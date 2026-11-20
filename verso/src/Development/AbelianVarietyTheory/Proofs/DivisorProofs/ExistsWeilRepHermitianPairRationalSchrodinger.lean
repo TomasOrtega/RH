@@ -21,6 +21,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.WeilSchrodinger
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat`. Take `⟨ω, hω⟩` from `GlobalTheory.weilRepresentationUnitaryPair D ψ S T χS χT hψ hS hT rS rT`. Take `⟨om, hom⟩` from `GlobalTheory.T.exists_weilDatum_transport_adelicSchwartz_thetaTransform D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω`. Establish `h2` using `GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equivariant D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom`. Establish `h3` using `GlobalTheory.T.transportedWeilDatum_keeps_admissible_forms D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom`.
+
+Establish `h4` using `GlobalTheory.T.transportedWeilDatum_isUnitary_adelicSchwartz D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom`. Establish `h5` using `GlobalTheory.T.continuous_transported_weilDatum_adelicSchwartz D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom`. Establish `h6` using `GlobalTheory.T.exists_doubledWeil_blockEmbedding_acts_on_first_boxFactor D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom`. Establish `h7` using `GlobalTheory.T.exists_doubled_schrodingerModel_transposed_siegelRule D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ co hrat ω hω om hom`. Establish `hsp : GlobalTheory.WeilM.IsUSplitting (GlobalTheory.WeilM.adeleClass D.host.F) ψ co (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig)) om` using `⟨⟨h2.1, h2.2, h3⟩, h4, h5⟩`.
+
+Conclude with `⟨om, ⟨isUSplitting_inr hsp, h6⟩, ⟨transD _ co, transD_e co, isUSplitting_inl hsp, h7⟩, h5⟩`.
+-/
 theorem exists_isUWeilPair_hsp : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

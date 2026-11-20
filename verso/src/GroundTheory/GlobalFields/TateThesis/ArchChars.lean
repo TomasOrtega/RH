@@ -4,10 +4,24 @@ namespace GroundTheory.Global
 
 open Complex
 
+/- English proof (translation)
+Establish `h : IsCoveringMap ((↑) : ℝ → AddCircle (2 * Real.pi))` using `AddCircle.isCoveringMap_coe _`. Conclude with `h.homeomorph_comp AddCircle.homeomorphCircle'`.
+-/
 theorem isCoveringMap_circleExp : IsCoveringMap (Circle.exp : ℝ → Circle) := by
   have h : IsCoveringMap ((↑) : ℝ → AddCircle (2 * Real.pi)) := AddCircle.isCoveringMap_coe _
   exact h.homeomorph_comp AddCircle.homeomorphCircle'
 
+/- English proof (translation)
+Establish `cov` using `isCoveringMap_circleExp`. Establish `h0 : χ 0 = 1`. Establish `h` using `hmul 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := χ 0) (by rw [mul_one]; exact h.symm)`.
+
+Take `⟨F, ⟨hF0, hF⟩, -⟩` from `cov.existsUnique_continuousMap_lifts ⟨χ, hχ⟩ (0 : ℝ) (0 : ℝ) (by simp [h0])`. Establish `hF' : ∀ t, Circle.exp (F t) = χ t` using `fun t => congrFun hF t`. Establish `hadd : ∀ s t, F (s + t) = F s + F t`. Introduce `s`. Establish `key` using `cov.eq_of_comp_eq (g₁ := fun t => F (s + t) - F s - F t) (g₂ := fun _ => (0 : ℝ)) (by fun_prop) continuous_const (by`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, Circle.exp_sub, hF', hmul, Circle.exp_zero]`. Use the proof step `simp) 0 (by simp [hF0])`. Introduce `t`. Use `congrFun key t` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlin : ∀ t, F t = F 1 * t`. Introduce `t`. Use `map_real_smul (AddMonoidHom.mk' F hadd) F.continuous t 1` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+
+Use `⟨F 1, fun t => by rw [← hlin, hF'], ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Establish `key` using `cov.eq_of_comp_eq (g₁ := fun t : ℝ => τ * t) (g₂ := fun t => F 1 * t) (by fun_prop) (by fun_prop) (by funext t; simp only [Function.comp_apply]; rw [← hτ, ← hlin, hF']) 0 (by simp)`. Simplify using `using congrFun key 1`.
+-/
 theorem existsUnique_circleExp_of_continuous (χ : ℝ → Circle) (hχ : Continuous χ)
     (hmul : ∀ s t, χ (s + t) = χ s * χ t) : ∃! τ : ℝ, ∀ t, χ t = Circle.exp (τ * t) := by
   have cov := isCoveringMap_circleExp
@@ -39,6 +53,11 @@ theorem existsUnique_circleExp_of_continuous (χ : ℝ → Circle) (hχ : Contin
     (by funext t; simp only [Function.comp_apply]; rw [← hτ, ← hlin, hF']) 0 (by simp)
   simpa using congrFun key 1
 
+/- English proof (translation)
+Establish `hd : ∀ u : ℂ, HasDerivAt (fun t : ℝ => Complex.exp (u * t)) u 0`. Introduce `u`. Use `((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul u).cexp` as an intermediate fact. Simplify using `using this`. Establish `e : (fun t : ℝ => Complex.exp (s * t)) = fun t : ℝ => Complex.exp (s' * t)` using `funext h`.
+
+Establish `h' : HasDerivAt (fun t : ℝ => Complex.exp (s * t)) s' 0` using `by rw [e]; exact hd s'`. Conclude with `(hd s).unique h'`.
+-/
 theorem eq_of_forall_exp_mul_eq {s s' : ℂ}
     (h : ∀ t : ℝ, Complex.exp (s * t) = Complex.exp (s' * t)) : s = s' := by
   have hd : ∀ u : ℂ, HasDerivAt (fun t : ℝ => Complex.exp (u * t)) u 0 := by
@@ -49,6 +68,21 @@ theorem eq_of_forall_exp_mul_eq {s s' : ℂ}
   have h' : HasDerivAt (fun t : ℝ => Complex.exp (s * t)) s' 0 := by rw [e]; exact hd s'
   exact (hd s).unique h'
 
+/- English proof (translation)
+Use `existsUnique_of_exists_of_unique ?_ (fun s s' hs hs' => eq_of_forall_exp_mul_eq fun t => by rw [← hs, ← hs'])` and prove the remaining obligations. Establish `hc : Continuous fun t => (χ t : ℂ)` using `Units.continuous_val.comp hχ`. Establish `hnpos : ∀ t, 0 < ‖(χ t : ℂ)‖` using `fun t => norm_pos_iff.mpr (χ t).ne_zero`. Establish `ℓadd : ∀ s t, Real.log ‖(χ (s + t) : ℂ)‖ = Real.log ‖(χ s : ℂ)‖ + Real.log ‖(χ t : ℂ)‖`. Introduce `s t`.
+
+Rewrite using `[hmul, Units.val_mul, norm_mul]`. Conclude with `Real.log_mul (hnpos s).ne' (hnpos t).ne'`. Establish `ℓcont : Continuous fun t => Real.log ‖(χ t : ℂ)‖` using `hc.norm.log fun t => (hnpos t).ne'`. Establish `ℓlin : ∀ t, Real.log ‖(χ t : ℂ)‖ = Real.log ‖(χ 1 : ℂ)‖ * t`. Introduce `t`.
+
+Use `map_real_smul (AddMonoidHom.mk' (fun t => Real.log ‖(χ t : ℂ)‖) ℓadd) ℓcont t 1` as an intermediate fact. Simplify `this` using `[mul_comm]`. Set `u : ℝ → Circle` to `fun t => ⟨(χ t : ℂ) / (‖(χ t : ℂ)‖ : ℂ), mem_sphere_zero_iff_norm.2 (by simp [(hnpos t).ne'])⟩`. Establish `ucont : Continuous u`. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+
+Conclude with `hc.div (Complex.continuous_ofReal.comp hc.norm) fun t => by`. Conclude with `(hnpos t).ne'` after adjusting the coercions. Establish `umul : ∀ s t, u (s + t) = u s * u t`. Introduce `s t`. Apply `Circle.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[Circle.coe_mul]`. Use `show (χ (s + t) : ℂ) / (‖(χ (s + t) : ℂ)‖ : ℂ) = (χ s : ℂ) / (‖(χ s : ℂ)‖ : ℂ) * ((χ t : ℂ) / (‖(χ t : ℂ)‖ : ℂ))`. Rewrite using `[hmul, Units.val_mul, norm_mul, Complex.ofReal_mul, mul_div_mul_comm]`. Take `⟨τ, hτ, -⟩` from `existsUnique_circleExp_of_continuous u ucont umul`. Use `⟨Real.log ‖(χ 1 : ℂ)‖ + τ * I, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (χ t : ℂ) = (‖(χ t : ℂ)‖ : ℂ) * (u t : ℂ)` using `by show _ = _ * (_ / _)`. Rewrite using `[mul_div_cancel₀]`. Conclude with `(hnpos t).ne'` after adjusting the coercions. Establish `h2 : (‖(χ t : ℂ)‖ : ℂ) = Complex.exp ((Real.log ‖(χ 1 : ℂ)‖ * t : ℝ))`. Rewrite using `[← ℓlin, ← Complex.ofReal_exp, Real.exp_log (hnpos t)]`.
+
+Rewrite using `[h1, h2, hτ t, Circle.coe_exp, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem existsUnique_exp_of_continuous (χ : ℝ → ℂˣ) (hχ : Continuous χ)
     (hmul : ∀ s t, χ (s + t) = χ s * χ t) :
     ∃! s : ℂ, ∀ t : ℝ, (χ t : ℂ) = Complex.exp (s * t) := by

@@ -15,6 +15,11 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
 noncomputable def orb (z : (Σ k, ι k) → ℂ) : MvPolynomial (Σ k, ι k) ℤ →+* MvPolynomial K ℂ :=
   eval₂Hom (Int.castRingHom _) (fun v => C (z v) * X v.1)
 
+/- English proof (translation)
+Use `Finsupp.induction d ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `v b f _ _ ih`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Establish `h1 : ((Finsupp.single v b).prod fun x n => (X x.1 : MvPolynomial K ℂ) ^ n) = X v.1 ^ b` using `Finsupp.prod_single_index (pow_zero _)`.
+
+Rewrite using `[h1, ih, map_add]`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Use `congr 1`. Simplify using `[blockWeight, Pi.single_apply, Finsupp.weight_apply]`.
+-/
 lemma prod_weight (d : (Σ k, ι k) →₀ ℕ) :
     (d.prod fun v n => (X v.1 : MvPolynomial K ℂ) ^ n) =
       ∏ k, (X k : MvPolynomial K ℂ) ^ (Finsupp.weight (blockWeight ι) d k) := by
@@ -29,6 +34,11 @@ lemma prod_weight (d : (Σ k, ι k) →₀ ℕ) :
     congr 1
     simp [blockWeight, Pi.single_apply, Finsupp.weight_apply]
 
+/- English proof (translation)
+Use `conv_lhs => rw [s.as_sum]`. Use `conv_rhs => rw [s.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun d hd => ?_)` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWeight ι) d = a` using `hs (mem_support_iff.mp hd)`.
+
+Simplify using `only [orb, coe_eval₂Hom, eval₂_monomial, map_monomial, eval_monomial, mul_pow, Finsupp.prod_mul]`. Rewrite using `[prod_weight, hw]`. Simplify using `[map_finsuppProd, mul_assoc]`.
+-/
 lemma orb_homog (z : (Σ k, ι k) → ℂ) (a : K → ℕ) (s : MvPolynomial (Σ k, ι k) ℤ)
     (hs : s.IsWeightedHomogeneous (blockWeight ι) a) :
     orb z s = C (eval z (MvPolynomial.map (Int.castRingHom ℂ) s)) *
@@ -43,6 +53,9 @@ lemma orb_homog (z : (Σ k, ι k) → ℂ) (a : K → ℕ) (s : MvPolynomial (Σ
   rw [prod_weight, hw]
   simp [map_finsuppProd, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) s, map_finsum (orb z) (weightedHomogeneousComponent_finsupp s)]`. Establish `h0 : ∀ a, orb z (weightedHomogeneousComponent (blockWeight ι) a s) = 0` using `fun a => by`. Rewrite using `[orb_homog z a _ (weightedHomogeneousComponent_isWeightedHomogeneous a s), h a, map_zero, zero_mul]`. Simplify using `[h0]`.
+-/
 lemma orb_eq_zero (z : (Σ k, ι k) → ℂ) (s : MvPolynomial (Σ k, ι k) ℤ)
     (h : ∀ a : K → ℕ, eval z (MvPolynomial.map (Int.castRingHom ℂ)
       (weightedHomogeneousComponent (blockWeight ι) a s)) = 0) : orb z s = 0 := by
@@ -55,6 +68,15 @@ lemma orb_eq_zero (z : (Σ k, ι k) → ℂ) (s : MvPolynomial (Σ k, ι k) ℤ)
 
 end PositivityTheory.Xgn.MultihomogeneousOrbit
 
+/- English proof (translation)
+Introduce `K _ _ ι _ P z hP hz`. Take `⟨hz1, hz2⟩` from `hz`. Use `⟨RingHom.ker (PositivityTheory.Xgn.MultihomogeneousOrbit.orb z), RingHom.ker_isPrime _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Rewrite using `[RingHom.mem_ker]`.
+
+Conclude with `PositivityTheory.Xgn.MultihomogeneousOrbit.orb_eq_zero z q (fun a => hz2 _ (hP q hq a))`. Introduce `k`. Take `⟨i, hi⟩` from `hz1 k`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`.
+
+Simplify using `[PositivityTheory.Xgn.MultihomogeneousOrbit.orb, hi, X_ne_zero]`. Introduce `p`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[PositivityTheory.Xgn.MultihomogeneousOrbit.orb, p.prop.ne_zero]`. Introduce `s hs`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hs (RingHom.mem_ker.mpr (PositivityTheory.Xgn.MultihomogeneousOrbit.orb_eq_zero z s hne))`.
+-/
 theorem PositivityTheory.Xgn.relevant_prime_orbit_closure : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MvPolynomial (Σ k, ι k) ℤ)) (z : ((Σ k, ι k) → ℂ)), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomogIdeal P → z ∈ ReciprocityTheory.ChartRestriction.G.Geo.mcPts P → ∃ W : Ideal (MvPolynomial (Σ k, ι k) ℤ), W.IsPrime ∧ P ≤ W ∧ GroundTheory.Heights₂.Heights.NumbersDVR.IsRelevant W ∧ (∀ p : Nat.Primes, (C ((p : ℕ) : ℤ) : MvPolynomial (Σ k, ι k) ℤ) ∉ W) ∧ ∀ s : MvPolynomial (Σ k, ι k) ℤ, s ∉ W → ∃ a : K → ℕ, eval z (MvPolynomial.map (Int.castRingHom ℂ) (weightedHomogeneousComponent (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) a s)) ≠ 0 := by
   intro K _ _ ι _ P z hP hz
   obtain ⟨hz1, hz2⟩ := hz

@@ -15,6 +15,41 @@ namespace GlobalTheory.CompanionTheory.RankinSelberg
 
 open Ad3 Ad3.R
 
+/- English proof (translation)
+Introduce `hB0 hA1 hG0 hG2a hG4 hG5 hGS hFT hF2 hF5 hF6 hF6c hE6 hG6`. Introduce `k N _ hk χ hχ f a hf ha ω φ hOm hL hP μ₁ μ₂ φ₀ hM m hm S hS c δ hc hδ hu x Ψ hΨ`. Take `⟨μ, 𝓕, mK, 𝓓, h0⟩` from `hG0`. Take `⟨C0, hC0⟩` from `hG2a μ 𝓕 mK 𝓓 h0`. Take `⟨hB1, -, -, -, hBun, -⟩` from `hB0`.
+
+Take `⟨h, hh⟩` from `hBun S x`. Take `⟨γ, hγ⟩` from `hGS`. Use `haveI := h0.haarK`. Use `haveI := h0.probK`. Take `⟨C1, hC1, hE⟩` from `hE6 k N hk χ hχ f a hf ha ω φ hOm hL μ₁ μ₂ φ₀ hM mK m hm γ hγ`.
+
+Take `⟨⟨Cb, hCb⟩, hDec⟩` from `hF5 k N hk χ hχ f a hf ha ω φ hOm hL`. Take `⟨hWc, -, -, -⟩` from `hF2 k N hk χ hχ f a hf ha ω φ hOm hL`. Establish `hcusp` using `hF6c k N hk χ hχ f a hf ha ω φ hOm hL`. Establish `hinf : ∀ w, infAt w h = 1` using `hh.2.2`. Establish `hDecH` using `hDec h hinf`.
+
+Establish `hDec1 : Dec φ`. Use `hDec 1 (fun w => by simp)` as an intermediate fact. Simplify using `using this`. Establish `hcontR : Continuous fun g : G2 => φ (g * h)` using `hL.cont.comp (continuous_mul_right h)`. Establish `hleftR : LInv fun g : G2 => φ (g * h)` using `fun γ' g => by`.
+
+Simplify using `only [mul_assoc]`. Conclude with `hL.left γ' (g * h)`. Establish `hWh : ∀ g, Wh (fun g : G2 => φ (g * h)) g = Wh φ (g * h)` using `fun g => by`. Simplify using `only [Wh, mul_assoc]`. Establish `hWhF : Wh (fun g : G2 => φ (g * h)) = fun g => Wh φ (g * h)` using `funext hWh`.
+
+Establish `hWcR : Continuous (Wh fun g : G2 => φ (g * h))`. Rewrite using `[hWhF]`. Conclude with `hWc.comp (continuous_mul_right h)`. Establish `hPar : Par (fun g => φ g * conj (φ (g * h))) (fun g => Wh φ g * conj (Wh φ (g * h)))`. Use `hF6 φ (fun g => φ (g * h)) hL.cont hcontR hL.left hleftR hDec1 ⟨Cb, fun g => hCb _⟩ hcusp hWc hWcR` as an intermediate fact.
+
+Rewrite `this` using `[hWhF]`. Conclude with `this`. Establish `hAut : Aut (fun g => φ g * conj (φ (g * h)))`. Use `⟨hL.cont.mul (Complex.continuous_conj.comp hcontR), ?_, ?_, ⟨Cb * Cb, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `γ' g`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[hL.left γ' g, hL.left γ' (g * h)]`. Introduce `z g`. Simplify using `only [mul_assoc]`. Rewrite using `[hL.cen z g, hL.cen z (g * h)]`.
+
+Establish `: (ω.toIdele z : ℂ) * conj (ω.toIdele z : ℂ) = 1`. Rewrite using `[Complex.mul_conj, Circle.normSq_coe]`. Simplify using the standard rewrite rules. Simplify using `only [map_mul]`. Take the linear combination `(φ g * conj (φ (g * h))) * this`.
+
+Establish `hb0 : 0 ≤ Cb` using `(norm_nonneg _).trans (hCb 1)`. Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul (hCb _) (hCb _) (norm_nonneg _) hb0`. Introduce `M`. Take `⟨D, hD⟩` from `hDecH M`.
+
+Establish `hb0 : 0 ≤ Cb` using `(norm_nonneg _).trans (hCb 1)`. Use `⟨Cb * D, fun x' a' κ => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj, mul_assoc Cb D]`. Conclude with `mul_le_mul (hCb _) (hD x' a' κ) (norm_nonneg _) hb0`. Take `⟨hΦ, hsFA⟩` from `hFT γ hγ S Ψ hΨ`.
+
+Establish `hsΨ : ∀ v : S, SB (sF (localAdelicChar ℚ v.1) (Ψ v))` using `fun v => (hA1 (Qv v.1) (localAdelicChar ℚ v.1) (hB1 v.1).1 1 1 (Ψ v) 1 (hΨ v)).2.1`. Take `⟨hΦ', -⟩` from `hFT γ hγ S (fun v => sF (localAdelicChar ℚ v.1) (Ψ v)) hsΨ`. Establish `hci : IsOfFinOrder c⁻¹` using `hc.inv`. Establish `hδi : ∀ w : InfinitePlace ℚ, (c⁻¹.infiniteComponent w (-1) : ℂ) = if δ then -1 else 1`. Introduce `w`.
+
+Establish `h1 : (c⁻¹.infiniteComponent w (-1) : Circle) = (c.infiniteComponent w (-1))⁻¹` using `rfl`. Rewrite using `[h1, Circle.coe_inv, hδ w]`. Apply the tactic sequence `cases δ <;> simp`. Establish `hui : ∀ v ∉ S, IsUnramifiedChar (localChar c⁻¹ v)`. Introduce `v hv`.
+
+Establish `h1 : localChar c⁻¹ v = (localChar c v)⁻¹`. Use extensionality with `a'`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `isUnramifiedChar_inv_iff.2 (hu v hv)`.
+
+Take `⟨E, E', hd, hd', hEq, hfe, hnz⟩` from `hG4 μ 𝓕 mK 𝓓 h0 _ hAut _ hΦ c hc`. Apply the tactic sequence `have hsgn : (if δ then (-1 : ℂ) else 1) ≠ 0 := by cases δ <;> simp`. Use `⟨((C0 : ℝ) : ℂ) * C1 * (if δ then -1 else 1), E, E', ?_, hd, hd', ?_, hfe, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero (mul_ne_zero ?_ hC1) hsgn` and prove the remaining obligations. Conclude with `hC0.1` after adjusting the coercions.
+
+Introduce `s hs`. Take `⟨h1, h2⟩` from `hEq s hs`. Prove the components needed by the constructor for the conclusion. Rewrite using `[h1, hG5 μ 𝓕 mK 𝓓 C0 h0 hC0 _ _ hAut hPar _ hΦ c s hs, hE S hS c δ hc hδ hu x h hh Ψ hΨ s hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h2, hsFA, hG5 μ 𝓕 mK 𝓓 C0 h0 hC0 _ _ hAut hPar _ hΦ' c⁻¹ s hs, hE S hS c⁻¹ δ hci hδi hui x h hh _ hsΨ s hs]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h1 hc1`. Conclude with `hG6 k N hk χ hχ f a hf ha ω φ hOm hL hP μ 𝓕 mK 𝓓 h0 S hS c hc hc1 hu x h hh (hnz h1)`.
+-/
 theorem globalIdentity : Ad3.R.B0 → Ad3.R.A1 → Ad3.R.G0 → Ad3.R.G2a → Ad3.R.G4 → Ad3.R.G5 → Ad3.R.GS →
     Ad3.R.FT → Ad3.R.F2 → Ad3.R.F5 → Ad3.R.F6 → Ad3.R.ConstantTermVanishingAlt → Ad3.R.E6 → Ad3.R.G6 → Ad3.R.X0 := by
   intro hB0 hA1 hG0 hG2a hG4 hG5 hGS hFT hF2 hF5 hF6 hF6c hE6 hG6

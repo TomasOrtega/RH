@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 open Formalism.L2.Host in
+/- English proof (translation)
+Establish `h2` using `unif_spec w`. Establish `h0 : Valued.v (x : w.adicCompletion F) ≠ 0` using `by simp`. Establish `h1 : IsUnitAt w (x * (atFin w (unif w) ^ GlobalTheory.SmGL.ord (w.adicCompletion F) x)⁻¹)`. Unfold `IsUnitAt IsUnifAt at *`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, map_mul, map_inv₀, map_zpow₀, h2, ← WithZero.exp_zsmul, GlobalTheory.SmGL.SphCompletion.ord_completion]`.
+
+Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log h0, mul_inv_cancel₀ h0]`. Establish `h3` using `hu _ h1`. Rewrite `h3` using `[map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Conclude with `h3`.
+-/
 private theorem loc_unr {F : Type} [Field F] [NumberField F] {w : HeightOneSpectrum (𝓞 F)} (χ : HChar F)
     (hu : χ.UnrAt w) (x : (w.adicCompletion F)ˣ) :
     χ.loc w x = χ.val w ^ GlobalTheory.SmGL.ord (w.adicCompletion F) x := by
@@ -24,6 +29,13 @@ private theorem loc_unr {F : Type} [Field F] [NumberField F] {w : HeightOneSpect
   rw [map_mul, map_inv, map_zpow, mul_inv_eq_one] at h3
   exact h3
 
+/- English proof (translation)
+Introduce `hG F Ω _ _ _ _ _ l _ A w h _ a ha σ`. Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Take `⟨art, hart⟩` from `hG F Ω`. Take `⟨μ, hμ, hL⟩` from `hart.exists_isLAdicOf ι (GlobalTheory.Published.CharAboveModel.absPow_isAlgPos F 1)`. Establish `e` using `GlobalTheory.Published.CharAboveModel.eq_cyc_pow hart hμ hL`.
+
+Establish `h1` using `hL.loc (a σ) σ (ha.glob art hart σ)`. Establish `hu` using `(Model.absPow_isAbsPow F (1 : ℕ)).1 w`. Establish `hval` using `(Model.absPow_isAbsPow F (1 : ℕ)).2.1 w`. Establish `h2 : (((Model.absPow F ((1 : ℕ) : ℝ)).loc w (a σ) : ℂˣ) : ℂ) = ((normV w : ℕ) : ℂ) ^ deg σ`. Rewrite using `[loc_unr _ hu, ha.ord_eq, Units.val_zpow_eq_zpow_val, hval]`.
+
+Simplify using `[Complex.cpow_neg, normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `h1` using `[h2, e, pow_one, cyc_eq_map_cycZ, map_zpow₀, map_natCast]`. Simplify using `only [Nat.cast_one] at h1`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.Loc.epsArt :
     GlobalArtinReciprocity → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ (a : Weil h →* (w.adicCompletion F)ˣ), IsLocalArtin h a → ∀ s : Weil h, (cycBar F Ω l (s : G F Ω) : Qbar l) = ((normV w : ℕ) : Qbar l) ^ deg s * algPow w (fun _ => 1) (a s : (w.adicCompletion F)) := by
   intro hG F Ω _ _ _ _ _ l _ A w h _ a ha σ

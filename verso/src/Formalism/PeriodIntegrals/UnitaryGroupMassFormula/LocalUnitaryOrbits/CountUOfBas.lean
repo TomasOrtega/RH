@@ -27,6 +27,9 @@ def LatBasO (a : ℕ) (Y : TupV (E := E) v n a) : Prop :=
   GoodY σ J ψ v Λ a Y → ∃ b : Fin (2 * n) → (Fin n → Fv F v ⊗[F] E), LinearIndependent (Fv F v) b ∧
     ∀ x, x ∈ latLoc (E := E) v Λ ↔ ∃ c : Fin (2 * n) → v.adicCompletionIntegers F, x = ∑ i, (c i : Fv F v) • b i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show sc (E := E) v ϖ * (r • y p) = (ϖ * r) • y p`. Rewrite using `[mul_smul, Algebra.smul_def ϖ, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem sc_smul_smul (ϖ r : Fv F v) (y : Fin n → Fv F v ⊗[F] E) :
     sc (E := E) v ϖ • (r • y) = (ϖ * r) • y := by
   funext p
@@ -34,6 +37,21 @@ theorem sc_smul_smul (ϖ r : Fv F v) (y : Fin n → Fv F v ⊗[F] E) :
   rw [mul_smul, Algebra.smul_def ϖ, Algebra.TensorProduct.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Introduce `hG ϖ hϖ`. Take `⟨b, hb, hmem⟩` from `hB hG`. Set `φ : (Fin (2 * n) → v.adicCompletionIntegers F) →+ latA v Λ` to `{ toFun := fun c => ⟨∑ i, (c i : Fv F v) • b i, (hmem _).2 ⟨c, rfl⟩⟩ map_zero' := by ext1; simp map_add' := fun c d => by ext1`. Simplify using `[add_smul, Finset.sum_add_distrib] }`. Establish `hφs : Function.Surjective φ`.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨c, rfl⟩` from `(hmem x).1 hx`. Conclude with `⟨c, rfl⟩`. Establish `key : ((lattice₂ v Λ ϖ).addSubgroupOf (latA v Λ)).comap φ = AddSubgroup.pi Set.univ (fun _ => unifO v ϖ)`. Use extensionality with `c`.
+
+Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hze⟩ i _`. Take `⟨d, rfl⟩` from `(hmem z).1 hz`. Use `⟨d i, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∑ i, (c i : Fv F v) • b i = ∑ i, (ϖ * d i) • b i`. Establish `: (DistribMulAction.toAddMonoidHom (Fin n → Fv F v ⊗[F] E) (sc (E` using `E) v ϖ)) (∑ i, (d i : Fv F v) • b i) = ∑ i, (ϖ * d i) • b i := by show sc (E := E) v ϖ • ∑ i, (d i : Fv F v) • b i = _`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => sc_smul_smul v ϖ _ _`. Rewrite using `[← this, hze]`.
+
+Both sides reduce to the same expression. Establish `h0` using `Fintype.linearIndependent_iff.1 hb (fun i => (c i : Fv F v) - ϖ * d i) (by simp only [sub_smul, Finset.sum_sub_distrib, e, sub_self])`. Conclude with `sub_eq_zero.1 (h0 i)`. Introduce `h choose d hd using fun i => h i (Set.mem_univ i)`. Use `⟨∑ i, (d i : Fv F v) • b i, (hmem _).2 ⟨d, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show sc (E := E) v ϖ • ∑ i, (d i : Fv F v) • b i = ∑ i, (c i : Fv F v) • b i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sc_smul_smul, hd i]`. Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hφs, key, AddSubgroup.index_pi]`.
+
+Simplify using `only [hR ϖ hϖ, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem idxV_of (a : ℕ) (Y : TupV (E := E) v n a) (hB : LatBasO σ J ψ v Λ a Y) (hR : ResIdx v) :
     IdxV σ J ψ v Λ a Y := by
   intro hG ϖ hϖ
@@ -77,6 +95,9 @@ theorem idxV_of (a : ℕ) (Y : TupV (E := E) v n a) (hB : LatBasO σ J ψ v Λ a
   rw [AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hφs, key, AddSubgroup.index_pi]
   simp only [hR ϖ hϖ, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+The claim follows from `countU_of_idxV σ J ψ v Λ a Y hO (idxV_of σ J ψ v Λ a Y hB hQ) hR`.
+-/
 theorem countU_of_bas (a : ℕ) (Y : TupV (E := E) v n a) (hO : LamOpen v Λ a)
     (hB : LatBasO σ J ψ v Λ a Y) (hQ : ResIdx v) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=
   countU_of_idxV σ J ψ v Λ a Y hO (idxV_of σ J ψ v Λ a Y hB hQ) hR

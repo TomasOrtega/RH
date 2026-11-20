@@ -12,6 +12,17 @@ namespace GlobalTheory.ThetaTransl
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hq : ζ ∈ Qbar`. Use `mem_algebraicClosure_iff.2 ⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.X_pow_sub_C_ne_zero hn 1, ?_⟩` and prove the remaining obligations. Simplify using `[hζ]`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hζ` using `[zero_pow hn.ne']`. Conclude with `zero_ne_one hζ`. Establish `h1 : ‖lam ⟨ζ, hq⟩‖ = 1`. Establish `e : (⟨ζ, hq⟩ : Qbar) ^ n = 1` using `Subtype.ext (by simpa using hζ)`. Establish `: ‖lam ⟨ζ, hq⟩‖ ^ n = 1` using `by rw [← norm_pow, ← map_pow, e, map_one, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`. Distinguish the cases in `hx : x ∈ Qbar`. Establish `hzx : ζ * x ∈ Qbar` using `mul_mem hq hx`. Simplify using `only [lamC, dif_pos hx, dif_pos hzx]`. Establish `: (⟨ζ * x, hzx⟩ : Qbar) = ⟨ζ, hq⟩ * ⟨x, hx⟩` using `rfl`.
+
+Rewrite using `[this, map_mul, norm_mul, h1, one_mul]`. Establish `hzx : ζ * x ∉ Qbar`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `: x = ζ⁻¹ * (ζ * x)` using `by field_simp`.
+
+Rewrite using `[this]`. Conclude with `mul_mem (inv_mem hq) h`. Simplify using `only [lamC, dif_neg hx, dif_neg hzx]`.
+-/
 theorem norm_lamC_root_mul (lam : Qbar →+* ℂ_[p]) {ζ : ℂ} {n : ℕ} (hn : 0 < n) (hζ : ζ ^ n = 1)
     (x : ℂ) : ‖lamC lam (ζ * x)‖ = ‖lamC lam x‖ := by
   have hq : ζ ∈ Qbar := by
@@ -39,6 +50,27 @@ theorem norm_lamC_root_mul (lam : Qbar →+* ℂ_[p]) {ζ : ℂ} {n : ℕ} (hn :
       exact mul_mem (inv_mem hq) h
     simp only [lamC, dif_neg hx, dif_neg hzx]
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hg t ω ht hω`. Take `⟨hcc, -, hδ, hΛ, -⟩` from `hg`. Establish `hlat` using `(GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 cc δ ⟨hcc, hδ⟩).1`. Rewrite `hlat` using `[← hΛ]`. Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair g.abelian₂ hlat`.
+
+Establish `hlaw` using `(GlobalTheory.OddTheta.sgStar_laws g.abelian₂ hlat).1.2.2.2 ω hω t`. Take `⟨m, hm, hmt⟩` from `ht`. Use `set s := sgStar g.abelian₂ with hs`. Use `set A : ℂ := (area g.abelian₂ : ℂ) with hAdef`. Establish `hA : area g.abelian₂ = GlobalTheory.latticeArea L` using `GlobalTheory.OddTheta.area_eq L g.abelian₂ hL`.
+
+Establish `hA0 : A ≠ 0`. Rewrite using `[hAdef, hA]`. Conclude with `(GlobalTheory.latticeArea_pos L).ne'` after adjusting the coercions. Use `set ψ : ℂ := if ω / 2 ∈ g.abelian₂ then 1 else -1 with hψ`. Use `set E : ℂ := Complex.exp ((Real.pi : ℂ) * (t * (starRingEnd ℂ) ω - ω * (starRingEnd ℂ) t) / (2 * A)) with hE`.
+
+Establish `key : U1 g.abelian₂ (t + ω) s 0 = (ψ * E) * U1 g.abelian₂ t s 0`. Establish `h2 : s (t + ω) = ψ * s t * Complex.exp (-(-(Real.pi : ℂ) * t * (starRingEnd ℂ) ω / A - (Real.pi : ℂ) * ω * (starRingEnd ℂ) ω / (2 * A)))`. Establish `hlaw'` using `hlaw`. Simplify using `only [U1] at hlaw'`. Rewrite using `[← hlaw', mul_assoc, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, mul_one]`.
+
+Simplify using `only [U1]`. Rewrite using `[zero_add, zero_add, h2, show ψ * E * (s t * Complex.exp (-(Real.pi : ℂ) * 0 * (starRingEnd ℂ) t / A - (Real.pi : ℂ) * t * (starRingEnd ℂ) t / (2 * A))) = ψ * s t * (E * Complex.exp (-(Real.pi : ℂ) * 0 * (starRingEnd ℂ) t / A - (Real.pi : ℂ) * t * (starRingEnd ℂ) t / (2 * A))) by …`. Use `congr 1`. Use `congr 1`. Simplify using `only [map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hroot : (ψ * E) ^ (2 * m) = 1`. Apply the tactic sequence `have hψ2 : ψ ^ 2 = 1 := by rw [hψ]; split_ifs <;> norm_num`. Establish `ha' : (m : ℂ) * t ∈ L.lattice` using `(hL _).1 hmt`. Establish `hω' : ω ∈ L.lattice` using `(hL _).1 hω`.
+
+Take `⟨k, hk⟩` from `GlobalTheory.exists_int_im_latticeForm L ha' hω'`. Establish `hL0 : (GlobalTheory.latticeArea L : ℂ) ≠ 0` using `by exact_mod_cast (GlobalTheory.latticeArea_pos L).ne'`. Establish `him : ((m : ℂ) * t * (starRingEnd ℂ) ω).im = k * GlobalTheory.latticeArea L`. Rewrite `hk` using `[GlobalTheory.latticeForm, Complex.div_ofReal_im, div_eq_iff (GlobalTheory.latticeArea_pos L).ne']`. Conclude with `hk`.
+
+Establish `hc : (starRingEnd ℂ) ((m : ℂ) * t * (starRingEnd ℂ) ω) = (m : ℂ) * (starRingEnd ℂ) t * ω`. Simplify using `[map_mul]`. Establish `hsub` using `Complex.sub_conj ((m : ℂ) * t * (starRingEnd ℂ) ω)`. Rewrite `hsub` using `[hc, him]`. Establish `hexp : ((2 * m : ℕ) : ℂ) * ((Real.pi : ℂ) * (t * (starRingEnd ℂ) ω - ω * (starRingEnd ℂ) t) / (2 * A)) = (k : ℂ) * (2 * (Real.pi : ℂ) * Complex.I)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAdef, hA]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_pow, pow_mul, hψ2, one_pow, one_mul, hE, ← Complex.exp_nat_mul, hexp, Complex.exp_int_mul_two_pi_mul_I]`.
+
+Unfold `cval`. Rewrite using `[key]`. Conclude with `norm_lamC_root_mul g.lam (by omega) hroot _`.
+-/
 theorem cval_norm_periodic : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p),
     GL3Theta.At D cc δ g → ∀ t ω : ℂ, InRationalLattice g.abelian₂ t → ω ∈ g.abelian₂ → ‖GlobalTheory.ThetaTransl.cval g (t + ω)‖ = ‖GlobalTheory.ThetaTransl.cval g t‖ := by
   intro D p _ cc δ g hg t ω ht hω

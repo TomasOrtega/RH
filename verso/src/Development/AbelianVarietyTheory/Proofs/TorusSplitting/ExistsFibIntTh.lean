@@ -22,6 +22,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace FibEx
 
+/- English proof (translation)
+Substitute `hψ` using the available equality. Establish `mk : ∀ (x : X) (k : L.ι), x ∈ L.U k → u x ∈ (L.pull g).U (fun _ => k)` using `fun x k hx => mem_pull.2 ((congrArg (fun q => q x ∈ L.U k) hu).mpr hx)`. Establish `le : ∀ (J : PUnit → M.ι) (k : L.ι), (M.pull (u ≫ p)).U J ⊓ L.U k ≤ u ⁻¹ᵁ ((M.pull p).U J ⊓ (L.pull g).U (fun _ => k))` using `fun J k x hx => ⟨mem_pull.2 (mem_pull₂.1 hx.1), mk x k hx.2⟩`. Set `v : LB.Iso L (M.pull (u ≫ p))` to `⟨fun q => res (le q.1 q.2) (pullU u _ (w.s (q.1, fun _ => q.2)))⟩`. Establish `hv : ∀ (Z : Scheme.{0}) (f : Z ⟶ X) (z : Z) (j : M.ι) (k : L.ι), (u ≫ p) (f z) ∈ M.U j → f z ∈ L.U k → Geo.Tor.gw v f z j k = Geo.Tor.gw w (f ≫ u) z j (fun _ => k)` using `fun Z f z j k hj hk => by`.
+
+Establish `hm : f z ∈ (M.pull (u ≫ p)).U (fun _ => j) ⊓ L.U k` using `⟨mem_pull.2 hj, hk⟩`. Conclude with `(gm_res f z (le _ _) hm _).trans (gm_pull f u z _ (le _ _ hm) _)`. Use `⟨v, fun Z f z j j' k k' hj hj' hk hk' => ?_, hv⟩` and prove the remaining obligations. Rewrite using `[hv Z f z j k hj hk, hv Z f z j' k' hj' hk', hw Z (f ≫ u) z j j' (fun _ => k) (fun _ => k') hj hj' (mk _ k hk) (mk _ k' hk'), gm_pull_g L g (f ≫ u) z _ _ (mk _ k hk) (mk _ k' hk'), Category.assoc, Category.assoc, hu, Category.comp_id]`.
+-/
 theorem exists_along {X Y B : Scheme.{0}} {L : LB X} {M : LB B} {g : Y ⟶ X} {u : X ⟶ Y} (hu : u ≫ g = 𝟙 X)
     {p : Y ⟶ B} (w : LB.Iso (L.pull g) (M.pull p)) (hw : PGen w) {ψ : X ⟶ B} (hψ : u ≫ p = ψ) :
     ∃ v : LB.Iso L (M.pull ψ), PGen v ∧ ∀ (Z : Scheme.{0}) (f : Z ⟶ X) (z : Z) (j : M.ι) (k : L.ι),
@@ -43,6 +48,9 @@ theorem exists_along {X Y B : Scheme.{0}} {L : LB X} {M : LB B} {g : Y ⟶ X} {u
     hw Z (f ≫ u) z j j' (fun _ => k) (fun _ => k') hj hj' (mk _ k hk) (mk _ k' hk'),
     gm_pull_g L g (f ≫ u) z _ _ (mk _ k hk) (mk _ k' hk'), Category.assoc, Category.assoc, hu, Category.comp_id]
 
+/- English proof (translation)
+Establish `k` using `H _ (𝟙 _) z (fun _ => J (h ≫ e)) (fun _ => J' e') (fun _ => (congrArg (fun q => q z ∈ L.U (J (h ≫ e))) he).mpr (hJ (h ≫ e))) (fun _ => hJ' e')`. Rewrite `k` using `[Fintype.prod_unique, zpow_one, Category.id_comp, Category.id_comp]`. Rewrite using `[val_of a (𝟙 _) z J' (fun _ => J' e') (fun _ => by rw [Category.id_comp])]`. Conclude with `k.symm`.
+-/
 theorem val_of_pmaps {X X' S S' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {e : S ⟶ X} {e' : S' ⟶ X'} {h : S' ⟶ S} (he : e' ≫ F = h ≫ e) {a : LB.Gen (L'.pull e')} {t : LB.Gen (L.pull e)}
     (H : PMaps w (K := PUnit) (fun _ => e') (fun _ => e) (fun _ => 1) a t h) (z : S') {J' J}
@@ -55,6 +63,9 @@ theorem val_of_pmaps {X X' S S' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' �
   rw [val_of a (𝟙 _) z J' (fun _ => J' e') (fun _ => by rw [Category.id_comp])]
   exact k.symm
 
+/- English proof (translation)
+Establish `hz : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `a` using `congrArg (gs r z _) (h (fun _ => j) k)`. Conclude with `(gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))`.
+-/
 theorem gs_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {σ : LB.Sec L'} {s : LB.Sec (L.pull F)} (h : IsoMaps w σ s) (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι)
     (k : L'.ι) (hj : F (r z) ∈ L.U j) (hk : r z ∈ L'.U k) :
@@ -64,6 +75,9 @@ theorem gs_isoMaps {X X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w
   exact (gs_res _ z _ hz _).symm.trans (a.trans ((gs_mul _ z _ hz _ _).trans
     (congrArg₂ (· * ·) (gs_unit _ z _ hz _) (gs_res _ z _ hz _))))
 
+/- English proof (translation)
+Use `⟨thfPull1 L (𝟙 X) (Category.id_comp _) (thfPull L (𝟙 X) θ), fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hJ.mem (fun _ : Fin 1 => 𝟙 X) r`. Establish `h₂ : (r ≫ 𝟙 X) z ∈ (L.pull (𝟙 X)).U (fun _ => J (r ≫ 𝟙 _))` using `chart_le_pullback_open L (𝟙 X) (Category.id_comp _) _ h₁`. Use `(gs_appLE (𝟙 X) _ _ _ r z h₁ _).trans ((gs_appLE (𝟙 X) _ _ _ (r ≫ 𝟙 X) z h₂ _).trans ?_)` and prove the remaining obligations. Simplify using `only [Category.comp_id]`.
+-/
 theorem exists_sec_one {X : Scheme.{0}} {L : LB X} (θ : LB.Sec L) :
     ∃ σ : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => ((1 : ℕ) : ℤ))),
       ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (J), Good L z J → sval σ r z J = gs r z _ (θ.f (J (r ≫ 𝟙 _))) := by
@@ -73,6 +87,21 @@ theorem exists_sec_one {X : Scheme.{0}} {L : LB X} (θ : LB.Sec L) :
   refine (gs_appLE (𝟙 X) _ _ _ r z h₁ _).trans ((gs_appLE (𝟙 X) _ _ _ (r ≫ 𝟙 X) z h₂ _).trans ?_)
   simp only [Category.comp_id]
 
+/- English proof (translation)
+Substitute `hPP` using the available equality. Use `U.gen_hom` as an intermediate fact. Establish `hi : IsMonHom U.gen.symm.hom` using `inferInstanceAs (IsMonHom U.gen.inv)`. Establish `hA : IsGrpPullback A.A G (jK R) (U.gen.inv.left ≫ pullback.fst G.hom (jK R))` using `((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback G (jK R))).congr (Category.id_comp _) rfl`. Take `⟨κ, hκ, eκ⟩` from `grpPullback_iso hA cart`.
+
+Take `⟨w₀, g₀⟩` from `U.ext`. Establish `ug : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, U.gen.inv_hom_id, Over.id_left]`. Establish `gu : U.gen.hom.left ≫ U.gen.inv.left = 𝟙 _` using `by rw [← Over.comp_left, U.gen.hom_inv_id, Over.id_left]`. Take `⟨v, gv', hv⟩` from `exists_along ug w₀ ((isGen_iff w₀).1 g₀) eκ.symm`. Take `⟨w', Tr⟩` from `exists_cancel U.LG.isLB w v hw gv' L'.isLB A.isLB`.
+
+Establish `g'` using `Tr.pgen_cancel U.LG.isLB hw gv'`. Establish `e₁ : eSec A.A ≫ κ.hom.left = 𝟙 _ ≫ eSec T` using `(cubeMapOf (isGrpPullback_of_iso κ)).e_comm`. Establish `e₂ : eSec A.A ≫ U.gen.inv.left = 𝟙 _ ≫ eSec ((Over.pullback (jK R)).obj G)` using `(cubeMapOf (isGrpPullback_of_iso U.gen.symm)).e_comm`. Establish `e₃ : eSec A.A ≫ κ.hom.left ≫ φ = (𝟙 _ ≫ jK R) ≫ eSec G`. Rewrite using `[eκ, Category.id_comp]`.
+
+Conclude with `(cubeMapOf hA).e_comm`. Take `⟨ρ, gρ, hρ⟩` from `H1.exists_gen_move L'.isLB A.isLB w' g' (K := PUnit) (fun _ => eSec T) (fun _ => eSec A.A) (fun _ => 1) (𝟙 _) (fun _ => e₁) L'.rig L'.rigGen`. Use `⟨κ, hκ, eκ, w', ρ, w₀, g', hρ, ⟨g₀, gρ, fun z JA JG hA' hG => ?_⟩, fun F _ _ th H => ?_⟩` and prove the remaining obligations. Establish `k` using `val_of_pmaps e₃ (Tr.pmaps_comp L'.isLB (fun _ => e₁) hr hρ) z hA' hG`. Rewrite `k` using `[hv _ _ z _ _ ((congrArg (fun q => q z ∈ U.LG.L.U (JG _)) e₃).mpr (hG _)) (hA' _), e₂, Category.id_comp, Category.id_comp]`.
+
+Conclude with `k`. Take `⟨σ₁, h₁⟩` from `exists_sec_one θ`. Use `⟨g₀, σ₁, fun Z r z JA JG hA' hG => ?_⟩` and prove the remaining obligations. Rewrite using `[h₁ _ _ z JG hG]`. Establish `q₁ : (U.genF F).left ≫ (snd (TFK (R` using `R) F) A.A).left = (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left ≫ U.gen.hom.left := congrArg (fun q => q.left) (lift_snd (fst _ _) (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G) ≫ U.gen.hom))`.
+
+Establish `H'` using `fun i => H Z (r ≫ (U.genF F).left) z JA i hA'`. Establish `q₂ : ((r ≫ (U.genF F).left) ≫ (snd (TFK (R` using `R) F) A.A).left) ≫ U.gen.inv.left = r ≫ (snd (TFK (R := R) F) ((Over.pullback (jK R)).obj G)).left := by`. Rewrite using `[Category.assoc r, q₁, Category.assoc, Category.assoc, gu, Category.comp_id]`. Establish `q₃ : r ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left ≫ pullback.fst G.hom (jK R) = (((r ≫ (U.genF F).left) ≫ (snd (TFK (R := R) F) A.A).left) ≫ κ.hom.left) ≫ φ := by`. Rewrite using `[Category.assoc _ κ.hom.left, eκ, ← Category.assoc _ U.gen.inv.left, q₂, Category.assoc]`.
+
+Rewrite using `[q₃, ← q₂]`. Generalize the expression as in `(r ≫ (U.genF F).left) ≫ (snd (TFK (R := R) F) A.A).left = a at H' ⊢`. Take `⟨i, hi'⟩` from `exists_chart L'.isLB (κ.hom.left (a z))`. Establish `hj : φ (κ.hom.left (a z)) ∈ U.LG.L.U (JG (((a ≫ κ.hom.left) ≫ φ) ≫ 𝟙 _))` using `hG (((a ≫ κ.hom.left) ≫ φ) ≫ 𝟙 _)`. Rewrite using `[hθ Z (a ≫ κ.hom.left) z _ i hj hi', H' i hi', ← hv Z a z _ _ hj (hA' a), Tr Z a z _ i _ hj hi' (hA' a), Units.val_mul, _root_.mul_assoc]`.
+-/
 theorem core {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
     (U : UnifPre I D A G) (PP : RigLB G) (hPP : U.LG = PP)
@@ -136,6 +165,9 @@ theorem core {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I
     rw [hθ Z (a ≫ κ.hom.left) z _ i hj hi', H' i hi', ← hv Z a z _ _ hj (hA' a), Tr Z a z _ i _ hj hi' (hA' a),
       Units.val_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Use `⟨(isGen_iff w).1 h.1, ?_⟩` and prove the remaining obligations. Use `(maps_iff w _ (fun _ => eSec t.G) _ t₁.PP.rig t.PP.rig m.cm.e _ (rigPull_le m.cm.F m.cm.e m.cm.e_comm t.PP.L) (fun _ => rfl)).1 h.2` as an intermediate fact. Rewrite `this` using `[m.base]`. Then use the resulting hypothesis.
+-/
 theorem rigIso_pt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {X Y : Scheme.{0}}
     {t₁ : SAB H Y} {t : SAB H X} {f : Y ⟶ X} {m : SABMap t₁ t f} {w : LB.Iso t₁.PP.L (t.PP.L.pull m.φ)}
     (h : RigIso m w) : PGen w ∧
@@ -149,6 +181,37 @@ end FibEx
 
 open FibEx in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c V _ _ _ _ y G I P`. Take `⟨g₁, r₁⟩` from `rigIso_pt I.rig1`. Take `⟨g₂, r₂⟩` from `rigIso_pt I.rig2`. Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hL'` using `I.t'.PP.isLB`.
+
+Take `⟨κ, hκ, eκ, w', ρ, w₀, g', hρ, hN, hI⟩` from `core P.U.toUnifPre G.PP P.bundle I.t'.PP I.m2.cart I.w2 g₂ r₂ I.θ I.σ (fun Z r z j k hj hk => by`. Establish `le : (G.PP.L.pull I.m2.φ).U (fun _ => j) ≤ I.m2.φ ⁻¹ᵁ G.PP.L.U j` using `fun q hq => mem_pull.1 hq`. Use `Eq.trans ?_ (gs_isoMaps I.maps2 Z r z j k hj hk)` and prove the remaining obligations. Rewrite using `[I.pull (fun _ => j) le]`. Conclude with `(gs_appLE I.m2.φ _ _ le r z (mem_pull.2 hj) _).symm)`.
+
+Take `⟨ω, Tr⟩` from `exists_comp hL' I.w1 w' g₁ g' hL P.A.isLB`. Establish `cart : IsGrpPullback P.A.A Xo.univ.t.G y.x (κ.hom.left ≫ I.m1.φ)` using `((isGrpPullback_of_iso κ).comp I.m1.cart).congr (Category.id_comp _) rfl`. Establish `e₁ : eSec P.A.A ≫ κ.hom.left = 𝟙 _ ≫ eSec I.t'.G` using `(cubeMapOf (isGrpPullback_of_iso κ)).e_comm`. Establish `hω` using `Tr.pmaps_comp hL' (fun _ => e₁) r₁ hρ`. Rewrite `hω` using `[Category.id_comp]`.
+
+Use `⟨⟨κ.hom.left ≫ I.m1.φ, cart, ω, (isGen_iff ω).2 (Tr.pgen_comp hL' g₁ g'), ρ, hN.2.1, fun z JA J hA hJ => val_of_pmaps (cubeMapOf cart).e_comm hω z hA hJ⟩, w₀, hN, fun a => ?_, fun F _ _ _ ψ z th hψ hm hT => hI F th fun Z r p JA i hA hi => ?_⟩` and prove the remaining obligations. Set `_` to `H.starRing`. Establish `x₁ : P.oA.act a ≫ P.U.gen.inv = P.U.gen.inv ≫ (Over.pullback (jK V)).map (G.act.act a)`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, Iso.eq_inv_comp]`. Conclude with `(P.lin.ext a).symm`.
+
+Establish `x₂ : ((Over.pullback (jK V)).map (G.act.act a)).left ≫ pullback.fst G.G.hom (jK V) = pullback.fst G.G.hom (jK V) ≫ (G.act.act a).left` using `pullback.lift_fst _ _ _`. Establish `x₃ : (P.oA.act a).left ≫ κ.hom.left = κ.hom.left ≫ (I.t'.act.act a).left`. Apply `I.m2.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, I.m2.act, ← Category.assoc κ.hom.left, eκ, ← Category.assoc, ← Over.comp_left, x₁, Over.comp_left, Category.assoc, x₂, Category.assoc]`. Simplify using `only [Category.assoc, Over.w]`.
+
+Use `show (P.oA.act a).left ≫ κ.hom.left ≫ I.m1.φ = (κ.hom.left ≫ I.m1.φ) ≫ _`. Rewrite using `[← Category.assoc, x₃, Category.assoc, I.m1.act, Category.assoc]`. Take `⟨hx, -, pm, pm₁, pm₂, hpm⟩` from `hm`. Set `a0 : Over.mk (I.t'.G.hom ≫ y.x) ⟶ Over.mk y.x` to `Over.homMk I.t'.G.hom rfl`. Set `b0 : Over.mk (I.t'.G.hom ≫ y.x) ⟶ Xo.univ.t.G` to `Over.homMk I.m1.φ I.m1.cart.1.w`.
+
+Set `g : I.t'.G.left ⟶ Gx y.x` to `(lift a0 b0).left`. Establish `gf : g ≫ (fst (Over.mk y.x) Xo.univ.t.G).left = I.t'.G.hom` using `congrArg (fun q => q.left) (lift_fst a0 b0)`. Establish `gs' : g ≫ (snd (Over.mk y.x) Xo.univ.t.G).left = I.m1.φ` using `congrArg (fun q => q.left) (lift_snd a0 b0)`. Use `clear_value g`. Set `p₁ : (TFK (R` to `V) F ⊗ P.A.A).left ⟶ Sp F := (fst (TFK (R := V) F) P.A.A).left`.
+
+Set `a : Z ⟶ P.A.A.left` to `r ≫ (snd (TFK (R := V) F) P.A.A).left`. Establish `hj : spMap ψ.toRingHom = jFK (R` using `V) F := by rw [hψ]`. Establish `a2 : (r ≫ p₁) ≫ spMap ψ.toRingHom = a ≫ P.A.A.hom`. Rewrite using `[hj, Category.assoc, Category.assoc]`. Conclude with `congrArg (r ≫ ·) ((Over.w (fst (TFK (R := V) F) P.A.A)).trans (Over.w (snd (TFK (R := V) F) P.A.A)).symm)`.
+
+Establish `w : (r ≫ p₁) ≫ z.x = (a ≫ κ.hom.left ≫ I.m1.φ) ≫ Xo.univ.t.G.hom`. Rewrite using `[hx, ← Category.assoc, a2, Category.assoc a, Category.assoc a, cart.1.w]`. Set `r' : Z ⟶ Gx z.x` to `pullback.lift (r ≫ p₁) (a ≫ κ.hom.left ≫ I.m1.φ) w`. Establish `h1 : r' ≫ (fst (Over.mk z.x) Xo.univ.t.G).left = r ≫ p₁` using `pullback.lift_fst _ _ _`. Establish `h2 : r' ≫ (snd (Over.mk z.x) Xo.univ.t.G).left = a ≫ κ.hom.left ≫ I.m1.φ` using `pullback.lift_snd _ _ _`.
+
+Use `clear_value r'`. Establish `e : r' ≫ pm = (a ≫ κ.hom.left) ≫ g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (r' ≫ pm) ≫ (fst (Over.mk y.x) Xo.univ.t.G).left = (_ ≫ g) ≫ (fst (Over.mk y.x) Xo.univ.t.G).left`. Rewrite using `[Category.assoc, pm₂, ← Category.assoc, h1, Category.assoc _ g, gf, Category.assoc a, Over.w]`.
+
+Conclude with `a2`. Use `show (r' ≫ pm) ≫ (snd (Over.mk y.x) Xo.univ.t.G).left = (_ ≫ g) ≫ (snd (Over.mk y.x) Xo.univ.t.G).left`. Rewrite using `[Category.assoc, pm₁, Category.assoc _ g, gs']`. Conclude with `h2.trans (Category.assoc _ _ _).symm`. Take `⟨J, hJ, -⟩` from `exists_good Xo.univ.t.PP.L hL p (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`.
+
+Establish `k` using `hT.2 Z r r' (h2.trans (Category.assoc _ _ _)) h1 p JA J hA hJ`. Establish `mz` using `hJ.mem (fun _ : Fin 1 => (snd (Over.mk z.x) Xo.univ.t.G).left) r'`. Establish `mj : I.m1.φ (κ.hom.left (a p)) ∈ Xo.univ.t.PP.L.U (J (r' ≫ (snd (Over.mk z.x) Xo.univ.t.G).left))`. Rewrite using `[h2]`. Conclude with `hJ (a ≫ κ.hom.left ≫ I.m1.φ)`.
+
+Unfold `sval at k`. Use `beta_reduce at k`. Generalize the expression as in `J (r' ≫ (snd (Over.mk z.x) Xo.univ.t.G).left) = j at k mz mj`. Establish `le₁ : (PPx z.x).U (fun _ => j) ≤ pm ⁻¹ᵁ (PPx y.x).U (fun _ => j)` using `fun q hq => Set.mem_iInter.2 fun _ => (congrArg (fun u => u q ∈ Xo.univ.t.PP.L.U j) pm₁).mpr (Set.mem_iInter.1 hq 0)`. Establish `le₂ : (Xo.univ.t.PP.L.pull I.m1.φ).U (fun _ => j) ≤ g ⁻¹ᵁ (PPx y.x).U (fun _ => j)` using `fun q hq => Set.mem_iInter.2 fun _ => (congrArg (fun u => u q ∈ Xo.univ.t.PP.L.U j) gs').mpr (mem_pull.1 hq)`.
+
+Establish `k₁ : gs r' p ((PPx z.x).U (fun _ => j)) (z.s.f (fun _ => j)) = gs (r' ≫ pm) p ((PPx y.x).U (fun _ => j)) (y.s.f (fun _ => j))` using `(congrArg (gs r' p _) (hpm (fun _ => j) le₁).symm).trans (gs_appLE pm _ _ le₁ r' p mz _)`. Establish `k₂ : gs (a ≫ κ.hom.left) p _ (I.s1.f (fun _ => j)) = gs ((a ≫ κ.hom.left) ≫ g) p ((PPx y.x).U (fun _ => j)) (y.s.f (fun _ => j))` using `(congrArg (gs (a ≫ κ.hom.left) p _) (I.gen1 g gs' gf (fun _ => j) le₂)).trans (gs_appLE g _ _ le₂ (a ≫ κ.hom.left) p (mem_pull.2 mj) _)`. Establish `k₃` using `gs_isoMaps I.maps1 Z (a ≫ κ.hom.left) p j i mj hi`. Establish `k₄` using `Tr Z a p j i (JA a) mj hi (hA a)`. Rewrite `k₁` using `[e, ← k₂, k₃]`.
+
+Establish `k₅` using `k₁.symm.trans (k.trans (congrArg (fun u => u.val * GlobalTheory.UT.sA th r p JA) k₄))`. Rewrite `k₅` using `[Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 k₅`.
+-/
 theorem exists_fib_intTh : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [Algebra c.F (FractionRing V)] (y : FrPt Xo c (FractionRing V)) (G : SAB H (Sp V)) (_ : IntSec Xo V y.x y.s G) (P : PELUnif (maximalIdeal V) G), ∃ (Φ : Fib Xo y.x P.A) (w₀ : GlobalTheory.UT.W0 P.U.toUnifPre), GlobalTheory.UT.NormW P.U.toUnifPre w₀ Φ.ρ ∧ (∀ a : 𝓞 E, ((letI := H.starRing; P.oA.act a : P.A.A ⟶ P.A.A)).left ≫ Φ.φ = Φ.φ ≫ (Xo.univ.t.act.act a).left) ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] [Algebra c.F F] (ψ : FractionRing V →ₐ[c.F] F) (z : FrPt Xo c F) (th : GlobalTheory.UT.SecA P.A F 1), ψ.toRingHom = algebraMap (FractionRing V) F → FrMap ψ y z → Φ.SecTie z.x z.s th → IntTh P.U.toUnifPre w₀ th := by
   intro E _ _ _ H Dw l Xo c V _ _ _ _ y G I P
   obtain ⟨g₁, r₁⟩ := rigIso_pt I.rig1

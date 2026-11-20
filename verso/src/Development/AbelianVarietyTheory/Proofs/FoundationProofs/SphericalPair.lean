@@ -12,16 +12,25 @@ namespace GlobalTheory.NormSum.VacInt
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {a d : ℕ} {e0 : VC D a d → ℂ}
 
+/- English proof (translation)
+Take `⟨Lt, h, h1, -⟩` from `exists_lattice_of_adelic_point D N`. Conclude with `h1 ▸ (h 1).2`.
+-/
 theorem sd_std (D : D7) (N : ℕ) : SD D (stdL D N) := by
   obtain ⟨Lt, h, h1, -⟩ := exists_lattice_of_adelic_point D N
   exact h1 ▸ (h 1).2
 
+/- English proof (translation)
+Use `⟨he.1, 1, one_pos, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, (GlobalTheory.ThetaLine.theta_line D hg cc δ crv a d _ (Or.inr ⟨_, _, sd_std D a, sd_std D d, rfl⟩)).2.1 x hx]`. Conclude with `funext (he.2 x hx)`.
+-/
 theorem vac_mem_TT (hg : admG1 D) (crv : Crv D cc δ) (he : e0 ∈ Th D (tor0 D cc δ) (stdL D a) (stdL D d)) :
     e0 ∈ TT D (tor0 D cc δ) a d := by
   refine ⟨he.1, 1, one_pos, fun x hx => ?_⟩
   rw [one_smul, (GlobalTheory.ThetaLine.theta_line D hg cc δ crv a d _ (Or.inr ⟨_, _, sd_std D a, sd_std D d, rfl⟩)).2.1 x hx]
   exact funext (he.2 x hx)
 
+/- English proof (translation)
+Take `⟨x, x', -, -, h⟩` from `om_vac_of_mem he hT W (AdLattice.intG_of_mem D a k hk) (AdLattice.intG_of_mem D d k' hk')`. Use `⟨_, ?_, h⟩` and prove the remaining obligations. Simplify using `[W.chV.unitary, W.chV'.unitary]`.
+-/
 theorem om_vac_norm (he : e0 ∈ Th D (tor0 D cc δ) (stdL D a) (stdL D d)) (hT : e0 ∈ TT D (tor0 D cc δ) a d)
     (W : WeilO D cc δ a d e0) {k : GA D a} {k' : GA D d} (hk : k ∈ intG D a) (hk' : k' ∈ intG D d) :
     ∃ c : ℂ, ‖c‖ = 1 ∧ W.Om k k' e0 = c • e0 := by
@@ -29,6 +38,9 @@ theorem om_vac_norm (he : e0 ∈ Th D (tor0 D cc δ) (stdL D a) (stdL D d)) (hT 
   refine ⟨_, ?_, h⟩
   simp [W.chV.unitary, W.chV'.unitary]
 
+/- English proof (translation)
+Take `⟨x, hx, h⟩` from `om_vac_left he hT W (AdLattice.intG_of_mem D a k hk)`. Rewrite using `[h, hu x hx]`. Simplify using the standard rewrite rules.
+-/
 theorem om_vac_fix (he : e0 ∈ Th D (tor0 D cc δ) (stdL D a) (stdL D d)) (hT : e0 ∈ TT D (tor0 D cc δ) a d)
     (W : WeilO D cc δ a d e0) (hu : ∀ u, IntU D u → W.chV'.f u = 1) {k : GA D a} (hk : k ∈ intG D a) :
     W.Om k 1 e0 = e0 := by
@@ -43,6 +55,9 @@ def sphericalPair (hg : admG1 D) (crv : Crv D cc δ) (pt0 : GL3Theta.IsTwoTorsio
   Pair.ofVacuum crv pt0 had hd vac W n wt (fun _ hk => om_vac_fix vac.1 (vac_mem_TT hg crv vac.1) W hu hk)
     (fun _ hj => om_vac_norm vac.1 (vac_mem_TT hg crv vac.1) W (one_mem _) hj)
 
+/- English proof (translation)
+Introduce `D hg cc δ crv a d e0 he W`. Establish `hT` using `vac_mem_TT hg crv he`. Conclude with `⟨hT, fun k hk k' hk' => om_vac_of_mem he hT W (AdLattice.intG_of_mem D a k hk) (AdLattice.intG_of_mem D d k' hk'), fun _ hk _ hk' => om_vac_norm he hT W hk hk', fun hu _ hk => om_vac_fix he hT W hu hk, fun hu had hd t0 pt0 vac n wt => ⟨sphericalPair hg crv pt0 had hd vac W n wt h …`.
+-/
 theorem vacuum_eigen : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ →
     ∀ (a d : ℕ), ∀ e0 ∈ Th D (tor0 D cc δ) (stdL D a) (stdL D d), ∀ W : WeilO D cc δ a d e0,
       e0 ∈ TT D (tor0 D cc δ) a d ∧

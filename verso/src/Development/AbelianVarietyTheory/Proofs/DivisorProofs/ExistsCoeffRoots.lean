@@ -31,6 +31,13 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c c' : Coeff l} {r n : ℕ}
 
+/- English proof (translation)
+Establish `hi : ∀ x : ℂ, (∃ m : ℕ, 0 < m ∧ x ^ m = 1) → IsIntegral ℚ x`. Introduce and unpack `x ⟨m, hm, h⟩`. Conclude with `IsIntegral.of_pow hm (h ▸ isIntegral_one)`. Use `c.fin` as an intermediate fact. Establish `: FiniteDimensional ℚ (IntermediateField.adjoin ℚ ({z, w} : Set ℂ))` using `IntermediateField.finiteDimensional_adjoin (by`.
+
+Introduce and unpack `x (rfl | rfl)`. Conclude with `hi _ hz`. Conclude with `hi _ hw)`. Establish `hle : c.F ≤ c.F ⊔ IntermediateField.adjoin ℚ ({z, w} : Set ℂ)` using `le_sup_left`. Establish `hle' : IntermediateField.adjoin ℚ ({z, w} : Set ℂ) ≤ c.F ⊔ IntermediateField.adjoin ℚ ({z, w} : Set ℂ)` using `le_sup_right`.
+
+Conclude with `⟨⟨c.F ⊔ IntermediateField.adjoin ℚ ({z, w} : Set ℂ), inferInstance, fun τ a => hle (c.conj τ a), hle c.zeta_mem, c.le.trans hle⟩, hle, hle' (IntermediateField.subset_adjoin _ _ (by simp)), hle' (IntermediateField.subset_adjoin _ _ (by simp))⟩`.
+-/
 theorem exists_coeff_roots (c : Coeff l) {z w : ℂ} (hz : ∃ m : ℕ, 0 < m ∧ z ^ m = 1) (hw : ∃ m : ℕ, 0 < m ∧ w ^ m = 1) :
     ∃ c' : Coeff l, c.F ≤ c'.F ∧ z ∈ c'.F ∧ w ∈ c'.F := by
   have hi : ∀ x : ℂ, (∃ m : ℕ, 0 < m ∧ x ^ m = 1) → IsIntegral ℚ x := by
@@ -48,6 +55,17 @@ theorem exists_coeff_roots (c : Coeff l) {z w : ℂ} (hz : ∃ m : ℕ, 0 < m �
     c.le.trans hle⟩, hle, hle' (IntermediateField.subset_adjoin _ _ (by simp)),
     hle' (IntermediateField.subset_adjoin _ _ (by simp))⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `LinearMap.exists_extend (p := VV K lam) (LinearMap.id : VV K lam →ₗ[K] VV K lam)`. Establish `hp' : ∀ v : VV K lam, p v = v` using `fun v => LinearMap.congr_fun hp v`. Set `C : Pol K' I n →ₛₗ[σ'] W` to `{ toFun := fun F => Finsupp.sum ((MvPolynomial.basisMonomials _ K').repr F) fun m a => σ' a • c₀ (p (MvPolynomial.monomial m 1)) map_add' := fun F F' => by`. Rewrite using `[map_add]`. Conclude with `Finsupp.sum_add_index' (fun _ => by simp) (fun _ _ _ => by simp [add_smul])`.
+
+Use the proof step `map_smul' := fun a F => by`. Rewrite using `[map_smul, Finsupp.sum_smul_index' (fun _ => by simp), Finsupp.smul_sum]`. Simplify using `[mul_smul] }`. Establish `hC : ∀ m a, C (MvPolynomial.monomial m a) = σ' a • c₀ (p (MvPolynomial.monomial m 1))` using `fun m a => by`. Establish `e : MvPolynomial.monomial m a = a • MvPolynomial.basisMonomials _ K' m`.
+
+Simplify using `[MvPolynomial.smul_monomial]`. Rewrite using `[e, map_smulₛₗ]`. Use `congr 1`. Use `show Finsupp.sum ((MvPolynomial.basisMonomials _ K').repr (MvPolynomial.basisMonomials _ K' m)) (fun m a => σ' a • c₀ (p (MvPolynomial.monomial m 1))) = _`. Rewrite using `[Module.Basis.repr_self, Finsupp.sum_single_index (by simp), map_one, one_smul]`.
+
+Establish `key : ∀ F : Pol K I n, C (MvPolynomial.map j F) = c₀ (p F)`. Introduce `F`. Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial m a`. Rewrite using `[MvPolynomial.map_monomial, hC, hσ, ← map_smulₛₗ, ← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+
+Consider the case `add F F' h h' => rw [map_add, map_add, h, h', map_add, map_add]`. Conclude with `⟨C.comp (VV K' lam).subtype, fun v v' h => by show C v' = _`. Rewrite using `[h, key, hp']⟩`.
+-/
 theorem exists_coef_ext {K K' : Type} [Field K] [Field K'] (j : K →+* K') {σ : K →+* ℂ} (σ' : K' →+* ℂ)
     (hσ : ∀ a, σ' (j a) = σ a) {I : Type} [Fintype I] (lam : I → DomWeight n) {W : Type} [AddCommGroup W] [Module ℂ W]
     (c₀ : VV K lam →ₛₗ[σ] W) : ∃ c₁ : VV K' lam →ₛₗ[σ'] W, ∀ (v : VV K lam) (v' : VV K' lam),
@@ -82,6 +100,9 @@ theorem exists_coef_ext {K K' : Type} [Field K] [Field K'] (j : K →+* K') {σ 
     show C v' = _
     rw [h, key, hp']⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, s, h3⟩` from `h`. Conclude with `⟨GlobalTheory.LevelCoverDatum.isLev_smul (ddBC hle d) (GlobalTheory.FieldBCModel.isLev_ddBC hle d h1) u hu, h2, s, GlobalTheory.FieldBCModel.isNab_nabBC (le_covCoeff hle d) d.nab₂ h3⟩`.
+-/
 theorem covPin_covBC (hle : c.F ≤ c'.F) (d : DeltaDat Xo c n) {u : c'.F} (hu : u ≠ 0)
     (h : d.IsLev ∧ d.l₂.A = 1 ∧ ∃ _ : StarRing (𝓞 E), IsNab d.Xo₂ d.c₂ d.nab₂) :
     (covBC hle d u).IsLev ∧ (covBC hle d u).l₂.A = 1 ∧
@@ -90,6 +111,13 @@ theorem covPin_covBC (hle : c.F ≤ c'.F) (d : DeltaDat Xo c n) {u : c'.F} (hu :
   exact ⟨GlobalTheory.LevelCoverDatum.isLev_smul (ddBC hle d) (GlobalTheory.FieldBCModel.isLev_ddBC hle d h1) u hu, h2, s,
     GlobalTheory.FieldBCModel.isNab_nabBC (le_covCoeff hle d) d.nab₂ h3⟩
 
+/- English proof (translation)
+Establish `e` using `congrArg (incF d.c₂ (covCoeff hle d) (le_covCoeff hle d)) h`. Use `Eq.trans (Subtype.ext rfl) (e.trans ?_)` and prove the remaining obligations. Unfold `phiHat`. Establish `hz : zetaM (covCoeff hle d) = incF d.c₂ (covCoeff hle d) (le_covCoeff hle d) (zetaM d.c₂)`. Unfold `zetaM`.
+
+Rewrite using `[map_pow]`. Both sides reduce to the same expression. Use `(AddMonoidHom.map_finsum_of_injective (incF d.c₂ (covCoeff hle d) (le_covCoeff hle d)).toAddMonoidHom (RingHom.injective _) _).trans ?_` and prove the remaining obligations. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Use `show incF d.c₂ (covCoeff hle d) (le_covCoeff hle d) (_ * _) = _`.
+
+Rewrite using `[map_mul, map_zpow₀, ← hz]`. Both sides reduce to the same expression.
+-/
 theorem phiHat_covBC (hle : c.F ≤ c'.F) (d : DeltaDat Xo c n) (u : c'.F) (φ : (Fin n → LevQc Dw d.l₂) → c.F)
     (w : c.F) (q : Fin n → LevQ Dw d.l₂) (h : d.eF w = phiHat d.c₂ (fun x => d.eF (φ x)) q) :
     (covBC hle d u).eF (incF c c' hle w) =
@@ -106,6 +134,9 @@ theorem phiHat_covBC (hle : c.F ≤ c'.F) (d : DeltaDat Xo c n) (u : c'.F) (φ :
   rw [map_mul, map_zpow₀, ← hz]
   rfl
 
+/- English proof (translation)
+Introduce `L cc h1 h2 h3 h4 h5`. Take `⟨q, a, b, e⟩` from `h L cc h1 h2 h3 h4 h5`. Conclude with `⟨q, a, b, by simp only [e, map_mul, map_inv₀, map_ratCast]⟩`.
+-/
 theorem epIs_map (hle : c.F ≤ c'.F) {bad : ℕ} {B : Ideal (𝓞 E) → c.F} {epF : Submodule (𝓞 E) (Fin n → E) → c.F}
     (h : EpIs (Dw := Dw) c bad B epF) :
     EpIs (Dw := Dw) c' bad (fun I => incF c c' hle (B I)) (fun L => incF c c' hle (epF L)) := by
@@ -113,6 +144,11 @@ theorem epIs_map (hle : c.F ≤ c'.F) {bad : ℕ} {B : Ideal (𝓞 E) → c.F} {
   obtain ⟨q, a, b, e⟩ := h L cc h1 h2 h3 h4 h5
   exact ⟨q, a, b, by simp only [e, map_mul, map_inv₀, map_ratCast]⟩
 
+/- English proof (translation)
+Substitute `hu` using the available equality. Establish `h'` using `(GlobalTheory.ClassSumFieldChange.isThClsD_ddBC_iff E H Dw l Xo c c' hle n d Cl w La Nc gam vol ep Vs io Vs' io' x x' hx hd a m f hf).2 h`. Introduce `k _ _ _ i hk y y₂ hy`. Take `⟨vc, h1, h2⟩` from `@h' k _ _ _ i hk y y₂ hy`. Use `⟨vc, h1, h2.trans ?_⟩` and prove the remaining obligations.
+
+Establish `e : (covBC hle d 1).cδ = (ddBC hle d).cδ` using `one_smul (covCoeff hle d).F (rulBC (le_covCoeff hle d) d.cδ)`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem isThClsD_covBC_one (hle : c.F ≤ c'.F) (d : DeltaDat Xo c n) {u : c'.F} (hu : u = 1) {Cl : Type} [Fintype Cl]
     (w : Cl → (Fin n → LevQ Dw d.l₂) → c.F) (La : Cl → GenLat E n) (Nc gam : Cl → ℕ) (vol : c.F) (ep : Cl → c.F)
     {Vs : Type} [AddCommGroup Vs] [Module c.F Vs] (io : Vs →ₗ[c.F] MvPolynomial (LtN Dw n) c.F)
@@ -132,6 +168,9 @@ theorem isThClsD_covBC_one (hle : c.F ≤ c'.F) (d : DeltaDat Xo c n) {u : c'.F}
   rw [e]
   rfl
 
+/- English proof (translation)
+Introduce `S _ _ _ hS y`. Use `letI := resAlg hle S`. Rewrite using `[GlobalTheory.FieldBCModel.evR_rulBC hle hf.1 (fun _ => rfl) y, h S (fun a => hS a) _]`. Both sides reduce to the same expression.
+-/
 theorem isBC_rulBC_trans {c₀ : Coeff l} (h₀ : c₀.F ≤ c.F) (hle : c.F ≤ c'.F) (h₁ : c₀.F ≤ c'.F)
     {a : (E →+* ℂ) × ℕ → ℕ} {k m : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a k) {as : Fin m → c.F} {fs : Fin m → Rul Xo c₀}
     (h : IsBC h₀ f as fs) : IsBC h₁ (rulBC hle f) (fun i => incF c c' hle (as i)) fs := by
@@ -153,6 +192,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {K' : Type} [Field K'] {σ' : K' →+* ℂ} (t : T0) {Cl : Type} (h : Cl → GA D (Vc D i))
   (c0' : VsV D i K' →ₛₗ[σ'] (R.cV i).W)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Take `⟨k, ⟨γ, κ, rfl⟩, -⟩` from `hr g`. Establish `h1` using `hF γ (y k) ⟨κ, hJ κ.2⟩`. Establish `h2` using `hF' γ (y k) ⟨κ, hJ κ.2⟩`. Rewrite `h1` using `[h k]`.
+
+Conclude with `h1.trans h2.symm`.
+-/
 theorem adForms_ext {Gp Γ W I : Type} [Group Gp] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* Gp}
     {ρ : Γ →* Module.End ℂ W} {J J' : Subgroup Gp} {χ : J →* ℂˣ} {F F' : Gp → W} (hF : F ∈ Bridge.AdForms ι ρ J χ)
     (hF' : F' ∈ Bridge.AdForms ι ρ J χ) (hJ : J' ≤ J) {y : I → Gp} (hr : Bridge.IsReps ι J' y)
@@ -164,6 +208,9 @@ theorem adForms_ext {Gp Γ W I : Type} [Group Gp] [Group Γ] [NormedAddCommGroup
   rw [h k] at h1
   exact h1.trans h2.symm
 
+/- English proof (translation)
+Conclude with `(hV i t).1 (adForms_ext ((hV i t).2.1.le (LinearMap.mem_range_self (R.HV i t).e y)) ((hV i t).2.1.le (LinearMap.mem_range_self (R.HV i t).e y')) hJ hr fun k => (hy k).trans (hy' k).symm)`.
+-/
 theorem place_unique (hV : R.models_HV) {J' : Subgroup (Bridge.Gf (Vc D i))} (hJ : J' ≤ levJ R i t)
     (hr : Bridge.IsReps (Bridge.ratF (Vc D i)) J' (fun k => fin _ (h k))) {y y' : (R.HV i t).H} {x : Cl → VsV D i K'}
     (hy : Place R i t h c0' y x) (hy' : Place R i t h c0' y' x) : y = y' := by
@@ -175,6 +222,9 @@ open Classical in
 def thAdOf (v₀ : (R.MW i (sg0 D A)).Vec) (x : Cl → VsV D i K') : AutQ (Wc D i) → ℂ :=
   if hx : ∃ y, Place R i t h c0' y x then onQ (Wc D i) (R.thF i t hx.choose v₀) else 0
 
+/- English proof (translation)
+Introduce `y x hy`. Establish `hx : ∃ y, Place R i t h c0' y x` using `⟨y, hy⟩`. Establish `e` using `place_unique R i t h c0' hV hJ hr hx.choose_spec hy`. Conclude with `(dif_pos hx).trans (congrArg (fun y => onQ (Wc D i) (R.thF i t y v₀)) e)`.
+-/
 theorem thAdIs_thAdOf (hV : R.models_HV) {J' : Subgroup (Bridge.Gf (Vc D i))} (hJ : J' ≤ levJ R i t)
     (hr : Bridge.IsReps (Bridge.ratF (Vc D i)) J' (fun k => fin _ (h k))) (v₀ : (R.MW i (sg0 D A)).Vec) :
     ThAdIs R i t h c0' v₀ (thAdOf R i t h c0' v₀) := by

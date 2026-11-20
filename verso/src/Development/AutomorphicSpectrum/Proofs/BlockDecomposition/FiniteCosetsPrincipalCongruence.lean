@@ -4,6 +4,9 @@ namespace GlobalTheory.CompanionTheory.Congruence
 
 open Matrix
 
+/- English proof (translation)
+Rewrite using `[← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq]`. Use `haveI : Finite (R ⧸ IsLocalRing.maximalIdeal R) := (inferInstance : Finite (IsLocalRing.ResidueField R))`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) m`.
+-/
 theorem finite_quotient_span_pow (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Finite (IsLocalRing.ResidueField R)] (ϖ : R) (m : ℕ) (hϖ : Irreducible ϖ) :
     Finite (R ⧸ Ideal.span {ϖ ^ m}) := by
@@ -12,6 +15,19 @@ theorem finite_quotient_span_pow (R : Type) [CommRing R] [IsDomain R] [IsDiscret
     (inferInstance : Finite (IsLocalRing.ResidueField R))
   exact Ideal.finite_quotient_pow (IsNoetherian.noetherian _) m
 
+/- English proof (translation)
+Introduce `R _ _ _ _ n ϖ m hϖ`. Use `haveI hQ : Finite (R ⧸ Ideal.span {ϖ ^ m}) := finite_quotient_span_pow R ϖ m hϖ`. Use `haveI : Finite (Matrix (Fin n) (Fin n) (R ⧸ Ideal.span {ϖ ^ m})) := inferInstanceAs (Finite (Fin n → Fin n → R ⧸ Ideal.span {ϖ ^ m}))`. Use `haveI : Fintype (Matrix (Fin n) (Fin n) (R ⧸ Ideal.span {ϖ ^ m})) := Fintype.ofFinite _`. Establish `hch : ∀ M : Matrix (Fin n) (Fin n) (R ⧸ Ideal.span {ϖ ^ m}), ∃ G : Matrix (Fin n) (Fin n) R, (∃ A' : Matrix (Fin n) (Fin n) R, IsUnit A'.det ∧ A'.map (Ideal.Quotient.mk (Ideal.span {ϖ ^ m})) = M) → IsUnit G.det ∧ G.map (Ideal.Quotient.mk (Ideal.span {ϖ ^ m})) = M`.
+
+Introduce `M`. Distinguish the cases in `h : ∃ A' : Matrix (Fin n) (Fin n) R, IsUnit A'.det ∧ A'.map (Ideal.Quotient.mk (Ideal.span {ϖ ^ m})) = M`. Conclude with `⟨h.choose, fun _ => h.choose_spec⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose c hc using hch`.
+
+Use `⟨Finset.univ.image c, ?_⟩` and prove the remaining obligations. Introduce `A hA`. Take `⟨hgdet, hgf⟩` from `hc (A.map (Ideal.Quotient.mk (Ideal.span {ϖ ^ m}))) ⟨A, hA, rfl⟩`. Use `set g := c (A.map (Ideal.Quotient.mk (Ideal.span {ϖ ^ m}))) with hg`. Establish `key : ∀ i j, A i j - g i j ∈ Ideal.span {ϖ ^ m}`.
+
+Introduce `i j`. Establish `h1` using `congrFun (congrFun hgf i) j`. Simplify using `only [Matrix.map_apply] at h1`. Conclude with `Ideal.Quotient.eq.mp h1.symm`. Establish `hB : g⁻¹ * A - 1 = g⁻¹ * (A - g)`.
+
+Rewrite using `[mul_sub, Matrix.nonsing_inv_mul g hgdet]`. Use `⟨g, Finset.mem_image_of_mem c (Finset.mem_univ _), g⁻¹ * A, hgdet, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[← Matrix.sub_apply, hB, Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ (fun k _ => Ideal.mul_mem_left _ _ (by rw [Matrix.sub_apply]; exact key k j))`.
+
+Rewrite using `[← mul_assoc, Matrix.mul_nonsing_inv g hgdet, one_mul]`.
+-/
 theorem finite_cosets_principal_congruence :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
       [Finite (IsLocalRing.ResidueField R)] (n : ℕ) (ϖ : R) (m : ℕ), Irreducible ϖ →

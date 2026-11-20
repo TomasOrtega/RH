@@ -9,6 +9,9 @@ namespace Formalism.RepresentationBoundsCohomology.BR
 
 open Formalism.NG
 
+/- English proof (translation)
+Establish `hr : r g⁻¹ * r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Simplify using `only [uElt, smul_mul_assoc, mul_smul_comm, smul_smul, Units.mul_inv, one_smul]`. Rewrite using `[mul_assoc, ← mul_assoc (r g⁻¹), hr, one_mul]`. Rewrite using `[smul_comm (((χ g)⁻¹ : T'ˣ) : T') c, smul_smul, Units.inv_mul, one_smul]`.
+-/
 lemma key_mul {O A T' G : Type*} [CommRing O] [Ring A] [Algebra O A] [CommRing T'] [Algebra T' A]
     [Group G] (r : G →* A) (χ : G →* T'ˣ) (g : G) (c : O) (b x : A) :
     (c • (((χ g : T'ˣ) : T') • (b * r g⁻¹))) * (uElt r χ g * x) = c • (b * x) := by
@@ -17,6 +20,19 @@ lemma key_mul {O A T' G : Type*} [CommRing O] [Ring A] [Algebra O A] [CommRing T
   rw [mul_assoc, ← mul_assoc (r g⁻¹), hr, one_mul]
   rw [smul_comm (((χ g)⁻¹ : T'ˣ) : T') c, smul_smul, Units.inv_mul, one_smul]
 
+/- English proof (translation)
+Introduce `O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 Dw ε T₁ T₂ _ _ _ _ ρ₁ ρ₂ inc π γ lam C₁ CN2 CN CA CP hinc hπ hγ hc2 hc1 hCP hH2 φ a ha hCa`. Set `Y` to `Ymod r χ E`. Set `ρY : Representation O Dw Y` to `resRep (uRep O (M := Y) r χ) Dw`. Set `ρA : Representation O Dw A` to `resRep (uRep O (M := A) r χ) Dw`. Set `ρM : Representation O Dw M` to `resRep (uRep O (M := M) r χ) Dw`.
+
+Set `β : T₁ →ₗ[O] Y →ₗ[O] Y` to `LinearMap.mk₂ O (fun b y => inc b • y) (fun b b' y => by rw [map_add, add_smul]) (fun c b y => by rw [map_smul, smul_assoc]) (fun b y y' => smul_add _ _ _) (fun c b y => smul_comm _ _ _)`. Set `β' : T₁ →ₗ[O] A →ₗ[O] A` to `LinearMap.mk₂ O (fun b y => inc b • y) (fun b b' y => by rw [map_add, add_smul]) (fun c b y => by rw [map_smul, smul_assoc]) (fun b y y' => smul_add _ _ _) (fun c b y => smul_comm _ _ _)`. Set `jm : Y →ₗ[O] A` to `Y.subtype.restrictScalars O`. Set `φ' : Y →ₗ[O] M` to `psiY r χ E e₁ δ D j Kc k0 φ`. Establish `hφ' : ∀ (x : A) (y : Y), φ' (x • y) = x • φ' y` using `fun x y => map_smul (φ ∘ₗ (Submodule.mkQ _) ∘ₗ (LinearMap.inl A (Ymod r χ E) _)) x y`.
+
+Conclude with `cupKillAdm O Dw T₁ Y A Y A T₂ M (KO O) ρ₁ ρY ρA (twRep ε Y) (twRep ε A) ρ₂ ρM (twRep ε (KO O)) β β' γ jm jm π φ' (lam ∘ₗ φ') CN2 CN CA CP (fun g b y => Subtype.ext (by show inc (ρ₁ g b) * (uElt r χ (g : G) * (y : A)) = ((ε g : Oˣ) : O) • (inc b * (y : A))`. Rewrite using `[hinc, key_mul]))`. Use the proof step `(fun g b y => by show inc (ρ₁ g b) * (uElt r χ (g : G) * y) = ((ε g : Oˣ) : O) • (inc b * y)`. Rewrite using `[hinc, key_mul])`. Use the proof step `(fun g y => rfl) (fun g y => rfl) hπ (fun g y => hφ' _ y)`.
+
+Use the proof step `(fun g y => by show (lam ∘ₗ φ') (((ε g : Oˣ) : O) • y) = ((ε g : Oˣ) : O) • (lam ∘ₗ φ') y`. Rewrite using `[map_smul])`. Use the proof step `(fun m n => rfl)`. Use the proof step `(fun m n => by show γ (π m) (φ' n) = lam (φ' (inc m • n))`. Rewrite using `[hγ, hφ'])`.
+
+Use the proof step `(fun f hf => hCP _ f hf) hH2 a (fun h => yY r χ E (h : G)) E ha`. Use the proof step `(fun g h => Subtype.ext (ycoc_mul r χ E (g : G) (h : G)))`. Use the proof step `(fun g => by show ycoc r χ E (g : G) = uElt r χ (g : G) * E - E`. Unfold `ycoc uElt`. Rewrite using `[sub_mul, one_mul])`.
+
+Use the proof step `(hc2 a hCa) (hc1 a hCa)`.
+-/
 theorem rowCup : StatRowCup := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 Dw ε T₁ T₂ _ _ _ _ ρ₁ ρ₂
     inc π γ lam C₁ CN2 CN CA CP hinc hπ hγ hc2 hc1 hCP hH2 φ a ha hCa

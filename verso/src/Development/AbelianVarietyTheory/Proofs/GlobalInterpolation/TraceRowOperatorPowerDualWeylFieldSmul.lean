@@ -9,6 +9,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility Formalism.BasicNotions Global
 noncomputable section
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Establish `hM : hcMat S (fun i => φ (μ i)) = (hcMat R μ).map φ`. Use extensionality with `i l`. Simplify using `only [hcMat, shift, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hP : (hcMat S (fun i => φ (μ i))) ^ k = ((hcMat R μ) ^ k).map φ`.
+
+Rewrite using `[hM]`. Conclude with `(map_pow (RingHom.mapMatrix φ) (hcMat R μ) k).symm`. Simplify using `only [hcVal, hP, Matrix.map_apply, map_sum]`.
+-/
 theorem hcVal_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {N : ℕ} (μ : Fin N → R) (k : ℕ) :
     hcVal S (fun i => φ (μ i)) k = φ (hcVal R μ k) := by
   have hM : hcMat S (fun i => φ (μ i)) = (hcMat R μ).map φ := by
@@ -20,6 +25,9 @@ theorem hcVal_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {N : �
     exact (map_pow (RingHom.mapMatrix φ) (hcMat R μ) k).symm
   simp only [hcVal, hP, Matrix.map_apply, map_sum]
 
+/- English proof (translation)
+Apply `MvPolynomial.map_injective (Int.castRingHom ℚ) (RingHom.injective_int _)` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.rowPolarizationOperators_relations_divPow_baseChange ℤ N N).2.2 ℚ (Int.castRingHom ℚ) j f, GlobalTheory.T.traceRowOperatorPower_dualWeyl_highestWeight N ν hν j _ (dualWeylMap ℤ ℚ (Int.castRingHom ℚ) N N ν f hf), smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`. Use `congr 2`. Rewrite using `[← hcVal_map]`. Simplify using the standard rewrite rules.
+-/
 theorem gel_dualWeyl_int (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν) (j : ℕ) (f : MvPolynomial (Fin N × Fin N) ℤ)
     (hf : f ∈ dualWeyl ℤ N N ν) : gel ℤ N N j f = hcVal ℤ (fun i => (ν i : ℤ)) j • f := by
   apply MvPolynomial.map_injective (Int.castRingHom ℚ) (RingHom.injective_int _)
@@ -30,6 +38,15 @@ theorem gel_dualWeyl_int (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν) (j :
   rw [← hcVal_map]
   simp
 
+/- English proof (translation)
+Introduce `k _ N ν hν j f hf`. Rewrite `hf` using `[standardMonomialSpanDomain k N N ν]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨K, sz, hsz, I, hsh, rfl⟩` from `hg`.
+
+Establish `hb : bideterminant k sz hsz I = map (Int.castRingHom k) (bideterminant ℤ sz hsz I)`. Simplify using `only [bideterminant, initMinor, map_prod]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `p q`. Simplify using the standard rewrite rules. Establish `hmem : bideterminant ℤ sz hsz I ∈ dualWeyl ℤ N N ν` using `hsh ▸ bidetMem ℤ N N K sz hsz I`. Rewrite using `[hb, ← (GlobalTheory.T.rowPolarizationOperators_relations_divPow_baseChange ℤ N N).2.2 k (Int.castRingHom k) j, gel_dualWeyl_int N ν hν j _ hmem, smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C]`. Use `congr 2`.
+
+Rewrite using `[← hcVal_map]`. Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_comm]`.
+-/
 theorem gel_dualWeyl_field : ∀ (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ), Antitone ν → ∀ j : ℕ,
     ∀ f ∈ dualWeyl k N N ν, gel k N N j f = hcVal k (fun i => (ν i : k)) j • f := by
   intro k _ N ν hν j f hf

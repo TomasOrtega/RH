@@ -10,6 +10,25 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.StepW
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p x₀ z z' hx₀ hz hz' horb hbase hblk`. Take `⟨l, hl⟩` from `BM.O_cover x₀`. Establish `hx : x₀ ∈ BM.O l \ ReciprocityTheory.AnForm.P.bdry BM.s` using `⟨hl, hx₀⟩`. Establish `horb' : ReciprocityTheory.ChartRestriction.G.Geo.SameOrbit (GlobalTheory.CompanionTheory.Ar.PB.basePart M.blk z') (BM.Rb.lift x₀ x₀)`. Rewrite using `[← hbase]`.
+
+Conclude with `horb`. Establish `hbm : GlobalTheory.CompanionTheory.Ar.PB.StepW.baseMono M (BM.F l) p z = GlobalTheory.CompanionTheory.Ar.PB.StepW.baseMono M (BM.F l) p z'`. Unfold `GlobalTheory.CompanionTheory.Ar.PB.StepW.baseMono`. Rewrite using `[hbase]`. Establish `hfs : (GroundTheory.Heights₂.Heights.LowerBoundFree.fsHerm ι (M.dy p)).h z = (GroundTheory.Heights₂.Heights.LowerBoundFree.fsHerm ι (M.dy p)).h z'` using `by show GroundTheory.Heights₂.Heights.LowerBoundFree.refNorm (M.dy p) z = GroundTheory.Heights₂.Heights.LowerBoundFree.refNorm (M.dy p) z'`.
+
+Unfold `GroundTheory.Heights₂.Heights.LowerBoundFree.refNorm`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : M.dy p k = 0`. Simplify using `[h0]`. Establish `hcoord : ∀ i, z ⟨k, i⟩ = z' ⟨k, i⟩`.
+
+Introduce `i`. Distinguish the cases in `hk : M.blk p = some k`. Conclude with `hblk k hk i`. Distinguish the cases in `hb : ∀ p' : Ψ × Fin N, M.blk p' ≠ some k`. Conclude with `congrFun hbase ⟨⟨k, hb⟩, i⟩`.
+
+It suffices to derive a contradiction. Apply `h0` to reduce the goal to its premises. Unfold `GlobalTheory.CompanionTheory.Ar.PB.FlagModel.dy`. Rewrite using `[dif_neg hb, if_neg hk]`. Simplify using `only [hcoord]`.
+
+Establish `hh : Real.log ((BM.hom p).h z) = Real.log ((BM.hom p).h z')`. Consider the cases of `hp : M.blk p with`. Consider the case `none`. Rewrite using `[GlobalTheory.T.log_block_metric_off_boundary K ι Φ y Ψ N j M n BM p l x₀ z hp hx hz horb, GlobalTheory.T.log_block_metric_off_boundary K ι Φ y Ψ N j M n BM p l x₀ z' hp hx hz' horb', hbm, hbase]`. Consider the case `some k₀`.
+
+Take `⟨I₀, hI₀, hne⟩` from `GlobalTheory.T.block_metric_row_echelon_local K ι Φ y Ψ N j M n BM p k₀ l x₀ z hp hl hz horb`. Take `⟨C, B, hCB⟩` from `GlobalTheory.CompanionTheory.Ar.PB.StepW.GrChart.exists_isGrChart N j p.2 I₀ M.j_le hI₀`. Establish `hfun : GlobalTheory.CompanionTheory.Ar.PB.StepW.plk M (BM.F l) k₀ z = GlobalTheory.CompanionTheory.Ar.PB.StepW.plk M (BM.F l) k₀ z'`. Use function extensionality and compare the values at `I`. Unfold `GlobalTheory.CompanionTheory.Ar.PB.StepW.plk`.
+
+Rewrite using `[hbase]`. Simplify using `only [hblk k₀ hp]`. Establish `hne' : GlobalTheory.CompanionTheory.Ar.PB.StepW.plk M (BM.F l) k₀ z' I₀ ≠ 0`. Rewrite using `[← hfun]`. Conclude with `hne`.
+
+Rewrite using `[GlobalTheory.T.block_metric_explicit_matrix_form K ι Φ y Ψ N j M n BM p k₀ l x₀ z I₀ C B hp hCB hx hz horb hne, GlobalTheory.T.block_metric_explicit_matrix_form K ι Φ y Ψ N j M n BM p k₀ l x₀ z' I₀ C B hp hCB hx hz' horb' hne', hfun, hbm]`. Unfold `GlobalTheory.CompanionTheory.Ar.PB.StepW.stepGap`. Rewrite using `[hh, hfs]`.
+-/
 theorem stepGap_eq_of_base_block : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (p : Ψ × Fin N) (x₀ : BM.Rb.X) (z z' : (Σ k, ι k) → ℂ), x₀ ∉ bdry BM.s → z ∈ mcPts (mCoordIdeal y) → z' ∈ mcPts (mCoordIdeal y) → SameOrbit (basePart M.blk z) (BM.Rb.lift x₀ x₀) → basePart M.blk z = basePart M.blk z' → (∀ k, M.blk p = some k → ∀ m : ι k, z ⟨k, m⟩ = z' ⟨k, m⟩) → stepGap M BM p z = stepGap M BM p z' := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM p x₀ z z' hx₀ hz hz' horb hbase hblk
   obtain ⟨l, hl⟩ := BM.O_cover x₀

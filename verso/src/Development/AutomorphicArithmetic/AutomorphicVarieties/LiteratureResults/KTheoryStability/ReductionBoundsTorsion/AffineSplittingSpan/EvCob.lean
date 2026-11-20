@@ -8,12 +8,22 @@ namespace EvaluationCoboundary
 
 open PositivityTheory.KB
 
+/- English proof (translation)
+Rewrite using `[Finsupp.linearCombination_apply]`. Both sides reduce to the same expression.
+-/
 theorem ev_eq {G : Type} [Group G] {m : ℕ} (F : (Fin (m + 1) → G) → ℝ) (z : Chn G m) :
     ev (MonoidHom.id G) F 1 z =
       Finsupp.linearCombination ℝ (fun g : Fin m → G => F fun i => (MonoidHom.id G) (Fin.partialProd g i) • (1 : G)) z := by
   rw [Finsupp.linearCombination_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ev_eq, bd, Finsupp.linearCombination_single, one_smul, map_add, map_sum, Finsupp.linearCombination_single, dC, Fin.sum_univ_succ]`. Simplify using `only [MonoidHom.id_apply, smul_eq_mul, mul_one, Fin.succAbove_zero, one_smul, Fin.val_zero, pow_zero, one_mul, map_smul, Finsupp.linearCombination_single, Fin.val_succ]`. Use `congr 1`. Establish `h` using `he (g 0) fun i => Fin.partialProd (fun i => g i.succ) i`. Simplify using `only [MonoidHom.id_apply, smul_eq_mul] at h`.
+
+Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.partialProd_succ']`. Both sides reduce to the same expression.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.partialProd_contractNth]`. Both sides reduce to the same expression.
+-/
 theorem key {G : Type} [Group G] (j : ℕ) (e : (Fin (j + 1) → G) → ℝ) (he : Inv (MonoidHom.id G) e)
     (g : Fin (j + 1) → G) :
     dC e (fun i => (MonoidHom.id G) (Fin.partialProd g i) • (1 : G)) =
@@ -36,6 +46,13 @@ theorem key {G : Type} [Group G] (j : ℕ) (e : (Fin (j + 1) → G) → ℝ) (he
 
 end EvaluationCoboundary
 
+/- English proof (translation)
+Introduce `G _ j e he z hz`. Establish `h : ∀ w : Chn G (j + 1), ev (MonoidHom.id G) (dC e) 1 w = ev (MonoidHom.id G) e 1 (bd G j w)`. Introduce `w`. Proceed by induction on `w using Finsupp.induction_linear with`. Consider the case `zero => simp [ev]`.
+
+Consider the case `add a b ha hb`. Rewrite using `[map_add, EvaluationCoboundary.ev_eq, map_add, ← EvaluationCoboundary.ev_eq, ← EvaluationCoboundary.ev_eq, ha, hb, EvaluationCoboundary.ev_eq, EvaluationCoboundary.ev_eq e (bd G j b), ← map_add, ← EvaluationCoboundary.ev_eq]`. Consider the case `single g r`. Rewrite using `[EvaluationCoboundary.ev_eq, Finsupp.linearCombination_single, EvaluationCoboundary.key j e he g, ← Finsupp.smul_single_one, map_smul, EvaluationCoboundary.ev_eq, EvaluationCoboundary.ev_eq, map_smul]`. Rewrite using `[one_smul, ← map_smul, ← map_smul, Finsupp.smul_single_one]`.
+
+Rewrite using `[h, hz]`. Simplify using `[ev]`.
+-/
 theorem evCob : EvCob := by
   intro G _ j e he z hz
   have h : ∀ w : Chn G (j + 1), ev (MonoidHom.id G) (dC e) 1 w =

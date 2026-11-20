@@ -29,6 +29,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Lit.Car
 
+/- English proof (translation)
+Use `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_` and prove the remaining obligations. Take `⟨Ξ, hΞ⟩` from `hπ`. Use `choose m' h1 h2 h3 using fun σ => GlobalTheory.AlgInfChar.exists_dualInfChar E a Ξ σ`. Establish `e : (fun σ => (CG.mk π).infChar σ) = m'`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `UpperTheory.V.AlgRepEndIrreducible.wigner E a π Ξ _ m' (fun σ => GlobalTheory.CuspRep.ParLaws.hasInfChar_infChar (CG.mk π) σ) h1 hne hΞ`. Rewrite using `[show (CG.mk π).infChar τ = m' τ from congrFun e τ]`. Conclude with `⟨h2 τ, h3 τ⟩`.
+-/
 private theorem regAlg_of_coh (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (a : ℕ) (π : CuspSub E a) (hπ : GlobalTheory.GKCoh.IsCohomological π) : (CG.mk π).IsRegAlg := by
   refine (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_
@@ -40,6 +45,9 @@ private theorem regAlg_of_coh (E : Type) [Field E] [NumberField E] [IsTotallyCom
   rw [show (CG.mk π).infChar τ = m' τ from congrFun e τ]
   exact ⟨h2 τ, h3 τ⟩
 
+/- English proof (translation)
+Rewrite using `[← h, hj.valuation_lt_one_iff]`. Establish `: Bw.j (algebraMap F Ω (((l : ℕ) : 𝓞 F) : F)) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 private theorem mem_of_induces {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w) {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw) :
@@ -53,6 +61,11 @@ section
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `y using WD.ind with`. Consider the case `hP n a`. Introduce `g hg`. Rewrite using `[GlobalTheory.CompanionTheory.RelSym.triv_mk_iff]`. Establish `: ⁅(⊤ : Subgroup ↥(Weil h)), (⊤ : Subgroup ↥(Weil h))⁆ ≤ a.ρ.ker` using `Subgroup.commutator_le.2 fun s _ t _ => (GlobalTheory.CompanionTheory.RelSym.triv_mk_iff a _).1 (hy s t)`.
+
+Conclude with `this hg`.
+-/
 theorem triv_of_abW {y : WD h} (hy : UpperTheory.V.Lev.AbW y) : ∀ g ∈ ⁅(⊤ : Subgroup ↥(Weil h)), (⊤ : Subgroup ↥(Weil h))⁆, LocalGlobalAboveLAlt.Triv y g := by
   induction y using WD.ind with
   | hP n a =>
@@ -62,17 +75,28 @@ theorem triv_of_abW {y : WD h} (hy : UpperTheory.V.Lev.AbW y) : ∀ g ∈ ⁅(�
       (GlobalTheory.CompanionTheory.RelSym.triv_mk_iff a _).1 (hy s t)
     exact this hg
 
+/- English proof (translation)
+Introduce and unpack `(hx | hy) s`. Conclude with `((LocalGlobalAboveLAlt.relSymm E Ω A w h x y r).2.2 ⊤ .top (triv_of_abW hx) s trivial).symm`. Conclude with `r.2.2 ⊤ .top (triv_of_abW hy) s trivial`.
+-/
 theorem ssCmp_of_rel {x y : WD h} (r : LocalGlobalAboveLAlt.Rel x y) : UpperTheory.V.Lev.SsCmp x y := by
   rintro (hx | hy) s
   · exact ((LocalGlobalAboveLAlt.relSymm E Ω A w h x y r).2.2 ⊤ .top (triv_of_abW hx) s trivial).symm
   · exact r.2.2 ⊤ .top (triv_of_abW hy) s trivial
 end
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A h O _ _ _ Bw hj σ hσ rc hrc` and use `have k := h1 E Ω l ι a ha π hc hr r wt HT hG P AI hT w hw A h O Bw hj σ hσ rc hrc ⟨k.1, k.2.1.2, LocalGlobalAboveLAlt.relIneAb E Ω A w h _ _ k, fun _ => h2 E Ω l ι a ha π hc hr r wt HT hG P AI hT w hw A h O Bw hj σ hσ rc hrc⟩`.
+-/
 theorem lg_of (h1 : LocalGlobalAboveLAlt.LocalGlobalSubnormal) (h2 : LocalGlobalAboveLAlt.TemperednessTransfer) : LG :=
   fun E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A h O _ _ _ Bw hj σ hσ rc hrc =>
     have k := h1 E Ω l ι a ha π hc hr r wt HT hG P AI hT w hw A h O Bw hj σ hσ rc hrc
     ⟨k.1, k.2.1.2, LocalGlobalAboveLAlt.relIneAb E Ω A w h _ _ k, fun _ => h2 E Ω l ι a ha π hc hr r wt HT hG P AI hT w hw A h O Bw hj σ hσ rc hrc⟩
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hd hcoh`. Establish `hreg` using `regAlg_of_coh E a π hcoh`. Establish `hc : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired hF E a π (hGK E a π) hd`. Take `⟨r, wt, HT, hr⟩` from `hG.of_isCsd Ω ι (by omega) hreg hc`. Use `⟨r, hr.cont, hr.ss, hr.away, fun P AI hT w A h O _ _ _ Bw hj => ⟨hT.elim fun T => hr.isPstAt hB T h Bw hj, fun σ hσ rc hrc => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `ssCmp_of_rel (h1 E Ω l ι a ha π hc hreg r wt HT hr P AI hT w (mem_of_induces h Bw hj) A h O Bw hj σ hσ rc hrc)`.
+-/
 theorem csdSs_of (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : GlobalTheory.Published.GelfandKazhdanDual)
     (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (hB : GlobalTheory.Published.DeRhamPotSemistable) (h1 : LocalGlobalAboveLAlt.LocalGlobalSubnormal) :
     UpperTheory.V.Lev.CsdSs := by
@@ -83,6 +107,9 @@ theorem csdSs_of (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : G
   refine ⟨r, hr.cont, hr.ss, hr.away, fun P AI hT w A h O _ _ _ Bw hj => ⟨hT.elim fun T => hr.isPstAt hB T h Bw hj, fun σ hσ rc hrc => ?_⟩⟩
   exact ssCmp_of_rel (h1 E Ω l ι a ha π hc hreg r wt HT hr P AI hT w (mem_of_induces h Bw hj) A h O Bw hj σ hσ rc hrc)
 
+/- English proof (translation)
+The claim follows from `have hG := (bridge' hGK).2 hP have hW := PositivityTheory.Pf1.CLGD.K.kKW hC ⟨lg_of (LocalGlobalAboveLAlt.local_global_compatibility_holds hW hG hB hL hJ) (LocalGlobalAboveLAlt.temperedness_transfer_holds hW hG hB hL hJ), csdSs_of hF hGK hG hB (LocalGlobalAboveLAlt.local_global_co …`.
+-/
 theorem dualR_of (hC : UpperTheory.CBC.LitCBC2) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : GlobalTheory.Published.GelfandKazhdanDual)
     (hP : GlobalTheory.Published.GaloisRepOfPolarizedPair) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hJ : GlobalTheory.Published.JacquetShalikaRigidity) : DualR :=
@@ -91,6 +118,9 @@ theorem dualR_of (hC : UpperTheory.CBC.LitCBC2) (hF : GlobalTheory.Published.Aut
   ⟨lg_of (LocalGlobalAboveLAlt.local_global_compatibility_holds hW hG hB hL hJ) (LocalGlobalAboveLAlt.temperedness_transfer_holds hW hG hB hL hJ),
     csdSs_of hF hGK hG hB (LocalGlobalAboveLAlt.local_global_compatibility_holds hW hG hB hL hJ)⟩
 
+/- English proof (translation)
+The claim follows from `(dualR_of hC hF hGK hP hB hL hJ).2`.
+-/
 theorem csdSs_of_lit (hC : UpperTheory.CBC.LitCBC2) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hGK : GlobalTheory.Published.GelfandKazhdanDual)
     (hP : GlobalTheory.Published.GaloisRepOfPolarizedPair) (hB : GlobalTheory.Published.DeRhamPotSemistable) (hL : GlobalTheory.Published.LocalLanglandsGL)
     (hJ : GlobalTheory.Published.JacquetShalikaRigidity) : UpperTheory.V.Lev.CsdSs := (dualR_of hC hF hGK hP hB hL hJ).2

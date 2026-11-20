@@ -10,6 +10,11 @@ namespace RestTerms
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `f N F Q Q' hQ hQ' k hk1 hkN τ G hG`. Take `⟨c, -, -, hA⟩` from `h1 f N`. Take `⟨P, hP, -, S, hS, hI⟩` from `hA F Q hQ k hk1 hkN τ G hG`. Take `⟨P', hP', -, S', hS', hI'⟩` from `hA F Q' hQ' k hk1 hkN τ G hG`. Establish `hPP : P = P'` using `IsFractionRing.injective (RootRing f N) (FractionRing (RootRing f N)) (hP.trans hP'.symm)`.
+
+Establish `hSS : S = S'` using `Flag.powerSumHom_injective N (by rw [hS, hS', hPP])`. Simplify using `only [restTerm, hI, hI', hSS]`.
+-/
 theorem RestTermWellDefined.proof (h1 : LemmaA.Statement) : RestTermWellDefined.Statement := by
   intro f N F Q Q' hQ hQ' k hk1 hkN τ G hG
   obtain ⟨c, -, -, hA⟩ := h1 f N

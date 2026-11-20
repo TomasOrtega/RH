@@ -21,10 +21,16 @@ variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K
 
 def scaleGen {M : LB X} (t : LB.Gen M) (c : Γ(X, ⊤)ˣ) : LB.Gen M := ⟨fun i => res le_top c * t.s i⟩
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top h c) rfl)`.
+-/
 theorem gm_scaleGen {M : LB X} (t : LB.Gen M) (c : Γ(X, ⊤)ˣ) (r : Z ⟶ X) (z : Z) (i : M.ι) (h : r z ∈ M.U i) :
     gm r z (M.U i) ((scaleGen t c).s i) = gm r z ⊤ c * gm r z (M.U i) (t.s i) :=
   (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top h c) rfl)
 
+/- English proof (translation)
+The claim follows from `isGen_of_gm _ fun y j j' hj hj' => by have e1 : gm (𝟙 Y) y (LB.wchart M φ j) ((scaleGen t c).s j) = gm (𝟙 Y) y ⊤ c * gm (𝟙 Y) y (LB.wchart M φ j) (t.s j) := (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ y le_top hj c) rfl) have e2 : gm (𝟙 Y) y (LB.wchart M φ j') ((scaleGen t …`.
+-/
 theorem scaleGen_isGen {M : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb M φ ε))
     (ht : t.IsGen) (c : Γ(Y, ⊤)ˣ) : (scaleGen t c).IsGen :=
   isGen_of_gm _ fun y j j' hj hj' => by
@@ -37,6 +43,11 @@ theorem scaleGen_isGen {M : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : L
     rw [e1, e2, gen_trans ht (𝟙 Y) y hj hj']
     exact mul_left_comm _ _ _
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `FormalPoint.exists_ratio hL h t t' ht ht'`. Establish `h1 : p.appTop.hom ρ.val = 1` using `FormalPoint.appTop_eq_one_of_gm p ρ fun w => by`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' hL w`. Conclude with `mul_eq_right.1 ((hρ W p w J hJ).symm.trans (hp w J hJ))`. Establish `h2 : ρ = 1` using `Units.ext (hi (h1.trans (map_one _).symm))`.
+
+Conclude with `corr_of_val hL fun y J hJ => by rw [hρ _ _ y J hJ, h2, map_one, _root_.one_mul]`.
+-/
 theorem corr_of_inj {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (hL : L.IsLB)
     (h : FormEq φ' ε' φ ε) {t : LB.Gen (LB.LinComb L φ ε)}
     {t' : LB.Gen (LB.LinComb L φ' ε')} (ht : t.IsGen) (ht' : t'.IsGen) {W : Scheme.{0}} (p : W ⟶ Y)
@@ -49,6 +60,11 @@ theorem corr_of_inj {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶
   have h2 : ρ = 1 := Units.ext (hi (h1.trans (map_one _).symm))
   exact corr_of_val hL fun y J hJ => by rw [hρ _ _ y J hJ, h2, map_one, _root_.one_mul]
 
+/- English proof (translation)
+Establish `m : ∀ i : K → L.ι, r z ∈ LB.wchart L φ i → r' z ∈ LB.wchart L φ' i` using `fun i hi => Set.mem_iInter.2 fun k => by`. Establish `h1 : (r ≫ φ k) z ∈ L.U (i k)` using `Set.mem_iInter.1 hi k`. Rewrite `h1` using `[hr k]`. Conclude with `h1`. Rewrite using `[gen_trans ht r z hj' hj, gen_trans ht' r' z (m _ hj') (m _ hj), h]`.
+
+Simplify using `only [trF, hr]`.
+-/
 theorem gm_transfer {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {t' : LB.Gen (LB.LinComb L φ' ε)} (ht : t.IsGen) (ht' : t'.IsGen) (r : Z ⟶ Y) (r' : Z ⟶ Y')
     (hr : ∀ k, r ≫ φ k = r' ≫ φ' k) (z : Z) {j j' : K → L.ι} (hj : r z ∈ LB.wchart L φ j)
@@ -63,6 +79,9 @@ theorem gm_transfer {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → 
   rw [gen_trans ht r z hj' hj, gen_trans ht' r' z (m _ hj') (m _ hj), h]
   simp only [trF, hr]
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun k => by have h1 : (r ≫ φ k) z ∈ L.U (i k) := Set.mem_iInter.1 hi k rw [hr k] at h1 exact h1`.
+-/
 theorem mem_wchart_of_eq {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} (r : Z ⟶ Y) (r' : Z ⟶ Y')
     (hr : ∀ k, r ≫ φ k = r' ≫ φ' k) (z : Z) {i : K → L.ι} (hi : r z ∈ LB.wchart L φ i) :
     r' z ∈ LB.wchart L φ' i :=
@@ -71,6 +90,11 @@ theorem mem_wchart_of_eq {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} (r : Z 
     rw [hr k] at h1
     exact h1
 
+/- English proof (translation)
+Take `⟨J, hJ⟩` from `TorusCoord.exists_good' hL (cpt A)`. Establish `h1` using `h _ J hJ`. Rewrite `h1` using `[val_of t' r' _ J (fun k => J (r ≫ φ k)) (fun k => by rw [hr k])]`. Establish `hm` using `(top_le_iff_cpt r _).1 hj`. Establish `h2` using `gm_transfer ht ht' r r' hr (cpt A) (hJ.mem φ r) hm h1`.
+
+Apply `toStkA_injective` to reduce the goal to its premises. Conclude with `(toStkA_valR r _ _ hj _).trans ((congrArg Units.val h2).trans (toStkA_valR r' _ _ ((top_le_iff_cpt r' _).2 (mem_wchart_of_eq r r' hr _ hm)) _).symm)`.
+-/
 theorem valR_transfer {A : Type} [CommRing A] [IsLocalRing A] (hL : L.IsLB) {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)}
     {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {t' : LB.Gen (LB.LinComb L φ' ε)} (ht : t.IsGen) (ht' : t'.IsGen) (r : Sp A ⟶ Y) (r' : Sp A ⟶ Y')
@@ -86,6 +110,11 @@ theorem valR_transfer {A : Type} [CommRing A] [IsLocalRing A] (hL : L.IsLB) {φ 
   exact (toStkA_valR r _ _ hj _).trans ((congrArg Units.val h2).trans
     (toStkA_valR r' _ _ ((top_le_iff_cpt r' _).2 (mem_wchart_of_eq r r' hr _ hm)) _).symm)
 
+/- English proof (translation)
+Use `(GlobalTheory.ZH.CrdCalc.valR_spMap β (𝟙 (Sp O)) ⊤ le_rfl).2 ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a)` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Rewrite using `[this, GlobalTheory.ZH.CrdCalc.valR_eq (𝟙 (Sp O)) ⊤ le_top]`. Use `congr 1`. Establish `h : (𝟙 (Sp O) : Sp O ⟶ Sp O).appLE ⊤ ⊤ le_top = 𝟙 _`.
+
+Simplify using `[Scheme.Hom.appLE]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom (((𝟙 (Sp O) : Sp O ⟶ Sp O).appLE ⊤ ⊤ le_top).hom _) = a`. Rewrite using `[h]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of O)).inv_hom_id_apply a`.
+-/
 theorem valR_spMap_fn {A O : Type} [CommRing A] [CommRing O] (β : O →+* A) (a : O) :
     valR (spMap β) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a) = β a := by
   have := (GlobalTheory.ZH.CrdCalc.valR_spMap β (𝟙 (Sp O)) ⊤ le_rfl).2 ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a)
@@ -99,6 +128,13 @@ theorem valR_spMap_fn {A O : Type} [CommRing A] [CommRing O] (β : O →+* A) (a
   rw [h]
   exact (Scheme.ΓSpecIso (CommRingCat.of O)).inv_hom_id_apply a
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_gen_of_local L hL φ' ε`. Set `A : Γ(Sp W, ⊤)ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom.toMonoidHom a`. Set `c : Γ(Sp W, ⊤)ˣ` to `res hj (t.s j)`. Establish `hr : ∀ k, spMap κ ≫ φ' k = 𝟙 _ ≫ φ k` using `fun k => (hφ k).trans (Category.id_comp _).symm`. Use `⟨scaleGen t (A * c⁻¹), scaleGen_isGen t ht _, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : z = cpt F` from `Subsingleton.elim (α := PrimeSpectrum F) _ _`. Establish `hm : spMap κ (cpt F) ∈ LB.wchart L φ' j` using `hj trivial`. Rewrite using `[val_of s (𝟙 _) _ J (fun k => J (spMap κ ≫ φ' k)) (fun k => by rw [hr k])]`. Use `gm_transfer (scaleGen_isGen t ht _) hs (spMap κ) (𝟙 _) hr _ hm (hJ.mem φ' _) ?_` and prove the remaining obligations. Establish `e1` using `gm_scaleGen (M := LB.LinComb L φ' ε) t (A * c⁻¹) (spMap κ) (cpt F) j hm`.
+
+Establish `e2 : gm (spMap κ) (cpt F) ⊤ c = gm (spMap κ) (cpt F) (LB.wchart L φ' j) (t.s j)` using `gm_res _ _ hj trivial _`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, e2]`. Use `(inv_mul_cancel_right _ _).trans (Units.ext ?_)` and prove the remaining obligations. Conclude with `(toStkA_valR (spMap κ) ⊤ (cpt F) le_top A).symm.trans ((congrArg _ ((valR_spMap_fn κ a).trans ha)).trans (toStkA_valR (𝟙 (Sp F)) _ (cpt F) ((top_le_iff_cpt _ _).2 (mem_wchart_of_eq _ _ hr _ hm)) (s.s j)))`.
+-/
 theorem exists_gen_extend {W F : Type} [CommRing W] [IsLocalRing W] [Field F] (hL : L.IsLB) (κ : W →+* F)
     {φ' : K → (Sp W ⟶ X)} {φ : K → (Sp F ⟶ X)} {ε : K → ℤ} (hφ : ∀ k, spMap κ ≫ φ' k = φ k)
     (s : LB.Gen (LB.LinComb L φ ε)) (hs : s.IsGen) (j : K → L.ι) (hj : ⊤ ≤ LB.wchart L φ' j) (a : Wˣ)
@@ -122,6 +158,9 @@ theorem exists_gen_extend {W F : Type} [CommRing W] [IsLocalRing W] [Field F] (h
   exact (toStkA_valR (spMap κ) ⊤ (cpt F) le_top A).symm.trans ((congrArg _ ((valR_spMap_fn κ a).trans ha)).trans
     (toStkA_valR (𝟙 (Sp F)) _ (cpt F) ((top_le_iff_cpt _ _).2 (mem_wchart_of_eq _ _ hr _ hm)) (s.s j)))
 
+/- English proof (translation)
+Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom κ)`. Introduce `a b hab`. Establish `e : ∀ a, (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom ((spMap κ).appTop.hom a) = κ ((Scheme.ΓSpecIso (CommRingCat.of W)).hom.hom a)` using `fun a => congrArg (fun q => q.hom a) n`. Use `(e a).symm.trans ((congrArg _ hab).trans (e b))` as an intermediate fact. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of W)).commRingCatIsoToRingEquiv.injective (h this)`.
+-/
 theorem appTop_injective {W F : Type} [CommRing W] [CommRing F] (κ : W →+* F) (h : Function.Injective κ) :
     Function.Injective (spMap κ).appTop.hom := by
   have n := Scheme.ΓSpecIso_naturality (CommRingCat.ofHom κ)
@@ -137,12 +176,32 @@ section Desc
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' : Over (Spec (CommRingCat.of R))}
 
+/- English proof (translation)
+Use `FormalPoint.prod_gtφT (𝟙 T) b χ h` as an intermediate fact. Simplify `this` using `only [Over.id_left, Category.id_comp]`.
+-/
 theorem prod_gtT (b : T ⟶ D.P.A) (χ : D.X) {U : Type} [CommGroup U] (h : (T.left ⟶ D.P.A.left) → U) :
     ∏ k, h (DegPre.gtφT D T b χ k) ^ DegPre.gtε k =
       (h (cP D T χ * b).left)⁻¹ * h (cP D T χ).left * h b.left * (h (1 : T ⟶ D.P.A).left)⁻¹ := by
   have := FormalPoint.prod_gtφT (𝟙 T) b χ h
   simpa only [Over.id_left, Category.id_comp] using this
 
+/- English proof (translation)
+Establish `one : (LB.oneGen D.P.L (Y` using `T.left)).IsGen := fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`. Establish `F0 : FormEq (PEmpty.elim : PEmpty → (T.left ⟶ D.P.A.left)) PEmpty.elim (DegPre.gtφT D T b 0) DegPre.gtε` using `fun U _ h => by rw [prod_gtT, cPoint_zero, _root_.one_mul]; simp`. Establish `cg : ∀ χ χ' : D.X, (DegPre.cubAtT D T (cP D T χ) (cP D T χ') b).IsGen` using `fun χ χ' => pullGen_isGen _ _ _ _ D.cub.isGen _`. Establish `vm : ∀ χ χ' z J, Good D.P.L z J → val (ξ'.s (χ + χ')) (𝟙 _) z J * val (DegPre.cubAtT D T (cP D T χ) (cP D T χ') b) ρ.left z J = val (ξ'.s χ) (𝟙 _) z J * val (ξ'.s χ') (𝟙 _) z J` using `fun χ χ' z J hJ => by`. Establish `e` using `FormalPoint.val_s_add ξ' (𝟙 T') hJ χ χ'`.
+
+Establish `e'` using `val_cub D.cub ρ hJ (cP D T χ) (cP D T χ') b`. Rewrite `e'` using `[comp_cP, comp_cP, hb]`. Rewrite `e` using `[Category.id_comp]`. Conclude with `(congrArg₂ (· * ·) rfl e').trans e`. Establish `all : ∀ χ, ∃ s : LB.Gen (LB.LinComb D.P.L (DegPre.gtφT D T b χ) DegPre.gtε), s.IsGen ∧ ∀ z J, Good D.P.L z J → val s ρ.left z J = val (ξ'.s χ) (𝟙 _) z J` using `fun χ => by`.
+
+Establish `hχ : χ ∈ AddSubmonoid.closure S` using `hS ▸ AddSubmonoid.mem_top χ`. Proceed by induction on `hχ using AddSubmonoid.closure_induction with`. Consider the case `mem χ hχ => exact h χ hχ`. Consider the case `zero`. Take `⟨s, hs, hv⟩` from `exists_gen D.P.isLB F0 _ one`.
+
+Conclude with `⟨s, hs, fun z J hJ => (hv _ _ z J hJ).trans ((val_one _).trans ((val_corr hJ ξ'.s_zero _).trans (val_one _)).symm)⟩`. Consider the case `add χ χ' _ _ h₁ h₂`. Take `⟨s₁, g₁, v₁⟩` from `h₁`. Take `⟨s₂, g₂, v₂⟩` from `h₂`. Take `⟨s, hs, hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.gtφT D T b (χ + χ')) (ε' := DegPre.gtε) (fun U _ h => by`.
+
+Use `(prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := thK) (U := U) _ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gtT b χ h) (prod_gtT b χ' h)) (prod_neg _ _ (prod_cub (cP D _ χ) (cP D _ χ') b h))).trans ?_` and prove the remaining obligations. Rewrite using `[prod_gtT, cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`.
+
+Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ s₁ s₂) (LB.invGen D.P.L _ _ (DegPre.cubAtT D T (cP D T χ) (cP D T χ') b)))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ g₁ g₂) (invGen_isGen _ _ _ _ (cg χ χ')))`. Use `⟨s, hs, fun z J hJ => (hv _ _ z J hJ).trans ?_⟩` and prove the remaining obligations. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) (v₁ z J hJ) (v₂ z J hJ)).trans (vm χ χ' z J hJ).symm)) (val_inv _ _))).trans ?_` and prove the remaining obligations. Conclude with `mul_inv_cancel_right _ _`.
+
+Use `choose s hs hv using all`. Use `⟨⟨b, s, hs, corr_of_inj D.P.isLB F0 (hs 0) one ρ.left hi fun z J hJ => ?_, fun χ χ' => corr_of_inj D.P.isLB (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ (hs _) (cg χ χ')) (mulGen_isGen _ _ _ _ _ _ _ (hs _) (hs _)) ρ.left hi fun z J hJ => ?_⟩, rfl, hv⟩` and prove the remaining obligations. Conclude with `(hv 0 z J hJ).trans (((val_corr hJ ξ'.s_zero _).trans (val_one _)).trans (val_one _).symm)`. Use `(prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (prod_gtT b χ h) (prod_gtT b χ' h)).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := thK) (U := U) _ (prod_gtT b (χ + χ') h) (prod_cub (cP D _ χ) (cP D _ χ') b h)).symm)` and prove the remaining obligations. Rewrite using `[cPoint_add]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `(val_mul hJ _ _ _).trans (((congrArg₂ (· * ·) (hv _ z J hJ) rfl).trans ((vm χ χ' z J hJ).trans (congrArg₂ (· * ·) (hv _ z J hJ) (hv _ z J hJ)).symm)).trans (val_mul hJ _ _ _).symm)`.
+-/
 theorem exists_descend (ρ : T' ⟶ T) (hi : Function.Injective ρ.left.appTop.hom) (ξ' : GtPt D T') (b : T ⟶ D.P.A)
     (hb : ρ ≫ b = ξ'.b) (S : Set D.X) (hS : AddSubmonoid.closure S = ⊤)
     (h : ∀ χ ∈ S, ∃ s : LB.Gen (LB.LinComb D.P.L (DegPre.gtφT D T b χ) DegPre.gtε), s.IsGen ∧
@@ -208,6 +267,23 @@ end Desc
 
 section Pts
 
+/- English proof (translation)
+Take `⟨U, hU, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := y (cpt O)) trivial`. Establish `hr : Set.range y ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(top_le_iff_cpt y U).2 hz (Set.mem_univ x)`.
+
+Take `⟨φ, hφ⟩ : ∃ φ : Γ(X, U) ⟶ CommRingCat.of O, Spec.map φ ≫ hU.fromSpec = y` from `⟨Spec.preimage (IsOpenImmersion.lift hU.fromSpec y hr), by rw [Spec.map_preimage, IsOpenImmersion.lift_fac]⟩`. Take `⟨ρ, hρ⟩ : ∃ ρ : CommRingCat.of V ⟶ Γ(X, U), Spec.map ρ = hU.fromSpec ≫ q` from `⟨_, Spec.map_preimage _⟩`. Establish `hft : ρ.hom.FiniteType`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), hρ]`. Use `infer_instance`.
+
+Establish `hj : ρ ≫ φ = CommRingCat.ofHom j` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, hρ, ← Category.assoc, hφ, hy])`. Use `letI := ρ.hom.toAlgebra`. Take `⟨s, hs⟩` from `(hft : Algebra.FiniteType V Γ(X, U)).out`. Use `⟨s.image φ.hom, fun W _ f κ hκ hf hs' => ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : ∀ a, φ.hom a ∈ κ.range`. Introduce `a`. Establish `ha : a ∈ Algebra.adjoin V (s : Set Γ(X, U))` using `hs ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs' _ (Finset.mem_image_of_mem _ hx)`.
+
+Consider the case `algebraMap r => exact ⟨f r, (DFunLike.congr_fun hf r).trans (congrArg (fun q => q.hom r) hj).symm⟩`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+
+Set `e : W ≃+* κ.range` to `RingEquiv.ofBijective κ.rangeRestrict ⟨fun a b h => hκ (congrArg Subtype.val h), κ.rangeRestrict_surjective⟩`. Set `ψ : Γ(X, U) →+* W` to `e.symm.toRingHom.comp (φ.hom.codRestrict κ.range hmem)`. Establish `hψ : ∀ a, κ (ψ a) = φ.hom a` using `fun a => congrArg Subtype.val (e.apply_symm_apply ⟨_, hmem a⟩)`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ hU.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hρ, ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `r`. Conclude with `hκ ((hψ _).trans ((congrArg (fun q => q.hom r) hj).trans (DFunLike.congr_fun hf r).symm))`. Rewrite using `[← hφ, ← Category.assoc]`. Use `congr 1`.
+
+Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Use extensionality with `a`. Conclude with `hψ a`.
+-/
 theorem exists_factor {V O : Type} [CommRing V] [CommRing O] [IsLocalRing O] {X : Scheme.{0}} (q : X ⟶ Sp V)
     [LocallyOfFiniteType q] (j : V →+* O) (y : Sp O ⟶ X) (hy : y ≫ q = spMap j) :
     ∃ s : Finset O, ∀ (W : Type) [CommRing W] (f : V →+* W) (κ : W →+* O), Function.Injective κ → κ.comp f = j →
@@ -252,6 +328,13 @@ theorem exists_factor {V O : Type} [CommRing V] [CommRing O] [IsLocalRing O] {X 
     ext a
     exact hψ a
 
+/- English proof (translation)
+Establish `hle : I ≤ IsLocalRing.maximalIdeal W` using `IsLocalRing.le_maximalIdeal h1`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible h0 hϖ`. Establish `he' : IsLocalRing.maximalIdeal W ^ e = I`. Rewrite using `[he, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`.
+
+Establish `hm : ∀ n, I ^ n • (⊤ : Submodule W W) ≤ IsLocalRing.maximalIdeal W ^ n • ⊤` using `fun n => Submodule.smul_mono_left (Ideal.pow_right_mono hle n)`. Establish `: IsHausdorff I W` using `⟨fun x hx => IsHausdorff.haus' (I := IsLocalRing.maximalIdeal W) x fun n => (hx n).mono (hm n)⟩`. Establish `: IsPrecomplete I W` using `⟨fun u hu => by`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := IsLocalRing.maximalIdeal W) u fun {m n} hmn => (hu hmn).mono (hm m)`. Use `⟨L, fun n => (hu (Nat.le_mul_of_pos_left n e.succ_pos)).trans ((hL _).mono (Submodule.smul_mono_left ?_))⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_mul, ← he']`. Conclude with `Ideal.pow_right_mono (Ideal.pow_le_pow_right e.le_succ) n⟩`. Conclude with `⟨⟩`.
+-/
 theorem isAdicComplete_of_ne {W : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [IsAdicComplete (IsLocalRing.maximalIdeal W) W] {I : Ideal W} (h0 : I ≠ ⊥) (h1 : I ≠ ⊤) : IsAdicComplete I W := by
   have hle : I ≤ IsLocalRing.maximalIdeal W := IsLocalRing.le_maximalIdeal h1

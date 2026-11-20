@@ -24,6 +24,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WRightUnram.scalar_eq_one | exact GlobalTheory.WRightUnram.scalar_eq_one | (intros; apply GlobalTheory.WRightUnram.scalar_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.linear_bar_valuation_integral_bound : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ ι, G.M'.IsLinBar B.ψ B.τ₁ 1 1 ι → ∀ h ∈ UAt σ G.W (evFin F B.v₁),

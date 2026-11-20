@@ -32,22 +32,36 @@ open GlobalTheory.ChainOnto
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.T.base_chain_step_weil_datum W u f hP hf j hj).1, (GlobalTheory.T.base_chain_step_weil_datum W u f hP hf j hj).2, (GlobalTheory.T.base_chain_step_theta_functions W u f hP hf j hj).1, (GlobalTheory.T.base_chain_step_theta_functions W u f hP hf j hj).2, GlobalTheory. …`.
+-/
 theorem stepY_is {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (hP : PkHyp W) (hf : f.RowOK) (j : ℕ) (hj : j + 1 < D.R.m) :
     (stepY f j).Is (j + 1) :=
   ⟨(GlobalTheory.T.base_chain_step_weil_datum W u f hP hf j hj).1, (GlobalTheory.T.base_chain_step_weil_datum W u f hP hf j hj).2, (GlobalTheory.T.base_chain_step_theta_functions W u f hP hf j hj).1,
     (GlobalTheory.T.base_chain_step_theta_functions W u f hP hf j hj).2, GlobalTheory.T.base_chain_step_theta_lift W u f hP hf j hj⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GlobalTheory.T.base_chain_top_weil_datum W u f hP hf j h).1, (GlobalTheory.T.base_chain_top_weil_datum W u f hP hf j h).2, (GlobalTheory.T.base_chain_top_theta_functions W u f hP hf j h).1, (GlobalTheory.T.base_chain_top_theta_functions W u f hP hf j h).2, GlobalTheory.T.base_c …`.
+-/
 theorem stepX_is {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (hP : PkHyp W) (hf : f.RowOK) (j : ℕ)
     (h : j + 2 * 0 + 2 = D.R.m) : (stepX f j h).Is (j + 1 + 1) :=
   ⟨(GlobalTheory.T.base_chain_top_weil_datum W u f hP hf j h).1, (GlobalTheory.T.base_chain_top_weil_datum W u f hP hf j h).2, (GlobalTheory.T.base_chain_top_theta_functions W u f hP hf j h).1,
     (GlobalTheory.T.base_chain_top_theta_functions W u f hP hf j h).2, GlobalTheory.T.base_chain_top_theta_lift W u f hP hf j h⟩
 
+/- English proof (translation)
+The claim follows from `| 0, _ => Reach.zero | k + 1, hk => Reach.step (reach_dn f hP hf k (by omega)) (GlobalTheory.T.base_chain_stage_Y_valid W hP (k + 1) (by omega)) (stepY f k) (stepY_is f hP hf k (by omega))`.
+-/
 theorem reach_dn {W : RealPack ex} {u : D.what₂.Word} (f : FamCh W u) (hP : PkHyp W) (hf : f.RowOK) :
     ∀ k, k + 1 ≤ D.R.m → Reach (com W) (stageY W 0) k (stageY W k) ((f.t W.P.A3.A.μ0).dn k)
   | 0, _ => Reach.zero
   | k + 1, hk => Reach.step (reach_dn f hP hf k (by omega)) (GlobalTheory.T.base_chain_stage_Y_valid W hP (k + 1) (by omega)) (stepY f k)
       (stepY_is f hP hf k (by omega))
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hP hO f hf n h T hT`. Establish `e : 2 * n + 1 + 1 = D.R.m` using `by omega`. Establish `hX : (stageX W).Is (com W) (2 * n + 1 + 1)` using `e ▸ GlobalTheory.T.base_chain_stage_X_valid W hP`. Establish `hR` using `Reach.step (reach_dn f hP hf (2 * n + 1) (by omega)) hX (stepX f (2 * n) h) (stepX_is f hP hf (2 * n) h)`. Take `⟨G, hG⟩` from `hO hP.gap (com W) (GlobalTheory.T.base_chain_commutation_valid W hP) (stageY W 0) (GlobalTheory.T.base_chain_stage_Y_valid W hP 0 (by omega)) (2 * n + 1 + 1) (by omega) _ _ hR ⟨T, GlobalTheory.T.rows_mem_base_chain_stage_zero W hP T hT⟩`.
+
+Conclude with `⟨G, congrArg Subtype.val hG⟩`.
+-/
 theorem linkOnto_of_ontoAll : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word),
     PkHyp W → GlobalTheory.ChainOnto.OntoAll D → ∀ f : FamCh W u, f.RowOK → LinkOnto f := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP hO f hf n h T hT

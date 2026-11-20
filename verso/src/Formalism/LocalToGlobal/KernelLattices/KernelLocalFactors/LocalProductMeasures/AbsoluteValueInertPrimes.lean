@@ -14,15 +14,26 @@ section One
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `Valuation.map_one_add_of_lt (v := P.valuation E) h` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem ab_one_val {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : P.valuation E a = 1 := by
   have := Valuation.map_one_add_of_lt (v := P.valuation E) h
   rwa [add_sub_cancel] at this
 
+/- English proof (translation)
+Unfold `OneAt`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_one`.
+-/
 theorem ab_one_one (P : HeightOneSpectrum (𝓞 E)) : OneAt P (1 : E) := by
   unfold OneAt
   rw [sub_self, map_zero]
   exact zero_lt_one
 
+/- English proof (translation)
+Unfold `OneAt`. Establish `e : a * b - 1 = a * (b - 1) + (a - 1)` using `by ring`. Rewrite using `[e]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ha)` and prove the remaining obligations. Rewrite using `[map_mul, ab_one_val ha, one_mul]`.
+
+Conclude with `hb`.
+-/
 theorem ab_one_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (hb : OneAt P b) : OneAt P (a * b) := by
   unfold OneAt
   have e : a * b - 1 = a * (b - 1) + (a - 1) := by ring
@@ -31,6 +42,11 @@ theorem ab_one_mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (
   rw [map_mul, ab_one_val ha, one_mul]
   exact hb
 
+/- English proof (translation)
+Establish `h1` using `ab_one_val ha`. Establish `h0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[map_zero]`. Conclude with `zero_ne_one h1`.
+
+Unfold `OneAt`. Establish `e : a⁻¹ - 1 = -(a - 1) * a⁻¹` using `by field_simp; ring`. Rewrite using `[e, map_mul, Valuation.map_neg, map_inv₀, h1, inv_one, mul_one]`. Conclude with `ha`.
+-/
 theorem ab_one_inv {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : OneAt P a) : OneAt P a⁻¹ := by
   have h1 := ab_one_val ha
   have h0 : a ≠ 0 := by
@@ -42,19 +58,37 @@ theorem ab_one_inv {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : OneAt P a) : O
   rw [e, map_mul, Valuation.map_neg, map_inv₀, h1, inv_one, mul_one]
   exact ha
 
+/- English proof (translation)
+Rewrite using `[div_eq_mul_inv]`. Conclude with `ab_one_mul ha (ab_one_inv hb)`.
+-/
 theorem ab_one_div {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (hb : OneAt P b) : OneAt P (a / b) := by
   rw [div_eq_mul_inv]
   exact ab_one_mul ha (ab_one_inv hb)
 
+/- English proof (translation)
+Unfold `OneAt`. Establish `: P.valuation E (algebraMap (𝓞 E) E (b - 1)) < 1` using `(P.valuation_lt_one_iff_mem (K := E) (b - 1)).2 h`. Rewrite `this` using `[map_sub, map_one]`. Conclude with `this`.
+-/
 theorem ab_one_of_mem {P : HeightOneSpectrum (𝓞 E)} {b : 𝓞 E} (h : b - 1 ∈ P.asIdeal) : OneAt P (b : E) := by
   unfold OneAt
   have : P.valuation E (algebraMap (𝓞 E) E (b - 1)) < 1 := (P.valuation_lt_one_iff_mem (K := E) (b - 1)).2 h
   rw [map_sub, map_one] at this
   exact this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, P.intValuation_if_neg hr⟩`.
+-/
 theorem ab_int_exp (P : HeightOneSpectrum (𝓞 E)) {r : 𝓞 E} (hr : r ≠ 0) : ∃ k : ℕ, P.intValuation r = WithZero.exp (-(k : ℤ)) :=
   ⟨_, P.intValuation_if_neg hr⟩
 
+/- English proof (translation)
+Establish `h1 : IsCoprime P.asIdeal Q.asIdeal`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne P.isMaximal Q.isMaximal fun h' => h (HeightOneSpectrum.ext h')`. Establish `h2 : IsCoprime (P.asIdeal ^ k) Q.asIdeal` using `h1.pow_left`. Take `⟨e, he, e', he', hs⟩` from `Ideal.isCoprime_iff_exists.1 h2`.
+
+Use `⟨t * e' + e, ?_, ?_⟩` and prove the remaining obligations. Establish `: t * e' + e - t = e * (1 - t)`. Establish `: e' = 1 - e` using `by rw [← hs]; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ he`. Establish `: t * e' + e - 1 = e' * (t - 1)`. Establish `: e = 1 - e'` using `by rw [← hs]; ring`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ he'`.
+-/
 theorem ab_crt {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) (k : ℕ) (t : 𝓞 E) : ∃ b : 𝓞 E, b - t ∈ P.asIdeal ^ k ∧ b - 1 ∈ Q.asIdeal := by
   have h1 : IsCoprime P.asIdeal Q.asIdeal := by
     rw [Ideal.isCoprime_iff_sup_eq]
@@ -73,6 +107,11 @@ theorem ab_crt {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) (k : ℕ) (t : �
     rw [this]
     exact Ideal.mul_mem_right _ _ he'
 
+/- English proof (translation)
+Introduce `E _ _ P Q h t`. Take `⟨b, h1, h2⟩` from `ab_crt h 2 t`. Use `⟨b, ?_, h1, h2⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `h2` using `[zero_sub, neg_mem_iff]`.
+
+Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)`.
+-/
 theorem prime_approximation_holds : ApproxP := by
   intro E _ _ P Q h t
   obtain ⟨b, h1, h2⟩ := ab_crt h 2 t
@@ -81,6 +120,17 @@ theorem prime_approximation_holds : ApproxP := by
   rw [zero_sub, neg_mem_iff] at h2
   exact Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `ab_int_exp P hr`. Take `⟨b, h1, h2⟩` from `ab_crt h (k + 1) r`. Establish `hrE : algebraMap (𝓞 E) E r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hr`. Establish `hv : P.valuation E (algebraMap (𝓞 E) E b - algebraMap (𝓞 E) E r) < P.valuation E (algebraMap (𝓞 E) E r)`. Establish `e1 : P.valuation E (algebraMap (𝓞 E) E b - algebraMap (𝓞 E) E r) = P.intValuation (b - r)`.
+
+Rewrite using `[← map_sub]`. Conclude with `P.valuation_of_algebraMap _`. Establish `e2 : P.valuation E (algebraMap (𝓞 E) E r) = P.intValuation r` using `P.valuation_of_algebraMap _`. Rewrite using `[e1, e2, hk]`. Use `lt_of_le_of_lt ((P.intValuation_le_pow_iff_mem _ _).2 h1) ?_` and prove the remaining obligations.
+
+Rewrite using `[WithZero.exp_lt_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `⟨b, ?_, ?_, ab_one_of_mem h2⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `hv` using `[map_zero, zero_sub, Valuation.map_neg]`. Conclude with `lt_irrefl _ hv`. Unfold `OneAt`. Establish `e : algebraMap (𝓞 E) E b / algebraMap (𝓞 E) E r - 1 = (algebraMap (𝓞 E) E b - algebraMap (𝓞 E) E r) / algebraMap (𝓞 E) E r` using `by field_simp`. Rewrite using `[e, map_div₀]`.
+
+Conclude with `(div_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hrE))).2 hv`.
+-/
 theorem ab_read_int {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) {r : 𝓞 E} (hr : r ≠ 0) :
     ∃ b : 𝓞 E, b ≠ 0 ∧ OneAt P (algebraMap (𝓞 E) E b / algebraMap (𝓞 E) E r) ∧ OneAt Q (algebraMap (𝓞 E) E b) := by
   obtain ⟨k, hk⟩ := ab_int_exp P hr
@@ -104,6 +154,15 @@ theorem ab_read_int {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) {r : 𝓞 E
     rw [e, map_div₀]
     exact (div_lt_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hrE))).2 hv
 
+/- English proof (translation)
+Take `⟨r, s, hs, hrs⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) (a : E)`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Establish `hsE : algebraMap (𝓞 E) E s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hs0`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hrs` using `[map_zero, zero_div]`. Conclude with `a.ne_zero hrs.symm`. Establish `hrE : algebraMap (𝓞 E) E r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hr0`. Take `⟨b1, hb1, h11, h12⟩` from `ab_read_int h hr0`. Take `⟨b2, hb2, h21, h22⟩` from `ab_read_int h hs0`.
+
+Establish `hb1E : algebraMap (𝓞 E) E b1 ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hb1`. Establish `hb2E : algebraMap (𝓞 E) E b2 ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hb2`. Use `⟨Units.mk0 _ hb1E / Units.mk0 _ hb2E, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_div_eq_div_val, Units.val_mk0, Units.val_mk0, ← hrs]`. Establish `e : algebraMap (𝓞 E) E b1 / algebraMap (𝓞 E) E b2 / (algebraMap (𝓞 E) E r / algebraMap (𝓞 E) E s) = (algebraMap (𝓞 E) E b1 / algebraMap (𝓞 E) E r) / (algebraMap (𝓞 E) E b2 / algebraMap (𝓞 E) E s)`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `ab_one_div h11 h21`. Rewrite using `[Units.val_div_eq_div_val, Units.val_mk0, Units.val_mk0]`. Conclude with `ab_one_div h12 h22`.
+-/
 theorem ab_read {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) (a : Eˣ) : ∃ b : Eˣ, OneAt P ((b : E) / (a : E)) ∧ OneAt Q (b : E) := by
   obtain ⟨r, s, hs, hrs⟩ := IsFractionRing.div_surjective (A := 𝓞 E) (a : E)
   have hs0 : s ≠ 0 := nonZeroDivisors.ne_zero hs
@@ -127,12 +186,24 @@ theorem ab_read {P Q : HeightOneSpectrum (𝓞 E)} (h : P ≠ Q) (a : Eˣ) : ∃
   · rw [Units.val_div_eq_div_val, Units.val_mk0, Units.val_mk0]
     exact ab_one_div h12 h22
 
+/- English proof (translation)
+The claim follows from `ab_read h x`.
+-/
 theorem ab_reads (P Q : HeightOneSpectrum (𝓞 E)) (h : P ≠ Q) (x : Eˣ) : ∃ b : Eˣ, OneAt P ((b : E) / (x : E)) ∧ OneAt Q (b : E) := ab_read h x
 
+/- English proof (translation)
+The claim follows from `ab_one_val h`.
+-/
 theorem OneAt.val_eq_one {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : P.valuation E a = 1 := ab_one_val h
 
+/- English proof (translation)
+The claim follows from `ab_one_mul ha hb`.
+-/
 theorem OneAt.mul {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : OneAt P a) (hb : OneAt P b) : OneAt P (a * b) := ab_one_mul ha hb
 
+/- English proof (translation)
+The claim follows from `ab_one_inv ha`.
+-/
 theorem OneAt.inv {P : HeightOneSpectrum (𝓞 E)} {a : E} (ha : OneAt P a) : OneAt P a⁻¹ := ab_one_inv ha
 
 end One
@@ -141,11 +212,19 @@ section Conj
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+-/
 theorem ab_conj_conj (P : HeightOneSpectrum (𝓞 E)) : conjPrime₂ (conjPrime₂ P) = P := by
   apply HeightOneSpectrum.ext
   ext r
   rw [mem_conjP, mem_conjP, cO_cO]
 
+/- English proof (translation)
+Establish `h1 : P.asIdeal.map (cO E) ≤ (conjPrime₂ P).asIdeal`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `p hp`. Rewrite using `[Ideal.mem_comap, mem_conjP, cO_cO]`. Conclude with `hp`.
+
+Establish `h2 : cO E r ∈ (P.asIdeal ^ k).map (cO E)` using `Ideal.mem_map_of_mem _ h`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 k h2`.
+-/
 theorem ab_pow_conj (P : HeightOneSpectrum (𝓞 E)) (k : ℕ) {r : 𝓞 E} (h : r ∈ P.asIdeal ^ k) : cO E r ∈ (conjPrime₂ P).asIdeal ^ k := by
   have h1 : P.asIdeal.map (cO E) ≤ (conjPrime₂ P).asIdeal := by
     rw [Ideal.map_le_iff_le_comap]
@@ -156,6 +235,9 @@ theorem ab_pow_conj (P : HeightOneSpectrum (𝓞 E)) (k : ℕ) {r : 𝓞 E} (h :
   rw [Ideal.map_pow] at h2
   exact Ideal.pow_right_mono h1 k h2
 
+/- English proof (translation)
+Distinguish the cases in `hr : r = 0`. Rewrite using `[hr, map_zero, map_zero, map_zero]`. Take `⟨k, hk⟩` from `ab_int_exp P hr`. Rewrite using `[hk]`. Conclude with `((conjPrime₂ P).intValuation_le_pow_iff_mem _ _).2 (ab_pow_conj P k ((P.intValuation_le_pow_iff_mem _ _).1 hk.le))`.
+-/
 theorem ab_int_le (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) : (conjPrime₂ P).intValuation (cO E r) ≤ P.intValuation r := by
   by_cases hr : r = 0
   · rw [hr, map_zero, map_zero, map_zero]
@@ -163,25 +245,40 @@ theorem ab_int_le (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) : (conjPrime₂ 
     rw [hk]
     exact ((conjPrime₂ P).intValuation_le_pow_iff_mem _ _).2 (ab_pow_conj P k ((P.intValuation_le_pow_iff_mem _ _).1 hk.le))
 
+/- English proof (translation)
+Use `le_antisymm (ab_int_le P r) ?_` and prove the remaining obligations. Use `ab_int_le (conjPrime₂ P) (cO E r)` as an intermediate fact. Rewrite `this` using `[ab_conj_conj, cO_cO]`. Then use the resulting hypothesis.
+-/
 theorem ab_int_star (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) : (conjPrime₂ P).intValuation (cO E r) = P.intValuation r := by
   refine le_antisymm (ab_int_le P r) ?_
   have := ab_int_le (conjPrime₂ P) (cO E r)
   rwa [ab_conj_conj, cO_cO] at this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ab_cO_coe (r : 𝓞 E) : algebraMap (𝓞 E) E (cO E r) = star (algebraMap (𝓞 E) E r) := rfl
 
+/- English proof (translation)
+Take `⟨r, s, _, hrs⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) a`. Rewrite using `[← hrs, star_div₀, ← ab_cO_coe, ← ab_cO_coe, map_div₀, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, ab_int_star, ab_int_star]`.
+-/
 theorem ab_val_star (P : HeightOneSpectrum (𝓞 E)) (a : E) : (conjPrime₂ P).valuation E (star a) = P.valuation E a := by
   obtain ⟨r, s, _, hrs⟩ := IsFractionRing.div_surjective (A := 𝓞 E) a
   rw [← hrs, star_div₀, ← ab_cO_coe, ← ab_cO_coe, map_div₀, map_div₀, HeightOneSpectrum.valuation_of_algebraMap,
     HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap,
     ab_int_star, ab_int_star]
 
+/- English proof (translation)
+Unfold `OneAt at *`. Establish `e : star a - 1 = star (a - 1)` using `by rw [star_sub, star_one]`. Rewrite using `[e, ab_val_star]`. Conclude with `h`.
+-/
 theorem ab_one_star {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt P a) : OneAt (conjPrime₂ P) (star a) := by
   unfold OneAt at *
   have e : star a - 1 = star (a - 1) := by rw [star_sub, star_one]
   rw [e, ab_val_star]
   exact h
 
+/- English proof (translation)
+Use `ab_one_star h` as an intermediate fact. Rewrite `this` using `[ab_conj_conj]`. Then use the resulting hypothesis.
+-/
 theorem ab_one_star' {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : OneAt (conjPrime₂ P) a) : OneAt P (star a) := by
   have := ab_one_star h
   rwa [ab_conj_conj] at this
@@ -192,15 +289,28 @@ section Over
 
 variable (X : Fields)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star (algebraMap X.F X.E (a : X.F)) = algebraMap X.F X.E (a : X.F)`. Rewrite using `[hX.star_F]`.
+-/
 theorem ab_cO_alg (hX : X.Ok) (a : 𝓞 X.F) : cO X.E (algebraMap (𝓞 X.F) (𝓞 X.E) a) = algebraMap (𝓞 X.F) (𝓞 X.E) a := by
   apply RingOfIntegers.ext
   show star (algebraMap X.F X.E (a : X.F)) = algebraMap X.F X.E (a : X.F)
   rw [hX.star_F]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Ideal.mem_under, Ideal.mem_under, mem_conjP, ab_cO_alg X hX]`.
+-/
 theorem ab_conjP_under (hX : X.Ok) (P : HeightOneSpectrum (𝓞 X.E)) : (conjPrime₂ P).asIdeal.under (𝓞 X.F) = P.asIdeal.under (𝓞 X.F) := by
   ext x
   rw [Ideal.mem_under, Ideal.mem_under, mem_conjP, ab_cO_alg X hX]
 
+/- English proof (translation)
+Establish `h1 : star ((a * cO X.E a : 𝓞 X.E) : X.E) = ((a * cO X.E a : 𝓞 X.E) : X.E)` using `by show star (algebraMap (𝓞 X.E) X.E (a * cO X.E a)) = algebraMap (𝓞 X.E) X.E (a * cO X.E a)`. Rewrite using `[map_mul, ab_cO_coe, star_mul', star_star, mul_comm]`. Take `⟨k, hk⟩` from `(rlh_fixed hX _).1 h1`. Establish `hint : IsIntegral ℤ k`. Establish `h2 : IsIntegral ℤ (algebraMap X.F X.E k)`.
+
+Rewrite using `[hk]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Conclude with `(isIntegral_algebraMap_iff (algebraMap X.F X.E).injective).1 h2`. Use `⟨⟨k, hint⟩, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Conclude with `hk`.
+-/
 theorem ab_norm_int (hX : X.Ok) (a : 𝓞 X.E) : ∃ k : 𝓞 X.F, algebraMap (𝓞 X.F) (𝓞 X.E) k = a * cO X.E a := by
   have h1 : star ((a * cO X.E a : 𝓞 X.E) : X.E) = ((a * cO X.E a : 𝓞 X.E) : X.E) := by
     show star (algebraMap (𝓞 X.E) X.E (a * cO X.E a)) = algebraMap (𝓞 X.E) X.E (a * cO X.E a)
@@ -215,6 +325,17 @@ theorem ab_norm_int (hX : X.Ok) (a : 𝓞 X.E) : ∃ k : 𝓞 X.F, algebraMap (�
   apply RingOfIntegers.ext
   exact hk
 
+/- English proof (translation)
+Introduce `X hX P P' h`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨h1, h2⟩` from `hc`. Take `⟨s1, hs1, hs1'⟩` from `exists_mem_notMem h1`.
+
+Take `⟨s2, hs2, hs2'⟩` from `exists_mem_notMem h2`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, haP, haQ⟩ : ∃ a ∈ P'.asIdeal, a ∉ P.asIdeal ∧ a ∉ (conjPrime₂ P).asIdeal := by`. Distinguish the cases in `c1 : s1 ∈ (conjPrime₂ P).asIdeal`. Distinguish the cases in `c2 : s2 ∈ P.asIdeal`. Use `⟨s1 + s2, Ideal.add_mem _ hs1 hs2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hm`. Conclude with `hs1' ((Ideal.add_mem_iff_left _ c2).1 hm)`. Introduce `hm`. Conclude with `hs2' ((Ideal.add_mem_iff_right _ c1).1 hm)`. Conclude with `⟨s2, hs2, c2, hs2'⟩`.
+
+Conclude with `⟨s1, hs1, hs1', c1⟩`. Take `⟨k, hk⟩` from `ab_norm_int X hX a`. Establish `hk1 : k ∈ P'.asIdeal.under (𝓞 X.F)`. Rewrite using `[Ideal.mem_under, hk]`. Conclude with `Ideal.mul_mem_right _ _ ha`.
+
+Rewrite `hk1` using `[h, Ideal.mem_under, hk]`. Break down `P.isPrime.mem_or_mem hk1 with h3 | h3` into its components or cases. Conclude with `haP h3`. Conclude with `haQ ((mem_conjP P a).2 h3)`.
+-/
 theorem local_factor_over_two : OverTwo := by
   intro X hX P P' h
   by_contra hc
@@ -245,6 +366,31 @@ end Over
 
 section Main
 
+/- English proof (translation)
+Introduce `X hX A _ lam Rm hL v P hP hne x b hbQ hbP`. Establish `hne' : P ≠ conjPrime₂ P` using `fun h => hne h.symm`. Take `⟨b1, h11, h12⟩` from `ab_read hne' x`. Take `⟨b2, h21, h22⟩` from `ab_read hne' (star x)`. Rewrite `h21` using `[Units.coe_star]`.
+
+Establish `hover : ∀ P' : HeightOneSpectrum (𝓞 X.E), P'.asIdeal.under (𝓞 X.F) = v.asIdeal → P' = P ∨ P' = conjPrime₂ P` using `fun P' h => local_factor_over_two X hX P P' (h.trans hP.symm)`. Establish `key : ∀ y : X.Eˣ, OneAt P (y : X.E) → OneAt (conjPrime₂ P) (y : X.E) → lam v y = 1` using `fun y h1 h2 => hL.wild v y fun P' h' => by`. Break down `hover P' h' with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `h1`.
+
+Rewrite using `[h]`. Conclude with `h2`. Establish `hx0 : (x : X.E) ≠ 0` using `x.ne_zero`. Establish `hsx0 : star (x : X.E) ≠ 0` using `star_ne_zero.2 hx0`. Establish `hb10 : (b1 : X.E) ≠ 0` using `b1.ne_zero`.
+
+Establish `hb20 : (b2 : X.E) ≠ 0` using `b2.ne_zero`. Establish `hsb20 : star (b2 : X.E) ≠ 0` using `star_ne_zero.2 hb20`. Establish `hb0 : (b : X.E) ≠ 0` using `b.ne_zero`. Establish `s1 : lam v (x / (b1 * star b2)) = 1`. Apply `key` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_div_eq_div_val, Units.val_mul, Units.coe_star]`. Establish `e : (x : X.E) / ((b1 : X.E) * star (b2 : X.E)) = ((b1 : X.E) / (x : X.E))⁻¹ * (star (b2 : X.E))⁻¹` using `by field_simp`. Rewrite using `[e]`. Conclude with `ab_one_mul (ab_one_inv h11) (ab_one_inv (ab_one_star' h22))`. Rewrite using `[Units.val_div_eq_div_val, Units.val_mul, Units.coe_star]`.
+
+Establish `e : (x : X.E) / ((b1 : X.E) * star (b2 : X.E)) = (b1 : X.E)⁻¹ * star (((b2 : X.E) / star (x : X.E))⁻¹)`. Rewrite using `[star_inv₀, star_div₀, star_star, inv_div]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `ab_one_mul (ab_one_inv h12) (ab_one_star (ab_one_inv h21))`.
+
+Establish `s2 : lam v (b2 * star b2) = 1`. Establish `hfix : star ((b2 : X.E) * star (b2 : X.E)) = (b2 : X.E) * star (b2 : X.E)`. Rewrite using `[star_mul', star_star, mul_comm]`. Take `⟨k, hk⟩` from `(rlh_fixed hX _).1 hfix`. Establish `hk0 : k ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hk` using `[map_zero]`. Conclude with `(mul_ne_zero hb20 hsb20) hk.symm`. Establish `e : b2 * star b2 = Units.map (algebraMap X.F X.E).toMonoidHom (Units.mk0 k hk0)`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.coe_star]`. Conclude with `hk.symm`. Rewrite using `[e]`. Conclude with `hL.trivF v _`. Establish `s3 : lam v (b / (b1 / b2)) = 1`.
+
+Apply `key` to reduce the goal to its premises. Rewrite using `[Units.val_div_eq_div_val, Units.val_div_eq_div_val]`. Establish `e : (b : X.E) / ((b1 : X.E) / (b2 : X.E)) = ((b : X.E) / ((x : X.E) / star (x : X.E))) * (((b1 : X.E) / (x : X.E))⁻¹ * ((b2 : X.E) / star (x : X.E)))` using `by field_simp`. Rewrite using `[e]`. Conclude with `ab_one_mul hbP (ab_one_mul (ab_one_inv h11) h21)`.
+
+Rewrite using `[Units.val_div_eq_div_val, Units.val_div_eq_div_val]`. Conclude with `ab_one_div hbQ (ab_one_div h12 h22)`. Rewrite `s1` using `[map_div, map_mul, div_eq_one]`. Rewrite `s2` using `[map_mul]`. Rewrite `s3` using `[map_div, map_div, div_eq_one]`.
+
+Rewrite using `[s1, s3, eq_inv_of_mul_eq_one_right s2, div_eq_mul_inv]`.
+-/
 theorem absolute_value_split_primes : AbsSplit := by
   intro X hX A _ lam Rm hL v P hP hne x b hbQ hbP
   have hne' : P ≠ conjPrime₂ P := fun h => hne h.symm
@@ -304,6 +450,25 @@ theorem absolute_value_split_primes : AbsSplit := by
   rw [map_div, map_div, div_eq_one] at s3
   rw [s1, s3, eq_inv_of_mul_eq_one_right s2, div_eq_mul_inv]
 
+/- English proof (translation)
+Introduce `X hX A _ lam Rm hL v P hP hc hv hun x`. Establish `hover : ∀ P' : HeightOneSpectrum (𝓞 X.E), P'.asIdeal.under (𝓞 X.F) = v.asIdeal → P' = P` using `fun P' h => by`. Break down `local_factor_over_two X hX P P' (h.trans hP.symm) with h | h` into its components or cases. Conclude with `h`. Rewrite using `[h, hc]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨p, hpv, hp2⟩ : ∃ p ∈ P.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E)), algebraMap (𝓞 X.F) (𝓞 X.E) p ∉ P.asIdeal ^ 2 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hun (Ideal.map_le_iff_le_comap.2 fun p hp => hcon p hp)`. Establish `hpP : algebraMap (𝓞 X.F) (𝓞 X.E) p ∈ P.asIdeal ^ 1` using `by rw [pow_one]; exact hpv`.
+
+Establish `hpE0 : algebraMap (𝓞 X.F) (𝓞 X.E) p ≠ 0`. Introduce `h0`. Rewrite `hp2` using `[h0]`. Conclude with `hp2 (zero_mem _)`. Establish `hp0 : (algebraMap (𝓞 X.F) X.F p) ≠ 0`.
+
+Introduce `h0`. Apply `hpE0` to reduce the goal to its premises. Establish `: p = 0` using `(map_eq_zero_iff _ (IsFractionRing.injective (𝓞 X.F) X.F)).1 h0`. Rewrite using `[this, map_zero]`. Take `⟨k, hk⟩` from `ab_int_exp P hpE0`.
+
+Establish `hk1 : k = 1`. Establish `h1` using `(P.intValuation_le_pow_iff_mem _ _).2 hpP`. Establish `h2 : ¬ P.intValuation (algebraMap (𝓞 X.F) (𝓞 X.E) p) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => hp2 ((P.intValuation_le_pow_iff_mem _ _).1 h)`. Rewrite `h1`, `h2` using `[hk, WithZero.exp_le_exp]`. Move the coercions through the operations in `at h1 h2`.
+
+Use linear arithmetic over natural numbers and integers. Set `U : X.Eˣ` to `Units.map (algebraMap X.F X.E).toMonoidHom (Units.mk0 _ hp0)`. Establish `hU : P.valuation X.E (U : X.E) = WithZero.exp (-1 : ℤ)`. Establish `e : (U : X.E) = algebraMap (𝓞 X.E) X.E (algebraMap (𝓞 X.F) (𝓞 X.E) p)` using `(IsScalarTower.algebraMap_apply (𝓞 X.F) X.F X.E p).symm.trans (IsScalarTower.algebraMap_apply (𝓞 X.F) (𝓞 X.E) X.E p)`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap, hk, hk1]`.
+
+Both sides reduce to the same expression. Establish `hx0 : P.valuation X.E (x : X.E) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Establish `h1 : lam v (x * U ^ (WithZero.log (P.valuation X.E (x : X.E)))) = 1`. Apply `hL.unr v hv` to reduce the goal to its premises. Introduce `P' hP'`.
+
+Rewrite using `[hover P' hP', Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hU, ← WithZero.exp_zsmul]`. Use `conv_lhs => rw [← WithZero.exp_log hx0]`. Rewrite using `[← WithZero.exp_add, ← WithZero.exp_zero]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[map_mul, map_zpow, hL.trivF v _, one_zpow, mul_one]`. Conclude with `h1`.
+-/
 theorem absolute_value_inert_primes : AbsInert := by
   intro X hX A _ lam Rm hL v P hP hc hv hun x
   have hover : ∀ P' : HeightOneSpectrum (𝓞 X.E), P'.asIdeal.under (𝓞 X.F) = v.asIdeal → P' = P := fun P' h => by

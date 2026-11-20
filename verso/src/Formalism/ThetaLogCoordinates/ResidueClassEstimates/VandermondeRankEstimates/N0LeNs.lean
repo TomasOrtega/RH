@@ -9,21 +9,33 @@ namespace Formalism.InvariantFactorPaths.BranchingDimensions
 
 open Letters
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.sum_filter, Finset.sum_Icc_succ_top h]`.
+-/
 lemma sum_filter_Icc_succ (p : ℕ → Prop) [DecidablePred p] (f : ℕ → ℕ) (a i : ℕ) (h : a ≤ i + 1) :
     ∑ l ∈ (Icc a (i + 1)).filter p, f l =
       (∑ l ∈ (Icc a i).filter p, f l) + if p (i + 1) then f (i + 1) else 0 := by
   rw [Finset.sum_filter, Finset.sum_filter, Finset.sum_Icc_succ_top h]
 
+/- English proof (translation)
+Rewrite using `[Finset.card_filter, Finset.card_filter, Finset.sum_Icc_succ_top h]`.
+-/
 lemma card_filter_Icc_succ (p : ℕ → Prop) [DecidablePred p] (a i : ℕ) (h : a ≤ i + 1) :
     ((Icc a (i + 1)).filter p).card = ((Icc a i).filter p).card + if p (i + 1) then 1 else 0 := by
   rw [Finset.card_filter, Finset.card_filter, Finset.sum_Icc_succ_top h]
 
+/- English proof (translation)
+Introduce `a b hab hb`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ b hab ih => exact (h b hb).trans (ih (by omega))`.
+-/
 lemma Dom.anti {n : ℕ} {la : ℕ → ℤ} (h : Dom n la) : ∀ a b, a ≤ b → b < n → la b ≤ la a := by
   intro a b hab hb
   induction b, hab using Nat.le_induction with
   | base => exact le_rfl
   | succ b hab ih => exact (h b hb).trans (ih (by omega))
 
+/- English proof (translation)
+Unfold `wsize`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.single_le_sum (f := fun j => b j - a j) (fun j hj => sub_nonneg.mpr (h.1 j (Finset.mem_range.mp hj))) (Finset.mem_range.mpr hm)`.
+-/
 lemma HStrip.diff_le {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) (m : ℕ) (hm : m < n) :
     b m - a m ≤ wsize n b - wsize n a := by
   unfold wsize
@@ -33,8 +45,16 @@ lemma HStrip.diff_le {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) (m : ℕ) 
 
 def revW (n : ℕ) (la : ℕ → ℤ) : ℕ → ℤ := fun m => -(la (n - 1 - m))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma tailNeg_eq (n : ℕ) (la : ℕ → ℤ) (u : ℕ) : tailNeg n la u = tailPos n (revW n la) u := rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Use `⟨fun m hm => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Simplify using `only [revW]`. Conclude with `neg_le_neg (h1 _ (by omega))`. Simplify using `only [revW]`.
+
+Establish `h3` using `h2 (n - 1 - (m + 1)) (by omega)`. Establish `e : n - 1 - (m + 1) + 1 = n - 1 - m` using `by omega`. Rewrite `h3` using `[e]`. Conclude with `neg_le_neg h3`.
+-/
 lemma HStrip.rev {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) : HStrip n (revW n b) (revW n a) := by
   obtain ⟨h1, h2⟩ := h
   refine ⟨fun m hm => ?_, fun m hm => ?_⟩
@@ -46,6 +66,11 @@ lemma HStrip.rev {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) : HStrip n (re
     rw [e] at h3
     exact neg_le_neg h3
 
+/- English proof (translation)
+Introduce `l hl`. Establish `h3` using `h (n - 1 - l) (by omega)`. Simplify using `only [revW]`. Establish `e1 : n + 1 - 1 - l = n - 1 - l + 1` using `by omega`. Establish `e2 : n + 1 - 1 - (l + 1) = n - 1 - l` using `by omega`.
+
+Rewrite using `[e1, e2]`. Conclude with `⟨neg_le_neg h3.2, neg_le_neg h3.1⟩`.
+-/
 lemma Interl.rev {n : ℕ} {a b : ℕ → ℤ} (h : Interl n a b) : Interl n (revW n a) (revW (n + 1) b) := by
   intro l hl
   have h3 := h (n - 1 - l) (by omega)
@@ -55,6 +80,9 @@ lemma Interl.rev {n : ℕ} {a b : ℕ → ℤ} (h : Interl n a b) : Interl n (re
   rw [e1, e2]
   exact ⟨neg_le_neg h3.2, neg_le_neg h3.1⟩
 
+/- English proof (translation)
+Unfold `wsize revW`. Rewrite using `[Finset.sum_neg_distrib]`. Establish `h` using `Finset.sum_range_reflect (fun m => la m) n`. Apply the tactic sequence `try simp only at h`. Rewrite using `[h]`.
+-/
 lemma wsize_rev (n : ℕ) (la : ℕ → ℤ) : wsize n (revW n la) = - wsize n la := by
   unfold wsize revW
   rw [Finset.sum_neg_distrib]
@@ -62,17 +90,26 @@ lemma wsize_rev (n : ℕ) (la : ℕ → ℤ) : wsize n (revW n la) = - wsize n l
   try simp only at h
   rw [h]
 
+/- English proof (translation)
+Unfold `tailPos`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, Finset.sum_range_succ]`.
+-/
 lemma tailPos_succ (n : ℕ) (la : ℕ → ℤ) (u : ℕ) :
     tailPos (n + 1) la u = tailPos n la u + if u ≤ n then max (la n) 0 else 0 := by
   unfold tailPos
   rw [Finset.sum_filter, Finset.sum_filter, Finset.sum_range_succ]
 
+/- English proof (translation)
+Rewrite using `[tailPos_succ]`. Use `split_ifs`. Combine the linear relations using `[le_max_right (la n) 0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma tailPos_le_succ (n : ℕ) (la : ℕ → ℤ) (u : ℕ) : tailPos n la u ≤ tailPos (n + 1) la u := by
   rw [tailPos_succ]
   split_ifs
   · linarith [le_max_right (la n) 0]
   · linarith
 
+/- English proof (translation)
+Unfold `tailPos`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hm`. Conclude with `max_le_max (h m hm.1) le_rfl`.
+-/
 lemma tailPos_mono {n : ℕ} {a b : ℕ → ℤ} (h : ∀ m, m < n → a m ≤ b m) (u : ℕ) :
     tailPos n a u ≤ tailPos n b u := by
   unfold tailPos
@@ -81,6 +118,13 @@ lemma tailPos_mono {n : ℕ} {a b : ℕ → ℤ} (h : ∀ m, m < n → a m ≤ b
   simp only [Finset.mem_filter, Finset.mem_range] at hm
   exact max_le_max (h m hm.1) le_rfl
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `_`. Simplify using `[tailPos, Finset.filter_singleton]`.
+
+Consider the case `succ n ih`. Introduce `h`. Rewrite using `[tailPos_succ (n + 1) b, tailPos_succ n a]`. Establish `h1` using `ih (fun m hm => h m (by omega))`. Establish `h2 : b (n + 1) ≤ a n` using `h n (by omega)`.
+
+Establish `h3 : max (b (n + 1)) 0 ≤ max (a n) 0` using `max_le_max h2 le_rfl`. Establish `hiff : (u + 1 ≤ n + 1) ↔ (u ≤ n)` using `by omega`. Simplify using `only [hiff]`. Apply the tactic sequence `split_ifs <;> linarith`.
+-/
 lemma tail_pos_shift_le (a b : ℕ → ℤ) (u : ℕ) :
     ∀ n, (∀ m, m + 1 < n + 1 → b (m + 1) ≤ a m) → tailPos (n + 1) b (u + 1) ≤ tailPos n a u := by
   intro n
@@ -98,6 +142,9 @@ lemma tail_pos_shift_le (a b : ℕ → ℤ) (u : ℕ) :
     simp only [hiff]
     split_ifs <;> linarith
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => simp [tailPos]`. Consider the case `succ k`. Conclude with `(tail_pos_shift_le a b u k (fun m hm => h.2 m hm)).trans (tailPos_le_succ k a u)`.
+-/
 lemma HStrip.tailPos_shift {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) (u : ℕ) :
     tailPos n b (u + 1) ≤ tailPos n a u := by
   cases n with
@@ -105,9 +152,19 @@ lemma HStrip.tailPos_shift {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) (u :
   | succ k =>
     exact (tail_pos_shift_le a b u k (fun m hm => h.2 m hm)).trans (tailPos_le_succ k a u)
 
+/- English proof (translation)
+The claim follows from `tailPos_mono h.1 u`.
+-/
 lemma HStrip.tailPos_le {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) (u : ℕ) :
     tailPos n a u ≤ tailPos n b u := tailPos_mono h.1 u
 
+/- English proof (translation)
+Unfold `wsize tailPos revW`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Simplify using `only [Nat.zero_le, if_true, ite_true]`. Establish `h` using `Finset.sum_range_reflect (fun m => max (-(a m)) 0) n`. Apply the tactic sequence `try simp only at h`.
+
+Rewrite using `[h, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Break down `le_total 0 (a m) with h0 | h0` into its components or cases. Rewrite using `[max_eq_left h0, max_eq_right (by linarith)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[max_eq_right h0, max_eq_left (by linarith)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma wsize_eq_tails (n : ℕ) (a : ℕ → ℤ) : wsize n a = tailPos n a 0 - tailPos n (revW n a) 0 := by
   unfold wsize tailPos revW
   rw [Finset.sum_filter, Finset.sum_filter]
@@ -122,16 +179,27 @@ lemma wsize_eq_tails (n : ℕ) (a : ℕ → ℤ) : wsize n a = tailPos n a 0 - t
   · rw [max_eq_right h0, max_eq_left (by linarith)]
     ring
 
+/- English proof (translation)
+Rewrite using `[wsize_eq_tails n b, wsize_eq_tails n a]`. Establish `h1` using `HStrip.tailPos_le h.rev 0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma HStrip.tailPos_zero {n : ℕ} {a b : ℕ → ℤ} (h : HStrip n a b) :
     tailPos n b 0 - tailPos n a 0 ≤ wsize n b - wsize n a := by
   rw [wsize_eq_tails n b, wsize_eq_tails n a]
   have h1 := HStrip.tailPos_le h.rev 0
   linarith
 
+/- English proof (translation)
+The claim follows from `(tailPos_mono (fun m hm => (h m hm).1) u).trans (tailPos_le_succ n b u)`.
+-/
 lemma Interl.tailPos_le {n : ℕ} {a b : ℕ → ℤ} (h : Interl n a b) (u : ℕ) :
     tailPos n a u ≤ tailPos (n + 1) b u :=
   (tailPos_mono (fun m hm => (h m hm).1) u).trans (tailPos_le_succ n b u)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Unfold `wsize`. Rewrite using `[Finset.sum_range_succ]`. Establish `h1 : ∑ m ∈ range n, a m ≤ ∑ m ∈ range n, b m` using `Finset.sum_le_sum fun m hm => (h m (Finset.mem_range.mp hm)).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Unfold `wsize`. Rewrite using `[Finset.sum_range_succ']`. Establish `h1 : ∑ m ∈ range n, b (m + 1) ≤ ∑ m ∈ range n, a m` using `Finset.sum_le_sum fun m hm => (h m (Finset.mem_range.mp hm)).2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma Interl.size {n : ℕ} {a b : ℕ → ℤ} (h : Interl n a b) :
     b n ≤ wsize (n + 1) b - wsize n a ∧ wsize (n + 1) b - wsize n a ≤ b 0 := by
   constructor
@@ -146,6 +214,9 @@ lemma Interl.size {n : ℕ} {a b : ℕ → ℤ} (h : Interl n a b) :
       Finset.sum_le_sum fun m hm => (h m (Finset.mem_range.mp hm)).2
     linarith
 
+/- English proof (translation)
+Distinguish the cases in `hq : q (i + 1) = true`. Simplify using `[List.range'_concat, List.filter_append, hq, add_comm]`. Simplify using `[List.range'_concat, List.filter_append, hq, add_comm]`.
+-/
 lemma latest_succ (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) :
     (((List.range' 1 (i + 1)).filter q).reverse).map B =
       if q (i + 1) = true then B (i + 1) :: (((List.range' 1 i).filter q).reverse).map B
@@ -154,6 +225,17 @@ lemma latest_succ (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) :
   · simp [List.range'_concat, List.filter_append, hq, add_comm]
   · simp [List.range'_concat, List.filter_append, hq, add_comm]
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ u`. Conclude with `h0 u`.
+
+Consider the case `succ i ih`. Introduce `hi u`. Establish `ih'` using `ih (by omega)`. Distinguish the cases in `ha : act (i + 1) = true`. Consider the cases of `u with`.
+
+Consider the case `zero`. Establish `h1` using `hA0 i (by omega) ha`. Establish `h2` using `ih' 0`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ u`.
+
+Take `⟨h1, h2⟩` from `hA i u (by omega) ha`. Rewrite using `[h2]`. Conclude with `h1.trans (ih' u)`. Establish `ha' : act (i + 1) = false` using `by simpa using ha`. Take `⟨h1, h2⟩` from `hI i u (by omega) ha'`.
+
+Rewrite using `[h2]`. Conclude with `h1.trans (ih' u)`.
+-/
 lemma abs_bound (N : ℕ) (T : ℕ → ℕ → ℤ) (S : ℕ → ℕ → ℕ) (act : ℕ → Bool)
     (h0 : ∀ u, T 0 u ≤ S u 0)
     (hA : ∀ i u, i < N → act (i + 1) = true → T (i + 1) (u + 1) ≤ T i u ∧ S (u + 1) (i + 1) = S u i)
@@ -183,6 +265,17 @@ lemma abs_bound (N : ℕ) (T : ℕ → ℕ → ℤ) (S : ℕ → ℕ → ℕ) (a
       rw [h2]
       exact h1.trans (ih' u)
 
+/- English proof (translation)
+Introduce `i hi hiN`. Proceed by induction on `i, hi using Nat.le_induction with`. Consider the case `base`. Establish `hc : ((Icc (i₀ + 1) i₀).filter fun l => act l = true).card = 0` using `by simp`. Rewrite using `[hc, add_zero]`.
+
+Conclude with `h`. Consider the case `succ i hi ih`. Establish `ih'` using `ih (by omega)`. Rewrite using `[card_filter_Icc_succ _ (i₀ + 1) i (by omega)]`. Generalize the expression as in `hc : ((Icc (i₀ + 1) i).filter fun l => act l = true).card = c at ih' ⊢`.
+
+Use `split_ifs with ha`. Take `⟨h1, h2⟩` from `hA i (u + c) (by omega) ha`. Rewrite using `[← add_assoc, h2]`. Establish `h1' : ((T (i + 1) (u + c + 1) : ℤ) : ℝ) ≤ ((T i (u + c) : ℤ) : ℝ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[add_zero]`. Establish `ha' : act (i + 1) = false` using `by simpa using ha`. Take `⟨h1, h2⟩` from `hI i (u + c) (by omega) ha'`. Rewrite using `[h2]`. Establish `h1' : ((T (i + 1) (u + c) : ℤ) : ℝ) ≤ ((T i (u + c) : ℤ) : ℝ)` using `by exact_mod_cast h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma deficit_persists_of_active_inactive_recursion (N : ℕ) (T : ℕ → ℕ → ℤ) (S : ℕ → ℕ → ℕ) (act : ℕ → Bool)
     (hA : ∀ i u, i < N → act (i + 1) = true → T (i + 1) (u + 1) ≤ T i u ∧ S (u + 1) (i + 1) = S u i)
     (hI : ∀ i u, i < N → act (i + 1) = false → T (i + 1) u ≤ T i u ∧ S u (i + 1) = S u i)
@@ -214,39 +307,66 @@ lemma deficit_persists_of_active_inactive_recursion (N : ℕ) (T : ℕ → ℕ �
 
 variable {D : Letters} {mu : D.Stages}
 
+/- English proof (translation)
+The claim follows from `Nat.sub_le _ _`.
+-/
 lemma n0_le_Ns (D : Letters) : D.n0 ≤ D.Ns := Nat.sub_le _ _
 
+/- English proof (translation)
+Take `⟨_, _, h3, _⟩` from `hW`. Unfold `Letters.n0`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma Ns_eq (hW : D.Wf) : D.Ns = D.n0 + D.r := by
   obtain ⟨_, _, h3, _⟩ := hW
   unfold Letters.n0
   omega
 
+/- English proof (translation)
+Establish `h` using `hW.2.1`. Unfold `Letters.k`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma r_lt_k (hW : D.Wf) : D.r < D.k := by
   have h := hW.2.1
   unfold Letters.k
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[Letters.stage, Nat.sub_eq_zero_of_le h]`.
+-/
 lemma stage_le (i : ℕ) (h : i ≤ D.n0) : stage mu i = ent mu i := by
   funext l
   simp [Letters.stage, Nat.sub_eq_zero_of_le h]
 
+/- English proof (translation)
+Simplify using `[Letters.stage]`.
+-/
 lemma stage_add (j l : ℕ) : stage mu (D.n0 + j) l = ent mu (D.n0 + j) (l + j) := by
   simp [Letters.stage]
 
+/- English proof (translation)
+Unfold `Letters.stLen`. Rewrite using `[Nat.sub_eq_zero_of_le h, Nat.sub_zero]`.
+-/
 lemma stLen_le (i : ℕ) (h : i ≤ D.n0) : D.stLen i = D.k := by
   unfold Letters.stLen
   rw [Nat.sub_eq_zero_of_le h, Nat.sub_zero]
 
+/- English proof (translation)
+Unfold `Letters.stLen`. Rewrite using `[Nat.add_sub_cancel_left]`.
+-/
 lemma stLen_add (j : ℕ) : D.stLen (D.n0 + j) = D.k - j := by
   unfold Letters.stLen
   rw [Nat.add_sub_cancel_left]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, -⟩` from `h`. Conclude with `⟨h1, fun i hi => h2 i (hi.trans (n0_le_Ns D)), fun i hi1 hi2 hv => h3 i hi1 (hi2.trans (n0_le_Ns D)) hv, fun i hi1 hi2 hv => h4 i hi1 (hi2.trans (n0_le_Ns D)) hv, h5, h6⟩`.
+-/
 lemma pre_of_path (h : D.IsPATH mu) : D.IsPre mu := by
   obtain ⟨h1, h2, h3, h4, h5, h6, -⟩ := h
   exact ⟨h1, fun i hi => h2 i (hi.trans (n0_le_Ns D)),
     fun i hi1 hi2 hv => h3 i hi1 (hi2.trans (n0_le_Ns D)) hv,
     fun i hi1 hi2 hv => h4 i hi1 (hi2.trans (n0_le_Ns D)) hv, h5, h6⟩
 
+/- English proof (translation)
+Unfold `Letters.be Letters.bePos Letters.beNeg`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (Icc 1 D.n0) (fun i => D.vec i = true)]`. Use `congr 2`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 lemma be_eq (D : Letters) : D.be = D.bePos + D.beNeg := by
   unfold Letters.be Letters.bePos Letters.beNeg
   rw [← Finset.sum_filter_add_sum_filter_not (Icc 1 D.n0) (fun i => D.vec i = true)]
@@ -254,6 +374,19 @@ lemma be_eq (D : Letters) : D.be = D.bePos + D.beNeg := by
   ext i
   simp
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Simplify using `[hP.1]`.
+
+Consider the case `succ i ih`. Introduce `hi`. Take `⟨ih1, ih2⟩` from `ih (by omega)`. Rewrite using `[sum_filter_Icc_succ _ _ _ _ (by omega), sum_filter_Icc_succ _ _ _ _ (by omega)]`. Establish `hk1 : D.k - 1 < D.k` using `by omega`.
+
+Establish `hk0 : 0 < D.k` using `by omega`. Distinguish the cases in `hv : D.vec (i + 1) = true`. Establish `hS` using `hP.2.2.1 (i + 1) (by omega) hi hv`. Establish `hW` using `hP.2.2.2.2.1 (i + 1) (by omega) hi hv`. Simplify using `only [Nat.add_sub_cancel] at hS hW`.
+
+Establish `hd` using `HStrip.diff_le hS 0 hk0`. Establish `h1` using `hS.1 (D.k - 1) hk1`. Rewrite using `[if_neg (by simp [hv]), if_pos hv]`. Move the coercions through the operations in `at ih1 ih2 ⊢`. Apply the tactic sequence `constructor <;> linarith`.
+
+Establish `hv' : D.vec (i + 1) = false` using `by simpa using hv`. Establish `hS` using `hP.2.2.2.1 (i + 1) (by omega) hi hv'`. Establish `hW` using `hP.2.2.2.2.2 (i + 1) (by omega) hi hv'`. Simplify using `only [Nat.add_sub_cancel] at hS hW`. Establish `hd` using `HStrip.diff_le hS (D.k - 1) hk1`.
+
+Establish `h1` using `hS.1 0 hk0`. Rewrite using `[if_pos hv', if_neg hv]`. Move the coercions through the operations in `at ih1 ih2 ⊢`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 lemma pre_size (hk : 1 ≤ D.k) (hP : D.IsPre mu) : ∀ i, i ≤ D.n0 →
     -((∑ l ∈ (Icc 1 i).filter (fun l => D.vec l = false), D.B l : ℕ) : ℤ) ≤ ent mu i (D.k - 1) ∧
     ent mu i 0 ≤ ((∑ l ∈ (Icc 1 i).filter (fun l => D.vec l = true), D.B l : ℕ) : ℤ) := by
@@ -287,6 +420,17 @@ lemma pre_size (hk : 1 ≤ D.k) (hP : D.IsPre mu) : ∀ i, i ≤ D.n0 →
       push_cast at ih1 ih2 ⊢
       constructor <;> linarith
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Apply the tactic sequence `refine ⟨fun m _ _ => ?_, fun m _ => ?_⟩ <;> simp [hP.1]`.
+
+Consider the case `succ i ih`. Introduce `hi`. Take `⟨ih1, ih2⟩` from `ih (by omega)`. Simplify using `only [Letters.nVec, Letters.nCov] at ih1 ih2 ⊢`. Rewrite using `[card_filter_Icc_succ _ _ _ (by omega), card_filter_Icc_succ _ _ _ (by omega)]`.
+
+Distinguish the cases in `hv : D.vec (i + 1) = true`. Establish `hS` using `hP.2.2.1 (i + 1) (by omega) hi hv`. Simplify using `only [Nat.add_sub_cancel] at hS`. Rewrite using `[if_pos hv, if_neg (by simp [hv])]`. Use `⟨fun m hm hmk => ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Conclude with `(hS.2 m' hmk).trans (ih1 m' (by omega) (by omega))`. Conclude with `(ih2 m (by omega)).trans (hS.1 m (by omega))`. Establish `hv' : D.vec (i + 1) = false` using `by simpa using hv`. Establish `hS` using `hP.2.2.2.1 (i + 1) (by omega) hi hv'`.
+
+Simplify using `only [Nat.add_sub_cancel] at hS`. Rewrite using `[if_neg hv, if_pos hv']`. Use `⟨fun m hm hmk => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `(hS.1 m hmk).trans (ih1 m (by omega) hmk)`. Conclude with `(ih2 (m + 1) (by omega)).trans (hS.2 m (by omega))`.
+-/
 lemma path_rows (hP : D.IsPATH mu) : ∀ i, i ≤ D.Ns →
     (∀ m, D.nVec i ≤ m → m < D.k → ent mu i m ≤ 0) ∧ ∀ m, m + D.nCov i < D.k → 0 ≤ ent mu i m := by
   intro i
@@ -315,6 +459,11 @@ lemma path_rows (hP : D.IsPATH mu) : ∀ i, i ≤ D.Ns →
       · exact (hS.1 m hmk).trans (ih1 m (by omega) hmk)
       · exact (ih2 (m + 1) (by omega)).trans (hS.2 m (by omega))
 
+/- English proof (translation)
+Introduce `D mu hW hP`. Establish `hk : 1 ≤ D.k`. Use `hW.1` as an intermediate fact. Unfold `Letters.k`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨pre_size hk (pre_of_path hP), path_rows hP⟩`.
+-/
 theorem pathEntryBounds : PathEntryBounds := by
   intro D mu hW hP
   have hk : 1 ≤ D.k := by
@@ -323,6 +472,13 @@ theorem pathEntryBounds : PathEntryBounds := by
     omega
   exact ⟨pre_size hk (pre_of_path hP), path_rows hP⟩
 
+/- English proof (translation)
+Introduce `l hl`. Establish `hNs` using `Ns_eq hW`. Establish `hv : D.vec (D.n0 + (j + 1)) = true` using `hW.2.2.2.2 _ (by omega) (by omega)`. Establish `hS` using `hP.2.2.1 (D.n0 + (j + 1)) (by omega) (by omega) hv`. Establish `e1 : D.n0 + (j + 1) - 1 = D.n0 + j` using `by omega`.
+
+Rewrite `hS` using `[e1]`. Simplify using `only [stage_add]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show l + (j + 1) = l + j + 1 by omega]`. Conclude with `hS.2 (l + j) (by omega)`.
+
+Rewrite using `[show l + 1 + j = l + (j + 1) by omega]`. Conclude with `hS.1 (l + (j + 1)) (by omega)`.
+-/
 lemma interl_of_path (hW : D.Wf) (hP : D.IsPATH mu) (j : ℕ) (hj : j < D.r) :
     Interl (D.k - (j + 1)) (stage mu (D.n0 + (j + 1))) (stage mu (D.n0 + j)) := by
   intro l hl
@@ -338,6 +494,13 @@ lemma interl_of_path (hW : D.Wf) (hP : D.IsPATH mu) (j : ℕ) (hj : j < D.r) :
   · rw [show l + 1 + j = l + (j + 1) by omega]
     exact hS.1 (l + (j + 1)) (by omega)
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ l hl`. Rewrite using `[stage_add]`.
+
+Simplify using `only [Nat.add_zero] at hl ⊢`. Conclude with `⟨hD.anti l (D.k - 1) (by omega) (by omega), hD.anti 0 l (Nat.zero_le _) (by omega)⟩`. Consider the case `succ j ih`. Introduce `hj l hl`. Take `⟨h1, h2⟩` from `hI j (by omega) l (by omega)`.
+
+Take `⟨h3, h4⟩` from `ih (by omega) l (by omega)`. Take `⟨h5, h6⟩` from `ih (by omega) (l + 1) (by omega)`. Conclude with `⟨h5.trans h2, h1.trans h4⟩`.
+-/
 lemma tails_range (hD : Dom D.k (ent mu D.n0))
     (hI : ∀ j, j < D.r → Interl (D.k - (j + 1)) (stage mu (D.n0 + (j + 1))) (stage mu (D.n0 + j))) :
     ∀ j, j ≤ D.r → ∀ l, l < D.k - j →
@@ -356,6 +519,33 @@ lemma tails_range (hD : Dom D.k (ent mu D.n0))
     obtain ⟨h5, h6⟩ := ih (by omega) (l + 1) (by omega)
     exact ⟨h5.trans h2, h1.trans h4⟩
 
+/- English proof (translation)
+Establish `hNs` using `Ns_eq hW`. Establish `hrk` using `r_lt_k hW`. Establish `hk1 : 1 ≤ D.k` using `by omega`. Establish `hD0 : Dom D.k (ent mu D.n0)` using `hPre.2.1 D.n0 le_rfl`. Establish `hTR` using `tails_range hD0 hI`.
+
+Establish `hn0be : ent mu D.n0 0 ≤ (D.be : ℤ)`. Establish `h` using `(pre_size hk1 hPre D.n0 le_rfl).2`. Establish `hb : (∑ l ∈ (Icc 1 D.n0).filter (fun l => D.vec l = true), D.B l) ≤ D.be`. Rewrite using `[be_eq]`. Unfold `Letters.bePos`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h.trans (by exact_mod_cast hb)`. Establish `hcur : ∀ j, j ≤ D.r → ∀ m, j ≤ m → ent mu (D.n0 + j) m = stage mu (D.n0 + j) (m - j)`. Introduce `j _ m hm`. Rewrite using `[stage_add, Nat.sub_add_cancel hm]`.
+
+Establish `hDom : ∀ i, i ≤ D.Ns → Dom D.k (ent mu i)`. Introduce `i hi`. Distinguish the cases in `hin : i ≤ D.n0`. Conclude with `hPre.2.1 i hin`. Take `⟨j, rfl⟩ : ∃ j, i = D.n0 + j` from `⟨i - D.n0, by omega⟩`.
+
+Establish `hjr : j ≤ D.r` using `by omega`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hIj` using `hI j' (by omega)`. Introduce `m hm`. Break down `lt_trichotomy (m + 1) (j' + 1) with h | h | h` into its components or cases.
+
+Rewrite using `[hH _ (by omega) hjr m (by omega), hH _ (by omega) hjr (m + 1) h]`. Establish `hm' : m = j'` using `by omega`. Rewrite using `[hm', hH _ (by omega) hjr j' (by omega), hcur (j' + 1) hjr (j' + 1) le_rfl, Nat.sub_self]`. Conclude with `((hTR (j' + 1) hjr 0 (by omega)).2).trans hn0be`. Rewrite using `[hcur _ hjr (m + 1) (by omega), hcur _ hjr m (by omega)]`.
+
+Establish `hl : m + 1 - (j' + 1) = m - (j' + 1) + 1` using `by omega`. Rewrite using `[hl]`. Conclude with `(hIj (m - (j' + 1) + 1) (by omega)).1.trans (hIj (m - (j' + 1)) (by omega)).2`. Use `⟨hPre.1, hDom, ?_, ?_, hPre.2.2.2.2.1, hPre.2.2.2.2.2, hH⟩` and prove the remaining obligations. Introduce `i h1 hi hv`.
+
+Distinguish the cases in `hin : i ≤ D.n0`. Conclude with `hPre.2.2.1 i h1 hin hv`. Take `⟨j, rfl⟩ : ∃ j, i = D.n0 + j` from `⟨i - D.n0, by omega⟩`. Establish `hjr : j ≤ D.r` using `by omega`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`.
+
+Establish `hIj` using `hI j' (by omega)`. Rewrite using `[show D.n0 + (j' + 1) - 1 = D.n0 + j' by omega]`. Use `⟨fun m hm => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy m j' with h | h | h` into its components or cases. Rewrite using `[hH j' (by omega) (by omega) m h, hH (j' + 1) (by omega) hjr m (by omega)]`.
+
+Rewrite using `[h, hH (j' + 1) (by omega) hjr j' (by omega), hcur j' (by omega) j' le_rfl, Nat.sub_self]`. Conclude with `((hTR j' (by omega) 0 (by omega)).2).trans hn0be`. Rewrite using `[hcur j' (by omega) m (by omega), hcur (j' + 1) hjr m (by omega)]`. Establish `hl : m - j' = m - (j' + 1) + 1` using `by omega`. Rewrite using `[hl]`.
+
+Conclude with `(hIj (m - (j' + 1)) (by omega)).2`. Distinguish the cases in `h : m < j'`. Rewrite using `[hH (j' + 1) (by omega) hjr (m + 1) (by omega), hH j' (by omega) (by omega) m h]`. Rewrite using `[hcur (j' + 1) hjr (m + 1) (by omega), hcur j' (by omega) m (by omega)]`. Establish `hl : m + 1 - (j' + 1) = m - j'` using `by omega`.
+
+Rewrite using `[hl]`. Conclude with `(hIj (m - j') (by omega)).1`. Introduce `i h1 hi hv`. Distinguish the cases in `hin : i ≤ D.n0`. Conclude with `hPre.2.2.2.1 i h1 hin hv`.
+
+Establish `h'` using `hW.2.2.2.2 i (by omega) hi`. Simplify using `[h'] at hv`.
+-/
 lemma path_of_interl (hW : D.Wf) (hPre : D.IsPre mu)
     (hH : ∀ i', 1 ≤ i' → i' ≤ D.r → ∀ m, m < i' → ent mu (D.n0 + i') m = D.be)
     (hI : ∀ j, j < D.r → Interl (D.k - (j + 1)) (stage mu (D.n0 + (j + 1))) (stage mu (D.n0 + j))) :
@@ -423,6 +613,11 @@ lemma path_of_interl (hW : D.Wf) (hPre : D.IsPre mu)
     · have h' := hW.2.2.2.2 i (by omega) hi
       simp [h'] at hv
 
+/- English proof (translation)
+Unfold `wsize`. Establish `hk : D.k = j + (D.k - j)` using `by omega`. Use `conv_lhs => rw [hk]`. Rewrite using `[Finset.sum_range_add, Finset.sum_congr rfl (fun m hm => hH m (Finset.mem_range.1 hm)), Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[stage_add, Nat.add_comm m j]`.
+-/
 lemma wsize_head (j : ℕ) (hj : j ≤ D.k) (hH : ∀ m, m < j → ent mu (D.n0 + j) m = D.be) :
     wsize D.k (ent mu (D.n0 + j)) = (j : ℤ) * D.be + wsize (D.k - j) (stage mu (D.n0 + j)) := by
   unfold wsize
@@ -434,6 +629,21 @@ lemma wsize_head (j : ℕ) (hj : j ≤ D.k) (hH : ∀ m, m < j → ent mu (D.n0 
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [stage_add, Nat.add_comm m j]
 
+/- English proof (translation)
+Introduce `D mu hW`. Establish `hNs` using `Ns_eq hW`. Establish `hrk` using `r_lt_k hW`. Establish `hk1 : 1 ≤ D.k` using `by omega`. Establish `hr1 : 1 ≤ D.r` using `hW.1`.
+
+Use `⟨fun hPre hH => ⟨fun hP i' h1 h2 => ?_, fun h => ?_⟩, fun hP => ?_⟩` and prove the remaining obligations. Establish `hIj` using `interl_of_path hW hP (i' - 1) (by omega)`. Rewrite `hIj` using `[show i' - 1 + 1 = i' by omega, show D.n0 + (i' - 1) = D.n0 + i' - 1 by omega]`. Conclude with `hIj`. Use `path_of_interl hW hPre hH (fun j hj => ?_)` and prove the remaining obligations.
+
+Establish `hIj` using `h (j + 1) (by omega) (by omega)`. Rewrite `hIj` using `[show D.n0 + (j + 1) - 1 = D.n0 + j by omega]`. Conclude with `hIj`. Establish `hpre : -(D.beNeg : ℤ) ≤ ent mu D.n0 (D.k - 1) ∧ ent mu D.n0 0 ≤ (D.bePos : ℤ)` using `pre_size hk1 (pre_of_path hP) D.n0 le_rfl`. Establish `hD0 : Dom D.k (ent mu D.n0)` using `hP.2.1 D.n0 (n0_le_Ns D)`.
+
+Establish `hTR` using `tails_range hD0 (fun j hj => interl_of_path hW hP j hj)`. Establish `hbe : (D.be : ℤ) = D.bePos + D.beNeg` using `by exact_mod_cast be_eq D`. Use `⟨hpre.1, hpre.2, hTR, fun i' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hH' : ∀ m, m < i' → ent mu (D.n0 + i') m = D.be` using `hP.2.2.2.2.2.2 i' h1 h2`. Establish `hHm : ∀ m, m < i' - 1 → ent mu (D.n0 + (i' - 1)) m = D.be` using `fun m hm => hP.2.2.2.2.2.2 (i' - 1) (by omega) (by omega) m hm`.
+
+Establish `e1` using `wsize_head i' (by omega) hH'`. Establish `e2` using `wsize_head (i' - 1) (by omega) hHm`. Establish `hIj` using `interl_of_path hW hP (i' - 1) (by omega)`. Rewrite `hIj` using `[show i' - 1 + 1 = i' by omega]`. Establish `hsz` using `hIj.size`.
+
+Rewrite `hsz` using `[show D.k - i' + 1 = D.k - (i' - 1) by omega]`. Establish `hT0` using `hTR (i' - 1) (by omega) 0 (by omega)`. Establish `hT1` using `hTR (i' - 1) (by omega) (D.k - i') (by omega)`. Rewrite using `[show D.n0 + i' - 1 = D.n0 + (i' - 1) by omega, e1, e2]`. Establish `hc : ((i' - 1 : ℕ) : ℤ) = (i' : ℤ) - 1` using `by omega`.
+
+Rewrite using `[hc]`. Apply the tactic sequence `refine ⟨by ring, ?_, ?_⟩ <;> linarith [hsz.1, hsz.2, hT0.2, hT1.1, hpre.1, hpre.2]`.
+-/
 theorem pathInterlacingCriterion : PathInterlacingCriterion := by
   intro D mu hW
   have hNs := Ns_eq hW
@@ -470,26 +680,41 @@ theorem pathInterlacingCriterion : PathInterlacingCriterion := by
     rw [hc]
     refine ⟨by ring, ?_, ?_⟩ <;> linarith [hsz.1, hsz.2, hT0.2, hT1.1, hpre.1, hpre.2]
 
+/- English proof (translation)
+Unfold `Letters.latestV`. Rewrite using `[min_eq_left hi, min_eq_left (by omega)]`. Conclude with `latest_succ D.vec D.B i`.
+-/
 lemma latestV_succ (i : ℕ) (hi : i + 1 ≤ D.n0) :
     D.latestV (i + 1) = if D.vec (i + 1) = true then D.B (i + 1) :: D.latestV i else D.latestV i := by
   unfold Letters.latestV
   rw [min_eq_left hi, min_eq_left (by omega)]
   exact latest_succ D.vec D.B i
 
+/- English proof (translation)
+Unfold `Letters.latestC`. Rewrite using `[min_eq_left hi, min_eq_left (by omega)]`. Conclude with `latest_succ (fun l => !D.vec l) D.B i`.
+-/
 lemma latestC_succ (i : ℕ) (hi : i + 1 ≤ D.n0) :
     D.latestC (i + 1) = if (!D.vec (i + 1)) = true then D.B (i + 1) :: D.latestC i else D.latestC i := by
   unfold Letters.latestC
   rw [min_eq_left hi, min_eq_left (by omega)]
   exact latest_succ (fun l => !D.vec l) D.B i
 
+/- English proof (translation)
+Unfold `Letters.latestV`. Rewrite using `[min_eq_right hi, min_eq_right hj]`.
+-/
 lemma latestV_frame (i j : ℕ) (hi : D.n0 ≤ i) (hj : D.n0 ≤ j) : D.latestV i = D.latestV j := by
   unfold Letters.latestV
   rw [min_eq_right hi, min_eq_right hj]
 
+/- English proof (translation)
+Unfold `Letters.latestC`. Rewrite using `[min_eq_right hi, min_eq_right hj]`.
+-/
 lemma latestC_frame (i j : ℕ) (hi : D.n0 ≤ i) (hj : D.n0 ≤ j) : D.latestC i = D.latestC j := by
   unfold Letters.latestC
   rw [min_eq_right hi, min_eq_right hj]
 
+/- English proof (translation)
+Simplify using `[tailPos, h]`.
+-/
 lemma tailPos_of_zero {n : ℕ} {a : ℕ → ℤ} (h : ∀ m, a m = 0) (u : ℕ) : tailPos n a u = 0 := by
   simp [tailPos, h]
 
@@ -497,12 +722,23 @@ def actV (D : Letters) (l : ℕ) : Bool := decide (l ≤ D.n0) && D.vec l
 
 def actC (D : Letters) (l : ℕ) : Bool := decide (l ≤ D.n0) && !D.vec l
 
+/- English proof (translation)
+Simplify using `[actV]`.
+-/
 lemma actV_true {l : ℕ} : actV D l = true ↔ l ≤ D.n0 ∧ D.vec l = true := by
   simp [actV]
 
+/- English proof (translation)
+Simplify using `[actC]`.
+-/
 lemma actC_true {l : ℕ} : actC D l = true ↔ l ≤ D.n0 ∧ D.vec l = false := by
   simp [actC]
 
+/- English proof (translation)
+Establish `hn` using `n0_le_Ns D`. Use `congr 1`. Use extensionality with `l`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, actV_true]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨h1, _⟩, h3, h4⟩`. Conclude with `⟨⟨h1, h3⟩, h4⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h4⟩`. Conclude with `⟨⟨h1, le_trans h2 hn⟩, h2, h4⟩`.
+-/
 lemma card_actV (i₀ : ℕ) : ((Icc (i₀ + 1) D.Ns).filter fun l => actV D l = true).card =
     ((Icc (i₀ + 1) D.n0).filter fun l => D.vec l = true).card := by
   have hn := n0_le_Ns D
@@ -515,6 +751,11 @@ lemma card_actV (i₀ : ℕ) : ((Icc (i₀ + 1) D.Ns).filter fun l => actV D l =
   · rintro ⟨⟨h1, h2⟩, h4⟩
     exact ⟨⟨h1, le_trans h2 hn⟩, h2, h4⟩
 
+/- English proof (translation)
+Establish `hn` using `n0_le_Ns D`. Use `congr 1`. Use extensionality with `l`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, actC_true]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨h1, _⟩, h3, h4⟩`. Conclude with `⟨⟨h1, h3⟩, h4⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h4⟩`. Conclude with `⟨⟨h1, le_trans h2 hn⟩, h2, h4⟩`.
+-/
 lemma card_actC (i₀ : ℕ) : ((Icc (i₀ + 1) D.Ns).filter fun l => actC D l = true).card =
     ((Icc (i₀ + 1) D.n0).filter fun l => D.vec l = false).card := by
   have hn := n0_le_Ns D
@@ -527,6 +768,13 @@ lemma card_actC (i₀ : ℕ) : ((Icc (i₀ + 1) D.Ns).filter fun l => actC D l =
   · rintro ⟨⟨h1, h2⟩, h4⟩
     exact ⟨⟨h1, le_trans h2 hn⟩, h2, h4⟩
 
+/- English proof (translation)
+Take `⟨j, rfl⟩ : ∃ j, i = D.n0 + j` from `⟨i - D.n0, by omega⟩`. Establish `hNs` using `Ns_eq hW`. Establish `hj : j < D.r` using `by omega`. Establish `hI` using `interl_of_path hW hP j hj`. Establish `hl1 : D.stLen (D.n0 + j + 1) = D.k - (j + 1)` using `by rw [add_assoc, stLen_add]`.
+
+Establish `hl0 : D.stLen (D.n0 + j) = D.k - j` using `stLen_add j`. Establish `hkj : D.k - j = D.k - (j + 1) + 1`. Use `r_lt_k hW` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hl1, hl0, hkj, show D.n0 + j + 1 = D.n0 + (j + 1) by ring]`.
+
+Use `⟨hI.tailPos_le u, ?_⟩` and prove the remaining obligations. Rewrite using `[tailNeg_eq, tailNeg_eq]`. Conclude with `hI.rev.tailPos_le u`.
+-/
 lemma frame_step (hW : D.Wf) (hP : D.IsPATH mu) (i u : ℕ) (hi : i < D.Ns) (hn : D.n0 ≤ i) :
     tailPos (D.stLen (i + 1)) (stage mu (i + 1)) u ≤ tailPos (D.stLen i) (stage mu i) u ∧
     tailNeg (D.stLen (i + 1)) (stage mu (i + 1)) u ≤ tailNeg (D.stLen i) (stage mu i) u := by
@@ -544,6 +792,11 @@ lemma frame_step (hW : D.Wf) (hP : D.IsPATH mu) (i u : ℕ) (hi : i < D.Ns) (hn 
   rw [tailNeg_eq, tailNeg_eq]
   exact hI.rev.tailPos_le u
 
+/- English proof (translation)
+Take `⟨-, -, h3, -, h5, -, -⟩` from `hP`. Establish `e : i + 1 - 1 = i` using `by omega`. Establish `ha` using `h3 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Establish `hb` using `h5 (i + 1) (by omega) hi hv`. Rewrite `ha`, `hb` using `[e]`.
+
+Conclude with `⟨ha, hb⟩`.
+-/
 lemma vec_step (hP : D.IsPATH mu) (i : ℕ) (hi : i + 1 ≤ D.n0) (hv : D.vec (i + 1) = true) :
     HStrip D.k (ent mu i) (ent mu (i + 1)) ∧
       wsize D.k (ent mu (i + 1)) - wsize D.k (ent mu i) = D.B (i + 1) := by
@@ -554,6 +807,11 @@ lemma vec_step (hP : D.IsPATH mu) (i : ℕ) (hi : i + 1 ≤ D.n0) (hv : D.vec (i
   rw [e] at ha hb
   exact ⟨ha, hb⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, h4, -, h6, -⟩` from `hP`. Establish `e : i + 1 - 1 = i` using `by omega`. Establish `ha` using `h4 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Establish `hb` using `h6 (i + 1) (by omega) hi hv`. Rewrite `ha`, `hb` using `[e]`.
+
+Conclude with `⟨ha, hb⟩`.
+-/
 lemma cov_step (hP : D.IsPATH mu) (i : ℕ) (hi : i + 1 ≤ D.n0) (hv : D.vec (i + 1) = false) :
     HStrip D.k (ent mu (i + 1)) (ent mu i) ∧
       wsize D.k (ent mu i) - wsize D.k (ent mu (i + 1)) = D.B (i + 1) := by
@@ -564,6 +822,11 @@ lemma cov_step (hP : D.IsPATH mu) (i : ℕ) (hi : i + 1 ≤ D.n0) (hv : D.vec (i
   rw [e] at ha hb
   exact ⟨ha, hb⟩
 
+/- English proof (translation)
+Take `⟨hi, hv⟩` from `actV_true.1 ha`. Establish `hS` using `hP.2.2.1 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Simplify using `only [Nat.add_sub_cancel] at hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[stLen_le _ hi, stLen_le _ (by omega), stage_le _ hi, stage_le _ (by omega)]`.
+
+Conclude with `hS.tailPos_shift u`. Unfold `Letters.SPos`. Rewrite using `[latestV_succ i hi, if_pos hv, List.drop_succ_cons]`.
+-/
 lemma pos_A (hP : D.IsPATH mu) (i u : ℕ) (ha : actV D (i + 1) = true) :
     tailPos (D.stLen (i + 1)) (stage mu (i + 1)) (u + 1) ≤ tailPos (D.stLen i) (stage mu i) u ∧
       D.SPos (u + 1) (i + 1) = D.SPos u i := by
@@ -576,6 +839,11 @@ lemma pos_A (hP : D.IsPATH mu) (i u : ℕ) (ha : actV D (i + 1) = true) :
   · unfold Letters.SPos
     rw [latestV_succ i hi, if_pos hv, List.drop_succ_cons]
 
+/- English proof (translation)
+Take `⟨hi, hv⟩` from `actV_true.1 ha`. Establish `hS` using `hP.2.2.1 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Establish `hW` using `hP.2.2.2.2.1 (i + 1) (by omega) hi hv`. Simplify using `only [Nat.add_sub_cancel] at hS hW`. Rewrite using `[stLen_le _ hi, stLen_le _ (by omega), stage_le _ hi, stage_le _ (by omega)]`.
+
+Unfold `Letters.SPos`. Rewrite using `[latestV_succ i hi, if_pos hv, List.drop_zero, List.drop_zero, List.sum_cons]`. Establish `h1` using `hS.tailPos_zero`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma pos_active_zero (hP : D.IsPATH mu) (i : ℕ) (ha : actV D (i + 1) = true) :
     tailPos (D.stLen (i + 1)) (stage mu (i + 1)) 0 - tailPos (D.stLen i) (stage mu i) 0 ≤
       (D.SPos 0 (i + 1) : ℤ) - D.SPos 0 i := by
@@ -590,6 +858,13 @@ lemma pos_active_zero (hP : D.IsPATH mu) (i : ℕ) (ha : actV D (i + 1) = true) 
   push_cast
   linarith
 
+/- English proof (translation)
+Distinguish the cases in `hi : i + 1 ≤ D.n0`. Establish `hv : D.vec (i + 1) = false`. Assume the negation of the conclusion as `h`. Establish `h' : actV D (i + 1) = true` using `actV_true.2 ⟨hi, by simpa using h⟩`. Simplify using `[h'] at ha`.
+
+Establish `hS` using `hP.2.2.2.1 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Simplify using `only [Nat.add_sub_cancel] at hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[stLen_le _ hi, stLen_le _ (by omega), stage_le _ hi, stage_le _ (by omega)]`. Conclude with `tailPos_mono hS.1 u`.
+
+Unfold `Letters.SPos`. Rewrite using `[latestV_succ i hi, if_neg (by simp [hv])]`. Use `⟨(frame_step hW hP i u hN (by omega)).1, ?_⟩` and prove the remaining obligations. Unfold `Letters.SPos`. Rewrite using `[latestV_frame (i + 1) i (by omega) (by omega)]`.
+-/
 lemma pos_I (hW : D.Wf) (hP : D.IsPATH mu) (i u : ℕ) (hN : i < D.Ns) (ha : actV D (i + 1) = false) :
     tailPos (D.stLen (i + 1)) (stage mu (i + 1)) u ≤ tailPos (D.stLen i) (stage mu i) u ∧
       D.SPos u (i + 1) = D.SPos u i := by
@@ -609,6 +884,11 @@ lemma pos_I (hW : D.Wf) (hP : D.IsPATH mu) (i u : ℕ) (hN : i < D.Ns) (ha : act
     unfold Letters.SPos
     rw [latestV_frame (i + 1) i (by omega) (by omega)]
 
+/- English proof (translation)
+Take `⟨hi, hv⟩` from `actC_true.1 ha`. Establish `hS` using `hP.2.2.2.1 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Simplify using `only [Nat.add_sub_cancel] at hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[stLen_le _ hi, stLen_le _ (by omega), stage_le _ hi, stage_le _ (by omega), tailNeg_eq, tailNeg_eq]`.
+
+Conclude with `hS.rev.tailPos_shift u`. Unfold `Letters.SNeg`. Rewrite using `[latestC_succ i hi, if_pos (by simp [hv]), List.drop_succ_cons]`.
+-/
 lemma neg_A (hP : D.IsPATH mu) (i u : ℕ) (ha : actC D (i + 1) = true) :
     tailNeg (D.stLen (i + 1)) (stage mu (i + 1)) (u + 1) ≤ tailNeg (D.stLen i) (stage mu i) u ∧
       D.SNeg (u + 1) (i + 1) = D.SNeg u i := by
@@ -621,6 +901,13 @@ lemma neg_A (hP : D.IsPATH mu) (i u : ℕ) (ha : actC D (i + 1) = true) :
   · unfold Letters.SNeg
     rw [latestC_succ i hi, if_pos (by simp [hv]), List.drop_succ_cons]
 
+/- English proof (translation)
+Take `⟨hi, hv⟩` from `actC_true.1 ha`. Establish `hS` using `hP.2.2.2.1 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Establish `hW` using `hP.2.2.2.2.2.1 (i + 1) (by omega) hi hv`. Simplify using `only [Nat.add_sub_cancel] at hS hW`. Rewrite using `[stLen_le _ hi, stLen_le _ (by omega), stage_le _ hi, stage_le _ (by omega), tailNeg_eq, tailNeg_eq]`.
+
+Unfold `Letters.SNeg`. Rewrite using `[latestC_succ i hi, if_pos (by simp [hv]), List.drop_zero, List.drop_zero, List.sum_cons]`. Establish `h1` using `hS.rev.tailPos_zero`. Rewrite `h1` using `[wsize_rev, wsize_rev]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma neg_active_zero (hP : D.IsPATH mu) (i : ℕ) (ha : actC D (i + 1) = true) :
     tailNeg (D.stLen (i + 1)) (stage mu (i + 1)) 0 - tailNeg (D.stLen i) (stage mu i) 0 ≤
       (D.SNeg 0 (i + 1) : ℤ) - D.SNeg 0 i := by
@@ -636,6 +923,13 @@ lemma neg_active_zero (hP : D.IsPATH mu) (i : ℕ) (ha : actC D (i + 1) = true) 
   push_cast
   linarith
 
+/- English proof (translation)
+Distinguish the cases in `hi : i + 1 ≤ D.n0`. Establish `hv : D.vec (i + 1) = true`. Assume the negation of the conclusion as `h`. Establish `h' : actC D (i + 1) = true` using `actC_true.2 ⟨hi, by simpa using h⟩`. Simplify using `[h'] at ha`.
+
+Establish `hS` using `hP.2.2.1 (i + 1) (by omega) (hi.trans (n0_le_Ns D)) hv`. Simplify using `only [Nat.add_sub_cancel] at hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[stLen_le _ hi, stLen_le _ (by omega), stage_le _ hi, stage_le _ (by omega), tailNeg_eq, tailNeg_eq]`. Conclude with `tailPos_mono (fun m hm => by unfold revW; exact neg_le_neg (hS.1 _ (by omega))) u`.
+
+Unfold `Letters.SNeg`. Rewrite using `[latestC_succ i hi, if_neg (by simp [hv])]`. Use `⟨(frame_step hW hP i u hN (by omega)).2, ?_⟩` and prove the remaining obligations. Unfold `Letters.SNeg`. Rewrite using `[latestC_frame (i + 1) i (by omega) (by omega)]`.
+-/
 lemma neg_I (hW : D.Wf) (hP : D.IsPATH mu) (i u : ℕ) (hN : i < D.Ns) (ha : actC D (i + 1) = false) :
     tailNeg (D.stLen (i + 1)) (stage mu (i + 1)) u ≤ tailNeg (D.stLen i) (stage mu i) u ∧
       D.SNeg u (i + 1) = D.SNeg u i := by
@@ -655,6 +949,21 @@ lemma neg_I (hW : D.Wf) (hP : D.IsPATH mu) (i u : ℕ) (hN : i < D.Ns) (ha : act
     unfold Letters.SNeg
     rw [latestC_frame (i + 1) i (by omega) (by omega)]
 
+/- English proof (translation)
+Introduce `D mu hW hP`. Establish `hk0 : ∀ u, tailPos (D.stLen 0) (stage mu 0) u = 0`. Introduce `u`. Apply `tailPos_of_zero` to reduce the goal to its premises. Introduce `m`.
+
+Rewrite using `[stage_le 0 (Nat.zero_le _)]`. Conclude with `hP.1 m`. Establish `hk0' : ∀ u, tailNeg (D.stLen 0) (stage mu 0) u = 0`. Introduce `u`. Rewrite using `[tailNeg_eq]`.
+
+Apply `tailPos_of_zero` to reduce the goal to its premises. Introduce `m`. Simplify using `[revW, stage_le 0 (Nat.zero_le _), hP.1]`. Establish `bP` using `abs_bound D.Ns (fun i u => tailPos (D.stLen i) (stage mu i) u) (fun u i => D.SPos u i) (actV D) (fun u => by show tailPos (D.stLen 0) (stage mu 0) u ≤ (D.SPos u 0 : ℤ)`. Rewrite using `[hk0]`.
+
+Conclude with `Nat.cast_nonneg _)`. Use the proof step `(fun i u _ ha => pos_A hP i u ha) (fun i _ ha => pos_active_zero hP i ha) (fun i u hi ha => pos_I hW hP i u hi ha)`. Establish `bN` using `abs_bound D.Ns (fun i u => tailNeg (D.stLen i) (stage mu i) u) (fun u i => D.SNeg u i) (actC D) (fun u => by show tailNeg (D.stLen 0) (stage mu 0) u ≤ (D.SNeg u 0 : ℤ)`. Rewrite using `[hk0']`. Conclude with `Nat.cast_nonneg _)`.
+
+Use the proof step `(fun i u _ ha => neg_A hP i u ha) (fun i _ ha => neg_active_zero hP i ha) (fun i u hi ha => neg_I hW hP i u hi ha)`. Establish `hsP : ∀ v, D.SPos v D.Ns = D.SPos v D.n0` using `fun v => by`. Unfold `Letters.SPos`. Rewrite using `[latestV_frame D.Ns D.n0 (n0_le_Ns D) le_rfl]`. Establish `hsN : ∀ v, D.SNeg v D.Ns = D.SNeg v D.n0` using `fun v => by`.
+
+Unfold `Letters.SNeg`. Rewrite using `[latestC_frame D.Ns D.n0 (n0_le_Ns D) le_rfl]`. Use `⟨fun i u hi => ⟨bP i hi u, bN i hi u⟩, fun i₀ u X hi₀ _ h => ?_, fun i₀ u X hi₀ _ h => ?_⟩` and prove the remaining obligations. Establish `h1` using `deficit_persists_of_active_inactive_recursion D.Ns (fun i u => tailPos (D.stLen i) (stage mu i) u) (fun u i => D.SPos u i) (actV D) (fun i u _ ha => pos_A hP i u ha) (fun i u hi ha => pos_I hW hP i u hi ha) i₀ u X h D.Ns hi₀ le_rfl beta_reduce at h1`. Rewrite `h1` using `[card_actV, hsP]`.
+
+Conclude with `h1`. Establish `h1` using `deficit_persists_of_active_inactive_recursion D.Ns (fun i u => tailNeg (D.stLen i) (stage mu i) u) (fun u i => D.SNeg u i) (actC D) (fun i u _ ha => neg_A hP i u ha) (fun i u hi ha => neg_I hW hP i u hi ha) i₀ u X h D.Ns hi₀ le_rfl beta_reduce at h1`. Rewrite `h1` using `[card_actC, hsN]`. Conclude with `h1`.
+-/
 theorem pathTailBounds : PathTailBounds := by
   intro D mu hW hP
   have hk0 : ∀ u, tailPos (D.stLen 0) (stage mu 0) u = 0 := by

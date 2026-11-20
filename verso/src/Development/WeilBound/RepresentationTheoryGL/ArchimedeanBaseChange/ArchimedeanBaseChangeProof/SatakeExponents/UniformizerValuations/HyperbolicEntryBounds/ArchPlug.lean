@@ -5,6 +5,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.F0
 
 open PositivityTheory.Rg.BcB.CG in
+/- English proof (translation)
+The claim follows from `archimedean_existence_of_compatibility hC vcBridge PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1`.
+-/
 theorem archEx_of_compat (hC : PositivityTheory.Rg.BcB.CG.CompatEx) : PositivityTheory.Rg.BcB.F.ArchEx :=
   archimedean_existence_of_compatibility hC vcBridge PositivityTheory.RgBcC.wave_existence_speed_multiplicity.2.2.1
 

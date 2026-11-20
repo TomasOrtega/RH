@@ -22,6 +22,17 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha1 ha2 row col t Ch₀ A ι w c₀ hP hkb α`. Establish `hr` using `hP.ram 0 (Nat.zero_le _)`. Establish `hq` using `hP.rdq 0 (Nat.zero_le _)`. Establish `hl` using `hP.live`. Establish `hok : I.Ok` using `hW.tr.ok`.
+
+Take `⟨hpins⟩` from `hW.tr.pins`. Take `⟨hstd⟩` from `hW.tr.std`. Take `⟨l0, -⟩` from `hW.tw`. Establish `hθ : IsInfFam (_root_.GlobalTheory.Fam.pk_z W).θ` using `ha2.pinX.inf`. Use `⟨fun φ => ⟨?_, fun y => ?_⟩, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Use `show _ ∈ (col t).Ram 0`. Conclude with `(hr _).2 ⟨(GlobalTheory.T.stepZero_ramifiedForms_transport_iff I hok l Z l0 u (W.P.I.tup t) _).1 ((I.rec7 l Z).eMu u φ).2, fun c hc => absurd (hl.first _) hc⟩`. Use `show (col t).rd 0 α _ y = _`. Use `(hq α _ y).trans ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.scalarForm_transportedColumn_stepZero_standard I hok hpins l Z _ hstd u (W.P.I.tup t) Ch₀ A hP.is (ι 0 α) (hkb _) _ hθ _ ((I.rec7 l Z).eMu u φ).2 y`.
+
+Establish `h1 : GlobalTheory.AdForm.RamT 0 ψ` using `((hr ψ).1 hψ).1`. Establish `h2 : ((I.rec7 l Z).e0Tw u (W.P.I.tup t)).symm ψ ∈ ((I.rec7 l Z).mem u).A.Mram` using `(GlobalTheory.T.stepZero_ramifiedForms_transport_iff I hok l Z l0 u (W.P.I.tup t) _).2 (by rwa [LinearEquiv.apply_symm_apply])`. Take `⟨φ, hφ⟩` from `EquivLike.surjective ((I.rec7 l Z).eMu u) ⟨_, h2⟩`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Use `show ψ = (I.rec7 l Z).e0Tw u (W.P.I.tup t) (((I.rec7 l Z).eMu u) φ).1`.
+
+Rewrite using `[hφ]`. Conclude with `(LinearEquiv.apply_symm_apply _ ψ).symm`.
+-/
 theorem zero_forms_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ row col t (Ch₀ : ℕ → Type) (A : TwDat I l Z u (W.P.I.tup t) Ch₀) ι w c₀, PinChL (_root_.GlobalTheory.Fam.pk_z W) a.g (col t) c₀ A ι w → (∀ β, A.kb 0 β = TC.kStd X u (B.R.N 0)) → ∀ α, (∀ φ, _root_.GlobalTheory.MiTop.col0_alt (a.fam row col) t φ ∈ ((a.fam row col).t t).Ram 0 ∧ ∀ y, ((a.fam row col).t t).rd 0 α (_root_.GlobalTheory.MiTop.col0_alt (a.fam row col) t φ) y = (GlobalTheory.Core.Mi.chart0 (_root_.GlobalTheory.MiTop.formsAtZero W u)).rd W.Q.Rl.θ ((I.rec7 l Z).eMu u φ).1 y) ∧ ∀ ψ ∈ ((a.fam row col).t t).Ram 0, ∃ φ, ψ = _root_.GlobalTheory.MiTop.col0_alt (a.fam row col) t φ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha1 ha2 row col t Ch₀ A ι w c₀ hP hkb α
   have hr := hP.ram 0 (Nat.zero_le _)

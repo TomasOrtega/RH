@@ -8,6 +8,13 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 
 namespace GlobalTheory.ValConjClosure
 
+/- English proof (translation)
+Establish `hle : ∀ m : ℤ, A.valuation (m : Ω) ≤ 1` using `fun m => (A.valuation_le_one_iff _).mpr (intCast_mem A m)`. Use `le_antisymm (hle n) (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `((Nat.prime_iff_prime_int.mp hp).coprime_iff_not_dvd).mpr hn`. Establish `hab' : (a : Ω) * (p : Ω) + (b : Ω) * (n : Ω) = 1`. Conclude with `congrArg (Int.cast : ℤ → Ω) hab` after adjusting the coercions.
+
+Establish `h1 : A.valuation ((a : Ω) * (p : Ω)) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : A.valuation ((b : Ω) * (n : Ω)) < 1`. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hadd` using `A.valuation.map_add ((a : Ω) * (p : Ω)) ((b : Ω) * (n : Ω))`. Rewrite `hadd` using `[hab', map_one]`. Conclude with `absurd hadd (not_le.mpr (max_lt h1 h2))`.
+-/
 theorem valuation_intCast_eq_one {Ω : Type} [Field Ω] {p : ℕ} (hp : p.Prime) (A : ValuationSubring Ω)
     (hA : A.valuation (p : Ω) < 1) (n : ℤ) (hn : ¬ (p : ℤ) ∣ n) : A.valuation (n : Ω) = 1 := by
   have hle : ∀ m : ℤ, A.valuation (m : Ω) ≤ 1 := fun m =>
@@ -30,6 +37,17 @@ theorem valuation_intCast_eq_one {Ω : Type} [Field Ω] {p : ℕ} (hp : p.Prime)
   rw [hab', map_one] at hadd
   exact absurd hadd (not_le.mpr (max_lt h1 h2))
 
+/- English proof (translation)
+Establish `hle : ∀ m : ℤ, A.valuation (m : Ω) ≤ 1` using `fun m => (A.valuation_le_one_iff _).mpr (intCast_mem A m)`. Establish `hden0 : (a.den : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr a.den_nz`. Rewrite using `[Rat.cast_def, ← A.valuation_le_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `ha hd`.
+
+Establish `hnum : ¬ (p : ℤ) ∣ a.num`. Introduce `h`. Establish `h1 : p ∣ a.num.natAbs` using `Int.natCast_dvd.mp h`. Conclude with `hp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left h1 a.reduced) hd)`. Establish `hv1` using `valuation_intCast_eq_one hp A hA a.num hnum`.
+
+Take `⟨k, hk⟩` from `hd`. Establish `hdlt : A.valuation (a.den : Ω) < 1`. Rewrite using `[hk, Nat.cast_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hnd : A.valuation (a.num : Ω) ≤ A.valuation (a.den : Ω)`.
+
+Rewrite using `[← div_mul_cancel₀ (a.num : Ω) hden0, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hnd` using `[hv1]`. Conclude with `absurd (lt_of_le_of_lt hnd hdlt) (lt_irrefl 1)`. Introduce `hd`.
+
+Establish `hv1 : A.valuation (a.den : Ω) = 1`. Establish `h` using `valuation_intCast_eq_one hp A hA (a.den : ℤ) (by exact_mod_cast hd)`. Conclude with `h` after adjusting the coercions. Rewrite using `[map_div₀, hv1, div_one]`. Conclude with `hle a.num`.
+-/
 theorem ratCast_mem_iff {Ω : Type} [Field Ω] [CharZero Ω] {p : ℕ} (hp : p.Prime) (A : ValuationSubring Ω)
     (hA : A.valuation (p : Ω) < 1) (a : ℚ) : (a : Ω) ∈ A ↔ ¬ p ∣ a.den := by
   have hle : ∀ m : ℤ, A.valuation (m : Ω) ≤ 1 := fun m =>
@@ -63,6 +81,15 @@ theorem ratCast_mem_iff {Ω : Type} [Field Ω] [CharZero Ω] {p : ℕ} (hp : p.P
     rw [map_div₀, hv1, div_one]
     exact hle a.num
 
+/- English proof (translation)
+Set `E` to `IntermediateField.adjoin F ({x} : Set Ω)`. Use `haveI : FiniteDimensional F E := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral (R := F) x)`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `σ hσ`. Use `⟨(fun τ => σ⁻¹ * τ) ⁻¹' (E.fixingSubgroup : Set (Ω ≃ₐ[F] Ω)), ?_, E.fixingSubgroup_isOpen.preimage (continuous_mul_left σ⁻¹), ?_⟩` and prove the remaining obligations.
+
+Introduce `τ hτ hT`. Apply `hσ` to reduce the goal to its premises. Establish `hfix : (σ⁻¹ * τ) x = x` using `(IntermediateField.mem_fixingSubgroup_iff _ _).mp hτ x (IntermediateField.mem_adjoin_simple_self F x)`. Establish `hinv : ∀ y, σ (σ⁻¹ y) = y` using `fun y => by`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`.
+
+Rewrite `hfix` using `[AlgEquiv.mul_apply]`. Establish `he : τ x = σ x`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `σ x ∈ T`. Rewrite using `[← he]`.
+
+Conclude with `hT`. Use `show σ⁻¹ * σ ∈ E.fixingSubgroup`. Rewrite using `[inv_mul_cancel]`. Conclude with `E.fixingSubgroup.one_mem`.
+-/
 theorem isClosed_apply_mem {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Algebra.IsIntegral F Ω]
     (x : Ω) (T : Set Ω) : IsClosed {σ : Ω ≃ₐ[F] Ω | σ x ∈ T} := by
   let E := IntermediateField.adjoin F ({x} : Set Ω)
@@ -89,6 +116,19 @@ theorem isClosed_apply_mem {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Al
     rw [inv_mul_cancel]
     exact E.fixingSubgroup.one_mem
 
+/- English proof (translation)
+Set `C : Finset Ω → Set (Ω ≃ₐ[F] Ω)` to `fun s => {σ | ∀ x ∈ s, σ x ∈ B ↔ x ∈ A}`. Establish `hclosed : ∀ s, IsClosed (C s)`. Introduce `s`. Establish `hC : C s = ⋂ x ∈ s, {σ : Ω ≃ₐ[F] Ω | σ x ∈ {y : Ω | y ∈ B ↔ x ∈ A}}`. Use extensionality with `σ`.
+
+Simplify using `[C]`. Rewrite using `[hC]`. Conclude with `isClosed_biInter fun x _ => isClosed_apply_mem x _`. Establish `hne : ∀ s, (C s).Nonempty`. Introduce `s`.
+
+Set `L` to `(FiniteGaloisIntermediateField.adjoin F (s : Set Ω)).toIntermediateField`. Establish `hsL : (s : Set Ω) ⊆ L` using `FiniteGaloisIntermediateField.subset_adjoin F (s : Set Ω)`. Take `⟨τ, hτ⟩` from `GlobalTheory.KZ.ES.exists_conj_of_same_trace F L (A.comap (algebraMap L Ω)) (B.comap (algebraMap L Ω)) (by`. Introduce `a`. Rewrite using `[ValuationSubring.mem_comap, ValuationSubring.mem_comap, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `h a)`. Use `⟨τ.liftNormal Ω, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxL : x ∈ L` using `hsL hx`. Establish `key` using `hτ ⟨x, hxL⟩`. Rewrite `key` using `[ValuationSubring.mem_comap, ValuationSubring.mem_comap]`.
+
+Establish `he : (τ.liftNormal Ω) x = algebraMap L Ω (τ ⟨x, hxL⟩)` using `AlgEquiv.liftNormal_commutes τ Ω ⟨x, hxL⟩`. Rewrite using `[he]`. Conclude with `key`. Establish `hdir : Directed (fun s t => s ⊇ t) C`. Introduce `s t`.
+
+Conclude with `⟨s ∪ t, fun σ hσ x hx => hσ x (Finset.mem_union_left _ hx), fun σ hσ x hx => hσ x (Finset.mem_union_right _ hx)⟩`. Take `⟨σ, hσ⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed C hdir hne (fun s => (hclosed s).isCompact) hclosed`. Use `⟨σ, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.mp hσ {x} x (Finset.mem_singleton_self x)`.
+-/
 theorem exists_conj_of_isGalois {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [IsGalois F Ω]
     (A B : ValuationSubring Ω) (h : ∀ a : F, algebraMap F Ω a ∈ A ↔ algebraMap F Ω a ∈ B) :
     ∃ σ : Ω ≃ₐ[F] Ω, ∀ x, σ x ∈ B ↔ x ∈ A := by
@@ -128,6 +168,11 @@ theorem exists_conj_of_isGalois {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω
   refine ⟨σ, fun x => ?_⟩
   exact Set.mem_iInter.mp hσ {x} x (Finset.mem_singleton_self x)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ p _ A B hA hB`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `hp : p.Prime` using `Fact.out`. Establish `hA'` using `(A.mem_nonunits_iff).mp hA`. Establish `hB'` using `(B.mem_nonunits_iff).mp hB`.
+
+Apply `exists_conj_of_isGalois A B` to reduce the goal to its premises. Introduce `a`. Rewrite using `[eq_ratCast, ratCast_mem_iff hp A hA', ratCast_mem_iff hp B hB']`.
+-/
 theorem exists_conj_over_prime : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p : ℕ) [Fact p.Prime] (A B : ValuationSubring Ω), ((p : ℕ) : Ω) ∈ A.nonunits → ((p : ℕ) : Ω) ∈ B.nonunits → ∃ σ : Ω ≃ₐ[ℚ] Ω, ∀ x, σ x ∈ B ↔ x ∈ A := by
   intro Ω _ _ _ p _ A B hA hB
   haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective

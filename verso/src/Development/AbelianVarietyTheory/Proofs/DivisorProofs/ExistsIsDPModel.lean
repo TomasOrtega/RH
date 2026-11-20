@@ -21,6 +21,9 @@ def tensorEval {R₀ A R : Type} [CommRing R₀] [CommRing A] [CommRing R] [Alge
   TensorProduct.lift ((LinearMap.mul ℤ R).compl₁₂ (algebraMap R₀ R).toAddMonoidHom.toIntLinearMap
     ψ.toAddMonoidHom.toIntLinearMap)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tensorEval_tmul {R₀ A R : Type} [CommRing R₀] [CommRing A] [CommRing R] [Algebra R₀ R]
     (ψ : A →+* R) (r : R₀) (a : A) : tensorEval ψ (r ⊗ₜ a) = algebraMap R₀ R r * ψ a := rfl
 
@@ -51,6 +54,9 @@ def IsDPModel (N : ℕ) {M : Scheme.{0}} (s : M ⟶ Sp (Localization.Away (N : �
     ∀ (K : Type) [Field K] (t : Sp K ⟶ Sp (Localization.Away (N : ℤ))) (y : ↥(pullback s t)),
       pullback.fst s t y ∉ V → 2 ≤ ringKrullDim ((pullback s t).presheaf.stalk y)
 
+/- English proof (translation)
+Take `⟨M, s, U, α, hfine, hsep, -, -, hflat, -, ⟨V, hV, -, -, hcod⟩, hnorm, -⟩` from `hDP F 𝔠 N hN`. Conclude with `⟨M, s, U, α, V, hfine, hsep, hflat, hV, hnorm, hcod⟩`.
+-/
 theorem exists_isDPModel (hDP : GlobalTheory.Published.DelignePappasModel) (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ) (hN : 3 ≤ N) :
     ∃ (M : Scheme.{0}) (s : M ⟶ Sp (Localization.Away (N : ℤ))) (U : Obj F 𝔠 M) (α : U.Level N) (V : M.Opens),

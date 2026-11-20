@@ -12,6 +12,37 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk A _ s ι TB ρ hρ hρ1`. Establish `hH : IsHausdorff bk.J bk.S` using `bk.complete.toIsHausdorff`. Take `⟨-, -, -, -, h5⟩` from `GlobalTheory.T.topologicalBasis_basic_facts bk.S A s bk.J ι TB hH`. Establish `hlW : (l : Wq l bk.a) ≠ 0` using `WittVector.p_nonzero l (Fq l bk.a)`. Establish `hCl : (C (l : Wq l bk.a) : bk.S) = (l : bk.S)` using `map_natCast _ l`.
+
+Establish `hlS0 : (l : bk.S) ≠ 0`. Rewrite using `[← hCl]`. Conclude with `fun h => hlW (C_injective (h.trans (map_zero _).symm))`. Establish `hlA : (l : A) ∈ nonZeroDivisors A`. Simplify `h5 _ (mem_nonZeroDivisors_of_ne_zero hlS0)` using `[map_natCast]`.
+
+Establish `htor : ∀ x : A, (l : A) * x = 0 → x = 0` using `fun x hx => (mem_nonZeroDivisors_iff_right.1 hlA x) (by rw [mul_comm]; exact hx)`. Establish `hdvd : ∀ (m : ℕ) (x y : A), (l : A) * x = s X ^ m * y → s X ^ m ∣ x`. Introduce `m x y hxy`. Rewrite using `[← map_pow, GlobalTheory.T.dvd_iff_dvd_coeff_breuilKisin l K bk A s ι TB]`. Introduce `i`.
+
+Establish `e` using `congrArg (TB.c i) hxy`. Rewrite `e` using `[← map_natCast s l, ← map_pow, TB.c_mul, TB.c_mul]`. Establish `hd : X ^ m ∣ (l : bk.S) * TB.c i x` using `⟨_, e⟩`. Rewrite `hd`, the goal using `[PowerSeries.X_pow_dvd_iff]`. Introduce `k hk`.
+
+Use `hd k hk` as an intermediate fact. Rewrite `this` using `[← hCl, coeff_C_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hlW`. Establish `small` using `GlobalTheory.T.mem_breuilKisinIdeal_pow_of_norm_le l K bk A s htor hdvd ρ hρ hρ1`. Use `⟨?_, small, ?_⟩` and prove the remaining obligations.
+
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `hmem : ∀ n : ℕ, x ∈ (bk.J.map s) ^ n` using `fun n => by`. Take `⟨r, hr, h⟩` from `small n`. Rewrite using `[← Ideal.map_pow]`. Conclude with `h x (by rw [hx, norm_zero]; exact hr.le)`.
+
+Establish `hHA : IsHausdorff (bk.J.map s) A` using `TB.complete.toIsHausdorff`. Use `hHA.haus x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, Ideal.smul_eq_mul, Ideal.mul_top]`. Conclude with `hmem n`. Introduce `ρ' hρ' hρ'ρ R hR`.
+
+Establish `hρ'1 : ρ' < 1` using `lt_of_le_of_lt hρ'ρ hρ1`. Establish `h1 : ‖toDisc l (s X) ρ (s X)‖ ≤ ρ`. Simplify using `using norm_toDisc_pow_le (l := l) (u := s X) (ρ := ρ) 1 hρ`. Establish `h1' : ‖toDisc l (s X) ρ' (s X)‖ ≤ ρ'`. Simplify using `using norm_toDisc_pow_le (l := l) (u := s X) (ρ := ρ') 1 hρ'`.
+
+Establish `h2 : ‖toDisc l (X : bk.S) ρ' (RingHom.id bk.S X)‖ ≤ ρ`. Use `norm_toDisc_pow_le (l := l) (u := (X : bk.S)) (ρ := ρ') 1 hρ'` as an intermediate fact. Simplify using `only [pow_one] at this`. Conclude with `this.trans (by exact_mod_cast hρ'ρ)`. Take `⟨cD, hc1, -, hcn, -, -, hsup, -, -⟩` from `GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB ρ hρ hρ1 (Disc.map s h1) (isDiscMap_map s h1)`.
+
+Take `⟨cD', hc1', -, hcn', -, -, -, -, -⟩` from `GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB ρ' hρ' hρ'1 (Disc.map s h1') (isDiscMap_map s h1')`. Use `set RS : bk.DS ρ →+* bk.DS ρ' := Disc.map (RingHom.id bk.S) h2 with hRS`. Establish `hRSd : IsDiscMap (RingHom.id bk.S) RS` using `isDiscMap_map _ h2`. Establish `injS : Function.Injective RS` using `GlobalTheory.T.breuilKisin_closedDisc_restrict_injective l K bk ρ ρ' hρ' hρ'ρ hρ1 RS hRSd`. Take `⟨-, hlnorm, -, -⟩` from `GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l bk.S (X : bk.S) ρ'`.
+
+Take `⟨-, -, hext, -⟩` from `GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ`. Establish `hlpos : (0 : ℝ) < l` using `Nat.cast_pos.2 (Fact.out : l.Prime).pos`. Establish `htorD : ∀ z : bk.DS ρ', l • z = 0 → z = 0`. Introduce `z hz`. Rewrite `hz` using `[nsmul_eq_mul]`.
+
+Use `hlnorm z` as an intermediate fact. Rewrite `this` using `[hz, norm_zero]`. Conclude with `norm_eq_zero.1 ((div_eq_zero_iff.1 this.symm).resolve_right hlpos.ne')`. Establish `hRc : Continuous R` using `AddMonoidHomClass.continuous_of_bound R 1 fun x => (hR.norm_le x).trans (one_mul _).ge`. Establish `hRSc : Continuous RS` using `AddMonoidHomClass.continuous_of_bound RS 1 fun x => (hRSd.norm_le x).trans (one_mul _).ge`.
+
+Establish `key : ∀ i y, cD' i (R y) = RS (cD i y)`. Introduce `i y`. Establish `hF : Continuous ((cD' i).comp R.toAddMonoidHom)` using `(AddMonoidHomClass.continuous_of_bound (cD' i) 1 fun z => (hcn' i z).trans (one_mul _).ge).comp hRc`. Establish `hG : Continuous (RS.toAddMonoidHom.comp (cD i))` using `hRSc.comp (AddMonoidHomClass.continuous_of_bound (cD i) 1 fun z => (hcn i z).trans (one_mul _).ge)`. Use `hext (bk.DS ρ') htorD ((cD' i).comp R.toAddMonoidHom) (RS.toAddMonoidHom.comp (cD i)) hF hG (fun a => by` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `cD' i (R (toDisc l (s X) ρ a)) = RS (cD i (toDisc l (s X) ρ a))`. Rewrite using `[hR.ext, hc1, hc1', hRSd.ext]`. Use the proof step `rfl)`. Conclude with `DFunLike.congr_fun this y`. Use `(injective_iff_map_eq_zero R).2 fun y hy => ?_` and prove the remaining obligations.
+
+Establish `hz : ∀ i, cD i y = 0` using `fun i => injS (by rw [← key, hy, map_zero, map_zero])`. Conclude with `norm_le_zero_iff.1 (hsup y 0 le_rfl fun i => by rw [hz, norm_zero])`.
+-/
 theorem toDisc_injective_of_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A]
     (s : bk.S →+* A) (ι : Type), TopBasis s bk.J ι → ∀ ρ : ℝ≥0, 0 < ρ → ρ < 1 →
     Function.Injective (toDisc l (s X) ρ) ∧

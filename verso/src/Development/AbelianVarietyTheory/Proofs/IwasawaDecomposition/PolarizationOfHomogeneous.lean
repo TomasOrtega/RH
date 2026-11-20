@@ -19,6 +19,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ShFam.PolarPowers
 
+/- English proof (translation)
+Unfold `Pad.polar`. Rewrite using `[Multiset.card_map, PolarMultilinear.powerset_map, Multiset.map_map]`. Use `congr 2`. Use `Multiset.map_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `[Function.comp, Multiset.card_map, map_multiset_sum]`.
+-/
 theorem polar_map {A B : Type} [AddCommGroup A] [AddCommGroup B] (g : A →+ B) (f : B → ℝ) (S : Multiset A) :
     polar f (S.map g) = polar (f ∘ g) S := by
   unfold Pad.polar
@@ -27,6 +30,11 @@ theorem polar_map {A B : Type} [AddCommGroup A] [AddCommGroup B] (g : A →+ B) 
   refine Multiset.map_congr rfl fun T _ => ?_
   simp [Function.comp, Multiset.card_map, map_multiset_sum]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `⟨fun j => S.toList.get (j.cast (by simp)), ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map]`. Use `conv_rhs => rw [← Multiset.coe_toList S]`. Use `congr 1`.
+
+Apply the tactic sequence `apply List.ext_get <;> simp`.
+-/
 theorem exists_fin {A : Type} (S : Multiset A) {d : ℕ} (h : Multiset.card S = d) :
     ∃ a : Fin d → A, Multiset.map a Finset.univ.val = S := by
   subst h
@@ -41,8 +49,14 @@ noncomputable def linZ (ι : Type) [Fintype ι] : (ι → ℤ) →ₗ[ℤ] MvPol
     intro a b
     simp [ArInt.lin, Finset.sum_add_distrib, add_mul])).toIntLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linZ_apply {ι : Type} [Fintype ι] (n : ι → ℤ) : linZ ι n = ArInt.lin fun i => (n i : ℝ) := rfl
 
+/- English proof (translation)
+Rewrite using `[linZ_apply, ArInt.lin, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+-/
 theorem linZ_single {ι : Type} [Fintype ι] [DecidableEq ι] (i : ι) : linZ ι (Pi.single i 1) = MvPolynomial.X i := by
   rw [linZ_apply, ArInt.lin, Finset.sum_eq_single i]
   · simp
@@ -51,6 +65,21 @@ theorem linZ_single {ι : Type} [Fintype ι] [DecidableEq ι] (i : ι) : linZ ι
 
 end GlobalTheory.ShFam.PolarPowers
 
+/- English proof (translation)
+Introduce `ι _ B _ w f d Ψ c hf μ hμ`. Set `g : (ι → ℤ) →+ B` to `AddMonoidHom.mk' (fun n => ∑ i, n i • w i) (by`. Introduce `a b`. Simplify using `[add_smul, Finset.sum_add_distrib])`. Set `M : MultilinearMap ℤ (fun _ : Fin d => ι → ℤ) ℝ` to `((c • Ψ).restrictScalars ℤ).compMultilinearMap ((MultilinearMap.mkPiAlgebra ℤ (Fin d) (MvPolynomial ι ℝ)).compLinearMap fun _ => GlobalTheory.ShFam.PolarPowers.linZ ι)`.
+
+Establish `hM : ∀ a, M a = c * Ψ (∏ j, GlobalTheory.ShFam.PolarPowers.linZ ι (a j))`. Introduce `a`. Simplify using `[M]`. Establish `hsym : ∀ (σ : Equiv.Perm (Fin d)) (a : Fin d → ι → ℤ), M (a ∘ σ) = M a`. Introduce `σ a`.
+
+Rewrite using `[hM, hM]`. Use `congr 2`. Conclude with `Equiv.prod_comp σ (fun j => GlobalTheory.ShFam.PolarPowers.linZ ι (a j))`. Establish `hfg : f ∘ g = fun b => M fun _ => b`. Use function extensionality and compare the values at `b`.
+
+Rewrite using `[hM, Function.comp, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `hf b`. Set `S : Multiset (ι → ℤ)` to `μ.map fun i => Pi.single i 1`. Establish `hS : S.map g = μ.map w`. Simplify using `only [S, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[g, Function.comp, Pi.single_apply]`. Establish `hcard : Multiset.card S = d` using `by simp [S, hμ]`. Take `⟨a, ha⟩` from `GlobalTheory.ShFam.PolarPowers.exists_fin S hcard`. Rewrite using `[← hS, GlobalTheory.ShFam.PolarPowers.polar_map, hfg, ← ha, PolarMultilinear.polar_diag _ d M hsym a, hM]`.
+
+Use `congr 2`. Rewrite using `[Finset.prod_eq_multiset_prod]`. Establish `e : (Multiset.map (fun j => GlobalTheory.ShFam.PolarPowers.linZ ι (a j)) Finset.univ.val) = (Multiset.map a Finset.univ.val).map (GlobalTheory.ShFam.PolarPowers.linZ ι)`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ha]`. Simplify using `only [S, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.ShFam.PolarPowers.linZ_single i`.
+-/
 theorem GlobalTheory.ShFam.PolarPowers.polar_eq_of_pow : ∀ (ι : Type) [Fintype ι] (B : Type) [AddCommGroup B] (w : ι → B) (f : B → ℝ) (d : ℕ) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (c : ℝ), (∀ n : ι → ℤ, f (∑ i, n i • w i) = c * Ψ (GlobalTheory.ArInt.lin (fun i => (n i : ℝ)) ^ d)) → ∀ μ : Multiset ι, Multiset.card μ = d → polar f (μ.map w) = c * Ψ ((μ.map MvPolynomial.X).prod) := by
   classical
   intro ι _ B _ w f d Ψ c hf μ hμ

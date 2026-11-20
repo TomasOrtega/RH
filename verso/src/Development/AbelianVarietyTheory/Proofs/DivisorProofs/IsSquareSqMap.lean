@@ -27,6 +27,9 @@ def OActN.pullback {O : Type} [Ring O] (A : Over S) [GrpObj A] (a : GlobalTheory
   mul x y := by rw [a.mul, CategoryTheory.Functor.map_comp]
   add x y := by rw [a.add]; exact CategoryTheory.Functor.map_mul _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem OActN.pullback_left {O : Type} [Ring O] (A : Over S) [GrpObj A] (a : GlobalTheory.UPel.HT.OActN O A) (c : O) :
     ((OActN.pullback f A a).act c).left ≫ pullback.fst A.hom f = pullback.fst A.hom f ≫ (a.act c).left :=
   pullback.lift_fst _ _ _
@@ -40,14 +43,25 @@ variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj 
 def sqMap (w : φ ≫ A.hom = A'.hom ≫ f) : (G2 A').left ⟶ (G2 A).left :=
   (lift (pushPt w (fst A' A')) (pushPt w (snd A' A'))).left
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pushPt_left (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} (x : T ⟶ A') : (pushPt w x).left = x.left ≫ φ := rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Category.assoc _ _ _)`.
+-/
 theorem pushPt_comp (w : φ ≫ A.hom = A'.hom ≫ f) {T U : Over S'} (g : T ⟶ U) (x : U ⟶ A') :
     pushPt w (g ≫ x) = (Over.homMk g.left (by
       show g.left ≫ U.hom ≫ f = T.hom ≫ f
       rw [← Category.assoc, Over.w g]) : Over.mk (T.hom ≫ f) ⟶ Over.mk (U.hom ≫ f)) ≫ pushPt w x :=
   Over.OverMorphism.ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+Establish `e` using `pushPt_comp w (lift a b) (fst A' A')`. Establish `e'` using `pushPt_comp w (lift a b) (snd A' A')`. Rewrite `e` using `[lift_fst]`. Rewrite `e'` using `[lift_snd]`. Rewrite using `[e, e', ← comp_lift]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lift_sqMap (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} (a b : T ⟶ A') :
     (lift a b).left ≫ sqMap w = (lift (pushPt w a) (pushPt w b)).left := by
   have e := pushPt_comp w (lift a b) (fst A' A')
@@ -57,6 +71,11 @@ theorem lift_sqMap (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} (a b : T ⟶ 
   rw [e, e', ← comp_lift]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `show (lift (pushPt w (fst A' A')) (pushPt w (snd A' A')) ≫ fst A A).left = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression. Use `show (lift (pushPt w (fst A' A')) (pushPt w (snd A' A')) ≫ snd A A).left = _`.
+
+Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem isSquare_sqMap (w : φ ≫ A.hom = A'.hom ≫ f) : IsSquare φ (sqMap w) := by
   constructor
   · show (lift (pushPt w (fst A' A')) (pushPt w (snd A' A')) ≫ fst A A).left = _
@@ -92,6 +111,9 @@ def tateMoveO {D : GlobalTheory.UPel.HT.Datum p} {k : Type} [Field k] {Q Q' : Ty
     rw [Φ.apply_symm_apply, Φ.apply_symm_apply]
     exact I.isom n hn hp a b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateMoveO_ev {D : GlobalTheory.UPel.HT.Datum p} {k : Type} [Field k] {Q Q' : Type} [Group Q] [Group Q']
     {act : D.O → Q → Q} {act' : D.O → Q' → Q'} {e : ℕ → Q → Q → kˣ → Prop} {e' : ℕ → Q' → Q' → kˣ → Prop}
     (Φ : Q' ≃* Q) (hact : ∀ c x, Φ (act' c x) = act c (Φ x)) (he : ∀ n x y c, e n (Φ x) (Φ y) c → e' n x y c)
@@ -104,6 +126,9 @@ section Pts
 
 variable {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
 
+/- English proof (translation)
+Rewrite using `[lift_sqMap, ha, hb, ← comp_lift]`. Both sides reduce to the same expression.
+-/
 theorem sqMap_of (w : φ ≫ A.hom = A'.hom ≫ f) {T : Over S'} {T₀ : Over S} (u : Over.mk (T.hom ≫ f) ⟶ T₀)
     (a' b' : T ⟶ A') (a b : T₀ ⟶ A) (ha : pushPt w a' = u ≫ a) (hb : pushPt w b' = u ≫ b) :
     (lift a' b').left ≫ sqMap w = u.left ≫ (lift a b).left := by

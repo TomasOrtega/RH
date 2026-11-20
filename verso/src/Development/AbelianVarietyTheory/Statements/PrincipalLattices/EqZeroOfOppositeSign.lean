@@ -20,6 +20,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} in
 
+/- English proof (translation)
+Set `n : (E →+* ℂ) → ℕ` to `fun τ => if τ H.rt = H.rt0 then p else q`. Set `e` to `Fintype.equivFin (Σ τ : E →+* ℂ, Fin (n τ))`. Use `⟨_, fun i => (e.symm i).1, ?_⟩` and prove the remaining obligations. Establish `hcard : ∀ τ, Nat.card {i // (e.symm i).1 = τ} = n τ`. Introduce `τ`.
+
+Rewrite using `[Nat.card_congr ((e.symm.subtypeEquiv (p := fun i => (e.symm i).1 = τ) (q := fun s => s.1 = τ) (fun i => Iff.rfl)).trans (Equiv.sigmaSubtype τ)), Nat.card_eq_fintype_card, Fintype.card_fin]`. Introduce `τ`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hcard]`. Simplify using `[n, h]`.
+
+Rewrite using `[hcard]`. Simplify using `[n, h]`.
+-/
 theorem _root_.GlobalTheory.PureTypeModel.exists_isTypeFn (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p q : ℕ) :
     ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)), _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsTypeFn H p q ty := by
   classical
@@ -38,6 +45,11 @@ theorem _root_.GlobalTheory.PureTypeModel.exists_isTypeFn (H : _root_.Reciprocit
   · rw [hcard]
     simp [n, h]
 
+/- English proof (translation)
+Establish `hm` using `H.d_mod`. Take `⟨K, _, h2, hr⟩` from `exists_quadraticField_sq_eq_neg (d := H.d) (by omega)`. Take `⟨M, _, w, P, v, hw, hg, hv, -, hΛ, -⟩` from `hC H.d (by omega) H.d_prime.squarefree (by omega) K h2 hr`. Take `⟨Xo, g, ty, FU, i, Pe, hP, k, P₀, v₀, PC, ψ, u₀, c, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, b₁, ⟨f, π, b₂, b₃⟩, -⟩` from `hypotheses_inhabited h₁ h₂ hT hB (fun D => ⟨exists_isTypeFn H D.p D.q, fun g ty h => PeriodNonempty.exists_isPeriod E H D g ty h⟩) M P hg v (hv.1 0) (fun PC ψ u e h hL _ => by`. Take `⟨c, -, hc⟩` from `hΛ PC ψ ⟨e.trans hg.symm, h, LBIso.symm hL⟩ u`.
+
+Conclude with `⟨c, fun z => by rw [hc z, hw]⟩) D hD l`. Conclude with `⟨Xo, g, ty, FU, i, Pe, hP, k, P₀, v₀, PC, ψ, u₀, c, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, b₁, M, P, v, f, π, hv, b₂, b₃⟩`.
+-/
 theorem hypotheses_of_curve (h₁ : N1ab) (h₂ : N1c) (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt) (hC : CMCurve)
     (D : Datum H) (hD : 1 ≤ D.p + D.q) (l : Level H) :
     ∃ (Xo : Moduli D l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
@@ -60,6 +72,9 @@ theorem hypotheses_of_curve (h₁ : N1ab) (h₂ : N1c) (hT : ThetaUnifAV) (hB : 
         exact ⟨c, fun z => by rw [hc z, hw]⟩) D hD l
   exact ⟨Xo, g, ty, FU, i, Pe, hP, k, P₀, v₀, PC, ψ, u₀, c, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, b₁, M, P, v, f, π, hv, b₂, b₃⟩
 
+/- English proof (translation)
+Take `⟨Xo, g, ty, FU, i, Pe, hP, k, P₀, v₀, PC, ψ, u₀, c, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈, a₉, b₁, -⟩` from `hypotheses_of_curve h₁ h₂ hT hB hC (HostModel.hypDatum HostModel.host) (by simp) (HostModel.level HostModel.host A hA)`. Take `⟨R, hR, -, y, t, m, -⟩` from `h _ _ _ _ Xo g ty FU i Pe hP k a₁ a₂ P₀ v₀ a₃ a₄ PC ψ u₀ c a₅ a₆ a₇ a₈ a₉ b₁ (fun _ => {0}) (fun _ => Set.finite_singleton _) ⊥ Subalgebra.fg_bot`. Conclude with `⟨Xo, k, R, y, t, hR, ⟨m⟩⟩`.
+-/
 theorem exists_point_cyclotomic (h₁ : N1ab) (h₂ : N1c) (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt) (hC : CMCurve)
     (h : CMPoint) (A : ℕ) (hA : 0 < A) :
     ∃ (Xo : Moduli (HostModel.hypDatum HostModel.host) (HostModel.level HostModel.host A hA))
@@ -75,6 +90,15 @@ section Linear
 
 variable {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty Pe)
 
+/- English proof (translation)
+Establish `hs : (((ε : ℤ) : ℂ) * H.rt0) ^ 2 = (Complex.I * Real.sqrt H.d) ^ 2`. Establish `e : ((ε : ℤ) : ℂ) ^ 2 = 1` using `by exact_mod_cast (Int.units_sq ε ▸ rfl : ((ε ^ 2 : ℤˣ) : ℤ) = 1)`. Rewrite using `[mul_pow, mul_pow, e, H.sqrt_neg_disc_sq, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`. Simplify using the standard rewrite rules. Establish `hw` using `period_w0_smul hP ha`.
+
+Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hs with h | h` into its components or cases. Use `⟨m • a + n • H.w0 • a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_zsmul, map_zsmul, hw, h]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨m • a + n • (a - H.w0 • a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_zsmul, map_zsmul, map_sub, hw, h]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smul_mem_range (ε : ℤˣ) {a : D.La} (ha : a ∈ lat hP (((ε : ℤ) : ℂ) * H.rt0)) (m n : ℤ) :
     ((m : ℂ) + n * ((1 + Complex.I * Real.sqrt H.d) / 2)) • Pe a ∈ Pe.range := by
   have hs : (((ε : ℤ) : ℂ) * H.rt0) ^ 2 = (Complex.I * Real.sqrt H.d) ^ 2 := by
@@ -90,6 +114,11 @@ theorem smul_mem_range (ε : ℤˣ) {a : D.La} (ha : a ∈ lat hP (((ε : ℤ) :
     rw [map_add, map_zsmul, map_zsmul, map_sub, hw, h]
     funext j; simp; ring
 
+/- English proof (translation)
+Rewrite `h` using `[period_rt_smul hP ha]`. Apply `hP.2.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `j`. Establish `e` using `congrFun h j`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at e`. Establish `e' : (2 * ρ) * Pe a j = 0` using `by linear_combination e`. Conclude with `(mul_eq_zero.1 e').resolve_left (mul_ne_zero two_ne_zero hρ)`.
+-/
 theorem eq_zero_of_opposite_sign {ρ : ℂ} (hρ : ρ ≠ 0) {a : D.La} (ha : a ∈ lat hP ρ)
     (h : Pe (H.rt • a) = (-ρ) • Pe a) : a = 0 := by
   rw [period_rt_smul hP ha] at h
@@ -103,6 +132,15 @@ theorem eq_zero_of_opposite_sign {ρ : ℂ} (hρ : ρ ≠ 0) {a : D.La} (ha : a 
 
 end Linear
 
+/- English proof (translation)
+Use `set z : ℂ := (m : ℂ) + n * ((1 + Complex.I * Real.sqrt H.d) / 2)`. Establish `w : ((u₀.ex fun _ => c * z).left ≫ ψ) ≫ P₀.A.hom = spMap j.toRingHom ≫ spMap (algebraMap k R)`. Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w]`. Use `show 𝟙 _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[Category.id_comp, ← Spec.map_comp]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `e₁ : (u₀.ex fun _ => c * z) = 1` using `(u₀.ker _).2 ((hΛ _).2 ⟨m, n, rfl⟩)`. Establish `e₀ : (u₀.ex fun _ => c * 0) = 1` using `(u₀.ker _).2 (by`.
+
+Rewrite using `[mul_zero]`. Conclude with `u₀.Λ.zero_mem)`. Establish `ha` using `h z (pullback.lift _ _ w) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`. Establish `hb` using `h 0 (pullback.lift _ _ w) (by rw [pullback.lift_fst, e₁, e₀]) (pullback.lift_snd _ _ _)`. Rewrite `ha` using `[hb, zero_smul, (FU.ex_ker i Pe hP 0).2 (zero_mem _)]`.
+
+Conclude with `(FU.ex_ker i Pe hP _).1 (Over.OverMorphism.ext ha).symm`.
+-/
 theorem smul_mem_range_of_exp {D : Datum H} {l : Level H} {Xo : Moduli D l} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) {Pe : (FU.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (FU.Di i) ty Pe) {k : IntermediateField ℚ ℂ} (P₀ : Out.PolAV (Sp k))
@@ -129,6 +167,9 @@ theorem smul_mem_range_of_exp {D : Datum H} {l : Level H} {Xo : Moduli D l} {g :
   rw [hb, zero_smul, (FU.ex_ker i Pe hP 0).2 (zero_mem _)] at ha
   exact (FU.ex_ker i Pe hP _).1 (Over.OverMorphism.ext ha).symm
 
+/- English proof (translation)
+Establish `h0 : φ 0 = 1`. Establish `e` using `h.2.1 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `left_eq_mul.1 e`. Conclude with `⟨h0, fun a => eq_inv_of_mul_eq_one_left (by rw [← h.2.1, neg_add_cancel, h0])⟩`.
+-/
 theorem map_zero_neg {D : Datum H} {R : Type} [CommRing R] {t : SAB H (Sp R)} {B : Over (Sp R)} [GrpObj B]
     {M : LB B.left} {v : epsR R ⟶ B} {L : Submodule (𝓞 E) D.La} {ρ : R} {S : Set L} {φ : L → (B ⟶ t.G)}
     (h : IsHomFamily t B M v L ρ S φ) : φ 0 = 1 ∧ ∀ a, φ (-a) = (φ a)⁻¹ := by
@@ -143,6 +184,29 @@ section Mixed
 open HostModel PeriodNonempty
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `haveI := D.fin`. Use `haveI := D.proj`. Use `haveI : Module.Finite ℤ D.La := Module.Finite.trans (𝓞 E) D.La`. Use `haveI : Module.Flat ℤ D.La := Module.Flat.trans ℤ (𝓞 E) D.La`. Use `haveI : Module.Free ℤ D.La := inferInstance`.
+
+Set `P : D.La →+ (Fin g → ℂ)` to `{ toFun := fun x => e (1 ⊗ₜ x) map_zero' := by simp map_add' := fun x y => by rw [TensorProduct.tmul_add, map_add] }`. Establish `hP : ∀ x, P x = e (1 ⊗ₜ x)` using `fun _ => rfl`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `c` to `(b.baseChange ℝ).map e`. Establish `hc : ∀ i, c i = P (b i)` using `fun i => by simp [c, hP]`.
+
+Establish `hrange : P.range = (Submodule.span ℤ (Set.range c)).toAddSubgroup`. Establish `h1 : Set.range c = P.toIntLinearMap '' Set.range b`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hc i`. Rewrite using `[h1, ← Submodule.map_span, b.span_eq]`. Use extensionality with `z`. Simplify using the standard rewrite rules. Use `⟨P, ⟨heρ, ?_, ?_, ?_, ?_⟩, hP⟩` and prove the remaining obligations.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Rewrite `hx` using `[hP, e.map_eq_zero_iff]`. Apply `b.ext_elem` to reduce the goal to its premises. Introduce `i`.
+
+Use `congrArg (fun v => (b.baseChange ℝ).repr v i) hx` as an intermediate fact. Simplify using `using this`. Rewrite using `[hrange]`. Use `infer_instance`. Rewrite using `[eq_top_iff, ← c.span_eq]`.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨b i, (hc i).symm⟩`. Establish `halt0 : ∀ x y, D.EF x y = -D.EF y x` using `fun x y => by`. Use `D.alt (x + y)` as an intermediate fact.
+
+Simplify using `only [map_add, LinearMap.add_apply, D.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `halt : ∀ x y, D.EF.baseChange ℝ x y = -D.EF.baseChange ℝ y x` using `fun x y => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul r x`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add y y' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul r' y => simp [halt0 x y, mul_comm]`. Establish `hs : ∀ z, e.symm (Complex.I • z) = J (e.symm z)` using `fun z => by`. Rewrite using `[e.symm_apply_eq, heJ, e.apply_symm_apply]`.
+
+Take `⟨Hm, h1, h2, h3⟩` from `exists_herm ((D.EF.baseChange ℝ).comp e.symm.toLinearMap e.symm.toLinearMap) (fun x y => halt _ _) (fun x y => by simp [hs, hinv]) (fun x hx => by simpa [hs] using hpos (e.symm x) (by simpa using hx))`. Use `⟨Hm, h1, h2, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Simplify using `[hP]`.
+-/
 theorem isPeriod_of_coord (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (J : ℝ ⊗[ℤ] D.La →ₗ[ℝ] ℝ ⊗[ℤ] D.La)
     (hinv : ∀ x y, D.EF.baseChange ℝ (J x) (J y) = D.EF.baseChange ℝ x y)
     (hpos : ∀ x, x ≠ 0 → 0 < D.EF.baseChange ℝ (J x) x) (e : (ℝ ⊗[ℤ] D.La) ≃ₗ[ℝ] (Fin g → ℂ))
@@ -206,9 +270,17 @@ theorem isPeriod_of_coord (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ))
 def scale (H : Host E) (s t : ℝ) : ℝ ⊗[ℤ] HypLattice H →ₗ[ℝ] ℝ ⊗[ℤ] HypLattice H :=
   s • (LinearMap.inl ℤ _ _ ∘ₗ LinearMap.fst ℤ _ _).baseChange ℝ + t • (LinearMap.inr ℤ _ _ ∘ₗ LinearMap.snd ℤ _ _).baseChange ℝ
 
+/- English proof (translation)
+Simplify using `[scale]`.
+-/
 theorem scale_tmul (s t r : ℝ) (u : HypLattice H) :
     scale H s t (r ⊗ₜ u) = s • r ⊗ₜ (u.1, 0) + t • r ⊗ₜ (0, u.2) := by simp [scale]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul r u`. Rewrite using `[scale_tmul, map_add, map_smul, map_smul, scale_tmul, scale_tmul]`.
+
+Simplify using `only [Prod.mk_zero_zero, TensorProduct.tmul_zero, smul_zero, add_zero, zero_add, smul_smul, h, mul_comm t s, one_smul, ← TensorProduct.tmul_add, Prod.mk_add_mk]`.
+-/
 theorem scale_scale {s t : ℝ} (h : s * t = 1) (x) : scale H s t (scale H t s x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -218,6 +290,11 @@ theorem scale_scale {s t : ℝ} (h : s * t = 1) (x) : scale H s t (scale H t s x
     simp only [Prod.mk_zero_zero, TensorProduct.tmul_zero, smul_zero, add_zero, zero_add, smul_smul, h, mul_comm t s,
       one_smul, ← TensorProduct.tmul_add, Prod.mk_add_mk]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul r u`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul r' v`. Simplify using `[scale_tmul]`. Take the linear combination `((ConjDual.toDual H u.2 v.1 : ℤ) - (ConjDual.toDual H v.2 u.1 : ℤ) : ℝ) * r * r' * h`.
+-/
 theorem form_scale {s t : ℝ} (h : s * t = 1) (x y) :
     (hypForm H).baseChange ℝ (scale H s t x) (scale H s t y) = (hypForm H).baseChange ℝ x y := by
   induction x using TensorProduct.induction_on with
@@ -231,6 +308,33 @@ theorem form_scale {s t : ℝ} (h : s * t = 1) (x y) :
       simp [scale_tmul]
       linear_combination ((ConjDual.toDual H u.2 v.1 : ℤ) - (ConjDual.toDual H v.2 u.1 : ℤ) : ℝ) * r * r' * h
 
+/- English proof (translation)
+Take `⟨g, ty, hty⟩` from `exists_isTypeFn H 1 1`. Set `ρ₀ : 𝓞 E →+* Module.End ℤ (HypLattice H)` to `(Algebra.lsmul ℤ ℤ (HypLattice H) : 𝓞 E →ₐ[ℤ] Module.End ℤ (HypLattice H))`. Set `ρ : 𝓞 E →+* Module.End ℝ (ℝ ⊗[ℤ] HypLattice H)` to `(Module.End.baseChangeHom ℤ ℝ (HypLattice H) : Module.End ℤ _ →+* Module.End ℝ (ℝ ⊗[ℤ] HypLattice H)).comp ρ₀`. Establish `hρ : ∀ a x, ρ a (1 ⊗ₜ x) = 1 ⊗ₜ (a • x)` using `fun a x => rfl`. Take `⟨e, heJ, heρ⟩` from `exists_diag_real (hypJ H) (hypJ_hypJ H) ρ ty (fun a => by`.
+
+Establish `ht` using `sum_type H hty (a : E)`. Simplify using `only [Nat.cast_one, _root_.one_mul, sum_add_conj_eq_trace] at ht`. Use `⟨hypJ_comm H a _ (hρ a), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[trace_of_smul H a _ (hρ a), ht, Complex.intCast_re]`. Rewrite using `[trace_hypJ_comp H a _ (hρ a), ht, Complex.intCast_im, mul_zero])`.
+
+Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Take `⟨s, hs0, hs⟩ : ∃ s : ℝ, s ≠ 0 ∧ s ^ 4 = H.d` from `⟨√(√H.d), by positivity, by`. Rewrite using `[show 4 = 2 * 2 from rfl, pow_mul, Real.sq_sqrt (by positivity), Real.sq_sqrt hd.le]⟩`. Establish `h₁` using `mul_inv_cancel₀ hs0`. Establish `h₂` using `inv_mul_cancel₀ hs0`.
+
+Set `T : (ℝ ⊗[ℤ] HypLattice H) ≃ₗ[ℝ] (ℝ ⊗[ℤ] HypLattice H)` to `LinearEquiv.ofLinear (scale H s s⁻¹) (scale H s⁻¹ s) (LinearMap.ext (scale_scale h₁)) (LinearMap.ext (scale_scale h₂))`. Establish `hT : ∀ x, T x = scale H s s⁻¹ x` using `fun _ => rfl`. Establish `he : ∀ (a : 𝓞 E) (x : HypLattice H) i, e (1 ⊗ₜ (a • x)) i = ty i (a : E) * e (1 ⊗ₜ x) i` using `fun a x i => by`. Rewrite using `[← hρ, heρ]`. Take `⟨P, hP, hPe⟩` from `isPeriod_of_coord (hypDatum H) ty (scale H s⁻¹ s ∘ₗ hypJ H ∘ₗ scale H s s⁻¹) (fun x y => by`.
+
+Simplify using `only [LinearMap.comp_apply]`. Conclude with `(form_scale h₂ _ _).trans ((hypForm_hypJ_hypJ H _ _).trans (form_scale h₁ _ _)))`. Use the proof step `(fun x hx => by`. Establish `h` using `hypForm_hypJ_pos H (T x) (by simpa using hx)`. Rewrite `h` using `[← form_scale h₂, hT, scale_scale h₂]`.
+
+Conclude with `h)`. Use the proof step `(T.trans e) (fun v => by`. Simplify using `only [LinearEquiv.trans_apply, LinearMap.comp_apply, hT]`. Rewrite using `[scale_scale h₁, heJ])`. Use the proof step `(fun a x i => by`.
+
+Establish `e₁` using `he a (x.1, 0) i`. Establish `e₂` using `he a (0, x.2) i`. Simplify using `only [Prod.smul_mk, smul_zero] at e₁ e₂`. Simplify using `only [LinearEquiv.trans_apply, hT, scale_tmul, map_add, map_smul, Pi.add_apply, Pi.smul_apply, Complex.real_smul, Prod.smul_fst, Prod.smul_snd, e₁, e₂]`. Use the proof step `ring)`.
+
+Use `⟨g, ty, P, hP, hty, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hsq : ∀ j, ty j (H.rt : E) ^ 2 = -(H.d : ℂ)` using `fun j => by`. Use `congrArg (fun x : 𝓞 E => ty j (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `hsC : (s : ℂ) ^ 4 = H.d` using `by exact_mod_cast hs`.
+
+Establish `hs0' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs0`. Establish `hε2 : (((ε : ℤ) : ℂ) * H.rt0) ^ 2 = -(H.d : ℂ)`. Establish `e : ((ε : ℤ) : ℂ) ^ 2 = 1` using `by exact_mod_cast (Int.units_sq ε ▸ rfl : ((ε ^ 2 : ℤˣ) : ℤ) = 1)`. Rewrite using `[mul_pow, e, H.sqrt_neg_disc_sq, _root_.one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : ℤ, (δ : ℂ) * Complex.I * (((ε : ℤ) : ℂ) * H.rt0) = s ^ 2 := by`.
+
+Establish `: (Complex.I * (((ε : ℤ) : ℂ) * H.rt0)) ^ 2 = ((s : ℂ) ^ 2) ^ 2`. Rewrite using `[mul_pow, hε2, Complex.I_sq, ← hsC]`. Expand and normalize the polynomial expressions, which then agree. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 this with h | h` into its components or cases. Conclude with `⟨1, by push_cast; linear_combination h⟩`.
+
+Conclude with `⟨-1, by push_cast; linear_combination -h⟩`. Establish `hm : (((1 : 𝓞 E), traceDual H ((δ * H.rt) • 1)) : (hypDatum H).La) ∈ lat hP (((ε : ℤ) : ℂ) * H.rt0)`. Introduce `j hj`. Establish `hj' : ty j (H.rt : E) = -(((ε : ℤ) : ℂ) * H.rt0)` using `(sq_eq_sq_iff_eq_or_eq_neg.1 ((hsq j).trans hε2.symm)).resolve_left hj`. Establish `e₁` using `he (δ * H.rt) (1, 0) j`.
+
+Simplify using `only [Prod.smul_mk, smul_zero] at e₁`. Rewrite using `[hPe]`. Simplify using `only [LinearEquiv.trans_apply, hT, scale_tmul, map_add, LinearEquiv.map_smul, Pi.add_apply, Pi.smul_apply, Complex.real_smul, ← hypJ_inl, heJ, smul_eq_mul] at e₁ ⊢`. Rewrite using `[e₁]`. Use `push_cast`.
+
+Rewrite using `[map_mul, show ty j ((δ : 𝓞 E) : E) = δ by simp, hj']`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-(e (1 ⊗ₜ (1, 0)) j) * hδ`. Rewrite `hm` using `[hε, Submodule.mem_bot]`. Conclude with `one_ne_zero (congrArg Prod.fst hm)`.
+-/
 theorem exists_period_both_types (H : Host E) : ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ))
     (Pe : (hypDatum H).La →+ (Fin g → ℂ)) (hP : IsPeriod (hypDatum H) ty Pe), IsTypeFn H 1 1 ty ∧
     ∀ ε : ℤˣ, lat hP (((ε : ℤ) : ℂ) * H.rt0) ≠ ⊥ := by

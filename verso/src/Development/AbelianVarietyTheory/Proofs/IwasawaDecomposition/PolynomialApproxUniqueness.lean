@@ -4,6 +4,27 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 open IsLocalRing TensorProduct in
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro C _ I b _ i`. Conclude with `i.elim0`. Consider the case `succ d ih`.
+
+Introduce `C hC I b hb`. Establish `h0 : ∃ l0, C 0 l0 ∉ maximalIdeal A`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `hC (Pi.single 0 1) (fun l => by` as an intermediate fact.
+
+Simplify `h l) 0` using `[Fin.sum_univ_succ, Pi.single_apply]`. Simplify using `at this`. Take `⟨l0, hl0⟩` from `h0`. Use `set u := C 0 l0 with hu`. Establish `hunit : IsUnit u` using `(IsLocalRing.mem_maximalIdeal _).not.mp hl0 |> not_not.mp`.
+
+Set `C' : Fin d → κ → A` to `fun i l => u * C i.succ l - C i.succ l0 * C 0 l`. Establish `hC' : ∀ c : Fin d → A, (∀ l, ∑ i, c i * C' i l ∈ maximalIdeal A) → ∀ i, c i ∈ maximalIdeal A`. Introduce `c hc i`. Establish `key` using `hC (Fin.cons (-(∑ j, c j * C j.succ l0)) (fun j => u * c j)) (fun l => by`. Use `hc l using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, C']`. Rewrite using `[show ∑ i, c i * (u * C i.succ l - C i.succ l0 * C 0 l) = ∑ i, u * c i * C i.succ l - (∑ i, c i * C i.succ l0) * C 0 l by`. Rewrite using `[Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)]`.
+
+Use the proof step `ring) i.succ`. Simplify using `only [Fin.cons_succ] at key`. Conclude with `((Ideal.IsPrime.mem_or_mem inferInstance key).resolve_left hl0)`. Establish `hb'` using `ih C' hC' I (fun i => b i.succ) (fun l => by`. Establish `e : ∑ i, b i.succ * C' i l = u * (∑ i, b i * C i l) - (∑ i, b i * C i l0) * C 0 l`.
+
+Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify using `only [C']`. Rewrite using `[show ∑ i : Fin d, b i.succ * (u * C i.succ l - C i.succ l0 * C 0 l) = u * ∑ i : Fin d, b i.succ * C i.succ l - (∑ i : Fin d, b i.succ * C i.succ l0) * C 0 l by`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `I.sub_mem (I.mul_mem_left _ (hb l)) (I.mul_mem_right _ (hb l0)))`. Introduce `i`. Use `Fin.cases ?_ (fun j => hb' j) i` and prove the remaining obligations.
+
+Establish `h1 : b 0 * u ∈ I`. Use `hb l0` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_succ]`. Establish `h2 : ∑ i : Fin d, b i.succ * C i.succ l0 ∈ I` using `I.sum_mem (fun j _ => I.mul_mem_right _ (hb' j))`. Simplify `I.sub_mem this h2` using `[hu]`.
+
+Take `⟨v, hv⟩` from `hunit`. Use `I.mul_mem_right (↑v⁻¹ : A) h1` as an intermediate fact. Rewrite `this` using `[← hv, mul_assoc, Units.mul_inv, mul_one]`. Then use the resulting hypothesis.
+-/
 private lemma mem_ideal_of_sum_mul_mem_of_independent_mod_max {A : Type} [CommRing A] [IsLocalRing A] {κ : Type} [Fintype κ] :
     ∀ (d : ℕ) (C : Fin d → κ → A),
       (∀ c : Fin d → A, (∀ l, ∑ i, c i * C i l ∈ maximalIdeal A) → ∀ i, c i ∈ maximalIdeal A) →
@@ -61,6 +82,37 @@ private lemma mem_ideal_of_sum_mul_mem_of_independent_mod_max {A : Type} [CommRi
 
 open IsLocalRing TensorProduct in
 
+/- English proof (translation)
+Introduce `A R _ _ _ _ φ hflat hmax θ q _ _ _ hind n P hdeg hP i`. Use `letI := φ.toAlgebra`. Use `haveI : Module.Flat A R := hflat`. Establish `hsm : ∀ (a : A) (r : R), a • r = φ a * r` using `fun a r => by`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`.
+
+Establish `hφm : ∀ a ∈ maximalIdeal A, φ a ∈ maximalIdeal R` using `fun a ha => hmax ▸ Ideal.mem_map_of_mem φ ha`. Distinguish the cases in `hi : i < q.natDegree`. Use `swap`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le hdeg (not_lt.mp hi))]`. Conclude with `Ideal.zero_mem _`.
+
+Use `set d := q.natDegree with hd`. Rewrite `hP` using `[← hmax, ← Ideal.map_pow]`. Take `⟨K, y, g, hg⟩` from `Submodule.mem_span_set'.mp hP`. Establish `hb : ∀ k, ∃ b ∈ maximalIdeal A ^ n, φ b = g k` using `fun k => (g k).2`. Use `choose b hbI hbg using hb`.
+
+Establish `hev : (P.map φ).eval θ = ∑ j : Fin d, φ (P.coeff j) * θ ^ (j : ℕ)`. Rewrite using `[Polynomial.eval_eq_sum_range' (lt_of_le_of_lt (Polynomial.natDegree_map_le) hdeg), Finset.sum_range]`. Simplify using `[Polynomial.coeff_map]`. Establish `hsum : ∑ k, φ (b k) * y k = (P.map φ).eval θ`. Rewrite using `[← hg]`.
+
+Conclude with `Finset.sum_congr rfl (fun k _ => by rw [hbg, smul_eq_mul, mul_comm])`. Set `v : Fin d ⊕ Fin K → R` to `Sum.elim (fun j => θ ^ (j : ℕ)) y`. Set `f : Fin d ⊕ Fin K → A` to `Sum.elim (fun j => P.coeff j) (fun k => - b k)`. Establish `hx : Fintype.linearCombination A v f = 0`. Rewrite using `[Fintype.linearCombination_apply, Fintype.sum_sum_type]`.
+
+Simplify using `only [v, f, Sum.elim_inl, Sum.elim_inr, hsm, map_neg, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[hsum, hev]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, a, z, hxz, haf⟩` from `Module.Flat.exists_factorization_of_apply_eq_zero_of_free hx`. Set `e : Fin d ⊕ Fin K → Fin d ⊕ Fin K → A` to `fun x x' => if x = x' then 1 else 0`.
+
+Set `C : Fin d → Fin k → A` to `fun j l => a (e (Sum.inl j)) l`. Set `w : Fin k → R` to `fun l => z (Finsupp.single l 1)`. Establish `hz : ∀ x : Fin k →₀ A, z x = ∑ l, φ (x l) * w l`. Introduce `x`. Use `conv_lhs => rw [← Finsupp.univ_sum_single x]`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl (fun l _ => by rw [← Finsupp.smul_single_one, map_smul, hsm])`. Establish `hθ : ∀ j : Fin d, θ ^ (j : ℕ) = ∑ l, φ (C j l) * w l`. Introduce `j`. Establish `h1 : θ ^ (j : ℕ) = Fintype.linearCombination A v (e (Sum.inl j))`.
+
+Rewrite using `[Fintype.linearCombination_apply]`. Simplify using `[e, v]`. Rewrite using `[h1, hxz, LinearMap.comp_apply, hz]`. Establish `haf' : ∀ l, ∑ j : Fin d, P.coeff (j : ℕ) * C j l = ∑ k', b k' * a (e (Sum.inr k')) l`. Introduce `l`.
+
+Establish `h2` using `DFunLike.congr_fun haf l`. Rewrite `h2` using `[LinearMap.pi_apply_eq_sum_univ a f, Finsupp.finset_sum_apply, Fintype.sum_sum_type]`. Simplify using `only [f, e, C, Sum.elim_inl, Sum.elim_inr, Finsupp.smul_apply, smul_eq_mul, neg_mul, Finset.sum_neg_distrib, Finsupp.coe_zero, Pi.zero_apply] at h2`. Take the linear combination `h2`. Establish `hCm : ∀ c : Fin d → A, (∀ l, ∑ j, c j * C j l ∈ maximalIdeal A) → ∀ j, c j ∈ maximalIdeal A`.
+
+Introduce `c hc j`. Set `Q : Polynomial A` to `∑ j' : Fin d, Polynomial.C (c j') * Polynomial.X ^ (j' : ℕ)`. Establish `hQdeg : Q.natDegree < d`. Distinguish the cases in `hQ : Q = 0`. Rewrite using `[hQ, Polynomial.natDegree_zero]`.
+
+Conclude with `lt_of_le_of_lt (Nat.zero_le _) j.2`. Conclude with `(Polynomial.natDegree_lt_iff_degree_lt hQ).mpr (Polynomial.degree_sum_fin_lt c)`. Establish `hQc : Q.coeff j = c j`. Simplify using `[Q, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, Fin.val_inj]`. Establish `hQe : (Q.map φ).eval θ = ∑ l, φ (∑ j', c j' * C j' l) * w l`.
+
+Simplify using `only [Q, Polynomial.map_sum, Polynomial.eval_finset_sum, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_pow, Polynomial.map_X, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, hθ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun j' _ => by rw [map_mul]; ring)`.
+
+Rewrite using `[← hQc]`. Use `hind Q hQdeg ?_ j` and prove the remaining obligations. Rewrite using `[hQe]`. Conclude with `Ideal.sum_mem _ (fun l _ => Ideal.mul_mem_right _ _ (hφm _ (hc l)))`. Conclude with `mem_ideal_of_sum_mul_mem_of_independent_mod_max d C hCm (maximalIdeal A ^ n) (fun j => P.coeff j) (fun l => by`.
+
+Rewrite using `[haf' l]`. Conclude with `Ideal.sum_mem _ (fun k' _ => Ideal.mul_mem_right _ _ (hbI k'))) ⟨i, hi⟩`.
+-/
 theorem _root_.GlobalTheory.coeff_mem_pow_of_flat_of_indep_mod_max : ∀ {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R] (φ : A →+* R), φ.Flat → (maximalIdeal A).map φ = maximalIdeal R → ∀ (θ : R) (q : Polynomial A), q.Monic → (q.map φ).eval θ = 0 → (∀ (n : ℕ) (r : R), ∃ P : Polynomial A, r - (P.map φ).eval θ ∈ maximalIdeal R ^ n) → (∀ P : Polynomial A, P.natDegree < q.natDegree → (P.map φ).eval θ ∈ maximalIdeal R → ∀ i, P.coeff i ∈ maximalIdeal A) → ∀ (n : ℕ) (P : Polynomial A), P.natDegree < q.natDegree → (P.map φ).eval θ ∈ maximalIdeal R ^ n → ∀ i, P.coeff i ∈ maximalIdeal A ^ n := by
   intro A R _ _ _ _ φ hflat hmax θ q _ _ _ hind n P hdeg hP i
   letI := φ.toAlgebra

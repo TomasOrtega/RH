@@ -18,6 +18,13 @@ namespace GlobalTheory.GroupBplus.ValExt
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Set `i : FractionRing B →+* K` to `IsFractionRing.lift hinj`. Establish `hi : i.comp (algebraMap B (FractionRing B)) = c` using `RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a`. Use `clear_value i`. Establish `e : spMap c ≫ b = spMap i ≫ Out.jK B ≫ b`. Rewrite using `[← hi, Cris.spMap_comp, Category.assoc]`.
+
+Take `⟨tF, ⟨mF⟩⟩` from `exists_sab (Out.jK B) tB`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mB mF`. Take `⟨k, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ n (e ▸ m₀)`. Use `tF.semi.quasiCompact` as an intermediate fact. Use `tF.semi.separated` as an intermediate fact.
+
+Use `tF.semi.smooth` as an intermediate fact. Take `⟨hp, hA, hK⟩` from `GlobalTheory.AmpleDescent.proper_relAmple_kTriv_of_fieldExtension _ _ i tF.G t₀.G k.φ k.cart tF.PP.L t₀.PP.L tF.PP.isLB t₀.PP.isLB (k.lin.imp fun _ h => h.1) h₀.1 h₀.2.1 h₀.2.2.1`. Use `GlobalTheory.LocM.PolFibre.polAt_of_map mF ?_ hA hK` and prove the remaining obligations. Rewrite using `[← mF.cart.1.isoPullback_inv_snd]`. Use `infer_instance`.
+-/
 theorem polAt_generic {Dw : Datum H} {B K : Type} [CommRing B] [IsDomain B] [Field K] {Z : Scheme.{0}} {tZ : SAB H Z}
     (c : B →+* K) (hinj : Function.Injective c) {b : Sp B ⟶ Z} {t₀ : SAB H (Sp K)} (m₀ : SABMap t₀ tZ (spMap c ≫ b))
     (h₀ : IsOfType Dw t₀) {tB : SAB H (Sp B)} (mB : SABMap tB tZ b) : GlobalTheory.LN.PolAt tB (Out.jK B) := by
@@ -38,6 +45,15 @@ theorem polAt_generic {Dw : Datum H} {B K : Type} [CommRing B] [IsDomain B] [Fie
   rw [← mF.cart.1.isoPullback_inv_snd]
   infer_instance
 
+/- English proof (translation)
+Take `⟨tX, ⟨mX⟩⟩` from `exists_sab g tZ`. Establish `key : ∀ y, g y ∈ abLocus tZ.G ↔ y ∈ abLocus tX.G` using `fun y => abLocus_pullback abLocusOne tZ.semi mX.cart.1 y`. Establish `ho` using `GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_of_locallyNoetherian tX.G tX.semi`. Take `⟨W, hW, hxW, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⟨_, ho⟩) (x := x) ((key x).1 hx)`. Take `⟨U, rfl⟩ : ∃ U : AffOp X, U.1 = W` from `⟨⟨W, hW, ⟨⟨x, hxW⟩⟩⟩, rfl⟩`.
+
+Take `⟨tB, ⟨mB⟩⟩` from `exists_sab (S' := Sp Γ(X, U.1)) (U.2.1.fromSpec ≫ g) tZ`. Use `⟨U, tB, mB, hxW, ?_⟩` and prove the remaining obligations. Establish `e : genPt X ≫ g = spMap (algebraMap Γ(X, U.1) (Kbar X)) ≫ U.2.1.fromSpec ≫ g`. Rewrite using `[← U.val_toX, AffOp.toX, IsScalarTower.algebraMap_eq Γ(X, U.1) U.Bp (Kbar X), Cris.spMap_comp]`. Simplify using `only [Category.assoc]`.
+
+Use `h₀.charZero` as an intermediate fact. Establish `: CharZero Γ(X, U.1)` using `RingHom.charZero (algebraMap Γ(X, U.1) (Kbar X))`. Establish `: IsNoetherianRing Γ(X, U.1)` using `IsLocallyNoetherian.component_noetherian ⟨U.1, hW⟩`. Use `GlobalTheory.ProperOfAbelianFibres.isProper_of_polAt_of_abLocus E H _ tB (polAt_generic _ (FaithfulSMul.algebraMap_injective _ _) (e ▸ m₀) h₀ mB) (Set.eq_univ_of_forall fun y => (abLocus_pullback abLocusOne tZ.semi mB.cart.1 y).1 ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply]`.
+
+Use `(key _).2 (hle ?_)` and prove the remaining obligations. Establish `: hW.fromSpec y ∈ Set.range hW.fromSpec` using `⟨y, rfl⟩`. Rewrite `this` using `[hW.range_fromSpec]`. Then use the resulting hypothesis.
+-/
 theorem exists_isProper_near {Dw : Datum H} {X Z : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {g : X ⟶ Z}
     {tZ : SAB H Z} {t₀ : SAB H (Sp (Kbar X))} (m₀ : SABMap t₀ tZ (genPt X ≫ g)) (h₀ : IsOfType Dw t₀) (x : X)
     (hx : g x ∈ abLocus tZ.G) : ∃ (U : AffOp X) (tB : SAB H (Sp Γ(X, U.1))) (_ : SABMap tB tZ (U.2.1.fromSpec ≫ g)),
@@ -63,6 +79,27 @@ theorem exists_isProper_near {Dw : Datum H} {X Z : Scheme.{0}} [IsIntegral X] [I
   have : hW.fromSpec y ∈ Set.range hW.fromSpec := ⟨y, rfl⟩
   rwa [hW.range_fromSpec] at this
 
+/- English proof (translation)
+Introduce `_ _ _ E _ _ _ H Dw p _ X Z _ _ g tZ _ t₀ ⟨m₀⟩ h₀ U t ⟨m⟩ V _ _ _ _ _ _ _ hV n z`. Set `s : Sp V ⟶ Sp U.Bp` to `spMap (algebraMap U.Bp V)`. Set `j : Sp (Kbar X) ⟶ Sp V` to `spMap (algebraMap V (Kbar X))`. Establish `hx : g ((s ≫ U.toX) (IsLocalRing.closedPoint V)) ∈ abLocus tZ.G`. Use `(abLocus_pullback abLocusOne tZ.semi m.cart.1 _).2 hV` as an intermediate fact.
+
+Rewrite `this` using `[Scheme.Hom.comp_apply]`. Conclude with `(congrArg (fun q => g q ∈ abLocus tZ.G) (Scheme.Hom.comp_apply s U.toX _)).mpr this`. Take `⟨W, tB, mB, hxW, hp⟩` from `exists_isProper_near m₀ h₀ _ hx`. Establish `hr : Set.range (s ≫ U.toX) ⊆ Set.range W.2.1.fromSpec`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[W.2.1.range_fromSpec]`. Conclude with `((IsLocalRing.specializes_closedPoint y).map (s ≫ U.toX).continuous).mem_open W.1.isOpen hxW`. Set `y : Sp V ⟶ Sp Γ(X, W.1)` to `IsOpenImmersion.lift W.2.1.fromSpec _ hr`. Establish `hy : y ≫ W.2.1.fromSpec = s ≫ U.toX` using `IsOpenImmersion.lift_fac _ _ hr`. Establish `hz : z.1.left ≫ t.G.hom = j ≫ s`.
+
+Rewrite using `[Over.w z.1, ← Cris.spMap_comp, ← IsScalarTower.algebraMap_eq]`. Both sides reduce to the same expression. Establish `mw : m.φ ≫ tZ.G.hom = t.G.hom ≫ U.toX ≫ g` using `m.cart.1.w`. Establish `mBw : mB.φ ≫ tZ.G.hom = tB.G.hom ≫ W.2.1.fromSpec ≫ g` using `mB.cart.1.w`. Establish `w₁ : (z.1.left ≫ m.φ) ≫ tZ.G.hom = (j ≫ y) ≫ W.2.1.fromSpec ≫ g`.
+
+Rewrite using `[Category.assoc, mw, ← Category.assoc, hz, Category.assoc, Category.assoc, reassoc_of% hy]`. Establish `hE : ValuativeCriterion.Existence tB.G.hom`. Establish `h : UniversallyClosed tB.G.hom` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`.
+
+Set `S : ValuativeCommSq tB.G.hom` to `{ R := V, K := Kbar X, i₁ := mB.cart.1.lift _ _ w₁, i₂ := y, commSq := ⟨mB.cart.1.lift_snd _ _ w₁⟩ }`. Take `⟨l⟩` from `(hE S).exists_lift`. Establish `l₁ : j ≫ l.l = mB.cart.1.lift _ _ w₁` using `l.fac_left`. Establish `l₂ : l.l ≫ tB.G.hom = y` using `l.fac_right`. Establish `w₂ : (l.l ≫ mB.φ) ≫ tZ.G.hom = s ≫ U.toX ≫ g`.
+
+Rewrite using `[Category.assoc, mBw, ← Category.assoc, l₂, reassoc_of% hy]`. Set `z₁ : SpAlg U.Bp V ⟶ t.G` to `Over.homMk (m.cart.1.lift _ _ w₂) (m.cart.1.lift_snd _ _ w₂)`. Establish `hz₁ : spOver (IsScalarTower.toAlgHom U.Bp V (Kbar X)) ≫ z₁ = z.1`. Use `Over.OverMorphism.ext (m.cart.1.hom_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(j ≫ m.cart.1.lift _ _ w₂) ≫ m.φ = _`.
+
+Rewrite using `[Category.assoc]`. Use `(congrArg (j ≫ ·) (m.cart.1.lift_fst _ _ w₂)).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, l₁]`. Conclude with `mB.cart.1.lift_fst _ _ w₁`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+
+Use `⟨⟨z₁, ?_⟩, Subtype.ext hz₁⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap V (Kbar X))` using `IsFractionRing.injective V _`. Establish `: IsDominant j` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Rewrite using `[CommRingCat.hom_ofHom, (RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le)⟩`.
+
+Use `t.semi.separated` as an intermediate fact. Establish `h₃ : spOver (IsScalarTower.toAlgHom U.Bp V (Kbar X)) ≫ (z₁ ^ p ^ n) = spOver (IsScalarTower.toAlgHom U.Bp V (Kbar X)) ≫ (1 : SpAlg U.Bp V ⟶ t.G)`. Rewrite using `[MonObj.comp_pow, hz₁, z.2, MonObj.comp_one]`. Establish `: IsReduced (SpAlg U.Bp V).left` using `inferInstanceAs (IsReduced (Sp V))`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated t.G.hom ((Over.w _).trans (Over.w _).symm) j (congrArg (fun q => q.left) h₃))`.
+-/
 theorem exists_torsMap_eq : GlobalTheory.Published.RaynaudExtension → GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (X Z : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (g : X ⟶ Z) (tZ : SAB H Z), GlobalTheory.IsNormalScheme X → ∀ (t₀ : SAB H (Sp (Kbar X))), Nonempty (SABMap t₀ tZ (genPt X ≫ g)) → IsOfType Dw t₀ → ∀ (U : AffOp X) (t : SAB H (Sp U.Bp)), Nonempty (SABMap t tZ (U.toX ≫ g)) → ∀ (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Algebra U.Bp V] [Algebra V (Kbar X)] [IsScalarTower U.Bp V (Kbar X)] [IsFractionRing V (Kbar X)], spMap (algebraMap U.Bp V) (IsLocalRing.closedPoint V) ∈ abLocus t.G → ∀ (n : ℕ) (z : Tors t.G (p ^ n) (Kbar X)), ∃ z' : Tors t.G (p ^ n) V, torsMap (IsScalarTower.toAlgHom U.Bp V (Kbar X)) z' = z := by
   intro _ _ _ E _ _ _ H Dw p _ X Z _ _ g tZ _ t₀ ⟨m₀⟩ h₀ U t ⟨m⟩ V _ _ _ _ _ _ _ hV n z
   let s : Sp V ⟶ Sp U.Bp := spMap (algebraMap U.Bp V)

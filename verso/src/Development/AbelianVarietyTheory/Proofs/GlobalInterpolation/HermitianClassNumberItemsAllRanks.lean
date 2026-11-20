@@ -7,6 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D n` and use `have h := GlobalTheory.T.classNumber_finite_and_genusMass D ⟨genusMassAt_of D (GlobalTheory.genusMassStd_all D) n, classFinAt_of D h.1 n, classMassAt_of D h.2 n⟩`.
+-/
 theorem classItemsAt_all : ∀ (D : D7) (n : ℕ), ClassItemsAt D n := fun D n =>
   have h := GlobalTheory.T.classNumber_finite_and_genusMass D
   ⟨genusMassAt_of D (GlobalTheory.genusMassStd_all D) n, classFinAt_of D h.1 n, classMassAt_of D h.2 n⟩

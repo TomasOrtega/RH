@@ -16,20 +16,35 @@ def EtaleTateTwistSectionConstantOnPointsOfConnectedProper : Prop := ∀ (l : �
   ∀ {X : Scheme.{0}} (p : X ⟶ S k), IsProper p → ∀ s : Sec (tw (l ^ j) 0) X,
     (ConnectedSpace X → ∀ y y' : Pt p, Sec.res y.1 s = Sec.res y'.1 s)
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q : ℕ) : ULift.{1} (ZMod q)) = 0` using `ULift.ext _ _ (by simp)`. Rewrite using `[this, zero_smul]`.
+-/
 theorem q_nsmul {q : ℕ} {U : Scheme.{0}} (x : Sec (tw q 0) U) : q • x = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
   have : ((q : ℕ) : ULift.{1} (ZMod q)) = 0 := ULift.ext _ _ (by simp)
   rw [this, zero_smul]
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+-/
 theorem res_comp {q : ℕ} {W V U : Scheme.{0}} (a : W ⟶ V) (b : V ⟶ U) (x : Sec (tw q 0) U) :
     Sec.res (a ≫ b) x = Sec.res a (Sec.res b x) := by
   simp only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
+/- English proof (translation)
+The claim follows from `map_nsmul _ _ _`.
+-/
 theorem res_nsmul {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (c : ℕ) (x : Sec (tw q 0) U) :
     Sec.res g (c • x) = c • Sec.res g x := map_nsmul _ _ _
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem res_zero' {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec (tw q 0) U) = 0 := map_zero _
 
+/- English proof (translation)
+Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hq)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic q k) (ne_of_gt (Polynomial.degree_cyclotomic_pos q k hq0))`. Use `⟨⟨z, isUnit_iff_ne_zero.2 hq, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hz`.
+-/
 theorem primK (k : Type) [Field k] [IsAlgClosed k] (q : ℕ) (hq : (q : k) ≠ 0) : Nonempty (Prim q k) := by
   have hq0 : 0 < q := Nat.pos_of_ne_zero (by rintro rfl; simp at hq)
   obtain ⟨z, hz⟩ := IsAlgClosed.exists_root (Polynomial.cyclotomic q k)
@@ -38,6 +53,17 @@ theorem primK (k : Type) [Field k] [IsAlgClosed k] (q : ℕ) (hq : (q : k) ≠ 0
   rw [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]
   exact hz
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hq : ((l ^ j : ℕ) : k) ≠ 0` using `by push_cast; exact pow_ne_zero _ hl`. Take `⟨ζ0⟩` from `primK k (l ^ j) hq`. Set `φ : k →+* Γ(X, ⊤)` to `(p.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Take `⟨Sv, hSv, hSs⟩` from `(hT (l ^ j) 0).1 X (ζ0.map φ) s`.
+
+Take `⟨T, hTm, hTs⟩` from `hC k p hp Sv hSv`. Use `(EtaleFoundations.etale_sheaf_sections_glue_of_forget_isSheaf (ZMod (l ^ j)) (tw (l ^ j) 0) X).1 s 0 ⟨T, hTm, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨U, g', hh, hg', rfl, w, hw⟩` from `hTs V g hg`. Take `⟨c, hc⟩` from `hSs U g' hg'`. Establish `h0 : Sec.res g' s = 0`.
+
+Establish `e1 : Sec.res w (Sec.res g' s) = 0`. Rewrite using `[← res_comp]`. Conclude with `h ⟨w ≫ g', by rw [Category.assoc]; exact hw⟩`. Rewrite `e1`, the goal using `[hc]`. Rewrite `e1` using `[res_nsmul, (hT (l ^ j) 0).2.2]`.
+
+Take `⟨m, rfl⟩` from `(hT (l ^ j) 0).2.1 (S k) _ c e1`. Rewrite using `[mul_comm]`. Use `first`. Consider the case `(rw [mul_nsmul, q_nsmul, nsmul_zero])`. Consider the case `(rw [mul_nsmul', q_nsmul, nsmul_zero])`.
+
+Consider the case `(rw [mul_nsmul', q_nsmul, smul_zero])`. Consider the case `(rw [mul_nsmul, q_nsmul, smul_zero])`. Rewrite using `[res_comp, h0, res_zero', res_zero']`.
+-/
 theorem etale_tate_twist_zero_section_eq_zero_of_vanishing_at_points (hT : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc) (hC : PtCov) (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [IsAlgClosed k]
     (hl : (l : k) ≠ 0) (j : ℕ) {X : Scheme.{0}} (p : X ⟶ S k) (hp : IsProper p) (s : Sec (tw (l ^ j) 0) X)
     (h : ∀ y : Pt p, Sec.res y.1 s = 0) : s = 0 := by
@@ -65,6 +91,9 @@ theorem etale_tate_twist_zero_section_eq_zero_of_vanishing_at_points (hT : Later
       | (rw [mul_nsmul, q_nsmul, smul_zero])
   rw [res_comp, h0, res_zero', res_zero']
 
+/- English proof (translation)
+Introduce `l _ k _ _ hl j X p hp s`. Conclude with `⟨etale_tate_twist_zero_section_eq_zero_of_vanishing_at_points hT hC l k hl j p hp s, hK l k hl j p hp s⟩`.
+-/
 theorem tateTwistSections_determinedByPoints_of_constant (hT : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc) (hC : PtCov) (hK : EtaleTateTwistSectionConstantOnPointsOfConnectedProper) : EtaleTateTwistSectionsDeterminedByPointsOfProper := by
   intro l _ k _ _ hl j X p hp s
   exact ⟨etale_tate_twist_zero_section_eq_zero_of_vanishing_at_points hT hC l k hl j p hp s, hK l k hl j p hp s⟩

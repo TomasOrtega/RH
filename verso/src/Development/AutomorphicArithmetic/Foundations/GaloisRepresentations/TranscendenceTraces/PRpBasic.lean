@@ -6,10 +6,16 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ImageCochainExists
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+The claim follows from `map_zsmul (CohomologyClass.mkAddMonoidHom K L n) d a`.
+-/
 private theorem cohomologyClass_mk_zsmul {R : Type} [CommRing R] {K L : Cx R} {n : ℤ} (d : ℤ) (a : Cocycle K L n) :
     CohomologyClass.mk (d • a) = d • CohomologyClass.mk a :=
   map_zsmul (CohomologyClass.mkAddMonoidHom K L n) d a
 
+/- English proof (translation)
+Rewrite using `[Cocycle.coe_add]`. Conclude with `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).1 _ _ 0 n h0 X (𝟙 X)).1`.
+-/
 private theorem ev_cocycle_add {R : Type} [CommRing R] (I : Cx R) (X : Scheme) (n : ℤ) (h0 : -((0 : ℕ) : ℤ) + n = n)
     (α β : Cocycle ((chains R).obj (sch.obj X)) I n) :
     ev ((α + β : Cocycle ((chains R).obj (sch.obj X)) I n) : Cochain ((chains R).obj (sch.obj X)) I n) 0 n h0 X (𝟙 X) =
@@ -18,6 +24,9 @@ private theorem ev_cocycle_add {R : Type} [CommRing R] (I : Cx R) (X : Scheme) (
   rw [Cocycle.coe_add]
   exact ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).1 _ _ 0 n h0 X (𝟙 X)).1
 
+/- English proof (translation)
+Rewrite using `[Cocycle.coe_smul]`. Conclude with `((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).1 _ 0 0 n h0 X (𝟙 X)).2.2.2 d`.
+-/
 private theorem ev_cocycle_zsmul {R : Type} [CommRing R] (I : Cx R) (X : Scheme) (n : ℤ) (h0 : -((0 : ℕ) : ℤ) + n = n)
     (d : ℤ) (α : Cocycle ((chains R).obj (sch.obj X)) I n) :
     ev ((d • α : Cocycle ((chains R).obj (sch.obj X)) I n) : Cochain ((chains R).obj (sch.obj X)) I n) 0 n h0 X (𝟙 X) =
@@ -25,6 +34,17 @@ private theorem ev_cocycle_zsmul {R : Type} [CommRing R] (I : Cx R) (X : Scheme)
   rw [Cocycle.coe_smul]
   exact ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)).1 _ 0 0 n h0 X (𝟙 X)).2.2.2 d
 
+/- English proof (translation)
+Introduce `R _ I X n`. Establish `ev_lin` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := sch.obj X) (I := I) (n := n)`. Establish `key` using `fun (α : Cocycle ((chains R).obj (sch.obj X)) I n) => (GlobalTheory.T.cocycle_ev_d_eq_zero_and_mk_eq_zero_iff R X I (n - 1) n (n + 1) (by ring) rfl).2 α`. Establish `h0 : -((0 : ℕ) : ℤ) + n = n` using `by simp`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective x`. Conclude with `⟨_, α, rfl, rfl⟩`. Introduce and unpack `x a ⟨α, -, rfl⟩`. Conclude with `(key α).1`.
+
+Introduce and unpack `x x' a a' ⟨α, rfl, ha⟩ ⟨β, rfl, hb⟩`. Substitute `ha hb` using the available equality. Establish `hiff : CohomologyClass.mk α = CohomologyClass.mk β ↔ ∃ y, Sec.map (I.d (n - 1) n) y = ev (α : Cochain ((chains R).obj (sch.obj X)) I n) 0 n h0 X (𝟙 X) - ev (β : Cochain ((chains R).obj (sch.obj X)) I n) 0 n h0 X (𝟙 X)`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, (key (α - β)).2, Cocycle.coe_sub, (ev_lin.1 (α : Cochain _ I n) β 0 n h0 X (𝟙 X)).2.1]`. Use `⟨hiff, fun h => hiff.2 ⟨0, ?_⟩, ⟨α + β, CohomologyClass.mk_add α β, ev_cocycle_add I X n h0 α β⟩, fun d => ⟨d • α, cohomologyClass_mk_zsmul d α, ev_cocycle_zsmul I X n h0 d α⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h, sub_self]`. Conclude with `map_zero _`. Introduce and unpack `Y f x a ⟨α, rfl, rfl⟩`. Use `⟨zcomp (Cocycle.ofHom ((chains R).map (sch.map f))) α (zero_add n), rfl, ?_⟩` and prove the remaining obligations. Establish `h1` using `ev_lin.2.2.2.1 (sch.map f) (α : Cochain _ I n) 0 n h0 Y (𝟙 Y)`.
+
+Establish `h2` using `ev_lin.2.1 (α : Cochain _ I n) 0 n h0 Y X f (𝟙 X)`. Conclude with `h1.trans h2.symm`. Introduce and unpack `R' _ J ρ x a ⟨α, rfl, rfl⟩`. Take `⟨β, hβ⟩` from `SemiMap.image_exists ρ (sch.obj X) n α`. Conclude with `⟨β, (SemiMap.op_spec ρ (sch.obj X) n α β hβ).symm, hβ 0 n h0 X (𝟙 X)⟩`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.rpBasic_of :
     RpBasic := by
   intro R _ I X n

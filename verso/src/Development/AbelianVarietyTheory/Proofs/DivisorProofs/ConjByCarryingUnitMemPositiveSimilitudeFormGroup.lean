@@ -5,6 +5,19 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ G P B y s hs hc hβ`. Use `⟨?_, hc⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((y⁻¹ * P.γ * y : G.Cˣ) : G.C) * B * sh G ((y⁻¹ * P.γ * y : G.Cˣ) : G.C) = algebraMap ℚ G.C (P.c : ℚ) * B`. Establish `hmul : ∀ a b : G.C, sh G (a * b) = sh G b * sh G a`. Introduce `a b`.
+
+Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`. Establish `e : sh G y * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1`. Rewrite using `[← hmul, Units.inv_mul]`. Simplify using `[sh]`. Establish `hs0 : s ≠ 0` using `hs.ne'`.
+
+Establish `hβ' : (P.β : G.C) = s • ((y : G.C) * B * sh G y)` using `by rw [hβ, Algebra.smul_def]`. Establish `hY : (y : G.C) * B * sh G y = s⁻¹ • (P.β : G.C)`. Rewrite using `[hβ', smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Establish `hsim : (P.γ : G.C) * P.β * sh G P.γ = (P.c : ℚ) • (P.β : G.C)`. Rewrite using `[P.sim, Algebra.smul_def]`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, hmul, hmul, ← Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = s⁻¹ • (((y⁻¹ : G.Cˣ) : G.C) * ((P.γ : G.C) * P.β * sh G P.γ) * sh G ((y⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[hY]`.
+
+Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Use `_ = (s⁻¹ * (P.c : ℚ)) • (((y⁻¹ : G.Cˣ) : G.C) * (P.β : G.C) * sh G ((y⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[hsim, mul_smul]`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Use `_ = (s⁻¹ * (P.c : ℚ) * s) • ((((y⁻¹ : G.Cˣ) : G.C) * y) * B * (sh G y * sh G ((y⁻¹ : G.Cˣ) : G.C))) := by`.
+
+Rewrite using `[hβ', mul_smul (s⁻¹ * (P.c : ℚ)) s]`. Simplify using `only [mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `_ = (P.c : ℚ) • (B : G.C) := by`. Rewrite using `[Units.inv_mul, e, one_mul, mul_one, mul_comm (s⁻¹) _, mul_assoc, inv_mul_cancel₀ hs0, mul_one]`.
+-/
 theorem pair_conj_mem_grp : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (B y : G.Cˣ) (s : ℚ), 0 < s → 0 < ((P.c : ℚˣ) : ℚ) → (P.β : G.C) = algebraMap ℚ G.C s * (y * B * sh G y) → ((y⁻¹ * P.γ * y, P.c) : G.Cˣ × ℚˣ) ∈ grp G B := by
   intro p _ G P B y s hs hc hβ
   refine ⟨?_, hc⟩

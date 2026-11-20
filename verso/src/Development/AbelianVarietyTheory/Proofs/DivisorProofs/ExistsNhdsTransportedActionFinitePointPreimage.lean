@@ -18,6 +18,21 @@ namespace GlobalTheory.WeilTransNbhd
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hS' : S ∈ 𝓝 (fun _ : κ => (0 : FiniteAdeleRing (𝓞 F) F))` using `hS`. Rewrite `hS'` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `hS'`. Establish `hO : (⋂ i, t i) ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)` using `Filter.iInter_mem.2 ht`. Establish `hbox : ∀ u : κ → FiniteAdeleRing (𝓞 F) F, (∀ i, u i ∈ ⋂ i, t i) → u ∈ S` using `fun u hu => hsub fun i _ => Set.mem_iInter.1 (hu i) i`.
+
+Take `⟨N, hN, hNO⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hO`. Set `c : FiniteAdeleRing (𝓞 F) F` to `algebraMap F _ ((N : F)⁻¹)`. Establish `hcN : (N : FiniteAdeleRing (𝓞 F) F) * c = 1`. Rewrite using `[← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)) N, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN.ne'), map_one]`. Establish `hNc : c * (N : FiniteAdeleRing (𝓞 F) F) = 1` using `by rw [mul_comm]; exact hcN`.
+
+Set `h : (κ → FiniteAdeleRing (𝓞 F) F) ≃ₜ (κ → FiniteAdeleRing (𝓞 F) F)` to `{ toFun := fun u i => c * u i invFun := fun u i => (N : FiniteAdeleRing (𝓞 F) F) * u i left_inv := fun u => funext fun i => by show (N : FiniteAdeleRing (𝓞 F) F) * (c * u i) = u i`. Rewrite using `[← mul_assoc, hcN, one_mul]`. Use `right_inv := fun u => funext fun i => by show c * ((N : FiniteAdeleRing (𝓞 F) F) * u i) = u i`. Rewrite using `[← mul_assoc, hNc, one_mul]`. Use `continuous_toFun := continuous_pi fun i => continuous_const.mul (continuous_apply i)`.
+
+Use `continuous_invFun := continuous_pi fun i => continuous_const.mul (continuous_apply i) }`. Set `φ : (κ → FiniteAdeleRing (𝓞 F) F) →+ (κ → FiniteAdeleRing (𝓞 F) F)` to `{ toFun := fun u i => c * u i map_zero' := by funext i; exact mul_zero c map_add' := fun u w => by funext i; exact mul_add c (u i) (w i) }`. Set `U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)` to `(AddSubgroup.pi Set.univ fun _ => (Formalism.UG.intAd F).toAddSubgroup).comap φ`. Establish `hUset : (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) = h ⁻¹' Set.univ.pi fun _ => (Formalism.UG.intAd F : Set (FiniteAdeleRing (𝓞 F) F))` using `rfl`. Establish `hint_c : IsCompact (Formalism.UG.intAd F : Set (FiniteAdeleRing (𝓞 F) F))` using `Formalism.L2.Col.rlt_isCompact_intAd`.
+
+Establish `hint_o : IsOpen (Formalism.UG.intAd F : Set (FiniteAdeleRing (𝓞 F) F))` using `Formalism.L2.SG.Pf.top_isOpen_intAd F`. Use `⟨U, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hUset]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => hint_o).preimage h.continuous`. Rewrite using `[hUset]`.
+
+Conclude with `h.isCompact_preimage.2 (isCompact_univ_pi fun _ => hint_c)`. Introduce `u hu`. Use `hbox u fun i => ?_` and prove the remaining obligations. Establish `hi : c * u i ∈ Formalism.UG.intAd F` using `hu i (Set.mem_univ i)`. Use `hNO (c * u i) hi` as an intermediate fact.
+
+Rewrite `this` using `[nsmul_eq_mul, ← mul_assoc, hcN, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_compact_open_subgroup (κ : Type) [Fintype κ] {S : Set (κ → FiniteAdeleRing (𝓞 F) F)}
     (hS : S ∈ 𝓝 0) : ∃ U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F), IsOpen (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) ∧
       IsCompact (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) ∧ (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) ⊆ S := by
@@ -68,6 +83,11 @@ def finIdem : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) 
 
 variable {F}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : InfiniteAdeleRing F) * (w i).1 = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ((0 : κ → mixedEmbedding.mixedSpace F) i)`. Rewrite using `[zero_mul, Pi.zero_apply, map_zero]`. Use `show (1 : FiniteAdeleRing (𝓞 F) F) * (w i).2 = (w i).2`.
+
+Conclude with `one_mul _`.
+-/
 theorem finIdem_smul_eq {κ : Type} (w : κ → AF F) :
     finIdem F • w = GlobalTheory.WeilCont.adeleJoin F 0 (fun i => (w i).2) := by
   funext i
@@ -77,10 +97,16 @@ theorem finIdem_smul_eq {κ : Type} (w : κ → AF F) :
   · show (1 : FiniteAdeleRing (𝓞 F) F) * (w i).2 = (w i).2
     exact one_mul _
 
+/- English proof (translation)
+The claim follows from `finIdem_smul_eq _`.
+-/
 theorem finIdem_smul_adeleJoin {κ : Type} (x : κ → FiniteAdeleRing (𝓞 F) F) :
     finIdem F • GlobalTheory.WeilCont.adeleJoin F 0 x = GlobalTheory.WeilCont.adeleJoin F 0 x :=
   finIdem_smul_eq _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ((0 : κ → mixedEmbedding.mixedSpace F) i) = 0`. Rewrite using `[Pi.zero_apply, map_zero]`.
+-/
 theorem adeleJoin_zero_zero {κ : Type} :
     GlobalTheory.WeilCont.adeleJoin F (0 : κ → mixedEmbedding.mixedSpace F) 0 = 0 := by
   funext i
@@ -88,6 +114,9 @@ theorem adeleJoin_zero_zero {κ : Type} :
   show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ((0 : κ → mixedEmbedding.mixedSpace F) i) = 0
   rw [Pi.zero_apply, map_zero]
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => (continuous_const.prodMk (continuous_apply i) : Continuous fun x : κ → FiniteAdeleRing (𝓞 F) F => (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ((0 : κ → mixedEmbedding.mixedSpace F) i), x i) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))`.
+-/
 theorem continuous_adeleJoin_zero {κ : Type} :
     Continuous fun x : κ → FiniteAdeleRing (𝓞 F) F => GlobalTheory.WeilCont.adeleJoin F 0 x :=
   continuous_pi fun i => (continuous_const.prodMk (continuous_apply i) :
@@ -107,12 +136,20 @@ namespace GlobalTheory.WeilTransNbhd
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Unfold `actAB`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem actAB_smul (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     {JA : Matrix α α (AF F ⊗[F] E)} {JB : Matrix β β (AF F ⊗[F] E)} (p : UG (cA σ) JA × UG (cA σ) JB) (r : AF F)
     (X : Matrix α β (AF F ⊗[F] E)) : actAB (cA σ) p (r • X) = r • actAB (cA σ) p X := by
   unfold actAB
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Unfold `actAB`. Establish `h1 : ((p.1 : GL α (AF F ⊗[F] E)) : Matrix α α (AF F ⊗[F] E)) * (((p⁻¹).1 : GL α (AF F ⊗[F] E)) : Matrix α α (AF F ⊗[F] E)) = 1` using `by show ((p.1 : GL α (AF F ⊗[F] E)) : Matrix α α (AF F ⊗[F] E)) * (((p.1)⁻¹ : GL α (AF F ⊗[F] E)) : Matrix α α (AF F ⊗[F] E)) = 1`. Conclude with `Units.mul_inv _`. Establish `h2 : (((p⁻¹).2 : GL β (AF F ⊗[F] E)) : Matrix β β (AF F ⊗[F] E))ᵀ * ((p.2 : GL β (AF F ⊗[F] E)) : Matrix β β (AF F ⊗[F] E))ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul]`.
+
+Use `show ((p.2 : GL β (AF F ⊗[F] E)) * ((p.2)⁻¹ : GL β (AF F ⊗[F] E)) : Matrix β β (AF F ⊗[F] E))ᵀ = 1`. Rewrite using `[Units.mul_inv, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = X := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem actAB_mul_inv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     {JA : Matrix α α (AF F ⊗[F] E)} {JB : Matrix β β (AF F ⊗[F] E)} (p : UG (cA σ) JA × UG (cA σ) JB)
     (X : Matrix α β (AF F ⊗[F] E)) : actAB (cA σ) p (actAB (cA σ) p⁻¹ X) = X := by
@@ -129,6 +166,27 @@ theorem actAB_mul_inv (σ : E →ₐ[F] E) {α β : Type} [Fintype α] [Decidabl
         simp only [Matrix.mul_assoc]
     _ = X := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a b JA JB ξ κ _ co L₁ L₂ hL₁ hL₂ p0`. Use `haveI hmt : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin a) (Fin b) (AF F ⊗[F] E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin a → Fin b → AF F ⊗[F] E))`. Use `haveI : ContinuousSMul (AF F) (Matrix (Fin a) (Fin b) (AF F ⊗[F] E)) := inferInstanceAs (ContinuousSMul (AF F) (Fin a → Fin b → AF F ⊗[F] E))`.
+
+Establish `hce : Continuous co.e` using `IsModuleTopology.continuous_of_linearMap co.e.toLinearMap`. Establish `hcs : Continuous co.e.symm` using `IsModuleTopology.continuous_of_linearMap co.e.symm.toLinearMap`. Set `Ψ : (UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) × ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)) → (κ → AF F) × (κ → AF F)` to `fun q => co.e (actAB (cA σ) q.1⁻¹ (co.e.symm (GlobalTheory.WeilCont.adeleJoin F 0 q.2.1, GlobalTheory.WeilCont.adeleJoin F 0 q.2.2)))`. Set `Φ : (UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) × ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)) → (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)` to `fun q => (fun i => ((Ψ q).1 i).2, fun i => ((Ψ q).2 i).2)`. Establish `hinv : Continuous fun q : (UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) × ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)) => q.1⁻¹` using `continuous_fst.inv`.
+
+Establish `hm1 : Continuous fun q : (UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) × ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)) => (((q.1⁻¹).1 : GL (Fin a) (AF F ⊗[F] E)) : Matrix (Fin a) (Fin a) (AF F ⊗[F] E))` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_fst.comp hinv))`. Establish `hm2 : Continuous fun q : (UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) × ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)) => (((q.1⁻¹).2 : GL (Fin b) (AF F ⊗[F] E)) : Matrix (Fin b) (Fin b) (AF F ⊗[F] E))` using `Units.continuous_val.comp (continuous_subtype_val.comp (continuous_snd.comp hinv))`. Establish `hv : Continuous fun q : (UG (cA σ) (incM F JA) × UG (cA σ) (incM F JB)) × ((κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)) => co.e.symm (GlobalTheory.WeilCont.adeleJoin F 0 q.2.1, GlobalTheory.WeilCont.adeleJoin F 0 q.2.2)` using `hcs.comp ((continuous_adeleJoin_zero.comp (continuous_fst.comp continuous_snd)).prodMk (continuous_adeleJoin_zero.comp (continuous_snd.comp continuous_snd)))`. Establish `hΨ : Continuous Ψ` using `hce.comp ((hm1.matrix_mul hv).matrix_mul hm2.matrix_transpose)`. Establish `hΦ : Continuous Φ` using `(continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_fst.comp hΨ))).prodMk (continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_snd.comp hΨ)))`.
+
+Establish `hΦ0 : Φ (p0, (0, 0)) = (0, 0)`. Establish `: Ψ (p0, (0, 0)) = 0`. Simplify using `only [Ψ, adeleJoin_zero_zero]`. Rewrite using `[show ((0 : κ → AF F), (0 : κ → AF F)) = 0 from rfl, map_zero]`. Rewrite using `[show actAB (cA σ) p0⁻¹ (0 : Matrix (Fin a) (Fin b) (AF F ⊗[F] E)) = 0 by`.
+
+Unfold `actAB`. Rewrite using `[Matrix.mul_zero, Matrix.zero_mul], map_zero]`. Simplify using `only [Φ, this]`. Both sides reduce to the same expression. Establish `hopen : IsOpen (Φ ⁻¹' ((L₁ : Set (κ → FiniteAdeleRing (𝓞 F) F)) ×ˢ (L₂ : Set (κ → FiniteAdeleRing (𝓞 F) F))))` using `(hL₁.prod hL₂).preimage hΦ`.
+
+Establish `hmem : (p0, ((0 : κ → FiniteAdeleRing (𝓞 F) F), (0 : κ → FiniteAdeleRing (𝓞 F) F))) ∈ Φ ⁻¹' ((L₁ : Set (κ → FiniteAdeleRing (𝓞 F) F)) ×ˢ (L₂ : Set (κ → FiniteAdeleRing (𝓞 F) F)))`. Rewrite using `[Set.mem_preimage, hΦ0]`. Conclude with `⟨L₁.zero_mem, L₂.zero_mem⟩`. Take `⟨N, hN, V, hV, hNV⟩` from `mem_nhds_prod_iff.1 (hopen.mem_nhds hmem)`. Rewrite `hV` using `[← Prod.zero_eq_mk, nhds_prod_eq]`.
+
+Take `⟨V₁, hV₁, V₂, hV₂, hV12⟩` from `mem_prod_iff.1 hV`. Take `⟨L₁', hL₁'o, hL₁'c, hL₁'s⟩` from `exists_compact_open_subgroup F κ hV₁`. Take `⟨L₂', hL₂'o, -, hL₂'s⟩` from `exists_compact_open_subgroup F κ hV₂`. Use `⟨N, hN, L₁', L₂', hL₁'o, hL₁'c, hL₂'o, fun p hp x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hin` using `hNV (Set.mk_mem_prod hp (hV12 (Set.mk_mem_prod (hL₁'s hx) (hL₂'s hy))))`.
+
+Use `⟨(Φ (p, (x, y))).1, hin.1, (Φ (p, (x, y))).2, hin.2, ?_⟩` and prove the remaining obligations. Establish `hfin : (GlobalTheory.WeilCont.adeleJoin F 0 (Φ (p, (x, y))).1, GlobalTheory.WeilCont.adeleJoin F 0 (Φ (p, (x, y))).2) = Ψ (p, (x, y))`. Establish `e1 : Ψ (p, (x, y)) = finIdem F • Ψ (p, (x, y))`. Simplify using `only [Ψ]`. Use `conv_lhs => rw [← finIdem_smul_adeleJoin x, ← finIdem_smul_adeleJoin y, ← Prod.smul_mk, map_smul, actAB_smul, map_smul]`.
+
+Rewrite using `[e1]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.smul_fst, finIdem_smul_eq]`. Rewrite using `[Prod.smul_snd, finIdem_smul_eq]`. Rewrite using `[hfin]`.
+
+Simplify using `only [Ψ, LinearEquiv.symm_apply_apply, actAB_mul_inv, LinearEquiv.apply_symm_apply]`.
+-/
 theorem exists_nhds_finite_preimage : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (a b : ℕ) (JA : Matrix (Fin a) (Fin a) E) (JB : Matrix (Fin b) (Fin b) E) (ξ : AF F ⊗[F] E) (κ : Type) [Fintype κ]
     (co : Darboux (symp (cA σ) ξ (incM F JA) (incM F JB)) κ) (L₁ L₂ : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)),

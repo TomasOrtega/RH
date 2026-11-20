@@ -9,6 +9,9 @@ section Germ
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Take `⟨U, hU, hU0⟩` from `isDiscrete_iff_forall_mem_exists_isOpen.1 hΓ 0 Γ.zero_mem`. Establish `h0 : (0 : F) ∈ U` using `(hU0.ge rfl).1`. Use `filter_upwards [hf (hU.mem_nhds h0), hm] with a h1 h2`. Conclude with `hU0.le ⟨h1, h2⟩`.
+-/
 theorem eventually_eq_zero_of_tendsto_of_mem_discrete {α F : Type*} [AddCommGroup F]
     [TopologicalSpace F] {Γ : AddSubgroup F} (hΓ : IsDiscrete (Γ : Set F)) {l : Filter α}
     {f : α → F} (hf : Tendsto f l (𝓝 0)) (hm : ∀ᶠ a in l, f a ∈ Γ) : ∀ᶠ a in l, f a = 0 := by
@@ -19,6 +22,13 @@ theorem eventually_eq_zero_of_tendsto_of_mem_discrete {α F : Type*} [AddCommGro
 
 variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 
+/- English proof (translation)
+Establish `ht : Tendsto g (𝓝 0) (𝓝 0)` using `by simpa [h0] using hc.tendsto`. Establish `hadd : Tendsto (fun p : E × E ↦ p.1 + p.2) (𝓝 0) (𝓝 0)`. Simplify using `using continuous_add.tendsto (0 : E × E)`. Establish `h1 : Tendsto (fun p : E × E ↦ g (p.1 + p.2) - g p.1 - g p.2) (𝓝 0) (𝓝 0)`. Simplify using `using ((ht.comp hadd).sub (ht.comp (continuous_fst.tendsto (0 : E × E)))).sub (ht.comp (continuous_snd.tendsto (0 : E × E)))`.
+
+Take `⟨G, hG⟩` from `exists_addMonoidHom_eventuallyEq (g := g) <| by filter_upwards [eventually_eq_zero_of_tendsto_of_mem_discrete hΓ h1 hg] with p hp`. Rewrite `hp` using `[sub_sub, sub_eq_zero]`. Conclude with `hp`. Use `replace hG := hG.symm`. Establish `hGc : Continuous G` using `continuous_of_continuousAt_zero G (hc.congr hG)`.
+
+Use `⟨G.toRealLinearMap hGc, hG, fun L hL ↦ ?_⟩` and prove the remaining obligations. Establish `: (L : E →+ F) = G` using `addMonoidHom_eq_of_eventuallyEq (hL.symm.trans hG)`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`.
+-/
 theorem existsUnique_realLinear_of_eventually_add_mod_discrete {Γ : AddSubgroup F}
     (hΓ : IsDiscrete (Γ : Set F)) {g : E → F} (hc : ContinuousAt g 0) (h0 : g 0 = 0)
     (hg : ∀ᶠ p : E × E in 𝓝 0, g (p.1 + p.2) - g p.1 - g p.2 ∈ Γ) :
@@ -48,12 +58,18 @@ variable {𝕜 : Type*} [NontriviallyNormedField 𝕜] [NormedAlgebra ℝ 𝕜]
   {V W : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedSpace 𝕜 V] [IsScalarTower ℝ 𝕜 V]
   [NormedAddCommGroup W] [NormedSpace ℝ W] [NormedSpace 𝕜 W] [IsScalarTower ℝ 𝕜 W]
 
+/- English proof (translation)
+The claim follows from `((L.hasFDerivAt.add_const c).congr_of_eventuallyEq hL).unique (hd.hasFDerivAt.restrictScalars ℝ)`.
+-/
 theorem realLinear_eq_fderiv_of_eventuallyEq {g : V → W} (hd : DifferentiableAt 𝕜 g 0)
     {L : V →L[ℝ] W} {c : W} (hL : ∀ᶠ z in 𝓝 0, g z = L z + c) :
     L = (fderiv 𝕜 g 0).restrictScalars ℝ :=
   ((L.hasFDerivAt.add_const c).congr_of_eventuallyEq hL).unique
     (hd.hasFDerivAt.restrictScalars ℝ)
 
+/- English proof (translation)
+Take `⟨L, hL, -⟩` from `existsUnique_realLinear_of_eventually_add_mod_discrete hΓ hd.continuousAt h0 hg`. Use `realLinear_eq_fderiv_of_eventuallyEq hd (L := L) (c := 0) (hL.mono fun z hz ↦ by rw [hz, add_zero])` as an intermediate fact. Rewrite `hL` using `[this]`. Conclude with `hL`.
+-/
 theorem eventuallyEq_fderiv_of_eventually_add_mod_discrete {Γ : AddSubgroup W}
     (hΓ : IsDiscrete (Γ : Set W)) {g : V → W} (hd : DifferentiableAt 𝕜 g 0) (h0 : g 0 = 0)
     (hg : ∀ᶠ p : V × V in 𝓝 0, g (p.1 + p.2) - g p.1 - g p.2 ∈ Γ) :
@@ -71,17 +87,28 @@ section Countable
 
 variable {M N : Type*} [AddCommGroup M] [Module ℝ M] [AddCommGroup N] [Module ℝ N]
 
+/- English proof (translation)
+Use `subsingleton_of_forall_eq 0 fun v ↦ by_contra fun hv ↦ ?_` and prove the remaining obligations. Conclude with `not_countable (α := ℝ) (smul_left_injective ℝ hv).countable`.
+-/
 theorem subsingleton_of_countable_realModule (M : Type*) [AddCommGroup M] [Module ℝ M]
     [Countable M] : Subsingleton M := by
   refine subsingleton_of_forall_eq 0 fun v ↦ by_contra fun hv ↦ ?_
   exact not_countable (α := ℝ) (smul_left_injective ℝ hv).countable
 
+/- English proof (translation)
+Establish `: Countable (LinearMap.ker L)` using `h`. Use `subsingleton_of_countable_realModule (LinearMap.ker L)` as an intermediate fact. Conclude with `LinearMap.ker_eq_bot.1 (Submodule.eq_bot_of_subsingleton)`.
+-/
 theorem realLinear_injective_of_countable_ker (L : M →ₗ[ℝ] N) (h : {x | L x = 0}.Countable) :
     Function.Injective L := by
   have : Countable (LinearMap.ker L) := h
   have := subsingleton_of_countable_realModule (LinearMap.ker L)
   exact LinearMap.ker_eq_bot.1 (Submodule.eq_bot_of_subsingleton)
 
+/- English proof (translation)
+Establish `: Countable Γ` using `hΓ`. Establish `: Countable (N ⧸ LinearMap.range L)`. Use `Function.Surjective.countable (f := fun γ : Γ ↦ (LinearMap.range L).mkQ γ) fun q ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ q`. Take `⟨x, hx⟩` from `h y`.
+
+Conclude with `⟨⟨_, hx⟩, by simp [Submodule.Quotient.mk_eq_zero]⟩`. Use `subsingleton_of_countable_realModule (N ⧸ LinearMap.range L)` as an intermediate fact. Conclude with `LinearMap.range_eq_top.1 (Submodule.Quotient.subsingleton_iff.1 this)`.
+-/
 theorem realLinear_surjective_of_mod_countable (L : M →ₗ[ℝ] N) {Γ : Set N} (hΓ : Γ.Countable)
     (h : ∀ y, ∃ x, y - L x ∈ Γ) : Function.Surjective L := by
   have : Countable Γ := hΓ
@@ -100,6 +127,11 @@ section Lift
 variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
   [NormedSpace ℝ F] {A : Type*} [AddCommGroup A]
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `ht : Tendsto (fun t : ℝ ↦ t • (L x - L' x)) (𝓝[≠] 0) (𝓝 0)`. Establish `: Continuous fun t : ℝ ↦ t • (L x - L' x)` using `by fun_prop`. Simplify using `using (this.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `h0` using `eventually_eq_zero_of_tendsto_of_mem_discrete hΓ ht (Eventually.of_forall fun t ↦ by simpa [smul_sub] using h (t • x))`.
+
+Take `⟨t, ht0, ht⟩` from `(h0.and self_mem_nhdsWithin).exists`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 ht0).resolve_left ht)`.
+-/
 theorem realLinear_eq_of_sub_mem_discrete {M : Type*} [AddCommGroup M] [Module ℝ M]
     {Γ : AddSubgroup F} (hΓ : IsDiscrete (Γ : Set F)) {L L' : M →ₗ[ℝ] F}
     (h : ∀ x, L x - L' x ∈ Γ) : L = L' := by
@@ -112,6 +144,11 @@ theorem realLinear_eq_of_sub_mem_discrete {M : Type*} [AddCommGroup M] [Module �
   obtain ⟨t, ht0, ht⟩ := (h0.and self_mem_nhdsWithin).exists
   exact sub_eq_zero.1 ((smul_eq_zero.1 ht0).resolve_left ht)
 
+/- English proof (translation)
+Establish `h0 : ex' (g 0) = 0` using `by simpa using hg.self_of_nhds`. Establish `ht : Tendsto (fun z ↦ g z - (L z + g 0)) (𝓝 0) (𝓝 0)`. Simplify using `using hc.tendsto.sub ((L.continuous.tendsto 0).add_const (g 0))`. Use `eventually_eq_zero_of_tendsto_of_mem_discrete hker ht <| by filter_upwards [hg] with z hz` as an intermediate fact. Simplify using `[AddMonoidHom.mem_ker, hz, hL, h0]`.
+
+Use `filter_upwards [this] with z hz using sub_eq_zero.1 hz`.
+-/
 theorem eventually_eq_lift_add {ex : E →+ A} {ex' : F →+ A}
     (hker : IsDiscrete (ex'.ker : Set F)) {g : E → F} (hc : ContinuousAt g 0)
     (hg : ∀ᶠ z in 𝓝 0, ex' (g z) = ex z) {L : E →L[ℝ] F} (hL : ∀ z, ex' (L z) = ex z) :
@@ -124,6 +161,13 @@ theorem eventually_eq_lift_add {ex : E →+ A} {ex' : F →+ A}
     simp [AddMonoidHom.mem_ker, hz, hL, h0]
   filter_upwards [this] with z hz using sub_eq_zero.1 hz
 
+/- English proof (translation)
+Establish `h0 : ex' (g 0) = 0` using `by simpa using hg.self_of_nhds`. Establish `hadd : Tendsto (fun p : E × E ↦ p.1 + p.2) (𝓝 0) (𝓝 0)`. Simplify using `using continuous_add.tendsto (0 : E × E)`. Take `⟨L, hL, -⟩` from `existsUnique_realLinear_of_eventually_add_mod_discrete hker (g := fun z ↦ g z - g 0) (hc.sub continuousAt_const) (sub_self _) <| by filter_upwards [hadd.eventually hg, (continuous_fst.tendsto (0 : E × E)).eventually hg, (continuous_snd.tendsto (0 : E × E)).eventually hg] with p h …`. Simplify using `[AddMonoidHom.mem_ker, h0, h1, h2, h3]`.
+
+Establish `hL' : ex'.comp (L : E →+ F) = ex` using `addMonoidHom_eq_of_eventuallyEq <| by filter_upwards [hL, hg] with z h1 h2`. Express the relevant statement in the definitionally equal form `ex' (L z) = ex z`. Rewrite using `[← h1, map_sub, h0, h2, sub_zero]`. Establish `hL'' : ∀ z, ex' (L z) = ex z` using `fun z ↦ DFunLike.congr_fun hL' z`. Use `⟨L, hL'', fun L' h' ↦ ContinuousLinearMap.coe_injective ?_⟩` and prove the remaining obligations.
+
+Conclude with `realLinear_eq_of_sub_mem_discrete hker fun x ↦ by`. Simplify using `[AddMonoidHom.mem_ker, h', hL'']`.
+-/
 theorem existsUnique_realLinear_lift_of_germ {ex : E →+ A} {ex' : F →+ A}
     (hker : IsDiscrete (ex'.ker : Set F)) {g : E → F} (hc : ContinuousAt g 0)
     (hg : ∀ᶠ z in 𝓝 0, ex' (g z) = ex z) :
@@ -145,6 +189,13 @@ theorem existsUnique_realLinear_lift_of_germ {ex : E →+ A} {ex' : F →+ A}
   exact realLinear_eq_of_sub_mem_discrete hker fun x ↦ by
     simp [AddMonoidHom.mem_ker, h', hL'']
 
+/- English proof (translation)
+Take `⟨U, hU, hU0⟩` from `isDiscrete_iff_forall_mem_exists_isOpen.1 hker 0 ex'.ker.zero_mem`. Take `⟨W, hW, hWU⟩` from `exists_nhds_half_neg (hU.mem_nhds (hU0.ge rfl).1)`. Establish `hinj : InjOn ex' W` using `fun x hx y hy hxy ↦ sub_eq_zero.1 (hU0.le ⟨hWU x hx y hy, by simp [AddMonoidHom.mem_ker, hxy]⟩)`. Establish `hs : ∀ᶠ z in 𝓝 0, Function.invFunOn ex' W (ex' z) = z` using `by filter_upwards [hW] with z hz using hinj.leftInvOn_invFunOn hz`. Establish `h0 : Function.invFunOn ex' W 0 = 0` using `by simpa using hs.self_of_nhds`.
+
+Use `⟨Function.invFunOn ex' W, h0, ?_, hopen ?_, hs⟩` and prove the remaining obligations. Rewrite using `[ContinuousAt, h0]`. Conclude with `(tendsto_map'_iff.2 (tendsto_id.congr' (hs.mono fun z hz ↦ hz.symm))).mono_left hopen`. Express the relevant statement in the definitionally equal form `∀ᶠ a in map ex' (𝓝 0), _`. Rewrite using `[eventually_map]`.
+
+Use `filter_upwards [hs] with z hz`. Rewrite using `[hz]`.
+-/
 theorem exists_local_section_of_isDiscrete_ker {F : Type*} [AddCommGroup F] [TopologicalSpace F]
     [IsTopologicalAddGroup F] [TopologicalSpace A] {ex' : F →+ A}
     (hker : IsDiscrete (ex'.ker : Set F)) (hopen : 𝓝 (0 : A) ≤ map ex' (𝓝 0)) :
@@ -165,6 +216,9 @@ theorem exists_local_section_of_isDiscrete_ker {F : Type*} [AddCommGroup F] [Top
     filter_upwards [hs] with z hz
     rw [hz]
 
+/- English proof (translation)
+Take `⟨s, -, hs, hs', -⟩` from `exists_local_section_of_isDiscrete_ker hker hopen`. Establish `ht : Tendsto ex (𝓝 0) (𝓝 0)` using `by simpa using hc.tendsto`. Conclude with `existsUnique_realLinear_lift_of_germ hker (g := s ∘ ex) (ContinuousAt.comp (by simpa using hs) hc) (ht.eventually hs')`.
+-/
 theorem existsUnique_realLinear_lift [TopologicalSpace A] {ex : E →+ A} {ex' : F →+ A}
     (hker : IsDiscrete (ex'.ker : Set F)) (hopen : 𝓝 (0 : A) ≤ map ex' (𝓝 0))
     (hc : ContinuousAt ex 0) : ∃! L : E →L[ℝ] F, ∀ z, ex' (L z) = ex z := by
@@ -182,12 +236,18 @@ variable {𝕜 : Type*} [NontriviallyNormedField 𝕜] [NormedAlgebra ℝ 𝕜]
   [NormedAddCommGroup W] [NormedSpace ℝ W] [NormedSpace 𝕜 W] [IsScalarTower ℝ 𝕜 W]
   {A : Type*} [AddCommGroup A]
 
+/- English proof (translation)
+The claim follows from `realLinear_eq_fderiv_of_eventuallyEq hd (eventually_eq_lift_add hker hd.continuousAt hg hL)`.
+-/
 theorem realLinear_lift_eq_fderiv {ex : V →+ A} {ex' : W →+ A}
     (hker : IsDiscrete (ex'.ker : Set W)) {g : V → W} (hd : DifferentiableAt 𝕜 g 0)
     (hg : ∀ᶠ z in 𝓝 0, ex' (g z) = ex z) {L : V →L[ℝ] W} (hL : ∀ z, ex' (L z) = ex z) :
     L = (fderiv 𝕜 g 0).restrictScalars ℝ :=
   realLinear_eq_fderiv_of_eventuallyEq hd (eventually_eq_lift_add hker hd.continuousAt hg hL)
 
+/- English proof (translation)
+Take `⟨L, hL, -⟩` from `existsUnique_realLinear_lift_of_germ hker hd.continuousAt hg`. Use `hL z` as an intermediate fact. Rewrite `this` using `[realLinear_lift_eq_fderiv hker hd hg hL]`. Then use the resulting hypothesis.
+-/
 theorem apply_fderiv_eq_of_germ {ex : V →+ A} {ex' : W →+ A}
     (hker : IsDiscrete (ex'.ker : Set W)) {g : V → W} (hd : DifferentiableAt 𝕜 g 0)
     (hg : ∀ᶠ z in 𝓝 0, ex' (g z) = ex z) (z : V) : ex' (fderiv 𝕜 g 0 z) = ex z := by
@@ -195,6 +255,9 @@ theorem apply_fderiv_eq_of_germ {ex : V →+ A} {ex' : W →+ A}
   have := hL z
   rwa [realLinear_lift_eq_fderiv hker hd hg hL] at this
 
+/- English proof (translation)
+Use `⟨fderiv 𝕜 g 0, apply_fderiv_eq_of_germ hker hd hg, fun L hL ↦ ?_⟩` and prove the remaining obligations. Use `realLinear_lift_eq_fderiv hker hd hg (L := L.restrictScalars ℝ) hL` as an intermediate fact. Use extensionality with `z`. Conclude with `DFunLike.congr_fun this z`.
+-/
 theorem existsUnique_linear_lift_of_germ {ex : V →+ A} {ex' : W →+ A}
     (hker : IsDiscrete (ex'.ker : Set W)) {g : V → W} (hd : DifferentiableAt 𝕜 g 0)
     (hg : ∀ᶠ z in 𝓝 0, ex' (g z) = ex z) :
@@ -204,11 +267,23 @@ theorem existsUnique_linear_lift_of_germ {ex : V →+ A} {ex' : W →+ A}
   ext z
   exact DFunLike.congr_fun this z
 
+/- English proof (translation)
+Use `hs.to_subtype` as an intermediate fact. Conclude with `countable_of_Lindelof_of_discrete (X := s)`.
+-/
 theorem countable_of_isDiscrete_finiteDimensional {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] {s : Set E} (hs : IsDiscrete s) : s.Countable := by
   have := hs.to_subtype
   exact countable_of_Lindelof_of_discrete (X := s)
 
+/- English proof (translation)
+Take `⟨L, hL, hu⟩` from `existsUnique_linear_lift_of_germ hk' hd hg`. Establish `hc'` using `countable_of_isDiscrete_finiteDimensional hk'`. Establish `hi : Function.Injective L` using `realLinear_injective_of_countable_ker (L.restrictScalars ℝ).toLinearMap <| hc.mono fun x (hx : L x = 0) ↦ by simp [← hL x, hx]`. Establish `hs : Function.Surjective L` using `realLinear_surjective_of_mod_countable (L.restrictScalars ℝ).toLinearMap hc' fun y ↦ by`. Take `⟨x, hx⟩` from `hr ⟨y, rfl⟩`.
+
+Conclude with `⟨x, by simp [hL, hx]⟩`. Set `e : V ≃ₗ[𝕜] W` to `LinearEquiv.ofBijective L.toLinearMap ⟨hi, hs⟩`. Establish `he : Continuous e.symm` using `(e.restrictScalars ℝ).symm.toLinearMap.continuous_of_finiteDimensional`. Use `⟨⟨e, L.continuous, he⟩, ⟨hL, ?_⟩, fun L' h' ↦ ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+
+Take `⟨x, rfl⟩` from `hs y`. Rewrite using `[AddMonoidHom.mem_ker, hL]`. Conclude with `AddSubgroup.mem_map_iff_mem (f := (L : V →+ W)) hi`. Use `hu (L' : V →L[𝕜] W) h'.1` as an intermediate fact. Use extensionality with `z`.
+
+Conclude with `DFunLike.congr_fun this z`.
+-/
 theorem existsUnique_linearEquiv_lift_of_countable_ker
     [FiniteDimensional ℝ W] {ex : V →+ A} {ex' : W →+ A} (hc : (ex.ker : Set V).Countable)
     (hk' : IsDiscrete (ex'.ker : Set W)) (hr : ex'.range ≤ ex.range) {g : V → W}
@@ -235,6 +310,9 @@ theorem existsUnique_linearEquiv_lift_of_countable_ker
     ext z
     exact DFunLike.congr_fun this z
 
+/- English proof (translation)
+The claim follows from `existsUnique_linearEquiv_lift_of_countable_ker (countable_of_isDiscrete_finiteDimensional hk) hk' hr hd hg`.
+-/
 theorem existsUnique_linearEquiv_of_uniformisations [FiniteDimensional ℝ V]
     [FiniteDimensional ℝ W] {ex : V →+ A} {ex' : W →+ A} (hk : IsDiscrete (ex.ker : Set V))
     (hk' : IsDiscrete (ex'.ker : Set W)) (hr : ex'.range ≤ ex.range) {g : V → W}
@@ -254,16 +332,25 @@ def latticeQuotMap (Λ : Submodule ℤ M) (Λ' : Submodule ℤ N) (h : M →+ N)
   (Λ.mapQ Λ' h.toIntLinearMap hΛ).toAddMonoidHom
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latticeQuotMap_mk (h : M →+ N) (hΛ : ∀ x ∈ Λ, h x ∈ Λ') (x : M) :
     latticeQuotMap Λ Λ' h hΛ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h x) := rfl
 
 variable {φ : M ⧸ Λ →+ N ⧸ Λ'} {h : M →+ N}
 
+/- English proof (translation)
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← hφ, (Submodule.Quotient.mk_eq_zero Λ).2 hx, map_zero]`.
+-/
 theorem map_mem_of_quotient_lift
     (hφ : ∀ x, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h x)) {x : M} (hx : x ∈ Λ) :
     h x ∈ Λ' := by
   rw [← Submodule.Quotient.mk_eq_zero, ← hφ, (Submodule.Quotient.mk_eq_zero Λ).2 hx, map_zero]
 
+/- English proof (translation)
+Rewrite using `[AddMonoidHom.mem_ker, hφ, Submodule.Quotient.mk_eq_zero]`.
+-/
 theorem mk_mem_ker_iff_of_quotient_lift
     (hφ : ∀ x, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h x)) (x : M) :
     Submodule.Quotient.mk x ∈ φ.ker ↔ h x ∈ Λ' := by
@@ -286,6 +373,9 @@ noncomputable def comapQuotEquivKer
       exact (Submodule.Quotient.mk_eq_zero Λ).symm)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comapQuotEquivKer_mk
     (hφ : ∀ x, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h x))
     (x : Λ'.toAddSubgroup.comap h) :
@@ -296,6 +386,9 @@ def quotientLiftRestrict
   h.toIntLinearMap.restrict fun _ hx ↦ map_mem_of_quotient_lift hφ hx
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_quotientLiftRestrict
     (hφ : ∀ x, φ (Submodule.Quotient.mk x) = Submodule.Quotient.mk (h x)) (x : Λ) :
     (quotientLiftRestrict hφ x : N) = h x := rfl
@@ -308,6 +401,9 @@ variable (K : Type*) [DivisionRing K] [CharZero K] {M : Type*} [AddCommGroup M] 
   (Λ : Submodule ℤ M) (n : ℕ) [NeZero n]
 
 omit [NeZero n] in
+/- English proof (translation)
+Rewrite using `[natCast_zsmul, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem natCast_zsmul_eq_smul (x : M) : (n : ℤ) • x = (n : K) • x := by
   rw [natCast_zsmul, Nat.cast_smul_eq_nsmul]
 
@@ -343,6 +439,9 @@ noncomputable def modNEquivTorsion :
       rw [natCast_zsmul_eq_smul K, inv_smul_smul₀ (NeZero.ne (n : K))]))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_modNEquivTorsion_mk (x : Λ) :
     (modNEquivTorsion K Λ n (Submodule.Quotient.mk x) : M ⧸ Λ) =
       Submodule.Quotient.mk ((n : K)⁻¹ • (x : M)) := rfl
@@ -354,6 +453,9 @@ section RealTorus
 variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
   [NormedSpace ℝ F]
 
+/- English proof (translation)
+Establish `: (Λ.mkQ.toAddMonoidHom.ker : Set M) = Λ`. Use extensionality with `x`. Conclude with `Submodule.Quotient.mk_eq_zero Λ`. Rewrite using `[this]`. Conclude with `DiscreteTopology.isDiscrete`.
+-/
 theorem isDiscrete_ker_mkQ {M : Type*} [AddCommGroup M] [TopologicalSpace M] (Λ : Submodule ℤ M)
     [DiscreteTopology Λ] : IsDiscrete (Λ.mkQ.toAddMonoidHom.ker : Set M) := by
   have : (Λ.mkQ.toAddMonoidHom.ker : Set M) = Λ := by

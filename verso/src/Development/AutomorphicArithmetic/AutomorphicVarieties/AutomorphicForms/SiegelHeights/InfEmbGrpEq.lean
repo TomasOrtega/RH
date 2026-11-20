@@ -12,10 +12,16 @@ variable (E : Type) [Field E] [NumberField E] [IsTotallyReal E] (a : ℕ)
 def mixRing : TR.Rinf E ≃+* mixedSpace E := (TR.infEq E).trans (InfiniteAdeleRing.ringEquiv_mixedSpace E)
 
 variable {E} in
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.ringEquivRealOfIsReal w.2).apply_symm_apply (x w.1)`.
+-/
 theorem mixRing_fst (x : TR.Rinf E) (w : {w : InfinitePlace E // w.IsReal}) : (mixRing E x).1 w = x w.1 :=
   (InfinitePlace.Completion.ringEquivRealOfIsReal w.2).apply_symm_apply (x w.1)
 
 variable {E} in
+/- English proof (translation)
+The claim follows from `Prod.ext (funext h) (funext fun w => absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2))`.
+-/
 theorem mixed_ext {x y : mixedSpace E} (h : ∀ w, x.1 w = y.1 w) : x = y :=
   Prod.ext (funext h) (funext fun w => absurd (IsTotallyReal.isReal w.1) (InfinitePlace.not_isReal_iff_isComplex.2 w.2))
 
@@ -25,6 +31,9 @@ def mixEq : TR.Rinf E ≃ₐ[ℝ] mixedSpace E :=
 def matEq : Matrix (Fin a) (Fin a) (TR.Rinf E) ≃ₐ[ℝ] ArchMatrix E a := (mixEq E).mapMatrix
 
 variable {E a} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matEq_apply (x : Matrix (Fin a) (Fin a) (TR.Rinf E)) (i j : Fin a) :
     (matEq E a x : Matrix (Fin a) (Fin a) (mixedSpace E)) i j = mixEq E (x i j) := rfl
 
@@ -41,13 +50,25 @@ def grpEq : GL (Fin a) (TR.Rinf E) ≃* archGroup E a :=
 
 variable {E a}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_lieEq (X : TR.Lie E a) : (lieEq E a X : ArchMatrix E a) = matEq E a (Matrix.of X) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_grpEq (y : GL (Fin a) (TR.Rinf E)) :
     (((grpEq E a y : archGroup E a) : (ArchMatrix E a)ˣ) : ArchMatrix E a) = matEq E a y.val := rfl
 
+/- English proof (translation)
+The claim follows from `map_one (matEq E a)`.
+-/
 theorem lieEq_oneL : (lieEq E a (TR.oneL E a) : ArchMatrix E a) = 1 := map_one (matEq E a)
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `matEq E a (Matrix.of X * Matrix.of Y - Matrix.of Y * Matrix.of X) = _`. Rewrite using `[map_sub, map_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem lieEq_lie (X Y : TR.Lie E a) :
     lieEq E a (TR.toL (Matrix.of X * Matrix.of Y) - TR.toL (Matrix.of Y * Matrix.of X)) = ⁅lieEq E a X, lieEq E a Y⁆ := by
   refine Subtype.ext ?_
@@ -56,6 +77,9 @@ theorem lieEq_lie (X Y : TR.Lie E a) :
   rfl
 
 omit [IsTotallyReal E] in
+/- English proof (translation)
+Use `MonoidHom.ext fun k => (AdelicGLn.prodEquiv E a).injective ?_` and prove the remaining obligations. Rewrite using `[prodEquiv_finEmb]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(map_cornerGL_of_zero (sFin E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (fun _ => rfl) k).symm`. Conclude with `(map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun _ => rfl) k).symm`.
+-/
 theorem finEmb_eq : finEmb E a = finGL E a := by
   refine MonoidHom.ext fun k => (AdelicGLn.prodEquiv E a).injective ?_
   rw [prodEquiv_finEmb]
@@ -63,6 +87,11 @@ theorem finEmb_eq : finEmb E a = finGL E a := by
   · exact (map_cornerGL_of_zero (sFin E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (fun _ => rfl) k).symm
   · exact (map_cornerGL_of_hom (sFin E) (pFin E) (RingHom.id _) (fun _ => rfl) k).symm
 
+/- English proof (translation)
+Use `(AdelicGLn.prodEquiv E a).injective ?_` and prove the remaining obligations. Rewrite using `[prodEquiv_infEmb]`. Use `Prod.ext ?_ (TR.pFin_infGL y).symm` and prove the remaining obligations. Use `Eq.trans ?_ (map_cornerGL_of_hom (TR.sInf E) (RingHom.fst (InfiniteAdeleRing E) (Af E)) (TR.infEq E).toRingHom (fun _ => rfl) y).symm` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+
+Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace E).symm_apply_apply (TR.infEq E (y.val i j))`.
+-/
 theorem infEmb_grpEq (y : GL (Fin a) (TR.Rinf E)) : infEmb E a (grpEq E a y) = TR.infGL E a y := by
   refine (AdelicGLn.prodEquiv E a).injective ?_
   rw [prodEquiv_infEmb]

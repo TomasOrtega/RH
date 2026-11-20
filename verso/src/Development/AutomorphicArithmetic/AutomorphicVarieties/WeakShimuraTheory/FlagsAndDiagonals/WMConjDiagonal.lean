@@ -19,30 +19,63 @@ def Par (X : M4 R) : Prop := ∀ i j, lamW j < lamW i → X i j = 0
 
 def Cg (I : Ideal R) (X Y : M4 R) : Prop := ∀ i j, X i j - Y i j ∈ I
 
+/- English proof (translation)
+The claim follows from `(grp R).1 X Y`.
+-/
 theorem adj_mul (X Y : M4 R) : adj (X * Y) = adj Y * adj X := (grp R).1 X Y
 
+/- English proof (translation)
+The claim follows from `(grp R).2.1 X`.
+-/
 theorem adj_adj (X : M4 R) : adj (adj X) = X := (grp R).2.1 X
 
+/- English proof (translation)
+The claim follows from `(grp R).2.2.2.2.1`.
+-/
 theorem adj_one : adj (1 : M4 R) = 1 := (grp R).2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `(grp R).2.2.2.2.2.1 R' f X`.
+-/
 theorem adj_map (f : R →+* R') (X : M4 R) : adj (X.map f) = (adj X).map f := (grp R).2.2.2.2.2.1 R' f X
 
+/- English proof (translation)
+The claim follows from `(grp R).2.2.2.2.2.2.2.1 ν ν' g g' h h'`.
+-/
 theorem gsp_mul {ν ν' : R} {g g' : M4 R} (h : IsGSp ν g) (h' : IsGSp ν' g') : IsGSp (ν * ν') (g * g') :=
   (grp R).2.2.2.2.2.2.2.1 ν ν' g g' h h'
 
+/- English proof (translation)
+Simplify using `using gsp_mul h h'`.
+-/
 theorem sp_mul {g g' : M4 R} (h : IsGSp 1 g) (h' : IsGSp 1 g') : IsGSp 1 (g * g') := by
   simpa using gsp_mul h h'
 
+/- English proof (translation)
+Simplify `h` using `[IsGSp]`.
+-/
 theorem sp_adj_mul {g : M4 R} (h : IsGSp 1 g) : adj g * g = 1 := by simpa [IsGSp] using h
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.1 (sp_adj_mul h)`.
+-/
 theorem sp_mul_adj {g : M4 R} (h : IsGSp 1 g) : g * adj g = 1 := mul_eq_one_comm.1 (sp_adj_mul h)
 
+/- English proof (translation)
+Rewrite using `[IsGSp, adj_adj, sp_mul_adj h, one_smul]`.
+-/
 theorem sp_adj {g : M4 R} (h : IsGSp 1 g) : IsGSp 1 (adj g) := by
   rw [IsGSp, adj_adj, sp_mul_adj h, one_smul]
 
+/- English proof (translation)
+Simplify using `using gsp_mul (gsp_mul (sp_adj hm) h) hm`.
+-/
 theorem gsp_conj {ν : R} {m g : M4 R} (hm : IsGSp 1 m) (h : IsGSp ν g) : IsGSp ν (adj m * g * m) := by
   simpa using gsp_mul (gsp_mul (sp_adj hm) h) hm
 
+/- English proof (translation)
+Rewrite using `[IsGSp, adj_map, ← Matrix.map_mul, h]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [e, Matrix.one_apply]`.
+-/
 theorem gsp_map (f : R →+* R') {ν : R} {g : M4 R} (h : IsGSp ν g) : IsGSp (f ν) (g.map f) := by
   rw [IsGSp, adj_map, ← Matrix.map_mul, h]
   ext i j
@@ -56,6 +89,9 @@ def conjSp {Γ : Type} [Group Γ] {m : M4 R} (hm : IsGSp 1 m) (r : Γ →* M4 R)
     calc adj m * (r g * r h) * m = adj m * r g * (m * adj m) * r h * m := by rw [sp_mul_adj hm]; simp only [mul_assoc, mul_one]
       _ = _ := by simp only [mul_assoc]
 
+/- English proof (translation)
+Consider the cases of `pr`. Simplify using `[IsGSp, wM, adj_one]`. Unfold `IsGSp`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wM, adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply, Fin.rev]`.
+-/
 theorem wM_sp (pr : Bool) : IsGSp 1 (wM R pr) := by
   cases pr
   · simp [IsGSp, wM, adj_one]
@@ -63,12 +99,18 @@ theorem wM_sp (pr : Bool) : IsGSp 1 (wM R pr) := by
     ext i j
     fin_cases i <;> fin_cases j <;> simp [wM, adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Matrix.one_apply, Fin.rev]
 
+/- English proof (translation)
+Consider the cases of `pr`. Simplify using `[wM]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [wM]`.
+-/
 theorem wM_map (f : R →+* R') (pr : Bool) : (wM R pr).map f = wM R' pr := by
   cases pr
   · simp [wM]
   · ext i j
     fin_cases i <;> fin_cases j <;> simp [wM]
 
+/- English proof (translation)
+Consider the cases of `pr`. Introduce `i j hij`. Establish `: i ≠ j` using `by rintro rfl; exact lt_irrefl _ hij`. Simplify using `[wM, Matrix.one_apply, this]`. Apply the tactic sequence `intro i j hij fin_cases i <;> fin_cases j <;> simp_all [wM, lamW]`.
+-/
 theorem wM_par (pr : Bool) : Par (wM R pr) := by
   cases pr
   · intro i j hij
@@ -77,6 +119,9 @@ theorem wM_par (pr : Bool) : Par (wM R pr) := by
   · intro i j hij
     fin_cases i <;> fin_cases j <;> simp_all [wM, lamW]
 
+/- English proof (translation)
+Consider the cases of `pr`. Simplify using `[wM, adj_one, lab]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [wM, adj, sgn, lab, Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal, Fin.rev]`.
+-/
 theorem wM_conj_diagonal (pr : Bool) (d : Fin 4 → R) :
     adj (wM R pr) * Matrix.diagonal d * wM R pr = Matrix.diagonal fun i => d (lab pr i) := by
   cases pr
@@ -84,11 +129,22 @@ theorem wM_conj_diagonal (pr : Bool) (d : Fin 4 → R) :
   · ext i j
     fin_cases i <;> fin_cases j <;> simp [wM, adj, sgn, lab, Matrix.mul_apply, Fin.sum_univ_four, Matrix.diagonal, Fin.rev]
 
+/- English proof (translation)
+Simplify using `[wM, adj_one]`.
+-/
 theorem wM_false_mul (u : M4 R) : adj (wM R false) * u = u := by simp [wM, adj_one]
 
+/- English proof (translation)
+Simplify using `[wM, adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four]`.
+-/
 theorem wM_true_mul (u : M4 R) : (adj (wM R true) * u : M4 R) 0 0 = u 2 0 := by
   simp [wM, adj_apply, sgn, Fin.rev, Matrix.mul_apply, Fin.sum_univ_four]
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : lamW k < lamW i`. Rewrite using `[hX i k hk, zero_mul]`.
+
+Rewrite using `[hY k j (by omega), mul_zero]`.
+-/
 theorem Par.mul {X Y : M4 R} (hX : Par X) (hY : Par Y) : Par (X * Y) := by
   intro i j h
   rw [Matrix.mul_apply]
@@ -97,6 +153,9 @@ theorem Par.mul {X Y : M4 R} (hX : Par X) (hY : Par Y) : Par (X * Y) := by
   · rw [hX i k hk, zero_mul]
   · rw [hY k j (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `i j hij`. Apply the tactic sequence `have key : lamW i.rev < lamW j.rev := by fin_cases i <;> fin_cases j <;> simp_all [lamW] <;> decide`. Simplify using `[_root_.UpperTheory.V.GradeZeroInterpolatingElement.adj, hX _ _ key]`.
+-/
 theorem Par.adj {X : M4 R} (hX : Par X) : Par (adj X) := by
   intro i j hij
   have key : lamW i.rev < lamW j.rev := by
@@ -105,14 +164,28 @@ theorem Par.adj {X : M4 R} (hX : Par X) : Par (adj X) := by
 
 variable {I : Ideal R}
 
+/- English proof (translation)
+Introduce `i j` and use `by simp`.
+-/
 theorem Cg.refl (X : M4 R) : Cg I X X := fun i j => by simp
 
+/- English proof (translation)
+Introduce `i j` and use `by simpa using neg_mem (h i j)`.
+-/
 theorem Cg.symm {X Y : M4 R} (h : Cg I X Y) : Cg I Y X := fun i j => by
   simpa using neg_mem (h i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by simpa using add_mem (h i j) (h' i j)`.
+-/
 theorem Cg.trans {X Y Z : M4 R} (h : Cg I X Y) (h' : Cg I Y Z) : Cg I X Z := fun i j => by
   simpa using add_mem (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j`. Establish `e : (X * X') i j - (Y * Y') i j = ∑ k, ((X i k - Y i k) * X' k j + Y i k * (X' k j - Y' k j))`. Simplify using `only [Matrix.mul_apply, ← Finset.sum_sub_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `I.sum_mem fun k _ => I.add_mem (I.mul_mem_right _ (h i k)) (I.mul_mem_left _ (h' k j))`.
+-/
 theorem Cg.mul {X Y X' Y' : M4 R} (h : Cg I X Y) (h' : Cg I X' Y') : Cg I (X * X') (Y * Y') := by
   intro i j
   have e : (X * X') i j - (Y * Y') i j =
@@ -124,6 +197,9 @@ theorem Cg.mul {X Y X' Y' : M4 R} (h : Cg I X Y) (h' : Cg I X' Y') : Cg I (X * X
   rw [e]
   exact I.sum_mem fun k _ => I.add_mem (I.mul_mem_right _ (h i k)) (I.mul_mem_left _ (h' k j))
 
+/- English proof (translation)
+Introduce `i j`. Establish `e : UpperTheory.V.GradeZeroInterpolatingElement.adj X i j - UpperTheory.V.GradeZeroInterpolatingElement.adj Y i j = (sgn i * sgn j) • (X j.rev i.rev - Y j.rev i.rev)`. Simplify using `[UpperTheory.V.GradeZeroInterpolatingElement.adj, smul_sub]`. Rewrite using `[e]`. Conclude with `zsmul_mem (h _ _) _`.
+-/
 theorem Cg.adj {X Y : M4 R} (h : Cg I X Y) : Cg I (adj X) (adj Y) := by
   intro i j
   have e : UpperTheory.V.GradeZeroInterpolatingElement.adj X i j - UpperTheory.V.GradeZeroInterpolatingElement.adj Y i j = (sgn i * sgn j) • (X j.rev i.rev - Y j.rev i.rev) := by
@@ -131,6 +207,11 @@ theorem Cg.adj {X Y : M4 R} (h : Cg I X Y) : Cg I (adj X) (adj Y) := by
   rw [e]
   exact zsmul_mem (h _ _) _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `hxm : x ∈ maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal x).2 hx`. Establish `: y ∈ maximalIdeal R`. Use `(maximalIdeal R).sub_mem hxm h` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal y).1 this hy`.
+-/
 theorem unit_of_sub_mem [IsLocalRing R] {x y : R} (hy : IsUnit y) (h : x - y ∈ maximalIdeal R) : IsUnit x := by
   by_contra hx
   have hxm : x ∈ maximalIdeal R := (IsLocalRing.mem_maximalIdeal x).2 hx
@@ -143,12 +224,22 @@ end Mat
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
+/- English proof (translation)
+Rewrite using `[← map_sub]`. Use `IsUnit.map _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `h (sub_eq_zero.1 (by rw [← map_sub, residue_eq_zero_iff]; exact hn))`.
+-/
 theorem Amb.unit_sub (𝔞 : Amb l) {x y : c.O} (h : residue c.O x ≠ residue c.O y) : IsUnit (𝔞.a c x - 𝔞.a c y) := by
   rw [← map_sub]
   refine IsUnit.map _ ?_
   by_contra hn
   exact h (sub_eq_zero.1 (by rw [← map_sub, residue_eq_zero_iff]; exact hn))
 
+/- English proof (translation)
+Establish `h2 : IsUnit (2 : ℤ_[l])`. Assume the negation of the conclusion as `hn`. Establish `hm : (2 : ℤ_[l]) ∈ maximalIdeal ℤ_[l]` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Rewrite `hm` using `[← PadicInt.ker_toZMod, RingHom.mem_ker, map_ofNat]`. Establish `hd : l ∣ 2` using `(ZMod.natCast_eq_zero_iff 2 l).1 (by exact_mod_cast hm)`.
+
+Conclude with `hl ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).1 hd)`. Establish `h2O : IsUnit (2 : c.O)`. Use `h2.map (algebraMap ℤ_[l] c.O)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Use `h2O.map (𝔞.a c)` as an intermediate fact.
+
+Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+-/
 theorem Amb.unit_two (𝔞 : Amb l) (c : Coef l) (hl : l ≠ 2) : IsUnit (2 : 𝔞.V) := by
   have h2 : IsUnit (2 : ℤ_[l]) := by
     by_contra hn
@@ -162,6 +253,11 @@ theorem Amb.unit_two (𝔞 : Amb l) (c : Coef l) (hl : l ≠ 2) : IsUnit (2 : �
   have := h2O.map (𝔞.a c)
   rwa [map_ofNat] at this
 
+/- English proof (translation)
+Take `⟨_, h2, _, _, _, _, _, _, _⟩` from `h`. Establish `hr0 : (D.r0 g).map (𝔞.a c) = Matrix.diagonal (fun i => 𝔞.a c (D.ps i g))`. Unfold `Raw.r0`. Simplify using `[diagRep, Matrix.diagonal_map]`. Establish `hcg : Cg (maximalIdeal 𝔞.V) (r g) ((D.r0 g).map (𝔞.a c))` using `fun i j => by simpa using h2 g i j`.
+
+Use `Cg.mul (Cg.mul (Cg.refl (I := maximalIdeal 𝔞.V) (adj (wM 𝔞.V pr))) hcg) (Cg.refl (I := maximalIdeal 𝔞.V) (wM 𝔞.V pr))` as an intermediate fact. Rewrite `this` using `[hr0, wM_conj_diagonal]`. Simplify `this` using `[chi]`.
+-/
 theorem KPair.cg {D : Raw Ω c} {𝔞 : Amb l} {r u} (h : KPair D 𝔞 r u) (pr : Bool) (g : G ℚ Ω) :
     Cg (maximalIdeal 𝔞.V) (adj (wM 𝔞.V pr) * r g * wM 𝔞.V pr) (Matrix.diagonal fun i => 𝔞.a c (chi D pr i g)) := by
   obtain ⟨_, h2, _, _, _, _, _, _, _⟩ := h
@@ -174,6 +270,27 @@ theorem KPair.cg {D : Raw Ω c} {𝔞 : Amb l} {r u} (h : KPair D 𝔞 r u) (pr 
   rw [hr0, wM_conj_diagonal] at this
   simpa [chi] using this
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, hom, -, -, -, -, -, hfr, hcyc, hsep, -, -, -, -, -, -⟩` from `hD`. Establish `hl : l ∈ D.T`. Unfold `Raw.T`. Conclude with `Finset.mem_insert_self _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `(hfr l hl).1` as an intermediate fact. Unfold `Raw.Gp Dec`. Conclude with `this`. Use `set s := D.sg l with hs`. Set `U : (c.O)ˣ →* (ResidueField c.O)ˣ` to `Units.map (residue c.O : c.O →* ResidueField c.O)`.
+
+Establish `hU : ∀ χ : G ℚ Ω →* (c.O)ˣ, Raw.bar χ s = ((U (χ s) : (ResidueField c.O)ˣ) : ResidueField c.O)` using `fun χ => rfl`. Establish `hchi : chiO ℚ Ω l c.O s = 1`. Unfold `chiO`. Rewrite using `[MonoidHom.comp_apply, hcyc, map_one]`. Establish `hom' : U (D.om s) = 1`.
+
+Use `hom s` as an intermediate fact. Rewrite `this` using `[hU, hU, hchi, map_one, Units.val_one]`. Conclude with `Units.ext this`. Establish `hal : U (D.al s) = U (D.ξ s)`. Unfold `Raw.al`.
+
+Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, map_inv, hchi, hom', map_one, inv_one, one_mul]`. Establish `hth : U (D.th s) = U (D.ξ s) * U (D.Psi s)`. Unfold `Raw.th`. Rewrite using `[MonoidHom.mul_apply, map_mul, hal]`. Establish `hsp : ∀ k : ℤ, U (D.ξ s) * U (D.Psi s) ^ k ≠ 1`.
+
+Introduce `k hk`. Apply `hsep l hl k` to reduce the goal to its premises. Rewrite using `[hU]`. Simplify using `[MonoidHom.mul_apply, map_mul, map_zpow, hk]`. Establish `h0 : U (D.ξ s) ≠ 1` using `by simpa using hsp 0`.
+
+Establish `h1 : U (D.ξ s) * U (D.Psi s) ≠ 1` using `by simpa using hsp 1`. Establish `hm : U (D.ξ s) ≠ U (D.Psi s)`. Introduce `he`. Apply `hsp (-1)` to reduce the goal to its premises. Rewrite using `[he, zpow_neg_one, mul_inv_cancel]`.
+
+Use `clear_value U`. Introduce `i j hij`. Apply `Amb.unit_sub 𝔞` to reduce the goal to its premises. Use `show Raw.bar (chi D pr i) s ≠ Raw.bar (D.ps j) s`. Rewrite using `[hU, hU]`.
+
+Introduce `he`. Establish `he'` using `Units.ext he`. Use `clear he hU hsep hfr hom hsp`. Apply the tactic sequence `cases pr <;> fin_cases i <;> fin_cases j <;> simp [lamW] at hij <;>`. Apply the tactic sequence `simp [chi, lab, Raw.ps, hal, hth] at he' <;>`.
+
+Use `first`. Consider the case `exact absurd he' hm | exact absurd he'.symm hm | exact absurd he' h0 | exact absurd he'.symm h0`. Consider the case `exact absurd he' h1 | exact absurd he'.symm h1`.
+-/
 theorem sg_sep {D : Raw Ω c} (hD : D.Good) (𝔞 : Amb l) (pr : Bool) : D.sg l ∈ D.Gp l ∧ ∀ i j, lamW i ≠ lamW j →
     IsUnit (𝔞.a c (chi D pr i (D.sg l)) - 𝔞.a c (D.ps j (D.sg l))) := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, hom, -, -, -, -, -, hfr, hcyc, hsep, -, -, -, -, -, -⟩ := hD

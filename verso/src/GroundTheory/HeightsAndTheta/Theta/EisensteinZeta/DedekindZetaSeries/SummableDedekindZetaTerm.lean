@@ -18,15 +18,26 @@ def ratPrime (P : Ideal (𝓞 K)) : ℕ :=
 
 variable {K}
 
+/- English proof (translation)
+Establish `: NeZero P` using `⟨hP0⟩`. Conclude with `Nat.absNorm_under_prime P`.
+-/
 theorem ratPrime_prime {P : Ideal (𝓞 K)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) :
     (ratPrime K P).Prime := by
   have : NeZero P := ⟨hP0⟩
   exact Nat.absNorm_under_prime P
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP, Int.liesOver_span_absNorm P⟩`.
+-/
 theorem mem_primesOver_ratPrime {P : Ideal (𝓞 K)} (hP : P.IsPrime) :
     P ∈ primesOver (Ideal.span {((ratPrime K P : ℕ) : ℤ)}) (𝓞 K) :=
   ⟨hP, Int.liesOver_span_absNorm P⟩
 
+/- English proof (translation)
+Establish `hp` using `ratPrime_prime hP hP0`. Establish `: P.LiesOver (Ideal.span {((ratPrime K P : ℕ) : ℤ)})` using `Int.liesOver_span_absNorm P`. Establish `h` using `absNorm_eq_pow_inertiaDeg' P hp`. Establish `hf : (absNorm P).factorization (ratPrime K P) = (Ideal.span {((ratPrime K P : ℕ) : ℤ)}).inertiaDeg' P`. Rewrite using `[h, hp.factorization_pow, Finsupp.single_eq_same]`.
+
+Use `⟨hf ▸ h, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use `Nat.pos_of_ne_zero fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0, pow_zero, absNorm_eq_one_iff]`. Conclude with `hP.ne_top h`.
+-/
 theorem absNorm_eq_ratPrime_pow {P : Ideal (𝓞 K)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) :
     absNorm P = ratPrime K P ^ (absNorm P).factorization (ratPrime K P) ∧
       0 < (absNorm P).factorization (ratPrime K P) := by
@@ -42,6 +53,11 @@ theorem absNorm_eq_ratPrime_pow {P : Ideal (𝓞 K)} (hP : P.IsPrime) (hP0 : P �
   rw [h0, pow_zero, absNorm_eq_one_iff] at h
   exact hP.ne_top h
 
+/- English proof (translation)
+Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: Finite (primesOver (Ideal.span {(p : ℤ)}) (𝓞 K))` using `(IsDedekindDomain.primesOver_finite _ _).to_subtype`. Set `: Fintype (primesOver (Ideal.span {(p : ℤ)}) (𝓞 K))` to `Fintype.ofFinite _`. Rewrite using `[Nat.card_eq_fintype_card, ← RingOfIntegers.rank K, ← Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(p : ℤ)}) (𝓞 K), Fintype.card_eq_sum_ones]`. Use `Finset.sum_le_sum fun q _ => ?_` and prove the remaining obligations.
+
+Establish `: q.1.IsPrime` using `q.2.1`. Conclude with `Right.one_le_mul (Ideal.ramificationIdx_pos (R := ℤ) q.1) (Ideal.inertiaDeg_pos (R := ℤ) q.1)`.
+-/
 theorem natCard_primesOver_le {p : ℕ} (hp : p.Prime) :
     Nat.card (primesOver (Ideal.span {(p : ℤ)}) (𝓞 K)) ≤ Module.finrank ℚ K := by
   have : Fact p.Prime := ⟨hp⟩
@@ -65,6 +81,11 @@ def primeLabel (p : ℕ) (hp : p.Prime) (P : Ideal (𝓞 K))
     (IsDedekindDomain.primesOver_finite _ _).to_subtype
   Fin.castLE (natCard_primesOver_le hp) (Finite.equivFin _ ⟨P, h⟩)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: Finite (primesOver (Ideal.span {(p : ℤ)}) (𝓞 K))` using `(IsDedekindDomain.primesOver_finite _ _).to_subtype`. Unfold `primeLabel at h`. Establish `h1` using `Fin.castLE_injective _ h`.
+
+Establish `h2` using `(Finite.equivFin _).injective h1`. Conclude with `congrArg Subtype.val h2`.
+-/
 theorem prime_label_injective {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (e : p = q) {P Q : Ideal (𝓞 K)}
     (hP : P ∈ primesOver (Ideal.span {(p : ℤ)}) (𝓞 K))
     (hQ : Q ∈ primesOver (Ideal.span {(q : ℤ)}) (𝓞 K))
@@ -78,6 +99,9 @@ theorem prime_label_injective {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (e : p =
   have h2 := (Finite.equivFin _).injective h1
   exact congrArg Subtype.val h2
 
+/- English proof (translation)
+The claim follows from `Module.finrank_pos`.
+-/
 theorem finrank_pos' : 0 < Module.finrank ℚ K := Module.finrank_pos
 
 open Classical in
@@ -88,6 +112,9 @@ def label (P : Ideal (𝓞 K)) : Fin (Module.finrank ℚ K) :=
     primeLabel K (ratPrime K P) (ratPrime_prime h.1 h.2) P (mem_primesOver_ratPrime h.1)
   else ⟨0, finrank_pos'⟩
 
+/- English proof (translation)
+Unfold `label at h`. Rewrite `h` using `[dif_pos ⟨hP, hP0⟩, dif_pos ⟨hQ, hQ0⟩]`. Conclude with `prime_label_injective _ _ e _ _ h`.
+-/
 theorem label_inj {P Q : Ideal (𝓞 K)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) (hQ : Q.IsPrime)
     (hQ0 : Q ≠ ⊥) (e : ratPrime K P = ratPrime K Q) (h : label K P = label K Q) : P = Q := by
   unfold label at h
@@ -100,11 +127,17 @@ def tuple (I : Ideal (𝓞 K)) (j : Fin (Module.finrank ℚ K)) : ℕ :=
   ∏ P ∈ (normalizedFactors I).toFinset,
     if label K P = j then absNorm P ^ (normalizedFactors I).count P else 1
 
+/- English proof (translation)
+Establish `hp` using `prime_of_normalized_factor P h`. Conclude with `⟨(Ideal.prime_iff_isPrime hp.ne_zero).mp hp, hp.ne_zero⟩`.
+-/
 theorem prime_ne_bot_of_mem {I P : Ideal (𝓞 K)} (h : P ∈ normalizedFactors I) :
     P.IsPrime ∧ P ≠ ⊥ := by
   have hp := prime_of_normalized_factor P h
   exact ⟨(Ideal.prime_iff_isPrime hp.ne_zero).mp hp, hp.ne_zero⟩
 
+/- English proof (translation)
+Unfold `tuple`. Rewrite using `[Finset.prod_comm]`. Simplify using `only [Finset.prod_ite_eq, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Finset.prod_multiset_map_count, ← map_multiset_prod, associated_iff_eq.mp (prod_normalizedFactors hI)]`.
+-/
 theorem prod_tuple {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) : ∏ j, tuple K I j = absNorm I := by
   classical
   unfold tuple
@@ -113,6 +146,17 @@ theorem prod_tuple {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) : ∏ j, tuple K I j = 
   rw [← Finset.prod_multiset_map_count, ← map_multiset_prod,
     associated_iff_eq.mp (prod_normalizedFactors hI)]
 
+/- English proof (translation)
+Unfold `tuple`. Rewrite using `[Nat.factorization_prod]`. Use `swap`. Introduce `Q hQ split_ifs`. Use `pow_ne_zero _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Ne, absNorm_eq_zero_iff]`. Conclude with `(prime_ne_bot_of_mem (Multiset.mem_toFinset.mp hQ)).2`. Conclude with `one_ne_zero`. Rewrite using `[Finsupp.finset_sum_apply]`. Establish `key : ∀ Q ∈ (normalizedFactors I).toFinset, Q ≠ P → (if label K Q = label K P then absNorm Q ^ (normalizedFactors I).count Q else 1).factorization (ratPrime K P) = 0`.
+
+Introduce `Q hQ hQP`. Take `⟨hQp, hQ0⟩` from `prime_ne_bot_of_mem (Multiset.mem_toFinset.mp hQ)`. Use `split_ifs with hl`. Establish `hne : ratPrime K Q ≠ ratPrime K P` using `fun e => hQP (label_inj hQp hQ0 hP hP0 e hl)`. Rewrite using `[Nat.factorization_pow, (absNorm_eq_ratPrime_pow hQp hQ0).1, (ratPrime_prime hQp hQ0).factorization_pow]`.
+
+Simplify using `[Finsupp.single_apply, hne]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single P key]`. Rewrite using `[if_pos rfl, Nat.factorization_pow]`. Simplify using the standard rewrite rules.
+
+Introduce `hPn`. Rewrite `hPn` using `[Multiset.mem_toFinset]`. Rewrite using `[Multiset.count_eq_zero.mpr hPn]`. Simplify using the standard rewrite rules.
+-/
 theorem factorization_tuple (I : Ideal (𝓞 K)) {P : Ideal (𝓞 K)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) :
     (tuple K I (label K P)).factorization (ratPrime K P) =
       (normalizedFactors I).count P * (absNorm P).factorization (ratPrime K P) := by
@@ -146,6 +190,13 @@ theorem factorization_tuple (I : Ideal (𝓞 K)) {P : Ideal (𝓞 K)} (hP : P.Is
     rw [Multiset.count_eq_zero.mpr hPn]
     simp
 
+/- English proof (translation)
+Introduce `I hI J hJ h`. Establish `hc : ∀ P, (normalizedFactors I).count P = (normalizedFactors J).count P`. Introduce `P`. Distinguish the cases in `hP : P.IsPrime ∧ P ≠ ⊥`. Establish `hI'` using `factorization_tuple I hP.1 hP.2`.
+
+Establish `hJ'` using `factorization_tuple J hP.1 hP.2`. Rewrite `hI'` using `[h]`. Establish `hpos` using `(absNorm_eq_ratPrime_pow hP.1 hP.2).2`. Conclude with `Nat.eq_of_mul_eq_mul_right hpos (hI'.symm.trans hJ')`. Rewrite using `[Multiset.count_eq_zero.mpr fun hm => hP (prime_ne_bot_of_mem hm), Multiset.count_eq_zero.mpr fun hm => hP (prime_ne_bot_of_mem hm)]`.
+
+Establish `hm : normalizedFactors I = normalizedFactors J` using `Multiset.ext.mpr hc`. Rewrite using `[← associated_iff_eq.mp (prod_normalizedFactors hI), ← associated_iff_eq.mp (prod_normalizedFactors hJ), hm]`.
+-/
 theorem tuple_injOn : Set.InjOn (tuple K) {I | I ≠ ⊥} := by
   intro I hI J hJ h
   have hc : ∀ P, (normalizedFactors I).count P = (normalizedFactors J).count P := by
@@ -164,6 +215,19 @@ theorem tuple_injOn : Set.InjOn (tuple K) {I | I ≠ ⊥} := by
 
 variable (K) in
 
+/- English proof (translation)
+Use `set g : ℕ → ℝ := fun m => (m : ℝ) ^ (-s) with hg`. Establish `hg0 : ∀ m, 0 ≤ g m` using `fun m => by positivity`. Establish `hsum : Summable g` using `Real.summable_nat_rpow.mpr (by linarith)`. Establish `hgz : g 0 = 0` using `by simp [hg, Real.zero_rpow (by linarith : -s ≠ 0)]`. Use `set T' := T.filter (· ≠ ⊥)`.
+
+Establish `e1 : ∑ I ∈ T, g (absNorm I) = ∑ I ∈ T', g (absNorm I)`. Use `(Finset.sum_filter_of_ne fun I _ hne => ?_).symm` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hne (by simp [hgz])`. Establish `e2 : ∑ I ∈ T', g (absNorm I) = ∑ I ∈ T', ∏ j, g (tuple K I j)`.
+
+Use `Finset.sum_congr rfl fun I hI => ?_` and prove the remaining obligations. Rewrite using `[← prod_tuple (Finset.mem_filter.mp hI).2]`. Simplify using `only [hg, Nat.cast_prod]`. Rewrite using `[Real.finsetProd_rpow _ _ (fun _ _ => Nat.cast_nonneg _)]`. Establish `e3 : ∑ I ∈ T', ∏ j, g (tuple K I j) = ∑ t ∈ T'.image (tuple K), ∏ j, g (t j)`.
+
+Rewrite using `[Finset.sum_image]`. Introduce `I hI J hJ h`. Conclude with `tuple_injOn (Finset.mem_filter.mp hI).2 (Finset.mem_filter.mp hJ).2 h`. Use `set M := ∑ t ∈ T'.image (tuple K), ∑ j, t j + 1`. Establish `hsub : T'.image (tuple K) ⊆ Fintype.piFinset fun _ => Finset.range M`.
+
+Introduce `t ht`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `j`. Rewrite using `[Finset.mem_range]`. Establish `h1 : t j ≤ ∑ j, t j` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`.
+
+Establish `h2 : ∑ j, t j ≤ ∑ t ∈ T'.image (tuple K), ∑ j, t j` using `Finset.single_le_sum (f := fun t : Fin (Module.finrank ℚ K) → ℕ => ∑ j, t j) (fun _ _ => Nat.zero_le _) ht`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_rpow_neg_le_pow (T : Finset (Ideal (𝓞 K))) {s : ℝ} (hs : 1 < s) :
     ∑ I ∈ T, (absNorm I : ℝ) ^ (-s) ≤ (∑' m : ℕ, (m : ℝ) ^ (-s)) ^ Module.finrank ℚ K := by
   classical
@@ -208,6 +272,9 @@ theorem sum_rpow_neg_le_pow (T : Finset (Ideal (𝓞 K))) {s : ℝ} (hs : 1 < s)
 
 variable (K) in
 
+/- English proof (translation)
+Use `Real.tsum_le_of_sum_range_le (fun n => GroundTheory.Global.dedekindZetaTerm_nonneg K s n) fun N => ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.sum_range_dedekindZetaTerm]`. Conclude with `sum_rpow_neg_le_pow K _ hs`.
+-/
 theorem dedekindZetaReal_le_pow {s : ℝ} (hs : 1 < s) :
     GroundTheory.Global.dedekindZetaReal K s ≤ (∑' m : ℕ, (m : ℝ) ^ (-s)) ^ Module.finrank ℚ K := by
   refine Real.tsum_le_of_sum_range_le (fun n => GroundTheory.Global.dedekindZetaTerm_nonneg K s n)
@@ -216,6 +283,9 @@ theorem dedekindZetaReal_le_pow {s : ℝ} (hs : 1 < s) :
   exact sum_rpow_neg_le_pow K _ hs
 
 variable (K) in
+/- English proof (translation)
+Use `summable_of_sum_range_le (c := (∑' m : ℕ, (m : ℝ) ^ (-s)) ^ Module.finrank ℚ K) (fun n => GroundTheory.Global.dedekindZetaTerm_nonneg K s n) fun N => ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.sum_range_dedekindZetaTerm]`. Conclude with `sum_rpow_neg_le_pow K _ hs`.
+-/
 theorem summable_dedekindZetaTerm {s : ℝ} (hs : 1 < s) :
     Summable (GroundTheory.Global.dedekindZetaTerm K s) := by
   refine summable_of_sum_range_le (c := (∑' m : ℕ, (m : ℝ) ^ (-s)) ^ Module.finrank ℚ K) (fun n => GroundTheory.Global.dedekindZetaTerm_nonneg K s n)
@@ -223,6 +293,11 @@ theorem summable_dedekindZetaTerm {s : ℝ} (hs : 1 < s) :
   rw [GroundTheory.Global.sum_range_dedekindZetaTerm]
   exact sum_rpow_neg_le_pow K _ hs
 
+/- English proof (translation)
+Establish `h` using `zeta_eq_tsum_one_div_nat_cpow (s := (7 / 2 : ℂ)) (by norm_num)`. Establish `h2 : (∑' n : ℕ, 1 / (n : ℂ) ^ (7 / 2 : ℂ)) = ((∑' m : ℕ, (m : ℝ) ^ (-(7 / 2 : ℝ)) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_tsum]`. Use `congr 1`. Use extensionality with `n`.
+
+Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.ofReal_neg, Complex.cpow_neg, one_div]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[zetaSevenHalves, h, h2, Complex.ofReal_re]`.
+-/
 theorem zetaSevenHalves_eq_tsum :
     zetaSevenHalves = ∑' m : ℕ, (m : ℝ) ^ (-(7 / 2 : ℝ)) := by
   have h := zeta_eq_tsum_one_div_nat_cpow (s := (7 / 2 : ℂ)) (by norm_num)
@@ -238,6 +313,11 @@ theorem zetaSevenHalves_eq_tsum :
 
 end ZetaSevenHalvesBounds
 
+/- English proof (translation)
+Introduce `K _ _`. Establish `h1 : (dedekindZeta K (7 / 2 : ℂ)).re = GroundTheory.Global.dedekindZetaReal K (7 / 2)`. Use `GroundTheory.Global.dedekindZeta_ofReal K (s := 7 / 2) (by norm_num)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this, Complex.ofReal_re]`.
+
+Establish `hle` using `ZetaSevenHalvesBounds.dedekindZetaReal_le_pow K (s := 7 / 2) (by norm_num)`. Establish `hpos : 0 < GroundTheory.Global.dedekindZetaReal K (7 / 2)` using `lt_of_lt_of_le one_pos (GroundTheory.Global.one_le_dedekindZetaReal (ZetaSevenHalvesBounds.summable_dedekindZetaTerm K (by norm_num)))`. Rewrite using `[h1, ZetaSevenHalvesBounds.zetaSevenHalves_eq_tsum, ← Real.log_pow]`. Conclude with `Real.log_le_log hpos hle`.
+-/
 theorem DedekindBound.proof : ZetaSevenHalvesBounds.DedekindBound.Statement := by
   intro K _ _
   have h1 : (dedekindZeta K (7 / 2 : ℂ)).re = GroundTheory.Global.dedekindZetaReal K (7 / 2) := by

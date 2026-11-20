@@ -9,6 +9,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_sum_left_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ} (c : Fin m → ℂ)
     (q : Fin m → Fin r → ℂ) (v : Fin r → ℂ) :
     hermC τ G (∑ k, c k • q k) v = ∑ k, c k * hermC τ G (q k) v := by
@@ -22,6 +25,9 @@ private lemma hermC_sum_left_lemma (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r
           Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_sum_right_lemma_2 (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {m : ℕ} (u : Fin r → ℂ)
     (d : Fin m → ℂ) (q : Fin m → Fin r → ℂ) :
     hermC τ G u (∑ l, d l • q l) = ∑ l, conj (d l) * hermC τ G u (q l) := by
@@ -35,6 +41,11 @@ private lemma hermC_sum_right_lemma_2 (τ : E →+* ℂ) (G : Matrix (Fin r) (Fi
           Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Take `⟨-, -, hgr, -, -⟩` from `hf τ`. Rewrite using `[hermC_sum_left_lemma]`. Simplify using `only [hermC_sum_right_lemma_2, hgr, mul_ite, mul_zero, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Complex.mul_conj, Complex.normSq_eq_norm_sq] <;>`.
+
+Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 lemma f_gram_re (X : Data E r) (ξ : Fin r → E) (z0 : Frame X.Ψ r) (f : X.Ψ → Fin (r - 2) → Fin r → ℂ)
     (hf : X.UBasis z0 ξ f) (τ : X.Ψ) (a : Fin (r - 2) → ℂ) :
     (hermC τ.1 X.Gm (∑ k, a k • f τ k) (∑ k, a k • f τ k)).re =
@@ -47,21 +58,35 @@ lemma f_gram_re (X : Data E r) (ξ : Fin r → E) (z0 : Frame X.Ψ r) (f : X.Ψ 
   split_ifs <;> simp [Complex.mul_conj, Complex.normSq_eq_norm_sq] <;>
     rw [← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 private lemma hermC_add_left_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
     hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
   unfold hermC
   simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+-/
 private lemma hermC_sub_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → ℂ) :
     hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v := by
   unfold hermC
   simp only [Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+-/
 private lemma hermC_sub_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
     hermC τ G u (v - v') = hermC τ G u v - hermC τ G u v' := by
   unfold hermC
   simp only [Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `hermC`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_smul_left_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ) (u v : Fin r → ℂ) :
     hermC τ G (c • u) v = c * hermC τ G u v := by
   unfold hermC
@@ -72,6 +97,11 @@ private lemma hermC_smul_left_fundamental_domains (τ : E →+* ℂ) (G : Matrix
   simp only [Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `hermC`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma hermC_smul_right_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (c : ℂ) (u v : Fin r → ℂ) :
     hermC τ G u (c • v) = conj c * hermC τ G u v := by
   unfold hermC
@@ -82,16 +112,27 @@ private lemma hermC_smul_right_fundamental_domains (τ : E →+* ℂ) (G : Matri
   simp only [Pi.smul_apply, smul_eq_mul, map_mul]
   ring
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using the standard rewrite rules.
+-/
 private lemma hermC_zero_left' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (v : Fin r → ℂ) :
     hermC τ G 0 v = 0 := by
   unfold hermC
   simp
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using the standard rewrite rules.
+-/
 private lemma hermC_zero_right' (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u : Fin r → ℂ) :
     hermC τ G u 0 = 0 := by
   unfold hermC
   simp
 
+/- English proof (translation)
+Rewrite using `[Data.ppos_eq, Data.ppos_eq, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hermC_smul_left_fundamental_domains]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma ppos_smul_fundamental_domains (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (c : ℂ) (u : Fin r → ℂ) :
     X.ppos x τ (c • u) = c • X.ppos x τ u := by
   rw [Data.ppos_eq, Data.ppos_eq, Finset.smul_sum]
@@ -102,11 +143,91 @@ private lemma ppos_smul_fundamental_domains (X : Data E r) (x : Frame X.Ψ r) (�
   rw [hermC_smul_left_fundamental_domains]
   ring
 
+/- English proof (translation)
+Unfold `hermC`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 private lemma hermC_add_right_fundamental_domains (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → ℂ) :
     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
   unfold hermC
   simp only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Take `⟨hperp, hJ, hgr, -, hspan⟩` from `hf τ`. Establish `hdet0 : (mat x0 τ).det ≠ 0` using `(hx0 τ).1`. Establish `hS : Spos X.toData z0 τ = Spos X.toData x0 τ` using `hflag τ`. Establish `hJt : ∀ u, X.Jt z0 τ u = I • ((2 : ℂ) • X.ppos z0 τ u - u)` using `fun u => rfl`. Establish `hPpos : ∀ k : Fin (r - 2), (k : ℕ) < X.p0 - 1 → X.ppos z0 τ (f τ k) = f τ k`.
+
+Introduce `k hk`. Establish `h` using `hJ k`. Rewrite `h` using `[if_pos hk, hJt]`. Establish `h2` using `smul_right_injective (Fin r → ℂ) Complex.I_ne_zero h`. Establish `h3 : (2 : ℂ) • X.ppos z0 τ (f τ k) = (2 : ℂ) • f τ k`.
+
+Rewrite using `[sub_eq_iff_eq_add.mp h2, two_smul]`. Conclude with `smul_right_injective (Fin r → ℂ) two_ne_zero h3`. Establish `hPneg : ∀ k : Fin (r - 2), ¬ (k : ℕ) < X.p0 - 1 → X.ppos z0 τ (f τ k) = 0`. Introduce `k hk`. Establish `h` using `hJ k`.
+
+Rewrite `h` using `[if_neg hk, hJt, neg_smul, ← smul_neg]`. Establish `h2` using `smul_right_injective (Fin r → ℂ) Complex.I_ne_zero h`. Establish `h3 : (2 : ℂ) • X.ppos z0 τ (f τ k) = 0`. Establish `h4` using `congrArg (· + f τ k) h2`. Simplify using `using h4`.
+
+Conclude with `(smul_eq_zero.mp h3).resolve_left two_ne_zero`. Establish `hfS : ∀ k : Fin (r - 2), (k : ℕ) < X.p0 - 1 → f τ k ∈ Spos X.toData z0 τ`. Introduce `k hk`. Rewrite using `[← hPpos k hk]`. Conclude with `ppos_mem (X := X.toData) z0 τ _`.
+
+Establish `hvP : X.ppos z0 τ v = v` using `ppos_of_mem (X := X.toData) hz τ v hv`. Establish `hvneg : ∀ k : Fin (r - 2), ¬ (k : ℕ) < X.p0 - 1 → hermC τ.1 X.Gm v (f τ k) = 0`. Introduce `k hk`. Rewrite using `[← hvP, Data.ppos_selfadj (X := X.toData) hz τ v (f τ k), hPneg k hk, hermC_zero_right']`. Take `⟨a, ha⟩ : ∃ a : Fin (r - 2) → ℂ, a = fun k : Fin (r - 2) => if (k : ℕ) < X.p0 - 1 then hermC τ.1 X.Gm v (f τ k) else 0` from `⟨_, rfl⟩`.
+
+Take `⟨w, hw⟩ : ∃ w : Fin r → ℂ, w = ∑ k, a k • f τ k` from `⟨_, rfl⟩`. Establish `hwspan : w ∈ Submodule.span ℂ (f τ '' {k | (k : ℕ) < X.p0 - 1})`. Rewrite using `[hw]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < X.p0 - 1`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, hk, rfl⟩)`. Simplify using `[ha, hk]`. Establish `hwS : w ∈ Spos X.toData z0 τ`. Rewrite using `[hw]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : (k : ℕ) < X.p0 - 1`. Conclude with `Submodule.smul_mem _ _ (hfS k hk)`. Simplify using `[ha, hk]`. Establish `hfw : ∀ k, hermC τ.1 X.Gm (f τ k) w = conj (a k) * (if (k : ℕ) < X.p0 - 1 then 1 else -1)`. Introduce `k`.
+
+Rewrite using `[hw, hermC_sum_right_lemma_2]`. Simplify using `only [hgr, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hfp : ∀ k, hermC τ.1 X.Gm (f τ k) (v - w) = 0`. Introduce `k`. Rewrite using `[hermC_sub_right', hfw]`.
+
+Distinguish the cases in `hk : (k : ℕ) < X.p0 - 1`. Rewrite using `[if_pos hk, mul_one, ha]`. Simplify using `only [if_pos hk]`. Rewrite using `[hermC_conj τ.1 X.Gm_herm, sub_self]`. Rewrite using `[if_neg hk, ha]`.
+
+Simplify using `only [if_neg hk, map_zero, zero_mul, sub_zero]`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, hvneg k hk, map_zero]`. Establish `hskew : ∀ u q, hermC τ.1 X.Gm (X.Jt z0 τ u) q = -hermC τ.1 X.Gm u (X.Jt z0 τ q)`. Introduce `u q`. Rewrite using `[hJt, hJt, hermC_smul_left_fundamental_domains, hermC_smul_right_fundamental_domains, hermC_sub_left', hermC_sub_right', hermC_smul_left_fundamental_domains, hermC_smul_right_fundamental_domains, Data.ppos_selfadj (X := X.toData) hz τ u q, Complex.conj_I]`.
+
+Use `first`. Consider the case `(simp only [map_ofNat]; ring)`. Consider the case `(simp; ring)`. Set `Lq : (Fin r → ℂ) → (Fin r → ℂ) →ₗ[ℂ] ℂ` to `fun q => { toFun := fun u => hermC τ.1 X.Gm u q map_add' := fun u u' => hermC_add_left_fundamental_domains _ _ u u' q map_smul' := fun c u => hermC_smul_left_fundamental_domains _ _ c u q }`. Establish `hK : ⨅ i, LinearMap.ker (![Lq (Data.emb τ.1 ξ), Lq (X.Jt z0 τ (Data.emb τ.1 ξ))] i) ≤ LinearMap.ker (Lq (v - w))`.
+
+Introduce `u hu`. Rewrite `hu` using `[Submodule.mem_iInf]`. Establish `h0 : hermC τ.1 X.Gm u (Data.emb τ.1 ξ) = 0` using `hu 0`. Establish `h1' : hermC τ.1 X.Gm u (X.Jt z0 τ (Data.emb τ.1 ξ)) = 0` using `hu 1`. Establish `hJu : hermC τ.1 X.Gm (X.Jt z0 τ u) (Data.emb τ.1 ξ) = 0` using `by rw [hskew, h1', neg_zero]`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (hspan u h0 hJu)`. Use `show hermC τ.1 X.Gm u (v - w) = 0`. Rewrite using `[← hc, hermC_sum_left_lemma]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [hfp k, mul_zero]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (mem_span_of_iInf_ker_le_ker hK)`.
+
+Establish `hc' : ∀ u, hermC τ.1 X.Gm u (v - w) = hermC τ.1 X.Gm u (conj (c 0) • Data.emb τ.1 ξ + conj (c 1) • X.Jt z0 τ (Data.emb τ.1 ξ))`. Introduce `u`. Establish `h` using `LinearMap.congr_fun hc u`. Simplify using `only [Fin.sum_univ_two, LinearMap.add_apply, LinearMap.smul_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, smul_eq_mul] at h`. Rewrite using `[hermC_add_right_fundamental_domains, hermC_smul_right_fundamental_domains, hermC_smul_right_fundamental_domains, Complex.conj_conj, Complex.conj_conj]`.
+
+Conclude with `h.symm`. Establish `hnd : ∀ z : Fin r → ℂ, (∀ u, hermC τ.1 X.Gm u z = 0) → z = 0`. Introduce `z hz'`. Rewrite using `[expand (X := X.toData) hortho τ hdet0 z]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hermC_conj τ.1 X.Gm_herm, hz', map_zero, mul_zero, zero_smul]`. Establish `hpq : v - w = conj (c 0) • Data.emb τ.1 ξ + conj (c 1) • X.Jt z0 τ (Data.emb τ.1 ξ)`. Use `sub_eq_zero.mp (hnd _ fun u => ?_)` and prove the remaining obligations. Rewrite using `[hermC_sub_right', hc' u, sub_self]`. Establish `hfix : h1 τ *ᵥ (v - w) = v - w`.
+
+Establish `h` using `congrFun (hI (fun _ => conj (c 0)) (fun _ => conj (c 1))) τ`. Simplify using `only [Data.applyV, Data.lineV, Data.Jz, Pi.add_apply] at h`. Establish `he : conj (c 0) • Data.emb τ.1 ξ + conj (c 1) • X.Jt z0 τ (Data.emb τ.1 ξ) = conj (c 0) • Data.emb τ.1 ξ + I • ((2 : ℂ) • X.ppos z0 τ (conj (c 1) • Data.emb τ.1 ξ) - conj (c 1) • Data.emb τ.1 ξ)`. Rewrite using `[hJt, ppos_smul_fundamental_domains]`. Use `first`.
+
+Consider the case `module`. Consider the case `(simp only [smul_sub, smul_smul]; ring_nf)`. Rewrite using `[hpq, he]`. Use `first`. Consider the case `exact h`.
+
+Consider the case `simpa using h`. Establish `hwe : hermC τ.1 X.Gm w (Data.emb τ.1 ξ) = 0`. Rewrite using `[hw, hermC_sum_left_lemma]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [(hperp k).1, mul_zero]`. Establish `hwP : X.ppos z0 τ w = w` using `ppos_of_mem (X := X.toData) hz τ w hwS`.
+
+Establish `hp0 : ∀ τ' : X.Ψ, X.ppos z0 τ' 0 = 0` using `fun τ' => by`. Simplify using `using ppos_smul_fundamental_domains X.toData z0 τ' 0 0`. Establish `hU : (fun τ' => if τ' = τ then w else 0) ∈ X.Uz z0 ξ`. Use `⟨fun τ' => ?_, fun τ' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : τ' = τ`.
+
+Simplify using `only [if_pos h]`. Rewrite using `[h]`. Conclude with `hwe`. Simplify using `only [if_neg h]`. Conclude with `hermC_zero_left' _ _ _`.
+
+Distinguish the cases in `h : τ' = τ`. Simplify using `only [Data.Jz, if_pos h]`. Rewrite using `[h, hwP, hermC_smul_left_fundamental_domains, hermC_sub_left', hermC_smul_left_fundamental_domains, hwe]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Data.Jz, if_neg h, hp0, smul_zero, sub_zero]`.
+
+Conclude with `hermC_zero_left' _ _ _`. Establish `hA` using `hUz _ hU`. Establish `hA1 : hermC τ.1 X.Gm (h1 τ *ᵥ w) (Data.emb τ.1 ξ) = 0`. Establish `h` using `hA.1 τ`. Simplify `h` using `[Data.applyV]`.
+
+Establish `hA2 : hermC τ.1 X.Gm (X.Jt z0 τ (h1 τ *ᵥ w)) (Data.emb τ.1 ξ) = 0`. Establish `h` using `hA.2 τ`. Simplify `h` using `[Data.applyV, Data.Jz, Data.Jt]`. Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp (hspan _ hA1 hA2)`. Establish `hg` using `hgraph τ w hwspan cc hcc.symm`.
+
+Establish `hy : h1 τ *ᵥ v = (v - w) + ∑ k, cc k • f τ k`. Rewrite using `[hcc]`. Use `conv_rhs => rw [← hfix]`. Rewrite using `[← Matrix.mulVec_add, sub_add_cancel]`. Rewrite using `[hy]`.
+
+Establish `hpS0 : v - w ∈ Spos X.toData x0 τ` using `hS ▸ Submodule.sub_mem _ hv hwS`. Take `⟨b, hb⟩ : ∃ b : Fin (r - 2) → ℂ, b = fun k : Fin (r - 2) => if (k : ℕ) < X.p0 - 1 then 0 else cc k` from `⟨_, rfl⟩`. Establish `hNeq : PositiveSpanMatrices.Neg X.toData x0 τ ((v - w) + ∑ k, cc k • f τ k) = PositiveSpanMatrices.Neg X.toData x0 τ (∑ k, b k • f τ k)`. Unfold `PositiveSpanMatrices.Neg`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hermC_add_left_fundamental_domains, perp_kap (X := X.toData) hortho τ _ hpS0 a', zero_add, hermC_sum_left_lemma, hermC_sum_left_lemma]`. Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hb]`. Distinguish the cases in `hk : (k : ℕ) < X.p0 - 1`.
+
+Simplify using `only [if_pos hk, zero_mul]`. Rewrite using `[perp_kap (X := X.toData) hortho τ _ (hS ▸ hfS k hk) a', mul_zero]`. Simplify using `only [if_neg hk]`. Establish `hnegperp : ∀ b' : Fin X.p0, hermC τ.1 X.Gm (∑ k, b k • f τ k) (col (mat x0 τ) (Fin.castLE X.p0_le b')) = 0`. Introduce `b'`.
+
+Rewrite using `[hermC_sum_left_lemma]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hb]`. Distinguish the cases in `hk : (k : ℕ) < X.p0 - 1`. Simplify using `only [if_pos hk, zero_mul]`.
+
+Simplify using `only [if_neg hk]`. Rewrite using `[perp_of_ppos_zero (X := X.toData) hx0 τ (f τ k) ?_ b', mul_zero]`. Rewrite using `[← FrameDegreeData.ppos_sameFlag (X := X.toData) hz hx0 hflag τ]`. Conclude with `hPneg k hk`. Establish `hN : PositiveSpanMatrices.Neg X.toData x0 τ ((v - w) + ∑ k, cc k • f τ k) = ∑ k : Fin (r - 2), if (k : ℕ) < X.p0 - 1 then 0 else ‖cc k‖ ^ 2`.
+
+Rewrite using `[hNeq]`. Establish `h1'` using `re_self_of_perp (X := X.toData) hortho τ hdet0 _ hnegperp`. Establish `h2'` using `f_gram_re X.toData ξ z0 f hf τ b`. Establish `h3' : PositiveSpanMatrices.Neg X.toData x0 τ (∑ k, b k • f τ k) = -∑ k : Fin (r - 2), (if (k : ℕ) < X.p0 - 1 then ‖b k‖ ^ 2 else -‖b k‖ ^ 2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[h3', ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hb]`. Apply the tactic sequence `by_cases hk : (k : ℕ) < X.p0 - 1 <;> simp [hk]`. Establish `hre` using `re_self_split (X := X.toData) hortho τ hdet0 ((v - w) + ∑ k, cc k • f τ k)`.
+
+Establish `hpf : ∀ k, hermC τ.1 X.Gm (v - w) (f τ k) = 0` using `fun k => by`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, hfp k, map_zero]`. Establish `hexp : (hermC τ.1 X.Gm ((v - w) + ∑ k, cc k • f τ k) ((v - w) + ∑ k, cc k • f τ k)).re = (hermC τ.1 X.Gm (v - w) (v - w)).re + (hermC τ.1 X.Gm (∑ k, cc k • f τ k) (∑ k, cc k • f τ k)).re`. Rewrite using `[hermC_add_left_fundamental_domains, hermC_add_right_fundamental_domains, hermC_add_right_fundamental_domains, hermC_sum_right_lemma_2 τ.1 X.Gm (v - w), hermC_sum_left_lemma τ.1 X.Gm cc (f τ) (v - w)]`. Simplify using `only [hpf, hfp, mul_zero, Finset.sum_const_zero, add_zero, zero_add, Complex.add_re]`.
+
+Establish `hSS` using `f_gram_re X.toData ξ z0 f hf τ cc`. Establish `hPp` using `re_self_of_mem (X := X.toData) hortho τ hdet0 _ hpS0`. Establish `hP0` using `Pos_nonneg (X := X.toData) x0 τ (v - w)`. Establish `hsplit : (∑ k : Fin (r - 2), if (k : ℕ) < X.p0 - 1 then ‖cc k‖ ^ 2 else -‖cc k‖ ^ 2) = (∑ k : Fin (r - 2), if (k : ℕ) < X.p0 - 1 then ‖cc k‖ ^ 2 else 0) - ∑ k : Fin (r - 2), if (k : ℕ) < X.p0 - 1 then 0 else ‖cc k‖ ^ 2`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Rewrite `hre`, the goal using `[hN]`. Establish `hmono : ∀ A B C : ℝ, C ≤ δ ^ 2 * A → A ≤ B → C ≤ δ ^ 2 * B` using `fun A B C h1 h2 => h1.trans (mul_le_mul_of_nonneg_left h2 (sq_nonneg δ))`. Use `hmono _ _ _ hg ?_` and prove the remaining obligations.
+
+Combine the linear relations using `[hre, hexp, hSS, hPp, hP0, hsplit]`.
+-/
 theorem key (X : DataX E r) (ξ : Fin r → E) (z0 x0 : Frame X.Ψ r)
     (f : X.Ψ → Fin (r - 2) → Fin r → ℂ) (h1 : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (δ : ℝ)
     (hz : z0 ∈ X.dom) (hx0 : x0 ∈ X.dom) (hortho : X.IsOrtho x0)

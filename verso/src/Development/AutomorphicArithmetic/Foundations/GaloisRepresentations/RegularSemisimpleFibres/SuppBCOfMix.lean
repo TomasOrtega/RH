@@ -40,6 +40,9 @@ def MixUnlinked : Prop :=
     ∀ f : ℕ, normV w = g ^ f → (∀ s, HasSupport τ.ρ s → ∀ y ∈ s, y.1 ∣ f) →
       ∀ s, HasSupport τ'.ρ s → GlobalTheory.RoadU.Unlinked s
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ n hn π Y hY A v w h h' g _ i hi hI τ τ' hτ hτ' hD f hf hs`. Take `⟨ξ, hξ, H⟩` from `h₁ E Ω n hn π Y hY A v w h h' g i hi hI τ τ' hτ hτ' hD f hf hs`. Conclude with `⟨ξ, hξ, H, fun hM => h₂ E Ω n hn π Y hY A v w h h' g i hi hI τ τ' hτ hτ' hM f hf hs _ H.2.1⟩`.
+-/
 theorem suppBC_of_mix (h₁ : SuppAny) (h₂ : MixUnlinked) : SuppBC := by
   intro E Ω _ _ _ _ _ _ n hn π Y hY A v w h h' g _ i hi hI τ τ' hτ hτ' hD f hf hs
   obtain ⟨ξ, hξ, H⟩ := h₁ E Ω n hn π Y hY A v w h h' g i hi hI τ τ' hτ hτ' hD f hf hs

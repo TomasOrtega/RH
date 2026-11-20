@@ -19,23 +19,44 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def jw {R : Type} [CommRing R] (n : ℕ) (e : R) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R :=
   Matrix.fromBlocks 0 1 (e • 1) 0
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem incM_mul' {α β γ : Type} [Fintype β] (A : Matrix α β E) (C : Matrix β γ E) :
     incM F (A * C) = incM F A * incM F C := Matrix.map_mul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incM_transpose' {α β : Type} (A : Matrix α β E) : incM F Aᵀ = (incM F A)ᵀ := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR σ (A i j)`.
+-/
 theorem incM_map_cA {α β : Type} (A : Matrix α β E) : (incM F A).map (cA σ) = incM F (A.map σ) := by
   ext i j; exact GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR σ (A i j)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (cA σ).toRingHom)`.
+-/
 theorem map_cA_mul {α β γ : Type} [Fintype β] (A : Matrix α β (AE F E)) (C : Matrix β γ (AE F E)) :
     (A * C).map (cA σ) = A.map (cA σ) * C.map (cA σ) := Matrix.map_mul (f := (cA σ).toRingHom)
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [incM, dbl]`.
+-/
 theorem incM_dbl (J : Matrix (Fin n) (Fin n) E) : incM F (dbl J) = dbl (incM F J) := by
   ext (i | i) (j | j) <;> simp [incM, dbl]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [incM, jw, Matrix.one_apply] <;> split_ifs <;> simp`.
+-/
 theorem incM_jw (e : E) : incM F (jw n e) = jw n (inclR (F := F) (AF F) e) := by
   ext (i | i) (j | j) <;> simp [incM, jw, Matrix.one_apply] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h` using `congrArg (incM F) hε`. Rewrite `h` using `[incM_mul', incM_mul', incM_dbl, ← incM_map_cA]`. Rewrite using `[← incM_transpose', h, show Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 = jw n ((ε : ℤ) : E) from rfl, incM_jw, map_intCast]`.
+-/
 theorem incM_frame {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     (incM F b.1)ᵀ * dbl (incM F Y.J) * (incM F b.1).map (cA σ) = jw n (((ε : ℤ) : AE F E)) := by
   have h := congrArg (incM F) hε
@@ -43,6 +64,15 @@ theorem incM_frame {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fr
   rw [← incM_transpose', h, show Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0 = jw n ((ε : ℤ) : E) from rfl, incM_jw,
     map_intCast]
 
+/- English proof (translation)
+Establish `hJ` using `incM_frame (F := F) hε`. Use `set B0 := incM F b.1`. Use `set Bi := incM F (b⁻¹).1`. Use `set D := dbl (incM F Y.J)`. Establish `hX : (mat2 x)ᵀ * D * (mat2 x).map (cA σ) = D` using `x.2`.
+
+Establish `h2 : B0.map (cA σ) * Bi.map (cA σ) = 1`. Rewrite using `[← map_cA_mul, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv b]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Establish `h3 : Biᵀ * B0ᵀ = 1` using `by rw [← Matrix.transpose_mul, GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv b, Matrix.transpose_one]`.
+
+Use `show (Bi * mat2 x * B0)ᵀ * _ * (Bi * mat2 x * B0).map (cA σ) = _`. Rewrite using `[← hJ, Matrix.transpose_mul, Matrix.transpose_mul, map_cA_mul, map_cA_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B0ᵀ * D * B0.map (cA σ) := by`.
+
+Rewrite using `[h3, h2, Matrix.mul_one, Matrix.mul_one, hX, Matrix.mul_assoc]`.
+-/
 theorem frame_eq {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (x : G2 σ Y) :
     (inFrame b x)ᵀ * jw n (((ε : ℤ) : AE F E)) * (inFrame b x).map (cA σ) = jw n (((ε : ℤ) : AE F E)) := by
@@ -62,6 +92,21 @@ theorem frame_eq {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.from
     _ = B0ᵀ * D * B0.map (cA σ) := by
         rw [h3, h2, Matrix.mul_one, Matrix.mul_one, hX, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hJ` using `incM_frame (F := F) hε`. Use `set B0 := incM F b.1`. Use `set Bi := incM F (b⁻¹).1`. Use `set D := dbl (incM F Y.J)`. Use `set J := jw n (((ε : ℤ) : AE F E))`.
+
+Establish `h' : M' * M = 1` using `mul_eq_one_comm.1 h`. Establish `e1 : B0 * Bi = 1` using `GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv b`. Establish `e2 : Bi * B0 = 1` using `GlobalTheory.EisBL.DoubledParabolic.incM_inv_mul b`. Establish `h2 : B0.map (cA σ) * Bi.map (cA σ) = 1`. Rewrite using `[← map_cA_mul, e1]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Establish `h2' : Bi.map (cA σ) * B0.map (cA σ) = 1`. Rewrite using `[← map_cA_mul, e2]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.one_apply]`. Establish `h3 : Biᵀ * B0ᵀ = 1` using `by rw [← Matrix.transpose_mul, e1, Matrix.transpose_one]`. Establish `h3' : B0ᵀ * Biᵀ = 1` using `by rw [← Matrix.transpose_mul, e2, Matrix.transpose_one]`. Establish `hD : D = Biᵀ * J * Bi.map (cA σ)`. Rewrite using `[← hJ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `U : GL (Fin n ⊕ Fin n) (AE F E)` to `⟨B0 * M * Bi, B0 * M' * Bi, by`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hU : U ∈ UG (cA σ) D` using `by show (B0 * M * Bi)ᵀ * D * (B0 * M * Bi).map (cA σ) = D`.
+
+Rewrite using `[hD, Matrix.transpose_mul, Matrix.transpose_mul, map_cA_mul, map_cA_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Biᵀ * J * Bi.map (cA σ) := by`. Rewrite using `[h3', h2', Matrix.mul_one, Matrix.mul_one, hM, Matrix.mul_assoc]`.
+
+Use `⟨⟨U, hU⟩, ?_⟩` and prove the remaining obligations. Use `show Bi * (B0 * M * Bi) * B0 = M`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_of_frame {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (h : M * M' = 1)
     (hM : Mᵀ * jw n (((ε : ℤ) : AE F E)) * M.map (cA σ) = jw n (((ε : ℤ) : AE F E))) :
@@ -102,6 +147,29 @@ theorem exists_of_frame {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matr
   calc Bi * (B0 * M * Bi) * B0 = (Bi * B0) * M * (Bi * B0) := by simp only [Matrix.mul_assoc]
     _ = M := by rw [e2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Use `set B0 := incM F b.1`. Use `set Bi := incM F (b⁻¹).1`. Use `set P := inFrame b p`. Use `set T0 := incM F t₀.1`. Use `set Ti := incM F (t₀⁻¹).1`.
+
+Use `set e1 : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E) := Matrix.fromRows 1 0`. Establish `e2 : Bi * B0 = 1` using `GlobalTheory.EisBL.DoubledParabolic.incM_inv_mul b`. Establish `e3 : B0 * Bi = 1` using `GlobalTheory.EisBL.DoubledParabolic.incM_mul_inv b`. Establish `hT : T0 * Ti = 1` using `by show incM F t₀.1 * incM F (t₀⁻¹).1 = 1`. Rewrite using `[← incM_mul', Units.mul_inv]`.
+
+Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hT' : Ti * T0 = 1` using `by show incM F (t₀⁻¹).1 * incM F t₀.1 = 1`. Rewrite using `[← incM_mul', Units.inv_mul]`. Use extensionality with `i j`.
+
+Simplify using `[incM, Matrix.one_apply]`. Establish `hmat : mat2 p = B0 * P * Bi` using `by show mat2 p = B0 * (Bi * mat2 p * B0) * Bi`. Combine the equalities or inequalities in the displayed calculation. Establish `hcols : B0 * e1 = incM F b.1.toCols₁`. Use extensionality with `i j`.
+
+Simplify using `[B0, e1, incM, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.toCols₁]`. Establish `hdc : diagCols (E` using `AE F E) (Fin n) = B0 * e1 * Ti := by`. Rewrite using `[hcols, ht₀, incM_mul', incM_diag, Matrix.mul_assoc, hT, Matrix.mul_one]`. Establish `cB : ∀ X : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E), Bi * (B0 * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, e2, Matrix.one_mul]`.
+
+Establish `key : IsPar p t ↔ P * e1 = e1 * (Ti * t.1 * T0)` using `by show mat2 p * diagCols (E := AE F E) (Fin n) = diagCols (E := AE F E) (Fin n) * t.1 ↔ _`. Rewrite using `[hmat, hdc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [Matrix.mul_assoc] at h`.
+
+Rewrite `h` using `[cB]`. Establish `h1 : Bi * (B0 * (P * (e1 * Ti))) = Bi * (B0 * (e1 * (Ti * t.1)))` using `by rw [h]`. Rewrite `h1` using `[cB, cB]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[cB, ← Matrix.mul_assoc P, h]`. Simplify using `only [Matrix.mul_assoc, hT, Matrix.mul_one]`. Establish `hPe : P * e1 = Matrix.fromRows P.toBlocks₁₁ P.toBlocks₂₁` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks P]`. Simplify using `[e1, Matrix.fromBlocks_mul_fromRows]`.
+
+Establish `he : ∀ X : Matrix (Fin n) (Fin n) (AE F E), e1 * X = Matrix.fromRows X 0` using `fun X => by`. Simplify using `[e1, Matrix.fromRows_mul]`. Rewrite using `[key, hPe, he, Matrix.fromRows_ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨h2, h1⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isPar_frame {t₀ : GL (Fin n) E} (ht₀ : b.1.toCols₁ = diagCols (E := E) (Fin n) * t₀.1) (p : G2 σ Y)
     (t : GL (Fin n) (AE F E)) :
     IsPar p t ↔ (inFrame b p).toBlocks₂₁ = 0 ∧ t.1 = incM F t₀.1 * (inFrame b p).toBlocks₁₁ * incM F (t₀⁻¹).1 := by

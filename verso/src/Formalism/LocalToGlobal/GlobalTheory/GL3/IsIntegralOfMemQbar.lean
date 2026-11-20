@@ -30,9 +30,17 @@ section Coef
 
 variable {D : D7} {N N' : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem algCoef_iff (G : VC D N N' → ℂ) :
     AlgCoef D G ↔ ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ CoefIn D G M := Iff.rfl
 
+/- English proof (translation)
+Unfold `taylor`. Establish `h1 : (fun z => ∑ k, r k * F k z) = fun z => ∑ k ∈ Finset.univ, r k • F k z` using `rfl`. Rewrite using `[h1, iteratedFDeriv_sum (fun k _ => (hF k _).const_smul (r k)), Finset.sum_apply, _root_.sum_apply, Finset.sum_div]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : (fun x => r k • F k x) = r k • F k` using `rfl`.
+
+Rewrite using `[e, iteratedFDeriv_const_smul_apply ((hF k _).contDiffAt), _root_.smul_apply, smul_eq_mul, mul_div_assoc]`.
+-/
 theorem taylor_lin {ι : Type*} [Fintype ι] (r : ι → ℂ) (F : ι → VC D N N' → ℂ)
     (hF : ∀ k (m : ℕ), ContDiff ℂ m (F k)) (α : Mono D N N') :
     taylor D (fun z => ∑ k, r k * F k z) α = ∑ k, r k * taylor D (F k) α := by
@@ -44,9 +52,17 @@ theorem taylor_lin {ι : Type*} [Fintype ι] (r : ι → ℂ) (F : ι → VC D N
   have e : (fun x => r k • F k x) = r k • F k := rfl
   rw [e, iteratedFDeriv_const_smul_apply ((hF k _).contDiffAt), _root_.smul_apply, smul_eq_mul, mul_div_assoc]
 
+/- English proof (translation)
+The claim follows from `(mem_algebraicClosure_iff.1 h).isIntegral`.
+-/
 theorem isIntegral_of_mem_Qbar {x : ℂ} (h : x ∈ Qbar) : IsIntegral ℚ x :=
   (mem_algebraicClosure_iff.1 h).isIntegral
 
+/- English proof (translation)
+Use `choose M hM hC using hA`. Set `M' : ι → IntermediateField ℚ ℂ` to `fun k => M k ⊔ IntermediateField.adjoin ℚ {r k}`. Use `haveI : ∀ k, FiniteDimensional ℚ (M k) := hM`. Use `haveI : ∀ k, FiniteDimensional ℚ (IntermediateField.adjoin ℚ {r k}) := fun k => IntermediateField.adjoin.finiteDimensional (isIntegral_of_mem_Qbar (hr k))`. Use `haveI : ∀ k, FiniteDimensional ℚ (M' k) := fun k => IntermediateField.finiteDimensional_sup _ _`.
+
+Use `⟨⨆ k, M' k, IntermediateField.finiteDimensional_iSup_of_finite, fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[taylor_lin r F hF α]`. Use `sum_mem fun k _ => mul_mem ?_ ?_` and prove the remaining obligations. Conclude with `le_iSup M' k (le_sup_right (a := M k) (b := IntermediateField.adjoin ℚ {r k}) (IntermediateField.subset_adjoin ℚ {r k} (Set.mem_singleton _)))`. Conclude with `le_iSup M' k (le_sup_left (a := M k) (b := IntermediateField.adjoin ℚ {r k}) (hC k α))`.
+-/
 theorem algCoef_sum {ι : Type*} [Fintype ι] (r : ι → ℂ) (hr : ∀ k, r k ∈ Qbar) (F : ι → VC D N N' → ℂ)
     (hF : ∀ k (m : ℕ), ContDiff ℂ m (F k)) (hA : ∀ k, AlgCoef D (F k)) :
     AlgCoef D (fun z => ∑ k, r k * F k z) := by
@@ -63,11 +79,17 @@ theorem algCoef_sum {ι : Type*} [Fintype ι] (r : ι → ℂ) (hr : ∀ k, r k 
       (IntermediateField.subset_adjoin ℚ {r k} (Set.mem_singleton _)))
   · exact le_iSup M' k (le_sup_left (a := M k) (b := IntermediateField.adjoin ℚ {r k}) (hC k α))
 
+/- English proof (translation)
+Establish `h` using `algCoef_sum (ι := Unit) (fun _ => c) (fun _ => hc) (fun _ => G) (fun _ => hG) (fun _ => hA)`. Simplify using `using h`.
+-/
 theorem algCoef_const_mul (c : ℂ) (hc : c ∈ Qbar) (G : VC D N N' → ℂ) (hG : ∀ m : ℕ, ContDiff ℂ m G)
     (hA : AlgCoef D G) : AlgCoef D (fun z => c * G z) := by
   have h := algCoef_sum (ι := Unit) (fun _ => c) (fun _ => hc) (fun _ => G) (fun _ => hG) (fun _ => hA)
   simpa using h
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℂ m (fun z : VC D N N' => G (z + x))` using `(hG m).comp (contDiff_id.add contDiff_const)`. Establish `h2 : ContDiff ℂ m (fun z : VC D N N' => Formalism.MainNotions.TaylorLogMetric.Hf D T z x)`. Unfold `Formalism.MainNotions.TaylorLogMetric.Hf`. Use `fun_prop`. Conclude with `h1.mul (((contDiff_const.mul h2).sub contDiff_const).cexp)`.
+-/
 theorem U_contDiff (T : Tor D) (x : VC D N N') {G : VC D N N' → ℂ} (hG : ∀ m : ℕ, ContDiff ℂ m G) (m : ℕ) :
     ContDiff ℂ m (U D T x G) := by
   have h1 : ContDiff ℂ m (fun z : VC D N N' => G (z + x)) := (hG m).comp (contDiff_id.add contDiff_const)
@@ -76,17 +98,28 @@ theorem U_contDiff (T : Tor D) (x : VC D N N') {G : VC D N N' → ℂ} (hG : ∀
     fun_prop
   exact h1.mul (((contDiff_const.mul h2).sub contDiff_const).cexp)
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_inv]`. Use `inv_mem (mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (n := 2) two_pos ?_))` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n), Complex.ofReal_natCast]`. Conclude with `mem_algebraicClosure_iff.1 (natCast_mem Qbar n)`.
+-/
 theorem sqrt_inv_mem_Qbar (n : ℕ) : (((Real.sqrt (n : ℝ))⁻¹ : ℝ) : ℂ) ∈ Qbar := by
   rw [Complex.ofReal_inv]
   refine inv_mem (mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (n := 2) two_pos ?_))
   rw [← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg n), Complex.ofReal_natCast]
   exact mem_algebraicClosure_iff.1 (natCast_mem Qbar n)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases al_sign D T x with h | h <;> rw [h]`. Conclude with `one_mem _`. Conclude with `neg_mem (one_mem _)`.
+-/
 theorem al_mem_Qbar (T : Tor D) (x : VC D N N') : al D T x ∈ Qbar := by
   rcases al_sign D T x with h | h <;> rw [h]
   · exact one_mem _
   · exact neg_mem (one_mem _)
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite (La₂ ⧸ La₁.addSubgroupOf La₂)`. Establish `e : Iop D T La₁ La₂ G = fun z => ∑ q : La₂ ⧸ La₁.addSubgroupOf La₂, ((((Real.sqrt ((La₁.addSubgroupOf La₂).index : ℝ))⁻¹ : ℝ) : ℂ) * al D T ((Quotient.out q : La₂) : VC D N N')) * U D T ((Quotient.out q : La₂) : VC D N N') G z`. Use function extensionality and compare the values at `z`. Simplify using `only [Iop, finsum_eq_sum_of_fintype, Finset.mul_sum, mul_assoc, Complex.ofReal_inv]`. Rewrite using `[e]`.
+
+Conclude with `algCoef_sum _ (fun q => mul_mem (sqrt_inv_mem_Qbar _) (al_mem_Qbar T _)) _ (fun q m => U_contDiff T _ hG m) (fun q => hA _ (Quotient.out q).2)`.
+-/
 theorem algCoef_Iop (T : Tor D) (La₁ La₂ : AddSubgroup (VC D N N')) [Finite (La₂ ⧸ La₁.addSubgroupOf La₂)]
     (G : VC D N N' → ℂ) (hG : ∀ m : ℕ, ContDiff ℂ m G) (hA : ∀ x ∈ La₂, AlgCoef D (U D T x G)) :
     AlgCoef D (Iop D T La₁ La₂ G) := by
@@ -102,6 +135,13 @@ theorem algCoef_Iop (T : Tor D) (La₁ La₂ : AddSubgroup (VC D N N')) [Finite 
 
 end Coef
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Take `⟨k, hk, z, hz, hspan⟩` from `CU.pow_unitary D ha`. Establish `hzu : z ∈ unitary D.host.E`. Rewrite using `[Unitary.mem_iff, CU.star_conj]`. Conclude with `⟨by rw [mul_comm]; exact hz, hz⟩`.
+
+Establish `h1` using `hχ.2 ⟨z, hzu⟩`. Simplify using `only at h1`. Rewrite `h1` using `[← hspan, CU.chi_pow D χ hχ ha k hk]`. Use `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (n := k) (by omega) ?_)` and prove the remaining obligations. Rewrite using `[h1]`.
+
+Use `mem_algebraicClosure_iff.1 (prod_mem fun τ _ => inv_mem ?_)` and prove the remaining obligations. Use `mem_algebraicClosure_iff.2 ?_` and prove the remaining obligations. Establish `hz' : IsIntegral ℚ z` using `Algebra.IsIntegral.isIntegral z`. Conclude with `(hz'.map (embT D τ).toRatAlgHom).isAlgebraic`.
+-/
 theorem chi_mem_Qbar {D : D7} (χ : IdE D → ℂ) (hχ : IsChi D χ) {𝔞 : IdE D} (ha : N1 D 𝔞) : χ 𝔞 ∈ Qbar := by
   letI := D.host.cmStar
   obtain ⟨k, hk, z, hz, hspan⟩ := CU.pow_unitary D ha
@@ -118,6 +158,17 @@ theorem chi_mem_Qbar {D : D7} (χ : IdE D → ℂ) (hχ : IsChi D χ) {𝔞 : Id
   have hz' : IsIntegral ℚ z := Algebra.IsIntegral.isIntegral z
   exact (hz'.map (embT D τ).toRatAlgHom).isAlgebraic
 
+/- English proof (translation)
+Introduce `D cc hcc δ hδ B χ hχ N N' L L' hA`. Establish `hδ0 : δ ≠ 0` using `base_linkage_nonempty D cc δ B`. Establish `hS : B.StdOK` using `standard_basis_ok_link D cc hcc δ hδ B`. Establish `hL : B.LatAll` using `B.latAll hcc hδ hδ0`. Establish `hA0 : admitted D N N' (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')` using `Base.first_coordinate_admissible hA`.
+
+Establish `hA1 : admitted D N N' L (Formalism.MainNotions.StandardLatticesGL3.stdL D N')` using `Base.isAdmissible_flagPair_of_unitriangular_left_automorphism hA`. Establish `z0 : AlgCoef D (B.thZero N N')` using `h0 D cc hcc δ hδ B N N' hA.1 hA.2.1`. Establish `z0T` using `B.thZeroMem hS N N'`. Establish `z0m : B.thZero N N' ∈ Th D (tor0 D cc δ) (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N')` using `mem_ThSp_of D B.tor _ _ z0T`. Establish `z0s : ∀ m : ℕ, ContDiff ℂ m (B.thZero N N')` using `fun m => z0T.1.contDiff`.
+
+Use `haveI := IO.La_index_finite cc hcc δ (Formalism.MainNotions.StandardLatticesGL3.stdL D N) L (Formalism.MainNotions.StandardLatticesGL3.stdL D N') (Formalism.MainNotions.StandardLatticesGL3.stdL D N') hA0 hA1`. Establish `h1 : AlgCoef D (B.thHalf N N' L)` using `algCoef_Iop _ _ _ _ z0s fun x hx => hT D cc hcc δ hδ N N' _ _ _ _ hA0 hA1 _ z0m z0 x hx`. Establish `h1T` using `B.thHalf_mem hS hL hA`. Establish `h1m : B.thHalf N N' L ∈ Th D (tor0 D cc δ) L (Formalism.MainNotions.StandardLatticesGL3.stdL D N')` using `mem_ThSp_of D B.tor _ _ h1T`. Establish `h1s : ∀ m : ℕ, ContDiff ℂ m (B.thHalf N N' L)` using `fun m => h1T.1.contDiff`.
+
+Use `haveI := IO.La_index_finite cc hcc δ L L (Formalism.MainNotions.StandardLatticesGL3.stdL D N') L' hA1 hA`. Establish `h2 : AlgCoef D (B.thMoved N N' L L')` using `algCoef_Iop _ _ _ _ h1s fun x hx => hT D cc hcc δ hδ N N' _ _ _ _ hA1 hA _ h1m h1 x hx`. Establish `h2s : ∀ m : ℕ, ContDiff ℂ m (B.thMoved N N' L L')` using `fun m => (B.thMoved_mem hL z0T hA).1.contDiff`. Establish `hd` using `relative_determinant_norm_one D`. Establish `c1` using `chi_mem_Qbar χ hχ (hd N _ L hA.1 (Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D N) hA.2.2.1)`.
+
+Establish `c2` using `chi_mem_Qbar χ hχ (hd N' _ L' hA.2.1 (Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D N') hA.2.2.2)`. Establish `hc : Base.chiFac χ N N' L L' ∈ Qbar` using `mul_mem (zpow_mem c1 _) (zpow_mem c2 _)`. Conclude with `algCoef_const_mul _ hc _ h2s h2`.
+-/
 theorem LinkVecCoef_of (h0 : ZeroAlg) (hT : TransAlg) : LinkVecCoef := by
   intro D cc hcc δ hδ B χ hχ N N' L L' hA
   have hδ0 : δ ≠ 0 := base_linkage_nonempty D cc δ B

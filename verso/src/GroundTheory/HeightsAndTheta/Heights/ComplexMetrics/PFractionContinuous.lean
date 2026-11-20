@@ -13,6 +13,21 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace ComplexMetric
 
+/- English proof (translation)
+Introduce `A _ N ρ d a b ha hb`. Establish `hrep : ∀ (w : Fin (N + 1) → ℂ) (hw : w ≠ 0), ∃ c : ℂ, c ≠ 0 ∧ (Projectivization.mk ℂ w hw).rep = c • w`. Introduce `w hw`. Take `⟨c, hc⟩` from `(Projectivization.mk_eq_mk_iff ℂ _ _ (Projectivization.rep_nonzero _) hw).1 (Projectivization.mk_rep (Projectivization.mk ℂ w hw))`. Conclude with `⟨c, c.ne_zero, hc.symm⟩`.
+
+Establish `hSo : IsOpen {v : CP N | evalAt ρ v.rep b ≠ 0}`. Establish `e : {v : CP N | evalAt ρ v.rep b ≠ 0} = {v : CP N | b ∈ (projPoint ρ v).asHomogeneousIdeal}ᶜ`. Use extensionality with `v`. Conclude with `(not_congr (mem_projPointOf ρ v.rep_nonzero hb)).symm`. Rewrite using `[e]`.
+
+Conclude with `(isClosed_setOf_mem_projPoint ρ hb).isOpen_compl`. Establish `hq : Topology.IsQuotientMap (Projectivization.mk' ℂ : {w : Fin (N + 1) → ℂ // w ≠ 0} → CP N)`. Use `⟨⟨rfl⟩, fun v => ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨v.rep, v.rep_nonzero⟩, Projectivization.mk_rep v⟩`. Rewrite using `[hq.continuousOn_isOpen_iff hSo]`.
+
+Establish `hval : ∀ w : {w : Fin (N + 1) → ℂ // w ≠ 0}, evalAt ρ (Projectivization.mk' ℂ w).rep a / evalAt ρ (Projectivization.mk' ℂ w).rep b = evalAt ρ w.1 a / evalAt ρ w.1 b`. Introduce `w`. Take `⟨c, hc, e⟩` from `hrep w.1 w.2`. Express the relevant statement in the definitionally equal form `evalAt ρ (Projectivization.mk ℂ w.1 w.2).rep a / evalAt ρ (Projectivization.mk ℂ w.1 w.2).rep b = _`. Rewrite using `[e, evalAt_smul ρ ha, evalAt_smul ρ hb]`.
+
+Conclude with `mul_div_mul_left _ _ (pow_ne_zero _ hc)`. Establish `hne : ∀ w : {w : Fin (N + 1) → ℂ // w ≠ 0}, w ∈ (Projectivization.mk' ℂ) ⁻¹' {v : CP N | evalAt ρ v.rep b ≠ 0} → evalAt ρ w.1 b ≠ 0`. Introduce `w hw h0`. Take `⟨c, _, e⟩` from `hrep w.1 w.2`. Apply `hw` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `evalAt ρ (Projectivization.mk ℂ w.1 w.2).rep b = 0`. Rewrite using `[e, evalAt_smul ρ hb, h0, mul_zero]`. Establish `hfun : ((fun v : CP N => evalAt ρ v.rep a / evalAt ρ v.rep b) ∘ Projectivization.mk' ℂ) = fun w => evalAt ρ w.1 a / evalAt ρ w.1 b`. Use function extensionality and compare the values at `w`. Conclude with `hval w`.
+
+Rewrite using `[hfun]`. Conclude with `ContinuousOn.div ((continuous_evalAt ρ a).comp continuous_subtype_val).continuousOn ((continuous_evalAt ρ b).comp continuous_subtype_val).continuousOn hne`.
+-/
 theorem FractionContinuous.proof : FractionContinuous.Statement.{u} := by
   intro A _ N ρ d a b ha hb
 

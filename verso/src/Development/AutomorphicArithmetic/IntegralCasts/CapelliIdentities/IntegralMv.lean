@@ -9,6 +9,11 @@ noncomputable def UpperTheory.Reformulated.B.Gwb3.IntegralMv.{u_1} :
     fun {σ : Type u_1} {p : ℕ} [Fact (Nat.Prime p)] (F : MvPowerSeries σ ℂ_[p]) ↦
       ∀ (n : σ →₀ ℕ), UpperTheory.Reformulated.B.Gwb3.IsIntP ((MvPowerSeries.coeff n : MvPowerSeries σ ℂ_[p] → ℂ_[p]) F)
 
+/- English proof (translation)
+Introduce `p inst σ n`. Use `show ‖MvPowerSeries.coeff n (1 : MvPowerSeries σ ℂ_[p])‖ ≤ (1 : ℝ)`. Rewrite using `[MvPowerSeries.coeff_one]`. Use `split_ifs`. Conclude with `norm_one.le`.
+
+Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem UpperTheory.Reformulated.B.Gwb3.intMv_one.{u_1} :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {σ : Type u_1}, UpperTheory.Reformulated.B.Gwb3.IntegralMv (1 : MvPowerSeries σ ℂ_[p]) := by
   intro p inst σ n

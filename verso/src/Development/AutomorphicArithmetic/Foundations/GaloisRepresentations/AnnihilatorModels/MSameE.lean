@@ -8,6 +8,9 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hK hI p _ D R _ b N r κ _ _ s o o₁ o₂ ψ₁ ψ₂ hψ₂ hsub d hrep hcard hkill T g hg`. Use `⟨hK κ o.A o₂.A ψ₂ hψ₂ (UKer r o ψ₁) d hrep hsub hkill ?_ T g hg, hg.2⟩` and prove the remaining obligations. Introduce `Λ _ _ _ ε g' hP hinf`. Rewrite using `[hI κ o.A (UKer r o ψ₁) d hrep hcard Λ ε g' hP hinf]`. Conclude with `MonObj.one_comp _`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.sameE_of :
     KillLocal → InfE → SameE := by
   intro hK hI p _ D R _ b N r κ _ _ s o o₁ o₂ ψ₁ ψ₂ hψ₂ hsub d hrep hcard hkill T g hg

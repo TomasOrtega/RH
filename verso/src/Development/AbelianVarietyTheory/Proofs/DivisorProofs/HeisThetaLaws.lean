@@ -9,6 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeisThetaLaws
 
+/- English proof (translation)
+Introduce `D ψ hψ S T` and use `⟨fun w _ hf => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf w, fun w w' f => GlobalTheory.WeilVacMove.heisO_heisO ψ S T w w' f, GlobalTheory.SymplOInv.symplO_actO D S T⟩`.
+-/
 theorem heis_theta_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D), (∀ w f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (heisO ψ S T w f)) ∧ (∀ w w' f, heisO ψ S T w (heisO ψ S T w' f) = ψ (symplOH S T w w') • heisO ψ S T (w + w') f) ∧ ∀ g h x y, symplO S T (actO S T g h x) (actO S T g h y) = symplO S T x y :=
   fun D ψ hψ S T =>
     ⟨fun w _ hf => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf w,

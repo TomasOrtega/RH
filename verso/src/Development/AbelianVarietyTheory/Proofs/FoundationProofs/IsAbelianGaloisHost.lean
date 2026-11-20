@@ -23,6 +23,9 @@ section Host
 
 variable (D : D7) (H : Geo.Tor.Host D.host.E)
 
+/- English proof (translation)
+Establish `hE` using `D.host.hostE_isGalois`. Establish `hmul` using `D.host.galE_mul`. Establish `hbij` using `D.host.galE_bijective`. Establish `: IsMulCommutative Gal(D.host.E/ℚ)` using `⟨⟨fun σ τ => hbij.1 (by rw [hmul, hmul, _root_.mul_comm])⟩⟩`. Conclude with `{}`.
+-/
 theorem isAbelianGalois_host : IsAbelianGalois ℚ D.host.E := by
   have hE := D.host.hostE_isGalois
   have hmul := D.host.galE_mul
@@ -30,6 +33,21 @@ theorem isAbelianGalois_host : IsAbelianGalois ℚ D.host.E := by
   have : IsMulCommutative Gal(D.host.E/ℚ) := ⟨⟨fun σ τ => hbij.1 (by rw [hmul, hmul, _root_.mul_comm])⟩⟩
   exact {}
 
+/- English proof (translation)
+Establish `hE` using `D.host.hostE_isGalois`. Establish `hmul` using `D.host.galE_mul`. Establish `hbij` using `D.host.galE_bijective`. Establish `hp` using `D.host.hyp.2.1`. Establish `: IsGaloisGroup Gal(D.host.E/ℚ) ℤ (𝓞 D.host.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ D.host.E`.
+
+Use `w.isPrime` as an intermediate fact. Establish `hmax : (Ideal.span {(D.host.d : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible`. Establish `: w.asIdeal.LiesOver (Ideal.span {(D.host.d : ℤ)})` using `⟨hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) (by`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Simplify using `using hw)⟩`.
+
+Establish `hb : (Ideal.span {(D.host.d : ℤ)}) ≠ ⊥` using `by simpa using hp.ne_zero`. Establish `hIn : Nat.card (w.asIdeal.inertia Gal(D.host.E/ℚ)) = 2`. Establish `e : Nat.card (w.asIdeal.inertia Gal(D.host.E/ℚ)) = Nat.card ({1, D.R.toFrame.iod} : Set (D.R.GG))` using `Nat.card_congr (Equiv.subtypeEquiv (Equiv.ofBijective _ hbij) fun σ => by`. Rewrite using `[AddSubgroup.mem_inertia]`. Conclude with `D.host.der.inertia_d w.asIdeal σ)`.
+
+Rewrite using `[e, Nat.card_coe_set_eq, Set.ncard_pair]`. Introduce `h`. Use `congrArg (fun g : D.R.GG => g.1.2) h` as an intermediate fact. Conclude with `absurd (show (1 : ℤˣ) = -1 from this) (by decide)`. Rewrite `hIn` using `[Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(D.host.E/ℚ)) (Ideal.span {(D.host.d : ℤ)}) w.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx _ w.asIdeal Gal(D.host.E/ℚ), ← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(D.host.d : ℤ)}) w.asIdeal hb]`.
+
+Introduce `h`. Establish `hm : Ideal.map (algebraMap ℤ (𝓞 D.host.E)) (Ideal.span {(D.host.d : ℤ)}) = Ideal.span {((D.host.d : ℕ) : 𝓞 D.host.E)}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules. Rewrite `hIn` using `[Ideal.IsDedekindDomain.ramificationIdx'_eq_multiplicity (by rw [hm]; simpa using hp.ne_zero) w.isPrime, hm]`.
+
+Establish `hf : FiniteMultiplicity w.asIdeal (Ideal.span {((D.host.d : ℕ) : 𝓞 D.host.E)})`. Assume the negation of the conclusion as `hn`. Rewrite `hIn` using `[multiplicity_eq_one_of_not_finiteMultiplicity hn]`. Use linear arithmetic over natural numbers and integers. Use `hf.le_multiplicity_of_pow_dvd h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_cube_dvd (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : ((D.host.d : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) :
     ¬ w.asIdeal ^ 3 ∣ Ideal.span {((D.host.d : ℕ) : 𝓞 D.host.E)} := by
   have hE := D.host.hostE_isGalois
@@ -69,6 +87,19 @@ theorem not_cube_dvd (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : ((D.host.d : 
   have := hf.le_multiplicity_of_pow_dvd h
   omega
 
+/- English proof (translation)
+Establish `hA` using `isAbelianGalois_host D`. Take `⟨-, -, hdisc, hmov⟩` from `PlaceInt.host_galois_discr_moves D H`. Use `(HostRamif.isHostField_iff _ H).2 ⟨hA, fun l w hl hdv hw hlw => ?_⟩` and prove the remaining obligations. Establish `h1 : l ∣ D.host.condN` using `hdisc l hl hdv`. Establish `h2 : l ∈ D.host.small ∨ l = D.host.q ∨ l = D.host.d` using `(D.host.toHostRaw.dvd_condN_iff_small hl).1 h1`.
+
+Use `⟨fun h => ?_, fun h => (HostRamif.isSquare_iff H hl hw hlw h).1 ?_, fun h h3 => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `(hmov l (Nat.mem_primeFactors.2 ⟨hl, h1, D.host.toHostRaw.condN_ne_zero⟩)).2 w hw.isPrime hlw`. Conclude with `hx' (h ▸ Ideal.mem_map_of_mem (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) hx)`. Break down `h2 with h2 | rfl | h2` into its components or cases. Distinguish the cases in `e2 : l = 2`.
+
+Substitute `e2` using the available equality. Conclude with `FiniteField.isSquare_of_char_two (ZMod.ringChar_zmod_n 2) _`. Use `Fact.mk hl` as an intermediate fact. Use `ZMod.isSquare_of_jacobiSym_eq_one (D.host.QS_split l hl e2 ((D.host.toHostRaw.mem_small_iff).1 h2).2)` as an intermediate fact. Rewrite using `[hd]`.
+
+Simplify using `using this`. Use `Fact.mk hl` as an intermediate fact. Use `ZMod.isSquare_of_jacobiSym_eq_one D.host.hyp.2.2.2.2` as an intermediate fact. Rewrite using `[hd]`. Simplify using `using this`.
+
+Conclude with `absurd (h2.trans hd.symm) h`. Take `rfl : l = D.host.d` from `h.trans hd`. Establish `hb : w ≠ ⊥` using `fun e => by`. Rewrite `hlw` using `[e, Ideal.mem_bot]`. Conclude with `hl.ne_zero (by exact_mod_cast hlw)`.
+
+Conclude with `not_cube_dvd D ⟨w, hw.isPrime, hb⟩ hlw (Ideal.dvd_span_singleton.2 h3)`.
+-/
 theorem isHostField (hd : H.d = D.host.d) : EigenvectorLieDegree.IsHostField H := by
   have hA := isAbelianGalois_host D
   obtain ⟨-, -, hdisc, hmov⟩ := PlaceInt.host_galois_discr_moves D H
@@ -105,6 +136,23 @@ section Point
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Establish `h` using `n.cart`. Take `⟨e, he⟩` from `LiePull.exists_pushEquiv h (epsR R) (spMap (algebraMap R (DualNumber R)) ≫ x) rfl`. Take `⟨e₀, he₀⟩` from `LiePull.exists_pushEquiv h (𝟙_ (Over (Sp R))) x (Category.id_comp _).symm`. Establish `one : (1 : Over.mk x ⟶ T.G).left = η[t.G].left ≫ n.φ`. Rewrite using `[← map_one e₀, he₀, Hom.one_def, toUnit_unit, Category.id_comp]`.
+
+Establish `sc : ∀ c : R, spMap (epsScaleR c) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R))` using `fun c => by`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `fs : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `hR : ∀ (c : R) (u v : epsR R ⟶ t.G), u.left = spMap (epsScaleR c) ≫ v.left ↔ (e u).left = spMap (epsScaleR c) ≫ (e v).left` using `fun c u v => by`. Rewrite using `[he, he]`. Use `⟨fun E => by rw [E]; exact Category.assoc _ _ _, fun E => h.1.hom_ext (E.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations.
+
+Use `(Over.w u).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Conclude with `(congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans (sc c)`. Establish `hP : ∀ v : epsR R ⟶ t.G, EigenvectorLieDegree.IsEigVec t.act χ v ↔ FramedFlatCoordinates.IsEigenTangent T.act x χ (e v)` using `fun v => by`. Use `and_congr ?_ (forall_congr' fun c => ?_)` and prove the remaining obligations. Rewrite using `[one, he, IsTangent]`.
+
+Use `⟨fun E => by rw [← E]; exact (Category.assoc _ _ _).symm, fun E => h.1.hom_ext ((Category.assoc _ _ _).trans E) ?_⟩` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans ?_).trans (Over.w η[t.G]).symm` and prove the remaining obligations. Conclude with `(congrArg (spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ ·) (Over.w v)).trans fs`. Establish `E : e (v ≫ t.act.act c) = e v ≫ T.act.act c` using `Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, n.act, Category.assoc])`.
+
+Rewrite using `[hR, E]`. Establish `pr : ∀ u : Fin m → (epsR R ⟶ t.G), e (List.ofFn u).prod = (List.ofFn fun i => e (u i)).prod` using `fun u => by`. Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Use `⟨fun i => e (v i), ⟨fun i => (hP _).1 (hv.1 i), fun w hw => ?_⟩, fun i => (he _).symm⟩` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩` from `e.surjective w`. Use `(existsUnique_congr fun c => ⟨?_, ?_⟩).1 (hv.2 w ((hP _).2 hw))` and prove the remaining obligations. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨fun i => e (u i), fun i => (hR _ _ _).1 (hu i), pr u⟩`. Introduce and unpack `⟨u, hu, hw⟩`.
+
+Use `⟨fun i => e.symm (u i), fun i => (hR _ _ _).2 (by simpa using hu i), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[pr, hw]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_eigenBasis {S : Scheme.{0}} {T : SAB H S} {R : Type} [CommRing R] {x : Sp R ⟶ S} {t : SAB H (Sp R)}
     (n : SABMap t T x) {χ : 𝓞 E →+* R} {m : ℕ} {v : Fin m → (epsR R ⟶ t.G)} (hv : EigenvectorLieDegree.IsEigBasis t.act χ v) :
     ∃ u : Fin m → (FramedFlatCoordinates.epsAt x ⟶ T.G), FramedFlatCoordinates.IsEigenBasis T.act x χ u ∧ ∀ i, (v i).left ≫ n.φ = (u i).left := by
@@ -174,6 +222,9 @@ def ValAtAlgebraic (sig : FramedFlatCoordinates.Rule Y Xc τ) (ρ : HeightOneSpe
     EigenvectorLieDegree.IsLocOrd t.G v 𝔓 r → EigenvectorLieDegree.IsLocOrd t.G w 𝔓 r' →
     (vAdd 𝔓 (sig L j a) : ℝ) + (r - r' - Dw.q * (EigenvectorLieDegree.ordTwist H (EigenvectorLieDegree.embIn c j τ) 𝔓 : ℝ)) = e * ρ 𝔭
 
+/- English proof (translation)
+Simplify using `only [EigenvectorLieDegree.adDeg, FlatLine.lineDeg, lw, Real.log_pow, ← Finset.mul_sum, div_eq_mul_inv, ← _root_.mul_assoc]`. Rewrite using `[← finsum_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem adDeg_sq {K : Type} [Field K] [NumberField K] (ρ : HeightOneSpectrum (𝓞 K) → ℝ) (R : (K →+* ℂ) → ℝ) :
     EigenvectorLieDegree.adDeg ρ (fun σ => R σ ^ 2) = FlatLine.lineDeg R ρ := by
   simp only [EigenvectorLieDegree.adDeg, FlatLine.lineDeg, lw, Real.log_pow, ← Finset.mul_sum, div_eq_mul_inv, ← _root_.mul_assoc]
@@ -181,6 +232,9 @@ theorem adDeg_sq {K : Type} [Field K] [NumberField K] (ρ : HeightOneSpectrum (�
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h` using `FlatLine.lineDeg_mul (r := fun σ : K →+* ℂ => ‖σ s‖) (r' := fun σ => √(N σ)) (fun σ => norm_pos_iff.2 ((map_ne_zero σ).2 hs)) (fun σ => Real.sqrt_pos.2 (hN σ)) (FlatLine.finite_vAdd hs) hρ`. Rewrite `h` using `[FlatLine.lineDeg_num hs, zero_add, ← adDeg_sq, ← adDeg_sq]`. Simplify using `only [Pi.mul_apply, mul_pow, Real.sq_sqrt (hN _).le] at h`. Conclude with `h`.
+-/
 theorem adDeg_mul {K : Type} [Field K] [NumberField K] {s : K} (hs : s ≠ 0) {ρ : HeightOneSpectrum (𝓞 K) → ℝ}
     (hρ : (Function.support ρ).Finite) {N : (K →+* ℂ) → ℝ} (hN : ∀ σ, 0 < N σ) :
     EigenvectorLieDegree.adDeg (fun 𝔭 => (vAdd 𝔭 s : ℝ) + ρ 𝔭) (fun σ => ‖σ s‖ ^ 2 * N σ) = EigenvectorLieDegree.adDeg ρ N := by
@@ -194,6 +248,9 @@ end Point
 
 section Record
 
+/- English proof (translation)
+Use `choose s hs _ using h.sum`. Use `(hρ.biUnion fun 𝔭 _ => (s 𝔭).finite_toSet).subset fun 𝔓 h𝔓 => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, Finset.mem_coe]`. Conclude with `⟨π 𝔓, right_ne_zero_of_mul h𝔓, (hs _ _).2 rfl⟩`.
+-/
 theorem finite_up {k k' : Type} [Field k] [NumberField k] [Field k'] [NumberField k'] {i : k →+* k'}
     {π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)} {ε : HeightOneSpectrum (𝓞 k') → ℕ}
     (h : IsUnder i π ε) {ρ : HeightOneSpectrum (𝓞 k) → ℝ} (hρ : (Function.support ρ).Finite) :

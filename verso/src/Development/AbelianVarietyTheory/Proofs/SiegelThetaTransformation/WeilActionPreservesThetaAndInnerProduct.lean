@@ -20,6 +20,13 @@ namespace GlobalTheory.SW.UnAct
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+Use `choose P hP hg using X.signature`. Apply the tactic sequence `have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+
+Rewrite using `[show FD.gram τ.1 X.Gm (mat (fun τ => P τ) τ) = FD.gram τ.1 X.Gm (P τ) from rfl, hg τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Rewrite using `[e, Complex.ofReal_re]`.
+
+Establish `h0 : psgn X.p0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hs a`. Conclude with `mul_self_pos.2 h0`.
+-/
 theorem exists_mem_dom (X : Data E r) : ∃ x, x ∈ X.dom := by
   choose P hP hg using X.signature
   have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num
@@ -37,6 +44,9 @@ theorem exists_mem_dom (X : Data E r) : ∃ x, x ∈ X.dom := by
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 theorem lact_one' {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
   change (1 : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ
@@ -44,6 +54,11 @@ theorem lact_one' {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact (1 : GL (F
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame`. Consider the case `exact _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame`. Consider the case `(apply _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame ..)`.
+-/
 theorem lact_mul' {Ψ : Finset (E →+* ℂ)} (γ' γ : GL (Fin r) E) (x : Frame Ψ r) :
     lact (γ' * γ) x = lact γ' (lact γ x) := by
   first
@@ -54,14 +69,23 @@ theorem lact_mul' {Ψ : Finset (E →+* ℂ)} (γ' γ : GL (Fin r) E) (x : Frame
   | (intros; apply @_root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LeftActionFrameMul.lact_mul_frame ..)
 
+/- English proof (translation)
+Introduce `u v`. Rewrite using `[Units.val_mul, ← mulVec_mulVec, ← mulVec_mulVec, h', h]`.
+-/
 theorem isUn_mul {γ' γ : GL (Fin r) E} (h' : IsUn X γ') (h : IsUn X γ) : IsUn X (γ' * γ) := by
   intro u v
   rw [Units.val_mul, ← mulVec_mulVec, ← mulVec_mulVec, h', h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tauMat_isSymm idx hs hx, tauMat_im_posDef idx hs hx⟩`.
+-/
 theorem tauMat_mem (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     tauMat X bas idx x ∈ Siegel (Fin g) :=
   ⟨tauMat_isSymm idx hs hx, tauMat_im_posDef idx hs hx⟩
 
+/- English proof (translation)
+Use `eq_of_thS_eq _ _ φ ψ hφ hψ _ (tauMat_mem idx hs hx) fun ζ => ?_` and prove the remaining obligations. Establish `h1` using `congrFun h fun k => perMat X bas idx Sum.inl x *ᵥ ζ k`. Simplify using `only [thA, mulVec_mulVec, hMat_mul_perMat idx hs hx, one_mulVec] at h1`. Conclude with `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero _ (isUnit_det_hMat idx hs hx).ne_zero) (Complex.exp_ne_zero _)) h1`.
+-/
 theorem eq_of_thA_eq (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {φ ψ : TF n g}
     (hφ : IsSB φ) (hψ : IsSB ψ) (h : thA X bas idx φ x = thA X bas idx ψ x) : φ = ψ := by
   refine eq_of_thS_eq _ _ φ ψ hφ hψ _ (tauMat_mem idx hs hx) fun ζ => ?_
@@ -70,6 +94,9 @@ theorem eq_of_thA_eq (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) 
   exact mul_left_cancel₀ (mul_ne_zero (pow_ne_zero _ (isUnit_det_hMat idx hs hx).ne_zero)
     (Complex.exp_ne_zero _)) h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `h1` using `(SiegelSum.summable_norm_thetaTerm _ _ φ hφ _ (tauMat_mem idx hs hx) fun k => hMat X bas idx x *ᵥ z k).of_norm`. Establish `h2` using `(SiegelSum.summable_norm_thetaTerm _ _ ψ hψ _ (tauMat_mem idx hs hx) fun k => hMat X bas idx x *ᵥ z k).of_norm`. Simplify using `only [thA, thS, Pi.add_apply, add_mul]`. Rewrite using `[h1.tsum_add h2, mul_add]`.
+-/
 theorem thA_add (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {φ ψ : TF n g}
     (hφ : IsSB φ) (hψ : IsSB ψ) :
     thA X bas idx (φ + ψ) x = thA X bas idx φ x + thA X bas idx ψ x := by
@@ -81,12 +108,24 @@ theorem thA_add (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {φ �
   simp only [thA, thS, Pi.add_apply, add_mul]
   rw [h1.tsum_add h2, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [thA, thS, Pi.smul_apply, smul_eq_mul, mul_assoc a, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thA_smul (x : Frame X.Ψ r) (a : ℂ) (φ : TF n g) :
     thA X bas idx (a • φ) x = a • thA X bas idx φ x := by
   funext z
   simp only [thA, thS, Pi.smul_apply, smul_eq_mul, mul_assoc a, tsum_mul_left]
   ring
 
+/- English proof (translation)
+Take `⟨σ, hσ, h⟩` from `periods_lact_symplectic E r X g bas idx n hs hn γ hγ`. Take `⟨ω, hω⟩` from `GlobalTheory.T.exists_weil_of_symplectic' (Fin n) (Fin g) σ (by simpa using hn) hσ`. Use `⟨ω, fun φ hφ => ⟨(hω φ hφ).1, fun x hx => ?_, (hω φ hφ).2.2⟩⟩` and prove the remaining obligations. Take `⟨-, hτ, h1, h2⟩` from `h x hx`. Use function extensionality and compare the values at `z`.
+
+Establish `h3` using `(hω φ hφ).2.1 _ hτ fun k => hMat X bas idx x *ᵥ z k`. Establish `h4` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun (k : Fin n) _ => GlobalTheory.T.canonicalThetaExponent_symplectic_invariant _ σ hσ _ hτ (hMat X bas idx x *ᵥ z k)`. Establish `hd` using `(GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle _ σ hσ _ hτ).1`. Rewrite `h4` using `[Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `h5 (k) : hMat X bas idx (lact γ x) *ᵥ z k = (hMat X bas idx x *ᵥ z k) ᵥ* (spDen σ (tauMat X bas idx x))⁻¹`.
+
+Rewrite using `[h2, ← mulVec_mulVec, mulVec_transpose]`. Establish `h6 : (hMat X bas idx (lact γ x)).det = (spDen σ (tauMat X bas idx x)).det⁻¹ * (hMat X bas idx x).det`. Rewrite using `[h2, det_mul, det_transpose, det_nonsing_inv, Ring.inverse_eq_inv']`. Simplify using `only [thA, h5, imInv_eq, h1, h6]`. Rewrite using `[h3, ← h4, Fintype.card_fin, mul_add, Complex.exp_add, mul_pow, inv_pow]`.
+
+Establish `h7` using `pow_ne_zero (n / 2) hd`. Rewrite using `[show ∀ t : ℂ, (π : ℂ) / 2 * (2 * I * t) = π * I * t from fun t => by ring]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_weil (hs : IsSympl X bas) (hn : Even n) {γ : GL (Fin r) E} (hγ : IsUn X γ) :
     ∃ ω : TF n g → TF n g, ∀ φ, IsSB φ → IsSB (ω φ) ∧
       (∀ x ∈ X.dom, thA X bas idx (ω φ) (lact γ x) = thA X bas idx φ x) ∧
@@ -113,6 +152,9 @@ theorem exists_weil (hs : IsSympl X bas) (hn : Even n) {γ : GL (Fin r) E} (hγ 
   rw [show ∀ t : ℂ, (π : ℂ) / 2 * (2 * I * t) = π * I * t from fun t => by ring]
   field_simp
 
+/- English proof (translation)
+Establish `he : ∃ ψ : TF n g, IsSB ψ ∧ ∀ x ∈ X.dom, thA X bas idx ψ (lact γ x) = thA X bas idx φ x` using `⟨ψ, hψ, h⟩`. Take `⟨x, hx⟩` from `exists_mem_dom X`. Rewrite using `[wG, dif_pos he]`. Conclude with `eq_of_thA_eq idx hs (hγ.lact_mem hx) he.choose_spec.1 hψ ((he.choose_spec.2 x hx).trans (h x hx).symm)`.
+-/
 theorem wG_eq (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ) {φ ψ : TF n g}
     (hψ : IsSB ψ) (h : ∀ x ∈ X.dom, thA X bas idx ψ (lact γ x) = thA X bas idx φ x) :
     wG X bas idx γ φ = ψ := by
@@ -123,6 +165,11 @@ theorem wG_eq (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ) {φ ψ 
   exact eq_of_thA_eq idx hs (hγ.lact_mem hx) he.choose_spec.1 hψ
     ((he.choose_spec.2 x hx).trans (h x hx).symm)
 
+/- English proof (translation)
+Take `⟨σ, hσ, h⟩` from `periods_lact_symplectic E r X g bas idx 0 hs Even.zero γ hγ`. Take `⟨hx', hτ, h1, h2⟩` from `h x hx`. Take `⟨hd, -, -, h3, -⟩` from `GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle _ σ hσ _ hτ`. Establish `h4 : imInv X bas idx x = (spDen σ (tauMat X bas idx x))⁻¹ * imInv X bas idx (lact γ x) * ((spDen σ (tauMat X bas idx x))⁻¹)ᴴ`. Rewrite using `[← (imInv_isSymm idx hs hx).eq, ← (imInv_isSymm idx hs hx').eq, imInv_eq, imInv_eq, ← h3, h1, Matrix.mul_inv_rev, Matrix.mul_inv_rev, transpose_mul, transpose_mul, ← transpose_nonsing_inv (spDen _ _), transpose_transpose, conjTranspose_nonsing_inv, transpose_nonsing_inv (Matrix.m …`.
+
+Both sides reduce to the same expression. Rewrite using `[h4, h2, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_transpose, mulVec_transpose, star_vecMul, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec _ (spDen _ _)⁻¹]`.
+-/
 theorem herm_lact (hs : IsSympl X bas) {γ : GL (Fin r) E} (hγ : IsUn X γ) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) (u v : Fin g → ℂ) :
     (hMat X bas idx (lact γ x) *ᵥ u) ⬝ᵥ imInv X bas idx (lact γ x) *ᵥ
@@ -147,6 +194,19 @@ namespace GlobalTheory.SW
 
 open UnAct
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn`. Establish `key : ∀ γ, IsUn X γ → ∀ φ : TF n g, IsSB φ → IsSB (wG X bas idx γ φ) ∧ (∀ x ∈ X.dom, thA X bas idx (wG X bas idx γ φ) (lact γ x) = thA X bas idx φ x) ∧ ∀ ψ, IsSB ψ → ip (wG X bas idx γ φ) (wG X bas idx γ ψ) = ip φ ψ`. Introduce `γ hγ φ hφ`. Take `⟨ω, hω⟩` from `exists_weil idx hs hn hγ`. Establish `e : ∀ ψ, IsSB ψ → wG X bas idx γ ψ = ω ψ` using `fun ψ hψ => wG_eq idx hs hγ (hω ψ hψ).1 (hω ψ hψ).2.1`.
+
+Rewrite using `[e φ hφ]`. Conclude with `⟨(hω φ hφ).1, (hω φ hφ).2.1, fun ψ hψ => by rw [e ψ hψ]; exact (hω φ hφ).2.2 ψ hψ⟩`. Introduce `γ hγ φ hφ`. Take `⟨k1, k2, k3⟩` from `key γ hγ φ hφ`. Use `⟨k1, k2, fun ψ hψ => ⟨k3 ψ hψ, ?_, fun x hx => eq_of_thA_eq idx hs hx hφ hψ⟩, fun a => ?_, ?_, fun γ' hγ' => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨l1, l2, -⟩` from `key γ hγ ψ hψ`. Use `wG_eq idx hs hγ (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ k1 l1).1 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[thA_add idx hs (hγ.lact_mem hx) k1 l1, thA_add idx hs hx hφ hψ, k2 x hx, l2 x hx]`. Use `wG_eq idx hs hγ ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ k1 k1).2.1 a) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[thA_smul, thA_smul, k2 x hx]`.
+
+Conclude with `wG_eq idx hs (fun u v => by simp) hφ fun x _ => by rw [lact_one']`. Take `⟨l1, l2, -⟩` from `key γ' hγ' _ k1`. Use `wG_eq idx hs (isUn_mul hγ' hγ) l1 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[lact_mul', l2 _ (hγ.lact_mem hx), k2 x hx]`. Take `⟨-, -, -, hH⟩` from `heisG_laws E r X g bas idx n hs hn`.
+
+Use `wG_eq idx hs hγ (hH _ _ k1).1 fun x hx => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `hy (k) : per X (lact γ x) ((y * (γ : Matrix (Fin r) (Fin r) E)ᵀ) k) = per X x (y k)`. Rewrite using `[← per_lact x hγ]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [mul_apply, transpose_apply, mulVec, dotProduct, mul_comm]`. Rewrite using `[(hH _ _ k1).2.2.2.2 _ (hγ.lact_mem hx), (hH _ _ hφ).2.2.2.2 _ hx, k2 x hx]`. Simplify using `only [hy, herm_lact idx hs hγ hx]`.
+-/
 theorem wG_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ γ : GL (Fin r) E, IsUn X γ → ∀ φ : TF n g, IsSB φ → IsSB (wG X bas idx γ φ) ∧ (∀ x ∈ X.dom, thA X bas idx (wG X bas idx γ φ) (lact γ x) = thA X bas idx φ x) ∧ (∀ ψ, IsSB ψ → ip (wG X bas idx γ φ) (wG X bas idx γ ψ) = ip φ ψ ∧ wG X bas idx γ (φ + ψ) = wG X bas idx γ φ + wG X bas idx γ ψ ∧ ∀ x ∈ X.dom, thA X bas idx φ x = thA X bas idx ψ x → φ = ψ) ∧ (∀ a : ℂ, wG X bas idx γ (a • φ) = a • wG X bas idx γ φ) ∧ wG X bas idx 1 φ = φ ∧ (∀ γ', IsUn X γ' → wG X bas idx (γ' * γ) φ = wG X bas idx γ' (wG X bas idx γ φ)) ∧ ∀ y : Matrix (Fin n) (Fin r) E, wG X bas idx γ (heisG X bas y φ) = heisG X bas (y * (γ : Matrix (Fin r) (Fin r) E)ᵀ) (wG X bas idx γ φ) := by
   intro E _ _ _ r X g bas idx n hs hn
   have key : ∀ γ, IsUn X γ → ∀ φ : TF n g, IsSB φ → IsSB (wG X bas idx γ φ) ∧

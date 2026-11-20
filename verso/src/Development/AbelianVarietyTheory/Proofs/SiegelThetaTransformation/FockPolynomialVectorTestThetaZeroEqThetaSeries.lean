@@ -19,6 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker
 
+/- English proof (translation)
+Set `F : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ' ℂ` to `MvPolynomial.aeval fun v => MvPolynomial.C (c v) * MvPolynomial.X (e v)`. Set `G : MvPolynomial σ' ℂ →ₐ[ℂ] MvPolynomial σ ℂ` to `MvPolynomial.aeval fun v => MvPolynomial.C (c (e.symm v))⁻¹ * MvPolynomial.X (e.symm v)`. Establish `h1 : F.comp G = AlgHom.id ℂ _` using `by ext1 v`. Simplify using `only [F, G, AlgHom.comp_apply, MvPolynomial.aeval_X, map_mul, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, AlgHom.id_apply, Equiv.apply_symm_apply]`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ (hc _), map_one, one_mul]`.
+
+Establish `h2 : G.comp F = AlgHom.id ℂ _` using `by ext1 v`. Simplify using `only [F, G, AlgHom.comp_apply, MvPolynomial.aeval_X, map_mul, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, AlgHom.id_apply, Equiv.symm_apply_apply]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ (hc _), map_one, one_mul]`. Conclude with `(AlgEquiv.ofAlgHom F G h1 h2).bijective`.
+-/
 theorem bijective_aeval_scale_rename {σ σ' : Type} (e : σ ≃ σ') (c : σ → ℂ) (hc : ∀ v, c v ≠ 0) :
     Function.Bijective
       (MvPolynomial.aeval fun v => MvPolynomial.C (c v) * MvPolynomial.X (e v) :
@@ -41,6 +46,11 @@ theorem bijective_aeval_scale_rename {σ σ' : Type} (e : σ ≃ σ') (c : σ �
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `h0 : D.host.xi0 ≠ 0`. Introduce `h`. Establish `h1` using `C.X.κ0_sign (C.m.e τ)`. Rewrite `h1` using `[C.m.ka, h]`. Simplify using `at h1`.
+
+Establish `h2 : 0 < ‖tauE D τ D.host.xi0‖` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 h0)`. Unfold `fockScale`. Use `Real.pi_pos` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem Ctx.fockScale_pos (C : Ctx S T) (τ : D.what₂.Tau) : 0 < fockScale D τ := by
   have h0 : D.host.xi0 ≠ 0 := by
     intro h
@@ -52,12 +62,22 @@ theorem Ctx.fockScale_pos (C : Ctx S T) (τ : D.what₂.Tau) : 0 < fockScale D �
   have := Real.pi_pos
   positivity
 
+/- English proof (translation)
+The claim follows from `bijective_aeval_scale_rename (C.m.e.prodCongr ((rowIdx C.hr).symm.prodCongr (Equiv.refl (Fin S.rank)))) (fun v => ((2 / fockScale D v.1 : ℝ) : ℂ)) fun v => by have := C.fockScale_pos v.1 exact Complex.ofReal_ne_zero.2 (by positivity)`.
+-/
 theorem Ctx.toH_bijective (C : Ctx S T) : Function.Bijective C.toH :=
   bijective_aeval_scale_rename (C.m.e.prodCongr ((rowIdx C.hr).symm.prodCongr (Equiv.refl (Fin S.rank))))
     (fun v => ((2 / fockScale D v.1 : ℝ) : ℂ)) fun v => by
       have := C.fockScale_pos v.1
       exact Complex.ofReal_ne_zero.2 (by positivity)
 
+/- English proof (translation)
+Introduce `D S T C`. Use `⟨C.toH_bijective, fun B hB φ hφ => ?_⟩` and prove the remaining obligations. Establish `hx : C.xB B ∈ C.X.dom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`. Establish `hZ` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C _ hx φ hφ).1`. Establish `hd : Differentiable ℂ (thA C.X C.bas C.idx φ (C.xB B))` using `fun z => ((GlobalTheory.SW.theta_holomorphic_weight _ _ C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even (fun _ _ => 0) (fun _ _ => 0) φ hφ 0 (Submodule.zero_mem _)).2.2.2 _ hx z trivial).differentiableAt`.
+
+Establish `hG : ∀ w, IsRealPt w → C.Th (C.xB B) φ w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * thA C.X C.bas C.idx φ (C.xB B) (C.zOf (C.xB B) w)` using `hZ.2`. Use `⟨fun τ z => ?_, fun Q => GlobalTheory.T.fockPolynomialVector_origin_eq_polyDeriv D S T C B hB _ _ hd hG Q⟩` and prove the remaining obligations. Take `⟨h0, h1, h2⟩` from `GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C`. Establish `hth : C.IsTh (annih (heisO C.ψ S T) C.θ τ (cplxO 1 (C.sB B τ)) z (C.Th (C.xB B) φ))` using `(h1 _ _ (GlobalTheory.T.heisenbergDerivative_thetaFunction_laws D S T C _ hZ.1 τ z).1 ((h2 _ (GlobalTheory.T.heisenbergDerivative_thetaFunction_laws D S T C _ hZ.1 τ (cplxO 1 (C.sB B τ) z)).1).1 I)).1`. Use `(h1 _ _ hth h0).2 fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite using `[(GlobalTheory.T.annihilation_creation_periodCoordinates D S T C B hB _ _ (hd.restrictScalars ℝ) hG τ z _ rfl w hw).1, ((hd _).hasFDerivAt.restrictScalars ℝ).fderiv]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← mul_assoc I I, I_mul_I]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fvec_Th_zero : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), Function.Bijective C.toH ∧ ∀ B, C.IsB B → ∀ φ : TF S.rank C.g, SW.IsSB φ → C.IsFock B (C.Th (C.xB B) φ) ∧ ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, C.fvec B (C.Th (C.xB B) φ) Q 0 = thP C.X C.hr C.bas C.idx φ (C.toH Q) (C.xB B) := by
   intro D S T C
   refine ⟨C.toH_bijective, fun B hB φ hφ => ?_⟩

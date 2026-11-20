@@ -15,6 +15,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `hz : ∀ z : (A × B) ⊗[F] E, z = LinearMap.rTensor E (LinearMap.inl F A B) (Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) z) + LinearMap.rTensor E (LinearMap.inr F A B) (Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) z)`. Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [← TensorProduct.add_tmul]`.
+
+Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Rewrite using `[add_add_add_comm, ← hx, ← hy]`. Rewrite using `[hz x, hz y, h1, h2]`.
+-/
 theorem prod_tens_ext {A B : Type} [CommRing A] [CommRing B] [Algebra F A] [Algebra F B] {x y : (A × B) ⊗[F] E}
     (h1 : Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) x =
       Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) y)
@@ -33,6 +38,11 @@ theorem prod_tens_ext {A B : Type} [CommRing A] [CommRing B] [Algebra F A] [Alge
       rw [add_add_add_comm, ← hx, ← hy]
   rw [hz x, hz y, h1, h2]
 
+/- English proof (translation)
+Establish `h1 : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) x = Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) y`. Use `GlobalTheory.AutFunCompare.infTens_ext fun w => ?_` and prove the remaining obligations. Take `⟨τ⟩` from `(inferInstance : Nonempty (EmbOver E w))`. Apply `(infEmb_bijective h τ).1` to reduce the goal to its premises. Establish `e : ∀ z : AE F E, infEmb τ (Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z)) = piInf τ z` using `fun z => by`.
+
+Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression. Rewrite using `[e, e]`. Conclude with `hi w τ`. Conclude with `prod_tens_ext (A := Ainf F) (B := Af F) h1 hf`.
+-/
 theorem ae_ext {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {x y : AE F E}
     (hf : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) x =
       Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) y)
@@ -56,11 +66,19 @@ section Helpers
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w 1 ⊗ₜ[F] x) = _`. Simplify using the standard rewrite rules.
+-/
 theorem piInf_inclR {w : InfinitePlace F} (τ : EmbOver E w) (x : E) :
     piInf τ (inclR (F := F) (AF F) x) = τ.1 x := by
   change infEmb τ (evInf F w 1 ⊗ₜ[F] x) = _
   simp
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Establish `hr : w.IsReal` using `IsTotallyReal.isReal w`. Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w (GlobalTheory.TorusTheta.infScale F s) ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[infEmb_tmul, map_one, mul_one]`. Establish `e` using `congrArg (fun p : mixedEmbedding.mixedSpace F => p.1 ⟨w, hr⟩) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (algebraMap ℝ (mixedEmbedding.mixedSpace F) s))`.
+
+Simplify using `only [InfiniteAdeleRing.ringEquiv_mixedSpace_apply] at e`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr]`. Conclude with `congrArg (fun x : ℝ => (x : ℂ)) (e.trans rfl)`.
+-/
 theorem piInf_infScale {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (s : ℝ) :
     piInf τ (algebraMap (AF F) (AE F E) (GlobalTheory.TorusTheta.infScale F s)) = s := by
   have := h.1
@@ -73,6 +91,9 @@ theorem piInf_infScale {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePl
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr]
   exact congrArg (fun x : ℝ => (x : ℂ)) (e.trans rfl)
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem snd_infScale (s : ℝ) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (algebraMap (AF F) (AE F E) (GlobalTheory.TorusTheta.infScale F s)) = 1 := by
   rw [Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]
@@ -80,6 +101,19 @@ theorem snd_infScale (s : ℝ) :
 
 end Helpers
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J r₀ Xf Yf t _ a ha`. Set `M : Matrix (Fin n) (Fin n) (AE F E)` to `((HA.mat (AF F) σ J a : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))`. Set `ψ : AE F E →+* Af F ⊗[F] E` to `(Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom`. Establish `f1 : M.map ψ = 1` using `congrArg (fun u : GL (Fin n) (Af F ⊗[F] E) => (u : Matrix (Fin n) (Fin n) (Af F ⊗[F] E))) (MonoidHom.mem_ker.1 ha.1)`. Establish `f2 : ∀ s : Fin r₀ → ℝ, (Matrix.diagonal fun i => algebraMap (AF F) (AE F E) (GlobalTheory.TorusTheta.infScale F (s i))).map ψ = 1` using `fun s => by`.
+
+Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Simplify using `only [ψ, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, snd_infScale, Matrix.diagonal_one]`. Establish `g1 : ∀ (w : InfinitePlace F) (τ : EmbOver E w), M.map (piInf τ) = GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)` using `fun w τ => rfl`. Establish `g2 : ∀ (w : InfinitePlace F) (τ : EmbOver E w) (Z : Matrix (Fin n) (Fin r₀) E), (incM F Z).map (piInf τ) = Z.map τ.1` using `fun w τ Z => Matrix.ext fun i j => piInf_inclR τ (Z i j)`. Establish `g3 : ∀ (w : InfinitePlace F) (τ : EmbOver E w) (s : Fin r₀ → ℝ), (Matrix.diagonal fun i => algebraMap (AF F) (AE F E) (GlobalTheory.TorusTheta.infScale F (s i))).map (piInf τ) = Matrix.diagonal fun i => (s i : ℂ)` using `fun w τ s => by`.
+
+Rewrite using `[Matrix.diagonal_map (map_zero _)]`. Conclude with `congrArg Matrix.diagonal (funext fun i => piInf_infScale h τ (s i))`. Establish `key : ∀ {P Q : Matrix (Fin n) (Fin r₀) (AE F E)}, P.map ψ = Q.map ψ → (∀ (w : InfinitePlace F) (τ : EmbOver E w), P.map (piInf τ) = Q.map (piInf τ)) → P = Q` using `fun hf hi => Matrix.ext fun i j => ae_ext h (congrFun (congrFun hf i) j) fun w τ => congrFun (congrFun (hi w τ) i) j`. Use `⟨key ?_ fun w τ => ?_, key ?_ fun w τ => ?_, fun z hz hz' => funext fun i => ae_ext h ?_ fun w τ => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul, f1, f2 t, Matrix.one_mul, Matrix.mul_one]`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, g1, g2, g3, (ha.2 w τ).1]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, f1, f2 (fun i => (t i)⁻¹), Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, g1, g2, g3, (ha.2 w τ).2.1]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Use `push_cast`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ψ ((M *ᵥ _) i) = ψ _`. Rewrite using `[RingHom.map_mulVec, f1, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `piInf τ ((M *ᵥ _) i) = piInf τ _`. Rewrite using `[RingHom.map_mulVec, g1]`. Establish `e : (piInf τ ∘ fun i => inclR (F` using `F) (AF F) (z i)) = fun i => τ.1 (z i) := funext fun i => piInf_inclR τ (z i)`. Rewrite using `[e, (ha.2 w τ).2.2 z hz hz', piInf_inclR]`.
+-/
 theorem isTorusElt_mat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r₀ : ℕ) (Xf Yf : Matrix (Fin n) (Fin r₀) E)
     (t : Fin r₀ → ℝ), (∀ i, 0 < t i) → ∀ a, GlobalTheory.SiegelSet.IsTorusElt σ J Xf Yf t a →

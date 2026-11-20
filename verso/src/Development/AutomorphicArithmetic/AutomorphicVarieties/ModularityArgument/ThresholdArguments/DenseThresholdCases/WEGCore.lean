@@ -19,6 +19,15 @@ open GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Pu
 namespace UpperTheory.V.Sd.EG
 section Norm
 variable {l : ℕ} [hl : Fact l.Prime]
+/- English proof (translation)
+Establish `hx` using `norm_root hl.out.ne_zero h`. Establish `hy : ‖x - 1‖ ≤ 1`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (by simp [hx])`. Establish `e` using `add_pow_prime_eq hl.out (x - 1) 1`.
+
+Rewrite `e` using `[sub_add_cancel, h, one_pow]`. Use `set S := ∑ k ∈ Finset.Ioo 0 l, (x - 1) ^ (k - 1) * 1 ^ (l - k - 1) * ((l.choose k / l : ℕ) : Qbar l) with hS`. Establish `hs : ‖S‖ ≤ 1`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[one_pow, mul_one, norm_mul, norm_pow]`.
+
+Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hy) (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)`. Establish `e2 : (x - 1) ^ l = -((l : Qbar l) * ((x - 1) * S))` using `by linear_combination -e`. Establish `h3 : ‖x - 1‖ ^ l < 1`. Rewrite using `[← norm_pow, e2, norm_neg, norm_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) norm_l (mul_le_one₀ hy (norm_nonneg _) hs)`.
+
+Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hl.out.ne_zero).1 h3`.
+-/
 private theorem root_small {x : Qbar l} (h : x ^ l = 1) : ‖x - 1‖ < 1 := by
   have hx := norm_root hl.out.ne_zero h
   have hy : ‖x - 1‖ ≤ 1 := by
@@ -54,11 +63,21 @@ private def U : Subgroup (Qbar l)ˣ where
     show ‖_‖ < 1
     rw [this]
     exact hu
+/- English proof (translation)
+Establish `e : ((a * u : (Qbar l)ˣ) : Qbar l) - a = a * (u - 1)` using `by push_cast; ring`. Unfold `Cong`. Rewrite using `[e, norm_mul, ha, one_mul]`. Conclude with `hu`.
+-/
 private theorem cong_mul {a u : (Qbar l)ˣ} (ha : ‖(a : Qbar l)‖ = 1) (hu : u ∈ U l) : Cong (a * u) a := by
   have e : ((a * u : (Qbar l)ˣ) : Qbar l) - a = a * (u - 1) := by push_cast; ring
   unfold Cong
   rw [e, norm_mul, ha, one_mul]
   exact hu
+/- English proof (translation)
+Introduce `s i`. Establish `e : (ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).charpoly - ∏ j, (X - C ((![1, Φ] j s : (Qbar l)ˣ) : Qbar l)) = C (-((ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace - (1 + Φ s))) * X + C ((ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det - Φ s)`. Rewrite using `[Matrix.charpoly_fin_two, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, MonoidHom.one_apply, Units.val_one, map_one, map_neg, map_sub, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← coeff_sub, e, coeff_add, coeff_C_mul_X, coeff_C]`. Use `small_add ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[norm_neg]`. Conclude with `ht s`.
+
+Simplify using the standard rewrite rules. Use `split_ifs`. Conclude with `hd s`. Simplify using the standard rewrite rules.
+-/
 private theorem resSum_of {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) (Qbar l)) (Φ : Γ →* (Qbar l)ˣ)
     (ht : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).trace - (1 + Φ s)‖ < 1)
     (hd : ∀ s, ‖(ρ s : Matrix (Fin 2) (Fin 2) (Qbar l)).det - Φ s‖ < 1) : ResSum ρ ![1, Φ] := by
@@ -77,6 +96,9 @@ private theorem resSum_of {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin 2) (Qbar 
   · split_ifs
     · exact hd s
     · simp
+/- English proof (translation)
+Establish `h1` using `congrArg Units.val h`. Rewrite `h1` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, h1, Ring.inverse_unit, inv_inv, Matrix.trace_smul, Matrix.trace_smul, Matrix.adjugate_fin_two, Matrix.trace_fin_two, Matrix.trace_fin_two]`. Simplify using `[add_comm]`.
+-/
 private theorem trace_inv {K : Type} [Field K] (g : GL (Fin 2) K) (d : Kˣ) (h : Matrix.GeneralLinearGroup.det g = d⁻¹) :
     ((d : K) • (g : Matrix (Fin 2) (Fin 2) K)).trace = ((g⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K).trace := by
   have h1 := congrArg Units.val h
@@ -87,6 +109,11 @@ private theorem trace_inv {K : Type} [Field K] (g : GL (Fin 2) K) (d : Kˣ) (h :
 end Norm
 section Gal
 variable {l : ℕ} [hl : Fact l.Prime] {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
+/- English proof (translation)
+Use `haveI : IsGalois ℚ Ω := {}`. Establish `key` using `ProfiniteGrp.closedSubgroup_eq_sInf_open (G := G ℚ Ω) ⟨K.topologicalClosure, Subgroup.isClosed_topologicalClosure _⟩`. Use `le_trans (le_sInf ?_) key.ge` and prove the remaining obligations. Introduce and unpack `N ⟨hNo, hN⟩`. Establish `h` using `(Subgroup.le_topologicalClosure _).trans hN`.
+
+Conclude with `Kum.decGen ℚ Ω A _ γ N hv hγ hNo (hI.trans h) (h hK)`.
+-/
 private theorem dec_le {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 ℚ)} (hv : IsPlaceOver A v) {γ : G ℚ Ω}
     (hγ : IsFrob A (normV v) γ) (K : Subgroup (G ℚ Ω)) (hI : Ine (F := ℚ) A ≤ K) (hK : γ ∈ K) :
     Dec (F := ℚ) A ≤ K.topologicalClosure := by
@@ -96,6 +123,17 @@ private theorem dec_le {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 �
   rintro N ⟨hNo, hN⟩
   have h := (Subgroup.le_topologicalClosure _).trans hN
   exact Kum.decGen ℚ Ω A _ γ N hv hγ hNo (hI.trans h) (h hK)
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hκ`. Prove the components needed by the constructor for the conclusion. Establish `e : Matrix.GeneralLinearGroup.det (g * ρ s * g⁻¹) = Matrix.GeneralLinearGroup.det (ρ s)`. Rewrite using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Rewrite using `[← e]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, (hg s).1 1 0 (by decide), (hg s).2, (hg s).2]`. Simplify using the standard rewrite rules. Take `⟨γ, hγ⟩` from `exists_isFrob hv`. Establish `h1` using `dec_le hv hγ (((U l).comap (κ 0)).map (Dec (F := ℚ) A).subtype) (fun t ht => ⟨⟨t, ht.1⟩, by show κ 0 _ ∈ U l`.
+
+Rewrite using `[hI _ ht]`. Conclude with `one_mem _, rfl⟩)`. Use the proof step `⟨⟨γ, hγ.1⟩, hF _ hγ, rfl⟩ s.2`. Establish `hc : Continuous fun t : G ℚ Ω => (g * ρ t * g⁻¹ : GL (Fin 2) (Qbar l)) 0 0 - 1` using `((continuous_apply 0).comp ((continuous_apply 0).comp ((Units.continuous_val (M := Matrix (Fin 2) (Fin 2) (Qbar l))).comp ((continuous_const.mul hρ).mul continuous_const)))).sub continuous_const`. Establish `h2` using `closure_minimal (t := {t : G ℚ Ω | ‖(g * ρ t * g⁻¹ : GL (Fin 2) (Qbar l)) 0 0 - 1‖ < 1}) (by`.
+
+Introduce and unpack `_ ⟨t, ht, rfl⟩`. Use `show ‖(g * ρ t * g⁻¹ : GL (Fin 2) (Qbar l)) 0 0 - 1‖ < 1`. Rewrite using `[(hg t).2]`. Conclude with `ht) (isClosed_small hc) h1`. Use `show ‖_‖ < 1`.
+
+Rewrite using `[← (hg s).2]`. Conclude with `h2`.
+-/
 private theorem above_of {ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)} (hρ : Continuous ρ) {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 ℚ)} (hv : IsPlaceOver A v) {κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ}
     (hκ : IsFlagOn ρ (Dec (F := ℚ) A) κ) (hI : ∀ s : ↥(Dec (F := ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = 1)
@@ -126,6 +164,37 @@ private theorem above_of {ρ : G ℚ Ω →* GL (Fin 2) (Qbar l)} (hρ : Continu
     show ‖_‖ < 1
     rw [← (hg s).2]
     exact h2
+/- English proof (translation)
+Take `⟨c, π, r, H, htr, hU, hS⟩` from `_root_.UpperTheory.V.Sd.EG.ordExT_sv_alt P ι hk hN hχ g hg hm`. Establish `hθU : ∀ s, θ s ∈ U l` using `fun s => root_small (by`. Use `DFunLike.congr_fun hθ s` as an intermediate fact. Rewrite `this` using `[MonoidHom.pow_apply]`. Rewrite using `[← Units.val_pow_eq_pow_val, this]`.
+
+Use the proof step `rfl)`. Use `set D : G ℚ Ω →* (Qbar l)ˣ := cycBar ℚ Ω l ^ (k - 1) * (φ * θ) with hD`. Use `set Φ : G ℚ Ω →* (Qbar l)ˣ := cycBar ℚ Ω l ^ (k - 1) * φ with hΦ`. Establish `hDv : ∀ s, (D s : Qbar l) = (cycBar ℚ Ω l s : Qbar l) ^ (k - 1) * Chr.dirG ℚ Ω (χ.ringHomComp ι.symm.toRingHom) s` using `fun s => by`. Rewrite using `[hD, ← hm]`.
+
+Simplify using the standard rewrite rules. Establish `hDΦ : ∀ s, D s = Φ s * θ s` using `fun s => by simp [hD, hΦ, mul_assoc]`. Establish `hΦn : ∀ s, ‖(Φ s : Qbar l)‖ = 1` using `fun s => by`. Use `congrArg norm (hDv s)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_pow, cyc_norm, dirG_norm, one_pow, mul_one, hDΦ, Units.val_mul, norm_mul, norm_eq_one_of (hθU s), mul_one]`. Then use the resulting hypothesis.
+
+Establish `hDc : Continuous fun s => (D s : Qbar l)`. Simplify using `only [hDv]`. Conclude with `(cyc_cont.pow _).mul (dirG_cont _)`. Establish `hcong : ∀ s, ‖(D s : Qbar l) - Φ s‖ < 1` using `fun s => by`. Rewrite using `[hDΦ]`.
+
+Conclude with `cong_mul (hΦn s) (hθU s)`. Establish `hdr : ∀ s, Matrix.GeneralLinearGroup.det (r s) = (D s)⁻¹` using `fun s => by`. Use `(DFunLike.congr_fun H.det s).trans ?_` and prove the remaining obligations. Rewrite using `[show 1 - (k : ℤ) = -((k - 1 : ℕ) : ℤ) by omega, zpow_neg, zpow_natCast, ← mul_inv]`. Both sides reduce to the same expression.
+
+Establish `hdet : ∀ s, (tw r D s : Matrix (Fin 2) (Fin 2) (Qbar l)).det = D s` using `fun s => by`. Rewrite using `[tw_val, Matrix.det_smul, ← Matrix.GeneralLinearGroup.val_det_apply, hdr, Fintype.card_fin, sq, mul_assoc, Units.mul_inv, mul_one]`. Establish `SF` using `shapeFacts l (G ℚ Ω) 2 r D`. Establish `hc0 : Continuous fun s => (tw r D s : Matrix (Fin 2) (Fin 2) (Qbar l))`. Simplify using `only [tw_val]`.
+
+Conclude with `hDc.smul (Units.continuous_val.comp H.cont)`. Establish `halg` using `(_root_.UpperTheory.V.Sd.alg_cyclotomic_of_printed_results P.toClassicalTheorems ℚ Ω l ι).1 ((k - 1 : ℕ) : ℤ) (φ * θ) (hm ▸ dirG_open _)`. Rewrite `halg` using `[zpow_natCast]`. Use `⟨tw r D, ⟨Units.continuous_iff.2 ⟨hc0, ?_⟩, SF.2.2.2.2.2 (_root_.UpperTheory.V.Sd.ordinary_irreducible_of_printed_hida P ℚ Ω l hl2 (splitL hl.out) ι _ _ _ _ _ _ _ H), _root_.UpperTheory.V.Sd.twist_real_selfDual P.toClassicalTheorems ℚ Ω l ι 2 r D halg ⟨π, H.reg, H.att⟩, MonoidHom …` and prove the remaining obligations. Simplify using `only [← map_inv]`.
+
+Conclude with `hc0.comp continuous_inv`. Use `small_add (htr s) (hcong s)` as an intermediate fact. Rewrite using `[tw_val, trace_inv _ _ (hdr s), ← map_inv]`. Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hdet]`. Conclude with `hcong s`. Use `(shapeFacts l (G ℚ Ω) 2 _ 1).2.1 _ _ _ (Equiv.swap 0 1) (SF.1 _ _ (_root_.UpperTheory.V.Z.Win.RR.ordAway_a_alt P ℚ Ω l ι _ _ _ _ _ _ _ H A hA)) fun i s hs => ?_` and prove the remaining obligations. Establish `h1 : cycZ ℚ Ω l s = 1` using `(places ℚ Ω l A).2.2.2 hA hs`. Establish `h2 : D s = (φ * θ) s`.
+
+Rewrite using `[hD, MonoidHom.mul_apply, MonoidHom.pow_apply, cycBar, MonoidHom.comp_apply, h1, map_one, one_pow, one_mul]`. Use `fin_cases i`. Use `show 1 = ((φ * θ) s)⁻¹ * D s`. Rewrite using `[h2, inv_mul_cancel]`. Use `show (φ * θ) s = 1 * D s`.
+
+Rewrite using `[h2, one_mul]`. Take `⟨w, hw, hwl, hmem⟩` from `(ML.placeBasic Ω).2.2.2.2.2.2.2.2.1 A l hl.out hA`. Take `⟨κ, hκ, hI, hFr⟩` from `_root_.UpperTheory.V.Z.Win.RR.ordAbove_of_printsH P ℚ Ω l hl2 (splitL hl.out) ι _ _ _ _ _ _ _ H w hmem A hw`. Establish `hI0 : ∀ s : ↥(Dec (F` using `ℚ) A), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ 0 s = 1 := fun s hs => (hI 0 s hs).trans (zpow_zero _)`. Establish `key` using `above_of H.cont hw hκ hI0 fun σ hσ => by`.
+
+Establish `h1 : κ 0 σ⁻¹ * cycBar ℚ Ω l (σ : G ℚ Ω) ^ (0 : ℤ) ∈ U l` using `hFr σ hσ`. Rewrite `h1` using `[zpow_zero, mul_one, map_inv, inv_mem_iff]`. Then use the resulting hypothesis. Establish `h1 : ∀ s : ↥(Dec (F` using `ℚ) A), κ 1 s * D s = (κ 0 s)⁻¹ := fun s => by`. Rewrite using `[eq_inv_iff_mul_eq_one, mul_comm, ← mul_assoc, (key s).1, hdr, inv_mul_cancel]`. Use `⟨_, SF.2.2.1 _ κ hκ, fun i s hs => ?_, fun i s => ?_⟩` and prove the remaining obligations.
+
+Use `fin_cases i`. Establish `h2 : (φ * θ) s = 1` using `hm ▸ dirG_unr _ (not_over hl.out hA hN) hs show κ 0 s * D s = cycBar ℚ Ω l s ^ ((k : ℤ) - 1)`. Rewrite using `[hI0 s hs, one_mul, hD, MonoidHom.mul_apply, h2, mul_one, MonoidHom.pow_apply, show (k : ℤ) - 1 = ((k - 1 : ℕ) : ℤ) by omega, zpow_natCast]`. Use `show κ 1 s * D s = cycBar ℚ Ω l s ^ (0 : ℤ)`. Rewrite using `[h1, hI0 s hs, inv_one, zpow_zero]`.
+
+Use `fin_cases i`. Use `show Cong (κ 0 s * D s) (Φ s)`. Rewrite using `[hDΦ, mul_comm, mul_assoc]`. Conclude with `cong_mul (hΦn s) (mul_mem (hθU s) (key s).2)`. Use `show Cong (κ 1 s * D s) 1`.
+
+Rewrite using `[h1]`. Conclude with `inv_mem (key s).2`.
+-/
 private theorem core (P : _root_.UpperTheory.V.Af.HypothesesH') (hl2 : l ≠ 2) (ι : Qbar l ≃+* ℂ) {k N : ℕ} [NeZero N] (hk : 3 ≤ k) (hN : ¬ l ∣ N)
     {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) (g : Eigenform k N χ)
     (hg : ∀ p : ℕ, p.Prime → ‖ι.symm (g.a p - (1 + χ (p : ZMod N) * (p : ℂ) ^ (k - 1)))‖ < 1)
@@ -208,14 +277,27 @@ private theorem core (P : _root_.UpperTheory.V.Af.HypothesesH') (hl2 : l ≠ 2) 
       · show Cong (κ 1 s * D s) 1
         rw [h1]
         exact inv_mem (key s).2
+/- English proof (translation)
+Rewrite using `[dirG_val, ← (Chr.clsFacts ℚ Ω N).2.1 M h, MonoidHom.comp_apply, ZMod.unitsMap_val, ZMod.natCast_val]`.
+-/
 private theorem dirG_dvd {O : Type} [CommRing O] {N M : ℕ} [NeZero N] [NeZero M] (h : M ∣ N) (χ : DirichletCharacter O M) (s : G ℚ Ω) :
     (Chr.dirG ℚ Ω χ s : O) = χ ((((Chr.cls ℚ Ω N s : (ZMod N)ˣ) : ZMod N).val : ℕ) : ZMod M) := by
   rw [dirG_val, ← (Chr.clsFacts ℚ Ω N).2.1 M h, MonoidHom.comp_apply, ZMod.unitsMap_val, ZMod.natCast_val]
+/- English proof (translation)
+Introduce and unpack `rfl`. Use `h (MonoidHom.ext fun s => ?_)` and prove the remaining obligations. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, Subsingleton.elim (Chr.cls ℚ Ω 1 s) 1, map_one, MonoidHom.one_apply]`.
+-/
 private theorem dirG_ne_one {M : ℕ} [NeZero M] {O : Type} [CommRing O] {χ : DirichletCharacter O M} (h : Chr.dirG ℚ Ω χ ≠ 1) : M ≠ 1 := by
   rintro rfl
   refine h (MonoidHom.ext fun s => ?_)
   rw [Chr.dirG, MonoidHom.comp_apply, Subsingleton.elim (Chr.cls ℚ Ω 1 s) 1, map_one, MonoidHom.one_apply]
 end Gal
+/- English proof (translation)
+Use `⟨DirichletCharacter.changeLevel (dvd_mul_right M w) φ * DirichletCharacter.changeLevel (dvd_mul_left w M) θ, fun n => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : n.Coprime (M * w)`. Establish `h' : IsCoprime (n : ℤ) ((M * w : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 h`. Establish `h1` using `DirichletCharacter.changeLevel_eq_cast_of_dvd' φ (dvd_mul_right M w) h'`. Establish `h2` using `DirichletCharacter.changeLevel_eq_cast_of_dvd' θ (dvd_mul_left w M) h'`.
+
+Rewrite `h1`, `h2` using `[Int.cast_natCast, Int.cast_natCast]`. Rewrite using `[MulChar.mul_apply, h1, h2]`. Rewrite using `[MulChar.map_nonunit _ (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h'))]`. Rewrite `h` using `[Nat.coprime_mul_iff_right, not_and_or]`. Break down `h with h | h` into its components or cases.
+
+Rewrite using `[φ.map_nonunit (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h')), zero_mul]`. Rewrite using `[θ.map_nonunit (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h')), mul_zero]`.
+-/
 private theorem exists_mul {M w : ℕ} [NeZero (M * w)] (φ : DirichletCharacter ℂ M) (θ : DirichletCharacter ℂ w) :
     ∃ χ : DirichletCharacter ℂ (M * w), ∀ n : ℕ, χ (n : ZMod (M * w)) = φ (n : ZMod M) * θ (n : ZMod w) := by
   refine ⟨DirichletCharacter.changeLevel (dvd_mul_right M w) φ * DirichletCharacter.changeLevel (dvd_mul_left w M) θ, fun n => ?_⟩
@@ -232,6 +314,33 @@ private theorem exists_mul {M w : ℕ} [NeZero (M * w)] (φ : DirichletCharacter
     · rw [θ.map_nonunit (fun h' => h ((ZMod.isUnit_iff_coprime _ _).1 h')), mul_zero]
 end UpperTheory.V.Sd.EG
 open UpperTheory.V.Sd UpperTheory.V.Sd.EG in
+/- English proof (translation)
+Introduce `P l hl Ω _ _ _ ι c hc N w φ θ hx hs hφ`. Take `⟨M, _, φ₀, hMN, hφp, rfl⟩` from `dirOf l Ω ι N hx.pos φ hs.1`. Take `⟨w', _, θ₀, hw, -, hθ⟩` from `dirOf l Ω ι w hx.prime.pos θ hx.mu`. Take `rfl : w' = w` from `((Nat.dvd_prime hx.prime).1 hw).resolve_left (dirG_ne_one (hθ ▸ hx.ne))`. Use `haveI : NeZero N := ⟨hx.pos.ne'⟩`.
+
+Use `haveI : NeZero (M * w') := ⟨mul_ne_zero (NeZero.ne M) (NeZero.ne w')⟩`. Use `haveI : Fact w'.Prime := ⟨hx.prime⟩`. Take `⟨χ, hχ⟩` from `exists_mul φ₀ θ₀`. Establish `hne : θ₀ ≠ 1`. Introduce and unpack `rfl`.
+
+Use `hx.ne (hθ.trans ?_)` and prove the remaining obligations. Use extensionality with `s`. Rewrite using `[dirG_val]`. Simplify using the standard rewrite rules. Establish `hpow : θ₀ ^ l = 1`.
+
+Use extensionality with `u`. Take `⟨s, rfl⟩` from `(Chr.clsOnto Ω w').1 u`. Establish `h1` using `congrArg Units.val (DFunLike.congr_fun hx.pow s)`. Rewrite `h1` using `[MonoidHom.pow_apply, Units.val_pow_eq_pow_val, hθ, dirG_val]`. Rewrite using `[MulChar.pow_apply_coe, MulChar.one_apply_coe]`.
+
+Apply `ι.symm.injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Conclude with `h1`. Establish `hdvd : l ∣ w' - 1`. Establish `h1 : orderOf θ₀ = l` using `orderOf_eq_prime hpow hne`.
+
+Rewrite using `[← h1, ← ZMod.card_units w']`. Use `orderOf_dvd_of_pow_eq_one ?_` and prove the remaining obligations. Use extensionality with `u`. Rewrite using `[MulChar.pow_apply_coe, MulChar.one_apply_coe, ← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`. Establish `hφw : φ₀ (w' : ZMod M) = 1`.
+
+Establish `hcop : w'.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hx.prime).2 hx.wN`. Take `⟨s, hs1⟩` from `(Chr.clsOnto Ω N).1 (ZMod.unitOfCoprime w' hcop)`. Establish `h1 : ∀ ζ : Ω, ζ ^ N = 1 → s ζ = ζ ^ w'` using `fun ζ hζ => by`. Rewrite using `[Chr.cls_spec N s ζ hζ, hs1, ZMod.coe_unitOfCoprime, ZMod.val_natCast, ← pow_eq_pow_mod w' hζ]`. Establish `h2` using `congrArg Units.val (hs.2 s h1)`.
+
+Rewrite using `[dirG_val, cls_pow (hcop.coprime_dvd_right hMN) fun ζ hζ => h1 ζ (by`. Take `⟨d, rfl⟩` from `hMN`. Rewrite `h2` using `[pow_mul, hζ, one_pow])]`. Apply `ι.symm.injective` to reduce the goal to its premises. Rewrite using `[map_one]`.
+
+Conclude with `h2`. Establish `E : EDat l M w' φ₀ θ₀ χ` using `⟨hx.odd, lt_of_le_of_ne (NeZero.pos M) (dirG_ne_one hφ).symm, fun h => hx.cop (h.trans hMN), hφp, hx.prime, hdvd, fun h => hx.wN (h.trans hMN), hφw, hne, hpow, hχ⟩`. Establish `hlN : ¬ l ∣ M * w'`. Introduce `hd`. Break down `(Nat.Prime.dvd_mul hl.out).1 hd with hd | hd` into its components or cases.
+
+Conclude with `E.cop hd`. Establish `h1 : l ∣ w' - (w' - 1)` using `Nat.dvd_sub hd hdvd`. Use `hx.prime.pos` as an intermediate fact. Rewrite `h1` using `[show w' - (w' - 1) = 1 by omega]`. Conclude with `hl.out.one_lt.ne' (Nat.dvd_one.1 h1)`.
+
+Take `⟨k₀, hk₀⟩` from `UpperTheory.V.Z.Sym.Unl.propEC l ι M w' φ₀ θ₀ χ E`. Use `⟨max k₀ 3, fun k hk hpar => ?_⟩` and prove the remaining obligations. Take `⟨g, hcj, hg⟩` from `hk₀ k (le_of_max_le_left hk) (by`. Establish `h1` using `congrArg Units.val hpar`. Rewrite `h1` using `[dirG_val, (Chr.clsFacts ℚ Ω M).2.2.2.1 c hc, Units.val_neg, Units.val_one]`.
+
+Apply `ι.symm.injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_neg ι.symm, map_one ι.symm]`. Simplify using `using h1)`. It suffices to establish `hm : Chr.dirG ℚ Ω (χ.ringHomComp ι.symm.toRingHom) = Chr.dirG ℚ Ω (φ₀.ringHomComp ι.symm.toRingHom) * θ by`. Take `⟨ρ, h1, h2, h3, h4⟩` from `core P hx.odd ι (le_of_max_le_right hk) hlN (ePrim l M w' φ₀ θ₀ χ E) g hg hm hx.pow hcj`.
+
+Conclude with `⟨ρ, h1, h2, h3, h4⟩`. Use extensionality with `s`. Rewrite using `[hθ, MonoidHom.mul_apply, Units.val_mul, dirG_dvd dvd_rfl, dirG_dvd (dvd_mul_right M w'), dirG_dvd (dvd_mul_left w' M)]`. Simplify using `only [MulChar.ringHomComp_apply]`. Rewrite using `[hχ, map_mul]`.
+-/
 theorem UpperTheory.V.Z.Sym.W.prop_eg_complex_of_printed_hida :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Z.Sym.W.PropEGc := by
   intro P l hl Ω _ _ _ ι c hc N w φ θ hx hs hφ

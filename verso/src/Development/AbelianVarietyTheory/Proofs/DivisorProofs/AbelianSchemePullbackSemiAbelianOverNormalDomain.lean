@@ -19,6 +19,55 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep.Spz
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ EE FinalForm hU O _ _ _ _ _ _ x u hx hu`. Establish `hr : Set.range M.pt ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hU (x := w) trivial`.
+
+Set `x₀ : Sp Ω ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι M.pt hr`. Establish `hx₀ : x₀ ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hxu : x₀ ≫ FinalForm.u₀ = spMap S.R.val.toRingHom` using `FinalForm.u₀_gen x₀ hx₀`. Set `j : Sp Ω ⟶ Sp O` to `spMap (algebraMap O Ω)`. Establish `hju : j ≫ spMap u = spMap S.R.val.toRingHom` using `(spMap_comp u (algebraMap O Ω)).symm.trans (congrArg spMap hu)`.
+
+Set `Q` to `(Over.pullback FinalForm.u₀).obj ρ.P.A`. Set `A₀` to `(Over.pullback M.pt).obj FinalForm.G`. Set `ν : pullback FinalForm.G.hom M.pt ⟶ pullback ρ.P.A.hom FinalForm.u₀` to `FinalForm.cart.1.lift (pullback.fst FinalForm.G.hom M.pt) (pullback.snd FinalForm.G.hom M.pt ≫ x₀) (by rw [pullback.condition, Category.assoc, hx₀])`. Establish `hν₁ : ν ≫ FinalForm.φ = pullback.fst FinalForm.G.hom M.pt` using `FinalForm.cart.1.lift_fst _ _ _`. Establish `hν₂ : ν ≫ Q.hom = pullback.snd FinalForm.G.hom M.pt ≫ x₀` using `FinalForm.cart.1.lift_snd _ _ _`.
+
+Establish `gη : IsGrpPullback A₀ FinalForm.G (x₀ ≫ U₀.ι) (ν ≫ FinalForm.φ)` using `(isGrpPullback_pullback FinalForm.G M.pt).congr hx₀.symm hν₁.symm`. Establish `gν : IsGrpPullback A₀ Q x₀ ν` using `FinalForm.cart.cancel gη hν₂`. Establish `gψ : IsGrpPullback A₀ ρ.P.A (j ≫ spMap u) (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀)` using `(gν.comp (isGrpPullback_pullback ρ.P.A FinalForm.u₀)).congr (by rw [hju, hxu]) rfl`. Set `A` to `(Over.pullback (spMap u)).obj ρ.P.A`. Establish `hA` using `isGrpPullback_pullback ρ.P.A (spMap u)`.
+
+Establish `wA : (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) ≫ ρ.P.A.hom = (A₀.hom ≫ j) ≫ spMap u`. Rewrite using `[gψ.1.w, Category.assoc]`. Set `φ₂ : A₀.left ⟶ A.left` to `hA.1.lift _ _ wA`. Establish `eφ₂ : φ₂ ≫ pullback.fst ρ.P.A.hom (spMap u) = ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀` using `hA.1.lift_fst _ _ _`. Establish `sφ₂ : φ₂ ≫ A.hom = A₀.hom ≫ j` using `hA.1.lift_snd _ _ _`.
+
+Establish `hφ₂ : IsGrpPullback A₀ A j φ₂` using `hA.cancel (gψ.congr rfl eφ₂.symm) sφ₂`. Set `GO` to `(Over.pullback x).obj FinalForm.G`. Establish `hGO` using `isGrpPullback_pullback FinalForm.G x`. Establish `gη' : IsGrpPullback A₀ FinalForm.G (j ≫ x) (pullback.fst FinalForm.G.hom M.pt)` using `(isGrpPullback_pullback FinalForm.G M.pt).congr hx.symm rfl`. Establish `wG : pullback.fst FinalForm.G.hom M.pt ≫ FinalForm.G.hom = (A₀.hom ≫ j) ≫ x` using `by rw [gη'.1.w, Category.assoc]`.
+
+Set `φ₁ : A₀.left ⟶ GO.left` to `hGO.1.lift _ _ wG`. Establish `eφ₁ : φ₁ ≫ pullback.fst FinalForm.G.hom x = pullback.fst FinalForm.G.hom M.pt` using `hGO.1.lift_fst _ _ _`. Establish `hφ₁ : IsGrpPullback A₀ GO j φ₁` using `hGO.cancel (gη'.congr rfl eφ₁.symm) (hGO.1.lift_snd _ _ _)`. Establish `sA : IsSemiAbelian A` using `IsSemiAbelian.pullback _ _ (GlobalTheory.isSemiAbelian_of_isAbelianScheme _ ρ.P.isAb)`. Establish `sG : IsSemiAbelian GO` using `IsSemiAbelian.pullback _ _ FinalForm.semi`.
+
+Take `⟨E, ⟨hE, hEφ⟩, -⟩` from `GlobalTheory.semiAbelianHomExtension_holds.generic_existsUnique_iso_of_extensions (GlobalTheory.Published.SemiAbelianHomExtension.isNormalScheme_spec O) (GlobalTheory.IsGenericPointHom.fractionField O Ω) sA sG hφ₂ hφ₁`. Use `haveI := hE`. Set `gm : A.left ⟶ FinalForm.G.left` to `E.hom.left ≫ pullback.fst FinalForm.G.hom x`. Establish `hgm : IsGrpPullback A FinalForm.G x gm` using `((isGrpPullback_of_iso E).comp hGO).congr (Category.id_comp _) rfl`. Establish `key : φ₂ ≫ gm = ν ≫ FinalForm.φ` using `by show φ₂ ≫ E.hom.left ≫ pullback.fst FinalForm.G.hom x = _`.
+
+Rewrite using `[← Category.assoc, hEφ, eφ₁, hν₁]`. Establish `hgmw : gm ≫ FinalForm.G.hom = A.hom ≫ x` using `hgm.1.w`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian _ sA`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian _ FinalForm.semi`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.spec_fractionRing O Ω`.
+
+Use `haveI : IsSchemeTheoreticallyDominant φ₂ := .of_isPullback hφ₂.1.flip`. Use `⟨gm, hgm, ?_, ?_⟩` and prove the remaining obligations. Introduce `f Fm hf T' p p' h₁ h₂`. Set `fO` to `(Over.pullback (spMap u)).map f`. Set `fQ` to `(Over.pullback FinalForm.u₀).map f`.
+
+Establish `hfO₁ : fO.left ≫ pullback.fst ρ.P.A.hom (spMap u) = pullback.fst ρ.P.A.hom (spMap u) ≫ f.left` using `pullback.lift_fst _ _ _`. Establish `hfQ₁ : fQ.left ≫ pullback.fst ρ.P.A.hom FinalForm.u₀ = pullback.fst ρ.P.A.hom FinalForm.u₀ ≫ f.left` using `pullback.lift_fst _ _ _`. Establish `hfO₂ : fO.left ≫ A.hom = A.hom` using `Over.w fO`. Establish `hp' : p' = p ≫ fO.left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[h₂, Category.assoc, hfO₁]`. Use `show p' ≫ A.hom = (p ≫ fO.left) ≫ A.hom`. Rewrite using `[Category.assoc, hfO₂, h₁]`. Establish `wk : (ν ≫ fQ.left) ≫ Q.hom = A₀.hom ≫ x₀`. Rewrite using `[Category.assoc, Over.w fQ, gν.1.w]`.
+
+Set `k : A₀.left ⟶ A₀.left` to `gν.1.lift _ _ wk`. Establish `hk₁ : k ≫ ν = ν ≫ fQ.left` using `gν.1.lift_fst _ _ _`. Establish `hk₂ : k ≫ A₀.hom = A₀.hom` using `gν.1.lift_snd _ _ _`. Establish `hφk : φ₂ ≫ fO.left = k ≫ φ₂`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Category.assoc, hfO₁, eφ₂, reassoc_of% eφ₂, reassoc_of% hk₁, hfQ₁]`. Use `show (φ₂ ≫ fO.left) ≫ A.hom = (k ≫ φ₂) ≫ A.hom`. Rewrite using `[Category.assoc, hfO₂, Category.assoc, sφ₂, ← Category.assoc, hk₂]`. Establish `main : fO.left ≫ gm = gm ≫ Fm.left`. Use `GlobalTheory.ExtUnique.hom_ext_of_dominant FinalForm.G.hom ?_ φ₂ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hgmw, ← Category.assoc, hfO₂, Category.assoc, Over.w Fm, hgmw]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hp', Category.assoc, main]`. Introduce `a Wo h hs T' p x' h₁ h₂`. Establish `hpa : (ρ.pt a).left ≫ ρ.P.A.hom = 𝟙 _` using `by simpa [baseOver] using Over.w (ρ.pt a)`.
+
+Set `σ : Sp O ⟶ A.left` to `pullback.lift (spMap u ≫ (ρ.pt a).left) (𝟙 (Sp O)) (by rw [Category.assoc, hpa]; simp)`. Establish `hσ₁ : σ ≫ pullback.fst ρ.P.A.hom (spMap u) = spMap u ≫ (ρ.pt a).left` using `pullback.lift_fst _ _ _`. Establish `hσ₂ : σ ≫ A.hom = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hp : p = (p ≫ A.hom) ≫ σ`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hσ₁, h₂, Category.assoc]`. Use `show p ≫ A.hom = ((p ≫ A.hom) ≫ σ) ≫ A.hom`. Rewrite using `[Category.assoc, hσ₂, Category.comp_id]`. Set `O'` to `x ⁻¹ᵁ Wo`. Establish `hpb` using `isPullback_morphismRestrict x Wo`.
+
+Set `q : T' ⟶ O'.toScheme` to `hpb.lift x' (p ≫ A.hom) (by rw [h₁, Category.assoc])`. Establish `hq₁ : q ≫ (x ∣_ Wo) = x'` using `hpb.lift_fst _ _ _`. Establish `hq₂ : q ≫ O'.ι = p ≫ A.hom` using `hpb.lift_snd _ _ _`. Establish `hmain : O'.ι ≫ σ ≫ gm = (x ∣_ Wo) ≫ h`. Distinguish the cases in `hO : (O' : Set (Sp O)).Nonempty`.
+
+Establish `hr' : Set.range j ⊆ Set.range O'.ι`. Rewrite using `[Scheme.Opens.range_ι, (GlobalTheory.IsGenericPointHom.fractionField O Ω).range_eq, Set.singleton_subset_iff]`. Conclude with `((genericPoint_spec (Sp O)).mem_open_set_iff O'.isOpen).2 (by simpa using hO)`. Set `jO : Sp Ω ⟶ O'.toScheme` to `IsOpenImmersion.lift O'.ι j hr'`. Establish `hjO : jO ≫ O'.ι = j` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Use `haveI : IsDominant (jO ≫ O'.ι) := by rw [hjO]; infer_instance`. Use `haveI : IsDominant jO := IsDominant.of_comp_of_isOpenImmersion jO O'.ι`. Use `ext_of_isDominant_of_isSeparated FinalForm.G.hom ?_ jO ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[hgmw, ← Category.assoc σ, hσ₂, Category.id_comp, hs.1, morphismRestrict_ι]`.
+
+Set `x'' : Sp Ω ⟶ pullback ρ.P.A.hom FinalForm.u₀` to `pullback.lift (spMap S.R.val.toRingHom ≫ (ρ.pt a).left) x₀ (by rw [Category.assoc, hpa, hxu]; simp)`. Establish `hx''₁ : x'' ≫ pullback.fst ρ.P.A.hom FinalForm.u₀ = spMap S.R.val.toRingHom ≫ (ρ.pt a).left` using `pullback.lift_fst _ _ _`. Establish `hx''₂ : x'' ≫ pullback.snd ρ.P.A.hom FinalForm.u₀ = x₀` using `pullback.lift_snd _ _ _`. Establish `hsec` using `hs.2 (jO ≫ (x ∣_ Wo)) x'' (by rw [Category.assoc, morphismRestrict_ι, ← Category.assoc, hjO, hx]) (by rw [FinalForm.cart.1.w, ← Category.assoc]; erw [hx''₂]; exact hx₀) hx''₁`. Set `e : Sp Ω ⟶ A₀.left` to `hφ₂.1.lift (j ≫ σ) (𝟙 _) (by rw [Category.assoc, hσ₂, Category.comp_id, Category.id_comp])`.
+
+Establish `he₁ : e ≫ φ₂ = j ≫ σ` using `hφ₂.1.lift_fst _ _ _`. Establish `he₂ : e ≫ A₀.hom = 𝟙 _` using `hφ₂.1.lift_snd _ _ _`. Establish `heν : e ≫ ν = x''`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hx''₁, Category.assoc, ← eφ₂, ← Category.assoc, he₁, Category.assoc, hσ₁, ← Category.assoc, hju]`.
+
+Rewrite using `[hx''₂, Category.assoc] erw [hν₂]`. Rewrite using `[← Category.assoc]`. Use `erw [he₂]`. Rewrite using `[Category.id_comp]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `haveI : IsEmpty O'.toScheme := ⟨fun y => hO ⟨y.1, y.2⟩⟩`. Conclude with `isInitialOfIsEmpty.hom_ext _ _`. Rewrite using `[hp, ← hq₂, ← hq₁, Category.assoc, Category.assoc, hmain, Category.assoc]`.
+-/
 theorem link_of_normal : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), (U₀ : Set M.Z).Nonempty → ∀ (O : Type) [CommRing O] [IsDomain O] [IsNoetherianRing O] [IsIntegrallyClosed O] [Algebra O Ω] [IsFractionRing O Ω] (x : Sp O ⟶ M.Z) (u : S.R →+* O), spMap (algebraMap O Ω) ≫ x = M.pt → (algebraMap O Ω).comp u = S.R.val.toRingHom → ∃ gm : ((Over.pullback (spMap u)).obj ρ.P.A).left ⟶ FinalForm.G.left, Link FinalForm x (spMap u) ((Over.pullback (spMap u)).obj ρ.P.A) (pullback.fst ρ.P.A.hom (spMap u)) gm := by
   intro o Ω _ _ _ _ S ρ M U₀ EE FinalForm hU O _ _ _ _ _ _ x u hx hu
 

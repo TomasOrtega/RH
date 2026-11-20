@@ -11,6 +11,11 @@ open GlobalTheory.BottomFrames
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.BottomRebase
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D _ _ _ _ T Lc _ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W _ i j A A' WW X c0 hX hc`. Take `⟨Z, v, hZ, e1, e2, e3, hv, H⟩` from `frame_change W.ψ W.θ W.θ_is _ _ _ _ X hX.is 1 (isFrame_one hX.stdW.2.1)`. Use `⟨Z, v, ⟨hX.rank, hX.rank', e1 ▸ hX.std, e2 ▸ hX.std', ?_, hZ⟩, by rw [e3], hv, H c0 hc⟩` and prove the remaining obligations.
+
+Rewrite using `[e3]`. Conclude with `hX.stdW`.
+-/
 theorem bottom_basis_change : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
       (X : Tri T A A' WW) (c0 : T → ℂ), IsBottomTri W i j X → X.IsConst W.ψ W.θ c0 →
@@ -37,6 +42,9 @@ open GlobalTheory.NormSum (Pair Tup)
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BottomRebase.bottom_basis_change | exact _root_.GlobalTheory.BottomRebase.bottom_basis_change | (intros; apply _root_.GlobalTheory.BottomRebase.bottom_basis_change <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_bottom_basis_change : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
       (X : Tri T A A' WW) (c0 : T → ℂ), IsBottomTri W i j X → X.IsConst W.ψ W.θ c0 →

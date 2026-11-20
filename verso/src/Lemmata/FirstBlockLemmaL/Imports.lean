@@ -2,6 +2,13 @@ import Mathlib
 
 namespace Bl.FirstBlockLemmaL
 
+/- English proof (translation)
+Introduce `ℓ _ s hs`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a t ih`. Establish `ha : a ≠ 0` using `hs a (by simp)`.
+
+Establish `ht' : ∀ x, x ∈ t → x ≠ 0` using `fun x hx => hs x (Multiset.mem_cons_of_mem hx)`. Establish `ht : t.prod ≠ 0`. Rewrite using `[Ne, Multiset.prod_eq_zero_iff]`. Introduce `h`. Conclude with `ht' 0 h rfl`.
+
+Rewrite using `[Multiset.prod_cons, Multiset.map_cons, Multiset.sum_cons, padicValNat.mul ha ht, ih ht']`.
+-/
 theorem goal1 :
   ∀ (ℓ : Nat) [Fact (Nat.Prime ℓ)] (s : Multiset.{0} Nat),
   (∀ (x : Nat), Membership.mem.{0, 0} s x → Ne.{1} x 0) →

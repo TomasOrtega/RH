@@ -12,6 +12,11 @@ namespace GlobalTheory.CellDec.RatUnip
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ k, algebraMap E (Ad E) (r k) * w k j = (if k < j then algebraMap E (Ad E) (r k) * w k j else 0) + (if j = k then algebraMap E (Ad E) (r k) else 0)`. Introduce `k`. Break down `lt_trichotomy k j with h | rfl | h` into its components or cases. Simplify using `[h, h.ne']`. Simplify using `[hd]`.
+
+Simplify using `[not_lt.2 h.le, h.ne, hl k j h]`. Rewrite using `[Finset.sum_congr rfl fun k _ => key k, Finset.sum_add_distrib, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem row_mul_split (w : Matrix (Fin n) (Fin n) (Ad E))
     (hl : ∀ i j, j < i → w i j = 0) (hd : ∀ i, w i i = 1) (r : Fin n → E) (j : Fin n) :
     ∑ k, algebraMap E (Ad E) (r k) * w k j =
@@ -27,6 +32,19 @@ theorem row_mul_split (w : Matrix (Fin n) (Fin n) (Ad E))
   rw [Finset.sum_congr rfl fun k _ => key k, Finset.sum_add_distrib, Finset.sum_ite_eq]
   simp
 
+/- English proof (translation)
+It suffices to establish `h : ∀ m : ℕ, ∀ j : Fin n, j.val < m → r j = r' j from`. Use function extensionality and compare the values at `fun j => h _ j j.val.lt_succ_self`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro j hj`.
+
+Conclude with `absurd hj (Nat.not_lt_zero _)`. Consider the case `succ m ih`. Introduce `j hj`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Conclude with `ih j hj`.
+
+Break down `lt_trichotomy j i with h | rfl | h` into its components or cases. Rewrite using `[h0 j h, h0' j h]`. Rewrite using `[h1, h1']`. Establish `hs : (∑ k, if k < j then algebraMap E (Ad E) (r k) * w k j else 0) = ∑ k, if k < j then algebraMap E (Ad E) (r' k) * w k j else 0`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hk`. Rewrite using `[ih k (by have := Fin.lt_def.1 hk; omega)]`. Both sides reduce to the same expression. Establish `a` using `hF j h`. Establish `b` using `hF' j h`.
+
+Rewrite `a`, `b` using `[row_mul_split w hl hd]`. Rewrite `a` using `[hs]`. Take `⟨c, -, hc⟩` from `GroundTheory.Global.existsUnique_sub_mem_fundamentalSet E (∑ k, if k < j then algebraMap E (Ad E) (r' k) * w k j else 0)`. Establish `e1` using `hc (-r j) (by simpa using a)`. Establish `e2` using `hc (-r' j) (by simpa using b)`.
+
+Conclude with `neg_injective (e1.trans e2.symm)`.
+-/
 theorem row_unique (w : Matrix (Fin n) (Fin n) (Ad E))
     (hl : ∀ i j, j < i → w i j = 0) (hd : ∀ i, w i i = 1) (i : Fin n) (r r' : Fin n → E)
     (h0 : ∀ k, k < i → r k = 0) (h0' : ∀ k, k < i → r' k = 0) (h1 : r i = 1) (h1' : r' i = 1)
@@ -61,6 +79,23 @@ theorem row_unique (w : Matrix (Fin n) (Fin n) (Ad E))
       have e2 := hc (-r' j) (by simpa using b)
       exact neg_injective (e1.trans e2.symm)
 
+/- English proof (translation)
+It suffices to establish `h : ∀ m : ℕ, ∃ r : Fin n → E, (∀ k, k < i → r k = 0) ∧ r i = 1 ∧ ∀ j : Fin n, i < j → j.val < m → ∑ k, algebraMap E (Ad E) (r k) * w k j ∈ GroundTheory.Global.fundamentalSet E by`. Take `⟨r, h0, h1, h2⟩` from `h n`. Conclude with `⟨r, h0, h1, fun j hj => h2 j hj j.isLt⟩`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Conclude with `⟨Pi.single i 1, fun k hk => by simp [Pi.single_apply, hk.ne], by simp, fun j _ hj => absurd hj (Nat.not_lt_zero _)⟩`. Consider the case `succ m ih`. Take `⟨r, h0, h1, h2⟩` from `ih`. Distinguish the cases in `hm : ∃ jm : Fin n, jm.val = m ∧ i < jm`.
+
+Take `⟨jm, hjm, hijm⟩` from `hm`. Take `⟨c, hc, -⟩` from `GroundTheory.Global.existsUnique_sub_mem_fundamentalSet E (∑ k, algebraMap E (Ad E) (r k) * w k jm)`. Use `⟨r - Pi.single jm c, fun k hk => ?_, ?_, fun j hij hj => ?_⟩` and prove the remaining obligations. Simplify using `[h0 k hk, Pi.single_apply, (hk.trans hijm).ne]`. Simplify using `[h1, Pi.single_apply, hijm.ne]`.
+
+Establish `hsum : ∑ k, algebraMap E (Ad E) ((r - Pi.single jm c : Fin n → E) k) * w k j = ∑ k, algebraMap E (Ad E) (r k) * w k j - algebraMap E (Ad E) c * w jm j`. Simplify using `only [Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single jm]`. Simplify using the standard rewrite rules.
+
+Introduce `k _ hk`. Simplify using `[Pi.single_apply, hk]`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases.
+
+Establish `hlt : j < jm` using `by rw [Fin.lt_def]; omega`. Rewrite using `[hl jm j hlt, mul_zero, sub_zero]`. Conclude with `h2 j hij hj`. Establish `: j = jm` using `Fin.ext (hj.trans hjm.symm)`. Substitute `this` using the available equality.
+
+Rewrite using `[hd, mul_one]`. Conclude with `hc`. Use `⟨r, h0, h1, fun j hij hj => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Conclude with `h2 j hij hj`.
+
+Conclude with `absurd ⟨j, hj, hij⟩ hm`.
+-/
 theorem row_exists (w : Matrix (Fin n) (Fin n) (Ad E))
     (hl : ∀ i j, j < i → w i j = 0) (hd : ∀ i, w i i = 1) (i : Fin n) :
     ∃ r : Fin n → E, (∀ k, k < i → r k = 0) ∧ r i = 1 ∧
@@ -111,6 +146,15 @@ namespace GlobalTheory.CellDec
 
 open GlobalTheory.CellDec.RatUnip
 
+/- English proof (translation)
+Take `⟨hl, hd⟩` from `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Establish `hent : ∀ (γ : GL (Fin n) E) (i j : Fin n), ((ratGL E n γ * u : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j = ∑ k, algebraMap E (Ad E) ((γ : Matrix (Fin n) (Fin n) E) i k) * (u : Matrix (Fin n) (Fin n) (Ad E)) k j`. Introduce `γ i j`. Simplify using `[ratGL, Matrix.mul_apply]`. Use `choose r h0 h1 hF using row_exists (u : Matrix (Fin n) (Fin n) (Ad E)) hl hd`.
+
+Set `M : Matrix (Fin n) (Fin n) E` to `Matrix.of fun i k => r i k`. Establish `hM : IsUnit M.det`. Rewrite using `[Matrix.det_of_upperTriangular (show M.BlockTriangular id from fun i j hij => h0 i j hij)]`. Simplify using `[M, h1]`. Use `⟨Matrix.nonsingInvUnit M hM, ⟨(GlobalTheory.SmGL.mem_unipB E).2 ⟨fun i j hij => h0 i j hij, fun i => h1 i⟩, fun i j hij => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hent]`. Conclude with `hF i j hij`. Introduce and unpack `γ ⟨hγ, hγF⟩`. Take `⟨gl, gd⟩` from `(GlobalTheory.SmGL.mem_unipB E).1 hγ`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Use `row_unique (u : Matrix (Fin n) (Fin n) (Ad E)) hl hd i (fun k => (γ : Matrix (Fin n) (Fin n) E) i k) (r i) (fun k hk => gl i k hk) (h0 i) (gd i) (h1 i) (fun j hij => by rw [← hent]; exact hγF i j hij) (hF i)` as an intermediate fact. Conclude with `congrFun this j`.
+-/
 theorem existsUnique_ratUnip_mul_mem_fundamentalSet (E : Type) [Field E] [NumberField E] (n : ℕ) (u : GA E n)
     (hu : u ∈ GlobalTheory.CellDec.NA E n) :
     ∃! γ : GL (Fin n) E, γ ∈ GlobalTheory.SmGL.unipB E (Fin n) ∧ ∀ i j : Fin n, i < j →

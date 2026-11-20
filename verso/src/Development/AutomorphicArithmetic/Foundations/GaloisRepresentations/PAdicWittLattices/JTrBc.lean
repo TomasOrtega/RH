@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et GlobalTheory.GalV UpperTheory.Gal.G3
 universe u v
 
+/- English proof (translation)
+Introduce `hbc B B' R _ T g Z Y p q s _ _ hs tr htr W r c hc J _ σ hσ hspl x`. Establish `key` using `(hbc g p q r s hs c hc J σ hσ).2.2 hspl`. Conclude with `htr (pullback r g) (pullback.snd r g) (bcMap g c hc) (bcMap_snd g c hc) J (fun j => bcMap g (σ j) (hσ j)) (fun j => bcMap_snd g (σ j) (hσ j)) key x`.
+-/
 theorem UpperTheory.Gal.G3.jTrBc :
     BcSplits → TrBc.{u} := by
   intro hbc B B' R _ T g Z Y p q s _ _ hs tr htr W r c hc J _ σ hσ hspl x

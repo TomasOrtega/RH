@@ -8,6 +8,15 @@ open scoped Classical
 
 namespace GlobalTheory.LocOver.InnerDual
 
+/- English proof (translation)
+Set `φ : 𝒪[F] →+* L.O` to `((algebraMap F E).comp (𝒪[F]).subtype).codRestrict L.O (fun c => (GlobalTheory.UnramOrder.algebraMap_mem_iff L c).2 c.2)`. Establish `hcomp : (L.O.subtype).comp φ = algebraMap 𝒪[F] E`. Use extensionality with `c`. Both sides reduce to the same expression. Establish `hint : φ.IsIntegral`.
+
+Introduce `x`. Take `⟨p, hp, hpx⟩` from `(L.O_def x).1 x.2`. Use `⟨p, hp, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `key` using `Polynomial.hom_eval₂ p φ L.O.subtype x`. Rewrite `key` using `[hcomp]`.
+
+Use `show L.O.subtype (Polynomial.eval₂ φ x p) = L.O.subtype 0`. Rewrite using `[key, map_zero]`. Conclude with `hpx`. Use `hm` as an intermediate fact. Establish `hmax` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal' φ hint m`.
+
+Establish `h3 : ϖ ∈ m.comap φ`. Rewrite using `[IsLocalRing.eq_maximalIdeal hmax]`. Conclude with `(IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit`. Conclude with `Ideal.mem_comap.1 h3`.
+-/
 theorem unif_mem_maximal {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
     (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (m : Ideal L.O) (hm : m.IsMaximal) :
@@ -42,6 +51,41 @@ namespace GlobalTheory.LocOver.InnerDual
 
 open GlobalTheory.LocOver.UnipOnto in
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r Fr L hL`. Establish `: IsNonarchimedeanLocalField F` using `hM.loc`. Establish `: CharZero F` using `hM.char0`. Take `⟨_hfg, hdual, xz, hxz, hxzL, hprim⟩` from `hL`. Establish `hz : (xz : V) = Fr.f (Fin.last r)` using `hxz`.
+
+Establish `hint : ∀ y : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f y ∈ L → H.h (Fr.f (Fin.last r)) (y : V) ∈ M.L.O`. Introduce `y hy`. Establish `h0` using `(hdual xz).1 hxzL y hy`. Rewrite `h0` using `[hz]`. Then use the resulting hypothesis. Take `⟨I, hI⟩ : ∃ I : Ideal M.L.O, ∀ c : M.L.O, c ∈ I ↔ ∃ y : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f y ∈ L ∧ H.h (Fr.f (Fin.last r)) (y : V) = (c : E)` from `⟨{ carrier := {c | ∃ y : ↥(H.perp (H.X Fr.f)), H.mkW Fr.f y ∈ L ∧ H.h (Fr.f (Fin.last r)) (y : V) = (c : E)} add_mem' := by`.
+
+Introduce and unpack `a b ⟨y, hy, hya⟩ ⟨y', hy', hyb⟩`. Use `⟨y + y', by rw [map_add]; exact L.add_mem hy hy', ?_⟩` and prove the remaining obligations. Use `show H.h _ ((y : V) + (y' : V)) = (a : E) + (b : E)`. Rewrite using `[h_add_right, hya, hyb]`. Use the proof step `zero_mem' := by`.
+
+Use `⟨0, by rw [map_zero]; exact L.zero_mem, ?_⟩` and prove the remaining obligations. Use `show H.h _ (0 : V) = 0`. Conclude with `h_zero_right H _`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨y, hy, hya⟩`.
+
+Use `⟨M.L.cj (c : E) • y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `L.smul_mem ⟨M.L.cj (c : E), GlobalTheory.UnramOrder.cj_mem M.L c.2⟩ hy`. Use `show H.h _ (M.L.cj (c : E) • (y : V)) = (c : E) * (a : E)`. Rewrite using `[h_smul_right, M.L.cj_cj, hya] },`.
+
+Use `fun c => Iff.rfl⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (R := 𝒪[F])`. Establish `: IsPrincipalIdealRing M.L.O` using `(GlobalTheory.UnramOrder.order_facts M.L ϖ hϖ).2.2.2.1`. Establish `hϖ0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `htop : I = ⊤`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨π, hπ⟩` from `Submodule.IsPrincipal.principal m`. Establish `hϖm` using `unif_mem_maximal M.L ϖ hϖ m hm`. Rewrite `hϖm` using `[hπ, Submodule.mem_span_singleton]`.
+
+Take `⟨t, ht⟩` from `hϖm`. Establish `htE : (t : E) * (π : E) = algebraMap F E ϖ` using `congrArg Subtype.val ht`. Take `⟨πi, hπi⟩ : ∃ πi : E, πi = (t : E) * algebraMap F E (ϖ : F)⁻¹` from `⟨_, rfl⟩`. Establish `hinv : πi * (π : E) = 1`. Rewrite using `[hπi, mul_right_comm, htE, ← map_mul, mul_inv_cancel₀ hϖ0, map_one]`.
+
+Establish `hvL : H.mkW Fr.f (πi • xz) ∈ L`. Use `(hdual (πi • xz)).2 fun y hy => ?_` and prove the remaining obligations. Establish `hyI : (⟨_, hint y hy⟩ : M.L.O) ∈ I` using `(hI _).2 ⟨y, hy, rfl⟩`. Establish `hym` using `hIm hyI`. Rewrite `hym` using `[hπ, Submodule.mem_span_singleton]`.
+
+Take `⟨s, hs⟩` from `hym`. Establish `hsE : (s : E) * (π : E) = H.h (Fr.f (Fin.last r)) (y : V)` using `congrArg Subtype.val hs`. Use `show H.h (πi • (xz : V)) (y : V) ∈ M.L.O`. Rewrite using `[H.h_smul_left, hz, ← hsE, mul_left_comm, hinv, mul_one]`. Conclude with `s.2`.
+
+Establish `hxzv : H.mkW Fr.f xz = (π : E) • H.mkW Fr.f (πi • xz)`. Use `Eq.trans ?_ (map_smul (H.mkW Fr.f) (π : E) (πi • xz))` and prove the remaining obligations. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (xz : V) = (π : E) • (πi • (xz : V))`.
+
+Rewrite using `[smul_smul, mul_comm, hinv, one_smul]`. Establish `hu` using `hprim π (πi • xz) hvL hxzv`. Conclude with `hm.ne_top (hπ.trans (Ideal.span_singleton_eq_top.2 hu))`. Establish `h1 : (1 : M.L.O) ∈ I`. Rewrite using `[htop]`.
+
+Conclude with `Submodule.mem_top`. Take `⟨y0, hy0L, hy0z⟩` from `(hI 1).1 h1`. Establish `hy0z' : H.h (Fr.f (Fin.last r)) (y0 : V) = 1` using `hy0z`. Take `⟨w, hw⟩ : ∃ w : V, w = ∑ a : Fin r, H.h (y0 : V) (Fr.es a) • Fr.f a.castSucc` from `⟨_, rfl⟩`. Establish `hwX : w ∈ H.X Fr.f`.
+
+Rewrite using `[hw]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Fj_le_X Fr _ (e_mem Fr a))`. Establish `hwp : w ∈ H.perp (H.X Fr.f)` using `X_le_perp Fr hwX`. Establish `hsumL : ∀ (g : Fin r → V) (u : V) (s : Finset (Fin r)), H.h (∑ a ∈ s, g a) u = ∑ a ∈ s, H.h (g a) u`. Introduce `g u s`.
+
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `H.h_zero_left u`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, ih]`.
+
+Use `⟨y0 - ⟨w, hwp⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hmk0 : H.mkW Fr.f ⟨w, hwp⟩ = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hwX`. Rewrite using `[map_sub, hmk0, sub_zero]`. Conclude with `hy0L`.
+
+Use `show H.h _ ((y0 : V) - w) = 1`. Rewrite using `[h_sub_right, h_right H _ w, pairing_isotropicSpan_lastVector Fr w hwX, map_zero, sub_zero, hy0z']`. Introduce `b show H.h ((y0 : V) - w) (Fr.es b) = 0`. Rewrite using `[h_sub_left, hw, hsumL]`. Simplify using `[H.h_smul_left, Fr.h_es]`.
+-/
 theorem exists_inner_lattice_vector_anisotropic' : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type}
     [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ) (Fr : FrameD H r)

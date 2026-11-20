@@ -9,6 +9,15 @@ open scoped BigOperators Real
 
 namespace GlobalTheory.ThetaGroupFrame
 
+/- English proof (translation)
+Use `choose jOf hjOf using hcov`. Set `F : (Fin g → ℂ) → ℂ` to `fun z => G (jOf z) z`. Establish `hFeq : ∀ j z, z ∈ D j → F z = G j z` using `fun j z hz => hc _ _ _ (hjOf z) hz`. Establish `hFdiff : Differentiable ℂ F`. Introduce `z`.
+
+Establish `hmem : D (jOf z) ∈ 𝓝 z` using `(hD _).mem_nhds (hjOf z)`. Establish `hev : F =ᶠ[𝓝 z] G (jOf z)` using `by filter_upwards [hmem] with w hw`. Conclude with `hFeq _ _ hw`. Conclude with `((hG _).differentiableAt hmem).congr_of_eventuallyEq hev`. Establish `hFper : ∀ x, ∀ l ∈ S, F (x + l) = F x`.
+
+Introduce `x l hl`. Establish `h1` using `hper (jOf x) x (hjOf x) l hl`. Rewrite using `[hFeq _ _ h1.1, h1.2]`. Use `⟨F 0, fun j z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hFeq j z hz]`.
+
+Conclude with `GlobalTheory.entire_apply_eq_of_periodic_of_span_real hFdiff hS hFper z 0`.
+-/
 theorem exists_const_of_cover {g : ℕ} {J : Type*} (D : J → Set (Fin g → ℂ))
     (G : J → (Fin g → ℂ) → ℂ) (hD : ∀ j, IsOpen (D j)) (hcov : ∀ z, ∃ j, z ∈ D j)
     (hG : ∀ j, DifferentiableOn ℂ (G j) (D j))
@@ -38,6 +47,11 @@ theorem exists_const_of_cover {g : ℕ} {J : Type*} (D : J → Set (Fin g → �
 abbrev ValLaws : Prop :=
   ∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)
 
+/- English proof (translation)
+Unfold `LB.wchart`. Prove the components needed by the constructor for the conclusion. Introduce `h k z _`. Establish `hz : x z ∈ ⋂ k, ⇑(φ k) ⁻¹' ↑(L.U (j k))` using `h (show z ∈ (⊤ : Z.Opens) from trivial)`. Conclude with `Set.mem_iInter.mp hz k`.
+
+Introduce `h z _ show x z ∈ ⋂ k, ⇑(φ k) ⁻¹' ↑(L.U (j k))`. Conclude with `Set.mem_iInter.mpr fun k => h k (show z ∈ (⊤ : Z.Opens) from trivial)`.
+-/
 theorem top_le_wchart_iff {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (j : K → L.ι) (x : Z ⟶ Y) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
@@ -50,9 +64,17 @@ theorem top_le_wchart_iff {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     show x z ∈ ⋂ k, ⇑(φ k) ⁻¹' ↑(L.U (j k))
     exact Set.mem_iInter.mpr fun k => h k (show z ∈ (⊤ : Z.Opens) from trivial)
 
+/- English proof (translation)
+The claim follows from `le_inf h h'`.
+-/
 theorem top_le_inf {X Z : Scheme.{0}} (x : Z ⟶ X) {U V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U)
     (h' : ⊤ ≤ x ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) := le_inf h h'
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `(hv X x).2.1 U h`. Rewrite using `[he]`. Introduce `h0`. Establish `h1` using `congrArg e s.mul_inv`. Rewrite `h1` using `[map_mul, map_one, h0, zero_mul]`.
+
+Conclude with `zero_ne_one h1`.
+-/
 theorem valAt'_unit_ne_zero (hv : ValLaws) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(X, U)ˣ) : valAt' x U s.val ≠ 0 := by
   obtain ⟨e, he⟩ := (hv X x).2.1 U h
@@ -62,6 +84,15 @@ theorem valAt'_unit_ne_zero (hv : ValLaws) {X : Scheme.{0}} (x : Sp ℂ ⟶ X) (
   rw [map_mul, map_one, h0, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Establish `hV : ⊤ ≤ x ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')` using `top_le_inf x hj hj'`. Take `⟨e, he⟩` from `(hv Y x).2.1 _ hV`. Establish `h3` using `(hv Y x).2.2.1`. Establish `h4` using `(hv Y x).2.2.2.1`. Establish `hcj` using `congrArg (fun w => ((Units.map (e : Γ(Y, LB.wchart L φ j ⊓ LB.wchart L φ j') →* ℂ) w : ℂˣ) : ℂ)) (hc j j')`.
+
+Unfold `LB.LinComb at hcj`. Simplify using `only at hcj`. Simplify using `only [map_mul, map_prod, map_zpow, Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.coe_map, MonoidHom.coe_coe] at hcj`. Simplify using `only [← he] at hcj`. Unfold `res pullU at hcj`.
+
+Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at hcj`. Simplify using `only [h3 _ _ _ _ hV] at hcj`. Rewrite using `[hcj]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `(h3 _ _ _ _ hV).trans (h4 X (φ i) (L.U (j i) ⊓ L.U (j' i)) (L.g (j i) (j' i)).val)`.
+-/
 theorem valAt'_gen_linComb (hv : ValLaws) {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φ ε)) (hc : c.IsGen)
     (x : Sp ℂ ⟶ Y) (j j' : K → L.ι) (hj : ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j)
@@ -89,12 +120,18 @@ theorem valAt'_gen_linComb (hv : ValLaws) {X Y : Scheme.{0}} (L : LB X) {K : Typ
   congr 1
   exact (h3 _ _ _ _ hV).trans (h4 X (φ i) (L.U (j i) ⊓ L.U (j' i)) (L.g (j i) (j' i)).val)
 
+/- English proof (translation)
+Rewrite using `[top_le_wchart_iff, Fin.forall_fin_two]`. Simplify using `[h₀, h₁]`.
+-/
 theorem top_le_wchart_two {X Y Z : Scheme.{0}} (L : LB X) (φ₀ φ₁ : Y ⟶ X) (j : Fin 2 → L.ι)
     (x : Z ⟶ Y) (y₀ y₁ : Z ⟶ X) (h₀ : x ≫ φ₀ = y₀) (h₁ : x ≫ φ₁ = y₁) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L ![φ₀, φ₁] j ↔ ⊤ ≤ y₀ ⁻¹ᵁ L.U (j 0) ∧ ⊤ ≤ y₁ ⁻¹ᵁ L.U (j 1) := by
   rw [top_le_wchart_iff, Fin.forall_fin_two]
   simp [h₀, h₁]
 
+/- English proof (translation)
+Establish `hj : ⊤ ≤ x ⁻¹ᵁ LB.wchart L ![φ₀, φ₁] j` using `(top_le_wchart_two L φ₀ φ₁ j x y₀ y₁ h₀ h₁).2 ⟨a₀, a₁⟩`. Establish `hj' : ⊤ ≤ x ⁻¹ᵁ LB.wchart L ![φ₀, φ₁] j'` using `(top_le_wchart_two L φ₀ φ₁ j' x y₀ y₁ h₀ h₁).2 ⟨b₀, b₁⟩`. Rewrite using `[valAt'_gen_linComb hv L ![φ₀, φ₁] ![(k : ℤ), -(k : ℤ)] c hc x j j' hj hj']`. Simplify using `[Fin.prod_univ_two, h₀, h₁, _root_.zpow_neg, zpow_natCast]`.
+-/
 theorem valAt'_gen_two (hv : ValLaws) {X Y : Scheme.{0}} (L : LB X) (φ₀ φ₁ : Y ⟶ X) (k : ℕ)
     (c : LB.Gen (LB.LinComb L (K := Fin 2) ![φ₀, φ₁] ![(k : ℤ), -(k : ℤ)])) (hc : c.IsGen)
     (x : Sp ℂ ⟶ Y) (y₀ y₁ : Sp ℂ ⟶ X) (h₀ : x ≫ φ₀ = y₀) (h₁ : x ≫ φ₁ = y₁)
@@ -111,12 +148,20 @@ theorem valAt'_gen_two (hv : ValLaws) {X Y : Scheme.{0}} (L : LB X) (φ₀ φ₁
   rw [valAt'_gen_linComb hv L ![φ₀, φ₁] ![(k : ℤ), -(k : ℤ)] c hc x j j' hj hj']
   simp [Fin.prod_univ_two, h₀, h₁, _root_.zpow_neg, zpow_natCast]
 
+/- English proof (translation)
+Unfold `Out.translPt`. Rewrite using `[CategoryTheory.Hom.mul_def, ← Category.assoc, CartesianMonoidalCategory.comp_lift]`. Simplify using the standard rewrite rules.
+-/
 theorem lift_translPt {S : Scheme.{0}} (A : Over S) [GrpObj A] {T B : Over S} (p : B ⟶ T)
     (x : T ⟶ A) (y : B ⟶ A) : lift p y ≫ Out.translPt A x = (p ≫ x) * y := by
   unfold Out.translPt
   rw [CategoryTheory.Hom.mul_def, ← Category.assoc, CartesianMonoidalCategory.comp_lift]
   simp
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hH.apply j i]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_swap_eq_zero_of_eq_zero {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (l a : Fin g → ℂ) :
     a ⬝ᵥ Hm.mulVec (star l) = starRingEnd ℂ (l ⬝ᵥ Hm.mulVec (star a)) := by
@@ -127,6 +172,9 @@ private lemma herm_swap_eq_zero_of_eq_zero {g : ℕ} {Hm : Matrix (Fin g) (Fin g
   simp
   ring
 
+/- English proof (translation)
+Rewrite using `[herm_swap_eq_zero_of_eq_zero hH l a]`. Establish `e : (Real.pi : ℂ) * (l ⬝ᵥ Hm.mulVec (star a)) = Real.pi * starRingEnd ℂ (l ⬝ᵥ Hm.mulVec (star a)) + n * (2 * Real.pi * Complex.I)`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, ← hn] <;> ring`. Rewrite using `[e, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, _root_.mul_one]`.
+-/
 theorem exp_herm_eq {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (l a : Fin g → ℂ) (n : ℤ) (hn : (n : ℝ) = (l ⬝ᵥ Hm.mulVec (star a)).im) :
     cexp (Real.pi * (l ⬝ᵥ Hm.mulVec (star a))) = cexp (Real.pi * (a ⬝ᵥ Hm.mulVec (star l))) := by
@@ -136,6 +184,49 @@ theorem exp_herm_eq {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermi
     apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, ← hn] <;> ring
   rw [e, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `hv han P u Hm χ Ef hAH k a hk T p θ hp`. Take `⟨hH, hχ, hEf, hfr⟩` from `hAH`. Establish `hk0 : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `h₀ : ∀ z, (lift p (u.ex z)).left ≫ (snd T P.A).left = (u.ex z).left` using `fun z => by`. Rewrite using `[← Over.comp_left, CartesianMonoidalCategory.lift_snd]`.
+
+Establish `h₁ : ∀ z, (lift p (u.ex z)).left ≫ (Out.translPt P.A θ.pt).left = (u.ex (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ))).left` using `fun z => by`. Rewrite using `[← Over.comp_left, lift_translPt, hp, ← u.ex_add, add_comm]`. Set `D : (Fin 2 → P.L.ι) → Set (Fin P.g → ℂ)` to `fun j => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U (j 0) ∧ ⊤ ≤ (u.ex (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ))).left ⁻¹ᵁ P.L.U (j 1)}`. Set `V : (Fin 2 → P.L.ι) → (Fin P.g → ℂ) → ℂ` to `fun j z => valAt' (lift p (u.ex z)).left ((Out.thetaLB P.A P.L (k : ℤ) θ.pt).U j) (θ.φ.s j).val`. Set `G : (Fin 2 → P.L.ι) → (Fin P.g → ℂ) → ℂ` to `fun j z => V j z * u.fr (j 1) (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) ^ k * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ)))) / u.fr (j 0) z ^ k`.
+
+Establish `hopen : ∀ j, IsOpen (D j)` using `fun j => ((u.hol _ 1).1).inter (((u.hol _ 1).1).preimage (continuous_id.add continuous_const))`. Establish `hcov : ∀ z, ∃ j, z ∈ D j`. Introduce `z`. Establish `pick : ∀ y : Sp ℂ ⟶ P.A.left, ∃ i, ⊤ ≤ y ⁻¹ᵁ P.L.U i` using `fun y => by`. Establish `hy : y (default : PrimeSpectrum ℂ) ∈ (⨆ i, P.L.U i)`.
+
+Rewrite using `[P.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hy`. Conclude with `⟨i, ((hv _ y).1 _).2 hi⟩`. Take `⟨i₀, hi₀⟩` from `pick (u.ex z).left`.
+
+Take `⟨i₁, hi₁⟩` from `pick (u.ex (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ))).left`. Conclude with `⟨![i₀, i₁], show _ ∧ _ from ⟨hi₀, hi₁⟩⟩`. Establish `hVdiff : ∀ j, DifferentiableOn ℂ (V j) (D j)`. Introduce `j`. Establish `hh` using `han (Fin P.g → ℂ) Set.univ T P.A (fun _ => p) u.ex (fun U f => by`.
+
+Distinguish the cases in `hU : ⊤ ≤ p.left ⁻¹ᵁ U`. Simplify using `only [Set.mem_univ, true_and, hU, Set.ofPred_true]`. Conclude with `⟨isOpen_univ, differentiableOn_const _⟩`. Simplify using `only [Set.mem_univ, true_and, hU, Set.ofPred_false]`. Conclude with `⟨isOpen_empty, differentiableOn_empty⟩)`.
+
+Use the proof step `(fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)`. Use the proof step `((Out.thetaLB P.A P.L (k : ℤ) θ.pt).U j) (θ.φ.s j).val`. Use `hh.2.mono fun z hz => ⟨trivial, ?_⟩` and prove the remaining obligations. Conclude with `(top_le_wchart_two P.L (snd T P.A).left (Out.translPt P.A θ.pt).left j (lift p (u.ex z)).left _ _ (h₀ z) (h₁ z)).2 hz`. Establish `hlin : Differentiable ℂ (fun z : Fin P.g → ℂ => z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ)))`.
+
+Simplify using `only [dotProduct]`. Use `fun_prop`. Establish `hGdiff : ∀ j, DifferentiableOn ℂ (G j) (D j)`. Introduce `j`. Establish `hfr0 : DifferentiableOn ℂ (u.fr (j 0)) (D j)` using `(u.fr_hol _).mono fun z hz => hz.1`.
+
+Establish `hfr1 : DifferentiableOn ℂ (fun z => u.fr (j 1) (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ))) (D j)` using `(u.fr_hol _).comp (differentiable_id.add_const _).differentiableOn (fun z hz => hz.2)`. Establish `hp0 : DifferentiableOn ℂ (fun z => u.fr (j 0) z ^ k) (D j)` using `hfr0.pow k`. Establish `hp1 : DifferentiableOn ℂ (fun z => u.fr (j 1) (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) ^ k) (D j)` using `hfr1.pow k`. Establish `hE : DifferentiableOn ℂ (fun z => cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ))))) (D j)` using `(hlin.const_mul _).cexp.differentiableOn`. Establish `hq` using `(((hVdiff j).mul hp1).mul hE).mul (hp0.inv (fun z (hz : z ∈ D j) => pow_ne_zero _ (u.fr_ne _ _ hz.1)))`.
+
+Use `hq.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `only [G, div_eq_mul_inv, Pi.mul_apply, Pi.inv_apply]`. Establish `hcompat : ∀ j j' z, z ∈ D j → z ∈ D j' → G j z = G j' z`. Introduce `j j' z hz hz'`. Establish `hgen : V j z = valAt' (u.ex z).left (P.L.U (j 0) ⊓ P.L.U (j' 0)) (P.L.g (j 0) (j' 0)).val ^ k * (valAt' (u.ex (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ))).left (P.L.U (j 1) ⊓ P.L.U (j' 1)) (P.L.g (j 1) (j' 1)).val ^ k)⁻¹ * V j' z` using `valAt'_gen_two hv P.L (snd T P.A).left (Out.translPt P.A θ.pt).left k θ.φ θ.isGen (lift p (u.ex z)).left _ _ (h₀ z) (h₁ z) j j' hz.1 hz.2 hz'.1 hz'.2`.
+
+Establish `hc0` using `u.fr_compat (j 0) (j' 0) z (top_le_inf _ hz.1 hz'.1)`. Establish `hc1` using `u.fr_compat (j 1) (j' 1) _ (top_le_inf _ hz.2 hz'.2)`. Establish `hn0` using `valAt'_unit_ne_zero hv _ _ (top_le_inf _ hz.1 hz'.1) (P.L.g (j 0) (j' 0))`. Establish `hn1` using `valAt'_unit_ne_zero hv _ _ (top_le_inf _ hz.2 hz'.2) (P.L.g (j 1) (j' 1))`. Establish `hf0` using `u.fr_ne _ _ hz'.1`.
+
+Establish `hf1` using `u.fr_ne _ _ hz'.2`. Simplify using `only [G]`. Rewrite using `[hgen, hc0, hc1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hper : ∀ j z, z ∈ D j → ∀ l ∈ (u.Λ : Set (Fin P.g → ℂ)), z + l ∈ D j ∧ G j (z + l) = G j z`. Introduce `j z hz l hl`. Establish `hex : ∀ y, u.ex (y + l) = u.ex y` using `fun y => by`. Rewrite using `[u.ex_add, (u.ker l).2 hl, _root_.mul_one]`. Establish `hzl : z + l + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ) = z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ) + l`.
+
+Normalize the expressions using the abelian group laws. Establish `hmem : z + l ∈ D j`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hex]`. Conclude with `hz.1`.
+
+Rewrite using `[hzl, hex]`. Conclude with `hz.2`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hV : V j (z + l) = V j z` using `by simp only [V, hex]`. Establish `hf0` using `u.fr_ne _ _ hmem.1`.
+
+Establish `hf1` using `u.fr_ne _ _ hmem.2`. Rewrite `hf1` using `[hzl]`. Establish `e0` using `hfr ⟨l, hl⟩ (j 0) z hz.1`. Establish `e1` using `hfr ⟨l, hl⟩ (j 1) _ hz.2`. Simplify using `only at e0 e1`.
+
+Establish `hχ0 : χ ⟨l, hl⟩ ≠ 0` using `fun h => by simpa [h] using hχ ⟨l, hl⟩`. Establish `hh` using `exp_herm_eq hH l (a : Fin P.g → ℂ) (Ef ⟨l, hl⟩ a) (hEf ⟨l, hl⟩ a)`. Establish `eA : cexp ((Real.pi : ℂ) * ((z + l) ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ)))) = cexp ((Real.pi : ℂ) * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ)))) * cexp ((Real.pi : ℂ) * (l ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ))))`. Rewrite using `[add_dotProduct, mul_add, Complex.exp_add]`. Establish `eB : cexp ((Real.pi : ℂ) * ((z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) ⬝ᵥ Hm.mulVec (star l)) + (Real.pi : ℂ) / 2 * (l ⬝ᵥ Hm.mulVec (star l))) ^ k = cexp ((Real.pi : ℂ) * (z ⬝ᵥ Hm.mulVec (star l)) + (Real.pi : ℂ) / 2 * (l ⬝ᵥ Hm.mulVec (star l))) ^ k * cexp ((Real.pi : ℂ) * ((a : Fin P.g …`.
+
+Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Rewrite using `[add_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `hkk : (k : ℂ) * (k : ℂ)⁻¹ = 1` using `mul_inv_cancel₀ hk0`. Take the linear combination `((Real.pi : ℂ) * ((a : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star l))) * hkk`.
+
+Simplify using `only [G, hV]`. Rewrite using `[hzl, e0, e1, eA, mul_pow, mul_pow, mul_pow, mul_pow, eB, hh]`. Clear the denominators using the available nonvanishing facts. Take `⟨C, hC⟩` from `exists_const_of_cover D G hopen hcov hGdiff hcompat u.full hper`. Use `⟨C, fun j z hz0 hz1 => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hC j z ⟨hz0, hz1⟩`. Establish `hf0` using `u.fr_ne _ _ hz0`. Simplify using `only [G, V] at h1`. Rewrite `h1` using `[div_eq_iff (pow_ne_zero _ hf0)]`. Establish `hE : cexp ((Real.pi : ℂ) * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ)))) * cexp (-((Real.pi : ℂ) * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ))))) = 1`.
+
+Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Take the linear combination `cexp (-((Real.pi : ℂ) * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ))))) * h1 - (valAt' (lift p (u.ex z)).left ((Out.thetaLB P.A P.L (k : ℤ) θ.pt).U j) (θ.φ.s j).val * u.fr (j 1) (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) ^ k) * hE`.
+-/
 theorem thetaGrp_in_frame :
     (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) (X Y : Over (Sp ℂ)) (a : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (b : E → (𝟙_ (Over (Sp ℂ)) ⟶ Y)), (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (a w).left U f) {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U}) → (∀ (U : (Y).left.Opens) (f : Γ((Y).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (b w).left U f) {w | w ∈ W ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U}) → (∀ (U : (X ⊗ Y).left.Opens) (f : Γ((X ⊗ Y).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ ((fun w => lift (a w) (b w)) w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' ((fun w => lift (a w) (b w)) w).left U f) {w | w ∈ W ∧ ⊤ ≤ ((fun w => lift (a w) (b w)) w).left ⁻¹ᵁ U})) → (∀ (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g) (Hm : Matrix (Fin P.g) (Fin P.g) ℂ) (χ : u.Λ → ℂ) (Ef : LinearMap.BilinForm ℤ u.Λ), (Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧ (∀ l m : u.Λ, (Ef l m : ℝ) = ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin P.g → ℂ))).im) ∧ ∀ (l : u.Λ) i z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U i → u.fr i z = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))) + Real.pi / 2 * ((l : Fin P.g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin P.g → ℂ))))) * u.fr i (z + l)) → ∀ (k : ℕ) (a : u.Λ), 0 < k → ∀ (T : Over (Sp ℂ)) (p : (𝟙_ (Over (Sp ℂ)) ⟶ T)) (θ : Out.ThetaGrp P.A P.L k T), p ≫ θ.pt = u.ex ((k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) → ∃ C : ℂ, ∀ (j : Fin 2 → P.L.ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ P.L.U (j 0) → ⊤ ≤ (u.ex (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ))).left ⁻¹ᵁ P.L.U (j 1) → valAt' (lift p (u.ex z)).left _ (θ.φ.s j).val * u.fr (j 1) (z + (k : ℂ)⁻¹ • (a : Fin P.g → ℂ)) ^ k = C * cexp (-(Real.pi * (z ⬝ᵥ Hm.mulVec (star (a : Fin P.g → ℂ))))) * u.fr (j 0) z ^ k) := by
   intro hv han P u Hm χ Ef hAH k a hk T p θ hp

@@ -19,6 +19,23 @@ variable {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Is
   {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)}
   {l : ℕ} [Fact l.Prime] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `GlobalTheory.TameCharUnique.exists_eq_mul L Ω A v' h' l hl' (t.comp ResEx.resI) t' (ht.1.comp ResEx.continuous_resI) ht'.1 ht'.2`. Use `⟨algebraMap ℚ_[l] (Qbar l) (c : ℚ_[l]), ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `swap`. Use `hc σ` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply] at this`.
+
+Simplify using `[tval, this]`. Introduce `h0`. Rewrite `h0` using `[map_eq_zero, PadicInt.coe_eq_zero]`. Establish `hc0 : ∀ σ, (t (ResEx.resI (K` using `K) σ)).toAdd = 0 := fun σ => by`. Use `hc σ` as an intermediate fact.
+
+Simplify `this` using `[h0]`. Take `⟨σ, hσ⟩` from `ht.2 (Multiplicative.ofAdd 1)`. Use `haveI : Module.Finite K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Set `f : ℕ → (L →ₐ[K] Ω)` to `fun n => (((σ : G K Ω) ^ n : G K Ω) : Ω →ₐ[K] Ω).comp (IsScalarTower.toAlgHom K L Ω)`. Establish `main : ∀ i j : ℕ, i < j → f i = f j → False` using `fun i j hij e => by set k := j - i with hk`.
+
+Establish `hk0 : 0 < k` using `Nat.sub_pos_of_lt hij`. Establish `hfix : ∀ x : L, ((σ : G K Ω) ^ k).toRingEquiv (algebraMap L Ω x) = algebraMap L Ω x` using `fun x => by`. Establish `e1` using `congrArg (fun g : L →ₐ[K] Ω => g x) e`. Simplify using `only [f, AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', AlgEquiv.coe_algHom] at e1`. Establish `e2 : (σ : G K Ω) ^ j = (σ : G K Ω) ^ i * (σ : G K Ω) ^ k`.
+
+Rewrite using `[← pow_add, hk, Nat.add_sub_cancel' hij.le]`. Rewrite `e1` using `[e2, AlgEquiv.mul_apply]`. Conclude with `(((σ : G K Ω) ^ i).injective e1).symm`. Set `σ'' : G L Ω` to `AlgEquiv.ofRingEquiv (f := ((σ : G K Ω) ^ k).toRingEquiv) hfix`. Establish `hres : AlgEquiv.restrictScalarsHom K σ'' = (σ : G K Ω) ^ k` using `AlgEquiv.ext fun _ => rfl`.
+
+Establish `hmem : σ'' ∈ Ine (F` using `L) A := by show AlgEquiv.restrictScalarsHom K σ'' ∈ Ine (F := K) A`. Rewrite using `[hres]`. Conclude with `pow_mem σ.2 k`. Establish `e3 : ResEx.resI (K` using `K) ⟨σ'', hmem⟩ = σ ^ k := Subtype.ext (by rw [SubgroupClass.coe_pow, ← hres]; rfl)`. Use `hc0 ⟨σ'', hmem⟩` as an intermediate fact.
+
+Rewrite `this` using `[e3, map_pow, hσ, ← ofAdd_nsmul, toAdd_ofAdd, nsmul_eq_mul, mul_one, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers. Take `⟨i, j, hij, e⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Conclude with `main i j hlt e`.
+
+Conclude with `main j i hlt e.symm`.
+-/
 theorem exists_tval_resI (h' : IsPlaceOver A v') (hl' : ((l : ℕ) : 𝓞 L) ∉ v'.asIdeal)
     {t : Ine (F := K) A →* Multiplicative ℤ_[l]} {t' : Ine (F := L) A →* Multiplicative ℤ_[l]}
     (ht : IsTameChar t) (ht' : IsTameChar t') :
@@ -63,6 +80,9 @@ theorem exists_tval_resI (h' : IsPlaceOver A v') (hl' : ((l : ℕ) : 𝓞 L) ∉
   · exact main i j hlt e
   · exact main j i hlt e.symm
 
+/- English proof (translation)
+Take `⟨h1, U, hU, H⟩` from `hN`. Use `⟨h1.smul c, U.comap ResEx.resI, hU.preimage ResEx.continuous_resI, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `H _ hσ` as an intermediate fact. Rewrite using `[smul_smul, mul_comm, ← hc]`. Conclude with `this`.
+-/
 theorem isMonodromy_res {t : Ine (F := K) A →* Multiplicative ℤ_[l]}
     {t' : Ine (F := L) A →* Multiplicative ℤ_[l]} {r : G K Ω →* GL (Fin a) (Qbar l)}
     {N : Matrix (Fin a) (Fin a) (Qbar l)} {c : Qbar l} (hN : IsMonodromy t r N)
@@ -74,6 +94,27 @@ theorem isMonodromy_res {t : Ine (F := K) A →* Multiplicative ℤ_[l]}
   rw [smul_smul, mul_comm, ← hc]
   exact this
 
+/- English proof (translation)
+Establish `hq0 : ((normV v : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV v).ne_bot`. Establish `hf : deg (ResEx.resW h h' (frob h')) ≠ 0`. Introduce `h0`. Establish `h1 : ((frob h' : Weil h') : G L Ω) ∈ Ine (F` using `L) A := (deg_eq_zero_iff (σ := ResEx.resW h h' (frob h'))).1 h0`. Establish `h2` using `(deg_eq_zero_iff (σ := frob h')).2 h1`.
+
+Rewrite `h2` using `[deg_frob]`. Conclude with `one_ne_zero h2`. Establish `hq1 : 1 - (((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' (frob h')))⁻¹ ≠ 0`. Rewrite using `[sub_ne_zero, ne_comm, Ne, inv_eq_one]`. Introduce `h1`.
+
+Establish `h3 : (((normV v : ℕ) : ℚ) ^ deg (ResEx.resW h h' (frob h')) : ℚ) = 1`. Rewrite using `[← Rat.cast_inj (α := Qbar l)]`. Use `push_cast`. Conclude with `h1`. Conclude with `hf ((zpow_eq_one_iff_right₀ (Nat.cast_nonneg _) (Nat.cast_ne_one.mpr (one_lt_normV v).ne')).mp h3)`.
+
+Establish `key : ∀ m : ℤ, tval t (inePart (deg_frob (h` using `h)) (ResEx.resW h h' (frob h') ^ m)) * (1 - (((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' (frob h')))⁻¹) = tval t (inePart (deg_frob (h := h)) (ResEx.resW h h' (frob h'))) * (1 - (((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' (frob h') ^ m))⁻¹) := fun m => by`. Establish `h1` using `ht.tval_inePart_mul hl (deg_frob (h := h)) (ResEx.resW h h' (frob h')) (ResEx.resW h h' (frob h') ^ m)`. Establish `h2` using `ht.tval_inePart_mul hl (deg_frob (h := h)) (ResEx.resW h h' (frob h') ^ m) (ResEx.resW h h' (frob h'))`. Rewrite `h1` using `[(Commute.self_zpow (ResEx.resW h h' (frob h')) m).eq]`. Take the linear combination `h2 - h1`.
+
+Use `⟨tval t (inePart (deg_frob (h := h)) (ResEx.resW h h' (frob h'))) / (1 - (((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' (frob h')))⁻¹), fun g => ?_⟩` and prove the remaining obligations. Establish `hg : g = frob h' ^ deg g * ineIncl h' (inePart (deg_frob (h` using `h')) g) := by`. Rewrite using `[ineIncl_inePart, mul_inv_cancel_left]`. Establish `hRg : ResEx.resW h h' g = ResEx.resW h h' (frob h') ^ deg g * ineIncl h (ResEx.resI (inePart (deg_frob (h` using `h')) g)) := by conv_lhs => rw [hg]`. Rewrite using `[map_mul, map_zpow, ResEx.resW_ineIncl]`.
+
+Establish `hT : tval t (inePart (deg_frob (h` using `h)) (ResEx.resW h h' g)) = tval t (inePart (deg_frob (h := h)) (ResEx.resW h h' (frob h') ^ deg g)) + tval t (ResEx.resI (inePart (deg_frob (h := h')) g)) := by`. Rewrite using `[hRg, ht.tval_inePart_mul hl, deg_ineIncl, zpow_zero, inv_one, one_mul, inePart_ineIncl]`. Establish `hd : deg (ResEx.resW h h' g) = deg (ResEx.resW h h' (frob h') ^ deg g)`. Rewrite using `[hRg, deg_mul, deg_ineIncl, add_zero]`. Establish `hs` using `key (deg g)`.
+
+Establish `hqd : ((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' g) ≠ 0` using `zpow_ne_zero _ hq0`. Rewrite using `[wdMat, wdMat, hT]`. Establish `e1 : (-tval t' (inePart (deg_frob (h` using `h')) g)) • (c • N) = (-tval t (ResEx.resI (inePart (deg_frob (h := h')) g))) • N := by`. Rewrite using `[smul_smul, hc]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ((resTo L r g : Matrix (Fin a) (Fin a) (Qbar l))) = r (ResEx.resW h h' g)` using `rfl`. Rewrite using `[e1, e2]`. Use `set β := tval t (inePart (deg_frob (h := h)) (ResEx.resW h h' (frob h'))) / (1 - (((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' (frob h')))⁻¹) with hβ`. Establish `h2` using `hN.mul_exp hl ht (ResEx.resW h h' g) ((((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' g))⁻¹ * β)`.
+
+Rewrite `h2` using `[mul_inv_cancel_left₀ hqd]`. Rewrite using `[← mul_assoc, ← h2, mul_assoc, mul_assoc, ← exp_add_smul hN.1, ← exp_add_smul hN.1]`. Use `congr 3`. Establish `hsm : tval t (inePart (deg_frob (h` using `h)) (ResEx.resW h h' (frob h') ^ deg g)) = β * (1 - (((normV v : ℕ) : Qbar l) ^ deg (ResEx.resW h h' (frob h') ^ deg g))⁻¹) := by`. Rewrite using `[hβ, div_mul_eq_mul_div, eq_div_iff hq1]`.
+
+Take the linear combination `hs`. Rewrite using `[hd]`. Take the linear combination `hsm`.
+-/
 theorem exists_conj (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (hl : ((l : ℕ) : 𝓞 K) ∉ v.asIdeal)
     {t : Ine (F := K) A →* Multiplicative ℤ_[l]}
     {t' : Ine (F := L) A →* Multiplicative ℤ_[l]} {r : G K Ω →* GL (Fin a) (Qbar l)}
@@ -148,6 +189,21 @@ end GlobalTheory.AboveL.ResWD
 
 namespace GlobalTheory.AboveL
 
+/- English proof (translation)
+Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' l _ ι a r hl hl' hr`. Establish `hr' : Continuous fun g => (r g : Matrix (Fin a) (Fin a) (Qbar l))` using `Units.continuous_val.comp hr`. Establish `ht` using `isTameChar_tameL h hl`. Establish `ht'` using `isTameChar_tameL h' hl'`. Take `⟨N, hN⟩` from `exists_isMonodromy h hl ht hr'`.
+
+Take `⟨c, hc0, hc⟩` from `ResWD.exists_tval_resI h' hl' ht ht'`. Establish `hN'` using `ResWD.isMonodromy_res hN hc`. Take `⟨β, hβ⟩` from `ResWD.exists_conj h h' hl ht hN hc`. Take `⟨aK, haK⟩` from `hN.exists_isFrobSS hl ht (deg_frob (h := h)) ι`. Establish `ex : wdOf h hl ι r = WD.mk aK` using `IsWDOf.wdOf_eq hl ⟨_, ht, _, deg_frob, N, aK, hN, haK, rfl⟩`.
+
+Establish `hb : IsFrobSS (fun g => toEndC ι (wdMat (tameL h hl) (deg_frob (h` using `h)) r N (ResEx.resW h h' g))) (toEndC ι N) (ResEx.resRep h h' aK) := ⟨haK.1, fun g => haK.2 _⟩`. Take `⟨aL2, haL2⟩` from `hN'.exists_isFrobSS hl' ht' (deg_frob (h := h')) ι`. Establish `hcomm : ∀ g, hN'.rep hl' ht' (deg_frob (h` using `h')) ι g * toEndC ι N = ((normV v' : ℕ) : ℂ) ^ deg g • (toEndC ι N * hN'.rep hl' ht' (deg_frob (h := h')) ι g) := fun g => by`. Use `hN'.rep_comm hl' ht' (deg_frob (h := h')) ι g` as an intermediate fact. Rewrite `this` using `[toEndC_smul, mul_smul_comm, smul_mul_assoc, smul_comm]`.
+
+Conclude with `smul_right_injective _ ((map_ne_zero ι).mpr hc0) this`. Take `⟨aL1, haL1⟩` from `WeilDeligne.exists_isFrobSS (hN'.rep hl' ht' (deg_frob (h := h')) ι) (toEndC ι N) (hN'.isSmooth_rep hl' ht' _ ι) (hN.1.map _) hcomm`. Take `⟨u, hu⟩` from `(isUnit_exp (hN.1.smul β)).map (toEndC ι (n := Fin a))`. Establish `i1 : aL1.Iso (ResEx.resRep h h' aK)` using `haL1.iso hb (LinearMap.GeneralLinearGroup.toLinearEquiv u) (fun g w => by show ((u : Module.End ℂ (Fin a → ℂ)) * toEndC ι (wdMat (tameL h' hl') (deg_frob (h := h')) (resTo L r) (c • N) g)) w = (toEndC ι (wdMat (tameL h hl) (deg_frob (h := h)) r N (ResEx.resW h h' g)) * (u : Modul …`. Rewrite using `[hu, ← map_mul, hβ, map_mul])`.
+
+Use the proof step `(fun w => by show ((u : Module.End ℂ (Fin a → ℂ)) * toEndC ι N) w = (toEndC ι N * (u : Module.End ℂ (Fin a → ℂ))) w`. Rewrite using `[hu, ← map_mul, exp_smul_mul hN.1, map_mul])`. Establish `i2 : aL1.Iso aL2` using `haL1.iso_of_smul ((map_ne_zero ι).mpr hc0) (by`. Use `haL2` as an intermediate fact. Rewrite `this` using `[toEndC_smul]`.
+
+Conclude with `this)`. Establish `ex' : wdOf h' hl' ι (resTo L r) = WD.mk (ResEx.resRep h h' aK)` using `(IsWDOf.wdOf_eq hl' ⟨_, ht', _, deg_frob, c • N, aL2, hN', haL2, rfl⟩).trans (WD.sound (i2.symm.trans i1))`. Use `⟨a, aK, ResEx.resRep h h' aK, ex.symm, ex'.symm, rfl, fun σ σ' hs => ?_⟩` and prove the remaining obligations. Use `show aK.ρ (ResEx.resW h h' σ') = aK.ρ σ`. Use `congr 1`.
+
+Conclude with `Subtype.ext (AlgEquiv.ext fun z => (hs z).symm)`.
+-/
 theorem wdOf_restricts : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (r : G K Ω →* GL (Fin a) (Qbar l)) (hl : ((l : ℕ) : 𝓞 K) ∉ v.asIdeal) (hl' : ((l : ℕ) : 𝓞 L) ∉ v'.asIdeal), Continuous r → Restricts (wdOf h hl ι r) (wdOf h' hl' ι (resTo L r)) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' l _ ι a r hl hl' hr
   have hr' : Continuous fun g => (r g : Matrix (Fin a) (Fin a) (Qbar l)) := Units.continuous_val.comp hr

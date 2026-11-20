@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ThetaCompare
 
+/- English proof (translation)
+Rewrite using `[mul_pow, mul_pow, mul_pow, inv_pow, mul_inv_eq_one]`. Apply `mul_right_cancel (b := Ap * A0)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[h3, mul_pow, inv_pow, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one]`.
+-/
 private theorem pow_eq_one_of_three_pow_relations {G : Type*} [CommGroup G] (M : ℕ) (U0 Ax Ap A0 F R : G)
     (h1 : U0 ^ M * (Ax ^ M * Ap) = A0 ^ M * A0) (h2 : F ^ M * A0 = Ap * R ^ M) (h3 : A0 = R ^ M * R⁻¹) :
     (U0 * Ax * F * (R ^ M)⁻¹) ^ M = 1 := by
@@ -31,6 +34,19 @@ private theorem pow_eq_one_of_three_pow_relations {G : Type*} [CommGroup G] (M :
 
 open CommPairing in
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Unfold `IsActOf at hs₂`. Take `⟨α, hα, hαn, htw⟩` from `h₁`. Take `⟨τ₀, -, hτ₀, hval⟩` from `h₃`. Take `⟨J, hJ, -⟩` from `exists_good (L := P.L) P.isLB y (Empty.elim : Empty → (T.left ⟶ P.A.left)) Empty.elim (fun a => a.elim) (fun a => a.elim)`.
+
+Establish `hxM : x ^ (m ^ 2) = 1` using `by rw [sq, pow_mul, hx, hfr.1]`. Establish `hR : ∀ k : ℕ, val rig T.hom y J ^ (k : ℤ) = val rig T.hom y J ^ k` using `fun k => zpow_natCast _ _`. Establish `e1` using `sval_valueAt hval hJ`. Establish `e2` using `sval_twist hs₂ (ptSecT P.A 1).left hJ`. Establish `hpt : (ptSecT P.A (U.pt * 1)).left = (ptSecT P.A x).left` using `by rw [_root_.mul_one, hU.pt_eq]`.
+
+Rewrite `e2` using `[pt_translT, hpt]`. Establish `e3` using `sval_twist htw (ptSecT P.A x).left hJ`. Rewrite `e3` using `[pt_mulT, hx]`. Establish `e4` using `sval_valueAt ht hJ`. Establish `e5 : val τ₀ (𝟙 _) y J = val rig T.hom y J ^ (m ^ 2)`.
+
+Rewrite using `[val_corr hJ hτ₀, val_rigT rig _ hJ, ← Nat.cast_pow, hR]`. Establish `F1` using `frame_pow hG P hm hα hxM hU hJ`. Rewrite `F1` using `[hx]`. Establish `F2` using `torsFrame_pow hG P hα hfr hJ`. Establish `F3` using `val_corr hJ hαn (𝟙 _)`.
+
+Rewrite `F3` using `[val_pull hJ, val_mul hJ, val_inv, val_rigT rig _ hJ, val_rigT rig _ hJ, Category.id_comp]`. Establish `F3' : val α (ptSecT P.A 1).left y J = val rig T.hom y J ^ (m ^ 2) * (val rig T.hom y J)⁻¹`. Rewrite using `[F3, zpow_one, ← hR, Nat.cast_pow]`. Use `⟨tval U (ptSecT P.A 1).left y J * val α (ptSecT P.A x).left y J * val fr (𝟙 _) y J * (val rig T.hom y J ^ (m ^ 2))⁻¹, pow_eq_one_of_three_pow_relations _ _ _ _ _ _ _ F1 F2 F3', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[_root_.mul_assoc, Units.mul_inv, _root_.mul_one]`. Use `_ = _ := by`. Rewrite using `[← e1, e2, e3, e4, e5, show tval U (ptSecT P.A 1).left y J = val U.φ (ptSecT P.A 1).left y J from rfl]`. Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem normalised_root_stalk {S : Scheme.{0}} (hG : GlobalFnsSt) (P : PolAV S) {T : Over S} {m : ℕ} (hm : Odd m)
     {rig : LB.Gen (P.L.pull (eSec P.A))} {th : LB.Sec (LPow P.A P.L 1 T)} {x p : T ⟶ P.A} (hx : x ^ m = p)
     {fr : LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => p.left) (fun _ => 1))}

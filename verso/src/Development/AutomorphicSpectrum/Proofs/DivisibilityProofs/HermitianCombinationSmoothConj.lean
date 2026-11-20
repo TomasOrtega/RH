@@ -11,6 +11,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Introduce `K _ ι _ J _ ℓ n`. Use `⟨fun hs => ?_, fun hc => ?_, ?_⟩` and prove the remaining obligations. Use `contDiffOn_prod fun j _ => ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h0 : (ℓ j).h z ≠ 0` using `((ℓ j).pos z hz).ne'`.
+
+Establish `hf` using `hs j z hz`. Establish `key : ∀ m : ℤ, ContDiffWithinAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (ℓ j).h z ^ m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} z`. Introduce `m`. Consider the cases of `m with`. Consider the case `ofNat k => simpa only [Int.ofNat_eq_natCast, zpow_natCast] using hf.pow k`.
+
+Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`. Conclude with `(hf.pow (k + 1)).inv (pow_ne_zero _ h0)`. Conclude with `key _`. Introduce `z show (∏ j, (ℓ j).h _ ^ n j) = ∏ j, (ℓ j).h z ^ n j`.
+
+Simplify using `only [hc _ z]`. Conclude with `contDiffOn_const`.
+-/
 theorem combLine_smooth_conj :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (J : Type) [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ), ((∀ j, IsSmoothHerm (ℓ j)) → IsSmoothHerm (combLine ℓ n)) ∧ ((∀ j, IsConjInvariantH (ℓ j)) → IsConjInvariantH (combLine ℓ n)) ∧ IsSmoothHerm (trivLine ι) := by
   intro K _ ι _ J _ ℓ n

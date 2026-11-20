@@ -6,6 +6,9 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [add_mul, one_mul, Pi.single_add, ← add_assoc, hv, ih]`.
+-/
 theorem periodic_mul {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
     (hv : ∀ i, ∀ m, v (m + (Pi.single i l : Fin r → ℕ)) = v m) (i : Fin r) (k : ℕ)
     (m : Fin r → ℕ) : v (m + (Pi.single i (k * l) : Fin r → ℕ)) = v m := by
@@ -13,6 +16,13 @@ theorem periodic_mul {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
   | zero => simp
   | succ k ih => rw [add_mul, one_mul, Pi.single_add, ← add_assoc, hv, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `@insert a s ha ih`. Rewrite using `[ih]`. Establish `hfun : (fun i => if i ∈ s then m i % l else m i) = (fun i => if i ∈ insert a s then m i % l else m i) + (Pi.single a (m a / l * l) : Fin r → ℕ)`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality. Simplify using `[ha, Nat.mod_add_div']`. Simplify using `[hj, Pi.single_eq_of_ne hj]`.
+
+Rewrite using `[hfun, GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.periodic_mul hv]`.
+-/
 theorem reduce_on {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
     (hv : ∀ i, ∀ m, v (m + (Pi.single i l : Fin r → ℕ)) = v m) (s : Finset (Fin r))
     (m : Fin r → ℕ) : v m = v (fun i => if i ∈ s then m i % l else m i) := by
@@ -30,6 +40,11 @@ theorem reduce_on {r l : ℕ} {v : (Fin r → ℕ) → ℚ}
       · simp [hj, Pi.single_eq_of_ne hj]
     rw [hfun, GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.periodic_mul hv]
 
+/- English proof (translation)
+Introduce `r l v hl hv`. Use `⟨∑ f : Fin r → Fin l, |((v fun i => (f i : ℕ) : ℚ) : ℝ)|, fun m => ?_⟩` and prove the remaining obligations. Establish `hm : v m = v fun i => ((⟨m i % l, Nat.mod_lt _ hl⟩ : Fin l) : ℕ)`. Simplify using `using GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.reduce_on hv Finset.univ m`. Rewrite using `[hm]`.
+
+Conclude with `Finset.single_le_sum (f := fun f : Fin r → Fin l => |((v fun i => (f i : ℕ) : ℚ) : ℝ)|) (fun f _ => abs_nonneg _) (Finset.mem_univ fun i => (⟨m i % l, Nat.mod_lt _ hl⟩ : Fin l))`.
+-/
 theorem bddW_of_periodic : ∀ (r l : ℕ) (v : (Fin r → ℕ) → ℚ), 0 < l →
     (∀ i, ∀ m, v (m + (Pi.single i l : Fin r → ℕ)) = v m) → BddW v := by
   intro r l v hl hv

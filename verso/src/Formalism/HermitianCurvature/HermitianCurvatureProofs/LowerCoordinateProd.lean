@@ -24,21 +24,39 @@ def boxC : Set ℂ := Complex.equivRealProd ⁻¹' (Set.Icc (0 : ℝ) 1 ×ˢ Set
 def chiL (w0 : Equiv.Perm (Fin j)) (x : C2.Lstidx w0 → ℂ) : ℝ :=
   (Set.univ.pi fun _ : C2.Lstidx w0 => boxC).indicator (fun _ => (1 : ℝ)) x
 
+/- English proof (translation)
+The claim follows from `measurableSet_Icc.prod measurableSet_Icc`.
+-/
 theorem boxR_meas : MeasurableSet (Set.Icc (0 : ℝ) 1 ×ˢ Set.Icc (0 : ℝ) 1) := measurableSet_Icc.prod measurableSet_Icc
 
+/- English proof (translation)
+The claim follows from `(Complex.measurable_re.prodMk Complex.measurable_im) boxR_meas`.
+-/
 theorem boxC_meas : MeasurableSet boxC := (Complex.measurable_re.prodMk Complex.measurable_im) boxR_meas
 
+/- English proof (translation)
+Establish `h` using `(Complex.volume_preserving_equiv_real_prod.measure_preimage boxR_meas.nullMeasurableSet)`. Express the relevant statement in the definitionally equal form `volume (Complex.measurableEquivRealProd ⁻¹' _) = 1`. Rewrite using `[h, Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Icc]`. Simplify using the standard rewrite rules.
+-/
 theorem boxC_vol : volume boxC = 1 := by
   have h := (Complex.volume_preserving_equiv_real_prod.measure_preimage boxR_meas.nullMeasurableSet)
   change volume (Complex.measurableEquivRealProd ⁻¹' _) = 1
   rw [h, Measure.volume_eq_prod, Measure.prod_prod, Real.volume_Icc]
   simp
 
+/- English proof (translation)
+The claim follows from `measurable_const.indicator (MeasurableSet.univ_pi fun _ => boxC_meas)`.
+-/
 theorem chiL_meas (w0 : Equiv.Perm (Fin j)) : Measurable (chiL w0) := measurable_const.indicator (MeasurableSet.univ_pi fun _ => boxC_meas)
 
+/- English proof (translation)
+Conclude with `Set.indicator_nonneg (fun _ _ => zero_le_one) x`.
+-/
 theorem chiL_nonneg (w0 : Equiv.Perm (Fin j)) (x : C2.Lstidx w0 → ℂ) : 0 ≤ chiL w0 x := by
   exact Set.indicator_nonneg (fun _ _ => zero_le_one) x
 
+/- English proof (translation)
+Unfold `chiL`. Rewrite using `[integral_indicator_const _ (MeasurableSet.univ_pi fun _ => boxC_meas), Measure.real, volume_pi_pi]`. Simplify using `[boxC_vol]`.
+-/
 theorem chiL_int (w0 : Equiv.Perm (Fin j)) : ∫ x, chiL w0 x = 1 := by
   unfold chiL
   rw [integral_indicator_const _ (MeasurableSet.univ_pi fun _ => boxC_meas), Measure.real,
@@ -51,6 +69,9 @@ section low
 
 variable {r : ℕ} (w : Equiv.Perm (Fin (r + 1))) (w0 : Equiv.Perm (Fin r))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨b, hb⟩` from `Fin.exists_castSucc_eq.2 h`. Establish `h2 : w.symm (w0 b).castSucc = b.castSucc` using `by rw [hw, Equiv.symm_apply_apply]`. Rewrite `h2` using `[hb]`. Conclude with `(Fin.castSucc_lt_last (w0 b)).ne (w.symm.injective h2)`.
+-/
 theorem w_last (hw : ∀ a : Fin r, w.symm a.castSucc = (w0.symm a).castSucc) :
     w.symm (Fin.last r) = Fin.last r := by
   by_contra h
@@ -59,12 +80,18 @@ theorem w_last (hw : ∀ a : Fin r, w.symm a.castSucc = (w0.symm a).castSucc) :
   rw [hb] at h2
   exact (Fin.castSucc_lt_last (w0 b)).ne (w.symm.injective h2)
 
+/- English proof (translation)
+Conclude with `((Equiv.symm_apply_eq w).1 (w_last w w0 hw)).symm`.
+-/
 theorem w_last' (hw : ∀ a : Fin r, w.symm a.castSucc = (w0.symm a).castSucc) : w (Fin.last r) = Fin.last r := by
   exact ((Equiv.symm_apply_eq w).1 (w_last w w0 hw)).symm
 
 variable (hw : ∀ a : Fin r, w.symm a.castSucc = (w0.symm a).castSucc)
 include hw
 
+/- English proof (translation)
+Use `⟨fun h => ?_, ne_of_lt (lt_of_lt_of_le q.2.1 (Fin.le_last _))⟩` and prove the remaining obligations. Establish `h2` using `q.2.2`. Rewrite `h2` using `[h, w_last w w0 hw]`. Conclude with `absurd h2 (not_lt.2 (Fin.le_last _))`.
+-/
 theorem lst_ne_last (q : C2.Lstidx w) : q.1.1 ≠ Fin.last r ∧ q.1.2 ≠ Fin.last r := by
   refine ⟨fun h => ?_, ne_of_lt (lt_of_lt_of_le q.2.1 (Fin.le_last _))⟩
   have h2 := q.2.2
@@ -86,6 +113,11 @@ def eL : C2.Lstidx w0 ≃ C2.Lstidx w where
   left_inv q := by ext <;> simp
   right_inv q := by ext <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[← StabilizerDisintegration.UC.lowS_eq_low, ← StabilizerDisintegration.UC.lowS_eq_low]`. Simplify using `only [blkU, Matrix.submatrix_apply, StabilizerDisintegration.lowS, C2.lowOf, Matrix.add_apply, Matrix.of_apply, Function.comp_apply]`. Rewrite using `[← (eL w w0 hw).sum_comp (fun q => if q.1 = (i.castSucc, j.castSucc) then x q else 0)]`. Use `congr 1`.
+
+Simplify using `[Matrix.one_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `he : ((eL w w0 hw) q).1 = (q.1.1.castSucc, q.1.2.castSucc)` using `rfl`. Simplify using `only [he, Prod.ext_iff, Fin.castSucc_inj]`.
+-/
 theorem low_blk (x : C2.Lstidx w → ℂ) : blkU (Dx2.Rad.low w x) = Dx2.Rad.low w0 (x ∘ eL w w0 hw) := by
   ext i j
   rw [← StabilizerDisintegration.UC.lowS_eq_low, ← StabilizerDisintegration.UC.lowS_eq_low]
@@ -98,6 +130,9 @@ theorem low_blk (x : C2.Lstidx w → ℂ) : blkU (Dx2.Rad.low w x) = Dx2.Rad.low
     have he : ((eL w w0 hw) q).1 = (q.1.1.castSucc, q.1.2.castSucc) := rfl
     simp only [he, Prod.ext_iff, Fin.castSucc_inj]
 
+/- English proof (translation)
+Rewrite using `[← StabilizerDisintegration.UC.lowS_eq_low]`. Simplify using `only [StabilizerDisintegration.lowS, C2.lowOf, Matrix.add_apply, Matrix.of_apply]`. Rewrite using `[Matrix.one_apply_ne (Fin.castSucc_lt_last a).ne', zero_add]`. Conclude with `Finset.sum_eq_zero fun q _ => if_neg fun h => (lst_ne_last w w0 hw q).1 (congrArg Prod.fst h)`.
+-/
 theorem low_last_row (x : C2.Lstidx w → ℂ) (a : Fin r) : Dx2.Rad.low w x (Fin.last r) a.castSucc = 0 := by
   rw [← StabilizerDisintegration.UC.lowS_eq_low]
   simp only [StabilizerDisintegration.lowS, C2.lowOf, Matrix.add_apply, Matrix.of_apply]
@@ -105,17 +140,26 @@ theorem low_last_row (x : C2.Lstidx w → ℂ) (a : Fin r) : Dx2.Rad.low w x (Fi
   exact Finset.sum_eq_zero fun q _ => if_neg fun h => (lst_ne_last w w0 hw q).1 (congrArg Prod.fst h)
 
 omit hw in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blkU, Matrix.submatrix_apply, Matrix.mul_apply, Fin.sum_univ_castSucc, hA, zero_mul, add_zero]`.
+-/
 theorem blkU_mul (A B : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) (hA : ∀ a : Fin r, A a.castSucc (Fin.last r) = 0) :
     blkU (A * B) = blkU A * blkU B := by
   ext i j
   simp only [blkU, Matrix.submatrix_apply, Matrix.mul_apply, Fin.sum_univ_castSucc, hA, zero_mul, add_zero]
 
 omit hw in
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem blkU_ct (A : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : blkU Aᴴ = (blkU A)ᴴ := by
   ext i j
   rfl
 
 omit hw in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j h => hA.1 _ _ (Fin.castSucc_lt_castSucc_iff.2 h), fun i => hA.2 _⟩`.
+-/
 theorem blkU_UT {A : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ} (hA : A ∈ C2.UTset (r + 1)) : blkU A ∈ C2.UTset r := ⟨fun i j h => hA.1 _ _ (Fin.castSucc_lt_castSucc_iff.2 h), fun i => hA.2 _⟩
 
 end low
@@ -128,6 +172,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 def theta0 (z : Fin (2 * r + k + 1) → ℂ) (w0 : Equiv.Perm (Fin r)) (p : B.SS k r) : ℝ :=
   chiL w0 (x0c w0 (blkU (C2.uMap k r z (Matrix.of p.1.2))))
 
+/- English proof (translation)
+Establish `hU : Measurable fun p : B.SS k r => StabilizerDisintegration.utc (blkU (C2.uMap k r z (Matrix.of p.1.2)))`. Use `measurable_pi_lambda _ fun q => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : B.SS k r => C2.uMap k r z (Matrix.of p.1.2) q.1.1.castSucc q.1.2.castSucc`. Simplify using `only [C2.uMap, Formalism.QuantumDeterminants.herm, Fin.coe_castSucc, Fin.is_lt, dif_pos, dotProduct, Matrix.mulVec, Matrix.of_apply]`. Use `fun_prop`.
+
+Conclude with `hc.measurable`. Unfold `theta0 x0c`. Conclude with `(chiL_meas w0).comp (measurable_fst.comp ((StabilizerDisintegration.UC.eSp w0).symm.measurable.comp hU))`.
+-/
 theorem theta0_meas (z : Fin (2 * r + k + 1) → ℂ) (w0 : Equiv.Perm (Fin r)) : Measurable (theta0 (k := k) z w0) := by
   have hU : Measurable fun p : B.SS k r => StabilizerDisintegration.utc (blkU (C2.uMap k r z (Matrix.of p.1.2))) := by
     refine measurable_pi_lambda _ fun q => ?_
@@ -140,6 +189,11 @@ theorem theta0_meas (z : Fin (2 * r + k + 1) → ℂ) (w0 : Equiv.Perm (Fin r)) 
   unfold theta0 x0c
   exact (chiL_meas w0).comp (measurable_fst.comp ((StabilizerDisintegration.UC.eSp w0).symm.measurable.comp hU))
 
+/- English proof (translation)
+Establish `hL` using `((StabilizerDisintegration.UC.lstLeft r w0 (fun _ => 1) (fun _ => one_ne_zero) a).2 x)`. Establish `hM : (StabilizerDisintegration.lowS w0 x)ᴴ * ((StabilizerDisintegration.lowS w0 a)ᴴ * (StabilizerDisintegration.lowP w0 y)ᴴ) = (StabilizerDisintegration.lowS w0 (StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 a * StabilizerDisintegration.lowS w0 x)))ᴴ * (Stabil …`. Rewrite using `[← hL, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hE : StabilizerDisintegration.utc ((StabilizerDisintegration.lowS w0 (StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 a * StabilizerDisintegration.lowS w0 x)))ᴴ * (StabilizerDisintegration.lowP w0 y)ᴴ) = StabilizerDisintegration.UC.eSp w0 (StabilizerDisintegrati …` using `rfl`. Unfold `x0c`.
+
+Rewrite using `[hM, hE, MeasurableEquiv.symm_apply_apply]`.
+-/
 theorem lower_coordinate_prod (w0 : Equiv.Perm (Fin r)) (x a : C2.Lstidx w0 → ℂ) (y : C2.LPidx w0 → ℂ) :
     x0c w0 ((StabilizerDisintegration.lowS w0 x)ᴴ * ((StabilizerDisintegration.lowS w0 a)ᴴ * (StabilizerDisintegration.lowP w0 y)ᴴ)) =
       StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 a * StabilizerDisintegration.lowS w0 x) := by
@@ -152,6 +206,23 @@ theorem lower_coordinate_prod (w0 : Equiv.Perm (Fin r)) (x a : C2.Lstidx w0 → 
   unfold x0c
   rw [hM, hE, MeasurableEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Establish `hB : w (Fin.last r) = Fin.last r` using `w_last' w w0 hw`. Establish `hG : Dx2.Rad.Good S γ w d` using `⟨Dx2.Rad.ex_degen S hγ hd hZ hB, Dx2.Rad.inj_degen S hγ hd hZ hB, fun ρ hρ => Dx2.Rad.lst_gen S hγ hd hZ hρ⟩`. Use `⟨theta0_meas S.z w0, fun p => chiL_nonneg w0 _, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hmuR : D.muR S γ w = (volume : Measure (C2.Lstidx w → ℂ)).map (fun x => (Matrix.of.symm (Dx2.Rad.rhoF S γ w x) : Mt k r))` using `rfl`. Establish `hact : Measurable fun x : Mt k r => theta0 S.z w0 (C6.actR γ (Matrix.of x) p)`.
+
+Use `(theta0_meas S.z w0).comp ?_` and prove the remaining obligations. Unfold `C6.actR`. Use `Measurable.prodMk (Measurable.prodMk measurable_const ?_) (Measurable.prodMk measurable_const ?_)` and prove the remaining obligations. Use `(continuous_pi fun i => continuous_pi fun l => ?_).measurable` and prove the remaining obligations. Simplify using `only [Matrix.of_symm_apply, Matrix.mul_apply, Matrix.of_apply]`.
+
+Use `fun_prop`. Use `(continuous_pi fun i => continuous_pi fun l => ?_).measurable` and prove the remaining obligations. Simplify using `only [Matrix.of_symm_apply, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`. Rewrite using `[hmuR, integral_map (Dx2.Rad.rhoF_meas S hγ hd hG).aemeasurable hact.aestronglyMeasurable]`.
+
+Establish `hn : Matrix.of p.1.2 ∈ Formalism.QuantumDeterminants.Nset k r` using `hp.2.1`. Establish `hUT : blkU (C2.uMap k r S.z (Matrix.of p.1.2)) ∈ C2.UTset r` using `blkU_UT ((Formalism.FourierDecayAlt.P.unipotent_map_frame k r S.z ⟨S.z_mem, S.T_pos⟩).1 _ (Dx2.Rad.N_sub_S S.z hn)).2.1`. Use `set pa := (StabilizerDisintegration.UC.eSp w0).symm (StabilizerDisintegration.utc (blkU (C2.uMap k r S.z (Matrix.of p.1.2)))) with hpa`. Establish `hsplit : blkU (C2.uMap k r S.z (Matrix.of p.1.2)) = (StabilizerDisintegration.lowS w0 pa.1)ᴴ * (StabilizerDisintegration.lowP w0 pa.2)ᴴ`. Rewrite using `[← StabilizerDisintegration.UC.upper_fSp, ← StabilizerDisintegration.UC.upper_utc hUT]`.
+
+Use `congr 1`. Use `show _ = StabilizerDisintegration.UC.eSp w0 pa`. Rewrite using `[hpa, (StabilizerDisintegration.UC.eSp w0).apply_symm_apply]`. Establish `hpt : ∀ x : C2.Lstidx w → ℂ, theta0 S.z w0 (C6.actR γ (Matrix.of (Matrix.of.symm (Dx2.Rad.rhoF S γ w x))) p) = chiL w0 (StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 pa.1 * StabilizerDisintegration.lowS w0 (x ∘ eL w w0 hw)))`. Introduce `x`.
+
+Take `⟨hρR, hρu⟩` from `Dx2.Rad.rhoF_spec S hγ hd hG x`. Unfold `theta0`. Simplify using `only [C6.actR, Equiv.apply_symm_apply]`. Rewrite using `[Dx2.Rad.uMap_mul S hρR.1 hn, hρu, blkU_mul _ _ (fun a => by rw [Matrix.conjTranspose_apply, low_last_row w w0 hw, star_zero]), blkU_ct, low_blk w w0 hw, hsplit, ← StabilizerDisintegration.UC.lowS_eq_low, lower_coordinate_prod]`. Repeatedly rewrite using `[hpt]`.
+
+Establish `hmp1` using `(MeasureTheory.measurePreserving_piCongrLeft (fun _ : C2.Lstidx w => (volume : Measure ℂ)) (eL w w0 hw)).symm`. Establish `hmp2` using `(StabilizerDisintegration.lstLeft r w0 (fun _ => 1) (fun _ => one_ne_zero) pa.1).1`. Establish `e1 : ∫ x : C2.Lstidx w → ℂ, chiL w0 (StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 pa.1 * StabilizerDisintegration.lowS w0 (x ∘ eL w w0 hw))) = ∫ x' : C2.Lstidx w0 → ℂ, chiL w0 (StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 pa.1 * Stabilize …`. Establish `h` using `hmp1.integral_comp (MeasurableEquiv.measurableEmbedding _) (fun y : C2.Lstidx w0 → ℂ => chiL w0 (StabilizerDisintegration.lsc w0 (StabilizerDisintegration.lowS w0 pa.1 * StabilizerDisintegration.lowS w0 y)))`. Conclude with `h`.
+
+Rewrite using `[e1, ← integral_map hmp2.measurable.aemeasurable (chiL_meas w0).aestronglyMeasurable, hmp2.map_eq, chiL_int]`.
+-/
 theorem theta0_normCut (S : B.RealPlaceData k r Wp Wq) {γ : B.Mat k r} (hγ : γ ∈ B.GV k r)
     {w : Equiv.Perm (Fin (r + 1))} {d : Fin (r + 1) → ℂ} (hd : ∀ a, d a ≠ 0)
     (hZ : Zhat k r S.z S.z' γ = C2.monoP w d) (w0 : Equiv.Perm (Fin r))

@@ -8,6 +8,15 @@ open IsLocalRing Polynomial
 
 namespace GlobalTheory.KeyOriginNoeth
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf`. Establish `hle : GlobalTheory.KeyOriginCut.originIdeal T ≤ (maximalIdeal T).comap (Polynomial.constantCoeff (R` using `T)) := by`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Simplify using `using ha`. Rewrite using `[Ideal.span_le]`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+
+Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Use `hle hf` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_zero_eq_eval_zero]`. Introduce `hf`.
+
+Establish `h1 : Polynomial.C (f.coeff 0) ∈ GlobalTheory.KeyOriginCut.originIdeal T` using `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hf)`. Establish `h2 : f - Polynomial.C (f.coeff 0) ∈ GlobalTheory.KeyOriginCut.originIdeal T` using `Ideal.mem_sup_right (Ideal.mem_span_singleton.mpr (Polynomial.X_dvd_sub_C))`. Simplify using `using Ideal.add_mem _ h1 h2`.
+-/
 theorem mem_originIdeal_iff {T : Type} [CommRing T] [IsLocalRing T] (f : Polynomial T) :
     f ∈ GlobalTheory.KeyOriginCut.originIdeal T ↔ f.coeff 0 ∈ maximalIdeal T := by
   constructor
@@ -31,6 +40,9 @@ theorem mem_originIdeal_iff {T : Type} [CommRing T] [IsLocalRing T] (f : Polynom
       Ideal.mem_sup_right (Ideal.mem_span_singleton.mpr (Polynomial.X_dvd_sub_C))
     simpa using Ideal.add_mem _ h1 h2
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[Ideal.mem_comap, mem_originIdeal_iff, mem_originIdeal_iff, Polynomial.coe_mapRingHom, Polynomial.coeff_map, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_map_iff]`.
+-/
 theorem comap_originIdeal (A T : Type) [CommRing A] [IsLocalRing A] [CommRing T] [IsLocalRing T]
     (i : A →+* T) [IsLocalHom i] :
     (GlobalTheory.KeyOriginCut.originIdeal T).comap (Polynomial.mapRingHom i) = GlobalTheory.KeyOriginCut.originIdeal A := by
@@ -39,6 +51,19 @@ theorem comap_originIdeal (A T : Type) [CommRing A] [IsLocalRing A] [CommRing T]
     Polynomial.coeff_map, mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff,
     isUnit_map_iff]
 
+/- English proof (translation)
+Rewrite using `[isIntegrallyClosed_iff (FractionRing T)]`. Introduce `x hx0`. Take `⟨p, hpm, hpx⟩` from `hx0`. It suffices to establish `H : ∀ n : ℕ, ∀ p : Polynomial T, p.Monic → p.natDegree = n → Polynomial.eval₂ (algebraMap T (FractionRing T)) x p = 0 → ∃ y, algebraMap T (FractionRing T) y = x from H _ p hpm rfl hpx`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `p hp hd hx`. Establish `h1` using `Polynomial.eq_one_of_monic_natDegree_zero hp hd`. Substitute `h1` using the available equality.
+
+Simplify using `at hx`. Consider the case `succ n ih`. Introduce `p hp hd hx`. Take `⟨r, hr⟩` from `hT p hp (by omega)`. Establish `hroot : p.IsRoot r` using `hr`.
+
+Establish `hdec` using `Polynomial.mul_divByMonic_eq_iff_isRoot.mpr hroot`. Use `set p' := p /ₘ (Polynomial.X - Polynomial.C r)`. Establish `hp' : p'.Monic` using `(Polynomial.monic_X_sub_C r).of_mul_monic_left (by rw [hdec]; exact hp)`. Establish `hd' : p'.natDegree = n`. Use `congrArg Polynomial.natDegree hdec` as an intermediate fact.
+
+Rewrite `this` using `[(Polynomial.monic_X_sub_C r).natDegree_mul hp', Polynomial.natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Rewrite `hx` using `[← hdec, Polynomial.eval₂_mul]`. Break down `mul_eq_zero.mp hx with h | h` into its components or cases. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Simplify using `at h`. Conclude with `(sub_eq_zero.mp h).symm`. Conclude with `ih p' hp' hd' h`.
+-/
 theorem isIntegrallyClosed_of_absIntClosed (T : Type) [CommRing T] [IsDomain T]
     (hT : GlobalTheory.LocAcyc.AbsIntClosed T) : IsIntegrallyClosed T := by
   rw [isIntegrallyClosed_iff (FractionRing T)]
@@ -71,6 +96,9 @@ theorem isIntegrallyClosed_of_absIntClosed (T : Type) [CommRing T] [IsDomain T]
       exact (sub_eq_zero.mp h).symm
     · exact ih p' hp' hd' h
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.finite_integralClosure_of_essFiniteType_int (GlobalTheory.NormalApprox.gen S)`. Use `haveI : Algebra.FiniteType ℤ (integralClosure (GlobalTheory.NormalApprox.gen S) (FractionRing (GlobalTheory.NormalApprox.gen S))) := Algebra.FiniteType.trans (S := GlobalTheory.NormalApprox.gen S) inferInstance inferInstance`. Conclude with `Algebra.FiniteType.equiv this (AlgEquiv.ofRingEquiv (f := (GlobalTheory.NormalApprox.normEquiv S).symm) (fun n => by simp))`.
+-/
 theorem norm_finiteType {T : Type} [CommRing T] [IsDomain T] [IsIntegrallyClosed T] (S : Finset T) :
     Algebra.FiniteType ℤ (GlobalTheory.NormalApprox.norm S) := by
   haveI := GlobalTheory.finite_integralClosure_of_essFiniteType_int (GlobalTheory.NormalApprox.gen S)
@@ -80,6 +108,9 @@ theorem norm_finiteType {T : Type} [CommRing T] [IsDomain T] [IsIntegrallyClosed
   exact Algebra.FiniteType.equiv this
     (AlgEquiv.ofRingEquiv (f := (GlobalTheory.NormalApprox.normEquiv S).symm) (fun n => by simp))
 
+/- English proof (translation)
+Use `haveI := norm_finiteType S`. Use `haveI := GlobalTheory.NormalApprox.loc_isLocalization S`. Use `haveI : Algebra.EssFiniteType (GlobalTheory.NormalApprox.norm S) (GlobalTheory.NormalApprox.loc S) := Algebra.EssFiniteType.of_isLocalization _ (GlobalTheory.NormalApprox.unitsIn S)`. Conclude with `Algebra.EssFiniteType.comp ℤ (GlobalTheory.NormalApprox.norm S) (GlobalTheory.NormalApprox.loc S)`.
+-/
 theorem loc_essFiniteType {T : Type} [CommRing T] [IsDomain T] [IsIntegrallyClosed T] (S : Finset T) :
     Algebra.EssFiniteType ℤ (GlobalTheory.NormalApprox.loc S) := by
   haveI := norm_finiteType S
@@ -88,6 +119,19 @@ theorem loc_essFiniteType {T : Type} [CommRing T] [IsDomain T] [IsIntegrallyClos
     Algebra.EssFiniteType.of_isLocalization _ (GlobalTheory.NormalApprox.unitsIn S)
   exact Algebra.EssFiniteType.comp ℤ (GlobalTheory.NormalApprox.norm S) (GlobalTheory.NormalApprox.loc S)
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ _ _ _ hT q hq hqT E _ _ _ _ _ Q _ hQ j hj ψ hψ D₁ _ _ act₁ htor`. Establish `hTic : IsIntegrallyClosed T` using `isIntegrallyClosed_of_absIntClosed T hT`. Set `𝒜 : Finset T → Subring T` to `GlobalTheory.NormalApprox.loc`. Establish `hmono : Monotone 𝒜` using `GlobalTheory.NormalApprox.loc_mono`. Establish `hcov : ∀ (S : Finset T), ∀ x ∈ S, x ∈ 𝒜 S` using `fun S x hx => GlobalTheory.NormalApprox.mem_loc_of_mem S hx`.
+
+Establish `hprop : ∀ S, IsNoetherianRing (𝒜 S) ∧ IsIntegrallyClosed (𝒜 S) ∧ IsLocalRing (𝒜 S) ∧ (∀ x : 𝒜 S, IsUnit (x : T) → IsUnit x) ∧ Algebra.EssFiniteType ℤ (𝒜 S)`. Introduce `S`. Use `haveI := GlobalTheory.NormalApprox.loc_isLocalization S`. Use `haveI := GlobalTheory.NormalApprox.norm_isIntegrallyClosed S`. Conclude with `⟨IsLocalization.isNoetherianRing (GlobalTheory.NormalApprox.unitsIn S) _ (GlobalTheory.NormalApprox.norm_isNoetherianRing S), isIntegrallyClosed_of_isLocalization (GlobalTheory.NormalApprox.loc S) (GlobalTheory.NormalApprox.unitsIn S) (GlobalTheory.NormalApprox.unitsIn_le S), Glo …`.
+
+Take `⟨S, EA, _, _, _, _, _, e, he, β, hβ, D, _, _, actA, htorA, hlast⟩` from `GlobalTheory.T.exists_torsor_descent_directedUnion_subring T (Finset T) 𝒜 hmono (fun x => ⟨{x}, hcov {x} x (Finset.mem_singleton_self x)⟩) q hq E Q D₁ act₁ htor`. Take `⟨hN, hIC, hL, hU, hEF⟩` from `hprop S`. Establish `hloc : IsLocalHom (𝒜 S).subtype` using `⟨fun a ha => hU a ha⟩`. Establish `hqA : IsUnit (q : 𝒜 S)` using `hU _ (by simpa using hqT)`. Establish `horig : (Q.comap e).comap (algebraMap (Polynomial (𝒜 S)) EA) = GlobalTheory.KeyOriginCut.originIdeal (𝒜 S)`.
+
+Rewrite using `[Ideal.comap_comap, he, ← Ideal.comap_comap, hQ]`. Conclude with `comap_originIdeal (𝒜 S) T (𝒜 S).subtype`. Set `jA : Localization.AtPrime (Q.comap e) →+* O` to `j.comp (Localization.localRingHom (Q.comap e) Q e rfl)`. Establish `hjA : jA.comp (algebraMap (Polynomial (𝒜 S)) (Localization.AtPrime (Q.comap e))) = (algebraMap (Polynomial T) O).comp (Polynomial.mapRingHom (𝒜 S).subtype)`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `j (Localization.localRingHom (Q.comap e) Q e rfl (algebraMap (Polynomial (𝒜 S)) (Localization.AtPrime (Q.comap e)) x)) = _`. Rewrite using `[IsScalarTower.algebraMap_apply (Polynomial (𝒜 S)) EA (Localization.AtPrime (Q.comap e)), Localization.localRingHom_to_map, ← RingHom.comp_apply e, he, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, ← RingHom.comp_apply j, hj]`. Both sides reduce to the same expression. Use `⟨𝒜 S, inferInstance, inferInstance, hL, hN, hIC, hEF, (𝒜 S).subtype, Subtype.val_injective, hloc, hqA, EA, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Q.comap e, inferInstance, horig, jA, hjA, ψ.comp β, ?_, D, inferInstance, inferInstance, actA, hto …` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, hβ, ← RingHom.comp_assoc, hψ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_noetherian_model : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (q : ℕ), 0 < q → IsUnit (q : T) →

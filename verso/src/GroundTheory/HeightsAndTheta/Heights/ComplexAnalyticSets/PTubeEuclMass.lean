@@ -10,6 +10,11 @@ open MvPolynomial MeasureTheory Matrix ComplexSets
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d J A P R hJ hdim hA hP`. Establish `hS : {y : Fin (d + 1) → ℂ | logAbsSq P y < -Real.exp 1} = {y | -Real.exp 1 ≤ logAbsSq P y}ᶜ`. Use extensionality with `y`. Simplify using `[not_le]`. Establish `h` using `(hC n d J A P R hJ hdim hA hP).add (hD n d J A P R hJ hdim hA hP)`.
+
+Rewrite `h` using `[hS, Set.indicator_self_add_compl]`. Conclude with `h`.
+-/
 theorem TubeEuclMass.proof (hC : TubeCollarMass.Statement) (hD : TubeDeepMass.Statement) :
     TubeEuclMass.Statement := by
   intro n d J A P R hJ hdim hA hP

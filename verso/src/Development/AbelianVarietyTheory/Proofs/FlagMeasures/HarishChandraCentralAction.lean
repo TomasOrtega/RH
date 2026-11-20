@@ -6,6 +6,15 @@ noncomputable section
 
 namespace GlobalTheory.SUCentre
 
+/- English proof (translation)
+Establish `h1 : (univ.filter fun b => lam b ≠ lam a) = univ.erase a`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_erase, and_true]`. Conclude with `⟨fun h e => h (e ▸ rfl), fun h e => h (hinj e)⟩`. Establish `h2` using `Finset.card_filter_add_card_filter_not (s := univ.filter fun b => lam b ≠ lam a) (fun b => lam b < lam a)`.
+
+Establish `h3 : ((univ.filter fun b => lam b ≠ lam a).filter fun b => lam b < lam a) = univ.filter fun b => lam b < lam a`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and]`. Conclude with `⟨fun h => h.2, fun h => ⟨h.ne, h⟩⟩`. Establish `h4 : ((univ.filter fun b => lam b ≠ lam a).filter fun b => ¬ lam b < lam a) = univ.filter fun b => lam a < lam b`.
+
+Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, not_lt]`. Conclude with `⟨fun h => lt_of_le_of_ne h.2 (Ne.symm h.1), fun h => ⟨h.ne', h.le⟩⟩`. Rewrite `h2` using `[h3, h4, h1, Finset.card_erase_of_mem (mem_univ a), Finset.card_univ, Fintype.card_fin]`. Establish `hn : 1 ≤ n` using `Nat.one_le_iff_ne_zero.mpr (fun h => (h ▸ a).elim0)`.
+
+Establish `: ((n - 1 : ℕ) : ℝ) = (n : ℝ) - 1` using `by rw [Nat.cast_sub hn]; simp`. Rewrite `this` using `[← h2]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma card_lt_add_card_gt {n : ℕ} (lam : Fin n → ℝ) (hinj : Function.Injective lam) (a : Fin n) :
     ((univ.filter fun b => lam b < lam a).card : ℝ) + ((univ.filter fun b => lam a < lam b).card : ℝ) + 1 = n := by
   have h1 : (univ.filter fun b => lam b ≠ lam a) = univ.erase a := by
@@ -25,6 +34,9 @@ lemma card_lt_add_card_gt {n : ℕ} (lam : Fin n → ℝ) (hinj : Function.Injec
   push_cast at this
   linarith
 
+/- English proof (translation)
+Establish `h` using `Finset.card_filter_add_card_filter_not (s := univ.filter P) Q`. Rewrite `h` using `[Finset.filter_filter, Finset.filter_filter]`. Conclude with `h` after adjusting the coercions.
+-/
 lemma card_split {n : ℕ} (P Q : Fin n → Prop) [DecidablePred P] [DecidablePred Q] :
     ((univ.filter fun b => P b ∧ Q b).card : ℝ) + ((univ.filter fun b => P b ∧ ¬ Q b).card : ℝ) =
       ((univ.filter P).card : ℝ) := by
@@ -32,6 +44,13 @@ lemma card_split {n : ℕ} (P Q : Fin n → Prop) [DecidablePred P] [DecidablePr
   rw [Finset.filter_filter, Finset.filter_filter] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Take `⟨m0, hm0⟩` from `hlam.2 a`. Establish `hN : rhoNh ε (fun b => lam b - c) a = rhoNh ε lam a`. Simplify using `only [rhoNh, sub_lt_sub_iff_right]`. Establish `hC : rhoCh ε (fun b => lam b - c) a = rhoCh ε lam a`. Simplify using `only [rhoCh, sub_lt_sub_iff_right]`.
+
+Establish `hsum` using `card_lt_add_card_gt lam hlam.1 a`. Establish `s1` using `card_split (fun b => lam b < lam a) (fun b => ε b = ε a)`. Establish `s2` using `card_split (fun b => lam a < lam b) (fun b => ε b = ε a)`. Use `⟨m0 + ((univ.filter fun b => lam b < lam a ∧ ε b ≠ ε a).card : ℤ) + ((univ.filter fun b => lam a < lam b ∧ ε b = ε a).card : ℤ), ?_⟩` and prove the remaining obligations. Establish `e : lowCh ε (fun b => lam b - c) a = lam a - c + rhoNh ε (fun b => lam b - c) a - rhoCh ε (fun b => lam b - c) a` using `rfl`.
+
+Rewrite using `[e, hN, hC]`. Simplify using `only [rhoNh, rhoCh]`. Use `push_cast`. Simplify using `only [ne_eq] at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma lowCh_shift_int {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (hlam : IsParU lam) (c : ℝ) (a : Fin n) :
     ∃ k : ℤ, lowCh ε (fun b => lam b - c) a = (k : ℝ) - c := by
   obtain ⟨m0, hm0⟩ := hlam.2 a
@@ -52,6 +71,17 @@ lemma lowCh_shift_int {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) (hla
   simp only [ne_eq] at *
   linarith
 
+/- English proof (translation)
+Establish `hn : n ≠ 0` using `fun h => (h ▸ a0).elim0`. Establish `hnorm : ‖z‖ = 1`. Use `congrArg norm hz` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) hn).mp this`.
+
+Use `set t := Complex.arg z`. Establish `ht : Complex.exp ((t : ℂ) * Complex.I) = z`. Use `Complex.norm_mul_exp_arg_mul_I z` as an intermediate fact. Rewrite `this` using `[hnorm]`. Simplify using `using this`.
+
+Establish `ht' : Complex.exp (((t - n * t : ℝ) : ℂ) * Complex.I) = z`. Use `push_cast`. Rewrite using `[sub_mul, Complex.exp_sub, mul_assoc, Complex.exp_nat_mul, ht, hz, div_one]`. Use `⟨t, ht, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ∀ a : Fin n, (if a = a0 then t - n * t else t) = t - (if a = a0 then n * t else 0)`.
+
+Apply the tactic sequence `intro a; split_ifs <;> ring`. Simplify using `only [e, Finset.sum_sub_distrib, Finset.sum_ite_eq', mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, sub_self]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Distinguish the cases in `h0 : i = a0`. Simplify using `only [h0, diagonal_apply_eq, if_true, Matrix.smul_apply, one_apply_eq, smul_eq_mul, mul_one]`. Conclude with `ht'.symm`. Simplify using `[h0, ht]`. Simplify using `[hij]`.
+-/
 lemma scalar_as_torus {n : ℕ} (a0 : Fin n) (z : ℂ) (hz : z ^ n = 1) :
     ∃ t : ℝ, Complex.exp ((t : ℂ) * Complex.I) = z ∧
       ∑ a, (if a = a0 then t - n * t else t) = 0 ∧
@@ -82,6 +112,29 @@ lemma scalar_as_torus {n : ℕ} (a0 : Fin n) (z : ℂ) (hz : z ^ n = 1) :
       · simp [h0, ht]
     · simp [hij]
 
+/- English proof (translation)
+Introduce `n hn ε H _ _ π' lam m hpar hsum hHC z hz v`. Establish `hn0 : (n : ℝ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Set `a0 : Fin n` to `⟨0, hn⟩`. Take `⟨t, ht, hθsum, hdiag⟩` from `scalar_as_torus a0 z hz`. Take `⟨hirr, _, ⟨S0, hS0, _⟩, _⟩` from `hHC`.
+
+Take `⟨hΛsum, _, _, _, ⟨v0, _, hv0, hwt⟩, _⟩` from `hS0`. Take `⟨k, hk⟩` from `lowCh_shift_int ε lam hpar ((m : ℝ) / n) a0`. Use `set Λ := lowCh ε (fun a => lam a - (m : ℝ) / n)`. Establish `hscal : ∑ a, Λ a * (if a = a0 then t - n * t else t) = -(n : ℝ) * t * k + t * m`. Establish `e : ∀ a : Fin n, Λ a * (if a = a0 then t - n * t else t) = Λ a * t - (if a = a0 then Λ a0 * (n * t) else 0)`.
+
+Introduce `a`. Use `split_ifs with h`. Substitute `h` using the available equality. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [e, Finset.sum_sub_distrib, Finset.sum_ite_eq', mem_univ, if_true, ← Finset.sum_mul, hΛsum, zero_mul]`. Rewrite using `[hk]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `key : π' (z • (1 : Matrix (Fin n) (Fin n) ℂ)) v0 = z ^ m • v0`.
+
+Rewrite using `[hdiag, hwt _ hθsum, hscal]`. Use `congr 1`. Establish `e2 : (((-(n : ℝ) * t * k + t * m : ℝ)) : ℂ) * Complex.I = ((-((n : ℤ) * k) : ℤ) : ℂ) * ((t : ℂ) * Complex.I) + ((m : ℤ) : ℂ) * ((t : ℂ) * Complex.I)` using `by push_cast; ring`. Rewrite using `[e2, Complex.exp_add, Complex.exp_int_mul, Complex.exp_int_mul, ht, _root_.zpow_neg, _root_.zpow_mul, zpow_natCast, hz, _root_.one_zpow, inv_one, one_mul]`. Establish `hnorm : ‖z‖ = 1`.
+
+Use `congrArg norm hz` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) (by omega)).mp this`. Establish `hzSU : z • (1 : Matrix (Fin n) (Fin n) ℂ) ∈ SUset ε`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (z • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ * Jm ε * (z • 1) = Jm ε`. Establish `hc : z * star z = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj', hnorm]`. Simplify using the standard rewrite rules. Rewrite using `[conjTranspose_smul, conjTranspose_one, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, hc, one_smul]`.
+
+Rewrite using `[Matrix.det_smul, Fintype.card_fin, det_one, mul_one, hz]`. Establish `hrep` using `hirr.2.2.1.1.2`. Use `set f : H →L[ℂ] H := π' (z • (1 : Matrix (Fin n) (Fin n) ℂ)) - z ^ m • ContinuousLinearMap.id ℂ H`. Establish `hmem : ∀ w, w ∈ LinearMap.ker (f : H →ₗ[ℂ] H) ↔ π' (z • (1 : Matrix (Fin n) (Fin n) ℂ)) w = z ^ m • w`. Introduce `w`.
+
+Simplify using `only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe, f, ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, sub_eq_zero]`. Establish `hclosed : IsClosed ((LinearMap.ker (f : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H)` using `ContinuousLinearMap.isClosed_ker f`. Establish `hstab : ∀ g ∈ SUset ε, ∀ w ∈ LinearMap.ker (f : H →ₗ[ℂ] H), π' g w ∈ LinearMap.ker (f : H →ₗ[ℂ] H)`. Introduce `g hg w hw`. Rewrite `hw`, the goal using `[hmem]`.
+
+Establish `hcomm : z • (1 : Matrix (Fin n) (Fin n) ℂ) * g = g * (z • 1)`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one]`. Establish `h1` using `hrep _ hzSU g hg`. Establish `h2` using `hrep g hg _ hzSU`. Rewrite `h1` using `[hcomm]`.
+
+Combine the equalities or inequalities in the displayed calculation. Break down `hirr.2.2.2.1 (LinearMap.ker (f : H →ₗ[ℂ] H)) hclosed hstab with h | h` into its components or cases. Conclude with `absurd (by rw [← Submodule.mem_bot ℂ, ← h, hmem]; exact key) hv0`. Conclude with `(hmem v).mp (h ▸ Submodule.mem_top)`.
+-/
 theorem centre_acts : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (π' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ) (m : ℤ), IsParU lam → ∑ a, lam a = (m : ℝ) →
     IsHCS ε (fun a => lam a - (m : ℝ) / n) π' → ∀ z : ℂ, z ^ n = 1 → ∀ v,

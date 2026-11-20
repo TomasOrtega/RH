@@ -29,6 +29,9 @@ def chartPullLPow (n : ℕ) : ChartPull (LPow A L n T) (lbPow L n) (snd T A).lef
         (mem_powChart.2 (Set.mem_iInter.1 hj' 0))).symm)
     rw [Fin.prod_univ_one, Category.id_comp, zpow_natCast]
 
+/- English proof (translation)
+The claim follows from `nonzeroLocus_chartSec _ s fun _ J hJ => ⟨fun _ => J PUnit.unit, Set.mem_iInter.2 fun _ => mem_powChart.1 hJ⟩`.
+-/
 theorem nonzeroLocus_chartPullLPow (n : ℕ) (s : (lbPow L n).Sec) :
     nonzeroLocus (chartSec (chartPullLPow A L T n) s) = (snd T A).left ⁻¹ᵁ nonzeroLocus s :=
   nonzeroLocus_chartSec _ s fun _ J hJ => ⟨fun _ => J PUnit.unit, Set.mem_iInter.2 fun _ => mem_powChart.1 hJ⟩
@@ -52,6 +55,11 @@ def vanishing (a : ℤ) (E : Set (T ⊗ A).left) : Submodule Γ(T.left, ⊤) (Se
 
 variable {A L T}
 
+/- English proof (translation)
+Take `⟨k, hk, hu⟩` from `(mem_nonzeroLocus s' y).1 hy`. Take `⟨i, hi⟩` from `exists_chart hL ((translPt A θ.pt).left y)`. Take `⟨i₀, rfl⟩ : ∃ i₀ : L.ι, k = fun _ => i₀` from `⟨k 0, funext fun b => congrArg k (Subsingleton.elim _ _)⟩`. Establish `hm : y ∈ LB.wchart L ![(snd T A).left, (translPt A θ.pt).left] ![i₀, i]` using `Set.mem_iInter.2 fun b => by fin_cases b exacts [Set.mem_iInter.1 hk 0, hi]`. Establish `hp` using `chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) ![i₀, i] hm`.
+
+Establish `e` using `(gs_res (𝟙 _) y _ hm _).symm.trans ((congrArg (gs (𝟙 _) y _) (h ![i₀, i])).trans ((gs_mul (𝟙 _) y _ hm _ _).trans (congrArg (_ * ·) ((gs_res (𝟙 _) y _ hm _).trans (gs_pull (𝟙 _) (translT A θ.pt).left y _ hp _)))))`. Establish `u` using `isUnit_of_mul_isUnit_right ((congrArg IsUnit e).mp hu)`. Rewrite `u` using `[Category.id_comp]`. Conclude with `(mem_nonzeroLocus_iff_pull s (translT A θ.pt).left y (k := fun _ => i) hp).2 u`.
+-/
 theorem mem_nonzeroLocus_of_isActOf (hL : L.IsLB) {a : ℤ} {θ : ThetaGrp A L a T} {s s' : LB.Sec (LPow A L a T)}
     (h : IsActOf A L a θ s s') {y : (T ⊗ A).left} (hy : y ∈ nonzeroLocus s') :
     (translT A θ.pt).left y ∈ nonzeroLocus s := by
@@ -71,6 +79,27 @@ theorem mem_nonzeroLocus_of_isActOf (hL : L.IsLB) {a : ℤ} {θ : ThetaGrp A L a
 
 end General
 
+/- English proof (translation)
+Use `haveI : IsCommMonObj P.A := P.isAb.comm`. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨y₀, hy₀⟩`. Assume the negation of the conclusion as `hne`. Take `⟨a, -, s, hs, hle, -⟩` from `(isAmpleLB_of_relAmple_of_isAffine P.A P.isLB P.ample).exists_affine_le (U := ⟨U, hU⟩) hy₀`.
+
+Establish `gen : ∀ N : ℕ, 4 ≤ N → ∀ y : P.A.left, ∃ t : (lbPow P.L N).Sec, y ∈ nonzeroLocus t` using `fun N hN y => by`. Take `⟨m, t, ht, -⟩` from `veryAmple_lbPow hA k P N hN`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (ht.ge (Set.mem_univ y))`. Conclude with `⟨t i, hi⟩`. Take `⟨m, hm, hmp⟩ : ∃ m : ℕ, 4 ≤ m ∧ m.Coprime p` from `⟨p * 2 + 1, by have := hp.two_le; omega, by simp⟩`.
+
+Take `⟨t, ht⟩` from `gen m hm y₀`. Set `n` to `a * p + m`. Establish `hn : 4 ≤ n` using `le_add_left hm`. Establish `hnp : n.Coprime p` using `by simpa [n] using hmp`. Set `σ : (lbPow P.L n).Sec` to `secMul (secPow s p) t`.
+
+Establish `hσ : nonzeroLocus σ = nonzeroLocus s ⊓ nonzeroLocus t`. Rewrite using `[nonzeroLocus_secMul, nonzeroLocus_secPow s hp.one_le]`. Set `B` to `baseOver (Sp k)`. Set `β : ∀ T : Over (Sp k), T ⟶ B` to `fun T => Over.homMk T.hom (Category.comp_id _)`. Set `E : Set (B ⊗ P.A).left` to `⋃ x ∈ {x : 𝟙_ (Over (Sp k)) ⟶ P.A | ∃ n : ℕ, 0 < n ∧ n.Coprime p ∧ x ^ n = 1}, Set.range (lift (β _) x).left`.
+
+Establish `hsnd : ∀ {T : Over (Sp k)} (x : T ⟶ P.A) (z : T.left), (snd B P.A).left ((lift (β T) x).left z) = x.left z` using `fun x z => congrArg (fun q => q.left z) (lift_snd (β _) x)`. Break down `hI k P n (Or.inr hn) (Nat.cast_ne_zero.2 (by omega)) (vanishing P.A P.L B n E) (fun θ r r' hr h y hy hy' => by` into its components or cases. Use `h _ ?_ (mem_nonzeroLocus_of_isActOf P.isLB hr hy')` and prove the remaining obligations. Take `⟨x, ⟨l, hl, hlp, hx⟩, z, rfl⟩` from `Set.mem_iUnion₂.1 hy`. Establish `hθ : θ.pt ^ n = 1` using `(hK _ P n (by omega) B θ.pt).1 fun q => ⟨⊤, trivial, exists_isGen_pull _ θ.φ θ.isGen _⟩`.
+
+Use `Set.mem_iUnion₂.2 ⟨(β _ ≫ θ.pt) * x, ⟨n * l, by positivity, Nat.Coprime.mul_left hnp hlp, ?_⟩, z, (congrArg (fun q => q.left z) (lift_translT θ.pt (β _) x)).symm⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, pow_mul', hx, ← MonObj.comp_pow, hθ, MonObj.comp_one, one_pow, one_pow, _root_.mul_one]) with h | h`. Establish `hmem : SecM.ofSec P.A (chartSec (chartPullLPow P.A P.L B n) σ) ∈ vanishing P.A P.L B n E` using `fun y hy hy' => by`. Take `⟨x, hx, z, rfl⟩` from `Set.mem_iUnion₂.1 hy`. Establish `h₁ : (snd B P.A).left ((lift (β _) x).left z) ∈ nonzeroLocus σ` using `(nonzeroLocus_chartPullLPow P.A P.L B n σ).le hy'`.
+
+Rewrite `h₁` using `[hsnd, hσ]`. Conclude with `hne ⟨_, hle h₁.1, Set.mem_iUnion₂.2 ⟨x, hx, z, rfl⟩⟩`. Rewrite `hmem` using `[h, Submodule.mem_bot]`. Establish `h₂ : (lift (β _) (𝟙 P.A)).left y₀ ∈ nonzeroLocus (chartSec (chartPullLPow P.A P.L B n) σ)` using `(nonzeroLocus_chartPullLPow P.A P.L B n σ).ge (show (snd B P.A).left _ ∈ nonzeroLocus σ by`. Rewrite using `[hsnd, hσ]`.
+
+Conclude with `⟨hs, ht⟩)`. Conclude with `(hmem ▸ (vanishing P.A P.L B n Set.univ).zero_mem : SecM.ofSec P.A (chartSec (chartPullLPow P.A P.L B n) σ) ∈ vanishing P.A P.L B n Set.univ) _ trivial h₂`. Set `z : (𝟙_ (Over (Sp k))).left` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)`. Take `⟨τ, hτ⟩` from `gen n hn ((1 : 𝟙_ (Over (Sp k)) ⟶ P.A).left z)`. Establish `hmem : SecM.ofSec P.A (chartSec (chartPullLPow P.A P.L B n) τ) ∈ vanishing P.A P.L B n E`.
+
+Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Use `hmem ((lift (β _) 1).left z) (Set.mem_iUnion₂.2 ⟨1, ⟨1, one_pos, by simp, one_pow _⟩, z, rfl⟩) ((nonzeroLocus_chartPullLPow P.A P.L B n τ).ge ?_)` and prove the remaining obligations. Use `show (snd B P.A).left _ ∈ nonzeroLocus τ`. Rewrite using `[hsnd]`.
+
+Conclude with `hτ`.
+-/
 theorem dense_torsion (hA : AmpleSt) (hK : KerPowSt) (hI : IrredSt) (k : Type) [Field k] [IsAlgClosed k] [CharZero k]
     (P : PolAV (Sp k)) {p : ℕ} (hp : p.Prime) :
     Dense (⋃ x ∈ {x : 𝟙_ (Over (Sp k)) ⟶ P.A | ∃ n : ℕ, 0 < n ∧ n.Coprime p ∧ x ^ n = 1}, Set.range x.left) := by

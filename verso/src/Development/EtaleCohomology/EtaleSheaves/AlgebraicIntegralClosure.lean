@@ -7,6 +7,27 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC Polynomial Lateral
 
 namespace LateralTheory.E.BaseAICPf
 
+/- English proof (translation)
+Introduce `p hm hd`. Establish `: Nonempty W` using `⟨⟨_, hW.some_mem⟩⟩`. Establish `hcov : ∀ x : W, ∃ U : Z.Opens, (x : Z) ∈ U ∧ U ≤ W ∧ AIC Γ(Z, U)` using `fun x => hloc W x x.2`. Use `choose U hxU hUW hUa using hcov`. Establish `hne : ∀ x : W, Nonempty (U x)` using `fun x => ⟨⟨_, hxU x⟩⟩`.
+
+Set `ψ` to `Z.germToFunctionField W`. Establish `hroot : ∀ x : W, ∃ β : Z.functionField, (p.map ψ.hom).eval β = 0`. Introduce `x`. Use `hne x` as an intermediate fact. Establish `hA : AIC Γ(Z, U x)` using `hUa x`.
+
+Set `ρ` to `(Z.presheaf.map (homOfLE (hUW x)).op).hom`. Take `⟨r, hr⟩` from `hA (p.map ρ) (hm.map ρ) (by rw [hm.natDegree_map]; exact hd)`. Use `⟨Z.germToFunctionField (U x) r, ?_⟩` and prove the remaining obligations. Rewrite using `[← gtf_res_hom (homOfLE (hUW x)), ← Polynomial.map_map, Polynomial.eval_map_apply, hr, map_zero]`. Take `⟨β, hβ⟩` from `hroot ⟨_, hW.some_mem⟩`.
+
+Establish `hsec : ∀ x : W, ∃ t : Γ(Z, U x), Z.germToFunctionField (U x) t = β`. Introduce `x`. Use `hne x` as an intermediate fact. Establish `hA : AIC Γ(Z, U x)` using `hUa x`. Set `ρ` to `(Z.presheaf.map (homOfLE (hUW x)).op).hom`.
+
+Conclude with `roots_in (Z.germToFunctionField (U x)).hom hA _ (p.map ρ) rfl (hm.map ρ) β (by rw [Polynomial.map_map, gtf_res_hom]; exact hβ)`. Use `choose sf hsf using hsec`. Establish `hcompat : TopCat.Presheaf.IsCompatible Z.sheaf.1 U sf`. Introduce `i j`. Use `hne i` as an intermediate fact.
+
+Use `hne j` as an intermediate fact. Establish `hij : ((U i ⊓ U j : Z.Opens) : Set Z).Nonempty` using `nonempty_preirreducible_inter (U i).isOpen (U j).isOpen ⟨_, hxU i⟩ ⟨_, hxU j⟩`. Establish `: Nonempty (U i ⊓ U j : Z.Opens)` using `⟨⟨_, hij.some_mem⟩⟩`. Apply `Z.germToFunctionField_injective (U i ⊓ U j)` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Z.germToFunctionField _ (Z.presheaf.map _ (sf i)) = Z.germToFunctionField _ (Z.presheaf.map _ (sf j))`.
+
+Rewrite using `[gtf_res, gtf_res, hsf, hsf]`. Take `⟨s, hs, -⟩` from `Z.sheaf.existsUnique_gluing' (U := U) (V := W) (iUV := fun x => homOfLE (hUW x)) (hcover := fun y hy => TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨y, hy⟩, hxU _⟩) (sf := sf) (h := hcompat)`. Establish `hsβ : ψ s = β`. Establish `h0` using `hs ⟨_, hW.some_mem⟩`. Use `hne ⟨_, hW.some_mem⟩` as an intermediate fact.
+
+Rewrite using `[← hsf ⟨_, hW.some_mem⟩, ← gtf_res (homOfLE (hUW ⟨_, hW.some_mem⟩)) s]`. Conclude with `congrArg _ h0`. Take `⟨t, ht⟩ : ∃ t : Γ(Z, W), ψ t = β` from `⟨s, hsβ⟩`. Use `⟨t, Z.germToFunctionField_injective W ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`.
+
+Establish `key : ψ.hom (p.eval t) = (p.map ψ.hom).eval (ψ.hom t)`. Rewrite using `[Polynomial.eval_map, Polynomial.eval₂_hom]`. Express the relevant statement in the definitionally equal form `ψ.hom (p.eval t) = 0`. Rewrite using `[key]`. Express the relevant statement in the definitionally equal form `(p.map ψ.hom).eval (ψ t) = 0`.
+
+Rewrite using `[ht]`. Conclude with `hβ`.
+-/
 theorem aic_of_local {Z : Scheme.{0}} [IsIntegral Z]
     (hloc : ∀ (W : Z.Opens) (y : Z), y ∈ W → ∃ U : Z.Opens, y ∈ U ∧ U ≤ W ∧ AIC Γ(Z, U))
     (W : Z.Opens) (hW : (W : Set Z).Nonempty) : AIC Γ(Z, W) := by
@@ -75,12 +96,18 @@ def BaseLocLoc : Prop := ∀ {Z S : Scheme.{0}} (c : Z ⟶ S) [QuasiCompact c] [
     ∃ f : Γ(Z, V) →+* Γ((Limits.pullback c (S.fromSpecStalk x) : Scheme.{0}), U), ∃ M : Submonoid Γ(Z, V),
       @IsLocalization _ _ M _ _ f.toAlgebra
 
+/- English proof (translation)
+Introduce `Z S c _ _ _ hZ hS x W y hy`. Take `⟨U, hyU, hUW, V, hV, hne, f, M, hM⟩` from `h c hZ hS x W y hy`. Use `letI := f.toAlgebra`. Conclude with `⟨U, hyU, hUW, LateralTheory.E.BaseAICPf.Loc.aic_loc M (hZ.2 V hV hne)⟩`.
+-/
 theorem BaseLoc_of (h : BaseLocLoc) : BaseLoc := by
   intro Z S c _ _ _ hZ hS x W y hy
   obtain ⟨U, hyU, hUW, V, hV, hne, f, M, hM⟩ := h c hZ hS x W y hy
   letI := f.toAlgebra
   exact ⟨U, hyU, hUW, LateralTheory.E.BaseAICPf.Loc.aic_loc M (hZ.2 V hV hne)⟩
 
+/- English proof (translation)
+Introduce `Z S c _ _ _ hZ hS x`. Establish `: IsIntegral (Limits.pullback c (S.fromSpecStalk x) : Scheme.{0})` using `h1 c hZ hS x`. Conclude with `⟨this, fun U _ hne => aic_of_local (h2 c hZ hS x) U hne⟩`.
+-/
 theorem BaseAIC_of (h1 : BaseInt) (h2 : BaseLoc) : LateralTheory.E.FibreEqvPf.BaseAIC := by
   intro Z S c _ _ _ hZ hS x
   have : IsIntegral (Limits.pullback c (S.fromSpecStalk x) : Scheme.{0}) := h1 c hZ hS x

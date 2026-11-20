@@ -9,24 +9,52 @@ namespace GlobalTheory.RootEx.OpELevi
 section cov
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 lemma nabs_mul (x y : kˣ) : nabs k (x * y) = nabs k x * nabs k y := by
   simp [nabs]
 
+/- English proof (translation)
+Unfold `nabs`. Conclude with `(distribHaarChar_pos (A := k) (g := x))` after adjusting the coercions.
+-/
 lemma nabs_pos (x : kˣ) : 0 < nabs k x := by
   unfold nabs
   exact_mod_cast (distribHaarChar_pos (A := k) (g := x))
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 lemma nabs_pow (x : kˣ) (m : ℕ) : nabs k (x ^ m) = nabs k x ^ m := by
   simp [nabs]
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 lemma nabs_inv (x : kˣ) : nabs k x⁻¹ = (nabs k x)⁻¹ := by
   simp [nabs]
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 lemma nabs_one : nabs k 1 = 1 := by
   simp [nabs]
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Set `σ : (n × J) ⊕ {f // f ∉ Set.range ι} ≃ F` to `(Equiv.sumCongr (Equiv.ofInjective ι hι) (Equiv.refl _)).trans (Equiv.sumCompl (· ∈ Set.range ι))`. Establish `σl : ∀ x, σ (Sum.inl x) = ι x` using `fun x => rfl`. Establish `σr : ∀ x, σ (Sum.inr x) = x.1` using `fun x => rfl`. Set `G : Matrix F F k` to `Matrix.reindex σ σ (fromBlocks (blockDiagonal fun _ : J => A) 0 0 1)`. Establish `hG : G.det = (u ^ Fintype.card J : kˣ)`.
+
+Simplify using `[G, det_blockDiagonal, hu]`. Establish `hG0 : G.det ≠ 0` using `by rw [hG]; exact Units.ne_zero _`. Establish `hT : ∀ e, T e = G.mulVec e`. Introduce `e`. Use function extensionality and compare the values at `x`.
+
+Take `⟨y, rfl⟩` from `σ.surjective x`. Rewrite using `[Matrix.mulVec, dotProduct, ← σ.sum_comp]`. Break down `y with ⟨r, j⟩ | y` into its components or cases. Establish `: σ.symm (ι (r, j)) = Sum.inl (r, j)` using `by rw [← σl]; simp`. Simplify using `[G, this, σl, σr, h1, Fintype.sum_sum_type, Fintype.sum_prod_type, blockDiagonal_apply]`.
+
+Rewrite using `[σr, h2 _ _ y.2]`. Establish `: σ.symm y.1 = Sum.inr y` using `by rw [← σr]; simp`. Simplify using `[G, this, Fintype.sum_sum_type, Matrix.one_apply, σr]`. Establish `key` using `(GlobalTheory.SplitWeil.linear_change_of_variables k F F ν).1 (Matrix.GeneralLinearGroup.mkOfDetNeZero G hG0) f`. Establish `hd : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.mkOfDetNeZero G hG0) = u ^ Fintype.card J`.
+
+Use `ext`. Rewrite using `[← hG]`. Both sides reduce to the same expression. Rewrite `key` using `[hd, nabs_pow]`. Simplify using `only [hT]`.
+
+Conclude with `key`.
+-/
 lemma integral_comp_blocks {F n J : Type} [Fintype F] [Fintype n] [DecidableEq n] [Fintype J]
     (ν : Measure k) [ν.IsAddHaarMeasure] (ι : n × J → F) (hι : Function.Injective ι)
     (A : Matrix n n k) (u : kˣ) (hu : A.det = u) (T : (F → k) → (F → k))
@@ -74,38 +102,59 @@ def ext (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs}
   Matrix.of fun r s => if h : Free p (r, s) then e ⟨(r, s), h⟩ else 0
 
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma affPt_eq (p : ℕ) (x₀ : Matrix n n' k) (e) :
     affPt (c := c) p x₀ e = basePt c x₀ + ext p e := rfl
 
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `[ext, h]`.
+-/
 lemma ext_free (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) (r s)
     (h : Free p (r, s)) : ext p e r s = e ⟨(r, s), h⟩ := by
   simp [ext, h]
 
 omit [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `[ext, h]`.
+-/
 lemma ext_not_free (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) (r s)
     (h : ¬ Free p (r, s)) : ext p e r s = 0 := by
   simp [ext, h]
 
 omit [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type]`.
+-/
 lemma left_inl (A : Matrix n n k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (r s) :
     ((fromBlocks A 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * x) (Sum.inl r) s
       = ∑ t, A r t * x (Sum.inl t) s := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type]
 
 omit [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]`.
+-/
 lemma left_inr (A : Matrix n n k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (r s) :
     ((fromBlocks A 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * x) (Sum.inr r) s
       = x (Sum.inr r) s := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply]
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, mul_comm]`.
+-/
 lemma right_inl (A : Matrix n' n' k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (r s) :
     (x * (fromBlocks A 0 0 1 : Matrix (n' ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1)) k)) r (Sum.inl s)
       = ∑ t, Aᵀ s t * x r (Sum.inl t) := by
   simp [Matrix.mul_apply, Fintype.sum_sum_type, mul_comm]
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [fromBlocks_apply₁₂, fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, Matrix.one_apply, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 lemma right_inr (A : Matrix n' n' k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (r s) :
     (x * (fromBlocks A 0 0 1 : Matrix (n' ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1)) k)) r (Sum.inr s)
       = x r (Sum.inr s) := by
@@ -123,6 +172,13 @@ def TR (p : ℕ) (A : Matrix n' n' k) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c
   (ext p e * (fromBlocks A 0 0 1 : Matrix (n' ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1)) k)) rs.1.1 rs.1.2
 
 omit [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Rewrite using `[affPt_eq, affPt_eq, Matrix.mul_add]`. Use `congr 1`. Simplify using `[basePt, fromBlocks_multiply]`. Use extensionality with `r s`. Distinguish the cases in `h : Free p (r, s)`.
+
+Rewrite using `[ext_free _ _ _ _ h]`. Both sides reduce to the same expression. Rewrite using `[ext_not_free _ _ _ _ h]`. Break down `r with r | r` into its components or cases. Rewrite using `[left_inl]`.
+
+Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[ext_not_free, mul_zero]`. Apply the tactic sequence `rcases s with s | s <;> exact h`. Rewrite using `[left_inr, ext_not_free _ _ _ _ h]`.
+-/
 lemma left_affPt (p : ℕ) (A : Matrix n n k) (x₀ : Matrix n n' k) (e) :
     (fromBlocks A 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * affPt (c := c) p x₀ e
       = affPt p (A * x₀) (TL p A e) := by
@@ -141,6 +197,13 @@ lemma left_affPt (p : ℕ) (A : Matrix n n k) (x₀ : Matrix n n' k) (e) :
       · rw [left_inr, ext_not_free _ _ _ _ h]
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
+/- English proof (translation)
+Rewrite using `[affPt_eq, affPt_eq, Matrix.add_mul]`. Use `congr 1`. Simplify using `[basePt, fromBlocks_multiply]`. Use extensionality with `r s`. Distinguish the cases in `h : Free p (r, s)`.
+
+Rewrite using `[ext_free _ _ _ _ h]`. Both sides reduce to the same expression. Rewrite using `[ext_not_free _ _ _ _ h]`. Break down `s with s | s` into its components or cases. Rewrite using `[right_inl]`.
+
+Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[ext_not_free, mul_zero]`. Apply the tactic sequence `rcases r with r | r <;> exact h`. Rewrite using `[right_inr, ext_not_free _ _ _ _ h]`.
+-/
 lemma right_affPt (p : ℕ) (A : Matrix n' n' k) (x₀ : Matrix n n' k) (e) :
     affPt (c := c) p x₀ e * (fromBlocks A 0 0 1 : Matrix (n' ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1)) k)
       = affPt p (x₀ * A) (TR p A e) := by
@@ -159,15 +222,26 @@ lemma right_affPt (p : ℕ) (A : Matrix n' n' k) (x₀ : Matrix n n' k) (e) :
       · rw [right_inr, ext_not_free _ _ _ _ h]
 
 omit [DecidableEq n] [Fintype n'] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `only [ch, left_inr]`.
+-/
 lemma ch_left (A : Matrix n n k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) :
     ch ((fromBlocks A 0 0 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * x) = ch x := by
   simp only [ch, left_inr]
 
 omit [Fintype n] [DecidableEq n] [DecidableEq n'] in
+/- English proof (translation)
+Simplify using `only [ch, right_inr]`.
+-/
 lemma ch_right (A : Matrix n' n' k) (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) :
     ch (x * (fromBlocks A 0 0 1 : Matrix (n' ⊕ Fin (c + 1)) (n' ⊕ Fin (c + 1)) k)) = ch x := by
   simp only [ch, right_inr]
 
+/- English proof (translation)
+Establish `: Fintype.card {i : Fin (c + 1) // p < i.val + 1} = c + 1 - p`. Rewrite using `[Fintype.card_subtype]`. Establish `: (Finset.univ.filter fun i : Fin (c + 1) => p < i.val + 1) = Finset.Ici ⟨p, by omega⟩`. Use extensionality with `i`. Simplify using `[Fin.le_def]`.
+
+Rewrite using `[this, Fin.card_Ici]`. Rewrite using `[this, Nat.cast_sub (by omega)]; push_cast; ring`.
+-/
 lemma card_cols (p : ℕ) (_ : 1 ≤ p) (h2 : p ≤ c) :
     (Fintype.card {i : Fin (c + 1) // p < i.val + 1} : ℝ) = c + 1 - p := by
   have : Fintype.card {i : Fin (c + 1) // p < i.val + 1} = c + 1 - p := by
@@ -177,6 +251,11 @@ lemma card_cols (p : ℕ) (_ : 1 ≤ p) (h2 : p ≤ c) :
     rw [this, Fin.card_Ici]
   rw [this, Nat.cast_sub (by omega)]; push_cast; ring
 
+/- English proof (translation)
+Establish `: Fintype.card {l : Fin c // l.val + 1 < p} = p - 1`. Rewrite using `[Fintype.card_subtype]`. Establish `: (Finset.univ.filter fun l : Fin c => l.val + 1 < p) = Finset.Iio ⟨p - 1, by omega⟩`. Use extensionality with `i`. Simplify using `[Fin.lt_def]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Fin.card_Iio]`. Rewrite using `[this, Nat.cast_sub (by omega)]; push_cast; ring`.
+-/
 lemma card_rows (p : ℕ) (h1 : 1 ≤ p) (h2 : p ≤ c) :
     (Fintype.card {l : Fin c // l.val + 1 < p} : ℝ) = p - 1 := by
   have : Fintype.card {l : Fin c // l.val + 1 < p} = p - 1 := by
@@ -186,8 +265,14 @@ lemma card_rows (p : ℕ) (h1 : 1 ≤ p) (h2 : p ≤ c) :
     rw [this, Fin.card_Iio]
   rw [this, Nat.cast_sub (by omega)]; push_cast; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma embX_val (g : GL n k) : (embX c g).val = fromBlocks g.val 0 0 1 := rfl
 
+/- English proof (translation)
+Use `ext`. Simplify using `[embX_val]`.
+-/
 lemma det_embX (g : GL n k) :
     Matrix.GeneralLinearGroup.det (embX c g) = Matrix.GeneralLinearGroup.det g := by
   ext
@@ -197,6 +282,15 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k]
 
 omit [DecidableEq n'] in
+/- English proof (translation)
+Unfold `opE`. Rewrite using `[← integral_comp_blocks ν (fun x : n × {i : Fin (c + 1) // p < i.val + 1} => (⟨(Sum.inl x.1, Sum.inr x.2.1), x.2.2⟩ : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs})) ?_ A u hu (TL p A) ?_ ?_]`. Simplify using `only [← left_affPt, ch_left]`. Both sides reduce to the same expression. Introduce and unpack `⟨a, b, hb⟩ ⟨a', b', hb'⟩ h`.
+
+Establish `h'` using `congrArg Subtype.val h`. Simplify using `only [Subtype.mk.injEq, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq] at h' ⊢`. Conclude with `h'`. Introduce `e r j`. Simplify using `only [TL, left_inl]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[ext_free p e (Sum.inl t) (Sum.inr j.1) j.2]`. Introduce and unpack `e ⟨⟨r | r, s⟩, h⟩ hf`. Break down `s with s | s` into its components or cases. Conclude with `h.elim`.
+
+Conclude with `(hf ⟨(r, ⟨s, h⟩), rfl⟩).elim`. Simplify using `only [TL, left_inr]`. Rewrite using `[ext_free]`.
+-/
 lemma integral_left (p : ℕ) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure]
     (A : Matrix n n k) (u : kˣ) (hu : A.det = u)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x₀ : Matrix n n' k) :
@@ -226,6 +320,15 @@ lemma integral_left (p : ℕ) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAdd
       rw [ext_free]
 
 omit [DecidableEq n] in
+/- English proof (translation)
+Unfold `opE`. Rewrite using `[← integral_comp_blocks ν (fun x : n' × {l : Fin c // l.val + 1 < p} => (⟨(Sum.inr x.2.1, Sum.inl x.1), x.2.2⟩ : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs})) ?_ Aᵀ u (by rw [det_transpose, hu]) (TR p A) ?_ ?_]`. Simplify using `only [← right_affPt, ch_right]`. Both sides reduce to the same expression. Introduce and unpack `⟨a, b, hb⟩ ⟨a', b', hb'⟩ h`.
+
+Establish `h'` using `congrArg Subtype.val h`. Simplify using `only [Subtype.mk.injEq, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq] at h' ⊢`. Conclude with `h'.symm`. Introduce `e r j`. Simplify using `only [TR, right_inl]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[ext_free p e (Sum.inr j.1) (Sum.inl t) j.2]`. Introduce and unpack `e ⟨⟨r, s | s⟩, h⟩ hf`. Break down `r with r | r` into its components or cases. Conclude with `h.elim`.
+
+Conclude with `(hf ⟨(s, ⟨r, h⟩), rfl⟩).elim`. Simplify using `only [TR, right_inr]`. Rewrite using `[ext_free]`.
+-/
 lemma integral_right (p : ℕ) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure]
     (A : Matrix n' n' k) (u : kˣ) (hu : A.det = u)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x₀ : Matrix n n' k) :
@@ -257,6 +360,9 @@ lemma integral_right (p : ℕ) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAd
 
 omit [DecidableEq n] [DecidableEq n'] [ValuativeRel k] [TopologicalSpace k]
   [IsNonarchimedeanLocalField k] [BorelSpace k] in
+/- English proof (translation)
+Unfold `opE`. Rewrite using `[← integral_const_mul]`. Simplify using `only [mul_assoc]`.
+-/
 lemma opE_const_mul (p : ℕ) (ψ : AddChar k Circle) (ν : Measure k) (a : ℂ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (x₀ : Matrix n n' k) :
     opE ψ ν p (fun x => a * Φ x) x₀ = a * opE ψ ν p Φ x₀ := by
@@ -270,6 +376,23 @@ end GlobalTheory.RootEx.OpELevi
 
 open GlobalTheory.RootEx.OpELevi in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n n' _ _ _ _ c p h1 h2 ψ ν _ μ Φ`. Use `⟨fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x₀`. Unfold `om`. Rewrite using `[opE_const_mul]`.
+
+Simplify using `only [← map_inv, embX_val, Units.val_one, Matrix.mul_one, det_embX, Pi.smul_apply, smul_eq_mul, map_one, nabs_one, Real.one_rpow, Complex.ofReal_one]`. Use `erw [integral_left p ψ ν (g⁻¹).val (Matrix.GeneralLinearGroup.det g)⁻¹ (by rw [← map_inv]; rfl) Φ]`. Establish `hp` using `nabs_pos (Matrix.GeneralLinearGroup.det g)`. Use `set t := nabs k (Matrix.GeneralLinearGroup.det g) with ht`. Establish `key : t ^ (-(Fintype.card (n' ⊕ Fin (c + 1)) : ℝ) / 2) * (t⁻¹ ^ Fintype.card {i : Fin (c + 1) // p < i.val + 1})⁻¹ = t ^ (((c : ℝ) + 1) / 2 - p) * t ^ (-(Fintype.card n' : ℝ) / 2)`.
+
+Rewrite using `[inv_pow, inv_inv, ← Real.rpow_natCast, card_cols p h1 h2, ← Real.rpow_add hp, ← Real.rpow_add hp]`. Use `congr 1`. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[nabs_inv, ← ht, Complex.real_smul]`. Establish `key'` using `congrArg (fun r : ℝ => (r : ℂ)) key`. Simplify using `only [Complex.ofReal_mul] at key'`. Take the linear combination `(((μ (Matrix.GeneralLinearGroup.det g⁻¹) : ℂˣ) : ℂ) * opE ψ ν p Φ ((g⁻¹).val * x₀)) * key'`. Use function extensionality and compare the values at `x₀`.
+
+Unfold `om`. Rewrite using `[opE_const_mul]`. Simplify using `only [inv_one, embX_val, Units.val_one, Matrix.one_mul, det_embX, Pi.smul_apply, smul_eq_mul, map_one, nabs_one, Real.one_rpow, Complex.ofReal_one]`. Use `erw [integral_right p ψ ν g.val (Matrix.GeneralLinearGroup.det g) rfl Φ]`. Establish `hp` using `nabs_pos (Matrix.GeneralLinearGroup.det g)`.
+
+Use `set t := nabs k (Matrix.GeneralLinearGroup.det g) with ht`. Establish `key : t ^ ((Fintype.card (n ⊕ Fin c) : ℝ) / 2) * (t ^ Fintype.card {l : Fin c // l.val + 1 < p})⁻¹ = t ^ (((c : ℝ) + 2) / 2 - p) * t ^ ((Fintype.card n : ℝ) / 2)`. Rewrite using `[← Real.rpow_natCast, card_rows p h1 h2, ← Real.rpow_neg hp.le, ← Real.rpow_add hp, ← Real.rpow_add hp]`. Use `congr 1`. Simplify using `only [Fintype.card_sum, Fintype.card_fin]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.real_smul]`. Establish `key'` using `congrArg (fun r : ℝ => (r : ℂ)) key`. Simplify using `only [Complex.ofReal_mul] at key'`.
+
+Take the linear combination `(((μ (Matrix.GeneralLinearGroup.det g) : ℂˣ) : ℂ) * opE ψ ν p Φ (x₀ * g.val)) * key'`.
+-/
 theorem GlobalTheory.RootEx.opE_om_embX : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ) (_ : 1 ≤ p) (_ : p ≤ c) (ψ : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), (∀ g : GL n k, opE ψ ν p (om μ 1 (embX c g) Φ) = ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) • om μ 1 g (opE ψ ν p Φ)) ∧ ∀ g : GL n' k, opE ψ ν p (om μ (embX (c + 1) g) 1 Φ) = ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 2) / 2 - p) : ℝ) : ℂ) • om μ g 1 (opE ψ ν p Φ) := by
   intro k _ _ _ _ _ _ n n' _ _ _ _ c p h1 h2 ψ ν _ μ Φ
   refine ⟨fun g => ?_, fun g => ?_⟩

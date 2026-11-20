@@ -14,6 +14,19 @@ variable {p n' : ℕ} [Fact p.Prime] {W Qq O Kf : Type} [CommRing W] [IsDomain W
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Introduce `hPQ`. Establish `hw` using `w_ne hS`. Use `set c := algebraMap O Kf w with hc`. Establish `hP'` using `(pol_iff hS _ _ _).1 hP`.
+
+Establish `hM` using `Mx_det (ι := ι) (σ := σ) hw φ r (fun x : Fin n' => x) hmat hh g hg`. Unfold `thF`. Rewrite using `[tr_multi_twist Kf m hm (vecE n') d _ hM _ (Lin_Pol _ _ hP'), Lin_comp]`. Establish `h1` using `lift_eq hS φ hφ r (LLT n') (fun x : Fin n' => x) (fun _ => rfl) g hg P`. Establish `hB : Bm ι σ w φ r (LLT n').vec (fun x : Fin n' => x) g = fun x => (if (LLT n').vec x then c else 1) • (Aa ((LLT n').vec x) (la_tw ι σ x.val hmat)⁻¹ * Aa ((LLT n').vec x) (Mx ι σ w φ r (fun x : Fin n' => x) hmat g x))`.
+
+Use function extensionality and compare the values at `fun x => Bm_eq hw φ r (LLT n').vec (fun x : Fin n' => x) hmat hh g hg x`. Rewrite `h1` using `[hB, Lin_smul _ _ _ hP']`. Establish `hprod : ∏ x, (if (LLT n').vec x then c else 1) ^ d x = c ^ Avec (vecE n') d`. Unfold `Avec`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `x _`. Use `show (if vecE n' x then c else 1) ^ d x = _`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h1` using `[hprod]`.
+
+Establish `h2 : map (kapR hS) (liftSubst p n' O w r (LLT n') g P) = map (algebraMap O Kf) Q`. Establish `: liftSubst p n' O w r (LLT n') g P = map (algebraMap O (KK O)) Q` using `hPQ`. Rewrite using `[this, map_map]`. Establish `hk : (kapR hS).comp (algebraMap O (KK O)) = algebraMap O Kf` using `RingHom.ext fun x => kapR_alg hS x`. Rewrite using `[hk]`.
+
+Rewrite using `[map_letter_substitution, ← h2, h1, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem tr_theta (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (m r : ℕ)
     (hm : 1 ≤ m) (d : Fin n' → ℕ) (hmat : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hh : IsUnit hmat.det)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')) (hg : IsGLW g)
@@ -58,6 +71,39 @@ theorem tr_theta (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+*
 
 end
 
+/- English proof (translation)
+Introduce `p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS φ hφ m r hm hr1 hr2 d rest lam0 hlam hrest e he hmat g hh hg hbasis`. Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Introduce `Θ hΘ I _ sO hsO`. Establish `hfrac` using `hS.frac_O`. Establish `hinj : Function.Injective (algebraMap O Kf)` using `IsFractionRing.injective O Kf`.
+
+Establish `hw` using `w_ne hS`. Use `set c := algebraMap O Kf w with hc`. Use `set M : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf := Mx ι σ w φ r (fun x : Fin n' => x) hmat g with hMdef`. Establish `hM : ∀ s, IsUnit (M s).det` using `Mx_det hw φ r _ hmat hh g hg`. Establish `hH : ∀ lam : Fin n' → Fin (m + 1) → ℤ, IsDominant lam → Hten O lam (fun s => LeAt p ι σ w s.val e) = tensorLat O Kf (fun s => nablaLTw O Kf m (lamAt lam s) (M s))`.
+
+Introduce `lam hl`. Unfold `Hten`. Use `congr 1`. Use function extensionality and compare the values at `s`. Use `show H0 O m _ (LeAt p ι σ w s.val e) = _`.
+
+Rewrite using `[(edgeLat_of hS m r e _ hbasis).2.1]`. Use `show H0 O m _ (colSpan O (M s)) = _`. Rewrite using `[H0_eq_twisted_nabla (la_indep hinj) _ _ (lamAt_antitone' lam hl s) _ (hM s)]`. Establish `hV : ∀ lam : Fin n' → Fin (m + 1) → ℤ, IsDominant lam → Vsp Kf lam = tensorLat Kf Kf (fun s => dualWeyl Kf (m + 1) (m + 1) (nuOf (lamAt lam s)))`. Introduce `lam hl`.
+
+Unfold `Vsp`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[if_pos (lamAt_antitone' lam hl s)]`. Establish `hfl : IsDominant (flW (m` using `m) d) := flW_dom d`.
+
+Establish `hl0 : IsDominant lam0` using `by rw [hlam]; exact isDominant_add hfl hrest`. Set `dt : (Fin n' → Fin (m + 1) → ℤ) → Kf` to `fun lam => ∏ s, (M s).det ^ (lamAt lam s (Fin.last m))`. Establish `hdt : dt lam0 = dt (flW d) * dt rest` using `by show ∏ s, _ = (∏ s, _) * ∏ s, _`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hlam, lamAt_add, Pi.add_apply, zpow_add₀ (hM s).ne_zero]`. Establish `hAr : Ar r lam0 = Ar r (flW (m` using `m) d) + Ar r rest := by rw [hlam, Ar_add]`. Establish `h1` using `fun i => tr_tens_lift O Kf m (fun s => lamAt rest s) M hM (sO i) (hsO i)`. Use `choose y hy1 hy2 using h1`. Establish `hyV : ∀ i, y i ∈ Vsp Kf rest`.
+
+Introduce `i`. Rewrite using `[hV rest hrest]`. Conclude with `tr_tens_le O Kf m _ M hM _ (hy1 i)`. Use `⟨fun i => c ^ (-Ar r rest) • (⟨y i, hyV i⟩ : Vsp Kf rest), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Use `⟨⟨y i, hyV i⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show y i ∈ Hten O rest (fun s => LeAt p ι σ w s.val e)`. Rewrite using `[hH rest hrest]`. Conclude with `hy1 i`. Introduce `P Q hPQ v hv hvmem`.
+
+Take `⟨y0, hy0, hvy⟩` from `(mem_scale2 (O := O) (Vsp Kf lam0) (Hten O lam0 fun s => LeAt p ι σ w s.val e) (c ^ (1 : ℤ)) (c ^ (-Ar r lam0)) (zpow_ne_zero _ hw) (zpow_ne_zero _ hw) v).1 hvmem`. Rewrite `hy0` using `[hH lam0 hl0]`. Take `⟨R0, hR0⟩` from `tr_tens_int O Kf m (fun s => lamAt lam0 s) M hM y0 hy0`. Use `⟨R0, ?_⟩` and prove the remaining obligations. Apply `map_injective _ hinj` to reduce the goal to its premises.
+
+Establish `way1 : (c ^ (Ar r lam0) * dt lam0) • blockAct Kf M (v : MvPolynomial _ Kf) = map (algebraMap O Kf) (C w * R0)`. Rewrite using `[hvy, map_smul, smul_smul, map_mul, map_C, ← hR0, ← smul_eq_C_mul, smul_smul]`. Use `congr 1`. Establish `hcc : c ^ Ar r lam0 * c ^ (-Ar r lam0) = 1` using `by rw [← zpow_add₀ hw, add_neg_cancel, zpow_zero]`. Use `show c ^ Ar r lam0 * dt lam0 * (c ^ (1 : ℤ) * c ^ (-Ar r lam0)) = c * dt lam0`.
+
+Rewrite using `[zpow_one]`. Take the linear combination `(dt lam0 * c) * hcc`. Establish `hA : Ar r (flW (m` using `m) d) = (Avec (vecE n') d : ℤ) := flat_Ar r hr1 hr2 (vecE n') d (flW d) (isFlat_flW d)`. Establish `hdfl : dt (flW d) = ∏ s, (M s).det ^ (letterWt m (d s) (vecE n' s) (Fin.last m))`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[flat_lam (vecE n') d (flW d) (isFlat_flW d) s]`. Establish `way2 : (c ^ (Ar r lam0) * dt lam0) • blockAct Kf M (v : MvPolynomial _ Kf) = map (algebraMap O Kf) (∑ i, thAll O n' m (vecE n') (Q i) * sO i)`. Rewrite using `[hv, map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `t1` using `tr_theta hS φ hφ m r (by omega) d hmat hh g hg (P i).1 (P i).2 (Q i) (hPQ i)`.
+
+Rewrite using `[map_mul, map_mul, ← hy2 i]`. Establish `e1 : map (algebraMap O Kf) (thAll O n' m (vecE n') (Q i)) = map (algebraMap O Kf) (Th0 O m (vecE n') (Q i))`. Both sides reduce to the same expression. Rewrite using `[e1, ← t1, hΘ (P i), hAr, hdt, hdfl, hA, zpow_add₀ hw, zpow_natCast]`. Use `show _ • (_ * blockAct Kf M (c ^ (-Ar r rest) • y i)) = _`.
+
+Rewrite using `[map_smul]`. Simplify using `only [smul_eq_C_mul, map_mul, map_pow]`. Establish `hcc : (C (c ^ Ar r rest) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) * C (c ^ (-Ar r rest)) = 1`. Rewrite using `[← C_mul, ← zpow_add₀ hw, add_neg_cancel, zpow_zero, C_1]`. Take the linear combination `(C c ^ Avec (vecE n') d * C (∏ s, (M s).det ^ (letterWt m (d s) (vecE n' s) (Fin.last m))) * C (dt rest) * blockAct Kf M (thF hS m (vecE n') (fun x => la_tw ι σ x.val hmat) (P i).1) * blockAct Kf M (y i)) * hcc`.
+
+Rewrite using `[← way2, way1]`.
+-/
 theorem transStep : TransStep := by
   intro p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS φ hφ m r hm hr1 hr2 d rest lam0 hlam hrest e he hmat g hh hg hbasis
   letI : Algebra (WF p n') O := algOfIdent j φ

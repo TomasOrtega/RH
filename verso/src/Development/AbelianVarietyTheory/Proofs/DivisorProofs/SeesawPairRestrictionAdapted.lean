@@ -35,6 +35,9 @@ def swapD {R S : Type} [CommRing R] [CommRing S] [Algebra R S] [Invertible (2 : 
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[frame, incM, incV, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Matrix.vecMulVec_apply, add_assoc]`. Both sides reduce to the same expression.
+-/
 theorem frame_mul {d d₁ : ℕ} {β : Type} (H : Plane E d d₁) (z : Matrix (Fin d₁) β (AE F E)) (u v : β → AE F E) :
     incM F (frame H) * Matrix.of (Sum.elim z ![u, v]) =
       incM F H.ι * z + Matrix.vecMulVec (incV F H.x) u + Matrix.vecMulVec (incV F H.y) v := by
@@ -42,11 +45,71 @@ theorem frame_mul {d d₁ : ℕ} {β : Type} (H : Plane E d d₁) (z : Matrix (F
   simp [frame, incM, incV, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, Matrix.vecMulVec_apply, add_assoc]
   rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one {α : Type} [DecidableEq α] : incM F (1 : Matrix α α E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H i₀ i₁ M₁ om₁ r₁ s₁ hH _ dd₁ hdd₁`. Establish `hB` using `hP.base`. Set `ε : (Fin n × Fin d) ⊕ (Fin n × Fin d) ≃ ((Fin n ⊕ Fin n) × Fin 2) ⊕ ((Fin n × Fin d₁) ⊕ (Fin n × Fin d₁))` to `Fintype.equivOfCardEq (by simp [hH.rank]; ring)`. Set `β` to `Module.finBasisOfFinrankEq F E hB.cm.2.2.1`. Set `βA` to `Algebra.TensorProduct.basis (AF F) β`.
+
+Establish `hβA : ∀ i, βA i = inclR (F` using `F) (AF F) (β i) := fun i => Algebra.TensorProduct.basis_apply _ _`. Set `Tr` to `Algebra.trace (AF F) (AE F E)`. Take `⟨Q, hPQ, hQP, -⟩` from `exists_frame_inv hH hP.skew.lat`. Establish `hG` using `frame_gram (η := -1) hB hH (by ring) (fun i j => by rw [hP.skew.skew]; ring)`. Set `J'` to `dbl (incM F X.J)`.
+
+Set `J₀ : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E` to `dbl X.J`. Establish `hJ₀ : J' = incM F J₀`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [J', J₀, dbl, incM]`. Establish `hJ' : ∀ i j, cA σ (J' j i) = 1 * J' i j`. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp [J', dbl, incM, GlobalTheory.VacIndic.cA_inclR, hP.herm.herm]`.
+
+Set `b : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) → Fin n ⊕ Fin n → AE F E` to `fun z => (incM F Q * z) (.inr 1)`. Set `D : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) → Fin n ⊕ Fin n → AE F E` to `fun z j => -∑ l, J' j l * cA σ ((incM F Q * z) (.inr 0) l)`. Set `π : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) → Matrix (Fin d₁) (Fin n ⊕ Fin n) (AE F E)` to `fun z => (incM F Q * z).submatrix .inl id`. Establish `hGA : (incM F (frame H))ᵀ * incM F W.J * (incM F (frame H)).map (cA σ) = Matrix.fromBlocks (incM F W₁.J) 0 0 !![0, 1; -1, 0]`. Establish `h1 : (incM F (frame H)).map (cA σ) = incM F ((frame H).map σ)`.
+
+Use extensionality with `i j`. Simplify using `[incM, GlobalTheory.VacIndic.cA_inclR]`. Rewrite using `[h1, show (incM F (frame H))ᵀ = incM F (frame H)ᵀ from rfl, ← incM_mul, ← incM_mul, hG]`. Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression.
+
+Simplify using `[incM]`. Simplify using `[incM]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [incM]`. Establish `hbD : ∀ z z', b z ⬝ᵥ D z' = -∑ j, ∑ l, (incM F Q * z) (.inr 1) j * J' j l * cA σ ((incM F Q * z') (.inr 0) l)` using `fun z z' => by`. Simplify using `only [b, D, dotProduct, mul_neg, Finset.sum_neg_distrib, Finset.mul_sum, mul_assoc]`.
+
+Establish `hHt : ∀ z z', hTens (cA σ) (incM F W.J) J' z z' = b z ⬝ᵥ D z' - cA σ (b z' ⬝ᵥ D z) + hTens (cA σ) (incM F W₁.J) J' (π z) (π z')` using `fun z z' => by`. Establish `h0 : ∀ z : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E), incM F (frame H) * (incM F Q * z) * (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))ᵀ = z` using `fun z => by`. Rewrite using `[← Matrix.mul_assoc, ← incM_mul, hPQ, incM_one, Matrix.transpose_one, Matrix.mul_one, Matrix.one_mul]`. Establish `h1` using `hTens_mul (cA σ) (incM F W.J) J' (incM F (frame H)) 1 (incM F Q * z) (incM F Q * z')`. Rewrite `h1` using `[h0, h0, hGA, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, hTens_plane_left]`.
+
+Rewrite using `[h1, hbD, hbD, map_neg, conj_pair (cA σ) (cA_cA hB) hJ']`. Expand and normalize the polynomial expressions, which then agree. Set `p : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) → (Fin n ⊕ Fin n) × Fin 2 → AF F` to `fun z k => Tr (βA k.2 * b z k.1)`. Set `q : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) → (Fin n ⊕ Fin n) × Fin 2 → AF F` to `fun z k => -βA.repr (D z k.1) k.2`. Establish `hpq : ∀ z z', p z ⬝ᵥ q z' = -Tr (b z ⬝ᵥ D z')` using `fun z z' => by`.
+
+Simplify using `only [dotProduct, Fintype.sum_prod_type, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← βA.sum_repr (D z' k), Finset.mul_sum, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm (b z k)]`.
+
+Simplify using `only [p, q]`. Expand and normalize the polynomial expressions, which then agree. Establish `hTr : ∀ z, Tr (cA σ z) = Tr z` using `GlobalTheory.VacCocycle.trace_conj (cA σ) (cA_cA hB)`. Establish `hb1 : ∀ z z', b (z + z') = b z + b z'` using `fun z z' => by funext j; simp [b, Matrix.mul_add]`. Establish `hb2 : ∀ (c : AF F) z, b (c • z) = c • b z` using `fun c z => by funext j; simp [b, Matrix.mul_smul]`.
+
+Establish `hD1 : ∀ z z', D (z + z') = D z + D z'` using `fun z z' => by`. Use function extensionality and compare the values at `j`. Simplify using `only [D, Matrix.mul_add, Matrix.add_apply, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib, neg_add]`. Establish `hD2 : ∀ (c : AF F) z, D (c • z) = c • D z` using `fun c z => by`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[D, Matrix.mul_smul, Finset.smul_sum]`. Establish `hπ1 : ∀ z z', π (z + z') = π z + π z'` using `fun z z' => by ext i j; simp [π, Matrix.mul_add]`. Establish `hπ2 : ∀ (c : AF F) z, π (c • z) = c • π z` using `fun c z => by ext i j; simp [π, Matrix.mul_smul]`. Set `Φ : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) →ₗ[AF F] ((Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F) × ((Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F)` to `{ toFun := fun z => (glue ε (p z) (dd₁.e (π z)).1, glue ε (q z) (dd₁.e (π z)).2) map_add' := fun z z' => by`. Rewrite using `[Prod.mk_add_mk, glue_add, glue_add, hπ1, map_add]`.
+
+Apply the tactic sequence `congr 2 <;> funext k <;>`. Simplify using `only [p, q, hb1, hD1, mul_add, Pi.add_apply, map_add, Finsupp.add_apply, neg_add]`. Use the proof step `map_smul' := fun c z => by`. Rewrite using `[Prod.smul_mk, glue_smul, glue_smul, hπ2, map_smul]`. Apply the tactic sequence `congr 2 <;> funext k <;> simp [p, q, hb2, hD2] }`.
+
+Establish `hΦ : ∀ z z', symp (R` using `AF F) (cA σ) (-1) (incM F W.J) J' z z' = (Φ z).1 ⬝ᵥ (Φ z').2 - (Φ z').1 ⬝ᵥ (Φ z).2 := fun z z' => by`. Establish `h1` using `dd₁.form (π z) (π z')`. Use `show Tr _ = glue ε _ _ ⬝ᵥ glue ε _ _ - glue ε _ _ ⬝ᵥ glue ε _ _`. Express the relevant statement in the definitionally equal form `Tr _ = _ at h1`. Rewrite using `[glue_dot, glue_dot, hpq, hpq, hHt, mul_add, map_add, h1, neg_one_mul, map_neg, map_sub, hTr]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `co₀` to `GlobalTheory.DblSchr.dblD (cA σ) (swapD (cA σ) M.co)`. Establish `hbij : Function.Bijective Φ`. Use `(bijective_of_symp (Φ ∘ₗ co₀.e.symm.toLinearMap) fun u w => by` as an intermediate fact. Establish `h1` using `co₀.form (co₀.e.symm u) (co₀.e.symm w)`.
+
+Rewrite `h1` using `[hΦ, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `h1).comp co₀.e.bijective`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+
+Set `co : Darboux (symp (R` to `AF F) (cA σ) (-1) (incM F W.J) J') ((Fin n × Fin d) ⊕ (Fin n × Fin d)) := ⟨LinearEquiv.ofBijective Φ hbij, hΦ⟩`. Establish `hco : ∀ z, co.e z = (glue ε (p z) (dd₁.e (π z)).1, glue ε (q z) (dd₁.e (π z)).2)` using `fun z => rfl`. Establish `hdec : ∀ (z : Matrix (Fin d₁) (Fin n ⊕ Fin n) (AE F E)) (u v : Fin n ⊕ Fin n → AE F E), incM F Q * (incM F H.ι * z + Matrix.vecMulVec (incV F H.x) u + Matrix.vecMulVec (incV F H.y) v) = Matrix.of (Sum.elim z ![u, v])` using `fun z u v => by`. Rewrite using `[← frame_mul, ← Matrix.mul_assoc, ← incM_mul, hQP, incM_one, Matrix.one_mul]`. Establish `hval : ∀ (z : Matrix (Fin d₁) (Fin n ⊕ Fin n) (AE F E)) (u v : Fin n ⊕ Fin n → AE F E), co.e (incM F H.ι * z + Matrix.vecMulVec (incV F H.x) u + Matrix.vecMulVec (incV F H.y) v) = (glue ε (fun k => Tr (βA k.2 * v k.1)) (dd₁.e z).1, glue ε (fun k => -βA.repr (-∑ l, J' k.1 l * cA σ …` using `fun z u v => by`.
+
+Rewrite using `[hco]`. Simplify using `only [p, q, b, D, π, hdec]`. Both sides reduce to the same expression. Establish `hv0 : ∀ u : Fin d → AE F E, Matrix.vecMulVec u (0 : Fin n ⊕ Fin n → AE F E) = 0` using `fun u => by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply]`. Use `⟨(Fin n ⊕ Fin n) × Fin 2, inferInstance, ε, fun k j => if Sum.elim id id k.1 = j then β k.2 else 0, co, fun x => ?_, fun z hz => ?_, fun z => ?_, fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨u, w, huw⟩` from `hdd₁ ((Q * x).submatrix .inl id)`. Establish `hx₁ : π (incM F x) = incM F ((Q * x).submatrix .inl id)`. Simplify using `only [π, ← incM_mul]`.
+
+Both sides reduce to the same expression. Use `⟨glue ε (fun k => Algebra.trace F E (β k.2 * (Q * x) (.inr 1) k.1)) u, glue ε (fun k => -β.repr (-∑ l, J₀ k.1 l * σ ((Q * x) (.inr 0) l)) k.2) w, ?_⟩` and prove the remaining obligations. Rewrite using `[hco, hx₁, huw, glue_map ε (algebraMap F (AF F)), glue_map ε (algebraMap F (AF F))]`. Apply the tactic sequence `congr 2 <;> funext k`. Simplify using `only [p, b, ← incM_mul]`.
+
+Rewrite using `[← GlobalTheory.VacIndic.trace_inclR, map_mul (inclR (F := F) (AF F)), hβA]`. Both sides reduce to the same expression. Establish `h1 : D (incM F x) k.1 = inclR (F` using `F) (AF F) (-∑ l, J₀ k.1 l * σ ((Q * x) (.inr 0) l)) := by`. Simplify using `only [D, ← incM_mul, hJ₀]`. Simplify using `[incM, GlobalTheory.VacIndic.cA_inclR]`.
+
+Simplify using `only [q, h1]`. Rewrite using `[map_neg (algebraMap F (AF F))]`. Generalize the expression as in `(-∑ l, J₀ k.1 l * σ ((Q * x) (.inr 0) l)) = t`. Use `show -βA.repr ((1 : AF F) ⊗ₜ[F] t) k.2 = _`. Simplify using `[βA, Algebra.TensorProduct.basis_repr_tmul]`.
+
+Use function extensionality and compare the values at `j`. Establish `h1 : ∀ i, Algebra.trace F E (β i * z j) = 0` using `fun i => by`. Establish `h2` using `hz (.inl j, i)`. Rewrite `h2` using `[Finset.sum_eq_single j (fun j' _ hj => by simp [Ne.symm hj]) (by simp)]`. Simplify using `using h2`.
+
+Use `(traceForm_nondegenerate F E).1 (z j) fun t => ?_` and prove the remaining obligations. Rewrite using `[← β.sum_repr t, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.traceForm_apply, mul_comm, h1, smul_zero]`. Use `hval z 0 0` as an intermediate fact.
+
+Rewrite `this` using `[hv0, hv0]`. Simplify using `only [add_zero, Pi.zero_apply, mul_zero, map_zero, Finset.sum_const_zero, neg_zero, Finsupp.coe_zero] at this`. Conclude with `this`. Use `hval 0 y 0` as an intermediate fact. Rewrite `this` using `[hv0]`.
+
+Simplify using `only [add_zero, zero_add, Matrix.mul_zero, Pi.zero_apply, mul_zero, map_zero, Prod.fst_zero, Prod.snd_zero] at this`. Conclude with `⟨_, this.trans (congrArg₂ Prod.mk (glue_zero ε) rfl)⟩`. Use `hval 0 0 (Sum.elim y y)` as an intermediate fact. Rewrite `this` using `[hv0]`. Simplify using `only [add_zero, zero_add, Matrix.mul_zero, Pi.zero_apply, mul_zero, map_zero, Prod.fst_zero, Prod.snd_zero, Finset.sum_const_zero, neg_zero, Finsupp.coe_zero] at this`.
+
+Use `this.trans (congrArg₂ Prod.mk ?_ (glue_zero ε))` and prove the remaining obligations. Use `show glue ε _ _ = glue ε _ _`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_eq_single (Sum.elim id id k.1) (fun j _ hj => by simp [Ne.symm hj]) (by simp), hβA]`.
+
+Use `beta_reduce`. Rewrite using `[if_pos rfl]`. Apply the tactic sequence `rcases k with ⟨k | k, i⟩ <;> rfl`.
+-/
 theorem exists_coord : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

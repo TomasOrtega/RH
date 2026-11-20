@@ -20,6 +20,11 @@ section Rel
 variable {S' S : Scheme.{0}} {j : S' ⟶ S} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G]
   {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Set `φ₀ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ hφ.1.w`. Set `z : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk ((1 : G' ⟶ G').left ≫ φ) (by rw [Category.assoc, hφ.1.w, ← Category.assoc, Over.w]; rfl)`. Establish `h` using `hφ.2 G' 1 1 z z rfl rfl`. Rewrite `h` using `[_root_.mul_one]`. Establish `hz : z = 1` using `mul_eq_left.1 (Over.OverMorphism.ext h)`.
+
+Establish `h1 : φ₀ ≫ (1 : G ⟶ G) = 1` using `MonObj.comp_one _`. Establish `h2 : z.left = (φ₀ ≫ (1 : G ⟶ G)).left` using `congrArg (fun w => w.left) (hz.trans h1.symm)`. Rewrite `h2` using `[Over.comp_left]`. Conclude with `h2`.
+-/
 theorem one_left_comp (hφ : IsGrpPullback G' G j φ) :
     (1 : G' ⟶ G').left ≫ φ = φ ≫ (1 : G ⟶ G).left := by
   let φ₀ : Over.mk (G'.hom ≫ j) ⟶ G := Over.homMk φ hφ.1.w
@@ -33,6 +38,9 @@ theorem one_left_comp (hφ : IsGrpPullback G' G j φ) :
   rw [Over.comp_left] at h2
   exact h2
 
+/- English proof (translation)
+Set `φ₀ : Over.mk (G'.hom ≫ j) ⟶ G` to `Over.homMk φ hφ.1.w`. Establish `h` using `hφ.2 G' e₁ e₂ (φ₀ ≫ F₁) (φ₀ ≫ F₂) h₁.symm h₂.symm`. Rewrite `h` using `[← MonObj.comp_mul]`. Conclude with `h.symm`.
+-/
 theorem mul_left_comp (hφ : IsGrpPullback G' G j φ) {e₁ e₂ : G' ⟶ G'} {F₁ F₂ : G ⟶ G}
     (h₁ : e₁.left ≫ φ = φ ≫ F₁.left) (h₂ : e₂.left ≫ φ = φ ≫ F₂.left) :
     (e₁ * e₂).left ≫ φ = φ ≫ (F₁ * F₂).left := by
@@ -41,6 +49,9 @@ theorem mul_left_comp (hφ : IsGrpPullback G' G j φ) {e₁ e₂ : G' ⟶ G'} {F
   rw [← MonObj.comp_mul] at h
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, h₂, ← Category.assoc, h₁, Category.assoc]`.
+-/
 theorem comp_left_comp {e₁ e₂ : G' ⟶ G'} {F₁ F₂ : G ⟶ G}
     (h₁ : e₁.left ≫ φ = φ ≫ F₁.left) (h₂ : e₂.left ≫ φ = φ ≫ F₂.left) :
     (e₁ ≫ e₂).left ≫ φ = φ ≫ (F₁ ≫ F₂).left := by
@@ -48,6 +59,27 @@ theorem comp_left_comp {e₁ e₂ : G' ⟶ G'} {F₁ F₂ : G ⟶ G}
 
 end Rel
 
+/- English proof (translation)
+Introduce `S B _ hS U₀ hU G _ _ hG G' _ P _ _ f φ ψ hφ hψ E' hE' hrel hsum`. Establish `: IsDominant U₀.ι` using `AlgebraicGeometry.Opens.isDominant_ι hU`. Take `⟨_, _⟩` from `GlobalTheory.Published.SemiAbelianHomExtension.quasiCompact_and_dominant hS U₀.ι`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian G hG`. Set `e : Fin 8 → Fin 8 → (G' ⟶ G')` to `fun a b => Over.homMk (hψ.1.lift (ψ ≫ (E' a b).left) G'.hom (by rw [Category.assoc, Over.w, hψ.1.w])) (hψ.1.lift_snd _ _ _)`.
+
+Establish `he : ∀ a b, (e a b).left ≫ ψ = ψ ≫ (E' a b).left` using `fun a b => hψ.1.lift_fst _ _ _`. Establish `heM : ∀ a b, IsMonHom (e a b)` using `fun a b => by haveI := hE' a b`. Conclude with `ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.isMonHom_of_grpPullback hψ hψ (E' a b) (e a b) (he a b)`. Establish `uq : ∀ {x y : G' ⟶ G'} {F : P ⟶ P}, x.left ≫ ψ = ψ ≫ F.left → y.left ≫ ψ = ψ ≫ F.left → x = y` using `fun hx hy => Over.OverMorphism.ext (hψ.1.hom_ext (hx.trans hy.symm) ((Over.w _).trans (Over.w _).symm))`. Establish `uG : ∀ {F₁ F₂ : G ⟶ G}, φ ≫ F₁.left = φ ≫ F₂.left → F₁ = F₂` using `fun h => GlobalTheory.ExtUnique.over_hom_ext_of_isPullback hφ.1 h`.
+
+Establish `ext : ∀ a b, ∃ F : G ⟶ G, IsMonHom F ∧ (e a b).left ≫ φ = φ ≫ F.left` using `fun a b => by haveI := heM a b`. Conclude with `(GlobalTheory.Published.SemiAbelianHomExtension.of_isGrpPullback GlobalTheory.semiAbelianHomExtension_holds hS hG hG hφ hφ (e a b)).exists`. Use `choose E hE using ext`. Use `⟨E, fun a b => (hE a b).1, ?_, ?_, fun a b => ⟨e a b, heM a b, (hE a b).2, he a b⟩⟩` and prove the remaining obligations. Introduce `a b c d`.
+
+Apply `uG` to reduce the goal to its premises. Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality. Rewrite using `[if_pos rfl]`. Establish `h1` using `comp_left_comp (he a b) (he b d)`.
+
+Rewrite `h1` using `[hrel, if_pos rfl]`. Establish `h2 : e a b ≫ e b d = e a d` using `uq h1 (he a d)`. Rewrite using `[← comp_left_comp (hE a b).2 (hE b d).2, h2, (hE a d).2]`. Rewrite using `[if_neg hbc]`. Establish `h1` using `comp_left_comp (he a b) (he c d)`.
+
+Rewrite `h1` using `[hrel, if_neg hbc]`. Establish `h2 : e a b ≫ e c d = 1` using `uq h1 (one_left_comp hψ)`. Rewrite using `[← comp_left_comp (hE a b).2 (hE c d).2, h2, one_left_comp hφ]`. Establish `key : ∀ s : Finset (Fin 8), ∃ x : G' ⟶ G', x.left ≫ φ = φ ≫ (∏ a ∈ s, E a a).left ∧ x.left ≫ ψ = ψ ≫ (∏ a ∈ s, E' a a).left`. Introduce `s`.
+
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_empty]`. Conclude with `one_left_comp hφ`. Rewrite using `[Finset.prod_empty]`.
+
+Conclude with `one_left_comp hψ`. Introduce `a s ha ih`. Take `⟨x, h1, h2⟩` from `ih`. Use `⟨e a a * x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_insert ha]`.
+
+Conclude with `mul_left_comp hφ (hE a a).2 h1`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `mul_left_comp hψ (he a a) h2`. Take `⟨x, h1, h2⟩` from `key Finset.univ`. Rewrite `h2` using `[hsum]`.
+
+Establish `hx : x = 𝟙 G'` using `uq h2 (by simp)`. Apply `uG` to reduce the goal to its premises. Rewrite using `[← h1, hx]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_matrixUnits_extend : ∀ {S B : Scheme.{0}} [AlgebraicGeometry.IsNoetherian S] (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (U₀ : S.Opens) (hU : Dense (U₀ : Set S)) (G : Over S) [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) (G' : Over U₀.toScheme) [GrpObj G'] (P : Over B) [GrpObj P] [IsCommMonObj P] (f : U₀.toScheme ⟶ B) (φ : G'.left ⟶ G.left) (ψ : G'.left ⟶ P.left) (hφ : IsGrpPullback G' G U₀.ι φ) (hψ : IsGrpPullback G' P f ψ) (E' : Fin 8 → Fin 8 → (P ⟶ P)) (hE' : ∀ a b, IsMonHom (E' a b)) (hrel : ∀ a b c d, E' a b ≫ E' c d = if b = c then E' a d else 1) (hsum : ∏ a, E' a a = 𝟙 P), ∃ E : Fin 8 → Fin 8 → (G ⟶ G), (∀ a b, IsMonHom (E a b)) ∧ (∀ a b c d, E a b ≫ E c d = if b = c then E a d else 1) ∧ ∏ a, E a a = 𝟙 G ∧ ∀ a b, ∃ e : G' ⟶ G', IsMonHom e ∧ e.left ≫ φ = φ ≫ (E a b).left ∧ e.left ≫ ψ = ψ ≫ (E' a b).left := by
   intro S B _ hS U₀ hU G _ _ hG G' _ P _ _ f φ ψ hφ hψ E' hE' hrel hsum
   have : IsDominant U₀.ι := AlgebraicGeometry.Opens.isDominant_ι hU

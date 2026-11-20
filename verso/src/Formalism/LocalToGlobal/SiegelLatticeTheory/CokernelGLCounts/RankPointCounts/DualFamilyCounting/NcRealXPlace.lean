@@ -16,14 +16,25 @@ def refNg : {n r k : ℕ} → n = 2 * r + k + 1 → (ε : Fin n → Bool) → (F
     (Fin k → Fin n → ℂ) → (Fin n → ℂ) → Measure (Formalism.REAL.UJ ε)
   | _, _, _, rfl, ε, e, f, wf, z0 => refN ε e f wf z0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem refNg_rfl {r k : ℕ} (ε : Fin (2 * r + k + 1) → Bool) (e f : Fin r → Fin (2 * r + k + 1) → ℂ)
     (wf : Fin k → Fin (2 * r + k + 1) → ℂ) (z0 : Fin (2 * r + k + 1) → ℂ) :
     refNg rfl ε e f wf z0 = refN ε e f wf z0 := rfl
 
+/- English proof (translation)
+Unfold `muSL`. Rewrite using `[Measure.prod_smul_left, Measure.map_smul]`.
+-/
 theorem muSL_smul {n : ℕ} {ε : Fin n → Bool} (μH μN : Measure (Formalism.REAL.UJ ε)) [SFinite μH] (c : ℝ≥0∞) :
     muSL μH (c • μN) = c • muSL μH μN := by
   unfold muSL; rw [Measure.prod_smul_left, Measure.map_smul]
 
+/- English proof (translation)
+Introduce `φ hφ`. Rewrite using `[hD φ hφ]`. Use `setLIntegral_congr_fun (JL.measurableSet_goodLoc r T T') (fun x _ => ?_)` and prove the remaining obligations. Repeatedly rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← mul_assoc, ← ENNReal.ofReal_mul' hc.le]`.
+
+Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem disint_smul_right {n r k : ℕ} {ε : Fin n → Bool} {T T' : ℝ} {μS μS' : Measure (Formalism.REAL.UJ ε)}
     {h : (Fin (r + 1) → ℂ) → Formalism.REAL.UJ ε} {C c : ℝ} (hc : 0 < c) (hD : DisintLoc ε k T T' μS μS' h C) :
     DisintLoc ε k T T' μS (ENNReal.ofReal c • μS') h (C / c) := by
@@ -35,6 +46,27 @@ theorem disint_smul_right {n r k : ℕ} {ε : Fin n → Bool} {T T' : ℝ} {μS 
   congr 2
   field_simp
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hs : (Real.sqrt T)⁻¹ * (Real.sqrt T)⁻¹ * T = 1`. Rewrite using `[← mul_inv, Real.mul_self_sqrt hT.le, inv_mul_cancel₀ hT.ne']`. Establish `hsC : ((((Real.sqrt T)⁻¹ : ℝ)) : ℂ) * ((((Real.sqrt T)⁻¹ : ℝ)) : ℂ) * (T : ℂ) = 1` using `by exact_mod_cast hs`. Establish `hFJ : IsFrameJ ε e f wf (z0v T z)` using `{ ee := hee, ff := hff, ef := hef ez := fun a => by rw [z0v, JL.hJ_smul_r, hez, mul_zero] fz := fun a => by rw [z0v, JL.hJ_smul_r, hfz, mul_zero] zz := by`.
+
+Rewrite using `[z0v, JL.hJ_smul_l, JL.hJ_smul_r, hzz, Complex.conj_ofReal]`. Take the linear combination `(-1 : ℂ) * hsC`. Use `ww := hww, ew := hew, fw := hfw`. Use `zw := fun a => by rw [z0v, JL.hJ_smul_l, hzw, mul_zero] }`. Establish `hzB : inWb k r (zBv k r T)` using `inWb_zB T`.
+
+Establish `hQzB : Qm e f wf (z0v T z) *ᵥ zBv k r T = z` using `Qm_zB hT z`. Establish `hTzB : Tz k r (zBv k r T) = T` using `Tz_zB hT.le`. Use `set zB' := Qi ε e f wf (z0v T z) *ᵥ z' with hzB'`. Establish `hQzB' : Qm e f wf (z0v T z) *ᵥ zB' = z'`. Rewrite using `[hzB', Matrix.mulVec_mulVec, Qm_mul_Qi hFJ, Matrix.one_mulVec]`.
+
+Establish `hzB'W : inWb k r zB'`. Introduce `i hi`. Break down `hi with hi | hi` into its components or cases. Establish `hie : i = eI k r ⟨i.val, hi⟩` using `Fin.ext rfl`. Rewrite using `[hie, hzB', Qi_mulVec_eI, hfz']`.
+
+Conclude with `Qi_perp z' hez' i hi`. Establish `hTzB' : Tz k r zB' = T'`. Establish `hw` using `Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.hJ_P (gramQ hFJ) zB' zB'`. Rewrite `hw` using `[hQzB', hzz']`. Unfold `Tz`.
+
+Rewrite using `[← hw]`. Simplify using the standard rewrite rules. Establish `hHB : IsLocHaar (Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf (z0v T z) *ᵥ zBv k r T)) μH`. Rewrite using `[hQzB]`. Conclude with `hH`.
+
+Establish `hHB' : IsLocHaar (Formalism.L2.SG.Pf.NcReal.HLoc ε e f (Qm e f wf (z0v T z) *ᵥ zB')) μH'`. Rewrite using `[hQzB']`. Conclude with `hH'`. Establish `hhB : IsSecLoc ε 1 e (Qm e f wf (z0v T z) *ᵥ zBv k r T) (Qm e f wf (z0v T z) *ᵥ zB') (Tz k r (zBv k r T)) (Tz k r zB') h`. Rewrite using `[hQzB, hQzB', hTzB, hTzB']`.
+
+Conclude with `hh`. Establish `hD` using `jacLocX_of hJG k r ε e f wf (z0v T z) (zBv k r T) zB' hFJ hk hzB hzB'W (by rw [hTzB]; exact hT) (by rw [hTzB']; exact hT') hG μH μH' hHB hHB' a a' ha ha' hma hma' κ hκ h hhB`. Rewrite `hD` using `[hTzB, hTzB']`. Establish `hD2` using `disint_smul_right (c := κ' / κ) (div_pos hκ' hκ) hD`. Use `haveI : SigmaFinite μH' := hH'.1`.
+
+Establish `hm : muSL μH' (ENNReal.ofReal κ' • refN ε e f wf (z0v T z)) = ENNReal.ofReal (κ' / κ) • muSL μH' (ENNReal.ofReal κ • refN ε e f wf (z0v T z))`. Rewrite using `[muSL_smul, muSL_smul, smul_smul, ← ENNReal.ofReal_mul (div_pos hκ' hκ).le, div_mul_cancel₀ _ hκ.ne']`. Use `show DisintLoc ε k T T' (muSL μH (ENNReal.ofReal κ • refN ε e f wf (z0v T z))) (muSL μH' (ENNReal.ofReal κ' • refN ε e f wf (z0v T z))) h _`. Rewrite using `[hm]`. Use `hD2 using 1` and compare the differences between its conclusion and the goal.
+
+Establish `hV1` using `Jac.volU_pos (k - 1)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem placeStep (hJG : JacGauge) {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool)
     (e f : Fin r → Fin n → ℂ) (wf : Fin k → Fin n → ℂ) (z z' : Fin n → ℂ) {T T' : ℝ} (hk : 1 ≤ k) (hT : 0 < T)
     (hT' : 0 < T') (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)
@@ -106,6 +138,15 @@ theorem placeStep (hJG : JacGauge) {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : 
   have hV1 := Jac.volU_pos (k - 1)
   field_simp
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hs : (Real.sqrt T)⁻¹ * (Real.sqrt T)⁻¹ * T = 1`. Rewrite using `[← mul_inv, Real.mul_self_sqrt hT.le, inv_mul_cancel₀ hT.ne']`. Establish `hsC : ((((Real.sqrt T)⁻¹ : ℝ)) : ℂ) * ((((Real.sqrt T)⁻¹ : ℝ)) : ℂ) * (T : ℂ) = 1` using `by exact_mod_cast hs`. Establish `hFJ : IsFrameJ ε e f wf (z0v T z)` using `{ ee := hee, ff := hff, ef := hef ez := fun a => by rw [z0v, JL.hJ_smul_r, hez, mul_zero] fz := fun a => by rw [z0v, JL.hJ_smul_r, hfz, mul_zero] zz := by`.
+
+Rewrite using `[z0v, JL.hJ_smul_l, JL.hJ_smul_r, hzz, Complex.conj_ofReal]`. Take the linear combination `(-1 : ℂ) * hsC`. Use `ww := hww, ew := hew, fw := hfw`. Use `zw := fun a => by rw [z0v, JL.hJ_smul_l, hzw, mul_zero] }`. Establish `hQzB : Qm e f wf (z0v T z) *ᵥ zBv k r T = z` using `Qm_zB hT z`.
+
+Establish `hz0 : ∃ t : ℂ, z0v T z = t • (Qm e f wf (z0v T z) *ᵥ zBv k r T)` using `⟨(((Real.sqrt T)⁻¹ : ℝ) : ℂ), by rw [hQzB]; rfl⟩`. Establish `h0` using `refN_isHaarLoc hFJ (inWb_zB T) hz0`. Rewrite `h0` using `[hQzB]`. Take `⟨h1, h2, h3, h4⟩` from `h0`. Establish `hNeq : NLoc ε e z' = NLoc ε e z`.
+
+Use extensionality with `g`. Conclude with `⟨fun hg => inN_indep hez hg, fun hg => inN_indep hez' hg⟩`. Use `show IsHaarLoc (NLoc ε e z') (refN ε e f wf (z0v T z))`. Rewrite using `[hNeq]`. Conclude with `⟨h1, h2, h3, h4⟩`.
+-/
 theorem refNg_isHaarLoc {n r k : ℕ} (hn : n = 2 * r + k + 1) (ε : Fin n → Bool)
     (e f : Fin r → Fin n → ℂ) (wf : Fin k → Fin n → ℂ) (z z' : Fin n → ℂ) {T : ℝ} (hT : 0 < T)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)

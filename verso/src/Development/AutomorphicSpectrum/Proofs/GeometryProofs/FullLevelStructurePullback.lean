@@ -10,6 +10,17 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar.XR
 
+/- English proof (translation)
+Introduce `E _ _ _ H D X X' t t' f m Ω Ω' _ _ i ξ ξ' hξ N z ev hfull`. Establish `hpb : IsPullback m.φ t'.G.hom t.G.hom f` using `m.cart.1`. Establish `hsq : ∀ a, (spMap i ≫ (ev a).left) ≫ t.G.hom = ξ' ≫ f`. Introduce `a`. Rewrite using `[Category.assoc, Over.w (ev a)]`.
+
+Conclude with `hξ.symm`. Set `ev' : D.La → (Over.mk ξ' ⟶ t'.G)` to `fun a => Over.homMk (hpb.lift (spMap i ≫ (ev a).left) ξ' (hsq a)) (hpb.lift_snd _ _ _)`. Establish `hfst : ∀ a, (ev' a).left ≫ m.φ = spMap i ≫ (ev a).left` using `fun a => hpb.lift_fst _ _ _`. Establish `hsnd : ∀ a, (ev' a).left ≫ t'.G.hom = ξ'` using `fun a => hpb.lift_snd _ _ _`. Use `⟨ev', ?_, hfst⟩` and prove the remaining obligations.
+
+Unfold `IsFullLevelAt`. Introduce `k _ _ j`. Take `⟨I, hIζ, hIev⟩` from `hfull k (j.comp i)`. Establish `hx : spMap (j.comp i) ≫ ξ = (spMap j ≫ ξ') ≫ f`. Rewrite using `[spMap_comp, Category.assoc, Category.assoc, hξ]`.
+
+Take `⟨I', hζ, hev⟩` from `(tateIsoAt_move E H D X X' t t' f m k (spMap j ≫ ξ') (spMap (j.comp i) ≫ ξ) hx).1 I`. Use `⟨I', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hζ, hIζ]`. Simplify using the standard rewrite rules. Introduce `a`.
+
+Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[hev N a, hIev a, Category.assoc, hfst a, spMap_comp, Category.assoc]`. Rewrite using `[Over.w (I'.ev N a), Category.assoc, hsnd a]`. Both sides reduce to the same expression.
+-/
 theorem isFullLevelAt_move : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∀ (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (m : SABMap t' t f) (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω' ⟶ X'), ξ' ≫ f = spMap i ≫ ξ → ∀ (N : ℕ) (z : Ωˣ) (ev : D.La → (Over.mk ξ ⟶ t.G)), IsFullLevelAt D t ξ N z ev → ∃ ev' : D.La → (Over.mk ξ' ⟶ t'.G), IsFullLevelAt D t' ξ' N (Units.map i.toMonoidHom z) ev' ∧ ∀ a, (ev' a).left ≫ m.φ = spMap i ≫ (ev a).left := by
   intro E _ _ _ H D X X' t t' f m Ω Ω' _ _ i ξ ξ' hξ N z ev hfull
   have hpb : IsPullback m.φ t'.G.hom t.G.hom f := m.cart.1

@@ -7,6 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableLipschitzLa
 
 open NumberField UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Unfold `Loc.hs`. Break down `le_or_gt 0 x with h | h` into its components or cases. Rewrite using `[if_pos ⟨√x, 0, by rw [Real.sq_sqrt h]; ring⟩, abs_of_nonneg h, one_mul]`. Rewrite using `[if_neg (by rintro ⟨a, b, e⟩; nlinarith [sq_nonneg a, sq_nonneg b]), abs_of_neg h]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hs_real {d x : ℝ} (hd : d < 0) : Loc.hs d x * ((|x| : ℝ) : ℂ) = (x : ℂ) := by
   unfold Loc.hs
   rcases le_or_gt 0 x with h | h
@@ -15,6 +20,13 @@ private theorem hs_real {d x : ℝ} (hd : d < 0) : Loc.hs d x * ((|x| : ℝ) : �
     push_cast
     ring
 
+/- English proof (translation)
+Establish `hN` using `GlobalTheory.LipschitzTR.LhsSum.prod_realEmb_eq_norm x`. Establish `h1 : ((|Algebra.norm ℚ x| : ℚ) : ℂ) = ∏ σ : F →+* ℝ, ((|σ x| : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_ratCast, Rat.cast_abs, ← hN, Finset.abs_prod]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `h2 : ((Algebra.norm ℚ x : ℚ) : ℂ) = ∏ σ : F →+* ℝ, ((σ x : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_ratCast, ← hN]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[h1, h2, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun σ _ => hs_real (hΔ σ)`.
+-/
 private theorem real_prod {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {Δ : F} (hΔ : ∀ σ : F →+* ℝ, σ Δ < 0) (x : F) :
     (∏ σ : F →+* ℝ, Loc.hs (σ Δ) (σ x)) * ((|Algebra.norm ℚ x| : ℚ) : ℂ) = ((Algebra.norm ℚ x : ℚ) : ℂ) := by
   have hN := GlobalTheory.LipschitzTR.LhsSum.prod_realEmb_eq_norm x
@@ -29,6 +41,11 @@ private theorem real_prod {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
   rw [h1, h2, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun σ _ => hs_real (hΔ σ)
 
+/- English proof (translation)
+Introduce `hΔ`. Use `haveI := h.real`. Establish `h0 : ∏ τ : F →+* ℝ, τ 0 = 0`. Rewrite using `[GlobalTheory.LipschitzTR.LhsSum.prod_realEmb_eq_norm]`. Simplify using the standard rewrite rules.
+
+Take `⟨σ, -, -⟩` from `Finset.prod_eq_zero_iff.mp h0`. Establish `hσ` using `h.neg σ`. Rewrite `hσ` using `[hΔ, map_zero]`. Conclude with `lt_irrefl _ hσ`.
+-/
 private theorem delta_ne {F : Type} [Field F] [NumberField F] {Δ : F} {D : Dat Δ} (h : D.Ok) : Δ ≠ 0 := by
   intro hΔ
   haveI := h.real
@@ -40,6 +57,25 @@ private theorem delta_ne {F : Type} [Field F] [NumberField F] {Δ : F} {D : Dat 
   rw [hΔ, map_zero] at hσ
   exact lt_irrefl _ hσ
 
+/- English proof (translation)
+Use `haveI := h.real`. Establish `hz : (z : F) ≠ 0` using `z.ne_zero`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hz` to reduce the goal to its premises.
+
+Rewrite using `[← ha]`. Both sides reduce to the same expression. Take `⟨hfin, hrec⟩` from `recip F Δ (z : F) (delta_ne h) hz`. Establish `hval : ∀ v : Pl F, (D.χ v (Units.map (cv v : F →* Kv v) z) : ℂ) = Loc.hs (cv v Δ) (cv v (z : F)) / (Nat.card (Ov v ⧸ Ideal.span {algebraMap (𝓞 F) (Ov v) a}) : ℂ)`. Introduce `v`.
+
+Rewrite using `[chiVal F Δ D h v _ (algebraMap (𝓞 F) (Ov v) a) (by rw [Units.coe_map, ← ha]; rfl)]`. Both sides reduce to the same expression. Take `⟨cfin, cprod⟩` from `GlobalTheory.LocalDifferentProduct.finprod_card_quot_map (K := F) (I := Ideal.span {a}) (by simpa using ha0)`. Simplify using `only [Ideal.map_span, Set.image_singleton] at cfin cprod`. Establish `cfinC : (Function.mulSupport fun v : Pl F => (Nat.card (Ov v ⧸ Ideal.span {algebraMap (𝓞 F) (Ov v) a}) : ℂ)).Finite`.
+
+Establish `e` using `Function.mulSupport_comp_eq (Nat.cast : ℕ → ℂ) (fun {n} => Nat.cast_eq_one) (fun v : Pl F => Nat.card (Ov v ⧸ Ideal.span {algebraMap (𝓞 F) (Ov v) a}))`. Rewrite `e` using `[Function.comp_def]`. Rewrite using `[e]`. Conclude with `cfin`. Rewrite using `[funext hval]`.
+
+Use `⟨(hfin.union cfinC).subset (Function.mulSupport_div _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_div_distrib hfin cfinC, hrec]`. Establish `hcard : (∏ᶠ v : Pl F, (Nat.card (Ov v ⧸ Ideal.span {algebraMap (𝓞 F) (Ov v) a}) : ℂ)) = ((|Algebra.norm ℚ (z : F)| : ℚ) : ℂ)`. Establish `e` using `(Nat.castRingHom ℂ : ℕ →* ℂ).map_finprod cfin`. Simplify using `only [MonoidHom.coe_coe, Nat.coe_castRingHom] at e`.
+
+Rewrite using `[← e, cprod, Ideal.absNorm_span_singleton, ← ha, ← Algebra.coe_norm_int]`. Rewrite using `[Nat.cast_natAbs, ← Int.cast_abs, Rat.cast_intCast]`. Rewrite using `[hcard]`. Establish `hp` using `real_prod h.neg (z : F)`. Establish `hn : ((Algebra.norm ℚ (z : F) : ℚ) : ℂ) ≠ 0`.
+
+Conclude with `(Algebra.norm_ne_zero_iff.mpr hz)` after adjusting the coercions. Establish `hA : ((|Algebra.norm ℚ (z : F)| : ℚ) : ℂ) ≠ 0`. Conclude with `abs_ne_zero.mpr (Algebra.norm_ne_zero_iff.mpr hz)` after adjusting the coercions. Establish `hAA : ((|Algebra.norm ℚ (z : F)| : ℚ) : ℂ) * ((|Algebra.norm ℚ (z : F)| : ℚ) : ℂ) = ((Algebra.norm ℚ (z : F) : ℚ) : ℂ) * ((Algebra.norm ℚ (z : F) : ℚ) : ℂ)`. Conclude with `abs_mul_abs_self (Algebra.norm ℚ (z : F))` after adjusting the coercions.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_mul_right _ _ hA]`. Use `_ = ((Algebra.norm ℚ (z : F) : ℚ) : ℂ) / (((Algebra.norm ℚ (z : F) : ℚ) : ℂ) * ((Algebra.norm ℚ (z : F) : ℚ) : ℂ)) := by`. Rewrite using `[hp, hAA]`. Use `_ = ((Algebra.norm ℚ (z : F) : ℚ) : ℂ)⁻¹ := by`.
+
+Rewrite using `[div_mul_cancel_left₀ hn]`.
+-/
 private theorem int_case {F : Type} [Field F] [NumberField F] {Δ : F} {D : Dat Δ} (h : D.Ok) (z : Fˣ) (a : 𝓞 F)
     (ha : (a : F) = z) :
     (Function.mulSupport fun v : Pl F => (D.χ v (Units.map (cv v : F →* Kv v) z) : ℂ)).Finite ∧
@@ -95,6 +131,15 @@ private theorem int_case {F : Type} [Field F] [NumberField F] {Δ : F} {D : Dat 
     _ = ((Algebra.norm ℚ (z : F) : ℚ) : ℂ)⁻¹ := by
         rw [div_mul_cancel_left₀ hn]
 
+/- English proof (translation)
+Introduce `F _ _ Δ D h z`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (𝓞 F) (z : F)`. Establish `hb0 : algebraMap (𝓞 F) F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `ha0 : algebraMap (𝓞 F) F a ≠ 0`. Introduce `h0`.
+
+Apply `z.ne_zero` to reduce the goal to its premises. Rewrite using `[← hab, h0, zero_div]`. Establish `hz : z = Units.mk0 _ ha0 * (Units.mk0 _ hb0)⁻¹`. Use `ext`. Simplify using `[← hab, div_eq_mul_inv]`.
+
+Take `⟨fa, pa⟩` from `int_case h (Units.mk0 _ ha0) a rfl`. Take `⟨fb, pb⟩` from `int_case h (Units.mk0 _ hb0) b rfl`. Establish `hf : ∀ v : Pl F, (D.χ v (Units.map (cv v : F →* Kv v) z) : ℂ) = (D.χ v (Units.map (cv v : F →* Kv v) (Units.mk0 _ ha0)) : ℂ) / (D.χ v (Units.map (cv v : F →* Kv v) (Units.mk0 _ hb0)) : ℂ)`. Introduce `v`. Rewrite using `[hz, map_mul, map_inv, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, div_eq_mul_inv]`.
+
+Establish `hinv : Algebra.norm ℚ ((algebraMap (𝓞 F) F b)⁻¹) = (Algebra.norm ℚ (algebraMap (𝓞 F) F b))⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, inv_mul_cancel₀ hb0, map_one]`. Rewrite using `[finprod_congr hf, finprod_div_distrib fa fb, pa, pb, hz]`. Simplify using `[map_mul, hinv, div_eq_mul_inv, mul_comm]`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.chiProd :
     UpperTheory.V.Z.Sym.Glob.ChiProd := by
   intro F _ _ Δ D h z

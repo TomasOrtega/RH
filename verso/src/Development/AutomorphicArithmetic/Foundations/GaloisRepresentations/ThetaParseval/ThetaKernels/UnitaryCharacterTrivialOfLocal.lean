@@ -9,6 +9,9 @@ section
 open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.PositivityTheory.ThKW.unitary_character_trivial_global | exact _root_.PositivityTheory.ThKW.unitary_character_trivial_global | (intros; apply _root_.PositivityTheory.ThKW.unitary_character_trivial_global <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitary_character_trivial_of_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ ν : Formalism.IndefR.DatumF.GAF σ J →* Circle, Continuous ν → (∀ γ ∈ Formalism.IndefR.DatumF.GQF σ J, ν γ = 1) →

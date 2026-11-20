@@ -6,6 +6,13 @@ universe w w' w'' t t' v u v' u' v'' u''
 
 namespace GlobalTheory.CompanionTheory.GrpOnto
 
+/- English proof (translation)
+Establish `hper : ∀ q t, u (p * q + t) = u t`. Introduce `q t`. Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih => rw [show p * (q + 1) + t = (p * q + t) + p by ring, hu, ih]`.
+
+Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[Nat.mul_succ, Finset.sum_range_add, ih, succ_nsmul]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun t _ => hper q t`.
+-/
 theorem sum_range_periodic {A : Type*} [AddCommMonoid A] (u : ℕ → A) (p : ℕ)
     (hu : ∀ t, u (t + p) = u t) (q : ℕ) :
     ∑ t ∈ Finset.range (p * q), u t = q • ∑ t ∈ Finset.range p, u t := by
@@ -21,6 +28,13 @@ theorem sum_range_periodic {A : Type*} [AddCommMonoid A] (u : ℕ → A) (p : �
     congr 1
     exact Finset.sum_congr rfl fun t _ => hper q t
 
+/- English proof (translation)
+Establish `hlt` using `ZMod.val_lt z`. Establish `hz : ((z.val : ℕ) : ZMod P) = z` using `ZMod.natCast_zmod_val z`. Establish `hP` using `NeZero.pos P`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `e1 : z - 1 = ((z.val - 1 : ℕ) : ZMod P)`. Rewrite using `[Nat.cast_sub (by omega), hz]; simp`. Rewrite using `[e1, ZMod.val_natCast_of_lt (by omega)]`. Introduce `h`. Establish `hz0 : z = 0` using `by rw [← hz, h]; simp`.
+
+Establish `e1 : z - 1 = ((P - 1 : ℕ) : ZMod P)`. Rewrite using `[Nat.cast_sub hP, hz0]`. Simplify using the standard rewrite rules. Rewrite using `[e1, ZMod.val_natCast_of_lt (by omega)]`.
+-/
 theorem val_sub_one {P : ℕ} [NeZero P] (z : ZMod P) :
     (z.val ≠ 0 → (z - 1).val = z.val - 1) ∧ (z.val = 0 → (z - 1).val = P - 1) := by
   have hlt := ZMod.val_lt z
@@ -37,6 +51,49 @@ theorem val_sub_one {P : ℕ} [NeZero P] (z : ZMod P) :
       rw [Nat.cast_sub hP, hz0]; simp
     rw [e1, ZMod.val_natCast_of_lt (by omega)]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `GlobalTheory.CompanionTheory.SmoothUniform.smooth_uniform_exponent (R := R) l k ρ n hsm f`. Establish `hlpos : 0 < l` using `(Fact.out : l.Prime).pos`. Take `⟨e, he⟩ : ∃ e : Fin k → ℤ_[l], e = Pi.single i 1` from `⟨_, rfl⟩`. Rewrite using `[← he]`. Establish `hcomm : ∀ (p q : Multiplicative (Fin k → ℤ_[l])) (y : M), ρ p (ρ q y) = ρ q (ρ p y)`.
+
+Introduce `p q y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply]`. Establish `hmul : ∀ (p q : Fin k → ℤ_[l]) (y : M), ρ (Multiplicative.ofAdd (p + q)) y = ρ (Multiplicative.ofAdd p) (ρ (Multiplicative.ofAdd q) y)`. Introduce `p q y`. Rewrite using `[ofAdd_add, map_mul, Module.End.mul_apply]`.
+
+Set `sh : ℕ → (Fin (n + 1) → Fin k → ℤ_[l]) → (Fin (n + 1) → Fin k → ℤ_[l])` to `fun t x j => x j - t • e`. Set `F : ℕ → (Fin (n + 1) → Fin k → ℤ_[l]) → M` to `fun t x => ρ (Multiplicative.ofAdd (t • e)) (f (sh t x))`. Establish `hF0 : ∀ x, F 0 x = f x`. Introduce `x`. Establish `h1 : sh 0 x = x` using `by funext j; simp [sh]`.
+
+Simplify using `[F, h1]`. Establish `hFs : ∀ t x, ρ (Multiplicative.ofAdd e) (F t fun j => x j - e) = F (t + 1) x`. Introduce `t x`. Establish `h1 : sh t (fun j => x j - e) = sh (t + 1) x`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [sh, succ_nsmul]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `ρ _ (ρ _ (f (sh t fun j => x j - e))) = ρ _ (f (sh (t + 1) x))`. Rewrite using `[h1, succ_nsmul', hmul]`. Establish `hE : (l ^ a) • e = (l : ℤ_[l]) ^ a • e`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l]]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hper : ∀ t x, F (t + l ^ a) x = F t x`. Introduce `t x`.
+
+Establish `h1` using `(ha e (sh (t + l ^ a) x)).1`. Establish `h2` using `(ha e (sh (t + l ^ a) x)).2`. Establish `h3 : (fun s => (l : ℤ_[l]) ^ a • e + sh (t + l ^ a) x s) = sh t x`. Use function extensionality and compare the values at `s`. Simplify using `only [sh, add_nsmul, ← hE]`.
+
+Normalize the expressions using the abelian group laws. Rewrite `h1` using `[h3]`. Express the relevant statement in the definitionally equal form `ρ _ (f (sh (t + l ^ a) x)) = ρ _ (f (sh t x))`. Rewrite using `[add_nsmul, hmul, hE, h2, h1]`. Establish `hsum : ∀ x, ∑ t ∈ Finset.range (l ^ (a + c)), F (t + 1) x = 0`.
+
+Introduce `x`. Rewrite using `[pow_add, sum_range_periodic (fun t => F (t + 1) x) (l ^ a) (fun t => by`. Express the relevant statement in the definitionally equal form `F (t + l ^ a + 1) x = F (t + 1) x`. Rewrite using `[add_right_comm]`. Conclude with `hper (t + 1) x) (l ^ c)]`.
+
+Conclude with `hc _`. Use `haveI : NeZero (l ^ (a + c)) := ⟨pow_ne_zero _ hlpos.ne'⟩`. Set `z : (Fin (n + 1) → Fin k → ℤ_[l]) → ZMod (l ^ (a + c))` to `fun x => PadicInt.toZModPow (a + c) (x 0 i)`. Establish `hz1 : ∀ x, z (fun j => x j - e) = z x - 1`. Introduce `x`.
+
+Simplify using `[z, he, map_sub]`. Establish `hzj : ∀ j ∈ S, ∀ x, z (fun t => Pi.single j (1 : ℤ_[l]) + x t) = z x`. Introduce `j hj x`. Establish `hij : i ≠ j` using `fun h => hiS (h ▸ hj)`. Simplify using `[z, Pi.single_eq_of_ne hij]`.
+
+Establish `hzl : IsLocallyConstant z`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `hb : Metric.closedBall (x 0 i) ((l : ℝ) ^ (-((a + c : ℕ) : ℤ))) ∈ nhds (x 0 i)` using `Metric.closedBall_mem_nhds _ (zpow_pos (by exact_mod_cast hlpos) _)`. Establish `hcont : Continuous (fun y : Fin (n + 1) → Fin k → ℤ_[l] => y 0 i)` using `(continuous_apply i).comp (continuous_apply 0)`. Use `filter_upwards [hcont.continuousAt.preimage_mem_nhds hb] with y hy`.
+
+Establish `h1 : ‖y 0 i - x 0 i‖ ≤ (l : ℝ) ^ (-((a + c : ℕ) : ℤ))`. Simplify `hy` using `[dist_eq_norm]`. Establish `h2` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ _).1 h1`. Rewrite `h2` using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h2`.
+
+Establish `hFl : ∀ t, IsLocallyConstant (F t)`. Introduce `t`. Establish `hsh : Continuous (sh t)` using `continuous_pi fun j => (continuous_apply j).sub continuous_const`. Conclude with `(f.isLocallyConstant.comp_continuous hsh).comp _`. Set `gf : (Fin (n + 1) → Fin k → ℤ_[l]) → M` to `fun x => -∑ t ∈ Finset.range ((z x).val + 1), F t x`.
+
+Establish `hg : IsLocallyConstant gf`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `h1` using `(IsLocallyConstant.iff_eventually_eq _).1 hzl x`. Establish `h2 : ∀ᶠ y in nhds x, ∀ t ∈ Finset.range ((z x).val + 1), F t y = F t x` using `(Filter.eventually_all_finset _).2 fun t _ => (IsLocallyConstant.iff_eventually_eq _).1 (hFl t) x`. Use `filter_upwards [h1, h2] with y hy1 hy2`.
+
+Express the relevant statement in the definitionally equal form `-∑ t ∈ Finset.range ((z y).val + 1), F t y = -∑ t ∈ Finset.range ((z x).val + 1), F t x`. Rewrite using `[hy1]`. Conclude with `congrArg _ (Finset.sum_congr rfl hy2)`. Establish `hgE : ∀ j ∈ S, ∀ x : Fin (n + 1) → Fin k → ℤ_[l], gf (fun t => Pi.single j (1 : ℤ_[l]) + x t) = ρ (Multiplicative.ofAdd (Pi.single j 1)) (gf x)`. Introduce `j hj x`.
+
+Establish `hFj : ∀ t, F t (fun s => Pi.single j (1 : ℤ_[l]) + x s) = ρ (Multiplicative.ofAdd (Pi.single j 1)) (F t x)`. Introduce `t`. Establish `h1 : sh t (fun s => Pi.single j (1 : ℤ_[l]) + x s) = fun s => Pi.single j (1 : ℤ_[l]) + sh t x s`. Use function extensionality and compare the values at `s`. Simplify using `only [sh, add_sub_assoc]`.
+
+Express the relevant statement in the definitionally equal form `ρ _ (f (sh t _)) = ρ _ (ρ _ (f (sh t x)))`. Rewrite using `[h1, hf j hj, hcomm]`. Simplify using `only [gf]`. Rewrite using `[hzj j hj x, map_neg, map_sum]`. Conclude with `congrArg _ (Finset.sum_congr rfl fun t _ => hFj t)`.
+
+Establish `hgT : ∀ x : Fin (n + 1) → Fin k → ℤ_[l], ρ (Multiplicative.ofAdd e) (gf fun j => x j - e) - gf x = f x`. Introduce `x`. Simplify using `only [gf]`. Rewrite using `[map_neg, map_sum, hz1 x]`. Simplify using `only [hFs]`.
+
+Take `⟨hne, h0⟩` from `val_sub_one (z x)`. Distinguish the cases in `hx : (z x).val = 0`. Establish `hP` using `NeZero.pos (l ^ (a + c))`. Rewrite using `[h0 hx, hx, Nat.sub_add_cancel hP, hsum x]`. Simplify using `[hF0]`.
+
+Rewrite using `[hne hx, Nat.sub_add_cancel (Nat.pos_of_ne_zero hx), Finset.sum_range_succ' (fun t => F t x) (z x).val, hF0]`. Normalize the expressions using the abelian group laws. Conclude with `⟨⟨gf, hg⟩, hgE, hgT⟩`.
+-/
 theorem core {R : Type} [CommRing R] (l : ℕ) [Fact l.Prime] (k : ℕ) {M : Type w} [AddCommGroup M]
     [Module R M] (ρ : Multiplicative (Fin k → ℤ_[l]) →* (M →ₗ[R] M)) (n c : ℕ) (S : Set (Fin k))
     (i : Fin k) (hiS : i ∉ S) (hc : ∀ x : M, l ^ c • x = 0)

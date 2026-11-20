@@ -13,6 +13,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), funext fun p => ?_⟩` and prove the remaining obligations. Simplify using `[← mul_assoc, inv_mul_cancel₀ (hc p.1)]`.
+-/
 theorem ResAboveCover.sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit z' z := by
   obtain ⟨c, hc, rfl⟩ := h
   refine ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), funext fun p => ?_⟩
@@ -20,6 +23,9 @@ theorem ResAboveCover.sameOrbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbi
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h₁`. Take `⟨c', hc', rfl⟩` from `h₂`. Conclude with `⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), funext fun p => by simp [mul_assoc]⟩`.
+-/
 theorem ResAboveCover.sameOrbit_trans {a b d : (Σ k, ι k) → ℂ} (h₁ : SameOrbit a b)
     (h₂ : SameOrbit b d) : SameOrbit a d := by
   obtain ⟨c, hc, rfl⟩ := h₁
@@ -28,6 +34,17 @@ theorem ResAboveCover.sameOrbit_trans {a b d : (Σ k, ι k) → ℂ} (h₁ : Sam
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `choose i hi using hu₀`. Establish `hcross : ∀ k j, v₀ ⟨k, j⟩ * u₀ ⟨k, i k⟩ = v₀ ⟨k, i k⟩ * u₀ ⟨k, j⟩`. Introduce `k j`. Establish `h₁ : Tendsto (fun a => v a ⟨k, j⟩ * u a ⟨k, i k⟩) l (𝓝 (v₀ ⟨k, j⟩ * u₀ ⟨k, i k⟩))` using `((continuous_apply _).continuousAt.tendsto.comp hv).mul ((continuous_apply _).continuousAt.tendsto.comp hu)`. Establish `h₂ : Tendsto (fun a => v a ⟨k, i k⟩ * u a ⟨k, j⟩) l (𝓝 (v₀ ⟨k, i k⟩ * u₀ ⟨k, j⟩))` using `((continuous_apply _).continuousAt.tendsto.comp hv).mul ((continuous_apply _).continuousAt.tendsto.comp hu)`.
+
+Use `tendsto_nhds_unique h₁ (h₂.congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hvu] with a ha`. Take `⟨c, -, hc⟩` from `ha`. Simplify using `only [hc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨fun k => v₀ ⟨k, i k⟩ / u₀ ⟨k, i k⟩, fun k => div_ne_zero ?_ (hi k), ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨j, hj⟩` from `hv₀ k`. Establish `h` using `hcross k j`. Rewrite `h` using `[h0, zero_mul]`.
+
+Conclude with `hj ((mul_eq_zero.mp h).resolve_right (hi k))`. Use function extensionality and compare the values at `p`. Take `⟨k, j⟩` from `p`. Use `show v₀ ⟨k, j⟩ = v₀ ⟨k, i k⟩ / u₀ ⟨k, i k⟩ * u₀ ⟨k, j⟩`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (hi k)]`.
+
+Conclude with `hcross k j`.
+-/
 theorem ResAboveCover.sameOrbit_of_tendsto {α : Type*} {l : Filter α} [l.NeBot]
     {v u : α → (Σ k, ι k) → ℂ} {v₀ u₀ : (Σ k, ι k) → ℂ}
     (hv : Tendsto v l (𝓝 v₀)) (hu : Tendsto u l (𝓝 u₀))
@@ -62,6 +79,11 @@ theorem ResAboveCover.sameOrbit_of_tendsto {α : Type*} {l : Filter α} [l.NeBot
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Use `tendsto_pi_nhds.2 fun p => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `R.A.cover x`. Establish `han` using `R.holo x p j (R.A.chart j x) ⟨(R.A.chart j).map_source hj, by simp [(R.A.chart j).left_inv hj, R.mem_U x]⟩`. Establish `h₁` using `han.continuousAt.comp ((R.A.chart j).continuousAt hj)`. Establish `h₂ : ((fun y => R.lift x y p) ∘ (R.A.chart j).symm) ∘ (R.A.chart j) =ᶠ[𝓝 x] fun y => R.lift x y p` using `by filter_upwards [(R.A.chart j).eventually_left_inverse hj] with y hy`.
+
+Simplify using `[hy]`. Conclude with `(h₁.congr h₂).tendsto`.
+-/
 theorem ResAboveCover.tendsto_lift {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) (x : R.X) :
     Tendsto (R.lift x) (𝓝 x) (𝓝 (R.lift x x)) := by
   refine tendsto_pi_nhds.2 fun p => ?_
@@ -77,6 +99,9 @@ theorem ResAboveCover.tendsto_lift {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLog
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Establish `hU : ∀ᶠ a in l, x a ∈ R.U x₀` using `hx ((R.isOpen_U x₀).mem_nhds (R.mem_U x₀))`. Establish `h₂ : ∀ᶠ a in l, x a ∈ R.U x₀ ∧ SameOrbit (v a) (R.lift x₀ (x a))` using `by filter_upwards [hU, hvx] with a ha hva`. Conclude with `⟨ha, ResAboveCover.sameOrbit_trans hva (ResAboveCover.sameOrbit_symm (R.compat x₀ (x a) (x a) ⟨ha, R.mem_U _⟩))⟩`. Use `⟨ResAboveCover.sameOrbit_of_tendsto hv ((ResAboveCover.tendsto_lift R x₀).comp hx) (h₂.mono fun a h => h.2) hv₀ (R.mem x₀ x₀ (R.mem_U x₀)).1, h₂⟩` and prove the remaining obligations.
+-/
 theorem ResAboveCover.limit {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) {α : Type*}
     {l : Filter α} [l.NeBot] {v : α → (Σ k, ι k) → ℂ} {x : α → R.X} {v₀ : (Σ k, ι k) → ℂ}
     {x₀ : R.X} (hv : Tendsto v l (𝓝 v₀)) (hx : Tendsto x l (𝓝 x₀))
@@ -93,6 +118,11 @@ theorem ResAboveCover.limit {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Take `⟨-, x₁, -⟩` from `hex.exists`. Set `x : α → R.X` to `fun a => if h : ∃ x, SameOrbit (v a) (R.lift x x) then h.choose else x₁`. Establish `hvx : ∀ᶠ a in l, SameOrbit (v a) (R.lift (x a) (x a))` using `hex.mono fun a h => by simp only [x, dif_pos h]; exact h.choose_spec`. Set `F` to `Ultrafilter.of l`. Establish `hFl : (F : Filter α) ≤ l` using `Ultrafilter.of_le l`.
+
+Take `⟨x₀, -, hx₀⟩` from `isCompact_univ.ultrafilter_le_nhds (F.map x) (by simp)`. Establish `hx : Tendsto x F (𝓝 x₀)`. Rewrite using `[Tendsto, ← Ultrafilter.coe_map]`. Conclude with `hx₀`. Conclude with `⟨F, x, x₀, hFl, hx, ResAboveCover.limit R (hv.mono_left hFl) hx (hvx.filter_mono hFl) hv₀⟩`.
+-/
 theorem ResAboveCover.exists_limit {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) {α : Type*}
     {l : Filter α} [l.NeBot] {v : α → (Σ k, ι k) → ℂ} {v₀ : (Σ k, ι k) → ℂ}
     (hv : Tendsto v l (𝓝 v₀)) (hv₀ : ∀ k, ∃ i, v₀ ⟨k, i⟩ ≠ 0)
@@ -113,6 +143,11 @@ theorem ResAboveCover.exists_limit {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLog
     exact hx₀
   exact ⟨F, x, x₀, hFl, hx, ResAboveCover.limit R (hv.mono_left hFl) hx (hvx.filter_mono hFl) hv₀⟩
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨f, hfJ, hfP⟩` from `SetLike.not_le_iff_exists.1 R.nondeg`. Establish `hcl` using `hND K ι P d f hP hfP hv`. Use `mem_closure_iff_nhdsWithin_neBot.1 hcl` as an intermediate fact. Establish `hex : ∀ᶠ w in 𝓝[{w | w ∈ mcPts P ∧ eval w (map (Int.castRingHom ℂ) f) ≠ 0}] v, ∃ x, SameOrbit w (R.lift x x)` using `by filter_upwards [self_mem_nhdsWithin] with w hw`.
+
+Take `⟨x, hx⟩` from `R.surj w hw.1 (fun hJ => hw.2 (hJ.2 f hfJ))`. Conclude with `⟨x, ResAboveCover.sameOrbit_symm hx⟩`. Take `⟨-, -, x₀, -, -, h, -⟩` from `ResAboveCover.exists_limit R (v := fun w => w) (tendsto_id.mono_left nhdsWithin_le_nhds) hv.1 hex`. Conclude with `⟨x₀, h⟩`.
+-/
 theorem ResAboveCover.surj_all (hND : HilbertSamuel.NonvanishingDense.Statement)
     (P J : Ideal (MRing ι)) {e d : ℕ} (R : AnLogRes P J e) (hP : IsArithVar P d) :
     ∀ v ∈ mcPts P, ∃ x, SameOrbit v (R.lift x x) := by
@@ -129,6 +164,13 @@ theorem ResAboveCover.surj_all (hND : HilbertSamuel.NonvanishingDense.Statement)
     (tendsto_id.mono_left nhdsWithin_le_nhds) hv.1 hex
   exact ⟨x₀, h⟩
 
+/- English proof (translation)
+Take `⟨c, hc, hl⟩` from `ResAboveCover.sameOrbit_symm h`. Establish `ht : (∏ k, c k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Establish `hseg : segre (R.lift x x) = (∏ k, c k) • segre z`. Rewrite using `[hl]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[segre, Finset.prod_mul_distrib]`. Establish `hΨ : Ψ (segre (R.lift x x)) = (∏ k, c k) • (Fin.cons 1 y : Fin (n + 1) → ℂ)`. Rewrite using `[hseg, map_smul, hz]`. Use `⟨funext fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [projCoord, hΨ, Pi.smul_apply, smul_eq_mul, Fin.cons_succ, Fin.cons_zero, mul_one]`.
+
+Clear the denominators using the available nonvanishing facts. Use `show (Ψ (segre (R.lift x x)) 0)⁻¹ • segre (R.lift x x) = segre z`. Rewrite using `[hΨ, hseg, smul_smul]`. Simplify using `only [Pi.smul_apply, Fin.cons_zero, smul_eq_mul, mul_one, inv_mul_cancel₀ ht, one_smul]`.
+-/
 theorem ResAboveCover.mem_resAbove {P J : Ideal (MRing ι)} {e n : ℕ} (R : AnLogRes P J e)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) {y : Fin n → ℂ} {z : (Σ k, ι k) → ℂ}
     (hz : Ψ (segre z) = Fin.cons 1 y) {x : R.X} (h : SameOrbit z (R.lift x x)) :
@@ -148,6 +190,15 @@ theorem ResAboveCover.mem_resAbove {P J : Ideal (MRing ι)} {e n : ℕ} (R : AnL
     rw [hΨ, hseg, smul_smul]
     simp only [Pi.smul_apply, Fin.cons_zero, smul_eq_mul, mul_one, inv_mul_cancel₀ ht, one_smul]
 
+/- English proof (translation)
+Introduce `K _ ι _ P J n R Ψ hP y z hz hzy V' hV'`. Assume the negation of the conclusion as `hcon`. Set `T : Set ((Σ k, ι k) → ℂ)` to `{v | v ∈ mcPts P ∧ ¬ ∃ x ∈ resAbove R Ψ y (segre z), ∃ y₁ ∈ V' x ∩ R.U x, SameOrbit v (R.lift x y₁)}`. Establish `: (𝓝[T] z).NeBot`. Rewrite using `[← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]`.
+
+Introduce `N hN`. Assume the negation of the conclusion as `hN'`. Use `hcon ⟨N, hN, fun v hv => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hbad`. Conclude with `hN' ⟨v, hv.2, hv.1, hbad⟩`.
+
+Take `⟨F, x, x₀, hFl, hx, hz₀, hev⟩` from `ResAboveCover.exists_limit R (l := 𝓝[T] z) (v := fun w => w) (tendsto_id.mono_left nhdsWithin_le_nhds) hz.1 (eventually_nhdsWithin_of_forall fun w hw => ResAboveCover.surj_all hND P J R hP w hw.1)`. Establish `hx₀ : x₀ ∈ resAbove R Ψ y (segre z)` using `ResAboveCover.mem_resAbove R Ψ hzy hz₀`. Establish `hV : ∀ᶠ a in (F : Filter _), x a ∈ V' x₀` using `hx (hV' x₀ hx₀)`. Establish `hT : ∀ᶠ a in (F : Filter _), a ∈ T` using `hFl self_mem_nhdsWithin`. Take `⟨a, ⟨hU₁, hso⟩, hVa, haT⟩` from `(hev.and (hV.and hT)).exists`.
+
+Conclude with `haT.2 ⟨x₀, hx₀, x a, ⟨hVa, hU₁⟩, hso⟩`.
+-/
 theorem ResAboveCover.proof (hND : HilbertSamuel.NonvanishingDense.Statement) :
     ResAboveCover.Statement := by
   intro K _ ι _ P J n R Ψ hP y z hz hzy V' hV'

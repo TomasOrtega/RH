@@ -15,12 +15,20 @@ section D
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `hd : Continuous (Matrix.detMonoidHom : Matrix (Fin 2) (Fin 2) F →* F)` using `by show Continuous fun A : Matrix (Fin 2) (Fin 2) F => A.det`. Conclude with `continuous_id.matrix_det`. Conclude with `Continuous.units_map _ hd`.
+-/
 theorem cont_det : Continuous (fun h : GL (Fin 2) F => (GeneralLinearGroup.det h : Fˣ)) := by
   have hd : Continuous (Matrix.detMonoidHom : Matrix (Fin 2) (Fin 2) F →* F) := by
     show Continuous fun A : Matrix (Fin 2) (Fin 2) F => A.det
     exact continuous_id.matrix_det
   exact Continuous.units_map _ hd
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `hv : Continuous fun h : GL (Fin 2) F => (h.val : Matrix (Fin 2) (Fin 2) F)` using `Units.continuous_val`. Establish `he : ∀ a b : Fin 2, Continuous fun h : GL (Fin 2) F => h.val a b` using `fun a b => (continuous_apply_apply a b).comp hv`. Use `fin_cases i`. Simplify `he 1 0` using `[e2r]`.
+
+Simplify `he 1 1` using `[e2r]`.
+-/
 theorem continuous_second_vector_GL2 : Continuous (e2r : GL (Fin 2) F → Fin 2 → F) := by
   refine continuous_pi fun i => ?_
   have hv : Continuous fun h : GL (Fin 2) F => (h.val : Matrix (Fin 2) (Fin 2) F) := Units.continuous_val
@@ -30,6 +38,9 @@ theorem continuous_second_vector_GL2 : Continuous (e2r : GL (Fin 2) F → Fin 2 
   · simpa [e2r] using he 1 0
   · simpa [e2r] using he 1 1
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : Fˣ × Fˣ × GL (Fin 2) F => (modulus (p.1 : F) : ℝ)` using `NNReal.continuous_coe.comp (continuous_modulus.comp (Units.continuous_val.comp continuous_fst))`. Use `hc.inv₀ fun p => ?_` and prove the remaining obligations. Establish `h0 : (0 : ℝ) < (modulus (p.1 : F) : ℝ)` using `by exact_mod_cast modulus_pos p.1.ne_zero`. Conclude with `h0.ne'`.
+-/
 theorem cont_wR : Continuous (wR : Fˣ × Fˣ × GL (Fin 2) F → ℝ) := by
   have hc : Continuous fun p : Fˣ × Fˣ × GL (Fin 2) F => (modulus (p.1 : F) : ℝ) :=
     NNReal.continuous_coe.comp (continuous_modulus.comp (Units.continuous_val.comp continuous_fst))
@@ -37,6 +48,11 @@ theorem cont_wR : Continuous (wR : Fˣ × Fˣ × GL (Fin 2) F → ℝ) := by
   have h0 : (0 : ℝ) < (modulus (p.1 : F) : ℝ) := by exact_mod_cast modulus_pos p.1.ne_zero
   exact h0.ne'
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ _ W₀ W' Φ s hW₀ hW' hP`. Establish `hg : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => q.2` using `continuous_snd`. Establish `hh : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => hI q.1 * q.2⁻¹` using `(GlobalTheory.CompanionTheory.BochIw.cont_hI.comp continuous_fst).mul continuous_snd.inv`. Establish `hhg : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => hI q.1 * q.2⁻¹ * q.2` using `hh.mul hg`. Establish `hm1 : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => mp (GeneralLinearGroup.det q.2) (s + 1 / 2)` using `(GlobalTheory.CompanionTheory.DampedWhittakerLimit.continuous_mp (s + 1 / 2)).comp (cont_det.comp hg)`.
+
+Establish `hm2 : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => mp (GeneralLinearGroup.det (hI q.1 * q.2⁻¹)) s` using `(GlobalTheory.CompanionTheory.DampedWhittakerLimit.continuous_mp s).comp (cont_det.comp hh)`. Establish `hw : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => ((GlobalTheory.CompanionTheory.DampedZetaMajorant.wR q.1 : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (cont_wR.comp continuous_fst)`. Establish `hp : Continuous fun q : (Fˣ × Fˣ × GL (Fin 2) F) × GL (Fin 2) F => pFT ψ Φ q.2.val (e2r (hI q.1 * q.2⁻¹))` using `hP.comp ((Units.continuous_val.comp hg).prodMk (continuous_second_vector_GL2.comp hh))`. Unfold `Aq Bq`. Conclude with `hm1.mul (hw.mul ((((hW₀.comp hh).mul (hW'.comp hhg)).mul hp).mul hm2))`.
+-/
 theorem continuous_Aq : ForS fun F _ _ _ _ _ _ ψ => ∀ (W₀ W' : GL (Fin 2) F → ℂ) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ),
   Continuous W₀ → Continuous W' → Continuous (fun q : Matrix (Fin 2) (Fin 2) F × (Fin 2 → F) => pFT ψ Φ q.1 q.2) →
   Continuous (Aq ψ W₀ W' Φ s) := by

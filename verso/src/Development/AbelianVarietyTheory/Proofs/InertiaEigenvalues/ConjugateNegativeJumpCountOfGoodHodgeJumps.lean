@@ -11,6 +11,11 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.TripleGal
 
+/- English proof (translation)
+Rewrite using `[Multiset.filter_map, Multiset.card_map]`. Establish `e : M.filter ((fun a => 0 ≤ a) ∘ fun a => t - 1 - a) = M.filter (fun a => ¬ 0 ≤ a)`. Apply `Multiset.filter_congr` to reduce the goal to its premises. Introduce `a ha`. Use `h a ha` as an intermediate fact.
+
+Simplify using `only [Function.comp_apply]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, ← Multiset.card_add, Multiset.filter_add_not]`.
+-/
 theorem card_filter_nonneg_add_reflect (t : ℤ) (ht : 0 ≤ t) (M : Multiset ℤ) (h : ∀ a ∈ M, a < -1 ∨ t < a) :
     Multiset.card (M.filter (0 ≤ ·)) + Multiset.card ((M.map (fun a => t - 1 - a)).filter (0 ≤ ·)) =
       Multiset.card M := by
@@ -23,6 +28,11 @@ theorem card_filter_nonneg_add_reflect (t : ℤ) (ht : 0 ≤ t) (M : Multiset �
     omega
   rw [e, ← Multiset.card_add, Multiset.filter_add_not]
 
+/- English proof (translation)
+Introduce `D bkP i s ι J hH hJ hG v v' hv hv' τ τ' hc`. Take `⟨τc, h1, h2⟩` from `GlobalTheory.T.exists_complex_reading_local_embedding D bkP i ι v hv τ`. Establish `h2'` using `h2 v' hv' τ' hc`. Take `⟨a1, a2⟩` from `GlobalTheory.T.finrank_DdR_and_fil_zero_of_jump_multiset D bkP i s v hv τ (J τc) hH (hJ v hv τ τc h1)`. Take `⟨b1, b2⟩` from `GlobalTheory.T.finrank_DdR_and_fil_zero_of_jump_multiset D bkP i s v' hv' τ' (J (τc.comp (cj D))) hH (hJ v' hv' τ' _ h2')`.
+
+Take `⟨g1, g2, g3⟩` from `hG τc`. Establish `k` using `card_filter_nonneg_add_reflect (D.R.t : ℤ) (by positivity) (J τc) g3`. Rewrite using `[a1, a2, b1, b2, g2, Multiset.card_map]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem negCount_of_goodJ : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i), ∀ (ι : FractionRing (D.ntw.O0 i) →+* ℂ) (J : (D.host.E →+* ℂ) → Multiset ℤ), HodgeL bkP i s → JumpsAre bkP i s ι J → GoodJ D J → NegCount bkP i s := by
   intro D bkP i s ι J hH hJ hG v v' hv hv' τ τ' hc
   obtain ⟨τc, h1, h2⟩ := GlobalTheory.T.exists_complex_reading_local_embedding D bkP i ι v hv τ

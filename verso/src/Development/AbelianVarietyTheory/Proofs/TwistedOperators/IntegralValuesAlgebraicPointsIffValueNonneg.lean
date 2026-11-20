@@ -15,6 +15,11 @@ open GlobalTheory.Tow
 
 namespace GlobalTheory.TowVal
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c la f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩, rfl⟩`. Establish `h1` using `h T io e ho y hy`. Rewrite `h1` using `[map_one, one_mul]`.
+
+Conclude with `(GlobalTheory.GoodPtsModel.inV_iff_nval T ho.1 _).1 h1`. Introduce `h T io e ho y hy`. Rewrite using `[map_one, one_mul, GlobalTheory.GoodPtsModel.inV_iff_nval T ho.1]`. Conclude with `h _ ⟨PtV.mk la ho y hy () trivial, rfl⟩`.
+-/
 theorem bddAll_one_iff_valSet_nonneg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (la : HeightOneSpectrum (𝓞 c.F)) (f : Rul Xo c), GlobalTheory.GoodPts.BddAll Xo c la 1 f ↔ ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f := by
   intro E _ _ _ H Dw l Xo c la f
   constructor

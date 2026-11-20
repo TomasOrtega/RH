@@ -11,6 +11,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.polarisation_squares_agree_at_level | exact GlobalTheory.polarisation_squares_agree_at_level | (intros; apply GlobalTheory.polarisation_squares_agree_at_level <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polarization_squares_agree_at_each_thickening : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I →
     ∀ (D D' : DegData R I) (A A' : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R)))
     [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : UnifPre I D A G) (U' : UnifPre I D' A' G)

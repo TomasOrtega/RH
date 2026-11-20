@@ -7,6 +7,13 @@ open scoped Classical TensorProduct
 
 namespace CompanionTheory.Rg.BcB.G3
 
+/- English proof (translation)
+Introduce `E _ _ _`. Establish `hne` using `IsCMField.complexConj_ne_one E`. Establish `hz : ∃ z : E, IsCMField.complexConj E z ≠ z`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hne (AlgEquiv.ext fun x => by simpa using h x)`. Take `⟨z, hz⟩` from `hz`. Use `set s : E := z - IsCMField.complexConj E z with hs`. Establish `hs0 : s ≠ 0` using `fun h => hz (sub_eq_zero.1 h).symm`. Establish `hcs : IsCMField.complexConj E s = -s`.
+
+Rewrite using `[hs, map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : s ^ 2 ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_pow, hcs, neg_sq]`. Conclude with `⟨s, ⟨s ^ 2, hmem⟩, hs0, hcs, rfl⟩`.
+-/
 theorem skewEx_pf : SkewEx := by
   intro E _ _ _
   have hne := IsCMField.complexConj_ne_one E

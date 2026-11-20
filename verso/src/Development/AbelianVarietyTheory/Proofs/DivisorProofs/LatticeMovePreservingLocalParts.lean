@@ -14,9 +14,27 @@ def awayFrom {R : Type} [CommRing R] [IsDomain R] (SB : Finset (HeightOneSpectru
   mul_mem' := fun {a b} ha hb => ⟨mul_ne_zero ha.1 hb.1, fun P hP h =>
     (P.isPrime.mem_or_mem h).elim (ha.2 P hP) (hb.2 P hP)⟩
 
+/- English proof (translation)
+Introduce `_ h` and use `mem_nonZeroDivisors_of_ne_zero h.1`.
+-/
 theorem awayFrom_le {R : Type} [CommRing R] [IsDomain R] (SB : Finset (HeightOneSpectrum R)) :
     awayFrom SB ≤ nonZeroDivisors R := fun _ h => mem_nonZeroDivisors_of_ne_zero h.1
 
+/- English proof (translation)
+Use `haveI : IsDedekindDomain A := IsLocalization.isDedekindDomain R (awayFrom_le SB) A`. Apply `IsPrincipalIdealRing.of_finite_primes` to reduce the goal to its premises. Set `T : Finset (Ideal R)` to `insert ⊥ (SB.image (·.asIdeal))`. Establish `hT : ∀ Q ∈ T, Q.IsPrime`. Introduce `Q hQ`.
+
+Break down `Finset.mem_insert.1 hQ with rfl | hQ` into its components or cases. Conclude with `Ideal.isPrime_bot`. Take `⟨P, _, rfl⟩` from `Finset.mem_image.1 hQ`. Conclude with `P.isPrime`. Establish `hinj : Function.Injective (fun I : Ideal A => I.comap (algebraMap R A))`.
+
+Introduce `I J h`. Rewrite using `[← IsLocalization.map_comap (awayFrom SB) A I, ← IsLocalization.map_comap (awayFrom SB) A J]`. Conclude with `congrArg _ h`. Use `((T.finite_toSet).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce `I hI`.
+
+Establish `hI' : I.IsPrime` using `hI`. Establish `hsub : ((I.comap (algebraMap R A) : Ideal R) : Set R) ⊆ ⋃ i ∈ (T : Set (Ideal R)), ((id i : Ideal R) : Set R)`. Introduce `s hs`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, not_exists, id] at hn`.
+
+Establish `hS : s ∈ awayFrom SB`. Use `⟨fun h0 => hn ⊥ (by simp [T]) (by simp [h0]), fun P hP h => hn P.asIdeal ?_ h⟩` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hP))`. Conclude with `hI'.ne_top (Ideal.eq_top_of_isUnit_mem _ hs (IsLocalization.map_units A ⟨s, hS⟩))`. Take `⟨Q, hQ, hle⟩` from `(Ideal.subset_union_prime (⊥ : Ideal R) ⊥ (fun i hi _ _ => hT i hi)).1 hsub`.
+
+Use `show I.comap (algebraMap R A) ∈ (T : Set (Ideal R))`. Distinguish the cases in `h0 : I.comap (algebraMap R A) = ⊥`. Rewrite using `[h0]`. Simplify using `[T]`. Establish `hmax : (I.comap (algebraMap R A)).IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime h0 (Ideal.comap_isPrime _ _)`.
+
+Rewrite using `[hmax.eq_of_le (hT Q hQ).ne_top hle]`. Conclude with `hQ`.
+-/
 theorem isPrincipalIdealRing_awayFrom {R : Type} [CommRing R] [IsDedekindDomain R]
     (SB : Finset (HeightOneSpectrum R)) (A : Type) [CommRing A] [IsDomain A] [Algebra R A]
     [IsLocalization (awayFrom SB) A] : IsPrincipalIdealRing A := by
@@ -54,6 +72,33 @@ theorem isPrincipalIdealRing_awayFrom {R : Type} [CommRing R] [IsDedekindDomain 
     rw [hmax.eq_of_le (hT Q hQ).ne_top hle]
     exact hQ
 
+/- English proof (translation)
+Set `A : Subalgebra R K` to `Localization.subalgebra K (awayFrom SB) (awayFrom_le SB)`. Use `haveI : IsLocalization (awayFrom SB) A := Localization.subalgebra.isLocalization_subalgebra K (awayFrom SB) (awayFrom_le SB)`. Use `haveI : IsPrincipalIdealRing A := isPrincipalIdealRing_awayFrom SB A`. Use `haveI : IsFractionRing A K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (awayFrom SB) A K`. Establish `clear : ∀ (X : Set (Fin n → K)) (x : Fin n → K), x ∈ Submodule.span A X → ∃ s ∈ awayFrom SB, s • x ∈ Submodule.span R X`.
+
+Introduce `X x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_mem _, by simpa using Submodule.subset_span hx⟩`. Consider the case `zero => exact ⟨1, one_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, mul_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hsx`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ hty`. Consider the case `smul a x _ hx`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨⟨r, t⟩, hr⟩` from `IsLocalization.surj (awayFrom SB) a`. Use `⟨s * t, mul_mem hs t.2, ?_⟩` and prove the remaining obligations. Establish `: (t : R) • a • x = r • x`. Rewrite using `[← algebraMap_smul A (t : R), ← mul_smul, mul_comm, hr, algebraMap_smul]`.
+
+Rewrite using `[mul_smul, this, smul_comm]`. Conclude with `Submodule.smul_mem _ _ hsx`. Set `M : Submodule A (Fin n → K)` to `Submodule.span A (N : Set (Fin n → K))`. Use `haveI hM : Submodule.IsLattice K M := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨X, hX⟩` from `hN.fg`. Use `⟨X, ?_⟩` and prove the remaining obligations. Simplify using `only [M, ← hX]`. Conclude with `(Submodule.span_span_of_tower R A _).symm`. Simplify using `only [M]`.
+
+Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `hN.span_eq_top`. Use `haveI : Module.Free A M := Submodule.IsLattice.free K M`. Use `haveI : Module.Finite A M := Module.Finite.iff_fg.2 hM.fg`. Establish `hrk : Module.finrank A M = n`.
+
+Simplify using `using Submodule.IsLattice.finrank_of_pi K M`. Set `b : Module.Basis (Fin n) A M` to `Module.finBasisOfFinrankEq A M hrk`. Establish `hb : ∀ i, ∃ s ∈ awayFrom SB, s • (b i : Fin n → K) ∈ N`. Introduce `i`. Take `⟨s, hs, h⟩` from `clear _ _ (b i).2`.
+
+Conclude with `⟨s, hs, by simpa using h⟩`. Use `choose s hs hsb using hb`. Set `b' : Module.Basis (Fin n) A M` to `b.isUnitSMul (w := fun i => algebraMap R A (s i)) (fun i => IsLocalization.map_units A ⟨s i, hs i⟩)`. Establish `hb' : ∀ i, (b' i : Fin n → K) = s i • (b i : Fin n → K)`. Introduce `i`.
+
+Simplify using `only [b', Module.Basis.isUnitSMul_apply, Submodule.coe_smul, algebraMap_smul]`. Apply the tactic sequence `try rfl`. Use `⟨b'.extendOfIsLattice K, fun i => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.extendOfIsLattice_apply, hb']`. Conclude with `hsb i`.
+
+Apply `clear` to reduce the goal to its premises. Establish `hxM : x ∈ M` using `Submodule.subset_span hx`. Establish `h1` using `b'.sum_repr ⟨x, hxM⟩`. Establish `h2 : x = ∑ i, b'.repr ⟨x, hxM⟩ i • (b' i : Fin n → K)`. Use `congrArg Subtype.val h1` as an intermediate fact.
+
+Rewrite `this` using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `this.symm`. Rewrite using `[h2]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, ?_⟩)` and prove the remaining obligations. Rewrite using `[Module.Basis.extendOfIsLattice_apply]`.
+-/
 theorem exists_basis {R : Type} [CommRing R] [IsDedekindDomain R] (K : Type) [Field K]
     [Algebra R K] [IsFractionRing R K] (n : ℕ) (SB : Finset (HeightOneSpectrum R))
     (N : Submodule R (Fin n → K)) (hN : Submodule.IsLattice K N) :
@@ -129,10 +174,22 @@ theorem exists_basis {R : Type} [CommRing R] [IsDedekindDomain R] (K : Type) [Fi
     refine Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, ?_⟩)
     rw [Module.Basis.extendOfIsLattice_apply]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_localization_iff {R : Type} [CommRing R] {W : Type} [AddCommGroup W] [Module R W]
     (p : Ideal R) [p.IsPrime] (L : Submodule R W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ p L ↔ ∃ s, s ∉ p ∧ s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : ∀ i, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = x i` using `fun i => Submodule.mem_one.1 (hx i (Set.mem_univ _))`. Use `choose r hr using hx'`. Establish `: x = ∑ i, r i • Pi.basisFun E (Fin n) i` using `by conv_lhs => rw [← (Pi.basisFun E (Fin n)).sum_repr x]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.basisFun_repr, ← hr, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩ j _`. Rewrite using `[Pi.basisFun_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `Submodule.mem_one.2 ⟨1, by simp⟩`.
+
+Conclude with `Submodule.mem_one.2 ⟨0, by simp [h]⟩`.
+-/
 theorem stdLat_eq_span (E : Type) [Field E] (n : ℕ) :
     Formalism.L2.Col.stdLat E n = Submodule.span (𝓞 E) (Set.range (Pi.basisFun E (Fin n))) := by
   classical
@@ -155,6 +212,21 @@ theorem stdLat_eq_span (E : Type) [Field E] (n : ℕ) :
       exact Submodule.mem_one.2 ⟨1, by simp⟩
     · exact Submodule.mem_one.2 ⟨0, by simp [h]⟩
 
+/- English proof (translation)
+Take `⟨v, hv, hgen⟩` from `exists_basis E n SB N hN`. Set `γ : Sp E n ≃ₗ[E] Sp E n` to `(Pi.basisFun E (Fin n)).equiv v (Equiv.refl _)`. Establish `key : ∀ x, x ∈ Formalism.L2.Col.stdLat E n ↔ γ x ∈ Submodule.span (𝓞 E) (Set.range v)`. Introduce `x`. Establish `hmap : (Formalism.L2.Col.stdLat E n).map ((γ.restrictScalars (𝓞 E)) : Sp E n →ₗ[𝓞 E] Sp E n) = Submodule.span (𝓞 E) (Set.range v)`.
+
+Rewrite using `[stdLat_eq_span, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `(Pi.basisFun E (Fin n)).equiv_apply i v (Equiv.refl _)`. Rewrite using `[← hmap]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, h⟩`. Establish `: y = x` using `γ.injective h`.
+
+Conclude with `this ▸ hy`. Establish `hle : Submodule.span (𝓞 E) (Set.range v) ≤ N`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hv i`.
+
+Establish `hsm : ∀ (s : 𝓞 E) x, γ (s • x) = s • γ x` using `fun s x => (γ.restrictScalars (𝓞 E)).map_smul s x`. Use `⟨γ, fun x hx => hle ((key x).1 hx), fun P hP x => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_localization_iff, mem_localization_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`.
+
+Take `⟨t, ht, h'⟩` from `hgen _ h`. Use `⟨t * s, fun hm => (P.isPrime.mem_or_mem hm).elim (ht.2 P hP) hs, ?_⟩` and prove the remaining obligations. Rewrite using `[key, hsm, mul_smul]`. Conclude with `h'`. Introduce and unpack `⟨s, hs, h⟩`.
+
+Use `⟨s, hs, hle ?_⟩` and prove the remaining obligations. Rewrite using `[← hsm]`. Conclude with `(key _).1 h`.
+-/
 theorem exists_equiv (E : Type) [Field E] [NumberField E] (n : ℕ)
     (SB : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E n))
     (hN : Submodule.IsLattice E N) :

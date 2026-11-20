@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.USep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser | exact GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser | (intros; apply GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finite_ext_sqrt_uniformiser_complete_dvr : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → IsPrincipalIdealRing V → ∀ ϖ : V, Irreducible ϖ → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (f : V →+* V') (t : V'), IsCN V' ∧ IsPrincipalIdealRing V' ∧ Function.Injective f ∧ IsLocalHom f ∧ f.Finite ∧ t ^ 2 = f ϖ := by
   first | exact @GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser | exact GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser | (intros; apply GlobalTheory.USep.exists_finite_ext_sq_eq_uniformiser <;> assumption)

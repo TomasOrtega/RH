@@ -11,6 +11,19 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `p F L t hp h4 h3 hD V`. Take `⟨N, ι, _, T, hNodd, hN3, hNv, hcard, hst, hT⟩` from `GlobalTheory.T.exists_galoisStable_torsion_family_ker p F L t hp h4 h3 hD V`. Establish `hΔ0` using `latticeCurve_Δ_ne_zero L`. Take `⟨u, hu⟩` from `IsAlgClosed.exists_pow_nat_eq (latticeCurve L).Δ (by norm_num : 0 < 12)`. Establish `hu0 : u ≠ 0` using `by rintro rfl; exact hΔ0 (by rw [← hu]; simp)`.
+
+Establish `hvu : V.valuation u ≠ 0` using `(Valuation.ne_zero_iff _).2 hu0`. Establish `hvΔ : V.valuation (latticeCurve L).Δ = V.valuation u ^ 12` using `by rw [← hu, map_pow]`. Establish `hβ : (sqrtNegNat p).im ≠ 0`. Establish `: (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Simplify using `[sqrtNegNat, Real.sqrt_ne_zero'.2 this]`.
+
+Establish `hN3' : ¬ 3 ∣ N` using `by omega`. Establish `hU` using `fun i => GlobalTheory.T.valuation_weierstrassP_sub_two_mul_eq_sq L (sqrtNegNat p) u V N hD.mul hβ hvΔ.symm hNv hNodd hN3' (T i) (hT i).1 (hT i).2`. Establish `hmem` using `(GlobalTheory.T.galoisStable_lattice_points_symmetric_mem F L ι T hD.g₂_mem hD.g₃_mem hst (fun i => (hT i).1)).2.2.2 (fun i => (hU i).1)`. Establish `hΔmem : (latticeCurve L).Δ ∈ F`. Rewrite using `[latticeCurve_Δ]`.
+
+Conclude with `sub_mem (pow_mem hD.g₂_mem 3) (mul_mem (by simpa using natCast_mem F 27) (pow_mem hD.g₃_mem 2))`. Use `set U := ∏ i, (L.weierstrassP (T i) - L.weierstrassP (2 * T i)) with hUdef`. Take `⟨n, hn⟩ : ∃ n, N = 3 * n + 2` from `⟨N / 3, by omega⟩`. Establish `hvU : V.valuation U = V.valuation u ^ (12 * n) * V.valuation u ^ 4`. Rewrite using `[hUdef, map_prod]`.
+
+Repeatedly rewrite using `[fun i => (hU i).2]`. Rewrite using `[Finset.prod_const, Finset.card_univ, hcard, ← pow_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hU0 : U ≠ 0`.
+
+Introduce `h`. Rewrite `hvU` using `[h, map_zero]`. Conclude with `(mul_ne_zero (pow_ne_zero _ hvu) (pow_ne_zero _ hvu)) hvU.symm`. Use `⟨U / (latticeCurve L).Δ ^ n, div_mem hmem (pow_mem hΔmem n), div_ne_zero hU0 (pow_ne_zero _ hΔ0), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_pow, hvU, hvΔ, ← pow_mul, mul_comm 12 n, mul_div_cancel_left₀ _ (pow_ne_zero _ hvu), ← pow_mul]`.
+-/
 theorem exists_mem_valuation_cube_eq_Δ : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ),
     p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → ∀ V : ValuationSubring ℂ,
       ∃ A ∈ F, A ≠ 0 ∧ V.valuation A ^ 3 = V.valuation (latticeCurve L).Δ := by

@@ -20,33 +20,82 @@ def parM : Matrix (Fin 2) (Fin 2) ℂ := !![1, 0; 0, -1]
 
 def vacM : Matrix (Fin 2) (Fin 2) ℂ := !![1, 0; 0, 0]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [annM, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem annM_sq : annM * annM = 0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [annM, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [annM, Matrix.conjTranspose_apply]`.
+-/
 theorem annM_conj : annMᴴ = !![0, 0; 1, 0] := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [annM, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Rewrite using `[annM_conj]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [annM, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem annM_car : annM * annMᴴ + annMᴴ * annM = 1 := by
   rw [annM_conj]
   ext i j; fin_cases i <;> fin_cases j <;> simp [annM, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [parM, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem parM_sq : parM * parM = 1 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [parM, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [parM, Matrix.conjTranspose_apply]`.
+-/
 theorem parM_herm : parMᴴ = parM := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [parM, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [parM, annM, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem parM_annM : parM * annM + annM * parM = 0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [parM, annM, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [annM, vacM, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem annM_vacM : annM * vacM = 0 := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [annM, vacM, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun (congrFun h 0) 0` as an intermediate fact. Simplify using `[vacM] at this`.
+-/
 theorem vacM_ne : vacM ≠ 0 := by
   intro h
   have := congrFun (congrFun h 0) 0
   simp [vacM] at this
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Use `⟨Unit, inferInstance, inferInstance, fun p => p.elim0, 1, 1, ⟨fun p => p.elim0, fun p => p.elim0⟩, by simp, by simp, fun p => p.elim0, one_ne_zero, fun p => p.elim0⟩` and prove the remaining obligations. Consider the case `succ m ih`. Take `⟨ι, _, _, A, G, Q, ⟨h1, h2⟩, hG, hGh, hGA, hQ, hv⟩` from `ih`.
+
+Establish `hGAh : ∀ i, G * (A i)ᴴ + (A i)ᴴ * G = 0`. Introduce `i`. Use `congrArg conjTranspose (hGA i)` as an intermediate fact. Simplify `this` using `[conjTranspose_add, conjTranspose_mul, hGh, add_comm]`. Use `⟨ι × Fin 2, inferInstance, inferInstance, Fin.cases (G ⊗ₖ annM) (fun i => A i ⊗ₖ (1 : Matrix (Fin 2) (Fin 2) ℂ)), G ⊗ₖ parM, Q ⊗ₖ vacM, ⟨?_, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `p r`. Proceed by induction on `p using Fin.cases with`. Consider the case `zero`. Proceed by induction on `r using Fin.cases with`. Consider the case `zero`.
+
+Simplify using `only [Fin.cases_zero, ← mul_kronecker_mul, annM_sq, kronecker_zero, add_zero]`. Consider the case `succ r`. Simplify using `only [Fin.cases_zero, Fin.cases_succ, ← mul_kronecker_mul, mul_one, one_mul, ← add_kronecker, hGA, zero_kronecker]`. Consider the case `succ p`. Proceed by induction on `r using Fin.cases with`.
+
+Consider the case `zero`. Simplify using `only [Fin.cases_zero, Fin.cases_succ, ← mul_kronecker_mul, mul_one, one_mul, ← add_kronecker]`. Rewrite using `[add_comm, hGA, zero_kronecker]`. Consider the case `succ r`. Simplify using `only [Fin.cases_succ, ← mul_kronecker_mul, mul_one, ← add_kronecker, h1, zero_kronecker]`.
+
+Introduce `p r`. Proceed by induction on `p using Fin.cases with`. Consider the case `zero`. Proceed by induction on `r using Fin.cases with`. Consider the case `zero`.
+
+Simplify using `only [Fin.cases_zero, conjTranspose_kronecker, hGh, ← mul_kronecker_mul, hG, ← kronecker_add, annM_car, if_true, one_kronecker_one]`. Consider the case `succ r`. Establish `hne : (0 : Fin (m + 1)) ≠ r.succ` using `(Fin.succ_ne_zero r).symm`. Simplify using `only [Fin.cases_zero, Fin.cases_succ, conjTranspose_kronecker, conjTranspose_one, ← mul_kronecker_mul, mul_one, one_mul, ← add_kronecker, hGAh, zero_kronecker, if_neg hne]`. Consider the case `succ p`.
+
+Proceed by induction on `r using Fin.cases with`. Consider the case `zero`. Establish `hne : p.succ ≠ (0 : Fin (m + 1))` using `Fin.succ_ne_zero p`. Simplify using `only [Fin.cases_zero, Fin.cases_succ, conjTranspose_kronecker, hGh, ← mul_kronecker_mul, mul_one, one_mul, ← add_kronecker, if_neg hne]`. Rewrite using `[add_comm, hGA, zero_kronecker]`.
+
+Consider the case `succ r`. Simplify using `only [Fin.cases_succ, conjTranspose_kronecker, conjTranspose_one, ← mul_kronecker_mul, mul_one, ← add_kronecker, h2, Fin.succ_inj]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← mul_kronecker_mul, hG, parM_sq, one_kronecker_one]`. Rewrite using `[conjTranspose_kronecker, hGh, parM_herm]`.
+
+Introduce `p`. Proceed by induction on `p using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cases_zero, ← mul_kronecker_mul, hG, ← kronecker_add, parM_annM, kronecker_zero]`. Consider the case `succ p`.
+
+Simplify using `only [Fin.cases_succ, ← mul_kronecker_mul, mul_one, one_mul, ← add_kronecker, hGA, zero_kronecker]`. Introduce `h`. Apply `hQ` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrFun (congrFun h (i, 0)) (j, 0)` as an intermediate fact.
+
+Simplify `this` using `[vacM, kroneckerMap_apply]`. Introduce `p`. Proceed by induction on `p using Fin.cases with`. Consider the case `zero => simp only [Fin.cases_zero, ← mul_kronecker_mul, annM_vacM, kronecker_zero]`. Consider the case `succ p => simp only [Fin.cases_succ, ← mul_kronecker_mul, hv, zero_kronecker]`.
+-/
 theorem exists_fock (m : ℕ) : ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι)
     (A : Fin m → Matrix ι ι ℂ) (G Q : Matrix ι ι ℂ),
     IsCAR A ∧ G * G = 1 ∧ Gᴴ = G ∧ (∀ p, G * A p + A p * G = 0) ∧ Q ≠ 0 ∧ ∀ p, A p * Q = 0 := by
@@ -122,6 +171,13 @@ theorem exists_fock (m : ℕ) : ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableE
       | zero => simp only [Fin.cases_zero, ← mul_kronecker_mul, annM_vacM, kronecker_zero]
       | succ p => simp only [Fin.cases_succ, ← mul_kronecker_mul, hv, zero_kronecker]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hA`. Establish `h3 : (A p)ᴴ * (A r)ᴴ + (A r)ᴴ * (A p)ᴴ = 0`. Use `congrArg conjTranspose (h1 p r)` as an intermediate fact. Simplify `this` using `[conjTranspose_add, conjTranspose_mul, add_comm]`. Establish `key : (x • A p + y • (A p)ᴴ) * (u • A r + v • (A r)ᴴ) + (u • A r + v • (A r)ᴴ) * (x • A p + y • (A p)ᴴ) = (x * u) • (A p * A r + A r * A p) + (x * v) • (A p * (A r)ᴴ + (A r)ᴴ * A p) + (y * u) • (A r * (A p)ᴴ + (A p)ᴴ * A r) + (y * v) • ((A p)ᴴ * (A r)ᴴ + (A r)ᴴ * (A p)ᴴ)`.
+
+Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul]`. Use `module`. Rewrite using `[key, h1, h2, h2, h3]`. Distinguish the cases in `h : p = r`. Substitute `h` using the available equality.
+
+Simplify using `[add_smul]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem car_lin {M ι : Type} [DecidableEq M] [Fintype ι] [DecidableEq ι] {A : M → Matrix ι ι ℂ}
     (hA : IsCAR A) (x y u v : ℂ) (p r : M) :
     (x • A p + y • (A p)ᴴ) * (u • A r + v • (A r)ᴴ) + (u • A r + v • (A r)ᴴ) * (x • A p + y • (A p)ᴴ) =
@@ -147,18 +203,41 @@ def coefC {n : ℕ} (s : ℂ) (a b : Fin n) : ℂ := if a < b then s else if b <
 
 def modeOf {n : ℕ} (a b : Fin n) : Fin n × Fin n := (min a b, max a b)
 
+/- English proof (translation)
+Simplify using `[modeOf, min_comm, max_comm]`.
+-/
 theorem modeOf_comm {n : ℕ} (a b : Fin n) : modeOf a b = modeOf b a := by
   simp [modeOf, min_comm, max_comm]
 
+/- English proof (translation)
+Simplify using `[modeOf, min_eq_left h.le, max_eq_right h.le]`.
+-/
 theorem modeOf_lt {n : ℕ} {a b : Fin n} (h : a < b) : modeOf a b = (a, b) := by
   simp [modeOf, min_eq_left h.le, max_eq_right h.le]
 
+/- English proof (translation)
+Simplify using `[modeOf, min_eq_right h.le, max_eq_left h.le]`.
+-/
 theorem modeOf_gt {n : ℕ} {a b : Fin n} (h : b < a) : modeOf a b = (b, a) := by
   simp [modeOf, min_eq_right h.le, max_eq_left h.le]
 
+/- English proof (translation)
+Simplify using `[modeOf]`.
+-/
 theorem modeOf_self {n : ℕ} (a : Fin n) : modeOf a a = (a, a) := by
   simp [modeOf]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases lt_trichotomy a b with hab | rfl | hab <;> rcases lt_trichotomy d e with hde | rfl | hde`. Establish `: ¬ (a = e ∧ b = d)` using `by rintro ⟨rfl, rfl⟩; exact lt_asymm hab hde`. Simplify using `[coefA, coefC, hab, hde, lt_asymm hab, lt_asymm hde, this]`. Establish `h1 : ¬ (a = d ∧ b = d)` using `by rintro ⟨rfl, rfl⟩; exact lt_irrefl _ hab`. Simplify using `[modeOf_lt hab, modeOf_self, h1]`.
+
+Simplify using `only [modeOf_lt hab, modeOf_gt hde, Prod.mk.injEq, coefA, coefC, hab, hde, lt_asymm hab, lt_asymm hde, if_true, if_false]`. Simplify using `[hs]`. Establish `h1 : ¬ (a = e ∧ a = d)` using `by rintro ⟨rfl, rfl⟩; exact lt_irrefl _ hde`. Establish `h2 : ¬ (a = d ∧ a = e)` using `fun h => h1 ⟨h.2, h.1⟩`. Simplify using `[modeOf_lt hde, modeOf_self, h1, h2]`.
+
+Apply the tactic sequence `simp only [modeOf_self, Prod.mk.injEq, coefA, coefC, lt_irrefl, if_false, and_self] split_ifs <;> norm_num`. Establish `h1 : ¬ (a = e ∧ a = d)` using `by rintro ⟨rfl, rfl⟩; exact lt_irrefl _ hde`. Establish `h3 : ¬ (a = d ∧ a = e)` using `fun h => h1 ⟨h.2, h.1⟩`. Simplify using `[modeOf_gt hde, modeOf_self, h1, h3]`. Simplify using `only [modeOf_gt hab, modeOf_lt hde, Prod.mk.injEq, coefA, coefC, hab, hde, lt_asymm hab, lt_asymm hde, if_true, if_false]`.
+
+Distinguish the cases in `h : b = d ∧ a = e`. Simplify using `[h, hs]`. Establish `h' : ¬ (a = e ∧ b = d)` using `fun g => h ⟨g.2, g.1⟩`. Simplify using `[h, h']`. Establish `h1 : ¬ (a = d ∧ b = d)` using `by rintro ⟨rfl, rfl⟩; exact lt_irrefl _ hab`.
+
+Establish `h2 : ¬ (b = d ∧ a = d)` using `fun h => h1 ⟨h.2, h.1⟩`. Simplify using `[modeOf_gt hab, modeOf_self, h1, h2]`. Establish `: ¬ (a = e ∧ b = d)` using `by rintro ⟨rfl, rfl⟩; exact lt_asymm hab hde`. Simplify using `[coefA, coefC, hab, hde, lt_asymm hab, lt_asymm hde, this]`.
+-/
 theorem coef_rel {n : ℕ} {s : ℂ} (hs : s * s = 2) (a b d e : Fin n) :
     (if modeOf a b = modeOf d e then coefA s a b * coefC s d e + coefC s a b * coefA s d e else 0) =
       if a = e ∧ b = d then 2 else 0 := by
@@ -190,6 +269,9 @@ theorem coef_rel {n : ℕ} {s : ℂ} (hs : s * s = 2) (a b d e : Fin n) :
   · have : ¬ (a = e ∧ b = d) := by rintro ⟨rfl, rfl⟩; exact lt_asymm hab hde
     simp [coefA, coefC, hab, hde, lt_asymm hab, lt_asymm hde, this]
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `[coefA, coefC, h, lt_asymm h, hs]`. Simplify using `[coefA, coefC]`. Simplify using `[coefA, coefC, h, lt_asymm h]`.
+-/
 theorem star_coefC {n : ℕ} {s : ℂ} (hs : star s = s) (a b : Fin n) :
     star (coefC s a b) = coefA s b a := by
   rcases lt_trichotomy a b with h | rfl | h
@@ -197,6 +279,9 @@ theorem star_coefC {n : ℕ} {s : ℂ} (hs : star s = s) (a b : Fin n) :
   · simp [coefA, coefC]
   · simp [coefA, coefC, h, lt_asymm h]
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Simplify using `[coefA, coefC, h, lt_asymm h]`. Simplify using `[coefA, coefC]`. Simplify using `[coefA, coefC, h, lt_asymm h, hs]`.
+-/
 theorem star_coefA {n : ℕ} {s : ℂ} (hs : star s = s) (a b : Fin n) :
     star (coefA s a b) = coefC s b a := by
   rcases lt_trichotomy a b with h | rfl | h
@@ -204,6 +289,21 @@ theorem star_coefA {n : ℕ} {s : ℂ} (hs : star s = s) (a b : Fin n) :
   · simp [coefA, coefC]
   · simp [coefA, coefC, h, lt_asymm h, hs]
 
+/- English proof (translation)
+Introduce `n`. Take `⟨ι, _, _, A0, G, Q, ⟨h1, h2⟩, -, -, -, hQ, hv⟩` from `exists_fock (Fintype.card (Fin n × Fin n))`. Set `e` to `Fintype.equivFin (Fin n × Fin n)`. Set `A : Fin n × Fin n → Matrix ι ι ℂ` to `fun p => A0 (e p)`. Establish `hA : IsCAR A` using `⟨fun p r => h1 _ _, fun p r => by simp [A, h2, e.injective.eq_iff]⟩`.
+
+Set `s : ℂ` to `((Real.sqrt 2 : ℝ) : ℂ)`. Establish `hs : s * s = 2`. Simplify using `only [s, ← Complex.ofReal_mul]`. Rewrite using `[Real.mul_self_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+
+Establish `hs' : star s = s` using `Complex.conj_ofReal _`. Use `⟨ι, inferInstance, inferInstance, fun a b => coefA s a b • A (modeOf a b) + coefC s a b • (A (modeOf a b))ᴴ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b d e'`. Rewrite using `[car_lin hA, coef_rel hs]`. Use `split_ifs`.
+
+Simplify using `[two_smul, one_add_one_eq_two]`. Simplify using the standard rewrite rules. Introduce `a b`. Simplify using `only [conjTranspose_add, conjTranspose_smul, conjTranspose_conjTranspose, star_coefA hs', star_coefC hs', modeOf_comm a b]`. Rewrite using `[add_comm]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, Q i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hQ (by ext i j; exact h i j)`. Use `⟨fun i => Q i j, fun h => hij (congrFun h i), ?_⟩` and prove the remaining obligations.
+
+Introduce `a b hab`. Establish `hcol : ∀ M : Matrix ι ι ℂ, M * Q = 0 → M *ᵥ (fun i => Q i j) = 0`. Introduce `M hM`. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun hM k) j` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, mulVec, dotProduct]`. Apply `hcol` to reduce the goal to its premises. Simplify using `only [coefA, coefC, hab, lt_asymm hab, if_true, if_false, zero_smul, add_zero, smul_mul_assoc]`. Simplify using `[A, hv]`.
+-/
 theorem exists_cliff_model : ∀ n : ℕ, ∃ (ι : Type) (_ : Fintype ι) (_ : DecidableEq ι)
     (c : Fin n → Fin n → Matrix ι ι ℂ),
     IsCliff c ∧ ∃ q : ι → ℂ, q ≠ 0 ∧ ∀ a b, a < b → c b a *ᵥ q = 0 := by

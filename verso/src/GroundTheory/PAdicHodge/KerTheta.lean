@@ -13,11 +13,17 @@ section Adic
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem smodEq_span_singleton_pow_iff (a x y : R) (n : ℕ) :
     x ≡ y [SMOD (Ideal.span {a} ^ n • ⊤ : Submodule R R)] ↔ a ^ n ∣ x - y := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow,
     Ideal.mem_span_singleton]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Yhc2.le_span_singleton_of_forall_mem_eq h`.
+-/
 theorem le_span_singleton_of_forall_mem_eq {π ξ : R} [IsAdicComplete (Ideal.span {π}) R]
     {J : Ideal R} (h : ∀ x ∈ J, ∃ a z, z ∈ J ∧ x = a * ξ + z * π) :
     J ≤ Ideal.span {ξ} :=
@@ -29,6 +35,11 @@ section WittPerfect
 
 variable {p : ℕ} [hp : Fact p.Prime] {A : Type*} [CommRing A] [CharP A p] [PerfectRing A p]
 
+/- English proof (translation)
+Establish `: x - teichmuller p (x.coeff 0) ∈ Ideal.span {(p : WittVector p A)}`. Rewrite using `[mem_span_p_iff_coeff_zero_eq_zero]`. Establish `h` using `add_coeff_zero (x - teichmuller p (x.coeff 0)) (teichmuller p (x.coeff 0))`. Rewrite `h` using `[sub_add_cancel, teichmuller_coeff_zero]`. Conclude with `(eq_sub_of_add_eq h.symm).trans (sub_self _)`.
+
+Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 this`. Conclude with `⟨v, by rw [hv]; ring⟩`.
+-/
 theorem exists_eq_teichmuller_add_mul_p (x : WittVector p A) :
     ∃ v : WittVector p A, x = teichmuller p (x.coeff 0) + v * p := by
   have : x - teichmuller p (x.coeff 0) ∈ Ideal.span {(p : WittVector p A)} := by
@@ -41,12 +52,18 @@ theorem exists_eq_teichmuller_add_mul_p (x : WittVector p A) :
 
 omit [PerfectRing A p] in
 
+/- English proof (translation)
+Rewrite using `[add_coeff_zero, teichmuller_coeff_zero, mul_charP_coeff_zero, add_zero]`.
+-/
 theorem coeff_zero_teichmuller_add_mul_p (c : A) (v : WittVector p A) :
     (teichmuller p c + v * p).coeff 0 = c := by
   rw [add_coeff_zero, teichmuller_coeff_zero, mul_charP_coeff_zero, add_zero]
 
 omit [PerfectRing A p] in
 
+/- English proof (translation)
+Rewrite using `[coeff_add_of_disjoint 1 _ _ fun n => ?_, teichmuller_coeff_pos p c 1 one_pos, zero_add, mul_charP_coeff_succ]`. Break down `n with _ | n` into its components or cases. Conclude with `Or.inr (mul_charP_coeff_zero v)`. Conclude with `Or.inl (teichmuller_coeff_pos p c (n + 1) n.succ_pos)`.
+-/
 theorem coeff_one_teichmuller_add_mul_p (c : A) (v : WittVector p A) :
     (teichmuller p c + v * p).coeff 1 = v.coeff 0 ^ p := by
   rw [coeff_add_of_disjoint 1 _ _ fun n => ?_, teichmuller_coeff_pos p c 1 one_pos, zero_add,
@@ -55,6 +72,11 @@ theorem coeff_one_teichmuller_add_mul_p (c : A) (v : WittVector p A) :
   · exact Or.inr (mul_charP_coeff_zero v)
   · exact Or.inl (teichmuller_coeff_pos p c (n + 1) n.succ_pos)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h.exists_left_inv`. Use `set t := teichmuller p u * v with ht`. Establish `h0 : t - 1 ∈ Ideal.span {(p : WittVector p A)}`. Rewrite using `[mem_span_p_iff_coeff_zero_eq_zero]`. Establish `h` using `add_coeff_zero (t - 1) 1`.
+
+Rewrite `h` using `[sub_add_cancel, one_coeff_zero, ht, mul_coeff_zero, teichmuller_coeff_zero, hu]`. Conclude with `(eq_sub_of_add_eq h.symm).trans (sub_self _)`. Establish `hj` using `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ h0) 1`. Rewrite `hj` using `[mul_one, sub_add_cancel]`. Conclude with `isUnit_of_mul_isUnit_right hj`.
+-/
 theorem isUnit_of_isUnit_coeff_zero {v : WittVector p A} (h : IsUnit (v.coeff 0)) : IsUnit v := by
   obtain ⟨u, hu⟩ := h.exists_left_inv
   set t := teichmuller p u * v with ht
@@ -81,6 +103,15 @@ section Integers
 
 variable {p}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`. Establish `h1 : ‖((w : 𝒪) : K)‖ * ‖(((w⁻¹ : 𝒪ˣ) : 𝒪) : K)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+
+Establish `ha` using `mem_normInteger.1 (w : 𝒪).2`. Establish `hb` using `mem_normInteger.1 ((w⁻¹ : 𝒪ˣ) : 𝒪).2`. Use polynomial arithmetic with `[norm_nonneg ((w : 𝒪) : K), norm_nonneg (((w⁻¹ : 𝒪ˣ) : 𝒪) : K)]`. Introduce `h`. Establish `h0 : (u : K) ≠ 0`.
+
+Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`. Conclude with `zero_ne_one h`. Use `isUnit_iff_exists_inv.2 ⟨⟨(u : K)⁻¹, mem_normInteger.2 (by rw [norm_inv, h, inv_one])⟩, ?_⟩` and prove the remaining obligations. Use `ext`.
+
+Simplify using `[h0]`.
+-/
 theorem isUnit_iff_norm_eq_one {u : 𝒪} : IsUnit u ↔ ‖(u : K)‖ = 1 := by
   constructor
   · rintro ⟨w, rfl⟩
@@ -98,6 +129,11 @@ theorem isUnit_iff_norm_eq_one {u : 𝒪} : IsUnit u ↔ ‖(u : K)‖ = 1 := by
 
 omit [Fact p.Prime] [IsPerfectoidField K p] in
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[Subring.coe_mul, norm_mul]`. Establish `hc` using `mem_normInteger.1 c.2`. Establish `: ((p : 𝒪) : K) = (p : K)` using `by simp`. Rewrite using `[this]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_of_mem_span_p {b : 𝒪} (hb : b ∈ Ideal.span {(p : 𝒪)}) :
     ‖(b : K)‖ ≤ ‖(p : K)‖ := by
   obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hb
@@ -110,6 +146,13 @@ theorem norm_le_of_mem_span_p {b : 𝒪} (hb : b ∈ Ideal.span {(p : 𝒪)}) :
 
 variable (p) in
 
+/- English proof (translation)
+Establish `hbc : ‖(b : K) - c‖ < 1`. Use `norm_le_of_mem_span_p (Ideal.Quotient.eq.1 h)` as an intermediate fact. Rewrite `this` using `[AddSubgroupClass.coe_sub]`. Conclude with `this.trans_lt (norm_natCast_lt_one (K := K) (p := p))`. Use `le_antisymm (mem_normInteger.1 b.2) ?_` and prove the remaining obligations.
+
+Establish `h2 : ‖(c : K)‖ ≤ max ‖(c : K) - b‖ ‖(b : K)‖`. Simplify using `using IsUltrametricDist.norm_add_le_max ((c : K) - b) (b : K)`. Rewrite `h2` using `[norm_sub_rev]`. Break down `le_max_iff.1 h2 with h3 | h3` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_eq_one_of_mk_eq {b c : 𝒪}
     (h : Ideal.Quotient.mk (Ideal.span {(p : 𝒪)}) b = Ideal.Quotient.mk _ c)
     (hc : ‖(c : K)‖ = 1) : ‖(b : K)‖ = 1 := by
@@ -128,6 +171,11 @@ theorem norm_eq_one_of_mk_eq {b c : 𝒪}
 omit [Fact p.Prime] [IsPerfectoidField K p] in
 variable (p) in
 
+/- English proof (translation)
+Establish `hbc : ‖(b : K) - c‖ ≤ ‖(p : K)‖`. Use `norm_le_of_mem_span_p (Ideal.Quotient.eq.1 h)` as an intermediate fact. Rewrite `this` using `[AddSubgroupClass.coe_sub]`. Then use the resulting hypothesis. Establish `h1 : ‖(b : K)‖ ≤ max ‖(b : K) - c‖ ‖(c : K)‖`. Simplify using `using IsUltrametricDist.norm_add_le_max ((b : K) - c) (c : K)`.
+
+Establish `h2 : ‖(c : K)‖ ≤ max ‖(c : K) - b‖ ‖(b : K)‖`. Simplify using `using IsUltrametricDist.norm_add_le_max ((c : K) - b) (b : K)`. Rewrite `h2` using `[norm_sub_rev]`. Apply the tactic sequence `rcases le_max_iff.1 h1 with h3 | h3 <;> rcases le_max_iff.1 h2 with h4 | h4 <;> linarith`.
+-/
 theorem norm_eq_of_mk_eq {b c : 𝒪}
     (h : Ideal.Quotient.mk (Ideal.span {(p : 𝒪)}) b = Ideal.Quotient.mk _ c)
     (hc : ‖(p : K)‖ < ‖(c : K)‖) : ‖(b : K)‖ = ‖(c : K)‖ := by
@@ -145,31 +193,52 @@ end Integers
 
 section Tilt
 
+/- English proof (translation)
+The claim follows from `Perfection.ext h`.
+-/
 theorem preTilt_ext {x y : 𝒪♭} (h : ∀ n, PreTilt.coeff n x = PreTilt.coeff n y) : x = y :=
   Perfection.ext h
 
+/- English proof (translation)
+The claim follows from `PreTilt.mk_untilt_eq_coeff_zero x`.
+-/
 theorem mk_untilt (x : 𝒪♭) :
     Ideal.Quotient.mk (Ideal.span {(p : 𝒪)}) (PreTilt.untilt x) = PreTilt.coeff 0 x :=
   PreTilt.mk_untilt_eq_coeff_zero x
 
+/- English proof (translation)
+Rewrite using `[mk_untilt, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add]`.
+-/
 theorem mk_untilt_iterate (x : 𝒪♭) (n : ℕ) :
     Ideal.Quotient.mk (Ideal.span {(p : 𝒪)})
       (PreTilt.untilt ((frobeniusEquiv 𝒪♭ p).symm^[n] x)) = PreTilt.coeff n x := by
   rw [mk_untilt, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add]
 
+/- English proof (translation)
+Rewrite using `[Function.iterate_succ_apply', ← map_pow, frobeniusEquiv_symm_pow_p]`.
+-/
 theorem untilt_iterate_succ_pow (x : 𝒪♭) (n : ℕ) :
     PreTilt.untilt ((frobeniusEquiv 𝒪♭ p).symm^[n + 1] x) ^ p =
       PreTilt.untilt ((frobeniusEquiv 𝒪♭ p).symm^[n] x) := by
   rw [Function.iterate_succ_apply', ← map_pow, frobeniusEquiv_symm_pow_p]
 
+/- English proof (translation)
+Rewrite using `[← norm_pow, ← SubmonoidClass.coe_pow, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow]`.
+-/
 theorem norm_untilt_iterate_pow (x : 𝒪♭) (n : ℕ) :
     ‖((PreTilt.untilt ((frobeniusEquiv 𝒪♭ p).symm^[n] x) : 𝒪) : K)‖ ^ p ^ n =
       ‖((PreTilt.untilt x : 𝒪) : K)‖ := by
   rw [← norm_pow, ← SubmonoidClass.coe_pow, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow]
 
+/- English proof (translation)
+The claim follows from `Perfection.teichmuller_zero`.
+-/
 theorem untilt_zero : PreTilt.untilt (0 : 𝒪♭) = 0 :=
   Perfection.teichmuller_zero
 
+/- English proof (translation)
+Use `⟨fun h => preTilt_ext p fun n => ?_, fun h => h ▸ untilt_zero p⟩` and prove the remaining obligations. Establish `h1` using `PreTilt.untilt_iterate_frobeniusEquiv_symm_pow x n`. Rewrite `h1` using `[h, pow_eq_zero_iff (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)]`. Rewrite using `[← mk_untilt_iterate, h1, map_zero, map_zero]`.
+-/
 theorem untilt_eq_zero_iff {x : 𝒪♭} : PreTilt.untilt x = 0 ↔ x = 0 := by
   refine ⟨fun h => preTilt_ext p fun n => ?_, fun h => h ▸ untilt_zero p⟩
   have h1 := PreTilt.untilt_iterate_frobeniusEquiv_symm_pow x n
@@ -180,10 +249,18 @@ def ofCompatible (y : ℕ → 𝒪) (hy : ∀ n, y (n + 1) ^ p = y n) : 𝒪♭ 
   (⟨fun n => Ideal.Quotient.mk _ (y n), fun n => by rw [← map_pow, hy]⟩ :
     Perfection (ModP 𝒪 p) p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_ofCompatible (y : ℕ → 𝒪) (hy : ∀ n, y (n + 1) ^ p = y n) (n : ℕ) :
     PreTilt.coeff n (ofCompatible p y hy) = Ideal.Quotient.mk _ (y n) :=
   rfl
 
+/- English proof (translation)
+Establish `hpow : ∀ n, y n ^ p ^ n = y 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, hy, ih]`.
+
+Conclude with `Perfection.teichmuller_spec fun n => ⟨y n, rfl, by rw [hpow n]; exact SModEq.refl _⟩`.
+-/
 theorem untilt_ofCompatible (y : ℕ → 𝒪) (hy : ∀ n, y (n + 1) ^ p = y n) :
     PreTilt.untilt (ofCompatible p y hy) = y 0 := by
   have hpow : ∀ n, y n ^ p ^ n = y 0 := by
@@ -195,6 +272,17 @@ theorem untilt_ofCompatible (y : ℕ → 𝒪) (hy : ∀ n, y (n + 1) ^ p = y n)
 
 local notation "φ" => RingEquiv.symm (frobeniusEquiv (PreTilt (normInteger K) p) p)
 
+/- English proof (translation)
+Establish `hbn : ∀ n, ((PreTilt.untilt (φ^[n] b) : 𝒪) : K) ≠ 0`. Introduce `n h0`. Apply `hb` to reduce the goal to its premises. Establish `h0' : PreTilt.untilt (φ^[n] b) = 0` using `Subtype.ext h0`. Rewrite using `[← untilt_eq_zero_iff p, ← PreTilt.untilt_iterate_frobeniusEquiv_symm_pow b n, h0', zero_pow (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)]`.
+
+Establish `hle : ∀ n, ‖((PreTilt.untilt (φ^[n] a) : 𝒪) : K)‖ ≤ ‖((PreTilt.untilt (φ^[n] b) : 𝒪) : K)‖`. Introduce `n`. Establish `hpn : p ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Rewrite using `[← pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) hpn, norm_untilt_iterate_pow, norm_untilt_iterate_pow]`. Conclude with `h`.
+
+Set `y : ℕ → 𝒪` to `fun n => ⟨((PreTilt.untilt (φ^[n] a) : 𝒪) : K) / PreTilt.untilt (φ^[n] b), mem_normInteger.2 (by`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (hle n) (norm_nonneg _))⟩`. Establish `hy : ∀ n, y (n + 1) ^ p = y n`. Introduce `n`.
+
+Use `ext`. Simplify using `only [y, SubmonoidClass.coe_pow, div_pow]`. Rewrite using `[← SubmonoidClass.coe_pow, ← SubmonoidClass.coe_pow, untilt_iterate_succ_pow, untilt_iterate_succ_pow]`. Use `⟨ofCompatible p y hy, preTilt_ext p fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, coeff_ofCompatible, ← mk_untilt_iterate, ← mk_untilt_iterate, ← map_mul]`.
+
+Use `congr 1`. Use `ext`. Simplify using `only [y, Subring.coe_mul]`. Rewrite using `[mul_div_cancel₀ _ (hbn n)]`.
+-/
 theorem dvd_of_norm_untilt_le {a b : 𝒪♭} (hb : b ≠ 0)
     (h : ‖((PreTilt.untilt a : 𝒪) : K)‖ ≤ ‖((PreTilt.untilt b : 𝒪) : K)‖) : b ∣ a := by
   have hbn : ∀ n, ((PreTilt.untilt (φ^[n] b) : 𝒪) : K) ≠ 0 := by
@@ -226,6 +314,11 @@ theorem dvd_of_norm_untilt_le {a b : 𝒪♭} (hb : b ≠ 0)
   simp only [y, Subring.coe_mul]
   rw [mul_div_cancel₀ _ (hbn n)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `isUnit_iff_norm_eq_one.1 (h.map PreTilt.untilt)`. Introduce `h`. Establish `hx : x ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `h` using `[untilt_zero, ZeroMemClass.coe_zero, norm_zero]`. Conclude with `zero_ne_one h`. Use `isUnit_of_dvd_one (dvd_of_norm_untilt_le p hx ?_)` and prove the remaining obligations. Rewrite using `[map_one, OneMemClass.coe_one, norm_one, h]`.
+-/
 theorem isUnit_iff_norm_untilt {x : 𝒪♭} : IsUnit x ↔ ‖((PreTilt.untilt x : 𝒪) : K)‖ = 1 := by
   constructor
   · intro h
@@ -238,6 +331,9 @@ theorem isUnit_iff_norm_untilt {x : 𝒪♭} : IsUnit x ↔ ‖((PreTilt.untilt 
     refine isUnit_of_dvd_one (dvd_of_norm_untilt_le p hx ?_)
     rw [map_one, OneMemClass.coe_one, norm_one, h]
 
+/- English proof (translation)
+Take `⟨a, ha⟩ : ∃ a : 𝒪♭, PreTilt.coeff 0 a = Ideal.Quotient.mk _ b` from `Perfection.coeff_surjective (surjective_frobenius (K := K) p) 0 (Ideal.Quotient.mk _ b)`. Conclude with `⟨a, by rw [mk_untilt]; exact ha⟩`.
+-/
 theorem exists_mk_untilt_eq (b : 𝒪) :
     ∃ a : 𝒪♭, Ideal.Quotient.mk (Ideal.span {(p : 𝒪)}) (PreTilt.untilt a) =
       Ideal.Quotient.mk _ b := by
@@ -262,13 +358,24 @@ local notation "θ" => fontaineTheta (normInteger K) p
 
 section Kernel
 
+/- English proof (translation)
+Rewrite using `[map_add, map_mul, fontaineTheta_teichmuller, map_natCast]`.
+-/
 theorem fontaineTheta_teichmuller_add_mul_p (c : 𝒪♭) (v : 𝕎𝒪♭) :
     θ (teichmuller p c + v * p) = PreTilt.untilt c + θ v * p := by
   rw [map_add, map_mul, fontaineTheta_teichmuller, map_natCast]
 
+/- English proof (translation)
+Rewrite using `[← constantCoeff_apply, map_pow, constantCoeff_apply]`.
+-/
 theorem coeff_zero_pow (x : 𝕎𝒪♭) (n : ℕ) : (x ^ n).coeff 0 = x.coeff 0 ^ n := by
   rw [← constantCoeff_apply, map_pow, constantCoeff_apply]
 
+/- English proof (translation)
+Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `h` using `congrArg (fun w : 𝕎𝒪♭ => w.coeff 1) hv`. Rewrite `h` using `[coeff_one_teichmuller_add_mul_p]`. Rewrite `h1` using `[h]`. Establish `hv0 : IsUnit (v.coeff 0)` using `(isUnit_pow_iff hp0).1 h1`.
+
+Use `norm_eq_one_of_mk_eq p (c := PreTilt.untilt (v.coeff 0)) ?_ (isUnit_iff_norm_untilt p |>.1 hv0)` and prove the remaining obligations. Rewrite using `[mk_fontaineTheta, mk_untilt]`.
+-/
 theorem norm_fontaineTheta_eq_one_of_isUnit_coeff_one {ξ v : 𝕎𝒪♭}
     (hv : ξ = teichmuller p (ξ.coeff 0) + v * p) (h1 : IsUnit (ξ.coeff 1)) :
     ‖((θ v : 𝒪) : K)‖ = 1 := by
@@ -281,12 +388,20 @@ theorem norm_fontaineTheta_eq_one_of_isUnit_coeff_one {ξ v : 𝕎𝒪♭}
     (isUnit_iff_norm_untilt p |>.1 hv0)
   rw [mk_fontaineTheta, mk_untilt]
 
+/- English proof (translation)
+Rewrite using `[← fontaineTheta_teichmuller_add_mul_p, ← hv]`. Conclude with `hξ`.
+-/
 theorem untilt_coeff_zero_add_eq_zero {ξ v : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker θ)
     (hv : ξ = teichmuller p (ξ.coeff 0) + v * p) :
     PreTilt.untilt (ξ.coeff 0) + θ v * p = 0 := by
   rw [← fontaineTheta_teichmuller_add_mul_p, ← hv]
   exact hξ
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun z : 𝒪 => (z : K)) (untilt_coeff_zero_add_eq_zero hξ hv)`. Simplify using `only [AddMemClass.coe_add, Subring.coe_mul, ZeroMemClass.coe_zero] at h`. Establish `: ((PreTilt.untilt (ξ.coeff 0) : 𝒪) : K) = -(((θ v : 𝒪) : K) * (((p : 𝒪)) : K))`. Take the linear combination `h`. Rewrite using `[this, norm_neg, norm_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem norm_untilt_coeff_zero {ξ v : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker θ)
     (hv : ξ = teichmuller p (ξ.coeff 0) + v * p) :
     ‖((PreTilt.untilt (ξ.coeff 0) : 𝒪) : K)‖ = ‖((θ v : 𝒪) : K)‖ * ‖(p : K)‖ := by
@@ -297,6 +412,27 @@ theorem norm_untilt_coeff_zero {ξ v : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker θ
   rw [this, norm_neg, norm_mul]
   simp
 
+/- English proof (translation)
+Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Take `⟨v, hv⟩` from `exists_eq_teichmuller_add_mul_p ξ`. Establish `hθv` using `norm_fontaineTheta_eq_one_of_isUnit_coeff_one hv h1`. Establish `hθξ` using `untilt_coeff_zero_add_eq_zero hξ hv`. Use `le_antisymm ?_ (Ideal.span_le.2 (Set.singleton_subset_iff.2 hξ))` and prove the remaining obligations.
+
+Distinguish the cases in `hpO : (p : 𝒪) = 0`. Establish `hξ0 : ξ.coeff 0 = 0`. Rewrite `hθξ` using `[hpO, mul_zero, add_zero]`. Conclude with `(untilt_eq_zero_iff p).1 hθξ`. Establish `hv0 : IsUnit (v.coeff 0)`.
+
+Establish `h` using `congrArg (fun w : 𝕎𝒪♭ => w.coeff 1) hv`. Rewrite `h` using `[coeff_one_teichmuller_add_mul_p]`. Rewrite `h1` using `[h]`. Conclude with `(isUnit_pow_iff hp0).1 h1`. Establish `hvu : IsUnit v` using `isUnit_of_isUnit_coeff_zero hv0`.
+
+Rewrite `hv` using `[hξ0, teichmuller_zero, zero_add]`. Introduce `x hx`. Take `⟨y, hy⟩` from `exists_eq_teichmuller_add_mul_p x`. Establish `hx0 : x.coeff 0 = 0`. Establish `h` using `untilt_coeff_zero_add_eq_zero hx hy`.
+
+Rewrite `h` using `[hpO, mul_zero, add_zero]`. Conclude with `(untilt_eq_zero_iff p).1 h`. Rewrite `hy` using `[hx0, teichmuller_zero, zero_add]`. Rewrite using `[Ideal.mem_span_singleton, hy, hv]`. Conclude with `mul_dvd_mul_right hvu.dvd _`.
+
+Establish `hpK : (p : K) ≠ 0` using `fun h => hpO (Subtype.ext (by simpa using h))`. Establish `hnξ0` using `norm_untilt_coeff_zero hξ hv`. Rewrite `hnξ0` using `[hθv, one_mul]`. Establish `hξ0 : ξ.coeff 0 ≠ 0`. Introduce `h`.
+
+Rewrite `hnξ0` using `[h, untilt_zero, ZeroMemClass.coe_zero, norm_zero]`. Conclude with `hpK (norm_eq_zero.1 hnξ0.symm)`. Use `le_span_singleton_of_forall_mem_eq (π := (p : 𝕎𝒪♭)) fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_eq_teichmuller_add_mul_p x`. Establish `hθx` using `untilt_coeff_zero_add_eq_zero hx hy`.
+
+Establish `hnx0 : ‖((PreTilt.untilt (x.coeff 0) : 𝒪) : K)‖ ≤ ‖(p : K)‖`. Rewrite using `[norm_untilt_coeff_zero hx hy]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc⟩` from `dvd_of_norm_untilt_le p hξ0 (hnx0.trans hnξ0.ge)`. Use `⟨teichmuller p c, y - teichmuller p c * v, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.mem_ker]`. Establish `hc' : PreTilt.untilt (x.coeff 0) = PreTilt.untilt (ξ.coeff 0) * PreTilt.untilt c`. Rewrite using `[hc, map_mul]`. Establish `h2 : θ (y - teichmuller p c * v) * p = 0`. Rewrite using `[map_sub, map_mul, fontaineTheta_teichmuller]`.
+
+Take the linear combination `hθx - PreTilt.untilt c * hθξ - hc'`. Conclude with `(mul_eq_zero.1 h2).resolve_right hpO`. Establish `hteich : teichmuller p (x.coeff 0) = teichmuller p c * teichmuller p (ξ.coeff 0)`. Rewrite using `[hc, map_mul, mul_comm]`. Take the linear combination `hy - teichmuller p c * hv + hteich`.
+-/
 theorem ker_fontaineTheta_eq_span {ξ : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker θ)
     (h1 : IsUnit (ξ.coeff 1)) : RingHom.ker θ = Ideal.span {ξ} := by
   have hp0 : p ≠ 0 := (Fact.out : p.Prime).ne_zero
@@ -353,11 +489,23 @@ theorem ker_fontaineTheta_eq_span {ξ : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker �
         rw [hc, map_mul, mul_comm]
       linear_combination hy - teichmuller p c * hv + hteich
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_natCast, fontaineTheta_teichmuller, h, mul_comm, sub_self]`.
+-/
 theorem fontaineTheta_mul_p_sub_teichmuller {ϖ : 𝒪♭} {w : 𝕎𝒪♭}
     (h : PreTilt.untilt ϖ = p * θ w) : w * p - teichmuller p ϖ ∈ RingHom.ker θ := by
   rw [RingHom.mem_ker, map_sub, map_mul, map_natCast, fontaineTheta_teichmuller, h, mul_comm,
     sub_self]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_eq_teichmuller_add_mul_p (-1 : 𝕎𝒪♭)`. Establish `hneg : (-1 : 𝕎𝒪♭).coeff 0 = -1`. Establish `h0` using `add_coeff_zero (-1 : 𝕎𝒪♭) 1`. Rewrite `h0` using `[neg_add_cancel, one_coeff_zero, zero_coeff]`. Take the linear combination `-h0`.
+
+Establish `e : teichmuller p (-ϖ) = teichmuller p ϖ * teichmuller p ((-1 : 𝕎𝒪♭).coeff 0)`. Rewrite using `[hneg, ← map_mul, mul_neg_one]`. Establish `key : w * p - teichmuller p ϖ = teichmuller p (-ϖ) + (w + teichmuller p ϖ * s) * p`. Take the linear combination `teichmuller p ϖ * hs - e`. Rewrite using `[key, coeff_one_teichmuller_add_mul_p]`.
+
+Use `IsUnit.pow _ ((isUnit_iff_norm_untilt p).2 ?_)` and prove the remaining obligations. Use `norm_eq_one_of_mk_eq p (c := θ w) ?_ (isUnit_iff_norm_eq_one.1 hw)` and prove the remaining obligations. Establish `hmk : Ideal.Quotient.mk (Ideal.span {(p : 𝒪)}) (PreTilt.untilt ϖ) = 0`. Rewrite using `[h, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+
+Rewrite using `[mk_untilt, add_coeff_zero, mul_coeff_zero, teichmuller_coeff_zero, map_add, map_mul, ← mk_untilt p ϖ, hmk, zero_mul, add_zero, mk_fontaineTheta]`.
+-/
 theorem isUnit_coeff_one_mul_p_sub_teichmuller {ϖ : 𝒪♭} {w : 𝕎𝒪♭} (hw : IsUnit (θ w))
     (h : PreTilt.untilt ϖ = p * θ w) : IsUnit ((w * p - teichmuller p ϖ).coeff 1) := by
   obtain ⟨s, hs⟩ := exists_eq_teichmuller_add_mul_p (-1 : 𝕎𝒪♭)
@@ -378,12 +526,18 @@ theorem isUnit_coeff_one_mul_p_sub_teichmuller {ϖ : 𝒪♭} {w : 𝕎𝒪♭} 
   rw [mk_untilt, add_coeff_zero, mul_coeff_zero, teichmuller_coeff_zero, map_add, map_mul,
     ← mk_untilt p ϖ, hmk, zero_mul, add_zero, mk_fontaineTheta]
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `surjective_fontaineTheta (K := K) p u`. Conclude with `⟨_, fontaineTheta_mul_p_sub_teichmuller h, isUnit_coeff_one_mul_p_sub_teichmuller hu h⟩`.
+-/
 theorem exists_mem_ker_isUnit_coeff_one_of_untilt_eq {ϖ : 𝒪♭} {u : 𝒪} (hu : IsUnit u)
     (h : PreTilt.untilt ϖ = p * u) :
     ∃ ξ ∈ RingHom.ker θ, IsUnit (ξ.coeff 1) := by
   obtain ⟨w, rfl⟩ := surjective_fontaineTheta (K := K) p u
   exact ⟨_, fontaineTheta_mul_p_sub_teichmuller h, isUnit_coeff_one_mul_p_sub_teichmuller hu h⟩
 
+/- English proof (translation)
+Establish `h' : PreTilt.untilt pflat = p * θ 1` using `by rw [map_one, mul_one, h]`. Use `ker_fontaineTheta_eq_span (fontaineTheta_mul_p_sub_teichmuller h') (isUnit_coeff_one_mul_p_sub_teichmuller (by rw [map_one]; exact isUnit_one) h')` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ker_fontaineTheta_eq_span_p_sub_teichmuller {pflat : 𝒪♭}
     (h : PreTilt.untilt pflat = p) :
     RingHom.ker θ = Ideal.span {(p : 𝕎𝒪♭) - teichmuller p pflat} := by
@@ -392,6 +546,9 @@ theorem ker_fontaineTheta_eq_span_p_sub_teichmuller {pflat : 𝒪♭}
     (isUnit_coeff_one_mul_p_sub_teichmuller (by rw [map_one]; exact isUnit_one) h')
   rwa [one_mul] at this
 
+/- English proof (translation)
+The claim follows from `ker_fontaineTheta_eq_span_p_sub_teichmuller (by rw [untilt_ofCompatible, h0])`.
+-/
 theorem ker_fontaineTheta_eq_span_p_sub_teichmuller_ofCompatible (y : ℕ → 𝒪)
     (hy : ∀ n, y (n + 1) ^ p = y n) (h0 : y 0 = p) :
     RingHom.ker θ = Ideal.span {(p : 𝕎𝒪♭) - teichmuller p (ofCompatible p y hy)} :=
@@ -399,6 +556,9 @@ theorem ker_fontaineTheta_eq_span_p_sub_teichmuller_ofCompatible (y : ℕ → �
 
 variable (p) in
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_mk_untilt_eq p b`. Conclude with `⟨a, norm_eq_of_mk_eq p ha hb⟩`.
+-/
 theorem exists_norm_untilt_eq {b : 𝒪} (hb : ‖(p : K)‖ < ‖(b : K)‖) :
     ∃ a : 𝒪♭, ‖((PreTilt.untilt a : 𝒪) : K)‖ = ‖(b : K)‖ := by
   obtain ⟨a, ha⟩ := exists_mk_untilt_eq p b
@@ -406,6 +566,17 @@ theorem exists_norm_untilt_eq {b : 𝒪} (hb : ‖(p : K)‖ < ‖(b : K)‖) :
 
 variable (K p) in
 
+/- English proof (translation)
+Distinguish the cases in `hpO : (p : 𝒪) = 0`. Conclude with `⟨0, 1, isUnit_one, by rw [untilt_zero, hpO, zero_mul]⟩`. Establish `hpK : (p : K) ≠ 0` using `fun h => hpO (Subtype.ext (by simpa using h))`. Establish `hp1 : ‖(p : K)‖ < 1` using `IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p)`. Establish `hpos : 0 < ‖(p : K)‖` using `norm_pos_iff.2 hpK`.
+
+Take `⟨x, hx1, hx2⟩` from `IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p) _ hp1`. Establish `hxpos : 0 < ‖x‖` using `hpos.trans hx1`. Establish `hx0 : x ≠ 0` using `norm_pos_iff.1 hxpos`. Establish `hy : ‖(p : K) / x‖ ≤ 1`. Rewrite using `[norm_div]`.
+
+Conclude with `div_le_one_of_le₀ hx1.le hxpos.le`. Take `⟨a₁, ha₁⟩` from `exists_norm_untilt_eq (K := K) p (b := ⟨x, mem_normInteger.2 hx2.le⟩) hx1`. Take `⟨a₂, ha₂⟩` from `exists_norm_untilt_eq (K := K) p (b := ⟨(p : K) / x, mem_normInteger.2 hy⟩) (by show ‖(p : K)‖ < ‖(p : K) / x‖`. Rewrite using `[norm_div, lt_div_iff₀ hxpos]`. Conclude with `mul_lt_of_lt_one_right hpos hx2)`.
+
+Establish `hϖ : ‖((PreTilt.untilt (a₁ * a₂) : 𝒪) : K)‖ = ‖(p : K)‖`. Rewrite using `[map_mul, Subring.coe_mul, norm_mul, ha₁, ha₂]`. Use `show ‖x‖ * ‖(p : K) / x‖ = ‖(p : K)‖`. Rewrite using `[norm_div, mul_div_cancel₀ _ hxpos.ne']`. Establish `hu : ‖((PreTilt.untilt (a₁ * a₂) : 𝒪) : K) / p‖ = 1`.
+
+Rewrite using `[norm_div, hϖ, div_self hpos.ne']`. Use `⟨a₁ * a₂, ⟨_, mem_normInteger.2 hu.le⟩, isUnit_iff_norm_eq_one.2 hu, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [Subring.coe_mul]`. Rewrite using `[show ((p : 𝒪) : K) = (p : K) by simp, mul_div_cancel₀ _ hpK]`.
+-/
 theorem exists_untilt_eq_p_mul_unit :
     ∃ ϖ : 𝒪♭, ∃ u : 𝒪, IsUnit u ∧ PreTilt.untilt ϖ = p * u := by
   by_cases hpO : (p : 𝒪) = 0
@@ -437,6 +608,9 @@ theorem exists_untilt_eq_p_mul_unit :
 
 variable (K p) in
 
+/- English proof (translation)
+Take `⟨ϖ, u, hu, h⟩` from `exists_untilt_eq_p_mul_unit K p`. Conclude with `exists_mem_ker_isUnit_coeff_one_of_untilt_eq hu h`.
+-/
 theorem exists_mem_ker_fontaineTheta_isUnit_coeff_one :
     ∃ ξ ∈ RingHom.ker θ, IsUnit (ξ.coeff 1) := by
   obtain ⟨ϖ, u, hu, h⟩ := exists_untilt_eq_p_mul_unit K p
@@ -444,12 +618,22 @@ theorem exists_mem_ker_fontaineTheta_isUnit_coeff_one :
 
 variable (K p) in
 
+/- English proof (translation)
+Take `⟨ξ, hξ, h1⟩` from `exists_mem_ker_fontaineTheta_isUnit_coeff_one K p`. Conclude with `⟨⟨ξ, ker_fontaineTheta_eq_span hξ h1⟩⟩`.
+-/
 theorem isPrincipal_ker_fontaineTheta : (RingHom.ker θ).IsPrincipal := by
   obtain ⟨ξ, hξ, h1⟩ := exists_mem_ker_fontaineTheta_isUnit_coeff_one K p
   exact ⟨⟨ξ, ker_fontaineTheta_eq_span hξ h1⟩⟩
 
 variable (K p) in
 
+/- English proof (translation)
+Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Set `root : 𝒪 → 𝒪` to `fun z => ⟨Classical.choose (IsAlgClosed.exists_pow_nat_eq (z : K) hp), mem_normInteger.2 (by`. Establish `h` using `Classical.choose_spec (IsAlgClosed.exists_pow_nat_eq (z : K) hp)`. Establish `h2 : ‖Classical.choose (IsAlgClosed.exists_pow_nat_eq (z : K) hp)‖ ^ p ≤ 1`. Rewrite using `[← norm_pow, h]`.
+
+Conclude with `mem_normInteger.1 z.2`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) hp.ne').1 h2)⟩`. Establish `hroot : ∀ z, root z ^ p = z` using `fun z => Subtype.ext (by`. Simplify using `only [root, SubmonoidClass.coe_pow]`. Conclude with `Classical.choose_spec (IsAlgClosed.exists_pow_nat_eq (z : K) hp))`.
+
+Set `y : ℕ → 𝒪` to `fun n => root^[n] p`. Establish `hy : ∀ n, y (n + 1) ^ p = y n` using `fun n => by`. Simplify using `only [y, Function.iterate_succ_apply', hroot]`. Conclude with `⟨ofCompatible p y hy, by rw [untilt_ofCompatible]; rfl⟩`.
+-/
 theorem exists_untilt_eq_p [IsAlgClosed K] : ∃ pflat : 𝒪♭, PreTilt.untilt pflat = p := by
   have hp : 0 < p := (Fact.out : p.Prime).pos
   let root : 𝒪 → 𝒪 := fun z =>
@@ -468,6 +652,9 @@ theorem exists_untilt_eq_p [IsAlgClosed K] : ∃ pflat : 𝒪♭, PreTilt.untilt
 
 variable (K p) in
 
+/- English proof (translation)
+Take `⟨pflat, h⟩` from `exists_untilt_eq_p K p`. Conclude with `⟨pflat, h, ker_fontaineTheta_eq_span_p_sub_teichmuller h⟩`.
+-/
 theorem exists_ker_fontaineTheta_eq_span_p_sub_teichmuller [IsAlgClosed K] :
     ∃ pflat : 𝒪♭, PreTilt.untilt pflat = p ∧
       RingHom.ker θ = Ideal.span {(p : 𝕎𝒪♭) - teichmuller p pflat} := by
@@ -480,19 +667,31 @@ section WittTilt
 
 variable (K p) in
 
+/- English proof (translation)
+The claim follows from `have := isDomain_preTilt (K := K) p inferInstance`.
+-/
 theorem isDomain_wittVector_preTilt : IsDomain 𝕎𝒪♭ :=
   have := isDomain_preTilt (K := K) p
   inferInstance
 
+/- English proof (translation)
+The claim follows from `WittVector.eq_zero_of_p_mul_eq_zero x (by rwa [mul_comm])`.
+-/
 theorem eq_zero_of_p_mul_eq_zero {x : 𝕎𝒪♭} (h : (p : 𝕎𝒪♭) * x = 0) : x = 0 :=
   WittVector.eq_zero_of_p_mul_eq_zero x (by rwa [mul_comm])
 
+/- English proof (translation)
+Use `isDomain_wittVector_preTilt K p` as an intermediate fact. Use `(mul_eq_zero.1 h).resolve_left fun h0 => hϖ ?_` and prove the remaining obligations. Rewrite using `[← teichmuller_coeff_zero p ϖ, h0, zero_coeff]`.
+-/
 theorem eq_zero_of_teichmuller_mul_eq_zero {ϖ : 𝒪♭} (hϖ : ϖ ≠ 0) {x : 𝕎𝒪♭}
     (h : teichmuller p ϖ * x = 0) : x = 0 := by
   have := isDomain_wittVector_preTilt K p
   refine (mul_eq_zero.1 h).resolve_left fun h0 => hϖ ?_
   rw [← teichmuller_coeff_zero p ϖ, h0, zero_coeff]
 
+/- English proof (translation)
+Use `isDomain_preTilt (K := K) p` as an intermediate fact. Use `isDomain_wittVector_preTilt K p` as an intermediate fact. Use `mem_nonZeroDivisors_of_ne_zero fun h => ?_` and prove the remaining obligations. Rewrite `h1` using `[h, zero_coeff]`. Conclude with `not_isUnit_zero h1`.
+-/
 theorem mem_nonZeroDivisors_of_isUnit_coeff_one {ξ : 𝕎𝒪♭} (h1 : IsUnit (ξ.coeff 1)) :
     ξ ∈ nonZeroDivisors 𝕎𝒪♭ := by
   have := isDomain_preTilt (K := K) p
@@ -501,6 +700,31 @@ theorem mem_nonZeroDivisors_of_isUnit_coeff_one {ξ : 𝕎𝒪♭} (h1 : IsUnit 
   rw [h, zero_coeff] at h1
   exact not_isUnit_zero h1
 
+/- English proof (translation)
+Use `isDomain_preTilt (K := K) p` as an intermediate fact. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Take `⟨v, hv⟩` from `exists_eq_teichmuller_add_mul_p ξ`. Establish `hθv` using `norm_fontaineTheta_eq_one_of_isUnit_coeff_one hv h1`. Establish `hθξ` using `untilt_coeff_zero_add_eq_zero hξ hv`.
+
+It suffices to establish `H : ∀ m (x : 𝕎𝒪♭), (∀ n, ξ ^ n ∣ x) → (p : 𝕎𝒪♭) ^ m ∣ x by`. Use `⟨fun x hx => IsHausdorff.haus (I := Ideal.span {(p : 𝕎𝒪♭)}) inferInstance x fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[smodEq_span_singleton_pow_iff, sub_zero]`. Conclude with `H m x fun n => by`. Use `hx n` as an intermediate fact.
+
+Rewrite `this` using `[smodEq_span_singleton_pow_iff, sub_zero]`. Then use the resulting hypothesis. Distinguish the cases in `hpO : (p : 𝒪) = 0`. Establish `hξ0 : ξ.coeff 0 = 0`. Rewrite `hθξ` using `[hpO, mul_zero, add_zero]`. Conclude with `(untilt_eq_zero_iff p).1 hθξ`.
+
+Rewrite `hv` using `[hξ0, teichmuller_zero, zero_add]`. Introduce `m x hx`. Take `⟨w, hw⟩` from `hx m`. Conclude with `⟨v ^ m * w, by rw [hw, hv, mul_pow]; ring⟩`. Establish `hpK : (p : K) ≠ 0` using `fun h => hpO (Subtype.ext (by simpa using h))`.
+
+Establish `hp1 : ‖(p : K)‖ < 1` using `IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p)`. Establish `hnξ0` using `norm_untilt_coeff_zero hξ hv`. Rewrite `hnξ0` using `[hθv, one_mul]`. Establish `hξ0 : ξ.coeff 0 ≠ 0`. Introduce `h`.
+
+Rewrite `hnξ0` using `[h, untilt_zero, ZeroMemClass.coe_zero, norm_zero]`. Conclude with `hpK (norm_eq_zero.1 hnξ0.symm)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `x hx`. Establish `hx0 : x.coeff 0 = 0`. Rewrite using `[← untilt_eq_zero_iff p]`.
+
+Establish `hle : ∀ n, ‖((PreTilt.untilt (x.coeff 0) : 𝒪) : K)‖ ≤ ‖(p : K)‖ ^ n`. Introduce `n`. Take `⟨w, hw⟩` from `hx n`. Establish `hw0 : x.coeff 0 = ξ.coeff 0 ^ n * w.coeff 0`. Rewrite using `[hw, mul_coeff_zero, coeff_zero_pow]`.
+
+Rewrite using `[hw0, map_mul, map_pow, Subring.coe_mul, SubmonoidClass.coe_pow, norm_mul, norm_pow, hnξ0]`. Combine the equalities or inequalities in the displayed calculation. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg (p : K)) hp1`. Establish `h0` using `ge_of_tendsto' ht hle`. Conclude with `Subtype.ext (norm_le_zero_iff.1 h0)`.
+
+Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero x).2 hx0)`. Establish `hy' : ∀ n, ξ ^ n ∣ y`. Introduce `n`. Take `⟨w, hw⟩` from `hx n`. Establish `hw0 : w.coeff 0 = 0`.
+
+Establish `h` using `congrArg (fun z : 𝕎𝒪♭ => z.coeff 0) (hy.trans hw)`. Rewrite `h` using `[mul_charP_coeff_zero, mul_coeff_zero, coeff_zero_pow]`. Conclude with `(mul_eq_zero.1 h.symm).resolve_left (pow_ne_zero _ hξ0)`. Take `⟨w', hw'⟩` from `Ideal.mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero w).2 hw0)`. Use `⟨w', sub_eq_zero.1 (eq_zero_of_p_mul_eq_zero ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_sub, mul_comm (p : 𝕎𝒪♭) y, hy, hw, ← hw']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, ht⟩` from `ih y hy'`. Conclude with `⟨t, by rw [← hy, ht]; ring⟩`.
+-/
 theorem isHausdorff_span_of_isUnit_coeff_one {ξ : 𝕎𝒪♭} (hξ : ξ ∈ RingHom.ker θ)
     (h1 : IsUnit (ξ.coeff 1)) : IsHausdorff (Ideal.span {ξ}) 𝕎𝒪♭ := by
   have := isDomain_preTilt (K := K) p

@@ -6,6 +6,15 @@ open UpperTheory.Gal.Int.Geo
 open UpperTheory.Gal.G3 (sp)
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `I W Ω _`. Use `haveI : Unique (sp Ω) := inferInstanceAs (Unique (PrimeSpectrum Ω))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, x⟩ ⟨j, x'⟩ h`. Establish `h' : x ≫ Sigma.ι (fun _ : I => W) i = x' ≫ Sigma.ι (fun _ : I => W) j` using `h`.
+
+Establish `e : (Sigma.ι (fun _ : I => W) i) (x default) = (Sigma.ι (fun _ : I => W) j) (x' default)`. Use `congrArg (fun f : sp Ω ⟶ _ => f default) h'` as an intermediate fact. Simplify using `using this`. Establish `e2` using `(sigmaι_eq_iff _ _ _ _ _).mp e`. Take `⟨rfl⟩ : i = j` from `congrArg Sigma.fst e2`.
+
+Establish `: x = x'` using `(cancel_mono (Sigma.ι (fun _ : I => W) i)).mp h'`. Rewrite using `[this]`. Introduce `y`. Take `⟨i, w, hw⟩` from `(sigmaOpenCover fun _ : I => W).exists_eq (y default)`. Establish `hr : Set.range y ⊆ Set.range (Sigma.ι (fun _ : I => W) i)`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Subsingleton.elim p default]`. Conclude with `⟨w, hw⟩`. Conclude with `⟨(i, IsOpenImmersion.lift (Sigma.ι (fun _ : I => W) i) y hr), IsOpenImmersion.lift_fac _ _ _⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.lSigPt_holds :
     LSigPt := by
   intro I W Ω _

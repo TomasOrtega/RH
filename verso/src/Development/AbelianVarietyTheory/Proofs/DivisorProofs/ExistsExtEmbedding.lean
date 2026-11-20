@@ -24,6 +24,9 @@ section ReadingSec
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
+/- English proof (translation)
+Substitute `hΨ` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castFrame_mem_GG {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Ψ Ψ' : Finset (E →+* ℂ)}
     (hΨ : Ψ = Ψ') (G : Matrix (Fin r) (Fin r) E) (p0 : ℕ) (x : Frame Ψ r) :
     castFrame hΨ x ∈ GG Ψ' G p0 ↔ x ∈ GG Ψ G p0 := by
@@ -33,6 +36,9 @@ variable {p : PtAt ex Csz} {r : TwoRuns p.T p.P.Gp} (h : RunsOk (fw2 p) r) {i : 
   [MulAction p.P.Gp C] {M : TwoLevels D.host.E D.R.r p.P.Gp C} {v : HeightOneSpectrum (𝓞 D.what₂.LL)}
   {e : C ≃ ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).Comp}
 
+/- English proof (translation)
+Rewrite using `[← ha c]`. Conclude with `(M.comp_Ψ c).symm`.
+-/
 theorem psi_eq (ha : ∀ c, (M.comp c).toData = ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c)) (c : C) :
     M.Ψ = (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c)).Ψ := by
   rw [← ha c]; exact (M.comp_Ψ c).symm
@@ -41,6 +47,11 @@ def rdFun (ha : ∀ c, (M.comp c).toData = ((r.used v).full.U ((i : ℕ) + 1) (r
     (F : (recB (h.laws v).p.toLawsCore).Cusp ((i : ℕ) + 1) (p.κ i)) : C → Frame M.Ψ D.R.r → ℂ :=
   fun c x => rdR (h.laws v).p ((i : ℕ) + 1) F (e c) (castFrame (psi_eq ha c) x)
 
+/- English proof (translation)
+Establish `hG : (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c)).Gm = M.Gm`. Rewrite using `[← ha c]`. Conclude with `M.comp_Gm c`. Establish `hp : (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c)).p0 = M.p0`. Rewrite using `[← ha c]`.
+
+Conclude with `M.comp_basePoint c`. Use `show castFrame (psi_eq ha c) x ∈ GG _ _ _ ↔ x ∈ GG _ _ _`. Rewrite using `[hG, hp, castFrame_mem_GG]`.
+-/
 theorem mem_dom_iff (ha : ∀ c, (M.comp c).toData = ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c))
     (c : C) (x : Frame M.Ψ D.R.r) :
     castFrame (psi_eq ha c) x ∈ (((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c)).dom ↔ x ∈ M.dom := by
@@ -70,6 +81,9 @@ def rdLin (ha : ∀ c, (M.comp c).toData = ((r.used v).full.U ((i : ℕ) + 1) (r
     funext c x
     simp only [TwoLevels.res, rdFun, rdR, Pi.smul_apply, Submodule.coe_smul, map_smulₛₗ, smul_eq_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rdLin_apply (ha : ∀ c, (M.comp c).toData = ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).X (e c))
     (F : (recB (h.laws v).p.toLawsCore).Cusp ((i : ℕ) + 1) (p.κ i)) (c : C) (x : M.dom) :
     rdLin h ha F c x = rdFun h ha F c x.1 := rfl
@@ -80,6 +94,11 @@ section LP
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
+/- English proof (translation)
+Introduce `τ k hk`. Rewrite using `[(p.fw.kap i τ).1 k, Formalism.IndefR.Fock.KV.sig_Wc i τ]`. Establish `e1 : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + (i : ℕ)` using `by show D.R.k + ((i : ℕ) + 1) - 1 = D.R.k + (i : ℕ); omega`. Establish `e2 : D.R.k + (i : ℕ) - 1 = (k : ℕ)` using `by omega`. Establish `h0` using `GlobalTheory.PtStringTest.aPl_last_pos i τ`.
+
+Rewrite `h0` using `[e2, ← e1]`. Conclude with `h0`.
+-/
 theorem lastPos_kappa (p : PtAt ex Csz) (i : Fin D.R.m) : (p.κ i).LastPos := by
   intro τ k hk
   rw [(p.fw.kap i τ).1 k, Formalism.IndefR.Fock.KV.sig_Wc i τ]
@@ -91,6 +110,9 @@ theorem lastPos_kappa (p : PtAt ex Csz) (i : Fin D.R.m) : (p.κ i).LastPos := by
   exact h0
 end LP
 
+/- English proof (translation)
+Use `letI : Algebra K ℂ := σ₀.toAlgebra`. Use `haveI : Algebra.IsAlgebraic K LL := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Conclude with `⟨(IsAlgClosed.lift : LL →ₐ[K] ℂ).toRingHom, fun a => (IsAlgClosed.lift : LL →ₐ[K] ℂ).commutes a⟩`.
+-/
 theorem exists_ext_embedding {K LL : Type} [Field K] [NumberField K] [Field LL] [NumberField LL] [Algebra K LL]
     (σ₀ : K →+* ℂ) : ∃ σ : LL →+* ℂ, ∀ a, σ (algebraMap K LL a) = σ₀ a := by
   letI : Algebra K ℂ := σ₀.toAlgebra
@@ -101,6 +123,9 @@ section Card
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
+/- English proof (translation)
+Take `⟨v, e, -⟩` from `hM`. Take `⟨k⟩ : Nonempty ((r.used v).full.U ((i : ℕ) + 1) (r.used v).full.σ₀).Comp` from `⟨((r.used v).full.dict ((i : ℕ) + 1) (r.used v).full.σ₀ 1).1⟩`. Establish `h2` using `Formalism.L2.Pj.DatLin.two_card (M.comp (e.symm k)).cmType`. Rewrite `h2` using `[M.comp_Ψ, Formalism.L2.S.Pv.MSTypP.finrank_hostE' D]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_of_runModel {p : PtAt ex Csz} {r : TwoRuns p.T p.P.Gp} {h : RunsOk (fw2 p) r} {i : Fin D.R.m} {C : Type}
     [Finite C] [MulAction p.P.Gp C] {M : TwoLevels D.host.E D.R.r p.P.Gp C} {ka : Wt M.Ψ D.R.r}
     (hM : RunModel p r h i M ka) : M.Ψ.card = D.R.f := by

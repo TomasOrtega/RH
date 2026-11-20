@@ -17,10 +17,16 @@ def cycAway (n : ℕ) : Subring ℂ := Subring.closure {zeta n, (n : ℂ)⁻¹}
 
 def zetaAway (n : ℕ) : cycAway n := ⟨zeta n, Subring.subset_closure (Or.inl rfl)⟩
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩ (Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn : (n : ℂ) ≠ 0)))`.
+-/
 theorem isUnit_natCast {n : ℕ} (hn : n ≠ 0) : IsUnit (n : cycAway n) :=
   IsUnit.of_mul_eq_one ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩
     (Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn : (n : ℂ) ≠ 0)))
 
+/- English proof (translation)
+Establish `h₁ : IsPrimitiveRoot (zetaAway n) n` using `IsPrimitiveRoot.of_map_of_injective (f := (cycAway n).subtype) (Complex.isPrimitiveRoot_exp n hn) Subtype.val_injective`. Establish `: NeZero (n : K)` using `⟨by simpa using ((isUnit_natCast hn).map β).ne_zero⟩`. Establish `h₂` using `(h₁.isRoot_cyclotomic (Nat.pos_of_ne_zero hn)).map (f := β)`. Rewrite `h₂` using `[Polynomial.map_cyclotomic, Polynomial.isRoot_cyclotomic_iff]`. Then use the resulting hypothesis.
+-/
 theorem isPrimitiveRoot_map {n : ℕ} (hn : n ≠ 0) {K : Type} [Field K] (β : cycAway n →+* K) :
     IsPrimitiveRoot (β (zetaAway n)) n := by
   have h₁ : IsPrimitiveRoot (zetaAway n) n :=
@@ -34,6 +40,9 @@ def cycBase {n : ℕ} (hn : n ≠ 0) : TBase (cycAway n) n where
   unit := isUnit_natCast hn
   prim _ _ β := isPrimitiveRoot_map hn β
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycBase_ζ {n : ℕ} (hn : n ≠ 0) : ((cycBase hn).ζ : cycAway n) = zetaAway n := rfl
 
 section Param
@@ -44,14 +53,29 @@ def IsRelParam (b : o →+* R) (t : Fin m → R) : Prop :=
   (∀ i, t i ∈ maximalIdeal R) ∧ ∀ c : Fin m → R,
     ∑ i, c i * t i ∈ maximalIdeal R ^ 2 ⊔ ((maximalIdeal R).comap b).map b → ∀ i, c i ∈ maximalIdeal R
 
+/- English proof (translation)
+The claim follows from `h.2 c (Ideal.mem_sup_left hc) i`.
+-/
 theorem IsRelParam.mem_of_mem_sq {b : o →+* R} {t : Fin m → R} (h : IsRelParam b t) (c : Fin m → R)
     (hc : ∑ i, c i * t i ∈ maximalIdeal R ^ 2) (i : Fin m) : c i ∈ maximalIdeal R :=
   h.2 c (Ideal.mem_sup_left hc) i
 
+/- English proof (translation)
+Introduce `h` and use `(maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 (h.2 ![1] (Ideal.mem_sup_right (by simpa using Ideal.mem_map_of_mem b (show p ∈ (maximalIdeal R).comap b from h.1 0))) 0))`.
+-/
 example (b : o →+* R) (p : o) : ¬ IsRelParam b ![b p] := fun h =>
   (maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 (h.2 ![1] (Ideal.mem_sup_right (by
     simpa using Ideal.mem_map_of_mem b (show p ∈ (maximalIdeal R).comap b from h.1 0))) 0))
 
+/- English proof (translation)
+Establish `hm : ∀ f : PowerSeries o, f ∈ maximalIdeal (PowerSeries o) ↔ PowerSeries.coeff 0 f ∈ maximalIdeal o` using `fun f => by`. Simplify using `[mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff]`. Use `⟨fun i => by simp [hm], fun c hc i => ?_⟩` and prove the remaining obligations. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `h0 : ∀ f g : PowerSeries o, PowerSeries.coeff 0 (f * g) = PowerSeries.coeff 0 f * PowerSeries.coeff 0 g` using `by simp`.
+
+Establish `h1 : ∀ f g : PowerSeries o, PowerSeries.coeff 1 (f * g) = PowerSeries.coeff 0 f * PowerSeries.coeff 1 g + PowerSeries.coeff 1 f * PowerSeries.coeff 0 g` using `fun f g => by`. Rewrite using `[PowerSeries.coeff_mul, Finset.Nat.antidiagonal_succ]`. Simplify using the standard rewrite rules. Set `J : Ideal (PowerSeries o)` to `{ carrier := {f | PowerSeries.coeff 0 f ∈ maximalIdeal o ∧ PowerSeries.coeff 1 f ∈ maximalIdeal o} add_mem' := fun h h' => ⟨by simpa using add_mem h.1 h'.1, by simpa using add_mem h.2 h'.2⟩ zero_mem' := by simp smul_mem' := fun f g h => ⟨h0 f g ▸ Ideal.mul_mem_left _ _ h.1, h1 f …`. Establish `hJ : maximalIdeal (PowerSeries o) ^ 2 ⊔ ((maximalIdeal (PowerSeries o)).comap PowerSeries.C).map PowerSeries.C ≤ J`.
+
+Use `sup_le ?_ (Ideal.map_le_iff_le_comap.2 fun a ha => ⟨by simpa [hm] using ha, by simp [PowerSeries.coeff_C]⟩)` and prove the remaining obligations. Rewrite using `[sq]`. Use `Ideal.mul_le.2 fun f hf g hg => ?_` and prove the remaining obligations. Rewrite `hf`, `hg` using `[hm]`. Conclude with `⟨h0 f g ▸ Ideal.mul_mem_left _ _ hg, h1 f g ▸ add_mem (Ideal.mul_mem_right _ _ hf) (Ideal.mul_mem_left _ _ hg)⟩`.
+
+Use `(hJ hc).2` as an intermediate fact. Simplify `this` using `[hm, PowerSeries.coeff_succ_mul_X]`.
+-/
 theorem isRelParam_X (o : Type) [CommRing o] [IsLocalRing o] :
     IsRelParam (PowerSeries.C (R := o)) ![(PowerSeries.X : PowerSeries o)] := by
   have hm : ∀ f : PowerSeries o, f ∈ maximalIdeal (PowerSeries o) ↔ PowerSeries.coeff 0 f ∈ maximalIdeal o := fun f => by
@@ -109,6 +133,13 @@ def HasChart [IsOpenImmersion j] (φ : InvFun ℤ) (BD : EffCartierData S) (d : 
 
 variable {F s j e}
 
+/- English proof (translation)
+Take `⟨R, _, _, b, ξ, m, t, R', _, _, _, ρ, r, G', _, _, π, D, A, U, γ, a, ⟨-, -, rfl, -, -⟩, ⟨ht, -, hj⟩, -, ⟨-, hX, hγ, -⟩, ha, hD⟩` from `h`. Establish `pos : ∀ i, a i ≠ 0` using `fun i h0 => by`. Establish `h₁` using `(hφ _ hX).pos _ (hγ.mem i) (hγ.nonneg i) (hγ.linearIndependent.ne_zero i)`. Establish `h₂` using `ha i`. Rewrite `h₂` using `[h0, hγ.evalZ_smul]`.
+
+Establish `: (0 : ℝ) < d * (n * φ.evalZ (γ i))` using `by positivity`. Simplify using `[← h₂] at this`. Establish `e₁ : ReciprocityTheory.AnForm.R.FinalTheorems.stalkId BD.idealSheaf (ξ (closedPoint R)) = ⊤ ↔ idlAlong BD.idealSheaf ξ = ⊤`. Use `⟨fun h => by rw [idlAlong, h, Ideal.map_top], fun h => by_contra fun h' => ?_⟩` and prove the remaining obligations. Use `(maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (h.ge.trans (Ideal.map_le_iff_le_comap.2 fun c hc => ?_)))` and prove the remaining obligations.
+
+Conclude with `(map_mem_nonunits_iff (Scheme.stalkClosedPointTo ξ).hom c).2 (le_maximalIdeal h' hc)`. Use `e₁.trans (Iff.trans ?_ (hj _).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ ∏ i, t i ∉ maximalIdeal R`. Rewrite using `[hD, Ideal.span_singleton_eq_top, notMem_maximalIdeal, IsUnit.prod_univ_iff, IsUnit.prod_univ_iff]`. Conclude with `forall_congr' fun i => isUnit_pow_iff (pos i)`.
+-/
 theorem HasChart.idl_eq_top_iff [IsOpenImmersion j] {φ : InvFun ℤ} (hφ : IsPolFan id g φ) (hn : n ≠ 0) {BD : EffCartierData S}
     {d : ℕ} (hd : d ≠ 0) {x : S} (h : HasChart F s j e φ BD d x) :
     ReciprocityTheory.AnForm.R.FinalTheorems.stalkId BD.idealSheaf x = ⊤ ↔ x ∈ Set.range j := by
@@ -133,6 +164,9 @@ end Charts
 
 abbrev hodge {S : Scheme.{0}} (G : Over S) [GrpObj G] (g : ℕ) : LB S := GlobalTheory.VB.det (GlobalTheory.LieVB.omega G) g
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LieVB.isVB_omega G g).isLB_det`.
+-/
 theorem isLB_hodge {S : Scheme.{0}} (G : Over S) [GrpObj G] (g : ℕ) [QuasiSeparated G.hom]
     [SmoothOfRelativeDimension g G.hom] : (hodge G g).IsLB := (GlobalTheory.LieVB.isVB_omega G g).isLB_det
 

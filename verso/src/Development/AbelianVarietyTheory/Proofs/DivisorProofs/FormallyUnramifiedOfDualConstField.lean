@@ -17,6 +17,25 @@ open TensorProduct
 
 namespace GlobalTheory.TangentCrit
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[← Module.support_eq_empty_iff (R := B), ← ne_eq, ← Set.nonempty_iff_ne_empty]`. Take `⟨p, hp⟩` from `hne`. Take `⟨m, hm, hpm⟩` from `p.asIdeal.exists_le_maximal p.isPrime.ne_top`.
+
+Set `P : PrimeSpectrum B` to `⟨m, hm.isPrime⟩`. Establish `hP : P ∈ Module.support B Ω[B⁄A]`. Rewrite `hp`, the goal using `[Module.support_eq_zeroLocus]`. Conclude with `fun x hx => hpm (hp hx)`. Rewrite `hP` using `[Module.mem_support_iff_nontrivial_residueField_tensorProduct]`.
+
+Establish `hsurj : Function.Surjective (algebraMap B m.ResidueField)`. Introduce `y`. Take `⟨x, rfl⟩` from `m.bijective_algebraMap_quotient_residueField.surjective y`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `⟨b, rfl⟩`.
+
+Use `haveI : Algebra.FiniteType K m.ResidueField := Algebra.FiniteType.of_surjective (IsScalarTower.toAlgHom K B m.ResidueField) hsurj`. Use `haveI : Module.Finite K m.ResidueField := finite_of_finite_type_of_isJacobsonRing K _`. Set `ev : m.ResidueField →ₐ[K] K` to `IsAlgClosed.lift`. Use `letI : Algebra m.ResidueField K := ev.toRingHom.toAlgebra`. Use `letI : Algebra B K := (ev.toRingHom.comp (algebraMap B m.ResidueField)).toAlgebra`.
+
+Use `haveI : IsScalarTower B m.ResidueField K := .of_algebraMap_eq fun _ => rfl`. Use `letI : Algebra A K := ((algebraMap B K).comp (algebraMap A B)).toAlgebra`. Use `haveI : IsScalarTower A B K := .of_algebraMap_eq fun _ => rfl`. Establish `key : Function.Injective ((0 : Ω[B⁄A] →ₗ[B] PUnit.{1}).lTensor m.ResidueField)` using `lTensor_injective_of_extend (k := K) _ fun χ => by`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+
+Set `D : Derivation A B K` to `χ.compDer (KaehlerDifferential.D A B)`. Establish `hlin : ∀ c, derToDual D (algebraMap K B c) = algebraMap K (DualNumber K) c`. Introduce `c`. Use `ext`. Rewrite using `[fst_derToDual]`.
+
+Express the relevant statement in the definitionally equal form `ev (algebraMap B m.ResidueField (algebraMap K B c)) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply, ev.commutes]`. Both sides reduce to the same expression. Rewrite using `[snd_derToDual, IsScalarTower.algebraMap_apply K A B, D.map_algebraMap]`. Both sides reduce to the same expression.
+
+Use `H (derToDual D) hlin (fun a => (snd_derToDual D _).trans (D.map_algebraMap a))` as an intermediate fact. Use `Derivation.liftKaehlerDifferential_unique _ _ (Derivation.ext fun b => ?_)` and prove the remaining obligations. Use `this b` as an intermediate fact. Rewrite `this` using `[snd_derToDual]`. Simplify `this.symm` using `[D]`.
+
+Take `⟨z, hz⟩` from `exists_ne (0 : m.ResidueField ⊗[B] Ω[B⁄A])`. Conclude with `hz (key (by simp))`.
+-/
 theorem formallyUnramified_of_dual_const_field {K A B : Type} [Field K] [IsAlgClosed K]
     [CommRing A] [CommRing B] [Algebra K A] [Algebra K B] [Algebra A B] [IsScalarTower K A B]
     [Algebra.FiniteType K B] [Algebra.FiniteType A B]

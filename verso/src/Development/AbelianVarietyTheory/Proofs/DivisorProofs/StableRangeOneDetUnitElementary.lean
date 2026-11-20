@@ -8,14 +8,27 @@ open Matrix
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inl ⟨i, j, c, h, rfl⟩)`.
+-/
 theorem transvection_mem {κ : Type} [Fintype κ] [DecidableEq κ] {i j : κ} (h : i ≠ j) (c : R) :
     transvection i j c ∈ TD R κ :=
   Submonoid.subset_closure (Or.inl ⟨i, j, c, h, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inr ⟨d, rfl⟩)`.
+-/
 theorem diagonal_mem {κ : Type} [Fintype κ] [DecidableEq κ] (d : κ → Rˣ) :
     (diagonal fun i => (d i : R)) ∈ TD R κ :=
   Submonoid.subset_closure (Or.inr ⟨d, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `hA using Submonoid.closure_induction with`. Consider the case `mem N hN`. Break down `hN with ⟨i, j, c, hij, rfl⟩ | ⟨d, rfl⟩` into its components or cases. Apply the tactic sequence `refine ⟨transvection i j (-c), transvection_mem hij _, ?_, ?_⟩ <;>`. Simplify using `[transvection_mul_transvection_same _ _ hij]`.
+
+Apply the tactic sequence `refine ⟨_, diagonal_mem (fun i => (d i)⁻¹), ?_, ?_⟩ <;>`. Simplify using `[diagonal_mul_diagonal]`. Consider the case `one => exact ⟨1, one_mem _, by simp, by simp⟩`. Consider the case `mul A B _ _ IA IB`. Take `⟨A', hA', h1, h2⟩` from `IA`.
+
+Take `⟨B', hB', h3, h4⟩` from `IB`. Use `⟨B' * A', mul_mem hB' hA', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc A', h1, one_mul, h3]`. Rewrite using `[mul_assoc, ← mul_assoc B, h4, one_mul, h2]`.
+-/
 theorem exists_inv {κ : Type} [Fintype κ] [DecidableEq κ] {A : Matrix κ κ R} (hA : A ∈ TD R κ) :
     ∃ B ∈ TD R κ, B * A = 1 ∧ A * B = 1 := by
   induction hA using Submonoid.closure_induction with
@@ -33,6 +46,9 @@ theorem exists_inv {κ : Type} [Fintype κ] [DecidableEq κ] {A : Matrix κ κ R
     · rw [mul_assoc, ← mul_assoc A', h1, one_mul, h3]
     · rw [mul_assoc, ← mul_assoc B, h4, one_mul, h2]
 
+/- English proof (translation)
+Take `⟨B, hB, h1, h2⟩` from `exists_inv hE`. Establish `hd : IsUnit E.det` using `IsUnit.of_mul_eq_one B.det (by rw [← det_mul, h2, det_one])`. Use `mul_mem hB (h (by rw [det_mul]; exact hd.mul hM))` as an intermediate fact. Rewrite `this` using `[← mul_assoc, h1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem of_left {κ : Type} [Fintype κ] [DecidableEq κ] {E M : Matrix κ κ R} (hE : E ∈ TD R κ)
     (hM : IsUnit M.det) (h : IsUnit (E * M).det → E * M ∈ TD R κ) : M ∈ TD R κ := by
   obtain ⟨B, hB, h1, h2⟩ := exists_inv hE
@@ -40,6 +56,9 @@ theorem of_left {κ : Type} [Fintype κ] [DecidableEq κ] {E M : Matrix κ κ R}
   have := mul_mem hB (h (by rw [det_mul]; exact hd.mul hM))
   rwa [← mul_assoc, h1, one_mul] at this
 
+/- English proof (translation)
+Take `⟨B, hB, h1, h2⟩` from `exists_inv hE`. Establish `hd : IsUnit E.det` using `IsUnit.of_mul_eq_one B.det (by rw [← det_mul, h2, det_one])`. Use `mul_mem (h (by rw [det_mul]; exact hM.mul hd)) hB` as an intermediate fact. Rewrite `this` using `[mul_assoc, h2, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem of_right {κ : Type} [Fintype κ] [DecidableEq κ] {E M : Matrix κ κ R} (hE : E ∈ TD R κ)
     (hM : IsUnit M.det) (h : IsUnit (M * E).det → M * E ∈ TD R κ) : M ∈ TD R κ := by
   obtain ⟨B, hB, h1, h2⟩ := exists_inv hE
@@ -47,6 +66,11 @@ theorem of_right {κ : Type} [Fintype κ] [DecidableEq κ] {E M : Matrix κ κ R
   have := mul_mem (h (by rw [det_mul]; exact hM.mul hd)) hB
   rwa [mul_assoc, h2, mul_one] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp⟩`. Consider the case `insert k s hk IH`. Establish `hkp : p ≠ k` using `fun h => hs (by simp [h])`. Take `⟨E, hE, H⟩` from `IH (fun h => hs (by simp [h]))`.
+
+Use `⟨transvection p k (w k) * E, mul_mem (transvection_mem hkp _) hE, fun M => ⟨fun b => ?_, fun a b ha => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, transvection_mul_apply_same, (H M).1, (H M).2 _ _ hkp.symm, Finset.sum_insert hk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc, transvection_mul_apply_of_ne _ _ _ _ ha, (H M).2 _ _ ha]`.
+-/
 theorem rowOp {κ : Type} [Fintype κ] [DecidableEq κ] (p : κ) (w : κ → R) (s : Finset κ) (hs : p ∉ s) :
     ∃ E ∈ TD R κ, ∀ M : Matrix κ κ R, (∀ b, (E * M) p b = M p b + ∑ k ∈ s, w k * M k b) ∧
       ∀ a b, a ≠ p → (E * M) a b = M a b := by
@@ -60,6 +84,13 @@ theorem rowOp {κ : Type} [Fintype κ] [DecidableEq κ] (p : κ) (w : κ → R) 
       ring
     · rw [mul_assoc, transvection_mul_apply_of_ne _ _ _ _ ha, (H M).2 _ _ ha]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp⟩`. Consider the case `insert k s hk IH`. Establish `hkp : p ≠ k` using `fun h => hs (by simp [h])`. Establish `hps : p ∉ s` using `fun h => hs (by simp [h])`.
+
+Take `⟨E, hE, H⟩` from `IH hps`. Use `⟨transvection k p (w k) * E, mul_mem (transvection_mem hkp.symm _) hE, fun M a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = k`. Substitute `ha` using the available equality. Rewrite using `[mul_assoc, transvection_mul_apply_same, H, H]`.
+
+Simplify using `[hk, hps]`. Rewrite using `[mul_assoc, transvection_mul_apply_of_ne _ _ _ _ ha, H]`. Simplify using `[ha]`.
+-/
 theorem colOpLeft {κ : Type} [Fintype κ] [DecidableEq κ] (p : κ) (w : κ → R) (s : Finset κ) (hs : p ∉ s) :
     ∃ E ∈ TD R κ, ∀ (M : Matrix κ κ R) a b, (E * M) a b = M a b + if a ∈ s then w a * M p b else 0 := by
   induction s using Finset.induction_on with
@@ -76,6 +107,13 @@ theorem colOpLeft {κ : Type} [Fintype κ] [DecidableEq κ] (p : κ) (w : κ →
     · rw [mul_assoc, transvection_mul_apply_of_ne _ _ _ _ ha, H]
       simp [ha]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp⟩`. Consider the case `insert k s hk IH`. Establish `hkp : p ≠ k` using `fun h => hs (by simp [h])`. Establish `hps : p ∉ s` using `fun h => hs (by simp [h])`.
+
+Take `⟨E, hE, H⟩` from `IH hps`. Use `⟨E * transvection p k (w k), mul_mem hE (transvection_mem hkp _), fun M a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = k`. Substitute `hb` using the available equality. Rewrite using `[← mul_assoc, mul_transvection_apply_same, H, H]`.
+
+Simplify using `[hk, hps]`. Rewrite using `[← mul_assoc, mul_transvection_apply_of_ne _ _ _ _ hb, H]`. Simplify using `[hb]`.
+-/
 theorem colOpRight {κ : Type} [Fintype κ] [DecidableEq κ] (p : κ) (w : κ → R) (s : Finset κ) (hs : p ∉ s) :
     ∃ E ∈ TD R κ, ∀ (M : Matrix κ κ R) a b, (M * E) a b = M a b + if b ∈ s then w b * M a p else 0 := by
   induction s using Finset.induction_on with
@@ -92,6 +130,13 @@ theorem colOpRight {κ : Type} [Fintype κ] [DecidableEq κ] (p : κ) (w : κ �
     · rw [← mul_assoc, mul_transvection_apply_of_ne _ _ _ _ hb, H]
       simp [hb]
 
+/- English proof (translation)
+Proceed by induction on `hA using Submonoid.closure_induction with`. Consider the case `mem N hN`. Break down `hN with ⟨i, j, c, hij, rfl⟩ | ⟨d, rfl⟩` into its components or cases. Establish `: (transvection i j c).submatrix e.symm e.symm = transvection (e i) (e j) c`. Use extensionality with `a b`.
+
+Simplify using `[transvection, Matrix.one_apply, Matrix.single_apply, Equiv.eq_symm_apply]`. Rewrite using `[this]`. Conclude with `transvection_mem (e.injective.ne hij) c`. Rewrite using `[submatrix_diagonal_equiv]`. Conclude with `diagonal_mem (fun i => d (e.symm i))`.
+
+Consider the case `one => rw [submatrix_one_equiv]`. Conclude with `one_mem _`. Consider the case `mul A B _ _ IA IB`. Rewrite using `[← submatrix_mul_equiv A B e.symm e.symm e.symm]`. Conclude with `mul_mem IA IB`.
+-/
 theorem reindex_mem {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (e : κ ≃ κ')
     {A : Matrix κ κ R} (hA : A ∈ TD R κ) : A.submatrix e.symm e.symm ∈ TD R κ' := by
   induction hA using Submonoid.closure_induction with
@@ -109,6 +154,15 @@ theorem reindex_mem {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] 
     rw [← submatrix_mul_equiv A B e.symm e.symm e.symm]
     exact mul_mem IA IB
 
+/- English proof (translation)
+Proceed by induction on `hA using Submonoid.closure_induction with`. Consider the case `mem N hN`. Break down `hN with ⟨i, j, c, hij, rfl⟩ | ⟨d, rfl⟩` into its components or cases. Establish `: transvection (Sum.inl i) (Sum.inl j) c = fromBlocks (transvection i j c) 0 0 (1 : Matrix Unit Unit R)` using `TransvectionStruct.toMatrix_sumInl Unit (⟨i, j, hij, c⟩ : TransvectionStruct κ R)`. Rewrite using `[← this]`.
+
+Conclude with `transvection_mem (Sum.inl_injective.ne hij) c`. Rewrite using `[← diagonal_one, fromBlocks_diagonal]`. Use `diagonal_mem (R := R) (Sum.elim d (fun _ : Unit => 1)) using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Apply the tactic sequence `cases x <;> rfl`.
+
+Consider the case `one => rw [fromBlocks_one]`. Conclude with `one_mem _`. Consider the case `mul A B _ _ IA IB`. Use `mul_mem IA IB` as an intermediate fact. Rewrite `this` using `[fromBlocks_multiply]`.
+
+Simplify using `using this`.
+-/
 theorem fromBlocks_mem {κ : Type} [Fintype κ] [DecidableEq κ]
     {A : Matrix κ κ R} (hA : A ∈ TD R κ) : fromBlocks A 0 0 (1 : Matrix Unit Unit R) ∈ TD R (κ ⊕ Unit) := by
   induction hA using Submonoid.closure_induction with
@@ -128,6 +182,25 @@ theorem fromBlocks_mem {κ : Type} [Fintype κ] [DecidableEq κ]
     rw [fromBlocks_multiply] at this
     simpa using this
 
+/- English proof (translation)
+Use `set l : κ ⊕ Unit := Sum.inr () with hl`. Use `set s : Finset (κ ⊕ Unit) := Finset.univ.erase l with hs`. Establish `hls : l ∉ s` using `Finset.notMem_erase _ _`. Establish `hin : ∀ i : κ, Sum.inl i ∈ s` using `fun i => by simp [hs, hl]`. Establish `h1 : (M⁻¹ * M) l l = 1` using `by rw [nonsing_inv_mul M hM, one_apply_eq]`.
+
+Rewrite `h1` using `[mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ l)]`. Take `⟨t, ht⟩` from `hR (M l l) (∑ k ∈ s, M⁻¹ l k * M k l) ⟨M⁻¹ l l, 1, by rw [one_mul]; exact h1⟩`. Take `⟨E₁, hE₁, H₁⟩` from `rowOp l (fun k => t * M⁻¹ l k) s hls`. Use `of_left hE₁ hM fun hM₁ => ?_` and prove the remaining obligations. Establish `hu : IsUnit ((E₁ * M) l l)`.
+
+Rewrite using `[(H₁ M).1]`. Simplify `ht` using `[Finset.mul_sum, mul_assoc]`. Generalize the expression as in `E₁ * M = M₁ at hM₁ hu`. Take `⟨u, hu⟩` from `hu`. Take `⟨E₂, hE₂, H₂⟩` from `colOpLeft l (fun a => - M₁ a l * ↑u⁻¹) s hls`.
+
+Use `of_left hE₂ hM₁ fun hM₂ => ?_` and prove the remaining obligations. Establish `hu₂ : (E₂ * M₁) l l = u` using `by rw [H₂, if_neg hls, add_zero, hu]`. Establish `hc₂ : ∀ i : κ, (E₂ * M₁) (Sum.inl i) l = 0` using `fun i => by`. Rewrite using `[H₂, if_pos (hin i), ← hu, mul_assoc, Units.inv_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Generalize the expression as in `E₂ * M₁ = M₂ at hM₂ hu₂ hc₂`. Take `⟨E₃, hE₃, H₃⟩` from `colOpRight l (fun b => - M₂ l b * ↑u⁻¹) s hls`. Use `of_right hE₃ hM₂ fun hM₃ => ?_` and prove the remaining obligations. Establish `hu₃ : (M₂ * E₃) l l = u` using `by rw [H₃, if_neg hls, add_zero, hu₂]`. Establish `hc₃ : ∀ i : κ, (M₂ * E₃) (Sum.inl i) l = 0` using `fun i => by`.
+
+Rewrite using `[H₃, if_neg hls, add_zero, hc₂]`. Establish `hr₃ : ∀ i : κ, (M₂ * E₃) l (Sum.inl i) = 0` using `fun i => by`. Rewrite using `[H₃, if_pos (hin i), hu₂, mul_assoc, Units.inv_mul]`. Expand and normalize the polynomial expressions, which then agree. Generalize the expression as in `M₂ * E₃ = M₃ at hM₃ hu₃ hc₃ hr₃`.
+
+Establish `hform : M₃ = (diagonal fun i => ((Sum.elim (fun _ => 1) (fun _ => u) : κ ⊕ Unit → Rˣ) i : R)) * fromBlocks M₃.toBlocks₁₁ 0 0 (1 : Matrix Unit Unit R)`. Use extensionality with `a b`. Rewrite using `[diagonal_mul]`. Apply the tactic sequence `rcases a with a | ⟨⟩ <;> rcases b with b | ⟨⟩`. Simplify using `[toBlocks₁₁]`.
+
+Simplify using `using hc₃ a`. Simplify using `using hr₃ b`. Simplify using `using hu₃`. Establish `hN : IsUnit M₃.toBlocks₁₁.det`. Rewrite `hM₃` using `[hform, det_mul, det_fromBlocks_zero₂₁, det_one, mul_one]`.
+
+Conclude with `isUnit_of_mul_isUnit_right hM₃`. Rewrite using `[hform]`. Conclude with `mul_mem (diagonal_mem _) (fromBlocks_mem (IH _ hN))`.
+-/
 theorem step {κ : Type} [Fintype κ] [DecidableEq κ] (hR : HasStableRangeOne R)
     (IH : ∀ N : Matrix κ κ R, IsUnit N.det → N ∈ TD R κ)
     (M : Matrix (κ ⊕ Unit) (κ ⊕ Unit) R) (hM : IsUnit M.det) : M ∈ TD R (κ ⊕ Unit) := by
@@ -174,6 +247,15 @@ theorem step {κ : Type} [Fintype κ] [DecidableEq κ] (hR : HasStableRangeOne R
   rw [hform]
   exact mul_mem (diagonal_mem _) (fromBlocks_mem (IH _ hN))
 
+/- English proof (translation)
+Introduce `R _ hR κ _ _`. Establish `key : ∀ n : ℕ, ∀ N : Matrix (Fin n) (Fin n) R, IsUnit N.det → N ∈ TD R (Fin n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro N _`.
+
+Rewrite using `[Subsingleton.elim N 1]`. Conclude with `one_mem _`. Consider the case `succ n IH`. Introduce `N hN`. Set `e : Fin n ⊕ Unit ≃ Fin (n + 1)` to `(Equiv.sumCongr (Equiv.refl _) finOneEquiv.symm).trans finSumFinEquiv`.
+
+Use `reindex_mem e (step hR IH (N.submatrix e e) (by rwa [det_submatrix_equiv_self]))` as an intermediate fact. Simplify using `using this`. Introduce `M hM`. Set `e` to `(Fintype.equivFin κ).symm`. Use `reindex_mem e (key _ (M.submatrix e e) (by rwa [det_submatrix_equiv_self]))` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem mem_TD_of_isUnit_det : ∀ (R : Type) [CommRing R], HasStableRangeOne R → ∀ (κ : Type) [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ R), IsUnit M.det → M ∈ TD R κ := by
   intro R _ hR κ _ _

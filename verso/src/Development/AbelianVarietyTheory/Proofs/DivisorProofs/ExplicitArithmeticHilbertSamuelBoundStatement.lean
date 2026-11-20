@@ -10,5 +10,8 @@ open GlobalTheory.HSCore GlobalTheory.QCoh
 open GlobalTheory
 open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HSShortTop.geoBound_of_abstract | exact GlobalTheory.HSShortTop.geoBound_of_abstract | (intros; apply GlobalTheory.HSShortTop.geoBound_of_abstract <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.explicit_arithmetic_hilbertSamuel_bound : Quoted → BertiniNF → HeightTie → SlopeBound → GeoBound := by
   first | exact @GlobalTheory.HSShortTop.geoBound_of_abstract | exact GlobalTheory.HSShortTop.geoBound_of_abstract | (intros; apply GlobalTheory.HSShortTop.geoBound_of_abstract <;> assumption)

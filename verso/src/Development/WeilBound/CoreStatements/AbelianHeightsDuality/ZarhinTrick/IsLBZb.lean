@@ -42,6 +42,9 @@ def zb (P : LB (A ⊗ B).left) (L : LB ((Over.pullback s).obj A).left) :
     LB ((Over.pullback s).obj (G4 (A ⊗ B))).left :=
   tens (LB.LinComb L (phiL mu s) fun _ => 1) (LB.LinComb P (phiP s) fun ij => α ij.1 ij.2)
 
+/- English proof (translation)
+The claim follows from `isLB_tens (LB.isLB_linComb hL _ _) (LB.isLB_linComb hP _ _)`.
+-/
 theorem isLB_zb {P : LB (A ⊗ B).left} (hP : P.IsLB) {L : LB ((Over.pullback s).obj A).left} (hL : L.IsLB) :
     (zb mu α s P L).IsLB :=
   isLB_tens (LB.isLB_linComb hL _ _) (LB.isLB_linComb hP _ _)

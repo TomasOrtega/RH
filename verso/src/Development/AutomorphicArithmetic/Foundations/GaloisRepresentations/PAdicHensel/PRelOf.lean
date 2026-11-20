@@ -9,6 +9,9 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.G1
 
+/- English proof (translation)
+Establish `hu : IsUnit H.det` using `isUnit_iff_ne_zero.2 hd`. Establish `h1 : b' = (b' * H⁻¹) * H` using `(Matrix.nonsing_inv_mul_cancel_right _ _ hu).symm`. Rewrite using `[h1, h]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+-/
 private theorem key_mat {E : Type} [Field E] {n : ℕ} (H Q b b' R : Matrix (Fin n) (Fin n) E) (hd : H.det ≠ 0) (s : E)
     (h : b' * H⁻¹ = Q * (s • (b * H⁻¹)) * R) : b' = s • (Q * b * (H⁻¹ * R * H)) := by
   have hu : IsUnit H.det := isUnit_iff_ne_zero.2 hd
@@ -16,6 +19,15 @@ private theorem key_mat {E : Type} [Field E] {n : ℕ} (H Q b b' R : Matrix (Fin
   rw [h1, h]
   simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S B B' s hs P hP h`. Establish `hH` using `A.det_ne n`. Establish `key` using `key_mat (A.H n) Pᵀ (mat S ↑B.β) (mat S ↑B'.β) (P.map ⇑(IsCMField.complexConj E)) hH (s : E) h`. Establish `hdetT : IsUnit (Pᵀ).det`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `isUnit_iff_ne_zero.mpr hP`. Establish `hu : IsUnit Pᵀ` using `(Matrix.isUnit_iff_isUnit_det _).mpr hdetT`. Establish `hHc : (A.H n).map ⇑(IsCMField.complexConj E) = A.H n`. Establish `h1` using `A.herm n`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsh : MulOpposite.unop (hermStar (A.H n) hH Pᵀ) = (A.H n)⁻¹ * P.map ⇑(IsCMField.complexConj E) * A.H n`. Rewrite using `[hermStar_apply]`. Express the relevant statement in the definitionally equal form `((A.H n).map ⇑(IsCMField.complexConj E))⁻¹ * ((Pᵀ).map ⇑(IsCMField.complexConj E))ᵀ * (A.H n).map ⇑(IsCMField.complexConj E) = _`. Rewrite using `[hHc, Matrix.transpose_map, Matrix.transpose_transpose]`. Use `⟨hu.unit, s, hs, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `mat S ↑B'.β = algebraMap ℚ (Matrix (Fin n) (Fin n) E) s * (Pᵀ * mat S ↑B.β * MulOpposite.unop (hermStar (A.H n) hH Pᵀ))`. Rewrite using `[hsh, key, ← Algebra.smul_def, ← algebraMap_smul E s, eq_ratCast]`.
+-/
 theorem pRelOf : RelOf := by
   intro E _ _ _ A n p _ S B B' s hs P hP h
   have hH := A.det_ne n

@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.SchubertPoint
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Subsingleton.elim (Fin.revPerm : Equiv.Perm (Fin 0)) 1]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+
+Establish `key : finRotate (n + 1) * (Fin.revPerm : Equiv.Perm (Fin (n + 1))) = Equiv.Perm.decomposeFin.symm (0, (Fin.revPerm : Equiv.Perm (Fin n)))`. Use extensionality with `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j`.
+
+Simplify using `[Equiv.Perm.decomposeFin_symm_apply_succ, Fin.rev_succ]`. Establish `hs` using `congrArg Equiv.Perm.sign key`. Rewrite `hs` using `[Equiv.Perm.sign_mul, sign_finRotate, Equiv.Perm.decomposeFin.symm_sign]`. Simplify using `only [if_true, one_mul, Nat.add_sub_cancel] at hs`. Rewrite using `[Fin.sum_univ_castSucc, pow_add]`.
+
+Simplify using `only [Fin.coe_castSucc, Fin.val_last]`. Rewrite using `[← ih]`. Establish `: Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (n + 1))) = (-1) ^ n * Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n))`. Rewrite using `[← hs, ← mul_assoc, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sign_revPerm_real (n : ℕ) :
     ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : ℝ) = (-1) ^ (∑ i : Fin n, (i : ℕ)) := by
   induction n with
@@ -33,6 +44,9 @@ theorem sign_revPerm_real (n : ℕ) :
       rw [← hs, ← mul_assoc, ← pow_add, ← two_mul, pow_mul]; simp
     rw [this]; push_cast; ring
 
+/- English proof (translation)
+Establish `h : Finset.powersetCard n (Finset.univ : Finset (Fin n)) = {Finset.univ}`. Simplify using `using Finset.powersetCard_self (Finset.univ : Finset (Fin n))`. Rewrite using `[esymm, h]`. Simplify using the standard rewrite rules.
+-/
 theorem esymm_self (n : ℕ) : esymm (Fin n) ℝ n = ∏ i : Fin n, X i := by
   have h : Finset.powersetCard n (Finset.univ : Finset (Fin n)) = {Finset.univ} := by
     simpa using Finset.powersetCard_self (Finset.univ : Finset (Fin n))
@@ -42,23 +56,42 @@ theorem esymm_self (n : ℕ) : esymm (Fin n) ℝ n = ∏ i : Fin n, X i := by
 def revTail (p q : ℕ) : Equiv.Perm (Fin (p + q)) :=
   finSumFinEquiv.permCongr (Equiv.sumCongr 1 Fin.revPerm)
 
+/- English proof (translation)
+Simplify using `[revTail, Equiv.permCongr_apply]`.
+-/
 theorem revTail_castAdd (p q : ℕ) (i : Fin p) : revTail p q (Fin.castAdd q i) = Fin.castAdd q i := by
   simp [revTail, Equiv.permCongr_apply]
 
+/- English proof (translation)
+Simplify using `[revTail, Equiv.permCongr_apply]`.
+-/
 theorem revTail_natAdd (p q : ℕ) (j : Fin q) : revTail p q (Fin.natAdd p j) = Fin.natAdd p (Fin.rev j) := by
   simp [revTail, Equiv.permCongr_apply]
 
+/- English proof (translation)
+Rewrite using `[revTail, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_one, one_mul]`. Conclude with `sign_revPerm_real q`.
+-/
 theorem sign_revTail (p q : ℕ) :
     ((Equiv.Perm.sign (revTail p q) : ℤ) : ℝ) = (-1) ^ (∑ j : Fin q, (j : ℕ)) := by
   rw [revTail, Equiv.Perm.sign_permCongr, Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_one, one_mul]
   exact sign_revPerm_real q
 
+/- English proof (translation)
+Use `Fintype.sum_equiv Fin.revPerm _ _ fun j => ?_` and prove the remaining obligations. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_tail (q : ℕ) : ∑ j : Fin q, (q - 1 - (j : ℕ)) = ∑ j : Fin q, (j : ℕ) := by
   refine Fintype.sum_equiv Fin.revPerm _ _ fun j => ?_
   simp [Fin.val_rev]; omega
 
 def tailSgn (p q : ℕ) (k : Fin (p + q)) : ℝ := if (k : ℕ) < p then (-1) ^ (p + q - 1 - (k : ℕ)) else 1
 
+/- English proof (translation)
+Establish `h : C (∏ x : ι × Fin (p + q), tailSgn p q x.2) * monomial (Formalism.DegreeFormula.permExp (fun _ : ι => revTail p q)) 1 = ∏ x : ι × Fin (p + q), (C (tailSgn p q x.2) * X x ^ (Formalism.DegreeFormula.permExp (fun _ : ι => revTail p q) x))`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (by intro i; simp)]`. Rewrite using `[h, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [tailSgn, Formalism.DegreeFormula.permExp, revTail_castAdd, Finsupp.equivFunOnFinite_symm_apply_apply, Fin.coe_castAdd]`. Rewrite using `[if_pos i.2, neg_pow, map_pow, map_neg, map_one]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [tailSgn, Formalism.DegreeFormula.permExp, revTail_natAdd, Finsupp.equivFunOnFinite_symm_apply_apply, Fin.coe_natAdd, Fin.val_rev]`. Rewrite using `[if_neg (by omega), C_1, one_mul]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem schubPoint_eq (ι : Type) [Fintype ι] [DecidableEq ι] (p q : ℕ) :
     (∏ τ : ι, ((∏ i : Fin p, (-X (τ, Fin.castAdd q i) : MvPolynomial (ι × Fin (p + q)) ℝ) ^ (p + q - 1 - (i : ℕ))) *
       ∏ j : Fin q, X (τ, Fin.natAdd p j) ^ (j : ℕ))) =
@@ -81,6 +114,21 @@ theorem schubPoint_eq (ι : Type) [Fintype ι] [DecidableEq ι] (p q : ℕ) :
     congr 1
     omega
 
+/- English proof (translation)
+Rewrite using `[schubPoint_eq]`. Unfold `Formalism.DegreeFormula.degFl`. Rewrite using `[Finset.sum_eq_single (fun _ => revTail p q)]`. Rewrite using `[coeff_C_mul, coeff_monomial, if_pos rfl, mul_one]`. Establish `hA : ∏ x : ι × Fin (p + q), tailSgn p q x.2 = ((-1 : ℝ) ^ (∑ i : Fin p, (p + q - 1 - (i : ℕ)))) ^ Fintype.card ι`.
+
+Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only`. Rewrite using `[Finset.prod_const, Finset.card_univ]`. Use `congr 1`. Rewrite using `[Fin.prod_univ_add]`.
+
+Simplify using `[tailSgn, Finset.prod_pow_eq_pow_sum]`. Establish `hB : ∏ τ : ι, ((Equiv.Perm.sign ((fun _ : ι => revTail p q) τ) : ℤ) : ℝ) = ((-1 : ℝ) ^ (∑ j : Fin q, (j : ℕ))) ^ Fintype.card ι`. Rewrite using `[Finset.prod_const, sign_revTail, Finset.card_univ]`. Establish `hD : Formalism.DegreeFormula.dimFl ι (p + q) = Fintype.card ι * ((∑ i : Fin p, (p + q - 1 - (i : ℕ))) + ∑ j : Fin q, (j : ℕ))`. Unfold `Formalism.DegreeFormula.dimFl`.
+
+Use `congr 1`. Rewrite using `[← Formalism.DegreeFormula.PermutationPointDegree.sum_delta, Fin.sum_univ_add, ← sum_tail]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.coe_natAdd]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : ∀ a b c : ℕ, (-1 : ℝ) ^ (c * (a + b)) * (((-1) ^ b) ^ c * ((-1) ^ a) ^ c) = 1`. Introduce `a b c`. Rewrite using `[← pow_mul, ← pow_mul, ← pow_add, ← pow_add]`. Conclude with `Even.neg_one_pow ⟨c * (a + b), by ring⟩`.
+
+Rewrite using `[hA, hB, hD]`. Conclude with `e _ _ _`. Introduce `σ _ hσ`. Rewrite using `[coeff_C_mul, coeff_monomial, if_neg, mul_zero, mul_zero]`. Introduce `h`.
+
+Conclude with `hσ (Formalism.DegreeFormula.PermutationPointDegree.permExp_inj _ _ h).symm`. Simplify using the standard rewrite rules.
+-/
 theorem degFl_schubPoint (ι : Type) [Fintype ι] [DecidableEq ι] (p q : ℕ) :
     Formalism.DegreeFormula.degFl ι (p + q) (∏ τ : ι, ((∏ i : Fin p, (-X (τ, Fin.castAdd q i) : MvPolynomial (ι × Fin (p + q)) ℝ) ^
       (p + q - 1 - (i : ℕ))) * ∏ j : Fin q, X (τ, Fin.natAdd p j) ^ (j : ℕ))) = 1 := by
@@ -129,6 +177,15 @@ def conjOff (H : Host E) : {τ : E →+* ℂ // ¬ τ (H.rt : E) = H.rt0} ≃ Gl
   left_inv τ := Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb τ.1)
   right_inv τ := Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb τ.1)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LieBase.pointPoly, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hm : Dw.mult τ.1 = Dw.p` using `GlobalTheory.PointChern.mult_of_mem Dw τ.2`. Establish `he : Dw.p + Dw.q - Dw.mult τ.1 = Dw.q` using `by omega`. Rewrite using `[he, map_pow, map_pow]`.
+
+Use `congr 1`. Simplify using `only [map_mul, GlobalTheory.GoodMetric.chernRoots, GlobalTheory.Schubert.flagMap, aeval_C, aeval_X, algebraMap_eq, esymm_self, map_prod, rename_X]`. Establish `h1 : ∀ i : Fin (Dw.mult τ.1), GlobalTheory.Schubert.flagRoot Dw ⟨τ.1, i⟩ = X (τ, Fin.castAdd Dw.q (finCongr hm i))`. Introduce `i`. Rewrite using `[GlobalTheory.Schubert.flagRoot, dif_pos τ.2]`.
+
+Both sides reduce to the same expression. Simplify using `only [h1]`. Establish `h2 : (∏ i : Fin (Dw.mult τ.1), (-X (τ, Fin.castAdd Dw.q (finCongr hm i)) : MvPolynomial _ ℝ)) = C ((-1 : ℝ) ^ Dw.mult τ.1) * ∏ i : Fin (Dw.mult τ.1), X (τ, Fin.castAdd Dw.q (finCongr hm i))`. Simplify using `only [← neg_one_mul (X _ : MvPolynomial _ ℝ), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_pow, map_neg, map_one]`. Rewrite using `[← h2]`.
+
+Conclude with `Fintype.prod_equiv (finCongr hm) _ _ fun i => rfl`.
+-/
 theorem flagMap_chernRoots_pointPoly {H : Host E} (Dw : Datum H) :
     GlobalTheory.Schubert.flagMap Dw (GlobalTheory.GoodMetric.chernRoots Dw.mult (GlobalTheory.LieBase.pointPoly H Dw)) =
       ∏ τ : GlobalTheory.AllWt.Psi H, (∏ i : Fin Dw.p, (-X (τ, Fin.castAdd Dw.q i))) ^ Dw.q := by
@@ -153,6 +210,17 @@ theorem flagMap_chernRoots_pointPoly {H : Host E} (Dw : Datum H) :
   rw [← h2]
   exact Fintype.prod_equiv (finCongr hm) _ _ fun i => rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.GoodMetric.fibrePoint, map_prod]`. Simplify using `only [map_pow, map_neg, GlobalTheory.Schubert.flagMap, aeval_X]`. Rewrite using `[Fintype.prod_sigma, ← Fintype.prod_subtype_mul_prod_subtype (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `hm : Dw.mult τ.1 = Dw.p` using `GlobalTheory.PointChern.mult_of_mem Dw τ.2`. Use `Fintype.prod_equiv (finCongr hm) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Schubert.flagRoot, dif_pos τ.2]`. Use `congr 1`. Simplify using `only [finCongr_apply, Fin.coe_cast]`.
+
+Use linear arithmetic over natural numbers and integers. Use `Fintype.prod_equiv (conjOff H) _ _ fun τ => ?_` and prove the remaining obligations. Establish `hm : Dw.mult τ.1 = Dw.q` using `GlobalTheory.PointChern.mult_of_not_mem Dw τ.2`. Use `Fintype.prod_equiv ((finCongr hm).trans Fin.revPerm) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Schubert.flagRoot, dif_neg τ.2, neg_neg]`.
+
+Establish `hi : (i : ℕ) < Dw.q` using `hm ▸ i.2`. Use `congr 1`. Use `congr 1`. Use `Prod.ext rfl (Fin.ext ?_)` and prove the remaining obligations. Simplify using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem flagMap_fibrePoint {H : Host E} (Dw : Datum H) :
     GlobalTheory.Schubert.flagMap Dw (GlobalTheory.GoodMetric.fibrePoint Dw.mult) =
       (∏ τ : GlobalTheory.AllWt.Psi H, ∏ i : Fin Dw.p, (-X (τ, Fin.castAdd Dw.q i)) ^ (Dw.p - 1 - (i : ℕ))) *
@@ -183,6 +251,13 @@ theorem flagMap_fibrePoint {H : Host E} (Dw : Datum H) :
 
 end Host
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw`. Rewrite using `[GlobalTheory.Schubert.schubGam_apply, map_mul, flagMap_chernRoots_pointPoly, flagMap_fibrePoint]`. Establish `h : (∏ τ : GlobalTheory.AllWt.Psi H, (∏ i : Fin Dw.p, (-X (τ, Fin.castAdd Dw.q i) : MvPolynomial _ ℝ)) ^ Dw.q) * ((∏ τ : GlobalTheory.AllWt.Psi H, ∏ i : Fin Dw.p, (-X (τ, Fin.castAdd Dw.q i)) ^ (Dw.p - 1 - (i : ℕ))) * ∏ τ : GlobalTheory.AllWt.Psi H, ∏ j : Fin Dw.q, X (τ, Fin.natA …`. Rewrite using `[← mul_assoc, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add]`. Use `congr 1`.
+
+Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[h]`. Conclude with `degFl_schubPoint _ _ _`.
+-/
 theorem schubGam_pointPoly : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H),
     GlobalTheory.Schubert.schubGam Dw (GlobalTheory.LieBase.pointPoly H Dw) = 1 := by
   intro E _ _ _ H Dw

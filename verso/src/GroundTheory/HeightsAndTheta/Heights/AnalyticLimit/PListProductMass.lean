@@ -16,6 +16,15 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular (RegChar
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Introduce `x j y hy w`. Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Establish `hO : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x)` using `(A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)`. Establish `h2` using `pot_contDiffAt_two hP x j hy.1 hy.2`.
+
+Establish `hc : ContinuousAt (fun z => levi (P.φ x ∘ (A.chart j).symm) z w) y`. Establish `h0` using `((h2.fderiv_right (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)).continuousAt`. Unfold `levi`. Conclude with `(((h0.clm_apply continuousAt_const).clm_apply continuousAt_const).add ((h0.clm_apply continuousAt_const).clm_apply continuousAt_const)).div_const 4`. Establish `hev : ∀ᶠ z in 𝓝 y, levi (P.φ x ∘ (A.chart j).symm) z w < 0 ∧ z ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x` using `(hc.eventually (eventually_lt_nhds hneg)).and (hO.mem_nhds hy)`.
+
+Take `⟨N, hNsub, hNo, hyN⟩` from `mem_nhds_iff.1 hev`. Establish `himg : IsOpen ((A.chart j).symm '' N)` using `(A.chart j).isOpen_image_symm_of_subset_target hNo fun z hz => (hNsub hz).2.1`. Establish `hsub : (A.chart j).symm '' N ⊆ Vᶜ`. Introduce and unpack `_ ⟨z, hz, rfl⟩ hzV`. Establish `h` using `hnn x j z ⟨(hNsub hz).2.1, hzV, (hNsub hz).2.2⟩ w`.
+
+Combine the linear relations using `[(hNsub hz).1]`. Establish `hmem : (A.chart j).symm y ∈ interior Vᶜ` using `interior_maximal hsub himg ⟨y, hyN, rfl⟩`. Rewrite `hmem` using `[hV]`. Conclude with `hmem`.
+-/
 theorem isPsh_of_formNonneg {A : FinHolAtlas D X} {V : Set X} (hV : interior Vᶜ = ∅)
     {P : LocPot X} (hP : IsPotential A P) (hnn : FormNonneg A V P) : IsPsh A P := by
   intro x j y hy w
@@ -44,6 +53,11 @@ theorem isPsh_of_formNonneg {A : FinHolAtlas D X} {V : Set X} (hV : interior V�
   rw [hV] at hmem
   exact hmem
 
+/- English proof (translation)
+Introduce `x j y hy w`. Establish `hyQ : (A.chart j).symm y ∈ Q.U x` using `hy.2.1`. Establish `hyP : (A.chart j).symm y ∈ P.U x` using `hy.2.2`. Establish `hlev` using `hle x j y ⟨hy.1, ⟨⟨Set.mem_univ _, hyP⟩, hyQ⟩⟩ w`. Establish `hadd` using `levi_add_smul (-1) (pot_contDiffAt_two hQ x j hy.1 hyQ) (pot_contDiffAt_two hP x j hy.1 hyP) w`.
+
+Use `show 0 ≤ levi (fun z => (Q.φ x ∘ (A.chart j).symm) z + (-1) * (P.φ x ∘ (A.chart j).symm) z) y w`. Rewrite using `[hadd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isPsh_add_neg {A : FinHolAtlas D X} {P Q : LocPot X} (hQ : IsPotential A Q)
     (hP : IsPotential A P) (hle : LeviLe A Set.univ 1 P 1 Q) : IsPsh A (Q + P.rsmul (-1)) := by
   intro x j y hy w
@@ -56,11 +70,27 @@ theorem isPsh_add_neg {A : FinHolAtlas D X} {P Q : LocPot X} (hQ : IsPotential A
   rw [hadd]
   linarith
 
+/- English proof (translation)
+Unfold `mInt ReciprocityTheory.AnForm.M.integralWith ReciprocityTheory.AnForm.M.locDens`. Simplify using `only [h]`.
+-/
 theorem mInt_congr_φ (A : FinHolAtlas D X) {Φ Ψ : Fin D → LocPot X} (h : ∀ i, (Φ i).φ = (Ψ i).φ)
     (g : X → ℝ) : mInt A Φ g = mInt A Ψ g := by
   unfold mInt ReciprocityTheory.AnForm.M.integralWith ReciprocityTheory.AnForm.M.locDens
   simp only [h]
 
+/- English proof (translation)
+Introduce `D X _ _ _ A R Om C₁ th u hT`. Set `_ : MeasurableSpace X` to `borel X`. Establish `_ : BorelSpace X` using `⟨rfl⟩`. Establish `hNull` using `(DivisorNull.proof A R).2`. Set `T : Fin D → LocPot X` to `fun i => potForm (th i) (u i)`.
+
+Set `Q : Fin D → LocPot X` to `fun i => Om.pot + (th i).rsmul (-1)`. Establish `hTpot : ∀ i, IsPotential A (T i)` using `fun i => isPotentialAdd A _ _ (hT i).1.th_pot (isPotential_ofFun A _ (hT i).2)`. Establish `hTpsh : ∀ i, IsPsh A (T i)` using `fun i => isPsh_of_formNonneg hNull (hTpot i) (hT i).1.nonneg`. Establish `hQpot : ∀ i, IsPotential A (Q i)` using `fun i => isPotentialAdd A _ _ Om.isPot (isPotentialRsmul A _ _ (hT i).1.th_pot)`. Establish `hQpsh : ∀ i, IsPsh A (Q i)` using `fun i => isPsh_add_neg Om.isPot (hT i).1.th_pot (hT i).1.th_le`.
+
+Establish `hSpot : ∀ i, IsPotential A (T i + Q i)` using `fun i => isPotentialAdd A _ _ (hTpot i) (hQpot i)`. Establish `hSpsh : ∀ i, IsPsh A (T i + Q i)` using `fun i => isPshAdd A _ _ (hTpot i) (hQpot i) (hTpsh i) (hQpsh i)`. Establish `hmono` using `maMeasureMono A T Q hTpot hTpsh hQpot hQpsh`. Take `⟨_, hT'⟩` from `maMeasure_thm A T hTpot hTpsh`. Take `⟨hfinS, hS'⟩` from `maMeasure_thm A (fun i => T i + Q i) hSpot hSpsh`.
+
+Establish `e1 : mInt A T (fun _ => 1) = (maMeasure A T).real Set.univ`. Rewrite using `[(hT' _ measurable_const).2 (mIntegrableCont A T hTpot _ continuous_const), integral_const, smul_eq_mul, mul_one]`. Establish `e2 : mInt A (fun i => T i + Q i) (fun _ => 1) = (maMeasure A (fun i => T i + Q i)).real Set.univ`. Rewrite using `[(hS' _ measurable_const).2 (mIntegrableCont A _ hSpot _ continuous_const), integral_const, smul_eq_mul, mul_one]`. Establish `e3 : mInt A (fun i => T i + Q i) (fun _ => 1) = mInt A (fun i => Om.pot + LocPot.ofFun (u i)) (fun _ => 1)`.
+
+Use `mInt_congr_φ A (fun i => ?_) _` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Use `show (th i).φ x y + u i y + (Om.pot.φ x y + -1 * (th i).φ x y) = Om.pot.φ x y + u i y`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : mInt A (fun i => Om.pot + LocPot.ofFun (u i)) (fun _ => 1) = Om.vol` using `massIndep A (fun _ => Om.pot) u (fun _ => Om.isPot) (fun i => (hT i).2)`.
+
+Establish `hle : (maMeasure A T).real Set.univ ≤ (maMeasure A (fun i => T i + Q i)).real Set.univ` using `ENNReal.toReal_mono (measure_ne_top _ _) (Measure.le_iff'.1 hmono Set.univ)`. Express the relevant statement in the definitionally equal form `mInt A T (fun _ => 1) ≤ Om.vol`. Rewrite using `[e1, ← e4, ← e3, e2]`. Conclude with `hle`.
+-/
 theorem ListProductMass.proof : ListProductMass.Statement := by
   intro D X _ _ _ A R Om C₁ th u hT
   let _ : MeasurableSpace X := borel X

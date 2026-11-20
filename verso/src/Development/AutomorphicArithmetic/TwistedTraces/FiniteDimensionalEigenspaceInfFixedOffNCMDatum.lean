@@ -12,16 +12,25 @@ open scoped ComplexConjugate Classical InnerProductSpace
 section One
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Simplify using `only [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.smul_apply, LinearMap.id_apply]`.
+-/
 private theorem mem_eigL' (w : Pl K) (J : Subgroup (Gw n w)) (χ : Gw n w → ℂ) (v : LL μ) :
     v ∈ eigL μ w J χ ↔ ∀ x ∈ J, rhoL μ w x v = χ x • v := by
   simp only [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.smul_apply,
     LinearMap.id_apply]
 
+/- English proof (translation)
+Simplify using `only [fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply, Subgroup.mem_map, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, rhoL]`.
+-/
 private theorem mem_fixL' (w : Pl K) (J : Subgroup (Gw n w)) (v : LL μ) :
     v ∈ fixL μ w J ↔ ∀ x ∈ J, rhoL μ w x v = v := by
   simp only [fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply,
     Subgroup.mem_map, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, rhoL]
 
+/- English proof (translation)
+Establish `h` using `(UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.1 w' hne g x`. Simplify using `only [rhoL, rhoF]`. Rewrite using `[← UnitaryRep.map_mul_apply, ← UnitaryRep.map_mul_apply, ← map_mul, ← map_mul, h]`.
+-/
 private theorem rhoL_comm {w w' : Pl K} (hne : w' ≠ w) (g : Gw n w) (x : Gw n w') (v : LL μ) :
     rhoL μ w' x (rhoL μ w g v) = rhoL μ w g (rhoL μ w' x v) := by
   have h := (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.2.2.1 w' hne g x
@@ -30,6 +39,9 @@ private theorem rhoL_comm {w w' : Pl K} (hne : w' ≠ w) (g : Gw n w) (x : Gw n 
 
 end One
 
+/- English proof (translation)
+Establish `e : (kerChr J χ h : Set G) = (J : Set G) ∩ χ ⁻¹' {1}` using `rfl`. Establish `ho : IsOpen (χ ⁻¹' {(1 : ℂ)})` using `h.1.isOpen_fiber 1`. Establish `hc : IsClosed (χ ⁻¹' {(1 : ℂ)})` using `isClosed_singleton.preimage h.1.continuous`. Rewrite using `[CO, e]`. Conclude with `⟨hJ.1.inter_right hc, hJ.2.inter ho⟩`.
+-/
 private theorem kerChr_co {G : Type} [Group G] [TopologicalSpace G] {J : Subgroup G} {χ : G → ℂ} (hJ : CO J) (h : IsChr J χ) :
     CO (kerChr J χ h) := by
   have e : (kerChr J χ h : Set G) = (J : Set G) ∩ χ ⁻¹' {1} := rfl
@@ -38,6 +50,11 @@ private theorem kerChr_co {G : Type} [Group G] [TopologicalSpace G] {J : Subgrou
   rw [CO, e]
   exact ⟨hJ.1.inter_right hc, hJ.2.inter ho⟩
 
+/- English proof (translation)
+Establish `key : ∀ (i j : ι) (hj : f j = f i), (hj ▸ U j : B (f i)) = U i`. Introduce `i j hj`. Take `rfl` from `hf hj`. Both sides reduce to the same expression. Use `⟨fun a => if h : ∃ i, f i = a then h.choose_spec ▸ U h.choose else d a, fun i => ?_, fun a ha => dif_neg ha⟩` and prove the remaining obligations.
+
+Establish `h : ∃ j, f j = f i` using `⟨i, rfl⟩`. Simplify using `only [dif_pos h]`. Conclude with `key i _ _`.
+-/
 private theorem exists_ext {A ι : Type*} {B : A → Type*} (f : ι → A) (hf : Function.Injective f) (U : ∀ i, B (f i))
     (d : ∀ a, B a) : ∃ U' : ∀ a, B a, (∀ i, U' (f i) = U i) ∧ ∀ a, a ∉ Set.range f → U' a = d a := by
   have key : ∀ (i j : ι) (hj : f j = f i), (hj ▸ U j : B (f i)) = U i := by
@@ -54,21 +71,35 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {σ : E ≃ₐ[F] E} {n : ℕ} {q : Pl F} {w₀ : PlacesOver E q}
 variable (μ : Measure (normOneGL E n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `ext1`. Conclude with `(Ideal.over_def u.1.asIdeal v.asIdeal).symm`.
+-/
 private theorem under_of_over {v : Pl F} (u : PlacesOver E v) : u.1.under (𝓞 F) = v := by
   ext1
   exact (Ideal.over_def u.1.asIdeal v.asIdeal).symm
 
+/- English proof (translation)
+Use `(Set.finite_range fun u : PlacesOver E v => u.1).subset fun w hw => ?_` and prove the remaining obligations. Substitute `hw` using the available equality. Conclude with `⟨⟨w, ⟨rfl⟩⟩, rfl⟩`.
+-/
 private theorem finite_over (v : Pl F) : {w : Pl E | w.under (𝓞 F) = v}.Finite := by
   refine (Set.finite_range fun u : PlacesOver E v => u.1).subset fun w hw => ?_
   subst hw
   exact ⟨⟨w, ⟨rfl⟩⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [eigIn, offN, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, ContinuousLinearMap.coe_coe, and_assoc]`.
+-/
 private theorem mem_Zv (T : Ty σ n q w₀) (V : Submodule ℂ (LL μ)) (O : LL μ →L[ℂ] LL μ) (x : ℝ) (v : LL μ) :
     v ∈ eigIn (V ⊓ offN μ T) O x ↔ v ∈ V ∧ (∀ w : Pl E, w.under (𝓞 F) ∉ (nsS T : Set (Pl F)) → v ∈ eigL μ w (T.J w) (T.χ w)) ∧
       O v = (x : ℂ) • v := by
   simp only [eigIn, offN, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, ContinuousLinearMap.coe_coe,
     and_assoc]
 
+/- English proof (translation)
+Establish `e : (eigIn (V ⊓ offN μ T) O x : Set (LL μ)) = (V : Set (LL μ)) ∩ ((⋂ w, ⋂ (_ : w.under (𝓞 F) ∉ (nsS T : Set (Pl F))), (eigL μ w (T.J w) (T.χ w) : Set (LL μ))) ∩ {v | O v = (x : ℂ) • v})`. Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, mem_Zv, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[e]`. Use `hV.inter (IsClosed.inter ?_ (isClosed_eq O.continuous (continuous_const_smul _)))` and prove the remaining obligations.
+
+Conclude with `isClosed_iInter fun w => isClosed_iInter fun _ => (UpperTheory.ConvolutionTheory.L1.eigBasic E n μ w (T.J w) (T.χ w) (T.co w) (T.chr w)).1`.
+-/
 private theorem Zv_closed (T : Ty σ n q w₀) (V : Submodule ℂ (LL μ)) (hV : IsClosed (V : Set (LL μ))) (O : LL μ →L[ℂ] LL μ) (x : ℝ) :
     IsClosed (eigIn (V ⊓ offN μ T) O x : Set (LL μ)) := by
   have e : (eigIn (V ⊓ offN μ T) O x : Set (LL μ)) = (V : Set (LL μ)) ∩ ((⋂ w, ⋂ (_ : w.under (𝓞 F) ∉ (nsS T : Set (Pl F))),
@@ -82,6 +113,33 @@ private theorem Zv_closed (T : Ty σ n q w₀) (V : Submodule ℂ (LL μ)) (hV :
 
 end Two
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n hn μ _ ν _ a q w₀ T V hV huniq x hx`. Use `⟨Zv_closed μ T V hV.closed _ x, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv g f hf`. Take `⟨m, _, -⟩` from `(UpperTheory.ConvolutionTheory.Tf.compatEx E n hn).2.1 μ ν`. Take `⟨h1, h2, h3⟩` from `(mem_Zv μ T V _ x f).1 hf`.
+
+Use `(mem_Zv μ T V _ x _).2 ⟨hV.inv _ _ h1, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Use `(mem_eigL' μ _ _ _ _).2 fun y hy => ?_` and prove the remaining obligations. Establish `hne : w ≠ (T.mk' v).1` using `fun h => hw (by rw [h, under_of_over]; exact hv)`. Rewrite using `[rhoL_comm μ hne, (mem_eigL' μ _ _ _ _).1 (h2 w hw) y hy, map_smul]`. Establish `hc : Oinf μ ν a (rhoL μ (T.mk' v).1 g f) = rhoL μ (T.mk' v).1 g (Oinf μ ν a f)` using `DFunLike.congr_fun ((UpperTheory.ConvolutionTheory.Tf.opAlg E n μ ν m).2.2.2.2.2.2.2.2 a (AdelicGLn.localEmbedding (T.mk' v).1 g)).eq f`.
+
+Rewrite using `[hc, h3, map_smul]`. Introduce `r p hp hpr U hU`. Establish `hfin : {w : Pl E | w.under (𝓞 F) ∈ insert q T.S}.Finite`. Establish `: {w : Pl E | w.under (𝓞 F) ∈ insert q T.S} = ⋃ v ∈ insert q T.S, {w : Pl E | w.under (𝓞 F) = v}`. Use extensionality with `w`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `(Finset.finite_toSet _).biUnion fun v _ => finite_over v`. Use `set P : Finset (Pl E) := hfin.toFinset with hP`. Establish `hPm : ∀ w, w ∈ P ↔ w.under (𝓞 F) ∈ insert q T.S` using `fun w => by simp [hP]`.
+
+Set `f : Fin r → Pl E` to `fun i => (T.mk' (p i)).1`. Establish `hf : Function.Injective f` using `fun i j hij => hp (by`. Use `congrArg (fun w : Pl E => w.under (𝓞 F)) hij` as an intermediate fact. Simplify `this)` using `only [f, under_of_over]`. Take `⟨U', hU1, hU2⟩` from `exists_ext (B := fun w : Pl E => Subgroup (Gw n w)) f hf U (fun w => kerChr (T.J w) (T.χ w) (T.chr w))`.
+
+Establish `hU' : ∀ w ∈ P, CO (U' w)` using `fun w _ => by`. Distinguish the cases in `hw : w ∈ Set.range f`. Take `⟨i, rfl⟩` from `hw`. Rewrite using `[hU1]`. Conclude with `hU i`.
+
+Rewrite using `[hU2 w hw]`. Conclude with `kerChr_co (T.co w) (T.chr w)`. Establish `hoff : ∀ w : Pl E, w ∉ Set.range f → w.under (𝓞 F) ∉ (nsS T : Set (Pl F))` using `fun w hw h => by`. Establish `h' : w.under (𝓞 F) ∈ nsS T` using `h`. Establish `e` using `huniq _ h' ⟨w, ⟨rfl⟩⟩`.
+
+Take `⟨i, hi⟩` from `(hpr _).1 h'`. Use `hw ⟨i, ?_⟩` and prove the remaining obligations. Establish `e' : w = (T.mk' (w.under (𝓞 F))).1` using `congrArg Subtype.val e`. Conclude with `(congrArg (fun v => (T.mk' v).1) hi).trans e'.symm`. Use `haveI := UpperTheory.ConvolutionTheory.C.eigAdm E n hn μ ν a x hx P U' hU'`.
+
+Use `Submodule.finiteDimensional_of_le (fun v hv => ?_) (S₂ := eigIn (cuspidalL2 μ) (Oinf μ ν a) x ⊓ sphOff μ P ⊓ ⨅ w ∈ P, fixL μ w (U' w))` and prove the remaining obligations. Take `⟨hZ, hfx⟩` from `Submodule.mem_inf.1 hv`. Take `⟨h1, h2, h3⟩` from `(mem_Zv μ T V _ x v).1 hZ`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hV.le h1, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, ContinuousLinearMap.coe_coe, h3]`.
+
+Use `(Submodule.mem_iInf _).2 fun w => (Submodule.mem_iInf _).2 fun hw => ?_` and prove the remaining obligations. Establish `hu : w.under (𝓞 F) ∉ insert q T.S` using `fun h => hw ((hPm w).2 h)`. Establish `hS : w.under (𝓞 F) ∉ T.S` using `fun h => hu (Finset.mem_insert_of_mem h)`. Take `⟨e1, e2⟩` from `T.off w hS (fun h => hu (by rw [h]; exact Finset.mem_insert_self _ _))`. Establish `hns : w.under (𝓞 F) ∉ (nsS T : Set (Pl F))` using `fun h => hS (Finset.mem_filter.1 h).1`.
+
+Use `(mem_fixL' μ _ _ _).2 fun y hy => ?_` and prove the remaining obligations. Rewrite using `[(mem_eigL' μ _ _ _ _).1 (h2 w hns) y (e1 ▸ hy), e2]`. Simplify using the standard rewrite rules. Use `(Submodule.mem_iInf _).2 fun w => (Submodule.mem_iInf _).2 fun _ => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ Set.range f`.
+
+Take `⟨i, rfl⟩` from `hw`. Rewrite using `[hU1]`. Conclude with `(Submodule.mem_iInf _).1 hfx i`. Rewrite using `[hU2 w hw]`. Use `(mem_fixL' μ _ _ _).2 fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[(mem_eigL' μ _ _ _ _).1 (h2 w (hoff w hw)) y hy.1, hy.2, one_smul]`.
+-/
 theorem UpperTheory.finiteDimensional_eigenspace_inf_fixed_offN_CMDatum :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL E n)) [μ.IsHaarMeasure]
         (ν : Measure (archGroup E n)) [ν.IsHaarMeasure] (a : TI E n) (q : Pl F) (w₀ : PlacesOver E q) (T : Ty σ n q w₀)

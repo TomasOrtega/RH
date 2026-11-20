@@ -9,6 +9,13 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities Formalism.RepresentationBoundsCohomology.BR
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ T d _ _ G _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Take `⟨hP, hA, h2, hG3, hε⟩` from `hyp`. Take `⟨eB, e₁, hI⟩` from `idem O X T d G r π t bl χ₁ ε hP hA h2`. Take `⟨m, jj, a, hja, hsep⟩` from `x0 O X T d G r π t bl χ₁ ε hP eB e₁ hI hG3 g₀ hε L ϖ hϖ`. Use `⟨eB, e₁, fun x => ϖ ^ L • ∑ i, jj i x • (eB x * a i x * eB x), ⟨hI, ⟨m, jj, a, hja, rfl⟩, hsep⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `O' _ _ _ _ _ _ e he hspl`. Take `⟨b1, b2, b3, b4⟩` from `bridge O X T d G r π eB hI.1 hI.2.2.1 m jj a hja (ϖ ^ L)`. Take `⟨cP, cA, cI, cX, cv⟩` from `stageC O O' e he X T d G r π t bl χ₁ ε hP hA eB e₁ hI g₀ _ b1 b2 b3 b4 hsep hspl`. Take `⟨D, hD, ⟨i1, i2, i3, i4, i5⟩, i3', hT⟩` from `ring_objects_exist O' X (bcT O' T) d G (bcR O' r) π t ht bl _ _ cP cA _ _ cI g₀ _ cX`. Establish `hpπ : D.p D.π' = π`.
+
+Take `⟨-, -, -, -, h, -⟩` from `hD`. Conclude with `h`. Use `⟨D, hD, ⟨i1, i2, i3', i4, i5, hT, fun Z => ?_⟩, fun Z => by rw [hpπ]; exact cv Z⟩` and prove the remaining obligations. Conclude with `displayFree O' X (bcT O' T) d G (bcR O' r) π t ht bl _ _ cP cA _ _ cI g₀ _ cX D hD hT Z`.
+-/
 theorem chain_from_primitive_data : ChainFromPrimitiveData := by
   intro O _ _ _ _ X _ T d _ _ G _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
   obtain ⟨hP, hA, h2, hG3, hε⟩ := hyp
@@ -28,6 +35,17 @@ theorem chain_from_primitive_data : ChainFromPrimitiveData := by
   refine ⟨D, hD, ⟨i1, i2, i3', i4, i5, hT, fun Z => ?_⟩, fun Z => by rw [hpπ]; exact cv Z⟩
   exact displayFree O' X (bcT O' T) d G (bcR O' r) π t ht bl _ _ cP cA _ _ cI g₀ _ cX D hD hT Z
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ T d _ _ G _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Take `⟨eB, e₁, s, hAB, hall⟩` from `chain_from_primitive_data O X T d G r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ`. Use `⟨eB, e₁, s, hAB, ?_⟩` and prove the remaining obligations. Take `⟨hI, ⟨m, jj, a, hja, hs⟩, hsep⟩` from `hAB`. Take `⟨-, b2, b3, -⟩` from `bridge O X T d G r π eB hI.1 hI.2.2.1 m jj a hja (ϖ ^ L)`.
+
+Rewrite `b2`, `b3` using `[← hs]`. Set `ι : O →+* FractionRing O` to `algebraMap O (FractionRing O)`. Establish `hι : Function.Injective ι` using `IsFractionRing.injective O (FractionRing O)`. Establish `hmon : ∀ x, (blockPoly (eB x) (eB x * r g₀ x * eB x + s x)).Monic`. Introduce `x`.
+
+Establish `hbb : eB x * eB x = eB x` using `congrFun hI.2.2.1 x`. Establish `hbs : eB x * s x = s x` using `congrFun b2 x`. Establish `hsb : s x * eB x = s x` using `congrFun b3 x`. Use `Polynomial.monic_of_injective hι ?_` and prove the remaining obligations. Rewrite using `[blockPoly_map]`.
+
+Use `(bcSplit (FractionRing O) d _ _ t ?_ ?_ ?_ (hI.2.2.2.2.2.2.1 x)).1` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hbb]`. Rewrite using `[← Matrix.map_mul, mul_add, ← mul_assoc, ← mul_assoc, hbb, hbs]`. Rewrite using `[← Matrix.map_mul, add_mul, mul_assoc, hbb, hsb]`. Take `⟨O', i1, i2, i3, i4, i5, i6, e, he, hspl⟩` from `hE O X (fun x => blockPoly (eB x) (eB x * r g₀ x * eB x + s x)) hmon (fun x => by rw [blockPoly_map]; exact hsep x)`.
+
+Conclude with `⟨O', i1, i2, i3, i4, i5, i6, e, he, hall O' e he hspl⟩`.
+-/
 theorem chain_with_extension_of_split (hE : StatSplitExt) : ChainWithExtension := by
   intro O _ _ _ _ X _ T d _ _ G _ r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
   obtain ⟨eB, e₁, s, hAB, hall⟩ := chain_from_primitive_data O X T d G r π t ht bl χ₁ ε g₀ hyp L ϖ hϖ
@@ -53,6 +71,9 @@ theorem chain_with_extension_of_split (hE : StatSplitExt) : ChainWithExtension :
     (fun x => by rw [blockPoly_map]; exact hsep x)
   exact ⟨O', i1, i2, i3, i4, i5, i6, e, he, hall O' e he hspl⟩
 
+/- English proof (translation)
+The claim follows from `chain_with_extension_of_split splitExt`.
+-/
 theorem chain_with_extension_holds : ChainWithExtension := chain_with_extension_of_split splitExt
 
 end Formalism.RepresentationBoundsCohomology.ringDataObjects

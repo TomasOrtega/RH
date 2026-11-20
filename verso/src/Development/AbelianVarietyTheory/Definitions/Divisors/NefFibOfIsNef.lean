@@ -53,6 +53,9 @@ def arVol (L : HermLB p) (D : ℕ) : EReal :=
   limsup (fun m : ℕ => ENNReal.log ((L.pow m).smallSec.encard : ENNReal) *
     ((((D + 1).factorial : ℝ) / (m : ℝ) ^ (D + 1) : ℝ) : EReal)) atTop
 
+/- English proof (translation)
+The claim follows from `h.vertical`.
+-/
 theorem nefFib_of_isNef {L : HermLB p} {D : ℕ} (h : L.IsNef D) : NefFib L := h.vertical
 
 end GlobalTheory.ArInt

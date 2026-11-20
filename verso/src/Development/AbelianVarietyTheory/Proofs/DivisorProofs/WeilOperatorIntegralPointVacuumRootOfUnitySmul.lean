@@ -12,6 +12,11 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 namespace GlobalTheory.FunObj.StdDatum
 
+/- English proof (translation)
+Introduce `D δ crv a d e0 he W r hr`. Take `⟨x, x', hx, hx', h⟩` from `(GlobalTheory.NormSum.VacInt.vacuum_eigen D (GlobalTheory.InducedType.induced_type D).1 ⊤ δ crv a d e0 he W).2.1 r hr 1 (one_mem _)`. Take `⟨m, hm, hxm⟩` from `(GlobalTheory.T.unitaryHeckeCharacter_values D d W.chV' x).2.1 hx`. Take `⟨m', hm', hxm'⟩` from `(GlobalTheory.T.unitaryHeckeCharacter_values D a W.chV x').2.1 hx'`. Use `⟨_, ⟨m * m', Nat.mul_pos hm hm', ?_⟩, h⟩` and prove the remaining obligations.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm W.ep, mul_comm W.ep', zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, mul_comm m m', pow_mul, hxm', one_pow, one_zpow, mul_comm m' m, pow_mul, hxm, one_pow, one_zpow, one_mul, U …`.
+-/
 theorem vacuum_int_root_of_unity : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ),
     e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) → ∀ (W : WeilO D ⊤ δ a d e0) (r : GA D a), r ∈ intG D a →
     ∃ c : ℂ, (∃ m : ℕ, 0 < m ∧ c ^ m = 1) ∧ W.Om r 1 e0 = c • e0 := by

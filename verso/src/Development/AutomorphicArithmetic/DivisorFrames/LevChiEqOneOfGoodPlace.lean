@@ -9,6 +9,11 @@ open Formalism.CohomologicalDescent.DepthNonnegative (NablaT)
 open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.FrameAut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `hβ.elim fun c hc => ?_` and prove the remaining obligations. Establish `hc' : Formalism.IndefR.Lev.IsBaseFrame V β Λ 1` using `(one_pow c : (1 : ℕ) ^ c = 1) ▸ hc`. Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 v.isPrime.ne_top`.
+
+Establish `hl` using `fun e f' he => (GlobalTheory.LevSplit.lev_split V β Λ 1 (Formalism.IndefR.Lev.flag1L L) hc').2 v e f' he h1 hoff`. Introduce and unpack `a ⟨ha, e, f', he, hs⟩`. Establish `hm` using `((hl e f' he).1 a hs).2 ha`. Conclude with `⟨hm.2, Units.ext ((hl e f' he).2.1 a hm hs)⟩`.
+-/
 private theorem UpperTheory.hecke_offprime_preimage {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (hβ : ∃ c : ℕ, Formalism.IndefR.Lev.IsBaseFrame V β Λ (1 ^ c)) (v : HeightOneSpectrum (𝓞 D.host.E))
@@ -24,6 +29,9 @@ private theorem UpperTheory.hecke_offprime_preimage {D : D7} (V : Formalism.Basi
   have hm := ((hl e f' he).1 a hs).2 ha
   exact ⟨hm.2, Units.ext ((hl e f' he).2.1 a hm hs)⟩
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p j t v hv`. Conclude with `UpperTheory.hecke_offprime_preimage (Vc D j) (p.R.βV j) (p.R.ΛV j) (p.R.datVt j t) (p.charW.base.lev.βV j) v hv`.
+-/
 theorem UpperTheory.levChi_eq_one_of_good_place :
     ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
         {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T) (v : HeightOneSpectrum (𝓞 D.host.E)), GlobalTheory.Hk3.Good p.R.toRealDat t v →

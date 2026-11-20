@@ -10,6 +10,9 @@ namespace GlobalTheory.HermCongruence
 def signVec {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) : Fin n → ℂ :=
   fun i => if 0 < hA.eigenvalues i then 1 else -1
 
+/- English proof (translation)
+Introduce `h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hA.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [h])`.
+-/
 theorem eigenvalues_ne_zero {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (hd : A.det ≠ 0)
     (i : Fin n) : hA.eigenvalues i ≠ 0 := by
   intro h
@@ -17,6 +20,27 @@ theorem eigenvalues_ne_zero {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.I
   rw [hA.det_eq_prod_eigenvalues]
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp [h])
 
+/- English proof (translation)
+Use `set U : Matrix (Fin n) (Fin n) ℂ := (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hUU : Uᴴ * U = 1`. Use `hA.eigenvectorUnitary.2.1` as an intermediate fact. Simplify `this` using `[hU, Matrix.star_eq_conjTranspose]`. Establish `hspec : A = U * diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) * Uᴴ`.
+
+Use `hA.spectral_theorem` as an intermediate fact. Simplify `this` using `[hU, Matrix.star_eq_conjTranspose, Function.comp_def]`. Use `set c : Fin n → ℂ := fun i => ((Real.sqrt |hA.eigenvalues i|)⁻¹ : ℝ) with hc`. Establish `hc0 : ∀ i, c i ≠ 0`. Introduce `i`.
+
+Establish `h1 : 0 < |hA.eigenvalues i|` using `abs_pos.2 (eigenvalues_ne_zero hA hd i)`. Simplify using `[hc, Real.sqrt_eq_zero', not_le.2 h1, eigenvalues_ne_zero hA hd i]`. Use `set V := U * diagonal c with hV`. Establish `hVdet : V.det ≠ 0`. Rewrite using `[hV, det_mul, det_diagonal]`.
+
+Use `mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun i _ => hc0 i)` and prove the remaining obligations. Introduce `h`. Use `congrArg det hUU` as an intermediate fact. Rewrite `this` using `[det_mul, h, mul_zero, det_one]`. Conclude with `zero_ne_one this`.
+
+Use `⟨GeneralLinearGroup.mkOfDetNeZero V hVdet, ?_⟩` and prove the remaining obligations. Use `show Vᴴ * A * V = _`. Establish `hcs : (diagonal c)ᴴ = diagonal c`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hc]`. Rewrite using `[hV, conjTranspose_mul, hcs]`. Use `conv_lhs => rw [hspec]`. Establish `: diagonal c * Uᴴ * (U * diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) * Uᴴ) * (U * diagonal c) = diagonal c * (Uᴴ * U) * diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) * (Uᴴ * U) * diagonal c`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hUU, Matrix.mul_one, Matrix.mul_one, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hne` using `eigenvalues_ne_zero hA hd i`.
+
+Establish `hpos : 0 < |hA.eigenvalues i|` using `abs_pos.2 hne`. Establish `hsq : Real.sqrt |hA.eigenvalues i| * Real.sqrt |hA.eigenvalues i| = |hA.eigenvalues i|` using `Real.mul_self_sqrt hpos.le`. Establish `hs0 : Real.sqrt |hA.eigenvalues i| ≠ 0` using `(Real.sqrt_pos.2 hpos).ne'`. Establish `key : (Real.sqrt |hA.eigenvalues i|)⁻¹ * hA.eigenvalues i * (Real.sqrt |hA.eigenvalues i|)⁻¹ = if 0 < hA.eigenvalues i then 1 else -1`. Rewrite using `[mul_comm, ← mul_assoc, ← mul_inv, hsq]`.
+
+Use `split_ifs with h`. Rewrite using `[abs_of_pos h]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.1 h) hne)]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [signVec, hc]`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, key]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_congr_signVec {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (hd : A.det ≠ 0) :
     ∃ V : GL (Fin n) ℂ, (V : Matrix (Fin n) (Fin n) ℂ)ᴴ * A * V = diagonal (signVec hA) := by
   set U : Matrix (Fin n) (Fin n) ℂ := (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU
@@ -71,6 +95,13 @@ end GlobalTheory.HermCongruence
 
 namespace GlobalTheory.HermCongruence
 
+/- English proof (translation)
+Establish `h1 : Fintype.card {i // 0 < hB.eigenvalues i} = Fintype.card {i // 0 < hA.eigenvalues i}` using `h.symm`. Establish `h2 : Fintype.card {i // ¬ 0 < hB.eigenvalues i} = Fintype.card {i // ¬ 0 < hA.eigenvalues i}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, h1]`. Use `⟨Equiv.subtypeCongr (Fintype.equivOfCardEq h1) (Fintype.equivOfCardEq h2), fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : 0 < hB.eigenvalues i`.
+
+Establish `hx : Equiv.subtypeCongr (Fintype.equivOfCardEq h1) (Fintype.equivOfCardEq h2) i = ((Fintype.equivOfCardEq h1) ⟨i, hi⟩ : Fin n)`. Simplify using `[Equiv.subtypeCongr, hi]`. Rewrite using `[hx]`. Conclude with `iff_of_true ((Fintype.equivOfCardEq h1) ⟨i, hi⟩).2 hi`. Establish `hx : Equiv.subtypeCongr (Fintype.equivOfCardEq h1) (Fintype.equivOfCardEq h2) i = ((Fintype.equivOfCardEq h2) ⟨i, hi⟩ : Fin n)`.
+
+Simplify using `[Equiv.subtypeCongr, hi]`. Rewrite using `[hx]`. Conclude with `iff_of_false ((Fintype.equivOfCardEq h2) ⟨i, hi⟩).2 hi`.
+-/
 theorem exists_equiv_pos {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (hB : B.IsHermitian)
     (h : sigPosH hA = sigPosH hB) :
     ∃ e : Fin n ≃ Fin n, ∀ i, (0 < hA.eigenvalues (e i) ↔ 0 < hB.eigenvalues i) := by
@@ -90,6 +121,9 @@ theorem exists_equiv_pos {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.Is
     rw [hx]
     exact iff_of_false ((Fintype.equivOfCardEq h2) ⟨i, hi⟩).2 hi
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Matrix.diagonal_apply, Matrix.conjTranspose_apply]`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+-/
 theorem perm_congr {n : ℕ} (d : Fin n → ℂ) (e : Fin n ≃ Fin n) :
     ((1 : Matrix (Fin n) (Fin n) ℂ).submatrix id e)ᴴ * diagonal d * (1 : Matrix (Fin n) (Fin n) ℂ).submatrix id e =
       diagonal (d ∘ e) := by
@@ -97,6 +131,21 @@ theorem perm_congr {n : ℕ} (d : Fin n → ℂ) (e : Fin n ≃ Fin n) :
   simp [Matrix.mul_apply, Matrix.one_apply, Matrix.diagonal_apply, Matrix.conjTranspose_apply]
   split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Introduce `n A B hA hB hdA hdB hs`. Take `⟨VA, hVA⟩` from `exists_congr_signVec hA hdA`. Take `⟨VB, hVB⟩` from `exists_congr_signVec hB hdB`. Take `⟨e, he⟩` from `exists_equiv_pos hA hB hs`. Use `set P : Matrix (Fin n) (Fin n) ℂ := (1 : Matrix (Fin n) (Fin n) ℂ).submatrix id e with hP`.
+
+Establish `hPP : P * (1 : Matrix (Fin n) (Fin n) ℂ).submatrix id e.symm = 1`. Use extensionality with `i j`. Simplify using `[hP, Matrix.mul_apply, Matrix.one_apply]`. Establish `hPdet : P.det ≠ 0`. Introduce `h`.
+
+Use `congrArg det hPP` as an intermediate fact. Rewrite `this` using `[det_mul, h, zero_mul, det_one]`. Conclude with `zero_ne_one this`. Establish `hsig : signVec hA ∘ e = signVec hB`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Function.comp_apply, signVec]`. Distinguish the cases in `hi : 0 < hB.eigenvalues i`. Rewrite using `[if_pos hi, if_pos ((he i).2 hi)]`. Rewrite using `[if_neg hi, if_neg (fun h => hi ((he i).1 h))]`. Use `⟨VA * GeneralLinearGroup.mkOfDetNeZero P hPdet * VB⁻¹, ?_⟩` and prove the remaining obligations.
+
+Use `set W : Matrix (Fin n) (Fin n) ℂ := ((VB⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) with hW`. Establish `hVW : (VB : Matrix (Fin n) (Fin n) ℂ) * W = 1`. Rewrite using `[hW, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hWV : Wᴴ * (VB : Matrix (Fin n) (Fin n) ℂ)ᴴ = 1`. Rewrite using `[← conjTranspose_mul, hVW, conjTranspose_one]`.
+
+Establish `hP' : ((GeneralLinearGroup.mkOfDetNeZero P hPdet : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = P` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, hP', ← hW, conjTranspose_mul, conjTranspose_mul]`. Establish `: Wᴴ * (Pᴴ * (VA : Matrix (Fin n) (Fin n) ℂ)ᴴ) * A * (VA * P * W) = Wᴴ * (Pᴴ * ((VA : Matrix (Fin n) (Fin n) ℂ)ᴴ * A * VA) * P) * W`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hVA, hP, perm_congr, hsig, ← hVB]`.
+
+Establish `: Wᴴ * ((VB : Matrix (Fin n) (Fin n) ℂ)ᴴ * B * VB) * W = (Wᴴ * (VB : Matrix (Fin n) (Fin n) ℂ)ᴴ) * B * ((VB : Matrix (Fin n) (Fin n) ℂ) * W)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hWV, hVW, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem congr_of_sigPosH_eq : ∀ {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (hA : A.IsHermitian) (hB : B.IsHermitian),
     A.det ≠ 0 → B.det ≠ 0 → sigPosH hA = sigPosH hB →
       ∃ Z : GL (Fin n) ℂ, B = (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * A * (Z : Matrix (Fin n) (Fin n) ℂ) := by

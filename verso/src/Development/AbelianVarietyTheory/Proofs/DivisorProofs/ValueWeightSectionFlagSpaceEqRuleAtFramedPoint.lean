@@ -25,6 +25,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompHS.BridgeValue
 
+/- English proof (translation)
+Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `P'`. Simplify using `only at e`. Substitute `e` using the available equality. Conclude with `gen_unit P.s s' P.gen t4'`.
+-/
 theorem exists_gen_unit {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
     (P P' : FrPt Xo c S) (e : P'.x = P.x) : ∃ u : Sˣ, ∀ i, (e ▸ P'.s).f i = scal P.x (u : S) i * P.s.f i := by
@@ -37,6 +40,27 @@ end GlobalTheory.CompHS.BridgeValue
 
 namespace GlobalTheory.CompHS.BridgeValue
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z la σ W hW i φ x hx hz fr hfr ψ y hψ hm g hO hi`. Set `k` to `i PUnit.unit`. Set `ψ' : Γ(Y₀ TF.X Z, W) →+* CAt σ` to `ψ`. Set `q : Sp Γ(Y₀ TF.X Z, W) ⟶ TF.X.YY` to `(show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ inc₀ TF.X Z`. Set `z' : Sp (CAt σ) ⟶ TF.X.YY` to `spMap ψ' ≫ q`.
+
+Establish `hz' : ⊤ ≤ z' ⁻¹ᵁ TF.X.F.U k` using `GlobalTheory.FlagMod.le_preimage_comp _ hz`. Establish `hO' : ⊤ ≤ z' ⁻¹ᵁ flagOpen TF.X` using `fun s hs => hO hs`. Establish `hpt : AllWt.ptF y = GlobalTheory.FlagMod.frX y` using `rfl`. Establish `ex : spMap ψ' ≫ (x ≫ genι TF.Y) = z' ≫ TF.X.π`. Rewrite using `[← hx]`.
+
+Conclude with `(Category.assoc _ _ _).symm`. Establish `hxy : GlobalTheory.FlagMod.frX y ≫ TF.Y.j = z' ≫ TF.X.π`. Combine the equalities or inequalities in the displayed calculation. Use `_ = spMap ψ' ≫ (x ≫ genι TF.Y) := by rw [hm.1, Category.assoc]`. Use `_ = z' ≫ TF.X.π := ex`.
+
+Take `⟨Q, hQ⟩` from `TF.X.top.exists_chartFr (GlobalTheory.FlagMod.frX_snd y) hxy.symm k hz'`. Establish `hv : ∀ τ j, GlobalTheory.FlagMod.frVec TF.Y y hxy τ j = GlobalTheory.FlagMod.frVec TF.Y Q hQ.over τ j` using `fun τ j => by`. Rewrite using `[hQ.frVec_eq rfl hQ.over τ]`. Use `(GlobalTheory.FlagMod.toModel_eq_iff _ _ _ _ _).2 ?_` and prove the remaining obligations. Take `⟨w, h1, h2, h3⟩` from `hm.2 τ j`.
+
+Use `⟨w, h1, h2, h3.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hfr τ j, ← TF.X.F.tanPull_vecAt k ψ' q hz hz' hx rfl ex]`. Both sides reduce to the same expression. Establish `eQ : y.x = Q.x`. Rewrite using `[← GlobalTheory.FlagMod.frX_fst, ← GlobalTheory.FlagMod.frX_fst, GlobalTheory.FlagMod.xF_ext (Y := TF.Y) (GlobalTheory.FlagMod.frX_snd y) (GlobalTheory.FlagMod.frX_snd Q) (hxy.trans hQ.over.symm)]`.
+
+Take `⟨u0, hu0⟩` from `exists_gen_unit Q y eQ`. Set `t : Ix Dw → (CAt σ)ˣ` to `fun ix => ix.elim u0 fun _ => 1`. Establish `ht : FrBor t Q y` using `GlobalTheory.FlagMod.frBor_of_frVec (TF.X.F.inM hz' rfl) hQ.over hxy t (fun _ => 1) (fun _ => Matrix.blockTriangular_one) (fun _ i => Matrix.one_apply_eq i) (fun τ j => by`. Rewrite using `[hv τ j]`. Use `((Fintype.sum_eq_single j fun j' hj' => ?_).trans ?_).symm` and prove the remaining obligations.
+
+Use `show (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)) j' j • _ = 0`. Rewrite using `[Matrix.one_apply_ne hj', zero_smul]`. Use `show (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)) j j • _ = _`. Rewrite using `[Matrix.one_apply_eq, one_smul]) (fun _ => hu0)`. Establish `he` using `evR_eq_val_secOf (X := TF.X) g hO' hQ ht`.
+
+Establish `hprod : (∏ ix, t ix ^ AllWt.exOf Dw la 0 ix) = 1`. Rewrite using `[Fintype.prod_option, GlobalTheory.FlagMod.exOf_none, zpow_zero, _root_.one_mul]`. Conclude with `Finset.prod_eq_one fun _ _ => one_zpow _`. Rewrite `he` using `[hprod, Units.val_one, _root_.one_mul]`. Establish `key : ∀ (a b : Sp (CAt σ) ⟶ TF.X.YY), a = b → ∀ hOa hia hOb hib, H0.val (B` using `TF.X.LL (AllWt.exOf Dw la 0)) a k hOa hia (secOf TF.X _ g) = H0.val (B := TF.X.LL (AllWt.exOf Dw la 0)) b k hOb hib (secOf TF.X _ g) := by`.
+
+Introduce `a b hab`. Substitute `hab` using the available equality. Use `intros`. Both sides reduce to the same expression. Use `(H0.val_pull (inc₀ TF.X Z) le_rfl _ i hO hi (fun s hs => hO' hs) (fun s hs => hz' hs) _).trans ?_` and prove the remaining obligations.
+
+Use `(key _ _ (Category.assoc _ _ _) _ _ hO' hz').trans ?_` and prove the remaining obligations. Conclude with `he.symm`.
+-/
 theorem val_sec₀_eq_evR : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) (la : AllWt.Weight Dw) (σ : c.F →+* ℂ) (W : (Y₀ TF.X Z).Opens) (hW : IsAffineOpen W) (i : (L₀ TF.X Z la).ι) (φ : c.F →+* Γ(Y₀ TF.X Z, W)) (x : Sp Γ(Y₀ TF.X Z, W) ⟶ gen TF.Y) (hx : ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ inc₀ TF.X Z) ≫ TF.X.π = x ≫ genι TF.Y) (hz : ⊤ ≤ ((show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec) ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U (i PUnit.unit)) (fr : GlobalTheory.ShFam.EigFrame TF.Y φ (x ≫ genι TF.Y)), (∀ (τ : E →+* ℂ) (j : Fin (Dw.mult τ)), fr.v τ j = (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv (TF.X.F.vecAt (i PUnit.unit) _ hz hx τ j)).left) → ∀ (ψ : Γ(Y₀ TF.X Z, W) →+* ℂ) (y : FrPt Xo c (CAt σ)), ψ.comp φ = σ → GlobalTheory.ShFam.BdArc.Matches fr ψ y → ∀ (g : AllWt.secZ Xo c (AllWt.exOf Dw la 0)) (hO : ⊤ ≤ (spMap ψ ≫ (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec)) ⁻¹ᵁ U₀ TF.X Z) (hi : ⊤ ≤ (spMap ψ ≫ (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec)) ⁻¹ᵁ (L₀ TF.X Z la).U i), H0.val (spMap ψ ≫ (show Sp Γ(Y₀ TF.X Z, W) ⟶ Y₀ TF.X Z from hW.fromSpec)) i hO hi (sec₀ TF.X Z _ g) = toC (evR Xo c g.1 y) := by
   intro E _ _ _ H Dw l Xo c TF Z la σ W hW i φ x hx hz fr hfr ψ y hψ hm g hO hi
   let k := i PUnit.unit

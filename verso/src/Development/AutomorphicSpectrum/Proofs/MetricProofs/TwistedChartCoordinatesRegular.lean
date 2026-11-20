@@ -8,6 +8,19 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c x`. Take `⟨⟨F, H, hW⟩, hVo, hxV, hVs, -, hu, hu0, hd, -⟩` from `hL x`. Establish `hsrc : ((ψ x).restrOpen (V x) hVo).source = V x`. Rewrite using `[OpenPartialHomeomorph.restrOpen_source]`. Conclude with `Set.inter_eq_right.mpr hVs`.
+
+Use `⟨(ψ x).restrOpen (V x) hVo, pa_compat_restr RW.A (ψ x) hW.1 (V x) hVo, by rw [hsrc]; exact hxV, ?_, fun _ => some (i₀ x), ?_, ?_, u x, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsrc]`. Conclude with `subset_rfl`. Introduce `k k' _ _ _`. Conclude with `Subsingleton.elim k k'`.
+
+Introduce `k`. Take `rfl : k = 0` from `Subsingleton.elim k 0`. Rewrite using `[hsrc]`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hw, hwV⟩`. Conclude with `⟨hwV, i₀ x, rfl, (hd w hwV).2 hw⟩`. Introduce and unpack `⟨hwV, i, hi, hw⟩`. Take `rfl : i₀ x = i` from `Option.some.inj hi`. Conclude with `⟨(hd w hwV).1 hw, hwV⟩`.
+
+Rewrite using `[hsrc]`. Conclude with `hu`. Rewrite using `[hsrc]`. Conclude with `hu0`. Rewrite using `[hsrc]`.
+
+Introduce `w _`. Simplify using `[diagSec]`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.diagSec_isSNC_diagSet : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (τ : Ψ) (a : Fin N) (k₀ : K) (ca cb : Fin N) (RW : AnLogRes (mCoordIdeal (M.wCo (τ, a) k₀ ca cb RatFunc.X)) ⊤ e) (pr : RW.X → Rb.X) (ψ : RW.X → OpenPartialHomeomorph RW.X (Fin e → ℂ)) (kb : RW.X → Fin Rb.A.n) (σ : RW.X → Fin n ↪ Fin e) (i₀ : RW.X → Fin e) (V : RW.X → Set RW.X) (u : RW.X → RW.X → ℂ) (hL : ∀ x, IsLocSec M Rb τ a k₀ ca cb RW pr x (ψ x) (kb x) (σ x) (i₀ x) (V x) (u x)), ∀ c : ℝ, IsSNC RW.A (secPot RW (potA M τ a k₀) V (fun x => (hL x).2.1) (fun x => (hL x).2.2.1) c) (diagSec ψ i₀ u) ![1] ![diagSet k₀ RW] := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb τ a k₀ ca cb RW pr ψ kb σ i₀ V u hL c x
   obtain ⟨⟨F, H, hW⟩, hVo, hxV, hVs, -, hu, hu0, hd, -⟩ := hL x

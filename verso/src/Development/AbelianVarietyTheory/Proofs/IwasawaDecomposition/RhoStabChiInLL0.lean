@@ -10,6 +10,15 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 namespace GlobalTheory.Mem.RatDatRExp
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP PP)`. Establish `ha0 : (a : D.host.E) ≠ 0`. Introduce `h`. Establish `h0 : a = 0` using `RingOfIntegers.coe_eq_zero_iff.mp h`. Apply `u.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[← ha, h0, map_zero]`. Set `k : D.host.Eˣ` to `Units.mk0 _ ha0`. Take `⟨ι, hι, hint, happ⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, -⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι hι hint happ PP`. Establish `hv : PP.valuation D.host.E (k : D.host.E) ≤ 1` using `PP.valuation_le_one a`.
+
+Establish `hinf` using `(GlobalTheory.UnramCharUnique.loc_parts he _ hv).1`. Take `⟨y, hy⟩` from `hV i (Formalism.L2.JoinChr.locU he.1 k) hinf`. Establish `h1` using `(hL.mu0 i).2 PP e he k (Formalism.L2.JoinChr.locU he.1 k) rfl`. Establish `h2` using `hL.chi i PP hP a k u rfl ha.symm`. Use `⟨y⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h2` using `[MonoidHom.inv_apply]`. Establish `h3 : R.chi ((i : ℕ) + 1) PP u = ((R.C.mu0 i).locK PP k)⁻¹` using `by rw [← h2, inv_inv]`. Rewrite using `[h3, Units.val_inv_eq_inv_val, ← h1, hy, map_inv₀, map_inv₀]`.
+-/
 theorem chi_val_small {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (hL : R.toLevCh.Is A.μ0) (hV : GlobalTheory.RealGeo.ValKs R) (i : Fin D.R.m) (PP : Pl D.host.E) (hP : PP ∈ R.Pg)
@@ -38,6 +47,17 @@ end GlobalTheory.Mem.RatDatRExp
 
 namespace GlobalTheory.Mem.RatDatRExp
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 C _ R F cG B kKs hk hP _ j _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g0 x hx`. Express the relevant statement in the definitionally equal form `(R.FW (NX.idxOf D j)).ρ g0 x ∈ (R.FW (NX.idxOf D j)).WK`. Express the relevant statement in the definitionally equal form `x ∈ (R.FW (NX.idxOf D j)).WK at hx`.
+
+Distinguish the cases in `hK : Formalism.IndefR.FWT.ActKeeps (κ := B.κ) B.O (NX.idxOf D j)`. Take `⟨hf, heq⟩` from `(B.rhoGeo (NX.idxOf D j)).1 hK g0 ((B.fw.e (NX.idxOf D j)).symm ⟨x, hx⟩)`. Rewrite `heq` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← heq]`. Conclude with `Submodule.coe_mem _`.
+
+Rewrite using `[(B.rhoGeo (NX.idxOf D j)).2 hK g0]`. Conclude with `hx`. Introduce `g0`. Express the relevant statement in the definitionally equal form `(((R.FW (NX.idxOf D j)).chi g0 : D.what₂.LLˣ) : D.what₂.LL) ∈ D.LL0`. Establish `hL` using `hP.char.base.lev`.
+
+Establish `hW` using `hP.char.base.grp.chiW`. Establish `hV` using `hP.keep.valKs`. Establish `hy : ∀ PP : R.Pg, ∃ y : C.Q.c.F, ((R.chi ((NX.idxOf D j : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g0 PP)) : ℂˣ) : ℂ) = D.what₂.embLL (algebraMap C.Q.c.F D.what₂.LL y)` using `fun PP => chi_val_small R.toRealDat hL hV (NX.idxOf D j) PP.1 PP.2 _`. Use `choose y hy using hy`. Establish `h1` using `hW (NX.idxOf D j) g0`.
+
+Rewrite `h1` using `[Finset.prod_congr rfl (fun PP _ => hy PP), ← map_prod, ← map_prod]`. Establish `h2` using `D.what₂.embLL.injective h1`. Rewrite using `[h2, ← hk]`. Conclude with `(kKs _).2`.
+-/
 theorem rhoStab_chiInLL0 : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (C : Formalism.L2.Pj.CoreJ D) [Algebra C.Q.c.F D.what₂.LL] (R : RealDat3 D A3 C.Q.c.F) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (g : GlobalTheory.RealGeo.GeoHalf C R.toRealDat fun _ => 1) (kKs : C.Q.c.F →+* ↥D.LL0) (hk : ∀ x, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap C.Q.c.F D.what₂.LL x), Pins R F cG → GlobalTheory.RealGeo.InGeo g → ∀ j, 1 ≤ j → j ≤ D.R.m → NX.RhoStab (NX.ratDatR R cG kKs hk) j ∧ NX.ChiInLL0 (NX.ratDatR R cG kKs hk) j := by
   intro D G _ _ Pl0 I0 T A3 C _ R F cG B kKs hk hP _ j _ _
   refine ⟨?_, ?_⟩

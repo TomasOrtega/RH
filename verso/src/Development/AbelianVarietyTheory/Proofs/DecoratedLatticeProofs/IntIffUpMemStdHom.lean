@@ -12,10 +12,24 @@ open GlobalTheory.FinPl
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, h1, h2, h3⟩ => ⟨α, h1, fun v hv => h2 v fun hp => hv (h v hp), h3⟩`.
+-/
 theorem latO_mono (S T : HSp D) (LS LT) {P Q : Pl D → Prop} (h : ∀ v, P v → Q v) :
     latO S T LS LT P ≤ latO S T LS LT Q :=
   AddSubgroup.closure_mono fun _ ⟨α, h1, h2, h3⟩ => ⟨α, h1, fun v hv => h2 v fun hp => hv (h v hp), h3⟩
 
+/- English proof (translation)
+Take `⟨ε, ⟨β, rfl, h1, h0⟩, hsum⟩` from `q.above`. Establish `hβ : β ∈ intAf D.host.F` using `fun u => by`. Distinguish the cases in `hu : u = q.v`. Substitute `hu` using the available equality. Rewrite using `[h1]`.
+
+Conclude with `one_mem _`. Rewrite using `[h0 u hu]`. Conclude with `zero_mem _`. Establish `main : (latO S T LS LT fun _ => True) ≤ (latO S T LS LT (· = q.v)).comap (DistribSMul.toAddMonoidHom (WO S T) (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β)))`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Use `AddSubgroup.subset_closure ⟨β * α, fun v => by rw [map_mul]; exact mul_mem (hβ v) (hα v), fun v hv => ?_, a, ha, s, hs, t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h0 v hv, zero_mul]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (pairA D.host.F 0 α ⊗ₜ[D.host.F] _) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Matrix.of_apply]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) rfl`. Establish `h` using `main hu`. Rewrite `h` using `[AddSubgroup.mem_comap]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `_ = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β) * u i j`. Rewrite using `[← hsum, ← hh i j, ← mul_assoc, add_mul, q.split.1, mul_comm (cA D q.e), q.split.2.1, add_zero]`.
+-/
 theorem mem_latO_at (q : SplitPt D k) {S T : HSp D} {LS LT} {u : WO S T} (hu : u ∈ latO S T LS LT fun _ => True)
     (hh : IsHalf q.e u) : u ∈ latO S T LS LT (· = q.v) := by
   obtain ⟨ε, ⟨β, rfl, h1, h0⟩, hsum⟩ := q.above
@@ -42,6 +56,11 @@ theorem mem_latO_at (q : SplitPt D k) {S T : HSp D} {LS LT} {u : WO S T} (hu : u
   change _ = algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 β) * u i j
   rw [← hsum, ← hh i j, ← mul_assoc, add_mul, q.split.1, mul_comm (cA D q.e), q.split.2.1, add_zero]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q hq Y Y' _ _ _ _ S T FS FT LS LT hS hT eS eT hFS hFT x`. Establish `eS' : (LS : Set (Fin S.rank → D.host.E)) = intVec D S.rank` using `Set.ext eS`. Establish `eT' : (LT : Set (Fin T.rank → D.host.E)) = intVec D T.rank` using `Set.ext eT`. Rewrite using `[stdHom, ← eS', ← eT']`. Use `⟨fun hx => latO_mono S T _ _ (fun _ _ => trivial) (GlobalTheory.UpMem.up_mem_latO D k q hq Y Y' S T FS FT LS LT hS hT hFS hFT x hx), fun hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hh` using `Witness.up_half (ofSplit q) FS FT x`. Take `⟨x', hx', e⟩` from `GlobalTheory.HalfIntUp.exists_int_up D k q hq Y Y' S T FS FT LS LT hS hT hFS hFT _ (mem_latO_at q hx hh) hh`. Use `congrArg ((ofSplit q).down FS FT) e` as an intermediate fact. Rewrite `this` using `[Witness.down_up, Witness.down_up]`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem int_iff_up_mem_stdHom : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k), q.UnitAA → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T), IsSelfDualC S LS → IsSelfDualC T LT → (∀ z, z ∈ LS ↔ z ∈ intVec D S.rank) → (∀ z, z ∈ LT ↔ z ∈ intVec D T.rank) → (∀ y : Y' → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FS.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV S LS (· = q.v)) → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FT.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV T LT (· = q.v)) → ∀ x : Matrix Y Y' k, (∀ r s, x r s ∈ 𝒪[k]) ↔ (GlobalTheory.LocMod.ofSplit q).up FS FT x ∈ stdHom S T := by
   intro D k _ _ _ _ q hq Y Y' _ _ _ _ S T FS FT LS LT hS hT eS eT hFS hFT x
   have eS' : (LS : Set (Fin S.rank → D.host.E)) = intVec D S.rank := Set.ext eS

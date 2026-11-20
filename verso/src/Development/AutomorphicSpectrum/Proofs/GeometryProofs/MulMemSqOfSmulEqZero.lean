@@ -12,6 +12,11 @@ section Hopf
 
 variable {R : Type} [CommRing R] {T : Type} [CommGroup T]
 
+/- English proof (translation)
+Establish `key : ∀ g ∈ prodSpan A, (fun x => g (t, x)) ∈ A`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g h`. Take `⟨a, ha, b, hb, rfl⟩` from `h`.
+
+Conclude with `A.smul_mem hb (a t)`. Consider the case `zero => exact A.zero_mem`. Consider the case `add g g' _ _ h h' => exact A.add_mem h h'`. Consider the case `smul c g _ h => exact A.smul_mem h c`. Conclude with `key _ (hA.comul f hf)`.
+-/
 theorem translate_mem {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) {f : T → R} (hf : f ∈ A) (t : T) :
     (fun x => f (t * x)) ∈ A := by
   have key : ∀ g ∈ prodSpan A, (fun x => g (t, x)) ∈ A := by
@@ -25,6 +30,19 @@ theorem translate_mem {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) {f : T �
     | smul c g _ h => exact A.smul_mem h c
   exact key _ (hA.comul f hf)
 
+/- English proof (translation)
+Use `haveI := hA.finite`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule R A).FG)`. Set `π : A →ₗ[R] A` to `LinearMap.id - (Algebra.linearMap R A) ∘ₗ (evalAt A 1).toLinearMap`. Establish `hπ : ∀ a : A, π a = a - algebraMap R A ((a : T → R) 1)` using `fun a => rfl`. Establish `hJ : ∀ a : A, π a ∈ augIdeal A`.
+
+Introduce `a`. Rewrite using `[OrderApi.mem_augIdeal, hπ]`. Simplify using the standard rewrite rules. Use `⟨s.image π, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`.
+
+Introduce `g hg`. Take `⟨g', _, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hg)`. Conclude with `hJ g'`. Introduce `a ha`. Establish `ha' : a ∈ Submodule.span R (s : Set A)` using `hs ▸ Submodule.mem_top`.
+
+Establish `key : ∀ x ∈ Submodule.span R (s : Set A), π x ∈ Ideal.span ((s.image π : Finset A) : Set A)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact Ideal.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem π (Finset.mem_coe.1 h)))`. Consider the case `zero => simp`.
+
+Consider the case `add x x' _ _ h h' => rw [map_add]`. Conclude with `Ideal.add_mem _ h h'`. Consider the case `smul c x _ h`. Rewrite using `[map_smul, ← algebraMap_smul A c]`. Conclude with `Submodule.smul_mem _ _ h`.
+
+Establish `h1 : π a = a`. Rewrite using `[hπ, (OrderApi.mem_augIdeal A a).1 ha]`. Simplify using the standard rewrite rules. Rewrite using `[← h1]`. Conclude with `key a ha'`.
+-/
 theorem augIdeal_fg {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) : (augIdeal A).FG := by
   classical
   haveI := hA.finite
@@ -57,6 +75,17 @@ theorem augIdeal_fg {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) : (augIdea
     rw [← h1]
     exact key a ha'
 
+/- English proof (translation)
+Use `haveI : Module.Finite B J := Module.Finite.iff_fg.2 hfg`. Set `fJ : Module.End B J` to `algebraMap B (Module.End B J) c`. Establish `hfx : ∀ x : J, fJ x = c • x` using `fun x => Module.algebraMap_end_apply B B J c x`. Establish `hrange : LinearMap.range fJ ≤ J • (⊤ : Submodule B J)`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Establish `h1 : ((fJ x : J) : B) ∈ Submodule.map J.subtype (J • (⊤ : Submodule B J))`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_subtype, smul_eq_mul, ← sq, hfx]`. Conclude with `h x x.2`. Take `⟨y, hy, hxy⟩` from `h1`. Establish `: y = fJ x` using `Subtype.ext hxy`.
+
+Conclude with `this ▸ hy`. Take `⟨q, hmon, -, hcoef, hq⟩` from `LinearMap.exists_monic_and_coeff_mem_pow_and_aeval_eq_zero_of_range_le_smul B fJ J hrange`. Use `⟨q.eval c, q.natDegree, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : Polynomial.aeval fJ q = algebraMap B (Module.End B J) (q.eval c)`. Express the relevant statement in the definitionally equal form `Polynomial.aeval (algebraMap B (Module.End B J) c) q = _`.
+
+Rewrite using `[Polynomial.aeval_algebraMap_apply, Polynomial.coe_aeval_eq_eval]`. Establish `h3` using `LinearMap.congr_fun (h2.symm.trans hq) ⟨x, hx⟩`. Establish `h4 : q.eval c • (⟨x, hx⟩ : J) = 0` using `by simpa [Module.algebraMap_end_apply] using h3`. Simplify using `using congrArg Subtype.val h4`. Rewrite using `[Polynomial.eval_eq_sum_range, Finset.sum_range_succ, hmon.coeff_natDegree, _root_.one_mul, add_sub_cancel_right]`.
+
+Use `sum_mem fun i hi => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `hi' : i < q.natDegree` using `Finset.mem_range.1 hi`. Conclude with `Ideal.pow_le_self (by omega) (hcoef i)`.
+-/
 theorem det_trick {B : Type} [CommRing B] (J : Ideal B) (hfg : J.FG) (c : B) (h : ∀ x ∈ J, c * x ∈ J ^ 2) :
     ∃ (u : B) (k : ℕ), (∀ x ∈ J, u * x = 0) ∧ u - c ^ k ∈ J := by
   haveI : Module.Finite B J := Module.Finite.iff_fg.2 hfg
@@ -87,6 +116,9 @@ theorem det_trick {B : Type} [CommRing B] (J : Ideal B) (hfg : J.FG) (c : B) (h 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h1 : (augIdeal A).toCotangent (algebraMap R A n • (⟨x, hx⟩ : augIdeal A)) = 0`. Rewrite using `[LinearMap.map_smul, algebraMap_smul]`. Conclude with `hn _`. Conclude with `(Ideal.toCotangent_eq_zero (augIdeal A) _).1 h1`.
+-/
 theorem mul_mem_sq_of_smul_eq_zero {A : Subalgebra R (T → R)} (n : R) (hn : ∀ x : omega A, n • x = 0) (x : A)
     (hx : x ∈ augIdeal A) : algebraMap R A n * x ∈ augIdeal A ^ 2 := by
   have h1 : (augIdeal A).toCotangent (algebraMap R A n • (⟨x, hx⟩ : augIdeal A)) = 0 := by
@@ -94,6 +126,21 @@ theorem mul_mem_sq_of_smul_eq_zero {A : Subalgebra R (T → R)} (n : R) (hn : �
     exact hn _
   exact (Ideal.toCotangent_eq_zero (augIdeal A) _).1 h1
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite T`. Take `⟨u, k, hu, huk⟩` from `det_trick (augIdeal A) (augIdeal_fg hA) (algebraMap R A n) (mul_mem_sq_of_smul_eq_zero n hn)`. Establish `hu1 : (u : T → R) 1 = n ^ k`. Establish `h2 : evalAt A 1 (u - algebraMap R A n ^ k) = 0` using `huk`. Rewrite `h2` using `[map_sub, map_pow, AlgHom.commutes]`.
+
+Conclude with `sub_eq_zero.1 h2`. Establish `hut : ∀ t : T, t ≠ 1 → (u : T → R) t = 0`. Introduce `t ht`. Take `⟨d, hd, hfull⟩` from `hA.full`. Establish `hg : (⟨d • Pi.single t (1 : R), hfull _⟩ : A) ∈ augIdeal A`.
+
+Rewrite using `[OrderApi.mem_augIdeal]`. Simplify using `[Pi.single_apply, ht.symm]`. Establish `h1` using `congrFun (congrArg Subtype.val (hu _ hg)) t`. Establish `h2 : (u : T → R) t * d = 0` using `by simpa using h1`. Conclude with `(mul_eq_zero.1 h2).resolve_right hd`.
+
+Establish `hδ : ∀ t : T, n ^ k • (Pi.single t (1 : R) : T → R) ∈ A`. Introduce `t`. Establish `h1` using `translate_mem hA u.2 t⁻¹`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Distinguish the cases in `hx : x = t`. Substitute `hx` using the available equality. Simplify using `[hu1]`. Establish `: t⁻¹ * x ≠ 1` using `fun h => hx (by rw [inv_mul_eq_one] at h; exact h.symm)`. Simplify using `[Pi.single_apply, hx, hut _ this]`.
+
+Use `⟨k, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : n ^ k • f = ∑ t, f t • (n ^ k • (Pi.single t (1 : R) : T → R))`. Use extensionality with `x`. Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm]`. Rewrite using `[h1]`.
+
+Conclude with `sum_mem fun t _ => A.smul_mem (hδ t) _`.
+-/
 theorem exists_pow_smul_mem [IsDomain R] [Finite T] {A : Subalgebra R (T → R)} (hA : IsHopfOrder A) (n : R)
     (hn : ∀ x : omega A, n • x = 0) : ∃ k : ℕ, ∀ f : T → R, n ^ k • f ∈ A := by
   classical
@@ -141,6 +188,23 @@ def resMap (toN : W → T) : (T → R) →ₗ[R] (W → Ω) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Establish `hb : ∀ a : W, (c : Ω) • (Pi.single a (1 : Ω) : W → Ω) ∈ L` using `fun a => h2 _ fun b => by`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using `[R.one_mem]`. Simplify using `[Pi.single_apply, h, R.zero_mem]`.
+
+Set `bas : W → L` to `fun a => ⟨_, hb a⟩`. Establish `hsum : ∀ l : L, ∑ a, (⟨(l : W → Ω) a, h1 _ l.2 a⟩ : R) • bas a = c • l`. Introduce `l`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `[bas, Pi.single_apply, Subalgebra.smul_def, mul_comm]`. Apply `IsBaseChange.of_lift_unique` to reduce the goal to its premises. Introduce `Q _ _ _ _ g`. Set `g' : (W → Ω) →ₗ[Ω] Q` to `∑ a, (LinearMap.proj a : (W → Ω) →ₗ[Ω] Ω).smulRight ((c : Ω)⁻¹ • g (bas a))`. Establish `hg' : ∀ h : W → Ω, g' h = ∑ a, h a • ((c : Ω)⁻¹ • g (bas a))` using `fun h => by`.
+
+Simplify using `[g', LinearMap.sum_apply]`. Establish `hgs : ∀ (r : R) (l : L), g (r • l) = (r : Ω) • g l` using `fun r l => by`. Rewrite using `[LinearMap.map_smul]`. Conclude with `(algebraMap_smul Ω r (g l)).symm`. Use `⟨g', ?_, fun g'' hg'' => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `l`. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, Submodule.subtype_apply]`. Rewrite using `[hg']`. Establish `h3 : ∀ a, ((l : W → Ω) a) • ((c : Ω)⁻¹ • g (bas a)) = (c : Ω)⁻¹ • g ((⟨(l : W → Ω) a, h1 _ l.2 a⟩ : R) • bas a)`. Introduce `a`.
+
+Rewrite using `[hgs]`. Conclude with `smul_comm _ _ _`. Rewrite using `[Finset.sum_congr rfl fun a _ => h3 a, ← Finset.smul_sum, ← map_sum, hsum, hgs, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `h`.
+
+Establish `h3 : ∀ a, g'' ((c : Ω) • (Pi.single a (1 : Ω) : W → Ω)) = g (bas a)` using `fun a => LinearMap.congr_fun hg'' (bas a)`. Rewrite using `[hg']`. Establish `h4 : h = ∑ a, (h a * (c : Ω)⁻¹) • ((c : Ω) • (Pi.single a (1 : Ω) : W → Ω))`. Use extensionality with `x`. Simplify using `[Finset.sum_apply, Pi.single_apply, inv_mul_cancel_right₀ hc]`.
+
+Use `conv_lhs => rw [h4]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, h3, mul_smul]`.
+-/
 theorem isBaseChange_of_sandwich [Fintype W] (L : Submodule R (W → Ω)) (c : R) (hc : (c : Ω) ≠ 0)
     (h1 : ∀ g ∈ L, ∀ a, g a ∈ R) (h2 : ∀ g : W → Ω, (∀ a, g a ∈ R) → (c : Ω) • g ∈ L) :
     IsBaseChange Ω L.subtype := by
@@ -187,6 +251,29 @@ theorem isBaseChange_of_sandwich [Fintype W] (L : Submodule R (W → Ω)) (c : R
     refine Finset.sum_congr rfl fun a _ => ?_
     rw [map_smul, h3, mul_smul]
 
+/- English proof (translation)
+Set `Ms : Submodule R (W → Ω)` to `(Subalgebra.toSubmodule A).map (resMap R toN)`. Establish `hMs : ∀ g, g ∈ Ms ↔ g ∈ M`. Introduce `g`. Rewrite using `[hM]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f, hf, fun a => rfl⟩`. Introduce and unpack `⟨f, hf, h⟩`. Conclude with `⟨f, hf, funext h⟩`. Establish `hle : ∀ g ∈ M, ∀ a, g a ∈ R`.
+
+Introduce `g hg a`. Take `⟨f, -, h⟩` from `(hM g).1 hg`. Rewrite using `[← h a]`. Conclude with `(f (toN a)).2`. Establish `h3 : ∀ h : W → Ω, (∀ a, h a ∈ R) → (c : Ω) • h ∈ M`.
+
+Introduce `h hh`. Use `(hM _).2 ⟨c • fun t => ⟨h (fromN t), hh _⟩, hfull _, fun a => ?_⟩` and prove the remaining obligations. Simplify using `[hft, Subalgebra.smul_def]`. Establish `hpm : ∀ g, g ∈ stdLat R W ↔ ∀ a, g a ∈ R`. Introduce `g`.
+
+Simplify using `[stdLat, AddSubgroup.mem_pi]`. Use `⟨?_, fun g hg => (hpm g).2 (hle g hg), fun h hh => h3 h ((hpm h).1 hh), (hM _).2 ⟨1, A.one_mem, fun a => rfl⟩⟩` and prove the remaining obligations. Use `haveI := hA.finite`. Use `haveI := hA.projective`. Use `haveI : Module.Finite R (Subalgebra.toSubmodule A) := hA.finite`.
+
+Establish `hfin : Module.Finite R Ms` using `Module.Finite.map _ _`. Set `s : A →ₗ[R] Ms` to `((resMap R toN).comp A.val.toLinearMap).codRestrict Ms fun f => ⟨f.1, f.2, rfl⟩`. Establish `hi : ∀ g : Ms, (fun t => (⟨(g : W → Ω) (fromN t), hle _ ((hMs _).1 g.2) _⟩ : R)) ∈ A`. Introduce and unpack `⟨g, hg⟩`. Take `⟨f, hf, h⟩` from `(hM g).1 ((hMs g).1 hg)`.
+
+Use `hst f hf using 1` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `[h]`. Set `i : Ms →ₗ[R] A` to `{ toFun := fun g => ⟨_, hi g⟩ map_add' := fun _ _ => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `t`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun _ _ => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `t`.
+
+Use `rfl }`. Establish `hsi : s.comp i = LinearMap.id`. Use extensionality with `g a`. Simplify using `[s, i, resMap, hft]`. Establish `hproj : Module.Projective R Ms` using `Module.Projective.of_split i s hsi`.
+
+Establish `hbc : IsBaseChange Ω Ms.subtype` using `isBaseChange_of_sandwich R Ms c hc (fun g hg => hle g ((hMs g).1 hg)) fun g hg => (hMs _).2 (h3 g hg)`. Use `LocFreeProj.locFree_of_projective R (Fintype.card W) Ms hfin hproj (Module.finrank_fintype_fun_eq_card Ω) hbc` as an intermediate fact. Establish `hMeq : Ms.toAddSubgroup = M`. Use extensionality with `g`. Conclude with `hMs g`.
+
+Rewrite `this` using `[hMeq]`. Then use the resulting hypothesis.
+-/
 theorem lat_clauses [Finite T] [Fintype W] {A : Subalgebra R (T → R)} (hA : IsHopfOrder A)
     (toN : W → T) (fromN : T → W) (hft : ∀ a, fromN (toN a) = a)
     (hst : ∀ f ∈ A, (fun t => f (toN (fromN t))) ∈ A) (c : R) (hc : (c : Ω) ≠ 0)
@@ -255,10 +342,50 @@ section Th
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω) {T W : Type} [CommGroup T]
   [AddCommGroup W] {A : Subalgebra R (T → R)} {L : Type} [AddCommGroup L] [Module R L] {r : ℕ}
 
+/- English proof (translation)
+Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_dotDual_iff (Λ : AddSubgroup (Fin r → Ω)) (m : Fin r → Ω) :
     m ∈ dotDual R Λ ↔ ∀ l ∈ Λ, l ⬝ᵥ m ∈ R := by
   simp [dotDual, AddSubgroup.mem_iInf]
 
+/- English proof (translation)
+Establish `haug : ∀ g ∈ M, g 0 = 0 → ∃ f : I, ∀ t, ((f.1 t : R) : Ω) = g (fromN t)`. Introduce `g hg hg0`. Take `⟨f₀, hf₀, h⟩` from `(hM g).1 hg`. Establish `hz : (fun t => f₀ (toN (fromN t))) 1 = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [h1]`. Simplify using `using (h 0).trans hg0`. Conclude with `⟨⟨_, (hI _).2 ⟨hst f₀ hf₀, hz⟩⟩, fun t => h _⟩`. Set `S : ((W → Ω) × (Fin r → Ω)) → Prop` to `fun z => z.1 ∈ M ∧ z.1 0 = 0 ∧ ∃ (f : I) (u : Module.Dual R L), (∀ t, ((f.1 t : R) : Ω) = z.1 (fromN t)) ∧ θ u = cl f ∧ z.2 = ev u`. Establish `hSTh : ∀ z, S z → z ∈ Th`.
+
+Introduce and unpack `z ⟨hz, hz0, f, u, hf, hu, hev⟩`. Rewrite using `[hTh]`. Conclude with `AddSubgroup.subset_closure ⟨hz, hz0, f.1, u, hf, (hDer f u).1 hu, fun k => by rw [hev]⟩`. Establish `hThS : ∀ z ∈ Th, S z`. Introduce `z hz`.
+
+Rewrite `hz` using `[hTh]`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z h`. Take `⟨hz, hz0, f, u, hf, hd, hev⟩` from `h`. Take `⟨f', hf'⟩` from `haug _ hz hz0`.
+
+Establish `hff : f'.1 = f` using `funext fun t => Subtype.ext ((hf' t).trans (hf t).symm)`. Use `⟨hz, hz0, f', u, hf', (hDer f' u).2 (hff ▸ hd), funext hev⟩` and prove the remaining obligations. Consider the case `zero`. Conclude with `⟨M.zero_mem, rfl, 0, 0, fun t => rfl, by simp, by simp⟩`. Consider the case `add z z' _ _ h h'`.
+
+Take `⟨hz, hz0, f, u, hf, hu, hev⟩` from `h`. Take `⟨hz', hz0', f', u', hf', hu', hev'⟩` from `h'`. Use `⟨M.add_mem hz hz', by simp [hz0, hz0'], f + f', u + u', fun t => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `hf t`. Establish `h4` using `hf' t`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply, Prod.fst_add, Subalgebra.coe_add, h3, h4]`. Rewrite using `[map_add, map_add, hu, hu']`. Simplify using `[hev, hev']`. Consider the case `neg z _ h`. Take `⟨hz, hz0, f, u, hf, hu, hev⟩` from `h`.
+
+Use `⟨M.neg_mem hz, by simp [hz0], -f, -u, fun t => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `hf t`. Simplify using `only [Submodule.coe_neg, Pi.neg_apply, Prod.fst_neg, Subalgebra.coe_neg, h3]`. Rewrite using `[map_neg, map_neg, hu]`. Simplify using `[hev]`.
+
+Use `⟨fun a ha v hv => ?_, fun g => ⟨?_, ?_⟩, fun m => ⟨?_, ?_⟩, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨hz, hz0, f, u, hf, hu, hev⟩` from `hThS v hv`. Set `a' : R` to `⟨a, ha⟩`. Use `hSTh _ ⟨hMR a ha _ hz, by simp [hz0], a' • f, a' • u, fun t => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `hf t`.
+
+Express the relevant statement in the definitionally equal form `a * ((f.1 t : R) : Ω) = a * v.1 (fromN t)`. Rewrite using `[h3]`. Rewrite using `[map_smul, hu, map_smul]`. Simplify using `only [Prod.smul_snd, hev, map_smul]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨m, hm⟩`. Take `⟨hz, hz0, -⟩` from `hThS _ hm`. Conclude with `⟨hz, hz0⟩`. Introduce and unpack `⟨hg, hg0⟩`. Take `⟨f, hf⟩` from `haug g hg hg0`.
+
+Take `⟨u, hu⟩` from `hsurj (cl f)`. Conclude with `⟨ev u, hSTh _ ⟨hg, hg0, f, u, hf, hu, rfl⟩⟩`. Introduce and unpack `⟨g, hg⟩`. Take `⟨-, -, f, u, -, -, hev⟩` from `hThS _ hg`. Express the relevant statement in the definitionally equal form `m = _ at hev`.
+
+Rewrite using `[hev]`. Conclude with `H1 u`. Introduce `hm`. Take `⟨u, hu, f, hf, hθ⟩` from `H2 m hm`. Establish `hfI` using `(hI _).1 f.2`.
+
+Use `⟨fun a => ((f.1 (toN a) : R) : Ω), hSTh _ ⟨(hM _).2 ⟨_, hfI.1, fun a => rfl⟩, ?_, f, u, fun t => ?_, hθ, hu.symm⟩⟩` and prove the remaining obligations. Simplify using `[h0, hfI.2]`. Simplify using `[hf]`. Introduce `hm`. Take `⟨-, -, f, u, hf, hu, hev⟩` from `hThS _ hm`.
+
+Establish `hf0 : f = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `t`. Simplify using `using hf t`. Rewrite `hu` using `[hf0, map_zero]`.
+
+Take `⟨u', rfl⟩` from `(hker u).1 hu`. Use `⟨ev u', H1 u', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N : Ω) • ev u' = m`. Rewrite using `[show m = ev (N • u') from hev, map_nsmul, Nat.cast_smul_eq_nsmul]`. Introduce and unpack `⟨m', hm', rfl⟩`.
+
+Take `⟨u', hu', -⟩` from `H2 m' hm'`. Use `hSTh _ ⟨M.zero_mem, rfl, 0, N • u', fun t => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `(hker _).2 ⟨u', rfl⟩`. Express the relevant statement in the definitionally equal form `(N : Ω) • m' = _`.
+
+Rewrite using `[map_nsmul, hu', Nat.cast_smul_eq_nsmul]`.
+-/
 theorem th_clauses {C : Type} [AddCommGroup C] [Module R C] (toN : W → T) (fromN : T → W) (h1 : fromN 1 = 0) (h0 : toN 0 = 1)
     (hft : ∀ a, fromN (toN a) = a) (hst : ∀ f ∈ A, (fun t => f (toN (fromN t))) ∈ A)
     (M : AddSubgroup (W → Ω)) (hM : ∀ g, g ∈ M ↔ ∃ f ∈ A, ∀ a, ((f (toN a) : R) : Ω) = g a)

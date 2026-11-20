@@ -25,6 +25,9 @@ section General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Establish `e3 : (frGL β y).1 = β.1 * (intGL F E n y).1 * (β⁻¹).1` using `rfl`. Rewrite using `[e3, Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem frame_sub_eq (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E))
     (v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
     (β⁻¹).1 *ᵥ ((frGL β y).1 *ᵥ v - v) = ((intGL F E n y).1 - 1) *ᵥ ((β⁻¹).1 *ᵥ v) := by
@@ -32,6 +35,15 @@ theorem frame_sub_eq (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL
   rw [e3, Matrix.mulVec_sub, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul,
     Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Grid.mem_princGL, ← stabilizer_eq_stabilizer_lattice F E n Λ β hfr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl, hy⟩`. Use `⟨⟨y, rfl⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr I, frame_sub_eq]`.
+
+Introduce `i`. Establish `hw` using `(hfr v).1 hv`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `GlobalTheory.FrameIdeal.inId_sum _ fun k => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Conclude with `GlobalTheory.FrameIdeal.inId_mul (hw k) ⟨_, hy i k, GlobalTheory.LevRedTriv.coe_sub_one_apply y i k⟩`. Introduce and unpack `⟨⟨y, rfl⟩, h⟩`. Use `⟨y, rfl, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.FrameIdeal.mem_hatL_smul_iff β Λ hfr I _).1 (h _ (GlobalTheory.ChainOnto.LStab.col_mem_hatL hfr j)) i`. Establish `e : (β⁻¹).1 *ᵥ (β.1 *ᵥ Pi.single j 1) = Pi.single j (1 : E ⊗[F] Formalism.L2.Herm.Af F)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite `h1` using `[frame_sub_eq, e, Matrix.mulVec_single_one]`. Take `⟨s, hs, e⟩` from `h1`. Establish `: s = (y.1 - 1) i j` using `Subtype.ext (e.trans (GlobalTheory.LevRedTriv.coe_sub_one_apply y i j).symm)`. Conclude with `this ▸ hs`.
+-/
 theorem mem_princGL_iff {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (hfr : IsFrame β Λ) (I : Ideal (𝓞 E)) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     x ∈ GlobalTheory.Grid.princGL β I ↔ x ∈ Formalism.UG.stabGL (Formalism.L2.Herm.hatL (F := F) Λ) ∧
@@ -57,6 +69,9 @@ theorem mem_princGL_iff {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ 
     have : s = (y.1 - 1) i j := Subtype.ext (e.trans (GlobalTheory.LevRedTriv.coe_sub_one_apply y i j).symm)
     exact this ▸ hs
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_inf, mem_princGL_iff hfr, mem_congLev]`.
+-/
 theorem princ_eq_congLev [StarRing E] (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hfr : IsFrame β Λ) (I : Ideal (𝓞 E)) :
     UA hc J ⊓ GlobalTheory.Grid.princGL β I = congLev hc J Λ I := by
@@ -75,6 +90,11 @@ namespace GlobalTheory.ColMeas
 
 open GlobalTheory.GridJoin
 
+/- English proof (translation)
+Take `⟨L, h1, h2, e⟩` from `hsp`. Take `⟨V', S, M, Λ', β⟩` from `N`. Simplify using `only at e hlat hfr ⊢`. Substitute `e` using the available equality. Take `rfl` from `eq_of_heq hlat`.
+
+Use `⟨⟨ν, fd⟩, HEq.rfl, HEq.rfl, fun h => h.elim, fun _ => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Grid.Node.princ`. Rewrite using `[princ_eq_congLev _ _ hfr]`. Conclude with `hm`.
+-/
 theorem exists_measDat {D : D7} (N : GlobalTheory.Grid.Node D) {V : HSp D} (hsp : SameSp V N.V)
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hlat : HEq N.Λ Λ) (hfr : IsFrame N.β N.Λ)
     (I : Ideal (𝓞 D.host.E)) {ν : Measure (GA D V)} {fd : Set (GA D V)}
@@ -98,6 +118,15 @@ noncomputable section
 
 namespace GlobalTheory.ColMeas
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch G hG hsp hfr hrow`. Establish `H : ∀ i, ∃ md : (G.V i 0).MeasDat, i ≤ D.R.m → HEq md.ν (ch.M.ν (.grid i 0)) ∧ HEq md.fd (ch.M.fd (.grid i 0)) ∧ md.Is False ((G.V i 0).princ (G.lvl R))`. Introduce `i`. Distinguish the cases in `hi : i ≤ D.R.m`. Establish `hN` using `hsp.vert i 0 hi (Nat.zero_le _)`.
+
+Establish `hr` using `hrow.row i hi`. Establish `hne : GlobalTheory.ChiGrid.Node.neg D.R.m (.grid i 0) ≠ 0`. Simplify using `only [GlobalTheory.ChiGrid.Node.neg, Nat.sub_zero]`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Unfold `Vol.IsAt at hr`. Rewrite `hr` using `[if_neg hne]`. Take `⟨md, h1, h2, h3⟩` from `exists_measDat (G.V i 0) hN.sp hN.lat (hfr i hi) _ hr`. Conclude with `⟨md, fun _ => ⟨h1, h2, hsp.lvl ▸ h3⟩⟩`. Conclude with `⟨G.measCol i, fun h => absurd h hi⟩`.
+
+Use `choose f hf using H`. Use `⟨f 0, fun i j => match j with | 0 => f (i + 1) | j + 1 => G.mV i (j + 1), ⟨fun i hi => ?_, fun i j hi hj => hG.vert i j hi hj, hG.P, hG.X⟩, fun i hi => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases i <;> exact (hf _ hi).2.2`. Apply the tactic sequence `cases i <;> exact (hf _ hi).1`. Apply the tactic sequence `cases i <;> exact (hf _ hi).2.1`.
+-/
 theorem measCol_of_choice : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
     (G : GlobalTheory.Grid.GridPre R), G.IsMeas → GlobalTheory.GridJoin.SpMatch G ch.W →

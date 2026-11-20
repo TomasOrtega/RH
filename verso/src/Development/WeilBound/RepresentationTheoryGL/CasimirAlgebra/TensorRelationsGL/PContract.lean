@@ -8,6 +8,41 @@ namespace PositivityTheory.Rg.Cz
 
 open CtrX
 
+/- English proof (translation)
+Introduce `_ hQ hW hT hL hWQ`. Introduce `n hn M _ _ ι _ _ Γ _ _ bar κ E ρ hK hG s φ hφ m hm hS`. Take `⟨lab, c, ξ, hlab, hξ, I, w, hw, hφw⟩` from `hS`. Take `⟨N, F, hFgl, hFc, hFch, hFE, hN⟩` from `hWQ n M ι E hG.gl hG.comm (fun _ _ => s) φ (by`. Introduce `τ u`.
+
+Rewrite using `[hφ τ u]`. Simplify using `[Finset.prod_const])`. Take `⟨τ0, hτ0⟩ : ∃ τ0, lab ⟨0, hm⟩ = τ0` from `⟨_, rfl⟩`. Set `O` to `{p : Fin m // ¬ lab p = τ0}`. Set `e1` to `Fintype.equivFin {p : Fin m // lab p = τ0}`.
+
+Set `e : Fin m ≃ O ⊕ Fin (Fintype.card {p : Fin m // lab p = τ0})` to `(Equiv.sumCompl (fun p : Fin m => lab p = τ0)).symm.trans ((Equiv.sumComm _ _).trans (Equiv.sumCongr (Equiv.refl O) e1))`. Set `labO : O → ι` to `fun o => lab o.1`. Establish `hle : lab ∘ e.symm = Sum.elim labO (fun _ => τ0)`. Use function extensionality and compare the values at `x`. Break down `x with o | j` into its components or cases.
+
+Both sides reduce to the same expression. Conclude with `(e1.symm j).2`. Establish `hm1 : 0 < Fintype.card {p : Fin m // lab p = τ0}` using `Fintype.card_pos_iff.2 ⟨⟨⟨0, hm⟩, hτ0⟩⟩`. Use `set ζ := cur (reIx e ξ) with hζdef`. Establish `hζS : ∀ γ, actT (fun _ : Fin (Fintype.card {p : Fin m // lab p = τ0}) => τ0) κ (actT labO κ ρ) γ ζ = (∏ τ, (κ τ γ).det ^ c τ) • ζ`.
+
+Introduce `γ`. Apply `unc_inj` to reduce the goal to its premises. Rewrite using `[← actT_unc, unc_smul, hζdef, unc_cur, ← hle, actT_reIx, hξ γ, reIx_smul]`. Take `⟨hGO, -⟩` from `hT n M ι Γ bar κ E ρ hK hG O labO`. Set `I0 : O → Fin n` to `I ∘ e.symm ∘ Sum.inl`.
+
+Set `q : TV n M O →ₗ[ℂ] M ⧸ N` to `N.mkQ ∘ₗ LinearMap.proj I0`. Establish `hf0 : fib labO τ0 = ∅`. Use extensionality with `o`. Simplify using `[fib, labO, o.2]`. Establish `hf1 : fib labO (bar τ0) = ∅`.
+
+Use extensionality with `o`. Use `hlab o.1 ⟨0, hm⟩` as an intermediate fact. Rewrite `this` using `[hτ0]`. Simplify using `[fib, labO, this]`. Establish `hq : ∀ τ, fib labO τ = ∅ → ∀ a b, q ∘ₗ tE (fib labO τ) (E τ) a b = F τ a b ∘ₗ q`.
+
+Introduce `τ h a b`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Use `show N.mkQ (tE (fib labO τ) (E τ) a b f I0) = F τ a b (N.mkQ (f I0))`. Rewrite using `[tE_apply, h, Finset.sum_empty, add_zero]`.
+
+Conclude with `LinearMap.congr_fun (hFE τ a b) (f I0)`. Establish `hξN : ξ I ∉ N`. Introduce `h`. Conclude with `hφw ((hN _).1 h w hw)`. Establish `hz : q (ζ (I ∘ e.symm ∘ Sum.inr)) ≠ 0`.
+
+Establish `h3 : Sum.elim (I ∘ e.symm ∘ Sum.inl) (I ∘ e.symm ∘ Sum.inr) = I ∘ e.symm` using `Sum.elim_comp_inl_inr (I ∘ e.symm)`. Establish `h4 : ζ (I ∘ e.symm ∘ Sum.inr) I0 = ξ I`. Simplify using `only [hζdef, cur, reIx, I0, h3]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Use `show N.mkQ (ζ (I ∘ e.symm ∘ Sum.inr) I0) ≠ 0`. Rewrite using `[h4, Submodule.mkQ_apply, Ne, Submodule.Quotient.mk_eq_zero]`. Conclude with `hξN`. Take `⟨m2, hm2, ζ2, hζ2, I2, hI2⟩` from `core hQ hW hT hL hK hGO τ0 q (F τ0) (F (bar τ0)) s (hFgl _) (hFgl _) (hFc _ _ (Ne.symm (hK.ne τ0))) (hFch τ0) (hFch (bar τ0)) (hq τ0 hf0) (hq _ hf1) hn _ hm1 c ζ hζS ⟨_, hz⟩`.
+
+Set `e3` to `Fintype.equivFin (O ⊕ Fin m2)`. Establish `hcard : m = Fintype.card O + Fintype.card {p : Fin m // lab p = τ0}`. Use `Fintype.card_congr e` as an intermediate fact. Simplify `this` using `[Fintype.card_sum]`. Use `⟨Fintype.card (O ⊕ Fin m2), ?_, (Sum.elim labO (fun _ => τ0)) ∘ e3.symm, Function.update c τ0 (c τ0 - 1), reIx e3 (unc ζ2), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hex : ∀ x : O ⊕ Fin m2, ∃ p, Sum.elim labO (fun _ => τ0) x = lab p`. Introduce and unpack `(o | j)`. Conclude with `⟨o.1, rfl⟩`.
+
+Conclude with `⟨⟨0, hm⟩, hτ0.symm⟩`. Introduce `p p'`. Take `⟨r, hr⟩` from `hex (e3.symm p)`. Take `⟨r', hr'⟩` from `hex (e3.symm p')`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[hr, hr']`. Conclude with `hlab r r'`. Introduce `γ`. Rewrite using `[actT_reIx, actT_unc, hζ2 γ, unc_smul, reIx_smul]`. Establish `hv : reIx e3 (unc ζ2) (Sum.elim I0 I2 ∘ e3.symm) = ζ2 I2 I0` using `by show unc ζ2 ((Sum.elim I0 I2 ∘ e3.symm) ∘ e3) = _`.
+
+Rewrite using `[show (Sum.elim I0 I2 ∘ e3.symm) ∘ e3 = Sum.elim I0 I2 from by funext x; simp]`. Both sides reduce to the same expression. Establish `hnot : ζ2 I2 I0 ∉ N`. Establish `h5 : N.mkQ (ζ2 I2 I0) ≠ 0` using `hI2`. Rewrite `h5` using `[Submodule.mkQ_apply, Ne, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+
+Rewrite `hnot` using `[hN]`. Use `push_neg at hnot`. Take `⟨w', hw', hφ'⟩` from `hnot`. Conclude with `⟨_, w', hw', by rwa [hv]⟩`.
+-/
 theorem contract_of : TensorGl → QdetFacts → WallAlg → TensorGK → LieInv → WallQuot → Contract := by
   intro _ hQ hW hT hL hWQ
   intro n hn M _ _ ι _ _ Γ _ _ bar κ E ρ hK hG s φ hφ m hm hS

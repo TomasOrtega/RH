@@ -6,11 +6,31 @@ open NumberField IsDedekindDomain Formalism.BasicNotions
 
 namespace GlobalTheory.PrimeEmbedding
 
+/- English proof (translation)
+Unfold `vAdd`. Rewrite using `[neg_neg, WithZero.exp_log ((Valuation.ne_zero_iff _).2 hz)]`.
+-/
 theorem valuation_eq_exp {L : Type} [Field L] [NumberField L] (𝔓 : HeightOneSpectrum (𝓞 L)) {z : L}
     (hz : z ≠ 0) : 𝔓.valuation L z = WithZero.exp (-vAdd 𝔓 z) := by
   unfold vAdd
   rw [neg_neg, WithZero.exp_log ((Valuation.ne_zero_iff _).2 hz)]
 
+/- English proof (translation)
+Take `⟨ι, hι⟩` from `GlobalTheory.DatumJets.Place.exists_embedding 𝔓 h`. Establish `hw : ∀ y : 𝓞 L, y ∈ 𝔓.asIdeal ↔ ‖ι (y : L)‖ < 1` using `fun y => by rw [hι]; rfl`. Establish `hp : ℓ.Prime` using `Fact.out`. Establish `hl0 : (ℓ : L) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hlR : (0 : ℝ) < ℓ` using `Nat.cast_pos.2 hp.pos`.
+
+Establish `he : 0 < vAdd 𝔓 (ℓ : L)`. Establish `h1 : 𝔓.valuation L (algebraMap (𝓞 L) L (ℓ : 𝓞 L)) < 1` using `(𝔓.valuation_lt_one_iff_mem (K := L) _).2 h`. Rewrite `h1` using `[map_natCast, valuation_eq_exp 𝔓 hl0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hunit : ∀ u : L, 𝔓.valuation L u = 1 → ‖ι u‖ = 1`.
+
+Introduce `u hu`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu`. Establish `h1` using `GlobalTheory.MomPlace.norm_le_one_of_valuation L ℓ ι 𝔓 hw u hu.le`.
+
+Establish `h2` using `GlobalTheory.MomPlace.norm_le_one_of_valuation L ℓ ι 𝔓 hw u⁻¹ (by rw [map_inv₀, hu, inv_one])`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Establish `h3 : 0 < ‖ι u‖` using `norm_pos_iff.2 ((map_ne_zero ι).2 hu0)`. Conclude with `le_antisymm h1 ((inv_le_one₀ h3).1 h2)`. Establish `hnl : ‖(ℓ : ℂ_[ℓ])‖ = (ℓ : ℝ)⁻¹`.
+
+Establish `h1` using `PadicComplex.norm_extends' ℓ (ℓ : ℚ_[ℓ])`. Rewrite `h1` using `[Padic.norm_p]`. Simplify using `using h1`. Use `⟨ι, he, fun z hz => ?_⟩` and prove the remaining obligations. Use `set e := vAdd 𝔓 (ℓ : L) with hedef`.
+
+Use `set a := vAdd 𝔓 z with hadef`. Establish `h1` using `hunit (z ^ e / (ℓ : L) ^ a) (by`. Rewrite using `[map_div₀, map_zpow₀, map_zpow₀, valuation_eq_exp 𝔓 hz, valuation_eq_exp 𝔓 hl0, ← WithZero.exp_zsmul, ← WithZero.exp_zsmul, ← WithZero.exp_sub, ← WithZero.exp_zero]`. Use `congr 1`. Simplify using `only [smul_eq_mul, ← hedef, ← hadef]`.
+
+Use the proof step `ring)`. Rewrite `h1` using `[map_div₀, map_zpow₀, map_zpow₀, map_natCast, norm_div, norm_zpow, norm_zpow, hnl, div_eq_one_iff_eq (zpow_ne_zero _ (inv_ne_zero hlR.ne'))]`. Establish `heR : (e : ℝ) ≠ 0` using `Int.cast_ne_zero.2 he.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul (norm_nonneg _), mul_inv_cancel₀ heR, Real.rpow_one]`.
+
+Use `_ = _ := by`. Rewrite using `[h1, inv_zpow', ← Real.rpow_intCast, ← Real.rpow_mul hlR.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_embedding_norm_eq (L : Type) [Field L] [NumberField L] (𝔓 : HeightOneSpectrum (𝓞 L))
     (ℓ : ℕ) [Fact ℓ.Prime] (h : (ℓ : 𝓞 L) ∈ 𝔓.asIdeal) :
     ∃ i : L →+* ℂ_[ℓ], 0 < vAdd 𝔓 (ℓ : L) ∧ ∀ z : L, z ≠ 0 →

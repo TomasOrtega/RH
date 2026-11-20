@@ -15,6 +15,9 @@ namespace IsomInvariance
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Set `c : ∀ k, ι k` to `fun k => (hrel k).choose`. Establish `hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P` using `fun k => (hrel k).choose_spec`. Conclude with `⟨_, _, fun k => (B.a k).toNat, fun k => (-B.a k).toNat, Inter.AvoidRing.isMultiHomog_coordProd c _, Inter.AvoidRing.isMultiHomog_coordProd c _, Inter.AvoidRing.coordProd_not_mem hP c hc _, Inter.AvoidRing.coordProd_not_mem hP c hc _, fun k => Int.toNat_sub_toNat_neg _⟩`.
+-/
 theorem exists_ratSection {P : Ideal (MRing ι)} (hP : P.IsPrime) (hrel : IsRelevant P) (B : HermLine ι) :
     ∃ s t : MRing ι, IsRatSectionOn P B s t := by
   classical
@@ -24,6 +27,19 @@ theorem exists_ratSection {P : Ideal (MRing ι)} (hP : P.IsPrime) (hrel : IsRele
     Inter.AvoidRing.isMultiHomog_coordProd c _, Inter.AvoidRing.coordProd_not_mem hP c hc _,
     Inter.AvoidRing.coordProd_not_mem hP c hc _, fun k => Int.toNat_sub_toNat_neg _⟩
 
+/- English proof (translation)
+Take `⟨f, g, α, β, hf, hg, hfP, hgP, hdeg, hdiv, hnorm⟩` from `hAB`. Establish `hPp : P.IsPrime` using `hP.2.1.1`. Establish `nm : ∀ {x y : MRing ι}, x ∉ P → y ∉ P → x * y ∉ P` using `fun hx hy h => (hPp.mem_or_mem h).elim hx hy`. Take `⟨s, t, σ, τ, hs, ht, hsP, htP, hst⟩` from `exists_ratSection hPp hP.2.1.2.2 B`. Establish `hB' : IsRatSectionOn P B (s * g) (t * g)` using `⟨σ + β, τ + β, Inter.AvoidRing.isMultiHomog_mul hs hg, Inter.AvoidRing.isMultiHomog_mul ht hg, nm hsP hgP, nm htP hgP, fun k => by have := hst k; simp only [Pi.add_apply]; push_cast; linarith⟩`.
+
+Establish `hA' : IsRatSectionOn P A (s * f * g) (t * g * g)` using `⟨σ + α + β, τ + β + β, Inter.AvoidRing.isMultiHomog_mul (Inter.AvoidRing.isMultiHomog_mul hs hf) hg, Inter.AvoidRing.isMultiHomog_mul (Inter.AvoidRing.isMultiHomog_mul ht hg) hg, nm (nm hsP hfP) hgP, nm (nm htP hgP) hgP, fun k => by have := hst k; have := hdeg k; simp only [Pi.ad …`. Rewrite using `[hR K ι I hI P m N A _ _ hP hN hA hA', hR K ι I hI P m N B _ _ hP hN hB hB']`. Unfold `recRRat`. Establish `hfg : cycR I P N f = cycR I P N g`. Rewrite using `[Inter.cycR_eq_sum, Inter.cycR_eq_sum, hdiv]`.
+
+Establish `hint : ptsIntegral P (pot N) (logNormRat A (s * f * g) (t * g * g)) = ptsIntegral P (pot N) (logNormRat B (s * g) (t * g))`. Use `Inter.DiagRAux.ptsIntegral_congr_mcPts P (fun _ _ _ => rfl) fun z hz => ?_` and prove the remaining obligations. Unfold `logNormRat`. Use `congr 1`. Establish `ha` using `A.pos z hz.1`.
+
+Establish `hb` using `B.pos z hz.1`. Establish `hn` using `hnorm z hz`. Simplify using `only [map_mul, norm_mul] at hn ⊢`. Use `set S := ‖eval z (map (Int.castRingHom ℂ) s)‖`. Use `set T := ‖eval z (map (Int.castRingHom ℂ) t)‖`.
+
+Use `set F := ‖eval z (map (Int.castRingHom ℂ) f)‖`. Use `set G := ‖eval z (map (Int.castRingHom ℂ) g)‖`. Break down `eq_or_ne T 0 with hT | hT` into its components or cases. Simplify using `[hT]`. Break down `eq_or_ne G 0 with hG | hG` into its components or cases.
+
+Simplify using `[hG]`. Rewrite using `[div_div, div_div, div_eq_div_iff (by positivity) (by positivity)]`. Take the linear combination `(S * G * G * T) * hn`. Rewrite using `[Inter.cycR_mul I hPp N (nm hsP hfP) hgP, Inter.cycR_mul I hPp N hsP hfP, Inter.cycR_mul I hPp N (nm htP hgP) hgP, Inter.cycR_mul I hPp N htP hgP, Inter.cycR_mul I hPp N hsP hgP, hint, hfg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem snoc_eq (hR : RatRStatement) {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {m : ℕ} (N : Fin m → HermLine ι) (A B : HermLine ι)
     (hP : IsArithVar P (m + 1)) (hN : ∀ j, IsSmoothHerm (N j)) (hA : IsSmoothHerm A) (hB : IsSmoothHerm B)
@@ -69,6 +85,17 @@ theorem snoc_eq (hR : RatRStatement) {I : Ideal (MRing ι) → (n : ℕ) → (Fi
     Inter.cycR_mul I hPp N hsP hgP, hint, hfg]
   ring
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero (Nat.pos_iff_ne_zero.mp (Nat.lt_of_le_of_lt (Nat.zero_le _) j.2))`. Establish `hL' : ∀ i, IsSmoothHerm (Function.update L j B i)` using `fun i => by`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `using hB`.
+
+Simplify `hL i` using `[Function.update_of_ne hi]`. Set `σ : Equiv.Perm (Fin (m + 1))` to `Equiv.swap j (Fin.last m)`. Set `N : Fin m → HermLine ι` to `fun i => L (σ i.castSucc)`. Establish `hne : ∀ i : Fin m, σ i.castSucc ≠ j` using `fun i h => by`. Rewrite `h` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`.
+
+Conclude with `Fin.castSucc_ne_last i h`. Establish `e1 : L ∘ σ = Fin.snoc N (L j)`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[σ]`.
+
+Simplify using `[N]`. Establish `e2 : Function.update L j B ∘ σ = Fin.snoc N B`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[σ]`.
+
+Simplify using `[N, Function.update_of_ne (hne i)]`. Rewrite using `[← hI.1 P _ L σ hP hL, ← hI.1 P _ _ σ hP hL', e1, e2]`. Conclude with `snoc_eq hR hI N (L j) B hP (fun i => hL _) (hL j) hB hLB`.
+-/
 theorem update_eq (hR : RatRStatement) {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ}
     (hI : IsIntersectionFamily I) {P : Ideal (MRing ι)} {n : ℕ} (L : Fin n → HermLine ι) (j : Fin n)
     (B : HermLine ι) (hP : IsArithVar P n) (hL : ∀ i, IsSmoothHerm (L i)) (hB : IsSmoothHerm B)
@@ -99,6 +126,17 @@ theorem update_eq (hR : RatRStatement) {I : Ideal (MRing ι) → (n : ℕ) → (
 
 end IsomInvariance
 
+/- English proof (translation)
+Introduce `K _ ι _ I hI P n L L' hP hL hL' hiso`. Set `M : Finset (Fin n) → Fin n → HermLine ι` to `fun S j => if j ∈ S then L' j else L j`. Establish `hM : ∀ S j, IsSmoothHerm (M S j)` using `fun S j => by`. Distinguish the cases in `h : j ∈ S`. Simplify `hL' j` using `[M, h]`.
+
+Simplify `hL j` using `[M, h]`. Establish `key : ∀ S : Finset (Fin n), I P n L = I P n (M S)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp [M]`.
+
+Consider the case `insert a S ha ih`. Establish `e : M (insert a S) = Function.update (M S) a (L' a)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality.
+
+Simplify using `[M]`. Simplify using `[M, hj]`. Establish `hMa : M S a = L a` using `by simp [M, ha]`. Rewrite using `[ih, e]`. Conclude with `IsomInvariance.update_eq hR hI (M S) a (L' a) hP (hM S) (hL' a) (hMa ▸ hiso a)`.
+
+Establish `hU : M Finset.univ = L'` using `by funext j; simp [M]`. Rewrite using `[key Finset.univ, hU]`.
+-/
 theorem IsomInvariance.proof (hR : Inter.RatR.Statement) : IsomInvariance.Statement := by
   classical
   intro K _ ι _ I hI P n L L' hP hL hL' hiso

@@ -22,6 +22,11 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh.AxesSq
 
+/- English proof (translation)
+Establish `H` using `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 R R X' X s' s (RingHom.id R) e he R' X₀ s₀ σ ψ hψ σ (ψ ≫ e) hc rfl (fun _ ↦ rfl))`. Use `⟨fun h y ↦ ?_, fun h y ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `h y`. Conclude with `⟨pullHO1 he a, H.1 a⟩`. Take `⟨a, rfl⟩` from `h y`.
+
+Conclude with `⟨pullHO2 he a, H.2.1 a⟩`.
+-/
 theorem surj_of_comp {R R' : Type} [CommRing R] [CommRing R'] {X X' X₀ : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R}
     {s₀ : X₀ ⟶ Sp R'} {σ : R →+* R'} (e : X ⟶ X') (ψ : X₀ ⟶ X)
     (he : e ≫ s' = s ≫ spMap (RingHom.id R)) (hψ : ψ ≫ s = s₀ ≫ spMap σ) (hc : (ψ ≫ e) ≫ s' = s₀ ≫ spMap σ) :
@@ -34,6 +39,15 @@ theorem surj_of_comp {R R' : Type} [CommRing R] [CommRing R'] {X X' X₀ : Schem
   · obtain ⟨a, rfl⟩ := h y
     exact ⟨pullHO2 he a, H.2.1 a⟩
 
+/- English proof (translation)
+Use `haveI : Smooth A.hom := hA.smooth`. Use `haveI : IsProper A.hom := hA.proper`. Take `⟨h1, -, h3, -⟩` from `GlobalTheory.T.structure_cohomology_residue_field_fibre R A.left A.hom inferInstance inferInstance (GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA) (by`. Introduce `R' _ _ _ _ k _ _ α hα X' s' φ X₀ s₀ ψ hφ w`. Take `⟨B, _, pr, -, hB, hBg, hpb, -⟩` from `GlobalTheory.T.exists_abelianScheme_baseChange_and_square R R' A g hA hg`.
+
+Set `e : B.left ≅ X'` to `IsPullback.isoIsPullback _ _ hpb hφ`. Establish `he2 : e.hom ≫ s' = B.hom` using `IsPullback.isoIsPullback_hom_snd A.left (Sp R') hpb hφ`. Establish `he : e.inv ≫ B.hom = s' ≫ spMap (RingHom.id R')`. Rewrite using `[← he2, Iso.inv_hom_id_assoc]`. Apply the tactic sequence `first | (rw [spMap_id, Category.comp_id]) | (simp [spMap, CommRingCat.ofHom_id]) | (rw [spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id])`.
+
+Establish `w' : IsPullback (ψ ≫ e.inv) s₀ B.hom (spMap (α : R' →+* k))`. Apply the tactic sequence `refine IsPullback.of_iso w (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [← he2]`. Take `⟨s1, s2⟩` from `GlobalTheory.T.abelianSchemeSpecialFibre_cohomology_lift_artinian R' B g hB hBg k α hα X₀ s₀ (ψ ≫ e.inv) w'`. Establish `hc` using `surj_of_comp (s := s') (s' := B.hom) e.inv ψ he w.w w'.w`. Conclude with `⟨hc.1 s1, hc.2 s2⟩)`.
+
+Conclude with `⟨h1, h3⟩`.
+-/
 theorem fp_bc1 (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     (Module.Finite R (HO1 A.hom) ∧ Module.Projective R (HO1 A.hom)) ∧ StructureSheafH1BaseChange A.hom := by
@@ -55,6 +69,9 @@ theorem fp_bc1 (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [G
       exact ⟨hc.1 s1, hc.2 s2⟩)
   exact ⟨h1, h3⟩
 
+/- English proof (translation)
+Substitute `hφ` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pull1_congr {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}} {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'}
     {σ : R →+* R'} {φ₁ φ₂ : X' ⟶ X} (hφ : φ₁ = φ₂) (h₁ : φ₁ ≫ s = s' ≫ spMap σ) (h₂ : φ₂ ≫ s = s' ≫ spMap σ)
     (c : HO1 s) : pullHO1 h₁ c = pullHO1 h₂ c := by
@@ -64,6 +81,11 @@ def axesMap {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] :
     HO1 (A ⊗ A).hom →ₗ[R] HO1 A.hom × HO1 A.hom :=
   LinearMap.prod (pO1 (lift (𝟙 A) (toUnit A ≫ η[A]))) (pO1 (lift (toUnit A ≫ η[A]) (𝟙 A)))
 
+/- English proof (translation)
+Establish `h1 : (f'.left ≫ pr') ≫ A.hom = Z.hom ≫ spMap (algebraMap R K)`. Rewrite using `[Category.assoc, hpb', ← Category.assoc, Over.w]`. Establish `h2 : (pr ≫ f.left) ≫ A.hom = Z.hom ≫ spMap (algebraMap R K)` using `by rw [← hc]; exact h1`. Establish `E1` using `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 R K A.left B.left A.hom B.hom (algebraMap R K) pr' hpb' K Z.left Z.hom (RingHom.id K) f'.left (ovw f') (algebraMap R K) (f'.left ≫ pr') h1 rfl (fun _ ↦ rfl)).1 c`. Establish `E2` using `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 R R A.left Y.left A.hom Y.hom (RingHom.id R) f.left (ovw f) K Z.left Z.hom (algebraMap R K) pr hpb (algebraMap R K) (pr ≫ f.left) h2 rfl (fun _ ↦ rfl)).1 c`.
+
+Unfold `pO1`. Rewrite using `[E1, E2]`. Conclude with `pull1_congr hc h1 h2 c`.
+-/
 theorem pO1_bc {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {A Y : Over (Sp R)} {B Z : Over (Sp K)}
     (f : Y ⟶ A) (f' : Z ⟶ B) (pr : Z.left ⟶ Y.left) (pr' : B.left ⟶ A.left)
     (hpb : pr ≫ Y.hom = Z.hom ≫ spMap (algebraMap R K)) (hpb' : pr' ≫ A.hom = B.hom ≫ spMap (algebraMap R K))
@@ -80,6 +102,21 @@ theorem pO1_bc {R K : Type} [CommRing R] [CommRing K] [Algebra R K] {A Y : Over 
   rw [E1, E2]
   exact pull1_congr hc h1 h2 c
 
+/- English proof (translation)
+Take `⟨hsq, hsqg⟩` from `(GlobalTheory.Obs.sq_abelian_and_affine_H1 R).1 A g hA hg`. Take `⟨B, _, pr, pr', hB, hBg, hpb, hpb', -, -, -, h1, h2⟩` from `GlobalTheory.T.exists_abelianScheme_baseChange_and_square R K A g hA hg`. Take `⟨eS, heS⟩` from `(fp_bc1 R (A ⊗ A) (g + g) hsq hsqg).2 K _ _ pr' hpb'`. Take `⟨eA, heA⟩` from `(fp_bc1 R A g hA hg).2 K _ _ pr hpb`. Establish `key : ∀ (f : A ⟶ A ⊗ A) (f' : B ⟶ B ⊗ B), f'.left ≫ pr' = pr ≫ f.left → ∀ z, pO1 f' (eS z) = eA ((pO1 f).baseChange K z)`.
+
+Introduce `f f' hc z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c`. Establish `: a ⊗ₜ[R] c = a • ((1 : K) ⊗ₜ[R] c)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[this, map_smul, map_smul, map_smul, LinearMap.baseChange_tmul, map_smul, heS, heA]`. Use `congr 1`. Conclude with `pO1_bc f f' pr pr' hpb.w hpb'.w hc c`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Take `⟨-, -, -, -, hax⟩` from `GlobalTheory.T.structureSheafCohomology_abelianVariety_algClosed K B g hB hBg`.
+
+Introduce `z z' hzz`. Rewrite `hzz`, the goal using `[← sub_eq_zero]`. Rewrite `hzz` using `[← map_sub]`. Generalize the expression as in `z - z' = w at hzz ⊢`. Establish `hfst : (pO1 (lift (𝟙 A) (toUnit A ≫ η[A]))).baseChange K w = 0`.
+
+Use `congrArg ((LinearMap.fst R (HO1 A.hom) (HO1 A.hom)).baseChange K) hzz` as an intermediate fact. Rewrite `this` using `[map_zero, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Then use the resulting hypothesis. Establish `hsnd : (pO1 (lift (toUnit A ≫ η[A]) (𝟙 A))).baseChange K w = 0`. Use `congrArg ((LinearMap.snd R (HO1 A.hom) (HO1 A.hom)).baseChange K) hzz` as an intermediate fact. Rewrite `this` using `[map_zero, ← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Then use the resulting hypothesis.
+
+Establish `e0 : eS w = 0`. Apply `hax` to reduce the goal to its premises. Establish `k1` using `key (lift (𝟙 A) (toUnit A ≫ η[A])) (lift (𝟙 B) (toUnit B ≫ η[B])) h1 w`. Rewrite using `[k1, hfst, map_zero]`. Establish `k2` using `key (lift (toUnit A ≫ η[A]) (𝟙 A)) (lift (toUnit B ≫ η[B]) (𝟙 B)) h2 w`.
+
+Rewrite using `[k2, hsnd, map_zero]`. Simplify using `using congrArg eS.symm e0`.
+-/
 theorem axesMap_baseChange_injective (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A]
     (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     (K : Type) [Field K] [IsAlgClosed K] [Algebra R K] :
@@ -118,6 +155,19 @@ theorem axesMap_baseChange_injective (R : Type) [CommRing R] [IsNoetherianRing R
       rw [k2, hsnd, map_zero]
   simpa using congrArg eS.symm e0
 
+/- English proof (translation)
+Introduce `R _ _ A _ g hA hg`. Take `⟨hsq, hsqg⟩` from `(GlobalTheory.Obs.sq_abelian_and_affine_H1 R).1 A g hA hg`. Take `⟨⟨hS1, hS2⟩, -⟩` from `fp_bc1 R (A ⊗ A) (g + g) hsq hsqg`. Take `⟨⟨hA1, hA2⟩, -⟩` from `fp_bc1 R A g hA hg`. Set `e1 : ULift.{1} (HO1 (A ⊗ A).hom) ≃ₗ[R] HO1 (A ⊗ A).hom` to `ULift.moduleEquiv`.
+
+Set `e2 : ULift.{1} (HO1 A.hom × HO1 A.hom) ≃ₗ[R] HO1 A.hom × HO1 A.hom` to `ULift.moduleEquiv`. Set `f : ULift.{1} (HO1 (A ⊗ A).hom) →ₗ[R] ULift.{1} (HO1 A.hom × HO1 A.hom)` to `e2.symm.toLinearMap ∘ₗ axesMap A ∘ₗ e1.toLinearMap`. Use `haveI : Module.Finite R (ULift.{1} (HO1 (A ⊗ A).hom)) := Module.Finite.equiv e1.symm`. Use `haveI : Module.Projective R (ULift.{1} (HO1 (A ⊗ A).hom)) := Module.Projective.of_equiv e1.symm`. Use `haveI : Module.Finite R (ULift.{1} (HO1 A.hom × HO1 A.hom)) := Module.Finite.equiv e2.symm`.
+
+Use `haveI : Module.Projective R (ULift.{1} (HO1 A.hom × HO1 A.hom)) := Module.Projective.of_equiv e2.symm`. Take `⟨r, hr⟩` from `GlobalTheory.split_injective_of_forall_prime_baseChange_field_injective R _ _ f (by`. Introduce `P`. Use `⟨AlgebraicClosure P.asIdeal.ResidueField, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Establish `hk : RingHom.ker (algebraMap P.asIdeal.ResidueField (AlgebraicClosure P.asIdeal.ResidueField)) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap P.asIdeal.ResidueField _).injective`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq R P.asIdeal.ResidueField (AlgebraicClosure P.asIdeal.ResidueField), ← RingHom.comap_ker, hk]`. Conclude with `Ideal.ker_algebraMap_residueField _`. Establish `hi` using `axesMap_baseChange_injective R A g hA hg (AlgebraicClosure P.asIdeal.ResidueField)`. Simplify using `only [f, LinearMap.baseChange_comp]`. Conclude with `(e2.symm.baseChange R _ _ _).injective.comp (hi.comp (e1.baseChange R _ _ _).injective))`.
+
+Establish `hf : Function.Injective f` using `fun x y hxy ↦ by`. Use `congrArg r hxy` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, hr, LinearMap.id_apply, LinearMap.id_apply]`. Then use the resulting hypothesis. Introduce `y hy1 hy2`. Establish `h0 : f (e1.symm y) = f 0`.
+
+Simplify using `only [f, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_zero]`. Simplify using `[axesMap, hy1, hy2]`. Simplify using `using congrArg e1 (hf h0)`.
+-/
 theorem axesO1_of_isAbelianScheme : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → AxesVanishingStructureSheafDegOne A := by
   intro R _ _ A _ g hA hg

@@ -23,6 +23,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowsOrb
 
+/- English proof (translation)
+Break down `finite_or_infinite α with h | h` into its components or cases. Establish `h0 : 0 < Nat.card α` using `Nat.card_pos`. Rewrite using `[ENat.card_eq_coe_natCard, ENNReal.ofReal_inv_of_pos (by exact_mod_cast h0), ENNReal.ofReal_natCast]`. Simplify using the standard rewrite rules. Rewrite using `[Nat.card_eq_zero_of_infinite, ENat.card_eq_top_of_infinite]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cardE (α : Type) [Nonempty α] :
     ENNReal.ofReal ((Nat.card α : ℝ)⁻¹) = ((ENat.card α : ℕ∞) : ℝ≥0∞)⁻¹ := by
   rcases finite_or_infinite α with h | h
@@ -33,6 +38,23 @@ theorem cardE (α : Type) [Nonempty α] :
     simp
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `D large₂ X Y u hS W HW hEmb φ hφ Λ₀ hΛ₀`. Take `⟨e, he, heX⟩` from `GlobalTheory.T.anisotropicOrthogonal_isometric_definiteModel D X u W HW hEmb`. Establish `hlat` using `GlobalTheory.T.definiteQuotientLattice_eq_image_anisotropicPart D X u W e heX`. Use `set M₀ := GlobalTheory.Mass.latIn (GlobalTheory.RowsOrb.Ub X u) (GlobalTheory.RowsOrb.Lmap X u Λ₀) with hM₀`. Take `⟨hψ, hgen, horb⟩` from `GlobalTheory.T.isometry_transports_genus_orbitSum D.host.E (GlobalTheory.RowsOrb.Ub X u) W (GlobalTheory.RowsOrb.hU X u) HW.B.flip e he φ hφ M₀`.
+
+Take `⟨hcm, -, -, -, hf, -, -, -, -, -, -, -, hTu⟩` from `GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hS`. Take `⟨hTp, hsp⟩` from `hTu u`. Establish `hl0` using `GlobalTheory.T.base_lattice_construction_holds D large₂ X Y u hS W HW hEmb Λ₀ hΛ₀`. Rewrite `hl0` using `[hlat Λ₀]`. Take `⟨hM₀i, hM₀d⟩` from `GlobalTheory.T.isometry_transports_discriminantModule D.host.E (GlobalTheory.RowsOrb.Ub X u) W (GlobalTheory.RowsOrb.hU X u) HW.B.flip e he M₀ _ hl0.1 hl0.2`.
+
+Establish `hbs : (GlobalTheory.RowsOrb.hb X).IsSymm` using `⟨fun a b => (VS D).herm.eq (a : (VS D).V) (b : (VS D).V)⟩`. Establish `hz : GlobalTheory.RowsOrb.hb X (GlobalTheory.RowsOrb.zb X u) (GlobalTheory.RowsOrb.zb X u) = -((Tu D u : ℕ) : D.host.E)` using `X.zu_norm u`. Establish `hrm` using `GlobalTheory.Mass.RowMean.main D.host.E (GlobalTheory.RowsOrb.Wb X) (GlobalTheory.RowsOrb.hb X) hcm hbs (Tu D u) (GlobalTheory.RowsOrb.zb X u) (GlobalTheory.RowsOrb.Ub X u) hTp hsp hz rfl (GlobalTheory.T.anisotropicOrthogonal_totallyPositiveDefinite D X u) M₀ hM₀i hM₀d (fun M => …`. Simplify using `only [hlat, ← hM₀, hgen]`. Rewrite using `[horb, ← hf]`.
+
+Use `Eq.trans ?_ hrm` and prove the remaining obligations. Take `⟨hst, hinv⟩` from `GlobalTheory.T.gluedLattices_stable_under_vectorStabilizer D X u M₀ (fun M => φ (GlobalTheory.Mass.Transp.img e M)) hψ`. Establish `hinj : ∀ a ∈ (Y.what₂ u).filter (fun Λ => GlobalTheory.Mass.latIn (GlobalTheory.RowsOrb.Ub X u) (GlobalTheory.RowsOrb.Lmap X u Λ) ∈ Formalism.HermitianLatticesTheory.genus (GlobalTheory.RowsOrb.hU X u) M₀), ∀ b ∈ (Y.what₂ u).filter (fun Λ => GlobalTheory.Mass.latIn (GlobalTheory. …`. Introduce `a ha b hb hab`. Conclude with `GlobalTheory.T.rows_eq_of_stabilizer_conjugate_lattices D large₂ X Y u hS a (Finset.mem_filter.1 ha).1 b (Finset.mem_filter.1 hb).1 1 ((one_smul (GlobalTheory.RowsOrb.Gz X u) (GlobalTheory.RowsOrb.Lmap X u a)).trans hab)`.
+
+Use `Eq.trans ?_ (GlobalTheory.Mass.orbSum_eq_sum_reps (GlobalTheory.RowsOrb.Gz X u) (Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X)) {L : Submodule (𝓞 D.host.E) (GlobalTheory.RowsOrb.Wb X) | Submodule.IsLattice D.host.E L ∧ Formalism.HermitianLatticesTheory.IsUnimodular (GlobalTh …` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun Λ hΛ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show ENNReal.ofReal ((Nat.card (autLz D (X.Fu u) Λ) : ℝ)⁻¹) = _`.
+
+Rewrite using `[GlobalTheory.T.card_row_automorphisms_eq_lattice_stabilizer D large₂ X Y u hS Λ (Finset.mem_filter.1 hΛ).1, cardE]`. Introduce `L hL`. Take `⟨Λ, hΛ, rfl⟩` from `Finset.mem_image.1 hL`. Take `⟨hΛr, hΛg⟩` from `Finset.mem_filter.1 hΛ`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.orbit_lattice_unimodular_and_primitive D large₂ X Y u hS Λ hΛr`.
+
+Conclude with `⟨h1, h2, h3, hΛg⟩`. Introduce `L hL`. Take `⟨Λ, hΛ, g, hg⟩` from `GlobalTheory.T.exists_row_of_unimodular_lattice_primitive_vector D large₂ X Y u hS L hL.1 hL.2.1 hL.2.2.1`. Use `⟨GlobalTheory.RowsOrb.Lmap X u Λ, ⟨Finset.mem_image.2 ⟨Λ, Finset.mem_filter.2 ⟨hΛ, ?_⟩, rfl⟩, g, hg⟩, ?_⟩` and prove the remaining obligations. Use `hst g⁻¹ L hL erw [← hg, inv_smul_smul] at this` as an intermediate fact.
+
+Conclude with `this.2.2.2`. Introduce and unpack `y ⟨hy, g', hg'⟩`. Take `⟨Λ', hΛ', rfl⟩` from `Finset.mem_image.1 hy`. Use `congr 1`. Conclude with `GlobalTheory.T.rows_eq_of_stabilizer_conjugate_lattices D large₂ X Y u hS Λ' (Finset.mem_filter.1 hΛ').1 Λ hΛ (g⁻¹ * g') (by erw [mul_smul, hg', ← hg, inv_smul_smul])`.
+-/
 theorem rowsOrbC : GlobalTheory.TypeAsm.RowsOrbC := by
   intro D large₂ X Y u hS W HW hEmb φ hφ Λ₀ hΛ₀
   obtain ⟨e, he, heX⟩ := GlobalTheory.T.anisotropicOrthogonal_isometric_definiteModel D X u W HW hEmb

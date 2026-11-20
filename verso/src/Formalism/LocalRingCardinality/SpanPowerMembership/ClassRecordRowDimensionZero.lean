@@ -173,6 +173,9 @@ abbrev classLevelData (Dst : ℝ)
   { rowsG H.E H.φ₀ (@placesOf H.E _ _ H.cmStar) (Tau2 R) (card_realPlaces_eq_degree R) Dst (shaExample H)
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) with kaBig := kb, kaSmall := ks }
 
+/- English proof (translation)
+Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+-/
 theorem nHyp3 (Dst : ℝ)
     (kb : ∀ j, Tau2 R → Fin (R.sigW j).1 → ℤ) (ks : ∀ j, Tau2 R → Fin (R.sigW j).2 → ℤ)
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) :
@@ -358,47 +361,107 @@ def classRecord : D7 :=
     gat_d := fun _ _ _ => (gAtPExample_d _).trans (finrank_bot ℂ _).symm
     Y_sigval := spaces_signature_eq R _ _ _ _ _ _ _ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_host :
     (⟨(classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).R, (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).host⟩ : Σ R : Ranks, Host R) = ⟨R, H⟩ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_ranks :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).R = R := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_word (u : (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).what₂.Word) :
     u = (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).u₀ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_sign :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).hc = hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_weight_sign (u) :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).hcW u = hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_eta (j w) :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).what₂.etaJ j w = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_mem_A_T (u) :
     ((classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).mem u).A.T = T := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_gamma (u) :
     ((classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).mem u).A.GamP = Gam := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_discriminantLevel (u) :
     ((classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).mem u).A.duStar = du := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_dimensionBound :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).what₂.Dstar = Dst := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_delta :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).s.Del = Del := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_letter (u l) :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).s.letter u l = false := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_cdScale :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).s.cdScale = cdS := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_dsig :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).dsig = dsg := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_etaF :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).div.etaF = etaF := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_height (u) :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).div.h u = hv := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_volume :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).vol = vol := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_rowDimension_zero :
     (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).what₂.Drows = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem classRecord_lowerLevel (u) : ((classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks).mem u).A.Tstar =
     (Dst / du) ^ ((1 : ℝ) / (R.f * R.k)) * Gam ^ (-(2 : ℝ) / (R.f * R.k)) := rfl
 
 omit kb ks in
 
+/- English proof (translation)
+Take `⟨kb, ks, h⟩` from `DV.exists_blocks (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0))`. Conclude with `⟨kb, ks, fun j _ _ τ => h j τ⟩`.
+-/
 theorem classRecord_weights_defined : ∃ kb ks, DV.KapDef (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks) := by
   obtain ⟨kb, ks, h⟩ := DV.exists_blocks (classRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0))
   exact ⟨kb, ks, fun j _ _ τ => h j τ⟩

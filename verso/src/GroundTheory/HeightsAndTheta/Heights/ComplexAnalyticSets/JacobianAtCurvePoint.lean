@@ -23,6 +23,11 @@ abbrev ptIdeal (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) : Ideal (ptLoc
 
 abbrev ptQuot (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) : Type := ptLoc w ⧸ ptIdeal I w
 
+/- English proof (translation)
+Take `⟨⟨y, s⟩, hys⟩` from `(IsLocalization.mem_map_algebraMap_iff (ptMax w).primeCompl _).1 hx`. Rewrite `hys` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (ptMax w).primeCompl _).1 hys`. Use `⟨(c : MvPolynomial σ ℂ) * s, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(ptMax w).primeCompl.mul_mem c.2 s.2`.
+
+Introduce `h0`. Conclude with `h (RingHom.mem_ker.2 h0)`. Rewrite using `[show (c : MvPolynomial σ ℂ) * s * x = c * (x * s) by ring, hc]`. Conclude with `J.mul_mem_left _ y.2`.
+-/
 theorem exists_mul_mem_of_algebraMap_mem (w : σ → ℂ) (J : Ideal (MvPolynomial σ ℂ)) (x : MvPolynomial σ ℂ)
     (hx : algebraMap _ (ptLoc w) x ∈ J.map (algebraMap _ (ptLoc w))) :
     ∃ s : MvPolynomial σ ℂ, eval w s ≠ 0 ∧ s * x ∈ J := by
@@ -38,6 +43,81 @@ theorem exists_mul_mem_of_algebraMap_mem (w : σ → ℂ) (J : Ideal (MvPolynomi
 
 variable [Fintype σ]
 
+/- English proof (translation)
+Establish `hRS : ∀ y, algebraMap (MvPolynomial σ ℂ) S y = algebraMap (ptLoc w) S (algebraMap _ (ptLoc w) y)` using `fun y => IsScalarTower.algebraMap_apply _ _ _ y`. Establish `hIm : I ≤ ptMax w` using `fun q hq => RingHom.mem_ker.2 (hw q hq)`. Establish `hmax : (ptMax w).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨C c, eval_C _⟩)`. Establish `hcomapPS : (maximalIdeal S).comap (algebraMap (ptLoc w) S) = maximalIdeal (ptLoc w)` using `eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ hsurj)`. Establish `hmap : (ptMax w).map (algebraMap _ S) = maximalIdeal S`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq (MvPolynomial σ ℂ) (ptLoc w) S, ← Ideal.map_map, Localization.AtPrime.map_eq_maximalIdeal, ← hcomapPS, Ideal.map_comap_of_surjective _ hsurj]`. Establish `hcomap : (maximalIdeal S).comap (algebraMap _ S) = ptMax w` using `(hmax.eq_of_le (Ideal.comap_ne_top _ (maximalIdeal.isMaximal S).ne_top) (hmap ▸ Ideal.le_comap_map)).symm`. Establish `hunit : ∀ s : MvPolynomial σ ℂ, eval w s ≠ 0 → IsUnit (algebraMap _ S s)`. Introduce `s hs`. Rewrite using `[hRS]`.
+
+Conclude with `(IsLocalization.map_units (ptLoc w) (⟨s, fun h => hs (RingHom.mem_ker.1 h)⟩ : (ptMax w).primeCompl)).map _`. Establish `hspec : ∀ (a : MvPolynomial σ ℂ) (s : (ptMax w).primeCompl), algebraMap (ptLoc w) S (IsLocalization.mk' (ptLoc w) a s) * algebraMap _ S (s : MvPolynomial σ ℂ) = algebraMap _ S a`. Introduce `a s`. Rewrite using `[hRS, hRS, ← map_mul, IsLocalization.mk'_spec]`. Use `set V : Submodule ℂ (σ → ℂ) := (I.restrictScalars ℂ).map (grad w) with hV`.
+
+Establish `hQ : ∀ x : MvPolynomial σ ℂ, algebraMap _ S x ∈ maximalIdeal S ^ 2 → grad w x ∈ V`. Introduce `x hx`. Establish `hx' : algebraMap (ptLoc w) S (algebraMap _ (ptLoc w) x) ∈ ((ptMax w ^ 2).map (algebraMap _ (ptLoc w))).map (algebraMap (ptLoc w) S)`. Rewrite using `[Ideal.map_map, ← IsScalarTower.algebraMap_eq, Ideal.map_pow, hmap, ← hRS]`. Conclude with `hx`.
+
+Rewrite `hx'` using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, hker, ptIdeal, ← Ideal.map_sup]`. Take `⟨s, hs, hsx⟩` from `exists_mul_mem_of_algebraMap_mem w _ x hx'`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hsx`. Establish `hxm : eval w x = 0`. Establish `h1 : s * x ∈ ptMax w` using `sup_le (Ideal.pow_le_self two_ne_zero) hIm hsx`.
+
+Rewrite `h1` using `[RingHom.mem_ker, map_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hs`. Establish `h2 : eval w s • grad w x = grad w z`. Rewrite using `[← grad_mul_of_eval_eq_zero w s x hxm, ← hyz, map_add, grad_eq_zero_of_mem_sq w hy, zero_add]`. Establish `h3 : grad w z ∈ V` using `⟨z, hz, rfl⟩`.
+
+Establish `h4 : grad w x = (eval w s)⁻¹ • grad w z`. Rewrite using `[← h2, smul_smul, inv_mul_cancel₀ hs, one_smul]`. Rewrite using `[h4]`. Conclude with `V.smul_mem _ h3`. Establish `hVne : V ≠ ⊤`.
+
+Introduce `hVtop`. Establish `hXi : ∀ i, algebraMap _ S (X i - C (w i)) ∈ maximalIdeal S ^ 2`. Introduce `i`. Take `⟨p, hp, hpg⟩ : Pi.single i (1 : ℂ) ∈ V` from `hVtop ▸ Submodule.mem_top`. Establish `hm : X i - C (w i) - p ∈ ptMax w` using `Ideal.sub_mem _ (by simp [RingHom.mem_ker]) (hIm hp)`.
+
+Establish `hg : grad w (X i - C (w i) - p) = 0` using `by rw [map_sub, grad_X_sub_C, hpg, sub_self]`. Establish `h2` using `mem_sq_of_grad_eq_zero w hm hg`. Establish `hp0 : algebraMap _ S p = 0`. Rewrite using `[hRS, ← RingHom.mem_ker, hker]`. Conclude with `Ideal.mem_map_of_mem _ hp`.
+
+Rewrite using `[show X i - C (w i) = (X i - C (w i) - p) + p by ring, map_add, hp0, add_zero, ← hmap, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ h2`. Establish `hgen : maximalIdeal S = Ideal.span (Set.range fun i => algebraMap _ S (X i - C (w i)))`. Rewrite using `[← hmap, show ptMax w = _ from ker_eval_eq_span w, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hle : maximalIdeal S ≤ maximalIdeal S • maximalIdeal S` using `by conv_lhs => rw [hgen]`. Rewrite using `[Ideal.span_le, Ideal.smul_eq_mul, ← pow_two]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hXi i`. Establish `hbot : maximalIdeal S = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (maximalIdeal S) (maximalIdeal S) (IsNoetherian.noetherian _) hle (maximalIdeal_le_jacobson ⊥)`.
+
+Conclude with `IsDiscreteValuationRing.not_isField S (isField_iff_maximalIdeal_eq.2 hbot)`. Establish `hres : ∀ b : S, ∃ c : ℂ, b - algebraMap (MvPolynomial σ ℂ) S (C c) ∈ maximalIdeal S`. Introduce `b`. Take `⟨p', rfl⟩` from `hsurj b`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (ptMax w).primeCompl p'`.
+
+Establish `hs : eval w (s : MvPolynomial σ ℂ) ≠ 0` using `fun h => s.2 (RingHom.mem_ker.2 h)`. Use `⟨eval w a / eval w (s : MvPolynomial σ ℂ), ?_⟩` and prove the remaining obligations. Establish `hmem : algebraMap _ S (a - C (eval w a / eval w (s : MvPolynomial σ ℂ)) * (s : MvPolynomial σ ℂ)) ∈ maximalIdeal S`. Rewrite using `[← Ideal.mem_comap, hcomap, RingHom.mem_ker, map_sub, map_mul, eval_C, div_mul_cancel₀ _ hs, sub_self]`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ (hunit _ hs), sub_mul, hspec, ← map_mul, ← map_sub]`.
+
+Conclude with `hmem`. Take `⟨t, ht⟩` from `(IsPrincipalIdealRing.principal (maximalIdeal S)).principal`. Take `⟨p', rfl⟩` from `hsurj t`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (ptMax w).primeCompl p'`. Establish `hgena : maximalIdeal S = Ideal.span {algebraMap _ S a}`.
+
+Rewrite using `[← hspec, Ideal.span_singleton_mul_right_unit (hunit _ fun h => s.2 (RingHom.mem_ker.2 h))]`. Conclude with `ht`. Establish `hsup : ∀ i, Pi.single i (1 : ℂ) ∈ V ⊔ ℂ ∙ grad w a`. Introduce `i`. Establish `hi : algebraMap _ S (X i - C (w i)) ∈ maximalIdeal S`.
+
+Rewrite using `[← Ideal.mem_comap, hcomap, RingHom.mem_ker]`. Simplify using the standard rewrite rules. Rewrite `hi` using `[hgena, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `hi`. Take `⟨c, hc⟩` from `hres b`.
+
+Establish `h2 : algebraMap _ S (X i - C (w i) - C c * a) ∈ maximalIdeal S ^ 2`. Rewrite using `[map_sub, ← hb, map_mul, ← sub_mul, pow_two]`. Conclude with `Ideal.mul_mem_mul hc (by rw [hgena]; exact Ideal.mem_span_singleton_self _)`. Establish `h3` using `hQ _ h2`. Rewrite `h3` using `[map_sub, grad_X_sub_C, C_mul', map_smul]`.
+
+Rewrite using `[show Pi.single i (1 : ℂ) = (Pi.single i 1 - c • grad w a) + c • grad w a by abel]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left h3) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)))`. Establish `htop : V ⊔ ℂ ∙ grad w a = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun ℂ σ).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Rewrite using `[Pi.basisFun_apply]`. Conclude with `hsup i`. Take `⟨N, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (Ideal.fg_of_isNoetherianRing I)`. Establish `hgI : ∀ j, g j ∈ I` using `fun j => hg ▸ Submodule.subset_span ⟨j, rfl⟩`. Establish `hVg : V = Submodule.span ℂ (Set.range (grad w ∘ g))`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Establish `hp' : p ∈ Ideal.span (Set.range g)` using `by rw [Ideal.span, hg]; exact hp`. Take `⟨r, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hp'`. Rewrite using `[map_sum]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[grad_mul_of_eval_eq_zero w _ _ (RingHom.mem_ker.1 (hIm (hgI j)))]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `⟨g j, hgI j, rfl⟩`. Take `⟨κ, ι, hι, hspanι, hli⟩` from `exists_linearIndependent' ℂ (grad w ∘ g)`. Establish `: Finite κ` using `Finite.of_injective ι hι`. Set `` to `Fintype.ofFinite κ`. Set `e` to `Fintype.equivFin κ`.
+
+Set `f : Fin (Fintype.card κ) → MvPolynomial σ ℂ` to `g ∘ ι ∘ e.symm`. Establish `hfI : ∀ j, f j ∈ I` using `fun j => hgI _`. Establish `hlif' : LinearIndependent ℂ (grad w ∘ f)` using `hli.comp e.symm e.symm.injective`. Establish `hlif : LinearIndependent ℂ (fun j (i : σ) => eval w (pderiv i (f j)))`. Use `hlif' using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j i`. Simplify using `[grad_apply]`. Establish `hrange : Set.range (grad w ∘ f) = Set.range (grad w ∘ g ∘ ι)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨j, rfl⟩`. Conclude with `⟨e.symm j, rfl⟩`. Introduce and unpack `⟨j, rfl⟩; exact ⟨e j, by simp [f]⟩`. Establish `hVf : V = Submodule.span ℂ (Set.range (grad w ∘ f))`. Rewrite using `[hVg, hrange, ← hspanι]`.
+
+Both sides reduce to the same expression. Establish `hfinV : Module.finrank ℂ V = Fintype.card κ`. Rewrite using `[hVf, finrank_span_eq_card hlif', Fintype.card_fin]`. Establish `hcovR : I ≤ Ideal.span (Set.range f) ⊔ ptMax w ^ 2`. Introduce `p hp`.
+
+Establish `hpV : grad w p ∈ V` using `⟨p, hp, rfl⟩`. Rewrite `hpV` using `[hVf]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hpV`. Establish `hzm : p - ∑ j, C (c j) * f j ∈ ptMax w` using `Ideal.sub_mem _ (hIm hp) (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hIm (hfI j)))`. Establish `hzg : grad w (p - ∑ j, C (c j) * f j) = 0`.
+
+Rewrite using `[map_sub, map_sum]`. Repeatedly rewrite using `[C_mul', map_smul]`. Rewrite using `[← hc, sub_eq_zero]`. Both sides reduce to the same expression. Establish `h2` using `mem_sq_of_grad_eq_zero w hzm hzg`.
+
+Rewrite using `[show p = (p - ∑ j, C (c j) * f j) + ∑ j, C (c j) * f j by ring]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_right h2) (Ideal.mem_sup_left (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)))`. Establish `hcov : RingHom.ker (algebraMap (ptLoc w) S) ≤ Ideal.span (Set.range (algebraMap _ (ptLoc w) ∘ f)) ⊔ maximalIdeal (ptLoc w) ^ 2`. Rewrite using `[hker, Set.range_comp, ← Ideal.map_span, ← Localization.AtPrime.map_eq_maximalIdeal, ← Ideal.map_pow, ← Ideal.map_sup]`. Conclude with `Ideal.map_mono hcovR`.
+
+Establish `hfker : ∀ j, (algebraMap _ (ptLoc w) ∘ f) j ∈ RingHom.ker (algebraMap (ptLoc w) S)` using `fun j => by rw [hker]; exact Ideal.mem_map_of_mem _ (hfI j)`. Establish `hμ : (maximalIdeal S).spanFinrank ≤ 1`. Rewrite using `[hgena]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdim : ((1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim S`.
+
+Rewrite using `[IsDiscreteValuationRing.ringKrullDim_eq_one]`. Simplify using the standard rewrite rules. Establish `hIP` using `GroundTheory.Arith.Jacobian.ker_le_span_of_spanFinrank_le (P := ptLoc w) (S := S) hsurj (algebraMap _ (ptLoc w) ∘ f) hfker hcov 1 hμ hdim`. Establish `hden : ∀ j, ∃ s : MvPolynomial σ ℂ, eval w s ≠ 0 ∧ s * g j ∈ Ideal.span (Set.range f)`. Introduce `j`.
+
+Apply `exists_mul_mem_of_algebraMap_mem w` to reduce the goal to its premises. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `hIP (by rw [hker]; exact Ideal.mem_map_of_mem _ (hgI j))`. Use `choose s hs0 hsg using hden`. Use `⟨Fintype.card κ, f, ∏ j, s j, ?_, hfI, hlif, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Fintype.card κ < Fintype.card σ`. Use `Submodule.finrank_lt hVne` as an intermediate fact. Rewrite `this` using `[hfinV, Module.finrank_fintype_fun_eq_card]`. Then use the resulting hypothesis. Establish `h2 : Fintype.card σ ≤ Fintype.card κ + 1`. Establish `h3` using `Submodule.finrank_add_le_finrank_add_finrank V (ℂ ∙ grad w a)`.
+
+Rewrite `h3` using `[htop, finrank_top, Module.finrank_fintype_fun_eq_card, hfinV]`. Establish `h4` using `finrank_span_le_card (R := ℂ) ({grad w a} : Set (σ → ℂ))`. Simplify using `only [Set.toFinset_singleton, Finset.card_singleton] at h4`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => hs0 j`. Introduce `p hp`. Establish `hp' : p ∈ Submodule.span (MvPolynomial σ ℂ) (Set.range g)` using `by rw [hg]; exact hp`. Use `clear hp`.
+
+Proceed by induction on `hp' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ j), mul_comm (s j), mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hsg j)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Ideal.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hx`.
+-/
 theorem exists_of_isDiscreteValuationRing (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ)
     (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn I) (S : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Algebra (ptLoc w) S] [Algebra (MvPolynomial σ ℂ) S] [IsScalarTower (MvPolynomial σ ℂ) (ptLoc w) S]

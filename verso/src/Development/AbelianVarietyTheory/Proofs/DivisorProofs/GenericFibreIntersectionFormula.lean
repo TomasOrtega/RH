@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.GenFibreDegree
 
+/- English proof (translation)
+Establish `hE : IsEmpty G'`. Use `⟨fun g => hz ?_⟩` and prove the remaining obligations. Take `⟨_, hr, _, h4⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Z (i ≫ f) G' j' s' hG'`. Take `⟨hGi, hη⟩` from `h4 ⟨g⟩`. Establish `hmem : j' (genericPoint G') ∈ Set.range j'` using `⟨_, rfl⟩`.
+
+Rewrite `hmem` using `[hr, hη]`. Simplify `hmem` using `[← hi]`. Use `letI := algebraΓOfHom s'`. Conclude with `interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _) (fun a => LB.isLB_pull (hP a) j')`.
+-/
 theorem interNum_eq_zero_of_not_generic (B Y : Scheme.{0}) [IsIntegral B] (f : Y ⟶ B) (z : Y)
     (hz : f z ≠ genericPoint B) (Z : Scheme.{0}) (i : Z ⟶ Y) [IsIntegral Z]
     (hi : i (genericPoint Z) = z) (G' : Scheme.{0}) (j' : G' ⟶ Z) (s' : G' ⟶ Sp B.functionField)
@@ -34,6 +39,27 @@ theorem interNum_eq_zero_of_not_generic (B Y : Scheme.{0}) [IsIntegral B] (f : Y
   exact interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _)
     (fun a => LB.isLB_pull (hP a) j')
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ _ q p d e hq hp f hfq G j s hpb L hL r hr γ hγ`. Take `⟨hpre, hrange, hstalk, hint⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Y f G j s hpb`. Use `set F : Y → ℤ := fun z => (divOfRatSec (hL 0) hr).mult z * γ z with hF`. Establish `hoff : ∀ z, z ∉ Set.range j → F z = 0`. Introduce `z hz`.
+
+Distinguish the cases in `hm : (divOfRatSec (hL 0) hr).mult z = 0`. Simplify using `[hF, hm]`. Take `⟨Z, i, _, _, G', j', s', hi, hpb', hγz⟩` from `hγ z hm`. Establish `hfz : f z ≠ genericPoint B`. Introduce `h`.
+
+Conclude with `hz (hrange ▸ (show z ∈ f ⁻¹' {genericPoint B} from h))`. Simplify using `only [hF]`. Rewrite using `[hγz, interNum_eq_zero_of_not_generic B Y f z hfz Z i hi G' j' s' hpb' (fun a : Fin e => (L a.succ).pull i) (fun a => LB.isLB_pull (hL a.succ) i), mul_zero]`. Establish `hinj : Function.Injective j` using `j.isEmbedding.injective`. Establish `hs : Function.support F ⊆ Set.range j` using `fun z hz => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hz (hoff z h)`. Establish `hre : ∑ᶠ w, F (j w) = ∑ᶠ z, F z`. Rewrite using `[← finsum_mem_range hinj, ← finsum_mem_inter_support, Set.inter_eq_right.2 hs, finsum_mem_support]`. Rewrite using `[← hre]`.
+
+Break down `isEmpty_or_nonempty G with hG | hG` into its components or cases. Use `letI := algebraΓOfHom s`. Rewrite using `[interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _) (fun a => LB.isLB_pull (hL a) j)]`. Conclude with `(finsum_of_isEmpty _).symm`. Take `⟨hGi, hη⟩` from `hint hG`.
+
+Use `letI := algebraΓOfHom s`. Establish `hsproj : IsProjOver s` using `GlobalTheory.T.generic_fibre_projective k B Y q p hq.isProjOver hp.isProjOver f hfq G j s hpb`. Establish `hstr : strHom B.functionField G = s` using `strHom_eq fun _ => rfl`. Use `haveI : AlgebraicGeometry.IsNoetherian G := isNoetherian_of_isProjOver hsproj`. Use `haveI : IsProper q := CommonModel.isProper_of_isProjOver hq.isProjOver`.
+
+Use `haveI : IsProper (f ≫ q) := by rw [hfq]; exact CommonModel.isProper_of_isProjOver hp.isProjOver`. Use `haveI : IsProper f := IsProper.of_comp f q`. Establish `hdim : topologicalKrullDim G ≤ ((e + 1 : ℕ) : WithBot ℕ∞)` using `GlobalTheory.T.generic_fibre_dimension_le B Y (d + 1) (e + 1) hq.dim_eq (by rw [hp.dim_eq]; exact le_of_eq (congrArg _ (by omega))) f G j s hpb`. Take `⟨r', hr', hmult⟩` from `GlobalTheory.T.rational_section_divisor_pullback_generic G Y j hη hstalk (L 0) (hL 0) r hr`. Establish `hcyc` using `GlobalTheory.T.rational_section_cycle_formula_projective B.functionField G (by rw [hstr]; exact hsproj) e hdim ((L 0).pull j) (LB.isLB_pull (hL 0) j) (fun a => (L a.succ).pull j) (fun a => LB.isLB_pull (hL a.succ) j) r' hr'`.
+
+Establish `hcons : (Fin.cons ((L 0).pull j) (fun a : Fin e => (L a.succ).pull j) : Fin (e + 1) → LB G) = fun a => (L a).pull j`. Use function extensionality and compare the values at `a`. Conclude with `Fin.cases rfl (fun b => rfl) a`. Rewrite `hcyc` using `[hcons]`. Rewrite using `[hcyc]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [hF]`. Rewrite using `[hmult w]`. Distinguish the cases in `hm : (divOfRatSec (hL 0) hr).mult (j w) = 0`.
+
+Simplify using `[hm]`. Take `⟨Z, i, _, _, G', j', s', hi, hpb', hγz⟩` from `hγ (j w) hm`. Rewrite using `[hγz, GlobalTheory.T.generic_fibre_closed_subvariety B Y f G j s hpb w Z i hi G' j' s' hpb' (Fin e) (fun a => L a.succ) (fun a => hL a.succ)]`.
+-/
 theorem degree_genericFibre_ratSec : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] [IsLocallyNoetherian Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d e : ℕ), IsArithVar q d → IsArithVar p (d + (e + 1)) → ∀ (f : Y ⟶ B), f ≫ q = p → ∀ (G : Scheme.{0}) (j : G ⟶ Y) (s : G ⟶ Sp B.functionField), IsPullback j s f (B.fromSpecStalk (genericPoint B)) → ∀ (L : Fin (e + 1) → LB Y) (hL : ∀ a, (L a).IsLB) (r : (L 0).ι → Y.functionFieldˣ) (hr : IsRatSec (L 0) r) (γ : Y → ℤ), (∀ z, (divOfRatSec (hL 0) hr).mult z ≠ 0 → ∃ (Z : Scheme.{0}) (i : Z ⟶ Y) (_ : IsClosedImmersion i) (_ : IsIntegral Z) (G' : Scheme.{0}) (j' : G' ⟶ Z) (s' : G' ⟶ Sp B.functionField), i (genericPoint Z) = z ∧ IsPullback j' s' (i ≫ f) (B.fromSpecStalk (genericPoint B)) ∧ γ z = (letI := algebraΓOfHom s'; interNum B.functionField (structureModule G') (fun a : Fin e => ((L a.succ).pull i).pull j'))) → (letI := algebraΓOfHom s; interNum B.functionField (structureModule G) (fun a => (L a).pull j)) = ∑ᶠ z, (divOfRatSec (hL 0) hr).mult z * γ z := by
   intro k _ B Y _ _ _ q p d e hq hp f hfq G j s hpb L hL r hr γ hγ
   obtain ⟨hpre, hrange, hstalk, hint⟩ := GlobalTheory.T.generic_fibre_preimmersion_integral B Y f G j s hpb

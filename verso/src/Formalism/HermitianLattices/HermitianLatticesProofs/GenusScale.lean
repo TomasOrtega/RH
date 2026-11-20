@@ -13,6 +13,17 @@ section SlopeTestRemainingChoices
 variable {R K V : Type*} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Establish `key : ∀ a ∈ s, ∀ y ∈ Submodule.span R s, c * h a y ∈ (1 : Submodule R K)`. Introduce `a ha y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb => exact hs a ha b hb`. Consider the case `zero => simp`.
+
+Consider the case `add u w _ _ hu hw`. Rewrite using `[map_add, mul_add]`. Conclude with `add_mem hu hw`. Consider the case `smul r u _ hu`. Rewrite using `[genusBasic_hsmul_right, mul_left_comm]`.
+
+Conclude with `genusBasic_mem_one_mul _ hu r`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => exact key a ha y hy`. Consider the case `zero => simp`.
+
+Consider the case `add u w _ _ hu hw`. Rewrite using `[map_add, LinearMap.add_apply, mul_add]`. Conclude with `add_mem hu hw`. Consider the case `smul r u _ hu`. Rewrite using `[genusBasic_hsmul_left hinj hstar, mul_left_comm]`.
+
+Conclude with `genusBasic_mem_one_mul _ hu _`.
+-/
 theorem genusScale_span (hinj : Function.Injective (algebraMap R K))
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K))
     (h : V →ₗ⋆[K] V →ₗ[K] K) (c : K) (s : Set V)
@@ -40,6 +51,17 @@ theorem genusScale_span (hinj : Function.Injective (algebraMap R K))
       rw [genusBasic_hsmul_left hinj hstar, mul_left_comm]
       exact genusBasic_mem_one_mul _ hu _
 
+/- English proof (translation)
+Introduce `x hx y hy`. Use `genusBasic_lg (K := K) (1 : Submodule R K) (c * h x y) ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨g, hg, hgL⟩` from `hLM p hp`. Establish `hxM : x ∈ loc (K` using `K) p M := locBasic_le_locS (hcompl (K := K) p) M hx`.
+
+Establish `hyM : y ∈ loc (K` using `K) p M := locBasic_le_locS (hcompl (K := K) p) M hy`. Rewrite `hxM`, `hyM` using `[← hgL, isomAct_mem_gmap]`. Take `⟨s, hsS, hsx⟩` from `locBasic_mem_locS.mp hxM`. Take `⟨t, htS, hty⟩` from `locBasic_mem_locS.mp hyM`. Establish `hg' : ∀ u v : V, h (g u) (g v) = h u v` using `hg`.
+
+Establish `hiso : h (g.symm x) (g.symm y) = h x y`. Establish `e` using `hg' (g.symm x) (g.symm y)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `e.symm`. Establish `h1` using `hL _ hsx _ hty`.
+
+Rewrite `h1` using `[genusBasic_hsmul_left hinj hstar, genusBasic_hsmul_right, hiso]`. Use `locBasic_mem_locS.mpr ⟨locBasic_sigma hinj hstar s * t, (hcompl (K := K) p).mul_mem (genusBasic_sigma_mem hinj hstar p s hsS) htS, ?_⟩` and prove the remaining obligations. Establish `e : (locBasic_sigma hinj hstar s * t) • (c * h x y) = c * (algebraMap R K (locBasic_sigma hinj hstar s) * (algebraMap R K t * h x y))`. Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `h1`.
+-/
 theorem genusScale_transfer (hinj : Function.Injective (algebraMap R K))
     (hstar : ∀ r : R, star (algebraMap R K r) ∈ Set.range (algebraMap R K))
     (h : V →ₗ⋆[K] V →ₗ[K] K) (c : K) (L M : Submodule R V) (hLM : SameGenus h L M)
@@ -72,6 +94,11 @@ theorem genusScale_transfer (hinj : Function.Injective (algebraMap R K))
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hz : IsAlgebraic ℤ z` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (Algebra.IsIntegral.isIntegral (R := ℚ) z).isAlgebraic`. Take `⟨y, hy0, hy⟩` from `hz.exists_integral_multiple`. Establish `hw : IsIntegral ℤ ((y.natAbs : K) * z)`. Break down `Int.natAbs_eq y with e | e` into its components or cases. Rewrite using `[← Int.cast_natCast, ← e, ← zsmul_eq_mul]`.
+
+Conclude with `hy`. Establish `e' : (y.natAbs : ℤ) = -y` using `by linarith`. Rewrite using `[← Int.cast_natCast, e', Int.cast_neg, neg_mul, ← zsmul_eq_mul]`. Conclude with `hy.neg`. Conclude with `⟨y.natAbs, Int.natAbs_pos.mpr hy0, Submodule.mem_one.mpr ⟨⟨_, hw⟩, rfl⟩⟩`.
+-/
 private theorem exists_nat_pos_mul_mem_one {K : Type} [Field K] [NumberField K] (z : K) :
     ∃ n : ℕ, 0 < n ∧ (n : K) * z ∈ (1 : Submodule (𝓞 K) K) := by
   have hz : IsAlgebraic ℤ z :=
@@ -86,6 +113,17 @@ private theorem exists_nat_pos_mul_mem_one {K : Type} [Field K] [NumberField K] 
       exact hy.neg
   exact ⟨y.natAbs, Int.natAbs_pos.mpr hy0, Submodule.mem_one.mpr ⟨⟨_, hw⟩, rfl⟩⟩
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h _ L hL`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective _ _`. Establish `hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K)`. Introduce `r`. Establish `hr : IsIntegral ℤ (algebraMap (𝓞 K) K r)` using `NumberField.RingOfIntegers.isIntegral_coe r`.
+
+Conclude with `⟨⟨star (algebraMap (𝓞 K) K r), hr.map (starRingEnd K).toIntAlgHom⟩, rfl⟩`. Take `⟨s, hs⟩` from `hL.fg`. Use `choose n hn0 hn using exists_nat_pos_mul_mem_one (K := K)`. Use `⟨∏ q ∈ s ×ˢ s, n (h q.1 q.2), Finset.prod_pos (fun q _ => hn0 _), ?_⟩` and prove the remaining obligations. Establish `hLd : ∀ x ∈ L, ∀ y ∈ L, ((∏ q ∈ s ×ˢ s, n (h q.1 q.2) : ℕ) : K) * h x y ∈ (1 : Submodule (𝓞 K) K)`.
+
+Rewrite using `[← hs]`. Use `genusScale_span hinj hstar h _ _ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Establish `hmem : (a, b) ∈ s ×ˢ s` using `Finset.mem_product.mpr ⟨ha, hb⟩`. Take `⟨k, hk⟩ : n (h a b) ∣ ∏ q ∈ s ×ˢ s, n (h q.1 q.2)` from `Finset.dvd_prod_of_mem (fun q : V × V => n (h q.1 q.2)) hmem`.
+
+Rewrite using `[hk, Nat.cast_mul, mul_comm ((n (h a b) : ℕ) : K), mul_assoc]`. Establish `hm` using `genusBasic_mem_one_mul _ (hn (h a b)) (k : 𝓞 K)`. Rewrite `hm` using `[map_natCast]`. Then use the resulting hypothesis. Introduce `M hM x hx y hy`. Establish `hM' : Submodule.IsLattice K M ∧ SameGenus h L M` using `hM`.
+
+Conclude with `genusScale_transfer hinj hstar h _ L M hM'.2 hLd x hx y hy`.
+-/
 theorem genusScale : GenusScale := by
   intro K V _ _ _ _ _ _ _ _ h _ L hL
   have hinj : Function.Injective (algebraMap (𝓞 K) K) := IsFractionRing.injective _ _

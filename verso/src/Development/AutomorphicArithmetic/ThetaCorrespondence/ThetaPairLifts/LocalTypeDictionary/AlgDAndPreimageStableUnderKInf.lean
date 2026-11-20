@@ -16,6 +16,45 @@ noncomputable section
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift
 namespace GlobalTheory.KStableSums
 open scoped Classical in
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hb hX hW hM hw Pv _ _ Q N hlie k hk Ψ hΨ`. Establish `hAL : ActsLaws` using `GlobalTheory.RealLift.actsLaws`. Establish `hfr : FrameEx` using `GlobalTheory.T.cartanEigen_orthonormalFrame_exists`. Establish `hder : DerEx` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl : VacLine` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hder`.
+
+Establish `hfe : FockEx` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hder`. Establish `hls : LieScalar` using `_root_.GlobalTheory.T.weil_lie_algebra_scalar_action hP hder hvl`. Establish `hpr : PolRange` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws hAL hder hvl`. Use `choose A hA hAθ using fun w => hfr _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => hfr _ _ _ _ _ (hW.sig w) (hW.cartan w)`.
+
+Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolCompact.incM_map_piInf', one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[GlobalTheory.PolCompact.incM_map_piInf']`.
+
+Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `hpr F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hw`.
+
+Take `⟨c, hact⟩` from `hls F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C Φ _ hb.cm hb.std fr hΦ hwp.1.1`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Take `⟨γ, hγ, Yg, hgen, hYu, hKC, hγ1⟩` from `exists_line_upq σ r' s' B.emb (incM F W.J) Complex.I C W.θ hb.cm hC1 hCθ k hk.1 hk.2`. Establish `hloc` using `GlobalTheory.RealLift.locFin_sumPl _ _ _ (fun w => GlobalTheory.PolCompact.locFin_second r s r' s' (Yg w) (hKC w) (c w * (Yg w).trace))`. Take `⟨U, hU, hSA⟩` from `GlobalTheory.T.weakExponential_action_on_fockVectors F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) hloc (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hgen T)`.
+
+Take `⟨m, f, φ, hf, hφ, rfl⟩` from `exists_sum_pure M B.ψ B.emb hΨ`. Establish `hf' : ∀ i, ∃ y, Φ y = f i` using `fun i => LinearMap.mem_range.1 (by rw [hr]; exact hf i)`. Use `choose T hT using hf'`. Take `rfl : f = fun i => Φ (T i)` from `funext fun i => (hT i).symm`. Set `G : (Fin m → Tens F r s r' s') →ₗ[ℂ] ((Fin n × Fin d → AF F) → ℂ)` to `∑ i, (pureL (φ i)) ∘ₗ Φ ∘ₗ LinearMap.proj i`.
+
+Establish `hG : ∀ y, G y = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (y i)) (φ i)` using `fun y => by`. Simplify using `only [G, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Both sides reduce to the same expression. Establish `hplace : ∀ (w : InfinitePlace F) (y : Fin m → Tens F r s r' s'), Q (G y) ∈ N → Q (G (piEnd m (atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol r s r' s') w (fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1)) y)) ∈ N := by`. Introduce `w y hy`.
+
+Rewrite `hy`, the goal using `[hG]`. Take `⟨A', hCA, hAC⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv (hC1 w)`. Establish `hsu : ∀ w', (Pi.single w (Yg w) : InfinitePlace F → Matrix (Ix r' s') (Ix r' s') ℂ) w' ∈ upq r' s'`. Introduce `w'`. Distinguish the cases in `h : w' = w`.
+
+Substitute `h` using the available equality. Simplify using `using hYu w'`. Rewrite using `[Pi.single_eq_of_ne h] show (0 : Matrix (Ix r' s') (Ix r' s') ℂ)ᴴ * Jm r' s' + Jm r' s' * 0 = 0`. Simplify using the standard rewrite rules. Take `⟨γw, hγw, hgw⟩` from `GlobalTheory.T.unitaryLieElements_generate_oneParamLines F E σ (Fin d) r' s' B.emb (incM F W.J) Complex.I C hb.cm hC1 _ hsu`.
+
+Use `hlie w (C w * Yg w * A') γw hγw ?_ ?_ m (fun i => Φ (y i)) _ φ hφ (fun i => ⟨by rw [← hr]; exact LinearMap.mem_range_self Φ _, by rw [← hr]; exact LinearMap.mem_range_self Φ _⟩) ?_ hy` and prove the remaining obligations. Introduce `t`. Establish `h1` using `hgw t w`. Simplify using `only [Pi.single_eq_same] at h1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, hCA, Matrix.mul_one]`. Both sides reduce to the same expression. Use `_ = C w * NormedSpace.exp (t • Yg w) * A' := by rw [h1]`. Use `_ = NormedSpace.exp (t • (C w * Yg w * A')) := by`. Rewrite using `[show t • (C w * Yg w * A') = C w * (t • Yg w) * A' by rw [Matrix.mul_smul, Matrix.smul_mul], exp_conj_rect _ _ hCA hAC]`.
+
+Introduce `t w' hw'`. Establish `h1` using `hgw t w'`. Rewrite `h1` using `[Pi.single_eq_of_ne hw', smul_zero, NormedSpace.exp_zero, Matrix.mul_one]`. Take `⟨A'', hCA', -⟩` from `GlobalTheory.RealLift.KLineProof.frame_inv (hC1 w')`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, hCA', Matrix.mul_one]`. Both sides reduce to the same expression. Use `_ = 1 := by rw [h1, hCA']`. Introduce `i`. Establish `hsd` using `hact γw hγw _ hgw (y i)`.
+
+Rewrite `hsd` using `[sumPl_single]`. Conclude with `(hAL F (Fin n × Fin d) _ _ (Φ (y i))).1 _ (fun t => map_zero _) hsd`. Set `N' : Submodule ℂ (Fin m → Tens F r s r' s')` to `N.comap (Q ∘ₗ G)`. Establish `hstab : ∀ y ∈ N', piEnd m (sumPl fun w => fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1) y ∈ N'`. Introduce `y hy`.
+
+Establish `e : piEnd m (sumPl fun w => fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1) y = ∑ w, piEnd m (atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol r s r' s') w (fockAct2 r s r' s' (Yg w) + (c w * (Yg w).trace) • 1)) y := by`. Use function extensionality and compare the values at `i`. Simplify using `only [piEnd_apply, sumPl, LinearMap.sum_apply, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `N'.sum_mem fun w _ => hplace w y hy`.
+
+Establish `hk1 : ∀ i, om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (T i)) (φ i)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (U (T i))) (φ i)`. Introduce `i`. Establish `h1` using `hSA (T i)`. Rewrite `h1` using `[MonoidHom.comp_apply, hγ1]`. Establish `hg` using `GlobalTheory.AdelicCoordSB.finprod_mem_SB F (Fin n × Fin d) (φ i) (hφ i).1 (((hφ i).2.and hM.std).mono fun v hv => hv.1.trans hv.2)`.
+
+Conclude with `h1 _ hg`. Establish `hsum : om (1, k) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (T i)) (φ i)) = ∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Φ (U (T i))) (φ i)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hk1 i`. Use `⟨?_, fun hQ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨Φ (U (T i)), φ i, by rw [← hr]; exact LinearMap.mem_range_self Φ _, (hφ i).1, (hφ i).2, rfl⟩`. Establish `h0 : T ∈ N'` using `by show Q (G T) ∈ N`. Rewrite using `[hG]`. Conclude with `hQ`.
+
+Establish `h2` using `GlobalTheory.KStableLie.mem_of_isExp (isExp_piEnd hU m) N' hstab h0`. Establish `e` using `hG (piEnd m U T)`. Simplify using `only [piEnd_apply] at e`. Rewrite using `[hsum, ← e]`. Conclude with `h2`.
+-/
 theorem kStable_subspace_sums : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) {r s r' s' : ℕ},
@@ -153,6 +192,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KStableSums.kStable_subspace_sums | exact _root_.GlobalTheory.KStableSums.kStable_subspace_sums | (intros; apply _root_.GlobalTheory.KStableSums.kStable_subspace_sums <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.algD_and_preimage_stable_under_KInf : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
     (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ X W) (χX χW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W) {r s r' s' : ℕ},

@@ -8,6 +8,17 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Establish `hφ' : ∀ (a : Λ₀) v, φ.symm (a • v) = e a • φ.symm v` using `fun a v => by`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hφ, φ.apply_symm_apply, φ.apply_symm_apply]`. Set `ρ'' : Representation Λ₀ Q V₀` to `{ toFun := fun q => { toFun := fun v => φ (ρ' q (φ.symm v)) map_add' := fun x y => by simp only [map_add] map_smul' := fun a v => by rw [hφ', map_smul, hφ]; rfl } map_one' := by ext v; simp map_mul' := fun g h => by ext v; simp }`. Use `⟨ρ'', fun _ _ => rfl, ?_⟩` and prove the remaining obligations.
+
+Set `E : MonoidAlgebra Λ Q ≃+* MonoidAlgebra Λ₀ Q` to `MonoidAlgebra.mapRingEquiv Q e.symm`. Use `haveI := RingHomInvPair.of_ringEquiv E`. Use `haveI := RingHomInvPair.of_ringEquiv_symm E`. Set `ψ : ρ'.asModule ≃+ ρ''.asModule` to `(ρ'.asModuleEquiv.toAddEquiv.trans φ).trans ρ''.asModuleEquiv.symm.toAddEquiv`. Establish `hψ : ∀ (r : MonoidAlgebra Λ Q) (x : ρ'.asModule), ψ (r • x) = E r • ψ x`.
+
+Introduce `r x`. Proceed by induction on `r using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [add_smul, map_add, map_add, add_smul, ha, hb]`. Consider the case `single g a`.
+
+Establish `hE : E (MonoidAlgebra.single g a) = MonoidAlgebra.single g (e.symm a)`. Simplify using `[E]`. Rewrite using `[hE, Representation.single_smul, Representation.single_smul]`. Express the relevant statement in the definitionally equal form `φ (a • ρ' g (ρ'.asModuleEquiv x)) = e.symm a • φ (ρ' g (φ.symm (φ (ρ'.asModuleEquiv x))))`. Rewrite using `[φ.symm_apply_apply, ← hφ, e.apply_symm_apply]`.
+
+Set `Ψ : ρ'.asModule ≃ₛₗ[(E : MonoidAlgebra Λ Q →+* MonoidAlgebra Λ₀ Q)] ρ''.asModule` to `{ ψ with map_smul' := hψ }`. Conclude with `Module.Projective.of_equiv Ψ`.
+-/
 private theorem UpperTheory.V.Hi.projective_transport_along_equiv {Λ₀ Λ V₀ V Q : Type} [CommRing Λ₀] [CommRing Λ] [AddCommGroup V₀] [AddCommGroup V]
     [Module Λ₀ V₀] [Module Λ V] [Group Q] (e : Λ₀ ≃+* Λ) (φ : V ≃+ V₀) (hφ : ∀ a v, φ (e a • v) = a • φ v)
     (ρ' : Representation Λ Q V) (hP : Module.Projective (MonoidAlgebra Λ Q) ρ'.asModule) :
@@ -44,6 +55,13 @@ private theorem UpperTheory.V.Hi.projective_transport_along_equiv {Λ₀ Λ V₀
     { ψ with map_smul' := hψ }
   exact Module.Projective.of_equiv Ψ
 
+/- English proof (translation)
+Introduce `Λ₀ Λ R P G _ _ _ _ _ _ _ _ _ _ e he ρ ρR hρ U U₁ _`. Establish `hmem : ∀ p : P, p ∈ fixd ρ U₁ ↔ p ∈ fixd ρR U₁` using `fun p => forall_congr' fun u => forall_congr' fun _ => by rw [hρ]`. Set `φ : fixd ρ U₁ ≃+ fixd ρR U₁` to `{ toFun := fun v => ⟨v.1, (hmem _).1 v.2⟩ invFun := fun v => ⟨v.1, (hmem _).2 v.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl }`. Establish `hφ : ∀ (a : Λ₀) v, φ (e a • v) = a • φ v` using `fun a v => Subtype.ext (he a v.1).symm`. Use `⟨fun hfin => ?_, fun ρ' h' hP => ?_⟩` and prove the remaining obligations.
+
+Set `f : fixd ρ U₁ →ₛₗ[(e.symm : Λ →+* Λ₀)] fixd ρR U₁` to `{ toFun := φ map_add' := φ.map_add map_smul' := fun a v => by`. Rewrite using `[← hφ]`. Simplify using `}`. Use `haveI : RingHomSurjective (e.symm : Λ →+* Λ₀) := ⟨e.symm.surjective⟩`. Conclude with `Module.Finite.of_surjective f φ.surjective`.
+
+Take `⟨ρ'', h1, h2⟩` from `UpperTheory.V.Hi.projective_transport_along_equiv e φ hφ ρ' hP`. Use `⟨ρ'', fun u f => ?_, h2⟩` and prove the remaining obligations. Rewrite using `[h1, hρ]`. Conclude with `h' u (φ.symm f)`.
+-/
 theorem UpperTheory.V.Hi.levelUR2ProjTr :
     ∀ (Λ₀ Λ R P G : Type) [CommRing Λ₀] [CommRing Λ] [CommRing R] [Algebra Λ₀ R] [AddCommGroup P] [Module R P] [Module Λ₀ P] [IsScalarTower Λ₀ R P] [Module Λ P] [Group G] (e : Λ₀ ≃+* Λ), (∀ (a : Λ₀) (p : P), a • p = e a • p) → ∀ (ρ : Representation Λ G P) (ρR : Representation R G P), (∀ g p, ρR g p = ρ g p) → ∀ (U U₁ : Subgroup G) [(U₁.subgroupOf U).Normal], (Module.Finite Λ (fixd ρ U₁) → Module.Finite Λ₀ (fixd ρR U₁)) ∧ ∀ ρ' : Representation Λ (U ⧸ U₁.subgroupOf U) (fixd ρ U₁), (∀ (u : U) f, (ρ' (u : U ⧸ U₁.subgroupOf U) f).1 = ρ u f) → Module.Projective (MonoidAlgebra Λ (U ⧸ U₁.subgroupOf U)) ρ'.asModule → ∃ ρ'' : Representation Λ₀ (U ⧸ U₁.subgroupOf U) (fixd ρR U₁), (∀ (u : U) f, (ρ'' (u : U ⧸ U₁.subgroupOf U) f : P) = ρR u f) ∧ Module.Projective (MonoidAlgebra Λ₀ (U ⧸ U₁.subgroupOf U)) ρ''.asModule := by
   intro Λ₀ Λ R P G _ _ _ _ _ _ _ _ _ _ e he ρ ρR hρ U U₁ _

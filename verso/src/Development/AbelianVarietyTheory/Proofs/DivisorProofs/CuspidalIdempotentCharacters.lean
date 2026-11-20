@@ -8,6 +8,9 @@ namespace GlobalTheory.CuspidalIdempotentCharacters
 
 open Formalism.L2.DIV GlobalTheory.FinGL NumberField
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, V, i1, i2, i3, σ, hc, hχ⟩`. Conclude with `⟨_, fun PP => ⟨b PP, V PP, i1 PP, i2 PP, i3 PP, σ PP, hc PP, fun _ => rfl⟩, hχ⟩`. Introduce and unpack `⟨θ, hθ, hχ⟩ choose b V i1 i2 i3 σ hc ht using hθ`. Conclude with `⟨b, V, i1, i2, i3, σ, hc, fun g => (hχ g).trans (Finset.prod_congr rfl fun PP _ => ht PP (g PP))⟩`.
+-/
 theorem isIndCuspChar_iff {E : Type} [Field E] [NumberField E] (Pg : Finset (Pl E)) (r : ℕ) {K : Type} [Field K]
     (s : K →+* ℂ) (χ : G0 Pg r → K) :
     GlobalTheory.IndefiniteRowSideFullHecke.GenericMultiplicityOne.IsIndCuspChar Pg r s χ ↔ GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.IsCuspIndProdChar Pg r s χ := by
@@ -18,12 +21,18 @@ theorem isIndCuspChar_iff {E : Type} [Field E] [NumberField E] (Pg : Finset (Pl 
     choose b V i1 i2 i3 σ hc ht using hθ
     exact ⟨b, V, i1, i2, i3, σ, hc, fun g => (hχ g).trans (Finset.prod_congr rfl fun PP _ => ht PP (g PP))⟩
 
+/- English proof (translation)
+Take `rfl : i = GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.fintypeH P` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+-/
 theorem sum_eq_lvlSum {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ} {K : Type} [Field K]
     (P : LevelP Pg r K) (χ : G0 Pg r → K) (i : Fintype P.H) :
     ∑ h : P.H, χ (h : G0 Pg r) * (((P.chi h)⁻¹ : Kˣ) : K) = GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.lvlSum P χ := by
   obtain rfl : i = GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.fintypeH P := Subsingleton.elim _ _
   rfl
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.GenericMultiplicityOne.GenericMultOne GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.OneWhittakerVector`. Use `forall_congr' fun E => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun Pg => forall_congr' fun r => forall_congr' fun K => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun s => forall_congr' fun ψ => forall_congr' fun _ => forall_congr' fun χ => imp …` and prove the remaining obligations. Rewrite using `[← sum_eq_lvlSum (P0 Pg r ψ) χ]`.
+-/
 theorem genericMultOne_iff : GlobalTheory.IndefiniteRowSideFullHecke.GenericMultiplicityOne.GenericMultOne ↔ GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.OneWhittakerVector := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.GenericMultiplicityOne.GenericMultOne GlobalTheory.IndefiniteRowSideFullHecke.CuspidalInducedCharacter.OneWhittakerVector
   refine forall_congr' fun E => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun Pg =>
@@ -36,6 +45,11 @@ section Idem
 
 variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.PrimeDegreeVariant.eps lvlIdem`. Rewrite using `[Finset.smul_sum]`. Use `symm`. Use `Fintype.sum_of_injective (fun h : H => (h : G)) Subtype.val_injective _ _ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `: x ∉ H` using `fun h => hx ⟨⟨x, h⟩, rfl⟩`. Simplify using `[this]`. Introduce `h`. Simplify using `[map_inv]`.
+-/
 theorem eps_eq_lvlIdem (H : Subgroup G) (ψ : H →* Kˣ) :
     Formalism.MainNotions.PrimeDegreeVariant.eps (⟨H, ψ⟩ : Formalism.MainNotions.PrimeDegreeVariant.Pair K G) = lvlIdem H ψ := by
   classical
@@ -51,6 +65,9 @@ theorem eps_eq_lvlIdem (H : Subgroup G) (ψ : H →* Kˣ) :
 
 variable {W : Type} [AddCommGroup W] [Module K W]
 
+/- English proof (translation)
+Unfold `lvlIdem`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr (by congr!) fun h _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.asAlgebraHom_single, smul_smul, map_inv]`.
+-/
 theorem asAlgebraHom_lvlIdem (τ : Representation K G W) (H : Subgroup G) (ψ : H →* Kˣ) [Fintype H] :
     τ.asAlgebraHom (lvlIdem H ψ) = (Nat.card H : K)⁻¹ • ∑ h : H, (((ψ h)⁻¹ : Kˣ) : K) • τ (h : G) := by
   unfold lvlIdem
@@ -58,6 +75,13 @@ theorem asAlgebraHom_lvlIdem (τ : Representation K G W) (H : Subgroup G) (ψ : 
   refine Finset.sum_congr (by congr!) fun h _ => ?_
   rw [Representation.asAlgebraHom_single, smul_smul, map_inv]
 
+/- English proof (translation)
+Establish `hc : (Nat.card H : K) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := H)).ne'`. Use `set T : Module.End K W := ∑ h : H, (((ψ h)⁻¹ : Kˣ) : K) • τ (h : G) with hT`. Establish `h1 : ∀ a : H, ((((ψ a)⁻¹ : Kˣ) : K) • τ (a : G)) * T = T`. Introduce `a`. Rewrite using `[hT, Finset.mul_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.mulLeft a) _ _ fun h => ?_` and prove the remaining obligations. Simplify using `[smul_smul, mul_comm]`. Establish `h2 : T * T = (Nat.card H : K) • T` using `by conv_lhs => rw [hT, Finset.sum_mul, ← hT]`. Rewrite using `[Finset.sum_congr rfl fun a _ => h1 a]`. Simplify using `[Nat.card_eq_fintype_card, Nat.cast_smul_eq_nsmul]`.
+
+Rewrite using `[IsIdempotentElem, asAlgebraHom_lvlIdem, ← hT, smul_mul_smul_comm, h2, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]`.
+-/
 theorem isIdempotentElem_lvlIdem [CharZero K] (τ : Representation K G W) (H : Subgroup G) (ψ : H →* Kˣ) :
     IsIdempotentElem (τ.asAlgebraHom (lvlIdem H ψ)) := by
   classical
@@ -75,6 +99,11 @@ theorem isIdempotentElem_lvlIdem [CharZero K] (τ : Representation K G W) (H : S
   rw [IsIdempotentElem, asAlgebraHom_lvlIdem, ← hT, smul_mul_smul_comm, h2, smul_smul, mul_assoc,
     inv_mul_cancel₀ hc, mul_one]
 
+/- English proof (translation)
+Establish `hc : (Nat.card H : K) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := H)).ne'`. Establish `h` using `(LinearMap.IsIdempotentElem.isProj_range _ (isIdempotentElem_lvlIdem τ H ψ)).trace`. Establish `e : LinearMap.trace K W (τ.asAlgebraHom (lvlIdem H ψ)) = (Nat.card H : K)⁻¹ * ∑ h : H, LinearMap.trace K W (τ (h : G)) * (((ψ h)⁻¹ : Kˣ) : K)`. Rewrite using `[asAlgebraHom_lvlIdem, map_smul, map_sum, smul_eq_mul]`. Simplify using `[mul_comm]`.
+
+Rewrite using `[← Nat.cast_eq_one (R := K), ← h, e, inv_mul_eq_one₀ hc, eq_comm]`.
+-/
 theorem finrank_eq_one_iff [CharZero K] [FiniteDimensional K W] (τ : Representation K G W) (H : Subgroup G)
     (ψ : H →* Kˣ) [Fintype H] :
     Module.finrank K (LinearMap.range (τ.asAlgebraHom (lvlIdem H ψ))) = 1 ↔

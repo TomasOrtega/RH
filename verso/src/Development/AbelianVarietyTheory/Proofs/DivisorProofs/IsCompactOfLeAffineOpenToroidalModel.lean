@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.ModelQC
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y U W hW`. Take `⟨N, i, hi, hs⟩` from `Y.proj`. Use `isProper_str c.F N` as an intermediate fact. Establish `: IsProper Y.s` using `hs ▸ inferInstance`. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`.
+
+Establish `: CompactSpace Y.X` using `QuasiCompact.compactSpace_of_compactSpace Y.s`. Establish `: IsNoetherian Y.X` using `⟨⟩`. Conclude with `TopologicalSpace.NoetherianSpace.isCompact _`.
+-/
 theorem isCompact_of_le_affineOpen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens) (W : Y.X.Opens), W ≤ U.1 → IsCompact (W : Set Y.X) := by
   intro E _ _ _ H Dw l Xo c Y U W hW
   obtain ⟨N, i, hi, hs⟩ := Y.proj

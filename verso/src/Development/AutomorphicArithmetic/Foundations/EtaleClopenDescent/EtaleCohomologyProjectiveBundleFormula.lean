@@ -9,6 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace UpperTheory.Pbf
 
+/- English proof (translation)
+Establish `key : ∀ (a b : Fin 1) (g : a ⟶ b), y.map g = 𝟙 _`. Introduce `a b g`. Take `rfl : a = b` from `Subsingleton.elim _ _`. Rewrite using `[Subsingleton.elim g (𝟙 a), y.map_id]`. Use `CategoryTheory.Functor.ext (fun _ => rfl) ?_` and prove the remaining obligations.
+
+Introduce `a b f`. Simplify using `only [Functor.comp_map, Functor.const_obj_map, eqToHom_refl, Category.id_comp, Category.comp_id]`. Conclude with `key _ _ _`.
+-/
 private theorem functor_to_single_object_const {G : Type} [Monoid G] {n : ℕ} (y : Fin 1 ⥤ SingleObj G) (θ : Fin (n + 1) ⥤ Fin 1) :
     θ ⋙ y = (Functor.const _).obj (SingleObj.star G) := by
   have key : ∀ (a b : Fin 1) (g : a ⟶ b), y.map g = 𝟙 _ := by
@@ -20,6 +25,9 @@ private theorem functor_to_single_object_const {G : Type} [Monoid G] {n : ℕ} (
   simp only [Functor.comp_map, Functor.const_obj_map, eqToHom_refl, Category.id_comp, Category.comp_id]
   exact key _ _ _
 
+/- English proof (translation)
+Use extensionality with `k T x`. Set `f : (Opposite.op (SimplexCategory.mk 0)) ⟶ k` to `(SimplexCategory.isTerminalZero.from k.unop).op`. Establish `h` using `congrArg (fun φ => (ConcreteCategory.hom (NatTrans.app φ T)).toFun x) (V.naturality f)`. Use `h.trans ?_` and prove the remaining obligations. Conclude with `functor_to_single_object_const _ _`.
+-/
 private theorem eq_triv (U : Scheme.{0}) {N : ℕ} (V : sch.obj U ⟶ ofCat (glCat N)) : V = triv (sch.obj U) N := by
   ext k T x
   let f : (Opposite.op (SimplexCategory.mk 0)) ⟶ k := (SimplexCategory.isTerminalZero.from k.unop).op
@@ -27,6 +35,11 @@ private theorem eq_triv (U : Scheme.{0}) {N : ℕ} (V : sch.obj U ⟶ ofCat (glC
   refine h.trans ?_
   exact functor_to_single_object_const _ _
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => exact fun E _ => UpperTheory.projectiveBundleFormula_rank_zero q E`. Consider the case `succ N ih`. Break down `N with _ | _ | N` into its components or cases. Conclude with `UpperTheory.projectiveBundleFormula_rank_one_of_homotopyInvariant q`.
+
+Conclude with `UpperTheory.projectiveBundleFormula_rank_two q`. Conclude with `UpperTheory.projectiveBundleFormula_succ_of_forall q (N + 2) (by omega) ih`.
+-/
 private theorem pbf_all (q : ℕ) [NeZero q] (N : ℕ) : ∀ E : Spc, Inv q E → PBF q E N := by
   induction N with
   | zero => exact fun E _ => UpperTheory.projectiveBundleFormula_rank_zero q E
@@ -38,6 +51,9 @@ private theorem pbf_all (q : ℕ) [NeZero q] (N : ℕ) : ∀ E : Spc, Inv q E �
 
 end UpperTheory.Pbf
 
+/- English proof (translation)
+Introduce `q _ U N V h n i`. Take `rfl` from `UpperTheory.Pbf.eq_triv U V`. Conclude with `UpperTheory.Pbf.pbf_all q N _ h n i`.
+-/
 theorem UpperTheory.Cb.etaleCohomology_projectiveBundle_formula :
     ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), ∀ {N : ℕ} (V : sch.obj U ⟶ ofCat (glCat N)), Inv q (sch.obj U) → ∀ n i : ℤ, Function.Bijective fun a : ∀ j : Fin N, Ht q (sch.obj U) (n - 2 * (j : ℕ)) (i - (j : ℕ)) => ∑ j : Fin N, ((cup q (pull _ (pullback.fst V (PGL.pr N)) _ _ (a j)) (cpow q (c1 q (pullback.snd V (PGL.pr N) ≫ PGL.line N)) j)).cast (by ring) (by ring) : Ht q _ n i) := by
   intro q _ U N V h n i

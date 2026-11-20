@@ -15,6 +15,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hray _ D hE jE Pl hg`. Take `⟨h, hf, hgal, hab, hunr, hsplit⟩` from `GlobalTheory.T.rayClassFieldHostConductor_isRayClassField hray D jE`. Use `letI := algK D jE h`. Use `nfOf hf` as an intermediate fact. Set `X : NTypes D.naut` to `{ D.ntypes with Mray := MrayC D jE instMray := inferInstance nfMray := nfOf hf algKM := algK D jE h Mray_gal := hgal Mray_ab := hab Mray_unr := hunr g_Mray := fun k => hsplit _ (hg k) iota := fun k _ w => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ redHom (Pl.plB w) (Pl …`.
+
+Use `⟨X, D.nStage_trivialCharacter_compat, D.nStage_trivialCharacter_coeff_eq, rfl, rfl, rfl, rfl, rfl, ⟨?_⟩, fun _ => ?_⟩` and prove the remaining obligations. Conclude with `{ eM := RingEquiv.refl _ eM_K := fun _ => rfl eP := Equiv.refl _ locPar_def := fun _ _ => rfl }`. Introduce `lam k v x`. Both sides reduce to the same expression.
+-/
 theorem exists_types : GlobalTheory.Published.RayClassFieldSt → GlobalTheory.Published.ChebotarevDegreeOne → ∀ (D : D7) (hE : IsEmpty D.nd.Loc)
     (jE : D.host.E →+* Qb) (Pl : PlSide D), (∀ k, IsRayPrime (KQbar D jE) (D.host.QS * D.host.q * D.host.d) (D.host.g k)) →
     ∃ X h1 h0, X.tg = D.ntypes.tg ∧ X.teichC = D.ntypes.teichC ∧ X.eSer = D.ntypes.eSer ∧ X.cenAmb = D.ntypes.cenAmb ∧

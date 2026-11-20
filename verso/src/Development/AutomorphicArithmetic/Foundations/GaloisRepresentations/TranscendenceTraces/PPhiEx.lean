@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 namespace UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `h` and use `phiEx_of_parts phiUniv_of (phiExact_of (dSLoc_of (dSOne_of h)))`.
+-/
 theorem phiEx_of : LocFinSec → PhiEx := fun h => phiEx_of_parts phiUniv_of (phiExact_of (dSLoc_of (dSOne_of h)))
 
 end UpperTheory.Gal.TranscendenceTraces

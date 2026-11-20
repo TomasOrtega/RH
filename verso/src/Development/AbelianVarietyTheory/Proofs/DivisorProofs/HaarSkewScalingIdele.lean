@@ -13,6 +13,11 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hne : ∃ y, σ y ≠ y`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `h.2.1` as an intermediate fact. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => (h.2.2.2 τ y).symm.trans (congrArg τ (hc y)))))`. Take `⟨y, hy⟩` from `hne`. Conclude with `⟨y - σ y, sub_ne_zero.2 hy.symm, by rw [map_sub, hσ, neg_sub]⟩`.
+-/
 theorem exists_skew_elem (h : IsCMExt F E σ) (hσ : ∀ e, σ (σ e) = e) : ∃ δ : E, δ ≠ 0 ∧ σ δ = -δ := by
   have hne : ∃ y, σ y ≠ y := by
     by_contra hc
@@ -25,10 +30,18 @@ theorem exists_skew_elem (h : IsCMExt F E σ) (hσ : ∀ e, σ (σ e) = e) : ∃
   obtain ⟨y, hy⟩ := hne
   exact ⟨y - σ y, sub_ne_zero.2 hy.symm, by rw [map_sub, hσ, neg_sub]⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Doubling.algebraMap_norm_eq h s`.
+-/
 theorem algebraMap_norm_cA (h : IsCMExt F E σ) (s : AE F E) :
     algebraMap (AF F) (AE F E) (Algebra.norm (AF F) s) = s * cA σ s :=
   GlobalTheory.Doubling.algebraMap_norm_eq h s
 
+/- English proof (translation)
+Establish `h1 : At (evFin F v) (u * GlobalTheory.LatVac.liftV v a - GlobalTheory.LatVac.liftV v (evFin F v u * a))` using `fun w hw => by`. Establish `a1` using `GlobalTheory.LatVac.at_liftV v a w hw`. Establish `a2` using `GlobalTheory.LatVac.at_liftV v (evFin F v u * a) w hw`. Rewrite `a1`, `a2`, the goal using `[smul_eq_mul]`. Rewrite using `[mul_sub, mul_left_comm, a1, a2, mul_zero, sub_zero]`.
+
+Establish `h2` using `partFin_of_at h1`. Rewrite `h2` using `[partFin, smul_eq_mul, mul_comm]`. Establish `h3` using `GlobalTheory.LatVac.at_liftV v (1 : Fv F v) (u * GlobalTheory.LatVac.liftV v a - GlobalTheory.LatVac.liftV v (evFin F v u * a)) (by rw [map_sub, map_mul, GlobalTheory.LatVac.evFin_liftV, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `h3` using `[smul_eq_mul, h2]`. Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem mul_liftV (v : Pl F) (u : AF F) (a : Fv F v) :
     u * GlobalTheory.LatVac.liftV v a = GlobalTheory.LatVac.liftV v (evFin F v u * a) := by
   have h1 : At (evFin F v) (u * GlobalTheory.LatVac.liftV v a - GlobalTheory.LatVac.liftV v (evFin F v u * a)) := fun w hw => by
@@ -43,6 +56,27 @@ theorem mul_liftV (v : Pl F) (u : AF F) (a : Fv F v) :
   rw [smul_eq_mul, h2] at h3
   exact sub_eq_zero.1 h3
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Take `⟨δ, hδ, hs⟩` from `exists_skew_elem h hσ`. Use `set d : AE F E := (1 : AF F) ⊗ₜ[F] δ with hd`.
+
+Use `set d' : AE F E := (1 : AF F) ⊗ₜ[F] ((2 * δ)⁻¹) with hd'`. Establish `hdd : 2 * (d' * d) = 1`. Rewrite using `[hd, hd', Algebra.TensorProduct.tmul_mul_tmul, two_mul, ← TensorProduct.tmul_add, one_mul, Algebra.TensorProduct.one_def]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Evaluate the numerical expressions. Establish `hcd : cA σ d = -d`. Rewrite using `[hd, ← TensorProduct.tmul_neg, ← hs]`. Both sides reduce to the same expression. Establish `hcd' : cA σ d' = -d'`.
+
+Rewrite using `[hd', ← TensorProduct.tmul_neg, show -(2 * δ)⁻¹ = σ (2 * δ)⁻¹ by`. Rewrite using `[map_inv₀, map_mul, hs, map_ofNat, mul_neg, inv_neg]]`. Both sides reduce to the same expression. Set `ℓ : AE F E → AF F` to `fun c => Algebra.norm (AF F) (1 + c * d') - 1 - Algebra.norm (AF F) (c * d')`. Establish `hℓc : Continuous ℓ` using `((GlobalTheory.Doubling.continuous_norm_tens.comp (continuous_const.add (continuous_id.mul continuous_const))).sub continuous_const).sub (GlobalTheory.Doubling.continuous_norm_tens.comp (continuous_id.mul continuous_const))`.
+
+Establish `hℓ : ∀ c, cA σ c = -c → algebraMap (AF F) (AE F E) (ℓ c) = 2 * (c * d')` using `fun c hc => by`. Simplify using `only [ℓ, map_sub, map_one, algebraMap_norm_cA h, map_add, map_mul (cA σ), hc, hcd']`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective (algebraMap (AF F) (AE F E))` using `Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (algebraMap F E).injective`. Establish `hskew : ∀ u : AF F, cA σ (u • d) = -(u • d)` using `fun u => by rw [map_smul, hcd, smul_neg]`.
+
+Establish `hℓd : ∀ u : AF F, ℓ (u • d) = u` using `fun u => hinj (by`. Rewrite using `[hℓ _ (hskew u), Algebra.smul_def]`. Take the linear combination `(algebraMap (AF F) (AE F E) u) * hdd)`. Establish `hdℓ : ∀ c, cA σ c = -c → ℓ c • d = c` using `fun c hc => by`. Rewrite using `[Algebra.smul_def, hℓ c hc]`.
+
+Take the linear combination `c * hdd`. Establish `hl : Continuous (GlobalTheory.LatVac.liftV v)` using `Continuous.prodMk continuous_const (GlobalTheory.AdelicU.continuous_singleFin v)`. Use `haveI : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul _ _`. Establish `hld : Continuous fun a => GlobalTheory.LatVac.liftV v a • d` using `(IsModuleTopology.continuous_of_linearMap (LinearMap.toSpanSingleton (AF F) (AE F E) d)).comp hl`. Establish `he : Continuous (evFin F v)` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`.
+
+Use `⟨{ toFun := fun a => ⟨GlobalTheory.LatVac.liftV v a • d, fun u hu => by` and prove the remaining obligations. Rewrite using `[smul_smul, ← smul_eq_mul, GlobalTheory.LatVac.at_liftV v a u hu, zero_smul], hskew _⟩`. Use `invFun := fun c => evFin F v (ℓ c.1)`. Use `left_inv := fun a => by simp only [hℓd, GlobalTheory.LatVac.evFin_liftV]`. Use `right_inv := fun c => Subtype.ext ?_`.
+
+Use the proof step `map_add' := fun a b => Subtype.ext ?_`. Use `continuous_toFun := Continuous.subtype_mk (show Continuous fun a => GlobalTheory.LatVac.liftV v a • d from hld) _`. Use `continuous_invFun := he.comp (hℓc.comp continuous_subtype_val) }, fun u a => ?_⟩`. Use `show GlobalTheory.LatVac.liftV v (evFin F v (ℓ c.1)) • d = c.1`. Rewrite using `[← mul_one (evFin F v (ℓ c.1)), ← mul_liftV, mul_comm, mul_smul, hdℓ _ c.2.2]`.
+
+Conclude with `partFin_of_at c.2.1`. Use `show GlobalTheory.LatVac.liftV v (a + b) • d = GlobalTheory.LatVac.liftV v a • d + GlobalTheory.LatVac.liftV v b • d`. Rewrite using `[map_add, add_smul]`. Use `show GlobalTheory.LatVac.liftV v (evFin F v u * a) • d = u • GlobalTheory.LatVac.liftV v a • d`. Rewrite using `[← mul_liftV, mul_smul]`.
+-/
 theorem exists_skewAt_equiv (h : IsCMExt F E σ) (hσ : ∀ e, σ (σ e) = e) (v : Pl F) :
     ∃ φ : Fv F v ≃ₜ+ skewAt σ (evFin F v), ∀ (u : AF F) (a : Fv F v), (φ (evFin F v u * a)).1 = u • (φ a).1 := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -102,6 +136,19 @@ theorem exists_skewAt_equiv (h : IsCMExt F E σ) (hσ : ∀ e, σ (σ e) = e) (v
   · show GlobalTheory.LatVac.liftV v (evFin F v u * a) • d = u • GlobalTheory.LatVac.liftV v a • d
     rw [← mul_liftV, mul_smul]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨φ, hφ⟩` from `exists_skewAt_equiv h hσ v`.
+
+Use `set n : Fv F v := evFin F v (Algebra.norm (AF F) (t⁻¹ : (AE F E)ˣ).1) with hn`. Establish `hmul : n * evFin F v (Algebra.norm (AF F) t.1) = 1`. Rewrite using `[hn, ← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`. Establish `hn0 : n ≠ 0` using `left_ne_zero_of_mul_eq_one hmul`. Establish `habs : absE F E t = (‖n‖₊)⁻¹`.
+
+Rewrite using `[absE_of_mem ht, GlobalTheory.Doubling.absEv_unitFin, eq_inv_of_mul_eq_one_right hmul, nnnorm_inv]`. Establish `hμ : (ν.map φ.symm).IsAddHaarMeasure` using `φ.symm.isAddHaarMeasure_map ν`. Establish `key` using `GlobalTheory.CompanionTheory.SW.ProdFormula.map_mul_left_finite v n hn0 (ν.map φ.symm) hμ`. Establish `hm : Measurable φ` using `φ.continuous.measurable`. Establish `hm' : Measurable φ.symm` using `φ.symm.continuous.measurable`.
+
+Establish `hmn : Measurable fun x : Fv F v => n * x` using `(continuous_const_mul _).measurable`. Establish `e : (normSmul hσ (t⁻¹ : (AE F E)ˣ).1 : skewAt σ (evFin F v) → skewAt σ (evFin F v)) = φ ∘ ((fun x => n * x) ∘ φ.symm)`. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (t⁻¹ : (AE F E)ˣ).1 * cA σ (t⁻¹ : (AE F E)ˣ).1 * c.1 = (φ (n * φ.symm c)).1`.
+
+Rewrite using `[hn, hφ, ContinuousAddEquiv.apply_symm_apply, Algebra.smul_def, algebraMap_norm_cA h]`. Establish `e2 : (ν.map φ.symm).map φ = ν`. Rewrite using `[Measure.map_map hm hm', show φ ∘ φ.symm = id from funext φ.apply_symm_apply, Measure.map_id]`. Rewrite using `[e, ← Measure.map_map hm (hmn.comp hm'), ← Measure.map_map hmn hm']`. Use `(congrArg (Measure.map φ) key).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Measure.map_smul, e2, habs]`.
+-/
 theorem map_normSmul_inv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (hσ : ∀ e, σ (σ e) = e) (v : Pl F) (t : (AE F E)ˣ)
     (ht : t ∈ idelesAt E (evFin F v)) (ν : Measure (skewAt σ (evFin F v))) (hν : ν.IsAddHaarMeasure) :

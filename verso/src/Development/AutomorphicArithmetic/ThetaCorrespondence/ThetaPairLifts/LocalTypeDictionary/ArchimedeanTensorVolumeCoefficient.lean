@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
   GlobalTheory.FunObj.borelSpaceKw
 namespace GlobalTheory.ArchTens.VolSize
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hL` using `s.core.lev`. Establish `hde` using `Test.pde_ne_q s`. Introduce and unpack `Φ β hβ ⟨P, hl⟩`.
+
+Establish `hP : P ∈ ch.G.pl.W0` using `by classical`. Break down `Finset.mem_union.1 hl with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (fun hP => (hL.Q_ram A.μ0 P).2 (Or.inl hP) (by rw [hL.xi_base]; exact fun _ _ => rfl))`. Conclude with `(coef_le_of_chosen hL ch.S.toGridChoice A.μ0 Φ hde (GlobalTheory.RowTest.guard_of_qGuard s.guard A.μ0) hP hl hβ).trans (Real.exp_le_exp.2 (exponent_le P hC))`.
+-/
 theorem archimedean_tensor_volume_coefficient : _root_.GlobalTheory.FunPr.ThetaLocalInputs → BigC fun _ ch C _ => CoefAt ch C := by
   intro _
   refine ⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ => ?_⟩⟩⟩
@@ -32,6 +37,9 @@ end
 section
 open GlobalTheory.SumSize GlobalTheory.RowClaim GlobalTheory.ArchTens
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.ArchTens.VolSize.archimedean_tensor_volume_coefficient | exact _root_.GlobalTheory.ArchTens.VolSize.archimedean_tensor_volume_coefficient | (intros; apply _root_.GlobalTheory.ArchTens.VolSize.archimedean_tensor_volume_coefficient <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_tensor_volume_bound : _root_.GlobalTheory.FunPr.ThetaLocalInputs → BigC fun _ ch C _ => CoefAt ch C := by
   first | exact @_root_.GlobalTheory.ArchTens.VolSize.archimedean_tensor_volume_coefficient | exact _root_.GlobalTheory.ArchTens.VolSize.archimedean_tensor_volume_coefficient | (intros; apply _root_.GlobalTheory.ArchTens.VolSize.archimedean_tensor_volume_coefficient <;> assumption)
 end

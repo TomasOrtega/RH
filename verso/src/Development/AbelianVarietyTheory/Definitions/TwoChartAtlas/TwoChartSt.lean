@@ -234,10 +234,24 @@ def GermExSt : Prop := ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.
 section Basic₂
 open ReciprocityTheory.ChartRestriction.G.TB.WickVanishing
 
+/- English proof (translation)
+Unfold `toJet`. Rewrite using `[truncTotal_one (Nat.succ_ne_zero m), map_one]`.
+-/
 theorem toJet_one {κ : Type} [Finite κ] (m : ℕ) : toJet m (1 : MvPowerSeries κ R) = 1 := by
   unfold toJet
   rw [truncTotal_one (Nat.succ_ne_zero m), map_one]
 
+/- English proof (translation)
+Unfold `toJet`. Break down `m with _ | m` into its components or cases. Establish `h : truncTotal (0 + 1) (X j : MvPowerSeries κ R) = 0`. Use extensionality with `e`. Rewrite using `[coeff_truncTotal_eq_ite]`.
+
+Use `split_ifs with he`. Establish `: e = 0` using `(Finsupp.degree_eq_zero_iff e).1 (by omega)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Rewrite using `[h, map_zero]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem.2 (by`. Rewrite using `[zero_add, pow_one]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩)).symm`. Use `congr 1`.
+
+Use extensionality with `e`. Rewrite using `[coeff_truncTotal_eq_ite, MvPowerSeries.coeff_X, MvPolynomial.coeff_X']`. Distinguish the cases in `h : e = Finsupp.single j 1`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem toJet_X {κ : Type} [Finite κ] (m : ℕ) (j : κ) : toJet m (X j : MvPowerSeries κ R) = zR m j := by
   classical
   unfold toJet
@@ -261,6 +275,17 @@ theorem toJet_X {κ : Type} [Finite κ] (m : ℕ) (j : κ) : toJet m (X j : MvPo
       simp
     · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Establish `c : ∀ {n : ℕ} (j : Fin n), comp1 (pt R (n` using `1) d 0) (pt R (n := n) d j) = pt R d j := fun j => gt_comp1_pt _ (gp_pt j)`. Establish `e : ∀ {n : ℕ} (f : PS R n d), ev (fun j => pt R (n` using `n) d j) f = f := fun f => by`. Unfold `ev`. Conclude with `congrFun MvPowerSeries.subst_self f`. Establish `e2 : ∀ f : PS R 2 d, ev (n` using `2) ![pt R d 0, pt R d 1] f = f := fun f => by`.
+
+Establish `: (![pt R d 0, pt R d 1] : Fin 2 → Pt R 2 d) = fun j => pt R d j`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Rewrite using `[this, e]`. Establish `e3 : ∀ f : PS R 3 d, ev (n` using `3) ![pt R d 0, pt R d 1, pt R d 2] f = f := fun f => by`. Establish `: (![pt R d 0, pt R d 1, pt R d 2] : Fin 3 → Pt R 3 d) = fun j => pt R d j`.
+
+Apply the tactic sequence `funext j; fin_cases j <;> rfl`. Rewrite using `[this, e]`. Use `⟨⟨gp_pt 0, gp_pt 0, c 0, c 0⟩, ev_one _, ev_one _, fun i => ?_, fun a => ?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `hF : addOf B.G.F (pt R (n` using `2) d 0) (pt R (n := 2) d 1) = B.G.F := funext fun l => e2 _`. Unfold `transF`.
+
+Rewrite using `[c, c, hF]`. Conclude with `(congrFun (gt_comp1_pt (n := 2) B.G.F B.G.const) i).symm`. Rewrite using `[gt_comp1_pt_right, gt_comp1_pt _ (B.A.const a)]`. Simplify using `only [ev_one, c, e3, _root_.mul_one]`. Simplify using `only [ev_one, c, e3, _root_.mul_one]`.
+
+Simplify using `only [ev_one, c, e2, _root_.mul_one]`. Simplify using `only [ev_one, c, e2, _root_.mul_one]`.
+-/
 theorem Related.refl {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d O) :
     Related B B (pt R (n := 1) d 0) (pt R (n := 1) d 0) 1 := by
   have c : ∀ {n : ℕ} (j : Fin n), comp1 (pt R (n := 1) d 0) (pt R (n := n) d j) = pt R d j :=
@@ -287,6 +312,9 @@ theorem Related.refl {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB R d 
   · simp only [ev_one, c, e2, _root_.mul_one]
   · simp only [ev_one, c, e2, _root_.mul_one]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : ∑ i, primε i = 1 := by decide
 
 end Basic₂

@@ -34,18 +34,34 @@ def QPlOf (Tp : TupTied D C nch) (μ : D.what₂.Tup) : Type := {v : HeightOneSp
 
 def qvOf (Tp : TupTied D C nch) (μ : D.what₂.Tup) (v : QPlOf Tp μ) : ℕ := Ideal.absNorm v.1.asIdeal
 
+/- English proof (translation)
+The claim follows from `Set.Finite.mem_toFinset _`.
+-/
 theorem mem_QpOf (Tp : TupTied D C nch) (hf : XiRamFin Tp) (μ : D.what₂.Tup) (p : ℕ) :
     p ∈ QpOf Tp hf μ ↔ p.Prime ∧ ∃ w, OverP D.host p w ∧ ¬ (Tp.xi μ).UnrAt w :=
   Set.Finite.mem_toFinset _
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem unrAt_one {L : Type} [Field L] [NumberField L] (w : HeightOneSpectrum (𝓞 L)) : (1 : HChar L).UnrAt w :=
   fun _ _ => rfl
 
+/- English proof (translation)
+Introduce `x hx` and use `by show χ.loc w x * ψ.loc w x = 1 rw [hχ x hx, hψ x hx, one_mul]`.
+-/
 theorem unrAt_mul {L : Type} [Field L] [NumberField L] {χ ψ : HChar L} {w : HeightOneSpectrum (𝓞 L)}
     (hχ : χ.UnrAt w) (hψ : ψ.UnrAt w) : (χ * ψ).UnrAt w := fun x hx => by
   show χ.loc w x * ψ.loc w x = 1
   rw [hχ x hx, hψ x hx, one_mul]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hq).2 hne)`. Take `⟨a, b, hab⟩` from `hc`. Establish `h1' : (1 : 𝓞 D.host.E) ∈ w.asIdeal`. Establish `e : ((a : ℤ) : 𝓞 D.host.E) * ((p : ℕ) : 𝓞 D.host.E) + ((b : ℤ) : 𝓞 D.host.E) * ((q : ℕ) : 𝓞 D.host.E) = 1`.
+
+Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← e]`. Conclude with `w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h1) (w.asIdeal.mul_mem_left _ h2)`.
+
+Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1')`.
+-/
 theorem overP_unique {p q : ℕ} (hp : p.Prime) (hq : q.Prime) {w : HeightOneSpectrum (𝓞 D.host.E)}
     (h1 : OverP D.host p w) (h2 : OverP D.host q w) : p = q := by
   by_contra hne
@@ -60,6 +76,11 @@ theorem overP_unique {p q : ℕ} (hp : p.Prime) (hq : q.Prime) {w : HeightOneSpe
     exact w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ h1) (w.asIdeal.mul_mem_left _ h2)
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1')
 
+/- English proof (translation)
+Unfold `CharFrame.delAt`. Use `split_ifs with h`. Use `C.isDel'.unr w fun h' => D.host.pde_ne ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `overP_unique hl D.host.pde'_prime hw h'`.
+
+Use `C.isDel.unr w fun h' => h ?_` and prove the remaining obligations. Conclude with `overP_unique hl D.host.pde_prime hw h'`.
+-/
 theorem delAt_unr (l : ℕ) (hl : l.Prime) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : OverP D.host l w) :
     (C.delAt l).UnrAt w := by
   unfold CharFrame.delAt
@@ -70,12 +91,20 @@ theorem delAt_unr (l : ℕ) (hl : l.Prime) (w : HeightOneSpectrum (𝓞 D.host.E
   · refine C.isDel.unr w fun h' => h ?_
     exact overP_unique hl D.host.pde_prime hw h'
 
+/- English proof (translation)
+Use `Finset.eq_empty_iff_forall_notMem.2 fun p hp => ?_` and prove the remaining obligations. Take `⟨-, w, -, hw⟩` from `(mem_QpOf Tp hf _ p).1 hp`. Rewrite `hw` using `[Tp.trueColumnChoices_heckeChar_reference_eq_one]`. Conclude with `hw (unrAt_one w)`.
+-/
 theorem ramified_primes_trivial_tuple (Tp : TupTied D C nch) (hf : XiRamFin Tp) : QpOf Tp hf D.what₂.mu0 = ∅ := by
   refine Finset.eq_empty_iff_forall_notMem.2 fun p hp => ?_
   obtain ⟨-, w, -, hw⟩ := (mem_QpOf Tp hf _ p).1 hp
   rw [Tp.trueColumnChoices_heckeChar_reference_eq_one] at hw
   exact hw (unrAt_one w)
 
+/- English proof (translation)
+Introduce `hm`. Take `⟨-, v, hv, hnu⟩` from `(mem_QpOf Tp hf _ _).1 hm`. Distinguish the cases in `h0 : D.what₂.muAt w = D.what₂.mu0`. Rewrite `hnu` using `[h0, Tp.trueColumnChoices_heckeChar_reference_eq_one]`. Conclude with `hnu (unrAt_one v)`.
+
+Establish `ht : D.what₂.muAt w = D.what₂.muTw w` using `(D.what₂.muAt_or w).resolve_left h0`. Rewrite `hnu` using `[ht, Tp.xi_tw]`. Conclude with `hnu (unrAt_mul (delAt_unr _ (D.what₂.places.resChar_prime w) v hv) (fun x _ => (Tp.psi_is w h0).atl v hv x))`.
+-/
 theorem QpOf_muAt (Tp : TupTied D C nch) (hf : XiRamFin Tp) (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w ∉ QpOf Tp hf (D.what₂.muAt w) := by
   intro hm
@@ -88,12 +117,20 @@ theorem QpOf_muAt (Tp : TupTied D C nch) (hf : XiRamFin Tp) (w : D.what₂.place
     exact hnu (unrAt_mul (delAt_unr _ (D.what₂.places.resChar_prime w) v hv)
       (fun x _ => (Tp.psi_is w h0).atl v hv x))
 
+/- English proof (translation)
+Introduce `hm`. Take `⟨-, w, hw, hnu⟩` from `(mem_QpOf Tp hf _ _).1 hm`. Conclude with `hnu (hg μ i w hw)`.
+-/
 theorem QpOf_g (Tp : TupTied D C nch) (hf : XiRamFin Tp) (hg : XiUnrG Tp) (μ : D.what₂.Tup) (i) :
     D.host.g i ∉ QpOf Tp hf μ := by
   intro hm
   obtain ⟨-, w, hw, hnu⟩ := (mem_QpOf Tp hf _ _).1 hm
   exact hnu (hg μ i w hw)
 
+/- English proof (translation)
+Establish `hw' : w ∈ {P : HeightOneSpectrum (𝓞 D.host.E) | P.under (𝓞 D.host.F) = v}` using `(Set.Finite.mem_toFinset (finite_aboveF _ v)).1 hw`. Use `replace hw' : w.under (𝓞 D.host.F) = v := hw'`. Establish `h0 : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal`. Rewrite using `[hw']`. Conclude with `Ideal.absNorm_mem _`.
+
+Establish `h1` using `Ideal.mem_comap.1 h0`. Rewrite `h1` using `[map_natCast]`. Conclude with `h1`.
+-/
 theorem absNorm_mem_above (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ aboveF (L := D.host.E) D.host.F v) : OverP D.host (Ideal.absNorm v.asIdeal) w := by
   have hw' : w ∈ {P : HeightOneSpectrum (𝓞 D.host.E) | P.under (𝓞 D.host.F) = v} :=
@@ -105,12 +142,18 @@ theorem absNorm_mem_above (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOne
   rw [map_natCast] at h1
   exact h1
 
+/- English proof (translation)
+Use `⟨qvOf Tp μ v, ?_, hd μ v.1 v.2, rfl⟩` and prove the remaining obligations. Take `⟨w, hw, hnu⟩` from `v.2`. Conclude with `(mem_QpOf Tp hf _ _).2 ⟨hd μ v.1 v.2, w, absNorm_mem_above v.1 w hw, hnu⟩`.
+-/
 theorem qvOf_char (Tp : TupTied D C nch) (hf : XiRamFin Tp) (hd : QDegOne Tp) (μ : D.what₂.Tup) (v : QPlOf Tp μ) :
     ∃ p ∈ QpOf Tp hf μ, p.Prime ∧ qvOf Tp μ v = p := by
   refine ⟨qvOf Tp μ v, ?_, hd μ v.1 v.2, rfl⟩
   obtain ⟨w, hw, hnu⟩ := v.2
   exact (mem_QpOf Tp hf _ _).2 ⟨hd μ v.1 v.2, w, absNorm_mem_above v.1 w hw, hnu⟩
 
+/- English proof (translation)
+The claim follows from `mem_QpOf Tp hf μ p`.
+-/
 theorem mem_QpOf_iff (Tp : TupTied D C nch) (hf : XiRamFin Tp) (μ p) :
     p ∈ QpOf Tp hf μ ↔ p.Prime ∧ ∃ w, OverP D.host p w ∧ ¬ (Tp.xi μ).UnrAt w := mem_QpOf Tp hf μ p
 
@@ -122,15 +165,28 @@ def vddOf (pr : ℕ → D.what₂.Tau → HeightOneSpectrum (𝓞 D.host.E)) (p 
     (mult (pr p τ) (differentIdeal ℤ (𝓞 D.host.E)) : ℝ) / (mult (pr p τ) (Ideal.span {((p : ℕ) : 𝓞 D.host.E)}) : ℝ)
   else 0
 
+/- English proof (translation)
+Unfold `vddOf`. Use `split_ifs`. Conclude with `div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Conclude with `le_rfl`.
+-/
 theorem vddOf_nonneg (pr : ℕ → D.what₂.Tau → HeightOneSpectrum (𝓞 D.host.E)) (p τ) : 0 ≤ vddOf pr p τ := by
   unfold vddOf
   split_ifs
   · exact div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
   · exact le_rfl
 
+/- English proof (translation)
+The claim follows from `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors (Multiset.count_ne_zero.1 h)`.
+-/
 theorem dvd_of_mult_ne {P : HeightOneSpectrum (𝓞 D.host.E)} {I : Ideal (𝓞 D.host.E)} (h : mult P I ≠ 0) : P.asIdeal ∣ I :=
   UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors (Multiset.count_ne_zero.1 h)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `hc : IsCoprime (p : ℤ) (Ideal.absNorm P.asIdeal : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hn)`. Take `⟨a, b, hab⟩` from `hc`. Establish `h1 : (1 : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `e : ((a : ℤ) : 𝓞 D.host.E) * ((p : ℕ) : 𝓞 D.host.E) + ((b : ℤ) : 𝓞 D.host.E) * ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 D.host.E) = 1`.
+
+Use `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← e]`. Conclude with `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ h) (P.asIdeal.mul_mem_left _ (Ideal.absNorm_mem _))`.
+
+Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem prime_dvd_absNorm {p : ℕ} (hp : p.Prime) {P : HeightOneSpectrum (𝓞 D.host.E)} (h : ((p : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) :
     p ∣ Ideal.absNorm P.asIdeal := by
   by_contra hn
@@ -146,6 +202,13 @@ theorem prime_dvd_absNorm {p : ℕ} (hp : p.Prime) {P : HeightOneSpectrum (𝓞 
     exact P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ h) (P.asIdeal.mul_mem_left _ (Ideal.absNorm_mem _))
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
+/- English proof (translation)
+Unfold `vddOf`. Use `split_ifs with hp`. Distinguish the cases in `h2 : mult (pr p τ) (Ideal.span {((p : ℕ) : 𝓞 D.host.E)}) = 0`. Rewrite using `[h2, Nat.cast_zero, div_zero]`. Distinguish the cases in `h1 : mult (pr p τ) (differentIdeal ℤ (𝓞 D.host.E)) = 0`.
+
+Rewrite using `[h1, Nat.cast_zero, zero_div]`. It suffices to derive a contradiction. Apply `hu` to reduce the goal to its premises. Establish `hin : ((p : ℕ) : 𝓞 D.host.E) ∈ (pr p τ).asIdeal` using `Ideal.dvd_span_singleton.1 (dvd_of_mult_ne h2)`. Establish `hd : Ideal.absNorm (pr p τ).asIdeal ∣ Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.E))` using `Ideal.absNorm_dvd_absNorm_of_le (Ideal.le_of_dvd (dvd_of_mult_ne h1))`.
+
+Rewrite `hd` using `[NumberField.absNorm_differentIdeal D.host.E (𝓞 D.host.E)]`. Conclude with `(prime_dvd_absNorm hp hin).trans hd`. Both sides reduce to the same expression.
+-/
 theorem vddOf_unram (pr : ℕ → D.what₂.Tau → HeightOneSpectrum (𝓞 D.host.E)) (p τ) (hu : DV.UnramE D p) : vddOf pr p τ = 0 := by
   unfold vddOf
   split_ifs with hp
@@ -165,6 +228,9 @@ theorem vddOf_unram (pr : ℕ → D.what₂.Tau → HeightOneSpectrum (𝓞 D.ho
 def XiRamFinE (Tp : TupTied D C nch) : Prop :=
   ∀ μ, {w : HeightOneSpectrum (𝓞 D.host.E) | ¬ (Tp.xi μ).UnrAt w}.Finite
 
+/- English proof (translation)
+Introduce `μ` and use `by constructor · refine ((h μ).biUnion fun w _ => (Finset.finite_toSet (Ideal.absNorm w.asIdeal).divisors)).subset ?_ rintro p ⟨hp, w, hw, hnu⟩ refine Set.mem_iUnion₂.2 ⟨w, hnu, ?_⟩ have hn : Ideal.absNorm w.asIdeal ≠ 0 := fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0) exact …`.
+-/
 theorem xiRamFin_of (Tp : TupTied D C nch) (h : XiRamFinE Tp) : XiRamFin Tp := fun μ => by
   constructor
   · refine ((h μ).biUnion fun w _ => (Finset.finite_toSet (Ideal.absNorm w.asIdeal).divisors)).subset ?_
@@ -178,9 +244,15 @@ theorem xiRamFin_of (Tp : TupTied D C nch) (h : XiRamFinE Tp) : XiRamFin Tp := f
       (Set.Finite.mem_toFinset (finite_aboveF _ v)).1 hw
     exact ⟨w, hnu, hw'⟩
 
+/- English proof (translation)
+Introduce `μ` and use `Filter.eventually_cofinite.1 (HChar.unr_ae (unrAE D.host.E) (Tp.xi μ))`.
+-/
 theorem xiRamFinE (Tp : TupTied D C nch) : XiRamFinE Tp := fun μ =>
   Filter.eventually_cofinite.1 (HChar.unr_ae (unrAE D.host.E) (Tp.xi μ))
 
+/- English proof (translation)
+The claim follows from `xiRamFin_of Tp (xiRamFinE Tp)`.
+-/
 theorem xiRamFin (Tp : TupTied D C nch) : XiRamFin Tp := xiRamFin_of Tp (xiRamFinE Tp)
 
 structure ConjAt (D : D7) where
@@ -206,6 +278,9 @@ open Classical in
 def logLamOf (A : (D.what₂.LL →+* ℂ) → ConjAt D) (j : ℕ) (π : D.what₂.FT) (e : D.what₂.LL →+* ℂ) : ℝ :=
   if e = D.what₂.embLL then Real.log (D.what₂.lamP D.what₂.mu0 j π) else Real.log (lamAt (A e) j π)
 
+/- English proof (translation)
+The claim follows from `if_pos rfl`.
+-/
 theorem logLamOf_base (A : (D.what₂.LL →+* ℂ) → ConjAt D) (j π) :
     logLamOf A j π D.what₂.embLL = Real.log (D.what₂.lamP D.what₂.mu0 j π) := if_pos rfl
 

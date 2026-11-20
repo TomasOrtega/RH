@@ -9,6 +9,9 @@ open scoped InnerProductSpace ContDiff
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.IwaLevi
 
+/- English proof (translation)
+Introduce `{_ _ ε j W} hW hj` and use `GlobalTheory.CompanionTheory.LeviIwa.iwaOn_leviOne ε j W hW hj`.
+-/
 theorem exists_unitary_iwasawa_leviOne : ∀ {n a : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a}
     (hW : IsIsoFlag ε j W) (hj : ∀ i, 1 ≤ j i), ∃ U ∈ Matrix.unitaryGroup (Fin n) ℂ,
       ∀ g ∈ mats (leviOne ε W), ∃ k ∈ maxCpt (mats (leviOne ε W)), ∃ s ∈ mats (leviOne ε W),

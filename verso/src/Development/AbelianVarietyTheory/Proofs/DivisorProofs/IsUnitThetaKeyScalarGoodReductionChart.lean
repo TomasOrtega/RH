@@ -18,6 +18,11 @@ open scoped LaurentSeries
 
 namespace GlobalTheory.KeyUnitGood
 
+/- English proof (translation)
+Break down `ValuationRing.isInteger_or_isInteger R x with ⟨r, hr⟩ | ⟨r, hr⟩` into its components or cases. Establish `h : e r = u` using `IsFractionRing.injective A B (by rw [← hla, hr, hx])`. Take `⟨v, rfl⟩ : IsUnit r` from `isUnit_of_map_unit e r (h ▸ u.isUnit)`. Conclude with `⟨v, hr.symm⟩`. Establish `h : e r = (u⁻¹ : Aˣ)` using `IsFractionRing.injective A B (by rw [← hla, hr, map_inv₀, hx, map_units_inv])`.
+
+Take `⟨v, rfl⟩ : IsUnit r` from `isUnit_of_map_unit e r (h ▸ (u⁻¹).isUnit)`. Conclude with `⟨v⁻¹, by rw [map_units_inv, hr, inv_inv]⟩`.
+-/
 theorem exists_unit_of_map {R K A B : Type} [CommRing R] [IsDomain R] [ValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] [CommRing A] [Field B] [Algebra A B] [IsFractionRing A B] (e : R →+* A)
     [IsLocalHom e] (la : K →+* B) (hla : ∀ r, la (algebraMap R K r) = algebraMap A B (e r)) (x : K) (u : Aˣ)
@@ -30,6 +35,21 @@ theorem exists_unit_of_map {R K A B : Type} [CommRing R] [IsDomain R] [Valuation
     obtain ⟨v, rfl⟩ : IsUnit r := isUnit_of_map_unit e r (h ▸ (u⁻¹).isUnit)
     exact ⟨v⁻¹, by rw [map_units_inv, hr, inv_inv]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y κ hκ M R K _ _ _ _ _ _ _ z hz y hy hab x hx`. Establish `: CharZero R` using `(algebraMap R K).charZero`. Take `⟨T, i, hi, hil⟩ : ∃ (T : Formalism.L2.Pj.CDVR) (i : R →+* T.V), Function.Injective i ∧ IsLocalHom i` from `⟨GlobalTheory.CountableCompletion.completionCDVR R, algebraMap R (AdicCompletion (IsLocalRing.maximalIdeal R) R), GlobalTheory.algebraMap_adicCompletion_injective_of_dvr R, inferInstance⟩`. Establish `hiF : Function.Injective ((algebraMap T.V T.Fr).comp i)` using `(IsFractionRing.injective T.V T.Fr).comp hi`. Set `iK : K →+* T.Fr` to `IsFractionRing.lift hiF`.
+
+Establish `hiK : ∀ r, iK (algebraMap R K r) = algebraMap T.V T.Fr (i r)` using `fun r => IsFractionRing.lift_algebraMap hiF r`. Establish `hsq : spMap iK ≫ spMap (algebraMap R K) = spMap (algebraMap T.V T.Fr) ≫ spMap i`. Rewrite using `[← GlobalTheory.KeyAtBC.spMap_comp₀, ← GlobalTheory.KeyAtBC.spMap_comp₀]`. Conclude with `congrArg spMap (RingHom.ext hiK)`. Establish `hpt : spMap iK ≫ spMap (algebraMap R K) ≫ z = spMap (algebraMap T.V T.Fr) ≫ spMap i ≫ z`.
+
+Rewrite using `[← Category.assoc, hsq, Category.assoc]`. Take `⟨t, ⟨m⟩⟩` from `exists_sab (spMap i ≫ z) Y.t`. Take `⟨tK, ⟨mK⟩⟩` from `exists_sab (spMap (algebraMap T.V T.Fr)) t`. Take `⟨n, -⟩` from `ObjMaps.exists_sab_comp m mK`. Establish `hj : spMap (algebraMap T.V T.Fr) ≫ spMap i ≫ z = (spMap iK ≫ y) ≫ Y.j`.
+
+Rewrite using `[← hpt, Category.assoc, hy]`. Take `⟨n₁, -⟩` from `ObjMaps.exists_sab_cancel (show SABMap Y.oF.t Y.t Y.j from Y.m) (hj ▸ n)`. Take `⟨n₂, -⟩` from `ObjMaps.exists_sab_comp Y.m0.toSABMap n₁`. Establish `hp : IsProper t.G.hom` using `GlobalTheory.GoodProper.isProper_of_abLocus_eq_univ E H D l Xo T _ t tK n₂ mK (Set.eq_univ_of_forall fun q => (abLocus_pullback abLocusOne Y.t.semi m.cart.1 q).1 (hab ⟨spMap i q, (Scheme.Hom.comp_apply _ _ _).symm⟩))`. Take `⟨-, hA, hK⟩` from `GlobalTheory.GenericPol.proper_ample_kTriv (show SABMap Y.oF.t Y.t Y.j from Y.m) Y.oF.proper Y.oF.ample Y.oF.ktriv n (by`.
+
+Rewrite using `[hj]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩)`. Establish `hA' : Out.RelAmple t.G t.PP.L` using `GlobalTheory.GoodPol.relAmple_of_generic GlobalTheory.firstFiveLaws.1 ⟨inferInstance, t.semi.smooth, hp, t.semi.geomConnected⟩ t.cub mK.cart tK.PP.isLB (GlobalTheory.LN.GenericPoint.lbIso_of_sabMap mK) hA hK`. Take `⟨x', hx'⟩` from `GlobalTheory.KeyPow.exists_keyPB_ring x iK`.
+
+Establish `hzT : ⊤ ≤ (spMap i ≫ z) ⁻¹ᵁ M.U` using `le_preimage_comp _ hz`. Establish `h₁ : KeyAt M (spMap (algebraMap T.V T.Fr) ≫ spMap i ≫ z) (le_preimage_comp _ hzT) x'`. Establish `cast : ∀ (p q : Sp T.Fr ⟶ Y.X) (_ : p = q) hp hq, KeyAt M p hp x' → KeyAt M q hq x'`. Introduce and unpack `p q rfl _ _ h`. Conclude with `h`.
+
+Conclude with `cast _ _ hpt _ _ (GlobalTheory.KeyAtBC.keyAt_of_keyPB hx hx')`. Take `⟨xT, -, hT⟩` from `GlobalTheory.KeyAtFam.exists_keyAt_of_point M hzT m hp hA' _ h₁`. Take `⟨u, hu, -⟩` from `hκ.2.2.1 T.V T.Fr xT x' (GlobalTheory.KeyAtBC.keyPB_of_keyAt hT h₁)`. Conclude with `exists_unit_of_map i iK hiK _ u ((hκ.2.1 K T.Fr iK x x' hx').symm.trans hu)`.
+-/
 theorem isUnit_key_of_good : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), ∀ κ : KeyRule, IsKeyRule κ → ∀ (M : GChart Y) (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] (z : Sp R ⟶ Y.X) (hz : ⊤ ≤ z ⁻¹ᵁ M.U) (y : Sp K ⟶ Xo.XF c), y ≫ Y.j = spMap (algebraMap R K) ≫ z → Set.range z ⊆ abLocus Y.t.G → ∀ x : KeyIn K, KeyAt M (spMap (algebraMap R K) ≫ z) (le_preimage_comp _ hz) x → ∃ u : Rˣ, (κ K x : K) = algebraMap R K u := by
   intro E _ _ _ H D l Xo c O _ β Y κ hκ M R K _ _ _ _ _ _ _ z hz y hy hab x hx
   have : CharZero R := (algebraMap R K).charZero

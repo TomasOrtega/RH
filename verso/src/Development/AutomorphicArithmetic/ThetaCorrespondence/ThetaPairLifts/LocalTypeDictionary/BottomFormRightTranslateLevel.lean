@@ -18,6 +18,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 noncomputable section
 namespace GlobalTheory.BottomLevel
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX`. Establish `hψ` using `hX.is.isVac.1`. Establish `hθ : IsInfFam W.θ` using `hX.is.isVac.2.inf`. Establish `hf : ∀ t, IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f t)` using `fun t => GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ (hX.is.fst t) hX.is.isVac.2.theta`. Use `choose U hUo hU using fin_vec_fix hX`.
+
+Use `⟨⨅ t, U t, ⊥, ?_, inferInstance, fun t κ hκ hκf => ⟨1, one_mem _, fun P x => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun t => hUo t`. Establish `hfix` using `hU t κ (Subgroup.mem_iInf.1 hκ t) hκf`. Establish `hW` using `hX.is.weil t`.
+
+Establish `hpt` using `GlobalTheory.OrientedHeis.om_fin_pureTensorO _ _ _ _ _ _ hW W.θ hθ 1 (one_mem _) κ hκf (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P (hf t)`. Establish `e1 : ∀ g, (X.ω t).toSgn true (1, κ) g = X.ω t (1, κ) g`. Introduce `g`. Simplify using `[GlobalTheory.Grid.WRep.toSgn]`. Rewrite using `[one_mul]`.
+
+Unfold `Tri.I Tri.ker thetaKO`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `hm : ((g, x * κ) : GA D A × GA D WW) = (g, x) * (1, κ)` using `by simp`. Rewrite using `[hm, map_mul, Module.End.mul_apply, ← e1, hpt, e1, hfix]`.
+-/
 theorem rightTranslate_preserves_level : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
@@ -61,6 +70,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BottomLevel.rightTranslate_preserves_level | exact _root_.GlobalTheory.BottomLevel.rightTranslate_preserves_level | (intros; apply _root_.GlobalTheory.BottomLevel.rightTranslate_preserves_level <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bottomForm_rightTranslate_level : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

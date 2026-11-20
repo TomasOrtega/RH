@@ -14,12 +14,18 @@ namespace PositivityTheory.Pf1.SegRepC.Lift
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `isSmooth_parInd _ _`.
+-/
 theorem isSmooth_multiProd_segTerm {d : ℕ} (σ : IrrRep (GL (Fin d) k)) (l : ℕ) :
     IsSmooth (multiProd (consecBlocks l d) (segTerm σ.ρ l)) :=
   isSmooth_parInd _ _
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+The claim follows from `h.trans (GlobalTheory.JacquetExact.isSubquotient_jac (d := fun _ => d) (consecBlocks l d) (isSmooth_multiProd_segTerm σ l) (IsSubquotient.of_injective ⟨S.toSubmodule.subtype, fun _ => rfl⟩ Subtype.val_injective))`.
+-/
 theorem isSubquotient_jac_multiProd_of_sub {d l : ℕ} (σ : IrrRep (GL (Fin d) k))
     (S : Subrepresentation (multiProd (consecBlocks l d) (segTerm σ.ρ l)))
     {X : Type} [AddCommGroup X] [Module ℂ X] {π : Representation ℂ (Levi k fun _ : Fin l => Fin d) X}
@@ -29,6 +35,13 @@ theorem isSubquotient_jac_multiProd_of_sub {d l : ℕ} (σ : IrrRep (GL (Fin d) 
     (isSmooth_multiProd_segTerm σ l)
     (IsSubquotient.of_injective ⟨S.toSubmodule.subtype, fun _ => rfl⟩ Subtype.val_injective))
 
+/- English proof (translation)
+Consider the cases of `l with`. Consider the case `zero => exact Subsingleton.elim _ _`. Consider the case `succ n`. Establish `hm : StrictMono w.symm` using `Fin.strictMono_iff_lt_succ.2 fun i => h i.1 (by omega)`. Establish `he : ∀ y, w.symm y = y` using `fun y => by`.
+
+Use `congrArg (fun e : Fin (n + 1) ≃o Fin (n + 1) => e y) (Subsingleton.elim (hm.orderIsoOfSurjective _ w.symm.surjective) (OrderIso.refl _))` as an intermediate fact. Simplify using `using this`. Use extensionality with `x`. Establish `hx` using `he (w x)`. Simplify using `only [Equiv.symm_apply_apply] at hx`.
+
+Simplify using `[← hx]`.
+-/
 theorem perm_eq_one_of_lt_succ {l : ℕ} (w : Equiv.Perm (Fin l))
     (h : ∀ (i : ℕ) (hi : i + 1 < l), w.symm ⟨i, by omega⟩ < w.symm ⟨i + 1, hi⟩) : w = 1 := by
   cases l with

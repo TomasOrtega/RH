@@ -8,6 +8,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility TensorProduct
 noncomputable section
 namespace GlobalTheory.LeviCut
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h1`. Take `⟨w, rfl⟩` from `h2`. Establish `hw : LinearMap.lTensor N1 N2.mkQ w = 0`. Apply `Module.Flat.rTensor_preserves_injective_linearMap (M := M2 ⧸ N2) N1.subtype N1.injective_subtype` to reduce the goal to its premises. Rewrite using `[map_zero, ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor, ← LinearMap.lTensor_comp_rTensor, LinearMap.comp_apply, ← hu, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`.
+
+Establish `: N2.mkQ ∘ₗ N2.subtype = 0` using `by ext x; simp`. Rewrite using `[this, LinearMap.lTensor_zero, LinearMap.zero_apply]`. Take `⟨w', hw'⟩` from `(lTensor_exact N1 (LinearMap.exact_subtype_mkQ N2) N2.mkQ_surjective w).1 hw`. Use `⟨w', ?_⟩` and prove the remaining obligations. Rewrite using `[← hw', ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor]`.
+-/
 theorem mem_range_map_of_flat {M1 M2 : Type} [AddCommGroup M1] [AddCommGroup M2]
     (N1 : Submodule ℤ M1) (N2 : Submodule ℤ M2) [Module.Flat ℤ (M2 ⧸ N2)] (z : M1 ⊗[ℤ] M2)
     (h1 : z ∈ LinearMap.range (LinearMap.lTensor M1 N2.subtype))
@@ -25,6 +30,11 @@ theorem mem_range_map_of_flat {M1 M2 : Type} [AddCommGroup M1] [AddCommGroup M2]
   refine ⟨w', ?_⟩
   rw [← hw', ← LinearMap.comp_apply, LinearMap.rTensor_comp_lTensor]
 
+/- English proof (translation)
+Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨⟨c, hc⟩, hcx⟩` from `(Submodule.mem_torsion_iff x).1 hx`. Take `⟨f, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`.
+
+Establish `: c • f ∈ dualWeyl ℤ q q ν`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`. Simplify using `using hcx`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `dualWeylSat ℤ q q ν c f hc0 this`.
+-/
 theorem flat_quot_dualWeyl (q : ℕ) (ν : Fin q → ℕ) :
     Module.Flat ℤ (MvPolynomial (Fin q × Fin q) ℤ ⧸ dualWeyl ℤ q q ν) := by
   rw [IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]
@@ -37,6 +47,11 @@ theorem flat_quot_dualWeyl (q : ℕ) (ν : Fin q → ℕ) :
   rw [Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
   exact dualWeylSat ℤ q q ν c f hc0 this
 
+/- English proof (translation)
+Unfold `bideterminant initMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem bidet_map' {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {r n K : ℕ} (sz : Fin K → ℕ)
     (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin r) :
     map φ (bideterminant R sz hsz I) = bideterminant S sz hsz I := by
@@ -73,6 +88,11 @@ def phiL (p q : ℕ) : MvPolynomial (Fin p × Fin p) (MvPolynomial (Fin q × Fin
   eval₂Hom (Algebra.TensorProduct.includeRight : MvPolynomial (Fin q × Fin q) ℤ →ₐ[ℤ] _).toRingHom
     (fun v => X v ⊗ₜ 1)
 
+/- English proof (translation)
+Establish `: (phiR p q).comp ((aeval (psiR p q)).toRingHom.comp (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ))) = (resT ℤ p q).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `RingHom.congr_fun (RingHom.ext_int (((phiR p q).comp ((aeval (psiR p q)).toRingHom.comp (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ)))).comp C) ((resT ℤ p q).toRingHom.comp C)) r`. Introduce and unpack `⟨i, j⟩`.
+
+Apply the tactic sequence `induction i using Fin.addCases <;> induction j using Fin.addCases <;> (simp [phiR, psiR, resT, resVarT])`. Conclude with `DFunLike.congr_fun this f`.
+-/
 theorem phiR_psiR (p q : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ) :
     phiR p q (aeval (psiR p q) (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ) f)) = resT ℤ p q f := by
   have : (phiR p q).comp ((aeval (psiR p q)).toRingHom.comp (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ))) = (resT ℤ p q).toRingHom := by
@@ -84,6 +104,11 @@ theorem phiR_psiR (p q : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ
         (simp [phiR, psiR, resT, resVarT])
   exact DFunLike.congr_fun this f
 
+/- English proof (translation)
+Establish `: (phiL p q).comp ((aeval (psiL p q)).toRingHom.comp (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ))) = (resT ℤ p q).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `RingHom.congr_fun (RingHom.ext_int (((phiL p q).comp ((aeval (psiL p q)).toRingHom.comp (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ)))).comp C) ((resT ℤ p q).toRingHom.comp C)) r`. Introduce and unpack `⟨i, j⟩`.
+
+Apply the tactic sequence `induction i using Fin.addCases <;> induction j using Fin.addCases <;> (simp [phiL, psiL, resT, resVarT])`. Conclude with `DFunLike.congr_fun this f`.
+-/
 theorem phiL_psiL (p q : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ) :
     phiL p q (aeval (psiL p q) (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ) f)) = resT ℤ p q f := by
   have : (phiL p q).comp ((aeval (psiL p q)).toRingHom.comp (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ))) = (resT ℤ p q).toRingHom := by
@@ -95,6 +120,11 @@ theorem phiL_psiL (p q : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ
         (simp [phiL, psiL, resT, resVarT])
   exact DFunLike.congr_fun this f
 
+/- English proof (translation)
+Establish `: (phiR p q).comp (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ)) = (Algebra.TensorProduct.includeRight : _ →ₐ[ℤ] MvPolynomial (Fin p × Fin p) ℤ ⊗[ℤ] _).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `RingHom.congr_fun (RingHom.ext_int (((phiR p q).comp (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ))).comp C) (((Algebra.TensorProduct.includeRight : _ →ₐ[ℤ] MvPolynomial (Fin p × Fin p) ℤ ⊗[ℤ] _).toRingHom).comp C)) r`. Introduce `v`.
+
+Use the proof step `(simp [phiR])`. Conclude with `DFunLike.congr_fun this h`.
+-/
 theorem phiR_map (p q : ℕ) (h : MvPolynomial (Fin q × Fin q) ℤ) :
     phiR p q (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ) h) = 1 ⊗ₜ h := by
   have : (phiR p q).comp (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ)) =
@@ -105,6 +135,11 @@ theorem phiR_map (p q : ℕ) (h : MvPolynomial (Fin q × Fin q) ℤ) :
     intro v; (simp [phiR])
   exact DFunLike.congr_fun this h
 
+/- English proof (translation)
+Establish `: (phiL p q).comp (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ)) = (Algebra.TensorProduct.includeLeft : _ →ₐ[ℤ] _ ⊗[ℤ] MvPolynomial (Fin q × Fin q) ℤ).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `RingHom.congr_fun (RingHom.ext_int (((phiL p q).comp (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ))).comp C) (((Algebra.TensorProduct.includeLeft : _ →ₐ[ℤ] _ ⊗[ℤ] MvPolynomial (Fin q × Fin q) ℤ).toRingHom).comp C)) r`. Introduce `v`.
+
+Use the proof step `(simp [phiL])`. Conclude with `DFunLike.congr_fun this h`.
+-/
 theorem phiL_map (p q : ℕ) (h : MvPolynomial (Fin p × Fin p) ℤ) :
     phiL p q (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ) h) = h ⊗ₜ 1 := by
   have : (phiL p q).comp (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ)) =
@@ -115,6 +150,11 @@ theorem phiL_map (p q : ℕ) (h : MvPolynomial (Fin p × Fin p) ℤ) :
     intro v; (simp [phiL])
   exact DFunLike.congr_fun this h
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hx`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a n => exact ⟨(u * a) ⊗ₜ n, by simp⟩`. Consider the case `add x y hx hy => rw [map_add, mul_add]`.
+
+Conclude with `add_mem hx hy`.
+-/
 theorem mul_mem_range_lTensor {A B : Type} [CommRing A] [CommRing B] (N : Submodule ℤ B) (u : A)
     (x : A ⊗[ℤ] B) (hx : x ∈ LinearMap.range (LinearMap.lTensor A N.subtype)) :
     (u ⊗ₜ (1 : B)) * x ∈ LinearMap.range (LinearMap.lTensor A N.subtype) := by
@@ -124,6 +164,11 @@ theorem mul_mem_range_lTensor {A B : Type} [CommRing A] [CommRing B] (N : Submod
   | tmul a n => exact ⟨(u * a) ⊗ₜ n, by simp⟩
   | add x y hx hy => rw [map_add, mul_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hx`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul n b => exact ⟨n ⊗ₜ (u * b), by simp⟩`. Consider the case `add x y hx hy => rw [map_add, mul_add]`.
+
+Conclude with `add_mem hx hy`.
+-/
 theorem mul_mem_range_rTensor {A B : Type} [CommRing A] [CommRing B] (N : Submodule ℤ A) (u : B)
     (x : A ⊗[ℤ] B) (hx : x ∈ LinearMap.range (LinearMap.rTensor B N.subtype)) :
     ((1 : A) ⊗ₜ u) * x ∈ LinearMap.range (LinearMap.rTensor B N.subtype) := by
@@ -133,6 +178,19 @@ theorem mul_mem_range_rTensor {A B : Type} [CommRing A] [CommRing B] (N : Submod
   | tmul n b => exact ⟨n ⊗ₜ (u * b), by simp⟩
   | add x y hx hy => rw [map_add, mul_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Establish `hg : aeval (psiR p q) (map (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ) f) ∈ dualWeyl (MvPolynomial (Fin p × Fin p) ℤ) q q (fun j => ν (Fin.natAdd p j))`. Use `hS (MvPolynomial (Fin p × Fin p) ℤ) q (p + q) (Fin.natAdd p) (Fin.strictMono_natAdd p) (psiR p q) ?_ ?_ ?_ ν _ (dualWeylMap ℤ _ C _ _ ν f hf)` and prove the remaining obligations. Introduce `a s`. Simplify using `[psiR]`. Introduce `x s hx`.
+
+Proceed by induction on `x using Fin.addCases with`. Consider the case `left a => simp [psiR]`. Consider the case `right b => exact absurd ⟨b, rfl⟩ hx`. Introduce `x y hy`. Proceed by induction on `y using Fin.addCases with`.
+
+Consider the case `right t => exact absurd ⟨t, rfl⟩ hy`. Consider the case `left s`. Proceed by induction on `x using Fin.addCases with`. Consider the case `left a => exact ⟨X (a, s), by simp [psiR]⟩`. Consider the case `right b => exact ⟨0, by simp [psiR]⟩`.
+
+Rewrite `hg` using `[standardMonomialSpanDomain]`. Rewrite using `[← phiR_psiR]`. Use `Submodule.span_induction (p := fun g _ => phiR p q g ∈ LinearMap.range (LinearMap.lTensor (MvPolynomial (Fin p × Fin p) ℤ) (dualWeyl ℤ q q (fun j => ν (Fin.natAdd p j))).subtype)) ?_ ?_ ?_ ?_ hg` and prove the remaining obligations. Introduce and unpack `g ⟨K, sz, hsz, I, hsh, rfl⟩`. Rewrite using `[← bidet_map' (C : ℤ →+* MvPolynomial (Fin p × Fin p) ℤ), phiR_map]`.
+
+Conclude with `⟨1 ⊗ₜ ⟨bideterminant ℤ sz hsz I, hsh ▸ bidetMem ℤ q q K sz hsz I⟩, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+
+Introduce `u x _ hx`. Rewrite using `[smul_eq_C_mul, map_mul]`. Establish `: phiR p q (C u) = u ⊗ₜ 1` using `by simp [phiR]`. Rewrite using `[this]`. Conclude with `mul_mem_range_lTensor _ u _ hx`.
+-/
 theorem resT_mem_lTensor (hS : SubstMem) (p q : ℕ) (ν : Fin (p + q) → ℕ)
     (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ) (hf : f ∈ dualWeyl ℤ (p + q) (p + q) ν) :
     resT ℤ p q f ∈ LinearMap.range (LinearMap.lTensor (MvPolynomial (Fin p × Fin p) ℤ)
@@ -168,6 +226,19 @@ theorem resT_mem_lTensor (hS : SubstMem) (p q : ℕ) (ν : Fin (p + q) → ℕ)
     have : phiR p q (C u) = u ⊗ₜ 1 := by simp [phiR]
     rw [this]; exact mul_mem_range_lTensor _ u _ hx
 
+/- English proof (translation)
+Establish `hg : aeval (psiL p q) (map (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ) f) ∈ dualWeyl (MvPolynomial (Fin q × Fin q) ℤ) p p (fun i => ν (Fin.castAdd q i))`. Use `hS (MvPolynomial (Fin q × Fin q) ℤ) p (p + q) (Fin.castAdd q) (Fin.strictMono_castAdd q) (psiL p q) ?_ ?_ ?_ ν _ (dualWeylMap ℤ _ C _ _ ν f hf)` and prove the remaining obligations. Introduce `a s`. Simplify using `[psiL]`. Introduce `x s hx`.
+
+Proceed by induction on `x using Fin.addCases with`. Consider the case `left a => exact absurd ⟨a, rfl⟩ hx`. Consider the case `right b => simp [psiL]`. Introduce `x y hy`. Proceed by induction on `y using Fin.addCases with`.
+
+Consider the case `left s => exact absurd ⟨s, rfl⟩ hy`. Consider the case `right t`. Proceed by induction on `x using Fin.addCases with`. Consider the case `left a => exact ⟨0, by simp [psiL]⟩`. Consider the case `right b => exact ⟨X (b, t), by simp [psiL]⟩`.
+
+Rewrite `hg` using `[standardMonomialSpanDomain]`. Rewrite using `[← phiL_psiL]`. Use `Submodule.span_induction (p := fun g _ => phiL p q g ∈ LinearMap.range (LinearMap.rTensor (MvPolynomial (Fin q × Fin q) ℤ) (dualWeyl ℤ p p (fun i => ν (Fin.castAdd q i))).subtype)) ?_ ?_ ?_ ?_ hg` and prove the remaining obligations. Introduce and unpack `g ⟨K, sz, hsz, I, hsh, rfl⟩`. Rewrite using `[← bidet_map' (C : ℤ →+* MvPolynomial (Fin q × Fin q) ℤ), phiL_map]`.
+
+Conclude with `⟨⟨bideterminant ℤ sz hsz I, hsh ▸ bidetMem ℤ p p K sz hsz I⟩ ⊗ₜ 1, rfl⟩`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+
+Introduce `u x _ hx`. Rewrite using `[smul_eq_C_mul, map_mul]`. Establish `: phiL p q (C u) = 1 ⊗ₜ u` using `by simp [phiL]`. Rewrite using `[this]`. Conclude with `mul_mem_range_rTensor _ u _ hx`.
+-/
 theorem resT_mem_rTensor (hS : SubstMem) (p q : ℕ) (ν : Fin (p + q) → ℕ)
     (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ) (hf : f ∈ dualWeyl ℤ (p + q) (p + q) ν) :
     resT ℤ p q f ∈ LinearMap.range (LinearMap.rTensor (MvPolynomial (Fin q × Fin q) ℤ)
@@ -212,10 +283,18 @@ def toQ (p q : ℕ) : MvPolynomial (Fin p × Fin p) ℤ ⊗[ℤ] MvPolynomial (F
         (map (Int.castRingHom ℚ))))
     (fun _ _ => Commute.all _ _)).toRingHom
 
+/- English proof (translation)
+Simplify using `[toQ, intQ, RingHom.toIntAlgHom_apply]`.
+-/
 theorem toQ_tmul (p q : ℕ) (a : MvPolynomial (Fin p × Fin p) ℤ) (b : MvPolynomial (Fin q × Fin q) ℤ) :
     toQ p q (a ⊗ₜ b) = intQ p p a ⊗ₜ intQ q q b := by
   simp [toQ, intQ, RingHom.toIntAlgHom_apply]
 
+/- English proof (translation)
+Establish `: (toQ p q).comp (resT ℤ p q).toRingHom = (resT ℚ p q).toRingHom.comp (map (Int.castRingHom ℚ))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `RingHom.congr_fun (RingHom.ext_int (((toQ p q).comp (resT ℤ p q).toRingHom).comp C) (((resT ℚ p q).toRingHom.comp (map (Int.castRingHom ℚ))).comp C)) r`. Introduce and unpack `⟨i, j⟩`.
+
+Apply the tactic sequence `induction i using Fin.addCases <;> induction j using Fin.addCases <;>`. Simplify using `[toQ, resT, resVarT, RingHom.toIntAlgHom_apply]`. Conclude with `RingHom.congr_fun this f`.
+-/
 theorem toQ_resT (p q : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ) :
     toQ p q (resT ℤ p q f) = resT ℚ p q (intQ (p + q) (p + q) f) := by
   have : (toQ p q).comp (resT ℤ p q).toRingHom = (resT ℚ p q).toRingHom.comp (map (Int.castRingHom ℚ)) := by
@@ -228,6 +307,13 @@ theorem toQ_resT (p q : ℕ) (f : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ)
       simp [toQ, resT, resVarT, RingHom.toIntAlgHom_apply]
   exact RingHom.congr_fun this f
 
+/- English proof (translation)
+Introduce `hS p q ν f hf`. Use `flat_quot_dualWeyl q (fun j => ν (Fin.natAdd p j))` as an intermediate fact. Take `⟨w, hw⟩` from `mem_range_map_of_flat (dualWeyl ℤ p p (fun i => ν (Fin.castAdd q i))) (dualWeyl ℤ q q (fun j => ν (Fin.natAdd p j))) (resT ℤ p q f) (resT_mem_lTensor hS p q ν f hf) (resT_mem_rTensor hS p q ν f hf)`. Rewrite using `[← toQ_resT, ← hw]`. Use `clear hw`.
+
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[TensorProduct.map_tmul, toQ_tmul]`. Conclude with `Submodule.subset_span ⟨a.1, a.2, b.1, b.2, rfl⟩`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem resLat_of_substMem : SubstMem → ResLat := by
   intro hS p q ν f hf
   have := flat_quot_dualWeyl q (fun j => ν (Fin.natAdd p j))

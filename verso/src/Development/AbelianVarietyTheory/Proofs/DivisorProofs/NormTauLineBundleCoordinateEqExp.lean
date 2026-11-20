@@ -16,6 +16,9 @@ open GlobalTheory.Poinc.FibLat GlobalTheory.Poinc.Eq8
 
 namespace GlobalTheory.Poinc.TauNorm
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ (𝟙 (Sp F) : Sp F ⟶ Sp F) ⁻¹ᵁ U` using `h`. Unfold `valF`. Rewrite using `[dif_pos h']`. Use `congr 1`.
+-/
 theorem valF_id {F : Type} [Field F] (U : (Sp F).Opens) (h : ⊤ ≤ U) (f : Γ(Sp F, U)) :
     valF (𝟙 (Sp F)) U f =
       (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom
@@ -28,6 +31,9 @@ theorem valF_id {F : Type} [Field F] (U : (Sp F).Opens) (h : ⊤ ≤ U) (f : Γ(
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
   {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p}
 
+/- English proof (translation)
+Take `⟨j, h, hj, rfl⟩` from `hx`. Use `l.q_eq χ j hj` as an intermediate fact. Rewrite `this` using `[valF_id _ h]`. Conclude with `this`.
+-/
 theorem norm_psiCoord (u : ρ.UTest p y₀) (l : u.Lab) (χ : u.D.toPre.X)
     (x : (FractionRing u.V)ˣ) (hx : GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsPsiCoord u.D.toPre χ x) :
     ‖algebraMap (FractionRing u.V) (PadicAlgCl p) (x : FractionRing u.V)‖ =
@@ -37,6 +43,11 @@ theorem norm_psiCoord (u : ρ.UTest p y₀) (l : u.Lab) (χ : u.D.toPre.X)
   rw [valF_id _ h] at this
   exact this
 
+/- English proof (translation)
+Establish `h1` using `(u.norm_le (algebraMap u.V (FractionRing u.V) (w : u.V))).2 ⟨_, rfl⟩`. Establish `h2` using `(u.norm_le (algebraMap u.V (FractionRing u.V) ((w⁻¹ : (u.V)ˣ) : u.V))).2 ⟨_, rfl⟩`. Establish `h3 : ‖algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) (w : u.V))‖ * ‖algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ((w⁻¹ : (u.V)ˣ) : u.V))‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_unit (u : ρ.UTest p y₀) (w : (u.V)ˣ) :
     ‖algebraMap (FractionRing u.V) (PadicAlgCl p)
       (algebraMap u.V (FractionRing u.V) (w : u.V))‖ = 1 := by
@@ -51,6 +62,11 @@ theorem norm_unit (u : ρ.UTest p y₀) (w : (u.V)ˣ) :
   calc (1 : ℝ) = _ := h3.symm
     _ ≤ _ := mul_le_of_le_one_right (norm_nonneg _) h2
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ p _ y₀ u l a b x hx`. Take `⟨x₁, h₁⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord u.D.toPre (a + b)`. Take `⟨x₂, h₂⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord u.D.toPre a`. Take `⟨x₃, h₃⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord u.D.toPre b`. Take `⟨w, hw⟩` from `GlobalTheory.TauCoordQuot.main u.V u.D.toPre a b x x₁ x₂ x₃ hx h₁ h₂ h₃`.
+
+Rewrite using `[hw, map_mul, map_mul, map_mul, map_inv₀, map_inv₀, norm_mul, norm_mul, norm_mul, norm_inv, norm_inv, norm_unit, norm_psiCoord u l _ _ h₁, norm_psiCoord u l _ _ h₂, norm_psiCoord u l _ _ h₃, _root_.one_mul, ← Real.exp_neg, ← Real.exp_neg, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (a b : u.D.toPre.X) (x : (FractionRing u.V)ˣ), GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsTauCoord u.D.toPre a b x → ‖algebraMap (FractionRing u.V) (PadicAlgCl p) (x : FractionRing u.V)‖ = Real.exp (-(l.q (a + b) - l.q a - l.q b)) := by
   intro o Ω _ _ _ S ρ p _ y₀ u l a b x hx
   obtain ⟨x₁, h₁⟩ := GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.exists_isPsiCoord u.D.toPre (a + b)

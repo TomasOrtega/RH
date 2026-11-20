@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.LogKSDiv
 
+/- English proof (translation)
+Set `d : Derivation k A K` to `(Algebra.linearMap A K).compDer D`. Set `f : Ω[A⁄k] →ₗ[A] K` to `d.liftKaehlerDifferential`. Establish `hb` using `KaehlerDifferential.isBaseChange_of_formallyEtale k A K`. Set `g : Ω[K⁄k] →ₗ[K] K` to `hb.lift f`. Use `⟨g.compDer (KaehlerDifferential.D k K), fun a => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `g (KaehlerDifferential.D k K (algebraMap A K a)) = _`. Rewrite using `[← KaehlerDifferential.map_D k k A K]`. Use `erw [hb.lift_eq]`. Simplify using `[f, d]`.
+-/
 theorem exists_derivation_extend {k A K : Type} [CommRing k] [CommRing A] [CommRing K] [Algebra k A] [Algebra k K]
     [Algebra A K] [IsScalarTower k A K] [Algebra.FormallyEtale A K] (D : Derivation k A A) :
     ∃ D' : Derivation k K K, ∀ a, D' (algebraMap A K a) = algebraMap A K (D a) := by
@@ -33,6 +38,9 @@ end GlobalTheory.LogKSDiv
 
 namespace GlobalTheory.LogKSDiv
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.germ_stalkMap_apply f V x hfx y, Scheme.Hom.appLE]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, TopCat.Presheaf.germ_res_apply]`.
+-/
 theorem germ_appLE_apply {X Y : Scheme.{0}} (f : X ⟶ Y) (V : Y.Opens) (U' : X.Opens) (e : U' ≤ f ⁻¹ᵁ V) (x : X)
     (hx : x ∈ U') (hfx : f x ∈ V) (y : Γ(Y, V)) :
     X.presheaf.germ U' x hx (f.appLE V U' e y) = f.stalkMap x (Y.presheaf.germ V (f x) hfx y) := by
@@ -58,6 +66,25 @@ end GlobalTheory.LogKSDiv
 
 namespace GlobalTheory.LogKSDiv
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _ U hU ρ hρ N Dl`. Use `set W := barComp TF.Y Z with hW`. Use `set η₀ := genericPoint (X₀ TF.Y Z) with hη₀`. Establish `hη : W.ι η₀ ∈ U.1`. Establish `e` using `congrArg (fun f : Sp (X₀ TF.Y Z).functionField ⟶ TF.Y.X => f (IsLocalRing.closedPoint _)) hρ`.
+
+Simplify using `only [Scheme.Hom.comp_apply] at e`. Use `show W.ι η₀ ∈ (U.1 : Set TF.Y.X)`. Rewrite using `[← U.2.range_fromSpec]`. Use `⟨_, e.trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg W.ι Scheme.fromSpecStalk_closedPoint`.
+
+Establish `hmono : Mono (LogKS.chart U)` using `by haveI := U.2.isOpenImmersion_fromSpec`. Unfold `LogKS.chart`. Use `infer_instance`. Establish `hρ' : ρ = (TF.Y.X.presheaf.germ U.1 (W.ι η₀) hη ≫ W.ι.stalkMap η₀).hom`. Establish `e : CommRingCat.ofHom ρ = TF.Y.X.presheaf.germ U.1 (W.ι η₀) hη ≫ W.ι.stalkMap η₀`.
+
+Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (LogKS.chart U)]`. Use `hρ.trans ?_` and prove the remaining obligations. Establish `e1` using `U.2.fromSpecStalk_eq_fromSpecStalk hη`. Rewrite using `[Spec.map_comp, Category.assoc, LogKS.chart]`.
+
+Use `show (X₀ TF.Y Z).fromSpecStalk η₀ ≫ W.ι = _`. Rewrite using `[← Scheme.SpecMap_stalkMap_fromSpecStalk, ← e1]`. Both sides reduce to the same expression. Conclude with `congrArg CommRingCat.Hom.hom e`. Substitute `hρ'` using the available equality.
+
+Establish `hiso : IsIso (W.ι.stalkMap η₀)` using `inferInstance`. Use `letI iA : Algebra c.F Γ(TF.Y.X, U.1) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX TF.Y.s U.1).toAlgebra`. Use `letI iK : Algebra c.F (X₀ TF.Y Z).functionField := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra`. Use `letI iAK : Algebra Γ(TF.Y.X, U.1) (X₀ TF.Y Z).functionField := (TF.Y.X.presheaf.germ U.1 (W.ι η₀) hη ≫ W.ι.stalkMap η₀).hom.toAlgebra`. Establish `htow : IsScalarTower c.F Γ(TF.Y.X, U.1) (X₀ TF.Y Z).functionField`.
+
+Use `IsScalarTower.of_algebraMap_eq' ?_` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [RingHom.algebraMap_toAlgebra, RingHom.comp_apply, GlobalTheory.Cartier.constFn, GlobalTheory.Cartier.fnOf, ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX, CommRingCat.hom_comp]`. Use `(germ_appLE_apply (s₀ TF.Y Z) ⊤ ⊤ _ (genericPoint (X₀ TF.Y Z)) trivial trivial _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (W.ι.stalkMap η₀).hom (germ_appLE_apply TF.Y.s ⊤ U.1 _ (W.ι η₀) hη trivial _)).symm` and prove the remaining obligations.
+
+Rewrite using `[show s₀ TF.Y Z = W.ι ≫ TF.Y.s from rfl, Scheme.Hom.stalkMap_comp]`. Both sides reduce to the same expression. Use `letI iS : Algebra Γ(TF.Y.X, U.1) (TF.Y.X.presheaf.stalk (W.ι η₀)) := TopCat.Presheaf.algebra_section_stalk TF.Y.X.presheaf (U := U.1) ⟨W.ι η₀, hη⟩`. Establish `hloc` using `U.2.isLocalization_stalk ⟨W.ι η₀, hη⟩`. Set `eK : TF.Y.X.presheaf.stalk (W.ι η₀) ≃ₐ[Γ(TF.Y.X, U.1)] (X₀ TF.Y Z).functionField` to `AlgEquiv.ofRingEquiv (f := (asIso (W.ι.stalkMap η₀)).commRingCatIsoToRingEquiv) fun _ => rfl`.
+
+Use `haveI := IsLocalization.isLocalization_of_algEquiv (U.2.primeIdealOf ⟨W.ι η₀, hη⟩).asIdeal.primeCompl eK`. Use `haveI : Algebra.FormallyEtale Γ(TF.Y.X, U.1) (X₀ TF.Y Z).functionField := Algebra.FormallyEtale.of_isLocalization (U.2.primeIdealOf ⟨W.ι η₀, hη⟩).asIdeal.primeCompl`. Use `choose D hD using fun j => exists_derivation_extend (k := c.F) (K := (X₀ TF.Y Z).functionField) (derivOfConst (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX TF.Y.s U.1) (Dl j).1 (Dl j).2.1)`. Conclude with `⟨D, fun j r => hD j r⟩`.
+-/
 theorem exists_genDer_extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] (U : TF.Y.X.affineOpens), U.1 ≤ barComp TF.Y Z → ∀ (ρ : Γ(TF.Y.X, U.1) →+* (X₀ TF.Y Z).functionField), spMap ρ ≫ LogKS.chart U = GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι → ∀ {N : ℕ} (Dl : Fin N → LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U), ∃ D : Fin N → GlobalTheory.LogKSDiv.GenDer TF Z, letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra; ∀ j r, (show Derivation c.F (X₀ TF.Y Z).functionField (X₀ TF.Y Z).functionField from D j) (ρ r) = ρ ((Dl j).1 r) := by
   intro E _ _ _ H Dw l Xo c TF Z _ U hU ρ hρ N Dl
   set W := barComp TF.Y Z with hW

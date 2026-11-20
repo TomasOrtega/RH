@@ -84,6 +84,21 @@ section Red
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {P : Frame E n r}
 
+/- English proof (translation)
+Use `hμ` as an intermediate fact. Establish `hmeas : Measurable (fun h : ↥(Hsub (Af F) σ J P) => c2 * (h : HA (Af F) σ J))` using `(hmulF c2).comp measurable_subtype_coe`. Establish `hS : MeasurableSet {h : ↥(Hsub (Af F) σ J P) | c2 * (h : HA (Af F) σ J) ∈ Kf σ J Λ}` using `hmeas hK`. Establish `e1 : (fun h : ↥(Hsub (Af F) σ J P) => (Kf σ J Λ : Set (HA (Af F) σ J)).indicator (1 : HA (Af F) σ J → ENNReal) (c2 * (h : HA (Af F) σ J))) = {h : ↥(Hsub (Af F) σ J P) | c2 * (h : HA (Af F) σ J) ∈ Kf σ J Λ}.indicator 1`. Use function extensionality and compare the values at `h`.
+
+Apply the tactic sequence `by_cases hh : c2 * (h : HA (Af F) σ J) ∈ Kf σ J Λ <;> simp [Set.indicator, hh]`. Rewrite using `[e1, lintegral_indicator_one hS]`. Distinguish the cases in `hxK : x ∈ {X : Fin (r + 1 + r) → Fin n → Af F ⊗[F] E | ∃ k ∈ Kf σ J Λ, X = k • ratTup (Af F) (tupH P)}`. Rewrite using `[Set.indicator_of_mem hxK, Pi.one_apply, mul_one]`. Take `⟨k, hk, hkx⟩` from `hxK`.
+
+Establish `hmem : k⁻¹ * c2 ∈ Hsub (Af F) σ J P` using `by show k⁻¹ * c2 ∈ MulAction.stabilizer (HA (Af F) σ J) (ratTup (F := F) (Af F) (tupH P))`. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, hx, hkx, inv_smul_smul]`. Set `h1 : ↥(Hsub (Af F) σ J P)` to `⟨k⁻¹ * c2, hmem⟩`. Establish `e2 : {h : ↥(Hsub (Af F) σ J P) | c2 * (h : HA (Af F) σ J) ∈ Kf σ J Λ} = (fun h => h1 * h) ⁻¹' (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))`. Use extensionality with `h`.
+
+Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Subgroup.coe_mul, SetLike.mem_coe, h1]`. Rewrite using `[mul_assoc, (Kf σ J Λ).mul_mem_cancel_left ((Kf σ J Λ).inv_mem hk)]`. Establish `hm1 : Measurable (fun h : ↥(Hsub (Af F) σ J P) => h1 * h)`. Use `Measurable.subtype_mk (f := fun h : ↥(Hsub (Af F) σ J P) => (h1 : HA (Af F) σ J) * (h : HA (Af F) σ J)) ?_` and prove the remaining obligations. Conclude with `(hmulF _).comp measurable_subtype_coe`.
+
+Rewrite using `[e2, ← Measure.map_apply hm1 (measurable_subtype_coe hK), map_mul_left_eq_self]`. Establish `e0 : {X : Fin (r + 1 + r) → Fin n → Af F ⊗[F] E | ∃ k ∈ Kf σ J Λ, X = k • ratTup (Af F) (tupH P)}.indicator (1 : (Fin (r + 1 + r) → Fin n → Af F ⊗[F] E) → ENNReal) x = 0`. Simplify using `only [Set.indicator, hxK, if_false]`. Rewrite using `[e0, mul_zero]`. Establish `e3 : {h : ↥(Hsub (Af F) σ J P) | c2 * (h : HA (Af F) σ J) ∈ Kf σ J Λ} = ∅`.
+
+Use extensionality with `h`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hh`. Apply `hxK` to reduce the goal to its premises. Use `⟨c2 * (h : HA (Af F) σ J), hh, ?_⟩` and prove the remaining obligations.
+
+Establish `hst : (h : HA (Af F) σ J) • ratTup (F` using `F) (Af F) (tupH P) = ratTup (F := F) (Af F) (tupH P) := MulAction.mem_stabilizer_iff.mp (show (h : HA (Af F) σ J) ∈ MulAction.stabilizer (HA (Af F) σ J) (ratTup (F := F) (Af F) (tupH P)) from h.2)`. Rewrite using `[mul_smul, hst, hx]`. Rewrite using `[e3, measure_empty]`.
+-/
 theorem SplitSk_finFactor (Λ : Set (Fin n → E)) (μ : Measure (Hsub (Af F) σ J P)) (hμ : μ.IsHaarMeasure)
     (hmulF : ∀ g : HA (Af F) σ J, Measurable (fun h : HA (Af F) σ J => g * h))
     (hK : MeasurableSet (Kf σ J Λ : Set (HA (Af F) σ J))) (c2 : HA (Af F) σ J)
@@ -134,6 +149,29 @@ theorem SplitSk_finFactor (Λ : Set (Fin n → E)) (μ : Measure (Hsub (Af F) σ
       rw [mul_smul, hst, hx]
     rw [e3, measure_empty]
 
+/- English proof (translation)
+Take `⟨-, hGinf, hGf, -, -, hGsplit⟩` from `hG`. Take `⟨-, hHinf, hHf, -, -, -, -, -, hHsplit, -, -⟩` from `hW`. Establish `hind : Measurable ((Kf σ J Λ : Set (HA (Af F) σ J)).indicator (1 : HA (Af F) σ J → ENNReal))` using `measurable_one.indicator hK`. Set `sf : (Fin (r + 1 + r) → Fin n → Af F ⊗[F] E) → HA (Af F) σ J` to `fun x => if h : ∃ k : HA (Af F) σ J, k • ratTup (F := F) (Af F) (tupH P) = x then h.choose else 1`. Establish `hsf : ∀ x, (∃ k : HA (Af F) σ J, k • ratTup (F` using `F) (Af F) (tupH P) = x) → sf x • ratTup (F := F) (Af F) (tupH P) = x := by`.
+
+Introduce `x hx`. Simplify using `only [sf, dif_pos hx]`. Conclude with `hx.choose_spec`. Set `sA : (Fin (r + 1 + r) → Fin n → AF F ⊗[F] E) → HA (AF F) σ J` to `fun y => (hsurj (s (projInf y)) (sf (projFin y))).choose`. Establish `hsA : ∀ y, splitA σ J (sA y) = (s (projInf y), sf (projFin y))` using `fun y => (hsurj _ _).choose_spec`.
+
+Establish `horb : ∀ y, (∃ g : HA (AF F) σ J, g • ratTup (F` using `F) (AF F) (tupH P) = y) → (∃ g : HA (Ainf F) σ J, g • ratTup (F := F) (Ainf F) (tupH P) = projInf y) ∧ (∃ k : HA (Af F) σ J, k • ratTup (F := F) (Af F) (tupH P) = projFin y) := by`. Introduce and unpack `y ⟨g0, hg0⟩`. Use `⟨⟨(splitA σ J g0).1, ?_⟩, ⟨(splitA σ J g0).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hg0, (hproj g0 _).1, hrat.1]`. Rewrite using `[← hg0, (hproj g0 _).2, hrat.2]`.
+
+Establish `hsec : ∀ y, (∃ g : HA (AF F) σ J, g • ratTup (F` using `F) (AF F) (tupH P) = y) → sA y • ratTup (F := F) (AF F) (tupH P) = y := by`. Introduce `y hy`. Take `⟨hI, hF⟩` from `horb y hy`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[(hproj (sA y) _).1, hsA y, hrat.1]`.
+
+Conclude with `hs _ hI`. Rewrite using `[(hproj (sA y) _).2, hsA y, hrat.2]`. Conclude with `hsf _ hF`. Establish `hφ : Measurable (fun p : HA (Ainf F) σ J × HA (Af F) σ J => f p.1 * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 p.2)` using `(hf.comp measurable_fst).mul (hind.comp measurable_snd)`. Establish `key : ∫⁻ g, f (splitA σ J g).1 * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (splitA σ J g).2 ∂MG.μG = ∫⁻ y, ∫⁻ h' : ↥(Hsub (AF F) σ J P), f (splitA σ J (sA y * (h' : HA (AF F) σ J))).1 * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (splitA σ J (sA y * (h' : HA (AF F) σ J))).2 ∂ …` using `hC.2 _ (hφ.comp hsplit) sA hsec`.
+
+Establish `hL : ∫⁻ g, f (splitA σ J g).1 * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (splitA σ J g).2 ∂MG.μG = (∫⁻ g, f g ∂MG.μGinf) * MG.μGf (Kf σ J Λ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGsplit]`. Use `_ = (∫⁻ g, f g ∂MG.μGinf) * ∫⁻ g, (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 g ∂MG.μGf := lintegral_prod_mul hf.aemeasurable hind.aemeasurable`. Use `_ = _ := by rw [lintegral_indicator_one hK]`.
+
+Establish `hinner : ∀ y, (∃ g : HA (AF F) σ J, g • ratTup (F` using `F) (AF F) (tupH P) = y) → ∫⁻ h' : ↥(Hsub (AF F) σ J P), f (splitA σ J (sA y * (h' : HA (AF F) σ J))).1 * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (splitA σ J (sA y * (h' : HA (AF F) σ J))).2 ∂MW.μH = (∫⁻ h', f (s (projInf y) * (h' : HA (Ainf F) σ J)) ∂MW.μHinf) * (MW.μHf (Sub …`. Introduce `y hy`. Take `⟨-, hF⟩` from `horb y hy`. Establish `hψ : Measurable (fun p : HA (Ainf F) σ J × HA (Af F) σ J => f (s (projInf y) * p.1) * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (sf (projFin y) * p.2))` using `((hf.comp (hmulI _)).comp measurable_fst).mul ((hind.comp (hmulF _)).comp measurable_snd)`. Establish `e : ∀ g : HA (AF F) σ J, f (splitA σ J (sA y * g)).1 * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (splitA σ J (sA y * g)).2 = f (s (projInf y) * (splitA σ J g).1) * (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (sf (projFin y) * (splitA σ J g).2)`.
+
+Introduce `g`. Rewrite using `[map_mul, hsA y]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hHsplit]`.
+
+Use `_ = (∫⁻ g, f (s (projInf y) * g) ∂(amb MW.μHinf)) * ∫⁻ g, (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (sf (projFin y) * g) ∂(amb MW.μHf) := lintegral_prod_mul (hf.comp (hmulI _)).aemeasurable (hind.comp (hmulF _)).aemeasurable`. Use `_ = (∫⁻ h', f (s (projInf y) * (h' : HA (Ainf F) σ J)) ∂MW.μHinf) * ∫⁻ h', (Kf σ J Λ : Set (HA (Af F) σ J)).indicator 1 (sf (projFin y) * (h' : HA (Af F) σ J)) ∂MW.μHf := by`. Rewrite using `[amb, amb]`. Use `congr 1`. Conclude with `lintegral_map (hf.comp (hmulI _)) measurable_subtype_coe`.
+
+Conclude with `lintegral_map (hind.comp (hmulF _)) measurable_subtype_coe`. Use `_ = _ := by`. Rewrite using `[SplitSk_finFactor Λ MW.μHf hHf hmulF hK _ _ (hsf _ hF)]`. Establish `hae : ∀ᵐ y ∂νH, ∃ g : HA (AF F) σ J, g • ratTup (F` using `F) (AF F) (tupH P) = y := ae_iff.2 hC.1`. Rewrite using `[← hL, key]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem SplitSk_ident (MG : MeasG σ J r) (MW : MeasW σ J P) (νH : Measure (Fin (r + 1 + r) → Fin n → AF F ⊗[F] E))
     (Λ : Set (Fin n → E)) (hsplit : Measurable (splitA σ J))
     (hsurj : ∀ (g₁ : HA (Ainf F) σ J) (g₂ : HA (Af F) σ J), ∃ g, splitA σ J g = (g₁, g₂))
@@ -275,6 +313,33 @@ theorem SplitSk_ident (MG : MeasG σ J r) (MW : MeasW σ J P) (νH : Measure (Fi
 
 end Red
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ r P MG MW hT νH Λ hStd hLat hdet hn hSWa hSWc hG hW hOm hC hK0 hKt`. Take `⟨hsplit, hsurj, hproj, hrat, hinj, hmulI, hmulF, hsfI, hsfF, hsfHI, hsfHF, hKm, hKH⟩` from `h0 F E σ n J hStd.1 hStd.2.1`. Establish `: SFinite MG.μGinf` using `hsfI _ hG.2.1`. Establish `: SFinite MG.μGf` using `hsfF _ hG.2.2.1`. Establish `: SFinite (amb MW.μHinf)` using `hsfHI r P _ hW.2.1`.
+
+Establish `: SFinite (amb MW.μHf)` using `hsfHF r P _ hW.2.2.1`. Take `⟨hc0, hcT⟩` from `hKH Λ MG.μGf hLat hG.2.2.1 hK0 hKt r P MW.μHf hW.2.2.1`. Take `⟨hKYm, hfin⟩` from `h2 F E σ n J ψ (r + 1 + r) (tupH P) hT νH Λ MG.μGf hStd hdet (by omega) hn hSWa hSWc hLat hOm hG.2.2.1 hK0 hKt`. Take `⟨Pv, hPv⟩ : ∃ Pv : ℝ, Pv = ∏' v : HeightOneSpectrum (𝓞 F), (omAt σ J ψ v ((gramE σ J (tupH P)).map (inclR (Fv F v))) {X | ∃ k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v, X = k • ratTup (Fv F v) (tupH P)}).toReal` from `⟨_, rfl⟩`. Rewrite using `[← hPv]`.
+
+Simplify using `only [← hPv] at hfin`. Set `s0 : (Fin (r + 1 + r) → Fin n → Ainf F ⊗[F] E) → HA (Ainf F) σ J` to `fun y => if h : ∃ g : HA (Ainf F) σ J, g • ratTup (F := F) (Ainf F) (tupH P) = y then h.choose else 1`. Establish `hs0 : ∀ y, (∃ g : HA (Ainf F) σ J, g • ratTup (F` using `F) (Ainf F) (tupH P) = y) → s0 y • ratTup (F := F) (Ainf F) (tupH P) = y := by`. Introduce `y hy`. Simplify using `only [s0, dif_pos hy]`.
+
+Conclude with `hy.choose_spec`. Establish `hpos1 : (∫⁻ _ : HA (Ainf F) σ J, (1 : ENNReal) ∂MG.μGinf) * MG.μGf (Kf σ J Λ) ≠ 0`. Use `hG.2.1` as an intermediate fact. Rewrite using `[lintegral_one]`. Conclude with `mul_ne_zero (IsOpen.measure_pos MG.μGinf isOpen_univ ⟨1, trivial⟩).ne' hK0.ne'`.
+
+Establish `core : ∀ (μinf : Measure (Fin (r + 1 + r) → Fin n → Ainf F ⊗[F] E)) (νinf : Measure (HermR (Ainf F) σ (r + 1 + r))) (fibInf : HermR (Ainf F) σ (r + 1 + r) → Measure (Fin (r + 1 + r) → Fin n → Ainf F ⊗[F] E)), SdW F E σ n J (Ainf F) (psiInf F ψ) (r + 1 + r) μinf → SdHerm F E σ (Ai …` using `F) (Ainf F) (tupH P) = y) → s y • ratTup (F := F) (Ainf F) (tupH P) = y) → (∫⁻ g, f g ∂MG.μGinf) * MG.μGf (Kf σ J Λ) = MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J))) * (ENNReal.ofReal Pv * ∫⁻ y, ∫⁻ h', f (s y * (h' : HA (Ainf F) σ J)) ∂MW.μHinf ∂(fibInf (hermOf (Ainf F …`. Introduce `μinf νinf fibInf hμ hν hfib`. Take `⟨ωf, hdec⟩` from `h1 F E σ n J ψ (r + 1 + r) (tupH P) hT νH hStd hdet (by omega) hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib`. Establish `hI` using `fun f hf s hs => SplitSk_ident MG MW νH Λ hsplit hsurj (hproj (r + 1 + r)) (hrat (r + 1 + r) (tupH P)) (hinj (r + 1 + r)) hmulF hmulI (hKm Λ hLat) hG hW hC (fibInf (hermOf (Ainf F) σ (gramE σ J (tupH P)) hT)) (ωf {X | ∃ k ∈ Kf σ J Λ, X = k • ratTup (Af F) (tupH P)}) (fun A => hde …`. Establish `hne : fibInf (hermOf (Ainf F) σ (gramE σ J (tupH P)) hT) ≠ 0`.
+
+Introduce `hz`. Establish `h3` using `hI (fun _ => 1) measurable_const s0 hs0`. Rewrite `h3` using `[hz, lintegral_zero_measure, mul_zero, mul_zero]`. Conclude with `hpos1 h3`. Rewrite using `[← hfin μinf νinf fibInf hμ hν hfib hne ωf hdec]`.
+
+Conclude with `hI`. Take `⟨μ0, hμ0⟩` from `hOm.2.1`. Take `⟨ν0, hν0⟩` from `(hOm.2.2 μ0 hμ0).1`. Take `⟨⟨μv, hμv⟩, hX⟩` from `(hOm.2.2 μ0 hμ0).2 ν0 hν0`. Take `⟨⟨νv, hνv⟩, hY⟩` from `hX μv hμv`.
+
+Take `⟨fib0, hfib0⟩` from `(hY νv hνv).1`. Establish `hPpos : 0 < Pv`. Establish `h` using `core μ0 ν0 fib0 hμ0 hν0 hfib0 (fun _ => 1) measurable_const s0 hs0`. Establish `h' : MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J))) * (ENNReal.ofReal Pv * ∫⁻ y, ∫⁻ h', (fun _ : HA (Ainf F) σ J => (1 : ENNReal)) (s0 y * (h' : HA (Ainf F) σ J)) ∂MW.μHinf ∂(fib0 (hermOf (Ainf F) σ (gramE σ J (tupH P)) hT))) ≠ 0` using `h ▸ hpos1`. Conclude with `ENNReal.ofReal_pos.mp (pos_iff_ne_zero.mpr (mul_ne_zero_iff.mp (mul_ne_zero_iff.mp h').2).1)`.
+
+Establish `hm0 : MG.μGf (Kf σ J Λ) ≠ 0` using `hK0.ne'`. Establish `hmT : MG.μGf (Kf σ J Λ) ≠ ⊤` using `hKt.ne`. Establish `hmR : 0 < (MG.μGf (Kf σ J Λ)).toReal` using `ENNReal.toReal_pos hm0 hmT`. Establish `hcR : 0 < (MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal` using `ENNReal.toReal_pos hc0.ne' hcT.ne`. Establish `ha' : 0 < (MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal * Pv / (MG.μGf (Kf σ J Λ)).toReal` using `div_pos (mul_pos hcR hPpos) hmR`.
+
+Use `⟨(MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal * Pv / (MG.μGf (Kf σ J Λ)).toReal, ha', ⟨hOm.2.1, fun μinf hμ => ⟨(hOm.2.2 μinf hμ).1, fun νinf hν => ⟨?_, fun fibInf hfib f hf s hs => ?_⟩⟩⟩, ?_⟩` and prove the remaining obligations. Take `⟨⟨μv', hμv'⟩, hX'⟩` from `(hOm.2.2 μinf hμ).2 νinf hν`. Take `⟨⟨νv', hνv'⟩, hY'⟩` from `hX' μv' hμv'`. Conclude with `(hY' νv' hνv').1`. Establish `h` using `core μinf νinf fibInf hμ hν hfib f hf s hs`.
+
+Establish `hA : ENNReal.ofReal ((MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal * Pv / (MG.μGf (Kf σ J Λ)).toReal) * MG.μGf (Kf σ J Λ) = MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J))) * ENNReal.ofReal Pv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_toReal hmT]`. Use `_ = ENNReal.ofReal ((MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal * Pv / (MG.μGf (Kf σ J Λ)).toReal * (MG.μGf (Kf σ J Λ)).toReal) := (ENNReal.ofReal_mul ha'.le).symm`. Use `_ = ENNReal.ofReal ((MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal * Pv) := by`.
+
+Rewrite using `[div_mul_cancel₀ _ hmR.ne']`. Use `_ = ENNReal.ofReal (MW.μHf (Subtype.val ⁻¹' (Kf σ J Λ : Set (HA (Af F) σ J)))).toReal * ENNReal.ofReal Pv := ENNReal.ofReal_mul hcR.le`. Use `_ = _ := by rw [ENNReal.ofReal_toReal hcT.ne]`. Use `(ENNReal.mul_left_inj hm0 hmT).mp ?_` and prove the remaining obligations. Rewrite using `[h, mul_right_comm, hA]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_comm]`. Conclude with `div_mul_cancel₀ _ hmR.ne'`.
+-/
 theorem splitOm_of (h0 : AdTup) (h1 : OmDecomp) (h2 : OmFinVol) : Formalism.L2.SG.Pf.NcSplitS.SplitOm := by
   intro F E _ _ _ _ _ σ n J ψ r P MG MW hT νH Λ hStd hLat hdet hn hSWa hSWc hG hW hOm hC hK0 hKt
   classical

@@ -21,6 +21,9 @@ def divisorFamily (B : PrincipalizationRules.{u}) (L : PrincipalizationAssignmen
     PrincipalizationAssignment.{u} :=
   fun T => B.divisorRed T (fun S _ => L S) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem divisorFamily_apply (B : PrincipalizationRules.{u}) (L : PrincipalizationAssignment.{u}) (j : ℕ)
     (T : MarkedIdealWithBoundary.{u}) :
     B.divisorFamily L j T = B.divisorRed T (fun S _ => L S) j := rfl
@@ -29,6 +32,9 @@ def orderFamily (B : PrincipalizationRules.{u}) (D : ℕ → PrincipalizationAss
     PrincipalizationAssignment.{u} :=
   fun T => B.orderRed T (fun S _ j => D j S)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orderFamily_apply (B : PrincipalizationRules.{u}) (D : ℕ → PrincipalizationAssignment.{u})
     (T : MarkedIdealWithBoundary.{u}) :
     B.orderFamily D T = B.orderRed T (fun S _ j => D j S) := rfl
@@ -37,6 +43,9 @@ def maxOrderFamily (B : PrincipalizationRules.{u}) (A : PrincipalizationAssignme
     PrincipalizationAssignment.{u} :=
   fun T => B.maxOrderRed T (fun S _ => A S)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem maxOrderFamily_apply (B : PrincipalizationRules.{u}) (A : PrincipalizationAssignment.{u})
     (T : MarkedIdealWithBoundary.{u}) :
     B.maxOrderFamily A T = B.maxOrderRed T (fun S _ => A S) := rfl
@@ -45,9 +54,15 @@ def nextLevel (B : PrincipalizationRules.{u}) (L : OrderReductionData.{u}) : Ord
   maxOrderRed := B.maxOrderFamily (B.orderFamily (fun j => B.divisorFamily L.maxOrderRed j))
   orderRed := B.orderFamily (fun j => B.divisorFamily L.maxOrderRed j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nextLevel_orderReduction (B : PrincipalizationRules.{u}) (L : OrderReductionData.{u}) :
     (B.nextLevel L).orderRed = B.orderFamily (fun j => B.divisorFamily L.maxOrderRed j) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nextLevel_maxOrderReduction (B : PrincipalizationRules.{u}) (L : OrderReductionData.{u}) :
     (B.nextLevel L).maxOrderRed =
       B.maxOrderFamily (B.orderFamily (fun j => B.divisorFamily L.maxOrderRed j)) := rfl
@@ -58,21 +73,36 @@ def inputLevelData (B : PrincipalizationRules.{u}) : ℕ → OrderReductionData.
 
 def outputLevelData (B : PrincipalizationRules.{u}) (n : ℕ) : OrderReductionData.{u} := B.nextLevel (B.inputLevelData n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inputLevelData_zero (B : PrincipalizationRules.{u}) :
     B.inputLevelData 0 = trivialOrderReductionData.{u} := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem outputLevelData_eq_nextLevel (B : PrincipalizationRules.{u}) (n : ℕ) :
     B.outputLevelData n = B.nextLevel (B.inputLevelData n) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inputLevelData_succ (B : PrincipalizationRules.{u}) (n : ℕ) :
     B.inputLevelData (n + 1) = B.outputLevelData n := rfl
 
 def levelDivisorFamily (B : PrincipalizationRules.{u}) (n : ℕ) (j : ℕ) : PrincipalizationAssignment.{u} :=
   B.divisorFamily (B.inputLevelData n).maxOrderRed j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem outputLevelData_orderReduction_eq_orderFamily (B : PrincipalizationRules.{u}) (n : ℕ) :
     (B.outputLevelData n).orderRed = B.orderFamily (fun j => B.levelDivisorFamily n j) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem outputLevelData_maxOrderReduction_eq (B : PrincipalizationRules.{u}) (n : ℕ) :
     (B.outputLevelData n).maxOrderRed = B.maxOrderFamily (B.outputLevelData n).orderRed := rfl
 
@@ -92,6 +122,11 @@ structure ReducesInductivelyOnDimension (B : PrincipalizationRules.{u}) : Prop w
     IsBoundaryPositionInvariant (fun d => d ≤ n) D →
     IsOrderReduction (fun d => d ≤ n) (B.orderFamily D) L
 
+/- English proof (translation)
+Establish `hfun : (fun (S : MarkedIdealWithBoundary.{u}) (_ : S.krullDimSucc ≤ T.krullDimSucc) (j : ℕ) => B.divisorFamily L.maxOrderRed j S) = (fun (S : MarkedIdealWithBoundary.{u}) (_ : S.krullDimSucc ≤ T.krullDimSucc) (j : ℕ) => B.divisorFamily L'.maxOrderRed j S)`. Use function extensionality and compare the values at `S hS j`. Establish `hinner : (fun (S' : MarkedIdealWithBoundary.{u}) (_ : S'.krullDimSucc < S.krullDimSucc) => L.maxOrderRed S') = (fun (S' : MarkedIdealWithBoundary.{u}) (_ : S'.krullDimSucc < S.krullDimSucc) => L'.maxOrderRed S')`. Use function extensionality and compare the values at `S' h'`. Conclude with `h S' (lt_of_lt_of_le h' hS)`.
+
+Use `show B.divisorRed S (fun S' _ => L.maxOrderRed S') j = B.divisorRed S (fun S' _ => L'.maxOrderRed S') j`. Conclude with `congrArg (fun f => B.divisorRed S f j) hinner`. Use `show B.orderRed T (fun S _ j => B.divisorFamily L.maxOrderRed j S) = B.orderRed T (fun S _ j => B.divisorFamily L'.maxOrderRed j S)`. Conclude with `congrArg (B.orderRed T) hfun`.
+-/
 private theorem nextLevel_orderReduction_congr (B : PrincipalizationRules.{u}) (L L' : OrderReductionData.{u})
     (T : MarkedIdealWithBoundary.{u})
     (h : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → L.maxOrderRed S = L'.maxOrderRed S) :
@@ -112,6 +147,9 @@ private theorem nextLevel_orderReduction_congr (B : PrincipalizationRules.{u}) (
       = B.orderRed T (fun S _ j => B.divisorFamily L'.maxOrderRed j S)
   exact congrArg (B.orderRed T) hfun
 
+/- English proof (translation)
+Establish `hfun : (fun (S : MarkedIdealWithBoundary.{u}) (_ : S.krullDimSucc ≤ T.krullDimSucc) => (B.nextLevel L).orderRed S) = (fun (S : MarkedIdealWithBoundary.{u}) (_ : S.krullDimSucc ≤ T.krullDimSucc) => (B.nextLevel L').orderRed S)`. Use function extensionality and compare the values at `S hS`. Conclude with `nextLevel_orderReduction_congr B L L' S (fun S' h' => h S' (lt_of_lt_of_le h' hS))`. Use `show B.maxOrderRed T (fun S _ => (B.nextLevel L).orderRed S) = B.maxOrderRed T (fun S _ => (B.nextLevel L').orderRed S)`. Conclude with `congrArg (B.maxOrderRed T) hfun`.
+-/
 private theorem nextLevel_maxOrderReduction_congr (B : PrincipalizationRules.{u}) (L L' : OrderReductionData.{u})
     (T : MarkedIdealWithBoundary.{u})
     (h : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → L.maxOrderRed S = L'.maxOrderRed S) :
@@ -124,6 +162,15 @@ private theorem nextLevel_maxOrderReduction_congr (B : PrincipalizationRules.{u}
       = B.maxOrderRed T (fun S _ => (B.nextLevel L').orderRed S)
   exact congrArg (B.maxOrderRed T) hfun
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `T hT m M hm hmM`. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`.
+
+Take `⟨M', rfl⟩ : ∃ M', M = M' + 1` from `⟨M - 1, by omega⟩`. Establish `h0 : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → (B.inputLevelData m').maxOrderRed S = (B.inputLevelData M').maxOrderRed S`. Introduce `S hS`. Conclude with `absurd (lt_of_lt_of_le hS hT) (Nat.not_lt_zero _)`. Conclude with `⟨nextLevel_maxOrderReduction_congr B (B.inputLevelData m') (B.inputLevelData M') T h0, nextLevel_orderReduction_congr B (B.inputLevelData m') (B.inputLevelData M') T h0⟩`.
+
+Consider the case `succ d ih`. Introduce `T hT m M hm hmM`. Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Take `⟨M', rfl⟩ : ∃ M', M = M' + 1` from `⟨M - 1, by omega⟩`. Establish `h0 : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc < T.krullDimSucc → (B.inputLevelData m').maxOrderRed S = (B.inputLevelData M').maxOrderRed S`.
+
+Introduce `S hS`. Conclude with `(ih S (by omega) m' M' (by omega) (by omega)).1`. Conclude with `⟨nextLevel_maxOrderReduction_congr B (B.inputLevelData m') (B.inputLevelData M') T h0, nextLevel_orderReduction_congr B (B.inputLevelData m') (B.inputLevelData M') T h0⟩`.
+-/
 private theorem inputLevelData_reductions_eq_of_dim_lt (B : PrincipalizationRules.{u}) :
     ∀ (d : ℕ) (T : MarkedIdealWithBoundary.{u}), T.krullDimSucc ≤ d → ∀ m M : ℕ, d < m → m ≤ M →
       (B.inputLevelData m).maxOrderRed T = (B.inputLevelData M).maxOrderRed T ∧
@@ -151,6 +198,11 @@ private theorem inputLevelData_reductions_eq_of_dim_lt (B : PrincipalizationRule
       exact ⟨nextLevel_maxOrderReduction_congr B (B.inputLevelData m') (B.inputLevelData M') T h0,
         nextLevel_orderReduction_congr B (B.inputLevelData m') (B.inputLevelData M') T h0⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact isMaxOrderReduction_of_forall_not _ (fun m => Nat.not_lt_zero m) _ _`. Consider the case `succ n ih`. Establish `hord : IsOrderReduction (fun d => d ≤ n) (B.outputLevelData n).orderRed (B.inputLevelData n).maxOrderRed` using `hB.orderSpec n (fun j => B.divisorFamily (B.inputLevelData n).maxOrderRed j) (B.inputLevelData n).maxOrderRed (B.inputLevelData n).orderRed ih (fun j => hB.divisorSpec n (B.inputLevelData n).maxOrderRed (B.inputLevelData n).orderRed ih j) (hB.divisorShift n (B.inputLevelData n).m …`. Establish `hmax : IsMaxOrderReduction (fun d => d ≤ n) (B.outputLevelData n).maxOrderRed (B.outputLevelData n).orderRed` using `hB.maxOrderSpec n (B.outputLevelData n).orderRed (B.inputLevelData n).maxOrderRed hord`.
+
+Conclude with `hmax.mono (fun d => d < n + 1) (fun m hm => Nat.lt_succ_iff.mp hm)`.
+-/
 private theorem inputLevelData_isMaxOrderReduction (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension)
     (n : ℕ) :
     IsMaxOrderReduction (fun d => d < n) (B.inputLevelData n).maxOrderRed (B.inputLevelData n).orderRed := by
@@ -168,6 +220,9 @@ private theorem inputLevelData_isMaxOrderReduction (B : PrincipalizationRules.{u
         hB.maxOrderSpec n (B.outputLevelData n).orderRed (B.inputLevelData n).maxOrderRed hord
       exact hmax.mono (fun d => d < n + 1) (fun m hm => Nat.lt_succ_iff.mp hm)
 
+/- English proof (translation)
+The claim follows from `hB.orderSpec n (fun j => B.divisorFamily (B.inputLevelData n).maxOrderRed j) (B.inputLevelData n).maxOrderRed (B.inputLevelData n).orderRed (inputLevelData_isMaxOrderReduction B hB n) (fun j => hB.divisorSpec n (B.inputLevelData n).maxOrderRed (B.inputLevelData n).orderRed (input …`.
+-/
 theorem isOrderReduction_outputLevelData (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension) (n : ℕ) :
     IsOrderReduction (fun d => d ≤ n) (B.outputLevelData n).orderRed (B.inputLevelData n).maxOrderRed :=
   hB.orderSpec n (fun j => B.divisorFamily (B.inputLevelData n).maxOrderRed j)
@@ -178,17 +233,26 @@ theorem isOrderReduction_outputLevelData (B : PrincipalizationRules.{u}) (hB : B
     (hB.divisorShift n (B.inputLevelData n).maxOrderRed (B.inputLevelData n).orderRed
       (inputLevelData_isMaxOrderReduction B hB n))
 
+/- English proof (translation)
+The claim follows from `hB.maxOrderSpec n (B.outputLevelData n).orderRed (B.inputLevelData n).maxOrderRed (isOrderReduction_outputLevelData B hB n)`.
+-/
 theorem isMaxOrderReduction_outputLevelData (B : PrincipalizationRules.{u}) (hB : B.ReducesInductivelyOnDimension) (n : ℕ) :
     IsMaxOrderReduction (fun d => d ≤ n) (B.outputLevelData n).maxOrderRed (B.outputLevelData n).orderRed :=
   hB.maxOrderSpec n (B.outputLevelData n).orderRed (B.inputLevelData n).maxOrderRed
     (isOrderReduction_outputLevelData B hB n)
 
+/- English proof (translation)
+The claim follows from `(inputLevelData_reductions_eq_of_dim_lt B n T hT (n + 1) (N + 1) (Nat.lt_succ_self n) (Nat.succ_le_succ hnN)).1.symm`.
+-/
 theorem outputLevelData_maxOrderReduction_eq_of_le (B : PrincipalizationRules.{u}) {n N : ℕ} (hnN : n ≤ N)
     (T : MarkedIdealWithBoundary.{u}) (hT : T.krullDimSucc ≤ n) :
     (B.outputLevelData N).maxOrderRed T = (B.outputLevelData n).maxOrderRed T :=
   (inputLevelData_reductions_eq_of_dim_lt B n T hT (n + 1) (N + 1) (Nat.lt_succ_self n)
     (Nat.succ_le_succ hnN)).1.symm
 
+/- English proof (translation)
+The claim follows from `outputLevelData_maxOrderReduction_eq_of_le B hT T le_rfl`.
+-/
 theorem outputLevelData_maxOrderReduction_eq_at_dim (B : PrincipalizationRules.{u}) (T : MarkedIdealWithBoundary.{u}) {N : ℕ}
     (hT : T.krullDimSucc ≤ N) :
     (B.outputLevelData N).maxOrderRed T = (B.outputLevelData T.krullDimSucc).maxOrderRed T :=

@@ -41,11 +41,17 @@ def ZSplits : Prop :=
 
 def RootsAndSplitting : Prop := RootsExist Xo c ∧ ZSplits Xo c
 
+/- English proof (translation)
+Use `⟨l.odd, dvd_rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [GenLat.Ln, inf_idem]`. Conclude with `Submodule.smul_le_right`.
+-/
 example (n : ℕ) : GenLat.LevOK (⟨stdLat E n⟩ : GenLat E n) l.M l.M := by
   refine ⟨l.odd, dvd_rfl, ?_⟩
   simp only [GenLat.Ln, inf_idem]
   exact Submodule.smul_le_right
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _` and use `⟨(), fun b => b.elim0⟩`.
+-/
 example (Λ : GenLat E 0) (N : ℕ) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) :
     GeoExhaust Xo Λ N x0 (fun (_ : Unit) (b : Fin 0) => b.elim0) :=
   fun _ _ _ _ _ _ _ => ⟨(), fun b => b.elim0⟩

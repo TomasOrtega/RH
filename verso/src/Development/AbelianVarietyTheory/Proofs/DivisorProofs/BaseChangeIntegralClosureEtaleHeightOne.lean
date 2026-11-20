@@ -17,6 +17,25 @@ namespace GlobalTheory.KeyOriginBC
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP q hq hqT A _ _ _ _ _ _ i EA _ _ _ _ _ QA _ jA ψA DA _ _ actA hFits ρ hρ hpt a ha0 ha A₁ _ _ _ _ _ _ f i₁ hf hi₁ hloc₁ hcomp hK`. Take `⟨-, -, hqA, -, hj, hψ, htor⟩` from `hFits`. Take `⟨hρA, hρker, hρmod⟩` from `hρ`. Establish `hρX : ρ (algebraMap A[X] (Localization.AtPrime QA) Polynomial.X) = 0`. Rewrite using `[← RingHom.mem_ker, hρker]`.
+
+Conclude with `Ideal.subset_span rfl`. Establish `hmax` using `comap_maximalIdeal_eq_origin P φ hφ hsh hP`. Use `set β := fibBC f i i₁ EA QA jA hcomp hj hf with hβ`. Establish `hcong` using `reduce_sub_glue_mem f i i₁ EA QA jA hcomp hj ρ hρA hρX hρmod`. Establish `hunit` using `isUnit_reduce f i i₁ EA QA jA hcomp hj ρ hρA hρX hmax hloc₁ hcong`.
+
+Use `⟨Ext f EA, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ideal₁ f i i₁ EA QA jA hcomp hj, inferInstance, locMap f i i₁ EA QA jA hcomp hj, fibMap f i i₁ EA QA jA hcomp hj hi₁, BC β DA, inferInstance, inferInstance, bcAct β DA q actA, ⟨hi₁, hloc₁, ?_, ? …` and prove the remaining obligations. Simplify using `using hqA.map f`. Conclude with `comap_ideal₁_eq_origin f i i₁ EA QA jA hcomp hj hmax hloc₁`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `p`.
+
+Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply A₁[X] (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj), locMap_algebraMap, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[glue_tmul]`. Express the relevant statement in the definitionally equal form `algebraMap T[X] O (Polynomial.map i₁ p) * _ = _`. Simplify using the standard rewrite rules. Conclude with `IsLocalization.lift_comp _`.
+
+Conclude with `isZTorsor_bc β DA q hq actA htor`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply A₁ (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj)]`. Simplify using `only [reduceLoc, IsLocalization.lift_eq, algebraMap_ext, reduce_tmul]`.
+
+Express the relevant statement in the definitionally equal form `Polynomial.eval 0 (Polynomial.C x) * _ = _`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.T.ker_baseChangedReduction_eq_span_X T O A A₁ f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit hρker`. Conclude with `reduceLoc_sub_locMap_mem f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit hcong`. Conclude with `GlobalTheory.T.localization_at_prime_etale_compat T O A A₁ f i i₁ hf EA QA jA hcomp hj ρ hρA hρX hunit DA q actA hq htor hpt`.
+
+Introduce `P₁ _ hP₁`. Distinguish the cases in `h : algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) (f a) ∈ P₁`. Conclude with `GlobalTheory.T.integralClosure_torsor_etale_height_one_abhyankar T O A A₁ f i i₁ hf EA QA jA hcomp hj DA q actA hq hqA htor a ha0 hK P₁ hP₁ h`. Conclude with `GlobalTheory.T.normal_local_ring_etale_base_change T O A A₁ f i i₁ hf EA QA jA hcomp hj DA q actA hq hqA htor a ha0 ha P₁ h`. Establish `hloc : (locMap f i i₁ EA QA jA hcomp hj).comp (locBC f i i₁ EA QA jA hcomp hj) = jA`.
+
+Apply `IsLocalization.ringHom_ext QA.primeCompl` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[locBC_algebraMap, locMap_algebraMap, glue_inclE]`. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid (Localization.AtPrime QA) (nonZeroDivisors A))` to reduce the goal to its premises.
+
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hβ, fibBC_algebraMap, RingHom.comp_apply, ← RingHom.comp_apply ψA, hψ]`. Simplify using `only [fibMap, IsLocalization.lift_eq, RingHom.comp_apply]`. Rewrite using `[← RingHom.comp_apply (locMap f i i₁ EA QA jA hcomp hj), hloc]`.
+-/
 theorem etale_bc : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (P : Ideal (Polynomial T)) [P.IsPrime] (φ : Localization.AtPrime P →+* O),

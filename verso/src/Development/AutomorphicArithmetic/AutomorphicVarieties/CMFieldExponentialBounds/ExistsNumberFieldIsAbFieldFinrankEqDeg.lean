@@ -3,6 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StmtFields
 
 open NumberField Formalism.HC UpperTheory.Top UpperTheory.V
 
+/- English proof (translation)
+Introduce `A`. Use `haveI : NeZero A.m := ⟨A.pos.ne'⟩`. Use `haveI : NeZero ((A.m : ℚ)) := ⟨by exact_mod_cast A.pos.ne'⟩`. Use `haveI hcyc : IsCyclotomicExtension {A.m} ℚ (CyclotomicField A.m ℚ) := CyclotomicField.isCyclotomicExtension A.m ℚ`. Use `haveI : IsGalois ℚ (CyclotomicField A.m ℚ) := IsCyclotomicExtension.isGalois {A.m} ℚ (CyclotomicField A.m ℚ)`.
+
+Establish `hirr` using `Polynomial.cyclotomic.irreducible_rat A.pos`. Set `e` to `IsCyclotomicExtension.autEquivPow (CyclotomicField A.m ℚ) hirr`. Set `G : Subgroup Gal(CyclotomicField A.m ℚ/ℚ)` to `A.H.comap e.toMonoidHom`. Set `F` to `IntermediateField.fixedField G`. Use `⟨F, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hζ` using `IsCyclotomicExtension.zeta_spec A.m ℚ (CyclotomicField A.m ℚ)`. Use `⟨A.m, inferInstance, F.val, IsCyclotomicExtension.zeta A.m ℚ (CyclotomicField A.m ℚ), dvd_rfl, hζ, ?_⟩` and prove the remaining obligations. Introduce `τ a hτ`. Establish `hspec` using `IsPrimitiveRoot.autToPow_spec ℚ hζ τ`. Establish `he : ((e τ : (ZMod A.m)ˣ) : ZMod A.m) = a`.
+
+Establish `h1 : IsCyclotomicExtension.zeta A.m ℚ (CyclotomicField A.m ℚ) ^ ((e τ : (ZMod A.m)ˣ) : ZMod A.m).val = IsCyclotomicExtension.zeta A.m ℚ (CyclotomicField A.m ℚ) ^ a`. Rewrite using `[← hτ, ← hspec]`. Both sides reduce to the same expression. Establish `hfin : IsOfFinOrder (IsCyclotomicExtension.zeta A.m ℚ (CyclotomicField A.m ℚ))` using `isOfFinOrder_iff_pow_eq_one.2 ⟨A.m, A.pos, hζ.pow_eq_one⟩`. Rewrite `h1` using `[hfin.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf]`.
+
+Rewrite using `[← ZMod.natCast_zmod_val ((e τ : (ZMod A.m)ˣ) : ZMod A.m)]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 h1`. Establish `hfix : (∀ x : F, τ (F.val x) = F.val x) ↔ τ ∈ G`. Rewrite using `[← IntermediateField.fixingSubgroup_fixedField G, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Conclude with `h ⟨x, hx⟩`. Introduce `h x`. Conclude with `h x.1 x.2`. Establish `hker : τ ∈ G ↔ A.ker a`.
+
+Rewrite using `[Subgroup.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨e τ, h, he⟩`. Introduce and unpack `⟨u, hu, hua⟩`.
+
+Establish `hue : u = e τ` using `Units.ext (hua.trans he.symm)`. Establish `hmem : e τ ∈ A.H` using `hue ▸ hu`. Conclude with `hmem`. Conclude with `hfix.trans hker`. Establish `h1` using `Module.finrank_mul_finrank ℚ F (CyclotomicField A.m ℚ)`.
+
+Rewrite `h1` using `[IntermediateField.finrank_fixedField_eq_card, ← IsGalois.card_aut_eq_finrank ℚ (CyclotomicField A.m ℚ), ← Subgroup.index_mul_card G]`. Establish `hpos : 0 < Nat.card G` using `Nat.card_pos`. Establish `h2 : Module.finrank ℚ F = G.index` using `Nat.eq_of_mul_eq_mul_right hpos h1`. Rewrite using `[h2]`. Conclude with `Subgroup.index_comap_of_surjective _ e.surjective`.
+-/
 theorem UpperTheory.V.exists_numberField_isAbField_finrank_eq_deg :
     ∀ A : AbF, ∃ (L : Type) (_ : Field L) (_ : NumberField L), IsAbField A L ∧ Module.finrank ℚ L = A.deg := by
   intro A

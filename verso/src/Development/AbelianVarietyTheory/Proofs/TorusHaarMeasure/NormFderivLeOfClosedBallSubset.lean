@@ -5,6 +5,19 @@ open Metric
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hyU : y ∈ U` using `hy (mem_closedBall_self hr.le)`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC y hyU)`. Use `ContinuousLinearMap.opNorm_le_bound' _ (div_nonneg hC0 hr.le) fun v hv => ?_` and prove the remaining obligations. Establish `hv0 : 0 < ‖v‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm hv)`. Establish `hR : 0 < r / ‖v‖` using `div_pos hr hv0`.
+
+Establish `hmem : ∀ t ∈ closedBall (0 : ℂ) (r / ‖v‖), y + t • v ∈ U`. Introduce `t ht`. Apply `hy` to reduce the goal to its premises. Rewrite `ht` using `[mem_closedBall_zero_iff]`. Rewrite using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul]`.
+
+Conclude with `(le_div_iff₀ hv0).1 ht`. Establish `hlin : ∀ t : ℂ, HasDerivAt (fun s : ℂ => y + s • v) v t`. Introduce `t`. Simplify using `using ((hasDerivAt_id t).smul_const v).const_add y`. Establish `hd : DifferentiableOn ℂ (fun s : ℂ => f (y + s • v)) (closedBall 0 (r / ‖v‖))`.
+
+Introduce `t ht`. Conclude with `((hf.differentiableAt (hU.mem_nhds (hmem t ht))).comp t (hlin t).differentiableAt).differentiableWithinAt`. Establish `hdc : DiffContOnCl ℂ (fun s : ℂ => f (y + s • v)) (ball 0 (r / ‖v‖))` using `DifferentiableOn.diffContOnCl (by rwa [closure_ball _ hR.ne'])`. Establish `hb` using `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hR hdc (fun z hz => hC _ (hmem z (sphere_subset_closedBall hz)))`. Establish `hder : HasDerivAt (fun s : ℂ => f (y + s • v)) (fderiv ℂ f y v) 0`.
+
+Establish `h1 : HasFDerivAt f (fderiv ℂ f y) (y + (0 : ℂ) • v)`. Simplify using `using (hf.differentiableAt (hU.mem_nhds hyU)).hasFDerivAt`. Conclude with `h1.comp_hasDerivAt (0 : ℂ) (hlin 0)`. Rewrite `hb` using `[hder.deriv]`. Use `hb.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_fderiv_le_of_closedBall_subset {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
     {U : Set H} {f : H → ℂ} {C r : ℝ} {y : H} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U)
     (hr : 0 < r) (hy : closedBall y r ⊆ U) (hC : ∀ x ∈ U, ‖f x‖ ≤ C) :
@@ -39,6 +52,13 @@ theorem norm_fderiv_le_of_closedBall_subset {H : Type} [NormedAddCommGroup H] [N
   refine hb.trans (le_of_eq ?_)
   field_simp
 
+/- English proof (translation)
+Introduce `H _ _ ι U f u hU hf hu hb x hx`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU x hx`. Establish `hr : 0 < ε / 2` using `half_pos hε`. Establish `hsub : ∀ y ∈ ball x (ε / 2), closedBall y (ε / 2) ⊆ U`. Introduce `y hy z hz`.
+
+Apply `hball` to reduce the goal to its premises. Rewrite `hy`, the goal using `[mem_ball]`. Rewrite `hz` using `[mem_closedBall]`. Combine the linear relations using `[dist_triangle z y x]`. Establish `h` using `hasFDerivAt_tsum_of_isPreconnected (𝕜 := ℂ) (f := f) (f' := fun i y => fderiv ℂ (f i) y) (u := fun i => u i / (ε / 2)) (s := ball x (ε / 2)) (x₀ := x) (x := x) (hu.div_const _) isOpen_ball (convex_ball x _).isPreconnected (fun i y hy => ((hf i).differentiableAt (hU.mem_nhds (hsub …`.
+
+Conclude with `h.differentiableAt.differentiableWithinAt`.
+-/
 theorem differentiableOn_tsum_of_norm_le :
     ∀ (H : Type) [NormedAddCommGroup H] [NormedSpace ℂ H] (ι : Type) (U : Set H)
       (f : ι → H → ℂ) (u : ι → ℝ), IsOpen U → (∀ i, DifferentiableOn ℂ (f i) U) → Summable u →

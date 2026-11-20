@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open Finset UpperTheory.V.Bern
 
+/- English proof (translation)
+Establish `hinj : Function.Injective f` using `f.injective`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MulChar.ringHomComp_apply]`. Establish `e : ((-1 : S)) ^ k = f ((-1 : R) ^ k)` using `by simp`. Rewrite using `[e]`.
+
+Conclude with `hinj.eq_iff`. Rewrite using `[← b_primmap f hinj k χ]`. Conclude with `map_ne_zero_iff f hinj`. Rewrite using `[← map_genB_char f k χ]`. Conclude with `map_ne_zero_iff f hinj`.
+-/
 private theorem nz_iff {R S : Type} [Field R] [Algebra ℚ R] [Field S] [Algebra ℚ S] {N : ℕ} [NeZero N]
     (f : R →+* S) (χ : DirichletCharacter R N) (k : ℕ) :
     ((χ.ringHomComp f : DirichletCharacter S N) (-1) = (-1) ^ k ↔ χ (-1) = (-1) ^ k) ∧
@@ -22,6 +27,13 @@ private theorem nz_iff {R S : Type} [Field R] [Algebra ℚ R] [Field S] [Algebra
   · rw [← map_genB_char f k χ]
     exact map_ne_zero_iff f hinj
 
+/- English proof (translation)
+Introduce `Ω _ _ N _ χ k hk hχ`. Use `haveI : NeZero (Monoid.exponent (ZMod N)ˣ) := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Use `haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ`. Set `i : Ω →+* AlgebraicClosure Ω` to `algebraMap _ _`. Set `f : AlgebraicClosure ℚ →+* AlgebraicClosure Ω` to `(IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] AlgebraicClosure Ω).toRingHom`.
+
+Set `g : AlgebraicClosure ℚ →+* ℂ` to `(IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] ℂ).toRingHom`. Take `⟨ψ, -, hψ⟩` from `(UpperTheory.V.Bern.b_charbij (N := N) f Set.univ).surjOn (show (χ.ringHomComp i : DirichletCharacter _ N) ∈ charSet (AlgebraicClosure Ω) Set.univ from Set.mem_univ _)`. Take `⟨a1, a2, a3⟩` from `nz_iff i χ k`. Take `⟨b1, b2, b3⟩` from `nz_iff f ψ k`. Take `⟨c1, c2, c3⟩` from `nz_iff g ψ k`.
+
+Simplify using `only at hψ`. Rewrite `b1`, `b2`, `b3` using `[hψ]`. Take `⟨h1, h2⟩` from `UpperTheory.V.Bern.b_nzC (ψ.ringHomComp g) k hk (c1.2 (b1.1 (a1.2 hχ)))`. Conclude with `⟨a2.1 (b2.2 (c2.1 h1)), fun h => a3.1 (b3.2 (c3.1 (h2 h)))⟩`.
+-/
 theorem UpperTheory.V.Bern.b_nzany :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] {N : ℕ} [NeZero N] (χ : DirichletCharacter Ω N) (k : ℕ), 1 ≤ k → χ (-1) = (-1) ^ k → Bprim k χ ≠ 0 ∧ (2 ≤ k → genB k χ ≠ 0) := by
   intro Ω _ _ N _ χ k hk hχ

@@ -10,6 +10,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 namespace GlobalTheory.CompanionTheory.MM.LowerRows
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[Matrix.submatrix_mulVec_equiv]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Equiv.symm_symm, Matrix.fromBlocks_mulVec, Sum.elim_inr]`. Both sides reduce to the same expression.
+-/
 theorem block_mulVec_lower_rows {A : Type} [CommRing A] {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) A)
     (w : Fin (n + n) → A) (i : Fin n) :
     (blk4 a b c d *ᵥ w) (finSumFinEquiv (Sum.inr i)) =
@@ -24,14 +27,25 @@ theorem block_mulVec_lower_rows {A : Type} [CommRing A] {n : ℕ} (a b c d : Mat
 def glue {A : Type} {n : ℕ} (y y' : Fin n → A) : Fin (n + n) → A :=
   fun i => Sum.elim y y' (finSumFinEquiv.symm i)
 
+/- English proof (translation)
+Simplify using `only [glue, Equiv.symm_apply_apply, Sum.elim_inl]`.
+-/
 theorem glue_inl {A : Type} {n : ℕ} (y y' : Fin n → A) (j : Fin n) :
     glue y y' (finSumFinEquiv (Sum.inl j)) = y j := by
   simp only [glue, Equiv.symm_apply_apply, Sum.elim_inl]
 
+/- English proof (translation)
+Simplify using `only [glue, Equiv.symm_apply_apply, Sum.elim_inr]`.
+-/
 theorem glue_inr {A : Type} {n : ℕ} (y y' : Fin n → A) (j : Fin n) :
     glue y y' (finSumFinEquiv (Sum.inr j)) = y' j := by
   simp only [glue, Equiv.symm_apply_apply, Sum.elim_inr]
 
+/- English proof (translation)
+Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `j with j | j` into its components or cases. Rewrite using `[glue_inl]`. Conclude with `hy j`. Rewrite using `[glue_inr]`.
+
+Conclude with `hy' j`.
+-/
 theorem glue_mem {A : Type} {n : ℕ} {S : Set A} {y y' : Fin n → A} (hy : ∀ i, y i ∈ S)
     (hy' : ∀ i, y' i ∈ S) (i : Fin (n + n)) : glue y y' i ∈ S := by
   obtain ⟨j, rfl⟩ := finSumFinEquiv.surjective i
@@ -39,6 +53,13 @@ theorem glue_mem {A : Type} {n : ℕ} {S : Set A} {y y' : Fin n → A} (hy : ∀
   · rw [glue_inl]; exact hy j
   · rw [glue_inr]; exact hy' j
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩ i`. Establish `h1` using `(hs (glue y y')).1 (glue_mem (S := (S : Set A)) hy hy') (finSumFinEquiv (Sum.inr i))`. Rewrite `h1` using `[hg, block_mulVec_lower_rows]`. Simplify `h1` using `only [glue_inl, glue_inr]`.
+
+Introduce `hx set w : Fin (n + n) → A := h *ᵥ glue 0 x with hw`. Establish `hgw : g *ᵥ w = glue 0 x`. Rewrite using `[hw, Matrix.mulVec_mulVec, hgh, Matrix.one_mulVec]`. Establish `hwS : ∀ i, w i ∈ S` using `(hs w).2 fun i => by`. Rewrite using `[hgw]`.
+
+Conclude with `glue_mem (S := (S : Set A)) (fun _ => S.zero_mem) hx i`. Use `⟨fun j => w (finSumFinEquiv (Sum.inl j)), fun _ => hwS _, fun j => w (finSumFinEquiv (Sum.inr j)), fun _ => hwS _, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← block_mulVec_lower_rows a b c d w i, ← hg, hgw, glue_inr]`.
+-/
 theorem lower_image {A : Type} [CommRing A] (S : Subring A) {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) A)
     (g h : Matrix (Fin (n + n)) (Fin (n + n)) A) (hgh : g * h = 1) (hg : g = blk4 a b c d)
     (hs : ∀ y, (∀ i, y i ∈ S) ↔ ∀ i, (g *ᵥ y) i ∈ S) (x : Fin n → A) :
@@ -59,6 +80,11 @@ theorem lower_image {A : Type} [CommRing A] (S : Subring A) {n : ℕ} (a b c d :
       fun j => w (finSumFinEquiv (Sum.inr j)), fun _ => hwS _, funext fun i => ?_⟩
     rw [← block_mulVec_lower_rows a b c d w i, ← hg, hgw, glue_inr]
 
+/- English proof (translation)
+Establish `hgh : g.1 * (g⁻¹).1 = 1` using `by simp`. Use extensionality with `x`. Establish `key` using `lower_image (intLoc F E v) a b c d g.1 (g⁻¹).1 hgh hg (fun y => by`. Use `hs y` as an intermediate fact. Rewrite using `[mem_latLoc_stdLattice, mem_latLoc_stdLattice] at this) x` and apply the resulting hypothesis.
+
+Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, mem_latLoc_stdLattice]`. Conclude with `key`.
+-/
 theorem lower_image_lat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {n : ℕ}
     (a b c d : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E))
@@ -75,6 +101,9 @@ theorem lower_image_lat {F E : Type} [Field F] [NumberField F] [Field E] [Algebr
   simp only [Set.mem_setOf_eq, SetLike.mem_coe, mem_latLoc_stdLattice]
   exact key
 
+/- English proof (translation)
+Unfold `blk4`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`. Both sides reduce to the same expression.
+-/
 theorem blockMatrix_map {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {n : ℕ}
     (a b c d : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)) :
@@ -85,6 +114,11 @@ theorem blockMatrix_map {F E : Type} [Field F] [NumberField F] [Field E] [Algebr
   rw [← Matrix.submatrix_map, Matrix.fromBlocks_map]
   rfl
 
+/- English proof (translation)
+Introduce `D n k k₁ k₂ k₃ k₄ hk hm v`. Establish `hlev : k ∈ levelOpen D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n))` using `(Subgroup.mem_inf.1 hk).1`. Establish `hst` using `mem_stabLoc.1 (mem_levelOpen.1 hlev v)`. Use `lower_image_lat v (PositivityTheory.SiegelWeilFormula.Gen.matV v k₁) (PositivityTheory.SiegelWeilFormula.Gen.matV v k₂) (PositivityTheory.SiegelWeilFormula.Gen.matV v k₃) (PositivityTheory.SiegelWeilFormula.Gen.matV v k₄) _ ?_ hst` and prove the remaining obligations. Rewrite using `[matHom_proj, ← blockMatrix_map, ← hm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lowerRows_onto : ∀ (D : D7) (n : ℕ) (k : G D n) (k₁ k₂ k₃ k₄ : Mx D n n), k ∈ K D n → mat k = blk4 k₁ k₂ k₃ k₄ → ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F), {x | ∃ y ∈ (latLoc D.host.F (stdLattice D.host.E n) v), ∃ y' ∈ (latLoc D.host.F (stdLattice D.host.E n) v), x = (PositivityTheory.SiegelWeilFormula.Gen.matV v k₃).mulVec y + (PositivityTheory.SiegelWeilFormula.Gen.matV v k₄).mulVec y'} = ((latLoc D.host.F (stdLattice D.host.E n) v) : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) := by
   intro D n k k₁ k₂ k₃ k₄ hk hm v
   have hlev : k ∈ levelOpen D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) :=

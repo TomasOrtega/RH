@@ -21,13 +21,24 @@ def LinAdjOn (D : Submodule ℂ H) (f : H → H) : Prop :=
 
 variable {D : Submodule ℂ H}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ hw => hw, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun u hu => ⟨u, hu, fun _ _ => rfl⟩⟩`.
+-/
 theorem linAdjOn_id : LinAdjOn D fun w => w := ⟨fun _ hw => hw, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun u hu => ⟨u, hu, fun _ _ => rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨fun _ _ => D.zero_mem, fun _ _ _ _ => (add_zero 0).symm, fun c _ _ => (smul_zero c).symm, fun _ _ => ⟨0, D.zero_mem, fun w _ => ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem linAdjOn_zero : LinAdjOn D fun _ => 0 := by
   refine ⟨fun _ _ => D.zero_mem, fun _ _ _ _ => (add_zero 0).symm, fun c _ _ => (smul_zero c).symm,
     fun _ _ => ⟨0, D.zero_mem, fun w _ => ?_⟩⟩
   simp
 
+/- English proof (translation)
+Take `⟨hf1, hf2, hf3, hf4⟩` from `hf`. Take `⟨hg1, hg2, hg3, hg4⟩` from `hg`. Use `⟨fun w hw => hf1 _ (hg1 w hw), fun v hv w hw => ?_, fun c w hw => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `show f (g (v + w)) = f (g v) + f (g w)`. Rewrite using `[hg2 v hv w hw, hf2 _ (hg1 v hv) _ (hg1 w hw)]`.
+
+Use `show f (g (c • w)) = c • f (g w)`. Rewrite using `[hg3 c w hw, hf3 c _ (hg1 w hw)]`. Take `⟨u₁, hu₁, h₁⟩` from `hf4 u hu`. Take `⟨u₂, hu₂, h₂⟩` from `hg4 u₁ hu₁`. Conclude with `⟨u₂, hu₂, fun w hw => (h₁ _ (hg1 w hw)).trans (h₂ w hw)⟩`.
+-/
 theorem LinAdjOn.comp {f g : H → H} (hf : LinAdjOn D f) (hg : LinAdjOn D g) : LinAdjOn D fun w => f (g w) := by
   obtain ⟨hf1, hf2, hf3, hf4⟩ := hf
   obtain ⟨hg1, hg2, hg3, hg4⟩ := hg
@@ -40,6 +51,13 @@ theorem LinAdjOn.comp {f g : H → H} (hf : LinAdjOn D f) (hg : LinAdjOn D g) : 
     obtain ⟨u₂, hu₂, h₂⟩ := hg4 u₁ hu₁
     exact ⟨u₂, hu₂, fun w hw => (h₁ _ (hg1 w hw)).trans (h₂ w hw)⟩
 
+/- English proof (translation)
+Take `⟨hf1, hf2, hf3, hf4⟩` from `hf`. Take `⟨hg1, hg2, hg3, hg4⟩` from `hg`. Use `⟨fun w hw => D.add_mem (hf1 w hw) (hg1 w hw), fun v hv w hw => ?_, fun c w hw => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `show f (v + w) + g (v + w) = (f v + g v) + (f w + g w)`. Rewrite using `[hf2 v hv w hw, hg2 v hv w hw]`.
+
+Normalize the expressions using the abelian group laws. Use `show f (c • w) + g (c • w) = c • (f w + g w)`. Rewrite using `[hf3 c w hw, hg3 c w hw, smul_add]`. Take `⟨u₁, hu₁, h₁⟩` from `hf4 u hu`. Take `⟨u₂, hu₂, h₂⟩` from `hg4 u hu`.
+
+Use `⟨u₁ + u₂, D.add_mem hu₁ hu₂, fun w hw => ?_⟩` and prove the remaining obligations. Use `show ⟪u, f w + g w⟫_ℂ = ⟪u₁ + u₂, w⟫_ℂ`. Rewrite using `[inner_add_right, inner_add_left, h₁ w hw, h₂ w hw]`.
+-/
 theorem LinAdjOn.add {f g : H → H} (hf : LinAdjOn D f) (hg : LinAdjOn D g) : LinAdjOn D fun w => f w + g w := by
   obtain ⟨hf1, hf2, hf3, hf4⟩ := hf
   obtain ⟨hg1, hg2, hg3, hg4⟩ := hg
@@ -56,6 +74,11 @@ theorem LinAdjOn.add {f g : H → H} (hf : LinAdjOn D f) (hg : LinAdjOn D g) : L
     show ⟪u, f w + g w⟫_ℂ = ⟪u₁ + u₂, w⟫_ℂ
     rw [inner_add_right, inner_add_left, h₁ w hw, h₂ w hw]
 
+/- English proof (translation)
+Take `⟨hf1, hf2, hf3, hf4⟩` from `hf`. Use `⟨fun w hw => D.smul_mem a (hf1 w hw), fun v hv w hw => ?_, fun c w hw => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `show a • f (v + w) = a • f v + a • f w`. Rewrite using `[hf2 v hv w hw, smul_add]`. Use `show a • f (c • w) = c • a • f w`.
+
+Rewrite using `[hf3 c w hw, smul_comm]`. Take `⟨u₁, hu₁, h₁⟩` from `hf4 u hu`. Use `⟨(starRingEnd ℂ a) • u₁, D.smul_mem _ hu₁, fun w hw => ?_⟩` and prove the remaining obligations. Use `show ⟪u, a • f w⟫_ℂ = ⟪(starRingEnd ℂ a) • u₁, w⟫_ℂ`. Rewrite using `[inner_smul_right, inner_smul_left, h₁ w hw, Complex.conj_conj]`.
+-/
 theorem LinAdjOn.smul {f : H → H} (hf : LinAdjOn D f) (a : ℂ) : LinAdjOn D fun w => a • f w := by
   obtain ⟨hf1, hf2, hf3, hf4⟩ := hf
   refine ⟨fun w hw => D.smul_mem a (hf1 w hw), fun v hv w hw => ?_, fun c w hw => ?_, fun u hu => ?_⟩
@@ -68,6 +91,11 @@ theorem LinAdjOn.smul {f : H → H} (hf : LinAdjOn D f) (a : ℂ) : LinAdjOn D f
     show ⟪u, a • f w⟫_ℂ = ⟪(starRingEnd ℂ a) • u₁, w⟫_ℂ
     rw [inner_smul_right, inner_smul_left, h₁ w hw, Complex.conj_conj]
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `linAdjOn_zero`. Introduce `i s hi ih`. Simplify using `only [Finset.sum_insert hi]`.
+
+Conclude with `(hf i).add ih`.
+-/
 theorem linAdjOn_sum {ι : Type} (s : Finset ι) {f : ι → H → H} (hf : ∀ i, LinAdjOn D (f i)) :
     LinAdjOn D fun w => ∑ i ∈ s, f i w := by
   classical
@@ -78,6 +106,11 @@ theorem linAdjOn_sum {ι : Type} (s : Finset ι) {f : ι → H → H} (hf : ∀ 
     simp only [Finset.sum_insert hi]
     exact (hf i).add ih
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.foldr_nil]`. Conclude with `linAdjOn_id`. Consider the case `cons f l ih`.
+
+Simplify using `only [List.foldr_cons]`. Conclude with `(hl f (by simp)).comp (ih fun g hg => hl g (by simp [hg]))`.
+-/
 theorem linAdjOn_foldr (l : List (H → H)) (hl : ∀ f ∈ l, LinAdjOn D f) :
     LinAdjOn D fun w => l.foldr (fun f acc => f acc) w := by
   induction l with
@@ -88,6 +121,11 @@ theorem linAdjOn_foldr (l : List (H → H)) (hl : ∀ f ∈ l, LinAdjOn D f) :
     simp only [List.foldr_cons]
     exact (hl f (by simp)).comp (ih fun g hg => hl g (by simp [hg]))
 
+/- English proof (translation)
+Take `⟨-, hf2, hf3, -⟩` from `hf`. Set `g : D →ₗ[ℂ] H` to `{ toFun := fun x => f x map_add' := fun x y => hf2 x x.2 y y.2 map_smul' := fun c x => hf3 c x x.2 }`. Take `⟨A, hA⟩` from `LinearMap.exists_extend g`. Use `⟨A, fun w hw => ?_⟩` and prove the remaining obligations. Establish `key` using `LinearMap.congr_fun hA ⟨w, hw⟩`.
+
+Conclude with `key`.
+-/
 theorem LinAdjOn.exists_extend {f : H → H} (hf : LinAdjOn D f) : ∃ A : H →ₗ[ℂ] H, ∀ w ∈ D, A w = f w := by
   obtain ⟨-, hf2, hf3, -⟩ := hf
   let g : D →ₗ[ℂ] H :=
@@ -101,17 +139,26 @@ theorem LinAdjOn.exists_extend {f : H → H} (hf : LinAdjOn D f) : ∃ A : H →
 
 variable {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Use `⟨fun w hw => dRep_mem hG hπ hw hX, fun v hv w hw => dRep_add hv hw hX, fun c w hw => dRep_smul c hw hX, fun u hu => ⟨-dRep π X u, neg_mem (dRep_mem hG hπ hu hX), fun w hw => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[inner_dRep hG hπ hu hw hX, inner_neg_left]`.
+-/
 theorem linAdjOn_dRep (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ lieG G) : LinAdjOn (smSub G π) (dRep π X) := by
   refine ⟨fun w hw => dRep_mem hG hπ hw hX, fun v hv w hw => dRep_add hv hw hX,
     fun c w hw => dRep_smul c hw hX, fun u hu => ⟨-dRep π X u, neg_mem (dRep_mem hG hπ hu hX), fun w hw => ?_⟩⟩
   rw [inner_dRep hG hπ hu hw hX, inner_neg_left]
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `parts_mem hG hh Z`. Conclude with `(linAdjOn_dRep hG hπ h₁).add ((linAdjOn_dRep hG hπ h₂).smul Complex.I)`.
+-/
 theorem linAdjOn_dRepC (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π)
     (Z : Matrix (Fin n) (Fin n) ℂ) : LinAdjOn (smSub G π) (dRepC G π Z) := by
   obtain ⟨h₁, h₂⟩ := parts_mem hG hh Z
   exact (linAdjOn_dRep hG hπ h₁).add ((linAdjOn_dRep hG hπ h₂).smul Complex.I)
 
+/- English proof (translation)
+Use `show LinAdjOn (smSub G π) fun w => ∑ idx : Fin (k + 1) → Fin n, (List.ofFn fun a : Fin (k + 1) => dRepC G π (Matrix.single (idx a) (idx (a + 1)) 1)).foldr (fun f acc => f acc) w`. Use `linAdjOn_sum Finset.univ fun idx => linAdjOn_foldr _ fun g hg => ?_` and prove the remaining obligations. Rewrite `hg` using `[List.mem_ofFn]`. Take `⟨a, rfl⟩` from `hg`. Conclude with `linAdjOn_dRepC hG hh hπ _`.
+-/
 theorem linAdjOn_gelfH (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) π) (k : ℕ) :
     LinAdjOn (smSub G π) (gelfH G π k) := by
   show LinAdjOn (smSub G π) fun w => ∑ idx : Fin (k + 1) → Fin n,
@@ -124,6 +171,31 @@ theorem linAdjOn_gelfH (hG : IsUnit G) (hh : Gᴴ = G) (hπ : IsURepOn (Formalis
 
 end
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ P G hP hPG hσ hirr k`. Establish `hGu : IsUnit G` using `gram_unit hP hPG`. Establish `hh : Gᴴ = G` using `gram_herm hPG`. Establish `hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) (trRep σ P)` using `isURepOn_trRep hP hPG hσ`. Establish `hirr' : IsIrredOn (Formalism.QuantumDeterminants.UH G) (trRep σ P)` using `isIrredOn_trRep hP hPG hirr`.
+
+Establish `hL` using `linAdjOn_gelfH hGu hh hπ k`. Take `⟨A, hA⟩` from `hL.exists_extend`. Take `⟨-, -, -, hadj⟩` from `hL`. Establish `hnorm : ∀ g ∈ Formalism.QuantumDeterminants.UH G, ∀ v : H, ‖trRep σ P g v‖ = ‖v‖` using `fun g hg v => hπ.2.1 g hg v`. Establish `hAg : ∀ g ∈ Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P), A (trRep σ P g w) = trRep σ P g (A w)`.
+
+Introduce `g hg w hw`. Rewrite using `[hA _ (rep_mem hGu hπ hw hg), hA w hw]`. Conclude with `GlobalTheory.T.gelfandInvariantAction_commute_unitaryRep_smooth n ε H σ P G hP hPG hσ k g hg w hw`. Establish `h₁ : ∀ (i : Formalism.QuantumDeterminants.UH G) (v : H), ‖trRep σ P i.1 v‖ = ‖v‖` using `fun i v => hnorm i.1 i.2 v`. Establish `h₂ : ∀ i : Formalism.QuantumDeterminants.UH G, ∃ j : Formalism.QuantumDeterminants.UH G, (∀ v, trRep σ P j.1 (trRep σ P i.1 v) = v) ∧ ∀ v, trRep σ P i.1 (trRep σ P j.1 v) = v`.
+
+Introduce `i`. Establish `hu : IsUnit i.1.det` using `(Matrix.isUnit_iff_isUnit_det _).mp (isUnit_of_mem_UH hGu i.2)`. Use `⟨⟨i.1⁻¹, inv_mem_UH hGu i.2⟩, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← rep_mul hπ (inv_mem_UH hGu i.2) i.2, Matrix.nonsing_inv_mul _ hu, rep_one hπ]`. Rewrite using `[← rep_mul hπ i.2 (inv_mem_UH hGu i.2), Matrix.mul_nonsing_inv _ hu, rep_one hπ]`.
+
+Establish `h₃ : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ i : Formalism.QuantumDeterminants.UH G, ∀ v ∈ S, trRep σ P i.1 v ∈ S) → S = ⊥ ∨ S = ⊤` using `fun S hS hinv => hirr' S hS fun g hg v hv => hinv ⟨g, hg⟩ v hv`. Establish `h₄ : ∀ i : Formalism.QuantumDeterminants.UH G, ∀ v ∈ smSub G (trRep σ P), trRep σ P i.1 v ∈ smSub G (trRep σ P)` using `fun i v hv => rep_mem hGu hπ hv i.2`. Establish `h₅ : ∀ i : Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P), ‖A (trRep σ P i.1 w)‖ = ‖A w‖`. Introduce `i w hw`. Rewrite using `[hAg i.1 i.2 w hw, hnorm i.1 i.2]`.
+
+Establish `h₆ : ∀ i : Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P), ‖(LinearMap.id : H →ₗ[ℂ] H) (trRep σ P i.1 w)‖ = ‖(LinearMap.id : H →ₗ[ℂ] H) w‖`. Introduce `i w _`. Simplify using `only [LinearMap.id_apply]`. Conclude with `hnorm i.1 i.2 w`. Establish `h₇ : ∀ i : Formalism.QuantumDeterminants.UH G, ∀ w ∈ smSub G (trRep σ P), ⟪A (trRep σ P i.1 w), (LinearMap.id : H →ₗ[ℂ] H) (trRep σ P i.1 w)⟫_ℂ = ⟪A w, (LinearMap.id : H →ₗ[ℂ] H) w⟫_ℂ`.
+
+Introduce `i w hw`. Simplify using `only [LinearMap.id_apply]`. Rewrite using `[hAg i.1 i.2 w hw, rep_inner hπ i.2]`. Establish `h₈ : ∀ (u : ℕ → H) (f : H), (∀ i, u i ∈ smSub G (trRep σ P)) → Tendsto u atTop (𝓝 0) → Tendsto (fun i => A (u i)) atTop (𝓝 f) → f = 0`. Introduce `u f hu hu0 hAu`.
+
+Apply `eq_zero_of_inner_smooth hP hPG hσ` to reduce the goal to its premises. Introduce `v hv`. Take `⟨v', -, hvv⟩` from `hadj v hv`. Establish `t₁ : Tendsto (fun i => ⟪v, A (u i)⟫_ℂ) atTop (𝓝 ⟪v, f⟫_ℂ)` using `tendsto_const_nhds.inner hAu`. Establish `t₂ : Tendsto (fun i => ⟪v', u i⟫_ℂ) atTop (𝓝 ⟪v', (0 : H)⟫_ℂ)` using `tendsto_const_nhds.inner hu0`.
+
+Rewrite `t₂` using `[inner_zero_right]`. Use `tendsto_nhds_unique t₁ (t₂.congr fun i => ?_)` and prove the remaining obligations. Rewrite using `[hA _ (hu i), hvv _ (hu i)]`. Establish `h₉ : ∀ (u : ℕ → H) (f : H), (∀ i, u i ∈ smSub G (trRep σ P)) → Tendsto u atTop (𝓝 0) → Tendsto (fun i => (LinearMap.id : H →ₗ[ℂ] H) (u i)) atTop (𝓝 f) → f = 0`. Introduce `u f _ hu0 hu`.
+
+Simplify using `only [LinearMap.id_apply] at hu`. Conclude with `tendsto_nhds_unique hu hu0`. Take `⟨c, hc⟩` from `GlobalTheory.T.schur_inner_eq_pair_closable_normInvariant (Formalism.QuantumDeterminants.UH G) H H (fun i => trRep σ P i.1) (smSub G (trRep σ P)) h₁ h₂ h₃ h₄ A LinearMap.id h₅ h₆ h₇ h₈ h₉`. Use `⟨starRingEnd ℂ c, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hA w hw]`.
+
+Apply `ext_inner_smooth hP hPG hσ` to reduce the goal to its premises. Introduce `u hu`. Establish `e₁ : ⟪A w, u⟫_ℂ = ⟪starRingEnd ℂ c • w, u⟫_ℂ`. Establish `e` using `hc w hw u hu`. Rewrite `e` using `[LinearMap.id_apply]`.
+
+Rewrite using `[e, inner_smul_left, Complex.conj_conj]`. Rewrite using `[← inner_conj_symm, e₁, inner_conj_symm]`.
+-/
 theorem gelfH_scalar : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (P G : Matrix (Fin n) (Fin n) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = G → IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → ∀ (k : ℕ), ∃ c : ℂ, ∀ w ∈ smSub G (trRep σ P), gelfH G (trRep σ P) k w = c • w := by
   intro n ε H _ _ _ σ P G hP hPG hσ hirr k
   have hGu : IsUnit G := gram_unit hP hPG

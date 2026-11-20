@@ -54,6 +54,13 @@ def redLevChar {κ : Type} [CommRing κ] {a : ℕ} (r t s : ℕ) (hr : r ≤ a) 
       rw [Formalism.L2.DIV.diag_block_det_mul hx hy, map_mul]
     rw [Finset.prod_congr rfl e2, Finset.prod_mul_distrib, mul_mul_mul_comm]
 
+/- English proof (translation)
+Introduce `D v φ PP r hred a L H c`. Set `f` to `Matrix.GeneralLinearGroup.map (n := Fin a) r`. Use `⟨(redLevGrp L.r L.t L.hr H).comap f, (redLevChar L.r L.t L.s L.hr H c (fun i => L.cg i PP)).comp ((f.subgroupComap (redLevGrp L.r L.t L.hr H))), ?_⟩` and prove the remaining obligations. Introduce `k kb hk`. Establish `hkb : kb = f k`.
+
+Use extensionality with `i j`. Take `⟨h, e⟩` from `(hred.2.2.1 _ _).1 (hk i j)`. Rewrite using `[← e]`. Both sides reduce to the same expression. Substitute `hkb` using the available equality.
+
+Conclude with `⟨Iff.rfl, fun _ => rfl⟩`.
+-/
 theorem exists_isLocLevel : ∀ (D : D7) (v : FinPl D) (φ : SplitProj D v) (PP : Formalism.L2.DIV.Pl D.host.E)
     (r : v.adicCompletionIntegers D.host.F →+* Formalism.L2.DIV.kP PP), IsRedMap φ PP r →
     ∀ (a : ℕ) (L : Formalism.L2.DIV.LevDat D.host.E ℂ a) (H : Subgroup (GL (Fin L.r) (Formalism.L2.DIV.kP PP))) (c : H →* ℂˣ),

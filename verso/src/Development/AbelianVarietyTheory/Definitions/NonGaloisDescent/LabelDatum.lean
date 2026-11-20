@@ -56,8 +56,14 @@ def hcL (L : List (Pc g)) : (n : ℕ) → Gn g n → ℂ :=
   List.rec (motive := fun _ => (n : ℕ) → Gn g n → ℂ) (fun _ _ => 1)
     (fun p L ih n => hc p.1 (degL L) p.2 (ih (degL L)) n) L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hcL_nil (n : ℕ) : hcL ([] : List (Pc g)) n = fun _ => 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hcL_cons (p : Pc g) (L : List (Pc g)) (n : ℕ) :
     hcL (p :: L) n = hc p.1 (degL L) p.2 (hcL L (degL L)) n := rfl
 

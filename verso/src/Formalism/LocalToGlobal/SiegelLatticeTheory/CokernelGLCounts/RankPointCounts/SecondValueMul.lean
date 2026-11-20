@@ -14,9 +14,15 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) {
   (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (πa : UP p →* UP p)
   (hker : ∀ x : UP p, πa x = 1 ↔ ((x : GG p).1 : GLp p).val ∈ Va p a) (g : UP p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem first_value_mul (x y : UP p) : (((x * y : UP p) : GG p).1 : GLp p).val =
     (((x : GG p).1 : GLp p).val) * (((y : GG p).1 : GLp p).val) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem second_value_mul (x y : UP p) : ((((x * y : UP p) : GG p).2.unop : GLp p)).val =
     ((((y : GG p).2.unop : GLp p)).val) * ((((x : GG p).2.unop : GLp p)).val) := rfl
 

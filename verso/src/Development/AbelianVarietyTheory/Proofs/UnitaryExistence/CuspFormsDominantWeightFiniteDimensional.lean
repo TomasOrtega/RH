@@ -22,6 +22,21 @@ open NumberField AlgebraicGeometry CategoryTheory Limits in
 open scoped Matrix nonZeroDivisors in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hB E _ _ _ H Dw l Xo c r U σ hgood hunf`. Unfold `_root_.Formalism.L2.PjFree.CuspFD`. Introduce `a n _`. Take `⟨hind, -⟩` from `_root_.GlobalTheory.reading_linearIndependent_and_injective hB E H Dw l Xo c σ r (U σ) hunf a n`. Use `set V := _root_.Formalism.L2.PjFree.cusp Xo c U a n with hV`.
+
+Use `set W : Submodule ℂ (_root_.Formalism.L2.PjFree.FDSec (U σ).X) := Submodule.span ℂ ((_root_.Formalism.L2.PjFree.rdU (U σ)) '' (V : Set (_root_.Formalism.L2.Pj.Rul Xo c))) with hWdef`. Establish `hWle : W ≤ _root_.Formalism.L2.PjFree.holSub (U σ).X (_root_.Formalism.L2.PjFree.laU (U σ) a n)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `((_root_.Formalism.L2.PjFree.mem_cusp Xo c U a n f).mp hf).2 σ hgood`.
+
+Establish `hoff : ∀ P ∈ W, ∀ k, ∀ x ∉ ((U σ).X k).dom, P k x = 0`. Introduce `P hP k x hx`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨f, -, rfl⟩` from `hg`.
+
+Simplify using `[_root_.Formalism.L2.PjFree.rdU, hx]`. Consider the case `zero => rfl`. Consider the case `add g h _ _ hg hh => show g k x + h k x = 0`. Rewrite using `[hg, hh, add_zero]`. Consider the case `smul z g _ hg => show z • g k x = 0`.
+
+Rewrite using `[hg, smul_zero]`. Use `haveI : FiniteDimensional ℂ W := _root_.GlobalTheory.CuspSecFinData.finiteDimensional_of_le_holSub E r (U σ).Comp (U σ).X (_root_.Formalism.L2.PjFree.laU (U σ) a n) W hWle hoff`. Establish `hrank : Module.rank c.F V ≤ Module.finrank ℂ W`. Apply `rank_le` to reduce the goal to its premises. Introduce `s hs`.
+
+Set `e` to `s.equivFin`. Set `b : Fin s.card → _root_.Formalism.L2.Pj.Rul Xo c` to `fun i => ((e.symm i : s) : V).1`. Establish `hbV : ∀ i, b i ∈ _root_.Formalism.L2.Pj.sec Xo c a n` using `fun i => _root_.Formalism.L2.PjFree.cusp_le_sec Xo c U a n ((e.symm i : s) : V).2`. Establish `hbind : LinearIndependent c.F b` using `(hs.comp e.symm e.symm.injective).map' V.subtype V.ker_subtype`. Establish `himg` using `hind s.card b hbV hbind`.
+
+Set `b' : Fin s.card → W` to `fun i => ⟨_root_.Formalism.L2.PjFree.rdU (U σ) (b i), Submodule.subset_span ⟨b i, ((e.symm i : s) : V).2, rfl⟩⟩`. Establish `hb' : LinearIndependent ℂ b'` using `LinearIndependent.of_comp W.subtype himg`. Simplify using `using hb'.fintype_card_le_finrank`. Conclude with `Module.rank_lt_aleph0_iff.mp (lt_of_le_of_lt hrank (Cardinal.nat_lt_aleph0 _))`.
+-/
 theorem _root_.GlobalTheory.cuspForms_finiteDimensional_of_isUnf : _root_.ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt → ∀ (E : Type) [Field E]
     [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H)
     (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, _root_.Formalism.L2.PjFree.Unf Xo c σ r)

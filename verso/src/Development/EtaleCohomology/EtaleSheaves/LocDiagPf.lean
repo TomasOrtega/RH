@@ -12,21 +12,33 @@ def g {S : Type} [CommRing S] (p : PrimeSpectrum S) (s : Finset p.asIdeal.primeC
 
 variable {S : Type} [CommRing S] (p : PrimeSpectrum S)
 
+/- English proof (translation)
+Unfold `g`. Use `Submonoid.prod_mem _ (fun (x : p.asIdeal.primeCompl) _ => x.2)` and compare the differences between its conclusion and the goal.
+-/
 theorem g_mem (s : Finset p.asIdeal.primeCompl) : g p s ∈ p.asIdeal.primeCompl := by
   classical
   unfold g
   convert Submonoid.prod_mem _ (fun (x : p.asIdeal.primeCompl) _ => x.2)
 
+/- English proof (translation)
+Unfold `g`. Use `Finset.prod_dvd_prod_of_subset s t (fun x : p.asIdeal.primeCompl => (x : S)) h` and compare the differences between its conclusion and the goal.
+-/
 theorem g_dvd {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) : g p s ∣ g p t := by
   classical
   unfold g
   convert Finset.prod_dvd_prod_of_subset s t (fun x : p.asIdeal.primeCompl => (x : S)) h
 
+/- English proof (translation)
+Unfold `g`. Use `Finset.prod_singleton (fun x : p.asIdeal.primeCompl => (x : S)) y` and compare the differences between its conclusion and the goal.
+-/
 theorem g_single (y : p.asIdeal.primeCompl) : g p {y} = (y : S) := by
   classical
   unfold g
   convert Finset.prod_singleton (fun x : p.asIdeal.primeCompl => (x : S)) y
 
+/- English proof (translation)
+The claim follows from `isUnit_of_dvd_unit (map_dvd _ (g_dvd p h)) (IsLocalization.Away.algebraMap_isUnit _)`.
+-/
 theorem unitAway {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) :
     IsUnit (algebraMap S (Localization.Away (g p t)) (g p s)) :=
   isUnit_of_dvd_unit (map_dvd _ (g_dvd p h)) (IsLocalization.Away.algebraMap_isUnit _)
@@ -35,14 +47,23 @@ def tr {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) :
     Localization.Away (g p s) →+* Localization.Away (g p t) :=
   IsLocalization.Away.lift (g p s) (unitAway p h)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_comp _ _`.
+-/
 theorem tr_comp {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) :
     (tr p h).comp (algebraMap S _) = algebraMap S _ :=
   IsLocalization.Away.lift_comp _ _
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+-/
 theorem tr_apply {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) (x : S) :
     tr p h (algebraMap S _ x) = algebraMap S _ x :=
   IsLocalization.Away.lift_eq _ _ _
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (g p s)) h`.
+-/
 theorem away_ext {s : Finset p.asIdeal.primeCompl} {P : Type} [CommRing P]
     {u v : Localization.Away (g p s) →+* P}
     (h : u.comp (algebraMap S _) = v.comp (algebraMap S _)) : u = v :=
@@ -62,6 +83,9 @@ def Dg : Finset p.asIdeal.primeCompl ⥤ CommRingCat.{0} where
     simp only [CommRingCat.hom_ofHom, CommRingCat.hom_comp]
     rw [RingHom.comp_assoc, tr_comp, tr_comp, tr_comp]
 
+/- English proof (translation)
+The claim follows from `IsLocalization.map_units _ (⟨g p s, g_mem p s⟩ : p.asIdeal.primeCompl)`.
+-/
 theorem unitLoc (s : Finset p.asIdeal.primeCompl) :
     IsUnit (algebraMap S (Localization.AtPrime p.asIdeal) (g p s)) :=
   IsLocalization.map_units _ (⟨g p s, g_mem p s⟩ : p.asIdeal.primeCompl)
@@ -70,10 +94,16 @@ def toLoc (s : Finset p.asIdeal.primeCompl) :
     Localization.Away (g p s) →+* Localization.AtPrime p.asIdeal :=
   IsLocalization.Away.lift (g p s) (unitLoc p s)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_comp _ _`.
+-/
 theorem toLoc_comp (s : Finset p.asIdeal.primeCompl) :
     (toLoc p s).comp (algebraMap S _) = algebraMap S _ :=
   IsLocalization.Away.lift_comp _ _
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+-/
 theorem toLoc_apply (s : Finset p.asIdeal.primeCompl) (x : S) :
     toLoc p s (algebraMap S _ x) = algebraMap S _ x :=
   IsLocalization.Away.lift_eq _ _ _
@@ -89,11 +119,17 @@ def Cc : Cocone (Dg p) where
         rw [RingHom.comp_assoc, tr_comp, toLoc_comp, RingHom.comp_assoc, toLoc_comp]
         rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Cc_ι (s : Finset p.asIdeal.primeCompl) : ((Cc p).ι.app s).hom = toLoc p s := rfl
 
 def phi (c : Cocone (Dg p)) : S →+* c.pt :=
   (c.ι.app ∅).hom.comp (algebraMap S (Localization.Away (g p ∅)))
 
+/- English proof (translation)
+Establish `hw` using `c.w (homOfLE (Finset.empty_subset s))`. Unfold `phi`. Rewrite using `[← hw]`. Use extensionality with `x`. Conclude with `congrArg (c.ι.app s).hom (tr_apply p (Finset.empty_subset s) x).symm`.
+-/
 theorem cocone_comp (c : Cocone (Dg p)) (s : Finset p.asIdeal.primeCompl) :
     (c.ι.app s).hom.comp (algebraMap S (Localization.Away (g p s))) = phi p c := by
   have hw := c.w (homOfLE (Finset.empty_subset s))
@@ -102,6 +138,9 @@ theorem cocone_comp (c : Cocone (Dg p)) (s : Finset p.asIdeal.primeCompl) :
   ext x
   exact congrArg (c.ι.app s).hom (tr_apply p (Finset.empty_subset s) x).symm
 
+/- English proof (translation)
+Rewrite using `[← DFunLike.congr_fun (cocone_comp p c {y}) (y : S)]`. Establish `hy : IsUnit (algebraMap S (Localization.Away (g p {y})) y)`. Rewrite using `[show (y : S) = g p {y} from (g_single p y).symm]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Conclude with `IsUnit.map (c.ι.app {y}).hom hy`.
+-/
 theorem phi_unit (c : Cocone (Dg p)) (y : p.asIdeal.primeCompl) : IsUnit (phi p c y) := by
   rw [← DFunLike.congr_fun (cocone_comp p c {y}) (y : S)]
   have hy : IsUnit (algebraMap S (Localization.Away (g p {y})) y) := by
@@ -135,6 +174,11 @@ def isColim : IsColimit (Cc p) where
     change _ = m.hom (toLoc p ∅ (algebraMap S _ x))
     rw [toLoc_apply]
 
+/- English proof (translation)
+Introduce `S _ p`. Use `⟨Finset p.asIdeal.primeCompl, inferInstance, inferInstance, Dg p, Cc p, ⟨isColim p⟩, id, ∅, algebraMap S (Localization.Away (g p ∅)), ?_⟩` and prove the remaining obligations. Introduce `k m`. Use `⟨g p k, g_mem p k, RingHom.id _, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Conclude with `tr_apply p (leOfHom m) x`.
+-/
 theorem LocDiag_of : LateralTheory.E.ZarLocalPf.LocDiag := by
   intro S _ p
   refine ⟨Finset p.asIdeal.primeCompl, inferInstance, inferInstance, Dg p, Cc p,

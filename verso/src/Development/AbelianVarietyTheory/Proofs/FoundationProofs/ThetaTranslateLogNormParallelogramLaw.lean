@@ -26,32 +26,54 @@ open GlobalTheory.EvenTheta GlobalTheory.ThetaTransl
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (mul_mem ha hb), dif_pos ha, dif_pos hb, ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem lamC_mul' (lam : Qbar →+* ℂ_[p]) {a b : ℂ} (ha : a ∈ Qbar) (hb : b ∈ Qbar) :
     lamC lam (a * b) = lamC lam a * lamC lam b := by
   unfold lamC
   rw [dif_pos (mul_mem ha hb), dif_pos ha, dif_pos hb, ← map_mul]; rfl
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (sub_mem ha hb), dif_pos ha, dif_pos hb, ← map_sub]`. Both sides reduce to the same expression.
+-/
 theorem lamC_sub' (lam : Qbar →+* ℂ_[p]) {a b : ℂ} (ha : a ∈ Qbar) (hb : b ∈ Qbar) :
     lamC lam (a - b) = lamC lam a - lamC lam b := by
   unfold lamC
   rw [dif_pos (sub_mem ha hb), dif_pos ha, dif_pos hb, ← map_sub]; rfl
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (neg_mem ha), dif_pos ha, ← map_neg]`. Both sides reduce to the same expression.
+-/
 theorem lamC_neg' (lam : Qbar →+* ℂ_[p]) {a : ℂ} (ha : a ∈ Qbar) :
     lamC lam (-a) = -lamC lam a := by
   unfold lamC
   rw [dif_pos (neg_mem ha), dif_pos ha, ← map_neg]; rfl
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos (pow_mem ha n), dif_pos ha, ← map_pow]`. Both sides reduce to the same expression.
+-/
 theorem lamC_pow' (lam : Qbar →+* ℂ_[p]) {a : ℂ} (ha : a ∈ Qbar) (n : ℕ) :
     lamC lam (a ^ n) = lamC lam a ^ n := by
   unfold lamC
   rw [dif_pos (pow_mem ha n), dif_pos ha, ← map_pow]; rfl
 
+/- English proof (translation)
+Unfold `lamC`. Rewrite using `[dif_pos ha]`. Conclude with `(map_ne_zero lam).2 fun h' => h (congrArg Subtype.val h')`.
+-/
 theorem lamC_ne_zero' (lam : Qbar →+* ℂ_[p]) {a : ℂ} (ha : a ∈ Qbar) (h : a ≠ 0) :
     lamC lam a ≠ 0 := by
   unfold lamC
   rw [dif_pos ha]
   exact (map_ne_zero lam).2 fun h' => h (congrArg Subtype.val h')
 
+/- English proof (translation)
+Take `⟨hcc, -, hδ, hΛ, hok⟩` from `hg`. Establish `hcrv : Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨hlat, -, hdisc, -, -⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hG cc δ hcrv`. Take `⟨⟨-, h2, h3⟩, hwp⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hG).2 cc δ hcrv`.
+
+Establish `huse` using `(GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D cc δ hcrv).1`. Simplify using `only [tor0] at h2 h3`. Rewrite `hlat`, `hdisc`, `h2`, `h3`, `hwp`, `huse` using `[← hΛ]`. Establish `hlat' : IsLat g.abelian₂` using `hlat`. Take `⟨hu, -⟩` from `GlobalTheory.EvenTheta.DatumBasic.datum_basic p g hok hlat' h2 h3 hdisc`.
+
+Take `⟨⟨h1, h2', h3', h4, h6, hΔ⟩, -⟩` from `hok`. Use `⟨hlat', h2, h3, hwp, fun t ht => ?_, hu, h1, h2', h3', h4, h6, hΔ⟩` and prove the remaining obligations. Use `huse t ht 0` as an intermediate fact. Simplify `this` using `[coef1]`.
+-/
 theorem ctx (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) (hg : GL3Theta.At D cc δ g) :
     IsLat g.abelian₂ ∧ g2 g.abelian₂ ∈ Qbar ∧ g3 g.abelian₂ ∈ Qbar ∧
     (∀ t, InRationalLattice g.abelian₂ t → t ∉ g.abelian₂ → wpF g.abelian₂ t ∈ Qbar ∧ wpD g.abelian₂ t ∈ Qbar) ∧
@@ -74,15 +96,26 @@ theorem ctx (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p)
   have := huse t ht 0
   simpa [coef1] using this
 
+/- English proof (translation)
+Take `⟨n, hn, -, h⟩` from `h`. Conclude with `⟨n, hn, h⟩`.
+-/
 theorem tors_laq {Λ : AddSubgroup ℂ} {t : ℂ} (h : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * t ∈ Λ) :
     InRationalLattice Λ t := by
   obtain ⟨n, hn, -, h⟩ := h
   exact ⟨n, hn, h⟩
 
+/- English proof (translation)
+Use `AddSubgroup.nsmul_mem Λ hw k` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem natmul_mem {Λ : AddSubgroup ℂ} {w : ℂ} (hw : w ∈ Λ) (k : ℕ) : (k : ℂ) * w ∈ Λ := by
   have := AddSubgroup.nsmul_mem Λ hw k
   rwa [nsmul_eq_mul] at this
 
+/- English proof (translation)
+Take `⟨n, hn, hnp, hs⟩` from `hs`. Take `⟨k, hk, hkp, ht⟩` from `ht`. Use `⟨n * k, Nat.mul_pos hn hk, Nat.coprime_mul_iff_left.2 ⟨hnp, hkp⟩, ?_⟩` and prove the remaining obligations. Establish `e : ((n * k : ℕ) : ℂ) * (s + t) = (k : ℂ) * ((n : ℂ) * s) + (n : ℂ) * ((k : ℂ) * t)` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Conclude with `add_mem (natmul_mem hs k) (natmul_mem ht n)`.
+-/
 theorem tors_add {Λ : AddSubgroup ℂ} {s t : ℂ} (hs : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * s ∈ Λ)
     (ht : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * t ∈ Λ) :
     ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * (s + t) ∈ Λ := by
@@ -94,36 +127,69 @@ theorem tors_add {Λ : AddSubgroup ℂ} {s t : ℂ} (hs : ∃ n : ℕ, 0 < n ∧
   rw [e]
   exact add_mem (natmul_mem hs k) (natmul_mem ht n)
 
+/- English proof (translation)
+Take `⟨n, hn, hnp, hs⟩` from `hs`. Conclude with `⟨n, hn, hnp, by rw [mul_neg]; exact neg_mem hs⟩`.
+-/
 theorem tors_neg {Λ : AddSubgroup ℂ} {s : ℂ} (hs : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * s ∈ Λ) :
     ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * (-s) ∈ Λ := by
   obtain ⟨n, hn, hnp, hs⟩ := hs
   exact ⟨n, hn, hnp, by rw [mul_neg]; exact neg_mem hs⟩
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `tors_add hs (tors_neg ht)`.
+-/
 theorem tors_sub {Λ : AddSubgroup ℂ} {s t : ℂ} (hs : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * s ∈ Λ)
     (ht : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * t ∈ Λ) :
     ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * (s - t) ∈ Λ := by
   rw [sub_eq_add_neg]; exact tors_add hs (tors_neg ht)
 
+/- English proof (translation)
+Use `tors_add hs hs` as an intermediate fact. Rewrite `this` using `[← two_mul]`. Then use the resulting hypothesis.
+-/
 theorem tors_two {Λ : AddSubgroup ℂ} {s : ℂ} (hs : ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * s ∈ Λ) :
     ∃ n : ℕ, 0 < n ∧ Nat.Coprime n p ∧ (n : ℂ) * (2 * s) ∈ Λ := by
   have := tors_add hs hs
   rwa [← two_mul] at this
 
+/- English proof (translation)
+Simplify using `only [logc, if_neg hs, if_neg ht, h]`.
+-/
 theorem logc_eq_of_norm {g : GL3Theta.G1 p} {s t : ℂ} (hs : s ∉ g.abelian₂) (ht : t ∉ g.abelian₂)
     (h : ‖cval g s‖ = ‖cval g t‖) : logc g s = logc g t := by
   simp only [logc, if_neg hs, if_neg ht, h]
 
+/- English proof (translation)
+Simplify using `only [U1, zero_add, hlat.sg_neg, map_neg]`. Put the polynomial expressions in normal form.
+-/
 theorem thetaTranslateValueAtZero_neg {Λ : AddSubgroup ℂ} (hlat : IsLat Λ) (t : ℂ) :
     U1 Λ (-t) (sgStar Λ) 0 = -U1 Λ t (sgStar Λ) 0 := by
   simp only [U1, zero_add, hlat.sg_neg, map_neg]
   ring_nf
 
+/- English proof (translation)
+Use `lamC_ne_zero' g.lam hc ?_` and prove the remaining obligations. Simplify using `only [U1, zero_add, ne_eq, mul_eq_zero, Complex.exp_ne_zero, or_false]`. Conclude with `fun h => ht ((hlat.sg_eq_zero t).1 h)`.
+-/
 theorem cval_ne_zero {g : GL3Theta.G1 p} (hlat : IsLat g.abelian₂) {t : ℂ} (ht : t ∉ g.abelian₂)
     (hc : U1 g.abelian₂ t (sgStar g.abelian₂) 0 ∈ Qbar) : cval g t ≠ 0 := by
   refine lamC_ne_zero' g.lam hc ?_
   simp only [U1, zero_add, ne_eq, mul_eq_zero, Complex.exp_ne_zero, or_false]
   exact fun h => ht ((hlat.sg_eq_zero t).1 h)
 
+/- English proof (translation)
+Take `⟨hlat, hg2, hg3, hwp, hc, hu, ha1, ha2, -, -, -, hΔ⟩` from `ctx D cc δ g hg`. Establish `hS : GL3Theta.Tors1 p g.abelian₂ (P + Q)` using `⟨h1, tors_add hP.2 hQ.2⟩`. Establish `hD : GL3Theta.Tors1 p g.abelian₂ (P - Q)` using `⟨h2, tors_sub hP.2 hQ.2⟩`. Take `⟨wP, dP⟩` from `hwp P (tors_laq hP.2) hP.1`. Take `⟨wQ, dQ⟩` from `hwp Q (tors_laq hQ.2) hQ.1`.
+
+Take `⟨eP, -⟩` from `GlobalTheory.T.padicModel_equation_tangent_at_latticeParameter g P hlat hg2 hg3 hP.1 wP dP`. Take `⟨eQ, -⟩` from `GlobalTheory.T.padicModel_equation_tangent_at_latticeParameter g Q hlat hg2 hg3 hQ.1 wQ dQ`. Take `⟨hne, hadd, hsub⟩` from `GlobalTheory.T.padicModel_chordLaw_sum_and_difference g P Q hlat hg2 hg3 hP.1 hQ.1 h1 h2 wP dP wQ dQ`. Establish `hne' : xAt g P - xAt g Q ≠ 0` using `sub_ne_zero.2 hne`. Establish `hone` using `GlobalTheory.T.norm_sub_abscissa_eq_one_of_unitDiscr_integral_chords g.W (xAt g P) (yAt g P) (xAt g Q) (yAt g Q) _ _ ha1 ha2 hΔ eP eQ (hx P hP) (hx Q hQ) hne (div_mul_cancel₀ _ hne') (div_mul_cancel₀ _ hne') (by rw [← hadd]; exact hx _ hS) (by rw [← hsub]; exact hx _ hD)`.
+
+Establish `ediff : xAt g P - xAt g Q = ((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) ^ 2 * (lamC g.lam (wpF g.abelian₂ Q) - lamC g.lam (wpF g.abelian₂ P)) * (-1)`. Unfold `xAt`. Expand and normalize the polynomial expressions, which then agree. Establish `hwone : ‖lamC g.lam (wpF g.abelian₂ Q) - lamC g.lam (wpF g.abelian₂ P)‖ = 1`. Rewrite `hone` using `[ediff, norm_mul, norm_mul, norm_pow, hu, norm_neg, norm_one]`.
+
+Simplify using `using hone`. Establish `key` using `GlobalTheory.T.U1_add_mul_U1_sub_at_zero_eq_wpF_sub g.abelian₂ hlat P Q hP.1 hQ.1`. Establish `cS` using `hc _ (tors_laq hS.2)`. Establish `cD` using `hc _ (tors_laq hD.2)`. Establish `cP` using `hc _ (tors_laq hP.2)`.
+
+Establish `cQ` using `hc _ (tors_laq hQ.2)`. Establish `key'` using `congrArg (lamC g.lam) key`. Rewrite `key'` using `[lamC_mul' _ cS cD, lamC_mul' _ (mul_mem (sub_mem wQ wP) (pow_mem cP 2)) (pow_mem cQ 2), lamC_mul' _ (sub_mem wQ wP) (pow_mem cP 2), lamC_sub' _ wQ wP, lamC_pow' _ cP, lamC_pow' _ cQ]`. Establish `hn` using `congrArg norm key'`. Simplify using `only [norm_mul, norm_pow, hwone, one_mul] at hn`.
+
+Express the relevant statement in the definitionally equal form `‖cval g (P + Q)‖ * ‖cval g (P - Q)‖ = ‖cval g P‖ ^ 2 * ‖cval g Q‖ ^ 2 at hn`. Establish `nS` using `norm_pos_iff.2 (cval_ne_zero hlat h1 cS)`. Establish `nD` using `norm_pos_iff.2 (cval_ne_zero hlat h2 cD)`. Establish `nP` using `norm_pos_iff.2 (cval_ne_zero hlat hP.1 cP)`. Establish `nQ` using `norm_pos_iff.2 (cval_ne_zero hlat hQ.1 cQ)`.
+
+Establish `hl` using `congrArg Real.log hn`. Rewrite `hl` using `[Real.log_mul nS.ne' nD.ne', Real.log_mul (pow_pos nP 2).ne' (pow_pos nQ 2).ne', Real.log_pow, Real.log_pow]`. Simplify using `only [logc, if_neg h1, if_neg h2, if_neg hP.1, if_neg hQ.1]`. Move the coercions through the operations in `at hl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem generic (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) (hg : GL3Theta.At D cc δ g)
     (hx : ∀ s : ℂ, GL3Theta.Tors1 p g.abelian₂ s → ‖xAt g s‖ ≤ 1) (P Q : ℂ)
     (hP : GL3Theta.Tors1 p g.abelian₂ P) (hQ : GL3Theta.Tors1 p g.abelian₂ Q) (h1 : P + Q ∉ g.abelian₂) (h2 : P - Q ∉ g.abelian₂) :
@@ -168,6 +234,15 @@ theorem generic (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G
   push_cast at hl
   linarith
 
+/- English proof (translation)
+Take `⟨hlat, hg2, hg3, hwp, hc, hu, ha1, ha2, ha3, ha4, ha6, hΔ⟩` from `ctx D cc δ g hg`. Establish `hS : GL3Theta.Tors1 p g.abelian₂ (2 * P)` using `⟨h2, tors_two hP.2⟩`. Take `⟨wP, dP⟩` from `hwp P (tors_laq hP.2) hP.1`. Take `⟨eP, hη⟩` from `GlobalTheory.T.padicModel_equation_tangent_at_latticeParameter g P hlat hg2 hg3 hP.1 wP dP`. Take `⟨hne, hdbl⟩` from `GlobalTheory.T.padicModel_tangentLaw_at_double g P hlat hg2 hg3 hP.1 h2 wP dP`.
+
+Establish `hone` using `GlobalTheory.T.norm_tangentDenominator_eq_one_of_unitDiscr_double g.W (xAt g P) (yAt g P) _ ha1 ha2 ha3 ha4 ha6 hΔ eP (hx P hP) hne (div_mul_cancel₀ _ hne) (by rw [← hdbl]; exact hx _ hS)`. Rewrite `hone` using `[hη, norm_mul, norm_pow, hu, one_pow, one_mul]`. Establish `key` using `GlobalTheory.T.translate_modifiedSigma_two_mul_at_zero g.abelian₂ hlat P hP.1`. Establish `cS` using `hc _ (tors_laq hS.2)`. Establish `cP` using `hc _ (tors_laq hP.2)`.
+
+Establish `key'` using `congrArg (lamC g.lam) key`. Rewrite `key'` using `[lamC_mul' _ (neg_mem dP) (pow_mem cP 4), lamC_neg' _ dP, lamC_pow' _ cP]`. Establish `hn` using `congrArg norm key'`. Simplify using `only [norm_mul, norm_neg, norm_pow, hone, one_mul] at hn`. Express the relevant statement in the definitionally equal form `‖cval g (2 * P)‖ = ‖cval g P‖ ^ 4 at hn`.
+
+Establish `nP` using `norm_pos_iff.2 (cval_ne_zero hlat hP.1 cP)`. Simplify using `only [logc, if_neg h2, if_neg hP.1, hn, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem doubling (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) (hg : GL3Theta.At D cc δ g)
     (hx : ∀ s : ℂ, GL3Theta.Tors1 p g.abelian₂ s → ‖xAt g s‖ ≤ 1) (P : ℂ)
     (hP : GL3Theta.Tors1 p g.abelian₂ P) (h2 : 2 * P ∉ g.abelian₂) : logc g (2 * P) = 4 * logc g P := by
@@ -191,10 +266,16 @@ theorem doubling (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.
   simp only [logc, if_neg h2, if_neg hP.1, hn, Real.log_pow]
   push_cast; ring
 
+/- English proof (translation)
+The claim follows from `logc_eq_of_norm (fun h => ht (by simpa using sub_mem h hω)) ht (GlobalTheory.T.norm_thetaTranslateValueAtZeroPadic_periodic D p cc δ g hg t ω hL hω)`.
+-/
 theorem logc_per (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) (hg : GL3Theta.At D cc δ g)
     {t ω : ℂ} (hL : InRationalLattice g.abelian₂ t) (ht : t ∉ g.abelian₂) (hω : ω ∈ g.abelian₂) : logc g (t + ω) = logc g t :=
   logc_eq_of_norm (fun h => ht (by simpa using sub_mem h hω)) ht (GlobalTheory.T.norm_thetaTranslateValueAtZeroPadic_periodic D p cc δ g hg t ω hL hω)
 
+/- English proof (translation)
+Take `⟨hlat, -, -, -, hc, -⟩` from `ctx D cc δ g hg`. Use `logc_eq_of_norm (fun h => ht (by simpa using neg_mem h)) ht ?_` and prove the remaining obligations. Simplify using `only [cval]`. Rewrite using `[thetaTranslateValueAtZero_neg hlat, lamC_neg' _ (hc t hL), norm_neg]`.
+-/
 theorem logc_neg (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) (hg : GL3Theta.At D cc δ g)
     {t : ℂ} (hL : InRationalLattice g.abelian₂ t) (ht : t ∉ g.abelian₂) : logc g (-t) = logc g t := by
   obtain ⟨hlat, -, -, -, hc, -⟩ := ctx D cc δ g hg
@@ -202,6 +283,25 @@ theorem logc_neg (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.
   simp only [cval]
   rw [thetaTranslateValueAtZero_neg hlat, lamC_neg' _ (hc t hL), norm_neg]
 
+/- English proof (translation)
+Take `⟨hlat, -⟩` from `ctx D cc δ g hg`. Take `⟨n, hn, hnp, hnP⟩` from `hP.2`. Establish `hp2 : Nat.Coprime 2 p`. Assume the negation of the conclusion as `hc`. Establish `hp : p = 2`.
+
+Use `(Nat.Prime.coprime_iff_not_dvd Nat.prime_two).not.1 hc` as an intermediate fact. Use `push_neg at this`. Conclude with `((Nat.prime_dvd_prime_iff_eq Nat.prime_two (Fact.out : p.Prime)).1 this).symm`. Substitute `hp` using the available equality. Establish `hodd : ¬ 2 ∣ n` using `fun hd => by`.
+
+Use `Nat.Coprime.coprime_dvd_left hd hnp` as an intermediate fact. Evaluate the numerical expressions using `at this`. Take `⟨k, rfl⟩ : ∃ k, n = 2 * k + 1` from `⟨n / 2, by omega⟩`. Apply `hP.1` to reduce the goal to its premises. Establish `e : P = ((2 * k + 1 : ℕ) : ℂ) * P - (k : ℂ) * (2 * P)` using `by push_cast; ring`.
+
+Rewrite using `[e]`. Conclude with `sub_mem hnP (natmul_mem h2 k)`. Establish `tors2 : ∀ z : ℂ, 2 * z ∈ g.abelian₂ → z ∉ g.abelian₂ → GL3Theta.Tors1 p g.abelian₂ z` using `fun z hz hz' => ⟨hz', 2, two_pos, hp2, by exact_mod_cast hz⟩`. Take `⟨P', h2', hP', hd⟩` from `GlobalTheory.T.exists_half_period_sub_not_mem_of_isLat g.abelian₂ hlat P h2 hP.1`. Use `set R := P - P' with hR`.
+
+Establish `h2R : 2 * R ∈ g.abelian₂` using `by rw [hR, mul_sub]; exact sub_mem h2 h2'`. Establish `tP'` using `tors2 P' h2' hP'`. Establish `tR` using `tors2 R h2R hd`. Establish `hPP : P + P' = R + 2 * P'` using `by rw [hR]; ring`. Establish `hPP' : P + P' ∉ g.abelian₂`.
+
+Rewrite using `[hPP]; exact fun h => hd (by simpa using sub_mem h h2')`. Establish `e1` using `generic D cc δ g hg hx P P' hP tP' hPP' hd`. Rewrite `e1` using `[hPP, logc_per D cc δ g hg (tors_laq tR.2) hd h2']`. Establish `hPR : P + R = -P' + 2 * P` using `by rw [hR]; ring`. Establish `hPR' : P - R = P'` using `by rw [hR]; ring`.
+
+Establish `hPRn : P + R ∉ g.abelian₂`. Rewrite using `[hPR]; exact fun h => hP' (by simpa using neg_mem (sub_mem h h2))`. Establish `e2` using `generic D cc δ g hg hx P R hP tR hPRn (by rw [hPR']; exact hP')`. Rewrite `e2` using `[hPR, hPR', logc_per D cc δ g hg (tors_laq (tors_neg tP'.2)) (fun h => hP' (by simpa using neg_mem h)) h2, logc_neg D cc δ g hg (tors_laq tP'.2) hP']`. Establish `hP'R : P' + R = P` using `by rw [hR]; ring`.
+
+Establish `hP'R' : P' - R = -P + 2 * P'` using `by rw [hR]; ring`. Establish `hP'Rn : P' - R ∉ g.abelian₂`. Rewrite using `[hP'R']; exact fun h => hP.1 (by simpa using neg_mem (sub_mem h h2'))`. Establish `e3` using `generic D cc δ g hg hx P' R tP' tR (by rw [hP'R]; exact hP.1) hP'Rn`. Rewrite `e3` using `[hP'R, hP'R', logc_per D cc δ g hg (tors_laq (tors_neg hP.2)) (fun h => hP.1 (by simpa using neg_mem h)) h2', logc_neg D cc δ g hg (tors_laq hP.2) hP.1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem half (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) (hg : GL3Theta.At D cc δ g)
     (hx : ∀ s : ℂ, GL3Theta.Tors1 p g.abelian₂ s → ‖xAt g s‖ ≤ 1) (P : ℂ)
     (hP : GL3Theta.Tors1 p g.abelian₂ P) (h2 : 2 * P ∈ g.abelian₂) : logc g P = 0 := by
@@ -253,6 +353,25 @@ theorem half (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p
     logc_neg D cc δ g hg (tors_laq hP.2) hP.1] at e3
   linarith
 
+/- English proof (translation)
+Introduce `D p _ cc δ g hg hx _ P Q hP hQ`. Establish `lQ` using `tors_laq hQ.2`. Distinguish the cases in `hPl : P ∈ g.abelian₂`. Establish `h1 : P + Q = Q + P` using `add_comm P Q`. Establish `h2 : P - Q = -Q + P` using `by ring`.
+
+Establish `hQn : -Q ∉ g.abelian₂` using `fun h => hQ.1 (by simpa using neg_mem h)`. Rewrite using `[h1, h2, logc_per D cc δ g hg lQ hQ.1 hPl, logc_per D cc δ g hg (tors_laq (tors_neg hQ.2)) hQn hPl, logc_neg D cc δ g hg lQ hQ.1]`. Simplify using `only [logc, if_pos hPl]`. Expand and normalize the polynomial expressions, which then agree. Establish `tP : GL3Theta.Tors1 p g.abelian₂ P` using `⟨hPl, hP⟩`.
+
+Apply the tactic sequence `by_cases hS : P + Q ∈ g.abelian₂ <;> by_cases hD : P - Q ∈ g.abelian₂`. Establish `h2 : 2 * P ∈ g.abelian₂`. Rewrite using `[two_mul, show P + P = (P + Q) + (P - Q) by ring]; exact add_mem hS hD`. Establish `a2 : logc g Q = logc g P`. Rewrite using `[show Q = P + -(P - Q) by ring]; exact logc_per D cc δ g hg (tors_laq hP) hPl (neg_mem hD)`.
+
+Establish `a3` using `half D cc δ g hg hx P tP h2`. Establish `s1 : logc g (P + Q) = 0` using `by simp [logc, hS]`. Establish `s2 : logc g (P - Q) = 0` using `by simp [logc, hD]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 2 * P ∉ g.abelian₂` using `fun h => hD (by`.
+
+Rewrite using `[show P - Q = 2 * P - (P + Q) by ring]; exact sub_mem h hS)`. Establish `a1 : logc g (P - Q) = logc g (2 * P)`. Rewrite using `[show P - Q = 2 * P + -(P + Q) by ring]`. Conclude with `logc_per D cc δ g hg (tors_laq (tors_two hP)) h2 (neg_mem hS)`. Establish `a2 : logc g Q = logc g P`.
+
+Rewrite using `[show Q = -P + (P + Q) by ring, logc_per D cc δ g hg (tors_laq (tors_neg hP)) (fun h => hPl (by simpa using neg_mem h)) hS]`. Conclude with `logc_neg D cc δ g hg (tors_laq hP) hPl`. Establish `a3` using `doubling D cc δ g hg hx P tP h2`. Establish `s1 : logc g (P + Q) = 0` using `by simp [logc, hS]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : 2 * P ∉ g.abelian₂` using `fun h => hS (by`. Rewrite using `[show P + Q = 2 * P - (P - Q) by ring]; exact sub_mem h hD)`. Establish `a1 : logc g (P + Q) = logc g (2 * P)`. Rewrite using `[show P + Q = 2 * P + -(P - Q) by ring]`. Conclude with `logc_per D cc δ g hg (tors_laq (tors_two hP)) h2 (neg_mem hD)`.
+
+Establish `a2 : logc g Q = logc g P`. Rewrite using `[show Q = P + -(P - Q) by ring]; exact logc_per D cc δ g hg (tors_laq hP) hPl (neg_mem hD)`. Establish `a3` using `doubling D cc δ g hg hx P tP h2`. Establish `s2 : logc g (P - Q) = 0` using `by simp [logc, hD]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `generic D cc δ g hg hx P Q tP hQ hS hD`.
+-/
 theorem par_holds : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p),
     GL3Theta.At D cc δ g → (∀ s : ℂ, GL3Theta.Tors1 p g.abelian₂ s → ‖GlobalTheory.EvenTheta.xAt g s‖ ≤ 1) →
     (∀ s : ℂ, GL3Theta.Tors1 p g.abelian₂ s → ∃ w : PowerSeries ℂ_[p], GlobalTheory.EvenTheta.IntSer w ∧

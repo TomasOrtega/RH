@@ -24,6 +24,15 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.LevBC
 
+/- English proof (translation)
+Establish `hfin : Finite R` using `Nat.finite_of_card_ne_zero h.ne_zero`. Establish `htop : AddSubgroup.zmultiples (1 : R) = ⊤`. Break down `h.eq_one_or_self_of_dvd _ (AddSubgroup.card_addSubgroup_dvd_card (AddSubgroup.zmultiples (1 : R))) with h1 | h1` into its components or cases. It suffices to derive a contradiction. Establish `hb` using `AddSubgroup.eq_bot_of_card_eq _ h1`.
+
+Establish `h10 : (1 : R) = 0`. Establish `: (1 : R) ∈ AddSubgroup.zmultiples (1 : R)` using `AddSubgroup.mem_zmultiples 1`. Rewrite `this` using `[hb]`. Conclude with `(AddSubgroup.mem_bot).1 this`. Establish `: Subsingleton R` using `subsingleton_of_zero_eq_one h10.symm`.
+
+Rewrite `h` using `[Nat.card_unique]`. Conclude with `Nat.not_prime_one h`. Conclude with `AddSubgroup.eq_top_of_card_eq _ h1`. Establish `hx : x ∈ AddSubgroup.zmultiples (1 : R)` using `by rw [htop]; exact AddSubgroup.mem_top x`. Take `⟨n, hn⟩` from `AddSubgroup.mem_zmultiples_iff.1 hx`.
+
+Conclude with `⟨n, by rw [← hn, zsmul_one]⟩`.
+-/
 theorem exists_intCast_of_card_prime {R : Type} [Ring R] (h : (Nat.card R).Prime) (x : R) : ∃ n : ℤ, (n : R) = x := by
   have hfin : Finite R := Nat.finite_of_card_ne_zero h.ne_zero
   have htop : AddSubgroup.zmultiples (1 : R) = ⊤ := by
@@ -42,6 +51,13 @@ theorem exists_intCast_of_card_prime {R : Type} [Ring R] (h : (Nat.card R).Prime
   obtain ⟨n, hn⟩ := AddSubgroup.mem_zmultiples_iff.1 hx
   exact ⟨n, by rw [← hn, zsmul_one]⟩
 
+/- English proof (translation)
+Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B px`. Establish `hi : ∃ i, PP ∈ (B.primes px).vG i`. Break down `Finset.mem_union.1 hPP with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`.
+
+Take `⟨i, hi⟩` from `hi`. Establish `hn` using `hPr.vG_norm i PP hi`. Establish `hp` using `hPr.g_prime i`. Rewrite `hn` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `hp` using `[← hn]`.
+
+Conclude with `exists_intCast_of_card_prime hp c`.
+-/
 theorem exists_intCast_vGs (B : Base) (px : PreX B.toPre) (PP : Pl B.host.E) (hPP : PP ∈ (B.primes px).vGs)
     (c : 𝓞 B.host.E ⧸ PP.asIdeal) : ∃ n : ℤ, (n : 𝓞 B.host.E ⧸ PP.asIdeal) = c := by
   classical
@@ -57,6 +73,11 @@ theorem exists_intCast_vGs (B : Base) (px : PreX B.toPre) (PP : Pl B.host.E) (hP
   rw [← hn] at hp
   exact exists_intCast_of_card_prime hp c
 
+/- English proof (translation)
+Take `⟨x, hxm⟩` from `x`. Take `⟨x', hxm'⟩` from `x'`. Simplify using `only at hx`. Substitute `hx` using the available equality. Use `show ((((∏ PP : ↥Pg, (addCharHom (ψ' PP.1) (supHom (kP PP.1) r)).comp (LevelP.prj (fun PP => unip (kP PP.1) r) PP)) ⟨x, hxm'⟩ : LL'ˣ)) : LL') = φ (((∏ PP : ↥Pg, (addCharHom (ψ PP.1) (supHom (kP PP.1) r)).comp (LevelP.prj (fun PP => unip (kP PP.1) r) PP)) ⟨x, hxm⟩ : LLˣ) : LL)`.
+
+Rewrite using `[MonoidHom.finset_prod_apply, MonoidHom.finset_prod_apply, Units.coe_prod, Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Conclude with `h PP.1 PP.2 _`.
+-/
 theorem baseLevelCharacter_map_coefficientRingHom {E : Type} [Field E] [NumberField E] (Pg : Finset (Pl E)) (r : ℕ) {LL LL' : Type} [CommRing LL] [CommRing LL']
     (ψ : ∀ PP : Pl E, AddChar (kP PP) LL) (ψ' : ∀ PP : Pl E, AddChar (kP PP) LL') (φ : LL →+* LL')
     (h : ∀ PP ∈ Pg, ∀ c, ψ' PP c = φ (ψ PP c)) (x : (P0 Pg r ψ).H) (x' : (P0 Pg r ψ').H) (hx : (x : G0 Pg r) = x') :
@@ -71,6 +92,13 @@ theorem baseLevelCharacter_map_coefficientRingHom {E : Type} [Field E] [NumberFi
   refine Finset.prod_congr rfl fun PP _ => ?_
   exact h PP.1 PP.2 _
 
+/- English proof (translation)
+Take `⟨P, r⟩` from `B`. Take `⟨P', r'⟩` from `B'`. Simplify using `only at h px px' hp I I' hI hI' φ hφ g g' hg`. Substitute `h` using the available equality. Consider the cases of `hp`.
+
+Consider the cases of `hg`. Use `⟨Iff.rfl, fun h0 h0' => ?_⟩` and prove the remaining obligations. Use `baseLevelCharacter_map_coefficientRingHom _ _ _ _ φ (fun PP hPP c => ?_) ⟨_, h0⟩ ⟨_, h0'⟩ rfl` and prove the remaining obligations. Rewrite using `[psiC_of_mem _ hPP, psiC_of_mem I' hPP]`. Take `⟨n, hn⟩` from `exists_intCast_vGs _ _ PP hPP (Formalism.L2.Col.redP PP P'.host.xi0 * c)`.
+
+Establish `e1` using `hI'.weil ⟨PP, hPP⟩ c n hn.symm`. Establish `e2` using `hI.weil ⟨PP, hPP⟩ c n hn.symm`. Establish `e3` using `hφ (I.Ch.psi0 ⟨PP, hPP⟩ c)`. Conclude with `RingHom.injective _ (e1.trans (e2.symm.trans e3.symm))`.
+-/
 theorem lev_bc (B B' : Base) (h : B'.toPre = B.toPre) (px : PreX B.toPre) (px' : PreX B'.toPre) (hp : HEq px' px)
     (I : ColIn B px) (I' : ColIn B' px') (hI : I.Ok) (hI' : I'.Ok) (φ : B.LL →+* B'.LL) (hφ : ∀ x, B'.embLL (φ x) = B.embLL x)
     (g : Gc B px) (g' : Gc B' px') (hg : HEq g' g) :
@@ -95,6 +123,9 @@ end GlobalTheory.Mem.R3.LevBC
 
 namespace GlobalTheory.Mem.R3.Rw
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ => ?_` and prove the remaining obligations. Introduce `B f T w hE _ _ hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' _ φ hφ g g' hg`. Conclude with `GlobalTheory.Mem.R3.LevBC.lev_bc B B' hE.1 w.px w'.px hpx w.I w'.I w.ok w'.ok φ hφ g g' hg`.
+-/
 theorem extN_baseLevel_bc : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

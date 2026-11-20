@@ -10,6 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 
+/- English proof (translation)
+Use `⟨hs, fun s d e he => absurd ?_ he⟩` and prove the remaining obligations. Use `(Subgroup.eq_bot_iff_forall _).2 fun u hu => ?_` and prove the remaining obligations. Use extensionality with `i j`. Take `rfl : i = j` from `Subsingleton.elim _ _`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`.
+
+Simplify using `using (mem_unipRad.1 hu).2 a i i`.
+-/
 private theorem UpperTheory.smooth_gl_one_cuspidal {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {V : Type} [AddCommGroup V] [Module ℂ V]
     {π : Representation ℂ (GL (Fin 1) k) V} (hs : IsSmooth π) : IsCuspidal π := by
@@ -20,6 +25,13 @@ private theorem UpperTheory.smooth_gl_one_cuspidal {k : Type} [Field k] [Valuati
   obtain ⟨⟨a, i⟩, rfl⟩ := e.surjective i
   simpa using (mem_unipRad.1 hu).2 a i i
 
+/- English proof (translation)
+Establish `h' : IrrGL.of y.ρ y.smooth y.irr = IrrGL.of (detRep (Fin 1) χ) (isCuspidal_detRep_one hχ).1 (isIrreducible_ofChar _)` using `h`. Take `⟨φ⟩` from `IrrGL.of_eq_of.1 h'`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible y.irr`. Take `⟨v, hv⟩` from `exists_ne (0 : y.V)`. Use `(Submodule.ne_bot_iff _).2 ⟨v, fun g => ?_, hv⟩` and prove the remaining obligations.
+
+Establish `hg : valuation k ((g.1.val - 1) 0 0) < γ` using `g.2 0 0`. Establish `h2 : χ (Matrix.GeneralLinearGroup.det g.1) = 1`. Use `h1 _ ?_` and prove the remaining obligations. Simplify `hg` using `[Matrix.det_unique]`. Use `φ.toLinearEquiv.injective ?_` and prove the remaining obligations.
+
+Establish `h3` using `φ.toIntertwiningMap.isIntertwining _ _ g.1 v`. Use `h3.trans ?_` and prove the remaining obligations. Simplify using `only [detRep, ofChar_apply, detChar_apply, h2, MonoidHom.one_apply, Units.val_one, one_mul, one_smul]`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.fixed_vectors_nonzero_character {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (y : IrrRep (GL (Fin 1) k)) (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1)
     (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (h : IrrGL.of y.ρ y.smooth y.irr = IrrGL.ofChar χ hχ)
@@ -41,6 +53,21 @@ private theorem UpperTheory.fixed_vectors_nonzero_character {k : Type} [Field k]
   simp only [detRep, ofChar_apply, detChar_apply, h2, MonoidHom.one_apply, Units.val_one, one_mul, one_smul]
   rfl
 
+/- English proof (translation)
+Introduce `hG hZ k _ _ _ _ N V _ _ π s γ hγ hs hχ e hJ`. Establish `hjs : IsSmooth (jac e π)` using `isSmooth_jac e hs.isSmooth`. Take `⟨Y, _, _, τ, hτ, hτs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (jac e π) hJ`. Establish `hτsm : IsSmooth τ` using `hτs.isSmooth hjs`. Establish `hsm : ∀ j : Fin N, IsSmooth (τ.comp (MonoidHom.mulSingle (fun _ : Fin N => GL (Fin 1) k) j) : Representation ℂ (GL (Fin 1) k) Y)` using `fun j => isSmooth_comp hτsm _ (continuous_mulSingle (A := fun _ : Fin N => GL (Fin 1) k) j)`.
+
+Establish `hy : ∀ j : Fin N, ∃ y : IrrRep (GL (Fin 1) k), IsSubquotient y.ρ (τ.comp (MonoidHom.mulSingle (fun _ : Fin N => GL (Fin 1) k) j) : Representation ℂ (GL (Fin 1) k) Y)`. Introduce `j`. Take `⟨X, _, _, υ, hυ, hυs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (τ.comp (MonoidHom.mulSingle (fun _ : Fin N => GL (Fin 1) k) j)) (GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτ)`. Conclude with `⟨⟨X, υ, hυs.isSmooth (hsm j), hυ⟩, hυs⟩`. Use `choose y hy using hy`.
+
+Take `⟨u, hu, rfl⟩` from `SupportUnique.exists_sum_of_jac (d := fun _ : Fin N => 1) hG hZ hs e hτ hτs y hy`. Establish `hfix : ∀ j : Fin N, fixed (τ.comp (MonoidHom.mulSingle (fun _ : Fin N => GL (Fin 1) k) j) : Representation ℂ (GL (Fin 1) k) Y) (GlobalTheory.CentralExponent.cong (Fin 1) γ hγ) ≠ ⊥`. Introduce `j`. Establish `hc : (IrrGL.of (y j).ρ (y j).smooth (y j).irr).IsCusp` using `⟨Nat.one_pos, UpperTheory.smooth_gl_one_cuspidal (IrrGL.of (y j).ρ (y j).smooth (y j).irr).2.rep.smooth⟩`. Establish `h1` using `SupportUnique.eq_singleton_of_isCusp hc ((hu j).of_equiv (IrrGL.equivOf _ _ _))`.
+
+Take `⟨χ, hχs, h2, h3⟩` from `hχ (IrrGL.of (y j).ρ (y j).smooth (y j).irr) (Multiset.mem_sum.2 ⟨j, Finset.mem_univ j, by rw [h1]; exact Multiset.mem_singleton_self _⟩)`. Conclude with `UpperTheory.fixed_ne_bot_of_isSubquotient_of_isCompact _ _ _ _ _ _ (hsm j) (hy j) (GlobalTheory.CentralExponent.isCompact_cong γ hγ) (UpperTheory.fixed_vectors_nonzero_character (y j) γ hγ χ hχs h2 h3)`. Establish `hcomm : ∀ (_ : Fin N) (x z : GL (Fin 1) k), x * z = z * x`. Introduce `_ x z`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply, Subsingleton.elim i 0, Subsingleton.elim j 0, mul_comm]`. Establish `htriv` using `UpperTheory.eq_one_of_irreducible_pi_abelian_fixed_ne_bot (Fin N) (fun _ => GL (Fin 1) k) hcomm Y τ (fun _ => GlobalTheory.CentralExponent.cong (Fin 1) γ hγ) hτ hfix`. Set `H : Subgroup (Levi k fun _ : Fin N => Fin 1)` to `Subgroup.pi Set.univ fun _ => GlobalTheory.CentralExponent.cong (Fin 1) γ hγ`. Establish `hH : IsCompact (H : Set (Levi k fun _ : Fin N => Fin 1))` using `isCompact_univ_pi fun _ => GlobalTheory.CentralExponent.isCompact_cong γ hγ`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτ`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : Y)`. Establish `hτf : fixed τ H ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨v, fun g => by`. Rewrite using `[htriv g.1 fun a => g.2 a trivial]`. Use the proof step `simp, hv⟩`. Take `⟨w, hw, hw0⟩` from `(Submodule.ne_bot_iff _).1 (UpperTheory.fixed_ne_bot_of_isSubquotient_of_isCompact _ _ _ τ (jac e π) H hjs hτs hH hτf)`.
+
+Use `⟨w, hw0, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `using hw ⟨g, fun a _ => hg a⟩`.
+-/
 theorem UpperTheory.jacquet_exists_levi_congruence_fixed_of_char_support :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
     (s : Multiset (IrrGL k)) (γ : (ValueGroupWithZero k)ˣ) (hγ : γ ≤ 1), HasSupport π s → (∀ y ∈ s, ∃ χ hχ, y = IrrGL.ofChar χ hχ ∧ ∀ u : kˣ, valuation k ((u : k) - 1) < γ → χ u = 1) →

@@ -14,6 +14,11 @@ variable {T : Type} [Fintype T] [DecidableEq T] {N j : ℕ}
 
 omit [Fintype T] [DecidableEq T] in
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.coe_mul, ← rename_rename]`. Break down `hρ with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hσ`. Rewrite using `[h, map_neg]`.
+
+Break down `hσ with h' | h'` into its components or cases. Use `right`. Rewrite using `[h']`. Use `left`. Rewrite using `[h', neg_neg]`.
+-/
 theorem rename_mul_eq_or_neg {R : MvPolynomial (T × Fin N) ℝ} {σ ρ : Equiv.Perm (T × Fin N)}
     (hσ : rename σ R = R ∨ rename σ R = -R) (hρ : rename ρ R = R ∨ rename ρ R = -R) :
     rename ⇑(σ * ρ) R = R ∨ rename ⇑(σ * ρ) R = -R := by
@@ -25,6 +30,19 @@ theorem rename_mul_eq_or_neg {R : MvPolynomial (T × Fin N) ℝ} {σ ρ : Equiv.
     · right; rw [h']
     · left; rw [h', neg_neg]
 
+/- English proof (translation)
+Establish `hR' : ∀ σ, IsBlockSimpleSwap T N j σ → rename σ R = -R` using `hR.2`. It suffices to establish `H : ∀ k : ℕ, ∀ c : Fin N, c.val = a.val + k → (c.val < j ∨ j ≤ a.val) → rename ⇑(Equiv.swap (τ, a) (τ, c)) R = R ∨ rename ⇑(Equiv.swap (τ, a) (τ, c)) R = -R from H (c.val - a.val) c (by omega) hblk`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `c hc _`. Establish `hca : c = a` using `Fin.ext (by omega)`. Substitute `hca` using the available equality. Use `left`. Rewrite using `[Equiv.swap_self, Equiv.coe_refl, rename_id_apply]`.
+
+Consider the case `succ k ih`. Introduce `c hc hb`. Establish `hc' : a.val + k < N` using `by omega`. Establish `hsimple : rename ⇑(Equiv.swap (τ, (⟨a.val + k, hc'⟩ : Fin N)) (τ, c)) R = -R` using `hR' _ ⟨τ, ⟨a.val + k, hc'⟩, c, by simp only; omega, by simp only; omega, rfl⟩`. Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases.
+
+Substitute `hk` using the available equality. Establish `hca : (⟨a.val + 0, hc'⟩ : Fin N) = a` using `Fin.ext (by simp)`. Rewrite `hsimple` using `[hca]`. Conclude with `Or.inr hsimple`. Establish `hprev` using `ih ⟨a.val + k, hc'⟩ rfl (by simp only; omega)`.
+
+Establish `h1 : (τ, a) ≠ (τ, (⟨a.val + k, hc'⟩ : Fin N))`. Simplify using `only [ne_eq, Prod.mk.injEq, true_and, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (τ, a) ≠ (τ, c)`. Simplify using `only [ne_eq, Prod.mk.injEq, true_and, Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e` using `Equiv.swap_mul_swap_mul_swap h1 h2`. Rewrite `e` using `[Equiv.swap_comm (τ, c) (τ, a)]`. Rewrite using `[← e]`. Conclude with `rename_mul_eq_or_neg (rename_mul_eq_or_neg (Or.inr hsimple) hprev) (Or.inr hsimple)`.
+-/
 theorem rename_swap_eq_or_neg {R : MvPolynomial (T × Fin N) ℝ} (hR : R ∈ antisymSpace T N j)
     (τ : T) (a c : Fin N) (hac : a.val ≤ c.val) (hblk : c.val < j ∨ j ≤ a.val) :
     rename ⇑(Equiv.swap (τ, a) (τ, c)) R = R ∨ rename ⇑(Equiv.swap (τ, a) (τ, c)) R = -R := by
@@ -62,6 +80,17 @@ theorem rename_swap_eq_or_neg {R : MvPolynomial (T × Fin N) ℝ} (hR : R ∈ an
 
 omit [Fintype T] [DecidableEq T] in
 
+/- English proof (translation)
+Establish `hinv_a : σ⁻¹ (τ, a') = (τ, a)` using `by rw [← hσa]; simp`. Establish `hinv_b : σ⁻¹ (τ, b') = (τ, b)` using `by rw [← hσb]; simp`. Use `⟨hKc.image (continuous_pi fun p => continuous_apply _), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ show y (σ (τ, a)) = y (σ (τ, b))`. Rewrite using `[hσa, hσb]`.
+
+Conclude with `hKH hy`. Take `⟨O, hO, ⟨y0, hy0O, hy0H⟩, hOK⟩` from `hKO`. Use `⟨(fun x => x ∘ ⇑σ⁻¹) ⁻¹' O, hO.preimage (continuous_pi fun p => continuous_apply _), ⟨y0 ∘ ⇑σ, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : (y0 ∘ ⇑σ) ∘ ⇑σ⁻¹ = y0` using `by funext p; simp show (y0 ∘ ⇑σ) ∘ ⇑σ⁻¹ ∈ O`. Rewrite using `[e]`.
+
+Conclude with `hy0O`. Use `show y0 (σ (τ, a)) = y0 (σ (τ, b))`. Rewrite using `[hσa, hσb]`. Conclude with `hy0H`. Introduce and unpack `x ⟨hxO, hxH⟩`.
+
+Use `⟨x ∘ ⇑σ⁻¹, hOK ⟨hxO, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show x (σ⁻¹ (τ, a')) = x (σ⁻¹ (τ, b'))`. Rewrite using `[hinv_a, hinv_b]`. Conclude with `hxH`. Use function extensionality and compare the values at `p`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem image_comp_perm (σ : Equiv.Perm (T × Fin N)) (τ : T) {a b a' b' : Fin N}
     (hσa : σ (τ, a) = (τ, a')) (hσb : σ (τ, b) = (τ, b')) {K : Set (T × Fin N → ℝ)}
     (hKc : IsCompact K) (hKH : K ⊆ diagHyperplane T N τ a' b')
@@ -96,6 +125,23 @@ theorem image_comp_perm (σ : Equiv.Perm (T × Fin N)) (τ : T) {a b a' b' : Fin
 
 end AntisymPerturbation
 
+/- English proof (translation)
+Introduce `T _ _ N j hj hjN h K hK`. Set `jm : Fin N` to `⟨j - 1, by omega⟩`. Set `jp : Fin N` to `⟨j, hjN⟩`. Set `σ : T → Fin N → Fin N → Equiv.Perm (T × Fin N)` to `fun τ a b => Equiv.swap (τ, a) (τ, jm) * Equiv.swap (τ, b) (τ, jp)`. Establish `hσa : ∀ (τ : T) (a b : Fin N), a.val < j → j ≤ b.val → σ τ a b (τ, a) = (τ, jm)`.
+
+Introduce `τ a b ha hb`. Establish `e1 : Equiv.swap (τ, b) (τ, jp) (τ, a) = (τ, a)` using `Equiv.swap_apply_of_ne_of_ne (by simp only [ne_eq, Prod.mk.injEq, true_and, Fin.ext_iff]; omega) (by simp only [ne_eq, Prod.mk.injEq, true_and, Fin.ext_iff, jp]; omega)`. Simplify using `only [σ, Equiv.Perm.coe_mul, Function.comp_apply]`. Rewrite using `[e1, Equiv.swap_apply_left]`. Establish `hσb : ∀ (τ : T) (a b : Fin N), a.val < j → j ≤ b.val → σ τ a b (τ, b) = (τ, jp)`.
+
+Introduce `τ a b ha hb`. Simplify using `only [σ, Equiv.Perm.coe_mul, Function.comp_apply]`. Rewrite using `[Equiv.swap_apply_left]`. Conclude with `Equiv.swap_apply_of_ne_of_ne (by simp only [ne_eq, Prod.mk.injEq, true_and, Fin.ext_iff, jp]; omega) (by simp only [ne_eq, Prod.mk.injEq, true_and, Fin.ext_iff, jp, jm]; omega)`. Establish `hsign : ∀ R ∈ antisymSpace T N j, ∀ (τ : T) (a b : Fin N), a.val < j → j ≤ b.val → rename ⇑(σ τ a b) R = R ∨ rename ⇑(σ τ a b) R = -R`.
+
+Introduce `R hR τ a b ha hb`. Use `AntisymPerturbation.rename_mul_eq_or_neg (AntisymPerturbation.rename_swap_eq_or_neg hR τ a jm (by simp only [jm]; omega) (Or.inl (by simp only [jm]; omega))) ?_` and prove the remaining obligations. Rewrite using `[Equiv.swap_comm]`. Conclude with `AntisymPerturbation.rename_swap_eq_or_neg hR τ jp b (by simp only [jp]; omega) (Or.inr (by simp only [jp]; omega))`. Take `⟨C, hC⟩` from `hStab T N j (fun τ a b => (fun y => y ∘ ⇑(σ τ a b)) '' K τ) (fun τ a b ha hb => AntisymPerturbation.image_comp_perm (σ τ a b) τ (hσa τ a b ha hb) (hσb τ a b ha hb) (hK τ).1 (hK τ).2.1 (hK τ).2.2.1)`.
+
+Break down `isEmpty_or_nonempty T with hT | ⟨⟨τ0⟩⟩` into its components or cases. Use `⟨0, fun P v ε hR _ => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hb⟩` from `hC _ hR`. Conclude with `⟨l, hl, fun m => by simpa using hb 0 le_rfl (fun τ => isEmptyElim τ) m⟩`. Use `⟨C, fun P v ε hR hε => ?_⟩` and prove the remaining obligations.
+
+Take `⟨l, hl, hb⟩` from `hC _ hR`. Use `⟨l, hl, hb ε ?_ ?_⟩` and prove the remaining obligations. Take `⟨O, _, ⟨y, hyO, hyH⟩, hOK⟩` from `(hK τ0).2.2.1`. Conclude with `(abs_nonneg _).trans (hε τ0 y (hOK ⟨hyO, hyH⟩))`. Introduce and unpack `τ a b ha hb x ⟨y, hy, rfl⟩`.
+
+Establish `hyh : eval y h = 0` using `(hK τ).2.2.2 y hy`. Establish `hyP` using `hε τ y hy`. Use `show |eval (y ∘ ⇑(σ τ a b)) (P - v • h)| ≤ ε`. Rewrite using `[← eval_rename]`. Break down `hsign _ hR τ a b ha hb with e | e` into its components or cases.
+
+Rewrite using `[e]`. Simplify `hyP` using `[hyh]`. Rewrite using `[e, map_neg, abs_neg]`. Simplify `hyP` using `[hyh]`.
+-/
 theorem AntisymPerturbation.proof (hStab : AntisymStability.Statement) :
     AntisymPerturbation.Statement := by
   intro T _ _ N j hj hjN h K hK

@@ -17,6 +17,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaLocalBridge.emb_mem_uAt_piW | exact GlobalTheory.ThetaLocalBridge.emb_mem_uAt_piW | (intros; apply GlobalTheory.ThetaLocalBridge.emb_mem_uAt_piW <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_level_embedding_unitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (d : ℕ) (W : Spc F E d) (c : E) (hc : c ≠ 0) (v : Pl F) (t : E →ₐ[F] Fv F v)
     (g : GL (Fin d) (Fv F v)) (x : GLoc σ (c • W.J.map σ) v), IsCompAt σ (c • W.J.map σ) t 1 g x →

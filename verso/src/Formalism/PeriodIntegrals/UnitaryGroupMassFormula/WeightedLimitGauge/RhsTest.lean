@@ -16,12 +16,20 @@ open PI.RhsWLim
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [PI.RhsWLim.wI] at h'`. Conclude with `Fin.ext (by omega)`.
+-/
 theorem wI_injective : Function.Injective (wI k r) := by
   intro a b h
   have h' := congrArg Fin.val h
   simp only [PI.RhsWLim.wI] at h'
   exact Fin.ext (by omega)
 
+/- English proof (translation)
+Establish `h1 : ∑ j : Fin (k + 1), f (PI.RhsWLim.wI k r j) = ∑ i ∈ Finset.univ.image (PI.RhsWLim.wI k r), f i` using `(Finset.sum_image (fun a _ b _ h => wI_injective h)).symm`. Rewrite using `[h1]`. Use `(Finset.sum_subset (Finset.subset_univ _) ?_).symm` and prove the remaining obligations. Introduce `i _ hi`. Apply `hf` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hc`. Apply `hi` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Conclude with `⟨⟨i.val - r, by omega⟩, Finset.mem_univ _, Fin.ext (by simp only [PI.RhsWLim.wI]; omega)⟩`.
+-/
 theorem sum_wb (f : Fin (2 * r + k + 1) → ℂ) (hf : ∀ i : Fin (2 * r + k + 1), (i.val < r ∨ r + k < i.val) → f i = 0) :
     ∑ i, f i = ∑ j : Fin (k + 1), f (wI k r j) := by
   have h1 : ∑ j : Fin (k + 1), f (PI.RhsWLim.wI k r j) = ∑ i ∈ Finset.univ.image (PI.RhsWLim.wI k r), f i :=
@@ -35,16 +43,25 @@ theorem sum_wb (f : Fin (2 * r + k + 1) → ℂ) (hf : ∀ i : Fin (2 * r + k + 
   rw [Finset.mem_image]
   exact ⟨⟨i.val - r, by omega⟩, Finset.mem_univ _, Fin.ext (by simp only [PI.RhsWLim.wI]; omega)⟩
 
+/- English proof (translation)
+Establish `hj` using `j.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Use `show (if r + j.val < r ∨ r + k < r + j.val then 2 * r + k - (r + j.val) else r + j.val) = r + j.val`. Rewrite using `[if_neg (by omega)]`.
+-/
 theorem tau_wI (j : Fin (k + 1)) : HU.tau k r (wI k r j) = wI k r j := by
   have hj := j.isLt
   apply Fin.ext
   show (if r + j.val < r ∨ r + k < r + j.val then 2 * r + k - (r + j.val) else r + j.val) = r + j.val
   rw [if_neg (by omega)]
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, PI.RhsWLim.W.HU.hpk_row, ite_mul]`.
+-/
 theorem hpk_mulVec_apply (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = HU.sgn k r i * v (HU.tau k r i) := by
   simp [Matrix.mulVec, dotProduct, PI.RhsWLim.W.HU.hpk_row, ite_mul]
 
+/- English proof (translation)
+Distinguish the cases in `h : j = Fin.last k`. Substitute `h` using the available equality. Simplify using `[PI.RhsWLim.W.HU.sgn, PI.RhsWLim.wI]`. Establish `hne : j.val ≠ k` using `fun e => h (Fin.ext (by rw [Fin.val_last]; exact e))`. Simplify using `[PI.RhsWLim.W.HU.sgn, PI.RhsWLim.wI, h, hne]`.
+-/
 theorem sgn_wI (j : Fin (k + 1)) : HU.sgn k r (wI k r j) = if j = Fin.last k then -1 else 1 := by
   by_cases h : j = Fin.last k
   · subst h
@@ -52,6 +69,11 @@ theorem sgn_wI (j : Fin (k + 1)) : HU.sgn k r (wI k r j) = if j = Fin.last k the
   · have hne : j.val ≠ k := fun e => h (Fin.ext (by rw [Fin.val_last]; exact e))
     simp [PI.RhsWLim.W.HU.sgn, PI.RhsWLim.wI, h, hne]
 
+/- English proof (translation)
+Simplify using `only [PI.RhsWLim.herm, dotProduct]`. Rewrite using `[sum_wb (k := k) (r := r)]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Pi.star_apply, hpk_mulVec_apply, PI.RhsWLim.Hb, Matrix.mulVec_diagonal, PI.RhsWLim.wbPart, sgn_wI, tau_wI]`. Introduce `i hi`.
+
+Simplify using `[hz i hi]`.
+-/
 theorem herm_wb (v z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) :
     herm (Hpk k r) v z = herm (Hb k) (wbPart k r v) (wbPart k r z) := by
   simp only [PI.RhsWLim.herm, dotProduct]
@@ -62,6 +84,11 @@ theorem herm_wb (v z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) :
   · intro i hi
     simp [hz i hi]
 
+/- English proof (translation)
+Establish `hj` using `j.isLt`. Establish `hm` using `m.isLt`. Establish `hc : (r ≤ (PI.RhsWLim.wI k r j).val ∧ (PI.RhsWLim.wI k r j).val ≤ r + k) ∧ (r ≤ (PI.RhsWLim.wI k r m).val ∧ (PI.RhsWLim.wI k r m).val ≤ r + k)`. Simplify using `only [PI.RhsWLim.wI]`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `PI.RhsWLim.embWb`. Rewrite using `[dif_pos hc]`. Conclude with `congrArg₂ μ (Fin.ext (by simp [PI.RhsWLim.wI])) (Fin.ext (by simp [PI.RhsWLim.wI]))`.
+-/
 theorem embWb_wI (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (j m : Fin (k + 1)) :
     embWb k r μ (wI k r j) (wI k r m) = μ j m := by
   have hj := j.isLt
@@ -74,6 +101,11 @@ theorem embWb_wI (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (j m : Fin (k + 1
   rw [dif_pos hc]
   exact congrArg₂ μ (Fin.ext (by simp [PI.RhsWLim.wI])) (Fin.ext (by simp [PI.RhsWLim.wI]))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [PI.RhsWLim.wbPart, Matrix.mulVec, dotProduct]`. Rewrite using `[sum_wb (k := k) (r := r)]`. Simplify using `only [embWb_wI]`. Introduce `i hi`.
+
+Simplify using `[hz' i hi]`.
+-/
 theorem wbPart_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (z' : Fin (2 * r + k + 1) → ℂ) (hz' : inWb k r z') :
     wbPart k r (embWb k r μ *ᵥ z') = μ *ᵥ wbPart k r z' := by
   funext j
@@ -83,11 +115,19 @@ theorem wbPart_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (z' : Fin (2 * 
   · intro i hi
     simp [hz' i hi]
 
+/- English proof (translation)
+Rewrite using `[herm_wb _ _ hz, wbPart_emb μ z' hz']`.
+-/
 theorem herm_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (hz : inWb k r z) (hz' : inWb k r z') :
     herm (Hpk k r) (embWb k r μ *ᵥ z') z = herm (Hb k) (μ *ᵥ wbPart k r z') (wbPart k r z) := by
   rw [herm_wb _ _ hz, wbPart_emb μ z' hz']
 
+/- English proof (translation)
+Take `⟨hU, -, hfix⟩` from `hh`. Establish `hU' : hᴴ * PI.RhsWLim.Hpk k r * h = PI.RhsWLim.Hpk k r` using `hU`. Unfold `PI.RhsWLim.herm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+
+Use `_ = star z ⬝ᵥ (PI.RhsWLim.Hpk k r *ᵥ u) := by rw [hU']`.
+-/
 theorem herm_fix {h : Mat k r} {z : Fin (2 * r + k + 1) → ℂ} (hh : h ∈ UWset k r z) (u : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (h *ᵥ u) z = herm (Hpk k r) u z := by
   obtain ⟨hU, -, hfix⟩ := hh
@@ -99,12 +139,18 @@ theorem herm_fix {h : Mat k r} {z : Fin (2 * r + k + 1) → ℂ} (hh : h ∈ UWs
         rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
     _ = star z ⬝ᵥ (PI.RhsWLim.Hpk k r *ᵥ u) := by rw [hU']
 
+/- English proof (translation)
+Take `⟨hU, -, hfix⟩` from `hh`. Establish `hdet` using `PI.RhsWLim.W.HU.isUnit_of_uh hU`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_fix {h : Mat k r} {z : Fin (2 * r + k + 1) → ℂ} (hh : h ∈ UWset k r z) : h⁻¹ *ᵥ z = z := by
   obtain ⟨hU, -, hfix⟩ := hh
   have hdet := PI.RhsWLim.W.HU.isUnit_of_uh hU
   calc h⁻¹ *ᵥ z = h⁻¹ *ᵥ (h *ᵥ z) := by rw [hfix]
     _ = z := by rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul h hdet, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hsub : {ζ : ℂ | Complex.normSq ζ = c} ⊆ Metric.sphere (0 : ℂ) (Real.sqrt c)`. Introduce `ζ hζ`. Establish `hζ' : Complex.normSq ζ = c` using `hζ`. Rewrite using `[mem_sphere_zero_iff_norm, ← hζ', Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg ζ)]`. Conclude with `measure_mono_null hsub (Measure.addHaar_sphere volume 0 _)`.
+-/
 theorem circle_null (c : ℝ) : (volume : Measure ℂ) {ζ | Complex.normSq ζ = c} = 0 := by
   have hsub : {ζ : ℂ | Complex.normSq ζ = c} ⊆ Metric.sphere (0 : ℂ) (Real.sqrt c) := by
     intro ζ hζ
@@ -112,6 +158,9 @@ theorem circle_null (c : ℝ) : (volume : Measure ℂ) {ζ | Complex.normSq ζ =
     rw [mem_sphere_zero_iff_norm, ← hζ', Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg ζ)]
   exact measure_mono_null hsub (Measure.addHaar_sphere volume 0 _)
 
+/- English proof (translation)
+Use `show PI.RhsWLim.herm (PI.RhsWLim.Hpk k r) ((p * PI.RhsWLim.embWb k r μ * q⁻¹) *ᵥ z') z = _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, herm_fix hp, inv_fix hq, herm_emb μ z z' hz hz']`.
+-/
 private theorem pairF_mul_embWb_mul_inv {z z' : Fin (2 * r + k + 1) → ℂ} (hz : PI.RhsWLim.inWb k r z) (hz' : PI.RhsWLim.inWb k r z')
     {p q : PI.RhsWLim.Mat k r} (hp : p ∈ PI.RhsWLim.UWset k r z) (hq : q ∈ PI.RhsWLim.UWset k r z')
     (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) :
@@ -121,6 +170,19 @@ private theorem pairF_mul_embWb_mul_inv {z z' : Fin (2 * r + k + 1) → ℂ} (hz
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, herm_fix hp,
     inv_fix hq, herm_emb μ z z' hz hz']
 
+/- English proof (translation)
+Introduce `k r z z' μW μW' a a' μsec hD g hg`. Simplify using `only [PI.RhsWLim.rhsW]`. Take `⟨-, -, hnW, -⟩` from `hD.haarW`. Take `⟨-, -, hnW', -⟩` from `hD.haarW'`. Take `⟨-, hS⟩` from `hD.sec`.
+
+Establish `hW : ∀ᵐ x ∂μW, Matrix.of x ∈ PI.RhsWLim.UWset k r z` using `ae_iff.mpr hnW`. Establish `hW' : ∀ᵐ x ∂μW', Matrix.of x ∈ PI.RhsWLim.UWset k r z'` using `ae_iff.mpr hnW'`. Establish `hae : ∀ᵐ ζ : ℂ, Complex.normSq ζ ≠ PI.RhsWLim.Tz k r z * PI.RhsWLim.Tz k r z'`. Rewrite using `[ae_iff]`. Simplify using `using circle_null (PI.RhsWLim.Tz k r z * PI.RhsWLim.Tz k r z')`.
+
+Rewrite using `[← lintegral_const_mul' (ENNReal.ofReal (a * a')) _ ENNReal.ofReal_ne_top]`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with ζ hζ`. Apply the tactic sequence `try dsimp only`. Distinguish the cases in `hreg : PI.RhsWLim.Tz k r z * PI.RhsWLim.Tz k r z' < Complex.normSq ζ`.
+
+Establish `hsec` using `(hS ζ hreg).2`. Rewrite using `[lintegral_congr_ae (μ := μW) (g := fun _ => g ζ * ENNReal.ofReal a') ?_]`. Rewrite using `[lintegral_const, hD.massW, ENNReal.ofReal_mul hD.a_pos.le]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `filter_upwards [hW] with h hh try dsimp only`.
+
+Rewrite using `[lintegral_congr_ae (μ := μW') (g := fun _ => g ζ) ?_]`. Rewrite using `[lintegral_const, hD.massW']`. Use `filter_upwards [hW'] with h' hh'`. Conclude with `(congrArg g (pairF_mul_embWb_mul_inv hD.z_mem hD.z'_mem hh hh' (μsec ζ))).trans (congrArg g hsec)`. Establish `hle : ¬ (PI.RhsWLim.Tz k r z * PI.RhsWLim.Tz k r z' ≤ Complex.normSq ζ)` using `fun hle => hreg (lt_of_le_of_ne hle (Ne.symm hζ))`.
+
+Establish `h0 : PI.RhsWLim.zWeight k (PI.RhsWLim.Tz k r z) (PI.RhsWLim.Tz k r z') ζ = 0`. Unfold `PI.RhsWLim.zWeight`. Conclude with `if_neg hle`. Simplify using `[h0]`.
+-/
 theorem rhsTest : RhsTest := by
   intro k r z z' μW μW' a a' μsec hD g hg
   simp only [PI.RhsWLim.rhsW]

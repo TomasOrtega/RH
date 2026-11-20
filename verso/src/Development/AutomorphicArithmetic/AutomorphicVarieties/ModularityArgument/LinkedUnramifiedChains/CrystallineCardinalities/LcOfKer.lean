@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `s`. Use `⟨(fun y => s⁻¹ * y) ⁻¹' (τ.ker : Set D), h.preimage (continuous_mul_left s⁻¹), ?_, ?_⟩` and prove the remaining obligations. Use `show s⁻¹ * s ∈ τ.ker`. Rewrite using `[inv_mul_cancel]`.
+
+Conclude with `one_mem _`. Introduce `y hy`. Establish `hy' : τ (s⁻¹ * y) = 1` using `hy`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem lc_of_ker {D N : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [AddCommGroup N]
     (τ : Representation ℤ D N) (h : IsOpen (τ.ker : Set D)) : IsLocallyConstant fun s => τ s := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -18,6 +23,31 @@ private theorem lc_of_ker {D N : Type} [Group D] [TopologicalSpace D] [IsTopolog
       _ = τ s * τ (s⁻¹ * y) := map_mul τ _ _
       _ = τ s := by rw [hy', mul_one]
 
+/- English proof (translation)
+Set `ψ : ↥A × N →+ (D → N)` to `{ toFun := fun p => fun s => e ((p.1 : D → N) s) + (σ s p.2 - p.2) map_zero' := by`. Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Use the proof step `map_add' := by`. Introduce `p q`.
+
+Use function extensionality and compare the values at `s`. Simplify using `only [Prod.fst_add, Prod.snd_add, AddSubgroup.coe_add, Pi.add_apply, map_add]`. Use `abel }`. Establish `hψ : ∀ p : ↥A × N, ∀ s, ψ p s = e ((p.1 : D → N) s) + (σ s p.2 - p.2)` using `fun p s => rfl`. Establish `hlc : ∀ Y : N, IsLocallyConstant fun s => σ s Y`.
+
+Introduce `Y`. Establish `h1 : (fun s => σ s Y) = fun s => e (τ s (e.symm Y))`. Use function extensionality and compare the values at `s`. Rewrite using `[← he, AddEquiv.apply_symm_apply]`. Rewrite using `[h1]`.
+
+Conclude with `(lc_of_ker τ h).comp fun f => e (f (e.symm Y))`. Use `⟨ψ.range, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, Y⟩, rfl⟩`.
+
+Conclude with `⟨a, a.2, Y, fun s => rfl⟩`. Introduce and unpack `⟨z', hz', Y, hz⟩`. Conclude with `⟨(⟨z', hz'⟩, Y), funext fun s => (hz s).symm⟩`. Introduce and unpack `z ⟨⟨a, Y⟩, rfl⟩`. Establish `ha` using `hA a.2`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun s => e ((a : D → N) s)` using `ha.1.comp e`. Conclude with `h2.add ((hlc Y).sub (IsLocallyConstant.const Y))`. Introduce `s t`. Simplify using `only [hψ]`.
+
+Rewrite using `[ha.2 s t]`. Simplify using `only [map_add, map_sub, he, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Introduce `Y`. Conclude with `⟨(0, Y), funext fun s => by simp [hψ]⟩`.
+
+Establish `hcard : Nat.card (↥A × N) = Nat.card ψ.range * Nat.card ψ.ker`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup ψ.ker, Nat.card_congr (QuotientAddGroup.quotientKerEquivRange ψ).toEquiv]`. Establish `key : ∀ p : ψ.ker, (fun s => τ s (-e.symm p.1.2) - -e.symm p.1.2) = (p.1.1 : D → N)`. Introduce and unpack `⟨⟨a, Y⟩, hp⟩`. Establish `hp' : ∀ s, e ((a : D → N) s) + (σ s Y - Y) = 0` using `fun s => congrFun hp s`.
+
+Use `show (fun s => τ s (-e.symm Y) - -e.symm Y) = (a : D → N)`. Use function extensionality and compare the values at `s`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_sub, map_neg, AddEquiv.apply_symm_apply, ← he]`. Rewrite using `[eq_neg_of_add_eq_zero_left (hp' s)]`.
+
+Normalize the expressions using the abelian group laws. Set `f : ψ.ker → T` to `fun p => ⟨-e.symm p.1.2, hT _ (by rw [key p]; exact p.1.1.2)⟩`. Establish `hf : Function.Injective f`. Introduce `p q hpq`. Establish `h2 : p.1.2 = q.1.2`.
+
+Establish `h3 : -e.symm p.1.2 = -e.symm q.1.2` using `congrArg Subtype.val hpq`. Conclude with `e.symm.injective (neg_injective h3)`. Establish `h1 : (p.1.1 : D → N) = q.1.1`. Rewrite using `[← key p, ← key q, h2]`. Conclude with `Subtype.ext (Prod.ext (Subtype.ext h1) h2)`.
+
+Establish `hker : Nat.card ψ.ker ≤ Nat.card T` using `Nat.card_le_card_of_injective f hf`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem cnt {D N : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [AddCommGroup N] [Finite N]
     (σ τ : Representation ℤ D N) (e : N ≃+ N) (he : ∀ s x, σ s (e x) = e (τ s x)) (h : IsOpen (τ.ker : Set D))
     (A : AddSubgroup (D → N)) [Finite A] (hA : (A : Set (D → N)) ⊆ Zc τ) (T : Set N)
@@ -89,6 +119,13 @@ private theorem cnt {D N : Type} [Group D] [TopologicalSpace D] [IsTopologicalGr
       _ = Nat.card ψ.range * Nat.card ψ.ker := hcard
       _ ≤ Nat.card ψ.range * Nat.card T := Nat.mul_le_mul_left _ hker
 
+/- English proof (translation)
+Establish `hP : Nat.card {p : Fin 3 × Fin 3 // p.1 ≤ p.2} = 6`. Rewrite using `[Nat.card_eq_fintype_card]`. Evaluate the decidable proposition. Establish `hinj : Function.Injective (fun Y : {Y : Matrix (Fin 3) (Fin 3) R | UpT Y} => fun p : {p : Fin 3 × Fin 3 // p.1 ≤ p.2} => (Y : Matrix (Fin 3) (Fin 3) R) p.1.1 p.1.2)`. Introduce and unpack `⟨Y, hY⟩ ⟨Y', hY'⟩ e`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show Y i j = Y' i j`. Distinguish the cases in `hij : i ≤ j`. Conclude with `congrFun e ⟨(i, j), hij⟩`.
+
+Establish `hji : j < i` using `lt_of_not_ge hij`. Establish `h1 : UpT Y` using `hY`. Establish `h2 : UpT Y'` using `hY'`. Rewrite using `[h1 i j hji, h2 i j hji]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem card_upT (R : Type) [Zero R] [Finite R] :
     Nat.card {Y : Matrix (Fin 3) (Fin 3) R | UpT Y} ≤ Nat.card R ^ 6 := by
   classical
@@ -119,6 +156,11 @@ private def cjE {R : Type} [CommRing R] (g : GL (Fin 3) R) : Matrix (Fin 3) (Fin
   right_inv X := by simp only [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, Units.inv_mul_cancel_left]
   map_add' X Y := by rw [Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Establish `hr : (B.r (F.loc v s)).right = 1`. Rewrite using `[B.nu]`. Conclude with `(F.loc0 v s).2`. Establish `e1 : ∀ A : GL (Fin 3) O, (↑A : Matrix (Fin 3) (Fin 3) O).map (Ideal.Quotient.mk (Ideal.span {(l : O) ^ k})) = ↑(GeneralLinearGroup.map (Ideal.Quotient.mk (Ideal.span {(l : O) ^ k})) A)` using `fun A => rfl`. Simplify using `only [adK, Box.ad, adRep, GG.ad, boxK, Box.map, GG.map, cjE, cj, triOf, MonoidHom.comp_apply, MonoidHom.coe_mk, OneHom.coe_mk, AddEquiv.coe_mk, Equiv.coe_fn_mk, e1]`.
+
+Use `show GG.adFun (m := 3) (R := Ok l O k) _ _ = _`. Simplify using `only [GG.adFun, GG.mat, SemidirectProduct.map_left, SemidirectProduct.map_right, MonoidHom.id_apply, hr, if_true, map_mul, map_inv, _root_.mul_inv_rev, inv_inv, Units.val_mul, Matrix.mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv_cancel_left, Units.inv_mul, Units.mul_inv, Ma …`.
+-/
 private theorem ad_cj {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     {F : Frame l (ResidueField O)} (B : Box F 3 O) (k : ℕ) (v : F.V) (s : F.Gv v)
     (X : Matrix (Fin 3) (Fin 3) (Ok l O k)) :
@@ -135,6 +177,31 @@ private theorem ad_cj {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalR
     if_true, map_mul, map_inv, _root_.mul_inv_rev, inv_inv, Units.val_mul, Matrix.mul_assoc,
     Units.inv_mul_cancel_left, Units.mul_inv_cancel_left, Units.inv_mul, Units.mul_inv, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ F C₀ hF hl ρ B hlift hOf hCont k hk v hfin`. Take `⟨hfinOk, -⟩` from `okFin l O hl`. Use `haveI : Finite (Ok l O k) := hfinOk k`. Establish `htri` using `(triOk l O F C₀ hF hl ρ B hlift hOf hCont v).1`. Take `⟨⟨ρc, hρc, hker⟩, -, -, -, hup⟩` from `cjFacts l O (F.Gv v) (triOf B v) k hl htri`.
+
+Set `A : AddSubgroup (F.Gv v → Matrix (Fin 3) (Fin 3) (Ok l O k))` to `{ carrier := ZF (l := l) (F.Iv v) k (triOf B v) add_mem' := by`. Introduce and unpack `a b ⟨ha1, ha2, ha3, ha4⟩ ⟨hb1, hb2, hb3, hb4⟩`. Use `⟨ha1.add hb1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s s'`. Simplify using `only [Pi.add_apply]`.
+
+Rewrite using `[ha2, hb2, ← hρc, ← hρc, ← hρc, map_add]`. Normalize the expressions using the abelian group laws. Introduce `s i j hij`. Simplify using `only [Pi.add_apply, Matrix.add_apply, ha3 s i j hij, hb3 s i j hij, add_zero]`. Introduce `s hs i`.
+
+Simplify using `only [Pi.add_apply, Matrix.add_apply, ha4 s hs i, hb4 s hs i, add_zero]`. Use the proof step `zero_mem' := by`. Use `⟨IsLocallyConstant.const 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s s'`. Simplify using `only [Pi.zero_apply]`.
+
+Rewrite using `[← hρc, map_zero, add_zero]`. Introduce `s i j hij`. Both sides reduce to the same expression. Introduce `s hs i`. Both sides reduce to the same expression.
+
+Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨ha1, ha2, ha3, ha4⟩`. Use `⟨ha1.neg, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s s'`. Simplify using `only [Pi.neg_apply]`.
+
+Rewrite using `[ha2, ← hρc, ← hρc, map_neg, neg_add]`. Introduce `s i j hij`. Simplify using `only [Pi.neg_apply, Matrix.neg_apply, ha3 s i j hij, neg_zero]`. Introduce `s hs i`. Simplify using `only [Pi.neg_apply, Matrix.neg_apply, ha4 s hs i, neg_zero] }`.
+
+Establish `hA : (A : Set (F.Gv v → Matrix (Fin 3) (Fin 3) (Ok l O k))) ⊆ Zc ρc`. Introduce and unpack `z ⟨h1, h2, -, -⟩`. Conclude with `⟨h1, fun s t => by rw [h2, hρc]⟩`. Use `haveI : Finite A := hfin.to_subtype`. Establish `hT : ∀ Y, (fun s => ρc s Y - Y) ∈ A → Y ∈ {Y : Matrix (Fin 3) (Fin 3) (Ok l O k) | UpT Y}`.
+
+Introduce and unpack `Y ⟨-, -, h3, -⟩`. Conclude with `hup Y fun s => by`. Use `h3 s` as an intermediate fact. Simplify `this` using `only [hρc]`. Establish `he : ∀ s x, ((adK B k).comp (F.loc v)) s (cjE ((boxK B k).g v) x) = cjE ((boxK B k).g v) (ρc s x)`.
+
+Introduce `s x`. Rewrite using `[hρc]`. Conclude with `ad_cj B k v s x`. Take `⟨Z, hZ1, hZ2, hZ3, hZ4⟩` from `cnt _ ρc (cjE ((boxK B k).g v)) he hker A hA _ hT`. Use `⟨Z, ?_, hZ2, hZ3, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hZ1]`. Both sides reduce to the same expression. Establish `hN : Nat.card (Matrix (Fin 3) (Fin 3) (Ok l O k)) = Nat.card (Ok l O k) ^ 9` using `by show Nat.card (Fin 3 → Fin 3 → Ok l O k) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_fin, ← pow_mul]`. Establish `hAc : Nat.card A = (ZF (l` using `l) (F.Iv v) k (triOf B v)).ncard := Nat.card_coe_set_eq (ZF (l := l) (F.Iv v) k (triOf B v))`.
+
+Establish `hTc` using `card_upT (Ok l O k)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Z.J.zvCnt :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (F : Frame l (ResidueField O)) (C₀ : ℕ), F.Ok C₀ → (l : O) ≠ 0 → ∀ (ρ : NRep F 3 O) (B : Box F 3 O), UpperTheory.V.Fr.IsLift O ρ → B.Of ρ → B.Cont (maximalIdeal O) → ∀ k, 0 < k → ∀ v, (ZF (l := l) (F.Iv v) k (triOf B v)).Finite → ∃ Z : AddSubgroup (F.Gv v → Matrix (Fin 3) (Fin 3) (Ok l O k)), (Z : Set _) = Zv B k v ∧ (Z : Set _) ⊆ Zc ((adK B k).comp (F.loc v)) ∧ (∀ Y, (fun s => adK B k (F.loc v s) Y - Y) ∈ Z) ∧ (ZF (l := l) (F.Iv v) k (triOf B v)).ncard * Nat.card (Ok l O k) ^ 9 ≤ Nat.card Z * Nat.card (Ok l O k) ^ 6 := by
   intro l _ O _ _ _ _ _ F C₀ hF hl ρ B hlift hOf hCont k hk v hfin

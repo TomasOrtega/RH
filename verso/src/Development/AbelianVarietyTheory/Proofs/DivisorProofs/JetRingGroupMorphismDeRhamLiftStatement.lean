@@ -11,6 +11,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.RealMult GlobalTheory.LatVal GlobalTheory.LatJet
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatJet.jetFil_summand_reduces | exact GlobalTheory.LatJet.jetFil_summand_reduces | (intros; apply GlobalTheory.LatJet.jetFil_summand_reduces <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jet_ring_group_morphism_de_rham_lift : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [IsLocalRing R] (I : Type) [Fintype I] (n : ℕ) (J : JetRing R I n) (X : Obj F 𝔠 (Sp R))
     (N : I → Module.End R (HdR X.A)), admitted X N →

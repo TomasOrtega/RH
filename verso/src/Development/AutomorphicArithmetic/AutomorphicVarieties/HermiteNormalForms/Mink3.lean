@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HermiteNormalForms
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `R _ _ _ H hH`. Set `f : H → R` to `fun h => ((h : Rˣ) : R)`. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Conclude with `Subtype.ext (Units.ext hab)`.
+
+Establish `hsep : ∀ a ∈ Set.range f, ∀ b ∈ Set.range f, ∀ x : R, a - b = (3 : ℕ) • x → a = b`. Introduce and unpack `_ ⟨h1, rfl⟩ _ ⟨h2, rfl⟩ x hx`. Establish `ha : f h1 = f h2 + 3 * x`. Rewrite `hx` using `[sub_eq_iff_eq_add']`. Rewrite using `[hx, nsmul_eq_mul, Nat.cast_ofNat]`.
+
+Set `u : H` to `h2⁻¹ * h1`. Establish `hu : f u = 1 + 3 * (f h2⁻¹ * x)`. Establish `e : f u = f h2⁻¹ * f h1`. Simplify using `[f, u]`. Establish `e2 : f h2⁻¹ * f h2 = 1`.
+
+Simplify using `[f]`. Rewrite using `[e, ha, mul_add, e2]`. Use `congr 1`. Use `noncomm_ring`. Establish `hpow : f u ^ orderOf u = 1`.
+
+Establish `: u ^ orderOf u = 1` using `pow_orderOf_eq_one u`. Simplify using `only [f]`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Subgroup.coe_pow, this]`. Both sides reduce to the same expression. Establish `h1u` using `UpperTheory.V.KT.torsfree R (f u) _ (orderOf u) (orderOf_pos u) hu hpow`.
+
+Establish `hu1 : u = 1` using `hinj (by rw [h1u]; simp [f])`. Establish `: h2 = h1` using `inv_mul_eq_one.mp hu1`. Rewrite using `[this]`. Take `⟨_, hcard⟩` from `UpperTheory.V.KT.cardsep R 3 (by norm_num) (Set.range f) hsep`. Rewrite `hcard` using `[Set.ncard_range_of_injective hinj]`.
+
+Conclude with `hcard`.
+-/
 theorem UpperTheory.V.KT.mink3 :
     ∀ (R : Type) [Ring R] [Module.Free ℤ R] [Module.Finite ℤ R] (H : Subgroup Rˣ), Finite H →
     Nat.card H ≤ 3 ^ Module.finrank ℤ R := by

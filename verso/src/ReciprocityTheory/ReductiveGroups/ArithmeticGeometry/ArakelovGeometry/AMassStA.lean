@@ -15,6 +15,13 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 open MeasureTheory Set Filter Topology
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hpos : 0 < b + r ^ 2` using `by positivity`. Establish `h1 : HasDerivAt (fun r : ℝ => b + r ^ 2) (2 * r) r`. Simplify using `using (hasDerivAt_pow 2 r).const_add b`. Establish `h2` using `(h1.pow (j + 1)).inv (pow_ne_zero _ hpos.ne')`. Establish `h3` using `h2.const_mul (-(1 / (2 * ((j : ℝ) + 1))))`.
+
+Simplify using `only [Nat.add_sub_cancel] at h3`. Establish `h4 : HasDerivAt (fun r : ℝ => -(1 / (2 * ((j : ℝ) + 1))) * ((b + r ^ 2) ^ (j + 1))⁻¹) (-(1 / (2 * ((j : ℝ) + 1))) * (-(((j + 1 : ℕ) : ℝ) * (b + r ^ 2) ^ j * (2 * r)) / ((b + r ^ 2) ^ (j + 1)) ^ 2)) r` using `h3`. Use `h4.congr_deriv ?_` and prove the remaining obligations. Establish `hj : (2 * ((j : ℝ) + 1)) ≠ 0` using `by positivity`. Establish `hX : (b + r ^ 2) ≠ 0` using `hpos.ne'`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaM_hasDerivAt_antider {b : ℝ} (hb : 0 < b) (j : ℕ) (r : ℝ) :
     HasDerivAt (fun r : ℝ => -(1 / (2 * ((j : ℝ) + 1))) * ((b + r ^ 2) ^ (j + 1))⁻¹)
       (r * ((b + r ^ 2) ^ (j + 2))⁻¹) r := by
@@ -34,6 +41,9 @@ theorem gaM_hasDerivAt_antider {b : ℝ} (hb : 0 < b) (j : ℕ) (r : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun r : ℝ => b + r ^ 2) atTop atTop` using `tendsto_atTop_add_const_left _ _ (tendsto_pow_atTop two_ne_zero)`. Establish `h2 : Tendsto (fun r : ℝ => (b + r ^ 2) ^ (j + 1)) atTop atTop` using `(tendsto_pow_atTop (Nat.succ_ne_zero j)).comp h1`. Simplify using `using (tendsto_inv_atTop_zero.comp h2).const_mul (-(1 / (2 * ((j : ℝ) + 1))))`.
+-/
 theorem gaM_tendsto_antider {b : ℝ} (_hb : 0 < b) (j : ℕ) :
     Tendsto (fun r : ℝ => -(1 / (2 * ((j : ℝ) + 1))) * ((b + r ^ 2) ^ (j + 1))⁻¹) atTop (𝓝 0) := by
   have h1 : Tendsto (fun r : ℝ => b + r ^ 2) atTop atTop :=
@@ -42,6 +52,9 @@ theorem gaM_tendsto_antider {b : ℝ} (_hb : 0 < b) (j : ℕ) :
     (tendsto_pow_atTop (Nat.succ_ne_zero j)).comp h1
   simpa using (tendsto_inv_atTop_zero.comp h2).const_mul (-(1 / (2 * ((j : ℝ) + 1))))
 
+/- English proof (translation)
+The claim follows from `integrableOn_Ioi_deriv_of_nonneg' (fun x _ => gaM_hasDerivAt_antider hb j x) (fun x hx => by have : 0 < b + x ^ 2 := by positivity exact mul_nonneg (le_of_lt hx) (by positivity)) (gaM_tendsto_antider hb j)`.
+-/
 theorem gaM_integrableOn_Ioi {b : ℝ} (hb : 0 < b) (j : ℕ) :
     IntegrableOn (fun r : ℝ => r * ((b + r ^ 2) ^ (j + 2))⁻¹) (Ioi 0) :=
   integrableOn_Ioi_deriv_of_nonneg' (fun x _ => gaM_hasDerivAt_antider hb j x)
@@ -49,6 +62,11 @@ theorem gaM_integrableOn_Ioi {b : ℝ} (hb : 0 < b) (j : ℕ) :
                     exact mul_nonneg (le_of_lt hx) (by positivity))
     (gaM_tendsto_antider hb j)
 
+/- English proof (translation)
+Rewrite using `[integral_Ioi_of_hasDerivAt_of_nonneg' (fun x _ => gaM_hasDerivAt_antider hb j x) (fun x hx => by have : 0 < b + x ^ 2 := by positivity`. Conclude with `mul_nonneg (le_of_lt hx) (by positivity))`. Use the proof step `(gaM_tendsto_antider hb j)]`. Establish `: (0 : ℝ) < b ^ (j + 1)` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaM_integral_Ioi {b : ℝ} (hb : 0 < b) (j : ℕ) :
     ∫ r in Ioi (0 : ℝ), r * ((b + r ^ 2) ^ (j + 2))⁻¹ = 1 / (2 * ((j : ℝ) + 1) * b ^ (j + 1)) := by
   rw [integral_Ioi_of_hasDerivAt_of_nonneg' (fun x _ => gaM_hasDerivAt_antider hb j x)
@@ -59,6 +77,15 @@ theorem gaM_integral_Ioi {b : ℝ} (hb : 0 < b) (j : ℕ) :
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[← Complex.lintegral_comp_polarCoord_symm]`. Establish `hcongr : ∀ p ∈ polarCoord.target, ENNReal.ofReal p.1 • ENNReal.ofReal (((b + ‖Complex.polarCoord.symm p‖ ^ 2) ^ (j + 2))⁻¹) = ENNReal.ofReal (p.1 * ((b + p.1 ^ 2) ^ (j + 2))⁻¹) * 1`. Introduce `p hp`. Establish `hp1 : 0 < p.1` using `hp.1`. Rewrite using `[Complex.norm_polarCoord_symm, abs_of_pos hp1, smul_eq_mul, mul_one, ENNReal.ofReal_mul hp1.le]`.
+
+Rewrite using `[setLIntegral_congr_fun polarCoord.open_target.measurableSet hcongr]`. Rewrite using `[polarCoord_target, Measure.volume_eq_prod, ← Measure.prod_restrict]`. Rewrite using `[lintegral_prod_mul (f := fun r : ℝ => ENNReal.ofReal (r * ((b + r ^ 2) ^ (j + 2))⁻¹)) (g := fun _ : ℝ => (1 : ℝ≥0∞)) (by fun_prop) aemeasurable_const]`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (gaM_integrableOn_Ioi hb j) (ae_restrict_of_forall_mem measurableSet_Ioi fun x hx => by`. Establish `: 0 < b + x ^ 2` using `by positivity`.
+
+Conclude with `mul_nonneg (le_of_lt hx) (by positivity))]`. Rewrite using `[gaM_integral_Ioi hb j, setLIntegral_one, Real.volume_Ioo, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Establish `: (0 : ℝ) < b ^ (j + 1)` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaM_lintegral_complex {b : ℝ} (hb : 0 < b) (j : ℕ) :
     ∫⁻ t : ℂ, ENNReal.ofReal (((b + ‖t‖ ^ 2) ^ (j + 2))⁻¹) =
       ENNReal.ofReal (Real.pi / (((j : ℝ) + 1) * b ^ (j + 1))) := by
@@ -84,6 +111,25 @@ theorem gaM_lintegral_complex {b : ℝ} (hb : 0 < b) (j : ℕ) :
   field_simp
   ring
 
+/- English proof (translation)
+Proceed by induction on `D with`. Consider the case `zero`. Introduce `a ha j`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero, zero_add, pow_zero, one_mul]`. Rewrite using `[lintegral_const, MeasureTheory.volume_pi, Measure.pi_univ, Finset.univ_eq_empty, Finset.prod_empty, mul_one]`.
+
+Use `congr 1`. Establish `: (0 : ℝ) < (j.factorial : ℝ)` using `by positivity`. Clear the denominators using the available nonvanishing facts. Consider the case `succ D ih`. Introduce `a ha j`.
+
+Establish `hmp` using `volume_preserving_piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0`. Use `set F : (Fin (D + 1) → ℂ) → ℝ≥0∞ := fun y => ENNReal.ofReal (((a + ∑ i, ‖y i‖ ^ 2) ^ (D + 1 + j + 1))⁻¹) with hF`. Establish `hFm : Measurable F`. Establish `: Continuous fun y : Fin (D + 1) → ℂ => ((a + ∑ i, ‖y i‖ ^ 2) ^ (D + 1 + j + 1))⁻¹`. Use `Continuous.inv₀ (by fun_prop) fun y => ?_` and prove the remaining obligations.
+
+Establish `: 0 < a + ∑ i, ‖y i‖ ^ 2` using `by positivity`. Check the signs of the components of the expression. Conclude with `ENNReal.measurable_ofReal.comp this.measurable`. Establish `h1` using `hmp.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _) (fun p => F ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0).symm p))`. Simplify using `only [MeasurableEquiv.symm_apply_apply] at h1`.
+
+Rewrite using `[h1, Measure.volume_eq_prod, lintegral_prod (fun p => F ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0).symm p)) ((hFm.comp (MeasurableEquiv.measurable _)).aemeasurable)]`. Establish `h2 : ∀ t : ℂ, ∫⁻ y', F ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (D + 1) => ℂ) 0).symm (t, y')) = ENNReal.ofReal (Real.pi ^ D * ((j + 1).factorial : ℝ) / (((D + (j + 1)).factorial : ℝ))) * ENNReal.ofReal (((a + ‖t‖ ^ 2) ^ (j + 2))⁻¹)`. Introduce `t`. Establish `ht : 0 < a + ‖t‖ ^ 2` using `by positivity`. Use `ih (a + ‖t‖ ^ 2) ht (j + 1)` as an intermediate fact.
+
+Establish `hexp : D + (j + 1) + 1 = D + 1 + j + 1` using `by ring`. Rewrite `this` using `[hexp]`. Simplify using `only [hF, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNthEquiv, Equiv.coe_fn_mk, Fin.insertNth_zero', Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Repeatedly rewrite using `[← add_assoc]`. Rewrite using `[this, ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `congr 1`. Establish `: 0 < (a + ‖t‖ ^ 2) ^ (j + 2)` using `by positivity`. Clear the denominators using the available nonvanishing facts. Rewrite using `[show D + j + 1 = D + (j + 1) by ring]`. Repeatedly rewrite using `[h2]`.
+
+Rewrite using `[lintegral_const_mul _ (by fun_prop), gaM_lintegral_complex ha j, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Establish `hfj : ((j + 1).factorial : ℝ) = (j + 1) * j.factorial` using `by push_cast [Nat.factorial_succ]; ring`. Establish `hfD : ((D + 1 + j).factorial : ℝ) = ((D + (j + 1)).factorial : ℝ)`. Rewrite using `[show D + 1 + j = D + (j + 1) by ring]`.
+
+Rewrite using `[hfj, hfD]`. Establish `: (0 : ℝ) < ((D + (j + 1)).factorial : ℝ)` using `by positivity`. Establish `: (0 : ℝ) < a ^ (j + 1)` using `by positivity`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaM_lintegral_pi (D : ℕ) : ∀ (a : ℝ), 0 < a → ∀ j : ℕ,
     ∫⁻ y : Fin D → ℂ, ENNReal.ofReal (((a + ∑ i, ‖y i‖ ^ 2) ^ (D + j + 1))⁻¹) =
       ENNReal.ofReal (Real.pi ^ D * (j.factorial : ℝ) / (((D + j).factorial : ℝ) * a ^ (j + 1))) := by
@@ -141,6 +187,11 @@ theorem gaM_lintegral_pi (D : ℕ) : ∀ (a : ℝ), 0 < a → ∀ j : ℕ,
     field_simp
     ring
 
+/- English proof (translation)
+Establish `hnn : ∀ y : Fin D → ℂ, 0 ≤ ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹` using `fun y => by positivity`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall hnn) (Continuous.aestronglyMeasurable (by`. Use `Continuous.inv₀ (by fun_prop) fun y => ?_` and prove the remaining obligations. Establish `: 0 < 1 + ∑ i, ‖y i‖ ^ 2` using `by positivity`. Use the proof step `positivity))]`.
+
+Use `gaM_lintegral_pi D 1 one_pos 0` as an intermediate fact. Simplify using `only [add_zero, Nat.factorial_zero, Nat.cast_one, mul_one, one_pow] at this`. Rewrite using `[this, ENNReal.toReal_ofReal (by positivity)]`.
+-/
 theorem gaM_integral_fsDens (D : ℕ) :
     ∫ y : Fin D → ℂ, ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹ = Real.pi ^ D / (D.factorial : ℝ) := by
   have hnn : ∀ y : Fin D → ℂ, 0 ≤ ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹ := fun y => by positivity
@@ -172,9 +223,15 @@ def gbBil (D : ℕ) : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ :=
   LinearMap.toContinuousLinearMap
     ((LinearMap.toContinuousLinearMap : ((Fin D → ℂ) →ₗ[ℝ] ℝ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ gbBilL D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gbBil_apply (v u : Fin D → ℂ) :
     gbBil D v u = ∑ i, ((v i).re * (u i).re + (v i).im * (u i).im) := rfl
 
+/- English proof (translation)
+Simplify using `only [gbBil_apply]`. Use `congr 1`. Use `ext`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gbBil_comm (v u : Fin D → ℂ) : gbBil D v u = gbBil D u v := by
   simp only [gbBil_apply]; congr 1; ext; ring
 
@@ -182,14 +239,25 @@ def gbG (y : Fin D → ℂ) : ℝ := 1 + ∑ i, ‖y i‖ ^ 2
 
 def gbPot (y : Fin D → ℂ) : ℝ := Real.log (Real.sqrt (1 + ∑ i, ‖y i‖ ^ 2))
 
+/- English proof (translation)
+Unfold `gbG`. Check the signs of the components of the expression.
+-/
 theorem gbG_pos (y : Fin D → ℂ) : 0 < gbG y := by unfold gbG; positivity
 
+/- English proof (translation)
+Rewrite using `[gbG, gbBil_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`.
+-/
 theorem gbG_eq (y : Fin D → ℂ) : gbG y = 1 + gbBil D y y := by
   rw [gbG, gbBil_apply]
   congr 1
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply]
 
+/- English proof (translation)
+Establish `h` using `(gbBil D).hasFDerivAt_of_bilinear (hasFDerivAt_id y) (hasFDerivAt_id y)`. Establish `h2` using `h.const_add 1`. Establish `hfun : (fun y' => 1 + gbBil D (id y') (id y')) = gbG` using `funext fun y' => (gbG_eq y').symm`. Rewrite `h2` using `[hfun]`. Use `h2.congr_fderiv ?_` and prove the remaining obligations.
+
+Use `ContinuousLinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[gbBil_comm u y]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasFDerivAt_gbG (y : Fin D → ℂ) : HasFDerivAt gbG (2 • gbBil D y) y := by
   have h := (gbBil D).hasFDerivAt_of_bilinear (hasFDerivAt_id y) (hasFDerivAt_id y)
   have h2 := h.const_add 1
@@ -201,10 +269,18 @@ theorem hasFDerivAt_gbG (y : Fin D → ℂ) : HasFDerivAt gbG (2 • gbBil D y) 
   rw [gbBil_comm u y]
   ring
 
+/- English proof (translation)
+Use `show Real.log (Real.sqrt (gbG y)) = _`. Rewrite using `[Real.log_sqrt (gbG_pos y).le]`.
+-/
 theorem gbPot_eq (y : Fin D → ℂ) : gbPot y = Real.log (gbG y) / 2 := by
   show Real.log (Real.sqrt (gbG y)) = _
   rw [Real.log_sqrt (gbG_pos y).le]
 
+/- English proof (translation)
+Establish `h` using `HasFDerivAt.const_mul (HasFDerivAt.log (hasFDerivAt_gbG y) (gbG_pos y).ne') (1 / 2 : ℝ)`. Establish `hfun : (fun y' : Fin D → ℂ => (1 / 2 : ℝ) * Real.log (gbG y')) = gbPot`. Use function extensionality and compare the values at `fun y' => by rw [gbPot_eq]; ring`. Rewrite `h` using `[hfun]`. Use `h.congr_fderiv ?_` and prove the remaining obligations.
+
+Use `ContinuousLinearMap.ext fun u => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasFDerivAt_gbPot (y : Fin D → ℂ) : HasFDerivAt gbPot ((gbG y)⁻¹ • gbBil D y) y := by
   have h := HasFDerivAt.const_mul (HasFDerivAt.log (hasFDerivAt_gbG y) (gbG_pos y).ne') (1 / 2 : ℝ)
   have hfun : (fun y' : Fin D → ℂ => (1 / 2 : ℝ) * Real.log (gbG y')) = gbPot :=
@@ -215,9 +291,15 @@ theorem hasFDerivAt_gbPot (y : Fin D → ℂ) : HasFDerivAt gbPot ((gbG y)⁻¹ 
   simp
   ring
 
+/- English proof (translation)
+The claim follows from `funext fun y => (hasFDerivAt_gbPot y).fderiv`.
+-/
 theorem fderiv_gbPot : fderiv ℝ gbPot = fun y : Fin D → ℂ => (gbG y)⁻¹ • gbBil D y :=
   funext fun y => (hasFDerivAt_gbPot y).fderiv
 
+/- English proof (translation)
+Rewrite using `[fderiv_gbPot]`. Establish `hi : HasFDerivAt (fun y => (gbG y)⁻¹) ((-((gbG y) ^ 2)⁻¹) • (2 • gbBil D y)) y`. Use `(hasDerivAt_inv (gbG_pos y).ne').comp_hasFDerivAt y (hasFDerivAt_gbG y)` as an intermediate fact. Conclude with `this`. Conclude with `hi.smul (gbBil D).hasFDerivAt`.
+-/
 theorem hasFDerivAt_fderiv_gbPot (y : Fin D → ℂ) :
     HasFDerivAt (fderiv ℝ gbPot)
       ((gbG y)⁻¹ • gbBil D + ((-((gbG y) ^ 2)⁻¹) • (2 • gbBil D y)).smulRight (gbBil D y)) y := by
@@ -227,6 +309,9 @@ theorem hasFDerivAt_fderiv_gbPot (y : Fin D → ℂ) :
     exact this
   exact hi.smul (gbBil D).hasFDerivAt
 
+/- English proof (translation)
+Rewrite using `[(hasFDerivAt_fderiv_gbPot y).fderiv]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_fderiv_gbPot_apply (y v u : Fin D → ℂ) :
     fderiv ℝ (fderiv ℝ gbPot) y v u =
       (gbG y)⁻¹ * gbBil D v u - 2 * ((gbG y) ^ 2)⁻¹ * gbBil D y v * gbBil D y u := by
@@ -234,6 +319,9 @@ theorem fderiv_fderiv_gbPot_apply (y v u : Fin D → ℂ) :
   simp
   ring
 
+/- English proof (translation)
+Rewrite using `[gbBil_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Pi.single_apply, hk]`. Simplify using the standard rewrite rules.
+-/
 theorem gbBil_single (y : Fin D → ℂ) (i : Fin D) (a : ℂ) :
     gbBil D y (Pi.single i a) = (y i).re * a.re + (y i).im * a.im := by
   rw [gbBil_apply, Finset.sum_eq_single i]
@@ -241,15 +329,28 @@ theorem gbBil_single (y : Fin D → ℂ) (i : Fin D) (a : ℂ) :
   · intro k _ hk; simp [Pi.single_apply, hk]
   · simp
 
+/- English proof (translation)
+Use extensionality with `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply]`.
+-/
 theorem gb_I_single (i : Fin D) : (Complex.I • Pi.single i (1 : ℂ) : Fin D → ℂ) = Pi.single i Complex.I := by
   ext k; by_cases h : k = i
   · subst h; simp
   · simp [h, Pi.single_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem gb_conj_mul (u v : ℂ) : starRingEnd ℂ u * v =
     ((u.re * v.re + u.im * v.im : ℝ) : ℂ) + ((u.re * v.im - u.im * v.re : ℝ) : ℂ) * Complex.I := by
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Establish `hG : (gbG y : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (gbG_pos y).ne'`. Simplify using `only [cxHessian, fderiv_fderiv_gbPot_apply, gb_I_single, gbBil_single, gb_conj_mul]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [Pi.single_apply, if_true, Complex.one_re, Complex.one_im, Complex.I_re, Complex.I_im]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.single_apply, h, Ne.symm h, if_false, Complex.zero_re, Complex.zero_im, Complex.one_re, Complex.one_im, Complex.I_re, Complex.I_im]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cxHessian_gbPot (y : Fin D → ℂ) (i j : Fin D) :
     cxHessian gbPot y i j =
       (((gbG y : ℂ) * (if i = j then 1 else 0) - starRingEnd ℂ (y i) * y j) / (2 * (gbG y : ℂ) ^ 2)) := by
@@ -267,6 +368,11 @@ theorem cxHessian_gbPot (y : Fin D → ℂ) (i j : Fin D) :
     field_simp
     ring
 
+/- English proof (translation)
+Establish `hG : (gbG y : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (gbG_pos y).ne'`. Use extensionality with `i j`. Rewrite using `[cxHessian_gbPot]`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.replicateCol_apply, Matrix.replicateRow_apply, Finset.univ_unique, Finset.sum_singleton, Matrix.one_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cxHessian_gbPot_eq (y : Fin D → ℂ) :
     cxHessian gbPot y = (1 / (2 * (gbG y : ℂ))) •
       (1 + Matrix.replicateCol Unit (fun i => -(starRingEnd ℂ (y i)) / (gbG y : ℂ)) *
@@ -279,6 +385,13 @@ theorem cxHessian_gbPot_eq (y : Fin D → ℂ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hG : (gbG y : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (gbG_pos y).ne'`. Rewrite using `[cxHessian_gbPot_eq, Matrix.det_smul, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Establish `hs : ∑ i, y i * starRingEnd ℂ (y i) = ((gbG y - 1 : ℝ) : ℂ)`. Rewrite using `[gbG, add_sub_cancel_left, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hdot : y ⬝ᵥ (fun i => -(starRingEnd ℂ (y i)) / (gbG y : ℂ)) = -(∑ i, y i * starRingEnd ℂ (y i)) / (gbG y : ℂ)`. Simplify using `only [dotProduct, Finset.sum_div, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hdot, hs, Fintype.card_fin]`. Use `push_cast`. Simplify using `only [inv_pow, one_div_pow, one_div]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_cxHessian_gbPot (y : Fin D → ℂ) :
     (cxHessian gbPot y).det = 1 / ((2 : ℂ) ^ D * (gbG y : ℂ) ^ (D + 1)) := by
   have hG : (gbG y : ℂ) ≠ 0 := Complex.ofReal_ne_zero.mpr (gbG_pos y).ne'
@@ -298,6 +411,11 @@ theorem det_cxHessian_gbPot (y : Fin D → ℂ) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hmd : mixedDisc (fun _ : Fin D => cxHessian gbPot y) = (cxHessian gbPot y).det` using `ReciprocityTheory.AnForm.A.mdisc_const _`. Simplify using `only [maDensity, hmd, det_cxHessian_gbPot]`. Establish `hG : (gbG y : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (gbG_pos y).ne'`. Establish `: (1 / ((2 : ℂ) ^ D * (gbG y : ℂ) ^ (D + 1))) = ((1 / ((2 : ℝ) ^ D * (gbG y) ^ (D + 1)) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this, Complex.ofReal_re]`.
+
+Establish `hpi : Real.pi ≠ 0` using `Real.pi_ne_zero`. Establish `hGr : gbG y ≠ 0` using `(gbG_pos y).ne'`. Unfold `gbG at hGr ⊢`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem maDensity_gbPot (y : Fin D → ℂ) :
     maDensity (fun _ : Fin D => gbPot) y =
       (D.factorial : ℝ) / Real.pi ^ D * ((1 + ∑ i, ‖y i‖ ^ 2) ^ (D + 1))⁻¹ := by
@@ -314,6 +432,9 @@ theorem maDensity_gbPot (y : Fin D → ℂ) :
   rw [div_pow]
   field_simp
 
+/- English proof (translation)
+Repeatedly rewrite using `[maDensity_gbPot]`. Rewrite using `[integral_const_mul, gaM_integral_fsDens]`. Establish `: (D.factorial : ℝ) ≠ 0` using `by positivity`. Establish `: Real.pi ^ D ≠ 0` using `pow_ne_zero _ Real.pi_ne_zero`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_maDensity_gbPot (D : ℕ) : ∫ y : Fin D → ℂ, maDensity (fun _ : Fin D => gbPot) y = 1 := by
   simp_rw [maDensity_gbPot]
   rw [integral_const_mul, gaM_integral_fsDens]

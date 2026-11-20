@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.Mean4.NearWall
 
+/- English proof (translation)
+The claim follows from `|∏ x, g x| ≤ |g x₀| * 2 ^ Fintype.card α := by rw [← Finset.mul_prod_erase Finset.univ g (Finset.mem_univ x₀), abs_mul] refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _) rw [Finset.abs_prod] calc ∏ x ∈ Finset.univ.erase x₀, |g x| ≤ ∏ _x ∈ Finset.univ.erase x₀, (2 : ℝ) := Finset. …`.
+-/
 theorem abs_prod_le {α : Type} [Fintype α] (g : α → ℝ) (hg : ∀ x, |g x| ≤ 2) (x₀ : α) :
     |∏ x, g x| ≤ |g x₀| * 2 ^ Fintype.card α := by
   rw [← Finset.mul_prod_erase Finset.univ g (Finset.mem_univ x₀), abs_mul]
@@ -22,6 +25,9 @@ theorem abs_prod_le {α : Type} [Fintype α] (g : α → ℝ) (hg : ∀ x, |g x|
         apply pow_le_pow_right₀ (by norm_num)
         exact Finset.card_le_univ _
 
+/- English proof (translation)
+The claim follows from `|ev v (delPol ι N)| ≤ |v τ₀ a - v τ₀ b| * 2 ^ Fintype.card (ι × Fin N × Fin N) := by have h := abs_prod_le (fun x : ι × Fin N × Fin N => if x.2.1 < x.2.2 then v x.1 x.2.1 - v x.1 x.2.2 else 1) (by intro x split_ifs · have h1 := abs_le.mp (hv x.1 x.2.1) have h2 := abs_le.mp (hv x. …`.
+-/
 theorem abs_ev_delPol_le {ι : Type} [Fintype ι] {N : ℕ} (v : ι → Fin N → ℝ) (hv : ∀ τ i, |v τ i| ≤ 1)
     (τ₀ : ι) (a b : Fin N) (hab : a < b) :
     |ev v (delPol ι N)| ≤ |v τ₀ a - v τ₀ b| * 2 ^ Fintype.card (ι × Fin N × Fin N) := by
@@ -39,6 +45,11 @@ theorem abs_ev_delPol_le {ι : Type} [Fintype ι] {N : ℕ} (v : ι → Fin N �
   refine Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `b`. Establish `hab' : (a : ℕ) ≤ b` using `hab`. Proceed by induction on `b, hab' using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n hn ih`.
+
+Establish `hn' : n < N` using `by omega`. Conclude with `(h ⟨n, hn'⟩ ⟨n + 1, hb⟩ rfl).trans (ih hn' hn)`.
+-/
 theorem anti_of_adj {N : ℕ} (v : Fin N → ℝ) (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → v b ≤ v a) (a b : Fin N)
     (hab : a ≤ b) : v b ≤ v a := by
   obtain ⟨b, hb⟩ := b
@@ -51,12 +62,29 @@ theorem anti_of_adj {N : ℕ} (v : Fin N → ℝ) (h : ∀ a b : Fin N, (b : ℕ
 
 variable {D : D7} (Y : ShimX D.what₂.Tau)
 
+/- English proof (translation)
+The claim follows from `le_ciSup (f := fun x : Rt D.what₂.Tau Y.N => |u x.1 x.2|) (Set.finite_range _).bddAbove (τ, i)`.
+-/
 theorem abs_le_sup (u : Wt Y) (τ : D.what₂.Tau) (i : Fin Y.N) : |u τ i| ≤ supAbs Y u :=
   le_ciSup (f := fun x : Rt D.what₂.Tau Y.N => |u x.1 x.2|) (Set.finite_range _).bddAbove (τ, i)
 
+/- English proof (translation)
+The claim follows from `Real.iSup_le (fun x => h x.1 x.2) hc`.
+-/
 theorem sup_le (u : Wt Y) (c : ℝ) (hc : 0 ≤ c) (h : ∀ τ i, |u τ i| ≤ c) : supAbs Y u ≤ c :=
   Real.iSup_le (fun x => h x.1 x.2) hc
 
+/- English proof (translation)
+Take `⟨_, h2, h3⟩` from `hu`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl, hb⟩`. Use `h2 a b hab hb` as an intermediate fact. Establish `ha : (a : ℕ) < Y.j` using `by omega`.
+
+Establish `hb' : ¬ (b : ℕ) < Y.j` using `by omega`. Simplify using `[offWall, ha, hb', this]`. Introduce `hn`. Use `h3 τ a b hab hn` as an intermediate fact. Distinguish the cases in `hτ : τ = τ₀`.
+
+Establish `hb : (b : ℕ) ≠ Y.j` using `fun h => hn ⟨hτ, h⟩`. Distinguish the cases in `ha : (a : ℕ) < Y.j`. Establish `hb' : (b : ℕ) < Y.j` using `by omega`. Simplify using `only [offWall, hτ, ha, hb', and_self, if_true]`. Rewrite `this` using `[hτ]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb' : ¬ (b : ℕ) < Y.j` using `by omega`. Simplify using `only [offWall, hτ, ha, hb', and_false, if_false]`. Rewrite `this` using `[hτ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `only [offWall, hτ, false_and, if_false]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem offWall_gap (τ₀ : D.what₂.Tau) (t c₀ : ℝ) (u : Wt Y) (hu : u ∈ wallSet (N := Y.N) Y.j τ₀ c₀)
     (τ : D.what₂.Tau) (a b : Fin Y.N) (hab : (b : ℕ) = a + 1) :
     ((τ = τ₀ ∧ (b : ℕ) = Y.j) → offWall Y τ₀ t u τ a - offWall Y τ₀ t u τ b = 2 * t) ∧
@@ -82,6 +110,9 @@ theorem offWall_gap (τ₀ : D.what₂.Tau) (t c₀ : ℝ) (u : Wt Y) (hu : u �
     · simp only [offWall, hτ, false_and, if_false]
       linarith
 
+/- English proof (translation)
+The claim follows from `|offWall Y τ₀ t u τ i| ≤ 1 / 2 + 2 * t := by have h := abs_le.mp (hu.1 τ i) simp only [offWall] split_ifs <;> rw [abs_le] <;> constructor <;> linarith [h.1, h.2]`.
+-/
 theorem offWall_abs (τ₀ : D.what₂.Tau) (t c₀ : ℝ) (ht : 0 ≤ t) (u : Wt Y)
     (hu : u ∈ wallSet (N := Y.N) Y.j τ₀ c₀) (τ : D.what₂.Tau) (i : Fin Y.N) :
     |offWall Y τ₀ t u τ i| ≤ 1 / 2 + 2 * t := by
@@ -89,6 +120,11 @@ theorem offWall_abs (τ₀ : D.what₂.Tau) (t c₀ : ℝ) (ht : 0 ≤ t) (u : W
   simp only [offWall]
   split_ifs <;> rw [abs_le] <;> constructor <;> linarith [h.1, h.2]
 
+/- English proof (translation)
+Introduce `τ i`. Take `⟨q, hq⟩` from `hu τ i`. Simplify using `only [offWall]`. Use `split_ifs`. Conclude with `⟨q + 2 * t, by rw [hq]; push_cast; ring⟩`.
+
+Conclude with `⟨q, by rw [hq]; ring⟩`.
+-/
 theorem offWall_rat (τ₀ : D.what₂.Tau) (t : ℚ) (u : Wt Y) (hu : IsRat Y u) : IsRat Y (offWall Y τ₀ t u) := by
   intro τ i
   obtain ⟨q, hq⟩ := hu τ i
@@ -97,6 +133,9 @@ theorem offWall_rat (τ₀ : D.what₂.Tau) (t : ℚ) (u : Wt Y) (hu : IsRat Y u
   · exact ⟨q + 2 * t, by rw [hq]; push_cast; ring⟩
   · exact ⟨q, by rw [hq]; ring⟩
 
+/- English proof (translation)
+The claim follows from `|x| ≤ d * (3 * |C| * L) * G := by have hC := abs_nonneg C have e1 : C * L' ≤ 3 * |C| * L := by have := mul_le_mul (le_abs_self C) hLL hL' hC linarith have e2 : C * L ≤ 3 * |C| * L := by have := mul_le_mul_of_nonneg_right (le_abs_self C) hL have := mul_nonneg hC hL linarith have e …`.
+-/
 theorem squeeze_abs (d C L L' g G x : ℝ) (hd : 0 ≤ d) (hL : 0 ≤ L) (hL' : 0 ≤ L') (hLL : L' ≤ 3 * L)
     (hg : 0 ≤ g) (hG : g ≤ G) (h1 : d * (-(C * L')) * g ≤ x) (h2 : x ≤ d * (C * L) * g) :
     |x| ≤ d * (3 * |C| * L) * G := by
@@ -116,6 +155,59 @@ theorem squeeze_abs (d C L L' g G x : ℝ) (hd : 0 ≤ d) (hL : 0 ≤ L) (hL' : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D Y A hf hP hS hH hD`. Establish `hf1 : 1 ≤ D.R.f`. Break down `Nat.eq_zero_or_pos D.R.f with h | h` into its components or cases. Rewrite `hf` using `[h]`. Simplify using `at hf`.
+
+Conclude with `h`. Establish `hf1' : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1`. Establish `hj` using `Y.j_lt`. Establish `hj0` using `Y.j_pos`. Establish `hN : (0 : ℝ) < Y.N` using `by exact_mod_cast (by omega : 0 < Y.N)`.
+
+Establish `hN1 : (1 : ℝ) ≤ Y.N` using `by exact_mod_cast (by omega : 1 ≤ Y.N)`. Use `set c₀ : ℝ := 1 / (4 * (Y.N : ℝ)) with hc₀`. Establish `hc0 : 0 < c₀` using `by positivity`. Establish `hc4 : c₀ ≤ 1 / 4`. Apply the tactic sequence `rw [hc₀]; apply one_div_le_one_div_of_le <;> linarith`.
+
+Take `⟨s₁, hs₁, hP⟩` from `hP 1`. Take `⟨t₀, ht₀, C, hH⟩` from `hH c₀ hc0`. Take `⟨hw, -, hD, -⟩` from `hD`. Take `⟨s₂, hs₂, hD⟩` from `hD 1`. Take `⟨cf, hcf, hfl⟩` from `GlobalTheory.T.flag_degree_eq_discriminant_multiple D.what₂.Tau Y.N`.
+
+Use `set K : ℝ := supAbs Y A.dir + 1 with hK`. Establish `hK0 : 0 < K`. Establish `: 0 ≤ supAbs Y A.dir` using `Real.iSup_nonneg fun _ => abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKd : ∀ τ i, |A.dir τ i| ≤ K` using `fun τ i => by linarith [abs_le_sup Y A.dir τ i]`.
+
+Use `set δ : ℝ := min (min (min s₁ s₂) t₀) (min (c₀ / 2) (1 / (2 * K))) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hδ1 : δ ≤ s₁` using `(min_le_left _ _).trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hδ2 : δ ≤ s₂` using `(min_le_left _ _).trans ((min_le_left _ _).trans (min_le_right _ _))`. Establish `hδ3 : δ ≤ t₀` using `(min_le_left _ _).trans (min_le_right _ _)`.
+
+Establish `hδ4 : δ ≤ c₀ / 2` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `hδ5 : δ ≤ 1 / (2 * K)` using `(min_le_right _ _).trans (min_le_right _ _)`. Use `set M : ℝ := 2 ^ Fintype.card (D.what₂.Tau × Fin Y.N × Fin Y.N) with hM`. Use `⟨∑ c, ((dimY Y : ℝ) + 1) * (3 * |C|) * (A.w c * (cf * (10 * D.R.f * M))), ⌈5 * (D.R.f : ℝ) / δ⌉₊ + 10, ?_⟩` and prove the remaining obligations. Introduce `B hB τ₀ u hu hur t ht`.
+
+Establish `hB10 : (10 : ℝ) ≤ B` using `by exact_mod_cast (by omega : 10 ≤ B)`. Establish `hB0 : (0 : ℝ) < B` using `by linarith`. Establish `hB2 : (2 : ℝ) ≤ B` using `by linarith`. Establish `htR : (t : ℝ) = 5 * (D.R.f : ℝ) / B` using `by rw [ht]; push_cast; ring`. Establish `htB : (t : ℝ) * B = 5 * D.R.f` using `by rw [htR]; field_simp`.
+
+Establish `ht0 : (0 : ℝ) < t` using `by rw [htR]; positivity`. Establish `htδ : (t : ℝ) ≤ δ`. Establish `h1 : 5 * (D.R.f : ℝ) / δ ≤ B`. Use `(Nat.le_ceil _).trans ?_` and prove the remaining obligations. Conclude with `(by omega : ⌈5 * (D.R.f : ℝ) / δ⌉₊ ≤ B)` after adjusting the coercions.
+
+Rewrite `h1` using `[div_le_iff₀ hδ0]`. Rewrite using `[htR, div_le_iff₀ hB0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht8 : (t : ℝ) ≤ 1 / 8` using `by linarith`. Establish `htK : (t : ℝ) * K ≤ 1 / 2`.
+
+Use `htδ.trans hδ5` as an intermediate fact. Rewrite using `[le_div_iff₀ (by positivity)] at this; linarith`. Establish `ht2 : (t : ℝ) ^ 2 ≤ t` using `by nlinarith`. Establish `ht2K : (t : ℝ) ^ 2 * K ≤ t / 2` using `by nlinarith`. Use `set v := offWall Y τ₀ t u with hv`.
+
+Establish `hvr : IsRat Y v` using `offWall_rat Y τ₀ t u hur`. Establish `hva : ∀ τ i, |v τ i| ≤ 3 / 4` using `fun τ i => by`. Use `offWall_abs Y τ₀ t c₀ ht0.le u hu τ i` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvs : supAbs Y v ≤ 1` using `sup_le Y v 1 zero_le_one fun τ i => by linarith [hva τ i]`.
+
+Establish `hadj : ∀ τ (a b : Fin Y.N), (b : ℕ) = a + 1 → 2 * (t : ℝ) ≤ v τ a - v τ b`. Introduce `τ a b hab`. Use `offWall_gap Y τ₀ t c₀ u hu τ a b hab` as an intermediate fact. Distinguish the cases in `h : τ = τ₀ ∧ (b : ℕ) = Y.j`. Conclude with `(this.1 h).ge`.
+
+Combine the linear relations using `[this.2 h]`. Establish `hdirt : ∀ τ i, |(t : ℝ) ^ 2 * A.dir τ i| ≤ t / 2` using `fun τ i => by`. Rewrite using `[abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (t : ℝ) ^ 2)]`. Conclude with `(mul_le_mul_of_nonneg_left (hKd τ i) (by positivity)).trans ht2K`. Establish `hadj' : ∀ τ (a b : Fin Y.N), (b : ℕ) = a + 1 → (t : ℝ) ≤ A.sh v ((t : ℝ) ^ 2) τ a - A.sh v ((t : ℝ) ^ 2) τ b`.
+
+Introduce `τ a b hab`. Establish `h1` using `hadj τ a b hab`. Establish `h2` using `abs_le.mp (hdirt τ a)`. Establish `h3` using `abs_le.mp (hdirt τ b)`. Simplify using `only [SlopeTestRemainingChoices.sh]`.
+
+Combine the linear relations using `[h2.1, h2.2, h3.1, h3.2]`. Establish `hdomv : Dominant Y v` using `fun τ a b hab => anti_of_adj (v τ) (fun a b h => by linarith [hadj τ a b h]) a b hab`. Establish `hdom : Dominant Y (A.sh v ((t : ℝ) ^ 2))` using `fun τ a b hab => anti_of_adj (A.sh v ((t : ℝ) ^ 2) τ) (fun a b h => by linarith [hadj' τ a b h]) a b hab`. Establish `hjj : Y.j = Y.j - 1 + 1` using `by omega`. Establish `hgap : ∀ τ, (t : ℝ) ≤ gap Y v τ` using `fun τ => by`.
+
+Use `hadj τ ⟨Y.j - 1, by omega⟩ ⟨Y.j, hj⟩ hjj` as an intermediate fact. Simplify using `only [gap]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcpt : CptGaps Y c₀ v` using `fun τ a b hab hb => (offWall_gap Y τ₀ t c₀ u hu τ a b hab).2 fun h => hb h.2`. Establish `hnef : NefCond Y B (A.sh v ((t : ℝ) ^ 2))`.
+
+Introduce `τ`. Establish `h1 : supAbs Y (A.sh v ((t : ℝ) ^ 2)) ≤ 1` using `sup_le Y _ 1 zero_le_one fun τ i => by`. Establish `h2` using `abs_le.mp (hdirt τ i)`. Establish `h3` using `abs_le.mp (hva τ i)`. Simplify using `only [SlopeTestRemainingChoices.sh]`.
+
+Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [h2.1, h2.2, h3.1, h3.2]`. Establish `h2 : (t : ℝ) ≤ gap Y (A.sh v ((t : ℝ) ^ 2)) τ` using `hadj' τ ⟨Y.j - 1, by omega⟩ ⟨Y.j, hj⟩ hjj`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 (by linarith : (0 : ℝ) ≤ B - 2)`. Establish `h4` using `mul_le_mul_of_nonneg_left h1 (by linarith : (0 : ℝ) ≤ 4 * D.R.f)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `⟨hdom, ?_⟩` and prove the remaining obligations. Establish `hs0 : (0 : ℚ) < t ^ 2`. Establish `: (0 : ℚ) < t` using `by exact_mod_cast ht0`. Check the signs of the components of the expression. Establish `hcast : ((t ^ 2 : ℚ) : ℝ) = (t : ℝ) ^ 2` using `by push_cast; ring`.
+
+Take `⟨hsp, hnf⟩` from `hP B hB2 v (t ^ 2) hvr hvs hs0 (by rw [hcast]; linarith) (by rw [hcast]; exact hdom) (by rw [hcast]; exact hnef)`. Take `⟨hlo, hup⟩` from `hH B hB2 v t hvr hvs (by exact_mod_cast ht0) (by linarith) hgap hcpt hnef`. Establish `hdeg` using `hD B hB2 v (t ^ 2) hvr hvs hs0 (by rw [hcast]; linarith) hdomv (by rw [hcast]; exact hdom)`. Establish `hL : 0 ≤ Real.log B` using `Real.log_nonneg (by linarith)`. Establish `hL' : 0 ≤ Real.log (B / (t : ℝ) ^ 2)`.
+
+Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]; linarith`. Establish `hLL : Real.log (B / (t : ℝ) ^ 2) ≤ 3 * Real.log B`. Establish `: (3 : ℝ) * Real.log B = Real.log ((B : ℝ) ^ 3)` using `by rw [Real.log_pow]; norm_num`. Rewrite using `[this]`.
+
+Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: (B : ℝ) ^ 3 * (t : ℝ) ^ 2 = B * ((t : ℝ) * B) ^ 2` using `by ring`. Rewrite using `[this, htB]`. Establish `: (1 : ℝ) ≤ (5 * (D.R.f : ℝ)) ^ 2` using `by nlinarith`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hflag : flagDeg D.what₂.Tau Y.N v ≤ cf * (10 * D.R.f * M) / B`. Rewrite using `[hfl]`. Establish `h1` using `abs_ev_delPol_le v (fun τ i => by linarith [hva τ i]) τ₀ ⟨Y.j - 1, by omega⟩ ⟨Y.j, hj⟩ (by rw [Fin.lt_def]; simp only; omega)`. Rewrite `h1` using `[(offWall_gap Y τ₀ t c₀ u hu τ₀ ⟨Y.j - 1, by omega⟩ ⟨Y.j, hj⟩ hjj).1 ⟨rfl, rfl⟩, abs_of_pos (by linarith : (0 : ℝ) < 2 * (t : ℝ))]`.
+
+Establish `h2 : cf * (10 * D.R.f * M) / B = cf * (2 * t * M)` using `by rw [htR]; ring`. Rewrite using `[h2]`. Conclude with `mul_le_mul_of_nonneg_left ((le_abs_self _).trans h1) hcf.le`. Rewrite using `[Y.arSelf_sum, Finset.sum_mul, Finset.sum_div]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `(hS _ hsp hnf c _).1 fun y _ => hlo y`. Establish `h2` using `(hS _ hsp hnf c _).2 (hup c)`. Establish `h3` using `squeeze_abs _ C _ _ _ (A.w c * (cf * (10 * D.R.f * M) / B)) _ (by positivity) hL hL' hLL (hdeg c).1 ((hdeg c).2.trans (mul_le_mul_of_nonneg_left hflag (hw c).le)) h1 h2`. Use `h3.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wallSmall : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ (A : SlopeTestRemainingChoices Y), 2 < D.R.f * (Y.N - 1) → Positive A → Squeeze A →
     Heights A → Degrees A → WallSmall A := by
   intro D Y A hf hP hS hH hD

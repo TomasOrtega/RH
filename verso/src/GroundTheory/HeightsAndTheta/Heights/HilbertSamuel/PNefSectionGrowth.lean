@@ -10,6 +10,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ _ y D a hD hV hB hN`. Take `⟨m, r, hdeg, hcoef, hr⟩` from `hP K ι Ω y D a hD hV hB hN`. Take `⟨C, hC⟩` from `hS K ι Ω y D a m hD hV hB`. Use `set G : ℝ := (genDeg (mCoordIdeal y) D a : ℝ) / (D.factorial : ℝ) with hGdef`. Establish `hlow : (r - Polynomial.C G * Polynomial.X ^ D).degree ≤ (Polynomial.X ^ (D - 1) : Polynomial ℝ).degree`.
+
+Rewrite using `[Polynomial.degree_X_pow]`. Use `Polynomial.degree_le_of_natDegree_le ((Polynomial.natDegree_le_iff_coeff_eq_zero).mpr ?_)` and prove the remaining obligations. Introduce `N hN'`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_C_mul_X_pow]`. Break down `eq_or_lt_of_le (show D ≤ N by omega) with h | h` into its components or cases.
+
+Substitute `h` using the available equality. Simplify using `[hcoef]`. Rewrite using `[if_neg (by omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]; ring`. Take `⟨C', hC'⟩` from `(Polynomial.isBigO_atTop_of_degree_le _ _ hlow).bound`. Use `⟨|C| + C', ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hr, hC, tendsto_natCast_atTop_atTop.eventually hC'] with n h1 h2 h3`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Real.norm_eq_abs] at h3`. Establish `hq : 0 ≤ (n : ℝ) ^ (D - 1)` using `pow_nonneg (Nat.cast_nonneg n) _`. Rewrite `h3` using `[abs_of_nonneg hq]`. Establish `hG : (genDeg (mCoordIdeal y) D a : ℝ) * (n : ℝ) ^ D / (D.factorial : ℝ) = G * (n : ℝ) ^ D`.
+
+Rewrite using `[hGdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hG, abs_le]`. Take `⟨h2a, h2b⟩` from `h2`. Rewrite `h2a`, `h2b` using `[h1]`.
+
+Establish `h3'` using `abs_le.mp h3`. Establish `hCq : C * (n : ℝ) ^ (D - 1) ≤ |C| * (n : ℝ) ^ (D - 1)` using `mul_le_mul_of_nonneg_right (le_abs_self C) hq`. Apply the tactic sequence `constructor <;> nlinarith [h3'.1, h3'.2]`.
+-/
 theorem NefSectionGrowth.proof (hP : NefShiftPolynomial.Statement) (hS : ShiftSectionBound.Statement) :
     NefSectionGrowth.Statement := by
   intro K _ ι _ Ω _ _ y D a hD hV hB hN

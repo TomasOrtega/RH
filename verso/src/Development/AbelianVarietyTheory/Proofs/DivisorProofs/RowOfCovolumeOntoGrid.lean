@@ -24,6 +24,13 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 
 namespace GlobalTheory.Fc.FourBoundsAtBundles
 
+/- English proof (translation)
+Introduce `t`. Break down `b.pt.charW.tup.mu_used t with h | ⟨w, hw⟩` into its components or cases. Use `left`. Substitute `h` using the available equality. Conclude with `b.P.tied.div.tup.mu0`.
+
+Use `right`. Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Establish `e1` using `b.pt.tupAt (D.plEq.symm w)`. Rewrite `e1` using `[Equiv.apply_symm_apply]`. Establish `e2` using `b.pt.tupTie (D.what₂.muAt (D.plEq.symm w)) (Or.inr ⟨_, rfl⟩)`.
+
+Rewrite `e2` using `[e1, hw]`. Conclude with `e2`.
+-/
 theorem tupAllUsed_part {D : D7} {O : Obj D} {c : ℝ} (b : Ind.Part D O c) : Formalism.L2.DIV.TupAllUsed b.P := by
   intro t
   rcases b.pt.charW.tup.mu_used t with h | ⟨w, hw⟩
@@ -38,6 +45,9 @@ theorem tupAllUsed_part {D : D7} {O : Obj D} {c : ℝ} (b : Ind.Part D O c) : Fo
     rw [e1, hw] at e2
     exact e2
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.DIV.DivRows3G.toRows (tupAllUsed_part b) ⟨h.sharpRR, h.baseRR, h.divisionRows_rationalLift, h.thTheta, ⟨h.num.Ij, h.num.jw, h.num.etaJ⟩, h.colsBk⟩`.
+-/
 theorem pDiv_of {D : D7} {O : Obj D} {c : ℝ} (b : Ind.Part D O c) (h : GlobalTheory.Cp.DivRows3G b.P) : Ind.PDiv D O c b :=
   Formalism.L2.DIV.DivRows3G.toRows (tupAllUsed_part b)
     ⟨h.sharpRR, h.baseRR, h.divisionRows_rationalLift, h.thTheta, ⟨h.num.Ij, h.num.jw, h.num.etaJ⟩, h.colsBk⟩
@@ -48,6 +58,9 @@ namespace GlobalTheory.Fc.FourBoundsAtBundles
 
 open GlobalTheory.Fc.R1
 
+/- English proof (translation)
+The claim follows from `Closed.of_all fun Fm _ hc => Ind.ev_of_atAll h Fm (w3_a hc)`.
+-/
 theorem evW_of_atAll {Bd : BdT} {q : BdP Bd} {𝒜 : FamClass} {σ : RawSel Bd 𝒜} (h : AtAll q 𝒜 σ) : Ind.EvW q 𝒜 σ :=
   Closed.of_all fun Fm _ hc => Ind.ev_of_atAll h Fm (w3_a hc)
 

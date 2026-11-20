@@ -23,6 +23,13 @@ def ob2PsiCoef (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} {T : S7.
 def ob2SI {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ξ η : Fin n → V) : ℂ :=
   ∑ c, inner ℂ (ξ c) (η c)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : G (b j) = ∑ i, inner ℂ (c i) (b j) • G (c i)` using `by conv_lhs => rw [← c.sum_repr' (b j)]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[e, inner_sum]`.
+
+Simplify using `only [inner_smul_right]`. Use `_ = ∑ i, ∑ j, inner ℂ (c i) (b j) * inner ℂ (F (b j)) (G (c i)) := Finset.sum_comm`. Use `_ = ∑ i, inner ℂ (F (c i)) (G (c i)) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : F (c i) = ∑ j, inner ℂ (b j) (c i) • F (b j)` using `by conv_lhs => rw [← b.sum_repr' (c i)]`.
+
+Simplify using `only [map_sum, map_smul]`. Rewrite using `[e, sum_inner]`. Simplify using `only [inner_smul_left, inner_conj_symm]`.
+-/
 theorem onb_sum_inner_independent {E V : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι κ : Type*} [Fintype ι] [Fintype κ]
     (b : OrthonormalBasis ι ℂ E) (c : OrthonormalBasis κ ℂ E) (F G : E →ₗ[ℂ] V) :
@@ -44,6 +51,9 @@ theorem onb_sum_inner_independent {E V : Type*} [NormedAddCommGroup E] [InnerPro
         rw [e, sum_inner]
         simp only [inner_smul_left, inner_conj_symm]
 
+/- English proof (translation)
+Unfold `ob2SI`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => onb_sum_inner_independent b c ((LinearMap.proj d).comp F) ((LinearMap.proj d).comp G)`.
+-/
 theorem onb_sum_vector_inner_independent {E V : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι κ : Type*} [Fintype ι] [Fintype κ]
     (b : OrthonormalBasis ι ℂ E) (c : OrthonormalBasis κ ℂ E) (F G : E →ₗ[ℂ] (Fin n → V)) :
@@ -54,6 +64,9 @@ theorem onb_sum_vector_inner_independent {E V : Type*} [NormedAddCommGroup E] [I
   exact Finset.sum_congr rfl fun d _ =>
     onb_sum_inner_independent b c ((LinearMap.proj d).comp F) ((LinearMap.proj d).comp G)
 
+/- English proof (translation)
+Use `conv_rhs => rw [← b.sum_repr' y]`. Simplify using `only [ob2SI, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, inner_sum, inner_smul_right, inner_conj_symm, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem onb_expand_vector_inner {E V : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type*} [Fintype ι]
     (b : OrthonormalBasis ι ℂ E) (ι₀ : E →ₗ[ℂ] (Fin n → V)) (z : Fin n → V) (y : E) :
@@ -64,21 +77,41 @@ theorem onb_expand_vector_inner {E V : Type*} [NormedAddCommGroup E] [InnerProdu
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.inner_map_map_of_mem_unitary (T.τ k).2 x y`.
+-/
 theorem k_type_op_inner_preserved {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
     inner ℂ (T.op k x) (T.op k y) = inner ℂ x y :=
   ContinuousLinearMap.inner_map_map_of_mem_unitary (T.τ k).2 x y
 
+/- English proof (translation)
+Establish `hk : S7.toMK k ∈ Kset ε` using `k.2`. Use `(Matrix.mem_unitaryGroup_iff').1 hk.1` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+-/
 theorem k_matrix_conjTranspose_mul_self {ε : Fin n → Bool} (k : S7.KG ε) :
     (S7.toMK k)ᴴ * S7.toMK k = 1 := by
   have hk : S7.toMK k ∈ Kset ε := k.2
   have := (Matrix.mem_unitaryGroup_iff').1 hk.1
   simpa [Matrix.star_eq_conjTranspose] using this
 
+/- English proof (translation)
+Use `congrFun (congrFun (k_matrix_conjTranspose_mul_self k) e) f` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+-/
 theorem k_matrix_columns_orthonormal {ε : Fin n → Bool} (k : S7.KG ε) (e f : Fin n) :
     ∑ c, star (S7.toMK k c e) * S7.toMK k c f = if e = f then 1 else 0 := by
   have := congrFun (congrFun (k_matrix_conjTranspose_mul_self k) e) f
   simpa [Matrix.mul_apply, Matrix.one_apply] using this
 
+/- English proof (translation)
+Establish `hc : ∀ e f, ∑ c, starRingEnd ℂ (cond dual (star (S7.toMK k c e)) (S7.toMK k c e)) * cond dual (star (S7.toMK k c f)) (S7.toMK k c f) = if e = f then 1 else 0`. Introduce `e f`. Consider the cases of `dual`. Simplify using `using k_matrix_columns_orthonormal k e f`. Establish `h` using `congrArg star (k_matrix_columns_orthonormal k e f)`.
+
+Simplify using `only [star_sum, star_mul, star_star] at h`. Simplify using `only [cond_true, Complex.star_def, Complex.conj_conj] at h ⊢`. Use `conv_lhs => arg 2`. Use extensionality with `c`. Rewrite using `[mul_comm]`.
+
+Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `ob2SI ob2TauF`. Simplify using `only [sum_inner, inner_sum, inner_smul_left, inner_smul_right, k_type_op_inner_preserved]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h1 : ∀ e', ∑ c, cond dual (star (S7.toMK k c e)) (S7.toMK k c e) * ((starRingEnd ℂ) (cond dual (star (S7.toMK k c e')) (S7.toMK k c e')) * inner ℂ (ξ e') (η e)) = (if e' = e then 1 else 0) * inner ℂ (ξ e') (η e)` using `fun e' => by`. Rewrite using `[← hc e' e, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun e' _ => h1 e']`. Simplify using the standard rewrite rules.
+-/
 theorem k_twist_vector_inner_preserved (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) (k : S7.KG ε)
     (ξ η : Fin n → T.V) : ob2SI (ob2TauF dual T k ξ) (ob2TauF dual T k η) = ob2SI ξ η := by
   have hc : ∀ e f, ∑ c, starRingEnd ℂ (cond dual (star (S7.toMK k c e)) (S7.toMK k c e)) *
@@ -113,10 +146,16 @@ def ob2B (dual : Bool) {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ
   map_add' ζ ζ' := by funext c; simp [smul_add, Finset.sum_add_distrib]
   map_smul' a ζ := by funext c; simp [Finset.smul_sum, smul_comm a]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psi_coef_eq_inner_twist (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} {T : S7.KType ε Λ}
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (ξ ζ : Fin n → T.V) (g : Matrix (Fin n) (Fin n) ℂ) :
     ob2PsiCoef dual Ψ ξ ζ g = ob2SI ξ (ob2B dual Ψ g ζ) := rfl
 
+/- English proof (translation)
+Consider the cases of `dual`. Simplify using `[oa1Phi, Matrix.mul_apply]`. Establish `hki : (S7.toMK k)⁻¹ = (S7.toMK k)ᴴ` using `Matrix.inv_eq_left_inv (k_matrix_conjTranspose_mul_self k)`. Simplify using `only [oa1Phi, cond_true, Matrix.mul_inv_rev, hki, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Conclude with `Finset.sum_congr rfl fun e _ => mul_comm _ _`.
+-/
 theorem tensor_phi_k_mul (dual : Bool) {ε : Fin n → Bool} (k : S7.KG ε) (E : Matrix (Fin n) (Fin n) ℂ)
     (c d : Fin n) :
     oa1Phi dual (S7.toMK k * E) c d =
@@ -127,6 +166,9 @@ theorem tensor_phi_k_mul (dual : Bool) {ε : Fin n → Bool} (k : S7.KG ε) (E :
     simp only [oa1Phi, cond_true, Matrix.mul_inv_rev, hki, Matrix.mul_apply, Matrix.conjTranspose_apply]
     exact Finset.sum_congr rfl fun e _ => mul_comm _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [ob2B, LinearMap.coe_mk, AddHom.coe_mk, ob2TauF, hΨ, tensor_phi_k_mul, ContinuousLinearMap.mul_apply, map_sum, map_smul, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem psi_twist_k_mul (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ)
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (k : S7.KG ε) (E : Matrix (Fin n) (Fin n) ℂ)
     (hΨ : Ψ (S7.toMK k * E) = T.op k * Ψ E) (ζ : Fin n → T.V) :
@@ -137,6 +179,13 @@ theorem psi_twist_k_mul (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ}
   rw [Finset.sum_comm]
 
 open scoped MatrixOrder in
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hM.nonneg`. Establish `e : ∑ c, ∑ d, (star S * S) c d * inner ℂ (u c) (R (u d)) = ∑ e, inner ℂ (∑ c, S e c • u c) (R (∑ d, S e d • u d))`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, map_sum, map_smul, sum_inner, inner_sum, inner_smul_left, inner_smul_right, Finset.sum_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Finset.sum_nonneg fun e _ => hR.inner_nonneg_right _`.
+-/
 theorem posSemidef_weighted_inner_nonneg {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosSemidef) {R : V →L[ℂ] V} (hR : R.IsPositive)
     (u : Fin n → V) : 0 ≤ ∑ c, ∑ d, M c d * inner ℂ (u c) (R (u d)) := by
@@ -155,10 +204,16 @@ theorem posSemidef_weighted_inner_nonneg {V : Type*} [NormedAddCommGroup V] [Inn
   rw [e]
   exact Finset.sum_nonneg fun e _ => hR.inner_nonneg_right _
 
+/- English proof (translation)
+Simplify using `[ob2SI, Finset.mul_sum]`.
+-/
 theorem vector_inner_smul_right {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (ξ η : Fin n → V) (a : ℂ) :
     ob2SI ξ (a • η) = a * ob2SI ξ η := by
   simp [ob2SI, Finset.mul_sum]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [psi_coef_eq_inner_twist]`. Conclude with `onb_expand_vector_inner _ ι₀ _ _`.
+-/
 theorem psi_pairing_eq_inner (dual : Bool) {ε : Fin n → Bool} {Λ Λ' : Fin n → ℝ} {T : S7.KType ε Λ} {T' : S7.KType ε Λ'}
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V))
     (ι₀ : T'.V →ₗ[ℂ] (Fin n → T.V)) (g : Matrix (Fin n) (Fin n) ℂ) :
@@ -172,6 +227,13 @@ theorem psi_pairing_eq_inner (dual : Bool) {ε : Fin n → Bool} {Λ Λ' : Fin n
   simp only [psi_coef_eq_inner_twist]
   exact onb_expand_vector_inner _ ι₀ _ _
 
+/- English proof (translation)
+Use `set E := NormedSpace.exp Y with hEdef`. Establish `hE : E.PosDef` using `S7.exp_noncompactPart_posDef hY`. Use `set M : Matrix (Fin n) (Fin n) ℂ := cond dual (E⁻¹)ᵀ E with hMdef`. Establish `hM : M.PosSemidef`. Consider the cases of `dual`.
+
+Conclude with `hE.posSemidef`. Conclude with `hE.inv.transpose.posSemidef`. Establish `hφ : ∀ c d, oa1Phi dual E c d = M c d`. Apply the tactic sequence `intro c d; cases dual <;> rfl`. Establish `h0` using `posSemidef_weighted_inner_nonneg hM hR u`.
+
+Establish `e : ob2SI (ob2B dual Ψ E u) u = star (∑ c, ∑ d, M c d * inner ℂ (u c) (Ψ E (u d)))`. Simplify using `only [ob2SI, ob2B, LinearMap.coe_mk, AddHom.coe_mk, hφ, sum_inner, inner_smul_left, star_sum, star_mul', Complex.star_def, inner_conj_symm]`. Rewrite using `[e]`. Conclude with `star_nonneg_iff.mpr h0`.
+-/
 theorem psi_twist_exp_positive (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n → ℝ} {T : S7.KType ε Λ}
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inP ε Y)
     (hR : (Ψ (NormedSpace.exp Y)).IsPositive) (u : Fin n → T.V) :
@@ -192,11 +254,30 @@ theorem psi_twist_exp_positive (dual : Bool) {ε : Fin n → Bool} {Λ : Fin n �
   rw [e]
   exact star_nonneg_iff.mpr h0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem k_matrix_of_one {ε : Fin n → Bool} : S7.toMK (1 : S7.KG ε) = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[S7.KType.op]`.
+-/
 theorem k_type_op_one {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) : T.op 1 = 1 := by
   simp [S7.KType.op]
 
+/- English proof (translation)
+Rewrite using `[psi_pairing_eq_inner]`. Take `⟨k0, hk0, Y, hY, rfl⟩` from `polar_UJ (show g ∈ UJset ε from hg)`. Take `⟨k, rfl⟩` from `ffa_Kset hk0`. Establish `hE : inUJ ε (NormedSpace.exp Y)`. Establish `h1 : NormedSpace.exp Y ∈ UJset ε` using `by simpa using exp_smul_mem_UJset hY.1 1`.
+
+Conclude with `h1`. Establish `hΨ : Ψ (S7.toMK k * NormedSpace.exp Y) = T.op k * Ψ (NormedSpace.exp Y)`. Use `hP.1 k 1 _ hE` as an intermediate fact. Rewrite `this` using `[k_matrix_of_one, Matrix.mul_one, k_type_op_one, mul_one]`. Then use the resulting hypothesis. Establish `hΨ' : Ψ' (S7.toMK k * NormedSpace.exp Y) = T'.op k * Ψ' (NormedSpace.exp Y)`.
+
+Use `hP'.1 k 1 _ hE` as an intermediate fact. Rewrite `this` using `[k_matrix_of_one, Matrix.mul_one, k_type_op_one, mul_one]`. Then use the resulting hypothesis. Use `set b := stdOrthonormalBasis ℂ T'.V`. Use `set E := NormedSpace.exp Y`. Establish `step : ∀ j, ob2SI (ob2B dual Ψ (S7.toMK k * E) (ι₀ (b j))) (ι₀ (Ψ' (S7.toMK k * E) (b j))) = ob2SI (ob2B dual Ψ E (ι₀ (b j))) (ι₀ (Ψ' E (b j)))`.
+
+Introduce `j`. Rewrite using `[psi_twist_k_mul dual T Ψ k E hΨ, hΨ', ContinuousLinearMap.mul_apply, hK, k_twist_vector_inner_preserved]`. Rewrite using `[Finset.sum_congr rfl fun j _ => step j]`. Establish `hQ` using `(hpos' Y hY).toLinearMap`. Establish `hs` using `hQ.isSymmetric`.
+
+Use `set c := hs.eigenvectorBasis rfl`. Establish `h` using `onb_sum_vector_inner_independent b c ((ob2B dual Ψ E).comp ι₀) (ι₀.comp (Ψ' E : T'.V →ₗ[ℂ] T'.V))`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe] at h`. Rewrite using `[h]`. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hc` using `hs.apply_eigenvectorBasis rfl i`. Simplify using `only [ContinuousLinearMap.coe_coe] at hc`. Rewrite using `[hc, map_smul, vector_inner_smul_right]`. Conclude with `mul_nonneg (Complex.zero_le_real.mpr (hQ.nonneg_eigenvalues rfl i)) (psi_twist_exp_positive dual Ψ hY (hpos Y hY) _)`.
+-/
 theorem psi_pairing_nonneg (dual : Bool) {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {T' : S7.KType ε (lowK ε lam')}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}

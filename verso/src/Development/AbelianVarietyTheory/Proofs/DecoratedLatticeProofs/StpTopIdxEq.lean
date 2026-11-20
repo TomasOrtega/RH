@@ -8,6 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdForm.TwDat.Is
 
+/- English proof (translation)
+Use `show (b : Idx I.sel (I.tup a) (I.idx a) B.R.m) = b'`. Take `⟨x, hx⟩` from `b`. Take `⟨y, hy⟩` from `b'`. Establish `h1 : x = none` using `by simpa using hx`. Establish `h2 : y = none` using `by simpa using hy`.
+
+Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+-/
 theorem stp_top_idx_eq {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.ι)
     (b b' : (I.stp u a B.R.m).β) : b = b' := by
   show (b : Idx I.sel (I.tup a) (I.idx a) B.R.m) = b'
@@ -17,6 +22,9 @@ theorem stp_top_idx_eq {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B 
   have h2 : y = none := by simpa using hy
   subst h1; subst h2; rfl
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z u a Ch₀ A hA c₀ β`. Take `⟨c, rfl⟩` from `hA.chOf_onto B.R.m le_rfl β`. Conclude with `((hA.reads B.R.m le_rfl).key c₀ c).2 ⟨stp_top_idx_eq I u a _ _, GlobalTheory.Mem.Col2.ChEx.cos_of_neT I (by omega) _ _⟩`.
+-/
 theorem chOf_top_eq : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch₀ : ℕ → Type) (A : TwDat I l Z u a Ch₀), A.Is → ∀ (c₀ : (I.stp u a B.R.m).Cl) (β : Ch₀ B.R.m), A.chOf B.R.m c₀ = β := by
   intro B X I _ _ l Z u a Ch₀ A hA c₀ β
   obtain ⟨c, rfl⟩ := hA.chOf_onto B.R.m le_rfl β

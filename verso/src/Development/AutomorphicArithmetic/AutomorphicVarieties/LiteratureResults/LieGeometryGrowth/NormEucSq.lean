@@ -25,10 +25,16 @@ def euc : (Fin a → Cinf E) ≃ₗ[ℝ] EuclideanSpace ℂ (Fin a × InfinitePl
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem norm_euc_sq (x : Fin a → Cinf E) : ‖euc x‖ ^ 2 = qf x := by
   rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]
   rfl
 
+/- English proof (translation)
+The claim follows from `norm_euc_sq x ▸ sq_nonneg _`.
+-/
 theorem qf_nonneg (x : Fin a → Cinf E) : 0 ≤ qf x := norm_euc_sq x ▸ sq_nonneg _
 
 def gauss (x : Fin a → Cinf E) : ℝ := Real.exp (-Real.pi * qf x)

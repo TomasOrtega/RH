@@ -7,6 +7,9 @@ import Formalism.SharpRestriction.GlobalSchurBounds.GeneralLinearActions.GenusMa
 open NumberField IsDedekindDomain
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator | exact GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator | (intros; apply GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.scaling_open_subgroups_finite : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (B : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), AddSubgroup (v.adicCompletion F)),
     (∀ v, IsOpen (B v : Set (v.adicCompletion F))) →

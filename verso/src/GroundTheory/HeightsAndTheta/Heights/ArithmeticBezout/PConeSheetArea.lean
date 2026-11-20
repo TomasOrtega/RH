@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar IsGoodProj 
 
 open scoped ENNReal ComplexOrder
 
+/- English proof (translation)
+Unfold `gramVol`. Simplify using `only`. Use `set w : Fin (e + 1) → Fin n → ℂ := Fin.cons (v y) fun j => fderiv ℂ v y (Pi.single j 1)`. Establish `hM : (Matrix.of fun a b => ∑ i, star (w a i) * w b i) = (Matrix.of fun (i : Fin n) (a : Fin (e + 1)) => w a i)ᴴ * Matrix.of fun (i : Fin n) (a : Fin (e + 1)) => w a i`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `h` using `(Matrix.posSemidef_conjTranspose_mul_self (Matrix.of fun (i : Fin n) (a : Fin (e + 1)) => w a i)).det_nonneg`. Rewrite `h` using `[← hM]`. Conclude with `(Complex.nonneg_iff.1 h).1`.
+-/
 theorem gramVol_nonneg {e n : ℕ} (v : (Fin e → ℂ) → (Fin n → ℂ)) (y : Fin e → ℂ) :
     0 ≤ gramVol v y := by
   unfold gramVol
@@ -28,6 +33,9 @@ theorem gramVol_nonneg {e n : ℕ} (v : (Fin e → ℂ) → (Fin n → ℂ)) (y 
   rw [← hM] at h
   exact (Complex.nonneg_iff.1 h).1
 
+/- English proof (translation)
+Rewrite using `[← ofReal_norm, Real.norm_eq_abs, abs_mul, abs_of_nonneg hr, ← add_mul, ENNReal.ofReal_mul (abs_nonneg a)]`. Use `congr 1`. Break down `le_total 0 a with ha | ha` into its components or cases. Rewrite using `[abs_of_nonneg ha, ENNReal.ofReal_of_nonpos (by linarith : -a ≤ 0), add_zero]`. Rewrite using `[abs_of_nonpos ha, ENNReal.ofReal_of_nonpos ha, zero_add]`.
+-/
 theorem enorm_mul_eq_ofReal_add {a r : ℝ} (hr : 0 ≤ r) :
     ‖a * r‖ₑ = ENNReal.ofReal a * ENNReal.ofReal r + ENNReal.ofReal (-a) * ENNReal.ofReal r := by
   rw [← ofReal_norm, Real.norm_eq_abs, abs_mul, abs_of_nonneg hr, ← add_mul,
@@ -41,6 +49,11 @@ section Abstract
 
 variable {E X W : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Establish `hfv : Measurable fun t : ℂ => f (t • v)` using `hf.comp (continuous_id.smul continuous_const).measurable`. Establish `hint : Integrable (fun t : ℂ => f (t • v) * ρ t)`. Use `⟨(hfv.mul hρc.measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key : ∀ (a : ℝ) (t : ℂ), ENNReal.ofReal (a * ρ t) = ENNReal.ofReal a * ENNReal.ofReal (ρ t)` using `fun a t => ENNReal.ofReal_mul' (hρ t)`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint]`. Repeatedly rewrite using `[← neg_mul, key]`.
+-/
 theorem integral_smul_mul_eq_toReal_sub {f : E → ℝ} (hf : Measurable f) (v : E) {ρ : ℂ → ℝ}
     (hρ : ∀ t, 0 ≤ ρ t) (hρc : Continuous ρ)
     (hp : ∫⁻ t : ℂ, ENNReal.ofReal (f (t • v)) * ENNReal.ofReal (ρ t) ≠ ⊤)
@@ -67,6 +80,9 @@ theorem integral_smul_mul_eq_toReal_sub {f : E → ℝ} (hf : Measurable f) (v :
   rw [integral_eq_lintegral_pos_part_sub_lintegral_neg_part hint]
   simp_rw [← neg_mul, key]
 
+/- English proof (translation)
+Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hT] at hp hm ⊢`. Establish `hp'` using `fun w (hw : w ∈ hT.toFinset) => ne_top_of_le_ne_top hp (Finset.single_le_sum (fun _ _ => zero_le) hw)`. Establish `hm'` using `fun w (hw : w ∈ hT.toFinset) => ne_top_of_le_ne_top hm (Finset.single_le_sum (fun _ _ => zero_le) hw)`. Rewrite using `[ENNReal.toReal_sum hp', ENNReal.toReal_sum hm', ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun w hw => integral_smul_mul_eq_toReal_sub hf (v w) (hρ w) (hρc w) (hp' w hw) (hm' w hw)`.
+-/
 theorem finsum_integral_smul_mul_eq_toReal_sub {f : E → ℝ} (hf : Measurable f) {T : Set W}
     (hT : T.Finite) (v : W → E) (ρ : W → ℂ → ℝ) (hρ : ∀ w t, 0 ≤ ρ w t)
     (hρc : ∀ w, Continuous (ρ w))
@@ -86,6 +102,13 @@ theorem finsum_integral_smul_mul_eq_toReal_sub {f : E → ℝ} (hf : Measurable 
 
 variable [MeasurableSpace X]
 
+/- English proof (translation)
+Take `⟨hGpm, hAp⟩` from `hA (fun y => ENNReal.ofReal (f y)) (ENNReal.measurable_ofReal.comp hfm)`. Take `⟨hGmm, hAm⟩` from `hA (fun y => ENNReal.ofReal (-f y)) (ENNReal.measurable_ofReal.comp hfm.neg)`. Establish `hCp : ∫⁻ y in C, ENNReal.ofReal (f y) ∂μ ≠ ⊤` using `(lt_of_le_of_lt (lintegral_ofReal_le_lintegral_enorm _) hf.2).ne`. Establish `hCm : ∫⁻ y in C, ENNReal.ofReal (-f y) ∂μ ≠ ⊤` using `(lt_of_le_of_lt (lintegral_ofReal_le_lintegral_enorm _) hf.neg.2).ne`. Establish `hIp : ∫⁻ x, (∑ᶠ w ∈ fib x, ∫⁻ t : ℂ, ENNReal.ofReal (f (t • v x w)) * ENNReal.ofReal (ρ x w t)) ∂ν ≠ ⊤`.
+
+Establish `h1 : ENNReal.ofReal c * ∫⁻ y in C, ENNReal.ofReal (f y) ∂μ ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hCp`. Rewrite `h1` using `[hAp]`. Conclude with `fun h2 => h1 (by rw [h2, ENNReal.mul_top hb])`. Establish `hIm : ∫⁻ x, (∑ᶠ w ∈ fib x, ∫⁻ t : ℂ, ENNReal.ofReal (-f (t • v x w)) * ENNReal.ofReal (ρ x w t)) ∂ν ≠ ⊤`. Establish `h1 : ENNReal.ofReal c * ∫⁻ y in C, ENNReal.ofReal (-f y) ∂μ ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hCm`.
+
+Rewrite `h1` using `[hAm]`. Conclude with `fun h2 => h1 (by rw [h2, ENNReal.mul_top hb])`. Establish `hae : (fun x => ∑ᶠ w ∈ fib x, ∫ t : ℂ, f (t • v x w) * ρ x w t) =ᵐ[ν] fun x => (∑ᶠ w ∈ fib x, ∫⁻ t : ℂ, ENNReal.ofReal (f (t • v x w)) * ENNReal.ofReal (ρ x w t)).toReal - (∑ᶠ w ∈ fib x, ∫⁻ t : ℂ, ENNReal.ofReal (-f (t • v x w)) * ENNReal.ofReal (ρ x w t)).toReal` using `by filter_upwards [ae_lt_top' hGpm hIp, ae_lt_top' hGmm hIm] with x hxp hxm`. Conclude with `finsum_integral_smul_mul_eq_toReal_sub hfm (hfin x) (v x) (ρ x) (hρ x) (hρc x) hxp.ne hxm.ne`. Rewrite using `[integral_congr_ae hae, integral_sub (integrable_toReal_of_lintegral_ne_top hGpm hIp) (integrable_toReal_of_lintegral_ne_top hGmm hIm), integral_toReal hGpm (ae_lt_top' hGpm hIp), integral_toReal hGmm (ae_lt_top' hGmm hIm), integral_eq_lintegral_pos_part_sub_lintegral_neg_part hf …`.
+-/
 theorem mul_setIntegral_eq_of_lintegral_of_measurable {μ : Measure E} {ν : Measure X} {C : Set E}
     {fib : X → Set W} (hfin : ∀ x, (fib x).Finite) (v : X → W → E) (ρ : X → W → ℂ → ℝ)
     (hρ : ∀ x w t, 0 ≤ ρ x w t) (hρc : ∀ x w, Continuous (ρ x w))
@@ -129,6 +152,17 @@ theorem mul_setIntegral_eq_of_lintegral_of_measurable {μ : Measure E} {ν : Mea
     mul_sub, ← ENNReal.toReal_ofReal_mul c _ hc, ← ENNReal.toReal_ofReal_mul c _ hc, hAp, hAm,
     ENNReal.toReal_mul, ENNReal.toReal_mul, mul_sub]
 
+/- English proof (translation)
+Take `⟨N, hsub, hNm, hN0⟩` from `exists_measurable_superset_of_null (ae_iff.1 hf.1.ae_eq_mk)`. Take `⟨hG0m, hA0⟩` from `hA (N.indicator 1) (measurable_one.indicator hNm)`. Rewrite `hA0` using `[lintegral_indicator_one hNm, hN0, mul_zero, eq_comm, mul_eq_zero, or_iff_right hb, lintegral_eq_zero_iff' hG0m]`. Establish `hae : (fun x => ∑ᶠ w ∈ fib x, ∫ t : ℂ, f (t • v x w) * ρ x w t) =ᵐ[ν] fun x => ∑ᶠ w ∈ fib x, ∫ t : ℂ, hf.1.mk f (t • v x w) * ρ x w t` using `by filter_upwards [hA0] with x hx`. Use `finsum_mem_congr rfl fun w hw => integral_congr_ae ?_` and prove the remaining obligations.
+
+Establish `hx' : ∫⁻ t : ℂ, N.indicator 1 (t • v x w) * ENNReal.ofReal (ρ x w t) = 0`. Simplify using `only [Pi.zero_apply, finsum_mem_eq_finite_toFinset_sum _ (hfin x), Finset.sum_eq_zero_iff] at hx`. Conclude with `hx w ((hfin x).mem_toFinset.2 hw)`. Establish `hm : Measurable fun t : ℂ => N.indicator 1 (t • v x w) * ENNReal.ofReal (ρ x w t)` using `((measurable_one.indicator hNm).comp (continuous_id.smul continuous_const).measurable).mul (ENNReal.measurable_ofReal.comp (hρc x w).measurable)`. Rewrite `hx'` using `[lintegral_eq_zero_iff' hm.aemeasurable]`.
+
+Use `filter_upwards [hx'] with t ht`. Break down `mul_eq_zero.1 ht with h | h` into its components or cases. Establish `hy : t • v x w ∉ N`. Introduce `hy`. Simplify using `[Set.indicator_of_mem hy] at h`.
+
+Establish `: f (t • v x w) = hf.1.mk f (t • v x w)`. Assume the negation of the conclusion as `hne`. Conclude with `hy (hsub hne)`. Rewrite using `[this]`. Rewrite `h` using `[ENNReal.ofReal_eq_zero]`.
+
+Rewrite using `[le_antisymm h (hρ x w t), mul_zero, mul_zero]`. Rewrite using `[integral_congr_ae hf.1.ae_eq_mk, integral_congr_ae hae]`. Conclude with `mul_setIntegral_eq_of_lintegral_of_measurable hfin v ρ hρ hρc hc hb hA hf.1.stronglyMeasurable_mk.measurable (hf.congr hf.1.ae_eq_mk)`.
+-/
 theorem mul_setIntegral_eq_of_lintegral {μ : Measure E} {ν : Measure X} {C : Set E}
     {fib : X → Set W} (hfin : ∀ x, (fib x).Finite) (v : X → W → E) (ρ : X → W → ℂ → ℝ)
     (hρ : ∀ x w t, 0 ≤ ρ x w t) (hρc : ∀ x w, Continuous (ρ x w))
@@ -173,6 +207,9 @@ theorem mul_setIntegral_eq_of_lintegral {μ : Measure E} {ν : Measure X} {C : S
 
 end Abstract
 
+/- English proof (translation)
+Introduce `n e S hS P Ψ f hP hΨ hf`. Take `⟨hb0, -⟩` from `coordBall_mass (n := n) (m := e + 1) (le_of_isArithVar_pblk hP)`. Conclude with `mul_setIntegral_eq_of_lintegral (fun x => ReciprocityTheory.ChartRestriction.G.Geo.fibreFinite Unit (PBlk n) P e Ψ hP hΨ x) (fun x w => WithLp.toLp 2 (S *ᵥ fun i => chosenSheet P Ψ x w x ⟨(), i⟩)) (fun x w t => ‖t‖ ^ (2 * e) * gramVol (fun x' => S *ᵥ fun i => chosenSheet P Ψ x w …`.
+-/
 theorem ConeSheetArea.proof (h : ConeSheetAreaLintegral.Statement) : ConeSheetArea.Statement := by
   intro n e S hS P Ψ f hP hΨ hf
   obtain ⟨hb0, -⟩ := coordBall_mass (n := n) (m := e + 1) (le_of_isArithVar_pblk hP)

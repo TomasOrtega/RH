@@ -7,6 +7,23 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
+/- English proof (translation)
+Establish `h1 : (Fintype.piFinset (fun _ : ι => S)).filter (fun A => A ∘ φ = A') = Fintype.piFinset (fun i : ι => if h : ∃ i', φ i' = i then {A' h.choose} else S)`. Use extensionality with `A`. Simplify using `only [Finset.mem_filter, Fintype.mem_piFinset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hc⟩ i`.
+
+Distinguish the cases in `h : ∃ i', φ i' = i`. Simplify using `only [h, dite_true, Finset.mem_singleton]`. Rewrite using `[← hc, Function.comp, h.choose_spec]`. Simplify using `only [h, dite_false]`. Conclude with `hA i`.
+
+Introduce `hA`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Distinguish the cases in `h : ∃ i', φ i' = i`. Use `hA i` as an intermediate fact.
+
+Simplify using `only [h, dite_true, Finset.mem_singleton] at this`. Rewrite using `[this]`. Conclude with `hA' _`. Use `hA i` as an intermediate fact. Simplify `this` using `only [h, dite_false]`.
+
+Use function extensionality and compare the values at `i'`. Establish `h : ∃ i'', φ i'' = φ i'` using `⟨i', rfl⟩`. Use `hA (φ i')` as an intermediate fact. Simplify using `only [h, dite_true, Finset.mem_singleton] at this`. Rewrite using `[Function.comp, this, hφ h.choose_spec]`.
+
+Rewrite using `[h1, Fintype.card_piFinset]`. Establish `h2 : ∀ i : ι, (if h : ∃ i', φ i' = i then ({A' h.choose} : Finset ℕ) else S).card = if (∃ i', φ i' = i) then 1 else S.card`. Introduce `i`. Apply the tactic sequence `by_cases h : ∃ i', φ i' = i <;> simp [h]`. Repeatedly rewrite using `[h2]`.
+
+Rewrite using `[Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const]`. Use `congr 1`. Establish `h3 : (Finset.univ.filter (fun i : ι => ∃ i', φ i' = i)) = Finset.univ.image φ`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Establish `h4 : (Finset.univ.filter (fun i : ι => ∃ i', φ i' = i)).card = Fintype.card ι'`. Rewrite using `[h3, Finset.card_image_of_injective _ hφ, Finset.card_univ]`. Establish `h5` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset ι)) (fun i : ι => ∃ i', φ i' = i)`. Rewrite `h5` using `[h4, Finset.card_univ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_fiber_restriction_pi {ι ι' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableEq ι'] (φ : ι' → ι)
     (hφ : Function.Injective φ) (S : Finset ℕ) (A' : ι' → ℕ) (hA' : ∀ i, A' i ∈ S) :
     ((Fintype.piFinset (fun _ : ι => S)).filter (fun A => A ∘ φ = A')).card =
@@ -55,6 +72,11 @@ theorem card_fiber_restriction_pi {ι ι' : Type} [Fintype ι] [DecidableEq ι] 
   rw [h4, Finset.card_univ] at h5
   omega
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := Fintype.piFinset (fun _ : ι => S)) (t := Fintype.piFinset (fun _ : ι' => S)) (g := fun A => A ∘ φ) (fun A hA => Fintype.mem_piFinset.2 fun i => Fintype.mem_piFinset.1 hA (φ i)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun A' hA' => ?_` and prove the remaining obligations. Establish `h1 : ∑ A ∈ (Fintype.piFinset (fun _ : ι => S)).filter (fun A => A ∘ φ = A'), g (A ∘ φ) = ∑ A ∈ (Fintype.piFinset (fun _ : ι => S)).filter (fun A => A ∘ φ = A'), g A'` using `Finset.sum_congr rfl fun A hA => by rw [(Finset.mem_filter.1 hA).2]`. Rewrite using `[h1, Finset.sum_const, nsmul_eq_mul, card_fiber_restriction_pi φ hφ S A' (Fintype.mem_piFinset.1 hA')]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_pi_marginal_injective {ι ι' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableEq ι'] (φ : ι' → ι)
     (hφ : Function.Injective φ) (S : Finset ℕ) (g : (ι' → ℕ) → ℝ) :
     ∑ A ∈ Fintype.piFinset (fun _ : ι => S), g (A ∘ φ) =
@@ -71,6 +93,15 @@ theorem sum_pi_marginal_injective {ι ι' : Type} [Fintype ι] [DecidableEq ι] 
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_product']`. Use `Finset.sum_nbij' (fun A' => (fun i => A' (some i), A' none)) (fun q => fun o => o.elim q.2 q.1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `A' hA'`. Use `Fintype.mem_piFinset.1 hA'` as an intermediate fact. Conclude with `Finset.mem_product.2 ⟨Fintype.mem_piFinset.2 fun i => this (some i), this none⟩`.
+
+Introduce `q hq`. Take `⟨h1, h2⟩` from `Finset.mem_product.1 hq`. Use `Fintype.mem_piFinset.2 fun o => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact h2`.
+
+Consider the case `some i => exact Fintype.mem_piFinset.1 h1 i`. Introduce `A' _`. Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> rfl`. Introduce `q _`.
+
+Both sides reduce to the same expression. Introduce `A' _`. Both sides reduce to the same expression.
+-/
 theorem sum_pi_option_split {α : Type} [Fintype α] [DecidableEq α] (S : Finset ℕ) (h : (α → ℕ) → ℕ → ℝ) :
     ∑ A' ∈ Fintype.piFinset (fun _ : Option α => S), h (fun i => A' (some i)) (A' none) =
       ∑ f ∈ Fintype.piFinset (fun _ : α => S), ∑ x ∈ S, h f x := by
@@ -109,6 +140,9 @@ def locOf (X : Dat) (aT bT : Fin X.n' → ℕ) : Formalism.MainNotions.ColumnSys
   { p := X.p, n' := X.n', m := X.m, TT := X.TT, aT := aT, bT := bT, a := X.a, b' := X.b', Y := X.Y, Yb := X.Yb / 2,
     N1 := X.N₁, G' := X.G', bl := X.bl, bh := X.bu, ccl := X.ccl, DLP := X.Dp, cs := X.cStar, c := X.c4 }
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, h21, h22, h23, h24⟩` from `h`. Establish `h23' : (8 : ℝ) * ((X.Dp : ℝ) + 1) ≤ (X.cStar : ℝ)` using `by exact_mod_cast h23`. Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19, h20, Nat.cast_nonneg _, h21, h22, h23', h24⟩`.
+-/
 theorem local_hypothesis_of_global (K : Cst) (X : Dat) (aT bT : Fin X.n' → ℕ)
     (h : HypI K.C₀ K.CH X.p X.n' X.m X.TT X.G' X.N₁ X.Y (X.Yb / 2) (X.a : ℝ) X.b' X.bl X.bu X.ccl X.Dp X.cStar) :
     Formalism.MainNotions.ColumnSystems.WindowHypotheses K.C₀ K.CH K.CH K.CH K.CH K.CH (locOf X aT bT) := by
@@ -124,6 +158,9 @@ def instOf (K : Cst) (X : Dat) (R : RS X.p X.n') (jj : Fin (numSeg X.TT)) (B : X
     xa := ((X.ua + X.Jn K + X.ccl : ℕ) : ℝ) - ((X.a : ℝ) + X.a / (((X.m : ℝ) + 1) * X.Y)),
     xb := 2 * X.J0 K }
 
+/- English proof (translation)
+Unfold `Inst.winA Dat.WaP`. Establish `h : ((instOf K X R jj B).L.a : ℝ) + (instOf K X R jj B).L.a / ((instOf K X R jj B).L.k * (instOf K X R jj B).L.Y) + (instOf K X R jj B).xa = ((X.ua + X.Jn K + X.ccl : ℕ) : ℝ)` using `by show (X.a : ℝ) + X.a / (((X.m : ℝ) + 1) * X.Y) + (((X.ua + X.Jn K + X.ccl : ℕ) : ℝ) - ((X.a : ℝ) + X.a / (((X.m : ℝ) + 1) * X.Y))) = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Nat.floor_natCast]`. Both sides reduce to the same expression.
+-/
 theorem instance_window_eq (K : Cst) (X : Dat) (R : RS X.p X.n') (jj : Fin (numSeg X.TT)) (B : X.TT → ℕ) :
     (instOf K X R jj B).winA = X.WaP K := by
   unfold Inst.winA Dat.WaP
@@ -140,6 +177,19 @@ def kapSeg (K : Cst) (X : Dat) (R : RS X.p X.n') (jj : Fin (numSeg X.TT)) (B : X
   Formalism.MainNotions.G.kapT R.O X.p X.m (segI K.C₀ K.CE1 K.CE2 X.p X.n' X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 (ex B) jj)
     (m0I K.Cm X.p X.m X.G' X.N₁ X.c4) (DjI K.CA X.p X.m X.TT X.N₁ X.Y X.a) f x
 
+/- English proof (translation)
+Establish `hHI : HI K.C₀ K.CH K.CH K.CH K.CH K.CH 4 (instOf K X R jj B)`. Use `⟨local_hypothesis_of_global K X _ _ hF.hyp', hF.cb, ?_, ?_, ?_, le_rfl, ?_, hF.logl, hF.m0nn, hF.m0le⟩` and prove the remaining obligations. Use `show 0 ≤ ((X.ua + X.Jn K + X.ccl : ℕ) : ℝ) - ((X.a : ℝ) + X.a / (((X.m : ℝ) + 1) * X.Y))`. Combine the linear relations using `[hF.windowLowerBound]`. Use `show ((X.ua + X.Jn K + X.ccl : ℕ) : ℝ) - ((X.a : ℝ) + X.a / (((X.m : ℝ) + 1) * X.Y)) ≤ 2 * X.J0 K`.
+
+Combine the linear relations using `[hF.winA]`. Use `show 0 ≤ 2 * X.J0 K`. Combine the linear relations using `[hF.j0nn]`. Introduce `s hs`. Establish `hs' : s ∈ X.TT` using `hs`.
+
+Establish `h1` using `Finset.mem_Icc.1 (hB ⟨s, hs'⟩)`. Establish `h2 : ex B s = B ⟨s, hs'⟩` using `dif_pos hs'`. Use `show X.bl ≤ (ex B s : ℝ) ∧ (ex B s : ℝ) ≤ X.bu + 2 * X.J0 K`. Rewrite using `[h2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (X.lb : ℝ) ≤ B ⟨s, hs'⟩` using `by exact_mod_cast h1.1`. Conclude with `le_trans (Nat.le_ceil _) h3`. Establish `h3 : (B ⟨s, hs'⟩ : ℝ) ≤ ((X.ub + X.Jn K + X.ccl : ℕ) : ℝ)` using `by exact_mod_cast h1.2`. Conclude with `le_trans h3 hF.winB`. Establish `h2` using `hA.1 (instOf K X R jj B) hHI`.
+
+Unfold `meanKapT at h2`. Rewrite `h2` using `[instance_window_eq]`. Establish `hY : 0 < X.Y` using `lt_of_lt_of_le one_pos hF.hyp'.1`. Establish `ht : (((instOf K X R jj B).S K.C₀ K.CE1 K.CE2).t : ℝ) ≤ (segS X.TT jj : ℝ)`. Establish `: ((instOf K X R jj B).S K.C₀ K.CE1 K.CE2).t ≤ segS X.TT jj` using `Nat.sub_le _ _`.
+
+Conclude with `this` after adjusting the coercions. Use `le_trans h2 ?_` and prove the remaining obligations. Use `show K.CA * ((((instOf K X R jj B).S K.C₀ K.CE1 K.CE2).t : ℝ) + 1) * (X.N₁ : ℝ) / X.Y ≤ _`. Conclude with `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (by linarith) hK.2.2.1.le) (Nat.cast_nonneg _)) hY.le`.
+-/
 theorem segment_mean_kappa_bound (D : Formalism.BasicNotions.D7) (K : Cst) (hK : K.Pos) (hA : K.admitted D) (X : Dat) (hF : MeanKappaNumericalFacts K X) (R : RS X.p X.n')
     (jj : Fin (numSeg X.TT)) (B : X.TT → ℕ) (hB : ∀ s, B s ∈ X.WbP K) :
     (∑ aTop ∈ Fintype.piFinset (fun _ : Fin (segS X.TT jj) => X.WaP K), ∑ aPlus ∈ X.WaP K,
@@ -176,6 +226,17 @@ theorem segment_mean_kappa_bound (D : Formalism.BasicNotions.D7) (K : Cst) (hK :
   exact div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right
     (mul_le_mul_of_nonneg_left (by linarith) hK.2.2.1.le) (Nat.cast_nonneg _)) hY.le
 
+/- English proof (translation)
+Establish `h1` using `segment_mean_kappa_bound D K hK hA X hF R jj B hB`. Establish `hcpos : (0 : ℝ) < ((X.WaP K).card : ℝ)` using `by exact_mod_cast hc`. Rewrite `h1` using `[div_le_iff₀ (pow_pos hcpos _)]`. Establish `h2 : ∀ A : X.TT → ℕ, kapTI R.O K.C₀ K.CA K.CE1 K.CE2 K.Cm X.p X.n' X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 (ex A) (ex B) jj = (fun A' : Option (Fin (segS X.TT jj)) → ℕ => kapSeg K X R jj B (fun i => A' (some i)) (A' none)) (A ∘ sgTop X.TT jj)`. Introduce `A`.
+
+Use `show kapSeg K X R jj B (segATop X.TT (ex A) jj) (segAPlus X.TT (ex A) jj) = _`. Establish `e1 : segATop X.TT (ex A) jj = fun i => (A ∘ sgTop X.TT jj) (some i)`. Use function extensionality and compare the values at `i`. Conclude with `dif_pos (sg_pos_spec X.TT jj i).1`. Establish `e2 : segAPlus X.TT (ex A) jj = (A ∘ sgTop X.TT jj) none` using `dif_pos (sg_next_mem X.TT jj).1`.
+
+Rewrite using `[e1, e2]`. Establish `h3` using `sum_pi_marginal_injective (sgTop X.TT jj) (sgTop_inj X.TT jj) (X.WaP K) (fun A' : Option (Fin (segS X.TT jj)) → ℕ => kapSeg K X R jj B (fun i => A' (some i)) (A' none))`. Establish `h4` using `(Finset.sum_congr rfl (fun A (_ : A ∈ Fintype.piFinset (fun _ : X.TT => X.WaP K)) => h2 A)).trans h3`. Rewrite using `[h4, sum_pi_option_split (X.WaP K) (kapSeg K X R jj B)]`. Establish `hcard : Fintype.card (Option (Fin (segS X.TT jj))) = segS X.TT jj + 1` using `by simp`.
+
+Establish `hN : Fintype.card X.TT = X.N` using `Fintype.card_coe _`. Establish `hle : segS X.TT jj + 1 ≤ X.N`. Rewrite using `[← hcard, ← hN]`. Conclude with `Fintype.card_le_of_injective _ (sgTop_inj X.TT jj)`. Rewrite using `[hcard, hN]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [Nat.sub_add_cancel hle]`.
+-/
 theorem segment_sum_kappa_bound (D : Formalism.BasicNotions.D7) (K : Cst) (hK : K.Pos) (hA : K.admitted D) (X : Dat) (hF : MeanKappaNumericalFacts K X)
     (R : RS X.p X.n') (jj : Fin (numSeg X.TT)) (B : X.TT → ℕ) (hB : ∀ s, B s ∈ X.WbP K)
     (hc : 0 < (X.WaP K).card) :
@@ -217,6 +278,37 @@ theorem segment_sum_kappa_bound (D : Formalism.BasicNotions.D7) (K : Cst) (hK : 
         ring
     _ = _ := by rw [Nat.sub_add_cancel hle]
 
+/- English proof (translation)
+Unfold `MeanX meanN`. Establish `hN : Fintype.card X.TT = X.N` using `Fintype.card_coe _`. Rewrite using `[hN]`. Establish `hY : 0 < X.Y` using `lt_of_lt_of_le one_pos hF.hyp'.1`. Establish `hCA : 0 < K.CA` using `hK.2.2.1`.
+
+Establish `hCs : 0 < K.Cs` using `hK.2.2.2.2.2.2.2.2`. Establish `hb0 : 0 ≤ (K.CA + K.Cs) * X.N * X.N₁ / X.Y` using `by positivity`. Establish `hNpos : 0 < X.N`. Take `⟨x, hx, -⟩` from `hF.hyp'.2.2.1`. Conclude with `Finset.card_pos.2 ⟨x, hx⟩`.
+
+Distinguish the cases in `hca : (X.WaP K).card = 0`. Rewrite using `[hca]`. Simplify `hb0` using `[hNpos.ne']`. Distinguish the cases in `hcb : (X.WbP K).card = 0`. Rewrite using `[hcb]`.
+
+Simplify `hb0` using `[hNpos.ne']`. Establish `hca' : 0 < (X.WaP K).card` using `Nat.pos_of_ne_zero hca`. Establish `hcb' : 0 < (X.WbP K).card` using `Nat.pos_of_ne_zero hcb`. Establish `hcaR : (0 : ℝ) < ((X.WaP K).card : ℝ)` using `by exact_mod_cast hca'`. Establish `hcbR : (0 : ℝ) < ((X.WbP K).card : ℝ)` using `by exact_mod_cast hcb'`.
+
+Rewrite using `[div_le_iff₀ (mul_pos (pow_pos hcaR _) (pow_pos hcbR _))]`. Take `⟨a₀, ha₀⟩` from `Finset.card_pos.1 hca'`. Take `⟨b₀, hb₀⟩` from `Finset.card_pos.1 hcb'`. Establish `hWin : WinX X.TT X.m X.Y X.a X.bl X.bu (2 * cleaningBudget K.C₀ X.m X.N₁ X.a X.b') (2 * cleaningBudget K.C₀ X.m X.N₁ X.a X.b') (fun _ => a₀) (fun _ => b₀)`. Establish `h1` using `Finset.mem_Icc.1 ha₀`.
+
+Establish `h2` using `Finset.mem_Icc.1 hb₀`. Prove the components needed by the constructor for the conclusion. Introduce `s _`. Use `⟨by exact_mod_cast h1.1, ?_⟩` and prove the remaining obligations. Establish `h3 : (a₀ : ℝ) ≤ ((X.ua + X.Jn K + X.ccl : ℕ) : ℝ)` using `by exact_mod_cast h1.2`.
+
+Conclude with `le_trans h3 hF.winA`. Introduce `s _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3 : (X.lb : ℝ) ≤ b₀` using `by exact_mod_cast h2.1`. Conclude with `le_trans (Nat.le_ceil _) h3`.
+
+Establish `h3 : (b₀ : ℝ) ≤ ((X.ub + X.Jn K + X.ccl : ℕ) : ℝ)` using `by exact_mod_cast h2.2`. Conclude with `le_trans h3 hF.winB`. Establish `hkp : kapPI K.C₀ K.CE1 K.CE2 K.Cm K.Ckap X.p X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 ≤ K.Cs * X.N * X.N₁ / X.Y` using `(hA.2.2.1 X.p R.W R.Qq R.O R.Kf R.ι R.σ R.jO R.w X.n' X.m X.TT X.G' X.N₁ X.Y (X.Yb / 2) X.a X.b' X.bl X.bu X.ccl X.Dp X.cStar (fun _ => a₀) (fun _ => b₀) X.c4 R.std hF.hyp' hWin hF.cb _ hF.m0nn hF.m0le).2`. Use `set PA := Fintype.piFinset (fun _ : X.TT => X.WaP K) with hPA`. Use `set PB := Fintype.piFinset (fun _ : X.TT => X.WbP K) with hPB`.
+
+Establish `hcPA : (PA.card : ℝ) = ((X.WaP K).card : ℝ) ^ X.N`. Rewrite using `[hPA, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hN]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hcPB : (PB.card : ℝ) = ((X.WbP K).card : ℝ) ^ X.N`.
+
+Rewrite using `[hPB, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, hN]`. Use `push_cast`. Both sides reduce to the same expression. Establish `e2 : ∑ A ∈ PA, ∑ B ∈ PB, ∑ jj, kapTI R.O K.C₀ K.CA K.CE1 K.CE2 K.Cm X.p X.n' X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 (ex A) (ex B) jj = ∑ jj, ∑ B ∈ PB, ∑ A ∈ PA, kapTI R.O K.C₀ K.CA K.CE1 K.CE2 K.Cm X.p X.n' X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 (ex A) (ex B) jj`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[Finset.sum_congr rfl fun B _ => Finset.sum_comm]`. Rewrite using `[Finset.sum_comm]`. Establish `e3 : ∑ jj, ∑ B ∈ PB, ∑ A ∈ PA, kapTI R.O K.C₀ K.CA K.CE1 K.CE2 K.Cm X.p X.n' X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 (ex A) (ex B) jj ≤ ∑ jj : Fin (numSeg X.TT), (PB.card : ℝ) * (((X.WaP K).card : ℝ) ^ X.N * (K.CA * ((segS X.TT jj : ℝ) + 1) * X.N₁ / X.Y))`. Use `Finset.sum_le_sum fun jj _ => ?_` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul, ← Finset.sum_const]`.
+
+Conclude with `Finset.sum_le_sum fun B hB => segment_sum_kappa_bound D K hK hA X hF R jj B (Fintype.mem_piFinset.1 hB) hca'`. Establish `e4 : ∑ jj : Fin (numSeg X.TT), ((segS X.TT jj : ℝ) + 1) ≤ X.N`. Use `sg_count X.TT hF.hyp'.2.2.2.1` as an intermediate fact. Unfold `Dat.N`. Conclude with `this` after adjusting the coercions.
+
+Establish `e5 : ∑ jj : Fin (numSeg X.TT), (PB.card : ℝ) * (((X.WaP K).card : ℝ) ^ X.N * (K.CA * ((segS X.TT jj : ℝ) + 1) * X.N₁ / X.Y)) = (PB.card : ℝ) * ((X.WaP K).card : ℝ) ^ X.N * (K.CA * X.N₁ / X.Y) * ∑ jj : Fin (numSeg X.TT), ((segS X.TT jj : ℝ) + 1)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun jj _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `e6 : ∑ A ∈ PA, ∑ B ∈ PB, X.kx K R A B = (PA.card : ℝ) * ((PB.card : ℝ) * kapPI K.C₀ K.CE1 K.CE2 K.Cm K.Ckap X.p X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4) + ∑ A ∈ PA, ∑ B ∈ PB, ∑ jj, kapTI R.O K.C₀ K.CA K.CE1 K.CE2 K.Cm X.p X.n' X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4 (ex A) (ex B) jj`.
+
+Unfold `Dat.kx`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul]`. Rewrite using `[e6, e2]`. Establish `hpos : 0 ≤ (PB.card : ℝ) * ((X.WaP K).card : ℝ) ^ X.N * (K.CA * X.N₁ / X.Y)` using `by positivity`. Establish `e7` using `mul_le_mul_of_nonneg_left e4 hpos`.
+
+Establish `e8 : (PA.card : ℝ) * ((PB.card : ℝ) * kapPI K.C₀ K.CE1 K.CE2 K.Cm K.Ckap X.p X.m X.TT X.G' X.N₁ X.Y X.a X.b' X.c4) ≤ (PA.card : ℝ) * ((PB.card : ℝ) * (K.Cs * X.N * X.N₁ / X.Y))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hkp (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`. Rewrite `e3` using `[e5]`. Rewrite `*` using `[hcPA, hcPB]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem meanX_of (D : Formalism.BasicNotions.D7) (K : Cst) (hK : K.Pos) (hA : K.admitted D) (X : Dat) (hF : MeanKappaNumericalFacts K X)
     (R : RS X.p X.n') : MeanX K X R := by
   unfold MeanX meanN

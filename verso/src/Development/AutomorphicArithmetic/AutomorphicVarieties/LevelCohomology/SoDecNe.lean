@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 
+/- English proof (translation)
+Establish `h : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite using `[h]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `fun h0 => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+
+Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `fun h1 => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem one_lt_normV {k : Type} [Field k] [NumberField k] (v : HeightOneSpectrum (𝓞 k)) : 1 < normV v := by
   have h : normV v = Ideal.absNorm v.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]; rfl
@@ -13,6 +18,13 @@ private theorem one_lt_normV {k : Type} [Field k] [NumberField k] (v : HeightOne
   have h1 : Ideal.absNorm v.asIdeal ≠ 1 := fun h1 => v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)
   omega
 
+/- English proof (translation)
+Distinguish the cases in `hl : ((l : ℕ) : 𝓞 k) ∈ v.asIdeal`. Conclude with `GlobalTheory.T.exists_decompositionGroup_cyclotomicCharacter_zpow_ne_one k Ω l v A hl hA n hn`. Take `⟨γ, hγ⟩` from `exists_isFrob hA`. Use `⟨γ, hγ.1, fun h => ?_⟩` and prove the remaining obligations. Establish `hc` using `cycZ_of_isFrob hl hA hγ`.
+
+Establish `h2 : cycZ k Ω l γ ^ n.natAbs = 1`. Break down `Int.natAbs_eq n with e | e` into its components or cases. Rewrite using `[← zpow_natCast, ← e, h]`. Rewrite `h` using `[e, zpow_neg, inv_eq_one, zpow_natCast]`. Conclude with `h`.
+
+Establish `h3` using `congrArg (Units.val : ℤ_[l]ˣ → ℤ_[l]) h2`. Rewrite `h3` using `[Units.val_pow_eq_pow_val, hc, Units.val_one]`. Establish `h4 : normV v ^ n.natAbs = 1` using `by exact_mod_cast h3`. Conclude with `(Nat.one_lt_pow (Int.natAbs_ne_zero.2 hn) (one_lt_normV v)).ne' h4`.
+-/
 private theorem cyc_ne (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ)
     [Fact l.Prime] (v : HeightOneSpectrum (𝓞 k)) (A : ValuationSubring Ω) (hA : IsPlaceOver A v) (n : ℤ) (hn : n ≠ 0) :
     ∃ g : G k Ω, g ∈ Dec (F := k) A ∧ cycZ k Ω l g ^ n ≠ 1 := by
@@ -30,6 +42,15 @@ private theorem cyc_ne (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algeb
     have h4 : normV v ^ n.natAbs = 1 := by exact_mod_cast h3
     exact (Nat.one_lt_pow (Int.natAbs_ne_zero.2 hn) (one_lt_normV v)).ne' h4
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ _ _ l _ O _ _ _ _ _ ψ hψ n hn v A hA`. Use `haveI : IsGalois k Ω := {}`. Use `haveI : Finite (G k Ω ⧸ ψ.ker) := Subgroup.quotient_finite_of_isOpen _ hψ`. Establish `hm : ψ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Take `⟨g, hg, hne⟩` from `cyc_ne k Ω l v A hA (n * (ψ.ker.index : ℤ)) (mul_ne_zero hn (Int.natCast_ne_zero.2 hm))`.
+
+Use `⟨g, hg, fun h => hne ?_⟩` and prove the remaining obligations. Establish `hinj` using `(dvrFacts l O).1`. Establish `h1 : ψ g ^ ψ.ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `ψ.ker.pow_index_mem g`.
+
+Establish `h2 : ψ g * chiO k Ω l O g ^ n = 1` using `h`. Establish `h3 : chiO k Ω l O g ^ (n * (ψ.ker.index : ℤ)) = 1`. Use `congrArg (· ^ ψ.ker.index) h2` as an intermediate fact. Simplify using `only [mul_pow, h1, one_mul, one_pow] at this`. Rewrite using `[zpow_mul, zpow_natCast, this]`.
+
+Apply `Units.map_injective (f := (algebraMap ℤ_[l] O).toMonoidHom) hinj` to reduce the goal to its premises. Rewrite using `[map_zpow, map_one]`. Conclude with `h3`.
+-/
 theorem UpperTheory.V.X.So.decNe :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (ψ : G k Ω →* Oˣ), IsOpen (ψ.ker : Set (G k Ω)) → ∀ n : ℤ, n ≠ 0 → ∀ (v : HeightOneSpectrum (𝓞 k)) (A : ValuationSubring Ω), IsPlaceOver A v → ∃ g ∈ Dec (F := k) A, (ψ * chiO k Ω l O ^ n) g ≠ 1 := by
   intro k Ω _ _ _ _ _ l _ O _ _ _ _ _ ψ hψ n hn v A hA

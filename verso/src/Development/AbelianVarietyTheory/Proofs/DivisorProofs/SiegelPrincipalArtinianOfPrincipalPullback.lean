@@ -19,6 +19,9 @@ noncomputable section
 
 namespace GlobalTheory.ArtinPrinc
 
+/- English proof (translation)
+Establish `h` using `hP.map (forget CommRingCat)`. Introduce `r`. Take `⟨r₂, hr₂⟩` from `hs (g₁ r)`. Take `⟨x, hx, -⟩` from `((Types.isPullback_iff _ _ _ _).1 h).2.2 r r₂ hr₂.symm`. Conclude with `⟨x, hx⟩`.
+-/
 theorem surj_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R₁} {f₂ : P ⟶ R₂} {g₁ : R₁ ⟶ R₀} {g₂ : R₂ ⟶ R₀}
     (hP : IsPullback f₁ f₂ g₁ g₂) (hs : Function.Surjective g₂) : Function.Surjective f₁ := by
   have h := hP.map (forget CommRingCat)
@@ -27,6 +30,29 @@ theorem surj_of_isPullback {P R₁ R₂ R₀ : CommRingCat.{0}} {f₁ : P ⟶ R�
   obtain ⟨x, hx, -⟩ := ((Types.isPullback_iff _ _ _ _).1 h).2.2 r r₂ hr₂.symm
   exact ⟨x, hx⟩
 
+/- English proof (translation)
+Introduce `g n _ _ P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart _ hs₂ _ β c c₁ hpb hc₁`. Take `⟨φ, φ₂, hφ, hsq, hw, -⟩` from `hpb`. Take `⟨hA₁, hK₁⟩` from `hc₁`. Establish `hl : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hf₁ : Function.Surjective f₁.hom` using `surj_of_isPullback hP hs₂`.
+
+Set `f` to `Spec.map f₁`. Establish `hPc : cls c₁.P c₁.isLB = pull φ₂ (cls c.P c.isLB)` using `(cls_eq_iff _ (pull_isLB c.isLB _)).2 hw`. Establish `hpair : ∀ {T : Over (Spec P)} {T' : Over (Spec R₁)} (u : T'.left ⟶ T.left) (a b : T ⟶ c.A) (a' b' : T' ⟶ c₁.A), a'.left ≫ φ = u ≫ a.left → b'.left ≫ φ = u ≫ b.left → pair (cls c₁.P c₁.isLB) a' b' = pull u (pair (cls c.P c.isLB) a b)` using `fun u a b a' b' ha hb => by`. Rewrite using `[GlobalTheory.PrincipalIntegral.pair, GlobalTheory.PrincipalIntegral.pair, hPc, ← pull_comp, ← pull_comp, SiegelDescent.lift_comp_square hsq u a b a' b' ha hb]`. Establish `hD : c.diag.IsLB` using `pull_isLB c.isLB _`.
+
+Establish `hD₁ : c₁.diag.IsLB` using `pull_isLB c₁.isLB _`. Establish `hd : cls c₁.diag hD₁ = pull φ (cls c.diag hD)` using `hpair φ (𝟙 c.A) (𝟙 c.A) (𝟙 c₁.A) (𝟙 c₁.A) (by simp) (by simp)`. Establish `hdiso : LBIso c₁.diag (c.diag.pull φ)`. Use `(cls_eq_iff hD₁ (pull_isLB hD _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hD, hd]`.
+
+Use `haveI := c.ab.proper`. Use `haveI := c.ab.smooth`. Establish `hA : Out.RelAmple c.A c.diag` using `GlobalTheory.SharpLift.relAmple_of_closed_proper P c.A c.diag hD R₁ f₁.hom hf₁ c₁.A φ hφ.1 c₁.diag hD₁ hdiso hA₁`. Use `⟨hA, fun T x hx => ?_⟩` and prove the remaining obligations. Take `⟨hpos, hdet⟩` from `isE8_W8`.
+
+Set `G` to `Out.powObj c.A 8`. Set `pr : Fin 8 → (G ⟶ c.A)` to `Out.powPr c.A`. Establish `hmon : ∀ u, IsMonHom (pr u)` using `fun u => inferInstance`. Establish `huniv : ∀ (T : Over (Spec P)) (y : Fin 8 → (T ⟶ c.A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u` using `fun T y => ⟨(Out.powIsLimit c.A 8).lift (Fan.mk T y), fun u => (Out.powIsLimit c.A 8).fac (Fan.mk T y) ⟨u⟩, fun x hx => (Out.powIsLimit c.A 8).uniq (Fan.mk T y) x fun u => hx u.as⟩`. Establish `hG : IsAbelianScheme G` using `AbelianSchemeGerms.isAbelianScheme_powObj c.A c.ab 7`.
+
+Set `G'` to `(Over.pullback f).obj G`. Set `ψ : G'.left ⟶ G.left` to `Pdiv.PullbackComparison.pφ f G`. Establish `hψ : IsGrpPullback G' G f ψ` using `Pdiv.PullbackComparison.isGrpPullback f G`. Use `choose pr' hpr using fun u => SharpPull.exists_lift hψ hφ (pr u)`. Establish `hmon' : ∀ u, IsMonHom (pr' u)` using `fun u => SharpPull.isMonHom_lift hψ hφ (hpr u)`.
+
+Establish `huniv' : ∀ (T : Over (Spec R₁)) (y : Fin 8 → (T ⟶ c₁.A)), ∃! x : T ⟶ G', ∀ u, x ≫ pr' u = y u` using `fun T y => by`. Take `⟨x₀, hx₀, hu⟩` from `huniv (Over.mk (T.hom ≫ f)) (fun u => pushHom hφ T (y u))`. Take `⟨x, rfl⟩` from `SharpPull.push_surj hψ x₀`. Use `⟨x, fun u => SharpPull.push_inj hφ ?_, fun x' hx' => SharpPull.push_inj hψ (hu _ fun u => ?_)⟩` and prove the remaining obligations. Rewrite using `[SharpPull.push_comp hψ hφ (hpr u), hx₀ u]`.
+
+Rewrite using `[← SharpPull.push_comp hψ hφ (hpr u), hx' u]`. Set `L` to `LB.LinComb c.P (K := Fin 8 × Fin 8) (fun uv => (lift (pr uv.1) (pr uv.2)).left) fun uv => W8 uv.1 uv.2`. Set `L'` to `LB.LinComb c₁.P (K := Fin 8 × Fin 8) (fun uv => (lift (pr' uv.1) (pr' uv.2)).left) fun uv => W8 uv.1 uv.2`. Establish `hL : L.IsLB` using `LB.isLB_linComb c.isLB _ _`. Establish `hL' : L'.IsLB` using `LB.isLB_linComb c₁.isLB _ _`.
+
+Establish `hLW : cls L hL = quad (cls c.P c.isLB) W8 pr` using `cls_linComb c.isLB _ _ _`. Establish `hLW' : cls L' hL' = quad (cls c₁.P c₁.isLB) W8 pr'` using `cls_linComb c₁.isLB _ _ _`. Establish `hiso : LBIso L' (L.pull ψ)`. Use `(cls_eq_iff hL' (pull_isLB hL _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hL, hLW, hLW', quad, quad, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun uv _ => by rw [map_zsmul, hpair ψ _ _ _ _ (hpr uv.1) (hpr uv.2)]`. Establish `hadd` using `pair_mul c hl.globalFns hA`. Establish `hadd'` using `pair_mul c₁ hl.globalFns hA₁`. Establish `hK' : Out.KTriv G' L'` using `kTriv_of_kernel hadd' (pair_comm c₁) hmon' huniv' hL' hLW' hdet fun T x hx => hK₁ T x ((cls_eq_zero_iff (pull_isLB c₁.isLB _)).1 hx)`. Establish `hAL : Out.RelAmple G L` using `PosDefAmple.relAmple_linComb_of_posDef hl.globalFns g n 8 _ _ _ _ c G pr W8 hmon huniv hA hpos`.
+
+Use `haveI : IsLocalRing R₁ := IsLocalRing.of_surjective' f₁.hom hf₁`. Use `haveI : IsLocalHom f₁.hom := Function.Surjective.isLocalHom f₁.hom hf₁`. Establish `hK : Out.KTriv G L` using `GlobalTheory.SharpLift.kTriv_of_localHom P R₁ f₁.hom G hG L hL hAL G' ψ hψ L' hL' hiso hK'`. Establish `hx' : pair (cls c.P c.isLB) (snd c.A T ≫ x) (fst c.A T) = 0` using `(cls_eq_zero_iff (pull_isLB c.isLB _)).2 hx`. Conclude with `kernel_of_kTriv (n := 8) (G := G) hadd (pair_comm c) hmon huniv hL hLW (0 : Fin 8) hK T x hx'`.
+-/
 theorem principal_of_pull : ∀ (g n : ℕ), 3 ≤ n → Odd n → ∀ (P R₁ R₂ R₀ : CommRingCat.{0}) (f₁ : P ⟶ R₁) (f₂ : P ⟶ R₂) (g₁ : R₁ ⟶ R₀) (g₂ : R₂ ⟶ R₀), IsPullback f₁ f₂ g₁ g₂ → IsLocalRing P → IsArtinianRing P → Function.Surjective g₁ → Function.Surjective g₂ → Nontrivial R₁ → ∀ (β : CommRingCat.of (cycAway n) ⟶ P) (c : SiegPre g n (zetaAway n) (Spec.map β)) (c₁ : SiegPre g n (zetaAway n) (Spec.map f₁ ≫ Spec.map β)), SiegPB c₁ c (Spec.map f₁) → c₁.Principal → c.Principal := by
   intro g n _ _ P R₁ R₂ R₀ f₁ f₂ g₁ g₂ hP hloc hart _ hs₂ _ β c c₁ hpb hc₁
   obtain ⟨φ, φ₂, hφ, hsq, hw, -⟩ := hpb

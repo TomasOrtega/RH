@@ -14,6 +14,17 @@ namespace GlobalTheory.NGRow
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 hcb hcT`. Take `⟨C1, C0n, hA1⟩` from `hM Cg cb Cw cT CT C0 hcb hcT`. Take `⟨CB, CSt, hCB, hCSt, a₀, b₀, hA2⟩` from `hA1 (C1 + C0n + 38)`. Take `⟨Cgs, CTs, hCg, hCT, s₀, t₀, hS2⟩` from `hS Cg cb Cw cT CT C0`. Take `⟨n₀, m₀, hN2⟩` from `hN Cg cb Cw cT CT C0`.
+
+Take `⟨p₀, q₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨h₀, j₀, hH2⟩` from `hH Cg cb Cw cT CT C0`. Use `⟨C1, C0n, C1 + C0n + 38, CB, CSt, Cgs, CTs, hCB, hCSt, hCg, hCT, le_refl _, max a₀ (max s₀ (max n₀ (max p₀ h₀))), max b₀ (max t₀ (max m₀ (max q₀ j₀))), fun C' Cl h1 h2 D large₂ X Y u u' hTies h0 hs hT => ?_⟩` and prove the remaining obligations. Establish `hc : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u'` using `⟨h0, hs, hT⟩`. Establish `e1' : a₀ ≤ C'` using `le_trans (by simp) h1`.
+
+Establish `e2' : b₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `f1 : s₀ ≤ C'` using `le_trans (by simp) h1`. Establish `f2 : t₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `i1 : n₀ ≤ C'` using `le_trans (by simp) h1`. Establish `i2 : m₀ ≤ Cl` using `le_trans (by simp) h2`.
+
+Establish `j1 : p₀ ≤ C'` using `le_trans (by simp) h1`. Establish `j2 : q₀ ≤ Cl` using `le_trans (by simp) h2`. Establish `k1 : h₀ ≤ C'` using `le_trans (by simp) h1`. Establish `k2 : j₀ ≤ Cl` using `le_trans (by simp) h2`. Take `⟨P, iP, B, Irat, Ire, hBk, νL, νB, ng, cSt, e1, hL, hBq, c1, c2, c3, c4, hV, hLoc, hGen, hMeas, hSum⟩` from `hA2 C' Cl e1' e2' D large₂ X Y u u' hTies hc`.
+
+Take `⟨hG, hdd, hNI, hFI⟩` from `hBk`. Use `⟨P, iP, B, cSt, e1, Irat, Ire, νL, νB, ng, hL, hBq, hG, hdd, hNI, hFI, ngSizes_of (hS2 C' Cl f1 f2 D large₂ X Y u u' hc) c1 c2 c3 c4, ?_, hMeas, hSum⟩` and prove the remaining obligations. Conclude with `⟨hC D X Y u u' hT νL νB ng, ampInput_of_vanish Y u u' νL νB ng hV, hN2 C' Cl i1 i2 D large₂ X Y u u' hc νL νB ng, hP2 C' Cl j1 j2 D large₂ X Y u u' hc νL νB ng, hLoc, hGen, hH2 C' Cl k1 k2 D large₂ X Y u u' hc νL νB ng⟩`.
+-/
 theorem ngCut2P_of_steps (hM : StepAnalyticConstantsP) (hS : StepSizes) (hC : StepClass) (hN : StepNormals)
     (hP : StepPoints) (hH : StepHeight) : NGCut2P := by
   intro Cg cb Cw cT CT C0 hcb hcT

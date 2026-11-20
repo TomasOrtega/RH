@@ -15,6 +15,17 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict.ColVac
 
+/- English proof (translation)
+Distinguish the cases in `hA : ∀ p, A p = 0`. Use `⟨1, by simp, fun p => ?_⟩` and prove the remaining obligations. Establish `hp` using `h p p`. Rewrite `hp` using `[hA p, zero_mul, Complex.mul_conj, Complex.ofReal_eq_zero, Complex.normSq_eq_zero]`. Rewrite using `[hp, hA p, mul_zero]`.
+
+Simplify using `only [not_forall] at hA`. Take `⟨p₀, hp₀⟩` from `hA`. Establish `e₀` using `h p₀ p₀`. Establish `hn : ‖B p₀‖ = ‖A p₀‖`. Use `congrArg (fun c : ℂ => ‖c‖) e₀` as an intermediate fact.
+
+Simplify using `only [norm_mul, Complex.norm_conj] at this`. Conclude with `(mul_self_inj (norm_nonneg _) (norm_nonneg _)).mp this`. Establish `hB₀ : B p₀ ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hn, norm_ne_zero_iff]`. Conclude with `hp₀`.
+
+Use `⟨B p₀ / A p₀, by rw [norm_div, hn, div_self (norm_ne_zero_iff.mpr hp₀)], fun p => ?_⟩` and prove the remaining obligations. Establish `e₁` using `h p p₀`. Establish `key : B p * A p₀ = B p₀ * A p`. Apply `mul_right_cancel₀ ((map_ne_zero (starRingEnd ℂ)).mpr hB₀)` to reduce the goal to its premises. Take the linear combination `(A p₀) * e₁ - (A p) * e₀`.
+
+Rewrite using `[div_mul_eq_mul_div, eq_div_iff hp₀, key]`.
+-/
 theorem exists_unit_factor {P : Type} (A B : P → ℂ)
     (h : ∀ p q, B p * conj (B q) = A p * conj (A q)) : ∃ t : ℂ, ‖t‖ = 1 ∧ ∀ p, B p = t * A p := by
   by_cases hA : ∀ p, A p = 0
@@ -43,6 +54,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Unfold `tens at hy ⊢`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, u, hu, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨h *ᵥ v, (m v).1 hv, u, hu, Matrix.mul_vecMulVec h v u⟩`.
+
+Consider the case `zero => rw [Matrix.mul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Matrix.mul_add]`. Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [Matrix.mul_neg]`.
+
+Conclude with `neg_mem ha`.
+-/
 theorem mul_mem_tens_of_moves {Λ Λ' : Lt E n} {K : Lt E r} {h : Matrix (Fin n) (Fin n) E}
     (m : Moves h Λ Λ') {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ K) : h * y ∈ tens Λ' K := by
   unfold tens at hy ⊢
@@ -54,6 +72,11 @@ theorem mul_mem_tens_of_moves {Λ Λ' : Lt E n} {K : Lt E r} {h : Matrix (Fin n)
   | add a b _ _ ha hb => rw [Matrix.mul_add]; exact add_mem ha hb
   | neg a _ ha => rw [Matrix.mul_neg]; exact neg_mem ha
 
+/- English proof (translation)
+Establish `hh : h * ccT h = 1` using `mul_eq_one_comm.mp hu`. Establish `m' : Moves (ccT h) Λ' Λ` using `fun v => by`. Rewrite using `[m (ccT h *ᵥ v), Matrix.mulVec_mulVec, hh, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Use `mul_mem_tens_of_moves m' hy` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, hu, Matrix.one_mul]`. Then use the resulting hypothesis. Introduce `hy`. Conclude with `mul_mem_tens_of_moves m hy`.
+-/
 theorem mul_mem_tens_iff {Λ Λ' : Lt E n} {K : Lt E r} {h : Matrix (Fin n) (Fin n) E}
     (hu : ccT h * h = 1) (m : Moves h Λ Λ') (y : Matrix (Fin n) (Fin r) E) :
     h * y ∈ tens Λ' K ↔ y ∈ tens Λ K := by
@@ -67,6 +90,11 @@ theorem mul_mem_tens_iff {Λ Λ' : Lt E n} {K : Lt E r} {h : Matrix (Fin n) (Fin
   · intro hy
     exact mul_mem_tens_of_moves m hy
 
+/- English proof (translation)
+Establish `hc : ccT (h * y) = ccT y * ccT h`. Use extensionality with `i j`. Simplify using `only [ccT, cc, Matrix.transpose_apply, Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Rewrite using `[hc, ← Matrix.mul_assoc, Matrix.trace_mul_comm (h * y * β * ccT y) (ccT h)]`.
+
+Simplify using `only [← Matrix.mul_assoc, hu, Matrix.one_mul]`.
+-/
 theorem trace_mul_unitary {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
     (β : Matrix (Fin r) (Fin r) E) (y : Matrix (Fin n) (Fin r) E) :
     (h * y * β * ccT (h * y)).trace = (y * β * ccT y).trace := by
@@ -77,6 +105,9 @@ theorem trace_mul_unitary {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
   rw [hc, ← Matrix.mul_assoc, Matrix.trace_mul_comm (h * y * β * ccT y) (ccT h)]
   simp only [← Matrix.mul_assoc, hu, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨R, hR, hl⟩` from `hφ`. Use `⟨R, hR, fun x hx => hl.1 x fun h0 => hx ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, h0, mul_zero]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hl.2 x y hy]`.
+-/
 theorem isSB_smul {φ : TF n g} (hφ : IsSB φ) (c : ℂ) : IsSB (c • φ) := by
   obtain ⟨R, hR, hl⟩ := hφ
   refine ⟨R, hR, fun x hx => hl.1 x fun h0 => hx ?_, fun x y hy => ?_⟩
@@ -85,6 +116,13 @@ theorem isSB_smul {φ : TF n g} (hφ : IsSB φ) (c : ℂ) : IsSB (c • φ) := b
 
 variable (X : Data E r) (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+Establish `hv : ∀ k, (fun a : Fin r => if (a : ℕ) < X.p0 then Dict.hAct X idx h z₁ k (idx.symm (τ, a)) else conj (Dict.hAct X idx h z₂ k (idx.symm (τ, a)))) = ∑ k', conj (τ.1 (h k k')) • (fun a : Fin r => if (a : ℕ) < X.p0 then z₁ k' (idx.symm (τ, a)) else conj (z₂ k' (idx.symm (τ, a))))`. Introduce `k`. Use function extensionality and compare the values at `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Dict.hAct, Equiv.apply_symm_apply]`. Use `split_ifs with ha`.
+
+Rewrite using `[rowType_of_lt X τ ha]`. Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[rowType_of_le X τ (not_lt.mp ha)]`. Simplify using `only [map_sum, map_mul]`. Use extensionality with `k b`.
+
+Simplify using `only [dblz, Matrix.of_apply, hv, Matrix.mulVec_sum, Matrix.mulVec_smul, Finset.smul_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Complex.star_def]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem dblz_hAct (h : Matrix (Fin n) (Fin n) E) (x₁ x₂ : Frame X.Ψ r) (z₁ z₂ : Fin n → Fin g → ℂ) (τ : X.Ψ) :
     dblz X idx x₁ x₂ (Dict.hAct X idx h z₁) (fun k i => conj (Dict.hAct X idx h z₂ k i)) τ =
       (h.map τ.1)ᴴᵀ * dblz X idx x₁ x₂ z₁ (fun k i => conj (z₂ k i)) τ := by
@@ -106,6 +144,13 @@ theorem dblz_hAct (h : Matrix (Fin n) (Fin n) E) (x₁ x₂ : Frame X.Ψ r) (z�
     Matrix.conjTranspose_apply, Matrix.map_apply, Complex.star_def]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hv : ∀ k, (fun a : Fin r => if (a : ℕ) < X.p0 then conj (Dict.hAct X idx h z₂ k (idx.symm (τ, a))) else Dict.hAct X idx h z₁ k (idx.symm (τ, a))) = ∑ k', τ.1 (h k k') • (fun a : Fin r => if (a : ℕ) < X.p0 then conj (z₂ k' (idx.symm (τ, a))) else z₁ k' (idx.symm (τ, a)))`. Introduce `k`. Use function extensionality and compare the values at `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Dict.hAct, Equiv.apply_symm_apply]`. Use `split_ifs with ha`.
+
+Rewrite using `[rowType_of_lt X τ ha]`. Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq, map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[rowType_of_le X τ (not_lt.mp ha)]`. Use extensionality with `k b`. Simplify using `only [dblz', Matrix.of_apply, hv, Matrix.mulVec_sum, Matrix.mulVec_smul, Matrix.sum_vecMul, Matrix.smul_vecMul, Finset.smul_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.map_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem dblz'_hAct (h : Matrix (Fin n) (Fin n) E) (x₁ x₂ : Frame X.Ψ r) (z₁ z₂ : Fin n → Fin g → ℂ) (τ : X.Ψ) :
     dblz' X idx x₁ x₂ (Dict.hAct X idx h z₁) (fun k i => conj (Dict.hAct X idx h z₂ k i)) τ =
       h.map τ.1 * dblz' X idx x₁ x₂ z₁ (fun k i => conj (z₂ k i)) τ := by
@@ -126,6 +171,9 @@ theorem dblz'_hAct (h : Matrix (Fin n) (Fin n) E) (x₁ x₂ : Frame X.Ψ r) (z�
     Matrix.map_apply]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem sum_rows_eq_trace (a b : Matrix (Fin n) (Fin r) ℂ) (M : Matrix (Fin r) (Fin r) ℂ) :
     ∑ k, a k ⬝ᵥ M *ᵥ b k = (a * M * bᵀ).trace := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, dotProduct, Matrix.mulVec,
@@ -134,6 +182,9 @@ theorem sum_rows_eq_trace (a b : Matrix (Fin n) (Fin r) ℂ) (M : Matrix (Fin r)
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hc : (h.map τ)ᴴ = (ccT h).map τ`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply, ccT, Matrix.transpose_apply, cc, NumberField.IsCMField.complexEmbedding_complexConj, Complex.star_def]`. Rewrite using `[hc, ← Matrix.map_mul, hu]`. Conclude with `Matrix.map_one _ (map_zero τ) (map_one τ)`.
+-/
 theorem map_unitary {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (τ : E →+* ℂ) :
     (h.map τ)ᴴ * h.map τ = 1 := by
   have hc : (h.map τ)ᴴ = (ccT h).map τ := by
@@ -143,6 +194,9 @@ theorem map_unitary {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (τ : E 
   rw [hc, ← Matrix.map_mul, hu]
   exact Matrix.map_one _ (map_zero τ) (map_one τ)
 
+/- English proof (translation)
+Rewrite using `[sum_rows_eq_trace, sum_rows_eq_trace, Matrix.transpose_mul, Matrix.transpose_transpose]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm (H * a * M * bᵀ) Hᴴ]`. Simplify using `only [← Matrix.mul_assoc, hH, Matrix.one_mul]`.
+-/
 private theorem sum_unitary_mul_dotProduct_mulVec_eq (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ * H = 1) (a b : Matrix (Fin n) (Fin r) ℂ)
     (M : Matrix (Fin r) (Fin r) ℂ) : ∑ k, (H * a) k ⬝ᵥ M *ᵥ (Hᴴᵀ * b) k = ∑ k, a k ⬝ᵥ M *ᵥ b k := by
   rw [sum_rows_eq_trace, sum_rows_eq_trace, Matrix.transpose_mul, Matrix.transpose_transpose]
@@ -150,6 +204,9 @@ private theorem sum_unitary_mul_dotProduct_mulVec_eq (H : Matrix (Fin n) (Fin n)
   rw [Matrix.trace_mul_comm (H * a * M * bᵀ) Hᴴ]
   simp only [← Matrix.mul_assoc, hH, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [kZero, dblz_hAct, dblz'_hAct]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[sum_unitary_mul_dotProduct_mulVec_eq _ (map_unitary hu τ.1)]`.
+-/
 theorem kZero_hAct {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (x₁ x₂ : Frame X.Ψ r)
     (z₁ z₂ : Fin n → Fin g → ℂ) :
     kZero X idx x₁ x₂ (Dict.hAct X idx h z₁) (fun k i => conj (Dict.hAct X idx h z₂ k i)) =
@@ -158,6 +215,9 @@ theorem kZero_hAct {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) (x₁ x�
   refine Finset.prod_congr rfl fun τ _ => ?_
   rw [sum_unitary_mul_dotProduct_mulVec_eq _ (map_unitary hu τ.1)]
 
+/- English proof (translation)
+Establish `t1` using `sum_unitary_mul_dotProduct_mulVec_eq H hH Y Yᴴᵀ Zm`. Establish `t2` using `sum_unitary_mul_dotProduct_mulVec_eq H hH Y D 1`. Establish `t3` using `sum_unitary_mul_dotProduct_mulVec_eq H hH D' Yᴴᵀ 1`. Simplify using `only [Matrix.one_mulVec] at t2 t3`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.transpose_mul, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, t1, t2, t3]`.
+-/
 private theorem sum_quadratic_linear_unitary_mul_rows_eq (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ * H = 1) (Y D D' : Matrix (Fin n) (Fin r) ℂ)
     (Zm : Matrix (Fin r) (Fin r) ℂ) :
     ∑ k, ((H * Y) k ⬝ᵥ Zm *ᵥ (H * Y)ᴴᵀ k + (H * Y) k ⬝ᵥ (Hᴴᵀ * D) k + (H * D') k ⬝ᵥ (H * Y)ᴴᵀ k) =
@@ -169,6 +229,13 @@ private theorem sum_quadratic_linear_unitary_mul_rows_eq (H : Matrix (Fin n) (Fi
   rw [Matrix.conjTranspose_mul, Matrix.transpose_mul, Finset.sum_add_distrib, Finset.sum_add_distrib,
     Finset.sum_add_distrib, Finset.sum_add_distrib, t1, t2, t3]
 
+/- English proof (translation)
+Establish `hh : h * ccT h = 1` using `mul_eq_one_comm.mp hu`. Set `eqv : Matrix (Fin n) (Fin r) E ≃ Matrix (Fin n) (Fin r) E` to `{ toFun := fun y => h * y invFun := fun y => ccT h * y left_inv := fun y => by simp only [← Matrix.mul_assoc, hu, Matrix.one_mul] right_inv := fun y => by simp only [← Matrix.mul_assoc, hh, Matrix.one_mul] }`. Unfold `thH`. Rewrite using `[← eqv.tsum_eq]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ψ' (h * y) * _ = _`. Rewrite using `[e y]`. Use `congr 3`. Unfold `expo`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Use `sum_quadratic_linear_unitary_mul_rows_eq (h.map τ.1) (map_unitary hu τ.1) (y.map τ.1) (D τ) (D' τ) (Z τ)` as an intermediate fact. Rewrite `this` using `[← Matrix.map_mul]`. Conclude with `this`.
+-/
 private theorem thH_unitary_translate_eq {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1)
     {ψ ψ' : Matrix (Fin n) (Fin r) E → ℂ} (e : ∀ y, ψ' (h * y) = ψ y) (Z : CM X.Ψ r r) (D D' : CM X.Ψ n r) :
     thH X.Ψ ψ' Z (fun τ => (h.map τ.1)ᴴᵀ * D τ) (fun τ => h.map τ.1 * D' τ) = thH X.Ψ ψ Z D D' := by
@@ -192,6 +259,11 @@ private theorem thH_unitary_translate_eq {h : Matrix (Fin n) (Fin n) E} (hu : cc
 
 variable (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ)
 
+/- English proof (translation)
+Establish `h1` using `d' x₁ h₁ x₂ h₂ (Dict.hAct X idx h z₁) (fun k i => conj (Dict.hAct X idx h z₂ k i))`. Establish `h2` using `d x₁ h₁ x₂ h₂ z₁ (fun k i => conj (z₂ k i))`. Simplify using `only [Complex.conj_conj] at h1 h2`. Rewrite using `[h1, h2, kZero_hAct X idx hu x₁ x₂ z₁ z₂]`. Use `congr 1`.
+
+Rewrite using `[show dblz X idx x₁ x₂ (Dict.hAct X idx h z₁) (fun k i => conj (Dict.hAct X idx h z₂ k i)) = fun τ => (h.map τ.1)ᴴᵀ * dblz X idx x₁ x₂ z₁ (fun k i => conj (z₂ k i)) τ from`. Use function extensionality and compare the values at `(dblz_hAct X idx h x₁ x₂ z₁ z₂),`. Use `show dblz' X idx x₁ x₂ (Dict.hAct X idx h z₁) (fun k i => conj (Dict.hAct X idx h z₂ k i)) = fun τ => h.map τ.1 * dblz' X idx x₁ x₂ z₁ (fun k i => conj (z₂ k i)) τ from`. Use function extensionality and compare the values at `(dblz'_hAct X idx h x₁ x₂ z₁ z₂)]`. Conclude with `thH_unitary_translate_eq X hu e _ _ _`.
+-/
 theorem prod_hAct {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) {φ₁ φ₂ φ₁' φ₂' : TF n g}
     {ψ ψ' : Matrix (Fin n) (Fin r) E → ℂ} (d : IsDbl X bas idx φ₁ φ₂ ψ) (d' : IsDbl X bas idx φ₁' φ₂' ψ')
     (e : ∀ y, ψ' (h * y) = ψ y) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom)
@@ -213,6 +285,15 @@ theorem prod_hAct {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) {φ₁ φ�
 
 end GlobalTheory.Dict.ColVac
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn w hw hw1 h hu Λ hΛ Λ' hΛ' m`. Establish `sbP : ∀ (Λ₀ : Lt E n) (L : Lt E r) (v : TF n g), IsSB v → IsSB (unitv (projA X bas w (tens Λ₀ L) v))`. Introduce `Λ₀ L v hv`. Unfold `unitv projA`. Use `GlobalTheory.Dict.ColVac.isSB_smul (GlobalTheory.Dict.ColVac.isSB_smul ?_ _) _` and prove the remaining obligations.
+
+Use `finsum_mem_induction (fun φ : TF n g => IsSB φ) GlobalTheory.SW.isSB_zero (fun a b ha hb => GlobalTheory.SW.DblVac.sb_add ha hb) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `GlobalTheory.SW.TensVac.rho_sb idx hs hn y hv`. Set `P` to `{p : Lt E r × TF n g × Frame X.Ψ r × (Fin n → Fin g → ℂ) // SelfD X p.1 ∧ IsVac X bas w (tens (stdL E n) p.1) p.2.1 ∧ p.2.2.1 ∈ X.dom}`. Set `A : P → ℂ` to `fun p => thA X bas idx (unitv (projA X bas w (tens Λ p.1.1) p.1.2.1)) p.1.2.2.1 p.1.2.2.2`.
+
+Set `B : P → ℂ` to `fun p => thA X bas idx (unitv (projA X bas w (tens Λ' p.1.1) p.1.2.1)) p.1.2.2.1 (hAct X idx h p.1.2.2.2)`. Take `⟨t, ht, hBA⟩` from `GlobalTheory.Dict.ColVac.exists_unit_factor A B (by`. Introduce and unpack `⟨⟨L₁, v₁, x₁, z₁⟩, hL₁, hv₁, hx₁⟩ ⟨⟨L₂, v₂, x₂, z₂⟩, hL₂, hv₂, hx₂⟩`. Take `⟨β, c, -, hβ⟩` from `GlobalTheory.SW.dbl_vacuum E r X g bas idx n hs hn w hw hw1 L₁ L₂ hL₁ hL₂ 1 one_pos v₁ v₂ hv₁ hv₂`. Establish `d` using `(GlobalTheory.SW.DblEx.dbl_spec E r X g bas idx n hs hn _ _ (sbP Λ L₁ v₁ hv₁.1) (sbP Λ L₂ v₂ hv₂.1)).2.1`.
+
+Establish `d'` using `(GlobalTheory.SW.DblEx.dbl_spec E r X g bas idx n hs hn _ _ (sbP Λ' L₁ v₁ hv₁.1) (sbP Λ' L₂ v₂ hv₂.1)).2.1`. Use `GlobalTheory.Dict.ColVac.prod_hAct X idx bas hu d d' (fun y => ?_) hx₁ hx₂ z₁ z₂` and prove the remaining obligations. Rewrite using `[hβ Λ' hΛ', hβ Λ hΛ, GlobalTheory.Dict.ColVac.mul_mem_tens_iff hu m, GlobalTheory.Dict.ColVac.trace_mul_unitary hu])`. Conclude with `⟨t, ht, fun L hL v hv x hx z => hBA ⟨(L, v, x, z), hL, hv, hx⟩⟩`.
+-/
 theorem GlobalTheory.Dict.thA_vacuum_hAct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∀ Λ ∈ Vset E n 1, ∀ Λ' ∈ Vset E n 1, Moves h Λ Λ' → ∃ t : ℂ, ‖t‖ = 1 ∧ ∀ L : Lt E r, SelfD X L → ∀ v : TF n g, IsVac X bas w (tens (stdL E n) L) v → ∀ x ∈ X.dom, ∀ z : Fin n → Fin g → ℂ, thA X bas idx (unitv (projA X bas w (tens Λ' L) v)) x (hAct X idx h z) = t * thA X bas idx (unitv (projA X bas w (tens Λ L) v)) x z := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw1 h hu Λ hΛ Λ' hΛ' m
   have sbP : ∀ (Λ₀ : Lt E n) (L : Lt E r) (v : TF n g), IsSB v →

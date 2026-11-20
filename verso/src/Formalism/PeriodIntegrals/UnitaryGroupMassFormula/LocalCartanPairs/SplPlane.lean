@@ -8,15 +8,24 @@ namespace PI.LocCartanPair
 
 variable {R : Type} [CommRing R] [StarRing R]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem splPlane_entry {ι m n : Type} [Fintype ι] (A : Matrix ι ι R) (M : Matrix ι m R)
     (N : Matrix ι n R) (r : m) (s : n) :
     (Mᴴ * A * N) r s = star (fun i => M i r) ⬝ᵥ (A *ᵥ fun i => N i s) := by
   rw [Matrix.mul_assoc]; rfl
 
+/- English proof (translation)
+Rewrite using `[star_dotProduct, star_star, star_mulVec, ← dotProduct_mulVec, hA]`.
+-/
 theorem splPlane_herm {ι : Type} [Fintype ι] (A : Matrix ι ι R) (hA : Aᴴ = A) (a b : ι → R) :
     star (star a ⬝ᵥ (A *ᵥ b)) = star b ⬝ᵥ (A *ᵥ a) := by
   rw [star_dotProduct, star_star, star_mulVec, ← dotProduct_mulVec, hA]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hm : w ⬝ᵥ z ∈ IsLocalRing.maximalIdeal R` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hn i))`. Rewrite `hm` using `[h]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm isUnit_one`.
+-/
 theorem splPlane_unitEntry [IsLocalRing R] {ι : Type} [Fintype ι] (w z : ι → R)
     (h : w ⬝ᵥ z = 1) : ∃ i, IsUnit (z i) := by
   by_contra hn
@@ -35,6 +44,39 @@ def splCorr (E : Fin 2 ⊕ κ ≃ ι) (A : Matrix ι ι R) (x y : ι → R) : Ma
   fun a j => ![-(star y ⬝ᵥ (A *ᵥ fun i => (1 : Matrix ι ι R) i (E (.inr j)))),
     -(star x ⬝ᵥ (A *ᵥ fun i => (1 : Matrix ι ι R) i (E (.inr j))))] a
 
+/- English proof (translation)
+Establish `hyx : star y ⬝ᵥ (A *ᵥ x) = 1` using `by rw [← splPlane_herm A hA x y, hxy, star_one]`. Use `set u₀ := splBasis E x y with hu₀def`. Use `set B := splCorr E A x y with hBdef`. Use `set T : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := fromBlocks 1 B 0 1 with hTdef`. Use `set T' : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := fromBlocks 1 (-B) 0 1 with hT'def`.
+
+Establish `hTT' : T * T' = 1` using `by simp [hTdef, hT'def, fromBlocks_multiply, fromBlocks_one]`. Establish `hT'T : T' * T = 1` using `by simp [hTdef, hT'def, fromBlocks_multiply, fromBlocks_one]`. Use `set S : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := u₀.submatrix E id with hSdef`. Establish `hS : S = fromBlocks S.toBlocks₁₁ 0 S.toBlocks₂₁ 1` using `by conv_lhs => rw [← fromBlocks_toBlocks S]`. Use `congr 1`.
+
+Use extensionality with `a j`. Simplify using `[hSdef, hu₀def, splBasis, toBlocks₁₂, one_apply]`. Use extensionality with `k j`. Simplify using `[hSdef, hu₀def, splBasis, toBlocks₂₂, one_apply]`. Establish `hSdet : IsUnit S.det`.
+
+Rewrite using `[hS, det_fromBlocks_zero₁₂, det_one, mul_one, det_fin_two]`. Simplify `hdet` using `[hSdef, hu₀def, splBasis, toBlocks₁₁]`. Use `set v₀ : Matrix (Fin 2 ⊕ κ) ι R := S⁻¹.submatrix id E.symm with hv₀def`. Establish `hu₀S : u₀ = S.submatrix E.symm id` using `by ext i c; simp [hSdef]`. Establish `huv₀ : u₀ * v₀ = 1`.
+
+Rewrite using `[hu₀S, hv₀def, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, mul_nonsing_inv _ hSdet, submatrix_one_equiv]`. Establish `hvu₀ : v₀ * u₀ = 1`. Rewrite using `[hu₀S, hv₀def, submatrix_mul_equiv, nonsing_inv_mul _ hSdet, submatrix_id_id]`. Use `set u := u₀ * T with hudef`. Use `set v := T' * v₀ with hvdef`.
+
+Establish `huv : u * v = 1`. Rewrite using `[hudef, hvdef, Matrix.mul_assoc, ← Matrix.mul_assoc T, hTT', Matrix.one_mul, huv₀]`. Establish `hvu : v * u = 1`. Rewrite using `[hudef, hvdef, Matrix.mul_assoc, ← Matrix.mul_assoc v₀, hvu₀, Matrix.one_mul, hT'T]`. Establish `hc0 : (fun i => u i (.inl 0)) = x`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hudef, hTdef, hu₀def, splBasis, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two]`. Establish `hc1 : (fun i => u i (.inl 1)) = y`. Use function extensionality and compare the values at `i`. Simplify using `[hudef, hTdef, hu₀def, splBasis, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two]`.
+
+Establish `hcj : ∀ j, (fun i => u i (.inr j)) = (fun i => (1 : Matrix ι ι R) i (E (.inr j))) + B 0 j • x + B 1 j • y`. Introduce `j`. Use function extensionality and compare the values at `i`. Simplify using `[hudef, hTdef, hu₀def, splBasis, Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set G := uᴴ * A * u with hGdef`. Apply the tactic sequence `have hG : ∀ r s, G r s = star (fun i => u i r) ⬝ᵥ (A *ᵥ fun i => u i s) := fun r s => splPlane_entry A u u r s`. Establish `h12 : G.toBlocks₁₂ = 0`. Use extensionality with `a j`. Simplify using `only [toBlocks₁₂, of_apply, hG, hcj, Matrix.zero_apply]`.
+
+Use `fin_cases a`. Simplify using `only [Fin.zero_eta, Fin.isValue, hc0, mulVec_add, mulVec_smul, dotProduct_add, dotProduct_smul, smul_eq_mul, hxx, hxy, hBdef, splCorr]`. Simplify using the standard rewrite rules. Simplify using `only [Fin.mk_one, Fin.isValue, hc1, mulVec_add, mulVec_smul, dotProduct_add, dotProduct_smul, smul_eq_mul, hyx, hyy, hBdef, splCorr]`. Simplify using the standard rewrite rules.
+
+Establish `h21 : G.toBlocks₂₁ = 0`. Use extensionality with `j a`. Use `congrFun (congrFun h12 a) j` as an intermediate fact. Simplify using `only [toBlocks₁₂, toBlocks₂₁, of_apply, Matrix.zero_apply] at this ⊢`. Rewrite using `[hG, ← splPlane_herm A hA, ← hG, this, star_zero]`.
+
+Establish `h11 : G.toBlocks₁₁ = !![0, 1; 1, 0]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[toBlocks₁₁, hG, hc0, hc1, hxx, hyy, hxy, hyx]`. Establish `hGe : G = fromBlocks !![0, 1; 1, 0] 0 0 G.toBlocks₂₂` using `by conv_lhs => rw [← fromBlocks_toBlocks G]`.
+
+Rewrite using `[h11, h12, h21]`. Use `⟨u, v, G.toBlocks₂₂, huv, hvu, fun i => congrFun hc0 i, fun i => congrFun hc1 i, hGe, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, toBlocks₂₂, of_apply]`. Rewrite using `[hG, hG, splPlane_herm A hA]`.
+
+Introduce `hAdet set U : Matrix (Fin 2 ⊕ κ) (Fin 2 ⊕ κ) R := u.submatrix E id with hUdef`. Establish `hUv : U * v.submatrix id E = 1`. Rewrite using `[hUdef, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, huv, submatrix_one_equiv]`. Establish `hU : IsUnit U.det` using `isUnit_det_of_right_inverse hUv`. Establish `hGU : G = Uᴴ * A.submatrix E E * U`.
+
+Rewrite using `[hUdef, conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, submatrix_id_id]`. Establish `hGdet : IsUnit G.det`. Rewrite using `[hGU, det_mul, det_mul, det_conjTranspose, det_submatrix_equiv_self]`. Conclude with `(hU.star.mul hAdet).mul hU`. Rewrite `hGdet` using `[hGe, det_fromBlocks_zero₁₂]`.
+
+Conclude with `isUnit_of_mul_isUnit_right hGdet`.
+-/
 theorem splPlane_core (E : Fin 2 ⊕ κ ≃ ι) (A : Matrix ι ι R) (hA : Aᴴ = A) (x y : ι → R)
     (hxx : star x ⬝ᵥ (A *ᵥ x) = 0) (hyy : star y ⬝ᵥ (A *ᵥ y) = 0)
     (hxy : star x ⬝ᵥ (A *ᵥ y) = 1)
@@ -133,6 +175,17 @@ section Local
 
 variable {R : Type} [CommRing R] [StarRing R]
 
+/- English proof (translation)
+Establish `hyx : star y ⬝ᵥ (A *ᵥ x) = 1` using `by rw [← splPlane_herm A hA x y, hxy, star_one]`. Rewrite `hyx` using `[dotProduct_mulVec]`. Apply the tactic sequence `obtain ⟨i₀, hi₀⟩ := splPlane_unitEntry _ _ hyx`. Take `⟨xi, hxi⟩` from `hi₀.exists_right_inv`. Use `set y' := y - (y i₀ * xi) • x with hy'`.
+
+Establish `hy'i : y' i₀ = 0`. Simplify using `only [hy', Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-(y i₀)) * hxi`. Establish `hxy' : (star x ᵥ* A) ⬝ᵥ y' = 1`. Rewrite using `[← dotProduct_mulVec, hy', mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, hxx, hxy, smul_eq_mul, mul_zero, sub_zero]`.
+
+Apply the tactic sequence `obtain ⟨j₀, hj₀⟩ := splPlane_unitEntry _ _ hxy'`. Establish `hne : i₀ ≠ j₀`. Introduce and unpack `rfl`. Rewrite `hj₀` using `[hy'i]`. Conclude with `not_isUnit_zero hj₀`.
+
+Use `⟨i₀, j₀, hne, ?_⟩` and prove the remaining obligations. Establish `e : x i₀ * y j₀ - y i₀ * x j₀ = x i₀ * y' j₀`. Simplify using `only [hy', Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(y i₀ * x j₀) * hxi`. Rewrite using `[e]`.
+
+Conclude with `hi₀.mul hj₀`.
+-/
 theorem splPlane_pair [IsLocalRing R] {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι R)
     (hA : Aᴴ = A) (x y : ι → R) (hxx : star x ⬝ᵥ (A *ᵥ x) = 0)
     (hxy : star x ⬝ᵥ (A *ᵥ y) = 1) :
@@ -175,6 +228,11 @@ def splEquiv {ι : Type} [DecidableEq ι] (i₀ j₀ : ι) (hne : i₀ ≠ j₀)
       · subst h1; simp [h0]
       · simp [h0, h1]
 
+/- English proof (translation)
+Take `⟨i₀, j₀, hne, hu⟩` from `splPlane_pair A hA x y hxx hxy`. Establish `hc₀ : Fintype.card {j // j ≠ i₀ ∧ j ≠ j₀} = Fintype.card κ`. Use `Fintype.card_congr (splEquiv i₀ j₀ hne)` as an intermediate fact. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers.
+
+Set `E : Fin 2 ⊕ κ ≃ ι` to `(Equiv.sumCongr (Equiv.refl _) (Fintype.equivOfCardEq hc₀).symm).trans (splEquiv i₀ j₀ hne)`. Establish `h0 : E (.inl 0) = i₀` using `by simp [E, splEquiv]`. Establish `h1 : E (.inl 1) = j₀` using `by simp [E, splEquiv]`. Conclude with `splPlane_core E A hA x y hxx hyy hxy (by rw [h0, h1]; exact hu)`.
+-/
 theorem splPlane [IsLocalRing R] {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [DecidableEq κ] (hc : Fintype.card κ + 2 = Fintype.card ι) (A : Matrix ι ι R) (hA : Aᴴ = A)
     (x y : ι → R) (hxx : star x ⬝ᵥ (A *ᵥ x) = 0) (hyy : star y ⬝ᵥ (A *ᵥ y) = 0)

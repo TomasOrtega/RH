@@ -26,6 +26,11 @@ namespace GlobalTheory.LiftFlatModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[D.host.F] star (star x) = _`.
+
+Rewrite using `[star_star]`.
+-/
 theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => rw [RingHom.map_zero, RingHom.map_zero]
@@ -34,22 +39,39 @@ theorem cA_cA (z : AE D) : cA D (cA D z) = z := by
     change a ⊗ₜ[D.host.F] star (star x) = _
     rw [star_star]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.add_apply]; exact add_mem (hN i j) (hM i j)`.
+-/
 theorem isIntM_add {b a : ℕ} {N M : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) (hM : IsIntM M) :
     IsIntM (N + M) := fun i j => by rw [Matrix.add_apply]; exact add_mem (hN i j) (hM i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.neg_apply]; exact neg_mem (hN i j)`.
+-/
 theorem isIntM_neg {b a : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) : IsIntM (-N) :=
   fun i j => by rw [Matrix.neg_apply]; exact neg_mem (hN i j)
 
+/- English proof (translation)
+Unfold `frMapO`. Rewrite using `[Matrix.map_add (toEAf D) (fun a b => (toEAf D).map_add a b), Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem frMapO_add (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x y : WO S T) :
     frMapO S T βS βT (x + y) = frMapO S T βS βT x + frMapO S T βS βT y := by
   unfold frMapO
   rw [Matrix.map_add (toEAf D) (fun a b => (toEAf D).map_add a b), Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `frMapO`. Rewrite using `[Matrix.map_neg (toEAf D) (fun a => (toEAf D).map_neg a), Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 theorem frMapO_neg (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x : WO S T) :
     frMapO S T βS βT (-x) = -frMapO S T βS βT x := by
   unfold frMapO
   rw [Matrix.map_neg (toEAf D) (fun a => (toEAf D).map_neg a), Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h2 : (M + N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `add_mem (hM i j) (hN i j)`. Rewrite using `[Matrix.add_apply]`. Unfold `redM`. Rewrite using `[dif_pos h2, dif_pos (hM i j), dif_pos (hN i j), ← RingHom.map_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem redM_add (PP : Pl D.host.E) {b a : ℕ} {M N : Matrix (Fin b) (Fin a) (EAf D)} (hM : IsIntM M) (hN : IsIntM N) :
     redM PP (M + N) = redM PP M + redM PP N := by
   funext i j
@@ -59,6 +81,11 @@ theorem redM_add (PP : Pl D.host.E) {b a : ℕ} {M N : Matrix (Fin b) (Fin a) (E
   rw [dif_pos h2, dif_pos (hM i j), dif_pos (hN i j), ← RingHom.map_add]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Establish `h2 : (-N) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `neg_mem (hN i j)`. Rewrite using `[Matrix.neg_apply]`. Unfold `redM`. Rewrite using `[dif_pos h2, dif_pos (hN i j), ← RingHom.map_neg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem redM_neg (PP : Pl D.host.E) {b a : ℕ} {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) :
     redM PP (-N) = -redM PP N := by
   funext i j
@@ -68,6 +95,11 @@ theorem redM_neg (PP : Pl D.host.E) {b a : ℕ} {N : Matrix (Fin b) (Fin a) (EAf
   rw [dif_pos h2, dif_pos (hN i j), ← RingHom.map_neg]
   rfl
 
+/- English proof (translation)
+Establish `hiff : (∀ PP ∈ Q, IsUnit (topL r (y PP)).det) ↔ ∀ PP ∈ Q, IsUnit (topL r (y' PP)).det` using `forall_congr' fun PP => forall_congr' fun hPP => by rw [h PP hPP]`. Unfold `omegaFlat`. Distinguish the cases in `h1 : ∀ PP ∈ Q, IsUnit (topL r (y PP)).det`. Rewrite using `[dif_pos h1, dif_pos (hiff.1 h1)]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Establish `e : (h1 PP.1 PP.2).unit = (hiff.1 h1 PP.1 PP.2).unit` using `Units.ext (by rw [IsUnit.unit_spec, IsUnit.unit_spec, h PP.1 PP.2])`. Rewrite using `[e]`. Rewrite using `[dif_neg h1, dif_neg fun h2 => h1 (hiff.2 h2)]`.
+-/
 theorem omegaFlat_congr {a b : ℕ} (Q : Finset (Pl D.host.E)) (r : ℕ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
     {y y' : ∀ PP : Pl D.host.E, Matrix (Fin a) (Fin b) (kP PP)} (h : ∀ PP ∈ Q, y PP = y' PP) :
     omegaFlat Q r ξ y = omegaFlat Q r ξ y' := by
@@ -88,6 +120,11 @@ namespace GlobalTheory.LiftFlatModel
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h1` using `h i j`. Establish `h2` using `hu i j`. Simplify using `only [Matrix.add_apply, mul_add] at h1`.
+
+Rewrite `h1` using `[h2]`. Conclude with `add_right_cancel h1`. Introduce `h i j`. Simplify using `only [Matrix.add_apply, mul_add, h i j, hu i j]`.
+-/
 theorem isHalf_add_iff {e : AE D} {x u : Mx D m n} (hu : IsHalf e u) : IsHalf e (x + u) ↔ IsHalf e x := by
   constructor
   · intro h i j
@@ -99,10 +136,16 @@ theorem isHalf_add_iff {e : AE D} {x u : Mx D m n} (hu : IsHalf e u) : IsHalf e 
   · intro h i j
     simp only [Matrix.add_apply, mul_add, h i j, hu i j]
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.neg_apply, mul_neg, hu i j]`.
+-/
 theorem isHalf_neg {e : AE D} {u : Mx D m n} (hu : IsHalf e u) : IsHalf e (-u) := by
   intro i j
   simp only [Matrix.neg_apply, mul_neg, hu i j]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `fun i j => mul_zero e`. Consider the case `succ k ih => rw [succ_nsmul]`. Conclude with `(isHalf_add_iff hu).2 ih`.
+-/
 theorem isHalf_nsmul {e : AE D} {u : Mx D m n} (hu : IsHalf e u) (k : ℕ) : IsHalf e (k • u) := by
   induction k with
   | zero => rw [zero_nsmul]; exact fun i j => mul_zero e
@@ -110,6 +153,17 @@ theorem isHalf_nsmul {e : AE D} {u : Mx D m n} (hu : IsHalf e u) (k : ℕ) : IsH
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨k, hk0, hkR⟩` from `hk`. Establish `hne : ∀ x, Ψ x ≠ 0 → ∃ u ∈ Rs, x + u ∈ Λ ∧ IsHalf e (x + u)`. Introduce `x hx`. Rewrite `hx` using `[hΨ x]`. Take `⟨u, hu, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx`.
+
+Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Apply `hne` to reduce the goal to its premises. Simplify using `[halfInd, hc]`. Use `⟨fun x hx => ?_, k, hk0, fun v hv hve x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu, -, hh⟩` from `hne x hx`. Conclude with `(isHalf_add_iff (hR u hu)).1 hh`. Rewrite using `[hΨ, hΨ]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Establish `hkv : k • v ∈ Λ` using `AddSubgroup.nsmul_mem Λ hv k`.
+
+Establish `hkh : IsHalf e (k • v)` using `isHalf_nsmul hve k`. Establish `e1 : x + k • v + u = (x + u) + k • v` using `by abel`. Establish `e2 : (x + u + k • v ∈ Λ ∧ IsHalf e (x + u + k • v)) ↔ (x + u ∈ Λ ∧ IsHalf e (x + u))` using `and_congr (Λ.add_mem_cancel_right hkv) (isHalf_add_iff hkh)`. Rewrite using `[e1]`. Unfold `halfInd`.
+
+Rewrite using `[if_congr e2 rfl rfl]`. Take `⟨u, hu, hl, -⟩` from `hne x hx`. Establish `h1 : k • (x + u) ∈ Λ` using `AddSubgroup.nsmul_mem Λ hl k`. Rewrite `h1` using `[nsmul_add]`. Conclude with `(Λ.add_mem_cancel_right (hkR u hu)).1 h1`.
+-/
 theorem isSBHalf_of_sum {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Ψ : Mx D m n → ℂ} {Rs : Finset (Mx D m n)}
     {c : Mx D m n → ℂ} (hR : ∀ u ∈ Rs, IsHalf e u) (hΨ : ∀ x, Ψ x = ∑ u ∈ Rs, c u * halfInd e Λ (x + u))
     (hk : ∃ k : ℕ, 0 < k ∧ ∀ u ∈ Rs, k • u ∈ Λ) : IsSBHalf e Λ Ψ := by
@@ -140,6 +194,11 @@ theorem isSBHalf_of_sum {e : AE D} {Λ : AddSubgroup (Mx D m n)} {Ψ : Mx D m n 
     rw [nsmul_add] at h1
     exact (Λ.add_mem_cancel_right (hkR u hu)).1 h1
 
+/- English proof (translation)
+Establish `hvac : Tm (halfInd e Λ) = f₀` using `by simpa using hT.vac`. Establish `hΨ' : Ψ = ∑ u ∈ Rs, c u • fun x => halfInd e Λ (x + u)`. Use function extensionality and compare the values at `x`. Rewrite using `[hΨ x, Finset.sum_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[hΨ', map_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hT.trans _ (GlobalTheory.isSBHalf_halfInd e Λ) u (hR u hu), hvac]`.
+-/
 theorem placeModel_sum {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F}
     {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f₀ : Mx D m n → ℂ}
     {Tm : (Mx D m n → ℂ) →ₗ[ℂ] (Mx D m n → ℂ)} (hT : IsPlaceModel ψ B hs e Λ 1 f₀ Tm) {Ψ : Mx D m n → ℂ}
@@ -154,6 +213,13 @@ theorem placeModel_sum {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m
   refine Finset.sum_congr rfl fun u hu => ?_
   rw [map_smul, hT.trans _ (GlobalTheory.isSBHalf_halfInd e Λ) u (hR u hu), hvac]
 
+/- English proof (translation)
+Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Establish `hΦ' : Φ = ∑ y ∈ Y, a y • fun t => ψ (B t y) * halfInd e Λ t`. Use function extensionality and compare the values at `t`. Rewrite using `[hΦ t, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvac : Tm (halfInd e Λ) = f₀` using `by simpa using hTm.vac`. Rewrite using `[hall Tm hTm, hΦ', map_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hTm.modul _ (GlobalTheory.isSBHalf_halfInd e Λ) y (hY y hy), hvac]`.
+-/
 theorem thetaAt_sum {ψ : AddChar (AF D.host.F) ℂ} {B : Mx D m n → Mx D m n → AF D.host.F}
     {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {f₀ Φ f : Mx D m n → ℂ}
     (hθ : IsThetaAt ψ B hs e Λ 1 f₀ Φ f) {Y : Finset (Mx D m n)} {a : Mx D m n → ℂ} (hY : ∀ y ∈ Y, IsHalf (cA D e) y)
@@ -176,6 +242,25 @@ namespace GlobalTheory.LiftFlatModel
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV eQ heQ ϖ hϖ0 hϖ`. Take `⟨cV, hcV⟩` from `hC.lev.βV i`. Take `⟨cW, hcW⟩` from `hC.lev.βW i`. Establish `sV : IsSelfDualC (Vc D i) (R.ΛV i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βV i))`. Establish `sW : IsSelfDualC (Wc D i) (R.ΛW i)` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βW i))`.
+
+Establish `hψ : IsStdChar D R.ψ (-1)` using `(hC.thP.ωP i t).std`. Establish `hP` using `hQG.2 t`. Establish `hfr` using `GlobalTheory.T.mem_completedLattice_half_iff_frameMatrix_integral D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) sV sW hcV.1 hcW.1 (R.Q t) eQ heQ hP`. Establish `hker` using `GlobalTheory.T.frameMatrix_integral_iff_uniformiser_multiple_on_half D (Vc D i) (Wc D i) (R.βV i) (R.βW i) (R.Q t) eQ heQ ϖ hϖ0 hϖ`. Take `⟨k, hk0, hk⟩` from `GlobalTheory.T.exists_nat_integral_frame_of_uniformizer_mul D (Vc D i) (Wc D i) (R.βV i) (R.βW i) ϖ hϖ0`.
+
+Take `⟨ψP, hprim, hpair⟩` from `GlobalTheory.T.symplectic_pairing_half_lattices_eq_prod_primitive D R.ψ (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) hψ sV sW hcV.1 hcW.1 (R.Q t) eQ heQ hP ϖ hϖ0 hϖ`. Use `choose g hg1 hg2 hg3 using fun y : ∀ PP : ↥(R.Q t), Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) (kP PP.1) => GlobalTheory.T.exists_half_uniformiser_frameMatrix_prescribed_reductions D (Vc D i) (Wc D i) (R.βV i) (R.βW i) (R.Q t) eQ heQ ϖ hϖ0 (fun PP => if h : PP ∈ R.Q t then y …`. Establish `hg4 : ∀ y (PP : ↥(R.Q t)), redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) ((g y).map fun w => incA D (ϖ : D.host.E) * w)) = y PP` using `fun y PP => by`. Rewrite using `[hg3 y PP.1 PP.2, dif_pos PP.2]`. Use `letI : ∀ PP : Pl D.host.E, Fintype (kP PP) := fun PP => Fintype.ofFinite _`.
+
+Establish `hmem : ∀ u ∈ Finset.univ.image g, IsHalf eQ u ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w))`. Introduce `u hu`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hu`. Conclude with `⟨hg1 y, hg2 y⟩`. Use `⟨ψP, Finset.univ.image g, hprim, hmem, ⟨k, hk0, fun u hu => ?_⟩, fun y => ?_, fun x hx u hu => ?_, fun x hx => ⟨fun h => ?_, fun h => ?_⟩, fun x hx hi u hu => hpair x hx hi u (hmem u hu).1 (hmem u hu).2⟩` and prove the remaining obligations.
+
+Conclude with `(hfr _ (isHalf_nsmul (hmem u hu).1 k)).2 (hk u (hmem u hu).2)`. Use `⟨g y, ⟨Finset.mem_image_of_mem g (Finset.mem_univ y), hg4 y⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u ⟨hu, hred⟩`. Take `⟨y', -, rfl⟩` from `Finset.mem_image.1 hu`. Establish `: y' = y` using `funext fun PP => (hg4 y' PP).symm.trans (hred PP)`.
+
+Rewrite using `[this]`. Establish `hxu : IsHalf eQ (x + u)` using `(isHalf_add_iff (hmem u hu).1).2 hx`. Establish `e1 : ((x + u).map fun w => incA D (ϖ : D.host.E) * w) = (x.map fun w => incA D (ϖ : D.host.E) * w) + (u.map fun w => incA D (ϖ : D.host.E) * w)`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, mul_add]`.
+
+Rewrite using `[hfr _ hxu, hker _ hxu, e1, frMapO_add]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h3` using `isIntM_add h1 (isIntM_neg (hmem u hu).2)`. Rewrite `h3` using `[add_neg_cancel_right]`.
+
+Use `⟨h3, fun PP hPP => ?_⟩` and prove the remaining obligations. Establish `h4` using `h2 PP hPP`. Rewrite `h4` using `[redM_add PP h3 (hmem u hu).2]`. Conclude with `eq_neg_of_add_eq_zero_left h4`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨isIntM_add h1 (hmem u hu).2, fun PP hPP => ?_⟩` and prove the remaining obligations. Rewrite using `[redM_add PP h1 (hmem u hu).2, h2 PP hPP, neg_add_cancel]`. Conclude with `GlobalTheory.T.adjointFrameMatrix_integral_of_conjugate_half D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) sV sW hcV.1 hcW.1 (R.Q t) eQ heQ hP x h hx`. Conclude with `GlobalTheory.T.idempotent_sum_self_dual_frames_bound D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) sV sW hcV.1 hcW.1 (R.Q t) eQ heQ hP x hx h`.
+-/
 theorem exists_reps_pairing : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0), VStd D i → ∀ (eQ : AE D), IsIdemSum eQ (R.Q t) → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ R.Q t, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∃ (ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (Rs : Finset (WO (Vc D i) (Wc D i))), (∀ PP ∈ R.Q t, (ψP PP).IsPrimitive) ∧ (∀ u ∈ Rs, IsHalf eQ u ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w))) ∧ (∃ k : ℕ, 0 < k ∧ ∀ u ∈ Rs, k • u ∈ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) ∧ (∀ y : ∀ PP : ↥(R.Q t), Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) (kP PP.1), ∃! u, u ∈ Rs ∧ ∀ PP : ↥(R.Q t), redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w)) = y PP) ∧ (∀ x, IsHalf eQ x → ∀ u ∈ Rs, (x + u ∈ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True) ↔ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)) ∧ ∀ PP ∈ R.Q t, redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)) = -redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w)))) ∧ (∀ x, IsHalf (cA D eQ) x → (x ∈ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True) ↔ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x))) ∧ (∀ x, IsHalf (cA D eQ) x → IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) → ∀ u ∈ Rs, R.ψ (symplO (Vc D i) (Wc D i) x u) = ∏ PP ∈ (R.Q t).attach, ψP PP.1 (Matrix.trace (redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w)) * redM PP.1 (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)))) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV eQ heQ ϖ hϖ0 hϖ
   obtain ⟨cV, hcV⟩ := hC.lev.βV i
@@ -236,6 +321,45 @@ namespace GlobalTheory.LiftFlatModel
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ`. Take `⟨ψP, Rs, hprim, hRs, hk, hbij, hiii, hiv, hv⟩` from `exists_reps_pairing D G Pl0 T0 A Ks R F hC hQG i t hV eQ heQ ϖ hϖ0 hϖ`. Establish `hN : 0 < GlobalTheory.TwistField.tupPrime R t`. Unfold `GlobalTheory.TwistField.tupPrime`. Use `Finset.prod_pos fun q hq => ?_` and prove the remaining obligations.
+
+Take `⟨PP, -, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `Nat.card_pos`. Use `letI : ∀ PP : Pl D.host.E, Fintype (kP PP) := fun PP => Fintype.ofFinite _`. Take `⟨Gc, hGc, hfin⟩` from `GlobalTheory.T.residueTwistFactor_eq_unit_mul_flat_fourier D (R.Q t) (R.xiR t) ψP (Wc D i).rank (Vc D i).rank (GlobalTheory.TwistField.tupPrime R t) hN (fun PP hPP => ⟨hprim PP hPP, GlobalTheory.ChainTw.RModel.xiR_ne R hC.lev t PP hPP, Finset.dvd_prod_of_mem (fun q : ℕ => q) (Fin …`. Establish `hE : (ϖ : D.host.E) ≠ 0` using `fun h => hϖ0 (by exact_mod_cast h)`.
+
+Establish `hu : IsUnit (incA D (ϖ : D.host.E))` using `(Ne.isUnit hE).map (incA D)`. Establish `F1 : ∀ x : WO (Vc D i) (Wc D i), IsHalf eQ (x.map fun w => incA D (ϖ : D.host.E) * w) ↔ IsHalf eQ x`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h a b`.
+
+Establish `h1` using `h a b`. Simplify using `only [Matrix.map_apply] at h1`. Rewrite `h1` using `[mul_left_comm]`. Conclude with `hu.mul_left_cancel h1`. Introduce `h a b`.
+
+Simplify using `only [Matrix.map_apply]`. Rewrite using `[mul_left_comm, h a b]`. Establish `F2 : ∀ x : WO (Vc D i) (Wc D i), ((-x).map fun w => incA D (ϖ : D.host.E) * w) = -(x.map fun w => incA D (ϖ : D.host.E) * w)`. Introduce `x`. Use extensionality with `a b`.
+
+Simplify using `[mul_neg]`. Establish `hPsiNeg : ∀ u ∈ Rs, (if IsHalf eQ ((-u).map fun w => incA D (ϖ : D.host.E) * w) ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) ((-u).map fun w => incA D (ϖ : D.host.E) * w)) then omegaFlat (R.Q t) (Wc D i).rank (R.xiR t) (fun PP => redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) …`. Introduce `u hu'`. Establish `hh : IsHalf eQ ((-u).map fun w => incA D (ϖ : D.host.E) * w)`. Rewrite using `[F2]`.
+
+Conclude with `LiftFlatModel.isHalf_neg ((F1 u).2 (hRs u hu').1)`. Establish `hi : IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) ((-u).map fun w => incA D (ϖ : D.host.E) * w))`. Rewrite using `[F2, LiftFlatModel.frMapO_neg]`. Conclude with `LiftFlatModel.isIntM_neg (hRs u hu').2`. Rewrite using `[if_pos ⟨hh, hi⟩]`.
+
+Apply `LiftFlatModel.omegaFlat_congr` to reduce the goal to its premises. Introduce `PP hPP`. Rewrite using `[dif_pos hPP, F2, LiftFlatModel.frMapO_neg, redM_neg _ (hRs u hu').2]`. Establish `hA : ∀ x : WO (Vc D i) (Wc D i), (if IsHalf eQ (x.map fun w => incA D (ϖ : D.host.E) * w) ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)) then omegaFlat (R.Q t) (Wc D i).rank (R.xiR t) (fun PP => redM PP (frMapO (Vc D i) (Wc D i) ( …`. Introduce `x`.
+
+Distinguish the cases in `hx : IsHalf eQ (x.map fun w => incA D (ϖ : D.host.E) * w) ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w))`. Take `⟨u, ⟨huR, hured⟩, huniq⟩` from `hbij (fun PP => -(redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w))))`. Establish `hxh : IsHalf eQ x` using `(F1 x).1 hx.1`. Rewrite using `[Finset.sum_eq_single u]`. Establish `hmem : x + u ∈ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True)` using `(hiii x hxh u huR).2 ⟨hx.2, fun PP hPP => by rw [hured ⟨PP, hPP⟩, neg_neg]⟩`.
+
+Establish `hhalf : IsHalf eQ (x + u)` using `(LiftFlatModel.isHalf_add_iff (hRs u huR).1).2 hxh`. Rewrite using `[show halfInd eQ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) (x + u) = 1 from if_pos ⟨hmem, hhalf⟩, mul_one, hPsiNeg u huR, if_pos hx]`. Apply `LiftFlatModel.omegaFlat_congr` to reduce the goal to its premises. Introduce `PP hPP`. Rewrite using `[dif_pos hPP]`.
+
+Use `show _ = -(redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w)))`. Rewrite using `[hured ⟨PP, hPP⟩, neg_neg]`. Introduce `u' hu' hne`. Rewrite using `[show halfInd eQ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) (x + u') = 0 from if_neg ?_, mul_zero]`. Introduce and unpack `⟨hmem, -⟩`.
+
+Take `⟨-, hred⟩` from `(hiii x hxh u' hu').1 hmem`. Conclude with `hne (huniq u' ⟨hu', fun PP => by show _ = -(redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)))`. Rewrite using `[hred PP.1 PP.2, neg_neg]⟩)`. Introduce `h`. Conclude with `absurd huR h`.
+
+Rewrite using `[if_neg hx]`. Use `symm`. Use `Finset.sum_eq_zero fun u hu' => ?_` and prove the remaining obligations. Rewrite using `[show halfInd eQ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) (x + u) = 0 from if_neg ?_, mul_zero]`. Introduce and unpack `⟨hmem, hhalf⟩`.
+
+Establish `hxh : IsHalf eQ x` using `(LiftFlatModel.isHalf_add_iff (hRs u hu').1).1 hhalf`. Conclude with `hx ⟨(F1 x).2 hxh, ((hiii x hxh u hu').1 hmem).1⟩`. Establish `hB : ∀ x : WO (Vc D i) (Wc D i), (if IsHalf (cA D eQ) x ∧ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) then omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) (fun PP => redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) else 0) = halfInd (cA D eQ) (latO (Vc D i) (Wc D …`. Introduce `x`. Distinguish the cases in `hx : x ∈ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (fun _ => True) ∧ IsHalf (cA D eQ) x`.
+
+Establish `hint` using `(hiv x hx.2).1 hx.1`. Rewrite using `[if_pos ⟨hx.2, hint⟩, show halfInd (cA D eQ) (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) x = 1 from if_pos hx, one_mul, hfin, Finset.mul_sum]`. Use `symm`. Use `Finset.sum_bij (fun u _ => fun PP : ↥(R.Q t) => redM PP.1 (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (u.map fun w => incA D (ϖ : D.host.E) * w))) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb hab`.
+
+Conclude with `(hbij _).unique ⟨ha, fun PP => rfl⟩ ⟨hb, fun PP => (congrFun hab PP).symm⟩`. Introduce `y _`. Take `⟨u, ⟨hu', hred⟩, -⟩` from `hbij y`. Conclude with `⟨u, hu', funext hred⟩`. Introduce `u hu'`.
+
+Rewrite using `[hPsiNeg u hu', hv x hx.2 hint u hu', ← Finset.univ_eq_attach]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show halfInd (cA D eQ) (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) x = 0 from if_neg hx, zero_mul, if_neg]`. Introduce and unpack `⟨hh, hint⟩`. Conclude with `hx ⟨(hiv x hh).2 hint, hh⟩`.
+
+Establish `hθ` using `GlobalTheory.T.thetaLiftVector_isThetaFunction_twoStepModel D G Pl0 T0 A Ks R F hC hQG i t eg eQ fg heg heQ hfg`. Establish `hvP` using `LiftFlatModel.thetaAt_sum hθ (fun u hu' => by rw [LiftFlatModel.cA_cA]; exact (hRs u hu').1) hB`. Establish `hΨ : ∀ x : WO (Vc D i) (Wc D i), Gc * (if IsHalf eQ (x.map fun w => incA D (ϖ : D.host.E) * w) ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)) then omegaFlat (R.Q t) (Wc D i).rank (R.xiR t) (fun PP => redM PP (frMapO (Vc D i) (Wc D …`. Introduce `x`. Rewrite using `[hA x, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun u _ => by ring`. Use `⟨Gc, hGc, LiftFlatModel.isSBHalf_of_sum (fun u hu' => (hRs u hu').1) hΨ hk, fun Tm hTm => ?_⟩` and prove the remaining obligations. Rewrite using `[LiftFlatModel.placeModel_sum hTm (fun u hu' => (hRs u hu').1) hΨ]`. Conclude with `hvP`.
+-/
 theorem lift_eq_model_flat : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0), VStd D i → ∀ (eg eQ : AE D) (fg : WO (Vc D i) (Wc D i) → ℂ), IsIdemSum eg R.Pg → IsIdemSum eQ (R.Q t) → IsThetaAt R.ψ (symplO (Vc D i) (Wc D i)) (heisO R.ψ (Vc D i) (Wc D i)) (cA D eg) (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) 1 (R.vacP i) (fun x => if IsHalf (cA D eg) x ∧ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) then omegaK R.Pg (fun PP => redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) else 0) fg → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ R.Q t, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∃ Gc : ℂ, UnitOff (GlobalTheory.TwistField.tupPrime R t) Gc ∧ IsSBHalf eQ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) (fun x => Gc * (if IsHalf eQ (x.map fun w => incA D (ϖ : D.host.E) * w) ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)) then omegaFlat (R.Q t) (Wc D i).rank (R.xiR t) (fun PP => redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w))) else 0)) ∧ ∀ (Tm : (WO (Vc D i) (Wc D i) → ℂ) →ₗ[ℂ] (WO (Vc D i) (Wc D i) → ℂ)), IsPlaceModel R.ψ (symplO (Vc D i) (Wc D i)) (heisO R.ψ (Vc D i) (Wc D i)) eQ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) 1 fg Tm → R.vP i t = Tm (fun x => Gc * (if IsHalf eQ (x.map fun w => incA D (ϖ : D.host.E) * w) ∧ IsIntM (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w)) then omegaFlat (R.Q t) (Wc D i).rank (R.xiR t) (fun PP => redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (x.map fun w => incA D (ϖ : D.host.E) * w))) else 0)) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hQG i t hV eg eQ fg heg heQ hfg ϖ hϖ0 hϖ
   obtain ⟨ψP, Rs, hprim, hRs, hk, hbij, hiii, hiv, hv⟩ := exists_reps_pairing D G Pl0 T0 A Ks R F hC hQG i t hV eQ heQ ϖ hϖ0 hϖ

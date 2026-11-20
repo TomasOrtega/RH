@@ -8,6 +8,15 @@ open scoped Matrix NNReal
 
 namespace GlobalTheory.RecOne
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ A h`. Establish `hA : A.valuation (l : Ω) < 1`. Take `⟨w, hw, hl⟩` from `h`. Simplify using `using (hw ((l : ℕ) : 𝓞 ℚ)).2 hl`. Take `⟨j, hj⟩` from `Formalism.BasicNotions.Examples₂.LB.exists_emb (l := l) A hA`.
+
+Set `v : Valuation Ω ℝ≥0` to `(NormedField.valuation (K := PadicAlgCl l)).comap j`. Establish `hv : ∀ x : Ω, v x ≤ 1 ↔ x ∈ A`. Introduce `x`. Rewrite using `[hj]`. Conclude with `Iff.rfl`.
+
+Establish `he : v.IsEquiv A.valuation`. Rewrite using `[Valuation.isEquiv_iff_val_le_one]`. Introduce `x`. Rewrite using `[hv, A.valuation_le_one_iff]`. Use `⟨v, hv, fun s hs x => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `he.eq_iff.2 (GlobalTheory.Dec_valuation_apply_eq ℚ Ω A s hs x)`. Establish `: CharZero Ω` using `j.charZero`. Establish `hl : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Conclude with `zero_lt_iff.mpr ((v.ne_zero_iff).2 hl)`. Conclude with `he.lt_one_iff_lt_one.2 hA`.
+-/
 theorem exists_real_valuation : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∃ v : Valuation Ω ℝ≥0, (∀ x : Ω, v x ≤ 1 ↔ x ∈ A) ∧ (∀ s ∈ Dec (F := ℚ) A, ∀ x : Ω, v (s x) = v x) ∧ 0 < v (l : Ω) ∧ v (l : Ω) < 1 := by
   intro l _ Ω _ _ _ A h
   have hA : A.valuation (l : Ω) < 1 := by

@@ -20,6 +20,31 @@ open scoped CategoryTheory.Obj
 
 variable {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R]
 
+/- English proof (translation)
+Set `A'` to `(Over.pullback f).obj o.A`. Set `φ` to `PullbackComparison.pφ f o.A`. Set `φ₂` to `PullbackComparison.pφ₂ f o.A`. Establish `pb : IsGrpPullback A' o.A f φ` using `PullbackComparison.isGrpPullback f o.A`. Establish `sq : IsSquare φ φ₂` using `PullbackComparison.isSquare f o.A`.
+
+Establish `hab : IsAbelianScheme A'` using `{ comm := by have := o.ab.comm; infer_instance smooth := by have := o.ab.smooth; show Smooth (Limits.pullback.snd _ _); infer_instance proper := by have := o.ab.proper; show IsProper (Limits.pullback.snd _ _); infer_instance geomConnected := by`. Use `o.ab.geomConnected` as an intermediate fact. Use `show GeometricallyConnected (Limits.pullback.snd _ _)`. Use `infer_instance }`. Take `⟨act', ⟨hhom, hone, hmul, hadd⟩, hact'⟩` from `ActPull.exists_act_pull S S' f o.A A' φ pb G.Oᵐᵒᵖ (fun a => o.act.act a.unop) (fun a => o.act.hom _) (by simpa using o.act.one) (fun a b => by simpa using o.act.mul b.unop a.unop) (fun a b => by simpa using o.act.add a.unop b.unop)`.
+
+Set `actN : OActN G.O A'` to `{ act := fun c => act' (MulOpposite.op c) hom := fun c => hhom _ one := by simpa using hone mul := fun c d => by rw [MulOpposite.op_mul]; exact hmul _ _ add := fun c d => by rw [MulOpposite.op_add]; exact hadd _ _ }`. Establish `hact : ∀ c, (actN.act c).left ≫ φ = φ ≫ (o.act.act c).left` using `fun c => hact' (MulOpposite.op c)`. Set `P' : LB (G2 A').left` to `o.P.pull φ₂`. Establish `hP' : P'.IsLB` using `pull_isLB o.isLB φ₂`. Establish `iso : LBIso P' (o.P.pull φ₂)` using `PullbackComparison.gen_refl _ hP'`.
+
+Establish `dg` using `SiegelPull.diag_iso sq iso`. Establish `sqL : ∀ (x' y' : G2 A' ⟶ A') (x y : G2 o.A ⟶ o.A), x'.left ≫ φ = φ₂ ≫ x.left → y'.left ≫ φ = φ₂ ≫ y.left → (lift x' y').left ≫ φ₂ = φ₂ ≫ (lift x y).left` using `fun x' y' x y hx hy => (Category.id_comp _).symm.trans (SiegelPull.lift_sq sq (T := Over.mk (φ₂ ≫ (G2 o.A).hom)) (T' := G2 A') (𝟙 _) x' y' (Z := G2 o.A) φ₂ x y (by rw [Category.id_comp]; exact hx) (by rw [Category.id_comp]; exact hy))`. Take `⟨t₁, ht₁⟩` from `o.rig₁`. Take `⟨t₂, ht₂⟩` from `o.rig₂`. Set `o' : GObj b N (f ≫ s)` to `{ A := A' ab := hab act := actN P := P' isLB := hP' rig₁ := gen_chartPull (chartPullLinComb o.P _ _ _ _ φ (fun _ => PullbackComparison.lift_one_id f o.A)) t₁ ht₁ rig₂ := gen_chartPull (chartPullLinComb o.P _ _ _ _ φ (fun _ => PullbackComparison.lift_id_one f o.A)) t₂ ht₂`.
+
+Use symmetry as in `:= LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull o.P _ _ rfl) (chartPullLinComb o.P _ _ _ _ φ₂ (fun _ => PullbackComparison.lift_swap f o.A)) o.symm`. Use `ample := (pol_pull S S' o.A A' f φ _ _ (pull_isLB o.isLB _) (pull_isLB hP' _) o.ab pb dg).2.1 o.ample`. Use `rosati := fun c => LBIso.chartPull (chartPullLinComb o.P _ _ _ _ φ₂ (fun _ => sqL _ _ _ _ (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact, ← Category.assoc, ← sq.1, Category.assoc])`. Use the proof step `(by rw [sq.2])))`.
+
+Use the proof step `(chartPullLinComb o.P _ _ _ _ φ₂ (fun _ => sqL _ _ _ _ (by rw [sq.1]) (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hact, ← Category.assoc, ← sq.2, Category.assoc])))`. Use the proof step `(o.rosati c)`. Use `lie := fun R' _ β x hx v hv => by`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv pb (epsPtR x) (spMap (algebraMap R' (DualNumber R')) ≫ x ≫ f) (Category.assoc _ _ _).symm`.
+
+Take `⟨w, hw, hvw⟩` from `o.lie R' β (x ≫ f) (by rw [Category.assoc, hx]) (e v) ((isTanScal_iff pb o.act actN hact x e he _ _ v).1 hv)`. Use `⟨fun i => e.symm (w i), fun i c => (isTanScal_iff pb o.act actN hact x e he _ _ _).2 (by rw [e.apply_symm_apply]; exact hw i c), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hvw, map_list_prod, List.map_ofFn]`. Simplify using `[Function.comp_def]`. Use `lieRank := fun k _ _ x β hx i => (GlobalTheory.LiePull.lieMult_pull (𝓞 G.F) S S' o.A A' f φ (actF o.act) (actF actN) pb (fun c => hact _) k x (β.comp (b.t i)) G.m).2 (o.lieRank k (x ≫ f) β (by rw [Category.assoc, hx]) i)`.
+
+Use `eta := fun y => SiegelPull.secPull pb (o.eta y)`. Use `eta_add := fun y z => SiegelPull.push_injective pb _ (by`. Rewrite using `[map_mul, push_secPull', push_secPull', push_secPull', o.eta_add, MonObj.comp_mul])`. Use `eta_lin := fun c y => SiegelPull.push_injective pb _ (by`. Rewrite using `[push_comp pb (hact c), push_secPull', push_secPull', o.eta_lin, Category.assoc])`.
+
+Use `eta_ker := fun y => SiegelPull.push_injective pb _ (by`. Rewrite using `[push_secPull', o.eta_ker, map_one, MonObj.comp_one])`. Use `geom := fun k _ _ x β hx => by`. Take `⟨I, hI⟩` from `o.geom k (x ≫ f) β (by rw [Category.assoc, hx])`. Set `e : (Over.mk x ⟶ A') ≃* (Over.mk (x ≫ f) ⟶ o.A)` to `MulEquiv.ofBijective (pushHom pb (Over.mk x)) ⟨SiegelPull.push_injective pb _, SiegelPull.push_surjective pb _⟩`.
+
+Establish `ea : ∀ c g, e (g ≫ actN.act c) = e g ≫ o.act.act c` using `fun c g => push_comp pb (hact c) _ g`. Establish `ex : ∀ z, z.left = (e.symm z).left ≫ φ` using `fun z => (congrArg (fun q => q.left) (e.apply_symm_apply z)).symm`. Use `⟨{ ζ := I.ζ, ζ_prim := I.ζ_prim, ζ_pow := I.ζ_pow, ev := fun n y => e.symm (I.ev n y) add := fun n y z => by rw [I.add, map_mul] lin := fun n c y => e.injective (by rw [ea, e.apply_symm_apply, e.apply_symm_apply, I.lin]) ker := fun n hn y => by rw [map_eq_one_iff _ e.symm.injecti …` and prove the remaining obligations. Rewrite using `[← map_eq_one_iff e e.injective, map_pow, I.onto n hn (e q)]`. Conclude with `exists_congr fun y => e.symm_apply_eq.symm`.
+
+Use `tower := fun n m hn hm y => by rw [← map_pow, I.tower n m hn hm]`. Use `isom := fun n hn y z => (weilIs_grpPullback_of_comm S S' o.A A' f φ _ _ (pull_isLB o.isLB _) (pull_isLB hP' _) pb dg (Over.mk x) n _ _ (I.ev n y) (I.ev n z) _ (ex _) (ex _)).2 (I.isom n hn y z) }, fun y => ?_⟩`. Use `show toUnit _ ≫ SiegelPull.secPull pb (o.eta y) = e.symm (I.ev N y)`. Rewrite using `[eq_comm, e.symm_apply_eq, ← hI y]`. Conclude with `(SiegelPull.push_secPull pb (o.eta y) (Over.mk x)).symm }`.
+
+Conclude with `⟨o', ⟨{ φ := φ, φ₂ := φ₂, cart := pb, sq := sq, act := hact, pol := iso, eta := fun y => SiegelPull.secPull_left pb _ }⟩⟩`.
+-/
 theorem exists_gObjMap_pull {b : GBase G R} {N : ℕ} {S S' : Scheme.{0}} {s : S ⟶ Sp R} (f : S' ⟶ S)
     (o : GObj b N s) : ∃ o' : GObj b N (f ≫ s), Nonempty (GObjMap o' o f) := by
   let A' := (Over.pullback f).obj o.A
@@ -121,6 +146,15 @@ open GlobalTheory.UPel.HT.MapComp
 
 variable {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R]
 
+/- English proof (translation)
+Establish `w : m.φ ≫ o₃.A.hom = (o₁.A.hom ≫ f) ≫ g` using `by rw [m.cart.1.w, Category.assoc]`. Use `set φ := m₂.cart.1.lift m.φ (o₁.A.hom ≫ f) w`. Establish `hφ : φ ≫ m₂.φ = m.φ` using `m₂.cart.1.lift_fst _ _ _`. Establish `hφ' : φ ≫ o₂.A.hom = o₁.A.hom ≫ f` using `m₂.cart.1.lift_snd _ _ _`. Establish `n : IsGrpPullback o₁.A o₃.A (f ≫ g) (φ ≫ m₂.φ)` using `by rw [hφ]; exact m.cart`.
+
+Take `⟨φ₂, sq⟩` from `exists_isSquare hφ'`. Establish `e : m.φ₂ = φ₂ ≫ m₂.φ₂` using `isSquare_unique m.sq (hφ ▸ isSquare_comp sq m₂.sq)`. Establish `hact : ∀ c, (o₁.act.act c).left ≫ φ = φ ≫ (o₂.act.act c).left`. Introduce `c`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hφ, m.act, Category.assoc, m₂.act, ← Category.assoc, hφ]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w, hφ']`. Establish `heta : ∀ y, (o₁.eta y).left ≫ φ = f ≫ (o₂.eta y).left`. Introduce `y`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hφ, m.eta, Category.assoc, Category.assoc, m₂.eta]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w] show 𝟙 _ ≫ f = f ≫ 𝟙 _`. Rewrite using `[Category.id_comp, Category.comp_id]`. Conclude with `⟨{ φ := φ φ₂ := φ₂ cart := m₂.cart.cancel n hφ' sq := sq act := hact pol := LBIso.trans o₁.isLB (pull_isLB o₃.isLB _) (pull_isLB o₂.isLB _) m.pol (LBIso.symm (lbIso_pull_comp m₂.pol φ₂ e)) eta := heta }⟩`.
+-/
 theorem gObjMap_cancel {b : GBase G R} {N : ℕ} {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R}
     {s₃ : S₃ ⟶ Sp R} {o₁ : GObj b N s₁} {o₂ : GObj b N s₂} {o₃ : GObj b N s₃} {f : S₁ ⟶ S₂} {g : S₂ ⟶ S₃}
     (m : GObjMap o₁ o₃ (f ≫ g)) (m₂ : GObjMap o₂ o₃ g) : Nonempty (GObjMap o₁ o₂ f) := by
@@ -154,10 +188,18 @@ theorem gObjMap_cancel {b : GBase G R} {N : ℕ} {S₁ S₂ S₃ : Scheme.{0}} {
 
 end Cancel
 
+/- English proof (translation)
+The claim follows from `Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f :=
   Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Spec.map_surjective (R := CommRingCat.of R₂) (S := CommRingCat.of R') x`. Establish `e : x = spMap g.hom` using `hg.symm`. Use `⟨g.hom, e, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[e, ← spMap_comp']`. Use `Spec.map_injective (R := CommRingCat.of R₁) (S := CommRingCat.of R') hx` as an intermediate fact.
+
+Conclude with `(congrArg CommRingCat.Hom.hom this).symm`.
+-/
 theorem exists_ext {R₁ R₂ R' : Type} [CommRing R₁] [CommRing R₂] [CommRing R'] (ψ : R₁ →+* R₂) (β₁ : R₁ →+* R')
     (x : Sp R' ⟶ Sp R₂) (hx : x ≫ spMap ψ = spMap β₁) : ∃ β₂ : R₂ →+* R', x = spMap β₂ ∧ β₁ = β₂.comp ψ := by
   obtain ⟨g, hg⟩ := Spec.map_surjective (R := CommRingCat.of R₂) (S := CommRingCat.of R') x

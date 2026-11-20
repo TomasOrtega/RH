@@ -9,6 +9,49 @@ open GlobalTheory.ChosenPrimes
 
 namespace GlobalTheory.NewPrimePick
 
+/- English proof (translation)
+Introduce `hC D N X i s M R n d A L z P _ _ hsm hst _ H S hA hLH U h hU hUn hUL hh hh1 hIU`. Take `⟨-, -, -, hd⟩` from `hA`. Take `⟨⟨hL, hLn, -⟩, hLr, -⟩` from `hsm`. Take `⟨⟨ha1, ha2, ha3⟩, hs1, hs2⟩` from `hst`. Establish `hl` using `(X.lPrime i).out`.
+
+Use `set m := 2 * X.l i ^ M with hm`. Establish `hn1 : 1 < m` using `by have := Nat.pow_pos (n := M) hl.pos; omega`. Establish `hn0 : m ≠ 0` using `by omega`. Establish `hval` using `exists_values (U ⊓ ⨅ b : {b : Fin R // b.val < n}, (d (P (.inl b.1))).ker) (fun b : {b : Fin R // n ≤ b.val} => d (P (.inl b.1))) (fun b c => by`. Take `⟨γ, hγ, e⟩` from `(ha3 (.inl b.1)).2.2.2.2 _ (over_refl _) _ (N.plOm.2 (P (.inl b.1))) c`.
+
+Establish `key : ∀ b' : Fin R, b' ≠ b.1 → d (P (.inl b')) γ = 1` using `fun b' hb' => (ha3 (.inl b')).2.2.2.1 _ (fun h => hb' (Sum.inl_injective (ha2 _ _ h))) _ (N.plOm.2 (P (.inl b.1))) γ hγ`. Use `⟨γ, ⟨hIU b.1 b.2 hγ, Subgroup.mem_iInf.2 fun b' => key b'.1 fun h => ?_⟩, e, fun b' hb' => key b'.1 fun h => hb' (Subtype.ext h)⟩` and prove the remaining obligations. Establish `h1` using `b'.2`. Establish `h2` using `b.2`. Rewrite `h1` using `[h]`.
+
+Use the proof step `omega)`. Take `⟨γ₀, hγ₀, hγd⟩` from `hval fun b => Multiplicative.ofAdd (if n = b.1.val then 1 else 0) * (d (P (.inl b.1)) h)⁻¹`. Establish `hγh : ∀ b : Fin R, d (P (.inl b)) (γ₀ * h) = Multiplicative.ofAdd (if n = b.val then 1 else 0)`. Introduce `b`. Rewrite using `[map_mul]`.
+
+Break down `lt_or_ge b.val n with hb | hb` into its components or cases. Establish `h1 : d (P (.inl b)) γ₀ = 1` using `Subgroup.mem_iInf.1 hγ₀.2 ⟨b, hb⟩`. Rewrite using `[h1, hh1 b hb, if_neg (by omega), mul_one]`. Both sides reduce to the same expression. Rewrite using `[hγd ⟨b, hb⟩, inv_mul_cancel_right]`.
+
+Set `V : Subgroup (GE N)` to `U ⊓ ⨅ b, (d (P (.inl b))).ker`. Establish `hV : IsOpen (V : Set (GE N))`. Use `hU.inter ?_` and prove the remaining obligations. Use `show IsOpen ((⨅ b, (d (P (.inl b))).ker : Subgroup (GE N)) : Set (GE N))`. Rewrite using `[Subgroup.coe_iInf]`.
+
+Conclude with `isOpen_iInter_of_finite fun b => (ha3 (.inl b)).1`. Establish `hVn : V.Normal`. Establish `: (⨅ b, (d (P (.inl b))).ker).Normal` using `Subgroup.normal_iInf_normal fun b => inferInstance`. Use `infer_instance`. Take `⟨T₀, hT₀, hsp⟩` from `GlobalTheory.FrobDense.exists_finite_split D.host`.
+
+Set `T : Set (PlE D.host)` to `((↑A ∪ ↑S ∪ ↑(X.S0 i)) ∪ (T₀ ∪ {P | P.asIdeal.ramificationIdx ℤ ≠ 1}) ∪ ({v | ((m : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal} ∪ {v | ∃ B : ValuationSubring N.Om, IsPlaceOver B v ∧ ¬ Ine (F := D.host.E) B ≤ U})) ∪ Set.range P`. Establish `hT : T.Finite` using `((((A.finite_toSet.union S.finite_toSet).union (X.S0 i).finite_toSet).union (hT₀.union (GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified D.host.E).2)).union ((finite_mem hn0).union (finite_ram hU))).union (Set.finite_range P)`. Take `⟨p, hp⟩` from `exists_pick hC hV hVn (γ₀ * h) hT`. Establish `h1 : ∀ v, Over p v → ((((v ∉ A ∧ v ∉ S) ∧ v ∉ X.S0 i) ∧ v ∉ T₀ ∧ v.asIdeal.ramificationIdx ℤ = 1) ∧ ((m : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal ∧ ∀ B : ValuationSubring N.Om, IsPlaceOver B v → Ine (F` using `D.host.E) B ≤ U) ∧ v ∉ Set.range P := fun v hv => by`. Establish `: v ∉ T` using `(hp.1 v hv).1`.
+
+Simplify `this` using `only [T, Set.mem_union, not_or, Finset.mem_coe, Set.mem_ofPred_eq, not_exists, not_and, not_not]`. Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 p)`. Take `⟨k, hk⟩` from `hp.2 σ hσ`. Establish `hσL : σ ∈ L`. Establish `h2` using `hLn.conj_mem _ (L.mul_mem (hUL hk.1) (L.mul_mem (hUL hγ₀.1) hh)) k⁻¹`.
+
+Establish `e : k⁻¹ * (k * σ * k⁻¹ * (γ₀ * h)⁻¹ * (γ₀ * h)) * k⁻¹⁻¹ = σ` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `hP0` using `h1 p (over_refl p)`. Establish `hq` using `norm_mod (N.plOm.2 p) hn1 hP0.1.2.1 hσ (hLr σ hσL)`. Establish `hIp : Ine (F` using `D.host.E) (N.plOm.1 p) ≤ U := hP0.1.2.2 _ (N.plOm.2 p)`.
+
+Establish `hdec : DecV N p ≤ L` using `dec_le (N.plOm.2 p) hL (hIp.trans hUL) hσ hσL`. Establish `hspl : IsSplitPl D.host p` using `hsp p hP0.1.1.2.1 (hp.1 p (over_refl p)).2`. Establish `hgood : GoodChar X i M p (d p)` using `hd p hP0.1.1.1.1.2 hspl (hdec.trans hLH)`. Establish `haux : ∀ v, Over p v → IsSplitPl D.host v ∧ v.asIdeal.inertiaDeg ℤ = 1 ∧ Formalism.BasicNotions.eWL D.host.E v = 1 ∧ v ∉ X.S0 i ∧ v ∉ A ∧ normV v % m = 1`. Use `fun v hv => ⟨hsp v (h1 v hv).1.1.2.1 (hp.1 v hv).2, (hp.1 v hv).2, (h1 v hv).1.1.2.2, (h1 v hv).1.1.1.2, (h1 v hv).1.1.1.1.1, ?_⟩` and prove the remaining obligations.
+
+Break down `hv with rfl | hv` into its components or cases. Conclude with `hq`. Rewrite using `[normV_conj hv]` and apply the resulting hypothesis. Set `P' : Fin R ⊕ Fin (n + 1) → PlE D.host` to `Sum.elim (fun a => P (.inl a)) (Fin.snoc (α := fun _ => PlE D.host) (fun a => P (.inr a)) p)`. Establish `e1 : P' (.inr (Fin.last n)) = p` using `by simp [P']`.
+
+Establish `e2 : ∀ q, P' (Sum.map id Fin.castSucc q) = P q`. Apply the tactic sequence `rintro (a | a) <;> simp [P']`. Establish `cases : ∀ q : Fin R ⊕ Fin (n + 1), q = .inr (Fin.last n) ∨ ∃ q₀, q = Sum.map id Fin.castSucc q₀`. Introduce and unpack `(a | a)`. Conclude with `Or.inr ⟨.inl a, rfl⟩`.
+
+Use `Fin.lastCases (Or.inl rfl) (fun a => Or.inr ⟨.inr a, rfl⟩) a` and prove the remaining obligations. Use `⟨P', e2, ⟨⟨fun q => ?_, fun q q' => ?_, fun q => ?_⟩, hs1, fun a => ?_⟩, ?_⟩` and prove the remaining obligations. Break down `cases q with rfl | ⟨q, rfl⟩` into its components or cases. Rewrite using `[e1]`. Conclude with `haux`.
+
+Rewrite using `[e2]`. Conclude with `ha1 q`. Apply the tactic sequence `rcases cases q with rfl | ⟨q, rfl⟩ <;> rcases cases q' with rfl | ⟨q', rfl⟩`. Conclude with `fun _ => rfl`. Rewrite using `[e1, e2]`.
+
+Conclude with `fun h => ((h1 _ h).2 ⟨q', rfl⟩).elim`. Rewrite using `[e1, e2]`. Conclude with `fun h => ((h1 _ (over_symm h)).2 ⟨q, rfl⟩).elim`. Rewrite using `[e2, e2]; exact fun h => by rw [ha2 _ _ h]`. Use `show GoodChar X i M (P' q) (d (P' q))`.
+
+Break down `cases q with rfl | ⟨q, rfl⟩` into its components or cases. Rewrite using `[e1]`. Conclude with `hgood`. Rewrite using `[e2]`. Conclude with `ha3 q`.
+
+Use `Fin.lastCases ?_ (fun a => ?_) a` and prove the remaining obligations. Rewrite using `[e1]`. Use `⟨hdec, fun b τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨k', hk'⟩` from `hp.2 τ hτ`. Establish `h2 : d (P (.inl b)) _ = 1` using `Subgroup.mem_iInf.1 hk'.2 b`.
+
+Rewrite `h2` using `[map_mul, map_inv, hγh]`. Simplify using `only [map_mul, map_inv, mul_inv_cancel_comm, mul_inv_eq_one] at h2`. Conclude with `h2`. Establish `e3 : P' (.inr a.castSucc) = P (.inr a)` using `e2 (.inr a)`. Rewrite using `[e3]`.
+
+Conclude with `hs2 a`. Rewrite using `[e1]`. Take `⟨γ, hγ, hγ1⟩` from `hgood.2.2.2.2 p (over_refl p) _ (N.plOm.2 p) (Multiplicative.ofAdd 1)`. Take `⟨τ, hτ, hτ1⟩` from `hgood.2.2.2.2 p (over_refl p) _ (N.plOm.2 p) (d p σ)⁻¹`. Use `⟨σ * τ, γ, k, ⟨fun v hv => (haux v hv).2.2.2.1, hspl, hq, hdec, hgood.1, ?_, hγ, hγ1⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `first | exact isFrob_mul_of_mem_Ine hσ hτ | exact isFrob_mul_of_mem_Ine hτ hσ`. Rewrite using `[map_mul, hτ1, mul_inv_cancel]`. Establish `h2` using `U.mul_mem (U.mul_mem (hUn.conj_mem _ (hIp hτ) (k * σ)) hk.1) hγ₀.1`. Establish `e : k * σ * τ * (k * σ)⁻¹ * (k * σ * k⁻¹ * (γ₀ * h)⁻¹) * γ₀ = k * (σ * τ) * k⁻¹ * h⁻¹` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem exists_newPlace : Cheb → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) (s : X.Sig i), ∀ (M R n : ℕ) (d : PlE D.host → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (A₀ : Finset (PlE D.host)) (L : Subgroup (GE N)) (z : GE N) (P : Fin R ⊕ Fin n → PlE D.host), 1 ≤ M → IsTameInertiaElementAtTwistPrime X i z → Small2 i s M L z → PiLocalization₂ i M d A₀ L z P → n < R → ∀ (H : Subgroup (GE N)) (S : Finset (PlE D.host)), AdmFam X i M H S d → L ≤ H → ∀ (U : Subgroup (GE N)) (h : GE N), IsOpen (U : Set (GE N)) → U.Normal → U ≤ L → h ∈ L → (∀ b : Fin R, b.val < n → d (P (.inl b)) h = 1) → (∀ b : Fin R, n ≤ b.val → Ine (F := D.host.E) (N.plOm.1 (P (.inl b))) ≤ U) → ∃ P' : Fin R ⊕ Fin (n + 1) → PlE D.host, Ext P P' ∧ PiLocalization₂ i M d A₀ L z P' ∧ ∃ σ γ g : GE N, NewPl i M L (P' (.inr (Fin.last n))) (d (P' (.inr (Fin.last n)))) σ γ ∧ d (P' (.inr (Fin.last n))) σ = 1 ∧ g * σ * g⁻¹ * h⁻¹ ∈ U := by
   intro hC D N X i s M R n d A L z P _ _ hsm hst _ H S hA hLH U h hU hUn hUL hh hh1 hIU
   classical

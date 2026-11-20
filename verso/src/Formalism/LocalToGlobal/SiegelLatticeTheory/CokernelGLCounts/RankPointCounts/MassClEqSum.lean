@@ -13,10 +13,22 @@ section Abstract
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`.
+-/
 theorem mem_map_conj (K : Subgroup G) (x a : G) :
     a ∈ K.map (MulAut.conj x).toMonoidHom ↔ x⁻¹ * a * x ∈ K := by
   rw [Subgroup.mem_map_equiv, MulAut.conj_symm_apply]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Subgroup.mem_inf, mem_map_conj, mem_map_conj, Subgroup.mem_inf, mem_map_conj]`. Establish `e1 : (γ * x * k)⁻¹ * a * (γ * x * k) = k⁻¹ * (x⁻¹ * (γ⁻¹ * a * γ) * x) * k` using `by group`. Establish `e2 : x⁻¹ * (γ⁻¹ * a * γ) * x = k * (k⁻¹ * (x⁻¹ * (γ⁻¹ * a * γ) * x) * k) * k⁻¹` using `by group`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨ha, hK⟩`. Use `⟨Γ.mul_mem (Γ.mul_mem (Γ.inv_mem hγ) ha) hγ, ?_⟩` and prove the remaining obligations. Rewrite `hK` using `[e1]`. Rewrite using `[e2]`. Conclude with `K.mul_mem (K.mul_mem hk hK) (K.inv_mem hk)`.
+
+Introduce and unpack `⟨ha, hK⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e3 : a = γ * (γ⁻¹ * a * γ) * γ⁻¹` using `by group`. Rewrite using `[e3]`. Conclude with `Γ.mul_mem (Γ.mul_mem hγ ha) (Γ.inv_mem hγ)`.
+
+Rewrite using `[e1]`. Conclude with `K.mul_mem (K.mul_mem (K.inv_mem hk) hK) hk`.
+-/
 theorem stab_eq_map (Γ K : Subgroup G) (x γ k : G) (hγ : γ ∈ Γ) (hk : k ∈ K) :
     Γ ⊓ K.map (MulAut.conj (γ * x * k)).toMonoidHom =
       (Γ ⊓ K.map (MulAut.conj x).toMonoidHom).map (MulAut.conj γ).toMonoidHom := by
@@ -38,12 +50,18 @@ theorem stab_eq_map (Γ K : Subgroup G) (x γ k : G) (hγ : γ ∈ Γ) (hk : k �
     · rw [e1]
       exact K.mul_mem (K.mul_mem (K.inv_mem hk) hK) hk
 
+/- English proof (translation)
+Rewrite using `[stab_eq_map Γ K x γ k hγ hk]`. Conclude with `Subgroup.card_map_of_injective (MulAut.conj γ).injective`.
+-/
 theorem card_conj_eq (Γ K : Subgroup G) (x γ k : G) (hγ : γ ∈ Γ) (hk : k ∈ K) :
     Nat.card ↥(Γ ⊓ K.map (MulAut.conj (γ * x * k)).toMonoidHom) =
       Nat.card ↥(Γ ⊓ K.map (MulAut.conj x).toMonoidHom) := by
   rw [stab_eq_map Γ K x γ k hγ hk]
   exact Subgroup.card_map_of_injective (MulAut.conj γ).injective
 
+/- English proof (translation)
+Take `⟨γ, k, hγ, hk, h⟩` from `DoubleCoset.mk_out_eq_mul Γ K x`. Rewrite using `[h]`. Conclude with `card_conj_eq Γ K x γ k hγ hk`.
+-/
 theorem card_out_eq (Γ K : Subgroup G) (x : G) :
     Nat.card ↥(Γ ⊓ K.map (MulAut.conj (Quotient.out (DoubleCoset.mk Γ K x))).toMonoidHom) =
       Nat.card ↥(Γ ⊓ K.map (MulAut.conj x).toMonoidHom) := by
@@ -57,6 +75,19 @@ section Transport
 
 variable {G G' : Type} [Group G] [Group G']
 
+/- English proof (translation)
+Use `set Γ' := Γ.comap e.toMonoidHom with hΓ'`. Use `set K' := K.comap e.toMonoidHom with hK'`. Establish `hstab : ∀ y : G', Nat.card ↥(Γ' ⊓ K'.map (MulAut.conj y).toMonoidHom) = Nat.card ↥(Γ ⊓ K.map (MulAut.conj (e y)).toMonoidHom)`. Introduce `y`. Establish `hm : (Γ' ⊓ K'.map (MulAut.conj y).toMonoidHom).map e.toMonoidHom = Γ ⊓ K.map (MulAut.conj (e y)).toMonoidHom`.
+
+Use extensionality with `a`. Rewrite using `[Subgroup.mem_map_equiv, Subgroup.mem_inf, Subgroup.mem_inf, mem_map_conj, mem_map_conj]`. Simplify using `[hΓ', hK', Subgroup.mem_comap, map_mul, map_inv]`. Rewrite using `[← hm, Subgroup.card_map_of_injective e.injective]`. Unfold `massCl`.
+
+Use `finsum_eq_of_bijective (fun c => DoubleCoset.mk Γ K (e (Quotient.out c))) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `c1 c2 h`. Take `⟨γ, hγ, k, hk, h2⟩` from `(DoubleCoset.eq Γ K _ _).mp h`. Rewrite using `[← Quotient.out_eq c1, ← Quotient.out_eq c2]`. Use `(DoubleCoset.eq Γ' K' _ _).mpr ⟨e.symm γ, by simpa [hΓ'] using hγ, e.symm k, by simpa [hK'] using hk, ?_⟩` and prove the remaining obligations.
+
+Apply `e.injective` to reduce the goal to its premises. Simplify using `[map_mul, h2]`. Introduce `c`. Take `⟨γ, k, hγ, hk, hout⟩` from `DoubleCoset.mk_out_eq_mul Γ' K' (e.symm (Quotient.out c))`. Use `⟨DoubleCoset.mk Γ' K' (e.symm (Quotient.out c)), ?_⟩` and prove the remaining obligations.
+
+Use `show DoubleCoset.mk Γ K (e (Quotient.out (DoubleCoset.mk Γ' K' (e.symm (Quotient.out c))))) = c`. Rewrite using `[hout]`. Use `conv_rhs => rw [← Quotient.out_eq c]`. Use `((DoubleCoset.eq Γ K _ _).mpr ⟨e γ, hγ, e k, hk, ?_⟩).symm` and prove the remaining obligations. Simplify using `[map_mul]`.
+
+Introduce `c`. Rewrite using `[card_out_eq, hstab]`.
+-/
 theorem massCl_comap (e : G' ≃* G) (Γ K : Subgroup G) :
     massCl (Γ.comap e.toMonoidHom) (K.comap e.toMonoidHom) = massCl Γ K := by
   set Γ' := Γ.comap e.toMonoidHom with hΓ'
@@ -96,6 +127,15 @@ section Count
 
 variable {G α : Type} [Group G]
 
+/- English proof (translation)
+Unfold `massCl`. Establish `hout : ∀ x, ∃ γ ∈ Γ, ∃ k ∈ K, Quotient.out (DoubleCoset.mk Γ K x) = γ * x * k`. Introduce `x`. Take `⟨γ, k, hγ, hk, h⟩` from `DoubleCoset.mk_out_eq_mul Γ K x`. Conclude with `⟨γ, hγ, k, hk, h⟩`.
+
+Rewrite using `[← Finset.sum_coe_sort S w, ← finsum_eq_sum_of_fintype]`. Use `finsum_eq_of_bijective (fun c => (⟨ℓ (Quotient.out c), hS _⟩ : {s // s ∈ S})) ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `c1 c2 h`. Establish `h' : ℓ (Quotient.out c1) = ℓ (Quotient.out c2)` using `congrArg Subtype.val h`. Take `⟨γ, hγ, k, hk, h2⟩` from `(hrel _ _).mp h'`.
+
+Rewrite using `[← Quotient.out_eq c1, ← Quotient.out_eq c2]`. Conclude with `(DoubleCoset.eq Γ K _ _).mpr ⟨γ, hγ, k, hk, h2⟩`. Introduce and unpack `⟨s, hs⟩`. Take `⟨x, rfl⟩` from `hsurj s hs`. Use `⟨DoubleCoset.mk Γ K x, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ, k, hk, h⟩` from `hout x`. Conclude with `((hrel _ _).mpr ⟨γ, hγ, k, hk, h⟩).symm`. Introduce `c`. Conclude with `hw _`.
+-/
 theorem massCl_eq_sum (Γ K : Subgroup G) (S : Finset α) (ℓ : G → α) (w : α → ℝ)
     (hS : ∀ x, ℓ x ∈ S)
     (hrel : ∀ x y, ℓ x = ℓ y ↔ ∃ γ ∈ Γ, ∃ k ∈ K, y = γ * x * k)

@@ -20,6 +20,9 @@ open GlobalTheory.CechPic GlobalTheory.AbDual
 open GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase (IsPrincipalPol sqToBase)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AmpleForm.relAmple_of_lam_eq | exact GlobalTheory.CompanionTheory.AmpleForm.relAmple_of_lam_eq | (intros; apply GlobalTheory.CompanionTheory.AmpleForm.relAmple_of_lam_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rel_ample_of_same_polarization : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B →
     ∀ (M L : LB B.left) (hM : M.IsLB) (hL : L.IsLB), Out.RelAmple B L → Out.KTriv B L →
     lam (cls M hM) (fst B B) (snd B B) = lam (cls L hL) (fst B B) (snd B B) → Out.RelAmple B M := by

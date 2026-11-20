@@ -17,6 +17,11 @@ namespace GlobalTheory.SS.IrrSplit
 section
 variable {R : Type} [CommRing R] {K : Type} [Field K] [Algebra R K] {A : Over (Sp K)}
 
+/- English proof (translation)
+Use `⟨⟨by rw [IsOpenImmersion.lift_fac_assoc, pullback.condition]⟩, ⟨PullbackCone.IsLimit.mk _ (fun c => pullback.lift (c.fst ≫ U.ι) c.snd (by simpa using c.condition)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `c`. Rewrite using `[← cancel_mono U.ι, Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`. Introduce `c`. Rewrite using `[pullback.lift_snd]`.
+
+Introduce `c m h₁ h₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, ← h₁, Category.assoc, IsOpenImmersion.lift_fac]`. Rewrite using `[pullback.lift_snd, h₂]`.
+-/
 theorem isPullback_lift (M : Model R A) (U : M.Y.left.Opens)
     (hU : Set.range (pullback.fst M.Y.hom (spMap (algebraMap R K))) ⊆ Set.range U.ι) :
     IsPullback (IsOpenImmersion.lift U.ι (pullback.fst M.Y.hom (spMap (algebraMap R K))) hU)
@@ -41,6 +46,9 @@ def restrictModel (M : Model R A) (U : M.Y.left.Opens) [QuasiCompact U.ι]
   sep := by have := M.sep; show IsSeparated (U.ι ≫ M.Y.hom); infer_instance
   qc := by have := M.qc; show QuasiCompact (U.ι ≫ M.Y.hom); infer_instance
 
+/- English proof (translation)
+Establish `h` using `(isPullback_lift M U hU).isoPullback_hom_fst`. Use `show ((M.e.inv.left ≫ (isPullback_lift M U hU).isoPullback.hom) ≫ pullback.fst (U.ι ≫ M.Y.hom) (spMap (algebraMap R K))) ≫ U.ι = _`. Rewrite using `[Category.assoc, Category.assoc, reassoc_of% h, IsOpenImmersion.lift_fac]`. Both sides reduce to the same expression.
+-/
 theorem restrictModel_j (M : Model R A) (U : M.Y.left.Opens) [QuasiCompact U.ι]
     (hU : Set.range (pullback.fst M.Y.hom (spMap (algebraMap R K))) ⊆ Set.range U.ι) :
     (restrictModel M U hU).j ≫ U.ι = M.j := by
@@ -52,6 +60,35 @@ theorem restrictModel_j (M : Model R A) (U : M.Y.left.Opens) [QuasiCompact U.ι]
 
 end
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ A M`. Use `M.smooth` as an intermediate fact. Use `M.qc` as an intermediate fact. Set `f : M.Y.left ⟶ Sp R` to `M.Y.hom`. Set `c : Sp R` to `IsLocalRing.closedPoint R`.
+
+Establish `: IsLocallyNoetherian M.Y.left` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `hf : Smooth f` using `M.smooth`. Establish `hf' : QuasiCompact f` using `M.qc`. Establish `hs : Smooth (f.fiberToSpecResidueField c)` using `inferInstanceAs (Smooth (pullback.snd f ((Sp R).fromSpecResidueField c)))`. Take `⟨-, hn, hl⟩` from `GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field ((Sp R).residueField c) (f.fiber c) (f.fiberToSpecResidueField c) hs`.
+
+Establish `hn' : GlobalTheory.IsNormalScheme (f.fiber c)` using `GlobalTheory.IsNormalScheme.of_pred hn`. Establish `: CompactSpace (f.fiber c)` using `inferInstance`. Establish `: IsNoetherian (f.fiber c)` using `{}`. Establish `hfin : (irreducibleComponents (f.fiber c)).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Establish `hr : Set.range (f.fiberι c) = M.sp` using `f.range_fiberι c`.
+
+Establish `hcl : Topology.IsClosedEmbedding (f.fiberι c)`. Use `⟨(f.fiberι c).isEmbedding, ?_⟩` and prove the remaining obligations. Rewrite using `[f.range_fiberι]`. Conclude with `(IsLocalRing.isClosed_singleton_closedPoint R).preimage f.continuous`. Establish `: Finite (irreducibleComponents (f.fiber c))` using `hfin`.
+
+Take `⟨n, ⟨σ⟩⟩` from `Finite.exists_equiv_fin (irreducibleComponents (f.fiber c))`. Set `U : Fin n → M.Y.left.Opens` to `fun i => ⟨(f.fiberι c '' (σ.symm i).1ᶜ)ᶜ, (hcl.isClosedMap _ (GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents (σ.symm i).2).isClosed_compl).isOpen_compl⟩`. Establish `hU : ∀ i, Set.range (pullback.fst M.Y.hom (spMap (algebraMap R K))) ⊆ Set.range (U i).ι`. Introduce and unpack `i _ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `⟨z, -, hz⟩`. Establish `h1 : pullback.fst M.Y.hom (spMap (algebraMap R K)) x ∈ M.sp` using `hr ▸ ⟨z, hz⟩`. Establish `h2 : M.Y.hom (pullback.fst M.Y.hom (spMap (algebraMap R K)) x) = spMap (algebraMap R K) (pullback.snd M.Y.hom (spMap (algebraMap R K)) x)`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Establish `h3` using `h2.symm.trans h1`.
+
+Generalize the expression as in `pullback.snd M.Y.hom (spMap (algebraMap R K)) x = p at h3`. Establish `h4 : Ideal.comap (algebraMap R K) p.asIdeal = IsLocalRing.maximalIdeal R` using `congrArg PrimeSpectrum.asIdeal h3`. Establish `h5 : p.asIdeal = ⊥` using `(Ideal.eq_bot_or_top (K := K) p.asIdeal).resolve_right p.isPrime.ne_top`. Rewrite `h4` using `[h5, Ideal.comap_bot_of_injective _ (IsFractionRing.injective R K)]`. Conclude with `IsDiscreteValuationRing.not_a_field R h4.symm`.
+
+Establish `hmem : ∀ i z, f.fiberι c z ∈ U i ↔ z ∈ (σ.symm i).1`. Introduce `i z`. Use `show f.fiberι c z ∉ f.fiberι c '' (σ.symm i).1ᶜ ↔ _`. Rewrite using `[hcl.injective.mem_set_image]`. Simplify using the standard rewrite rules.
+
+Use `⟨n, fun i => restrictModel M (U i) (hU i), fun i => Over.homMk (U i).ι rfl, fun i => ⟨?_, inferInstanceAs (IsOpenImmersion (U i).ι), restrictModel_j M (U i) (hU i)⟩, ?_⟩` and prove the remaining obligations. Establish `hi : IsIrreducible (f.fiberι c '' (σ.symm i).1)` using `(σ.symm i).2.1.image _ (f.fiberι c).continuous.continuousOn`. Establish `he : (restrictModel M (U i) (hU i)).sp = (U i).ι ⁻¹' (f.fiberι c '' (σ.symm i).1)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Establish `: (U i).ι y ∈ M.sp` using `hy`. Rewrite `this` using `[← hr]`. Take `⟨z, hz⟩` from `this`. Use `⟨z, (hmem i z).1 ?_, hz⟩` and prove the remaining obligations.
+
+Rewrite using `[hz]`. Conclude with `y.2`. Introduce and unpack `⟨z, -, hz⟩`. Establish `: (U i).ι y ∈ M.sp` using `hr ▸ ⟨z, hz⟩`. Conclude with `this`.
+
+Use `show IsIrreducible _`. Rewrite using `[he]`. Use `⟨?_, hi.2.preimage (U i).ι.isOpenEmbedding⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(σ.symm i).2.1.1`. Conclude with `⟨⟨_, (hmem i z).2 hz⟩, z, hz, rfl⟩`.
+
+Introduce `y hy`. Rewrite `hy` using `[← hr]`. Take `⟨z, rfl⟩` from `hy`. Use `⟨σ ⟨_, irreducibleComponent_mem_irreducibleComponents z⟩, ⟨_, (hmem _ z).2 ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply]`.
+
+Conclude with `mem_irreducibleComponent`.
+-/
 theorem exists_cover_irr : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (A : Over (Sp K)) (M : Model R A), ∃ (n : ℕ) (N : Fin n → Model R A) (g : ∀ i, (N i).Y ⟶ M.Y), (∀ i, (N i).Irr ∧ IsOpenImmersion (g i).left ∧ (N i).j ≫ (g i).left = M.j) ∧ ∀ y ∈ M.sp, ∃ i, y ∈ Set.range (g i).left := by
   intro R K _ _ _ _ _ _ A M
   have := M.smooth

@@ -17,6 +17,23 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 noncomputable section
 namespace UpperTheory.One.M
+/- English proof (translation)
+Introduce `hL D T A hA j h1 h2 π`. Take `⟨π₀, rfl⟩` from `A.surj j h1 h2 π`. Take `⟨F⟩` from `GlobalTheory.T.unitaryFiniteAdeleIdentification_nonempty_presentations D.host.E D.R.nV`. Take `⟨U, hU⟩` from `GlobalTheory.T.exists_dictionary_cm_field_automorphic D.host.E D.R.nV F π₀`. Use `⟨U, hU.1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `w hw σ hσ`. Take `⟨s, rfl⟩` from `exists_splitPlace_w D w hw`. Take `⟨τ, hτ, ⟨e⟩⟩` from `GlobalTheory.T.localComponents_agree_splitPlace_dictionary _ _ F π₀ U hU s σ hσ`. Establish `h` using `hA j h1 h2 π₀ s τ hτ`. Use `show _ = (T.e s.w).symm _`.
+
+Establish `hc : GlobalTheory.LocLanglands.cls τ = GlobalTheory.LocLanglands.cls (ParLaws.toRep σ)`. Unfold `GlobalTheory.LocLanglands.cls`. Rewrite using `[(GlobalTheory.SmGL.IrrRep.cl_eq_iff (σ := τ) (τ := ParLaws.toRep σ)).2 ⟨e⟩]`. Rewrite using `[Equiv.eq_symm_apply, h, hc]`. Introduce `w hw hsph`.
+
+Set `v` to `GlobalTheory.SplitConjPlace.belowE (D := D) w`. Establish `hv : NG.OverPl w v` using `rfl`. Establish `hsph0` using `(A.sph j h1 h2 π₀ w v hw hv).1 hsph`. Take `⟨s, ϖ, q, hs, hq⟩` from `GlobalTheory.InertPlaceConj.exists_conj_isUnramInv D.host.E w (host_unramified D.host w) (not_isSplitAt D w hw)`. Take `⟨-, hI⟩` from `_root_.UpperTheory.One.M.Sph.satAgree _ _ F π₀ U hU v w hv`.
+
+Take `⟨⟨Dv, hDs, hDϖ⟩, hI2⟩` from `hI s ϖ q hs hq`. Take `⟨α, hα, hsat⟩` from `A.sat j h1 h2 π₀ v w hv Dv (_root_.UpperTheory.One.M.Sph.exists_satAt_of_dict _ _ F π₀ U hU v w hv hsph0 Dv)`. Take `⟨α', hα', hS⟩` from `hI2 Dv α hDs hDϖ hα`. Use `⟨fun w' hw' σ hσ => ?_, α', ⟨s, ϖ, q, hs, hq, hS⟩, ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `exists_splitPlace_w D w' hw'`.
+
+Take `⟨τ, hτ, ⟨e⟩⟩` from `GlobalTheory.T.localComponents_agree_splitPlace_dictionary _ _ F π₀ U hU t σ hσ`. Establish `hc : GlobalTheory.LocLanglands.cls τ = GlobalTheory.LocLanglands.cls (ParLaws.toRep σ)`. Unfold `GlobalTheory.LocLanglands.cls`. Rewrite using `[(GlobalTheory.SmGL.IrrRep.cl_eq_iff (σ := τ) (τ := ParLaws.toRep σ)).2 ⟨e⟩]`. Use `_root_.UpperTheory.One.M.New.sphGood sw hsph0 (noSplit D w v hw hv) t τ hτ` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Rewrite using `[hsat]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hα' i).symm`.
+
+Introduce `τ`. Take `⟨b, hb, -⟩` from `GlobalTheory.algWt_contragredient _ _ π₀.toAlgWt`. Take `⟨lam, hl, hhw⟩` from `GlobalTheory.T.algebraicWeight_agrees_under_modularForm_dictionary _ _ F π₀ U hU b hb τ`. Use `⟨lam, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[A.wt j h1 h2 π₀ b hb, A.infW j h1 h2 b τ lam.w hhw, infOf_eq_infOfWeight]`.
+-/
 theorem unitaryRead_true_alt (sw : _root_.UpperTheory.One.M.TrivialCondition) : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (A : _root_.GlobalTheory.HeightCounting.AUSideAlt D),
     _root_.GlobalTheory.HeightCounting.AutomorphicSideRealised hL D T A → Ud.UnitaryReadS D.nbc (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
   intro hL D T A hA j h1 h2 π
@@ -60,6 +77,13 @@ theorem unitaryRead_true_alt (sw : _root_.UpperTheory.One.M.TrivialCondition) : 
     obtain ⟨lam, hl, hhw⟩ := GlobalTheory.T.algebraicWeight_agrees_under_modularForm_dictionary _ _ F π₀ U hU b hb τ
     refine ⟨lam, hl, ?_⟩
     rw [A.wt j h1 h2 π₀ b hb, A.infW j h1 h2 b τ lam.w hhw, infOf_eq_infOfWeight]
+/- English proof (translation)
+Introduce `hL D T C a P ha hP hg`. Use `haveI := host_isCMField D.host`. Establish `hu : (CG.mk P).IsUnitary` using `CsdUnitary.isUnitary_of_isCsd _ a (CG.mk P) hP`. Take `⟨π, hπ⟩` from `_root_.UpperTheory.One.M.New.cgSurj C a ha ⟨CG.mk P, hu⟩ fun w => by`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp GlobalTheory.automorphicFormsFiniteGL D.host.E a P w`.
+
+Conclude with `(ParLawsT.cls_loc_eq_of_isLocComp hσ).symm ▸ hg w σ hσ`. Use `⟨π, (C.csd a _).2 (by rw [hπ]; exact hP), fun w σ hσ => ?_, fun τ m hm => ?_⟩` and prove the remaining obligations. Apply `(T.e w).injective` to reduce the goal to its premises. Rewrite using `[C.loc, hπ]`. Simplify using `only [_root_.GlobalTheory.FormDict.recT_alt, Equiv.apply_symm_apply]`.
+
+Conclude with `_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_eq_reciprocity_of_is_local_component hL hσ _`. Rewrite using `[C.inf, hπ]`. Conclude with `CG.HasInfChar.infChar_eq (π := CG.mk P) hm`.
+-/
 theorem cusp_read_rec_t : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut),
     _root_.GlobalTheory.HeightCounting.CGTrueT hL D T → CuspReadG (_root_.GlobalTheory.FormDict.recT_alt T hL) := by
   intro hL D T C a P ha hP hg

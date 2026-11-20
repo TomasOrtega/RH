@@ -10,9 +10,18 @@ abbrev SchwartzJetSpace (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (N
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (N : ℕ) : CompleteSpace (SchwartzJetSpace V N) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (N : ℕ) : NormedSpace ℂ (SchwartzJetSpace V N) := inferInstance
 
+/- English proof (translation)
+Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `SchwartzMap.one_add_le_sup_seminorm_apply (m := (K, N)) le_rfl (Nat.lt_succ_iff.1 n.2) f x`.
+-/
 lemma schwartzJet_norm_bound (K N : ℕ) (f : SchwartzMap V ℂ) (n : Fin (N + 1)) (x : V) :
     ‖((1 + ‖x‖) ^ K : ℝ) • iteratedFDeriv ℝ (n : ℕ) f x‖ ≤
       2 ^ K * (Finset.Iic (K, N)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f := by
@@ -26,6 +35,9 @@ def schwartzJetFun (K N : ℕ) (f : SchwartzMap V ℂ) : SchwartzJetSpace V N :=
       ((f.smooth ⊤).continuous_iteratedFDeriv (by exact_mod_cast le_top)))
     _ (schwartzJet_norm_bound K N f n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma schwartzJetFun_apply (K N : ℕ) (f : SchwartzMap V ℂ) (n : Fin (N + 1)) (x : V) :
     schwartzJetFun K N f n x = ((1 + ‖x‖) ^ K : ℝ) • iteratedFDeriv ℝ (n : ℕ) f x := rfl
 
@@ -43,14 +55,25 @@ def schwartzJet (K N : ℕ) : SchwartzMap V ℂ →ₗ[ℂ] SchwartzJetSpace V N
     have e : (⇑(c • f) : V → ℂ) = c • ⇑f := rfl
     rw [e, iteratedFDeriv_const_smul_apply ((f.smooth ⊤).of_le (by exact_mod_cast le_top)).contDiffAt, smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma schwartzJet_apply (K N : ℕ) (f : SchwartzMap V ℂ) (n : Fin (N + 1)) (x : V) :
     schwartzJet K N f n x = ((1 + ‖x‖) ^ K : ℝ) • iteratedFDeriv ℝ (n : ℕ) f x := rfl
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun n => ?_` and prove the remaining obligations. Conclude with `(BoundedContinuousFunction.norm_le (by positivity)).2 fun x => schwartzJet_norm_bound K N f n x`.
+-/
 lemma norm_schwartzJet_le (K N : ℕ) (f : SchwartzMap V ℂ) :
     ‖schwartzJet K N f‖ ≤ 2 ^ K * (Finset.Iic (K, N)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun n => ?_
   exact (BoundedContinuousFunction.norm_le (by positivity)).2 fun x => schwartzJet_norm_bound K N f n x
 
+/- English proof (translation)
+Use `Seminorm.finset_sup_apply_le (norm_nonneg _) fun m hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[Finset.mem_Iic]`. Use `SchwartzMap.seminorm_le_bound ℂ m.1 m.2 f (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Establish `hn : m.2 < N + 1` using `Nat.lt_succ_of_le hm.2`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = ‖schwartzJet K N f ⟨m.2, hn⟩ x‖ := by`. Rewrite using `[schwartzJet_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `_ ≤ ‖schwartzJet K N f ⟨m.2, hn⟩‖ := BoundedContinuousFunction.norm_coe_le_norm _ x`. Use `_ ≤ ‖schwartzJet K N f‖ := norm_le_pi_norm _ _`.
+-/
 lemma sup_seminorm_le_norm_schwartzJet (K N : ℕ) (f : SchwartzMap V ℂ) :
     (Finset.Iic (K, N)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f ≤ ‖schwartzJet K N f‖ := by
   refine Seminorm.finset_sup_apply_le (norm_nonneg _) fun m hm => ?_
@@ -66,6 +89,11 @@ lemma sup_seminorm_le_norm_schwartzJet (K N : ℕ) (f : SchwartzMap V ℂ) :
     _ ≤ ‖schwartzJet K N f ⟨m.2, hn⟩‖ := BoundedContinuousFunction.norm_coe_le_norm _ x
     _ ≤ ‖schwartzJet K N f‖ := norm_le_pi_norm _ _
 
+/- English proof (translation)
+Use `(schwartz_withSeminorms ℂ V ℂ).continuous_normedSpace_rng _ (schwartzJet K N) ⟨Finset.Iic (K, N), 2 ^ K, fun f => ?_⟩` and prove the remaining obligations. Establish `h` using `norm_schwartzJet_le K N f`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Seminorm.smul_apply, NNReal.smul_def]`. Simplify using `only [NNReal.coe_pow, NNReal.coe_ofNat]`.
+
+Both sides reduce to the same expression.
+-/
 lemma continuous_schwartzJet (K N : ℕ) : Continuous (schwartzJet (V := V) K N) := by
   refine (schwartz_withSeminorms ℂ V ℂ).continuous_normedSpace_rng _ (schwartzJet K N)
     ⟨Finset.Iic (K, N), 2 ^ K, fun f => ?_⟩
@@ -75,6 +103,11 @@ lemma continuous_schwartzJet (K N : ℕ) : Continuous (schwartzJet (V := V) K N)
   simp only [NNReal.coe_pow, NNReal.coe_ofNat]
   rfl
 
+/- English proof (translation)
+Introduce `f g hfg`. Use extensionality with `x`. Establish `h` using `congrArg (fun y : SchwartzJetSpace V N => y 0 x) hfg`. Simplify using `only [schwartzJet_apply] at h`. Establish `h2 : iteratedFDeriv ℝ 0 f x = iteratedFDeriv ℝ 0 g x` using `smul_right_injective _ (by positivity : ((1 + ‖x‖) ^ K : ℝ) ≠ 0) h`.
+
+Simplify using `using congrArg (fun A => A (fun _ => 0)) h2`.
+-/
 lemma schwartzJet_injective (K N : ℕ) : Function.Injective (schwartzJet (V := V) K N) := by
   intro f g hfg
   ext x
@@ -84,6 +117,21 @@ lemma schwartzJet_injective (K N : ℕ) : Function.Injective (schwartzJet (V := 
     smul_right_injective _ (by positivity : ((1 + ‖x‖) ^ K : ℝ) ≠ 0) h
   simpa using congrArg (fun A => A (fun _ => 0)) h2
 
+/- English proof (translation)
+Use `set q : Seminorm ℂ (SchwartzMap V ℂ) := (normSeminorm ℂ ℂ).comp T.toLinearMap with hq`. Establish `hqc : Continuous q` using `continuous_norm.comp T.continuous`. Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) q hqc`. Use `set m : ℕ × ℕ := s.sup id`. Use `⟨m.1, m.2, ?_⟩` and prove the remaining obligations.
+
+Use `set ι := schwartzJet (V := V) m.1 m.2`. Establish `hbound : ∀ f, ‖T f‖ ≤ (C : ℝ) * ‖ι f‖`. Introduce `f`. Establish `h1 : q f ≤ (C • s.sup (schwartzSeminormFamily ℂ V ℂ)) f` using `hC f`. Rewrite `h1` using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]`.
+
+Establish `h2 : s.sup (schwartzSeminormFamily ℂ V ℂ) f ≤ (Finset.Iic (m.1, m.2)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f`. Use `Seminorm.finset_sup_apply_le (apply_nonneg _ _) fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ∈ Finset.Iic (m.1, m.2)` using `Finset.mem_Iic.2 (Finset.le_sup (f := id) hi)`. Conclude with `Seminorm.le_finset_sup_apply (p := fun m : ℕ × ℕ => (SchwartzMap.seminorm ℂ m.1 m.2 : Seminorm ℂ (SchwartzMap V ℂ))) hi'`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h2.trans (sup_seminorm_le_norm_schwartzJet _ _ f)`. Establish `hinj : Function.Injective ι` using `schwartzJet_injective _ _`. Set `e` to `LinearEquiv.ofInjective ι hinj`. Set `g0 : LinearMap.range ι →ₗ[ℂ] ℂ` to `T.toLinearMap ∘ₗ e.symm.toLinearMap`. Establish `hg0 : ∀ y, ‖g0 y‖ ≤ (C : ℝ) * ‖y‖`.
+
+Introduce `y`. Take `⟨f, rfl⟩` from `e.surjective y`. Simplify using `only [g0, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, ContinuousLinearMap.coe_coe]`. Establish `: ‖e f‖ = ‖ι f‖`. Rewrite using `[Submodule.coe_norm, LinearEquiv.ofInjective_apply]`.
+
+Rewrite using `[this]`. Conclude with `hbound f`. Take `⟨L, hL, -⟩` from `exists_extension_norm_eq (LinearMap.range ι) (g0.mkContinuous C hg0)`. Use `⟨L, fun f => ?_⟩` and prove the remaining obligations. Use `hL (e f)` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.ofInjective_apply]`. Rewrite using `[this]`. Simplify using `[g0, e]`.
+-/
 lemma exists_jet_factor (T : SchwartzMap V ℂ →L[ℂ] ℂ) :
     ∃ K N : ℕ, ∃ L : SchwartzJetSpace V N →L[ℂ] ℂ, ∀ f, T f = L (schwartzJet K N f) := by
   set q : Seminorm ℂ (SchwartzMap V ℂ) := (normSeminorm ℂ ℂ).comp T.toLinearMap with hq
@@ -125,6 +173,25 @@ lemma exists_jet_factor (T : SchwartzMap V ℂ →L[ℂ] ℂ) :
   rw [this]
   simp [g0, e]
 
+/- English proof (translation)
+Take `⟨K, N, L, hL⟩` from `exists_jet_factor T`. Use `haveI : ProperSpace W := FiniteDimensional.proper_real W`. Use `haveI : SecondCountableTopology W := secondCountable_of_proper`. Use `haveI : SecondCountableTopologyEither W (SchwartzJetSpace V N) := ⟨Or.inl ‹_›⟩`. Use `choose C hC using hΦ`.
+
+Use `set ι := schwartzJet (V := V) K N`. Use `set B : ℝ := ∑ m ∈ Finset.Iic (K, N), |C m.1 m.2|`. Establish `hB0 : 0 ≤ B` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hjet : ∀ w, ‖ι (Φ w)‖ ≤ 2 ^ K * B * (1 + ‖w‖) ^ N`. Introduce `w`.
+
+Establish `h1w : (1 : ℝ) ≤ 1 + ‖w‖` using `by linarith [norm_nonneg w]`. Use `(norm_schwartzJet_le K N (Φ w)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`. Use `Seminorm.finset_sup_apply_le (by positivity) fun m hm => ?_` and prove the remaining obligations.
+
+Use `SchwartzMap.seminorm_le_bound ℂ m.1 m.2 (Φ w) (by positivity) fun x => ?_` and prove the remaining obligations. Use `(hC m.1 m.2 w x).trans ?_` and prove the remaining obligations. Establish `hm2 : m.2 ≤ N` using `(Finset.mem_Iic.1 hm).2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.single_le_sum (f := fun m : ℕ × ℕ => |C m.1 m.2|) (fun _ _ => abs_nonneg _) hm`.
+
+Establish `hιc : Continuous fun w => ι (Φ w)` using `(continuous_schwartzJet K N).comp hΦc`. Use `set F : W → SchwartzJetSpace V N := fun w => φ w • ι (Φ w) with hF`. Establish `hFint : Integrable F μ`. Use `Integrable.mono' ((hφ N).const_mul (2 ^ K * B)) (hφm.smul hιc.aestronglyMeasurable) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations.
+
+Simplify using `only [hF, norm_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hI : ι h = ∫ w, F w ∂μ`. Use function extensionality and compare the values at `n`. Use extensionality with `x : 1`.
+
+Set `ev` to `(BoundedContinuousFunction.evalCLM ℂ x).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun n : Fin (N + 1) => BoundedContinuousFunction V (ContinuousMultilinearMap ℝ (fun _ : Fin (n : ℕ) => V) ℂ)) n)`. Establish `hev : ∀ y : SchwartzJetSpace V N, ev y = y n x` using `fun y => rfl`. Rewrite using `[show ((∫ w, F w ∂μ) n) x = ev (∫ w, F w ∂μ) from rfl, ← ContinuousLinearMap.integral_comp_comm ev hFint]`. Simplify using `only [hev, hF, schwartzJet_apply, ι, Pi.smul_apply, BoundedContinuousFunction.coe_smul]`. Rewrite using `[hh, ← integral_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `smul_comm _ _ _`. Rewrite using `[hL h, hI, ← ContinuousLinearMap.integral_comp_comm L hFint]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [hF, map_smul, smul_eq_mul, hL]`.
+-/
 theorem clm_integral_exchange {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W]
     (μ : Measure W) (T : SchwartzMap V ℂ →L[ℂ] ℂ) (Φ : W → SchwartzMap V ℂ) (hΦc : Continuous Φ)

@@ -11,6 +11,17 @@ namespace GlobalTheory.Orb
 
 section Param
 
+/- English proof (translation)
+Use `borelize X`. Set `e : H → X × ℂ` to `fun x => (k x, φ x)`. Establish `he : Continuous e` using `hk.prodMk hφ`. Take `⟨R, hR0, hR⟩` from `(hc.isCompact.image he).isBounded.subset_closedBall_lt 0 0`. Set `χ : ContDiffBump (0 : X × ℂ)` to `⟨R, R + 1, hR0, by linarith⟩`.
+
+Establish `: IsFiniteMeasure (μ.restrict (tsupport φ))` using `isFiniteMeasure_restrict.2 hc.isCompact.measure_ne_top`. Establish `hg : ContDiff ℝ ∞ fun q : P × (X × ℂ) => (χ (-q.2) : ℂ) * ((-q.2).2 * Ψ (q.1, (-q.2).1))` using `(Complex.ofRealCLM.contDiff.comp (χ.contDiff.comp contDiff_snd.neg)).mul (contDiff_snd.neg.snd.mul (hΨ.comp (contDiff_fst.prodMk contDiff_snd.neg.fst)))`. Establish `key` using `contDiffOn_convolution_right_with_param_comp (𝕜 := ℝ) (n := (⊤ : ℕ∞)) (ContinuousLinearMap.mul ℝ ℂ) (s := (univ : Set P)) (v := fun _ => (0 : X × ℂ)) contDiffOn_const (f := fun _ => (1 : ℂ)) (μ := (μ.restrict (tsupport φ)).map e) (g := fun p z => (χ (-z) : ℂ) * ((-z).2 * Ψ (p, (- …`. Rewrite `key` using `[contDiffOn_univ]`. Use `key using 2 with p` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[convolution_def, integral_map he.aemeasurable, ← setIntegral_eq_integral_of_forall_compl_eq_zero (s := tsupport φ) fun x hx => by simp [image_eq_zero_of_notMem_tsupport hx]]`. Use `setIntegral_congr_fun (isClosed_tsupport φ).measurableSet fun x hx => ?_` and prove the remaining obligations. Simplify using `only [zero_sub, neg_neg, ContinuousLinearMap.mul_apply']`. Rewrite using `[χ.one_of_mem_closedBall (hR ⟨x, hx, rfl⟩)]`. Simplify using `[e]`.
+
+Conclude with `(continuous_const.mul (hg.continuous.comp (continuous_const.prodMk (continuous_const.sub continuous_id)))).aestronglyMeasurable`. Introduce `p z _ hz`. Establish `: χ (-z) = 0`. Apply `χ.zero_of_le_dist` to reduce the goal to its premises. Simplify using `only [Metric.mem_closedBall, dist_zero_right, not_le] at hz`.
+
+Simplify `hz.le` using `[χ]`. Simplify using `[this]`.
+-/
 theorem contDiff_integral_param {H X P : Type} [TopologicalSpace H] [MeasurableSpace H] [OpensMeasurableSpace H]
     [T2Space H] (μ : Measure H) [IsFiniteMeasureOnCompacts μ] [NormedAddCommGroup X] [NormedSpace ℝ X]
     [FiniteDimensional ℝ X] [NormedAddCommGroup P] [NormedSpace ℝ P] {k : H → X} (hk : Continuous k) {φ : H → ℂ}
@@ -58,12 +69,18 @@ def IsGroupCoord (c : H → X) : Prop :=
   Continuous c ∧ (∃ m : X × X → X, ContDiff ℝ ∞ m ∧ ∀ a b, c (a * b) = m (c a, c b)) ∧
     ∃ (U : Set X) (i : X → X), IsOpen U ∧ (∀ g, c g ∈ U) ∧ ContDiffOn ℝ ∞ i U ∧ ∀ g, c g⁻¹ = i (c g)
 
+/- English proof (translation)
+Take `⟨h1, ⟨m, hm, em⟩, U, i, hU, hc, hi, ei⟩` from `h`. Conclude with `⟨h1.comp hφ, ⟨m, hm, fun a b => by simp only [map_mul, em]⟩, U, i, hU, fun g => hc _, hi, fun g => by simp only [map_inv, ei]⟩`.
+-/
 theorem IsGroupCoord.comp {H' : Type} [Group H'] [TopologicalSpace H'] {c : H → X} (h : IsGroupCoord c) (φ : H' →* H)
     (hφ : Continuous φ) : IsGroupCoord fun g => c (φ g) := by
   obtain ⟨h1, ⟨m, hm, em⟩, U, i, hU, hc, hi, ei⟩ := h
   exact ⟨h1.comp hφ, ⟨m, hm, fun a b => by simp only [map_mul, em]⟩, U, i, hU, fun g => hc _, hi,
     fun g => by simp only [map_inv, ei]⟩
 
+/- English proof (translation)
+Use `choose m hm em using fun j => (h j).2.1`. Use `choose U i hU hc hi ei using fun j => (h j).2.2`. Use `⟨continuous_pi fun j => (h j).1, ⟨fun p j => m j (p.1 j, p.2 j), contDiff_pi.2 fun j => (hm j).comp ((contDiff_pi.1 contDiff_fst j).prodMk (contDiff_pi.1 contDiff_snd j)), fun a b => funext fun j => em j a b⟩, univ.pi U, fun y j => i j (y j), isOpen_set_pi finite_univ fun j _ => …` and prove the remaining obligations.
+-/
 theorem IsGroupCoord.pi {I : Type} [Fintype I] {Y : I → Type} [∀ j, NormedAddCommGroup (Y j)]
     [∀ j, NormedSpace ℝ (Y j)] {c : ∀ j, H → Y j} (h : ∀ j, IsGroupCoord (c j)) :
     IsGroupCoord fun g j => c j g := by
@@ -76,11 +93,21 @@ theorem IsGroupCoord.pi {I : Type} [Fintype I] {Y : I → Type} [∀ j, NormedAd
     contDiffOn_pi.2 fun j => (hi j).comp (contDiff_pi.1 contDiff_id j).contDiffOn fun y hy => hy j trivial,
     fun g => funext fun j => ei j g⟩
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiff.sum fun s _ => contDiff_const.mul (contDiff_prod fun i _ => h _ _)`.
+-/
 theorem contDiff_det_of_entries {n : Type} [Fintype n] [DecidableEq n] {A : X → Matrix n n ℂ}
     (h : ∀ i j, ContDiff ℝ ∞ fun y => A y i j) : ContDiff ℝ ∞ fun y => (A y).det := by
   simp only [Matrix.det_apply']
   exact ContDiff.sum fun s _ => contDiff_const.mul (contDiff_prod fun i _ => h _ _)
 
+/- English proof (translation)
+Establish `hd : ContDiff ℝ ∞ fun y : n → n → ℂ => (Matrix.of y).det` using `contDiff_det_of_entries fun i j => by simp only [Matrix.of_apply]; fun_prop`. Use `⟨hι, ⟨fun p i j => ∑ k, p.1 i k * p.2 k j, by fun_prop, fun a b => ?_⟩, {y | (Matrix.of y).det ≠ 0}, fun y i j => ((Matrix.of y).det)⁻¹ * (Matrix.of y).adjugate i j, isOpen_ne_fun hd.continuous continuous_const, fun g => ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `[matCoord, Matrix.mul_apply]`. Conclude with `(((Group.isUnit g).map ι).map Matrix.detMonoidHom).ne_zero`.
+
+Use `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => (hd.contDiffOn.inv fun y hy => hy).mul (ContDiff.contDiffOn ?_)` and prove the remaining obligations. Simplify using `only [Matrix.adjugate_apply]`. Use `contDiff_det_of_entries fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+
+Use function extensionality and compare the values at `i j`. Establish `e : ι g⁻¹ = (ι g)⁻¹` using `(Matrix.inv_eq_left_inv (by rw [← map_mul, inv_mul_cancel, map_one])).symm`. Express the relevant statement in the definitionally equal form `ι g⁻¹ i j = (ι g).det⁻¹ * (ι g).adjugate i j`. Rewrite using `[e, Matrix.inv_def, Ring.inverse_eq_inv]`. Both sides reduce to the same expression.
+-/
 theorem isGroupCoord_matCoord {n : Type} [Fintype n] [DecidableEq n] {ι : H →* Matrix n n ℂ} (hι : Continuous ι) :
     IsGroupCoord (matCoord ι) := by
   have hd : ContDiff ℝ ∞ fun y : n → n → ℂ => (Matrix.of y).det :=
@@ -105,6 +132,9 @@ theorem isGroupCoord_matCoord {n : Type} [Fintype n] [DecidableEq n] {ι : H →
 
 variable [IsTopologicalGroup H] {c : H → X} {f f' : H → ℂ}
 
+/- English proof (translation)
+Take `⟨-, ⟨m, hm, em⟩, -⟩` from `h`. Take `⟨hc, Φ, hΦ, e⟩` from `hf`. Conclude with `⟨hc.comp_homeomorph ((Homeomorph.mulLeft a).trans (Homeomorph.mulRight b)), fun y => Φ (m (m (c a, y), c b)), hΦ.comp (hm.comp ((hm.comp (by fun_prop)).prodMk contDiff_const)), fun g => by simp only [e, em]⟩`.
+-/
 theorem IsGroupCoord.translate_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) (a b : H) :
     (fun g => f (a * g * b)) ∈ CcSmooth c := by
   obtain ⟨-, ⟨m, hm, em⟩, -⟩ := h
@@ -115,6 +145,15 @@ theorem IsGroupCoord.translate_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) 
 
 variable [FiniteDimensional ℝ X]
 
+/- English proof (translation)
+Take `⟨h1, -, U, i, hU, hc, hi, ei⟩` from `h`. Take `⟨hs, Φ, hΦ, e⟩` from `hf`. Establish `hs' : HasCompactSupport fun g => f g⁻¹` using `hs.comp_homeomorph (Homeomorph.inv H)`. Take `⟨χ, h0, h1, -⟩` from `exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, X) (n := ⊤) hU.isClosed_compl (hs'.isCompact.image h1).isClosed (disjoint_left.2 fun y hy ⟨g, _, hg⟩ => hy (hg ▸ hc g))`. Establish `hχ : ContDiff ℝ ∞ fun y => ((χ y : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff.comp χ.contMDiff.contDiff`.
+
+Use `⟨hs', fun y => χ y * Φ (i y), contDiff_iff_contDiffAt.2 fun y => ?_, fun g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ U`. Conclude with `hχ.contDiffAt.mul (hΦ.contDiffAt.comp y (hi.contDiffAt (hU.mem_nhds hy)))`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_ filter_upwards [h0.filter_mono (nhds_le_nhdsSet hy)] with z hz` and prove the remaining obligations. Simplify using `[hz]`.
+
+Simplify using `only [← ei, ← e]`. Distinguish the cases in `hg : g ∈ tsupport fun g => f g⁻¹`. Rewrite using `[h1.self_of_nhdsSet _ ⟨g, hg, rfl⟩]`. Simplify using the standard rewrite rules. Establish `: f g⁻¹ = 0` using `image_eq_zero_of_notMem_tsupport (f := fun g => f g⁻¹) hg`.
+
+Simplify using `[this]`.
+-/
 theorem IsGroupCoord.inv_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) : (fun g => f g⁻¹) ∈ CcSmooth c := by
   obtain ⟨h1, -, U, i, hU, hc, hi, ei⟩ := h
   obtain ⟨hs, Φ, hΦ, e⟩ := hf
@@ -134,6 +173,9 @@ theorem IsGroupCoord.inv_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) : (fun
     · have : f g⁻¹ = 0 := image_eq_zero_of_notMem_tsupport (f := fun g => f g⁻¹) hg
       simp [this]
 
+/- English proof (translation)
+Take `⟨-, Φ, hΦ, e⟩` from `h.inv_mem hf`. Conclude with `⟨hasCompactSupport_starFn hf.1, fun y => conj (Φ y), Complex.conjCLE.contDiff.comp hΦ, fun g => congrArg conj (e g)⟩`.
+-/
 theorem IsGroupCoord.starFn_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) : starFn f ∈ CcSmooth c := by
   obtain ⟨-, Φ, hΦ, e⟩ := h.inv_mem hf
   exact ⟨hasCompactSupport_starFn hf.1, fun y => conj (Φ y), Complex.conjCLE.contDiff.comp hΦ,
@@ -141,6 +183,9 @@ theorem IsGroupCoord.starFn_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) : s
 
 variable [T2Space H] [MeasurableSpace H] [BorelSpace H] (μ : Measure H) [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Take `⟨h1, ⟨m, hm, em⟩, -⟩` from `h`. Take `⟨hc', Φ, hΦ, e⟩` from `hf'`. Use `⟨hasCompactSupport_conv hc hc', _, contDiff_integral_param μ (h1.comp continuous_inv) hf hc (Ψ := fun q => Φ (m (q.2, q.1))) (hΦ.comp (hm.comp (by fun_prop))), fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [conv, e, em, Function.comp]`.
+-/
 theorem IsGroupCoord.conv_mem_right (h : IsGroupCoord c) (hf : Continuous f) (hc : HasCompactSupport f)
     (hf' : f' ∈ CcSmooth c) : conv μ f f' ∈ CcSmooth c := by
   obtain ⟨h1, ⟨m, hm, em⟩, -⟩ := h
@@ -149,6 +194,9 @@ theorem IsGroupCoord.conv_mem_right (h : IsGroupCoord c) (hf : Continuous f) (hc
     (Ψ := fun q => Φ (m (q.2, q.1))) (hΦ.comp (hm.comp (by fun_prop))), fun g => ?_⟩
   simp only [conv, e, em, Function.comp]
 
+/- English proof (translation)
+The claim follows from `h.conv_mem_right μ (continuous_of_mem_ccSmooth h.1 hf) hf.1 hf'`.
+-/
 theorem IsGroupCoord.conv_mem (h : IsGroupCoord c) (hf : f ∈ CcSmooth c) (hf' : f' ∈ CcSmooth c) :
     conv μ f f' ∈ CcSmooth c := h.conv_mem_right μ (continuous_of_mem_ccSmooth h.1 hf) hf.1 hf'
 
@@ -167,11 +215,17 @@ section General
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+The claim follows from `comp_mem_SB h ((Homeomorph.mulLeft a).trans (Homeomorph.mulRight b))`.
+-/
 theorem translate_mem_SB {f : G → ℂ} (h : f ∈ SB G) (a b : G) : (fun g => f (a * g * b)) ∈ SB G :=
   comp_mem_SB h ((Homeomorph.mulLeft a).trans (Homeomorph.mulRight b))
 
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `hy : Continuous fun x => f' (x⁻¹ * y)` using `h'.comp (by fun_prop)`. Simplify using `only [conv, Pi.add_apply, add_mul]`. Conclude with `integral_add ((h₁.mul hy).integrable_of_hasCompactSupport c₁.mul_right) ((h₂.mul hy).integrable_of_hasCompactSupport c₂.mul_right)`.
+-/
 theorem conv_add_left {f₁ f₂ f' : G → ℂ} (h₁ : Continuous f₁) (c₁ : HasCompactSupport f₁) (h₂ : Continuous f₂)
     (c₂ : HasCompactSupport f₂) (h' : Continuous f') : conv μ (f₁ + f₂) f' = conv μ f₁ f' + conv μ f₂ f' := by
   funext y
@@ -180,6 +234,9 @@ theorem conv_add_left {f₁ f₂ f' : G → ℂ} (h₁ : Continuous f₁) (c₁ 
   exact integral_add ((h₁.mul hy).integrable_of_hasCompactSupport c₁.mul_right)
     ((h₂.mul hy).integrable_of_hasCompactSupport c₂.mul_right)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `hy : Continuous fun x : G => x⁻¹ * y` using `by fun_prop`. Simplify using `only [conv, Pi.add_apply, mul_add]`. Conclude with `integral_add ((h.mul (h₁.comp hy)).integrable_of_hasCompactSupport c.mul_right) ((h.mul (h₂.comp hy)).integrable_of_hasCompactSupport c.mul_right)`.
+-/
 theorem conv_add_right {f f₁ f₂ : G → ℂ} (h : Continuous f) (c : HasCompactSupport f) (h₁ : Continuous f₁)
     (h₂ : Continuous f₂) : conv μ f (f₁ + f₂) = conv μ f f₁ + conv μ f f₂ := by
   funext y
@@ -190,6 +247,9 @@ theorem conv_add_right {f f₁ f₂ : G → ℂ} (h : Continuous f) (c : HasComp
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [BorelSpace G] [IsFiniteMeasureOnCompacts μ] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [conv, Pi.smul_apply, smul_eq_mul, ← integral_const_mul]`. Conclude with `integral_congr_ae (.of_forall fun x => by ring)`.
+-/
 theorem conv_smul_smul (a b : ℂ) (f f' : G → ℂ) : conv μ (a • f) (b • f') = (a * b) • conv μ f f' := by
   funext y
   simp only [conv, Pi.smul_apply, smul_eq_mul, ← integral_const_mul]
@@ -200,9 +260,15 @@ end General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+The claim follows from `.pi fun τ => isGroupCoord_matCoord (continuous_archMat σ J τ)`.
+-/
 theorem isGroupCoord_archCoord (w : InfinitePlace F) : IsGroupCoord (archCoord σ J w) :=
   .pi fun τ => isGroupCoord_matCoord (continuous_archMat σ J τ)
 
+/- English proof (translation)
+The claim follows from `.pi fun w => (isGroupCoord_archCoord σ J w).comp (projInfArch σ J w) (continuous_projInfArch σ J w)`.
+-/
 theorem isGroupCoord_infCoord : IsGroupCoord (infCoord σ J) :=
   .pi fun w => (isGroupCoord_archCoord σ J w).comp (projInfArch σ J w) (continuous_projInfArch σ J w)
 
@@ -212,6 +278,9 @@ section Arch
 
 variable {w : InfinitePlace F} {f f' : GArch σ J w → ℂ}
 
+/- English proof (translation)
+The claim follows from `(isGroupCoord_archCoord σ J w).starFn_mem hf`.
+-/
 theorem starFn_mem_ccArch (hf : f ∈ CcArch σ J w) : starFn f ∈ CcArch σ J w :=
   (isGroupCoord_archCoord σ J w).starFn_mem hf
 
@@ -221,6 +290,9 @@ section Inf
 
 variable {f f' : GInf σ J → ℂ}
 
+/- English proof (translation)
+The claim follows from `(isGroupCoord_infCoord σ J).starFn_mem hf`.
+-/
 theorem starFn_mem_ccInf (hf : f ∈ CcInf σ J) : starFn f ∈ CcInf σ J :=
   (isGroupCoord_infCoord σ J).starFn_mem hf
 
@@ -230,11 +302,17 @@ section Ad
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[starFn, infFin]`.
+-/
 theorem starFn_infFin (a : GInf σ J → ℂ) (b : GFin σ J → ℂ) :
     starFn (infFin σ J a b) = infFin σ J (starFn a) (starFn b) := by
   funext g
   simp [starFn, infFin]
 
+/- English proof (translation)
+Use `(infFinEquiv σ J).isHaarMeasure_map μ` as an intermediate fact. Set `ν : Measure (GInf σ J × GFin σ J)` to `Measure.haar.prod Measure.haar`. Use `⟨Measure.haarScalarFactor (μ.map (infFinEquiv σ J)) ν • Measure.haar, Measure.haar, Measure.IsHaarMeasure.nnreal_smul _ (Measure.haarScalarFactor_pos_of_isHaarMeasure _ _).ne', inferInstance, ?_⟩` and prove the remaining obligations. Use `(Measure.isMulLeftInvariant_eq_smul _ ν).trans ?_` and prove the remaining obligations. Conclude with `(Measure.prod_smul_left _).symm`.
+-/
 theorem exists_map_infFinEquiv_eq_prod (μ : Measure (GAd σ J)) [μ.IsHaarMeasure] :
     ∃ (μa : Measure (GInf σ J)) (μf : Measure (GFin σ J)), μa.IsHaarMeasure ∧ μf.IsHaarMeasure ∧
       μ.map (infFinEquiv σ J) = μa.prod μf := by
@@ -245,6 +323,11 @@ theorem exists_map_infFinEquiv_eq_prod (μ : Measure (GAd σ J)) [μ.IsHaarMeasu
   refine (Measure.isMulLeftInvariant_eq_smul _ ν).trans ?_
   exact (Measure.prod_smul_left _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [conv, infFin]`. Rewrite using `[← integral_prod_mul, ← h]`. Use `Eq.trans ?_ ((infFinEquiv σ J).toHomeomorph.isClosedEmbedding.integral_map _).symm` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = a (projInf σ J x) * a' ((projInf σ J x)⁻¹ * _) * (b (projFin σ J x) * b' ((projFin σ J x)⁻¹ * _))`. Simplify using `only [map_mul, map_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conv_infFin {μ : Measure (GAd σ J)} {μa : Measure (GInf σ J)} {μf : Measure (GFin σ J)} [SFinite μa]
     [SFinite μf] (h : μ.map (infFinEquiv σ J) = μa.prod μf) (a a' : GInf σ J → ℂ) (b b' : GFin σ J → ℂ) :
     conv μ (infFin σ J a b) (infFin σ J a' b') = infFin σ J (conv μa a a') (conv μf b b') := by
@@ -259,6 +342,13 @@ theorem conv_infFin {μ : Measure (GAd σ J)} {μa : Measure (GInf σ J)} {μf :
 
 variable {f f' : GAd σ J → ℂ}
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ha, b, hb, rfl⟩` from `hf`. Conclude with `starFn_infFin a b ▸ infFin_mem_ccAd (starFn_mem_ccInf ha) (starFn_mem_SB hb)`. Consider the case `zero => convert (CcAd σ J).zero_mem using 1`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[starFn]`. Consider the case `add f f' _ _ h h' => convert (CcAd σ J).add_mem h h' using 1`. Use function extensionality and compare the values at `g`. Simplify using `[starFn]`.
+
+Consider the case `smul a f _ h => convert (CcAd σ J).smul_mem (conj a) h using 1`. Use function extensionality and compare the values at `g`. Simplify using `[starFn]`.
+-/
 theorem starFn_mem_ccAd (hf : f ∈ CcAd σ J) : starFn f ∈ CcAd σ J := by
   induction hf using Submodule.span_induction with
   | mem f hf =>
@@ -268,6 +358,19 @@ theorem starFn_mem_ccAd (hf : f ∈ CcAd σ J) : starFn f ∈ CcAd σ J := by
   | add f f' _ _ h h' => convert (CcAd σ J).add_mem h h' using 1; funext g; simp [starFn]
   | smul a f _ h => convert (CcAd σ J).smul_mem (conj a) h using 1; funext g; simp [starFn]
 
+/- English proof (translation)
+Take `⟨μa, μf, _, _, h⟩` from `exists_map_infFinEquiv_eq_prod μ`. Proceed by induction on `hf, hf' using Submodule.span_induction₂ with`. Consider the case `mem_mem f f' hf hf'`. Take `⟨a, ha, b, hb, rfl⟩` from `hf`. Take `⟨a', ha', b', hb', rfl⟩` from `hf'`.
+
+Rewrite using `[conv_infFin h]`. Conclude with `infFin_mem_ccAd ((isGroupCoord_infCoord σ J).conv_mem μa ha ha') (conv_mem_SB hb hb')`. Consider the case `zero_left f _ => convert (CcAd σ J).zero_mem using 1`. Use function extensionality and compare the values at `g`. Simplify using `[conv]`.
+
+Consider the case `zero_right f _ => convert (CcAd σ J).zero_mem using 1`. Use function extensionality and compare the values at `g`. Simplify using `[conv]`. Consider the case `add_left f₁ f₂ f' h₁ h₂ h' i₁ i₂`. Rewrite using `[conv_add_left μ (continuous_of_mem_ccAd h₁).1 (continuous_of_mem_ccAd h₁).2 (continuous_of_mem_ccAd h₂).1 (continuous_of_mem_ccAd h₂).2 (continuous_of_mem_ccAd h').1]`.
+
+Conclude with `(CcAd σ J).add_mem i₁ i₂`. Consider the case `add_right f f₁ f₂ h h₁ h₂ i₁ i₂`. Rewrite using `[conv_add_right μ (continuous_of_mem_ccAd h).1 (continuous_of_mem_ccAd h).2 (continuous_of_mem_ccAd h₁).1 (continuous_of_mem_ccAd h₂).1]`. Conclude with `(CcAd σ J).add_mem i₁ i₂`. Consider the case `smul_left r f f' _ _ i`.
+
+Use `conv_smul_smul μ r 1 f f'` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this ▸ (CcAd σ J).smul_mem _ i`. Consider the case `smul_right r f f' _ _ i`. Use `conv_smul_smul μ 1 r f f'` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Conclude with `this ▸ (CcAd σ J).smul_mem _ i`.
+-/
 theorem conv_mem_ccAd (μ : Measure (GAd σ J)) [μ.IsHaarMeasure] (hf : f ∈ CcAd σ J) (hf' : f' ∈ CcAd σ J) :
     conv μ f f' ∈ CcAd σ J := by
   obtain ⟨μa, μf, _, _, h⟩ := exists_map_infFinEquiv_eq_prod μ

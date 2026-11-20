@@ -12,22 +12,40 @@ section Lev
 
 variable {La : Type} [AddCommGroup La] (p : ℕ)
 
+/- English proof (translation)
+Introduce `t` and use `Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)`.
+-/
 theorem lev_surjective (n : ℕ) : Function.Surjective (lev (La := La) p n) := fun t =>
   Submodule.Quotient.mk_surjective _ (Multiplicative.toAdd t)
 
+/- English proof (translation)
+Rewrite using `[lev, lev, Multiplicative.ofAdd.apply_eq_iff_eq, Submodule.Quotient.eq]`. Conclude with `⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩`.
+-/
 theorem lev_eq_iff (n : ℕ) (a a' : La) : lev p n a = lev p n a' ↔ ∃ b : La, a - a' = (p ^ n) • b := by
   rw [lev, lev, Multiplicative.ofAdd.apply_eq_iff_eq, Submodule.Quotient.eq]
   exact ⟨fun ⟨b, hb⟩ => ⟨b, hb.symm⟩, fun ⟨b, hb⟩ => ⟨b, hb.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_add (n : ℕ) (a a' : La) : lev p n (a + a') = lev p n a * lev p n a' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_zero (n : ℕ) : lev p n (0 : La) = 1 := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [lev_zero]`. Consider the case `succ k ih => rw [succ_nsmul, lev_add, ih, pow_succ]`.
+-/
 theorem lev_nsmul (n k : ℕ) (a : La) : lev p n (k • a) = lev p n a ^ k := by
   induction k with
   | zero => simp [lev_zero]
   | succ k ih => rw [succ_nsmul, lev_add, ih, pow_succ]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `lev_surjective p n t`. Rewrite using `[← lev_nsmul, ← lev_zero, lev_eq_iff]`. Conclude with `⟨a, sub_zero _⟩`.
+-/
 theorem lev_pow (n : ℕ) (t : LevGrp La p n) : t ^ p ^ n = 1 := by
   obtain ⟨a, rfl⟩ := lev_surjective p n t
   rw [← lev_nsmul, ← lev_zero, lev_eq_iff]
@@ -38,8 +56,16 @@ def incl (n : ℕ) : LevGrp La p n →* LevGrp La p (n + 1) :=
     rintro _ ⟨b, rfl⟩
     exact ⟨b, by simp only [LinearMap.smul_apply, LinearMap.id_apply, pow_succ', mul_smul]⟩)).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_lev (n : ℕ) (a : La) : incl p n (lev p n a) = lev p (n + 1) (p • a) := rfl
 
+/- English proof (translation)
+Rewrite using `[pow_mul, ← AddSubgroup.index_range_nsmul]`. Establish `: (nsmulAddMonoidHom (α` using `La) (p ^ n)).range = (LinearMap.range ((p ^ n) • (LinearMap.id : La →ₗ[ℤ] La))).toAddSubgroup := by`. Use extensionality with `x`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem card_lev [Module.Free ℤ La] [Module.Finite ℤ La] (n : ℕ) :
     Nat.card (LevGrp La p n) = p ^ (n * Module.finrank ℤ La) := by
   rw [pow_mul, ← AddSubgroup.index_range_nsmul]
@@ -60,9 +86,15 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] {La : Type} [AddCommGr
 def resT (n : ℕ) : Ord (X.hopf (n + 1)) →ₐc[O] Ord (X.hopf n) :=
   Ord.comap (X.hopf n) (X.hopf (n + 1)) (incl p n) fun f hf => (X.res_iff n _).2 ⟨f, hf, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `Ord.ev_comap _ _ _ _ t f`.
+-/
 theorem ev_resT (n : ℕ) (t : LevGrp La p n) (f : Ord (X.hopf (n + 1))) :
     Ord.ev _ t (resT X n f) = Ord.ev _ (incl p n t) f := Ord.ev_comap _ _ _ _ t f
 
+/- English proof (translation)
+Introduce `g` and use `by obtain ⟨f, hf, h⟩ := (X.res_iff n _).1 (Ord.equiv _ g).2 refine ⟨(Ord.equiv _).symm ⟨f, hf⟩, Ord.sep _ _ _ fun t => ?_⟩ obtain ⟨a, rfl⟩ := lev_surjective p n t rw [ev_resT] exact (h a).symm`.
+-/
 theorem resT_surjective (n : ℕ) : Function.Surjective (resT X n) := fun g => by
   obtain ⟨f, hf, h⟩ := (X.res_iff n _).1 (Ord.equiv _ g).2
   refine ⟨(Ord.equiv _).symm ⟨f, hf⟩, Ord.sep _ _ _ fun t => ?_⟩
@@ -70,6 +102,17 @@ theorem resT_surjective (n : ℕ) : Function.Surjective (resT X n) := fun g => b
   rw [ev_resT]
   exact (h a).symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Establish `hf' : resT X n f = 0` using `hf`. Establish `h1` using `X.ker_res n (Ord.equiv _ f) fun a => by`. Use `ev_resT X n (lev p n a) f` as an intermediate fact.
+
+Rewrite `this` using `[hf', map_zero]`. Conclude with `this.symm`. Establish `h2 : Ideal.span {g : X.A (n + 1) | ∃ h ∈ X.A (n + 1), ∀ t, g.1 t = h (t ^ p ^ n) - h 1} ≤ (torsionIdeal O (Ord (X.hopf (n + 1))) (p ^ n)).comap (Ord.equiv (X.hopf (n + 1))).symm`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `g ⟨u, hu, hg⟩`.
+
+Set `u'` to `(Ord.equiv (X.hopf (n + 1))).symm ⟨u, hu⟩`. Establish `h3 : (Ord.equiv (X.hopf (n + 1))).symm g = mulBy O _ (p ^ n) (u' - algebraMap O _ (counit u'))` using `Ord.sep _ _ _ fun t => by`. Rewrite using `[Ord.ev_mulBy, map_sub, AlgHom.commutes, Ord.counit_eq]`. Conclude with `hg t`. Express the relevant statement in the definitionally equal form `(Ord.equiv (X.hopf (n + 1))).symm g ∈ torsionIdeal O (Ord (X.hopf (n + 1))) (p ^ n)`.
+
+Rewrite using `[h3]`. Conclude with `Ideal.mem_map_of_mem _ (by simp [RingHom.mem_ker])`. Conclude with `h2 h1`. Use `(kerIdeal_le_ker_iff _ (resT X n : Ord (X.hopf (n + 1)) →ₐ[O] Ord (X.hopf n))).2 fun c => Ord.sep _ _ _ fun t => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.commutes]`.
+
+Express the relevant statement in the definitionally equal form `Ord.ev _ t (resT X n _) = _`. Rewrite using `[ev_resT, Ord.ev_mulBy, ← map_pow, lev_pow, map_one, Ord.counit_eq]`. Both sides reduce to the same expression.
+-/
 theorem ker_resT (n : ℕ) : RingHom.ker (resT X n) = torsionIdeal O (Ord (X.hopf (n + 1))) (p ^ n) := by
   apply le_antisymm
   · intro f hf
@@ -117,9 +160,15 @@ def tau : La →+ (grp X).Tate :=
       exact (ev_resT X n (lev p n a) f).symm⟩)
     fun a b => TateOver.ext_conv fun n => map_mul (Ord.evHom (X.hopf n)) (lev p n a) (lev p n b)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n f a => ev_resT X n (lev p n a) f, fun _ _ _ => rfl⟩`.
+-/
 theorem realises : X.Realises (grp X) (fun n => Ord.equiv (X.hopf n)) (tau X) :=
   ⟨fun n f a => ev_resT X n (lev p n a) f, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `tate_equiv (tau X) (fun n a a' => ((Ord.evHom_bijective (X.hopf n)).1.eq_iff (a := lev p n a) (b := lev p n a')).trans (lev_eq_iff p n a a')) fun n y => by obtain ⟨t, ht⟩ := (Ord.evHom_bijective (X.hopf n)).2 y obtain ⟨a, rfl⟩ := lev_surjective p n t exact ⟨a, ht⟩`.
+-/
 theorem exists_tate : ∃ j : ℤ_[p] ⊗[ℤ] La ≃ₗ[ℤ_[p]] (grp X).Tate, ∀ a, j (1 ⊗ₜ a) = tau X a :=
   tate_equiv (tau X)
     (fun n a a' => ((Ord.evHom_bijective (X.hopf n)).1.eq_iff (a := lev p n a) (b := lev p n a')).trans
@@ -135,6 +184,9 @@ end
 
 open CategoryTheory AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct NumberField GlobalTheory GlobalTheory.PDivGroup GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT GlobalTheory.CompanionTheory.Ar.HT ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ hv _ _ La _ _ _ L _ _ X`. Establish `: ValuationRing O` using `ValuationRing.of_integers v hv`. Conclude with `⟨PositivityTheory.HtPt.Twpdiv.grp X, _, _, PositivityTheory.HtPt.Twpdiv.realises X, rfl, PositivityTheory.HtPt.Twpdiv.exists_tate X⟩`.
+-/
 theorem PositivityTheory.HtPt.Twpdiv.tower_pdiv : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [IsDomain O] [Algebra O C] (hv : v.Integers O) (hp : v (p : C) < 1) (hO : IsAdicComplete (Ideal.span {(p : O)}) O) (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (L : Type) [AddCommGroup L] [Module O L] (X : OrdTower p O La L), ∃ (G : PDivGroup p O) (e : ∀ n, G.A n ≃ₐ[O] X.A n) (τ : La →+ G.Tate), X.Realises G e τ ∧ G.height = Module.finrank ℤ La ∧ ∃ j : ℤ_[p] ⊗[ℤ] La ≃ₗ[ℤ_[p]] G.Tate, ∀ a, j (1 ⊗ₜ a) = τ a := by
   intro p _ C _ _ _ v O _ _ _ hv _ _ La _ _ _ L _ _ X
   have : ValuationRing O := ValuationRing.of_integers v hv

@@ -15,6 +15,29 @@ noncomputable section
 
 namespace GlobalTheory.ThK.EvLawUniq
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M χX χW om r s r' s' hpair H H' j₀ j₁ i₀ i₁ M₁ hH hH' hM₁ e hev f hfh hfi`. Establish `hψ : IsStd B.ψ` using `hpair.base.std`. Establish `hM : M.IsGood B.ψ` using `hpair.good`. Set `ev0 : Fn F n₁ d₁ →ₗ[ℂ] ℂ` to `LinearMap.proj (R := ℂ) (φ := fun _ : (Fin n₁ × Fin d₁ → AF F) => ℂ) 0`. Set `j : Matrix (Fin n₁) (Fin d₁) (AE F E) → Matrix (Fin n) (Fin d) (AE F E)` to `fun z => incM F H.ι * z * (incM F H'.ι)ᵀ`.
+
+Establish `hmem : ∀ (w : Matrix (Fin n) (Fin d) (AE F E)) (Φ : Fn F n d), Φ ∈ schA F (Fin n × Fin d) → M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ _ Φ hΦ`. Establish `hrec : ∀ S : Fn F n d →ₗ[ℂ] Fn F n₁ d₁, (∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho B.ψ (j z) Φ) = M₁.co.rho B.ψ z (S Φ)) → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ y, S Φ y = ev0 (S (M.co.rho B.ψ (j (M₁.co.e.symm (y, 0))) Φ))`. Introduce `S hS Φ hΦ y`. Rewrite using `[hS _ Φ hΦ]`. Simplify using `[ev0, Darboux.rho, schr]`.
+
+Take `⟨L, hiso, hrk, hL⟩` from `GlobalTheory.T.seesaw_pair_adapted_planes F E σ B n d n₁ d₁ X W X₁ W₁ M χX χW om r s r' s' hpair H H' j₀ j₁ i₀ i₁ M₁ hH hH' hM₁`. Establish `inv : ∀ S : Fn F n d →ₗ[ℂ] Fn F n₁ d₁, (∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho B.ψ (j z) Φ) = M₁.co.rho B.ψ z (S Φ)) → (∀ u ∈ isoA H H', ∀ Φ ∈ schA F (Fin n × Fin d), S (M.co.rho B.ψ u Φ) = S Φ) → ∀ (t : AF F), ∀ w ∈ L, ∀ Φ ∈ schA F (Fin n × Fin d), (ev0 ∘ₗ S) (schr B.ψ ( …`. Introduce `S hS hI t w hw Φ hΦ`. Take `⟨y, z₂, z, hz, he⟩` from `hL t w hw`. Establish `h1` using `hmem (j z) Φ hΦ`.
+
+Establish `h2` using `hmem (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ z₂)) _ h1`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, he, hI _ (Set.mem_union_left _ ⟨y, rfl⟩) _ h2, hI _ (Set.mem_union_right _ ⟨z₂, rfl⟩) _ h1, hS z Φ hΦ]`. Simplify using `[ev0, Darboux.rho, schr, hz]`. Establish `hevh : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), e (M.co.rho B.ψ (j z) Φ) = M₁.co.rho B.ψ z (e Φ)` using `fun z Φ hΦ => hev.Heisenberg₂ z Φ hΦ`. Take `⟨ei, ev, hei, hloc0, hloc⟩` from `hev.loc`.
+
+Establish `hex : ∀ v : Pl F, ∃ p : (Fin n × Fin d → Fv F v) → ℂ, p ∈ SB _ ∧ ev v p = Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ (M₁.vac v = Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → p = M.vac v)`. Introduce `v`. Distinguish the cases in `h : M₁.vac v = Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Conclude with `⟨M.vac v, (hM.vac v).1, by rw [← h]; exact (hloc0 v).1, fun _ => rfl⟩`. Establish `hmem' : Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)`.
+
+Rewrite using `[(hloc0 v).2]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB v`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.1 hmem'`. Conclude with `⟨p, hp, hpe, fun h' => absurd h' h⟩`. Use `choose φ hφSB hφev hφvac using hex`.
+
+Establish `hcof : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hM₁.std] with v hv`. Conclude with `hφvac v hv`. Establish `hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hM.std] with v h1 h2`. Rewrite using `[h1, h2]`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, ei g ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hei (ContinuousLinearMap.ext h)`. Establish `hΦ₀ : pure g φ ∈ schA F (Fin n × Fin d)` using `(GlobalTheory.ThK.EvUniqInf.rest_pure g φ hφSB hstd).2`. Establish `hne : e (pure g φ) ≠ 0`.
+
+Rewrite using `[hloc g φ hφSB hcof, show (fun v => ev v (φ v)) = fun v => Set.indicator {x : Fin n₁ × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 from funext hφev]`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Apply `GlobalTheory.ThK.EvUniqInf.eq_of_pure_std (ei g) 0` to reduce the goal to its premises. Rewrite using `[h0]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Take `⟨y₀, hy₀⟩` from `Function.ne_iff.1 hne`. Take `⟨c, hc⟩` from `GlobalTheory.T.schrodinger_invariant_functionals_lagrangian hP F B.ψ hψ (Fin n × Fin d) L hiso hrk (ev0 ∘ₗ f) (ev0 ∘ₗ e) (inv f hfh hfi) (inv e hevh hev.inv) ⟨M.co.rho B.ψ (j (M₁.co.e.symm (y₀, 0))) (pure g φ), hmem _ _ hΦ₀, by`. Rewrite using `[LinearMap.comp_apply, ← hrec e hevh _ hΦ₀ y₀]`.
+
+Conclude with `hy₀⟩`. Use `⟨c, fun Φ hΦ => funext fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hrec f hfh Φ hΦ y, Pi.smul_apply, hrec e hevh Φ hΦ y, smul_eq_mul]`. Conclude with `hc _ (hmem _ _ hΦ)`.
+-/
 theorem eq_smul_isEv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (H : Plane E n n₁) (H' : Plane E d d₁) (j₀ j₁ i₀ i₁ : ℕ) (M₁ : Model σ X₁ W₁),

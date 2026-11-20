@@ -8,6 +8,23 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.VerticalUnit
 
+/- English proof (translation)
+Introduce `R _ _ _ _ X _ q _ _ π hπp`. Establish `hP : (Ideal.span {π}).IsPrime` using `(Ideal.span_singleton_prime hπp.ne_zero).2 hπp`. Set `v : Sp R` to `⟨Ideal.span {π}, hP⟩`. Set `V` to `Localization.AtPrime v.asIdeal`. Establish `hmax : IsLocalRing.maximalIdeal V = Ideal.span {algebraMap R V π}`.
+
+Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton]`. Establish `hne : algebraMap R V π ≠ 0` using `(map_ne_zero_iff _ (IsLocalization.injective V v.asIdeal.primeCompl_le_nonZeroDivisors)).2 hπp.ne_zero`. Establish `: IsNoetherianRing V` using `IsLocalization.isNoetherianRing v.asIdeal.primeCompl V inferInstance`. Establish `hnf : ¬ IsField V`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, hmax, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hne`. Establish `hpr : Submodule.IsPrincipal (IsLocalRing.maximalIdeal V)` using `⟨⟨_, hmax⟩⟩`. Establish `: IsDiscreteValuationRing V` using `((IsDiscreteValuationRing.TFAE V hnf).out 0 4).mpr hpr`. Establish `hπ : Irreducible (algebraMap R V π)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hmax`. Set `l` to `spMap (algebraMap R V)`.
+
+Establish `: Flat l` using `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: IsPreimmersion l` using `IsPreimmersion.of_isLocalization v.asIdeal.primeCompl`. Establish `H` using `IsPullback.of_hasPullback q l`. Use `set ψ := pullback.fst q l`. Use `set f := pullback.snd q l`.
+
+Establish `hs` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))`. Use `DvrModel.isIntegral_of_geometricallyIntegral hs` as an intermediate fact. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks ψ` as an intermediate fact. Take `⟨h₁, h₂⟩` from `DvrModel.isDiscreteValuationRing_stalk_generic hπ hs`. Establish `h₃` using `DvrModel.notMem_basicOpen_iff_specializes hπ hs`.
+
+Establish `hlv : l (IsLocalRing.closedPoint V) = v` using `PrimeSpectrum.ext (Localization.AtPrime.comap_maximalIdeal (I := v.asIdeal))`. Establish `h₄` using `(DvrModel.notMem_basicOpen_iff f hπ _).1 ((h₃ _).2 specializes_rfl)`. Generalize the expression as in `(pullback.fst f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))) (genericPoint _) = ξ at h₁ h₂ h₃ h₄`. Set `E` to `(asIso (ψ.stalkMap ξ)).commRingCatIsoToRingEquiv`. Use `⟨ψ ξ, ?_, fun x hx => ?_, IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing E.symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Scheme.Hom.comp_apply, H.w, Scheme.Hom.comp_apply, h₄, hlv]`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback H x (IsLocalRing.closedPoint V) ((PrimeSpectrum.ext hx).trans hlv.symm)`. Conclude with `((h₃ y).1 ((DvrModel.notMem_basicOpen_iff f hπ y).2 hy)).map ψ.continuous`. Rewrite using `[← MulEquiv.irreducible_iff E.toMulEquiv]`. Use `h₂ using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `(ψ.germ_stalkMap_apply ⊤ ξ trivial _).trans (congrArg _ ((app_constFn H.w π).trans (constFn_top _ _)))`.
+-/
 theorem exists_fibre_generic_of_prime : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [UniqueFactorizationMonoid R] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp R) [Smooth q] [GeometricallyIntegral q] (π : R), Prime π → ∃ ξ : X, (q ξ).asIdeal = Ideal.span {π} ∧ (∀ x : X, (q x).asIdeal = Ideal.span {π} → ξ ⤳ x) ∧ IsDiscreteValuationRing (X.presheaf.stalk ξ) ∧ Irreducible (X.presheaf.germ ⊤ ξ trivial (constFn q ⊤ π)) := by
   intro R _ _ _ _ X _ q _ _ π hπp
   have hP : (Ideal.span {π}).IsPrime := (Ideal.span_singleton_prime hπp.ne_zero).2 hπp

@@ -41,6 +41,9 @@ def congrSubgroup {R : Type} [CommRing R] (n : ℕ) (O : Subring R) (I : AddSubg
     rw [← Matrix.sub_apply, e, Matrix.neg_apply, Matrix.mul_apply]
     exact I.neg_mem (I.sum_mem fun k _ => hI _ (g2 _ _) _ (g3 _ _))
 
+/- English proof (translation)
+Establish `c1 : ∀ i j, Continuous fun g : GL (Fin n) R => (g : Matrix (Fin n) (Fin n) R) i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `c2 : ∀ i j, Continuous fun g : GL (Fin n) R => ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j` using `fun i j => Units.continuous_coe_inv.matrix_elem i j`. Express the relevant statement in the definitionally equal form `IsOpen {g : GL (Fin n) R | (∀ i j, (g : Matrix (Fin n) (Fin n) R) i j ∈ O) ∧ (∀ i j, ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j ∈ O) ∧ ∀ i j, (g : Matrix (Fin n) (Fin n) R) i j - (1 : Matrix (Fin n) (Fin n) R) i j ∈ I}`. Simplify using `only [Set.ofPred_and, Set.ofPred_forall]`. Use `(isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage (c1 i j)).inter ((isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hO.preimage (c2 i j)).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hIo.preimage ((c1 i j) …` and prove the remaining obligations.
+-/
 theorem isOpen_congrSubgroup {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (n : ℕ)
     (O : Subring R) (I : AddSubgroup R) (hI : ∀ a ∈ O, ∀ x ∈ I, a * x ∈ I)
     (hO : IsOpen (O : Set R)) (hIo : IsOpen (I : Set R)) :
@@ -58,6 +61,11 @@ theorem isOpen_congrSubgroup {R : Type} [CommRing R] [TopologicalSpace R] [IsTop
       (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j =>
         hIo.preimage ((c1 i j).sub continuous_const)))
 
+/- English proof (translation)
+Establish `hM : IsCompact {A : Matrix (Fin n) (Fin n) R | ∀ i j, A i j ∈ O}`. Use `isCompact_univ_pi (fun _ : Fin n => isCompact_univ_pi (fun _ : Fin n => hOc))` as an intermediate fact. Establish `e : {A : Matrix (Fin n) (Fin n) R | ∀ i j, A i j ∈ O} = (Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => (O : Set R))` using `Set.ext fun A => ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Rewrite using `[e]`. Conclude with `this`.
+
+Establish `hP` using `hM.prod (hM.image MulOpposite.continuous_op)`. Establish `hE` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) R)).isCompact_preimage hP`. Use `hE.of_isClosed_subset ((congrSubgroup n O I hI).isClosed_of_isOpen (isOpen_congrSubgroup n O I hI hO hIo)) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨g1, g2, -⟩`. Conclude with `⟨g1, _, g2, rfl⟩`.
+-/
 theorem isCompact_congrSubgroup {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     (n : ℕ) (O : Subring R) (I : AddSubgroup R) (hI : ∀ a ∈ O, ∀ x ∈ I, a * x ∈ I)
     (hO : IsOpen (O : Set R)) (hIo : IsOpen (I : Set R)) (hOc : IsCompact (O : Set R)) :
@@ -76,6 +84,15 @@ theorem isCompact_congrSubgroup {R : Type} [CommRing R] [TopologicalSpace R] [Is
   rintro g ⟨g1, g2, -⟩
   exact ⟨g1, _, g2, rfl⟩
 
+/- English proof (translation)
+Introduce `F _ _ v n c hc`. Set `O : Subring (v.adicCompletion F)` to `(v.adicCompletionIntegers F).toSubring`. Establish `hO : IsOpen (O : Set (v.adicCompletion F))` using `Valued.isOpen_valuationSubring _`. Establish `hOc : IsCompact (O : Set (v.adicCompletion F))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Set `I : AddSubgroup (v.adicCompletion F)` to `Valued.v.leAddSubgroup (Valued.v c)`.
+
+Establish `hI : ∀ a ∈ O, ∀ x ∈ I, a * x ∈ I` using `fun a ha x hx => by`. Express the relevant statement in the definitionally equal form `Valued.v (a * x) ≤ Valued.v c`. Rewrite using `[map_mul]`. Establish `ha' : Valued.v a ≤ 1` using `ha`. Establish `hx' : Valued.v x ≤ Valued.v c` using `hx`.
+
+Simplify using `using mul_le_mul' ha' hx'`. Establish `hIo : IsOpen (I : Set (v.adicCompletion F))`. Establish `e : (I : Set (v.adicCompletion F)) = (fun x => x / c) ⁻¹' (O : Set (v.adicCompletion F))`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Valued.v x ≤ Valued.v c ↔ Valued.v (x / c) ≤ 1`.
+
+Rewrite using `[map_div₀, div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hc))]`. Rewrite using `[e]`. Conclude with `hO.preimage (continuous_id.div_const c)`. Conclude with `⟨congrSubgroup n O I hI, isOpen_congrSubgroup n O I hI hO hIo, isCompact_congrSubgroup n O I hI hO hIo hOc, fun g hg => hg.2.2⟩`.
+-/
 theorem exists_compactOpen_congr :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (c : v.adicCompletion F), c ≠ 0 →
     ∃ K : Subgroup (GL (Fin n) (v.adicCompletion F)), IsOpen (K : Set (GL (Fin n) (v.adicCompletion F))) ∧

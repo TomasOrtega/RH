@@ -18,6 +18,27 @@ noncomputable section
 namespace GlobalTheory.HTPolPair
 open GlobalTheory.AbDual
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ _ k _ _ t o₀ β ht φ hφ x hx`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o₀.A o₀.ab`. Set `A' : GlobalTheory.AV.AbVar k` to `⟨o₀.A, o₀.ab, g, hg⟩`. Take `⟨B, P₀, ⟨h1, h2⟩, hdim⟩` from `GlobalTheory.AV.exists_dualPair k A'`. Establish `hgB : SmoothOfRelativeDimension g B.X.hom`.
+
+Use `B.smooth` as an intermediate fact. Rewrite `this` using `[hdim]`. Conclude with `this`. Take `⟨l, hl, hlP⟩` from `GlobalTheory.T.exists_monHom_lbIso_ev_of_trivial_pullbacks k o₀.A B.X o₀.ab B.ab P₀ h1 o₀.P o₀.isLB o₀.rig₁ o₀.rig₂`. Take `⟨iso, hker⟩` from `GlobalTheory.T.poincareBundleIso_swap_trivial_of_kernelPoint k o₀.A B.X P₀ h1 o₀.P o₀.isLB o₀.symm l hlP`.
+
+Take `⟨e, he, hkP⟩` from `o₀.kerP`. Establish `hu : IsUnit (e : k)`. Use `(b.unit e he).map β` as an intermediate fact. Simplify using `using this`. Take `⟨m, hm, hlm⟩` from `GlobalTheory.T.abelianScheme_exists_comp_eq_nsmul_of_kernel_killed k o₀.A B.X g o₀.ab B.ab hg hgB l hl e hu fun T y hy => hkP T y (hker T y hy)`.
+
+Establish `hPf : IsPerfect B.X o₀.A (swap P₀)` using `(IsDual.isPerfect h1 h2).swap`. Establish `CAA` using `cupSquare_of_free GlobalTheory.abelianDeRham.1 (AbelianSchemeGerms.isAbelianScheme_tensor o₀.A o₀.A o₀.ab o₀.ab) (smooth_prod hg hg)`. Establish `CBA` using `cupSquare_of_free GlobalTheory.abelianDeRham.1 (AbelianSchemeGerms.isAbelianScheme_tensor B.X o₀.A B.ab o₀.ab) (smooth_prod hgB hg)`. Take `⟨φ', hφ'⟩` from `exists_isCorrForm CBA hPf.isLB hPf.zero_left hPf.zero_right`. Establish `hadj` using `IsCorrForm.adjoint CAA o₀.isLB hPf.isLB hφ hφ' l (𝟙 o₀.A) iso`.
+
+Establish `perf` using `(IsCorrForm.perfect GlobalTheory.abelianDeRham B.ab hgB o₀.ab hg hPf hφ').1`. Establish `h0 : push (dp0 k) (𝟙 _) l x = 0`. Use `(injective_iff_map_eq_zero _).1 perf.bijective_left.1 _ (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Rewrite using `[← hadj x y, push_id]`. Conclude with `hx y`.
+
+Establish `hpowM : ∀ j : ℕ, IsMonHom (𝟙 o₀.A ^ j)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero]`. Conclude with `isMonHom_one o₀.A o₀.A`.
+
+Consider the case `succ n ih => rw [pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift (𝟙 o₀.A ^ n) (𝟙 o₀.A) ≫ μ[o₀.A]))`. Establish `hpush : ∀ j : ℕ, push (dp0 k) (𝟙 _) (𝟙 o₀.A ^ j) = (j : k) • LinearMap.id`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Rewrite using `[push_congr (dp0 k) (𝟙 _) (pow_zero (𝟙 o₀.A)), push_one]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => haveI := hpowM n haveI : IsMonHom (𝟙 o₀.A ^ n * 𝟙 o₀.A) := by rw [← pow_succ]; exact hpowM (n + 1)`. Rewrite using `[push_congr (dp0 k) (𝟙 _) (pow_succ (𝟙 o₀.A) n), push_mul, ih, push_id]`.
+
+Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Use `haveI := hpowM e`. Establish `key : push (dp0 k) (𝟙 _) m (push (dp0 k) (𝟙 _) l x) = (e : k) • x`. Rewrite using `[← LinearMap.comp_apply, ← push_comp, push_congr (dp0 k) (𝟙 _) hlm, hpush]`.
+
+Both sides reduce to the same expression. Rewrite `key` using `[h0, map_zero]`. Conclude with `(hu.smul_eq_zero.1 key.symm)`.
+-/
 theorem nondeg : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ x, (∀ y, φ x y = 0) → x = 0 := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β ht φ hφ x hx
   obtain ⟨g, hg⟩ := GlobalTheory.AbVarRelDim.exists_relDim k o₀.A o₀.ab

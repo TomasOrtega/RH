@@ -21,6 +21,27 @@ def archActX (M : Model σ X W) (g : UA σ X.J)
     (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F) :=
   coordI M (actAB (cA σ) (g, (1 : UA σ W.J)) (M.co.e.symm (liftV v.1, liftV v.2)))
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hW`. Use `set u := M.co.e.symm (liftV v.1, liftV v.2) with hu`. Use `set u' := actAB (cA σ) (g, (1 : UA σ W.J)) u with hu'`. Establish `h0 : ∀ c : AF F, evI F c = 0 → c • u = 0`. Introduce `c hc`.
+
+Establish `hl : ∀ y : Fin n × Fin d → mixedEmbedding.mixedSpace F, c • liftV y = 0`. Introduce `y`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.1 * _ = 0`.
+
+Rewrite using `[fst_eq_zero_of_ev hc, zero_mul]`. Express the relevant statement in the definitionally equal form `c.2 * 0 = 0`. Rewrite using `[mul_zero]`. Rewrite using `[hu, ← LinearEquiv.map_smul, Prod.smul_mk, hl, hl, Prod.mk_zero_zero, LinearEquiv.map_zero]`. Establish `hAt : ∀ c : AF F, evI F c = 0 → c • u' = 0`.
+
+Introduce `c hc`. Establish `hm : c • (mat g - 1) = 0` using `hg c hc`. Establish `e : u' = (mat g - 1) * u + u`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, sub_add_cancel, hu']`. Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hm, Matrix.zero_mul, zero_add, h0 c hc]`. Establish `hAt₁ : At (evI F) (M.co.e u').1`. Introduce `c hc`. Use `congrArg Prod.fst (congrArg M.co.e (hAt c hc))` as an intermediate fact.
+
+Rewrite `this` using `[LinearEquiv.map_smul, LinearEquiv.map_zero]`. Then use the resulting hypothesis. Establish `hAt₂ : At (evI F) (M.co.e u').2`. Introduce `c hc`. Use `congrArg Prod.snd (congrArg M.co.e (hAt c hc))` as an intermediate fact. Rewrite `this` using `[LinearEquiv.map_smul, LinearEquiv.map_zero]`. Then use the resulting hypothesis.
+
+Establish `he' : M.co.e u' = (liftV (archActX M g v).1, liftV (archActX M g v).2)`. Express the relevant statement in the definitionally equal form `M.co.e u' = (liftV (locV (M.co.e u').1), liftV (locV (M.co.e u').2))`. Rewrite using `[liftV_locV_of_at hAt₁, liftV_locV_of_at hAt₂]`. Establish `hA₁` using `acts_locOpInf (hex f₁) (refFin _) (rest_refFin _ f₁)`. Establish `hA` using `acts_locOpInf (hex f) (refFin _) (rest_refFin _ f)`.
+
+Establish `himpl` using `hS.impl (g, 1) u (tens (evI F) ⇑f (refFin _)) (rest_refFin _ f).2`. Establish `h1 : M.co.rho ψ u (tens (evI F) ⇑f (refFin _)) = tens (evI F) ⇑f₁ (refFin _)`. Simplify using `only [Darboux.rho, hu, LinearEquiv.apply_symm_apply]`. Rewrite using `[schr_tens ψ hψ v, hf₁]`. Establish `h2 : M.co.rho ψ u' (tens (evI F) ⇑(locOpInf (om (g, 1)) f) (refFin _)) = tens (evI F) (schrF (trP F (Fin n × Fin d)) (archActX M g v) ⇑(locOpInf (om (g, 1)) f)) (refFin _)`.
+
+Simplify using `only [Darboux.rho]`. Rewrite using `[he', schr_tens ψ hψ]`. Rewrite `himpl` using `[h1, hA₁, hA, ← hu', h2]`. Use function extensionality and compare the values at `y`. Use `congrFun himpl (liftV y)` as an intermediate fact.
+
+Simplify using `only [tens, refFin_liftV, mul_one] at this`. Establish `hy : (fun i => evI F (liftV y i)) = y` using `funext fun i => evI_liftV y i`. Rewrite `this` using `[hy]`. Then use the resulting hypothesis.
+-/
 theorem locOpInf_schrF (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W)
     (hψ : IsStd ψ) (hW : M.IsWeil ψ χX χW om) (g : UA σ X.J) (hg : g ∈ UAt σ X (evI F))
     (hex : ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (g, 1)) ⇑f ⇑f₁)
@@ -84,11 +105,17 @@ namespace GlobalTheory.ArchKX
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Simplify using `only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem actAB_one (g : UA σ X.J) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     actAB (cA σ) (g, (1 : UA σ W.J)) u = mat g * u := by
   simp only [actAB, OneMemClass.coe_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Simplify using `only [archActX, actAB_one, Prod.fst_add, Prod.snd_add, lift_add, ← Prod.mk_add_mk, map_add, Matrix.mul_add, coordI_add]`. Use `map_smul c v := by`. Simplify using `only [archActX, actAB_one, Prod.smul_fst, Prod.smul_snd, lift_smul, ← Prod.smul_mk, map_smul, Matrix.mul_smul, coordI_smul]`.
+-/
 theorem isLinearMap_archActX (M : Model σ X W) (g : UA σ X.J) : IsLinearMap ℝ (archActX M g) where
   map_add v w := by
     simp only [archActX, actAB_one, Prod.fst_add, Prod.snd_add, lift_add, ← Prod.mk_add_mk, map_add,
@@ -97,6 +124,9 @@ theorem isLinearMap_archActX (M : Model σ X W) (g : UA σ X.J) : IsLinearMap �
     simp only [archActX, actAB_one, Prod.smul_fst, Prod.smul_snd, lift_smul, ← Prod.smul_mk, map_smul,
       Matrix.mul_smul, coordI_smul]
 
+/- English proof (translation)
+Establish `e : archActX M g⁻¹ v = coordI M (mat g⁻¹ * M.co.e.symm (liftV v.1, liftV v.2))`. Rewrite using `[archActX, actAB_one]`. Rewrite using `[archActX, e, lift_coordI, actAB_one, Matrix.mul_smul, coordI_one, ← Matrix.mul_assoc, GlobalTheory.StabHaar.mat_mul_inv, Matrix.one_mul, coordI_lift]`.
+-/
 theorem archActX_inv (M : Model σ X W) (g : UA σ X.J) (v) : archActX M g (archActX M g⁻¹ v) = v := by
   have e : archActX M g⁻¹ v = coordI M (mat g⁻¹ * M.co.e.symm (liftV v.1, liftV v.2)) := by
     rw [archActX, actAB_one]
@@ -112,6 +142,17 @@ open MeasureTheory GlobalTheory.ArchIsom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Establish `hU` using `(IsUWeilPair.isUSplitting hW).unit`. Use `haveI := hμ`. Establish `hΦ` using `hact (r0 F (Fin n × Fin d)) (restriction_at_standard_point _ f)`. Use `letI mB : MeasurableSpace (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`.
+
+Use `letI mA : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`.
+
+Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := inferInstance`. Set `ν : Measure (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)` to `Measure.addHaar`. Set `H : ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)) ≃ₜ (Fin n × Fin d → AF F)` to `{ (splitEquiv F (Fin n × Fin d)).toEquiv with continuous_toFun := continuous_splitEquiv _ continuous_invFun := continuous_splitEquiv_symm _ }`. Set `e` to `H.toMeasurableEquiv`. Establish `he : ∀ p, e p = splitEquiv F (Fin n × Fin d) p` using `fun _ => rfl`.
+
+Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite μ := inferInstance`. Establish `hμ' : (Measure.map e (μ.prod ν)).IsAddHaarMeasure` using `(splitEquiv F (Fin n × Fin d)).isAddHaarMeasure_map (μ.prod ν) (continuous_splitEquiv _) (continuous_splitEquiv_symm _)`. Establish `hmem : tens (evI F) (⇑f) (r0 F (Fin n × Fin d)) ∈ schA F (Fin n × Fin d)` using `(restriction_at_standard_point _ f).2`. Establish `hu` using `hU (Measure.map e (μ.prod ν)) hμ' (g, 1) _ hmem`.
+
+Rewrite `hu` using `[hΦ, lintegral_tensor_at_standard_point _ μ ν e he, lintegral_tensor_at_standard_point _ μ ν e he]`. Establish `hc0 : ν (intPts F (Fin n × Fin d)) ≠ 0` using `((isOpen_intPts _).measure_pos ν ⟨0, zero_mem_intPts _⟩).ne'`. Establish `hct : ν (intPts F (Fin n × Fin d)) ≠ ⊤` using `(isCompact_intPts _).measure_lt_top.ne`. Conclude with `(ENNReal.mul_left_inj hc0 hct).mp hu`.
+-/
 theorem lintegral_acts_eq (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W)
     (hW : M.IsWeil ψ χX χW om) (μ : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F)) (hμ : μ.IsAddHaarMeasure)
     (g : UA σ X.J) (f f₁ : SInf F (Fin n × Fin d)) (hact : Acts (evI F) (om (g, 1)) ⇑f ⇑f₁) :
@@ -148,6 +189,9 @@ theorem lintegral_acts_eq (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW 
   have hct : ν (intPts F (Fin n × Fin d)) ≠ ⊤ := (isCompact_intPts _).measure_lt_top.ne
   exact (ENNReal.mul_left_inj hc0 hct).mp hu
 
+/- English proof (translation)
+Use `haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := MeasurableAdd₂.toMeasurableAdd`. Use `haveI : (volume : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `lintegral_acts_eq M ψ χX χW om hW volume inferInstance g f f₁ hact`.
+-/
 theorem lintegral_acts_eq_volume (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W)
     (hW : M.IsWeil ψ χX χW om) (g : UA σ X.J) (f f₁ : SInf F (Fin n × Fin d))
     (hact : Acts (evI F) (om (g, 1)) ⇑f ⇑f₁) : ∫⁻ x, ‖f₁ x‖ₑ ^ 2 = ∫⁻ x, ‖f x‖ₑ ^ 2 := by
@@ -164,9 +208,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => GlobalTheory.ArchIsom.continuous_toMixed.comp (continuous_fst.comp (continuous_apply i))`.
+-/
 theorem continuous_locV (κ : Type) : Continuous (locV (F := F) (κ := κ)) :=
   continuous_pi fun i => GlobalTheory.ArchIsom.continuous_toMixed.comp (continuous_fst.comp (continuous_apply i))
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Establish `hm : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `h1 : Continuous fun g : UA σ X.J => mat g * M.co.e.symm (liftV v.1, liftV v.2)` using `hm.matrix_mul continuous_const`. Use `haveI hP : IsModuleTopology (AF F) (Fin n → Fin d → AE F E) := inferInstance`.
+
+Use `haveI : IsModuleTopology (AF F) (Matrix (Fin n) (Fin d) (AE F E)) := hP`. Establish `he : Continuous M.co.e` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`. Simplify using `only [archActX, actAB_one, coordI]`. Conclude with `((continuous_locV _).comp (continuous_fst.comp (he.comp h1))).prodMk ((continuous_locV _).comp (continuous_snd.comp (he.comp h1)))`.
+-/
 theorem continuous_archActX (M : Model σ X W) (v) : Continuous fun g : UA σ X.J => archActX M g v := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens
@@ -180,6 +232,15 @@ theorem continuous_archActX (M : Model σ X W) (v) : Continuous fun g : UA σ X.
   exact ((continuous_locV _).comp (continuous_fst.comp (he.comp h1))).prodMk
     ((continuous_locV _).comp (continuous_snd.comp (he.comp h1)))
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F))`. Establish `hB : ∀ j, ∃ B : ℝ, ∀ g ∈ S, ‖archActX M g (b j)‖ ≤ B` using `fun j => hS.exists_bound_of_continuousOn (continuous_archActX M (b j)).continuousOn`. Use `choose B hB using hB`. Set `c` to `fun j => LinearMap.toContinuousLinearMap (b.coord j)`. Use `⟨∑ j, ‖c j‖ * B j, fun g hg v => ?_⟩` and prove the remaining obligations.
+
+Set `T` to `IsLinearMap.mk' _ (isLinearMap_archActX M g)`. Establish `hv : archActX M g v = ∑ j, b.coord j v • archActX M g (b j)`. Express the relevant statement in the definitionally equal form `T v = ∑ j, b.coord j v • T (b j)`. Use `conv_lhs => rw [← b.sum_repr v]`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul, Module.Basis.coord_apply]`. Rewrite using `[hv, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `h1 : ‖b.coord j v‖ ≤ ‖c j‖ * ‖v‖` using `(c j).le_opNorm v`.
+
+Establish `h2` using `hB j g hg`. Establish `h3 : 0 ≤ B j` using `(norm_nonneg _).trans h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem archActX_bound (M : Model σ X W) (S : Set (UA σ X.J)) (hS : IsCompact S) :
     ∃ C : ℝ, ∀ g ∈ S, ∀ v, ‖archActX M g v‖ ≤ C * ‖v‖ := by
   classical

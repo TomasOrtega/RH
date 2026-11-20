@@ -16,6 +16,19 @@ noncomputable section
 
 namespace GlobalTheory.CuspRealTwist
 
+/- English proof (translation)
+Introduce `_ k _ _ _ _ _ y hy`. Take `⟨ω, hωs, hω⟩` from `exists_smooth_hasCentralChar y.2.rep.smooth y.2.rep.irr`. Take `⟨s, hs⟩` from `GlobalTheory.SmoothCharNorm.norm_eq_nabs_rpow k ω hωs`. Establish `hN : (y.1 : ℝ) ≠ 0` using `by exact_mod_cast hy.1.ne'`. Use `⟨y.nu ((-(s / y.1) : ℝ) : ℂ), s / y.1, hy.nu _, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hρc : (y.nu ((-(s / y.1) : ℝ) : ℂ)).IsCusp` using `hy.nu _`. Establish `hcc` using `UnitaryOrder.hasCentralChar_nu y hω ((-(s / y.1) : ℝ) : ℂ)`. Establish `hi` using `(y.nu ((-(s / y.1) : ℝ) : ℂ)).2.rep.irr`. Establish `hsm` using `(y.nu ((-(s / y.1) : ℝ) : ℂ)).2.rep.smooth`. Use `haveI := Model.nontrivial_of_isIrreducible hi`.
+
+Take `⟨v₀, hv₀⟩` from `exists_ne (0 : (y.nu ((-(s / y.1) : ℝ) : ℂ)).2.rep.V)`. Take `⟨l, hl⟩` from `GlobalTheory.ContraRefl.exists_smooth_form_ne hsm (GlobalTheory.SqIntUnit.compactOpen_basis k _) hv₀`. Use `GlobalTheory.isUnitarisable_of_isSupercuspidal _ _ _ (l : Module.Dual ℂ _) l.2 (fun e => hl (by rw [e]; rfl)) hi (GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal k _ _ _ hρc.2) ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite `hg` using `[Matrix.GeneralLinearGroup.center_eq_range_scalar]`.
+
+Take `⟨a, rfl⟩` from `hg`. Use `⟨_, ?_, hcc a⟩` and prove the remaining obligations. Establish `h1` using `UnitaryOrder.log_norm_mul_absPow ω (-(s / y.1)) y.1 a`. Establish `hpos` using `nabs_pos' k a`. Rewrite `h1` using `[hs a, Real.log_rpow hpos]`.
+
+Establish `h2 : Real.log ‖(((ω * absPow k ((-(s / y.1) : ℝ) : ℂ) ^ y.1) a : ℂˣ) : ℂ)‖ = 0`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `Real.eq_one_of_pos_of_log_eq_zero (norm_pos_iff.2 (Units.ne_zero _)) h2`.
+
+Rewrite using `[IrrGL.nu_nu, show ((-(s / y.1) : ℝ) : ℂ) + ((s / y.1 : ℝ) : ℂ) = 0 by push_cast; ring, IrrGL.nu_zero]`.
+-/
 theorem main : BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k] (y : IrrGL k), y.IsCusp →
     ∃ (ρ : IrrGL k) (z : ℝ), ρ.IsCusp ∧ IsUnitarisable ρ.rep ∧ y = ρ.nu z := by

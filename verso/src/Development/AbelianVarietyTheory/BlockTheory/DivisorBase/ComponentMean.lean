@@ -47,10 +47,16 @@ def SlopeMean (C : ℝ) : Prop :=
         compMean Y sl = atWt Y Φ (realWt Y u) / (((dimY Y : ℝ) + 1) * geoDeg Y (realWt Y u))) ∧
       -(C * errTerm Y (bigB0 Y (realWt Y u) g) (realWt Y u)) ≤ compMean Y sl
 
+/- English proof (translation)
+The claim follows from `funext fun c => tendsto_nhds_unique (ha c) (hb c)`.
+-/
 example (B : ℝ) (u : D.what₂.Tau → Fin Y.N → ℝ) (a b : Y.Comp → ℝ) (ha : IsSlope Y B u a) (hb : IsSlope Y B u b) :
     a = b :=
   funext fun c => tendsto_nhds_unique (ha c) (hb c)
 
+/- English proof (translation)
+Establish `h : (Fintype.card Y.Comp : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Simplify using `[compMean, Finset.sum_const, Finset.card_univ]`.
+-/
 example (t : ℝ) : compMean Y (fun _ => t) = t := by
   have h : (Fintype.card Y.Comp : ℝ) ≠ 0 := by exact_mod_cast Fintype.card_ne_zero
   simp [compMean, Finset.sum_const, Finset.card_univ]

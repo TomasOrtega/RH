@@ -20,6 +20,17 @@ local notation "Γ₁" => rationalGLOne K n
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `set C : normOneGL K n → ℂ := fun x => c (mk Γ₁ x) with hCdef`. Establish `hCm : StronglyMeasurable C` using `stronglyMeasurable_lift Γ₁ μ c`. Establish `h1 : ∀ g : normOneGL K n, ∀ᵐ x ∂μ, C (x * g) = C x`. Introduce `g`. Establish `h` using `coeFn_rightRegularRep Γ₁ μ g c`.
+
+Rewrite `h` using `[hc g]`. Establish `h2` using `(quasiMeasurePreserving_mk Γ₁ μ).ae h`. Use `filter_upwards [h2] with x hx`. Rewrite `hx` using `[rightMul_mk]`. Conclude with `hx.symm`.
+
+Establish `hset : MeasurableSet {p : normOneGL K n × normOneGL K n | C (p.1 * p.2) = C p.1}` using `measurableSet_eq_fun (hCm.measurable.comp continuous_mul.measurable) (hCm.measurable.comp measurable_fst)`. Establish `h2 : ∀ᵐ x ∂μ, ∀ᵐ g ∂μ, C (x * g) = C x` using `(Measure.ae_ae_comm hset).2 (ae_of_all _ h1)`. Establish `: (ae μ).NeBot` using `ae_neBot.2 (NeZero.ne μ)`. Take `⟨x₀, hx₀⟩` from `h2.exists`. Use `⟨C x₀, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : ∀ᵐ y ∂μ, C y = C x₀`. Establish `h4 : μ {y | ¬ C y = C x₀} = 0`. Rewrite using `[← measure_preimage_mul μ x₀]`. Conclude with `ae_iff.1 hx₀`. Conclude with `ae_iff.2 h4`.
+
+Establish `hmeas : MeasurableSet {q : RightCosetSpace Γ₁ | c q = C x₀}` using `measurableSet_eq_fun (Lp.stronglyMeasurable c).measurable measurable_const`. Express the relevant statement in the definitionally equal form `∀ᵐ q ∂(Measure.map (mk Γ₁) (μ.restrict (fundamentalDomain Γ₁))), c q = C x₀`. Rewrite using `[ae_map_iff (measurable_mk Γ₁).aemeasurable hmeas]`. Conclude with `ae_restrict_of_ae h3`.
+-/
 theorem exists_ae_eq_const_of_forall_eq {c : Lp ℂ 2 (quotientMeasure Γ₁ μ)}
     (hc : ∀ g, rightRegularRep Γ₁ μ g c = c) :
     ∃ κ : ℂ, (c : RightCosetSpace Γ₁ → ℂ) =ᵐ[quotientMeasure Γ₁ μ] fun _ => κ := by
@@ -52,6 +63,13 @@ theorem exists_ae_eq_const_of_forall_eq {c : Lp ℂ 2 (quotientMeasure Γ₁ μ)
   rw [ae_map_iff (measurable_mk Γ₁).aemeasurable hmeas]
   exact ae_restrict_of_ae h3
 
+/- English proof (translation)
+Establish `h1` using `(hc : IsCuspidalL2 μ c) 1 one_pos (by omega)`. Establish `h2` using `ae_ctFun_congr μ 1 hκ`. Establish `h3 : ∀ y, ctFun K n 1 (fun _ : RightCosetSpace Γ₁ => κ) y = κ`. Introduce `y`. Simplify using `only [ctFun]`.
+
+Rewrite using `[setIntegral_const, measureReal_def, unipMeasure_unipFundamentalDomain]`. Simplify using the standard rewrite rules. Establish `: (ae μ).NeBot` using `ae_neBot.2 (NeZero.ne μ)`. Take `⟨y, hy1, hy2⟩` from `(h1.and h2).exists`. Rewrite `hy1` using `[Pi.zero_apply, constantTermL2, hy2, h3]`.
+
+Conclude with `hy1`.
+-/
 theorem eq_zero_of_ae_eq_const (hn : 2 ≤ n) {c : Lp ℂ 2 (quotientMeasure Γ₁ μ)}
     (hc : c ∈ cuspidalL2 μ) {κ : ℂ}
     (hκ : (c : RightCosetSpace Γ₁ → ℂ) =ᵐ[quotientMeasure Γ₁ μ] fun _ => κ) : κ = 0 := by
@@ -67,6 +85,9 @@ theorem eq_zero_of_ae_eq_const (hn : 2 ≤ n) {c : Lp ℂ 2 (quotientMeasure Γ�
   rw [Pi.zero_apply, constantTermL2, hy2, h3] at hy1
   exact hy1
 
+/- English proof (translation)
+Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Take `⟨C, hC⟩` from `hbd`. Use `MemLp.of_bound (continuous_cuspQuot _ hψc).aestronglyMeasurable C (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Conclude with `hC y y.2`.
+-/
 theorem memLp_cuspQuot_of_bounded {ψ : AdelicGLn.AdelicGL K n → ℂ} (hψc : Continuous ψ)
     (hψl : IsLeftInvariant ψ) (hbd : ∃ C, ∀ g ∈ normOneGL K n, ‖ψ g‖ ≤ C) :
     MemLp (cuspQuot hψl) 2 (quotientMeasure Γ₁ μ) := by
@@ -77,6 +98,9 @@ theorem memLp_cuspQuot_of_bounded {ψ : AdelicGLn.AdelicGL K n → ℂ} (hψc : 
   obtain ⟨y, rfl⟩ := mk_surjective Γ₁ q
   exact hC y y.2
 
+/- English proof (translation)
+Introduce `r hr hrn`. Use `filter_upwards [ae_ctFun_congr μ r (MemLp.coeFn_toLp (memLp_cuspQuot_of_bounded μ hψc hψl hbd))] with y hy`. Rewrite using `[constantTermL2, hy]`. Conclude with `hψ r hr hrn y`.
+-/
 theorem toLp_cuspQuot_mem_cuspidalL2 {ψ : AdelicGLn.AdelicGL K n → ℂ} (hψc : Continuous ψ)
     (hψl : IsLeftInvariant ψ) (hψ : IsCuspidal ψ) (hbd : ∃ C, ∀ g ∈ normOneGL K n, ‖ψ g‖ ≤ C) :
     (memLp_cuspQuot_of_bounded μ hψc hψl hbd).toLp _ ∈ cuspidalL2 μ := by
@@ -86,6 +110,21 @@ theorem toLp_cuspQuot_mem_cuspidalL2 {ψ : AdelicGLn.AdelicGL K n → ℂ} (hψc
   rw [constantTermL2, hy]
   exact hψ r hr hrn y
 
+/- English proof (translation)
+Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Establish `: CompleteSpace (cuspidalL2 μ)` using `(isClosed_cuspidalL2 μ).completeSpace_coe`. Establish `hmem` using `memLp_cuspQuot_of_bounded μ hψc hψl hbd`. Establish `hvS : hmem.toLp _ ∈ cuspidalL2 μ` using `toLp_cuspQuot_mem_cuspidalL2 μ hψc hψl hψ hbd`. Establish `hone` using `memLp_const (μ := quotientMeasure Γ₁ μ) (p := 2) (1 : ℂ)`.
+
+Establish `e1 : ∫ g in fundamentalDomain Γ₁, ψ (g : AdelicGLn.AdelicGL K n) ∂μ = ∫ q, cuspQuot hψl q ∂quotientMeasure Γ₁ μ`. Rewrite using `[integral_quotientMeasure]`. Both sides reduce to the same expression. Establish `hint : ∫ g in fundamentalDomain Γ₁, ψ (g : AdelicGLn.AdelicGL K n) ∂μ = ⟪hone.toLp _, hmem.toLp _⟫_ℂ`. Rewrite using `[e1, MeasureTheory.L2.inner_def]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [MemLp.coeFn_toLp hmem, MemLp.coeFn_toLp hone] with q h1 h2`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Establish `hR1 : ∀ g, rightRegularRep Γ₁ μ g (hone.toLp _) = hone.toLp _`.
+
+Introduce `g`. Use `Lp.ext ?_` and prove the remaining obligations. Establish `h1` using `coeFn_rightRegularRep Γ₁ μ g (hone.toLp _)`. Establish `h2 : (fun x => (hone.toLp _ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (rightMul Γ₁ g x)) =ᵐ[quotientMeasure Γ₁ μ] fun _ => (1 : ℂ)` using `(measurePreserving_rightMul μ g).quasiMeasurePreserving.ae_eq (MemLp.coeFn_toLp hone)`. Conclude with `h1.trans (h2.trans (MemLp.coeFn_toLp hone).symm)`.
+
+Establish `hcomm` using `((rightRegularRep Γ₁ μ).isInvariant_iff_commute_starProjection (cuspidalL2 μ)).1 (isInvariant_cuspidalL2 μ)`. Establish `hcinv : ∀ g, rightRegularRep Γ₁ μ g ((cuspidalL2 μ).starProjection (hone.toLp _)) = (cuspidalL2 μ).starProjection (hone.toLp _)`. Introduce `g`. Establish `h : rightRegularRep Γ₁ μ g ((cuspidalL2 μ).starProjection (hone.toLp _)) = (cuspidalL2 μ).starProjection (rightRegularRep Γ₁ μ g (hone.toLp _))` using `congrArg (fun T : Lp ℂ 2 (quotientMeasure Γ₁ μ) →L[ℂ] Lp ℂ 2 (quotientMeasure Γ₁ μ) => T (hone.toLp _)) (hcomm g).eq`. Rewrite using `[h, hR1 g]`.
+
+Take `⟨κ, hκ⟩` from `exists_ae_eq_const_of_forall_eq μ hcinv`. Establish `hκ0 : κ = 0` using `eq_zero_of_ae_eq_const μ hn ((cuspidalL2 μ).starProjection_apply_mem (hone.toLp _)) hκ`. Establish `hc0 : (cuspidalL2 μ).starProjection (hone.toLp _) = 0`. Use `Lp.ext (hκ.trans ?_)` and prove the remaining obligations. Rewrite using `[hκ0]`.
+
+Conclude with `(Lp.coeFn_zero ℂ 2 (quotientMeasure Γ₁ μ)).symm`. Rewrite using `[hint, ← Submodule.starProjection_eq_self_iff.2 hvS, ← Submodule.inner_starProjection_left_eq_right, hc0, inner_zero_left]`.
+-/
 theorem setIntegral_fundamentalDomain_eq_zero (hn : 2 ≤ n) {ψ : AdelicGLn.AdelicGL K n → ℂ}
     (hψc : Continuous ψ) (hψl : IsLeftInvariant ψ) (hψ : IsCuspidal ψ)
     (hbd : ∃ C, ∀ g ∈ normOneGL K n, ‖ψ g‖ ≤ C) :

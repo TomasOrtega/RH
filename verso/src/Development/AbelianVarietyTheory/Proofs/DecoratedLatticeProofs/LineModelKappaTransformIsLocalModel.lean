@@ -18,6 +18,31 @@ noncomputable section
 namespace GlobalTheory.KappaModel
 open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule (ofAdj)
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ _ _ p ν hν ψ hψ ψk hk L S L'' ζ τ hrk hτ s z₀ hs hz n _ _ FS FL hFL TLS hTLS`. Take `⟨-, hk2, hxi, -, -⟩` from `GlobalTheory.LocChar.weil_char_split D k p ψ hψ`. Take `⟨hcont, hne⟩` from `hk2 ψk hk`. Establish `hz0 : z₀ ≠ 0`. Introduce `h0`.
+
+Rewrite `hz` using `[h0, Matrix.mulVec_zero]`. Establish `h1` using `congrFun (congrFun FL.γβ ()) ()`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Establish `h2 : ∀ r, FL.β r () = 0` using `fun r => by`. Establish `h3` using `congrFun hz r`.
+
+Simplify using `only [Pi.zero_apply, Pi.smul_apply, smul_eq_mul] at h3`. Establish `hx : p.xi * s ≠ 0` using `mul_ne_zero hxi hs`. Establish `h4 : p.pr (ζ r) = 0`. Break down `mul_eq_zero.1 h3.symm with h | h` into its components or cases. Conclude with `absurd (neg_eq_zero.1 h) hx`.
+
+Conclude with `h`. Rewrite using `[hFL, h4, mul_zero]`. Simplify using `[h2] at h1`. Take `⟨FL'', hFL''⟩` from `exists_frame_col hrk z₀ hz0`. Use `⟨FL'', hFL'', ?_⟩` and prove the remaining obligations.
+
+Use `set κ : WO S L'' → WO L S := fun w => ofAdj L S ((rat τ : Mx D L.rank L''.rank) * w) with hκdef`. Establish `hτ' : τᴴ * (L.gram * τ) = (((-1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L''.gram`. Rewrite using `[hτ]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨hadd, -, -, -, hsy, -⟩` from `GlobalTheory.LinkKappa.kappa_props D L L'' S τ (-1) hτ' κ (fun _ => rfl)`. Establish `hsy' : ∀ w w', symplO L S (κ w) (κ w') = symplO S L'' w w'` using `fun w w' => by`. Rewrite using `[hsy]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨C, hC⟩` from `GlobalTheory.T.fourierInversion_inverseRowTransform_negOne k n ψk ν hcont hne hν`. Use `haveI := hν`. Set `H : SB (Matrix Unit n k) →ₗ[ℂ] SB (Matrix n Unit k)` to `{ toFun := fun Φ => ⟨finv ψk ν C Φ.1, GlobalTheory.T.inverseRowFourierTransform_mem_schwartzBruhat k n ψk ν hcont hne hν C Φ.1 Φ.2⟩ map_add' := fun Φ Ψ => Subtype.ext (finv_add ψk hcont ν C Φ.2 Ψ.2) map_smul' := fun a Φ => Subtype.ext (finv_smul ψk ν C a Φ.1) }`. Set `TL : SB (Matrix Unit n k) →ₗ[ℂ] (WO S L'' → ℂ)` to `(LinearMap.funLeft ℂ ℂ κ) ∘ₗ TLS ∘ₗ H`.
+
+Establish `hTL : ∀ Φ w, TL Φ w = TLS (H Φ) (κ w)` using `fun _ _ => rfl`. Take `⟨-, -, -, hpsi, -⟩` from `GlobalTheory.LocSympl.halves_at_split D k p n Unit L S FL FS ψ ψk hk`. Establish `hhalf : ∀ x, IsHalf (cA D p.e) (κ (p.up FS FL'' x))` using `fun x => (GlobalTheory.T.skewAdjointSimilitude_exchanges_halves D L S L'' τ p.e _).2 (Witness.up_half p FS FL'' x)`. Establish `hkey : ∀ x a, ψ (symplO L S (p.up FL FS a) (κ (p.up FS FL'' x))) = (ψk (-(∑ r, x () r * a r ())) : ℂ)`. Introduce `x a`.
+
+Rewrite using `[hpsi a _ (hhalf x)]`. Conclude with `congrArg (fun u => ((ψk u : Circle) : ℂ)) (GlobalTheory.T.splitPlace_hermitianForm_half_skewAdjointImage D k p L S L'' ζ τ s z₀ hs hz n FS FL FL'' hFL hFL'' x a)`. Use `⟨TL, ⟨fun Φ => ?_, fun x Φ Φ' h => ?_, fun y hy Φ Φ' h => ?_⟩, fun c Φ hΦ w => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isThetaFunction_comp_skewAdjointSimilitude D ψ L S L'' τ hτ _ (hTLS.theta _)`. Use function extensionality and compare the values at `w show TLS (H Φ') (κ w) = heisO ψ S L'' (p.up FS FL'' x) (fun w => TLS (H Φ) (κ w)) w`.
+
+Rewrite using `[← heis_comp ψ L S L'' κ hadd hsy']`. Rewrite using `[hTLS.modul (κ (p.up FS FL'' x)) (hhalf x) (H Φ) (H Φ') (fun t => ?_)]`. Use `show finv ψk ν C Φ'.1 t = _ * finv ψk ν C Φ.1 t`. Rewrite using `[finv_trans ψk ν C x h t, hkey]`. Establish `hy' : IsHalf p.e (κ y)` using `(GlobalTheory.T.skewAdjointSimilitude_exchanges_halves D L S L'' τ p.e y).1 hy set t₀ := p.down FL FS (κ y) with ht₀`.
+
+Establish `hup : p.up FL FS t₀ = κ y` using `Witness.up_down p FL FS hy'`. Establish `hmod : ∀ t, Φ'.1 t = (ψk (∑ r, t () r * t₀ r ()) : ℂ) * Φ.1 t` using `fun t => by`. Rewrite using `[h t, ← hsy', ← hup, GlobalTheory.OrientedHeis.symplO_skew, AddChar.map_neg_eq_inv, hkey, AddChar.map_neg_eq_inv, Circle.coe_inv, inv_inv]`. Use function extensionality and compare the values at `w`. Use `show TLS (H Φ') (κ w) = heisO ψ S L'' y (fun w => TLS (H Φ) (κ w)) w`.
+
+Rewrite using `[← heis_comp ψ L S L'' κ hadd hsy', ← hup]`. Rewrite using `[hTLS.trans t₀ (H Φ) (H Φ') (fun t => finv_mod ψk ν C t₀ hmod t)]`. Use `show TLS (H Φ) (κ w) = _`. Establish `: H Φ = c` using `Subtype.ext (hC c.1 c.2 Φ.1 hΦ)`. Rewrite using `[this]`.
+-/
 theorem kappa_model : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (p : Place D k) (ν : Measure k), ν.IsAddHaarMeasure → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (L S L'' : HSp D) (ζ : Fin L.rank → D.host.E) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E), L''.rank = 1 → τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram → ∀ (s : k) (z₀ : Fin L''.rank → k), s ≠ 0 → τ.map p.pr *ᵥ z₀ = (-(p.xi * s)) • (fun i => p.pr (ζ i)) → ∀ (n : Type) [Fintype n] [DecidableEq n] (FS : Frame k S.rank n) (FL : Frame k L.rank Unit), (∀ r, FL.β r () = s * p.pr (ζ r)) → ∀ TLS, p.IsModel ψ FL FS TLS → ∃ FL'' : Frame k L''.rank Unit, (∀ r, FL''.β r () = z₀ r) ∧ ∃ TL, p.IsModel ψ FS FL'' TL ∧ ∀ (c : SB (Matrix n Unit k)) (Φ : SB (Matrix Unit n k)), (∀ η, Φ.1 η = GlobalTheory.StepData.hat ψk ν (-1) (fun y => c.1 (Matrix.of fun r _ => y r)) (η ())) → ∀ w, TL Φ w = TLS c (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L''.rank) * w)) := by
   intro D k _ _ _ _ _ _ p ν hν ψ hψ ψk hk L S L'' ζ τ hrk hτ s z₀ hs hz n _ _ FS FL hFL TLS hTLS
   obtain ⟨-, hk2, hxi, -, -⟩ := GlobalTheory.LocChar.weil_char_split D k p ψ hψ

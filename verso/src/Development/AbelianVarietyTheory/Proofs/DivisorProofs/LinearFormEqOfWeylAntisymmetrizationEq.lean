@@ -8,6 +8,15 @@ open Classical
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Introduce `ι _ m L hL Q Q' h`. Establish `sq : ∀ u : ℤˣ, ((u : ℤ) : ℝ) * ((u : ℤ) : ℝ) = 1`. Introduce `u`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+
+Establish `key : ∀ P : MvPolynomial (Root m) ℝ, L (antisymm P) = (Fintype.card (∀ τ, Equiv.Perm (Fin (m τ))) : ℝ) * L P`. Introduce `P`. Simplify using `only [GlobalTheory.GoodMetric.antisymm, map_sum, map_zsmul]`. Rewrite using `[Finset.sum_congr rfl (fun w _ => by`. Rewrite using `[GlobalTheory.T.linearForm_alternating_of_adjacent_swap_blocks ι m L hL w P, zsmul_eq_mul, ← mul_assoc, sq, one_mul])]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hc : (Fintype.card (∀ τ, Equiv.Perm (Fin (m τ))) : ℝ) ≠ 0`. Conclude with `(Fintype.card_pos (α := ∀ τ, Equiv.Perm (Fin (m τ)))).ne'` after adjusting the coercions. Establish `e` using `congrArg L h`. Rewrite `e` using `[key, key]`.
+
+Conclude with `mul_left_cancel₀ hc e`.
+-/
 theorem linForm_eq_of_antisymm_eq : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (L : MvPolynomial (Root m) ℝ →ₗ[ℝ] ℝ), (∀ (τ : ι) (a b : Fin (m τ)), (b : ℕ) = a + 1 → ∀ Q, L (rename (Equiv.swap (⟨τ, a⟩ : Root m) ⟨τ, b⟩) Q) = - L Q) → ∀ Q Q' : MvPolynomial (Root m) ℝ, antisymm Q = antisymm Q' → L Q = L Q' := by
   intro ι _ m L hL Q Q' h
   have sq : ∀ u : ℤˣ, ((u : ℤ) : ℝ) * ((u : ℤ) : ℝ) = 1 := by

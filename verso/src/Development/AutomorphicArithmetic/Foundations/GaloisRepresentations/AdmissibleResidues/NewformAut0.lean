@@ -10,6 +10,9 @@ namespace UpperTheory.V.Af.NewformAutomorphy
 
 end UpperTheory.V.Af.NewformAutomorphy
 
+/- English proof (translation)
+Introduce `P k hk f l hl Ω _ _ _ ι W j hf hW K _ _ _ _ _ _ hK hirr`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Conclude with `UpperTheory.V.Sd.upQuad P ℚ K Ω l ι hK 2 one_le_two W hW (UpperTheory.V.Af.newformAutR P k hk f l Ω ι W j hf) hirr`.
+-/
 theorem UpperTheory.GalN.V.newformAut0 :
     UpperTheory.V.Af.Hypotheses₂ → NewformAut0 := by
   intro P k hk f l hl Ω _ _ _ ι W j hf hW K _ _ _ _ _ _ hK hirr

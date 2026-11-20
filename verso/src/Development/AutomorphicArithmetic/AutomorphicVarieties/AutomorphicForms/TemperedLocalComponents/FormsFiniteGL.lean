@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.FormsFiniteness.FormsFinite
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.ArchimedeanCompact.AutomorphicFormsLeSm
 
+/- English proof (translation)
+Use `CoefficientSpans.finite_of (CoefficientSpans.charFinite_of Fin.formsFinite) (fun E _ _ _ a φ h => (Cm.isAutForm_iff φ).1 h) (fun E _ _ _ a => ⟨(Cm.cptEq E a).symm, fun φ k g => ?_⟩) (fun E _ _ _ a z hz => ⟨Cm.uTC E a z, ?_, fun _ _ => rfl⟩)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `(Cm.cptEq E a).surjective k`. Rewrite using `[MulEquiv.symm_apply_apply, Cm.infEmb_cptEq]`. Both sides reduce to the same expression. Establish `h` using `Cm.uTC_mem_Zalg hz`.
+
+Rewrite `h` using `[Cm.Zalg_eq_map, Cm.center_UC, AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨τ, u, rfl⟩, rfl⟩`. Conclude with `⟨τ, u, Cm.uC_capC τ u⟩`.
+-/
 theorem UpperTheory.V.Af.formsFiniteGL :
     GlobalTheory.Published.AutomorphicFormsFiniteGL := by
   refine CoefficientSpans.finite_of (CoefficientSpans.charFinite_of Fin.formsFinite) (fun E _ _ _ a φ h => (Cm.isAutForm_iff φ).1 h)

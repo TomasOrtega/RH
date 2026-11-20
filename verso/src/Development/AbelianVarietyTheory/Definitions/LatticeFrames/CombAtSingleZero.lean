@@ -251,11 +251,17 @@ def OffTop (D : D7) : Prop :=
 
 def PosRanks (D : D7) : Prop := ∀ j, 0 < (D.sp.X j).rank
 
+/- English proof (translation)
+Rewrite using `[D.sp.X_rank j h]`. Establish `hk : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Conclude with `Nat.lt_of_lt_of_le hk (Nat.le_add_right _ _)`.
+-/
 theorem rank_pos_of_le (D : D7) {j : ℕ} (h : j ≤ D.R.m) : 0 < (D.sp.X j).rank := by
   rw [D.sp.X_rank j h]
   have hk : 0 < D.R.k := by have := D.R.m_add_three_le_k; omega
   exact Nat.lt_of_lt_of_le hk (Nat.le_add_right _ _)
 
+/- English proof (translation)
+Establish `h1` using `(d.oT D.R.m rfl).rank_add`. Rewrite `h1` using `[D.sp.X_rank D.R.m le_rfl, D.sp.X'_rank]`. Establish `hk` using `D.R.m_add_three_le_k`. Simplify using `only [Formalism.BasicNotions.Ranks.N, Formalism.BasicNotions.Ranks.rankX', Formalism.BasicNotions.Ranks.r, Nat.mul_add_one] at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lastLine_rank (d : Dat D u) : d.Lz.rank = 1 := by
   have h1 := (d.oT D.R.m rfl).rank_add
   rw [D.sp.X_rank D.R.m le_rfl, D.sp.X'_rank] at h1
@@ -273,27 +279,45 @@ variable {o} {Q : ∀ j, ι → Pair k (Fin (D.sp.X j).rank)}
 
 namespace OffTest
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]`. Introduce `i j`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem combAt_single_zero (P : Pl D → Prop) {S T : HSp D} (c : ℂ) : CombAt P (Finsupp.single (0 : WO S T) c) := by
   intro u hu
   rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]
   intro i j
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Simplify using `[comb]`. Conclude with `GlobalTheory.MixPer.heisO_zero ψ S T f`.
+-/
 theorem comb_single_zero (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single 0 1) f = f := by
   simp [comb]
   exact GlobalTheory.MixPer.heisO_zero ψ S T f
 
+/- English proof (translation)
+Rewrite using `[extS, Finsupp.mapDomain_single]`. Conclude with `congrArg (Finsupp.single · 1) (map_zero (o.resS T).symm)`.
+-/
 example {S A L : HSp D} (o : OrthDec S A L) (T : HSp D) : extS o T (Finsupp.single 0 1) = Finsupp.single 0 1 := by
   rw [extS, Finsupp.mapDomain_single]
   exact congrArg (Finsupp.single · 1) (map_zero (o.resS T).symm)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (v : Pl D) : offS d v ↔ ¬ onS d v := Iff.rfl
 
+/- English proof (translation)
+Take `⟨i, rfl⟩` from `hv`. Conclude with `H.off i`.
+-/
 example (H : PinOff o) {v : Pl D} (hv : o.atT v) : offS d v := by
   obtain ⟨i, rfl⟩ := hv
   exact H.off i
 
+/- English proof (translation)
+Establish `: o.I = []` using `List.eq_nil_iff_forall_not_mem.2 fun i => i.elim`. Simplify using `only [IsS, this, List.foldr_nil]`.
+-/
 example (o : OffDat d k Empty) (j : ℕ) (ε : Empty → 𝓀[k]ˣ) :
     IsS o j ε ↔ ∀ ψ ∈ d.Ram j, d.S j ψ ∈ d.Ram j ∧ ∀ y, d.rd j (d.S j ψ) y = d.rd j ψ y := by
   have : o.I = [] := List.eq_nil_iff_forall_not_mem.2 fun i => i.elim

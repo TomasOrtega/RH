@@ -10,6 +10,25 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O D.X]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `oa.onB.hom w0` as an intermediate fact. Set `g` to `oa.onB.act a`. Set `f` to `oa.onB.act (star a)`.
+
+Set `w` to `oa.onB.act w0`. Set `x : D.P.A ⟶ D.P.A` to `𝟙 _`. Take `⟨t, ht, vt⟩` from `exists_cubN D.cub (1 : D.P.A ⟶ D.P.A) w x (N + 1)`. Establish `hz : (g ≫ w) ≫ f = w ^ (N + 1)`. Rewrite using `[← oa.onB.map_mul, ← oa.onB.map_mul, ← act_nsmul, ← haa]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `pW : ∀ (y : D.P.A ⟶ D.P.A) {U : Type} [CommGroup U] (h : (D.P.A.left ⟶ D.P.A.left) → U), ∏ i : Fin 4, h (y.left ≫ (![(padd D.P.A (𝟙 _) w).left, 𝟙 D.P.A.left, w.left, (toUnit D.P.A ≫ η[D.P.A]).left] : Fin 4 → _) i) ^ (![1, -2, -1, 2] : Fin 4 → ℤ) i = h (y * (y ≫ w)).left * h y.lef …`. Introduce `y U _ h`. Establish `e₀ : y ≫ padd D.P.A (𝟙 _) w = y * (y ≫ w)` using `(MonObj.comp_mul _ _ _).trans (by rw [Category.comp_id])`.
+
+Establish `e₃ : y ≫ toUnit D.P.A ≫ η[D.P.A] = 1` using `MonObj.comp_one (M := D.P.A) y`. Rewrite using `[Fin.prod_univ_four]`. Use `show h (y ≫ padd D.P.A (𝟙 _) w).left ^ (1 : ℤ) * h (y.left ≫ 𝟙 _) ^ (-2 : ℤ) * h (y ≫ w).left ^ (-1 : ℤ) * h (y ≫ toUnit D.P.A ≫ η[D.P.A]).left ^ (2 : ℤ) = _`. Rewrite using `[e₀, e₃, Category.comp_id, zpow_one, zpow_neg_one]`. Take `⟨s, hs, vs⟩` from `exists_gen D.P.isLB (K' := Fin 3) (φ' := ![x.left, g.left, (1 : D.P.A ⟶ D.P.A).left]) (ε' := ![(N + 1 : ℕ), -1, -(N : ℤ)]) (fun U _ h => by`.
+
+Use `(prod_sum₂ (K := Fin 4 ⊕ Fin 4) (K' := Fin 6 ⊕ Fin 8) (U := U) _ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (pW g h) (prod_neg _ _ (ppow _ _ (N + 1) (pW x h)))) (prod_sum₂ (K := Fin 6) (K' := Fin 8) (U := U) _ (prod_neg _ _ (prod_ros g f x (g ≫ w) h)) (prod_neg _ _ (Fin.pro …` and prove the remaining obligations. Establish `a₁ : x ≫ w = w` using `Category.id_comp _`. Establish `a₂ : x ≫ g = g` using `Category.id_comp _`. Rewrite using `[hz, a₁, a₂, Fin.prod_univ_three]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Matrix.cons_val]`.
+
+Rewrite using `[_root_.one_mul (w ^ (N + 1)), _root_.one_mul x, mul_comm (w ^ (N + 1)) x, mul_comm w x]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use `push_cast`. Use the proof step `module)`.
+
+Use the proof step `(LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u₀ g.left) (LB.invGen D.P.L _ _ (GeneratorPullback.powGen D.P.L _ _ (LB.pullGen D.P.L _ _ u₀ x.left) (N + 1)))) (LB.mulGen D.P.L _ _ _ _ (LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ u₂ (lift x (g ≫ w)).left)) ( …`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hu₀ _) (invGen_isGen _ _ _ _ (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hu₀ _) _))) (mulGen_isGen _ _ _ _ _ _ _ (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ hu₂ _)) (invGen_isGen _ _ _ _ ht)))`. Use `⟨s, hs, fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Establish `x₁ : ρ ≫ x = ρ` using `Category.comp_id _`. Establish `b₂ : val (LB.pullGen D.P.L _ _ u₀ x.left) ρ.left z J = val u₀ ρ.left z J`.
+
+Rewrite using `[val_pull hJ, ← Over.comp_left, x₁]`. Establish `b₃ : val (LB.pullGen D.P.L _ _ u₂ (lift x (g ≫ w)).left) ρ.left z J = val₂ u₂ z J ρ (ρ ≫ g ≫ w)`. Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift, x₁]`. Both sides reduce to the same expression. Establish `b₄` using `vt T ρ z J hJ`.
+
+Rewrite `b₄` using `[x₁, MonObj.comp_one]`. Rewrite using `[vs _ _ z J hJ, val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv, val_pow, b₂, b₃, b₄, val_pull hJ]`. Both sides reduce to the same expression.
+-/
 theorem exists_sq_val (oa : D.OAct O) (w0 a : O) (N : ℕ) (haa : star a * a = ((N + 1 : ℕ) : O))
     (u₀ : LB.Gen (LB.LinComb D.P.L (K := Fin 4) ![(padd D.P.A (𝟙 _) (oa.onB.act w0)).left, 𝟙 D.P.A.left,
       (oa.onB.act w0).left, (toUnit D.P.A ≫ η[D.P.A]).left] ![1, -2, -1, 2])) (hu₀ : u₀.IsGen)
@@ -78,6 +97,9 @@ section K
 variable {y : (TK R).left} {J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L y J)
 include hJ
 
+/- English proof (translation)
+Establish `e : ∀ a b : D.X, val (D.tau a b) (𝟙 _) y J = val (D.psi (a + b)) (𝟙 _) y J * (val (D.psi a) (𝟙 _) y J)⁻¹ * (val (D.psi b) (𝟙 _) y J)⁻¹ * (val D.rigK (𝟙 _) y J)⁻¹` using `fun a b => (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`. Rewrite using `[e, e, add_comm b a, mul_right_comm (val (D.psi (a + b)) _ y J)]`.
+-/
 theorem tauK_symm (a b : D.X) : val (D.tau a b) (𝟙 _) y J = val (D.tau b a) (𝟙 _) y J := by
   have e : ∀ a b : D.X, val (D.tau a b) (𝟙 _) y J = val (D.psi (a + b)) (𝟙 _) y J * (val (D.psi a) (𝟙 _) y J)⁻¹ *
       (val (D.psi b) (𝟙 _) y J)⁻¹ * (val D.rigK (𝟙 _) y J)⁻¹ := fun a b =>
@@ -85,6 +107,9 @@ theorem tauK_symm (a b : D.X) : val (D.tau a b) (𝟙 _) y J = val (D.tau b a) (
       (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))
   rw [e, e, add_comm b a, mul_right_comm (val (D.psi (a + b)) _ y J)]
 
+/- English proof (translation)
+Use `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (hB a a' b) (𝟙 _)).trans (val_mul hJ _ _ _))` as an intermediate fact. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) this` and prove the remaining obligations. Establish `e` using `val_cub D.cub (𝟙 (TK R)) hJ (cP D _ a) (cP D _ a') (cP D _ b)`. Rewrite `e` using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Conclude with `e.symm`.
+-/
 theorem tauK_mul (hB : D.TauBimult) (a a' b : D.X) :
     val (D.tau (a + a') b) (𝟙 _) y J * cubV D.cub (T := TK R) y J (cP D _ a) (cP D _ a') (cP D _ b) =
       val (D.tau a b) (𝟙 _) y J * val (D.tau a' b) (𝟙 _) y J := by
@@ -94,6 +119,13 @@ theorem tauK_mul (hB : D.TauBimult) (a a' b : D.X) :
   rw [Category.id_comp, Category.id_comp, Category.id_comp] at e
   exact e.symm
 
+/- English proof (translation)
+Establish `C : IsCub (cubV D.cub (T` using `TK R) y J) := isCub_cubV D.cub hJ`. Proceed by induction on `n with`. Consider the case `zero`. Establish `t` using `tauK_mul hJ hB 0 0 b`. Rewrite `t` using `[add_zero, cPoint_zero, C.face, _root_.mul_one]`.
+
+Rewrite using `[zero_nsmul, pow_zero, mul_eq_left.1 t.symm]`. Conclude with `_root_.one_mul _`. Consider the case `succ n ih`. Establish `e` using `tauK_mul hJ hB (n • a) a b`. Rewrite `e` using `[cPoint_nsmul]`.
+
+Rewrite using `[succ_nsmul, cubN, Finset.prod_range_succ, _root_.one_mul, mul_comm (∏ _ ∈ _, _), ← _root_.mul_assoc, e, pow_succ, ← ih, cubN, mul_right_comm]`.
+-/
 theorem tauK_nsmul (hB : D.TauBimult) (a b : D.X) (n : ℕ) :
     val (D.tau (n • a) b) (𝟙 _) y J * cubN (cubV D.cub (T := TK R) y J) n 1 (cP D _ a) (cP D _ b) =
       val (D.tau a b) (𝟙 _) y J ^ n := by
@@ -112,6 +144,33 @@ theorem tauK_nsmul (hB : D.TauBimult) (a b : D.X) (n : ℕ) :
 end K
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨N, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `oa.onB.hom w0` as an intermediate fact. Establish `haa : star a * a = ((N + 1 : ℕ) : O)` using `(mul_comm _ _).trans hN`.
+
+Take `⟨u₂, hu₂, n₂⟩` from `exists_ros hGF D.P.isAb D.P.isLB _ _ (oa.onB.rosati a)`. Take `⟨u₀, hu₀, n₀, hψ⟩` from `hΨ`. Take `⟨s, hs, vs⟩` from `exists_sq_val oa w0 a N haa u₀ hu₀ u₂ hu₂`. Establish `vX : ∀ (Z : Scheme.{0}) (r : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J → val X r z J = val s r z J ^ k * val (L` using `D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig (r ≫ D.P.A.hom) z J ^ (k * N) := by`. Introduce `Z r z J hJ`.
+
+Establish `ev : ∀ (Z : Scheme.{0}) (r : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J → val (LB.mulGen D.P.L _ _ _ _ (GeneratorPullback.powGen D.P.L _ _ s k) (GeneratorPullback.powGen D.P.L _ _ (LB.pullGen D.P.L (fun _ : PUnit => eSec D.P.A) (fun _ => 1) D.rig D.P.A.hom) (k * N))) r z J = val …` using `D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig (r ≫ D.P.A.hom) z J ^ (k * N) := fun Z r z J hJ => by`. Rewrite using `[val_mul hJ, val_pow, val_pow, val_pull hJ]`. Use `(gen_unique' D.P.isLB (fun U _ h => ?_) D.P.A.hom (eSec D.P.A) (Over.w η[D.P.A]) (hGF _ _ D.P.isAb).2 hX (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ hs _) (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _) _)) (fun y I hI => ?_) Z r z J hJ).trans (ev Z r z J hJ)` and prove the remaining obligations. Use `(prod_sum₂ (K := Fin 3) (K' := PUnit) (U := U) _ (ppow _ _ k (Fin.prod_univ_three _)) (ppow _ _ (k * N) (c := h (1 : D.P.A ⟶ D.P.A).left) ((Fintype.prod_unique _).trans (zpow_one _)))).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_pow, Sum.elim_inl, Matrix.cons_val, Over.id_left, Matrix.cons_val_zero, Matrix.cons_val_one]`. Use `push_cast`. Use `module`. Establish `C : IsCub (cubV D.cub (T` using `𝟙_ _) y I) := isCub_cubV D.cub hI`.
+
+Establish `e₁ : (1 : 𝟙_ (Over (Sp R)) ⟶ D.P.A).left = eSec D.P.A` using `Category.id_comp _`. Establish `w₀ : val u₀ (1 : 𝟙_ (Over (Sp R)) ⟶ D.P.A).left y I = 1` using `(val_pull hI u₀ (eSec D.P.A) (𝟙 _)).symm.trans ((val_corr hI n₀ _).trans (val_one _))`. Establish `r₂ : val₂ u₂ y I (1 : 𝟙_ (Over (Sp R)) ⟶ D.P.A) 1 = 1`. Establish `e` using `(ros_add D.cub hGF D.P.isAb _ _ u₂ hu₂ n₂ (T := 𝟙_ _) hI 1 1 1).2`. Rewrite `e` using `[_root_.mul_one, C.face, MonObj.one_comp, C.face, _root_.mul_one, _root_.one_mul]`.
+
+Conclude with `mul_eq_left.1 e.symm`. Establish `s₁` using `vs (𝟙_ _) 1 y I hI`. Rewrite `s₁` using `[MonObj.one_comp (oa.onB.act a), MonObj.one_comp (oa.onB.act a ≫ oa.onB.act w0), w₀, r₂, C.N_one, e₁]`. Establish `a₁` using `val_corr hI hXn (𝟙 _)`. Rewrite `a₁` using `[val_pull hI, Category.id_comp]`.
+
+Use `a₁.trans (Eq.trans ?_ (ev _ _ y I hI).symm)` and prove the remaining obligations. Rewrite using `[s₁, show eSec D.P.A ≫ D.P.A.hom = 𝟙 _ from Over.w η[D.P.A]]`. Conclude with `(val_pow _ _ _ _ _).trans (by simp)`. Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `cf : ∀ (x : O) χ, cP D (TK R) (x • χ) = cP D (TK R) χ ≫ oa.onB.act x` using `fun x χ => by`.
+
+Rewrite using `[cP, oa.c_lin, ← Category.assoc]`. Both sides reduce to the same expression. Establish `W : ∀ χ, val (D.tau χ (w0 • χ)) (𝟙 _) y J * val u₀ (cP D (TK R) χ).left y J = val (D.psi χ) (𝟙 _) y J * val D.rigK (𝟙 _) y J` using `fun χ => by`. Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (hψ χ) (𝟙 _)).trans (val_mul hJ _ _ _))`. Rewrite `e` using `[val_pull hJ, Category.id_comp]`. Then use the resulting hypothesis.
+
+Establish `B` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (oa.tau_bal a u₂ hu₂ n₂ mu (w0 • a • mu)) (𝟙 _))`. Rewrite `B` using `[val_pull hJ, Category.id_comp]`. Establish `sm : star a • w0 • a • mu = (N + 1) • w0 • mu`. Rewrite using `[smul_smul, smul_smul, mul_right_comm, haa, mul_smul, Nat.cast_smul_eq_nsmul]`. Establish `B₀ : val (D.tau (a • mu) (w0 • a • mu)) (𝟙 _) y J * val₂ u₂ y J (cP D (TK R) mu) (cP D (TK R) (w0 • a • mu)) = val (D.tau mu (star a • w0 • a • mu)) (𝟙 _) y J` using `B`.
+
+Establish `B'` using `B₀.trans ((congrArg (fun q => val (D.tau mu q) (𝟙 _) y J) sm).trans (tauK_symm hJ _ _))`. Establish `T` using `tauK_nsmul hJ hB (w0 • mu) mu (N + 1)`. Rewrite `T` using `[tauK_symm hJ (w0 • mu) mu]`. Establish `S` using `vs _ (cP D (TK R) mu) y J hJ`. Rewrite `S` using `[← Category.assoc, ← cf, ← cf, ← cf]`.
+
+Establish `Rg : val (L` using `D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig ((cP D (TK R) mu).left ≫ D.P.A.hom) y J = val D.rigK (𝟙 _) y J := by`. Rewrite using `[Over.w]; exact ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)).symm`. Rewrite using `[val_pull hJ, Category.id_comp, val_mul hJ, val_pow, val_pow, val_inv]`. Use `(vX _ (cP D (TK R) mu).left y J hJ).trans ?_` and prove the remaining obligations. Establish `S' : val s (cP D (TK R) mu).left y J * val D.rigK (𝟙 _) y J ^ N = (val (D.psi mu) (𝟙 _) y J)⁻¹ ^ (N + 1) * val (D.psi (a • mu)) (𝟙 _) y J`.
+
+Rewrite using `[S]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : ((TK R).left.presheaf.stalk y)ˣ} (e : p = q) => congrArg Additive.ofMul e`. Establish `w₁` using `E (W (a • mu))`. Establish `w₂` using `E (congrArg (· ^ (N + 1)) (W mu))`.
+
+Establish `b` using `E B'`. Establish `t` using `E T`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at w₁ w₂ b t ⊢`. Take the linear combination `(norm := module) w₁ - w₂ - b - t`. Rewrite using `[Rg, mul_comm k N, pow_mul, ← mul_pow, S', mul_pow, ← pow_mul, mul_comm (N + 1) k]`.
+-/
 theorem X_value' (hGF : GlobalFnsSt) (hB : D.TauBimult) (oa : D.OAct O) (w0 : O) (hΨ : TraceFormTwistIso D oa w0)
     (a : O) (N : ℕ) (hN : a * star a = (N : O)) (hN1 : 1 ≤ N) (k : ℕ)
     (X : LB.Gen (LB.LinComb D.P.L (K := Fin 2) ![𝟙 D.P.A.left, (oa.onB.act a).left]
@@ -203,6 +262,9 @@ section Closed
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   (D : DegData V (IsLocalRing.maximalIdeal V)) {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
+/- English proof (translation)
+Conclude with `X_value' hGF D.tau_bimult oa w0 hΨ a N hN hN1 k X hX hXn mu`.
+-/
 theorem X_value (hGF : GlobalFnsSt) (oa : D.toPre.OAct O) (w0 : O) (hΨ : Geo.Tor.TraceFormTwistIso D.toPre oa w0)
     (a : O) (N : ℕ) (hN : a * star a = (N : O)) (hN1 : 1 ≤ N) (k : ℕ)
     (X : LB.Gen (LB.LinComb D.toPre.P.L (K := Fin 2) ![𝟙 D.toPre.P.A.left, (oa.onB.act a).left]

@@ -18,6 +18,11 @@ namespace GlobalTheory.ChernCalc.CombW
 
 variable {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F}
 
+/- English proof (translation)
+Establish `hd` using `hψ.contDiffAt c hy (mem_pick ψ.isLB y)`. Express the relevant statement in the definitionally equal form `ofValues _ = kappa • ∑ a, GlobalTheory.ChernTop.rowForm a _`. Simplify using `only [ofValues, GlobalTheory.ChernTop.rowForm, Fintype.linearCombination_apply, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `congrArg (kappa * ·) (GlobalTheory.CurveDens.cHess_apply_eq_ddbar (contDiffAt_ofReal_comp hd) a b).symm`.
+-/
 theorem firstChernFormOfWeight_eq_hessianForm_chart {L : LB X.X} (ψ : Weight X.str σ L) (hψ : ψ.IsCInf) (c : AlgChart X.str σ X.dim)
     {y : CxPts X.str σ} (hy : y ∈ c.e.source) :
     c1W ψ ⟨(c, y), hy⟩ = GlobalTheory.ChernTop.matForm X.dim (c.hess ψ (pick ψ.isLB y) y) := by
@@ -28,6 +33,11 @@ theorem firstChernFormOfWeight_eq_hessianForm_chart {L : LB X.X} (ψ : Weight X.
   congr 1
   exact congrArg (kappa * ·) (GlobalTheory.CurveDens.cHess_apply_eq_ddbar (contDiffAt_ofReal_comp hd) a b).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Establish `ha` using `mem_pick ψ.isLB y`. Establish `hb` using `mem_pick φ.isLB y`. Use `show c1W (ψ.tens φ) ⟨(c, y), hy⟩ = c1W ψ ⟨(c, y), hy⟩ + c1W φ ⟨(c, y), hy⟩`.
+
+Rewrite using `[firstChernFormOfWeight_eq_hessianForm_chart _ (hψ.tens hφ) c hy, firstChernFormOfWeight_eq_hessianForm_chart _ hψ c hy, firstChernFormOfWeight_eq_hessianForm_chart _ hφ c hy, c.hess_eq (hψ.tens hφ) hy (i := (pick ψ.isLB y, pick φ.isLB y)) (mem_ptsIn_inf.2 ⟨ha, hb⟩) (mem_pick _ y …`.
+-/
 theorem firstChernFormOfWeight_tensor {A B : LB X.X} (ψ : Weight X.str σ A) (φ : Weight X.str σ B) (hψ : ψ.IsCInf) (hφ : φ.IsCInf) :
     c1W (ψ.tens φ) = c1W ψ + c1W φ := by
   funext x
@@ -39,6 +49,9 @@ theorem firstChernFormOfWeight_tensor {A B : LB X.X} (ψ : Weight X.str σ A) (�
     c.hess_eq (hψ.tens hφ) hy (i := (pick ψ.isLB y, pick φ.isLB y)) (mem_ptsIn_inf.2 ⟨ha, hb⟩) (mem_pick _ y),
     GlobalTheory.FlatMass.hess_tens hψ hφ hy ha hb, map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Establish `hb` using `mem_pick φ.isLB y`. Use `show c1W φ.dual ⟨(c, y), hy⟩ = -c1W φ ⟨(c, y), hy⟩`. Rewrite using `[firstChernFormOfWeight_eq_hessianForm_chart _ hφ.dual c hy, firstChernFormOfWeight_eq_hessianForm_chart _ hφ c hy, c.hess_eq hφ.dual hy (i := (pick φ.isLB y : B.ι)) hb (mem_pick _ y), GlobalTheory.FlatMass.hess_dual hφ hy hb, map_neg]`.
+-/
 theorem firstChernFormOfWeight_dual {B : LB X.X} (φ : Weight X.str σ B) (hφ : φ.IsCInf) :
     c1W φ.dual = -c1W φ := by
   funext x
@@ -49,6 +62,11 @@ theorem firstChernFormOfWeight_dual {B : LB X.X} (φ : Weight X.str σ B) (hφ :
     c.hess_eq hφ.dual hy (i := (pick φ.isLB y : B.ι)) hb (mem_pick _ y),
     GlobalTheory.FlatMass.hess_dual hφ hy hb, map_neg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Establish `h0 : (Weight.ofFun (p` using `X.str) (σ := σ) fun _ => (0:ℝ)).IsCInf := Weight.isCInf_ofFun (cInfAt_const 0)`. Use `show c1W _ ⟨(c, y), hy⟩ = 0`. Rewrite using `[firstChernFormOfWeight_eq_hessianForm_chart _ h0 c hy]`.
+
+Establish `e : c.hess (Weight.ofFun (p` using `X.str) (σ := σ) fun _ => (0:ℝ)) (pick (Weight.ofFun (p := X.str) (σ := σ) fun _ => (0:ℝ)).isLB y) y = 0 := GlobalTheory.FlatMass.cHess_zero _`. Rewrite using `[e, map_zero]`.
+-/
 theorem firstChernFormOfWeight_trivial_zero : c1W (Weight.ofFun (p := X.str) (σ := σ) fun _ => 0) = 0 := by
   funext x
   obtain ⟨⟨c, y⟩, hy⟩ := x
@@ -74,6 +92,11 @@ def combSub (X : Var F) (σ : F →+* ℂ) : AddSubgroup (X.Dv × ((atlas X σ).
 end GlobalTheory.ChernCalc.CombW
 
 open GlobalTheory.ChernCalc.CombW in
+/- English proof (translation)
+Introduce `F _ σ X κ _ Δ L r ψ h c`. Establish `hm : (∑ a, c a • ((Δ a, c1W (ψ a)) : X.Dv × ((atlas X σ).Pt → Ev X.dim))) ∈ combSub X σ` using `AddSubgroup.sum_mem _ fun a _ => AddSubgroup.zsmul_mem _ (show ((Δ a, c1W (ψ a)) : X.Dv × ((atlas X σ).Pt → Ev X.dim)) ∈ combSub X σ from ⟨L a, r a, ψ a, (h a).1, (h a).2, rfl⟩) _`. Take `⟨L', r', ψ', h1, h2, h3⟩` from `hm`. Use `⟨L', r', ψ', ?_, h2, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[Prod.fst_sum]`.
+
+Rewrite using `[h3, Prod.snd_sum]`. Simplify using `only [Prod.smul_snd]`. Conclude with `Finset.sum_congr rfl fun a _ => (Int.cast_smul_eq_zsmul ℂ (c a) _).symm`.
+-/
 theorem GlobalTheory.ChernCalc.exists_comb_smoothWeight : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (κ : Type) [Fintype κ] (Δ : κ → X.Dv) (L : κ → LB X.X) (r : ∀ a, (L a).ι → X.Fnˣ) (ψ : ∀ a, Weight X.str σ (L a)), (∀ a, Presents (Δ a) (L a) (r a) ∧ (ψ a).IsCInf) → ∀ c : κ → ℤ, ∃ (L' : LB X.X) (r' : L'.ι → X.Fnˣ) (ψ' : Weight X.str σ L'), Presents (∑ a, c a • Δ a) L' r' ∧ ψ'.IsCInf ∧ c1W ψ' = ∑ a, (c a : ℂ) • c1W (ψ a) := by
   intro F _ σ X κ _ Δ L r ψ h c
   have hm : (∑ a, c a • ((Δ a, c1W (ψ a)) : X.Dv × ((atlas X σ).Pt → Ev X.dim))) ∈ combSub X σ :=

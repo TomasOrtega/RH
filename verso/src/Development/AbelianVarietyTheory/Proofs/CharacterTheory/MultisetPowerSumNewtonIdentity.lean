@@ -5,6 +5,9 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => if i ∈ Set.Ioo 0 k then g i j else 0), ← Finset.sum_filter]`. Apply `Finset.sum_congr _ (fun _ _ => rfl)` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Set.mem_Ioo, Finset.mem_Ioo]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem sum_antidiagonal_filter_ioo_eq_sum_ioo (k : ℕ) (g : ℕ → ℕ → ℂ) :
     ∑ a ∈ Finset.HasAntidiagonal.antidiagonal k with a.1 ∈ Set.Ioo 0 k, g a.1 a.2
       = ∑ i ∈ Finset.Ioo 0 k, g i (k - i) := by
@@ -16,6 +19,9 @@ private theorem sum_antidiagonal_filter_ioo_eq_sum_ioo (k : ℕ) (g : ℕ → �
   simp only [Finset.mem_filter, Finset.mem_range, Set.mem_Ioo, Finset.mem_Ioo]
   omega
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.psum, map_sum]`. Simplify using `only [map_pow, MvPolynomial.aeval_X]`. Use `conv_rhs => rw [← Multiset.map_univ_coe s]`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 private theorem aeval_psum_eq_sum_map_pow (s : Multiset ℂ) (n : ℕ) :
     MvPolynomial.aeval (fun x : s => (x : ℂ)) (MvPolynomial.psum s ℂ n) = (s.map (· ^ n)).sum := by
   classical
@@ -25,6 +31,9 @@ private theorem aeval_psum_eq_sum_map_pow (s : Multiset ℂ) (n : ℕ) :
   rw [Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Establish `key` using `congrArg (MvPolynomial.aeval (fun x : s => (x : ℂ))) (MvPolynomial.psum_eq_mul_esymm_sub_sum s ℂ r hr)`. Simplify using `only [map_sub, map_mul, map_sum, map_pow, map_neg, map_one, map_natCast, MvPolynomial.aeval_esymm_eq_multiset_esymm, Multiset.map_univ_coe, aeval_psum_eq_sum_map_pow] at key`. Rewrite using `[key, sum_antidiagonal_filter_ioo_eq_sum_ioo r (fun i j => (-1) ^ i * s.esymm i * (s.map (· ^ j)).sum)]`.
+-/
 theorem multiset_newton_psum (s : Multiset ℂ) (r : ℕ) (hr : 0 < r) :
     (s.map (· ^ r)).sum = (-1) ^ (r + 1) * (r : ℂ) * s.esymm r
       - ∑ i ∈ Finset.Ioo 0 r, (-1) ^ i * s.esymm i * (s.map (· ^ (r - i))).sum := by

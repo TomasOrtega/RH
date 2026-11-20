@@ -9,6 +9,13 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 
 namespace PositivityTheory.Xgn.TestCharacter
 
+/- English proof (translation)
+Use `letI : Algebra (ZMod p) F := ZMod.algebra F p`. Use `letI : Algebra F k := f.toAlgebra`. Use `letI : Algebra (ZMod p) k := (f.comp (algebraMap (ZMod p) F)).toAlgebra`. Use `haveI : IsScalarTower (ZMod p) F k := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `g' : F →ₐ[ZMod p] k` to `{ g with commutes' := fun r => by`.
+
+Establish `: g.comp (algebraMap (ZMod p) F) = algebraMap (ZMod p) k` using `RingHom.ext_zmod _ _`. Conclude with `DFunLike.congr_fun this r }`. Take `⟨n, hn⟩` from `(FiniteField.bijective_frobeniusAlgHom_pow (ZMod p) F).2 (g'.restrictNormal F)`. Use `⟨n, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `g'.restrictNormal_commutes F a`.
+
+Establish `h2` using `DFunLike.congr_fun hn a`. Simplify using `only [AlgHom.coe_pow, FiniteField.coe_frobeniusAlgHom, pow_iterate, ZMod.card] at h2`. Rewrite `h1` using `[← h2, map_pow]`. Conclude with `h1.symm`.
+-/
 theorem emb_pow (p : ℕ) [Fact p.Prime] {F k : Type} [Field F] [Fintype F] [CharP F p] [Field k]
     (f g : F →+* k) : ∃ n : ℕ, ∀ a, g a = f a ^ p ^ n := by
   letI : Algebra (ZMod p) F := ZMod.algebra F p
@@ -28,6 +35,13 @@ theorem emb_pow (p : ℕ) [Fact p.Prime] {F k : Type} [Field F] [Fintype F] [Cha
   rw [← h2, map_pow] at h1
   exact h1.symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h1` using `geom_sum₂_mul x y q`. Rewrite `h1` using `[hx, hy]`. Establish `h2 : (∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)) = 1` using `mul_right_cancel₀ (sub_ne_zero.2 hne) (by rw [h1, _root_.one_mul])`. Establish `h3` using `congrArg (IsLocalRing.residue R) h2`.
+
+Rewrite `h3` using `[map_sum, map_one]`. Simplify using `only [map_mul, map_pow, h] at h3`. Rewrite `h3` using `[geom_sum₂_self]`. Establish `h4 : ((q : ℕ) : IsLocalRing.ResidueField R) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue R), IsLocalRing.residue_eq_zero_iff]`.
+
+Conclude with `hq`. Rewrite `h3` using `[h4, zero_mul]`. Conclude with `zero_ne_one h3`.
+-/
 theorem eq_of_root {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (q : ℕ)
     (hq : (q : R) ∈ IsLocalRing.maximalIdeal R) {x y : R} (hx : x ^ q = x) (hy : y ^ q = y)
     (h : IsLocalRing.residue R x = IsLocalRing.residue R y) : x = y := by
@@ -45,6 +59,15 @@ theorem eq_of_root {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (q : ℕ
   rw [h4, zero_mul] at h3
   exact zero_ne_one h3
 
+/- English proof (translation)
+Use `set d := z - x - y with hd`. Establish `hz' : z = (x + y) + d` using `by rw [hd]; ring`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp (x + y) d n`. Take `⟨s, hs⟩` from `exists_add_pow_prime_pow_eq hp x y n`. Rewrite `hr` using `[← hz', hz, hs, hx, hy]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m, p ^ n = m + 2 := by`. Use `Nat.one_lt_pow hn hp.one_lt` as an intermediate fact. Conclude with `⟨p ^ n - 2, by omega⟩`. Establish `hu : IsUnit (1 - d ^ (m + 1))`. Apply `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits` to reduce the goal to its premises.
+
+Conclude with `Ideal.pow_mem_of_mem (IsLocalRing.maximalIdeal R) h _ (Nat.succ_pos m)`. Establish `h1 : d * (1 - d ^ (m + 1)) ∈ Ideal.span {(p : R)}`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨x * y * s + (x + y) * d * r, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[hm]`.
+
+Take the linear combination `hd - hr`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ hu).1 h1`.
+-/
 theorem fund {R : Type} [CommRing R] [IsLocalRing R] {p : ℕ} (hp : p.Prime) {n : ℕ} (hn : n ≠ 0) {x y z : R}
     (hx : x ^ p ^ n = x) (hy : y ^ p ^ n = y) (hz : z ^ p ^ n = z)
     (h : z - x - y ∈ IsLocalRing.maximalIdeal R) : z - x - y ∈ Ideal.span {(p : R)} := by
@@ -66,6 +89,19 @@ theorem fund {R : Type} [CommRing R] [IsLocalRing R] {p : ℕ} (hp : p.Prime) {n
     linear_combination hd - hr
   exact (Ideal.mul_unit_mem_iff_mem _ hu).1 h1
 
+/- English proof (translation)
+Establish `hpp : p.Prime` using `Fact.out`. Take `⟨n, -, hn⟩` from `FiniteField.card F p`. Establish `hq : ((Fintype.card F : ℕ) : R) ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[hn, Nat.cast_pow]`. Conclude with `Ideal.pow_mem_of_mem _ hp _ n.pos`.
+
+Establish `hroot : ∀ τ a, χ τ a ^ Fintype.card F = χ τ a` using `fun τ a => by`. Rewrite using `[← map_pow, FiniteField.pow_card]`. Use `choose ee hee using fun τ => emb_pow p (ρ τ₀) (ρ τ)`. Set `σ' : MulChar F R` to `{ (χ τ₀).toMonoidHom with map_nonunit' := fun a ha => by`. Establish `: a = 0` using `by simpa using ha`.
+
+Substitute `this` using the available equality. Conclude with `map_zero (χ τ₀) }`. Establish `hσ : ∀ a, σ' a = χ τ₀ a` using `fun _ => rfl`. Establish `key : ∀ τ a, χ τ a = (σ' ^ p ^ ee τ) a` using `fun τ a => by`. Rewrite using `[MulChar.pow_apply' _ (pow_ne_zero _ hpp.ne_zero), hσ, ← map_pow]`.
+
+Use `eq_of_root _ hq (hroot _ _) (hroot _ _) ?_` and prove the remaining obligations. Rewrite using `[hχ, hχ, hee, map_pow]`. Use `⟨σ', ee, fun a b => ?_, key, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ, hσ, hσ]`. Use `fund hpp n.ne_zero (hn ▸ hroot _ _) (hn ▸ hroot _ _) (hn ▸ hroot _ _) ?_` and prove the remaining obligations.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_sub, hχ, hχ, hχ, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use extensionality with `a`. Rewrite using `[← key, pow_succ, pow_mul, MulChar.pow_apply' _ hpp.ne_zero, ← key, ← map_pow]`. Use `eq_of_root _ hq (hroot _ _) (hroot _ _) ?_` and prove the remaining obligations.
+
+Rewrite using `[hχ, hχ, hφ, map_pow]`.
+-/
 theorem core (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     (hp : (p : R) ∈ IsLocalRing.maximalIdeal R) {F : Type} [Field F] [Fintype F] [CharP F p] {Sg : Type}
     (τ₀ : Sg) (φ' : Sg → Sg) (ρ : Sg → F →+* IsLocalRing.ResidueField R) (χ : Sg → F →*₀ R)
@@ -101,6 +137,23 @@ theorem core (p : ℕ) [Fact p.Prime] {R : Type} [CommRing R] [IsDomain R] [IsLo
     refine eq_of_root _ hq (hroot _ _) (hroot _ _) ?_
     rw [hχ, hχ, hφ, map_pow]
 
+/- English proof (translation)
+Establish `hunit : ∀ a : RC, v (a : C) = 1 → IsUnit a` using `fun a ha => by`. Establish `h0 : (a : C) ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, map_zero]`. Conclude with `zero_ne_one ha`.
+
+Use `IsUnit.of_mul_eq_one ⟨(a : C)⁻¹, (hv _).2 (by rw [map_inv₀, ha, inv_one])⟩ ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`. Use `haveI : IsLocalRing RC := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`. Break down `((hv _).1 a.2).eq_or_lt with h | h` into its components or cases. Conclude with `Or.inl (hunit a h)`.
+
+Conclude with `Or.inr (hunit _ (v.map_one_sub_of_lt h))`. Establish `hnu : ∀ x : RC, (∀ u ∈ RC, u * (x : C) ≠ 1) → x ∈ IsLocalRing.maximalIdeal RC` using `fun x hx hu => by`. Take `⟨u, hu⟩` from `hu.exists_left_inv`. Conclude with `hx u u.2 (congrArg Subtype.val hu)`. Establish `hp : (p : RC) ∈ IsLocalRing.maximalIdeal RC` using `hnu _ fun u hu h => by`.
+
+Establish `h1` using `congrArg v h`. Rewrite `h1` using `[map_mul, map_one]`. Establish `h2 : v u * v ((p : RC) : C) < 1` using `mul_lt_one_of_nonneg_of_lt_one_right ((hv _).1 hu) zero_le (by simpa using hvp)`. Conclude with `h2.ne h1`. Establish `hmem : ∀ τ a, χ τ a ∈ RC` using `fun τ a => by`.
+
+Take `⟨o, ho⟩` from `IsLocalRing.residue_surjective (σ τ a)`. Use `RC.add_mem (hχ τ a o ho).1 (RC.algebraMap_mem o)` as an intermediate fact. Simplify using `using this`. Set `χ' : Sg → F →*₀ RC` to `fun τ => { toFun := fun a => ⟨χ τ a, hmem τ a⟩ map_zero' := Subtype.ext (map_zero _) map_one' := Subtype.ext (map_one _) map_mul' := fun a b => Subtype.ext (map_mul _ a b) }`. Establish `hdiff : ∀ τ a (o : O), IsLocalRing.residue O o = σ τ a → χ' τ a - algebraMap O RC o ∈ IsLocalRing.maximalIdeal RC` using `fun τ a o ho => hnu _ (hχ τ a o ho).2`.
+
+Use `haveI : IsLocalHom (algebraMap O RC) := ⟨fun o ho => by`. Assume the negation of the conclusion as `hno`. Establish `h1` using `hdiff τ₀ 0 o (by rw [map_zero, IsLocalRing.residue_eq_zero_iff]; exact hno)`. Rewrite `h1` using `[map_zero, zero_sub, neg_mem_iff]`. Conclude with `h1 ho⟩`.
+
+Set `ψ` to `IsLocalRing.ResidueField.map (algebraMap O RC)`. Take `⟨σ', ee, h1, h2, h3⟩` from `core p hp τ₀ φ' (fun τ => ψ.comp (σ τ)) χ' (fun τ a => by`. Take `⟨o, ho⟩` from `IsLocalRing.residue_surjective (σ τ a)`. Establish `h` using `hdiff τ a o ho`. Rewrite `h` using `[← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]`.
+
+Rewrite using `[h, RingHom.comp_apply, ← ho]`. Use the proof step `rfl) (fun τ a => by rw [RingHom.comp_apply, RingHom.comp_apply, hφ, map_pow])`. Conclude with `⟨σ', ee, h1, fun τ a => congrArg Subtype.val (h2 τ a), h3⟩`.
+-/
 theorem overC (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [IsLocalRing O] {C : Type} [Field C] [Algebra O C]
     (RC : Subalgebra O C) (v : Valuation C NNReal) (hv : ∀ c, c ∈ RC ↔ v c ≤ 1) (hvp : v (p : C) < 1)
     {F : Type} [Field F] [Fintype F] [CharP F p] {Sg : Type}
@@ -154,6 +207,11 @@ theorem overC (p : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [IsLocalRing O] {
     rfl) (fun τ a => by rw [RingHom.comp_apply, RingHom.comp_apply, hφ, map_pow])
   exact ⟨σ', ee, h1, fun τ a => congrArg Subtype.val (h2 τ a), h3⟩
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `o ho`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj m.primeCompl o`. Establish `h1` using `congrArg (algebraMap O Ω) h`. Rewrite `h1` using `[map_mul, ho, zero_mul, ← IsScalarTower.algebraMap_apply]`.
+
+Establish `ha : a = 0` using `IsIntegralClosure.algebraMap_injective A ℤ Ω (by rw [map_zero]; exact h1.symm)`. Rewrite `h` using `[ha, map_zero]`. Conclude with `(IsLocalization.map_units O s).mul_left_eq_zero.1 h`.
+-/
 theorem inj_loc {A Ω O : Type} [CommRing A] [Field Ω] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime]
     [CommRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] :
     Function.Injective (algebraMap O Ω) := by
@@ -166,6 +224,9 @@ theorem inj_loc {A Ω O : Type} [CommRing A] [Field Ω] [Algebra A Ω] [IsIntegr
   rw [ha, map_zero] at h
   exact (IsLocalization.map_units O s).mul_left_eq_zero.1 h
 
+/- English proof (translation)
+Use `letI : Algebra T Ω := f.toAlgebra`. Conclude with `⟨(IsIntegralClosure.lift ℤ A Ω (S := T) : T →ₐ[ℤ] A), fun t => IsIntegralClosure.algebraMap_lift ℤ A Ω t⟩`.
+-/
 theorem exists_lift {A Ω T : Type} [CommRing A] [Field Ω] [Algebra A Ω] [IsIntegralClosure A ℤ Ω]
     [CommRing T] [Algebra.IsIntegral ℤ T] (f : T →+* Ω) : ∃ g : T →+* A, ∀ t, algebraMap A Ω (g t) = f t := by
   letI : Algebra T Ω := f.toAlgebra
@@ -173,6 +234,17 @@ theorem exists_lift {A Ω T : Type} [CommRing A] [Field Ω] [Algebra A Ω] [IsIn
 
 end PositivityTheory.Xgn.TestCharacter
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ _ p _ _ _ _ _ b _ φ hφ A _ _ _ m _ _ O _ _ _ _ _ _ _ t₀ Sg _ e φ' F _ _ _ pq sc w σ hO _ G c' _ P i _ _ C _ _ _ _ RC hT χ hχ`. Take `⟨⟨τ₀, -⟩, -, he, hsurj, hσ, -, ⟨-, -, hpO⟩, -⟩` from `hO`. Take `⟨-, ⟨v, hv, hvp⟩, -⟩` from `hT`. Use `PositivityTheory.Xgn.TestCharacter.overC p RC v hv hvp τ₀ φ' σ χ hχ fun τ a => ?_` and prove the remaining obligations. Establish `hinj` using `PositivityTheory.Xgn.TestCharacter.inj_loc (Ω := Ω) (O := O) m`.
+
+Take `⟨g₀, hg₀⟩` from `PositivityTheory.Xgn.TestCharacter.exists_lift (A := A) (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F))`. Set `g : 𝓞 c.F →+* O` to `(algebraMap A O).comp g₀`. Establish `hg : ∀ t, algebraMap O Ω (g t) = 𝔐.cst (t : c.F)` using `fun t => by`. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply, hg₀]`. Both sides reduce to the same expression.
+
+Take `⟨a, rfl⟩` from `hsurj a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hint : ∀ s, IsIntegral ℤ (labelEmb c s a)` using `fun s => (Algebra.IsIntegral.isIntegral (R := ℤ) a).map (labelEmb c s).toIntAlgHom`. Take `⟨o₁, h₁, h₁'⟩` from `hσ (φ' τ) a`. Take `⟨o₂, h₂, h₂'⟩` from `hσ τ a`.
+
+Take `⟨u₁, hu₁⟩ : ∃ u : 𝓞 c.F, (u : c.F) = labelEmb c (φ (e τ)) a` from `⟨⟨_, hint (φ (e τ))⟩, rfl⟩`. Take `⟨u₂, hu₂⟩ : ∃ u : 𝓞 c.F, (u : c.F) = labelEmb c (e τ) a` from `⟨⟨_, hint (e τ)⟩, rfl⟩`. Establish `hn` using `hφ ((IsLocalRing.maximalIdeal O).comap g) (Ideal.comap_isPrime _ _) (by rw [Ideal.mem_comap, map_natCast]; exact hpO) (e τ) a u₁ u₂ hu₁ hu₂`. Establish `e₁ : g u₁ = o₁` using `hinj (by rw [hg, h₁, he, hu₁]; rfl)`. Establish `e₂ : g u₂ = o₂` using `hinj (by rw [hg, h₂, hu₂]; rfl)`.
+
+Rewrite `hn` using `[Ideal.mem_comap, map_sub, map_pow, e₁, e₂, ← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, sub_eq_zero]`. Rewrite using `[← h₁', ← h₂', hn]`.
+-/
 theorem PositivityTheory.Xgn.test_character_exists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (b : ∀ t, Fin (labelRk D t) → 𝔐.Li), (∀ t, LinearIndependent Ω (b t) ∧ Submodule.span Ω (Set.range (b t)) = 𝔐.Vgen t) → ∀ φ : Equiv.Perm (CMType H ⊕ CMType H), IsFrobLabels c p φ → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ (t₀ : CMType H ⊕ CMType H) (Sg : Type) [Fintype Sg] (e : Sg → CMType H ⊕ CMType H) (φ' : Equiv.Perm Sg) (F : Type) [Field F] [Fintype F] [CharP F p] (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F) (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) (w : O) (σ : Sg → F →+* IsLocalRing.ResidueField O), IsOrbit O 𝔐 p φ t₀ e φ' pq w σ → IsSec pq sc → ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c') (i : ∀ τ, (Fin (labelRk D (e τ)) → Ω) →ₗ[Ω] (Fin (D.p + D.q) → Ω)), (∀ τ : Sg, SeqHyp (CR O y c') (algebraMap O Ω w) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (dotDual (CR O y c') (coordLat O y (𝔐.HT p (e τ).swap) (b (e τ).swap) c')) (i τ) (qMap P (b (e τ).swap)) ∧ ∀ σE : E →+* Ω, (∀ a : 𝓞 E, σE (a : E) = 𝔐.emb (e τ) a) → DualSeq P σE (𝔐.R p - 2) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (b (e τ)) (i τ)) → (chartD e b pq sc w P i).Base (CR O y c') p (algebraMap O Ω w) → ∀ (C : Type) [Field C] [Algebra O C] [Algebra Ω C] [IsScalarTower O Ω C] (RC : Subalgebra O C), IsTestPt p (CR O y c') RC → ∀ χ : Sg → F →*₀ C, (∀ τ a (o : O), IsLocalRing.residue O o = σ τ a → χ τ a - algebraMap O C o ∈ RC ∧ ∀ u ∈ RC, u * (χ τ a - algebraMap O C o) ≠ 1) → ∃ (σ' : MulChar F RC) (ee : Sg → ℕ), GlobalTheory.CompanionTheory.Ar.GR.IsFund p σ' ∧ (∀ τ a, χ τ a = ((σ' ^ p ^ ee τ) a : RC)) ∧ ∀ τ, σ' ^ p ^ ee (φ' τ) = σ' ^ p ^ (ee τ + 1) := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d _ _ p _ _ _ _ _ b _ φ hφ A _ _ _ m _ _ O _ _ _ _ _ _ _ t₀ Sg _ e φ' F
     _ _ _ pq sc w σ hO _ G c' _ P i _ _ C _ _ _ _ RC hT χ hχ

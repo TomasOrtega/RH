@@ -9,8 +9,14 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.PrimeNumberTheoremConsequences
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem PNTAPRelW_iff_ext : PNTAPRelW ↔ Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.PNTAPRelW := Iff.rfl
 
+/- English proof (translation)
+Introduce `hP` and use `Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.mean_square_of_pnt_progressions (PNTAPRelW_iff_ext.1 hP)`.
+-/
 theorem mean_square_of_prime_number_theorem : MeanSquareFromPNT := fun hP =>
   Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.mean_square_of_pnt_progressions (PNTAPRelW_iff_ext.1 hP)
 

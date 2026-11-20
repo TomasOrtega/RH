@@ -6,6 +6,13 @@ namespace GlobalTheory.CMSep
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `hs : x + IsCMField.complexConj E x ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`. Simplify using `[add_comm]`. Establish `hp : x * IsCMField.complexConj E x ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`.
+
+Simplify using `[mul_comm]`. Establish `h1` using `h ⟨_, hs⟩`. Establish `h2` using `h ⟨_, hp⟩`. Simplify using `only [map_add, map_mul, IsCMField.complexEmbedding_complexConj] at h1 h2`. Establish `key : (g x - f x) * (g x - starRingEnd ℂ (f x)) = 0`.
+
+Take the linear combination `(-(g x)) * h1 + h2`. Break down `mul_eq_zero.mp key with e | e` into its components or cases. Conclude with `Or.inl (sub_eq_zero.mp e)`. Conclude with `Or.inr (sub_eq_zero.mp e)`.
+-/
 theorem pointwise {f g : E →+* ℂ} (h : ∀ x : FR E, f (x : E) = g (x : E)) (x : E) :
     g x = f x ∨ g x = starRingEnd ℂ (f x) := by
   have hs : x + IsCMField.complexConj E x ∈ maximalRealSubfield E := by
@@ -21,6 +28,13 @@ theorem pointwise {f g : E →+* ℂ} (h : ∀ x : FR E, f (x : E) = g (x : E)) 
   · exact Or.inl (sub_eq_zero.mp e)
   · exact Or.inr (sub_eq_zero.mp e)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, g x ≠ f x := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`.
+
+Conclude with `hne.1 (RingHom.ext hh)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, g y ≠ starRingEnd ℂ (f y) := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hne.2 (RingHom.ext hh)`.
+
+Establish `hx' : g x = starRingEnd ℂ (f x)` using `(pointwise h x).resolve_left hx`. Establish `hy' : g y = f y` using `(pointwise h y).resolve_right hy`. Break down `pointwise h (x + y) with e | e` into its components or cases. Simplify using `only [map_add] at e; exact hx (by linear_combination e - hy')`. Simplify using `only [map_add] at e; exact hy (by linear_combination e - hx')`.
+-/
 theorem eq_or_eq_conj {f g : E →+* ℂ} (h : ∀ x : FR E, f (x : E) = g (x : E)) :
     g = f ∨ g = ComplexEmbedding.conjugate f := by
   by_contra hne
@@ -39,6 +53,15 @@ end GlobalTheory.CMSep
 
 namespace GlobalTheory.CMSep
 
+/- English proof (translation)
+Introduce `E _ _ _ I φ hφ i k hik`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hext : ((φ i).comp (algebraMap (FR E) E)) = ((φ k).comp (algebraMap (FR E) E))`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 (FR E)))` to reduce the goal to its premises.
+
+Use extensionality with `a`. Conclude with `hall a`. Establish `hres : ∀ x : FR E, φ i (x : E) = φ k (x : E)` using `fun x => RingHom.congr_fun hext x`. Break down `eq_or_eq_conj hres with e | e` into its components or cases. Take `⟨j, -, hj⟩` from `hφ (φ i)`.
+
+Establish `h1` using `hj i (Or.inl rfl)`. Establish `h2` using `hj k (Or.inl e.symm)`. Conclude with `hik (h1.trans h2.symm)`. Take `⟨j, -, hj⟩` from `hφ (φ k)`. Establish `h1` using `hj k (Or.inl rfl)`.
+
+Establish `h2` using `hj i (Or.inr e)`. Conclude with `hik (h2.trans h1.symm)`.
+-/
 theorem exists_int_ne : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) (φ : I → E →+* ℂ), IsCMType φ →
     ∀ i k, i ≠ k → ∃ a : 𝓞 (FR E), φ i ((a : FR E) : E) ≠ φ k ((a : FR E) : E) := by
   intro E _ _ _ I φ hφ i k hik

@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.GramConv.gramEq_of_gram_bounds | exact GlobalTheory.Hk3.GramConv.gramEq_of_gram_bounds | (intros; apply GlobalTheory.Hk3.GramConv.gramEq_of_gram_bounds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gramClassEq_of_sigmaHermitianForm_bounds : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L), (∀ x, σ (σ x) = x) → (∀ x, Valued.v (σ x) = Valued.v x) → ϖ ∈ Formalism.UG.intL L →
   ∀ (n n' r : ℕ) (JT : GL (Fin n') L) (a : GL (Fin n) L) (x y : Matrix (Fin n') (Fin n) L)
     (M : Matrix (Fin n) (Fin r) L) (e : Fin r → ℕ),

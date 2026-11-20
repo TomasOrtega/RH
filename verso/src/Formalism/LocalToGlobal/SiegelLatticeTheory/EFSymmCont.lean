@@ -30,6 +30,11 @@ structure LocIso {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   eE_O : ∀ y : A.Ep, y ∈ A.O ↔ eE y ∈ B.O
   eE_psi : ∀ y : A.Ep, A.psiE y = B.psiE (eE y)
 
+/- English proof (translation)
+Rewrite using `[D.conjF_eq, D.conjF_eq]`. Establish `h1 : D.R.toFrame.cc * D.R.toFrame.cc = 1`. Rewrite using `[← D.host.art_neg_one, ← map_mul]`. Simplify using the standard rewrite rules. Establish `h2 : D.host.gal.symm D.R.toFrame.cc * D.host.gal.symm D.R.toFrame.cc = 1`.
+
+Rewrite using `[← map_mul, h1, map_one]`. Use `show D.host.gal.symm D.R.toFrame.cc (D.host.gal.symm D.R.toFrame.cc x) = x`. Use `first`. Consider the case `rw [← AlgEquiv.mul_apply, h2, AlgEquiv.one_apply]`. Consider the case `exact congrArg (fun e : D.host.E ≃ₐ[ℚ] D.host.E => e x) h2`.
+-/
 theorem conjF_invol (D : D7) (x : D.host.E) : D.conjF (D.conjF x) = x := by
   rw [D.conjF_eq, D.conjF_eq]
   have h1 : D.R.toFrame.cc * D.R.toFrame.cc = 1 := by
@@ -45,6 +50,9 @@ theorem conjF_invol (D : D7) (x : D.host.E) : D.conjF (D.conjF x) = x := by
 def locC (D : D7) (p : HeightOneSpectrum (𝓞 D.host.F)) : Formalism.MainNotions.S.Loc.LocAt D.host.F D.host.E D.conjF p :=
   Examples₂.locAtC D.conjF (conjF_invol D) (Examples₂.finrank_FE D.host) p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem locC_Fp (D : D7) (p : HeightOneSpectrum (𝓞 D.host.F)) : (locC D p).Fp = p.adicCompletion D.host.F := rfl
 
 structure SiegelLatticeAgreement (D : D7) : Prop where
@@ -53,6 +61,11 @@ structure SiegelLatticeAgreement (D : D7) : Prop where
 
   term : Nonempty (Formalism.MainNotions.S.TermTie D)
 
+/- English proof (translation)
+Establish `hu` using `D.s.u_letter w τ l.1 l.2`. Establish `hD` using `D.s.Del_pos`. Unfold `letterOf`. Rewrite using `[hu]`. Consider the cases of `hb : D.s.letter w l`.
+
+Simplify using `[hb]`. Simplify using `[hb, hD.ne']`.
+-/
 theorem letter_eq (D : D7) (w : D.what₂.Word) (τ : D.what₂.Tau) (l : Fin (D.R.k - 2)) :
     D.s.letter w l = letterOf (D.hcW w τ) l := by
   have hu := D.s.u_letter w τ l.1 l.2
@@ -63,6 +76,9 @@ theorem letter_eq (D : D7) (w : D.what₂.Word) (τ : D.what₂.Tau) (l : Fin (D
   · simp [hb]
   · simp [hb, hD.ne']
 
+/- English proof (translation)
+Establish `h : (D.hcW w τ).v ⟨0, by omega⟩ - (D.hcW w τ).v ⟨1, by omega⟩ = 4 * D.s.Del` using `D.s.cloud_gap w τ 0 (by omega)`. Unfold `delOf`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem del_eq (D : D7) (hk : 3 ≤ D.R.k) (w : D.what₂.Word) (τ : D.what₂.Tau) :
     (D.s.Del : ℚ) = delOf (D.hcW w τ) hk := by
   have h : (D.hcW w τ).v ⟨0, by omega⟩ - (D.hcW w τ).v ⟨1, by omega⟩ = 4 * D.s.Del :=
@@ -70,6 +86,9 @@ theorem del_eq (D : D7) (hk : 3 ≤ D.R.k) (w : D.what₂.Word) (τ : D.what₂.
   unfold delOf
   linarith
 
+/- English proof (translation)
+Establish `e : (fun w => letterOf (D.hcW w τ)) = D.s.letter`. Use function extensionality and compare the values at `w l`. Conclude with `(letter_eq D w τ l).symm`. Rewrite using `[e]`. Conclude with `D.s.letter_inj`.
+-/
 theorem letterOf_inj (D : D7) (τ : D.what₂.Tau) : Function.Injective fun w => letterOf (D.hcW w τ) := by
   have e : (fun w => letterOf (D.hcW w τ)) = D.s.letter := by
     funext w l
@@ -113,6 +132,9 @@ def LocIso.setSplit {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   eE_O _ := Iff.rfl
   eE_psi _ := rfl
 
+/- English proof (translation)
+Introduce `p`. Take `⟨s, hs⟩` from `h p`. Rewrite using `[hs]`. Conclude with `⟨LocIso.setSplit (locC D p) s⟩`.
+-/
 theorem loc_of_adj (D : D7)
     (h : ∀ p, ∃ s, D.s.atP p = { locC D p with split := s }) :
     ∀ p, Nonempty (LocIso (D.s.atP p) (locC D p)) := by

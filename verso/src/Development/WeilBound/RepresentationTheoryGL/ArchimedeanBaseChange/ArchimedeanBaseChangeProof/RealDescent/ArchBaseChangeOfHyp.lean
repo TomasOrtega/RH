@@ -52,6 +52,9 @@ def OneEx : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : 
 def BCOut : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
   ∀ σ : Submodule ℂ (UA E n → ℂ), IsAutRepU σ → ∃ D : Pre E n, D.Reg ∧ D.ThetaStable ∧ ∀ w, IsSplitAt w → D.SplitAt σ w
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn σ hσ`. Take `⟨c, N, e, V, ρ, m, P, H⟩` from `h E hE n hn σ hσ`. Set `D : Pre E n` to `⟨c, N, e, V, ρ, m, H.pos, H.discrete, H.loc, H.inf⟩`. Conclude with `⟨D, fun τ => (hW E n σ hσ τ).imp fun lam h => H.weight τ lam h, hT E n D H.csd, fun w hw => ⟨P w, H.sub w, H.split w hw⟩⟩`.
+-/
 theorem bcOut_of_N (h : PositivityTheory.Rg.BcN.BaseChangeIsobaricN) (hW : WeightEx) (hT : Rig.ThetaOfAsc) : BCOut := by
   intro E _ _ _ hE n hn σ hσ
   obtain ⟨c, N, e, V, ρ, m, P, H⟩ := h E hE n hn σ hσ
@@ -76,6 +79,9 @@ def SphUnram : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n
   (σ : Submodule ℂ (UA E n → ℂ)) (w : HeightOneSpectrum (𝓞 E)) (τ : SmIrr (GL (Fin n) (w.adicCompletion E))) (B : Multiset ℂˣ),
   IsAutRepU σ → IsSplitAt w → (CG.mk π).HasSat w B → π.IsLocComp w τ → Comp σ w τ → IsUnramU σ w
 
+/- English proof (translation)
+Take `⟨-, f, h0, hf, h2⟩` from `h`. Take `⟨e⟩` from `he`. Use `⟨τ'.irred, f ∘ₗ e.symm.toLinearMap, fun h => h0 (LinearMap.ext fun v => ?_), fun v => hf _, fun x v => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg f (e.symm_apply_apply v)).symm.trans (LinearMap.congr_fun h (e v))`. Conclude with `(congrArg f (LinearMap.congr_fun (e.symm.isIntertwining' _) v)).trans (h2 x _)`.
+-/
 theorem Comp.congr {σ : Submodule ℂ (UA E n → ℂ)} {w : HeightOneSpectrum (𝓞 E)}
     {τ τ' : SmIrr (GL (Fin n) (w.adicCompletion E))} (h : Comp σ w τ) (he : Nonempty (τ.ρ.Equiv τ'.ρ)) : Comp σ w τ' := by
   obtain ⟨-, f, h0, hf, h2⟩ := h

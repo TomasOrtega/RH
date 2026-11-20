@@ -13,16 +13,27 @@ namespace GlobalTheory.JSW.KirSemi
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => Subtype.ext (funext fun w => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin a) (w.adicCompletion E) => x.1 i j) (H w)`.
+-/
 theorem gl_af_ext {g h : GL (Fin a) (Af E)}
     (H : ∀ w, GeneralLinearGroup.map (pLoc E w) g = GeneralLinearGroup.map (pLoc E w) h) : g = h := by
   refine Units.ext (Matrix.ext fun i j => Subtype.ext (funext fun w => ?_))
   exact congrArg (fun x : GL (Fin a) (w.adicCompletion E) => x.1 i j) (H w)
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 theorem map_loc_fin (w : HeightOneSpectrum (𝓞 E)) (g : GA E a) :
     GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) g) =
       GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) g := by
   ext; rfl
 
+/- English proof (translation)
+Apply `ga_ext` to reduce the goal to its premises. Simplify using `[map_mul, h1]`. Apply `gl_af_ext` to reduce the goal to its premises. Introduce `w`. Simplify using `only [map_mul, map_loc_fin]`.
+
+Distinguish the cases in `hw : w ∈ S`. Rewrite using `[h2 w hw]`. Simplify using the standard rewrite rules. Rewrite using `[hs w hw]`. Simplify using the standard rewrite rules.
+-/
 theorem comm_of_supp (S : Finset (HeightOneSpectrum (𝓞 E))) {s t : GA E a} (hs : s ∈ supS E a S)
     (h1 : GeneralLinearGroup.map (pInf E) t = 1)
     (h2 : ∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) t = 1) : s * t = t * s := by
@@ -35,20 +46,32 @@ theorem comm_of_supp (S : Finset (HeightOneSpectrum (𝓞 E))) {s t : GA E a} (h
     · rw [h2 w hw]; simp
     · rw [hs w hw]; simp
 
+/- English proof (translation)
+Introduce `w hw`. Rewrite using `[map_mul, hx w hw, hy w hw, one_mul]`.
+-/
 theorem supS_mul (S : Finset (HeightOneSpectrum (𝓞 E))) {x y : GA E a} (hx : x ∈ supS E a S)
     (hy : y ∈ supS E a S) : x * y ∈ supS E a S := by
   intro w hw
   rw [map_mul, hx w hw, hy w hw, one_mul]
 
+/- English proof (translation)
+Simplify using `only [whit, GroundTheory.Automorphic.FourierWhittaker.whittaker, mul_assoc]`.
+-/
 theorem whit_rt (F : GA E a → ℂ) (h g : GA E a) : whit (fun y => F (y * h)) g = whit F (g * h) := by
   simp only [whit, GroundTheory.Automorphic.FourierWhittaker.whittaker, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [ratGL, Matrix.scalar_apply, Matrix.diagonal_apply, h]`.
+-/
 theorem ratGL_scalar_val (α : Eˣ) :
     ((ratGL E a (Units.map (Matrix.scalar (Fin a) : E →+* Matrix (Fin a) (Fin a) E).toMonoidHom α) : GA E a) :
       Matrix (Fin a) (Fin a) (Ad E)) = Matrix.scalar (Fin a) (algebraMap E (Ad E) (α : E)) := by
   ext i j
   by_cases h : i = j <;> simp [ratGL, Matrix.scalar_apply, Matrix.diagonal_apply, h]
 
+/- English proof (translation)
+Establish `hc : g * ratGL E a (Units.map (Matrix.scalar (Fin a) : E →+* Matrix (Fin a) (Fin a) E).toMonoidHom α) = ratGL E a (Units.map (Matrix.scalar (Fin a) : E →+* Matrix (Fin a) (Fin a) E).toMonoidHom α) * g`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, ratGL_scalar_val]`. Conclude with `((Matrix.scalar_commute _ (fun r => Commute.all _ r) _)).symm`. Rewrite using `[hc, hφ.left]`.
+-/
 theorem aut_central {φ : Sm E a} (hφ : IsAutForm φ) (α : Eˣ) (g : GA E a) :
     φ.1 (g * ratGL E a (Units.map (Matrix.scalar (Fin a) : E →+* Matrix (Fin a) (Fin a) E).toMonoidHom α)) = φ.1 g := by
   have hc : g * ratGL E a (Units.map (Matrix.scalar (Fin a) : E →+* Matrix (Fin a) (Fin a) E).toMonoidHom α) =
@@ -58,6 +81,39 @@ theorem aut_central {φ : Sm E a} (hφ : IsAutForm φ) (α : Eˣ) (g : GA E a) :
     exact ((Matrix.scalar_commute _ (fun r => Commute.all _ r) _)).symm
   rw [hc, hφ.left]
 
+/- English proof (translation)
+Introduce `E _ _ _ m S π φ hφ ⟨x, hxS, hx⟩`. Establish `haut : IsAutForm φ` using `(π.cusp φ hφ).1`. Use `set xf := GeneralLinearGroup.map (pFin E) x with hxf`. Take `⟨p0, ρ, k, hp0, hy⟩` from `GlobalTheory.T.exists_mirabolic_scalar_unitary_decomposition_archimedean E m (GeneralLinearGroup.map (pInf E) x)`. Set `sc : (Cinf E)ˣ →* GL (Fin (m + 1)) (Cinf E)` to `Units.map (Matrix.scalar (Fin (m + 1)) : Cinf E →+* Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)).toMonoidHom`.
+
+Establish `hsc : Continuous sc`. Apply `Continuous.units_map` to reduce the goal to its premises. Use `show Continuous (fun c : Cinf E => Matrix.scalar (Fin (m + 1)) c)`. Simplify using `only [Matrix.scalar_apply]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => continuous_id)`.
+
+Set `ζ : (Cinf E)ˣ → ℂ` to `fun c => whit φ.1 (infGL E (m + 1) p0 * infGL E (m + 1) (sc c * Unitary.toUnits k) * finGL E (m + 1) xf)`. Establish `hζc : Continuous ζ` using `(GlobalTheory.T.continuous_globalWhittakerCoefficient_archimedean E (m + 1) φ haut _ _).comp (hsc.mul continuous_const)`. Establish `hζρ : ζ ρ ≠ 0`. Establish `hx' : infGL E (m + 1) p0 * infGL E (m + 1) (sc ρ * Unitary.toUnits k) * finGL E (m + 1) xf = x`. Rewrite using `[← map_mul, ← mul_assoc]`.
+
+Rewrite using `[show p0 * sc ρ * Unitary.toUnits k = GeneralLinearGroup.map (pInf E) x from hy.symm]`. Conclude with `infGL_mul_finGL x`. Use `show whit φ.1 _ ≠ 0`. Rewrite using `[hx']`. Conclude with `hx`.
+
+Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_field_unit_mem_open_archimedean_units E {c | ζ c ≠ 0} (isOpen_ne_fun hζc continuous_const) ⟨ρ, hζρ⟩`. Use `set c := Units.map ((pInf E).comp (algebraMap E (Ad E))).toMonoidHom β with hc`. Set `zE : GL (Fin (m + 1)) E` to `Units.map (Matrix.scalar (Fin (m + 1)) : E →+* Matrix (Fin (m + 1)) (Fin (m + 1)) E).toMonoidHom β⁻¹`. Use `set s := infGL E (m + 1) (sc c * Unitary.toUnits k) * finGL E (m + 1) xf with hs`. Establish `hcen : ∀ g : GL (Fin (m + 1)) (Cinf E), sc c * g = g * sc c`.
+
+Introduce `g`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.scalar_commute _ (fun r => Commute.all _ r) _`. Establish `hzinf : GeneralLinearGroup.map (pInf E) (ratGL E (m + 1) zE) = (sc c)⁻¹`. Establish `hci : (sc c)⁻¹ = sc (Units.map ((pInf E).comp (algebraMap E (Ad E))).toMonoidHom β⁻¹)`.
+
+Simplify using `only [hc, map_inv]`. Rewrite using `[hci]`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((ratGL E (m + 1) zE : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)).map (pInf E) = Matrix.scalar (Fin (m + 1)) (((Units.map ((pInf E).comp (algebraMap E (Ad E))).toMonoidHom β⁻¹ : (Cinf E)ˣ)) : Cinf E)`. Rewrite using `[ratGL_scalar_val]`.
+
+Simplify using `[Matrix.scalar_apply, Matrix.diagonal_map]`. Use function extensionality and compare the values at `v`. Simplify using `[pInf_algebraMap, map_inv₀]`. Use `set z := GeneralLinearGroup.map (pFin E) (ratGL E (m + 1) zE) with hz`. Establish `hsz : s * ratGL E (m + 1) zE = infGL E (m + 1) (Unitary.toUnits k) * finGL E (m + 1) (xf * z)`.
+
+Apply `ga_ext` to reduce the goal to its premises. Simplify using `only [hs, map_mul, pInf_infGL, hzinf]`. Simplify using the standard rewrite rules. Rewrite using `[hcen]`. Use `group`.
+
+Simplify using `[hs, hz, mul_assoc]`. Set `ψ : Sm E (m + 1)` to `act (Op.cpt k) (act (Op.fin (xf * z)) φ)`. Establish `hψV : ψ ∈ π.V` using `π.stable _ _ (π.stable _ _ hφ)`. Establish `hψ : ∀ g, ψ.1 g = φ.1 (g * s)`. Introduce `g`.
+
+Establish `h0 : ψ.1 g = φ.1 (g * infGL E (m + 1) (Unitary.toUnits k) * finGL E (m + 1) (xf * z))` using `rfl`. Rewrite using `[h0, mul_assoc, ← hsz, ← mul_assoc, aut_central haut β⁻¹]`. Establish `hψf : ψ.1 = fun g => φ.1 (g * s)` using `funext hψ`. Establish `hsS : s ∈ supS E (m + 1) S`. Introduce `w hw`.
+
+Rewrite using `[← map_loc_fin, hs, map_mul, pFin_infGL, pFin_finGL, one_mul, hxf, map_loc_fin]`. Conclude with `hxS w hw`. Use `⟨ψ, hψV, ⟨infGL E (m + 1) p0, ⟨?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[← map_loc_fin]`.
+
+Simplify using the standard rewrite rules. Introduce `j`. Establish `h1 : pInf E (((infGL E (m + 1) p0 : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) j) = (p0 : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j` using `congrArg (fun y : GL (Fin (m + 1)) (Cinf E) => (y : Matrix (Fin (m + 1)) (Fin (m + 1)) (Cinf E)) (Fin.last m) j) (pInf_infGL (E := E) p0)`. Establish `h2 : pFin E (((infGL E (m + 1) p0 : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) j) = ((1 : GL (Fin (m + 1)) (Af E)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Af E)) (Fin.last m) j` using `congrArg (fun y : GL (Fin (m + 1)) (Af E) => (y : Matrix (Fin (m + 1)) (Fin (m + 1)) (Af E)) (Fin.last m) j) (pFin_infGL (E := E) p0)`. Rewrite `h1` using `[hp0 j]`.
+
+Apply `ad_ext` to reduce the goal to its premises. Apply the tactic sequence `rw [h1]; split_ifs <;> simp`. Apply the tactic sequence `rw [h2]; split_ifs with h <;> simp [Matrix.one_apply, h, eq_comm]`. Rewrite using `[hψf, whit_rt]`. Establish `: infGL E (m + 1) p0 * s = infGL E (m + 1) p0 * infGL E (m + 1) (sc c * Unitary.toUnits k) * finGL E (m + 1) xf`.
+
+Rewrite using `[hs, mul_assoc]`. Rewrite using `[this]`. Conclude with `hβ`. Introduce `k' h1 h2 hk g`. Rewrite using `[hψ, hψ, mul_assoc, ← comm_of_supp S hsS h1 h2, ← mul_assoc, hk]`.
+
+Introduce `t c' h1 h2 hrel y hy`. Rewrite using `[hψf, whit_rt, whit_rt, mul_assoc, ← comm_of_supp S hsS h1 h2, ← mul_assoc]`. Conclude with `hrel (y * s) (supS_mul S hy hsS)`.
+-/
 theorem exists_mirabolic_nonzero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E (m + 1)) (φ : Sm E (m + 1)), φ ∈ π.V → (∃ x ∈ GlobalTheory.JSW.supS E (m + 1) S, GlobalTheory.JSW.whit φ.1 x ≠ 0) → ∃ ψ ∈ π.V, (∃ p ∈ GlobalTheory.JSW.mirS E S m, GlobalTheory.JSW.whit ψ.1 p ≠ 0) ∧ (∀ k : GA E (m + 1), GeneralLinearGroup.map (pInf E) k = 1 → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) k = 1) → (∀ g, φ.1 (g * k) = φ.1 g) → ∀ g, ψ.1 (g * k) = ψ.1 g) ∧ ∀ (t : GA E (m + 1)) (c : ℂ), GeneralLinearGroup.map (pInf E) t = 1 → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) t = 1) → (∀ x ∈ GlobalTheory.JSW.supS E (m + 1) S, GlobalTheory.JSW.whit φ.1 (x * t) = c * GlobalTheory.JSW.whit φ.1 x) → ∀ x ∈ GlobalTheory.JSW.supS E (m + 1) S, GlobalTheory.JSW.whit ψ.1 (x * t) = c * GlobalTheory.JSW.whit ψ.1 x := by
   intro E _ _ _ m S π φ hφ ⟨x, hxS, hx⟩
   have haut : IsAutForm φ := (π.cusp φ hφ).1
@@ -147,6 +203,9 @@ theorem exists_mirabolic_nonzero : ∀ (E : Type) [Field E] [NumberField E] [IsT
     rw [hψf, whit_rt, whit_rt, mul_assoc, ← comm_of_supp S hsS h1 h2, ← mul_assoc]
     exact hrel (y * s) (supS_mul S hy hsS)
 
+/- English proof (translation)
+Introduce `E _ _ _ m S b hb hC hU hsm π φ hφ hx`. Take `⟨ψ, hψ, hp, hk, hrel⟩` from `exists_mirabolic_nonzero E m S π φ hφ hx`. Take `⟨F, hF, hFb, hFU, hFk, hFrel⟩` from `GlobalTheory.T.kirillov_semilocal_mirabolic_whittaker E m S b hb hC hU hsm π ψ hψ hp`. Conclude with `⟨F, hF, hFb, hFU, fun k h1 h2 h3 => hFk k h1 h2 (hk k h1 h2 h3), fun t c h1 h2 h3 => hFrel t c h1 h2 (hrel t c h1 h2 h3)⟩`.
+-/
 theorem kirillov_semilocal_bump : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (b : GA E (m + 1) → ℂ), (∀ u ∈ GlobalTheory.JSW.NA E (m + 1), ∀ g, b (u * g) = GlobalTheory.JSW.psiN u * b g) → (∃ C : Set (GA E (m + 1)), IsCompact C ∧ ∀ p ∈ GlobalTheory.JSW.mirS E S m, b p ≠ 0 → ∃ u ∈ GlobalTheory.JSW.NA E (m + 1), u⁻¹ * p ∈ C) → (∃ U : Subgroup (GL (Fin (m + 1)) (Af E)), IsOpen (U : Set (GL (Fin (m + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, b (g * finGL E (m + 1) u) = b g) → (∀ g, ContDiffOn ℝ ∞ (chart b g) (invSet E (m + 1))) → ∀ (π : CuspSub E (m + 1)) (φ : Sm E (m + 1)), φ ∈ π.V → (∃ x ∈ GlobalTheory.JSW.supS E (m + 1) S, GlobalTheory.JSW.whit φ.1 x ≠ 0) → ∃ F ∈ GlobalTheory.JSW.mspanR π, (∀ p ∈ GlobalTheory.JSW.mirS E S m, GlobalTheory.JSW.whit F p = b p) ∧ (∃ U : Subgroup (GL (Fin (m + 1)) (Af E)), IsOpen (U : Set (GL (Fin (m + 1)) (Af E))) ∧ ∀ u ∈ U, ∀ g, F (g * finGL E (m + 1) u) = F g) ∧ (∀ t : GA E (m + 1), GeneralLinearGroup.map (pInf E) t = 1 → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) t = 1) → (∀ g, φ.1 (g * t) = φ.1 g) → ∀ g, F (g * t) = F g) ∧ ∀ (t : GA E (m + 1)) (c : ℂ), GeneralLinearGroup.map (pInf E) t = 1 → (∀ w ∈ S, GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) t = 1) → (∀ x ∈ GlobalTheory.JSW.supS E (m + 1) S, GlobalTheory.JSW.whit φ.1 (x * t) = c * GlobalTheory.JSW.whit φ.1 x) → ∀ x ∈ GlobalTheory.JSW.supS E (m + 1) S, GlobalTheory.JSW.whit F (x * t) = c * GlobalTheory.JSW.whit F x := by
   intro E _ _ _ m S b hb hC hU hsm π φ hφ hx
   obtain ⟨ψ, hψ, hp, hk, hrel⟩ := exists_mirabolic_nonzero E m S π φ hφ hx

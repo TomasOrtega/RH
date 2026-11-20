@@ -15,6 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Establish `a` using `ringChar.dvd h1`. Establish `b` using `ringChar.dvd h2`. Establish `hne : ringChar K ≠ 1` using `CharP.ringChar_ne_one`. Establish `e1` using `(hp.eq_one_or_self_of_dvd _ a).resolve_left hne`. Establish `e2` using `(hq.eq_one_or_self_of_dvd _ b).resolve_left hne`.
+
+Rewrite using `[← e1, ← e2]`.
+-/
 theorem prime_eq_of_natCast_eq_zero {K : Type*} [Field K] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (h1 : (p : K) = 0) (h2 : (q : K) = 0) : p = q := by
   have a := ringChar.dvd h1
@@ -24,6 +29,9 @@ theorem prime_eq_of_natCast_eq_zero {K : Type*} [Field K] {p q : ℕ} (hp : p.Pr
   have e2 := (hq.eq_one_or_self_of_dvd _ b).resolve_left hne
   rw [← e1, ← e2]
 
+/- English proof (translation)
+Set `φ` to `(Scheme.stalkClosedPointTo (R := CommRingCat.of (OO p)) y).hom`. Establish `hinj` using `(IsLocalRing.ResidueField.map φ).injective`. Use `hinj ((map_natCast _ p).trans ?_)` and prove the remaining obligations. Conclude with `(natCast_residueField_OO (p := p)).trans (map_zero _).symm`.
+-/
 theorem natCast_residueField_cPt {X : Scheme.{0}} {p : ℕ} [Fact p.Prime] (y : Sp (OO p) ⟶ X) :
     ((p : ℕ) : X.residueField (y (cPt p))) = 0 := by
   let φ := (Scheme.stalkClosedPointTo (R := CommRingCat.of (OO p)) y).hom
@@ -31,6 +39,23 @@ theorem natCast_residueField_cPt {X : Scheme.{0}} {p : ℕ} [Fact p.Prime] (y : 
   refine hinj ((map_natCast _ p).trans ?_)
   exact (natCast_residueField_OO (p := p)).trans (map_zero _).symm
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ hb M hN U hU p _ y₀ b hb0 hv`. Assume the negation of the conclusion as `hne`. Take `⟨V, f, hzV, hf⟩` from `hb0`. Establish `hD : ((M.Z.basicOpen f : M.Z.Opens) : Set M.Z).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+
+Introduce `h`. Establish `h0 : f = 0` using `(basicOpen_eq_bot_iff f).1 (SetLike.coe_injective h)`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hf, ← M.res_apply V ⟨_, hzV⟩, h0, map_zero]`. Establish `hW : ((U ⊓ M.Z.basicOpen f : M.Z.Opens) : Set M.Z).Nonempty` using `M.nonempty_inf hU hD`.
+
+Use `hb.ded` as an intermediate fact. Use `hb.ft` as an intermediate fact. Use `hb.char` as an intermediate fact. Establish `: CharZero o` using `(RingHom.charZero_iff hb.inj).2 hb.char`. Set `π : M.Z ⟶ Spec (.of ℤ)` to `M.s ≫ Spec.map (CommRingCat.ofHom (Int.castRingHom o))`.
+
+Establish `: Flat M.s` using `GlobalTheory.ModelOfOutput.flat_ratModel M`. Establish `: Flat (Spec.map (CommRingCat.ofHom (Int.castRingHom o)))`. Use `Flat.SpecMap_iff.2 ?_` and prove the remaining obligations. Establish `: FaithfulSMul ℤ o` using `inferInstance`. Conclude with `(RingHom.flat_algebraMap_iff.2 inferInstance)`.
+
+Establish `: Flat π` using `inferInstance`. Use `M.lft` as an intermediate fact. Establish `: LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (Int.castRingHom o)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `(RingHom.finiteType_algebraMap (A := ℤ) (B := o)).2 hb.ft`.
+
+Establish `: LocallyOfFiniteType π` using `inferInstance`. Establish `hz : IsClosed ({y₀ (cPt p)} : Set M.Z)` using `isClosed_singleton_cPt y₀`. Take `⟨p', hp', y, hy, hyW⟩` from `GlobalTheory.padicAlgCl_integral_points.1 M.Z π (y₀ (cPt p)) hz _ hW`. Establish `e : p = p'` using `prime_eq_of_natCast_eq_zero (Fact.out) hp'.out (natCast_residueField_cPt y₀) (hy ▸ natCast_residueField_cPt y)`. Substitute `e` using the available equality.
+
+Establish `h0` using `hv y ⟨hy, hyW.trans (fun _ h => h.1)⟩`. Set `w : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint _`. Establish `hξ : (gPt p ≫ y) w ∈ M.Z.basicOpen f` using `(hyW ⟨w, rfl⟩).2`. Establish `hξV : (gPt p ≫ y) w ∈ V` using `M.Z.basicOpen_le f hξ`. Substitute `hf` using the available equality.
+
+Conclude with `(RatModel.val_ne_zero_iff (RatModel.range_eq_singleton _ w) ⟨_, RatModel.valF_mem_O hξV f⟩).2 ((RatModel.isUnit_valF_iff hξV f).2 hξ) h0`.
+-/
 theorem eq_zero_of_val_cen_eq_zero : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M : RatModel o Ω), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z → ∀ (U : M.Z.Opens), (U : Set M.Z).Nonempty → ∀ (p : ℕ) [Fact p.Prime] (y₀ : Sp (OO p) ⟶ M.Z) (b : Ω), b ∈ M.O (y₀ (cPt p)) → (∀ y : Sp (OO p) ⟶ M.Z, M.Cen U (y₀ (cPt p)) y → M.val (gPt p ≫ y) b = 0) → b = 0 := by
   intro o Ω _ _ _ hb M hN U hU p _ y₀ b hb0 hv
   by_contra hne

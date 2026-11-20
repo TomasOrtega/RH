@@ -99,11 +99,24 @@ def AllReq : PtProp := ReqPt.and (PrimePt.and TwPt)
 
 def ExFull (Q : PtProp) : Prop := KitEx (Q.and AllReq)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem Pt.has_and {C : FC} (p : Pt C) (Q Q' : PtProp) : p.Has (Q.and Q') ↔ p.Has Q ∧ p.Has Q' := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun x hx i => (h x hx i).1, fun x hx i => (h x hx i).2⟩, fun h x hx i => ⟨h.1 x hx i, h.2 x hx i⟩⟩`.
+-/
 theorem classOf_and (Q Q' : PtProp) {eps : ℝ} (Fm : FamP eps) : classOf (Q.and Q') Fm ↔ classOf Q Fm ∧ classOf Q' Fm :=
   ⟨fun h => ⟨fun x hx i => (h x hx i).1, fun x hx i => (h x hx i).2⟩, fun h x hx i => ⟨h.1 x hx i, h.2 x hx i⟩⟩
 
+/- English proof (translation)
+Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨CT2, C8, K0, h8, h⟩` from `h eps h1 h2 h3`. Use `⟨CT2, C8, K0, h8, fun C a b c d => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C a b c d`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨C5, c6, Cb, Cdg, x0, p5, p6, pb, S, h⟩` from `h ch hch`. Use `⟨C5, c6, Cb, Cdg, x0, p5, p6, pb, S, fun s hs hx hm => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `h s hs hx hm`. Conclude with `⟨k, fun i => ⟨hQ C cD ch _ (k.val i) (k.arith i) (hk i).1, (hk i).2⟩⟩`.
+-/
 theorem KitExW.imp {la : ℝ} {Q Q' : PtProp} (h : KitExW la Q)
     (hQ : ∀ (C : FC) (cD ch : ℝ) (p : Pt C), Val C cD ch p.L → HostArith p.D.host → p.Has Q → p.Has Q') : KitExW la Q' := by
   obtain ⟨ε0, h0, h⟩ := h
@@ -119,13 +132,24 @@ theorem KitExW.imp {la : ℝ} {Q Q' : PtProp} (h : KitExW la Q)
   obtain ⟨k, hk⟩ := h s hs hx hm
   exact ⟨k, fun i => ⟨hQ C cD ch _ (k.val i) (k.arith i) (hk i).1, (hk i).2⟩⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨la, h1, h⟩ := h ⟨la, h1, h.imp hQ⟩`.
+-/
 theorem KitEx.imp {Q Q' : PtProp} (h : KitEx Q)
     (hQ : ∀ (C : FC) (cD ch : ℝ) (p : Pt C), Val C cD ch p.L → HostArith p.D.host → p.Has Q → p.Has Q') : KitEx Q' :=
   let ⟨la, h1, h⟩ := h
   ⟨la, h1, h.imp hQ⟩
 
+/- English proof (translation)
+The claim follows from `KitEx.imp h fun _ _ _ _ _ _ hp => hp.1`.
+-/
 theorem ExFull.kitEx {Q : PtProp} (h : ExFull Q) : KitEx Q := KitEx.imp h fun _ _ _ _ _ _ hp => hp.1
 
+/- English proof (translation)
+Use `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ => rfl, ?_, ?_, rfl, rfl, ?_, rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `h t h' t' e1 e2`. Rewrite using `[Formalism.HC.Frame.A.val_injective _ e1, Formalism.HC.Frame.A.val_injective _ e2]`. Introduce `j t t' e`. Rewrite using `[Formalism.HC.Frame.A.val_injective _ e]`.
+
+Introduce `t t' e`. Rewrite using `[Subtype.ext (Formalism.HC.Frame.A.val_injective _ e : t.1 = t'.1)]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem Pt.Same.refl {C : FC} (p : Pt C) : p.Same p := by
   refine ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, fun _ => rfl, ?_, ?_, rfl, rfl, ?_, rfl, rfl, rfl⟩
   · intro h t h' t' e1 e2
@@ -136,20 +160,35 @@ theorem Pt.Same.refl {C : FC} (p : Pt C) : p.Same p := by
     rw [Subtype.ext (Formalism.HC.Frame.A.val_injective _ e : t.1 = t'.1)]
     exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 t t' e`.
+-/
 theorem Pt.Same.weights {C : FC} {p p' : Pt C} (h : p.Same p') (t : p.D.host.TT) (t' : p'.D.host.TT)
     (e : (t : p.D.R.A).val = (t' : p'.D.R.A).val) : p.L.aT t = p'.L.aT t' ∧ p.L.bT t = p'.L.bT t' :=
   h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 t t' e
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem Pt.Same.QS_eq {C : FC} {p p' : Pt C} (h : p.Same p') : p.D.host.QS = p'.D.host.QS :=
   h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem Pt.Same.art_eq {C : FC} {p p' : Pt C} (h : p.Same p') :
     artNum p.D.host.toHostRaw = artNum p'.D.host.toHostRaw :=
   h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2`.
+-/
 theorem Pt.Same.rd_eq {C : FC} {p p' : Pt C} (h : p.Same p') : p.D.host.rdE = p'.D.host.rdE :=
   h.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `k.cover i0 u0 hu`. Conclude with `⟨i, hi, (k.same i i0).weights⟩`.
+-/
 theorem Kit.cover_weights {C : FC} {cD ch : ℝ} {s : Scale} (k : Kit C cD ch s) (i0 : k.Ix) (u0 : ℕ)
     (hu : u0 < (k.pt i0).D.R.n) : ∃ i, (k.pt i).D.host.u0.val = u0 ∧
       ∀ (t : (k.pt i).D.host.TT) (t0 : (k.pt i0).D.host.TT),
@@ -158,11 +197,24 @@ theorem Kit.cover_weights {C : FC} {cD ch : ℝ} {s : Scale} (k : Kit C cD ch s)
   obtain ⟨i, hi⟩ := k.cover i0 u0 hu
   exact ⟨i, hi, (k.same i i0).weights⟩
 
+/- English proof (translation)
+The claim follows from `p.D.ntypes.BB_disj`.
+-/
 theorem Pt.disjoint_exceptional {C : FC} (p : Pt C) :
     Disjoint (Formalism.CyclotomicNorms.BB p.D.R.r (p.D.host.g 0)) (Formalism.CyclotomicNorms.BB p.D.R.r (p.D.host.g 1)) := p.D.ntypes.BB_disj
 
+/- English proof (translation)
+The claim follows from `h.host.1`.
+-/
 theorem Val.qdRows {C : FC} {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (h : Val C cD ch L) : QDRowsW D L.sc := h.host.1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `Fintype.mem_piFinset.2 fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ D.host.TT`. Simplify using `only [G.aL, ht, dif_pos, if_true, G.winA, Finset.mem_Icc, Int.ceil_le, Int.le_floor]`. Conclude with `L.aT_win ⟨t, ht⟩`.
+
+Simplify using `[G.aL, ht]`. Use `Fintype.mem_piFinset.2 fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ D.host.TT`. Simplify using `only [G.bL, ht, dif_pos, if_true, G.winB, Finset.mem_Icc, Int.ceil_le, Int.le_floor, G.Nstar]`. Conclude with `⟨L.bT_ge ⟨t, ht⟩, h.La_eq ▸ h.bT_le ⟨t, ht⟩⟩`.
+
+Simplify using `[G.bL, ht]`.
+-/
 theorem Val.mem_box {C : FC} {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (h : Val C cD ch L) :
     G.aL L ∈ G.box D (G.winA D L.sc) ∧ G.bL L ∈ G.box D (G.winB D C.GK L.sc) := by
   classical
@@ -178,10 +230,18 @@ theorem Val.mem_box {C : FC} {cD ch : ℝ} {D : D7} {L : SizeData₂ D} (h : Val
       exact ⟨L.bT_ge ⟨t, ht⟩, h.La_eq ▸ h.bT_le ⟨t, ht⟩⟩
     · simp [G.bL, ht]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hp => ⟨hp.1.2.2, hp.2.1⟩, fun hp => ⟨⟨h.mem_box.1, h.mem_box.2, hp.1⟩, hp.2, h.qdRows⟩⟩`.
+-/
 theorem Pt.has_reqPt_iff {C : FC} {cD ch : ℝ} (p : Pt C) (h : Val C cD ch p.L) :
     p.Has ReqPt ↔ AuxBlock8.WReq p.ta.Gx C.GK (G.aL p.L) (G.bL p.L) ∧ BoxesW p.D p.L.sc :=
   ⟨fun hp => ⟨hp.1.2.2, hp.2.1⟩, fun hp => ⟨⟨h.mem_box.1, h.mem_box.2, hp.1⟩, hp.2, h.qdRows⟩⟩
 
+/- English proof (translation)
+Use `⟨fun x hx i => (h x hx i).1, ⟨Fm.x1 + 1, fun x hx i => ?_⟩, ⟨Fm.x1 + 1, fun x hx i => ?_⟩⟩` and prove the remaining obligations. Establish `hx' : Fm.x1 < x` using `by linarith`. Use `(h x hx' i).2.1` as an intermediate fact. Unfold `BoxesW PairWin at this`. Rewrite `this` using `[Fm.L_x x i hx', Fm.L_eps x i, Fm.L_J x i]`. Then use the resulting hypothesis.
+
+Establish `hx' : Fm.x1 < x` using `by linarith`. Use `(h x hx' i).2.2` as an intermediate fact. Unfold `QDRowsW PairWin at this`. Rewrite `this` using `[Fm.L_x x i hx', Fm.L_eps x i, Fm.L_J x i]`. Then use the resulting hypothesis.
+-/
 theorem classOf_reqPt {eps : ℝ} (Fm : FamP eps) (h : classOf ReqPt Fm) :
     (∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, AuxBlock8.admW (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK) ∧ BoxesWF Fm ∧ QDRowsWF Fm := by
   refine ⟨fun x hx i => (h x hx i).1, ⟨Fm.x1 + 1, fun x hx i => ?_⟩, ⟨Fm.x1 + 1, fun x hx i => ?_⟩⟩
@@ -194,31 +254,63 @@ theorem classOf_reqPt {eps : ℝ} (Fm : FamP eps) (h : classOf ReqPt Fm) :
     unfold QDRowsW PairWin at this
     rwa [Fm.L_x x i hx', Fm.L_eps x i, Fm.L_J x i] at this
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem BoxesWF.boxesF {eps : ℝ} {Fm : FamP eps} (h : BoxesWF Fm) (hJ : Fm.J = 1) : BoxesF Fm := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem QDRowsWF.qdRowsF {eps : ℝ} {Fm : FamP eps} (h : QDRowsWF Fm) (hJ : Fm.J = 1) : QDRowsF Fm := h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem boxesWF_iff {eps : ℝ} (Fm : FamP eps) : BoxesWF Fm ↔ BoxesF Fm := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem qdRowsWF_iff {eps : ℝ} (Fm : FamP eps) : QDRowsWF Fm ↔ QDRowsF Fm := Iff.rfl
 
+/- English proof (translation)
+Establish `h1 : 1 < Nat.lcm 15 N` using `lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.lcm_pos (by norm_num) hN) (Nat.dvd_lcm_left 15 N))`. Rewrite using `[← Nat.mod_mod_of_dvd p (Nat.lcm_dvd_mul 15 N), h, Nat.mod_eq_of_lt h1]`.
+-/
 theorem mod_lcm_of_mod_mul {p N : ℕ} (hN : 0 < N) (h : p % (15 * N) = 1) : p % Nat.lcm 15 N = 1 := by
   have h1 : 1 < Nat.lcm 15 N := lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.lcm_pos (by norm_num) hN) (Nat.dvd_lcm_left 15 N))
   rw [← Nat.mod_mod_of_dvd p (Nat.lcm_dvd_mul 15 N), h, Nat.mod_eq_of_lt h1]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← Nat.mod_mod_of_dvd p (Nat.dvd_lcm_left 15 N), h]`. Rewrite using `[← Nat.mod_mod_of_dvd p (Nat.dvd_lcm_right 15 N), h, Nat.mod_eq_of_lt hN]`.
+-/
 theorem mod_of_mod_lcm {p N : ℕ} (hN : 1 < N) (h : p % Nat.lcm 15 N = 1) : p % 15 = 1 ∧ p % N = 1 := by
   constructor
   · rw [← Nat.mod_mod_of_dvd p (Nat.dvd_lcm_left 15 N), h]
   · rw [← Nat.mod_mod_of_dvd p (Nat.dvd_lcm_right 15 N), h, Nat.mod_eq_of_lt hN]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun x _ hx i => h x hx i⟩`.
+-/
 theorem classOf_twPt {eps : ℝ} (Fm : FamP eps) (h : classOf TwPt Fm) : TwGood Fm := ⟨0, fun x _ hx i => h x hx i⟩
 
+/- English proof (translation)
+Introduce `_ _ _` and use `trivial`.
+-/
 example {eps : ℝ} (Fm : FamP eps) : classOf (fun _ _ _ _ _ _ _ _ _ => True) Fm := fun _ _ _ => trivial
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨x, -, hx, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt 0 exact h x hx i`.
+-/
 example {eps : ℝ} (Fm : FamP eps) : ¬ classOf (fun _ _ _ _ _ _ _ _ _ => False) Fm := fun h => by
   obtain ⟨x, -, hx, -, ⟨i⟩⟩ := Fm.toFamCore.exists_pt 0
   exact h x hx i
 
+/- English proof (translation)
+Take `⟨i0⟩` from `k.ne`. Establish `h2 : 1 < (k.pt i0).D.R.n`. Establish `h1 : 1 < 2 ^ ((k.pt i0).D.R.e + 2)` using `Nat.one_lt_two_pow (by omega)`. Establish `h3` using `(h1.trans_le (Nat.le_of_dvd (k.pt i0).D.host.QS_pos (k.pt i0).D.host.tower_dvd)).trans_le (k.pt i0).D.host.QS_le`. Assume the negation of the conclusion as `hn`.
+
+Establish `h4 : (k.pt i0).D.R.n ^ 2 ≤ 1` using `pow_le_one₀ (Nat.zero_le _) (by omega)`. Use linear arithmetic over natural numbers and integers. Take `⟨i, hi⟩` from `k.cover i0 0 (by omega)`. Take `⟨i', hi'⟩` from `k.cover i0 1 h2`. Conclude with `⟨i, i', by omega⟩`.
+-/
 example {C : FC} {cD ch : ℝ} {s : Scale} (k : Kit C cD ch s) :
     ∃ i i' : k.Ix, (k.pt i).D.host.u0.val ≠ (k.pt i').D.host.u0.val := by
   obtain ⟨i0⟩ := k.ne

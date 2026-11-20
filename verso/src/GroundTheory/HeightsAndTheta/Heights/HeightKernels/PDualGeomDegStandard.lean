@@ -9,6 +9,11 @@ namespace GroundTheory.Heights₂.Heights
 open ReciprocityTheory.ChartRestriction.G.Geo NumberField Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `K _ _ i F T _ _ b hb hi`. Take `⟨A, hA, hE⟩` from `hD K i F T b hb hi`. Take `⟨B, hB, hG'⟩` from `hG (i - 1)`. Establish `e1 : 1 * 1 * (i - 1) = i - 1` using `by simp`. Establish `hterm : ∀ σ : K →+* ℂ, chartMass ((A σ)ᴴ * F.metric σ * A σ) = chartMass (1 : Matrix (Fin (i - 1 + 1)) (Fin (i - 1 + 1)) ℂ)` using `fun σ => hM _ _ ((F.posDef σ).conjTranspose_mul_mul_same (hA σ).1)`.
+
+Rewrite using `[e1, hE, hG', hM _ _ (Matrix.PosDef.conjTranspose_mul_self B hB.1), Finset.sum_congr rfl fun σ _ => hterm σ, Finset.sum_const, Finset.card_univ, Embeddings.card K ℂ, nsmul_eq_mul]`.
+-/
 theorem DualGeomDegStandard.proof (hD : DualGeomDegCharts.Statement)
     (hG : GrassGeomDegChart.Statement) (hM : ChartMassInvariant.Statement) :
     DualGeomDegStandard.Statement := by

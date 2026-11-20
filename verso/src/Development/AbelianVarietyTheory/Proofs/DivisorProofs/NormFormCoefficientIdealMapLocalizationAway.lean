@@ -6,6 +6,11 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.NormSheaf
 
+/- English proof (translation)
+Establish `hM : ∀ i, (Algebra.leftMulMatrix (Module.finBasis K L) (algebraMap K L c * y i)).map (MvPolynomial.C : K →+* MvPolynomial (Fin m) K) = (MvPolynomial.C c : MvPolynomial (Fin m) K) • (Algebra.leftMulMatrix (Module.finBasis K L) (y i)).map (MvPolynomial.C : K →+* MvPolynomial (Fin m …`. Introduce `i`. Rewrite using `[← Algebra.smul_def, map_smul]`. Use extensionality with `a b`. Simplify using `[Matrix.map_apply, Matrix.smul_apply, MvPolynomial.C_mul]`.
+
+Establish `: normForm K L (fun i => algebraMap K L c * y i) = MvPolynomial.C (c ^ Module.finrank K L) * normForm K L y`. Unfold `normForm`. Repeatedly rewrite using `[hM, smul_comm (MvPolynomial.X _ : MvPolynomial (Fin m) K) (MvPolynomial.C c), ← Finset.smul_sum, Matrix.det_smul, Fintype.card_fin, map_pow]`. Rewrite using `[this, MvPolynomial.coeff_C_mul]`.
+-/
 theorem normForm_coeff_smul (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] {m : ℕ}
     (y : Fin m → L) (c : K) (s : Fin m →₀ ℕ) :
     (normForm K L (fun i => algebraMap K L c * y i)).coeff s =
@@ -29,6 +34,27 @@ end GlobalTheory.NormSheaf
 
 namespace GlobalTheory.NormSheaf
 
+/- English proof (translation)
+Introduce `A K L B A' B' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ f _ _ h1 h2 h3 hinj hcoef J`. Establish `e1 : ∀ x : A, algebraMap A' K (algebraMap A A' x) = algebraMap A K x` using `fun x => by`. Simplify using `using RingHom.congr_fun h1 x`. Establish `e2 : ∀ x : B, algebraMap B' L (algebraMap B B' x) = algebraMap B L x` using `fun x => by`. Simplify using `using RingHom.congr_fun h2 x`.
+
+Establish `e3 : ∀ x : A, algebraMap K L (algebraMap A K x) = algebraMap B L (algebraMap A B x)` using `fun x => by`. Simplify using `using RingHom.congr_fun h3 x`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Unfold `normIdeal`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `a ⟨m, g, hg, s, hs⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨m, fun i => algebraMap B B' (g i), fun i => Ideal.mem_map_of_mem _ (hg i), s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1, hs]`. Simplify using `only [e2]`. Unfold `normIdeal`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `a' ⟨m, g', hg', s, hs⟩`.
+
+Use `set b := algebraMap A B f with hb`. Establish `hloc : ∀ i, ∃ (j : B) (n : ℕ), j ∈ J ∧ g' i * algebraMap B B' (b ^ n) = algebraMap B B' j`. Introduce `i`. Take `⟨⟨⟨j, hj⟩, ⟨_, n, rfl⟩⟩, h⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers b) B').1 (hg' i)`. Conclude with `⟨j, n, hj, h⟩`.
+
+Use `choose j n hj hn using hloc`. Use `set N := ∑ i, n i`. Establish `hN : ∀ i, g' i * algebraMap B B' (b ^ N) = algebraMap B B' (j i * b ^ (N - n i))`. Introduce `i`. Establish `hle : n i ≤ N` using `Finset.single_le_sum (fun k _ => Nat.zero_le (n k)) (Finset.mem_univ i)`.
+
+Rewrite using `[← Nat.add_sub_cancel' hle, pow_add, map_mul, ← mul_assoc, hn i, Nat.add_sub_cancel_left, map_mul]`. Establish `hjJ : ∀ i, j i * b ^ (N - n i) ∈ J` using `fun i => J.mul_mem_right _ (hj i)`. Use `set c := algebraMap A K f`. Establish `himg : ∀ i, algebraMap B L (j i * b ^ (N - n i)) = algebraMap K L (c ^ N) * algebraMap B' L (g' i)`. Introduce `i`.
+
+Rewrite using `[← e2, ← hN i, map_mul, e2, map_pow, map_pow, hb, ← e3, mul_comm]`. Take `⟨a, ha⟩` from `hcoef (fun i => j i * b ^ (N - n i)) s`. Establish `hcoef' : algebraMap A K a = (c ^ N) ^ Module.finrank K L * algebraMap A' K a'`. Rewrite using `[ha, hs]`. Simplify using `only [himg]`.
+
+Conclude with `normForm_coeff_smul K L _ _ s`. Establish `hmem : a ∈ normIdeal A K L B J` using `Ideal.subset_span ⟨m, _, hjJ, s, ha⟩`. Establish `key : algebraMap A A' a = algebraMap A A' (f ^ (N * Module.finrank K L)) * a'`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, e1, e1, hcoef', map_pow, pow_mul]`.
+
+Establish `hu : IsUnit (algebraMap A A' (f ^ (N * Module.finrank K L)))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit f).pow _`. Rewrite using `[SetLike.mem_coe, ← Ideal.unit_mul_mem_iff_mem _ hu, ← key]`. Conclude with `Ideal.mem_map_of_mem _ hmem`.
+-/
 theorem normIdeal_map_away : ∀ (A K L B A' B' : Type) [CommRing A] [CommRing B] [CommRing A'] [CommRing B'] [Field K] [Field L]
     [Algebra K L] [FiniteDimensional K L] [Algebra A K] [Algebra B L] [Algebra A' K] [Algebra B' L]
     [Algebra A A'] [Algebra B B'] [Algebra A B] (f : A) [IsLocalization.Away f A']

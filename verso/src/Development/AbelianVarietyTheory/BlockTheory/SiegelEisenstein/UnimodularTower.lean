@@ -206,6 +206,9 @@ def Fin2.inner (e : Fin2 N top) (P₁ : PolF D e.t.J.W.rank N.B.V.rank) (P₂ : 
   ∫ h in e.t.s.vW.𝓕, e.t.om (h, h') (e.p₂.pt P₂) 0 * (∫ h₀ in N.B.vA.𝓕,
     φ h₀ * e.t.s.om (embA N.B.d N.B.o h₀, h) (e.t.s.om (g, 1) (e.p₁.pt P₁)) 0 ∂N.B.vA.μ) ∂e.t.s.vW.μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Fin2.Q_eq (e : Fin2 N top) (P₁ P₂ φ g) (F : GA D T → ℂ) :
     e.t.Q φ (e.t.s.om (g, 1) (e.p₁.pt P₁)) (e.p₂.pt P₂) F = ∫ h' in e.t.vT.𝓕, F h' * e.inner P₁ P₂ φ g h' ∂e.t.vT.μ := rfl
 
@@ -248,6 +251,9 @@ inductive Tower.Is {T : HSp D} {top : RowOn T} : {ρ j : ℕ} → {N : Node c u 
   | step {σ j : ℕ} {N : Node c u (σ + 1) j} (N' : Node c u σ (j + 1 + 1)) (d : Dbl N N') (t : Tower c u top σ (j + 1 + 1) N')
       (hN : N.Is) (hd : d.Is) (ht : t.Is) : Tower.Is (.step N' d t)
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `last e _ he => have := he.idx`. Use linear arithmetic over natural numbers and integers. Consider the case `step _ _ _ _ _ _ ih => omega`.
+-/
 theorem Tower.Is.index {T : HSp D} {top : RowOn T} {ρ j : ℕ} {N : Node c u ρ j} {t : Tower c u top ρ j N} (h : t.Is) :
     j + 2 * ρ + 2 = D.R.m := by
   induction h with
@@ -267,15 +273,24 @@ def Laws (D : D7) (u : D.what₂.Word) : Prop :=
 def Suffices (D : D7) (u : D.what₂.Word) : Prop :=
   GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D → DoubleStep D → LastLaw D → LevelLaw D → ChainOnto.OntoAll D → Laws D u → GlobalTheory.Core.Rk.KerIncl D u
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+-/
 example (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
   obtain ⟨t, ht⟩ := D.R.m_even
   have h2 := D.R.two_le_m
   simp only [Ranks.rS]
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_mem _, 1, one_mem _, 1, one_mem _, by simp⟩`.
+-/
 example {V : HSp D} (R K : Subgroup (GA D V)) (b : GA D V) : b ∈ dcos R b K :=
   ⟨1, one_mem _, 1, one_mem _, 1, one_mem _, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.product_first_zeroth_parts.MramI_zero D u`.
+-/
 example (D : D7) (u : D.what₂.Word) : Ram D u 0 = (D.mem u).A.Mram := Formalism.MainNotions.product_first_zeroth_parts.MramI_zero D u
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnimodularTower

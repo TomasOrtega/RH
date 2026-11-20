@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Z T f _ O O' hO hO'`. Use `⟨fun t => ?_⟩` and prove the remaining obligations. Establish `hint : IsIntegral (f.fiber t)` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ (IsPullback.of_hasPullback f (T.fromSpecResidueField t))`. Establish `hi : IsPreirreducible (f ⁻¹' {t})`. Rewrite using `[← Scheme.Hom.range_fiberι, ← Set.image_univ]`.
+
+Conclude with `(PreirreducibleSpace.isPreirreducible_univ).image _ (f.fiberι t).continuous.continuousOn`. Take `⟨x, hx⟩` from `(O.ι ≫ f).surjective t`. Take `⟨x', hx'⟩` from `(O'.ι ≫ f).surjective t`. Take `⟨y, hy, k₁, k₂⟩` from `hi _ _ O.2 O'.2 ⟨x.1, by rw [← hx]; rfl, x.2⟩ ⟨x'.1, by rw [← hx']; rfl, x'.2⟩`. Conclude with `⟨⟨y, k₁, k₂⟩, hy⟩`.
+-/
 theorem surjective_inf_of_geometricallyIntegral :
     ∀ (Z T : Scheme.{0}) (f : Z ⟶ T) [GeometricallyIntegral f] (O O' : Z.Opens),
       Surjective (O.ι ≫ f) → Surjective (O'.ι ≫ f) → Surjective ((O ⊓ O').ι ≫ f) := by

@@ -21,6 +21,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Rewrite using `[← b.sum_repr x, map_sum, map_sum, Finsupp.finsetSum_apply]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (hx i) (hf i j)`.
+-/
 theorem repr_map_mem {V V' ι ι' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V'] [Fintype ι]
     (b : Basis ι K V) (b' : Basis ι' K V') (f : V →ₗ[K] V') (hf : ∀ i j, b'.repr (f (b i)) j ∈ cmMax K) {x : V}
     (hx : ∀ i, b.repr x i ∈ cmMax K) (j : ι') : b'.repr (f x) j ∈ cmMax K := by
@@ -31,6 +34,13 @@ theorem repr_map_mem {V V' ι ι' : Type} [AddCommGroup V] [Module K V] [AddComm
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Set `M : Submodule (𝓞 K) V` to `N ⊓ (Submodule.span K {v}).restrictScalars (𝓞 K)`. Establish `hM : M.FG` using `by haveI : Module.Finite (𝓞 K) N := Module.Finite.iff_fg.2 hN.fg`. Conclude with `Submodule.FG.of_le_of_isNoetherian (inf_le_left : M ≤ N)`. Establish `hne : M ≠ ⊥`. Establish `hv' : v ∈ Submodule.span K (N : Set V)` using `hN.span_eq_top ▸ Submodule.mem_top`.
+
+Take `⟨a, ha⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K (N : Set V) v hv'`. Rewrite `ha` using `[Submodule.span_eq]`. Use `(Submodule.ne_bot_iff _).2 ⟨(a : 𝓞 K) • v, ⟨ha, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v)`. Rewrite using `[← algebraMap_smul K]`.
+
+Conclude with `smul_ne_zero (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2) hv`. Use `isIntegral_of_smul_mem_submodule M hne hM l ?_` and prove the remaining obligations. Introduce and unpack `n ⟨h1, h2⟩`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 h2`. Conclude with `⟨h a h1, Submodule.smul_mem (Submodule.span K {v}) l h2⟩`.
+-/
 theorem isIntegral_of_line {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (N : Submodule (𝓞 K) V) (hN : Submodule.IsLattice K N) {v : V} (hv : v ≠ 0) (l : K)
     (h : ∀ a : K, a • v ∈ N → l • a • v ∈ N) : IsIntegral (𝓞 K) l := by
@@ -51,6 +61,15 @@ theorem isIntegral_of_line {V : Type} [AddCommGroup V] [Module K V] [Module (�
   obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 h2
   exact ⟨h a h1, Submodule.smul_mem (Submodule.span K {v}) l h2⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `h0 : (∑ g, ρ g) = 0` using `b.ext fun j => by`. Assume the negation of the conclusion as `h1`. Take `⟨i, hi⟩` from `hn _ h1 fun g => by`.
+
+Rewrite using `[← Module.End.mul_apply, Finset.mul_sum]`. Simplify using `only [← map_mul]`. Rewrite using `[Fintype.sum_bijective (g * ·) (Group.mulLeft_bijective g) _ (fun g => ρ g) fun _ => rfl]`. Use `hi ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, map_sum, Finsupp.finsetSum_apply]`.
+
+Conclude with `sum_mem fun g _ => hρ g i j`. Establish `h1` using `LinearMap.congr_fun h0 v`. Rewrite `h1` using `[LinearMap.sum_apply]`. Simplify using `only [hi, Finset.sum_const, Finset.card_univ, LinearMap.zero_apply] at h1`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul K]`.
+
+Conclude with `smul_ne_zero (Nat.cast_ne_zero.2 Fintype.card_ne_zero) hv h1`.
+-/
 theorem exists_inv_rat {V ι Γ : Type} [AddCommGroup V] [Module K V] [Fintype ι] [Group Γ] [Fintype Γ] (b : Basis ι K V)
     (ρ : Γ →* Module.End K V) (hρ : ∀ g i j, b.repr (ρ g (b j)) i ∈ cmMax K) {v : V} (hv : v ≠ 0) (hi : ∀ g, ρ g v = v) :
     ∃ w : V, w ≠ 0 ∧ (∀ g, ρ g w = w) ∧ ∀ i, b.repr w i ∈ cmMax K := by
@@ -73,6 +92,9 @@ theorem exists_inv_rat {V ι Γ : Type} [AddCommGroup V] [Module K V] [Fintype �
 
 omit [NumberField K] [StarRing K] in
 
+/- English proof (translation)
+Rewrite `h` using `[← b'.sum_repr x, ← b'.sum_repr y, map_sum, map_sum, Finset.smul_sum]`. Simplify using `only [map_smulₛₗ, smul_smul] at h`. Conclude with `Fintype.linearIndependent_iffₛ.1 hli _ _ h j`.
+-/
 theorem repr_of_smul {V' W ι' : Type} [AddCommGroup V'] [Module K V'] [AddCommGroup W] [Module ℂ W] [Fintype ι'] (σ : K →+* ℂ)
     (b' : Basis ι' K V') (c0 : V' →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => c0 (b' i)) {x y : V'} {μ : ℂ}
     (h : c0 x = μ • c0 y) (j : ι') : σ (b'.repr x j) = μ * σ (b'.repr y j) := by
@@ -80,6 +102,33 @@ theorem repr_of_smul {V' W ι' : Type} [AddCommGroup V'] [Module K V'] [AddCommG
   simp only [map_smulₛₗ, smul_smul] at h
   exact Fintype.linearIndependent_iffₛ.1 hli _ _ h j
 
+/- English proof (translation)
+Use `letI := hG.ok.fintypeStab (S.outSec.rep c)`. Take `⟨v, v0, vi, vr⟩` from `exists_inv_rat S.bV (S.ρ.comp (MulAction.stabilizer S.G (S.outSec.rep c)).subtype) (fun g => hR.act_rat g) hφ ((S.res hG.ok φ).2 c)`. Establish `hc0 : ∀ x, c0 x = 0 → x = 0` using `fun x hx => b'.repr.injective (Finsupp.ext fun j => σ.injective (by`. Rewrite using `[repr_of_smul σ b' c0 hli (hx.trans (zero_smul ℂ (c0 x)).symm), zero_mul, map_zero, Finsupp.zero_apply, map_zero]))`. Set `f : (S.toCSD hG.ok).Forms` to `⟨Pi.single c v, fun c' γ => by`.
+
+Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `vi γ`. Rewrite using `[Pi.single_eq_of_ne h, map_zero]⟩`.
+
+Establish `H1` using `H ((S.res hG.ok).symm f)`. Establish `e1 : ((S.res hG.ok).symm f).1 (S.outSec.rep c) = v` using `(congrFun (congrArg Subtype.val ((S.res hG.ok).apply_symm_apply f)) c).trans (show (Pi.single c v : S.Cl → S.V) c = v by simp)`. Establish `e2 : ((S.res hG.ok).symm f).1 d = S.ρ (S.outSec.mv d) ((Pi.single c v : S.Cl → S.V) (S.cls d))` using `rfl`. Rewrite `H1` using `[e1, e2]`. Establish `hc : S.cls d = c`.
+
+Assume the negation of the conclusion as `h`. Rewrite `H1` using `[Pi.single_eq_of_ne h, map_zero, map_zero, map_zero, smul_zero]`. Conclude with `v0 (e.map_eq_zero_iff.1 (hc0 _ H1))`. Establish `hg` using `S.outSec.mv_smul d`. Rewrite `hg` using `[hc]`.
+
+Rewrite `H1` using `[hc, Pi.single_eq_same]`. Generalize the expression as in `S.outSec.mv d = g at hg H1`. Substitute `hg` using the available equality. Establish `gi : Function.Injective (S.ρ g)` using `fun x y h => by`. Use `congrArg (S.ρ g⁻¹) h` as an intermediate fact.
+
+Rewrite `this` using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Then use the resulting hypothesis. Establish `y0 : e0 (S.ρ g v) ≠ 0` using `fun h => v0 (gi ((e0.map_eq_zero_iff.1 h).trans (map_zero _).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, b'.repr (e0 (S.ρ g v)) j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Conclude with `y0 (b'.repr.injective (Finsupp.ext fun j => by rw [h, map_zero, Finsupp.zero_apply]))`. Set `l : K` to `b'.repr (e v) j / b'.repr (e0 (S.ρ g v)) j`. Establish `hl : σ l = μ`. Rewrite using `[map_div₀, repr_of_smul σ b' c0 hli H1 j, mul_div_cancel_right₀ _ ((map_ne_zero σ).2 hj)]`. Establish `lr : l ∈ cmMax K` using `div_mem (repr_map_mem S.bV b' e.toLinearMap er vr j) (repr_map_mem S.bV b' e0.toLinearMap er0 (repr_map_mem S.bV S.bV _ (fun i j => hR.act_rat g j i) vr) j)`.
+
+Establish `H2 : e v = l • e0 (S.ρ g v)` using `sub_eq_zero.1 (hc0 _ (by rw [map_sub, map_smulₛₗ, hl, H1, sub_self]))`. Establish `l0 : l ≠ 0` using `fun h => v0 (e.map_eq_zero_iff.1 (by rw [H2, h, zero_smul]))`. Establish `ln : star l * l = 1`. Establish `h1` using `pe v v`. Rewrite `h1` using `[H2, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, pe0, hG.ok.inv, smul_eq_mul, smul_eq_mul, ← mul_assoc]`.
+
+Use `mul_right_cancel₀ (fun h => v0 (hp v h)) (h1.trans (one_mul _).symm)` as an intermediate fact. Rewrite using `[mul_comm]`. Conclude with `this`. Rewrite `le` using `[hG.ok.nab_smul]`. Establish `i1 : IsIntegral (𝓞 K) l` using `isIntegral_of_line _ (hG.nab_lat _) v0 l fun a ha => by`.
+
+Take `⟨_, ⟨w, hw, rfl⟩, h2⟩` from `le.le ⟨_, ha, rfl⟩`. Establish `: w = l • a • v` using `gi (e0.injective (by`. Use `h2.trans ?_` and prove the remaining obligations. Use `show e (a • v) = _`. Rewrite using `[map_smul, H2, smul_comm l a, map_smul, map_smul, map_smul, map_smul]))`.
+
+Conclude with `this ▸ hw`. Establish `i2 : IsIntegral (𝓞 K) l⁻¹` using `isIntegral_of_line _ (hG.nab_lat _) v0 l⁻¹ fun a ha => by`. Take `⟨w, hw, h2⟩` from `le.ge ⟨_, ⟨_, ha, rfl⟩, rfl⟩`. Establish `: w = l⁻¹ • a • v` using `e.injective (by`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Use `show e0 (S.ρ g (a • v)) = _`. Rewrite using `[map_smul, map_smul, map_smul, map_smul, H2, smul_comm a l, inv_smul_smul₀ l0])`. Conclude with `this ▸ hw`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 i1`. Take `⟨b, hb⟩` from `IsIntegrallyClosed.isIntegral_iff.1 i2`.
+
+Establish `hab : a * b = 1` using `IsFractionRing.injective (𝓞 K) K (by rw [map_mul, ha, hb, map_one, mul_inv_cancel₀ l0])`. Establish `hu : ((Units.mkOfMulEqOne a b hab : 𝓞 K) : K) = l` using `ha`. Conclude with `⟨Units.mkOfMulEqOne a b hab, hu ▸ hl, hu ▸ lr, hu ▸ ln⟩`.
+-/
 theorem exists_unit (S : GSD K) (hG : S.Good 1) (hR : S.Rat) (hp : ∀ x, S.pair x x = 0 → x = 0) (σ : K →+* ℂ)
     {V' W ι' : Type} [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] [AddCommGroup W] [Module ℂ W]
     [Fintype ι'] (b' : Basis ι' K V') (c0 : V' →ₛₗ[σ] W) (hli : LinearIndependent ℂ fun i => c0 (b' i))
@@ -164,6 +213,15 @@ section Coef
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl : lam = lam'` from `funext fun τ => by`. Establish `: (lam τ).w = (lam' τ).w` using `funext fun i => hw τ i i rfl`. Use `revert this`. Consider the cases of `lam τ`.
+
+Consider the cases of `lam' τ`. Introduce and unpack `rfl`. Both sides reduce to the same expression. Use `⟨LinearEquiv.refl _ _, fun v => ?_, fun i j => ?_, fun _ _ => rfl, fun γ => ⟨γ, ⟨rfl, fun i j i' j' a b => ?_⟩, fun _ => rfl⟩, fun L L' hL => ?_⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.rename_id_apply _).symm`.
+
+Rewrite using `[LinearEquiv.refl_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[Fin.ext a, Fin.ext b]`.
+
+Take `rfl : L = L'` from `Submodule.ext hL`. Conclude with `Submodule.map_id _`.
+-/
 theorem exists_cast {a n : ℕ} (h : n = a) (emb : ι → E →+* K) (lam : ι → Formalism.BasicNotions.DomWeight a) (lam' : ι → Formalism.BasicNotions.DomWeight n)
     (hw : ∀ τ (i : Fin a) (i' : Fin n), (i : ℕ) = i' → (lam τ).w i = (lam' τ).w i') :
     ∃ e0 : VV K lam' ≃ₗ[K] VV K lam,
@@ -195,6 +253,13 @@ theorem exists_cast {a n : ℕ} (h : n = a) (emb : ι → E →+* K) (lam : ι �
 
 open scoped TensorProduct in
 
+/- English proof (translation)
+Establish `e : pullV (Formalism.UG.bc (Algebra.TensorProduct.comm F _ E).toAlgHom.toRingHom h) v = fun i => Algebra.TensorProduct.comm F _ E ((h⁻¹).1.mulVec (fun i => 1 ⊗ₜ[F] v i) i)`. Use function extensionality and compare the values at `i`. Rewrite using `[pullV, ← map_inv]`. Conclude with `(RingHom.map_mulVec (Algebra.TensorProduct.comm F _ E).toAlgHom.toRingHom (h⁻¹).1 (fun i => 1 ⊗ₜ[F] v i) i).symm`. Rewrite using `[mem_globLat, e]`.
+
+Generalize the expression as in `(h⁻¹).1.mulVec (fun i => 1 ⊗ₜ[F] v i) = z`. Establish `hf` using `hfr fun i => Algebra.TensorProduct.comm F _ E (z i)`. Rewrite `hf` using `[inv_one, Units.val_one, Matrix.one_mulVec]`. Use `hf.symm.trans ⟨fun a => ?_, GlobalTheory.PrincInLevel.swap_mem_hatL Λ z⟩` and prove the remaining obligations. Use `GlobalTheory.PrincInLevel.swap_symm_mem_hat Λ _ a using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Conclude with `(AlgEquiv.symm_apply_apply _ _).symm`.
+-/
 theorem mem_globLat_swap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
     {Λ : Submodule (𝓞 E) (Fin n → E)} (hfr : IsFrame (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) Λ)
     (h : GL (Fin n) (IsDedekindDomain.FiniteAdeleRing (𝓞 F) F ⊗[F] E)) (v : Fin n → E) :
@@ -224,6 +289,15 @@ section Space
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI := hc.2.2.2.1`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hall : ∀ h x, T (c.ρ h x) = c.ρ h (T x)` using `fun h x => by`. Take `⟨u, hu, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 h`. Rewrite using `[map_mul, hc.1 k hk, mul_one]`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨γ, hγ, k, hk, hU, -⟩` from `GlobalTheory.RealApprox.weak_approx_real V u hu _ (isOpen_ne_fun (T.continuous_of_finiteDimensional.comp (hc.2.2.1 x)) (hc.2.2.1 (T x))) hne`. Use `hU ?_` and prove the remaining obligations. Use `show T (c.ρ (γ * k) x) = _`. Rewrite using `[map_mul, hc.1 k hk, mul_one]`.
+
+Conclude with `hT ⟨γ, hγ⟩ x`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue T`. Use `⟨μ, fun x => ?_⟩` and prove the remaining obligations. Break down `hc.2.2.2.2 (T.eigenspace μ) (fun h => by` into its components or cases. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Rewrite `hv` using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[Module.End.mem_eigenspace_iff, hall, hv, map_smul]) with h | h`. Conclude with `absurd h (Module.End.hasEigenvalue_iff.1 hμ)`. Conclude with `Module.End.mem_eigenspace_iff.1 (h ▸ Submodule.mem_top)`.
+-/
 theorem scalar_of_comm_rat {V : HSp D} (c : CoefA V) (hc : c.Is) (T : Module.End ℂ c.W)
     (hT : ∀ (γ : GQ V) x, T (c.ρ γ x) = c.ρ γ (T x)) : ∃ μ : ℂ, ∀ x, T x = μ • x := by
   haveI := hc.2.2.2.1
@@ -247,6 +321,13 @@ theorem scalar_of_comm_rat {V : HSp D} (c : CoefA V) (hc : c.Is) (T : Module.End
   · exact absurd h (Module.End.hasEigenvalue_iff.1 hμ)
   · exact Module.End.mem_eigenspace_iff.1 (h ▸ Submodule.mem_top)
 
+/- English proof (translation)
+Set `b : Basis _ ℂ c.W` to `Module.Basis.mk h0.2.1 h0.2.2.ge`. Establish `hb : ∀ i, b i = c0 (bVV _ lam i)` using `fun i => Module.Basis.mk_apply _ _ i`. Set `T : Module.End ℂ c.W` to `b.constr ℂ fun i => c1 (bVV _ lam i)`. Establish `hT : ∀ v, T (c0 v) = c1 v` using `fun v => LinearMap.congr_fun (f := T.comp c0) (g := c1) ((bVV _ lam).ext fun i => by`. Use `b.constr_basis ℂ (fun i => c1 (bVV _ lam i)) i` as an intermediate fact.
+
+Rewrite using `[hb] at this) v` and apply the resulting hypothesis. Take `⟨μ, hμ⟩` from `scalar_of_comm_rat c hc T fun γ x => by`. Take `⟨γE, hγ, -⟩` from `GlobalTheory.HLatMove.exists_ratMat V γ`. Use `LinearMap.congr_fun (f := T.comp (c.ρ γ)) (g := (c.ρ γ).comp T) (b.ext fun i => ?_) x` and prove the remaining obligations. Rewrite using `[hb]`.
+
+Conclude with `(congrArg T (h0.1 γ γE hγ _).symm).trans ((hT _).trans ((h1 γ γE hγ _).trans (congrArg (c.ρ γ) (hT _).symm)))`. Conclude with `⟨μ, fun v => (hT v).symm.trans (hμ _)⟩`.
+-/
 theorem exists_smul_eq {V : HSp D} (c : CoefA V) (hc : c.Is) {lam : D.what₂.Tau → DomWeight V.rank}
     {rho : GL (Fin V.rank) D.host.E →* Module.End D.what₂.LL (VV D.what₂.LL lam)} {c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.W}
     (h0 : Bridge.CoefMapTie V c.coef c0 rho) (c1 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.W)
@@ -264,6 +345,11 @@ theorem exists_smul_eq {V : HSp D} (c : CoefA V) (hc : c.Is) {lam : D.what₂.Ta
     exact (congrArg T (h0.1 γ γE hγ _).symm).trans ((hT _).trans ((h1 γ γE hγ _).trans (congrArg (c.ρ γ) (hT _).symm)))
   exact ⟨μ, fun v => (hT v).symm.trans (hμ _)⟩
 
+/- English proof (translation)
+Take `⟨_, g, rfl⟩` from `h`. Use `⟨⟨_, GlobalTheory.Mem.ColAd.finN_mem hn hG g⟩, ?_⟩` and prove the remaining obligations. Substitute `hn` using the available equality. Use `⟨rfl, fun i j i' j' a b => ?_⟩` and prove the remaining obligations. Take `rfl` from `Fin.ext a`.
+
+Take `rfl` from `Fin.ext b`. Unfold `R3.matIn`. Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+-/
 theorem exists_matEq (V : HSp D) {n : ℕ} (hn : V.rank = n) (hG : V.gram = 1) (h : Bridge.Gf V) :
     ∃ x : Formalism.L2.Col.UAd D.sp.cm n, R3.MatEq (R3.matIn V 1 h) (x : GL (Fin n) _) := by
   obtain ⟨_, g, rfl⟩ := h
@@ -276,6 +362,11 @@ theorem exists_matEq (V : HSp D) {n : ℕ} (hn : V.rank = n) (hG : V.gram = 1) (
   rw [mul_one]
   rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `rfl : R3.matIn V 1 h = x` from `Units.ext (Matrix.ext fun i j => hx.2 i j i j rfl rfl)`. Establish `hfr : IsFrame (1 : GL (Fin V.rank) (Lev.EAf D)) Λ` using `by obtain ⟨c, h, -⟩ := hΛ; exact h`. Establish `key : ∀ v : Fin V.rank → D.host.E, v ∈ Formalism.UG.CS.globLat (R3.matIn V 1 h) (stdLat D.host.E V.rank) ↔ (h.1⁻¹).1.mulVec (fun i => (1 : Af D.host.F) ⊗ₜ[D.host.F] v i) ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))`. Introduce `v`.
+
+Rewrite using `[R3.matIn, mul_one]`. Conclude with `mem_globLat_swap hfr h.1 v`. Conclude with `SetLike.ext_iff.1 ((GlobalTheory.HLatMove.hLat_eq_span hΛ h).trans ((congrArg (Submodule.span _) (Set.ext key).symm).trans (Submodule.span_eq _))) v`.
+-/
 theorem mem_hLat_iff {V : HSp D} {Λ} (hΛ : IsSDFrame V 1 Λ 1) (h : Bridge.Gf V) {n : ℕ} (hn : n = V.rank)
     (x : GL (Fin n) (Lev.EAf D)) (hx : R3.MatEq (R3.matIn V 1 h) x) (v : Fin V.rank → D.host.E) :
     v ∈ Bridge.hLat V h ↔ (fun i => v (Fin.cast hn i)) ∈ Formalism.UG.CS.globLat x (stdLat D.host.E n) := by
@@ -307,6 +398,9 @@ def valPol (v : VV X.B.fields.K X.B.wts.sgTrue) : Pol ℂ X.toD7.what₂.Tau X.t
     (MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast (RowAd.rank_X' X).symm) (Fin.cast (RowAd.rank_X' X).symm)))
       (show Pol X.toD7.what₂.LL X.toD7.what₂.Tau (X.B.R.N X.B.R.m - 1) from v.1))
 
+/- English proof (translation)
+Use `show X.B.sp.X'.gram = 1`. Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Rewrite using `[h2]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+-/
 theorem gram_eq_one (hI : I.Ok) : X.toD7.sp.X'.gram = 1 := by
   show X.B.sp.X'.gram = 1
   obtain ⟨hs, -, h2, -⟩ := hI.spaces

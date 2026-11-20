@@ -15,6 +15,9 @@ namespace GlobalTheory
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Establish `hLaws` using `_root_.GlobalTheory.allSixLaws.1`. Conclude with `_root_.GlobalTheory.thetaUnifAV_of_laws hLaws.cube hLaws.mulN hLaws.weil hLaws.weilNondeg hLaws.globalSectionsRank`.
+-/
 theorem _root_.GlobalTheory.thetaUnifAV_closed : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV := by
   have hLaws := _root_.GlobalTheory.allSixLaws.1
   exact _root_.GlobalTheory.thetaUnifAV_of_laws hLaws.cube hLaws.mulN hLaws.weil

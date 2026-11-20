@@ -9,17 +9,29 @@ namespace Formalism.MainNotions.LemmaBAlt
 section maps
 variable {P Q : Type*} [CommRing P] [CommRing Q] {n : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `unfold extOne; split_ifs <;> simp`.
+-/
 theorem map_exterior_one (φ : P →+* Q) (J : Finset (Fin n)) : φ (extOne J) = extOne J := by
   unfold extOne; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[wedgeR, map_sum]`.
+-/
 theorem map_right_wedge (φ : P →+* Q) (x : Fin n → P) (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
     φ (wedgeR x K J) = wedgeR (fun m => φ (x m)) (fun J => φ (K J)) J := by
   simp [wedgeR, map_sum]
 
+/- English proof (translation)
+Simplify using `[contrR, map_sum]`.
+-/
 theorem map_right_contraction (φ : P →+* Q) (x : Fin n → P) (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
     φ (contrR x K J) = contrR (fun m => φ (x m)) (fun J => φ (K J)) J := by
   simp [contrR, map_sum]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold colStep; split_ifs <;> simp [map_right_wedge, map_right_contraction]`.
+-/
 theorem map_column_operator (φ : P →+* Q) (c : ℤ) (hP hN : ℕ) (x : Fin n → P) (K : Finset (Fin n) → P)
     (J : Finset (Fin n)) :
     φ (colStep c hP hN x K J) = colStep c hP hN (fun m => φ (x m)) (fun J => φ (K J)) J := by
@@ -27,6 +39,13 @@ theorem map_column_operator (φ : P →+* Q) (c : ℤ) (hP hN : ℕ) (x : Fin n 
 
 end maps
 
+/- English proof (translation)
+Proceed by induction on `j generalizing J with`. Consider the case `zero => exact map_exterior_one _ _`. Consider the case `succ j ih`. Simplify using `only [Kcol]`. Use `split_ifs with h`.
+
+Rewrite using `[map_column_operator]`. Establish `h1 : (fun m => MvPolynomial.map φ (letVec R (⟨j, h⟩ : Fin N) m)) = letVec (n` using `n) R' (⟨j, h⟩ : Fin N) := by`. Use function extensionality and compare the values at `m`. Simplify using `[letVec]`. Establish `h2 : (fun J => MvPolynomial.map φ (Kcol R mu c j J)) = Kcol R' mu c j` using `funext ih`.
+
+Rewrite using `[h1, h2]`. Conclude with `ih J`.
+-/
 theorem map_column_kernel {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {N n : ℕ}
     (mu : Fin (N + 1) → Fin n → ℤ) (c : ℤ) (j : ℕ) (J : Finset (Fin n)) :
     MvPolynomial.map φ (Kcol R mu c j J) = Kcol R' mu c j J := by
@@ -42,11 +61,25 @@ theorem map_column_kernel {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+
       rw [h1, h2]
     · exact ih J
 
+/- English proof (translation)
+Simplify using `[Psi, map_prod, map_column_kernel]`.
+-/
 theorem map_Psi' {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {N n : ℕ}
     (mu : Fin (N + 1) → Fin n → ℤ) (I : ℤ → Finset (Fin n)) :
     MvPolynomial.map φ (Psi R mu I) = Psi R' mu I := by
   simp [Psi, map_prod, map_column_kernel]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Establish `hsub : (univ.filter fun x => c ≤ mu x) ⊆ Finset.Iio m`. Introduce `x hx`.
+
+Rewrite `hx` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hxm`. Conclude with `hc (hx.2.trans (hmu (not_lt.1 hxm)))`. Use `Finset.card_le_card hsub` as an intermediate fact.
+
+Rewrite `this` using `[Fin.card_Iio]`. Unfold `colH at h`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `hsub : Finset.Iic m ⊆ (univ.filter fun x => c ≤ mu x)`.
+
+Introduce `x hx`. Rewrite `hx` using `[Finset.mem_Iic]`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨mem_univ _, h.trans (hmu hx)⟩`. Use `Finset.card_le_card hsub` as an intermediate fact.
+
+Rewrite `this` using `[Fin.card_Iic]`. Unfold `colH`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem column_height_lt_iff {n : ℕ} {mu : Fin n → ℤ} (hmu : Dominant mu) (c : ℤ) (m : Fin n) :
     m.val < colH mu c ↔ c ≤ mu m := by
   constructor
@@ -73,23 +106,37 @@ theorem column_height_lt_iff {n : ℕ} {mu : Fin n → ℤ} (hmu : Dominant mu) 
     unfold colH
     omega
 
+/- English proof (translation)
+The claim follows from `|mu i m| ≤ ∑ i, ∑ m, |mu i m| := by calc |mu i m| ≤ ∑ m, |mu i m| := Finset.single_le_sum (f := fun m => |mu i m|) (fun _ _ => abs_nonneg _) (mem_univ m) _ ≤ ∑ i, ∑ m, |mu i m| := Finset.single_le_sum (f := fun i => ∑ m, |mu i m|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonn …`.
+-/
 theorem abs_entry_le_total {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) (i : Fin (N + 1)) (m : Fin n) :
     |mu i m| ≤ ∑ i, ∑ m, |mu i m| := by
   calc |mu i m| ≤ ∑ m, |mu i m| := Finset.single_le_sum (f := fun m => |mu i m|) (fun _ _ => abs_nonneg _) (mem_univ m)
     _ ≤ ∑ i, ∑ m, |mu i m| :=
       Finset.single_le_sum (f := fun i => ∑ m, |mu i m|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (mem_univ i)
 
+/- English proof (translation)
+Unfold `Ican`. Rewrite using `[if_pos hc]`. Conclude with `Finset.filter_congr fun m _ => column_height_lt_iff hd c m`.
+-/
 theorem canonical_column_positive {N n : ℕ} {mu : Fin (N + 1) → Fin n → ℤ} (hd : Dominant (pEnd mu)) {c : ℤ} (hc : 1 ≤ c) :
     Ican mu c = univ.filter fun m => c ≤ pEnd mu m := by
   unfold Ican; rw [if_pos hc]
   exact Finset.filter_congr fun m _ => column_height_lt_iff hd c m
 
+/- English proof (translation)
+Unfold `Ican`. Rewrite using `[if_neg hc]`. Use `Finset.filter_congr fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← column_height_lt_iff hd c m, not_lt]`.
+-/
 theorem canonical_column_nonpositive {N n : ℕ} {mu : Fin (N + 1) → Fin n → ℤ} (hd : Dominant (pEnd mu)) {c : ℤ} (hc : ¬ 1 ≤ c) :
     Ican mu c = univ.filter fun m => ¬ c ≤ pEnd mu m := by
   unfold Ican; rw [if_neg hc]
   refine Finset.filter_congr fun m _ => ?_
   rw [← column_height_lt_iff hd c m, not_lt]
 
+/- English proof (translation)
+Unfold `tabCol`. Distinguish the cases in `hc : 1 ≤ c`. Rewrite using `[if_pos hc, canonical_column_positive hd hc]`. Rewrite using `[if_neg hc, canonical_column_nonpositive hd hc]`. Use extensionality with `m`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tableau_column_canonical_eq {N n : ℕ} {mu : Fin (N + 1) → Fin n → ℤ} (hd : Dominant (pEnd mu)) (c : ℤ) :
     tabCol (Ican mu) c = univ.filter fun m => c ≤ pEnd mu m := by
   unfold tabCol
@@ -98,6 +145,21 @@ theorem tableau_column_canonical_eq {N n : ℕ} {mu : Fin (N + 1) → Fin n → 
   · rw [if_neg hc, canonical_column_nonpositive hd hc]
     ext m; simp
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Establish `hT` using `fun m => abs_entry_le_total mu (Fin.last N) m`. Simplify using `only [colRange, Finset.mem_Icc, not_and_or, not_le] at hc`. Distinguish the cases in `h1 : 1 ≤ c`.
+
+Rewrite using `[canonical_column_positive hd h1]`. Use `Finset.filter_eq_empty_iff.2 fun m _ => ?_` and prove the remaining obligations. Use `hT m` as an intermediate fact. Establish `h2` using `le_abs_self (mu (Fin.last N) m)`. Establish `h0 : (0 : ℤ) ≤ ∑ i, ∑ m, |mu i m|` using `(abs_nonneg _).trans this`.
+
+Unfold `pEnd`. Apply the tactic sequence `rcases hc with hc | hc <;> omega`. Rewrite using `[canonical_column_nonpositive hd h1]`. Use `Finset.filter_eq_empty_iff.2 fun m _ => ?_` and prove the remaining obligations. Use `hT m` as an intermediate fact.
+
+Establish `h2` using `neg_abs_le (mu (Fin.last N) m)`. Establish `h0 : (0 : ℤ) ≤ ∑ i, ∑ m, |mu i m|` using `(abs_nonneg _).trans this`. Unfold `pEnd`. Apply the tactic sequence `rcases hc with hc | hc <;> omega`. Introduce `c`.
+
+Distinguish the cases in `h1 : 1 ≤ c`. Rewrite using `[canonical_column_positive hd h1, if_pos h1]`. Both sides reduce to the same expression. Rewrite using `[canonical_column_nonpositive hd h1, if_neg h1]`. Use `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun m => c ≤ pEnd mu m)` as an intermediate fact.
+
+Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Unfold `colH`. Use linear arithmetic over natural numbers and integers. Introduce `c t`. Rewrite using `[tableau_column_canonical_eq hd, tableau_column_canonical_eq hd]`.
+
+Use `Finset.card_le_card (Finset.filter_subset_filter _ ?_)` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hm.1, by omega⟩`.
+-/
 theorem canonical_tableau_standard {N n : ℕ} {mu : Fin (N + 1) → Fin n → ℤ} (hd : Dominant (pEnd mu)) : IsSt mu (Ican mu) := by
   refine ⟨?_, ?_, ?_⟩
   · intro c hc
@@ -152,6 +214,21 @@ def dividedPowerSum (sg : ι → R) (src dst : ι → σ) (s : Finset ι) (k : �
 def dividedPowerDerivation (sg : ι → R) (src dst : ι → σ) (l : ι) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=
   sg l • ((LinearMap.mulLeft R (X (dst l))) ∘ₗ (pderiv (src l)).toLinearMap)
 
+/- English proof (translation)
+Establish `h1 : Finsupp.mapDomain src f (src l) = f l` using `Finsupp.mapDomain_apply hs f l`. Establish `h2 : ∀ g : ι →₀ ℕ, Finsupp.mapDomain dst g (src l) = 0` using `fun g => Finsupp.mapDomain_of_notMem_range _ _ (by rintro ⟨l', h⟩; exact hd l l' h)`. Establish `hexp : Finsupp.single (dst l) 1 + (dividedPowerShiftedExponent src dst m f - Finsupp.single (src l) 1) = dividedPowerShiftedExponent src dst m (f + Finsupp.single l 1)`. Use extensionality with `v`. Simplify using `only [dividedPowerShiftedExponent, Finsupp.mapDomain_add, Finsupp.mapDomain_single, Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply]`.
+
+Distinguish the cases in `hv : src l = v`. Substitute `hv` using the available equality. Establish `h3` using `hd l l`. Simplify using `only [h1, h2, h3, if_true, if_false]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [hv, if_false]`. Use linear arithmetic over natural numbers and integers. Establish `he : dividedPowerShiftedExponent src dst m f (src l) = m (src l) - f l`. Simplify using `[dividedPowerShiftedExponent, h1, h2]`. Establish `hcf : sg l * (dividedPowerCoeff sg src s m f * ((dividedPowerShiftedExponent src dst m f (src l) : ℕ) : R)) = ((f l + 1 : ℕ) : R) * dividedPowerCoeff sg src s m (f + Finsupp.single l 1)`.
+
+Rewrite using `[he]`. Unfold `dividedPowerCoeff`. Rewrite using `[← Finset.mul_prod_erase s _ hl, ← Finset.mul_prod_erase s _ hl]`. Establish `h4 : ∏ x ∈ s.erase l, sg x ^ ((f + Finsupp.single l 1 : ι →₀ ℕ) x) * ((m (src x)).choose ((f + Finsupp.single l 1 : ι →₀ ℕ) x) : R) = ∏ x ∈ s.erase l, sg x ^ (f x) * ((m (src x)).choose (f x) : R)`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `x hx`. Establish `hx' : x ≠ l` using `(Finset.mem_erase.1 hx).1`. Simplify using `[hx'.symm]`. Rewrite using `[h4]`. Establish `hc : ((m (src l)).choose (f l + 1) : R) * ((f l + 1 : ℕ) : R) = ((m (src l)).choose (f l) : R) * ((m (src l) - f l : ℕ) : R)`.
+
+Conclude with `congrArg (Nat.cast (R := R)) (Nat.choose_succ_right_eq (m (src l)) (f l))` after adjusting the coercions. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, pow_succ]`. Generalize the expression as in `(∏ x ∈ s.erase l, sg x ^ (f x) * ((m (src x)).choose (f x) : R)) = Er`. Take the linear combination `(-(sg l ^ f l * sg l * Er)) * hc`. Simplify using `only [dividedPowerDerivation, dividedPowerTerm, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, pderiv_monomial]`.
+
+Rewrite using `[X, monomial_mul, hexp, one_mul, smul_monomial, smul_eq_mul, hcf, ← nsmul_eq_mul, map_nsmul]`.
+-/
 theorem derivation_divided_power_term (sg : ι → R) (src dst : ι → σ) (hs : Function.Injective src) (hd : ∀ l l', dst l' ≠ src l)
     (s : Finset ι) (m : σ →₀ ℕ) (f : ι →₀ ℕ) (l : ι) (hl : l ∈ s) :
     dividedPowerDerivation sg src dst l (dividedPowerTerm sg src dst s m f) =
@@ -197,6 +274,31 @@ theorem derivation_divided_power_term (sg : ι → R) (src dst : ι → σ) (hs 
     Derivation.coeFn_coe, pderiv_monomial]
   rw [X, monomial_mul, hexp, one_mul, smul_monomial, smul_eq_mul, hcf, ← nsmul_eq_mul, map_nsmul]
 
+/- English proof (translation)
+Establish `hone : s.sum (Finsupp.single l 1 : ι →₀ ℕ) = 1`. Simplify using `[Finsupp.single_apply, hl]`. Rewrite using `[← Finset.sum_filter_of_ne (p := fun g : ι →₀ ℕ => g l ≠ 0) (fun g _ h h0 => h (by rw [h0, zero_smul]))]`. Use `Finset.sum_nbij' (fun g => g - Finsupp.single l 1) (fun f => f + Finsupp.single l 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Rewrite `hg` using `[Finset.mem_filter, Finset.mem_finsuppAntidiag]`. Take `⟨⟨hsum, hsup⟩, hne⟩` from `hg`. Establish `hle : Finsupp.single l 1 ≤ g`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hg' : g = (g - Finsupp.single l 1) + Finsupp.single l 1` using `(tsub_add_cancel_of_le hle).symm`. Rewrite using `[Finset.mem_finsuppAntidiag]`. Prove the components needed by the constructor for the conclusion. Establish `: s.sum g = s.sum (g - Finsupp.single l 1 : ι →₀ ℕ) + s.sum (Finsupp.single l 1 : ι →₀ ℕ)` using `by conv_lhs => rw [hg', Finsupp.coe_add]`. Conclude with `Finset.sum_add_distrib`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `x hx`. Apply `hsup` to reduce the goal to its premises. Rewrite `hx`, the goal using `[Finsupp.mem_support_iff]`. Introduce `h0`.
+
+Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`. Introduce `f hf`. Rewrite `hf` using `[Finset.mem_finsuppAntidiag]`. Rewrite using `[Finset.mem_filter, Finset.mem_finsuppAntidiag]`.
+
+Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: s.sum (f + Finsupp.single l 1 : ι →₀ ℕ) = s.sum f + s.sum (Finsupp.single l 1 : ι →₀ ℕ)`. Rewrite using `[Finsupp.coe_add]`. Conclude with `Finset.sum_add_distrib`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `x hx`. Distinguish the cases in `hxl : x = l`. Rewrite using `[hxl]`. Conclude with `hl`. Apply `hf.2` to reduce the goal to its premises.
+
+Rewrite `hx`, the goal using `[Finsupp.mem_support_iff]`. Simplify `hx` using `[Finsupp.single_apply, Ne.symm hxl]`. Simplify using the standard rewrite rules. Introduce `g hg`. Rewrite `hg` using `[Finset.mem_filter]`.
+
+Establish `hle : Finsupp.single l 1 ≤ g`. Rewrite using `[Finsupp.single_le_iff]`. Use `hg.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `tsub_add_cancel_of_le hle`.
+
+Introduce `f _`. Conclude with `add_tsub_cancel_right _ _`. Introduce `g hg`. Rewrite `hg` using `[Finset.mem_filter]`. Establish `hle : Finsupp.single l 1 ≤ g`.
+
+Rewrite using `[Finsupp.single_le_iff]`. Use `hg.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1 : (g - Finsupp.single l 1 : ι →₀ ℕ) l + 1 = g l`. Use `hg.2` as an intermediate fact.
+
+Simplify using `only [Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, tsub_add_cancel_of_le hle]`.
+-/
 theorem antidiagonal_sum_reindex {N : Type*} [AddCommMonoid N] (s : Finset ι) (k : ℕ) (l : ι) (hl : l ∈ s)
     (F : (ι →₀ ℕ) → N) :
     ∑ g ∈ Finset.finsuppAntidiag s (k + 1), (g l) • F g =
@@ -256,6 +358,11 @@ theorem antidiagonal_sum_reindex {N : Type*} [AddCommMonoid N] (s : Finset ι) (
       simp only [Finsupp.tsub_apply, Finsupp.single_eq_same]; omega
     rw [h1, tsub_add_cancel_of_le hle]
 
+/- English proof (translation)
+Simplify using `only [LinearMap.sum_apply, dividedPowerSum, map_sum]`. Establish `h1 : ∀ l ∈ s, ∑ f ∈ Finset.finsuppAntidiag s k, dividedPowerDerivation sg src dst l (dividedPowerTerm sg src dst s m f) = ∑ g ∈ Finset.finsuppAntidiag s (k + 1), (g l) • dividedPowerTerm sg src dst s m g`. Introduce `l hl`. Rewrite using `[antidiagonal_sum_reindex s k l hl]`. Conclude with `Finset.sum_congr rfl fun f _ => derivation_divided_power_term sg src dst hs hd s m f l hl`.
+
+Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl h1, Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, (Finset.mem_finsuppAntidiag.1 hg).1]`.
+-/
 theorem derivation_sum_divided_power (sg : ι → R) (src dst : ι → σ) (hs : Function.Injective src) (hd : ∀ l l', dst l' ≠ src l)
     (s : Finset ι) (m : σ →₀ ℕ) (k : ℕ) :
     (∑ l ∈ s, dividedPowerDerivation sg src dst l) (dividedPowerSum sg src dst s k m) = (k + 1) • dividedPowerSum sg src dst s (k + 1) m := by
@@ -270,6 +377,9 @@ theorem derivation_sum_divided_power (sg : ι → R) (src dst : ι → σ) (hs :
   refine Finset.sum_congr rfl fun g hg => ?_
   rw [← Finset.sum_smul, (Finset.mem_finsuppAntidiag.1 hg).1]
 
+/- English proof (translation)
+Simplify using `[dividedPowerSum, dividedPowerTerm, dividedPowerShiftedExponent, dividedPowerCoeff]`.
+-/
 theorem divided_power_sum_zero (sg : ι → R) (src dst : ι → σ) (s : Finset ι) (m : σ →₀ ℕ) :
     dividedPowerSum sg src dst s 0 m = monomial m 1 := by
   simp [dividedPowerSum, dividedPowerTerm, dividedPowerShiftedExponent, dividedPowerCoeff]
@@ -286,11 +396,19 @@ def dividedPowerTarget (LL : Letters ι) (a b : Fin n) (l : ι) : ι × Fin n :=
 
 def dividedPowerSign (R : Type*) [CommRing R] (LL : Letters ι) (l : ι) : R := if LL.vec l then 1 else -1
 
+/- English proof (translation)
+Introduce `l l' h`. Establish `: (dividedPowerSource LL a b l).1 = (dividedPowerSource LL a b l').1` using `by rw [h]`. Simplify `this` using `[dividedPowerSource, apply_ite Prod.fst]`.
+-/
 theorem divided_power_source_injective (LL : Letters ι) (a b : Fin n) : Function.Injective (dividedPowerSource LL a b) := by
   intro l l' h
   have : (dividedPowerSource LL a b l).1 = (dividedPowerSource LL a b l').1 := by rw [h]
   simpa [dividedPowerSource, apply_ite Prod.fst] using this
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (dividedPowerTarget LL a b l').1 = (dividedPowerSource LL a b l).1` using `by rw [h]`. Establish `h2 : l' = l` using `by simpa [dividedPowerSource, dividedPowerTarget, apply_ite Prod.fst] using h1`. Substitute `h2` using the available equality. Distinguish the cases in `hv : LL.vec l' = true`.
+
+Simplify using `[dividedPowerSource, dividedPowerTarget, hv, hab] at h`. Simplify using `[dividedPowerSource, dividedPowerTarget, hv, hab.symm] at h`.
+-/
 theorem divided_power_target_ne_source (LL : Letters ι) (a b : Fin n) (hab : a ≠ b) (l l' : ι) :
     dividedPowerTarget LL a b l' ≠ dividedPowerSource LL a b l := by
   intro h
@@ -302,6 +420,11 @@ theorem divided_power_target_ne_source (LL : Letters ι) (a b : Fin n) (hab : a 
   · simp [dividedPowerSource, dividedPowerTarget, hv, hab.symm] at h
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter]`. Unfold `glAct`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hS : l ∈ S`. Apply the tactic sequence `by_cases hv : LL.vec l = true <;> simp [hS, hv, dividedPowerDerivation, dividedPowerSign, dividedPowerSource, dividedPowerTarget]`.
+
+Simplify using `[hS]`.
+-/
 theorem gl_action_eq_sum_derivations (LL : Letters ι) (S : Set ι) (a b : Fin n) :
     glAct R LL S a b = ∑ l ∈ Finset.univ.filter (· ∈ S),
       dividedPowerDerivation (dividedPowerSign R LL) (dividedPowerSource LL a b) (dividedPowerTarget LL a b) l := by
@@ -313,6 +436,13 @@ theorem gl_action_eq_sum_derivations (LL : Letters ι) (S : Set ι) (a b : Fin n
   · simp [hS]
 
 open Classical in
+/- English proof (translation)
+Unfold `divPowMono dividedPowerSum dividedPowerTerm`. Use `Finset.sum_congr rfl fun f hf => ?_` and prove the remaining obligations. Establish `hsup` using `(Finset.mem_finsuppAntidiag.1 hf).2`. Establish `he : ((m - ∑ l ∈ f.support, Finsupp.single (if LL.vec l then (l, b) else (l, a)) (f l)) + ∑ l ∈ f.support, Finsupp.single (if LL.vec l then (l, a) else (l, b)) (f l)) = dividedPowerShiftedExponent (dividedPowerSource LL a b) (dividedPowerTarget LL a b) m f` using `rfl`. Establish `hc : (∏ l ∈ f.support, (if LL.vec l then ((m (l, b)).choose (f l) : R) else (-1 : R) ^ (f l) * ((m (l, a)).choose (f l) : R))) = dividedPowerCoeff (dividedPowerSign R LL) (dividedPowerSource LL a b) (Finset.univ.filter (· ∈ S)) m f`.
+
+Unfold `dividedPowerCoeff`. Rewrite using `[← Finset.prod_subset hsup]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hv : LL.vec l = true <;> simp [hv, dividedPowerSign, dividedPowerSource]`. Introduce `l _ hl`.
+
+Establish `: f l = 0` using `by simpa using hl`. Simplify using `[this]`. Rewrite using `[he, hc]`.
+-/
 theorem divided_power_monomial_eq_sum (LL : Letters ι) (S : Set ι) (a b : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) :
     divPowMono R LL S a b k m =
       dividedPowerSum (dividedPowerSign R LL) (dividedPowerSource LL a b) (dividedPowerTarget LL a b) (Finset.univ.filter (· ∈ S)) k m := by
@@ -334,6 +464,9 @@ theorem divided_power_monomial_eq_sum (LL : Letters ι) (S : Set ι) (a b : Fin 
       simp [this]
   rw [he, hc]
 
+/- English proof (translation)
+Use `(MvPolynomial.basisMonomials (ι × Fin n) R).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, divPow, Module.Basis.constr_basis]`. Rewrite using `[divided_power_monomial_eq_sum, divided_power_monomial_eq_sum, gl_action_eq_sum_derivations]`. Conclude with `derivation_sum_divided_power _ _ _ (divided_power_source_injective LL a b) (divided_power_target_ne_source LL a b hab) _ m k`.
+-/
 theorem gl_action_comp_divided_power (LL : Letters ι) (S : Set ι) (a b : Fin n) (hab : a ≠ b) (k : ℕ) :
     glAct R LL S a b ∘ₗ divPow R LL S a b k = (k + 1) • divPow R LL S a b (k + 1) := by
   classical
@@ -342,12 +475,18 @@ theorem gl_action_comp_divided_power (LL : Letters ι) (S : Set ι) (a b : Fin n
   rw [divided_power_monomial_eq_sum, divided_power_monomial_eq_sum, gl_action_eq_sum_derivations]
   exact derivation_sum_divided_power _ _ _ (divided_power_source_injective LL a b) (divided_power_target_ne_source LL a b hab) _ m k
 
+/- English proof (translation)
+Use `(MvPolynomial.basisMonomials (ι × Fin n) R).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [divPow, Module.Basis.constr_basis, LinearMap.id_apply]`. Rewrite using `[divided_power_monomial_eq_sum, divided_power_sum_zero, coe_basisMonomials]`.
+-/
 theorem divided_power_zero (LL : Letters ι) (S : Set ι) (a b : Fin n) : divPow R LL S a b 0 = LinearMap.id := by
   classical
   refine (MvPolynomial.basisMonomials (ι × Fin n) R).ext fun m => ?_
   simp only [divPow, Module.Basis.constr_basis, LinearMap.id_apply]
   rw [divided_power_monomial_eq_sum, divided_power_sum_zero, coe_basisMonomials]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [divided_power_zero]`. Both sides reduce to the same expression. Consider the case `succ k ih`. Rewrite using `[pow_succ', ih, mul_smul_comm, Module.End.mul_eq_comp, gl_action_comp_divided_power LL S a b hab k, smul_smul, Nat.factorial_succ, mul_comm]`.
+-/
 theorem gl_action_pow_eq_factorial_smul (LL : Letters ι) (S : Set ι) (a b : Fin n) (hab : a ≠ b) (k : ℕ) :
     (glAct R LL S a b : Module.End R (MvPolynomial (ι × Fin n) R)) ^ k = k.factorial • divPow R LL S a b k := by
   induction k with
@@ -358,10 +497,18 @@ theorem gl_action_pow_eq_factorial_smul (LL : Letters ι) (S : Set ι) (a b : Fi
 
 end a1dpCon
 
+/- English proof (translation)
+Consider the cases of `P`. Consider the cases of `Q`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem positive_path_ext {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {P Q : PPath n N LL B} (h : P.mu = Q.mu) :
     P = Q := by
   cases P; cases Q; cases h; rfl
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp [Kcol, extOne, Finset.eq_empty_of_isEmpty J]`. Consider the case `succ j ih`. Simplify using `only [Kcol]`. Use `split_ifs with h`.
+
+Simplify `ih` using `[colStep, colH]`. Conclude with `ih`.
+-/
 theorem column_kernel_fin_zero {R : Type*} [CommRing R] {N : ℕ} (mu : Fin (N + 1) → Fin 0 → ℤ) (c : ℤ) (j : ℕ)
     (J : Finset (Fin 0)) : Kcol R mu c j J = 1 := by
   induction j with
@@ -372,10 +519,18 @@ theorem column_kernel_fin_zero {R : Type*} [CommRing R] {N : ℕ} (mu : Fin (N +
     · simpa [colStep, colH] using ih
     · exact ih
 
+/- English proof (translation)
+Simplify using `[Psi, column_kernel_fin_zero]`.
+-/
 theorem Psi_fin_zero {R : Type*} [CommRing R] {N : ℕ} (mu : Fin (N + 1) → Fin 0 → ℤ) (I : ℤ → Finset (Fin 0)) :
     Psi R mu I = 1 := by
   simp [Psi, column_kernel_fin_zero]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[Psi_fin_zero]`. Conclude with `one_ne_zero`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `hli` using `(h17 R N n LL B).1`.
+
+Use `hli.ne_zero (⟨(P, Ican P.mu), canonical_tableau_standard (P.dom _)⟩ : {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2})` as an intermediate fact. Conclude with `this`.
+-/
 theorem canonical_Psi_ne_zero_of_path_basis (D : Formalism.BasicNotions.D7) (h17 : PathBasisOverRing D) (R : Type) [CommRing R] [Nontrivial R] {N n : ℕ}
     {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B) : Psi R P.mu (Ican P.mu) ≠ 0 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -386,6 +541,11 @@ theorem canonical_Psi_ne_zero_of_path_basis (D : Formalism.BasicNotions.D7) (h17
       {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2})
     exact this
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: Subsingleton {P : PPath 0 N LL B // pEnd P.mu = mu}` using `⟨fun P Q => Subtype.ext (positive_path_ext (funext fun i => funext fun a => a.elim0))⟩`. Rewrite using `[linearIndependent_subsingleton_index_iff]`. Introduce `P`. Rewrite using `[Psi_fin_zero]`.
+
+Conclude with `one_ne_zero`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Use `((h17 F N n LL B).1).comp (fun P : {P : PPath n N LL B // pEnd P.mu = mu} => (⟨(P.1, Ican P.1.mu), canonical_tableau_standard (P.1.dom _)⟩ : {x : PPath n N LL B × (ℤ → Finset (Fin n)) // IsSt x.1.mu x.2})) ?_` and prove the remaining obligations. Introduce `P Q h`. Conclude with `Subtype.ext (congrArg (fun x => x.1.1) h)`.
+-/
 theorem canonical_Psi_linear_independent (D : Formalism.BasicNotions.D7) (h17 : PathBasisOverRing D) (F : Type) [Field F] {N n : ℕ}
     (LL : Letters (Fin N)) (B : Fin N → ℕ) (mu : Fin n → ℤ) :
     LinearIndependent F (fun P : {P : PPath n N LL B // pEnd P.mu = mu} => Psi F P.1.mu (Ican P.1.mu)) := by
@@ -403,6 +563,9 @@ theorem canonical_Psi_linear_independent (D : Formalism.BasicNotions.D7) (h17 : 
     intro P Q h
     exact Subtype.ext (congrArg (fun x => x.1.1) h)
 
+/- English proof (translation)
+Establish `: monomial m c = c • (MvPolynomial.basisMonomials (ι × Fin n) R) m`. Rewrite using `[coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, divPow, Module.Basis.constr_basis]`.
+-/
 theorem divPow_monomial_eq_smul {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a b : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) (c : R) :
     divPow R LL S a b k (monomial m c) = c • divPowMono R LL S a b k m := by
@@ -410,6 +573,11 @@ theorem divPow_monomial_eq_smul {R : Type*} [CommRing R] {ι : Type*} [Fintype �
     rw [coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]
   rw [this, map_smul, divPow, Module.Basis.constr_basis]
 
+/- English proof (translation)
+Unfold `divPowMono`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, map_prod]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_divided_power_monomial {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {ι : Type*} [Fintype ι] {n : ℕ}
     (LL : Letters ι) (S : Set ι) (a b : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) :
     MvPolynomial.map φ (divPowMono R LL S a b k m) = divPowMono R' LL S a b k m := by
@@ -422,6 +590,9 @@ theorem map_divided_power_monomial {R R' : Type*} [CommRing R] [CommRing R'] (φ
   refine Finset.prod_congr rfl fun l _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Rewrite using `[divPow_monomial_eq_smul, MvPolynomial.map_monomial, divPow_monomial_eq_smul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_divided_power_monomial, MvPolynomial.smul_eq_C_mul]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`.
+-/
 theorem map_divided_power {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+* R') {ι : Type*} [Fintype ι] {n : ℕ}
     (LL : Letters ι) (S : Set ι) (a b : Fin n) (k : ℕ) (G : MvPolynomial (ι × Fin n) R) :
     MvPolynomial.map φ (divPow R LL S a b k G) = divPow R' LL S a b k (MvPolynomial.map φ G) := by
@@ -431,6 +602,11 @@ theorem map_divided_power {R R' : Type*} [CommRing R] [CommRing R'] (φ : R →+
       MvPolynomial.map_C, map_divided_power_monomial, MvPolynomial.smul_eq_C_mul]
   | add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]
 
+/- English proof (translation)
+Establish `h1 : ((glAct ℤ LL S a b : Module.End ℤ (MvPolynomial (ι × Fin n) ℤ)) ^ k) G = 0`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[pow_succ, Module.End.mul_apply, hG, map_zero]`. Rewrite `h1` using `[gl_action_pow_eq_factorial_smul LL S a b hab k, LinearMap.smul_apply]`. Establish `h2 : divPow ℤ LL S a b k G = 0`.
+
+Break down `smul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h (Nat.factorial_ne_zero k)`. Conclude with `h`. Rewrite using `[← map_divided_power, h2, map_zero]`.
+-/
 theorem divided_power_zero_of_gl_action_zero {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι) (a b : Fin n) (hab : a ≠ b)
     (G : MvPolynomial (ι × Fin n) ℤ) (hG : glAct ℤ LL S a b G = 0) (R : Type*) [CommRing R] (k : ℕ) (hk : 1 ≤ k) :
     divPow R LL S a b k (MvPolynomial.map (Int.castRingHom R) G) = 0 := by
@@ -451,9 +627,19 @@ variable {n : ℕ} {P : Type*} [CommRing P]
 def exteriorSign (P : Type*) [CommRing P] {n : ℕ} (J : Finset (Fin n)) (m : Fin n) : P :=
   (-1) ^ (J.filter fun j => m < j).card
 
+/- English proof (translation)
+Unfold `exteriorSign`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem exterior_sign_mul_self (J : Finset (Fin n)) (m : Fin n) : exteriorSign P J m * exteriorSign P J m = 1 := by
   unfold exteriorSign; rw [← pow_add, ← two_mul, pow_mul]; simp
 
+/- English proof (translation)
+Unfold `exteriorSign`. Establish `e : (J.erase a).filter (fun j => b < j) = (J.filter fun j => b < j).erase a`. Use extensionality with `x`. Simplify using `only [mem_filter, mem_erase]`. The claim follows by propositional logic.
+
+Rewrite using `[e]`. Use `split_ifs with h`. Establish `hm : a ∈ J.filter fun j => b < j` using `mem_filter.2 h`. Establish `hc` using `Finset.card_erase_add_one hm`. Rewrite using `[← hc, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.erase_eq_of_notMem (by rw [mem_filter]; exact h), one_mul]`.
+-/
 theorem exterior_sign_erase (a b : Fin n) (J : Finset (Fin n)) :
     exteriorSign P (J.erase a) b = (if a ∈ J ∧ b < a then -1 else 1) * exteriorSign P J b := by
   unfold exteriorSign
@@ -466,6 +652,11 @@ theorem exterior_sign_erase (a b : Fin n) (J : Finset (Fin n)) :
     rw [← hc, pow_succ]; ring
   · rw [Finset.erase_eq_of_notMem (by rw [mem_filter]; exact h), one_mul]
 
+/- English proof (translation)
+Unfold `exteriorSign`. Distinguish the cases in `ha : a ∈ J`. Rewrite using `[Finset.insert_eq_of_mem ha]`. Simplify using `[ha]`. Rewrite using `[Finset.filter_insert]`.
+
+Distinguish the cases in `hb : b < a`. Rewrite using `[if_pos hb, Finset.card_insert_of_notMem (by simp [ha]), if_pos ⟨ha, hb⟩, pow_succ]; ring`. Rewrite using `[if_neg hb, if_neg (by tauto), one_mul]`.
+-/
 theorem exterior_sign_insert (a b : Fin n) (J : Finset (Fin n)) :
     exteriorSign P (insert a J) b = (if a ∉ J ∧ b < a then -1 else 1) * exteriorSign P J b := by
   unfold exteriorSign
@@ -486,17 +677,35 @@ def exteriorContraction (P : Type*) [CommRing P] {n : ℕ} (m : Fin n) : Module.
   map_add' K K' := by funext J; simp only [Pi.add_apply]; split_ifs <;> ring
   map_smul' c K := by funext J; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; split_ifs <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem exterior_wedge_apply (m : Fin n) (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
     exteriorWedge P m K J = if m ∈ J then exteriorSign P J m * K (J.erase m) else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem exterior_contraction_apply (m : Fin n) (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
     exteriorContraction P m K J = if m ∈ J then 0 else exteriorSign P J m * K (insert m J) := rfl
 
+/- English proof (translation)
+Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Rewrite using `[if_neg (not_lt.2 h.le), if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos h, if_neg (not_lt.2 h.le)]`.
+-/
 theorem sign_flip_of_ne {a b : Fin n} (hab : a ≠ b) : (if b < a then (-1 : P) else 1) = -(if a < b then (-1 : P) else 1) := by
   rcases lt_or_gt_of_ne hab with h | h
   · rw [if_neg (not_lt.2 h.le), if_pos h]; ring
   · rw [if_pos h, if_neg (not_lt.2 h.le)]
 
+/- English proof (translation)
+Use `LinearMap.ext fun K => funext fun J => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, exterior_wedge_apply, exterior_contraction_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Distinguish the cases in `ha : a ∈ J`. Simplify using `only [ha, if_true, Finset.mem_erase, ne_eq, not_true_eq_false, false_and, if_false, exterior_sign_erase, lt_self_iff_false, and_false, one_mul, Finset.insert_erase ha, add_zero, ← mul_assoc, exterior_sign_mul_self, Module.End.one_apply]`. Simplify using `only [ha, if_false, Finset.mem_insert, true_or, if_true, exterior_sign_insert, lt_self_iff_false, and_false, one_mul, Finset.erase_insert ha, zero_add, ← mul_assoc, exterior_sign_mul_self, Module.End.one_apply]`. Rewrite using `[if_neg hab]`. Establish `hba : b ≠ a` using `fun h => hab h.symm`.
+
+Apply the tactic sequence `by_cases ha : a ∈ J <;> by_cases hb : b ∈ J`. Simplify using `[ha, hb, hba]`. Establish `e : (insert b J).erase a = insert b (J.erase a)` using `Finset.erase_insert_of_ne hba`. Simplify using `only [ha, hb, if_true, if_false, Finset.mem_erase, Finset.mem_insert, and_false, or_true, exterior_sign_erase, exterior_sign_insert, true_and, not_false_eq_true, e, sign_flip_of_ne hab, LinearMap.zero_apply, Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[ha, hb]`. Simplify using `[ha, hb, hab]`.
+-/
 theorem wedge_contraction_anticommute (a b : Fin n) :
     exteriorWedge P a * exteriorContraction P b + exteriorContraction P b * exteriorWedge P a = if a = b then 1 else 0 := by
   refine LinearMap.ext fun K => funext fun J => ?_
@@ -522,6 +731,13 @@ theorem wedge_contraction_anticommute (a b : Fin n) :
     · simp [ha, hb]
     · simp [ha, hb, hab]
 
+/- English proof (translation)
+Use `LinearMap.ext fun K => funext fun J => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.neg_apply, Module.End.mul_apply, Pi.neg_apply, exterior_wedge_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hba : b ≠ a` using `fun h => hab h.symm`. Apply the tactic sequence `by_cases ha : a ∈ J <;> by_cases hb : b ∈ J`. Simplify using `only [ha, hb, if_true, Finset.mem_erase, ne_eq, hab, hba, not_false_eq_true, and_self, exterior_sign_erase, true_and, Finset.erase_right_comm (a := a) (b := b), sign_flip_of_ne hab]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[ha, hb]`.
+
+Simplify using `[ha, hb]`. Simplify using `[ha, hb]`.
+-/
 theorem wedge_anticommute (a b : Fin n) : exteriorWedge P a * exteriorWedge P b = -(exteriorWedge P b * exteriorWedge P a) := by
   refine LinearMap.ext fun K => funext fun J => ?_
   simp only [LinearMap.neg_apply, Module.End.mul_apply, Pi.neg_apply, exterior_wedge_apply]
@@ -536,6 +752,13 @@ theorem wedge_anticommute (a b : Fin n) : exteriorWedge P a * exteriorWedge P b 
     · simp [ha, hb]
     · simp [ha, hb]
 
+/- English proof (translation)
+Use `LinearMap.ext fun K => funext fun J => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.neg_apply, Module.End.mul_apply, Pi.neg_apply, exterior_contraction_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hba : b ≠ a` using `fun h => hab h.symm`. Apply the tactic sequence `by_cases ha : a ∈ J <;> by_cases hb : b ∈ J`. Simplify using `[ha, hb]`. Simplify using `[ha, hb]`. Simplify using `[ha, hb]`.
+
+Simplify using `only [ha, hb, if_false, Finset.mem_insert, hab, hba, or_self, exterior_sign_insert, true_and, not_false_eq_true, Finset.insert_comm a b, sign_flip_of_ne hab]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem contraction_anticommute (a b : Fin n) : exteriorContraction P a * exteriorContraction P b = -(exteriorContraction P b * exteriorContraction P a) := by
   refine LinearMap.ext fun K => funext fun J => ?_
   simp only [LinearMap.neg_apply, Module.End.mul_apply, Pi.neg_apply, exterior_contraction_apply]
@@ -550,6 +773,13 @@ theorem contraction_anticommute (a b : Fin n) : exteriorContraction P a * exteri
         true_and, not_false_eq_true, Finset.insert_comm a b, sign_flip_of_ne hab]
       ring
 
+/- English proof (translation)
+Establish `h1 : exteriorContraction P a * exteriorWedge P m = (if m = a then 1 else 0) - exteriorWedge P m * exteriorContraction P a`. Rewrite using `[← wedge_contraction_anticommute m a]`. Normalize the expressions using the abelian group laws. Establish `h2` using `wedge_anticommute (P := P) b m`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1, mul_sub, add_mul]`. Simplify using `only [mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = if a = m then exteriorWedge P b else 0 := by`. Rewrite using `[h2]`.
+
+Distinguish the cases in `h : a = m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : m ≠ a` using `fun e => h e.symm`. Simplify using `[h, h']`.
+-/
 theorem commutator_wedge (a b m : Fin n) :
     (exteriorWedge P b * exteriorContraction P a) * exteriorWedge P m - exteriorWedge P m * (exteriorWedge P b * exteriorContraction P a) = if a = m then exteriorWedge P b else 0 := by
   have h1 : exteriorContraction P a * exteriorWedge P m = (if m = a then 1 else 0) - exteriorWedge P m * exteriorContraction P a := by
@@ -565,6 +795,13 @@ theorem commutator_wedge (a b m : Fin n) :
         · have h' : m ≠ a := fun e => h e.symm
           simp [h, h']
 
+/- English proof (translation)
+Establish `h1 : exteriorContraction P m * exteriorWedge P b = (if b = m then 1 else 0) - exteriorWedge P b * exteriorContraction P m`. Rewrite using `[← wedge_contraction_anticommute b m]`. Normalize the expressions using the abelian group laws. Establish `h2` using `contraction_anticommute (P := P) a m`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1, sub_mul, mul_add]`. Simplify using `only [mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = if m = b then -exteriorContraction P a else 0 := by`. Rewrite using `[h2]`.
+
+Distinguish the cases in `h : m = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : b ≠ m` using `fun e => h e.symm`. Simplify using `[h, h']`.
+-/
 theorem commutator_contraction (a b m : Fin n) :
     (exteriorWedge P b * exteriorContraction P a) * exteriorContraction P m - exteriorContraction P m * (exteriorWedge P b * exteriorContraction P a) = if m = b then -exteriorContraction P a else 0 := by
   have h1 : exteriorContraction P m * exteriorWedge P b = (if b = m then 1 else 0) - exteriorWedge P b * exteriorContraction P m := by
@@ -580,6 +817,11 @@ theorem commutator_contraction (a b m : Fin n) :
         · have h' : b ≠ m := fun e => h e.symm
           simp [h, h']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Rewrite using `[Finset.sum_apply]`. Unfold `wedgeR`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ J)]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, exterior_wedge_apply, if_pos hm, smul_eq_mul]`. Unfold `exteriorSign`. Expand and normalize the polynomial expressions, which then agree. Introduce `m _ hm`. Rewrite using `[Pi.smul_apply, exterior_wedge_apply, if_neg hm, smul_zero]`.
+-/
 theorem right_wedge_eq_sum (x : Fin n → P) (K : Finset (Fin n) → P) : wedgeR x K = ∑ m, x m • exteriorWedge P m K := by
   funext J
   rw [Finset.sum_apply]
@@ -590,6 +832,13 @@ theorem right_wedge_eq_sum (x : Fin n → P) (K : Finset (Fin n) → P) : wedgeR
   · intro m _ hm
     rw [Pi.smul_apply, exterior_wedge_apply, if_neg hm, smul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Rewrite using `[Finset.sum_apply]`. Unfold `contrR`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (univ \ J))]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hm' : m ∉ J` using `(Finset.mem_sdiff.1 hm).2`. Rewrite using `[Pi.smul_apply, exterior_contraction_apply, if_neg hm', smul_eq_mul]`. Unfold `exteriorSign`. Expand and normalize the polynomial expressions, which then agree. Introduce `m _ hm`.
+
+Establish `hm' : m ∈ J` using `by simpa using hm`. Rewrite using `[Pi.smul_apply, exterior_contraction_apply, if_pos hm', smul_zero]`.
+-/
 theorem right_contraction_eq_sum (x : Fin n → P) (K : Finset (Fin n) → P) : contrR x K = ∑ m, x m • exteriorContraction P m K := by
   funext J
   rw [Finset.sum_apply]
@@ -606,6 +855,11 @@ end car
 
 section der
 
+/- English proof (translation)
+Establish `hK' : (fun J => D (K J)) = T K` using `funext hK`. Establish `h` using `congrFun hc J`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, LinearMap.sub_apply, Module.End.mul_apply, Pi.sub_apply] at h`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply, map_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_smul, hD, ho, hK']`.
+
+Rewrite using `[Finset.sum_add_distrib]`. Establish `h2 : ∑ m, o m K J * D (x m) = ∑ m, D (x m) * o m K J` using `Finset.sum_congr rfl fun m _ => mul_comm _ _`. Rewrite using `[h2, ← h, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`.
+-/
 theorem derivation_exterior_induction {n : ℕ} {P : Type*} [CommRing P] (D : P →+ P) (hD : ∀ u v, D (u * v) = u * D v + v * D u)
     (o : Fin n → Module.End P (Finset (Fin n) → P))
     (ho : ∀ m K J, D (o m K J) = o m (fun J => D (K J)) J) (T : Module.End P (Finset (Fin n) → P))
@@ -623,6 +877,9 @@ theorem derivation_exterior_induction {n : ℕ} {P : Type*} [CommRing P] (D : P 
   rw [h2, ← h, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun m _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `m _ hm`. Simplify using `[Ne.symm hm]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_ite_eq_left_smul {n : ℕ} {P F : Type*} [CommRing P] [AddCommGroup F] [Module P F] (x : Fin n → P) (a : Fin n)
     (A : Module.End P F) (K : F) : ∑ m, x m • ((if a = m then A else 0 : Module.End P F) K) = x a • A K := by
   rw [Finset.sum_eq_single a]
@@ -630,6 +887,9 @@ theorem sum_ite_eq_left_smul {n : ℕ} {P F : Type*} [CommRing P] [AddCommGroup 
   · intro m _ hm; simp [Ne.symm hm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `m _ hm`. Simplify using `[hm]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_ite_eq_left_smul' {n : ℕ} {P F : Type*} [CommRing P] [AddCommGroup F] [Module P F] (x : Fin n → P) (a : Fin n)
     (A : Module.End P F) (K : F) : ∑ m, x m • ((if m = a then A else 0 : Module.End P F) K) = x a • A K := by
   rw [Finset.sum_eq_single a]
@@ -637,6 +897,9 @@ theorem sum_ite_eq_left_smul' {n : ℕ} {P F : Type*} [CommRing P] [AddCommGroup
   · intro m _ hm; simp [hm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `m _ hm`. Simplify using `[hm]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_ite_eq_right_smul {n : ℕ} {P F : Type*} [CommRing P] [AddCommGroup F] [Module P F] (y : P) (b : Fin n)
     (o : Fin n → Module.End P F) (K : F) : ∑ m, (if m = b then y else 0) • o m K = y • o b K := by
   rw [Finset.sum_eq_single b]
@@ -646,6 +909,9 @@ theorem sum_ite_eq_right_smul {n : ℕ} {P F : Type*} [CommRing P] [AddCommGroup
 
 variable {R : Type*} [CommRing R] {N n : ℕ} (LL : Letters (Fin N))
 
+/- English proof (translation)
+Unfold `glAct`. Simplify using `only [LinearMap.sum_apply]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [Derivation.leibniz] <;> ring`.
+-/
 theorem gl_action_mul (S : Set (Fin N)) (a b : Fin n) (u v : MvPolynomial (Fin N × Fin n) R) :
     glAct R LL S a b (u * v) = u * glAct R LL S a b v + v * glAct R LL S a b u := by
   classical
@@ -655,6 +921,11 @@ theorem gl_action_mul (S : Set (Fin N)) (a b : Fin n) (u v : MvPolynomial (Fin N
   refine Finset.sum_congr rfl fun l _ => ?_
   split_ifs <;> simp [Derivation.leibniz] <;> ring
 
+/- English proof (translation)
+Unfold `glAct`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single l]`. Distinguish the cases in `hv : LL.vec l = true`. Apply the tactic sequence `by_cases hm : m = b <;> simp [hv, hm, pderiv_X]`. Apply the tactic sequence `by_cases hm : m = a <;> simp [hv, hm, pderiv_X]`.
+
+Introduce `l' _ hne`. Establish `hne' : l ≠ l'` using `fun e => hne e.symm`. Apply the tactic sequence `by_cases hv : LL.vec l' = true <;> simp [hv, pderiv_X, hne']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
+-/
 theorem gl_action_X (a b : Fin n) (l : Fin N) (m : Fin n) :
     glAct R LL Set.univ a b (X (l, m)) =
       if LL.vec l then (if m = b then X (l, a) else 0) else (if m = a then -X (l, b) else 0) := by
@@ -669,10 +940,16 @@ theorem gl_action_X (a b : Fin n) (l : Fin N) (m : Fin n) :
     by_cases hv : LL.vec l' = true <;> simp [hv, pderiv_X, hne']
   · intro h; exact absurd (Finset.mem_univ l) h
 
+/- English proof (translation)
+Use `gl_action_mul (R := R) LL S a b 1 1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem gl_action_one (S : Set (Fin N)) (a b : Fin n) : glAct R LL S a b 1 = 0 := by
   have := gl_action_mul (R := R) LL S a b 1 1
   simpa using this
 
+/- English proof (translation)
+Unfold `exteriorSign`. Apply the tactic sequence `rcases neg_one_pow_eq_or (MvPolynomial (Fin N × Fin n) R) (J.filter fun j => m < j).card with h | h <;>`. Apply the tactic sequence `rw [h] <;> simp`.
+-/
 theorem linear_map_exterior_sign_mul (D : MvPolynomial (Fin N × Fin n) R →ₗ[R] MvPolynomial (Fin N × Fin n) R) (J : Finset (Fin n))
     (m : Fin n) (y : MvPolynomial (Fin N × Fin n) R) :
     D (exteriorSign _ J m * y) = exteriorSign _ J m * D y := by
@@ -680,6 +957,9 @@ theorem linear_map_exterior_sign_mul (D : MvPolynomial (Fin N × Fin n) R →ₗ
   rcases neg_one_pow_eq_or (MvPolynomial (Fin N × Fin n) R) (J.filter fun j => m < j).card with h | h <;>
     rw [h] <;> simp
 
+/- English proof (translation)
+Rewrite using `[exterior_wedge_apply, exterior_wedge_apply]`. Use `split_ifs`. Conclude with `linear_map_exterior_sign_mul D J m _`. Conclude with `map_zero D`.
+-/
 theorem linear_map_exterior_wedge (D : MvPolynomial (Fin N × Fin n) R →ₗ[R] MvPolynomial (Fin N × Fin n) R) (m : Fin n)
     (K : Finset (Fin n) → MvPolynomial (Fin N × Fin n) R) (J : Finset (Fin n)) :
     D (exteriorWedge _ m K J) = exteriorWedge _ m (fun J => D (K J)) J := by
@@ -688,6 +968,9 @@ theorem linear_map_exterior_wedge (D : MvPolynomial (Fin N × Fin n) R →ₗ[R]
   · exact linear_map_exterior_sign_mul D J m _
   · exact map_zero D
 
+/- English proof (translation)
+Rewrite using `[exterior_contraction_apply, exterior_contraction_apply]`. Use `split_ifs`. Conclude with `map_zero D`. Conclude with `linear_map_exterior_sign_mul D J m _`.
+-/
 theorem linear_map_exterior_contraction (D : MvPolynomial (Fin N × Fin n) R →ₗ[R] MvPolynomial (Fin N × Fin n) R) (m : Fin n)
     (K : Finset (Fin n) → MvPolynomial (Fin N × Fin n) R) (J : Finset (Fin n)) :
     D (exteriorContraction _ m K J) = exteriorContraction _ m (fun J => D (K J)) J := by
@@ -696,6 +979,9 @@ theorem linear_map_exterior_contraction (D : MvPolynomial (Fin N × Fin n) R →
   · exact map_zero D
   · exact linear_map_exterior_sign_mul D J m _
 
+/- English proof (translation)
+Unfold `colH`. Use `Finset.card_le_card fun m hm => ?_` and prove the remaining obligations. Rewrite `hm`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hm.1, hm.2.trans (h m)⟩`.
+-/
 theorem column_height_mono {nu mu : Fin n → ℤ} (h : ∀ a, nu a ≤ mu a) (c : ℤ) : colH nu c ≤ colH mu c := by
   unfold colH
   refine Finset.card_le_card fun m hm => ?_
@@ -705,6 +991,35 @@ theorem column_height_mono {nu mu : Fin n → ℤ} (h : ∀ a, nu a ≤ mu a) (c
 def columnOperator (P : Type*) [CommRing P] {n : ℕ} (a b : Fin n) (c : ℤ) : Module.End P (Finset (Fin n) → P) :=
   if 1 ≤ c then exteriorWedge P b * exteriorContraction P a else -(exteriorWedge P a * exteriorContraction P b)
 
+/- English proof (translation)
+Proceed by induction on `j generalizing J with`. Consider the case `zero`. Establish `h0 : glAct R LL Set.univ a b (Kcol R Pa.mu c 0 J) = 0`. Simplify using `only [Kcol, extOne]`. Use `split_ifs`.
+
+Conclude with `gl_action_one LL _ a b`. Conclude with `map_zero _`. Rewrite using `[h0]`. Unfold `columnOperator`. Apply the tactic sequence `split_ifs <;> simp [Kcol, exterior_wedge_apply, exterior_contraction_apply, extOne]`.
+
+Consider the case `succ j ih`. Simplify using `only [Kcol]`. Use `split_ifs with h`. Establish `hst` using `Pa.step ⟨j, h⟩ set x := letVec (n := n) R (⟨j, h⟩ : Fin N) with hx set K := Kcol R Pa.mu c j with hKdef`. Establish `hDx : ∀ m, glAct R LL Set.univ a b (x m) = if LL.vec ⟨j, h⟩ then (if m = b then x a else 0) else (if m = a then -x b else 0)` using `fun m => gl_action_X LL a b _ m`.
+
+Establish `hmul` using `gl_action_mul (R := R) LL Set.univ a b`. Distinguish the cases in `hv : LL.vec ⟨j, h⟩ = true`. Rewrite `hst` using `[if_pos hv]`. Establish `hle : colH (Pa.mu ⟨j, by omega⟩) c ≤ colH (Pa.mu ⟨j + 1, by omega⟩) c` using `column_height_mono hst.1 c`. Simplify using `only [hv, if_true] at hDx`.
+
+Unfold `colStep`. Distinguish the cases in `hlt : colH (Pa.mu ⟨j, by omega⟩) c < colH (Pa.mu ⟨j + 1, by omega⟩) c`. Rewrite using `[if_pos hlt]`. Distinguish the cases in `hc : 1 ≤ c`. Rewrite using `[if_pos hc, right_wedge_eq_sum]`.
+
+Use `derivation_exterior_induction (glAct R LL Set.univ a b).toAddMonoidHom hmul (exteriorWedge _) (linear_map_exterior_wedge _) _ x K ih ?_ J` and prove the remaining obligations. Simplify using `only [columnOperator, if_pos hc, commutator_wedge, LinearMap.toAddMonoidHom_coe, hDx]`. Rewrite using `[sum_ite_eq_left_smul, sum_ite_eq_right_smul]`. Rewrite using `[if_neg hc, right_contraction_eq_sum]`. Use `derivation_exterior_induction (glAct R LL Set.univ a b).toAddMonoidHom hmul (exteriorContraction _) (linear_map_exterior_contraction _) _ x K ih ?_ J` and prove the remaining obligations.
+
+Establish `e : ∀ m, (-(exteriorWedge (MvPolynomial (Fin N × Fin n) R) a * exteriorContraction _ b)) * exteriorContraction _ m - exteriorContraction _ m * (-(exteriorWedge _ a * exteriorContraction _ b)) = if m = a then exteriorContraction _ b else 0`. Introduce `m`. Use `commutator_contraction (P := MvPolynomial (Fin N × Fin n) R) b a m` as an intermediate fact. Rewrite using `[neg_mul, mul_neg, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [columnOperator, if_neg hc, e, LinearMap.toAddMonoidHom_coe, hDx]`. Rewrite using `[sum_ite_eq_left_smul', sum_ite_eq_right_smul]`. Rewrite using `[if_neg hlt, if_neg (by omega)]`. Conclude with `ih J`. Rewrite `hst` using `[if_neg hv]`.
+
+Establish `hle : colH (Pa.mu ⟨j + 1, by omega⟩) c ≤ colH (Pa.mu ⟨j, by omega⟩) c` using `column_height_mono hst.1 c`. Establish `hv' : LL.vec ⟨j, h⟩ = false` using `by simpa using hv`. Simplify using `only [hv', Bool.false_eq_true, if_false] at hDx`. Unfold `colStep`. Rewrite using `[if_neg (by omega)]`.
+
+Distinguish the cases in `hlt : colH (Pa.mu ⟨j + 1, by omega⟩) c < colH (Pa.mu ⟨j, by omega⟩) c`. Rewrite using `[if_pos hlt]`. Distinguish the cases in `hc : 1 ≤ c`. Rewrite using `[if_pos hc, right_contraction_eq_sum]`. Use `derivation_exterior_induction (glAct R LL Set.univ a b).toAddMonoidHom hmul (exteriorContraction _) (linear_map_exterior_contraction _) _ x K ih ?_ J` and prove the remaining obligations.
+
+Simplify using `only [columnOperator, if_pos hc, commutator_contraction, LinearMap.toAddMonoidHom_coe, hDx]`. Rewrite using `[sum_ite_eq_left_smul', sum_ite_eq_right_smul]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, right_wedge_eq_sum]`. Use `derivation_exterior_induction (glAct R LL Set.univ a b).toAddMonoidHom hmul (exteriorWedge _) (linear_map_exterior_wedge _) _ x K ih ?_ J` and prove the remaining obligations.
+
+Establish `e : ∀ m, (-(exteriorWedge (MvPolynomial (Fin N × Fin n) R) a * exteriorContraction _ b)) * exteriorWedge _ m - exteriorWedge _ m * (-(exteriorWedge _ a * exteriorContraction _ b)) = if b = m then -exteriorWedge _ a else 0`. Introduce `m`. Use `commutator_wedge (P := MvPolynomial (Fin N × Fin n) R) b a m` as an intermediate fact. Rewrite using `[neg_mul, mul_neg, sub_neg_eq_add, neg_add_eq_sub, ← neg_sub, this]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [columnOperator, if_neg hc, e, LinearMap.toAddMonoidHom_coe, hDx]`. Rewrite using `[sum_ite_eq_left_smul, sum_ite_eq_right_smul]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hlt]`. Conclude with `ih J`.
+
+Conclude with `ih J`.
+-/
 theorem gl_action_column_kernel {B : Fin N → ℕ} (Pa : PPath n N LL B) (a b : Fin n) (c : ℤ) (j : ℕ) (J : Finset (Fin n)) :
     glAct R LL Set.univ a b (Kcol R Pa.mu c j J) = columnOperator _ a b c (Kcol R Pa.mu c j) J := by
   induction j generalizing J with
@@ -780,6 +1095,15 @@ theorem gl_action_column_kernel {B : Fin N → ℕ} (Pa : PPath n N LL B) (a b :
           exact ih J
     · exact ih J
 
+/- English proof (translation)
+Unfold `columnOperator Ican`. Distinguish the cases in `hc : 1 ≤ c`. Simplify using `only [if_pos hc, Module.End.mul_apply, exterior_wedge_apply, exterior_contraction_apply] split_ifs with h1 h2`. Rewrite using `[mul_zero]`. It suffices to derive a contradiction.
+
+Apply `h2` to reduce the goal to its premises. Rewrite `h1` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_erase, Finset.mem_filter]`. Conclude with `⟨hab.ne, mem_univ _, lt_trans (Fin.lt_def.1 hab) h1.2⟩`. Both sides reduce to the same expression.
+
+Simplify using `only [if_neg hc, LinearMap.neg_apply, Pi.neg_apply, Module.End.mul_apply, exterior_wedge_apply, exterior_contraction_apply] split_ifs with h1 h2`. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Rewrite `h1` using `[Finset.mem_filter]`.
+
+Rewrite using `[Finset.mem_erase, Finset.mem_filter]`. Conclude with `⟨hab.ne', mem_univ _, h1.2.trans (Fin.lt_def.1 hab).le⟩`. Simplify using the standard rewrite rules.
+-/
 theorem column_operator_canonical_eq_zero {P : Type*} [CommRing P] {mu : Fin (N + 1) → Fin n → ℤ} {a b : Fin n} (hab : a < b) (c : ℤ)
     (K : Finset (Fin n) → P) : columnOperator P a b c K (Ican mu c) = 0 := by
   unfold columnOperator Ican
@@ -803,6 +1127,11 @@ theorem column_operator_canonical_eq_zero {P : Type*} [CommRing P] {mu : Fin (N 
       exact ⟨hab.ne', mem_univ _, h1.2.trans (Fin.lt_def.1 hab).le⟩
     · simp
 
+/- English proof (translation)
+Unfold `Psi`. Proceed by induction on `colRange Pa.mu using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty]`. Conclude with `gl_action_one LL _ a b`. Consider the case `insert c s hc ih`.
+
+Rewrite using `[Finset.prod_insert hc, gl_action_mul, ih, gl_action_column_kernel, column_operator_canonical_eq_zero hab]`. Simplify using the standard rewrite rules.
+-/
 theorem gl_action_canonical_Psi_eq_zero {B : Fin N → ℕ} (Pa : PPath n N LL B) (a b : Fin n) (hab : a < b) :
     glAct R LL Set.univ a b (Psi R Pa.mu (Ican Pa.mu)) = 0 := by
   unfold Psi
@@ -818,6 +1147,9 @@ section wt
 
 variable {N n : ℕ} (LL : Letters (Fin N))
 
+/- English proof (translation)
+Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h : m v = 0`. Simplify using `[h]`. Establish `hle : Finsupp.single v 1 ≤ m` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h)`. Rewrite using `[X, monomial_mul, one_mul, add_tsub_cancel_of_le hle, mul_comm]`.
+-/
 theorem X_mul_pderiv_monomial_bis {R σ : Type*} [CommRing R] (v : σ) (m : σ →₀ ℕ) (c : R) :
     X v * pderiv v (monomial m c) = monomial m ((m v : R) * c) := by
   classical
@@ -827,6 +1159,11 @@ theorem X_mul_pderiv_monomial_bis {R σ : Type*} [CommRing R] (v : σ) (m : σ �
   · have hle : Finsupp.single v 1 ≤ m := Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h)
     rw [X, monomial_mul, one_mul, add_tsub_cancel_of_le hle, mul_comm]
 
+/- English proof (translation)
+Unfold `glAct wtS`. Rewrite using `[LinearMap.sum_apply, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `key` using `X_mul_pderiv_monomial_bis (R := ℤ) (l, a) m c`. Rewrite `key` using `[pderiv_monomial]`.
+
+Apply the tactic sequence `split_ifs <;> simp [key]`.
+-/
 theorem gl_action_diag_monomial (S : Set (Fin N)) (a : Fin n) (m : Fin N × Fin n →₀ ℕ) (c : ℤ) :
     glAct ℤ LL S a a (monomial m c) = monomial m (wtS LL S m a * c) := by
   classical
@@ -837,6 +1174,11 @@ theorem gl_action_diag_monomial (S : Set (Fin N)) (a : Fin n) (m : Fin N × Fin 
   rw [pderiv_monomial] at key
   split_ifs <;> simp [key]
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial m' c`. Rewrite using `[gl_action_diag_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Rewrite using `[h]`.
+
+Rewrite using `[mul_zero]`. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem coeff_gl_action_diag (S : Set (Fin N)) (a : Fin n) (m : Fin N × Fin n →₀ ℕ) (G : MvPolynomial (Fin N × Fin n) ℤ) :
     coeff m (glAct ℤ LL S a a G) = wtS LL S m a * coeff m G := by
   classical
@@ -848,12 +1190,22 @@ theorem coeff_gl_action_diag (S : Set (Fin N)) (a : Fin n) (m : Fin N × Fin n �
     · rw [mul_zero]
   | add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
+/- English proof (translation)
+Establish `h1` using `coeff_gl_action_diag LL S a m G`. Rewrite `h1` using `[h, coeff_smul, smul_eq_mul]`. Conclude with `(mul_right_cancel₀ (mem_support_iff.1 hm) h1).symm`.
+-/
 theorem weight_eq_of_eigen (S : Set (Fin N)) (a : Fin n) (G : MvPolynomial (Fin N × Fin n) ℤ) (lam : ℤ)
     (h : glAct ℤ LL S a a G = lam • G) (m : Fin N × Fin n →₀ ℕ) (hm : m ∈ G.support) : wtS LL S m a = lam := by
   have h1 := coeff_gl_action_diag LL S a m G
   rw [h, coeff_smul, smul_eq_mul] at h1
   exact (mul_right_cancel₀ (mem_support_iff.1 hm) h1).symm
 
+/- English proof (translation)
+Establish `key : (exteriorWedge P a * exteriorContraction P a) K J = if a ∈ J then K J else 0`. Rewrite using `[Module.End.mul_apply, exterior_wedge_apply, exterior_contraction_apply]`. Distinguish the cases in `ha : a ∈ J`. Rewrite using `[if_pos ha, if_pos ha, if_neg (Finset.notMem_erase a J), exterior_sign_erase, Finset.insert_erase ha]`. Simplify using `only [lt_self_iff_false, and_false, if_false, one_mul]`.
+
+Rewrite using `[← mul_assoc, exterior_sign_mul_self, one_mul]`. Rewrite using `[if_neg ha, if_neg ha]`. Unfold `columnOperator`. Distinguish the cases in `hc : 1 ≤ c`. Apply the tactic sequence `rw [if_pos hc, if_pos hc, key]; split_ifs <;> simp`.
+
+Apply the tactic sequence `rw [if_neg hc, if_neg hc, LinearMap.neg_apply, Pi.neg_apply, key]; split_ifs <;> simp`.
+-/
 theorem column_operator_diag {P : Type*} [CommRing P] (a : Fin n) (c : ℤ) (K : Finset (Fin n) → P) (J : Finset (Fin n)) :
     columnOperator P a a c K J = (if 1 ≤ c then (if a ∈ J then (1 : ℤ) else 0) else (if a ∈ J then -1 else 0)) • K J := by
   have key : (exteriorWedge P a * exteriorContraction P a) K J = if a ∈ J then K J else 0 := by
@@ -868,6 +1220,15 @@ theorem column_operator_diag {P : Type*} [CommRing P] (a : Fin n) (c : ℤ) (K :
   · rw [if_pos hc, if_pos hc, key]; split_ifs <;> simp
   · rw [if_neg hc, if_neg hc, LinearMap.neg_apply, Pi.neg_apply, key]; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `e : ∀ c : ℤ, (if 1 ≤ c then (if c ≤ x then (1 : ℤ) else 0) else (if ¬ c ≤ x then -1 else 0)) = (if c ≤ x then 1 else 0) - (if c ≤ 0 then 1 else 0)`. Apply the tactic sequence `intro c; split_ifs <;> omega`. Simplify using `only [e]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole]`. Establish `f1 : (Finset.Icc (-T) T).filter (fun c => c ≤ x) = Finset.Icc (-T) x`.
+
+Use extensionality with `c`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `f2 : (Finset.Icc (-T) T).filter (fun c => c ≤ 0) = Finset.Icc (-T) 0`. Use extensionality with `c`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[f1, f2, Int.card_Icc, Int.card_Icc]`. Use `push_cast`. Rewrite using `[Int.toNat_of_nonneg (by omega), Int.toNat_of_nonneg (by omega)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem signed_column_count_eq (T x : ℤ) (h1 : -T ≤ x) (h2 : x ≤ T) :
     ∑ c ∈ Finset.Icc (-T) T, (if 1 ≤ c then (if c ≤ x then (1 : ℤ) else 0) else (if ¬ c ≤ x then -1 else 0)) = x := by
   have e : ∀ c : ℤ, (if 1 ≤ c then (if c ≤ x then (1 : ℤ) else 0) else (if ¬ c ≤ x then -1 else 0)) =
@@ -884,6 +1245,11 @@ theorem signed_column_count_eq (T x : ℤ) (h1 : -T ≤ x) (h2 : x ≤ T) :
   rw [Int.toNat_of_nonneg (by omega), Int.toNat_of_nonneg (by omega)]
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [gl_action_one]`. Consider the case `insert c s hc ih`. Rewrite using `[Finset.prod_insert hc, Finset.sum_insert hc, gl_action_mul, ih, gl_action_column_kernel, column_operator_diag, add_smul]`. Simplify using `only [mul_smul_comm]`.
+
+Rewrite using `[mul_comm (∏ c ∈ s, Kcol ℤ Pa.mu c N (I c)), add_comm]`.
+-/
 theorem gl_action_diag_column_product {B : Fin N → ℕ} (Pa : PPath n N LL B) (a : Fin n) (I : ℤ → Finset (Fin n)) (s : Finset ℤ) :
     glAct ℤ LL Set.univ a a (∏ c ∈ s, Kcol ℤ Pa.mu c N (I c)) =
       (∑ c ∈ s, (if 1 ≤ c then (if a ∈ I c then (1 : ℤ) else 0) else (if a ∈ I c then -1 else 0))) •
@@ -895,6 +1261,15 @@ theorem gl_action_diag_column_product {B : Fin N → ℕ} (Pa : PPath n N LL B) 
     simp only [mul_smul_comm]
     rw [mul_comm (∏ c ∈ s, Kcol ℤ Pa.mu c N (I c)), add_comm]
 
+/- English proof (translation)
+Rewrite `hm` using `[← map_Psi' (Int.castRingHom R)]`. Establish `hm'` using `MvPolynomial.support_map_subset _ _ hm`. Use function extensionality and compare the values at `a`. Use `weight_eq_of_eigen LL Set.univ a _ _ ?_ m hm'` and prove the remaining obligations. Establish `h` using `gl_action_diag_column_product LL Pa a (Ican Pa.mu) (colRange Pa.mu)`.
+
+Establish `hd : Dominant (pEnd Pa.mu)` using `Pa.dom _`. Establish `hs : (∑ c ∈ colRange Pa.mu, (if 1 ≤ c then (if a ∈ Ican Pa.mu c then (1 : ℤ) else 0) else (if a ∈ Ican Pa.mu c then -1 else 0))) = pEnd Pa.mu a`. Establish `hT` using `abs_entry_le_total Pa.mu (Fin.last N) a`. Rewrite `hT` using `[abs_le]`. Rewrite using `[← signed_column_count_eq _ (pEnd Pa.mu a) hT.1 hT.2]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : 1 ≤ c`. Rewrite using `[if_pos hc, if_pos hc, canonical_column_positive hd hc]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, if_neg hc, canonical_column_nonpositive hd hc]`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[hs]`. Conclude with `h`.
+-/
 theorem weight_of_canonical_Psi_support {B : Fin N → ℕ} (Pa : PPath n N LL B) (R : Type*) [CommRing R]
     (m : Fin N × Fin n →₀ ℕ) (hm : m ∈ (Psi R Pa.mu (Ican Pa.mu)).support) : wtS LL Set.univ m = pEnd Pa.mu := by
   rw [← map_Psi' (Int.castRingHom R)] at hm
@@ -917,6 +1292,11 @@ theorem weight_of_canonical_Psi_support {B : Fin N → ℕ} (Pa : PPath n N LL B
 
 end wt
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ _ N n LL B mu`. Use `⟨?_, canonical_Psi_linear_independent D h17 (FF O) LL B mu⟩` and prove the remaining obligations. Introduce and unpack `P rfl`. Use `⟨canonical_Psi_ne_zero_of_path_basis D h17 O P, fun m hm => weight_of_canonical_Psi_support LL P O m hm, ?_⟩` and prove the remaining obligations. Introduce `a b hab k hk`.
+
+Rewrite using `[← map_Psi' (Int.castRingHom O)]`. Conclude with `divided_power_zero_of_gl_action_zero LL Set.univ a b hab.ne _ (gl_action_canonical_Psi_eq_zero LL P a b hab) O k hk`.
+-/
 theorem automorphicSideConclusion_of_pathBasis (D : Formalism.BasicNotions.D7) (h17 : PathBasisOverRing D) : AutomorphicSideConclusion D := by
   intro p _ O _ _ _ _ N n LL B mu
   refine ⟨?_, canonical_Psi_linear_independent D h17 (FF O) LL B mu⟩

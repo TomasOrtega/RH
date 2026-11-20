@@ -10,6 +10,9 @@ open Formalism.BasicNotions Formalism.MainNotions
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hSW` and use `GlobalTheory.T.ranks_frames_closed (GlobalTheory.T.unitary_hyperplane_volumeRatio_siegelWeil hSW)`.
+-/
 theorem bothRowsFromSiegelWeil :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (𝒞 : FamClass), Formalism.L2.TSel 𝒞 →
       (Closed 𝒞 fun Fm _ => PX.RanksF Fm 3 (Fm.CYL + 1) (1 / 4) 3 (1 / 2) Fm.CTu) ∧

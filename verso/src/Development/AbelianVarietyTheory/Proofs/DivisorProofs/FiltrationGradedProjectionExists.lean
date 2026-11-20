@@ -16,6 +16,11 @@ namespace GlobalTheory.GrFiltProj
 
 variable {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
 
+/- English proof (translation)
+Use `(he.basis h).repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hW : genericPoint X ∈ W`. Use `germ_injective_of_isIntegral X _ hW ?_` and prove the remaining obligations. Rewrite using `[← TriFrame.FlagOf.stalkBasis_repr_germ he h, ← TriFrame.FlagOf.stalkBasis_repr_germ he h, H hW]`. Choose the witnesses or unpack the hypotheses as in `rfl : W = ⊥ := by`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`. Conclude with `hW (genericPoint_mem hx)`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem eq_of_germ_eq {F : X.Modules} {n : ℕ} {U W : X.Opens} {e : Fin n → Γ(F, U)} (he : IsFrame e) (h : W ≤ U)
     (s t : Γ(F, W)) (H : ∀ hW : genericPoint X ∈ W, F.presheaf.germ W _ hW s = F.presheaf.germ W _ hW t) : s = t := by
   refine (he.basis h).repr.injective (Finsupp.ext fun i => ?_)
@@ -36,12 +41,20 @@ def stalkProj {V : X.Opens} (f' : ∀ a, Fin (r a) → Γ(E' a, V)) {c : (Σ a, 
   (hc.stalkBasis x hx).constr (X.presheaf.stalk x) fun z => (E' b).presheaf.germ V x hx (img f' b z)
 
 omit [IsIntegral X] in
+/- English proof (translation)
+Rewrite using `[← hc.stalkBasis_apply x hx, stalkProj, Module.Basis.constr_basis]`.
+-/
 theorem stalkProj_frame {V : X.Opens} (f' : ∀ a, Fin (r a) → Γ(E' a, V)) {c : (Σ a, Fin (r a)) → Γ(L, V)}
     (hc : IsFrame c) (b : ι) (x : X) (hx : x ∈ V) (z : Σ a, Fin (r a)) :
     stalkProj f' hc b x hx (L.presheaf.germ V x hx (c z)) = (E' b).presheaf.germ V x hx (img f' b z) := by
   rw [← hc.stalkBasis_apply x hx, stalkProj, Module.Basis.constr_basis]
 
 omit [IsIntegral X] in
+/- English proof (translation)
+Use `conv_lhs => rw [← (hc.basis le_rfl).sum_repr s]`. Simplify using `only [map_sum, QCoh.germ_smul, map_smul, hc.basis_apply, resM_self, stalkProj_frame]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single b]`. Simplify using `[img]`. Introduce `a _ ha`.
+
+Simplify using `[img, ha]`. Simplify using the standard rewrite rules.
+-/
 theorem stalkProj_germ {V : X.Opens} (f' : ∀ a, Fin (r a) → Γ(E' a, V)) {c : (Σ a, Fin (r a)) → Γ(L, V)}
     (hc : IsFrame c) (b : ι) (x : X) (hx : x ∈ V) (s : Γ(L, V)) :
     stalkProj f' hc b x hx (L.presheaf.germ V x hx s) =
@@ -54,6 +67,9 @@ theorem stalkProj_germ {V : X.Opens} (f' : ∀ a, Fin (r a) → Γ(E' a, V)) {c 
     simp [img, ha]
   · simp
 
+/- English proof (translation)
+Use `((hf b).stalkBasis x hx).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, IsFrame.stalkBasis_apply, QCoh.stalkLinear_germ, QCoh.stalkLinear_germ, stalkProj_germ]`. Use `congr 1`. Use `conv_rhs => rw [← ((hf' b).basis le_rfl).sum_repr ((u b).app V (f b i))]`. Simplify using `only [(hA b i).2, IsFrame.basis_apply, resM_self]`.
+-/
 theorem stalkProj_comp_self {o : ι → ℕ} {T : ∀ a, E a ⟶ L} {u : ∀ a, E a ⟶ E' a} {V : X.Opens}
     {f : ∀ a, Fin (r a) → Γ(E a, V)} (hf : ∀ a, IsFrame (f a)) {f' : ∀ a, Fin (r a) → Γ(E' a, V)}
     {hf' : ∀ a, IsFrame (f' a)} {c : (Σ a, Fin (r a)) → Γ(L, V)} {hc : IsFrame c}
@@ -65,6 +81,9 @@ theorem stalkProj_comp_self {o : ι → ℕ} {T : ∀ a, E a ⟶ L} {u : ∀ a, 
   conv_rhs => rw [← ((hf' b).basis le_rfl).sum_repr ((u b).app V (f b i))]
   simp only [(hA b i).2, IsFrame.basis_apply, resM_self]
 
+/- English proof (translation)
+Use `((hf a).stalkBasis x hx).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, IsFrame.stalkBasis_apply, QCoh.stalkLinear_germ, stalkProj_germ]`. Establish `(j : Fin (r b))` using `(hA a i).1 ⟨b, j⟩ hab`. Simplify using `[this]`.
+-/
 theorem stalkProj_comp_lt {o : ι → ℕ} {T : ∀ a, E a ⟶ L} {u : ∀ a, E a ⟶ E' a} {V : X.Opens}
     {f : ∀ a, Fin (r a) → Γ(E a, V)} (hf : ∀ a, IsFrame (f a)) {f' : ∀ a, Fin (r a) → Γ(E' a, V)}
     {hf' : ∀ a, IsFrame (f' a)} {c : (Σ a, Fin (r a)) → Γ(L, V)} {hc : IsFrame c}
@@ -75,6 +94,11 @@ theorem stalkProj_comp_lt {o : ι → ℕ} {T : ∀ a, E a ⟶ L} {u : ∀ a, E 
   have (j : Fin (r b)) := (hA a i).1 ⟨b, j⟩ hab
   simp [this]
 
+/- English proof (translation)
+Use `LinearMap.eqOn_span ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, W, hW, s, rfl⟩`. Rewrite using `[← QCoh.stalkLinear_germ]`. Break down `(Nat.lt_succ_iff.1 ha).lt_or_eq with h | h` into its components or cases. Conclude with `(LinearMap.congr_fun (stalkProj_comp_lt hf hA h _ hV) _).trans (LinearMap.congr_fun (stalkProj_comp_lt hf₁ hA₁ h _ hV₁) _).symm`.
+
+Take `rfl` from `ho h`. Conclude with `(LinearMap.congr_fun (stalkProj_comp_self hf hA a _ hV) _).trans (LinearMap.congr_fun (stalkProj_comp_self hf₁ hA₁ a _ hV₁) _).symm`.
+-/
 theorem stalkProj_eq {o : ι → ℕ} (ho : Function.Injective o) {T : ∀ a, E a ⟶ L} {u : ∀ a, E a ⟶ E' a}
     {V V₁ : X.Opens}
     {f : ∀ a, Fin (r a) → Γ(E a, V)} (hf : ∀ a, IsFrame (f a)) {f' : ∀ a, Fin (r a) → Γ(E' a, V)}
@@ -95,6 +119,23 @@ theorem stalkProj_eq {o : ι → ℕ} (ho : Function.Injective o) {T : ∀ a, E 
     exact (LinearMap.congr_fun (stalkProj_comp_self hf hA a _ hV) _).trans
       (LinearMap.congr_fun (stalkProj_comp_self hf₁ hA₁ a _ hV₁) _).symm
 
+/- English proof (translation)
+Introduce `X _ ι _ L E E' r o ho T u _ hcov hmem _ b`. Set `D : Type` to `{d : Σ V : X.Opens, (∀ a, Fin (r a) → Γ(E a, V)) × (∀ a, Fin (r a) → Γ(E' a, V)) × ((Σ a, Fin (r a)) → Γ(L, V)) // (∀ a, IsFrame (d.2.1 a)) ∧ ∃ (hf' : ∀ a, IsFrame (d.2.2.1 a)) (hc : IsFrame d.2.2.2), AdaptedAt o T u d.2.1 d.2.2.1 hf' d.2.2.2 hc}`. Establish `hf (d : D)` using `d.2.1`. Establish `hf' (d : D)` using `d.2.2.1`. Establish `hc (d : D)` using `d.2.2.2.1`.
+
+Establish `hA (d : D) : AdaptedAt o T u d.1.2.1 d.1.2.2.1 (hf' d) d.1.2.2.2 (hc d)` using `d.2.2.2.2`. Set `Q : (Σ a, Fin (r a)) → Prop` to `fun z => o z.1 < o b + 1`. Establish `ex (d : D)` using `exists_isFrame_subP (filtSub o T (o b + 1)) d.1.2.2.2 (hc d) Q fun V' h a => by`. Simplify `hmem (o b + 1) _ _ (hf d) _ (hf' d) _ (hc d) (hA d) V' h a` using `only [Q, not_lt]`. Use `choose t ht htc using ex`.
+
+Set `σ` to `(Fintype.equivFin {z // Q z}).symm`. Take `⟨κ, hκ⟩` from `FrameGlue.exists_hom_of_frames X (filtSub o T (o b + 1)).toMod (E' b) _ D (fun d => d.1.1) (fun x => by`. Take `⟨V, hx, f, hf, f', hf', c, hc, hA⟩` from `hcov x`. Conclude with `⟨⟨⟨V, f, f', c⟩, hf, hf', hc, hA⟩, hx⟩)`. Use the proof step `(fun d => t d ∘ σ) (fun d => (ht d).comp_equiv σ) (fun d a => img d.1.2.2.1 b (σ a)) (fun i j a => by`.
+
+Use `eq_of_germ_eq (hf' i b) inf_le_left _ _ fun hW => ?_` and prove the remaining obligations. Establish `e1` using `(((ht i).comp_equiv σ).basis (inf_le_left : i.1.1 ⊓ j.1.1 ≤ i.1.1)).sum_repr (resM _ inf_le_right ((t j ∘ σ) a))`. Establish `e2` using `congrArg (fun s => stalkProj i.1.2.2.1 (hc i) b _ hW.1 (L.presheaf.germ _ _ hW ((filtSub o T (o b + 1)).incl.app _ s))) e1`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, app_resM, Function.comp_apply, htc, QCoh.germ_smul, germ_resM, map_smul, stalkProj_frame] at e2`. Establish `hm : L.presheaf.germ _ _ hW.2 (j.1.2.2.2 (σ a)) ∈ genSpan o T (o b + 1)`.
+
+Rewrite using `[← htc]`. Conclude with `(filtSub o T (o b + 1)).incl_app_mem _ hW.2`. Rewrite `e2` using `[stalkProj_eq ho (hf i) (hA i) (hf j) (hA j) b hW.1 hW.2 hm, stalkProj_frame]`. Simplify using `only [map_sum, QCoh.germ_smul, germ_resM]`. Conclude with `e2.symm)`.
+
+Use `⟨κ, fun V f hf f' hf' c hc hA z s hs => ?_⟩` and prove the remaining obligations. Set `d : D` to `⟨⟨V, f, f', c⟩, hf, hf', hc, hA⟩`. Distinguish the cases in `hz : Q z`. Take `rfl : s = t d ⟨z, hz⟩` from `(filtSub o T (o b + 1)).incl_app_injective V (hs.trans (htc d ⟨z, hz⟩).symm)`. Use `hκ d (σ.symm ⟨z, hz⟩)` as an intermediate fact.
+
+Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at this`. Conclude with `this`. Establish `h1` using `(hmem (o b + 1) V f hf f' hf' c hc hA V le_rfl (Pi.single z 1)).1 (by`. Use `(filtSub o T (o b + 1)).incl_app_mem s` as an intermediate fact. Rewrite `this` using `[hs]`.
+
+Simplify `this) z (Nat.le_of_not_lt hz)` using `[Pi.single_apply, resM_self]`. Rewrite `h1` using `[Pi.single_eq_same]`. Establish `: Subsingleton Γ(X, V)` using `subsingleton_of_zero_eq_one h1.symm`. Conclude with `(Module.subsingleton Γ(X, V) Γ(E' b, V)).elim _ _`.
+-/
 theorem exists_isProj : ∀ {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
     (o : ι → ℕ), Function.Injective o → ∀ (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a), (∀ a, Mono (u a)) →
     (∀ x : X, ∃ V : X.Opens, x ∈ V ∧ LocAdapted r o T u V) → FrameMem r o T u → GenSpanEq r o T u →

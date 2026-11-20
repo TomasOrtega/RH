@@ -19,9 +19,15 @@ variable {d : ℕ}
 def awayRatio (i j : Fin (d + 1)) : Away (homogeneousSubmodule (Fin (d + 1)) ℂ) (X i) :=
   Away.mk (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d i) 1 (X j) (by simpa using X_mem_one d j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratioSec_eq (i j : Fin (d + 1)) :
     ratioSec d i j = Proj.awayToSection (homogeneousSubmodule (Fin (d + 1)) ℂ) (X i) (awayRatio i j) := rfl
 
+/- English proof (translation)
+Establish `e` using `ConcreteCategory.congr_hom (Proj.awayMap_awayToSection (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d b) hx) s`. Simplify using `only [ConcreteCategory.comp_apply] at e`. Establish `e' : Proj.awayToSection (homogeneousSubmodule (Fin (d + 1)) ℂ) x (HomogeneousLocalization.awayMap (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d b) hx s) = (PSpace ℂ d).presheaf.map (homOfLE (Proj.basicOpen_mono _ _ _ ⟨_, hx⟩)).op (Proj.awayToSection (homogeneousSubmodule (F …` using `e`. Rewrite using `[e', TopCat.Presheaf.germ_res_apply]`.
+-/
 theorem germ_awayToSection_mul (a b : Fin (d + 1)) {x : MvPolynomial (Fin (d + 1)) ℂ} (hx : x = X a * X b)
     (y : PSpace ℂ d) (hya : y ∈ chart d a)
     (hy : y ∈ Proj.basicOpen (homogeneousSubmodule (Fin (d + 1)) ℂ) x)
@@ -39,6 +45,11 @@ theorem germ_awayToSection_mul (a b : Fin (d + 1)) {x : MvPolynomial (Fin (d + 1
         (Proj.awayToSection (homogeneousSubmodule (Fin (d + 1)) ℂ) (X a) s) := e
   rw [e', TopCat.Presheaf.germ_res_apply]
 
+/- English proof (translation)
+Apply `val_injective` to reduce the goal to its premises. Rewrite using `[HomogeneousLocalization.val_mul, awayRatio, awayRatio, Away.mk, Away.mk, val_awayMap_mk, val_awayMap_mk, HomogeneousLocalization.val_one, Localization.mk_mul]`. Rewrite using `[← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem awayRatio_mul_awayRatio (a i : Fin (d + 1)) :
     HomogeneousLocalization.awayMap (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d i)
         (rfl : X a * X i = X a * X i) (awayRatio a i) *
@@ -52,6 +63,9 @@ theorem awayRatio_mul_awayRatio (a i : Fin (d + 1)) :
   simp
   ring
 
+/- English proof (translation)
+Apply `val_injective` to reduce the goal to its premises. Rewrite using `[HomogeneousLocalization.val_mul, awayRatio, awayRatio, awayRatio, Away.mk, Away.mk, Away.mk, val_awayMap_mk, val_awayMap_mk, val_awayMap_mk, Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem awayRatio_change (a i j : Fin (d + 1)) :
     HomogeneousLocalization.awayMap (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d a)
         (mul_comm (X a) (X i)) (awayRatio i j) =
@@ -66,6 +80,9 @@ theorem awayRatio_change (a i j : Fin (d + 1)) :
   simp
   ring
 
+/- English proof (translation)
+Unfold `rat`. Rewrite using `[dif_pos hk]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply φ _ _ hk _).symm`.
+-/
 theorem rat_eq_germ {Z : Scheme.{0}} [IsIntegral Z] (φ : Z ⟶ PSpace ℂ d) (k l : Fin (d + 1))
     (hk : genericPoint Z ∈ φ ⁻¹ᵁ chart d k) :
     rat φ k l = φ.stalkMap (genericPoint Z) ((PSpace ℂ d).presheaf.germ (chart d k) _ hk (ratioSec d k l)) := by
@@ -77,6 +94,15 @@ end Overlap
 
 open Overlap in
 
+/- English proof (translation)
+Introduce `d Z _ φ a i j ha hi`. Establish `hW : φ (genericPoint Z) ∈ Proj.basicOpen (homogeneousSubmodule (Fin (d + 1)) ℂ) (X a * X i)`. Rewrite using `[Proj.basicOpen_mul]`. Conclude with `⟨ha, hi⟩`. Set `F` to `((Proj.awayToSection (homogeneousSubmodule (Fin (d + 1)) ℂ) (X a * X i) ≫ (PSpace ℂ d).presheaf.germ _ _ hW) ≫ φ.stalkMap (genericPoint Z)).hom`.
+
+Establish `hA : ∀ l, rat φ a l = F (HomogeneousLocalization.awayMap (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d i) (rfl : X a * X i = X a * X i) (awayRatio a l))`. Introduce `l`. Rewrite using `[rat_eq_germ φ a l ha, ratioSec_eq, germ_awayToSection_mul a i rfl _ ha hW]`. Both sides reduce to the same expression. Establish `hI : ∀ l, rat φ i l = F (HomogeneousLocalization.awayMap (homogeneousSubmodule (Fin (d + 1)) ℂ) (X_mem_one d a) (mul_comm (X a) (X i)) (awayRatio i l))`.
+
+Introduce `l`. Rewrite using `[rat_eq_germ φ i l hi, ratioSec_eq, germ_awayToSection_mul i a (mul_comm (X a) (X i)) _ hi hW]`. Both sides reduce to the same expression. Establish `h1 : rat φ a i * rat φ i a = 1`. Rewrite using `[hA, hI, ← map_mul, awayRatio_mul_awayRatio, map_one]`.
+
+Use `⟨left_ne_zero_of_mul_eq_one h1, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, ← eq_inv_of_mul_eq_one_right h1, hI, hA, hI, ← map_mul, awayRatio_change]`.
+-/
 theorem rat_overlap : ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (φ : Z ⟶ PSpace ℂ d) (a i j : Fin (d + 1)),
     genericPoint Z ∈ φ ⁻¹ᵁ chart d a → genericPoint Z ∈ φ ⁻¹ᵁ chart d i →
       rat φ a i ≠ 0 ∧ rat φ i j = rat φ a j / rat φ a i := by

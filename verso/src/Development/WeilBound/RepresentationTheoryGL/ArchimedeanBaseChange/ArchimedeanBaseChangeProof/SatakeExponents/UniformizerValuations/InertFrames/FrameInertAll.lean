@@ -7,6 +7,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.F.Inert
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inertPlaceEx, wittEx, unifEx, satEx, unifOf, satUniq⟩`.
+-/
 theorem frameInert_all : InertPlaceEx ∧ WittEx ∧ UnifEx ∧ SatEx ∧ UnifOf ∧ SatUniq :=
   ⟨inertPlaceEx, wittEx, unifEx, satEx, unifOf, satUniq⟩
 

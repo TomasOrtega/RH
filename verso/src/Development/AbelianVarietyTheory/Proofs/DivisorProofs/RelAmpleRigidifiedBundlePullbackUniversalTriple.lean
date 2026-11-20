@@ -12,6 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PullAmpleXF
 
+/- English proof (translation)
+Introduce `mF`. Establish `hP : IsProper tF.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) mF.cart.1 Xo.univ.proper`. Take `⟨w, hw, -⟩` from `mF.lin`. Use `GlobalTheory.AmpleLocal.relAmple_of_locally _ tF.G tF.PP.L tF.PP.isLB inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨V, hV, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Xo.X) (U := ⊤) (x := pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) s) trivial`.
+
+Set `f` to `pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)`. Set `U` to `f ⁻¹ᵁ V`. Use `⟨U, hs, ?_⟩` and prove the remaining obligations. Establish `H : IsPullback ((tF.G.hom ⁻¹ᵁ U).ι ≫ mF.φ) (tF.G.hom ∣_ U) Xo.univ.t.G.hom (U.ι ≫ f)` using `(isPullback_morphismRestrict tF.G.hom U).flip.paste_horiz mF.cart.1`. Take `⟨w', hw'⟩ : LBIso (tF.PP.L.pull (tF.G.hom ⁻¹ᵁ U).ι) (Xo.univ.t.PP.L.pull ((tF.G.hom ⁻¹ᵁ U).ι ≫ mF.φ))` from `LBIso.chartPull (chartPullPull _ _) (chartPullSame Xo.univ.t.PP.L (fun _ : PUnit => (tF.G.hom ⁻¹ᵁ U).ι ≫ mF.φ) (fun _ => mF.φ) (fun _ => 1) (tF.G.hom ⁻¹ᵁ U).ι fun _ => rfl) ⟨w, hw⟩`.
+
+Conclude with `relAmple_pull (A' := Over.mk (tF.G.hom ∣_ U)) H Xo.univ.t.PP.isLB (pull_isLB tF.PP.isLB _) ((isGen_iff w').1 hw') V hV (fun y => y.2) Xo.univ.ample`.
+-/
 theorem relAmple_XF {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (tF : SAB H (Xo.XF c)) :
     SABMap tF Xo.univ.t (pullback.fst _ _) → RelAmple tF.G tF.PP.L := by

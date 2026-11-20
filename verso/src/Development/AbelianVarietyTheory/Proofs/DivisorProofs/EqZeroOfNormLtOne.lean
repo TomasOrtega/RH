@@ -9,6 +9,13 @@ namespace GlobalTheory.StdMassLower
 section
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hz`. Establish `h0 : Algebra.norm ℤ z ≠ 0` using `Algebra.norm_ne_zero_iff.2 hz`. Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℤ z : ℤ) : ℝ)|` using `by exact_mod_cast Int.one_le_abs h0`. Establish `h2` using `congrArg norm (Algebra.norm_eq_prod_embeddings ℚ ℂ (z : E))`. Rewrite `h2` using `[← Algebra.coe_norm_int, norm_prod]`.
+
+Establish `h3 : ∏ σ : E →ₐ[ℚ] ℂ, ‖σ (z : E)‖ < 1`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ.toRatAlgHom)]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun σ _ => (h σ.toRingHom).le)`.
+
+Use `_ < 1 := h τ`. Rewrite `h3` using `[← h2]`. Simplify using `only [eq_ratCast, Rat.cast_intCast, Complex.norm_intCast] at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_norm_lt_one (z : 𝓞 E) (h : ∀ φ : E →+* ℂ, ‖φ (z : E)‖ < 1) : z = 0 := by
   classical
   by_contra hz
@@ -27,6 +34,13 @@ theorem eq_zero_of_norm_lt_one (z : 𝓞 E) (h : ∀ φ : E →+* ℂ, ‖φ (z 
   simp only [eq_ratCast, Rat.cast_intCast, Complex.norm_intCast] at h3
   linarith
 
+/- English proof (translation)
+Rewrite `h` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨z, hz⟩` from `h`. Establish `: z = 0` using `eq_zero_of_norm_lt_one z fun φ => by`. Establish `e : φ (x : E) - φ (y : E) = 3 * φ (z : E)`. Use `congrArg (fun t : 𝓞 E => φ (algebraMap (𝓞 E) E t)) hz` as an intermediate fact.
+
+Simplify `this` using `only [map_sub, map_mul, map_ofNat]`. Establish `e2` using `norm_sub_le (φ (x : E)) (φ (y : E))`. Rewrite `e2` using `[e, norm_mul]`. Use `hx φ` as an intermediate fact. Use `hy φ` as an intermediate fact.
+
+Simplify using `only [Complex.norm_ofNat] at e2`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hz` using `[this, mul_zero]`. Conclude with `sub_eq_zero.1 hz`.
+-/
 theorem eq_of_mk_eq (x y : 𝓞 E) (hx : ∀ φ : E →+* ℂ, ‖φ (x : E)‖ ≤ 1) (hy : ∀ φ : E →+* ℂ, ‖φ (y : E)‖ ≤ 1)
     (h : Ideal.Quotient.mk (Ideal.span {(3 : 𝓞 E)}) x = Ideal.Quotient.mk _ y) : x = y := by
   rw [Ideal.Quotient.eq, Ideal.mem_span_singleton] at h
@@ -44,6 +58,9 @@ theorem eq_of_mk_eq (x y : 𝓞 E) (hx : ∀ φ : E →+* ℂ, ‖φ (x : E)‖ 
   rw [this, mul_zero] at hz
   exact sub_eq_zero.1 hz
 
+/- English proof (translation)
+Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton]`. Establish `: (3 : 𝓞 E) = algebraMap ℤ (𝓞 E) 3` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+-/
 theorem card_quot_three :
     Nat.card (𝓞 E ⧸ Ideal.span {(3 : 𝓞 E)}) = 3 ^ Module.finrank ℚ E := by
   rw [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton]
@@ -51,6 +68,13 @@ theorem card_quot_three :
   rw [this, Algebra.norm_algebraMap, RingOfIntegers.rank]
   simp
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Distinguish the cases in `h : i = j`. Conclude with `⟨1, by simp [h]⟩`.
+
+Conclude with `⟨0, by simp [h]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+
+Conclude with `⟨a + b, by simp [← ha, ← hb]⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨r * a, by simp [← ha, Algebra.smul_def]⟩`.
+-/
 theorem coord_of_mem {n : ℕ} {x : Fin n → E} (hx : x ∈ Formalism.MainNotions.StandardLattice.stdLat E n) (i : Fin n) :
     ∃ a : 𝓞 E, (a : E) = x i := by
   induction hx using Submodule.span_induction with
@@ -68,6 +92,9 @@ theorem coord_of_mem {n : ℕ} {x : Fin n → E} (hx : x ∈ Formalism.MainNotio
     obtain ⟨a, ha⟩ := hx
     exact ⟨r * a, by simp [← ha, Algebra.smul_def]⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.fg_span (Set.finite_range _) span_eq_top := by rw [eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq] refine Submodule.span_mono ?_ rintro _ ⟨j, rfl⟩ rw [Pi.basisFun_apply] exact Submodule.subset_span ⟨j, rfl⟩`.
+-/
 theorem isLattice_std (n : ℕ) : Submodule.IsLattice E (Formalism.MainNotions.StandardLattice.stdLat E n) where
   fg := Submodule.fg_span (Set.finite_range _)
   span_eq_top := by
@@ -80,6 +107,9 @@ theorem isLattice_std (n : ℕ) : Submodule.IsLattice E (Formalism.MainNotions.S
 variable [StarRing E]
 
 omit [NumberField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(τ (∑ i, star (x i) * x i)).re = _`. Rewrite using `[map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hφ, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`.
+-/
 theorem re_form (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)) {n : ℕ} (x : Fin n → E)
     (τ : E →+* ℂ) : (τ (Formalism.MainNotions.StandardLattice.stdForm E n x x)).re = ∑ i, Complex.normSq (τ (x i)) := by
   change (τ (∑ i, star (x i) * x i)).re = _
@@ -87,6 +117,13 @@ theorem re_form (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, hφ, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.re (trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := Formalism.MainNotions.StandardLattice.stdForm E n x x))`. Rewrite `h1` using `[Complex.re_sum]`. Establish `h2 : 0 < ∑ σ : E →ₐ[ℚ] ℂ, (σ (Formalism.MainNotions.StandardLattice.stdForm E n x x)).re`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `Finset.sum_pos (fun σ _ => ?_) ⟨τ.toRatAlgHom, Finset.mem_univ _⟩` and prove the remaining obligations.
+
+Use `lt_of_lt_of_eq ?_ (re_form hφ x σ.toRingHom).symm` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Use `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Complex.normSq_pos.2 ((map_ne_zero σ.toRingHom).2 hi)`. Rewrite `h2` using `[← h1]`.
+
+Simplify using `using h2`.
+-/
 theorem trace_pos (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)) {n : ℕ} (x : Fin n → E)
     (hx : x ≠ 0) : 0 < Algebra.trace ℚ E (Formalism.MainNotions.StandardLattice.stdForm E n x x) := by
   have h1 := congrArg Complex.re
@@ -103,6 +140,11 @@ theorem trace_pos (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingE
   simpa using h2
 
 omit [NumberField E] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y`. Express the relevant statement in the definitionally equal form `starRingEnd _ (∑ i, star (x i) * y i) = ∑ i, star (y i) * x i`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[starRingEnd_apply, star_mul, star_star]`.
+-/
 theorem isSymm_std (n : ℕ) : (Formalism.MainNotions.StandardLattice.stdForm E n).IsSymm := by
   constructor
   intro x y
@@ -113,6 +155,11 @@ theorem isSymm_std (n : ℕ) : (Formalism.MainNotions.StandardLattice.stdForm E 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `e : Formalism.MainNotions.StandardLattice.stdForm E n (g (Pi.single j 1)) (g (Pi.single j 1)) = 1`. Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `∑ i, star ((Pi.single j (1 : E) : Fin n → E) i) * (Pi.single j (1 : E) : Fin n → E) i = 1`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Establish `h1` using `re_form hφ (g (Pi.single j 1)) τ`. Rewrite `h1` using `[e, map_one, Complex.one_re]`. Establish `h2` using `Finset.single_le_sum (f := fun i => Complex.normSq (τ (g (Pi.single j 1) i))) (fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)`. Rewrite `h2` using `[← h1, Complex.normSq_eq_norm_sq]`. Conclude with `(sq_le_one_iff₀ (norm_nonneg _)).1 h2`.
+-/
 theorem norm_entry_le (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)) {n : ℕ}
     {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} (hg : g ∈ Formalism.HermitianLatticesTheory.isom (Formalism.MainNotions.StandardLattice.stdForm E n)) (j i : Fin n)
     (τ : E →+* ℂ) : ‖τ (g (Pi.single j 1) i)‖ ≤ 1 := by
@@ -128,6 +175,17 @@ theorem norm_entry_le (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starR
   rw [← h1, Complex.normSq_eq_norm_sq] at h2
   exact (sq_le_one_iff₀ (norm_nonneg _)).1 h2
 
+/- English proof (translation)
+Establish `hm : ∀ (g : Formalism.ThetaLiftIndependence.autL (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n)) (j i : Fin n), ∃ a : 𝓞 E, (a : E) = g.1 (Pi.single j 1) i` using `fun g j i => by`. Use `coord_of_mem ?_ i` and prove the remaining obligations. Conclude with `g.2.2.le ⟨_, Submodule.subset_span ⟨j, rfl⟩, rfl⟩`. Use `choose a ha using hm`. Establish `hq` using `card_quot_three (E := E)`.
+
+Use `haveI : Finite (𝓞 E ⧸ Ideal.span {(3 : 𝓞 E)}) := Nat.finite_of_card_ne_zero (by rw [hq]; positivity)`. Establish `hinj : Function.Injective fun g j i => Ideal.Quotient.mk (Ideal.span {(3 : 𝓞 E)}) (a g j i)`. Introduce `g g' h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises.
+
+Use `(Pi.basisFun E (Fin n)).ext fun j => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.basisFun_apply]`. Express the relevant statement in the definitionally equal form `g.1 _ i = g'.1 _ i`. Rewrite using `[← ha, ← ha, eq_of_mk_eq (a g j i) (a g' j i) (fun φ => ?_) (fun φ => ?_) (congrFun (congrFun h j) i)]`.
+
+Rewrite using `[ha]`. Conclude with `norm_entry_le hφ g.2.1 j i φ`. Rewrite using `[ha]`. Conclude with `norm_entry_le hφ g'.2.1 j i φ`. Use `⟨Finite.of_injective _ hinj, (Nat.card_le_card_of_injective _ hinj).trans_eq ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.card_fun, Nat.card_fun, hq, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul, ← pow_mul, sq]`.
+-/
 theorem card_aut_std (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)) (n : ℕ) :
     Finite (Formalism.ThetaLiftIndependence.autL (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n)) ∧
     Nat.card (Formalism.ThetaLiftIndependence.autL (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n)) ≤
@@ -155,6 +213,11 @@ theorem card_aut_std (hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRi
 
 end
 
+/- English proof (translation)
+Establish `hmul : ∀ (a b : V ≃ₗ[K] V) (M : Submodule (𝓞 K) V), Formalism.HermitianLatticesTheory.gmap (a * b) M = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b M)` using `fun a b M => by`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[← Submodule.map_comp]`. Both sides reduce to the same expression. Establish `hone : ∀ M : Submodule (𝓞 K) V, Formalism.HermitianLatticesTheory.gmap (1 : V ≃ₗ[K] V) M = M` using `fun M => Submodule.map_id M`.
+
+Use `Nat.card_congr { toFun := fun u => ⟨g * u.1 * g⁻¹, mul_mem (mul_mem hg u.2.1) (inv_mem hg), ?_⟩ invFun := fun u => ⟨g⁻¹ * u.1 * g, mul_mem (mul_mem (inv_mem hg) u.2.1) hg, ?_⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_a …` and prove the remaining obligations. Rewrite using `[← hmul, inv_mul_cancel_right, hmul, u.2.2]`. Rewrite using `[hmul, hmul, u.2.2, ← hmul, inv_mul_cancel, hone]`.
+-/
 theorem card_aut_gmap {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (N : Submodule (𝓞 K) V) :
@@ -173,6 +236,13 @@ theorem card_aut_gmap {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Modu
   · rw [← hmul, inv_mul_cancel_right, hmul, u.2.2]
   · rw [hmul, hmul, u.2.2, ← hmul, inv_mul_cancel, hone]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ hst n`. Establish `hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a)` using `fun φ a => by`. Rewrite using `[hst, IsCMField.complexEmbedding_complexConj]`. Take `⟨⟨s, hs⟩, hm, -⟩` from `Formalism.HermitianLatticesTheory.final_massBasic E (Fin n → E) _ (isSymm_std n) (trace_pos hφ) _ (isLattice_std n)`. Take `⟨N, ⟨hN, g, hg, e⟩, -⟩` from `hs.2 (Formalism.MainNotions.StandardLattice.stdLat E n) ⟨isLattice_std n, fun p _ => ⟨1, one_mem _, Submodule.map_id _⟩⟩`.
+
+Take `⟨hf, hc⟩` from `card_aut_std hφ n`. Use `haveI : Nonempty (Formalism.ThetaLiftIndependence.autL (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n)) := ⟨⟨1, one_mem _, Submodule.map_id _⟩⟩`. Establish `hp : 0 < Nat.card (Formalism.ThetaLiftIndependence.autL (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n))` using `Nat.card_pos`. Rewrite using `[hm s hs]`. Use `le_trans ?_ (Finset.single_le_sum (f := fun M => ((Nat.card (Formalism.ThetaLiftIndependence.autL (Formalism.MainNotions.StandardLattice.stdForm E n) M) : ℝ))⁻¹) (fun _ _ => by positivity) hN)` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[card_aut_gmap _ hg N, e]`. Conclude with `inv_anti₀ (by exact_mod_cast hp) (by exact_mod_cast hc)`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing E], (∀ x : E, star x = IsCMField.complexConj E x) → ∀ n : ℕ, ((3 : ℝ) ^ (Module.finrank ℚ E * n ^ 2))⁻¹ ≤ Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n) := by
   intro E _ _ _ _ hst n
   have hφ : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a) := fun φ a => by

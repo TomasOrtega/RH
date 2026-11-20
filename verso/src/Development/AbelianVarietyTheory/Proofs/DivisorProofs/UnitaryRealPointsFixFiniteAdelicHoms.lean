@@ -9,6 +9,13 @@ open Classical
 noncomputable section
 namespace GlobalTheory.RealWeilFinFix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ nS nT JS JT g h hg hh u hu`. Establish `h1 : (mtF σ JT h).map (finPartF F E) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hh)`. Establish `h2 : (mtF σ JS g⁻¹).map (finPartF F E) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 (inv_mem hg))`. Establish `h3 : (actOF σ JS JT g h u).map (finPartF F E) = u.map (finPartF F E)`. Unfold `actOF`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, h1, h2, Matrix.one_mul, Matrix.mul_one]`. Establish `h4 : (actOF σ JS JT g h u).map (infPartF F E) = u.map (infPartF F E)`. Unfold `actOF`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hu, Matrix.mul_zero, Matrix.zero_mul]`. Use extensionality with `i j`.
+
+Establish `k3 : finPartF F E (actOF σ JS JT g h u i j) = finPartF F E (u i j)` using `congrFun (congrFun h3 i) j`. Establish `k4 : infPartF F E (actOF σ JS JT g h u i j) = infPartF F E (u i j)` using `congrFun (congrFun h4 i) j`. Rewrite using `[← Formalism.L2.Fam.ThC.pairE_eta (actOF σ JS JT g h u i j), ← Formalism.L2.Fam.ThC.pairE_eta (u i j)]`. Conclude with `congrArg₂ Formalism.L2.Fam.ThC.pairE k4 k3`.
+-/
 theorem actOF_fin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (nS nT : ℕ)
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (g : GAF σ JS) (h : GAF σ JT),
       g ∈ GlobalTheory.WeilPartsF.GinfCF σ JS → h ∈ GlobalTheory.WeilPartsF.GinfCF σ JT → ∀ u : WOF F E nS nT, u.map (infPartF F E) = 0 →

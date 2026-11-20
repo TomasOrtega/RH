@@ -20,6 +20,13 @@ noncomputable section
 
 namespace GlobalTheory.CovTest.SwapLine
 
+/- English proof (translation)
+Introduce `hC`. Take `⟨G, hG, hAn⟩` from `GlobalTheory.T.flag_bundle_pullback_height_compare hC`. Use `⟨G, hG, ?_⟩` and prove the remaining obligations. Introduce `k _ B Y _ _ q p d hq hp hreg π w E h H flB fl hfl A Φ Ψ hΦ hΨ a b`. Take `⟨K, hKh, hK⟩` from `GlobalTheory.T.homogeneous_line_base_difference d a b`.
+
+Establish `hF : onLine d a b - onBase d a b = (X 4 - X 0) * ((X 3 - X 0) * K)` using `by rw [hK]; ring`. Establish `hFv : aeval (![X 3, X 4, X 2, X 3, X 4] : Fin 5 → MvPolynomial (Fin 5) ℝ) ((X 3 - X 0) * K) = 0`. Simplify using the standard rewrite rules. Establish `hFh : ((X 3 - X 0) * K : MvPolynomial (Fin 5) ℝ).IsHomogeneous (d + 1)`. Establish `h1 : (X 3 - X 0 : MvPolynomial (Fin 5) ℝ).IsHomogeneous 1` using `(isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`.
+
+Simplify `h1.mul hKh` using `[add_comm]`. Take `⟨r, hr, hsupp, hnorm⟩` from `GlobalTheory.T.rank_two_flag_rational_sections k B Y q p d hq hp hreg π w E h H flB fl hfl A`. Take `⟨s, c, hpol⟩` from `GlobalTheory.T.homogeneous_form_powers_linear (d + 1) _ hFh`. Rewrite using `[hF, GlobalTheory.T.arithmetic_function_swap_line_family hC k B Y q p d hq hp π w E h H flB fl A Φ hΦ r hr hsupp _ hFv s c hpol]`. Conclude with `hAn k B Y q p d hq hp hreg π w E h H flB fl hfl A Ψ hΨ r hr hnorm a b _ hF.symm s c hpol`.
+-/
 theorem core_exists : ArCalc → ∃ G : ℕ → ℤ → ℤ → MvPolynomial (Fin 3) ℝ, Homog G ∧
     ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →

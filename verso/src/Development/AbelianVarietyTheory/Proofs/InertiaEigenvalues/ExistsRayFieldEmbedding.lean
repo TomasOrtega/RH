@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.RayUp
 
+/- English proof (translation)
+Introduce `P hP`. Use `letI : Algebra L L' := τ.toAlgebra`. Set `Q : HeightOneSpectrum (𝓞 L)` to `P.under (𝓞 L)`. Establish `hQ : Q.asIdeal = P.asIdeal.comap (RingOfIntegers.mapRingHom τ)` using `rfl`. Use `haveI hPo : P.asIdeal.LiesOver Q.asIdeal := ⟨rfl⟩`.
+
+Establish `hn : ((n : ℕ) : 𝓞 L) ∉ Q.asIdeal` using `fun h' => hP (by`. Rewrite `h'` using `[hQ, Ideal.mem_comap, map_natCast]`. Conclude with `h')`. Take `⟨f, α, h1, h2, h3⟩` from `h Q hn`. Establish `hf` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal Q.asIdeal Q.isPrime Q.ne_bot`.
+
+Establish `hcm : P.asIdeal.comap (RingOfIntegers.mapRingHom (τ.comp φ)) = Q.asIdeal.comap (RingOfIntegers.mapRingHom φ)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hcm]`. Use `⟨f * Q.asIdeal.inertiaDeg' P.asIdeal, α ^ Q.asIdeal.inertiaDeg' P.asIdeal, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf, h1, ← pow_mul]`. Rewrite using `[pow_mul, h2, Ideal.span_singleton_pow]`. Use `sub_dvd_pow_sub_pow α 1 (Q.asIdeal.inertiaDeg' P.asIdeal)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `dvd_trans h3 this`.
+-/
 theorem containsRayField_up {K L L' : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field L'] [NumberField L']
     (φ : K →+* L) (τ : L →+* L') (n : ℕ) (h : GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField φ n) :
     GlobalTheory.IndefiniteRowSideFullHecke.RayFieldTheta.ContainsRayField (τ.comp φ) n := by

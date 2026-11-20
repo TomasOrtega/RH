@@ -25,14 +25,28 @@ open GlobalTheory.LocMod GlobalTheory.StepData GlobalTheory.SymChain
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem mt_mul' (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := by
   unfold Formalism.L2.Theta.mt; rw [map_mul]; rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem mt_one' (V : HSp D) : mt V 1 = 1 := by
   unfold Formalism.L2.Theta.mt; rw [map_one]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finE_val' (V : HSp D) (g : GA D V) : (Lev.finE V g).val = (mt V g).map (toEAf D) := rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, RingHom.map_zero _⟩`. Consider the case `tmul b α => exact ⟨pairA D.host.F 0 α ⊗ₜ[D.host.F] b, rfl⟩`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`.
+
+Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, RingHom.map_add _ _ _⟩`.
+-/
 theorem exists_lift (z : EAf D) : ∃ w : AE D, toEAf D w = z := by
   induction z using TensorProduct.induction_on with
   | zero => exact ⟨0, RingHom.map_zero _⟩
@@ -42,12 +56,20 @@ theorem exists_lift (z : EAf D) : ∃ w : AE D, toEAf D w = z := by
     obtain ⟨b, rfl⟩ := hy
     exact ⟨a + b, RingHom.map_add _ _ _⟩
 
+/- English proof (translation)
+Establish `h0 : Formalism.L2.DIV.frGL β y * β = β * Formalism.L2.DIV.intGL F E n y` using `inv_mul_cancel_right _ _`. Rewrite using `[← Units.val_mul, h0, Units.val_mul]`.
+-/
 theorem frGL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     (Formalism.L2.DIV.frGL β y).val * β.val = β.val * (Formalism.L2.DIV.intGL F E n y).val := by
   have h0 : Formalism.L2.DIV.frGL β y * β = β * Formalism.L2.DIV.intGL F E n y := inv_mul_cancel_right _ _
   rw [← Units.val_mul, h0, Units.val_mul]
 
+/- English proof (translation)
+Establish `h2 : x.map π * β.val.map π = β.val.map π * y.map π` using `by rw [← Matrix.map_mul, h1, Matrix.map_mul]`. Establish `h3 : N * M = N * y.map π`. Rewrite using `[← hM, ← hN, Matrix.mul_assoc _ _ (y.map π), ← h2, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hx]`. Establish `h4 : ((β⁻¹).val.map π * T') * N = 1`. Rewrite using `[← hN, Matrix.mul_assoc, ← Matrix.mul_assoc T', hT, Matrix.one_mul, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_map_of_moved {S K n : Type} [CommRing S] [CommRing K] [Fintype n] [DecidableEq n] (π : S →+* K) (β : GL n S)
     (x y : Matrix n n S) (h1 : x * β.val = β.val * y) (T T' H N M : Matrix n n K) (hT : T' * T = 1)
     (hN : T * β.val.map π = N) (hM : H * N = N * M) (hx : T * x.map π = H * T) : M = y.map π := by
@@ -62,6 +84,19 @@ theorem eq_map_of_moved {S K n : Type} [CommRing S] [CommRing K] [Fintype n] [De
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨π', hπ, hred, -⟩` from `GlobalTheory.T.exists_finiteAdele_projection_integral_reduction D k q PP hPP`. Take `⟨y, hy⟩` from `hx`. Rewrite `hz` using `[← hy, Formalism.L2.DIV.redFn_frGL]`. Use `choose l hl using exists_lift (D := D)`. Establish `hπ' : ∀ m : Matrix (Fin V.rank) (Fin V.rank) (AE D), (m.map (toEAf D)).map π' = m.map q.pr` using `fun m => by`.
+
+Use extensionality with `a b`. Conclude with `hπ _`. Establish `hb : (β.val.map l).map (toEAf D) = β.val` using `by ext a b; exact hl _`. Establish `hN' : (mt V t).map q.pr * β.val.map π' = N`. Rewrite using `[← hN _ hb, Matrix.map_mul]`.
+
+Use `congr 1`. Use `conv_lhs => rw [← hb]`. Conclude with `hπ' _`. Set `ψ` to `π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype`. Establish `h1 : (Lev.finE V (t⁻¹ * h * t)).val * β.val = β.val * (Formalism.L2.DIV.intGL D.host.F D.host.E _ y).val`.
+
+Establish `h0` using `frGL_mul β y`. Rewrite `h0` using `[hy]`. Conclude with `h0`. Establish `hfin : (Lev.finE V (t⁻¹ * h * t)).val.map π' = (mt V (t⁻¹ * h * t)).map q.pr`. Rewrite using `[finE_val', hπ']`.
+
+Establish `h5` using `eq_map_of_moved π' β _ _ h1 ((mt V t).map q.pr) ((mt V t⁻¹).map q.pr) _ N M (by rw [← Matrix.map_mul, ← mt_mul', inv_mul_cancel, mt_one', Matrix.map_one _ (map_zero _) (map_one _)]) hN' hM (by`. Rewrite using `[hfin, ← Matrix.map_mul, ← Matrix.map_mul, ← mt_mul', ← mt_mul', mul_assoc, mul_inv_cancel_left])`. Establish `h7 : M i j = ψ (y.val i j)` using `congrFun (congrFun h5 i) j`. Establish `h6 : (ofSplit q).pr (z : D.host.E) = ψ (Formalism.L2.DIV.oToS D.host.F D.host.E z)` using `(hπ _).symm`. Rewrite using `[h7, h6, ← map_sub, ← hred.ker, map_sub, Formalism.L2.DIV.resS_oToS, hz]`.
+
+Conclude with `sub_self _`.
+-/
 theorem red_of_movedTo (q : SplitPt D k) (PP : Formalism.L2.DIV.Pl D.host.E) (hPP : Formalism.L2.NTheta.IsIdemAt q.e PP)
     (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (t h : GA D V) (N M : Matrix (Fin V.rank) (Fin V.rank) k)
     (hN : MovedTo (ofSplit q) V t β N) (hM : (mt V h).map q.pr * N = N * M)

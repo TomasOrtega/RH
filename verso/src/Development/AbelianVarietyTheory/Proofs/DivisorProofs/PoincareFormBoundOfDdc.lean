@@ -9,6 +9,9 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `rComp`. Establish `h0 : 0 ≤ normSec (L i) (s i) y` using `by unfold normSec; positivity`. Establish `: Real.log (normSec (L i) (s i) y ^ 2) ≤ 0` using `Real.log_nonpos (by positivity) (pow_le_one₀ h0 h)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_one_le_rComp_of_normSec_le_one {X : Type} [TopologicalSpace X] {m : ℕ}
     (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (i : Fin m) (y : X)
     (h : normSec (L i) (s i) y ≤ 1) : Real.exp 1 ≤ rComp L s i y := by
@@ -18,6 +21,19 @@ theorem exp_one_le_rComp_of_normSec_le_one {X : Type} [TopologicalSpace X] {m : 
     Real.log_nonpos (by positivity) (pow_le_one₀ h0 h)
   linarith
 
+/- English proof (translation)
+Introduce `e X _ A K m L s D Kc c hK hB hKc hddc hpos hc hcm ψ hψ z hz hzD w`. Establish `hzDi : ∀ i, ψ.symm z ∉ D i` using `fun i hi => hzD (Set.mem_iUnion.2 ⟨i, hi⟩)`. Establish `hr : ∀ i, Real.exp 1 ≤ rComp L s i (ψ.symm z)` using `fun i => exp_one_le_rComp_of_normSec_le_one L s i _ ((hB i).2.2.2 _)`. Establish `hr0 : ∀ i, 0 < rComp L s i (ψ.symm z)` using `fun i => lt_of_lt_of_le (Real.exp_pos 1) (hr i)`. Establish `hk : ContDiffAt ℝ 2 (K.φ (ψ.symm z) ∘ ψ.symm) z` using `(GlobalTheory.T.potential_smooth_in_chart A K hK ψ hψ z hz).of_le (WithTop.coe_le_coe.2 le_top)`.
+
+Establish `hri : ∀ i, ContDiffAt ℝ 2 ((fun i => rComp L s i ∘ ψ.symm) i) z` using `fun i => (GlobalTheory.T.boundary_potential_smooth_off_divisor A L s D hB i ψ hψ z hz (hzDi i)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hcalc` using `GlobalTheory.T.levi_form_log_potential_formula (K.φ (ψ.symm z) ∘ ψ.symm) (fun i => rComp L s i ∘ ψ.symm) c z w hk hri hr0`. Establish `hβ : formAt ψ (poincarePot K L s c) z w = formAt ψ K z w + c * ∑ i, (gradSqAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z) ^ 2 - ddcAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z))` using `hcalc`. Establish `ha : 0 ≤ formAt ψ K z w` using `hpos ψ hψ z hz w`. Establish `hterm : ∀ i, |ddcAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z)| ≤ Kc * formAt ψ K z w / Real.exp 1`.
+
+Introduce `i`. Rewrite using `[abs_div, abs_of_pos (hr0 i), div_le_div_iff₀ (hr0 i) (Real.exp_pos 1)]`. Establish `h1` using `hddc i ψ hψ z hz hzD w`. Establish `hKa : 0 ≤ Kc * formAt ψ K z w` using `mul_nonneg hKc.le ha`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsum : |∑ i, ddcAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z)| ≤ m * (Kc * formAt ψ K z w / Real.exp 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `hhalf : c * (m * (Kc * formAt ψ K z w / Real.exp 1)) ≤ formAt ψ K z w / 2`. Rewrite using `[show c * (m * (Kc * formAt ψ K z w / Real.exp 1)) = (2 * c * m * Kc) * formAt ψ K z w / (2 * Real.exp 1) by ring, div_le_div_iff₀ (by positivity) (by norm_num)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hcm ha]`.
+
+Establish `hcs : |c * ∑ i, ddcAt ψ (rComp L s i) z w / rComp L s i (ψ.symm z)| ≤ formAt ψ K z w / 2`. Rewrite using `[abs_mul, abs_of_pos hc]`. Conclude with `(mul_le_mul_of_nonneg_left hsum hc.le).trans hhalf`. Rewrite `hβ` using `[Finset.sum_sub_distrib, mul_sub]`. Establish `h2` using `abs_le.1 hcs`.
+
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem poincare_twoSided : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (K : LocPot X) {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X)
     (Kc c : ℝ), IsPotential A K → IsBoundary A L s D → 0 < Kc →

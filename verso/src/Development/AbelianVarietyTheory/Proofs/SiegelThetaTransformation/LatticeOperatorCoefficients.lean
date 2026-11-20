@@ -12,6 +12,11 @@ namespace GlobalTheory.SW.Coef
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hc : IsSB fun x => conj (ψ x)` using `(isSB_algebra_haar_linear K κ ι ψ ψ hψ hψ).2.2.2.1`. Establish `hp : IsSB (φ * fun x => conj (ψ x))` using `(isSB_algebra_haar_linear K κ ι φ _ hφ hc).2.2.1`. Establish `hs` using `(isSB_algebra_haar_linear K κ ι _ _ hp hp).2.2.2.2.2.1 (a * conj b)`. Establish `key : (fun x => (a • φ) x * conj ((b • ψ) x)) = (a * conj b) • (φ * fun x => conj (ψ x))`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.mul_apply, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `ip`. Rewrite using `[key, hs]`. Both sides reduce to the same expression.
+-/
 theorem ip_smul_smul {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι]
     {φ ψ : Matrix κ ι K → ℂ} (hφ : IsSB φ) (hψ : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
@@ -29,11 +34,23 @@ theorem ip_smul_smul {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fi
   rw [key, hs]
   rfl
 
+/- English proof (translation)
+Unfold `classSum`. Conclude with `finsum_eq_sum_of_fintype _`.
+-/
 theorem classSum_eq_sum {M : ℕ} [Fintype (Cls E n M)] (f : Lt E n → ℂ) :
     classSum M f = ∑ c : Cls E n M, (wt M (Quot.out c).1 : ℂ) * f (Quot.out c).1 := by
   unfold classSum
   exact finsum_eq_sum_of_fintype _
 
+/- English proof (translation)
+Take `⟨hfin, hstd, hwt, -, -⟩` from `finite_cls_and_stab E n M hM`. Set `_ : Fintype (Cls E n M)` to `Fintype.ofFinite _`. Use `⟨∑ c : Cls E n M, wt M (Quot.out c).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Finset.sum_pos` to reduce the goal to its premises. Introduce `c _`.
+
+Conclude with `(hwt _ (Quot.out c).2).2`. Conclude with `⟨(Quot.mk _ ⟨stdL E n, hstd⟩ : Cls E n M), Finset.mem_univ _⟩`. Introduce `f a hf`. Rewrite using `[classSum_eq_sum, Complex.ofReal_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf _ (Quot.out c).2]`. Introduce `f b hf`. Rewrite using `[classSum_eq_sum, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Establish `hw` using `(hwt _ (Quot.out c).2).2`.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hw.le]`. Conclude with `mul_le_mul_of_nonneg_left (hf _ (Quot.out c).2) hw.le`.
+-/
 theorem exists_mass {M : ℕ} (hM : 0 < M) : ∃ m : ℝ, 0 < m ∧
     (∀ (f : Lt E n → ℂ) (a : ℂ), (∀ Λ ∈ Vset E n M, f Λ = a) → classSum M f = m * a) ∧
     ∀ (f : Lt E n → ℂ) (b : ℝ), (∀ Λ ∈ Vset E n M, ‖f Λ‖ ≤ b) → ‖classSum M f‖ ≤ m * b := by
@@ -56,6 +73,9 @@ theorem exists_mass {M : ℕ} (hM : 0 < M) : ∃ m : ℝ, 0 < m ∧
     rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg hw.le]
     exact mul_le_mul_of_nonneg_left (hf _ (Quot.out c).2) hw.le
 
+/- English proof (translation)
+Use `(finite_cls_and_stab E n M hM).1` as an intermediate fact. Set `_ : Fintype (Cls E n M)` to `Fintype.ofFinite _`. Rewrite using `[classSum_eq_sum, classSum_eq_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_assoc _ _ _`.
+-/
 theorem classSum_mul {M : ℕ} (hM : 0 < M) (f : Lt E n → ℂ) (a : ℂ) :
     classSum M f * a = classSum M fun Λ => f Λ * a := by
   classical
@@ -70,12 +90,26 @@ namespace GlobalTheory.SW
 
 open Coef
 
+/- English proof (translation)
+Unfold `classSum`. Conclude with `finsum_congr fun c => by rw [h _ (Quot.out c).2]`.
+-/
 private theorem classSum_congr_of_eqOn_Vset {E : Type} [Field E] [NumberField E] [IsCMField E]
     {n M : ℕ} {f g : Lt E n → ℂ} (h : ∀ Λ ∈ Vset E n M, f Λ = g Λ) :
     classSum M f = classSum M g := by
   unfold classSum
   exact finsum_congr fun c => by rw [h _ (Quot.out c).2]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn M Δ 𝓛 Φ μ hM hsys`. Take `⟨m, hm, hconst, hbd⟩` from `Coef.exists_mass (E := E) (n := n) hM`. Take `⟨a, ha, hdiag, b, θ, hθ, hoff, hbt⟩` from `hsys.norm`. Establish `hma : 0 < m * a` using `mul_pos hm ha`. Use `⟨m * a, θ, hma, hθ, fun L hL => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hb : ∀ L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, ‖classSum M (fun Λ => ip (Φ L Λ) (Φ L'.1 Λ))‖ ≤ m * a * b L L'.1` using `fun L' => by`. Rewrite using `[mul_assoc]`. Conclude with `hbd _ (a * b L L'.1) fun Λ hΛ => hoff L hL L'.1 L'.2.1 Λ hΛ`. Establish `hS : Summable fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => m * a * b L L'.1` using `(hbt L hL).1.mul_left (m * a)`. Establish `hT` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hb hS`.
+
+Use `⟨?_, hT, ?_⟩` and prove the remaining obligations. Rewrite using `[hconst _ (a : ℂ) fun Λ hΛ => hdiag L hL Λ hΛ]`. Conclude with `(Complex.ofReal_mul m a).symm`. Combine the equalities or inequalities in the displayed calculation. Introduce `γ hγ L hL L' hL'`.
+
+Establish `hun` using `hsys.un γ hγ`. Establish `key : ∀ Λ ∈ Vset E n M, ip (Φ L Λ) (Φ L' Λ) = ip (Φ (mapL γ L) Λ) (Φ (mapL γ L') Λ) * (μ γ L * conj (μ γ L'))`. Introduce `Λ hΛ`. Establish `hw` using `wG_laws E r X g bas idx n hs hn γ hun (Φ L Λ) (hsys.sb L hL Λ hΛ)`. Rewrite using `[← (hw.2.2.1 (Φ L' Λ) (hsys.sb L' hL' Λ hΛ)).1, (hsys.mu γ hγ L hL).2 Λ hΛ, (hsys.mu γ hγ L' hL').2 Λ hΛ, Coef.ip_smul_smul (hsys.sb _ (hsys.stab γ hγ L hL) Λ hΛ) (hsys.sb _ (hsys.stab γ hγ L' hL') Λ hΛ)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc, Coef.classSum_mul hM]`. Conclude with `classSum_congr_of_eqOn_Vset fun Λ hΛ => (key Λ hΛ).symm`.
+-/
 theorem lattice_operator_coefficients : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (M : ℕ) (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (Φ : Lt E r → Lt E n → TF n g) (μ : GL (Fin r) E → Lt E r → ℂ), 0 < M → IsSystem X bas idx M Δ 𝓛 Φ μ → ∃ (a θ : ℝ), 0 < a ∧ θ < 1 ∧ (∀ L ∈ 𝓛, classSum M (fun Λ => ip (Φ L Λ) (Φ L Λ)) = a ∧ Summable (fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => ‖classSum M (fun Λ => ip (Φ L Λ) (Φ L'.1 Λ))‖) ∧ ∑' L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L}, ‖classSum M (fun Λ => ip (Φ L Λ) (Φ L'.1 Λ))‖ ≤ θ * a) ∧ ∀ γ ∈ Δ, ∀ L ∈ 𝓛, ∀ L' ∈ 𝓛, classSum M (fun Λ => ip (Φ (mapL γ L) Λ) (Φ (mapL γ L') Λ)) * μ γ L * conj (μ γ L') = classSum M (fun Λ => ip (Φ L Λ) (Φ L' Λ)) := by
   intro E _ _ _ r X g bas idx n hs hn M Δ 𝓛 Φ μ hM hsys
   obtain ⟨m, hm, hconst, hbd⟩ := Coef.exists_mass (E := E) (n := n) hM

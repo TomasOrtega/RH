@@ -13,11 +13,17 @@ variable {F : Type} [Field F] [NumberField F]
 def evH : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evH_eq (a : AF F) : evI F a = evH a := rfl
 
 def Sz (m : ℕ) (c : ℝ) (a : AF F) : Prop :=
   ‖evH a‖ ≤ c ∧ ∀ v, evFin F v ((m : AF F) * a) ∈ v.adicCompletionIntegers F
 
+/- English proof (translation)
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul h.1 h'.1 (norm_nonneg _) ((norm_nonneg _).trans h.1))`. Rewrite using `[Nat.cast_mul, mul_mul_mul_comm, map_mul]`. Conclude with `mul_mem (h.2 v) (h'.2 v)`.
+-/
 theorem Sz.mul {m m' : ℕ} {c c' : ℝ} {a a' : AF F} (h : Sz m c a) (h' : Sz m' c' a') : Sz (m * m') (c * c') (a * a') := by
   refine ⟨?_, fun v => ?_⟩
   · rw [map_mul]
@@ -25,6 +31,11 @@ theorem Sz.mul {m m' : ℕ} {c c' : ℝ} {a a' : AF F} (h : Sz m c a) (h' : Sz m
   · rw [Nat.cast_mul, mul_mul_mul_comm, map_mul]
     exact mul_mem (h.2 v) (h'.2 v)
 
+/- English proof (translation)
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `(norm_sum_le_of_le _ fun i _ => (h i).1).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Finset.mul_sum, map_sum]`.
+
+Conclude with `sum_mem fun i _ => (h i).2 v`.
+-/
 theorem Sz.sum {ι : Type} [Fintype ι] {m : ℕ} {c : ℝ} {a : ι → AF F} (h : ∀ i, Sz m c (a i)) :
     Sz m (Fintype.card ι * c) (∑ i, a i) := by
   refine ⟨?_, fun v => ?_⟩
@@ -34,12 +45,20 @@ theorem Sz.sum {ι : Type} [Fintype ι] {m : ℕ} {c : ℝ} {a : ι → AF F} (h
   · rw [Finset.mul_sum, map_sum]
     exact sum_mem fun i _ => (h i).2 v
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hm`. Use `⟨h.1.trans hc, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, mul_comm (m : AF F), mul_assoc, map_mul, map_natCast]`. Conclude with `mul_mem (natCast_mem _ k) (h.2 v)`.
+-/
 theorem Sz.mono {m m' : ℕ} {c c' : ℝ} {a : AF F} (h : Sz m c a) (hm : m ∣ m') (hc : c ≤ c') : Sz m' c' a := by
   obtain ⟨k, rfl⟩ := hm
   refine ⟨h.1.trans hc, fun v => ?_⟩
   rw [Nat.cast_mul, mul_comm (m : AF F), mul_assoc, map_mul, map_natCast]
   exact mul_mem (natCast_mem _ k) (h.2 v)
 
+/- English proof (translation)
+Take `⟨m, hm, -, hv⟩` from `GlobalTheory.SmoothForms.denom_global (fun v => max 1 ‖evFin F v a‖₊) (fun v => le_max_left _ _) (by`. Use `(Filter.eventually_cofinite.1 a.2.2).subset fun v hv hv' => hv (max_eq_left ?_)` and prove the remaining obligations. Conclude with `Valued.toNormedField.norm_le_one_iff.2 hv')` after adjusting the coercions. Use `⟨m, hm, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast]`.
+
+Conclude with `Valued.toNormedField.norm_le_one_iff.1 (hv v _ (le_max_right _ _))`.
+-/
 theorem exists_den (a : AF F) : ∃ m : ℕ, 1 ≤ m ∧ ∀ v, evFin F v ((m : AF F) * a) ∈ v.adicCompletionIntegers F := by
   obtain ⟨m, hm, -, hv⟩ := GlobalTheory.SmoothForms.denom_global (fun v => max 1 ‖evFin F v a‖₊) (fun v => le_max_left _ _) (by
     refine (Filter.eventually_cofinite.1 a.2.2).subset fun v hv hv' => hv (max_eq_left ?_)
@@ -48,12 +67,18 @@ theorem exists_den (a : AF F) : ∃ m : ℕ, 1 ≤ m ∧ ∀ v, evFin F v ((m : 
   rw [map_mul, map_natCast]
   exact Valued.toNormedField.norm_le_one_iff.1 (hv v _ (le_max_right _ _))
 
+/- English proof (translation)
+Use `choose m hm hv using fun i => exists_den (a i)`. Use `⟨∏ i, m i, ∑ i, ‖evH (a i)‖, Nat.succ_le_of_lt (Finset.prod_pos fun i _ => hm i), by positivity, fun i => Sz.mono (m := m i) ⟨le_rfl, hv i⟩ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) ?_⟩` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ‖evH (a i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)`.
+-/
 theorem exists_sz {ι : Type} [Fintype ι] (a : ι → AF F) : ∃ (m : ℕ) (c : ℝ), 1 ≤ m ∧ 0 ≤ c ∧ ∀ i, Sz m c (a i) := by
   choose m hm hv using fun i => exists_den (a i)
   refine ⟨∏ i, m i, ∑ i, ‖evH (a i)‖, Nat.succ_le_of_lt (Finset.prod_pos fun i _ => hm i), by positivity, fun i =>
     Sz.mono (m := m i) ⟨le_rfl, hv i⟩ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) ?_⟩
   exact Finset.single_le_sum (f := fun i => ‖evH (a i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)
 
+/- English proof (translation)
+Use `max_le ((pi_norm_le_iff_of_nonneg hc).2 fun w => ?_) ((pi_norm_le_iff_of_nonneg hc).2 fun w => ?_)` and prove the remaining obligations. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal w.2).norm_map_of_map_zero (map_zero _) (evInf F w.1 a)).trans_le (h w.1)`. Conclude with `((InfinitePlace.Completion.isometry_extensionEmbedding w.1).norm_map_of_map_zero (map_zero _) (evInf F w.1 a)).trans_le (h w.1)`.
+-/
 theorem norm_evH_le {a : AF F} {c : ℝ} (hc : 0 ≤ c) (h : ∀ w, ‖evInf F w a‖ ≤ c) : ‖evH a‖ ≤ c := by
   refine max_le ((pi_norm_le_iff_of_nonneg hc).2 fun w => ?_) ((pi_norm_le_iff_of_nonneg hc).2 fun w => ?_)
   · exact ((InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal w.2).norm_map_of_map_zero (map_zero _)
@@ -61,17 +86,26 @@ theorem norm_evH_le {a : AF F} {c : ℝ} (hc : 0 ≤ c) (h : ∀ w, ‖evInf F w
   · exact ((InfinitePlace.Completion.isometry_extensionEmbedding w.1).norm_map_of_map_zero (map_zero _)
       (evInf F w.1 a)).trans_le (h w.1)
 
+/- English proof (translation)
+Use `Prod.ext ?_ (zero_mul _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a * z.1 = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (a * InfiniteAdeleRing.ringEquiv_mixedSpace F z.1)`. Rewrite using `[map_mul, RingEquiv.symm_apply_apply]`.
+-/
 theorem inf_mul (a : mixedEmbedding.mixedSpace F) (z : AF F) : inf a * z = inf (a * evH z) := by
   refine Prod.ext ?_ (zero_mul _)
   change (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a * z.1 =
     (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (a * InfiniteAdeleRing.ringEquiv_mixedSpace F z.1)
   rw [map_mul, RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Set `I : mixedEmbedding.mixedSpace F →+ AF F` to `(AddMonoidHom.inl (Ainf F) (Af F)).comp (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm.toAddMonoidHom`. Conclude with `(map_sum I a Finset.univ).symm`.
+-/
 theorem inf_sum {ι : Type} [Fintype ι] (a : ι → mixedEmbedding.mixedSpace F) : ∑ i, inf (a i) = inf (∑ i, a i) := by
   let I : mixedEmbedding.mixedSpace F →+ AF F :=
     (AddMonoidHom.inl (Ainf F) (Af F)).comp (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm.toAddMonoidHom
   exact (map_sum I a Finset.univ).symm
 
+/- English proof (translation)
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1 * z.1 = 0`. Rewrite using `[ha.1, zero_mul]`. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha.2 v) (hz v)`.
+-/
 theorem intF_mul {a z : AF F} (ha : IntF a) (hz : ∀ v, evFin F v z ∈ v.adicCompletionIntegers F) : IntF (a * z) := by
   refine ⟨?_, fun v => ?_⟩
   · change a.1 * z.1 = 0
@@ -79,6 +113,9 @@ theorem intF_mul {a z : AF F} (ha : IntF a) (hz : ∀ v, evFin F v z ∈ v.adicC
   · rw [map_mul]
     exact mul_mem (ha.2 v) (hz v)
 
+/- English proof (translation)
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `(map_sum (RingHom.fst (Ainf F) (Af F)) a Finset.univ).trans (Finset.sum_eq_zero fun i _ => (h i).1)`. Rewrite using `[map_sum]`. Conclude with `sum_mem fun i _ => (h i).2 v`.
+-/
 theorem intF_sum {ι : Type} [Fintype ι] {a : ι → AF F} (h : ∀ i, IntF (a i)) : IntF (∑ i, a i) := by
   refine ⟨?_, fun v => ?_⟩
   · exact (map_sum (RingHom.fst (Ainf F) (Af F)) a Finset.univ).trans (Finset.sum_eq_zero fun i _ => (h i).1)
@@ -91,6 +128,11 @@ variable (F κ) in
 
 def crd : Pt F κ ≃ₗ[AF F] (κ ⊕ κ → AF F) := (LinearEquiv.sumArrowLequivProdArrow κ κ (AF F) (AF F)).symm
 
+/- English proof (translation)
+Establish `: w = ∑ j, crd F κ w j • (crd F κ).symm (Pi.single j 1)`. Apply `(crd F κ).injective` to reduce the goal to its premises. Simplify using `only [map_sum, map_smul, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Use `conv_lhs => rw [this]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem crd_apply (s : Pt F κ →ₗ[AF F] Pt F κ) (w : Pt F κ) (i : κ ⊕ κ) :
     crd F κ (s w) i = ∑ j, crd F κ w j * crd F κ (s ((crd F κ).symm (Pi.single j 1))) i := by
   have : w = ∑ j, crd F κ w j • (crd F κ).symm (Pi.single j 1) := by
@@ -101,6 +143,17 @@ theorem crd_apply (s : Pt F κ →ₗ[AF F] Pt F κ) (w : Pt F κ) (i : κ ⊕ �
   conv_lhs => rw [this]
   simp only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨fun w hw => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `hw' : ∀ j, IntF (crd F κ w j)`. Introduce and unpack `(j | j)`. Use `exacts [hw.1 j, hw.2 j]`. Establish `: ∀ i, IntF (crd F κ ((m : AF F) • s w) i)` using `fun i => by`.
+
+Rewrite using `[map_smul, Pi.smul_apply, crd_apply, smul_eq_mul, Finset.mul_sum]`. Use `intF_sum fun j => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `intF_mul (hw' j) (h i j).2`. Conclude with `⟨fun i => this (Sum.inl i), fun i => this (Sum.inr i)⟩`.
+
+Set `z : κ ⊕ κ → mixedEmbedding.mixedSpace F` to `fun i => ∑ j, Sum.elim w.1 w.2 j * evH (crd F κ (s ((crd F κ).symm (Pi.single j 1))) i)`. Establish `hz : ∀ i, crd F κ (s (emb w)) i = inf (z i)` using `fun i => by`. Rewrite using `[crd_apply, ← inf_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← inf_mul]`.
+
+Apply the tactic sequence `rcases j with j | j <;> rfl`. Establish `hn : ∀ i, ‖z i‖ ≤ Fintype.card (κ ⊕ κ) * c * ‖w‖` using `fun i => by`. Use `(norm_sum_le_of_le (n := fun _ => ‖w‖ * c) _ fun j _ => (norm_mul_le _ _).trans (mul_le_mul ?_ (h i j).1 (norm_nonneg _) (norm_nonneg _))).trans (le_of_eq ?_)` and prove the remaining obligations. Break down `j with j | j exacts [(norm_le_pi_norm w.1 j).trans (norm_fst_le w), (norm_le_pi_norm w.2 j).trans (norm_snd_le w)]` into its components or cases. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0 : 0 ≤ Fintype.card (κ ⊕ κ) * c * ‖w‖` using `by positivity`. Conclude with `⟨(fun i => z (Sum.inl i), fun i => z (Sum.inr i)), Prod.ext (funext fun i => hz (Sum.inl i)) (funext fun i => hz (Sum.inr i)), max_le ((pi_norm_le_iff_of_nonneg h0).2 fun i => hn _) ((pi_norm_le_iff_of_nonneg h0).2 fun i => hn _)⟩`.
+-/
 theorem bd_of_sz {s : Pt F κ →ₗ[AF F] Pt F κ} {m : ℕ} {c : ℝ} (hc : 0 ≤ c)
     (h : ∀ i j, Sz m c (crd F κ (s ((crd F κ).symm (Pi.single j 1))) i)) : Bd s m (Fintype.card (κ ⊕ κ) * c) := by
   refine ⟨fun w hw => ?_, fun w => ?_⟩
@@ -133,6 +186,15 @@ theorem bd_of_sz {s : Pt F κ →ₗ[AF F] Pt F κ} {m : ℕ} {c : ℝ} (hc : 0 
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `letI : Algebra F ℂ := w.embedding.toAlgebra`. Set `t : (E →ₐ[F] ℂ) → EmbOver E w` to `fun τ => ⟨τ, RingHom.ext τ.commutes⟩`. Establish `key : ∀ y : w.Completion ⊗[F] E, InfinitePlace.Completion.extensionEmbedding w ((Algebra.TensorProduct.basis w.Completion b.traceDual).repr y i) = ∑ τ : E →ₐ[F] ℂ, infEmb (t τ) y * τ (b i)` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add y z hy hz => simp only [map_add, Finsupp.add_apply, hy, hz, add_mul, Finset.sum_add_distrib]`. Consider the case `tmul a e`. Establish `h : ∀ x : F, InfinitePlace.Completion.extensionEmbedding w (algebraMap F w.Completion x) = algebraMap F ℂ x` using `fun x => InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm x)`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, h, Module.Basis.traceDual_repr_apply, Algebra.traceForm_apply, trace_eq_sum_embeddings, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[infEmb_tmul, map_mul, mul_assoc]`. Both sides reduce to the same expression. Use `⟨∑ τ : E →ₐ[F] ℂ, ‖τ (b i)‖, by positivity, fun c y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _), key, Finset.sum_mul]`. Use `norm_sum_le_of_le _ fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hy _) (norm_nonneg _)`.
+-/
 theorem exists_norm_repr_le {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
     (w : InfinitePlace F) (i : ι) : ∃ B : ℝ, 0 ≤ B ∧ ∀ (c : ℝ) (y : w.Completion ⊗[F] E),
       (∀ τ : EmbOver E w, ‖infEmb τ y‖ ≤ c) →
@@ -161,6 +223,13 @@ theorem exists_norm_repr_le {ι : Type} [Fintype ι] [DecidableEq ι] (b : Modul
   exact mul_le_mul_of_nonneg_left (hy _) (norm_nonneg _)
 
 variable (F E) in
+/- English proof (translation)
+Take `⟨s, b, hb⟩` from `FiniteDimensional.exists_is_basis_integral (𝓞 F) F E`. Establish `hb' : ∀ i, IsIntegral ℤ (b i)` using `fun i => isIntegral_trans _ (hb i)`. Use `choose B hB0 hB using fun (p : s × InfinitePlace F) => exists_norm_repr_le b p.2 p.1`. Use `⟨s, inferInstance, Algebra.TensorProduct.basis (AF F) b.traceDual, ∑ p, B p, Finset.sum_nonneg fun p _ => hB0 p, fun n g => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hdc, hv⟩` from `GlobalTheory.SmoothForms.denom_global (fun v => htFin F v (Formalism.UG.bc (compFin F E v) g)) (fun v => one_le_htOf _ _) (finite_mulSupport_htFin F g)`.
+
+Use `⟨d, hd, ?_, fun i j k => ⟨norm_evH_le (mul_nonneg (Finset.sum_nonneg fun p _ => hB0 p) (NNReal.coe_nonneg _)) fun w => ?_, fun v => ?_⟩⟩` and prove the remaining obligations. Conclude with `hdc.trans (le_mul_of_one_le_left' (Finset.one_le_prod' fun _ _ => one_le_htOf _ _))` after adjusting the coercions. Use `(congrArg norm (HeightProper.repr_map b.traceDual (evInf F w) (g.1 i j) k)).symm.trans_le ((hB (k, w) (heightGL F g) _ fun τ => ?_).trans (mul_le_mul_of_nonneg_right (Finset.single_le_sum (fun p _ => hB0 p) (Finset.mem_univ _)) (NNReal.coe_nonneg _)))` and prove the remaining obligations. Establish `h` using `((normInf_le_iff F w).1 (le_htOf _ _) τ).trans (GlobalTheory.Grow.htInf_le_heightGL F g w)`. Conclude with `(HeightProper.norm_entry_le_opNorm _ i j).trans (NNReal.coe_le_coe.2 h)`.
+
+Rewrite using `[map_mul, map_natCast]`. Use `Valued.toNormedField.norm_le_one_iff.1 (hv v _ ?_)` and prove the remaining obligations. Use `(congrArg nnnorm (HeightProper.repr_map b.traceDual (evFin F v) (g.1 i j) k)).symm.trans_le ((HeightProper.nnnorm_repr_le_absFin b hb' v _ k).trans ?_)` and prove the remaining obligations. Conclude with `(absFin_le_normFin F v (Formalism.UG.bc (compFin F E v) g).1 i j).trans (le_htOf _ _)`.
+-/
 theorem exists_entries : ∃ (ι : Type) (_ : Fintype ι) (β : Module.Basis ι (AF F) (AE F E)) (C : ℝ), 0 ≤ C ∧
     ∀ (n : ℕ) (g : GL (Fin n) (AE F E)), ∃ m : ℕ, 1 ≤ m ∧ (m : ℝ) ≤ heightGL F g ∧
       ∀ i j k, Sz m (C * heightGL F g) (β.repr (g.1 i j) k) := by
@@ -185,6 +254,9 @@ theorem exists_entries : ∃ (ι : Type) (_ : Fintype ι) (β : Module.Basis ι 
       ((HeightProper.nnnorm_repr_le_absFin b hb' v _ k).trans ?_)
     exact (absFin_le_normFin F v (Formalism.UG.bc (compFin F E v) g).1 i j).trans (le_htOf _ _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Fintype.sum_prod_type, Matrix.single_apply, smul_ite, smul_zero]`. Rewrite using `[Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp), Finset.sum_eq_single j (fun a _ ha => by simp [ha]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem expand {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A] [Fintype ι] (β : Module.Basis ι R A) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) A) :
     M = ∑ p : Fin n × Fin n × ι, β.repr (M p.1 p.2.1) p.2.2 • Matrix.single p.1 p.2.1 (β p.2.2) := by
@@ -193,6 +265,11 @@ theorem expand {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A] [Fintype 
   rw [Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp), Finset.sum_eq_single j (fun a _ ha => by simp [ha]) (by simp)]
   simp
 
+/- English proof (translation)
+Use `(congrArg₂ (fun A B => l (A * u * Bᵀ)) (expand β M) (expand β N)).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type (α₁ := Fin n × Fin n × ι) (α₂ := Fin d × Fin d × ι), Matrix.sum_mul, Matrix.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.transpose_sum, Matrix.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bilin {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A] [Fintype ι] (β : Module.Basis ι R A) {n d : ℕ}
     (l : Matrix (Fin n) (Fin d) A →ₗ[R] R) (u : Matrix (Fin n) (Fin d) A) (M : Matrix (Fin n) (Fin n) A)
     (N : Matrix (Fin d) (Fin d) A) : l (M * u * Nᵀ) = ∑ p : (Fin n × Fin n × ι) × (Fin d × Fin d × ι),
@@ -206,6 +283,11 @@ theorem bilin {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A] [Fintype �
   rw [Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, map_smul, map_smul, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Set `l : κ ⊕ κ → Matrix (Fin n) (Fin d) A →ₗ[AF F] AF F` to `fun i => LinearMap.proj i ∘ₗ (crd F κ).toLinearMap ∘ₗ e.toLinearMap`. Set `u : κ ⊕ κ → Matrix (Fin n) (Fin d) A` to `fun j => e.symm ((crd F κ).symm (Pi.single j 1))`. Take `⟨m₀, c₀, hm₀, hc₀, h₀⟩` from `exists_sz (F := F) fun q : ((κ ⊕ κ) × (κ ⊕ κ)) × ((Fin n × Fin n × ι) × (Fin d × Fin d × ι)) => l q.1.1 (Matrix.single q.2.1.1 q.2.1.2.1 (β q.2.1.2.2) * u q.1.2 * (Matrix.single q.2.2.1 q.2.2.2.1 (β q.2.2.2.2))ᵀ)`. Use `⟨m₀, Fintype.card (κ ⊕ κ) * (Fintype.card ((Fin n × Fin n × ι) × (Fin d × Fin d × ι)) * c₀), hm₀, by positivity, fun M N s a b x y hx hy hs hA hB => ?_⟩` and prove the remaining obligations. Establish `hbd : Bd s (a * b * m₀) _` using `bd_of_sz (c := Fintype.card ((Fin n × Fin n × ι) × (Fin d × Fin d × ι)) * (x * y * c₀)) (by positivity) fun i j => by`.
+
+Establish `e' : crd F κ (s ((crd F κ).symm (Pi.single j 1))) i = l i (M * u j * Nᵀ)` using `by rw [hs]; rfl`. Rewrite using `[e', bilin β (l i) (u j) M N]`. Conclude with `Sz.sum fun p => ((hA _ _ _).mul (hB _ _ _)).mul (h₀ ((i, j), p))`. Use `hbd using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bd_bilin {A ι : Type} [CommRing A] [Algebra (AF F) A] [Fintype ι] (β : Module.Basis ι (AF F) A) {n d : ℕ}
     (e : Matrix (Fin n) (Fin d) A ≃ₗ[AF F] Pt F κ) : ∃ (m₀ : ℕ) (K : ℝ), 1 ≤ m₀ ∧ 0 ≤ K ∧
       ∀ (M : Matrix (Fin n) (Fin n) A) (N : Matrix (Fin d) (Fin d) A) (s : Pt F κ →ₗ[AF F] Pt F κ) (a b : ℕ) (x y : ℝ),
@@ -235,6 +317,17 @@ namespace PositivityTheory.ThKF0.Grow
 open scoped Matrix NNReal ENNReal Classical TensorProduct
 open NumberField IsDedekindDomain Filter Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Ht
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M`. Take `⟨ι, _, β, C, hC, hβ⟩` from `exists_entries F E`. Take `⟨m₀, K, hm₀, hK, h₀⟩` from `bd_bilin β M.co.e`. Use `⟨m₀ + K * C * C, by positivity, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, ha', hA⟩` from `hβ n (g⁻¹).1`.
+
+Take `⟨b, hb, hb', hB⟩` from `hβ d (h⁻¹).1`. Establish `eg : heightGL F (g⁻¹).1 = ht g` using `heightGL_inv F g.1`. Establish `eh : heightGL F (h⁻¹).1 = ht h` using `heightGL_inv F h.1`. Rewrite `ha'`, `hA` using `[eg]`. Rewrite `hb'`, `hB` using `[eh]`.
+
+Establish `hbd` using `h₀ (mat g⁻¹) (mat h⁻¹) (sOf M g h) a b (C * ht g) (C * ht h) (mul_nonneg hC (ht g).2) (mul_nonneg hC (ht h).2) (fun _ => rfl) hA hB`. Establish `hx : (0 : ℝ) ≤ ht g` using `(ht g).2`. Establish `hy : (0 : ℝ) ≤ ht h` using `(ht h).2`. Generalize the expression as in `(ht g : ℝ) = x at *`. Generalize the expression as in `(ht h : ℝ) = y at *`.
+
+Establish `h0 : 0 ≤ x * y` using `mul_nonneg hx hy`. Establish `h1 : 0 ≤ K * C * C * (x * y)` using `by positivity`. Use `⟨a * b * m₀, Nat.mul_pos (Nat.mul_pos ha hb) hm₀, ?_, hbd.fin, fun w => ?_⟩` and prove the remaining obligations. Use `push_cast`. Establish `: (a : ℝ) * b ≤ x * y` using `mul_le_mul ha' hb' (Nat.cast_nonneg _) hx`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this (Nat.cast_nonneg (α := ℝ) m₀)]`. Take `⟨w', e, hw'⟩` from `hbd.inf w`. Use `⟨w', e, hw'.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ m₀ * (x * y)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem htBd : HtBd := by
   intro F E _ _ _ _ _ σ n d X W M
   obtain ⟨ι, _, β, C, hC, hβ⟩ := exists_entries F E

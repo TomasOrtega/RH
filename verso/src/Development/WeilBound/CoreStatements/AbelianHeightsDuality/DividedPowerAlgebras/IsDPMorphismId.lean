@@ -16,6 +16,9 @@ variable {R : Type} [CommRing R] {I : Ideal R} {X X₀ : Scheme.{0}}
 def NT (κ : DividedPowers I) {s : X ⟶ Sp R} {K : Type} (U : K → X.Opens) : ObjectProperty (Tag (dp0 R) s U) :=
   fun S ↦ InN κ S.T
 
+/- English proof (translation)
+The claim follows from `(DPMorphism.id δ).isDPMorphism`.
+-/
 theorem isDPMorphism_id {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) :
     IsDPMorphism δ δ (RingHom.id B) := (DPMorphism.id δ).isDPMorphism
 
@@ -33,11 +36,23 @@ namespace Red
 
 include h
 
+/- English proof (translation)
+Use `IsMor.of_dividedPowersZeroIdeal κ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Cris.spMap_id, Category.comp_id]`. Conclude with `h.pb.w`.
+-/
 theorem mor : IsMor (dp0 R) s κ (s₀ ≫ spMap π) (RingHom.id R) i := by
   refine IsMor.of_dividedPowersZeroIdeal κ ?_
   rw [GlobalTheory.Cris.spMap_id, Category.comp_id]
   exact h.pb.w
 
+/- English proof (translation)
+Establish `hnil : ∀ x ∈ I, ∃ N : ℕ, x ^ N = 0`. Introduce `x hx`. Take `⟨N, hN⟩` from `h.nil`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `hN (List.replicate N (1, x)) (by` as an intermediate fact.
+
+Introduce `p hp`. Rewrite using `[List.eq_of_mem_replicate hp]`. Conclude with `hx)`. Use the proof step `(by simp)`. Simplify `this` using `[List.map_replicate, List.prod_replicate, κ.dpow_one hx]`.
+
+Establish `hsurj : Function.Surjective (spMap π)`. Introduce `p`. Establish `hp : p ∈ Set.range (PrimeSpectrum.comap π)` using `by open PrimeSpectrum in rw [range_comap_of_surjective _ π h.surj, h.ker]`. Express the relevant statement in the definitionally equal form `(I : Set R) ⊆ (p : PrimeSpectrum R).asIdeal`. Introduce `x hx`.
+
+Take `⟨N, hN⟩` from `hnil x hx`. Conclude with `p.isPrime.mem_of_pow_mem N (by rw [hN]; exact p.asIdeal.zero_mem)`. Conclude with `hp`. Establish `hS : AlgebraicGeometry.Surjective (spMap π)` using `(AlgebraicGeometry.surjective_iff _).mpr hsurj`. Conclude with `(AlgebraicGeometry.surjective_iff i).mp (MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) h.pb.flip hS)`.
+-/
 theorem surjective : Function.Surjective i := by
   have hnil : ∀ x ∈ I, ∃ N : ℕ, x ^ N = 0 := by
     intro x hx
@@ -63,11 +78,17 @@ theorem surjective : Function.Surjective i := by
   exact (AlgebraicGeometry.surjective_iff i).mp
     (MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Surjective) h.pb.flip hS)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, rfl⟩` from `h.surjective x`. Conclude with `(show y ∈ i ⁻¹ᵁ V from e (show y ∈ i ⁻¹ᵁ U from hx))`.
+-/
 theorem le_of_le {U V : X.Opens} (e : i ⁻¹ᵁ U ≤ i ⁻¹ᵁ V) : U ≤ V := by
   intro x hx
   obtain ⟨y, rfl⟩ := h.surjective x
   exact (show y ∈ i ⁻¹ᵁ V from e (show y ∈ i ⁻¹ᵁ U from hx))
 
+/- English proof (translation)
+Use `show ∃ δ' : DividedPowers (T.J ⊔ Ideal.map (algebraMap R T.B) I), T.δ.IsDPMorphism δ' (RingHom.id T.B) ∧ κ.IsDPMorphism δ' (algebraMap R T.B)`. Rewrite using `[sup_eq_left.mpr T.dp.ideal_comp]`. Conclude with `⟨T.δ, isDPMorphism_id T.δ, T.dp⟩`.
+-/
 theorem inN_obj (T : Thick κ (s₀ ≫ spMap π)) : InN κ (h.mor.obj T) := by
   show ∃ δ' : DividedPowers (T.J ⊔ Ideal.map (algebraMap R T.B) I),
     T.δ.IsDPMorphism δ' (RingHom.id T.B) ∧ κ.IsDPMorphism δ' (algebraMap R T.B)
@@ -86,6 +107,9 @@ def rho (I : Ideal R) : S.B₀ →+* S.B ⧸ big S I :=
   RingHom.liftOfSurjective S.π S.surj ⟨Ideal.Quotient.mk _, fun b hb ↦
     Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left ((S.ker b).1 hb))⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ b`.
+-/
 theorem rho_π (I : Ideal R) (b : S.B) : rho S I (S.π b) = Ideal.Quotient.mk _ b :=
   RingHom.liftOfSurjective_comp_apply _ _ _ b
 
@@ -93,6 +117,9 @@ def Red.sig : R₀ →+* S.B ⧸ big S I :=
   RingHom.liftOfSurjective π h.surj ⟨(Ideal.Quotient.mk _).comp (algebraMap R S.B), fun r hr ↦
     Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ (h.ker ▸ hr)))⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ r`.
+-/
 theorem Red.sig_π (r : R) : h.sig S (π r) = Ideal.Quotient.mk _ (algebraMap R S.B r) :=
   RingHom.liftOfSurjective_comp_apply _ _ _ r
 
@@ -102,8 +129,14 @@ def Red.pt : Sp (S.B ⧸ big S I) ⟶ X₀ :=
     congr 1
     exact RingHom.ext fun r ↦ (rho_π S I _).trans (h.sig_π S r).symm)
 
+/- English proof (translation)
+The claim follows from `h.pb.lift_fst _ _ _`.
+-/
 theorem Red.pt_i : h.pt S ≫ i = spMap (rho S I) ≫ S.x := h.pb.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `h.pb.lift_snd _ _ _`.
+-/
 theorem Red.pt_s : h.pt S ≫ s₀ = spMap (h.sig S) := h.pb.lift_snd _ _ _
 
 @[reducible] def Red.up (hS : InN κ S) : Thick κ (s₀ ≫ spMap π) where
@@ -127,6 +160,9 @@ variable {S}
 def Red.rh {T : Thick κ (s₀ ≫ spMap π)} (f : S ⟶ h.mor.obj T) : S.B →+* T.B :=
   (f.φ : S.B →+* (h.mor.obj T).B)
 
+/- English proof (translation)
+The claim follows from `f.φ.commutes r`.
+-/
 theorem Red.rh_algebraMap {T : Thick κ (s₀ ≫ spMap π)} (f : S ⟶ h.mor.obj T) (r : R) :
     h.rh f (algebraMap R S.B r) = algebraMap R T.B r := f.φ.commutes r
 
@@ -223,6 +259,9 @@ def Red.ε : h.G U ⋙ h.H U ⟶ 𝟭 _ where
     refine Tag.hom_ext (Thick.hom_ext fun b ↦ ?_)
     exact (rfl : (Tag.Hom.f f).φ b = (Tag.Hom.f f).φ b)
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull1, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `((CoefMap.id _).pullCohomologyOne_eq_of_natTrans ((h.cG U).comp (h.cH U)) (h.η U) (fun _ b ↦ (rfl : b = b)) c).symm.trans (CoefMap.pullCohomologyOne_id c)`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `(((h.cH U).comp (h.cG U)).pullCohomologyOne_eq_of_natTrans (CoefMap.id _) (h.ε U) (fun _ b ↦ (rfl : b = b)) c).trans (CoefMap.pullCohomologyOne_id c)`.
+-/
 theorem Red.cG_pull1 : Function.Bijective (h.cG U).pull1 := by
   refine Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull1, fun c ↦ ?_, fun c ↦ ?_⟩
   · rw [← CoefMap.pullCohomologyOne_comp]
@@ -232,6 +271,9 @@ theorem Red.cG_pull1 : Function.Bijective (h.cG U).pull1 := by
     exact (((h.cH U).comp (h.cG U)).pullCohomologyOne_eq_of_natTrans (CoefMap.id _) (h.ε U) (fun _ b ↦ (rfl : b = b)) c).trans
       (CoefMap.pullCohomologyOne_id c)
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull2, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `((CoefMap.id _).pullCohomologyTwo_eq_of_natTrans ((h.cG U).comp (h.cH U)) (h.η U) (fun _ b ↦ (rfl : b = b)) c).symm.trans (CoefMap.pullCohomologyTwo_id c)`. Rewrite using `[← CoefMap.pullCohomologyTwo_comp]`. Conclude with `(((h.cH U).comp (h.cG U)).pullCohomologyTwo_eq_of_natTrans (CoefMap.id _) (h.ε U) (fun _ b ↦ (rfl : b = b)) c).trans (CoefMap.pullCohomologyTwo_id c)`.
+-/
 theorem Red.cG_pull2 : Function.Bijective (h.cG U).pull2 := by
   refine Function.bijective_iff_has_inverse.2 ⟨(h.cH U).pull2, fun c ↦ ?_, fun c ↦ ?_⟩
   · rw [← CoefMap.pullCohomologyTwo_comp]

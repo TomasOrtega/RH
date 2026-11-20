@@ -18,20 +18,35 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem translPt_eq {T : Over S} (x : T ⟶ A) : translPt A x = (fst T A ≫ x) * snd T A := rfl
 
+/- English proof (translation)
+Unfold `translT`. Rewrite using `[translPt_eq, MonObj.comp_one, _root_.one_mul, lift_fst_snd]`.
+-/
 theorem translT_one (T : Over S) : translT A (1 : T ⟶ A) = 𝟙 _ := by
   unfold translT
   rw [translPt_eq, MonObj.comp_one, _root_.one_mul, lift_fst_snd]
 
+/- English proof (translation)
+Unfold `translT`. Simplify using `only [translPt_eq, comp_lift, lift_fst, MonObj.comp_mul, lift_snd, lift_fst_assoc, _root_.mul_assoc]`.
+-/
 theorem translT_comp {T : Over S} (x y : T ⟶ A) : translT A x ≫ translT A y = translT A (y * x) := by
   unfold translT
   simp only [translPt_eq, comp_lift, lift_fst, MonObj.comp_mul, lift_snd, lift_fst_assoc, _root_.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, translT_comp, ← pow_succ]`.
+-/
 theorem translT_comp_left {T : Over S} (x : T ⟶ A) (m : ℕ) :
     (translT A x).left ≫ (translT A (x ^ m)).left = (translT A (x ^ (m + 1))).left := by
   rw [← Over.comp_left, translT_comp, ← pow_succ]
 
+/- English proof (translation)
+Unfold `LB.wchart`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage]`. Introduce `k`. Simplify using `using hJ (r ≫ φ k)`.
+-/
 private theorem mem_wchart_of_good {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     r z ∈ L.wchart φ (fun k => J (r ≫ φ k)) := by
@@ -40,21 +55,33 @@ private theorem mem_wchart_of_good {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fin
   intro k
   simpa using hJ (r ≫ φ k)
 
+/- English proof (translation)
+The claim follows from `TopCat.Presheaf.germ_res_apply _ i x hx s`.
+-/
 private theorem germ_presheaf_map_eq_germ {X : Scheme.{0}} {U V : X.Opens} (i : U ⟶ V) (x : X) (hx : x ∈ U) (s : Γ(X, V)) :
     (X.presheaf.germ U x hx).hom ((X.presheaf.map i.op).hom s) = (X.presheaf.germ V x (i.le hx)).hom s :=
   TopCat.Presheaf.germ_res_apply _ i x hx s
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.germ_stalkMap_apply f U x hx y).symm`.
+-/
 private theorem germ_app_eq_stalkMap_germ {X Y : Scheme.{0}} (f : X ⟶ Y) (U : Y.Opens) (x : X) (hx : f x ∈ U) (y : Γ(Y, U)) :
     (X.presheaf.germ (f ⁻¹ᵁ U) x hx).hom ((f.app U).hom y) =
       (f.stalkMap x).hom ((Y.presheaf.germ U (f x) hx).hom y) :=
   (Scheme.Hom.germ_stalkMap_apply f U x hx y).symm
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem sval_lPow_eq_of_index_eq {L : LB A.left} {k : ℤ} {T : Over S} (s : LB.Sec (LPow A L k T)) {Z : Scheme.{0}}
     (p : Z ⟶ (T ⊗ A).left) (z : Z) (J : (Z ⟶ A.left) → L.ι) (c : L.ι) (hc : J (p ≫ (snd T A).left) = c) :
     sval (L := L) s p z J = gs p z (L.wchart (fun _ : Fin 1 => (snd T A).left) (fun _ => c)) (s.f (fun _ => c)) := by
   subst hc
   rfl
 
+/- English proof (translation)
+Establish `hm` using `mem_wchart_of_good L φ r z hJ`. Establish `hfun : (fun k => J (r ≫ φ k)) = c` using `funext hc`. Rewrite `hm` using `[hfun]`. Conclude with `hm`.
+-/
 private theorem mem_wchart_of_good_of_index_eq {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (c : K → L.ι)
     (hc : ∀ k, J (r ≫ φ k) = c k) : r z ∈ L.wchart φ c := by
@@ -63,6 +90,9 @@ private theorem mem_wchart_of_good_of_index_eq {X Y : Scheme.{0}} (L : LB X) {K 
   rw [hfun] at hm
   exact hm
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem val_thetaGrp_eq_of_index_eq {L : LB A.left} {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T) {Z : Scheme.{0}}
     (p : Z ⟶ (T ⊗ A).left) (z : Z) (J : (Z ⟶ A.left) → L.ι) (c : Fin 2 → L.ι)
     (hc : (fun b => J (p ≫ ![(snd T A).left, (translPt A θ.pt).left] b)) = c) :
@@ -70,6 +100,9 @@ private theorem val_thetaGrp_eq_of_index_eq {L : LB A.left} {k : ℤ} {T : Over 
   subst hc
   rfl
 
+/- English proof (translation)
+Rewrite using `[germ_app_eq_stalkMap_germ r V z hz, germ_presheaf_map_eq_germ, germ_presheaf_map_eq_germ, Scheme.Hom.comp_app]`. Conclude with `(germ_app_eq_stalkMap_germ r (f ⁻¹ᵁ U) z _ _).symm`.
+-/
 private theorem germ_app_presheaf_map_app_eq_germ_comp_app {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) (U : X.Opens) (V V' : Y.Opens)
     (h1 : V ≤ V') (h2 : V' ≤ f ⁻¹ᵁ U) (hz : r z ∈ V) (hz' : (r ≫ f) z ∈ U) (x : Γ(X, U)) :
     (Z.presheaf.germ (r ⁻¹ᵁ V) z hz).hom ((r.app V).hom ((Y.presheaf.map (homOfLE h1).op).hom
@@ -80,6 +113,19 @@ private theorem germ_app_presheaf_map_app_eq_germ_comp_app {X Y Z : Scheme.{0}} 
 
 variable {A}
 
+/- English proof (translation)
+Establish `hpt : (translT A θ.pt).left ≫ (snd T A).left = (translPt A θ.pt).left`. Rewrite using `[← Over.comp_left]`. Unfold `translT`. Rewrite using `[lift_snd]`. Establish `e : J ((r ≫ (translT A θ.pt).left) ≫ (snd T A).left) = J (r ≫ ![(snd T A).left, (translPt A θ.pt).left] 1)`.
+
+Rewrite using `[Category.assoc, hpt]`. Both sides reduce to the same expression. Rewrite using `[sval_lPow_eq_of_index_eq A s (r ≫ (translT A θ.pt).left) z J _ e]`. Unfold `IsActOf IsTwistPull at h`. Establish `hj` using `h (fun i => J (r ≫ ![(snd T A).left, (translPt A θ.pt).left] i))`.
+
+Establish `m` using `mem_wchart_of_good L ![(snd T A).left, (translPt A θ.pt).left] r z hJ`. Establish `m0` using `mem_wchart_of_good L (fun _ : Fin 1 => (snd T A).left) r z hJ`. Establish `m1 : (r ≫ (translT A θ.pt).left) z ∈ L.wchart (fun _ : Fin 1 => (snd T A).left) (fun _ => J (r ≫ ![(snd T A).left, (translPt A θ.pt).left] 1))`. Rewrite using `[← e]`. Conclude with `mem_wchart_of_good L (fun _ : Fin 1 => (snd T A).left) (r ≫ (translT A θ.pt).left) z hJ`.
+
+Establish `key` using `congrArg (fun x => ((T ⊗ A).left.presheaf.germ _ (r z) m).hom x) hj`. Simplify using `only at key`. Use `erw [TopCat.Presheaf.germ_res_apply, map_mul, TopCat.Presheaf.germ_res_apply] at key`. Establish `key2` using `congrArg (r.stalkMap z).hom key`. Simplify using `only [map_mul, Scheme.Hom.germ_stalkMap_apply] at key2`.
+
+Use `erw [Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply] at key2`. Unfold `sval val gs gm`. Simplify using `only [m0, m, m1, ↓reduceDIte]`. Simplify using `only [Scheme.Hom.comp_app, Scheme.Hom.comp_preimage, CommRingCat.hom_comp]`. Use `key2 using 1` and compare the differences between its conclusion and the goal.
+
+Both sides reduce to the same expression. Use `erw [Units.coe_map]`. Both sides reduce to the same expression.
+-/
 theorem act_sval {L : LB A.left} {k : ℤ} {T : Over S} {θ : ThetaGrp A L k T} {s s' : LB.Sec (LPow A L k T)}
     (h : IsActOf A L k θ s s') {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J : (Z ⟶ A.left) → L.ι}
     (hJ : Good L z J) :
@@ -115,6 +161,17 @@ theorem act_sval {L : LB A.left} {k : ℤ} {T : Over S} {θ : ThetaGrp A L k T} 
   · erw [Units.coe_map]
     rfl
 
+/- English proof (translation)
+Rewrite using `[← Fin.prod_univ_eq_prod_range]`. Establish `hmem` using `mem_wchart_of_good L (powφ A θ.pt n) r z hJ`. Establish `hfac : ∀ i : Fin n, val (L` using `L) θ.φ (r ≫ (translT A (θ.pt ^ (i : ℕ))).left) z J = gm (r ≫ (translT A (θ.pt ^ (i : ℕ))).left) z (L.wchart ![(snd T A).left, (translPt A θ.pt).left] (fun b => J (r ≫ powφ A θ.pt n (i, b)))) (θ.φ.s (fun b => J (r ≫ powφ A θ.pt n (i, b)))) := by`. Introduce `i`. Apply `val_thetaGrp_eq_of_index_eq` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression. Establish `hmi : ∀ i : Fin n, (r ≫ (translT A (θ.pt ^ (i : ℕ))).left) z ∈ L.wchart ![(snd T A).left, (translPt A θ.pt).left] (fun b => J (r ≫ powφ A θ.pt n (i, b)))`. Introduce `i`.
+
+Apply `mem_wchart_of_good_of_index_eq L _ _ z hJ` to reduce the goal to its premises. Introduce `b`. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression. Simplify using `only [hfac]`.
+
+Unfold `val Out.powGen LB.pullGen gm`. Simplify using `only [hmem, hmi, ↓reduceDIte]`. Use `erw [map_prod]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Conclude with `germ_app_presheaf_map_app_eq_germ_comp_app r _ z _ _ _ _ _ _ _ _`.
+-/
 theorem val_powGen {L : LB A.left} {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T) (n : ℕ)
     {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J : (Z ⟶ A.left) → L.ι} (hJ : Good L z J) :
     val (Out.powGen A L k θ n) r z J =
@@ -145,6 +202,11 @@ theorem val_powGen {L : LB A.left} {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T
   apply Units.ext
   exact germ_app_presheaf_map_app_eq_germ_comp_app r _ z _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Proceed by induction on `m generalizing r with`. Consider the case `zero`. Simplify using `only [Finset.range_zero, Finset.prod_empty, Units.val_one, _root_.one_mul, pow_zero, translT_one, Over.id_left, Category.comp_id]`. Both sides reduce to the same expression. Consider the case `succ m ih`.
+
+Establish `hm' : m < n + 1` using `by omega`. Establish `hact : sval (L` using `L) (t ⟨m + 1, hm⟩) r z J = (val (L := L) θ.φ r z J).val * sval (L := L) (t ⟨m, hm'⟩) (r ≫ (translT A θ.pt).left) z J := act_sval (ht ⟨m, by omega⟩) r z hJ`. Rewrite using `[hact, ih hm' (r ≫ (translT A θ.pt).left)]`. Simplify using `only [Category.assoc, translT_comp_left, Finset.prod_range_succ', pow_zero, translT_one, Over.id_left, Category.comp_id, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iter_sval {L : LB A.left} {k : ℤ} {T : Over S} {θ : ThetaGrp A L k T} {n : ℕ}
     (t : Fin (n + 1) → LB.Sec (LPow A L k T)) (ht : ∀ i : Fin n, IsActOf A L k θ (t i.castSucc) (t i.succ))
     {Z : Scheme.{0}} (z : Z) {J : (Z ⟶ A.left) → L.ι} (hJ : Good L z J) (m : ℕ) (hm : m < n + 1)
@@ -167,6 +229,9 @@ theorem iter_sval {L : LB A.left} {k : ℤ} {T : Over S} {θ : ThetaGrp A L k T}
       Category.comp_id, Units.val_mul]
     ring
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun v : (Γ(X, V))ˣ => (X.presheaf.germ V x hxV).hom (v : Γ(X, V))) h`. Simplify using `only [Units.coe_map, Units.val_one, map_one] at h2`. Rewrite using `[← h2]`. Conclude with `(germ_presheaf_map_eq_germ i x hxV _).symm`.
+-/
 private theorem germ_unit_eq_one_of_map_eq_one {X : Scheme.{0}} {V W : X.Opens} (i : V ⟶ W) (x : X) (hxV : x ∈ V) (hxW : x ∈ W)
     (u : (Γ(X, W))ˣ) (h : Units.map (X.presheaf.map i.op).hom.toMonoidHom u = 1) :
     (X.presheaf.germ W x hxW).hom (u : Γ(X, W)) = 1 := by
@@ -181,6 +246,23 @@ namespace GlobalTheory
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ThetaPowOrder in
 
+/- English proof (translation)
+Introduce `S A _ _ L hL k T θ n hn hc t ht j`. Take `⟨c, rfl⟩ : ∃ c, j = fun _ => c` from `⟨j 0, funext fun i => by fin_cases i; rfl⟩`. Apply `TopCat.Presheaf.section_ext (T ⊗ A).left.sheaf` to reduce the goal to its premises. Introduce `x hx`. Establish `hcov : ∀ ψ : (T ⊗ A).left ⟶ A.left, ∃ i, ψ x ∈ L.U i`.
+
+Introduce `ψ`. Establish `h1 : ψ x ∈ (⨆ i, L.U i)`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.mp h1`.
+
+Set `J : ((T ⊗ A).left ⟶ A.left) → L.ι` to `fun ψ => if ψ = (snd T A).left then c else (hcov ψ).choose`. Establish `hJ : Good L x J`. Introduce `ψ`. Distinguish the cases in `hψ : ψ = (snd T A).left`. Establish `hx' : x ∈ L.wchart (fun _ : Fin 1 => (snd T A).left) (fun _ => c)` using `hx`.
+
+Unfold `LB.wchart at hx'`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage] at hx'`. Simplify using `only [J, hψ, if_true]`. Conclude with `hx' 0`. Simplify using `only [J, hψ, if_false]`.
+
+Conclude with `(hcov ψ).choose_spec`. Establish `hJc : J (𝟙 _ ≫ (snd T A).left) = c`. Simplify using `[J]`. Establish `hit` using `iter_sval t ht x hJ n (Nat.lt_succ_self n) (𝟙 _)`. Rewrite `hit` using `[← val_powGen θ n (𝟙 _) x hJ, hn, translT_one, Over.id_left, Category.comp_id]`.
+
+Establish `hv : val (L` using `L) (Out.powGen A L k θ n) (𝟙 _) x J = 1 := by`. Establish `hm` using `mem_wchart_of_good L (powφ A θ.pt n) (𝟙 _) x hJ`. Establish `hcc` using `hc (fun kk => J (𝟙 _ ≫ powφ A θ.pt n kk)) (fun e => e.elim) (fun k₁ k₂ h => by simp only [h]) (fun k₁ => k₁.elim) (fun _ e => e.elim)`. Unfold `val gm`. Simplify using `only [hm, ↓reduceDIte]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Unfold `LB.oneGen at hcc`. Use `erw [map_one] at hcc`. Conclude with `germ_unit_eq_one_of_map_eq_one _ x (by exact ⟨hm, by simp [LB.wchart]⟩) hm _ hcc`. Rewrite `hit` using `[hv, Units.val_one, _root_.one_mul]`.
+
+Rewrite `hit` using `[sval_lPow_eq_of_index_eq A (t ⟨n, _⟩) (𝟙 _) x J c hJc, sval_lPow_eq_of_index_eq A (t 0) (𝟙 _) x J c hJc]`. Unfold `gs at hit`. Establish `hx2 : (𝟙 (T ⊗ A).left) x ∈ L.wchart (fun _ : Fin 1 => (snd T A).left) (fun _ => c)` using `hx`. Simplify using `only [hx2, ↓reduceDIte] at hit`. Conclude with `hit`.
+-/
 theorem thetaGrp_act_iterate_eq_of_pow_eq_one : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : LB A.left), L.IsLB → ∀ (k : ℤ) (T : Over S) (θ : ThetaGrp A L k T) (n : ℕ), θ.pt ^ n = 1 → LB.Gen.Corr L _ _ _ _ (Out.powGen A L k θ n) (LB.oneGen L) → ∀ t : Fin (n + 1) → LB.Sec (LPow A L k T), (∀ i : Fin n, IsActOf A L k θ (t i.castSucc) (t i.succ)) → ∀ j, (t (Fin.last n)).f j = (t 0).f j := by
   intro S A _ _ L hL k T θ n hn hc t ht j
   obtain ⟨c, rfl⟩ : ∃ c, j = fun _ => c := ⟨j 0, funext fun i => by fin_cases i; rfl⟩

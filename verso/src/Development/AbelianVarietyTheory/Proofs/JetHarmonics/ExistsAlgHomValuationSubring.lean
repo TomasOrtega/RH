@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TorsionCharacter
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DivisibleUnits.target`. Consider the case `exact _root_.GlobalTheory.DivisibleUnits.target`. Consider the case `(apply _root_.GlobalTheory.DivisibleUnits.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DivisibleUnits.target <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DivisibleUnits.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DivisibleUnits.target ..)`.
+-/
 theorem exists_extend_character {H M F : Type} [CommGroup H] [CommGroup M] [Field F] [IsAlgClosed F]
     (Φ : H →* M) (hΦ : Function.Injective Φ) (χ : H →* Fˣ) : ∃ κ : M →* Fˣ, ∀ x, κ (Φ x) = χ x := by
   first
@@ -25,6 +30,11 @@ theorem exists_extend_character {H M F : Type} [CommGroup H] [CommGroup M] [Fiel
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `Spec.map_surjective (R := CommRingCat.of A) (S := CommRingCat.of R) c.left`. Establish `w` using `Over.w c`. Express the relevant statement in the definitionally equal form `c.left ≫ Spec.map _ = Spec.map _ at w`. Rewrite `w` using `[← hψ, ← Spec.map_comp]`. Establish `w'` using `congrArg CommRingCat.Hom.hom (Spec.map_injective w)`.
+
+Conclude with `⟨⟨ψ.hom, fun r => RingHom.congr_fun w' r⟩, Over.OverMorphism.ext hψ.symm⟩`.
+-/
 theorem exists_ptMap {A R : Type} [CommRing A] [Algebra O A] [CommRing R] [Algebra O R]
     (c : specO O R ⟶ specO O A) : ∃ φ : A →ₐ[O] R, c = ptMap φ := by
   obtain ⟨ψ, hψ⟩ := Spec.map_surjective (R := CommRingCat.of A) (S := CommRingCat.of R) c.left
@@ -34,6 +44,13 @@ theorem exists_ptMap {A R : Type} [CommRing A] [Algebra O A] [CommRing R] [Algeb
   have w' := congrArg CommRingCat.Hom.hom (Spec.map_injective w)
   exact ⟨⟨ψ.hom, fun r => RingHom.congr_fun w' r⟩, Over.OverMorphism.ext hψ.symm⟩
 
+/- English proof (translation)
+Use `haveI : IsAffine Z.left := isAffine_of_isAffineHom Z.hom`. Set `g : CommRingCat.of O ⟶ Γ(Z.left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ Z.hom.appTop`. Use `letI : Algebra O Γ(Z.left, ⊤) := g.hom.toAlgebra`. Establish `hw : Z.left.isoSpec.inv ≫ Z.hom = Spec.map g`. Rewrite using `[Iso.inv_comp_eq, Spec.map_comp, ← Category.assoc, Scheme.isoSpec_hom_naturality, Category.assoc, ← Scheme.isoSpec_Spec_inv, Iso.hom_inv_id, Category.comp_id]`.
+
+Use `haveI h1 : IsFinite (Spec.map g) := hw ▸ inferInstance`. Use `haveI h2 : Flat (Spec.map g) := hw ▸ inferInstance`. Establish `h3 : g.hom.Finite` using `(IsFinite.SpecMap_iff g).1 h1`. Establish `h4 : g.hom.Flat` using `(HasRingHomProperty.Spec_iff (P := @Flat)).1 h2`. Use `haveI : Module.Finite O Γ(Z.left, ⊤) := h3`.
+
+Use `haveI : Module.Flat O Γ(Z.left, ⊤) := h4`. Conclude with `⟨Γ(Z.left, ⊤), inferInstance, inferInstance, inferInstance, Module.free_of_flat_of_isLocalRing, ⟨Over.isoMk Z.left.isoSpec.symm hw⟩⟩`.
+-/
 theorem exists_finite_free [IsLocalRing O] (Z : Over (Spec (CommRingCat.of O))) [IsFinite Z.hom] [Flat Z.hom] :
     ∃ (A : Type) (_ : CommRing A) (_ : Algebra O A), Module.Finite O A ∧ Module.Free O A ∧
       Nonempty (specO O A ≅ Z) := by
@@ -52,6 +69,11 @@ theorem exists_finite_free [IsLocalRing O] (Z : Over (Spec (CommRingCat.of O))) 
   exact ⟨Γ(Z.left, ⊤), inferInstance, inferInstance, inferInstance, Module.free_of_flat_of_isLocalRing,
     ⟨Over.isoMk Z.left.isoSpec.symm hw⟩⟩
 
+/- English proof (translation)
+Establish `h : ∀ a, φ a ∈ (⊥ : Subalgebra W F)` using `fun a => by`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 ((Algebra.IsIntegral.isIntegral (R := W) a).map φ)`. Conclude with `Algebra.mem_bot.2 ⟨y, hy⟩`. Set `e` to `Algebra.botEquivOfInjective (R := W) (A := F) Subtype.val_injective`. Use `⟨(e : (⊥ : Subalgebra W F) →ₐ[W] W).comp (φ.codRestrict ⊥ h), AlgHom.ext fun a => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `e.symm.surjective (φ.codRestrict ⊥ h a)`. Use `show φ a = algebraMap W F (e (φ.codRestrict ⊥ h a))`. Rewrite using `[← hy, e.apply_symm_apply]`. Conclude with `(congrArg Subtype.val hy).symm.trans ((e.symm.commutes y ▸ rfl : ((e.symm y : (⊥ : Subalgebra W F)) : F) = _))`.
+-/
 theorem exists_algHom_valuationSubring {F : Type} [Field F] (W : ValuationSubring F) {A : Type} [CommRing A]
     [Algebra W A] [Module.Finite W A] (φ : A →ₐ[W] F) : ∃ ψ : A →ₐ[W] W, φ = (Algebra.ofId W F).comp ψ := by
   have h : ∀ a, φ a ∈ (⊥ : Subalgebra W F) := fun a => by
@@ -64,6 +86,15 @@ theorem exists_algHom_valuationSubring {F : Type} [Field F] (W : ValuationSubrin
   rw [← hy, e.apply_symm_apply]
   exact (congrArg Subtype.val hy).symm.trans ((e.symm.commutes y ▸ rfl : ((e.symm y : (⊥ : Subalgebra W F)) : F) = _))
 
+/- English proof (translation)
+Use `letI : TopologicalSpace O := I.adicTopology`. Use `haveI : IsTopologicalRing O := (I.ringFilterBasis).isTopologicalRing`. Use `letI : UniformSpace O := IsTopologicalAddGroup.rightUniformSpace O`. Use `haveI : IsUniformAddGroup O := isUniformAddGroup_of_addCommGroup`. Establish `hI : IsAdic I` using `rfl`.
+
+Establish `hJ : IsAdic J`. Rewrite `hI`, the goal using `[isAdic_iff]`. Use `⟨fun n => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `AddSubgroup.isOpen_mono (H₁ := (I ^ (a * n)).toAddSubgroup) (H₂ := (J ^ n).toAddSubgroup) ?_ (hI.1 _)` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[pow_mul]`. Conclude with `Ideal.pow_right_mono h₁ n hx`. Take `⟨n, hn⟩` from `hI.2 s hs`. Use `⟨b * n, fun x hx => hn ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[pow_mul]`.
+
+Conclude with `Ideal.pow_right_mono h₂ n hx`. Conclude with `hJ.isAdicComplete_iff.2 (hI.isAdicComplete_iff.1 inferInstance)`.
+-/
 theorem isAdicComplete_of_pow_le {I J : Ideal O} [IsAdicComplete I O] {a b : ℕ} (h₁ : I ^ a ≤ J) (h₂ : J ^ b ≤ I) :
     IsAdicComplete J O := by
   letI : TopologicalSpace O := I.adicTopology
@@ -87,6 +118,17 @@ theorem isAdicComplete_of_pow_le {I J : Ideal O} [IsAdicComplete I O] {a b : ℕ
 section Val
 variable {F : Type} [Field F] (v : AddValuation F (WithTop ℚ))
 
+/- English proof (translation)
+Distinguish the cases in `ha0 : a = 0`. Conclude with `⟨1, by simp [ha0]⟩`. Establish `hbF : (b : F) ≠ 0` using `fun h => hb (Subtype.ext h)`. Establish `haF : (a : F) ≠ 0` using `fun h => ha0 (Subtype.ext h)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.ne_top_iff v).2 haF)`.
+
+Take `⟨s, hs⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.ne_top_iff v).2 hbF)`. Establish `hr0 : 0 < r`. Establish `h0 : (0 : ℚ) ≤ r` using `by have := TWO.v_nonneg v a; rw [← hr] at this; exact_mod_cast this`. Use `lt_of_le_of_ne h0 fun h => ha ?_` and prove the remaining obligations. Establish `hi : (a : F)⁻¹ ∈ TWO.Ov v`.
+
+Use `TWO.exists_weight_basis_filtration (a := v a) ?_ (by rw [← hr, ← h]; rfl)` and prove the remaining obligations. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ haF, AddValuation.map_one]`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hi⟩ (Subtype.ext (mul_inv_cancel₀ haF))`. Take `⟨n, hn⟩` from `Archimedean.arch s hr0`. Establish `hq : (a : F) ^ n / b ∈ TWO.Ov v`.
+
+Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.ne_top_iff v).2 (div_ne_zero (pow_ne_zero n haF) hbF))`. Establish `e : v ((a : F) ^ n / b * b) = v ((a : F) ^ n)` using `by rw [div_mul_cancel₀ _ hbF]`. Rewrite `e` using `[AddValuation.map_mul, AddValuation.map_pow, ← ht, ← hs, ← hr]`. Establish `e' : t + s = n • r` using `by exact_mod_cast e`. Rewrite using `[TWO.mem_Ov, ← ht]`.
+
+Conclude with `(by linarith : (0 : ℚ) ≤ t)` after adjusting the coercions. Conclude with `⟨n, Ideal.mem_span_singleton'.2 ⟨⟨_, hq⟩, Subtype.ext (by show (a : F) ^ n / b * b = ((a ^ n : TWO.Ov v) : F)`. Rewrite using `[div_mul_cancel₀ _ hbF]`. Use the proof step `rfl)⟩⟩`.
+-/
 theorem exists_pow_mem_span (a b : TWO.Ov v) (ha : ¬ IsUnit a) (hb : b ≠ 0) :
     ∃ n : ℕ, a ^ n ∈ Ideal.span {b} := by
   by_cases ha0 : a = 0

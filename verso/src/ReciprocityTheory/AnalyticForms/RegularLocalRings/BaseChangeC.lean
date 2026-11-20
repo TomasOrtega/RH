@@ -10,6 +10,11 @@ variable {σ : Type} [Fintype σ]
 noncomputable def extC (𝔭 : Ideal (MvPolynomial σ ℚ)) : Ideal (MvPolynomial σ ℂ) :=
   Ideal.map (MvPolynomial.map (algebraMap ℚ ℂ)) 𝔭
 
+/- English proof (translation)
+Rewrite using `[Ideal.isRadical_iff_quotient_reduced]`. Establish `hA : IsDomain (MvPolynomial σ ℚ ⧸ 𝔭)` using `Ideal.Quotient.isDomain 𝔭`. Establish `hK : IsReduced (TensorProduct ℚ (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭)) ℂ)` using `BaseChangeC.isReduced_tensor_of_essFiniteType _ ℂ`. Establish `hK' : IsReduced (TensorProduct ℚ ℂ (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭)))` using `isReduced_of_injective (Algebra.TensorProduct.comm ℚ ℂ _) (Algebra.TensorProduct.comm ℚ ℂ _).injective`. Establish `hinj : Function.Injective (Algebra.TensorProduct.map (1 : ℂ →ₐ[ℚ] ℂ) (IsScalarTower.toAlgHom ℚ (MvPolynomial σ ℚ ⧸ 𝔭) (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭))))` using `Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective (MvPolynomial σ ℚ ⧸ 𝔭) (FractionRing (MvPolynomial σ ℚ ⧸ 𝔭)))`.
+
+Establish `hT : IsReduced (TensorProduct ℚ ℂ (MvPolynomial σ ℚ ⧸ 𝔭))` using `isReduced_of_injective _ hinj`. Conclude with `isReduced_of_injective (BaseChangeC.quotExtEquiv 𝔭).symm (BaseChangeC.quotExtEquiv 𝔭).symm.injective`.
+-/
 theorem extC_isRadical (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime] : (extC 𝔭).IsRadical := by
   rw [Ideal.isRadical_iff_quotient_reduced]
   have hA : IsDomain (MvPolynomial σ ℚ ⧸ 𝔭) := Ideal.Quotient.isDomain 𝔭
@@ -24,6 +29,13 @@ theorem extC_isRadical (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime] : (ex
   have hT : IsReduced (TensorProduct ℚ ℂ (MvPolynomial σ ℚ ⧸ 𝔭)) := isReduced_of_injective _ hinj
   exact isReduced_of_injective (BaseChangeC.quotExtEquiv 𝔭).symm (BaseChangeC.quotExtEquiv 𝔭).symm.injective
 
+/- English proof (translation)
+Set `_ : Algebra (MvPolynomial σ ℚ) (MvPolynomial σ ℂ)` to `MvPolynomial.algebraMvPolynomial`. Establish `hflat : Module.Flat (MvPolynomial σ ℚ) (MvPolynomial σ ℂ)` using `BaseChangeC.flat_mvPolynomial_rat_complex`. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hle : 𝔭 ≤ Q.comap (MvPolynomial.map (algebraMap ℚ ℂ))` using `Ideal.map_le_iff_le_comap.mp hQ.1.2`. Establish `hPp : (Q.comap (MvPolynomial.map (algebraMap ℚ ℂ))).IsPrime` using `Ideal.comap_isPrime _ Q`.
+
+Establish `hlo : Q.LiesOver (Q.comap (MvPolynomial.map (algebraMap ℚ ℂ)))` using `⟨rfl⟩`. Take `⟨Q', hQ'le, hQ'p, hQ'lo⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := 𝔭) Q hle`. Establish `hQ'over : Q'.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = 𝔭` using `hQ'lo.over.symm`. Establish `hmapQ' : extC 𝔭 ≤ Q'`. Unfold `extC`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap, hQ'over]`. Establish `hEq : Q = Q'` using `le_antisymm (hQ.2 ⟨hQ'p, hmapQ'⟩ hQ'le) hQ'le`. Substitute `hEq` using the available equality. Conclude with `hQ'over`.
+-/
 theorem comap_of_mem_minimalPrimes_extC (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime]
     (Q : Ideal (MvPolynomial σ ℂ)) (hQ : Q ∈ (extC 𝔭).minimalPrimes) :
     Q.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = 𝔭 := by
@@ -43,6 +55,11 @@ theorem comap_of_mem_minimalPrimes_extC (𝔭 : Ideal (MvPolynomial σ ℚ)) [�
   subst hEq
   exact hQ'over
 
+/- English proof (translation)
+Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hh` using `BaseChangeC.height_eq_of_mem_minimalPrimes_map 𝔭 Q hQ`. Establish `h1` using `BaseChangeC.height_add_ringKrullDim_quotient_fintype ℂ Q`. Establish `h2` using `BaseChangeC.height_add_ringKrullDim_quotient_fintype ℚ 𝔭`. Rewrite `h1` using `[hh]`.
+
+Conclude with `BaseChangeC.withBot_enat_cancel h1 h2`.
+-/
 theorem ringKrullDim_of_mem_minimalPrimes_extC (𝔭 : Ideal (MvPolynomial σ ℚ)) [𝔭.IsPrime]
     (Q : Ideal (MvPolynomial σ ℂ)) (hQ : Q ∈ (extC 𝔭).minimalPrimes) :
     ringKrullDim (MvPolynomial σ ℂ ⧸ Q) = ringKrullDim (MvPolynomial σ ℚ ⧸ 𝔭) := by

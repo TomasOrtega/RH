@@ -20,6 +20,31 @@ noncomputable section
 
 namespace GlobalTheory.Heat
 
+/- English proof (translation)
+Introduce `R _ G _ _ n X m L hL v dd hinv D h k a b ρ τ ρ' τ' hpt hρ hτ`. Establish `cTop : ∀ c : R, constFn G.hom ⊤ c = scal G.hom c` using `fun c => by`. Simplify using `only [constFn, Out.scal, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Establish `gsR : ∀ {Z : Scheme.{0}} (r : Z ⟶ G.left) (z : Z) {O O₀ : G.left.Opens} (hle : O ≤ O₀) (hz : r z ∈ O) (s : Γ(G.left, O₀)), gs r z O (rsT s O) = gs r z O₀ s` using `fun r z _ _ hle hz s => by`.
+
+Rewrite using `[GlobalTheory.KS.rsT_of_le hle]`. Conclude with `gs_res r z hle hz s`. Establish `gsC : ∀ {Z : Scheme.{0}} (r : Z ⟶ G.left) (z : Z) (O : G.left.Opens) (hz : r z ∈ O) (c : R), gs r z O (constFn G.hom O c) = gs r z ⊤ (scal G.hom c)` using `fun r z O hz c => by`. Rewrite using `[← GlobalTheory.KS.rsT_constFn G.hom (le_top : O ≤ ⊤) c, gsR r z le_top hz, cTop]`. Establish `cMul : ∀ (O : G.left.Opens) (c : R), constFn G.hom O (2 * (k : R) * c) = 2 * (k : Γ(G.left, O)) * constFn G.hom O c` using `fun O c => by`.
+
+Simplify using `[constFn, map_mul, map_natCast, map_ofNat]`. Establish `hWc : ∀ i, h.W i ≤ LB.wchart L (fun _ : Fin 1 => m) (fun _ => h.j i)` using `fun i => Glue.le_wchart _ (h.le i)`. Establish `leib : ∀ i (c : R) (F : Γ(G.left, h.W i)), op G dd h.Θ h.u (h.d i) (h.p i) (h.p' i) k (h.W i) (constFn G.hom (h.W i) c * F) = constFn G.hom (h.W i) c * op G dd h.Θ h.u (h.d i) (h.p i) (h.p' i) k (h.W i) F + constFn G.hom (h.W i) (2 * (k : R) * D c) * F`. Introduce `i c F`. Establish `hd` using `(h.lift i).1.2.1 (h.W i) le_rfl (constFn G.hom (h.W i) c) F`.
+
+Establish `hdc` using `(h.lift i).2 (h.W i) le_rfl c`. Establish `hdd : ∀ a' (f : Γ(G.left, h.W i)), dd a' (h.W i) (constFn G.hom (h.W i) c * f) = constFn G.hom (h.W i) c * dd a' (h.W i) f` using `fun a' f => by`. Rewrite using `[(hinv a').1.2.1 (h.W i) le_top, IsInv.apply_constFn G (v a') (dd a') (hinv a'), mul_zero, add_zero]`. Establish `hs : ∀ (f : Γ(G.left, h.W i)), ∑ a', ∑ b', constFn G.hom (h.W i) (h.Θ a' b') * dd a' (h.W i) (dd b' (h.W i) (constFn G.hom (h.W i) c * f)) = constFn G.hom (h.W i) c * ∑ a', ∑ b', constFn G.hom (h.W i) (h.Θ a' b') * dd a' (h.W i) (dd b' (h.W i) f)`. Introduce `f`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[hdd, hdd]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hs' : ∑ a', constFn G.hom (h.W i) (h.u a') * dd a' (h.W i) (constFn G.hom (h.W i) c * F) = constFn G.hom (h.W i) c * ∑ a', constFn G.hom (h.W i) (h.u a') * dd a' (h.W i) F`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[hdd]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [op]`. Rewrite using `[hs, hs', hd, hdc, cMul]`. Expand and normalize the polynomial expressions, which then agree. Establish `onW : ∀ i, constFn G.hom (h.W i) a * rsT (ρ'.f fun _ => h.j i) (h.W i) + constFn G.hom (h.W i) (2 * (k : R) * D a) * rsT (ρ.f fun _ => h.j i) (h.W i) = constFn G.hom (h.W i) b * rsT (τ'.f fun _ => h.j i) (h.W i) + constFn G.hom (h.W i) (2 * (k : R) * D b) * rsT (τ.f fun _ => h.j …`.
+
+Introduce `i`. Establish `hA : constFn G.hom (h.W i) a * rsT (ρ.f fun _ => h.j i) (h.W i) = constFn G.hom (h.W i) b * rsT (τ.f fun _ => h.j i) (h.W i)`. Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL x (fun _ : Fin 1 => m) (fun _ => h.j i) (fun _ _ _ => rfl) (fun _ => h.le i hx)`. Establish `hp` using `hpt G.left (𝟙 _) x J hJ`.
+
+Establish `s1 : ∀ σ : SecM m L k, sval σ (𝟙 G.left) x J = gs (𝟙 G.left) x (h.W i) (rsT (σ.f fun _ => h.j i) (h.W i))` using `fun σ => by`. Rewrite using `[sval_of σ (𝟙 G.left) x J (fun _ => h.j i) (fun q => by rw [Category.id_comp]; exact e q)]`. Conclude with `(gsR (𝟙 G.left) x (hWc i) hx _).symm`. Rewrite `hp` using `[s1, s1]`. Rewrite using `[gs_mul _ x _ hx, gs_mul _ x _ hx, gsC _ x _ hx, gsC _ x _ hx]`.
+
+Conclude with `hp`. Rewrite using `[hρ i, hτ i, ← leib, ← leib, hA]`. Introduce `Z r z J hJ`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, r z ∈ h.W i := by`. Establish `: r z ∈ ⨆ i, h.W i` using `by rw [h.cover]; trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `hz1` using `hJ.mem (fun _ : Fin 1 => m) r`. Establish `hz2 : r z ∈ LB.wchart L (fun _ : Fin 1 => m) (fun _ => h.j i)` using `hWc i hi`. Establish `sv : ∀ σ : SecM m L k, sval σ r z J = (trF (fun _ : Fin 1 => m) (fun _ => (k : ℤ)) r z (fun _ => J (r ≫ m)) (fun _ => h.j i)).val * gs r z (h.W i) (rsT (σ.f fun _ => h.j i) (h.W i))` using `fun σ => by`. Conclude with `(sec_trans σ r z hz1 hz2).trans (congrArg _ (gsR r z (hWc i) hi _).symm)`.
+
+Establish `E` using `congrArg (gs r z (h.W i)) (onW i)`. Simplify using `only [gs_add r z _ hi, gs_mul r z _ hi, gsC r z _ hi] at E`. Rewrite using `[sv ρ, sv τ, sv ρ', sv τ']`. Take the linear combination `(trF (fun _ : Fin 1 => m) (fun _ => (k : ℤ)) r z (fun _ => J (r ≫ m)) (fun _ => h.j i)).val * E`.
+-/
 theorem Heat.acts_const_at_points : ∀ {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ} {X : Scheme.{0}} (m : G.left ⟶ X) (L : LB X), L.IsLB → ∀ (v : Fin n → TanM (𝟙 (Sp R)) G) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) → ∀ (D : Derivation ℤ R R) (h : Heat G m L dd ⇑D) (k : ℕ) (a b : R) (ρ τ ρ' τ' : SecM m L k), (∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (J : (Z ⟶ X) → L.ι), Good L z J → gs r z ⊤ (scal G.hom a) * sval ρ r z J = gs r z ⊤ (scal G.hom b) * sval τ r z J) → h.Acts k ρ ρ' → h.Acts k τ τ' → ∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (J : (Z ⟶ X) → L.ι), Good L z J → gs r z ⊤ (scal G.hom a) * sval ρ' r z J + gs r z ⊤ (scal G.hom (2 * (k : R) * D a)) * sval ρ r z J = gs r z ⊤ (scal G.hom b) * sval τ' r z J + gs r z ⊤ (scal G.hom (2 * (k : R) * D b)) * sval τ r z J := by
   intro R _ G _ _ n X m L hL v dd hinv D h k a b ρ τ ρ' τ' hpt hρ hτ
 

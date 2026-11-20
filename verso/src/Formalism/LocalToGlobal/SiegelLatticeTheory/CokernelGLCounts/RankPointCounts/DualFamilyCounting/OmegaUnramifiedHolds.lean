@@ -10,6 +10,21 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocVol F
   MeasureTheory NumberField IsDedekindDomain
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `P hP hP0 _`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨hc.deg2⟩`. Set `c : Gal(E/F)` to `AlgEquiv.ofRingEquiv (f := starRingAut) (fun r => (hc.fixed (algebraMap F E r)).2 ⟨r, rfl⟩)`. Use `haveI : P.LiesOver (P.under (𝓞 F)) := ⟨rfl⟩`. Establish `hp0 : P.under (𝓞 F) ≠ ⊥` using `Ideal.IsIntegral.comap_ne_bot (𝓞 F) hP0`.
+
+Establish `hcard : Nat.card (P.inertia Gal(E/F)) = P.ramificationIdx (𝓞 F)`. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(E/F)) (P.under (𝓞 F)) P, Ideal.ramificationIdxIn_eq_ramificationIdx (P.under (𝓞 F)) P Gal(E/F)]`. Assume the negation of the conclusion as `hne`. Establish `hG : Nat.card Gal(E/F) = 2` using `by first`. Consider the case `(rw [IsGalois.card_aut_eq_finrank]; exact hc.deg2)`.
+
+Consider the case `(rw [Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]; exact hc.deg2)`. Use `haveI : Fact (Nat.card Gal(E/F)).Prime := ⟨by rw [hG]; exact Nat.prime_two⟩`. Establish `htop : P.inertia Gal(E/F) = ⊤`. Break down `Subgroup.eq_bot_or_eq_top_of_prime_card (P.inertia Gal(E/F)) with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← hcard, h]`. Simplify using the standard rewrite rules. Conclude with `h`. Establish `hcI : c ∈ P.inertia Gal(E/F)` using `htop ▸ Subgroup.mem_top c`.
+
+Take `⟨θ, t, ht, hθ⟩` from `hc.cmUnram.2.2 P (hP.isMaximal hP0)`. Apply `hθ` to reduce the goal to its premises. Establish `h1` using `hcI θ`. Establish `e : c • θ = t`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[ht]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Establish `: θ - t = -(t - θ)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `P.neg_mem h1`.
+-/
 theorem unramAt_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (v : HeightOneSpectrum (𝓞 F)) : UnramAt (E := E) v := by
   intro P hP hP0 _
@@ -49,6 +64,13 @@ theorem unramAt_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
 
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
+/- English proof (translation)
+Introduce `h1 h2`. Use `⟨?_, ?_, h1, h2⟩` and prove the remaining obligations. Unfold `IsCMExt`. Use `⟨X.B.I.cm.totReal, X.B.I.cm.cmUnram.1, X.B.I.cm.deg2, ?_⟩` and prove the remaining obligations. Conclude with `fun τ x => X.B.I.cm.cmUnram.2.1 τ x`.
+
+Unfold `IsHermND`. Establish `hH` using `X.B.I.J_herm`. Unfold `Formalism.UG.IsHerm at hH`. Use `⟨fun i j => ?_, X.B.I.J_det⟩` and prove the remaining obligations. Establish `h3` using `congrFun (congrFun hH i) j`.
+
+Conclude with `h3`.
+-/
 theorem omega_standard_holds : OmVStd X ψ := by
   intro h1 h2
   refine ⟨?_, ?_, h1, h2⟩
@@ -62,8 +84,14 @@ theorem omega_standard_holds : OmVStd X ψ := by
     have h3 := congrFun (congrFun hH i) j
     exact h3
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩`.
+-/
 theorem omega_lattice_holds : OmVLat X := ⟨X.B.I.L, ⟨X.B.I.L_fg, X.B.I.L_span⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `v` and use `unramAt_of_cm X.B.I.cm v`.
+-/
 theorem omega_unramified_holds : OmVUnram X := fun v => unramAt_of_cm X.B.I.cm v
 
 end Formalism.L2.SG.Pf.NcX.OmVSt

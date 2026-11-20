@@ -18,13 +18,26 @@ namespace GlobalTheory.BaseTiltMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI : Nontrivial (AF D.host.F) := (NumberField.AdeleRing.algebraMap_injective (NumberField.RingOfIntegers D.host.F) D.host.F).nontrivial`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap D.host.F (AF D.host.F)).injective`.
+-/
 theorem incA_inj : Function.Injective (incA D) := by
   haveI : Nontrivial (AF D.host.F) :=
     (NumberField.AdeleRing.algebraMap_injective (NumberField.RingOfIntegers D.host.F) D.host.F).nontrivial
   exact Algebra.TensorProduct.includeRight_injective (algebraMap D.host.F (AF D.host.F)).injective
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incA_apply (e : D.host.E) : incA D e = (1 : AF D.host.F) ⊗ₜ[D.host.F] e := rfl
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, hαP, a, ha, x, hx, rfl⟩` from `hz`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+
+Use `AddSubgroup.subset_closure ⟨α, hα, hαP, 1, rfl, γ *ᵥ x, hLM x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, incA_apply, one_mul, Algebra.TensorProduct.tmul_mul_tmul, ← TensorProduct.tmul_sum]`. Consider the case `zero => simp only [Matrix.mulVec_zero]`. Conclude with `(latV S M P).zero_mem`.
+
+Consider the case `add u v _ _ hu hv => rw [Matrix.mulVec_add]`. Conclude with `(latV S M P).add_mem hu hv`. Consider the case `neg u _ hu => rw [Matrix.mulVec_neg]`. Conclude with `(latV S M P).neg_mem hu`.
+-/
 theorem mulVec_latV_of_rat (S : HSp D) (γ : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (L M : Lat S)
     (hLM : ∀ x ∈ L, γ *ᵥ x ∈ M) (P : Pl D → Prop) (y : Fin S.rank → AE D) (hy : y ∈ latV S L P) :
     γ.map (incA D) *ᵥ y ∈ latV S M P := by
@@ -41,6 +54,11 @@ theorem mulVec_latV_of_rat (S : HSp D) (γ : Matrix (Fin S.rank) (Fin S.rank) D.
   | add u v _ _ hu hv => rw [Matrix.mulVec_add]; exact (latV S M P).add_mem hu hv
   | neg u _ hu => rw [Matrix.mulVec_neg]; exact (latV S M P).neg_mem hu
 
+/- English proof (translation)
+Take `⟨γ, -, hγ⟩` from `h`. Establish `e : matHom S δ = Formalism.UG.bc (inclR (F` using `D.host.F) (AF D.host.F)) γ := hγ.symm`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Use `show (matHom S δ).val = _`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Use `show (matHom S δ⁻¹).val = _`. Rewrite using `[map_inv, e, ← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem exists_rat_of_GQ (S : HSp D) (δ : GA D S) (h : δ ∈ GQ S) :
     ∃ γ : GL (Fin S.rank) D.host.E, mt S δ = γ.val.map (incA D) ∧ mt S δ⁻¹ = (γ⁻¹).val.map (incA D) := by
   obtain ⟨γ, -, hγ⟩ := h
@@ -51,6 +69,11 @@ theorem exists_rat_of_GQ (S : HSp D) (δ : GA D S) (h : δ ∈ GQ S) :
   · show (matHom S δ⁻¹).val = _
     rw [map_inv, e, ← map_inv]; rfl
 
+/- English proof (translation)
+Introduce `y _`. Use `⟨fun hy => h ▸ mulVec_latV_of_rat S γ L M hLM P y hy, fun hy => ?_⟩` and prove the remaining obligations. Establish `e : mt S δ⁻¹ *ᵥ (mt S δ *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.FinPl.PlacesAdeles.mt_mul, inv_mul_cancel, GlobalTheory.FinPl.PlacesAdeles.mt_one, Matrix.one_mulVec]`. Rewrite using `[← e, h']`.
+
+Conclude with `mulVec_latV_of_rat S γ' M L hML P _ hy`.
+-/
 theorem moves_of_rat (S : HSp D) (δ : GA D S) (γ γ' : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (h : mt S δ = γ.map (incA D)) (h' : mt S δ⁻¹ = γ'.map (incA D)) (L M : Lat S)
     (hLM : ∀ x ∈ L, γ *ᵥ x ∈ M) (hML : ∀ x ∈ M, γ' *ᵥ x ∈ L) (P : Pl D → Prop) : Moves S δ L M P := by
@@ -62,6 +85,11 @@ theorem moves_of_rat (S : HSp D) (δ : GA D S) (γ γ' : Matrix (Fin S.rank) (Fi
   rw [← e, h']
   exact mulVec_latV_of_rat S γ' M L hML P _ hy
 
+/- English proof (translation)
+Take `⟨-, a, ha, hab⟩` from `hb`. Establish `hb' : b = a⁻¹ * δ` using `by rw [← hab, inv_mul_cancel_left]`. Introduce `y hy`. Establish `hy'` using `GlobalTheory.FinPl.PlacesAdeles.supp_mulVec S _ δ hy`. Rewrite using `[hb', GlobalTheory.FinPl.PlacesAdeles.mt_mul, ← Matrix.mulVec_mulVec, GlobalTheory.FinPl.PlacesAdeles.mulVec_off (GlobalTheory.FinPl.SuppTwoAsm.ginf_le_grpOff S _ (inv_mem ha)) hy']`.
+
+Conclude with `h y hy`.
+-/
 theorem moves_of_isFinOf (S : HSp D) {δ b : GA D S} (hb : IsFinOf δ b) (L M : Lat S)
     (h : Moves S δ L M (fun _ => True)) : Moves S b L M (fun _ => True) := by
   obtain ⟨-, a, ha, hab⟩ := hb
@@ -72,10 +100,18 @@ theorem moves_of_isFinOf (S : HSp D) {δ b : GA D S} (hb : IsFinOf δ b) (L M : 
     GlobalTheory.FinPl.PlacesAdeles.mulVec_off (GlobalTheory.FinPl.SuppTwoAsm.ginf_le_grpOff S _ (inv_mem ha)) hy']
   exact h y hy
 
+/- English proof (translation)
+Introduce `y _`. Rewrite using `[GlobalTheory.FinPl.PlacesAdeles.mt_one, Matrix.one_mulVec]`.
+-/
 theorem moves_one (S : HSp D) (L : Lat S) (P : Pl D → Prop) : Moves S 1 L L P := by
   intro y _
   rw [GlobalTheory.FinPl.PlacesAdeles.mt_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, u, hu, rfl⟩`. Use `⟨y, hy, fun p => t p * u p, fun p => ht p _ (hu p), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, hM, Matrix.mulVec_mulVec, ha, ← Matrix.mulVec_mulVec]`. Use `congr 2`. Use function extensionality and compare the values at `p`.
+
+Conclude with `Matrix.mulVec_diagonal _ _ _`.
+-/
 theorem sumLat_mulVec {n k c : ℕ} (γ : Matrix (Fin n) (Fin n) D.host.E) (M₀ : Matrix (Fin n) (Fin k) D.host.E)
     (Λ : Submodule (𝓞 D.host.E) (Fin k → D.host.E)) (a : Matrix (Fin n) (Fin c) D.host.E)
     (𝔟 𝔟' : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (t : Fin c → D.host.E) (hM : γ * M₀ = M₀)
@@ -92,6 +128,9 @@ section Grid
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 
+/- English proof (translation)
+Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Conclude with `G.sp.rowLat j' h`.
+-/
 theorem lat_grid (j : ℕ) (h1 : 1 ≤ j) (h : j < D.R.m) :
     G.Λ (.grid D.R.m j) = (G.rowDec j h).lat (G.Λ (.top j)) (stairId D.host.AA D.host.AAbar (D.R.m - 1 - j)) := by
   obtain ⟨j', rfl⟩ : ∃ j', j = j' + 1 := ⟨j - 1, by omega⟩
@@ -99,6 +138,17 @@ theorem lat_grid (j : ℕ) (h1 : 1 ≤ j) (h : j < D.R.m) :
 
 variable {G}
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ, D.R.m - 1 - j = 2 * σ := by`. Take `⟨a, ha⟩` from `D.R.m_even; obtain ⟨b, hb⟩ := hodd; exact ⟨(D.R.m - 1 - j) / 2, by omega⟩`. Take `⟨h0, he, he'⟩` from `hδ.2.2 σ hj hσ`. Rewrite `h0`, `he`, `he'` using `[hγ, ← Matrix.map_mul]`. Establish `h0` using `Matrix.map_injective incA_inj h0`.
+
+Establish `he` using `Matrix.map_injective incA_inj he`. Establish `he'` using `Matrix.map_injective incA_inj he'`. Use `⟨h0, Matrix.ext fun k p => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`. Distinguish the cases in `hp : 2 * p.1 < D.R.m - 1 - j`.
+
+Use `congrFun (congrFun he k) ⟨p.1, by omega⟩` as an intermediate fact. Simplify using `only [Matrix.mul_diagonal] at this`. Establish `e1 : (γ * (rowJac G j hj σ hσ).e) k ⟨p.1, by omega⟩ = (γ * (G.rowDec j hj).a) k p` using `rfl`. Establish `e2 : (rowJac G j hj σ hσ).e k ⟨p.1, by omega⟩ = (G.rowDec j hj).a k p` using `rfl`. Rewrite using `[← e1, this, e2]`.
+
+Simplify using `[GlobalTheory.RowShape.tiltSc, hodd, hp]`. Use `congrFun (congrFun he' k) ⟨D.R.m - 1 - j - 1 - p.1, by omega⟩` as an intermediate fact. Simplify using `only [Matrix.mul_diagonal] at this`. Establish `hq : (Fin.castLE (by omega : σ ≤ D.R.m - 1 - j) (⟨D.R.m - 1 - j - 1 - p.1, by omega⟩ : Fin σ)).rev = p` using `Fin.ext (by simp only [Fin.val_rev, Fin.val_castLE]; omega)`. Establish `e1 : (γ * (rowJac G j hj σ hσ).e') k ⟨D.R.m - 1 - j - 1 - p.1, by omega⟩ = (γ * (G.rowDec j hj).a) k p`.
+
+Simplify using `only [Matrix.mul_apply, GlobalTheory.RowUnf.rowJac, GlobalTheory.RowUnf.jacDec, Matrix.submatrix_apply, id_eq, hq]`. Establish `e2 : (rowJac G j hj σ hσ).e' k ⟨D.R.m - 1 - j - 1 - p.1, by omega⟩ = (G.rowDec j hj).a k p`. Simplify using `only [GlobalTheory.RowUnf.rowJac, GlobalTheory.RowUnf.jacDec, Matrix.submatrix_apply, id_eq, hq]`. Rewrite using `[← e1, this, e2]`. Simplify using `[GlobalTheory.RowShape.tiltSc, hodd, hp]`.
+-/
 theorem tilt_cols {j : ℕ} (hj : j < D.R.m) (hodd : Odd j) {δ : GA D (G.V (.grid D.R.m j))} (hδ : IsTilt G j δ)
     (γ : Matrix (Fin (G.V (.grid D.R.m j)).rank) (Fin (G.V (.grid D.R.m j)).rank) D.host.E)
     (hγ : mt _ δ = γ.map (incA D)) :
@@ -137,6 +187,9 @@ section Main
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Unfold `GlobalTheory.RowShape.tiltSc`. Use `split_ifs`. Conclude with `inv_ne_zero (pow_ne_zero _ cmHost_imaginaryGenerator_ne_zero)`. Conclude with `star_ne_zero.2 (pow_ne_zero _ cmHost_imaginaryGenerator_ne_zero)`. Conclude with `one_ne_zero`.
+-/
 theorem tiltSc_ne_zero (j : ℕ) (p : Fin (D.R.m - 1 - j)) : GlobalTheory.RowShape.tiltSc D j p ≠ 0 := by
   unfold GlobalTheory.RowShape.tiltSc
   split_ifs
@@ -144,6 +197,23 @@ theorem tiltSc_ne_zero (j : ℕ) (p : Fin (D.R.m - 1 - j)) : GlobalTheory.RowSha
   · exact star_ne_zero.2 (pow_ne_zero _ cmHost_imaginaryGenerator_ne_zero)
   · exact one_ne_zero
 
+/- English proof (translation)
+Establish `hj' : 1 ≤ j ∧ j < 1 + (D.R.m - 2)` using `List.mem_range'_1.1 hj`. Establish `hjm : j < D.R.m` using `by omega`. Take `⟨δ, hδ, hfin⟩` from `hb.2.1 j hj`. Use `moves_of_isFinOf _ hfin _ _ ?_` and prove the remaining obligations. Establish `hN : GlobalTheory.RowShape.rowN G j = (G.rowDec j hjm).lat (G.Λ (.top j)) (GlobalTheory.RowShape.rowId D j)`.
+
+Unfold `GlobalTheory.RowShape.rowN`. Rewrite using `[dif_pos hjm]`. Rewrite using `[lat_grid G j hj'.1 hjm, hN]`. Distinguish the cases in `hodd : Odd j`. Take `⟨γ, hγ, hγ'⟩` from `exists_rat_of_GQ _ δ hδ.1`.
+
+Take `⟨h0, ha⟩` from `tilt_cols hjm hodd hδ γ.val hγ`. Use `set t := GlobalTheory.RowShape.tiltSc D j`. Establish `hinv : (γ⁻¹).val * γ.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h0' : (γ⁻¹).val * frameMat _ _ (G.rowDec j hjm).ι = frameMat _ _ (G.rowDec j hjm).ι` using `by conv_lhs => rw [← h0]`. Rewrite using `[← Matrix.mul_assoc, hinv, Matrix.one_mul]`.
+
+Establish `hdd : diagonal t * diagonal (fun p => (t p)⁻¹) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, show (fun p => t p * (t p)⁻¹) = fun _ => (1 : D.host.E) from funext fun p => mul_inv_cancel₀ (tiltSc_ne_zero j p)]`. Conclude with `Matrix.diagonal_one`. Establish `ha' : (γ⁻¹).val * (G.rowDec j hjm).a = (G.rowDec j hjm).a * diagonal (fun p => (t p)⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hdd, Matrix.mul_one]`. Use `_ = (γ⁻¹).val * (γ.val * (G.rowDec j hjm).a) * diagonal (fun p => (t p)⁻¹) := by`. Simplify using `only [ha, Matrix.mul_assoc]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Use `moves_of_rat _ δ γ.val (γ⁻¹).val hγ hγ' _ _ ?_ ?_ _` and prove the remaining obligations.
+
+Use `sumLat_mulVec _ _ _ _ _ _ t h0 ha fun p u hu => ?_` and prove the remaining obligations. Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) hu`. Use `sumLat_mulVec _ _ _ _ _ _ (fun p => (t p)⁻¹) h0' ha' fun p u hu => ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `(FractionalIdeal.mem_singleton_mul).1 hu`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (tiltSc_ne_zero j p), one_mul]`.
+
+Conclude with `hz`. Establish `h1 : δ = 1` using `hδ.2.1 (Nat.not_odd_iff_even.1 hodd)`. Substitute `h1` using the available equality. Establish `hI : GlobalTheory.RowShape.rowId D j = stairId D.host.AA D.host.AAbar (D.R.m - 1 - j)`. Use function extensionality and compare the values at `p`.
+
+Simplify using `[GlobalTheory.RowShape.rowId, GlobalTheory.RowShape.tiltSc, hodd]`. Rewrite using `[hI]`. Conclude with `moves_one _ _ _`.
+-/
 theorem moves_idx (t : T) (B : Frames G) (b : Pts G) (hb : IsBase t B b) (j : ℕ) (hj : j ∈ idx D) :
     Moves _ (b j) (G.Λ (.grid D.R.m j)) (GlobalTheory.RowShape.rowN G j) fun _ => True := by
   have hj' : 1 ≤ j ∧ j < 1 + (D.R.m - 2) := List.mem_range'_1.1 hj
@@ -187,6 +257,15 @@ theorem moves_idx (t : T) (B : Frames G) (b : Pts G) (hb : IsBase t B b) (j : �
     rw [hI]
     exact moves_one _ _ _
 
+/- English proof (translation)
+Distinguish the cases in `hj : j ∈ idx D`. Conclude with `moves_idx t B b hb j hj`. Rewrite using `[hb.2.2 j (by omega) hj]`. Distinguish the cases in `hjm : j < D.R.m`. Establish `hc : D.R.m - 1 - j = 0`.
+
+Establish `: ¬ (1 ≤ j ∧ j < 1 + (D.R.m - 2))` using `fun h => hj (List.mem_range'_1.2 h)`. Use linear arithmetic over natural numbers and integers. Establish `hN : GlobalTheory.RowShape.rowN G j = G.Λ (.grid D.R.m j)`. Unfold `GlobalTheory.RowShape.rowN`. Rewrite using `[dif_pos hjm, lat_grid G j h1 hjm]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `absurd p.2 (by omega)`. Rewrite using `[hN]`. Conclude with `moves_one _ _ _`.
+
+Establish `hN : GlobalTheory.RowShape.rowN G j = G.Λ (.grid D.R.m j)`. Unfold `GlobalTheory.RowShape.rowN`. Rewrite using `[dif_neg hjm]`. Rewrite using `[hN]`. Conclude with `moves_one _ _ _`.
+-/
 theorem moves_rowN (t : T) (B : Frames G) (b : Pts G) (hb : IsBase t B b) (j : ℕ) (h1 : 1 ≤ j) (hm : j ≤ D.R.m) :
     Moves _ (b j) (G.Λ (.grid D.R.m j)) (GlobalTheory.RowShape.rowN G j) fun _ => True := by
   by_cases hj : j ∈ idx D
@@ -211,6 +290,9 @@ theorem moves_rowN (t : T) (B : Frames G) (b : Pts G) (hb : IsBase t B b) (j : �
 
 end Main
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ t b hb j h1 hm`. Conclude with `moves_rowN t ch.S.B b hb j h1 hm`.
+-/
 theorem base_moves_rowN : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ (t : T) (b : Pts ch.G), IsBase t ch.S.B b → ∀ j, 1 ≤ j → j ≤ D.R.m → GlobalTheory.FinPl.Moves _ (b j) (ch.G.Λ (.grid D.R.m j)) (GlobalTheory.RowShape.rowN ch.G j) fun _ => True := by
   refine ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩
   intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ t b hb j h1 hm

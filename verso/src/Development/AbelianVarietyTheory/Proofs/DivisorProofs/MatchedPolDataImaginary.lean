@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.ThKAutKInf
 
+/- English proof (translation)
+Take `⟨T, -, m, m', f, φ, f', φ', hf, -, rfl, -, -⟩` from `h`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (hf i).1, φ i, (hf i).2.1, ?_, rfl⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 ((T.finite_toSet).subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hvT`. Conclude with `hv ((hf i).2.2 v hvT)`.
+-/
 theorem mem_polData_of_polMatch {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (R : RealMaps F a a') (Rf : FinMaps F a a') (Φ Φ')
     (h : PolMatch B G X R Rf Φ Φ') : Φ ∈ GlobalTheory.ThK.PolData B G.M := by
@@ -26,6 +29,17 @@ theorem mem_polData_of_polMatch {F E : Type} [Field F] [NumberField F] [Field E]
   by_contra hvT
   exact hv ((hf i).2.2 v hvT)
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hσ c hc hcs Φ Φ' _hΦ' hPM K hK`. Establish `hT` using `hM.triple`. Establish `hΦ` using `mem_polData_of_polMatch B G X R Rf Φ Φ' hPM`. Take `⟨K₀, -, hA⟩` from `GlobalTheory.T.exists_maximal_compact_invariant F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Use `⟨hA.mod, ?_, hA.zfin⟩` and prove the remaining obligations.
+
+Take `⟨S, hSf, hSle, hS⟩` from `GlobalTheory.T.polynomial_datum_finite_dimensional_orbit F E σ B _ _ G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hKP (GlobalTheory.ThK.Inhab.pairV hT) Φ hΦ`. Take `⟨L, hL⟩` from `GlobalTheory.T.theta_integral_linear_in_polynomial F E σ B a a' G X om om' hKP hT`. Set `P` to `GlobalTheory.ThK.PolData B G.M`. Set `S' : Submodule ℂ P` to `S.comap P.subtype`. Use `haveI : FiniteDimensional ℂ S := hSf`.
+
+Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((P.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : GlobalTheory.ThK.Fn F a (a + a'))) e))`. Set `T : P →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L`. Use `Submodule.finiteDimensional_of_le (S₂ := S'.map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `hS _ (hK k k.2)`.
+
+Use `⟨⟨om (1, (toGAd hσ G.W.J hc).symm k) Φ, hSle hk⟩, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [T, LinearMap.coe_comp, Function.comp_apply, LinearMap.funLeft_apply, hL, map_mul]`. Unfold `Model.I theta`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[show ((x, (toGAd hσ G.W.J hc).symm g * (toGAd hσ G.W.J hc).symm k) : UA σ G.V.J × UA σ G.W.J) = (x, (toGAd hσ G.W.J hc).symm g) * (1, (toGAd hσ G.W.J hc).symm k) by simp, map_mul, Module.End.mul_apply]`.
+-/
 theorem isAut_thetaIntegral_of_le_kInf : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → ∀ (hσ : ∀ x, σ (σ x) = x) (c : E) (hc : c ≠ 0), σ c = -c →

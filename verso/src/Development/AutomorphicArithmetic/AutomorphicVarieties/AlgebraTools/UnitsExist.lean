@@ -4,6 +4,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.SqrtO
 
 open Polynomial Matrix IsLocalRing TensorProduct UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `B E _ _ _ T F _ _ _ ι _ _ o r ep h2 ho hr hy hco hst hre htr hrank`. Establish `idem : ∀ i, ep i * ep i = ep i` using `fun i => (hco.idem i).eq`. Establish `idem' : ∀ i x, ep i * (ep i * x) = ep i * x` using `fun i x => by rw [← mul_assoc, idem]`. Use `choose y hy using hy`. Take `⟨z, hz⟩ : ∃ z : ι → E, ∀ i, z i = ep (o i) * y i * ep i` from `⟨_, fun i => rfl⟩`.
+
+Establish `hz_mem : ∀ i, ep (o i) * z i * ep i = z i`. Introduce `i`. Rewrite using `[hz]`. Simplify using `only [mul_assoc, idem, idem']`. Establish `hstz : ∀ i, T.st (z i) = ep i * (T.st (y i) * ep (o i))`.
+
+Introduce `i`. Rewrite using `[hz, T.st_mul, T.st_mul, hst, hst]`. Establish `hrz : ∀ i, r (z i) = single (o i) i 1`. Introduce `i`. Rewrite using `[hz, map_mul, map_mul, hre, hre, hy]`.
+
+Simplify using `only [Matrix.single_mul_single_same, mul_one]`. Use `choose b hb using fun i => hrank i (T.st (y i) * ep (o i) * y i)`. Use `choose b' hb2 using fun i => hrank (o i) (y i * ep i * T.st (y i))`. Establish `hb' : ∀ i, T.st (z i) * z i = b i • ep i`. Introduce `i`.
+
+Rewrite using `[hstz, hz, ← hb i]`. Simplify using `only [mul_assoc, idem, idem']`. Establish `hzst : ∀ i, z i * T.st (z i) = b' i • ep (o i)`. Introduce `i`. Rewrite using `[hstz, hz, ← hb2 i]`.
+
+Simplify using `only [mul_assoc, idem, idem']`. Establish `hbb : ∀ i, b' i = b i`. Introduce `i`. Establish `h` using `congrArg T.tr (hzst i)`. Rewrite `h` using `[T.tr_comm, hb', map_smul, map_smul, htr, htr, smul_eq_mul, smul_eq_mul, mul_one, mul_one]`.
+
+Conclude with `h.symm`. Establish `hbF : ∀ i, algebraMap B F (b i) = 1`. Introduce `i`. Establish `h` using `congrArg r (hb' i)`. Rewrite `h` using `[map_mul, hr, hrz, map_smul, hre, Matrix.transpose_single, Matrix.single_mul_single_same, mul_one]`.
+
+Establish `h'` using `congrArg (fun M : Matrix ι ι F => M i i) h`. Simplify using `only [Matrix.smul_apply, Matrix.single_apply_same, Algebra.smul_def, mul_one] at h'`. Conclude with `h'.symm`. Establish `hb1 : ∀ i, b i - 1 ∈ RingHom.ker (algebraMap B F)`. Introduce `i`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, hbF, map_one, sub_self]`. Use `choose α hα hα1 using fun i => UpperTheory.V.AlgebraTools.sqrt_one_add (RingHom.ker (algebraMap B F)) (b i) h2 (hb1 i)`. Establish `hαinvF : ∀ i, algebraMap B F (↑(α i)⁻¹ : B) = 1`. Introduce `i`. Establish `h1` using `hα1 i`.
+
+Rewrite `h1` using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Establish `h` using `congrArg (algebraMap B F) (Units.inv_mul (α i))`. Rewrite `h` using `[map_mul, map_one, h1, mul_one]`. Conclude with `h`. Establish `hinv : ∀ i, (↑(α i)⁻¹ : B) * ↑(α i)⁻¹ * b i = 1`.
+
+Introduce `i`. Rewrite using `[← hα, sq, mul_assoc, ← mul_assoc (↑(α i)⁻¹ : B) (↑(α i)) (↑(α i)), Units.inv_mul, one_mul, Units.inv_mul]`. Use `⟨⟨ep, fun i => if o i = i then ep i else (↑(α i)⁻¹ : B) • z i, ho, hco, hst, htr, hrank, ?_, ?_, ?_, ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `h : o i = i`.
+
+Rewrite using `[if_pos h, h, idem, idem]`. Rewrite using `[if_neg h, mul_smul_comm, smul_mul_assoc, hz_mem]`. Introduce `i`. Rewrite using `[if_pos (ho i)]`. Introduce `i`.
+
+Distinguish the cases in `h : o i = i`. Rewrite using `[if_pos h, hst, idem, h]`. Rewrite using `[if_neg h, map_smul, smul_mul_assoc, mul_smul_comm, smul_smul, hzst, hbb, smul_smul, hinv, one_smul]`. Introduce `i`. Distinguish the cases in `h : o i = i`.
+
+Rewrite using `[if_pos h, hst, idem]`. Rewrite using `[if_neg h, map_smul, smul_mul_assoc, mul_smul_comm, smul_smul, hb', smul_smul, hinv, one_smul]`. Introduce `i dsimp only`. Distinguish the cases in `h : o i = i`. Rewrite using `[if_pos h, hre, h]`.
+
+Rewrite using `[if_neg h, map_smul, hrz, ← algebraMap_smul (A := F), hαinvF, one_smul]`.
+-/
 theorem UpperTheory.V.AlgebraTools.units_exist :
     ∀ {B E : Type} [CommRing B] [Ring E] [Algebra B E] (T : TrInv B E) {F : Type} [CommRing F] [Algebra B F] [HenselianRing B (RingHom.ker (algebraMap B F))] {ι : Type} [Fintype ι] [DecidableEq ι] (o : ι → ι) (r : E →ₐ[B] Matrix ι ι F) (ep : ι → E), IsUnit (2 : B) → (∀ i, o (o i) = o i) → (∀ x, r (T.st x) = (r x)ᵀ) → (∀ i, ∃ y, r y = single (o i) i 1) → CompleteOrthogonalIdempotents ep → (∀ i, T.st (ep i) = ep i) → (∀ i, r (ep i) = single i i 1) → (∀ i, T.tr (ep i) = 1) → (∀ i y, ∃ b : B, ep i * y * ep i = b • ep i) → ∃ U : T.Units ι o, U.ep = ep ∧ ∀ i, r (U.x i) = single (o i) i 1 := by
   intro B E _ _ _ T F _ _ _ ι _ _ o r ep h2 ho hr hy hco hst hre htr hrank

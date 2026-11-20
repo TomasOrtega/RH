@@ -8,6 +8,11 @@ namespace GlobalTheory.ClosedFibre
 open Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `letI : Algebra K D := ψ.toAlgebra`. Establish `hK : AIC K` using `fun p _ hd => IsAlgClosed.exists_root p (natDegree_pos_iff_degree_pos.mp hd).ne'`. Establish `hm : (f * C f.leadingCoeff⁻¹).Monic` using `monic_mul_leadingCoeff_inv hf`. Conclude with `GlobalTheory.AICIff.root_mem_range hK _ _ hm rfl τ (by`. Rewrite using `[aeval_def, eval₂_mul]`.
+
+Express the relevant statement in the definitionally equal form `eval₂ ψ τ f * _ = 0`. Rewrite using `[h, zero_mul])`.
+-/
 theorem mem_range_of_eval₂ {K D : Type} [Field K] [IsAlgClosed K] [CommRing D] [IsDomain D]
     (ψ : K →+* D) (f : K[X]) (hf : f ≠ 0) (τ : D) (h : f.eval₂ ψ τ = 0) : ∃ r, ψ r = τ := by
   letI : Algebra K D := ψ.toAlgebra
@@ -18,6 +23,13 @@ theorem mem_range_of_eval₂ {K D : Type} [Field K] [IsAlgClosed K] [CommRing D]
     change eval₂ ψ τ f * _ = 0
     rw [h, zero_mul])
 
+/- English proof (translation)
+Use `haveI : Algebra.Etale K (K ⊗[R] E) := Algebra.Etale.baseChange R E K`. Use `haveI : Module.Finite K (K ⊗[R] E) := Algebra.FormallyUnramified.finite_of_free _ _`. Use `haveI : Algebra.IsIntegral K (K ⊗[R] E) := Algebra.IsIntegral.of_finite _ _`. Take `⟨f, hfm, hf⟩` from `Algebra.IsIntegral.isIntegral (R := K) ((1 : K) ⊗ₜ[R] u)`. Set `Θ : K ⊗[R] E →ₐ[R] D` to `Algebra.TensorProduct.productMap ψ Φ`.
+
+Establish `hΘ : (Θ : K ⊗[R] E →+* D).comp (algebraMap K (K ⊗[R] E)) = (ψ : K →+* D)`. Use extensionality with `k`. Simplify using `[Θ, Algebra.TensorProduct.algebraMap_apply]`. Use `mem_range_of_eval₂ (ψ : K →+* D) f hfm.ne_zero (Φ u) ?_` and prove the remaining obligations. Establish `h2` using `congrArg (Θ : K ⊗[R] E →+* D) hf`.
+
+Rewrite `h2` using `[hom_eval₂, hΘ, map_zero]`. Simplify `h2` using `[Θ]`.
+-/
 theorem mem_range_of_etale {R K E D : Type} [CommRing R] [Field K] [IsAlgClosed K] [CommRing E]
     [CommRing D] [IsDomain D] [Algebra R K] [Algebra R E] [Algebra.Etale R E] [Algebra R D]
     (ψ : K →ₐ[R] D) (Φ : E →ₐ[R] D) (u : E) : ∃ r, ψ r = Φ u := by
@@ -39,6 +51,47 @@ end GlobalTheory.ClosedFibre
 namespace GlobalTheory.ClosedFibre
 open Polynomial
 
+/- English proof (translation)
+Introduce `T _ _ hT O _ _ _ _ hO P hP g hg hgP`. Set `L` to `Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))`. Set `K` to `FractionRing T`. Use `haveI : IsAlgClosed K := GlobalTheory.isAlgClosed_fractionRing_of_AIC T hT`. Use `haveI := hP`.
+
+Set `mk : L →+* L ⧸ P` to `Ideal.Quotient.mk P`. Establish `hunitL : ∀ t : T, t ≠ 0 → IsUnit (algebraMap T L t)`. Introduce `t ht`. Use `IsLocalization.map_units L (⟨algebraMap T O t, ⟨t, mem_nonZeroDivisors_of_ne_zero ht, rfl⟩⟩ : Algebra.algebraMapSubmonoid O (nonZeroDivisors T))` as an intermediate fact. Rewrite using `[IsScalarTower.algebraMap_apply T O L]` and apply the resulting hypothesis.
+
+Establish `hunit : ∀ y : nonZeroDivisors T, IsUnit ((mk.comp (algebraMap T L)) y)` using `fun y => (hunitL y (nonZeroDivisors.ne_zero y.2)).map mk`. Set `ψ : K →+* L ⧸ P` to `IsLocalization.lift (M := nonZeroDivisors T) (S := K) hunit`. Establish `hψ : ψ.comp (algebraMap T K) = mk.comp (algebraMap T L)` using `IsLocalization.lift_comp hunit`. Set `τ : L ⧸ P` to `mk (algebraMap (Polynomial T) L X)`. Establish `hpoly : mk.comp (algebraMap (Polynomial T) L) = eval₂RingHom (mk.comp (algebraMap T L)) τ`.
+
+Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, coe_eval₂RingHom, eval₂_C]`. Rewrite using `[IsScalarTower.algebraMap_apply T (Polynomial T) L, Polynomial.algebraMap_apply]`. Both sides reduce to the same expression.
+
+Simplify using `[τ]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ψ a = τ := by`. Use `mem_range_of_eval₂ ψ (g.map (algebraMap T K)) ((Polynomial.map_ne_zero_iff (IsFractionRing.injective T K)).2 hg) τ ?_` and prove the remaining obligations. Rewrite using `[eval₂_map, hψ, ← coe_eval₂RingHom, ← hpoly, RingHom.comp_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hgP`.
+
+Use `letI : Algebra (Polynomial T) K := (eval₂RingHom (algebraMap T K) a).toAlgebra`. Set `ψA : K →ₐ[Polynomial T] L ⧸ P` to `{ ψ with commutes' := fun p => by`. Express the relevant statement in the definitionally equal form `ψ (eval₂ (algebraMap T K) a p) = mk (algebraMap (Polynomial T) L p)`. Rewrite using `[hom_eval₂, hψ, ha, ← RingHom.comp_apply mk, hpoly, coe_eval₂RingHom] }`. Establish `key : ∀ o : O, ∃ r, ψ r = mk (algebraMap O L o)`.
+
+Introduce `o`. Take `⟨ι, _, _, _, Si, -, hcov, hE⟩` from `hO`. Take `⟨i, hi⟩` from `hcov o`. Take `⟨E, _, _, _, Q, _, ⟨e⟩⟩` from `hE i`. Set `Φ0 : Localization.AtPrime Q →ₐ[Polynomial T] L ⧸ P` to `(Ideal.Quotient.mkₐ (Polynomial T) P).comp ((IsScalarTower.toAlgHom (Polynomial T) O L).comp ((Si i).val.comp e.toAlgHom))`.
+
+Set `Φ : E →ₐ[Polynomial T] L ⧸ P` to `Φ0.comp (IsScalarTower.toAlgHom (Polynomial T) E (Localization.AtPrime Q))`. Take `⟨⟨u, s⟩, hus⟩` from `IsLocalization.mk'_surjective Q.primeCompl (e.symm ⟨o, hi⟩)`. Take `⟨r1, h1⟩` from `mem_range_of_etale ψA Φ u`. Take `⟨r2, h2⟩` from `mem_range_of_etale ψA Φ s`. Establish `hsu : IsUnit (Φ s)` using `(IsLocalization.map_units (Localization.AtPrime Q) s).map Φ0`.
+
+Establish `ho : Φ0 (e.symm ⟨o, hi⟩) = mk (algebraMap O L o)`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk P (algebraMap O L ((e (e.symm ⟨o, hi⟩) : Si i) : O)) = mk (algebraMap O L o)`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Establish `hmul : Φ0 (e.symm ⟨o, hi⟩) * Φ s = Φ u`. Rewrite using `[← hus]`.
+
+Simplify using `only [Φ, AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Rewrite using `[← map_mul, IsLocalization.mk'_spec]`. Establish `h1' : ψA r1 = ψ r1` using `rfl`. Establish `h2' : ψA r2 = ψ r2` using `rfl`. Rewrite `h1` using `[h1']`.
+
+Rewrite `h2` using `[h2']`. Establish `hr2 : r2 ≠ 0`. Introduce and unpack `rfl`. Rewrite `h2` using `[map_zero]`. Conclude with `hsu.ne_zero h2.symm`.
+
+Use `⟨r1 * r2⁻¹, ?_⟩` and prove the remaining obligations. Establish `hne : ψ r2 ≠ 0` using `h2 ▸ hsu.ne_zero`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← map_mul, inv_mul_cancel_right₀ hr2, h1, ← ho, h2, hmul]`. Establish `hall : ∀ x : L, ∃ r, ψ r = mk x`.
+
+Introduce `x`. Take `⟨⟨o, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)) x`. Take `⟨t, ht, hts⟩` from `s.2`. Take `⟨r, hr⟩` from `key o`. Establish `ht0 : t ≠ 0` using `nonZeroDivisors.ne_zero ht`.
+
+Establish `hk : ψ (algebraMap T K t) = mk (algebraMap O L s)`. Rewrite using `[← RingHom.comp_apply ψ, hψ, RingHom.comp_apply, IsScalarTower.algebraMap_apply T O L, ← hts]`. Establish `hne : ψ (algebraMap T K t) ≠ 0`. Rewrite using `[hk]`. Conclude with `((IsLocalization.map_units L s).map mk).ne_zero`.
+
+Establish `hk0 : algebraMap T K t ≠ 0` using `fun h => hne (by rw [h, map_zero])`. Use `⟨r * (algebraMap T K t)⁻¹, ?_⟩` and prove the remaining obligations. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← map_mul, inv_mul_cancel_right₀ hk0, hr, hk, ← map_mul, IsLocalization.mk'_spec]`. Establish `hfield : IsField (L ⧸ P)`.
+
+Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {y} hy => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨r, hr⟩` from `hall x`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hy (by rw [← hr, map_zero])`. Conclude with `⟨ψ r⁻¹, by rw [← hr, ← map_mul, mul_inv_cancel₀ hr0, map_one]⟩`. Use `⟨Ideal.Quotient.maximal_of_isField P hfield, fun x => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hall x`. Take `⟨⟨c, d⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors T) r`.
+
+Use `⟨c, d, nonZeroDivisors.ne_zero d.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul]`. Establish `h1 : ψ (IsLocalization.mk' K c d) * ψ (algebraMap T K d) = ψ (algebraMap T K c)`. Rewrite using `[← map_mul, IsLocalization.mk'_spec]`. Establish `hd : ψ (algebraMap T K d) = Ideal.Quotient.mk P (algebraMap T L d)`.
+
+Rewrite using `[← RingHom.comp_apply ψ, hψ]`. Both sides reduce to the same expression. Establish `hc : ψ (algebraMap T K c) = Ideal.Quotient.mk P (algebraMap T L c)`. Rewrite using `[← RingHom.comp_apply ψ, hψ]`. Both sides reduce to the same expression.
+
+Rewrite using `[← hd, ← hc, ← h1, ← hr, mul_comm]`. Conclude with `sub_self _`.
+-/
 theorem isMaximal_of_mem : ∀ (T : Type) [CommRing T] [IsDomain T], AIC T → ∀ (O : Type) [CommRing O] [Algebra T O] [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (E : Type) (_ : CommRing E) (_ : Algebra (Polynomial T) E) (_ : Algebra.Etale (Polynomial T) E) (P : Ideal E) (_ : P.IsPrime), Nonempty (Localization.AtPrime P ≃ₐ[(Polynomial T)] Si i)) → ∀ P : Ideal (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))), P.IsPrime → ∀ g : Polynomial T, g ≠ 0 → algebraMap (Polynomial T) (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) g ∈ P → P.IsMaximal ∧ ∀ x : Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)), ∃ c d : T, d ≠ 0 ∧ algebraMap T (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) d * x - algebraMap T (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) c ∈ P := by
   intro T _ _ hT O _ _ _ _ hO P hP g hg hgP
   let L := Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))

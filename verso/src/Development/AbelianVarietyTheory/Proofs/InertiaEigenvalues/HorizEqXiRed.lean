@@ -7,6 +7,19 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ l e a ι _ _ _ _ P v hv`. Establish `hn : P.nabla v = 0`. Rewrite `hv` using `[BK.PhiMod.conn_apply]`. Conclude with `(smul_right_injective _ PowerSeries.X_ne_zero) (hv.trans (smul_zero _).symm)`. Use `set w := P.xiExt.symm v with hw`.
+
+Establish `hvw : v = P.xiExt w` using `by rw [hw, LinearEquiv.apply_symm_apply]`. Establish `hd : BK.derV w = 0`. Rewrite `hn` using `[hvw, BK.PhiMod.nabla_xiExt, ← map_zero P.xiExt]`. Conclude with `P.xiExt.injective hn`. Establish `hnz : ∀ m : ℕ, ((m : K) + 1) ≠ 0`.
+
+Introduce `m h`. Establish `h2 : algebraMap ℚ_[l] K ((m : ℚ_[l]) + 1) = 0`. Rewrite using `[map_add, map_natCast, map_one]`. Conclude with `h`. Rewrite `h2` using `[map_eq_zero_iff _ (algebraMap ℚ_[l] K).injective]`.
+
+Conclude with `Nat.cast_add_one_ne_zero m h2`. Establish `hc : w = BK.cst (red w)`. Use function extensionality and compare the values at `τ i`. Use extensionality with `n`. Break down `n with _ | m` into its components or cases.
+
+Simplify using `[BK.cst_apply, red_apply]`. Establish `h1` using `congrArg (fun f => PowerSeries.coeff m (f τ i)) hd`. Simplify using `only [BK.derV_apply, PowerSeries.coeff_derivative] at h1`. Rewrite using `[BK.cst_apply, PowerSeries.coeff_C, if_neg (Nat.succ_ne_zero m)]`. Establish `h3 : PowerSeries.coeff (m + 1) (w τ i) * ((m : K) + 1) = 0` using `by simpa using h1`.
+
+Conclude with `(mul_eq_zero.1 h3).resolve_right (hnz m)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem horiz_eq_xi_red : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] (P : PhiMod O K l e a ι) (v : Vec K a ι), P.conn v = 0 → v = P.xi (red v) := by
   intro O K _ _ _ _ _ l e a ι _ _ _ _ P v hv
   have hn : P.nabla v = 0 := by

@@ -33,20 +33,40 @@ def invDiff : Submodule (OF E) E where
     · obtain ⟨n, hn⟩ := hw (c * a)
       exact ⟨n, by rw [← hn]; congr 1; push_cast; ring⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_OF (a : OF E) : (((a : maximalRealSubfield E)) : E) = algebraMap (OF E) E a := rfl
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_apply_eq_self E w`.
+-/
 theorem bar_real (w : maximalRealSubfield E) : bar (w : E) = w := IsCMField.complexConj_apply_eq_self E w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨v, (IsCMField.complexConj_eq_self_iff E v).1 h⟩, rfl⟩`.
+-/
 theorem real_of_bar {v : E} (h : bar v = v) : ∃ w : maximalRealSubfield E, (w : E) = v :=
   ⟨⟨v, (IsCMField.complexConj_eq_self_iff E v).1 h⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, bar, map_mul, ← bar, ← bar, ← coe_OF, bar_real]`.
+-/
 theorem bar_smul (a : OF E) (x : E) : bar (a • x) = a • bar x := by
   rw [Algebra.smul_def, Algebra.smul_def, bar, map_mul, ← bar, ← bar, ← coe_OF, bar_real]
 
+/- English proof (translation)
+Simplify using `only [altForm, bar, map_sub, map_mul, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem altForm_bar (x y : E) : bar (altForm x y) = - altForm x y := by
   simp only [altForm, bar, map_sub, map_mul, IsCMField.complexConj_apply_apply]; ring
 
 open Classical in
+/- English proof (translation)
+Establish `hc : Nat.card (E ≃ₐ[maximalRealSubfield E] E) = 2` using `(Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E) ▸ IsGalois.card_aut_eq_finrank _ E`. Take `⟨τ, hτ, hu⟩` from `(Nat.card_eq_two_iff' 1).1 hc`. Use extensionality with `σ`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Distinguish the cases in `h : σ = 1`.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr (by rw [hu σ h, hu _ (IsCMField.complexConj_ne_one E)])`.
+-/
 theorem univ_aut : (Finset.univ : Finset (E ≃ₐ[maximalRealSubfield E] E)) = {1, IsCMField.complexConj E} := by
   have hc : Nat.card (E ≃ₐ[maximalRealSubfield E] E) = 2 :=
     (Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E) ▸ IsGalois.card_aut_eq_finrank _ E
@@ -57,6 +77,11 @@ theorem univ_aut : (Finset.univ : Finset (E ≃ₐ[maximalRealSubfield E] E)) = 
   · exact Or.inl h
   · exact Or.inr (by rw [hu σ h, hu _ (IsCMField.complexConj_ne_one E)])
 
+/- English proof (translation)
+Rewrite using `[← Algebra.trace_trace (S := maximalRealSubfield E)]`. Use `congr 1`. Apply `FaithfulSMul.algebraMap_injective (maximalRealSubfield E) E` to reduce the goal to its premises. Rewrite using `[trace_eq_sum_automorphisms, univ_aut, Finset.sum_pair (Ne.symm (IsCMField.complexConj_ne_one E))]`. Simplify using `only [AlgEquiv.one_apply]`.
+
+Conclude with `hw.symm`.
+-/
 theorem trace_eq (u : E) (w : maximalRealSubfield E) (hw : (w : E) = u + bar u) :
     Algebra.trace ℚ E u = Algebra.trace ℚ (maximalRealSubfield E) w := by
   rw [← Algebra.trace_trace (S := maximalRealSubfield E)]
@@ -68,6 +93,19 @@ theorem trace_eq (u : E) (w : maximalRealSubfield E) (hw : (w : E) = u + bar u) 
   exact hw.symm
 
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Set `K` to `maximalRealSubfield E`. Set `f : K →ₐ[OF E] E` to `IsScalarTower.toAlgHom (OF E) K E`. Use `haveI : NeZero (1 : FractionalIdeal (OF E)⁰ K) := ⟨one_ne_zero⟩`. Set `𝔡 : FractionalIdeal (OF E)⁰ K` to `FractionalIdeal.dual ℤ ℚ 1`. Establish `h0 : 𝔡 ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`.
+
+Establish `hmul : (𝔡 : Submodule (OF E) K) * ((𝔡⁻¹ : FractionalIdeal (OF E)⁰ K) : Submodule (OF E) K) = 1`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ h0, FractionalIdeal.coe_one]`. Establish `heq : invDiff E = (𝔡 : Submodule (OF E) K).map f.toLinearMap`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, rfl, hw⟩`. Use `⟨w, ?_, rfl⟩` and prove the remaining obligations. Use `show w ∈ 𝔡`. Rewrite using `[FractionalIdeal.mem_dual one_ne_zero]`. Introduce `a ha`.
+
+Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨n, hn⟩` from `hw b`. Conclude with `⟨n, by rw [Algebra.traceForm_apply]; simpa using hn.symm⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨w, rfl, fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `hw' : w ∈ 𝔡` using `hw`. Rewrite `hw'` using `[FractionalIdeal.mem_dual one_ne_zero]`. Take `⟨n, hn⟩` from `hw' (algebraMap (OF E) K a) ((FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩)`. Conclude with `⟨n, by rw [Algebra.traceForm_apply] at hn; simpa using hn.symm⟩`. Use `⟨⟨invDiff E, ((𝔡⁻¹ : FractionalIdeal (OF E)⁰ K) : Submodule (OF E) K).map f.toLinearMap, ?_, ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[heq, ← Submodule.map_mul, hmul, Submodule.map_one]`. Rewrite using `[heq, ← Submodule.map_mul, mul_comm, hmul, Submodule.map_one]`.
+-/
 theorem isUnit_invDiff : IsUnit (invDiff E) := by
   let K := maximalRealSubfield E
   let f : K →ₐ[OF E] E := IsScalarTower.toAlgHom (OF E) K E
@@ -109,11 +147,23 @@ def imagPart (E : Type) [Field E] [NumberField E] [IsCMField E] : Submodule (OF 
     simp only [Set.mem_setOf_eq] at ha ⊢
     rw [bar_smul, ha, smul_neg]
 
+/- English proof (translation)
+Rewrite using `[formSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, -, y, -, rfl⟩`. Conclude with `altForm_bar x y`.
+-/
 theorem formSpan_le_imag (L : Submodule (OF E) E) : formSpan L ≤ imagPart E := by
   rw [formSpan, Submodule.span_le]
   rintro _ ⟨x, -, y, -, rfl⟩
   exact altForm_bar x y
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : E, bar x ≠ x := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext fun x => h x)`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+
+Establish `key : ∃ c : 𝓞 E, bar (c : E) ≠ c`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hx` to reduce the goal to its premises. Simplify using `only [bar, map_div₀] at h ⊢`.
+
+Rewrite using `[h a, h b]`. Take `⟨c, hc⟩` from `key`. Use `⟨c - IsCMField.ringOfIntegersComplexConj E c, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, IsCMField.coe_ringOfIntegersComplexConj]`. Conclude with `sub_ne_zero.2 (Ne.symm hc)`.
+
+Simplify using `only [map_sub, IsCMField.coe_ringOfIntegersComplexConj, bar, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_imag_int : ∃ δ : 𝓞 E, (δ : E) ≠ 0 ∧ bar (δ : E) = -(δ : E) := by
   obtain ⟨x, hx⟩ : ∃ x : E, bar x ≠ x := by
     by_contra h
@@ -133,6 +183,15 @@ theorem exists_imag_int : ∃ δ : 𝓞 E, (δ : E) ≠ 0 ∧ bar (δ : E) = -(�
   · simp only [map_sub, IsCMField.coe_ringOfIntegersComplexConj, bar, IsCMField.complexConj_apply_apply]
     ring
 
+/- English proof (translation)
+Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx, y, hy, rfl⟩` from `hw`. Establish `hb : ∀ t : E, IsIntegral ℤ t → IsIntegral ℤ (bar t)` using `fun t ht => ht.map ((IsCMField.complexConj E).toAlgHom.restrictScalars ℤ)`.
+
+Establish `e : (N : E) ^ 2 * altForm x y = (N * x) * bar (N * y) - bar (N * x) * (N * y)`. Simplify using `only [altForm, bar, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `((hN x hx).mul (hb _ (hN y hy))).sub ((hb _ (hN x hx)).mul (hN y hy))`.
+
+Consider the case `zero => simpa using isIntegral_zero`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `ha.add hb`. Consider the case `smul c a _ ha`. Rewrite using `[Algebra.smul_def, mul_left_comm]`.
+
+Conclude with `(c.2.map (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E)).mul ha`.
+-/
 theorem isIntegral_formSpan (L : Submodule (OF E) E) (N : ℕ) (hN : ∀ x ∈ L, IsIntegral ℤ ((N : E) * x)) :
     ∀ w ∈ formSpan L, IsIntegral ℤ ((N : E) ^ 2 * w) := by
   intro w hw
@@ -152,6 +211,43 @@ theorem isIntegral_formSpan (L : Submodule (OF E) E) (N : ℕ) (hN : ∀ x ∈ L
     exact (c.2.map (IsScalarTower.toAlgHom ℤ (maximalRealSubfield E) E)).mul ha
 
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Take `⟨N, hN0, hNL, hNi⟩` from `hL`. Take `⟨δ, hδ0, hδb⟩` from `exists_imag_int (E := E)`. Set `K` to `maximalRealSubfield E`. Set `f : K →ₐ[OF E] E` to `IsScalarTower.toAlgHom (OF E) K E`. Set `g : K →ₗ[OF E] E` to `(LinearMap.mulRight (OF E) (δ : E)).comp f.toLinearMap`.
+
+Set `IK : Submodule (OF E) K` to `(formSpan L).comap g`. Establish `hg : ∀ a : K, g a = (a : E) * δ` using `fun a => rfl`. Establish `hsplit : formSpan L = IK.map f.toLinearMap * Submodule.span (OF E) {(δ : E)}`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`.
+
+Establish `hwi : bar w = -w` using `formSpan_le_imag L hw`. Establish `hr : bar (w / δ) = w / δ`. Simplify using `only [bar, map_div₀] at hwi hδb ⊢`. Rewrite using `[hwi, hδb, neg_div_neg_eq]`. Take `⟨a, ha⟩` from `real_of_bar hr`.
+
+Establish `haI : a ∈ IK` using `by show g a ∈ formSpan L`. Rewrite using `[hg, ha, div_mul_cancel₀ _ hδ0]`. Conclude with `hw`. Establish `: w = f a * δ` using `by show w = (a : E) * δ`. Rewrite using `[ha, div_mul_cancel₀ _ hδ0]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.mul_mem_mul ⟨a, haI, rfl⟩ (Submodule.mem_span_singleton_self _)`. Use `Submodule.mul_le.2 fun u hu s hs => ?_` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `hu`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hs`.
+
+Rewrite using `[mul_smul_comm]`. Conclude with `(formSpan L).smul_mem c ha`. Establish `hδ2 : bar ((δ : E) * δ) = (δ : E) * δ`. Simplify using `only [bar, map_mul] at hδb ⊢`. Rewrite using `[hδb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d : OF E, algebraMap (OF E) E d = (δ : E) * δ := by`. Take `⟨d, hd⟩` from `(IsCMField.RingOfIntegers.complexConj_eq_self_iff E (δ * δ)).1 (by push_cast; exact hδ2)`. Conclude with `⟨d, by rw [hd]; push_cast; rfl⟩`. Establish `hd0 : d ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hd` using `[map_zero]`. Conclude with `mul_self_ne_zero.2 hδ0 hd.symm`. Establish `hfrac : IsFractional (OF E)⁰ IK`. Use `⟨(N : OF E) ^ 2 * d, mem_nonZeroDivisors_of_ne_zero (mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hN0.ne')) hd0), ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha`. Establish `h1` using `isIntegral_formSpan L N hNi _ ha`. Rewrite `h1` using `[hg]`. Establish `h2 : IsIntegral ℤ (f (((N : OF E) ^ 2 * d) • a))`. Establish `e : f (((N : OF E) ^ 2 * d) • a) = (N : E) ^ 2 * ((a : E) * δ) * δ`.
+
+Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, map_mul, map_pow, map_natCast, hd]`. Express the relevant statement in the definitionally equal form `(N : E) ^ 2 * (δ * δ) * (a : E) = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h1.mul δ.2`.
+
+Establish `h3 : IsIntegral ℤ (((N : OF E) ^ 2 * d) • a)` using `(isIntegral_algHom_iff (f.restrictScalars ℤ) f.toRingHom.injective).1 h2`. Conclude with `⟨⟨_, h3⟩, rfl⟩`. Set `𝔦 : FractionalIdeal (OF E)⁰ K` to `⟨IK, hfrac⟩`. Establish `h𝔦 : 𝔦 ≠ 0`. Introduce `h`.
+
+Establish `hm : (-(N : K) ^ 2 - (N : K) ^ 2 : K) ∈ IK` using `by show g _ ∈ formSpan L`. Establish `hx` using `hNL 1`. Establish `hy : (N : E) * (δ : E) ∈ L` using `hNL δ`. Rewrite `hx` using `[map_one, mul_one]`. Establish `hmem : altForm (N : E) ((N : E) * (δ : E)) ∈ formSpan L` using `Submodule.subset_span ⟨_, hx, _, hy, rfl⟩`.
+
+Use `hmem using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hg]`. Simplify using `only [altForm, bar, map_mul, map_natCast] at hδb ⊢`. Rewrite using `[hδb]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `: (-(N : K) ^ 2 - (N : K) ^ 2 : K) ∈ (𝔦 : Submodule (OF E) K)` using `hm`. Rewrite `this` using `[h, FractionalIdeal.coe_zero, Submodule.mem_bot]`. Establish `hN : (N : K) ≠ 0` using `by exact_mod_cast hN0.ne'`. Rewrite `this` using `[show (-(N : K) ^ 2 - (N : K) ^ 2 : K) = -2 * (N : K) ^ 2 by ring]`.
+
+Conclude with `(mul_ne_zero (by norm_num) (pow_ne_zero 2 hN)) this`. Establish `hmul : IK * ((𝔦⁻¹ : FractionalIdeal (OF E)⁰ K) : Submodule (OF E) K) = 1`. Rewrite using `[show IK = (𝔦 : Submodule (OF E) K) from rfl, ← FractionalIdeal.coe_mul, mul_inv_cancel₀ h𝔦, FractionalIdeal.coe_one]`. Use `⟨((𝔦⁻¹ : FractionalIdeal (OF E)⁰ K) : Submodule (OF E) K).map f.toLinearMap * Submodule.span (OF E) {(δ : E)⁻¹}, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, mul_mul_mul_comm, ← Submodule.map_mul, hmul, Submodule.map_one, Submodule.span_mul_span, Set.singleton_mul_singleton, mul_inv_cancel₀ hδ0, ← Submodule.one_eq_span, mul_one]`.
+
+Introduce `j hj`. Establish `hle : ((𝔦⁻¹ : FractionalIdeal (OF E)⁰ K) : Submodule (OF E) K).map f.toLinearMap * Submodule.span (OF E) {(δ : E)⁻¹} ≤ imagPart E`. Use `Submodule.mul_le.2 fun u hu s hs => ?_` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `hu`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hs`.
+
+Use `show bar _ = -_`. Rewrite using `[mul_smul_comm, bar_smul]`. Simplify using `only [bar, map_mul, map_inv₀] at hδb ⊢`. Rewrite using `[hδb]`. Establish `: IsCMField.complexConj E (f.toLinearMap a) = f.toLinearMap a` using `IsCMField.complexConj_apply_eq_self E a`.
+
+Rewrite using `[this, inv_neg, mul_neg, smul_neg]`. Conclude with `hle hj`.
+-/
 theorem exists_inv (L : Submodule (OF E) E)
     (hL : ∃ N : ℕ, 0 < N ∧ (∀ x : 𝓞 E, (N : E) * algebraMap (𝓞 E) E x ∈ L) ∧ ∀ x ∈ L, IsIntegral ℤ ((N : E) * x)) :
     ∃ J : Submodule (OF E) E, formSpan L * J = 1 ∧ ∀ j ∈ J, bar j = -j := by
@@ -256,6 +352,39 @@ end GlobalTheory.PolModLattice
 
 open GlobalTheory.PolModLattice in
 
+/- English proof (translation)
+Introduce `E _ _ _ L hL`. Take `⟨J, hIJ, hJ⟩` from `exists_inv L hL`. Establish `hJI : J * formSpan L = 1` using `by rw [mul_comm]; exact hIJ`. Establish `hM : polMod L = J * invDiff E`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `ξ hξ`. Establish `h1 : Submodule.span (OF E) {ξ} * formSpan L ≤ invDiff E`. Rewrite using `[formSpan, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, b, ⟨x, hx, y, hy, rfl⟩, rfl⟩`. Rewrite using `[Set.mem_singleton_iff.1 ha]`.
+
+Establish `hr : bar (ξ * altForm x y) = ξ * altForm x y`. Rewrite using `[bar, map_mul, ← bar, ← bar, altForm_bar, hξ.1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hw⟩` from `real_of_bar hr`. Use `⟨w, hw, fun c => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, hn⟩` from `hξ.2 (c • x) (L.smul_mem c hx) y hy`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Use `symm`. Apply `trace_eq` to reduce the goal to its premises.
+
+Use `push_cast`. Rewrite using `[hw, coe_OF]`. Establish `hb : IsCMField.complexConj E ξ = -ξ` using `hξ.1`. Simplify using `only [altForm, bar, map_mul, IsCMField.complexConj_apply_apply, Algebra.smul_def]`. Rewrite using `[hb, show IsCMField.complexConj E (algebraMap (OF E) E c) = _ from bar_algebraMap c]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Submodule.span (OF E) {ξ} ≤ J * invDiff E` using `calc Submodule.span (OF E) {ξ} = Submodule.span (OF E) {ξ} * (formSpan L * J) := by rw [hIJ, mul_one] _ = (Submodule.span (OF E) {ξ} * formSpan L) * J := (mul_assoc _ _ _).symm _ ≤ invDiff E * J := mul_le_mul_left h1 _ _ = J * invDiff E := mul_comm _ _`. Conclude with `h2 (Submodule.mem_span_singleton_self ξ)`. Use `Submodule.mul_le.2 fun j hj v hv => ?_` and prove the remaining obligations. Take `⟨w, rfl, hw⟩` from `hv`.
+
+Use `⟨by rw [bar, map_mul, ← bar, ← bar, hJ j hj, bar_real]; ring, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hm : j * altForm x y ∈ (1 : Submodule (OF E) E)` using `hJI ▸ Submodule.mul_mem_mul hj (Submodule.subset_span ⟨x, hx, y, hy, rfl⟩)`. Take `⟨a, ha⟩` from `Submodule.mem_one.1 hm`. Take `⟨n, hn⟩` from `hw a`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hn]`. Apply `trace_eq` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[coe_OF, ha]`. Establish `hb : IsCMField.complexConj E j = -j` using `hJ j hj`.
+
+Simplify using `only [altForm, bar, map_mul, IsCMField.complexConj_apply_apply]`. Rewrite using `[hb, show IsCMField.complexConj E (w : E) = w from bar_real w]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, le_antisymm (polMod_mul_le L) ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`.
+
+Conclude with `(show IsUnit J from ⟨⟨J, formSpan L, hJI, hIJ⟩, rfl⟩).mul isUnit_invDiff`. Rewrite using `[hM]`. Introduce `z hz`. Establish `h1 : Submodule.span (OF E) {z} * formSpan L ≤ invDiff E * L`. Rewrite using `[formSpan, Submodule.span_mul_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨a, ha, b, ⟨x, hx, y, hy, rfl⟩, rfl⟩`. Rewrite using `[Set.mem_singleton_iff.1 ha]`. Establish `key : ∀ t ∈ L, z * bar t + bar z * t ∈ invDiff E`. Introduce `t ht`. Establish `hr : bar (z * bar t + bar z * t) = z * bar t + bar z * t`.
+
+Simplify using `only [bar, map_add, map_mul, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hw⟩` from `real_of_bar hr`. Use `⟨w, hw, fun c => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hz (c • t) (L.smul_mem c ht)`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Use `symm`. Apply `trace_eq` to reduce the goal to its premises. Use `push_cast`.
+
+Rewrite using `[hw, coe_OF, bar_smul]`. Simplify using `only [bar, map_mul, IsCMField.complexConj_apply_apply, Algebra.smul_def]`. Rewrite using `[show IsCMField.complexConj E (algebraMap (OF E) E c) = _ from bar_algebraMap c]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : z * altForm x y = (z * bar y + bar z * y) * x - (z * bar x + bar z * x) * y`.
+
+Simplify using `only [altForm]`. Expand and normalize the polynomial expressions, which then agree. Use `show z * altForm x y ∈ _`. Rewrite using `[e]`. Conclude with `sub_mem (Submodule.mul_mem_mul (key y hy) hx) (Submodule.mul_mem_mul (key x hx) hy)`.
+
+Establish `h2 : Submodule.span (OF E) {z} ≤ J * invDiff E * L` using `calc Submodule.span (OF E) {z} = Submodule.span (OF E) {z} * (formSpan L * J) := by rw [hIJ, mul_one] _ = (Submodule.span (OF E) {z} * formSpan L) * J := (mul_assoc _ _ _).symm _ ≤ invDiff E * L * J := mul_le_mul_left h1 _ _ = J * invDiff E * L := by rw [mul_comm, mul_assoc]`. Conclude with `h2 (Submodule.mem_span_singleton_self z)`.
+-/
 theorem GlobalTheory.PolModLattice.polMod_isUnit_mul_eq_dual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (L : Submodule (OF E) E),
     (∃ N : ℕ, 0 < N ∧ (∀ x : 𝓞 E, (N : E) * algebraMap (𝓞 E) E x ∈ L) ∧ ∀ x ∈ L, IsIntegral ℤ ((N : E) * x)) →
     IsUnit (polMod L) ∧ polMod L * L = dualLat L := by

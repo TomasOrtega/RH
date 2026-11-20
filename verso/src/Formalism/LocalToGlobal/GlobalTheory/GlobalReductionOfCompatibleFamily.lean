@@ -86,17 +86,29 @@ structure GlobalClaimsF {eps : ℝ} {Fm : FamP eps} (O : GlobalObjF Fm) (C : ℝ
 def GlobalTiedF {eps : ℝ} (Fm : FamP eps) (C : ℝ) : Prop :=
   ∃ O : GlobalObjF Fm, GlobalTiesF O ∧ GlobalChoicesF O ∧ GlobalClaimsF O C
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K.M, K.nf, K.eL, K.emb, hD, fun τ => ⟨K.d τ, K.gen τ, fun s => h.om τ s⟩⟩`.
+-/
 theorem CurveTies.omTied {D : D7} {K : CurveObj D} (h : CurveTies D K)
     (hD : TaylorLogMetric.DataIn D (TaylorLogMetric.tor0 D D.host.ccK K.δ) K.M) : OmegaCompatible D K.δ :=
   ⟨K.M, K.nf, K.eL, K.emb, hD, fun τ => ⟨K.d τ, K.gen τ, fun s => h.om τ s⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K.M, K.nf, K.eL, K.emb, hD, h.thOne, h.thFree⟩`.
+-/
 theorem CurveTies.thTied {D : D7} {K : CurveObj D} (h : CurveTies D K)
     (hD : TaylorLogMetric.DataIn D (TaylorLogMetric.tor0 D D.host.ccK K.δ) K.M) : ThetaCompatible D K.δ K.e :=
   ⟨K.M, K.nf, K.eL, K.emb, hD, h.thOne, h.thFree⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x i => (h.real x i).vol.volTie, fun x i => (h.real x i).dsig⟩`.
+-/
 theorem tiesF_of_ties {eps : ℝ} {Fm : FamP eps} {O : GlobalObjF Fm} (h : GlobalTiesF O) : StandardLattice.TiesF Fm :=
   ⟨fun x i => (h.real x i).vol.volTie, fun x i => (h.real x i).dsig⟩
 
+/- English proof (translation)
+Establish `h3` using `(hT.curve x i).thTied (hK.dataIn x i)`. Establish `h5` using `theta_power_of_first_layer (hC.curve x i).thPow`. Conclude with `⟨⟨_, (O.K x i).delta_pow_twelve_eq_discr, omLink_of_tied ((hT.curve x i).omTied (hK.dataIn x i))⟩, thFree_of_tied h3 h5, ⟨_, (O.K x i).delta_pow_twelve_eq_discr, _, (O.K x i).chi, _, (hC.curve x i).cl22, thLinkLe_of_tied h3 h5 (fun u j hj => (O.T x i).herm.base.cls_nonempty u j h …`.
+-/
 theorem curveLinks_of {eps : ℝ} {Fm : FamP eps} {O : GlobalObjF Fm} {C : ℝ} (hT : GlobalTiesF O) (hK : GlobalChoicesF O)
     (hC : GlobalClaimsF O C) (x : ℝ) (i : Fm.Ix x) :
     (∃ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (Fm.D x i) (Fm.D x i).host.ccK δ ∧
@@ -108,12 +120,22 @@ theorem curveLinks_of {eps : ℝ} {Fm : FamP eps} {O : GlobalObjF Fm} {C : ℝ} 
     ⟨_, (O.K x i).delta_pow_twelve_eq_discr, _, (O.K x i).chi, _, (hC.curve x i).cl22,
       thLinkLe_of_tied h3 h5 (fun u j hj => (O.T x i).herm.base.cls_nonempty u j hj)⟩⟩
 
+/- English proof (translation)
+Establish `hs : SeenDef (Fm.D x i) (Formalism.L2.Herm.toErrX (O.T x i).herm)` using `(hT.extra x hx i).join.errX_eq ▸ (Fm.ex x hx i).err.seen`. Establish `hP` using `hC.pend x hx i`. Conclude with `⟨hP.UpDownIncidenceInverse u, hP.admT u, base_lattice_convention_of_flags _ hs u (base_lattice_convention_of_hermitian (O.T x i).herm u), hP.br u⟩`.
+-/
 theorem hecke_compatibility_of_groups {eps : ℝ} {Fm : FamP eps} {O : GlobalObjF Fm} {C : ℝ} (hT : GlobalTiesF O) (hC : GlobalClaimsF O C)
     (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (u : (Fm.D x i).what₂.Word) : IncidenceTransportConditions (Fm.D x i) u := by
   have hs : SeenDef (Fm.D x i) (Formalism.L2.Herm.toErrX (O.T x i).herm) := (hT.extra x hx i).join.errX_eq ▸ (Fm.ex x hx i).err.seen
   have hP := hC.pend x hx i
   exact ⟨hP.UpDownIncidenceInverse u, hP.admT u, base_lattice_convention_of_flags _ hs u (base_lattice_convention_of_hermitian (O.T x i).herm u), hP.br u⟩
 
+/- English proof (translation)
+Establish `tVol : StandardLattice.TiesF Fm` using `tiesF_of_ties hT`. Take `⟨C₅, h59a⟩` from `UnusedSlot33.field_lemmas_except_seven`. Establish `h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅` using `fun x hx i => by`. Take `⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩` from `h59a (Fm.D x i) (Fm.L x i).sc`. Conclude with `⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩`.
+
+Establish `h24` using `s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol`. Establish `h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev` using `fun x hx i => (h24.2.2.2.2.2.1 x hx i).2.2.2.1`. Take `⟨a0, hStab⟩` from `flipTwoThree.stabiliser_family_of_column_lemma Fm 100 C₅ h59 h4p`. Use `⟨tVol, fun x i => (curveLinks_of hT hK hC x i).1, fun x i => (curveLinks_of hT hK hC x i).2.1, fun x i => (curveLinks_of hT hK hC x i).2.2, ⟨0, fun x _ hx i => hK.kRat x hx i⟩, ?_, ⟨Fm.x1 + 1, fun x hx i u => hecke_compatibility_of_groups hT hC x (by linarith) i u⟩⟩` and prove the remaining obligations. Use `⟨max a0 (Fm.x1 + 1), fun x hx i u => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Fm.x1 < x` using `by have := le_trans (le_max_right a0 (Fm.x1 + 1)) hx; linarith`. Conclude with `(hC.pend x h1 i).colVal (hStab x (le_trans (le_max_left _ _) hx) h1 i) u`.
+-/
 theorem linkIn_of {eps : ℝ} (Fm : FamP eps) (C3 C22 : ℝ) (O : GlobalObjF Fm) (hT : GlobalTiesF O) (hK : GlobalChoicesF O)
     (hC : GlobalClaimsF O C22) (hF3 : StandardLattice.FamilyTheoremThreeAdmitted Fm)
     (s59 : ∀ x : ℝ, Fm.x1 < x → ∀ i : Fm.Ix x, UnusedSlot33.division_rows_rational_lattice (Fm.D x i)) (s24 : StandardLattice.KudlaFamilyStatement Fm C3) :
@@ -141,6 +163,13 @@ theorem linkIn_of {eps : ℝ} (Fm : FamP eps) (C3 C22 : ℝ) (O : GlobalObjF Fm)
   have h1 : Fm.x1 < x := by have := le_trans (le_max_right a0 (Fm.x1 + 1)) hx; linarith
   exact (hC.pend x h1 i).colVal (hStab x (le_trans (le_max_left _ _) hx) h1 i) u
 
+/- English proof (translation)
+Introduce `hCov hTu hDG hCh hIn`. Take `⟨tVol, tOm, tFree, tTh, t7, tCV, t10⟩` from `linkIn_of Fm C3 C22 O hT hK hC hF3 s59 s24`. Establish `provedFiveF : LocalQuadraticParts.SlopeLossFamily Fm eL`. Take `⟨C5, c6, Cb, -, -, -, -, cTT, cBad, -⟩` from `hCh`. Conclude with `Loss.slope_loss_lemma_family Fm Cb eL heL cTT cBad hIn.1 hCov`.
+
+Take `⟨C₅, h59a⟩` from `UnusedSlot33.field_lemmas_except_seven`. Establish `h59 : UnusedSlot33.ConclusionOnFamily Fm 100 C₅` using `fun x hx i => by`. Take `⟨p1, p2, p3, p4, p5, p5c, p6, p8⟩` from `h59a (Fm.D x i) (Fm.L x i).sc`. Conclude with `⟨p1, p2, p3, p4, p5, p5c, p6, s59 x hx i, p8⟩`. Establish `h24` using `s24 ⟨hF3, StandardLattice.column_lemma_family_of_definite Fm 100 C₅ h59 (fun _ _ => gram0Def _)⟩ tVol`.
+
+Establish `h4p : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), StandardLattice.Conclusion4p (Fm.D x i) (Fm.ex x hx i).lev` using `fun x hx i => (h24.2.2.2.2.2.1 x hx i).2.2.2.1`. Establish `h22 : TaylorLogMetric.ConclusionOnFamily Fm C22` using `s22 (TaylorLogMetric.AdmF_of Fm (fun x i => UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _))`. Establish `h10 : product_first_zeroth_parts.ConclusionOnFamily Fm crystallineComparison` using `s10 (product_first_zeroth_parts.AdmF_of Fm C22 100 C₅ h22 h59 h4p t10)`. Establish `provedFourF : LocalQuadraticParts.SlopeLemmaFamily Fm` using `Places.slope_lemma_link_form Fm Cabs CH C0 crystallineComparison (by linarith) h10 hTu hCh hIn`. Conclude with `linkGLOBAL_pk Fm Cabs CH C0 eL C3 crystallineComparison C22 hCabs hCH heL hC0 s59 s22 s23 s24 s10 provedFourF provedFiveF hF3 tVol tOm tFree tTh t7 (Places.settingF_of Fm hTu) tCV t10 hCov hTu hDG hCh hIn`.
+-/
 theorem global_reduction_of_packets {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineComparison C22 : ℝ)
     (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)
 
@@ -175,15 +204,24 @@ theorem global_reduction_of_packets {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C
   exact linkGLOBAL_pk Fm Cabs CH C0 eL C3 crystallineComparison C22 hCabs hCH heL hC0 s59 s22 s23 s24 s10 provedFourF provedFiveF hF3 tVol
     tOm tFree tTh t7 (Places.settingF_of Fm hTu) tCV t10 hCov hTu hDG hCh hIn
 
+/- English proof (translation)
+Take `⟨O, hT, -, -⟩` from `h`. Conclude with `tiesF_of_ties hT`.
+-/
 theorem tiesF_of {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : GlobalTiedF Fm C) : StandardLattice.TiesF Fm := by
   obtain ⟨O, hT, -, -⟩ := h
   exact tiesF_of_ties hT
 
+/- English proof (translation)
+Take `⟨O, hT, -, hC⟩` from `h`. Conclude with `hecke_compatibility_of_groups hT hC x hx i u`.
+-/
 theorem hecke_compatibility_beyond_threshold {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : GlobalTiedF Fm C) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x)
     (u : (Fm.D x i).what₂.Word) : IncidenceTransportConditions (Fm.D x i) u := by
   obtain ⟨O, hT, -, hC⟩ := h
   exact hecke_compatibility_of_groups hT hC x hx i u
 
+/- English proof (translation)
+Take `⟨O, hT, hK, hC⟩` from `h`. Conclude with `curveLinks_of hT hK hC x i`.
+-/
 theorem GlobalTiedF.curveLinks {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : GlobalTiedF Fm C) (x : ℝ) (i : Fm.Ix x) :
     (∃ δ : ℂ, TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice (Fm.D x i) (Fm.D x i).host.ccK δ ∧
       OmLink (Fm.D x i) (TaylorLogMetric.tor0 (Fm.D x i) (Fm.D x i).host.ccK δ)) ∧
@@ -191,20 +229,32 @@ theorem GlobalTiedF.curveLinks {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : Global
   obtain ⟨O, hT, hK, hC⟩ := h
   exact curveLinks_of hT hK hC x i
 
+/- English proof (translation)
+Take `⟨O, -, hK, -⟩` from `h`. Conclude with `⟨0, fun x _ hx i => hK.kRat x hx i⟩`.
+-/
 theorem GlobalTiedF.kRat {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : GlobalTiedF Fm C) : flipTwoThree.admF7 Fm := by
   obtain ⟨O, -, hK, -⟩ := h
   exact ⟨0, fun x _ hx i => hK.kRat x hx i⟩
 
+/- English proof (translation)
+Take `⟨O, -, -, hC⟩` from `h`. Conclude with `(hC.pend x hx i).colVal`.
+-/
 theorem GlobalTiedF.colVal {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : GlobalTiedF Fm C) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     flipTwoThree.adm3 (Fm.D x i) → ∀ u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u) := by
   obtain ⟨O, -, -, hC⟩ := h
   exact (hC.pend x hx i).colVal
 
+/- English proof (translation)
+Take `⟨O, -, hK, hC⟩` from `h`. Conclude with `⟨hK.kRat x hx i, (hC.pend x hx i).colVal⟩`.
+-/
 theorem GlobalTiedF.pend {eps : ℝ} {Fm : FamP eps} {C : ℝ} (h : GlobalTiedF Fm C) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     flipTwoThree.adm7 (Fm.D x i) ∧ (flipTwoThree.adm3 (Fm.D x i) → ∀ u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u)) := by
   obtain ⟨O, -, hK, hC⟩ := h
   exact ⟨hK.kRat x hx i, (hC.pend x hx i).colVal⟩
 
+/- English proof (translation)
+Take `⟨O, a, b, c⟩` from `hT`. Conclude with `global_reduction_of_packets Fm Cabs CH C0 eL C3 crystallineComparison C22 hCabs hCH heL hC0 O a b c hF3 s59 s22 s23 s24 s10`.
+-/
 theorem global_reduction_of_compatible_family {eps : ℝ} (Fm : FamP eps) (Cabs CH C0 eL C3 crystallineComparison C22 : ℝ)
     (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (heL : 0 ≤ eL) (hC0 : 1 ≤ C0)
     (hT : GlobalTiedF Fm C22) (hF3 : StandardLattice.FamilyTheoremThreeAdmitted Fm)

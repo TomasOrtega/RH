@@ -14,10 +14,20 @@ section Val
 
 variable {K : Type} [Field K] [NumberField K] (ψ : K →+* ℂ_[p])
 
+/- English proof (translation)
+Rewrite using `[vLa, neg_neg, WithZero.exp_log (((placeAt ψ).valuation K).ne_zero_iff.2 hx)]`.
+-/
 theorem valuation_eq_exp {x : K} (hx : x ≠ 0) :
     (placeAt ψ).valuation K x = WithZero.exp (-vLa (placeAt ψ) x) := by
   rw [vLa, neg_neg, WithZero.exp_log (((placeAt ψ).valuation K).ne_zero_iff.2 hx)]
 
+/- English proof (translation)
+Use `set P := placeAt ψ`. Take `⟨π, hπ⟩` from `P.intValuation_exists_uniformizer`. Establish `hπ1 : P.intValuation π < 1`. Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+
+Establish `hπn : ‖ψ (π : K)‖ < 1` using `(mem_placeAt ψ π).1 ((P.intValuation_lt_one_iff_mem π).1 hπ1)`. Establish `hνπ : P.valuation K (π : K) = WithZero.exp (-1)`. Rewrite using `[← hπ]`. Conclude with `HeightOneSpectrum.valuation_of_algebraMap P π`. Establish `hπ0 : (π : K) ≠ 0`.
+
+Introduce `h`. Rewrite `hνπ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hνπ.symm`. Use `⟨π, hπ0, ?_, hπn⟩` and prove the remaining obligations. Simplify using `[vLa, P, hνπ]`.
+-/
 theorem exists_uniformizer : ∃ π : K, π ≠ 0 ∧ vLa (placeAt ψ) π = 1 ∧ ‖ψ π‖ < 1 := by
   set P := placeAt ψ
   obtain ⟨π, hπ⟩ := P.intValuation_exists_uniformizer
@@ -33,6 +43,15 @@ theorem exists_uniformizer : ∃ π : K, π ≠ 0 ∧ vLa (placeAt ψ) π = 1 �
   refine ⟨π, hπ0, ?_, hπn⟩
   simp [vLa, P, hνπ]
 
+/- English proof (translation)
+Use `set P := placeAt ψ`. Use `set n := vLa P x`. Use `set b := x * π ^ (-n) with hb`. Establish `hb0 : b ≠ 0` using `mul_ne_zero hx (zpow_ne_zero _ hπ0)`. Establish `hνb : P.valuation K b = 1`.
+
+Rewrite using `[hb, map_mul, map_zpow₀, valuation_eq_exp ψ hx, valuation_eq_exp ψ hπ0, hπ, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg, n]`. Rewrite using `[show -vLa (placeAt ψ) x + vLa P x = 0 from neg_add_cancel _, WithZero.exp_zero]`. Establish `h1 : ‖ψ b‖ ≤ 1` using `GlobalTheory.ReadingOver.norm_le_one_of_valuation_le_one ψ hνb.le`. Establish `h2 : ‖ψ b⁻¹‖ ≤ 1` using `GlobalTheory.ReadingOver.norm_le_one_of_valuation_le_one ψ (by rw [map_inv₀, hνb, inv_one])`.
+
+Establish `hpos : 0 < ‖ψ b‖` using `norm_pos_iff.2 ((map_ne_zero ψ).2 hb0)`. Establish `hb1 : ‖ψ b‖ = 1`. Rewrite `h2` using `[map_inv₀, norm_inv]`. Conclude with `le_antisymm h1 ((inv_le_one₀ hpos).1 h2)`. Establish `hxb : x = b * π ^ n`.
+
+Rewrite using `[hb, mul_assoc, ← zpow_add₀ hπ0, neg_add_cancel, zpow_zero, mul_one]`. Rewrite using `[hxb, map_mul, norm_mul, hb1, one_mul, map_zpow₀, norm_zpow]`.
+-/
 theorem norm_eq_zpow {π : K} (hπ0 : π ≠ 0) (hπ : vLa (placeAt ψ) π = 1) {x : K} (hx : x ≠ 0) :
     ‖ψ x‖ = ‖ψ π‖ ^ vLa (placeAt ψ) x := by
   set P := placeAt ψ
@@ -60,6 +79,21 @@ section Unram
 
 variable {F F' : Type} [Field F] [NumberField F] [Field F'] [NumberField F'] [Algebra F F']
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[vLa]`. Take `⟨π, hπ0, hπ, hπn⟩` from `exists_uniformizer φ`. Take `⟨π', hπ0', hπ', hπn'⟩` from `exists_uniformizer φ'`.
+
+Use `set c := ‖φ π‖ with hc`. Use `set c' := ‖φ' π'‖ with hc'`. Establish `hc0 : 0 < c` using `norm_pos_iff.2 ((map_ne_zero φ).2 hπ0)`. Establish `hc0' : 0 < c'` using `norm_pos_iff.2 ((map_ne_zero φ').2 hπ0')`. Take `⟨b, hb⟩` from `GlobalTheory.KurValue.exists_norm_eq φ (hk π')`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Rewrite `hb` using `[map_zero, norm_zero]`. Conclude with `hc0'.ne' hb`. Establish `e1 : c' = c ^ vLa (placeAt φ) b` using `by rw [hc', hb, norm_eq_zpow φ hπ0 hπ hb0]`.
+
+Establish `hι0 : algebraMap F F' π ≠ 0` using `(_root_.map_ne_zero _).2 hπ0`. Establish `e2 : c = c' ^ vLa (placeAt φ') (algebraMap F F' π)`. Rewrite using `[hc, ← hcomp, norm_eq_zpow φ' hπ0' hπ' hι0]`. Establish `hinj` using `zpow_right_injective₀ hc0 hπn.ne`. Establish `hmk : vLa (placeAt φ) b * vLa (placeAt φ') (algebraMap F F' π) = 1`.
+
+Apply `hinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `c ^ (_ * _) = c ^ (1 : ℤ)`. Rewrite using `[zpow_mul, ← e1, ← e2, zpow_one]`. Establish `hm : vLa (placeAt φ) b = 1`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one' hmk with h | h` into its components or cases.
+
+Conclude with `h.1`. It suffices to derive a contradiction. Rewrite `e1` using `[h.1, zpow_neg_one]`. Establish `: 1 < c⁻¹` using `(one_lt_inv₀ hc0).2 hπn`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite `e1` using `[hm, zpow_one]`. Establish `hιa : algebraMap F F' a ≠ 0` using `(_root_.map_ne_zero _).2 ha`. Establish `e3` using `norm_eq_zpow φ' hπ0' hπ' hιa`. Rewrite `e3` using `[hcomp, norm_eq_zpow φ hπ0 hπ ha, ← hc, ← hc', e1]`. Conclude with `(hinj e3).symm`.
+-/
 theorem vLa_eq_of_mem_kurC (φ : F →+* ℂ_[p]) (φ' : F' →+* ℂ_[p]) (hcomp : ∀ a, φ' (algebraMap F F' a) = φ a)
     (hk : ∀ x, φ' x ∈ kurC φ) (a : F) : vLa (placeAt φ') (algebraMap F F' a) = vLa (placeAt φ) a := by
   by_cases ha : a = 0
@@ -106,22 +140,34 @@ variable {F : Type} [Field F] (φ : F →+* ℂ_[p])
 def adjRoots (N : ℕ) : IntermediateField F (PAt φ) :=
   IntermediateField.adjoin F {x : PAt φ | x ^ N = 1}
 
+/- English proof (translation)
+Use `((nthRoots N (1 : PAt φ)).toFinset.finite_toSet).subset fun x hx => ?_` and prove the remaining obligations. Simplify `hx` using `[Polynomial.mem_nthRoots hN]`.
+-/
 theorem finite_roots {N : ℕ} (hN : 0 < N) : {x : PAt φ | x ^ N = 1}.Finite := by
   classical
   refine ((nthRoots N (1 : PAt φ)).toFinset.finite_toSet).subset fun x hx => ?_
   simpa [Polynomial.mem_nthRoots hN] using hx
 
+/- English proof (translation)
+Use `haveI := (finite_roots φ hN).to_subtype`. Use `IntermediateField.finiteDimensional_adjoin fun x hx => ?_` and prove the remaining obligations. Establish `h : x ^ N = 1` using `hx`. Conclude with `IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)`.
+-/
 theorem finiteDimensional_adjRoots {N : ℕ} (hN : 0 < N) : FiniteDimensional F (adjRoots φ N) := by
   haveI := (finite_roots φ hN).to_subtype
   refine IntermediateField.finiteDimensional_adjoin fun x hx => ?_
   have h : x ^ N = 1 := hx
   exact IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)
 
+/- English proof (translation)
+Use `haveI := finiteDimensional_adjRoots φ hN`. Use `haveI : FiniteDimensional ℚ (adjRoots φ N) := Module.Finite.trans F (adjRoots φ N)`. Prove the components needed by the constructor for the conclusion.
+-/
 theorem numberField_adjRoots [NumberField F] {N : ℕ} (hN : 0 < N) : NumberField (adjRoots φ N) := by
   haveI := finiteDimensional_adjRoots φ hN
   haveI : FiniteDimensional ℚ (adjRoots φ N) := Module.Finite.trans F (adjRoots φ N)
   constructor
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Use `IntermediateField.adjoin.mono _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ^ N = 1` using `hx`. Use `show x ^ (N * k) = 1`. Rewrite using `[pow_mul, hx', one_pow]`.
+-/
 theorem adjRoots_mono {N M : ℕ} (h : N ∣ M) : adjRoots φ N ≤ adjRoots φ M := by
   obtain ⟨k, rfl⟩ := h
   refine IntermediateField.adjoin.mono _ _ _ fun x hx => ?_
@@ -129,6 +175,11 @@ theorem adjRoots_mono {N M : ℕ} (h : N ∣ M) : adjRoots φ N ≤ adjRoots φ 
   show x ^ (N * k) = 1
   rw [pow_mul, hx', one_pow]
 
+/- English proof (translation)
+Set `Kt : IntermediateField F (PAt φ)` to `(show Subfield (PAt φ) from kurC φ).toIntermediateField fun a => mem_kurC φ a`. Establish `hle : adjRoots φ N ≤ Kt`. Use `IntermediateField.adjoin_le_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ^ N = 1` using `hx`. Conclude with `root_mem_kurC (p := p) φ hpN hx'`.
+
+Conclude with `hle hz`.
+-/
 theorem adjRoots_le_kurC {N : ℕ} (hN : 0 < N) (hpN : ¬ p ∣ N) (z : PAt φ) (hz : z ∈ adjRoots φ N) :
     toCp φ z ∈ kurC φ := by
   let Kt : IntermediateField F (PAt φ) :=
@@ -162,6 +213,11 @@ def kurAlg : Subfield ℂ_[p] where
     rintro x ⟨N, hN, hpN, hx⟩
     exact ⟨N, hN, hpN, inv_mem hx⟩
 
+/- English proof (translation)
+Use `Subfield.topologicalClosure_minimal _ (sup_le ?_ ?_) (Subfield.isClosed_topologicalClosure _)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Subfield.le_topologicalClosure _ ⟨1, one_pos, (Fact.out : p.Prime).not_dvd_one, IntermediateField.algebraMap_mem _ a⟩`. Use `Subfield.topologicalClosure_minimal _ ?_ (Subfield.isClosed_topologicalClosure _)` and prove the remaining obligations. Use `(Subfield.closure_le.2 ?_).trans (Subfield.le_topologicalClosure _)` and prove the remaining obligations.
+
+Introduce and unpack `ζ ⟨n, hn, hpn, hζ⟩`. Conclude with `⟨n, hn, hpn, IntermediateField.subset_adjoin _ _ hζ⟩`.
+-/
 theorem kurC_le : kurC φ ≤ (kurAlg φ).topologicalClosure := by
   refine Subfield.topologicalClosure_minimal _ (sup_le ?_ ?_) (Subfield.isClosed_topologicalClosure _)
   · rintro _ ⟨a, rfl⟩
@@ -178,6 +234,15 @@ end GlobalTheory.KurApprox
 
 namespace GlobalTheory.KurApprox
 
+/- English proof (translation)
+Introduce `p _ F _ _ φ n y hy ε hε`. Establish `h1 : ∀ s, ∃ z : ℂ_[p], ∃ N : ℕ, 0 < N ∧ ¬ p ∣ N ∧ (show PAt φ from z) ∈ adjRoots φ N ∧ ‖y s - z‖ < ε`. Introduce `s`. Establish `hs : y s ∈ closure ((kurAlg φ : Subfield ℂ_[p]) : Set ℂ_[p])` using `kurC_le φ (hy s)`. Take `⟨z, ⟨N, hN, hpN, hz⟩, hd⟩` from `Metric.mem_closure_iff.1 hs ε hε`.
+
+Conclude with `⟨z, N, hN, hpN, hz, by rwa [dist_eq_norm] at hd⟩`. Use `choose z N hN hpN hz hd using h1`. Use `set M := ∏ s, N s with hM`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun s _ => hN s`. Establish `hpM : ¬ p ∣ M`.
+
+Introduce `h`. Take `⟨s, _, hs⟩` from `((Fact.out : p.Prime).prime.dvd_finsetProd_iff _).1 h`. Conclude with `hpN s hs`. Set `K` to `adjRoots φ M`. Use `haveI : NumberField K := numberField_adjRoots φ hM0`.
+
+Set `φ' : K →+* ℂ_[p]` to `(toCp φ).comp (algebraMap K (PAt φ))`. Establish `hcomp : ∀ a, φ' (algebraMap F K a) = φ a` using `fun a => rfl`. Establish `hk : ∀ x : K, φ' x ∈ kurC φ` using `fun x => adjRoots_le_kurC φ hM0 hpM x x.2`. Establish `hzM : ∀ s, (show PAt φ from z s) ∈ K` using `fun s => adjRoots_mono φ (Finset.dvd_prod_of_mem N (Finset.mem_univ s)) (hz s)`. Conclude with `⟨K, inferInstance, inferInstance, inferInstance, φ', hcomp, vLa_eq_of_mem_kurC φ φ' hcomp hk, fun s => ⟨z s, hzM s⟩, fun s => hd s⟩`.
+-/
 theorem kur_approx : ∀ (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (φ : F →+* ℂ_[p]) (n : ℕ)
     (y : Fin n → ℂ_[p]), (∀ s, y s ∈ kurC φ) → ∀ ε : ℝ, 0 < ε →
     ∃ (F' : Type) (_ : Field F') (_ : NumberField F') (_ : Algebra F F') (φ' : F' →+* ℂ_[p]),

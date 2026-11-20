@@ -18,6 +18,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hpq hgood hA h`. Take `⟨hM, ⟨Y⟩⟩` from `GlobalTheory.T.exists_global_model_goodLevel_all_primes E H Dw l Xo c hpq hgood hA`. Take `⟨hEv, hInt, -, -⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Establish `hTw : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Take `⟨δ, h1, h2⟩` from `GlobalTheory.T.exists_frame_shift_of_valued_points hTw E H Dw l Xo c hEv hInt hM Y h`.
+
+Conclude with `⟨δ, h1, fun d hD => GlobalTheory.Reg.frShFin_of_divFin_of_finset E H Dw l Xo c d δ hD h2⟩`.
+-/
 theorem exists_frameShift_frShFin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → l.A = 1 → ∀ h : GenFrEx Xo c, ∃ δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ, (∀ (Z : Comp Xo c) (v : AddValuation (Om Z) (WithTop ℤ)), T0.IsNormDiscrete v → ((∃ la, T0.IsOver (K := c.F) v la) ∨ T0.IsTrivOn c.F v) → ∃ (T : CDVR) (ψ : Om Z →+* T.Fr) (y : IntFr Xo c T (ψ.comp (algebraMap c.F (Om Z)))), (∀ a : Om Z, a ≠ 0 → ((vV T.V (ψ a) : ℤ) : WithTop ℤ) = v a) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c), f ∈ sec Xo c a n → (evI y f = 0 ↔ evC h Z f = 0) ∧ (evC h Z f ≠ 0 → ordC (δ Z v) v (wtZ a n) (valC h a n f Z) = vV T.V (evI y f))) ∧ ∀ [Fintype (Comp Xo c)] (d : T0.Data c.F (Comp Xo c) (fun Z => Om Z) (WTZ E) (fun Z => AC Z)), DivFin d → FrShFin d δ := by
   intro E _ _ _ H Dw l Xo c hpq hgood hA h
   obtain ⟨hM, ⟨Y⟩⟩ := GlobalTheory.T.exists_global_model_goodLevel_all_primes E H Dw l Xo c hpq hgood hA

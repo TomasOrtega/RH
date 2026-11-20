@@ -26,6 +26,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.PicField
 
+/- English proof (translation)
+Take `⟨p⟩ : Nonempty (Sp k)` from `inferInstance`. Take `⟨V, hV, hc⟩` from `exists_pull_eq_zero c p`. Establish `hV' : V = ⊤`. Establish `hs : Subsingleton (Sp k)`. Unfold `Sp`.
+
+Use `infer_instance`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Conclude with `(Subsingleton.elim x p) ▸ hV`. Substitute `hV'` using the available equality.
+
+Establish `: IsIso (⊤ : (Sp k).Opens).ι` using `(Sp k).topIso.isIso_hom`. Establish `e : c = CechPic.pull (inv (⊤ : (Sp k).Opens).ι) (CechPic.pull (⊤ : (Sp k).Opens).ι c)`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Rewrite using `[e, hc, map_zero]`.
+-/
 theorem pic_eq_zero (k : Type) [Field k] (c : Pic (Sp k)) : c = 0 := by
   obtain ⟨p⟩ : Nonempty (Sp k) := inferInstance
   obtain ⟨V, hV, hc⟩ := exists_pull_eq_zero c p

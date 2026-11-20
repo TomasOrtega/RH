@@ -18,6 +18,9 @@ def FlagOfTriv {Z : Scheme.{0}} [IsIntegral Z] {N : ℕ} (g : Fin N → Pic Z) :
     ∀ z : Z, ∃ B : Matrix (Fin N) (Fin N) Z.functionField, B.BlockTriangular id ∧ (∀ a b, RegAt z ((A * B) a b)) ∧
       UnitAt z (A * B).det ∧ ∀ i c, z ∈ (G i).U c → UnitAt z (B i i * r i c)
 
+/- English proof (translation)
+Use `⟨fun _ => LB.triv Z, fun _ => LB.isLB_triv Z, fun _ _ => 1, 1, fun _ => rfl, fun _ a b h => ?_, fun z => ⟨1, Matrix.blockTriangular_one, fun a b => ?_, by simpa using unitAt_one z, fun i c _ => by simpa using unitAt_one z⟩⟩` and prove the remaining obligations. Conclude with `(map_one _).symm.trans (mul_one _).symm`. Rewrite using `[mul_one, Matrix.one_apply] split_ifs`. Conclude with `(unitAt_one z).regAt`. Conclude with `⟨0, map_zero _⟩`.
+-/
 theorem flagOfTriv_zero (Z : Scheme.{0}) [IsIntegral Z] (N : ℕ) : FlagOfTriv (0 : Fin N → Pic Z) := by
   refine ⟨fun _ => LB.triv Z, fun _ => LB.isLB_triv Z, fun _ _ => 1, 1, fun _ => rfl, fun _ a b h => ?_, fun z =>
     ⟨1, Matrix.blockTriangular_one, fun a b => ?_, by simpa using unitAt_one z, fun i c _ => by simpa using unitAt_one z⟩⟩
@@ -38,12 +41,18 @@ def NormsAt (V : Cover Y) (L : LB V.X) (p : ℕ) (W : Y.X.Opens) (f : Y.X → Y.
       ⊤ ≤ yt ⁻¹ᵁ L.U (i PUnit.unit) →
       l v e y = Real.log (e.w (valAt z (V.φ (f (below y.1)) * (r i : V.G.functionField))))
 
+/- English proof (translation)
+The claim follows from `have ⟨r, h₁, h₂, _, h₄⟩ := h ⟨r, h₁, h₂, fun v _ e y _ => h₄ v e y⟩`.
+-/
 theorem normsAt_of_norms {V : Cover Y} {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V L f a l) (p : ℕ) (W : Y.X.Opens) :
     NormsAt V L.B p W f l :=
   have ⟨r, h₁, h₂, _, h₄⟩ := h
   ⟨r, h₁, h₂, fun v _ e y _ => h₄ v e y⟩
 
+/- English proof (translation)
+Take `rfl : f = f'` from `funext hf`. Take `⟨r, h₁, h₂, h₃⟩` from `h`. Conclude with `⟨r, h₁, h₂, fun v hv e y hy z yt i a b c => (hl v hv e y).symm.trans (h₃ v hv e y hy z yt i a b c)⟩`.
+-/
 theorem NormsAt.congr {V : Cover Y} {L : LB V.X} {p : ℕ} {W : Y.X.Opens} {f f' : Y.X → Y.Fn}
     {l l' : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : NormsAt V L p W f l) (hf : ∀ x, f x = f' x)
     (hl : ∀ v, resP v = p → ∀ e y, l v e y = l' v e y) : NormsAt V L p W f' l' := by

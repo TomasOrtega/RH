@@ -14,6 +14,9 @@ section Algebra
 
 variable {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
 
+/- English proof (translation)
+Establish `e : exteriorPower.pairingDual R N 2 (exteriorPower.ιMulti R 2 v) ∘ₗ exteriorPower.map 2 g = exteriorPower.pairingDual R M 2 (exteriorPower.ιMulti R 2 fun i ↦ v i ∘ₗ g)`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `[exteriorPower.pairingDual_ιMulti_ιMulti]`. Conclude with `LinearMap.congr_fun e t`.
+-/
 theorem pairing_map (v : Fin 2 → Module.Dual R N) (g : M →ₗ[R] N) (t : ⋀[R]^2 M) :
     exteriorPower.pairingDual R N 2 (exteriorPower.ιMulti R 2 v) (exteriorPower.map 2 g t) =
       exteriorPower.pairingDual R M 2 (exteriorPower.ιMulti R 2 fun i ↦ v i ∘ₗ g) t := by
@@ -24,6 +27,11 @@ theorem pairing_map (v : Fin 2 → Module.Dual R N) (g : M →ₗ[R] N) (t : ⋀
     simp [exteriorPower.pairingDual_ιMulti_ιMulti]
   exact LinearMap.congr_fun e t
 
+/- English proof (translation)
+Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R M`. Establish `hu : exteriorPower.map 2 g t = 0`. Set `b` to `Pi.basisFun R (Fin n)`. Use `(b.exteriorPower 2).repr.injective (Finsupp.ext fun s ↦ ?_)` and prove the remaining obligations. Rewrite using `[exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual, exteriorPower.ιMulti_family]`.
+
+Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Conclude with `(pairing_map _ g t).trans (h _)`. Conclude with `exteriorPower.map_injective f hfg (hu.trans (map_zero _).symm)`.
+-/
 theorem eq_zero_of_pairing [Module.Finite R M] [Module.Projective R M] (t : ⋀[R]^2 M)
     (h : ∀ v : Fin 2 → Module.Dual R M, exteriorPower.pairingDual R M 2 (exteriorPower.ιMulti R 2 v) t = 0) :
     t = 0 := by
@@ -36,6 +44,15 @@ theorem eq_zero_of_pairing [Module.Finite R M] [Module.Projective R M] (t : ⋀[
     exact (pairing_map _ g t).trans (h _)
   exact exteriorPower.map_injective f hfg (hu.trans (map_zero _).symm)
 
+/- English proof (translation)
+Set `e : (M × M) ≃ₗ[R] N` to `LinearEquiv.ofBijective (A.coprod B) ((funext fun x ↦ LinearMap.coprod_apply A B x : ⇑(A.coprod B) = _) ▸ hb)`. Establish `eA : ∀ x, e.symm (A x) = (x, 0)` using `fun x ↦ e.symm_apply_eq.2 (by simp [e])`. Establish `eB : ∀ x, e.symm (B x) = (0, x)` using `fun x ↦ e.symm_apply_eq.2 (by simp [e])`. Use `eq_zero_of_pairing t fun v ↦ ?_` and prove the remaining obligations. Set `L : Module.Dual R N` to `v 0 ∘ₗ LinearMap.fst R M M ∘ₗ e.symm.toLinearMap`.
+
+Set `L' : Module.Dual R N` to `v 1 ∘ₗ LinearMap.snd R M M ∘ₗ e.symm.toLinearMap`. Establish `key` using `congrArg (exteriorPower.pairingDual R N 2 (exteriorPower.ιMulti R 2 ![L, L'])) h`. Rewrite `key` using `[map_add, pairing_map, pairing_map, pairing_map]`. Establish `h0 : (fun i ↦ ![L, L'] i ∘ₗ (A + B)) = v`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Use extensionality with `x`. Simplify using `[L, eA, eB]`. Use extensionality with `x`. Simplify using `[L', eA, eB]`.
+
+Establish `hA : (fun i ↦ ![L, L'] i ∘ₗ A) 1 = 0` using `by ext x; simp [L', eA]`. Establish `hB : (fun i ↦ ![L, L'] i ∘ₗ B) 0 = 0` using `by ext x; simp [L, eB]`. Rewrite `key` using `[h0, (exteriorPower.ιMulti R 2).map_coord_zero (m := fun i ↦ ![L, L'] i ∘ₗ A) 1 hA, (exteriorPower.ιMulti R 2).map_coord_zero (m := fun i ↦ ![L, L'] i ∘ₗ B) 0 hB]`. Simplify using `using key`.
+-/
 theorem eq_zero_of_additive [Module.Finite R M] [Module.Projective R M] (A B : M →ₗ[R] N)
     (hb : Function.Bijective fun x : M × M ↦ A x.1 + B x.2) (t : ⋀[R]^2 M)
     (h : exteriorPower.map 2 (A + B) t = exteriorPower.map 2 A t + exteriorPower.map 2 B t) : t = 0 := by
@@ -65,6 +82,11 @@ section Forms
 variable {R : Type} [CommRing R] {C D : Type} [Category.{0} C] [Category.{0} D]
   {F : C ⥤ CommAlgCat.{0} R} {G : D ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Establish `e : (qOm c 2 T : _ →ₗ[R] _) ∘ₗ LinearMap.proj (c.G.obj T) ∘ₗ ν = LinearMap.proj T ∘ₗ ν' ∘ₗ exteriorPower.map 2 (pullGlob1 c)`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `x`. Apply the tactic sequence `obtain ⟨a, b, rfl⟩ : ∃ a b, x = ![a, b] := ⟨x 0, x 1, by funext i; fin_cases i <;> rfl⟩`. Establish `hy : (pullGlob1 c : Glob1 F →ₗ[R] Glob1 G) ∘ ![a, b] = ![pullGlob1 c a, pullGlob1 c b]`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.comp_apply, LinearMap.proj_apply, exteriorPower.map_apply_ιMulti]`. Rewrite using `[hy, hν, hν']`. Conclude with `congrArg Subtype.val (qOm_wedge c (a.1 (c.G.obj T)) (b.1 (c.G.obj T)))`. Conclude with `LinearMap.congr_fun e t`.
+-/
 theorem nu_natural (c : CoefMap (RingHom.id R) F G) (ν : ⋀[R]^2 (Glob1 F) →ₗ[R] W0 F 2)
     (ν' : ⋀[R]^2 (Glob1 G) →ₗ[R] W0 G 2)
     (hν : ∀ a b T, ν (exteriorPower.ιMulti R 2 ![a, b]) T = wedge R _ (a.1 T) (b.1 T))
@@ -86,6 +108,19 @@ theorem nu_natural (c : CoefMap (RingHom.id R) F G) (ν : ⋀[R]^2 (Glob1 F) →
 
 end Forms
 
+/- English proof (translation)
+Introduce `h2 R _ C _ F hF hBi`. Take `⟨D, _, G, m, p, q, hS, hP, -, hb, -, hm, -⟩` from `hBi`. Establish `hG : Framed G`. Take `⟨-, -, h1, h3⟩` from `hF`. Set `e : (Glob1 F × Glob1 F) ≃ₗ[R] Glob1 G` to `LinearEquiv.ofBijective ((pullGlob1 p).coprod (pullGlob1 q)) ((funext fun x ↦ LinearMap.coprod_apply (pullGlob1 p) (pullGlob1 q) x : ⇑((pullGlob1 p).coprod (pullGlob1 q)) = _) ▸ hb)`.
+
+Conclude with `⟨hS, hP, Module.Finite.equiv e, Module.Projective.of_equiv e⟩`. Take `⟨ν, hν, -, hsurj⟩` from `h2 R C F hF`. Take `⟨ν', hν', hinj, -⟩` from `h2 R D G hG`. Take `⟨-, -, hfin, hproj⟩` from `hF`. Use `eq_top_iff.2 fun ω₀ _ T ↦ ?_` and prove the remaining obligations.
+
+Take `⟨t, ht⟩` from `hsurj (fun T ↦ dOne R _ (ω₀.1 T)) fun T T' φ ↦ by`. Rewrite using `[pOm_dOne, ω₀.2 φ]`. Establish `step : ∀ (c : CoefMap (RingHom.id R) F G), ν' (exteriorPower.map 2 (pullGlob1 c) t) = fun T ↦ dOne R _ ((pullGlob1 c ω₀).1 T)`. Introduce `c`. Use function extensionality and compare the values at `T`.
+
+Rewrite using `[← nu_natural c ν ν' hν hν' t T, ht]`. Conclude with `qOm_dOne c (ω₀.1 (c.G.obj T))`. Establish `hadd : exteriorPower.map 2 (pullGlob1 p + pullGlob1 q) t = exteriorPower.map 2 (pullGlob1 p) t + exteriorPower.map 2 (pullGlob1 q) t`. Establish `h1 : pullGlob1 p + pullGlob1 q = pullGlob1 m` using `LinearMap.ext fun ω ↦ (hm ω).symm`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[h1, step m, map_add, step p, step q]`. Use function extensionality and compare the values at `T'`. Express the relevant statement in the definitionally equal form `dOne R _ ((pullGlob1 m ω₀).1 T') = dOne R _ ((pullGlob1 p ω₀).1 T') + dOne R _ ((pullGlob1 q ω₀).1 T')`. Rewrite using `[hm, ← map_add]`. Both sides reduce to the same expression.
+
+Establish `ht0 : t = 0` using `eq_zero_of_additive _ _ hb t hadd`. Use `congrFun ht T` as an intermediate fact. Rewrite `this` using `[ht0, map_zero]`. Conclude with `this.symm`.
+-/
 theorem closedSt_of_twoFormCohSt : TwoFormCohSt → ClosedSt := by
   intro h2 R _ C _ F hF hBi
   obtain ⟨D, _, G, m, p, q, hS, hP, -, hb, -, hm, -⟩ := hBi

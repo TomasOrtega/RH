@@ -15,6 +15,9 @@ variable {k G Q : Type u} [CommRing k] [Group G] [Group Q] [TopologicalSpace G] 
 
 omit [TopologicalSpace G] [TopologicalSpace Q] in
 
+/- English proof (translation)
+Establish `hab : π (a⁻¹ * b) = 1` using `by rw [map_mul, map_inv, h, inv_mul_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ρ_eq_of_map_eq (π : G →* Q) (A : Rep.{u} k G) (hA : ∀ g, π g = 1 → A.ρ g = 1) {a b : G}
     (h : π a = π b) : A.ρ a = A.ρ b := by
   have hab : π (a⁻¹ * b) = 1 := by rw [map_mul, map_inv, h, inv_mul_cancel]
@@ -34,6 +37,9 @@ noncomputable def descendRepρ (π : G →ₜ* Q) (hπ : Function.Surjective π)
     change π (Function.surjInv hπ (q * q')) = π (Function.surjInv hπ q * Function.surjInv hπ q')
     rw [map_mul, Function.surjInv_eq hπ, Function.surjInv_eq hπ, Function.surjInv_eq hπ]
 
+/- English proof (translation)
+The claim follows from `ρ_eq_of_map_eq π.toMonoidHom A hA (Function.surjInv_eq hπ (π g))`.
+-/
 theorem descendRepρ_apply (π : G →ₜ* Q) (hπ : Function.Surjective π) (A : Rep.{u} k G)
     (hA : ∀ g, π g = 1 → A.ρ g = 1) (g : G) : descendRepρ π hπ A hA (π g) = A.ρ g :=
   ρ_eq_of_map_eq π.toMonoidHom A hA (Function.surjInv_eq hπ (π g))
@@ -56,6 +62,11 @@ noncomputable def resDescendRepIso : Rep.res π.toMonoidHom (descendRep π hπ A
   hom_inv_id := rfl
   inv_hom_id := rfl
 
+/- English proof (translation)
+Rewrite using `[← hq.isOpen_preimage]`. Establish `e : (⇑π ⁻¹' (stabilizer (descendRepρ π hπ A hA) a : Set Q)) = (stabilizer A.ρ a : Set G)`. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `descendRepρ π hπ A hA (π g) a = a ↔ A.ρ g a = a`. Rewrite using `[descendRepρ_apply]`.
+
+Rewrite using `[e]`. Conclude with `isOpen_stabilizer A a`.
+-/
 theorem isDiscreteRep_descendRep (hq : Topology.IsQuotientMap π) [IsDiscreteRep A] :
     IsDiscreteRep (descendRep π hπ A hA) where
   isOpen_stabilizer a := by
@@ -69,6 +80,9 @@ theorem isDiscreteRep_descendRep (hq : Topology.IsQuotientMap π) [IsDiscreteRep
 
 include hπ in
 
+/- English proof (translation)
+The claim follows from `π.continuous.isClosedMap.isQuotientMap π.continuous hπ`.
+-/
 theorem isQuotientMap_of_compactSpace [CompactSpace G] [T2Space Q] :
     Topology.IsQuotientMap π :=
   π.continuous.isClosedMap.isQuotientMap π.continuous hπ
@@ -88,6 +102,9 @@ variable (π : G →ₜ* Q) (hπ : Function.Surjective π) {B : Rep.{u} k Q} {A 
 
 omit [IsTopologicalGroup G] [IsTopologicalGroup Q] [IsDiscreteRep A] [IsDiscreteRep B] in
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `hf a`. Rewrite using `[← Rep.hom_comm_apply]`. Express the relevant statement in the definitionally equal form `f.hom (B.ρ (π g) b) = f.hom b`. Rewrite using `[hg, map_one, Module.End.one_apply]`.
+-/
 theorem ρ_eq_of_map_eq_one (hf : Function.Surjective f.hom) {g : G} (hg : π g = 1) (a : A) :
     A.ρ g a = a := by
   obtain ⟨b, rfl⟩ := hf a

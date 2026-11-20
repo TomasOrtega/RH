@@ -28,6 +28,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.QuotLoc
 
+/- English proof (translation)
+Use `set Lm := LinearMap.toMatrix' ℓ with hLm`. Establish `h1 : ∀ x, Lm *ᵥ x = ℓ x` using `fun x => LinearMap.toMatrix'_mulVec ℓ x`. Establish `h2 : ∀ y, (Lm.map star) *ᵥ star y = star (ℓ y)` using `fun y => by`. Rewrite using `[← h1]`. Use extensionality with `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct]`. Establish `h3 : ∀ y, (Lmᵀ * Hm * Lm.map star) *ᵥ star y = Lmᵀ *ᵥ (Hm *ᵥ star (ℓ y))` using `fun y => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h2]`. Use `⟨Lmᵀ * Hm * Lm.map star, ?_, fun x y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e1 : (Lm.map star)ᴴ = Lmᵀ` using `by ext i j; simp [Matrix.conjTranspose_apply]`.
+
+Establish `e2 : (Lmᵀ)ᴴ = Lm.map star` using `by ext i j; simp [Matrix.conjTranspose_apply]`. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, e1, e2, hH.eq, Matrix.mul_assoc]`. Rewrite using `[h3, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, h1]`. Rewrite using `[h3, hy]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_pull_form {g g' : ℕ} (ℓ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (Hm : Matrix (Fin g') (Fin g') ℂ) (hH : Hm.IsHermitian) :
     ∃ Hb : Matrix (Fin g) (Fin g) ℂ, Hb.IsHermitian ∧ (∀ x y, x ⬝ᵥ Hb *ᵥ star y = ℓ x ⬝ᵥ Hm *ᵥ star (ℓ y)) ∧
       ∀ y, ℓ y = 0 → Hb *ᵥ star y = 0 := by
@@ -48,6 +57,17 @@ theorem exists_pull_form {g g' : ℕ} (ℓ : (Fin g → ℂ) →ₗ[ℂ] (Fin g'
   · rw [h3, hy]
     simp
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_nat_gt |d - e|`. Establish `hN0 : 0 < N + 1` using `Nat.succ_pos N`. Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h (N + 1) hN0)`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Establish `hNc : ((N + 1 : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast hN0.ne'`.
+
+Establish `h1 : ((d - e : ℝ) : ℂ) = (((-k * (N + 1 : ℕ) : ℤ) : ℝ) : ℂ)`. Use `push_cast`. Clear denominators, using `at hk` for the nonvanishing conditions. Move the coercions through the operations in `at hk`. Take the linear combination `-hk`.
+
+Establish `h2 : d - e = ((-k * (N + 1 : ℕ) : ℤ) : ℝ)` using `by exact_mod_cast h1`. Assume the negation of the conclusion as `hne`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises.
+
+Simplify `h2` using `[sub_eq_zero]`. Establish `h3 : (N + 1 : ℝ) ≤ |d - e|`. Rewrite using `[h2]`. Establish `: (1 : ℤ) ≤ |k|` using `Int.one_le_abs hk0`. Establish `h4 : (1 : ℝ) ≤ |(k : ℝ)|` using `by exact_mod_cast this`.
+
+Use `push_cast`. Rewrite using `[abs_mul, abs_neg, abs_of_nonneg (by positivity : (0 : ℝ) ≤ (N : ℝ) + 1)]`. Use polynomial arithmetic with `[abs_nonneg (k : ℝ), (Nat.cast_nonneg N : (0 : ℝ) ≤ N)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_of_forall_exp {d e : ℝ} (h : ∀ N : ℕ, 0 < N →
     Complex.exp (-(2 * Real.pi * Complex.I) * (d : ℂ) / N) = Complex.exp (-(2 * Real.pi * Complex.I) * (e : ℂ) / N)) :
     d = e := by
@@ -76,6 +96,17 @@ theorem eq_of_forall_exp {d e : ℝ} (h : ∀ N : ℕ, 0 < N →
     nlinarith [abs_nonneg (k : ℝ), (Nat.cast_nonneg N : (0 : ℝ) ≤ N)]
   linarith
 
+/- English proof (translation)
+Establish `key : ∀ w : Fin g → ℂ, (p ⬝ᵥ Hm *ᵥ star w).im = 0`. Introduce `w`. Establish `hw : w ∈ Submodule.span ℝ (Λ : Set (Fin g → ℂ))` using `by rw [hfull]; trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [star_add, Matrix.mulVec_add, dotProduct_add, hx, hy]`. Consider the case `smul c x _ hx`. Establish `e : star (c • x) = (c : ℂ) • star x`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mulVec_smul, dotProduct_smul]`. Simplify using `[hx]`. Assume the negation of the conclusion as `hp`. Establish `h1` using `hpos p hp`.
+
+Establish `h2` using `key (Complex.I • p)`. Establish `e : star (Complex.I • p) = (-Complex.I) • star p`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e, Matrix.mulVec_smul, dotProduct_smul]`.
+
+Simplify using `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_im_lattice {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (Λ : Submodule ℤ (Fin g → ℂ))
     (hfull : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) (p : Fin g → ℂ)
@@ -101,6 +132,33 @@ theorem eq_zero_of_im_lattice {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (Λ : 
   simp at h2
   linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ n a C hpq hσ`. Take `⟨ρ₀, Λ, _, L, e, hρ0, hρ1, hlink⟩` from `GlobalTheory.T.exists_log_period_family E H D l Xo σ n a C hpq hσ`. Take `⟨ρ₁, Cb, h1, h2, hL⟩` from `GlobalTheory.T.log_period_limit n a C.g Λ L`. Establish `hol : Flat.IsHolPts (Metric.ball 0 ρ₀) C.ψ` using `⟨Metric.isOpen_ball, fun r => (C.hol.2 r).mono (Metric.ball_subset_ball hρ1)⟩`. Establish `hprin : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ P : AbPart C.t (spMap (C.ψ z)), IsPrincipal P.tB`.
+
+Introduce `z hz P`. Take `⟨V, _, _, _, f, r, tV, mV, hV, hr, hker, hrf, hpol⟩` from `GlobalTheory.T.exists_dvr_through_disc_point E H D l Xo σ n a C z hz`. Establish `key : ∀ (z₀ : Sp ℂ ⟶ Sp C.R), z₀ = spMap r ≫ spMap f → ∀ P : AbPart C.t z₀, IsPrincipal P.tB`. Introduce and unpack `_ rfl P`. Take `⟨m', -⟩` from `GlobalTheory.T.abelian_part_factors_through E H _ _ tV C.t _ mV ℂ (spMap r) P`.
+
+Conclude with `GlobalTheory.T.polarized_abelian_part_principal E H V r tV hV hr hker hpol ⟨P.tK, m', P.τ, P.tB, P.e, P.e_hom, P.act, P.pp⟩`. Use `key _ ?_ P` and prove the remaining obligations. Rewrite using `[← hrf]`. Use `show Spec.map (CommRingCat.ofHom (r.comp f)) = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Use `⟨ρ₀ * ρ₁, Real.pi * Cb, mul_pos hρ0 h1, by nlinarith, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Choose the witnesses or unpack the hypotheses as in `⟨z', hz', rfl⟩ : ∃ z' ∈ Metric.ball (0 : Fin n → ℂ) ρ₁, z = (ρ₀ : ℂ) • z' := by`. Use `⟨(ρ₀⁻¹ : ℂ) • z, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`.
+
+Rewrite using `[norm_smul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hρ0.le]`. Rewrite using `[inv_mul_lt_iff₀ hρ0]`. Conclude with `hz`. Rewrite using `[smul_smul, mul_inv_cancel₀ (by exact_mod_cast hρ0.ne'), one_smul]`. Establish `hz1 : z' ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.ball_subset_ball h2 hz'`.
+
+Establish `hb : (ρ₀ : ℂ) • z' ∈ Metric.ball (0 : Fin n → ℂ) ρ₀`. Rewrite `hz1`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ0.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hb1 : (ρ₀ : ℂ) • z' ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.ball_subset_ball hρ1 hb`.
+
+Take `⟨ws, W, per, hws, hlim, hper, hfour, -, hsix⟩` from `hL z' hz'`. Take `⟨hA, hB, hC⟩` from `GlobalTheory.T.family_exp_log_cover_bound E H C.R C.t C.g n a C.M C.ψ ρ₀ e Λ L hρ0 hρ1 hol hlink z' hz1 ws W per hws hlim hper hfour`. Introduce `P`. Establish `hP` using `hprin _ hb1 P`. Use `⟨hP, ?_⟩` and prove the remaining obligations.
+
+Introduce `Mz hMz x v c hv hc`. Take `⟨-, -, -, A, iA, φ, g', u, Hm, χ, v', w', a', b', hφ, hAH, hv', hw', ha', hb', rfl⟩` from `hc`. Take `⟨ℓ, hℓ⟩` from `GlobalTheory.T.hol_unif_period_matrix_left E H C.R C.t C.g n C.M _ C.ψ e _ P A iA φ g' u Hm χ hb hφ hAH hP`. Establish `e1 : a' = ℓ x` using `GlobalTheory.CompanionTheory.Ar.QuotLoc.DiffL.isDiff_eq_lift E H C.R C.t C.g n C.M _ C.ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ Mz hMz x v v' a' hv hv' ha'`. Establish `e2 : b' = ℓ x` using `GlobalTheory.CompanionTheory.Ar.QuotLoc.DiffL.isDiff_eq_lift E H C.R C.t C.g n C.M _ C.ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ Mz hMz x v w' b' hv hw' hb'`.
+
+Take `⟨hin, honto⟩` from `GlobalTheory.T.hol_unif_period_matrix_right E H C.R C.t C.g n C.M _ C.ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ`. Take `⟨Hb, hH1, hH2, hH3⟩` from `exists_pull_form ℓ Hm hAH.1`. Establish `hE : ∀ x x' : W, (per x ⬝ᵥ Hb *ᵥ star (per x')).im = ((L.E x x' : ℤ) : ℝ)`. Introduce `x x'`. Rewrite using `[hH2]`.
+
+Use `eq_of_forall_exp fun N hN => ?_` and prove the remaining obligations. Establish `hw` using `hC N (Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * ((L.E x x' : ℤ) : ℂ) / N))) x x' hN rfl`. Use `GlobalTheory.T.hol_unif_period_matrix_middle E H C.R C.t C.g n C.M _ C.ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ N _ (per x) (per x') hN (hA x) (hA x') hw` as an intermediate fact. Rewrite `this` using `[Units.val_mk0]`. Establish `c : (((L.E x x' : ℤ) : ℝ) : ℂ) = ((L.E x x' : ℤ) : ℂ)` using `by push_cast; rfl`.
+
+Rewrite using `[c]`. Conclude with `this.symm`. Establish `hrad : ∀ x : W, (∀ x' : W, L.E x x' = 0) → Hb *ᵥ star (per x) = 0`. Introduce `x hx`. Use `hH3 _ (eq_zero_of_im_lattice Hm u.Λ u.full hAH.2.1 _ fun q hq => ?_)` and prove the remaining obligations.
+
+Take `⟨y, hy, rfl⟩` from `honto q hq`. Take `⟨x', rfl⟩` from `hB y hy`. Rewrite using `[← hH2, hE, hx]`. Simplify using the standard rewrite rules. Substitute `e1 e2` using the available equality.
+
+Establish `hbd` using `(hsix Hb hH1 hE hrad x).2.1`. Rewrite `hbd` using `[hH2]`. Establish `e3 : ((Real.pi : ℂ) * (ℓ x ⬝ᵥ Hm.mulVec (star (ℓ x)))).re = Real.pi * (ℓ x ⬝ᵥ Hm *ᵥ star (ℓ x)).re` using `by simp`. Rewrite using `[e3, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hbd Real.pi_pos.le`.
+-/
 theorem abPart_principal_and_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → ∃ ρ K : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ ∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∀ P : AbPart C.t (spMap (C.ψ z)), IsPrincipal P.tB ∧ ∀ (Mz : LieModel C.t.G (spMap (C.ψ z)) (Fin C.g → ℂ)), (∀ i, C.M.Lifts (C.ψ z) (𝟙 _) (Pi.single i 1) (Mz.pt (Pi.single i 1))) → ∀ (x : Fin C.g → ℂ) (v : epsAt (𝟙 (Sp ℂ)) ⟶ P.tK.G) (c : ℂ), v.left ≫ P.m.φ = (Mz.pt x).left → HodgeIP P.tB.G P.tB.PP.L (𝟙 _) (v ≫ P.τ.q ≫ P.e.hom) (v ≫ P.τ.q ≫ P.e.hom) c → c.re ≤ K * ∑ i, ‖x i‖ ^ 2 := by
   intro E _ _ _ H D l Xo σ n a C hpq hσ
   obtain ⟨ρ₀, Λ, _, L, e, hρ0, hρ1, hlink⟩ := GlobalTheory.T.exists_log_period_family E H D l Xo σ n a C hpq hσ

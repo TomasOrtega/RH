@@ -13,6 +13,13 @@ variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [M
 open scoped LaurentSeries PowerSeries in
 variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] in
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `_root_.GlobalTheory.PhiGam.mem_sh_iff_exists.1 hx`. Take `⟨u, hu⟩` from `R.φ_v`. Establish `hfy : f y ∈ _root_.GlobalTheory.PhiGam.sh (-w) N` using `h (Submodule.subset_span ⟨y, hy, rfl⟩)`. Take `⟨z, hz, hz'⟩` from `_root_.GlobalTheory.PhiGam.mem_sh_iff_exists.1 hfy`. Rewrite using `[_root_.GlobalTheory.PhiGam.mem_sh_iff_exists]`.
+
+Use `⟨((u : k⟦X⟧) ^ m) • z, N.smul_mem _ hz, ?_⟩` and prove the remaining obligations. Establish `hX` using `_root_.GlobalTheory.PhiGam.vv_ne_zero k`. Rewrite using `[zpow_natCast, hf, map_pow, hu, ← hz', ← algebraMap_smul k⸨X⸩ ((u : k⟦X⟧) ^ m) z, smul_smul, smul_smul, LaurentSeries.coe_algebraMap, map_pow, sub_eq_add_neg, zpow_add₀ hX, mul_pow, ← pow_mul]`. Use `congr 1`. Rewrite using `[show ((l : ℤ) * (m : ℤ)) = ((l * m : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.PhiGam.Gauge.phi_sh {l : ℕ} (R : _root_.GlobalTheory.PhiGam.RingPG k l)
     (f : V →ₗ[k] V) (hf : _root_.GlobalTheory.PhiGam.Semi R.φ f)
     (N N' : Submodule k⟦X⟧ V) (w : ℤ)
@@ -37,6 +44,9 @@ end
 open scoped LaurentSeries PowerSeries in
 variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] in
+/- English proof (translation)
+Establish `hX` using `_root_.GlobalTheory.PhiGam.vv_ne_zero k`. Rewrite using `[_root_.GlobalTheory.PhiGam.mem_sh_iff_smul_mem, _root_.GlobalTheory.PhiGam.mem_sh_iff_smul_mem, smul_smul, ← zpow_add_one₀ hX]`. Rewrite using `[show -(a + 1) + 1 = -a by ring]`.
+-/
 private theorem vv_smul_mem_sh_succ_iff (a : ℤ) (N : Submodule k⟦X⟧ V) (y : V) :
     _root_.GlobalTheory.PhiGam.vv k • y ∈ _root_.GlobalTheory.PhiGam.sh (a + 1) N ↔
       y ∈ _root_.GlobalTheory.PhiGam.sh a N := by
@@ -47,6 +57,9 @@ private theorem vv_smul_mem_sh_succ_iff (a : ℤ) (N : Submodule k⟦X⟧ V) (y 
 open scoped LaurentSeries PowerSeries in
 variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.PhiGam.nab_apply_eq, smul_smul, mul_inv_cancel₀ (_root_.GlobalTheory.PhiGam.vv_ne_zero k), one_smul]`.
+-/
 private theorem apply_sub_self_eq_vv_smul_nab (f : V →ₗ[k] V) (x : V) :
     f x - x = _root_.GlobalTheory.PhiGam.vv k • _root_.GlobalTheory.PhiGam.nab f x := by
   rw [_root_.GlobalTheory.PhiGam.nab_apply_eq, smul_smul, mul_inv_cancel₀ (_root_.GlobalTheory.PhiGam.vv_ne_zero k),
@@ -54,6 +67,33 @@ private theorem apply_sub_self_eq_vv_smul_nab (f : V →ₗ[k] V) (x : V) :
 
 open scoped LaurentSeries PowerSeries in
 
+/- English proof (translation)
+Introduce `k _ l _ _ R n _ V _ _ _ _ _ _ _ _ D w w' s N hN hAB hC hs hsen b g hcoc hg`. Establish `hX` using `_root_.GlobalTheory.PhiGam.vv_ne_zero k`. Establish `hl : (2 : ℤ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).two_le`. Establish `hW : ∀ i, _` using `fun i => _root_.GlobalTheory.PhiGam.Window.nab_bijective_window R (D.γ i) (D.γ_semi i) (N i) (hN i) (hC i) 0 (s i + 2) (fun j hj => by`. Simplify using `using hsen i j (by omega))`.
+
+Use `⟨?_, fun hg3 hb => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, ∃ x ∈ N i, g i - (D.γ i x - x) ∈ _root_.GlobalTheory.PhiGam.sh (s i + 3) (N i)`. Introduce `i`. Establish `hy : (_root_.GlobalTheory.PhiGam.vv k)⁻¹ • g i ∈ _root_.GlobalTheory.PhiGam.sh 0 (N i)`. Rewrite using `[← vv_smul_mem_sh_succ_iff, smul_inv_smul₀ hX]`.
+
+Simplify using `using hg i`. Take `⟨x, hx, hxy⟩` from `(hW i).2 _ hy`. Use `⟨x, by rwa [_root_.GlobalTheory.PhiGam.sh_zero_eq] at hx, ?_⟩` and prove the remaining obligations. Establish `h3` using `(vv_smul_mem_sh_succ_iff _ _ _).2 hxy`. Rewrite `h3` using `[smul_sub, smul_inv_smul₀ hX, ← apply_sub_self_eq_vv_smul_nab]`.
+
+Use `h3 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose m hm1 hm2 using key`. Conclude with `⟨m, hm1, hm2⟩`.
+
+Use `set φ := D.φ set γ := D.γ`. Establish `hφ : ∀ i (a : ℕ) {x : V}, x ∈ _root_.GlobalTheory.PhiGam.sh a (N (i - 1)) → φ i x ∈ _root_.GlobalTheory.PhiGam.sh (l * a - w i) (N i)` using `fun i a x hx => _root_.GlobalTheory.PhiGam.Gauge.phi_sh R (φ i) (D.φ_semi i) (N i) (N (i - 1)) (w i) (hAB i).1 a hx`. Establish `hγ : ∀ i (a : ℤ) {x : V}, x ∈ _root_.GlobalTheory.PhiGam.sh a (N i) → γ i x - x ∈ _root_.GlobalTheory.PhiGam.sh (a + 1) (N i)` using `fun i a x hx => by`. Rewrite using `[apply_sub_self_eq_vv_smul_nab, vv_smul_mem_sh_succ_iff]`. Conclude with `_root_.GlobalTheory.PhiGam.Window.nab_mem_sh R (D.γ_semi i) (hC i) a hx`.
+
+Establish `hb' : ∀ i, b i ∈ _root_.GlobalTheory.PhiGam.sh ((s i : ℤ) + 2) (N i)`. Introduce `i`. Establish `h1 : γ i (b i) - b i ∈ _root_.GlobalTheory.PhiGam.sh ((s i : ℤ) + 2 + 1) (N i)`. Rewrite using `[hcoc i]`. Use `sub_mem ?_ (by convert hg3 i using 2; ring)` and prove the remaining obligations.
+
+Establish `h2` using `hφ i (s (i - 1) + 3) (by push_cast; exact hg3 (i - 1))`. Use `_root_.GlobalTheory.PhiGam.sh_le_sh_of_le ?_ _ h2` and prove the remaining obligations. Use `hs i` as an intermediate fact. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite `h1` using `[apply_sub_self_eq_vv_smul_nab, vv_smul_mem_sh_succ_iff]`. Use `(hW i).1 (b i) (by rw [_root_.GlobalTheory.PhiGam.sh_zero_eq]; exact hb i) (by convert h1 using 2; push_cast; ring)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hP : ∀ i, ∀ x ∈ _root_.GlobalTheory.PhiGam.sh ((s (i - 1) : ℤ) + 2) (N (i - 1)), φ i x ∈ _root_.GlobalTheory.PhiGam.sh 1 (_root_.GlobalTheory.PhiGam.sh ((s i : ℤ) + 2) (N i))`. Introduce `i x hx`. Rewrite using `[_root_.GlobalTheory.PhiGam.sh_sh_eq]`. Use `_root_.GlobalTheory.PhiGam.sh_le_sh_of_le ?_ _ (hφ i (s (i - 1) + 2) (by push_cast; exact hx))` and prove the remaining obligations. Use `hs i` as an intermediate fact.
+
+Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hF` using `_root_.GlobalTheory.PhiGam.one_sub_frob_bij R D (fun i => _root_.GlobalTheory.PhiGam.sh ((s i : ℤ) + 2) (N i)) (fun i => (hN i).shift _) hP`. Take `⟨m, hmP, hmb⟩` from `hF.1 b hb'`. Express the relevant statement in the definitionally equal form `∀ i, φ i (m (i - 1)) - m i = b i at hmb`.
+
+Establish `hg0` using `hF.2 (fun i => g i - (γ i (m i) - m i)) (fun i => sub_mem (_root_.GlobalTheory.PhiGam.sh_le_sh_of_le (by linarith) _ (hg3 i)) (_root_.GlobalTheory.PhiGam.sh_le_sh_of_le (by linarith) _ (hγ i _ (hmP i)))) (fun i => by show φ i (g (i - 1) - (γ (i - 1) (m (i - 1)) - m (i - 1))) = g …`. Establish `e` using `hcoc i`. Rewrite `e` using `[← hmb i, map_sub]`. Establish `e2` using `sub_eq_iff_eq_add.1 e.symm`. Establish `hcomm : ∀ x, φ i (γ (i - 1) x) = γ i (φ i x)` using `D.comm i`.
+
+Simplify using `only [map_sub, hcomm]`. Rewrite using `[e2]`. Use the proof step `abel)`. Use `⟨m, fun i => ?_, fun i => ⟨(hmb i).symm, ?_⟩⟩` and prove the remaining obligations. Use `_root_.GlobalTheory.PhiGam.sh_le_sh_of_le (show (0 : ℤ) ≤ (s i : ℤ) + 2 by positivity) _ (hmP i)` as an intermediate fact.
+
+Rewrite `this` using `[_root_.GlobalTheory.PhiGam.sh_zero_eq]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.1 (congrFun hg0 i)`.
+-/
 theorem _root_.GlobalTheory.PhiGam.Gauge.main : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l]
     (R : _root_.GlobalTheory.PhiGam.RingPG k l) {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V]
     [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]

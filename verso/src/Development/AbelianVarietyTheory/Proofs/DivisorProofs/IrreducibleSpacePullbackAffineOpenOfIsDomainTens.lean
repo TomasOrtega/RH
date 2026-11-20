@@ -8,6 +8,13 @@ namespace GlobalTheory.GeomIrr
 
 set_option backward.isDefEq.respectTransparency false
 
+/- English proof (translation)
+Introduce `F _ X g V hV k _ f`. Use `letI : Algebra F Γ(X, V) := ((Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ g.appTop ≫ X.presheaf.map (homOfLE le_top).op).hom.toAlgebra`. Use `letI : Algebra F k := f.toAlgebra`. Introduce `hdom`. Establish `hφ : hV.fromSpec ≫ g = Spec.map (CommRingCat.ofHom (algebraMap F Γ(X, V)))`.
+
+Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec g (isAffineOpen_top _) hV le_top, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e1 : V.ι ≫ g = hV.isoSpec.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap F Γ(X, V)))`. Rewrite using `[← hφ, IsAffineOpen.isoSpec_hom_fromSpec_assoc]`. Set `m` to `pullback.map (V.ι ≫ g) (spMap f) (Spec.map (CommRingCat.ofHom (algebraMap F Γ(X, V)))) (Spec.map (CommRingCat.ofHom (algebraMap F k))) hV.isoSpec.hom (𝟙 _) (𝟙 _) (by rw [Category.comp_id, e1]) (by simp; rfl)`.
+
+Set `E : pullback (V.ι ≫ g) (spMap f) ≅ Spec (CommRingCat.of (Γ(X, V) ⊗[F] k))` to `asIso m ≪≫ pullbackSpecIso F Γ(X, V) k`. Use `haveI : IsDomain (Γ(X, V) ⊗[F] k) := MulEquiv.isDomain (k ⊗[F] Γ(X, V)) (Algebra.TensorProduct.comm F Γ(X, V) k).toRingEquiv.toMulEquiv`. Use `haveI : IrreducibleSpace (Spec (CommRingCat.of (Γ(X, V) ⊗[F] k))) := PrimeSpectrum.irreducibleSpace (R := Γ(X, V) ⊗[F] k)`. Conclude with `Function.Surjective.irreducibleSpace E.inv.homeomorph.continuous E.inv.homeomorph.surjective`.
+-/
 theorem irreducibleSpace_pullback_of_isDomain_tensor : ∀ {F : Type} [Field F] {X : Scheme.{0}} (g : X ⟶ Sp F) (V : X.Opens), IsAffineOpen V →
     ∀ (k : Type) [Field k] (f : F →+* k),
     letI : Algebra F Γ(X, V) :=

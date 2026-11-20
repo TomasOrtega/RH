@@ -17,6 +17,9 @@ open NumberField IsDedekindDomain
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.DefiniteBC
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Multiset.map_add, Multiset.prod_add, ih]`.
+-/
 theorem GlobalTheory.multiset_map_prod_finset_sum {α β γ : Type} [CommMonoid γ] (F : α → γ) (s : Finset β)
     (m : β → Multiset α) :
     ((∑ i ∈ s, m i).map F).prod = ∏ i ∈ s, ((m i).map F).prod := by
@@ -26,6 +29,15 @@ theorem GlobalTheory.multiset_map_prod_finset_sum {α β γ : Type} [CommMonoid 
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.prod_insert ha, Multiset.map_add, Multiset.prod_add, ih]
 
+/- English proof (translation)
+Introduce `K _ ι c d S T q hq e hT`. Establish `hq' : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hq`. Use `set F : ℂ → Polynomial K := fun u => Polynomial.X - Polynomial.C (ι.symm (u * (q : ℂ) ^ e)) with hF`. Establish `h1 : (T.map fun z : ℂˣ => Polynomial.X - Polynomial.C (ι.symm ((z : ℂ) * (q : ℂ) ^ e))) = (T.map (fun z : ℂˣ => (z : ℂ))).map F`. Rewrite using `[Multiset.map_map]`.
+
+Both sides reduce to the same expression. Establish `hc : ∀ M : Multiset ℂˣ, (do let a ← M; pure (a : ℂ) : Multiset ℂ) = M.map (fun z : ℂˣ => (z : ℂ))` using `fun M => Multiset.bind_singleton M _`. Simplify using `only [hc, Multiset.map_id'] at hT`. Rewrite using `[h1, ← hT, GlobalTheory.multiset_map_prod_finset_sum]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.multiset_map_prod_finset_sum]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl (fun z _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp, hF]`. Rewrite using `[Complex.cpow_add _ _ hq']`. Put the polynomial expressions in normal form.
+-/
 theorem GlobalTheory.satake_linear_factors_regroup : ∀ (K : Type) [Field K] (ι : K ≃+* ℂ) (c : ℕ) (d : Fin c → ℕ) (S : Fin c → Multiset ℂˣ) (T : Multiset ℂˣ) (q : ℕ),
   q ≠ 0 → ∀ e : ℂ,
   ∑ i, ∑ k : Fin (d i), (S i).map (fun z => (z : ℂ) * (q : ℂ) ^ (((d i : ℂ) - 1) / 2 - (k : ℕ))) = T.map (fun z => (z : ℂ)) →

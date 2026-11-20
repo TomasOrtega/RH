@@ -5,6 +5,17 @@ open scoped ComplexConjugate
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `l0 : ∀ g, g ∈ C → F 0 g = 0`. Introduce `g hg`. Use `hl 1 0 0 g C.zero_mem C.zero_mem hg` as an intermediate fact. Simplify using `only [one_smul, add_zero, star_one, one_mul] at this`. Take the linear combination `-this`.
+
+Establish `r0 : ∀ f, f ∈ C → F f 0 = 0`. Introduce `f hf`. Use `hr 1 f 0 0 hf C.zero_mem C.zero_mem` as an intermediate fact. Simplify using `only [one_smul, add_zero, one_mul] at this`. Take the linear combination `-this`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f f' g hf hf' hg`. Simplify using `using hl 1 f f' g hf hf' hg`. Introduce `a f g hf hg`. Use `hl a f 0 g hf C.zero_mem hg` as an intermediate fact.
+
+Rewrite `this` using `[add_zero, l0 g hg, add_zero]`. Then use the resulting hypothesis. Introduce `f g g' hf hg hg'`. Simplify using `using hr 1 f g g' hf hg hg'`. Introduce `a f g hf hg`. Use `hr a f g 0 hf hg C.zero_mem` as an intermediate fact.
+
+Rewrite `this` using `[add_zero, r0 f hf, add_zero]`. Then use the resulting hypothesis.
+-/
 lemma sesq_rules_of_combination {X : Type} (C : Submodule ℂ (X → ℂ)) (F : (X → ℂ) → (X → ℂ) → ℂ)
     (hl : ∀ (a : ℂ) (f f' g : X → ℂ), f ∈ C → f' ∈ C → g ∈ C → F (a • f + f') g = star a * F f g + F f' g)
     (hr : ∀ (a : ℂ) (f g g' : X → ℂ), f ∈ C → g ∈ C → g' ∈ C → F f (a • g + g') = a * F f g + F f g') :
@@ -34,6 +45,35 @@ lemma sesq_rules_of_combination {X : Type} (C : Submodule ℂ (X → ℂ)) (F : 
     have := hr a f g 0 hf hg C.zero_mem
     rwa [add_zero, r0 f hf, add_zero] at this
 
+/- English proof (translation)
+Introduce `X C hfin ip Φ hl hr hs hp Φl Φr`. Use `haveI := hfin`. Take `⟨ipa, ips, ipa', ips'⟩` from `sesq_rules_of_combination C ip hl hr`. Take `⟨Φa, Φs, Φa', Φs'⟩` from `sesq_rules_of_combination C Φ Φl Φr`. Set `B : C →ₗ[ℂ] C →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => ip (y : X → ℂ) x) (fun m₁ m₂ n => by simp only [Submodule.coe_add]; exact ipa' _ _ _ n.2 m₁.2 m₂.2) (fun c m n => by`.
+
+Simplify using `only [Submodule.coe_smul, RingHom.id_apply, smul_eq_mul]`. Conclude with `ips' c _ _ n.2 m.2)`. Use the proof step `(fun m n₁ n₂ => by simp only [Submodule.coe_add]; exact ipa _ _ _ n₁.2 n₂.2 m.2)`. Use the proof step `(fun c m n => by`. Simplify using `only [Submodule.coe_smul, smul_eq_mul, starRingEnd_apply]`.
+
+Conclude with `ips c _ _ n.2 m.2)`. Establish `Bsym : ∀ x y, B x y = conj (B y x)`. Introduce `x y`. Simplify using `only [B, LinearMap.mk₂'ₛₗ_apply, starRingEnd_apply]`. Conclude with `hs _ _ x.2 y.2`.
+
+Establish `Bpos : ∀ x, x ≠ 0 → 0 < (B x x).re`. Introduce `x hx`. Simplify using `only [B, LinearMap.mk₂'ₛₗ_apply]`. Conclude with `hp _ x.2 (by rwa [ne_eq, Submodule.coe_eq_zero])`. Set `ipA : ℂ →ₗ[ℂ] ℂ →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => conj b * a) (by intros; ring) (by intros; simp; ring) (by intros; simp; ring) (by intros; simp; ring)`.
+
+Establish `riesz : ∀ L : C →ₗ[ℂ] ℂ, ∃ x : C, ∀ y : C, ip (x : X → ℂ) y = L y`. Introduce `L`. Take `⟨x, hx, -⟩` from `hermitian_adjoint_exists_unique ℂ C ipA B Bsym Bpos L 1`. Conclude with `⟨x, fun y => by have := hx y; simpa [B, ipA] using this⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `f hf`. Set `L : C →ₗ[ℂ] ℂ` to `{ toFun := fun g => Φ f g map_add' := fun g g' => Φa' _ _ _ hf g.2 g'.2 map_smul' := fun c g => Φs' c _ _ hf g.2 }`. Take `⟨x, hx⟩` from `riesz L`. Conclude with `⟨x, x.2, fun g hg => hx ⟨g, hg⟩⟩`. Introduce `hC`.
+
+Set `large₂ : C → (C →ₗ[ℂ] ℂ)` to `fun g => { toFun := fun f => star (Φ f g) map_add' := fun f f' => by`. Simplify using `only [Submodule.coe_add]`. Rewrite using `[Φa _ _ _ f.2 f'.2 g.2, star_add]`. Use the proof step `map_smul' := fun c f => by`. Simplify using `only [Submodule.coe_smul, RingHom.id_apply, smul_eq_mul]`.
+
+Rewrite using `[Φs c _ _ f.2 g.2, star_mul, star_star, mul_comm] }`. Establish `hex : ∀ g : C, ∃ x : C, ∀ f : C, ip (f : X → ℂ) x = Φ f g`. Introduce `g`. Take `⟨x, hx⟩` from `riesz (large₂ g)`. Use `⟨x, fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs _ _ x.2 f.2, hx f]`. Simplify using `[large₂]`. Use `choose R hR using hex`. Establish `inj : ∀ x y : C, (∀ f : C, ip (f : X → ℂ) x = ip f y) → x = y`. Introduce `x y h`.
+
+Assume the negation of the conclusion as `hne`. Establish `hd : ((x - y : C) : X → ℂ) = (-1 : ℂ) • (y : X → ℂ) + x`. Rewrite using `[Submodule.coe_sub]`. Use extensionality with `t`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hr (-1) ((x - y : C) : X → ℂ) y x (x - y).2 y.2 x.2`. Rewrite `h1` using `[← hd, h (x - y)]`. Establish `h2` using `hp _ (x - y).2 (by rwa [ne_eq, Submodule.coe_eq_zero, sub_eq_zero])`. Establish `h3 : ip ((x - y : C) : X → ℂ) ((x - y : C) : X → ℂ) = 0` using `by rw [h1]; ring`.
+
+Rewrite `h2` using `[h3]`. Simplify using `at h2`. Set `Rl : Module.End ℂ C` to `{ toFun := R map_add' := fun g g' => inj _ _ (fun f => by`. Rewrite using `[hR, Submodule.coe_add, Submodule.coe_add, ipa' _ _ _ f.2 (R g).2 (R g').2, hR, hR, Φa' _ _ _ f.2 g.2 g'.2])`. Use the proof step `map_smul' := fun c g => inj _ _ (fun f => by`.
+
+Rewrite using `[hR, Submodule.coe_smul, RingHom.id_apply, Submodule.coe_smul, ips' c _ _ f.2 (R g).2, hR, Φs' c _ _ f.2 g.2]) }`. Use `haveI : Nontrivial C := Submodule.nontrivial_iff_ne_bot.mpr hC`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue Rl`. Take `⟨e, he⟩` from `hc.exists_hasEigenvector`. Use `⟨c, e, e.2, by rw [ne_eq, Submodule.coe_eq_zero]; exact he.2, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hR e ⟨f, hf⟩]`. Use `show ip f ((Rl e : C) : X → ℂ) = _`. Rewrite using `[he.apply_eq_smul, Submodule.coe_smul, ips' c _ _ hf e.2]`.
+-/
 theorem riesz_and_eigenvector_of_sesq_on_fun_space : ∀ (X : Type) (C : Submodule ℂ (X → ℂ)), FiniteDimensional ℂ C →
     ∀ (ip Φ : (X → ℂ) → (X → ℂ) → ℂ),
     (∀ (a : ℂ) (f f' g : X → ℂ), f ∈ C → f' ∈ C → g ∈ C → ip (a • f + f') g = star a * ip f g + ip f' g) →

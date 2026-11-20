@@ -21,6 +21,13 @@ def pSet (g : ℕ) (p : Fin (r + 1) × Fin (r + 1)) : Set (Fv F v ⊗[F] E) :=
     {y | y ∈ OEv (E := E) v ∧ (y + sigR (Fv F v) σ y) * sc (E := E) v (g : Fv F v)⁻¹ ∈ OEv (E := E) v}
   else OEv (E := E) v
 
+/- English proof (translation)
+Establish `hgv : (g : Fv F v) ≠ 0` using `VolTU.natCast_ne_zero v hg0`. Unfold `famL pSet`. Use `split_ifs with h1 h2`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, LinearMap.smul_apply, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← VolTU.sc_mul_eq_smul, mul_comm, ← mul_assoc, ← VolTU.sc_mul, inv_mul_cancel₀ hgv, VolTU.sc_one, one_mul]`. Conclude with `hz`. Introduce `h`. Use `⟨y * sc (E := E) v (g : Fv F v)⁻¹, h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← VolTU.sc_mul_eq_smul, mul_comm, mul_assoc, ← VolTU.sc_mul, inv_mul_cancel₀ hgv, VolTU.sc_one, mul_one]`. Conclude with `mem_aL_image v σ htr hg0 hθO hθ y`. Simplify using the standard rewrite rules.
+-/
 theorem famL_image
     (htr : ∀ w : Fv F v ⊗[F] E, algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w) =
       w + sigR (Fv F v) σ w)
@@ -43,6 +50,13 @@ theorem famL_image
   · exact mem_aL_image v σ htr hg0 hθO hθ y
   · simp
 
+/- English proof (translation)
+Take `⟨hD, hA⟩` from `absV_det_bigL v r hfin hg0 hg θ Δ hθ hΔ hΔ0`. Establish `himg : bigL v r (g : Fv F v) θ '' VolTO (E` using `E) v (Fin (r + 1) × Fin (r + 1)) = {Y | ∀ p, Y p ∈ pSet σ v r g p} := by`. Use extensionality with `Y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, VolTO]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨Z, hZ, rfl⟩ p`. Conclude with `(famL_image σ v r htr hg0 hθO hθ p _).1 ⟨Z p, hZ p, rfl⟩`. Introduce `h`. Establish `: ∀ p, ∃ z, z ∈ OEv (E` using `E) v ∧ famL v r (g : Fv F v) θ p z = Y p := fun p => (famL_image σ v r htr hg0 hθO hθ p _).2 (h p)`. Use `choose Z hZ using this`.
+
+Conclude with `⟨Z, fun p => (hZ p).1, funext fun p => (hZ p).2⟩`. Establish `hgpos : (0 : ℝ) < g` using `by exact_mod_cast Nat.pos_of_ne_zero hg0`. Rewrite using `[← himg, meas_image v _ μ _ hD _ (VolUL.volTO_meas v _), hK, mul_one, hA, ENNReal.ofReal_pow (inv_nonneg.2 hgpos.le), ENNReal.ofReal_inv_of_pos hgpos, ENNReal.ofReal_natCast, ENNReal.inv_pow]`.
+-/
 theorem box_meas (hfin : Module.finrank F E = 2)
     (htr : ∀ w : Fv F v ⊗[F] E, algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w) =
       w + sigR (Fv F v) σ w)
@@ -70,6 +84,9 @@ theorem box_meas (hfin : Module.finrank F E = 2)
     ENNReal.ofReal_pow (inv_nonneg.2 hgpos.le), ENNReal.ofReal_inv_of_pos hgpos, ENNReal.ofReal_natCast,
     ENNReal.inv_pow]
 
+/- English proof (translation)
+Establish `h1 : θ + sigR (Fv F v) σ θ = 1` using `by rw [← htr, hθ, map_one]`. Rewrite using `[map_sub, map_mul, hc]`. Take the linear combination `(-c) * h1`.
+-/
 theorem diag_key
     (htr : ∀ w : Fv F v ⊗[F] E, algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w) =
       w + sigR (Fv F v) σ w)
@@ -84,6 +101,25 @@ def ctr (θ : Fv F v ⊗[F] E) (c : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v �
     (p : Fin (r + 1) × Fin (r + 1)) : Fv F v ⊗[F] E :=
   if p.1 < p.2 then c p.1 p.2 else if p.1 = p.2 then c p.1 p.2 * θ else 0
 
+/- English proof (translation)
+Establish `hgO : sc (E` using `E) v (g : Fv F v) ∈ OEv (E := E) v := VolUTr.TrW.alg_mem v (VolTU.natCast_memO v g)`. Use extensionality with `Y`. Simplify using `only [VolUHm.hermBox, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h p`.
+
+Take `⟨i, j⟩` from `p`. Take `⟨hO, hup, hdg⟩` from `h i j`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Simplify using `only [ctr, pSet, if_pos hij, Set.mem_setOf_eq]`. Conclude with `hup hij`.
+
+Substitute `hij` using the available equality. Simplify using `only [ctr, pSet, lt_irrefl, if_false, if_true, Set.mem_setOf_eq]`. Use `⟨Submodule.sub_mem _ hO (VolUTr.TrW.mul_mem v (hc.2 i i) hθO), ?_⟩` and prove the remaining obligations. Rewrite using `[diag_key σ v htr hθ _ _ (hc.1 i i).symm]`. Conclude with `hdg rfl`.
+
+Establish `h1 : ¬ i < j` using `not_lt.2 hij.le`. Establish `h2 : i ≠ j` using `hij.ne'`. Simplify using `only [ctr, pSet, if_neg h1, if_neg h2, sub_zero]`. Conclude with `hO`. Introduce `h i j`.
+
+Establish `hp` using `h (i, j)`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Simplify using `only [ctr, pSet, if_pos hij, Set.mem_setOf_eq] at hp`. Establish `hO : Y (i, j) ∈ OEv (E` using `E) v := by`. Establish `e : Y (i, j) = sc (E` using `E) v (g : Fv F v) * ((Y (i, j) - c i j) * sc (E := E) v (g : Fv F v)⁻¹) + c i j := by`.
+
+Rewrite using `[mul_comm, mul_assoc, ← VolTU.sc_mul, inv_mul_cancel₀ (VolTU.natCast_ne_zero v hg0), VolTU.sc_one, mul_one, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (VolUTr.TrW.mul_mem v hgO hp) (hc.2 i j)`. Conclude with `⟨hO, fun _ => hp, fun h => absurd h hij.ne⟩`. Substitute `hij` using the available equality.
+
+Simplify using `only [ctr, pSet, lt_irrefl, if_false, if_true, Set.mem_setOf_eq] at hp`. Establish `hO : Y (i, i) ∈ OEv (E` using `E) v := by`. Rewrite using `[← sub_add_cancel (Y (i, i)) (c i i * θ)]`. Conclude with `Submodule.add_mem _ hp.1 (VolUTr.TrW.mul_mem v (hc.2 i i) hθO)`. Use `⟨hO, fun h => absurd h (lt_irrefl _), fun _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← diag_key σ v htr hθ _ _ (hc.1 i i).symm]`. Conclude with `hp.2`. Establish `h1 : ¬ i < j` using `not_lt.2 hij.le`. Establish `h2 : i ≠ j` using `hij.ne'`. Simplify using `only [ctr, pSet, if_neg h1, if_neg h2, sub_zero] at hp`.
+
+Conclude with `⟨hp, fun h => absurd h h1, fun h => absurd h h2⟩`.
+-/
 theorem hermBox_eq
     (htr : ∀ w : Fv F v ⊗[F] E, algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w) =
       w + sigR (Fv F v) σ w)
@@ -137,6 +173,9 @@ theorem hermBox_eq
       simp only [ctr, pSet, if_neg h1, if_neg h2, sub_zero] at hp
       exact ⟨hp, fun h => absurd h h1, fun h => absurd h h2⟩
 
+/- English proof (translation)
+Rewrite using `[hermBox_eq σ v r htr hg0 hθO hθ c hc, VolUH.sub_pre v _ μ, box_meas σ v r hfin htr hg0 hg hθO hθ hΔ hΔ0 μ hK]`.
+-/
 theorem hermBox_meas (hfin : Module.finrank F E = 2)
     (htr : ∀ w : Fv F v ⊗[F] E, algebraMap (Fv F v) (Fv F v ⊗[F] E) (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) w) =
       w + sigR (Fv F v) σ w)
@@ -152,6 +191,21 @@ theorem hermBox_meas (hfin : Module.finrank F E = 2)
 
 end Box
 
+/- English proof (translation)
+Establish `hst : σ (t : E) = a` using `by rw [← ht, hinv]`. Establish `hTa : Algebra.trace F E ((a : E) - t) = 0`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[VolUTr.TrW.trace_eq_add σ hinv hnt hfin, map_sub, ht, hst, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hTb : Algebra.trace F E ((a : E) * ((a : E) - t)) = e`. Apply `(algebraMap F E).injective` to reduce the goal to its premises. Rewrite using `[VolUTr.TrW.trace_eq_add σ hinv hnt hfin, map_mul, map_sub, ht, hst, ← he]`. Expand and normalize the polynomial expressions, which then agree. Use `set ev := algebraMap F (Fv F v) (e : F) with hevdef`.
+
+Establish `hval : Valued.v ev = 1`. Establish `h` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 F) v (algebraMap (𝓞 F) F e)`. Rewrite `h` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 hev]`. Conclude with `h`. Establish `he0 : ev ≠ 0`.
+
+Introduce `h0`. Rewrite `hval` using `[h0, map_zero]`. Conclude with `zero_ne_one hval`. Establish `hinvm : ev⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`.
+
+Establish `hθ1 : Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (sc (E` using `E) v ev⁻¹ * inclR (F := F) (Fv F v) ((a : E) * ((a : E) - t))) = 1 := by`. Rewrite using `[VolUTr.TrW.sc_eq, ← Algebra.smul_def, map_smul, PI.UnitaryGroupMassFormula.LocJacTyp.Sd.trace_inclR, hTb, smul_eq_mul, inv_mul_cancel₀ he0]`. Use `⟨sc (E := E) v ev⁻¹ * inclR (F := F) (Fv F v) ((a : E) * ((a : E) - t)), inclR (F := F) (Fv F v) ((a : E) - t), ?_, hθ1, ?_, ?_⟩` and prove the remaining obligations. Use `VolUTr.TrW.mul_mem v (VolUTr.TrW.alg_mem v hinvm) ?_` and prove the remaining obligations. Establish `e1 : (((a * (a - t) : 𝓞 E)) : E) = (a : E) * ((a : E) - t)` using `by push_cast; ring`.
+
+Rewrite using `[← e1]`. Conclude with `VolUTr.TrW.inclR_mem' (E := E) v (a * (a - t))`. Rewrite using `[PI.UnitaryGroupMassFormula.LocJacTyp.Sd.trace_inclR, hTa, map_zero]`. Introduce `h0`. Rewrite `hθ1` using `[show inclR (F := F) (Fv F v) ((a : E) * ((a : E) - t)) = inclR (F := F) (Fv F v) (a : E) * inclR (F := F) (Fv F v) ((a : E) - t) from map_mul _ _ _, h0, mul_zero, mul_zero, map_zero]`.
+
+Conclude with `zero_ne_one hθ1`.
+-/
 theorem theta_exists (hinv : ∀ y, σ (σ y) = y) (hnt : ∃ x, σ x ≠ x) (hfin : Module.finrank F E = 2)
     (a t : 𝓞 E) (ht : σ (a : E) = (t : E)) (e : 𝓞 F)
     (he : ((a : E) - t) ^ 2 = algebraMap F E (e : F)) (hev : e ∉ v.asIdeal) :

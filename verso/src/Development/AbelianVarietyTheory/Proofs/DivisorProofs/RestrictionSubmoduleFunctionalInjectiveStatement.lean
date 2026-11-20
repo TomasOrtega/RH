@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSubquotientJa
 open scoped TensorProduct
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ext_sub_smooth | exact GlobalTheory.ext_sub_smooth | (intros; apply GlobalTheory.ext_sub_smooth <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.restriction_submodule_functional_injective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (X G₁ : Type) [AddCommGroup X] [Module ℂ X] [Group G₁]
     (π : Representation ℂ (GL (Fin n) k) X) (ι : GL (Fin m) k →* G₁), Function.Injective ι →

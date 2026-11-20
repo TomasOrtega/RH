@@ -17,6 +17,13 @@ abbrev BSx (X : SimplicialObject Spc) (a b : ℕ) (U : Scheme.{0}) : Type :=
 abbrev BSx.res {X : SimplicialObject Spc} {a b : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (y : BSx X a b U) : BSx X a b V :=
   ((X.obj (op (SimplexCategory.mk a))).obj (op (SimplexCategory.mk b))).map g.op y
 
+/- English proof (translation)
+Break down `h with h | h` into its components or cases. Conclude with `(HomologicalComplex.eval _ _ l).map_isZero (HomologicalComplex.isZero_extend_X _ _ c (fun i hi => by`. Express the relevant statement in the definitionally equal form `-((i : ℕ) : ℤ) = c at hi`. Use the proof step `omega))`. Distinguish the cases in `hc : c ≤ 0`.
+
+Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Use `IsZero.of_iso ?_ ((HomologicalComplex.eval _ _ l).mapIso (HomologicalComplex.extendXIso _ ComplexShape.embeddingDownNat (i := a) rfl))` and prove the remaining obligations. Conclude with `HomologicalComplex.isZero_extend_X _ _ l (fun i hi => by`. Express the relevant statement in the definitionally equal form `-((i : ℕ) : ℤ) = l at hi`. Use the proof step `omega)`.
+
+Conclude with `(HomologicalComplex.eval _ _ l).map_isZero (HomologicalComplex.isZero_extend_X _ _ c (fun i hi => by`. Express the relevant statement in the definitionally equal form `-((i : ℕ) : ℤ) = c at hi`. Use the proof step `omega))`.
+-/
 theorem biChains_isZero (X : SimplicialObject Spc) (c l : ℤ) (h : 0 < c ∨ 0 < l) :
     IsZero (((biChains R X).X c).X l) := by
   rcases h with h | h
@@ -39,6 +46,13 @@ def evT {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ : Cochain (totChains
   Sec.map ((biChainsXIso R X a b).inv ≫ (biChains R X).ιTotal (ComplexShape.up ℤ) (-(a : ℤ)) (-(b : ℤ))
       (-((a + b : ℕ) : ℤ)) (by simp only [ComplexShape.π_def]; push_cast; ring) ≫ γ.v _ s h) (freeGen R _ U y)
 
+/- English proof (translation)
+Use extensionality with `t s hs : 1`. Apply `HomologicalComplex₂.total.hom_ext` to reduce the goal to its premises. Introduce `c l hcl`. Establish `hcl' : c + l = t` using `hcl`. Distinguish the cases in `hc : c ≤ 0 ∧ l ≤ 0`.
+
+Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, l = -(b : ℤ)` from `⟨(-l).toNat, by omega⟩`. Take `rfl : t = -((a + b : ℕ) : ℤ)` from `by push_cast; omega`. Rewrite using `[← cancel_epi (biChainsXIso R X a b).inv]`. Conclude with `free_ext _ _ fun U y => h a b s hs U y`.
+
+Conclude with `(biChains_isZero X c l (by omega)).eq_of_src _ _`.
+-/
 theorem evT_ext {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ γ' : Cochain (totChains R X) K n)
     (h : ∀ a b s h U y, evT γ a b s h U y = evT γ' a b s h U y) : γ = γ' := by
   ext t s hs : 1
@@ -53,6 +67,17 @@ theorem evT_ext {X : SimplicialObject Spc} {K : Cx R} {n : ℤ} (γ γ' : Cochai
     exact free_ext _ _ fun U y => h a b s hs U y
   · exact (biChains_isZero X c l (by omega)).eq_of_src _ _
 
+/- English proof (translation)
+Establish `key : ∀ (c l s : ℤ) (hs : c + l + n = s), ∃ ψ : ((biChains R X).X c).X l ⟶ K.X s, ∀ (a b : ℕ) (hc : c = -(a : ℤ)) (hl : l = -(b : ℤ)) U y, Sec.map ((biChainsXIso R X a b).inv ≫ eqToHom (by rw [hc, hl]) ≫ ψ) (freeGen R _ U y) = f a b s (by push_cast; omega) U y`. Introduce `c l s hs`. Distinguish the cases in `hc : c ≤ 0 ∧ l ≤ 0`. Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, l = -(b : ℤ)` from `⟨(-l).toNat, by omega⟩`.
+
+Take `⟨φ, hφ⟩` from `free_exists (R := R) _ _ (f a b s (by push_cast; omega)) (fun V U g y => hf a b s _ V U g y)`. Use `⟨(biChainsXIso R X a b).hom ≫ φ, fun a' b' hc hl U y => ?_⟩` and prove the remaining obligations. Take `rfl : a' = a` from `by omega`. Take `rfl : b' = b` from `by omega`. Rewrite using `[eqToHom_refl, Category.id_comp, Iso.inv_hom_id_assoc]`.
+
+Conclude with `hφ U y`. Conclude with `⟨0, fun a b hc' hl' => by omega⟩`. Use `choose ψ hψ using key`. Use `⟨Cochain.mk fun t s h => (biChains R X).totalDesc fun c l hcl => ψ c l s (by` and prove the remaining obligations. Establish `: c + l = t` using `hcl`.
+
+Use the proof step `omega), fun a b s h U y => ?_⟩`. Unfold `evT`. Rewrite using `[Cochain.mk_v, HomologicalComplex₂.ι_totalDesc]`. Use `hψ (-(a : ℤ)) (-(b : ℤ)) s (by push_cast at h ⊢; omega) a b rfl rfl U y` as an intermediate fact. Rewrite `this` using `[eqToHom_refl, Category.id_comp]`.
+
+Conclude with `this`.
+-/
 theorem evT_exists {X : SimplicialObject Spc} {K : Cx R} {n : ℤ}
     (f : ∀ (a b : ℕ) (s : ℤ), -((a + b : ℕ) : ℤ) + n = s → ∀ U : Scheme.{0}, BSx X a b U → Sec (K.X s) U)
     (hf : ∀ a b s h (V U : Scheme.{0}) (g : V ⟶ U) (y : BSx X a b U), Sec.res g (f a b s h U y) = f a b s h V (y.res g)) :
@@ -93,9 +118,15 @@ variable {B : Spc} (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj 
 def vertS {a b : ℕ} {U : Scheme.{0}} (y : BSx (twX E V) a b U) : Sx B b U :=
   ((ℓ.app (op (SimplexCategory.mk a))).app (op (SimplexCategory.mk b))).app (op U) y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseS_res {a b : ℕ} {W U : Scheme.{0}} (g : W ⟶ U) (y : BSx (twX E V) a b U) :
     baseS V (y.res g) = (baseS V y).res g := rfl
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (((ℓ.app (op (SimplexCategory.mk a))).app (op (SimplexCategory.mk b))).naturality g.op) y`.
+-/
 theorem vertS_res {a b : ℕ} {W U : Scheme.{0}} (g : W ⟶ U) (y : BSx (twX E V) a b U) :
     vertS V ℓ (y.res g) = (vertS V ℓ y).res g :=
   ConcreteCategory.congr_hom (((ℓ.app (op (SimplexCategory.mk a))).app (op (SimplexCategory.mk b))).naturality g.op) y
@@ -108,6 +139,9 @@ def crossVal (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) (U : Sch
   (m * (a : ℤ)).negOnePow • μ.mul U (-(a : ℤ) + n) (-(b : ℤ) + m) s (by push_cast at h; omega)
     (ev α a _ rfl U (baseS V y)) (ev z b _ rfl U (vertS V ℓ y))
 
+/- English proof (translation)
+Unfold `crossVal`. Rewrite using `[Units.smul_def, Units.smul_def, Sec.res, map_zsmul, ← Sec.res, μ.nat, ev_res, ev_res, baseS_res, vertS_res]`.
+-/
 theorem crossVal_res (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) {W U : Scheme.{0}} (g : W ⟶ U)
     (y : BSx (twX E V) a b U) :
     Sec.res g (crossVal V ℓ μ hk α z a b s h U y) = crossVal V ℓ μ hk α z a b s h W (y.res g) := by
@@ -117,12 +151,18 @@ theorem crossVal_res (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) 
 def crossT : Cochain (totChains R (twX E V)) K k :=
   (evT_exists (crossVal V ℓ μ hk α z) (fun a b s h W U g y => crossVal_res V ℓ μ hk α z a b s h g y)).choose
 
+/- English proof (translation)
+The claim follows from `(evT_exists (crossVal V ℓ μ hk α z) (fun a b s h W U g y => crossVal_res V ℓ μ hk α z a b s h g y)).choose_spec a b s h U y`.
+-/
 theorem evT_crossT (a b : ℕ) (s : ℤ) (h : -((a + b : ℕ) : ℤ) + k = s) (U : Scheme.{0}) (y : BSx (twX E V) a b U) :
     evT (crossT V ℓ μ hk α z) a b s h U y =
       (m * (a : ℤ)).negOnePow • μ.mul U (-(a : ℤ) + n) (-(b : ℤ) + m) s (by push_cast at h; omega)
         (ev α a _ rfl U (baseS V y)) (ev z b _ rfl U (vertS V ℓ y)) :=
   (evT_exists (crossVal V ℓ μ hk α z) (fun a b s h W U g y => crossVal_res V ℓ μ hk α z a b s h g y)).choose_spec a b s h U y
 
+/- English proof (translation)
+Unfold `evT`. Rewrite using `[Cochain.add_v, Preadditive.comp_add, Preadditive.comp_add]`. Conclude with `map_add (mapHom _ _ (freeGen R _ U y)) _ _`.
+-/
 theorem evT_add {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (γ γ' : Cochain (totChains R X) L t) (a b : ℕ) (s : ℤ)
     (h : -((a + b : ℕ) : ℤ) + t = s) (U : Scheme.{0}) (y : BSx X a b U) :
     evT (γ + γ') a b s h U y = evT γ a b s h U y + evT γ' a b s h U y := by
@@ -130,11 +170,17 @@ theorem evT_add {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (γ γ' : Cochai
   rw [Cochain.add_v, Preadditive.comp_add, Preadditive.comp_add]
   exact map_add (mapHom _ _ (freeGen R _ U y)) _ _
 
+/- English proof (translation)
+The claim follows from `evT_ext _ _ fun a b s h U y => by rw [evT_add, evT_crossT, evT_crossT, evT_crossT, ev_add, map_add, LinearMap.add_apply, smul_add]`.
+-/
 theorem crossT_add_left (α' : Cochain ((chains R).obj E) I n) :
     crossT V ℓ μ hk (α + α') z = crossT V ℓ μ hk α z + crossT V ℓ μ hk α' z :=
   evT_ext _ _ fun a b s h U y => by
     rw [evT_add, evT_crossT, evT_crossT, evT_crossT, ev_add, map_add, LinearMap.add_apply, smul_add]
 
+/- English proof (translation)
+Unfold `evT`. Rewrite using `[Cochain.zero_v, comp_zero, comp_zero]`. Conclude with `map_zero (mapHom _ _ (freeGen R _ U y))`.
+-/
 theorem evT_zero {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (a b : ℕ) (s : ℤ)
     (h : -((a + b : ℕ) : ℤ) + t = s) (U : Scheme.{0}) (y : BSx X a b U) :
     evT (0 : Cochain (totChains R X) L t) a b s h U y = 0 := by
@@ -142,6 +188,9 @@ theorem evT_zero {X : SimplicialObject Spc} {L : Cx R} {t : ℤ} (a b : ℕ) (s 
   rw [Cochain.zero_v, comp_zero, comp_zero]
   exact map_zero (mapHom _ _ (freeGen R _ U y))
 
+/- English proof (translation)
+The claim follows from `evT_ext _ _ fun a b s h U y => by rw [evT_crossT, evT_zero, ev_zero, map_zero, smul_zero]`.
+-/
 theorem crossT_zero_right : crossT V ℓ μ hk α (0 : Cochain ((chains R).obj B) J m) = 0 :=
   evT_ext _ _ fun a b s h U y => by
     rw [evT_crossT, evT_zero, ev_zero, map_zero, smul_zero]
@@ -163,6 +212,9 @@ def phi (q : ℕ) {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc}
       rw [← Finset.sum_add_distrib]
       exact Finset.sum_congr rfl fun j _ => crossT_add_left V ℓ _ _ _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (q : ℕ) {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc}
     (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B) (i : ℤ)
     (z : ∀ j : Fin N, Cochain ((chains (ZMod q)).obj B) (res _ (tw q ((j : ℕ) : ℤ))) (2 * ((j : ℕ) : ℤ)))

@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InvAlg.Levels.levels_equiv | exact GlobalTheory.InvAlg.Levels.levels_equiv | (intros; apply GlobalTheory.InvAlg.Levels.levels_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adicCompletion_equivariant_equiv_of_level_isos : ∀ (R : Type) [CommRing R] (m : Ideal R) (R' : Type) [CommRing R'] [Algebra R R'] (C' : Type) [CommRing C']
     [Algebra R C'] [Algebra R' C'] [IsScalarTower R R' C'] (act : GlobalTheory.Mum.Gal (algebraMap R R') →* (C' ≃ₐ[R] C')),
     (∀ σ r, act σ (algebraMap R' C' r) = algebraMap R' C' (σ.1 r)) →

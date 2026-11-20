@@ -18,6 +18,27 @@ open GlobalTheory.CompanionTheory.Hypotheses₂.NefVolume GroundTheory.Heights�
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D A P0 hV hB hP0 hs q hq`. Use `BigIffGenDeg.charZero_of_isArithVar hV` as an intermediate fact. Establish `hy` using `BigIffGenDeg.coord_ne_zero_of_isArithVar hV`. Use `set N := HermLine.zcomb A (fsH ι) (q : ℤ) 1 with hN`. Establish `hR : ChartLatRank.Statement` using `ChartLatRank.proof (SectionLatticeFinite.proof Closed.ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cond)`.
+
+Establish `hrk : ∀ n : ℕ, (Module.finrank ℤ (chartLat y N.a n) : ℝ) = Module.finrank ℚ (chartLatQ y N.a n)` using `fun n => by exact_mod_cast hR K ι Ω y N.a n hy`. Choose the witnesses or unpack the hypotheses as in `rfl | ⟨d, rfl⟩ : D = 0 ∨ ∃ d, D = d + 1 := by`. Break down `D with _ | d` into its components or cases. Conclude with `Or.inl rfl`. Conclude with `Or.inr ⟨d, rfl⟩`.
+
+Establish `hconst : (fun n : ℕ => (Module.finrank ℤ (chartLat y N.a n) : ℝ) / ((n : ℝ) ^ 0 / ((Nat.factorial 0 : ℕ) : ℝ))) = fun _ => (genDeg (mCoordIdeal y) 0 N.a : ℝ)`. Use function extensionality and compare the values at `n`. Rewrite using `[hrk n, ← SectionsDimZero.full K ι Ω y N.a n (by simpa using hV)]`. Simplify using the standard rewrite rules. Rewrite using `[hconst]`.
+
+Conclude with `tendsto_const_nhds`. Establish `hsN : IsSemipositiveRel P0 (mCoordIdeal y) N`. Establish `h` using `SemiposTwist.proof K ι P0 (mCoordIdeal y) A 1 q hs`. Simplify `h` using `[hN]`. Establish `hNef : NefOnGenericDeg (mCoordIdeal y) N.a` using `nefOnGenericDeg_of_semipos NefOnGenericOfSemipos.proof hDG hP0 hsN`.
+
+Use `set a := N.a with ha`. Take `⟨hK, hS⟩` from `(GlobalTheory.CompanionTheory.Relay.kleiman_input_nef_ample_section_count GlobalTheory.CompanionTheory.Relay.kleiman_genericPointSectionInput).2`. Establish `: Nonempty K` using `hV.1`. Establish `hI : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.genIdeal y = mIdealOver ℚ y` using `LiftBirationalNef.genIdeal_eq y`. Establish `hP` using `isProjVarF_map_of_isArithVar hV`.
+
+Establish `hnz` using `GlobalTheory.CompanionTheory.Ar.Relevant.exists_coord_ne_zero K ι Ω y (d + 1) hV`. Establish `hdim : FieldNumbers.relDim (mIdealOver ℚ y) = ((d + 1 : ℕ) : WithBot (WithTop ℤ))` using `hI ▸ (FieldNumbers.CutRegular.relDim_eq_natCast_iff _ (d + 1)).2 hP.2`. Establish `hnef : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Kleiman2.IsNef ℚ y a` using `fun W hW hle hW1 => NefPlusAmpleDegree.nefOnF_of_nefOnGenericDeg hNef W ⟨(Bridge.isMultiProjPrime_iff W).mp hW, (FieldNumbers.CutRegular.relDim_eq_natCast_iff W 1).1 hW1⟩ (hI.le.trans hle)`. Establish `hfinQ : ∀ b, FiniteDimensional ℚ (chartLatQ y b 1)` using `fun b => GlobalTheory.CompanionTheory.GenericFibre.finiteDimensional_chartLatQ K ι Ω y (d + 1) b hV`. Establish `hfd : ∀ b, FiniteDimensional ℚ (secOver ℚ y b)` using `fun b => by`.
+
+Rewrite using `[← chartLatQ_eq_secOver]`. Conclude with `hfinQ b`. Establish `hsh : ∀ M : ℕ, ∃ C : ℝ, ∀ᶠ n : ℕ in atTop, (Module.finrank ℚ (secOver ℚ y ((n : ℤ) • a + fun _ => (M : ℤ))) : ℝ) ≤ (Module.finrank ℚ (secOver ℚ y ((n : ℤ) • a)) : ℝ) + C * (n : ℝ) ^ d`. Introduce `M`. Take `⟨C, hC⟩` from `shiftSectionBound K ι Ω y (d + 1) a M (by omega) hV hB`.
+
+Use `⟨C, hC.mono fun n hn => ?_⟩` and prove the remaining obligations. Establish `h` using `hn.2`. Rewrite `h` using `[Nat.add_sub_cancel, chartLatQ_eq_secOver, chartLatQ_eq_secOver]`. Conclude with `h`. Establish `hlim` using `tendsto_finrank_nef hK hS hnz hdim hnef hfd hsh`.
+
+Use `set F : ℝ := ((d + 1).factorial : ℝ) with hF`. Establish `hfac : F ≠ 0` using `by rw [hF]; exact_mod_cast (Nat.factorial_pos _).ne'`. Establish `hgen : (genDeg (mCoordIdeal y) (d + 1) a : ℝ) = F * ((NumbersDVR.intNum ℚ (mIdealOver ℚ y) (fun _ : Fin (d + 1) => a) : ℝ) / F)`. Rewrite using `[mul_div_cancel₀ _ hfac, ← hI]`. Both sides reduce to the same expression.
+
+Rewrite using `[hgen]`. Use `(hlim.const_mul F).congr' (Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hrk n, ← chartLatQ_smul, chartLatQ_eq_secOver, div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ShiftSectionsRankB.of_degreeGeneric (hDG : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) :
     ShiftSectionsRankB.Statement := by
   intro K _ ι _ Ω _ y D A P0 hV hB hP0 hs q hq
@@ -84,6 +105,9 @@ theorem ShiftSectionsRankB.of_degreeGeneric (hDG : GroundTheory.Heights₂.Heigh
     rw [hrk n, ← chartLatQ_smul, chartLatQ_eq_secOver, div_div_eq_mul_div]
     ring
 
+/- English proof (translation)
+The claim follows from `ShiftSectionsRankUpper.of_B (ShiftSectionsRankB.of_degreeGeneric hDG)`.
+-/
 theorem ShiftSectionsRankUpper.of_degreeGeneric (hDG : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) :
     ShiftSectionsRankUpper.Statement :=
   ShiftSectionsRankUpper.of_B (ShiftSectionsRankB.of_degreeGeneric hDG)

@@ -22,11 +22,19 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `ValuativeRel.valuation_surjective (K := k) (ValuativeRel.uniformizer k)`. Establish `h0 : x ≠ 0` using `fun e => ValuativeRel.uniformizer_ne_zero (R := k) (by rw [← hx, e, map_zero])`. Conclude with `⟨_, eq_unrChar h (ϖ := Units.mk0 x h0) hx⟩`.
+-/
 private theorem exists_unr {ξ : kˣ →* ℂˣ} (h : IsUnram ξ) : ∃ a : ℂˣ, ξ = unrChar k a := by
   obtain ⟨x, hx⟩ := ValuativeRel.valuation_surjective (K := k) (ValuativeRel.uniformizer k)
   have h0 : x ≠ 0 := fun e => ValuativeRel.uniformizer_ne_zero (R := k) (by rw [← hx, e, map_zero])
   exact ⟨_, eq_unrChar h (ϖ := Units.mk0 x h0) hx⟩
 
+/- English proof (translation)
+Establish `hc : Multiset.card s = n`. Rewrite using `[← hn, Multiset.map_congr rfl h1, Multiset.map_const', Multiset.sum_replicate, smul_eq_mul, mul_one]`. Take `⟨x, rfl⟩` from `GlobalTheory.RoadU.PlainChars.exists_fin_enum s hc`. Establish `key : ∀ i, ∃ a : ℂˣ, x i = IrrGL.ofChar (unrChar k a) (isSmoothChar_of_isUnram (isUnram_unrChar k a))` using `fun i => by`. Establish `hm : x i ∈ Finset.univ.val.map x` using `Multiset.mem_map_of_mem _ (Finset.mem_univ i)`.
+
+Take `⟨θ, hθ, e⟩` from `GlobalTheory.RoadU.PlainChars.exists_eq_ofChar (x i) (h1 _ hm)`. Take `⟨a, rfl⟩` from `exists_unr (hu θ ⟨hθ, e ▸ hm⟩)`. Conclude with `⟨a, e⟩`. Use `choose α hα using key`. Conclude with `⟨α, congrArg (fun f => Multiset.map f Finset.univ.val) (funext hα)⟩`.
+-/
 private theorem exists_family {n : ℕ} {s : Multiset (IrrGL k)} (h1 : ∀ y ∈ s, y.1 = 1) (hn : (s.map Sigma.fst).sum = n)
     (hu : ∀ ξ ∈ chars s, IsUnram ξ) : ∃ α : Fin n → ℂˣ,
       s = Finset.univ.val.map fun i => IrrGL.ofChar (unrChar k (α i)) (isSmoothChar_of_isUnram (isUnram_unrChar k (α i))) := by
@@ -43,6 +51,11 @@ private theorem exists_family {n : ℕ} {s : Multiset (IrrGL k)} (h1 : ∀ y ∈
 
 end Loc
 
+/- English proof (translation)
+Introduce `K _ _ _ n hn π t v hw hu`. Take `⟨⟨s, hs⟩, -, h3, -⟩` from `suppFacts K n hn π v`. Take `⟨h4, h5, -⟩` from `h3 s hs`. Establish `hl` using `winUnl K n π t v hw s hs`. Take `⟨α, rfl⟩` from `exists_family (h4.1 hw.1) h5 (hu s hs)`.
+
+Take `⟨σ, hσ, hs⟩` from `hs`. Use `haveI : CharZero (v.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Establish `hq : GroundTheory.LocalField.residueCard (v.adicCompletion K) = Ideal.absNorm v.asIdeal` using `GroundTheory.Global.residueCard_adicCompletion`. Take `⟨e⟩` from `unlFull (v.adicCompletion K) n σ.V σ.ρ _ _ hs (hq ▸ hl)`. Conclude with `⟨_, (CG.hasSat_mk π v _).2 (GlobalTheory.HeightCounting.Blocks.hasSatGL_locRep hσ (GlobalTheory.PrinSat.hasSatGL_of_equiv e (GlobalTheory.PrinSat.hasSatGL_prinSeries v α)))⟩`.
+-/
 theorem winSph : WinSph := by
   intro K _ _ _ n hn π t v hw hu
   obtain ⟨⟨s, hs⟩, -, h3, -⟩ := suppFacts K n hn π v

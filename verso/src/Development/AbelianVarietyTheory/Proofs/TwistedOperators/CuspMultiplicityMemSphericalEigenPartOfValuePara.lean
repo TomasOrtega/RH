@@ -30,6 +30,9 @@ noncomputable section
 
 namespace GlobalTheory.EvenOnto.ValPart
 
+/- English proof (translation)
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem lift_compMultilinearMap' {ι : Type*} [Fintype ι] {Mi : ι → Type*} [∀ i, AddCommGroup (Mi i)] [∀ i, Module ℂ (Mi i)]
     {E F : Type*} [AddCommGroup E] [Module ℂ E] [AddCommGroup F] [Module ℂ F]
     (L : E →ₗ[ℂ] F) (T : MultilinearMap ℂ Mi E) :
@@ -38,6 +41,25 @@ theorem lift_compMultilinearMap' {ι : Type*} [Fintype ι] {Mi : ι → Type*} [
   ext v
   simp
 
+/- English proof (translation)
+Introduce `hCRD D hMet c hc j hj s hs u w B hw hB`. Establish `hconjH` using `(GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hCRD D c hc j hj s hs).2`. Establish `hBV : GlobalTheory.LFun.IsParamFunV s.V c.S (fun g => conj (PiLocalization₂.val u w g)) B` using `hB`. Take `⟨a, ha⟩` from `GlobalTheory.ParamEigen.eig_of_param D s.V (s.J : Set (GA D s.V)) (1 : GA D s.V → ℂ) c.S hs.sph B`. Establish `heig : ∀ P d R, Hecke₂ s.V (s.J : Set (GA D s.V)) 1 c.S P d R → heckeLin s.V R (PiLocalization₂.val u w) = conj (a P d) • PiLocalization₂.val u w`.
+
+Introduce `P d R hR`. Establish `h1` using `ha _ hBV P d R hR`. Rewrite `h1` using `[hconjH]`. Use function extensionality and compare the values at `g`. Establish `h2` using `congrArg (starRingEnd ℂ) (congrFun h1 g)`.
+
+Simplify `h2` using `[map_mul]`. Establish `hops` using `GlobalTheory.SphericalOps.spherical_ops s.V c.θ s.M s.J (1 : GA D s.V → ℂ) c.S GlobalTheory.ChainOntoSph.exists_unif_of_F hc.inf (fun _ _ _ _ => by simp) hs.split`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `hw (by simp [PiLocalization₂.val])`.
+
+Use `⟨fun P d => conj (a P d), ?_⟩` and prove the remaining obligations. Establish `hT : PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ Mult c.θ s.M (s.J : Set (GA D s.V)) 1` using `(mem_multT c.θ s.M _ _ _).1 u.2`. Rewrite using `[mem_partFull]`. Use `⟨hT, fun P d R hR v => ?_⟩` and prove the remaining obligations. Take `⟨hkeep, -, -⟩` from `hops.2.2 P d R hR`.
+
+Use `set T := PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) with hTdef`. Establish `hT' : heckeOn s.M R T - conj (a P d) • T ∈ Mult c.θ s.M (s.J : Set (GA D s.V)) 1` using `Submodule.sub_mem _ (hkeep T hT) (Submodule.smul_mem _ _ hT)`. Establish `hmem : PiTensorProduct.lift (heckeOn s.M R T - conj (a P d) • T) ∈ s.CC c` using `by show _ ∈ MultT c.θ s.M _ _`. Rewrite using `[mem_multT, LinearEquiv.symm_apply_apply]`. Conclude with `hT'`.
+
+Set `x : s.CC c` to `⟨_, hmem⟩`. Establish `hlift : PiTensorProduct.lift (heckeOn s.M R T - conj (a P d) • T) = heckeLin s.V R ∘ₗ (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) - conj (a P d) • (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))`. Rewrite using `[map_sub, map_smul, heckeOn, postOn]`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[lift_compMultilinearMap', hTdef, LinearEquiv.apply_symm_apply]`.
+
+Establish `hx : PiLocalization₂.val x w = 0` using `by show PiTensorProduct.lift (heckeOn s.M R T - conj (a P d) • T) w = 0`. Rewrite using `[hlift]`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply]`. Rewrite using `[sub_eq_zero]`. Conclude with `heig P d R hR`.
+
+Establish `hx0` using `(GlobalTheory.T.multiplicity_vanishing_and_same_params_subspace D hMet).1 c hc j hj s hs x w hw0 hx`. Establish `h3 : PiTensorProduct.lift (heckeOn s.M R T - conj (a P d) • T) = 0` using `congrArg Subtype.val hx0`. Establish `h4 : heckeOn s.M R T - conj (a P d) • T = 0`. Establish `h` using `congrArg PiTensorProduct.lift.symm h3`. Rewrite `h` using `[LinearEquiv.symm_apply_apply, map_zero]`. Then use the resulting hypothesis.
+
+Establish `h5` using `congrArg (fun U : MMap s.M => U v) h4`. Simplify using `only [MultilinearMap.sub_apply, MultilinearMap.smul_apply, MultilinearMap.zero_apply, sub_eq_zero] at h5`. Simplify `h5` using `[heckeOn, postOn_apply]`.
+-/
 theorem valPart_mem : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetEx D → ForStage D fun c _ s => ∀ (u : s.CC c) w B, PiLocalization₂.val u w ≠ 0 → ParFun c s (PiLocalization₂.val u w) B → ∃ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ partFull c.θ s.M (s.J : Set (GA D s.V)) 1 c.S e := by
   intro hCRD D hMet c hc j hj s hs u w B hw hB
   have hconjH := (GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hCRD D c hc j hj s hs).2

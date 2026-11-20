@@ -76,6 +76,9 @@ def ReadsAt {K : Type} [Field K] [NumberField K] {g : ℕ} (h : HermFam K (Fin g
 
 abbrev ref0 : ∀ c, Mets (O.Φ.C c) (cxSt D.what₂.LL) := fun c _ => O.met.h0 c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : omHt O O.met.hm y = O.faltAt _ (basePt O.Φ y) := rfl
 
 end Heights

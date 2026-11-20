@@ -7,11 +7,17 @@ namespace GlobalTheory.CompanionTheory.SW.ThetaUD
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← h]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec v, Matrix.vecMul_transpose]`.
+-/
 theorem form_mulVec {R ι : Type} [CommRing R] [Fintype ι] (G Q : Matrix ι ι R) (h : Gᵀ * Q * G = Q)
     (v : ι → R) : (G *ᵥ v) ⬝ᵥ (Q *ᵥ (G *ᵥ v)) = v ⬝ᵥ (Q *ᵥ v) := by
   conv_rhs => rw [← h]
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec v, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_dotProduct]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec f Q x i).symm`.
+-/
 theorem form_map {R S ι : Type} [CommRing R] [CommRing S] [Fintype ι] (f : R →+* S) (Q : Matrix ι ι R)
     (x : ι → R) : (fun j => f (x j)) ⬝ᵥ (Q.map f *ᵥ fun j => f (x j)) = f (x ⬝ᵥ (Q *ᵥ x)) := by
   rw [RingHom.map_dotProduct]
@@ -19,6 +25,15 @@ theorem form_map {R S ι : Type} [CommRing R] [CommRing S] [Fintype ι] (f : R �
   funext i
   exact (RingHom.map_mulVec f Q x i).symm
 
+/- English proof (translation)
+Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := y)`. Establish `h2 : ((Algebra.trace ℚ F y : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ F y)` using `by simp`. Rewrite using `[h2, h1]`. Use `symm`. Use `Fintype.sum_bijective (fun w : InfinitePlace F => (w.embedding).toRatAlgHom) ?_ _ _ ?_` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce `w w' h`. Establish `: w.embedding = w'.embedding`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`.
+
+Rewrite using `[← InfinitePlace.mk_embedding w, ← InfinitePlace.mk_embedding w', this]`. Introduce `σ`. Establish `hr : (InfinitePlace.mk (σ : F →+* ℂ)).IsReal` using `hT.isReal _`. Establish `hc : ComplexEmbedding.IsReal (σ : F →+* ℂ)` using `InfinitePlace.isReal_mk_iff.1 hr`. Use `⟨InfinitePlace.mk (σ : F →+* ℂ), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Use `InfinitePlace.embedding_mk_eq_of_isReal hc` as an intermediate fact. Simplify using `[this]`. Introduce `w`. Simplify using `[hρ]`.
+-/
 theorem trace_eq_sum (hT : IsTotallyReal F) (ρ : InfinitePlace F → (F →+* ℝ))
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) (y : F) :
     ((Algebra.trace ℚ F y : ℚ) : ℂ) = ∑ w, ((ρ w y : ℝ) : ℂ) := by
@@ -45,6 +60,11 @@ theorem trace_eq_sum (hT : IsTotallyReal F) (ρ : InfinitePlace F → (F →+* �
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `gauss`. Rewrite using `[← Complex.exp_add, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.add_re, Complex.add_im, Complex.ofReal_re, Complex.ofReal_im, add_zero]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_add (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
     (τ : InfinitePlace F → ℂ) (c : InfinitePlace F → ℝ) (y : InfinitePlace F → ι → ℝ) :
     gauss B ρ P (fun w => τ w + (c w : ℝ)) y = gauss B ρ P τ y *
@@ -58,6 +78,13 @@ theorem gauss_add (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) 
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `gauss`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hre : (((c w : ℝ) : ℂ) ^ 2 * τ w).re = c w ^ 2 * (τ w).re`. Rewrite using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+
+Establish `him : (((c w : ℝ) : ℂ) ^ 2 * τ w).im = c w ^ 2 * (τ w).im`. Rewrite using `[← Complex.ofReal_pow, Complex.im_ofReal_mul]`. Rewrite using `[hre, him]`. Simplify using `only [Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_sq (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
     (τ : InfinitePlace F → ℂ) (c : InfinitePlace F → ℝ) (y : InfinitePlace F → ι → ℝ) :
     gauss B ρ P (fun w => ((c w : ℝ) : ℂ) ^ 2 * τ w) y = gauss B ρ P τ (fun w => c w • y w) := by
@@ -73,6 +100,19 @@ theorem gauss_sq (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨hT, -, -, -, hρ, -, -⟩` from `hQ`. Take `⟨hOf, hOi⟩` from `hO`. Use `set t : F := x ⬝ᵥ (B *ᵥ x) with ht`. Establish `hfin : qf (hf F) (Bf B) (gf *ᵥ fun j => algebraMap F (A F) (x j)) = algebraMap F (A F) (1 / 2 * t)`. Unfold `qf`.
+
+Rewrite using `[form_mulVec gf (Bf B) hOf]`. Use `form_map (algebraMap F (A F)) B x` as an intermediate fact. Unfold `Bf hf`. Rewrite using `[this, map_mul]`. Establish `hinf : ∀ w, (gi w *ᵥ fun j => ρ w (x j)) ⬝ᵥ (B.map (ρ w) *ᵥ (gi w *ᵥ fun j => ρ w (x j))) = ρ w t`.
+
+Introduce `w`. Rewrite using `[form_mulVec (gi w) _ (hOi w), form_map]`. Establish `hphase : ψ (algebraMap F (A F) b * algebraMap F (A F) (1 / 2 * t)) * Complex.exp ((Real.pi : ℂ) * Complex.I * ∑ w, (((ρ w b : ℝ) : ℂ) * ((ρ w t : ℝ) : ℂ))) = 1`. Rewrite using `[← map_mul, hψ.2, trace_eq_sum hT ρ hρ, ← Complex.exp_add]`. Establish `: ∑ w, ((ρ w (b * (1 / 2 * t)) : ℝ) : ℂ) = (1 / 2) * ∑ w, (((ρ w b : ℝ) : ℂ) * ((ρ w t : ℝ) : ℂ))`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_div₀, map_one, map_ofNat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Establish `h0 : -(2 * (Real.pi : ℂ) * Complex.I) * (1 / 2 * ∑ w, (((ρ w b : ℝ) : ℂ) * ((ρ w t : ℝ) : ℂ))) + (Real.pi : ℂ) * Complex.I * ∑ w, (((ρ w b : ℝ) : ℂ) * ((ρ w t : ℝ) : ℂ)) = 0` using `by ring`. Rewrite using `[h0, Complex.exp_zero]`. Unfold `thTerm opU`. Rewrite using `[gauss_add B ρ P τ (fun w => ρ w b), hfin]`.
+
+Simplify using `only [hinf]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem term_U (ψ : AddChar (A F) ℂ) (hψ : IsStdChar F ψ) (M : ℕ) (B : Matrix ι ι F)
     (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ) (hQ : QSetup M B ρ P)
     (gf : Matrix ι ι (A F)) (gi : InfinitePlace F → Matrix ι ι ℝ) (hO : IsOrth B ρ gf gi)
@@ -115,6 +155,13 @@ theorem term_U (ψ : AddChar (A F) ℂ) (hψ : IsStdChar F ψ) (M : ℕ) (B : Ma
           gauss B ρ P τ fun w => gi w *ᵥ fun j => ρ w (x j)) := by ring
     _ = _ := by rw [hphase, one_mul]
 
+/- English proof (translation)
+Unfold `thTerm opD`. Rewrite using `[gauss_sq B ρ P τ (fun w => ρ w a)]`. Establish `h1 : (algebraMap F (A F) a • gf *ᵥ fun j => algebraMap F (A F) (x j)) = gf *ᵥ fun j => algebraMap F (A F) ((a • x) j)`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Establish `h2 : (fun w => ρ w a • gi w *ᵥ fun j => ρ w (x j)) = fun w => gi w *ᵥ fun j => ρ w ((a • x) j)`. Use function extensionality and compare the values at `w`. Rewrite using `[← Matrix.mulVec_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem term_D (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
     (gf : Matrix ι ι (A F)) (gi : InfinitePlace F → Matrix ι ι ℝ)
     (φ : (ι → A F) → ℂ) (τ : InfinitePlace F → ℂ) (a : F) (x : ι → F) :
@@ -138,6 +185,13 @@ theorem term_D (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P 
   rw [h1, h2]
   simp
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ ι _ _ M B ρ P hQ gf gi hO φ τ`. Use `⟨fun b => ?_, fun a ha => ?_, fun c => ?_⟩` and prove the remaining obligations. Unfold `theta`. Conclude with `tsum_congr fun x => term_U ψ hψ M B ρ P hQ gf gi hO φ τ b x`. Unfold `theta`.
+
+Simplify using `only [term_D]`. Conclude with `(MulAction.toPerm (Units.mk0 a ha) : Equiv.Perm (ι → F)).tsum_eq (thTerm B ρ P gf gi φ τ)`. Unfold `theta`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
+
+Simplify using `[thTerm, mul_assoc]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F], ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ (gf : Matrix ι ι (A F)) (gi : InfinitePlace F → Matrix ι ι ℝ), IsOrth B ρ gf gi → ∀ (φ : (ι → A F) → ℂ) (τ : InfinitePlace F → ℂ), (∀ b : F, theta B ρ P gf gi (opU ψ (hf F) (Bf B) (algebraMap F (A F) b) φ) (fun w => τ w + (ρ w b : ℝ)) = theta B ρ P gf gi φ τ) ∧ (∀ a : F, a ≠ 0 → theta B ρ P gf gi (opD 1 (algebraMap F (A F) a) φ) (fun w => ((ρ w a : ℝ) : ℂ) ^ 2 * τ w) = theta B ρ P gf gi φ τ) ∧ ∀ c : ℂ, theta B ρ P gf gi (c • φ) τ = c * theta B ρ P gf gi φ τ := by
   intro F _ _ ψ hψ ι _ _ M B ρ P hQ gf gi hO φ τ
   refine ⟨fun b => ?_, fun a ha => ?_, fun c => ?_⟩

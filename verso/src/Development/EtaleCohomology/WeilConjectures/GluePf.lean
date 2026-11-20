@@ -15,6 +15,19 @@ def Sig : Prop := ∀ (l r : ℕ) (P : SPair l r) {T : Type} (Q : T → SPair l 
 def ShvSigma : Prop := ∀ (R : Type) [CommRing R] (F : GlobalTheory.EtC.Shv R) {T : Type} {Y : T → Scheme.{0}} (c : Cofan Y), IsColimit c →
   Function.Bijective (fun (s : GlobalTheory.EtC.Sec F c.pt) (t : T) => GlobalTheory.EtC.Sec.res (c.inj t) s)
 
+/- English proof (translation)
+Introduce `l _ r P c i n x hx`. Use `choose Q g ht hz using hx`. Take `⟨P', f, a, hfa, ⟨hX⟩, ⟨hU⟩, hsurj⟩` from `hS l r P Q g`. Use `⟨P', f, hsurj fun t => ⟨t, ht t⟩, ?_⟩` and prove the remaining obligations. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+
+Consider the case `H z => ?_`. Establish `key : ∀ t, ∃ y : SecI (l ^ c) i (Q t).X (n - 1), resA (l ^ c) i (Q t).j (n - 1) y = 0 ∧ dA (l ^ c) i (Q t).X (n - 1) n y = resA (l ^ c) i (g t).fX n z.1`. Introduce `t`. Establish `h` using `hz t`. Unfold `pullZ at h`.
+
+Rewrite `h` using `[QuotientAddGroup.map_mk, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Take `⟨y, hy, e⟩` from `h`. Conclude with `⟨y, hy, e⟩`. Use `choose y hy hd using key`. Take `⟨Y, hY⟩` from `(hF _ ((res _ (tw (l ^ c) i)).X (n - 1)) _ hX).2 y`.
+
+Establish `hYt : ∀ t, resA (l ^ c) i (a t).fX (n - 1) Y = y t` using `fun t => congrFun hY t`. Unfold `pullZ`. Rewrite using `[QuotientAddGroup.map_mk, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Use `⟨Y, ?_, ?_⟩` and prove the remaining obligations. Use `show resA (l ^ c) i P'.j (n - 1) Y = 0`.
+
+Apply `(hF _ ((res _ (tw (l ^ c) i)).X (n - 1)) _ hU).1` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `resA (l ^ c) i (a t).fU (n - 1) (resA (l ^ c) i P'.j (n - 1) Y) = resA (l ^ c) i (a t).fU (n - 1) 0`. Rewrite using `[map_zero, ← resA_comp, (a t).sqU, resA_comp, hYt, hy]`. Use `show dA (l ^ c) i P'.X (n - 1) n Y = resA (l ^ c) i f.fX n z.1`.
+
+Apply `(hF _ ((res _ (tw (l ^ c) i)).X n) _ hX).1` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `resA (l ^ c) i (a t).fX n (dA (l ^ c) i P'.X (n - 1) n Y) = resA (l ^ c) i (a t).fX n (resA (l ^ c) i f.fX n z.1)`. Rewrite using `[resA_dA, hYt, hd, ← resA_comp, hfa]`.
+-/
 theorem glue_of (hS : Sig) (hF : ShvSigma) : Glue := by
   intro l _ r P c i n x hx
   choose Q g ht hz using hx

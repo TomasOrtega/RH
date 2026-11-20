@@ -11,6 +11,9 @@ namespace Formalism.L2.SG.RealObj.EnergyConvJ
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
+/- English proof (translation)
+Establish `h2` using `(transpC' C τ).2.1`. Use `show X.B.σ (vOf X τ) (Qcs C τ * (Qics C τ * uMat y * Qcs C τ) * Qics C τ) = _`. Rewrite using `[show Qcs C τ * (Qics C τ * uMat y * Qcs C τ) * Qics C τ = (Qcs C τ * Qics C τ) * uMat y * (Qcs C τ * Qics C τ) by`. Simplify using `only [Matrix.mul_assoc], h2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem sigC_Tm (C : Choice X θ) (τ : D.what₂.Tau) (y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     sigB X (Qcs C τ) (Qics C τ) τ (Matrix.of (Tm C τ y)) = X.B.σ (vOf X τ) (uMat y) := by
   have h2 := (transpC' C τ).2.1
@@ -18,6 +21,11 @@ theorem sigC_Tm (C : Choice X θ) (τ : D.what₂.Tau) (y : Formalism.REAL.UJ (X
   rw [show Qcs C τ * (Qics C τ * uMat y * Qcs C τ) * Qics C τ = (Qcs C τ * Qics C τ) * uMat y * (Qcs C τ * Qics C τ) by
     simp only [Matrix.mul_assoc], h2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← comap_lint C τ h0 (fun m => ∫⁻ m', ∫⁻ p, ∫⁻ p', G m m' p p' ∂μ1' ∂μ1 ∂ν0')]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← comap_lint C τ h0' (fun m' => ∫⁻ p, ∫⁻ p', G (Tm C τ x) m' p p' ∂μ1' ∂μ1)]`. Use `lintegral_congr fun x' => ?_` and prove the remaining obligations. Rewrite using `[← comap_lint C τ h1 (fun p => ∫⁻ p', G (Tm C τ x) (Tm C τ x') p p' ∂μ1')]`.
+
+Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Rewrite using `[← comap_lint C τ h1' (fun p' => G (Tm C τ x) (Tm C τ x') (Tm C τ s) p')]`.
+-/
 theorem lintegral_four_comap (C : Choice X θ) (τ : D.what₂.Tau) {ν0 ν0' μ1 μ1' : Measure (Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)}
     (h0 : ν0 {m | Matrix.of m ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)} = 0)
     (h0' : ν0' {m | Matrix.of m ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)} = 0)
@@ -36,6 +44,9 @@ theorem lintegral_four_comap (C : Choice X θ) (τ : D.what₂.Tau) {ν0 ν0' μ
   refine lintegral_congr fun s => ?_
   rw [← comap_lint C τ h1' (fun p' => G (Tm C τ x) (Tm C τ x') (Tm C τ s) p')]
 
+/- English proof (translation)
+Rewrite using `[← comap_lint C τ h0 (fun m => ∫⁻ m', ∫⁻ p, G m m' p ∂μ1 ∂ν0)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← comap_lint C τ h0 (fun m' => ∫⁻ p, G (Tm C τ x) m' p ∂μ1)]`. Use `lintegral_congr fun x' => ?_` and prove the remaining obligations. Rewrite using `[← comap_lint C τ h1 (fun p => G (Tm C τ x) (Tm C τ x') p)]`.
+-/
 theorem lintegral_three_comap (C : Choice X θ) (τ : D.what₂.Tau) {ν0 μ1 : Measure (Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)}
     (h0 : ν0 {m | Matrix.of m ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)} = 0)
     (h1 : μ1 {m | Matrix.of m ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)} = 0)

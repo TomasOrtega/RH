@@ -4,6 +4,13 @@ open scoped MatrixGroups
 
 namespace GlobalTheory.KZ.H3
 
+/- English proof (translation)
+Introduce `G _ R _ V _ _ ρ hmul hone h2 S hS Δ hΔ hΔρ c hc hcomm z hzS hz hzΔ`. Take `⟨u, hu⟩` from `h2`. Use `⟨-((↑u⁻¹ : R) • z c), S.neg_mem (S.smul_mem _ (hzS c)), fun g => ?_⟩` and prove the remaining obligations. Establish `key : ρ g (z c) + z g = -z g + z c`. Establish `e1 : z (c * g) = z (g * c)`.
+
+Establish `: c * g = (c * g * c⁻¹ * g⁻¹) * (g * c)` using `by group`. Rewrite using `[this, hz, hzΔ _ (hcomm g), map_zero, zero_add]`. Rewrite `e1` using `[hz, hz, hc _ (hzS g)]`. Conclude with `e1`. Establish `h2z : (2 : R) • z g = z c - ρ g (z c)`.
+
+Rewrite using `[two_smul, ← sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_smul, h2z, map_neg, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cocycle_isCoboundary_of_neg_central : ∀ (G : Type) [Group G] (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module R V] (ρ : G → V →ₗ[R] V), (∀ g h v, ρ (g * h) v = ρ h (ρ g v)) → (∀ v, ρ 1 v = v) → IsUnit (2 : R) → ∀ (S : Submodule R V), (∀ g, ∀ v ∈ S, ρ g v ∈ S) → ∀ (Δ : Subgroup G), Δ.Normal → (∀ δ ∈ Δ, ∀ v, ρ δ v = v) → ∀ c : G, (∀ v ∈ S, ρ c v = -v) → (∀ g, c * g * c⁻¹ * g⁻¹ ∈ Δ) → ∀ z : G → V, (∀ g, z g ∈ S) → (∀ g h, z (g * h) = ρ h (z g) + z h) → (∀ δ ∈ Δ, z δ = 0) → ∃ p ∈ S, ∀ g, z g = ρ g p - p := by
   intro G _ R _ V _ _ ρ hmul hone h2 S hS Δ hΔ hΔρ c hc hcomm z hzS hz hzΔ
   obtain ⟨u, hu⟩ := h2

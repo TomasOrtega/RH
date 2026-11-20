@@ -15,6 +15,13 @@ section General
 
 variable {R : Type} [CommRing R] [IsDomain R] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `h1 : ((M - 1).map (algebraMap R (FractionRing R))).mulVec x = 0`. Establish `e : (M - 1).map (algebraMap R (FractionRing R)) = M.map (algebraMap R (FractionRing R)) - 1`. Use extensionality with `a b`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, apply_ite (algebraMap R (FractionRing R))]`. Rewrite using `[e, Matrix.sub_mulVec, hx, Matrix.one_mulVec, sub_self]`.
+
+Establish `h2 : ((M - 1).map (algebraMap R (FractionRing R))).det ≠ 0`. Establish `e : ((M - 1).map (algebraMap R (FractionRing R))).det = algebraMap R (FractionRing R) (M - 1).det`. Simplify using `using ((algebraMap R (FractionRing R)).map_det (M - 1)).symm`. Rewrite using `[e]`. Conclude with `fun h0 => h ((IsFractionRing.injective R (FractionRing R)) (by simpa using h0))`.
+
+Conclude with `Matrix.eq_zero_of_mulVec_eq_zero h2 h1`.
+-/
 theorem eq_zero_of_fixed {M : Matrix n n R} (h : (M - 1).det ≠ 0)
     {x : n → FractionRing R} (hx : (M.map (algebraMap R (FractionRing R))).mulVec x = x) : x = 0 := by
   have h1 : ((M - 1).map (algebraMap R (FractionRing R))).mulVec x = 0 := by
@@ -31,6 +38,11 @@ theorem eq_zero_of_fixed {M : Matrix n n R} (h : (M - 1).det ≠ 0)
     exact fun h0 => h ((IsFractionRing.injective R (FractionRing R)) (by simpa using h0))
   exact Matrix.eq_zero_of_mulVec_eq_zero h2 h1
 
+/- English proof (translation)
+Establish `e : (M⁻¹).transpose - 1 = (M⁻¹ - 1).transpose` using `by simp`. Rewrite using `[e, Matrix.det_transpose]`. Introduce `h0`. Establish `h1 : (M⁻¹ - 1) * M = -(M - 1)`. Rewrite using `[sub_mul, Matrix.nonsing_inv_mul _ hu, one_mul]`.
+
+Normalize the expressions using the abelian group laws. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_neg]`. Establish `h3 : ((-1 : R) ^ Fintype.card n) ≠ 0` using `pow_ne_zero _ (by simp)`. Conclude with `h (by simpa [h3] using h2.symm)`.
+-/
 theorem det_inv_transpose_sub_one_ne_zero {M : Matrix n n R} (hu : IsUnit M.det)
     (h : (M - 1).det ≠ 0) : ((M⁻¹).transpose - 1).det ≠ 0 := by
   have e : (M⁻¹).transpose - 1 = (M⁻¹ - 1).transpose := by simp
@@ -46,6 +58,13 @@ theorem det_inv_transpose_sub_one_ne_zero {M : Matrix n n R} (hu : IsUnit M.det)
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Introduce `h0`. Establish `e1 : P - (c : R) • (1 : Matrix n n R) = (c : R) • ((((c⁻¹ : Rˣ) : R) • P) - 1)`. Rewrite using `[smul_sub, smul_smul, Units.mul_inv, one_smul]`. Establish `e2 : (P - (c : R) • (1 : Matrix n n R)).det = 0`. Rewrite using `[e1, Matrix.det_smul, h0, mul_zero]`.
+
+Apply `h` to reduce the goal to its premises. Establish `e3 : P.map (IsLocalRing.residue R) - (IsLocalRing.residue R (c : R)) • (1 : Matrix n n _) = (P - (c : R) • (1 : Matrix n n R)).map (IsLocalRing.residue R)`. Use extensionality with `a b`. Simplify using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply, apply_ite (IsLocalRing.residue R)]`. Rewrite using `[e3]`.
+
+Use `(IsLocalRing.residue R).map_det (P - (c : R) • (1 : Matrix n n R))` as an intermediate fact. Rewrite `this` using `[e2, map_zero]`. Simplify using `using this.symm`.
+-/
 theorem det_scaled_sub_one_ne_zero [IsLocalRing R] (P : Matrix n n R) (c : Rˣ)
     (h : (P.map (IsLocalRing.residue R) - (IsLocalRing.residue R (c : R)) • (1 : Matrix n n _)).det ≠ 0) :
     ((((c⁻¹ : Rˣ) : R) • P) - 1).det ≠ 0 := by
@@ -66,6 +85,21 @@ theorem det_scaled_sub_one_ne_zero [IsLocalRing R] (P : Matrix n n R) (c : Rˣ)
 
 end General
 
+/- English proof (translation)
+Introduce `D i s h k hk v hv`. Establish `hvl : v ∉ placesOver D.host.E (D.ntw.l i)`. Introduce `hl`. Establish `hlp : (D.ntw.l i).Prime` using `Fact.out`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime k) hlp).2 hk)`.
+
+Establish `h1 : (1 : 𝓞 D.host.E) ∈ v.asIdeal`. Establish `e : (1 : 𝓞 D.host.E) = (a : 𝓞 D.host.E) * ((D.host.g k : ℕ) : 𝓞 D.host.E) + (b : 𝓞 D.host.E) * ((D.ntw.l i : ℕ) : 𝓞 D.host.E)`. Establish `h2` using `congrArg (Int.cast : ℤ → 𝓞 D.host.E) hab`. Move the coercions through the operations in `at h2`. Conclude with `h2.symm`.
+
+Rewrite using `[e]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hl)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `key : ∀ A : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) A v → ∃ σ ∈ Ine (F := D.host.E) A, (Tmat i s σ - 1).det ≠ 0 := by`. Introduce `A hA`.
+
+Take `⟨-, σ, hσ, hdet⟩` from `h.2 k hk v hv A hA`. Conclude with `⟨σ, hσ, det_scaled_sub_one_ne_zero _ _ hdet⟩`. Prove the components needed by the constructor for the conclusion. Introduce `A hA x hx`. Take `⟨σ, hσ, hd⟩` from `key A hA`.
+
+Conclude with `eq_zero_of_fixed hd (hx σ (Ine_le_Dec A hσ))`. Introduce `A hA x hx`. Take `⟨σ, hσ, hd⟩` from `key A hA`. Establish `he` using `(GlobalTheory.TripleGal.eps0_unram_frob D i v hvl A hA).1 σ hσ`. Establish `hu : IsUnit (Tmat i s σ).det`.
+
+Rewrite using `[← Tgl_coe]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`. Establish `hT : Tdual i s σ = ((Tmat i s σ)⁻¹).transpose`. Simplify using `[Tdual, he]`. Use `hx σ (Ine_le_Dec A hσ)` as an intermediate fact.
+
+Rewrite `this` using `[hT]`. Conclude with `eq_zero_of_fixed (det_inv_transpose_sub_one_ne_zero hu hd) this`.
+-/
 theorem noInv_of_adm2At : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i), ValuationStabilityAtRing D.ntw i s → ∀ k, D.host.g k ≠ D.ntw.l i → ∀ v ∈ placesOver D.host.E (D.host.g k), NoInv i (Tmat i s) v ∧ NoInv i (Tdual i s) v := by
   intro D i s h k hk v hv
   have hvl : v ∉ placesOver D.host.E (D.ntw.l i) := by

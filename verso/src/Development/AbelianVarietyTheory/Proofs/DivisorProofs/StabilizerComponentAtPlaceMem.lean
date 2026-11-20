@@ -12,6 +12,9 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 
 namespace GlobalTheory.ThK.ConeEuler.StabCompAt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n X K hK k hk v`. Conclude with `(GlobalTheory.ThK.ConeEuler.StabComp.comp_mem_of_isStab F E σ B n X K hK k hk).1 v`.
+-/
 theorem compAt_mem_of_isStab : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (B : Base F E) {n : ℕ} {X : Spc F E n} (K : Subgroup (UA σ X.J)), IsStab B K →
     ∀ k ∈ K, ∀ v : Pl F, compAt σ X.J v k ∈ K := by

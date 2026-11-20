@@ -24,11 +24,19 @@ namespace GlobalTheory.Core.Mi.LatMatch.CoreHomothety
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+-/
 theorem mulVec_mem_idAt {P : GlobalTheory.FinPl.Pl D → Prop} {m l : ℕ} (X : Matrix (Fin m) (Fin l) (AE D))
     {y : Fin l → AE D} (hy : ∀ i, y i ∈ idAt D P) (i : Fin m) : (X *ᵥ y) i ∈ idAt D P := by
   simp only [Matrix.mulVec, dotProduct]
   exact Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1` using `h (mt S g⁻¹ *ᵥ y) (mulVec_mem_idAt _ hy)`. Establish `h2 : mt S g *ᵥ (mt S g⁻¹ *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, show mt S g * mt S g⁻¹ = mt S (g * g⁻¹) from rfl, mul_inv_cancel, mt_one, Matrix.one_mulVec]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1.symm`.
+-/
 theorem moves_inv {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} (h : Moves S g L M P) :
     Moves S g⁻¹ M L P := by
   intro y hy
@@ -39,12 +47,20 @@ theorem moves_inv {S : HSp D} {g : GA D S} {L M : Lat S} {P : GlobalTheory.FinPl
   rw [h2] at h1
   exact h1.symm
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[h1 y hy, h2 _ (mulVec_mem_idAt _ hy), Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem moves_trans {S : HSp D} {g h : GA D S} {L M N : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} (h1 : Moves S g L M P)
     (h2 : Moves S h M N P) : Moves S (h * g) L N P := by
   intro y hy
   rw [h1 y hy, h2 _ (mulVec_mem_idAt _ hy), Matrix.mulVec_mulVec]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `e : h⁻¹ * (h * a * h⁻¹ * h) = a` using `by group`. Use `moves_trans (moves_trans hM H) (moves_inv hM)` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+
+Introduce `H`. Use `moves_trans (moves_trans (moves_inv hM) H) hM` as an intermediate fact. Rewrite `this` using `[← mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem moves_conj {S : HSp D} {h : GA D S} {L M : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} (hM : Moves S h L M P)
     (a : GA D S) : Moves S (h * a * h⁻¹) M M P ↔ Moves S a L L P := by
   constructor
@@ -56,6 +72,9 @@ theorem moves_conj {S : HSp D} {h : GA D S} {L M : Lat S} {P : GlobalTheory.FinP
     have := moves_trans (moves_trans (moves_inv hM) H) hM
     rwa [← mul_assoc] at this
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[hS y hy, hM (c • (mt S g *ᵥ y)) (fun i => Ideal.mul_mem_left _ c (mulVec_mem_idAt _ hy i)), Matrix.mulVec_smul, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem sMoves_trans {S : HSp D} {c : AE D} {g h : GA D S} {L M N : Lat S} {v : GlobalTheory.FinPl.Pl D}
     (hS : SMoves S c g L M v) (hM : Moves S h M N (· = v)) : SMoves S c (h * g) L N v := by
   intro y hy
@@ -68,6 +87,17 @@ section Split
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `hgx : ∀ x : n → k, g • x = s • x` using `fun x => by show g.val *ᵥ x = s • x`. Rewrite using `[hg, Matrix.smul_mulVec, Matrix.one_mulVec]`. Establish `hgi : ∀ x : n → k, g⁻¹ • x = s⁻¹ • x` using `fun x => by`. Establish `: x = g • (s⁻¹ • x)` using `by rw [hgx, smul_smul, mul_inv_cancel₀ hs, one_smul]`. Use `conv_lhs => rw [this]`.
+
+Rewrite using `[inv_smul_smul]`. Establish `hker : ∀ x : n → k, x ∈ P'.ker ↔ s⁻¹ • x ∈ P.ker` using `fun x => by`. Rewrite using `[hP, GlobalTheory.LatPair.Pair.smul_ker, GlobalTheory.LatPair.mem_smul_iff, hgi]`. Establish `hvec : P'.vec - s • P.vec ∈ P'.ker`. Establish `h1` using `P.hasVal_vec.gl_smul g`.
+
+Rewrite `h1` using `[← hP, hgx]`. Use `GlobalTheory.LatPair.Pair.sub_vec_mem h1` as an intermediate fact. Rewrite using `[← neg_sub]`. Conclude with `neg_mem this`. Rewrite using `[GlobalTheory.LevelUnfold.mem_gluedS, GlobalTheory.LevelUnfold.mem_gluedS]`.
+
+Use `exists_congr fun σ => and_congr_left' ?_` and prove the remaining obligations. Establish `e1 : (Sum.elim u t : n ⊕ Fin 1 → k) ∘ Sum.inl = u` using `rfl`. Establish `e2 : (Sum.elim (s • u) t : n ⊕ Fin 1 → k) ∘ Sum.inl = s • u` using `rfl`. Rewrite using `[e1, e2]`. Establish `e3 : s • u - σ • P'.vec = s • (u - σ • P.vec) - σ • (P'.vec - s • P.vec)`.
+
+Simplify using `only [smul_sub]`. Rewrite using `[smul_comm σ s P.vec]`. Normalize the expressions using the abelian group laws. Rewrite using `[e3, Submodule.sub_mem_iff_left _ (Submodule.smul_mem _ σ hvec), hker, smul_smul, inv_mul_cancel₀ hs, one_smul]`.
+-/
 theorem mem_gluedS_smul (q : GlobalTheory.LatPair.Unif k) {P P' : GlobalTheory.LatPair.Pair k n} {g : GL n k} {s : k} (hs : s ≠ 0)
     (hg : g.val = s • (1 : Matrix n n k)) (hP : P' = g • P) (u : n → k) (t : Fin 1 → k) :
     Sum.elim u t ∈ GlobalTheory.LatPair.gluedS q 1 P.ker P.vec ↔ Sum.elim (s • u) t ∈ GlobalTheory.LatPair.gluedS q 1 P'.ker P'.vec := by
@@ -97,6 +127,11 @@ theorem mem_gluedS_smul (q : GlobalTheory.LatPair.Unif k) {P P' : GlobalTheory.L
     abel
   rw [e3, Submodule.sub_mem_iff_left _ (Submodule.smul_mem _ σ hvec), hker, smul_smul, inv_mul_cancel₀ hs, one_smul]
 
+/- English proof (translation)
+Establish `h3 : (mt A a).map p.pr = β.b * (p.pr c' • (1 : Matrix n n k)) * β.b'`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, β.bb', ha]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `e` using `GlobalTheory.FinPl.Comm.block_calc p.pr _ _ _ _ _ _ _ (o.emb_jA a 1) (GlobalTheory.FinPl.Comm.emb_vecB o ζ a) h3 β.b'b`. Rewrite `e` using `[← hsum]`. Rewrite using `[Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Apply the tactic sequence `ext (i | j) <;> simp [Matrix.fromBlocks_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+-/
 theorem emb_central_frame {p : SplitPt D k} {S A L : HSp D} {o : OrthDec S A L} {ζ : Fin L.rank → D.host.E}
     {β : GlobalTheory.FinPl.Frame p A n} {β₀ : GlobalTheory.FinPl.Frame p S (n ⊕ Fin 1)} (hsum : IsSumFrame o ζ β β₀) {a : GA D A}
     {c' : AE D} (ha : mt A a = c' • (1 : Matrix (Fin A.rank) (Fin A.rank) (AE D))) (y : n ⊕ Fin 1 → k) :
@@ -115,6 +150,25 @@ theorem emb_central_frame {p : SplitPt D k} {S A L : HSp D} {o : OrthDec S A L} 
 
 end Split
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S A L o ζ n _ _ β β₀ M M' μ T q P a₀ hn hsum hM hM' hlat hμ hline hnorm hval hconj`. Take `⟨M'', hsd'', hmv⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S M' hM').1 (o.emb (a₀, 1))⁻¹`. Establish `hmv' : Moves S (o.emb (a₀, 1)) M'' M' (· = p.v)`. Use `moves_inv (hmv (· = p.v))` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Establish `hline'' : LineAt (vecB o ζ) μ M'' p.v`. Introduce `b hb`. Rewrite using `[← hline b hb, hmv' (b • ratV (vecB o ζ)) (fun i => Ideal.mul_mem_right _ _ hb), Matrix.mulVec_smul, GlobalTheory.FinPl.Comm.emb_vecB]`. Take `⟨P', hP'⟩` from `GlobalTheory.T.selfDualCore_component_gluedAlongPair D k p S A L o ζ n β β₀ M'' μ T q hsum hsd'' hμ hline'' hnorm hval`. Establish `hm : p.pr (incA D μ) ≠ 0`.
+
+Introduce `h0`. Establish `h1 : p.pr (incA D μ * incA D μ⁻¹) = 1` using `by rw [← map_mul, mul_inv_cancel₀ hμ, map_one, map_one]`. Rewrite `h1` using `[map_mul, h0, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `hW : GluedW β₀ M q 1 P` using `fun x => by`.
+
+Establish `e : (Sum.elim (fun a => x (Sum.inl a)) (fun j => 1 * x (Sum.inr j)) : n ⊕ Fin 1 → k) = x`. Apply the tactic sequence `ext (i | i) <;> simp`. Rewrite using `[e]`. Conclude with `(hlat x).symm`. Establish `hstab : ∀ g : GL n k, g • P = P ↔ g • P' = P'` using `fun g => by`.
+
+Rewrite using `[← GlobalTheory.T.orthogonalEmbedding_keeps_gluedCore_iff_fixes_pair D k p S A L o ζ n β β₀ M q 1 P hsum hM one_ne_zero hW g, ← GlobalTheory.T.orthogonalEmbedding_keeps_gluedCore_iff_fixes_pair D k p S A L o ζ n β β₀ M'' q _ P' hsum hsd'' hm hP' g, hconj _ (GlobalTheory.FinPl.Fra …`. Establish `e : o.emb (a₀ * β.gl g * a₀⁻¹, 1) = o.emb (a₀, 1) * o.emb (β.gl g, 1) * (o.emb (a₀, 1))⁻¹`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, Prod.inv_mk, Prod.mk_mul_mk, Prod.mk_mul_mk, inv_one, mul_one, mul_one]`. Rewrite using `[e, moves_conj hmv']`. Take `⟨g, s, hs, hg, hPP⟩` from `GlobalTheory.T.latticeResiduePair_eq_scalar_of_same_stabilizer k n P P' hn hstab`.
+
+Take `⟨c, hc, hcpr⟩` from `GlobalTheory.T.exists_normOneIdele_with_splitPlace_component D k p (p.pr (incA D μ))⁻¹ (inv_ne_zero hm)`. Take `⟨c', hc', hc'pr⟩` from `GlobalTheory.T.exists_normOneIdele_with_splitPlace_component D k p (s * p.pr (incA D μ)) (mul_ne_zero hs hm)`. Take `⟨a, hcen, hamt⟩` from `GlobalTheory.T.exists_centralUnitary_scalar_of_normOneIdele D A p.v c' hc'`. Use `⟨a, c, hcen, hc, ?_⟩` and prove the remaining obligations. Establish `key : SMoves S c (o.emb (a, 1)) M M'' p.v`.
+
+Use `GlobalTheory.T.normOneHomothety_carries_selfDual_of_splitComponent D k p S M M'' c (o.emb (a, 1)) hM hsd'' hc fun x => ?_` and prove the remaining obligations. Establish `hx : x = β₀.b *ᵥ (β₀.b' *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, β₀.bb', Matrix.one_mulVec]`. Rewrite using `[hx, emb_central_frame hsum hamt, ← Matrix.mulVec_smul, hW, hP']`. Use `(mem_gluedS_smul q hs hg hPP _ _).trans (iff_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Use extensionality with `(i | j)`. Simplify using `only [Sum.elim_inl, Pi.smul_apply, smul_eq_mul, hcpr, hc'pr]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Sum.elim_inr, Pi.smul_apply, smul_eq_mul, hcpr]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e : o.emb (a₀ * a, 1) = o.emb (a₀, 1) * o.emb (a, 1)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e]`. Conclude with `sMoves_trans key hmv'`.
+-/
 theorem exists_central_sMoves : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (n : Type) [Fintype n] [DecidableEq n] (β : GlobalTheory.FinPl.Frame p A n) (β₀ : GlobalTheory.FinPl.Frame p S (n ⊕ Fin 1)) (M M' : Lat S) (μ : D.host.E) (T : ℕ) (q : GlobalTheory.LatPair.Unif k) (P : GlobalTheory.LatPair.Pair k n) (a₀ : GA D A), 3 ≤ Fintype.card n → IsSumFrame o ζ β β₀ → IsSelfDualC S M → IsSelfDualC S M' → β₀.IsLat M (GlobalTheory.LatPair.gluedS q 1 P.ker P.vec) → μ ≠ 0 → LineAt (vecB o ζ) μ M' p.v → star ζ ⬝ᵥ L.gram *ᵥ ζ = -(μ * star μ * (T : D.host.E)) → valuation k (p.pr (incA D (T : D.host.E))) = valuation k ((q.1 : 𝒪[k]) : k) → (∀ a ∈ grpAt A (· = p.v), Moves S (o.emb (a, 1)) M M (· = p.v) ↔ Moves S (o.emb (a₀ * a * a₀⁻¹, 1)) M' M' (· = p.v)) → ∃ (a : GA D A) (c : AE D), CenAt A p.v a ∧ NormOneAt p.v c ∧ SMoves S c (o.emb (a₀ * a, 1)) M M' p.v := by
   intro D k _ _ _ _ p S A L o ζ n _ _ β β₀ M M' μ T q P a₀ hn hsum hM hM' hlat hμ hline hnorm hval hconj
   obtain ⟨M'', hsd'', hmv⟩ := (GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S M' hM').1 (o.emb (a₀, 1))⁻¹

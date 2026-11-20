@@ -10,10 +10,27 @@ namespace UpperTheory.V.Z.GSp4Splitting.OnePlaceCyclotomic
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   {E1 E2 : Fin n → Fin n → Module.End ℂ V}
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩`.
+-/
 private theorem mem1 (a b : Fin n) : E1 a b ∈ alg E1 E2 := Algebra.subset_adjoin ⟨a, b, Or.inl rfl⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩`.
+-/
 private theorem mem2 (a b : Fin n) : E2 a b ∈ alg E1 E2 := Algebra.subset_adjoin ⟨a, b, Or.inr rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ a b (x y : V), ⟪E1 a b x, y⟫_ℂ = ⟪x, E2 b a y⟫_ℂ ∧ ⟪E2 a b x, y⟫_ℂ = ⟪x, E1 b a y⟫_ℂ`. Introduce `a b x y`. Establish `h1` using `h.unitK a b x y`. Establish `h2` using `h.unitP a b x y`. Simplify using `only [kF, pF, LinearMap.add_apply, LinearMap.sub_apply, inner_add_left, inner_add_right, inner_sub_left, inner_sub_right] at h1 h2`.
+
+Conclude with `⟨by linear_combination (h1 + h2) / 2, by linear_combination (h1 - h2) / 2⟩`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨a, b, rfl | rfl⟩` from `hz`. Conclude with `⟨_, mem2 b a, fun x y => (key a b x y).1⟩`.
+
+Conclude with `⟨_, mem1 b a, fun x y => (key a b x y).2⟩`. Consider the case `algebraMap c`. Use `⟨algebraMap ℂ _ (starRingEnd ℂ c), Subalgebra.algebraMap_mem _ _, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[Module.algebraMap_end_apply, inner_smul_left, inner_smul_right, mul_comm]`. Consider the case `add u v _ _ hu hv`.
+
+Take `⟨u', hu', hu⟩` from `hu`. Take `⟨v', hv', hv⟩` from `hv`. Conclude with `⟨u' + v', add_mem hu' hv', fun x y => by simp [inner_add_left, inner_add_right, hu, hv]⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨u', hu', hu⟩` from `hu`.
+
+Take `⟨v', hv', hv⟩` from `hv`. Conclude with `⟨v' * u', mul_mem hv' hu', fun x y => by simp [hu, hv]⟩`.
+-/
 private theorem adj (h : IsPair E1 E2) {a : Module.End ℂ V} (ha : a ∈ alg E1 E2) :
     ∃ a' ∈ alg E1 E2, ∀ x y : V, ⟪a x, y⟫_ℂ = ⟪x, a' y⟫_ℂ := by
   have key : ∀ a b (x y : V), ⟪E1 a b x, y⟫_ℂ = ⟪x, E2 b a y⟫_ℂ ∧ ⟪E2 a b x, y⟫_ℂ = ⟪x, E1 b a y⟫_ℂ := by
@@ -40,6 +57,15 @@ private theorem adj (h : IsPair E1 E2) {a : Module.End ℂ V} (ha : a ∈ alg E1
     obtain ⟨v', hv', hv⟩ := hv
     exact ⟨v' * u', mul_mem hv' hu', fun x y => by simp [hu, hv]⟩
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨a, b, rfl | rfl⟩` from `hz`. Rewrite using `[hE, mul_assoc, hA, mul_one]`. Conclude with `mem2 a b`.
+
+Rewrite using `[mul_assoc, ← hE, ← mul_assoc, hA, one_mul]`. Conclude with `mem1 a b`. Consider the case `algebraMap c`. Rewrite using `[← Algebra.commutes, mul_assoc, hA, mul_one]`. Conclude with `Subalgebra.algebraMap_mem _ _`.
+
+Consider the case `add u v _ _ hu hv => rw [mul_add, add_mul]`. Conclude with `add_mem hu hv`. Consider the case `mul u v _ _ hu hv`. Establish `: A * (u * v) * A = (A * u * A) * (A * v * A)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[this]`. Conclude with `mul_mem hu hv`.
+-/
 private theorem twist {A : Module.End ℂ V} (hA : A * A = 1) (hE : ∀ a b, A * E1 a b = E2 a b * A)
     {a : Module.End ℂ V} (ha : a ∈ alg E1 E2) : A * a * A ∈ alg E1 E2 := by
   induction ha using Algebra.adjoin_induction with
@@ -68,13 +94,22 @@ private def cyc (x : V) : Submodule ℂ V where
     rintro c _ ⟨a, ha, rfl⟩
     exact ⟨c • a, Subalgebra.smul_mem _ ha c, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_mem _, rfl⟩`.
+-/
 private theorem cyc_self (x : V) : x ∈ cyc E1 E2 x := ⟨1, one_mem _, rfl⟩
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a * b, mul_mem ha hb, rfl⟩`.
+-/
 private theorem cyc_stab {x y : V} {a : Module.End ℂ V} (ha : a ∈ alg E1 E2) (hy : y ∈ cyc E1 E2 x) :
     a y ∈ cyc E1 E2 x := by
   obtain ⟨b, hb, rfl⟩ := hy
   exact ⟨a * b, mul_mem ha hb, rfl⟩
 
+/- English proof (translation)
+Introduce `_ hy` and use `cyc_stab (add_mem (mem1 a b) (mem2 a b)) hy`.
+-/
 private theorem cyc_K {x : V} (a b : Fin n) : ∀ y ∈ cyc E1 E2 x, kF E1 E2 a b y ∈ cyc E1 E2 x :=
   fun _ hy => cyc_stab (add_mem (mem1 a b) (mem2 a b)) hy
 
@@ -82,16 +117,25 @@ section Res
 
 variable {X : Submodule ℂ V}
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => intro a b x; simp only [epow]; split_ifs <;> simp`. Consider the case `succ m ih => intro a b x`. Simplify using `[epow, LinearMap.sum_apply, h, ih]`.
+-/
 private theorem epow_coe {F : Fin n → Fin n → Module.End ℂ V} {F' : Fin n → Fin n → Module.End ℂ X}
     (h : ∀ a b x, (F' a b x : V) = F a b x) (m : ℕ) : ∀ a b x, (epow F' m a b x : V) = epow F m a b x := by
   induction m with
   | zero => intro a b x; simp only [epow]; split_ifs <;> simp
   | succ m ih => intro a b x; simp [epow, LinearMap.sum_apply, h, ih]
 
+/- English proof (translation)
+Simplify using `[gelA, LinearMap.sum_apply, epow_coe h]`.
+-/
 private theorem gelA_coe {F : Fin n → Fin n → Module.End ℂ V} {F' : Fin n → Fin n → Module.End ℂ X}
     (h : ∀ a b x, (F' a b x : V) = F a b x) (m : ℕ) (x : X) : (gelA F' m x : V) = gelA F m x := by
   simp [gelA, LinearMap.sum_apply, epow_coe h]
 
+/- English proof (translation)
+Introduce `a b c d`. Use `hF a b c d` as an intermediate fact. Use extensionality with `x`. Establish `h2` using `LinearMap.congr_fun this x`. Apply the tactic sequence `split_ifs at h2 ⊢ <;> simpa [h] using h2`.
+-/
 private theorem gl_res {F : Fin n → Fin n → Module.End ℂ V} {F' : Fin n → Fin n → Module.End ℂ X}
     (h : ∀ a b x, (F' a b x : V) = F a b x) (hF : Formalism.REAL.GlRel F) : Formalism.REAL.GlRel F' := by
   intro a b c d
@@ -100,6 +144,13 @@ private theorem gl_res {F : Fin n → Fin n → Module.End ℂ V} {F' : Fin n �
   have h2 := LinearMap.congr_fun this x
   split_ifs at h2 ⊢ <;> simpa [h] using h2
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨a, b, rfl | rfl⟩` from `hz`. Conclude with `⟨_, mem1 a b, h1 a b⟩`. Conclude with `⟨_, mem2 a b, h2 a b⟩`.
+
+Consider the case `algebraMap c`. Conclude with `⟨algebraMap ℂ _ c, Subalgebra.algebraMap_mem _ _, fun x => by simp [Module.algebraMap_end_apply]⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨u', hu', hu⟩` from `hu`. Take `⟨v', hv', hv⟩` from `hv`.
+
+Conclude with `⟨u' + v', add_mem hu' hv', fun x => by simp [hu, hv]⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨u', hu', hu⟩` from `hu`. Take `⟨v', hv', hv⟩` from `hv`. Conclude with `⟨u' * v', mul_mem hu' hv', fun x => by simp [hu, hv]⟩`.
+-/
 private theorem alg_res {E1' E2' : Fin n → Fin n → Module.End ℂ X}
     (h1 : ∀ a b x, (E1' a b x : V) = E1 a b x) (h2 : ∀ a b x, (E2' a b x : V) = E2 a b x)
     {a : Module.End ℂ V} (ha : a ∈ alg E1 E2) : ∃ a' ∈ alg E1' E2', ∀ x : X, (a' x : V) = a x := by
@@ -119,6 +170,9 @@ private theorem alg_res {E1' E2' : Fin n → Fin n → Module.End ℂ X}
     obtain ⟨v', hv', hv⟩ := hv
     exact ⟨u' * v', mul_mem hu' hv', fun x => by simp [hu, hv]⟩
 
+/- English proof (translation)
+The claim follows from `gl_res h1 h.gl1 gl2 := gl_res h2 h.gl2 comm a b c d := by ext x simpa [h1, h2] using LinearMap.congr_fun (h.comm a b c d) x unitK a b x y := by simpa [kF, h1, h2, Submodule.coe_inner] using h.unitK a b x y unitP a b x y := by simpa [pF, h1, h2, Submodule.coe_inner] using h.unitP …`.
+-/
 private theorem pair_res {E1' E2' : Fin n → Fin n → Module.End ℂ X}
     (h1 : ∀ a b x, (E1' a b x : V) = E1 a b x) (h2 : ∀ a b x, (E2' a b x : V) = E2 a b x) (h : IsPair E1 E2) :
     IsPair E1' E2' where
@@ -130,11 +184,21 @@ private theorem pair_res {E1' E2' : Fin n → Fin n → Module.End ℂ X}
   unitK a b x y := by simpa [kF, h1, h2, Submodule.coe_inner] using h.unitK a b x y
   unitP a b x y := by simpa [pF, h1, h2, Submodule.coe_inner] using h.unitP a b x y
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.of_injective (X.subtype.restrict (p := S.comap X.subtype) (q := S) fun _ hx => hx) fun _ _ h => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : V)) h))`.
+-/
 private theorem fin_comap {S : Submodule ℂ V} (hS : FiniteDimensional ℂ S) :
     FiniteDimensional ℂ (S.comap X.subtype) :=
   FiniteDimensional.of_injective (X.subtype.restrict (p := S.comap X.subtype) (q := S) fun _ hx => hx)
     fun _ _ h => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : V)) h))
 
+/- English proof (translation)
+Use `⟨fun k x y => by simpa [Submodule.coe_inner, hσ] using hd.1 k x y, fun v => ?_⟩` and prove the remaining obligations. Take `⟨S, hfd, hv, hs, hk, hder⟩` from `hd.2 v`. Use `⟨S.comap X.subtype, fin_comap hfd, hv, fun k w hw => ?_, fun a b w hw => ?_, fun Y γ hγ w hw => ?_⟩` and prove the remaining obligations. Use `show (σ' k w : V) ∈ S`. Rewrite using `[hσ]`.
+
+Conclude with `hs k _ hw`. Use `show (F' a b w : V) ∈ S`. Rewrite using `[h]`. Conclude with `hk a b _ hw`. Establish `h0 : HasDerivAt (fun t : ℝ => (σ' (γ t) w : V)) ((∑ a, ∑ b, Y a b • F' a b w : X) : V) 0`.
+
+Simplify `hder Y γ hγ w hw` using `[hσ, h]`. Rewrite `h0`, the goal using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Conclude with `Asymptotics.isLittleO_norm_left.1 h0.norm_left`.
+-/
 private theorem der_res {σ : Un n →* (V →ₗ[ℂ] V)} {σ' : Un n →* (X →ₗ[ℂ] X)} {F : Fin n → Fin n → Module.End ℂ V}
     {F' : Fin n → Fin n → Module.End ℂ X} (h : ∀ a b x, (F' a b x : V) = F a b x)
     (hσ : ∀ k x, (σ' k x : V) = σ k x) (hd : IsDerivK σ F) : IsDerivK σ' F' := by
@@ -150,6 +214,11 @@ private theorem der_res {σ : Un n →* (V →ₗ[ℂ] V)} {σ' : Un n →* (X �
     rw [hasDerivAt_iff_isLittleO_nhds_zero] at h0 ⊢
     exact Asymptotics.isLittleO_norm_left.1 h0.norm_left
 
+/- English proof (translation)
+Simplify `hK.iso k x y fin v := by` using `[Submodule.coe_inner, hσ]`. Take `⟨S, hfd, hv, hs⟩` from `hK.fin v`. Use `⟨S.comap X.subtype, fin_comap hfd, hv, fun k w hw => ?_⟩` and prove the remaining obligations. Use `show (σ' k w : V) ∈ S`. Rewrite using `[hσ]`.
+
+Conclude with `hs k _ hw`. Use `cont v w := by simpa [Submodule.coe_inner, hσ] using hK.cont v w`.
+-/
 private theorem isK_res {σ : Un n →* (V →ₗ[ℂ] V)} {σ' : Un n →* (X →ₗ[ℂ] X)}
     (hσ : ∀ k x, (σ' k x : V) = σ k x) (hK : IsK σ) : IsK σ' where
   iso k x y := by simpa [Submodule.coe_inner, hσ] using hK.iso k x y
@@ -160,12 +229,22 @@ private theorem isK_res {σ : Un n →* (V →ₗ[ℂ] V)} {σ' : Un n →* (X �
     rw [hσ]; exact hs k _ hw
   cont v w := by simpa [Submodule.coe_inner, hσ] using hK.cont v w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ toFun := fun k => (σ k).restrict (h k) map_one' := by ext x; simp map_mul' := fun a b => by ext x; simp }, fun _ _ => rfl⟩`.
+-/
 private theorem rep_res {σ : Un n →* (V →ₗ[ℂ] V)} (h : ∀ k, ∀ x ∈ X, σ k x ∈ X) :
     ∃ σ' : Un n →* (X →ₗ[ℂ] X), ∀ k x, (σ' k x : V) = σ k x :=
   ⟨{ toFun := fun k => (σ k).restrict (h k)
      map_one' := by ext x; simp
      map_mul' := fun a b => by ext x; simp }, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Establish `hiff : (∀ x ∈ S.comap X.subtype, f' x ∈ S.comap X.subtype) ↔ ∀ x ∈ S, f x ∈ S`. Prove the components needed by the constructor for the conclusion. Introduce `H x hx`. Use `H ⟨x, hSX hx⟩ hx` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, Submodule.subtype_apply, h]`. Then use the resulting hypothesis.
+
+Introduce `H x hx`. Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply, h]`. Conclude with `H _ hx`. Unfold `trOn`. Distinguish the cases in `H : ∀ x ∈ S, f x ∈ S`.
+
+Rewrite using `[dif_pos H, dif_pos (hiff.2 H), ← LinearMap.trace_conj' _ (Submodule.comapSubtypeEquivOfLe hSX)]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[LinearEquiv.conj_apply, h, Submodule.comapSubtypeEquivOfLe]`. Rewrite using `[dif_neg H, dif_neg fun H' => H (hiff.1 H')]`.
+-/
 private theorem trOn_res {S : Submodule ℂ V} (hSX : S ≤ X) {f : Module.End ℂ V} {f' : Module.End ℂ X}
     (h : ∀ x, (f' x : V) = f x) : trOn (S.comap X.subtype) f' = trOn S f := by
   have hiff : (∀ x ∈ S.comap X.subtype, f' x ∈ S.comap X.subtype) ↔ ∀ x ∈ S, f x ∈ S := by
@@ -184,6 +263,19 @@ private theorem trOn_res {S : Submodule ℂ V} (hSX : S ≤ X) {f : Module.End �
     simp [LinearEquiv.conj_apply, h, Submodule.comapSubtypeEquivOfLe]
   · rw [dif_neg H, dif_neg fun H' => H (hiff.1 H')]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun t => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ξ, rfl⟩`. Use `hS _ (t.1 ξ).2 ?_` and prove the remaining obligations. Establish `ht : X.subtype ∘ₗ t.1 ∈ invA σ E` using `fun k ξ => by show ((t.1 _ : X) : V) = σ k (t.1 ξ : X)`.
+
+Rewrite using `[t.2 k ξ, hσ]`. Conclude with `le_iSup (fun t : invA σ E => LinearMap.range t.1) ⟨_, ht⟩ ⟨ξ, rfl⟩`. Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Establish `heq : ∀ k v, S.starProjection (σ k v) = σ k (S.starProjection v)`. Introduce `k v`.
+
+Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hst k _ (S.starProjection_apply_mem v)) fun w hw => ?_` and prove the remaining obligations. Establish `hw' : w = σ k (σ k⁻¹ w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← map_sub, hw', hK.iso]`. Conclude with `S.starProjection_inner_eq_zero v _ (hst _ _ hw)`.
+
+Set `p : V →ₗ[ℂ] X` to `S.starProjection.toLinearMap.codRestrict X fun v => hSX (S.starProjection_apply_mem v)`. Establish `hp : isoSp σ E ≤ (isoSp σ' E).comap p`. Use `iSup_le fun t => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ξ, rfl⟩`. Establish `ht : p ∘ₗ t.1 ∈ invA σ' E` using `fun k ξ => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hσ]`. Use `show S.starProjection (t.1 _) = σ k (S.starProjection (t.1 ξ))`. Rewrite using `[t.2 k ξ, heq]`. Conclude with `le_iSup (fun t : invA σ' E => LinearMap.range t.1) ⟨_, ht⟩ ⟨ξ, rfl⟩`.
+
+Introduce `x hx`. Establish `h1 : p x = x` using `Subtype.ext (Submodule.starProjection_eq_self_iff.2 hx)`. Establish `h2 : p x ∈ isoSp σ' E` using `hp (hSi hx)`. Rewrite `h2` using `[h1]`. Then use the resulting hypothesis.
+-/
 private theorem iso_res {σ : Un n →* (V →ₗ[ℂ] V)} {σ' : Un n →* (X →ₗ[ℂ] X)}
     (hσ : ∀ k x, (σ' k x : V) = σ k x) (hK : IsK σ) (E : KMod n) {S : Submodule ℂ V} (hfd : FiniteDimensional ℂ S)
     (hSX : S ≤ X) (hSi : S ≤ isoSp σ E) (hS : ∀ x ∈ X, x ∈ isoSp σ E → x ∈ S) (hst : ∀ k, ∀ x ∈ S, σ k x ∈ S) :
@@ -224,6 +316,43 @@ end Res
 end UpperTheory.V.Z.GSp4Splitting.OnePlaceCyclotomic
 
 open UpperTheory.V.Z.GSp4Splitting.OnePlaceCyclotomic in
+/- English proof (translation)
+Introduce `hC hL hPr hAF hAT n lam hlam E T hT _ _ ν _ hν V _ _ E1 E2 σ A P hloc hP S hfd hne hSi hAS hSa hSs`. Take `⟨x0, hx0, hx00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨e, he1, he2, he3, he4, -, he6⟩` from `hPr n V σ hloc.isK E`. Establish `hσc : ∀ x k, ∀ y ∈ cyc E1 E2 x, σ k y ∈ cyc E1 E2 x` using `fun x => hL n V σ _ hloc.der _ cyc_K`. Use `set X := cyc E1 E2 x0 with hX`.
+
+Establish `hSX : S ≤ X` using `fun y hy => hSs x0 hx0 y hy hx00`. Establish `hXS : ∀ x ∈ X, x ∈ isoSp σ E → x ∈ S`. Introduce and unpack `_ ⟨a, ha, rfl⟩ hi`. Conclude with `hSa a ha x0 hx0 hi`. Establish `hAX : ∀ x ∈ X, A x ∈ X`.
+
+Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `h1` using `cyc_stab (twist hloc.Asq hloc.AE ha) (hSX (hAS x0 hx0))`. Establish `h2 : (A * a * A) (A x0) = A (a x0)`. Rewrite using `[← Module.End.mul_apply, mul_assoc, hloc.Asq, mul_one, Module.End.mul_apply]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+
+Establish `hσS : ∀ k, ∀ x ∈ S, σ k x ∈ S`. Introduce `k x hx`. Use `hXS _ (hσc x0 k x (hSX hx)) ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (he4 k) x`. Simplify using `only [Module.End.mul_apply] at h1`.
+
+Rewrite `h1` using `[he3 x (hSi hx)]`. Rewrite using `[← h1]`. Conclude with `he2 _`. Establish `hirr : ∀ v ∈ X, ∀ w ∈ X, v ≠ 0 → w ∈ cyc E1 E2 v`. Introduce `v hv w hw hv0`.
+
+Establish `hle : cyc E1 E2 v ≤ X`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `cyc_stab ha hv`. Distinguish the cases in `h0 : ∀ y ∈ cyc E1 E2 v, e y = 0`. It suffices to derive a contradiction.
+
+Apply `hv0` to reduce the goal to its premises. Take `⟨a, ha, hav⟩` from `hv`. Take `⟨a', ha', hadj⟩` from `adj hloc.pair ha`. Establish `h1 : ⟪a x0, v⟫_ℂ = 0`. Rewrite using `[hadj, ← he3 x0 (hSi hx0), he1, h0 _ (cyc_stab ha' (cyc_self v)), inner_zero_right]`.
+
+Rewrite `h1` using `[hav]`. Conclude with `inner_self_eq_zero.1 h1`. Use `push Not at h0`. Take `⟨y, hy, hy0⟩` from `h0`. Establish `h1 : e y ∈ cyc E1 E2 v` using `he6 _ (hσc v) y hy`.
+
+Take `⟨b, hb, hbx⟩` from `hSs _ (hXS _ (hle h1) (he2 y)) x0 hx0 hy0`. Take `⟨a, ha, rfl⟩` from `hw`. Conclude with `cyc_stab ha (hbx ▸ cyc_stab hb h1)`. Take `⟨σ', hσ⟩` from `rep_res (X := X) (hσc x0)`. Set `E1' : Fin n → Fin n → Module.End ℂ X` to `fun a b => (E1 a b).restrict fun _ hy => cyc_stab (mem1 a b) hy`.
+
+Set `E2' : Fin n → Fin n → Module.End ℂ X` to `fun a b => (E2 a b).restrict fun _ hy => cyc_stab (mem2 a b) hy`. Establish `h1 : ∀ a b x, (E1' a b x : V) = E1 a b x` using `fun _ _ _ => rfl`. Establish `h2 : ∀ a b x, (E2' a b x : V) = E2 a b x` using `fun _ _ _ => rfl`. Set `A' : Module.End ℂ X` to `A.restrict hAX`. Establish `hA : ∀ x, (A' x : V) = A x` using `fun _ => rfl`.
+
+Establish `hPX : ∀ x ∈ X, P x ∈ X` using `(hAF n ν V σ hloc.isK E T P hT.1 hP).2.2.2.1 X (hσc x0)`. Set `P' : Module.End ℂ X` to `P.restrict hPX`. Establish `hP' : ∀ x, (P' x : V) = P x` using `fun _ => rfl`. Use `clear_value E1' E2' A' P'`. Establish `hAσ : ∀ k, A' * σ' k = σ' k * A'` using `fun k => by`.
+
+Use extensionality with `x`. Simplify `LinearMap.congr_fun (hloc.Aσ k) x` using `[hA, hσ]`. Establish `hcore : IsCoreMod (infOf lam) E1' E2' σ' A'` using `{ pair := pair_res h1 h2 hloc.pair ch1 := fun m x => Subtype.ext (by rw [gelA_coe h1, hloc.ch1]; rfl) ch2 := fun m x => Subtype.ext (by`. Rewrite using `[gelA_coe (F := barF E2) (fun a b y => by simp [barF, h2]), hloc.ch2]; rfl)`. Use `nontriv := ⟨⟨⟨x0, cyc_self x0⟩, 0, fun h => hx00 (congrArg Subtype.val h)⟩⟩`.
+
+Use `irr := fun v w hv => by`. Take `⟨a, ha, hav⟩` from `hirr v v.2 w w.2 fun h => hv (Subtype.ext h)`. Take `⟨a', ha', haa⟩` from `alg_res h1 h2 ha`. Conclude with `⟨a', ha', Subtype.ext (by rw [haa, hav])⟩`. Use `der := der_res (F := kF E1 E2) (fun a b x => by simp [kF, h1, h2]) hσ hloc.der`.
+
+Use `Asq := by`. Use extensionality with `x`. Simplify `LinearMap.congr_fun hloc.Asq x` using `[hA]`. Use `Aiso := fun x y => by simpa [Submodule.coe_inner, hA] using hloc.Aiso x y`. Use `Aσ := hAσ`.
+
+Use `AE := fun a b => by`. Use extensionality with `x`. Simplify `LinearMap.congr_fun (hloc.AE a b) x }` using `[hA, h1, h2]`. Establish `hiso` using `iso_res hσ hloc.isK E hfd hSX hSi hXS hσS`. Establish `havg : IsAvg ν σ' E T P'` using `fun v w => by`.
+
+Simplify `hP v w` using `only [Submodule.coe_inner, hσ, hP']`. Take `⟨hf, hn, htr⟩` from `hAT n ν hν X σ' (isK_res hσ hloc.isK) E T P' A' hT.1 havg hAσ (hiso ▸ fin_comap hfd)`. Establish `hne' : isoSp σ' E ≠ ⊥`. Rewrite using `[hiso]`. Introduce `h`.
+
+Establish `hm : (⟨x0, cyc_self x0⟩ : X) ∈ S.comap X.subtype` using `hx0`. Rewrite `hm` using `[h]`. Conclude with `hx00 (congrArg Subtype.val ((Submodule.mem_bot ℂ).1 hm))`. Take `⟨s, hs, hst⟩` from `hC n lam hlam E T hT X E1' E2' σ' A' hcore hf (hn hne')`. Rewrite `htr` using `[hiso, trOn_res hSX (f := P * A) (fun x => by simp [hP', hA]), hst]`.
+
+Break down `hs with rfl | rfl` into its components or cases. Use `left`. Rewrite using `[htr, one_mul]`. Use `right`. Rewrite using `[htr, neg_one_mul]`.
+-/
 theorem UpperTheory.V.Z.GSp4Splitting.onePlace :
     CoreG → LieStab → ProjEx → AvgFacts → AvgTr → OnePlace := by
   intro hC hL hPr hAF hAT n lam hlam E T hT _ _ ν _ hν V _ _ E1 E2 σ A P hloc hP S hfd hne hSi hAS hSa hSs

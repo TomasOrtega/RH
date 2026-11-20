@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegula
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `L B _ _ _ _ _ _ _ M _ _ _ _ _ _ r e y he hy hq hfree`. Take `⟨zs, h, hd⟩` from `GlobalTheory.exists_ofList_eq_maximalIdeal_length_eq L`. Establish `hreg` using `(GlobalTheory.isRegular_of_ofList_eq_maximalIdeal h hd.le).toIsWeaklyRegular`. Establish `hlen : zs.length = e`. Rewrite `hd` using `[he]`.
+
+Conclude with `hd` after adjusting the coercions. Establish `hmem : ∀ x ∈ List.ofFn y ++ zs.map (algebraMap L B), x ∈ maximalIdeal B`. Introduce `x hx`. Break down `List.mem_append.mp hx with hx | hx` into its components or cases. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hx`.
+
+Conclude with `hy i`. Use `map_maximalIdeal_le (algebraMap L B) ?_` and prove the remaining obligations. Rewrite using `[← h, Ideal.map_ofList]`. Conclude with `Ideal.subset_span hx`. Use `⟨List.ofFn y ++ zs.map (algebraMap L B), by simp [hlen], hmem, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsLocalRing.isRegular_iff_isWeaklyRegular_of_subset_maximalIdeal hmem, RingTheory.Sequence.isWeaklyRegular_append_iff, GlobalTheory.ofList_ofFn_eq_span_range, RingTheory.Sequence.isWeaklyRegular_map_algebraMap_iff]`. Use `⟨hq.isWeaklyRegular ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun i => maximalIdeal_le_jacobson _ (hy i)`. Conclude with `((TensorProduct.lid L _).isWeaklyRegular_congr zs).mp hreg.isWeaklyRegular_rTensor`.
+-/
 theorem UpperTheory.V.AlgebraTools.exists_isRegular_of_free_quotient :
     ∀ (L B : Type) [CommRing L] [IsRegularLocalRing L] [CommRing B] [IsLocalRing B] [IsNoetherianRing B]
       [Algebra L B] [IsLocalHom (algebraMap L B)] (M : Type) [AddCommGroup M] [Module B M] [Module L M]

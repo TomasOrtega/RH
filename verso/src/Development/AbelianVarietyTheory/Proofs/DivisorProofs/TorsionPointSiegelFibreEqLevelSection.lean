@@ -9,6 +9,11 @@ open GlobalTheory.TInj
 
 namespace GlobalTheory.TInj
 
+/- English proof (translation)
+Introduce `X g n B _ ζ sX c hζ S A _ y α hα F _ _ t x hx`. Set `β : B →+* F` to `(Spec.preimage ((t ≫ y) ≫ sX)).hom`. Take `⟨-, hs, -⟩` from `c.geom F (t ≫ y) β (hζ.map β).unit (Spec.map_preimage _).symm rfl`. Establish `hx₁ : pushHom hα (Over.mk t) x ^ n = 1` using `by rw [← map_pow, hx, map_one]`. Take `⟨a, ha⟩` from `hs _ hx₁`.
+
+Establish `hu : (toUnit (Over.mk (t ≫ y))).left = t ≫ y` using `(Category.comp_id _).symm.trans (Over.w (toUnit _))`. Establish `e : (t ≫ y) ≫ (c.lev a).left = x.left ≫ α`. Rewrite using `[← hu]`. Conclude with `congrArg (fun q => q.left) ha`. Conclude with `⟨a, by rw [← e, Category.assoc]⟩`.
+-/
 theorem torsion_isLev : ∀ {X : Scheme.{0}} {g n : ℕ} {B : Type} [CommRing B] {ζ : B} {sX : X ⟶ Sp B} (c : SiegPre g n ζ sX), IsUnit ζ → ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] (y : S ⟶ X) (α : A.left ⟶ c.A.left), IsGrpPullback A c.A y α → ∀ (F : Type) [Field F] [IsAlgClosed F] (t : Sp F ⟶ S) (x : Over.mk t ⟶ A), x ^ n = 1 → ∃ l, x.left ≫ α = t ≫ y ≫ (c.lev l).left := by
   intro X g n B _ ζ sX c hζ S A _ y α hα F _ _ t x hx
   let β : B →+* F := (Spec.preimage ((t ≫ y) ≫ sX)).hom

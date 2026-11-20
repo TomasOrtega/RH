@@ -14,6 +14,17 @@ namespace GlobalTheory.CechPic
 
 open TopologicalSpace
 
+/- English proof (translation)
+Use `choose c hc using fun i : L.ι => exists_ext_unit O.ι ((L.pull O.ι).U (fun _ => i)) (t.s (fun _ => i))`. Establish `le : ∀ i, L.U i ⊓ O ≤ O.ι ''ᵁ ((L.pull O.ι).U (fun _ => i))`. Introduce `i x hx`. Establish `m : (⟨x, hx.2⟩ : O.toScheme) ∈ (L.pull O.ι).U (fun _ => i)` using `mem_pull.2 hx.1`. Conclude with `⟨⟨x, hx.2⟩, m, rfl⟩`.
+
+Use `⟨fun i => res (le i) (c i), fun i j x hi hj hx => ?_⟩` and prove the remaining obligations. Set `z : O.toScheme` to `⟨x, hx⟩`. Establish `mi : z ∈ (L.pull O.ι).U (fun _ => i)` using `mem_pull.2 hi`. Establish `mj : z ∈ (L.pull O.ι).U (fun _ => j)` using `mem_pull.2 hj`. Establish `hW : O.ι z ∈ L.U i ⊓ L.U j ⊓ O` using `⟨⟨hi, hj⟩, hx⟩`.
+
+Establish `hWi : O.ι z ∈ L.U i ⊓ O` using `⟨hi, hx⟩`. Establish `hWj : O.ι z ∈ L.U j ⊓ O` using `⟨hj, hx⟩`. Establish `hWij : O.ι z ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Establish `l₁ : L.U i ⊓ L.U j ⊓ O ≤ L.U i ⊓ L.U j` using `inf_le_left`. Establish `l₂ : L.U i ⊓ L.U j ⊓ O ≤ L.U j ⊓ O` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`.
+
+Establish `key` using `gm_inj O.ι z (U := L.U i ⊓ O) (U' := L.U i ⊓ L.U j ⊓ O) hWi hW (a := res (le i) (c i)) (b := res l₁ (L.g i j) * res l₂ (res (le j) (c j))) (by`. Rewrite using `[map_mul, gm_res O.ι z l₁ hW, gm_res O.ι z l₂ hW, gm_res O.ι z (le j) hWj, gm_res O.ι z (le i) hWi]`. Establish `e₁` using `hc i O.toScheme (𝟙 _) z mi`. Establish `e₂` using `hc j O.toScheme (𝟙 _) z mj`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`.
+
+Rewrite using `[e₁, e₂, (isGen_iff_germ t).1 ht z _ _ mi mj, gm_pull_g L O.ι (𝟙 _) z _ _ mi mj, Category.id_comp])`. Rewrite `key` using `[map_mul, gm_res (𝟙 Z) (O.ι z) l₁ hW, gm_res (𝟙 Z) (O.ι z) l₂ hW]`. Conclude with `key`.
+-/
 theorem exists_units_of_gen_restrict {Z : Scheme.{0}} (L : LB Z) (O : Z.Opens) (t : LB.Gen (L.pull O.ι))
     (ht : t.IsGen) : ∃ b : ∀ i, Γ(Z, L.U i ⊓ O)ˣ, ∀ (i j : L.ι) (x : Z), x ∈ L.U i → x ∈ L.U j → x ∈ O →
       gm (𝟙 Z) x (L.U i ⊓ O) (b i) = gm (𝟙 Z) x (L.U i ⊓ L.U j) (L.g i j) * gm (𝟙 Z) x (L.U j ⊓ O) (b j) := by
@@ -42,6 +53,33 @@ theorem exists_units_of_gen_restrict {Z : Scheme.{0}} (L : LB Z) (O : Z.Opens) (
   rw [map_mul, gm_res (𝟙 Z) (O.ι z) l₁ hW, gm_res (𝟙 Z) (O.ι z) l₂ hW] at key
   exact key
 
+/- English proof (translation)
+Introduce `Z O O' hcov hsplit c hc hc'`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Rewrite `hc` using `[← cls_pull hL O.ι (pull_isLB hL O.ι)]`. Rewrite `hc'` using `[← cls_pull hL O'.ι (pull_isLB hL O'.ι)]`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff _).1 hc`.
+
+Take `⟨t', ht'⟩` from `(cls_eq_zero_iff _).1 hc'`. Take `⟨b, hb⟩` from `exists_units_of_gen_restrict L O t ht`. Take `⟨b', hb'⟩` from `exists_units_of_gen_restrict L O' t' ht'`. Establish `key₁ : ∀ {G : Type} [CommGroup G] (a x y : G), a * x * (a * y)⁻¹ = x * y⁻¹` using `fun a x y => by`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_left_eq_div]`.
+
+Establish `key₂ : ∀ {G : Type} [CommGroup G] (a x y : G), a * x * y * x⁻¹ = a * y` using `fun a x y => by`. Rewrite using `[mul_right_comm, mul_inv_cancel_right]`. Set `W : L.ι → Z.Opens` to `fun i => L.U i ⊓ (O ⊓ O')`. Establish `lw : ∀ i, W i ≤ L.U i ⊓ O` using `fun i => inf_le_inf_left _ inf_le_left`. Establish `lw' : ∀ i, W i ≤ L.U i ⊓ O'` using `fun i => inf_le_inf_left _ inf_le_right`.
+
+Set `q : ∀ i, Γ(Z, W i)ˣ` to `fun i => res (lw i) (b i) * (res (lw' i) (b' i))⁻¹`. Establish `gq : ∀ i x, x ∈ W i → gm (𝟙 Z) x (W i) (q i) = gm (𝟙 Z) x (L.U i ⊓ O) (b i) * (gm (𝟙 Z) x (L.U i ⊓ O') (b' i))⁻¹` using `fun i x hx => by`. Simplify using `only [q, map_mul, map_inv, gm_res (𝟙 Z) x (lw i) hx, gm_res (𝟙 Z) x (lw' i) hx]`. Take `⟨F, hF⟩` from `glue_unit (O ⊓ O') W (fun i => inf_le_right) (fun x hx => by`. Take `⟨i, hi⟩` from `exists_chart hL x`.
+
+Conclude with `Opens.mem_iSup.2 ⟨i, hi, hx⟩) q (fun i j x hx => by`. Rewrite using `[gq i x hx.1, gq j x hx.2, hb i j x hx.1.1 hx.2.1 hx.1.2.1, hb' i j x hx.1.1 hx.2.1 hx.1.2.2, key₁])`. Take `⟨u, u', hu⟩` from `hsplit F`. Establish `gF : ∀ i x, x ∈ W i → gm (𝟙 Z) x (L.U i ⊓ O) (b i) = gm (𝟙 Z) x (L.U i ⊓ O') (b' i) * gm (𝟙 Z) x O u * gm (𝟙 Z) x O' u'` using `fun i x hx => by`. Establish `e` using `congrArg (gm (𝟙 Z) x (W i)) (hF i)`.
+
+Rewrite `e` using `[gm_res (𝟙 Z) x _ hx, gq i x hx, hu, map_mul, gm_res (𝟙 Z) x _ hx.2, gm_res (𝟙 Z) x _ hx.2]`. Rewrite using `[(mul_inv_eq_iff_eq_mul).1 e.symm]`. The two sides agree by associativity and commutativity. Establish `loc : ∀ i, ∃ s : Γ(Z, L.U i)ˣ, (∀ y, y ∈ L.U i → y ∈ O → gm (𝟙 Z) y (L.U i) s = gm (𝟙 Z) y (L.U i ⊓ O) (b i) * (gm (𝟙 Z) y O u)⁻¹) ∧ (∀ y, y ∈ L.U i → y ∈ O' → gm (𝟙 Z) y (L.U i) s = gm (𝟙 Z) y (L.U i ⊓ O') (b' i) * gm (𝟙 Z) y O' u')`. Introduce `i`.
+
+Set `V : Bool → Z.Opens` to `fun β => Bool.rec (L.U i ⊓ O') (L.U i ⊓ O) β`. Set `v : ∀ β, Γ(Z, V β)ˣ` to `fun β => Bool.rec (motive := fun β => Γ(Z, V β)ˣ) (b' i * res (inf_le_right : L.U i ⊓ O' ≤ O') u') (b i * (res (inf_le_right : L.U i ⊓ O ≤ O) u)⁻¹) β`. Apply the tactic sequence `have hV : ∀ β, V β ≤ L.U i := fun β => by cases β <;> exact inf_le_left`. Establish `g₁ : ∀ y, y ∈ L.U i ⊓ O → gm (𝟙 Z) y (V true) (v true) = gm (𝟙 Z) y (L.U i ⊓ O) (b i) * (gm (𝟙 Z) y O u)⁻¹` using `fun y hy => by show gm (𝟙 Z) y (L.U i ⊓ O) (b i * (res (inf_le_right : L.U i ⊓ O ≤ O) u)⁻¹) = _`. Rewrite using `[map_mul, map_inv, gm_res (𝟙 Z) y _ hy]`.
+
+Establish `g₀ : ∀ y, y ∈ L.U i ⊓ O' → gm (𝟙 Z) y (V false) (v false) = gm (𝟙 Z) y (L.U i ⊓ O') (b' i) * gm (𝟙 Z) y O' u'` using `fun y hy => by show gm (𝟙 Z) y (L.U i ⊓ O') (b' i * res (inf_le_right : L.U i ⊓ O' ≤ O') u') = _`. Rewrite using `[map_mul, gm_res (𝟙 Z) y _ hy]`. Take `⟨s, hs⟩` from `glue_unit (L.U i) V hV (fun y hy => by`. Establish `h : y ∈ O ⊔ O'` using `hcov ▸ (trivial : y ∈ (⊤ : Z.Opens))`. Break down `Opens.mem_sup.1 h with h | h` into its components or cases.
+
+Conclude with `Opens.mem_iSup.2 ⟨true, hy, h⟩`. Conclude with `Opens.mem_iSup.2 ⟨false, hy, h⟩) v (fun β β₂ y hy => by`. Apply the tactic sequence `cases β <;> cases β₂`. Both sides reduce to the same expression. Rewrite using `[g₀ y hy.1, g₁ y hy.2, gF i y ⟨hy.1.1, hy.2.2, hy.1.2⟩, key₂]`.
+
+Rewrite using `[g₁ y hy.1, g₀ y hy.2, gF i y ⟨hy.1.1, hy.1.2, hy.2.2⟩, key₂]`. Use the proof step `rfl)`. Use `⟨s, fun y hi ho => ?_, fun y hi ho => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (gm (𝟙 Z) y (V true)) (hs true)`. Rewrite `e` using `[gm_res (𝟙 Z) y (hV true) (show y ∈ L.U i ⊓ O from ⟨hi, ho⟩)]`.
+
+Conclude with `e.trans (g₁ y ⟨hi, ho⟩)`. Establish `e` using `congrArg (gm (𝟙 Z) y (V false)) (hs false)`. Rewrite `e` using `[gm_res (𝟙 Z) y (hV false) (show y ∈ L.U i ⊓ O' from ⟨hi, ho⟩)]`. Conclude with `e.trans (g₀ y ⟨hi, ho⟩)`. Use `choose s hs using loc`.
+
+Use `(cls_eq_zero_iff hL).2 ⟨⟨s⟩, (isGen_iff_germ _).2 fun y i j hi hj => ?_⟩` and prove the remaining obligations. Establish `h : y ∈ O ⊔ O'` using `hcov ▸ (trivial : y ∈ (⊤ : Z.Opens))`. Break down `Opens.mem_sup.1 h with h | h` into its components or cases. Use `show gm (𝟙 Z) y (L.U i) (s i) = _ * gm (𝟙 Z) y (L.U j) (s j)`. Rewrite using `[(hs i).1 y hi h, (hs j).1 y hj h, hb i j y hi hj h, _root_.mul_assoc]`.
+
+Use `show gm (𝟙 Z) y (L.U i) (s i) = _ * gm (𝟙 Z) y (L.U j) (s j)`. Rewrite using `[(hs i).2 y hi h, (hs j).2 y hj h, hb' i j y hi hj h, _root_.mul_assoc]`.
+-/
 theorem eq_zero_of_pull_eq_zero_of_units_split : ∀ (Z : Scheme.{0}) (O O' : Z.Opens), O ⊔ O' = ⊤ →
     (∀ F : Γ(Z, O ⊓ O')ˣ, ∃ (u : Γ(Z, O)ˣ) (u' : Γ(Z, O')ˣ),
       F = res (inf_le_left : O ⊓ O' ≤ O) u * res (inf_le_right : O ⊓ O' ≤ O') u') →

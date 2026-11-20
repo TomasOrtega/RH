@@ -17,6 +17,13 @@ section Abstract
 
 variable {Γ : Type} [Group Γ]
 
+/- English proof (translation)
+Use `Nat.card_congr { toFun := fun g => ⟨ζ⁻¹ * g.1 * ζ, ?_⟩ invFun := fun g => ⟨ζ * g.1 * ζ⁻¹, ?_⟩ left_inv := fun g => by ext; simp [mul_assoc] right_inv := fun g => by ext; simp [mul_assoc] }` and prove the remaining obligations. Take `⟨g, hg⟩` from `g`. Rewrite `hg` using `[Subgroup.mem_inf]`. Establish `hg1 : g • ζ • a = ζ • a` using `hg.1`. Use `Subgroup.mem_inf.2 ⟨?_, Z.mul_mem (Z.mul_mem (Z.inv_mem hζ) hg.2) hζ⟩` and prove the remaining obligations.
+
+Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hg1, inv_smul_smul]`. Take `⟨g, hg⟩` from `g`. Rewrite `hg` using `[Subgroup.mem_inf]`. Establish `hg1 : g • a = a` using `hg.1`. Use `Subgroup.mem_inf.2 ⟨?_, Z.mul_mem (Z.mul_mem hζ hg.2) (Z.inv_mem hζ)⟩` and prove the remaining obligations.
+
+Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, inv_smul_smul, hg1]`.
+-/
 theorem card_stabilizer_smul_inf {X : Type} [MulAction Γ X] (Z : Subgroup Γ) {ζ : Γ} (hζ : ζ ∈ Z) (a : X) :
     Nat.card (MulAction.stabilizer Γ (ζ • a) ⊓ Z : Subgroup Γ) = Nat.card (MulAction.stabilizer Γ a ⊓ Z : Subgroup Γ) := by
   refine Nat.card_congr
@@ -35,6 +42,35 @@ theorem card_stabilizer_smul_inf {X : Type} [MulAction Γ X] (Z : Subgroup Γ) {
     refine Subgroup.mem_inf.2 ⟨?_, Z.mul_mem (Z.mul_mem hζ hg.2) (Z.inv_mem hζ)⟩
     rw [MulAction.mem_stabilizer_iff, mul_smul, mul_smul, inv_smul_smul, hg1]
 
+/- English proof (translation)
+Use `set S : U × P → ℂ := fun a => ((Nat.card (MulAction.stabilizer Γ a ⊓ Z : Subgroup Γ) : ℕ) : ℂ)⁻¹ * F a with hS`. Establish `hstab : ∀ u, (MulAction.stabilizer Γ ((u, l₀) : U × P) ⊓ Z : Subgroup Γ) = MulAction.stabilizer Γ u ⊓ Z`. Introduce `u`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf, MulAction.mem_stabilizer_iff, Prod.smul_mk, Prod.mk.injEq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, -⟩, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, hl₀ g h2⟩, h2⟩`.
+
+Establish `hSinv : ∀ ζ ∈ Z, ∀ a, S (ζ • a) = S a`. Introduce `ζ hζ a`. Simplify using `only [hS]`. Rewrite using `[card_stabilizer_smul_inf Z hζ a]`. Use `congr 1`.
+
+Take `⟨u, l⟩` from `a`. Rewrite using `[Prod.smul_mk]`. Distinguish the cases in `hl : l = l₀`. Substitute `hl` using the available equality. Rewrite using `[hl₀ ζ hζ, hF1, hF1, hc ζ hζ]`.
+
+Establish `hl' : ζ • l ≠ l₀`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Use `congrArg (fun m => ζ⁻¹ • m) h` as an intermediate fact. Simplify `this` using `[hl₀ ζ⁻¹ (Z.inv_mem hζ)]`.
+
+Rewrite using `[hF0 _ _ hl, hF0 _ _ hl']`. Set `φ : MulAction.orbitRel.Quotient Z U → MulAction.orbitRel.Quotient Z (U × P)` to `Quotient.map' (fun u => (u, l₀)) (by`. Introduce and unpack `u u' ⟨ζ, rfl⟩`. Use `⟨ζ, ?_⟩` and prove the remaining obligations. Use `show ((ζ : Γ) • u', (ζ : Γ) • l₀) = ((ζ : Γ) • u', l₀)`.
+
+Rewrite using `[hl₀ _ ζ.2])`. Establish `hφ : Function.Injective φ`. Introduce `q q' h`. Proceed by induction on `q using Quotient.inductionOn' with | h u => ?_`. Proceed by induction on `q' using Quotient.inductionOn' with | h u' => ?_`.
+
+Establish `h'` using `Quotient.exact' h`. Take `⟨ζ, hζ⟩` from `h'`. Apply `Quotient.sound'` to reduce the goal to its premises. Use `⟨ζ, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Prod.fst hζ`.
+
+Establish `hsupp : Function.support (fun o : MulAction.orbitRel.Quotient Z (U × P) => S (Quotient.out o)) ⊆ Set.range φ`. Introduce `o ho`. Establish `hne : F (Quotient.out o) ≠ 0`. Introduce `h0`. Apply `ho` to reduce the goal to its premises.
+
+Simplify using `[hS, h0]`. Establish `hl : (Quotient.out o).2 = l₀`. Assume the negation of the conclusion as `hl`. Conclude with `hne (by rw [← Prod.mk.eta (p := Quotient.out o)]; exact hF0 _ _ hl)`. Use `⟨Quotient.mk'' (Quotient.out o).1, ?_⟩` and prove the remaining obligations.
+
+Use `show Quotient.mk'' ((Quotient.out o).1, l₀) = o`. Rewrite using `[← hl, Prod.mk.eta]`. Conclude with `Quotient.out_eq' o`. Establish `hval : ∀ q : MulAction.orbitRel.Quotient Z U, S (Quotient.out (φ q)) = ((Nat.card (MulAction.stabilizer Γ (Quotient.out q) ⊓ Z : Subgroup Γ) : ℕ) : ℂ)⁻¹ * c (Quotient.out q)`. Introduce `q`.
+
+Establish `h1 : (Quotient.mk'' (Quotient.out (φ q)) : MulAction.orbitRel.Quotient Z (U × P)) = Quotient.mk'' (Quotient.out q, l₀)`. Rewrite using `[Quotient.out_eq']`. Use `conv_lhs => rw [← Quotient.out_eq' q]`. Both sides reduce to the same expression. Take `⟨ζ, hζ⟩` from `Quotient.exact' h1`.
+
+Rewrite using `[← hζ]`. Express the relevant statement in the definitionally equal form `S ((ζ : Γ) • _) = _`. Rewrite using `[hSinv _ ζ.2]`. Simplify using `only [hS]`. Rewrite using `[hstab, hF1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← finsum_mem_inter_support, Set.inter_eq_right.2 hsupp, finsum_mem_support]`. Use `_ = ∑ᶠ q, S (Quotient.out (φ q)) := finsum_mem_range hφ`. Use `_ = _ := finsum_congr hval`.
+-/
 theorem finsum_orbit_prod_line {U P : Type} [MulAction Γ U] [MulAction Γ P] (Z : Subgroup Γ) (l₀ : P)
     (hl₀ : ∀ ζ ∈ Z, ζ • l₀ = l₀) (F : U × P → ℂ) (c : U → ℂ) (hF0 : ∀ u l, l ≠ l₀ → F (u, l) = 0)
     (hF1 : ∀ u, F (u, l₀) = c u) (hc : ∀ ζ ∈ Z, ∀ u, c (ζ • u) = c u) :
@@ -135,6 +171,11 @@ def cosetVal (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (K₁ : Subgroup G₁
 variable (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) {K₁ : Subgroup G₁} {K₂ : Subgroup G₂} (γ : G₁) (δ : G₂)
   {f₁ : G₁ → ℂ} {φ : G₂ → ℂ}
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `LeftCosets.rep_mk (ι := ι₁.prod ι₂) (K := K₁.prod K₂) x`. Rewrite `hk` using `[Subgroup.mem_prod]`. Rewrite using `[cosetVal, e]`. Establish `e1 : (x * k).1⁻¹ * γ * (x * k).1 = k.1⁻¹ * (x.1⁻¹ * γ * x.1) * k.1`. Simplify using `only [Prod.fst_mul]`.
+
+Use `group`. Establish `e2 : (x * k).2⁻¹ * δ * (x * k).2 = k.2⁻¹ * (x.2⁻¹ * δ * x.2) * k.2`. Simplify using `only [Prod.snd_mul]`. Use `group`. Rewrite using `[e1, e2, hf₁ _ hk.1, hφ _ hk.2]`.
+-/
 theorem cosetVal_mk (hf₁ : ∀ k ∈ K₁, ∀ g, f₁ (k⁻¹ * g * k) = f₁ g) (hφ : ∀ k ∈ K₂, ∀ g, φ (k⁻¹ * g * k) = φ g)
     (x : G₁ × G₂) :
     cosetVal ι₁ ι₂ K₁ K₂ γ δ f₁ φ (LeftCosets.mk _ _ x) = f₁ (x.1⁻¹ * γ * x.1) * φ (x.2⁻¹ * δ * x.2) := by
@@ -147,6 +188,13 @@ theorem cosetVal_mk (hf₁ : ∀ k ∈ K₁, ∀ g, f₁ (k⁻¹ * g * k) = f₁
     simp only [Prod.snd_mul]; group
   rw [e1, e2, hf₁ _ hk.1, hφ _ hk.2]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← LeftCosets.mk_rep u, LeftCosets.smul_mk]`. Use `conv_rhs => rw [← LeftCosets.mk_rep u]`. Rewrite using `[cosetVal_mk ι₁ ι₂ γ δ hf₁ hφ, cosetVal_mk ι₁ ι₂ γ δ hf₁ hφ]`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, MonoidHom.prod_apply]`. Establish `e1 : (ι₁ η * (LeftCosets.rep _ _ u).1)⁻¹ * γ * (ι₁ η * (LeftCosets.rep _ _ u).1) = (LeftCosets.rep _ _ u).1⁻¹ * γ * (LeftCosets.rep _ _ u).1`.
+
+Establish `h : (ι₁ η)⁻¹ * γ * ι₁ η = γ` using `by rw [mul_assoc, ← h₁, ← mul_assoc, inv_mul_cancel, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (ι₂ η * (LeftCosets.rep _ _ u).2)⁻¹ * δ * (ι₂ η * (LeftCosets.rep _ _ u).2) = (LeftCosets.rep _ _ u).2⁻¹ * δ * (LeftCosets.rep _ _ u).2`. Establish `h : (ι₂ η)⁻¹ * δ * ι₂ η = δ` using `by rw [mul_assoc, ← h₂, ← mul_assoc, inv_mul_cancel, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1, e2]`.
+-/
 theorem cosetVal_smul (hf₁ : ∀ k ∈ K₁, ∀ g, f₁ (k⁻¹ * g * k) = f₁ g) (hφ : ∀ k ∈ K₂, ∀ g, φ (k⁻¹ * g * k) = φ g)
     (η : Γ) (h₁ : ι₁ η * γ = γ * ι₁ η) (h₂ : ι₂ η * δ = δ * ι₂ η) (u : LeftCosets (ι₁.prod ι₂) (K₁.prod K₂)) :
     cosetVal ι₁ ι₂ K₁ K₂ γ δ f₁ φ (η • u) = cosetVal ι₁ ι₂ K₁ K₂ γ δ f₁ φ u := by
@@ -166,6 +214,17 @@ theorem cosetVal_smul (hf₁ : ∀ k ∈ K₁, ∀ g, f₁ (k⁻¹ * g * k) = f�
       _ = _ := by rw [h]
   rw [e1, e2]
 
+/- English proof (translation)
+Use `set Z := Subgroup.centralizer {y₀} with hZ`. Establish `hcomm : ∀ η ∈ Z, η * y₀ = y₀ * η`. Introduce `η hη`. Conclude with `((Subgroup.mem_centralizer_iff.1 hη) y₀ (Set.mem_singleton _)).symm`. Use `set g : LeftCosets (ι₁.prod ι₂) (K₁.prod K₂) → ℂ := fun u => ((Nat.card (MulAction.stabilizer Γ u ⊓ Z : Subgroup Γ) : ℕ) : ℂ)⁻¹ * cosetVal ι₁ ι₂ K₁ K₂ (ι₁ y₀) (ι₂ y₀) f₁ φ u with hg`.
+
+Establish `hginv : ∀ η ∈ Z, ∀ u, g (η • u) = g u`. Introduce `η hη u`. Simplify using `only [hg]`. Rewrite using `[card_stabilizer_smul_inf Z hη u, cosetVal_smul ι₁ ι₂ _ _ hf₁ hφ η (by rw [← map_mul, ← map_mul, hcomm η hη]) (by rw [← map_mul, ← map_mul, hcomm η hη])]`. Establish `hr : (((ι₁.comp Z.subtype).prod (ι₂.comp Z.subtype)).range : Set (G₁ × G₂)) = ((Z.map (ι₁.prod ι₂) : Subgroup (G₁ × G₂)) : Set (G₁ × G₂))`.
+
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_range, Subgroup.mem_map, MonoidHom.prod_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, Subtype.exists, exists_prop]`. Establish `hcard : ∀ x : G₁ × G₂, Nat.card (stab (ι₁.comp Z.subtype) (ι₂.comp Z.subtype) K₁ K₂ x) = Nat.card (MulAction.stabilizer Γ (LeftCosets.mk (ι₁.prod ι₂) (K₁.prod K₂) x) ⊓ Z : Subgroup Γ)`. Introduce `x`. Rewrite using `[← stab_eq_stabilizer ι₁ ι₂]`.
+
+Conclude with `Nat.card_congr { toFun := fun η => ⟨η.1.1, Subgroup.mem_inf.2 ⟨η.2, η.1.2⟩⟩ invFun := fun η => ⟨⟨η.1, (Subgroup.mem_inf.1 η.2).2⟩, (Subgroup.mem_inf.1 η.2).1⟩ left_inv := fun η => rfl right_inv := fun η => rfl }`. Unfold `pointSum`. Rewrite using `[hr, ← GlobalTheory.LKCount.finsum_doubleCoset_eq_finsum_orbit (ι₁.prod ι₂) Z (K₁.prod K₂) g hginv]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [hg]`.
+
+Rewrite using `[cosetVal_mk ι₁ ι₂ _ _ hf₁ hφ, hcard]`. Both sides reduce to the same expression.
+-/
 theorem pointSum_centralizer_eq (hf₁ : ∀ k ∈ K₁, ∀ g, f₁ (k⁻¹ * g * k) = f₁ g)
     (hφ : ∀ k ∈ K₂, ∀ g, φ (k⁻¹ * g * k) = φ g) (y₀ : Γ) :
     pointSum (ι₁.comp (Subgroup.centralizer {y₀}).subtype) (ι₂.comp (Subgroup.centralizer {y₀}).subtype)
@@ -216,9 +275,43 @@ namespace GlobalTheory.CxUnfoldGen
 
 open GlobalTheory.CxUnfold
 
+/- English proof (translation)
+Conclude with `(finsum_mul _ _).symm`.
+-/
 theorem finsum_mul_const_complex {α : Type} (g : α → ℂ) (w : ℂ) : ∑ᶠ i, g i * w = (∑ᶠ i, g i) * w := by
   exact (finsum_mul _ _).symm
 
+/- English proof (translation)
+Introduce `p _ G v wt Kf f hf₁ K' f' hφ β x t hx huniq' y₀`. Use `set Z := Subgroup.centralizer {y₀} with hZ`. Establish `hcomm : ∀ η ∈ Z, η * y₀ = y₀ * η`. Introduce `η hη`. Conclude with `((Subgroup.mem_centralizer_iff.1 hη) y₀ (Set.mem_singleton _)).symm`.
+
+Distinguish the cases in `hpos : ∃ z : Fin G.n → ℂ, 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re ∧ FixL G v β y₀ z`. Use `swap`. Rewrite using `[if_neg hpos]`. Use `finsum_eq_zero_of_forall_eq_zero fun o => ?_` and prove the remaining obligations. Rewrite using `[cxF, if_neg (fun h => hpos ⟨_, h⟩), mul_zero]`.
+
+Rewrite using `[if_pos hpos]`. Take `⟨z₀, hz₀pos, hz₀fix⟩` from `hpos`. Distinguish the cases in `hf0 : ∃ h, f (h⁻¹ * toAfF G β x t hx y₀ * h) ≠ 0`. Use `swap`. Use `push_neg at hf0`.
+
+Establish `hl : ∀ o : MulAction.orbitRel.Quotient Z (Ys G v β x t hx Kf K'), cxF G v wt β x t hx Kf f K' f' (Quotient.out o) y₀ = 0`. Introduce `o`. Rewrite using `[cxF]`. Use `split_ifs`. Rewrite using `[hf0, zero_mul, zero_mul]`.
+
+Both sides reduce to the same expression. Simplify using `only [hl, mul_zero, finsum_zero, pointSum, hf0, zero_mul]`. Take `⟨h₀, hh₀⟩` from `hf0`. Establish `huniq : ∀ z', 0 < (star z' ⬝ᵥ (herm G v β *ᵥ z')).re → FixL G v β y₀ z' → ∃ c : ℂ, z' = c • z₀` using `fun z' hp hfx => huniq' y₀ h₀ hh₀ z₀ z' hz₀pos hp hz₀fix hfx`. Establish `hz₀ne : z₀ ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at hz₀pos`. Set `l₀ : PLv G v β` to `Projectivization.mk ℂ z₀ hz₀ne`. Establish `hl₀ : ∀ ζ ∈ Z, ζ • l₀ = l₀`. Introduce `ζ hζ`.
+
+Express the relevant statement in the definitionally equal form `Projectivization.map _ _ (Projectivization.mk ℂ z₀ hz₀ne) = Projectivization.mk ℂ z₀ hz₀ne`. Rewrite using `[Projectivization.map_mk]`. Establish `hp` using `(GlobalTheory.LKCx.pos_iff_smul_toV p G v β ζ z₀ 1 one_ne_zero).1 hz₀pos`. Rewrite `hp` using `[one_smul]`. Establish `hfx` using `(GlobalTheory.LKCx.fixL_conj_iff p G v β y₀ ζ z₀).1 hz₀fix`.
+
+Rewrite `hfx` using `[hcomm ζ hζ, mul_inv_cancel_right]`. Take `⟨c, hc⟩` from `huniq _ hp hfx`. Rewrite using `[Projectivization.mk_eq_mk_iff']`. Conclude with `⟨c, by rw [Matrix.toLin'_apply]; exact hc.symm⟩`. Take `⟨a, ha⟩` from `(Projectivization.mk_eq_mk_iff' ℂ _ _ (Projectivization.rep_nonzero (l₀ : Projectivization ℂ (Fin G.n → ℂ))) hz₀ne).1 (Projectivization.mk_rep (l₀ : Projectivization ℂ (Fin G.n → ℂ)))`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `Projectivization.rep_nonzero (l₀ : Projectivization ℂ (Fin G.n → ℂ)) (by rw [← ha, zero_smul])`. Use `set F : Ys G v β x t hx Kf K' → ℂ := fun b => cxF G v wt β x t hx Kf f K' f' b y₀ with hF`. Use `set c : LeftCosets ((toAfF G β x t hx).prod (toP1 G β)) (Kf.prod K') → ℂ := fun u => cosetVal (toAfF G β x t hx) (toP1 G β) Kf K' (toAfF G β x t hx y₀) (toP1 G β y₀) f f' u * wt (minpoly G.F (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) with hc`.
+
+Establish `hF0 : ∀ u l, l ≠ l₀ → F (u, l) = 0`. Introduce `u l hl`. Simplify using `only [hF]`. Rewrite using `[cxF, if_neg]`. Introduce and unpack `⟨hp, hfx⟩`.
+
+Take `⟨d, hd⟩` from `huniq _ hp hfx`. Apply `hl` to reduce the goal to its premises. Conclude with `(Projectivization.mk_rep (l : Projectivization ℂ (Fin G.n → ℂ))).symm.trans ((Projectivization.mk_eq_mk_iff' ℂ _ _ (Projectivization.rep_nonzero _) hz₀ne).2 ⟨d, hd.symm⟩)`. Establish `hF1 : ∀ u, F (u, l₀) = c u`. Introduce `u`.
+
+Simplify using `only [hF, hc]`. Rewrite using `[cxF, if_pos]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hp` using `(GlobalTheory.LKCx.pos_iff_smul_toV p G v β 1 z₀ a ha0).1 hz₀pos`.
+
+Establish `e : ((toV G v β 1 : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z₀ = z₀` using `by simp`. Rewrite `hp` using `[e, ha]`. Conclude with `hp`. Take `⟨d, hd⟩` from `hz₀fix`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ha, Matrix.mulVec_smul, hd, smul_comm]`. Establish `hcinv : ∀ ζ ∈ Z, ∀ u, c (ζ • u) = c u`. Introduce `ζ hζ u`. Simplify using `only [hc]`. Rewrite using `[cosetVal_smul (toAfF G β x t hx) (toP1 G β) _ _ hf₁ hφ ζ (by rw [← map_mul, ← map_mul, hcomm ζ hζ]) (by rw [← map_mul, ← map_mul, hcomm ζ hζ])]`.
+
+Use `(finsum_orbit_prod_line Z l₀ hl₀ F c hF0 hF1 hcinv).trans ?_` and prove the remaining obligations. Rewrite using `[pointSum_centralizer_eq (toAfF G β x t hx) (toP1 G β) hf₁ hφ y₀, mul_comm, ← finsum_mul_const_complex]`. Use `finsum_congr fun o => ?_` and prove the remaining obligations. Simplify using `only [hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cls_eq_of_uniq : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (wt : Polynomial G.F → ℂ) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ), (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → ∀ (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ), (∀ k ∈ K', ∀ g, f' (k⁻¹ * g * k) = f' g) → ∀ (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) β x t), (∀ (y₀ : grp G β) (h : G.GAf), f (h⁻¹ * toAfF G β x t hx y₀ * h) ≠ 0 → ∀ z z' : Fin G.n → ℂ, 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re → 0 < (star z' ⬝ᵥ (herm G v β *ᵥ z')).re → FixL G v β y₀ z → FixL G v β y₀ z' → ∃ c : ℂ, z' = c • z) → ∀ y₀ : grp G β, ∑ᶠ o : MulAction.orbitRel.Quotient (Subgroup.centralizer {y₀}) (GlobalTheory.CxUnfold.Ys G v β x t hx Kf K'), ((Nat.card (MulAction.stabilizer (grp G β) (Quotient.out o) ⊓ Subgroup.centralizer {y₀} : Subgroup (grp G β)) : ℕ) : ℂ)⁻¹ * GlobalTheory.CxUnfold.cxF G v wt β x t hx Kf f K' f' (Quotient.out o) y₀ = if (∃ z : Fin G.n → ℂ, 0 < (star z ⬝ᵥ (herm G v β *ᵥ z)).re ∧ FixL G v β y₀ z) then wt (minpoly G.F (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) * pointSum ((toAfF G β x t hx).comp (Subgroup.centralizer {y₀}).subtype) ((toP1 G β).comp (Subgroup.centralizer {y₀}).subtype) (MonoidHom.id (Gr G 1)) Kf K' (toAfF G β x t hx y₀) (toP1 G β y₀) f f' else 0 := by
   intro p _ G v wt Kf f hf₁ K' f' hφ β x t hx huniq' y₀
   set Z := Subgroup.centralizer {y₀} with hZ

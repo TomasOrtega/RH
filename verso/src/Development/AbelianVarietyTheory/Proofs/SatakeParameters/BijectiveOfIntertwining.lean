@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.BijectiveIntertwining
 
+/- English proof (translation)
+Set `K : Subrepresentation ρ` to `{ toSubmodule := LinearMap.ker F apply_mem_toSubmodule := by`. Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hF, hv, map_zero] }`. Set `R : Subrepresentation ρ'` to `{ toSubmodule := LinearMap.range F apply_mem_toSubmodule := by`.
+
+Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨ρ g v, hF g v⟩ }`. Prove the components needed by the constructor for the conclusion. Break down `h.eq_bot_or_eq_top K with hK | hK` into its components or cases. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Conclude with `congrArg Subrepresentation.toSubmodule hK`. Conclude with `absurd (LinearMap.ker_eq_top.mp (congrArg Subrepresentation.toSubmodule hK)) h0`. Break down `h'.eq_bot_or_eq_top R with hR | hR` into its components or cases. Conclude with `absurd (LinearMap.range_eq_bot.mp (congrArg Subrepresentation.toSubmodule hR)) h0`. Rewrite using `[← LinearMap.range_eq_top]`.
+
+Conclude with `congrArg Subrepresentation.toSubmodule hR`.
+-/
 theorem bijective_of_intertwining {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'}
     (h : Representation.IsIrreducible ρ) (h' : Representation.IsIrreducible ρ')

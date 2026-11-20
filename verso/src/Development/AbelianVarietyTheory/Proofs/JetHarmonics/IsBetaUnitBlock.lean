@@ -15,12 +15,18 @@ section Lattice
 
 variable {E : Type} [Field E] [NumberField E] {n₁ n₂ : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_block (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submodule (𝓞 E) (Fin n₂ → E))
     (v : Fin (n₁ + n₂) → E) : v ∈ (blockLat ⟨M₁⟩ ⟨M₂⟩).La ↔
       (fun i => v (Fin.castAdd n₂ i)) ∈ M₁ ∧ (fun j => v (Fin.natAdd n₁ j)) ∈ M₂ := Iff.rfl
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv, ← Matrix.det_fromBlocks_zero₁₂ _ (Matrix.of fun i j => u (Fin.natAdd n₁ i) (Fin.castAdd n₂ j))]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [h]`.
+-/
 theorem det_block (u : Matrix (Fin (n₁ + n₂)) (Fin (n₁ + n₂)) E)
     (h : ∀ i j, u (Fin.castAdd n₂ i) (Fin.natAdd n₁ j) = 0) :
     u.det = (Matrix.of fun i j => u (Fin.castAdd n₂ i) (Fin.castAdd n₂ j)).det *
@@ -33,6 +39,13 @@ theorem det_block (u : Matrix (Fin (n₁ + n₂)) (Fin (n₁ + n₂)) E)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Distinguish the cases in `h0 : w.det = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `h0'` using `h0`. Rewrite `h0'` using `[Matrix.det_apply]`.
+
+Take `⟨σ, -, hσ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h0'`. Establish `hd : ∀ i, w (σ i) i ≠ 0` using `fun i hi => hσ (by`. Rewrite using `[Finset.prod_eq_zero (f := fun k => w (σ k) k) (Finset.mem_univ i) hi, smul_zero])`. Establish `hm : (w.submatrix σ id).det ∈ detSpan M₁ * detSpan M₂`. Rewrite using `[det_block _ (fun i j => ((h (σ (Fin.castAdd n₂ i))).resolve_left fun g => hd _ (g i)) j)]`.
+
+Conclude with `Submodule.mul_mem_mul (det_mem _ fun i => h₁ _) (det_mem _ fun i => h₂ _)`. Rewrite `hm` using `[Matrix.det_permute]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with e | e <;> rw [e] at hm`. Simplify using `using hm`. Simplify using `using hm`.
+-/
 theorem det_pure_mem (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submodule (𝓞 E) (Fin n₂ → E))
     (w : Matrix (Fin (n₁ + n₂)) (Fin (n₁ + n₂)) E)
     (h₁ : ∀ i, (fun j => w i (Fin.castAdd n₂ j)) ∈ M₁) (h₂ : ∀ i, (fun j => w i (Fin.natAdd n₁ j)) ∈ M₂)
@@ -53,6 +66,23 @@ theorem det_pure_mem (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submod
   · simpa using hm
   · simpa using hm
 
+/- English proof (translation)
+Establish `z₁ : (fun _ => 0) ∈ M₁` using `M₁.zero_mem`. Establish `z₂ : (fun _ => 0) ∈ M₂` using `M₂.zero_mem`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 fun d hd => ?_` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `(mem_detSet _ d).1 hd`.
+
+Set `a : Fin (n₁ + n₂) → Fin (n₁ + n₂) → E` to `fun i => Fin.append (fun j => v i (Fin.castAdd n₂ j)) 0`. Set `b : Fin (n₁ + n₂) → Fin (n₁ + n₂) → E` to `fun i => Fin.append 0 (fun j => v i (Fin.natAdd n₁ j))`. Establish `e : (v : Fin (n₁ + n₂) → Fin (n₁ + n₂) → E) = a + b`. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp [a, b]`.
+
+Establish `e2 : v.det = ∑ s : Finset (Fin (n₁ + n₂)), (Matrix.of (s.piecewise a b)).det`. Use `(Matrix.detRowAlternating (n := Fin (n₁ + n₂)) (R := E)).toMultilinearMap.map_add_univ a b` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`. Rewrite using `[SetLike.mem_coe, e2]`.
+
+Use `Submodule.sum_mem _ fun s _ => det_pure_mem M₁ M₂ _ (fun i => ?_) (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ s`. Simplify `((mem_block _ _ _).1 (hv i)).1` using `[hi, a]`. Simplify `z₁` using `[hi, b]`. Distinguish the cases in `hi : i ∈ s`.
+
+Simplify `z₂` using `[hi, a]`. Simplify `((mem_block _ _ _).1 (hv i)).2` using `[hi, b]`. Distinguish the cases in `hi : i ∈ s`. Conclude with `Or.inr fun j => by simp [hi, a]`. Conclude with `Or.inl fun j => by simp [hi, b]`.
+
+Rewrite using `[detSpan, detSpan, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Take `⟨v, hv, rfl⟩` from `(mem_detSet _ _).1 hx`. Take `⟨w, hw, rfl⟩` from `(mem_detSet _ _).1 hy`. Set `u : Matrix (Fin (n₁ + n₂)) (Fin (n₁ + n₂)) E` to `Matrix.of (Fin.append (fun i => Fin.append (v i) 0) (fun i => Fin.append 0 (w i)))`.
+
+Establish `e : u.det = v.det * w.det`. Rewrite using `[det_block u (fun i j => by simp [u])]`. Apply the tactic sequence `congr 2 <;> ext i j <;> simp [u]`. Express the relevant statement in the definitionally equal form `v.det * w.det ∈ detSpan _`. Rewrite using `[← e]`.
+
+Use `det_mem _ fun i => (mem_block _ _ _).2 ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => exact ⟨by simpa [u] using hv i, by simpa [u] using z₂⟩`. Consider the case `right i => exact ⟨by simpa [u] using z₁, by simpa [u] using hw i⟩`.
+-/
 theorem detSpan_block (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submodule (𝓞 E) (Fin n₂ → E)) :
     detSpan (blockLat ⟨M₁⟩ ⟨M₂⟩).La = detSpan M₁ * detSpan M₂ := by
   classical
@@ -97,6 +127,9 @@ theorem detSpan_block (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submo
     | left i => exact ⟨by simpa [u] using hv i, by simpa [u] using z₂⟩
     | right i => exact ⟨by simpa [u] using z₁, by simpa [u] using hw i⟩
 
+/- English proof (translation)
+Use extensionality with `v`. Express the relevant statement in the definitionally equal form `(v ∈ (blockLat Λ₁ Λ₂).La ∧ v ∈ stdLat E _) ↔ _`. Rewrite using `[mem_std_block, mem_block, mem_block]`. Conclude with `and_and_and_comm`.
+-/
 theorem block_Ln (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) :
     (blockLat Λ₁ Λ₂).Ln = (blockLat ⟨Λ₁.Ln⟩ ⟨Λ₂.Ln⟩).La := by
   ext v
@@ -104,6 +137,11 @@ theorem block_Ln (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) :
   rw [mem_std_block, mem_block, mem_block]
   exact and_and_and_comm
 
+/- English proof (translation)
+Set `φ : (blockLat Λ₁ Λ₂).La.toAddSubgroup →+ Λ₁.La.toAddSubgroup × Λ₂.La.toAddSubgroup` to `{ toFun := fun v => (⟨fun i => v.1 (Fin.castAdd n₂ i), v.2.1⟩, ⟨fun j => v.1 (Fin.natAdd n₁ j), v.2.2⟩) map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨⟨x, hx⟩, ⟨y, hy⟩⟩`. Use `⟨⟨Fin.append x y, (mem_block _ _ _).2 ⟨by simpa using hx, by simpa using hy⟩⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext j <;> simp [φ]`.
+
+Rewrite using `[← AddSubgroup.index_prod, ← AddSubgroup.index_comap_of_surjective _ hφ, block_Ln]`. Both sides reduce to the same expression.
+-/
 theorem index_block (Λ₁ : GenLat E n₁) (Λ₂ : GenLat E n₂) :
     ((blockLat Λ₁ Λ₂).Ln.toAddSubgroup.addSubgroupOf (blockLat Λ₁ Λ₂).La.toAddSubgroup).index =
       (Λ₁.Ln.toAddSubgroup.addSubgroupOf Λ₁.La.toAddSubgroup).index *
@@ -124,6 +162,9 @@ end Lattice
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable (c : Coeff l) {n₁ n₂ : ℕ}
 
+/- English proof (translation)
+Establish `e` using `detSpan_block M₁ M₂`. Unfold `detSpan at e`. Unfold `idealAt`. Rewrite using `[← span_image_span, e, Submodule.span_mul_span, span_image_span, Submodule.span_mul_span, Set.image_mul]`.
+-/
 theorem idealAt_block (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submodule (𝓞 E) (Fin n₂ → E)) (τ : E →+* ℂ) :
     idealAt c (blockLat ⟨M₁⟩ ⟨M₂⟩).La τ = idealAt c M₁ τ * idealAt c M₂ τ := by
   have e := detSpan_block M₁ M₂
@@ -131,6 +172,11 @@ theorem idealAt_block (M₁ : Submodule (𝓞 E) (Fin n₁ → E)) (M₂ : Submo
   unfold idealAt
   rw [← span_image_span, e, Submodule.span_mul_span, span_image_span, Submodule.span_mul_span, Set.image_mul]
 
+/- English proof (translation)
+Use `⟨mul_ne_zero b₁.1 b₂.1, ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `e₁` using `b₁.2.1`. Establish `e₂` using `b₂.2.1`. Unfold `BetaIs at e₁ e₂ ⊢`. Rewrite using `[block_Ln]`.
+
+Simplify using `only [idealAt_block c Λ₁.La Λ₂.La, idealAt_block c Λ₁.Ln Λ₂.Ln, mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[← e₁, ← e₂, ← Set.singleton_mul_singleton, ← Submodule.span_mul_span, mul_mul_mul_comm]`. Rewrite using `[index_block, map_mul, norm_mul, mul_pow, b₁.2.2 σ, b₂.2.2 σ, Nat.cast_mul, mul_pow]`.
+-/
 theorem isBeta_block {Λ₁ : GenLat E n₁} {Λ₂ : GenLat E n₂} {β₁ β₂ : c.F} (b₁ : IsBeta Dw c Λ₁ β₁)
     (b₂ : IsBeta Dw c Λ₂ β₂) : IsBeta Dw c (blockLat Λ₁ Λ₂) (β₁ * β₂) := by
   refine ⟨mul_ne_zero b₁.1 b₂.1, ?_, fun σ => ?_⟩
@@ -142,6 +188,11 @@ theorem isBeta_block {Λ₁ : GenLat E n₁} {Λ₂ : GenLat E n₂} {β₁ β�
     rw [← e₁, ← e₂, ← Set.singleton_mul_singleton, ← Submodule.span_mul_span, mul_mul_mul_comm]
   · rw [index_block, map_mul, norm_mul, mul_pow, b₁.2.2 σ, b₂.2.2 σ, Nat.cast_mul, mul_pow]
 
+/- English proof (translation)
+Establish `e : (unitLat E n₁).Ln = (unitLat E n₁).La` using `inf_idem _`. Establish `hu : IsUnit (∏ τ : E →+* ℂ, idealAt c (unitLat E n₁).La τ ^ Dw.mult τ)` using `IsUnit.prod_univ_iff.2 fun τ => (isUnit_idealAt c (trivAt_std n₁ 0) (unimod_std n₁) zero_ne_one τ).pow _`. Use `and_congr_right fun _ => and_congr ?_ (forall_congr' fun σ => ?_)` and prove the remaining obligations. Unfold `BetaIs`. Rewrite using `[block_Ln, e]`.
+
+Simplify using `only [idealAt_block c (unitLat E n₁).La Λ₂.La, idealAt_block c (unitLat E n₁).La Λ₂.Ln, mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[mul_left_comm, hu.mul_right_inj]`. Rewrite using `[index_block, e]`. Simplify using the standard rewrite rules.
+-/
 theorem isBeta_unit_block (n₁ : ℕ) (Λ₂ : GenLat E n₂) (β : c.F) :
     IsBeta Dw c (blockLat (unitLat E n₁) Λ₂) β ↔ IsBeta Dw c Λ₂ β := by
   have e : (unitLat E n₁).Ln = (unitLat E n₁).La := inf_idem _
@@ -157,6 +208,11 @@ theorem isBeta_unit_block (n₁ : ℕ) (Λ₂ : GenLat E n₂) (β : c.F) :
   · rw [index_block, e]
     simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c bad`. Use `⟨fun n₁ n₂ Λ₁ Λ₂ h₁ h₂ β₁ β₂ β b₁ b₂ => ⟨fun b => ?_, ?_⟩, fun n₁ n₂ Λ₂ _ => ⟨GlobalTheory.Survey.BaseClassMove.isBeta_unit c n₁, isBeta_unit_block c n₁ Λ₂⟩⟩` and prove the remaining obligations. Establish `hB` using `latOK_block h₁ h₂`. Conclude with `isBeta_ratio c hB.1 hB.2.2 (isBeta_block c b₁ b₂) b`. Introduce and unpack `⟨ζ, hζ, rfl⟩`.
+
+Conclude with `isBeta_mul c (isBeta_block c b₁ b₂) hζ`.
+-/
 theorem blockBeta : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (c : Coeff l) (bad : ℕ), GlobalTheory.IndefiniteRowSideFullHecke.BlockLatticeAdmissibility.BlockBeta Dw c bad := by
   intro E _ _ _ H Dw l c bad

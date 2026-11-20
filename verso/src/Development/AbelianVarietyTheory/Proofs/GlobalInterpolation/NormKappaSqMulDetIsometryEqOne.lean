@@ -14,6 +14,9 @@ namespace GlobalTheory.KapVal
 
 open IsDedekindDomain
 
+/- English proof (translation)
+Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[q])).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
   have h1 : IsIntegral (NormedField.valuation (K := ℂ_[q])).integer x := hx.tower_top
@@ -21,12 +24,18 @@ theorem norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : I
   have h3 : ‖x‖₊ ≤ 1 := h2
   exact_mod_cast h3
 
+/- English proof (translation)
+The claim follows from `norm_le_one_of_isIntegral (by convert map_isIntegral_int j (RingOfIntegers.isIntegral_coe y) exact Subsingleton.elim _ _)`.
+-/
 theorem norm_le_one_of_int {q : ℕ} [Fact q.Prime] {K : Type} [Field K] [NumberField K] (j : K →+* ℂ_[q])
     (y : 𝓞 K) : ‖j (y : K)‖ ≤ 1 :=
   norm_le_one_of_isIntegral (by
     convert map_isIntegral_int j (RingOfIntegers.isIntegral_coe y)
     exact Subsingleton.elim _ _)
 
+/- English proof (translation)
+Establish `e : ((q : ℕ) : ℂ_[q]) = ((algebraMap ℚ_[q] (PadicAlgCl q) (q : ℚ_[q]) : PadicAlgCl q) : ℂ_[q])`. Simplify using the standard rewrite rules. Rewrite using `[e, PadicComplex.norm_extends']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_natCast_lt_one (q : ℕ) [Fact q.Prime] : ‖((q : ℕ) : ℂ_[q])‖ < 1 := by
   have e : ((q : ℕ) : ℂ_[q]) = ((algebraMap ℚ_[q] (PadicAlgCl q) (q : ℚ_[q]) : PadicAlgCl q) : ℂ_[q]) := by
     simp
@@ -41,6 +50,19 @@ open IsDedekindDomain
 
 variable {q : ℕ} [Fact q.Prime] {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Set `P : Ideal (𝓞 K)` to `{ carrier := {x | ‖j (x : K)‖ < 1} add_mem' := fun {x y} hx hy => by show ‖j ((x : K) + (y : K))‖ < 1`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hx hy)`. Use the proof step `zero_mem' := by show ‖j (0 : K)‖ < 1`. Simplify using the standard rewrite rules.
+
+Use the proof step `smul_mem' := fun r x hx => by show ‖j ((r : K) * (x : K))‖ < 1`. Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (norm_le_one_of_int j r) (norm_nonneg _) hx }`. Establish `hP : ∀ x : 𝓞 K, x ∈ P ↔ ‖j (x : K)‖ < 1` using `fun _ => Iff.rfl`. Establish `hl : ((q : ℕ) : 𝓞 K) ∈ P`.
+
+Rewrite using `[hP]`. Establish `e : j (((q : ℕ) : 𝓞 K) : K) = ((q : ℕ) : ℂ_[q])` using `by simp`. Rewrite using `[e]`. Conclude with `norm_natCast_lt_one q`. Establish `hprime : P.IsPrime`.
+
+Use `⟨?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, hP]`. Simplify using the standard rewrite rules. Rewrite `hxy` using `[hP]`. Establish `e : j ((x * y : 𝓞 K) : K) = j (x : K) * j (y : K)` using `by simp`.
+
+Rewrite `hxy` using `[e, norm_mul]`. Rewrite using `[hP, hP]`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_or, not_lt, not_lt]`. Conclude with `absurd (one_le_mul_of_one_le_of_one_le h.1 h.2) (not_le.2 hxy)`.
+
+Use `⟨⟨P, hprime, ?_⟩, hl, hP⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hl` using `[h0, Ideal.mem_bot]`. Conclude with `(Fact.out : q.Prime).ne_zero (by exact_mod_cast hl)`.
+-/
 theorem exists_place (j : K →+* ℂ_[q]) :
     ∃ w : HeightOneSpectrum (𝓞 K), ((q : ℕ) : 𝓞 K) ∈ w.asIdeal ∧ ∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖j (y : K)‖ < 1 := by
   let P : Ideal (𝓞 K) :=
@@ -78,6 +100,11 @@ theorem exists_place (j : K →+* ℂ_[q]) :
   rw [h0, Ideal.mem_bot] at hl
   exact (Fact.out : q.Prime).ne_zero (by exact_mod_cast hl)
 
+/- English proof (translation)
+Take `⟨n, d, h⟩` from `w.exists_primeCompl_mul_eq_of_integer x hx`. Establish `hd : 1 ≤ ‖j ((d : 𝓞 K) : K)‖` using `not_lt.1 fun hlt => d.2 ((hw _).2 hlt)`. Establish `h2 : ‖j x‖ * ‖j ((d : 𝓞 K) : K)‖ = ‖j (n : K)‖`. Rewrite using `[← norm_mul, ← map_mul]`. Conclude with `congrArg (fun z => ‖j z‖) h`.
+
+Establish `h3` using `norm_le_one_of_int j n`. Use polynomial arithmetic with `[norm_nonneg (j x)]`.
+-/
 theorem norm_le_one_of_val (j : K →+* ℂ_[q]) (w : HeightOneSpectrum (𝓞 K))
     (hw : ∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖j (y : K)‖ < 1) (x : K) (hx : w.valuation K x ≤ 1) :
     ‖j x‖ ≤ 1 := by
@@ -88,6 +115,11 @@ theorem norm_le_one_of_val (j : K →+* ℂ_[q]) (w : HeightOneSpectrum (𝓞 K)
   have h3 := norm_le_one_of_int j n
   nlinarith [norm_nonneg (j x)]
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Establish `h1` using `norm_le_one_of_val j w hw x hx.le`. Establish `h2` using `norm_le_one_of_val j w hw x⁻¹ (by rw [map_inv₀, hx, inv_one])`.
+
+Establish `h3 : ‖j x‖ * ‖j x⁻¹‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (j x), norm_nonneg (j x⁻¹)]`.
+-/
 theorem norm_eq_one_of_val (j : K →+* ℂ_[q]) (w : HeightOneSpectrum (𝓞 K))
     (hw : ∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖j (y : K)‖ < 1) (x : K) (hx : w.valuation K x = 1) :
     ‖j x‖ = 1 := by
@@ -100,6 +132,17 @@ theorem norm_eq_one_of_val (j : K →+* ℂ_[q]) (w : HeightOneSpectrum (𝓞 K)
     rw [← norm_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, norm_one]
   nlinarith [norm_nonneg (j x), norm_nonneg (j x⁻¹)]
 
+/- English proof (translation)
+Use `set y := -WithZero.log (w.valuation K x) with hy`. Establish `hv0 : w.valuation K x ≠ 0` using `by simpa using hx`. Establish `hvx : w.valuation K x = WithZero.exp (-y)`. Rewrite using `[hy, neg_neg, WithZero.exp_log hv0]`. Establish `hπ0 : (π : K) ≠ 0`.
+
+Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hz : w.valuation K (x ^ n * (π : K) ^ (-y)) = 1`. Rewrite using `[map_mul, map_pow, map_zpow₀, hvx, hπ, ← WithZero.exp_nsmul, ← WithZero.exp_zsmul, ← WithZero.exp_add]`.
+
+Rewrite using `[← WithZero.exp_zero]`. Use `congr 1`. Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `norm_eq_one_of_val j w hw _ hz`.
+
+Rewrite `h1` using `[map_mul, map_pow, map_zpow₀, norm_mul, norm_pow, norm_zpow]`. Establish `hjπ : ‖j (π : K)‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `(map_ne_zero j).2 hπ0`. Establish `h2 : ‖j (π : K)‖ ^ (-y) * ‖j (π : K)‖ ^ y = 1`.
+
+Rewrite using `[← zpow_add₀ hjπ, neg_add_cancel, zpow_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_pow_eq (j : K →+* ℂ_[q]) (w : HeightOneSpectrum (𝓞 K))
     (hw : ∀ y : 𝓞 K, y ∈ w.asIdeal ↔ ‖j (y : K)‖ < 1) (n : ℕ) (π : 𝓞 K)
     (hπ : w.valuation K (π : K) = WithZero.exp (-(n : ℤ))) (x : K) (hx : x ≠ 0) :
@@ -135,6 +178,39 @@ namespace GlobalTheory.KapVal
 
 open IsDedekindDomain
 
+/- English proof (translation)
+Introduce `D γ₀ γ k q _ hq2 hj hat ι`. Establish `hqp : q.Prime` using `Fact.out`. Establish `hs : SplitK D q` using `Or.inr hj`. Set `jK : D.host.K →+* ℂ_[q]` to `ι.toRingHom.comp (D.host.φ₀.comp (algebraMap D.host.K D.host.E))`. Set `jK' : D.host.K →+* ℂ_[q]` to `ι.toRingHom.comp (D.host.φ₀.comp ((D.host.conj : D.host.E →+* D.host.E).comp (algebraMap D.host.K D.host.E)))`.
+
+Establish `ejK : ∀ z : D.host.K, jK z = ι (D.host.φ₀ (z : D.host.E))` using `fun z => rfl`. Establish `ejK' : ∀ z : D.host.K, jK' z = ι (D.host.φ₀ (D.host.conj (z : D.host.E)))` using `fun z => rfl`. Establish `hU` using `GlobalTheory.T.relativeDeterminant_isometry_norm_one D γ₀ γ`. Use `set x : D.host.K := γ.detRel γ₀ with hxdef`. Use `set h : ℕ := classNumber D.host.K with hh`.
+
+Establish `hy : ordK (k.pp q) x = k.yP q` using `yIndep D γ₀ q (k.pp q) γ (k.gaP q) hqp hs (k.pp_over q hqp hs) hat (k.gaP_at q hqp hs)`. Establish `hπv : (k.pp q).valuation D.host.K ((k.pi q : 𝓞 D.host.K) : D.host.K) = WithZero.exp (-(h : ℤ))` using `GlobalTheory.T.valuation_eq_exp_neg_of_pow_eq_span_singleton D.host.K (k.pp q) h (k.pi q) (k.pi_gen q hqp hs)`. Establish `hkap` using `GlobalTheory.T.complexPadic_norm_kappa_splitPrime D γ₀ k q hs ι`. Establish `hrt` using `k.rt_pow q hqp hs`. Establish `hrt0` using `k.rt_ne_zero q hqp hs`.
+
+Use `set y : ℤ := k.yP q with hydef`. Use `set 𝔭 := k.pp q with h𝔭`. Use `set π : 𝓞 D.host.K := k.pi q with hπdef`. Establish `hx0 : x ≠ 0`. Introduce `h0`.
+
+Rewrite `hU` using `[h0]`. Simplify using `at hU`. Establish `hxx : ‖jK x‖ * ‖jK' x‖ = 1`. Rewrite using `[← norm_mul, ejK, ejK', ← map_mul, ← map_mul, hU, map_one, map_one, norm_one]`. Take `⟨w, hqw, hw⟩` from `exists_place jK`.
+
+Take `⟨w', hqw', hw'⟩` from `exists_place jK'`. Establish `hne : w ≠ w'`. Introduce `heq`. Take `⟨y0, h1, h2⟩` from `GlobalTheory.T.conjugate_embeddings_induce_different_primes_split D q hq2 hj ι`. Establish `a1 : y0 ∈ w.asIdeal` using `(hw y0).2 (by rw [ejK]; exact h1)`.
+
+Rewrite `a1` using `[heq, hw', ejK']`. Conclude with `absurd a1 (not_lt.2 h2)`. Establish `hq𝔭 : ((q : ℕ) : 𝓞 D.host.K) ∈ 𝔭.asIdeal` using `k.pp_over q hqp hs`. Establish `hnot : ∀ v : HeightOneSpectrum (𝓞 D.host.K), v ≠ 𝔭 → π ∉ v.asIdeal`. Introduce `v hv hπ`.
+
+Apply `hv` to reduce the goal to its premises. Establish `h1 : 𝔭.asIdeal ^ h ≤ v.asIdeal`. Rewrite using `[hh, k.pi_gen q hqp hs, Ideal.span_singleton_le_iff_mem]`. Conclude with `hπ`. Establish `h2 : 𝔭.asIdeal ≤ v.asIdeal` using `v.isPrime.le_of_pow_le h1`.
+
+Establish `h3 : 𝔭.asIdeal = v.asIdeal` using `𝔭.isMaximal.eq_of_le v.isPrime.ne_top h2`. Conclude with `(HeightOneSpectrum.ext h3).symm`. Establish `hone : ∀ (j : D.host.K →+* ℂ_[q]) (v : HeightOneSpectrum (𝓞 D.host.K)), (∀ z : 𝓞 D.host.K, z ∈ v.asIdeal ↔ ‖j (z : D.host.K)‖ < 1) → v ≠ 𝔭 → ‖j (π : D.host.K)‖ = 1`. Introduce `j v hv hv𝔭`. Conclude with `le_antisymm (norm_le_one_of_int j π) (not_lt.1 fun hlt => hnot v hv𝔭 ((hv π).2 hlt))`.
+
+Establish `key : ‖jK x‖ ^ h = (‖jK (π : D.host.K)‖ / ‖jK' (π : D.host.K)‖) ^ y`. Break down `GlobalTheory.T.quadratic_field_at_most_two_primes_over_prime D.host.K (kQuad D) q hqp 𝔭 w w' hq𝔭 hqw hqw' with e | e | e` into its components or cases. Establish `h1` using `norm_pow_eq jK w hw h π (by rw [← e]; exact hπv) x hx0`. Establish `h2 : -WithZero.log (w.valuation D.host.K x) = y` using `by rw [← e]; exact hy`. Rewrite `h1` using `[h2]`.
+
+Rewrite using `[h1, hone jK' w' hw' (fun e' => hne (e.symm.trans e'.symm)), div_one]`. Establish `h1` using `norm_pow_eq jK' w' hw' h π (by rw [← e]; exact hπv) x hx0`. Establish `h2 : -WithZero.log (w'.valuation D.host.K x) = y` using `by rw [← e]; exact hy`. Rewrite `h1` using `[h2]`. Rewrite using `[hone jK w hw (fun e' => hne (e'.trans e)), one_div, inv_zpow', zpow_neg, ← h1]`.
+
+Establish `hx' : ‖jK x‖ = ‖jK' x‖⁻¹` using `eq_inv_of_mul_eq_one_left hxx`. Rewrite using `[hx', inv_pow]`. Conclude with `absurd e hne`. Establish `hjx : ‖ι (D.host.φ₀ ((γ.detRel γ₀ : D.host.K) : D.host.E))‖ = ‖jK x‖` using `rfl`. Rewrite using `[hjx, hkap]`.
+
+Rewrite `hrt` using `[← hh]`. Establish `hr0 : 0 < ‖ι (k.rt q)‖` using `norm_pos_iff.2 ((map_ne_zero ι).2 hrt0)`. Establish `hratio : ‖jK (π : D.host.K)‖ / ‖jK' (π : D.host.K)‖ = ‖ι (k.rt q)‖ ^ (2 * h)`. Rewrite using `[ejK, ejK', ← norm_div, ← map_div₀, ← hrt, map_pow, norm_pow]`. Rewrite `key` using `[hratio]`.
+
+Establish `hh0 : h ≠ 0` using `by rw [hh]; exact (NumberField.classNumber_pos D.host.K).ne'`. Establish `hxr : ‖jK x‖ = ‖ι (k.rt q)‖ ^ (2 * y)`. Establish `e : (‖ι (k.rt q)‖ ^ (2 * h)) ^ y = (‖ι (k.rt q)‖ ^ (2 * y)) ^ h`. Rewrite using `[← zpow_natCast, ← zpow_natCast (‖ι (k.rt q)‖ ^ (2 * y)), ← zpow_mul, ← zpow_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[e]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (zpow_nonneg hr0.le _) hh0).1 key`. Rewrite using `[hxr, ← zpow_natCast, ← zpow_mul, ← zpow_add₀ hr0.ne']`.
+
+Rewrite using `[show -y * ((2 : ℕ) : ℤ) + 2 * y = 0 by push_cast; ring, zpow_zero]`.
+-/
 theorem norm_kappa_sq_mul_det : ∀ (D : D7) (γ₀ γ : IsoK D) (k : KapChoice γ₀) (q : ℕ) [Fact q.Prime], q ≠ 2 →
     jacobiSym (-(D.host.d : ℤ)) q = 1 → γ.AtP q → ∀ ι : ℂ ≃+* ℂ_[q],
     ‖ι k.kappa‖ ^ 2 * ‖ι (D.host.φ₀ ((γ.detRel γ₀ : D.host.K) : D.host.E))‖ = 1 := by

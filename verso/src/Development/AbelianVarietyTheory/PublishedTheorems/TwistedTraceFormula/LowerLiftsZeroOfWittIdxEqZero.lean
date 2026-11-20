@@ -64,6 +64,11 @@ namespace GlobalTheory.RallisIP
 
 variable {D : D7} {A B : HSp D}
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.SchurIrreducible.wittIdx wittIndex`. Use `congr 1`. Use extensionality with `k`. Use `exists_congr fun W => and_comm.trans (and_congr_left' ⟨fun h y hy => mem_perp.2 fun x hx => ?_, fun h x hx y hy => ?_⟩)` and prove the remaining obligations. Conclude with `h x hx y hy`.
+
+Conclude with `mem_perp.1 (h hy) x hx`.
+-/
 theorem wittIdx_eq_wittIndex (B : HSp D) : Formalism.MainNotions.SchurIrreducible.wittIdx B = wittIndex B := by
   unfold Formalism.MainNotions.SchurIrreducible.wittIdx wittIndex
   congr 1
@@ -72,9 +77,15 @@ theorem wittIdx_eq_wittIndex (B : HSp D) : Formalism.MainNotions.SchurIrreducibl
   · exact h x hx y hy
   · exact mem_perp.1 (h hy) x hx
 
+/- English proof (translation)
+Rewrite using `[wittIdx_eq_wittIndex]`. Conclude with `exists_isWittLower_iff`.
+-/
 theorem exists_lower_iff {i : ℕ} : (∃ B' : HSp D, IsWittLower B B' i ∧ B'.SigOK) ↔ i ≤ Formalism.MainNotions.SchurIrreducible.wittIdx B := by
   rw [wittIdx_eq_wittIndex]; exact exists_isWittLower_iff
 
+/- English proof (translation)
+Introduce `i B' hi h1 h2` and use `by have := exists_lower_iff.1 ⟨B', h1, h2⟩ omega`.
+-/
 theorem lowerLiftsZero_of_wittIdx_eq_zero (h : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0) (m : Measure (GA D A)) (ψ : AddChar (AF D.host.F) ℂ)
     (χA χB : (AE D)ˣ →* Circle) (π : Submodule ℂ (GA D A → ℂ)) : LowerLiftsZero m ψ B χA χB π := fun i B' hi h1 h2 => by
   have := exists_lower_iff.1 ⟨B', h1, h2⟩
@@ -82,10 +93,16 @@ theorem lowerLiftsZero_of_wittIdx_eq_zero (h : Formalism.MainNotions.SchurIrredu
 
 variable {ω : GA D A × GA D B →* Module.End ℂ (WO A B → ℂ)} {m : Measure (GA D A)} {Φ : WO A B → ℂ} {f : GA D A → ℂ}
 
+/- English proof (translation)
+The claim follows from `funext fun h => by simp only [thetaLift, Pi.smul_apply, smul_eq_mul] rw [← petersson_conj_symm, petersson_smul_left, map_mul, petersson_conj_symm]`.
+-/
 theorem thetaLift_smul (c : ℂ) : thetaLift ω m Φ (c • f) = conj c • thetaLift ω m Φ f := funext fun h => by
   simp only [thetaLift, Pi.smul_apply, smul_eq_mul]
   rw [← petersson_conj_symm, petersson_smul_left, map_mul, petersson_conj_symm]
 
+/- English proof (translation)
+Establish `h` using `Examples₂.lorentzSpace_signature_ok (E := D.host.E) Examples₂.star_isIntegral`. Establish `h1 : Formalism.MainNotions.SchurIrreducible.wittIdx (Examples₂.lorentzSpace (E` using `D.host.E) Examples₂.star_isIntegral) ≤ 1 := (WittSignature.wittIdx_le_signature _ _ h D.host.φ₀ (D.sp.cm.cmUnram.2.1 D.host.φ₀)).2`. Conclude with `⟨Examples₂.posSpace Examples₂.star_isIntegral 5, Examples₂.lorentzSpace Examples₂.star_isIntegral, Examples₂.posSpace_sigOK _ 5, (by decide : 5 < 8 + 1), (by decide : 8 + 1 ≤ 2 * 5), (Nat.add_le_add_left h1 5).trans_lt (by decide : 5 + 1 < 8 + 1), fun _ => ⟨h, rfl⟩⟩`.
+-/
 example (D : D7) : ∃ A B : HSp D, A.SigOK ∧ A.rank < B.rank ∧ B.rank ≤ 2 * A.rank ∧
     A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank ∧ ∀ τ, B.SigOK ∧ B.sig τ = (8, 1) := by
   have h := Examples₂.lorentzSpace_signature_ok (E := D.host.E) Examples₂.star_isIntegral

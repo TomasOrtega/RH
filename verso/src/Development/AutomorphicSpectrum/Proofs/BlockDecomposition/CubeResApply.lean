@@ -25,11 +25,17 @@ def pullNC (G : C ⥤ ModuleCat.{0} R) {m n : ℕ} (θ : Fin (m + 1) →o Fin (n
     LinearMap.proj (R := R) (φ := fun c : Fin (m + 1) ⥤ C ↦ (G.obj (c.obj (Fin.last m)) : Type))
       (θ.monotone.functor ⋙ c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullNC_apply (G : C ⥤ ModuleCat.{0} R) {m n : ℕ} (θ : Fin (m + 1) →o Fin (n + 1)) (f : NC G m)
     (c : Fin (n + 1) ⥤ C) :
     pullNC G θ f c = (G.map (c.map (homOfLE (Fin.le_last (θ (Fin.last m)))))).hom (f (θ.monotone.functor ⋙ c)) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[← ModuleCat.comp_apply, ← G.map_comp, ← c.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_map_chain (G : C ⥤ ModuleCat.{0} R) {n : ℕ} (c : Fin (n + 1) ⥤ C) {x y z : Fin (n + 1)} (a : x ≤ y)
     (b : y ≤ z) (v : G.obj (c.obj x)) :
     (G.map (c.map (homOfLE b))).hom ((G.map (c.map (homOfLE a))).hom v) =
@@ -78,8 +84,16 @@ instance : (nerveCx (R := R) (C := C)).PreservesZeroMorphisms where
 def dNC (G : C ⥤ ModuleCat.{0} R) (n : ℕ) : NC G n →ₗ[R] NC G (n + 1) :=
   ∑ i : Fin (n + 2), ((-1 : R) ^ (i : ℕ)) • pullNC G (Fin.succAboveOrderEmb i).toOrderHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nerveCx_X (G : C ⥤ ModuleCat.{0} R) (n : ℕ) : (nerveCx.obj G).X n = ModuleCat.of R (NC G n) := rfl
 
+/- English proof (translation)
+Establish `h0 : (nerveCx.obj G).d n (n + 1) = AlgebraicTopology.AlternatingCofaceMapComplex.objD (cosimp G) n` using `CochainComplex.of_d (fun n ↦ (cosimp G).obj ⦋n⦌) (AlgebraicTopology.AlternatingCofaceMapComplex.objD (cosimp G)) n`. Use `h0.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (ModuleCat.ofHom (pullNC G (Fin.succAboveOrderEmb i).toOrderHom) : ModuleCat.of R (NC G n) ⟶ ModuleCat.of R (NC G (n + 1)))) = _`. Use `ModuleCat.hom_ext ?_` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_ofHom, ModuleCat.hom_sum]`.
+
+Unfold `dNC`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Establish `h : ((-1 : R) ^ (i : ℕ)) = (((-1 : ℤ) ^ (i : ℕ) : ℤ) : R)` using `by push_cast; rfl`. Rewrite using `[h, Int.cast_smul_eq_zsmul, ModuleCat.hom_zsmul, ModuleCat.hom_ofHom]`.
+-/
 theorem nerveCx_d (G : C ⥤ ModuleCat.{0} R) (n : ℕ) :
     (nerveCx.obj G).d n (n + 1) = ModuleCat.ofHom (dNC G n) := by
   have h0 : (nerveCx.obj G).d n (n + 1) = AlgebraicTopology.AlternatingCofaceMapComplex.objD (cosimp G) n :=
@@ -94,6 +108,9 @@ theorem nerveCx_d (G : C ⥤ ModuleCat.{0} R) (n : ℕ) :
   have h : ((-1 : R) ^ (i : ℕ)) = (((-1 : ℤ) ^ (i : ℕ) : ℤ) : R) := by push_cast; rfl
   rw [h, Int.cast_smul_eq_zsmul, ModuleCat.hom_zsmul, ModuleCat.hom_ofHom]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nerveCx_map_f {G G' : C ⥤ ModuleCat.{0} R} (φ : G ⟶ G') (n : ℕ) (f : NC G n) (c : Fin (n + 1) ⥤ C) :
     (show NC G' n from ((nerveCx.map φ).f n).hom f) c = (φ.app _).hom (f c) := rfl
 
@@ -103,6 +120,9 @@ theorem nerveCx_map_f {G G' : C ⥤ ModuleCat.{0} R} (φ : G ⟶ G') (n : ℕ) (
   map_id T := ModuleCat.hom_ext (LinearMap.ext fun b ↦ GlobalTheory.CatCoh.mp_id F T b)
   map_comp φ ψ := ModuleCat.hom_ext (LinearMap.ext fun b ↦ GlobalTheory.CatCoh.mp_comp F φ ψ b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dNC_toMod (F : C ⥤ CommAlgCat.{0} R) (n : ℕ) : dNC (toMod F) n = MainStatements.Hodge.dn F n := rfl
 
 end Cochains
@@ -119,11 +139,17 @@ def cubeRes (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s ⊆ t) :
       LinearMap.proj (R := R) (φ := fun hs : PLift s.Nonempty ↦ (G.obj (op (s.inf' hs.down e)) : Type)) ⟨hs⟩
   else 0
 
+/- English proof (translation)
+Simplify using `[cubeRes, hs]`.
+-/
 theorem cubeRes_apply (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s ⊆ t)
     (x : ∀ hs : PLift s.Nonempty, G.obj (op (s.inf' hs.down e))) (hs : s.Nonempty) (ht : PLift t.Nonempty) :
     cubeRes e G h x ht = (G.map (homOfLE (Finset.inf'_mono e h hs)).op).hom (x ⟨hs⟩) := by
   simp [cubeRes, hs]
 
+/- English proof (translation)
+Simplify using `[cubeRes, hs]`.
+-/
 theorem cubeRes_empty (G : Pᵒᵖ ⥤ ModuleCat.{0} R) {s t : Finset κ} (h : s ⊆ t)
     (x : ∀ hs : PLift s.Nonempty, G.obj (op (s.inf' hs.down e))) (hs : ¬ s.Nonempty) (ht : PLift t.Nonempty) :
     cubeRes e G h x ht = 0 := by

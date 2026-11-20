@@ -7,6 +7,9 @@ open ReciprocityTheory.PTheta
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `thetaTerm eC`. Simplify using `only [dotProduct, Matrix.mulVec, shiftVec, ofRealVec, Pi.add_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem differentiable_thetaTerm_prod {ι : Type} [Fintype ι] (a b : ι → ℝ) (l : ι → ℤ) :
     Differentiable ℂ
       (fun p : (ι → ℂ) × (ι → ι → ℂ) => thetaTerm a b p.1 (Matrix.of p.2) l) := by
@@ -14,6 +17,15 @@ theorem differentiable_thetaTerm_prod {ι : Type} [Fintype ι] (a b : ι → ℝ
   simp only [dotProduct, Matrix.mulVec, shiftVec, ofRealVec, Pi.add_apply, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU c hc`. Establish `hK : Metric.closedBall c (ε / 2) ⊆ U` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Take `⟨u, hu, hbd⟩` from `hle _ hK (isCompact_closedBall c (ε / 2))`. Establish `hr : (0 : ℝ) < ε / 4` using `by positivity`.
+
+Establish `hlim : TendstoUniformlyOn (fun s : Finset (ι → ℤ) => fun p : (ι → ℂ) × (ι → ι → ℂ) => ∑ l ∈ s, thetaTerm a b p.1 (Matrix.of p.2) l) (fun p : (ι → ℂ) × (ι → ι → ℂ) => theta a b p.1 (Matrix.of p.2)) Filter.atTop (Metric.ball c (2 * (ε / 4)))`. Establish `h` using `tendstoUniformlyOn_tsum hu (fun l p hp => hbd l p hp)`. Use `h.mono ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `Metric.ball_subset_closedBall (by simpa [show 2 * (ε / 4) = ε / 2 by ring] using hp)`.
+
+Establish `hF : ∀ᶠ s : Finset (ι → ℤ) in Filter.atTop, DifferentiableOn ℂ (fun p : (ι → ℂ) × (ι → ι → ℂ) => ∑ l ∈ s, thetaTerm a b p.1 (Matrix.of p.2) l) (Metric.ball c (2 * (ε / 4)))` using `Filter.Eventually.of_forall fun s => by`. Establish `h` using `Differentiable.sum (u := s) fun l _ => differentiable_thetaTerm_prod a b l`. Establish `e : (fun p : (ι → ℂ) × (ι → ι → ℂ) => ∑ l ∈ s, thetaTerm a b p.1 (Matrix.of p.2) l) = ∑ l ∈ s, fun p : (ι → ℂ) × (ι → ι → ℂ) => thetaTerm a b p.1 (Matrix.of p.2) l`. Use function extensionality and compare the values at `p`. Rewrite using `[Finset.sum_apply]`.
+
+Rewrite using `[e]`. Conclude with `h.differentiableOn`. Establish `hd` using `(GlobalTheory.SCV.tendstoUniformlyOn_fderiv_ball hlim hF).1`. Conclude with `(hd.differentiableAt (Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self hr))).differentiableWithinAt`.
+-/
 theorem differentiableOn_theta_prod_of_normal {ι : Type} [Fintype ι] (a b : ι → ℝ)
     {U : Set ((ι → ℂ) × (ι → ι → ℂ))} (hU : IsOpen U)
     (hle : ∀ K ⊆ U, IsCompact K → ∃ u : (ι → ℤ) → ℝ, Summable u ∧
@@ -49,6 +61,9 @@ theorem differentiableOn_theta_prod_of_normal {ι : Type} [Fintype ι] (a b : ι
   have hd := (GlobalTheory.SCV.tendstoUniformlyOn_fderiv_ball hlim hF).1
   exact (hd.differentiableAt (Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self hr))).differentiableWithinAt
 
+/- English proof (translation)
+Introduce `ι _ a b`. Use `differentiableOn_theta_prod_of_normal a b ((hopen ι).preimage continuous_snd) ?_` and prove the remaining obligations. Introduce `K hKU hK`. Take `⟨u, hu, hbd⟩` from `hM ι a K hK (fun p hp => hKU hp)`. Conclude with `⟨u, hu, fun l p hp => hbd b p hp l⟩`.
+-/
 theorem thetaHolo_of_domainOpen_of_mTest (hopen : DomainOpenStatement)
     (hM : ThetaMTestStatement) : ThetaHoloStatement := by
   intro ι _ a b

@@ -14,6 +14,9 @@ variable {K : Type*} [Field K] [NumberField K]
 
 open IdeleGroup
 
+/- English proof (translation)
+The claim follows from `FractionalIdeal.coeIdeal_ne_zero.1 coe_differentIdeal_ne_zero`.
+-/
 theorem differentIdeal_ne_bot : differentIdeal ℤ (𝓞 K) ≠ ⊥ :=
   FractionalIdeal.coeIdeal_ne_zero.1 coe_differentIdeal_ne_zero
 
@@ -24,6 +27,11 @@ namespace HeckeCharacter
 
 variable (χ : HeckeCharacter K)
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `toFractionalIdeal_surjective (K := K) (idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)`. Use `⟨toFinite K x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, toFractionalIdeal_eq_iff]`. Introduce `v`. Rewrite using `[count_toFractionalIdeal]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_ofFinite_toFractionalIdeal_eq :
     ∃ δ : (FiniteAdeleRing (𝓞 K) K)ˣ, toFractionalIdeal (ofFinite δ) =
       idealUnit χ.conductor χ.conductor_ne_bot * differentUnit := by
@@ -35,6 +43,9 @@ theorem exists_ofFinite_toFractionalIdeal_eq :
   rw [count_toFractionalIdeal]
   rfl
 
+/- English proof (translation)
+Rewrite using `[valued_eq_exp_ord, ← count_toFractionalIdeal, hδ, Units.val_mul, FractionalIdeal.count_mul K v (idealUnit χ.conductor χ.conductor_ne_bot).ne_zero (differentUnit (K := K)).ne_zero]`. Both sides reduce to the same expression.
+-/
 theorem valued_of_toFractionalIdeal_eq {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
     (v : HeightOneSpectrum (𝓞 K)) :
@@ -48,12 +59,20 @@ def fourierConst (δ : (FiniteAdeleRing (𝓞 K) K)ˣ) : ℂ :=
   (∏ w, (-I) ^ (χ.infiniteWeight w).natAbs) *
     finiteFourier K χ.finiteTestFun ((δ⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K)
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun _ _ ↦ pow_ne_zero _ (neg_ne_zero.2 I_ne_zero)) (χ.finiteFourier_finiteTestFun_ne_zero δ (χ.valued_of_toFractionalIdeal_eq hδ))`.
+-/
 theorem fourierConst_ne_zero {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit) :
     χ.fourierConst δ ≠ 0 :=
   mul_ne_zero (Finset.prod_ne_zero_iff.2 fun _ _ ↦ pow_ne_zero _ (neg_ne_zero.2 I_ne_zero))
     (χ.finiteFourier_finiteTestFun_ne_zero δ (χ.valued_of_toFractionalIdeal_eq hδ))
 
+/- English proof (translation)
+Establish `hy1 : (ofFinite δ • y).1 = y.1`. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing K) * y.1 = y.1`. Conclude with `one_mul _`. Establish `hy2 : (ofFinite δ • y).2 = (δ : FiniteAdeleRing (𝓞 K) K) * y.2` using `rfl`. Rewrite using `[testFunction, adelicFourier_schwartzBruhatTensor, schwartzBruhatTensor, mixedFourierSchwartz_apply, χ.mixedFourier_infiniteSchwartz, χ.finiteFourier_finiteTestFun δ (χ.valued_of_toFractionalIdeal_eq hδ) y.2, testFunction, schwartzBruhatTensor, hy1, hy2, fourierConst]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem adelicFourier_testFunction {δ : (FiniteAdeleRing (𝓞 K) K)ˣ}
     (hδ : toFractionalIdeal (ofFinite δ) = idealUnit χ.conductor χ.conductor_ne_bot * differentUnit)
     (y : 𝔸[K]) :

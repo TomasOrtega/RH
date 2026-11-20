@@ -18,6 +18,13 @@ namespace GlobalTheory.ConjLiftData
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Take `⟨μH, hH⟩` from `GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D μ' hμ.1`. Use `⟨μH, fun P k => ?_, hH⟩` and prove the remaining obligations. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, hinf, -⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3 P`. Establish `hx : infPart D ((Formalism.L2.JoinChr.locU he.1 k : (AE D)ˣ) : AE D) = 1`.
+
+Rewrite using `[Formalism.L2.JoinChr.locU_val, Formalism.L2.JoinChr.locE, RingHom.map_add, RingHom.map_mul, hinf, zero_mul, add_zero, RingHom.map_one]`. Take `⟨y, hy0, hy⟩` from `hμ.2.2.2.1 _ hx`. Establish `a1` using `hH.2 P e he k _ (Formalism.L2.JoinChr.locU_val he.1 k)`. Establish `a2` using `(hL.mu0 i).2 P e he k _ (Formalism.L2.JoinChr.locU_val he.1 k)`. Rewrite using `[hL.xi_base, mul_one]`.
+
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.twVal`. Simplify using `only [Complex.ofReal_zero, zero_mul, neg_zero, Complex.cpow_zero, mul_one]`. Rewrite using `[← a1, ← a2, hy, hy0, hσ.1]`.
+-/
 theorem exists_galConj_mu (R : RealDat D A Ks) (hL : R.Is A.μ0) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ)
     (hσ : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsEmbOverK D σ s) (μ' : (AE D)ˣ →* Circle) (hμ : ChiAt R i σ μ') :
     ∃ μH : Formalism.L2.Host.HChar D.host.E, GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsGalConj s 0 (R.C.mu0 i * R.xiH A.μ0) μH ∧ ChrEq μ' μH := by
@@ -36,6 +43,11 @@ theorem exists_galConj_mu (R : RealDat D A Ks) (hL : R.Is A.μ0) (i : Fin D.R.m)
   simp only [Complex.ofReal_zero, zero_mul, neg_zero, Complex.cpow_zero, mul_one]
   rw [← a1, ← a2, hy, hy0, hσ.1]
 
+/- English proof (translation)
+Take `⟨ηH, hH⟩` from `GlobalTheory.HeckeTensorRead.exists_hchar_chrEq D η' hη.1`. Use `⟨ηH, fun P k => ?_, hH⟩` and prove the remaining obligations. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨e, he, -⟩` from `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3 P`. Take `⟨y, hy1, hy2⟩` from `hη.2.2 P e he (Formalism.L2.JoinChr.locU he.1 (Formalism.L2.Host.unif P)) rfl`.
+
+Establish `h0 : ∀ u : D.host.Eˣ, P.valuation D.host.E (u : D.host.E) = 1 → R.C.eta.locK P u = 1` using `fun u hu => R.C.isEta.unr P _ ((P.valuedAdicCompletion_eq_valuation' (u : D.host.E)).trans hu)`. Rewrite using `[GlobalTheory.EtaConjChar.twVal_half _ P (GlobalTheory.EtaConjChar.locK_eq_one hH hη.2.1 P), GlobalTheory.EtaConjChar.twVal_half _ P h0, map_zpow₀, ← hH.2 P e he _ (Formalism.L2.JoinChr.locU he.1 (Formalism.L2.Host.unif P)) rfl, ← hL.eta.2 P e he _ (Formalism.L2.JoinChr.locU he.1 …`.
+-/
 theorem exists_galConj_eta (R : RealDat D A Ks) (hL : R.Is A.μ0) (σ : D.what₂.LL →+* ℂ) (s : ℂ ≃+* ℂ)
     (hσ : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsEmbOverK D σ s) (η' : (AE D)ˣ →* Circle) (hη : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ R.eta η') :
     ∃ ηH : Formalism.L2.Host.HChar D.host.E, GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsGalConj s (1 / 2) R.C.eta ηH ∧ ChrEq η' ηH := by
@@ -50,6 +62,9 @@ theorem exists_galConj_eta (R : RealDat D A Ks) (hL : R.Is A.μ0) (σ : D.what�
     ← hH.2 P e he _ (Formalism.L2.JoinChr.locU he.1 (Formalism.L2.Host.unif P)) rfl,
     ← hL.eta.2 P e he _ (Formalism.L2.JoinChr.locU he.1 (Formalism.L2.Host.unif P)) rfl, ← hy1, ← hy2, hσ.1]
 
+/- English proof (translation)
+Substitute `hQ` using the available equality. Establish `h1 : ∀ y, ext1 (LevelP.triv Pg r ℂ).H (LevelP.triv Pg r ℂ).chi y = 1` using `fun y => Lev.subgroupCharExtension_one_apply _ _`. Unfold `levFn`. Simplify using `[h1]`.
+-/
 theorem levFn_conj {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) {r : ℕ} (hr : r ≤ n) (t : ℕ) (Pg : Finset (Pl D.host.E))
     {Q : Finset (Pl D.host.E)} (hQ : Q = ∅) (s : ℂ →+* ℂ) (χ ξ ξ' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (x) :
     s ((levFn β ⟨r, hr, t, 1, Pg, Q, LevelP.triv Pg r ℂ, fun _ => χ, ξ⟩ x : ℂˣ) : ℂ) =
@@ -59,6 +74,9 @@ theorem levFn_conj {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) {r : ℕ} (hr : r ≤
   unfold levFn
   simp [h1]
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Take `rfl : χ = χ'` from `MonoidHom.ext fun x => h x.1 x.2 x.2`. Conclude with `hH`.
+-/
 theorem is_congr {Γ Gr W : Type} [Group Γ] [Group Gr] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* Gr}
     {ρ : Γ →* Module.End ℂ W} {J J' : Subgroup Gr} (hJ : J = J') {χ : J →* ℂˣ} {χ' : J' →* ℂˣ}
     (h : ∀ x hx hx', χ ⟨x, hx⟩ = χ' ⟨x, hx'⟩) {I : Type} [Fintype I] {y : I → Gr} {H : HMod (Gr → W)}
@@ -69,6 +87,23 @@ theorem is_congr {Γ Gr W : Type} [Group Γ] [Group Gr] [NormedAddCommGroup W] [
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC gramR c0R c0L _ i σ c c₁ H j hσ hf μ' η' hμ hη ω f₀ f B io thP hL`. Establish `: Countable D.what₂.LL` using `Countable.of_equiv _ (Module.finBasis ℚ D.what₂.LL).equivFun.toEquiv.symm`. Take `⟨s, hs⟩` from `GlobalTheory.CompRat.exists_ringEquiv_complex_comp_eq D.what₂.LL D.what₂.embLL σ`. Establish `hE : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsEmbOverK D σ s` using `⟨fun a => (hs a).symm, hσ⟩`. Take `⟨hω, hvec, hio, -⟩` from `hL`.
+
+Take `⟨μH, hμ1, hμ2⟩` from `exists_galConj_mu R hC.lev i σ s hE μ' hμ`. Take `⟨ηH, hη1, hη2⟩` from `exists_galConj_eta R hC.lev σ s hE η' hη`. Establish `hQ` using `GlobalTheory.LiftLower.Q_base hC.lev`. Set `m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ` to `fun PP => (Units.map (s : ℂ →+* ℂ).toMonoidHom).comp (R.chi ((i : ℕ) + 1) PP)⁻¹`. Establish `hp : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.PrimeToHost R A.μ0`.
+
+Introduce `PP hPP`. Break down `hPP with hPP | hPP` into its components or cases. Conclude with `GlobalTheory.LiftScalarCompare.primeToHost hC.lev PP hPP`. Rewrite `hPP` using `[hQ]`. Conclude with `absurd hPP (Finset.notMem_empty _)`.
+
+Establish `hm : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsConjChars R i A.μ0 s μ' η' m`. Use `⟨μH, ηH, hμ1, hη1, hμ2, hη2, fun PP hPP a k u hk hu => ?_⟩` and prove the remaining obligations. Establish `hg : PP ∈ R.Pg` using `hPP.resolve_right (by simp [hQ])`. Establish `h1` using `hμ1 PP k`. Establish `h2` using `hC.lev.chi i PP hg a k u hk hu`.
+
+Rewrite `h1` using `[hC.lev.xi_base, mul_one]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.twVal, Complex.ofReal_zero, zero_mul, neg_zero, Complex.cpow_zero, mul_one] at h1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[h1, ← h2]`. Both sides reduce to the same expression.
+
+Establish `hlv : GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsLevelVec R.ψ R.θ (Vc D i) (Wc D i) (cart (R.MW i σ)) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) (R.datWp i R.triv) (R.Q A.μ0) m f₀ f`. Establish `hv` using `hvec.vec`. Rewrite using `[hQ]`. Unfold `Datum.IsThPVecOf at hv`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.IsLevelVec`.
+
+Establish `hq : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), Datum.omegaQ ∅ (Wc D i).rank m (-1) y = Datum.omegaQ ∅ (Wc D i).rank (fun _ => 1) (-1) y`. Introduce `y`. Simplify using `[Datum.omegaQ]`. Simplify using `only [GlobalTheory.Survey.LevelVectorSizeBounds.omegaG_triv, hq]`. Conclude with `hv`.
+
+Take `⟨χ', hχ, hH⟩` from `hf.model`. Establish `key : ∀ k : levJ R i A.μ0, χ' k = levFn (R.βV i) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.datV i R.Pg (R.Q A.μ0) R.triv m) (Formalism.UG.bc (Lev.swapAE D) k.1.1)` using `fun k => Units.ext <| (hχ k).elim fun y hy => hy.2.symm.trans ((hs y).symm.trans ((congrArg s hy.1).trans (levFn_conj (R.βV i) (r_le_V i) D.R.t R.Pg hQ (s : ℂ →+* ℂ) (fun PP => (R.chi ((i : ℕ) + 1) PP)⁻¹) (R.xiR A.μ0) m _)))`. Establish `hH'` using `is_congr (GlobalTheory.Survey.LevelVectorSizeBounds.grp_triv R i A.μ0 m).symm (χ' := GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.chrOf (Vc D i) (R.βV i) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.datV i R.Pg (R.Q A.μ0) R.triv m)) (fun x hx _ => key …`. Use `⟨s, m, ⟨hC, hp, hE, GlobalTheory.Survey.LevelVectorSizeBounds.isLocal_triv R, hm, hω, hvec.onb, hlv, fun P => hvec.theta P, hf.coef, hio⟩, hC.models.νV i A.μ0, (R.B.L i A.μ0).pres.reps, hH'⟩` and prove the remaining obligations.
+-/
 theorem isLiftDataC_of_liftData : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ gramR c0R c0L, GlobalTheory.GalLift.Comparison₂ R gramR c0R c0L → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.OverK σ → GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsConjForms R i σ (c0L i) c c₁ H j → ∀ μ' η', ChiAt R i σ μ' → GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsEtaConj σ R.eta η' → ∀ ω f₀ f B io thP, GlobalTheory.GalLift.LiftData R i σ μ' η' c H ω f₀ f B io thP → ∃ s m, GlobalTheory.LiftRows.IsLiftDataC R F i A.μ0 σ s R.triv μ' η' m ω B f₀ f c io ∧ IsMeasDef (Vc D i) (GlobalTheory.AdelicScalar.levV R i A.μ0 R.triv m) (R.νV i A.μ0) (R.fdV i A.μ0) ∧ Bridge.IsReps (Bridge.ratF (Vc D i)) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.grpOf (Vc D i) (R.βV i) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.datV i R.Pg (R.Q A.μ0) R.triv m)) (R.B.L i A.μ0).pres.y ∧ H.Is (Bridge.AdForms (Bridge.ratF (Vc D i)) c.coef.ρ (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.grpOf (Vc D i) (R.βV i) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.datV i R.Pg (R.Q A.μ0) R.triv m)) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.chrOf (Vc D i) (R.βV i) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.datV i R.Pg (R.Q A.μ0) R.triv m))) (Bridge.adInner (Bridge.ratF (Vc D i)) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.grpOf (Vc D i) (R.βV i) (GlobalTheory.IndefiniteRowSideFullHecke.TwistedLevelValues.datV i R.Pg (R.Q A.μ0) R.triv m)) (R.B.L i A.μ0).pres.y) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC gramR c0R c0L _ i σ c c₁ H j hσ hf μ' η' hμ hη ω f₀ f B io thP hL
   classical

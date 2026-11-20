@@ -18,6 +18,13 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT
 
+/- English proof (translation)
+Introduce `E _ _ _ H R R' _ _ f T`. Use `⟨?_, fun T' m hR => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap f) T.t`. Take `⟨⟨T', ht, hg⟩, -⟩` from `PAT.exists_of_sabMap E H _ _ _ T _ m`. Conclude with `⟨T', ht ▸ m, hg⟩`.
+
+Take `⟨-, e⟩` from `PAT.exists_of_sabMap E H _ _ _ T _ m`. Establish `hd : SmoothOfRelativeDimension T.g T'.t.G.hom`. Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} T.g` as an intermediate fact. Use the proof step `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension T.g) m.cart.1 T.dim`. Take `⟨p⟩ : Nonempty (PrimeSpectrum R')` from `inferInstance`.
+
+Establish `hg : T'.g = T.g` using `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ T'.dim hd (eSec T'.t.G p)`. Take `⟨w, hw, hr, -⟩` from `m.lin`. Conclude with `⟨hg, ⟨hg, m.cart, e⟩, w, hw, hr⟩`.
+-/
 theorem pat_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (T : PAT H (Sp R)), (∃ (T' : PAT H (Sp R')) (_ : SABMap T'.t T.t (spMap f)), T'.g = T.g) ∧ ∀ (T' : PAT H (Sp R')) (m : SABMap T'.t T.t (spMap f)), Nontrivial R' → T'.g = T.g ∧ IsPolFibre f T.pol T'.pol m.φ ∧ ∃ w : LB.Iso T'.t.PP.L (T.t.PP.L.pull m.φ), RigIso m w := by
   intro E _ _ _ H R R' _ _ f T
   refine ⟨?_, fun T' m hR => ?_⟩

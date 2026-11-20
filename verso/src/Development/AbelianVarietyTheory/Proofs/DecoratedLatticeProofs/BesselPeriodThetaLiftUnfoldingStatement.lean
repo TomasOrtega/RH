@@ -10,5 +10,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnfBessel.unfBF | exact GlobalTheory.UnfBessel.unfBF | (intros; apply GlobalTheory.UnfBessel.unfBF <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.besselPeriod_thetaLift_unfolding : ∀ D : D7, Descent D → UnfBF D := by
   first | exact @GlobalTheory.UnfBessel.unfBF | exact GlobalTheory.UnfBessel.unfBF | (intros; apply GlobalTheory.UnfBessel.unfBF <;> assumption)

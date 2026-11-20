@@ -10,6 +10,11 @@ def IsBlockUT {ι : Type} {s : ℕ} (b : ι → Fin s) (M : Matrix ι ι K) : Pr
   ∀ i j, b j < b i → M i j = 0
 
 variable {K} in
+/- English proof (translation)
+Introduce `i j h`. Simplify using `only [Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`. Distinguish the cases in `hk : b k < b i`.
+
+Simplify using `[hA i k hk]`. Simplify using `[hB k j (lt_of_lt_of_le h (not_lt.mp hk))]`.
+-/
 theorem isBlockUT_mul {ι : Type} [Fintype ι] {s : ℕ} (b : ι → Fin s) {A B : Matrix ι ι K}
     (hA : IsBlockUT K b A) (hB : IsBlockUT K b B) : IsBlockUT K b (A * B) := by
   intro i j h
@@ -50,6 +55,11 @@ def blk {ι : Type} {s : ℕ} (b : ι → Fin s) (c : Fin s) (M : Matrix ι ι K
   M.submatrix Subtype.val Subtype.val
 
 variable {K} in
+/- English proof (translation)
+Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Simplify using `only [blk, Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun k => b k = c)]`. Establish `h0 : ∑ k : {k // ¬ b k = c}, A i k * B k j = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce and unpack `⟨k, hk⟩ _`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA i k (by rw [hi]; exact h)]; simp`. Rewrite using `[hB k j (by rw [hj]; exact h)]; simp`. Rewrite using `[h0, add_zero]`.
+-/
 theorem blk_mul {ι : Type} [Fintype ι] [DecidableEq ι] {s : ℕ} (b : ι → Fin s) (c : Fin s)
     {A B : Matrix ι ι K} (hA : IsBlockUT K b A) (hB : IsBlockUT K b B) :
     blk K b c (A * B) = blk K b c A * blk K b c B := by

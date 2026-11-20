@@ -13,5 +13,8 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 open GlobalTheory.VB (IsVB IsSubbundle)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.FlagPair.nonempty_extend | exact GlobalTheory.Vert.Model.FlagPair.nonempty_extend | (intros; apply GlobalTheory.Vert.Model.FlagPair.nonempty_extend <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_pair_extends_by_one : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O) (E E' K K' : Z.X.Modules) (φ : Z.GenIso E E') (i : K ⟶ E) (i' : K' ⟶ E') (ψ : Z.GenIso K K') (r : ℕ), GlobalTheory.VB.IsSubbundle i → GlobalTheory.VB.IsSubbundle i' → GlobalTheory.VB.IsVB E (r + 1) → GlobalTheory.VB.IsVB E' (r + 1) → ψ.hom ≫ Z.genRes.map i' = Z.genRes.map i ≫ φ.hom → GlobalTheory.Vert.Model.FlagPair ψ r → Nonempty (GlobalTheory.Vert.Model.FlagPair φ (r + 1)) := by
   first | exact @GlobalTheory.Vert.Model.FlagPair.nonempty_extend | exact GlobalTheory.Vert.Model.FlagPair.nonempty_extend | (intros; apply GlobalTheory.Vert.Model.FlagPair.nonempty_extend <;> assumption)

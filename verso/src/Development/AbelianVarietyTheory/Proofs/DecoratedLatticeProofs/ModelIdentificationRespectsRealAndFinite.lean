@@ -20,6 +20,9 @@ namespace GlobalTheory.Core.Mi.SeeReal
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hex` using `(Formalism.IndefR.Eqv.atTauExUnique_holds D θ hθ V τ g hg).exists`. Unfold `atTau`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+-/
 theorem isAtTau_atTau (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau)
     (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) :
     IsAtTau θ V τ g (atTau θ V τ g) := by
@@ -28,14 +31,47 @@ theorem isAtTau_atTau (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (τ : D.wh
   rw [dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Rewrite using `[← e]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul P hP, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left P A hP]`.
+-/
 theorem eq_of_conj {n : ℕ} {P A B : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P.det) (e : P * A * P⁻¹ = B) :
     A = P⁻¹ * B * P := by
   rw [← e]
   simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul P hP, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left P A hP]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_inst (v : InfinitePlace D.host.F) (x : D.host.E) :
     (Formalism.IndefR.RationalEmbedding.inst D).φ v x = embS D ((Formalism.L2.Host.tauPl D).symm v) x := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `rfl` from `Formalism.IndefR.Eqv.eq_thetaC D hθ`. Establish `hι : ∀ x, ιE x = x` using `fun x => eq_of_heq (hιE x)`. Establish `key : ∀ τ τ' : D.what₂.Tau, embS D τ = embS D τ' → τ = τ'` using `fun τ τ' e => D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 e))`. Establish `hpl : pl = (Formalism.L2.Host.tauPl D).symm` using `Equiv.ext fun v => key _ _ (RingHom.ext fun x => by`.
+
+Establish `e` using `hφ v x`. Establish `e2 : embS D (pl v) (ιE x) = embS D (pl v) x` using `congrArg _ (hι x)`. Conclude with `(e2.symm.trans e.symm).trans (phi_inst v x))`. Substitute `hpl` using the available equality. Establish `hT : ∀ k, ((Formalism.IndefR.RationalEmbedding.iota D).trans (castGA (rfl : Formalism.L2.SG.InstExistsPf.instOf D = _).symm)) k = Formalism.IndefR.RationalEmbedding.iota D k` using `fun _ => rfl`.
+
+Establish `hP : ∀ v, IsUnit ((Formalism.IndefR.RationalEmbedding.inst D).P v).det` using `fun v => (Matrix.isUnit_iff_isUnit_det _).mp ((Formalism.IndefR.RationalEmbedding.inst D).P_unit v)`. Use `⟨fun k => ?_, fun k => ?_, fun τ g hg => ?_, fun τ y => ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Establish `e` using `Formalism.L2.SG.EvalTIota.brg_mem_GfC_i (Formalism.IndefR.RationalEmbedding.iota D k)`. Rewrite `e` using `[ContinuousMulEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+
+Rewrite using `[hT]`. Establish `e` using `Formalism.L2.SG.EvalTIota.iota_symm_mem_GinfC (Formalism.IndefR.RationalEmbedding.iota D k)`. Rewrite `e` using `[ContinuousMulEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Establish `hg' : gᴴ * gramAt D (D.sp.Y 0) τ * g = gramAt D (D.sp.Y 0) τ` using `hg`. Establish `hk` using `isAtTau_atTau (Formalism.IndefR.Eqv.thetaC D) (Formalism.IndefR.Eqv.isInfFam_thetaC D) _ τ g hg'`.
+
+Rewrite using `[hT]`. Generalize the expression as in `atTau (Formalism.IndefR.Eqv.thetaC D) (D.sp.Y 0) τ g = k at hk ⊢`. Take `⟨x, rfl⟩` from `(Formalism.IndefR.RationalEmbedding.iota D).symm.surjective k`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Establish `hbr` using `Formalism.L2.SG.EvalTIota.infMat_brg_i x`.
+
+Use `⟨(Formalism.L2.SG.EvalTIota.iota_symm_mem_GinfC x).1 hk.1, fun v hv => ?_, heq_of_eq ?_⟩` and prove the remaining obligations. Take `⟨ρ, rfl⟩` from `(Formalism.L2.Host.tauPl D).surjective v`. Establish `hρ : ρ ≠ τ` using `fun e => hv (by rw [e]; rfl)`. Establish `e0 : Formalism.L2.SG.EvalTIota.Pi (Formalism.L2.Host.tauPl D ρ) * Formalism.L2.SG.EvalTIota.uM' x (Formalism.L2.Host.tauPl D ρ) * (Formalism.L2.SG.EvalTIota.Pi (Formalism.L2.Host.tauPl D ρ))⁻¹ = (1 : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.sp.Y 0).rank) ℂ)`. Rewrite using `[← hbr ρ, hk.2.2 ρ hρ]`.
+
+Establish `e1` using `eq_of_conj (hP _) e0`. Simplify using `only [Formalism.L2.SG.EvalTIota.Pi, Formalism.L2.SG.EvalTIota.uM'] at e1`. Establish `e2 : uMat (x.1 (Formalism.L2.Host.tauPl D ρ)) = 1`. Rewrite using `[e1]`. Use `erw [Matrix.mul_one]`.
+
+Conclude with `Matrix.nonsing_inv_mul _ (hP _)`. Conclude with `Subtype.ext (Units.ext e2)`. Conclude with `eq_of_conj (hP _) ((hbr τ).symm.trans hk.2.1)`. Set `x0 : (Formalism.IndefR.RationalEmbedding.inst D).GA` to `(Pi.mulSingle (M := fun v => Formalism.REAL.UJ ((Formalism.IndefR.RationalEmbedding.inst D).ε v)) (Formalism.L2.Host.tauPl D τ) y, 1)`. Establish `hbr` using `Formalism.L2.SG.EvalTIota.infMat_brg_i x0`.
+
+Set `g : Matrix (Fin (D.sp.Y 0).rank) (Fin (D.sp.Y 0).rank) ℂ` to `(Formalism.IndefR.RationalEmbedding.inst D).P (Formalism.L2.Host.tauPl D τ) * uMat y * ((Formalism.IndefR.RationalEmbedding.inst D).P (Formalism.L2.Host.tauPl D τ))⁻¹`. Establish `hk0 : IsAtTau (Formalism.IndefR.Eqv.thetaC D) (D.sp.Y 0) τ g ((Formalism.IndefR.RationalEmbedding.iota D).symm x0)`. Use `⟨(Formalism.L2.SG.EvalTIota.iota_symm_mem_GinfC x0).2 rfl, ?_, fun ρ hρ => ?_⟩` and prove the remaining obligations. Rewrite using `[hbr τ]`. Establish `hy : x0.1 (Formalism.L2.Host.tauPl D τ) = y` using `Pi.mulSingle_eq_same (M := fun v => Formalism.REAL.UJ ((Formalism.IndefR.RationalEmbedding.inst D).ε v)) (Formalism.L2.Host.tauPl D τ) y`.
+
+Establish `hy' : Formalism.L2.SG.EvalTIota.uM' x0 (Formalism.L2.Host.tauPl D τ) = uMat y` using `by show uMat (x0.1 (Formalism.L2.Host.tauPl D τ)) = uMat y`. Rewrite using `[hy]`. Rewrite using `[hy']`. Both sides reduce to the same expression. Rewrite using `[hbr ρ]`.
+
+Establish `hne : Formalism.L2.Host.tauPl D ρ ≠ Formalism.L2.Host.tauPl D τ` using `(Formalism.L2.Host.tauPl D).injective.ne hρ`. Establish `h1 : x0.1 (Formalism.L2.Host.tauPl D ρ) = 1` using `Pi.mulSingle_eq_of_ne hne _`. Establish `h1' : Formalism.L2.SG.EvalTIota.uM' x0 (Formalism.L2.Host.tauPl D ρ) = 1` using `by show uMat (x0.1 (Formalism.L2.Host.tauPl D ρ)) = 1`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1']`. Use `erw [Matrix.mul_one]`. Conclude with `Matrix.mul_nonsing_inv _ (hP _)`. Establish `hgU : gᴴ * gramAt D (D.sp.Y 0) τ * g = gramAt D (D.sp.Y 0) τ` using `Formalism.IndefR.Eqv.atTauUnitary_holds D _ (Formalism.IndefR.Eqv.isInfFam_thetaC D) _ τ g _ hk0`. Use `⟨g, hgU, ?_⟩` and prove the remaining obligations.
+
+Establish `hu` using `(Formalism.IndefR.Eqv.atTauExUnique_holds D _ (Formalism.IndefR.Eqv.isInfFam_thetaC D) _ τ g hgU).unique (isAtTau_atTau _ (Formalism.IndefR.Eqv.isInfFam_thetaC D) _ τ g hgU) hk0`. Rewrite using `[hT, hu, ContinuousMulEquiv.apply_symm_apply]`. Conclude with `Pi.mulSingle_eq_same (M := fun v => Formalism.REAL.UJ ((Formalism.IndefR.RationalEmbedding.inst D).ε v)) _ _`.
+-/
 theorem realSplit_gen {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D)
     (ιE : I.E ≃+* D.host.E) (hιE : ∀ x : I.E, HEq (ιE x) x) (pl : InfinitePlace I.F ≃ D.what₂.Tau)
     (hφ : ∀ v (x : I.E), I.φ v x = embS D (pl v) (ιE x)) (θ : InfFam D) (hθ : IsInfFam θ) :
@@ -125,6 +161,9 @@ theorem realSplit_gen {I : Formalism.MainNotions.S.AutInst} (h : I = Formalism.L
     rw [hT, hu, ContinuousMulEquiv.apply_symm_apply]
     exact Pi.mulSingle_eq_same (M := fun v => Formalism.REAL.UJ ((Formalism.IndefR.RationalEmbedding.inst D).ε v)) _ _
 
+/- English proof (translation)
+Introduce `_ X h θ hθ hE` and use `realSplit_gen h X.ιE hE X.pl X.φ_eq θ hθ`.
+-/
 theorem realSplit_of_idE : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     (θ : InfFam D), IsInfFam θ → IdE X → RealSplit X h θ :=
   fun _ X h θ hθ hE => realSplit_gen h X.ιE hE X.pl X.φ_eq θ hθ

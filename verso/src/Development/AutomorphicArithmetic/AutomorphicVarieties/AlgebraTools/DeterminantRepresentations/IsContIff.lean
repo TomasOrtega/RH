@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `n A G _ _ _ _ _ I hI D`. Unfold `GDet.IsCont`. Simplify using `only [UpperTheory.V.AlgebraTools.Det.adicContIff I hI]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _`.
+
+Conclude with `h i`. Introduce `h i`. Distinguish the cases in `hi : i ≤ n`. Conclude with `h i hi`. Establish `heq : (fun g : G => D.lam i (MonoidAlgebra.single g 1)) = fun g => (-1) ^ (i + n) * D.lam n (MonoidAlgebra.single g 1)`.
+
+Use function extensionality and compare the values at `g`. Unfold `GDet.lam`. Rewrite using `[Nat.sub_eq_zero_of_le (not_le.mp hi).le, Nat.sub_self, ← mul_assoc, ← pow_add, add_assoc, ← two_mul, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]`. Rewrite using `[heq]`. Conclude with `continuous_const.mul (h n le_rfl)`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.isContIff :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] [TopologicalSpace A] [IsTopologicalRing A] [TopologicalSpace G] (I : Ideal A), IsAdic I → ∀ D : GDet n A G,
     D.IsCont I ↔ ∀ i ≤ n, Continuous fun g : G => D.lam i (MonoidAlgebra.single g 1) := by

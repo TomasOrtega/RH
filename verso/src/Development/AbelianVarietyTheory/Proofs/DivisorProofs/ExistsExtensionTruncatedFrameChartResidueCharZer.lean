@@ -28,6 +28,15 @@ namespace GlobalTheory.ExtScaleZero
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨G, t, m1, m2, -⟩` from `y.2.2`. Take `⟨W, _, _, _, hc, _, hf, hi, hS⟩` from `GlobalTheory.UnifTrait.exists_split_baseChange T.V G.G G.semi`. Establish `hz : CharZero W` using `charZero_of_injective_ringHom hi`. Set `T' : Formalism.L2.Pj.CDVR` to `{ V := W }`. Establish `: FaithfulSMul T.V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`.
+
+Establish `hfin : (algebraMap T.V W).Finite` using `RingHom.finite_algebraMap.2 hf`. Establish `hl : IsLocalHom (algebraMap T.V W)` using `hfin.to_isIntegral.isLocalHom hi`. Establish `hres : CharZero (ResidueField W)` using `charZero_of_injective_ringHom (ResidueField.map (algebraMap T.V W)).injective`. Establish `hj : Function.Injective ((algebraMap W (FractionRing W)).comp (algebraMap T.V W))` using `(IsFractionRing.injective W _).comp hi`. Take `⟨φ, hφ⟩ : ∃ φ : T.Fr →+* T'.Fr, ∀ v, φ (algebraMap T.V T.Fr v) = algebraMap T'.V T'.Fr (algebraMap T.V W v)` from `⟨IsFractionRing.lift hj, IsFractionRing.lift_algebraMap hj⟩`.
+
+Take `⟨r, hr0, hv⟩` from `GlobalTheory.IntegralPull.exists_index (V' := T'.V) (algebraMap T.V W) φ hφ`. Use `letI := io.toAlgebra`. Use `letI := (φ.comp io).toAlgebra`. Set `ψ : T.Fr →ₐ[c.F] T'.Fr` to `{ φ with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c _ _ ψ y.1`.
+
+Take `⟨p, χ, y₀, hy₀⟩` from `y.2.1`. Set `y' : IntFr Xo c T' (φ.comp io)` to `⟨z, ⟨p, ψ.comp χ, y₀, Formalism.L2.Pj.frMap_trans (Xo := Xo) (c := c) _ _ _ χ ψ y₀ y.1 z hy₀ hz⟩, GlobalTheory.IntegralPull.integral_baseChange T T' io (φ.comp io) _ hi ψ hφ y.1 z hz y.2.2⟩`. Conclude with `⟨T', φ.comp io, y', r, hres, hr0, fun I => GlobalTheory.IntegralPull.exists_unif_of_split T T' _ φ hφ m1 m2 hz.1 I.m1 I.m2 hS, ψ, fun a _ => hv a, hz⟩`.
+-/
 theorem exists_ext_all_models_uniformised_charZero (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l)
     (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (h0 : CharZero (ResidueField T.V)) :
@@ -66,6 +75,19 @@ namespace GlobalTheory.ExtScaleZero
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y hy φ hφ`. Take `⟨S', io', z', r, hz', hr, hU, ψA, hv, hm⟩` from `exists_ext_all_models_uniformised_charZero E H Dw l Xo c T io y hy`. Establish `hphi : ∀ φ' : ℝ, GlobalTheory.SlopeRec.HasPhi z' φ' → φ' = r * φ` using `fun φ' h' => GlobalTheory.T.balancedPeriodSlope_mul_ramificationIndex _ _ _ _ Xo c T S' io io' y z' r hr ⟨ψA, hv, hm⟩ φ φ' hφ h'`.
+
+Use `letI := io.toAlgebra`. Set `ψ : T.Fr →+* S'.Fr` to `letI := io'.toAlgebra`. Use the proof step `ψA.toRingHom`. Establish `hio : io' = ψ.comp io`. Use `letI := io'.toAlgebra`.
+
+Conclude with `RingHom.ext fun a => (ψA.commutes a).symm`. Establish `hv' : ∀ a : T.Fr, vV S'.V (ψ a) = (r : ℤ) * vV T.V a` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha, vV]`. Conclude with `hv a ha`.
+
+Establish `hev : ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ thGen Xo c nab a n, ψ (evI y f) = evI z' f` using `fun nab hn a n f hf => GlobalTheory.T.thetaRule_integralPoint_value_baseChange _ _ _ _ Xo c nab hn T S' io io' y z' ψA hm a n f hf`. Use `clear_value ψ`. Use `clear hm hv ψA`. Substitute `hio` using the available equality. Take `⟨C, hCh⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists _ H _ _ Xo c (fun _ => rfl) S' _ z'`.
+
+Take `⟨P, hP⟩` from `hU C.I`. Take `⟨φ', hφ'⟩` from `GlobalTheory.SlopeRec.exists_hasPhi z' C.I.G C.I.t' C.I.m1 C.I.m2 P`. Establish `e1` using `hphi φ' hφ'`. Substitute `e1` using the available equality. Use `⟨S', ψ.comp io, z', r, C, P, hz', hr, hCh, hP, hφ', fun nab hn a n e s f hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hev nab hn a n f hf, RingHom.comp_apply, ← map_mul, Formalism.L2.Pj.nval_bc ψ hr hv']`.
+-/
 theorem exists_ext_chart_scale_charZero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), CharZero (ResidueField T.V) → ∀ φ : ℝ, GlobalTheory.SlopeRec.HasPhi y φ → ∃ (T' : CDVR) (io' : c.F →+* T'.Fr) (y' : IntFr Xo c T' io') (r : ℕ) (C : IntegralChartA3 Xo c T' io' y') (P : PELUnif (maximalIdeal T'.V) C.I.G), CharZero (ResidueField T'.V) ∧ 0 < r ∧ FrTrunc C.I.G (𝟙 (Sp T'.V)) (chD C.ch) C.xT C.eT ∧ P.TorsionIso ∧ GlobalTheory.SlopeRec.HasPhi y' (r * φ) ∧ ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n e : ℕ) (s : c.F), ∀ f ∈ thGen Xo c nab a n, nval T'.V (r * e) (io' s * evI y' f) = nval T.V e (io s * evI y f) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

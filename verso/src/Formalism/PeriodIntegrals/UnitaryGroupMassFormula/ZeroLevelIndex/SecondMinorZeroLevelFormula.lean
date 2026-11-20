@@ -9,6 +9,9 @@ namespace PI.QnZeroLevelWork
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge k.val p.val with h | h` into its components or cases. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by rw [Fin.lt_def]; simpa using h), if_pos h]`. Simplify using the standard rewrite rules. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (by rw [Fin.le_def]; simpa using h), if_neg (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem val_succAbove {n : ℕ} (p : Fin (n + 1)) (k : Fin n) :
     (p.succAbove k).val = if k.val < p.val then k.val else k.val + 1 := by
   rcases Nat.lt_or_ge k.val p.val with h | h
@@ -17,12 +20,20 @@ theorem val_succAbove {n : ℕ} (p : Fin (n + 1)) (k : Fin n) :
   · rw [Fin.succAbove_of_le_castSucc _ _ (by rw [Fin.le_def]; simpa using h), if_neg (by omega)]
     simp
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[val_succAbove]`. Unfold `skip1`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem skip_one_eq_succAbove {t : ℕ} (i : Fin (t + 1)) (j : Fin t) : skip1 i j = i.succAbove j := by
   apply Fin.ext
   rw [val_succAbove]
   unfold skip1
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Establish `hv : (i.succAbove i').val = i'.val + 1`. Apply the tactic sequence `rw [val_succAbove]; split_ifs <;> omega`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[val_succAbove, val_succAbove]`. Unfold `skip2`.
+
+Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+-/
 theorem skip_two_succAbove_comp_alt {t : ℕ} (i : Fin (t + 2)) (i' : Fin (t + 1)) (j : Fin t) (hii : i.val ≤ i'.val) :
     skip2 i (i.succAbove i') j = i.succAbove (i'.succAbove j) := by
   have hv : (i.succAbove i').val = i'.val + 1 := by
@@ -32,14 +43,26 @@ theorem skip_two_succAbove_comp_alt {t : ℕ} (i : Fin (t + 2)) (i' : Fin (t + 1
   unfold skip2
   split_ifs <;> simp_all <;> omega
 
+/- English proof (translation)
+Introduce `_ i j` and use `skip_one_eq_succAbove i j`.
+-/
 theorem skipSucc : SkipSucc := fun _ i j => skip_one_eq_succAbove i j
 
+/- English proof (translation)
+Introduce `_ i i' j h` and use `skip_two_succAbove_comp_alt i i' j h`.
+-/
 theorem skipSucc2 : SkipSucc2 := fun _ i i' j h => skip_two_succAbove_comp_alt i i' j h
 
+/- English proof (translation)
+Introduce `E _ _ k r u f`. Both sides reduce to the same expression.
+-/
 theorem capLZero : CapLZero := by
   intro E _ _ k r u f
   rfl
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succAbove _ i, if_neg (lt_irrefl i), zero_add]`. Use `sum_congr rfl fun i'' _ => ?_` and prove the remaining obligations. Establish `h : i < i.succAbove i'' ↔ (i : ℕ) ≤ (i'' : ℕ)`. Apply the tactic sequence `rw [Fin.lt_def, val_succAbove]; split_ifs <;> omega`. Simplify using `only [h]`.
+-/
 theorem pair_sum {M : Type*} [AddCommMonoid M] {n : ℕ} (i : Fin (n + 2)) (G : Fin (n + 2) → M) :
     (∑ i' : Fin (n + 2), if i < i' then G i' else 0) =
       ∑ i'' : Fin (n + 1), if (i : ℕ) ≤ (i'' : ℕ) then G (i.succAbove i'') else 0 := by
@@ -49,6 +72,13 @@ theorem pair_sum {M : Type*} [AddCommMonoid M] {n : ℕ} (i : Fin (n + 2)) (G : 
     rw [Fin.lt_def, val_succAbove]; split_ifs <;> omega
   simp only [h]
 
+/- English proof (translation)
+Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ∀ i' : Fin (n + 2), (∑ j : Fin (n + 2), ∑ j' : Fin (n + 2), if i < i' ∧ j < j' then T i i' j j' else 0) = if i < i' then ∑ j : Fin (n + 2), ∑ j' : Fin (n + 2), (if j < j' then T i i' j j' else 0) else 0`. Apply the tactic sequence `intro i'; by_cases h : i < i' <;> simp [h]`. Establish `h2 : ∀ i'' : Fin (n + 1), (∑ j : Fin (n + 2), ∑ j'' : Fin (n + 1), if (i : ℕ) ≤ (i'' : ℕ) ∧ (j : ℕ) ≤ (j'' : ℕ) then T i (i.succAbove i'') j (j.succAbove j'') else 0) = if (i : ℕ) ≤ (i'' : ℕ) then ∑ j : Fin (n + 2), ∑ j'' : Fin (n + 1), (if (j : ℕ) ≤ (j'' : ℕ) then T i (i.succAbo …`. Apply the tactic sequence `intro i''; by_cases h : (i : ℕ) ≤ (i'' : ℕ) <;> simp [h]`.
+
+Simplify using `only [h1, h2]`. Rewrite using `[pair_sum i]`. Use `sum_congr rfl fun i'' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `sum_congr rfl fun j _ => pair_sum j (fun j' => T i (i.succAbove i'') j j')`.
+
+Both sides reduce to the same expression.
+-/
 theorem quad_sum {M : Type*} [AddCommMonoid M] {n : ℕ}
     (T : Fin (n + 2) → Fin (n + 2) → Fin (n + 2) → Fin (n + 2) → M) :
     (∑ i : Fin (n + 2), ∑ i' : Fin (n + 2), ∑ j : Fin (n + 2), ∑ j' : Fin (n + 2),
@@ -76,6 +106,9 @@ section Ops
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {k r : ℕ}
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+-/
 theorem qm_congr {n t : ℕ}
     (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → E) → (Matrix (Fin n) (Fin n) ℂ → E))
     (a a' b b' : Fin t → Fin n) (ha : a = a') (hb : b = b') (u : ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E) :
@@ -83,11 +116,17 @@ theorem qm_congr {n t : ℕ}
   subst ha hb
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `skip_one_eq_succAbove i j`.
+-/
 theorem comp1 (i : Fin (2 * r + k + 2)) :
     (posL (k + 1) r 0 ∘ skip1 i : Fin (2 * r + k + 2 - 1) → Fin (2 * r + (k + 1) + 1)) = i.succAbove := by
   funext j
   exact skip_one_eq_succAbove i j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `skip_two_succAbove_comp_alt i i'' j h`.
+-/
 theorem comp2 (i : Fin (2 * r + k + 2)) (i'' : Fin (2 * r + k + 1)) (h : (i : ℕ) ≤ (i'' : ℕ)) :
     (posL (k + 1) r 0 ∘ skip2 i (i.succAbove i'') : Fin (2 * r + k + 2 - 2) → Fin (2 * r + (k + 1) + 1)) =
       drop2 i i'' := by
@@ -105,6 +144,9 @@ def T2 (u : ℂ) (a a' β β' : Mx (k + 1) r → Fin (2 * r + k + 2) → ℂ) (f
     (a g j * a' g j' - a g j' * a' g j)) •
     qminorOp (EH (k + 1) r) (posL (k + 1) r 0 ∘ skip2 i i') (posL (k + 1) r 0 ∘ skip2 j j') u f g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Combine the equalities or inequalities in the displayed calculation. Unfold `chatOp minorOp`. Use `sum_congr rfl fun i _ => sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `congrArg (((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * β g i * a g j) • ·) (congrFun (qm_congr (EH (k + 1) r) _ _ _ _ (comp1 i) (comp1 j) u f) g)`.
+-/
 theorem chat_eq' (u : ℂ) (a β : Mx (k + 1) r → Fin (2 * r + k + 2) → ℂ) (f : Mx (k + 1) r → E) :
     chatL (EH (k + 1) r) (posL (k + 1) r 0) u a β f =
       chatOp (m := 2 * r + k + 1) (EabH (Hpk (k + 1) r)) u a β f := by
@@ -117,6 +159,11 @@ theorem chat_eq' (u : ℂ) (a β : Mx (k + 1) r → Fin (2 * r + k + 2) → ℂ)
       exact congrArg (((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * β g i * a g j) • ·)
         (congrFun (qm_congr (EH (k + 1) r) _ _ _ _ (comp1 i) (comp1 j) u f) g)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Combine the equalities or inequalities in the displayed calculation. Unfold `chat2Op minor2Op`. Use `sum_congr rfl fun i _ => sum_congr rfl fun i'' _ => sum_congr rfl fun j _ => sum_congr rfl fun j'' _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `congrArg (((-1 : ℂ) ^ ((i : ℕ) + (i.succAbove i'' : ℕ) + (j : ℕ) + (j.succAbove j'' : ℕ)) * (β g i * β' g (i.succAbove i'') - β g (i.succAbove i'') * β' g i) * (a g j * a' g (j.succAbove j'') - a g (j.succAbove j'') * a' g j)) • ·) (congrFun (qm_congr (EH (k + 1) r) _ _ _ _ (comp …`. Both sides reduce to the same expression.
+-/
 theorem second_minor_zero_level_formula (u : ℂ) (a a' β β' : Mx (k + 1) r → Fin (2 * r + k + 2) → ℂ) (f : Mx (k + 1) r → E) :
     chat2L (EH (k + 1) r) (posL (k + 1) r 0) u a a' β β' f =
       chat2Op (m := 2 * r + k) (EabH (Hpk (k + 1) r)) u a a' β β' f := by
@@ -140,16 +187,25 @@ theorem second_minor_zero_level_formula (u : ℂ) (a a' β β' : Mx (k + 1) r �
           (congrFun (qm_congr (EH (k + 1) r) _ _ _ _ (comp2 i i'' h.1) (comp2 j j'' h.2) u f) g)
       · rfl
 
+/- English proof (translation)
+The claim follows from `chat_eq' u a β f`.
+-/
 theorem chat_eq (u : ℂ) (a β : Mx (k + 1) r → Fin (mdim (k + 1) r 0) → ℂ) (f : Mx (k + 1) r → E) :
     chatL (EH (k + 1) r) (posL (k + 1) r 0) u a β f =
       chatOp (m := 2 * r + k + 1) (EabH (Hpk (k + 1) r)) u a β f :=
   chat_eq' u a β f
 
+/- English proof (translation)
+The claim follows from `second_minor_zero_level_formula u a a' β β' f`.
+-/
 theorem second_minor_zero_level (u : ℂ) (a a' β β' : Mx (k + 1) r → Fin (mdim (k + 1) r 0) → ℂ) (f : Mx (k + 1) r → E) :
     chat2L (EH (k + 1) r) (posL (k + 1) r 0) u a a' β β' f =
       chat2Op (m := 2 * r + k) (EabH (Hpk (k + 1) r)) u a a' β β' f :=
   second_minor_zero_level_formula u a a' β β' f
 
+/- English proof (translation)
+Simplify using `only [uC, mdim, Fin.val_zero, Nat.sub_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem uC_eq (k r : ℕ) (Y : ℂ) :
     uC (k + 1) r 0 Y = Y + (((2 * r + (k + 1) + 1 : ℕ) : ℂ) / 2 - 1 / 2) := by
   simp only [uC, mdim, Fin.val_zero, Nat.sub_zero]
@@ -158,6 +214,13 @@ theorem uC_eq (k r : ℕ) (Y : ℂ) :
 
 end Ops
 
+/- English proof (translation)
+Introduce `E _ _ k r z z' Y p q f`. Establish `hu` using `uC_eq k r Y`. Apply the tactic sequence `fin_cases p <;> fin_cases q`. Use `show capL (k + 1) r 0 (uC (k + 1) r 0 Y) f = _`. Rewrite using `[hu]`.
+
+Both sides reduce to the same expression. Use `show -(chatL (EH (k + 1) r) (posL (k + 1) r 0) (uC (k + 1) r 0 Y - 1) (fun _ => xv (k + 1) r z' 0) (ybv (k + 1) r z 0) f) = _`. Rewrite using `[hu, chat_eq]`. Both sides reduce to the same expression. Use `show -(chatL (EH (k + 1) r) (posL (k + 1) r 0) (uC (k + 1) r 0 Y) (yv (k + 1) r z 0) (fun _ => xbv (k + 1) r z' 0) f) = _`.
+
+Rewrite using `[hu, chat_eq]`. Both sides reduce to the same expression. Use `show -(chat2L (EH (k + 1) r) (posL (k + 1) r 0) (uC (k + 1) r 0 Y - 1) (yv (k + 1) r z 0) (fun _ => xv (k + 1) r z' 0) (ybv (k + 1) r z 0) (fun _ => xbv (k + 1) r z' 0) f) = _`. Rewrite using `[hu, second_minor_zero_level]`. Both sides reduce to the same expression.
+-/
 theorem tLZero : TLZero := by
   intro E _ _ k r z z' Y p q f
   have hu := uC_eq k r Y
@@ -178,6 +241,9 @@ theorem tLZero : TLZero := by
     rw [hu, second_minor_zero_level]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨capLZero, tLZero⟩`.
+-/
 theorem qnZeroLevel : CapLZero ∧ TLZero := ⟨capLZero, tLZero⟩
 
 end PI.QnZeroLevelWork

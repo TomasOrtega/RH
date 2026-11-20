@@ -9,11 +9,19 @@ open Classical
 
 namespace GlobalTheory.ThetaProj
 
+/- English proof (translation)
+Simplify using `only [eStd]`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem eStd_swap (g n : ℕ) (a b : Fin g ⊕ Fin g → ZMod n) : eStd g n a b = -eStd g n b a := by
   simp only [eStd]
   rw [← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Use `⟨Sum.elim (fun i => f (Pi.single (.inr i) 1)) (fun i => -f (Pi.single (.inl i) 1)), fun y => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← Finset.univ_sum_single y, map_sum, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : ∀ j, f (Pi.single j (y j)) = y j * f (Pi.single j 1)` using `fun j => by`. Rewrite using `[← smul_eq_mul, ← map_smul, ← Pi.single_smul, smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[h, h]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eStd_eq (g n : ℕ) (f : (Fin g ⊕ Fin g → ZMod n) →ₗ[ZMod n] ZMod n) :
     ∃ b, ∀ y, eStd g n b y = f y := by
   refine ⟨Sum.elim (fun i => f (Pi.single (.inr i) 1)) (fun i => -f (Pi.single (.inl i) 1)),
@@ -27,6 +35,11 @@ theorem exists_eStd_eq (g n : ℕ) (f : (Fin g ⊕ Fin g → ZMod n) →ₗ[ZMod
   simp only [Sum.elim_inl, Sum.elim_inr]
   ring
 
+/- English proof (translation)
+Set `T' : Submodule (ZMod n) Γ` to `AddSubgroup.toZModSubmodule n T`. Set `e' : T' →+ (Fin d → ZMod n)` to `{ toFun := fun x => e ⟨x.1, x.2⟩ map_zero' := map_zero e map_add' := fun x y => map_add e ⟨x.1, x.2⟩ ⟨y.1, y.2⟩ }`. Take `⟨f, hf⟩` from `(ZModPerp.baer_of_free (n := n) (Fin d → ZMod n)).extension_property T'.subtype T'.subtype_injective (e'.toZModLinearMap n)`. Use `⟨e.symm.toAddMonoidHom.comp f.toAddMonoidHom, fun t => ?_⟩` and prove the remaining obligations. Establish `: f t = e t` using `LinearMap.congr_fun hf ⟨t.1, t.2⟩`.
+
+Simplify using `[this]`.
+-/
 theorem exists_retraction {n d : ℕ} [NeZero n] {Γ : Type} [AddCommGroup Γ] [Module (ZMod n) Γ]
     (T : AddSubgroup Γ) (e : T ≃+ (Fin d → ZMod n)) : ∃ p : Γ →+ T, ∀ t : T, p t = t := by
   let T' : Submodule (ZMod n) Γ := AddSubgroup.toZModSubmodule n T
@@ -40,6 +53,11 @@ theorem exists_retraction {n d : ℕ} [NeZero n] {Γ : Type} [AddCommGroup Γ] [
   have : f t = e t := LinearMap.congr_fun hf ⟨t.1, t.2⟩
   simp [this]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Take `⟨f, hf⟩` from `ZModPerp.exists_dual_ne_zero (n := r * N) hu`. Apply `hf` to reduce the goal to its premises. Establish `h1` using `h ((ZMod.castHom (dvd_mul_left N r) (ZMod N)).toAddMonoidHom.comp f.toAddMonoidHom)`. Establish `h2 : ZMod.castHom (dvd_mul_left N r) (ZMod N) (f u) = 0` using `h1`.
+
+Rewrite `h2` using `[← ZMod.natCast_zmod_val (f u), map_natCast, ZMod.natCast_eq_zero_iff]`. Take `⟨k, hk⟩` from `h2`. Rewrite using `[map_nsmul, ← ZMod.natCast_zmod_val (f u), hk, nsmul_eq_mul, ← Nat.cast_mul, ← _root_.mul_assoc, Nat.cast_mul, ZMod.natCast_self, zero_mul]`.
+-/
 theorem nsmul_eq_zero_of_forall_char {r N : ℕ} [NeZero (r * N)] {Γ : Type} [AddCommGroup Γ]
     [Module (ZMod (r * N)) Γ] (u : Γ) (h : ∀ ψ : Γ →+ ZMod N, ψ u = 0) : r • u = 0 := by
   by_contra hu
@@ -52,6 +70,17 @@ theorem nsmul_eq_zero_of_forall_char {r N : ℕ} [NeZero (r * N)] {Γ : Type} [A
   rw [map_nsmul, ← ZMod.natCast_zmod_val (f u), hk, nsmul_eq_mul, ← Nat.cast_mul, ← _root_.mul_assoc,
     Nat.cast_mul, ZMod.natCast_self, zero_mul]
 
+/- English proof (translation)
+Establish `h1 : ∀ u, (∑ ψ : U →+ ZMod N, χ (-ψ u)) • ρ u = (∑ ψ : U →+ ZMod N, χ (-ψ u)) • ρ 0` using `fun u => by`. Distinguish the cases in `hu : ∀ ψ : U →+ ZMod N, ψ u = 0`. Rewrite using `[hρ u hu]`. Take `⟨ψ, hψ⟩` from `not_forall.mp hu`. Establish `: χ.compAddMonoidHom (-(AddMonoidHom.eval u : (U →+ ZMod N) →+ ZMod N)) ≠ 1`.
+
+Introduce `h`. Use `DFunLike.congr_fun h ψ` as an intermediate fact. Conclude with `hψ (neg_eq_zero.mp (hχ _ this))`. Establish `h0 : ∑ ψ : U →+ ZMod N, χ (-ψ u) = 0` using `AddChar.sum_eq_zero_of_ne_one this`. Rewrite using `[h0, zero_smul, zero_smul]`.
+
+Establish `h2 : ∀ ψ : U →+ ZMod N, ψ ≠ 0 → ∑ u, χ (-ψ u) = 0` using `fun ψ hψ => by`. Establish `: χ.compAddMonoidHom (-ψ) ≠ 1`. Introduce `h`. Apply `hψ` to reduce the goal to its premises. Use extensionality with `u`.
+
+Use `DFunLike.congr_fun h u` as an intermediate fact. Conclude with `neg_eq_zero.mp (hχ _ this)`. Conclude with `AddChar.sum_eq_zero_of_ne_one this`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, h1]`.
+
+Rewrite using `[← Finset.sum_smul, Finset.sum_comm, Finset.sum_eq_single (0 : U →+ ZMod N) (fun ψ _ => h2 ψ) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_char_smul {o M U : Type} [CommRing o] [IsDomain o] [AddCommGroup M] [Module o M]
     [AddCommGroup U] [Fintype U] {N : ℕ} [NeZero N] [Fintype (U →+ ZMod N)]
     (χ : AddChar (ZMod N) o) (hχ : ∀ a, χ a = 1 → a = 0) (ρ : U → M)
@@ -82,6 +111,25 @@ theorem sum_char_smul {o M U : Type} [CommRing o] [IsDomain o] [AddCommGroup M] 
     Finset.sum_eq_single (0 : U →+ ZMod N) (fun ψ _ => h2 ψ) (by simp)]
   simp
 
+/- English proof (translation)
+Set `q : T →+ p.ker` to `(AddMonoidHom.id T - i.comp p).codRestrict p.ker fun t => by`. Simplify using `[AddMonoidHom.mem_ker, hp]`. Establish `hq : ∀ t, (q t : T) = t - i (p t)` using `fun t => rfl`. Establish `hqu : ∀ u : p.ker, q u = u` using `fun u => Subtype.ext (by`. Rewrite using `[hq, (AddMonoidHom.mem_ker).mp u.2, map_zero, sub_zero])`.
+
+Establish `hqi : ∀ a, q (i a) = 0` using `fun a => Subtype.ext (by rw [hq, hp, sub_self]; rfl)`. Set `e : A × p.ker ≃ T` to `{ toFun := fun x => i x.1 + x.2 invFun := fun t => (p t, q t) left_inv := fun x => by`. Simplify using `[hp, hqu, hqi, (AddMonoidHom.mem_ker).mp x.2.2]`. Use `right_inv := fun t => by simp [hq] }`. Establish `he : ∀ a (u : p.ker), e (a, u) = i a + u` using `fun _ _ => rfl`.
+
+Use `⟨by rw [← Nat.card_prod, Nat.card_congr e], ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite A` as an intermediate fact. Use `Fintype.ofFinite T` as an intermediate fact. Use `Fintype.ofFinite p.ker` as an intermediate fact. Establish `: Finite (p.ker →+ ZMod N)` using `DFunLike.finite _`.
+
+Use `Fintype.ofFinite (p.ker →+ ZMod N)` as an intermediate fact. Establish `hinj : Function.Injective fun ψ : p.ker →+ ZMod N => c'.comp p + ψ.comp q`. Introduce `ψ ψ' h`. Use extensionality with `u`. Use `DFunLike.congr_fun (add_left_cancel h) (u : T)` as an intermediate fact.
+
+Simplify `this` using `[hqu]`. Establish `hs : {c : T →+ ZMod N | c.comp i = c'} = Set.range fun ψ : p.ker →+ ZMod N => c'.comp p + ψ.comp q`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Use `⟨c.comp p.ker.subtype, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `[hq]`. Introduce and unpack `⟨ψ, rfl⟩`. Use extensionality with `a`.
+
+Simplify using `[hp, hqi]`. Rewrite using `[hs, finsum_mem_range hinj]`. Repeatedly rewrite using `[finsum_eq_sum_of_fintype, ← e.sum_comp, Fintype.sum_prod_type, he]`. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Use `sum_char_smul χ hχ (fun u : p.ker => ρ (i a + u)) fun u hu => by` as an intermediate fact. Use `hρ a u fun ψ => hu (ψ.comp p.ker.subtype)` as an intermediate fact. Simplify using `using this`. Simplify using `only [ZeroMemClass.coe_zero, add_zero] at this`. Rewrite using `[smul_comm, Nat.card_eq_fintype_card, ← this, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← AddChar.map_add_eq_mul]`. Simplify using `[hp, hqu, hqi, (AddMonoidHom.mem_ker).mp u.2, add_comm]`.
+-/
 theorem sum_ext_char_smul {o M A T : Type} [CommRing o] [IsDomain o] [AddCommGroup M] [Module o M]
     [AddCommGroup A] [AddCommGroup T] [Finite A] [Finite T] {N : ℕ} [NeZero N]
     (i : A →+ T) (p : T →+ A) (hp : ∀ a, p (i a) = a)
@@ -146,6 +194,29 @@ namespace GlobalTheory
 
 open ThetaProj
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ hA S`. Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero S.N` using `⟨by omega⟩`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`.
+
+Establish `: NeZero ((S.r * S.N) ^ 2)` using `⟨pow_ne_zero _ (NeZero.ne _)⟩`. Establish `: IsDomain o` using `hA.inj.isDomain _`. Use `⟨fun T c k => ?_, ?_, fun H => ?_, fun T T' h hT hT' c' => ?_⟩` and prove the remaining obligations. Use `Fintype.ofFinite T` as an intermediate fact. Rewrite using `[ThetaSys.FF, finsum_eq_sum_of_fintype]`.
+
+Conclude with `S.R.sum_mem fun t _ => S.R.mul_mem (S.R.algebraMap_mem _) (S.R.sum_mem fun j _ => S.R.mul_mem (S.R.algebraMap_mem _) (S.ev_mem _ _))`. Establish `: Finite (AddSubgroup S.Gam)` using `Finite.of_injective _ SetLike.coe_injective`. Establish `: ∀ T : AddSubgroup S.Gam, Finite (T →+ ZMod S.N)` using `fun T => DFunLike.finite _`. Use `(Set.finite_range fun x : Σ T : AddSubgroup S.Gam, (T →+ ZMod S.N) × (S.J × (T → ZMod ((S.r * S.N) ^ 2))) => S.FF x.1 x.2.1 x.2.2).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨T, c, k, rfl⟩`.
+
+Conclude with `⟨⟨T, c, k⟩, rfl⟩`. Use `le_antisymm (fun x hx => ?_) fun x hx y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxH`. Set `H' : Submodule (ZMod (S.r * S.N)) S.Gam` to `AddSubgroup.toZModSubmodule _ H`. Take `⟨f, hf⟩` from `ZModPerp.exists_dual_ne_zero (n := S.r * S.N) (q := H'.mkQ x) (fun h0 => hxH ((Submodule.Quotient.mk_eq_zero H').mp h0))`.
+
+Take `⟨b, hb⟩` from `exists_eStd_eq _ _ (f ∘ₗ H'.mkQ)`. Establish `hb' : b ∈ S.perp H` using `fun y hy => by`. Rewrite using `[hb, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero H').mpr hy, map_zero]`. Establish `h1 : eStd S.g _ x b = 0` using `hx b hb'`. Rewrite `h1` using `[eStd_swap, neg_eq_zero, hb]`.
+
+Conclude with `hf h1`. Rewrite using `[eStd_swap, hy x hx, neg_zero]`. Take `⟨d, ⟨e⟩⟩` from `hT.2`. Take `⟨d', ⟨e'⟩⟩` from `hT'.2`. Take `⟨p, hp⟩` from `exists_retraction T' e'`.
+
+Establish `hζ : IsPrimitiveRoot S.ζN S.N` using `S.prim.pow (NeZero.pos _) (by ring)`. Set `χ : AddChar (ZMod S.N) o` to `AddChar.zmodChar S.N hζ.pow_eq_one`. Establish `hχ : ∀ a, χ a = 1 → a = 0` using `fun a ha => ((AddChar.zmodChar_primitive_of_primitive_root S.N hζ).zmod_char_eq_one_iff S.N a).mp ha`. Set `_ : Module (ZMod (S.r * S.N)) T` to `AddCommGroup.zmodModule fun x => Subtype.ext (by`. Rewrite using `[AddSubgroup.coe_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod (S.r * S.N)), ZMod.natCast_self, zero_smul]`.
+
+Use the proof step `rfl)`. Take `⟨h1, h2⟩` from `sum_ext_char_smul (AddSubgroup.inclusion h) (p.comp T.subtype) (fun a => hp a) χ hχ (fun t : T => S.ρ t) (fun a u hu => by`. Establish `hu' : S.r • (u : S.Gam) = 0` using `congrArg Subtype.val (nsmul_eq_zero_of_forall_char (r := S.r) u hu)`. Rewrite using `[AddSubgroup.coe_add, ← S.ρ_add _ _ (by`. Rewrite using `[hT.1 (AddSubgroup.inclusion h a).2 u u.2, smul_zero]), S.ρ_one _ hu', _root_.mul_one]) c'`.
+
+Establish `hu : IsUnit (Nat.card T : o)`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_fun, Nat.card_zmod, Nat.cast_pow]`. Conclude with `S.unit.pow _`. Establish `hfin : Finite (T →+ ZMod S.N)` using `DFunLike.finite _`. Establish `h3 : ∑ᶠ c ∈ {c : T →+ ZMod S.N | c.comp (AddSubgroup.inclusion h) = c'}, S.proj T c = Ring.inverse (Nat.card T : o) • ∑ᶠ c ∈ {c : T →+ ZMod S.N | c.comp (AddSubgroup.inclusion h) = c'}, ∑ᶠ t : T, χ (-c t) • S.ρ t`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite _), finsum_mem_eq_finite_toFinset_sum _ (Set.toFinite _), Finset.smul_sum]`. Both sides reduce to the same expression. Rewrite using `[h3, h2, smul_smul]`. Rewrite `hu`, the goal using `[h1, Nat.cast_mul]`. Rewrite using `[Ring.mul_inverse_rev' (Commute.all _ _), mul_right_comm, Ring.inverse_mul_cancel _ (isUnit_of_mul_isUnit_right hu), _root_.one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem thetaSys_FF_mem_finite_perp_proj :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω),
       (∀ T c k, S.FF T c k ∈ S.R) ∧ Set.Finite {x : Ω | ∃ T c k, x = S.FF T c k} ∧

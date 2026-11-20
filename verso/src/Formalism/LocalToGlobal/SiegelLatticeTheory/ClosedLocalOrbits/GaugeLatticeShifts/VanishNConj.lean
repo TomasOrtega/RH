@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Take `⟨hfe, hfz, -, -⟩` from `reference_frame_congruences X`. Establish `hf0 : ∀ a, X.f0 a ∈ X.B.I.Lf` using `fun a => (X.vectorsInLattice.1 a).2`. Establish `hg` using `modulus_g_ne_zero X`. Unfold `chiN`. Use `unitaryCongruence.psi_mul_of_Z X.B.I X.B.g X.psiEf_add X.psiEf_int hg ?_` and prove the remaining obligations.
+
+Establish `h : (∑ a, hA X.B.I (X.f0 a) (X.B.I.fmat (x * y) *ᵥ nxt X.e0 X.z0 a)) - (∑ a, hA X.B.I (X.f0 a) (X.B.I.fmat x *ᵥ nxt X.e0 X.z0 a)) - (∑ a, hA X.B.I (X.f0 a) (X.B.I.fmat y *ᵥ nxt X.e0 X.z0 a)) = ∑ a, (hA X.B.I (X.f0 a) (X.B.I.fmat (x * y) *ᵥ nxt X.e0 X.z0 a) - hA X.B.I (X.f0 a) (X. …`. Simplify using `only [Finset.sum_sub_distrib]`. Rewrite using `[h]`. Conclude with `unitaryCongruence.Z_sum X.B.I X.B.g _ _ fun a _ => unitaryCongruence.term_Z X.B.I X.B.g _ _ (unitaryCongruence.nxt_Z X.B.I X.B.g X.e0 X.f0 X.z0 hfe hfz a) (unitaryCongruence.Me_Q X.B.I X.B.g X.e0 X.f0 hf0 hfe a (unitaryCongruence.e_step X.B.I X.B.g X.e0 X.z0 X.bw hx.1 hx.2 a _ (u …`.
+-/
 theorem chiN_mul {x y : X.B.I.Gf} (hx : x ∈ X.K2) (hy : y ∈ X.K2) :
     chiN X (x * y) = chiN X x * chiN X y := by
   obtain ⟨hfe, hfz, -, -⟩ := reference_frame_congruences X
@@ -37,16 +42,29 @@ theorem chiN_mul {x y : X.B.I.Gf} (hx : x ∈ X.K2) (hy : y ∈ X.K2) :
         (unitaryCongruence.e_step X.B.I X.B.g X.e0 X.z0 X.bw hx.1 hx.2 a _
           (unitaryCongruence.nxt_cong X.B.I X.B.g X.e0 X.z0 X.bw hy.2 a)))
 
+/- English proof (translation)
+Unfold `chiL`. Conclude with `unitaryCongruence.psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int (modulus_g_ne_zero X) (unitaryCongruence.Z_sum X.B.I X.B.g _ _ fun i _ => Z_bw hn hnK i)`.
+-/
 theorem chiL_conj {u : D.what₂.Word} {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset) :
     chiL X ((X.xu u)⁻¹ * n * X.xu u) = 1 := by
   unfold chiL
   exact unitaryCongruence.psi_Z X.B.I X.B.g X.psiEf_add X.psiEf_int (modulus_g_ne_zero X)
     (unitaryCongruence.Z_sum X.B.I X.B.g _ _ fun i _ => Z_bw hn hnK i)
 
+/- English proof (translation)
+Rewrite using `[level_char_eq_mul, chiL_conj X hn hnK, mul_one]`.
+-/
 theorem chiN_conj {u : D.what₂.Word} {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) (hnK : n ∈ X.B.I.Kset) :
     chiN X ((X.xu u)⁻¹ * n * X.xu u) = X.chi2 ((X.xu u)⁻¹ * n * X.xu u) := by
   rw [level_char_eq_mul, chiL_conj X hn hnK, mul_one]
 
+/- English proof (translation)
+Establish `key : a⁻¹ * (x.2 * a) ∈ X.B.I.Kset`. Use `LatDictK.dict_K X _ _ {y | y ∈ Λ} (fun y => hlat y) (fun y => ?_)` and prove the remaining obligations. Use `show y ∈ Λ ↔ _`. Establish `e1 : y ∈ Λ ↔ n.symm y ∈ Λ` using `by conv_lhs => rw [← hmap]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, hz, hzy⟩`. Establish `: n.symm y = z` using `by rw [← hzy]; simp`. Rewrite using `[this]`. Conclude with `hz`. Introduce `h`.
+
+Conclude with `⟨n.symm y, h, by simp⟩`. Rewrite using `[e1, hlat, show (x.2 * a)⁻¹ = a⁻¹ * x.2⁻¹ from _root_.mul_inv_rev _ _, LatDictK.fmatK_mul, ← mulVec_mulVec, LatDictK.ratLink_incl_inv X hx]`. Rewrite using `[mul_assoc]` and apply the resulting hypothesis.
+-/
 theorem kappa_Kset {Λ : Submodule (𝓞 D.host.E) (VS D).V} (a : X.B.I.Gf)
     (hlat : ∀ y : (VS D).V, y ∈ Λ ↔ X.B.I.fmat a⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf)
     {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hmap : Formalism.HermitianLatticesTheory.gmap n Λ = Λ) {x : X.B.I.GA}
@@ -66,6 +84,15 @@ theorem kappa_Kset {Λ : Submodule (𝓞 D.host.E) (VS D).V} (a : X.B.I.Gf)
       LatDictK.fmatK_mul, ← mulVec_mulVec, LatDictK.ratLink_incl_inv X hx]
   rwa [mul_assoc]
 
+/- English proof (translation)
+Establish `hxN : x.2 ∈ X.NfinU u` using `nLamNfin_holds D X u Λ x n hx hn`. Establish `hc` using `nfinConj_holds X u h⁻¹ x.2 hxN`. Establish `ec : ((h⁻¹ : Hfin X u) : X.B.I.Gf) * x.2 * ((h⁻¹ : Hfin X u) : X.B.I.Gf)⁻¹ = (h : X.B.I.Gf)⁻¹ * x.2 * (h : X.B.I.Gf)`. Rewrite using `[Subgroup.coe_inv, inv_inv]`. Rewrite `hc` using `[ec]`.
+
+Establish `hκK` using `kappa_Kset X ((h : X.B.I.Gf) * X.xu u) hlat hn.1.2 hx`. Establish `eκ : ((h : X.B.I.Gf) * X.xu u)⁻¹ * x.2 * ((h : X.B.I.Gf) * X.xu u) = (X.xu u)⁻¹ * ((h : X.B.I.Gf)⁻¹ * x.2 * (h : X.B.I.Gf)) * X.xu u` using `by group`. Establish `en : (h : X.B.I.Gf)⁻¹ * x.2 * (h : X.B.I.Gf) = X.xu u * (((h : X.B.I.Gf) * X.xu u)⁻¹ * x.2 * ((h : X.B.I.Gf) * X.xu u)) * (X.xu u)⁻¹` using `by group`. Establish `hnK : (h : X.B.I.Gf)⁻¹ * x.2 * (h : X.B.I.Gf) ∈ X.B.I.Kset`. Rewrite using `[en]`.
+
+Conclude with `unitaryCongruence.K_mul X.B.I (unitaryCongruence.K_mul X.B.I (X.xu_K u) hκK) (unitaryCongruence.K_inv X.B.I (X.xu_K u))`. Take `⟨hK2, hchi⟩` from `hNK _ hc.1 hnK`. Rewrite `hchi` using `[hc.2]`. Establish `hN : chiN X (((h : X.B.I.Gf) * X.xu u)⁻¹ * x.2 * ((h : X.B.I.Gf) * X.xu u)) = X.psiFinU u x.2`. Rewrite using `[eκ, chiN_conj X hc.1 hnK, hchi]`.
+
+Rewrite `hN`, the goal using `[eκ]`. Use `⟨hK2, hchi, fun k hk => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[chiN_mul X hK2 hk, hN]`. Rewrite using `[chiN_mul X hk hK2, hN]`.
+-/
 theorem core (u : D.what₂.Word) (hNK : UnipotentConjugateInLevel X u) (h : Hfin X u) {Λ : Submodule (𝓞 D.host.E) (VS D).V}
     (hlat : ∀ y : (VS D).V, y ∈ Λ ↔
       X.B.I.fmat ((h : X.B.I.Gf) * X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd y) ∈ X.B.I.Lf)
@@ -105,11 +132,17 @@ end Formalism.L2.SG.Pf.VanishNConj
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+Introduce `D X Y u ρ x n hn hx`. Conclude with `VanishNConj.core X u (hN D X u) ((Y.cs u).h ρ) ((Y.cs u).lat_eq ρ) hn hx`.
+-/
 theorem nilradical_conj_level_of_mem (hN : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), UnipotentConjugateInLevel X u) :
     Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel := by
   intro D X Y u ρ x n hn hx
   exact VanishNConj.core X u (hN D X u) ((Y.cs u).h ρ) ((Y.cs u).lat_eq ρ) hn hx
 
+/- English proof (translation)
+The claim follows from `nilradical_conj_level_of_mem fun D X _ => unipotent_in_level_of_psi (hP D X)`.
+-/
 theorem nilradical_conj_level_of_psi (hP : ∀ (D : D7) (X : HidaSetting D), PsiDd X) :
     Formalism.L2.SG.TermOp.Vanish.NilradicalConjLevel :=
   nilradical_conj_level_of_mem fun D X _ => unipotent_in_level_of_psi (hP D X)

@@ -12,6 +12,29 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' d' hK hbm hP'`. Take `⟨-, hMP', hHor', hdim'⟩` from `hP'`. Establish `hMP : IsMultiProjPrime (imageZ v P')`. Rewrite `hMP'`, the goal using `[← Bridge.isMultiProjPrime_iff]`. Conclude with `FieldNumbers.ContractRelevant.isMultiProjPrime_comap_rename (j := κ) (g := v) hbm.2.2.1 hbm.1 hbm.2.1 (fun w hw ↦ hbm.2.2.2 w hw |>.imp fun _ h ↦ h) hMP'`.
+
+Establish `hHor : IsHorizontal (imageZ v P')`. Use `(Ideal.ext fun a ↦ ?_).trans hHor'` and prove the remaining obligations. Simplify using `only [imageZ, Ideal.mem_comap, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_C]`. Establish `: (P').IsPrime` using `hMP'.1`. Use `set A' := MRing ι' ⧸ P'`.
+
+Use `set L := FractionRing A'`. Establish `hinj : Function.Injective (algebraMap ℤ A')`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Rewrite `ha` using `[← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `h' : a ∈ (P').comap (C : ℤ →+* MRing ι')` using `ha`. Rewrite `h'` using `[show (P').comap (C : ℤ →+* MRing ι') = ⊥ from hHor']`. Conclude with `(Submodule.mem_bot ℤ).mp h'`. Establish `: CharZero A'` using `charZero_of_injective_algebraMap hinj`. Establish `: CharZero L` using `charZero_of_injective_algebraMap (IsFractionRing.injective A' L)`.
+
+Use `set φ' : MRing ι' →+* L := (algebraMap A' L).comp (Ideal.Quotient.mk P')`. Establish `hker' : RingHom.ker φ' = P'`. Rewrite using `[← RingHom.comap_ker, (RingHom.injective_iff_ker_eq_bot _).mp (IsFractionRing.injective A' L), ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Use `set φ : MRing ι →+* L := φ'.comp (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom`. Establish `hker : RingHom.ker φ = imageZ v P'`.
+
+Rewrite using `[← RingHom.comap_ker, hker']`. Both sides reduce to the same expression. Take `⟨s', hs', hd'⟩` from `TrdegAdjoin.ringKrullDim_quotient_ker φ'`. Take `⟨s, hs, hd⟩` from `TrdegAdjoin.ringKrullDim_quotient_ker φ`. Rewrite `hd'` using `[hker']`.
+
+Rewrite `hd` using `[hker]`. Establish `hφX : (Set.range fun p : Σ k, ι k ↦ φ (X p)) = Set.range fun p ↦ φ' (X (v p))`. Simplify using `[φ]`. Rewrite `hs` using `[hφX]`. Establish `h1` using `hBT K ι K' ι' κ v P' L φ' hbm hMP' hker'`.
+
+Rewrite `h1` using `[hs, hs']`. Establish `h2` using `@hBT Empty _ (fun k ↦ k.elim) (fun k ↦ k.elim) K _ ι _ (fun k ↦ k.elim) (fun p ↦ p.1.elim) (imageZ v P') L _ _ φ ⟨fun a ↦ a.elim, fun p ↦ p.1.elim, fun p ↦ p.1.elim, fun q ⟨a, _⟩ ↦ a.elim⟩ hMP hker`. Rewrite `h2` using `[hφX, hs]`. Simplify using `only [Fintype.card_empty, Nat.sub_zero] at h2`. Establish `h1' : s + (Fintype.card K' - Fintype.card K) ≤ s'` using `by exact_mod_cast h1`.
+
+Establish `h2' : Fintype.card K ≤ s`. Use `le_trans (self_le_add_left _ _) h2` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hKK : Fintype.card K ≤ Fintype.card K'` using `Fintype.card_le_of_injective κ hbm.1`. Rewrite `hd'` using `[hdim']`.
+
+Establish `h3 : d' + Fintype.card K' = s' + 1` using `by exact_mod_cast hd'`. Use `⟨s + 1 - Fintype.card K, by omega, hK, hMP, hHor, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`. Establish `: s + 1 - Fintype.card K + Fintype.card K = s + 1` using `by omega`. Rewrite using `[this]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ImageArith.of_found (hBT : BlockTrdeg.Statement) : ReciprocityTheory.ChartRestriction.G.AI.I4.ImageArithStatement := by
   intro K _ ι _ K' _ ι' _ κ v P' d' hK hbm hP'
   classical

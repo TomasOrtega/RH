@@ -40,6 +40,53 @@ variable {D : D7}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨v, π, hπ⟩` from `GlobalTheory.SplitChart.exists_chart e he`. Take `⟨β, hβ⟩` from `GlobalTheory.SplitFrame.exists_frame e v π he hπ V`. Take `⟨φ, hφ⟩` from `GlobalTheory.SplitFrame.exists_factor hπ`. Establish `hπe : π e = 1` using `GlobalTheory.SplitHomLattice.pi_idem he hπ`. Establish `hpe : φ (finPart D e) = 1` using `by rw [hφ]; exact hπe`.
+
+Establish `hpp : finPart D e * finPart D e = finPart D e` using `by rw [← map_mul, he.1]`. Establish `hpO : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ hpp`. Establish `hpq : finPart D e * finPart D (cA D e) = 0` using `by rw [← map_mul, he.2.1, map_zero]`. Establish `hφs : Function.Surjective φ` using `fun t => by`. Take `⟨a, rfl⟩` from `hπ.1 t`.
+
+Conclude with `⟨finPart D a, hφ a⟩`. Establish `hker : ∀ x, φ x = 0 → finPart D e * x = 0`. Introduce `x hx`. Take `⟨a, rfl⟩` from `GlobalTheory.SplitHecke.Stab.finPart_surj x`. Rewrite `hx` using `[hφ]`.
+
+Rewrite using `[← map_mul, (hπ.2.1 a).1 hx, map_zero]`. Set `T : (Fin V.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) →+ (Fin V.rank → Fv D.host.F v)` to `{ toFun := fun z => (β⁻¹).1 *ᵥ fun k => φ (z k) map_zero' := by`. Establish `: (fun k : Fin V.rank => φ ((0 : Fin V.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) k)) = 0`. Use function extensionality and compare the values at `fun k => by rw [Pi.zero_apply, map_zero, Pi.zero_apply]`. Simplify using `only [this, Matrix.mulVec_zero]`.
+
+Use the proof step `map_add' := by`. Introduce `x y`. Establish `: (fun k => φ ((x + y) k)) = (fun k => φ (x k)) + fun k => φ (y k)`. Use function extensionality and compare the values at `fun k => by rw [Pi.add_apply, map_add, Pi.add_apply]`. Simplify using `only [this, Matrix.mulVec_add] }`.
+
+Establish `hT : ∀ z, T z = (β⁻¹).1 *ᵥ fun k => φ (z k)` using `fun z => rfl`. Establish `hTs : ∀ (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) z, T (x • z) = φ x • T z`. Introduce `x z`. Rewrite using `[hT, hT, ← Matrix.mulVec_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Establish `hTp : ∀ z, T (finPart D e • z) = T z`. Introduce `z`. Rewrite using `[hTs, hpe, one_smul]`.
+
+Establish `hmem : ∀ z, finPart D e • z ∈ Formalism.L2.NTheta.LamHat V ↔ ∀ i, T z i ∈ v.adicCompletionIntegers D.host.F`. Introduce `z`. Use `choose y hy using fun k => GlobalTheory.SplitHecke.Stab.finPart_surj (z k)`. Establish `e1 : finPart D e • z = fun i => finPart D (e * y i)` using `funext fun i => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hy]`.
+
+Establish `e2 : (fun k => φ (z k)) = fun k => π (y k)` using `funext fun k => by rw [← hy, hφ]`. Rewrite using `[e1, hβ y, hT, e2]`. Conclude with `forall_congr' fun i => isInt_Ov`. Establish `hinj : ∀ z m, T z = T m → finPart D e • z = finPart D e • m`. Introduce `z m h`.
+
+Establish `h1 : (fun k => φ (z k)) = fun k => φ (m k)`. Use `congrArg (fun u => β.1 *ᵥ u) h` as an intermediate fact. Simplify `this` using `only [hT, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Use function extensionality and compare the values at `k`. Establish `h2` using `hker (z k - m k) (by rw [map_sub, sub_eq_zero]; exact congrFun h1 k)`.
+
+Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Rewrite `h2` using `[mul_sub, sub_eq_zero]`. Conclude with `h2`. Set `S : AddSubgroup (Fin V.rank → Fv D.host.F v)` to `M.map T`. Establish `hS : ∀ z, T z ∈ S ↔ finPart D e • z ∈ M`.
+
+Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h⟩`. Rewrite using `[hinj z m h.symm]`. Conclude with `hM _ hpO m hm`.
+
+Introduce `h`. Conclude with `⟨_, h, hTp z⟩`. Take `⟨N, hN, hlo, hup⟩` from `hb`. Establish `: CharZero (Fv D.host.F v)` using `charZero_of_injective_algebraMap (algebraMap D.host.F (Fv D.host.F v)).injective`. Establish `hN' : ((N : ℕ) : Fv D.host.F v) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`.
+
+Establish `hφN : φ ((N : ℕ) : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) = (N : Fv D.host.F v)` using `map_natCast φ N`. Establish `hf' : finPart D (e + cA D e) * finPart D e = finPart D e`. Rewrite using `[(finPart D).map_add, add_mul, hpp, mul_comm (finPart D (cA D e)), hpq, add_zero]`. Take `⟨t, ht, hSt⟩` from `GlobalTheory.LatticeBetweenMultiples.eq_multiple_of_standard_lattice v S (by`. Introduce `o ho w hw`.
+
+Take `⟨m, hm, rfl⟩` from `hw`. Take `⟨a, ha⟩` from `hπ.1 o`. Use `⟨finPart D (e * a) • m, hM _ ((hπ.2.2.2 a).2 (isInt_Ov.2 (ha ▸ ho))) m hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hTs, hφ, map_mul, hπe, one_mul, ha])`. Use the proof step `(by`.
+
+Use `⟨N, hN', fun w hw => ?_⟩` and prove the remaining obligations. Use `choose z hz using fun k => hφs ((β.1 *ᵥ w) k)`. Establish `hTz : T z = w`. Rewrite using `[hT, (funext hz : (fun k => φ (z k)) = β.1 *ᵥ w), Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hzL : finPart D e • z ∈ Formalism.L2.NTheta.LamHat V` using `(hmem z).2 (by rw [hTz]; exact hw)`.
+
+Establish `h1` using `hlo _ hzL`. Rewrite `h1` using `[smul_smul (finPart D (e + cA D e)), hf']`. Conclude with `⟨_, h1, by rw [hTs, hTp, hφN, hTz]⟩)`. Use the proof step `(by`. Use `⟨N, hN', fun w hw i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, hm, rfl⟩` from `hw`. Establish `h2 : finPart D e • (((N : ℕ) : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • m) ∈ Formalism.L2.NTheta.LamHat V` using `GlobalTheory.LatDual.smul_mem_lamHat V _ hpO _ (hup m hm)`. Establish `h3` using `(hmem _).1 h2 i`. Rewrite using `[hTs, hφN, Pi.smul_apply, smul_eq_mul] at h3)` and apply the resulting hypothesis. Use the proof step `(by`.
+
+Introduce `x hx1 hx2 w hw`. Take `⟨m, hm, rfl⟩` from `hw`. Take `⟨g, hg, hgx⟩` from `GlobalTheory.SplitOnto.exists_suppAt_rho_eq e v π he hπ V β x`. Establish `hgK : g ∈ KsphC V ∅` using `(GlobalTheory.SplitHecke.Stab.mem_KsphC_iff_gInt e v π he hπ V β hβ g hg).2 (by`. Rewrite using `[hgx]`.
+
+Conclude with `⟨fun i j => isInt_Ov.2 (hx1 i j), fun i j => isInt_Ov.2 (hx2 i j)⟩)`. Use `⟨_, hK g hgK hg m hm, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun k => φ ((finMat D.sp.cm.sig V.gram g *ᵥ m) k)) = (mt V g).map π *ᵥ fun k => φ (m k)`. Use function extensionality and compare the values at `k`. Rewrite using `[RingHom.map_mulVec, GlobalTheory.SplitHecke.Stab.finMat_eq, Matrix.map_map]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `y`. Conclude with `hφ y`. Rewrite using `[hT, hT, e1, ← hgx, rho_val, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc _ β.1, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one])`. Take `⟨a, ha⟩` from `hφs t`.
+
+Take `⟨a', ha'⟩` from `hφs t⁻¹`. Use `⟨a, a', ?_, fun z => ?_⟩` and prove the remaining obligations. Use `hker (a * a' - 1) (by rw [map_sub, map_mul, ha, ha', mul_inv_cancel₀ ht, map_one, sub_self])` as an intermediate fact. Take the linear combination `this`. Rewrite using `[← hS, hSt, mul_smul, hmem, hTs, ha]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem half (V : HSp D) (e : Formalism.L2.Theta.AE D) (he : IsSplitIdem D e)
     (M : AddSubgroup (Fin V.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)))
     (hM : ∀ a ∈ intAE D, ∀ z ∈ M, a • z ∈ M)
@@ -173,6 +220,21 @@ variable {D : D7}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V P e hP M hMs hf hb hK`. Establish `he : IsSplitIdem D e` using `hP.1`. Establish `he'` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`. Take `⟨a, a', ha, hA⟩` from `half V e he M hMs hf hb hK`. Establish `hsum : cA D e + cA D (cA D e) = e + cA D e` using `by rw [cA_cA, add_comm]`.
+
+Take `⟨b, b', hb', hB⟩` from `half V (cA D e) he' M hMs (by rw [hsum]; exact hf) (by rw [hsum]; exact hb) (by rw [hsum]; exact hK)`. Establish `hpp : finPart D e * finPart D e = finPart D e` using `by rw [← map_mul, he.1]`. Establish `hqq : finPart D (cA D e) * finPart D (cA D e) = finPart D (cA D e)` using `by rw [← map_mul, he'.1]`. Establish `hpq : finPart D e * finPart D (cA D e) = 0` using `by rw [← map_mul, he.2.1, map_zero]`. Establish `hpO : finPart D e ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ hpp`.
+
+Establish `hqO : finPart D (cA D e) ∈ intAE D` using `GlobalTheory.AdIdem.idempotent_mem_intAE D _ hqq`. Establish `hfe : finPart D (e + cA D e) = finPart D e + finPart D (cA D e)` using `map_add _ _ _`. Rewrite `hf` using `[hfe]`. Rewrite using `[hfe]`. Use `⟨finPart D e * a + finPart D (cA D e) * b + (1 - (finPart D e + finPart D (cA D e))), isUnit_iff_exists_inv.2 ⟨finPart D e * a' + finPart D (cA D e) * b' + (1 - (finPart D e + finPart D (cA D e))), by linear_combination (a * a' - a - a' + 1) * hpp + (b * b' - b - b' + 1) * hqq + …` and prove the remaining obligations.
+
+Establish `h1` using `(hA z).1 (hMs _ hpO z hz)`. Establish `h2` using `(hB z).1 (hMs _ hqO z hz)`. Establish `h3` using `hf z hz`. Establish `e1 : (finPart D e * a + finPart D (cA D e) * b + (1 - (finPart D e + finPart D (cA D e)))) • z = (finPart D e * a) • z + (finPart D (cA D e) * b) • z + (z - (finPart D e + finPart D (cA D e)) • z)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, h3, sub_self, add_zero]`. Conclude with `add_mem h1 h2`. Establish `e2 : ∀ (p c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), p * (finPart D e * a + finPart D (cA D e) * b + (1 - (finPart D e + finPart D (cA D e)))) = p * c → p • ((finPart D e * a + finPart D (cA D e) * b + (1 - (finPart D e + finP …`.
+
+Introduce `p c h`. Rewrite using `[smul_smul, h]`. Establish `h1 : finPart D e • z ∈ M` using `(hA z).2 (by`. Rewrite using `[← e2 (finPart D e) a (by linear_combination (a - 1) * hpp + (b - 1) * hpq)]`. Conclude with `GlobalTheory.LatDual.smul_mem_lamHat V _ hpO _ hc)`.
+
+Establish `h2 : finPart D (cA D e) • z ∈ M` using `(hB z).2 (by`. Rewrite using `[← e2 (finPart D (cA D e)) b (by linear_combination (b - 1) * hqq + (a - 1) * hpq)]`. Conclude with `GlobalTheory.LatDual.smul_mem_lamHat V _ hqO _ hc)`. Rewrite using `[← hz, add_smul]`. Conclude with `add_mem h1 h2`.
+-/
 theorem lat_split : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e : Formalism.L2.Theta.AE D), Formalism.L2.NTheta.IsIdemAt e P → ∀ (M : AddSubgroup (Fin V.rank → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))), (∀ a ∈ intAE D, ∀ z ∈ M, a • z ∈ M) → (∀ z ∈ M, finPart D (e + cA D e) • z = z) → (∃ N : ℕ, 0 < N ∧ (∀ y ∈ Formalism.L2.NTheta.LamHat V, ((N : ℕ) : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • (finPart D (e + cA D e) • y) ∈ M) ∧ ∀ z ∈ M, ((N : ℕ) : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) • z ∈ Formalism.L2.NTheta.LamHat V) → (∀ g : GA D V, g ∈ KsphC V ∅ → SuppF V (e + cA D e) g → ∀ z ∈ M, (finMat D.sp.cm.sig V.gram g).mulVec z ∈ M) → ∃ c : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E), IsUnit c ∧ ∀ z, z ∈ M ↔ (finPart D (e + cA D e) • z = z ∧ c • z ∈ Formalism.L2.NTheta.LamHat V) := by
   intro D V P e hP M hMs hf hb hK
   have he : IsSplitIdem D e := hP.1

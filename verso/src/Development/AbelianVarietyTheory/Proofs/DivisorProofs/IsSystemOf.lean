@@ -19,12 +19,21 @@ variable (K : Type) [CommRing K] (n : ℕ) {ι : Type} [Fintype ι] [DecidableEq
 def wtOp (g : ι → GL (Fin n) K) : Module.End K (NablaT K n mu) :=
   ((∏ τ, Matrix.GeneralLinearGroup.det (g τ) ^ (-sh τ) : Kˣ) : K) • grp K n mu g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wtOp_apply (g : ι → GL (Fin n) K) (u : NablaT K n mu) :
     wtOp K n mu sh g u = ((∏ τ, Matrix.GeneralLinearGroup.det (g τ) ^ (-sh τ) : Kˣ) : K) • grp K n mu g u := rfl
 
+/- English proof (translation)
+Simplify using `[wtOp, grp]`.
+-/
 theorem wtOp_one : wtOp K n mu sh 1 = 1 := by
   simp [wtOp, grp]
 
+/- English proof (translation)
+Simplify using `only [wtOp, grp, map_mul, Pi.mul_apply, mul_zpow, Finset.prod_mul_distrib, Units.val_mul, smul_mul_smul_comm]`.
+-/
 theorem wtOp_mul (g h : ι → GL (Fin n) K) : wtOp K n mu sh (g * h) = wtOp K n mu sh g * wtOp K n mu sh h := by
   simp only [wtOp, grp, map_mul, Pi.mul_apply, mul_zpow, Finset.prod_mul_distrib, Units.val_mul, smul_mul_smul_comm]
 

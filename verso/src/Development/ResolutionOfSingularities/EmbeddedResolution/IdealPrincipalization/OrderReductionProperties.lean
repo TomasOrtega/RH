@@ -23,6 +23,9 @@ def kerSubschemeIso {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] : (Scheme.Hom.ker f).subscheme ≅ X :=
   (asIso (Scheme.Hom.toImage f)).symm
 
+/- English proof (translation)
+Establish `key` using `IsIso.inv_hom_id_assoc (Scheme.Hom.toImage f) (Scheme.Hom.imageι f)`. Rewrite `key` using `[Scheme.Hom.toImage_imageι]`. Conclude with `key`.
+-/
 theorem kerSubschemeIso_hom_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] :
     (kerSubschemeIso f).hom ≫ f = (Scheme.Hom.ker f).subschemeι := by
@@ -30,6 +33,9 @@ theorem kerSubschemeIso_hom_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
   rw [Scheme.Hom.toImage_imageι] at key
   exact key
 
+/- English proof (translation)
+Rewrite using `[← kerSubschemeIso_hom_comp f, Iso.inv_hom_id_assoc]`.
+-/
 theorem kerSubschemeIso_inv_comp {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.IsClosedImmersion f] :
     (kerSubschemeIso f).inv ≫ (Scheme.Hom.ker f).subschemeι = f := by
@@ -47,26 +53,44 @@ def pullbackAlong (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
   mult := T.mult
   boundary := T.boundary.map (fun D => D.comap h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackAlong_baseField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).base = T.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackAlong_scheme (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).scheme = Y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullbackAlong_mult (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackAlong_structureMorphism (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).structMap = q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackAlong_ideal (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).ideal = T.ideal.comap h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullbackAlong_boundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme) :
     (T.pullbackAlong Y q h).boundary = T.boundary.map (fun D => D.comap h) := rfl
@@ -81,22 +105,40 @@ def baseChange (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.b
   boundary :=
     T.boundary.map (fun D => D.comap (pullback.fst T.structMap (specMapOfFieldHom T.base L f)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem baseChange_baseField (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) : (T.baseChange L f).base = L := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem baseChange_mult (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L]
     (f : T.base →+* L) : (T.baseChange L f).mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChange_scheme (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.base →+* L) :
     (T.baseChange L f).scheme = pullback T.structMap (specMapOfFieldHom T.base L f) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChange_structureMorphism (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.base →+* L) :
     (T.baseChange L f).structMap = pullback.snd T.structMap (specMapOfFieldHom T.base L f) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChange_ideal (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.base →+* L) :
     (T.baseChange L f).ideal =
       T.ideal.comap (pullback.fst T.structMap (specMapOfFieldHom T.base L f)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseChange_boundary (T : MarkedIdealWithBoundary.{u}) (L : Type u) [Field L] (f : T.base →+* L) :
     (T.baseChange L f).boundary =
       T.boundary.map
@@ -112,26 +154,44 @@ def withSchemeIdealBoundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u}) (
   mult := T.mult
   boundary := E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withSchemeIdealBoundary_baseField (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).base = T.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withSchemeIdealBoundary_scheme (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).scheme = Y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withSchemeIdealBoundary_mult (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withSchemeIdealBoundary_structureMorphism (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).structMap = q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withSchemeIdealBoundary_ideal (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).ideal = J := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem withSchemeIdealBoundary_boundary (T : MarkedIdealWithBoundary.{u}) (Y : Scheme.{u})
     (q : Y ⟶ Spec (CommRingCat.of T.base)) (J : Y.IdealSheafData)
     (E : List Y.IdealSheafData) : (T.withSchemeIdealBoundary Y q J E).boundary = E := rfl
@@ -146,27 +206,51 @@ def withBoundary (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheaf
   mult := T.mult
   boundary := E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_baseField (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheafData) :
     (T.withBoundary E).base = T.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_scheme (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheafData) :
     (T.withBoundary E).scheme = T.scheme := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_structureMorphism (T : MarkedIdealWithBoundary.{u})
     (E : List T.scheme.IdealSheafData) : (T.withBoundary E).structMap = T.structMap := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_ideal (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheafData) :
     (T.withBoundary E).ideal = T.ideal := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_mult (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheafData) :
     (T.withBoundary E).mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_boundary (T : MarkedIdealWithBoundary.{u})
     (E : List T.scheme.IdealSheafData) : (T.withBoundary E).boundary = E := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_dim (T : MarkedIdealWithBoundary.{u}) (E : List T.scheme.IdealSheafData) :
     (T.withBoundary E).krullDimSucc = T.krullDimSucc := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem withBoundary_self (T : MarkedIdealWithBoundary.{u}) :
     T.withBoundary T.boundary = T := rfl
 
@@ -176,22 +260,40 @@ def nontrivialPart {X : Scheme.{u}} (E : List X.IdealSheafData) : List X.IdealSh
 def SameNontrivialBoundary {X : Scheme.{u}} (E E' : List X.IdealSheafData) : Prop :=
   nontrivialPart E = nontrivialPart E'
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem sameNontrivialBoundary_iff {X : Scheme.{u}} (E E' : List X.IdealSheafData) :
     SameNontrivialBoundary E E' ↔ nontrivialPart E = nontrivialPart E' := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SameNontrivialBoundary.refl {X : Scheme.{u}} (E : List X.IdealSheafData) :
     SameNontrivialBoundary E E := rfl
 
+/- English proof (translation)
+The claim follows from `Eq.symm h`.
+-/
 theorem SameNontrivialBoundary.symm {X : Scheme.{u}} {E E' : List X.IdealSheafData}
     (h : SameNontrivialBoundary E E') : SameNontrivialBoundary E' E := Eq.symm h
 
+/- English proof (translation)
+The claim follows from `Eq.trans h h'`.
+-/
 theorem SameNontrivialBoundary.trans {X : Scheme.{u}} {E E' E'' : List X.IdealSheafData}
     (h : SameNontrivialBoundary E E') (h' : SameNontrivialBoundary E' E'') : SameNontrivialBoundary E E'' := Eq.trans h h'
 
+/- English proof (translation)
+Simplify using `[nontrivialPart, List.filter_append]`.
+-/
 theorem nontrivialPart_append {X : Scheme.{u}} (A B : List X.IdealSheafData) :
     nontrivialPart (A ++ B) = nontrivialPart A ++ nontrivialPart B := by
   simp [nontrivialPart, List.filter_append]
 
+/- English proof (translation)
+Establish `e₁ : nontrivialPart L₁ = nontrivialPart L₁'` using `h₁`. Establish `e₂ : nontrivialPart L₂ = nontrivialPart L₂'` using `h₂`. Use `show nontrivialPart (L₁ ++ L₂) = nontrivialPart (L₁' ++ L₂')`. Rewrite using `[nontrivialPart_append, nontrivialPart_append, e₁, e₂]`.
+-/
 theorem SameNontrivialBoundary.append {X : Scheme.{u}} {L₁ L₁' L₂ L₂' : List X.IdealSheafData}
     (h₁ : SameNontrivialBoundary L₁ L₁') (h₂ : SameNontrivialBoundary L₂ L₂') :
     SameNontrivialBoundary (L₁ ++ L₂) (L₁' ++ L₂') := by
@@ -200,6 +302,15 @@ theorem SameNontrivialBoundary.append {X : Scheme.{u}} {L₁ L₁' L₂ L₂' : 
   show nontrivialPart (L₁ ++ L₂) = nontrivialPart (L₁' ++ L₂')
   rw [nontrivialPart_append, nontrivialPart_append, e₁, e₂]
 
+/- English proof (translation)
+Establish `hcons_top : ∀ {Z : Scheme.{u}} {a : Z.IdealSheafData}, a = ⊤ → ∀ M : List Z.IdealSheafData, nontrivialPart (a :: M) = nontrivialPart M`. Introduce `Z a ha M`. Establish `hb : (@decide (a = ⊤) (Classical.propDecidable (a = ⊤))) = true` using `by simp [ha]`. Simplify using `[nontrivialPart, hb]`. Establish `hcons_ne : ∀ {Z : Scheme.{u}} {a : Z.IdealSheafData}, ¬ a = ⊤ → ∀ M : List Z.IdealSheafData, nontrivialPart (a :: M) = a :: nontrivialPart M`.
+
+Introduce `Z a ha M`. Establish `hb : (@decide (a = ⊤) (Classical.propDecidable (a = ⊤))) = false` using `by simp [ha]`. Simplify using `[nontrivialPart, hb]`. Proceed by induction on `L with`. Consider the case `nil => simp [nontrivialPart]`.
+
+Consider the case `cons a L ih`. Distinguish the cases in `ha : a = ⊤`. Establish `hfa : f a = ⊤` using `by rw [ha]; exact hf`. Rewrite using `[hcons_top ha L, List.map_cons, hcons_top hfa (L.map f), ih]`. Distinguish the cases in `hfa : f a = ⊤`.
+
+Rewrite using `[hcons_ne ha L, List.map_cons, List.map_cons, hcons_top hfa ((nontrivialPart L).map f), hcons_top hfa (L.map f), ih]`. Rewrite using `[hcons_ne ha L, List.map_cons, List.map_cons, hcons_ne hfa ((nontrivialPart L).map f), hcons_ne hfa (L.map f), ih]`.
+-/
 private theorem nontrivialPart_map_nontrivialPart {X Y : Scheme.{u}}
     (f : X.IdealSheafData → Y.IdealSheafData) (hf : f ⊤ = ⊤) (L : List X.IdealSheafData) :
     nontrivialPart ((nontrivialPart L).map f) = nontrivialPart (L.map f) := by
@@ -225,6 +336,9 @@ private theorem nontrivialPart_map_nontrivialPart {X Y : Scheme.{u}}
       · rw [hcons_ne ha L, List.map_cons, List.map_cons,
           hcons_ne hfa ((nontrivialPart L).map f), hcons_ne hfa (L.map f), ih]
 
+/- English proof (translation)
+Establish `e : nontrivialPart L = nontrivialPart L'` using `h`. Use `show nontrivialPart (L.map f) = nontrivialPart (L'.map f)`. Rewrite using `[← nontrivialPart_map_nontrivialPart f hf L, ← nontrivialPart_map_nontrivialPart f hf L', e]`.
+-/
 theorem SameNontrivialBoundary.map {X Y : Scheme.{u}} (f : X.IdealSheafData → Y.IdealSheafData)
     (hf : f ⊤ = ⊤) {L L' : List X.IdealSheafData} (h : SameNontrivialBoundary L L') :
     SameNontrivialBoundary (L.map f) (L'.map f) := by
@@ -239,6 +353,9 @@ def AdmissibleUnderBoundaryReplacement : Prop :=
 def IsOrderBoundedByMult (T : MarkedIdealWithBoundary.{u}) : Prop :=
   ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isOrderBoundedByMult_iff (T : MarkedIdealWithBoundary.{u}) :
     T.IsOrderBoundedByMult ↔ ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞) := Iff.rfl
 
@@ -258,6 +375,11 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
 def boundaryLocus (s : MarkedSequenceOfBlowups p I m E) (t : ℕ) : Set ↥(s.toSequenceOfBlowups.schemeAt t) :=
   ⋃ D ∈ s.boundary t, ((D.support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x ∈ ⋃ D ∈ s.boundary t, ((D.support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `hx`. Take `⟨D, hD, hxD⟩` from `Set.mem_iUnion₂.mp hx'`. Conclude with `⟨D, hD, hxD⟩`.
+
+Introduce and unpack `⟨D, hD, hxD⟩`. Establish `hx' : x ∈ ⋃ D ∈ s.boundary t, ((D.support : Set ↥(s.toSequenceOfBlowups.schemeAt t)))` using `Set.mem_iUnion₂.mpr ⟨D, hD, hxD⟩`. Conclude with `hx'`.
+-/
 theorem mem_boundaryLocus_iff (s : MarkedSequenceOfBlowups p I m E) (t : ℕ)
     (x : ↥(s.toSequenceOfBlowups.schemeAt t)) :
     x ∈ s.boundaryLocus t ↔
@@ -277,6 +399,11 @@ def otherBoundaryLocus (s : MarkedSequenceOfBlowups p I m E) (j t : ℕ) :
   ⋃ (i : Fin (s.boundary t).length) (_ : (i : ℕ) ≠ j),
     (((s.boundary t).get i).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x ∈ ⋃ (i : Fin (s.boundary t).length) (_ : (i : ℕ) ≠ j), (((s.boundary t).get i).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))` using `hx`. Take `⟨i, hi, hxi⟩` from `Set.mem_iUnion₂.mp hx'`. Conclude with `⟨i, hi, hxi⟩`.
+
+Introduce and unpack `⟨i, hi, hxi⟩`. Establish `hx' : x ∈ ⋃ (i : Fin (s.boundary t).length) (_ : (i : ℕ) ≠ j), (((s.boundary t).get i).support : Set ↥(s.toSequenceOfBlowups.schemeAt t))` using `Set.mem_iUnion₂.mpr ⟨i, hi, hxi⟩`. Conclude with `hx'`.
+-/
 theorem mem_otherBoundaryLocus_iff (s : MarkedSequenceOfBlowups p I m E) (j t : ℕ)
     (x : ↥(s.toSequenceOfBlowups.schemeAt t)) :
     x ∈ s.otherBoundaryLocus j t ↔
@@ -345,10 +472,22 @@ structure IsMaxOrderReduction (P : ℕ → Prop) (A B : PrincipalizationAssignme
   trivial_of_coSupport_empty : ∀ T : MarkedIdealWithBoundary.{u}, T.IsAdmissible → P T.krullDimSucc →
     orderAtLeastLocus T.ideal T.mult = ∅ → (A T).toSequenceOfBlowups.length = 0
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> exact fun T _ hd => absurd hd (hP T.krullDimSucc)`.
+-/
 theorem isMaxOrderReduction_of_forall_not (P : ℕ → Prop) (hP : ∀ n, ¬ P n)
     (A B : PrincipalizationAssignment.{u}) : IsMaxOrderReduction P A B := by
   constructor <;> exact fun T _ hd => absurd hd (hP T.krullDimSucc)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `T hV hQ`. Conclude with `hs.cert T hV (hQP _ hQ)`. Introduce `T hV hQ`. Conclude with `hs.orderRed_equiv T hV (hQP _ hQ)`.
+
+Introduce `T hV hQ L _ _ f E' hBE hV' hQ'`. Conclude with `hs.base_change T hV (hQP _ hQ) L f E' hBE hV' (hQP _ hQ')`. Introduce `T hV hQ L _ _ f E' hBE hV' hQ'`. Conclude with `hs.base_change_strict T hV (hQP _ hQ) L f E' hBE hV' (hQP _ hQ')`. Introduce `T hV hQ`.
+
+Conclude with `hs.center_nonempty T hV (hQP _ hQ)`. Introduce `T hV hQ`. Conclude with `hs.resolves T hV (hQP _ hQ)`. Introduce `T hV hQ Y q h _ hq E' hBE hV' hQ'`. Conclude with `hs.smooth_pullback T hV (hQP _ hQ) Y q h hq E' hBE hV' (hQP _ hQ')`.
+
+Introduce `T hV hQ Y q h _ _ hq E' hBE hV' hQ'`. Conclude with `hs.smooth_pullback_strict T hV (hQP _ hQ) Y q h hq E' hBE hV' (hQP _ hQ')`. Introduce `T hV hQ`. Conclude with `hs.trivial_of_coSupport_empty T hV (hQP _ hQ)`.
+-/
 theorem IsMaxOrderReduction.mono {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (Q : ℕ → Prop) (hQP : ∀ n, Q n → P n) :
     IsMaxOrderReduction Q A B := by
@@ -372,6 +511,9 @@ theorem IsMaxOrderReduction.mono {P : ℕ → Prop} {A B : PrincipalizationAssig
   · intro T hV hQ
     exact hs.trivial_of_coSupport_empty T hV (hQP _ hQ)
 
+/- English proof (translation)
+The claim follows from `hs.smooth_pullback T hV hP Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+-/
 theorem IsMaxOrderReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
     (Y : Scheme.{u}) (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)
@@ -381,6 +523,9 @@ theorem IsMaxOrderReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop
   hs.smooth_pullback T hV hP Y q h hq (T.pullbackAlong Y q h).boundary
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'
 
+/- English proof (translation)
+Conclude with `hs.smooth_pullback_strict T hV hP Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+-/
 theorem IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
     (Y : Scheme.{u}) (q : Y ⟶ Spec (CommRingCat.of T.base)) (h : Y ⟶ T.scheme)
@@ -390,6 +535,9 @@ theorem IsMaxOrderReduction.isStrictPullbackBlowupSeq_of_smooth_surjective {P : 
   exact hs.smooth_pullback_strict T hV hP Y q h hq (T.pullbackAlong Y q h).boundary
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'
 
+/- English proof (translation)
+Conclude with `hs.base_change T hV hP L f (T.baseChange L f).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+-/
 theorem IsMaxOrderReduction.isPullbackBlowupSequence_baseChange {P : ℕ → Prop} {A B : PrincipalizationAssignment.{u}}
     (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
     (L : Type u) [Field L] [CharZero L] (f : T.base →+* L)
@@ -399,6 +547,9 @@ theorem IsMaxOrderReduction.isPullbackBlowupSequence_baseChange {P : ℕ → Pro
   exact hs.base_change T hV hP L f (T.baseChange L f).boundary
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'
 
+/- English proof (translation)
+Conclude with `hs.base_change_strict T hV hP L f (T.baseChange L f).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) hV' hP'`.
+-/
 theorem IsMaxOrderReduction.isStrictPullbackBlowupSeq_baseChange {P : ℕ → Prop}
     {A B : PrincipalizationAssignment.{u}} (hs : IsMaxOrderReduction P A B) (T : MarkedIdealWithBoundary.{u})
     (hV : T.IsAdmissible) (hP : P T.krullDimSucc) (L : Type u) [Field L] [CharZero L] (f : T.base →+* L)
@@ -586,6 +737,9 @@ structure IsBoundaryDivisorReduction (P : ℕ → Prop) (j : ℕ) (A B : Princip
     T.IsOrderBoundedByMult → T.IsBalanced hV.locallyOfFiniteType → j < T.boundary.length →
     orderAtLeastLocus T.ideal T.mult = ∅ → (A T).toSequenceOfBlowups.length = 0
 
+/- English proof (translation)
+Conclude with `hs.smooth_pullback T hV hP hO hD hj Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'`.
+-/
 theorem IsBoundaryDivisorReduction.isPullbackBlowupSequence_of_smooth {P : ℕ → Prop} {j : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hs : IsBoundaryDivisorReduction P j A B) (T : MarkedIdealWithBoundary.{u})
     (hV : T.IsAdmissible) (hP : P T.krullDimSucc) (hO : T.IsOrderBoundedByMult)
@@ -600,6 +754,9 @@ theorem IsBoundaryDivisorReduction.isPullbackBlowupSequence_of_smooth {P : ℕ �
   exact hs.smooth_pullback T hV hP hO hD hj Y q h hq (T.pullbackAlong Y q h).boundary
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'
 
+/- English proof (translation)
+Conclude with `hs.smooth_pullback_strict T hV hP hO hD hj Y q h hq (T.pullbackAlong Y q h).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'`.
+-/
 theorem IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_of_smooth_surjective {P : ℕ → Prop} {j : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hs : IsBoundaryDivisorReduction P j A B) (T : MarkedIdealWithBoundary.{u})
     (hV : T.IsAdmissible) (hP : P T.krullDimSucc) (hO : T.IsOrderBoundedByMult)
@@ -614,6 +771,9 @@ theorem IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_of_smooth_surjectiv
   exact hs.smooth_pullback_strict T hV hP hO hD hj Y q h hq (T.pullbackAlong Y q h).boundary
     (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'
 
+/- English proof (translation)
+Conclude with `hs.base_change_strict T hV hP hO hD hj L f (T.baseChange L f).boundary (MarkedIdealWithBoundary.SameNontrivialBoundary.refl _) rfl hV' hP' hO' hD' hj'`.
+-/
 theorem IsBoundaryDivisorReduction.isStrictPullbackBlowupSeq_baseChange {P : ℕ → Prop} {j : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hs : IsBoundaryDivisorReduction P j A B) (T : MarkedIdealWithBoundary.{u})
     (hV : T.IsAdmissible) (hP : P T.krullDimSucc) (hO : T.IsOrderBoundedByMult)

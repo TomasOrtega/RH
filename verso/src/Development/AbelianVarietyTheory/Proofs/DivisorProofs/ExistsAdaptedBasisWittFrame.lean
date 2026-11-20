@@ -27,6 +27,9 @@ def perp (A B : Matrix (Fin r) (Fin n) K) : Submodule K (Fin n → K) :=
 def proj (X Y : Matrix (Fin n) (Fin r) K) (A B : Matrix (Fin r) (Fin n) K) : (Fin n → K) →ₗ[K] (Fin n → K) :=
   LinearMap.id - X.mulVecLin ∘ₗ B.mulVecLin - Y.mulVecLin ∘ₗ A.mulVecLin
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_apply (X Y : Matrix (Fin n) (Fin r) K) (A B : Matrix (Fin r) (Fin n) K) (z : Fin n → K) :
     proj X Y A B z = z - X *ᵥ (B *ᵥ z) - Y *ᵥ (A *ᵥ z) := rfl
 
@@ -35,6 +38,9 @@ variable {X Y : Matrix (Fin n) (Fin r) K} {A B : Matrix (Fin r) (Fin n) K}
   (hAX : A * X = 0) (hAY : A * Y = 1) (hBX : B * X = 1) (hBY : B * Y = 0)
 
 include hAX hAY hBX hBY in
+/- English proof (translation)
+Simplify using `only [perp, proj_apply, Submodule.mem_inf, LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_sub, Matrix.mulVec_mulVec (M := A) (N := X), Matrix.mulVec_mulVec (M := A) (N := Y), Matrix.mulVec_sub, Matrix.mulVec_sub, Matrix.mulVec_mulVec (M := B) (N := X), Matrix.mulVec_mulVec (M := B) (N := Y), hAX, hAY, hBX, hBY]`. Simplify using the standard rewrite rules.
+-/
 theorem proj_mem (z : Fin n → K) : proj X Y A B z ∈ perp A B := by
   simp only [perp, proj_apply, Submodule.mem_inf, LinearMap.mem_ker, Matrix.mulVecLin_apply]
   rw [Matrix.mulVec_sub, Matrix.mulVec_sub, Matrix.mulVec_mulVec (M := A) (N := X), Matrix.mulVec_mulVec (M := A) (N := Y),
@@ -42,17 +48,26 @@ theorem proj_mem (z : Fin n → K) : proj X Y A B z ∈ perp A B := by
     hAX, hAY, hBX, hBY]
   simp
 
+/- English proof (translation)
+Simplify using `only [perp, Submodule.mem_inf, LinearMap.mem_ker, Matrix.mulVecLin_apply] at hz`. Simplify using `[proj_apply, hz.1, hz.2]`.
+-/
 theorem proj_of_mem {z : Fin n → K} (hz : z ∈ perp A B) : proj X Y A B z = z := by
   simp only [perp, Submodule.mem_inf, LinearMap.mem_ker, Matrix.mulVecLin_apply] at hz
   simp [proj_apply, hz.1, hz.2]
 
 include hAX hBX in
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_single_one, proj_apply, Matrix.mulVec_mulVec (M := A) (N := X), Matrix.mulVec_mulVec (M := B) (N := X), hAX, hBX]`. Simplify using `only [Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.mulVec_zero, sub_zero, sub_self]`.
+-/
 theorem proj_X (j : Fin r) : proj X Y A B (X.col j) = 0 := by
   rw [← Matrix.mulVec_single_one, proj_apply, Matrix.mulVec_mulVec (M := A) (N := X),
     Matrix.mulVec_mulVec (M := B) (N := X), hAX, hBX]
   simp only [Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.mulVec_zero, sub_zero, sub_self]
 
 include hAY hBY in
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_single_one, proj_apply, Matrix.mulVec_mulVec (M := A) (N := Y), Matrix.mulVec_mulVec (M := B) (N := Y), hAY, hBY]`. Simplify using `only [Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.mulVec_zero, sub_zero, sub_self]`.
+-/
 theorem proj_Y (j : Fin r) : proj X Y A B (Y.col j) = 0 := by
   rw [← Matrix.mulVec_single_one, proj_apply, Matrix.mulVec_mulVec (M := A) (N := Y),
     Matrix.mulVec_mulVec (M := B) (N := Y), hAY, hBY]
@@ -71,6 +86,15 @@ def coord : (Fin n → K) →ₗ[K] (Fin r ⊕ Fin m ⊕ Fin r → K) :=
       (fun j => LinearMap.proj j ∘ₗ A.mulVecLin)) i
 
 include hAX hAY hBX hBY in
+/- English proof (translation)
+Establish `hBXc : ∀ j, B *ᵥ X.col j = Pi.single j 1` using `fun j => by`. Rewrite using `[← Matrix.mulVec_single_one, Matrix.mulVec_mulVec, hBX, Matrix.one_mulVec]`. Establish `hAXc : ∀ j, A *ᵥ X.col j = 0` using `fun j => by`. Rewrite using `[← Matrix.mulVec_single_one, Matrix.mulVec_mulVec, hAX, Matrix.zero_mulVec]`. Establish `hAYc : ∀ j, A *ᵥ Y.col j = Pi.single j 1` using `fun j => by`.
+
+Rewrite using `[← Matrix.mulVec_single_one, Matrix.mulVec_mulVec, hAY, Matrix.one_mulVec]`. Establish `hBYc : ∀ j, B *ᵥ Y.col j = 0` using `fun j => by`. Rewrite using `[← Matrix.mulVec_single_one, Matrix.mulVec_mulVec, hBY, Matrix.zero_mulVec]`. Establish `hWk : ∀ k, A *ᵥ (bW k : Fin n → K) = 0 ∧ B *ᵥ (bW k : Fin n → K) = 0` using `fun k => by`. Use `(bW k).2` as an intermediate fact.
+
+Simplify using `only [perp, Submodule.mem_inf, LinearMap.mem_ker, Matrix.mulVecLin_apply] at this`. Conclude with `this`. Establish `hPX : ∀ j, (proj X Y A B).codRestrict (perp A B) (proj_mem hAX hAY hBX hBY) (X.col j) = 0` using `fun j => Subtype.ext (proj_X hAX hBX j)`. Establish `hPY : ∀ j, (proj X Y A B).codRestrict (perp A B) (proj_mem hAX hAY hBX hBY) (Y.col j) = 0` using `fun j => Subtype.ext (proj_Y hAY hBY j)`. Establish `hPW : ∀ k, (proj X Y A B).codRestrict (perp A B) (proj_mem hAX hAY hBX hBY) (bW k : Fin n → K) = bW k` using `fun k => Subtype.ext (proj_of_mem (bW k).2)`.
+
+Use function extensionality and compare the values at `i'`. Apply the tactic sequence `rcases i with j | k | j <;> rcases i' with j' | k' | j' <;>`. Apply the tactic sequence `simp only [coord, fam, LinearMap.pi_apply, Sum.elim_inl, Sum.elim_inr, LinearMap.comp_apply, Matrix.mulVecLin_apply, LinearMap.proj_apply, hBXc, hAXc, hAYc, hBYc, (hWk _).1, (hWk _).2, hPX, hPY, hPW, map_zero, Basis.coord_apply, Basis.repr_self, Pi.single_apply, Finsupp.single_ap …`. Simplify using `[eq_comm]`.
+-/
 theorem coord_fam (i : Fin r ⊕ Fin m ⊕ Fin r) :
     coord hAX hAY hBX hBY bW (fam (X := X) (Y := Y) bW i) = Pi.single i 1 := by
   have hBXc : ∀ j, B *ᵥ X.col j = Pi.single j 1 := fun j => by
@@ -100,6 +124,11 @@ theorem coord_fam (i : Fin r ⊕ Fin m ⊕ Fin r) :
     simp [eq_comm]
 
 include hAX hAY hBX hBY in
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Establish `h1 : B *ᵥ z = 0` using `funext fun j => by simpa [coord] using congr_fun hz (.inl j)`. Establish `h3 : A *ᵥ z = 0` using `funext fun j => by simpa [coord] using congr_fun hz (.inr (.inr j))`. Establish `h2 : (proj X Y A B).codRestrict (perp A B) (proj_mem hAX hAY hBX hBY) z = 0` using `bW.ext_elem fun k => by simpa [coord] using congr_fun hz (.inr (.inl k))`.
+
+Use `congrArg Subtype.val h2` as an intermediate fact. Simplify `this` using `[proj_apply, h1, h3]`.
+-/
 theorem coord_injective : Function.Injective (coord hAX hAY hBX hBY bW) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro z hz
@@ -112,6 +141,27 @@ theorem coord_injective : Function.Injective (coord hAX hAY hBX hBY bW) := by
 
 include hAX hAY hBX hBY in
 
+/- English proof (translation)
+Set `m` to `finrank K (perp A B)`. Set `bW : Basis (Fin m) K (perp A B)` to `Module.finBasis K _`. Set `f` to `fam (X := X) (Y := Y) bW`. Establish `hli : LinearIndependent K f`. Apply `LinearIndependent.of_comp (coord hAX hAY hBX hBY bW)` to reduce the goal to its premises.
+
+Establish `: ⇑(coord hAX hAY hBX hBY bW) ∘ f = ⇑(Pi.basisFun K (Fin r ⊕ Fin m ⊕ Fin r))`. Use function extensionality and compare the values at `fun i => (coord_fam hAX hAY hBX hBY bW i).trans (Pi.basisFun_apply K _ i).symm`. Rewrite using `[this]`. Conclude with `(Pi.basisFun K (Fin r ⊕ Fin m ⊕ Fin r)).linearIndependent`. Establish `h1` using `hli.fintype_card_le_finrank`.
+
+Establish `h2` using `LinearMap.finrank_le_finrank_of_injective (coord_injective hAX hAY hBX hBY bW)`. Simplify using `only [Module.finrank_fin_fun, Module.finrank_pi, Fintype.card_sum, Fintype.card_fin] at h1 h2`. Establish `hn : r + (m + r) = n` using `le_antisymm h1 h2`. Set `g : Fin r ⊕ Fin m ⊕ Fin r → Fin n` to `fun s => match s with`. Consider the case `.inl j => ⟨j.val, by omega⟩`.
+
+Consider the case `.inr (.inl k) => ⟨r + k.val, by omega⟩`. Consider the case `.inr (.inr j) => ⟨n - 1 - j.val, by omega⟩`. Establish `hg : Function.Injective g`. Apply the tactic sequence `rintro (a|a|a) (b|b|b) h <;> have := a.isLt <;> have := b.isLt <;>`. Apply the tactic sequence `simp only [g, Fin.mk.injEq] at h <;>`.
+
+Apply the tactic sequence `simp only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Fin.ext_iff] <;> omega`. Establish `hgb : Function.Bijective g` using `(Fintype.bijective_iff_injective_and_card g).mpr ⟨hg, by simp; omega⟩`. Set `e` to `Equiv.ofBijective g hgb`. Set `M : Matrix (Fin n) (Fin n) K` to `fun k i => f (e.symm i) k`. Establish `hM : IsUnit M`.
+
+Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`. Conclude with `hli.comp e.symm e.symm.injective`. Establish `hC : ∀ s k, hM.unit.1 k (g s) = f s k` using `fun s k => by`. Rewrite using `[IsUnit.unit_spec]`. Use `show f (e.symm (e s)) k = _`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Use `⟨by omega, hM.unit, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j h k`. Establish `: i = g (.inl j)` using `Fin.ext h`. Rewrite using `[this]`.
+
+Conclude with `hC (.inl j) k`. Introduce `i j h k`. Establish `: i = g (.inr (.inr j))` using `Fin.ext (by simp only [g]; omega)`. Rewrite using `[this]`. Conclude with `hC (.inr (.inr j)) k`.
+
+Introduce `i h1 h2`. Establish `hk : i.val - r < m` using `by omega`. Establish `: i = g (.inr (.inl ⟨i.val - r, hk⟩))` using `Fin.ext (by simp only [g]; omega)`. Establish `hmem` using `(bW ⟨i.val - r, hk⟩).2`. Simplify using `only [perp, Submodule.mem_inf, LinearMap.mem_ker, Matrix.mulVecLin_apply] at hmem`.
+
+Rewrite using `[this]`. Simplify using `only [hC]`. Conclude with `hmem`.
+-/
 theorem exists_adapted : 2 * r ≤ n ∧ ∃ C : GL (Fin n) K,
     (∀ (i : Fin n) (j : Fin r), i.val = j.val → ∀ k, C.1 k i = X k j) ∧
     (∀ (i : Fin n) (j : Fin r), i.val + j.val + 1 = n → ∀ k, C.1 k i = Y k j) ∧
@@ -172,6 +222,9 @@ end GlobalTheory.AdaptedBasis
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hσ n J hJ r X Y hW`. Take `⟨hle, C, hX, hY, hperp⟩` from `GlobalTheory.AdaptedBasis.exists_adapted (X := X) (Y := Y) (A := Formalism.UG.cT (σ : E →+* E) X * J) (B := Formalism.UG.cT (σ : E →+* E) Y * J) hW.xx hW.xy (GlobalTheory.StdPar.yx hσ hJ hW) hW.yy`. Conclude with `⟨C, ⟨hle, hX, hY, (fun i h1 h2 => (hperp i h1 h2).1), (fun i h1 h2 => (hperp i h1 h2).2)⟩⟩`.
+-/
 theorem GlobalTheory.AdaptedBasis.exists_isAdapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → ∃ C : GL (Fin n) E, GlobalTheory.BlockForms.IsAdapted σ J Xf Yf C := by

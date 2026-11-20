@@ -24,6 +24,9 @@ def KeepsMat {D : D7} (p : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D
     finMat D.sp.cm.sig (Vc D i).gram (p i κ) a b = (GlobalTheory.Mem.R3.swapCast hF).symm
       ((κ.1 : Matrix (Fin D.R.nV) (Fin D.R.nV) (ReciprocityTheory.Aut.AL D.host.E)) (Fin.cast hn a) (Fin.cast hn b))
 
+/- English proof (translation)
+Introduce and unpack `p p' ⟨hF, hp⟩ ⟨hF', hp'⟩ j j' hj`. Consider the cases of `Fin.ext hj`. Take `⟨hn, hp⟩` from `hp j`. Take `⟨hn', hp'⟩` from `hp' j`. Conclude with `heq_of_eq (funext fun g => Subtype.ext (Units.ext (Matrix.ext fun a b => (hp g a b).trans (hp' g a b).symm)))`.
+-/
 theorem keepsMat_heq_refl (D : D7) : ∀ (p : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D i)) (p' : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D i)),
     KeepsMat p → KeepsMat p' → ∀ (j : Fin D.R.m) (j' : Fin D.R.m), (j : ℕ) = j' →
     HEq (fun g => (finHom (Vc D j)).rangeRestrict (p j g)) fun g => (finHom (Vc D j')).rangeRestrict (p' j' g) := by
@@ -33,12 +36,18 @@ theorem keepsMat_heq_refl (D : D7) : ∀ (p : ∀ i : Fin D.R.m, GAf D.host.E D.
   obtain ⟨hn', hp'⟩ := hp' j
   exact heq_of_eq (funext fun g => Subtype.ext (Units.ext (Matrix.ext fun a b => (hp g a b).trans (hp' g a b).symm)))
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((keepsMat_heq_refl D) :))`.
+-/
 theorem keepsMat_heq (h : CopyTw D D' ι e) : ∀ (p : ∀ i : Fin D.R.m, GAf D.host.E D.R.nV → GA D (Vc D i)) (p' : ∀ i : Fin D'.R.m, GAf D'.host.E D'.R.nV → GA D' (Vc D' i)),
     KeepsMat p → KeepsMat p' → ∀ (j : Fin D.R.m) (j' : Fin D'.R.m), (j : ℕ) = j' →
     HEq (fun g => (finHom (Vc D j)).rangeRestrict (p j g)) fun g => (finHom (Vc D' j')).rangeRestrict (p' j' g) := by
   obtain ⟨r, rfl⟩ := h.exists_rest
   exact (by with_unfolding_all exact ((keepsMat_heq_refl D) :))
 
+/- English proof (translation)
+Use `⟨id, fun _ _ hb H => ?_, id⟩` and prove the remaining obligations. Substitute `hb` using the available equality. Conclude with `H`.
+-/
 theorem low_copy_refl (D : D7) : (LowIn D → LowIn D) ∧
     (∀ (bad : D.ntw.Tw → ℕ) (bad' : D.ntw.Tw → ℕ), HEq bad bad' → (∀ i, bad i = normProd (D.ntw.S0 i)) →
       ∀ i, bad' i = normProd (D.ntw.S0 i)) ∧
@@ -47,6 +56,9 @@ theorem low_copy_refl (D : D7) : (LowIn D → LowIn D) ∧
   refine ⟨id, fun _ _ hb H => ?_, id⟩
   subst hb; exact H
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((low_copy_refl D) :))`.
+-/
 theorem low_copy (h : CopyTw D D' ι e) : (LowIn D → LowIn D') ∧
     (∀ (bad : D.ntw.Tw → ℕ) (bad' : D'.ntw.Tw → ℕ), HEq bad bad' → (∀ i, bad i = normProd (D.ntw.S0 i)) →
       ∀ i, bad' i = normProd (D'.ntw.S0 i)) ∧
@@ -55,6 +67,11 @@ theorem low_copy (h : CopyTw D D' ι e) : (LowIn D → LowIn D') ∧
   obtain ⟨r, rfl⟩ := h.exists_rest
   exact (by with_unfolding_all exact ((low_copy_refl D) :))
 
+/- English proof (translation)
+Use `fun Pq Pq' hPq => ⟨fun _ _ hc H => ?_, fun i k Q ψ => ?_⟩` and prove the remaining obligations. Substitute `hPq` using the available equality. Substitute `hc` using the available equality. Conclude with `H`. Substitute `hPq` using the available equality.
+
+Conclude with `⟨i, Q, ψ, .rfl, .rfl, .rfl, .rfl, .rfl⟩`.
+-/
 theorem pq_copy_refl (D : D7) : ∀ (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host)
       (Pq' : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host), HEq Pq Pq' →
       (∀ (ch : D.ntw.Tw → Set (Pl D.host.E)) (ch' : D.ntw.Tw → Set (Pl D.host.E)), HEq ch ch' →
@@ -66,6 +83,9 @@ theorem pq_copy_refl (D : D7) : ∀ (Pq : HeightOneSpectrum (𝓞 (maximalRealSu
   · subst hPq; subst hc; exact H
   · subst hPq; exact ⟨i, Q, ψ, .rfl, .rfl, .rfl, .rfl, .rfl⟩
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((pq_copy_refl D) :))`.
+-/
 theorem pq_copy (h : CopyTw D D' ι e) : ∀ (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host)
       (Pq' : HeightOneSpectrum (𝓞 (maximalRealSubfield D'.host.E)) → PlE D'.host), HEq Pq Pq' →
       (∀ (ch : D.ntw.Tw → Set (Pl D.host.E)) (ch' : D'.ntw.Tw → Set (Pl D'.host.E)), HEq ch ch' →
@@ -76,6 +96,11 @@ theorem pq_copy (h : CopyTw D D' ι e) : ∀ (Pq : HeightOneSpectrum (𝓞 (maxi
   obtain ⟨r, rfl⟩ := h.exists_rest
   exact (by with_unfolding_all exact ((pq_copy_refl D) :))
 
+/- English proof (translation)
+Introduce `i j j' hj b k Q ψ hT`. Consider the cases of `Fin.ext hj`. Use `⟨i, Q, ψ, .rfl, .rfl, .rfl, hT, rfl, .rfl, .rfl, fun _ _ hek => ?_⟩` and prove the remaining obligations. Substitute `hek` using the available equality. Use `⟨.rfl, fun _ _ hr _ _ hp => ?_⟩` and prove the remaining obligations.
+
+Substitute `hr` using the available equality. Substitute `hp` using the available equality. Both sides reduce to the same expression.
+-/
 theorem join_copy_refl (D : D7) : ∀ (i' : D.ntw.Tw) (j : Fin D.R.m) (j' : Fin D.R.m), (j : ℕ) = j' → ∀ (b : Bool) (k : ℕ)
     (Q' : Finset (PlE D.host)) (ψ' : G D.host.E D.nd.Om →* (D.ntw.Ok i' k)ˣ), TwOK i' k Q' ψ' →
     ∃ (i : D.ntw.Tw) (Q : Finset (PlE D.host)) (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ), HEq i i' ∧ HEq Q Q' ∧ HEq ψ ψ' ∧
@@ -99,6 +124,9 @@ theorem join_copy_refl (D : D7) : ∀ (i' : D.ntw.Tw) (j : Fin D.R.m) (j' : Fin 
   subst hr; subst hp
   rfl
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h.exists_rest`. Conclude with `(by with_unfolding_all exact ((join_copy_refl D) :))`.
+-/
 theorem join_copy (h : CopyTw D D' ι e) : ∀ (i' : D'.ntw.Tw) (j : Fin D.R.m) (j' : Fin D'.R.m), (j : ℕ) = j' → ∀ (b : Bool) (k : ℕ)
     (Q' : Finset (PlE D'.host)) (ψ' : G D'.host.E D'.nd.Om →* (D'.ntw.Ok i' k)ˣ), TwOK i' k Q' ψ' →
     ∃ (i : D.ntw.Tw) (Q : Finset (PlE D.host)) (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ), HEq i i' ∧ HEq Q Q' ∧ HEq ψ ψ' ∧
@@ -132,6 +160,11 @@ def PqLaw (X : NExpTied D) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.
   ∀ i j b k Q ψ (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hadm : Formalism.L2.NX.AdmTw D i k Q ψ),
     (X.mtV i j b k Q ψ h1 h2 hadm).QP = NX.qpOf D Pq Q ∧ (X.mtV i j b k Q ψ h1 h2 hadm).DP = NX.qpOf D Pq (D.ntw.pD i)
 
+/- English proof (translation)
+Introduce `i' j b k Q' ψ' h1 h2' hA'`. Establish `h2 : j ≤ D.R.m` using `by rw [h.gal.R]; exact h2'`. Take `⟨i, Q, ψ, hi, hQ, hψ, e1, e2⟩` from `(pq_copy h Pq Pq' hPq).2 i' k Q' ψ'`. Take `⟨hA, q1, q2, -⟩` from `hX i i' hi j b k Q Q' hQ ψ ψ' hψ h1 h2 h2' hA'`. Take `⟨l1, l2⟩` from `L i j b k Q ψ h1 h2 hA`.
+
+Conclude with `⟨eq_of_heq (q1.symm.trans ((heq_of_eq l1).trans e1)), eq_of_heq (q2.symm.trans ((heq_of_eq l2).trans e2))⟩`.
+-/
 theorem pqLaw_move (h : CopyTw D D' ι e) {X : NExpTied D} {X' : NExpTied D'} (hX : ExpMove X X') {Pq Pq'} (hPq : HEq Pq Pq')
     (L : PqLaw X Pq) : PqLaw X' Pq' := by
   intro i' j b k Q' ψ' h1 h2' hA'

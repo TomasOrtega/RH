@@ -12,19 +12,37 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L
 def edge (c d : L) (f : Fin N → L) : Fin (N + 2) → L := Fin.cons c (Fin.snoc f d : Fin (N + 1) → L)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem edge_zero (c d : L) (f : Fin N → L) : edge c d f 0 = c := rfl
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Simplify using `[edge, mid]`.
+-/
 @[simp] theorem edge_mid (c d : L) (f : Fin N → L) (j : Fin N) : edge c d f (mid j) = f j := by
   simp [edge, mid]
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Rewrite using `[edge, ← Fin.succ_last, Fin.cons_succ, Fin.snoc_last]`.
+-/
 @[simp] theorem edge_last (c d : L) (f : Fin N → L) : edge c d f (Fin.last (N + 1)) = d := by
   rw [edge, ← Fin.succ_last, Fin.cons_succ, Fin.snoc_last]
 
 def blkMat (x y : L) (A : Matrix (Fin N) (Fin N) L) : Matrix (Fin (N + 2)) (Fin (N + 2)) L :=
   fun i j => edge (edge x 0 (fun _ => 0) j) (edge 0 y (fun _ => 0) j) (fun p => edge 0 0 (A p) j) i
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, antiJ, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single k.rev]`. Rewrite using `[if_pos (by have := k.isLt; simp only [Fin.val_rev]; omega), mul_one]`.
+
+Introduce `l _ hl`. Rewrite using `[if_neg, mul_zero, zero_mul]`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Use `ext`.
+
+Use `k.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem gram_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (cT σ M * antiJ L n * M) i j = ∑ k, σ (M k i) * M k.rev j := by
   simp only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, antiJ, Finset.sum_mul]
@@ -44,6 +62,17 @@ theorem gram_apply {n : ℕ} (M : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gram_apply, sum_idx]`. Simplify using `only [Fin.rev_last, ← mid_rev, Fin.rev_zero]`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨r, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨s, rfl⟩ | rfl`. Simplify using `[blkMat, antiJ]`.
+
+Simplify using `[blkMat, antiJ, val_mid, s.isLt.ne]`. Simplify using `[blkMat, antiJ, hxy]`. Simplify using `[blkMat, antiJ, val_mid, r.isLt.ne]`. Establish `h` using `congrFun (congrFun hA r) s`. Rewrite `h` using `[gram_apply]`.
+
+Simplify using `only [blkMat, edge_zero, edge_mid, edge_last, map_zero, zero_mul, mul_zero, zero_add, add_zero]`. Rewrite using `[h]`. Simplify using `only [antiJ]`. Establish `e1` using `val_mid r`. Establish `e2` using `val_mid s`.
+
+Distinguish the cases in `h1 : (r : ℕ) + s + 1 = N`. Rewrite using `[if_pos h1, if_pos (by omega)]`. Rewrite using `[if_neg h1, if_neg (by omega)]`. Simplify using `[blkMat, antiJ, val_mid]`. Simplify using `[blkMat, antiJ, hyx]`.
+
+Simplify using `[blkMat, antiJ, val_mid]`. Simplify using `[blkMat, antiJ]`.
+-/
 theorem blkMat_gram {x y : L} (hxy : σ x * y = 1) (hyx : σ y * x = 1) {A : Matrix (Fin N) (Fin N) L}
     (hA : cT σ A * antiJ L N * A = antiJ L N) :
     cT σ (blkMat x y A) * antiJ L (N + 2) * blkMat x y A = antiJ L (N + 2) := by
@@ -70,6 +99,27 @@ theorem blkMat_gram {x y : L} (hxy : σ x * y = 1) (hyx : σ y * x = 1) {A : Mat
   · simp [blkMat, antiJ, val_mid]
   · simp [blkMat, antiJ]
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ q N hU a g₀`. Take `⟨_, _, hσϖ, hvϖ, _⟩` from `hU`. Establish `hϖ : ϖ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hvϖ`.
+
+Establish `hσx : σ (ϖ ^ a) = ϖ ^ a` using `by rw [map_zpow₀, hσϖ]`. Establish `hσy : σ (ϖ ^ (-a)) = ϖ ^ (-a)` using `by rw [map_zpow₀, hσϖ]`. Establish `hxy : σ (ϖ ^ a) * ϖ ^ (-a) = 1` using `by rw [hσx, ← zpow_add₀ hϖ, add_neg_cancel, zpow_zero]`. Establish `hyx : σ (ϖ ^ (-a)) * ϖ ^ a = 1` using `by rw [hσy, ← zpow_add₀ hϖ, neg_add_cancel, zpow_zero]`. Establish `hA : cT σ (mat g₀) * antiJ L N * mat g₀ = antiJ L N` using `g₀.2`.
+
+Establish `hJJ : antiJ L (N + 2) * antiJ L (N + 2) = 1`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, antiJ, Matrix.one_apply, ite_mul, one_mul, zero_mul]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`.
+
+Rewrite using `[Finset.sum_eq_single i.rev]`. Rewrite using `[if_pos (by simp only [Fin.val_rev]; omega)]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos (by simp only [Fin.val_rev]; omega), if_pos rfl]`.
+
+Rewrite using `[if_neg (by simp only [Fin.val_rev]; intro h'; apply h; ext; omega), if_neg h]`. Introduce `l _ hl`. Rewrite using `[if_neg]`. Introduce `h'`. Apply `hl` to reduce the goal to its premises.
+
+Use `ext`. Use `l.isLt` as an intermediate fact. Simplify using `only [Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Use `set B := blkMat (ϖ ^ a) (ϖ ^ (-a)) (mat g₀) with hB`. Establish `hG : cT σ B * antiJ L (N + 2) * B = antiJ L (N + 2)` using `blkMat_gram hxy hyx hA`. Establish `hCB : antiJ L (N + 2) * cT σ B * antiJ L (N + 2) * B = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hBC : B * (antiJ L (N + 2) * cT σ B * antiJ L (N + 2)) = 1` using `mul_eq_one_comm.mp hCB`. Set `U : GL (Fin (N + 2)) L` to `⟨B, antiJ L (N + 2) * cT σ B * antiJ L (N + 2), hBC, hCB⟩`. Establish `hU : U ∈ GU σ (N + 2)` using `hG`. Use `⟨⟨U, hU⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij show B i j = 0`.
+
+Apply the tactic sequence `rcases idx_cases i with rfl | ⟨r, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨s, rfl⟩ | rfl <;>`. Simplify using `[hB, blkMat, blk_zero, blk_mid, blk_last] at hij ⊢`. Use `show B 0 0 = ϖ ^ a`. Simplify using `[hB, blkMat]`. Use `show B (Fin.last (N + 1)) (Fin.last (N + 1)) = ϖ ^ (-a)`.
+
+Simplify using `[hB, blkMat]`. Introduce `i j show B (mid i) (mid j) = mat g₀ i j`. Simplify using `[hB, blkMat]`.
+-/
 theorem leviExists : LeviExists := by
   intro L _ _ ϖ σ q N hU a g₀
   obtain ⟨_, _, hσϖ, hvϖ, _⟩ := hU

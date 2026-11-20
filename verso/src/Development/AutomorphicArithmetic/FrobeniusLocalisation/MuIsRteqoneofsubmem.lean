@@ -5,6 +5,13 @@ open UpperTheory.HF
 open NumberField IntermediateField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h1` using `geom_sum₂_mul x y m`. Rewrite `h1` using `[hx, hy, sub_self, mul_eq_zero, sub_eq_zero]`. Establish `h2` using `congrArg (Ideal.Quotient.mk P) (h1.resolve_right hne)`. Establish `h3 : Ideal.Quotient.mk P x = Ideal.Quotient.mk P y` using `Ideal.Quotient.eq.mpr hxy`.
+
+Rewrite `h2` using `[RingHom.map_geom_sum₂, h3, geom_sum₂_self, map_zero, ← map_pow, ← map_natCast (Ideal.Quotient.mk P), ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Break down `hP.mem_or_mem h2 with h4 | h4` into its components or cases. Conclude with `hm h4`. Establish `h5 : y ∈ P` using `hP.mem_of_pow_mem _ h4`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (by simp)`.
+
+Establish `h6` using `P.pow_mem_of_mem h5 m (Nat.pos_of_ne_zero hm0)`. Rewrite `h6` using `[hy]`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).mpr h6)`.
+-/
 private theorem eq_of_pow_eq_one_of_sub_mem {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) [hP : P.IsPrime] {m : ℕ} (hm : (m : S) ∉ P)
     {x y : S} (hx : x ^ m = 1) (hy : y ^ m = 1) (hxy : x - y ∈ P) : x = y := by
   by_contra hne
@@ -22,6 +29,13 @@ private theorem eq_of_pow_eq_one_of_sub_mem {S : Type*} [CommRing S] [IsDomain S
     rw [hy] at h6
     exact hP.ne_top ((Ideal.eq_top_iff_one P).mpr h6)
 
+/- English proof (translation)
+Introduce `φ H p hp hpw P hP hpP ξ ξ' hξ hξ' hsub`. Establish `key : ∀ x : 𝓞 H.E, H.IsRt (x : H.E) → x ^ H.muW = 1`. Introduce `x hx`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`.
+
+Conclude with `(H.isRt_iff _).1 hx`. Establish `hw : ((H.muW : ℕ) : 𝓞 H.E) ∉ P`. Introduce `h`. Establish `hc : IsCoprime ((p : ℕ) : 𝓞 H.E) ((H.muW : ℕ) : 𝓞 H.E)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hp).2 hpw)`. Take `⟨a, b, hab⟩` from `hc`.
+
+Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `P.add_mem (P.mul_mem_left a hpP) (P.mul_mem_left b h)`. Conclude with `eq_of_pow_eq_one_of_sub_mem P hw (key ξ hξ) (key ξ' hξ') hsub`.
+-/
 theorem UpperTheory.HF.Formalism.HC.HostAx.isRt_eq_one_of_sub_mem :
     ∀ {φ : Frame} (H : HostAx φ) (p : ℕ), p.Prime → ¬ p ∣ H.muW → ∀ (P : Ideal (𝓞 H.E)), P.IsPrime → (p : 𝓞 H.E) ∈ P →
       ∀ ξ ξ' : 𝓞 H.E, H.IsRt (ξ : H.E) → H.IsRt (ξ' : H.E) → ξ - ξ' ∈ P → ξ = ξ' := by

@@ -11,6 +11,17 @@ def Spread : Prop := ∀ (A O : CommRingCat.{0}) (f : A ⟶ O), IE f →
     Et g ∧ Et e ∧ g ≫ d = f ∧
     IsPushout e d (CommRingCat.ofHom c) (CommRingCat.ofHom (algebraMap O C))
 
+/- English proof (translation)
+Introduce `A O f hf C _ _ _`. Take `⟨B, g, d, C', e, c, hg, he, hgd, hP⟩` from `hS A O f hf C`. Use `⟨B, g, d, C', e, c, hg, he, hgd, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Use `congrArg (fun φ => φ.hom y) hP.w` as an intermediate fact.
+
+Simplify using `using this`. Introduce `k hk`. Establish `hw : e ≫ k = d ≫ 𝟙 O` using `by rw [hk, Category.comp_id]`. Set `s` to `hP.desc k (𝟙 O) hw`. Establish `h1 : CommRingCat.ofHom c ≫ s = k` using `hP.inl_desc k (𝟙 O) hw`.
+
+Establish `h2 : CommRingCat.ofHom (algebraMap O C) ≫ s = 𝟙 O` using `hP.inr_desc k (𝟙 O) hw`. Use `⟨{ s.hom with commutes' := fun r => ?_ }, ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ => φ.hom r) h2` as an intermediate fact. Express the relevant statement in the definitionally equal form `s.hom (algebraMap O C r) = (𝟙 O : O ⟶ O).hom r`. Conclude with `this`.
+
+Use extensionality with `y`. Use `congrArg (fun φ => φ.hom y) h1` as an intermediate fact. Simplify using `using this`. Introduce `R _ α β h1 h2`. Use `hP.hom_ext (W := CommRingCat.of R) (k := CommRingCat.ofHom α) (l := CommRingCat.ofHom β) ?_ ?_` as an intermediate fact.
+
+Conclude with `congrArg CommRingCat.Hom.hom this`. Use extensionality with `y`. Conclude with `DFunLike.congr_fun h2 y`. Use extensionality with `y`. Conclude with `DFunLike.congr_fun h1 y`.
+-/
 theorem Descend_of (hS : Spread) : LateralTheory.E.ColimPf.Descend := by
   intro A O f hf C _ _ _
   obtain ⟨B, g, d, C', e, c, hg, he, hgd, hP⟩ := hS A O f hf C

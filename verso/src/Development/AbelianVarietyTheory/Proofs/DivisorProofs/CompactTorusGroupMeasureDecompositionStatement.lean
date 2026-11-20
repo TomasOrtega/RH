@@ -4,6 +4,9 @@ import Mathlib
 open MeasureTheory
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ParabolicCoord.quotIntegral_right_invariant | exact GlobalTheory.ParabolicCoord.quotIntegral_right_invariant | (intros; apply GlobalTheory.ParabolicCoord.quotIntegral_right_invariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_torus_group_measure_decomposition : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [SecondCountableTopology K]

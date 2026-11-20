@@ -21,6 +21,11 @@ variable (r) in
 def blockE (Y : Fin m × Fin r → k) : Matrix (Fin (r + m)) (Fin (r + m)) k := fun i j =>
   if h : (i : ℕ) < m ∧ m ≤ (j : ℕ) then Y (⟨i, h.1⟩, ⟨j - m, by omega⟩) else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Unfold `blockE`.
+
+Distinguish the cases in `hl : (l : ℕ) < m`. Establish `hl' : ¬ m ≤ (l : ℕ)` using `by omega`. Simplify using `[hl']`. Simplify using `[hl]`.
+-/
 theorem blockE_mul (Y Y' : Fin m × Fin r → k) : blockE r Y * blockE r Y' = 0 := by
   ext i j
   simp only [Matrix.mul_apply, Matrix.zero_apply]
@@ -32,6 +37,11 @@ theorem blockE_mul (Y Y' : Fin m × Fin r → k) : blockE r Y * blockE r Y' = 0 
     simp [hl']
   · simp [hl]
 
+/- English proof (translation)
+Unfold `blockE`. Establish `hc : ((rowI (r` using `r) i : Fin (r + m)) : ℕ) < m ∧ m ≤ ((colI (m := m) j : Fin (r + m)) : ℕ) := by`. Simplify using `[rowI, colI]`. Rewrite using `[dif_pos hc]`. Use `congr 2`.
+
+Use `all_goals`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[rowI, colI]`.
+-/
 theorem blockE_apply (Y : Fin m × Fin r → k) (i : Fin m) (j : Fin r) :
     blockE r Y (rowI i) (colI j) = Y (i, j) := by
   unfold blockE
@@ -43,6 +53,9 @@ theorem blockE_apply (Y : Fin m × Fin r → k) (i : Fin m) (j : Fin r) :
     apply Fin.ext
     simp [rowI, colI]
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply_ne]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[rowI, colI] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_rowI_colI (i : Fin m) (j : Fin r) : (1 : Matrix (Fin (r + m)) (Fin (r + m)) k) (rowI i) (colI j) = 0 := by
   rw [Matrix.one_apply_ne]
   intro h
@@ -55,6 +68,15 @@ def blockY (u : Matrix (Fin (r + m)) (Fin (r + m)) k) : Fin m × Fin r → k := 
 def IsBlockShape (u : Matrix (Fin (r + m)) (Fin (r + m)) k) : Prop :=
   ∀ i j, u i j ≠ (1 : Matrix (Fin (r + m)) (Fin (r + m)) k) i j → (i : ℕ) < m ∧ m ≤ (j : ℕ)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`. Unfold `blockE`. Distinguish the cases in `hij : (i : ℕ) < m ∧ m ≤ (j : ℕ)`. Rewrite using `[dif_pos hij]`.
+
+Establish `hne : i ≠ j`. Introduce `h`. Rewrite `hij` using `[h]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.one_apply_ne hne, zero_add]`.
+
+Use `show u i j = u (rowI _) (colI _)`. Use `congr 1`. Use `all_goals`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [rowI, colI]`.
+
+Apply the tactic sequence `try omega`. Rewrite using `[dif_neg hij, add_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hij (hu i j h)`.
+-/
 theorem eq_one_add_blockE {u : Matrix (Fin (r + m)) (Fin (r + m)) k} (hu : IsBlockShape u) :
     u = 1 + blockE r (blockY u) := by
   ext i j
@@ -77,6 +99,11 @@ theorem eq_one_add_blockE {u : Matrix (Fin (r + m)) (Fin (r + m)) k} (hu : IsBlo
     by_contra h
     exact hij (hu i j h)
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite `h` using `[Matrix.add_apply]`. Unfold `blockE at h`. Assume the negation of the conclusion as `hc`. Rewrite `h` using `[dif_neg hc, add_zero]`.
+
+Conclude with `h rfl`.
+-/
 theorem isBlockShape_one_add (Y : Fin m × Fin r → k) : IsBlockShape (1 + blockE r Y) := by
   intro i j h
   rw [Matrix.add_apply] at h
@@ -89,6 +116,13 @@ def blockGL (Y : Fin m × Fin r → k) : GL (Fin (r + m)) k :=
   ⟨1 + blockE r Y, 1 - blockE r Y, by rw [add_mul, one_mul, mul_sub, mul_one, blockE_mul, sub_zero, sub_add_cancel],
     by rw [sub_mul, one_mul, mul_add, mul_one, blockE_mul, add_zero, add_sub_cancel_right]⟩
 
+/- English proof (translation)
+Rewrite using `[mem_unipB]`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show (1 + blockE r Y) i j = 0`. Establish `hlt : (j : ℕ) < i` using `Fin.lt_iff_val_lt_val.mp hji`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hji).symm, zero_add]`.
+
+Unfold `blockE`. Rewrite using `[dif_neg (by omega)]`. Use `show (1 + blockE r Y) i i = 1`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq]`. Unfold `blockE`.
+
+Rewrite using `[dif_neg (by omega), add_zero]`.
+-/
 theorem blockGL_mem_unipB (Y : Fin m × Fin r → k) : blockGL Y ∈ unipB k (Fin (r + m)) := by
   rw [mem_unipB]
   refine ⟨fun i j hji => ?_, fun i => ?_⟩
@@ -128,6 +162,9 @@ def blockEquiv (U : Subgroup (GL (Fin (r + m)) k))
     simp only [Matrix.add_apply, one_rowI_colI, blockE_apply, zero_add]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockEquiv_apply (U : Subgroup (GL (Fin (r + m)) k))
     (hU : ∀ u, u ∈ U ↔ u ∈ unipB k (Fin (r + m)) ∧ IsBlockShape (u : Matrix (Fin (r + m)) (Fin (r + m)) k))
     (u : U) (i : Fin m) (j : Fin r) :
@@ -141,8 +178,16 @@ def box (ι : Type) (γ : ValueGroupWithZero k) : AddSubgroup (ι → k) where
   zero_mem' i := by simp
   neg_mem' {a} ha i := by simpa using ha i
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_box {ι : Type} {γ : ValueGroupWithZero k} {Y : ι → k} : Y ∈ box ι γ ↔ ∀ i, valuation k (Y i) ≤ γ := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Establish `hc : 0 < valuation k (c : k)`. Rewrite using `[zero_lt_iff]`. Simplify using the standard rewrite rules.
+
+Establish `key : valuation k (((c⁻¹ : kˣ) : k) * x) = (valuation k (c : k))⁻¹ * valuation k x`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Use `show valuation k x ≤ valuation k (c : k) ↔ valuation k (((c⁻¹ : kˣ) : k) * x) ≤ 1`. Rewrite using `[key, inv_mul_le_iff₀ hc, mul_one]`.
+-/
 theorem ball_eq_smul (c : kˣ) : {x : k | valuation k x ≤ valuation k (c : k)} = c • (𝒪[k] : Set k) := by
   ext x
   rw [Set.mem_smul_set_iff_inv_smul_mem]
@@ -154,6 +199,9 @@ theorem ball_eq_smul (c : kˣ) : {x : k | valuation k x ≤ valuation k (c : k)}
   show valuation k x ≤ valuation k (c : k) ↔ valuation k (((c⁻¹ : kˣ) : k) * x) ≤ 1
   rw [key, inv_mul_le_iff₀ hc, mul_one]
 
+/- English proof (translation)
+Establish `hset : (box ι (valuation k (c : k)) : Set (ι → k)) = Set.univ.pi (fun _ => {x : k | valuation k x ≤ valuation k (c : k)})`. Use extensionality with `Y`. Simplify using `[mem_box]`. Rewrite using `[hset]`. Conclude with `isCompact_univ_pi (fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _)`.
+-/
 theorem isCompact_box (ι : Type) [Fintype ι] (c : kˣ) : IsCompact (box ι (valuation k (c : k)) : Set (ι → k)) := by
   have hset : (box ι (valuation k (c : k)) : Set (ι → k)) =
       Set.univ.pi (fun _ => {x : k | valuation k x ≤ valuation k (c : k)}) := by
@@ -162,6 +210,11 @@ theorem isCompact_box (ι : Type) [Fintype ι] (c : kˣ) : IsCompact (box ι (va
   rw [hset]
   exact isCompact_univ_pi (fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k _)
 
+/- English proof (translation)
+Establish `hset : (box ι (valuation k (c : k)) : Set (ι → k)) = Set.univ.pi (fun _ => {x : k | valuation k x ≤ valuation k (c : k)})`. Use extensionality with `Y`. Simplify using `[mem_box]`. Establish `hball : IsOpen {x : k | valuation k x ≤ valuation k (c : k)}`. Rewrite using `[ball_eq_smul]`.
+
+Conclude with `((valuation k).isOpen_integer).smul c`. Rewrite using `[hset]`. Conclude with `isOpen_set_pi Set.finite_univ (fun _ _ => hball)`.
+-/
 theorem isOpen_box (ι : Type) [Fintype ι] (c : kˣ) : IsOpen (box ι (valuation k (c : k)) : Set (ι → k)) := by
   have hset : (box ι (valuation k (c : k)) : Set (ι → k)) =
       Set.univ.pi (fun _ => {x : k | valuation k x ≤ valuation k (c : k)}) := by
@@ -173,6 +226,9 @@ theorem isOpen_box (ι : Type) [Fintype ι] (c : kˣ) : IsOpen (box ι (valuatio
   rw [hset]
   exact isOpen_set_pi Set.finite_univ (fun _ _ => hball)
 
+/- English proof (translation)
+Rewrite `hY`, the goal using `[mem_box]`. Introduce `i`. Rewrite using `[Pi.smul_apply, Units.smul_def, smul_eq_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem smul_mem_box {ι : Type} {γ : ValueGroupWithZero k} (z : kˣ) (hz : valuation k (z : k) ≤ 1) {Y : ι → k}
     (hY : Y ∈ box ι γ) : z • Y ∈ box ι γ := by
   rw [mem_box] at hY ⊢

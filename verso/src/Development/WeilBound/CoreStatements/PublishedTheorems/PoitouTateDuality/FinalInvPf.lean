@@ -14,6 +14,13 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Establish `key` using `@invMatch_gen' Kf ‹_› ‹_› S ‹_› l r ‹_› hr hS ζ hζ inv hinv ιs v A hA ev hev`. Establish `hm0` using `key.choose_spec.choose_spec.1`. Establish `hz0` using `key.choose_spec.choose_spec.2.1`. Establish `hx0` using `key.choose_spec.choose_spec.2.2`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`.
+
+Establish `hbij` using `(hinv A v.1 hA).1`. Establish `hz : (Submodule.Quotient.mk z : H2 (muLoc Kf.1 l r A)) = (inv A (Submodule.Quotient.mk z)).val • Submodule.Quotient.mk key.choose`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hz0, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`. Establish `hx` using `@invMatch_nsmul_B Kf ‹_› ‹_› S ‹_› l r ‹_› hr hS ζ hζ inv hinv ιs v A hA ev hev hevc z key.choose x key.choose_spec.choose hzx hm0 _ hz`.
+
+Establish `E` using `(congrArg (gsLocalInvRootsQZ S ιs (l ^ r) v) hx).trans ((map_nsmul (gsLocalInvRootsQZ S ιs (l ^ r) v) _ _).trans (congrArg ((inv A (Submodule.Quotient.mk z)).val • ·) hx0))`. Establish `e3` using `zmodToQZ_eq_nsmul (inv A (Submodule.Quotient.mk z))`. Conclude with `e3.trans ((neg_neg _).symm.trans (congrArg Neg.neg ((smul_neg _ _).symm.trans E.symm)))`.
+-/
 theorem invCmp' (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] (hr : 0 < r)
     (hS : ∀ v : HeightOneSpectrum (𝓞 Kf.1), ((l : ℕ) : 𝓞 Kf.1) ∈ v.asIdeal → v ∈ S)

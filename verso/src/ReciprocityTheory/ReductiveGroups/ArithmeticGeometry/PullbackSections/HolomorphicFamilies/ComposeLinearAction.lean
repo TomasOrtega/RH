@@ -12,12 +12,18 @@ section Ev
 
 variable {g m n : ℕ}
 
+/- English proof (translation)
+Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Simplify using `only [ev, addF]`. Rewrite using `[MvPowerSeries.subst_add hs, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs]`.
+-/
 theorem ev_addF (a : Fin 2 → Pt ℂ n g) (ha : ∀ p : Fin 2 × Fin g, constantCoeff (a p.1 p.2) = 0) (i : Fin g) :
     ev a (addF ℂ g i) = a 0 i + a 1 i := by
   have hs := MvPowerSeries.hasSubst_of_constantCoeff_zero ha
   simp only [ev, addF]
   rw [MvPowerSeries.subst_add hs, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs]
 
+/- English proof (translation)
+Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Rewrite using `[← MvPowerSeries.smul_eq_C_mul, ← MvPowerSeries.smul_eq_C_mul]`. Simplify using `only [ev]`. Rewrite using `[MvPowerSeries.subst_smul hs, MvPowerSeries.subst_X hs]`.
+-/
 theorem ev_CX (a : Fin 1 → Pt ℂ n g) (ha : ∀ p : Fin 1 × Fin g, constantCoeff (a p.1 p.2) = 0) (c : ℂ)
     (i : Fin g) : ev a (C c * X ((0 : Fin 1), i) : PS ℂ 1 g) = C c * a 0 i := by
   have hs := MvPowerSeries.hasSubst_of_constantCoeff_zero ha
@@ -25,6 +31,9 @@ theorem ev_CX (a : Fin 1 → Pt ℂ n g) (ha : ∀ p : Fin 1 × Fin g, constantC
   simp only [ev]
   rw [MvPowerSeries.subst_smul hs, MvPowerSeries.subst_X hs]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [addOf]`. Apply the tactic sequence `rw [ev_addF _ (fun ⟨j, k⟩ => by fin_cases j <;> simp [ha, hb])]`. Simplify using the standard rewrite rules.
+-/
 theorem addOf_addF (a b : Pt ℂ n g) (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) :
     addOf (addF ℂ g) a b = a + b := by
   funext i
@@ -32,6 +41,9 @@ theorem addOf_addF (a b : Pt ℂ n g) (ha : ∀ i, constantCoeff (a i) = 0) (hb 
   rw [ev_addF _ (fun ⟨j, k⟩ => by fin_cases j <;> simp [ha, hb])]
   simp
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst (0 : PS k n d)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Unfold `FB.expS`. Use `conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const (PowerSeries.exp k)]`. Rewrite using `[PowerSeries.subst_add ha, PowerSeries.subst_mul ha, PowerSeries.subst_X ha, zero_mul, zero_add, PowerSeries.constantCoeff_exp, map_one, ← PowerSeries.coe_substAlgHom ha, map_one]`.
+-/
 theorem expS_zero_an (k : Type) [CommRing k] [Algebra ℚ k] {n d : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
   have ha : PowerSeries.HasSubst (0 : PS k n d) :=
     PowerSeries.HasSubst.of_constantCoeff_zero (by simp)
@@ -40,6 +52,9 @@ theorem expS_zero_an (k : Type) [CommRing k] [Algebra ℚ k] {n d : ℕ} : FB.ex
   rw [PowerSeries.subst_add ha, PowerSeries.subst_mul ha, PowerSeries.subst_X ha, zero_mul, zero_add,
     PowerSeries.constantCoeff_exp, map_one, ← PowerSeries.coe_substAlgHom ha, map_one]
 
+/- English proof (translation)
+Simplify using `[pt]`.
+-/
 theorem cc_pt (j : Fin n) (i : Fin g) : constantCoeff (pt ℂ g j i) = 0 := by
   simp [pt]
 
@@ -72,9 +87,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g n : ℕ}
 def linAct (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) : Pt ℂ 1 g :=
   fun k => C (ty k (a : E)) * X ((0 : Fin 1), k)
 
+/- English proof (translation)
+Simplify using `[linAct]`.
+-/
 theorem cc_linAct (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (i : Fin g) : constantCoeff (linAct ty a i) = 0 := by
   simp [linAct]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [comp1, linAct]`. Rewrite using `[ev_CX _ (fun ⟨j, k⟩ => by fin_cases j; simp [hb])]`. Simplify using the standard rewrite rules.
+-/
 theorem compose_linear_action (ty : Fin g → (E →+* ℂ)) (a : 𝓞 E) (b : Pt ℂ n g) (hb : ∀ i, constantCoeff (b i) = 0) :
     comp1 (linAct ty a) b = fun i => C (ty i (a : E)) * b i := by
   funext i
@@ -109,6 +130,9 @@ def linOAct (ty : Fin g → (E →+* ℂ)) : OAct (𝓞 E) (addFGLaw g) where
 
 def anFB [StarRing (𝓞 E)] (ty : Fin g → (E →+* ℂ)) : FB ℂ g (𝓞 E) := FB.triv (addFGLaw g) (linOAct ty)
 
+/- English proof (translation)
+The claim follows from `ev_zero' _ ax1 := ev_zero' _ ph1 := by simp [anFB, FB.triv, ev_zero', expS_zero_an] ph2 := by simp [anFB, FB.triv, ev_zero', expS_zero_an] sy := by simp [anFB, FB.triv, ev_zero', expS_zero_an] ad a := by simp [anFB, FB.triv, ev_zero', expS_zero_an]`.
+-/
 theorem anFB_canon [StarRing (𝓞 E)] (ty : Fin g → (E →+* ℂ)) : (anFB ty).IsCanonGauge ℂ 0 where
   ax0 := ev_zero' _
   ax1 := ev_zero' _

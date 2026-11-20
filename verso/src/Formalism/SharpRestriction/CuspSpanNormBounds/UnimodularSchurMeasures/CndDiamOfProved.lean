@@ -9,6 +9,9 @@ open scoped InnerProductSpace ComplexOrder ENNReal
 open Formalism.MainNotions.S Formalism.MainNotions.PlaceDegreeData Formalism.MainNotions.BridgeLemma
 open Formalism.HermitianLatticeCounting.S7 (P0 b1 Ydat)
 
+/- English proof (translation)
+Take `⟨V, i1, i2, i3, M, hd, hsp, hN, hdual, hR⟩` from `h`. Establish `hκ : 0 < Real.sqrt (f : ℝ) / (2 * rd * ρ₀)` using `div_pos (Real.sqrt_pos.2 (by exact_mod_cast hf)) (by positivity)`. Establish `h1` using `Formalism.HermitianLatticeCounting.Final.S7.coverRadius V M hd hsp _ hκ hdual`. Establish `h2` using `(Formalism.HermitianLatticeCounting.Final.S7.coverArith n f (Module.finrank ℝ V) rd ρ₀ hf hN hrd hρ₀).2.2`. Conclude with `hP _ _ h2 (hR _ h1)`.
+-/
 theorem cnd_cov_of_proved (n f : ℕ) (hf : 1 ≤ f) (rd ρ₀ : ℝ) (hrd : 0 < rd) (hρ₀ : 0 < ρ₀)
     (P : ℝ → Prop) (hP : ∀ R R', R ≤ R' → P R → P R')
     (h : cnd_CovLe (2 * n ^ 2 * f) (Real.sqrt (f : ℝ) / (2 * rd * ρ₀)) P) :
@@ -20,6 +23,13 @@ theorem cnd_cov_of_proved (n f : ℕ) (hf : 1 ≤ f) (rd ρ₀ : ℝ) (hrd : 0 <
   have h2 := (Formalism.HermitianLatticeCounting.Final.S7.coverArith n f (Module.finrank ℝ V) rd ρ₀ hf hN hrd hρ₀).2.2
   exact hP _ _ h2 (hR _ h1)
 
+/- English proof (translation)
+Establish `hrd : 0 < X.I.rd` using `lt_of_lt_of_le zero_lt_one (one_le_discriminant_root X.I)`. Establish `hco : 0 ≤ Cq * Real.sqrt (X.I.f : ℝ) * (X.g : ℝ)` using `by positivity`. Establish `hmono2 : ∀ R₁ R R' : ℝ, R ≤ R' → ρ ≤ Cq * Real.sqrt (X.I.f : ℝ) * (X.g : ℝ) * (R₁ + R) → ρ ≤ Cq * Real.sqrt (X.I.f : ℝ) * (X.g : ℝ) * (R₁ + R')` using `fun R₁ R R' hRR h => le_trans h (mul_le_mul_of_nonneg_left (by linarith) hco)`. Establish `h1` using `cnd_cov_of_proved X.I.n X.I.f (one_le_autInst_f X.I) X.I.rd ρ₀ hrd hρ₀ _ (by`. Introduce `R R' hRR hh`.
+
+Take `⟨V, i1, i2, i3, M, hd, hsp, hN, hdual, hR⟩` from `hh`. Conclude with `⟨V, i1, i2, i3, M, hd, hsp, hN, hdual, fun R₂ hc => le_trans (hR R₂ hc) (mul_le_mul_of_nonneg_left (by linarith) hco)⟩) h`. Establish `h2` using `cnd_cov_of_proved X.I.n X.I.f (one_le_autInst_f X.I) X.I.rd ρ₀ hrd hρ₀ _ (hmono2 _) h1`. Establish `hf0 : (0 : ℝ) < (X.I.f : ℝ)` using `by exact_mod_cast one_le_autInst_f X.I`. Establish `hs : Real.sqrt (X.I.f : ℝ) * (X.I.f : ℝ) ^ ((5 : ℝ) / 2) = (X.I.f : ℝ) ^ 3`.
+
+Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_add hf0, ← Real.rpow_natCast]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cnd_diam_of_proved (X : CData) (Cq ρ ρ₀ : ℝ) (hCq : 0 ≤ Cq) (hρ₀ : 0 < ρ₀) (h : cnd_Diam X Cq ρ ρ₀) :
     ρ ≤ (16 * Cq) * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ) * ((X.g : ℝ) * (X.I.n : ℝ) ^ 4 * (X.I.f : ℝ) ^ 2) * X.I.rd * ρ₀ := by
   have hrd : 0 < X.I.rd := lt_of_lt_of_le zero_lt_one (one_le_discriminant_root X.I)
@@ -41,6 +51,15 @@ theorem cnd_diam_of_proved (X : CData) (Cq ρ ρ₀ : ℝ) (hCq : 0 ≤ Cq) (hρ
     _ = (16 * Cq) * (X.I.n : ℝ) ^ 6 * (Real.sqrt (X.I.f : ℝ) * (X.I.f : ℝ) ^ ((5 : ℝ) / 2)) * (X.g : ℝ) * X.I.rd * ρ₀ := by ring
     _ = _ := by rw [hs]; ring
 
+/- English proof (translation)
+Take `⟨C', hC', hch⟩` from `Formalism.HermitianLatticeCounting.Final.CuspThresholdCounts.deepChainV Cd hCd`. Take `⟨C₁₀, h1, hB⟩` from `Formalism.HermitianLatticeCounting.Final.S7.deepBound C' hC'`. Use `⟨C₁₀, h1, fun n q f rd g b τ₁ τs ρ Kxx Bs D volG volK hn hq hq2 hf hrd hg hb hτ hlt hτs hD hvK hvG a b' c d hvol => ?_⟩` and prove the remaining obligations. Establish `h2` using `hch n q f rd g b τ₁ τs ρ Kxx Bs D volG volK hn hq hq2 hf hrd hg hb hτ hlt hD hvK hvG a b' c d hvol`. Establish `h3` using `hB n q f rd g b hn hq hq2 hf hrd hg hb`.
+
+Establish `h4 : τs ^ (12 * n ^ 2 * f) ≤ (Ydat n f rd g b ^ (-(C₁₀ * (q : ℝ)))) ^ (12 * n ^ 2 * f)` using `pow_le_pow_left₀ (le_trans hτ.le hlt.le) hτs _`. Establish `hb1 : 0 ≤ b1 n q f b`. Unfold `Formalism.HermitianLatticeCounting.S7.b1`. Check the signs of the components of the expression. Establish `hY0 : 0 ≤ Ydat n f rd g b`.
+
+Unfold `Formalism.HermitianLatticeCounting.S7.Ydat`. Check the signs of the components of the expression. Establish `hYp : 0 ≤ Ydat n f rd g b ^ (C' * (n : ℝ) ^ 2 * (f : ℝ)) * (C' * (n : ℝ) ^ 4 * (f : ℝ) ^ 2 * g * rd * b1 n q f b) ^ (16 * q * n ^ 2 * f)`. Establish `hC0 : 0 ≤ C'` using `by linarith`. Conclude with `mul_nonneg (Real.rpow_nonneg hY0 _) (pow_nonneg (by positivity) _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cnd_pointG (Cd : ℝ) (hCd : 1 ≤ Cd) : ∃ C₁₀ : ℝ, 1 ≤ C₁₀ ∧ ∀ (n q f : ℕ) (rd g b τ₁ τs ρ Kxx Bs D volG volK : ℝ),
     1 ≤ n → 1 ≤ q → q ^ 2 ≤ n → 1 ≤ f → 1 ≤ rd → 1 ≤ g → 2 ≤ b → 0 < τ₁ → τ₁ < τs →
     τs ≤ Ydat n f rd g b ^ (-(C₁₀ * (q : ℝ))) → 0 ≤ D → 0 < volK → 0 ≤ volG → 0 ≤ ρ →
@@ -73,6 +92,17 @@ theorem cnd_pointG (Cd : ℝ) (hCd : 1 ≤ Cd) : ∃ C₁₀ : ℝ, 1 ≤ C₁�
     _ ≤ D * Real.exp (-((n : ℝ) ^ 2 * (f : ℝ))) :=
         mul_le_mul_of_nonneg_left (le_trans (mul_le_mul_of_nonneg_left h4 hYp) h3) hD
 
+/- English proof (translation)
+Establish `hnR : (1 : ℝ) ≤ (n : ℝ)` using `by exact_mod_cast hn`. Establish `hfR : (1 : ℝ) ≤ (f : ℝ)` using `by exact_mod_cast hf`. Establish `hb1 : (1 : ℝ) ≤ b` using `by linarith`. Establish `hY0 : 0 ≤ Ydat n f rd g b`. Unfold `Formalism.HermitianLatticeCounting.S7.Ydat`.
+
+Check the signs of the components of the expression. Establish `hnY : (n : ℝ) ≤ Ydat n f rd g b`. Unfold `Formalism.HermitianLatticeCounting.S7.Ydat`. Combine the equalities or inequalities in the displayed calculation. Establish `hfY : (f : ℝ) ≤ Ydat n f rd g b`.
+
+Unfold `Formalism.HermitianLatticeCounting.S7.Ydat`. Combine the equalities or inequalities in the displayed calculation. Establish `he : Ydat n f rd (g * (n : ℝ) ^ 4 * (f : ℝ) ^ 2) b = Ydat n f rd g b * ((n : ℝ) ^ 4 * (f : ℝ) ^ 2)`. Unfold `Formalism.HermitianLatticeCounting.S7.Ydat`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[he]`. Prove the components needed by the constructor for the conclusion. Establish `h1 : (1 : ℝ) ≤ (n : ℝ) ^ 4 * (f : ℝ) ^ 2`. Establish `a1 : (1 : ℝ) ≤ (n : ℝ) ^ 4` using `one_le_pow₀ hnR`. Establish `a2 : (1 : ℝ) ≤ (f : ℝ) ^ 2` using `one_le_pow₀ hfR`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cnd_Y' (n f : ℕ) (rd g b : ℝ) (hn : 1 ≤ n) (hf : 1 ≤ f) (hrd : 1 ≤ rd) (hg : 1 ≤ g) (hb : 2 ≤ b) :
     Ydat n f rd g b ≤ Ydat n f rd (g * (n : ℝ) ^ 4 * (f : ℝ) ^ 2) b ∧
       Ydat n f rd (g * (n : ℝ) ^ 4 * (f : ℝ) ^ 2) b ≤ Ydat n f rd g b ^ 7 := by
@@ -104,6 +134,29 @@ theorem cnd_Y' (n f : ℕ) (rd g b : ℝ) (hn : 1 ≤ n) (hf : 1 ≤ f) (hrd : 1
         ≤ Ydat n f rd g b * (Ydat n f rd g b ^ 4 * Ydat n f rd g b ^ 2) := by gcongr
       _ = Ydat n f rd g b ^ 7 := by ring
 
+/- English proof (translation)
+Take `⟨C₀, h1, hpt⟩` from `cnd_pointG (4 * C) (by linarith)`. Use `⟨7 * C₀, by linarith, fun C₁ hC₁ X S volK n₀ A hn₀ hX hq hV hst hS A₁ hA₁ => ?_⟩` and prove the remaining obligations. Take `⟨hvK, hvol, hae⟩` from `hS`. Establish `hY` using `cnd_two_le_Y X hn₀ hX`. Establish `hn : 1 ≤ X.I.n` using `le_trans hn₀ hX.1.1`.
+
+Establish `hnR : (1 : ℝ) ≤ (X.I.n : ℝ)` using `by exact_mod_cast hn`. Establish `hfR : (1 : ℝ) ≤ (X.I.f : ℝ)` using `by exact_mod_cast one_le_autInst_f X.I`. Establish `hg1 : (1 : ℝ) ≤ (X.g : ℝ)` using `by exact_mod_cast hX.1.2.2.2.2.2.2.2.1`. Establish `hb : 2 ≤ X.b` using `hX.1.2.2.1`. Establish `hq2` using `(X.qq_spec hX).2`.
+
+Establish `hqR : (0 : ℝ) ≤ (X.qq : ℝ)` using `Nat.cast_nonneg _`. Use `set g' : ℝ := (X.g : ℝ) * (X.I.n : ℝ) ^ 4 * (X.I.f : ℝ) ^ 2 with hg'`. Establish `hg'1 : 1 ≤ g'`. Establish `a1 : (1 : ℝ) ≤ (X.I.n : ℝ) ^ 4` using `one_le_pow₀ hnR`. Establish `a2 : (1 : ℝ) ≤ (X.I.f : ℝ) ^ 2` using `one_le_pow₀ hfR`.
+
+Establish `a3 : (1 : ℝ) ≤ (X.g : ℝ) * (X.I.n : ℝ) ^ 4` using `by nlinarith`. Rewrite using `[hg']`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hY1, hY7⟩` from `cnd_Y' X.I.n X.I.f X.I.rd (X.g : ℝ) X.b hn (one_le_autInst_f X.I) (one_le_discriminant_root X.I) hg1 hb`. Establish `hYY : cn_Y X = Ydat X.I.n X.I.f X.I.rd (X.g : ℝ) X.b` using `rfl`.
+
+Rewrite `hY1`, `hY7` using `[← hYY]`. Establish `hYpos : 0 < cn_Y X` using `by linarith`. Establish `hY'pos : 0 < Ydat X.I.n X.I.f X.I.rd g' X.b` using `lt_of_lt_of_le hYpos hY1`. Establish `hτle : cn_tauS X C₁ ≤ Ydat X.I.n X.I.f X.I.rd g' X.b ^ (-(C₀ * (X.qq : ℝ)))`. Establish `hnp : -(C₀ * (X.qq : ℝ)) ≤ 0`.
+
+Establish `: 0 ≤ C₀ * (X.qq : ℝ)` using `mul_nonneg (by linarith) hqR`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (cn_Y X ^ 7) ^ (-(C₀ * (X.qq : ℝ))) ≤ Ydat X.I.n X.I.f X.I.rd g' X.b ^ (-(C₀ * (X.qq : ℝ)))` using `Real.rpow_le_rpow_of_nonpos hY'pos hY7 hnp`. Establish `e2 : (cn_Y X ^ 7) ^ (-(C₀ * (X.qq : ℝ))) = cn_Y X ^ (-(7 * C₀ * (X.qq : ℝ)))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hYpos.le]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : cn_tauS X C₁ ≤ cn_Y X ^ (-(7 * C₀ * (X.qq : ℝ)))` using `cnd_tauS_anti X hC₁ hY`. Rewrite `e1` using `[e2]`.
+
+Conclude with `le_trans e3 e1`. Establish `hvol4 : X.I.vol X.μf X.fund / volK ≤ Ydat X.I.n X.I.f X.I.rd g' X.b ^ (4 * C * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ))`. Establish `hex : 0 ≤ C * (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ)` using `by positivity`. Use `le_trans hvol (le_trans (Real.rpow_le_rpow hYpos.le hY1 hex) ?_)` and prove the remaining obligations. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by nlinarith)`.
+
+Use `cnd_deep_int X hV (S.measurableSet_Mod hst C₁) ?_ hA₁` and prove the remaining obligations. Use `filter_upwards [hae] with x hx hxM`. Establish `hlt : S.tau1 x < cn_tauS X C₁` using `not_le.1 hxM`. Establish `hhalf` using `lt_of_lt_of_le hlt (cnd_tauS_le_half X (by linarith : (1 : ℝ) ≤ C₁) hq hY)`. Take `⟨a, τ, ha, haq, hpos, htop, hτ1, H⟩` from `hx hhalf`.
+
+Establish `hrd0 : 0 ≤ X.I.rd` using `le_trans zero_le_one (one_le_discriminant_root X.I)`. Take `⟨ρ, Bs, r0, r1, r2, r3⟩` from `cnd_refine C hC X.I.n X.qq X.I.f hq (one_le_autInst_f X.I) X.I.rd g' X.b (S.tau1 x) X.Dc volK |(X.kerD x).re| (one_le_discriminant_root X.I) hg'1 (hst.2.2.2.2.2.1 x).1 hhalf (Nat.cast_nonneg _) hvK a τ ha haq hpos htop hτ1 (fun b' hb1 hb2 => by`. Take `⟨ρ, s, mult, s0, s1, s2, s3, s4, s5, s6⟩` from `H b' hb1 hb2`. Use `⟨ρ, s, mult, s0, ?_, s2, s3, s4, s5, s6⟩` and prove the remaining obligations. Establish `hρ₀ : 0 < τ b' / τ (b' + 1)` using `div_pos (hpos _) (hpos _)`.
+
+Use `le_trans (cnd_diam_of_proved X Cq ρ _ hCq hρ₀ s1) ?_` and prove the remaining obligations. Establish `: 0 ≤ (X.I.n : ℝ) ^ 2 * (X.I.f : ℝ) * g' * X.I.rd * (τ b' / τ (b' + 1))` using `by positivity`. Use the proof step `nlinarith)`. Conclude with `hpt X.I.n X.qq X.I.f X.I.rd g' X.b (S.tau1 x) (cn_tauS X C₁) ρ _ Bs X.Dc _ volK hn hq hq2 (one_le_autInst_f X.I) (one_le_discriminant_root X.I) hg'1 hb (hst.2.2.2.2.2.1 x).1 hlt hτle (Nat.cast_nonneg _) hvK ENNReal.toReal_nonneg r0 r1 r2 r3 hvol4`.
+-/
 theorem cnd_deepP (C Cq : ℝ) (hC : 1 ≤ C) (hCq : 0 ≤ Cq) (hCC : 16 * Cq ≤ C) :
     ∃ C₁₀ : ℝ, 1 ≤ C₁₀ ∧ ∀ C₁ ≥ C₁₀, ∀ (X : CData) (S : CSize X) (volK : ℝ)
     (n₀ : ℕ) (A : ℝ), 1 ≤ n₀ → X.HypB n₀ A → 1 ≤ X.qq → X.FinVol → S.Strata → S.DeepStepsQ volK C Cq →

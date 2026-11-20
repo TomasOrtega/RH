@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial | exact GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial | (intros; apply GlobalTheory.FrobTrivChar.eq_one_of_frob_trivial <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.galoisCharacter_eq_one_of_trivial_degreeOne_frobenius : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
     (φ : G E Ω →* (Qbar l)ˣ), Continuous φ →
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, w.asIdeal.inertiaDeg ℤ = 1 → w.asIdeal.ramificationIdx ℤ = 1 →

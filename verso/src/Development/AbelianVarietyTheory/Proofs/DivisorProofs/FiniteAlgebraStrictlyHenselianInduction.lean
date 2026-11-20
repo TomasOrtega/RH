@@ -8,6 +8,13 @@ namespace GlobalTheory.EtC.GmStep.FinSH
 
 open IsLocalRing
 
+/- English proof (translation)
+Take `⟨hH, hk⟩` from `hA`. Use `⟨GlobalTheory.henselianLocalRing_of_finite A T, ?_⟩` and prove the remaining obligations. Establish `hc : (maximalIdeal T).comap (algebraMap A T) = maximalIdeal A` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal T))`. Use `haveI : IsLocalHom (algebraMap A T) := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hna`. Establish `: a ∈ (maximalIdeal T).comap (algebraMap A T)` using `by rw [hc]; exact hna`. Conclude with `(maximalIdeal T).ne_top_iff_one.1 (maximalIdeal.isMaximal T).ne_top (by simpa using Ideal.mul_mem_left _ (↑ha.unit⁻¹ : T) (show algebraMap A T a ∈ maximalIdeal T from this))`. Use `haveI : Algebra.IsIntegral (ResidueField A) (ResidueField T) := by`. Use `⟨fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨t', rfl⟩` from `residue_surjective x`. Establish `h1 : IsIntegral A (residue T t')` using `(Algebra.IsIntegral.isIntegral (R := A) t').map (IsScalarTower.toAlgHom A T (ResidueField T))`. Conclude with `h1.tower_top`. Conclude with `Algebra.IsAlgebraic.isSepClosed (F := ResidueField A)`.
+-/
 theorem sh_of_finite_local (A T : Type) [CommRing A] [CommRing T] [Algebra A T] (hA : SH A)
     [Module.Finite A T] [IsLocalRing T] : SH T := by
   obtain ⟨hH, hk⟩ := hA
@@ -33,6 +40,17 @@ def optionProdEquiv (A : Type) [CommRing A] {α : Type} (T : Option α → Type)
   { Equiv.piOptionEquivProd with
     map_mul' := fun _ _ => rfl, map_add' := fun _ _ => rfl, commutes' := fun _ => rfl }
 
+/- English proof (translation)
+Introduce `A _ hA P hiso hsub hprod hsh T _ _ hT`. Take `⟨hH, hk⟩` from `hA`. Take `⟨ι, hι, S, _, _, e, hS⟩` from `GlobalTheory.exists_algEquiv_pi_henselianLocalRing A T`. Establish `key : ∀ (α : Type) [Finite α] (S : α → Type) [∀ i, CommRing (S i)] [∀ i, Algebra A (S i)], (∀ i, Module.Finite A (S i) ∧ SH (S i)) → P (∀ i, S i)`. Introduce `α _`.
+
+Proceed by induction on `α using Finite.induction_empty_option with`. Consider the case `of_equiv e' ih`. Introduce `S _ _ hS'`. Conclude with `hiso _ _ (AlgEquiv.piCongrLeft A S e') (ih (fun a => S (e' a)) (fun a => hS' (e' a)))`. Consider the case `h_empty`.
+
+Introduce `S _ _ _`. Conclude with `hsub _ inferInstance`. Consider the case `h_option ih`. Introduce `S _ _ hS'`. Use `hiso _ _ (optionProdEquiv A S).symm ?_` and prove the remaining obligations.
+
+Use `haveI : ∀ a, Module.Finite A (S (some a)) := fun a => (hS' (some a)).1`. Conclude with `hprod _ _ (hS' none).1 inferInstance (hsh _ (hS' none).1 (hS' none).2) (ih (fun a => S (some a)) (fun a => hS' (some a)))`. Use `hiso _ _ e.symm (key ι S fun i => ⟨(hS i).2, ?_⟩)` and prove the remaining obligations. Use `haveI := (hS i).1`. Use `haveI := (hS i).2`.
+
+Conclude with `sh_of_finite_local A (S i) ⟨hH, hk⟩`.
+-/
 theorem induction_principle : ∀ (A : Type) [CommRing A], SH A → ∀ (P : ∀ (T : Type) [CommRing T] [Algebra A T], Prop),
   (∀ (T T' : Type) [CommRing T] [CommRing T'] [Algebra A T] [Algebra A T'], (T ≃ₐ[A] T') → P T → P T') →
   (∀ (T : Type) [CommRing T] [Algebra A T], Subsingleton T → P T) →

@@ -10,6 +10,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagBundle
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Conclude with `⟨(Z.descResidueField (Scheme.stalkClosedPointTo p)).hom, Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Z p⟩`.
+-/
 theorem exists_spMap_fromSpecResidueField {Z : Scheme.{0}} (y : Z) {K : Type} [Field K] (p : Sp K ⟶ Z)
     (hp : p (IsLocalRing.closedPoint K) = y) :
     ∃ σ : Z.residueField y →+* K, spMap σ ≫ Z.fromSpecResidueField y = p := by
@@ -17,6 +20,9 @@ theorem exists_spMap_fromSpecResidueField {Z : Scheme.{0}} (y : Z) {K : Type} [F
   exact ⟨(Z.descResidueField (Scheme.stalkClosedPointTo p)).hom,
     Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K Z p⟩
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨A, hA, g, hg, h₁, h₂⟩` from `h`. Conclude with `⟨A, hA, g, hg, h₂, h₁⟩`.
+-/
 theorem coBear_swap {F : Type} [Field F] {ι : Type} {m : ι → ℕ} {X Y₁ Y₂ : Var F} {Eb : Fr (ratOf X) m 0}
     {S₁ : Fr (ratOf Y₁) m m} {φ₁ : X.Fn →ₐ[F] Y₁.Fn} {S₂ : Fr (ratOf Y₂) m m} {φ₂ : X.Fn →ₐ[F] Y₂.Fn}
     {K : Type} [Field K] {x x' : Sp K ⟶ X.X} {p₁ : Sp K ⟶ Y₁.X} {p₂ : Sp K ⟶ Y₂.X}
@@ -27,6 +33,17 @@ theorem coBear_swap {F : Type} [Field F] {ι : Type} {m : ι → ℕ} {X Y₁ Y�
 
 end GlobalTheory.FlagBundle
 
+/- English proof (translation)
+Introduce `F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ hR₁ hR₂ r hr hrc K _ p p' hp hpp' hc`. Use `set y₁ := r (IsLocalRing.closedPoint Y₂.Fn)`. Set `c : Sp (Y₁.X.residueField y₁) ⟶ Y₁.X` to `Y₁.X.fromSpecResidueField y₁`. Take `⟨τ, hτ⟩` from `exists_spMap_fromSpecResidueField y₁ r rfl`. Take `⟨σ, hσ⟩` from `exists_spMap_fromSpecResidueField y₁ p hp`.
+
+Take `⟨A, hA, g, hg, hb₁⟩` from `GlobalTheory.T.exists_pointCarriesFrameFlags_own_frame F ι m X Y₁ Eb S₁ φ₁ f₁ hR₁ _ c`. Take `⟨s, ⟨hs, hb₂⟩, -⟩` from `hR₂.2.2 _ (c ≫ f₁) A hA g hg`. Establish `hcs : CoBear Eb S₁ φ₁ S₂ φ₂ (c ≫ f₁) c s` using `⟨A, hA, g, hg, hb₁, hb₂⟩`. Establish `hτc` using `GlobalTheory.T.pointsCarryCommonFlag_spectrumMap_field_ext F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ hR₁ hR₂ _ _ τ _ _ _ hcs`. Establish `hσc` using `GlobalTheory.T.pointsCarryCommonFlag_spectrumMap_field_ext F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ hR₁ hR₂ _ _ σ _ _ _ hcs`.
+
+Establish `hτ' : spMap τ ≫ c = r` using `hτ`. Establish `hσ' : spMap σ ≫ c = p` using `hσ`. Rewrite `hτc` using `[hτ']`. Rewrite `hσc` using `[hσ']`. Establish `e₁ : (spMap τ ≫ s) ≫ f₂ = r ≫ f₁` using `by rw [Category.assoc, hs, ← Category.assoc, hτ']`.
+
+Establish `e₂ : (spMap σ ≫ s) ≫ f₂ = p ≫ f₁` using `by rw [Category.assoc, hs, ← Category.assoc, hσ']`. Establish `k₁ : spMap τ ≫ s = (ratOf Y₂).pt` using `GlobalTheory.T.eq_of_bear_common_fullFlag F ι m X Y₂ Y₁ Eb S₂ φ₂ f₂ S₁ φ₁ f₁ hR₂ hR₁ _ _ _ r e₁ hr.symm (coBear_swap hτc (by rw [Category.assoc, hs])) (coBear_swap hrc hr)`. Establish `k₂ : p' = spMap σ ≫ s` using `GlobalTheory.T.eq_of_bear_common_fullFlag F ι m X Y₂ Y₁ Eb S₂ φ₂ f₂ S₁ φ₁ f₁ hR₂ hR₁ _ _ _ p hpp'.symm e₂ (coBear_swap hc hpp') (coBear_swap hσc (by rw [Category.assoc, hs]))`. Establish `hgen : s (IsLocalRing.closedPoint _) = genericPoint Y₂.X`. Establish `e : (spMap τ ≫ s) (IsLocalRing.closedPoint Y₂.Fn) = s (IsLocalRing.closedPoint _)`.
+
+Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg s (Subsingleton.elim (α := PrimeSpectrum (Y₁.X.residueField y₁)) _ _))`. Rewrite using `[← e, k₁]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Rewrite using `[k₂, ← hgen]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg s (Subsingleton.elim (α := PrimeSpectrum (Y₁.X.residueField y₁)) _ _))`.
+-/
 theorem GlobalTheory.FlagBundle.conclusion : ∀ (F : Type) [Field F] (ι : Type) [Fintype ι] (m : ι → ℕ) (X Y₁ Y₂ : Var F) (Eb : Fr (ratOf X) m 0) (S₁ : Fr (ratOf Y₁) m m) (φ₁ : X.Fn →ₐ[F] Y₁.Fn) (f₁ : Y₁.X ⟶ X.X) (S₂ : Fr (ratOf Y₂) m m) (φ₂ : X.Fn →ₐ[F] Y₂.Fn) (f₂ : Y₂.X ⟶ X.X), Reps Eb S₁ φ₁ f₁ → Reps Eb S₂ φ₂ f₂ → ∀ r : Sp Y₂.Fn ⟶ Y₁.X, r ≫ f₁ = (ratOf Y₂).pt ≫ f₂ → CoBear Eb S₁ φ₁ S₂ φ₂ (r ≫ f₁) r (ratOf Y₂).pt → ∀ (K : Type) [Field K] (p : Sp K ⟶ Y₁.X) (p' : Sp K ⟶ Y₂.X), p (IsLocalRing.closedPoint K) = r (IsLocalRing.closedPoint Y₂.Fn) → p ≫ f₁ = p' ≫ f₂ → CoBear Eb S₁ φ₁ S₂ φ₂ (p ≫ f₁) p p' → p' (IsLocalRing.closedPoint K) = genericPoint Y₂.X := by
   intro F _ ι _ m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ hR₁ hR₂ r hr hrc K _ p p' hp hpp' hc
   set y₁ := r (IsLocalRing.closedPoint Y₂.Fn)

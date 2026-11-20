@@ -20,16 +20,27 @@ def GKModule.rep (M : h.GKModule K V) :
     Representation ℂ (FreeMonoid (h.lieSubalgebra ⊕ K)) V :=
   FreeMonoid.lift (Sum.elim (fun X => M.ρ X) fun k => M.σ k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem GKModule.rep_of_inl (M : h.GKModule K V) (X : h.lieSubalgebra) :
     M.rep (FreeMonoid.of (Sum.inl X)) = M.ρ X :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem GKModule.rep_of_inr (M : h.GKModule K V) (k : K) :
     M.rep (FreeMonoid.of (Sum.inr k)) = M.σ k :=
   rfl
 
 def GKModule.IsIrreducible (M : h.GKModule K V) : Prop := M.rep.IsIrreducible
 
+/- English proof (translation)
+Proceed by induction on `a using FreeMonoid.inductionOn' with`. Consider the case `one => simp`. Consider the case `of_mul x a ih`. Rewrite using `[map_mul, mul_assoc, ih, ← mul_assoc, ← mul_assoc]`. Use `congr 1`.
+
+Break down `x with X | k` into its components or cases. Conclude with `hρ X`. Conclude with `hσ k`.
+-/
 theorem GKModule.rep_comm (M : h.GKModule K V) {T : End ℂ V} (hρ : ∀ X, M.ρ X * T = T * M.ρ X)
     (hσ : ∀ k, M.σ k * T = T * M.σ k) (a : FreeMonoid (h.lieSubalgebra ⊕ K)) :
     M.rep a * T = T * M.rep a := by
@@ -42,10 +53,16 @@ theorem GKModule.rep_comm (M : h.GKModule K V) {T : End ℂ V} (hρ : ∀ X, M.�
     · exact hρ X
     · exact hσ k
 
+/- English proof (translation)
+The claim follows from `Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inr k)) hy`.
+-/
 theorem GKModule.apply_σ_mem (M : h.GKModule K V) (Y : Subrepresentation M.rep) (k : K) {y : V}
     (hy : y ∈ Y.toSubmodule) : M.σ k y ∈ Y.toSubmodule :=
   Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inr k)) hy
 
+/- English proof (translation)
+The claim follows from `Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inl X)) hy`.
+-/
 theorem GKModule.apply_ρ_mem (M : h.GKModule K V) (Y : Subrepresentation M.rep)
     (X : h.lieSubalgebra) {y : V} (hy : y ∈ Y.toSubmodule) : M.ρ X y ∈ Y.toSubmodule :=
   Y.apply_mem_toSubmodule (FreeMonoid.of (Sum.inl X)) hy
@@ -58,16 +75,25 @@ variable (M : h.GKModule K V) (U : Subrepresentation M.rep) (U₀ : Submodule �
 abbrev quotRep : Representation ℂ (FreeMonoid (h.lieSubalgebra ⊕ K)) (U.toSubmodule ⧸ U₀) :=
   U.toRepresentation.quotient U₀ hU₀
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotRep_mk (a : FreeMonoid (h.lieSubalgebra ⊕ K)) (u : U.toSubmodule) :
     quotRep M U U₀ hU₀ a (Submodule.Quotient.mk u) =
       Submodule.Quotient.mk (U.toRepresentation a u) :=
   rfl
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend (φ ∘ₗ U₀.mkQ)`. Conclude with `⟨ψ, fun u => (LinearMap.congr_fun hψ u).symm⟩`.
+-/
 theorem exists_form_extend (φ : Dual ℂ (U.toSubmodule ⧸ U₀)) :
     ∃ ψ : Dual ℂ V, ∀ u : U.toSubmodule, φ (Submodule.Quotient.mk u) = ψ u := by
   obtain ⟨ψ, hψ⟩ := LinearMap.exists_extend (φ ∘ₗ U₀.mkQ)
   exact ⟨ψ, fun u => (LinearMap.congr_fun hψ u).symm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toRepresentation_apply (a : FreeMonoid (h.lieSubalgebra ⊕ K)) (u : U.toSubmodule) :
     ((U.toRepresentation a u : U.toSubmodule) : V) = M.rep a u :=
   rfl
@@ -116,16 +142,29 @@ def subQuotσ : Representation ℂ K (U.toSubmodule ⧸ U₀) where
     refine Subtype.ext ?_
     simp only [coe_toRepresentation_apply, GKModule.rep_of_inr, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subQuotρ_mk (X : h.lieSubalgebra) (u : U.toSubmodule) :
     subQuotρ M U U₀ hU₀ X (Submodule.Quotient.mk u) =
       Submodule.Quotient.mk (U.toRepresentation (FreeMonoid.of (Sum.inl X)) u) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem subQuotσ_mk (k : K) (u : U.toSubmodule) :
     subQuotσ M U U₀ hU₀ k (Submodule.Quotient.mk u) =
       Submodule.Quotient.mk (U.toRepresentation (FreeMonoid.of (Sum.inr k)) u) :=
   rfl
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hfin` using `M.locallyFinite u`. Use `set S : Submodule ℂ U.toSubmodule := Submodule.span ℂ (range fun k : K => U.toRepresentation (FreeMonoid.of (Sum.inr k)) u)`. Establish `hS : FiniteDimensional ℂ S`. Establish `hle : S.map U.toSubmodule.subtype ≤ Submodule.span ℂ (range fun k : K => M.σ k u)`.
+
+Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `: FiniteDimensional ℂ (S.map U.toSubmodule.subtype)` using `Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ U.toSubmodule.injective_subtype S).symm`.
+
+Establish `hle : Submodule.span ℂ (range fun k : K => subQuotσ M U U₀ hU₀ k (Submodule.Quotient.mk u)) ≤ S.map U₀.mkQ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem subQuot_locallyFinite (q : U.toSubmodule ⧸ U₀) :
     FiniteDimensional ℂ (Submodule.span ℂ (range fun k : K => subQuotσ M U U₀ hU₀ k q)) := by
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -148,6 +187,11 @@ theorem subQuot_locallyFinite (q : U.toSubmodule ⧸ U₀) :
     exact ⟨_, Submodule.subset_span ⟨k, rfl⟩, rfl⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Introduce `φ q`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨ψ, hψ⟩` from `exists_form_extend M U U₀ φ`. Establish `: (fun k : K => φ (subQuotσ M U U₀ hU₀ k (Submodule.Quotient.mk u))) = fun k => ψ (M.σ k u)`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[subQuotσ_mk, hψ]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `M.hasContinuousCoeff ψ u`.
+-/
 theorem subQuot_hasContinuousCoeff : Representation.HasContinuousCoeff (subQuotσ M U U₀ hU₀) := by
   intro φ q
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ q
@@ -160,6 +204,13 @@ theorem subQuot_hasContinuousCoeff : Representation.HasContinuousCoeff (subQuot�
   rw [this]
   exact M.hasContinuousCoeff ψ u
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨ψ, hψ⟩` from `exists_form_extend M U U₀ φ`. Establish `h1 : (fun t : ℝ => φ (subQuotσ M U U₀ hU₀ ⟨h.expG (t • X), hX t⟩ (Submodule.Quotient.mk u))) = fun t => ψ (M.σ ⟨h.expG (t • X), hX t⟩ u)`. Use function extensionality and compare the values at `t`. Rewrite using `[subQuotσ_mk, hψ]`.
+
+Both sides reduce to the same expression. Establish `h2 : φ (subQuotρ M U U₀ hU₀ (h.toLie X) (Submodule.Quotient.mk u)) = ψ (M.ρ (h.toLie X) u)`. Rewrite using `[subQuotρ_mk, hψ]`. Both sides reduce to the same expression. Rewrite using `[h1, h2]`.
+
+Conclude with `M.hasDerivAt_coeff X hX ψ u`.
+-/
 theorem subQuot_hasDerivAt (X : 𝔤) (hX : ∀ t : ℝ, h.expG (t • X) ∈ K)
     (φ : Dual ℂ (U.toSubmodule ⧸ U₀)) (q : U.toSubmodule ⧸ U₀) :
     HasDerivAt (fun t : ℝ => φ (subQuotσ M U U₀ hU₀ ⟨h.expG (t • X), hX t⟩ q))
@@ -178,6 +229,9 @@ theorem subQuot_hasDerivAt (X : 𝔤) (hX : ∀ t : ℝ, h.expG (t • X) ∈ K)
   rw [h1, h2]
   exact M.hasDerivAt_coeff X hX ψ u
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[subQuotρ_mk, subQuotσ_mk, subQuotσ_mk, subQuotρ_mk]`. Use `congr 1`. Conclude with `Subtype.ext (M.map_ρ k X u)`.
+-/
 theorem subQuot_map_ρ (k : K) (X : 𝔤) (q : U.toSubmodule ⧸ U₀) :
     subQuotσ M U U₀ hU₀ k (subQuotρ M U U₀ hU₀ (h.toLie X) q) =
       subQuotρ M U U₀ hU₀ (h.toLie (h.Ad k X)) (subQuotσ M U U₀ hU₀ k q) := by
@@ -194,6 +248,9 @@ def GKModule.subQuot : h.GKModule K (U.toSubmodule ⧸ U₀) where
   hasDerivAt_coeff := subQuot_hasDerivAt M U U₀ hU₀
   map_ρ := subQuot_map_ρ M U U₀ hU₀
 
+/- English proof (translation)
+The claim follows from `FreeMonoid.hom_eq fun x => by rcases x with X | k <;> rfl`.
+-/
 theorem GKModule.subQuot_rep : (M.subQuot U U₀ hU₀).rep = quotRep M U U₀ hU₀ :=
   FreeMonoid.hom_eq fun x => by
     rcases x with X | k <;> rfl

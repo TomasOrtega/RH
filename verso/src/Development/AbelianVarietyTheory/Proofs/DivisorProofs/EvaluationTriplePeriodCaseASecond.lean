@@ -21,6 +21,9 @@ def schrLin {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {�
   map_add' φ φ' := funext fun _ => mul_add _ _ _
   map_smul' c φ := funext fun _ => mul_left_comm _ _ _
 
+/- English proof (translation)
+Introduce `l hl g hg`. Take `⟨T, g', hg', hT⟩` from `GlobalTheory.ThetaHeisCLM.exists_schr_pureA_eq ψ hψ w hg`. Take `⟨L, hL⟩` from `hl g' hg'`. Conclude with `⟨L.comp T, fun f => (congrArg l (hT f)).trans (hL (T f))⟩`.
+-/
 theorem comp_schrLin_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] [Invertible (2 : AF F)]
     (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (w : (κ → AF F) × (κ → AF F)) :
     ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ schrLin ψ w ∈ (adeleClass F).adm κ := by
@@ -29,6 +32,9 @@ theorem comp_schrLin_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [F
   obtain ⟨L, hL⟩ := hl g' hg'
   exact ⟨L.comp T, fun f => (congrArg l (hT f)).trans (hL (T f))⟩
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' _ e he X om om' om₁ om₁' hT hT₁ Ψ hΨ w y`. Establish `h1` using `GlobalTheory.EvAdm.comp_mem_adm F E σ B _ _ _ _ _ _ _ _ G.M G₁.M _ _ _ e hT.geo.hM hT₁.geo.hM he _ (GlobalTheory.EvPoint.proj_mem_adm F _ y)`. Conclude with `hT.weil.2.2 _ (comp_schrLin_mem_adm B.ψ hT.base.std (G.M.co.e w) _ h1) Ψ hΨ`.
+-/
 theorem continuous_ev_rho_weil : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e →
     ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

@@ -14,6 +14,13 @@ namespace GlobalTheory.CurveDens
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Establish `ho` using `ChartGlue.isOpen_over c.e (c'.e.open_source.inter c''.e.open_source)`. Establish `hm : c.e y ∈ c.e.target ∩ c.e.symm ⁻¹' (c'.e.source ∩ c''.e.source)` using `ChartGlue.mem_over c.e hy ⟨hy', hy''⟩`. Establish `e : c''.e ∘ c.e.symm =ᶠ[𝓝 (c.e y)] (c''.e ∘ c'.e.symm) ∘ (c'.e ∘ c.e.symm)` using `eventually_of_mem (ho.mem_nhds hm) fun w hw => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hw.2.1]`. Establish `hf : DifferentiableAt ℂ (c'.e ∘ c.e.symm) (c.e y)` using `(c.holo_trans c').differentiableAt ((ChartGlue.isOpen_over c.e c'.e.open_source).mem_nhds (ChartGlue.mem_over c.e hy hy'))`.
+
+Establish `hfy : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `by simp [c.e.left_inv hy]`. Establish `hg : DifferentiableAt ℂ (c''.e ∘ c'.e.symm) ((c'.e ∘ c.e.symm) (c.e y))`. Rewrite using `[hfy]`. Conclude with `(c'.holo_trans c'').differentiableAt ((ChartGlue.isOpen_over c'.e c''.e.open_source).mem_nhds (ChartGlue.mem_over c'.e hy' hy''))`. Rewrite using `[ChartGlue.transDet, e.fderiv_eq, fderiv_comp _ hg hf, hfy, ChartGlue.transDet, ChartGlue.transDet]`.
+
+Simplify using `only [ContinuousLinearMap.det]`. Conclude with `(LinearMap.det_comp _ _).trans (mul_comm _ _)`.
+-/
 theorem transDet_trans_chart (c c' c'' : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (hy' : y ∈ c'.e.source) (hy'' : y ∈ c''.e.source) :
     ChartGlue.transDet c.e c''.e y =
@@ -37,6 +44,9 @@ theorem transDet_trans_chart (c c' c'' : AlgChart p σ D) {y : CxPts p σ} (hy :
   simp only [ContinuousLinearMap.det]
   exact (LinearMap.det_comp _ _).trans (mul_comm _ _)
 
+/- English proof (translation)
+Introduce `h`. Use `transDet_trans_chart c c' c hy hy' hy` as an intermediate fact. Rewrite `this` using `[c.transDet_self hy, h, zero_mul]`. Conclude with `one_ne_zero this`.
+-/
 theorem transDet_chart_ne_zero (c c' : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (hy' : y ∈ c'.e.source) : ChartGlue.transDet c.e c'.e y ≠ 0 := by
   intro h
@@ -44,6 +54,9 @@ theorem transDet_chart_ne_zero (c c' : AlgChart p σ D) {y : CxPts p σ} (hy : y
   rw [c.transDet_self hy, h, zero_mul] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Establish `hW : y ∈ ptsIn p σ (c.U ⊓ c'.U)` using `mem_ptsIn_inf.2 ⟨c.source_subset hy, c'.source_subset hy'⟩`. Establish `h1 : ContinuousAt (ev p σ _ (c.isFrame.ratio c'.isFrame).val) y` using `(continuousOn_ev _).continuousAt ((isOpen_ptsIn _).mem_nhds hW)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [(c.e.open_source.inter c'.e.open_source).mem_nhds ⟨hy, hy'⟩] with z hz`. Conclude with `c.ev_ratio c' hz.1 hz.2`.
+-/
 theorem continuousAt_transDet_chart (c c' : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source)
     (hy' : y ∈ c'.e.source) : ContinuousAt (ChartGlue.transDet c.e c'.e) y := by
   have hW : y ∈ ptsIn p σ (c.U ⊓ c'.U) :=
@@ -54,6 +67,17 @@ theorem continuousAt_transDet_chart (c c' : AlgChart p σ D) {y : CxPts p σ} (h
   filter_upwards [(c.e.open_source.inter c'.e.open_source).mem_nhds ⟨hy, hy'⟩] with z hz
   exact c.ev_ratio c' hz.1 hz.2
 
+/- English proof (translation)
+Introduce `k _ X p σ _ _ _ ⟨R⟩`. Take `⟨s, hs⟩` from `R.exists_finite`. Take `⟨f, hf⟩` from `PartitionOfUnity.exists_isSubordinate (X := CxPts p σ) (ι := s) isClosed_univ (fun i => (R.chart i.1).e.source) (fun i => (R.chart i.1).e.open_source) (fun y _ => by`. Take `⟨i, hi, hy⟩` from `hs y`. Conclude with `Set.mem_iUnion.2 ⟨⟨i, hi⟩, hy⟩)`.
+
+Establish `hsrc : ∀ (i : s) (y : CxPts p σ), f i y ≠ 0 → y ∈ (R.chart i.1).e.source` using `fun i y h => hf i (subset_tsupport _ h)`. Use `⟨fun c y => ∑ i : s, f i y * ‖ChartGlue.transDet c.e (R.chart i.1).e y‖ ^ 2, ⟨fun c c' y hy hy' => ?_, fun c => ?_⟩, fun c y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : f i y = 0`.
+
+Simplify using `[h]`. Rewrite using `[transDet_trans_chart c c' _ hy hy' (hsrc i y h), norm_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `continuousOn_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `hg : ContinuousOn (fun y => f i y * ‖ChartGlue.transDet c.e (R.chart i.1).e y‖ ^ 2) c.e.source` using `fun y hy => by`.
+
+Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `h : y ∈ tsupport (f i)`. Conclude with `(f i).continuous.continuousAt.mul ((continuousAt_transDet_chart c _ hy (hf i h)).norm.pow 2)`. Use `(continuousAt_const (y := (0 : ℝ))).congr ?_ filter_upwards [notMem_tsupport_iff_eventuallyEq.1 h] with z hz` and prove the remaining obligations. Rewrite using `[hz, Pi.zero_apply, zero_mul]`.
+
+Conclude with `hg.comp c.e.continuousOn_symm fun v hv => c.e.map_target hv`. Take `⟨i, hi⟩` from `f.exists_pos (Set.mem_univ y)`. Use `Finset.sum_pos' (fun j _ => mul_nonneg (f.nonneg j y) (sq_nonneg _)) ⟨i, Finset.mem_univ _, mul_pos hi (pow_pos (norm_pos_iff.2 ?_) 2)⟩` and prove the remaining obligations. Conclude with `transDet_chart_ne_zero c _ hy (hsrc i y hi.ne')`.
+-/
 theorem exists_isDens_pos : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)],
     Nonempty (AnRead p σ 1) → ∃ w : AlgChart p σ 1 → CxPts p σ → ℝ,

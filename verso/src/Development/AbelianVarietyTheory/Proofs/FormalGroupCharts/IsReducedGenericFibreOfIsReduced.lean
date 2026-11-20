@@ -4,6 +4,9 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O C Q _ _ _ _ _ _ _ h`. Use `letI : Algebra Q (C ⊗[O] Q) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid Q (nonZeroDivisors O)) (C ⊗[O] Q) := IsLocalization.tensorRight C (nonZeroDivisors O)`. Conclude with `isReduced_localizationPreserves (Algebra.algebraMapSubmonoid Q (nonZeroDivisors O)) (C ⊗[O] Q) h`.
+-/
 theorem isReduced_genericFibre_of_isReduced :
     ∀ (O C Q : Type) [CommRing O] [IsDomain O] [Field C] [Algebra O C] [IsFractionRing O C]
       [CommRing Q] [Algebra O Q], IsReduced Q → IsReduced (C ⊗[O] Q) := by

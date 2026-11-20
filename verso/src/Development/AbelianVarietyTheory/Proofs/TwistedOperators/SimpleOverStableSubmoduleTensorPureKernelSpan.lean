@@ -10,6 +10,15 @@ def quotOps {V : Type} [AddCommGroup V] [Module ℂ V] (G : Set (Module.End ℂ 
     (K : Submodule ℂ V) : Set (Module.End ℂ (V ⧸ K)) :=
   {f | ∃ g ∈ G, f ∘ₗ K.mkQ = K.mkQ ∘ₗ g}
 
+/- English proof (translation)
+Introduce `U hU`. Establish `hst : Stab G (U.comap K.mkQ)`. Introduce `g hg x hx`. Establish `hf : (K.mapQ K g (fun y hy => hs g hg y hy)) ∘ₗ K.mkQ = K.mkQ ∘ₗ g`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules. Use `hU _ ⟨g, hg, hf⟩ _ hx` as an intermediate fact. Simplify using `using this`. Establish `hle : K ≤ U.comap K.mkQ`. Introduce `x hx`.
+
+Simplify using `[(Submodule.Quotient.mk_eq_zero K).2 hx]`. Break down `hK _ hst hle with h | h` into its components or cases. Use `left`. Rewrite using `[← Submodule.map_comap_eq_of_surjective K.mkQ_surjective U, h, Submodule.mkQ_map_self]`. Use `right`.
+
+Rewrite using `[← Submodule.map_comap_eq_of_surjective K.mkQ_surjective U, h, Submodule.map_top, LinearMap.range_eq_top.2 K.mkQ_surjective]`.
+-/
 theorem quot_simple {V : Type} [AddCommGroup V] [Module ℂ V] (G : Set (Module.End ℂ V))
     (K : Submodule ℂ V) (hs : Stab G K) (hK : SimpleOver G K) :
     ∀ U : Submodule ℂ (V ⧸ K), Stab (quotOps G K) U → U = ⊥ ∨ U = ⊤ := by
@@ -29,6 +38,13 @@ theorem quot_simple {V : Type} [AddCommGroup V] [Module ℂ V] (G : Set (Module.
     rw [← Submodule.map_comap_eq_of_surjective K.mkQ_surjective U, h, Submodule.map_top,
       LinearMap.range_eq_top.2 K.mkQ_surjective]
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.map_ker (LinearMap.exact_subtype_mkQ K₀) K₀.mkQ_surjective (LinearMap.exact_subtype_mkQ K₁) K₁.mkQ_surjective]`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x k => exact Submodule.subset_span ⟨x, k, Or.inr k.2, by simp⟩`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul k y => exact Submodule.subset_span ⟨k, y, Or.inl k.2, by simp⟩`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+-/
 theorem ker_map_mkQ_le {V₀ V₁ : Type} [AddCommGroup V₀] [Module ℂ V₀] [AddCommGroup V₁]
     [Module ℂ V₁] (K₀ : Submodule ℂ V₀) (K₁ : Submodule ℂ V₁) :
     LinearMap.ker (TensorProduct.map K₀.mkQ K₁.mkQ) ≤ tensKer K₀ K₁ := by
@@ -46,6 +62,19 @@ theorem ker_map_mkQ_le {V₀ V₁ : Type} [AddCommGroup V₀] [Module ℂ V₀] 
     | tmul k y => exact Submodule.subset_span ⟨k, y, Or.inl k.2, by simp⟩
     | add a b ha hb => rw [map_add]; exact add_mem ha hb
 
+/- English proof (translation)
+Introduce `V₀ V₁ _ _ _ _ A B K₀ K₁ hr hA hB hsA hsB N hN hKN`. Use `set φ := TensorProduct.map K₀.mkQ K₁.mkQ with hφ`. Establish `hker : LinearMap.ker φ ≤ N` using `(ker_map_mkQ_le K₀ K₁).trans hKN`. Establish `hstU : Stab (tensOps (quotOps A K₀) (quotOps B K₁)) (N.map φ)`. Introduce and unpack `f hf _ ⟨x, hx, rfl⟩`.
+
+Break down `hf with ⟨f', ⟨g, hg, hfg⟩, rfl⟩ | ⟨f', ⟨g, hg, hfg⟩, rfl⟩` into its components or cases. Establish `hc : TensorProduct.map f' LinearMap.id ∘ₗ φ = φ ∘ₗ TensorProduct.map g LinearMap.id`. Rewrite using `[hφ, ← TensorProduct.map_comp, ← TensorProduct.map_comp, hfg]`. Both sides reduce to the same expression. Use `⟨TensorProduct.map g LinearMap.id x, hN _ (Or.inl ⟨g, hg, rfl⟩) x hx, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(LinearMap.congr_fun hc x).symm`. Establish `hc : TensorProduct.map LinearMap.id f' ∘ₗ φ = φ ∘ₗ TensorProduct.map LinearMap.id g`. Rewrite using `[hφ, ← TensorProduct.map_comp, ← TensorProduct.map_comp, hfg]`. Both sides reduce to the same expression. Use `⟨TensorProduct.map LinearMap.id g x, hN _ (Or.inr ⟨g, hg, rfl⟩) x hx, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(LinearMap.congr_fun hc x).symm`. Break down `GlobalTheory.T.simple_tensor_product_operatorStable_countable (quotOps A K₀) (quotOps B K₁) ((rank_quotient_le K₀).trans hr) (quot_simple A K₀ hA hsA) (quot_simple B K₁ hB hsB) _ hstU with h | h` into its components or cases. Use `left`. Use `le_antisymm ?_ hKN` and prove the remaining obligations. Introduce `x hx`.
+
+Apply `ker_map_mkQ_le K₀ K₁` to reduce the goal to its premises. Rewrite using `[LinearMap.mem_ker, ← Submodule.mem_bot ℂ, ← h]`. Conclude with `Submodule.mem_map_of_mem hx`. Use `right`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Establish `: φ x ∈ N.map φ` using `h ▸ Submodule.mem_top`. Take `⟨y, hy, hxy⟩` from `this`. Establish `: x - y ∈ LinearMap.ker φ` using `by simp [hxy]`. Simplify using `using add_mem (hker this) hy`.
+-/
 theorem simpleOver_tensKer : ∀ {V₀ V₁ : Type} [AddCommGroup V₀] [Module ℂ V₀] [AddCommGroup V₁] [Module ℂ V₁]
     (A : Set (Module.End ℂ V₀)) (B : Set (Module.End ℂ V₁)) (K₀ : Submodule ℂ V₀) (K₁ : Submodule ℂ V₁),
     Module.rank ℂ V₀ ≤ Cardinal.aleph0 → GlobalTheory.TensHead.Stab A K₀ → GlobalTheory.TensHead.Stab B K₁ →

@@ -6,6 +6,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL ValuativeRel PositivityTheory.Lbc
 
 namespace GlobalTheory.CompanionTheory.CompactAvg
 
+/- English proof (translation)
+Establish `h : ∀ i, ∃ k, (x k)⁻¹ * (j * x i) ∈ H` using `fun i => (hu _ (J.mul_mem hj (hx i))).exists`. Use `choose f hf using h`. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Establish `ha` using `hf a`.
+
+Establish `hb` using `hf b`. Rewrite `hb` using `[← hab]`. Establish `hm : (x a)⁻¹ * x b ∈ H`. Establish `h2` using `H.mul_mem (H.inv_mem ha) hb`. Establish `e : ((x (f a))⁻¹ * (j * x a))⁻¹ * ((x (f a))⁻¹ * (j * x b)) = (x a)⁻¹ * x b` using `by group`.
+
+Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `h1 : (x b)⁻¹ * x b ∈ H` using `by simp [H.one_mem]`. Conclude with `(hu (x b) (hx b)).unique hm h1`. Conclude with `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hinj), hf⟩`.
+-/
 theorem exists_perm_of_reps {G : Type} [Group G] (J H : Subgroup G) {r : ℕ} (x : Fin r → G)
     (hx : ∀ i, x i ∈ J) (hu : ∀ y ∈ J, ∃! i, (x i)⁻¹ * y ∈ H) {j : G} (hj : j ∈ J) :
     ∃ σ : Equiv.Perm (Fin r), ∀ i, (x (σ i))⁻¹ * (j * x i) ∈ H := by
@@ -24,6 +31,19 @@ theorem exists_perm_of_reps {G : Type} [Group G] (J H : Subgroup G) {r : ℕ} (x
     exact (hu (x b) (hx b)).unique hm h1
   exact ⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hinj), hf⟩
 
+/- English proof (translation)
+Introduce `G _ _ _ J hJ V _ _ π hπ`. Establish `hsub : ∀ v, v - GlobalTheory.LocGL.idem hπ hJ v ∈ twKer π J 1` using `fun v => by`. Rewrite using `[← GlobalTheory.LocGL.idem_eq_zero_iff hπ hJ, map_sub, GlobalTheory.LocGL.idem_of_mem hπ hJ (GlobalTheory.LocGL.idem_mem hπ hJ v), sub_self]`. Use `⟨GlobalTheory.LocGL.idem hπ hJ, GlobalTheory.LocGL.idem_mem hπ hJ, fun v hv => GlobalTheory.LocGL.idem_of_mem hπ hJ hv, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`.
+
+Establish `hk : twKer π J 1 ≤ LinearMap.ker l`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Establish `h1 : l (π (n : G) v) = l v` using `LinearMap.congr_fun (hl n n.2) v`. Simplify using `[h1]`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h2` using `hk (hsub v)`. Rewrite `h2` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `h2.symm`. Introduce `x hx`.
+
+Conclude with `LinearMap.ext fun v => GlobalTheory.LocGL.idem_apply_mem hπ hJ hx v`. Introduce `u H _ hu r x hr hxJ hex`. Establish `hrc : (r : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hr.ne'`. Establish `hfix : ((r : ℂ)⁻¹ • ∑ i, π (x i) u) ∈ fixed π J` using `GlobalTheory.Parabolic.mem_fixed.2 fun j hj => by`. Take `⟨σ, hσ⟩` from `exists_perm_of_reps J H x hxJ hex hj`.
+
+Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Use `Fintype.sum_equiv σ _ _ fun i => ?_` and prove the remaining obligations. Establish `e : j * x i = x (σ i) * ((x (σ i))⁻¹ * (j * x i))` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hu _ (hσ i)]`.
+
+Establish `h3 : GlobalTheory.LocGL.idem hπ hJ ((r : ℂ)⁻¹ • ∑ i, π (x i) u) = GlobalTheory.LocGL.idem hπ hJ u`. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl fun i _ => GlobalTheory.LocGL.idem_apply_mem hπ hJ (hxJ i) u, Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hrc, one_smul]`. Rewrite using `[← h3, GlobalTheory.LocGL.idem_of_mem hπ hJ hfix]`.
+-/
 theorem exists_average : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G), IsCompact (J : Set G) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsSmooth π → ∃ E : V →ₗ[ℂ] V, (∀ v, E v ∈ fixed π J) ∧ (∀ v ∈ fixed π J, E v = v) ∧ (∀ l : Module.Dual ℂ V, (∀ x ∈ J, l ∘ₗ π x = l) → l ∘ₗ E = l) ∧ (∀ x ∈ J, E ∘ₗ π x = E) ∧ ∀ (u : V) (H : Subgroup G), H ≤ J → (∀ h ∈ H, π h u = u) → ∀ (r : ℕ) (x : Fin r → G), 0 < r → (∀ i, x i ∈ J) → (∀ y ∈ J, ∃! i, (x i)⁻¹ * y ∈ H) → E u = ((r : ℂ)⁻¹) • ∑ i, π (x i) u := by
   intro G _ _ _ J hJ V _ _ π hπ
   have hsub : ∀ v, v - GlobalTheory.LocGL.idem hπ hJ v ∈ twKer π J 1 := fun v => by

@@ -18,10 +18,42 @@ def gStd (ka : ℝ) (g : Mx k r) : Mx k r := cj k r ka⁻¹ 1 (tTi k r * g * tT 
 
 def muStd (ka : ℝ) (μR : Measure (Mt k r)) : Measure (Mt k r) := (μR.map (cA k r)).map (cjT k r ka⁻¹ 1)
 
+/- English proof (translation)
+Use `show (a * b) • _ = a • (b • _)`. Rewrite using `[smul_smul]`.
+-/
 theorem haarLie_smul (S : Set (Mx k r)) (a b : ENNReal) : haarLie S (a * b) = a • haarLie S b := by
   show (a * b) • _ = a • (b • _)
   rw [smul_smul]
 
+/- English proof (translation)
+Take `⟨k0, rfl⟩ : ∃ k0, k = k0 + 1` from `⟨k - 1, by omega⟩`. Establish `hκ : (0 : ℝ) < ka⁻¹` using `inv_pos.2 hka`. Establish `hτ : (0 : ℝ) < 1` using `one_pos`. Use `set κs : ENNReal := L.κN * ENNReal.ofReal (deltaN (k0 + 1) r ka⁻¹ 1) with hκs`. Establish `hd : ENNReal.ofReal (deltaN (k0 + 1) r ka⁻¹ 1) ≠ 0` using `(ENNReal.ofReal_pos.mpr (deltaN_pos hκ hτ)).ne'`.
+
+Establish `hs0 : κs ≠ 0` using `mul_ne_zero hN0 hd`. Establish `hs1 : κs ≠ ⊤` using `ENNReal.mul_ne_top hN1 ENNReal.ofReal_ne_top`. Use `set t : ENNReal := κ₀ / κs with ht`. Use `set g1 := tTi (k0 + 1) r * g * tT (k0 + 1) r with hg1`. Establish `hq1 : IsOrbQuot (turnL L ka) g1 (μR.map (cA (k0 + 1) r)) (ν.map (thP (k0 + 1) r))` using `isOrbQuot_turn L ka hq`.
+
+Establish `hrel1 : IsRelStab (turnL L ka) g1` using `isRelStab_turn L ka hc hrel`. Establish `hqs : IsOrbQuot (stdL L ka hka) (gStd ka g) (muStd ka μR) ((ν.map (thP (k0 + 1) r)).map (phiP (k0 + 1) r ka⁻¹ 1))` using `isOrbQuot_trD hκ hτ (turnL L ka) _ _ _ _ _ _ hq1`. Establish `hrels : IsRelStab (stdL L ka hka) (gStd ka g)` using `isRelStab_trD hκ hτ (turnL L ka) _ _ _ _ _ _ _ hrel1`. Establish `hNs : (standardBesselDatumRescaled L ka hka κ₀).μN = t • (stdL L ka hka).μN` using `by show haarLie (Nset (k0 + 1) r) κ₀ = t • haarLie (Nset (k0 + 1) r) κs`. Rewrite using `[← haarLie_smul, ht, ENNReal.div_mul_cancel hs0 hs1]`.
+
+Establish `hP2 : pairMeas (standardBesselDatumRescaled L ka hka κ₀) = (t * t) • pairMeas (stdL L ka hka)` using `pairMeas_scaleN (L := stdL L ka hka) (L' := standardBesselDatumRescaled L ka hka κ₀) rfl rfl t hNs`. Establish `hq2 : IsOrbQuot (standardBesselDatumRescaled L ka hka κ₀) (gStd ka g) (muStd ka μR) ((t * t) • ((ν.map (thP (k0 + 1) r)).map (phiP (k0 + 1) r ka⁻¹ 1)))` using `isOrbQuot_smul hqs _ hP2`. Establish `hrel2 : IsRelStab (standardBesselDatumRescaled L ka hka κ₀) (gStd ka g)` using `hrels`. Establish `hc2 : (standardBesselDatumRescaled L ka hka κ₀).c = cStd` using `stdL_c L ka hka`. Establish `hg2 : gStd ka g ∈ UH (Hpk (k0 + 1) r)` using `(cj_mem_UH_iff hκ hτ _).mpr (conjI_mem_UH hg)`.
+
+Establish `hmem : ∀ x : Mt (k0 + 1) r, (Matrix.of (cjT (k0 + 1) r ka⁻¹ 1 (cA (k0 + 1) r x)) ∈ RStab (k0 + 1) r (gStd ka g)) ↔ Matrix.of x ∈ RStab (k0 + 1) r g`. Introduce `x`. Rewrite using `[of_cjT, of_cA]`. Conclude with `(cj_mem_RStab_iff hκ hτ _ _).trans (conjI_mem_RStab_iff g _)`. Establish `hconc2 : muStd ka μR {x | Matrix.of x ∉ RStab (k0 + 1) r (gStd ka g)} = 0`.
+
+Unfold `muStd`. Rewrite using `[← cjE_coe hκ hτ, MeasurableEquiv.map_apply, ← cAE_coe, MeasurableEquiv.map_apply]`. Use `hconc using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, cAE_coe, cjE_coe]`.
+
+Conclude with `not_congr (hmem x)`. Establish `hne2 : muStd ka μR ≠ 0`. Unfold `muStd`. Rewrite using `[← cjE_coe hκ hτ, ← cAE_coe]`. Conclude with `(Measure.map_ne_zero_iff (cjE hκ hτ).measurable.aemeasurable).mpr ((Measure.map_ne_zero_iff (cAE (k0 + 1) r).measurable.aemeasurable).mpr hne)`.
+
+Establish `: SFinite (muStd ka μR)` using `by unfold muStd; infer_instance`. Take `⟨θ, hθ, hint⟩` from `hcut`. Establish `hμ : B.μSS = pairMeas (standardBesselDatumRescaled L ka hka κ₀)` using `by show (B.μW.prod B.μN).prod (B.μW'.prod B.μN) = _`. Rewrite using `[hBW, hBN, hBW']`. Both sides reduce to the same expression.
+
+Establish `hI : ∀ θ' : Formalism.FourierDecayAlt.B.SS (k0 + 1) r → ℝ, (fun p => θ' p • Formalism.FourierDecayAlt.D.orbIntegrand B (gStd ka g) (stdF L ka F) p) = fun p => θ' p • besselIntg (standardBesselDatumRescaled L ka hka κ₀) (stdF L ka F) (gStd ka g) p`. Introduce `θ'`. Use function extensionality and compare the values at `p`. Conclude with `congrArg (fun X => θ' p • X) (Formalism.MainNotions.BigCellDensity.integrand_eq (standardBesselDatumRescaled L ka hka κ₀) B hc2 hBz hBz' hBπ hBπ' (stdF L ka F) (gStd ka g) p)`. Establish `hW` using `Formalism.MainNotions.BigCellDensity.weil_L_gen (standardBesselDatumRescaled L ka hka κ₀) hc2 h0 h1 hg2 hrel2 hconc2 hne2 hq2 (stdF L ka F)`.
+
+Establish `hfin : OrbInt (standardBesselDatumRescaled L ka hka κ₀) (stdF L ka F) (gStd ka g) ((t * t) • ((ν.map (thP (k0 + 1) r)).map (phiP (k0 + 1) r ka⁻¹ 1))) = ((t * t).toReal : ℂ) • OrbInt L F g ν` using `by show OrbInt (stdL L ka hka) (stdF L ka F) (gStd ka g) ((t * t) • ((ν.map (thP (k0 + 1) r)).map (phiP (k0 + 1) r ka⁻¹ 1))) = _`. Rewrite using `[gStd, OrbInt_trD hκ hτ (turnL L ka) _ _ _ _ _ _ _ (stdF L ka F) g1 (t * t) (ν.map (thP (k0 + 1) r))]`. Establish `hfe : (fun x => stdF L ka F (cj (k0 + 1) r ka⁻¹ 1 x)) = turnF L ka F`. Use function extensionality and compare the values at `x`. Use `show turnF L ka F (cjI (k0 + 1) r ka⁻¹ 1 (cj (k0 + 1) r ka⁻¹ 1 x)) = _`.
+
+Rewrite using `[cjI_cj hκ hτ]`. Rewrite using `[hfe, OrbInt_turn L ka hc F g ν]`. Unfold `Formalism.FourierDecayAlt.D.orbJ`. Rewrite using `[dif_pos ⟨θ, hθ, hint⟩]`. Establish `hspec` using `(⟨θ, hθ, hint⟩ : ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut B (gStd ka g) (muStd ka μR) θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand B (gStd ka g) (stdF L ka F) p) B.μSS).choose_spec`.
+
+Generalize the expression as in `(⟨θ, hθ, hint⟩ : ∃ θ, Formalism.FourierDecayAlt.D.IsNormCut B (gStd ka g) (muStd ka μR) θ ∧ Integrable (fun p => θ p • Formalism.FourierDecayAlt.D.orbIntegrand B (gStd ka g) (stdF L ka F) p) B.μSS).choose = θ' at hspec ⊢`. Establish `hint' : Integrable (fun p => θ' p • besselIntg (standardBesselDatumRescaled L ka hka κ₀) (stdF L ka F) (gStd ka g) p) (pairMeas (standardBesselDatumRescaled L ka hka κ₀))`. Establish `h2` using `hspec.2`. Rewrite `h2` using `[hI θ', hμ]`. Conclude with `h2`.
+
+Establish `hθ1 : ∀ p, Formalism.MainNotions.BigCellDensity.InPair (standardBesselDatumRescaled L ka hka κ₀) p → ∫ x, θ' (stabAct (gStd ka g) (Matrix.of x) p) ∂(muStd ka μR) = 1`. Introduce `p hp`. Use `hspec.1.2.2 p ?_` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.B.RealPlaceData.inSS`. Rewrite using `[hBz, hBz']`.
+
+Conclude with `hp`. Establish `e1 : (∫ p, θ' p • Formalism.FourierDecayAlt.D.orbIntegrand B (gStd ka g) (stdF L ka F) p ∂B.μSS) = ∫ p, θ' p • besselIntg (standardBesselDatumRescaled L ka hka κ₀) (stdF L ka F) (gStd ka g) p ∂(pairMeas (standardBesselDatumRescaled L ka hka κ₀))`. Rewrite using `[hμ]`. Conclude with `congrArg (fun f => ∫ p, f p ∂(pairMeas (standardBesselDatumRescaled L ka hka κ₀))) (hI θ')`. Conclude with `e1.trans ((hW θ' hθ1 hint').trans hfin)`.
+-/
 theorem orbJ_std (hk : 1 ≤ k) (L : LocBessel k r) (ka : ℝ) (hka : 0 < ka) (hc : L.c = ((2 * ka : ℝ) : ℂ))
     (hN0 : L.κN ≠ 0) (hN1 : L.κN ≠ ⊤) (κ₀ : ENNReal) (h0 : κ₀ ≠ 0) (h1 : κ₀ ≠ ⊤)
     (B : Formalism.FourierDecayAlt.B.RealPlaceData k r L.Wp L.Wq) (hBz : B.z = (stdL L ka hka).z) (hBz' : B.z' = (stdL L ka hka).z')

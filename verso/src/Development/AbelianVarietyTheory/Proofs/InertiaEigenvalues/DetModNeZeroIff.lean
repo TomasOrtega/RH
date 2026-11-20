@@ -17,6 +17,13 @@ section Field
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Take `⟨f₀, hf₀⟩` from `R.subtype.exists_leftInverse_of_injective R.ker_subtype`. Establish `h₀ : ∀ x : R, f₀ x = x` using `fun x => LinearMap.congr_fun hf₀ x`. Rewrite using `[Nat.card_congr R.isComplEquivProj, ← Module.finrank_linearMap k k, ← Module.natCard_eq_pow_finrank (K := k)]`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun g => ⟨f₀ + g.comp R.mkQ, fun x => by` and prove the remaining obligations.
+
+Establish `: R.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero R).2 x.2`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, this, map_zero, add_zero, h₀]⟩) ⟨?_, ?_⟩)`. Introduce `g g' h`. Establish `h1 : g.comp R.mkQ = g'.comp R.mkQ` using `add_left_cancel (congrArg Subtype.val h)`. Conclude with `R.linearMap_qext h1`.
+
+Introduce and unpack `⟨f, hf⟩`. Use `⟨R.liftQ (f - f₀) fun x hx => ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hf ⟨x, hx⟩, h₀ ⟨x, hx⟩, sub_self]`. Simplify using the standard rewrite rules.
+-/
 theorem card_isCompl [Finite k] {V : Type} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (R : Submodule k V) :
     Nat.card {U : Submodule k V // IsCompl R U} =
@@ -38,6 +45,15 @@ theorem card_isCompl [Finite k] {V : Type} [AddCommGroup V] [Module k V] [Finite
     · rw [LinearMap.mem_ker, LinearMap.sub_apply, hf ⟨x, hx⟩, h₀ ⟨x, hx⟩, sub_self]
     · simp
 
+/- English proof (translation)
+Establish `key : ∀ U : Submodule k (Fin (r + t) → k), R ⊔ U = ⊤ → r + t + finrank k ↥(R ⊓ U) = finrank k R + finrank k U` using `fun U h => by`. Use `Submodule.finrank_sup_add_finrank_inf_eq R U` as an intermediate fact. Rewrite `this` using `[h, finrank_top, finrank_fin_fun]`. Then use the resulting hypothesis. Use `split_ifs with h`. Establish `hq : finrank k ((Fin (r + t) → k) ⧸ R) = t`.
+
+Use `R.finrank_quotient_add_finrank` as an intermediate fact. Rewrite `this` using `[finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Use `card_isCompl R` as an intermediate fact. Rewrite `this` using `[hq, h, mul_comm]`.
+
+Rewrite using `[← this]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun U => ⟨fun ⟨h1, h2⟩ => ?_, fun hc => ?_⟩)` and prove the remaining obligations. Use `⟨disjoint_iff.2 (Submodule.finrank_eq_zero.1 ?_), codisjoint_iff.2 h2⟩` and prove the remaining obligations. Use `key U h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `key U hc.sup_eq_top` as an intermediate fact. Rewrite `this` using `[hc.inf_eq_bot, finrank_bot]`. Conclude with `⟨by omega, hc.sup_eq_top⟩`. Use `haveI : IsEmpty {U : Submodule k (Fin (r + t) → k) // finrank k U = t ∧ R ⊔ U = ⊤} := ⟨fun U => by have := key U.1 U.2.2; have := U.2.1; omega⟩`. Conclude with `Nat.card_of_isEmpty`.
+-/
 theorem card_sup_eq_top [Finite k] (r t : ℕ) (R : Submodule k (Fin (r + t) → k))
     (hR : finrank k R ≤ r) :
     Nat.card {U : Submodule k (Fin (r + t) → k) // finrank k U = t ∧ R ⊔ U = ⊤} =

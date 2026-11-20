@@ -7,17 +7,30 @@ open scoped TensorProduct
 
 namespace UpperTheory.V.Lit.Dr
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun z => Ξ.mat g⁻¹ *ᵥ z) h`. Simplify `h2` using `only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec]`.
+-/
 private theorem mat_cancel {E : Type} [Field E] {a : ℕ} (Ξ : AlgRep E a) (g : GL (Fin a) (Cinf E))
     {v v' : Fin Ξ.d → ℂ} (h : Ξ.mat g *ᵥ v = Ξ.mat g *ᵥ v') : v = v' := by
   have h2 := congrArg (fun z => Ξ.mat g⁻¹ *ᵥ z) h
   simpa only [Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec] using h2
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.apply_symm_apply, map_smul, smul_smul, mul_inv_cancel₀ two_ne_zero, one_smul, ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+-/
 private theorem sand_surj {E : Type} [Field E] [NumberField E] {a : ℕ} (g : GL (Fin a) (Cinf E)) (v : HV E a) :
     (2 : ℝ) • sand g (hv (hv.symm ((2 : ℝ)⁻¹ • sand g⁻¹ v))) = v := by
   rw [LinearEquiv.apply_symm_apply, map_smul, smul_smul, mul_inv_cancel₀ two_ne_zero, one_smul,
     ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a ho U Ξ q`. Use `⟨fun α α' w h h' => ?_, fun α w w' h h' => ?_⟩` and prove the remaining obligations. Use `AlternatingMap.ext fun X => (evFacts E a Ξ.d).1 (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[← infGL_mul_finGL g]`. Conclude with `mat_cancel Ξ _ ((h _ _ X).symm.trans (h' _ _ X))`.
+
+Use `Subtype.ext (funext fun s => funext fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ cone E a`. Take `⟨g, rfl⟩` from `hp`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations.
+
+Establish `e` using `(h g x fun i => hv.symm ((2 : ℝ)⁻¹ • sand g⁻¹ (v i))).trans (h' g x fun i => hv.symm ((2 : ℝ)⁻¹ • sand g⁻¹ (v i))).symm`. Simplify using `only [sand_surj] at e`. Conclude with `e`. Rewrite using `[(w.2 s).2 p hp, (w'.2 s).2 p hp]`.
+-/
 theorem corrUniq : CorrUniq := by
   intro E _ _ _ a ho U Ξ q
   refine ⟨fun α α' w h h' => ?_, fun α w w' h h' => ?_⟩

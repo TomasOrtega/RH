@@ -10,6 +10,21 @@ open scoped Classical
 
 namespace GlobalTheory.FlagOverField.AdCarr
 
+/- English proof (translation)
+Establish `hB : IsUnit ((N.map φ).transpose).det`. Rewrite using `[Matrix.det_transpose]`. Use `(φ : R →+* L).map_det N` as an intermediate fact. Conclude with `(show (φ : R →+* L) N.det = (N.map φ).det from this) ▸ hN.map (φ : R →+* L)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨T, h₁, h₂, h₃⟩`. Establish `e : g = (T.map φ).transpose * (N.map φ).transpose`. Rewrite using `[← Matrix.transpose_mul]`. Use `congrArg (fun A : Matrix (Fin m) (Fin m) R => (A.map (φ : R →+* L)).transpose) h₃` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`.
+
+Use `Eq.trans ?_ this` and prove the remaining obligations. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mul_nonsing_inv_cancel_right _ _ hB]`. Use `⟨?_, fun i j hij => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_transpose]`. Use `(φ : R →+* L).map_det T` as an intermediate fact. Conclude with `((show (φ : R →+* L) T.det = (T.map φ).det from this) ▸ h₂.map (φ : R →+* L)).ne_zero`. Simplify using `[h₁ (show id i < id j from hij)]`. Introduce and unpack `⟨h₁, h₂⟩`.
+
+Use `⟨(g * ((N.map φ).transpose)⁻¹).transpose.map φ.symm, fun i j hij => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, h₂ j i hij, map_zero]`. Use `(φ.symm : L →+* R).map_det (g * ((N.map φ).transpose)⁻¹).transpose` as an intermediate fact. Use `(show (φ.symm : L →+* R) _ = ((g * ((N.map φ).transpose)⁻¹).transpose.map φ.symm).det from this) ▸ ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `(Ne.isUnit h₁).map _`. Establish `e : g.transpose = N.map φ * (g * ((N.map φ).transpose)⁻¹).transpose`. Rewrite using `[← Matrix.transpose_transpose (N.map φ), ← Matrix.transpose_mul, Matrix.transpose_transpose (N.map φ), Matrix.nonsing_inv_mul_cancel_right _ _ hB]`. Use `congrArg (fun A : Matrix (Fin m) (Fin m) L => A.map (φ.symm : L →+* R)) e` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`.
+
+Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem exists_upper_iff {R L : Type} [CommRing R] [Field L] (φ : R ≃+* L) {m : ℕ} (N : Matrix (Fin m) (Fin m) R)
     (hN : IsUnit N.det) (g : Matrix (Fin m) (Fin m) L) :
     (∃ T : Matrix (Fin m) (Fin m) R, T.BlockTriangular id ∧ IsUnit T.det ∧ g.transpose.map φ.symm = N * T) ↔
@@ -50,6 +65,21 @@ theorem exists_upper_iff {R L : Type} [CommRing R] [Field L] (φ : R ≃+* L) {m
       ext i j
       simp
 
+/- English proof (translation)
+Introduce `F _ Y ι _ r E e fl hE he L _ p x w h fl' hfl' A' hA`. Use `choose U hy M hM hAM using hA`. Establish `hU (a : ι) : ⊤ ≤ p ⁻¹ᵁ U a` using `fun z _ => by`. Establish `: z = IsLocalRing.closedPoint L` using `Subsingleton.elim (α := PrimeSpectrum L) _ _`. Rewrite using `[this]`.
+
+Conclude with `hy a`. Set `φ : Γ(Sp L, ⊤) ≃+* L` to `(Scheme.ΓSpecIso (.of L)).commRingCatIsoToRingEquiv`. Set `N (a : ι) : Matrix (Fin (r a)) (Fin (r a)) Γ(Sp L, ⊤)` to `(M a).map (p.appLE (U a) ⊤ (hU a)).hom`. Establish `hsp (fl'' : ∀ a, Vert.Flag ((Scheme.Modules.pullback x).obj (E a)) (r a)) (hc : Carries Y.str E r fl p x w fl'') (a : ι) : Spans (fl'' a) ⊤ (pullCol x (e a) le_top (N a))` using `spans_pullCol_of_carries _ _ _ Y.str ι r E fl p x w fl'' hc ⊤ a (e a) (U a) le_top (M a) ⊤ (hU a) le_top (hM a)`. Establish `hc` using `carries_carried Y.str E r fl p x w`.
+
+Establish `hq (a : ι) : (E a).IsQuasicoherent` using `(hE a).isQuasicoherent`. Establish `hN (a : ι) : IsUnit (N a).det` using `isUnit_det_of_spans x (he a) le_top (hsp _ hc a)`. Establish `hB (a : ι) : A'.map ((ratOf Y).val p) a = ((N a).map φ).transpose`. Use extensionality with `i j`. Establish `e₁ : A' a i j = valF (ratOf Y).pt (U a) (M a j i)`.
+
+Rewrite using `[hAM a]`. Conclude with `(valF_fromSpecStalk _ _).symm`. Use `show (ratOf Y).val p (A' a i j) = _`. Rewrite using `[e₁]`. Conclude with `(GlobalTheory.ZH.RatModel.val_valF (M := ratOf Y) (y := p) (U := U a) (by rintro _ ⟨z, rfl⟩; exact hU a (x := z) trivial) _).trans (GlobalTheory.Points.valR_eq p (U a) (hU a) _)`.
+
+Establish `key (a : ι)` using `exists_upper_iff φ (N a) (hN a) (h a)`. Simplify using `only [← hB] at key`. Prove the components needed by the constructor for the conclusion. Introduce `hc' a`. Use `(key a).1 (exists_upper_of_spans x (he a) le_top (hsp _ hc' a) (hfl' a))` as an intermediate fact.
+
+Conclude with `⟨fun _ _ => trivial, this.1, trivial, fun i j _ hij => this.2 i j hij⟩`. Introduce `hP a i`. Take `⟨T, h₁, h₂, h₃⟩` from `(key a).2 ⟨(hP a).2.1, fun i j hij => (hP a).2.2.2 i j i.2 hij⟩`. Establish `h₄` using `spans_pullCol_mul x (e a) le_top (hsp _ hc a) h₁ h₂`. Rewrite `h₄` using `[← h₃]`.
+
+Take `⟨e₁, he₁⟩` from `hc a i`. Take `⟨e₂, he₂⟩` from `steps_iso_of_spans_top _ _ _ _ _ _ h₄ (hfl' a) i`. Conclude with `⟨e₁ ≪≫ e₂, by rw [Iso.trans_hom, Category.assoc, he₂, he₁]⟩`.
+-/
 theorem carries_iff_par : ∀ (F : Type) [Field F] (Y : Var F) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → (Sp F).Modules) (e : ∀ a, Fin (r a) → Γ(E a, ⊤)) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback Y.str).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → (∀ a, IsFrame (e a)) → ∀ (L : Type) [Field L] (p : Sp L ⟶ Y.X) (x : Sp L ⟶ Sp F) (w : p ≫ Y.str = x) (h : Mat r L) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback x).obj (E a)) (r a)), (∀ a, Spans (fl' a) ⊤ (pullCol x (e a) le_top ((h a).transpose.map (Scheme.ΓSpecIso (.of L)).inv.hom))) → ∀ A' : Mat r Y.Fn, AdFrame e fl (p (IsLocalRing.closedPoint L)) A' → (Carries Y.str E r fl p x w fl' ↔ Par r ⊤ (h * (A'.map ((ratOf Y).val p))⁻¹)) := by
   intro F _ Y ι _ r E e fl hE he L _ p x w h fl' hfl' A' hA
   choose U hy M hM hAM using hA

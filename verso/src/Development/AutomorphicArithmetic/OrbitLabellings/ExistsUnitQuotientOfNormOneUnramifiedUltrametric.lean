@@ -10,18 +10,40 @@ namespace UpperTheory.NormSurjectiveFixedIntegers
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+-/
 private lemma nadd {a b : K} {r : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ r) : ‖a + b‖ ≤ r :=
   (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ha hb)`.
+-/
 private lemma naddlt {a b : K} {r : ℝ} (ha : ‖a‖ < r) (hb : ‖b‖ < r) : ‖a + b‖ < r :=
   (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ha hb)
 
+/- English proof (translation)
+Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - b) (y := b) (by rw [hb]; exact h.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hb, max_eq_right h.le]`. Conclude with `this`.
+-/
 private lemma norm_one_of_close {a b : K} (hb : ‖b‖ = 1) (h : ‖a - b‖ < 1) : ‖a‖ = 1 := by
   have := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := a - b) (y := b)
     (by rw [hb]; exact h.ne)
   rw [sub_add_cancel, hb, max_eq_right h.le] at this
   exact this
 
+/- English proof (translation)
+Establish `h20 : (2 : K) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, norm_zero]`. Conclude with `zero_ne_one h2`. Set `f : K → K` to `fun t => (w - t ^ 2) / 2`.
+
+Set `s : Set K` to `Metric.closedBall 0 ‖w‖`. Establish `hs : IsComplete s` using `Metric.isClosed_closedBall.isComplete`. Establish `hmem : ∀ t, t ∈ s ↔ ‖t‖ ≤ ‖w‖` using `fun t => mem_closedBall_zero_iff`. Establish `hmaps : Set.MapsTo f s s`. Introduce `t ht`.
+
+Rewrite `ht`, the goal using `[hmem]`. Use `show ‖(w - t ^ 2) / 2‖ ≤ _`. Rewrite using `[norm_div, h2, div_one, sub_eq_add_neg]`. Use `nadd le_rfl ?_` and prove the remaining obligations. Rewrite using `[norm_neg, norm_pow]`.
+
+Use polynomial arithmetic with `[norm_nonneg t]`. Establish `hc : ContractingWith ‖w‖₊ (hmaps.restrict f s s)`. Use `⟨by exact_mod_cast hw, LipschitzWith.of_dist_le_mul ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩`. Rewrite `ha`, `hb` using `[hmem]`.
+
+Rewrite using `[Subtype.dist_eq, Subtype.dist_eq, dist_eq_norm, dist_eq_norm]`. Use `show ‖(w - a ^ 2) / 2 - (w - b ^ 2) / 2‖ ≤ ‖w‖ * ‖a - b‖`. Establish `: (w - a ^ 2) / 2 - (w - b ^ 2) / 2 = -((a + b) * (a - b)) / 2` using `by ring`. Rewrite using `[this, norm_div, h2, div_one, norm_neg, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (nadd ha hb) (norm_nonneg _)`.
+
+Take `⟨t, ht, hfix, -⟩` from `ContractingWith.exists_fixedPoint' hs hmaps hc (x := 0) ((hmem 0).2 (by simp)) (edist_ne_top _ _)`. Use `⟨t, ((hmem t).1 ht).trans_lt hw, ?_⟩` and prove the remaining obligations. Establish `: (w - t ^ 2) / 2 = t` using `hfix`. Clear denominators, using `at this` for the nonvanishing conditions. Take the linear combination `-this`.
+-/
 private lemma sqrt_near [CompleteSpace K] (h2 : ‖(2 : K)‖ = 1) (w : K) (hw : ‖w‖ < 1) :
     ∃ t : K, ‖t‖ < 1 ∧ t ^ 2 + 2 * t = w := by
   have h20 : (2 : K) ≠ 0 := by
@@ -58,32 +80,73 @@ private lemma sqrt_near [CompleteSpace K] (h2 : ‖(2 : K)‖ = 1) (w : K) (hw :
 
 variable {l : ℕ} {σ : K →+* K}
 
+/- English proof (translation)
+The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hU.1.one_lt)`.
+-/
 private lemma linv_lt (hU : UnrOK K l σ) : (l : ℝ)⁻¹ < 1 :=
   inv_lt_one_of_one_lt₀ (by exact_mod_cast hU.1.one_lt)
 
+/- English proof (translation)
+The claim follows from `(hU.2.2.2.2 a ha).trans_lt (linv_lt hU)`.
+-/
 private lemma sig_close (hU : UnrOK K l σ) {a : K} (ha : ‖a‖ ≤ 1) : ‖σ a - a ^ l‖ < 1 :=
   (hU.2.2.2.2 a ha).trans_lt (linv_lt hU)
 
+/- English proof (translation)
+Use `nadd (sig_close hU ha).le (show ‖a ^ l‖ ≤ 1 by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 private lemma sig_le (hU : UnrOK K l σ) {a : K} (ha : ‖a‖ ≤ 1) : ‖σ a‖ ≤ 1 := by
   have := nadd (sig_close hU ha).le (show ‖a ^ l‖ ≤ 1 by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha)
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Use `naddlt (sig_close hU ha.le) (show ‖a ^ l‖ < 1 by rw [norm_pow]; exact pow_lt_one₀ (norm_nonneg _) ha hU.1.ne_zero)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 private lemma sig_lt (hU : UnrOK K l σ) {a : K} (ha : ‖a‖ < 1) : ‖σ a‖ < 1 := by
   have := naddlt (sig_close hU ha.le)
     (show ‖a ^ l‖ < 1 by rw [norm_pow]; exact pow_lt_one₀ (norm_nonneg _) ha hU.1.ne_zero)
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ha`. Consider the case `succ n ih => rw [Function.iterate_succ_apply']`. Conclude with `sig_le hU ih`.
+-/
 private lemma sig_iter_le (hU : UnrOK K l σ) (n : ℕ) {a : K} (ha : ‖a‖ ≤ 1) : ‖σ^[n] a‖ ≤ 1 := by
   induction n with
   | zero => exact ha
   | succ n ih => rw [Function.iterate_succ_apply']; exact sig_le hU ih
 
+/- English proof (translation)
+Use `Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd (K := K) hU.1 (by rw [hU.2.2.1]; exact linv_lt hU) (m := 2) (fun h => absurd (Nat.le_of_dvd two_pos h) (not_le.2 hU.2.1))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 private lemma norm_two (hU : UnrOK K l σ) : ‖(2 : K)‖ = 1 := by
   have := Formalism.DworkPowerSeriesWeights.norm_natCast_eq_one_of_not_dvd (K := K) hU.1
     (by rw [hU.2.2.1]; exact linv_lt hU) (m := 2)
     (fun h => absurd (Nat.le_of_dvd two_pos h) (not_le.2 hU.2.1))
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hl` using `hU.2.1`. Establish `hσζ : σ ζ = ζ ^ l` using `Formalism.L2.Th1.D.teichSigma K l 2 σ hU (by omega) ζ hζ.pow_eq_one`. Establish `hfac : l ^ 2 - 1 = (l + 1) * (l - 1)`. Use `Nat.sq_sub_sq l 1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hN0 : 0 < l ^ 2 - 1` using `by rw [hfac]; exact Nat.mul_pos (by omega) (by omega)`. Establish `nζ : ‖ζ‖ = 1` using `Formalism.L2.Th1.D.FormalExponential.norm_eq_one_of_pow hN0.ne' hζ.pow_eq_one`. Establish `hη : IsPrimitiveRoot (ζ ^ (l + 1)) (l - 1)` using `hζ.pow hN0 hfac`. Establish `h1 : ‖u ^ (l - 1) - 1‖ < 1`. Establish `h` using `sig_close hU hu.le`.
+
+Establish `e : σ u - u ^ l = -(u * (u ^ (l - 1) - 1))`. Rewrite using `[hs, mul_sub, ← pow_succ', Nat.sub_add_cancel (by omega)]; ring`. Rewrite `h` using `[e, norm_neg, norm_mul, hu, one_mul]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, ‖u - (ζ ^ (l + 1)) ^ k‖ < 1 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Establish `hp` using `congrArg (Polynomial.eval u) (X_pow_sub_C_eq_prod hη (α := 1) (a := 1) (by omega) (one_pow _))`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_prod, mul_one] at hp`. Rewrite `h1` using `[hp, norm_prod]`. Conclude with `absurd h1 (not_lt.2 (Finset.prod_induction _ (fun y : ℝ => 1 ≤ y) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun j _ => hcon j))`.
+
+Use `set x : K := ζ ^ k with hx`. Establish `hxx : x * σ x = (ζ ^ (l + 1)) ^ k`. Rewrite using `[hx, map_pow, hσζ, ← mul_pow, ← pow_succ']`. Establish `hx2 : σ (σ x) = x`. Rewrite using `[hx, map_pow, map_pow, hσζ, map_pow, hσζ, ← pow_mul ζ l l, ← sq, show l ^ 2 = (l ^ 2 - 1) + 1 by omega, pow_succ, hζ.pow_eq_one, one_mul]`.
+
+Establish `nx : ‖x‖ = 1` using `by rw [hx, norm_pow, nζ, one_pow]`. Rewrite `hk` using `[← hxx]`. Use `set n : K := x * σ x with hn`. Establish `nn : ‖n‖ = 1` using `by rw [hxx, norm_pow, norm_pow, nζ, one_pow, one_pow]`. Establish `hn0 : n ≠ 0`.
+
+Introduce `h`. Rewrite `nn` using `[h, norm_zero]`. Conclude with `zero_ne_one nn`. Establish `hsn : σ n = n` using `by rw [hn, map_mul, hx2, mul_comm]`. Take `⟨t, ht, htw⟩` from `sqrt_near (norm_two hU) ((u - n) / n) (by rwa [norm_div, nn, div_one])`.
+
+Establish `htw' : σ t ^ 2 + 2 * σ t = (u - n) / n`. Use `congrArg σ htw` as an intermediate fact. Rewrite `this` using `[map_add, map_pow, map_mul, map_ofNat, map_div₀, map_sub, hs, hsn]`. Then use the resulting hypothesis. Establish `hst : σ t = t`. Establish `e : (σ t - t) * (σ t + t + 2) = 0` using `by linear_combination htw' - htw`.
+
+Establish `h3 : ‖σ t + t + 2‖ = 1` using `norm_one_of_close (norm_two hU) (by rw [add_sub_cancel_right]; exact naddlt (sig_lt hU ht) ht)`. Break down `mul_eq_zero.1 e with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Rewrite `h3` using `[h, norm_zero]`. Conclude with `absurd h3 zero_ne_one`.
+
+Use `⟨x * (1 + t), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, nx, one_mul]`. Conclude with `nadd norm_one.le ht.le`. Simplify using `only [map_mul, map_add, map_one, hst, hx2]`. Simplify using `only [map_mul, map_add, map_one, hst]`.
+
+Establish `: (t ^ 2 + 2 * t) * n = u - n` using `by rw [htw]; field_simp`. Take the linear combination `this + (1 + t) ^ 2 * hn`.
+-/
 private lemma norm_onto [CompleteSpace K] [CharZero K] (hU : UnrOK K l σ) (ζ : K)
     (hζ : IsPrimitiveRoot ζ (l ^ 2 - 1)) (u : K) (hu : ‖u‖ = 1) (hs : σ u = u) :
     ∃ a : K, ‖a‖ ≤ 1 ∧ σ (σ a) = a ∧ a * σ a = u := by
@@ -153,6 +216,11 @@ private def intFix (hU : UnrOK K l σ) : Subring K where
   zero_mem' := ⟨by simp, by rw [map_zero, map_zero]⟩
   neg_mem' := fun {a} ha => ⟨by rw [norm_neg]; exact ha.1, by rw [map_neg, map_neg, ha.2]⟩
 
+/- English proof (translation)
+Establish `h0 : (a : K) ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, norm_zero]`. Conclude with `zero_ne_one ha`. Use `IsUnit.of_mul_eq_one ⟨(a : K)⁻¹, by rw [norm_inv, ha, inv_one], by` and prove the remaining obligations.
+
+Rewrite using `[map_inv₀, map_inv₀, a.2.2]⟩ (Subtype.ext ?_)`. Conclude with `mul_inv_cancel₀ h0`.
+-/
 private lemma unit_of_norm (hU : UnrOK K l σ) (a : intFix hU) (ha : ‖(a : K)‖ = 1) : IsUnit a := by
   have h0 : (a : K) ≠ 0 := by
     intro h
@@ -162,6 +230,9 @@ private lemma unit_of_norm (hU : UnrOK K l σ) (a : intFix hU) (ha : ‖(a : K)�
     rw [map_inv₀, map_inv₀, a.2.2]⟩ (Subtype.ext ?_)
   exact mul_inv_cancel₀ h0
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `ha.exists_right_inv`. Establish `h : ‖(a : K)‖ * ‖(b : K)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, hb, Subring.coe_one, norm_one]`. Use `le_antisymm a.2.1 ?_` and prove the remaining obligations. Use polynomial arithmetic with `[b.2.1, norm_nonneg (a : K)]`.
+-/
 private lemma norm_of_unit (hU : UnrOK K l σ) (a : intFix hU) (ha : IsUnit a) : ‖(a : K)‖ = 1 := by
   obtain ⟨b, hb⟩ := ha.exists_right_inv
   have h : ‖(a : K)‖ * ‖(b : K)‖ = 1 := by
@@ -169,6 +240,21 @@ private lemma norm_of_unit (hU : UnrOK K l σ) (a : intFix hU) (ha : IsUnit a) :
   refine le_antisymm a.2.1 ?_
   nlinarith [b.2.1, norm_nonneg (a : K)]
 
+/- English proof (translation)
+Use `letI : StarRing (intFix hU) := { star := fun a => ⟨σ a, sig_le hU a.2.1, by rw [a.2.2]⟩ star_involutive := fun a => Subtype.ext a.2.2 star_mul := fun a b => Subtype.ext (by show σ ((a : K) * b) = σ b * σ a`. Rewrite using `[map_mul, mul_comm])`. Use `star_add := fun a b => Subtype.ext (map_add σ (a : K) b) }`. Establish `hst : ∀ a : intFix hU, ((star a : intFix hU) : K) = σ a` using `fun a => rfl`. Use `haveI : IsLocalRing (intFix hU) := IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`.
+
+Break down `a.2.1.lt_or_eq with h | h` into its components or cases. Use `Or.inr (unit_of_norm hU _ (norm_one_of_close norm_one ?_))` and prove the remaining obligations. Simplify using `using h`. Conclude with `Or.inl (unit_of_norm hU _ h)`. Establish `hD : KStar.Cstarloc.UnramDatum (intFix hU)`.
+
+Prove the components needed by the constructor for the conclusion. Use `⟨⟨(2 : K)⁻¹, by rw [norm_inv, norm_two hU, inv_one], by simp only [map_inv₀, map_ofNat]⟩, Subtype.ext ?_⟩ show (2 : K)⁻¹ + σ (2 : K)⁻¹ = 1` and prove the remaining obligations. Rewrite using `[map_inv₀, map_ofNat]`. Evaluate the numerical expressions. Introduce `u hu hs`.
+
+Take `⟨a, h1, h2, h3⟩` from `norm_onto hU ζ hζ u (norm_of_unit hU u hu) (congrArg Subtype.val hs)`. Conclude with `⟨⟨a, h1, h2⟩, Subtype.ext h3⟩`. Set `H' : Matrix n n (intFix hU)` to `Matrix.of fun i j => ⟨H i j, hH i j⟩`. Set `G' : Matrix n n (intFix hU)` to `Matrix.of fun i j => ⟨G i j, hG i j⟩`. Establish `hHG' : H' * G' = 1`.
+
+Use extensionality with `i j`. Use `congrFun (congrFun hHG i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply, AddSubmonoidClass.coe_finset_sum]`. Use `this.trans ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> rfl`. Take `⟨P, -, hP⟩` from `KStar.Cstarloc.exists_congr_one hD H' (by ext i j; exact hh i j) (Matrix.isUnit_det_of_right_inverse hHG')`. Use `⟨Matrix.of fun i j => (P i j : K), fun i j => (P i j).2, fun r r' => ?_⟩` and prove the remaining obligations. Use `congrArg (intFix hU).subtype (congrFun (congrFun hP r) r')` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.one_apply, map_sum, map_mul, Matrix.conjTranspose_apply, Subring.coe_subtype, hst] at this`.
+
+Use `this.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private lemma congr_one [CompleteSpace K] [CharZero K] (hU : UnrOK K l σ) (ζ : K)
     (hζ : IsPrimitiveRoot ζ (l ^ 2 - 1)) {n : Type} [Fintype n] [DecidableEq n]
     (H G : Matrix n n K) (hH : ∀ i j, ‖H i j‖ ≤ 1 ∧ σ (σ (H i j)) = H i j)
@@ -221,10 +307,18 @@ private lemma congr_one [CompleteSpace K] [CharZero K] (hU : UnrOK K l σ) (ζ :
 private def tr (σ : K →+* K) (i : ℕ) (x : K) : K := ∑ k ∈ Finset.range i, (σ ^ (2 * k)) x
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Rewrite using `[pow_add]`. Both sides reduce to the same expression.
+-/
 private lemma pp (a b : ℕ) (x : K) : (σ ^ a) ((σ ^ b) x) = (σ ^ (a + b)) x := by
   rw [pow_add]; rfl
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Establish `h1` using `Finset.sum_range_succ (fun k => (σ ^ (2 * k)) x) i`. Establish `h2` using `Finset.sum_range_succ' (fun k => (σ ^ (2 * k)) x) i`. Simplify using `only [mul_zero, pow_zero, RingHom.coe_one, id] at h2`. Rewrite `h2` using `[h1, hx]`. Unfold `tr`.
+
+Simplify using `only [pp]`. Conclude with `(add_right_cancel h2).symm`.
+-/
 private lemma tr_shift (i : ℕ) (x : K) (hx : (σ ^ (2 * i)) x = x) : tr σ i ((σ ^ 2) x) = tr σ i x := by
   have h1 := Finset.sum_range_succ (fun k => (σ ^ (2 * k)) x) i
   have h2 := Finset.sum_range_succ' (fun k => (σ ^ (2 * k)) x) i
@@ -235,11 +329,17 @@ private lemma tr_shift (i : ℕ) (x : K) (hx : (σ ^ (2 * i)) x = x) : tr σ i (
   exact (add_right_cancel h2).symm
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Unfold `tr`. Simplify using `only [map_sum, pp, add_comm]`.
+-/
 private lemma tr_map (i m : ℕ) (x : K) : (σ ^ m) (tr σ i x) = tr σ i ((σ ^ m) x) := by
   unfold tr
   simp only [map_sum, pp, add_comm]
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[mul_add, add_comm, mul_one, ← pp, tr_shift, ih]`. Rewrite using `[pp, add_comm, ← pp, hx]`.
+-/
 private lemma tr_shift' (i : ℕ) (x : K) (hx : (σ ^ (2 * i)) x = x) (j : ℕ) :
     tr σ i ((σ ^ (2 * j)) x) = tr σ i x := by
   induction j with
@@ -249,6 +349,9 @@ private lemma tr_shift' (i : ℕ) (x : K) (hx : (σ ^ (2 * i)) x = x) (j : ℕ) 
     rw [pp, add_comm, ← pp, hx]
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[mul_add, ← pp]`. Conclude with `(congrArg _ hc).trans ih`.
+-/
 private lemma fix_even {c : K} (hc : σ (σ c) = c) (k : ℕ) : (σ ^ (2 * k)) c = c := by
   induction k with
   | zero => rfl
@@ -257,12 +360,18 @@ private lemma fix_even {c : K} (hc : σ (σ c) = c) (k : ℕ) : (σ ^ (2 * k)) c
     exact (congrArg _ hc).trans ih
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Th1.D.TraceDualSums.sum_zmod (2 * i) (fun k => if k % 2 = 0 then σ^[k] x else 0), Formalism.L2.Th1.D.TraceDualSums.sum_range_even i (fun k => σ^[k] x)]`. Simplify using `only [tr, RingHom.coe_pow]`.
+-/
 private lemma tr_eq (i : ℕ) [NeZero i] (x : K) :
     (∑ s : ZMod (2 * i), if s.val % 2 = 0 then σ^[s.val] x else 0) = tr σ i x := by
   rw [Formalism.L2.Th1.D.TraceDualSums.sum_zmod (2 * i) (fun k => if k % 2 = 0 then σ^[k] x else 0),
     Formalism.L2.Th1.D.TraceDualSums.sum_range_even i (fun k => σ^[k] x)]
   simp only [tr, RingHom.coe_pow]
 
+/- English proof (translation)
+Use `⟨IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.coe_pow]`. Conclude with `sig_iter_le hU _ hn`. Use `show (σ ^ 2) (tr σ i x) = _`. Rewrite using `[tr_map, tr_shift i x hx]`.
+-/
 private lemma tr_mem (hU : UnrOK K l σ) (i : ℕ) (x : K) (hn : ‖x‖ ≤ 1)
     (hx : (σ ^ (2 * i)) x = x) : ‖tr σ i x‖ ≤ 1 ∧ σ (σ (tr σ i x)) = tr σ i x := by
   refine ⟨IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_, ?_⟩
@@ -270,6 +379,31 @@ private lemma tr_mem (hU : UnrOK K l σ) (i : ℕ) (x : K) (hn : ‖x‖ ≤ 1)
   · show (σ ^ 2) (tr σ i x) = _
     rw [tr_map, tr_shift i x hx]
 
+/- English proof (translation)
+Take `⟨hn, hf⟩` from `h1`. Establish `hd` using `h2.2`. Simplify using `only [tr_eq] at hd`. Simplify using `only [← RingHom.coe_pow] at hf`. Take `⟨j, hj⟩` from `hi`.
+
+Establish `hle : ∀ {a : K}, ‖a‖ ≤ 1 → ‖(σ ^ i) a‖ ≤ 1` using `fun ha => by`. Rewrite using `[RingHom.coe_pow]`. Conclude with `sig_iter_le hU _ ha`. Establish `hfi : ∀ {a : K}, (σ ^ (2 * i)) a = a → (σ ^ (2 * i)) ((σ ^ i) a) = (σ ^ i) a` using `fun ha => by`. Rewrite using `[pp, add_comm, ← pp, ha]`.
+
+Establish `hmul : ∀ {a b : K}, ‖a‖ ≤ 1 → ‖b‖ ≤ 1 → ‖a * b‖ ≤ 1` using `fun ha hb => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`. Set `V : Matrix (Fin i) (Fin i) K` to `Matrix.of fun k r => (σ ^ (2 * k.val)) (om r)`. Set `Q : Matrix (Fin i) (Fin i) K` to `Matrix.of fun r k => (σ ^ (2 * k.val)) (oms r)`.
+
+Establish `hQV : Q * V = 1`. Use extensionality with `r r'`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Use `hd r' r` as an intermediate fact. Rewrite `this` using `[tr, Finset.sum_range]`.
+
+Simplify using `only [map_mul] at this`. Simplify using `only [V, Q, Matrix.of_apply, mul_comm ((σ ^ _) (oms r)), this, eq_comm]`. Establish `hVQ : V * Q = 1` using `mul_eq_one_comm.1 hQV`. Set `H : Matrix (Fin i) (Fin i) K` to `Matrix.of fun r r' => tr σ i (om r * (σ ^ i) (om r'))`. Set `G : Matrix (Fin i) (Fin i) K` to `Matrix.of fun r r' => tr σ i ((σ ^ i) (oms r) * oms r')`.
+
+Establish `eH : H = V.transpose * V.map (σ ^ i)`. Use extensionality with `r r'`. Simplify using `only [H, V, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.map_apply, tr, Finset.sum_range, map_mul, pp, add_comm]`. Establish `eG : G = Q.map (σ ^ i) * Q.transpose`. Use extensionality with `r r'`.
+
+Simplify using `only [G, Q, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.map_apply, tr, Finset.sum_range, map_mul, pp, add_comm]`. Establish `hHG : H * G = 1`. Rewrite using `[eH, eG, Matrix.mul_assoc, ← Matrix.mul_assoc (V.map _), ← Matrix.map_mul, hVQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.transpose_mul, hQV, Matrix.transpose_one]`. Establish `hh : ∀ r r', σ (H r' r) = H r r'`. Introduce `r r'`.
+
+Use `show (σ ^ 1) (tr σ i (om r' * (σ ^ i) (om r))) = tr σ i (om r * (σ ^ i) (om r'))`. Rewrite using `[tr_map, ← tr_shift' i _ _ j]`. Rewrite using `[map_mul, map_mul, pp, pp, pp, ← hj, show i + i = 2 * i by ring, (hf r).1, mul_comm]`. Rewrite using `[pp, add_comm, ← pp, map_mul (σ ^ (2 * i)), (hf r').1, hfi (hf r).1]`. Take `⟨P, hP, hPH⟩` from `congr_one hU ζ hζ H G (fun r r' => tr_mem hU i _ (hmul (hn r).1 (hle (hn r').1)) (by rw [map_mul, (hf r).1, hfi (hf r').1])) (fun r r' => tr_mem hU i _ (hmul (hle (hn r).2) (hn r').2) (by rw [map_mul, (hf r').2, hfi (hf r).2])) hh hHG`.
+
+Establish `n1 : ∀ r, ‖∑ a, P r a * om a‖ ≤ 1` using `fun r => IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun a _ => hmul (hP r a).1 (hn a).1`. Establish `f1 : ∀ r, (σ ^ (2 * i)) (∑ a, P r a * om a) = ∑ a, P r a * om a` using `fun r => by`. Simplify using `only [map_sum, map_mul, fix_even (hP _ _).2, (hf _).1]`. Establish `hPi : ∀ r a, (σ ^ i) (P r a) = σ (P r a)` using `fun r a => by`. Rewrite using `[hj, add_comm, ← pp, fix_even (hP _ _).2, pow_one]`.
+
+Establish `hPs : ∀ r a k, (σ ^ (2 * k)) (σ (P r a)) = σ (P r a)` using `fun r a k => fix_even (by rw [(hP r a).2]) k`. Use `⟨fun r => ∑ a, P r a * om a, ⟨fun r => ⟨n1 r, sig_iter_le hU _ (n1 r)⟩, fun r => ?_⟩, by rw [Fintype.card_fin], fun r r' => ?_⟩` and prove the remaining obligations. Simplify using `only [← RingHom.coe_pow]`. Conclude with `⟨f1 r, hfi (f1 r)⟩`. Rewrite using `[tr_eq, ← hPH r r', ← RingHom.coe_pow]`.
+
+Simplify using `only [H, Matrix.of_apply, tr, map_sum, map_mul, hPi, hPs, fix_even (hP _ _).2, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma main [CompleteSpace K] [CharZero K] (hU : UnrOK K l σ) (ζ : K)
     (hζ : IsPrimitiveRoot ζ (l ^ 2 - 1)) (i : ℕ) [NeZero i] (hi : Odd i) (om oms : Fin i → K)
     (h1 : OwOK (2 * i) σ om oms) (h2 : TrDual (2 * i) σ om oms) :
@@ -343,6 +477,9 @@ private lemma main [CompleteSpace K] [CharZero K] (hU : UnrOK K l σ) (ζ : K)
     refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => ?_
     ring
 
+/- English proof (translation)
+Establish `h0 : 1 < l ^ d` using `Nat.one_lt_pow hd hp.one_lt`. Use `⟨by omega, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `Nat.dvd_sub (dvd_pow_self l hd) h`. Rewrite `h2` using `[Nat.sub_sub_self h0.le]`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h2)`.
+-/
 private lemma not_dvd {l d : ℕ} (hp : l.Prime) (hd : d ≠ 0) : 0 < l ^ d - 1 ∧ ¬ l ∣ l ^ d - 1 := by
   have h0 : 1 < l ^ d := Nat.one_lt_pow hd hp.one_lt
   refine ⟨by omega, fun h => ?_⟩
@@ -352,6 +489,11 @@ private lemma not_dvd {l d : ℕ} (hp : l.Prime) (hd : d ≠ 0) : 0 < l ^ d - 1 
 
 end UpperTheory.NormSurjectiveFixedIntegers
 
+/- English proof (translation)
+Introduce `l _ _ σ hU i _ hi`. Use `haveI : CompleteSpace (MaximalUnramifiedExtension l) := Formalism.L2.Th1.D.kurComplete l`. Establish `a1` using `UpperTheory.NormSurjectiveFixedIntegers.not_dvd (d := 2) hU.1 two_ne_zero`. Establish `a2` using `UpperTheory.NormSurjectiveFixedIntegers.not_dvd (d := 2 * i) hU.1 (NeZero.ne _)`. Take `⟨ζ, hζ⟩` from `Formalism.L2.Th1.D.kurRoots l _ a1.1 a1.2`.
+
+Take `⟨ξ, hξ⟩` from `Formalism.L2.Th1.D.kurRoots l _ a2.1 a2.2`. Establish `h` using `Formalism.L2.Th1.D.trDualExists (MaximalUnramifiedExtension l) l (2 * i) σ hU (even_two_mul i) ξ hξ`. Rewrite `h` using `[show 2 * i / 2 = i by omega]`. Take `⟨om, oms, h1, h2⟩` from `h`. Conclude with `UpperTheory.NormSurjectiveFixedIntegers.main hU ζ hζ i hi om oms h1 h2`.
+-/
 theorem UpperTheory.exists_unit_quotient_of_normOne_unramified_ultrametric :
     ∀ (l : ℕ) [Fact l.Prime], 5 ≤ l → ∀ σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l, UnrOK (MaximalUnramifiedExtension l) l σ → ∀ (i : ℕ) [NeZero i], Odd i →
     ∃ om : Fin i → MaximalUnramifiedExtension l, OwOK (2 * i) σ om (fun r => σ^[i] (om r)) ∧ TrDual (2 * i) σ om (fun r => σ^[i] (om r)) := by

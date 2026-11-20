@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsDividedPowerE
 import Mathlib
 open MvPolynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.dpEval_two | exact GlobalTheory.dpEval_two | (intros; apply GlobalTheory.dpEval_two <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_dividedPowerEval_twoVars_ringHom : ∀ (B : Type) [CommRing B] (u v : ℕ → B), u 0 = 1 → v 0 = 1 →
     (∀ m n, u m * u n = ((m + n).choose m : B) * u (m + n)) →
     (∀ m n, v m * v n = ((m + n).choose m : B) * v (m + n)) →

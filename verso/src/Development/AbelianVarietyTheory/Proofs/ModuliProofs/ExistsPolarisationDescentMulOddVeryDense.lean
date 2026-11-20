@@ -19,6 +19,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Set `T : Over S` to `Over.mk t`. Set `T' : Over S'` to `Over.mk t'`. Establish `hxw : (g ≫ x.left) ≫ A.hom = t' ≫ f` using `by rw [Category.assoc, Over.w x]; exact sq`. Set `x' : T' ⟶ A'` to `Over.homMk (h.1.lift _ _ hxw) (h.1.lift_snd _ _ _)`.
+
+Establish `hx' : x'.left ≫ φ = g ≫ x.left` using `h.1.lift_fst _ _ _`. Establish `key : x' = toUnit _ ≫ η[A']` using `hK R' t' x' fun p => by`. Take `⟨V, hV, c, hc⟩` from `hx (g p)`. Use `⟨g ⁻¹ᵁ V, hV, ?_⟩` and prove the remaining obligations. Set `a : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ T` to `Over.homMk ((fst T' A').left ≫ g) ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) sq).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ f) (Over.w (fst T' A'))))))`.
+
+Set `b : Over.mk ((T' ⊗ A').hom ≫ f) ⟶ A` to `pushPt h.1.w (snd T' A')`. Establish `k₁ : (lift a b).left ≫ (fst T A).left = (fst T' A').left ≫ g` using `congrArg (fun q => q.left) (lift_fst a b)`. Establish `k₂ : (lift a b).left ≫ (snd T A).left = (snd T' A').left ≫ φ` using `congrArg (fun q => q.left) (lift_snd a b)`. Establish `k₃ : (lift a b).left ≫ ((fst T A ≫ x) * snd T A).left = ((fst T' A' ≫ x') * snd T' A').left ≫ φ`. Establish `e : lift a b ≫ ((fst T A ≫ x) * snd T A) = (a ≫ x) * b`.
+
+Rewrite using `[MonObj.comp_mul, lift_fst_assoc, lift_snd]`. Use `(congrArg (fun q => q.left) e).trans (h.2 (T' ⊗ A') _ _ _ _ ?_ rfl)` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hx'.symm).trans (Category.assoc _ _ _).symm)`. Establish `le : (fst T' A').left ⁻¹ᵁ g ⁻¹ᵁ V ≤ (lift a b).left ⁻¹ᵁ (fst T A).left ⁻¹ᵁ V` using `fun y hy => (congrArg (fun q => q y ∈ V) k₁).mpr hy`. Establish `hn` using `Scheme.Hom.resLE_comp_ι (lift a b).left le`.
+
+Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn L _ _ _) c hc`. Take `⟨c₂, h₂⟩` from `gen_chartPull (chartPullSame L (fun k : Fin 2 => (((fst T' A').left ⁻¹ᵁ g ⁻¹ᵁ V).ι ≫ ![(lift (fst T' A' ≫ x') (snd T' A') ≫ μ[A']).left, (snd T' A').left] k) ≫ φ) _ _ ((lift a b).left.resLE _ _ le) fun k => by`. Rewrite using `[← Category.assoc, hn, Category.assoc, Category.assoc]`. Use `fin_cases k`. Use `exacts [congrArg (_ ≫ ·) k₃.symm, congrArg (_ ≫ ·) k₂.symm]) c₁ h₁`.
+
+Take `⟨c₃, h₃⟩` from `exists_down ((isGen_iff w).1 hw) hL hL' c₂ h₂`. Conclude with `gen_chartPull (chartPullOut L' _ _ _ _ fun _ => rfl) c₃ h₃`. Set `U : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk g sq`. Establish `e₁ : U ≫ x = pushHom h T' x'` using `Over.OverMorphism.ext hx'.symm`. Establish `e₂ : U ≫ x = U ≫ (1 : T ⟶ A)`.
+
+Rewrite using `[e₁, MonObj.comp_one]`. Conclude with `(congrArg (pushHom h T') key).trans (map_one (pushHom h T'))`. Conclude with `congrArg (fun q => q.left) e₂`.
+-/
 theorem comp_eq_one_of_kTriv_pull {S S' : Scheme.{0}} {f : S' ⟶ S}
     {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left}
     (h : IsGrpPullback A' A f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ)) (hK : KTriv A' L')
@@ -66,6 +81,13 @@ theorem comp_eq_one_of_kTriv_pull {S S' : Scheme.{0}} {f : S' ⟶ S}
     exact (congrArg (pushHom h T') key).trans (map_one (pushHom h T'))
   exact congrArg (fun q => q.left) e₂
 
+/- English proof (translation)
+Introduce `R _ t x hx`. Use `Over.OverMorphism.ext (Scheme.hom_ext_of_forall x.left (1 : Over.mk t ⟶ A).left fun p => ?_)` and prove the remaining obligations. Take `⟨S', f, h₁, h₂, ⟨s, hs⟩, hK⟩` from `H (t p)`. Establish `: IsAffine (pullback t f)` using `isAffine_of_isAffineHom (pullback.fst t f)`. Set `g` to `(pullback t f).isoSpec.inv ≫ pullback.fst t f`.
+
+Establish `e` using `comp_eq_one_of_kTriv_pull (isGrpPullback_pullback A f) hL (pull_isLB hL _) (PolBaseChange.lbIso_refl (pull_isLB hL _)) hK t x hx g ((pullback t f).isoSpec.inv ≫ pullback.snd t f) (by rw [Category.assoc, Category.assoc, pullback.condition])`. Establish `e' : pullback.fst t f ≫ x.left = pullback.fst t f ≫ (1 : Over.mk t ⟶ A).left`. Rewrite using `[← cancel_epi (pullback t f).isoSpec.inv, ← Category.assoc, ← Category.assoc]`. Conclude with `e`. Use `⟨(pullback.fst t f).opensRange, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show p ∈ Set.range (pullback.fst t f)`. Rewrite using `[Scheme.Pullback.range_fst]`. Conclude with `⟨s, hs⟩`. Rewrite using `[← cancel_epi (pullback.fst t f).isoOpensRange.hom, ← Category.assoc, ← Category.assoc] erw [Scheme.Hom.isoOpensRange_hom_ι]`. Conclude with `e'`.
+-/
 theorem kTriv_of_locally {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB)
     (H : ∀ s : S, ∃ (S' : Scheme.{0}) (f : S' ⟶ S), IsOpenImmersion f ∧ IsAffineHom f ∧ s ∈ Set.range f ∧
       KTriv ((Over.pullback f).obj A) (L.pull (pullback.fst A.hom f))) : KTriv A L := by
@@ -88,6 +110,9 @@ theorem kTriv_of_locally {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left
     erw [Scheme.Hom.isoOpensRange_hom_ι]
     exact e'
 
+/- English proof (translation)
+Take `⟨w, hw⟩ : LBIso L' (L.pull (Iso.refl A).hom.left)` from `h.symm.chartPull (Geo.Tor.chartPullId L') (Geo.Tor.chartPullPull L (𝟙 _) (𝟙 _) rfl)`. Establish `: IsMonHom (Iso.refl A).hom` using `inferInstanceAs (IsMonHom (𝟙 A))`. Conclude with `kTriv_pull (isGrpPullback_of_iso (Iso.refl A)) hL hL' ((isGen_iff w).1 hw) hK`.
+-/
 theorem kTriv_of_lbIso {S : Scheme.{0}} {A : Over S} [GrpObj A] {L L' : LB A.left} (hL : L.IsLB) (hL' : L'.IsLB)
     (h : LBIso L L') (hK : KTriv A L) : KTriv A L' := by
   obtain ⟨w, hw⟩ : LBIso L' (L.pull (Iso.refl A).hom.left) :=
@@ -103,6 +128,17 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 
+/- English proof (translation)
+Introduce `h₁ h₂ R _ _ _ A _ g m M P pt hA hg hm hu hM hamp hP hpt hbas hfib`. Take `⟨L, hL, hrig, hsym, hLa, hiso⟩` from `GlobalTheory.OddDescent.exists_descended h₁ h₂ R A g m M pt hA hg hm hu hM hamp hpt hbas (by`. Introduce `f hf`. Use `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.2 fun q hq => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Take `⟨p, hp, hp', -, hfp⟩` from `hP q f hq hn`. Conclude with `hfp (hf p (hfib p hp) hp'))`. Use `⟨L, hL, hrig, hsym, hLa, kTriv_of_locally hL fun s => ?_, hiso⟩` and prove the remaining obligations. Establish `hs : (s : PrimeSpectrum R).asIdeal.IsPrime` using `(s : PrimeSpectrum R).isPrime`. Take `⟨p, hp, -, hle, -⟩` from `hP (s : PrimeSpectrum R).asIdeal 1 hs (fun h => hs.ne_top ((Ideal.eq_top_iff_one _).2 h))`.
+
+Take `⟨K, _, _, x, Pl, φ, hker, hφ, hw⟩` from `hfib p hp`. Take `⟨f, hf, H⟩` from `GlobalTheory.KTrivSpread.exists_kTriv_of_isUnit R A L K x Pl.A φ hA hL hLa hφ (kTriv_of_lbIso Pl.isLB (pull_isLB hL _) (hiso K x Pl φ hφ hw) Pl.ktriv)`. Establish `hfs : f ∉ (s : PrimeSpectrum R).asIdeal` using `fun h => hf (by`. Use `hle h` as an intermediate fact. Rewrite using `[← hker, RingHom.mem_ker] at this)` and apply the resulting hypothesis.
+
+Establish `ho : IsOpenImmersion (spMap (algebraMap R (Localization.Away f)))` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R (Localization.Away f)))))`. Use `⟨_, spMap (algebraMap R (Localization.Away f)), ho, inferInstance, ?_, H (Localization.Away f) (algebraMap R _) _ _ (IsLocalization.Away.algebraMap_isUnit f) (isGrpPullback_pullback A _)⟩` and prove the remaining obligations. Establish `: s ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away f)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `hfs`.
+
+Conclude with `this`.
+-/
 theorem exists_polarisation_of_veryDense : Out.Laws → Out.Laws2 → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (A : Over (Sp R)) [GrpObj A] (g m : ℕ) (M : LB A.left) (P : Set (Ideal R)) (pt : Fin (2 * g) → (𝟙_ (Over (Sp R)) ⟶ A)), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → Odd m → IsUnit (m : R) → M.IsLB → Out.RelAmple A M → (∀ (q₀ : Ideal R) (f₀ : R), q₀.IsPrime → f₀ ∉ q₀ → ∃ p₀ ∈ P, p₀.IsPrime ∧ q₀ ≤ p₀ ∧ f₀ ∉ p₀) → (∀ i, pt i ^ m = 1) → (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp R) (y : Over.mk x ⟶ A), y ^ m = 1 → ∃! c : Fin (2 * g) → ZMod m, Out.linComb (fun i => toUnit (Over.mk x) ≫ pt i) (fun i => (c i).val) = y) → (∀ q ∈ P, ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (x : R →+* K) (Pl : Out.PolAV (Sp K)) (φ : Pl.A.left ⟶ A.left), RingHom.ker x = q ∧ IsGrpPullback Pl.A A (spMap x) φ ∧ LBIso (lbPow Pl.L (m ^ 2)) (M.pull φ)) → ∃ L : LB A.left, L.IsLB ∧ Out.Rigidified A L ∧ Out.Sym A L ∧ Out.RelAmple A L ∧ Out.KTriv A L ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : R →+* K) (Pl : Out.PolAV (Sp K)) (φ : Pl.A.left ⟶ A.left), IsGrpPullback Pl.A A (spMap x) φ → LBIso (lbPow Pl.L (m ^ 2)) (M.pull φ) → LBIso Pl.L (L.pull φ) := by
   intro h₁ h₂ R _ _ _ A _ g m M P pt hA hg hm hu hM hamp hP hpt hbas hfib
   obtain ⟨L, hL, hrig, hsym, hLa, hiso⟩ := GlobalTheory.OddDescent.exists_descended h₁ h₂ R A g m M pt hA hg hm hu hM hamp hpt hbas (by

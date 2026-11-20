@@ -12,10 +12,16 @@ attribute [local instance] Formalism.InvariantFactorPaths.G7.WModel.nf sx_charZe
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (sx_two (τ := τ) hu hv)`.
+-/
 theorem sx_pair_hasSubst {τ : Type} {u v : MvPowerSeries τ (K0 p)} (hu : MvPowerSeries.constantCoeff u = 0)
     (hv : MvPowerSeries.constantCoeff v = 0) : MvPowerSeries.HasSubst ![u, v] :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (sx_two (τ := τ) hu hv)
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.subst_comp_subst_apply (sx_pair_hasSubst hu hv) hb]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> rfl`.
+-/
 theorem sx_subst_pair {τ τ' : Type} {b : τ → MvPowerSeries τ' (K0 p)} (hb : MvPowerSeries.HasSubst b)
     {u v : MvPowerSeries τ (K0 p)} (hu : MvPowerSeries.constantCoeff u = 0) (hv : MvPowerSeries.constantCoeff v = 0)
     (H : MvPowerSeries (Fin 2) (K0 p)) :
@@ -26,6 +32,9 @@ theorem sx_subst_pair {τ τ' : Type} {b : τ → MvPowerSeries τ' (K0 p)} (hb 
   funext s
   fin_cases s <;> rfl
 
+/- English proof (translation)
+Unfold `swap2`. Rewrite using `[sx_subst_pair (sx_pair_hasSubst hu hv) (sx_cX 1) (sx_cX 0), MvPowerSeries.subst_X (sx_pair_hasSubst hu hv), MvPowerSeries.subst_X (sx_pair_hasSubst hu hv)]`. Both sides reduce to the same expression.
+-/
 theorem sx_subst_swap {τ : Type} {u v : MvPowerSeries τ (K0 p)} (hu : MvPowerSeries.constantCoeff u = 0)
     (hv : MvPowerSeries.constantCoeff v = 0) (H : MvPowerSeries (Fin 2) (K0 p)) :
     MvPowerSeries.subst ![u, v] (swap2 H) = MvPowerSeries.subst ![v, u] H := by
@@ -34,6 +43,13 @@ theorem sx_subst_swap {τ : Type} {u v : MvPowerSeries τ (K0 p)} (hu : MvPowerS
     MvPowerSeries.subst_X (sx_pair_hasSubst hu hv)]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `integralExp_param_of_equiv_zero p h.add2`. Rewrite `h1` using `[th_inParam_sub, th_inParam_sub, param_substitution_pair be _ _ (MvPowerSeries.X 0) (MvPowerSeries.subst ![MvPowerSeries.X 1, MvPowerSeries.X 2] F) (sx_cX 0) (by rw [map_add, sx_cX, sx_cX, add_zero]) (sx_cX 0) (sx_law_const hF _ _ (sx_cX 1) (sx_cX 2)) (sx_eX 0) (by rw [sx_log_law …`. Establish `h2` using `integralExp_rename p (![2, 0, 1] : Fin 3 → Fin 3) h1`. Establish `hb : MvPowerSeries.HasSubst (fun k : Fin 3 => (MvPowerSeries.X ((![2, 0, 1] : Fin 3 → Fin 3) k) : MvPowerSeries (Fin 3) (K0 p)))` using `th_ren_hasSubst _`. Rewrite `h2` using `[th_ren_sub, th_ren_sub]`.
+
+Unfold `ren at h2`. Rewrite `h2` using `[sx_subst_pair hb (sx_cX 0) (sx_law_const hF _ _ (sx_cX 1) (sx_cX 2)), sx_subst_pair hb (sx_cX 1) (sx_cX 2), sx_subst_pair hb (sx_cX 0) (sx_cX 1), sx_subst_pair hb (sx_cX 0) (sx_cX 2), MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`. Use `equiv_zero_of_integralExp p ?_` and prove the remaining obligations. Unfold `d1 in3`. Rewrite using `[sx_subst_swap (sx_law_const hF _ _ (sx_cX 0) (sx_cX 1)) (sx_cX 2), sx_subst_swap (sx_cX 0) (sx_cX 2), sx_subst_swap (sx_cX 1) (sx_cX 2)]`.
+
+Conclude with `h2`.
+-/
 theorem biadditive_second_variable {F be : MvPowerSeries (Fin 2) (K0 p)} (hF : IsLawOfLog p F) (h : BeProp p be) :
     Formalism.InvariantFactorPaths.G7.Simeq (d1 F (swap2 (inParam p be))) 0 := by
   have h1 := integralExp_param_of_equiv_zero p h.add2
@@ -58,6 +74,19 @@ theorem biadditive_second_variable {F be : MvPowerSeries (Fin 2) (K0 p)} (hF : I
     sx_subst_swap (sx_cX 1) (sx_cX 2)]
   exact h2
 
+/- English proof (translation)
+Establish `hN : 0 < p ^ 2 - 1`. Use `hp.out.two_le` as an intermediate fact. Establish `: 4 ≤ p ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Use `Formalism.FG.WittVectorsCharZero.neZero_cast p 2 (by norm_num)` as an intermediate fact.
+
+Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (kb p) (p ^ 2 - 1)`. Establish `hinj : Function.Injective (WittVector.teichmuller p : kb p →* WW p)`. Introduce `a b h`. Use `congrArg (fun x => WittVector.coeff x 0) h` as an intermediate fact. Simplify `this` using `[WittVector.teichmuller_coeff_zero]`.
+
+Establish `h0 : IsPrimitiveRoot (wK p (WittVector.teichmuller p ξ)) (p ^ 2 - 1)` using `(hξ.map_of_injective hinj).map_of_injective (IsFractionRing.injective (WW p) (K0 p))`. Establish `: NeZero (p ^ 2 - 1)` using `⟨hN.ne'⟩`. Take `⟨k, _, hk⟩` from `h0.eq_pow_of_pow_eq_one hζ`. Establish `hfr : ∀ x : kb p, sigW p (WittVector.teichmuller p x) = (WittVector.teichmuller p x) ^ p`. Introduce `x`.
+
+Unfold `sigW`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`. Establish `hx : (ξ ^ k) ^ (p ^ 2 - 1) = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hξ.pow_eq_one, one_pow]`. Use `⟨WittVector.teichmuller p (ξ ^ k), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow] show algebraMap (WW p) (K0 p) ((WittVector.teichmuller p ξ) ^ k) = ζ`.
+
+Rewrite using `[map_pow]`. Conclude with `hk`. Use `show sigW p (sigW p _) = _`. Rewrite using `[hfr, map_pow, hfr, ← pow_mul, ← map_pow, ← sq]`. Use `congr 1`.
+
+Establish `e : p ^ 2 = (p ^ 2 - 1) + 1` using `by omega`. Rewrite using `[e, pow_succ, hx, one_mul]`. Rewrite using `[hfr, map_pow] show algebraMap (WW p) (K0 p) (((WittVector.teichmuller p ξ) ^ k) ^ p) = ζ ^ p`. Rewrite using `[map_pow, map_pow, ← hk]`.
+-/
 theorem sx_root (ζ : K0 p) (hζ : ζ ^ (p ^ 2 - 1) = 1) :
     ∃ w : WW p, wK p w = ζ ∧ (sigW p)^[2] w = w ∧ wK p (sigW p w) = ζ ^ p := by
   have hN : 0 < p ^ 2 - 1 := by
@@ -97,6 +126,15 @@ def sx_j : Fin 2 → ℕ := ![0, 1]
 def sx_rho (p : ℕ) [Fact p.Prime] : ℕ → MvPowerSeries (Fin 2) (K0 p) :=
   fun k => if k = 0 then MvPowerSeries.X 0 else if k = 1 then MvPowerSeries.X 1 else 0
 
+/- English proof (translation)
+Take `⟨w, hw, hw2, hwp⟩` from `sx_root ζ hζ`. Establish `hζp : (ζ ^ p) ^ (p ^ 2 - 1) = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Establish `hc : ∀ (z : K0 p) (i : Fin 2), MvPowerSeries.constantCoeff (MvPowerSeries.C z * (MvPowerSeries.X i : MvPowerSeries (Fin 2) (K0 p))) = 0`. Introduce `z i`. Rewrite using `[map_mul, sx_cX, mul_zero]`.
+
+Establish `hl : ∀ (z : K0 p) (i : Fin 2), z ^ (p ^ 2 - 1) = 1 → PowerSeries.subst (MvPowerSeries.C z * (MvPowerSeries.X i : MvPowerSeries (Fin 2) (K0 p))) (logF p) = inParam p (MvPowerSeries.C z * MvPowerSeries.X i)`. Introduce `z i hz`. Rewrite using `[sx_inParam_C_mul, sx_inParam_X, sx_logF_eq, Formalism.InvariantFactorPaths.G7.FormalGroupLaws.lgF_subst_C_mul hz hp.out.two_le _ (sx_cX i)]`. Unfold `sx_lX`. Rewrite using `[sx_logF_eq]`.
+
+Establish `h0` using `h.conj w hw2`. Establish `h1 : Simeq p (sub2 p be (MvPowerSeries.C ζ * MvPowerSeries.X 0) (MvPowerSeries.X 1) : MvPowerSeries (Fin 2) (K0 p)) (sub2 p be (MvPowerSeries.X 0) (MvPowerSeries.C (ζ ^ p) * MvPowerSeries.X 1))`. Rewrite using `[← hwp, ← hw]`. Conclude with `h0`. Establish `h2` using `sx_simeq_of p h1`.
+
+Rewrite `h2` using `[param_substitution_pair be _ _ (MvPowerSeries.C ζ * MvPowerSeries.X 0) (MvPowerSeries.X 1) (hc ζ 0) (sx_cX 1) (hc ζ 0) (sx_cX 1) (hl ζ 0 hζ) (sx_eX 1), param_substitution_pair be _ _ (MvPowerSeries.X 0) (MvPowerSeries.C (ζ ^ p) * MvPowerSeries.X 1) (sx_cX 0) (hc _ 1) (sx_cX 0) ( …`. Conclude with `h2`.
+-/
 theorem sx_conj {be : MvPowerSeries (Fin 2) (K0 p)} (h : BeProp p be) (ζ : K0 p) (hζ : ζ ^ (p ^ 2 - 1) = 1) :
     Formalism.InvariantFactorPaths.G7.Simeq (MvPowerSeries.subst ![MvPowerSeries.C ζ * (MvPowerSeries.X 0 :
                 MvPowerSeries (Fin 2) (K0 p)), MvPowerSeries.X 1] (inParam p be))
@@ -127,13 +165,26 @@ theorem sx_conj {be : MvPowerSeries (Fin 2) (K0 p)} (h : BeProp p be) (ζ : K0 p
       (sx_eX 0) (hl _ 1 hζp)] at h2
   exact h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sx_divAB p h, biadditive_first_variable hF h, biadditive_second_variable hF h, fun ζ hζ => sx_conj h ζ hζ⟩`.
+-/
 theorem sx_betaHyp {F be : MvPowerSeries (Fin 2) (K0 p)} (hF : IsLawOfLog p F) (h : BeProp p be) :
     BetaHyp p F (inParam p be) :=
   ⟨sx_divAB p h, biadditive_first_variable hF h, biadditive_second_variable hF h, fun ζ hζ => sx_conj h ζ hζ⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hp.out, h2, sx_norm_p p, Formalism.InvariantFactorPaths.G7.WModel.abv_value p, sx_sig_frob p⟩`.
+-/
 theorem sx_unrOK (h2 : 2 < p) : UnrOK (K0 p) p (sigK p).toRingHom :=
   ⟨hp.out, h2, sx_norm_p p, Formalism.InvariantFactorPaths.G7.WModel.abv_value p, sx_sig_frob p⟩
 
+/- English proof (translation)
+Introduce `h5 _ be hbe`. Use `sx_ultra p` as an intermediate fact. Use `Formalism.InvariantFactorPaths.G7.WModel.complete p` as an intermediate fact. Take `⟨F, hF⟩` from `(Formalism.InvariantFactorPaths.G7.Top.lawExists (K0 p) p hp.out (sx_norm_p p)).1`. Take `⟨ζ0, hζ0⟩` from `Formalism.FG.witt_teichmuller_root p 2 (by norm_num)`.
+
+Take `⟨c, hc, hcc, hS⟩` from `Formalism.InvariantFactorPaths.G7.Top.betaIsG (K0 p) p (sigK p).toRingHom (sx_unrOK (by omega)) ⟨wK p ζ0, hζ0.map_of_injective (IsFractionRing.injective (WW p) (K0 p))⟩ F hF (inParam p be) (sx_betaHyp hF hbe)`. Take `⟨w, rfl⟩` from `(sx_norm_le_one_iff p c).1 hc`. Establish `hs : ∀ x : WW p, (sigK p).toRingHom (algebraMap (WW p) (K0 p) x) = algebraMap (WW p) (K0 p) (sigW p x)`. Introduce `x`. Rewrite using `[sx_sigK_eq, Formalism.InvariantFactorPaths.G7.WModel.sig_coe]`.
+
+Both sides reduce to the same expression. Rewrite `hS`, `hcc` using `[hs]`. Rewrite `hcc` using `[hs]`. Use `⟨w, IsFractionRing.injective (WW p) (K0 p) hcc, ?_⟩` and prove the remaining obligations. Conclude with `integralExp_of_equiv p hS`.
+-/
 theorem restBeta (p : ℕ) [hp : Fact p.Prime] : RestBeta p := by
   intro h5 _ be hbe
   have := sx_ultra p

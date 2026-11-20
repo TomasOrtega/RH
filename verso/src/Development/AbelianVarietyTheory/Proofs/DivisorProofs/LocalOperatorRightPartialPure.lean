@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.DblEval.BlockSwap
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DblEval.BlockSwap.partR_of_partL e (GlobalTheory.T.local_operator_left_partial_pure e he)`.
+-/
 theorem partR_pureA {F : Type} [Field F] [NumberField F] {κ κ' κ₁' : Type} [Fintype κ]
     [Fintype κ'] [Fintype κ₁']
     (e : ((κ' → AF F) → ℂ) →ₗ[ℂ] (κ₁' → AF F) → ℂ) (he : IsLocOp e) :

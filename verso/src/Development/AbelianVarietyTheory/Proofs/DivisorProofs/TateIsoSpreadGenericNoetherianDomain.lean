@@ -16,6 +16,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LowDat
 
+/- English proof (translation)
+Introduce `E _ _ _ H D R _ _ _ P act o _ s z k hk hrk pt F _ _ x₀ β₀ hd hx₀ I₀ hζ₀ hev₀ K _ _ _ x β hx`. Establish `hL : Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Use `P.isAb.comm` as an intermediate fact. Establish `hu : ∀ {L : Type} [Field L] (y : Sp L ⟶ Sp R), (Over.homMk y (by simp) : Over.mk y ⟶ Out.baseOver (Sp R)) = toUnit (Over.mk y)` using `fun y => Over.OverMorphism.ext ((Over.w (toUnit (Over.mk y))).symm.trans (Category.comp_id _))`. Establish `hcard : ∀ n, 0 < n → Nat.card {w : Over.mk x ⟶ P.A // w ^ n = 1} = n ^ Module.finrank ℤ D.La` using `fun n hn => by`.
+
+Rewrite using `[hrk]`. Conclude with `(hL.mulN _ P n hn).2.2.2.2 K x (Nat.cast_ne_zero.2 hn.ne')`. Take `⟨I, hI, hA⟩` from `GlobalTheory.TateTower.tateIso_of_levels E H D K (Over.mk x ⟶ P.A) (fun c w => w ≫ act c) (fun n w w' c => Out.WeilIs P.A P.L n w w' (unitOn c)) k (β z) _ (fun a : D.La => a) (fun a => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver (Sp R)) ≫ pt a) hk (fun n hn => Nat.finite_o …`. Establish `e : unitOn (c ^ m) = unitOn c ^ m` using `map_pow _ _ _`. Establish `u : IsUnit ((n * m : ℕ) : K)` using `(Nat.cast_ne_zero.2 (Nat.mul_pos hn hm).ne').isUnit`.
+
+Establish `u'` using `u.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Rewrite `u'` using `[map_natCast]`. Rewrite using `[e]`. Conclude with `PELFamily.weilIs_lower P hL.weil hm u' hw hw' h)`. Use the proof step `(fun m hm => by`.
+
+Establish `hn` using `Nat.mul_pos hk hm`. Take `⟨ζ, ev, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩` from `GlobalTheory.exists_levelIsometry_of_dense hL E H D (Sp R) P act o s z _ (fun a : D.La => a) pt (k * m) m hn (Dense.mono (fun p hp => ⟨F, inferInstance, x₀, β₀, I₀.ζ (k * m), I₀.ev (k * m), Nat.cast_ne_zero.2 hn.ne', hp, hx₀, I₀.ζ_prim _ hn, I₀.add _, fun v => (I₀.onto _ hn _).2 …`. Take `⟨h₈, h₉⟩` from `GlobalTheory.TorsIsometry.ker_and_onto E H D K (Over.mk x ⟶ P.A) (fun w w' c => Out.WeilIs P.A P.L (k * m : ℕ) w w' (unitOn c)) (k * m) ζ ev hn (hcard _ hn) (fun _ _ _ h => PELFamily.eq_one_of_weilIs_one P hL.weil h) h₁ h₂ h₃ h₅`. Conclude with `⟨ζ, ev, h₁, h₂, h₄, h₈, h₉, h₅, h₆, h₇⟩)`. Conclude with `⟨I, hI, fun a => Eq.trans (by rw [hu]) (hA a).symm⟩`.
+-/
 theorem tateIso_spread : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
   (P : PolAV (Sp R)) (act : 𝓞 E → (P.A ⟶ P.A)) (o : Type) [CommRing o] (s : Sp R ⟶ Sp o) (z : o) (k : ℕ), 0 < k →
   Module.finrank ℤ D.La = 2 * P.g → ∀ (pt : D.La → (𝟙_ (Over (Sp R)) ⟶ P.A))

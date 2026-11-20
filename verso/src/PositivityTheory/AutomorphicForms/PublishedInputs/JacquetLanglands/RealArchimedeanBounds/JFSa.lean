@@ -8,6 +8,13 @@ open scoped Matrix NNReal
 
 namespace UpperTheory.Esk.AdelicNormalFormLemmas
 
+/- English proof (translation)
+Establish `h1 : Matrix.GeneralLinearGroup.scalar (Fin 2) c⁻¹ * aff α⁻¹ (-y0) * (Matrix.GeneralLinearGroup.scalar (Fin 2) (c * r * e) * aff (α * r' * e') u) = Matrix.GeneralLinearGroup.scalar (Fin 2) r * aff r' 0 * (aff 1 (((r'⁻¹ : Rˣ) : R) * (((α⁻¹ : Rˣ) : R) * u - y0)) * (Matrix.GeneralLin …`. Establish `hc` using `Units.inv_mul c`. Establish `ha` using `Units.inv_mul α`. Establish `hr` using `Units.mul_inv r'`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [aff, Matrix.mul_apply, Fin.sum_univ_two, Matrix.GeneralLinearGroup.scalar, Matrix.vecMul, dotProduct, Matrix.diagonal_apply] <;>`. Use `first`. Consider the case `linear_combination (((α⁻¹ : Rˣ) : R) * α * r * e * r' * e') * hc + ((r : R) * e * r' * e') * ha`. Consider the case `linear_combination ((r : R) * e * (((α⁻¹ : Rˣ) : R) * u - y0)) * hc - ((r : R) * e * (((α⁻¹ : Rˣ) : R) * u - y0)) * hr`.
+
+Consider the case `linear_combination ((r : R) * e) * hc`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem key {R : Type} [CommRing R] (c α r e r' e' : Rˣ) (u y0 : R) (k : GL (Fin 2) R) :
     Matrix.GeneralLinearGroup.scalar (Fin 2) c⁻¹ * aff α⁻¹ (-y0) *
       (Matrix.GeneralLinearGroup.scalar (Fin 2) (c * r * e) * aff (α * r' * e') u * k) =
@@ -34,6 +41,9 @@ theorem key {R : Type} [CommRing R] (c α r e r' e' : Rˣ) (u y0 : R) (k : GL (F
       (Matrix.GeneralLinearGroup.scalar (Fin 2) (c * r * e) * aff (α * r' * e') u)) * k := by group
     _ = _ := by rw [h1]; group
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[UpperTheory.Esk.jF, ratU, aff, Matrix.mul_apply, Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply]`.
+-/
 theorem jF_sa {F : Type} [Field F] [NumberField F] (c α : Fˣ) (β : F) :
     UpperTheory.Esk.jF F (Matrix.GeneralLinearGroup.scalar (Fin 2) c * aff α β) =
       Matrix.GeneralLinearGroup.scalar (Fin 2) (ratU F c) * aff (ratU F α) (algebraMap F (Af F) β) := by
@@ -44,6 +54,13 @@ theorem jF_sa {F : Type} [Field F] [NumberField F] (c α : Fˣ) (β : F) :
 end UpperTheory.Esk.AdelicNormalFormLemmas
 
 open UpperTheory.Esk.AdelicNormalFormLemmas in
+/- English proof (translation)
+Introduce `hM hI hC hA F _ _`. Take `⟨T, hT⟩` from `hC F`. Use `⟨(T ×ˢ T).image (fun p => zc F p.1 * aff p.2 0), fun x => ?_⟩` and prove the remaining obligations. Take `⟨d, a, u, k, hk, rfl⟩` from `hI F x`. Take `⟨y, e, r, hr, he, hd⟩` from `hT d`.
+
+Take `⟨y', e', r', hr', he', ha⟩` from `hT a`. Take `⟨y0, hy0⟩` from `hA F r' ((((ratU F y')⁻¹ : (Af F)ˣ) : Af F) * u)`. Establish `hK` using `(hM F).2.2.2.2.2.2.2`. Use `⟨Matrix.GeneralLinearGroup.scalar (Fin 2) y⁻¹ * aff y'⁻¹ (-y0), ?_, zc F r * aff r' 0, Finset.mem_image.2 ⟨(r, r'), Finset.mem_product.2 ⟨hr, hr'⟩, rfl⟩, aff 1 (((r'⁻¹ : (Af F)ˣ) : Af F) * ((((ratU F y')⁻¹ : (Af F)ˣ) : Af F) * u - algebraMap F (Af F) y0)) * (zc F e * aff e' 0 * k …` and prove the remaining obligations. Simplify using `[aff, Matrix.GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Conclude with `Subgroup.mul_mem _ ((hK 1 (by simp)).2 _ hy0) (Subgroup.mul_mem _ (Subgroup.mul_mem _ (hK e he).1 ((hK e' he').2 0 (zero_mem _))) hk)`. Rewrite using `[jF_sa, map_inv, map_inv, map_neg, hd, ha]`. Conclude with `key (ratU F y) (ratU F y') r e r' e' u (algebraMap F (Af F) y0) k`.
+-/
 theorem UpperTheory.Esk.aBnf : UpperTheory.Esk.AMem → UpperTheory.Esk.AIw → UpperTheory.Esk.ACls → UpperTheory.Esk.AAdd → UpperTheory.Esk.ABnf := by
   intro hM hI hC hA F _ _
   classical

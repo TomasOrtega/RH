@@ -20,6 +20,9 @@ noncomputable def rootsOfUnityTwoInv (l : ℕ) (V : OpenSubgroup Gal(Ksep/K)) :
   ((localClassFormationOfIsSepClosure K Ksep).inv V).comp
     (cohomologyMap (kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))).f 2).hom.toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.comp_apply _ _ x`.
+-/
 theorem rootsOfUnityTwoInv_apply (V : OpenSubgroup Gal(Ksep/K))
     (x : cohomology (Rep.res (V : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l)) 2) :
     rootsOfUnityTwoInv l V x = (localClassFormationOfIsSepClosure K Ksep).inv V
@@ -28,6 +31,9 @@ theorem rootsOfUnityTwoInv_apply (V : OpenSubgroup Gal(Ksep/K))
 
 include hl in
 
+/- English proof (translation)
+The claim follows from `((localClassFormationOfIsSepClosure K Ksep).inv_bijective V).1.comp (cohomologyMap_f_injective_of_subsingleton (kummerSequenceRes_shortExact (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K)) hl) 1 (subsingleton_cohomology_one_galUnits_open K Ksep V))`.
+-/
 theorem rootsOfUnityTwoInv_injective (V : OpenSubgroup Gal(Ksep/K)) :
     Function.Injective (rootsOfUnityTwoInv (K := K) (Ksep := Ksep) l V) :=
   ((localClassFormationOfIsSepClosure K Ksep).inv_bijective V).1.comp
@@ -37,6 +43,15 @@ theorem rootsOfUnityTwoInv_injective (V : OpenSubgroup Gal(Ksep/K)) :
 
 include hl in
 
+/- English proof (translation)
+Establish `: NeZero l` using `⟨by rintro rfl; exact hl Nat.cast_zero⟩`. Use `set F := localClassFormationOfIsSepClosure K Ksep`. Use `set S := kummerSequenceRes (K := K) (Ksep := Ksep) l (V : Subgroup Gal(Ksep/K))`. Establish `hS : S.ShortExact` using `kummerSequenceRes_shortExact l _ hl`. Use extensionality with `q`.
+
+Simplify using `only [AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Use `exists_zmodToQZ_eq ?_` and prove the remaining obligations. Establish `e : l • (cohomologyMap S.f 2).hom x = 0` using `(cohomologyMap_kummerSequenceRes_g_apply l (V : Subgroup Gal(Ksep/K)) 2 _).symm.trans (cohomologyMap_g_cohomologyMap_f_apply (S := S) 2 x)`.
+
+Rewrite using `[rootsOfUnityTwoInv_apply]`. Conclude with `(map_nsmul (F.inv V) l _).symm.trans ((congrArg (F.inv V) e).trans (map_zero _))`. Introduce and unpack `⟨a, rfl⟩`. Take `⟨y, hy⟩` from `(F.inv_bijective V).2 (zmodToQZ l a)`. Establish `hny : l • y = 0`.
+
+Apply `(F.inv_bijective V).1` to reduce the goal to its premises. Rewrite using `[map_nsmul, hy, ← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero, map_zero]`. Take `⟨x, hx⟩` from `exists_cohomologyMap_f_eq hS 2 y ((cohomologyMap_kummerSequenceRes_g_apply l (V : Subgroup Gal(Ksep/K)) 2 y).trans hny)`. Conclude with `⟨x, (rootsOfUnityTwoInv_apply V x).trans ((congrArg (F.inv V) hx).trans hy)⟩`.
+-/
 theorem range_rootsOfUnityTwoInv (V : OpenSubgroup Gal(Ksep/K)) :
     (rootsOfUnityTwoInv (K := K) (Ksep := Ksep) l V).range = (zmodToQZ l).range := by
   have : NeZero l := ⟨by rintro rfl; exact hl Nat.cast_zero⟩
@@ -83,6 +98,9 @@ noncomputable def cohomologyTwoRootsEquiv :
 
 variable [((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).Normal]
 
+/- English proof (translation)
+Rewrite using `[cohomologyConj_two_galRootsOfUnity_eq_id hl h g]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyTwoRootsEquiv_cohomologyConj (g : (U : Subgroup Gal(Ksep/K)))
     (x : cohomology (Rep.res ((V : Subgroup Gal(Ksep/K)).subgroupOf (U : Subgroup Gal(Ksep/K))).subtype
         (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galRootsOfUnity.{0} K Ksep l))) 2) :

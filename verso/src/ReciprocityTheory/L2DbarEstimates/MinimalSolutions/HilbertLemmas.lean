@@ -5,6 +5,9 @@ import ReciprocityTheory.L2DbarEstimates.MinimalSolutions.OntoWithBoundTop
 
 namespace ReciprocityTheory.L2DbarEstimates
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cvx H₁, rieszOnRange E H₁, minimalSolution E H₁, split E H₁ H₂, hormanderLemma E H₁ H₂, ontoWithBound E H₁ H₂⟩`.
+-/
 theorem hilbertLemmas (E H₁ H₂ : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁]
     [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂] :

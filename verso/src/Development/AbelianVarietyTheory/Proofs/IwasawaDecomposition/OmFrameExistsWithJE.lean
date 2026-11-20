@@ -5,6 +5,11 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting
 
+/- English proof (translation)
+Use `letI : Algebra D.host.E Qb := jE.toAlgebra`. Use `haveI : Algebra.IsAlgebraic ℚ Qb := inferInstance`. Use `haveI : IsScalarTower ℚ D.host.E Qb := .of_algebraMap_eq fun x => (map_ratCast jE x).symm`. Use `haveI : Algebra.IsAlgebraic D.host.E Qb := .tower_top (K := ℚ) D.host.E`. Use `haveI : IsAlgClosure D.host.E Qb := ⟨inferInstance, inferInstance⟩`.
+
+Set `e : D.nd.Om ≃ₐ[D.host.E] Qb` to `IsAlgClosure.equiv D.host.E D.nd.Om Qb`. Conclude with `⟨⟨jE, e.toRingEquiv, fun x => e.commutes x⟩, rfl⟩`.
+-/
 theorem omFrame_exists_with_jE (D : D7) (jE : D.host.E →+* Qb) : ∃ fr : OmFrame D, fr.jE = jE := by
   letI : Algebra D.host.E Qb := jE.toAlgebra
   haveI : Algebra.IsAlgebraic ℚ Qb := inferInstance

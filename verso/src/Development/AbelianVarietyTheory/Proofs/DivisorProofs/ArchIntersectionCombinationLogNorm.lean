@@ -15,6 +15,11 @@ open scoped Classical
 
 namespace GlobalTheory.ChernPoly
 
+/- English proof (translation)
+Introduce `k _ Y _ p D hp σ N r hr M φ ε`. Establish `e : (offSupp p σ (N.div hr))ᶜ = {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ ((N.div hr).supp : Set Y)}`. Use extensionality with `y`. Simplify using `only [Set.mem_compl_iff, mem_offSupp, not_not]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `GlobalTheory.ChernNull.chernPart_over_closed hp _ (N.div hr).supp.isClosed (CartierDiv.genericPoint_notMem_supp _) σ φ ε`.
+-/
 theorem chernPart_offSupp_null : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {p : Y ⟶ Sp k} {D : ℕ}, IsArithVar p D →
     ∀ (σ : k →+* ℂ) (N : HermLB p) {r : N.B.ι → Y.functionFieldˣ} (hr : IsRatSec N.B r)
     {M : LB Y} (φ : Weight p σ M) (ε : ℤˣ), φ.chernPart D ε (offSupp p σ (N.div hr))ᶜ = 0 := by
@@ -28,19 +33,39 @@ theorem chernPart_offSupp_null : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} [I
   exact GlobalTheory.ChernNull.chernPart_over_closed hp _ (N.div hr).supp.isClosed
     (CartierDiv.genericPoint_notMem_supp _) σ φ ε
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.chern_part_combination_power`.
+-/
 theorem chernPart_comb_eq_part : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsRegVar p D) (σ : k →+* ℂ)
     {ι : Type} [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ) (ε : ℤˣ),
     ((comb L n).φ σ).chernPart D ε = (hX.atlas σ).part (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (lin (fun i => (n i : ℝ)) ^ D)) ε := GlobalTheory.T.chern_part_combination_power
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.weighted_integral_chern_combination`.
+-/
 theorem wInt_sum_lin_pow : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsRegVar p D) (σ : k →+* ℂ)
     {ι : Type} [Fintype ι] (L : ι → HermLB p) (g : CxPts p σ → ℝ) (s : Finset (ι → ℤ)) (c : (ι → ℤ) → ℝ),
     (∀ n ∈ s, ∀ ε : ℤˣ, Integrable g ((hX.atlas σ).part (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (lin (fun i => (n i : ℝ)) ^ D)) ε)) →
     wInt (hX.atlas σ) g (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (∑ n ∈ s, c n • lin (fun i => (n i : ℝ)) ^ D)) =
       ∑ n ∈ s, c n * wInt (hX.atlas σ) g (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (lin (fun i => (n i : ℝ)) ^ D)) := GlobalTheory.T.weighted_integral_chern_combination
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.archIntegrable_regular_variety`.
+-/
 theorem archIntegrable_of_isRegVar : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}, IsRegVar p D →
     ∀ (M N : HermLB p) {r : N.B.ι → X.functionFieldˣ} (hr : IsRatSec N.B r), M.ArchIntegrable N D hr := GlobalTheory.T.archIntegrable_regular_variety
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX ι _ L N r hr g hg s c`. Use `haveI : Finite (k →+* ℂ) := (GlobalTheory.T.arith_var_complex_points_compact hX.toIsArithVar).1`. Use `haveI := Fintype.ofFinite (k →+* ℂ)`. Establish `key : ∀ (n : ι → ℤ) (σ : k →+* ℂ), ((comb L n).φ σ).chernInt D (offSupp p σ (N.div hr)) (logNorm (N.φ σ) r) = wInt (hX.atlas σ) (g σ) (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (lin (fun i => (n i : ℝ)) ^ D)) ∧ ∀ ε : ℤˣ, Integrable (g σ) ((hX.atlas σ).part (evalF (hX.atlas σ) …`. Introduce `n σ`.
+
+Establish `hae : ∀ ε : ℤˣ, ∀ᵐ y ∂((comb L n).φ σ).chernPart D ε, y ∈ offSupp p σ (N.div hr)` using `fun ε => measure_eq_zero_iff_ae_notMem.1 (chernPart_offSupp_null hX.toIsArithVar σ N hr _ ε) |>.mono fun y hy => by simpa using hy`. Establish `hres : ∀ ε : ℤˣ, (((comb L n).φ σ).chernPart D ε).restrict (offSupp p σ (N.div hr)) = ((comb L n).φ σ).chernPart D ε` using `fun ε => Measure.restrict_eq_self_of_ae_mem (hae ε)`. Establish `hfg : ∀ ε : ℤˣ, logNorm (N.φ σ) r =ᵐ[((comb L n).φ σ).chernPart D ε] g σ` using `fun ε => (hae ε).mono fun y hy => hg σ y hy`. Establish `hint` using `archIntegrable_of_isRegVar hX (comb L n) N hr σ`. Use `⟨?_, fun ε => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Weight.chernInt, hres, hres, integral_congr_ae (hfg 1), integral_congr_ae (hfg (-1)), wInt, chernPart_comb_eq_part hX σ L n, chernPart_comb_eq_part hX σ L n]`. Rewrite using `[← chernPart_comb_eq_part hX σ L n]`. Establish `h1 : IntegrableOn (logNorm (N.φ σ) r) (offSupp p σ (N.div hr)) (((comb L n).φ σ).chernPart D ε)`. Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Use `exacts [hint.1, hint.2]`.
+
+Rewrite `h1` using `[IntegrableOn, hres]`. Conclude with `h1.congr (hfg ε)`. Establish `hL : ∀ n : ι → ℤ, (comb L n).archInt N D hr = ∑ σ, wInt (hX.atlas σ) (g σ) (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (lin (fun i => (n i : ℝ)) ^ D))` using `fun n => by`. Rewrite using `[HermLB.archInt, finsum_eq_sum_of_fintype]`. Conclude with `Finset.sum_congr rfl fun σ _ => (key n σ).1`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [hL, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[wInt_sum_lin_pow hX σ L (g σ) s c fun n _ ε => (key n σ).2 ε]`.
+-/
 theorem archInt_sum_eq_wInt : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (ι : Type) [Fintype ι] (L : ι → HermLB p) (N : HermLB p)
     (r : N.B.ι → X.functionFieldˣ) (hr : IsRatSec N.B r) (g : ∀ σ : k →+* ℂ, CxPts p σ → ℝ),
     (∀ σ, ∀ y ∈ offSupp p σ (N.div hr), logNorm (N.φ σ) r y = g σ y) →

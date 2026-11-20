@@ -21,6 +21,11 @@ namespace GlobalTheory.RecDict
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hs : Function.Surjective (algebraMap F E)` using `fun a => (hc.fixed a).1 (h a)`. Establish `h1 : Module.finrank F E = 1` using `(LinearEquiv.ofBijective (Algebra.linearMap F E) ⟨(algebraMap F E).injective, hs⟩).finrank_eq.symm.trans (Module.finrank_self F)`. Use `hc.deg2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cmData_sig_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (hc : CMData F E) : ∃ a, hc.sig a ≠ a := by
   by_contra h
@@ -32,6 +37,11 @@ theorem cmData_sig_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   have := hc.deg2
   omega
 
+/- English proof (translation)
+Introduce `D V g`. Set `c : D.host.E ≃ₐ[D.host.F] D.host.E` to `AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun a => star_star a) (AlgHom.ext fun a => star_star a)`. Establish `hc1 : c ≠ 1`. Take `⟨a, ha⟩` from `cmData_sig_ne_id D.sp.cm`. Introduce `h`.
+
+Conclude with `ha (congrArg (fun f : D.host.E ≃ₐ[D.host.F] D.host.E => f a) h)`. Establish `hu` using `det_conj_mul V g`. Rewrite `hu` using `[mul_comm]`. Conclude with `GlobalTheory.AdLat.hilbert90_adeleRing_tensor_quadratic D.host.F D.host.E c D.sp.cm.deg2 hc1 (Formalism.L2.Theta.mt V g).det hu`.
+-/
 theorem exists_isDetRoot : ∀ (D : D7) (V : HSp D) (g : GA D V), ∃ x, IsDetRoot V g x := by
   intro D V g
   let c : D.host.E ≃ₐ[D.host.F] D.host.E :=

@@ -12,6 +12,13 @@ namespace GlobalTheory.BundleIsoMetric
 
 variable {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `hD : ∀ Q ∈ U, fderiv ℝ u Q = fderiv ℝ u₁ Q - fderiv ℝ u₂ Q`. Introduce `Q hQ`. Establish `heq : u =ᶠ[𝓝 Q] u₁ - u₂` using `Filter.eventually_of_mem (hU.mem_nhds hQ) fun R hR => hu R hR`. Rewrite using `[heq.fderiv_eq]`. Conclude with `fderiv_sub ((h₁.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hQ)) ((h₂.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hQ))`.
+
+Apply the tactic sequence `have hd₁ : DifferentiableOn ℝ (fun Q => fderiv ℝ u₁ Q) U := (h₁.fderiv_of_isOpen hU (m := 1) (by first | exact WithTop.coe_le_coe.2 le_top | exact_mod_cast (WithTop.coe_le_coe.2 (le_top : ((2:ℕ):ℕ∞) ≤ ⊤)) | exact (WithTop.coe_le_coe.2 (ENat.coe_le_top _)))).differentiableOn (by s …`. Apply the tactic sequence `have hd₂ : DifferentiableOn ℝ (fun Q => fderiv ℝ u₂ Q) U := (h₂.fderiv_of_isOpen hU (m := 1) (by first | exact WithTop.coe_le_coe.2 le_top | exact_mod_cast (WithTop.coe_le_coe.2 (le_top : ((2:ℕ):ℕ∞) ≤ ⊤)) | exact (WithTop.coe_le_coe.2 (ENat.coe_le_top _)))).differentiableOn (by s …`. Establish `key : ∀ x : Pt E g, fderiv ℝ (fun Q => fderiv ℝ u Q x) P = fderiv ℝ (fun Q => fderiv ℝ u₁ Q x) P - fderiv ℝ (fun Q => fderiv ℝ u₂ Q x) P`. Introduce `x`. Establish `heq : (fun Q => fderiv ℝ u Q x) =ᶠ[𝓝 P] (fun Q => fderiv ℝ u₁ Q x) - (fun Q => fderiv ℝ u₂ Q x)` using `Filter.eventually_of_mem (hU.mem_nhds hP) fun R hR => by simp [hD R hR]`.
+
+Rewrite using `[heq.fderiv_eq]`. Conclude with `fderiv_sub (((hd₁ P hP).differentiableAt (hU.mem_nhds hP)).clm_apply (differentiableAt_const x)) (((hd₂ P hP).differentiableAt (hU.mem_nhds hP)).clm_apply (differentiableAt_const x))`. Simplify using `only [ddc, key, ContinuousLinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddc_eq_sub_of_eqOn {U : Set (Pt E g)} (hU : IsOpen U) {u u₁ u₂ : Pt E g → ℝ}
     (h₁ : ContDiffOn ℝ ∞ u₁ U) (h₂ : ContDiffOn ℝ ∞ u₂ U)
     (hu : ∀ Q ∈ U, u Q = u₁ Q - u₂ Q) {P : Pt E g} (hP : P ∈ U) (v w : Pt E g) :
@@ -44,6 +51,17 @@ end GlobalTheory.BundleIsoMetric
 
 namespace GlobalTheory.BundleIsoMetric
 
+/- English proof (translation)
+Introduce `g E _ _ _ B τ hτ M j j' h φ hm hc hi`. Take `⟨hsm, hpos, haut⟩` from `hm`. Take `⟨hφd, hφ0, hφa⟩` from `hi`. Establish `hU : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hφc : ContDiffOn ℂ ∞ φ (cov B g)` using `GlobalTheory.SCV.contDiffOn_of_differentiableOn hU hφd ∞`.
+
+Establish `hφs : ContDiffOn ℝ ∞ φ (cov B g)` using `hφc.restrict_scalars ℝ`. Establish `hn : ContDiffOn ℝ ∞ (fun P => ‖φ P‖ ^ 2) (cov B g)` using `(contDiff_norm_sq ℝ).comp_contDiffOn hφs`. Establish `hnpos : ∀ P ∈ cov B g, 0 < ‖φ P‖ ^ 2` using `fun P hP => pow_pos (norm_pos_iff.2 (hφ0 P hP)) 2`. Establish `htr : ∀ l P, P ∈ cov B g → transl τ l P ∈ cov B g` using `fun l P hP => ⟨hP.1, Set.mem_univ _⟩`. Use `⟨⟨hsm.div hn fun P hP => (hnpos P hP).ne', fun P hP => div_pos (hpos P hP) (hnpos P hP), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `l hl P hP`. Establish `e1` using `haut l hl P hP`. Establish `e2` using `congrArg (fun z : ℂ => ‖z‖ ^ 2) (hφa l hl P hP)`. Simplify using `only [norm_mul, mul_pow] at e2`. Establish `a` using `hnpos _ (htr l P hP)`.
+
+Establish `b` using `hnpos P hP`. Rewrite using `[div_mul_eq_mul_div, div_eq_div_iff a.ne' b.ne']`. Take the linear combination `(-h (transl τ l P)) * e2 + ‖φ (transl τ l P)‖ ^ 2 * e1`. Introduce `P hP v w`. Establish `hlog` using `ddc_eq_sub_of_eqOn hU (u := fun Q => Real.log (h Q / ‖φ Q‖ ^ 2)) (u₁ := fun Q => Real.log (h Q)) (u₂ := fun Q => Real.log (‖φ Q‖ ^ 2)) (hsm.log fun Q hQ => (hpos Q hQ).ne') (hn.log fun Q hQ => (hnpos Q hQ).ne') (fun Q hQ => Real.log_div (hpos Q hQ).ne' (hnpos Q hQ).ne') hP v w`.
+
+Rewrite using `[hlog, GlobalTheory.T.log_norm_sq_holomorphic_ddc_zero _ φ hU hφd hφ0 P hP v w, sub_zero]`. Conclude with `hc P hP v w`.
+-/
 theorem div_normSq_isMetric_chernIsFlat : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ},
     IsPeriodMap B τ → ∀ (M : Submodule ℤ (Fl g)) (j j' : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ)

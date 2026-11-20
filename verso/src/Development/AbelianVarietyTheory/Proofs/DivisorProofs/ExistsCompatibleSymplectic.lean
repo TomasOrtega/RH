@@ -3,6 +3,19 @@ open Matrix
 
 namespace GlobalTheory.SympTower
 
+/- English proof (translation)
+Set `S` to `{y : R // ∃ z, y = c * z}`. Use `haveI : Fintype S := Fintype.ofFinite _`. Use `haveI : Nontrivial S := ⟨⟨⟨c, 1, by simp⟩, ⟨0, 0, by simp⟩, fun h => hc (congrArg Subtype.val h)⟩⟩`. Establish `key : ∀ s : Fin r → S, ∃ x : Fin r → R, (fun i => (s i).1) = c • x`. Introduce `s`.
+
+Use `choose z hz using fun i => (s i).2`. Conclude with `⟨z, funext fun i => by simpa using hz i⟩`. Set `f : (Fin r → S) → (ι → S)` to `fun s j => ⟨ψ (fun i => (s i).1) j, by`. Take `⟨x, hx⟩` from `key s`. Conclude with `⟨ψ x j, by rw [hx]; simp⟩⟩`.
+
+Establish `hφ : ∀ s : Fin r → S, φ (ψ (fun i => (s i).1)) = fun i => (s i).1`. Introduce `s`. Take `⟨x, hx⟩` from `key s`. Use `h x` as an intermediate fact. Rewrite `this` using `[smul_sub, sub_eq_zero]`.
+
+Rewrite using `[hx, map_smul, map_smul, ← this]`. Establish `hf : Function.Injective f`. Introduce `s t hst`. Establish `h1 : ψ (fun i => (s i).1) = ψ (fun i => (t i).1)`. Use function extensionality and compare the values at `fun j => congrArg Subtype.val (congrFun hst j)`.
+
+Establish `h2` using `hφ s`. Rewrite `h2` using `[h1, hφ t]`. Conclude with `funext fun i => Subtype.ext (congrFun h2 i).symm`. Establish `hcard` using `Fintype.card_le_of_injective f hf`. Simplify using `only [Fintype.card_fun, Fintype.card_fin] at hcard`.
+
+Conclude with `(Nat.pow_le_pow_iff_right Fintype.one_lt_card).1 hcard`.
+-/
 theorem rank_le_of_smul_sub_eq_zero {R : Type} [CommRing R] [Finite R] {r : ℕ} {ι : Type}
     [Fintype ι] (φ : (ι → R) →ₗ[R] (Fin r → R)) (ψ : (Fin r → R) →ₗ[R] (ι → R)) (c : R)
     (hc : c ≠ 0) (h : ∀ x, c • (x - φ (ψ x)) = 0) : r ≤ Fintype.card ι := by
@@ -34,6 +47,15 @@ theorem rank_le_of_smul_sub_eq_zero {R : Type} [CommRing R] [Finite R] {r : ℕ}
   simp only [Fintype.card_fun, Fintype.card_fin] at hcard
   exact (Nat.pow_le_pow_iff_right Fintype.one_lt_card).1 hcard
 
+/- English proof (translation)
+Use `haveI : IsPrincipalIdealRing (ZMod n) := IsPrincipalIdealRing.of_surjective (Int.castRingHom (ZMod n)) (ZMod.ringHom_surjective _)`. Take `⟨d, hd⟩` from `(IsPrincipalIdealRing.principal (LinearMap.range f)).principal`. Establish `hreg : d ∈ nonZeroDivisors (ZMod n)`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `c hc`.
+
+Apply `h` to reduce the goal to its premises. Introduce `y`. Establish `: f y ∈ Submodule.span (ZMod n) {d}` using `hd ▸ LinearMap.mem_range_self f y`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 this`. Rewrite using `[← ha, smul_eq_mul, mul_left_comm, hc, mul_zero]`.
+
+Establish `hu : IsUnit d` using `IsArtinianRing.isUnit_of_mem_nonZeroDivisors hreg`. Establish `: (1 : ZMod n) ∈ LinearMap.range f`. Rewrite using `[hd]`. Take `⟨u, rfl⟩` from `hu`. Conclude with `Submodule.mem_span_singleton.2 ⟨↑u⁻¹, by simp⟩`.
+
+Conclude with `this`.
+-/
 theorem exists_eq_one {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module (ZMod n) V]
     (f : V →ₗ[ZMod n] ZMod n) (h : ∀ c : ZMod n, (∀ y, c * f y = 0) → c = 0) : ∃ y, f y = 1 := by
   haveI : IsPrincipalIdealRing (ZMod n) :=
@@ -54,6 +76,9 @@ theorem exists_eq_one {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module (
     exact Submodule.mem_span_singleton.2 ⟨↑u⁻¹, by simp⟩
   exact this
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `AddMonoid.exists_addOrderOf_eq_exponent (G := V) AddMonoid.ExponentExists.of_finite`. Use `⟨x, fun c hc => h c fun y => ?_⟩` and prove the remaining obligations. Rewrite `hc`, the goal using `[← ZMod.natCast_zmod_val c, Nat.cast_smul_eq_nsmul]`. Take `⟨m, hm⟩` from `addOrderOf_dvd_of_nsmul_eq_zero hc`. Rewrite using `[hm, hx, mul_nsmul, AddMonoid.exponent_nsmul_eq_zero, nsmul_zero]`.
+-/
 theorem exists_faithful {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module (ZMod n) V]
     [Finite V] (h : ∀ c : ZMod n, (∀ y : V, c • y = 0) → c = 0) :
     ∃ x : V, ∀ c : ZMod n, c • x = 0 → c = 0 := by
@@ -63,6 +88,31 @@ theorem exists_faithful {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module
   obtain ⟨m, hm⟩ := addOrderOf_dvd_of_nsmul_eq_zero hc
   rw [hm, hx, mul_nsmul, AddMonoid.exponent_nsmul_eq_zero, nsmul_zero]
 
+/- English proof (translation)
+Establish `hsk : ∀ x y, ω x y = - ω y x`. Introduce `x y`. Use `halt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, halt] at this`. Take the linear combination `this`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ k ih`. Take `⟨v, w, hv, hw, hvw⟩` from `ih (by omega)`. Set `φ : (Fin k ⊕ Fin k → ZMod n) →ₗ[ZMod n] (Fin (2 * g) → ZMod n)` to `Fintype.linearCombination (ZMod n) (Sum.elim v w)`.
+
+Set `ψ : (Fin (2 * g) → ZMod n) →ₗ[ZMod n] (Fin k ⊕ Fin k → ZMod n)` to `LinearMap.pi (Sum.elim (fun i => ω.flip (w i)) (fun i => ω (v i)))`. Establish `hφψ : ∀ x, φ (ψ x) = ∑ i, ω x (w i) • v i + ∑ i, ω (v i) x • w i`. Introduce `x`. Simplify using `[φ, ψ, Fintype.linearCombination_apply, Fintype.sum_sum_type]`. Set `K : Submodule (ZMod n) (Fin (2 * g) → ZMod n)` to `{ carrier := {x | ∀ j, ω (v j) x = 0 ∧ ω x (w j) = 0} add_mem' := fun ha hb j => by simp [(ha j).1, (ha j).2, (hb j).1, (hb j).2] zero_mem' := fun j => by simp smul_mem' := fun c x hx j => by simp [(hx j).1, (hx j).2] }`.
+
+Establish `hp : ∀ x, x - φ (ψ x) ∈ K`. Introduce `x j`. Rewrite using `[hφψ]`. Prove the components needed by the constructor for the conclusion. Simplify using `[map_sum, hv, hvw]`.
+
+Simplify using `[map_sum, LinearMap.sum_apply, hw, hvw]`. Establish `hKp : ∀ x ∈ K, ∀ y, ω x (y - φ (ψ y)) = ω x y`. Introduce `x hx y`. Establish `h1 : ∀ j, ω x (v j) = 0` using `fun j => by rw [hsk, (hx j).1, neg_zero]`. Rewrite using `[hφψ]`.
+
+Simplify using `[map_sum, h1, fun j => (hx j).2]`. Take `⟨x, hx⟩` from `exists_faithful (n := n) (V := K) (by`. Introduce `c hc`. Assume the negation of the conclusion as `hc0`. Use `rank_le_of_smul_sub_eq_zero φ ψ c hc0 (fun x => congrArg Subtype.val (hc ⟨_, hp x⟩))` as an intermediate fact.
+
+Simplify using `at this`. Use the proof step `omega)`. Take `⟨y, hy⟩` from `exists_eq_one ((ω x.1).comp K.subtype) (by`. Introduce `c hc`. Apply `hx` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `hnd` to reduce the goal to its premises. Introduce `y`. Use `hc ⟨_, hp y⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, hKp x.1 x.2] at this`.
+
+Simplify using `using this)`. Establish `hxv : ∀ j, ω x.1 (v j) = 0` using `fun j => by rw [hsk, (x.2 j).1, neg_zero]`. Establish `hwy : ∀ j, ω (w j) y.1 = 0` using `fun j => by rw [hsk, (y.2 j).2, neg_zero]`. Use `⟨Fin.cons x.1 v, Fin.cons y.1 w, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[halt, hxv, hv, (x.2 _).1]`. Introduce `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[halt, hwy, hw, (y.2 _).2]`.
+
+Introduce `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `using hy`. Simplify using `[(x.2 _).2, (Fin.succ_ne_zero j).symm]`. Simplify using `[(y.2 _).1]`.
+
+Simplify using `[hvw]`.
+-/
 theorem exists_pairs {n : ℕ} [NeZero n] {g : ℕ}
     (ω : (Fin (2 * g) → ZMod n) →ₗ[ZMod n] (Fin (2 * g) → ZMod n) →ₗ[ZMod n] ZMod n)
     (halt : ∀ x, ω x x = 0) (hnd : ∀ x, (∀ y, ω x y = 0) → x = 0) (k : ℕ) (hk : k ≤ g) :
@@ -133,6 +183,29 @@ theorem exists_pairs {n : ℕ} [NeZero n] {g : ℕ}
       · simp [(y.2 _).1]
       · simp [hvw]
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn.ne'⟩`. Set `χ : ZMod n → Fˣ` to `fun a => ((Additive.toMul (hζ.zmodEquivZPowers a) : Subgroup.zpowers ζ) : Fˣ)`. Establish `χadd : ∀ a b, χ (a + b) = χ a * χ b` using `by intro a b; simp [χ]`. Establish `χinj : Function.Injective χ`. Introduce `a b h`.
+
+Conclude with `hζ.zmodEquivZPowers.injective (Additive.toMul.injective (Subtype.ext h))`. Establish `χint : ∀ i : ℤ, χ i = ζ ^ i`. Introduce `i`. Simplify using `only [χ, hζ.zmodEquivZPowers_apply_coe_int]`. Both sides reduce to the same expression.
+
+Establish `χ0 : χ 0 = 1` using `by simpa using χint 0`. Establish `hpow : ∀ x y, e x y ^ n = 1`. Introduce `x y`. Set `f : G →+ Additive Fˣ` to `AddMonoidHom.mk' (fun x => Additive.ofMul (e x y)) (fun a b => by rw [h1]; rfl)`. Establish `hx : n • x = 0` using `Φ.injective (by`.
+
+Rewrite using `[map_nsmul, map_zero, ← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul])`. Use `map_nsmul f n x` as an intermediate fact. Rewrite `this` using `[hx, map_zero]`. Conclude with `(congrArg Additive.toMul this).symm`. Establish `hex : ∀ x y, ∃ a, χ a = e (Φ.symm x) (Φ.symm y)`.
+
+Introduce `x y`. Establish `hm : e (Φ.symm x) (Φ.symm y) ∈ Subgroup.zpowers ζ`. Rewrite using `[hζ.zpowers_eq, mem_rootsOfUnity]`. Conclude with `hpow _ _`. Take `⟨i, hi⟩` from `hm`.
+
+Conclude with `⟨i, by rw [χint]; exact hi⟩`. Use `choose b hb using hex`. Establish `b1 : ∀ x y z, b (x + y) z = b x z + b y z` using `fun x y z => χinj (by rw [χadd, hb, hb, hb, map_add, h1])`. Establish `b2 : ∀ x y z, b x (y + z) = b x y + b x z` using `fun x y z => χinj (by rw [χadd, hb, hb, hb, map_add, h2])`. Set `ω : (Fin (2 * g) → ZMod n) →ₗ[ZMod n] (Fin (2 * g) → ZMod n) →ₗ[ZMod n] ZMod n` to `LinearMap.mk₂ (ZMod n) b b1 (fun c x y => ZMod.map_smul (AddMonoidHom.mk' (fun x => b x y) (fun x z => b1 x z y)) c x) b2 (fun c x y => ZMod.map_smul (AddMonoidHom.mk' (fun y => b x y) (fun y z => b2 x y z)) c y)`.
+
+Establish `hω : ∀ x y, χ (ω x y) = e (Φ.symm x) (Φ.symm y)` using `hb`. Establish `halt : ∀ x, ω x x = 0` using `fun x => χinj (by rw [hω, h3, χ0])`. Establish `hsk : ∀ x y, ω x y = - ω y x`. Introduce `x y`. Use `halt (x + y)` as an intermediate fact.
+
+Simplify using `only [map_add, LinearMap.add_apply, halt] at this`. Take the linear combination `this`. Take `⟨v, w, hv, hw, hvw⟩` from `exists_pairs ω halt (by`. Introduce `x hx`. Use `h4 (Φ.symm x) (fun y => by` as an intermediate fact.
+
+Use `hω x (Φ y)` as an intermediate fact. Rewrite `this` using `[hx, χ0, Φ.symm_apply_apply]`. Conclude with `this.symm)`. Conclude with `Φ.symm.injective (by rw [this, map_zero])) g le_rfl`. Establish `hwv : ∀ i j, ω (w i) (v j) = if j = i then -1 else 0`.
+
+Apply the tactic sequence `intro i j; rw [hsk, hvw]; split_ifs <;> simp`. Set `E : ((Fin g → ℤ) × (Fin g → ℤ)) →+ (Fin (2 * g) → ZMod n)` to `AddMonoidHom.mk' (fun a => ∑ i, (a.1 i : ZMod n) • v i + ∑ i, (a.2 i : ZMod n) • w i) (fun a b => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply, Int.cast_add, add_smul, Finset.sum_add_distrib]`. Use the proof step `abel)`. Use `⟨Φ.symm.toAddMonoidHom.comp E, fun a c => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `e (Φ.symm (E a)) (Φ.symm (E c)) = _`. Rewrite using `[← hω, ← χint]`. Use `congr 1`. Simplify using `[E, map_sum, LinearMap.sum_apply, hv, hw, hvw, hwv, dotProduct, mul_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_level {F : Type} [Field F] {ζ : Fˣ} {n : ℕ} (hn : 0 < n)
     (hζ : IsPrimitiveRoot ζ n) {g : ℕ} {G : Type} [AddCommGroup G] (e : G → G → Fˣ)
     (Φ : G ≃+ (Fin (2 * g) → ZMod n)) (h1 : ∀ x y z, e (x + y) z = e x z * e y z)
@@ -204,6 +277,27 @@ theorem exists_level {F : Type} [Field F] {ζ : Fˣ} {n : ℕ} (hn : 0 < n)
   simp [E, map_sum, LinearMap.sum_apply, hv, hw, hvw, hwv, dotProduct, mul_comm]
   ring
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn.ne'⟩`. Establish `hnx : ∀ x : G, n • x = 0` using `fun x => Φ.injective (by`. Rewrite using `[map_nsmul, map_zero, ← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul])`. Establish `h0 : ∀ y, e 0 y = 1`. Introduce `y`.
+
+Use `h1 0 0 y` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `hker : ∀ a, ev a = 0 → (∀ i, (n : ℤ) ∣ a.1 i) ∧ ∀ i, (n : ℤ) ∣ a.2 i`. Introduce `a ha`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `i`. Use `hev a (0, Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[ha, h0, eq_comm, hζ.zpow_eq_one_iff_dvd]`. Simplify using `using this`.
+
+Introduce `i`. Use `hev a (Pi.single i 1, 0)` as an intermediate fact. Rewrite `this` using `[ha, h0, eq_comm, hζ.zpow_eq_one_iff_dvd]`. Simplify using `using this`. Use `⟨fun a b => ⟨fun h => ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨ha, hb⟩` from `hker (a - b) (by rw [map_sub, h, sub_self]) choose c hc using ha choose d hd using hb`. Use `⟨(c, d), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Use `hc i` as an intermediate fact. Simplify using `at this ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hd i` as an intermediate fact. Simplify using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+
+Rewrite using `[map_add, map_nsmul, hnx, add_zero]`. Set `f : (Fin g → ZMod n) × (Fin g → ZMod n) → G` to `fun a => ev (fun i => ((a.1 i).val : ℤ), fun i => ((a.2 i).val : ℤ))`. Establish `hf : Function.Injective f`. Introduce `a b h`. Take `⟨ha, hb⟩` from `hker (_ - _) (by rw [map_sub]; exact sub_eq_zero.2 h)`.
+
+Use extensionality with `i`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ n).2 (ha i)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ n).2 (hb i)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+
+Use `haveI : Fintype G := Fintype.ofEquiv _ Φ.symm.toEquiv`. Establish `hb : Function.Bijective f` using `(Fintype.bijective_iff_injective_and_card f).2 ⟨hf, by`. Rewrite using `[Fintype.card_congr Φ.toEquiv]`. Simplify using `[two_mul, pow_add]⟩`. Introduce `x`.
+
+Take `⟨a, ha⟩` from `hb.2 x`. Conclude with `⟨_, ha⟩`.
+-/
 theorem ker_and_surj {F : Type} [Field F] {ζ : Fˣ} {n : ℕ} (hn : 0 < n)
     (hζ : IsPrimitiveRoot ζ n) {g : ℕ} {G : Type} [AddCommGroup G] (e : G → G → Fˣ)
     (Φ : G ≃+ (Fin (2 * g) → ZMod n)) (h1 : ∀ x y z, e (x + y) z = e x z * e y z)
@@ -262,6 +356,25 @@ theorem ker_and_surj {F : Type} [Field F] {ζ : Fˣ} {n : ℕ} (hn : 0 < n)
     obtain ⟨a, ha⟩ := hb.2 x
     exact ⟨_, ha⟩
 
+/- English proof (translation)
+Introduce `F _ ζ hζ hζc g G _ e π hG h1 h2 h3 h4 hπ hcomp`. Establish `hlev : ∀ M : ℕ, ∃ E : ((Fin g → ℤ) × (Fin g → ℤ)) →+ G M.factorial, ∀ a b, e _ (E a) (E b) = ζ M.factorial ^ (a.1 ⬝ᵥ b.2 - a.2 ⬝ᵥ b.1)` using `fun M => exists_level M.factorial_pos (hζ _ M.factorial_pos) (e _) (hG _ M.factorial_pos).some (h1 _) (h2 _) (h3 _) (h4 _ M.factorial_pos)`. Use `choose E hE using hlev`. Establish `hpush : ∀ n M, 0 < M → n ∣ M → ∀ (x y : G M) (i : ℤ), e M x y = ζ M ^ i → e n (π M n x) (π M n y) = ζ n ^ i`. Introduce and unpack `n _ hM ⟨m, rfl⟩ x y i h`.
+
+Establish `hn : 0 < n` using `Nat.pos_of_mul_pos_right hM`. Establish `hm : 0 < m` using `Nat.pos_of_mul_pos_left hM`. Rewrite using `[hπ n m hn hm, h, ← hζc n m hn hm, ← _root_.zpow_natCast, ← _root_.zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm i]`. Set `U : Ultrafilter ℕ` to `Filter.hyperfilter ℕ`. Establish `hU : ∀ n, 0 < n → ∀ᶠ k in (U : Filter ℕ), n ∣ k.factorial`.
+
+Introduce `n hn`. Apply `Filter.Eventually.filter_mono Filter.hyperfilter_le_cofinite` to reduce the goal to its premises. Rewrite using `[Nat.cofinite_eq_atTop]`. Conclude with `(Filter.eventually_ge_atTop n).mono fun k hk => Nat.dvd_factorial hn hk`. Establish `hlim : ∀ n, ∃ f : ((Fin g → ℤ) × (Fin g → ℤ)) →+ G n, 0 < n → ∀ a, ∀ᶠ k in (U : Filter ℕ), π k.factorial n (E k a) = f a`.
+
+Introduce `n`. Distinguish the cases in `hn : 0 < n`. Use `haveI : NeZero n := ⟨hn.ne'⟩ haveI : Finite (G n) := Finite.of_equiv _ (hG n hn).some.symm.toEquiv`. Establish `: ∀ a, ∃ x, ∀ᶠ k in (U : Filter ℕ), π k.factorial n (E k a) = x`. Introduce `a`.
+
+Take `⟨x, hx⟩` from `(U.map fun k => π k.factorial n (E k a)).eq_pure_of_finite`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `: {x} ∈ (U.map fun k => π k.factorial n (E k a))` using `by rw [hx]; simp`. Conclude with `this`. Use `choose f hf using this`.
+
+Use `⟨AddMonoidHom.mk' f fun a b => ?_, fun _ => hf⟩` and prove the remaining obligations. Take `⟨k, hk1, hk2, hk3⟩` from `((hf a).and ((hf b).and (hf (a + b)))).exists`. Rewrite using `[← hk1, ← hk2, ← hk3, map_add, map_add]`. Conclude with `⟨0, fun h => absurd h hn⟩`. Use `choose ev hev using hlim`.
+
+Establish `hpair : ∀ n, 0 < n → ∀ a b, e n (ev n a) (ev n b) = ζ n ^ (a.1 ⬝ᵥ b.2 - a.2 ⬝ᵥ b.1)`. Introduce `n hn a b`. Take `⟨k, hk1, hk2, hk3⟩` from `((hev n hn a).and ((hev n hn b).and (hU n hn))).exists`. Rewrite using `[← hk1, ← hk2]`. Conclude with `hpush n _ k.factorial_pos hk3 _ _ _ (hE k a b)`.
+
+Establish `hks` using `fun n (hn : 0 < n) => ker_and_surj hn (hζ n hn) (e n) (hG n hn).some (h1 n) (ev n) (hpair n hn)`. Use `⟨ev, fun n hn => (hks n hn).1, fun n hn => (hks n hn).2, ?_, hpair⟩` and prove the remaining obligations. Introduce `n m hn hm a`. Establish `hnm` using `Nat.mul_pos hn hm`. Take `⟨k, hk1, hk2, hk3⟩` from `((hev n hn a).and ((hev _ hnm a).and (hU _ hnm))).exists`.
+
+Rewrite using `[← hk1, ← hk2]`. Conclude with `hcomp _ _ _ hn k.factorial_pos (Dvd.intro _ rfl) hk3 _`.
+-/
 theorem exists_compatible_symplectic : ∀ (F : Type) [Field F] (ζ : ℕ → Fˣ), (∀ n, 0 < n → IsPrimitiveRoot (ζ n) n) → (∀ n m, 0 < n → 0 < m → ζ (n * m) ^ m = ζ n) → ∀ (g : ℕ) (G : ℕ → Type) [∀ n, AddCommGroup (G n)] (e : ∀ n, G n → G n → Fˣ) (π : ∀ M n, G M →+ G n), (∀ n, 0 < n → Nonempty (G n ≃+ (Fin (2 * g) → ZMod n))) → (∀ n x y z, e n (x + y) z = e n x z * e n y z) → (∀ n x y z, e n x (y + z) = e n x y * e n x z) → (∀ n x, e n x x = 1) → (∀ n, 0 < n → ∀ x, (∀ y, e n x y = 1) → x = 0) → (∀ n m, 0 < n → 0 < m → ∀ x y, e n (π (n * m) n x) (π (n * m) n y) = e (n * m) x y ^ m) → (∀ M n k, 0 < k → 0 < M → k ∣ n → n ∣ M → ∀ x, π n k (π M n x) = π M k x) → ∃ ev : ∀ n, ((Fin g → ℤ) × (Fin g → ℤ)) →+ G n, (∀ n, 0 < n → ∀ a b, ev n a = ev n b ↔ ∃ e', a = b + n • e') ∧ (∀ n, 0 < n → Function.Surjective (ev n)) ∧ (∀ n m, 0 < n → 0 < m → ∀ a, π (n * m) n (ev (n * m) a) = ev n a) ∧ (∀ n, 0 < n → ∀ a b, e n (ev n a) (ev n b) = ζ n ^ (a.1 ⬝ᵥ b.2 - a.2 ⬝ᵥ b.1)) := by
   intro F _ ζ hζ hζc g G _ e π hG h1 h2 h3 h4 hπ hcomp
   classical

@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.Mum.ThetaDown
 
+/- English proof (translation)
+Introduce `B _ P K C _ _ j s x hx k J p w hp H`. Establish `h₁ : Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `h₂ : Laws2` using `GlobalTheory.firstFiveLaws.2.1`. Establish `hk : Odd k` using `H.1`. Set `eC : Γ(Sp C, ⊤) ≃+* C` to `(Scheme.ΓSpecIso (CommRingCat.of C)).commRingCatIsoToRingEquiv`.
+
+Establish `hkC : (k : C) ≠ 0`. Use `H.2.1.map eC.toRingHom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hkK : IsUnit (k : K)` using `IsUnit.mk0 _ fun h0 => hkC (by rw [← map_natCast j, h0, map_zero])`.
+
+Take `⟨w₀, hw₀⟩` from `GlobalTheory.Ex.Specialise.exists_isThetaPt_local h₁ h₂ P s hk hkK p hp`. Establish `hC` using `GlobalTheory.Ex.Specialise.isThetaPt_map h₂ P j hx hw₀`. Use `haveI : IsLocalRing Γ((Over.mk x).left, ⊤) := eC.symm.isLocalRing`. Take `⟨u, hu⟩` from `GlobalTheory.ThetaUniq.exists_unit_over h₁.globalFns P hk (GlobalTheory.ThetaUniq.isThetaPtOver_of_local _ x hC) (GlobalTheory.ThetaUniq.isThetaPtOver_of_local _ x H)`. Use `set c : C := eC (u : Γ((Over.mk x).left, ⊤)) with hcdef`.
+
+Establish `hc : ∀ i, j (w i) = c * j (w₀ i)` using `fun i => by`. Establish `q` using `(congrArg eC (hu i)).trans (map_mul eC _ _)`. Conclude with `(eC.apply_symm_apply (j (w i))).symm.trans (q.trans (congrArg (_ * ·) (eC.apply_symm_apply (j (w₀ i)))))`. Establish `hu0 : c ≠ 0` using `fun h0 => (u.isUnit.map eC.toRingHom).ne_zero h0`. Distinguish the cases in `hz : ∀ i, w₀ i = 0`.
+
+Establish `e : w = w₀` using `funext fun i => j.injective (by rw [hc, hz, map_zero, MulZeroClass.mul_zero])`. Substitute `e` using the available equality. Conclude with `hw₀`. Use `push_neg at hz`. Take `⟨i₀, hi₀⟩` from `hz`.
+
+Establish `hd : j (w i₀ / w₀ i₀) = c`. Rewrite using `[map_div₀, hc, mul_div_assoc, div_self ((map_ne_zero j).2 hi₀), _root_.mul_one]`. Establish `hd0 : w i₀ / w₀ i₀ ≠ 0` using `fun h0 => hu0 (by rw [← hd, h0, map_zero])`. Establish `e : ∀ i, w i = (w i₀ / w₀ i₀) * w₀ i` using `fun i => j.injective (by rw [map_mul, hd, hc])`. Use `GlobalTheory.Ex.Specialise.isThetaPt_mul P hw₀ hd0` as an intermediate fact.
+
+Use `this using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[e i]`.
+-/
 theorem isThetaPt_of_map : ∀ (B : Scheme.{0}) [IsLocallyNoetherian B] (P : PolAV B) (K C : Type) [Field K] [Field C] (j : K →+* C) (s : Sp K ⟶ B) (x : Sp C ⟶ B) (hx : spMap j ≫ s = x) (k : ℕ) (J : Type) (p : J → (Over.mk s ⟶ P.A)) (w : J → K), (∀ i, p i ^ k ^ 2 = 1) → IsThetaPt P k (fun i => (Over.homMk (spMap j) hx : Over.mk x ⟶ Over.mk s) ≫ p i) (fun i => (Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom (j (w i))) → IsThetaPt P k p (fun i => (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (w i)) := by
   intro B _ P K C _ _ j s x hx k J p w hp H
   have h₁ : Laws := GlobalTheory.firstFiveLaws.1

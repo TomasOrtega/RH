@@ -6,10 +6,26 @@ open GlobalTheory.NeedB Polynomial
 
 namespace GlobalTheory.NeedB.TwistCochain
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Nat.div_add_mod n N, pow_add, pow_mul, hN, one_pow, one_mul]`.
+-/
 theorem pow_mod_of_pow_eq_one' {Ω : Type} [Field Ω] {N : ℕ} {ζ : Ω} (hN : ζ ^ N = 1) (n : ℕ) :
     ζ ^ (n % N) = ζ ^ n := by
   conv_rhs => rw [← Nat.div_add_mod n N, pow_add, pow_mul, hN, one_pow, one_mul]
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ N ζ hN hζ hζfix a b α β ha hb hα hβ w hw hcoc`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Rewrite `hα` using `[zero_pow hN.ne']`.
+
+Conclude with `ha ((algebraMap K Ω).injective (by rw [← hα, map_zero]))`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Rewrite `hβ` using `[zero_pow hN.ne']`. Conclude with `hb ((algebraMap K Ω).injective (by rw [← hβ, map_zero]))`.
+
+Take `⟨-, hgα, -, -⟩` from `GlobalTheory.T.kummerExponentOfGaloisElement_isKummerCharacter K Ω N ζ α hN hζ hζfix hα0 ⟨a, hα.symm⟩`. Take `⟨hylc, -, -, -⟩` from `GlobalTheory.T.kummerExponentOfGaloisElement_isKummerCharacter K Ω N ζ β hN hζ hζfix hβ0 ⟨b, hβ.symm⟩`. Use `⟨fun g => Units.mk0 α hα0 ^ (kum (N := N) ζ β g).val * (w g)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsLocallyConstant.comp₂ hylc hw (fun (i : ZMod N) (u : Ωˣ) => Units.mk0 α hα0 ^ i.val * u⁻¹)`. Introduce `g h`.
+
+Establish `hwg : (w g : Ω) ≠ 0` using `(w g).ne_zero`. Establish `hwh : g (w h : Ω) ≠ 0` using `by simpa using (w h).ne_zero`. Establish `hwgh : (w (g * h) : Ω) ≠ 0` using `(w (g * h)).ne_zero`. Establish `hz : ζ ^ (kum (N` using `N) ζ α g * kum (N := N) ζ β h).val = (ζ ^ (kum (N := N) ζ α g).val) ^ (kum (N := N) ζ β h).val := by`. Rewrite using `[ZMod.val_mul, pow_mod_of_pow_eq_one' hζ.pow_eq_one, pow_mul]`.
+
+Establish `hc` using `hcoc g h`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_mk0, map_mul, map_pow, Units.val_inv_eq_inv_val, map_inv₀, hgα g, hz]`. Rewrite `hc` using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_pow]`.
+
+Take the linear combination `-(ζ ^ (kum (N := N) ζ α g).val) ^ (kum (N := N) ζ β h).val * hc`.
+-/
 theorem twist_cochain : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) →
   ∀ (a b : K) (α β : Ω), a ≠ 0 → b ≠ 0 → α ^ N = algebraMap K Ω a → β ^ N = algebraMap K Ω b →

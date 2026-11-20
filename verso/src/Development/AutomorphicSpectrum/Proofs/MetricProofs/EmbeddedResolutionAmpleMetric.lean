@@ -8,6 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.AI.I1 (IsBlockMap pullDeg)
 
 namespace GlobalTheory.CompanionTheory.Ar.Cmp
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.UnitarySelfGeneration.g_pos`.
+-/
 theorem exists_smooth_hermLine_posPot_of_isEmbedded : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P J : Ideal (MRing ι)) (e : ℕ) (R : AnLogRes P J e), IsEmbedded R.A P R.U R.lift → ∃ Amp : HermLine ι, IsSmoothHerm Amp ∧ IsPotential R.A (potOf R Amp) ∧ IsPosPot R.A (potOf R Amp) :=
   @PositivityTheory.UnitarySelfGeneration.g_pos
 

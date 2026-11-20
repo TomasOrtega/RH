@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ConvUAbsU
 open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeBound GlobalTheory.WeylCell Formalism.UG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnitaryBorel.borel_eq_diag_mul_unip_sameDiag | exact GlobalTheory.UnitaryBorel.borel_eq_diag_mul_unip_sameDiag | (intros; apply GlobalTheory.UnitaryBorel.borel_eq_diag_mul_unip_sameDiag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unitaryBorel_eq_diagonal_mul_unipotent : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (n : ℕ)
     (β : GU σ n), IsBorelU β →
     ∃ t ν : GU σ n, β = t * ν ∧ IsUnipU ν ∧

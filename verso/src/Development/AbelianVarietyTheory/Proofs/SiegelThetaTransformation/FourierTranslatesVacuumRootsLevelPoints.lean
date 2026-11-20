@@ -18,6 +18,13 @@ open scoped ComplexConjugate Real Classical
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {w : E} {A A' : AddSubgroup (Matrix (Fin n) (Fin r) E)}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hyA`. Take `⟨v, hv, huniq⟩` from `GlobalTheory.SW.TensVac.Good.vac hs hA`. Take `⟨c, rfl⟩` from `huniq p hp hfix`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `h0 (zero_smul ℂ v)`. Establish `hvy : epsW X w y • heisG X bas y v = v`. Rewrite `hy` using `[heisG_smul, smul_comm]`. Conclude with `smul_right_injective _ hc hy`. Establish `h1` using `GlobalTheory.SW.TensVac.Good.ip_eq_zero idx hs hn hA hv hyA`.
+
+Rewrite `h1` using `[hvy, hv.2.1]`. Conclude with `one_ne_zero h1`.
+-/
 theorem mem_of_fix (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n)
     (hA : Good X w A) {p : TF n g} (hp : IsSB p) (h0 : p ≠ 0)
     (hfix : ∀ u ∈ A, epsW X w u • heisG X bas u p = p) {y}
@@ -35,6 +42,37 @@ theorem mem_of_fix (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Ev
   rw [hvy, hv.2.1] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Establish `hzero : ∀ y : Matrix (Fin n) (Fin r) E, heisG X bas y (0 : TF n g) = 0` using `fun y => by`. Establish `h` using `heisG_smul (X := X) (bas := bas) y (0 : ℂ) (0 : TF n g)`. Rewrite `h` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Distinguish the cases in `hp0 : p = 0`. Substitute `hp0` using the available equality.
+
+Establish `hproj : projA X bas w A' (0 : TF n g) = 0`. Unfold `projA`. Rewrite using `[finsum_mem_eq_zero_of_forall_eq_zero, smul_zero]`. Introduce and unpack `ψ ⟨y, -, rfl⟩`. Simplify using `[hzero]`.
+
+Rewrite using `[hproj, hzero, smul_zero]`. Simplify using `[hzero]`. Establish `hF : ∀ q, epsW X w (Y q) • heisG X bas (Y q) p = heisG X bas (Y q) p` using `fun q => by`. Rewrite using `[hY1, one_smul]`. Establish `hrange : (fun y => epsW X w y • heisG X bas y p) '' (A' : Set (Matrix (Fin n) (Fin r) E)) = Set.range (fun q => heisG X bas (Y q) p)`.
+
+Use extensionality with `ψ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨q, hq⟩` from `hsurj y hy`. Use `⟨q, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : y - Y q ∈ A'` using `sub_mem hy (hY q)`. Establish `h` using `GlobalTheory.SW.TensVac.Good.rho_rho idx hs hn hA' (hY q) hd hp`. Rewrite `h` using `[hfix _ hq, add_sub_cancel]`. Use `show heisG X bas (Y q) p = epsW X w y • heisG X bas y p`. Rewrite using `[← h, hF]`.
+
+Introduce and unpack `⟨q, rfl⟩`. Conclude with `⟨Y q, hY q, hF q⟩`. Establish `hinjF : Function.Injective (fun q => heisG X bas (Y q) p)`. Introduce `q q' hqq`. Simplify using `only at hqq`.
+
+Apply `hinj` to reduce the goal to its premises. Establish `hd : Y q - Y q' ∈ A'` using `sub_mem (hY q) (hY q')`. Establish `h1` using `GlobalTheory.SW.TensVac.Good.rho_rho idx hs hn hA' (hY q') hd hp`. Rewrite `h1` using `[add_sub_cancel, hF, hqq, ← hF q']`. Establish `hneg : -Y q' ∈ A'` using `neg_mem (hY q')`.
+
+Establish `cancel : ∀ φ : TF n g, IsSB φ → epsW X w (-Y q') • heisG X bas (-Y q') (epsW X w (Y q') • heisG X bas (Y q') φ) = φ` using `fun φ hφ => by`. Rewrite using `[GlobalTheory.SW.TensVac.Good.rho_rho idx hs hn hA' hneg (hY q') hφ, neg_add_cancel, rho_zero idx hs hn hφ]`. Establish `hsb` using `rho_sb idx hs hn (w := w) (Y q - Y q') hp`. Establish `h2 : epsW X w (-Y q') • heisG X bas (-Y q') (epsW X w (Y q') • heisG X bas (Y q') (epsW X w (Y q - Y q') • heisG X bas (Y q - Y q') p)) = epsW X w (-Y q') • heisG X bas (-Y q') (epsW X w (Y q') • heisG X bas (Y q') p)`. Rewrite using `[h1]`.
+
+Rewrite `h2` using `[cancel _ hsb, cancel _ hp]`. Conclude with `mem_of_fix idx hs hn hA hp hp0 hfix h2`. Establish `hfin : (Set.range fun q => heisG X bas (Y q) p).Finite`. Rewrite using `[← hrange]`. Conclude with `GlobalTheory.SW.TensVac.Good.finite idx hs hn hA' hp`.
+
+Establish `hfinι : Finite ι`. Use `hfin.to_subtype` as an intermediate fact. Conclude with `Finite.of_injective (fun q => (⟨_, q, rfl⟩ : Set.range fun q => heisG X bas (Y q) p)) (fun a b h => hinjF (congrArg Subtype.val h))`. Use `haveI := Fintype.ofFinite ι`. Establish `hproj : projA X bas w A' p = ((Nat.card ι : ℕ) : ℂ)⁻¹ • ∑ q, heisG X bas (Y q) p`.
+
+Unfold `projA`. Rewrite using `[hrange, finsum_mem_range hinjF, ← Set.image_univ, Set.ncard_image_of_injective _ hinjF, Set.ncard_univ, finsum_eq_sum_of_fintype]`. Establish `hsum : heisG X bas u (∑ q, heisG X bas (Y q) p) = ∑ q, heisG X bas u (heisG X bas (Y q) p)`. Establish `e : ∑ q, heisG X bas (Y q) p = ∑ φ ∈ Finset.univ.image (fun q => heisG X bas (Y q) p), φ`. Rewrite using `[Finset.sum_image (fun a _ b _ h => hinjF h)]`.
+
+Rewrite using `[e, heisG_sum, Finset.sum_image (fun a _ b _ h => hinjF h)]`. Establish `hup : heisG X bas u p = p`. Establish `h` using `hfix u hu`. Rewrite `h` using `[hu1, one_smul]`. Then use the resulting hypothesis. Establish `hterm : ∀ q, heisG X bas u (heisG X bas (Y q) p) = cexp (-(2 * Real.pi * I * ((∑ b, EF X (u b) (Y q b) : ℚ) : ℂ))) • heisG X bas (Y q) p`.
+
+Introduce `q`. Establish `l1` using `(laws idx hs hn u hp).2.2.1 (Y q)`. Establish `l2` using `(laws idx hs hn (Y q) hp).2.2.1 u`. Rewrite `l2` using `[hup, sumEF_swap hs, add_comm]`. Rewrite using `[l1, l2, smul_smul]`.
+
+Use `congr 1`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hproj, heisG_smul, hsum, finsum_eq_sum_of_fintype]`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[smul_inv_smul₀ (Nat.cast_ne_zero.2 Nat.card_pos.ne')]`. Conclude with `Finset.sum_congr rfl fun q _ => (hterm q).symm`.
+-/
 theorem fourier_of_reps (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n)
     (hA : Good X w A) (hA' : Good X w A') {p : TF n g} (hp : IsSB p)
     (hfix : ∀ u ∈ A, epsW X w u • heisG X bas u p = p) {ι : Type}
@@ -137,12 +175,18 @@ section Ideals
 
 variable {O V : Type} [CommRing O] [AddCommGroup V] [Module O V] {P Q : Ideal O} {M : ℕ}
 
+/- English proof (translation)
+Rewrite `hx` using `[Submodule.ideal_span_singleton_smul]`. Take `⟨u, hu, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Conclude with `⟨u, hu, Nat.cast_smul_eq_nsmul O M u⟩`.
+-/
 theorem exists_of_mem_span_smul {B : Submodule O V} {x : V}
     (hx : x ∈ Ideal.span {(M : O)} • B) : ∃ u ∈ B, x = M • u := by
   rw [Submodule.ideal_span_singleton_smul] at hx
   obtain ⟨u, hu, rfl⟩ := (Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx
   exact ⟨u, hu, Nat.cast_smul_eq_nsmul O M u⟩
 
+/- English proof (translation)
+Establish `hm : b • x ∈ (Q * P) • B`. Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hb hx`. Rewrite `hm` using `[h]`. Conclude with `exists_of_mem_span_smul hm`.
+-/
 theorem exists_of_mem_smul (h : Q * P = Ideal.span {(M : O)}) {B : Submodule O V} {x : V}
     (hx : x ∈ P • B) {b : O} (hb : b ∈ Q) : ∃ u ∈ B, b • x = M • u := by
   have hm : b • x ∈ (Q * P) • B := by
@@ -150,6 +194,13 @@ theorem exists_of_mem_smul (h : Q * P = Ideal.span {(M : O)}) {B : Submodule O V
   rw [h] at hm
   exact exists_of_mem_span_smul hm
 
+/- English proof (translation)
+Establish `h1 : (1 : O) ∈ Q ⊔ P` using `by rw [hc]; exact Submodule.mem_top`. Take `⟨q, hq, p, hp, hqp⟩` from `Submodule.mem_sup.1 h1`. Establish `hq' : q • x ∈ Ideal.span {(M : O)} • B`. Rewrite using `[← h, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hq hx`.
+
+Establish `hp' : p • x ∈ Ideal.span {(M : O)} • B`. Rewrite using `[← h, mul_comm Q P, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hp hx'`. Establish `hs` using `add_mem hq' hp'`. Rewrite `hs` using `[← add_smul, hqp, one_smul]`.
+
+Conclude with `exists_of_mem_span_smul hs`.
+-/
 theorem exists_of_mem_inter (h : Q * P = Ideal.span {(M : O)}) (hc : Q ⊔ P = ⊤)
     {B : Submodule O V} {x : V} (hx : x ∈ P • B) (hx' : x ∈ Q • B) : ∃ u ∈ B, x = M • u := by
   have h1 : (1 : O) ∈ Q ⊔ P := by rw [hc]; exact Submodule.mem_top
@@ -172,6 +223,9 @@ open scoped ComplexConjugate Real Classical
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ}
 
+/- English proof (translation)
+Unfold `ctr`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, cc, map_mul, map_natCast, mul_smul]`. Both sides reduce to the same expression.
+-/
 theorem ctr_nat (y : Matrix (Fin n) (Fin r) E) (s : ℕ) (v : Fin n → E) :
     ctr y ((s : E) • v) = (s : E) • ctr y v := by
   unfold ctr
@@ -180,6 +234,9 @@ theorem ctr_nat (y : Matrix (Fin n) (Fin r) E) (s : ℕ) (v : Fin n → E) :
   rw [Pi.smul_apply, smul_eq_mul, cc, map_mul, map_natCast, mul_smul]
   rfl
 
+/- English proof (translation)
+Unfold `ctr`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem ctr_smul (a : E) (y : Matrix (Fin n) (Fin r) E) (v : Fin n → E) :
     ctr (a • y) v = a • ctr y v := by
   unfold ctr
@@ -188,6 +245,11 @@ theorem ctr_smul (a : E) (y : Matrix (Fin n) (Fin r) E) (v : Fin n → E) :
   rw [smul_comm]
   rfl
 
+/- English proof (translation)
+Unfold `ctr`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using `[cc]`. Introduce `b _ hb`. Simplify using `[hb, cc]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ctr_single (y : Matrix (Fin n) (Fin r) E) (k : Fin n) : ctr y (Pi.single k 1) = y k := by
   unfold ctr
   rw [Finset.sum_eq_single k]
@@ -196,6 +258,19 @@ theorem ctr_single (y : Matrix (Fin n) (Fin r) E) (k : Fin n) : ctr y (Pi.single
     simp [hb, cc]
   · simp
 
+/- English proof (translation)
+Establish `hsm : ∀ (a : E) (v : Fin n → E), ctr y (a • v) = cc a • ctr y v`. Introduce `a v`. Unfold `ctr`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, cc, map_mul, mul_smul]`. Both sides reduce to the same expression. Establish `hadd : ∀ v v' : Fin n → E, ctr y (v + v') = ctr y v + ctr y v'`. Introduce `v v'`. Unfold `ctr`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, cc, map_add, add_smul]`. Both sides reduce to the same expression. Unfold `stdL at hv`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Rewrite using `[ctr_single]`. Conclude with `hy k`.
+
+Consider the case `zero`. Establish `: ctr y (0 : Fin n → E) = 0` using `by simp [ctr]`. Rewrite using `[this]`. Conclude with `B.zero_mem`. Consider the case `add x x' _ _ h1 h2`.
+
+Rewrite using `[hadd]`. Conclude with `B.add_mem h1 h2`. Consider the case `smul c x _ h`. Rewrite using `[← algebraMap_smul E c x, hsm]`. Conclude with `int_smul_mem (map_isIntegral_int _ (RingOfIntegers.isIntegral_coe c)) h`.
+-/
 theorem ctr_rows {B : Lt E r} {y : Matrix (Fin n) (Fin r) E} (hy : ∀ k, y k ∈ B) {v : Fin n → E}
     (hv : v ∈ stdL E n) : ctr y v ∈ B := by
   have hsm : ∀ (a : E) (v : Fin n → E), ctr y (a • v) = cc a • ctr y v := by
@@ -228,12 +303,22 @@ theorem ctr_rows {B : Lt E r} {y : Matrix (Fin n) (Fin r) E} (hy : ∀ k, y k �
 
 variable {M N s : ℕ} {Λ : Lt E n} {L : Lt E r} {P Q : Ideal (𝓞 E)}
 
+/- English proof (translation)
+Establish `hk : (s : E) • (Pi.single k 1 : Fin n → E) ∈ Λ` using `hs _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `h` using `(mem_tens_iff hΛ B y).1 hy _ hk`. Rewrite `h` using `[ctr_nat, ctr_single]`. Then use the resulting hypothesis.
+-/
 theorem row_mem (hΛ : Λ ∈ Vset E n M) (hs : ∀ v ∈ stdL E n, (s : E) • v ∈ Λ) {B : Lt E r}
     {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ B) (k : Fin n) : (s : E) • y k ∈ B := by
   have hk : (s : E) • (Pi.single k 1 : Fin n → E) ∈ Λ := hs _ (Submodule.subset_span ⟨k, rfl⟩)
   have h := (mem_tens_iff hΛ B y).1 hy _ hk
   rwa [ctr_nat, ctr_single] at h
 
+/- English proof (translation)
+Establish `hint : ∀ k, IsIntegral ℤ ((N : E) * v k)`. Introduce `k`. Establish `hk : (N : E) • (Pi.single k 1 : Fin n → E) ∈ Λ` using `hN _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `h` using `(hΛ.2.1 v).1 hv _ hk`. Establish `e : herm 1 v ((N : E) • (Pi.single k 1 : Fin n → E)) = (N : E) * v k`.
+
+Simplify using `[herm, Matrix.one_apply, Pi.single_apply, cc, mul_comm]`. Rewrite using `[Finset.sum_eq_single k (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `e : (N : E) • v = ∑ k, ((N : E) * v k) • (Pi.single k 1 : Fin n → E)`.
+
+Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun k _ => int_smul_mem (hint k) (Submodule.subset_span ⟨k, rfl⟩)`.
+-/
 theorem smul_mem_std (hΛ : Λ ∈ Vset E n M) (hN : ∀ v ∈ stdL E n, (N : E) • v ∈ Λ) {v : Fin n → E}
     (hv : v ∈ Λ) : (N : E) • v ∈ stdL E n := by
   have hint : ∀ k, IsIntegral ℤ ((N : E) * v k) := by
@@ -252,6 +337,9 @@ theorem smul_mem_std (hΛ : Λ ∈ Vset E n M) (hN : ∀ v ∈ stdL E n, (N : E)
   exact Submodule.sum_mem _ fun k _ => int_smul_mem (hint k) (Submodule.subset_span ⟨k, rfl⟩)
 
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `h` using `Submodule.smul_mem_smul hk hx`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E]` and apply the resulting hypothesis.
+-/
 theorem nat_smul_mem_smul {k : ℕ} (hk : (k : 𝓞 E) ∈ P) {x : Fin r → E} (hx : x ∈ L) :
     (k : E) • x ∈ P • L := by
   have h := Submodule.smul_mem_smul hk hx
@@ -259,6 +347,19 @@ theorem nat_smul_mem_smul {k : ℕ} (hk : (k : 𝓞 E) ∈ P) {x : Fin r → E} 
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `hQP : Q ^ j ⊔ P = ⊤`. Establish `h` using `(Ideal.isCoprime_iff_sup_eq.2 hc).pow_left (m := j)`. Conclude with `Ideal.isCoprime_iff_sup_eq.1 h`. Establish `hQbz : ∀ t ∈ Q ^ j, t • (b • z) ∈ P • L` using `fun t ht => by`. Rewrite using `[smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ b (ha t ht)`. Establish `hQw : ∀ t ∈ Q ^ j, t • (((2 * s : ℕ) : E) • b • z) ∈ P • L` using `fun t ht => by`. Rewrite using `[smul_comm, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hQbz t ht) _`. Establish `hwP : ((2 * s : ℕ) : E) • b • z ∈ P • L`.
+
+Establish `h1 : (1 : 𝓞 E) ∈ Q ^ j ⊔ P` using `by rw [hQP]; exact Submodule.mem_top`. Take `⟨q, hq, p, hp, hqp⟩` from `Submodule.mem_sup.1 h1`. Establish `e : ((2 * s : ℕ) : E) • b • z = q • (((2 * s : ℕ) : E) • b • z) + p • (((2 * s : ℕ) : E) • b • z)`. Rewrite using `[← add_smul, hqp, one_smul]`. Rewrite using `[e]`.
+
+Conclude with `add_mem (hQw q hq) (Submodule.smul_mem_smul hp hb2)`. Establish `hcop : Nat.Coprime (2 * s) (M ^ j)` using `Nat.Coprime.pow_right j (Nat.Coprime.mul_left (Nat.coprime_two_left.2 hM) hsM)`. Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `hMj : (M : 𝓞 E) ^ j ∈ Q ^ j` using `Ideal.pow_mem_pow hMQ j`. Establish `e : b • z = u • (((2 * s : ℕ) : E) • b • z) + v • (((M : 𝓞 E) ^ j) • (b • z))`.
+
+Rewrite using `[← algebraMap_smul E ((M : 𝓞 E) ^ j) (b • z), ← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, smul_smul, smul_smul, ← add_smul]`. Establish `h : (u : E) * ((2 * s : ℕ) : E) + (v : E) * algebraMap (𝓞 E) E ((M : 𝓞 E) ^ j) = 1`. Rewrite using `[map_pow, map_natCast]`. Conclude with `huv` after adjusting the coercions. Rewrite using `[h, one_smul]`.
+
+Rewrite using `[e]`. Conclude with `add_mem (zsmul_mem hwP u) (zsmul_mem (hQbz _ hMj) v)`.
+-/
 theorem mem_of_two (hM : Odd M) (hsM : s.Coprime M) (hMQ : (M : 𝓞 E) ∈ Q) (hc : Q ⊔ P = ⊤) {j : ℕ}
     {z : Fin r → E} (ha : ∀ t ∈ Q ^ j, t • z ∈ P • L) {b : 𝓞 E}
     (hb2 : ((2 * s : ℕ) : E) • b • z ∈ L) : b • z ∈ P • L := by
@@ -287,6 +388,25 @@ theorem mem_of_two (hM : Odd M) (hsM : s.Coprime M) (hMQ : (M : 𝓞 E) ∈ Q) (
     rw [h, one_smul]
   rw [e]; exact add_mem (zsmul_mem hwP u) (zsmul_mem (hQbz _ hMj) v)
 
+/- English proof (translation)
+Use `choose u hu hYu using h`. Establish `hstd : ∀ x ∈ stdL E n, ∀ k, IsIntegral ℤ (x k)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, rfl⟩` from `hx`. Introduce `k`. Distinguish the cases in `hka : k = a`. Substitute `hka` using the available equality. Simplify using `using isIntegral_one`.
+
+Simplify `isIntegral_zero` using `[Pi.single_apply, hka]`. Consider the case `zero => intro k`. Conclude with `isIntegral_zero`. Consider the case `add x y _ _ h1 h2 => intro k`. Conclude with `(h1 k).add (h2 k)`.
+
+Consider the case `smul c x _ h`. Introduce `k`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Conclude with `(RingOfIntegers.isIntegral_coe c).mul (h k)`. Establish `e : t • ctr ((2 : E)⁻¹ • Y) v = ∑ k, cc (v k) • ((N : E) • u k)`.
+
+Rewrite using `[ctr_smul, ctr, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm t ((2 : E)⁻¹), smul_comm t (cc (v k)), hYu k, ← Nat.cast_smul_eq_nsmul E, Nat.cast_mul, Nat.cast_ofNat]`. Simplify using `only [smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hsM`. Establish `hab' : (a : E) * s + b * M = 1` using `by exact_mod_cast hab`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+
+Establish `c1 : cc ((s : E) * v k) = (s : E) * cc (v k)` using `by simp [cc]`. Establish `c2 : cc ((N : E) * v k) = (N : E) * cc (v k)` using `by simp [cc]`. Establish `e2 : cc (v k) • ((N : E) • u k) = (a : E) • ((N : E) • (cc ((s : E) * v k) • u k)) + (b : E) • ((M : E) • (cc ((N : E) * v k) • u k))`. Rewrite using `[c1, c2]`. Simplify using `only [smul_smul, ← add_smul]`.
+
+Use `congr 1`. Take the linear combination `(-(cc (v k) * (N : E))) * hab'`. Rewrite using `[e2]`. Establish `i1 : IsIntegral ℤ (cc ((s : E) * v k))` using `map_isIntegral_int _ (hstd _ (hs v hv) k)`. Establish `i2 : IsIntegral ℤ (cc ((N : E) * v k))` using `map_isIntegral_int _ (hstd _ (smul_mem_std hΛ hN hv) k)`.
+
+Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem (nat_smul_mem_smul hNP (int_smul_mem i1 (hu k))) a`. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem (nat_smul_mem_smul hMP (int_smul_mem i2 (hu k))) b`.
+-/
 theorem half_away (hΛ : Λ ∈ Vset E n M) (hsM : s.Coprime M)
     (hs : ∀ v ∈ Λ, (s : E) • v ∈ stdL E n) (hMP : (M : 𝓞 E) ∈ P) (hNP : (N : 𝓞 E) ∈ P)
     (hN : ∀ v ∈ stdL E n, (N : E) • v ∈ Λ) {Y : Matrix (Fin n) (Fin r) E} {t : 𝓞 E}
@@ -338,6 +458,17 @@ theorem half_away (hΛ : Λ ∈ Vset E n M) (hsM : s.Coprime M)
   · rw [Int.cast_smul_eq_zsmul]
     exact zsmul_mem (nat_smul_mem_smul hMP (int_smul_mem i2 (hu k))) b
 
+/- English proof (translation)
+Take `⟨s, -, hsM, hs, -⟩` from `hΛ.2.2`. Use `choose j hj using h2`. Establish `hNP : (N : 𝓞 E) ∈ P`. Take `⟨c, rfl⟩` from `hMN`. Rewrite using `[Nat.cast_mul]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hMP`. Rewrite using `[mem_tens_iff hΛ]`. Introduce `v hv b hb`. Use `mem_of_two (j := ∑ k, j k) hM hsM hMQ hc ?_ ?_` and prove the remaining obligations. Introduce `t ht`.
+
+Use `half_away hΛ hsM hs hMP hNP hN (fun k => ?_) hv` and prove the remaining obligations. Conclude with `hj k t (Ideal.pow_le_pow_right (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)) ht)`. Establish `hrow : ∀ k, ((b : E) • Y) k ∈ L` using `fun k => by`. Establish `h` using `h1 k b hb`. Rewrite `h` using `[← algebraMap_smul E b (Y k)]`.
+
+Conclude with `h`. Establish `e : ((2 * s : ℕ) : E) • b • ctr ((2 : E)⁻¹ • Y) v = ctr ((b : E) • Y) ((s : E) • v)`. Rewrite using `[show ((b : 𝓞 E) : E) = algebraMap (𝓞 E) E b from rfl, ctr_smul, ctr_smul, ctr_nat, ← algebraMap_smul E b]`. Simplify using `only [smul_smul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ctr_rows hrow (hs v hv)`.
+-/
 theorem half_mem (hΛ : Λ ∈ Vset E n M) (hM : Odd M) (hMP : (M : 𝓞 E) ∈ P) (hMQ : (M : 𝓞 E) ∈ Q)
     (hc : Q ⊔ P = ⊤) (hMN : M ∣ N) (hN : ∀ v ∈ stdL E n, (N : E) • v ∈ Λ)
     {Y : Matrix (Fin n) (Fin r) E} (h1 : ∀ k, ∀ b ∈ Q, b • Y k ∈ L)
@@ -369,6 +500,11 @@ theorem half_mem (hΛ : Λ ∈ Vset E n M) (hM : Odd M) (hMP : (M : 𝓞 E) ∈ 
     rw [e]
     exact ctr_rows hrow (hs v hv)
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_tens_iff hΛ]`. Introduce `w hw`. Establish `h1 : ctr u w ∈ Ideal.span {((2 : ℕ) : 𝓞 E)} • L`. Establish `h` using `Submodule.smul_mono_left (Ideal.mul_le_left : Ideal.span {(2 : 𝓞 E)} * Q ≤ Ideal.span {(2 : 𝓞 E)}) (hu w hw)`. Simplify using `using h`.
+
+Take `⟨x, hx, hx2⟩` from `exists_of_mem_span_smul h1`. Rewrite using `[ctr_smul, hx2, ← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_ofNat, inv_mul_cancel₀ two_ne_zero, one_smul]`. Conclude with `hx`.
+-/
 theorem half_mem' (hΛ : Λ ∈ Vset E n M) {u : Matrix (Fin n) (Fin r) E}
     (hu : u ∈ tens Λ ((Ideal.span {2} * Q) • L)) : (2 : E)⁻¹ • u ∈ tens Λ L := by
   rw [mem_tens_iff hΛ] at hu ⊢
@@ -383,9 +519,17 @@ theorem half_mem' (hΛ : Λ ∈ Vset E n M) {u : Matrix (Fin n) (Fin r) E}
   exact hx
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[two_smul, ← add_smul, ← two_mul, mul_inv_cancel₀ two_ne_zero, one_smul]`.
+-/
 theorem two_half (y : Matrix (Fin n) (Fin r) E) : 2 • (2 : E)⁻¹ • y = y := by
   rw [two_smul, ← add_smul, ← two_mul, mul_inv_cancel₀ two_ne_zero, one_smul]
 
+/- English proof (translation)
+Take `⟨t, -, htM, -, ht⟩` from `hΛ.2.2`. Establish `h1` using `row_mem hΛ ht hy k`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 htM`. Establish `e : y k = a • ((t : E) • y k) + b • ((M : E) • y k)`. Rewrite using `[← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, smul_smul, smul_smul, ← add_smul]`.
+
+Establish `h2 : ((a : E) * t + b * M) = 1` using `by exact_mod_cast hab`. Rewrite using `[h2, one_smul]`. Rewrite using `[e]`. Conclude with `add_mem (zsmul_mem h1 a) (zsmul_mem h b)`.
+-/
 theorem rows_of_mem (hΛ : Λ ∈ Vset E n M) {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ L)
     (k : Fin n) (h : (M : E) • y k ∈ L) : y k ∈ L := by
   obtain ⟨t, -, htM, -, ht⟩ := hΛ.2.2
@@ -397,6 +541,27 @@ theorem rows_of_mem (hΛ : Λ ∈ Vset E n M) {y : Matrix (Fin n) (Fin r) E} (hy
     rw [h2, one_smul]
   rw [e]; exact add_mem (zsmul_mem h1 a) (zsmul_mem h b)
 
+/- English proof (translation)
+Take `⟨s, -, hsM, hs, hs'⟩` from `hΛ.2.2`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hsM`. Establish `hab' : (a : E) * s + b * M = 1` using `by exact_mod_cast hab`. Establish `hsub : ∀ (A A' : Matrix (Fin n) (Fin r) E) (w : Fin n → E), ctr (A - A') w = ctr A w - ctr A' w`. Introduce `A A' w`.
+
+Unfold `ctr`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_sub]`. Both sides reduce to the same expression.
+
+Establish `hcast : ∀ x : Fin r → E, (M : E) • x = (M : 𝓞 E) • x` using `fun x => by`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `hML : ∀ x ∈ idq P Q L, (M : E) • x ∈ L` using `fun x hx => by`. Establish `h : (M : 𝓞 E) • x ∈ P • L` using `hx _ hMQ`. Rewrite using `[hcast]`.
+
+Conclude with `Submodule.smul_le_right h`. Use `⟨((a : E) * s) • y, fun k => ?_, fun Y hY hYk => ?_⟩` and prove the remaining obligations. Establish `h1 : (s : E) • y k ∈ idq P Q L` using `row_mem hΛ hs' hy k`. Establish `h2 : (M : 𝓞 E) • ((s : E) • y k) ∈ P • L` using `h1 _ hMQ`. Establish `e : (M : E) • (((a : E) * s) • y) k = a • ((M : 𝓞 E) • ((s : E) • y k))`.
+
+Rewrite using `[← hcast, ← Int.cast_smul_eq_zsmul E]`. Use `show (M : E) • (((a : E) * s) • y k) = (a : E) • ((M : E) • ((s : E) • y k))`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `zsmul_mem h2 a`. Rewrite using `[mem_tens_iff hΛ]`. Introduce `w hw`. Establish `hx : ctr (y - Y) w ∈ idq P Q L` using `(mem_tens_iff hΛ _ _).1 (sub_mem hy hY) w hw`.
+
+Establish `hy' : ctr y w ∈ idq P Q L` using `(mem_tens_iff hΛ _ _).1 hy w hw`. Establish `hD : ∀ k, (Y - ((a : E) * s) • y) k ∈ L` using `fun k => hYk k`. Establish `hsx : (s : E) • ctr (y - Y) w ∈ L`. Establish `e : y - Y = ((b : E) * M) • y - (Y - ((a : E) * s) • y)`. Establish `h0 : ((b : E) * M) • y + ((a : E) * s) • y = y`.
+
+Rewrite using `[← add_smul, show (b : E) * M + a * s = 1 by linear_combination hab', one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ctr_nat, e, hsub, ctr_nat, ctr_smul]`. Use `sub_mem ?_ (ctr_rows hD (hs w hw))` and prove the remaining obligations. Establish `e3 : (s : E) • (((b : E) * M) • ctr y w) = ((s * b : ℤ) : E) • ((M : E) • ctr y w)`.
+
+Simplify using `only [smul_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, Int.cast_smul_eq_zsmul]`.
+
+Conclude with `zsmul_mem (hML _ hy') _`. Establish `e4 : ctr (y - Y) w = a • ((s : E) • ctr (y - Y) w) + b • ((M : E) • ctr (y - Y) w)`. Rewrite using `[← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, smul_smul, smul_smul, ← add_smul, hab', one_smul]`. Rewrite using `[e4]`. Conclude with `add_mem (zsmul_mem hsx a) (zsmul_mem (hML _ hx) b)`.
+-/
 theorem exists_rows (hΛ : Λ ∈ Vset E n M) (hM : 1 < M) (hMQ : (M : 𝓞 E) ∈ Q)
     {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ (idq P Q L)) :
     ∃ y' : Matrix (Fin n) (Fin r) E, (∀ k, (M : E) • y' k ∈ P • L) ∧
@@ -472,6 +637,13 @@ namespace GlobalTheory.Dict.Poisson
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Geo.Tor.Level H)
 
+/- English proof (translation)
+Unfold `conjI Mfr`. Establish `hset : {a : 𝓞 E | ∃ b ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), ((a : 𝓞 E) : E) = cc ((b : 𝓞 E) : E)} = (l.Mb : Set (𝓞 E))`. Use extensionality with `a`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨b, hb, hab⟩`. Take `⟨x, hx, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ H.bar.surjective).1 hb`. Establish `hax : a = x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hab, H.bar_eq, cc, IsCMField.complexConj_apply_apply]`.
+
+Rewrite using `[hax]` and apply the resulting hypothesis. Introduce `ha`. Use `⟨H.bar a, Ideal.mem_map_of_mem _ ha, ?_⟩` and prove the remaining obligations. Rewrite using `[H.bar_eq, cc, IsCMField.complexConj_apply_apply]`. Rewrite using `[hset, Ideal.span_eq]`.
+-/
 theorem conjI_Mfr : conjI (Mfr l) = l.Mb := by
   unfold conjI Mfr
   have hset : {a : 𝓞 E | ∃ b ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E), ((a : 𝓞 E) : E) = cc ((b : 𝓞 E) : E)} =
@@ -490,6 +662,11 @@ theorem conjI_Mfr : conjI (Mfr l) = l.Mb := by
       rw [H.bar_eq, cc, IsCMField.complexConj_apply_apply]
   rw [hset, Ideal.span_eq]
 
+/- English proof (translation)
+Establish `h : (l.M : 𝓞 E) ∈ l.Mb * Mfr l`. Unfold `Mfr`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Ideal.mul_le_right : l.Mb * Mfr l ≤ Mfr l) h`. Conclude with `(Ideal.mul_le_left : l.Mb * Mfr l ≤ l.Mb) h`.
+-/
 theorem M_mem : (l.M : 𝓞 E) ∈ Mfr l ∧ (l.M : 𝓞 E) ∈ l.Mb := by
   have h : (l.M : 𝓞 E) ∈ l.Mb * Mfr l := by
     unfold Mfr; rw [l.prod]; exact Ideal.mem_span_singleton_self _
@@ -497,6 +674,47 @@ theorem M_mem : (l.M : 𝓞 E) ∈ Mfr l ∧ (l.M : 𝓞 E) ∈ l.Mb := by
   · exact (Ideal.mul_le_right : l.Mb * Mfr l ≤ Mfr l) h
   · exact (Ideal.mul_le_left : l.Mb * Mfr l ≤ l.Mb) h
 
+/- English proof (translation)
+Rewrite using `[conjI_Mfr]`. Establish `hbar : ∀ a : 𝓞 E, ((H.bar a : 𝓞 E) : E) = cc (a : E)` using `fun a => H.bar_eq a`. Establish `hbarbar : ∀ a : 𝓞 E, H.bar (H.bar a) = a` using `fun a => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [hbar, cc, IsCMField.complexConj_apply_apply]`.
+
+Establish `hmemM : ∀ a ∈ l.Mb, H.bar a ∈ Mfr l` using `fun a ha => Ideal.mem_map_of_mem _ ha`. Establish `hmemN : ∀ a ∈ Mfr l, H.bar a ∈ l.Mb` using `fun a ha => by`. Take `⟨x, hx, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ H.bar.surjective).1 ha`. Simplify `hx` using `[hbarbar]`. Establish `hco : ∀ (a : 𝓞 E) (v : Fin r → E), a • v = (a : E) • v` using `fun a v => (algebraMap_smul E a v).symm`.
+
+Establish `hadd : ∀ u u' v : Fin r → E, EF X (u + u') v = EF X u v + EF X u' v`. Introduce `u u' v`. Rewrite using `[GlobalTheory.SW.TensLat.EF_eq_bilin, GlobalTheory.SW.TensLat.EF_eq_bilin, GlobalTheory.SW.TensLat.EF_eq_bilin, LinearMap.map_add₂]`. Establish `hsm : ∀ (a : 𝓞 E) (u v : Fin r → E), EF X (a • u) v = EF X u (H.bar a • v)`. Introduce `a u v`.
+
+Rewrite using `[hco, hco, GlobalTheory.SW.TensLat.EF_smul, hbar]`. Establish `hM0 : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `hcop : l.Mb ⊔ Mfr l = ⊤` using `l.coprime`. Take `⟨m, hm, m', hm', hmm⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ l.Mb ⊔ Mfr l by rw [hcop]; exact Submodule.mem_top)`. Establish `hMN : Mfr l • L ≤ L` using `Submodule.smul_le_right`.
+
+Establish `hmemL' : ∀ v, v ∈ idq (Mfr l) l.Mb L ↔ ∀ b ∈ l.Mb, b • v ∈ Mfr l • L` using `fun v => Iff.rfl`. Establish `C : ∀ z ∈ Mfr l • L, ∀ y ∈ idq (Mfr l) l.Mb L, ∃ k : ℤ, EF X z y = k`. Introduce `z hz y hy`. Use `Submodule.smul_induction_on (p := fun z => ∃ k : ℤ, EF X z y = k) hz ?_ ?_` and prove the remaining obligations. Introduce `mu hmu ℓ hℓ`.
+
+Rewrite using `[hsm]`. Conclude with `(hL.2 ℓ).1 hℓ _ (hMN ((hmemL' y).1 hy _ (hmemN mu hmu)))`. Introduce and unpack `z1 z2 ⟨k1, h1⟩ ⟨k2, h2⟩`. Conclude with `⟨k1 + k2, by rw [hadd, h1, h2]; push_cast; ring⟩`. Establish `hFG : (idq (Mfr l) l.Mb L).FG`.
+
+Set `f : (Fin r → E) →ₗ[𝓞 E] (Fin r → E)` to `(l.M : 𝓞 E) • LinearMap.id`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Establish `h : (l.M : 𝓞 E) • a = (l.M : 𝓞 E) • b` using `hab`. Rewrite `h` using `[hco, hco]`.
+
+Move the coercions through the operations in `at h`. Conclude with `smul_right_injective _ hM0 h`. Establish `hle : (idq (Mfr l) l.Mb L).map f ≤ L`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hMN ((hmemL' v).1 hv _ (M_mem l).2)`.
+
+Establish `hN : IsNoetherian (𝓞 E) L` using `isNoetherian_of_fg_of_noetherian L hL.1`. Conclude with `Submodule.fg_of_fg_map_injective f hf (isNoetherian_submodule.1 hN _ hle)`. Use `⟨hFG, fun x => ⟨fun hx y hy => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Establish `e : EF X x y = EF X (m • x) y + EF X (m' • x) y`. Rewrite using `[← hadd, ← add_smul, hmm, one_smul]`.
+
+Take `⟨k1, h1⟩` from `C _ ((hmemL' x).1 hx m hm) y hy`. Take `⟨k2, h2⟩` from `C _ ((hmemL' y).1 hy _ (hmemN m' hm')) x hx`. Use `⟨k1 - k2, ?_⟩` and prove the remaining obligations. Rewrite using `[e, h1, hsm, GlobalTheory.SW.TensLat.EF_swap X (H.bar m' • y) x, h2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `step1 : ∀ ν ∈ l.Mb, ν • x ∈ L`. Introduce `ν hν`. Use `(hL.2 _).2 fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `hyL' : H.bar ν • ℓ ∈ idq (Mfr l) l.Mb L` using `(hmemL' _).2 fun b hb => by`.
+
+Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem_smul (hmemM ν hν) (L.smul_mem b hℓ)`. Take `⟨k, hk⟩` from `hx _ hyL'`. Conclude with `⟨k, by rw [hsm, hk]⟩`. Establish `step2 : ∀ ν1 ∈ l.Mb, ∀ ν2 ∈ l.Mb, (ν1 * ν2) • x ∈ Mfr l • L`.
+
+Introduce `ν1 h1 ν2 h2`. Establish `hz : (l.M : E)⁻¹ • ((ν1 * ν2) • x) ∈ L`. Use `(hL.2 _).2 fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `hy : (l.M : E)⁻¹ • ((H.bar ν1 * H.bar ν2) • ℓ) ∈ idq (Mfr l) l.Mb L` using `(hmemL' _).2 fun b hb => by`. Establish `hbm : b * H.bar ν1 ∈ Ideal.span {(l.M : 𝓞 E)}`.
+
+Rewrite using `[← l.prod]`. Conclude with `Ideal.mul_mem_mul hb (hmemM ν1 h1)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hbm`. Establish `hc' : (c : E) * l.M = (b : E) * (H.bar ν1 : E)`. Use `congrArg (fun t : 𝓞 E => (t : E)) hc` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Establish `e : b • ((l.M : E)⁻¹ • ((H.bar ν1 * H.bar ν2) • ℓ)) = H.bar ν2 • (c • ℓ)`. Rewrite using `[hco, hco, hco, hco]`. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(H.bar ν2 : E) * hc'.symm`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem_smul (hmemM ν2 h2) (L.smul_mem c hℓ)`. Take `⟨k, hk⟩` from `hx _ hy`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, GlobalTheory.SW.TensLat.EF_smul, hsm]`. Use `congr 1`.
+
+Rewrite using `[map_mul, cc, map_inv₀, map_natCast, smul_comm]`. Establish `e2 : (ν1 * ν2) • x = (l.M : 𝓞 E) • ((l.M : E)⁻¹ • ((ν1 * ν2) • x))`. Rewrite using `[hco (l.M : 𝓞 E), smul_smul]`. Use `push_cast`. Rewrite using `[mul_inv_cancel₀ hM0, one_smul]`.
+
+Rewrite using `[e2]`. Conclude with `Submodule.smul_mem_smul (M_mem l).1 hz`. Rewrite using `[hmemL']`. Introduce `b hb`. Establish `e : b • x = (m * b) • x + m' • (b • x)`.
+
+Rewrite using `[smul_smul, ← add_smul, ← add_mul, hmm, _root_.one_mul]`. Rewrite using `[e]`. Conclude with `add_mem (step2 m hm b hb) (Submodule.smul_mem_smul hm' (step1 b hb))`.
+-/
 theorem selfD_shift {r : ℕ} {X : Data E r} {L : Lt E r} (hL : SelfD X L) :
     SelfD X (idq (Mfr l) (conjI (Mfr l)) L) := by
   rw [conjI_Mfr]
@@ -603,6 +821,51 @@ theorem selfD_shift {r : ℕ} {X : Data E r} {L : Lt E r} (hL : SelfD X L) :
 
 end GlobalTheory.Dict.Poisson
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l r g X bas idx n hs hn w hw hw1 L mk hL hmk Λ hΛ N hNOK Y hY p hp hfix u hu`. Establish `hQ : conjI (Mfr l) = l.Mb` using `GlobalTheory.Dict.Poisson.conjI_Mfr l`. Rewrite `hu`, the goal using `[hQ]`. Establish `hMP : (l.M : 𝓞 E) ∈ Mfr l` using `(GlobalTheory.Dict.Poisson.M_mem l).1`. Establish `hMQ : (l.M : 𝓞 E) ∈ l.Mb` using `(GlobalTheory.Dict.Poisson.M_mem l).2`.
+
+Establish `hc : l.Mb ⊔ Mfr l = ⊤` using `l.coprime`. Establish `hprod : l.Mb * Mfr l = Ideal.span {(l.M : 𝓞 E)}` using `l.prod`. Establish `hM0 : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `hMs : ∀ x ∈ L, (l.M : E) • x ∈ L` using `fun x hx => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `nsmul_mem hx _`. Take `⟨-, hMN, hNle⟩` from `hNOK`. Establish `hN : ∀ v ∈ stdL E n, (N : E) • v ∈ Λ`. Introduce `v hv`. Establish `hv' : v ∈ Formalism.L2.Pj.stdLat E n`.
+
+Use `(Submodule.span_le.2 ?_) hv` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `show Pi.single a 1 ∈ Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_pi]`. Introduce `j _`.
+
+Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne h]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `h1 : (N : 𝓞 E) • v ∈ Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n` using `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) hv'`. Establish `h2 : (N : 𝓞 E) • v ∈ Λ ⊓ Formalism.L2.Pj.stdLat E n` using `hNle h1`. Establish `h3` using `(Submodule.mem_inf.1 h2).1`. Rewrite `h3` using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E]`. Then use the resulting hypothesis.
+
+Establish `hA : GlobalTheory.SW.TensVac.Good X w (tens Λ L)`. Establish `h` using `GlobalTheory.SW.TensLat.tens_selfDual_semichar_index E r X g bas idx n hs hn w hw hw1 L hL l.M Λ hΛ`. Conclude with `⟨h.1, h.2.1, h.2.2.1⟩`. Establish `hL'` using `GlobalTheory.Dict.Poisson.selfD_shift l hL`. Rewrite `hL'` using `[hQ]`.
+
+Establish `hA' : GlobalTheory.SW.TensVac.Good X w (tens Λ (idq (Mfr l) l.Mb L))`. Establish `h` using `GlobalTheory.SW.TensLat.tens_selfDual_semichar_index E r X g bas idx n hs hn w hw hw1 _ hL' l.M Λ hΛ`. Conclude with `⟨h.1, h.2.1, h.2.2.1⟩`. Establish `hcoord : ∀ q, (2 : E)⁻¹ • Y q ∈ tens Λ (idq (Mfr l) l.Mb L)`. Introduce `q`.
+
+Use `GlobalTheory.Dict.Poisson.half_mem hΛ l.odd hMP hMQ hc hMN hN (fun k b hb => ?_) (fun k => (hY q k).2)` and prove the remaining obligations. Take `⟨a, ha, -, hya⟩` from `(hY q k).1`. Take `⟨c, -, hc'⟩` from `GlobalTheory.Dict.Poisson.exists_of_mem_smul hprod ha hb`. Establish `e1 : b • (((l.M : E)⁻¹) • mk a) = mk c`. Rewrite using `[smul_comm, ← map_smul mk b a, hc', map_nsmul, ← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hM0, one_smul]`.
+
+Establish `e : b • Y q k = b • (Y q k - ((l.M : E)⁻¹) • mk a) + mk c`. Rewrite using `[smul_sub, e1, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `add_mem (L.smul_mem b hya) (hmk.mem c)`. Establish `hYA' : ∀ q, Y q ∈ tens Λ (idq (Mfr l) l.Mb L)` using `fun q => by`.
+
+Establish `h` using `nsmul_mem (hcoord q) 2`. Rewrite `h` using `[GlobalTheory.Dict.Poisson.two_half]`. Then use the resulting hypothesis. Establish `hY1 : ∀ q, epsW X w (Y q) = 1` using `fun q => by`. Establish `h` using `GlobalTheory.SW.TensVac.Good.eps_two hs hA' (hcoord q)`. Rewrite `h` using `[GlobalTheory.Dict.Poisson.two_half]`. Then use the resulting hypothesis.
+
+Establish `hu2` using `GlobalTheory.Dict.Poisson.half_mem' hΛ hu`. Establish `huA : u ∈ tens Λ L`. Establish `h` using `nsmul_mem hu2 2`. Rewrite `h` using `[GlobalTheory.Dict.Poisson.two_half]`. Then use the resulting hypothesis. Establish `hu1 : epsW X w u = 1`.
+
+Establish `h` using `GlobalTheory.SW.TensVac.Good.eps_two hs hA hu2`. Rewrite `h` using `[GlobalTheory.Dict.Poisson.two_half]`. Then use the resulting hypothesis. Establish `hinj : ∀ q q', Y q - Y q' ∈ tens Λ L → q = q'`. Introduce `q q' hd`. Use function extensionality and compare the values at `k`.
+
+Take `⟨a, ha, hqa, hya⟩` from `(hY q k).1`. Take `⟨a', ha', hqa', hya'⟩` from `(hY q' k).1`. Establish `hML : (l.M : E) • (Y q - Y q') k ∈ L`. Establish `e : (l.M : E) • (Y q k - Y q' k) = (l.M : E) • (Y q k - (l.M : E)⁻¹ • mk a) - (l.M : E) • (Y q' k - (l.M : E)⁻¹ • mk a') + (mk a - mk a')`. Rewrite using `[smul_sub, smul_sub, smul_sub, smul_smul, smul_smul, mul_inv_cancel₀ hM0, one_smul, one_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[show (Y q - Y q') k = Y q k - Y q' k from rfl, e]`. Conclude with `add_mem (sub_mem (hMs _ hya) (hMs _ hya')) (sub_mem (hmk.mem a) (hmk.mem a'))`. Establish `hrow` using `GlobalTheory.Dict.Poisson.rows_of_mem hΛ hd k hML`. Establish `hz : (l.M : E)⁻¹ • mk a - (l.M : E)⁻¹ • mk a' ∈ L`.
+
+Establish `e : (l.M : E)⁻¹ • mk a - (l.M : E)⁻¹ • mk a' = (Y q k - Y q' k) - (Y q k - (l.M : E)⁻¹ • mk a) + (Y q' k - (l.M : E)⁻¹ • mk a')`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (sub_mem hrow hya) hya'`. Take `⟨b', hb'⟩` from `hmk.inj (a - a') (sub_mem ha ha') ⟨_, hz, by`.
+
+Rewrite using `[map_sub, ← smul_sub, ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hM0, one_smul]⟩`. Rewrite using `[← hqa, ← hqa']`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Rewrite using `[hb', ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hMQ Submodule.mem_top`.
+
+Establish `hsurj : ∀ y ∈ tens Λ (idq (Mfr l) l.Mb L), ∃ q, y - Y q ∈ tens Λ L`. Introduce `y hy`. Take `⟨y', hy'1, hy'2⟩` from `GlobalTheory.Dict.Poisson.exists_rows hΛ (by have := l.three_le; omega) hMQ hy`. Use `choose a ha v hv hav using fun k => hmk.surj _ (hy'1 k)`. Use `⟨fun k => Submodule.Quotient.mk (a k), hy'2 _ (hYA' _) fun k => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a', ha', hqa', hya'⟩` from `(hY (fun k => Submodule.Quotient.mk (a k)) k).1`. Establish `hdiff : a' - a k ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `(Submodule.Quotient.eq _).1 hqa'`. Take `⟨c, -, hc'⟩` from `GlobalTheory.Dict.Poisson.exists_of_mem_inter hprod hc (sub_mem ha' (ha k)) hdiff`. Establish `hy'k : y' k = (l.M : E)⁻¹ • mk (a k) + v k`. Establish `h : (l.M : E)⁻¹ • ((l.M : E) • y' k) = (l.M : E)⁻¹ • (mk (a k) + l.M • v k)`.
+
+Rewrite using `[hav k]`. Rewrite `h` using `[smul_smul, inv_mul_cancel₀ hM0, one_smul, smul_add, ← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Conclude with `h`. Establish `e2 : (l.M : E)⁻¹ • mk a' = (l.M : E)⁻¹ • mk (a k) + mk c`. Establish `h2 : a' = a k + l.M • c` using `by rw [← hc']; abel`.
+
+Rewrite using `[h2, map_add, map_nsmul, smul_add, ← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Establish `e : Y (fun k => Submodule.Quotient.mk (a k)) k - y' k = (Y (fun k => Submodule.Quotient.mk (a k)) k - (l.M : E)⁻¹ • mk a') + mk c - v k`. Rewrite using `[hy'k, e2]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `sub_mem (add_mem hya' (hmk.mem c)) (hv k)`. Conclude with `GlobalTheory.Dict.Poisson.fourier_of_reps idx hs hn hA hA' hp hfix Y hYA' hY1 hinj hsurj huA hu1`.
+-/
 theorem GlobalTheory.Dict.poisson_roots : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ (L : Lt E r) (mk : Dw.La →ₗ[𝓞 E] (Fin r → E)), SelfD X L → IsMark l L mk → ∀ Λ ∈ Vset E n l.M, ∀ N : ℕ, NOK Λ N l.M → ∀ Y : (Fin n → LevQ Dw l) → Matrix (Fin n) (Fin r) E, IsRoots l L mk N Y → ∀ p : TF n g, IsSB p → (∀ u ∈ tens Λ L, epsW X w u • heisG X bas u p = p) → ∀ u ∈ tens Λ ((Ideal.span {2} * conjI (Mfr l)) • L), ∑ᶠ q, cexp (-(2 * Real.pi * I * ((∑ b, EF X (u b) (Y q b) : ℚ) : ℂ))) • heisG X bas (Y q) p = ((Nat.card (Fin n → LevQ Dw l) : ℕ) : ℂ) • heisG X bas u (projA X bas w (tens Λ (idq (Mfr l) (conjI (Mfr l)) L)) p) := by
   intro E _ _ _ H Dw l r g X bas idx n hs hn w hw hw1 L mk hL hmk Λ hΛ N hNOK Y hY p hp hfix u hu
   classical

@@ -17,10 +17,16 @@ noncomputable def perm (G X : Type) [Group G] [MulAction G X] : Representation �
   map_one' := by ext x y; simp
   map_mul' g h := by ext x y; simp [mul_smul]
 
+/- English proof (translation)
+Simplify using `[perm]`.
+-/
 @[simp] theorem perm_single {G X : Type} [Group G] [MulAction G X] (g : G) (x : X) (c : ℤ) :
     perm G X g (Finsupp.single x c) = Finsupp.single (g • x) c := by
   simp [perm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perm_apply {G X : Type} [Group G] [MulAction G X] (g : G) (f : X →₀ ℤ) :
     perm G X g f = Finsupp.mapDomain (fun x : X => g • x) f := rfl
 
@@ -52,12 +58,18 @@ noncomputable def faceD {Y X : Type} {k : ℕ} (face : Fin k → Y → X) :
 noncomputable def aug (X : Type) : (X →₀ ℤ) →ₗ[ℤ] ℤ :=
   Finsupp.linearCombination ℤ (fun _ : X => (1 : ℤ))
 
+/- English proof (translation)
+Simplify using `only [faceD, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+-/
 theorem faceD_single {Y X : Type} {k : ℕ} (face : Fin k → Y → X) (y : Y) (c : ℤ) :
     faceD face (Finsupp.single y c) =
       ∑ i : Fin k, ((-1 : ℤ) ^ (i : ℕ)) • Finsupp.single (face i y) c := by
   simp only [faceD, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.lmapDomain_apply,
     Finsupp.mapDomain_single]
 
+/- English proof (translation)
+Simplify using `[aug]`.
+-/
 @[simp] theorem aug_single {X : Type} (x : X) (c : ℤ) : aug X (Finsupp.single x c) = c := by
   simp [aug]
 
@@ -94,10 +106,16 @@ instance Chain.mulAction (G P : Type) [Group G] [Preorder P] [MulAction G P]
   one_smul c := Subtype.ext (funext fun j => one_smul G (c.1 j))
   mul_smul g h c := Subtype.ext (funext fun j => mul_smul g h (c.1 j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Chain.smul_val {G P : Type} [Group G] [Preorder P] [MulAction G P]
     [CovariantClass G P (· • ·) (· < ·)] {p : ℕ} (g : G) (c : Chain P p) (j : Fin (p + 1)) :
     (g • c).1 j = g • c.1 j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Chain.face_smul {G P : Type} [Group G] [Preorder P] [MulAction G P]
     [CovariantClass G P (· • ·) (· < ·)] (p : ℕ) (i : Fin (p + 2)) (g : G)
     (c : Chain P (p + 1)) : Chain.face P p i (g • c) = g • Chain.face P p i c := rfl

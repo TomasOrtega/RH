@@ -9,6 +9,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.BdDim
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `LBIso.symm h`. Set `a` to `DVR.secOfIso t hu (LB.isLB_triv W) hA`. Use `⟨a.f ⟨⟩, le_antisymm (fun y hy => ?_) ((DVR.nonzeroLocus_secOfIso u t hu _ hA).trans (iSup_le fun _ => le_rfl))⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `LB.mem_of_cover hA y`. Establish `e2` using `congrArg W.basicOpen (DVR.secOfIso_spec (u := u) t hu (LB.isLB_triv W) hA ⟨⟩ b)`.
+
+Rewrite `e2` using `[DVR.isoCand, Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ (Units.isUnit _), Scheme.basicOpen_res, Scheme.basicOpen_res]`. Establish `hm : y ∈ ((LB.triv W).U ⟨⟩ ⊓ A.U b) ⊓ W.basicOpen (a.f ⟨⟩)` using `⟨⟨trivial, hb⟩, hy⟩`. Conclude with `(DVR.mem_nonzeroLocus t y).2 ⟨b, (e2.le hm).2.2⟩`.
+-/
 theorem exists_basicOpen_eq_nonzeroLocus {W : Scheme.{0}} {A : LB W} (hA : A.IsLB) (h : LBIso A (LB.triv W))
     (t : A.Sec) : ∃ g : Γ(W, ⊤), W.basicOpen g = Out.nonzeroLocus t := by
   obtain ⟨u, hu⟩ := LBIso.symm h
@@ -21,6 +26,11 @@ theorem exists_basicOpen_eq_nonzeroLocus {W : Scheme.{0}} {A : LB W} (hA : A.IsL
   have hm : y ∈ ((LB.triv W).U ⟨⟩ ⊓ A.U b) ⊓ W.basicOpen (a.f ⟨⟩) := ⟨⟨trivial, hb⟩, hy⟩
   exact (DVR.mem_nonzeroLocus t y).2 ⟨b, (e2.le hm).2.2⟩
 
+/- English proof (translation)
+Establish `hfin : f.appTop.hom.Finite` using `finite_appTop_of_universallyClosed K f`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of K)).inv`. Establish `he : Function.Bijective e.hom` using `ConcreteCategory.bijective_of_isIso e`. Establish `hfin' : (f.appTop.hom.comp e.hom).Finite` using `hfin.comp (RingHom.Finite.of_surjective _ he.2)`. Establish `hb : Function.Bijective (f.appTop.hom.comp e.hom)` using `IsAlgClosed.ringHom_bijective_of_isIntegral (k := K) _ hfin'.to_isIntegral`.
+
+Establish `hb' : Function.Bijective f.appTop.hom` using `(Function.Bijective.of_comp_iff _ he).1 hb`. Conclude with `(ConcreteCategory.isIso_iff_bijective _).2 hb'`.
+-/
 theorem isIso_appTop_of_isProper {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}}
     (f : X ⟶ Sp K) [IsIntegral X] [IsProper f] : IsIso f.appTop := by
   have hfin : f.appTop.hom.Finite := finite_appTop_of_universallyClosed K f
@@ -32,12 +42,24 @@ theorem isIso_appTop_of_isProper {K : Type} [Field K] [IsAlgClosed K] {X : Schem
   have hb' : Function.Bijective f.appTop.hom := (Function.Bijective.of_comp_iff _ he).1 hb
   exact (ConcreteCategory.isIso_iff_bijective _).2 hb'
 
+/- English proof (translation)
+Use `⟨S.toSpecΓ ≫ Spec.map (inv s.appTop) ≫ Spec.map l.appTop ≫ U.isoSpec.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc, IsIso.inv_hom_id, Spec.map_id, Category.id_comp, ← Scheme.toSpecΓ_naturality_assoc, Scheme.toSpecΓ_isoSpec_inv, Category.comp_id]`.
+-/
 theorem exists_factor_of_isIso_appTop {W S U : Scheme.{0}} (s : W ⟶ S) [IsIso s.appTop] [IsAffine U] (l : W ⟶ U) :
     ∃ y : S ⟶ U, s ≫ y = l := by
   refine ⟨S.toSpecΓ ≫ Spec.map (inv s.appTop) ≫ Spec.map l.appTop ≫ U.isoSpec.inv, ?_⟩
   rw [Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc, IsIso.inv_hom_id, Spec.map_id, Category.id_comp,
     ← Scheme.toSpecΓ_naturality_assoc, Scheme.toSpecΓ_isoSpec_inv, Category.comp_id]
 
+/- English proof (translation)
+Introduce `o k₀ _ _ _ b W s n f _ _ _ h`. Establish `hF : IsField Γ(W, ⊤)` using `isField_of_universallyClosed k₀ s`. Take `⟨x⟩ : Nonempty W` from `inferInstance`. Take `⟨i, hi⟩` from `ProjSpace.exists_mem_chart o n (f x)`. Take `⟨g, hg⟩` from `exists_basicOpen_eq_nonzeroLocus (LB.isLB_pull (ProjSpace.O1_isLB o n) f) h (Cartier.secPull (ProjSpace.coord o n i) f)`.
+
+Rewrite `hg` using `[Cartier.nonzeroLocus_secPull, ProjSpace.nonzeroLocus_coord]`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Rewrite `hg` using `[Scheme.basicOpen_zero]`. Conclude with `hg.ge (show x ∈ f ⁻¹ᵁ (ProjSpace.O1 o n).U i from hi)`.
+
+Establish `hu : IsUnit g` using `(hF.mul_inv_cancel hg0).elim fun c hc => IsUnit.of_mul_eq_one c hc`. Rewrite `hg` using `[W.basicOpen_of_isUnit hu]`. Establish `hr : Set.range f ⊆ Set.range (ProjSpace.chart o n i).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨c, rfl⟩`.
+
+Conclude with `hg.le (Set.mem_univ c)`. Establish `: IsAffine (ProjSpace.chart o n i)` using `ProjSpace.isAffineOpen_chart o n i`. Use `isIso_appTop_of_isProper s` as an intermediate fact. Take `⟨y, hy⟩` from `exists_factor_of_isIso_appTop s (IsOpenImmersion.lift (ProjSpace.chart o n i).ι f hr)`. Conclude with `⟨y ≫ (ProjSpace.chart o n i).ι, by rw [reassoc_of% hy, IsOpenImmersion.lift_fac]⟩`.
+-/
 theorem exists_point_of_trivial_O1 : ∀ (o k₀ : Type) [CommRing o] [Field k₀] [IsAlgClosed k₀] (b : o →+* k₀) (W : Scheme.{0}) (s : W ⟶ Sp k₀) (n : ℕ) (f : W ⟶ PSpace o n), IsIntegral W → IsProper s → f ≫ PSpace.str o n = s ≫ spMap b → LBIso ((ProjSpace.O1 o n).pull f) (LB.triv W) → ∃ y : Sp k₀ ⟶ PSpace o n, s ≫ y = f := by
   intro o k₀ _ _ _ b W s n f _ _ _ h
   have hF : IsField Γ(W, ⊤) := isField_of_universallyClosed k₀ s

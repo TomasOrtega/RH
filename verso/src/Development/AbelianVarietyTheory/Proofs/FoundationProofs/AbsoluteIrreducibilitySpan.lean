@@ -7,6 +7,31 @@ namespace GlobalTheory.Proof.AbsoluteIrreducibilitySpan
 
 open Formalism.MainNotions.N in
 
+/- English proof (translation)
+Use `set K := AlgebraicClosure k`. Establish `htop : Submodule.span K ((fun v : Fin a → k => (algebraMap k K) ∘ v) '' ((⊤ : Submodule k (Fin a → k)) : Set (Fin a → k))) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin a)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Use `⟨Pi.single j 1, trivial, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Distinguish the cases in `hx : x = j`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hx]`. Unfold `AbsIrrSub`. Rewrite using `[htop]`. Establish `: Nonempty (Fin a)` using `⟨⟨0, ha⟩⟩`. Use `⟨top_ne_bot, fun _ _ _ => trivial, fun W' _ hW => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ X : Matrix (Fin a) (Fin a) k, ∀ v ∈ W', (X.map (algebraMap k K)).mulVec v ∈ W'`. Introduce `X`. Establish `hX : X ∈ Submodule.span k (Set.range M)` using `h ▸ Submodule.mem_top`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨g, rfl⟩` from `hx`. Introduce `v hv`. Establish `h1 : (M g).map (algebraMap k K) = algebraMap k K (c g) • ((mapRep (algebraMap k K) ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)`. Use extensionality with `p q`. Simplify using `[hM, mapRep]`.
+
+Rewrite using `[h1, Matrix.smul_mulVec]`. Conclude with `W'.smul_mem _ (hW g v hv)`. Consider the case `zero => intro v hv`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+
+Introduce `v hv`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.add_mulVec]`. Conclude with `W'.add_mem (hx v hv) (hy v hv)`. Consider the case `smul r x _ hx`. Introduce `v hv`.
+
+Establish `h1 : (r • x).map (algebraMap k K) = algebraMap k K r • x.map (algebraMap k K)`. Use extensionality with `p q`. Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.smul_mulVec]`. Conclude with `W'.smul_mem _ (hx v hv)`.
+
+Distinguish the cases in `hb : W' = ⊥`. Conclude with `Or.inl hb`. Use `right`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨b, hb'⟩` from `Function.ne_iff.mp hv0`.
+
+Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin a)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h2` using `W'.smul_mem (v b)⁻¹ (key (Matrix.single j b 1) v hv)`. Establish `hb2 : v b ≠ 0` using `hb'`. Establish `h3 : (v b)⁻¹ • ((Matrix.single j b (1 : k)).map (algebraMap k K)).mulVec v = Pi.basisFun K (Fin a) j`.
+
+Rewrite using `[Matrix.map_single, map_one, Matrix.single_mulVec]`. Use extensionality with `x`. Distinguish the cases in `hx : x = j`. Substitute `hx` using the available equality. Simplify using `[hb2]`.
+
+Simplify using `[hx]`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+-/
 theorem absIrr_of_span {Γ k : Type} [Group Γ] [Field k] {a : ℕ} (ha : 0 < a) (ρ : Γ →* GL (Fin a) k)
     (M : Γ → Matrix (Fin a) (Fin a) k) (c : Γ → k)
     (hM : ∀ g, M g = c g • (ρ g : Matrix (Fin a) (Fin a) k))

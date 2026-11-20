@@ -9,6 +9,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Param.continuousOn_differentiableOn_integral | exact GlobalTheory.CompanionTheory.Param.continuousOn_differentiableOn_integral | (intros; apply GlobalTheory.CompanionTheory.Param.continuousOn_differentiableOn_integral <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.continuousOn_differentiableOn_parameter_integral : ∀ {Y T : Type} [TopologicalSpace Y] [MeasurableSpace Y] [OpensMeasurableSpace Y] [TopologicalSpace T]
     [FirstCountableTopology T] (μ : Measure Y) (U : Set ℂ), IsOpen U → ∀ F : ℂ → T → Y → ℂ,
   ContinuousOn (fun u : ℂ × T × Y => F u.1 u.2.1 u.2.2) (U ×ˢ Set.univ) →

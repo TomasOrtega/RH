@@ -4,6 +4,17 @@ namespace LateralTheory.E.E4
 
 open Polynomial
 
+/- English proof (translation)
+Rewrite `h1`, `h2` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨p, rfl⟩` from `h1`. Take `⟨q, hq⟩` from `h2`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `ht (isAlgebraic_zero)`. Use `set N := q.natDegree`. Establish `key : aeval t (X ^ N * p) = aeval t (reflect N q)`. Set `_ : Invertible t⁻¹` to `invertibleOfNonzero (inv_ne_zero ht0)`. Establish `h` using `eval₂_reflect_mul_pow (algebraMap k L) t⁻¹ N q le_rfl`.
+
+Rewrite `h` using `[invOf_eq_inv, inv_inv]`. Establish `hq' : aeval t⁻¹ q = aeval t p` using `hq`. Rewrite `hq'` using `[aeval_def, aeval_def]`. Rewrite using `[map_mul, map_pow, aeval_X, aeval_def, aeval_def, ← hq', ← h, mul_comm, mul_assoc, ← mul_pow, inv_mul_cancel₀ ht0, one_pow, mul_one]`. Establish `hinj : Function.Injective (aeval t : k[X] →ₐ[k] L)` using `transcendental_iff_injective.mp ht`.
+
+Establish `heq` using `hinj key`. Distinguish the cases in `hp : p = 0`. Simplify using `[hp]`. Establish `hdeg : (X ^ N * p).natDegree = N + p.natDegree`. Rewrite using `[natDegree_mul (pow_ne_zero _ X_ne_zero) hp, natDegree_X_pow]`.
+
+Establish `hle : (reflect N q).natDegree ≤ N` using `natDegree_reflect_le.trans (by simp [N])`. Establish `hp0 : p.natDegree = 0` using `by rw [heq] at hdeg; omega`. Rewrite using `[eq_C_of_natDegree_eq_zero hp0]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_bot_of_mem_adjoin_inv {k L : Type} [Field k] [Field L] [Algebra k L] (t : L) (ht : Transcendental k t)
     (c : L) (h1 : c ∈ Algebra.adjoin k {t}) (h2 : c ∈ Algebra.adjoin k {t⁻¹}) : c ∈ (⊥ : Subalgebra k L) := by
   rw [Algebra.adjoin_singleton_eq_range_aeval] at h1 h2
@@ -35,6 +46,9 @@ def LeafMinpolyCoeff : Prop := ∀ (k L : Type) [Field k] [Field L] [Algebra k L
   ∀ (F : IntermediateField k L), F = IntermediateField.adjoin k {s} → ∀ x : L, IsIntegral (Algebra.adjoin k {s}) x →
   ∀ i : ℕ, ((minpoly F x).coeff i : L) ∈ Algebra.adjoin k {s}
 
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `hx`. Set `ι : Algebra.adjoin k {s} →+* IntermediateField.adjoin k {s}` to `Subalgebra.inclusion (IntermediateField.algebra_adjoin_le_adjoin k {s}) |>.toRingHom`. Use `⟨p.map ι, hm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map]`. Conclude with `hp`.
+-/
 theorem isIntegral_adjoin_of {k L : Type} [Field k] [Field L] [Algebra k L] (s : L) (x : L)
     (hx : IsIntegral (Algebra.adjoin k {s}) x) : IsIntegral (IntermediateField.adjoin k {s}) x := by
   obtain ⟨p, hm, hp⟩ := hx
@@ -44,6 +58,17 @@ theorem isIntegral_adjoin_of {k L : Type} [Field k] [Field L] [Algebra k L] (s :
   rw [eval₂_map]
   exact hp
 
+/- English proof (translation)
+Introduce `k L _ _ _ t ht x h1 h2`. Establish `ht' : Transcendental k t⁻¹` using `fun h => ht (by simpa using h.inv)`. Use `set F := IntermediateField.adjoin k {t}`. Establish `hEq : F = IntermediateField.adjoin k {t⁻¹}`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Simplify using `using inv_mem (IntermediateField.mem_adjoin_simple_self k t⁻¹)`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `inv_mem (IntermediateField.mem_adjoin_simple_self k t)`. Establish `hxF : IsIntegral F x` using `isIntegral_adjoin_of t x h1`.
+
+Establish `hc : ∀ i, ((minpoly F x).coeff i : L) ∈ (⊥ : Subalgebra k L)` using `fun i => mem_bot_of_mem_adjoin_inv t ht _ (hM k L t ht F rfl x h1 i) (hM k L t⁻¹ ht' F hEq x h2 i)`. Establish `hl : minpoly F x ∈ lifts (algebraMap k F)`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Take `⟨a, ha⟩` from `Algebra.mem_bot.mp (hc n)`.
+
+Conclude with `⟨a, Subtype.ext ha⟩`. Take `⟨P, hP, -, hPm⟩` from `lifts_and_natDegree_eq_and_monic hl (minpoly.monic hxF)`. Use `⟨P, hPm, ?_⟩` and prove the remaining obligations. Use `minpoly.aeval F x` as an intermediate fact. Rewrite `this` using `[← hP, aeval_map_algebraMap]`.
+
+Conclude with `this`.
+-/
 theorem LeafIntBoth_of' (hM : LeafMinpolyCoeff) : ∀ (k L : Type) [Field k] [Field L] [Algebra k L] (t : L),
     Transcendental k t → ∀ x : L,
     IsIntegral (Algebra.adjoin k {t}) x → IsIntegral (Algebra.adjoin k {t⁻¹}) x → IsIntegral k x := by
@@ -70,8 +95,14 @@ theorem LeafIntBoth_of' (hM : LeafMinpolyCoeff) : ∀ (k L : Type) [Field k] [Fi
   rw [← hP, aeval_map_algebraMap] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `LeafIntBoth_of' hM`.
+-/
 theorem LeafIntBoth_of (hM : LeafMinpolyCoeff) : LeafIntBoth := LeafIntBoth_of' hM
 
+/- English proof (translation)
+The claim follows from `LeafOrdAtInfinity_of hV (LeafIntBoth_of hM)`.
+-/
 theorem LeafOrdAtInfinity_of_cut (hV : LeafOrdInfHom) (hM : LeafMinpolyCoeff) : LeafOrdAtInfinity :=
   LeafOrdAtInfinity_of hV (LeafIntBoth_of hM)
 

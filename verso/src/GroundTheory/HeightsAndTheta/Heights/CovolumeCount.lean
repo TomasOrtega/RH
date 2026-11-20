@@ -14,6 +14,9 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDim
 
 omit [MeasurableSpace V] [BorelSpace V] in
 
+/- English proof (translation)
+Establish `h` using `Metric.finite_isBounded_inter_isClosed (K := closedBall (0 : V) r) (s := (L : Set V)) DiscreteTopology.isDiscrete isBounded_closedBall (by rw [← Submodule.coe_toAddSubgroup]; exact AddSubgroup.isClosed_of_discrete)`. Use `h.subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv, hr⟩`. Conclude with `⟨by simpa using hr, hv⟩`.
+-/
 theorem finite_lattice_closedBall (r : ℝ) : {x : V | x ∈ L ∧ ‖x‖ ≤ r}.Finite := by
   have h := Metric.finite_isBounded_inter_isClosed (K := closedBall (0 : V) r)
     (s := (L : Set V)) DiscreteTopology.isDiscrete isBounded_closedBall
@@ -27,6 +30,15 @@ variable [IsZLattice ℝ L]
 omit [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]
   [DiscreteTopology L] [IsZLattice ℝ L] in
 
+/- English proof (translation)
+Break down `Set.eq_empty_or_nonempty {g : L | g +ᵥ x ∈ closedBall (0 : V) (1 / 2)} with hA | ⟨g₀, hg₀⟩` into its components or cases. Rewrite using `[hA, Set.encard_empty]`. Conclude with `bot_le`. Use `Set.encard_le_encard_of_injOn (f := fun g : L ↦ ((g - g₀ : L) : V)) ?_ ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Use `⟨(g - g₀).2, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, mem_closedBall, dist_zero_right, Submodule.vadd_def, vadd_eq_add] at hg hg₀`. Establish `: ((g - g₀ : L) : V) = ((g : V) + x) - ((g₀ : V) + x)`. Rewrite using `[Submodule.coe_sub]`. Normalize the expressions using the abelian group laws.
+
+Use `show ‖((g - g₀ : L) : V)‖ ≤ 1`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Introduce `g _ g' _ hgg'`. Use `Subtype.val_injective hgg'` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem encard_vadd_mem_le (x : V) :
     {g : L | g +ᵥ x ∈ closedBall (0 : V) (1 / 2)}.encard ≤
       {y : V | y ∈ L ∧ ‖y‖ ≤ 1}.encard := by

@@ -30,6 +30,13 @@ attribute [local instance] _root_.GlobalTheory.CompHt.algPadicInt _root_.GlobalT
   _root_.GlobalTheory.PadicComplexHost.isAdicComplete in
 open IsLocalRing in
 
+/- English proof (translation)
+Introduce `A _ _ _ _ _ 𝔭 h`. Take `⟨hdom, hic⟩` from `_root_.GlobalTheory.isDomain_and_isIntegrallyClosed_atPrime_of_isDomain 𝔭.asIdeal (Localization.AtPrime 𝔭.asIdeal)`. Use `haveI := hdom`. Use `haveI := hic`. Use `haveI : IsNoetherianRing (Localization.AtPrime 𝔭.asIdeal) := IsLocalization.isNoetherianRing 𝔭.asIdeal.primeCompl _ inferInstance`.
+
+Establish `hdim : ringKrullDim (Localization.AtPrime 𝔭.asIdeal) = 1`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height 𝔭.asIdeal (Localization.AtPrime 𝔭.asIdeal), h]`. Both sides reduce to the same expression. Use `haveI := _root_.GlobalTheory.CdvrExt.isDVR_of_ringKrullDim_eq_one hdim`. Establish `hinj : Function.Injective (algebraMap A (Localization.AtPrime 𝔭.asIdeal))` using `IsLocalization.injective _ (Ideal.primeCompl_le_nonZeroDivisors 𝔭.asIdeal)`.
+
+Take `⟨O, _, _, _, j, r, hc, hj, hl, -, -, -⟩` from `_root_.GlobalTheory.exists_complete_discreteValuationRing_with_residues (Localization.AtPrime 𝔭.asIdeal) (ResidueField (Localization.AtPrime 𝔭.asIdeal)) (residue _) ∅ (ker_residue)`. Use `haveI : CharZero (Localization.AtPrime 𝔭.asIdeal) := ⟨fun m n hmn => Nat.cast_injective (R := A) (hinj (by rw [map_natCast, map_natCast]; exact hmn))⟩`. Use `haveI : CharZero O := ⟨fun m n hmn => Nat.cast_injective (R := Localization.AtPrime 𝔭.asIdeal) (hj (by rw [map_natCast, map_natCast]; exact hmn))⟩`. Conclude with `⟨@_root_.Formalism.L2.Pj.CDVR.mk O _ _ _ hc _, j, hj, hl⟩`.
+-/
 theorem _root_.GlobalTheory.HeightOneCompletion.exists_cdvr_of_height_eq_one :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [IsNoetherianRing A] [CharZero A]
       (𝔭 : PrimeSpectrum A), 𝔭.asIdeal.height = 1 →

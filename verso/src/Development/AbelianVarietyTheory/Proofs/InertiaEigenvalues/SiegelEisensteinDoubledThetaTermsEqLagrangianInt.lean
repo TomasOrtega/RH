@@ -21,11 +21,17 @@ namespace GlobalTheory.SWLagTerms
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨g, -, hg⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 h)`. Conclude with `⟨g.1, (congrArg Units.val hg).symm⟩`.
+-/
 theorem rat_of_mem (V : HSp D) (γ : GA D V) (h : γ ∈ GQ V) :
     ∃ g₀ : Matrix (Fin V.rank) (Fin V.rank) D.host.E, Formalism.L2.Theta.mt V γ = g₀.map (incA D) := by
   obtain ⟨g, -, hg⟩ := Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 h)
   exact ⟨g.1, (congrArg Units.val hg).symm⟩
 
+/- English proof (translation)
+Establish `hψ : ∀ x, ‖ψ x‖ = 1` using `hS.weil.std.1.2.1`. Repeatedly rewrite using `[GlobalTheory.T.siegelWeilDoublingProduct_rational_translate_eq_frame D V W f₁ f₂ γ g₀ hγ]`. Unfold `lagTerm`. Conclude with `GlobalTheory.T.integral_hermitianAdjoint_covolOne_periodic_eq D V W ν 𝓖' μ 𝓕 hν hS.covol (fun u => f₁ (ratMul (frameOf W g₀).1 u) * star (f₂ (ratMul (frameOf W g₀).2 u))) (fun c u => GlobalTheory.RawLift.Model.integrand_periodic hψ hY h₁ h₂ c u)`.
+-/
 theorem integral_eq {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
     {om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {νV : Measure (GA D V)} {𝓗 : Set (GA D V)}
     {νW : Measure (GA D W)} {𝓖 : Set (GA D W)} {μ : Measure (WO V W)} {𝓕 : Set (WO V W)}
@@ -45,6 +51,21 @@ theorem integral_eq {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW : (A
     (fun u => f₁ (ratMul (frameOf W g₀).1 u) * star (f₂ (ratMul (frameOf W g₀).2 u)))
     (fun c u => GlobalTheory.RawLift.Model.integrand_periodic hψ hY h₁ h₂ c u)
 
+/- English proof (translation)
+Establish `hg : ∀ γ : GQ (GlobalTheory.Doubling.dblSp W), ∃ g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E, Formalism.L2.Theta.mt (GlobalTheory.Doubling.dblSp W) (γ : GA D (GlobalTheory.Doubling.dblSp W)) = g₀.map (incA D)` using `fun γ => rat_of_mem (GlobalTheory.Doubling.dblSp W) γ γ.2`. Use `choose g₀ hg₀ using hg`. Establish `hY : ∀ γ : GQ (GlobalTheory.Doubling.dblSp W), ∃ Y : Lag W, IsLagFrame W Y (frameOf W (g₀ γ))` using `fun γ => GlobalTheory.T.exists_doubledLagrangian_of_rational_unitary_frame D W γ (g₀ γ) (hg₀ γ)`. Use `choose Y hY using hY`. Establish `key : ∀ a b : GQ (GlobalTheory.Doubling.dblSp W), Y a = Y b ↔ ((b : GA D (GlobalTheory.Doubling.dblSp W)) * (a : GA D (GlobalTheory.Doubling.dblSp W))⁻¹ ∈ GlobalTheory.Doubling.siegel W)` using `fun a b => GlobalTheory.T.doubledLagrangian_eq_iff_siegelParabolic_coset D W a b (g₀ a) (g₀ b) (hg₀ a) (hg₀ b) (Y a) (Y b) (hY a) (hY b)`.
+
+Set `f : GlobalTheory.Eis.Cosets (GlobalTheory.Doubling.siegel W) (GQ (GlobalTheory.Doubling.dblSp W)) → Lag W` to `Quotient.lift Y (fun a b hab => (key a b).2 (by`. Use `QuotientGroup.rightRel_apply.1 hab` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_subgroupOf]`. Simplify using `using this))`. Establish `hf : ∀ a, f (Quotient.mk _ a) = Y a` using `fun a => rfl`.
+
+Establish `inj : Function.Injective f`. Introduce `p q hpq`. Proceed by induction on `p using Quotient.inductionOn`. Proceed by induction on `q using Quotient.inductionOn`. Name the introduced variables `a b`.
+
+Rewrite `hpq` using `[hf, hf]`. Apply `Quotient.sound` to reduce the goal to its premises. Use `QuotientGroup.rightRel_apply.2 ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`. Simplify using `using (key a b).1 hpq`.
+
+Establish `surj : Function.Surjective f`. Introduce `Z`. Take `⟨γ, hγQ, g₁, hg₁, hZ⟩` from `GlobalTheory.T.exists_rational_unitary_doubledLagrangianFrame_witt D W Z`. Use `⟨Quotient.mk _ ⟨γ, hγQ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Use `(GlobalTheory.T.doubledLagrangian_eq_iff_siegelParabolic_coset D W γ γ (g₀ ⟨γ, hγQ⟩) g₁ (hg₀ ⟨γ, hγQ⟩) hg₁ (Y ⟨γ, hγQ⟩) Z (hY ⟨γ, hγQ⟩) hZ).2` as an intermediate fact. Conclude with `this (by simpa using (GlobalTheory.Doubling.siegel W).one_mem)`. Use `⟨Equiv.ofBijective f ⟨inj, surj⟩, fun q => ⟨g₀ q.out, hg₀ q.out, ?_⟩⟩` and prove the remaining obligations. Use `show IsLagFrame W (f q) _`. Use `conv_lhs => rw [← Quotient.out_eq q]`.
+
+Conclude with `hY q.out`.
+-/
 theorem classes (W : HSp D) :
     ∃ e : GlobalTheory.Eis.Cosets (GlobalTheory.Doubling.siegel W) (GQ (GlobalTheory.Doubling.dblSp W)) ≃ Lag W, ∀ q,
       ∃ g₀ : Matrix (Fin (W.rank + W.rank)) (Fin (W.rank + W.rank)) D.host.E,
@@ -89,6 +110,9 @@ theorem classes (W : HSp D) :
   conv_lhs => rw [← Quotient.out_eq q]
   exact hY q.out
 
+/- English proof (translation)
+Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS f₁ f₂ h₁ h₂ ν 𝓖' hν`. Take `⟨e, he⟩` from `classes W`. Use `⟨e, fun q => ?_⟩` and prove the remaining obligations. Take `⟨g₀, hg₀, hY⟩` from `he q`. Conclude with `⟨frameOf W g₀, hY, integral_eq hS h₁ h₂ ν 𝓖' hν _ g₀ hg₀ (e q) hY⟩`.
+-/
 theorem lagTerms_eq : ∀ (D : D7) ψ (V W : HSp D) χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr, SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ f₁ f₂, IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → ∀ (ν : Measure (Mx D V.rank W.rank)) (𝓖' : Set (Mx D V.rank W.rank)), IsCovolOne (ratL V W) ν 𝓖' → ∃ e : GlobalTheory.Eis.Cosets (GlobalTheory.Doubling.siegel W) (GQ (GlobalTheory.Doubling.dblSp W)) ≃ Lag W, ∀ q, ∃ C, IsLagFrame W (e q) C ∧ ∫ y in 𝓖', GlobalTheory.SWPairProof.dbl V W f₁ f₂ (actO (GlobalTheory.Doubling.dblSp W) V ((q.out : GQ (GlobalTheory.Doubling.dblSp W)) : GA D (GlobalTheory.Doubling.dblSp W))⁻¹ 1 (GlobalTheory.SiegelFormula.lagr W V y)) ∂ν = lagTerm μ 𝓕 C f₁ f₂ := by
   intro D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS f₁ f₂ h₁ h₂ ν 𝓖' hν
   obtain ⟨e, he⟩ := classes W

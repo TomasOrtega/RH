@@ -9,6 +9,15 @@ noncomputable section
 
 namespace UpperTheory.GalS
 
+/- English proof (translation)
+Take `⟨hχ, hDel⟩` from `(GlobalTheory.T.tame_descent_conditions_every_localisation D i).1`. Take `⟨m, p⟩` from `h4.1 i P w hw (hA.imp id fun h => ⟨hDel, h.2⟩)`. Use `⟨fun σ hσ hW => ?_, m, fun γ hγ z hz => ?_⟩` and prove the remaining obligations. Establish `e : chi1 D.nd i σ = 1` using `by show ((D.nd.chi i 1 σ : (D.nd.O i)ˣ) : D.nd.O i) = 1`. Rewrite using `[hχ w hA σ hW, Units.val_one]`.
+
+Rewrite using `[p σ hσ, e, map_one, map_one, ← pow_add, hd]`. Both sides reduce to the same expression. Establish `h1 : (D.naut.inePol (D.naut.locV i P w) γ).IsRoot z` using `(rootMultiplicity_pos'.1 (lt_of_lt_of_le (thr_pos w) hz)).2`. Rewrite `h1` using `[p γ hγ.1]`. Simplify using `only [IsRoot, eval_mul, eval_pow, eval_sub, eval_X, eval_one, eval_C, mul_eq_zero] at h1`.
+
+Break down `h1 with h1 | h1` into its components or cases. Rewrite using `[sub_eq_zero.1 (pow_eq_zero_iff'.1 h1).1, one_pow]`. Establish `k` using `char_pow_ine (D.nd.plOm.2 w) (D.nd.chi i 1) (hχ w hA) γ hγ.1`. Rewrite using `[sub_eq_zero.1 (pow_eq_zero_iff'.1 h1).1, ← map_pow]`. Use `show iotaO D.nd D.naut i (((D.nd.chi i 1 γ : (D.nd.O i)ˣ) : D.nd.O i) ^ _) = 1`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, k, Units.val_one, map_one]`.
+-/
 theorem nonCritical_localParam_of_full_dim (D : D7) (h4 : SumRepresentations.ArchimedeanSignatureMatching D) (i : D.nd.Loc) (P : D.naut.AV i) (w : PlE D.host) (hw : w ∈ D.nd.S i ∨ w ∈ D.nd.Q i)
     (hA : w ∈ D.nd.Q i ∨ (w ∈ D.nd.S i ∧ (w ∈ placesOver D.host.E D.host.pde ∨
       (D.nd.l i = D.host.pde ∧ w ∈ placesOver D.host.E D.host.pde')))) (hd : D.naut.lpDim (D.naut.locV i P w) = D.R.nV) :

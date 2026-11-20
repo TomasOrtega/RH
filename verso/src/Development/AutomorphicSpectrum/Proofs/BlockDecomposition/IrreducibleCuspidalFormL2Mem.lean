@@ -14,14 +14,23 @@ section Hilbert
 
 variable {X : Type*} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [CompleteSpace X] {K : Type*} [Group K]
 
+/- English proof (translation)
+The claim follows from `(⟨(π g : X →ₗ[ℂ] X), hn g⟩ : X →ₗᵢ[ℂ] X).inner_map_map v w`.
+-/
 theorem inner_map_map (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g v‖ = ‖v‖) (g : K) (v w : X) :
     ⟪π g v, π g w⟫_ℂ = ⟪v, w⟫_ℂ :=
   (⟨(π g : X →ₗ[ℂ] X), hn g⟩ : X →ₗᵢ[ℂ] X).inner_map_map v w
 
+/- English proof (translation)
+Establish `: π g * π g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `congrArg (fun S : X →L[ℂ] X => S v) this`.
+-/
 theorem map_map_inv (π : K →* (X →L[ℂ] X)) (g : K) (v : X) : π g (π g⁻¹ v) = v := by
   have : π g * π g⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
   exact congrArg (fun S : X →L[ℂ] X => S v) this
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[← map_map_inv π g u, inner_map_map π hn]`. Conclude with `hv _ (hN _ u hu)`.
+-/
 theorem orthogonal_stable (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g v‖ = ‖v‖) {N : Submodule ℂ X}
     (hN : ∀ g, ∀ v ∈ N, π g v ∈ N) (g : K) {v : X} (hv : v ∈ Nᗮ) : π g v ∈ Nᗮ := by
   rw [Submodule.mem_orthogonal] at hv ⊢
@@ -29,6 +38,9 @@ theorem orthogonal_stable (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g v
   rw [← map_map_inv π g u, inner_map_map π hn]
   exact hv _ (hN _ u hu)
 
+/- English proof (translation)
+Use `Submodule.eq_starProjection_of_mem_orthogonal (hN g _ (Submodule.starProjection_apply_mem _ _)) ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`. Conclude with `orthogonal_stable π hn hN g (Submodule.sub_starProjection_mem_orthogonal v)`.
+-/
 theorem starProjection_map (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g v‖ = ‖v‖) {N : Submodule ℂ X}
     [N.HasOrthogonalProjection] (hN : ∀ g, ∀ v ∈ N, π g v ∈ N) (g : K) (v : X) :
     N.starProjection (π g v) = π g (N.starProjection v) := by
@@ -36,6 +48,21 @@ theorem starProjection_map (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g 
   rw [← map_sub]
   exact orthogonal_stable π hn hN g (Submodule.sub_starProjection_mem_orthogonal v)
 
+/- English proof (translation)
+Use `set M : Submodule ℂ X := ⨆ (T : W →ₗ[ℂ] X) (_ : (∀ k w, T (ρ k w) = π k (T w)) ∧ ∀ w, P (T w)), LinearMap.range T with hMdef`. Establish `hmem : ∀ (T : W →ₗ[ℂ] X), ((∀ k w, T (ρ k w) = π k (T w)) ∧ ∀ w, P (T w)) → ∀ w, T w ∈ M` using `fun T hT w => (le_iSup₂_of_le (f := fun (T : W →ₗ[ℂ] X) (_ : (∀ k w, T (ρ k w) = π k (T w)) ∧ ∀ w, P (T w)) => LinearMap.range T) T hT le_rfl) ⟨w, rfl⟩`. Establish `hM : ∀ g, ∀ v ∈ M, π g v ∈ M`. Introduce `g v hv`. Establish `: M ≤ M.comap (π g : X →ₗ[ℂ] X)`.
+
+Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Express the relevant statement in the definitionally equal form `π g (T w) ∈ M`. Rewrite using `[← hT.1]`. Conclude with `hmem T hT _`.
+
+Conclude with `this hv`. Use `set N : Submodule ℂ X := Y ⊓ M with hN`. Establish `hNs : ∀ g, ∀ v ∈ N, π g v ∈ N` using `fun g v hv => ⟨hY g v hv.1, hM g v hv.2⟩`. Use `haveI : FiniteDimensional ℂ N := Submodule.finiteDimensional_inf_left Y M`. Use `set Y₂ : Submodule ℂ X := Y ⊓ Nᗮ with hY₂`.
+
+Use `haveI : FiniteDimensional ℂ Y₂ := Submodule.finiteDimensional_inf_left Y Nᗮ`. Establish `hY₂s : ∀ g, ∀ v ∈ Y₂, π g v ∈ Y₂` using `fun g v hv => ⟨hY g v hv.1, orthogonal_stable π hn hNs g hv.2⟩`. Establish `hle : M ≤ Y₂ᗮ`. Use `iSup₂_le fun T hT => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Set `T' : W →ₗ[ℂ] X` to `(Y₂.starProjection : X →ₗ[ℂ] X) ∘ₗ T`. Establish `hT' : (∀ k w, T' (ρ k w) = π k (T' w)) ∧ ∀ w, P (T' w)` using `⟨fun k w => by`. Express the relevant statement in the definitionally equal form `Y₂.starProjection (T (ρ k w)) = π k (Y₂.starProjection (T w))`. Rewrite using `[hT.1, starProjection_map π hn hY₂s], fun w => hP _ (show _ ∈ Y₂ from Submodule.starProjection_apply_mem _ _).1⟩`. Establish `h1 : Y₂.starProjection (T w) ∈ Y₂` using `Submodule.starProjection_apply_mem _ _`.
+
+Establish `h2 : Y₂.starProjection (T w) ∈ N` using `⟨h1.1, hmem T' hT' w⟩`. Establish `h3 : Y₂.starProjection (T w) = 0`. Use `(Submodule.mem_orthogonal _ _).1 h1.2 _ h2` as an intermediate fact. Conclude with `inner_self_eq_zero.1 this`. Conclude with `(Submodule.starProjection_apply_eq_zero_iff _).1 h3`.
+
+Use `⟨N.starProjection v, Submodule.starProjection_apply_mem _ _, ?_⟩` and prove the remaining obligations. Establish `h4 : v - N.starProjection v ∈ Y₂` using `⟨Y.sub_mem hv (Submodule.starProjection_apply_mem N v).1, Submodule.sub_starProjection_mem_orthogonal v⟩`. Conclude with `Submodule.orthogonal_le hle (Submodule.le_orthogonal_orthogonal _ h4)`.
+-/
 theorem exists_decomp {W : Type*} [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ K W)
     (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g v‖ = ‖v‖) (P : X → Prop) (Y : Submodule ℂ X) [FiniteDimensional ℂ Y]
     (hY : ∀ g, ∀ v ∈ Y, π g v ∈ Y) (hP : ∀ v ∈ Y, P v) {v : X} (hv : v ∈ Y) :
@@ -80,6 +107,21 @@ theorem exists_decomp {W : Type*} [AddCommGroup W] [Module ℂ W] (ρ : Represen
     ⟨Y.sub_mem hv (Submodule.starProjection_apply_mem N v).1, Submodule.sub_starProjection_mem_orthogonal v⟩
   exact Submodule.orthogonal_le hle (Submodule.le_orthogonal_orthogonal _ h4)
 
+/- English proof (translation)
+Establish `hfin : ((fun u => π u F) '' (U : Set K)).Finite`. Take `⟨t, ht⟩` from `hU.elim_finite_subcover (fun u : K => (fun g => u⁻¹ * g) ⁻¹' {g | π g F = F}) (fun u => hF.preimage (continuous_const.mul continuous_id)) (fun u _ => Set.mem_iUnion.2 ⟨u, show π (u⁻¹ * u) F = F by simp⟩)`. Use `(t.image fun u => π u F).finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨s, hs, e⟩` from `Set.mem_iUnion₂.1 (ht hu)`.
+
+Use `Finset.mem_coe.2 (Finset.mem_image.2 ⟨s, hs, ?_⟩)` and prove the remaining obligations. Establish `e' : π (s⁻¹ * u) F = F` using `e`. Express the relevant statement in the definitionally equal form `π s F = π u F`. Combine the equalities or inequalities in the displayed calculation. Use `set O := hfin.toFinset with hO`.
+
+Establish `hOm : ∀ f, f ∈ O ↔ ∃ u ∈ U, π u F = f` using `fun f => by simp [hO]`. Establish `hO0 : (O.card : ℂ) ≠ 0`. Establish `: F ∈ O` using `(hOm F).2 ⟨1, U.one_mem, by simp⟩`. Conclude with `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨F, this⟩)`. Use `⟨(O.card : ℂ)⁻¹ • ∑ f ∈ O, f, A.smul_mem _ (A.sum_mem fun f hf => ?_), fun u hu => ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, -, rfl⟩` from `(hOm f).1 hf`. Conclude with `hA u F hFA`. Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_nbij' (π u) (π u⁻¹) ?_ ?_ ?_ ?_ fun _ _ => rfl` and prove the remaining obligations.
+
+Introduce `f hf`. Take `⟨s, hs, rfl⟩` from `(hOm f).1 hf`. Conclude with `(hOm _).2 ⟨u * s, U.mul_mem hu hs, by rw [map_mul]; rfl⟩`. Introduce `f hf`. Take `⟨s, hs, rfl⟩` from `(hOm f).1 hf`.
+
+Conclude with `(hOm _).2 ⟨u⁻¹ * s, U.mul_mem (U.inv_mem hu) hs, by rw [map_mul]; rfl⟩`. Introduce `f _`. Simplify using `using map_map_inv π u⁻¹ f`. Introduce `f _`. Conclude with `map_map_inv π u f`.
+
+Establish `h1 : ∀ f ∈ O, ⟪m, f⟫_ℂ = ⟪m, F⟫_ℂ` using `fun f hf => by`. Take `⟨s, hs, rfl⟩` from `(hOm f).1 hf`. Use `conv_lhs => rw [← hm s hs]`. Conclude with `inner_map_map π hn s m F`. Rewrite using `[inner_smul_right, inner_sum, Finset.sum_congr rfl h1, Finset.sum_const, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hO0, one_mul]`.
+-/
 theorem exists_average [TopologicalSpace K] [IsTopologicalGroup K] (π : K →* (X →L[ℂ] X)) (hn : ∀ g v, ‖π g v‖ = ‖v‖)
     (U : Subgroup K) (hU : IsCompact (U : Set K)) {F : X} (hF : IsOpen {g | π g F = F}) (A : Submodule ℂ X)
     (hA : ∀ g, ∀ v ∈ A, π g v ∈ A) (hFA : F ∈ A) :
@@ -130,6 +172,9 @@ section Orbit
 
 variable {X : Type*} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {K : Type*} [Group K]
 
+/- English proof (translation)
+Introduce `v hv`. Establish `: Submodule.span ℂ (Set.range fun k => π k F) ≤ (Submodule.span ℂ (Set.range fun k => π k F)).comap (π g : X →ₗ[ℂ] X)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * k, show π (g * k) F = π g (π k F) by rw [map_mul]; rfl⟩)`. Conclude with `this hv`.
+-/
 theorem span_orbit_stable (π : K →* (X →L[ℂ] X)) (F : X) (g : K) :
     ∀ v ∈ Submodule.span ℂ (Set.range fun k => π k F), π g v ∈ Submodule.span ℂ (Set.range fun k => π k F) := by
   intro v hv
@@ -162,12 +207,22 @@ variable (E a μ) in
 def piFin : GL (Fin a) (Af E) →* (L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ) :=
   (R (latticeGL E a) μ).comp (finGL E a)
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun g => R (latticeGL E a) μ g v) (infGL_comm (E := E) (a := a) (Unitary.toUnits k) u)`. Simplify using `only [map_mul, ContinuousLinearMap.mul_apply] at e`. Conclude with `e.symm`.
+-/
 theorem piFin_piInf (u : GL (Fin a) (Af E)) (k : Kinf E a) (v : L2 (latticeGL E a) μ) :
     piFin E a μ u (piInf E a μ k v) = piInf E a μ k (piFin E a μ u v) := by
   have e := congrArg (fun g => R (latticeGL E a) μ g v) (infGL_comm (E := E) (a := a) (Unitary.toUnits k) u)
   simp only [map_mul, ContinuousLinearMap.mul_apply] at e
   exact e.symm
 
+/- English proof (translation)
+Establish `hk` using `hφ.kfin`. Establish `hm : ∀ ψ ∈ Submodule.span ℂ (Set.range fun k => cptRep E a k φ), MemL2Quotient (latticeGL E a) μ ψ.1`. Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨k, rfl⟩` from `hx`. Conclude with `h.mul_right _`. Consider the case `zero => exact ⟨fun _ _ _ => rfl, MemLp.zero⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨fun γ hγ g => congrArg₂ (· + ·) (hx.1 γ hγ g) (hy.1 γ hγ g), hx.2.add hy.2⟩`.
+
+Consider the case `smul c x _ hx => exact ⟨fun γ hγ g => congrArg (c • ·) (hx.1 γ hγ g), hx.2.const_smul c⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := (⊤ : Submodule ℂ _).map (toL2ₗ μ _ hm)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨_, Submodule.subset_span ⟨k, rfl⟩⟩, trivial, (right_translate_toL2 h _).symm⟩`.
+-/
 theorem finiteDimensional_span_inf {φ : Sm E a} (hφ : IsAutForm φ) (h : MemL2Quotient (latticeGL E a) μ φ.1) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : Kinf E a => piInf E a μ k h.toL2)) := by
   have hk := hφ.kfin
@@ -192,6 +247,9 @@ def fixedBy (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] 
   add_mem' := fun {x y} hx hy u hu => by rw [map_add, hx u hu, hy u hu]
   smul_mem' := fun c x hx u hu => by rw [map_smul, hx u hu]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩ refine ⟨hH _ _ hF, fun u hu => ?_⟩ exact (piFin_piInf u k F).trans (congrArg (piInf E a μ k) (hU u hu)))`.
+-/
 theorem span_inf_le {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : ∀ g, ∀ v ∈ H, R (latticeGL E a) μ g v ∈ H)
     {U : Subgroup (GL (Fin a) (Af E))} {F : L2 (latticeGL E a) μ} (hF : F ∈ H) (hU : F ∈ fixedBy μ U) :
     Submodule.span ℂ (Set.range fun k : Kinf E a => piInf E a μ k F) ≤ H ⊓ fixedBy μ U :=
@@ -202,6 +260,39 @@ theorem span_inf_le {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : ∀ g, ∀
 
 end Adelic
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ _ H hcusp hirr W hW hWH hcl φ hφ h hH`. Establish `hn : ∀ k v, ‖piInf E a μ k v‖ = ‖v‖` using `fun k v => norm_R _ v`. Establish `hnF : ∀ k v, ‖piFin E a μ k v‖ = ‖v‖` using `fun k v => norm_R _ v`. Establish `hHs : ∀ g, ∀ v ∈ H, R (latticeGL E a) μ g v ∈ H` using `hirr.1.2`. Establish `hWm : ∀ ψ ∈ W, MemL2Quotient (latticeGL E a) μ ψ.1` using `fun ψ hψ => (hWH ψ hψ).2.choose`.
+
+Establish `hWa : ∀ ψ ∈ W, IsAutForm ψ` using `fun ψ hψ => (hWH ψ hψ).1`. Take `⟨U₀, hU₀o, hU₀c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E a`. Set `S : Subgroup (GL (Fin a) (Af E))` to `{ carrier := {k | finRep E a k φ = φ} mul_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `finRep E a (x * y) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, show finRep E a y φ = φ from hy, show finRep E a x φ = φ from hx]`.
+
+Use the proof step `one_mem' := by`. Express the relevant statement in the definitionally equal form `finRep E a 1 φ = φ`. Rewrite using `[map_one, Module.End.one_apply]`. Use the proof step `inv_mem' := fun {x} hx => by`. Express the relevant statement in the definitionally equal form `finRep E a x⁻¹ φ = φ`.
+
+Use `conv_lhs => rw [← show finRep E a x φ = φ from hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hSo : IsOpen (S : Set (GL (Fin a) (Af E)))` using `hφ.level`. Set `U : Subgroup (GL (Fin a) (Af E))` to `U₀ ⊓ S`. Establish `hUo : IsOpen (U : Set (GL (Fin a) (Af E)))` using `hU₀o.inter hSo`.
+
+Establish `hUc : IsCompact (U : Set (GL (Fin a) (Af E)))` using `hU₀c.inter_right (S.isClosed_of_isOpen hSo)`. Establish `hfix : h.toL2 ∈ fixedBy μ U` using `fun u hu => (right_translate_toL2 h _).trans (((h.mul_right _).toL2_eq_iff_ae_eq h).2 (.of_forall fun x => congrFun (congrArg Subtype.val hu.2) x))`. Use `set Y₀ := Submodule.span ℂ (Set.range fun k : Kinf E a => piInf E a μ k h.toL2) with hY₀def`. Use `haveI : FiniteDimensional ℂ Y₀ := finiteDimensional_span_inf hφ h`. Establish `hY₀s : ∀ g, ∀ v ∈ Y₀, piInf E a μ g v ∈ Y₀` using `span_orbit_stable _ _`.
+
+Establish `hY₀ : Y₀ ≤ H ⊓ fixedBy μ U` using `span_inf_le hHs hH hfix`. Establish `hF0Y : h.toL2 ∈ Y₀` using `Submodule.subset_span ⟨1, by simp⟩`. Set `ρ : Representation ℂ (Kinf E a) Y₀` to `subRep (piInf E a μ) Y₀ hY₀s`. Set `P : L2 (latticeGL E a) μ → Prop` to `fun v => v ∈ H ∧ ∀ u ∈ U, R (latticeGL E a) μ (finGL E a u) v = v`. Set `M : Submodule ℂ (L2 (latticeGL E a) μ)` to `⨆ (T : Y₀ →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = piInf E a μ k (T w)) ∧ ∀ w, P (T w)), LinearMap.range T`.
+
+Use `haveI hMf : FiniteDimensional ℂ M := GlobalTheory.T.cuspidal_K_type_finite E a μ H hcusp hirr U hUo Y₀ ρ`. Establish `hMP : M ≤ H ⊓ fixedBy μ U` using `iSup₂_le fun T hT => by`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hT.2 w`. Establish `hF0M : h.toL2 ∈ M` using `(le_iSup₂_of_le (f := fun (T : Y₀ →ₗ[ℂ] L2 (latticeGL E a) μ) (_ : (∀ k w, T (ρ k w) = piInf E a μ k (T w)) ∧ ∀ w, P (T w)) => LinearMap.range T) Y₀.subtype ⟨fun k w => rfl, fun w => hY₀ w.2⟩ le_rfl) ⟨⟨_, hF0Y⟩, rfl⟩`.
+
+Set `M' : Submodule ℂ (L2 (latticeGL E a) μ)` to `M ⊓ classes W μ`. Use `haveI : FiniteDimensional ℂ M' := Submodule.finiteDimensional_inf_left M _`. Establish `hpm : M'.starProjection h.toL2 ∈ M'` using `Submodule.starProjection_apply_mem _ _`. Take `⟨m, hmdef⟩ : ∃ m, m = h.toL2 - M'.starProjection h.toL2` from `⟨_, rfl⟩`. Establish `hmM : m ∈ M` using `hmdef ▸ M.sub_mem hF0M hpm.1`.
+
+Establish `hm' : m ∈ M'ᗮ` using `hmdef ▸ Submodule.sub_starProjection_mem_orthogonal _`. Establish `key : ∀ F ∈ classes W μ, ⟪m, F⟫_ℂ = 0`. Introduce `F hF`. Take `⟨ψ, rfl⟩` from `(range_toL2ₗ hWm).ge hF`. Establish `hi` using `toL2ₗ_injective hWm fun ψ hψ => ContAut.continuous_of_isOpen_stab E a ψ (hWa ψ hψ).level`.
+
+Establish `hop : IsOpen {g | piFin E a μ g (toL2ₗ μ W hWm ψ) = toL2ₗ μ W hWm ψ}`. Use `(hWa ψ ψ.2).level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `(R_toL2ₗ hWm ψ (hW (.fin k) _ ψ.2)).congr_left.trans (hi.eq_iff.trans Subtype.ext_iff)`. Take `⟨F', hF'c, hF'f, hF'i⟩` from `exists_average (piFin E a μ) hnF U hUc hop (classes W μ) (fun g v hv => R_mem_classes (fun χ hχ => hW (.fin g) χ hχ) hv) hF`.
+
+Rewrite using `[← hF'i m (fun u hu => (hMP hmM).2 u hu)]`. Establish `hF'H : F' ∈ H`. Establish `: classes W μ ≤ H` using `hcl ▸ Submodule.le_topologicalClosure _`. Conclude with `this hF'c`. Establish `hF'U : F' ∈ fixedBy μ U` using `hF'f`.
+
+Take `⟨ψ', rfl⟩` from `(range_toL2ₗ hWm).ge hF'c`. Use `haveI := finiteDimensional_span_inf (hWa ψ' ψ'.2) (hWm ψ' ψ'.2)`. Take `⟨Y₁, hY₁⟩ : ∃ Y₁, Y₁ = Submodule.span ℂ (Set.range fun k : Kinf E a => piInf E a μ k (toL2ₗ μ W hWm ψ'))` from `⟨_, rfl⟩`. Use `haveI : FiniteDimensional ℂ Y₁ := hY₁ ▸ this`. Establish `hY₁s : ∀ g, ∀ v ∈ Y₁, piInf E a μ g v ∈ Y₁` using `hY₁ ▸ span_orbit_stable _ _`.
+
+Establish `hY₁P : Y₁ ≤ H ⊓ fixedBy μ U` using `hY₁ ▸ span_inf_le hHs hF'H hF'U`. Establish `hY₁c : Y₁ ≤ classes W μ` using `hY₁ ▸ Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `R_mem_classes (fun χ hχ => hW (.cpt k) χ hχ) hF'c)`. Establish `hFY : toL2ₗ μ W hWm ψ' ∈ Y₁` using `hY₁ ▸ Submodule.subset_span ⟨1, by simp⟩`.
+
+Take `⟨x, ⟨hx1, hx2⟩, hx3⟩` from `exists_decomp ρ (piInf E a μ) hn P Y₁ hY₁s (fun v hv => hY₁P hv) hFY`. Establish `e1 : ⟪m, x⟫_ℂ = 0` using `(Submodule.mem_orthogonal' _ _).1 hm' x ⟨hx2, hY₁c hx1⟩`. Establish `e2 : ⟪m, toL2ₗ μ W hWm ψ' - x⟫_ℂ = 0` using `(Submodule.mem_orthogonal _ _).1 hx3 m hmM`. Rewrite `e2` using `[inner_sub_right, e1, sub_zero]`. Conclude with `e2`.
+
+Establish `hm0 : m = 0`. Establish `h1 : m ∈ (classes W μ)ᗮ` using `(Submodule.mem_orthogonal' _ _).2 key`. Rewrite `h1` using `[← Submodule.orthogonal_closure, hcl]`. Conclude with `inner_self_eq_zero.1 ((Submodule.mem_orthogonal' _ _).1 h1 m (hMP hmM).1)`. Establish `hF0c : h.toL2 ∈ classes W μ`.
+
+Establish `h1 : h.toL2 = M'.starProjection h.toL2` using `sub_eq_zero.1 (hmdef.symm.trans hm0)`. Rewrite using `[h1]`. Conclude with `hpm.2`. Take `⟨ψ, hψ, e⟩` from `hF0c`. Rewrite using `[show φ = ψ from Subtype.ext ((Continuous.ae_eq_iff_eq μ (ContAut.continuous_of_isOpen_stab E a φ hφ.level) (ContAut.continuous_of_isOpen_stab E a ψ (hWa ψ hψ).level)).1 (h.lift_toL2_ae_eq.symm.trans e))]` and apply the resulting hypothesis.
+-/
 theorem mem_of_toL2_mem : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Submodule ℂ (L2 (latticeGL E a) μ)), H ≤ L2cusp μ → IsIrredSubrep (R (latticeGL E a) μ) H → ∀ W : Submodule ℂ (Sm E a), IsStable W → (∀ φ ∈ W, IsAutForm φ ∧ ∃ h : MemL2Quotient (latticeGL E a) μ φ.1, h.toL2 ∈ H) → (classes W μ).topologicalClosure = H → ∀ φ : Sm E a, IsAutForm φ → ∀ h : MemL2Quotient (latticeGL E a) μ φ.1, h.toL2 ∈ H → φ ∈ W := by
   intro E _ _ _ a μ _ _ H hcusp hirr W hW hWH hcl φ hφ h hH
   have hn : ∀ k v, ‖piInf E a μ k v‖ = ‖v‖ := fun k v => norm_R _ v

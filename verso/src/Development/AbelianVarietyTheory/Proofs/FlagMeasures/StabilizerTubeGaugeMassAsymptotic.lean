@@ -18,6 +18,17 @@ namespace GlobalTheory.StabTube
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2` using `Continuous.matrix_mul (A := fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mat k r)) (B := fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mat k r)) continuous_fst continuous_snd`. Establish `hD : MeasurableSet ((fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2) ⁻¹' B)` using `hc.measurable hB`. Establish `e1` using `Measure.prod_apply (μ := μ) (ν := ν) hD`. Establish `e2` using `Measure.prod_apply_symm (μ := μ) (ν := ν) hD`. Establish `aμ : ∀ᵐ g ∂μ, Matrix.of g ∈ G` using `hμ`.
+
+Establish `aν : ∀ᵐ h ∂ν, Matrix.of h ∈ K` using `hν`. Rewrite using `[← lintegral_indicator_const hT, mul_comm, ← lintegral_const]`. Use `Eq.trans (lintegral_congr_ae ?_) ((e2.symm.trans e1).trans (lintegral_congr_ae ?_))` and prove the remaining obligations. Use `filter_upwards [aν] with h hh`. Establish `hm : Measurable (rmulM (Matrix.of h) : Mt k r → Mt k r)` using `(hc.comp (continuous_id.prodMk continuous_const)).measurable`.
+
+Use `conv_lhs => rw [← hR _ hh, Measure.map_apply hm hB]`. Both sides reduce to the same expression. Use `filter_upwards [aμ] with g hg`. Distinguish the cases in `hgT : g ∈ T`. Take `⟨h0, hh0, H⟩` from `h1 g hg hgT`.
+
+Rewrite using `[Set.indicator_of_mem hgT]`. Use `conv_rhs => rw [← hL _ hh0, Measure.map_apply (HU.lmulM_cont h0).measurable hS]`. Use `measure_congr ?_` and prove the remaining obligations. Use `filter_upwards [aν] with h hh`. Conclude with `propext (H h hh)`.
+
+Rewrite using `[Set.indicator_of_notMem hgT]`. Use `measure_mono_null (fun h hh => ?_) hν` and prove the remaining obligations. Conclude with `fun hK => h2 g hg hgT h hK hh`.
+-/
 theorem tube_identity (G K : Set (Mat k r)) (μ ν : Measure (Mt k r)) [SFinite μ] [SFinite ν]
     (hμ : μ {x | Matrix.of x ∉ G} = 0) (hν : ν {x | Matrix.of x ∉ K} = 0)
     (hR : ∀ p ∈ K, μ.map (rmulM p) = μ) (hL : ∀ s ∈ K, ν.map (lmulM s) = ν)
@@ -57,13 +68,26 @@ abbrev pw (k r : ℕ) : Fin (2 * r + k + 1) := wI k r (Fin.last k)
 
 abbrev Kw (k r : ℕ) : Set (Mat k r) := UWset k r (wLast k r)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1, h.2.1⟩, h.2.2⟩, fun h => ⟨h.1.1, h.1.2, h.2⟩⟩`.
+-/
 theorem mem_Kw {g : Mat k r} : g ∈ Kw k r ↔ g ∈ UWb k r ∧ g *ᵥ wLast k r = wLast k r :=
   ⟨fun h => ⟨⟨h.1, h.2.1⟩, h.2.2⟩, fun h => ⟨h.1.1, h.1.2, h.2⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨HU.amb_closed, HU.uwb_one, fun _ ha _ hb => HU.uwb_mul ha hb, fun a ha => ⟨HU.uwb_inv ha, Matrix.mul_nonsing_inv a (HU.uwb_unit ha)⟩⟩`.
+-/
 theorem isMatGroup_UWb : PI.IsMatGroup (UWb k r) :=
   ⟨HU.amb_closed, HU.uwb_one, fun _ ha _ hb => HU.uwb_mul ha hb,
     fun a ha => ⟨HU.uwb_inv ha, Matrix.mul_nonsing_inv a (HU.uwb_unit ha)⟩⟩
 
+/- English proof (translation)
+Use `⟨?_, mem_Kw.2 ⟨HU.uwb_one, Matrix.one_mulVec _⟩, fun a ha b hb => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `: Kw k r = UWb k r ∩ {g | g *ᵥ wLast k r = wLast k r}` using `Set.ext fun _ => mem_Kw`. Rewrite using `[this]`. Conclude with `isMatGroup_UWb.1.inter (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const)`. Rewrite `*` using `[mem_Kw]`.
+
+Conclude with `⟨HU.uwb_mul ha.1 hb.1, by rw [← Matrix.mulVec_mulVec, hb.2, ha.2]⟩`. Rewrite `*` using `[mem_Kw]`. Establish `hu` using `HU.uwb_unit ha.1`. Use `⟨⟨HU.uwb_inv ha.1, ?_⟩, Matrix.mul_nonsing_inv a hu⟩` and prove the remaining obligations. Use `conv_lhs => rw [← ha.2]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+-/
 theorem isMatGroup_Kw : PI.IsMatGroup (Kw k r) := by
   refine ⟨?_, mem_Kw.2 ⟨HU.uwb_one, Matrix.one_mulVec _⟩, fun a ha b hb => ?_, fun a ha => ?_⟩
   · have : Kw k r = UWb k r ∩ {g | g *ᵥ wLast k r = wLast k r} := Set.ext fun _ => mem_Kw
@@ -77,6 +101,9 @@ theorem isMatGroup_Kw : PI.IsMatGroup (Kw k r) := by
     conv_lhs => rw [← ha.2]
     rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `⟨fun h => GlobalTheory.ClosedMatGroup.unrealify_mem_lieOf hS h, fun h => ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨unrealify x, h, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, j, b⟩`. Apply the tactic sequence `cases b <;> rfl`.
+-/
 theorem mem_lieE_iff {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (hS : PI.IsMatGroup S)
     (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) : x ∈ lieE S ↔ unrealify x ∈ lieOf S := by
   refine ⟨fun h => GlobalTheory.ClosedMatGroup.unrealify_mem_lieOf hS h, fun h => ?_⟩
@@ -84,15 +111,24 @@ theorem mem_lieE_iff {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} (hS : PI.I
   ext ⟨i, j, b⟩
   cases b <;> rfl
 
+/- English proof (translation)
+Simplify using `using h 1`.
+-/
 theorem exp_mem {m : ℕ} {S : Set (Matrix (Fin m) (Fin m) ℂ)} {X : Matrix (Fin m) (Fin m) ℂ} (h : X ∈ lieOf S) :
     NormedSpace.exp X ∈ S := by
   simpa using h 1
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.CellLieAlg.exp_fix_iff X (pw k r)]`. Conclude with `⟨fun h => ⟨fun t => (mem_Kw.1 (h t)).1, fun t => (mem_Kw.1 (h t)).2⟩, fun h t => mem_Kw.2 ⟨h.1 t, h.2 t⟩⟩`.
+-/
 theorem mem_lieOf_Kw (X : Mat k r) : X ∈ lieOf (Kw k r) ↔ X ∈ lieOf (UWb k r) ∧ ∀ i, X i (pw k r) = 0 := by
   rw [← GlobalTheory.CellLieAlg.exp_fix_iff X (pw k r)]
   exact ⟨fun h => ⟨fun t => (mem_Kw.1 (h t)).1, fun t => (mem_Kw.1 (h t)).2⟩,
     fun h t => mem_Kw.2 ⟨h.1 t, h.2 t⟩⟩
 
+/- English proof (translation)
+Use `(GlobalTheory.CellLieAlg.mem_lieOf_UWb k r X).trans (and_congr_left fun _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Xᴴ * Hpk k r + Hpk k r * X = 0 ↔ _`. Establish `e : Xᴴ * Hpk k r = (Hpk k r * X)ᴴ` using `by rw [conjTranspose_mul, MB.hpk_herm]`. Rewrite using `[e, ← Matrix.ext_iff]`. Simplify using `only [Matrix.add_apply, conjTranspose_apply, HU.hpk_mul_apply, Matrix.zero_apply]`.
+-/
 theorem mem_lieOf_UWb (X : Mat k r) : X ∈ lieOf (UWb k r) ↔
     (∀ i j, star (HU.sgn k r j * X (HU.tau k r j) i) + HU.sgn k r i * X (HU.tau k r i) j = 0) ∧
       ∀ i j, ¬ (MB.mid k r i ∧ MB.mid k r j) → X i j = 0 := by
@@ -102,18 +138,30 @@ theorem mem_lieOf_UWb (X : Mat k r) : X ∈ lieOf (UWb k r) ↔
   rw [e, ← Matrix.ext_iff]
   simp only [Matrix.add_apply, conjTranspose_apply, HU.hpk_mul_apply, Matrix.zero_apply]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [HU.tau]`. Rewrite using `[if_neg (by have := hi.1; have := hi.2; omega)]`.
+-/
 theorem tau_mid {i : Fin (2 * r + k + 1)} (hi : MB.mid k r i) : HU.tau k r i = i := by
   apply Fin.ext
   simp only [HU.tau]
   rw [if_neg (by have := hi.1; have := hi.2; omega)]
 
+/- English proof (translation)
+Introduce `h` and use `by have := tau_mid h rw [HU.tau_tau] at this exact hi (this ▸ h)`.
+-/
 theorem tau_not_mid {i : Fin (2 * r + k + 1)} (hi : ¬ MB.mid k r i) : ¬ MB.mid k r (HU.tau k r i) := fun h => by
   have := tau_mid h
   rw [HU.tau_tau] at this
   exact hi (this ▸ h)
 
+/- English proof (translation)
+Simplify using `[HU.sgn, wI]`.
+-/
 theorem sgn_pw : HU.sgn k r (pw k r) = -1 := by simp [HU.sgn, wI]
 
+/- English proof (translation)
+Rewrite using `[← MB.wI_midx hi]`. Break down `Fin.eq_castSucc_or_eq_last (MB.midx hi) with ⟨a, h⟩ | h` into its components or cases. Conclude with `Or.inl ⟨a, by rw [h]⟩`. Conclude with `Or.inr (by rw [h])`.
+-/
 theorem mid_cases {i : Fin (2 * r + k + 1)} (hi : MB.mid k r i) :
     (∃ a : Fin k, i = wI k r a.castSucc) ∨ i = pw k r := by
   rw [← MB.wI_midx hi]
@@ -121,27 +169,49 @@ theorem mid_cases {i : Fin (2 * r + k + 1)} (hi : MB.mid k r i) :
   · exact Or.inl ⟨a, by rw [h]⟩
   · exact Or.inr (by rw [h])
 
+/- English proof (translation)
+Introduce `h` and use `Fin.castSucc_ne_last a (MB.wI_inj h)`.
+-/
 theorem wc_ne (a : Fin k) : wI k r a.castSucc ≠ pw k r := fun h => Fin.castSucc_ne_last a (MB.wI_inj h)
 
+/- English proof (translation)
+Use `a.isLt` as an intermediate fact. Conclude with `if_neg (by simp only [wI, Fin.val_castSucc]; omega)`.
+-/
 theorem sgn_wc (a : Fin k) : HU.sgn k r (wI k r a.castSucc) = 1 := by
   have := a.isLt
   exact if_neg (by simp only [wI, Fin.val_castSucc]; omega)
 
+/- English proof (translation)
+Establish `hi' : i.val ≠ r + k` using `fun h => hi (Fin.ext h)`. Establish `hj' : j.val ≠ r + k` using `fun h => hj (Fin.ext h)`. Simplify using `[opGen, hi', hj']`.
+-/
 theorem gen_off (q : TrE k) {i j : Fin (2 * r + k + 1)} (hi : i ≠ pw k r) (hj : j ≠ pw k r) :
     opGen k r q i j = 0 := by
   have hi' : i.val ≠ r + k := fun h => hi (Fin.ext h)
   have hj' : j.val ≠ r + k := fun h => hj (Fin.ext h)
   simp [opGen, hi', hj']
 
+/- English proof (translation)
+Unfold `opGen`. Simplify using `only [MB.mid] at h`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem gen_out (q : TrE k) (i j : Fin (2 * r + k + 1)) (h : ¬ (MB.mid k r i ∧ MB.mid k r j)) :
     opGen k r q i j = 0 := by
   unfold opGen
   simp only [MB.mid] at h
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Simplify using `[opGen, wI, a.isLt]`.
+-/
 theorem gen_wc (q : TrE k) (a : Fin k) : opGen k r q (pw k r) (wI k r a.castSucc) = star (opBeta k q a) := by
   simp [opGen, wI, a.isLt]
 
+/- English proof (translation)
+Use `(mem_lieOf_UWb _).2 ⟨fun i j => ?_, gen_out q⟩` and prove the remaining obligations. Distinguish the cases in `hi : MB.mid k r i`. Distinguish the cases in `hj : MB.mid k r j`. Rewrite using `[tau_mid hi, tau_mid hj]`. Apply the tactic sequence `rcases mid_cases hi with ⟨a, rfl⟩ | rfl <;> rcases mid_cases hj with ⟨b, rfl⟩ | rfl`.
+
+Simplify using `[gen_off q (wc_ne _) (wc_ne _)]`. Simplify using `[sgn_pw, sgn_wc, gen_wc, opGen_y]`. Simplify using `[sgn_pw, sgn_wc, gen_wc, opGen_y]`. Simplify using `[sgn_pw, opGen_c]`. Rewrite using `[gen_out q _ i fun h => tau_not_mid hj h.1, gen_out q _ j fun h => hj h.2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[gen_out q _ i fun h => hi h.2, gen_out q _ j fun h => tau_not_mid hi h.1]`. Simplify using the standard rewrite rules.
+-/
 theorem gen_mem (q : TrE k) : opGen k r q ∈ lieOf (UWb k r) := by
   refine (mem_lieOf_UWb _).2 ⟨fun i j => ?_, gen_out q⟩
   by_cases hi : MB.mid k r i
@@ -155,12 +225,18 @@ theorem gen_mem (q : TrE k) : opGen k r q ∈ lieOf (UWb k r) := by
     · rw [gen_out q _ i fun h => tau_not_mid hj h.1, gen_out q _ j fun h => hj h.2]; simp
   · rw [gen_out q _ i fun h => hi h.2, gen_out q _ j fun h => tau_not_mid hi h.1]; simp
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_lieOf_Kw X).1 hX`. Use `((mem_lieOf_UWb X).1 h1).1 (pw k r) j` as an intermediate fact. Rewrite `this` using `[h2, tau_mid (MB.mid_wI _), sgn_pw]`. Simplify using `using this`.
+-/
 theorem row_zero {X : Mat k r} (hX : X ∈ lieOf (Kw k r)) (j : Fin (2 * r + k + 1)) : X (pw k r) j = 0 := by
   obtain ⟨h1, h2⟩ := (mem_lieOf_Kw X).1 hX
   have := ((mem_lieOf_UWb X).1 h1).1 (pw k r) j
   rw [h2, tau_mid (MB.mid_wI _), sgn_pw] at this
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← Fin.sum_univ_castSucc (fun m => f (wI k r m))]`. Conclude with `(Fintype.sum_of_injective (wI k r) (fun _ _ => MB.wI_inj) _ _ (fun i hi => hf i fun h => hi ⟨_, MB.wI_midx h⟩) fun _ => rfl).symm`.
+-/
 theorem sum_mid (f : Fin (2 * r + k + 1) → ℝ) (hf : ∀ i, ¬ MB.mid k r i → f i = 0) :
     ∑ i, f i = ∑ a : Fin k, f (wI k r a.castSucc) + f (pw k r) := by
   rw [← Fin.sum_univ_castSucc (fun m => f (wI k r m))]
@@ -178,12 +254,25 @@ def genE (k r : ℕ) : TrE k →ₗ[ℝ] EuclideanSpace ℝ (Fin (2 * r + k + 1)
     ext ⟨i, j, b⟩
     cases b <;> simp [realifyFun, this]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unrealify_genE (q : TrE k) : unrealify (genE k r q) = opGen k r q := rfl
 
+/- English proof (translation)
+Rewrite using `[opBeta, map_div₀, Complex.normSq_add_mul_I, Complex.normSq_ofReal, Real.mul_self_sqrt (by norm_num), add_comm]`.
+-/
 theorem normSq_beta (q : TrE k) (a : Fin k) :
     Complex.normSq (opBeta k q a) = (q (some (a, true)) ^ 2 + q (some (a, false)) ^ 2) / 2 := by
   rw [opBeta, map_div₀, Complex.normSq_add_mul_I, Complex.normSq_ofReal, Real.mul_self_sqrt (by norm_num), add_comm]
 
+/- English proof (translation)
+Establish `e : ‖genE k r q‖ ^ 2 = ∑ i, ∑ j, Complex.normSq (opGen k r q i j)`. Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `[genE, realifyFun, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ a : Fin k, ∑ j, Complex.normSq (opGen k r q (wI k r a.castSucc) j) = Complex.normSq (opBeta k q a)`. Introduce `a`. Rewrite using `[Finset.sum_eq_single (pw k r) (fun j _ hj => by rw [gen_off q (wc_ne a) hj, map_zero]) (by simp), opGen_y]`.
+
+Rewrite using `[e, sum_mid _ fun i hi => Finset.sum_eq_zero fun j _ => by rw [gen_out q i j fun h => hi h.1, map_zero], sum_mid (fun j => Complex.normSq (opGen k r q (pw k r) j)) fun j hj => by`. Rewrite using `[gen_out q _ j fun h => hj h.2, map_zero],`. Use the proof step `EuclideanSpace.norm_sq_eq, Fintype.sum_option, Fintype.sum_prod_type]`. Simplify using `only [h1, gen_wc, opGen_c, Complex.star_def, Complex.normSq_conj, normSq_beta, Fintype.sum_bool, Real.norm_eq_abs, sq_abs, map_mul, Complex.normSq_I, Complex.normSq_ofReal, ← Finset.sum_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_genE (q : TrE k) : ‖genE k r q‖ ^ 2 = ‖q‖ ^ 2 := by
   have e : ‖genE k r q‖ ^ 2 = ∑ i, ∑ j, Complex.normSq (opGen k r q i j) := by
     rw [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]
@@ -203,6 +292,15 @@ theorem norm_genE (q : TrE k) : ‖genE k r q‖ ^ 2 = ‖q‖ ^ 2 := by
     Real.norm_eq_abs, sq_abs, map_mul, Complex.normSq_I, Complex.normSq_ofReal, ← Finset.sum_div]
   ring
 
+/- English proof (translation)
+Establish `hA` using `(mem_lieE_iff isMatGroup_Kw _).1 A.2`. Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_eq_zero fun ⟨i, j, b⟩ _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = pw k r ∨ j = pw k r`. Establish `h0 : unrealify (A : EuclideanSpace ℝ _) i j = 0`.
+
+Break down `h with rfl | rfl` into its components or cases. Conclude with `row_zero hA j`. Conclude with `((mem_lieOf_Kw _).1 hA).2 i`. Establish `: (A : EuclideanSpace ℝ _) (i, j, b) = 0`. Consider the cases of `b`.
+
+Conclude with `congrArg Complex.re h0`. Conclude with `congrArg Complex.im h0`. Rewrite using `[this, inner_zero_right]`. Rewrite `h` using `[not_or]`. Establish `: genE k r q (i, j, b) = 0`.
+
+Apply the tactic sequence `cases b <;> simp [genE, realifyFun, gen_off q h.1 h.2]`. Rewrite using `[this, inner_zero_left]`.
+-/
 theorem inner_genE (q : TrE k) (A : lieE (Kw k r)) : inner ℝ (genE k r q) (A : EuclideanSpace ℝ _) = 0 := by
   have hA := (mem_lieE_iff isMatGroup_Kw _).1 A.2
   rw [PiLp.inner_apply]
@@ -222,29 +320,58 @@ theorem inner_genE (q : TrE k) (A : lieE (Kw k r)) : inner ℝ (genE k r q) (A :
       cases b <;> simp [genE, realifyFun, gen_off q h.1 h.2]
     rw [this, inner_zero_left]
 
+/- English proof (translation)
+The claim follows from `(mem_lieE_iff isMatGroup_UWb _).2 (gen_mem q)`.
+-/
 theorem genE_mem (q : TrE k) : genE k r q ∈ lieE (UWb k r) := (mem_lieE_iff isMatGroup_UWb _).2 (gen_mem q)
 
+/- English proof (translation)
+Introduce `_ hx` and use `(mem_lieE_iff isMatGroup_UWb _).2 ((mem_lieOf_Kw _).1 ((mem_lieE_iff isMatGroup_Kw _).1 hx)).1`.
+-/
 theorem lieK_le : lieE (Kw k r) ≤ lieE (UWb k r) := fun _ hx =>
   (mem_lieE_iff isMatGroup_UWb _).2 ((mem_lieOf_Kw _).1 ((mem_lieE_iff isMatGroup_Kw _).1 hx)).1
 
 def tang (k r : ℕ) : TrE k × lieE (Kw k r) →ₗ[ℝ] lieE (UWb k r) :=
   ((genE k r).codRestrict _ genE_mem).coprod (Submodule.inclusion lieK_le)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_tang (v : TrE k × lieE (Kw k r)) :
     (tang k r v : EuclideanSpace ℝ _) = genE k r v.1 + (v.2 : EuclideanSpace ℝ _) := rfl
 
+/- English proof (translation)
+Rewrite using `[← Submodule.norm_coe, coe_tang, norm_add_sq_real, inner_genE, norm_genE, Submodule.norm_coe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_tang (v : TrE k × lieE (Kw k r)) : ‖tang k r v‖ ^ 2 = ‖v.1‖ ^ 2 + ‖v.2‖ ^ 2 := by
   rw [← Submodule.norm_coe, coe_tang, norm_add_sq_real, inner_genE, norm_genE, Submodule.norm_coe]
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`.
+-/
 theorem unrealify_sub {m : ℕ} (x y : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     unrealify (x - y) = unrealify x - unrealify y := by
   ext i j; apply Complex.ext <;> simp [unrealify]
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`.
+-/
 theorem unrealify_add {m : ℕ} (x y : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     unrealify (x + y) = unrealify x + unrealify y := by
   ext i j; apply Complex.ext <;> simp [unrealify]
 
+/- English proof (translation)
+Introduce `Y`. Take `⟨h1, h2⟩` from `(mem_lieOf_UWb _).1 ((mem_lieE_iff isMatGroup_UWb _).1 Y.2)`. Use `set M := unrealify (Y : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) with hM`. Set `q : TrE k` to `WithLp.toLp 2 fun o => match o with`. Consider the case `none => (M (pw k r) (pw k r)).im`.
+
+Consider the case `some (a, b) => Real.sqrt 2 * (if b then (M (wI k r a.castSucc) (pw k r)).im else (M (wI k r a.castSucc) (pw k r)).re)`. Establish `hq : ∀ i, M i (pw k r) = opGen k r q i (pw k r)`. Introduce `i`. Distinguish the cases in `hi : MB.mid k r i`. Break down `mid_cases hi with ⟨a, rfl⟩ | rfl` into its components or cases.
+
+Establish `hs : (Real.sqrt 2 : ℂ) ≠ 0` using `by simp`. Rewrite using `[opGen_y, opBeta, eq_div_iff hs]`. Apply the tactic sequence `apply Complex.ext <;> simp [q, mul_comm]`. Use `congrArg Complex.re (h1 (pw k r) (pw k r))` as an intermediate fact. Rewrite `this` using `[tau_mid (MB.mid_wI _), sgn_pw]`.
+
+Rewrite using `[opGen_c]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[q]`.
+
+Rewrite using `[h2 i _ fun h => hi h.1, gen_out q i _ fun h => hi h.1]`. Establish `hA : (Y : EuclideanSpace ℝ _) - genE k r q ∈ lieE (Kw k r)`. Use `(mem_lieE_iff isMatGroup_Kw _).2 ((mem_lieOf_Kw _).2 ⟨(mem_lieE_iff isMatGroup_UWb _).1 (Submodule.sub_mem _ Y.2 (genE_mem q)), fun i => ?_⟩)` and prove the remaining obligations. Rewrite using `[unrealify_sub, unrealify_genE, Matrix.sub_apply, ← hM, hq, sub_self]`. Conclude with `⟨(q, ⟨_, hA⟩), Subtype.ext (by rw [coe_tang]; exact add_sub_cancel _ _)⟩`.
+-/
 theorem tang_surjective : Function.Surjective (tang k r) := by
   intro Y
   obtain ⟨h1, h2⟩ := (mem_lieOf_UWb _).1 ((mem_lieE_iff isMatGroup_UWb _).1 Y.2)
@@ -272,6 +399,11 @@ theorem tang_surjective : Function.Surjective (tang k r) := by
     rw [unrealify_sub, unrealify_genE, Matrix.sub_apply, ← hM, hq, sub_self]
   exact ⟨(q, ⟨_, hA⟩), Subtype.ext (by rw [coe_tang]; exact add_sub_cancel _ _)⟩
 
+/- English proof (translation)
+Set `J : WithLp 2 (A × B) →ₗᵢ[ℝ] D` to `{ toFun := fun p => f (p.fst, p.snd) map_add' := fun p q => by rw [← map_add]; rfl map_smul' := fun c p => by rw [← map_smul]; rfl norm_map' := fun p => by`. Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _), WithLp.prod_norm_sq_eq_of_L2]`. Conclude with `hf _ }`. Establish `hJ : Function.Surjective J` using `fun Y => by`. Take `⟨v, hv⟩` from `hs Y`.
+
+Conclude with `⟨WithLp.toLp 2 v, hv⟩`. Conclude with `⟨fun v w h => WithLp.toLp_injective 2 (J.injective (a₁ := WithLp.toLp 2 v) (a₂ := WithLp.toLp 2 w) h), (LinearIsometryEquiv.ofSurjective _ hJ).measurePreserving.comp (WithLp.volume_preserving_toLp _ _)⟩`.
+-/
 theorem measurePreserving_of_norm {A B D : Type} [NormedAddCommGroup A] [InnerProductSpace ℝ A]
     [FiniteDimensional ℝ A] [MeasurableSpace A] [BorelSpace A] [NormedAddCommGroup B] [InnerProductSpace ℝ B]
     [FiniteDimensional ℝ B] [MeasurableSpace B] [BorelSpace B] [NormedAddCommGroup D] [InnerProductSpace ℝ D]
@@ -291,15 +423,24 @@ theorem measurePreserving_of_norm {A B D : Type} [NormedAddCommGroup A] [InnerPr
   exact ⟨fun v w h => WithLp.toLp_injective 2 (J.injective (a₁ := WithLp.toLp 2 v) (a₂ := WithLp.toLp 2 w) h),
     (LinearIsometryEquiv.ofSurjective _ hJ).measurePreserving.comp (WithLp.volume_preserving_toLp _ _)⟩
 
+/- English proof (translation)
+The claim follows from `(measurePreserving_of_norm _ norm_tang tang_surjective).2`.
+-/
 theorem measurePreserving_tang : MeasurePreserving (tang k r) (volume.prod volume) volume :=
   (measurePreserving_of_norm _ norm_tang tang_surjective).2
 
+/- English proof (translation)
+The claim follows from `(measurePreserving_of_norm _ norm_tang tang_surjective).1`.
+-/
 theorem tang_injective : Function.Injective (tang k r) :=
   (measurePreserving_of_norm _ norm_tang tang_surjective).1
 
 def tangEquiv (k r : ℕ) : (TrE k × lieE (Kw k r)) ≃L[ℝ] lieE (UWb k r) :=
   (LinearEquiv.ofBijective _ ⟨tang_injective, tang_surjective⟩).toContinuousLinearEquiv
 
+/- English proof (translation)
+Establish `ho : IsOpen (tangEquiv k r '' Metric.ball 0 ρ)` using `(tangEquiv k r).toHomeomorph.isOpenMap _ Metric.isOpen_ball`. Establish `hp : tang k r ⁻¹' (tangEquiv k r '' Metric.ball 0 ρ) = Metric.ball 0 ρ` using `Set.preimage_image_eq _ (tangEquiv k r).injective`. Rewrite using `[← measurePreserving_tang.measure_preimage ho.measurableSet.nullMeasurableSet, hp, ← Measure.prod_prod, ball_prod_same]`. Both sides reduce to the same expression.
+-/
 theorem volume_tang_ball (ρ : ℝ) : volume (tangEquiv k r '' Metric.ball 0 ρ) =
     volume (Metric.ball (0 : TrE k) ρ) * volume (Metric.ball (0 : lieE (Kw k r)) ρ) := by
   have ho : IsOpen (tangEquiv k r '' Metric.ball 0 ρ) := (tangEquiv k r).toHomeomorph.isOpenMap _ Metric.isOpen_ball
@@ -312,12 +453,21 @@ theorem volume_tang_ball (ρ : ℝ) : volume (tangEquiv k r '' Metric.ball 0 ρ)
 def chart (k r : ℕ) (v : TrE k × lieE (Kw k r)) : Mat k r :=
   NormedSpace.exp (opGen k r v.1) * NormedSpace.exp (unrealify (v.2 : EuclideanSpace ℝ _))
 
+/- English proof (translation)
+The claim follows from `exp_mem ((mem_lieE_iff isMatGroup_Kw _).1 A.2)`.
+-/
 theorem expK_mem (A : lieE (Kw k r)) : NormedSpace.exp (unrealify (A : EuclideanSpace ℝ _)) ∈ Kw k r :=
   exp_mem ((mem_lieE_iff isMatGroup_Kw _).1 A.2)
 
+/- English proof (translation)
+The claim follows from `HU.uwb_mul (exp_mem (gen_mem _)) (mem_Kw.1 (expK_mem _)).1`.
+-/
 theorem chart_mem (v : TrE k × lieE (Kw k r)) : chart k r v ∈ UWb k r :=
   HU.uwb_mul (exp_mem (gen_mem _)) (mem_Kw.1 (expK_mem _)).1
 
+/- English proof (translation)
+Use `((GlobalTheory.ChartDensity.hasStrict_exp (J.comp (ContinuousLinearMap.fst ℝ E F))).mul' (GlobalTheory.ChartDensity.hasStrict_exp (J'.comp (ContinuousLinearMap.snd ℝ E F)))).congr_fderiv ?_` and prove the remaining obligations. Apply the tactic sequence `ext v <;> simp`.
+-/
 theorem strict_prod {A E F : Type} [NormedRing A] [NormedAlgebra ℝ A] [CompleteSpace A] [NormedAddCommGroup E]
     [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] (J : E →L[ℝ] A) (J' : F →L[ℝ] A) :
     HasStrictFDerivAt (fun v : E × F => NormedSpace.exp (J v.1) * NormedSpace.exp (J' v.2)) (J.coprod J') 0 := by
@@ -326,6 +476,11 @@ theorem strict_prod {A E F : Type} [NormedRing A] [NormedAlgebra ℝ A] [Complet
   ext v <;> simp
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Set `J : TrE k →L[ℝ] Mat k r` to `LinearMap.toContinuousLinearMap (opGenLin k r)`. Set `J' : lieE (Kw k r) →L[ℝ] Mat k r` to `LinearMap.toContinuousLinearMap (GlobalTheory.ChartDensity.lieIncl (Kw k r))`. Set `T : Mat k r →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Use `⟨T.comp (J.coprod J'), T.hasStrictFDerivAt.comp 0 (strict_prod J J'), fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = unrealify (tang k r v : EuclideanSpace ℝ _) i j`.
+
+Rewrite using `[coe_tang, unrealify_add]`. Both sides reduce to the same expression.
+-/
 theorem chart_strict (i j : Fin (2 * r + k + 1)) : ∃ D : (TrE k × lieE (Kw k r)) →L[ℝ] ℂ,
     HasStrictFDerivAt (fun x => chart k r x i j) D 0 ∧
       ∀ v, D v = unrealify ((tangEquiv k r v : lieE (UWb k r)) : EuclideanSpace ℝ _) i j := by
@@ -337,16 +492,29 @@ theorem chart_strict (i j : Fin (2 * r + k + 1)) : ∃ D : (TrE k × lieE (Kw k 
   rw [coe_tang, unrealify_add]
   rfl
 
+/- English proof (translation)
+Establish `h : unrealify (0 : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) = 0` using `rfl`. Simplify using `[chart, opGen_zero, h]`.
+-/
 theorem chart_zero : chart k r 0 = 1 := by
   have h : unrealify (0 : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) = 0 := rfl
   simp [chart, opGen_zero, h]
 
+/- English proof (translation)
+Establish `hexp : Continuous (fun A : Mat k r => NormedSpace.exp A)` using `by open scoped Norms.Operator in exact NormedSpace.exp_continuous`. Conclude with `Continuous.matrix_mul (hexp.comp ((continuous_opGen k r).comp continuous_fst)) ((continuous_expChart k r (Kw k r)).comp continuous_snd)`.
+-/
 theorem chart_cont : Continuous fun v => (Matrix.of.symm (chart k r v) : Mt k r) := by
   have hexp : Continuous (fun A : Mat k r => NormedSpace.exp A) := by
     open scoped Norms.Operator in exact NormedSpace.exp_continuous
   exact Continuous.matrix_mul (hexp.comp ((continuous_opGen k r).comp continuous_fst))
     ((continuous_expChart k r (Kw k r)).comp continuous_snd)
 
+/- English proof (translation)
+Establish `e : Metric.ball (0 : E) ρ = ⋃ n : ℕ, Metric.closedBall 0 (ρ - 1 / ((n : ℝ) + 1))`. Use extensionality with `x`. Simplify using `only [Metric.mem_ball, Metric.mem_closedBall, Set.mem_iUnion, dist_zero_right]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨n, hn⟩` from `exists_nat_one_div_lt (sub_pos.2 hx)`. Conclude with `⟨n, by linarith⟩`. Introduce and unpack `⟨n, hn⟩`. Establish `: 0 < 1 / ((n : ℝ) + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[e, Set.image_iUnion]`. Conclude with `MeasurableSet.iUnion fun n => ((isCompact_closedBall _ _).image hf).isClosed.measurableSet`.
+-/
 theorem measurableSet_image_ball {E X : Type} [NormedAddCommGroup E] [ProperSpace E] [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] {f : E → X} (hf : Continuous f) (ρ : ℝ) :
     MeasurableSet (f '' Metric.ball 0 ρ) := by
@@ -363,6 +531,11 @@ theorem measurableSet_image_ball {E X : Type} [NormedAddCommGroup E] [ProperSpac
   rw [e, Set.image_iUnion]
   exact MeasurableSet.iUnion fun n => ((isCompact_closedBall _ _).image hf).isClosed.measurableSet
 
+/- English proof (translation)
+Establish `h1` using `(ENNReal.continuous_ofReal.tendsto 1).comp h.2`. Rewrite `h1` using `[ENNReal.ofReal_one]`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [h.2.eventually (lt_mem_nhds one_pos), self_mem_nhdsWithin] with ρ hρ hρ0`. Establish `ht : ν (expBall (k` using `k) (r := r) S ρ) ≠ ⊤ := fun e => by simp [e] at hρ`.
+
+Establish `hv : volume (Metric.ball (0 : lieE S) ρ) ≠ 0` using `(Metric.measure_ball_pos _ _ hρ0).ne'`. Simplify using `only [Function.comp, sVol]`. Rewrite using `[← ENNReal.toReal_div, ENNReal.ofReal_toReal (ENNReal.div_ne_top ht hv)]`. Both sides reduce to the same expression.
+-/
 theorem hasDens_of_gauge {S : Set (Mat k r)} {ν : Measure (Mt k r)} (h : IsGaugeOn k r S ν) :
     GlobalTheory.Amp.HasDens S ν 1 := by
   have h1 := (ENNReal.continuous_ofReal.tendsto 1).comp h.2
@@ -375,6 +548,11 @@ theorem hasDens_of_gauge {S : Set (Mat k r)} {ν : Measure (Mt k r)} (h : IsGaug
   rw [← ENNReal.toReal_div, ENNReal.ofReal_toReal (ENNReal.div_ne_top ht hv)]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.ChartDensity.density_in_chart _ (UWb k r) ν 1 isMatGroup_UWb h.1 (hasDens_of_gauge h) (TrE k × lieE (Kw k r)) (chart k r) (tangEquiv k r) chart_zero (Eventually.of_forall chart_mem) chart_strict`. Use `((ENNReal.tendsto_toReal ENNReal.one_ne_top).comp h1).congr fun ρ => ?_` and prove the remaining obligations. Establish `e` using `volume_tang_ball (k := k) (r := r) ρ`. Simplify using `only [Function.comp, tVol, sVol]`. Rewrite using `[← ENNReal.toReal_mul, ← e, ENNReal.toReal_div]`.
+
+Both sides reduce to the same expression.
+-/
 theorem box_lim {ν : Measure (Mt k r)} (h : IsGaugeOn k r (UWb k r) ν) :
     Tendsto (fun ρ : ℝ => (ν ((fun v => Matrix.of.symm (chart k r v)) '' Metric.ball 0 ρ)).toReal /
       (tVol k ρ * sVol k r (Kw k r) ρ)) (𝓝[>] 0) (𝓝 1) := by
@@ -386,6 +564,13 @@ theorem box_lim {ν : Measure (Mt k r)} (h : IsGaugeOn k r (UWb k r) ν) :
   rw [← ENNReal.toReal_mul, ← e, ENNReal.toReal_div]
   rfl
 
+/- English proof (translation)
+Establish `hs : (Real.sqrt T' : ℂ) ≠ 0` using `by rw [Complex.ofReal_ne_zero]; positivity`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`. Rewrite using `[wLast, MB.mulVec_bvec, MB.mulVec_bvec]`.
+
+Distinguish the cases in `hi : MB.mid k r i`. Use `mul_left_cancel₀ hs ?_` and prove the remaining obligations. Rewrite using `[← mulVec_base, ← mulVec_base]`. Break down `mid_cases hi with ⟨a, rfl⟩ | rfl` into its components or cases. Conclude with `congrFun (congrArg Prod.fst h) a`.
+
+Conclude with `congrArg Prod.snd h`. Rewrite using `[op_uwb_row hg i _ hi, op_uwb_row hg' i _ hi]`. Introduce `h`. Rewrite using `[opBase, Matrix.mulVec_smul, Matrix.mulVec_smul, h]`.
+-/
 theorem orb_eq_iff {T' : ℝ} (hT : 0 < T') {g g' : Mat k r} (hg : g ∈ UWb k r) (hg' : g' ∈ UWb k r) :
     opCo k r (g *ᵥ opBase k r T') = opCo k r (g' *ᵥ opBase k r T') ↔ g *ᵥ wLast k r = g' *ᵥ wLast k r := by
   have hs : (Real.sqrt T' : ℂ) ≠ 0 := by rw [Complex.ofReal_ne_zero]; positivity
@@ -403,6 +588,9 @@ theorem orb_eq_iff {T' : ℝ} (hT : 0 < T') {g g' : Mat k r} (hg : g ∈ UWb k r
   · intro h
     rw [opBase, Matrix.mulVec_smul, Matrix.mulVec_smul, h]
 
+/- English proof (translation)
+Establish `hd : (DL k T').det ≠ 0` using `by rw [DL_det T' hT]; positivity`. Establish `h : HasStrictFDerivAt (phiT k r T') ((DL k T').toContinuousLinearEquivOfDetNeZero hd : TrE k →L[ℝ] TrE k) 0` using `phiT_strict T' hT`. Take `⟨ε, hε, H⟩` from `Metric.eventually_nhds_iff_ball.1 h.eventually_left_inverse`. Use `⟨ε, hε, fun x hx y hy e => ?_⟩` and prove the remaining obligations. Rewrite using `[← H x hx, ← H y hy, phiT, phiT, e]`.
+-/
 theorem psi_injOn {T' : ℝ} (hT : 0 < T') : ∃ ε > 0, Set.InjOn (psiE k r T') (Metric.ball 0 ε) := by
   have hd : (DL k T').det ≠ 0 := by rw [DL_det T' hT]; positivity
   have h : HasStrictFDerivAt (phiT k r T') ((DL k T').toContinuousLinearEquivOfDetNeZero hd : TrE k →L[ℝ] TrE k) 0 :=
@@ -411,6 +599,21 @@ theorem psi_injOn {T' : ℝ} (hT : 0 < T') : ∃ ε > 0, Set.InjOn (psiE k r T')
   refine ⟨ε, hε, fun x hx y hy e => ?_⟩
   rw [← H x hx, ← H y hy, phiT, phiT, e]
 
+/- English proof (translation)
+Use `hg.1.1` as an intermediate fact. Use `hK.1` as an intermediate fact. Establish `key : ∀ (g h : Mat k r) (v : TrE k × lieE (Kw k r)), g ∈ UWb k r → h ∈ Kw k r → chart k r v = g * h → psiE k r T' v.1 = opCo k r (g *ᵥ opBase k r T')`. Introduce `g h v hg hh e`. Use `(orb_eq_iff hT (exp_mem (gen_mem _)) hg).2 ?_` and prove the remaining obligations.
+
+Use `congrArg (· *ᵥ wLast k r) e` as an intermediate fact. Simplify `this` using `only [chart, ← Matrix.mulVec_mulVec, (expK_mem _).2.2, hh.2.2]`. Use `tube_identity (UWb k r) (Kw k r) νg νK hg.1.2.2.1 hK.2.2.1 (fun p hp => unimodW k r νg hk hg p (mem_Kw.1 hp).1) hK.2.2.2 ((continuous_opOrb T').measurable (opEMeas k r T' ρ)) (measurableSet_image_ball chart_cont ρ) (measurableSet_expBall k r _ ρ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `g hgG ⟨q, hq, e⟩`. Establish `ha : NormedSpace.exp (opGen k r q) ∈ UWb k r` using `exp_mem (gen_mem q)`.
+
+Establish `hu` using `HU.uwb_unit ha`. Establish `e'` using `(orb_eq_iff hT ha hgG).1 e`. Use `⟨(NormedSpace.exp (opGen k r q))⁻¹ * Matrix.of g, mem_Kw.2 ⟨HU.uwb_mul (HU.uwb_inv ha) hgG, ?_⟩, fun h hh => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← e', Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`. Introduce and unpack `⟨v, hv, ev⟩`.
+
+Establish `ev' : chart k r v = Matrix.of g * Matrix.of h` using `ev`. Rewrite `hv` using `[mem_ball_zero_iff, Prod.norm_def, max_lt_iff]`. Establish `hvq : v.1 = q` using `hi (mem_ball_zero_iff.2 hv.1) hq ((key _ _ v hgG hh ev').trans e.symm)`. Use `⟨v.2, mem_ball_zero_iff.2 hv.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `NormedSpace.exp (unrealify (v.2 : EuclideanSpace ℝ _)) = (NormedSpace.exp (opGen k r q))⁻¹ * Matrix.of g * Matrix.of h`.
+
+Rewrite using `[Matrix.mul_assoc, ← ev', chart, hvq, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`. Introduce and unpack `⟨A, hA, eA⟩`. Establish `eA' : NormedSpace.exp (unrealify (A : EuclideanSpace ℝ _)) = (NormedSpace.exp (opGen k r q))⁻¹ * Matrix.of g * Matrix.of h` using `eA`. Use `⟨(q, A), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, Prod.norm_def, max_lt_iff]`.
+
+Conclude with `⟨mem_ball_zero_iff.1 hq, mem_ball_zero_iff.1 hA⟩`. Express the relevant statement in the definitionally equal form `chart k r (q, A) = Matrix.of g * Matrix.of h`. Rewrite using `[chart, eA', Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Introduce and unpack `g hgG hn h hh ⟨v, hv, ev⟩`. Rewrite `hv` using `[mem_ball_zero_iff, Prod.norm_def, max_lt_iff]`.
+
+Conclude with `hn ⟨v.1, mem_ball_zero_iff.2 hv.1, key _ _ v hgG hh ev⟩`.
+-/
 theorem tube_eq {T' : ℝ} (hT : 0 < T') {νg νK : Measure (Mt k r)} (hk : 1 ≤ k) (hg : IsGaugeOn k r (UWb k r) νg)
     (hK : IsHaarOn (Kw k r) νK) {ρ : ℝ} (hi : Set.InjOn (psiE k r T') (Metric.ball 0 ρ)) :
     νK Set.univ * νg ((fun v => Matrix.of.symm (chart k r v)) '' Metric.ball 0 ρ) =
@@ -454,6 +657,13 @@ theorem tube_eq {T' : ℝ} (hT : 0 < T') {νg νK : Measure (Mt k r)} (hk : 1 �
     rw [mem_ball_zero_iff, Prod.norm_def, max_lt_iff] at hv
     exact hn ⟨v.1, mem_ball_zero_iff.2 hv.1, key _ _ v hgG hh ev⟩
 
+/- English proof (translation)
+Introduce `k r T' hk hT νg νK hg hK`. Take `⟨ε, hε, hi⟩` from `psi_injOn (k := k) (r := r) hT`. Establish `h` using `((box_lim hg).div hK.2 one_ne_zero).const_mul (νK Set.univ).toReal`. Rewrite `h` using `[div_one, mul_one]`. Use `h.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Ioo_mem_nhdsGT hε, hK.2.eventually (lt_mem_nhds one_pos)] with ρ hρ hc`. Establish `e` using `congrArg ENNReal.toReal (tube_eq hT hk hg hK.1 (hi.mono (Metric.ball_subset_ball hρ.2.le)))`. Rewrite `e` using `[ENNReal.toReal_mul, ENNReal.toReal_mul]`. Establish `ht : 0 < tVol k ρ` using `ENNReal.toReal_pos (Metric.measure_ball_pos _ _ hρ.1).ne' measure_ball_lt_top.ne`. Establish `hs : 0 < sVol k r (Kw k r) ρ` using `ENNReal.toReal_pos (Metric.measure_ball_pos _ _ hρ.1).ne' measure_ball_lt_top.ne`.
+
+Establish `hc'` using `(div_pos_iff_of_pos_right hs).1 hc`. Simplify using `only [Pi.div_apply]`. Clear the denominators using the available nonvanishing facts. Conclude with `e`.
+-/
 theorem tubeLimK : PI.RhsWLim.W.TubeLimK := by
   intro k r T' hk hT νg νK hg hK
   obtain ⟨ε, hε, hi⟩ := psi_injOn (k := k) (r := r) hT

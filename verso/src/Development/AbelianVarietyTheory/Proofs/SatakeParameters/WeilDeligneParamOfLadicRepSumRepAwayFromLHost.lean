@@ -26,10 +26,16 @@ def blk : Matrix (Fin a) (Fin a) k × Matrix (Fin b) (Fin b) k →+*
 
 variable {k a b}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_apply (p : Matrix (Fin a) (Fin a) k × Matrix (Fin b) (Fin b) k) :
     blk k a b p = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks p.1 0 0 p.2) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[blk_apply, blk_apply]`. Use extensionality with `i j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.smul_apply, Prod.smul_fst, Prod.smul_snd]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp`.
+-/
 theorem blk_smul (c : k) (p : Matrix (Fin a) (Fin a) k × Matrix (Fin b) (Fin b) k) :
     blk k a b (c • p) = c • blk k a b p := by
   rw [blk_apply, blk_apply]
@@ -38,6 +44,9 @@ theorem blk_smul (c : k) (p : Matrix (Fin a) (Fin a) k × Matrix (Fin b) (Fin b)
     Prod.smul_snd]
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sumRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (ρ' : Γ →* GL (Fin b) k) (g : Γ) :
     ((Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ' g : GL (Fin (a + b)) k) : Matrix (Fin (a + b)) (Fin (a + b)) k) =
       blk k a b ((ρ g : Matrix (Fin a) (Fin a) k), (ρ' g : Matrix (Fin b) (Fin b) k)) :=
@@ -45,12 +54,18 @@ theorem coe_sumRep {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin a) k) (ρ' : Γ 
 
 end Blocks
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hx`. Take `⟨n, hn⟩` from `hy`. Conclude with `⟨m + n, Prod.ext (by simp [pow_add, hm]) (by simp [pow_add, hn])⟩`.
+-/
 theorem isNilpotent_pair {R S : Type*} [MonoidWithZero R] [MonoidWithZero S] {x : R} {y : S}
     (hx : IsNilpotent x) (hy : IsNilpotent y) : IsNilpotent (x, y) := by
   obtain ⟨m, hm⟩ := hx
   obtain ⟨n, hn⟩ := hy
   exact ⟨m + n, Prod.ext (by simp [pow_add, hm]) (by simp [pow_add, hn])⟩
 
+/- English proof (translation)
+Establish `hp` using `isNilpotent_pair hx hy`. Conclude with `Prod.ext (map_exp hp (RingHom.fst R S)) (map_exp hp (RingHom.snd R S))`.
+-/
 theorem exp_pair {R S : Type*} [Ring R] [Ring S] [Module ℚ R] [Module ℚ S] {x : R} {y : S}
     (hx : IsNilpotent x) (hy : IsNilpotent y) : exp (x, y) = (exp x, exp y) := by
   have hp := isNilpotent_pair hx hy
@@ -60,6 +75,11 @@ def eqv (a b : ℕ) : ((Fin a → ℂ) × (Fin b → ℂ)) ≃ₗ[ℂ] (Fin (a +
   (LinearEquiv.sumArrowLequivProdArrow (Fin a) (Fin b) ℂ ℂ).symm.trans
     (LinearEquiv.funCongrLeft ℂ ℂ finSumFinEquiv.symm)
 
+/- English proof (translation)
+Take `⟨v1, v2⟩` from `v`. Use function extensionality and compare the values at `i`. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [eqv, LinearEquiv.trans_apply, toEndC_apply, blk_apply, Matrix.reindex_apply, Matrix.toLin'_apply, LinearMap.prodMap_apply, LinearEquiv.funCongrLeft_apply]`. Rewrite using `[← Matrix.submatrix_map, Matrix.submatrix_mulVec_equiv]`.
+
+Apply the tactic sequence `rcases k with k | k <;> simp [Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec, Function.comp_def, LinearEquiv.sumArrowLequivProdArrow_symm_apply_inl, LinearEquiv.sumArrowLequivProdArrow_symm_apply_inr]`.
+-/
 theorem eqv_toEndC {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a b : ℕ}
     (M : Matrix (Fin a) (Fin a) (Qbar l)) (M' : Matrix (Fin b) (Fin b) (Qbar l))
     (v : (Fin a → ℂ) × (Fin b → ℂ)) :
@@ -77,6 +97,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 variable {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 variable {l : ℕ} [Fact l.Prime] {a b : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, U, hU, H⟩` from `hN`. Take `⟨h1', U', hU', H'⟩` from `hN'`. Establish `hp` using `isNilpotent_pair h1 h1'`. Use `⟨hp.map _, U ⊓ U', hU.inter hU', fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_sumRep, H σ hσ.1, H' σ hσ.2, ← blk_smul, ← map_exp (hp.smul _), Prod.smul_mk, exp_pair (h1.smul _) (h1'.smul _)]`.
+-/
 theorem isMonodromy_sum {t : Ine (F := E) A →* Multiplicative ℤ_[l]}
     {ρ : G E Ω →* GL (Fin a) (Qbar l)} {ρ' : G E Ω →* GL (Fin b) (Qbar l)}
     {N : Matrix (Fin a) (Fin a) (Qbar l)} {N' : Matrix (Fin b) (Fin b) (Qbar l)}
@@ -89,6 +112,9 @@ theorem isMonodromy_sum {t : Ine (F := E) A →* Multiplicative ℤ_[l]}
   rw [coe_sumRep, H σ hσ.1, H' σ hσ.2, ← blk_smul, ← map_exp (hp.smul _), Prod.smul_mk,
     exp_pair (h1.smul _) (h1'.smul _)]
 
+/- English proof (translation)
+Establish `hp` using `isNilpotent_pair h1 h1'`. Rewrite using `[wdMat, wdMat, wdMat, coe_sumRep, ← blk_smul, ← map_exp (hp.smul _), ← map_mul, Prod.smul_mk, exp_pair (h1.smul _) (h1'.smul _)]`. Both sides reduce to the same expression.
+-/
 theorem wdMat_sum {t : Ine (F := E) A →* Multiplicative ℤ_[l]} {φ : Weil h} (hφ : deg φ = 1)
     {ρ : G E Ω →* GL (Fin a) (Qbar l)} {ρ' : G E Ω →* GL (Fin b) (Qbar l)}
     {N : Matrix (Fin a) (Fin a) (Qbar l)} {N' : Matrix (Fin b) (Fin b) (Qbar l)}
@@ -100,6 +126,13 @@ theorem wdMat_sum {t : Ine (F := E) A →* Multiplicative ℤ_[l]} {φ : Weil h}
     exp_pair (h1.smul _) (h1'.smul _)]
   rfl
 
+/- English proof (translation)
+Use `⟨by rw [WDRep.sum_N, hx.1, hy.1], fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[WDRep.sum_ρ]`. Establish `hc : Commute ((x.ρ g, y.ρ g) : Module.End ℂ V × Module.End ℂ V') (ρ₁ g, ρ₂ g)` using `Prod.ext (hx.2 g).1.eq (hy.2 g).1.eq`. Conclude with `hc.map (LinearMap.prodMapRingHom ℂ V V')`. Rewrite using `[WDRep.sum_ρ]`.
+
+Establish `hn` using `(isNilpotent_pair (hx.2 g).2 (hy.2 g).2).map (LinearMap.prodMapRingHom ℂ V V')`. Establish `e : (ρ₁ g).prodMap (ρ₂ g) - (x.ρ g).prodMap (y.ρ g) = LinearMap.prodMapRingHom ℂ V V' (ρ₁ g - x.ρ g, ρ₂ g - y.ρ g)`. Rewrite using `[← Prod.mk_sub_mk, map_sub]`. Both sides reduce to the same expression. Use `show IsNilpotent ((ρ₁ g).prodMap (ρ₂ g) - (x.ρ g).prodMap (y.ρ g))`.
+
+Rewrite using `[e]`. Conclude with `hn`.
+-/
 theorem isFrobSS_sum {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
     {ρ₁ : Weil h → Module.End ℂ V} {N₁ : Module.End ℂ V} {x : WDRep h V}
@@ -119,6 +152,13 @@ theorem isFrobSS_sum {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimens
     show IsNilpotent ((ρ₁ g).prodMap (ρ₂ g) - (x.ρ g).prodMap (y.ρ g))
     rw [e]; exact hn
 
+/- English proof (translation)
+Establish `ht` using `isTameChar_tameL h hl`. Take `⟨N, hN⟩` from `exists_isMonodromy h hl ht hc`. Take `⟨N', hN'⟩` from `exists_isMonodromy h hl ht hc'`. Establish `hS` using `isMonodromy_sum hN hN'`. Take `⟨x, hx⟩` from `hN.exists_isFrobSS hl ht (deg_frob (h := h)) ι`.
+
+Take `⟨y, hy⟩` from `hN'.exists_isFrobSS hl ht (deg_frob (h := h)) ι`. Take `⟨z, hz⟩` from `hS.exists_isFrobSS hl ht (deg_frob (h := h)) ι`. Rewrite using `[IsWDOf.wdOf_eq hl ⟨_, ht, _, deg_frob, N, x, hN, hx, rfl⟩, IsWDOf.wdOf_eq hl ⟨_, ht, _, deg_frob, N', y, hN', hy, rfl⟩, IsWDOf.wdOf_eq hl ⟨_, ht, _, deg_frob, _, z, hS, hz, rfl⟩, WD.lpSum_mk]`. Use `(WD.sound ((isFrobSS_sum hx hy).iso hz (eqv a b) (fun g v => ?_) fun v => ?_)).symm` and prove the remaining obligations. Rewrite using `[wdMat_sum deg_frob hN.1 hN'.1]`.
+
+Conclude with `eqv_toEndC ι _ _ v`. Conclude with `eqv_toEndC ι _ _ v`.
+-/
 theorem wdOf_sumRep (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (ι : Qbar l ≃+* ℂ)
     (ρ : G E Ω →* GL (Fin a) (Qbar l)) (ρ' : G E Ω →* GL (Fin b) (Qbar l))
     (hc : Continuous fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)))
@@ -145,6 +185,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open Formalism.BasicNotions.Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `D l _ ι a b ρ ρ' w hw hc hc'` and use `GlobalTheory.WeilDeligne.SumParam.wdOf_sumRep (h := D.nd.plOm.2 w) hw ι ρ ρ' hc hc'`.
+-/
 theorem GlobalTheory.WeilDeligne.wdOf_sumRep_awayFrom : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a b : ℕ) (ρ : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) (ρ' : G D.host.E D.nd.Om →* GL (Fin b) (Qbar l)) (w : PlE D.host) (hw : ((l : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal), Continuous (fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) → Continuous (fun g => ((ρ' g : GL (Fin b) (Qbar l)) : Matrix (Fin b) (Fin b) (Qbar l))) → GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι (Formalism.MainNotions.SumRepresentations.At.sumRep ρ ρ') = (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι ρ).lpSum (GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι ρ') :=
   fun D l _ ι a b ρ ρ' w hw hc hc' =>
     GlobalTheory.WeilDeligne.SumParam.wdOf_sumRep (h := D.nd.plOm.2 w) hw ι ρ ρ' hc hc'

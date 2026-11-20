@@ -20,6 +20,15 @@ open GlobalTheory.SiegelRingChange GlobalTheory.SiegelPullComp
 
 variable {o : Type} [CommRing o] {S : Scheme.{0}} {g h k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o}
 
+/- English proof (translation)
+Introduce `x`. Take `⟨y, hy⟩` from `S.affineCover.covers x`. Establish `hcomp : Flat (S.affineCover.f (S.affineCover.idx x) ≫ s)` using `MorphismProperty.comp_mem _ _ _ inferInstance ‹Flat s›`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (S.affineCover.f (S.affineCover.idx x) ≫ s)`. Establish `hfl : φ.hom.Flat`.
+
+Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Flat), hφ]`. Conclude with `hcomp`. Establish `hsp : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum o) ⤳ PrimeSpectrum.comap φ.hom y` using `(PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal o) ≤ _ from bot_le)`. Take `⟨y', hy'1, hy'2⟩` from `RingHom.Flat.generalizingMap_comap hfl hsp`. Establish `hφy` using `congrArg (fun m => (m y').asIdeal) hφ`.
+
+Establish `hmem : S.affineCover.f (S.affineCover.idx x) y' ∈ {x : S | (s x).asIdeal = ⊥}`. Express the relevant statement in the definitionally equal form `((S.affineCover.f (S.affineCover.idx x) ≫ s) y').asIdeal = ⊥`. Use `Eq.trans ?_ (congrArg PrimeSpectrum.asIdeal hy'2)` and prove the remaining obligations. Conclude with `hφy.symm`. Establish `h₁ : S.affineCover.f (S.affineCover.idx x) y' ⤳ S.affineCover.f (S.affineCover.idx x) y` using `hy'1.map (S.affineCover.f (S.affineCover.idx x)).continuous`.
+
+Establish `h₂ : S.affineCover.f (S.affineCover.idx x) y ⤳ x` using `by rw [hy]`. Conclude with `(h₁.trans h₂).mem_closed isClosed_closure (subset_closure hmem)`.
+-/
 theorem dense_generic_of_flat [IsDomain o] (s : S ⟶ Sp o) [Flat s] : Dense {x : S | (s x).asIdeal = ⊥} := by
   intro x
   obtain ⟨y, hy⟩ := S.affineCover.covers x
@@ -42,6 +51,9 @@ theorem dense_generic_of_flat [IsDomain o] (s : S ⟶ Sp o) [Flat s] : Dense {x 
   have h₂ : S.affineCover.f (S.affineCover.idx x) y ⤳ x := by rw [hy]
   exact (h₁.trans h₂).mem_closed isClosed_closure (subset_closure hmem)
 
+/- English proof (translation)
+Introduce `x`. Establish `hη : (show ↥(Sp O) from (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O)) ⤳ x` using `(PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal O) ≤ x.asIdeal from bot_le)`. Use `hη.mem_closed isClosed_closure (subset_closure ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(PrimeSpectrum.comap β ⟨⊥, Ideal.isPrime_bot⟩).asIdeal = ⊥`. Conclude with `Ideal.comap_bot_of_injective β hβ`.
+-/
 theorem dense_generic_spMap {O : Type} [CommRing O] [IsDomain O] (β : o →+* O) (hβ : Function.Injective β) :
     Dense {x : Sp O | (spMap β x).asIdeal = ⊥} := by
   intro x
@@ -54,6 +66,9 @@ theorem dense_generic_spMap {O : Type} [CommRing O] [IsDomain O] (β : o →+* O
 namespace SFam
 variable {ζ : o}
 
+/- English proof (translation)
+Apply `hom_ext_of_fromSpecStalk` to reduce the goal to its premises. Introduce `x`. Take `⟨c', hc'⟩` from `(siegPre_pullback h k o ζ S (Spec (S.presheaf.stalk x)) s' (S.fromSpecStalk x ≫ s') (S.fromSpecStalk x) c rfl).1`. Conclude with `F.inj (S.presheaf.stalk x) _ _ _ c' (by simp only [Category.assoc, hs]) (pb_comp h₁ hc') (pb_comp h₂ hc')`.
+-/
 theorem hom_ext (F : SFam h k ζ) {s' : S ⟶ Sp o} (c : SiegPre h k ζ s') (f f' : S ⟶ F.X)
     (hs : f ≫ F.s = f' ≫ F.s) (h₁ : SiegPB c F.univ f) (h₂ : SiegPB c F.univ f') : f = f' := by
   apply hom_ext_of_fromSpecStalk
@@ -62,28 +77,45 @@ theorem hom_ext (F : SFam h k ζ) {s' : S ⟶ Sp o} (c : SiegPre h k ζ s') (f f
     (S.fromSpecStalk x) c rfl).1
   exact F.inj (S.presheaf.stalk x) _ _ _ c' (by simp only [Category.assoc, hs]) (pb_comp h₁ hc') (pb_comp h₂ hc')
 
+/- English proof (translation)
+Take `⟨f, hf, hpb⟩` from `F.rep S s' c hr hd hc`. Conclude with `⟨f, ⟨hf, hpb⟩, fun f' hf' => F.hom_ext c f' f (hf'.1.trans hf.symm) hf'.2 hpb⟩`.
+-/
 theorem existsUnique (F : SFam h k ζ) {s' : S ⟶ Sp o} (c : SiegPre h k ζ s') (hr : IsReduced S)
     (hd : Dense {x : S | (s' x).asIdeal = ⊥}) (hc : c.Principal) :
     ∃! f : S ⟶ F.X, f ≫ F.s = s' ∧ SiegPB c F.univ f := by
   obtain ⟨f, hf, hpb⟩ := F.rep S s' c hr hd hc
   exact ⟨f, ⟨hf, hpb⟩, fun f' hf' => F.hom_ext c f' f (hf'.1.trans hf.symm) hf'.2 hpb⟩
 
+/- English proof (translation)
+Take `⟨f, hf, hpb⟩` from `F.rep (Sp O) (spMap β) c inferInstance (dense_generic_spMap β hβ) hc`. Conclude with `⟨f, hf, hpb⟩`.
+-/
 theorem exists_point (F : SFam h k ζ) {O : Type} [CommRing O] [IsDomain O] (β : o →+* O) (hβ : Function.Injective β)
     (c : SiegPre h k ζ (spMap β)) (hc : c.Principal) : ∃ x : Sp O ⟶ F.X, x ≫ F.s = spMap β ∧ SiegPB c F.univ x := by
   obtain ⟨f, hf, hpb⟩ := F.rep (Sp O) (spMap β) c inferInstance (dense_generic_spMap β hβ) hc
   exact ⟨f, hf, hpb⟩
 
+/- English proof (translation)
+Take `⟨x, -, -⟩` from `F.exists_point β hβ c hc`. Conclude with `⟨x (show ↥(Sp O) from (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O))⟩`.
+-/
 theorem nonempty (F : SFam h k ζ) {O : Type} [CommRing O] [IsDomain O] (β : o →+* O) (hβ : Function.Injective β)
     (c : SiegPre h k ζ (spMap β)) (hc : c.Principal) : Nonempty F.X := by
   obtain ⟨x, -, -⟩ := F.exists_point β hβ c hc
   exact ⟨x (show ↥(Sp O) from (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O))⟩
 
+/- English proof (translation)
+Use `F.smooth` as an intermediate fact. Establish `: Smooth F.s` using `SmoothOfRelativeDimension.smooth (n := h * (h + 1) / 2) (f := F.s)`. Establish `: IsReduced F.X` using `isReduced_of_smooth_of_isReduced F.s`. Conclude with `⟨inferInstance, dense_generic_of_flat F.s⟩`.
+-/
 theorem isReduced_and_dense [IsDomain o] (F : SFam h k ζ) : IsReduced F.X ∧ Dense {x : F.X | (F.s x).asIdeal = ⊥} := by
   have := F.smooth
   have : Smooth F.s := SmoothOfRelativeDimension.smooth (n := h * (h + 1) / 2) (f := F.s)
   have : IsReduced F.X := isReduced_of_smooth_of_isReduced F.s
   exact ⟨inferInstance, dense_generic_of_flat F.s⟩
 
+/- English proof (translation)
+Take `⟨hr, hd⟩` from `F.isReduced_and_dense`. Take `⟨hr', hd'⟩` from `F'.isReduced_and_dense`. Take `⟨f, hf, hpf⟩` from `F'.rep F.X F.s F.univ hr hd F.princ`. Take `⟨g, hg, hpg⟩` from `F.rep F'.X F'.s F'.univ hr' hd' F'.princ`. Establish `e₁ : f ≫ g = 𝟙 _` using `F.hom_ext F.univ _ _ (by rw [Category.assoc, hg, hf, Category.id_comp]) (pb_comp hpg hpf) (pb_id _)`.
+
+Establish `e₂ : g ≫ f = 𝟙 _` using `F'.hom_ext F'.univ _ _ (by rw [Category.assoc, hf, hg, Category.id_comp]) (pb_comp hpf hpg) (pb_id _)`. Conclude with `⟨⟨f, g, e₁, e₂⟩, hf, hpf⟩`.
+-/
 theorem exists_iso [IsDomain o] (F F' : SFam h k ζ) :
     ∃ e : F.X ≅ F'.X, e.hom ≫ F'.s = F.s ∧ SiegPB F.univ F'.univ e.hom := by
   obtain ⟨hr, hd⟩ := F.isReduced_and_dense
@@ -96,6 +128,17 @@ theorem exists_iso [IsDomain o] (F F' : SFam h k ζ) :
     F'.hom_ext F'.univ _ _ (by rw [Category.assoc, hf, hg, Category.id_comp]) (pb_comp hpf hpg) (pb_id _)
   exact ⟨⟨f, g, e₁, e₂⟩, hf, hpf⟩
 
+/- English proof (translation)
+Establish `sq` using `IsPullback.of_hasPullback F.s (spMap j)`. Establish `hrc` using `siegPre_pull_ringChange h k o B ζ ζ' j F.X (pullback F.s (spMap j)) F.s (pullback.snd F.s (spMap j)) (pullback.fst F.s (spMap j)) hj pullback.condition`. Take `⟨u, hu⟩` from `hrc.1 F.univ`. Use `⟨SFam.mk (pullback F.s (spMap j)) (pullback.snd F.s (spMap j)) ?_ (isQProjOver_of_isPullback_spMap j sq F.qproj) u (hrc.2.1 F.univ u hu F.princ) ?_ ?_, pullback.fst F.s (spMap j), sq, hu⟩` and prove the remaining obligations. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange (n := h * (h + 1) / 2)).of_isPullback sq F.smooth`.
+
+Introduce `T t c hr hd hc`. Establish `hd' : Dense {x : T | ((t ≫ spMap j) x).asIdeal = ⊥}`. Use `hd.mono fun x hx => ?_` and prove the remaining obligations. Establish `hx' : (t x).asIdeal = ⊥` using `hx`. Express the relevant statement in the definitionally equal form `Ideal.comap j (t x).asIdeal = ⊥`.
+
+Conclude with `(congrArg (Ideal.comap j) hx').trans (Ideal.comap_bot_of_injective j hi)`. Take `⟨f₀, hf₀, hpb⟩` from `F.rep T (t ≫ spMap j) (down j hj c) hr hd' hc`. Use `⟨pullback.lift f₀ t hf₀, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `hpb' : SiegPB c F.univ (pullback.lift f₀ t hf₀ ≫ pullback.fst F.s (spMap j))`. Rewrite using `[pullback.lift_fst]`.
+
+Conclude with `hpb`. Conclude with `pb_cancel hu hpb'`. Introduce `R _ _ x y t c hxy hx hy`. Use `pullback.hom_ext ?_ hxy` and prove the remaining obligations. Establish `e : (x ≫ pullback.fst F.s (spMap j)) ≫ F.s = (y ≫ pullback.fst F.s (spMap j)) ≫ F.s`.
+
+Simplify using `only [Category.assoc, pullback.condition, reassoc_of% hxy]`. Conclude with `F.inj R _ _ (t ≫ spMap j) (down j hj c) e (pb_comp hu hx) (pb_comp hu hy)`.
+-/
 theorem exists_baseChange (F : SFam h k ζ) {B : Type} [CommRing B] {ζ' : B} (j : o →+* B) (hi : Function.Injective j)
     (hj : j ζ = ζ') : ∃ (F' : SFam h k ζ') (π : F'.X ⟶ F.X),
       IsPullback π F'.s F.s (spMap j) ∧ SiegPB F'.univ F.univ π := by
@@ -125,6 +168,9 @@ theorem exists_baseChange (F : SFam h k ζ) {B : Type} [CommRing B] {ζ' : B} (j
       simp only [Category.assoc, pullback.condition, reassoc_of% hxy]
     exact F.inj R _ _ (t ≫ spMap j) (down j hj c) e (pb_comp hu hx) (pb_comp hu hy)
 
+/- English proof (translation)
+Unfold `GlobalTheory.Models.SiegRep`. Use `⟨F.qproj, fun T t c hr _ hfl hc => ?_⟩` and prove the remaining obligations. Conclude with `F.existsUnique c hr (dense_generic_of_flat t) hc`.
+-/
 theorem siegRep {p M : ℕ} (F : SFam h M (zetaZP p M))
     (sm : SmoothOfRelativeDimension (h * (h + 1) / 2) F.s) (qc : QuasiCompact F.s) (pr : F.univ.Principal) (pts unr) :
     GlobalTheory.Models.SiegRep (⟨F.X, F.s, sm, qc, F.univ, pr, pts, unr⟩ : SiegelFamily h p M) := by
@@ -134,6 +180,21 @@ theorem siegRep {p M : ℕ} (F : SFam h M (zetaZP p M))
 
 end SFam
 
+/- English proof (translation)
+Take `⟨hsep, hrep⟩` from `H`. Take `⟨hr, hd⟩` from `F.isReduced_and_dense`. Use `Ag.smooth` as an intermediate fact. Establish `: Smooth Ag.s` using `SmoothOfRelativeDimension.smooth (n := h * (h + 1) / 2) (f := Ag.s)`. Establish `: IsReduced Ag.X` using `isReduced_of_smooth_of_isReduced Ag.s`.
+
+Take `⟨f, hf, hpf⟩` from `hrep F.X F.s F.univ hr hd F.princ`. Take `⟨g, hg, hpg⟩` from `F.rep Ag.X Ag.s Ag.univ inferInstance (dense_generic_of_flat Ag.s) Ag.princ`. Establish `hfg : f ≫ g = 𝟙 _` using `F.hom_ext F.univ _ _ (by rw [Category.assoc, hg, hf, Category.id_comp]) (pb_comp hpg hpf) (pb_id _)`. Establish `: IsSeparated (g ≫ F.s)` using `by rw [hg]; exact hsep`. Establish `: IsSeparated g` using `IsSeparated.of_comp g F.s`.
+
+Establish `: IsClosedImmersion (f ≫ g)` using `by rw [hfg]; infer_instance`. Establish `: IsClosedImmersion f` using `IsClosedImmersion.of_comp f g`. Use `Ag.qc` as an intermediate fact. Establish `qc : QuasiCompact F.s` using `by rw [← hf]; infer_instance`. Use `⟨⟨F.X, F.s, F.smooth, qc, F.univ, F.princ, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `C O _ _ _ _ _ _ _ _ hu hp β o ho ha`. Take `⟨y, hy, hpy⟩` from `Ag.points C O hu hp β o ho ha`. Conclude with `⟨y ≫ g, by rw [Category.assoc, hg, hy], pb_comp hpg hpy⟩`. Introduce `K _ x o h₁ h₂`. Establish `key : ∀ (s₁ : Sp (DualNumber K) ⟶ Sp (ZP p M)) (o₁ : SiegPre h M (zetaZP p M) s₁), s₁ = (x ≫ f) ≫ Ag.s → SiegPB o₁ Ag.univ (x ≫ f) → SiegPB o₁ Ag.univ (constPt (x ≫ f)) → x ≫ f = constPt (x ≫ f)`.
+
+Introduce and unpack `s₁ o₁ rfl`. Conclude with `Ag.unram K (x ≫ f) o₁`. Establish `hc : constPt (x ≫ f) = constPt x ≫ f` using `by simp only [constPt, Category.assoc]`. Establish `e : x ≫ f = constPt x ≫ f`. Rewrite using `[← hc]`.
+
+Use `key _ o (by rw [Category.assoc, hf]) (pb_comp hpf h₁) ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `pb_comp hpf h₂`. Combine the equalities or inequalities in the displayed calculation. Conclude with `F.sRep F.smooth qc F.princ _ _`.
+
+Conclude with `F.siegRep F.smooth qc F.princ _ _`.
+-/
 theorem SFam.exists_sRep_siegRep {p M : ℕ} (hM : M ≠ 0) (F : SFam h M (zetaZP p M)) (Ag : SiegelFamily h p M)
     (H : SRep Ag) : ∃ Ag' : SiegelFamily h p M, SRep Ag' ∧ GlobalTheory.Models.SiegRep Ag' := by
   obtain ⟨hsep, hrep⟩ := H
@@ -176,6 +237,15 @@ theorem SFam.exists_sRep_siegRep {p M : ℕ} (hM : M ≠ 0) (F : SFam h M (zetaZ
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hC : Function.Injective ((PowerSeries.C (R` using `K)).comp β) := PowerSeries.C_injective.comp hβ`. Establish `e₁ : spMap (PowerSeries.C (R` using `K)) ≫ spMap β = spMap ((PowerSeries.C (R := K)).comp β) := (spMap_comp' β PowerSeries.C).symm`. Take `⟨t'', ht''⟩` from `tObj_pull o g k J b (Sp K) (Sp (PowerSeries K)) (spMap β) (spMap ((PowerSeries.C (R := K)).comp β)) (spMap PowerSeries.C) t' e₁`. Take `⟨τ'', hτ''⟩` from `exists_isPEL_of_tmap E H D g J a bas k o b ρ (Sp K) (Sp (PowerSeries K)) (spMap β) (spMap ((PowerSeries.C (R := K)).comp β)) t' t'' τ' (spMap PowerSeries.C) e₁ ht'' h'`. Take `⟨f, hf, hft⟩` from `R.rep (PowerSeries K) ((PowerSeries.C (R := K)).comp β) t'' τ'' hC hτ''`.
+
+Establish `e₂ : spMap (PowerSeries.constantCoeff (R` using `K)) ≫ spMap (PowerSeries.C (R := K)) = 𝟙 (Sp K) := by`. Establish `: (PowerSeries.constantCoeff (R` using `K)).comp PowerSeries.C = RingHom.id K := RingHom.ext fun x => PowerSeries.constantCoeff_C x`. Rewrite using `[← spMap_comp', this]`. Simplify using the standard rewrite rules. Use `⟨spMap PowerSeries.constantCoeff ≫ f, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hf, ← e₁, ← Category.assoc, e₂, Category.id_comp]`. Establish `hback : TMap t' t'' (spMap PowerSeries.constantCoeff)`. Use `TMap.cancel ht'' ?_` and prove the remaining obligations. Rewrite using `[e₂]`. Conclude with `TMap.refl t'`.
+
+Conclude with `TMap.comp hback hft`.
+-/
 theorem PELRep.exists_point {D : Datum H} {a : J → 𝓞 E} {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {ρ : o}
     {t : TObj g k J b s} (R : PELRep D a bas ρ t) {K : Type} [Field K] (β : o →+* K) (hβ : Function.Injective β)
     (t' : TObj g k J b (spMap β)) (τ' : SAB H (Sp K)) (h' : IsPEL D a bas ρ t' τ') :
@@ -201,6 +271,9 @@ theorem PELRep.exists_point {D : Datum H} {a : J → 𝓞 E} {bas : (Fin (2 * g)
       exact TMap.refl t'
     exact TMap.comp hback hft
 
+/- English proof (translation)
+Use `⟨fun x => ∏ i, p i ^ x i, fun x y => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`. Use `show ∏ j, p j ^ (Pi.single i (1 : ℤ) : Fin n → ℤ) j = p i`. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, zpow_zero]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same, zpow_one]`.
+-/
 theorem exists_hom_of_basis {G : Type} [CommGroup G] {n : ℕ} (p : Fin n → G) :
     ∃ q : (Fin n → ℤ) → G, (∀ x y, q (x + y) = q x * q y) ∧ ∀ i, q (Pi.single i 1) = p i := by
   refine ⟨fun x => ∏ i, p i ^ x i, fun x y => ?_, fun i => ?_⟩

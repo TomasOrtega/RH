@@ -26,6 +26,11 @@ namespace GlobalTheory.AxisTrivExt
 
 variable {S S' : Scheme.{0}}
 
+/- English proof (translation)
+Establish `p : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Establish `p' : IsPullback (fst A A).left (snd A A).left A.hom A.hom` using `IsPullback.of_hasPullback _ _`. Establish `q` using `p'.paste_horiz m`. Rewrite `q` using `[← h₁, ← m.w]`. Establish `r` using `(IsPullback.of_right q h₂ p).paste_vert m`.
+
+Rewrite `r` using `[Over.w, Over.w]`. Then use the resulting hypothesis.
+-/
 theorem isPullback_sq {A : Over S'} {G : Over S} {b : S' ⟶ S} {f : A.left ⟶ G.left}
     (m : IsPullback f A.hom G.hom b) {h : (A ⊗ A).left ⟶ (G ⊗ G).left}
     (h₁ : h ≫ (fst G G).left = (fst A A).left ≫ f) (h₂ : h ≫ (snd G G).left = (snd A A).left ≫ f) :
@@ -37,6 +42,13 @@ theorem isPullback_sq {A : Over S'} {G : Over S} {b : S' ⟶ S} {f : A.left ⟶ 
   have r := (IsPullback.of_right q h₂ p).paste_vert m
   rwa [Over.w, Over.w] at r
 
+/- English proof (translation)
+Set `p : (𝟙_ (Over S') ⟶ A) → (Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ a) (by`. Rewrite using `[Category.assoc, ha.1.w, ← Category.assoc, Over.w x]`. Use the proof step `rfl)`. Establish `hp : p 1 * p 1 = p 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[ha.2 _ 1 1 (p 1) (p 1) rfl rfl, _root_.mul_one]`. Both sides reduce to the same expression. Establish `h1 : p 1 = 1` using `by simpa using hp`. Establish `e` using `congrArg (fun z => z.left) h1`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ A) = η[A]` using `by rw [Hom.one_def]; simp`.
+
+Simplify using `only [p, e₁, Hom.one_def] at e`. Use `e.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem unit_comp {A : Over S'} {G : Over S} [GrpObj A] [GrpObj G] {f : S' ⟶ S} {a : A.left ⟶ G.left}
     (ha : IsGrpPullback A G f a) : η[A].left ≫ a = f ≫ η[G].left := by
   let p : (𝟙_ (Over S') ⟶ A) → (Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G) := fun x =>
@@ -52,6 +64,9 @@ theorem unit_comp {A : Over S'} {G : Over S} [GrpObj A] [GrpObj G] {f : S' ⟶ S
   refine e.trans ?_
   simp
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Hom.one_def, Over.comp_left, Over.comp_left, Category.assoc, unit_comp ha]`. Establish `e₁ : (toUnit A).left = A.hom` using `by simpa using Over.w (toUnit A)`. Establish `e₂ : (toUnit G).left = G.hom` using `by simpa using Over.w (toUnit G)`. Rewrite using `[e₁, e₂, ← Category.assoc, ← Category.assoc, ha.1.w]`.
+-/
 theorem one_comm {A : Over S'} {G : Over S} [GrpObj A] [GrpObj G] {f : S' ⟶ S} {a : A.left ⟶ G.left}
     (ha : IsGrpPullback A G f a) : (1 : A ⟶ A).left ≫ a = a ≫ (1 : G ⟶ G).left := by
   rw [Hom.one_def, Hom.one_def, Over.comp_left, Over.comp_left, Category.assoc, unit_comp ha]
@@ -59,6 +74,9 @@ theorem one_comm {A : Over S'} {G : Over S} [GrpObj A] [GrpObj G] {f : S' ⟶ S}
   have e₂ : (toUnit G).left = G.hom := by simpa using Over.w (toUnit G)
   rw [e₁, e₂, ← Category.assoc, ← Category.assoc, ha.1.w]
 
+/- English proof (translation)
+Establish `p : IsPullback (fst X X).left (snd X X).left X.hom X.hom` using `IsPullback.of_hasPullback _ _`. Use `symm`. Apply `p.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← Over.comp_left, lift_fst, hu, Category.assoc, hl₁, ← Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, ← Over.comp_left, lift_snd, hv, Category.assoc, hl₂, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+-/
 theorem lift_match {A : Over S'} {X : Over S} {i : A.left ⟶ X.left} {l : (A ⊗ A).left ⟶ (X ⊗ X).left}
     (hl₁ : l ≫ (fst X X).left = (fst A A).left ≫ i) (hl₂ : l ≫ (snd X X).left = (snd A A).left ≫ i)
     (u v : A ⟶ A) (U V : X ⟶ X) (hu : i ≫ U.left = u.left ≫ i) (hv : i ≫ V.left = v.left ≫ i) :
@@ -71,6 +89,19 @@ theorem lift_match {A : Over S'} {X : Over S} {i : A.left ⟶ X.left} {l : (A �
   · rw [Category.assoc, ← Over.comp_left, lift_snd, hv, Category.assoc, hl₂, ← Category.assoc, ← Over.comp_left,
       lift_snd]
 
+/- English proof (translation)
+Introduce `W L _ _ _ _ _ _ G _ A _ φ φ₂ hG hA hsq P hP h₁ h₂`. Establish `h2 : IsPullback φ₂ (G2 A).hom (G2 G).hom (spMap (algebraMap W L))` using `isPullback_sq hA.1 hsq.1 hsq.2`. Establish `hG2 : IsAbelianScheme (G2 G)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor G G hG hG`. Establish `he : h2.isoPullback.hom ≫ pullback.fst _ _ = φ₂` using `h2.isoPullback_hom_fst`. Take `⟨M, w, hM, hw⟩` from `exists_lineBundle_extension_of_genericFibre_dvr W L (G2 G) hG2 (P.pull h2.isoPullback.inv) (pull_isLB hP _)`.
+
+Establish `i1 : LBIso ((P.pull h2.isoPullback.inv).pull h2.isoPullback.hom) (M.pull φ₂)` using `GenSpread.lbIso_pull_of_lbIso (LBIso.symm ⟨w, hw⟩) h2.isoPullback.hom he.symm`. Establish `i0 : LBIso (P.pull (𝟙 _)) ((P.pull h2.isoPullback.inv).pull h2.isoPullback.hom)` using `GenSpread.lbIso_pull_pull hP h2.isoPullback.hom (by simp)`. Establish `iP : LBIso P (M.pull φ₂)` using `LBIso.trans hP (pull_isLB (pull_isLB hP _) _) (pull_isLB hM _) (LBIso.trans hP (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) (lbIso_pull_id hP).symm i0) i1`. Establish `hT` using `LB.isLB_triv G.left`. Establish `axis : ∀ (iA : A.left ⟶ (G2 A).left) (iG : G.left ⟶ (G2 G).left), iA ≫ φ₂ = φ ≫ iG → (∃ t : (P.pull iA).Gen, t.IsGen) → ∃ t : (M.pull iG).Gen, t.IsGen`.
+
+Introduce `iA iG hc hgen`. Set `c : LB.Gen (LB.triv G.left)` to `⟨fun _ => 1⟩`. Establish `hcg : c.IsGen` using `fun _ _ => by simp [c]`. Establish `a1 : LBIso (LB.triv A.left) ((LB.triv G.left).pull φ)` using `(GlobalTheory.CechPic.iso_triv_iff _).2 ⟨LB.genPull _ c φ, LB.isGen_genPull _ c hcg φ⟩`. Establish `a2 : LBIso (LB.triv A.left) (P.pull iA)` using `(GlobalTheory.CechPic.iso_triv_iff _).2 hgen`.
+
+Establish `a3 : LBIso (P.pull iA) ((M.pull φ₂).pull iA)` using `GenSpread.lbIso_pullback iP iA`. Establish `b1 : LBIso (M.pull (φ ≫ iG)) ((M.pull φ₂).pull iA)` using `GenSpread.lbIso_pull_pull hM iA hc.symm`. Establish `b2 : LBIso (M.pull (φ ≫ iG)) ((M.pull iG).pull φ)` using `GenSpread.lbIso_pull_pull hM φ rfl`. Establish `lTA` using `LB.isLB_triv A.left`. Establish `q1 : LBIso ((M.pull iG).pull φ) (LB.triv A.left)` using `LBIso.trans (pull_isLB (pull_isLB hM _) _) (pull_isLB hM _) lTA b2.symm (LBIso.trans (pull_isLB hM _) (pull_isLB (pull_isLB hM _) _) lTA b1 (LBIso.trans (pull_isLB (pull_isLB hM _) _) (pull_isLB hP _) lTA a3.symm a2.symm))`.
+
+Establish `q2 : LBIso ((M.pull iG).pull φ) ((LB.triv G.left).pull φ)` using `LBIso.trans (pull_isLB (pull_isLB hM _) _) lTA (pull_isLB hT _) q1 a1`. Establish `q3 : LBIso (M.pull iG) (LB.triv G.left)` using `GlobalTheory.T.lineBundleIso_abelianSchemeDVR_of_generic_iso W L G A.left A.hom φ hG hA.1 (M.pull iG) (LB.triv G.left) (pull_isLB hM _) hT q2`. Conclude with `(GlobalTheory.CechPic.iso_triv_iff _).1 q3.symm`. Use `⟨M, hM, axis _ _ ?_ h₁, axis _ _ ?_ h₂, iP⟩` and prove the remaining obligations. Conclude with `lift_match hsq.1 hsq.2 _ _ _ _ (one_comm hA).symm (by simp)`.
+
+Conclude with `lift_match hsq.1 hsq.2 _ _ _ _ (by simp) (one_comm hA).symm`.
+-/
 theorem exists_extension_square_of_axes_trivial : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left) (φ₂ : (G2 A).left ⟶ (G2 G).left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap W L)) φ → IsSquare φ φ₂ → ∀ P : LB (G2 A).left, P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∃ P' : LB (G2 G).left, P'.IsLB ∧ (∃ t : (P'.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) ∧ (∃ t : (P'.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) ∧ LBIso P (P'.pull φ₂) := by
   intro W L _ _ _ _ _ _ G _ A _ φ φ₂ hG hA hsq P hP h₁ h₂
   have h2 : IsPullback φ₂ (G2 A).hom (G2 G).hom (spMap (algebraMap W L)) := isPullback_sq hA.1 hsq.1 hsq.2

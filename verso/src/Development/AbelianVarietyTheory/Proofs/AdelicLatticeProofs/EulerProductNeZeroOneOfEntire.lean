@@ -9,6 +9,9 @@ namespace GlobalTheory
 
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
+/- English proof (translation)
+Establish `h1 : ‖c ^ k‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hc`. Establish `h2` using `Complex.abs_re_le_norm (c ^ k)`. Combine the linear relations using `[(abs_le.mp (h2.trans h1)).1]`.
+-/
 private lemma neg_one_le_re_pow_of_norm_le_one {c : ℂ} (hc : ‖c‖ ≤ 1) (k : ℕ) : -1 ≤ (c ^ k).re := by
   have h1 : ‖c ^ k‖ ≤ 1 := by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hc
   have h2 := Complex.abs_re_le_norm (c ^ k)
@@ -17,6 +20,17 @@ private lemma neg_one_le_re_pow_of_norm_le_one {c : ℂ} (hc : ‖c‖ ≤ 1) (k
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `h`. Use `set f := fun k : ℕ => (2 + 2 * (c ^ (k + 1)).re) / ((k : ℝ) + 1) with hf`. Establish `hnn : ∀ k, 0 ≤ f k` using `fun k => div_nonneg (by linarith [neg_one_le_re_pow_of_norm_le_one hc (k + 1)]) (by positivity)`. Establish `hkey : ∀ k : ℕ, 3 / 2 * (1 / ((k : ℝ) + 1)) ≤ f k + f (2 * k + 1)`. Introduce `k`.
+
+Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hn : ‖c ^ (k + 1)‖ ^ 2 ≤ 1`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (by positivity) (pow_le_one₀ (norm_nonneg _) hc)`. Rewrite `hn` using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Establish `hz : c ^ (2 * k + 1 + 1) = c ^ (k + 1) * c ^ (k + 1)` using `by ring`. Establish `hsum : f k + f (2 * k + 1) = (3 + 2 * (c ^ (k + 1)).re + ((c ^ (k + 1)).re * (c ^ (k + 1)).re - (c ^ (k + 1)).im * (c ^ (k + 1)).im)) / ((k : ℝ) + 1)`. Simplify using `only [hf, hz, Complex.mul_re]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, mul_one_div]`. Conclude with `(div_le_div_iff_of_pos_right hk).mpr (by nlinarith [sq_nonneg ((c ^ (k + 1)).re + 1 / 2)])`. Establish `hs2 : Summable fun k : ℕ => f k + f (2 * k + 1)` using `h.add (h.comp_injective (fun a b hab => by simpa using hab))`. Establish `hharm : Summable fun k : ℕ => 1 / ((k : ℝ) + 1)`.
+
+Establish `h3 : Summable fun k : ℕ => 3 / 2 * (1 / ((k : ℝ) + 1))` using `hs2.of_nonneg_of_le (fun k => by positivity) hkey`. Conclude with `(summable_mul_left_iff (by norm_num : (3 / 2 : ℝ) ≠ 0)).mp h3`. Use `Real.not_summable_one_div_natCast ((summable_nat_add_iff 1).mp ?_)` and prove the remaining obligations. Simplify using `using hharm`.
+-/
 theorem _root_.GlobalTheory.not_summable_two_add_two_re_pow_div (c : ℂ) (hc : ‖c‖ ≤ 1) :
     ¬ Summable fun k : ℕ => (2 + 2 * (c ^ (k + 1)).re) / ((k : ℝ) + 1) := by
   intro h
@@ -51,6 +65,9 @@ theorem _root_.GlobalTheory.not_summable_two_add_two_re_pow_div (c : ℂ) (hc : 
 
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
+/- English proof (translation)
+Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), neg_re]`. Conclude with `mul_le_of_le_one_left (by positivity) hc`.
+-/
 private lemma norm_mul_natCast_cpow_neg_le {n : ℕ} (hn : 2 ≤ n) {c : ℂ} (hc : ‖c‖ ≤ 1) (s : ℂ) :
     ‖c * (n : ℂ) ^ (-s)‖ ≤ (n : ℝ) ^ (-s.re) := by
   rw [norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), neg_re]
@@ -58,6 +75,9 @@ private lemma norm_mul_natCast_cpow_neg_le {n : ℕ} (hn : 2 ≤ n) {c : ℂ} (h
 
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (by omega : 1 ≤ n)`. Combine the equalities or inequalities in the displayed calculation. Apply `one_div_le_one_div_of_le (by norm_num)` to reduce the goal to its premises. Conclude with `hn` after adjusting the coercions.
+-/
 private lemma natCast_rpow_neg_le_half {n : ℕ} (hn : 2 ≤ n) {σ : ℝ} (hσ : 1 < σ) :
     (n : ℝ) ^ (-σ) ≤ 1 / 2 := by
   have h1 : (1 : ℝ) ≤ n := by exact_mod_cast (by omega : 1 ≤ n)
@@ -70,6 +90,13 @@ private lemma natCast_rpow_neg_le_half {n : ℕ} (hn : 2 ≤ n) {σ : ℝ} (hσ 
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Establish `hlt : ‖c * (n : ℂ) ^ (-(starRingEnd ℂ s))‖ < 1` using `((norm_mul_natCast_cpow_neg_le hn hc (starRingEnd ℂ s)).trans (natCast_rpow_neg_le_half hn (by simpa using hs))).trans_lt (by norm_num)`. Establish `hre : 0 < (1 - c * (n : ℂ) ^ (-(starRingEnd ℂ s))).re`. Rewrite using `[sub_re, one_re]`. Combine the linear relations using `[Complex.re_le_norm (c * (n : ℂ) ^ (-(starRingEnd ℂ s)))]`. Establish `harg : (1 - c * (n : ℂ) ^ (-(starRingEnd ℂ s))).arg ≠ Real.pi` using `fun h => by`.
+
+Use `(Complex.arg_eq_pi_iff.mp h).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hconj : starRingEnd ℂ ((n : ℂ) ^ (-(starRingEnd ℂ s))) = (n : ℂ) ^ (-s)`. Use `Complex.cpow_conj (n : ℂ) (-s) (by rw [Complex.natCast_arg]; exact Real.pi_ne_zero.symm)` as an intermediate fact. Rewrite `this` using `[map_neg]`.
+
+Rewrite using `[this, Complex.conj_conj, Complex.conj_natCast]`. Rewrite using `[map_neg, ← Complex.log_conj _ harg, map_sub, map_one, map_mul, hconj]`.
+-/
 theorem _root_.GlobalTheory.conj_neg_log_euler_factor (n : ℕ) (hn : 2 ≤ n) (c : ℂ) (hc : ‖c‖ ≤ 1) (s : ℂ)
     (hs : 1 < s.re) :
     starRingEnd ℂ (-Complex.log (1 - c * (n : ℂ) ^ (-(starRingEnd ℂ s)))) =
@@ -92,6 +119,17 @@ theorem _root_.GlobalTheory.conj_neg_log_euler_factor (n : ℕ) (hn : 2 ≤ n) (
 open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Complex Classical in
 open scoped ContDiff nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `ι N c hN hc hsum hne Z L hZ hL hZs hLs h1`. Use `set L' : ℂ → ℂ := fun s => starRingEnd ℂ (L (starRingEnd ℂ s)) with hL'`. Establish `hdL' : Differentiable ℂ L'` using `fun s => by`. Use `(hL (starRingEnd ℂ s)).conj_conj` as an intermediate fact. Simplify `this` using `[hL', Function.comp_def]`.
+
+Establish `hL'1 : L' 1 = 0` using `by simp [hL', h1]`. Establish `hds : ∀ f : ℂ → ℂ, Differentiable ℂ f → Differentiable ℂ (dslope f 1)` using `fun f hf => differentiableOn_univ.mp ((differentiableOn_dslope Filter.univ_mem).mpr hf.differentiableOn)`. Establish `ha : ∀ p : ι × ℕ, 0 ≤ (2 + 2 * (c p.1 ^ (p.2 + 1)).re) / ((p.2 : ℝ) + 1)` using `fun p => div_nonneg (by linarith [neg_one_le_re_pow_of_norm_le_one (hc p.1) (p.2 + 1)]) (by positivity)`. Establish `key` using `_root_.GlobalTheory.landau_exp_summable (ι × ℕ) (fun p => (2 + 2 * (c p.1 ^ (p.2 + 1)).re) / ((p.2 : ℝ) + 1)) (fun p => ((p.2 : ℝ) + 1) * Real.log (N p.1)) (fun s => Z s ^ 2 * dslope L 1 s * dslope L' 1 s) ha (fun p => mul_nonneg (by positivity) (Real.log_nonneg (by exact_mod_cas …`. Introduce `s hs`.
+
+Use `⟨_, _root_.GlobalTheory.LogEulerSeries.hasSum_log_zeta_sq_mul ι N c hN hc hsum s hs, ?_⟩` and prove the remaining obligations. Establish `hs1 : s ≠ 1` using `fun h => by rw [h] at hs; simp at hs`. Establish `hsub : s - 1 ≠ 0` using `sub_ne_zero.mpr hs1`. Establish `hL's : L' s = Complex.exp (∑' i, -Complex.log (1 - starRingEnd ℂ (c i) * ((N i : ℕ) : ℂ) ^ (-s)))`. Simplify using `only [hL']`.
+
+Rewrite using `[hLs _ (by simpa using hs), ← Complex.exp_conj, Complex.conj_tsum]`. Use `congr 1`. Conclude with `tsum_congr fun i => _root_.GlobalTheory.conj_neg_log_euler_factor (N i) (hN i) (c i) (hc i) s hs`. Simplify using `only [dslope_of_ne _ hs1, slope_def_field, h1, hL'1, sub_zero]`. Rewrite using `[hZs s hs, hLs s hs, hL's, two_mul, Complex.exp_add, Complex.exp_add, Complex.exp_add]`.
+
+Use the proof step `field_simp)`. Take `⟨i⟩` from `hne`. Conclude with `_root_.GlobalTheory.not_summable_two_add_two_re_pow_div (c i) (hc i) (((summable_prod_of_nonneg (fun p => ha p)).mp key).1 i)`.
+-/
 theorem _root_.GlobalTheory.eulerProduct_ne_zero_one_of_entire : ∀ (ι : Type) (N : ι → ℕ) (c : ι → ℂ), (∀ i, 2 ≤ N i) → (∀ i, ‖c i‖ ≤ 1) → (∀ σ : ℝ, 1 < σ → Summable fun i => (N i : ℝ) ^ (-σ)) → Nonempty ι → ∀ Z L : ℂ → ℂ, Differentiable ℂ Z → Differentiable ℂ L → (∀ s : ℂ, 1 < s.re → Z s = (s - 1) * Complex.exp (∑' i, -Complex.log (1 - 1 * ((N i : ℕ) : ℂ) ^ (-s)))) → (∀ s : ℂ, 1 < s.re → L s = Complex.exp (∑' i, -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)))) → L 1 ≠ 0 := by
   intro ι N c hN hc hsum hne Z L hZ hL hZs hLs h1
   set L' : ℂ → ℂ := fun s => starRingEnd ℂ (L (starRingEnd ℂ s)) with hL'

@@ -16,6 +16,9 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.LogPair.ChartPt
 
+/- English proof (translation)
+Unfold `cstOn resG`. Rewrite using `[← CommRingCat.hom_comp, Category.assoc]`. Use `congr 2`. Conclude with `(Scheme.Hom.appLE_map f _ _).symm`.
+-/
 theorem cstOn_res {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) :
     cstOn f V = (resG X h).comp (cstOn f U) := by
   unfold cstOn resG
@@ -23,12 +26,22 @@ theorem cstOn_res {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U V
   congr 2
   exact (Scheme.Hom.appLE_map f _ _).symm
 
+/- English proof (translation)
+Establish `hs` using `HasRingHomProperty.appLE (P := @Smooth) f inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Unfold `cstOn`. Conclude with `(RingHom.Smooth.propertyIsLocal.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv _).2 hs`.
+-/
 theorem smooth_cstOn {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) [Smooth f] {U : X.Opens}
     (hU : IsAffineOpen U) : (cstOn f U).Smooth := by
   have hs := HasRingHomProperty.appLE (P := @Smooth) f inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top
   unfold cstOn
   exact (RingHom.Smooth.propertyIsLocal.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv _).2 hs
 
+/- English proof (translation)
+Use `letI : Algebra R Γ(X, U) := (cstOn f U).toAlgebra`. Use `letI : Algebra Γ(X, U) Γ(X, X.basicOpen h) := (resG X (X.basicOpen_le h)).toAlgebra`. Establish `hl : IsLocalization.Away h Γ(X, X.basicOpen h)` using `hU.isLocalization_basicOpen h`. Set `φ` to `IsLocalization.algEquiv (Submonoid.powers h) (Localization.Away h) Γ(X, X.basicOpen h)`. Establish `H'` using `RingHom.Etale.respectsIso.1 _ φ.toRingEquiv H`.
+
+Unfold `IsEtCoord`. Use `H' using 1` and compare the differences between its conclusion and the goal. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun a => ?_)` and prove the remaining obligations. Rewrite using `[cstOn_res f (X.basicOpen_le h)]`. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, AlgEquiv.coe_ringEquiv]`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply R Γ(X, U) (Localization.Away h), AlgEquiv.commutes]`. Both sides reduce to the same expression. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X, RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, AlgEquiv.coe_ringEquiv]`. Rewrite using `[AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem isEtCoord_basicOpen {R : Type} [CommRing R] {X : Scheme.{0}} (f : X ⟶ Sp R) {U : X.Opens}
     (hU : IsAffineOpen U) {d : ℕ} (t : Fin d → Γ(X, U)) (h : Γ(X, U))
     (H : letI : Algebra R Γ(X, U) := (cstOn f U).toAlgebra;
@@ -58,11 +71,35 @@ end GlobalTheory.LogPair.ChartPt
 noncomputable section
 namespace GlobalTheory.LogPair.ChartPt
 
+/- English proof (translation)
+Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_comp {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)) :
     resG X h' (resG X h a) = resG X (h'.trans h) a := by
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `R _ X f _ d s L σ U c hc x K _ _ hU hxU hK H`. Use `letI : Algebra R Γ(X, U) := (cstOn f U).toAlgebra`. Take `⟨hd, hli⟩` from `H`. Establish `: Algebra.Smooth R Γ(X, U)` using `smooth_cstOn f hU`. Take `⟨t, e', het, htli⟩` from `GlobalTheory.T.extend_linear_independent_differentials R Γ(X, U) K d {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0} (fun i => resG X (hc i.1) ((σ i.1).f (c i.1))) hd hli`.
+
+Take `⟨h, hh, het2⟩` from `GlobalTheory.T.etale_coordinates_kaehler_basis R Γ(X, U) K d t hd htli`. Establish `hV` using `isEtCoord_basicOpen f hU t h het2`. Set `sf : Fin s → Γ(X, U)` to `fun i => resG X (hc i) ((σ i).f (c i))`. Set `q : Fin s → Γ(X, U)` to `fun j => if algebraMap Γ(X, U) K (sf j) = 0 then 1 else sf j`. Set `g : Γ(X, U)` to `h * ∏ j, q j`.
+
+Establish `hgW : X.basicOpen g ≤ X.basicOpen h`. Simplify using `only [g, Scheme.basicOpen_mul]`. Conclude with `inf_le_left`. Establish `hgs : ∀ i, algebraMap Γ(X, U) K (sf i) ≠ 0 → X.basicOpen g ≤ X.basicOpen (sf i)`. Introduce `i hi`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : sf i ∣ g := by`. Establish `hq : q i = sf i` using `if_neg hi`. Conclude with `dvd_mul_of_dvd_right (hq ▸ Finset.dvd_prod_of_mem q (Finset.mem_univ i)) h`. Rewrite using `[hk, Scheme.basicOpen_mul]`. Conclude with `inf_le_left`.
+
+Establish `hxg : x ∈ X.basicOpen g`. Rewrite using `[← hK]`. Simplify using `only [g, map_mul, map_prod]`. Use `mul_ne_zero hh (Finset.prod_ne_zero_iff.2 fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [q]`.
+
+Use `split_ifs with hj`. Simplify using the standard rewrite rules. Conclude with `hj`. Establish `hgU : X.basicOpen g ≤ U` using `X.basicOpen_le g`. Establish `hEt` using `GlobalTheory.T.isEtaleCoordinatesOnOpen_restrict_affineOpen R X f (X.basicOpen h) (X.basicOpen g) hgW d _ (hU.basicOpen h) (hU.basicOpen g) hV`.
+
+Establish `hunit : ∀ i, algebraMap Γ(X, U) K (sf i) ≠ 0 → IsUnit (resG X hgU (sf i))`. Introduce `i hi`. Establish `h1 : IsUnit (resG X (X.basicOpen_le (sf i)) (sf i))` using `X.toRingedSpace.isUnit_res_basicOpen (sf i)`. Establish `h2` using `h1.map (resG X (hgs i hi))`. Rewrite `h2` using `[resG_comp]`. Then use the resulting hypothesis.
+
+Use `⟨{ U := X.basicOpen g affine := hU.basicOpen g t := fun a => resG X hgU (t a) etale := ?_ c := c le := fun i => hgU.trans (hc i) e := fun i => if hi : algebraMap Γ(X, U) K (sf i) = 0 then some (e' ⟨i, hi⟩) else none inj := ?_ u := fun i => if hi : algebraMap Γ(X, U) K (sf i) = 0 …` and prove the remaining obligations. Use `hEt using 2 with a` and compare the differences between its conclusion and the goal. Rewrite using `[resG_comp]`. Introduce `i j a hi hj split_ifs at hi hj with h1 h2`. Use `e'.injective ((Option.some_injective _ hi).trans (Option.some_injective _ hj).symm)` as an intermediate fact.
+
+Conclude with `congrArg Subtype.val this`. Introduce `i`. Distinguish the cases in `hi : algebraMap Γ(X, U) K (sf i) = 0`. Rewrite using `[dif_pos hi, dif_pos hi]`. Simplify using `only [Units.val_one, one_mul, Option.elim_some]`.
+
+Rewrite using `[het ⟨i, hi⟩, resG_comp]`. Rewrite using `[dif_neg hi, dif_neg hi]`. Simplify using `only [IsUnit.unit_spec, Option.elim_none, mul_one]`. Rewrite using `[resG_comp]`.
+-/
 theorem exists_chart : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) [Smooth f] (d : ℕ) (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec) (U : X.Opens) (c : ∀ i, (L i).ι) (hc : ∀ i, U ≤ (L i).U (c i)) (x : X) (K : Type) [Field K] [Algebra Γ(X, U) K], IsAffineOpen U → x ∈ U → (∀ a : Γ(X, U), algebraMap Γ(X, U) K a ≠ 0 ↔ x ∈ X.basicOpen a) → (letI : Algebra R Γ(X, U) := (cstOn f U).toAlgebra; Module.finrank K (K ⊗[Γ(X, U)] Ω[Γ(X, U)⁄R]) = d ∧ LinearIndependent K (fun i : {i : Fin s // algebraMap Γ(X, U) K (resG X (hc i) ((σ i).f (c i))) = 0} => (1 : K) ⊗ₜ[Γ(X, U)] KaehlerDifferential.D R Γ(X, U) (resG X (hc i) ((σ i).f (c i))))) → ∃ C : SncChart f d L σ, x ∈ C.U := by
   intro R _ X f _ d s L σ U c hc x K _ _ hU hxU hK H
   classical

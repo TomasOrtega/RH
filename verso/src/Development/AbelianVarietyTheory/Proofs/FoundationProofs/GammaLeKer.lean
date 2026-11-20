@@ -31,8 +31,18 @@ def act (T : Tower Ω ε) : SL(2, ℤ) →* (T.K ≃ₐ[Ω] T.K) where
     ext f
     rw [AlgEquiv.mul_apply, mul_inv_rev, map_mul, T.sl_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_apply (T : Tower Ω ε) (γ : SL(2, ℤ)) (f : T.K) : act T γ f = T.sl (ofSL γ⁻¹) f := rfl
 
+/- English proof (translation)
+Establish `hle : IntermediateField.adjoin Ω {T.jK} ≤ IntermediateField.fixedField (act T).range`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+
+Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixedField_iff]`. Introduce and unpack `σ ⟨δ, rfl⟩`. Conclude with `T.j_inv _`. Introduce `x hx`. Use `(IntermediateField.mem_fixedField_iff _ _).1 (hle hx) (act T γ⁻¹) ⟨γ⁻¹, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[act_apply, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem sl_fix (T : Tower Ω ε) (γ : SL(2, ℤ)) :
     ∀ x ∈ IntermediateField.adjoin Ω {T.jK}, T.sl (ofSL γ) x = x := by
   have hle : IntermediateField.adjoin Ω {T.jK} ≤ IntermediateField.fixedField (act T).range := by
@@ -58,6 +68,9 @@ def lvl (T : Tower Ω ε) (M : ℕ) : IntermediateField (IntermediateField.adjoi
     exact sl_fix T γ _ c.2
   inv_mem' x hx γ hγ := by rw [map_inv₀, hx γ hγ]
 
+/- English proof (translation)
+Introduce `δ hδ`. Establish `hc : γ⁻¹ * δ * γ⁻¹⁻¹ ∈ CongruenceSubgroup.Gamma M` using `(CongruenceSubgroup.Gamma_normal M).conj_mem δ hδ γ⁻¹`. Establish `e : γ⁻¹ * δ = (γ⁻¹ * δ * γ⁻¹⁻¹) * γ⁻¹` using `by group`. Rewrite using `[act_apply, ← T.sl_mul, ← map_mul, e, map_mul, T.sl_mul, hf _ hc]`.
+-/
 theorem act_mem_lvl (T : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) {f : T.K} (hf : f ∈ lvl T M) :
     act T γ f ∈ lvl T M := by
   intro δ hδ
@@ -90,9 +103,15 @@ def rho (T : Tower Ω ε) (M : ℕ) :
     show act T (γ * δ) x = act T γ (act T δ x)
     rw [map_mul, AlgEquiv.mul_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rho_val (T : Tower Ω ε) (M : ℕ) (γ : SL(2, ℤ)) (x : lvl T M) :
     ((rho T M γ x : lvl T M) : T.K) = T.sl (ofSL γ⁻¹) x := rfl
 
+/- English proof (translation)
+Introduce `γ hγ`. Rewrite using `[MonoidHom.mem_ker]`. Use `AlgEquiv.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `show T.sl (ofSL γ⁻¹) x = x`. Conclude with `x.2 _ (inv_mem hγ)`.
+-/
 theorem gamma_le_ker (T : Tower Ω ε) (M : ℕ) : CongruenceSubgroup.Gamma M ≤ (rho T M).ker := by
   intro γ hγ
   rw [MonoidHom.mem_ker]
@@ -100,6 +119,9 @@ theorem gamma_le_ker (T : Tower Ω ε) (M : ℕ) : CongruenceSubgroup.Gamma M �
   show T.sl (ofSL γ⁻¹) x = x
   exact x.2 _ (inv_mem hγ)
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI : (CongruenceSubgroup.Gamma M).FiniteIndex := by show (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))).ker.FiniteIndex`. Conclude with `Subgroup.finiteIndex_ker _`. Use `haveI : (rho T M).ker.FiniteIndex := Subgroup.finiteIndex_of_le (gamma_le_ker T M)`. Conclude with `Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange (rho T M)).toEquiv`.
+-/
 theorem finite_range (T : Tower Ω ε) (M : ℕ) (hM : 0 < M) : Finite (rho T M).range := by
   haveI : NeZero M := ⟨hM.ne'⟩
   haveI : (CongruenceSubgroup.Gamma M).FiniteIndex := by

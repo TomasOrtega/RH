@@ -22,8 +22,14 @@ def LW (a : ℕ) : AddSubgroup (TupV (E := E) v n a) where
   zero_mem' := fun _ => Submodule.zero_mem _
   neg_mem' := fun {_} hx i => Submodule.neg_mem _ (hx i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_LW (a : ℕ) : (LW v Λ a : Set (TupV (E := E) v n a)) = LamT v Λ a := rfl
 
+/- English proof (translation)
+Introduce `i` and use `Submodule.smul_mem _ (⟨s, hs⟩ : v.adicCompletionIntegers F) (hX i)`.
+-/
 theorem smul_mem_LW {a : ℕ} {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F)
     {X : TupV (E := E) v n a} (hX : X ∈ LW v Λ a) : s • X ∈ LW v Λ a :=
   fun i => Submodule.smul_mem _ (⟨s, hs⟩ : v.adicCompletionIntegers F) (hX i)
@@ -44,6 +50,29 @@ def IdxW (a : ℕ) : Prop :=
     UnramAt (E := E) v →
     ((LW v Λ a).relIndex (smulSub (dV v)⁻¹ (LW v Λ a)) : ℝ) = absV v (dV v) ^ (-(2 * ((n : ℝ) * a)))
 
+/- English proof (translation)
+Introduce `hS hL hSD hU hμ`. Establish `hd0` using `dV_ne_zero v`. Establish `hμsd : SdW F E σ n J (Fv F v) (psiV F ψ v) a (dX σ J ψ v a)`. Simplify using `only [dX, dif_pos hμ]`. Conclude with `hμ.choose_spec`.
+
+Use `hμsd.1` as an intermediate fact. Use `set μ := dX σ J ψ v a with hμdef`. Use `set L := LW v Λ a with hLdef`. Use `set L' := smulSub (dV v)⁻¹ L with hL'def`. Take `⟨hLc, hLo⟩` from `hT hL`.
+
+Rewrite `hLc`, `hLo` using `[← coe_LW]`. Establish `hL'c : IsCompact (L' : Set (TupV (E` using `E) v n a)) := isCompact_smulSub _ L hLc`. Establish `hL'o : IsOpen (L' : Set (TupV (E` using `E) v n a)) := isOpen_smulSub _ (inv_ne_zero hd0) L hLo`. Establish `hχ : ∀ x t y : TupV (E` using `E) v n a, psiV F ψ v (BR (Fv F v) σ J (t + x) y) = psiV F ψ v (BR (Fv F v) σ J t y) * psiV F ψ v (BR (Fv F v) σ J x y) := by`. Introduce `x t y`.
+
+Rewrite using `[BR_add, psiV_add]`. Establish `h0 : ∀ y : TupV (E` using `E) v n a, psiV F ψ v (BR (Fv F v) σ J y 0) = 1 := by`. Introduce `y`. Establish `e` using `SdDualW.BR_smul_right v σ J 0 y y`. Rewrite `e` using `[zero_smul, zero_mul]`.
+
+Rewrite using `[e, psiV_zero]`. Establish `hA : ann (fun X Y => psiV F ψ v (BR (Fv F v) σ J X Y)) (L : Set (TupV (E` using `E) v n a)) = L' := by`. Rewrite using `[Sd.ann_eq_cond v (psiV F ψ v) (dV v) (BR (Fv F v) σ J) _ (hC hS)]`. Conclude with `hD hS hL hSD hU`. Introduce `s hs x hx`.
+
+Conclude with `⟨s • x, smul_mem_LW v Λ hs hx, fun y => SdDualW.BR_smul_left v σ J s x y⟩`. Establish `hle : L ≤ L'`. Introduce `X hX`. Rewrite using `[hL'def, mem_smulSub]`. Use `⟨dV v • X, smul_mem_LW v Λ (dV_int v) hX, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ hd0, one_smul]`. Establish `hN1` using `hI hL hU`. Establish `hNz : L.relIndex L' ≠ 0`. Introduce `h`. Rewrite `hN1` using `[h, Nat.cast_zero]`.
+
+Use `Real.rpow_pos_of_pos (absV_dV_pos v) (-(2 * ((n : ℝ) * a)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `Sd.vol_sq_mul_index hμsd hχ h0 L L' hLc hLo hL'c hL'o hA hle hNz`. Rewrite `key` using `[hN1]`. Establish `hp` using `absV_dV_pos v`.
+
+Establish `e1 : absV v (dV v) ^ (-(2 * ((n : ℝ) * a))) = (absV v (dV v) ^ (2 * ((n : ℝ) * a)))⁻¹` using `Real.rpow_neg hp.le _`. Establish `e2 : (absV v (dV v) ^ ((n : ℝ) * a)) ^ 2 = absV v (dV v) ^ (2 * ((n : ℝ) * a))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp.le]`. Put the polynomial expressions in normal form. Establish `hA2 : 0 < absV v (dV v) ^ (2 * ((n : ℝ) * a))` using `Real.rpow_pos_of_pos hp _`.
+
+Rewrite `key` using `[e1]`. Establish `e3 : μ.real (L : Set (TupV (E` using `E) v n a)) ^ 2 = (absV v (dV v) ^ ((n : ℝ) * a)) ^ 2 := by`. Rewrite using `[e2]`. Clear denominators, using `at key` for the nonvanishing conditions. Rewrite using `[key, mul_assoc]`.
+
+Establish `hvol` using `(pow_left_inj₀ measureReal_nonneg (Real.rpow_pos_of_pos hp _).le two_ne_zero).1 e3`. Rewrite using `[← coe_LW, ← ENNReal.ofReal_toReal hLc.measure_lt_top.ne, ← measureReal_def, hvol]`.
+-/
 theorem sdVolW_of_top (a : ℕ) (hC : CondV σ J ψ v) (hT : TopW v Λ a) (hD : DualW σ J ψ v Λ a)
     (hI : IdxW v Λ a) : SdVolW σ J ψ v Λ a := by
   intro hS hL hSD hU hμ

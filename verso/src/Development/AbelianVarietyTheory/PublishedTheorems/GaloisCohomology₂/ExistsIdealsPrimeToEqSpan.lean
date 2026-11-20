@@ -41,6 +41,11 @@ namespace GlobalTheory.RayChar
 
 open Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.L2.Host GlobalTheory.HeckeGal GlobalTheory.Mem.Chr GlobalTheory.Mem.UnitIndex GlobalTheory.Idele WithZero
 
+/- English proof (translation)
+Set `π : H →* Γ ⧸ D` to `(QuotientGroup.mk' D).comp H.subtype`. Establish `hπ : Function.Surjective π` using `fun q => by`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨d, hd, ha⟩` from `hs a`. Conclude with `⟨⟨_, ha⟩, QuotientGroup.eq.2 (by simpa using hd)⟩`.
+
+Set `l` to `π.liftOfSurjective hπ ⟨h, fun a ha => hk a ((QuotientGroup.eq_one_iff _).1 ha)⟩`. Use `⟨l.comp (QuotientGroup.mk' D), fun a => π.liftOfRightInverse_comp_apply _ (Function.rightInverse_surjInv hπ) _ a, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff d).2 hd, map_one]`.
+-/
 theorem exists_extend {Γ A : Type} [CommGroup Γ] [CommGroup A] (H D : Subgroup Γ)
     (hs : ∀ a, ∃ d ∈ D, d⁻¹ * a ∈ H) (h : H →* A) (hk : ∀ a : H, a.1 ∈ D → h a = 1) :
     ∃ ψ : Γ →* A, (∀ a : H, ψ a = h a) ∧ ∀ d ∈ D, ψ d = 1 := by
@@ -58,17 +63,26 @@ variable {E : Type} [Field E] [NumberField E]
 abbrev ex (𝔪 : Ideal (𝓞 E)) (v : HeightOneSpectrum (𝓞 E)) : ℤ :=
   FractionalIdeal.count E v (𝔪 : FractionalIdeal (𝓞 E)⁰ E)
 
+/- English proof (translation)
+Rewrite using `[ex, FractionalIdeal.count_coe E v hm, ← Associates.count_ne_zero_iff_dvd hm v.irreducible, not_not]`. Use `norm_cast`.
+-/
 theorem ex_eq_zero_iff {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (v : HeightOneSpectrum (𝓞 E)) :
     ex 𝔪 v = 0 ↔ ¬ v.asIdeal ∣ 𝔪 := by
   classical
   rw [ex, FractionalIdeal.count_coe E v hm, ← Associates.count_ne_zero_iff_dvd hm v.irreducible, not_not]
   norm_cast
 
+/- English proof (translation)
+Use `FractionalIdeal.count_coe_nonneg E v 𝔪` as an intermediate fact. Rewrite using `[← exp_zero, exp_le_exp]`. Conclude with `neg_nonpos.2 this`.
+-/
 theorem exp_ex_le_one (𝔪 : Ideal (𝓞 E)) (v : HeightOneSpectrum (𝓞 E)) : exp (-ex 𝔪 v) ≤ 1 := by
   have := FractionalIdeal.count_coe_nonneg E v 𝔪
   rw [← exp_zero, exp_le_exp]
   exact neg_nonpos.2 this
 
+/- English proof (translation)
+Establish `h1 : 0 ≤ ex 𝔪 v` using `FractionalIdeal.count_coe_nonneg E v 𝔪`. Establish `h2 : ex 𝔪 v ≠ 0` using `fun h => (ex_eq_zero_iff hm v).1 h hv`. Rewrite using `[← exp_zero, exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exp_ex_lt_one {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) {v : HeightOneSpectrum (𝓞 E)} (hv : v.asIdeal ∣ 𝔪) :
     exp (-ex 𝔪 v) < 1 := by
   have h1 : 0 ≤ ex 𝔪 v := FractionalIdeal.count_coe_nonneg E v 𝔪
@@ -76,6 +90,9 @@ theorem exp_ex_lt_one {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) {v : HeightOne
   rw [← exp_zero, exp_lt_exp]
   omega
 
+/- English proof (translation)
+Rewrite using `[ex, FractionalIdeal.coeIdeal_mul, FractionalIdeal.count_mul E v (FractionalIdeal.coeIdeal_ne_zero.2 hm) (FractionalIdeal.coeIdeal_ne_zero.2 hn)]`.
+-/
 theorem ex_mul {𝔪 𝔫 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (hn : 𝔫 ≠ ⊥) (v : HeightOneSpectrum (𝓞 E)) :
     ex (𝔪 * 𝔫) v = ex 𝔪 v + ex 𝔫 v := by
   rw [ex, FractionalIdeal.coeIdeal_mul, FractionalIdeal.count_mul E v (FractionalIdeal.coeIdeal_ne_zero.2 hm)
@@ -84,9 +101,19 @@ theorem ex_mul {𝔪 𝔫 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (hn : 𝔫 ≠ �
 abbrev at' (v : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) : v.adicCompletion E :=
   algebraMap E (v.adicCompletion E) (algebraMap (𝓞 E) E x)
 
+/- English proof (translation)
+Rewrite using `[valued_algebraMap]`. Conclude with `v.valuation_le_one x`.
+-/
 theorem at'_le_one (v : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) : Valued.v (at' v x) ≤ 1 := by
   rw [valued_algebraMap]; exact v.valuation_le_one x
 
+/- English proof (translation)
+Establish `h : x ∈ 𝔪 ↔ algebraMap (𝓞 E) E x ∈ (𝔪 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Conclude with `⟨fun h => ⟨x, h, rfl⟩, fun ⟨y, hy, e⟩ => IsFractionRing.injective (𝓞 E) E e ▸ hy⟩`. Rewrite using `[h, mem_iff_valuation_le (FractionalIdeal.coeIdeal_ne_zero.2 hm)]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[← valued_algebraMap]`. Use `⟨fun h _ => h, fun h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v.asIdeal ∣ 𝔪`. Conclude with `h hv`. Establish `: exp (-ex 𝔪 v) = 1` using `by rw [(ex_eq_zero_iff hm v).2 hv]; simp`.
+
+Conclude with `(at'_le_one v x).trans this.ge`.
+-/
 theorem mem_iff_at {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (x : 𝓞 E) :
     x ∈ 𝔪 ↔ ∀ v : HeightOneSpectrum (𝓞 E), v.asIdeal ∣ 𝔪 → Valued.v (at' v x) ≤ exp (-ex 𝔪 v) := by
   have h : x ∈ 𝔪 ↔ algebraMap (𝓞 E) E x ∈ (𝔪 : FractionalIdeal (𝓞 E)⁰ E) := by
@@ -101,8 +128,14 @@ theorem mem_iff_at {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (x : 𝓞 E) :
   · have : exp (-ex 𝔪 v) = 1 := by rw [(ex_eq_zero_iff hm v).2 hv]; simp
     exact (at'_le_one v x).trans this.ge
 
+/- English proof (translation)
+Simplify using `[at']`.
+-/
 theorem at'_sub_one (v : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) : at' v (x - 1) = at' v x - 1 := by simp [at']
 
+/- English proof (translation)
+Use `Valuation.map_one_add_of_lt (Valued.v : Valuation (v.adicCompletion E) _) h` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem valued_eq_one {v : HeightOneSpectrum (𝓞 E)} {y : v.adicCompletion E} (h : Valued.v (y - 1) < 1) :
     Valued.v y = 1 := by
   have := Valuation.map_one_add_of_lt (Valued.v : Valuation (v.adicCompletion E) _) h
@@ -110,18 +143,33 @@ theorem valued_eq_one {v : HeightOneSpectrum (𝓞 E)} {y : v.adicCompletion E} 
 
 abbrev cmp (a : Ideles E) (v : HeightOneSpectrum (𝓞 E)) : v.adicCompletion E := (a : AdeleRing (𝓞 E) E).2 v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmp_mul (a b : Ideles E) (v : HeightOneSpectrum (𝓞 E)) : cmp (a * b) v = cmp a v * cmp b v := rfl
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_right (congrArg (fun z : AdeleRing (𝓞 E) E => z.2 v) a.mul_inv)`.
+-/
 theorem cmp_inv (a : Ideles E) (v : HeightOneSpectrum (𝓞 E)) : cmp a⁻¹ v = (cmp a v)⁻¹ :=
   eq_inv_of_mul_eq_one_right (congrArg (fun z : AdeleRing (𝓞 E) E => z.2 v) a.mul_inv)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmp_diag (k : Eˣ) (v : HeightOneSpectrum (𝓞 E)) :
     cmp (diagUnits E k) v = algebraMap E (v.adicCompletion E) k := rfl
 
+/- English proof (translation)
+Conclude with `Function.update_self v (u : v.adicCompletion E) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))`.
+-/
 theorem cmp_local_self (v : HeightOneSpectrum (𝓞 E)) (u : (v.adicCompletion E)ˣ) : cmp (localIdele E v u) v = u := by
   classical
   exact Function.update_self v (u : v.adicCompletion E) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))
 
+/- English proof (translation)
+Conclude with `Function.update_of_ne h (u : v.adicCompletion E) (fun w : HeightOneSpectrum (𝓞 E) => (1 : w.adicCompletion E))`.
+-/
 theorem cmp_local_ne {v w : HeightOneSpectrum (𝓞 E)} (h : w ≠ v) (u : (v.adicCompletion E)ˣ) :
     cmp (localIdele E v u) w = 1 := by
   classical
@@ -145,13 +193,22 @@ def congrIdl (𝔪 : Ideal (𝓞 E)) : Subgroup (Ideles E) where
     rw [e, Valuation.map_neg, map_mul, map_inv₀, (ha v hv).1, inv_one, one_mul]
     exact (ha v hv).2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h v hv => (h v hv).2, fun h v hv => ⟨valued_eq_one ((h v hv).trans_lt (exp_ex_lt_one hm hv)), h v hv⟩⟩`.
+-/
 theorem mem_congrIdl {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) {a : Ideles E} : a ∈ congrIdl 𝔪 ↔
     ∀ v : HeightOneSpectrum (𝓞 E), v.asIdeal ∣ 𝔪 → Valued.v (cmp a v - 1) ≤ exp (-ex 𝔪 v) :=
   ⟨fun h v hv => (h v hv).2, fun h v hv => ⟨valued_eq_one ((h v hv).trans_lt (exp_ex_lt_one hm hv)), h v hv⟩⟩
 
+/- English proof (translation)
+The claim follows from `((RestrictedProduct.continuous_eval v).comp continuous_snd).comp Units.continuous_val`.
+-/
 theorem continuous_cmp (v : HeightOneSpectrum (𝓞 E)) : Continuous fun a : Ideles E => cmp a v :=
   ((RestrictedProduct.continuous_eval v).comp continuous_snd).comp Units.continuous_val
 
+/- English proof (translation)
+Establish `h` using `(Ideal.finite_factors hm).isOpen_biInter (f := fun v : HeightOneSpectrum (𝓞 E) => {a : Ideles E | Valued.v (cmp a v - 1) ≤ exp (-ex 𝔪 v)}) fun v _ => (isOpen_valued_le (K := E) v _).preimage ((continuous_cmp v).sub continuous_const)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using `[mem_congrIdl hm]`.
+-/
 theorem isOpen_congrIdl {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) : IsOpen (congrIdl 𝔪 : Set (Ideles E)) := by
   have h := (Ideal.finite_factors hm).isOpen_biInter (f := fun v : HeightOneSpectrum (𝓞 E) =>
     {a : Ideles E | Valued.v (cmp a v - 1) ≤ exp (-ex 𝔪 v)}) fun v _ =>
@@ -160,6 +217,13 @@ theorem isOpen_congrIdl {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) : IsOpen (co
   ext a
   simp [mem_congrIdl hm]
 
+/- English proof (translation)
+Set `S` to `(Ideal.finite_factors hm).toFinset`. Establish `ho : IsOpen (⋂ v : S, {y : (GlobalTheory.FrobDense.Loc S)ˣ | Valued.v ((y : GlobalTheory.FrobDense.Loc S).2 v * cmp a⁻¹ v.1 - 1) ≤ exp (-ex 𝔪 v.1)})` using `isOpen_iInter_of_finite fun v => by`. Establish `h1 : Continuous fun y : (GlobalTheory.FrobDense.Loc S)ˣ => (y : GlobalTheory.FrobDense.Loc S).2 v` using `((continuous_apply v).comp continuous_snd).comp Units.continuous_val`. Establish `h2 : Continuous fun y : (GlobalTheory.FrobDense.Loc S)ˣ => (y : GlobalTheory.FrobDense.Loc S).2 v * cmp a⁻¹ v.1 - 1` using `(h1.mul continuous_const).sub continuous_const`. Conclude with `h2.isOpen_preimage _ (isOpen_valued_le (K := E) v.1 (-ex 𝔪 v.1))`.
+
+Take `⟨k, hk⟩` from `(GlobalTheory.FrobDense.denseRange_units S).exists_mem_open ho ⟨Units.map (GlobalTheory.FrobDense.proj S) a, Set.mem_iInter.2 fun v => by show Valued.v (cmp (a * a⁻¹) v.1 - 1) ≤ _`. Establish `: cmp (1 : Ideles E) v.1 = 1` using `rfl`. Simplify using `[this]⟩`. Use `⟨_, ⟨k, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: diagUnits E k * a⁻¹ ∈ congrIdl 𝔪` using `(mem_congrIdl hm).2 fun v hv => Set.mem_iInter.1 hk ⟨v, (Set.Finite.mem_toFinset _).2 hv⟩`.
+
+Simplify `(congrIdl 𝔪).inv_mem this` using `[mul_comm]`.
+-/
 theorem exists_diag {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (a : Ideles E) :
     ∃ d ∈ (diagUnits E).range, d⁻¹ * a ∈ congrIdl 𝔪 := by
   let S := (Ideal.finite_factors hm).toFinset
@@ -183,22 +247,34 @@ theorem exists_diag {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (a : Ideles E) :
 
 def idl : Ideles E →* (FractionalIdeal (𝓞 E)⁰ E)ˣ := ((idealHom E).comp (finIdele E)).toHomUnits
 
+/- English proof (translation)
+Establish `: (idl a : FractionalIdeal (𝓞 E)⁰ E) = idealOf (finIdele E a)` using `rfl`. Rewrite using `[this, count_idealOf]`. Conclude with `valued_idele (finIdele E a) v`.
+-/
 theorem valued_cmp (a : Ideles E) (v : HeightOneSpectrum (𝓞 E)) :
     Valued.v (cmp a v) = exp (-FractionalIdeal.count E v (idl a : FractionalIdeal (𝓞 E)⁰ E)) := by
   have : (idl a : FractionalIdeal (𝓞 E)⁰ E) = idealOf (finIdele E a) := rfl
   rw [this, count_idealOf]
   exact valued_idele (finIdele E a) v
 
+/- English proof (translation)
+The claim follows from `idealOf_unitEmbedding k`.
+-/
 theorem idl_diag (k : Eˣ) :
     (idl (diagUnits E k) : FractionalIdeal (𝓞 E)⁰ E) = FractionalIdeal.spanSingleton (𝓞 E)⁰ (k : E) :=
   idealOf_unitEmbedding k
 
+/- English proof (translation)
+The claim follows from `Units.ext (eq_of_count_eq (idl a).ne_zero J.ne_zero fun v => by have := (valued_cmp a v).symm.trans (h v) rwa [exp_inj, neg_inj] at this)`.
+-/
 theorem idl_eq {a : Ideles E} {J : (FractionalIdeal (𝓞 E)⁰ E)ˣ}
     (h : ∀ v, Valued.v (cmp a v) = exp (-FractionalIdeal.count E v (J : FractionalIdeal (𝓞 E)⁰ E))) : idl a = J :=
   Units.ext (eq_of_count_eq (idl a).ne_zero J.ne_zero fun v => by
     have := (valued_cmp a v).symm.trans (h v)
     rwa [exp_inj, neg_inj] at this)
 
+/- English proof (translation)
+The claim follows from `idl_eq fun v => by rw [Units.val_one, FractionalIdeal.count_one]; exact h v`.
+-/
 theorem idl_unit {a : Ideles E} (h : a ∈ unitIdl E) : idl a = 1 :=
   idl_eq fun v => by rw [Units.val_one, FractionalIdeal.count_one]; exact h v
 
@@ -207,6 +283,25 @@ def idlPrime (𝔪 : Ideal (𝓞 E)) : congrIdl 𝔪 →* idealsPrimeTo 𝔪 :=
     have := (valued_cmp a.1 v).symm.trans (a.2 v hv).1
     rwa [← exp_zero, exp_inj, neg_eq_zero] at this
 
+/- English proof (translation)
+Take `⟨c, d, hd, hcd⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) (k : E)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hdE : algebraMap (𝓞 E) E d ≠ 0` using `by simpa using hd0`. Distinguish the cases in `ht : 𝔪 = ⊤`. Conclude with `⟨c, d, hd0, ht ▸ Submodule.mem_top, ht ▸ Submodule.mem_top, by rw [← hcd]; exact div_mul_cancel₀ _ hdE⟩`.
+
+Establish `hD : Ideal.span {d} ≠ ⊥` using `by simpa using hd0`. Establish `hI : 𝔪 * Ideal.span {d} ≠ ⊥` using `mul_ne_zero hm hD`. Set `g : ∀ v : HeightOneSpectrum (𝓞 E), v.adicCompletion E` to `fun v => if v.asIdeal ∣ 𝔪 then 1 else 0`. Establish `hg : ∀ v, Valued.v (g v) ≤ 1` using `fun v => by`. Apply the tactic sequence `by_cases hv : v.asIdeal ∣ 𝔪 <;> simp [g, hv]`.
+
+Take `⟨β, hβ⟩` from `exists_sub_mem_adelicIdeal_of_integral (K := E) (FractionalIdeal.coeIdeal_ne_zero.2 hI) (a := ⟨g, Filter.Eventually.of_forall hg⟩) hg`. Rewrite `hβ` using `[mem_adelicIdeal_iff (FractionalIdeal.coeIdeal_ne_zero.2 hI)]`. Establish `hβ' : ∀ v, Valued.v (g v - at' v β) ≤ exp (-(ex 𝔪 v + ex (Ideal.span {d}) v))` using `fun v => by`. Rewrite using `[← ex_mul hm hD]`. Conclude with `hβ v`.
+
+Establish `h1 : ∀ v : HeightOneSpectrum (𝓞 E), v.asIdeal ∣ 𝔪 → Valued.v (at' v β - 1) ≤ exp (-ex 𝔪 v)` using `fun v hv => by`. Use `hβ' v` as an intermediate fact. Simplify using `only [g, if_pos hv] at this`. Rewrite `this` using `[Valuation.map_sub_swap, neg_add, exp_add]`. Conclude with `this.trans (mul_le_of_le_one_right' (exp_ex_le_one _ v))`.
+
+Establish `hint : ∀ v : HeightOneSpectrum (𝓞 E), v.valuation E ((k : E) * β) ≤ 1` using `fun v => by`. Rewrite using `[← valued_algebraMap, map_mul, map_mul]`. Distinguish the cases in `hv : v.asIdeal ∣ 𝔪`. Rewrite using `[show Valued.v (algebraMap E (v.adicCompletion E) (k : E)) = 1 from (hk v hv).1, one_mul]`. Conclude with `at'_le_one v β`.
+
+Use `hβ' v` as an intermediate fact. Simplify using `only [g, if_neg hv] at this`. Rewrite `this` using `[zero_sub, Valuation.map_neg, (ex_eq_zero_iff hm v).2 hv, zero_add, ex, FractionalIdeal.coeIdeal_span_singleton, ← valuation_eq_exp_neg_count v hdE, ← valued_algebraMap]`. Use `(mul_le_mul_right this _).trans ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, ← hcd, div_mul_cancel₀ _ hdE]`.
+
+Conclude with `at'_le_one v c`. Take `⟨α, hα⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one E _ hint`. Establish `hβ1 : β - 1 ∈ 𝔪` using `(mem_iff_at hm _).2 fun v hv => by rw [at'_sub_one]; exact h1 v hv`. Use `⟨α, β, ?_, (mem_iff_at hm _).2 fun v hv => ?_, hβ1, hα.symm⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `ht ((Ideal.eq_top_iff_one _).2 (by simpa using 𝔪.neg_mem hβ1))`. Establish `e : at' v (α - 1) = cmp (diagUnits E k) v * (at' v β - 1) + (cmp (diagUnits E k) v - 1)`. Rewrite using `[at'_sub_one, at', hα, map_mul, cmp_diag]`. Put the polynomial expressions in normal form. Rewrite using `[e]`.
+
+Conclude with `Valuation.map_add_le _ (by rw [map_mul, (hk v hv).1, one_mul]; exact h1 v hv) (hk v hv).2`.
+-/
 theorem exists_quot {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (k : Eˣ) (hk : diagUnits E k ∈ congrIdl 𝔪) :
     ∃ α β : 𝓞 E, β ≠ 0 ∧ α - 1 ∈ 𝔪 ∧ β - 1 ∈ 𝔪 ∧ (k : E) * β = α := by
   classical
@@ -252,12 +347,18 @@ theorem exists_quot {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (k : Eˣ) (hk : 
     rw [e]
     exact Valuation.map_add_le _ (by rw [map_mul, (hk v hv).1, one_mul]; exact h1 v hv) (hk v hv).2
 
+/- English proof (translation)
+The claim follows from `(mem_congrIdl hm).2 fun v hv => by have := (mem_iff_at hm _).1 hx v hv rwa [at'_sub_one] at this`.
+-/
 theorem diag_mem {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) {x : 𝓞 E} (hx : x - 1 ∈ 𝔪) (h0 : (x : E) ≠ 0) :
     diagUnits E (Units.mk0 (x : E) h0) ∈ congrIdl 𝔪 :=
   (mem_congrIdl hm).2 fun v hv => by
     have := (mem_iff_at hm _).1 hx v hv
     rwa [at'_sub_one] at this
 
+/- English proof (translation)
+Introduce `h0` and use `by have hx : x = 0 := by exact_mod_cast h0 exact J.ne_zero (by rw [h, hx]; simp)`.
+-/
 theorem ne_zero_of_eq_span {J : (FractionalIdeal (𝓞 E)⁰ E)ˣ} {x : 𝓞 E}
     (h : (J : FractionalIdeal (𝓞 E)⁰ E) = (Ideal.span {x} : Ideal (𝓞 E))) : (x : E) ≠ 0 := fun h0 => by
   have hx : x = 0 := by exact_mod_cast h0
@@ -265,6 +366,13 @@ theorem ne_zero_of_eq_span {J : (FractionalIdeal (𝓞 E)⁰ E)ˣ} {x : 𝓞 E}
 
 variable {A : Type} [CommGroup A]
 
+/- English proof (translation)
+Use `exists_extend _ _ (exists_diag hm) (f.comp (idlPrime 𝔪)) ?_` and prove the remaining obligations. Introduce and unpack `⟨_, hk⟩ ⟨k, rfl⟩`. Take `⟨α, β, hβ, h1, h2, e⟩` from `exists_quot hm k hk`. Establish `hβE : (β : E) ≠ 0` using `by exact_mod_cast hβ`. Establish `hαE : (α : E) ≠ 0` using `e ▸ mul_ne_zero k.ne_zero hβE`.
+
+Establish `ha` using `hf α (idlPrime 𝔪 ⟨_, diag_mem hm h1 hαE⟩) h1 ((idl_diag _).trans (FractionalIdeal.coeIdeal_span_singleton α).symm)`. Establish `hb` using `hf β (idlPrime 𝔪 ⟨_, diag_mem hm h2 hβE⟩) h2 ((idl_diag _).trans (FractionalIdeal.coeIdeal_span_singleton β).symm)`. Establish `e' : (⟨_, diag_mem hm h1 hαE⟩ : congrIdl 𝔪) = ⟨_, hk⟩ * ⟨_, diag_mem hm h2 hβE⟩` using `Subtype.ext (by show diagUnits E _ = diagUnits E _ * diagUnits E _`. Rewrite using `[← map_mul]`. Conclude with `congrArg _ (Units.ext e.symm))`.
+
+Rewrite `ha` using `[e', map_mul, map_mul, hb, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_idelic {𝔪 : Ideal (𝓞 E)} (hm : 𝔪 ≠ ⊥) (f : idealsPrimeTo 𝔪 →* A)
     (hf : ∀ (x : 𝓞 E) (J : idealsPrimeTo 𝔪), x - 1 ∈ 𝔪 →
       (J.1 : FractionalIdeal (𝓞 E)⁰ E) = (Ideal.span {x} : Ideal (𝓞 E)) → f J = 1) :
@@ -289,10 +397,16 @@ section Values
 
 variable {𝔪 : Ideal (𝓞 E)} {f : idealsPrimeTo 𝔪 →* A} {ψ : Ideles E →* A}
 
+/- English proof (translation)
+Rewrite using `[h1 ⟨a, hc⟩, show idlPrime 𝔪 ⟨a, hc⟩ = 1 from Subtype.ext (idl_unit hu), map_one]`.
+-/
 theorem map_unit (h1 : ∀ a : congrIdl 𝔪, ψ a = f (idlPrime 𝔪 a)) {a : Ideles E} (hu : a ∈ unitIdl E)
     (hc : a ∈ congrIdl 𝔪) : ψ a = 1 := by
   rw [h1 ⟨a, hc⟩, show idlPrime 𝔪 ⟨a, hc⟩ = 1 from Subtype.ext (idl_unit hu), map_one]
 
+/- English proof (translation)
+Introduce `w` and use `by show Valued.v (cmp _ w) = 1 by_cases h : w = v · subst h; rw [cmp_local_self]; exact hu · rw [cmp_local_ne h, map_one]`.
+-/
 theorem local_mem_unitIdl {v : HeightOneSpectrum (𝓞 E)} {u : (v.adicCompletion E)ˣ} (hu : IsUnitAt v u) :
     localIdele E v u ∈ unitIdl E := fun w => by
   show Valued.v (cmp _ w) = 1
@@ -300,11 +414,19 @@ theorem local_mem_unitIdl {v : HeightOneSpectrum (𝓞 E)} {u : (v.adicCompletio
   · subst h; rw [cmp_local_self]; exact hu
   · rw [cmp_local_ne h, map_one]
 
+/- English proof (translation)
+Introduce `w hw` and use `by rw [cmp_local_ne (by rintro rfl; exact hv hw)] simp`.
+-/
 theorem local_mem_congrIdl {v : HeightOneSpectrum (𝓞 E)} (hv : ¬ v.asIdeal ∣ 𝔪) (u : (v.adicCompletion E)ˣ) :
     localIdele E v u ∈ congrIdl 𝔪 := fun w hw => by
   rw [cmp_local_ne (by rintro rfl; exact hv hw)]
   simp
 
+/- English proof (translation)
+Rewrite using `[h1 ⟨_, local_mem_congrIdl hv u⟩]`. Use `congrArg f (Subtype.ext (idl_eq fun w => ?_))` and prove the remaining obligations. Use `show Valued.v (cmp (localIdele E v u) w) = exp (-FractionalIdeal.count E w (v.asIdeal : FractionalIdeal (𝓞 E)⁰ E))`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[cmp_local_self, FractionalIdeal.count_self]`. Conclude with `hu`. Rewrite using `[cmp_local_ne h, map_one, FractionalIdeal.count_maximal_coprime E w (Ne.symm h)]`. Both sides reduce to the same expression.
+-/
 theorem map_unif (h1 : ∀ a : congrIdl 𝔪, ψ a = f (idlPrime 𝔪 a)) {v : HeightOneSpectrum (𝓞 E)}
     (hv : ¬ v.asIdeal ∣ 𝔪) {u : (v.adicCompletion E)ˣ} (hu : IsUnifAt v u) :
     ψ (localIdele E v u) = f (primeElt 𝔪 v hv) := by
@@ -315,11 +437,25 @@ theorem map_unif (h1 : ∀ a : congrIdl 𝔪, ψ a = f (idlPrime 𝔪 a)) {v : H
   · subst h; rw [cmp_local_self, FractionalIdeal.count_self]; exact hu
   · rw [cmp_local_ne h, map_one, FractionalIdeal.count_maximal_coprime E w (Ne.symm h)]; rfl
 
+/- English proof (translation)
+Rewrite using `[ex_mul (pow_ne_zero _ v.ne_bot) hn, ex, FractionalIdeal.coeIdeal_pow, FractionalIdeal.count_pow, FractionalIdeal.count_maximal_coprime E w (Ne.symm h), mul_zero, zero_add]`.
+-/
 theorem ex_split {v : HeightOneSpectrum (𝓞 E)} {n : ℕ} {𝔫 : Ideal (𝓞 E)} (hn : 𝔫 ≠ ⊥) {w : HeightOneSpectrum (𝓞 E)}
     (h : w ≠ v) : ex (v.asIdeal ^ n * 𝔫) w = ex 𝔫 w := by
   rw [ex_mul (pow_ne_zero _ v.ne_bot) hn, ex, FractionalIdeal.coeIdeal_pow, FractionalIdeal.count_pow,
     FractionalIdeal.count_maximal_coprime E w (Ne.symm h), mul_zero, zero_add]
 
+/- English proof (translation)
+Establish `hn : 𝔫 ≠ ⊥` using `by rintro rfl; simp at hd; exact hm hd`. Establish `hc : diagUnits E (Units.mk0 (x : E) h0) * (localIdele E v u)⁻¹ ∈ congrIdl 𝔪` using `(mem_congrIdl hm).2 fun w hw => by`. Rewrite using `[cmp_mul, cmp_inv]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Establish `e : cmp (diagUnits E (Units.mk0 (x : E) h0)) w * ((u : w.adicCompletion E))⁻¹ - 1 = (at' w x - u) * ((u : w.adicCompletion E))⁻¹`. Rewrite using `[sub_mul, mul_inv_cancel₀ u.ne_zero]`. Both sides reduce to the same expression. Rewrite using `[cmp_local_self, e, map_mul, map_inv₀, show Valued.v (u : w.adicCompletion E) = 1 from hu, inv_one, mul_one]`. Conclude with `hxu`.
+
+Establish `hw' : w.asIdeal ∣ 𝔫`. Assume the negation of the conclusion as `hw'`. Conclude with `(ex_eq_zero_iff hm w).1 (by rw [hd, ex_split hn h]; exact (ex_eq_zero_iff hn w).2 hw') hw`. Use `(mem_iff_at hn _).1 hx w hw'` as an intermediate fact. Rewrite `this` using `[at'_sub_one]`.
+
+Rewrite using `[cmp_local_ne h, inv_one, mul_one, hd, ex_split hn h]`. Conclude with `this`. Use `⟨idlPrime 𝔪 ⟨_, hc⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ((idl (_ * _) : (FractionalIdeal (𝓞 E)⁰ E)ˣ) : FractionalIdeal (𝓞 E)⁰ E) = _`. Rewrite using `[map_mul, map_inv, idl_unit (local_mem_unitIdl hu), inv_one, mul_one, idl_diag]`.
+
+Conclude with `(FractionalIdeal.coeIdeal_span_singleton x).symm`. Rewrite using `[← h1] show ψ (_ * _) = _`. Rewrite using `[map_mul, map_inv, h2 _ ⟨_, rfl⟩, one_mul]`.
+-/
 theorem map_local_unit (hm : 𝔪 ≠ ⊥) (h1 : ∀ a : congrIdl 𝔪, ψ a = f (idlPrime 𝔪 a))
     (h2 : ∀ d ∈ (diagUnits E).range, ψ d = 1) {v : HeightOneSpectrum (𝓞 E)} {n : ℕ} {𝔫 : Ideal (𝓞 E)}
     (hd : 𝔪 = v.asIdeal ^ n * 𝔫) {u : (v.adicCompletion E)ˣ} (hu : IsUnitAt v u) {x : 𝓞 E} (h0 : (x : E) ≠ 0)
@@ -352,6 +488,15 @@ theorem map_local_unit (hm : 𝔪 ≠ ⊥) (h1 : ∀ a : congrIdl 𝔪, ψ a = f
     show ψ (_ * _) = _
     rw [map_mul, map_inv, h2 _ ⟨_, rfl⟩, one_mul]
 
+/- English proof (translation)
+Establish `hn : 𝔫 ≠ ⊥` using `by rintro rfl; simp at hd; exact hm hd`. Establish `hI : 𝔪 * v.asIdeal ≠ ⊥` using `mul_ne_zero hm v.ne_bot`. Take `⟨x, hx⟩` from `exists_sub_mem_adelicIdeal_of_integral (K := E) (FractionalIdeal.coeIdeal_ne_zero.2 hI) (a := (localIdele E v u : AdeleRing (𝓞 E) E).2) fun w => (local_mem_unitIdl hu w).le`. Rewrite `hx` using `[mem_adelicIdeal_iff (FractionalIdeal.coeIdeal_ne_zero.2 hI)]`. Establish `hx' : ∀ w, Valued.v (at' w x - cmp (localIdele E v u) w) ≤ exp (-ex 𝔪 w) * exp (-ex v.asIdeal w)` using `fun w => by`.
+
+Rewrite using `[← exp_add, ← neg_add, ← ex_mul hm v.ne_bot, Valuation.map_sub_swap]`. Conclude with `hx w`. Establish `hv'` using `hx' v`. Rewrite `hv'` using `[cmp_local_self]`. Use `⟨x, fun hxv => ?_, (mem_iff_at hn _).2 fun w hw => ?_, hv'.trans (mul_le_of_le_one_right' (exp_ex_le_one _ v))⟩` and prove the remaining obligations.
+
+Establish `h3 : Valued.v (at' v x - u) < 1` using `(hv'.trans (mul_le_of_le_one_left' (exp_ex_le_one _ v))).trans_lt (exp_ex_lt_one v.ne_bot dvd_rfl)`. Establish `h4 : Valued.v (at' v x) < 1`. Rewrite using `[valued_algebraMap]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem v x).2 hxv`. Establish `h5` using `Valuation.map_sub_lt _ h4 h3`.
+
+Rewrite `h5` using `[sub_sub_cancel, show Valued.v (u : v.adicCompletion E) = 1 from hu]`. Conclude with `lt_irrefl _ h5`. Establish `h : w ≠ v` using `by rintro rfl; exact hv hw`. Use `(hx' w).trans (mul_le_of_le_one_right' (exp_ex_le_one _ w))` as an intermediate fact. Rewrite `this` using `[cmp_local_ne h, hd, ex_split hn h, ← at'_sub_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_integer_near (hm : 𝔪 ≠ ⊥) {v : HeightOneSpectrum (𝓞 E)} {n : ℕ} {𝔫 : Ideal (𝓞 E)}
     (hd : 𝔪 = v.asIdeal ^ n * 𝔫) (hv : ¬ v.asIdeal ∣ 𝔫) {u : (v.adicCompletion E)ˣ} (hu : IsUnitAt v u) :
     ∃ x : 𝓞 E, x ∉ v.asIdeal ∧ x - 1 ∈ 𝔫 ∧ Valued.v (at' v x - u) ≤ exp (-ex 𝔪 v) := by
@@ -385,6 +530,27 @@ namespace GlobalTheory.Published
 
 open Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR Formalism.L2.Host GlobalTheory.HeckeGal GlobalTheory.Mem.Chr GlobalTheory.RayChar
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ 𝔪 hm A _ f hf`. Take `⟨art, ha⟩` from `H F Ω`. Take `⟨ψ, h1, h2⟩` from `exists_idelic hm f hf`. Establish `hopen : IsOpen (ψ.ker : Set (Ideles F))` using `Subgroup.isOpen_mono (H₁ := unitIdl F ⊓ congrIdl 𝔪) (fun a h => map_unit h1 h.1 h.2) (GlobalTheory.Mem.UnitOpen.isOpen_unitIdl.inter (isOpen_congrIdl hm))`. Establish `hker : art.ker ≤ ψ.ker`.
+
+Rewrite using `[ha.ker]`. Use `Subgroup.topologicalClosure_minimal _ (sup_le h2 ?_) (ψ.ker.isClosed_of_isOpen hopen)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `map_unit h1 (fun v => map_one (Valued.v : Valuation (v.adicCompletion F) _)) fun v hv => (congrIdl 𝔪).one_mem v hv`. Set `χ : Gab F Ω →* A` to `art.liftOfSurjective ha.quot.surjective ⟨ψ, hker⟩`.
+
+Establish `hχ : ∀ a, χ (art a) = ψ a` using `fun a => art.liftOfRightInverse_comp_apply _ (Function.rightInverse_surjInv ha.quot.surjective) _ a`. Set `φ : G F Ω →* A` to `(χ.comp (toAb F Ω))⁻¹`. Establish `hφ : ∀ σ a, art a = toAb F Ω σ → φ σ = (ψ a)⁻¹` using `fun σ a e => by`. Rewrite using `[← hχ, e]`. Both sides reduce to the same expression.
+
+Establish `hφo : IsOpen (φ.ker : Set (G F Ω))`. Use `Subgroup.isOpen_mono (H₁ := (ψ.ker.map art).comap (toAb F Ω)) ?_ ((ha.quot.isOpenMap _ hopen).preimage QuotientGroup.continuous_mk)` and prove the remaining obligations. Introduce and unpack `σ ⟨a, h, e⟩`. Rewrite using `[MonoidHom.mem_ker, hφ σ a e, MonoidHom.mem_ker.1 h, inv_one]`. Establish `hfr : ∀ (v : HeightOneSpectrum (𝓞 F)) (hv : ¬ v.asIdeal ∣ 𝔪) (B : ValuationSubring Ω), IsPlaceOver B v → ∀ σ : G F Ω, IsFrob B (normV v) σ → φ σ = f (primeElt 𝔪 v hv)` using `fun v hv B hB σ hσ => by`.
+
+Take `⟨u, hu, e⟩` from `(ha.frob v B hB _).2 ⟨σ, hσ, rfl⟩`. Use `hφ _ _ e` as an intermediate fact. Rewrite `this` using `[map_inv, inv_inj, map_unif h1 hv hu]`. Then use the resulting hypothesis. Use `⟨φ, hφo, fun v hv B hB σ hσ => ?_, hfr, fun v n 𝔫 hd hv B hB a => ⟨?_, ?_⟩, fun φ' ho' hfr' => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `(ha.ine v B hB _).2 ⟨σ, hσ, rfl⟩`.
+
+Rewrite using `[hφ _ _ e, map_unit h1 (local_mem_unitIdl hu) (local_mem_congrIdl hv u), inv_one]`. Introduce and unpack `⟨σ, hσ, rfl⟩`. Take `⟨u, hu, e⟩` from `(ha.ine v B hB _).2 ⟨σ, hσ, rfl⟩`. Take `⟨x, hx1, hx2, hx3⟩` from `exists_integer_near hm hd hv hu`. Establish `h0 : (x : F) ≠ 0` using `fun h => hx1 (by rw [show x = 0 by exact_mod_cast h]; exact zero_mem _)`.
+
+Take `⟨J, hJ, e'⟩` from `map_local_unit hm h1 h2 hd hu h0 hx2 hx3`. Conclude with `⟨x, J, hx1, hx2, hJ, by rw [e', hφ _ _ e]⟩`. Introduce and unpack `⟨x, J, hx1, hx2, hJ, rfl⟩`. Establish `h0` using `ne_zero_of_eq_span hJ`. Establish `hu : IsUnitAt v (atFin v (Units.mk0 (x : F) h0))` using `valued_algebraMap_eq_one F v x hx1`.
+
+Take `⟨J', hJ', e'⟩` from `map_local_unit hm h1 h2 hd hu h0 hx2 (by`. Rewrite using `[show at' v x - ((atFin v (Units.mk0 (x : F) h0) : (v.adicCompletion F)ˣ) : v.adicCompletion F) = 0 from sub_self _, map_zero]`. Conclude with `zero_le)`. Take `⟨σ, hσ, e⟩` from `(ha.ine v B hB _).1 ⟨_, hu, rfl⟩`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hφ _ _ e.symm, ← e', show J' = J from Subtype.ext (Units.ext (hJ'.trans hJ.symm))]`. Set `_ : TopologicalSpace A` to `⊥`. Establish `: DiscreteTopology A` using `⟨rfl⟩`. Establish `h` using `GlobalTheory.FrobDense.eq_one_of_frob F Ω art ha A (φ' * φ⁻¹) ((continuous_of_isOpen_ker' φ' ho').mul (continuous_of_isOpen_ker' φ hφo).inv) (Ideal.finite_factors hm).toFinset fun v hv B hB σ hσ => by`. Establish `hv' : ¬ v.asIdeal ∣ 𝔪` using `fun h => hv ((Set.Finite.mem_toFinset _).2 h)`.
+
+Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hfr' v hv' B hB σ hσ, hfr v hv' B hB σ hσ, mul_inv_cancel]`. Conclude with `mul_inv_eq_one.1 h`.
+-/
 theorem GlobalArtinReciprocity.rayCharacterArtin (H : GlobalArtinReciprocity) : RayCharacterArtin := by
   intro F Ω _ _ _ _ _ 𝔪 hm A _ f hf
   obtain ⟨art, ha⟩ := H F Ω
@@ -442,6 +608,13 @@ theorem GlobalArtinReciprocity.rayCharacterArtin (H : GlobalArtinReciprocity) : 
         rw [MonoidHom.mul_apply, MonoidHom.inv_apply, hfr' v hv' B hB σ hσ, hfr v hv' B hB σ hσ, mul_inv_cancel]
     exact mul_inv_eq_one.1 h
 
+/- English proof (translation)
+Establish `h0 : x ≠ 0` using `by rintro rfl; exact hx (zero_mem _)`. Establish `h1 : IsCoprime (Ideal.span {x}) v.asIdeal`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Use `v.isMaximal.eq_of_le hne le_sup_right` as an intermediate fact.
+
+Conclude with `hx (this ▸ Ideal.mem_sup_left (Ideal.mem_span_singleton_self x))`. Establish `h2 : IsCoprime (Ideal.span {x}) 𝔫` using `Ideal.isCoprime_iff_exists.2 ⟨x, Ideal.mem_span_singleton_self x, _, 𝔫.neg_mem hx', by ring⟩`. Establish `hc : IsCoprime (Ideal.span {x}) 𝔪` using `hd ▸ h1.pow_right.mul_right h2`. Use `⟨⟨Units.mk0 _ (FractionalIdeal.coeIdeal_ne_zero.2 (by simpa using h0 : Ideal.span {x} ≠ ⊥)), fun w hw => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, FractionalIdeal.coeIdeal_span_singleton]`.
+
+Conclude with `count_span_eq_zero h0 hc w hw`.
+-/
 theorem exists_idealsPrimeTo_eq_span {F : Type} [Field F] [NumberField F] {𝔪 𝔫 : Ideal (𝓞 F)}
     {v : HeightOneSpectrum (𝓞 F)} {n : ℕ} (hd : 𝔪 = v.asIdeal ^ n * 𝔫) {x : 𝓞 F} (hx : x ∉ v.asIdeal)
     (hx' : x - 1 ∈ 𝔫) :
@@ -460,6 +633,9 @@ theorem exists_idealsPrimeTo_eq_span {F : Type} [Field F] [NumberField F] {𝔪 
   rw [Units.val_mk0, FractionalIdeal.coeIdeal_span_singleton]
   exact count_span_eq_zero h0 hc w hw
 
+/- English proof (translation)
+Establish `h0` using `ne_zero_of_eq_span hJ`. Use `hf J ⟨Units.mk0 (x : F) h0, ⟨x, 1, ⟨fun h => h0 (by simp [h]), one_ne_zero, Ideal.isCoprime_iff_exists.2 ⟨x, Ideal.mem_span_singleton_self x, _, 𝔪.neg_mem hx, by ring⟩, by simp [← Ideal.one_eq_top, isCoprime_one_left], hx, fun φ => ?_⟩, by simp⟩, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `absurd (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => Complex.conj_ofReal (φ y))) (IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ))`. Rewrite using `[coe_toPrincipalIdeal, hJ, FractionalIdeal.coeIdeal_span_singleton]`. Both sides reduce to the same expression.
+-/
 theorem kills_of_rayPrincipal {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] {𝔪 : Ideal (𝓞 F)}
     {A : Type} [CommGroup A] (f : idealsPrimeTo 𝔪 →* A) (hf : ∀ J : idealsPrimeTo 𝔪, J.1 ∈ rayPrincipal 𝔪 → f J = 1)
     (x : 𝓞 F) (J : idealsPrimeTo 𝔪) (hx : x - 1 ∈ 𝔪)
@@ -473,6 +649,9 @@ theorem kills_of_rayPrincipal {F : Type} [Field F] [NumberField F] [IsTotallyCom
   · rw [coe_toPrincipalIdeal, hJ, FractionalIdeal.coeIdeal_span_singleton]
     rfl
 
+/- English proof (translation)
+The claim follows from `kills_of_rayPrincipal (A := RayClassGroup 𝔪) (QuotientGroup.mk' ((rayPrincipal 𝔪).subgroupOf (idealsPrimeTo 𝔪))) (fun I h => (QuotientGroup.eq_one_iff I).2 h) x J hx hJ`.
+-/
 example {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] (𝔪 : Ideal (𝓞 F)) (x : 𝓞 F) (J : idealsPrimeTo 𝔪)
     (hx : x - 1 ∈ 𝔪) (hJ : (J.1 : FractionalIdeal (𝓞 F)⁰ F) = (Ideal.span {x} : Ideal (𝓞 F))) :
     (QuotientGroup.mk J : RayClassGroup 𝔪) = 1 :=

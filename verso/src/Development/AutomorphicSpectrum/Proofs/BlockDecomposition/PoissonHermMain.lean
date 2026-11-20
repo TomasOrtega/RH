@@ -15,6 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.HermPoisson
 
+/- English proof (translation)
+Introduce `D r V ψ θ μ lam ν φ hH hJ`. Take `⟨hm, hψ, hθ, hμ, ⟨𝓖, hlam⟩, -, hφ, -⟩` from `hH`. Establish `hc` using `GlobalTheory.T.theta_integral_continuous D r V ψ θ μ φ hψ hθ hμ hφ`. Establish `hu` using `GlobalTheory.T.theta_integral_locally_summable_bound D r V ψ θ μ φ hm hψ hθ hμ hφ`. Establish `hW` using `GlobalTheory.T.siegel_eisenstein_coefficients_summable D r V ψ θ μ lam 𝓖 φ hm hψ hθ hμ hlam hφ`.
+
+Take `⟨-, hP⟩` from `GlobalTheory.T.poisson_summation_hermitian_lattice D r ψ hψ lam 𝓖 hlam _ hc hu`. Establish `hgW : ∀ β : HermE D r, (fun t : ratHerm D r => ∫ b, Jt ψ V μ φ b * ψ (-halfTr (Matrix.trace (HMul.hMul t.1.1 b.1 : Mx D r r))) ∂lam) ((hermEquiv (D` using `D) (r := r)) β) = W ψ V μ lam φ β := fun β => (W_eq ψ V μ lam φ β).symm`. Establish `hS : Summable (fun t : ratHerm D r => ∫ b, Jt ψ V μ φ b * ψ (-halfTr (Matrix.trace (HMul.hMul t.1.1 b.1 : Mx D r r))) ∂lam)`. Use `(hermEquiv (D := D) (r := r)).summable_iff.1 ?_` and prove the remaining obligations. Conclude with `hW.congr fun β => (hgW β).symm`.
+
+Establish `e` using `hP hS`. Establish `hsumJ : ∑' b : HermE D r, J ψ V μ φ b = ∑' c : ratHerm D r, Jt ψ V μ φ c.1` using `(hermEquiv (D := D) (r := r)).tsum_eq (fun c => Jt ψ V μ φ c.1)`. Establish `hsumW : ∑' β : HermE D r, W ψ V μ lam φ β = ∑' t : ratHerm D r, ∫ b, Jt ψ V μ φ b * ψ (-halfTr (Matrix.trace (HMul.hMul t.1.1 b.1 : Mx D r r))) ∂lam`. Rewrite using `[← (hermEquiv (D := D) (r := r)).tsum_eq]`. Conclude with `tsum_congr fun β => (hgW β).symm`.
+
+Rewrite using `[hsumJ, e, ← hsumW]`. Conclude with `hW.hasSum`.
+-/
 theorem poissonHerm_main : PositivityTheory.GramSchwartzFunctions.BC.PoissonHerm := by
   intro D r V ψ θ μ lam ν φ hH hJ
   obtain ⟨hm, hψ, hθ, hμ, ⟨𝓖, hlam⟩, -, hφ, -⟩ := hH

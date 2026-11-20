@@ -11,6 +11,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open GlobalTheory.Cartier GlobalTheory.CovTest.SwapLine
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor | exact GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor | (intros; apply GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.homogeneous_line_base_difference : ∀ (d : ℕ) (a b : ℤ), ∃ K : MvPolynomial (Fin 5) ℝ, K.IsHomogeneous d ∧
     onLine d a b - onBase d a b = (X 0 - X 4) * (X 0 - X 3) * K := by
   first | exact @GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor | exact GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor | (intros; apply GlobalTheory.CovTest.SwapLine.onLine_sub_onBase_factor <;> assumption)

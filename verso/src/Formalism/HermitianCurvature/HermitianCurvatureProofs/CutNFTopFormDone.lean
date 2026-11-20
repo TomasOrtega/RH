@@ -5,8 +5,14 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFTopForm
 
 namespace Formalism.FourierDecayAlt.P.CutBP
 
+/- English proof (translation)
+The claim follows from `TDM.topDMeasCpt_of_typeNormMeas type_norm_measurability_holds`.
+-/
 theorem top_domination_measurable_compact : TopDMeasCpt := TDM.topDMeasCpt_of_typeNormMeas type_norm_measurability_holds
 
+/- English proof (translation)
+The claim follows from `nFTopFormAll_of top_domination_measurable_compact (nfApxDomAll_of_ptw hP)`.
+-/
 theorem nFTopFormAll_of_ptw (hP : NFDomPtw) : NFTopFormAll :=
   nFTopFormAll_of top_domination_measurable_compact (nfApxDomAll_of_ptw hP)
 

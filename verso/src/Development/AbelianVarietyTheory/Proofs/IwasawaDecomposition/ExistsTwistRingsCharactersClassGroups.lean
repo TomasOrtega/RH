@@ -29,10 +29,18 @@ namespace GlobalTheory.TwRing
 
 open GlobalTheory.GalChar Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR GlobalTheory.HeckeGal
 
+/- English proof (translation)
+The claim follows from `inf_le_inf_right _ (Subring.topologicalClosure_mono fun _ ⟨y, hy, e⟩ => ⟨y, h hy, e⟩)`.
+-/
 theorem clC_mono (l : ℕ) [Fact l.Prime] {F F' : IntermediateField ℚ_[l] (PadicAlgCl l)} (h : F ≤ F') :
     clC l F ≤ clC l F' :=
   inf_le_inf_right _ (Subring.topologicalClosure_mono fun _ ⟨y, hy, e⟩ => ⟨y, h hy, e⟩)
 
+/- English proof (translation)
+Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `letI : Field (𝓞 K ⧸ w.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 K ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Take `⟨p, hp⟩` from `CharP.exists (𝓞 K ⧸ w.asIdeal)`. Use `haveI := hp`.
+
+Conclude with `⟨p, CharP.char_is_prime (𝓞 K ⧸ w.asIdeal) p, Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_natCast]; exact CharP.cast_eq_zero _ p)⟩`.
+-/
 theorem exists_prime_mem (K : Type) [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     ∃ l : ℕ, l.Prime ∧ ((l : ℕ) : 𝓞 K) ∈ w.asIdeal := by
   haveI : w.asIdeal.IsMaximal := w.isMaximal
@@ -43,6 +51,13 @@ theorem exists_prime_mem (K : Type) [Field K] [NumberField K] (w : HeightOneSpec
   exact ⟨p, CharP.char_is_prime (𝓞 K ⧸ w.asIdeal) p,
     Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_natCast]; exact CharP.cast_eq_zero _ p)⟩
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 E)`. Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ : 𝓞 E →* ℤ)`. Rewrite `h1` using `[show ((p : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ) by simp, Algebra.norm_algebraMap]`. Establish `h2` using `Int.isUnit_iff_natAbs_eq.1 h1`.
+
+Establish `h3 : 0 < Module.finrank ℤ (𝓞 E)` using `Module.finrank_pos`. Rewrite `h2` using `[Int.natAbs_pow, Int.natAbs_natCast]`. Break down `Nat.pow_eq_one.1 h2 with h | h` into its components or cases. Conclude with `hp.one_lt.ne' h`. Conclude with `h3.ne' h`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 E)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hmem : ((p : ℕ) : 𝓞 E) ∈ M` using `hle (Ideal.subset_span rfl)`. Use `⟨⟨M, hM.isPrime, fun h => ?_⟩, hmem⟩` and prove the remaining obligations. Rewrite `hmem` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hmem)`.
+-/
 theorem placesOver_nonempty (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime) :
     (placesOver E p).Nonempty := by
   have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 E) := by
@@ -62,35 +77,59 @@ theorem placesOver_nonempty (E : Type) [Field E] [NumberField E] (p : ℕ) (hp :
   rw [h, Ideal.mem_bot] at hmem
   exact hp.ne_zero (by exact_mod_cast hmem)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_ringEquiv_algClosed_over_numberField_comp_eq K Ω₁ Ω₂ a b hc hu`.
+-/
 theorem exists_ringEquiv_over (K Ω₁ Ω₂ : Type) [Field K] [NumberField K] [Field Ω₁] [Field Ω₂] [IsAlgClosed Ω₁]
     [IsAlgClosed Ω₂] [CharZero Ω₁] [CharZero Ω₂] (a : K →+* Ω₁) (b : K →+* Ω₂)
     (hc : Cardinal.mk Ω₁ = Cardinal.mk Ω₂) (hu : Cardinal.aleph0 < Cardinal.mk Ω₁) :
     ∃ ι : Ω₁ ≃+* Ω₂, ∀ x, ι (a x) = b x :=
   GlobalTheory.T.exists_ringEquiv_algClosed_over_numberField_comp_eq K Ω₁ Ω₂ a b hc hu
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.card_padicAlgCl_padicComplex_eq_complex l).1`.
+-/
 theorem card_padicAlgCl (l : ℕ) [Fact l.Prime] : Cardinal.mk (PadicAlgCl l) = Cardinal.mk ℂ :=
   (GlobalTheory.T.card_padicAlgCl_padicComplex_eq_complex l).1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.card_padicAlgCl_padicComplex_eq_complex l).2`.
+-/
 theorem card_padicComplex (l : ℕ) [Fact l.Prime] : Cardinal.mk ℂ_[l] = Cardinal.mk ℂ :=
   (GlobalTheory.T.card_padicAlgCl_padicComplex_eq_complex l).2
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mem_finiteExtPadic_ringOfIntegers_iff_norm_le_one l K x`.
+-/
 theorem mem_OL_iff (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) (x : ↥K.1) :
     x ∈ Loc.OL K ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 :=
   GlobalTheory.T.mem_finiteExtPadic_ringOfIntegers_iff_norm_le_one l K x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mem_maximalIdeal_OL_iff_norm_lt_one l K y`.
+-/
 theorem mem_maximalIdeal_OL_iff (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) [IsLocalRing ↥(Loc.OL K)]
     (y : ↥(Loc.OL K)) : y ∈ IsLocalRing.maximalIdeal ↥(Loc.OL K) ↔ ‖((y : ↥K.1) : PadicAlgCl l)‖ < 1 :=
   GlobalTheory.T.mem_maximalIdeal_OL_iff_norm_lt_one l K y
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_ringEquiv_finExtIntegers_padicIntOf l K`.
+-/
 theorem exists_equiv_intOf (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) :
     ∃ e : ↥(Loc.OL K) ≃+* ↥(intOf l K.1), ∀ y, (e y : PadicAlgCl l) = ((y : ↥K.1) : PadicAlgCl l) :=
   GlobalTheory.T.exists_ringEquiv_finExtIntegers_padicIntOf l K
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_integers_to_completedUnramifiedCompositum l K₀ L`.
+-/
 theorem exists_toClC (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l) :
     ∃ f : ↥(Loc.OL K₀) →+* ↥(clC l (Kt l K₀ L)),
       ∀ y, (f y : ℂ_[l]) = algebraMap (PadicAlgCl l) ℂ_[l] ((y : ↥K₀.1) : PadicAlgCl l) :=
   GlobalTheory.T.exists_integers_to_completedUnramifiedCompositum l K₀ L
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finite_primitive_root_of_clC_le l K₀ L k _`.
+-/
 theorem ok_laws (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l) (k : ℕ) :
     letI := (Subring.inclusion (clC_mono l (le_sup_left : Kt l K₀ L ≤ Kt l K₀ L ⊔ muK l k))).toAlgebra
     Module.Finite ↥(clC l (Kt l K₀ L)) ↥(clC l (Kt l K₀ L ⊔ muK l k)) ∧
@@ -101,6 +140,9 @@ theorem ok_laws (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l) (k : ℕ) :
             algebraMap _ (FractionRing ↥(clC l (Kt l K₀ L ⊔ muK l k))) (Polynomial.aeval (z : ↥(clC l (Kt l K₀ L ⊔ muK l k))) p) :=
   GlobalTheory.T.finite_primitive_root_of_clC_le l K₀ L k _
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unramifiedHeckeChar_idele_value_uniformiser χ h hh v`.
+-/
 theorem hc_at {E : Type} [Field E] [NumberField E] (χ : HChar E) (h : Formalism.L2.NC.HC E)
     (hh : h.χ = (χ : Ideles E →* ℂˣ)) (v : HeightOneSpectrum (𝓞 E)) :
     (χ.UnrAt v → h.At v (χ.val v)) ∧ (χ.UnrAt v ↔ h.Unr v) :=
@@ -111,6 +153,13 @@ end GlobalTheory.TwRing
 namespace GlobalTheory.TwRing
 open GlobalTheory.GalChar Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR GlobalTheory.HeckeGal
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨v, hv⟩` from `placesOver_nonempty E p hp`. Establish `hv' : v ∈ placesOver E q` using `h ▸ hv`. Establish `hc : Nat.Coprime p q` using `(Nat.coprime_primes hp hq).2 hne`. Take `⟨a, b, hab⟩ : ∃ a b : ℤ, a * p + b * q = 1` from `⟨Nat.gcdA p q, Nat.gcdB p q, by`.
+
+Use `Nat.gcd_eq_gcd_ab p q` as an intermediate fact. Rewrite `this` using `[hc]`. Move the coercions through the operations in `at this`. Use the proof step `linarith⟩`. Apply `v.isPrime.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: ((a : 𝓞 E) * (p : 𝓞 E) + (b : 𝓞 E) * (q : 𝓞 E)) = 1` using `by exact_mod_cast congrArg (Int.cast (R := 𝓞 E)) hab`. Rewrite using `[← this]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')`.
+-/
 theorem placesOver_inj (E : Type) [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (h : placesOver E p = placesOver E q) : p = q := by
   by_contra hne
@@ -125,11 +174,17 @@ theorem placesOver_inj (E : Type) [Field E] [NumberField E] {p q : ℕ} (hp : p.
   rw [← this]
   exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.etaTilde_isUnitArg_at_cmType_places H χ hχ h hh g`.
+-/
 theorem eta_unitArg {R : Ranks} (H : Host R) (χ : HChar H.E) (hχ : IsEtaT H χ) (h : Formalism.L2.NC.HC H.E)
     (hh : h.χ = (χ : Ideles H.E →* ℂˣ)) (g : R.Psi) :
     h.IsUnitArg (H.emb (g : R.GG)) :=
   GlobalTheory.T.etaTilde_isUnitArg_at_cmType_places H χ hχ h hh g
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.eventually_block_val_at_and_exists_inv_eq ε μ η hμ hη hr μH ηH hμH hηH`.
+-/
 theorem vals_block {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (ε : K →+* ℂ) (μ η : HChar E)
     (hμ : AlmostIn ε μ) (hη : η.ValuesIn (1 / 2) ε) {r : ℕ} (hr : Odd r) (μH ηH : Formalism.L2.NC.HC E)
     (hμH : μH.χ = (μ : Ideles E →* ℂˣ)) (hηH : ηH.χ = (η : Ideles E →* ℂˣ)) :
@@ -138,6 +193,9 @@ theorem vals_block {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (ε
       ∃ y : K, ε y = (((block μ η r).val v : ℂˣ) : ℂ)⁻¹ :=
   GlobalTheory.T.eventually_block_val_at_and_exists_inv_eq ε μ η hμ hη hr μH ηH hμH hηH
 
+/- English proof (translation)
+Use `filter_upwards [unr_ae χ] with v hu`. Use `⟨by simpa using (hc_at χ χH hH v).1 hu, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hv v hu`. Conclude with `⟨y⁻¹, by rw [map_inv₀, hy]; simp [HChar.valTw]⟩`.
+-/
 theorem vals_zero {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (ε : K →+* ℂ) (χ : HChar E)
     (hv : χ.ValuesIn 0 ε) (χH : Formalism.L2.NC.HC E) (hH : χH.χ = (χ : Ideles E →* ℂˣ)) :
     ∀ᶠ v in Filter.cofinite, χH.At v (((χ.val v : ℂˣ) : ℂ) * (Real.sqrt (normV v) : ℂ) ^ (0 : ℤ)) ∧
@@ -147,6 +205,9 @@ theorem vals_zero {E : Type} [Field E] [NumberField E] {K : Type} [Field K] (ε 
   obtain ⟨y, hy⟩ := hv v hu
   exact ⟨y⁻¹, by rw [map_inv₀, hy]; simp [HChar.valTw]⟩
 
+/- English proof (translation)
+Apply `κ.injective` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[hL, hy]`. Conclude with `h.frob ha hv hu hA hσ`.
+-/
 theorem frob_read {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime]
     {O : Type} [CommRing O] [IsDomain O] [TopologicalSpace O] {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
     {κ : FractionRing O →+* Qbar l} {ι : Qbar l ≃+* ℂ} {χ : HChar E} {n : (E →+* ℂ) → ℤ} {r : G E Ω →* Oˣ}
@@ -160,6 +221,11 @@ theorem frob_read {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E 
   rw [hL, hy]
   exact h.frob ha hv hu hA hσ
 
+/- English proof (translation)
+Establish `hall` using `hχ.and ((unr_ae χ).and (away_ae (E := E) l (Fact.out : l.Prime).ne_zero))`. Use `⟨(Filter.eventually_cofinite.1 hall).toFinset, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite `hP` using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not]`. Take `⟨⟨hAt, y, hy⟩, hu, hl⟩` from `hP`. Use `⟨_, hAt, y, ?_, fun σ hσ => frob_read ha h eL embC hL (Or.inl hl) hu (hpl P) hσ hy⟩` and prove the remaining obligations.
+
+Establish `h0 : (Real.sqrt (normV P) : ℂ) ≠ 0`. Use `Formalism.L2.NC.normV_ne_zero P` as an intermediate fact. Conclude with `(Real.sqrt_pos.2 (by exact_mod_cast Nat.pos_of_ne_zero this)).ne'` after adjusting the coercions. Rewrite using `[mul_inv, mul_assoc, inv_mul_cancel₀ (zpow_ne_zero _ h0), mul_one, hy]`.
+-/
 theorem read_of_isGal {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime]
     {O : Type} [CommRing O] [IsDomain O] [TopologicalSpace O] {art : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
     {κ : FractionRing O →+* Qbar l} {ι : Qbar l ≃+* ℂ} {χ : HChar E} {n : (E →+* ℂ) → ℤ} {r : G E Ω →* Oˣ}
@@ -184,6 +250,9 @@ end GlobalTheory.TwRing
 namespace GlobalTheory.TwRing
 open GlobalTheory.GalChar Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR GlobalTheory.HeckeGal
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_coefficientField_lower_bounds D`.
+-/
 theorem exists_padicBaseField_integral_places (D : D7) : ∃ c0 : Big D, ∀ (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* PadicAlgCl l),
     (∀ x, j x ∈ (c0 l j).1) ∧ muK l 1 ≤ (c0 l j).1 ∧
     ∀ K0 : Loc.FinExt l, (c0 l j).1 ≤ K0.1 → ∀ w ∈ placesOver D.host.E l,
@@ -194,6 +263,109 @@ theorem exists_padicBaseField_integral_places (D : D7) : ∃ c0 : Big D, ∀ (l 
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D cf J hJ hV hstar hE`. Take `⟨c0, hc0⟩` from `exists_padicBaseField_integral_places D`. Use `⟨c0, fun b0 b1 Sx hb => ?_⟩` and prove the remaining obligations. Use `choose lw hlw using fun w : HeightOneSpectrum (𝓞 ↥D.LL0) => exists_prime_mem ↥D.LL0 w`. Use `haveI hF : ∀ w, Fact (lw w).Prime := fun w => ⟨(hlw w).1⟩`.
+
+Use `set j0 : ∀ w, ↥D.LL0 →+* PadicAlgCl (lw w) := fun w => J (lw w) w (hlw w).2 with hj0`. Use `set K0 : ∀ w, Loc.FinExt (lw w) := fun w => b0 (lw w) (j0 w) with hK0`. Use `set Lw : ∀ w, Loc.FinExt (lw w) := fun w => b1 (lw w) (j0 w) with hLw`. Establish `hco` using `fun w => GlobalTheory.CoefInt.integers_laws (lw w) (K0 w)`. Use `haveI hdvr0 : ∀ w, IsDiscreteValuationRing ↥(Loc.OL (K0 w)) := fun w => (hco w).fst`.
+
+Use `haveI hfin0 : ∀ w, Module.Finite ℤ_[lw w] ↥(Loc.OL (K0 w)) := fun w => (hco w).snd.1`. Use `haveI hfr0 : ∀ w, IsFractionRing ↥(Loc.OL (K0 w)) ↥(K0 w).1 := fun w => (hco w).snd.2.2.2.2`. Establish `hclc` using `fun w k => GlobalTheory.T.exists_cyclotomic_unramified_completed_integers (lw w) (K0 w) (Lw w) k`. Establish `hmu0 : ∀ w, muK (lw w) 0 = ⊥` using `fun w => (hclc w 0).snd.2.2.2.2.1`. Establish `hkt : ∀ w, Kt (lw w) (K0 w) (Lw w) ⊔ muK (lw w) 0 = Kt (lw w) (K0 w) (Lw w)` using `fun w => by`.
+
+Rewrite using `[hmu0 w, sup_bot_eq]`. Establish `hclc0` using `fun w => hkt w ▸ hclc w 0`. Use `haveI hdvrO : ∀ w, IsDiscreteValuationRing ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))) := fun w => (hclc0 w).fst`. Use `haveI hdvrOk : ∀ w k, IsDiscreteValuationRing ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w) ⊔ muK (lw w) k)) := fun w k => (hclc w k).fst`. Use `choose toO htoO using fun w => exists_toClC (lw w) (K0 w) (Lw w)`.
+
+Use `choose cc hcc using GlobalTheory.MemN.exists_isCMConjOm_nData D.R D.host D.what₂ D.nd`. Take `⟨art, ha⟩` from `hA D.host.E D.nd.Om`. Set `C : GlobalTheory.Mem.Chr.HFrame D.host (fun j => eExp D j)` to `⟨cf.P, cf.W, cf.mu0, cf.eta, cf.chiPsi, cf.del, cf.del', cf.isMu0, cf.isEta, cf.isChi, cf.isDel, cf.isDel'⟩`. Establish `hGal` using `galois_characters_of_artin D.R D.host D.nd.Om cc hcc (fun j => eExp D j) hE C D.nd.g_split art ha`. Establish `hTw` using `hGal.1`.
+
+Set `φ : ∀ w, FractionRing ↥(Loc.OL (K0 w)) ≃ₐ[↥(Loc.OL (K0 w))] ↥(K0 w).1` to `fun w => IsLocalization.algEquiv (nonZeroDivisors ↥(Loc.OL (K0 w))) (FractionRing ↥(Loc.OL (K0 w))) ↥(K0 w).1`. Establish `hj0K : ∀ w x, j0 w x ∈ (K0 w).1` using `fun w x => hb (lw w) (j0 w) ((hc0 (lw w) (j0 w)).1 x)`. Set `jK : ∀ w, ↥D.LL0 →+* ↥(K0 w).1` to `fun w => (j0 w).codRestrict (K0 w).1 (hj0K w)`. Set `κ : ∀ w, FractionRing ↥(Loc.OL (K0 w)) →+* PadicAlgCl (lw w)` to `fun w => ((K0 w).1.val.toRingHom).comp (φ w).toRingEquiv.toRingHom`. Set `emb0 : ∀ w, ↥D.LL0 →+* FractionRing ↥(Loc.OL (K0 w))` to `fun w => (φ w).symm.toRingEquiv.toRingHom.comp (jK w)`.
+
+Set `st : ↥D.LL0 → ↥D.LL0` to `fun x => ⟨star (x : D.what₂.LL), hstar x⟩`. Set `stH : ↥D.LL0 →+* ↥D.LL0` to `{ toFun := st map_one' := Subtype.ext (by simp [st]) map_mul' := fun x y => Subtype.ext (by simp [st, star_mul']) map_zero' := Subtype.ext (by simp [st]) map_add' := fun x y => Subtype.ext (by simp [st]) }`. Set `emb0b : ∀ w, ↥D.LL0 →+* FractionRing ↥(Loc.OL (K0 w))` to `fun w => (emb0 w).comp stH`. Establish `hκemb : ∀ w x, κ w (emb0 w x) = j0 w x` using `fun w x => by`. Simplify using `[κ, emb0, jK]`.
+
+Establish `hcard : ∀ w, Cardinal.aleph0 < Cardinal.mk (PadicAlgCl (lw w))` using `fun w => by`. Rewrite using `[card_padicAlgCl, Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Use `choose ι hι using fun w => exists_ringEquiv_over ↥D.LL0 (PadicAlgCl (lw w)) ℂ (j0 w) (embLL0 D) ((card_padicAlgCl (lw w))) (hcard w)`. Establish `hf : ∀ w x, ι w (κ w (emb0 w x)) = embLL0 D x` using `fun w x => by rw [hκemb, hι]`.
+
+Establish `hf' : ∀ w x, ι w (κ w (emb0b w x)) = starRingEnd ℂ (embLL0 D x)` using `fun w x => by show ι w (κ w (emb0 w (st x))) = _`. Rewrite using `[hf]`. Conclude with `D.starLL_cx (x : D.what₂.LL)`. Establish `hκ : ∀ w (z : ℤ_[lw w]), κ w (algebraMap ↥(Loc.OL (K0 w)) (FractionRing ↥(Loc.OL (K0 w))) (algebraMap ℤ_[lw w] ↥(Loc.OL (K0 w)) z)) = algebraMap ℚ_[lw w] (PadicAlgCl (lw w)) (z : ℚ_[lw w])` using `fun w z => by`. Simplify using `[κ, φ]`.
+
+Both sides reduce to the same expression. Establish `hdel : ∀ w, (delAt D.host C (lw w)).ValuesIn 0 (embLL0 D)` using `fun w => by show (if lw w = D.host.pde then cf.del' else cf.del).ValuesIn 0 (embLL0 D) split_ifs`. Conclude with `hV.del'`. Conclude with `hV.del`. Establish `hchar` using `fun w => hTw (lw w) ↥(Loc.OL (K0 w)) (hco w).snd.2.1 (κ w) (hκ w) (ι w) ↥D.LL0 (embLL0 D) (emb0 w) (emb0b w) (hf w) (hf' w) hV.mu0 hV.eta (hdel w) (pDC D.host (lw w)) (coe_pDC D.host (lw w))`.
+
+Use `choose delta chi1 hdc using hchar`. Use `choose RCG hgrp hfint art' res hRCG using GlobalTheory.RingCls.exists_ringClass_host hA D.R D.host D.what₂ D.nd cc (HeightOneSpectrum (𝓞 ↥D.LL0)) lw`. Establish `hS0fin : ∀ w, ((placesOver D.host.E (lw w) ∪ (⋃ k, placesOver D.host.E (D.host.g k)) ∪ placesOver D.host.E D.host.pde ∪ placesOver D.host.E D.host.pde') ∪ ↑Sx).Finite` using `fun w => ((((placesOver_finite' D.host.E (lw w) (hF w).out.ne_zero).union (Set.finite_iUnion fun k => placesOver_finite' D.host.E (D.host.g k) (D.host.g_prime k).ne_zero)).union (placesOver_finite' D.host.E D.host.pde D.host.pde_prime.ne_zero)).union (placesOver_finite' D.host.E …`. Set `S0 : ∀ w, Finset (HeightOneSpectrum (𝓞 D.host.E))` to `fun w => (hS0fin w).toFinset`. Use `choose hOkfin zk hzk hOkgen using fun w k => ok_laws (lw w) (K0 w) (Lw w) k`.
+
+Set `T : TwR D.LL0 D.nd` to `{ cc := cc cc_cm := hcc Tw := HeightOneSpectrum (𝓞 ↥D.LL0) l := lw lPrime := hF O0 := fun w => ↥(Loc.OL (K0 w)) crO0 := fun w => inferInstance twistBaseCoefficientRing_isDomain := fun w => inferInstance twistBaseCoefficientRing_isDVR := hdvr0 algO0 := fun w => inferInstance twist …`. Use `congr 1`. Conclude with `Subtype.ext h.symm`. Use `O := fun w => ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))`. Use `crO := fun w => inferInstance`.
+
+Use `domO := fun w => inferInstance`. Use `dvrO := hdvrO`. Use `algO := fun w => (toO w).toAlgebra`. Use `O_inj := fun w y y' h => by`. Establish `h1 : ((toO w y : ℂ_[lw w])) = (toO w y' : ℂ_[lw w])` using `congrArg Subtype.val h`.
+
+Rewrite `h1` using `[htoO, htoO]`. Conclude with `Subtype.ext (Subtype.ext ((algebraMap (PadicAlgCl (lw w)) ℂ_[lw w]).injective h1))`. Use `O_l := fun w => by`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`.
+
+Establish `h1 : ((u⁻¹ : (↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))))ˣ) : ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))) * ((lw w : ℕ) : ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))) = 1` using `by rw [← hu]; exact u.inv_mul`. Establish `h2` using `congrArg (fun z : ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))) => ‖(z : ℂ_[lw w])‖) h1`. Simplify using `only [Subring.coe_mul, Subring.coe_natCast, Subring.coe_one, norm_mul, norm_one] at h2`. Establish `hu1 : ‖(((u⁻¹ : (↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))))ˣ) : ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))) : ℂ_[lw w])‖ ≤ 1`. Establish `hm` using `((u⁻¹ : (↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))))ˣ) : ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))).2.2`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ PadicComplexInt (lw w) at hm`. Rewrite `hm` using `[PadicComplexInt, Valuation.mem_valuationSubring_iff]`. Rewrite using `[PadicComplex.norm_eq_norm]`. Conclude with `(Valued.toNormedField.norm_le_one_iff).2 hm`. Establish `hl1 : ‖((lw w : ℕ) : ℂ_[lw w])‖ < 1`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[lw w] ℂ_[lw w]), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Use polynomial arithmetic with `[norm_nonneg (((u⁻¹ : (↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))))ˣ) : ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))) : ℂ_[lw w]), norm_nonneg ((lw w : ℕ) : ℂ_[lw w])]`. Use `topO := fun w => inferInstance`. Use `trO := fun w => inferInstance`.
+
+Use `O_adic := fun w => (hclc0 w).snd.2.2.1`. Use `resO_ac := fun w => (hclc0 w).snd.1`. Use `O_complete := fun w => (hclc0 w).snd.2.1`. Use `Ok := fun w k => ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w) ⊔ muK (lw w) k))`. Use `crOk := fun w k => inferInstance`.
+
+Use `domOk := fun w k => inferInstance`. Use `dvrOk := hdvrOk`. Use `algOk := fun w k => (Subring.inclusion (clC_mono (lw w) (le_sup_left : Kt (lw w) (K0 w) (Lw w) ≤ Kt (lw w) (K0 w) (Lw w) ⊔ muK (lw w) k))).toAlgebra`. Use `Ok_inj := fun w k => Subring.inclusion_injective _`. Use `Ok_fin := hOkfin`.
+
+Use `zk := zk`. Use `zk_prim := hzk`. Use `Ok_gen := hOkgen`. Use `pD := fun w => pDC D.host (lw w)`. Use `pD_eq := fun w => coe_pDC D.host (lw w)`.
+
+Use `delta := delta`. Use `delta_open := fun w => (hdc w).2.2.1`. Use `delta_anti := fun w => (hdc w).2.2.2.1`. Use `delta_ram := fun w => (hdc w).2.2.2.2.1`. Use `delta_15 := fun w => (hdc w).2.2.2.2.2.1`.
+
+Use `delta_tame := fun w => (hdc w).2.2.2.2.2.2.1`. Use `chi1 := chi1`. Use `twistCharacterFamily_continuous := fun w => (hdc w).2.2.2.2.2.2.2.1`. Use `twistCharacterFamily_unramified := fun w => (hdc w).2.2.2.2.2.2.2.2.1`. Use `twistCharacterFamily_at_auxiliaryPlaces := fun w => (hdc w).2.2.2.2.2.2.2.2.2.1`.
+
+Use `twistCharacterFamily_tame := fun w => (hdc w).2.2.2.2.2.2.2.2.2.2`. Use `S0 := S0`. Use `twistExcludedPlaces_contains_residueChar := fun w v hv => by show v ∈ ((hS0fin w).toFinset : Set _)`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inl hv)))`.
+
+Use `placesOver_subset_exceptional := fun w k v hv => by show v ∈ ((hS0fin w).toFinset : Set _)`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `Or.inl (Or.inl (Or.inl (Or.inr (Set.mem_iUnion.2 ⟨k, hv⟩))))`. Use `primes_subset_exceptional := fun w v hv => by`. Establish `h` using `coe_pDC D.host (lw w) ▸ (Finset.mem_coe.2 hv)`.
+
+Rewrite using `[← Finset.mem_coe, Set.Finite.coe_toFinset]`. Use `split_ifs at h`. Conclude with `Or.inl (Or.inr h)`. Conclude with `Or.inl (Or.inl (Or.inr h))`. Use `RCG := RCG`.
+
+Use `grpRCG := hgrp`. Use `finRCG := hfint`. Use `RCG_l := hRCG.1`. Use `art := art'`. Use `art_surj := hRCG.2.1`.
+
+Use `art_cont := hRCG.2.2.1`. Use `art_anti := hRCG.2.2.2.1`. Use `art_unr := hRCG.2.2.2.2.1`. Use `art_univ := hRCG.2.2.2.2.2.1`. Use `res := res`.
+
+Use `res_art := hRCG.2.2.2.2.2.2 }`. Use `choose eO0 heO0 using fun w => exists_equiv_intOf (lw w) (K0 w)`. Use `choose br hbr using fun w (v : PlE D.host) (hv : v ∈ placesOver D.host.E (lw w)) => (hc0 (lw w) (j0 w)).2.2 (K0 w) (hb _ _) v hv`. Establish `hcardC : ∀ w, Cardinal.aleph0 < Cardinal.mk ℂ_[lw w]` using `fun w => by`. Rewrite using `[card_padicComplex, Cardinal.mk_complex]`.
+
+Conclude with `Cardinal.aleph0_lt_continuum`. Use `choose ι' hι' using fun w => exists_ringEquiv_over ↥D.LL0 ℂ_[lw w] ℂ ((algebraMap (PadicAlgCl (lw w)) ℂ_[lw w]).comp (j0 w)) (embLL0 D) (card_padicComplex (lw w)) (hcardC w)`. Set `toHC : HChar D.host.E → Formalism.L2.NC.HC D.host.E` to `fun χ => ⟨χ.1, χ.2.1, χ.2.2⟩`. Set `mu0H : ℕ → Formalism.L2.NC.HC D.host.E` to `fun n => if h : 1 ≤ n ∧ n ≤ D.R.m then toHC (cf.mu0 ⟨n - 1, by omega⟩) else 1`. Establish `hmu0H : ∀ j : Fin D.R.m, mu0H (j.1 + 1) = toHC (cf.mu0 j)` using `fun j => by`.
+
+Simplify using `only [mu0H]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Use `congr 2`. Set `etaH` to `toHC cf.eta`. Set `delH : HeightOneSpectrum (𝓞 ↥D.LL0) → Formalism.L2.NC.HC D.host.E` to `fun w => toHC (cf.delAt (lw w))`.
+
+Set `mapO : ∀ w, FractionRing ↥(Loc.OL (K0 w)) →+* FractionRing ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w)))` to `fun w => @IsFractionRing.map _ _ _ _ _ _ _ _ _ _ _ _ _ (toO w) (T.O_inj w)`. Set `liftC : ∀ w, FractionRing ↥(clC (lw w) (Kt (lw w) (K0 w) (Lw w))) →+* ℂ_[lw w]` to `fun w => IsFractionRing.lift (g := (clC (lw w) (Kt (lw w) (K0 w) (Lw w))).subtype) Subtype.val_injective`. Establish `hφalg : ∀ w (y : ↥(Loc.OL (K0 w))), φ w (algebraMap ↥(Loc.OL (K0 w)) (FractionRing ↥(Loc.OL (K0 w))) y) = (y : ↥(K0 w).1)` using `fun w y => by simp [φ]`. Establish `hκy : ∀ w (y : ↥(Loc.OL (K0 w))), κ w (algebraMap ↥(Loc.OL (K0 w)) (FractionRing ↥(Loc.OL (K0 w))) y) = ((y : ↥(K0 w).1) : PadicAlgCl (lw w))` using `fun w y => by show (((φ w) (algebraMap _ _ y) : ↥(K0 w).1) : PadicAlgCl (lw w)) = _`. Rewrite using `[hφalg]`.
+
+Establish `hemb0 : ∀ w x, φ w (emb0 w x) = jK w x` using `fun w x => by simp [emb0]`. Establish `hlm : ∀ w z, liftC w (mapO w z) = algebraMap (PadicAlgCl (lw w)) ℂ_[lw w] (κ w z)` using `fun w z => by`. Establish `h` using `IsLocalization.ringHom_ext (nonZeroDivisors ↥(Loc.OL (K0 w))) (j := (liftC w).comp (mapO w)) (k := (algebraMap (PadicAlgCl (lw w)) ℂ_[lw w]).comp (κ w)) (RingHom.ext fun y => by`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hκy]`.
+
+Simplify using `only [mapO, liftC, IsFractionRing.map, IsLocalization.map_eq, IsFractionRing.lift_algebraMap]`. Use `erw [IsFractionRing.lift_algebraMap]`. Conclude with `htoO w y)`. Conclude with `DFunLike.congr_fun h z`. Set `Sp : RingSpec D cf b0 b1 Sx T` to `{ eTw := Equiv.refl _ pl_emb := fun w => ⟨(hlw w).2, fun x => by show x ∈ w.asIdeal ↔ _`.
+
+Rewrite using `[hJ (lw w) w (hlw w).2 x]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `z : ↥(K0 w).1` to `⟨j0 w x, hj0K w x⟩`. Establish `hz : z ∈ Loc.OL (K0 w)` using `(mem_OL_iff _ _ z).2 hx.le`.
+
+Use `⟨⟨z, hz⟩, (mem_maximalIdeal_OL_iff _ _ _).2 hx, ?_⟩` and prove the remaining obligations. Apply `(φ w).injective` to reduce the goal to its premises. Rewrite using `[hφalg, hemb0]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, hy, e⟩`.
+
+Establish `e2 : ((φ w (algebraMap _ _ y) : ↥(K0 w).1) : PadicAlgCl (lw w)) = ((φ w (emb0 w x) : ↥(K0 w).1) : PadicAlgCl (lw w))` using `congrArg (fun t => ((φ w t : ↥(K0 w).1) : PadicAlgCl (lw w))) e`. Rewrite `e2` using `[hφalg, hemb0]`. Rewrite `hy` using `[(mem_maximalIdeal_OL_iff _ _ _)]`. Rewrite using `[← show ((jK w x : ↥(K0 w).1) : PadicAlgCl (lw w)) = j0 w x from rfl, ← e2]`. Conclude with `hy⟩`.
+
+Use `K0 := K0`. Use `eO0 := eO0`. Use `j0 := j0`. Use `Lw := Lw`. Use `eO := fun w => RingEquiv.refl _`.
+
+Use `eOk := fun w k => RingEquiv.refl _`. Use `iCq := fun w => (ι' w).toRingHom.comp (liftC w)`. Use `ringSpec_baseExtension_lowerBound := fun w => le_rfl`. Use `Lw_big := fun w => le_rfl`. Use `ringSpec_baseIntegersEquiv_algebraMap := fun w z => by`.
+
+Rewrite using `[heO0, ← hκ w z, hκy]`. Use `ringSpec_baseEmbedding_compatible := fun w x y z hz => by`. Establish `key : ∀ a b : FractionRing ↥(Loc.OL (K0 w)), a = b ↔ ((φ w a : ↥(K0 w).1) : PadicAlgCl (lw w)) = ((φ w b : ↥(K0 w).1) : PadicAlgCl (lw w))` using `fun a b => ⟨fun h => h ▸ rfl, fun h => (φ w).injective (Subtype.ext h)⟩`. Establish `hjK : ((jK w x : ↥(K0 w).1) : PadicAlgCl (lw w)) = j0 w x` using `rfl`. Rewrite using `[key, map_mul, hemb0, hφalg, hφalg, heO0, heO0, IntermediateField.coe_mul, hjK]`.
+
+Use `eO_alg := fun w y => by`. Rewrite using `[RingEquiv.refl_apply, RingHom.algebraMap_toAlgebra, htoO, heO0]`. Use `eOk_alg := fun w k x => by simp only [RingEquiv.refl_apply]; exact Subring.coe_inclusion _ x`. Use `mu_g := fun w k _ => ((hc0 (lw w) (j0 w)).2.1.trans (hb _ _)).trans (le_sup_left.trans le_sup_left)`. Use `ringSpec_excludedPlaces_eq := fun w => Set.Finite.coe_toFinset _`.
+
+Use `br := br`. Use `br_ind := hbr`. Use `mu0H := mu0H`. Use `etaH := etaH`. Use `delH := delH`.
+
+Use `embO := fun w b => (mapO w).comp (if b then emb0 w else emb0b w)`. Use `del_fix := fun s s' h => by`. Express the relevant statement in the definitionally equal form `pDC D.host (lw s) = pDC D.host (lw s') at h`. Establish `h'` using `congrArg (fun F : Finset (PlE D.host) => (F : Set (PlE D.host))) h`. Simplify using `only [coe_pDC] at h'`.
+
+Simplify using `only [delH, CharFrame.delAt]`. Use `split_ifs at h' ⊢ with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (placesOver_inj _ D.host.pde'_prime D.host.pde_prime h') D.host.pde_ne.symm`. Conclude with `absurd (placesOver_inj _ D.host.pde_prime D.host.pde'_prime h') D.host.pde_ne`.
+
+Both sides reduce to the same expression. Use `delta := fun s => read_of_isGal ha (hdc s).1 D.nd.plOm.1 D.nd.plOm.2 (emb0 s) (embLL0 D) (hf s) (delH s) 0 (vals_zero (embLL0 D) _ (hdel s) (delH s) rfl)`. Use `chi1 := fun s j b h1 h2 => by`. Take `⟨j', rfl⟩ : ∃ j' : Fin D.R.m, j = j'.1 + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Take `⟨n, hn⟩` from `(hdc s).2.1 j' b`.
+
+Use `show Formalism.L2.NC.Read D.nd.plOm.1 (chi1 s (j'.1 + 1) b) _ (if b then emb0 s else emb0b s) (embLL0 D) (mu0H (j'.1 + 1) * delH s * etaH⁻¹) _`. Rewrite using `[hmu0H]`. Use `read_of_isGal ha hn D.nd.plOm.1 D.nd.plOm.2 _ (embLL0 D) ?_ _ _ (vals_block (embLL0 D) _ _ ((almostIn_of_valuesIn (hV.mu0 j')).mul (almostIn_of_valuesIn (hdel s))) hV.eta (GlobalTheory.TameLabels.odd_r D.R) _ _ rfl rfl)` and prove the remaining obligations. Introduce `x`. Consider the cases of `b`.
+
+Rewrite using `[sideIso_false]`. Simplify using `only [Bool.false_eq_true, if_false]`. Rewrite using `[hf', Complex.conj_conj]`. Conclude with `hf s x`. Use `ringSpec_sidedEmbedding_fixedField := fun s b x y h => by show mapO s ((if b then emb0 s else emb0b s) x) = _`.
+
+Rewrite using `[← h]`. Conclude with `IsLocalization.map_eq _ _`. Use `etaT_unr := fun P => ((hc_at cf.eta etaH rfl P).2).1 (cf.isEta.unr P)`. Use `etaT_inf := eta_unitArg D.host cf.eta cf.isEta etaH rfl`. Use `eta_eq := fun x => rfl`.
+
+Use `ringSpec_normalisedCharacter_eq := fun j x => by rw [hmu0H]`. Use `del_eq := fun s x => rfl`. Use `iCq_embO := fun s x => by show ι' s (liftC s (mapO s (emb0 s x))) = _`. Rewrite using `[hlm, hκemb, ← RingHom.comp_apply, hι']`. Both sides reduce to the same expression.
+
+Use `embO_star := fun s x y h => by show mapO s (emb0 s (st x)) = mapO s (emb0 s y)`. Use `congr 2`. Conclude with `Subtype.ext h.symm`. Use `deltaRead := fun s v hv hu B σ hB hσ => by`. Take `⟨y, hy⟩` from `hdel s v hu`.
+
+Use `⟨y⁻¹, ?_, frob_read ha (hdc s).1 (emb0 s) (embLL0 D) (hf s) (Or.inl hv) hu hB hσ ?_⟩` and prove the remaining obligations. Use `show embLL0 D y⁻¹ = _`. Rewrite using `[map_inv₀, hy, Units.val_inv_eq_inv_val]`. Simplify using `[HChar.valTw]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_inv₀, hy]`. Simplify using `[HChar.valTw] }`. Conclude with `⟨T, Sp, fun i => ⟨rfl, rfl, rfl⟩⟩`.
+-/
 theorem exists_ringSpec (hA : GlobalTheory.Published.GlobalArtinReciprocity) : ∀ (D : D7) (cf : CharFrame D) (J : ∀ (l : ℕ) [Fact l.Prime] (w : HeightOneSpectrum (𝓞 ↥D.LL0)), ((l : ℕ) : 𝓞 ↥D.LL0) ∈ w.asIdeal → (↥D.LL0 →+* PadicAlgCl l)), (∀ (l : ℕ) [Fact l.Prime] w h (x : 𝓞 ↥D.LL0), x ∈ w.asIdeal ↔ ‖J l w h x‖ < 1) → ValLL0 D cf → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → ∃ c0 : Big D, ∀ (b0 b1 : Big D) (Sx : Finset (PlE D.host)), (∀ (l : ℕ) [Fact l.Prime] j, (c0 l j).1 ≤ (b0 l j).1) → ∃ (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T), ∀ i, Sp.j0 i = J (T.l i) (Sp.eTw i) (Sp.pl_emb i).1 ∧ Sp.K0 i = b0 (T.l i) (Sp.j0 i) ∧ Sp.Lw i = b1 (T.l i) (Sp.j0 i) := by
   intro D cf J hJ hV hstar hE
   obtain ⟨c0, hc0⟩ := exists_padicBaseField_integral_places D

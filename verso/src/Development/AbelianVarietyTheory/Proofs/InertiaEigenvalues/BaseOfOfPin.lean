@@ -7,6 +7,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PinBase
 
+/- English proof (translation)
+Introduce `D X ρ hρ hp i j b`. Establish `hB` using `hρ.base i j b`. Establish `hL : X.R.toLevCh.Is X.A3.A.μ0` using `X.char.lev`. Establish `hlam` using `GlobalTheory.BaseLiftWeight.lam_eq D _ X.R.toLevCh X.A3.A.μ0 j (ρ.B i j b) hL hB (hp.mu0 i j b) (hp.ap i j b) (hp.am i j b)`. Establish `hc : ∀ τ, (ρ.B i j b).w.c τ = GlobalTheory.ConjTwist.liftC D j τ` using `fun τ => GlobalTheory.BaseLiftWeight.c_eq hL hB (hp.mu0 i j b) τ`.
+
+Establish `hP : (ρ.B i j b).w.p = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.pS D j` using `funext fun τ => congrArg Prod.fst (hB.sig τ)`. Establish `hQ : (ρ.B i j b).w.q = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.qS D j` using `funext fun τ => congrArg Prod.snd (hB.sig τ)`. Establish `hAP : (ρ.B i j b).w.ap = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.aP D j` using `funext fun τ => hp.ap i j b τ`. Establish `hAM : (ρ.B i j b).w.am = GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes.aM D j` using `funext fun τ => hp.am i j b τ`. Use `{ ψ := hp.psi i j b, θ := hp.inf i j b, sT := hp.cartT i j b, BS := hp.onbS i j b, BT := hp.onbT i j b, ΛS := hp.latS i j b, ΛT := hp.latT i j b, βS := hp.frS i j b, βT := hp.frT i j b, vac := hp.vac i j b, Pg := hp.Pg i j b, mu0 := hp.mu0 i j b, eta := hp.eta i j b, lam := hlam, …` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.ConjTwist.liftWeight_delta, Weight.delta, Weight.delta, hP, hQ, hAP, hAM]`. Both sides reduce to the same expression.
+-/
 theorem baseOf_of_pin : ∀ (D : D7) (X : RealSide D) (ρ : Setup D.ntw), ρ.Good → RealPin X.R X.cG ρ → ∀ i j b, GlobalTheory.ConjTwist.BaseOf X.R.toRealDat j (ρ.B i j b) := by
   intro D X ρ hρ hp i j b
   have hB := hρ.base i j b

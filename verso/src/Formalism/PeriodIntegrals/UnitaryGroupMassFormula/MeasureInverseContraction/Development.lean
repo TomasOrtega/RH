@@ -19,27 +19,44 @@ def Contract : Prop :=
       (∀ x ∈ Ninf I e z, a * x * a⁻¹ ∈ Ninf I e z) ∧ (∀ x ∈ Ninf I e z, a⁻¹ * x * a ∈ Ninf I e z) ∧
       a * n * a⁻¹ ∈ C
 
+/- English proof (translation)
+Conclude with `hμ`.
+-/
 theorem haarOn_of (I : Formalism.MainNotions.S.AutInst) {r : ℕ} (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E)
     (μ : Measure I.Ginf) (hμ : IsHaarOnSet I (Ninf I e z) μ) :
     HaarOn (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) μ := by
   exact hμ
 
+/- English proof (translation)
+Introduce `I r e f z _ μ hμ K hK`. Conclude with `(haarOn_props (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z)) μ (haarOn_of I e z μ hμ)).1 K hK`.
+-/
 theorem finite_compact_measure : FinCpt := by
   intro I r e f z _ μ hμ K hK
   exact (haarOn_props (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z)
     (PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z)) μ (haarOn_of I e z μ hμ)).1 K hK
 
+/- English proof (translation)
+Introduce `I r e f z h μ hμ n hn`. Take `⟨C, hCc, hcon⟩` from `hC I r e f z h`. Conclude with `rightInv_of_contract (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z)) (haarOn_of I e z μ hμ) C hCc hcon n hn`.
+-/
 theorem rightInv_of (hC : Contract) : RightInv := by
   intro I r e f z h μ hμ n hn
   obtain ⟨C, hCc, hcon⟩ := hC I r e f z h
   exact rightInv_of_contract (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z))
     (haarOn_of I e z μ hμ) C hCc hcon n hn
 
+/- English proof (translation)
+Introduce `I r e f z h μ hμ`. Conclude with `invInv_of_right (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z)) (haarOn_of I e z μ hμ) (hR I r e f z h μ hμ)`.
+-/
 theorem invInv_of (hR : RightInv) : InvInv := by
   intro I r e f z h μ hμ
   exact invInv_of_right (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z))
     (haarOn_of I e z μ hμ) (hR I r e f z h μ hμ)
 
+/- English proof (translation)
+Introduce `I r e f z hF μ hμ h hh`. Establish `hN : IsClosed ((PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z : Subgroup I.Ginf) : Set I.Ginf)` using `PI.ScMuExists.UnitaryGroupMassFormula.isClosed_Ninf (I := I) (e := e) (z := z)`. Establish `hC` using `PI.ScMuExists.UnitaryGroupMassFormula.instConj_of (PI.ScMuExists.UnitaryGroupMassFormula.genModOne_of PI.ScMuExists.UnitaryGroupMassFormula.generic_haar_subgroup) PI.ScMuExists.UnitaryGroupMassFormula.place_decomposition_instance PI.ScMuExists.UnitaryGroupMassFormula.measure_subF …`. Establish `hconj` using `hC I r e f z hF (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.HSub I (PI.ScMuExists.UnitaryGroupMassFormula.frameSet I e f z)) hN rfl rfl h hh`. Establish `hG` using `PI.ScMuExists.UnitaryGroupMassFormula.generic_haar_subgroup I.Ginf (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) hN`.
+
+Establish `hν : HaarOn (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) (PI.ScMuExists.UnitaryGroupMassFormula.haarSub _ hN)` using `⟨hG.1, hG.2.1, hG.2.2.1, hG.2.2.2.1⟩`. Take `⟨c, -, -, hc⟩` from `haarOn_unique (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) hN hν (haarOn_of I e z μ hμ)`. Rewrite using `[hc, Measure.map_smul, hconj]`.
+-/
 theorem conjugation_invariant_measure : ConjInv := by
   intro I r e f z hF μ hμ h hh
   have hN : IsClosed ((PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z : Subgroup I.Ginf) : Set I.Ginf) :=
@@ -55,6 +72,9 @@ theorem conjugation_invariant_measure : ConjInv := by
   obtain ⟨c, -, -, hc⟩ := haarOn_unique (PI.ScMuExists.UnitaryGroupMassFormula.NSub I e z) hN hν (haarOn_of I e z μ hμ)
   rw [hc, Measure.map_smul, hconj]
 
+/- English proof (translation)
+Conclude with `⟨finite_compact_measure, rightInv_of hC, invInv_of (rightInv_of hC), conjugation_invariant_measure⟩`.
+-/
 theorem nMeasInv_of (hC : Contract) : Target := by
   exact ⟨finite_compact_measure, rightInv_of hC, invInv_of (rightInv_of hC), conjugation_invariant_measure⟩
 

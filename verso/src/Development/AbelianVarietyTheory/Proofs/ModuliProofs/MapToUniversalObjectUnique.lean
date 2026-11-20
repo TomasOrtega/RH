@@ -17,12 +17,28 @@ open GlobalTheory.Models
 
 namespace GlobalTheory.LevUniq
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+-/
 theorem exists_sab_cast {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t : SAB H S} {t' : SAB H S'} {f g : S' ⟶ S} (m : SABMap t' t f) (h : f = g) :
     ∃ n : SABMap t' t g, n.φ = m.φ := by
   subst h
   exact ⟨m, rfl⟩
 
+/- English proof (translation)
+Introduce `hL _ _ E _ _ _ H D l₀ l Xo B _ b S s o r r' ν ν' hS hs hν hν'`. Take `⟨o₁, ⟨m₁⟩⟩` from `obj_pull E H D l₀ (KA l₀) (KA l₀) (baseKA l₀) (baseKA l₀) (RingHom.id _) Xo.X S Xo.s (r ≫ Xo.s) r rfl rfl (by`. Rewrite using `[show spMap (RingHom.id (KA l₀)) = 𝟙 (Sp (KA l₀)) from Spec.map_id _, Category.comp_id]) Xo.univ`. Take `⟨n₁, hn₁⟩` from `exists_sab_cast m₁.toSABMap (Category.id_comp r).symm`. Take `⟨k, hk⟩` from `ObjMaps.exists_sab_cancel ν n₁`.
+
+Establish `hk' : m₁.toSABMap.φ = k.φ ≫ ν.φ` using `hn₁.symm.trans hk`. Establish `pk : IsPullback k.φ o₁.t.G.hom o.t.G.hom (𝟙 S)` using `k.cart.1`. Establish `pν : IsPullback ν.φ o.t.G.hom Xo.univ.t.G.hom r` using `ν.cart.1`. Establish `key : ∀ (x : 𝟙_ (Over S) ⟶ o₁.t.G) (y : 𝟙_ (Over S) ⟶ o.t.G), x.left ≫ m₁.toSABMap.φ = y.left ≫ ν.φ → x.left ≫ k.φ = y.left`. Introduce `x y h`.
+
+Use `pν.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hk', h]`. Rewrite using `[Category.assoc, pk.w, Category.comp_id, Over.w x, Over.w y]`. Take `⟨n₂, hn₂⟩` from `ObjMaps.exists_sab_comp ν' k`. Take `⟨n₃, hn₃⟩` from `exists_sab_cast n₂ (Category.id_comp r')`.
+
+Establish `h₃ : n₃.φ = k.φ ≫ ν'.φ` using `hn₃.trans hn₂`. Establish `e₁ : ∀ a, (o₁.eta a).left ≫ n₃.φ = r' ≫ (Xo.univ.eta a).left`. Introduce `a`. Rewrite using `[h₃, ← Category.assoc, key _ _ ((m₁.eta a).trans (hν.1 a).symm), hν'.1 a]`. Establish `e₂ : ∀ a, (o₁.etaA a).left ≫ n₃.φ = r' ≫ (Xo.univ.etaA a).left`.
+
+Introduce `a`. Rewrite using `[h₃, ← Category.assoc, key _ _ ((m₁.etaA a).trans (hν.2 a).symm), hν'.2 a]`. Establish `hr : r = r'` using `(Xo.rep S (r ≫ Xo.s) hS o₁).unique ⟨rfl, ⟨m₁⟩⟩ ⟨hs.symm, ⟨⟨n₃, e₁, e₂⟩⟩⟩`. Substitute `hr` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+
+Establish `hφ : m₁.toSABMap.φ = n₃.φ` using `obj_rigid_closed hL E H D l₀ (KA l₀) (KA l₀) (baseKA l₀) (baseKA l₀) Xo.X S Xo.s (r ≫ Xo.s) Xo.univ o₁ r (Or.inl hS) m₁.toSABMap n₃ (fun a => ⟨_, m₁.eta a, e₁ a⟩)`. Establish `: IsIso k.φ` using `pk.isIso_fst_of_isIso`. Rewrite using `[← cancel_epi k.φ, ← hk', ← h₃, hφ]`.
+-/
 theorem map_to_univ_unique : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l₀ l : Level H) (Xo : Moduli D l₀) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s) (r r' : S ⟶ Xo.X) (ν : SABMap o.t Xo.univ.t r) (ν' : SABMap o.t Xo.univ.t r'), IsReduced S → r ≫ Xo.s = r' ≫ Xo.s → LevComp o Xo.univ r ν → LevComp o Xo.univ r' ν' → r = r' ∧ ν.φ = ν'.φ := by
   intro hL _ _ E _ _ _ H D l₀ l Xo B _ b S s o r r' ν ν' hS hs hν hν'
   obtain ⟨o₁, ⟨m₁⟩⟩ := obj_pull E H D l₀ (KA l₀) (KA l₀) (baseKA l₀) (baseKA l₀) (RingHom.id _) Xo.X S Xo.s

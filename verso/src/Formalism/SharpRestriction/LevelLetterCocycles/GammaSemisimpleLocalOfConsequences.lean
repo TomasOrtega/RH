@@ -40,15 +40,30 @@ def GammaSemisimpleQuotient : Prop :=
     ∀ y : ℕ, 1 ≤ y → SSEig W T (invN W T (W.Q ^ y)) (W.N T)
       {c | ∃ a ∈ Jumps (PD := PD) T, ∃ j : ℕ, 1 ≤ j ∧ j ≤ y ∧ c = (uU W) ^ (-(a + j))}
 
+/- English proof (translation)
+Introduce `T hT` and use `(h T hT).2.1`.
+-/
 theorem gamma_semisimple_of_consequences (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) (h : ConsW W Pt) : GammaSemisimpleQuotient W :=
   fun T hT => (h T hT).2.1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem wach_first_lattice_iff : WachFreeDualTensor W ↔ WachLatticeFree W ∧ WachLatticeMonoidal W := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem wach_tenth_iff : WachTwistCharacterisation W ↔ WachCharacterisationLattice W ∧ WachTwistLattice W := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem P1freeW_of (h : WachFreeDualTensor W) : WachLatticeFree W := h.1
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem wach_characterisation_lattice_of (h : WachTwistCharacterisation W) : WachCharacterisationLattice W := h.1
 
 end Local
@@ -99,10 +114,16 @@ def WachTwistLocalTheory (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : 
 def gammaSemisimpleQuotientGlobal (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop :=
   gammaSemisimpleLocal D.loc HW D.locA F
 
+/- English proof (translation)
+Introduce `l _ K s LL g` and use `gamma_semisimple_of_consequences _ _ (h l K s LL g)`.
+-/
 theorem gamma_semisimple_local_of_consequences {D : Formalism.BasicNotions.D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW}
     (h : cons D HW F) : gammaSemisimpleQuotientGlobal D HW F :=
   fun l _ K s LL g => gamma_semisimple_of_consequences _ _ (h l K s LL g)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun l _ K s LL g => (h l K s LL g).1, fun l _ K s LL g => (h l K s LL g).2⟩`. Introduce and unpack `⟨a, b⟩ l _ K s LL g`. Conclude with `⟨a l K s LL g, b l K s LL g⟩`.
+-/
 theorem wach_first_iff_free_monoidal (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) :
     P1 D HW F ↔ WachLatticeFreeGlobal D HW F ∧ WachLatticeMonoidalGlobal D HW F := by
   constructor
@@ -111,6 +132,9 @@ theorem wach_first_iff_free_monoidal (D : Formalism.BasicNotions.D7) (HW : HWOf 
   · rintro ⟨a, b⟩ l _ K s LL g
     exact ⟨a l K s LL g, b l K s LL g⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun l _ K s LL g => (h l K s LL g).1, fun l _ K s LL g => (h l K s LL g).2⟩`. Introduce and unpack `⟨a, b⟩ l _ K s LL g`. Conclude with `⟨a l K s LL g, b l K s LL g⟩`.
+-/
 theorem product_first_zeroth_parts_iff_wach_and_twist (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) :
     product_first_zeroth_parts D HW F ↔ WachCharacterisation D HW F ∧ WachTwistLocalTheory D HW F := by
   constructor
@@ -119,12 +143,21 @@ theorem product_first_zeroth_parts_iff_wach_and_twist (D : Formalism.BasicNotion
   · rintro ⟨a, b⟩ l _ K s LL g
     exact ⟨a l K s LL g, b l K s LL g⟩
 
+/- English proof (translation)
+The claim follows from `((wach_first_iff_free_monoidal D HW F).1 h).1`.
+-/
 theorem wach_free_of_properties {D : Formalism.BasicNotions.D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW}
     (h : P1 D HW F) : WachLatticeFreeGlobal D HW F := ((wach_first_iff_free_monoidal D HW F).1 h).1
 
+/- English proof (translation)
+The claim follows from `((product_first_zeroth_parts_iff_wach_and_twist D HW F).1 h).1`.
+-/
 theorem wach_characterisation_of_tenth {D : Formalism.BasicNotions.D7} {HW : HWOf D.loc} {F : FonOf D.loc D.locA HW}
     (h : product_first_zeroth_parts D HW F) : WachCharacterisation D HW F := ((product_first_zeroth_parts_iff_wach_and_twist D HW F).1 h).1
 
+/- English proof (translation)
+Rewrite using `[wach_theorem_iff_properties, wach_first_iff_free_monoidal, product_first_zeroth_parts_iff_wach_and_twist]`.
+-/
 theorem wach_theorem_iff_refined (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (C : CmpOf D.loc D.locA HW F) :
     thm1 D HW F C ↔ (WachLatticeFreeGlobal D HW F ∧ WachLatticeMonoidalGlobal D HW F) ∧ P2 D HW F ∧ P3 D HW F C ∧ P4 D HW F C ∧

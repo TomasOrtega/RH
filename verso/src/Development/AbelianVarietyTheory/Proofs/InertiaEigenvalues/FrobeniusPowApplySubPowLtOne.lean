@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[← Commute.geom_sum₂_mul (Commute.all a b), map_mul]`. Establish `hs : A.valuation (∑ i ∈ Finset.range k, a ^ i * b ^ (k - 1 - i)) ≤ 1`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_mul, map_pow, map_pow]`.
+
+Conclude with `mul_le_one' (pow_le_one' ha _) (pow_le_one' hb _)`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hs) hab`.
+-/
 theorem valuation_pow_sub_pow_lt_one {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : Ω}
     (ha : A.valuation a ≤ 1) (hb : A.valuation b ≤ 1) (hab : A.valuation (a - b) < 1) (k : ℕ) :
     A.valuation (a ^ k - b ^ k) < 1 := by
@@ -16,6 +21,17 @@ theorem valuation_pow_sub_pow_lt_one {Ω : Type} [Field Ω] (A : ValuationSubrin
     exact mul_le_one' (pow_le_one' ha _) (pow_le_one' hb _)
   exact lt_of_le_of_lt (mul_le_of_le_one_left' hs) hab
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ A q σ hσ n`. Take `⟨hD, hF⟩` from `hσ`. Establish `hD' : σ ∈ ReciprocityTheory.Gal.Dec (F` using `F) A := hD`. Establish `hle : ∀ y : Ω, A.valuation y ≤ 1 → A.valuation (σ y) ≤ 1`. Introduce `y hy`.
+
+Rewrite `hy`, the goal using `[A.valuation_le_one_iff]`. Conclude with `(ReciprocityTheory.Gal.apply_mem_iff_of_mem_Dec hD' y).mpr hy`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `x _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `x hx`. Establish `e : (σ ^ (n + 1)) x - x ^ (q ^ (n + 1)) = σ ((σ ^ n) x - x ^ (q ^ n)) + ((σ x) ^ (q ^ n) - (x ^ q) ^ (q ^ n))`. Rewrite using `[pow_succ' σ n, AlgEquiv.mul_apply, map_sub, map_pow, ← pow_mul, ← pow_succ']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Conclude with `(ReciprocityTheory.Gal.valuation_apply_lt_one_iff hD' _).mpr (ih x hx)`. Use `valuation_pow_sub_pow_lt_one A (hle x hx) ?_ (hF x hx) _` and prove the remaining obligations.
+
+Rewrite using `[map_pow]`. Conclude with `pow_le_one' hx _`.
+-/
 theorem frob_pow_apply_sub_lt_one :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (A : ValuationSubring Ω) (q : ℕ) (σ : Ω ≃ₐ[F] Ω),
     Formalism.ConjugateSelfDual.IsFrob A q σ → ∀ (n : ℕ) (x : Ω), A.valuation x ≤ 1 → A.valuation ((σ ^ n) x - x ^ (q ^ n)) < 1 := by

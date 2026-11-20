@@ -131,12 +131,24 @@ def KudlaFamilyStatement (CB Ca C C1 : ℝ) : Prop := AdmF Fm CB Ca → OrbitVal
 
 end Family
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem lemma_B_three_iff (D : Formalism.BasicNotions.D7) (CB : ℝ) : (adm1 D CB ∧ adm2 D CB ∧ adm10 D CB) ↔ LemmaBThreeClauses CB := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem radial_statement_indep_datum (D D' : Formalism.BasicNotions.D7) (C Cv C1 C2 : ℝ) : aux₃ D C Cv C1 C2 ↔ aux₃ D' C Cv C1 C2 := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem Adm_indep (D D' : Formalism.BasicNotions.D7) (CB Ca : ℝ) : admitted D CB Ca ↔ admitted D' CB Ca := Iff.rfl
 
+/- English proof (translation)
+Take `⟨C₀, Cv, H⟩` from `H CB Ca`. Use `⟨C₀, fun C hC C1 eps Fm hA => ?_⟩` and prove the remaining obligations. Take `⟨C2, H⟩` from `H C1`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩` from `hA`. Conclude with `⟨Cv, C2, fun x i => H C hC (Fm.D x i) ⟨a1 x i, a2 x i, a3 x i, a4 x i, a5 x i, a6 x i, a7 x i, a8 x i, a9 x i, a10 x i⟩⟩`.
+-/
 theorem rules_family_of_uniform (H : UniformExportStatement) (CB Ca : ℝ) : ∃ C₀ : ℝ, ∀ C ≥ C₀, ∀ C1 : ℝ, ∀ {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps),
     KudlaFamilyStatement Fm CB Ca C C1 := by
   obtain ⟨C₀, Cv, H⟩ := H CB Ca
@@ -146,6 +158,11 @@ theorem rules_family_of_uniform (H : UniformExportStatement) (CB Ca : ℝ) : ∃
   exact ⟨Cv, C2, fun x i => H C hC (Fm.D x i)
     ⟨a1 x i, a2 x i, a3 x i, a4 x i, a5 x i, a6 x i, a7 x i, a8 x i, a9 x i, a10 x i⟩⟩
 
+/- English proof (translation)
+Unfold `Big at *`. Establish `hp : 0 ≤ ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3)` using `by positivity`. Establish `hle : C * ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3) ≤ C' * ((L.r : ℝ) + 1) ^ 4 * ((N : ℝ) * ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 2 + ((2 * L.r + L.k0 + 2 : ℕ) : ℝ) ^ 3)`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right h hp`.
+
+Conclude with `⟨hle.trans hB.1, hle.trans hB.2⟩`.
+-/
 theorem big_mono {C C' : ℝ} (h : C ≤ C') {L : Lev} {N : ℕ} {A : ℝ} {mm : ℕ} (hB : Big C' L N A mm) :
     Big C L N A mm := by
   unfold Big at *
@@ -159,6 +176,11 @@ theorem big_mono {C C' : ℝ} (h : C ≤ C') {L : Lev} {N : ℕ} {A : ℝ} {mm :
     exact mul_le_mul_of_nonneg_right h hp
   exact ⟨hle.trans hB.1, hle.trans hB.2⟩
 
+/- English proof (translation)
+Introduce `Lt u u' I hr hy hy' R hR`. Take `⟨h, SS, p1, p2, p3, p4, p5, p6, p7, p8⟩` from `H Lt u u' I hr hy hy' R hR`. Use `⟨h, SS, fun hh A mm hO hB => p1 hh A mm hO (big_mono hc hB), p2, p3, p4, ?_, p6, p7, p8⟩` and prove the remaining obligations. Introduce `hh A mm hO w hw`. Take `⟨f1, f2⟩` from `p5 hh A mm hO w hw`.
+
+Conclude with `⟨fun hB => f1 (big_mono hc hB), f2⟩`.
+-/
 theorem theorem_c_mono_constant (D : Formalism.BasicNotions.D7) {C C' : ℝ} (Cv C1 C2 : ℝ) (hc : C ≤ C') (H : aux₃ D C Cv C1 C2) :
     aux₃ D C' Cv C1 C2 := by
   intro Lt u u' I hr hy hy' R hR

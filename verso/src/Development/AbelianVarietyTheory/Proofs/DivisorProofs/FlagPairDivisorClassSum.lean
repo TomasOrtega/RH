@@ -22,6 +22,19 @@ namespace GlobalTheory.Vert
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : GlobalTheory.Vert.Model O}
 
+/- English proof (translation)
+Introduce `i j k`. Establish `hi : P.M.U i ⊓ P'.M.U j ⊓ P''.M.U k ≤ P.M.U i` using `inf_le_left.trans inf_le_left`. Establish `hj : P.M.U i ⊓ P'.M.U j ⊓ P''.M.U k ≤ P'.M.U j` using `inf_le_left.trans inf_le_right`. Establish `hk : P.M.U i ⊓ P'.M.U j ⊓ P''.M.U k ≤ P''.M.U k` using `inf_le_right`. It suffices to establish `h : ∀ (U : Z.X.Opens) (hi : U ≤ P.M.U i) (hj : U ≤ P'.M.U j) (hk : U ≤ P''.M.U k), ∃ u : Γ(Z.X, U)ˣ, P''.eqn k (inf_le_inf_left Z.gen hk) = resG Z.X inf_le_right u.val * (P.eqn i (inf_le_inf_left Z.gen hi) * P'.eqn j (inf_le_inf_left Z.gen hj)) from h _ hi hj hk`.
+
+Introduce `U hi hj hk`. Take `⟨w, hw⟩` from `((P.isUnit_eqn i (inf_le_inf_left Z.gen hi)).mul (P'.isUnit_eqn j (inf_le_inf_left Z.gen hj))).exists_left_inv`. Establish `hf : P''.eqn k (inf_le_inf_left Z.gen hk) = (P''.eqn k (inf_le_inf_left Z.gen hk) * w) * (P.eqn i (inf_le_inf_left Z.gen hi) * P'.eqn j (inf_le_inf_left Z.gen hj))`. Rewrite using `[mul_assoc, hw, mul_one]`. Take `⟨u, hu⟩` from `GlobalTheory.GenUnitGlue.exists_unit_resG_eq Z (U := U) (P''.eqn k (inf_le_inf_left Z.gen hk) * w) (by`.
+
+Introduce `x hx`. Take `⟨V, i', j', k', hi', hj', hk', hxV, e⟩` from `H x`. Establish `a₁ : V ⊓ U ≤ P.M.U i' ⊓ P.M.U i` using `inf_le_inf hi' hi`. Establish `a₂ : V ⊓ U ≤ P'.M.U j' ⊓ P'.M.U j` using `inf_le_inf hj' hj`. Establish `a₃ : V ⊓ U ≤ P''.M.U k ⊓ P''.M.U k'` using `le_inf (inf_le_right.trans hk) (inf_le_left.trans hk')`.
+
+Use `⟨V ⊓ U, inf_le_right, ⟨hxV, hx⟩, res a₃ (P''.M.g k k') * (res a₁ (P.M.g i' i) * res a₂ (P'.M.g j' j)), ?_⟩` and prove the remaining obligations. Establish `b : Z.gen ⊓ (V ⊓ U) ≤ Z.gen ⊓ U` using `inf_le_inf_left _ inf_le_right`. Establish `b' : Z.gen ⊓ (V ⊓ U) ≤ Z.gen ⊓ V` using `inf_le_inf_left _ inf_le_left`. Establish `hf'` using `congrArg (resG Z.X b) hf`. Establish `e'` using `congrArg (resG Z.X b') e`.
+
+Rewrite `hf'` using `[map_mul, map_mul _ (P.eqn _ _)]`. Simplify using `only [map_mul, VertDiv.resG_eqn] at e'`. Rewrite `hf'` using `[VertDiv.resG_eqn, VertDiv.resG_eqn, VertDiv.resG_eqn]`. Use `((P.isUnit_eqn i (b.trans (inf_le_inf_left Z.gen hi))).mul (P'.isUnit_eqn j (b.trans (inf_le_inf_left Z.gen hj)))).mul_right_cancel ?_` and prove the remaining obligations. Use `Eq.trans ?_ hf'` and prove the remaining obligations.
+
+Rewrite using `[P''.eqn_rel k k' _ (b'.trans (inf_le_inf_left Z.gen hk')) (inf_le_right.trans a₃), e', P.eqn_rel i' i _ (b.trans (inf_le_inf_left Z.gen hi)) (inf_le_right.trans a₁), P'.eqn_rel j' j _ (b.trans (inf_le_inf_left Z.gen hj)) (inf_le_right.trans a₂)]`. Simplify using `only [Units.val_mul, map_mul, val_res, resG_resG]`. Use the proof step `ring)`. Conclude with `⟨u, by rw [hu]; exact hf⟩`.
+-/
 theorem VertDiv.isSum_of_local {P P' P'' : VertDiv Z}
     (H : ∀ x : Z.X, ∃ (V : Z.X.Opens) (i : P.M.ι) (j : P'.M.ι) (k : P''.M.ι) (hi : V ≤ P.M.U i)
       (hj : V ≤ P'.M.U j) (hk : V ≤ P''.M.U k), x ∈ V ∧
@@ -68,6 +81,13 @@ theorem VertDiv.isSum_of_local {P P' P'' : VertDiv Z}
     ring)
   exact ⟨u, by rw [hu]; exact hf⟩
 
+/- English proof (translation)
+Use `h₁.isQuasicoherent` as an intermediate fact. Use `h₂.isQuasicoherent` as an intermediate fact. Use `h₃.isQuasicoherent` as an intermediate fact. Use `h₁'.isQuasicoherent` as an intermediate fact. Use `h₂'.isQuasicoherent` as an intermediate fact.
+
+Use `h₃'.isQuasicoherent` as an intermediate fact. Use `VertDiv.IsSum.cls_eq (VertDiv.isSum_of_local fun x => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `VBExt.exists_adaptedChart hS h₁ h₃ x`. Take `⟨a', ha'⟩` from `VBExt.exists_adaptedChart hS' h₁' h₃' x`. Use `⟨a.U ⊓ a'.U, (a.sub, a'.sub), (a.quot, a'.quot), (a.mid hS, a'.mid hS'), le_rfl, le_rfl, le_rfl, ⟨ha, ha'⟩, (Model.genEquiv inf_le_left).injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Use `(g₂.genEquiv_eqn_div h₂ h₂' (a.mid hS) (a'.mid hS') _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (g₁.genEquiv_eqn_div h₁ h₁' a.sub a'.sub _) (g₃.genEquiv_eqn_div h₃ h₃' a.quot a'.quot _)).symm` and prove the remaining obligations. Conclude with `congrArg Units.val (GlobalTheory.T.generic_iso_short_exact_compat hS hS' g₁ g₂ g₃ e₁ e₂ a a' _)`.
+-/
 theorem Model.GenIso.cls_div_shortExact {S S' : ShortComplex Z.X.Modules} (hS : S.ShortExact)
     (hS' : S'.ShortExact) {r s : ℕ} (h₁ : IsVB S.X₁ r) (h₂ : IsVB S.X₂ (r + s)) (h₃ : IsVB S.X₃ s)
     (h₁' : IsVB S'.X₁ r) (h₂' : IsVB S'.X₂ (r + s)) (h₃' : IsVB S'.X₃ s)
@@ -92,11 +112,19 @@ theorem Model.GenIso.cls_div_shortExact {S S' : ShortComplex Z.X.Modules} (hS : 
     (g₃.genEquiv_eqn_div h₃ h₃' a.quot a'.quot _)).symm
   exact congrArg Units.val (GlobalTheory.T.generic_iso_short_exact_compat hS hS' g₁ g₂ g₃ e₁ e₂ a a' _)
 
+/- English proof (translation)
+Establish `h : fl.step 0 = 0` using `(VB.isVB_zero_iff.1 (fl.isVB 0)).eq_of_src _ _`. Conclude with `cokernel.π_of_zero h`.
+-/
 theorem Flag.isIso_π_zero {X : Scheme.{0}} {E : X.Modules} {N : ℕ} (fl : Flag E (N + 1)) :
     IsIso (fl.π 0) := by
   have h : fl.step 0 = 0 := (VB.isVB_zero_iff.1 (fl.isVB 0)).eq_of_src _ _
   exact cokernel.π_of_zero h
 
+/- English proof (translation)
+Introduce `O _ _ _ B W W' ψ R`. Use `R.fl.isIso_π_zero` as an intermediate fact. Use `R.fl'.isIso_π_zero` as an intermediate fact. Establish `e₂` using `Model.GenIso.cls_div_eq_of_iso O B _ _ _ _ 2 (R.fl.isVB (Fin.last 2)) (R.fl'.isVB (Fin.last 2)) R.fl.isVB_self R.fl'.isVB_self (R.gen (Fin.last 2)) ψ (asIso (R.fl.ι _)) (asIso (R.fl'.ι _)) (R.gen_ι _)`. Establish `e₁` using `Model.GenIso.cls_div_eq_of_iso O B _ _ _ _ 1 (R.fl.isVB (Fin.succ 0)) (R.fl'.isVB (Fin.succ 0)) (R.fl.isVB_gr 0) (R.fl'.isVB_gr 0) (R.gen (Fin.succ 0)) (R.grIso 0) (asIso (R.fl.π 0)) (asIso (R.fl'.π 0)) (R.π_grIso_hom 0).symm`.
+
+Establish `e` using `Model.GenIso.cls_div_shortExact (VMetric.stepSeq_shortExact R.fl 1) (VMetric.stepSeq_shortExact R.fl' 1) (r := 1) (s := 1) (R.fl.isVB (Fin.castSucc 1)) (R.fl.isVB (Fin.succ 1)) (R.fl.isVB_gr 1) (R.fl'.isVB (Fin.castSucc 1)) (R.fl'.isVB (Fin.succ 1)) (R.fl'.isVB_gr 1) (R.gen (Fin. …`. Conclude with `(congrArg (· + _) e₁.symm).trans (e.symm.trans e₂)`.
+-/
 theorem Model.FlagPair.cls_div_add_rank_two : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (B : GlobalTheory.Vert.Model O) (W W' : B.X.Modules) (ψ : B.GenIso W W')
     (R : GlobalTheory.Vert.Model.FlagPair ψ 2),

@@ -18,6 +18,17 @@ def centralFns (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : �
   zero_mem' _ _ := by simp
   smul_mem' c F hF z g := by simp [hF z g, mul_left_comm]
 
+/- English proof (translation)
+Establish `hc` using `CuspSub.hasCentral_iff.2 hω`. Establish `hle : GlobalTheory.JSW.mspan π ≤ centralFns E a ω`. Use `sInf_le ⟨fun ψ hψ z g => hc.apply hψ z g, fun F hF h z g => ?_, fun F hF f _ z g => ?_, fun F hF r f z g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F (GeneralLinearGroup.scalar (Fin a) z * g * h) = _ * F (g * h)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `hF z _`. Express the relevant statement in the definitionally equal form `GlobalTheory.JSW.smoothInf f F (GeneralLinearGroup.scalar (Fin a) z * g) = _ * GlobalTheory.JSW.smoothInf f F g`. Rewrite using `[← GlobalTheory.JSW.smoothInf_left]`. Establish `e : (fun x => F (GeneralLinearGroup.scalar (Fin a) z * x)) = ((ω.1 z : ℂˣ) : ℂ) • F`. Use function extensionality and compare the values at `fun x => hF z x`.
+
+Rewrite using `[e, GlobalTheory.JSW.smoothInf_smul]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `GlobalTheory.JSW.colConv r f F (GeneralLinearGroup.scalar (Fin a) z * g) = _ * GlobalTheory.JSW.colConv r f F g`. Simplify using `only [GlobalTheory.JSW.colConv, mul_assoc]`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hF z]`. Expand and normalize the polynomial expressions, which then agree. Break down `hφ with h | h` into its components or cases.
+
+Conclude with `hc.apply h z g`. Conclude with `hle h z g`.
+-/
 theorem apply_scalar (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a)
     (ω : HChar E) (hω : π.HasCentChar ω) (φ : Sm E a) (hφ : φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspan π)
     (z : Neutral.B1.Ideles E) (g : GA E a) :
@@ -43,6 +54,9 @@ theorem apply_scalar (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (
   · exact hc.apply h z g
   · exact hle h z g
 
+/- English proof (translation)
+Introduce `E _ _ _ a π ω hω φ hφ z g` and use `apply_scalar E a π ω hω φ hφ z g`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a) (ω : HChar E), π.HasCentChar ω → ∀ φ : Sm E a, (φ ∈ π.V ∨ φ.1 ∈ GlobalTheory.JSW.mspan π) → ∀ (z : Neutral.B1.Ideles E) (g : GA E a), φ.1 (GeneralLinearGroup.scalar (Fin a) z * g) = ((ω.1 z : ℂˣ) : ℂ) * φ.1 g :=
   fun E _ _ _ a π ω hω φ hφ z g => apply_scalar E a π ω hω φ hφ z g
 

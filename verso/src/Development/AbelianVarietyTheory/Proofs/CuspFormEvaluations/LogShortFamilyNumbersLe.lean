@@ -2,6 +2,27 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `N n a f rd L hN hNn ha hf hrd hL h1 h2 h3 h4`. Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hNn' : (N : ℝ) ≤ n` using `by exact_mod_cast hNn`. Establish `ha' : (1 : ℝ) ≤ a` using `by exact_mod_cast ha`. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`.
+
+Establish `hn' : (1 : ℝ) ≤ n` using `hN'.trans hNn'`. Take `⟨E, hE⟩ : ∃ E : ℝ, E = Real.exp L` from `⟨_, rfl⟩`. Establish `hE3 : 3 ≤ E` using `by have := Real.add_one_le_exp L; linarith`. Establish `hE1 : 1 ≤ E` using `by linarith`. Establish `hE2 : Real.exp (2 * L) = E ^ 2` using `by rw [hE, ← Real.exp_nat_mul]; norm_num`.
+
+Establish `bn : (n : ℝ) ≤ E` using `by rw [hE]; exact (Real.log_le_iff_le_exp (by linarith)).1 h4`. Establish `bf : (f : ℝ) ≤ E ^ 2` using `by rw [← hE2]; exact (Real.log_le_iff_le_exp (by linarith)).1 h2`. Establish `brd : rd ≤ E ^ 2` using `by rw [← hE2]; exact (Real.log_le_iff_le_exp (by linarith)).1 h1`. Establish `ba : (a : ℝ) ≤ E ^ 2`. Establish `: (1 + a : ℝ) ≤ E ^ 2`.
+
+Rewrite using `[← hE2]; exact (Real.log_le_iff_le_exp (by linarith)).1 h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `bN : (N : ℝ) ≤ E` using `hNn'.trans bn`. Establish `b2 : (2 : ℝ) ≤ E` using `by linarith`. Establish `b2N : (2 * N + 1 : ℝ) ≤ E ^ 2` using `by nlinarith`.
+
+Establish `bN1 : (N + 1 : ℝ) ≤ E ^ 2` using `by nlinarith`. Establish `bsq : Real.sqrt n ≤ E`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`. Establish `bf32 : (f : ℝ) ^ ((3 : ℝ) / 2) ≤ (E ^ 2) ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `bfact : ((N + 1).factorial : ℝ) ≤ E ^ (4 * N)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.factorial_le_pow (N + 1)` after adjusting the coercions. Use `_ = (N + 1 : ℝ) ^ (N + 1) := by push_cast; rfl`. Use `_ ≤ (E ^ 2) ^ (N + 1) := by gcongr`.
+
+Use `_ = E ^ (2 * (N + 1)) := by rw [← pow_mul]`. Use `_ ≤ E ^ (4 * N) := pow_le_pow_right₀ hE1 (by omega)`. Establish `binner : ((2 * f * n) * ((2 * N + 1) * a) * (2 * (f : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rd) : ℝ) ≤ E ^ 17`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : (0 : ℝ) < (N : ℝ) * Real.sqrt n * ((N + 1).factorial * ((2 * f * n) * ((2 * N + 1) * a) * (2 * (f : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rd)) ^ (2 * N + 1))`.
+
+Establish `: (0 : ℝ) < N` using `by linarith`. Establish `: (0 : ℝ) < n` using `by linarith`. Establish `: (0 : ℝ) < a` using `by linarith`. Establish `: (0 : ℝ) < f` using `by linarith`. Establish `: (0 : ℝ) < rd` using `by linarith`.
+
+Check the signs of the components of the expression. Establish `hle : (N : ℝ) * Real.sqrt n * ((N + 1).factorial * ((2 * f * n) * ((2 * N + 1) * a) * (2 * (f : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rd)) ^ (2 * N + 1)) ≤ E ^ (140 * N)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow]`. Establish `hlog` using `Real.log_le_log hpos hle`.
+
+Rewrite `hlog` using `[Real.log_pow, hE, Real.log_exp]`. Move the coercions through the operations in `at hlog`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_shortFamilyNumbers_le : ∀ (N n a f : ℕ) (rd L : ℝ), 1 ≤ N → N ≤ n → 1 ≤ a → 1 ≤ f → 1 ≤ rd → 2 ≤ L → Real.log rd ≤ 2 * L → Real.log f ≤ 2 * L → Real.log (1 + a) ≤ 2 * L → Real.log n ≤ L → Real.log (((N : ℝ) * Real.sqrt n * ((N + 1).factorial * ((2 * f * n) * ((2 * N + 1) * a) * (2 * (f : ℝ) ^ ((3 : ℝ) / 2) * n ^ 2 * rd)) ^ (2 * N + 1))) ^ a) ≤ 140 * N * L * a := by
   intro N n a f rd L hN hNn ha hf hrd hL h1 h2 h3 h4
   have hN' : (1 : ℝ) ≤ N := by exact_mod_cast hN

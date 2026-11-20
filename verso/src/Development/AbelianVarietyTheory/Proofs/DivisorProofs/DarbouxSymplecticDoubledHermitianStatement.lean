@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DblEvalLaw.apply_mem_degPSOf | exact GlobalTheory.DblEvalLaw.apply_mem_degPSOf | (intros; apply GlobalTheory.DblEvalLaw.apply_mem_degPSOf <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.darboux_symplectic_doubled_hermitian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ B : Base F E, IsCharAF F B.ψ → ∀ (n m : ℕ) (W : Spc F E n), (∀ i j, σ (W.J j i) = -W.J i j) →
     ∀ W₂ : Spc F E (n + n), W₂.J = dblGram finSumFinEquiv W.J →

@@ -6,6 +6,17 @@ noncomputable def UpperTheory.Reformulated.B.CayleySignature.IsLatIn :
     fun {R W : Type} [CommRing R] [AddCommGroup W] [_root_.Module R W] (M V : Submodule R W) ↦
       M.FG ∧ M ≤ V ∧ ∀ x ∈ V, ∃ (c : R), c ≠ (0 : R) ∧ c • x ∈ M
 
+/- English proof (translation)
+Introduce `O K V _ _ _ _ _ _ _ _ _ N hN`. Use `⟨hN, fun x hx => Submodule.subset_span hx, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[Submodule.restrictScalars_mem]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem b hay`. Rewrite using `[mul_smul]`.
+
+Conclude with `N.smul_mem a hbz`. Consider the case `smul k y _ hy`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨⟨p, q⟩, hpq⟩` from `IsLocalization.surj (nonZeroDivisors O) k`. Use `⟨a * (q : O), mul_ne_zero ha (nonZeroDivisors.coe_ne_zero q), ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (q : O) • (k • y) = p • y`. Rewrite using `[← algebraMap_smul K (q : O), smul_smul, mul_comm, hpq, algebraMap_smul]`. Rewrite using `[mul_smul, h1, smul_comm]`. Conclude with `N.smul_mem p hay`.
+-/
 theorem UpperTheory.Reformulated.B.CayleySignature.isLatIn_spanK :
     ∀ {O K V : Type} [inst : CommRing O] [IsDomain O] [inst_2 : Field K] [inst_3 : Algebra O K] [IsFractionRing O K]
       [inst_5 : AddCommGroup V] [inst_6 : _root_.Module K V] [inst_7 : _root_.Module O V] [inst_8 : IsScalarTower O K V]

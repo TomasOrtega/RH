@@ -19,6 +19,13 @@ noncomputable section
 namespace GlobalTheory.TopVol.MovesAt
 open GlobalTheory.FinPl ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ t J _ g hg`. Establish `hg'` using `(_root_.GlobalTheory.TopVol.mem_level_sphere_iff_conj_mem_levS g).1 hg`. Establish `hSt : Lev.finE (I.rec7 l Z).sp.X' (a.g.bT⁻¹ * g * a.g.bT) ∈ Formalism.L2.DIV.St (_root_.GlobalTheory.Fam.pk_z W).βX` using `Formalism.L2.DIV.parLev_St (Formalism.L2.DIV.lev_le_parLev hg'.2)`. Establish `hP : (fun p => ∃ i, (J.G i).q.v = p) = (· ∈ Finset.univ.image (fun i => (J.G i).q.v))`. Use function extensionality and compare the values at `p`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hP]`. Use `GlobalTheory.T.carriesLatticeCompletion_of_each_place _ _ _ _ _ fun v hv => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Take `⟨e, -, hM⟩` from `(J.G i).frameTop`.
+
+Conclude with `GlobalTheory.T.splitPlace_conjugate_stabilizer_keeps_movedFrameLattice (J.G i).q (J.G i).idem _ _ ha.vis.sdT (J.G i).FT (J.G i).latT _ _ e hM g hSt`.
+-/
 theorem main_alt_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ (t : W.P.T) (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ g ∈ _root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT, Moves (I.rec7 l Z).sp.X' g a.v.NT a.v.NT (fun p => ∃ i, (J.G i).q.v = p) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _ t J _ g hg
   have hg' := (_root_.GlobalTheory.TopVol.mem_level_sphere_iff_conj_mem_levS g).1 hg

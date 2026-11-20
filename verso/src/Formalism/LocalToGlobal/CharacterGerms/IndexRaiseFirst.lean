@@ -16,6 +16,11 @@ variable {C : Type} [Field C] [CharZero C] {dd : ℕ} {V : VF C}
 def ix (i : Fin dd) (L : ℕ) (γ : Fin 2 × Fin dd →₀ ℕ) : Fin 3 × Fin dd →₀ ℕ :=
   Finsupp.single ((0 : Fin 3), i) L + γ.mapDomain (up 2)
 
+/- English proof (translation)
+Establish `hn : ((0 : Fin 3), j) ∉ Set.range (up (dd` using `dd) 2) := by`. Introduce and unpack `⟨q, hq⟩`. Simplify using `only [up, Prod.mk.injEq] at hq`. Conclude with `Fin.succ_ne_zero _ hq.1`. Simplify using `only [ix, Finsupp.add_apply, Finsupp.mapDomain_notin_range _ _ hn, add_zero, Finsupp.single_apply, Prod.mk.injEq, true_and]`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem index_raise_first (i : Fin dd) (L : ℕ) (γ : Fin 2 × Fin dd →₀ ℕ) (j : Fin dd) :
     ix i L γ ((0 : Fin 3), j) = if j = i then L else 0 := by
   have hn : ((0 : Fin 3), j) ∉ Set.range (up (dd := dd) 2) := by
@@ -33,6 +38,11 @@ def FrobX (V : VF C) (f : PS C 3 dd) : Prop :=
 
 def FrobD (V : VF C) (f : PS C 3 dd) : Prop := ∀ j : Fin dd, MaximalIdealCongruence.MMS V (pderiv C ((0 : Fin 3), j) f)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [AddValuation.map_zero]`. Consider the case `succ m ih`. Rewrite using `[Nat.cast_succ]`. Use `le_trans (le_min ih ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations.
+
+Rewrite using `[AddValuation.map_one]`.
+-/
 private theorem v_natCast_nonneg_of_vf (V : VF C) (m : ℕ) : 0 ≤ V.v (m : C) := by
   induction m with
   | zero => simp [AddValuation.map_zero]
@@ -41,6 +51,9 @@ private theorem v_natCast_nonneg_of_vf (V : VF C) (m : ℕ) : 0 ≤ V.v (m : C) 
     refine le_trans (le_min ih ?_) (AddValuation.map_add _ _ _)
     rw [AddValuation.map_one]
 
+/- English proof (translation)
+Take `⟨m, rfl | rfl⟩` from `Int.eq_nat_or_neg a`. Rewrite using `[Int.cast_natCast]`. Conclude with `v_natCast_nonneg_of_vf V m`. Rewrite using `[Int.cast_neg, Int.cast_natCast, AddValuation.map_neg]`. Conclude with `v_natCast_nonneg_of_vf V m`.
+-/
 private theorem v_intCast_nonneg' (V : VF C) (a : ℤ) : 0 ≤ V.v (a : C) := by
   obtain ⟨m, rfl | rfl⟩ := Int.eq_nat_or_neg a
   · rw [Int.cast_natCast]
@@ -48,6 +61,15 @@ private theorem v_intCast_nonneg' (V : VF C) (a : ℤ) : 0 ≤ V.v (a : C) := by
   · rw [Int.cast_neg, Int.cast_natCast, AddValuation.map_neg]
     exact v_natCast_nonneg_of_vf V m
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hcop : Nat.Coprime n V.l` using `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd V.l_prime).mpr hn)`. Establish `hb` using `Nat.gcd_eq_gcd_ab n V.l`. Rewrite `hb` using `[hcop.gcd_eq_one, Nat.cast_one]`.
+
+Establish `h1 : (1 : C) = (n : C) * (Nat.gcdA n V.l : C) + (V.l : C) * (Nat.gcdB n V.l : C)`. Use `congrArg (fun z : ℤ => (z : C)) hb` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `h01 : (0 : WithTop ℝ) < 1`. Rewrite using `[← WithTop.coe_zero, ← WithTop.coe_one, WithTop.coe_lt_coe]`.
+
+Conclude with `one_pos`. Establish `ha : 0 < V.v ((n : C) * (Nat.gcdA n V.l : C))`. Rewrite using `[AddValuation.map_mul]`. Conclude with `add_pos_of_pos_of_nonneg hlt (v_intCast_nonneg' V _)`. Establish `hb' : 0 < V.v ((V.l : C) * (Nat.gcdB n V.l : C))`.
+
+Rewrite using `[AddValuation.map_mul, V.v_l]`. Conclude with `add_pos_of_pos_of_nonneg h01 (v_intCast_nonneg' V _)`. Use `lt_of_lt_of_le (lt_min ha hb') (AddValuation.map_add _ _ _)` as an intermediate fact. Rewrite `this` using `[← h1, AddValuation.map_one]`. Conclude with `lt_irrefl _ this`.
+-/
 private theorem v_natCast_nonpos_of_not_dvd (V : VF C) (n : ℕ) (hn : ¬ V.l ∣ n) : V.v (n : C) ≤ 0 := by
   by_contra hlt
   push_neg at hlt
@@ -71,6 +93,17 @@ private theorem v_natCast_nonpos_of_not_dvd (V : VF C) (n : ℕ) (hn : ¬ V.l �
   rw [← h1, AddValuation.map_one] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Unfold `FrobD MaximalIdealCongruence.MMS at hd`. Introduce and unpack `p ⟨j, hj⟩`. Establish `hp0 : p ((0 : Fin 3), j) ≠ 0`. Introduce `h`. Rewrite `hj` using `[h]`.
+
+Conclude with `hj (dvd_zero _)`. Establish `h` using `hd j (p - Finsupp.single ((0 : Fin 3), j) 1)`. Establish `hle : Finsupp.single ((0 : Fin 3), j) 1 ≤ p`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.mpr hp0`.
+
+Rewrite `h` using `[MvPowerSeries.coeff_pderiv, tsub_add_cancel_of_le hle]`. Establish `hn : ((((p - Finsupp.single ((0 : Fin 3), j) 1 : Fin 3 × Fin dd →₀ ℕ) ((0 : Fin 3), j)) : ℕ) : C) + 1 = (p ((0 : Fin 3), j) : C)`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`. Conclude with `Nat.sub_add_cancel (Nat.one_le_iff_ne_zero.mpr hp0)` after adjusting the coercions. Rewrite `h` using `[hn]`.
+
+Unfold `VF.MM at h ⊢`. Rewrite `h` using `[AddValuation.map_mul]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `add_le_add hc (v_natCast_nonpos_of_not_dvd V _ hj)` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `absurd h (not_lt.mpr this)`.
+-/
 theorem frobX_of {f : PS C 3 dd} (hi : IntS V f) (hd : FrobD V f) : FrobX V f := by
   unfold FrobD MaximalIdealCongruence.MMS at hd
   rintro p ⟨j, hj⟩
@@ -96,10 +129,16 @@ theorem frobX_of {f : PS C 3 dd} (hi : IntS V f) (hd : FrobD V f) : FrobX V f :=
   rw [add_zero] at this
   exact absurd h (not_lt.mpr this)
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ _ _)`.
+-/
 private theorem mm_add_of_mm_of_mm {V : VF C} {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at *
   exact lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ _ _)
 
+/- English proof (translation)
+Use `Finset.sum_induction a (fun x => V.MM x) (fun x y hx hy => mm_add_of_mm_of_mm hx hy) ?_ h` and prove the remaining obligations. Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero, ← WithTop.coe_zero]`. Conclude with `WithTop.coe_lt_top _`.
+-/
 private theorem mm_finset_sum_of_forall_mm {V : VF C} {ι : Type} (s : Finset ι) (a : ι → C) (h : ∀ i ∈ s, V.MM (a i)) :
     V.MM (∑ i ∈ s, a i) := by
   refine Finset.sum_induction a (fun x => V.MM x) (fun x y hx hy => mm_add_of_mm_of_mm hx hy) ?_ h
@@ -107,6 +146,13 @@ private theorem mm_finset_sum_of_forall_mm {V : VF C} {ι : Type} (s : Finset ι
   rw [AddValuation.map_zero, ← WithTop.coe_zero]
   exact WithTop.coe_lt_top _
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Apply `mm_finset_sum_of_forall_mm` to reduce the goal to its premises. Introduce `x _`. Establish `h1` using `hf x.1`.
+
+Establish `h2` using `hh x.2`. Unfold `VF.Ge at h1`. Unfold `VF.MM at h2 ⊢`. Rewrite using `[AddValuation.map_mul]`. Establish `h1' : (0 : WithTop ℝ) ≤ V.v (coeff x.1 f)` using `by simpa using h1`.
+
+Conclude with `lt_of_lt_of_le h2 (le_add_of_nonneg_left h1')`.
+-/
 private theorem mms_mul_of_intS_of_mms {V : VF C} {σ : Type} {f h : MvPowerSeries σ C} (hf : IntS V f)
     (hh : MaximalIdealCongruence.MMS V h) : MaximalIdealCongruence.MMS V (f * h) := by
   intro μ
@@ -121,6 +167,11 @@ private theorem mms_mul_of_intS_of_mms {V : VF C} {σ : Type} {f h : MvPowerSeri
   have h1' : (0 : WithTop ℝ) ≤ V.v (coeff x.1 f) := by simpa using h1
   exact lt_of_lt_of_le h2 (le_add_of_nonneg_left h1')
 
+/- English proof (translation)
+Introduce `j`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Introduce `μ`. Rewrite using `[map_add]`. Apply `mm_add_of_mm_of_mm` to reduce the goal to its premises.
+
+Conclude with `mms_mul_of_intS_of_mms hf (hg' j) μ`. Conclude with `mms_mul_of_intS_of_mms hg (hf' j) μ`.
+-/
 theorem frobD_mul {f g : PS C 3 dd} (hf : IntS V f) (hg : IntS V g) (hf' : FrobD V f) (hg' : FrobD V g) :
     FrobD V (f * g) := by
   intro j
@@ -131,6 +182,11 @@ theorem frobD_mul {f g : PS C 3 dd} (hf : IntS V f) (hg : IntS V g) (hf' : FrobD
   · exact mms_mul_of_intS_of_mms hf (hg' j) μ
   · exact mms_mul_of_intS_of_mms hg (hf' j) μ
 
+/- English proof (translation)
+Use extensionality with `⟨k, j⟩`. Proceed by induction on `k using Fin.cases with`. Consider the case `zero`. Rewrite using `[Finsupp.mapDomain_notin_range, hp]`. Introduce and unpack `⟨q, hq⟩`.
+
+Simplify using `only [up, Prod.mk.injEq] at hq`. Conclude with `Fin.succ_ne_zero _ hq.1`. Consider the case `succ k'`. Establish `e : ((Fin.succ k', j) : Fin 3 × Fin dd) = up 2 (k', j)` using `rfl`. Rewrite using `[e, Finsupp.mapDomain_apply (up_inj 2), Finsupp.comapDomain_apply]`.
+-/
 theorem eq_up_of {p : Fin 3 × Fin dd →₀ ℕ} (hp : ∀ j, p ((0 : Fin 3), j) = 0) :
     (Finsupp.comapDomain (up 2) p ((up_inj 2).injOn)).mapDomain (up 2) = p := by
   ext ⟨k, j⟩
@@ -144,6 +200,31 @@ theorem eq_up_of {p : Fin 3 × Fin dd →₀ ℕ} (hp : ∀ j, p ((0 : Fin 3), j
     have e : ((Fin.succ k', j) : Fin 3 × Fin dd) = up 2 (k', j) := rfl
     rw [e, Finsupp.mapDomain_apply (up_inj 2), Finsupp.comapDomain_apply]
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst (fun q : Fin 3 × Fin dd => rz (C` using `C) (dd := dd) 2 q.1 q.2) := by`. Establish `hz : ∀ q : Fin 3 × Fin dd, constantCoeff (rz (C` using `C) (dd := dd) 2 q.1 q.2) = 0 := by`. Introduce and unpack `⟨k, i⟩`. Apply the tactic sequence `induction k using Fin.cases <;> simp [rz, pt]`. Use `first`.
+
+Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero hz`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' hz`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun q => by rw [hz q]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun q => by rw [hz q]; exact IsNilpotent.zero)`. Establish `hmon : ∀ d' : Fin 2 × Fin dd →₀ ℕ, (d'.prod fun s n => (X s : PS C 2 dd) ^ n) = MvPowerSeries.monomial d' (1 : C)`.
+
+Introduce `d'`. Proceed by induction on `d' using Finsupp.induction with`. Consider the case `zero => rw [Finsupp.prod_zero_index, MvPowerSeries.monomial_zero_one]`. Consider the case `single_add a b g _ _ ih`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), ih, Finsupp.prod_single_index (h := fun x n => (X x : PS C 2 dd) ^ n) (pow_zero _), MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul]`.
+
+Establish `inj : Function.Injective (Finsupp.mapDomain (M` using `ℕ) (up (dd := dd) 2)) := Finsupp.mapDomain_injective (up_inj 2)`. Establish `hprod : ∀ (d : Fin 3 × Fin dd →₀ ℕ) (e : Fin 2 × Fin dd →₀ ℕ), coeff e (d.prod fun s n => (fun q : Fin 3 × Fin dd => rz (C` using `C) (dd := dd) 2 q.1 q.2) s ^ n) = if d = e.mapDomain (up 2) then 1 else 0 := by`. Introduce `d e`. Distinguish the cases in `hx : ∀ j, d ((0 : Fin 3), j) = 0`. Establish `hd` using `(eq_up_of hx).symm`.
+
+Rewrite using `[hd, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Use `show coeff e ((Finsupp.comapDomain (up 2) d ((up_inj 2).injOn)).prod fun s n => (X s : PS C 2 dd) ^ n) = _`. Rewrite using `[hmon, MvPowerSeries.coeff_monomial]`. Distinguish the cases in `he : e = Finsupp.comapDomain (up 2) d ((up_inj 2).injOn)`. Rewrite using `[if_pos he, if_pos (by rw [he])]`.
+
+Rewrite using `[if_neg he, if_neg (fun h => he (inj h).symm)]`. Use `push_neg at hx`. Take `⟨j, hj⟩` from `hx`. Establish `h0 : (d.prod fun s n => (fun q : Fin 3 × Fin dd => rz (C` using `C) (dd := dd) 2 q.1 q.2) s ^ n) = 0 := by`. Apply `Finset.prod_eq_zero (i := ((0 : Fin 3), j))` to reduce the goal to its premises.
+
+Conclude with `Finsupp.mem_support_iff.mpr hj`. Use `show (rz (C := C) (dd := dd) 2 0 j) ^ (d ((0 : Fin 3), j)) = 0`. Rewrite using `[show rz (C := C) (dd := dd) 2 0 j = 0 from rfl, zero_pow hj]`. Rewrite using `[h0, map_zero, if_neg]`. Introduce `h`.
+
+Apply `hj` to reduce the goal to its premises. Rewrite using `[h, Finsupp.mapDomain_notin_range]`. Introduce and unpack `⟨q, hq⟩`. Simplify using `only [up, Prod.mk.injEq] at hq`. Conclude with `Fin.succ_ne_zero _ hq.1`.
+
+Establish `key : ∀ e : Fin 2 × Fin dd →₀ ℕ, coeff e (ev (rz (C` using `C) (dd := dd) 2) f) = coeff (e.mapDomain (up 2)) f := by`. Introduce `e`. Use `show coeff e (MvPowerSeries.subst (fun q : Fin 3 × Fin dd => rz (C := C) (dd := dd) 2 q.1 q.2) f) = _`. Rewrite using `[MvPowerSeries.coeff_subst hs, finsum_eq_single _ (e.mapDomain (up 2))]`. Rewrite using `[hprod, if_pos rfl, smul_eq_mul, mul_one]`.
+
+Introduce `d hd`. Rewrite using `[hprod, if_neg hd, smul_zero]`. Establish `h2` using `key (Finsupp.comapDomain (up 2) p ((up_inj 2).injOn))`. Rewrite `h2` using `[h1, eq_up_of hp, MvPowerSeries.coeff_one]`. Rewrite using `[← h2]`.
+
+Distinguish the cases in `hp0 : p = 0`. Substitute `hp0` using the available equality. Rewrite using `[if_pos rfl, if_pos]`. Use extensionality with `s`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg hp0, if_neg]`. Introduce `h`. Apply `hp0` to reduce the goal to its premises. Rewrite using `[← eq_up_of hp, h, Finsupp.mapDomain_zero]`.
+-/
 theorem coeff_free {f : PS C 3 dd} (h1 : ev (rz 2) f = 1) {p : Fin 3 × Fin dd →₀ ℕ}
     (hp : ∀ j, p ((0 : Fin 3), j) = 0) : coeff p f = if p = 0 then 1 else 0 := by
   classical
@@ -215,17 +296,26 @@ theorem coeff_free {f : PS C 3 dd} (h1 : ev (rz 2) f = 1) {p : Fin 3 × Fin dd �
     apply hp0
     rw [← eq_up_of hp, h, Finsupp.mapDomain_zero]
 
+/- English proof (translation)
+Establish `h` using `hp ((0 : Fin 3), j)`. Rewrite `h` using `[index_raise_first, if_neg hj]`. Conclude with `Nat.le_zero.mp h`.
+-/
 theorem x_le (i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) {p : Fin 3 × Fin dd →₀ ℕ} (hp : p ≤ ix i V.l γ)
     (j : Fin dd) (hj : j ≠ i) : p ((0 : Fin 3), j) = 0 := by
   have h := hp ((0 : Fin 3), j)
   rw [index_raise_first, if_neg hj] at h
   exact Nat.le_zero.mp h
 
+/- English proof (translation)
+Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero, ← WithTop.coe_zero]`. Conclude with `WithTop.coe_lt_top _`.
+-/
 private theorem mm_zero' : V.MM (0 : C) := by
   unfold VF.MM
   rw [AddValuation.map_zero, ← WithTop.coe_zero]
   exact WithTop.coe_lt_top _
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Unfold `VF.Ge at hb`. Rewrite using `[AddValuation.map_mul]`. Establish `hb' : (0 : WithTop ℝ) ≤ V.v b` using `by simpa using hb`. Conclude with `lt_of_lt_of_le ha (le_add_of_nonneg_right hb')`.
+-/
 private theorem mm_mul_of_mm_of_ge_zero {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   unfold VF.MM at *
   unfold VF.Ge at hb
@@ -233,6 +323,41 @@ private theorem mm_mul_of_mm_of_ge_zero {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) 
   have hb' : (0 : WithTop ℝ) ≤ V.v b := by simpa using hb
   exact lt_of_lt_of_le ha (le_add_of_nonneg_right hb')
 
+/- English proof (translation)
+Unfold `FrobX at hfF hgF`. Use `set N := ix i V.l γ with hN`. Establish `hN0 : N ≠ 0`. Introduce `h`. Establish `h2` using `congrArg (fun p => p ((0 : Fin 3), i)) h`.
+
+Simplify using `[hN, index_raise_first] at h2`. Conclude with `V.l_prime.ne_zero h2`. Establish `hf0 : coeff 0 f = 1`. Use `coeff_free hf1 (p := 0) (fun j => rfl)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hg0 : coeff 0 g = 1`. Use `coeff_free hg1 (p := 0) (fun j => rfl)` as an intermediate fact. Simplify using `using this`. Rewrite using `[MvPowerSeries.coeff_mul]`. Establish `h1 : ((0 : Fin 3 × Fin dd →₀ ℕ), N) ∈ Finset.HasAntidiagonal.antidiagonal N`.
+
+Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using the standard rewrite rules. Establish `h2 : (N, (0 : Fin 3 × Fin dd →₀ ℕ)) ∈ (Finset.HasAntidiagonal.antidiagonal N).erase (0, N)`. Rewrite using `[Finset.mem_erase]`. Use `⟨fun h => hN0 (congrArg Prod.fst h), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using the standard rewrite rules. Rewrite using `[← Finset.add_sum_erase _ _ h1, ← Finset.add_sum_erase _ _ h2]`. Simplify using `only`. Rewrite using `[hf0, hg0, one_mul, mul_one]`.
+
+Establish `e : ∀ A B S : C, A + (B + S) - B - A = S`. Use `intros`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Apply `mm_finset_sum_of_forall_mm` to reduce the goal to its premises.
+
+Introduce `x hx`. Take `⟨hne2, hx'⟩` from `Finset.mem_erase.mp hx`. Take `⟨hne1, hx''⟩` from `Finset.mem_erase.mp hx'`. Establish `hsum` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hx''`. Establish `ha : x.1 ≤ N`.
+
+Rewrite using `[← hsum]`. Conclude with `le_self_add`. Establish `hb : x.2 ≤ N`. Rewrite using `[← hsum]`. Conclude with `le_add_self`.
+
+Establish `ha0 : x.1 ≠ 0`. Introduce `h`. Apply `hne1` to reduce the goal to its premises. Use `Prod.ext h ?_` and prove the remaining obligations. Use `show x.2 = N`.
+
+Rewrite using `[← hsum, h, zero_add]`. Establish `hb0 : x.2 ≠ 0`. Introduce `h`. Apply `hne2` to reduce the goal to its premises. Use `Prod.ext ?_ h` and prove the remaining obligations.
+
+Use `show x.1 = N`. Rewrite using `[← hsum, h, add_zero]`. Establish `hxa : ∀ j, j ≠ i → x.1 ((0 : Fin 3), j) = 0` using `fun j hj => x_le i γ ha j hj`. Establish `hxb : ∀ j, j ≠ i → x.2 ((0 : Fin 3), j) = 0` using `fun j hj => x_le i γ hb j hj`. Establish `hti : x.1 ((0 : Fin 3), i) + x.2 ((0 : Fin 3), i) = V.l`.
+
+Establish `h3` using `congrArg (fun p => p ((0 : Fin 3), i)) hsum`. Simplify using `only [Finsupp.add_apply] at h3`. Rewrite using `[h3, hN, index_raise_first, if_pos rfl]`. Distinguish the cases in `hd : V.l ∣ x.1 ((0 : Fin 3), i)`. Take `⟨q, hq⟩` from `hd`.
+
+Break down `q with _ | _ | q` into its components or cases. Establish `hfree : ∀ j, x.1 ((0 : Fin 3), j) = 0`. Introduce `j`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj]`.
+
+Simplify using `using hq`. Conclude with `hxa j hj`. Rewrite using `[coeff_free hf1 hfree, if_neg ha0, zero_mul]`. Conclude with `mm_zero'`. Establish `hfree : ∀ j, x.2 ((0 : Fin 3), j) = 0`.
+
+Introduce `j`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj]`. Simplify using `at hq`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `hxb j hj`. Rewrite using `[coeff_free hg1 hfree, if_neg hb0, mul_zero]`. Conclude with `mm_zero'`. It suffices to derive a contradiction. Use polynomial arithmetic with `[V.l_prime.pos]`.
+
+Conclude with `mm_mul_of_mm_of_ge_zero (hfF x.1 ⟨i, hd⟩) (hg x.2)`.
+-/
 theorem coeff_mul_cong {f g : PS C 3 dd} (hf : IntS V f) (hg : IntS V g) (hfF : FrobX V f) (hgF : FrobX V g)
     (hf1 : ev (rz 2) f = 1) (hg1 : ev (rz 2) g = 1) (i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) :
     V.MM (coeff (ix i V.l γ) (f * g) - coeff (ix i V.l γ) f - coeff (ix i V.l γ) g) := by

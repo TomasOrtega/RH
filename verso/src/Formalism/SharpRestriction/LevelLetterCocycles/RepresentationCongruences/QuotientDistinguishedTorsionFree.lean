@@ -14,6 +14,9 @@ noncomputable def wdeg (g : O⟦X⟧) : ℕ := (g.map (IsLocalRing.residue O)).o
 
 def IsDist (g : O⟦X⟧) : Prop := g.map (IsLocalRing.residue O) ≠ 0
 
+/- English proof (translation)
+Establish `hg0 : constantCoeff g ∈ IsLocalRing.maximalIdeal O` using `WeierD.constantCoeff_mem (g := g) hD`. Take `⟨h, hX⟩` from `WeierS.exists_algHom_X_eq hg0`. Use `⟨h, hX, WeierD.injective (g := g) hg hD h hX, fun f => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `WeierD.exists_decomp (g := g) hg hD h hX f`. Conclude with `⟨c, hc, fun c' hc' => WeierD.decomp_unique (g := g) hg h hX c' c (hc'.symm.trans hc)⟩`.
+-/
 theorem exists_weierstrass_substitution (g : O⟦X⟧) (hg : IsDist g) (hD : 1 ≤ wdeg g) :
     ∃ h : O⟦X⟧ →ₐ[O] O⟦X⟧, h X = g ∧ Function.Injective h ∧
       ∀ f : O⟦X⟧, ∃! c : Fin (wdeg g) → O⟦X⟧, f = ∑ i : Fin (wdeg g), X ^ (i : ℕ) * h (c i) := by

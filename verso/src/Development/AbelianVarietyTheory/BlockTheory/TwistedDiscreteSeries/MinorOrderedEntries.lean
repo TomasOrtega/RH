@@ -69,6 +69,9 @@ def hwVec (n : ℕ) (lam : ι → ℕ → ℤ) : Pol ι n n :=
 def weylSub (n : ℕ) (lam : ι → ℕ → ℤ) : Submodule ℂ (Pol ι n n) :=
   Submodule.span ℂ (Set.range fun g : UG ι n => leftRep n g (hwVec n lam))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Use `Submodule.subset_span ⟨g * h, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem span_orbit_le {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (v : V) (g : G) :
     Submodule.span ℂ (Set.range fun h : G => ρ h v) ≤ (Submodule.span ℂ (Set.range fun h : G => ρ h v)).comap (ρ g) := by
   refine Submodule.span_le.2 ?_
@@ -76,6 +79,9 @@ theorem span_orbit_le {G V : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] (�
   refine Submodule.subset_span ⟨g * h, ?_⟩
   simp
 
+/- English proof (translation)
+The claim follows from `span_orbit_le (leftRep n) (hwVec n lam) g`.
+-/
 theorem weylSub_le (n : ℕ) (lam : ι → ℕ → ℤ) (g : UG ι n) : weylSub n lam ≤ (weylSub n lam).comap (leftRep n g) :=
   span_orbit_le (leftRep n) (hwVec n lam) g
 
@@ -141,6 +147,9 @@ def nR (j : ℕ) : ℕ := S.k + S.m * S.s + j * (S.t + 1)
 
 def nC (i : ℕ) : ℕ := S.k + S.m - 1 + S.m * S.t + i * S.s
 
+/- English proof (translation)
+Use `S.k_pos` as an intermediate fact. Unfold `nC nR`. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nC_succ : S.nC S.m + 1 = S.nR S.m := by
   have := S.k_pos
   unfold nC nR
@@ -238,8 +247,14 @@ def OneLine : Prop :=
   ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S : Sizes) (P : ι → Entries S), (∀ τ, (P τ).Good) →
     Module.finrank ℂ (invFun (omRep P)) = 1
 
+/- English proof (translation)
+Simplify using `[block]`.
+-/
 theorem length_block (x : ℚ) (n : ℕ) : (block x n).length = n := by simp [block]
 
+/- English proof (translation)
+Establish `hk` using `S.k_pos`. Take `⟨r, hr⟩` from `S.s_odd`. Establish `: S.s - 1 + 1 = S.s` using `by omega`. Simplify using `[Entries.psiPar, List.length_flatMap, length_block, Sizes.nR, this]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem length_psi (Q : Entries S) : Q.psiPar.length = S.nR 0 := by
   have hk := S.k_pos
   obtain ⟨r, hr⟩ := S.s_odd
@@ -247,21 +262,35 @@ theorem length_psi (Q : Entries S) : Q.psiPar.length = S.nR 0 := by
   simp [Entries.psiPar, List.length_flatMap, length_block, Sizes.nR, this]
   omega
 
+/- English proof (translation)
+Use `length_psi Q` as an intermediate fact. Simplify using `[Entries.bigPar, List.length_flatMap, length_block, Sizes.nR] at this ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem length_big (Q : Entries S) : Q.bigPar.length = S.nR S.m := by
   have := length_psi Q
   simp [Entries.bigPar, List.length_flatMap, length_block, Sizes.nR] at this ⊢
   omega
 
+/- English proof (translation)
+Establish `hk` using `S.k_pos`. Simplify using `[Entries.basePar, List.length_flatMap, length_block, Sizes.nC, mul_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem length_base (Q : Entries S) : Q.basePar.length = S.nC 0 := by
   have hk := S.k_pos
   simp [Entries.basePar, List.length_flatMap, length_block, Sizes.nC, mul_add]
   omega
 
+/- English proof (translation)
+Use `length_base Q` as an intermediate fact. Simplify using `[Entries.smallPar, List.length_flatMap, length_block, Sizes.nC] at this ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem length_small (Q : Entries S) : Q.smallPar.length = S.nC S.m := by
   have := length_base Q
   simp [Entries.smallPar, List.length_flatMap, length_block, Sizes.nC] at this ⊢
   omega
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h _ (List.getElem_mem hi)`. Establish `: p.getD i 0 - (((p.length : ℚ) - 1) / 2 - i) = ((z + i : ℤ) : ℚ)`. Rewrite using `[List.getD_eq_getElem _ _ hi, hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hw, this, Int.floor_intCast, hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hw_exact (p : List ℚ) (h : ∀ x ∈ p, ∃ z : ℤ, x = z + ((p.length : ℚ) - 1) / 2) (i : ℕ) (hi : i < p.length) :
     (hw p i : ℚ) = p[i] - (((p.length : ℚ) - 1) / 2 - i) := by
   obtain ⟨z, hz⟩ := h _ (List.getElem_mem hi)
@@ -269,18 +298,27 @@ theorem hw_exact (p : List ℚ) (h : ∀ x ∈ p, ∃ z : ℤ, x = z + ((p.lengt
     rw [List.getD_eq_getElem _ _ hi, hz]; push_cast; ring
   rw [hw, this, Int.floor_intCast, hz]; push_cast; ring
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hn`. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨c + r - i, by push_cast; ring⟩`.
+-/
 theorem block_odd (c : ℤ) {n : ℕ} (hn : Odd n) : ∀ x ∈ block c n, ∃ z : ℤ, x = z := by
   obtain ⟨r, rfl⟩ := hn
   intro x hx
   obtain ⟨i, -, rfl⟩ := List.mem_map.1 hx
   exact ⟨c + r - i, by push_cast; ring⟩
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hn`. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨c + r - i - 1, by push_cast; ring⟩`.
+-/
 theorem block_even (c : ℤ) {n : ℕ} (hn : Even n) : ∀ x ∈ block c n, ∃ z : ℤ, x = z + 1 / 2 := by
   obtain ⟨r, rfl⟩ := hn
   intro x hx
   obtain ⟨i, -, rfl⟩ := List.mem_map.1 hx
   exact ⟨c + r - i - 1, by push_cast; ring⟩
 
+/- English proof (translation)
+Use `hw_exact p (fun x hx => ?_) i hi` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h x hx`. Take `⟨r, hr⟩` from `hl`. Conclude with `⟨z + 1 - r, by rw [hr]; push_cast; ring⟩`.
+-/
 theorem hw_of_half (p : List ℚ) (hl : Even p.length) (h : ∀ x ∈ p, ∃ z : ℤ, x = z + 1 / 2) (i : ℕ) (hi : i < p.length) :
     (hw p i : ℚ) = p[i] - (((p.length : ℚ) - 1) / 2 - i) := by
   refine hw_exact p (fun x hx => ?_) i hi
@@ -288,6 +326,9 @@ theorem hw_of_half (p : List ℚ) (hl : Even p.length) (h : ∀ x ∈ p, ∃ z :
   obtain ⟨r, hr⟩ := hl
   exact ⟨z + 1 - r, by rw [hr]; push_cast; ring⟩
 
+/- English proof (translation)
+Use `hw_exact p (fun x hx => ?_) i hi` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h x hx`. Take `⟨r, hr⟩` from `hl`. Conclude with `⟨z - r, by rw [hr]; push_cast; ring⟩`.
+-/
 theorem hw_of_int (p : List ℚ) (hl : Odd p.length) (h : ∀ x ∈ p, ∃ z : ℤ, x = z) (i : ℕ) (hi : i < p.length) :
     (hw p i : ℚ) = p[i] - (((p.length : ℚ) - 1) / 2 - i) := by
   refine hw_exact p (fun x hx => ?_) i hi
@@ -295,9 +336,15 @@ theorem hw_of_int (p : List ℚ) (hl : Odd p.length) (h : ∀ x ∈ p, ∃ z : �
   obtain ⟨r, hr⟩ := hl
   exact ⟨z - r, by rw [hr]; push_cast; ring⟩
 
+/- English proof (translation)
+The claim follows from `(S.k_even.add (S.m_even.mul_right _)).add (S.t_odd.add_one.mul_left _)`.
+-/
 theorem even_nR (j : ℕ) : Even (S.nR j) :=
   (S.k_even.add (S.m_even.mul_right _)).add (S.t_odd.add_one.mul_left _)
 
+/- English proof (translation)
+Establish `hk` using `S.k_pos`. Establish `h1 : Odd (S.k + S.m - 1)`. Take `⟨a, ha⟩` from `S.k_even.add S.m_even`. Conclude with `⟨a - 1, by omega⟩`. Conclude with `(h1.add_even (S.m_even.mul_right _)).add_even (hi.mul_right _)`.
+-/
 theorem odd_nC {i : ℕ} (hi : Even i) : Odd (S.nC i) := by
   have hk := S.k_pos
   have h1 : Odd (S.k + S.m - 1) := by
@@ -305,6 +352,9 @@ theorem odd_nC {i : ℕ} (hi : Even i) : Odd (S.nC i) := by
     exact ⟨a - 1, by omega⟩
   exact (h1.add_even (S.m_even.mul_right _)).add_even (hi.mul_right _)
 
+/- English proof (translation)
+Establish `hs : Even (S.s - 1)` using `by obtain ⟨r, hr⟩ := S.s_odd; exact ⟨r, by omega⟩`. Introduce `x hx`. Simplify using `only [Entries.psiPar, List.cons_append, List.mem_cons, List.mem_append, List.mem_flatMap, List.mem_map, List.not_mem_nil, or_false] at hx`. Break down `hx with rfl | ⟨i, -, h | rfl⟩ | ⟨i, -, rfl⟩` into its components or cases. Use `exacts [hQ.a_half _, block_even _ hs x h, hQ.a_half _, hQ.u_half _]`.
+-/
 theorem psi_half (Q : Entries S) (hQ : Q.Good) : ∀ x ∈ Q.psiPar, ∃ z : ℤ, x = z + 1 / 2 := by
   have hs : Even (S.s - 1) := by obtain ⟨r, hr⟩ := S.s_odd; exact ⟨r, by omega⟩
   intro x hx
@@ -313,6 +363,11 @@ theorem psi_half (Q : Entries S) (hQ : Q.Good) : ∀ x ∈ Q.psiPar, ∃ z : ℤ
   rcases hx with rfl | ⟨i, -, h | rfl⟩ | ⟨i, -, rfl⟩
   exacts [hQ.a_half _, block_even _ hs x h, hQ.a_half _, hQ.u_half _]
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Entries.basePar, List.mem_cons, List.mem_append, List.mem_flatMap, List.mem_map] at hx`. Break down `hx with ⟨i, -, rfl⟩ | ⟨j, -, rfl | h⟩` into its components or cases. Conclude with `⟨_, rfl⟩`. Conclude with `⟨-Q.b j, by push_cast; ring⟩`.
+
+Conclude with `block_odd (-Q.e j) S.t_odd x (by exact_mod_cast h)`.
+-/
 theorem base_int (Q : Entries S) : ∀ x ∈ Q.basePar, ∃ z : ℤ, x = z := by
   intro x hx
   simp only [Entries.basePar, List.mem_cons, List.mem_append, List.mem_flatMap, List.mem_map] at hx
@@ -321,10 +376,16 @@ theorem base_int (Q : Entries S) : ∀ x ∈ Q.basePar, ∃ z : ℤ, x = z := by
   · exact ⟨-Q.b j, by push_cast; ring⟩
   · exact block_odd (-Q.e j) S.t_odd x (by exact_mod_cast h)
 
+/- English proof (translation)
+The claim follows from `hw_of_half _ (length_psi Q ▸ even_nR 0) (psi_half Q hQ) i hi`.
+-/
 theorem hw_psi (Q : Entries S) (hQ : Q.Good) (i : ℕ) (hi : i < Q.psiPar.length) :
     (hw Q.psiPar i : ℚ) = Q.psiPar[i] - (((Q.psiPar.length : ℚ) - 1) / 2 - i) :=
   hw_of_half _ (length_psi Q ▸ even_nR 0) (psi_half Q hQ) i hi
 
+/- English proof (translation)
+Use `hw_of_half _ (length_big Q ▸ even_nR _) (fun x hx => ?_) i hi` and prove the remaining obligations. Break down `List.mem_append.1 hx with h | h` into its components or cases. Conclude with `psi_half Q hQ x h`. Take `⟨j, -, h⟩` from `List.mem_flatMap.1 h`. Conclude with `block_even (-Q.e j) S.t_odd.add_one x (by exact_mod_cast h)`.
+-/
 theorem hw_big (Q : Entries S) (hQ : Q.Good) (i : ℕ) (hi : i < Q.bigPar.length) :
     (hw Q.bigPar i : ℚ) = Q.bigPar[i] - (((Q.bigPar.length : ℚ) - 1) / 2 - i) := by
   refine hw_of_half _ (length_big Q ▸ even_nR _) (fun x hx => ?_) i hi
@@ -333,10 +394,16 @@ theorem hw_big (Q : Entries S) (hQ : Q.Good) (i : ℕ) (hi : i < Q.bigPar.length
   · obtain ⟨j, -, h⟩ := List.mem_flatMap.1 h
     exact block_even (-Q.e j) S.t_odd.add_one x (by exact_mod_cast h)
 
+/- English proof (translation)
+The claim follows from `hw_of_int _ (length_base Q ▸ odd_nC ⟨0, rfl⟩) (base_int Q) i hi`.
+-/
 theorem hw_base (Q : Entries S) (i : ℕ) (hi : i < Q.basePar.length) :
     (hw Q.basePar i : ℚ) = Q.basePar[i] - (((Q.basePar.length : ℚ) - 1) / 2 - i) :=
   hw_of_int _ (length_base Q ▸ odd_nC ⟨0, rfl⟩) (base_int Q) i hi
 
+/- English proof (translation)
+Use `hw_of_int _ (length_small Q ▸ odd_nC S.m_even) (fun x hx => ?_) i hi` and prove the remaining obligations. Break down `List.mem_append.1 hx with h | h` into its components or cases. Take `⟨j, -, h⟩` from `List.mem_flatMap.1 h`. Conclude with `block_odd (Q.c j) S.s_odd x h`. Conclude with `base_int Q x h`.
+-/
 theorem hw_small (Q : Entries S) (i : ℕ) (hi : i < Q.smallPar.length) :
     (hw Q.smallPar i : ℚ) = Q.smallPar[i] - (((Q.smallPar.length : ℚ) - 1) / 2 - i) := by
   refine hw_of_int _ (length_small Q ▸ odd_nC S.m_even) (fun x hx => ?_) i hi
@@ -349,6 +416,9 @@ abbrev exSizes : Sizes := ⟨2, 2, 3, 1, by decide, by decide, by decide, by dec
 
 def exEntries : Entries exSizes := ⟨![23 / 2, 13 / 2, 5 / 2], ![8, 4], ![1], ![1 / 2], ![1, 5], ![3, 7]⟩
 
+/- English proof (translation)
+Use `fin_cases l`. Use `exacts [⟨11, by norm_num [exEntries]⟩, ⟨6, by norm_num [exEntries]⟩, ⟨2, by norm_num [exEntries]⟩]`. Use `u_half i := by fin_cases i`. Conclude with `⟨0, by norm_num [exEntries]⟩`. Use `order := by decide +kernel`.
+-/
 theorem exEntries_good : exEntries.Good where
   a_half l := by
     fin_cases l
@@ -358,6 +428,9 @@ theorem exEntries_good : exEntries.Good where
     exact ⟨0, by norm_num [exEntries]⟩
   order := by decide +kernel
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 example : exEntries.bigPar = [23 / 2, 17 / 2, 15 / 2, 13 / 2, 9 / 2, 7 / 2, 5 / 2, 1 / 2, -5 / 2, -7 / 2, -13 / 2, -15 / 2] ∧
     exEntries.smallPar = [9, 8, 7, 5, 4, 3, 1, -1, -3, -5, -7] := by decide +kernel
 

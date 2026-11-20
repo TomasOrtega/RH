@@ -18,6 +18,9 @@ def EtaleTensorComplexLocallyExactOfFlatBounded : Prop :=
     ∀ (w : ℤ) (U : Scheme.{0}) (y : Sec (T.sc w).X₂ U), Sec.map (T.sc w).g y = 0 →
       Loc U fun V g => ∃ x : Sec (T.sc w).X₁ V, Sec.map (T.sc w).f x = Sec.res g y
 
+/- English proof (translation)
+Introduce `R _ C J T a b _ _ τ hτ hJ hC w`. Establish `hCl` using `fun s => (hE R (C.sc s)).1 (hC s)`. Conclude with `(hE R (T.sc w)).2 (hS R a b τ hτ hJ hCl w)`.
+-/
 theorem etale_tensor_complex_acyclic_of_locally_exact_flat (hE : EtaleShortComplexExactIffLocallySurjectiveOnKernel) (hS : EtaleTensorComplexLocallyExactOfFlatBounded) :
     EtaleTensorAcyclicOfFlatBounded := by
   intro R _ C J T a b _ _ τ hτ hJ hC w

@@ -17,17 +17,29 @@ variable {A : Type} [CommRing A] {X : Scheme.{0}}
 def evalHom (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) : Γ(X, U) →+* A :=
   (x.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom).hom
 
+/- English proof (translation)
+Rewrite using `[valR, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem valR_eq (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) : valR x U f = evalHom x U h f := by
   rw [valR, dif_pos h]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valAt'_eq_valR (x : Sp ℂ ⟶ X) (U : X.Opens) (f : Γ(X, U)) : valAt' x U f = valR x U f := rfl
 
+/- English proof (translation)
+Establish `hx' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `le_trans hx (x.preimage_mono h)`. Rewrite using `[valR_eq _ _ hx, valR_eq _ _ hx', evalHom, evalHom, ← Scheme.Hom.appLE_comp_appLE x φ U V ⊤ h hx]`. Both sides reduce to the same expression.
+-/
 theorem valR_appLE {Y : Scheme.{0}} (x : Sp A ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (V : X.Opens) (h : V ≤ φ ⁻¹ᵁ U)
     (f : Γ(Y, U)) (hx : ⊤ ≤ x ⁻¹ᵁ V) : valR x V ((φ.appLE U V h).hom f) = valR (x ≫ φ) U f := by
   have hx' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := le_trans hx (x.preimage_mono h)
   rw [valR_eq _ _ hx, valR_eq _ _ hx', evalHom, evalHom, ← Scheme.Hom.appLE_comp_appLE x φ U V ⊤ h hx]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hx : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)`. Rewrite using `[Scheme.Hom.app_eq_appLE, valR_appLE x φ U _ le_rfl f hx]`. Establish `hx' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `hx`. Rewrite using `[valR, valR, dif_neg hx, dif_neg hx']`.
+-/
 theorem valR_comp {Y : Scheme.{0}} (x : Sp A ⟶ X) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)) :
     valR (x ≫ φ) U f = valR x (φ ⁻¹ᵁ U) ((φ.app U).hom f) := by
   by_cases hx : ⊤ ≤ x ⁻¹ᵁ (φ ⁻¹ᵁ U)
@@ -35,12 +47,20 @@ theorem valR_comp {Y : Scheme.{0}} (x : Sp A ⟶ X) (φ : X ⟶ Y) (U : Y.Opens)
   · have hx' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := hx
     rw [valR, valR, dif_neg hx, dif_neg hx']
 
+/- English proof (translation)
+Establish `hx' : ⊤ ≤ x ⁻¹ᵁ U` using `le_trans hx (x.preimage_mono h)`. Rewrite using `[valR_eq _ _ hx, valR_eq _ _ hx', evalHom, evalHom, ← Scheme.Hom.map_appLE x hx (homOfLE h).op]`. Both sides reduce to the same expression.
+-/
 theorem valR_res (x : Sp A ⟶ X) {U V : X.Opens} (h : V ≤ U) (f : Γ(X, U)) (hx : ⊤ ≤ x ⁻¹ᵁ V) :
     valR x V ((X.presheaf.map (homOfLE h).op).hom f) = valR x U f := by
   have hx' : ⊤ ≤ x ⁻¹ᵁ U := le_trans hx (x.preimage_mono h)
   rw [valR_eq _ _ hx, valR_eq _ _ hx', evalHom, evalHom, ← Scheme.Hom.map_appLE x hx (homOfLE h).op]
   rfl
 
+/- English proof (translation)
+Establish `hx' : ⊤ ≤ (spMap ρ ≫ x) ⁻¹ᵁ U` using `fun p _ => hx (x := spMap ρ p) trivial`. Rewrite using `[valR_eq _ _ hx, valR_eq _ _ hx', evalHom, evalHom, ← Scheme.Hom.appLE_comp_appLE (spMap ρ) x U ⊤ ⊤ hx le_rfl]`. Establish `h3 : (spMap ρ).appLE ⊤ ⊤ le_rfl = (spMap ρ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+
+Rewrite using `[h3, Category.assoc, Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+-/
 theorem valR_spMap {A' : Type} [CommRing A'] (ρ : A →+* A') (x : Sp A ⟶ X) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)) : valR (spMap ρ ≫ x) U f = ρ (valR x U f) := by
   have hx' : ⊤ ≤ (spMap ρ ≫ x) ⁻¹ᵁ U := fun p _ => hx (x := spMap ρ p) trivial
@@ -51,6 +71,11 @@ theorem valR_spMap {A' : Type} [CommRing A'] (ρ : A →+* A') (x : Sp A ⟶ X) 
   rw [h3, Category.assoc, Scheme.ΓSpecIso_naturality]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of A) x hx, ← AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of A) x' hx']`. Use `congr 2`. Use `ext1`. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Use `h f` as an intermediate fact.
+
+Rewrite `this` using `[valR_eq _ _ hx, valR_eq _ _ hx']`. Then use the resulting hypothesis.
+-/
 theorem point_ext {x x' : Sp A ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (hx : ⊤ ≤ x ⁻¹ᵁ U) (hx' : ⊤ ≤ x' ⁻¹ᵁ U)
     (h : ∀ f, valR x U f = valR x' U f) : x = x' := by
   rw [← AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of A) x hx,
@@ -61,16 +86,27 @@ theorem point_ext {x x' : Sp A ⟶ X} {U : X.Opens} (hU : IsAffineOpen U) (hx : 
   have := h f
   rwa [valR_eq _ _ hx, valR_eq _ _ hx'] at this
 
+/- English proof (translation)
+Use `⟨fun h => h (x := (default : PrimeSpectrum ℂ)) trivial, fun h p _ => ?_⟩` and prove the remaining obligations. Take `rfl : p = (default : PrimeSpectrum ℂ)` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `h`.
+-/
 theorem le_preimage_iff (x : Sp ℂ ⟶ X) (U : X.Opens) : ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U := by
   refine ⟨fun h => h (x := (default : PrimeSpectrum ℂ)) trivial, fun h p _ => ?_⟩
   obtain rfl : p = (default : PrimeSpectrum ℂ) := Subsingleton.elim (α := PrimeSpectrum ℂ) _ _
   exact h
 
+/- English proof (translation)
+Take `⟨P, hP, hp, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := U) ((le_preimage_iff x U).1 h)`. Conclude with `⟨P, hP, (le_preimage_iff x P).2 hp, hle⟩`.
+-/
 theorem exists_affine (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) :
     ∃ P : X.Opens, IsAffineOpen P ∧ ⊤ ≤ x ⁻¹ᵁ P ∧ P ≤ U := by
   obtain ⟨P, hP, hp, hle⟩ := exists_isAffineOpen_mem_and_subset (X := X) (U := U) ((le_preimage_iff x U).1 h)
   exact ⟨P, hP, (le_preimage_iff x P).2 hp, hle⟩
 
+/- English proof (translation)
+Establish `h1` using `Scheme.basicOpen_appLE x ⊤ U h f`. Rewrite `h1` using `[top_inf_eq]`. Rewrite using `[← h1, valAt'_eq_valR, valR_eq _ _ h, top_le_iff, ← isUnit_iff_ne_zero]`. Establish `h2 : IsUnit (evalHom x U h f) ↔ IsUnit ((x.appLE U ⊤ h).hom f)` using `MulEquiv.isUnit_map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv`. Rewrite using `[h2]`.
+
+Conclude with `⟨fun H => (Sp ℂ).toRingedSpace.isUnit_of_isUnit_germ _ _ fun p hp => ((Sp ℂ).mem_basicOpen _ p hp).1 (H.ge hp), fun H => (Sp ℂ).basicOpen_of_isUnit H⟩`.
+-/
 theorem le_basicOpen_iff (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0 := by
   have h1 := Scheme.basicOpen_appLE x ⊤ U h f
@@ -82,6 +118,11 @@ theorem le_basicOpen_iff (x : Sp ℂ ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹�
   exact ⟨fun H => (Sp ℂ).toRingedSpace.isUnit_of_isUnit_germ _ _ fun p hp =>
     ((Sp ℂ).mem_basicOpen _ p hp).1 (H.ge hp), fun H => (Sp ℂ).basicOpen_of_isUnit H⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `⟨fun hx p _ => hx (x := spMap _ p) trivial, fun hx => ?_⟩` and prove the remaining obligations. Establish `hl : IsLocalHom (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).hom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`. Use `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of (DualNumber ℂ)) v ?_).ge` and prove the remaining obligations. Use `hx (x := IsLocalRing.closedPoint ℂ) trivial` as an intermediate fact.
+
+Rewrite using `[← Spec_closedPoint (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)]`. Conclude with `this`.
+-/
 theorem le_preimage_dual_iff {v : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
     (h : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) (U : X.Opens) : ⊤ ≤ v ⁻¹ᵁ U ↔ ⊤ ≤ x ⁻¹ᵁ U := by
   subst h
@@ -103,26 +144,44 @@ def HolAt (c : V → (Sp ℂ ⟶ X)) (z : V) : Prop :=
   ∀ U : X.Opens, ⊤ ≤ c z ⁻¹ᵁ U →
     (∀ᶠ t in 𝓝 z, ⊤ ≤ c t ⁻¹ᵁ U) ∧ ∀ f : Γ(X, U), DifferentiableAt ℂ (fun t => valAt' (c t) U f) z
 
+/- English proof (translation)
+Introduce `U hU`. Establish `hn : {b ∈ B | ⊤ ≤ c b ⁻¹ᵁ U} ∈ 𝓝 z` using `(h U 0).1.mem_nhds ⟨hz, hU⟩`. Conclude with `⟨mem_of_superset hn fun t ht => ht.2, fun f => (h U f).2.differentiableAt hn⟩`.
+-/
 theorem holAt_of_isHolTo {B : Set V} {c : V → (Sp ℂ ⟶ X)} (h : IsHolTo B c) {z : V} (hz : z ∈ B) : HolAt c z := by
   intro U hU
   have hn : {b ∈ B | ⊤ ≤ c b ⁻¹ᵁ U} ∈ 𝓝 z := (h U 0).1.mem_nhds ⟨hz, hU⟩
   exact ⟨mem_of_superset hn fun t ht => ht.2, fun f => (h U f).2.differentiableAt hn⟩
 
+/- English proof (translation)
+Simplify using `using (h ⊤ 0).1`.
+-/
 theorem isOpen_of_isHolTo {B : Set V} {c : V → (Sp ℂ ⟶ X)} (h : IsHolTo B c) : IsOpen B := by
   simpa using (h ⊤ 0).1
 
+/- English proof (translation)
+Introduce `U f`. Use `⟨isOpen_iff_mem_nhds.2 fun z hz => ?_, fun z hz => ((h z hz.1 U hz.2).2 f).differentiableWithinAt⟩` and prove the remaining obligations. Use `filter_upwards [hB.mem_nhds hz.1, (h z hz.1 U hz.2).1] with t h1 h2 using ⟨h1, h2⟩`.
+-/
 theorem isHolTo_of_holAt {B : Set V} {c : V → (Sp ℂ ⟶ X)} (hB : IsOpen B) (h : ∀ z ∈ B, HolAt c z) :
     IsHolTo B c := by
   intro U f
   refine ⟨isOpen_iff_mem_nhds.2 fun z hz => ?_, fun z hz => ((h z hz.1 U hz.2).2 f).differentiableWithinAt⟩
   filter_upwards [hB.mem_nhds hz.1, (h z hz.1 U hz.2).1] with t h1 h2 using ⟨h1, h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨isOpen_of_isHolTo h, fun _ hz => holAt_of_isHolTo h hz⟩, fun h => isHolTo_of_holAt h.1 h.2⟩`.
+-/
 theorem isHolTo_iff {B : Set V} {c : V → (Sp ℂ ⟶ X)} : IsHolTo B c ↔ IsOpen B ∧ ∀ z ∈ B, HolAt c z :=
   ⟨fun h => ⟨isOpen_of_isHolTo h, fun _ hz => holAt_of_isHolTo h hz⟩, fun h => isHolTo_of_holAt h.1 h.2⟩
 
+/- English proof (translation)
+Introduce `_ hU` and use `⟨Eventually.of_forall fun _ => hU, fun _ => differentiableAt_const _⟩`.
+-/
 theorem holAt_const (x : Sp ℂ ⟶ X) (z : V) : HolAt (fun _ => x) z :=
   fun _ hU => ⟨Eventually.of_forall fun _ => hU, fun _ => differentiableAt_const _⟩
 
+/- English proof (translation)
+Introduce `U hU`. Use `⟨(h (φ ⁻¹ᵁ U) hU).1, fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_comp]`. Conclude with `(h (φ ⁻¹ᵁ U) hU).2 _`.
+-/
 theorem HolAt.comp {Y : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolAt c z) (φ : X ⟶ Y) :
     HolAt (fun t => c t ≫ φ) z := by
   intro U hU
@@ -130,10 +189,22 @@ theorem HolAt.comp {Y : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolA
   simp only [valAt'_eq_valR, valR_comp]
   exact (h (φ ⁻¹ᵁ U) hU).2 _
 
+/- English proof (translation)
+Introduce `U hU` and use `⟨hk.continuousAt.eventually (h U hU).1, fun f => ((h U hU).2 f).comp z hk⟩`.
+-/
 theorem HolAt.precomp {V' : Type} [NormedAddCommGroup V'] [NormedSpace ℂ V'] {c : V → (Sp ℂ ⟶ X)} {k : V' → V} {z : V'}
     (h : HolAt c (k z)) (hk : DifferentiableAt ℂ k z) : HolAt (fun t => c (k t)) z :=
   fun U hU => ⟨hk.continuousAt.eventually (h U hU).1, fun f => ((h U hU).2 f).comp z hk⟩
 
+/- English proof (translation)
+Introduce `U hU`. Take `⟨s, hsU, hs₀⟩` from `hP.exists_basicOpen_le (V := U) ⟨_, (le_preimage_iff _ U).1 hU⟩ ((le_preimage_iff _ P).1 h₀)`. Establish `hs : valAt' (c z) P s ≠ 0` using `(le_basicOpen_iff _ h₀ s).1 ((le_preimage_iff _ _).2 hs₀)`. Establish `hN : ∀ᶠ t in 𝓝 z, ⊤ ≤ c t ⁻¹ᵁ X.basicOpen s` using `by filter_upwards [hev, (hd s).continuousAt.eventually_ne hs] with t h1 h2 using (le_basicOpen_iff _ h1 s).2 h2`. Use `⟨hN.mono fun t ht => le_trans ht ((c t).preimage_mono hsU), fun f => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, g, hg⟩` from `exists_eq_pow_mul_of_isAffineOpen X P hP s ((X.presheaf.map (homOfLE hsU).op).hom f)`. Establish `key : ∀ᶠ t in 𝓝 z, valAt' (c t) U f = valAt' (c t) P g / valAt' (c t) P s ^ n` using `by filter_upwards [hev, hN] with t hp ht`. Establish `hne` using `(le_basicOpen_iff _ hp s).1 ht`. Establish `h1` using `valR_res (c t) (X.basicOpen_le s) g ht`. Establish `h2` using `valR_res (c t) (X.basicOpen_le s) s ht`.
+
+Establish `h3` using `valR_res (c t) hsU f ht`. Establish `hg' : (X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom g = (X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom s ^ n * (X.presheaf.map (homOfLE hsU).op).hom f` using `hg`. Rewrite using `[eq_div_iff (pow_ne_zero n hne)]`. Simplify using `only [valAt'_eq_valR]`. Rewrite using `[← h1, ← h2, ← h3, hg', valR_eq _ _ ht, valR_eq _ _ ht, valR_eq _ _ ht, map_mul, map_pow, mul_comm]`.
+
+Simplify using `only [div_eq_mul_inv] at key`. Conclude with `((hd g).fun_mul (((hd s).fun_pow n).fun_inv (pow_ne_zero n hs))).congr_of_eventuallyEq key`.
+-/
 theorem holAt_of_affine {c : V → (Sp ℂ ⟶ X)} {z : V} {P : X.Opens} (hP : IsAffineOpen P) (h₀ : ⊤ ≤ c z ⁻¹ᵁ P)
     (hev : ∀ᶠ t in 𝓝 z, ⊤ ≤ c t ⁻¹ᵁ P) (hd : ∀ g : Γ(X, P), DifferentiableAt ℂ (fun t => valAt' (c t) P g) z) :
     HolAt c z := by
@@ -158,6 +229,23 @@ theorem holAt_of_affine {c : V → (Sp ℂ ⟶ X)} {z : V} {P : X.Opens} (hP : I
   simp only [div_eq_mul_inv] at key
   exact ((hd g).fun_mul (((hd s).fun_pow n).fun_inv (pow_ne_zero n hs))).congr_of_eventuallyEq key
 
+/- English proof (translation)
+Take `⟨T, hT, hpT, -⟩` from `exists_affine (c z ≫ g ≫ iX) (U := ⊤) le_top`. Take `⟨U, hU, hpU, hUT⟩` from `exists_affine (c z ≫ g) (U := iX ⁻¹ᵁ T) hpT`. Take `⟨W, hW, hpW, hWT⟩` from `exists_affine (c z ≫ iY) (U := f ⁻¹ᵁ T) (by rw [H.w] at hpT; exact hpT)`. Establish `hmem : ∀ t, ⊤ ≤ c t ⁻¹ᵁ (g ⁻¹ᵁ U ⊓ iY ⁻¹ᵁ W) ↔ ⊤ ≤ (c t ≫ g) ⁻¹ᵁ U ∧ ⊤ ≤ (c t ≫ iY) ⁻¹ᵁ W`. Introduce `t`.
+
+Rewrite using `[Scheme.Hom.preimage_inf, le_inf_iff]`. Both sides reduce to the same expression. Establish `hP : IsAffineOpen (g ⁻¹ᵁ U ⊓ iY ⁻¹ᵁ W)`. Establish `: IsAffine _` using `hU`. Establish `: IsAffine _` using `hW`.
+
+Establish `: IsAffine _` using `hT`. Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := T) (UT := W) (UX := U) hWT hUT rfl).isoPullback.hom`. Establish `po` using `(isIso_pushoutSection_iff H (US := T) (UT := W) (UX := U) hWT hUT rfl).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ hT hW hU)`. Establish `hev : ∀ᶠ t in 𝓝 z, ⊤ ≤ c t ⁻¹ᵁ (g ⁻¹ᵁ U ⊓ iY ⁻¹ᵁ W)` using `by filter_upwards [(h₁ U hpU).1, (h₂ W hpW).1] with t h1 h2 using (hmem t).2 ⟨h1, h2⟩`. Use `holAt_of_affine hP ((hmem z).2 ⟨hpU, hpW⟩) hev fun r => ?_` and prove the remaining obligations.
+
+Establish `hr` using `(CommRingCat.closure_range_union_range_eq_top_of_isPushout po).ge (Subring.mem_top r)`. Proceed by induction on `hr using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `((h₁ U hpU).2 a).congr_of_eventuallyEq (hev.mono fun t ht => valR_appLE _ _ _ _ _ _ ht)`.
+
+Conclude with `((h₂ W hpW).2 b).congr_of_eventuallyEq (hev.mono fun t ht => valR_appLE _ _ _ _ _ _ ht)`. Consider the case `zero`. Use `(differentiableAt_const (0 : ℂ)).congr_of_eventuallyEq (hev.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_zero]`. Consider the case `one`.
+
+Use `(differentiableAt_const (1 : ℂ)).congr_of_eventuallyEq (hev.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_one]`. Consider the case `add x y _ _ hx hy`. Use `(hx.add hy).congr_of_eventuallyEq (hev.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_add, Pi.add_apply]`.
+
+Consider the case `neg x _ hx`. Use `hx.neg.congr_of_eventuallyEq (hev.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_neg, Pi.neg_apply]`. Consider the case `mul x y _ _ hx hy`. Use `(hx.mul hy).congr_of_eventuallyEq (hev.mono fun t ht => ?_)` and prove the remaining obligations.
+
+Simplify using `only [valAt'_eq_valR, valR_eq _ _ ht, map_mul, Pi.mul_apply]`.
+-/
 theorem holAt_of_isPullback {Y S Z : Scheme.{0}} {f : Y ⟶ S} {g : Z ⟶ X} {iX : X ⟶ S} {iY : Z ⟶ Y}
     (H : IsPullback g iY iX f) {c : V → (Sp ℂ ⟶ Z)} {z : V}
     (h₁ : HolAt (fun t => c t ≫ g) z) (h₂ : HolAt (fun t => c t ≫ iY) z) : HolAt c z := by
@@ -211,6 +299,11 @@ def IsDerivAt (c : V → (Sp ℂ ⟶ X)) (z w : V) (v : Sp (DualNumber ℂ) ⟶ 
     ∀ U : X.Opens, ⊤ ≤ c z ⁻¹ᵁ U → ∀ f : Γ(X, U),
       TrivSqZeroExt.snd (valR v U f) = fderiv ℂ (fun t => valAt' (c t) U f) z w
 
+/- English proof (translation)
+Use `and_congr_right fun h => forall_congr' fun U => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `H hU f`. Establish `hv` using `(le_preimage_dual_iff h U).2 hU`. Rewrite using `[valR_eq _ _ hv]`.
+
+Conclude with `H hv f`. Introduce `H hv f`. Use `H ((le_preimage_dual_iff h U).1 hv) f` as an intermediate fact. Rewrite `this` using `[valR_eq _ _ hv]`. Conclude with `this`.
+-/
 theorem isDerivAt0_iff {g : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ X) :
     IsDerivAt0 e w v ↔ IsDerivAt e 0 w v := by
   refine and_congr_right fun h => forall_congr' fun U => ?_
@@ -224,6 +317,9 @@ theorem isDerivAt0_iff {g : ℕ} (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (w : F
     rw [valR_eq _ _ hv] at this
     exact this
 
+/- English proof (translation)
+Use `valR_spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom v U ((le_preimage_dual_iff h U).2 hU) f` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`.
+-/
 theorem fst_valR {v : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
     (h : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x) {U : X.Opens} (hU : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     TrivSqZeroExt.fst (valR v U f) = valAt' x U f := by
@@ -231,6 +327,9 @@ theorem fst_valR {v : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
   rw [h] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨U, hU, hx, -⟩` from `exists_affine x (U := ⊤) le_top`. Use `point_ext hU ((le_preimage_dual_iff h U).2 hx) ((le_preimage_dual_iff h' U).2 hx) fun f => ?_` and prove the remaining obligations. Conclude with `TrivSqZeroExt.ext ((fst_valR h hx f).trans (fst_valR h' hx f).symm) (H U hx f)`.
+-/
 theorem tangent_ext {v v' : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
     (h : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = x)
     (h' : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v' = x)
@@ -240,10 +339,16 @@ theorem tangent_ext {v v' : Sp (DualNumber ℂ) ⟶ X} {x : Sp ℂ ⟶ X}
   refine point_ext hU ((le_preimage_dual_iff h U).2 hx) ((le_preimage_dual_iff h' U).2 hx) fun f => ?_
   exact TrivSqZeroExt.ext ((fst_valR h hx f).trans (fst_valR h' hx f).symm) (H U hx f)
 
+/- English proof (translation)
+The claim follows from `tangent_ext h.1 h'.1 fun U hU f => (h.2 U hU f).trans (h'.2 U hU f).symm`.
+-/
 theorem IsDerivAt.unique {c : V → (Sp ℂ ⟶ X)} {z w : V} {v v' : Sp (DualNumber ℂ) ⟶ X} (h : IsDerivAt c z w v)
     (h' : IsDerivAt c z w v') : v = v' :=
   tangent_ext h.1 h'.1 fun U hU f => (h.2 U hU f).trans (h'.2 U hU f).symm
 
+/- English proof (translation)
+Use `⟨by rw [← Category.assoc, h.1], fun U hU f => ?_⟩` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_comp]`. Conclude with `h.2 (φ ⁻¹ᵁ U) hU _`.
+-/
 theorem IsDerivAt.comp {Y : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z w : V} {v : Sp (DualNumber ℂ) ⟶ X}
     (h : IsDerivAt c z w v) (φ : X ⟶ Y) : IsDerivAt (fun t => c t ≫ φ) z w (v ≫ φ) := by
   refine ⟨by rw [← Category.assoc, h.1], fun U hU f => ?_⟩
@@ -252,17 +357,26 @@ theorem IsDerivAt.comp {Y : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z w : V} {v 
 
 abbrev constVec (x : Sp ℂ ⟶ X) : Sp (DualNumber ℂ) ⟶ X := spMap (algebraMap ℂ (DualNumber ℂ)) ≫ x
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `Category.id_comp x` and compare the differences between its conclusion and the goal. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+-/
 theorem fst_constVec (x : Sp ℂ ⟶ X) : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ constVec x = x := by
   rw [← Category.assoc, ← Spec.map_comp]
   convert Category.id_comp x
   rw [← Spec.map_id]
   congr 1
 
+/- English proof (translation)
+Use `(and_iff_right (fst_constVec _)).trans (forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => ?_)` and prove the remaining obligations. Rewrite using `[valR_spMap _ _ _ hU, eq_comm, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]`.
+-/
 theorem isDerivAt_constVec_iff {c : V → (Sp ℂ ⟶ X)} {z w : V} : IsDerivAt c z w (constVec (c z)) ↔
     ∀ U : X.Opens, ⊤ ≤ c z ⁻¹ᵁ U → ∀ f : Γ(X, U), fderiv ℂ (fun t => valAt' (c t) U f) z w = 0 := by
   refine (and_iff_right (fst_constVec _)).trans (forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => ?_)
   rw [valR_spMap _ _ _ hU, eq_comm, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]
 
+/- English proof (translation)
+The claim follows from `(isDerivAt_constVec_iff (c := fun _ => x)).2 fun _ _ _ => by simp`.
+-/
 theorem isDerivAt_const (x : Sp ℂ ⟶ X) (z w : V) : IsDerivAt (fun _ => x) z w (constVec x) :=
   (isDerivAt_constVec_iff (c := fun _ => x)).2 fun _ _ _ => by simp
 
@@ -298,6 +412,9 @@ def jetHom {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolAt c z) (w : V) (U : X.Ope
     rw [this.fderiv_eq, h0, fderiv_fun_mul ((h U hU).2 f) ((h U hU).2 f')]
     ext <;> simp [mul_comm]
 
+/- English proof (translation)
+Establish `: (fun t => valAt' (c t) U' ((X.presheaf.map (homOfLE hle).op).hom f)) =ᶠ[𝓝 z] fun t => valAt' (c t) U f` using `(h U' hU').1.mono fun t ht => valR_res _ hle f ht`. Establish `h0` using `this.self_of_nhds`. Use `beta_reduce at h0`. Simplify using `only [jetHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[this.fderiv_eq, h0]`.
+-/
 theorem jetHom_res {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolAt c z) (w : V) {U U' : X.Opens} (hle : U' ≤ U)
     (hU : ⊤ ≤ c z ⁻¹ᵁ U) (hU' : ⊤ ≤ c z ⁻¹ᵁ U') (f : Γ(X, U)) :
     jetHom h w U' hU' ((X.presheaf.map (homOfLE hle).op).hom f) = jetHom h w U hU f := by
@@ -308,6 +425,17 @@ theorem jetHom_res {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolAt c z) (w : V) {U
   simp only [jetHom, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk]
   rw [this.fderiv_eq, h0]
 
+/- English proof (translation)
+Take `⟨P, hP, hz, -⟩` from `exists_affine (c z) (U := ⊤) le_top`. Set `φ : Γ(X, P) ⟶ CommRingCat.of (DualNumber ℂ)` to `CommRingCat.ofHom (jetHom h w P hz)`. Set `v : Sp (DualNumber ℂ) ⟶ X` to `Spec.map φ ≫ hP.fromSpec`. Establish `hvP : ⊤ ≤ v ⁻¹ᵁ P` using `fun p _ => hP.range_fromSpec.le ⟨_, rfl⟩`. Establish `hval : ∀ f, valR v P f = jetHom h w P hz f` using `fun f => by`.
+
+Rewrite using `[valR_eq _ _ hvP]`. Conclude with `congrArg (fun ψ => ψ.hom f) (AffinePointValues.appLE_specMap_fromSpec hP φ hvP)`. Establish `h1 : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = c z`. Use `point_ext hP (fun p _ => hvP (x := spMap _ p) trivial) hz fun f => ?_` and prove the remaining obligations. Rewrite using `[valR_spMap _ _ _ hvP, hval]`.
+
+Simplify using `[jetHom, valAt'_eq_valR]`. Use `⟨v, h1, fun U hU f => ?_⟩` and prove the remaining obligations. Take `⟨s, hsU, hs₀⟩` from `hP.exists_basicOpen_le (V := U) ⟨_, (le_preimage_iff _ U).1 hU⟩ ((le_preimage_iff _ P).1 hz)`. Establish `hs : ⊤ ≤ c z ⁻¹ᵁ X.basicOpen s` using `(le_preimage_iff _ _).2 hs₀`. Establish `hvs` using `(le_preimage_dual_iff h1 _).2 hs`.
+
+Use `hP.isLocalization_basicOpen s` as an intermediate fact. Establish `key : evalHom v _ hvs = jetHom h w _ hs`. Use `IsLocalization.ringHom_ext (Submonoid.powers s) (RingHom.ext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalHom v _ hvs ((X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom g) = jetHom h w _ hs ((X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom g)`. Rewrite using `[jetHom_res h w _ hz, ← valR_eq, valR_res _ _ _ hvs, hval]`.
+
+Rewrite using `[← valR_res v hsU f hvs, valR_eq _ _ hvs, key, jetHom_res h w _ hU]`. Simplify using `[jetHom]`.
+-/
 theorem HolAt.exists_isDerivAt {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolAt c z) (w : V) : ∃ v, IsDerivAt c z w v := by
   obtain ⟨P, hP, hz, -⟩ := exists_affine (c z) (U := ⊤) le_top
   let φ : Γ(X, P) ⟶ CommRingCat.of (DualNumber ℂ) := CommRingCat.ofHom (jetHom h w P hz)
@@ -333,6 +461,11 @@ theorem HolAt.exists_isDerivAt {c : V → (Sp ℂ ⟶ X)} {z : V} (h : HolAt c z
   rw [← valR_res v hsU f hvs, valR_eq _ _ hvs, key, jetHom_res h w _ hU]
   simp [jetHom]
 
+/- English proof (translation)
+Set `: NormedSpace ℝ V` to `NormedSpace.restrictScalars ℝ ℂ V`. Use `IsLocallyConstant.apply_eq_of_preconnectedSpace ((IsLocallyConstant.iff_eventually_eq c).2 fun x => ?_) z z'` and prove the remaining obligations. Take `⟨P, hP, hx, -⟩` from `exists_affine (c x) (U := ⊤) le_top`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (h x P hx).1`. Use `filter_upwards [Metric.ball_mem_nhds x hr] with t ht`.
+
+Use `point_ext hP (hball t ht) hx fun f => ?_` and prove the remaining obligations. Conclude with `Metric.isOpen_ball.is_const_of_fderiv_eq_zero (𝕜 := ℂ) (f := fun t => valAt' (c t) P f) (convex_ball x r).isPreconnected (fun s hs => ((h s P (hball s hs)).2 f).differentiableWithinAt) (fun s hs => ContinuousLinearMap.ext fun w => isDerivAt_constVec_iff.1 (h' s w) P (hball s hs) …`.
+-/
 theorem eq_of_isDerivAt_constVec {c : V → (Sp ℂ ⟶ X)} (h : ∀ z, HolAt c z)
     (h' : ∀ z w, IsDerivAt c z w (constVec (c z))) (z z' : V) : c z = c z' := by
   let : NormedSpace ℝ V := NormedSpace.restrictScalars ℝ ℂ V
@@ -352,6 +485,9 @@ section Group
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {S : Scheme.{0}}
 
+/- English proof (translation)
+Establish `H : IsPullback (fst G G').left (snd G G').left G.hom G'.hom` using `IsPullback.of_hasPullback G.hom G'.hom`. Use `holAt_of_isPullback H ?_ ?_` and prove the remaining obligations. Simplify `ha` using `only [Category.assoc, ← Over.comp_left, lift_fst]`. Simplify `hb` using `only [Category.assoc, ← Over.comp_left, lift_snd]`.
+-/
 theorem holAt_lift {P : V → Over S} {G G' : Over S} (i : ∀ t, Sp ℂ ⟶ (P t).left) {a : ∀ t, P t ⟶ G}
     {b : ∀ t, P t ⟶ G'} {z : V} (ha : HolAt (fun t => i t ≫ (a t).left) z)
     (hb : HolAt (fun t => i t ≫ (b t).left) z) : HolAt (fun t => i t ≫ (lift (a t) (b t)).left) z := by
@@ -362,6 +498,9 @@ theorem holAt_lift {P : V → Over S} {G G' : Over S} (i : ∀ t, Sp ℂ ⟶ (P 
 
 variable {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+Use `isHolTo_of_holAt (isOpen_of_isHolTo ha) fun z hz => ?_` and prove the remaining obligations. Use `(holAt_lift (P := fun t => Over.mk (y t)) (fun _ => 𝟙 (Sp ℂ)) (a := a) (b := b) (z := z) (by simpa using holAt_of_isHolTo ha hz) (by simpa using holAt_of_isHolTo hb hz)).comp μ[G].left` as an intermediate fact. Simplify `this` using `[Hom.mul_def]`.
+-/
 theorem isHolTo_mul {B : Set V} {y : V → (Sp ℂ ⟶ S)} {a b : ∀ t, Over.mk (y t) ⟶ G}
     (ha : IsHolTo B (fun t => (a t).left)) (hb : IsHolTo B (fun t => (b t).left)) :
     IsHolTo B (fun t => (a t * b t).left) := by
@@ -370,6 +509,9 @@ theorem isHolTo_mul {B : Set V} {y : V → (Sp ℂ ⟶ S)} {a b : ∀ t, Over.mk
     (by simpa using holAt_of_isHolTo ha hz) (by simpa using holAt_of_isHolTo hb hz)).comp μ[G].left
   simpa [Hom.mul_def] using this
 
+/- English proof (translation)
+The claim follows from `isHolTo_of_holAt (isOpen_of_isHolTo ha) fun _ hz => (holAt_of_isHolTo ha hz).comp (GrpObj.inv (X := G)).left`.
+-/
 theorem isHolTo_inv {B : Set V} {y : V → (Sp ℂ ⟶ S)} {a : ∀ t, Over.mk (y t) ⟶ G}
     (ha : IsHolTo B (fun t => (a t).left)) : IsHolTo B (fun t => ((a t)⁻¹).left) :=
   isHolTo_of_holAt (isOpen_of_isHolTo ha) fun _ hz => (holAt_of_isHolTo ha hz).comp (GrpObj.inv (X := G)).left
@@ -378,6 +520,9 @@ variable {y : Sp ℂ ⟶ S}
 
 omit [GrpObj G] in
 
+/- English proof (translation)
+Establish `h1` using `h.comp G.hom`. Establish `h2 : (fun t => (a t).left ≫ G.hom) = fun _ => y` using `funext fun t => Over.w (a t)`. Conclude with `(h2 ▸ h1).unique (isDerivAt_const y z w)`.
+-/
 theorem IsDerivAt.over {a : V → (Over.mk y ⟶ G)} {z w : V} {v : Sp (DualNumber ℂ) ⟶ G.left}
     (h : IsDerivAt (fun t => (a t).left) z w v) : v ≫ G.hom = (epsPt y).hom := by
   have h1 := h.comp G.hom
@@ -386,6 +531,13 @@ theorem IsDerivAt.over {a : V → (Over.mk y ⟶ G)} {z w : V} {v : Sp (DualNumb
 
 omit [GrpObj G] in
 
+/- English proof (translation)
+Establish `hl : HolAt (fun t => (lift (a t) (b t)).left) z`. Simplify `ha) (by simpa using hb)` using `using holAt_lift (P := fun _ => Over.mk y) (fun _ => 𝟙 (Sp ℂ)) (a := a) (b := b) (z := z) (by simpa`. Take `⟨u, hu⟩` from `hl.exists_isDerivAt w`. Establish `h1` using `hu.comp (fst G G').left`. Establish `h2` using `hu.comp (snd G G').left`.
+
+Simplify using `only [← Over.comp_left, lift_fst, lift_snd] at h1 h2`. Establish `H : IsPullback (fst G G').left (snd G G').left G.hom G'.hom` using `IsPullback.of_hasPullback G.hom G'.hom`. Establish `: (lift v v').left = u`. Use `H.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[h1.unique hv, ← Over.comp_left, lift_fst]`.
+
+Rewrite using `[h2.unique hv', ← Over.comp_left, lift_snd]`. Conclude with `this ▸ hu`.
+-/
 theorem isDerivAt_lift {G' : Over S} {a : V → (Over.mk y ⟶ G)} {b : V → (Over.mk y ⟶ G')} {z w : V}
     (ha : HolAt (fun t => (a t).left) z) (hb : HolAt (fun t => (b t).left) z) {v : epsPt y ⟶ G} {v' : epsPt y ⟶ G'}
     (hv : IsDerivAt (fun t => (a t).left) z w v.left) (hv' : IsDerivAt (fun t => (b t).left) z w v'.left) :
@@ -404,21 +556,45 @@ theorem isDerivAt_lift {G' : Over S} {a : V → (Over.mk y ⟶ G)} {b : V → (O
     · rw [h2.unique hv', ← Over.comp_left, lift_snd]
   exact this ▸ hu
 
+/- English proof (translation)
+The claim follows from `(isDerivAt_lift ha hb hv hv').comp μ[G].left`.
+-/
 theorem isDerivAt_mul {a b : V → (Over.mk y ⟶ G)} {z w : V}
     (ha : HolAt (fun t => (a t).left) z) (hb : HolAt (fun t => (b t).left) z) {v v' : epsPt y ⟶ G}
     (hv : IsDerivAt (fun t => (a t).left) z w v.left) (hv' : IsDerivAt (fun t => (b t).left) z w v'.left) :
     IsDerivAt (fun t => (a t * b t).left) z w (v * v').left :=
   (isDerivAt_lift ha hb hv hv').comp μ[G].left
 
+/- English proof (translation)
+The claim follows from `hv.comp (GrpObj.inv (X := G)).left`.
+-/
 theorem isDerivAt_inv {a : V → (Over.mk y ⟶ G)} {z w : V} {v : epsPt y ⟶ G}
     (hv : IsDerivAt (fun t => (a t).left) z w v.left) : IsDerivAt (fun t => ((a t)⁻¹).left) z w (v⁻¹).left :=
   hv.comp (GrpObj.inv (X := G)).left
 
+/- English proof (translation)
+Use `he 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.mp this.symm`.
+-/
 theorem map_zero_eq_one {A M : Type*} [AddMonoid A] [Group M] {e : A → M} (he : ∀ z w, e (z + w) = e z * e w) : e 0 = 1 := by
   have := he 0 0
   rw [add_zero] at this
   exact mul_eq_left.mp this.symm
 
+/- English proof (translation)
+Establish `h0 : e 0 = e' 0` using `(map_zero_eq_one he).trans (map_zero_eq_one he').symm`. Set `j : epsPt y ⟶ Over.mk y` to `Over.homMk (spMap (algebraMap ℂ (DualNumber ℂ))) rfl`. Establish `hj : ∀ (x : Over.mk y ⟶ G) (z w : V), IsDerivAt (fun _ : V => x.left) z w (j ≫ x).left` using `fun x z w => isDerivAt_const x.left z w`. Establish `hc : ∀ x : Over.mk y ⟶ G, IsHolTo Set.univ (fun _ : V => x.left)` using `fun x => isHolTo_of_holAt isOpen_univ fun z _ => holAt_const _ _`. Establish `hdh` using `isHolTo_mul (y := fun _ => y) hol (isHolTo_inv (y := fun _ => y) hol')`.
+
+Establish `at0` using `fun {c : V → (Sp ℂ ⟶ G.left)} (h : IsHolTo Set.univ c) (z : V) => holAt_of_isHolTo h (Set.mem_univ z)`. Establish `key : ∀ z w, IsDerivAt (fun t => (e t * (e' t)⁻¹).left) z w (constVec (e z * (e' z)⁻¹).left)`. Introduce `z w`. Take `⟨u, hu⟩` from `(at0 hol 0).exists_isDerivAt w`. Establish `hu' : IsDerivAt (fun t => (e' t).left) 0 w u` using `⟨hu.1.trans (congrArg (·.left) h0), fun U hU f => by`.
+
+Establish `hU' : ⊤ ≤ (e 0).left ⁻¹ᵁ U` using `h0 ▸ hU`. Rewrite using `[hu.2 U hU' f, hd U hU' f]⟩`. Set `v : epsPt y ⟶ G` to `Over.homMk u hu.over`. Establish `h1` using `isDerivAt_mul (at0 hol 0) (at0 (isHolTo_inv (y := fun _ => y) hol') 0) (v := v) hu (isDerivAt_inv (v := v) hu')`. Establish `h2` using `isDerivAt_mul (at0 (hc (e z)) 0) (at0 hdh 0) (hj _ 0 w) h1`.
+
+Establish `h3` using `isDerivAt_mul (at0 (isHolTo_mul (y := fun _ => y) (hc (e z)) hdh) 0) (at0 (hc (e' z)⁻¹) 0) h2 (hj _ 0 w)`. Establish `h4 : ∀ t, e z * (e t * (e' t)⁻¹) * (e' z)⁻¹ = e (z + t) * (e' (z + t))⁻¹` using `fun t => by`. Rewrite using `[he, he', mul_inv_rev]`. Simplify using `only [_root_.mul_assoc]`. Rewrite `h3` using `[mul_inv_cancel, _root_.mul_one, ← MonObj.comp_mul]`.
+
+Simplify using `only [h4] at h3`. Establish `h5 : IsDerivAt (fun t => (e (z + t) * (e' (z + t))⁻¹).left) 0 w (constVec (e (z + 0) * (e' (z + 0))⁻¹).left)`. Rewrite using `[add_zero]`. Conclude with `h3`. Use `(isDerivAt_constVec_iff (c := fun t => (e t * (e' t)⁻¹).left)).2 fun U hU f => ?_` and prove the remaining obligations.
+
+Establish `h6` using `(isDerivAt_constVec_iff (c := fun t => (e (z + t) * (e' (z + t))⁻¹).left)).1 h5 U (by simpa only [add_zero] using hU) f`. Rewrite `h6` using `[fderiv_comp_add_left (f := fun t => valAt' (e t * (e' t)⁻¹).left U f), add_zero]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `z`. Use `eq_of_isDerivAt_constVec (at0 hdh) key z 0` as an intermediate fact. Rewrite using `[← mul_inv_eq_one]`.
+
+Use `ext1`. Rewrite using `[this, h0, mul_inv_cancel]`.
+-/
 theorem eq_of_fderiv_eq {e e' : V → (Over.mk y ⟶ G)} (he : ∀ z w, e (z + w) = e z * e w)
     (he' : ∀ z w, e' (z + w) = e' z * e' w) (hol : IsHolTo Set.univ (fun z => (e z).left))
     (hol' : IsHolTo Set.univ (fun z => (e' z).left))
@@ -467,6 +643,9 @@ section Linear
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Rewrite using `[h.2 U hU, h₁.2 U hU, h₂.2 U hU, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+-/
 theorem IsDerivAt.snd_linear {X : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z w₁ w₂ : V} {a₁ a₂ : ℂ}
     {v₁ v₂ v : Sp (DualNumber ℂ) ⟶ X} (h₁ : IsDerivAt c z w₁ v₁) (h₂ : IsDerivAt c z w₂ v₂)
     (h : IsDerivAt c z (a₁ • w₁ + a₂ • w₂) v) (U : X.Opens) (hU : ⊤ ≤ c z ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -475,6 +654,9 @@ theorem IsDerivAt.snd_linear {X : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} {z w₁
 
 variable {S : Scheme.{0}} {G : Over S} {g : ℕ}
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hol'.exists_isDerivAt w`. Conclude with `(hdiff (Over.homMk u hu.over) hu.1).unique ((isDerivAt0_iff _ _ _).2 hu) ((isDerivAt0_iff _ _ _).2 ⟨hu.1, fun U hU f => (hu.2 U hU f).trans (h U hU f)⟩)`.
+-/
 theorem eq_of_forall_fderiv_eq {y : Sp ℂ ⟶ S} {e' : (Fin g → ℂ) → (Over.mk y ⟶ G)}
     (hol' : HolAt (fun z => (e' z).left) 0)
     (hdiff : ∀ v : epsPt y ⟶ G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e' 0).left →
@@ -485,6 +667,19 @@ theorem eq_of_forall_fderiv_eq {y : Sp ℂ ⟶ S} {e' : (Fin g → ℂ) → (Ove
   exact (hdiff (Over.homMk u hu.over) hu.1).unique ((isDerivAt0_iff _ _ _).2 hu)
     ((isDerivAt0_iff _ _ _).2 ⟨hu.1, fun U hU f => (hu.2 U hU f).trans (h U hU f)⟩)
 
+/- English proof (translation)
+Establish `h0 : e 0 = e' 0` using `(map_zero_eq_one he).trans (map_zero_eq_one he').symm`. Establish `hA` using `holAt_of_isHolTo hol (Set.mem_univ 0)`. Establish `hA'` using `holAt_of_isHolTo hol' (Set.mem_univ 0)`. Establish `hex : ∀ z : V, ∃ w, ∀ U : G.left.Opens, ⊤ ≤ (e' 0).left ⁻¹ᵁ U → ∀ f : Γ(G.left, U), fderiv ℂ (fun t => valAt' (e' t).left U f) 0 w = fderiv ℂ (fun t => valAt' (e t).left U f) 0 z`. Introduce `z`.
+
+Take `⟨u, hu⟩` from `hA.exists_isDerivAt z`. Take `⟨w, hw, -⟩` from `hdiff (Over.homMk u hu.over) (hu.1.trans (congrArg (·.left) h0))`. Establish `hw'` using `(isDerivAt0_iff _ _ _).1 hw`. Conclude with `⟨w, fun U hU f => (hw'.2 U hU f).symm.trans (hu.2 U (h0 ▸ hU :) f)⟩`. Use `choose k hk using hex`.
+
+Establish `chain : ∀ (h : V →ₗ[ℂ] (Fin g → ℂ)) (U : G.left.Opens), ⊤ ≤ (e' 0).left ⁻¹ᵁ U → ∀ (f : Γ(G.left, U)) (z : V), fderiv ℂ (fun t => valAt' (e' (h t)).left U f) 0 z = fderiv ℂ (fun t => valAt' (e' t).left U f) 0 (h z)`. Introduce `h U hU f z`. Establish `h1 : HasFDerivAt (fun t => valAt' (e' t).left U f) (fderiv ℂ (fun t => valAt' (e' t).left U f) 0) (LinearMap.toContinuousLinearMap h 0)`. Rewrite using `[map_zero]`. Conclude with `((hA' U hU).2 f).hasFDerivAt`.
+
+Conclude with `congrArg (· z) (h1.comp 0 (LinearMap.toContinuousLinearMap h).hasFDerivAt).fderiv`. Set `h : V →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := k map_add' := fun z z' => eq_of_forall_fderiv_eq hA' hdiff fun U hU f => by`. Rewrite using `[map_add, hk _ U hU, hk _ U hU, hk _ U hU, map_add]`. Use the proof step `map_smul' := fun a z => eq_of_forall_fderiv_eq hA' hdiff fun U hU f => by`. Rewrite using `[map_smul, hk _ U hU, hk _ U hU, map_smul, RingHom.id_apply] }`.
+
+Use `⟨h, congrFun (eq_of_fderiv_eq (e' := fun z => e' (h z)) he (fun z w => by rw [map_add, he']) hol ?_ ?_), fun h' hh' => LinearMap.ext fun z => eq_of_forall_fderiv_eq hA' hdiff fun U hU f => ?_⟩` and prove the remaining obligations. Conclude with `isHolTo_of_holAt isOpen_univ fun z _ => (holAt_of_isHolTo hol' (Set.mem_univ (h z))).precomp (LinearMap.toContinuousLinearMap h).differentiableAt`. Introduce `U hU f`. Use extensionality with `z`. Rewrite using `[chain h U (h0 ▸ hU :) f z]`.
+
+Conclude with `(hk z U (h0 ▸ hU :) f).symm`. Rewrite using `[← chain h' U hU f z]`. Simplify using `only [← hh']`. Conclude with `(hk z U hU f).symm`.
+-/
 theorem existsUnique_linear [FiniteDimensional ℂ V] [GrpObj G] {y : Sp ℂ ⟶ S} {e : V → (Over.mk y ⟶ G)}
     {e' : (Fin g → ℂ) → (Over.mk y ⟶ G)} (he : ∀ z w, e (z + w) = e z * e w)
     (he' : ∀ z w, e' (z + w) = e' z * e' w) (hol : IsHolTo Set.univ (fun z => (e z).left))
@@ -528,6 +723,11 @@ theorem existsUnique_linear [FiniteDimensional ℂ V] [GrpObj G] {y : Sp ℂ ⟶
     simp only [← hh']
     exact (hk z U hU f).symm
 
+/- English proof (translation)
+Establish `h1 : DifferentiableAt ℂ (fderiv ℂ F) (b, 0)` using `(SCV.differentiableOn_fderiv hs hF).differentiableAt (hs.mem_nhds hb)`. Establish `h2 : DifferentiableAt ℂ (fun b : P => (fderiv ℂ F (b, 0)).comp (ContinuousLinearMap.inr ℂ P V)) b` using `(h1.comp b (f := fun b : P => (b, (0 : V))) (by fun_prop)).clm_comp (differentiableAt_const _)`. Use `h2.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `h3 : ContinuousAt (fun b : P => (b, (0 : V))) b` using `by fun_prop`. Use `filter_upwards [h3.eventually (hs.mem_nhds hb)] with b' hb'`.
+
+Conclude with `((hF.differentiableAt (hs.mem_nhds hb')).hasFDerivAt.comp 0 (hasFDerivAt_prodMk_right b' (0 : V))).fderiv`.
+-/
 theorem differentiableAt_partial {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] [FiniteDimensional ℂ P]
     [FiniteDimensional ℂ V] {F : P × V → ℂ} {s : Set (P × V)} (hs : IsOpen s) (hF : DifferentiableOn ℂ F s) {b : P}
     (hb : (b, 0) ∈ s) : DifferentiableAt ℂ (fun b => fderiv ℂ (fun z => F (b, z)) 0) b := by
@@ -540,6 +740,29 @@ theorem differentiableAt_partial {P : Type} [NormedAddCommGroup P] [NormedSpace 
   filter_upwards [h3.eventually (hs.mem_nhds hb)] with b' hb'
   exact ((hF.differentiableAt (hs.mem_nhds hb')).hasFDerivAt.comp 0 (hasFDerivAt_prodMk_right b' (0 : V))).fderiv
 
+/- English proof (translation)
+Introduce `b₀ hb₀`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Establish `hslice : ∀ b ∈ B, HolAt (fun z => (e' b z).left) 0` using `fun b hb => (holAt_of_isHolTo hol' (z := (b, 0)) ⟨hb, trivial⟩).precomp (k := fun z => (b, z)) (by fun_prop)`. Set `s : Set ((Fin g → ℂ) →ₗ[ℂ] ℂ)` to `{l | ∃ (U : G.left.Opens) (_ : ⊤ ≤ (e' b₀ 0).left ⁻¹ᵁ U) (f : Γ(G.left, U)), l = (fderiv ℂ (fun z => valAt' (e' b₀ z).left U f) 0).toLinearMap}`. Establish `hs : Submodule.span ℂ s = ⊤` using `Submodule.span_eq_top_of_ne_zero fun w hw => by`.
+
+Assume the negation of the conclusion as `hne`. Use `hw (eq_of_forall_fderiv_eq (hslice b₀ hb₀) (hdiff b₀ hb₀) fun U hU f => ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Assume the negation of the conclusion as `h0`. Conclude with `hne ⟨_, ⟨U, hU, f, rfl⟩, h0⟩`.
+
+Establish `key : ∀ l ∈ Submodule.span ℂ s, ∃ (m : P → (Fin g → ℂ) →L[ℂ] ℂ) (n : P → V →L[ℂ] ℂ), DifferentiableAt ℂ m b₀ ∧ DifferentiableAt ℂ n b₀ ∧ (m b₀).toLinearMap = l ∧ ∀ᶠ b in 𝓝 b₀, ∀ z, m b (h b z) = n b z`. Introduce `l hl`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem l hl`. Take `⟨U, hU, f, rfl⟩` from `hl`.
+
+Establish `hU' : ⊤ ≤ (e b₀ 0).left ⁻¹ᵁ U` using `by rw [hh b₀ hb₀, map_zero]; exact hU`. Use `⟨fun b => fderiv ℂ (fun z => valAt' (e' b z).left U f) 0, fun b => fderiv ℂ (fun z => valAt' (e b z).left U f) 0, differentiableAt_partial (hol' U f).1 (hol' U f).2 ⟨⟨hb₀, trivial⟩, hU⟩, differentiableAt_partial (hol U f).1 (hol U f).2 ⟨⟨hb₀, trivial⟩, hU'⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `h3 : ContinuousAt (fun b : P => (b, (0 : Fin g → ℂ))) b₀` using `by fun_prop`. Use `filter_upwards [h3.eventually ((hol' U f).1.mem_nhds ⟨⟨hb₀, trivial⟩, hU⟩)] with b hb z`. Establish `h1 : HasFDerivAt (fun t => valAt' (e' b t).left U f) (fderiv ℂ (fun t => valAt' (e' b t).left U f) 0) (LinearMap.toContinuousLinearMap (h b) 0)`.
+
+Rewrite using `[map_zero]`. Conclude with `((hslice b hb.1.1 U hb.2).2 f).hasFDerivAt`. Simplify using `only [hh b hb.1.1]`. Conclude with `(congrArg (· z) (h1.comp 0 (LinearMap.toContinuousLinearMap (h b)).hasFDerivAt).fderiv).symm`. Consider the case `zero => exact ⟨0, 0, differentiableAt_const _, differentiableAt_const _, rfl, .of_forall fun _ _ => rfl⟩`.
+
+Consider the case `add l l' _ _ ih ih'`. Take `⟨m, n, hm, hn, rfl, hmn⟩` from `ih`. Take `⟨m', n', hm', hn', rfl, hmn'⟩` from `ih'`. Use `⟨m + m', n + n', hm.add hm', hn.add hn', rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hmn, hmn'] with b h1 h2 z`.
+
+Simplify using `[h1 z, h2 z]`. Consider the case `smul a l _ ih`. Take `⟨m, n, hm, hn, rfl, hmn⟩` from `ih`. Use `⟨a • m, a • n, hm.const_smul a, hn.const_smul a, rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hmn] with b h1 z`.
+
+Simplify using `[h1 z]`. Use `choose m n hm hn hm0 hmn using fun i : Fin g => key (LinearMap.proj i) (hs.ge trivial)`. Set `M : P → (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `fun b => ContinuousLinearMap.pi fun i => m i b`. Set `N : P → V →L[ℂ] (Fin g → ℂ)` to `fun b => ContinuousLinearMap.pi fun i => n i b`. Establish `hM : DifferentiableAt ℂ M b₀` using `(ContinuousLinearMap.piEquivL ℂ (Fin g → ℂ) (fun _ : Fin g => ℂ)).differentiableAt.comp b₀ (differentiableAt_pi.2 hm)`.
+
+Establish `hN : DifferentiableAt ℂ N b₀` using `(ContinuousLinearMap.piEquivL ℂ V (fun _ : Fin g => ℂ)).differentiableAt.comp b₀ (differentiableAt_pi.2 hn)`. Establish `hM0 : M b₀ = (ContinuousLinearEquiv.refl ℂ (Fin g → ℂ) : _ →L[ℂ] _)` using `by ext1 w`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (· w) (congrArg DFunLike.coe (hm0 i))`. Establish `hinv : ∀ᶠ b in 𝓝 b₀, (M b).IsInvertible` using `hM.continuousAt.eventually (hM0 ▸ (ContinuousLinearEquiv.refl ℂ (Fin g → ℂ)).nhds :)`.
+
+Establish `hI : DifferentiableAt ℂ (fun b => (M b).inverse) b₀` using `((hinv.self_of_nhds.contDiffAt_map_inverse (n := 1)).differentiableAt one_ne_zero).comp b₀ hM`. Use `(hI.clm_comp hN).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hinv, eventually_all.2 hmn] with b hb hb'`. Use `ext1 z`. Establish `: M b (h b z) = N b z` using `funext fun i => hb' i z`.
+
+Conclude with `(hb.inverse_apply_eq.2 this.symm).symm`.
+-/
 theorem differentiableOn_linear {P : Type} [NormedAddCommGroup P] [NormedSpace ℂ P] [FiniteDimensional ℂ P]
     [FiniteDimensional ℂ V] {B : Set P} {y : P → (Sp ℂ ⟶ S)} {e : ∀ b, V → (Over.mk (y b) ⟶ G)}
     {e' : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)}
@@ -623,12 +846,18 @@ open NumberField
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
   {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (Fu : FamilyUnif Xo σ ty)
 
+/- English proof (translation)
+Establish `h` using `(Fu.hol i 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2`. Conclude with `isHolTo_of_holAt isOpen_univ fun z _ => (holAt_of_isHolTo h (z := (0, z)) ⟨trivial, trivial⟩).precomp (k := fun z => (0, z)) (by fun_prop)`.
+-/
 theorem isHolTo_ex (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P) :
     IsHolTo Set.univ (fun z => (Fu.ex i P z).left) := by
   have h := (Fu.hol i 0 Set.univ (fun _ => P) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2
   exact isHolTo_of_holAt isOpen_univ fun z _ =>
     (holAt_of_isHolTo h (z := (0, z)) ⟨trivial, trivial⟩).precomp (k := fun z => (0, z)) (by fun_prop)
 
+/- English proof (translation)
+The claim follows from `existsUnique_linear he (Fu.ex_add i P hP) hol (isHolTo_ex Fu i hP) (Fu.ex_diff i P hP).2`.
+-/
 theorem existsUnique_linear_ex {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (Fu.Di i) ty P)
     {e : V → (Over.mk (Fu.u i P) ⟶ Xo.univ.t.G)} (he : ∀ z w, e (z + w) = e z * e w)
@@ -644,6 +873,11 @@ namespace GlobalTheory
 
 open HolHom in
 
+/- English proof (translation)
+Use `⟨fun y V _ _ e e' he he' hol hol' hd => eq_of_fderiv_eq he he' hol hol' hd, fun y n e hol => ⟨fun z₀ => ?_, fun z₀ v hv => ((isDerivAt0_iff _ _ _).1 hv).over, fun a₁ a₂ z₁ z₂ v₁ v₂ v h₁ h₂ h U hU => ?_⟩, fun y V _ _ _ g e e' he he' hol hol' hd => existsUnique_linear he he' hol ho …` and prove the remaining obligations. Simplify using `only [isDerivAt0_iff]`. Take `⟨v, hv⟩` from `(holAt_of_isHolTo hol (Set.mem_univ 0)).exists_isDerivAt z₀`. Conclude with `⟨v, hv, fun _ hv' => hv'.unique hv⟩`. Conclude with `⟨(le_preimage_dual_iff h₁.1 U).2 hU, (le_preimage_dual_iff h₂.1 U).2 hU, (le_preimage_dual_iff h.1 U).2 hU, IsDerivAt.snd_linear ((isDerivAt0_iff _ _ _).1 h₁) ((isDerivAt0_iff _ _ _).1 h₂) ((isDerivAt0_iff _ _ _).1 h) U hU⟩`.
+
+Establish `H` using `differentiableOn_linear hol hol' hd hh`. Conclude with `⟨H, H.continuousOn, fun z => H.continuousOn.clm_apply (continuousOn_const (c := z))⟩`.
+-/
 theorem holomorphic_hom_determined (S : Scheme.{0}) (G : Over S) [GrpObj G] :
     (∀ (y : Sp ℂ ⟶ S) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (e e' : V → (Over.mk y ⟶ G)),
       (∀ z w, e (z + w) = e z * e w) → (∀ z w, e' (z + w) = e' z * e' w) →

@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k hk`. Rewrite using `[PowerSeries.coeff_mul]`. Use `S.sum_mem fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = k` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Conclude with `S.mul_mem (hf _ (by omega)) (hg _ (by omega))`.
+-/
 private theorem coeff_mul_mem_of_lt {R : Type} [CommRing R] (S : Subring R) (n : ℕ)
     (f g : PowerSeries R) (hf : ∀ k < n, PowerSeries.coeff k f ∈ S)
     (hg : ∀ k < n, PowerSeries.coeff k g ∈ S) :
@@ -10,6 +13,11 @@ private theorem coeff_mul_mem_of_lt {R : Type} [CommRing R] (S : Subring R) (n :
   have hp' : p.1 + p.2 = k := Finset.HasAntidiagonal.mem_antidiagonal.mp hp
   exact S.mul_mem (hf _ (by omega)) (hg _ (by omega))
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_mul]`. Use `S.sum_mem fun p hp => ?_` and prove the remaining obligations. Establish `hp' : p.1 + p.2 = n` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Distinguish the cases in `h1 : p.1 = 0`. Rewrite using `[h1, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf0, zero_mul]`.
+
+Conclude with `S.zero_mem`. Distinguish the cases in `h2 : p.2 = 0`. Rewrite using `[h2, PowerSeries.coeff_zero_eq_constantCoeff_apply, hg0, mul_zero]`. Conclude with `S.zero_mem`. Conclude with `S.mul_mem (hf _ (by omega)) (hg _ (by omega))`.
+-/
 private theorem coeff_mul_mem_step {R : Type} [CommRing R] (S : Subring R) (n : ℕ)
     (f g : PowerSeries R) (hf0 : PowerSeries.constantCoeff f = 0)
     (hg0 : PowerSeries.constantCoeff g = 0)
@@ -27,6 +35,19 @@ private theorem coeff_mul_mem_step {R : Type} [CommRing R] (S : Subring R) (n : 
     exact S.zero_mem
   exact S.mul_mem (hf _ (by omega)) (hg _ (by omega))
 
+/- English proof (translation)
+Introduce `R _ S a₁ a₂ a₃ a₄ a₆ w h₁ h₂ h₃ h₄ h₆ h0 hw n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `hX : ∀ k < n, PowerSeries.coeff k (PowerSeries.X : PowerSeries R) ∈ S`. Introduce `k _`.
+
+Rewrite using `[PowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Establish `hX0 : PowerSeries.constantCoeff (PowerSeries.X : PowerSeries R) = 0` using `PowerSeries.constantCoeff_X`.
+
+Establish `hX3 : PowerSeries.coeff n ((PowerSeries.X : PowerSeries R) ^ 3) ∈ S`. Rewrite using `[PowerSeries.coeff_X_pow]`. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`.
+
+Establish `hXw0 : PowerSeries.constantCoeff (PowerSeries.X * w) = 0`. Rewrite using `[map_mul, h0, mul_zero]`. Establish `hww0 : PowerSeries.constantCoeff (w * w) = 0`. Rewrite using `[map_mul, h0, mul_zero]`. Establish `hXw` using `coeff_mul_mem_of_lt S n _ _ hX ih`.
+
+Establish `hww` using `coeff_mul_mem_of_lt S n _ _ ih ih`. Establish `e : w = PowerSeries.X ^ 3 + PowerSeries.C a₁ * (PowerSeries.X * w) + PowerSeries.C a₂ * (PowerSeries.X * (PowerSeries.X * w)) + PowerSeries.C a₃ * (w * w) + PowerSeries.C a₄ * (PowerSeries.X * (w * w)) + PowerSeries.C a₆ * (w * (w * w))`. Use `hw.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `e'` using `congrArg (PowerSeries.coeff n) e`.
+
+Rewrite using `[e']`. Simplify using `only [map_add, PowerSeries.coeff_C_mul]`. Conclude with `S.add_mem (S.add_mem (S.add_mem (S.add_mem (S.add_mem hX3 (S.mul_mem h₁ (coeff_mul_mem_step S n _ _ hX0 h0 hX ih))) (S.mul_mem h₂ (coeff_mul_mem_step S n _ _ hX0 hXw0 hX hXw))) (S.mul_mem h₃ (coeff_mul_mem_step S n _ _ h0 h0 ih ih))) (S.mul_mem h₄ (coeff_mul_mem_step S n _ _ hX0 …`.
+-/
 theorem UpperTheory.formal_group_coeff_mem :
     ∀ (R : Type) [CommRing R] (S : Subring R) (a₁ a₂ a₃ a₄ a₆ : R) (w : PowerSeries R), a₁ ∈ S → a₂ ∈ S → a₃ ∈ S → a₄ ∈ S → a₆ ∈ S → PowerSeries.constantCoeff w = 0 → w = PowerSeries.X ^ 3 + PowerSeries.C a₁ * PowerSeries.X * w + PowerSeries.C a₂ * PowerSeries.X ^ 2 * w + PowerSeries.C a₃ * w ^ 2 + PowerSeries.C a₄ * PowerSeries.X * w ^ 2 + PowerSeries.C a₆ * w ^ 3 → ∀ n, PowerSeries.coeff n w ∈ S := by
   intro R _ S a₁ a₂ a₃ a₄ a₆ w h₁ h₂ h₃ h₄ h₆ h0 hw n

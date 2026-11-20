@@ -16,6 +16,9 @@ def DeterminedByLowTypes : Prop :=
     (∀ τ, lowT M τ ≠ ⊥) → ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ T ∈ Mult θ M J χ,
       (∀ v : ∀ ρ, lowT M ρ, T (fun ρ => v ρ) = 0) → T = 0
 
+/- English proof (translation)
+Introduce `D _ _ _ _ _ _ _ _ _ _ R hθ i U hU hv` and use `h D _ _ (R.MW i _) R.θ hθ (lowT_ne_bot _) _ _ U hU hv`.
+-/
 theorem resInj_of_determined (h : DeterminedByLowTypes) : GlobalTheory.IndefiniteRowSideFullHecke.ResidueInjectivityAt.ResInj :=
   fun D _ _ _ _ _ _ _ _ _ _ R hθ i U hU hv =>
     h D _ _ (R.MW i _) R.θ hθ (lowT_ne_bot _) _ _ U hU hv

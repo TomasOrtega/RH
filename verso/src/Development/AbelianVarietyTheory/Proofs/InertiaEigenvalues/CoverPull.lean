@@ -54,6 +54,9 @@ def Cover.pull {l : ℕ} [Fact l.Prime] {Γ Δ : Type} [Group Γ] [TopologicalSp
   unit := C.unit
   trace := C.trace
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ j hj _ _ _ _ C`. Conclude with `⟨C.pull j hj⟩`.
+-/
 theorem cover_pull : ∀ (l : ℕ) [Fact l.Prime] (Γ Δ : Type) [Group Γ] [TopologicalSpace Γ] [Group Δ] [TopologicalSpace Δ] (j : Δ →* Γ), Continuous j → ∀ (a : ℕ) (L₀ : FinExt l) (r : Γ →* GL (Fin a) (Om l)) (Cl : Set (Γ →* GL (Fin a) (Om l))), Cover L₀ r Cl → Nonempty (Cover L₀ (r.comp j) ((fun ρ => ρ.comp j) '' Cl)) :=
   by
   intro _ _ _ _ _ _ _ _ j hj _ _ _ _ C

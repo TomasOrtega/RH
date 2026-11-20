@@ -7,6 +7,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegSS
 
+/- English proof (translation)
+Rewrite using `[mul_eq_one_comm, adj]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
+
+Establish `key : J * (J⁻¹ * cT s g * J * g) = J` using `by rw [h, Matrix.mul_one]`. Simplify `key` using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ, Matrix.one_mul]`.
+-/
 private lemma cT_mul_mul_eq_iff_mul_adj_eq_one {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (s : A →+* A) {J g : Matrix n n A} (hJ : IsUnit J.det) :
     cT s g * J * g = J ↔ g * adj s J g = 1 := by
@@ -19,6 +24,17 @@ private lemma cT_mul_mul_eq_iff_mul_adj_eq_one {A : Type} [CommRing A] {n : Type
     have key : J * (J⁻¹ * cT s g * J * g) = J := by rw [h, Matrix.mul_one]
     simpa only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hJ, Matrix.one_mul] using key
 
+/- English proof (translation)
+Introduce `hC hA F E _ _ _ _ n _ _ σ J γ hreg hAlg hPlus R _ _`. Take `⟨hinj, hcomm⟩` from `hC F E n σ J γ hreg hAlg hPlus R`. Use `⟨hinj, fun u => hA F E n σ J γ hreg R u, fun g => ?_⟩` and prove the remaining obligations. Establish `hJ : IsUnit (J.map (inclE (F` using `F) R)).det := by`. Establish `h` using `hreg.nondeg.map (inclE (F := F) R)`.
+
+Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`. Establish `hb : ((bc (inclE (F` using `F) R) γ : GL n (E ⊗[F] R)) : Matrix n n (E ⊗[F] R)) = (γ : Matrix n n E).map (inclE (F := F) R) := rfl`. Simplify using `only [centPts, Subgroup.mem_inf, Subgroup.mem_centralizer_singleton_iff]`. Unfold `UPts UJ`.
+
+Simplify using `only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_ofPred_eq, Units.ext_iff, Units.val_mul, hb]`. Rewrite using `[cT_mul_mul_eq_iff_mul_adj_eq_one _ hJ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hunit, hc⟩`. Take `⟨u, hu⟩` from `(hcomm g).1 hc`.
+
+Establish `h1 : u * lConj σ J (γ : Matrix n n E) R u = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hA F E n σ J γ hreg R u, hu, map_one, hunit]`. Conclude with `⟨Units.mkOfMulEqOne u _ h1, h1, hu⟩`. Introduce and unpack `⟨u, hu, hg⟩`.
+
+Establish `hu' : (u : LPts σ J (γ : Matrix n n E) R) * lConj σ J (γ : Matrix n n E) R u = 1` using `hu`. Use `⟨?_, (hcomm _).2 ⟨u, hg⟩⟩` and prove the remaining obligations. Rewrite using `[← hg, ← hA F E n σ J γ hreg R, ← map_mul, hu', map_one]`.
+-/
 theorem pointsCentraliser_of_commutant_of_adjoint :
     PointsCommutant → PointsAdjoint → PointsCentraliser := by
   intro hC hA F E _ _ _ _ n _ _ σ J γ hreg hAlg hPlus R _ _

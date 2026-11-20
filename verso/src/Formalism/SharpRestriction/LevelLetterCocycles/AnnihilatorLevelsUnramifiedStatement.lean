@@ -10,6 +10,11 @@ open PowerSeries
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Establish `h : X ^ N ∣ f - (trunc N f : PowerSeries O)`. Rewrite using `[X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, coeff_coe_trunc_of_lt hm, sub_self]`. Take `⟨g, hg⟩` from `h`.
+
+Conclude with `⟨g, by rw [← hg]; ring⟩`.
+-/
 theorem exists_trunc_add (f : PowerSeries O) (N : ℕ) :
     ∃ g, f = (trunc N f : PowerSeries O) + X ^ N * g := by
   have h : X ^ N ∣ f - (trunc N f : PowerSeries O) := by
@@ -19,6 +24,15 @@ theorem exists_trunc_add (f : PowerSeries O) (N : ℕ) :
   obtain ⟨g, hg⟩ := h
   exact ⟨g, by rw [← hg]; ring⟩
 
+/- English proof (translation)
+Establish `hpoly : ∀ p : Polynomial O, τ (p : PowerSeries O) = σ (p : PowerSeries O)`. Introduce `p`. Use `congrArg (fun φ : Polynomial O →ₐ[O] PowerSeries O => φ p) (Polynomial.algHom_ext (f := τ.comp (Polynomial.coeToPowerSeries.algHom O)) (g := σ.comp (Polynomial.coeToPowerSeries.algHom O)) (by simp [Polynomial.coeToPowerSeries.algHom_apply, hX]))` as an intermediate fact. Simplify `this` using `[Polynomial.coeToPowerSeries.algHom_apply]`. Establish `hd : X ∣ τ X` using `X_dvd_iff.mpr h0`.
+
+Use extensionality with `f k`. Take `⟨g, hg⟩` from `exists_trunc_add f (k + 1)`. Establish `h1 : X ^ (k + 1) ∣ τ X ^ (k + 1) * τ g` using `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hd _) _`. Establish `h2 : X ^ (k + 1) ∣ σ X ^ (k + 1) * σ g`. Rewrite using `[← hX]`.
+
+Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd hd _) _`. Establish `hτ : τ f = τ (trunc (k + 1) f : PowerSeries O) + τ X ^ (k + 1) * τ g` using `by conv_lhs => rw [hg]`. Rewrite using `[map_add, map_mul, map_pow]`. Establish `hσ : σ f = σ (trunc (k + 1) f : PowerSeries O) + σ X ^ (k + 1) * σ g` using `by conv_lhs => rw [hg]`. Rewrite using `[map_add, map_mul, map_pow]`.
+
+Rewrite using `[hτ, hσ, map_add, map_add, hpoly, X_pow_dvd_iff.mp h1 k (Nat.lt_succ_self k), X_pow_dvd_iff.mp h2 k (Nat.lt_succ_self k)]`.
+-/
 theorem algHom_ext_X (τ σ : PowerSeries O →ₐ[O] PowerSeries O) (hX : τ X = σ X)
     (h0 : constantCoeff (τ X) = 0) : τ = σ := by
   have hpoly : ∀ p : Polynomial O, τ (p : PowerSeries O) = σ (p : PowerSeries O) := by
@@ -43,6 +57,9 @@ theorem algHom_ext_X (τ σ : PowerSeries O →ₐ[O] PowerSeries O) (hX : τ X 
   rw [hτ, hσ, map_add, map_add, hpoly,
     X_pow_dvd_iff.mp h1 k (Nat.lt_succ_self k), X_pow_dvd_iff.mp h2 k (Nat.lt_succ_self k)]
 
+/- English proof (translation)
+Establish `hs : HasSubst (τ X)` using `HasSubst.of_constantCoeff_zero' h0`. Use `algHom_ext_X τ ((substAlgHom hs).restrictScalars O) (by simp [substAlgHom_X]) h0` as an intermediate fact. Rewrite using `[show τ f = ((substAlgHom hs).restrictScalars O) f from DFunLike.congr_fun this f]`. Simplify using `[coe_substAlgHom]`.
+-/
 theorem algHom_eq_subst (τ : PowerSeries O →ₐ[O] PowerSeries O) (h0 : constantCoeff (τ X) = 0)
     (f : PowerSeries O) : τ f = subst (τ X) f := by
   have hs : HasSubst (τ X) := HasSubst.of_constantCoeff_zero' h0
@@ -50,6 +67,11 @@ theorem algHom_eq_subst (τ : PowerSeries O →ₐ[O] PowerSeries O) (h0 : const
   rw [show τ f = ((substAlgHom hs).restrictScalars O) f from DFunLike.congr_fun this f]
   simp [coe_substAlgHom]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_trunc_add f 1`. Establish `hd : X ∣ τ X` using `X_dvd_iff.mpr h0`. Establish `e : (trunc 1 f : PowerSeries O) = C (constantCoeff f)`. Apply the tactic sequence `ext m; rcases m with _ | m <;> simp [coeff_C]`. Use `conv_lhs => rw [hg]`.
+
+Use `conv_rhs => rw [hg]`. Rewrite using `[e, map_add, map_mul, map_pow, pow_one, map_add, map_add, map_mul, map_mul, pow_one]`. Establish `: τ (C (constantCoeff f)) = C (constantCoeff f)` using `τ.commutes _`. Rewrite using `[this, X_dvd_iff.mp hd, constantCoeff_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cc_map (τ : PowerSeries O →ₐ[O] PowerSeries O) (h0 : constantCoeff (τ X) = 0)
     (f : PowerSeries O) : constantCoeff (τ f) = constantCoeff f := by
   obtain ⟨g, hg⟩ := exists_trunc_add f 1
@@ -67,6 +89,17 @@ section Taylor
 
 open MvPowerSeries in
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.X_pow_dvd_iff]`. Introduce `e he`. Rewrite using `[map_sub, map_sub, coeff_subst_X_zero_add_X_one, coeff_subst_single, show (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) O) = MvPowerSeries.monomial (Finsupp.single 1 1) 1 from MvPowerSeries.X_def 1, coeff_mul_monomial]`. Establish `hsplit : e 1 = 0 ∨ e 1 = 1` using `by omega`. Break down `hsplit with h | h` into its components or cases.
+
+Establish `he0 : e = Finsupp.single 0 (e 0)`. Apply the tactic sequence `ext i; fin_cases i <;> simp [h]`. Establish `hn : ¬ Finsupp.single (1 : Fin 2) 1 ≤ e`. Introduce `hle`. Use `hle 1` as an intermediate fact.
+
+Simplify using `[h] at this`. Rewrite using `[if_pos he0, if_neg hn, h]`. Simplify using the standard rewrite rules. Establish `hne : ¬ e = Finsupp.single 0 (e 0)`. Introduce `h'`.
+
+Use `congrArg (fun x => x 1) h'` as an intermediate fact. Simplify using `[h] at this`. Establish `hle : Finsupp.single (1 : Fin 2) 1 ≤ e`. Apply the tactic sequence `intro i; fin_cases i <;> simp [h]`. Establish `hsub : e - Finsupp.single 1 1 = Finsupp.single 0 (e 0)`.
+
+Apply the tactic sequence `ext i; fin_cases i <;> simp [h]`. Rewrite using `[if_neg hne, if_pos hle, hsub, coeff_subst_single, if_pos (by simp), h]`. Simplify using `only [Finsupp.single_eq_same, coeff_derivative, Nat.choose_succ_self_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem taylor_two_var (f : PowerSeries O) :
     (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) O) ^ 2 ∣
       PowerSeries.subst (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) O) f -
@@ -98,6 +131,21 @@ theorem taylor_two_var (f : PowerSeries O) :
     push_cast
     ring
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `taylor_two_var f`. Set `b : Fin 2 → MvPowerSeries Unit O` to `![(X : PowerSeries O), D]`. Establish `hb : MvPowerSeries.HasSubst b`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `i`.
+
+Use `fin_cases i`. Use `show PowerSeries.constantCoeff (X : PowerSeries O) = 0`. Simplify using the standard rewrite rules. Use `show PowerSeries.constantCoeff D = 0`. Conclude with `hD`.
+
+Establish `h2 : HasSubst (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) O)` using `HasSubst.of_constantCoeff_zero (by simp)`. Establish `hx0 : HasSubst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) O)` using `HasSubst.of_constantCoeff_zero (by simp)`. Establish `key` using `congrArg (MvPowerSeries.subst b) hQ`. Establish `e1 : MvPowerSeries.subst b (PowerSeries.subst (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) O) f) = subst (X + D) f`. Rewrite using `[PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply h2.const hb, PowerSeries.subst_def]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[MvPowerSeries.subst_add hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression. Establish `e0 : ∀ g : PowerSeries O, MvPowerSeries.subst b (PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) O) g) = g`.
+
+Introduce `g`. Rewrite using `[PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply hx0.const hb]`. Establish `: (fun _ : Unit => MvPowerSeries.subst b (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) O)) = fun _ => (X : PowerSeries O)`. Use function extensionality and compare the values at `u`. Rewrite using `[MvPowerSeries.subst_X hb]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, ← PowerSeries.subst_def, X_subst]`. Rewrite `key` using `[MvPowerSeries.subst_sub hb, MvPowerSeries.subst_sub hb, MvPowerSeries.subst_mul hb, e1, e0, e0, MvPowerSeries.subst_mul hb, MvPowerSeries.subst_pow hb, MvPowerSeries.subst_X hb]`. Use `⟨MvPowerSeries.subst b Q, ?_⟩` and prove the remaining obligations. Establish `: b 1 = D` using `rfl`.
+
+Rewrite `key` using `[this]`. Take the linear combination `key`.
+-/
 theorem taylor2 (f D : PowerSeries O) (hD : constantCoeff D = 0) :
     ∃ Q, subst (X + D) f = f + D * derivative O f + D ^ 2 * Q := by
   obtain ⟨Q, hQ⟩ := taylor_two_var f
@@ -142,10 +190,22 @@ open PowerSeries
 
 variable {O : Type} [CommRing O] {R : Type} [CommRing R] [BinomialRing R] [Algebra R O]
 
+/- English proof (translation)
+Rewrite using `[binomialSeries_coeff, Algebra.smul_def, mul_one]`.
+-/
 theorem coeff_bs (r : R) (k : ℕ) :
     coeff k (binomialSeries O r) = algebraMap R O (Ring.choose r k) := by
   rw [binomialSeries_coeff, Algebra.smul_def, mul_one]
 
+/- English proof (translation)
+Establish `h1 : ∀ j : ℕ, ((j : R) + 1) * Ring.choose r (j + 1) = r * Ring.choose (r - 1) j`. Introduce `j`. Use `Ring.choose_smul_choose r (Nat.le_add_left 1 j)` as an intermediate fact. Rewrite `this` using `[Nat.choose_one_right, nsmul_eq_mul, Ring.choose_one_right, Nat.add_sub_cancel, Nat.cast_one]`. Rewrite using `[← this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Break down `k with _ | j` into its components or cases. Use `h1 0` as an intermediate fact. Simplify using `only [Nat.cast_zero, zero_add, one_mul, Ring.choose_zero_right, mul_one, add_zero] at this ⊢`.
+
+Conclude with `this`. Establish `e` using `Ring.choose_succ_succ (r - 1) j`. Rewrite `e` using `[sub_add_cancel]`. Establish `h2` using `h1 (j + 1)`. Establish `h3` using `h1 j`.
+
+Move the coercions through the operations in `at h2 ⊢`. Take the linear combination `h2 + h3 - r * e`.
+-/
 theorem choose_rec (r : R) (k : ℕ) :
     ((k : R) + 1) * Ring.choose r (k + 1) + (k : R) * Ring.choose r k = r * Ring.choose r k := by
   have h1 : ∀ j : ℕ, ((j : R) + 1) * Ring.choose r (j + 1) = r * Ring.choose (r - 1) j := by
@@ -165,6 +225,13 @@ theorem choose_rec (r : R) (k : ℕ) :
     push_cast at h2 ⊢
     linear_combination h2 + h3 - r * e
 
+/- English proof (translation)
+Use extensionality with `k`. Rewrite using `[add_mul, one_mul, map_add, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Break down `k with _ | k` into its components or cases. Rewrite using `[coeff_zero_X_mul, add_zero, coeff_derivative, coeff_bs, coeff_bs, Ring.choose_one_right, Ring.choose_zero_right, map_one]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[coeff_succ_X_mul, coeff_derivative, coeff_derivative]`. Simplify using `only [coeff_bs]`. Use `congrArg (algebraMap R O) (choose_rec r (k + 1))` as an intermediate fact. Simplify using `only [map_add, map_mul, map_natCast, map_one] at this`. Move the coercions through the operations in `at this ⊢`.
+
+Take the linear combination `this`.
+-/
 theorem bs_ode (r : R) :
     (1 + X) * derivative O (binomialSeries O r) =
       algebraMap O (PowerSeries O) (algebraMap R O r) * binomialSeries O r := by
@@ -183,6 +250,15 @@ theorem bs_ode (r : R) :
 
 variable [IsDomain O] [CharZero O]
 
+/- English proof (translation)
+Establish `hH : (1 + X) * derivative O (F - G) = algebraMap O (PowerSeries O) c * (F - G)`. Rewrite using `[map_sub]`. Take the linear combination `hF - hG`. Establish `key : ∀ k, coeff k (F - G) = 0`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => rw [map_sub, coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, h0, sub_self]`. Consider the case `succ k ih`. Establish `e` using `congrArg (coeff k) hH`. Rewrite `e` using `[add_mul, one_mul, map_add, ← Algebra.smul_def, map_smul, smul_eq_mul, ih, mul_zero, coeff_derivative]`.
+
+Establish `hx : coeff k (X * derivative O (F - G)) = 0`. Break down `k with _ | j` into its components or cases. Conclude with `coeff_zero_X_mul _`. Rewrite using `[coeff_succ_X_mul, coeff_derivative, ih, zero_mul]`. Rewrite `e` using `[hx, add_zero]`.
+
+Conclude with `(mul_eq_zero.mp e).resolve_right (Nat.cast_add_one_ne_zero k)`. Use extensionality with `k`. Use `key k` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem ode_unique (c : O) {F G : PowerSeries O} (h0 : constantCoeff F = constantCoeff G)
     (hF : (1 + X) * derivative O F = algebraMap O (PowerSeries O) c * F)
     (hG : (1 + X) * derivative O G = algebraMap O (PowerSeries O) c * G) : F = G := by
@@ -208,12 +284,28 @@ theorem ode_unique (c : O) {F G : PowerSeries O} (h0 : constantCoeff F = constan
   rw [map_sub, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | l + 1 => by rw [show ((l + 1 : ℕ) : R) * r = (l : R) * r + r by push_cast; ring, binomialSeries_add, bs_natMul r l, pow_succ]`.
+-/
 theorem bs_natMul (r : R) : ∀ l : ℕ, binomialSeries O ((l : R) * r) = binomialSeries O r ^ l
   | 0 => by simp
   | l + 1 => by
     rw [show ((l + 1 : ℕ) : R) * r = (l : R) * r + r by push_cast; ring, binomialSeries_add,
       bs_natMul r l, pow_succ]
 
+/- English proof (translation)
+Establish `hW0 : constantCoeff ((1 + X) ^ l - 1 : PowerSeries O) = 0` using `by simp`. Establish `hs : HasSubst ((1 + X) ^ l - 1 : PowerSeries O)` using `HasSubst.of_constantCoeff_zero' hW0`. Set `σ : PowerSeries O →ₐ[O] PowerSeries O` to `substAlgHom hs`. Establish `hσ : ∀ f, σ f = subst ((1 + X) ^ l - 1 : PowerSeries O) f` using `fun f => congrFun (coe_substAlgHom hs) f`. Establish `hσX : σ X = (1 + X) ^ l - 1` using `substAlgHom_X hs`.
+
+Establish `hσ0 : constantCoeff (σ X) = 0` using `by rw [hσX]; exact hW0`. Rewrite using `[← hσ]`. Apply `ode_unique (algebraMap R O ((l : R) * r))` to reduce the goal to its premises. Rewrite using `[cc_map σ hσ0, binomialSeries_constantCoeff, binomialSeries_constantCoeff]`. Establish `hd : derivative O ((1 + X) ^ l - 1 : PowerSeries O) = (l : PowerSeries O) * (1 + X) ^ (l - 1)`.
+
+Simplify using `only [map_sub, derivative_pow, map_add, derivative_X, derivative_one, zero_add, mul_one, sub_zero]`. Establish `h1 : (1 + X : PowerSeries O) * (1 + X) ^ (l - 1) = (1 + X) ^ l`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : σ (1 + X) = (1 + X) ^ l` using `by rw [map_add, map_one, hσX]; ring`. Establish `h3 : (1 + X) ^ l * σ (derivative O (binomialSeries O r)) = algebraMap O (PowerSeries O) (algebraMap R O r) * σ (binomialSeries O r)`. Use `congrArg σ (bs_ode (O := O) r)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h2, AlgHom.commutes]`. Conclude with `this`.
+
+Establish `hdG : derivative O (σ (binomialSeries O r)) = σ (derivative O (binomialSeries O r)) * ((l : PowerSeries O) * (1 + X) ^ (l - 1))`. Rewrite using `[hσ, hσ, derivative_subst hs, hd]`. Rewrite using `[hdG, map_mul, map_natCast, map_mul, map_natCast]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h1]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h3]; ring`. Conclude with `bs_ode _`.
+-/
 theorem subst_bs (l : ℕ) (hl : 1 ≤ l) (r : R) :
     subst ((1 + X) ^ l - 1 : PowerSeries O) (binomialSeries O r) = binomialSeries O ((l : R) * r) := by
   have hW0 : constantCoeff ((1 + X) ^ l - 1 : PowerSeries O) = 0 := by simp
@@ -247,6 +339,27 @@ theorem subst_bs (l : ℕ) (hl : 1 ≤ l) (r : R) :
       _ = _ := by rw [h3]; ring
   · exact bs_ode _
 
+/- English proof (translation)
+Establish `hW0 : constantCoeff ((1 + X) ^ l - 1 : PowerSeries O) = 0` using `by simp`. Take `⟨q, hq⟩` from `X_dvd_iff.mpr hW0`. Establish `hq0 : constantCoeff q = (l : O)`. Establish `e` using `congrArg (coeff 0 ∘ derivative O) hq`. Simplify using `only [Function.comp_apply, map_sub, derivative_pow, map_add, derivative_X, derivative_one, zero_add, mul_one, sub_zero, Derivation.leibniz, smul_eq_mul] at e`.
+
+Simplify using `at e`. Conclude with `e.symm`. Establish `hφ0 : constantCoeff (φ₀ X) = 0` using `by rw [hφ]; exact hW0`. Establish `key : ∀ m : ℕ, X ^ (m + 2) ∣ U - V`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[X_pow_dvd_iff]`. Introduce `k hk`. Break down `k with _ | _ | k` into its components or cases.
+
+Rewrite using `[map_sub, coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, h0U, h0V, sub_self]`. Rewrite using `[map_sub, h1, sub_self]`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Take `⟨E, hE⟩` from `ih`.
+
+Establish `hS` using `geom_sum₂_mul U V l`. Establish `e1 : φ₀ (U - V) = (X * q) ^ (m + 2) * φ₀ E`. Rewrite using `[hE, map_mul, map_pow, hφ, hq]`. Rewrite `e1` using `[map_sub, hU, hV, ← hS, hE]`. Establish `e2 : (∑ i ∈ Finset.range l, U ^ i * V ^ (l - 1 - i)) * E = q ^ (m + 2) * φ₀ E`.
+
+Apply `X_pow_mul_cancel (k := m + 2)` to reduce the goal to its premises. Rewrite `e1` using `[mul_pow]`. Take the linear combination `e1`. Establish `e3` using `congrArg constantCoeff e2`. Rewrite `e3` using `[map_mul, map_mul, map_pow, cc_map φ₀ hφ0, hq0, map_sum]`.
+
+Simplify using `only [map_mul, map_pow, h0U, h0V, one_pow, mul_one, Finset.sum_const, Finset.card_range, nsmul_eq_mul] at e3`. Establish `hne : ((l : O) ^ (m + 2) - l) ≠ 0`. Establish `: l ^ (m + 2) ≠ l`. Establish `: l ^ 1 < l ^ (m + 2)` using `Nat.pow_lt_pow_right (by omega) (by omega)`. Rewrite `this` using `[pow_one]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Apply `this` to reduce the goal to its premises. Conclude with `sub_eq_zero.mp h` after adjusting the coercions. Establish `hE0 : constantCoeff E = 0`.
+
+Establish `: ((l : O) ^ (m + 2) - l) * constantCoeff E = 0` using `by linear_combination -e3`. Conclude with `(mul_eq_zero.mp this).resolve_left hne`. Take `⟨E', hE'⟩` from `X_dvd_iff.mpr hE0`. Conclude with `⟨E', by rw [hE, hE', pow_succ]; ring⟩`. Use extensionality with `k`.
+
+Use `X_pow_dvd_iff.mp (key k) k (by omega)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem func_unique (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (l : ℕ) (hl : 2 ≤ l)
     (hφ : φ₀ X = (1 + X) ^ l - 1) {U V : PowerSeries O}
     (h0U : constantCoeff U = 1) (h0V : constantCoeff V = 1) (h1 : coeff 1 U = coeff 1 V)
@@ -308,10 +421,16 @@ variable (φ₀ τ : PowerSeries O →ₐ[O] PowerSeries O) (l : ℕ) (hl : 2 �
   (hφ : φ₀ X = (1 + X) ^ l - 1)
 include hl hφ
 
+/- English proof (translation)
+Establish `h0 : constantCoeff (φ₀ X) = 0` using `by rw [hφ]; simp`. Rewrite using `[algHom_eq_subst φ₀ h0, hφ, subst_bs l (by omega)]`.
+-/
 theorem phi_bs (r : R) : φ₀ (binomialSeries O r) = binomialSeries O ((l : R) * r) := by
   have h0 : constantCoeff (φ₀ X) = 0 := by rw [hφ]; simp
   rw [algHom_eq_subst φ₀ h0, hφ, subst_bs l (by omega)]
 
+/- English proof (translation)
+The claim follows from `| 0, m => by simp | k + 1, m => by rw [pow_succ, AlgHom.mul_apply, phi_bs φ₀ l hl hφ, phi_pow_bs k] congr 1; ring`.
+-/
 theorem phi_pow_bs : ∀ (k : ℕ) (m : R),
     (φ₀ ^ k) (binomialSeries O m) = binomialSeries O ((l : R) ^ k * m)
   | 0, m => by simp
@@ -319,6 +438,9 @@ theorem phi_pow_bs : ∀ (k : ℕ) (m : R),
     rw [pow_succ, AlgHom.mul_apply, phi_bs φ₀ l hl hφ, phi_pow_bs k]
     congr 1; ring
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | k + 1 => by rw [pow_succ, AlgHom.mul_apply, hφ, map_sub, map_pow, map_add, map_one, phi_pow_X k, show l ^ (k + 1) = l ^ k * l from pow_succ l k, pow_mul] ring`.
+-/
 theorem phi_pow_X : ∀ k : ℕ, (φ₀ ^ k) X = (1 + X) ^ (l ^ k) - 1
   | 0 => by simp
   | k + 1 => by
@@ -329,6 +451,11 @@ theorem phi_pow_X : ∀ k : ℕ, (φ₀ ^ k) X = (1 + X) ^ (l ^ k) - 1
 variable (hcomm : ∀ a, φ₀ (τ a) = τ (φ₀ a)) (h0 : constantCoeff (τ X) = 0)
 include hcomm h0
 
+/- English proof (translation)
+Apply `func_unique φ₀ l hl hφ` to reduce the goal to its premises. Rewrite using `[map_add, map_one, h0, add_zero]`. Conclude with `binomialSeries_constantCoeff c`. Rewrite using `[map_add, h1, coeff_bs, Ring.choose_one_right, coeff_one, if_neg (by omega), zero_add]`. Rewrite using `[map_add, map_one, hcomm, hφ, map_sub, map_pow, map_add, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[phi_bs φ₀ l hl hφ, bs_natMul]`.
+-/
 theorem aut_eq_bs (c : R) (h1 : coeff 1 (τ X) = algebraMap R O c) : 1 + τ X = binomialSeries O c := by
   apply func_unique φ₀ l hl hφ
   · rw [map_add, map_one, h0, add_zero]
@@ -337,6 +464,29 @@ theorem aut_eq_bs (c : R) (h1 : coeff 1 (τ X) = algebraMap R O c) : 1 + τ X = 
   · rw [map_add, map_one, hcomm, hφ, map_sub, map_pow, map_add, map_one]; ring
   · rw [phi_bs φ₀ l hl hφ, bs_natMul]
 
+/- English proof (translation)
+Use `set Z : PowerSeries O := (1 + X) ^ (l ^ k) - 1 with hZdef`. Use `set M : PowerSeries O := algebraMap O (PowerSeries O) (algebraMap R O m) with hM`. Establish `hτX` using `aut_eq_bs φ₀ τ l hl hφ hcomm h0 c h1`. Establish `hB1 : binomialSeries O (1 : R) = 1 + X`. Use `binomialSeries_nat (A := O) (R := R) 1` as an intermediate fact.
+
+Rewrite `this` using `[Nat.cast_one, pow_one]`. Conclude with `this`. Choose the witnesses or unpack the hypotheses as in `⟨E, hE⟩ : X ^ 2 ∣ binomialSeries O m - 1 - M * X := by`. Rewrite using `[X_pow_dvd_iff]`. Introduce `j hj`.
+
+Break down `j with _ | _ | j` into its components or cases. Simplify using `[hM]`. Use `show coeff 1 (binomialSeries O m - 1 - M * X) = 0`. Rewrite using `[map_sub, map_sub, coeff_bs, Ring.choose_one_right, coeff_one, if_neg one_ne_zero, hM, ← Algebra.smul_def, map_smul, coeff_one_X, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use linear arithmetic over natural numbers and integers. Establish `hBm : (φ₀ ^ k) (binomialSeries O m) = 1 + M * Z + Z ^ 2 * (φ₀ ^ k) E`. Establish `e : binomialSeries O m = 1 + M * X + X ^ 2 * E` using `by rw [← hE]; ring`. Rewrite using `[e, map_add, map_add, map_mul, map_mul, map_pow, map_one, phi_pow_X φ₀ l hl hφ, hM, AlgHom.commutes]`. Use `set E' := (φ₀ ^ k) E`.
+
+Use `set D := τ X - X with hDdef`. Establish `hD : D = (1 + X) * (M * Z + Z ^ 2 * E')`. Establish `: τ X = binomialSeries O c - 1` using `by rw [← hτX]; ring`. Rewrite using `[hDdef, this, hc, binomialSeries_add, hB1, ← phi_pow_bs φ₀ l hl hφ k m, hBm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hD0 : constantCoeff D = 0` using `by rw [hDdef, map_sub, h0, constantCoeff_X, sub_zero]`. Establish `hτf : ∀ f, ∃ Q, τ f = f + D * derivative O f + D ^ 2 * Q`. Introduce `f`. Take `⟨Q, hQ⟩` from `taylor2 f D hD0`. Conclude with `⟨Q, by rw [algHom_eq_subst τ h0, show τ X = X + D by rw [hDdef]; ring, hQ]⟩`.
+
+Use `⟨fun f => ?_, fun P Rr hPR => ?_⟩` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `hτf f`. Conclude with `⟨(1 + X) * (M + Z * E') * (derivative O f + D * Q), by rw [hQ, hD]; ring⟩`. Take `⟨Q, hQ⟩` from `hτf P`. Establish `hN : 1 ≤ l ^ k` using `Nat.one_le_pow _ _ (by omega)`.
+
+Establish `hL : (1 + X) * (P * derivative O Rr + Rr * derivative O P) = ((l ^ k : ℕ) : PowerSeries O) * (1 + P * Rr)`. Establish `e : derivative O (P * Rr) = P * derivative O Rr + Rr * derivative O P`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Establish `h1' : (1 + X : PowerSeries O) * (1 + X) ^ (l ^ k - 1) = (1 + X) ^ (l ^ k)`. Rewrite using `[← pow_succ']`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← e, hPR, hZdef]`. Simplify using `only [map_sub, derivative_pow, map_add, derivative_X, derivative_one, zero_add, mul_one, sub_zero]`. Rewrite using `[← h1']`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcc : algebraMap O (PowerSeries O) (algebraMap R O c) = 1 + ((l ^ k : ℕ) : PowerSeries O) * M`. Rewrite using `[hc, map_add, map_mul, map_pow, map_natCast, map_one, map_add, map_one, map_mul, map_pow, map_natCast, hM]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hD` using `[← hPR]`. Use `⟨((l ^ k : ℕ) : PowerSeries O) * M * Rr - (1 + X) * M * derivative O Rr + (1 + X) * Rr ^ 2 * E' * derivative O P + (1 + X) ^ 2 * (M + P * Rr * E') ^ 2 * Rr ^ 2 * Q, ?_⟩` and prove the remaining obligations. Take the linear combination `hQ - P * hcc + (derivative O P + (D + (1 + X) * (M * (P * Rr) + (P * Rr) ^ 2 * E')) * Q) * hD + (M * P) * hL`.
+-/
 theorem aut_core (c m : R) (k : ℕ) (hc : c = 1 + (l : R) ^ k * m)
     (h1 : coeff 1 (τ X) = algebraMap R O c) :
     (∀ f, ∃ H, τ f - f = ((1 + X) ^ (l ^ k) - 1) * H) ∧
@@ -411,8 +561,14 @@ section W
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Rewrite using `[W.φ₀_X, W.q₀_def]`.
+-/
 theorem φ₀_X_eq : W.φ₀ X = (1 + X) ^ PD.p - 1 := by rw [W.φ₀_X, W.q₀_def]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, AlgHom.mul_apply, ih, pow_succ g k, map_mul, AlgHom.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem γA_pow_apply (g : W.Gam) (k : ℕ) (a : LetA O n) (i : ZMod n) :
     (W.γA g ^ k) a i = W.γ₀ (g ^ k) (a i) := by
   induction k generalizing a with
@@ -421,6 +577,11 @@ theorem γA_pow_apply (g : W.Gam) (k : ℕ) (a : LetA O n) (i : ZMod n) :
     rw [pow_succ, AlgHom.mul_apply, ih, pow_succ g k, map_mul, AlgHom.mul_apply]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => rfl`. Consider the case `succ s ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, ih, pow_succ', AlgHom.mul_apply]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[LocWach.φA, letφ]`.
+-/
 theorem φA_pow_const (c : PowerSeries O) (s : ℕ) :
     (W.φA ^ s) (fun _ => c) = fun _ => (W.φ₀ ^ s) c := by
   induction s with
@@ -430,6 +591,9 @@ theorem φA_pow_const (c : PowerSeries O) (s : ℕ) :
     funext i
     simp [LocWach.φA, letφ]
 
+/- English proof (translation)
+Establish `e : qA W = fun _ => W.π₀₁ + ((PD.p : ℕ) : PowerSeries O)`. Use function extensionality and compare the values at `j`. Simplify using `[qA, lA, LocWach.π₀]`. Unfold `ps`. Rewrite using `[e, φA_pow_const]`.
+-/
 theorem ps_apply (s : ℕ) (i : ZMod n) :
     ps W s i = (W.φ₀ ^ s) (W.π₀₁ + ((PD.p : ℕ) : PowerSeries O)) := by
   have e : qA W = fun _ => W.π₀₁ + ((PD.p : ℕ) : PowerSeries O) := by
@@ -439,6 +603,11 @@ theorem ps_apply (s : ℕ) (i : ZMod n) :
 
 variable [IsDomain O] [CharZero O]
 
+/- English proof (translation)
+Establish `hl` using `two_le (PD := PD)`. Introduce `h`. Establish `h0 : constantCoeff ((W.φ₀ ^ s) X) = 0`. Rewrite using `[phi_pow_X W.φ₀ PD.p hl (φ₀_X_eq W)]`. Simplify using the standard rewrite rules.
+
+Use `congrArg constantCoeff h` as an intermediate fact. Rewrite `this` using `[ps_apply, cc_map _ h0, map_add, π₀₁_cc hR, zero_add, map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.mpr (by omega : PD.p ≠ 0)) this`.
+-/
 theorem ps_ne (hR : RingP W) (s : ℕ) (i : ZMod n) : ps W s i ≠ 0 := by
   have hl := two_le (PD := PD)
   intro h
@@ -448,6 +617,11 @@ theorem ps_ne (hR : RingP W) (s : ℕ) (i : ZMod n) : ps W s i ≠ 0 := by
   rw [ps_apply, cc_map _ h0, map_add, π₀₁_cc hR, zero_add, map_natCast, map_zero] at this
   exact (Nat.cast_ne_zero.mpr (by omega : PD.p ≠ 0)) this
 
+/- English proof (translation)
+Establish `hl` using `two_le (PD := PD)`. Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[eat_qP]`. Establish `hq : W.q₀ = (w : LetA O n) i * (W.π₀₁ + ((PD.p : ℕ) : PowerSeries O))`. Use `congrFun hw i` as an intermediate fact.
+
+Simplify `this` using `[LocWach.q, Formalism.MainNotions.WachCoordinates.qP, LocWach.π₀]`. Use `⟨(W.φ₀ ^ s) X * (W.φ₀ ^ s) ((w : LetA O n) i), ?_⟩` and prove the remaining obligations. Rewrite using `[← phi_pow_X W.φ₀ PD.p hl (φ₀_X_eq W), pow_succ, AlgHom.mul_apply, W.φ₀_X, hq, ps_apply, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ps_mul_eq (hR : RingP W) (s : ℕ) (i : ZMod n) :
     ∃ Rr : PowerSeries O, ps W s i * Rr = (1 + X) ^ (PD.p ^ (s + 1)) - 1 := by
   have hl := two_le (PD := PD)
@@ -461,12 +635,32 @@ theorem ps_mul_eq (hR : RingP W) (s : ℕ) (i : ZMod n) :
     map_mul, map_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k generalizing a with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, AlgHom.mul_apply, AlgHom.mul_apply, ih, γA_comm]`.
+-/
 theorem γA_comm_pow (δ g : W.Gam) (k : ℕ) (a : LetA O n) :
     W.γA δ ((W.γA g ^ k) a) = (W.γA g ^ k) (W.γA δ a) := by
   induction k generalizing a with
   | zero => simp
   | succ k ih => rw [pow_succ, AlgHom.mul_apply, AlgHom.mul_apply, ih, γA_comm]
 
+/- English proof (translation)
+Introduce `ell s hs`. Establish `hl` using `two_le (PD := PD)`. Use `set N := PD.p ^ ell with hN`. Establish `h0` using `(W.γ₀_X (W.gam ^ N)).1`. Establish `hc1 : coeff 1 (W.γ₀ (W.gam ^ N) X) = algebraMap R O (z ^ N)`.
+
+Rewrite using `[(W.γ₀_X (W.gam ^ N)).2, map_pow, Units.val_pow_eq_pow_val, hz, map_pow]`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ((PD.p : ℕ) : R) ^ (s + 1) ∣ z ^ N - 1 := by`. Use `dvd_sub_pow_of_dvd_sub hz1 ell` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `(pow_dvd_pow _ (by omega)).trans this`.
+
+Establish `hc : z ^ N = 1 + ((PD.p : ℕ) : R) ^ (s + 1) * m` using `by rw [← hm]; ring`. Take `⟨hA, hB⟩` from `aut_core W.φ₀ (W.γ₀ (W.gam ^ N)) PD.p hl (φ₀_X_eq W) (W.γ₀_comm _) h0 (z ^ N) m (s + 1) hc hc1`. Use `choose Rr hRr using ps_mul_eq W hR s`. Establish `hπ : W.π₀ ∈ W.AΔ` using `hR.1`. Establish `hpsΔ : ps W s ∈ W.AΔ` using `ps_mem W hπ s`.
+
+Establish `hpsne : ∀ i, ps W s i ≠ 0` using `ps_ne W hR s`. Establish `hchi : (chiL W ell : O) = algebraMap R O (z ^ N)`. Rewrite using `[chiL, show ((PD.p : ℤ) ^ ell) = ((N : ℕ) : ℤ) by rw [hN]; push_cast; ring, zpow_natCast, Units.val_pow_eq_pow_val, hz, map_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `g hg choose H hH using fun i => hA (g i)`.
+
+Establish `key : (W.γA W.gam ^ N) g - g = ps W s * fun i => Rr i * H i`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.mul_apply]`. Rewrite using `[γA_pow_apply, hH i, ← hRr i]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨fun i => Rr i * H i, ?_, key⟩` and prove the remaining obligations. Apply `cancel_AΔ hpsΔ hpsne` to reduce the goal to its premises. Rewrite using `[← key]`. Conclude with `Subalgebra.sub_mem _ (γA_pow_mem W _ N hg) hg`. Use `choose H hH using fun i => hB (ps W s i) (Rr i) (hRr i)`.
+
+Establish `key : (W.γA W.gam ^ N) (ps W s) - algebraMap O (LetA O n) (chiL W ell : O) * ps W s = ps W s ^ 2 * fun i => H i`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, Pi.algebraMap_apply]`. Rewrite using `[γA_pow_apply, hchi, hH i]`. Use `⟨fun i => H i, ?_, key⟩` and prove the remaining obligations.
+
+Apply `cancel_AΔ (Subalgebra.pow_mem _ hpsΔ 2) (fun i => pow_ne_zero 2 (hpsne i))` to reduce the goal to its premises. Rewrite using `[← key]`. Conclude with `Subalgebra.sub_mem _ (γA_pow_mem W _ N hpsΔ) (Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) hpsΔ)`.
+-/
 theorem levGrad_of {R : Type} [CommRing R] [BinomialRing R] [Algebra R O] (hR : RingP W) (z : R)
     (hz : ((W.χΓ W.gam : Oˣ) : O) = algebraMap R O z) (hz1 : ((PD.p : ℕ) : R) ∣ z - 1) :
     LevGrad W := by
@@ -522,6 +716,21 @@ namespace Formalism.MainNotions.UnusedSlot80
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.KL
 
+/- English proof (translation)
+Establish `hp : (P.PD K).p = l` using `P.PD_p K`. Establish `hs : (H.W K 1 LL hg).s = 1` using `H.W_s K 1 LL hg`. Take `⟨g, hgg⟩` from `(H.W K 1 LL hg).resΓ_onto (H.W K 1 LL hg).gam`. Establish `hχ` using `(H.W K 1 LL hg).χΓ_res g`. Rewrite `hχ` using `[hgg]`.
+
+Establish `hint : IsIntegral ℤ_[l] (algebraMap ℚ_[l] ↥LL.1 ((P.PD K).χ g : ℚ_[l]))`. Rewrite using `[← hχ]`. Conclude with `(((H.W K 1 LL hg).χΓ (H.W K 1 LL hg).gam : (↥(OL LL))ˣ) : ↥(OL LL)).2`. Establish `hint' : IsIntegral ℤ_[l] ((P.PD K).χ g : ℚ_[l])` using `(isIntegral_algebraMap_iff (algebraMap ℚ_[l] ↥LL.1).injective).1 hint`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint'`.
+
+Establish `hzLL : algebraMap ℤ_[l] ↥LL.1 z = algebraMap ↥(OL LL) ↥LL.1 (((H.W K 1 LL hg).χΓ (H.W K 1 LL hg).gam : (↥(OL LL))ˣ) : ↥(OL LL))`. Rewrite using `[hχ, ← hz, ← IsScalarTower.algebraMap_apply]`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises. Conclude with `hzLL.symm`.
+
+Establish `hgen` using `(H.W K 1 LL hg).gam_gen`. Rewrite `hgen` using `[hs, ← hzLL]`. Establish `hz1 : z - 1 ≠ 0`. Introduce `h0`. Establish `: algebraMap ℤ_[l] ↥LL.1 z - 1 = 0`.
+
+Rewrite using `[← map_one (algebraMap ℤ_[l] ↥LL.1), ← map_sub, h0, map_zero]`. Rewrite `hgen` using `[this, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_natCast 1 hgen`. Establish `hval : (z - 1).valuation = 1`. Establish `h1` using `Formalism.MainNotions.CrystallineLiftingInputs.v_padicInt P LL (z - 1) hz1`.
+
+Rewrite `h1` using `[map_sub, map_one, hgen]`. Conclude with `le_antisymm (Formalism.MainNotions.RamifiedCoefficientChains.natCast_le_withTop h1.ge) (Formalism.MainNotions.RamifiedCoefficientChains.natCast_le_withTop h1.le)`. Establish `e` using `PadicInt.unitCoeff_spec hz1`. Rewrite `e` using `[hval, pow_one]`. Rewrite using `[hp]`.
+
+Conclude with `⟨_, by rw [e, mul_comm]⟩`.
+-/
 theorem levg_chi {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) (K LL : FinExt l)
     (hg : Good K 1 LL) :
     ∃ z : ℤ_[l], (((H.W K 1 LL hg).χΓ (H.W K 1 LL hg).gam : (↥(OL LL))ˣ) : ↥(OL LL)) =
@@ -560,11 +769,17 @@ theorem levg_chi {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) (K LL
     rw [hp]
     exact ⟨_, by rw [e, mul_comm]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a b h => by have := congrArg (algebraMap ↥(OL LL) ↥LL.1) h simpa using this⟩`.
+-/
 theorem levg_charZero {l : ℕ} [Fact l.Prime] (LL : FinExt l) : CharZero ↥(OL LL) :=
   ⟨fun a b h => by
     have := congrArg (algebraMap ↥(OL LL) ↥LL.1) h
     simpa using this⟩
 
+/- English proof (translation)
+Introduce `l _ K LL hG hA _`. Establish `hR` using `ring_condition_uniformizer_polynomial D HW F h9 l K LL hA`. Take `⟨z, hz, hz1⟩` from `levg_chi (D.loc l) (HW l) K LL hG`. Use `haveI := levg_charZero LL`. Conclude with `Formalism.MainNotions.UnusedSlot80.LG.levGrad_of _ hR z hz hz1`.
+-/
 theorem killLevFacts_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) : KillLevFacts D HW := by
   intro l _ K LL hG hA _
@@ -573,6 +788,9 @@ theorem killLevFacts_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
   haveI := levg_charZero LL
   exact Formalism.MainNotions.UnusedSlot80.LG.levGrad_of _ hR z hz hz1
 
+/- English proof (translation)
+Introduce `hAdm` and use `annihilator_levels_of_grading D HW F Cm (killLevFacts_of D HW F hAdm.2) hAdm`.
+-/
 theorem annihilator_levels_unramified_statement (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) : KillerLevelsTheorem D HW F Cm := fun hAdm =>
   annihilator_levels_of_grading D HW F Cm (killLevFacts_of D HW F hAdm.2) hAdm

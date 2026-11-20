@@ -10,6 +10,9 @@ namespace GlobalTheory.Published
 def consecBlocks (l d : ℕ) : (Σ _ : Fin l, Fin d) ≃ Fin (l * d) :=
   (Equiv.sigmaEquivProd (Fin l) (Fin d)).trans finProdFinEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem consecBlocks_val (l d : ℕ) (a : Fin l) (j : Fin d) : (consecBlocks l d ⟨a, j⟩ : ℕ) = j + d * a := rfl
 
 def SegmentRepresentation : Prop :=

@@ -8,6 +8,9 @@ namespace GlobalTheory.TypeSum.FamClosed
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `h1` using `((R s).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h`. Establish `h2` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h1)`. Use `HasDerivAt.congr_of_eventuallyEq h2 (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show _ = R s (R (t - s) a)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hR, add_sub_cancel]`.
+-/
 theorem hasDerivAt_flow {R : ℝ → (E →L[ℂ] E)} (hR : ∀ s t, R (s + t) = (R s).comp (R t)) {a b : E}
     (h : HasDerivAt (fun t : ℝ => R t a) b 0) (s : ℝ) : HasDerivAt (fun t : ℝ => R t a) (R s b) s := by
   have h1 := ((R s).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h
@@ -16,6 +19,9 @@ theorem hasDerivAt_flow {R : ℝ → (E →L[ℂ] E)} (hR : ∀ s t, R (s + t) =
   show _ = R s (R (t - s) a)
   rw [← ContinuousLinearMap.comp_apply, ← hR, add_sub_cancel]
 
+/- English proof (translation)
+Use `(convex_closedBall (0 : ℝ) |t|).norm_image_sub_le_of_norm_hasDerivWithin_le (f := f) (f' := f') (C := C) (fun s _ => (hf s).hasDerivWithinAt) (fun s hs => hC s (by simpa using hs)) (Metric.mem_closedBall_self (abs_nonneg t)) (y := t) (by simp)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem norm_sub_le {f f' : ℝ → E} (hf : ∀ s, HasDerivAt f (f' s) s) {t C : ℝ}
     (hC : ∀ s, |s| ≤ |t| → ‖f' s‖ ≤ C) : ‖f t - f 0‖ ≤ C * |t| := by
   have := (convex_closedBall (0 : ℝ) |t|).norm_image_sub_le_of_norm_hasDerivWithin_le (f := f) (f' := f') (C := C)
@@ -23,6 +29,11 @@ theorem norm_sub_le {f f' : ℝ → E} (hf : ∀ s, HasDerivAt f (f' s) s) {t C 
     (Metric.mem_closedBall_self (abs_nonneg t)) (y := t) (by simp)
   simpa using this
 
+/- English proof (translation)
+Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0 (by simp))`. Establish `h1 : ∀ s, |s| ≤ |t| → ‖R s b - b‖ ≤ M * ‖c‖ * |t|` using `fun s hs => by`. Use `norm_sub_le (hasDerivAt_flow hR hb) (t := s) (C := M * ‖c‖) fun u hu => ((R u).le_opNorm c).trans (mul_le_mul_of_nonneg_right (hM u (hu.trans (hs.trans ht))) (norm_nonneg _))` as an intermediate fact. Simplify using `only [h0, ContinuousLinearMap.one_apply] at this`. Conclude with `this.trans (mul_le_mul_of_nonneg_left hs (by positivity))`.
+
+Establish `h2` using `norm_sub_le (f := fun s : ℝ => R s a - s • b) (f' := fun s => R s b - b) (fun s => by`. Use `(hasDerivAt_flow hR ha s).fun_sub ((hasDerivAt_id' s).smul_const b)` as an intermediate fact. Rewrite using `[one_smul] at this) h1` and apply the resulting hypothesis. Simplify using `only [h0, ContinuousLinearMap.one_apply, zero_smul, sub_zero] at h2`. Rewrite using `[sub_right_comm]` and apply the resulting hypothesis.
+-/
 theorem taylor_bound {R : ℝ → (E →L[ℂ] E)} (h0 : R 0 = 1) (hR : ∀ s t, R (s + t) = (R s).comp (R t)) {M : ℝ}
     (hM : ∀ s, |s| ≤ 1 → ‖R s‖ ≤ M) {a b c : E} (ha : HasDerivAt (fun t : ℝ => R t a) b 0)
     (hb : HasDerivAt (fun t : ℝ => R t b) c 0) {t : ℝ} (ht : |t| ≤ 1) :
@@ -40,6 +51,11 @@ theorem taylor_bound {R : ℝ → (E →L[ℂ] E)} (h0 : R 0 = 1) (hR : ∀ s t,
   simp only [h0, ContinuousLinearMap.one_apply, zero_smul, sub_zero] at h2
   rwa [sub_right_comm]
 
+/- English proof (translation)
+Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Simplify using `only [zero_add]`. Establish `h1 : (fun t : ℝ => f t - f 0 - t • b) =O[𝓝 0] fun t : ℝ => t ^ 2`. Use `Asymptotics.IsBigO.of_bound K ?_` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : ℝ) one_pos] with t ht`.
+
+Use `h t (by simpa using ht)` as an intermediate fact. Rewrite using `[norm_pow, Real.norm_eq_abs, sq, ← mul_assoc]` and apply the resulting hypothesis. Conclude with `h1.trans_isLittleO (Asymptotics.isLittleO_pow_id one_lt_two)`.
+-/
 theorem hasDerivAt_of_bound {f : ℝ → E} {b : E} {K : ℝ}
     (h : ∀ t, |t| ≤ 1 → ‖f t - f 0 - t • b‖ ≤ K * |t| * |t|) : HasDerivAt f b 0 := by
   rw [hasDerivAt_iff_isLittleO_nhds_zero]
@@ -55,6 +71,15 @@ end GlobalTheory.TypeSum.FamClosed
 
 open GlobalTheory.TypeSum.FamClosed in
 
+/- English proof (translation)
+Take `⟨h1, hmul, C, N, hC⟩` from `hρ`. Use `isClosed_of_closure_subset fun v hv => ⟨fun l X => ?_, fun l₁ l₂ a X Y => ?_, fun l₁ l₂ X Y Z hZ => ?_⟩` and prove the remaining obligations. Establish `hX : (X : Mx n) ∈ lieSet ε` using `X.2`. Establish `h0 : ρ (NormedSpace.exp ((0 : ℝ) • (X : Mx n))) = 1` using `by rw [zero_smul, NormedSpace.exp_zero, h1]`. Establish `hR : ∀ s t : ℝ, ρ (NormedSpace.exp ((s + t) • (X : Mx n))) = (ρ (NormedSpace.exp (s • (X : Mx n)))).comp (ρ (NormedSpace.exp (t • (X : Mx n))))` using `fun s t => by`.
+
+Rewrite using `[exp_add_smul, hmul _ (exp_mem_UJ hX s) _ (exp_mem_UJ hX t)]`. Establish `hc : Continuous fun s : ℝ => C * (1 + hs (NormedSpace.exp (s • (X : Mx n)))) ^ N` using `continuous_const.mul ((continuous_const.add (continuous_hs.comp (continuous_exp_smul _))).pow N)`. Take `⟨M, hM⟩` from `(isCompact_closedBall (0 : ℝ) 1).bddAbove_image hc.continuousOn`. Establish `hM' : ∀ s : ℝ, |s| ≤ 1 → ‖ρ (NormedSpace.exp (s • (X : Mx n)))‖ ≤ M` using `fun s hs => (hC _ (exp_mem_UJ hX s)).trans (hM ⟨s, by simpa using hs, rfl⟩)`. Use `hasDerivAt_of_bound (K := M * ‖v (X :: X :: l)‖) fun t ht => ?_` and prove the remaining obligations.
+
+Simplify using `only [h0, ContinuousLinearMap.one_apply]`. Establish `hcl : IsClosed {w : List (lie (Jm ε)) → E | ‖ρ (NormedSpace.exp (t • (X : Mx n))) (w l) - w l - t • w (X :: l)‖ ≤ M * ‖w (X :: X :: l)‖ * |t| * |t|}` using `isClosed_le (by fun_prop) (by fun_prop)`. Conclude with `closure_minimal (fun w hw => taylor_bound (R := fun s : ℝ => ρ (NormedSpace.exp (s • (X : Mx n)))) h0 hR hM' (hw.1 l X) (hw.1 (X :: l) X) ht) hcl hv`. Establish `hcl : IsClosed {w : List (lie (Jm ε)) → E | w (l₁ ++ (a • X + Y) :: l₂) = (a : ℂ) • w (l₁ ++ X :: l₂) + w (l₁ ++ Y :: l₂)}` using `isClosed_eq (by fun_prop) (by fun_prop)`. Conclude with `closure_minimal (fun w hw => hw.2.1 l₁ l₂ a X Y) hcl hv`.
+
+Establish `hcl : IsClosed {w : List (lie (Jm ε)) → E | w (l₁ ++ X :: Y :: l₂) - w (l₁ ++ Y :: X :: l₂) = w (l₁ ++ Z :: l₂)}` using `isClosed_eq (by fun_prop) (by fun_prop)`. Conclude with `closure_minimal (fun w hw => hw.2.2 l₁ l₂ X Y Z hZ) hcl hv`.
+-/
 theorem GlobalTheory.TypeSum.isClosed_fam (n : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
     (ρ : Mx n → (E →L[ℂ] E)) (hρ : ModRep ε ρ) : IsClosed (Fam ε ρ : Set (List (lie (Jm ε)) → E)) := by
   obtain ⟨h1, hmul, C, N, hC⟩ := hρ

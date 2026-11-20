@@ -24,6 +24,9 @@ section RankOne
 variable {O K l e a}
 
 omit [NeZero a] [TameDescentExponentData K l e a] in
+/- English proof (translation)
+Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hi`. Rewrite using `[Ezpow_natCast]`. Conclude with `pow_mem (E_mem l e _) n`.
+-/
 theorem Ezpow_mem_A {i : ℤ} (hi : 0 ≤ i) : Ezpow K l e i ∈ A O K := by
   obtain ⟨n, rfl⟩ := Int.eq_ofNat_of_zero_le hi
   rw [Ezpow_natCast]
@@ -47,6 +50,9 @@ def rankOneDesc (j : ℤ) (χ : TameGal K l e a →* O) :
         mx_rankOne_eq, frob_C]
       rw [map_Ezpow l e _ (congrFun (ringAct_E g) τ), mul_comm]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Descent.matAct g _ v τ () = _`. Simplify using `[Descent.matAct_apply, Matrix.mulVec, dotProduct]`.
+-/
 theorem rankOneDesc_act (j : ℤ) (χ : TameGal K l e a →* O) (g : TameGal K l e a)
     (v : Vec K a Unit) (τ : ZMod a) : (rankOneDesc j χ).act g v τ () =
       C (algebraMap O K (χ g)) * rescale (g.root τ) (v (τ - g.shift) ()) := by
@@ -56,6 +62,11 @@ theorem rankOneDesc_act (j : ℤ) (χ : TameGal K l e a →* O) (g : TameGal K l
 variable [CompleteSpace K]
 
 omit [NeZero a] [TameDescentExponentData K l e a] in
+/- English proof (translation)
+Take `⟨γ, hγ, h⟩` from `exists_nabla_rankOne (O := O) (K := K) (l := l) (e := e) (a := a) j`. Use `⟨X * γ, mul_mem HasU.X_mem hγ, smul_right_injective _ (r := Ezpow K l e j) (Units.ne_zero _) ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun v => E K l e • (X : K⟦X⟧) • v) h`. Simplify using `only [← PhiMod.conn_apply, PhiMod.conn_smul, smul_add, smul_smul, E_mul_N_Ezpow] at h1`. Simplify using `only [PhiMod.EN_apply, smul_smul]`.
+
+Rewrite using `[mul_comm, eq_sub_of_add_eq' h1, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_EN_bas_rankOne (j : ℤ) : ∃ γ ∈ S O K e,
     (rankOne O K l e fun _ : ZMod a => j).EN (bas ()) =
       (E K l e * γ - (j : K⟦X⟧) * N K (E K l e)) • bas () := by
@@ -125,16 +136,28 @@ structure IsOfType (Sig : Set (ZMod e)) (U : Set ℤ) : Prop where
 
 omit [NeZero e] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, D.nabla_mem m hm, rfl⟩`.
+-/
 theorem exists_conn_eq {m : Vec K a ι} (hm : m ∈ D.MM) : ∃ w ∈ D.MM, D.conn m = (X : K⟦X⟧) • w :=
   ⟨_, D.nabla_mem m hm, rfl⟩
 
 omit [NeZero e] in
+/- English proof (translation)
+The claim follows from `D.MM.smul_mem (uIn (S O K e)) (D.nabla_mem m hm)`.
+-/
 theorem conn_mem_MM {m : Vec K a ι} (hm : m ∈ D.MM) : D.conn m ∈ D.MM :=
   D.MM.smul_mem (uIn (S O K e)) (D.nabla_mem m hm)
 
+/- English proof (translation)
+The claim follows from `D.EN_mem_Man_of_basis (fun i => D.EN_mem _ (D.bas_mem_M i)) hm`.
+-/
 theorem EN_mem_Man {m : Vec K a ι} (hm : m ∈ D.Man) : D.EN m ∈ D.Man :=
   D.EN_mem_Man_of_basis (fun i => D.EN_mem _ (D.bas_mem_M i)) hm
 
+/- English proof (translation)
+Rewrite using `[mem_divE, D.E_pow_smul_EN]`. Conclude with `sub_mem (D.EN_mem_Man hy) (D.smul_mem_Man (mul_mem (natCast_mem _ n) (N_mem (derivative_mem_R l (E_mem l e _)))) hy)`.
+-/
 theorem EN_mem_divE {n : ℕ} {y : Vec K a ι} (hy : y ∈ divE l e n D.Man) :
     D.EN y ∈ divE l e n D.Man := by
   rw [mem_divE, D.E_pow_smul_EN]
@@ -142,31 +165,52 @@ theorem EN_mem_divE {n : ℕ} {y : Vec K a ι} (hy : y ∈ divE l e n D.Man) :
     (mul_mem (natCast_mem _ n) (N_mem (derivative_mem_R l (E_mem l e _)))) hy)
 
 omit [NeZero e] in
+/- English proof (translation)
+The claim follows from `D.mem_Mext_invE_of_mem_divE (n := 1) (by rw [pow_one]; exact D.EN_mem _ (D.bas_mem_M i))`.
+-/
 theorem conn_bas_mem (i : ι) : D.conn (bas i) ∈ D.Mext (RpiE O K l e) :=
   D.mem_Mext_invE_of_mem_divE (n := 1) (by rw [pow_one]; exact D.EN_mem _ (D.bas_mem_M i))
 
+/- English proof (translation)
+The claim follows from `D.toPhiMod.hatTot_conn D.conn_bas_mem hv`.
+-/
 theorem hatTot_conn [CompleteSpace K] {v : Vec K a ι} (hv : v ∈ D.Mext (RpiE O K l e)) :
     D.hatTot (D.conn v) = D.connHat (D.hatTot v) := D.toPhiMod.hatTot_conn D.conn_bas_mem hv
 
 omit [NeZero e] in
 
+/- English proof (translation)
+The claim follows from `D.smul_mem_Mext_of_basis (fun i => D.upper _ (D.phi_mem_L (D.bas_mem_M i))) hB hm`.
+-/
 theorem smul_mem_Mext {B : Subalgebra O K⟦X⟧} (hB : A O K ≤ B) {m : Vec K a ι} (hm : m ∈ D.ext B) :
     E K l e ^ η • m ∈ D.Mext B :=
   D.smul_mem_Mext_of_basis (fun i => D.upper _ (D.phi_mem_L (D.bas_mem_M i))) hB hm
 
 def Lc : Module.End K D.Pol := D.Man.mapQ D.Man D.EN fun _ => D.EN_mem_Man
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Lc_cls (v : Vec K a ι) : D.Lc (D.cls v) = D.cls (D.EN v) := rfl
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hw`. Conclude with `⟨_, D.EN_mem_divE hy, rfl⟩`.
+-/
 theorem Lc_mem_PolEta {n : ℕ} {w : D.Pol} (hw : w ∈ D.PolEta n) : D.Lc w ∈ D.PolEta n := by
   obtain ⟨y, hy, rfl⟩ := hw
   exact ⟨_, D.EN_mem_divE hy, rfl⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `D.Man.mkQ_surjective w`. Rewrite using `[Lc_cls, Descent.actPol_cls, Descent.actPol_cls, Lc_cls, Descent.act_EN]`.
+-/
 theorem actPol_Lc (g : TameGal K l e a) (w : D.Pol) :
     D.desc.actPol g (D.Lc w) = D.Lc (D.desc.actPol g w) := by
   obtain ⟨y, rfl⟩ := D.Man.mkQ_surjective w
   rw [Lc_cls, Descent.actPol_cls, Descent.actPol_cls, Lc_cls, Descent.act_EN]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.Lc_mem_PolEta hw.1, fun g => by rw [actPol_Lc, hw.2 g]⟩`.
+-/
 theorem Lc_mem_Zl {w : D.Pol} (hw : w ∈ D.Zl) : D.Lc w ∈ D.Zl :=
   ⟨D.Lc_mem_PolEta hw.1, fun g => by rw [actPol_Lc, hw.2 g]⟩
 
@@ -174,15 +218,27 @@ def LcEta : Module.End K (D.PolEta η) := D.Lc.restrict fun _ => D.Lc_mem_PolEta
 
 def LcZ : Module.End K D.Zl := D.Lc.restrict fun _ => D.Lc_mem_Zl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_LcZ (w : D.Zl) : (D.LcZ w : D.Pol) = D.Lc w := rfl
 
+/- English proof (translation)
+Rewrite using `[PhiMod.Mon_apply, map_sub, Lc_cls]`.
+-/
 theorem Mon_eq (y : Vec K a ι) : D.Mon y = D.Lc (D.cls y) - D.cls (E K l e • D.zeta y) := by
   rw [PhiMod.Mon_apply, map_sub, Lc_cls]
 
+/- English proof (translation)
+Rewrite using `[map_add, PhiMod.Mon_phi_sub, D.cls_eq_zero_iff.2 (D.EN_mem_Man hm), neg_zero, add_zero]`.
+-/
 theorem Mon_add_phi_sub (y : Vec K a ι) {m : Vec K a ι} (hm : m ∈ D.Man) :
     D.Mon (y + (D.phi m - m)) = D.Mon y := by
   rw [map_add, PhiMod.Mon_phi_sub, D.cls_eq_zero_iff.2 (D.EN_mem_Man hm), neg_zero, add_zero]
 
+/- English proof (translation)
+Use `⟨⟨_, sub_mem (D.EN_mem_divE ?_) ?_, rfl⟩, D.desc.Mon_mem_invariants hy.2⟩` and prove the remaining obligations. Conclude with `D.Mext_mono (invL_A_le_Rpi l e) hy.1`. Rewrite using `[mem_divE, Module.End.mul_apply, mulV_apply, smul_comm]`. Conclude with `D.smul_mem_Man (E_mem l e _) (D.smul_mem_Mext (A_le_Rpi l e) hz)`.
+-/
 theorem Mon_mem_Zl_of_zeta_mem {y : Vec K a ι} (hy : y ∈ D.Yl)
     (hz : D.zeta y ∈ D.ext (Rpi O K l e)) : D.Mon y ∈ D.Zl := by
   refine ⟨⟨_, sub_mem (D.EN_mem_divE ?_) ?_, rfl⟩, D.desc.Mon_mem_invariants hy.2⟩
@@ -190,6 +246,9 @@ theorem Mon_mem_Zl_of_zeta_mem {y : Vec K a ι} (hy : y ∈ D.Yl)
   · rw [mem_divE, Module.End.mul_apply, mulV_apply, smul_comm]
     exact D.smul_mem_Man (E_mem l e _) (D.smul_mem_Mext (A_le_Rpi l e) hz)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `D.Man.mkQ_surjective w`. Rewrite using `[Lc_cls, Hom.onPol_cls, Hom.onPol_cls, Lc_cls, Hom.app_EN]`.
+-/
 theorem _root_.GlobalTheory.BK.BKHom.onPol_Lc {D : BKDat O K l e a ι η H} {D' : BKDat O K l e a κ η' H'}
     (F : BKHom D D') (w : D.Pol) : F.onPol (D.Lc w) = D'.Lc (F.onPol w) := by
   obtain ⟨y, rfl⟩ := D.Man.mkQ_surjective w
@@ -198,6 +257,9 @@ theorem _root_.GlobalTheory.BK.BKHom.onPol_Lc {D : BKDat O K l e a ι η H} {D' 
 variable {D} {y : Vec K a ι}
 
 omit [NeZero e] in
+/- English proof (translation)
+The claim follows from `D.mem_Mext_invE_of_mem_divE hy.1`.
+-/
 theorem mem_invE_of_mem_Y (hy : y ∈ D.Y) : y ∈ D.Mext (invE l e (A O K)) :=
   D.mem_Mext_invE_of_mem_divE hy.1
 
@@ -207,11 +269,17 @@ abbrev plusDesc (hy : y ∈ D.Y) : Descent (plusMod hy) := D.desc.plus (mem_invE
 
 omit [NeZero e] in
 
+/- English proof (translation)
+The claim follows from `D.plus_upper _ D.upper hy.1`.
+-/
 theorem plusMod_upper (hy : y ∈ D.Y) : ∀ v ∈ (plusMod hy).L, E K l e ^ η • v ∈ (plusMod hy).M :=
   D.plus_upper _ D.upper hy.1
 
 omit [NeZero e] in
 
+/- English proof (translation)
+The claim follows from `D.plus_lower _ (fun v hv => by rw [pow_add, mul_smul] exact D.lower _ (D.M.smul_mem (EIn l e (A O K) ^ η) hv)) (by rw [pow_add, mul_smul] exact D.lower _ hy.1)`.
+-/
 theorem plusMod_lower (hy : y ∈ D.Y) :
     ∀ v ∈ (plusMod hy).M, E K l e ^ (H + η) • v ∈ (plusMod hy).L :=
   D.plus_lower _ (fun v hv => by
@@ -255,16 +323,25 @@ def avg : Module.End K (Vec K a ι) :=
   ((Nat.card (TameGal K l e a) : K)⁻¹) • ∑ g, Δ.act g
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Rewrite using `[norm_natCast_eq l, Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 TameGal.not_dvd_card`.
+-/
 theorem norm_card : ‖(Nat.card (TameGal K l e a) : K)‖ = 1 := by
   rw [norm_natCast_eq l, Padic.norm_natCast_eq_one_iff]
   exact (Nat.Prime.coprime_iff_not_dvd Fact.out).2 TameGal.not_dvd_card
 
+/- English proof (translation)
+Introduce `g` and use `by let _ := Fintype.ofFinite (TameGal K l e a) simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, ← Module.End.mul_apply, ← map_mul] exact congrArg _ (Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun _ => rfl)`.
+-/
 theorem avg_mem_inv (v : Vec K a ι) : Δ.avg v ∈ Δ.inv := fun g => by
   let _ := Fintype.ofFinite (TameGal K l e a)
   simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum,
     ← Module.End.mul_apply, ← map_mul]
   exact congrArg _ (Fintype.sum_equiv (Equiv.mulLeft g) _ _ fun _ => rfl)
 
+/- English proof (translation)
+Set `_` to `Fintype.ofFinite (TameGal K l e a)`. Establish `h0 : (Nat.card (TameGal K l e a) : K) ≠ 0` using `norm_ne_zero_iff.1 (by rw [norm_card]; simp)`. Simplify using `only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, h, Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul K, inv_smul_smul₀ h0]`.
+-/
 theorem map_avg {V : Type} [AddCommGroup V] [Module K V] (f : Vec K a ι →ₗ[K] V) {v : Vec K a ι}
     (h : ∀ g, f (Δ.act g v) = f v) : f (Δ.avg v) = f v := by
   let _ := Fintype.ofFinite (TameGal K l e a)
@@ -272,8 +349,14 @@ theorem map_avg {V : Type} [AddCommGroup V] [Module K V] (f : Vec K a ι →ₗ[
   simp only [avg, LinearMap.smul_apply, LinearMap.sum_apply, map_smul, map_sum, h, Finset.sum_const,
     Finset.card_univ, ← Nat.card_eq_fintype_card, ← Nat.cast_smul_eq_nsmul K, inv_smul_smul₀ h0]
 
+/- English proof (translation)
+The claim follows from `Δ.map_avg LinearMap.id hv`.
+-/
 theorem avg_of_mem_inv {v : Vec K a ι} (hv : v ∈ Δ.inv) : Δ.avg v = v := Δ.map_avg LinearMap.id hv
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(IsUnitBall.mem_range_iff (O := O) ((Nat.card (TameGal K l e a) : K)⁻¹)).2 (by rw [norm_inv, norm_card, inv_one])`. Rewrite using `[avg, LinearMap.smul_apply, LinearMap.sum_apply, ← hc, algebraMap_smul]`. Conclude with `W.smul_mem c (W.sum_mem fun g _ => h g)`.
+-/
 theorem avg_mem (W : Submodule O (Vec K a ι)) {v : Vec K a ι} (h : ∀ g, Δ.act g v ∈ W) :
     Δ.avg v ∈ W := by
   obtain ⟨c, hc⟩ := (IsUnitBall.mem_range_iff (O := O) ((Nat.card (TameGal K l e a) : K)⁻¹)).2
@@ -281,6 +364,9 @@ theorem avg_mem (W : Submodule O (Vec K a ι)) {v : Vec K a ι} (h : ∀ g, Δ.a
   rw [avg, LinearMap.smul_apply, LinearMap.sum_apply, ← hc, algebraMap_smul]
   exact W.smul_mem c (W.sum_mem fun g _ => h g)
 
+/- English proof (translation)
+Use `le_antisymm ?_ fun w hw => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Δ.cls_mem_Z hy`. Take `⟨⟨y, hy, rfl⟩, h⟩` from `Δ.mem_Z.1 hw`. Conclude with `⟨Δ.avg y, ⟨Δ.avg_mem _ fun g => Δ.act_mem_EM g hy, Δ.avg_mem_inv y⟩, Δ.map_avg P.cls h⟩`.
+-/
 theorem map_Y (η : ℕ) : (Δ.Y η).map (P.cls.restrictScalars O) = Δ.Z η := by
   refine le_antisymm ?_ fun w hw => ?_
   · rintro _ ⟨y, hy, rfl⟩
@@ -294,6 +380,11 @@ section Examples
 
 omit [NeZero a] [TameDescentExponentData K l e a]
 
+/- English proof (translation)
+Use `⟨fun h => not_lt.1 fun hi => ?_, fun h => le_away (A O K) _ (Ezpow_mem_A h)⟩` and prove the remaining obligations. Establish `h0 : Ezpow K l e (-1 - i) ∈ invL l (A O K)` using `le_away _ _ (Ezpow_mem_A (by omega))`. Establish `h1` using `mul_mem h0 h`. Rewrite `h1` using `[← Ezpow_add, sub_add_cancel]`. Establish `h2 : E K l e * Ezpow K l e (-1) = 1` using `by simpa using E_pow_mul_Ezpow_neg (K := K) l e 1`.
+
+Establish `h3 : Ezpow K l e (-1) = 0` using `eq_zero_of_E_mul l e (invL_A_le_Rpi l e h1) fun n => by`. Rewrite using `[h2, coeff_one, if_neg (by have := NeZero.pos e; omega)]`. Conclude with `Units.ne_zero _ h3`.
+-/
 theorem Ezpow_mem_invL_A_iff {i : ℤ} : Ezpow K l e i ∈ invL l (A O K) ↔ 0 ≤ i := by
   refine ⟨fun h => not_lt.1 fun hi => ?_, fun h => le_away (A O K) _ (Ezpow_mem_A h)⟩
   have h0 : Ezpow K l e (-1 - i) ∈ invL l (A O K) := le_away _ _ (Ezpow_mem_A (by omega))
@@ -304,6 +395,9 @@ theorem Ezpow_mem_invL_A_iff {i : ℤ} : Ezpow K l e i ∈ invL l (A O K) ↔ 0 
     rw [h2, coeff_one, if_neg (by have := NeZero.pos e; omega)]
   exact Units.ne_zero _ h3
 
+/- English proof (translation)
+Use `(P.Mext (invL l (A O K))).smul_mem ⟨_, (Ezpow_mem_invL_A_iff (e := e)).2 (sub_nonneg.2 h)⟩ hv` as an intermediate fact. Rewrite `this` using `[Subalgebra.smul_def, smul_smul, ← Ezpow_add, show k - i + -k = -i by ring]`. Then use the resulting hypothesis.
+-/
 theorem mem_shiftE_of_le {P : PhiMod O K l e a ι} {i k : ℤ} (h : i ≤ k) {v : Vec K a ι}
     (hv : v ∈ shiftE l e k (P.Mext (invL l (A O K)))) :
     v ∈ shiftE l e i (P.Mext (invL l (A O K))) := by
@@ -311,6 +405,13 @@ theorem mem_shiftE_of_le {P : PhiMod O K l e a ι} {i k : ℤ} (h : i ≤ k) {v 
     ⟨_, (Ezpow_mem_invL_A_iff (e := e)).2 (sub_nonneg.2 h)⟩ hv
   rwa [Subalgebra.smul_def, smul_smul, ← Ezpow_add, show k - i + -k = -i by ring] at this
 
+/- English proof (translation)
+Use `set P := rankOne O K l e fun _ : ZMod a => j`. Establish `h0 : P.ext (invL l (A O K)) = shiftE l e j (P.Mext (invL l (A O K)))`. Use extensionality with `v`. Conclude with `(mem_ext_rankOne j).trans ⟨fun h => mem_tot.2 fun τ _ => h τ, fun h τ => mem_tot.1 h τ ()⟩`. Establish `h1 : shiftE l e 1 (P.ext (invL l (A O K))) = shiftE l e (j + 1) (P.Mext (invL l (A O K)))`.
+
+Use extensionality with `v`. Rewrite using `[h0, mem_shiftE, mem_shiftE, mem_shiftE, smul_smul, ← Ezpow_add, neg_add]`. Rewrite using `[PhiMod.filL, h1, h0]`. Use `split_ifs with h`. Rewrite using `[inf_of_le_left fun _ => mem_shiftE_of_le h, sup_of_le_left fun _ => mem_shiftE_of_le (by omega)]`.
+
+Conclude with `sup_of_le_right (inf_le_right.trans fun _ => mem_shiftE_of_le (by omega))`.
+-/
 theorem filL_rankOne (j i : ℤ) : (rankOne O K l e fun _ : ZMod a => j).filL i =
     shiftE l e (if i ≤ j then j else j + 1)
       ((rankOne O K l e fun _ : ZMod a => j).Mext (invL l (A O K))) := by
@@ -329,6 +430,13 @@ theorem filL_rankOne (j i : ℤ) : (rankOne O K l e fun _ : ZMod a => j).filL i 
       sup_of_le_left fun _ => mem_shiftE_of_le (by omega)]
   · exact sup_of_le_right (inf_le_right.trans fun _ => mem_shiftE_of_le (by omega))
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [PhiMod.jumps, Set.mem_ofPred_eq, filL_rankOne, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hi`.
+
+Conclude with `h (by simp only [show i + 1 ≤ j ↔ i ≤ j by omega])`. Introduce and unpack `rfl h`. Rewrite `h` using `[if_neg (by omega), if_pos le_rfl]`. Establish `h1 : Ezpow K l e i • (bas () : Vec K a Unit) ∈ shiftE l e i ((rankOne O K l e fun _ : ZMod a => i).Mext (invL l (A O K)))`. Rewrite using `[mem_shiftE, smul_smul, Ezpow_neg_mul, one_smul]`.
+
+Conclude with `PhiMod.Mext_mono _ (le_away _ _) ((rankOne O K l e fun _ : ZMod a => i).bas_mem_M ())`. Rewrite `h1` using `[← h, mem_shiftE, smul_smul, ← Ezpow_add]`. Establish `h2` using `mem_tot.1 h1 0 ()`. Simplify using `only [bas, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, Ezpow_mem_invL_A_iff] at h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem jumps_rankOne (j : ℤ) : (rankOne O K l e fun _ : ZMod a => j).jumps = {j} := by
   ext i
   simp only [PhiMod.jumps, Set.mem_ofPred_eq, filL_rankOne, Set.mem_singleton_iff]
@@ -355,6 +463,13 @@ section Examples
 
 variable [CompleteSpace K] {j : ℤ} (h₁ : -(η : ℤ) ≤ j) (h₂ : j ≤ H)
 
+/- English proof (translation)
+Take `⟨γ, hγ, h⟩` from `exists_EN_bas_rankOne (O := O) (K := K) (l := l) (e := e) (a := a) j`. Establish `h2 : E K l e * Ezpow K l e (-1) = 1` using `by simpa using E_pow_mul_Ezpow_neg (K := K) l e 1`. Establish `h3 : (rankOneDat O K l e a η H j h₁ h₂ χ).EN (Ezpow K l e (-1) • bas ()) = (((j + 1) * e * l : ℤ) : K) • Ezpow K l e (-1) • (bas () : Vec K a Unit) + (γ - ((j + 1) * e : ℤ)) • bas ()`. Rewrite using `[PhiMod.EN_apply, PhiMod.conn_smul, smul_add, smul_comm (E K l e) (Ezpow K l e (-1)), ← PhiMod.EN_apply]`. Use `erw [h]`.
+
+Rewrite using `[Int.cast_smul_eq_zsmul, ← Int.cast_smul_eq_zsmul K⟦X⟧]`. Simplify using `only [smul_smul, ← add_smul]`. Use `congr 1`. Rewrite using `[E_mul_N_Ezpow, N_E]`. Rewrite `h2`, the goal using `[E]`.
+
+Use `push_cast`. Take the linear combination `(γ - (j + 1) * e) * h2`. Rewrite using `[BKDat.Lc_cls, h3, map_add, map_smul, add_eq_left, PhiMod.cls_eq_zero_iff]`. Conclude with `PhiMod.smul_mem_Man _ (sub_mem (S_le_R l e hγ) (intCast_mem _ _)) (PhiMod.M_le_Man _ (PhiMod.bas_mem_M _ _))`.
+-/
 theorem Lc_rankOneDat (χ : TameGal K l e a →* O) :
     (rankOneDat O K l e a η H j h₁ h₂ χ).Lc
         ((rankOneDat O K l e a η H j h₁ h₂ χ).cls (Ezpow K l e (-1) • bas ())) =
@@ -379,6 +494,13 @@ theorem Lc_rankOneDat (χ : TameGal K l e a →* O) :
   exact PhiMod.smul_mem_Man _ (sub_mem (S_le_R l e hγ) (intCast_mem _ _))
     (PhiMod.M_le_Man _ (PhiMod.bas_mem_M _ _))
 
+/- English proof (translation)
+Use `⟨Descent.cls_mem_Z _ ⟨mem_tot.2 fun τ i => ?_, fun g => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `Ezpow_mem_A (O := O) (K := K) (l := l) (e := e) (i := η + -1) (by omega)` as an intermediate fact. Rewrite `this` using `[Ezpow_add, Ezpow_natCast]`. Simplify `this` using `[bas]`. Use extensionality with `τ i : 2`.
+
+Use `(rankOneDesc_act j 1 g _ τ).trans ?_` and prove the remaining obligations. Simplify `map_Ezpow l e _ (congrFun (ringAct_E g) τ) (-1)` using `[bas]`. Establish `h1` using `mem_tot.1 ((PhiMod.cls_eq_zero_iff _).1 h) 0 ()`. Establish `h2 : E K l e * Ezpow K l e (-1) = 1` using `by simpa using E_pow_mul_Ezpow_neg (K := K) l e 1`. Establish `h3` using `eq_zero_of_E_mul (O := O) (g := Ezpow K l e (-1)) l e (by simpa [bas] using h1) fun n => by rw [h2, coeff_one, if_neg (by have := NeZero.pos e; omega)]`.
+
+Conclude with `Units.ne_zero _ h3`.
+-/
 theorem cls_mem_Z_rankOneDat (hη : 1 ≤ η) :
     (rankOneDat O K l e a η H j h₁ h₂ 1).cls (Ezpow K l e (-1) • bas ()) ∈
         (rankOneDat O K l e a η H j h₁ h₂ 1).Z ∧
@@ -400,12 +522,18 @@ def splitDat (χ : TameGal K l e a →* O) : BKDat O K l e a (Unit ⊕ Unit) η 
   BKDat.plusDat (D := rankOneDat O K l e a η H j h₁ h₂ χ) (y := 0) (zero_mem _) (map_zero _)
     ⟨0, zero_mem _, by simp⟩ (by simp)
 
+/- English proof (translation)
+The claim follows from `Descent.plusInl _ _ (zero_mem _)`.
+-/
 example (χ : TameGal K l e a →* O) :
     BKHom (rankOneDat O K l e a η H j h₁ h₂ χ) (splitDat h₁ h₂ χ) :=
   Descent.plusInl _ _ (zero_mem _)
 
 end Examples
 
+/- English proof (translation)
+The claim follows from `rankOneDat _ _ _ _ _ 1 2 (-1) (by simp) (by simp) 1`.
+-/
 example : BKDat ℤ_[3] ℚ_[3] 3 2 1 Unit 1 2 := rankOneDat _ _ _ _ _ 1 2 (-1) (by simp) (by simp) 1
 
 def Descent.plusProj {P : PhiMod O K l e a ι} (Δ : Descent P) {y : Vec K a ι}
@@ -418,6 +546,13 @@ def Descent.plusProj {P : PhiMod O K l e a ι} (Δ : Descent P) {y : Vec K a ι}
     refine Eq.trans ?_ (rankOneDesc_act 0 1 g _ τ).symm
     simp [ringAct_apply]
 
+/- English proof (translation)
+Introduce and unpack `τ c ⟨d, hd, h⟩`. Take `⟨ζ, hζ⟩` from `TameDescentExponentData.prim (K := K) (l := l) (e := e) (a := a)`. Establish `h1` using `congrFun (h (powL l τ (rootsOfUnity.mkOfPowEq ζ hζ.pow_eq_one))) ()`. Establish `h2` using `(congrArg constantCoeff (rankOneDesc_act j 1 _ _ τ)).symm.trans h1`. Establish `h3 : (TameGal.inertia (powL l τ (rootsOfUnity.mkOfPowEq ζ hζ.pow_eq_one)) : TameGal K l e a).root τ = ζ`.
+
+Rewrite using `[TameGal.root, SemidirectProduct.left_inl, ← powL_add, neg_add_cancel, powL_zero]`. Both sides reduce to the same expression. Establish `h4 : d τ () ≠ 0` using `fun h0 => hd (funext fun _ => h0)`. Rewrite `h2` using `[h3, ← coeff_zero_eq_constantCoeff_apply]`. Establish `h5 : ζ ^ c.val = 1` using `by simpa [h4, eq_comm] using h2`.
+
+Conclude with `(ZMod.val_eq_zero c).1 (Nat.eq_zero_of_dvd_of_lt ((hζ.pow_eq_one_iff_dvd _).1 h5) c.val_lt)`. Use `jumps_subset := (jumps_rankOne j).le`.
+-/
 theorem isOfType_rankOneDat [CompleteSpace K] {j : ℤ} (h₁ : -(η : ℤ) ≤ j) (h₂ : j ≤ H) :
     (rankOneDat O K l e a η H j h₁ h₂ 1).IsOfType {0} {j} where
   chars_subset := by
@@ -442,6 +577,9 @@ omit [NeZero a] [TameDescentExponentData K l e a]
 variable [TameDescentExponentData K l e 1]
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+The claim follows from `(IsUnitBall.mem_range_iff (O := O) (g.root 0)).2 (g.norm_root 0).le`.
+-/
 theorem exists_algebraMap_eq_root (g : TameGal K l e 1) : ∃ c : O, algebraMap O K c = g.root 0 :=
   (IsUnitBall.mem_range_iff (O := O) (g.root 0)).2 (g.norm_root 0).le
 
@@ -456,9 +594,15 @@ def omegaOne : TameGal K l e 1 →* O where
       (exists_algebraMap_eq_root _).choose_spec, TameGal.root_mul, Subsingleton.elim (0 - g.shift) 0])
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+The claim follows from `(exists_algebraMap_eq_root g).choose_spec`.
+-/
 theorem algebraMap_omegaOne (g : TameGal K l e 1) : algebraMap O K (omegaOne O g) = g.root 0 :=
   (exists_algebraMap_eq_root g).choose_spec
 
+/- English proof (translation)
+Use `⟨fun _ _ => 1, fun h => one_ne_zero (congrFun h ()), fun ζ => funext fun i => ?_⟩` and prove the remaining obligations. Use `(congrArg constantCoeff (rankOneDesc_act j _ _ _ 0)).trans ?_` and prove the remaining obligations. Simplify using `[algebraMap_omegaOne]`.
+-/
 theorem mem_chars_rankOneDesc (j : ℤ) (c : ZMod e) :
     c ∈ (rankOneDesc (K := K) (l := l) j (omegaOne O ^ c.val)).chars 0 := by
   refine ⟨fun _ _ => 1, fun h => one_ne_zero (congrFun h ()), fun ζ => funext fun i => ?_⟩

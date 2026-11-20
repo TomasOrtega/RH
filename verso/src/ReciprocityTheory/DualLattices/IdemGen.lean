@@ -6,6 +6,23 @@ open Matrix
 
 namespace ReciprocityTheory.PGsh.Up
 
+/- English proof (translation)
+Introduce and unpack `R _ g d P hP ⟨e⟩`. Set `L : (Fin g → R) →ₗ[R] (Fin d → R)` to `e.toLinearMap ∘ₗ (mulVecLin P).rangeRestrict`. Set `T : (Fin d → R) →ₗ[R] (Fin g → R)` to `(LinearMap.range (mulVecLin P)).subtype ∘ₗ e.symm.toLinearMap`. Take `⟨M, hLM⟩ : ∃ M : Matrix (Fin d) (Fin g) R, Matrix.toLin' M = L` from `⟨_, Matrix.toLin'_toMatrix' L⟩`. Take `⟨N, hTN⟩ : ∃ N : Matrix (Fin g) (Fin d) R, Matrix.toLin' N = T` from `⟨_, Matrix.toLin'_toMatrix' T⟩`.
+
+Establish `hPNM : P = N * M`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hLM, hTN]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[L, T, Matrix.toLin'_apply]`.
+
+Establish `hMP : M * P = M`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, hLM]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Matrix.toLin'_apply, L, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Matrix.mulVec_mulVec, hP]`. Establish `hrow : ∀ i, Pᵀ *ᵥ M i = M i`. Introduce `i`.
+
+Use function extensionality and compare the values at `j`. Establish `h` using `congrFun (congrFun hMP i) j`. Simplify using `only [Matrix.mul_apply] at h`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply]`. Rewrite using `[← h]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Use `⟨fun i => ⟨M i, LinearMap.mem_range.mpr ⟨M i, by rw [Matrix.mulVecLin_apply]; exact hrow i⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨w, hw⟩ -`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.mp hw`.
+
+Establish `key : mulVecLin Pᵀ v = ∑ i, (Nᵀ *ᵥ v) i • M i`. Rewrite using `[Matrix.mulVecLin_apply, hPNM, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+
+Use `(Submodule.mem_span_range_iff_exists_fun R).mpr ⟨fun i => (Nᵀ *ᵥ v) i, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `key.symm`.
+-/
 theorem idemGen : IdemGenStatement := by
   rintro R _ g d P hP ⟨e⟩
 

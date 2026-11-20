@@ -10,17 +10,35 @@ section Mat
 
 variable {m : Type} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem star_mulVec_dot (A B : Matrix m m ℂ) (u w : m → ℂ) :
     star (A *ᵥ u) ⬝ᵥ (B *ᵥ w) = star u ⬝ᵥ ((Aᴴ * B) *ᵥ w) := by
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self, Complex.star_def]`.
+-/
 theorem star_dot_self_eq (w : m → ℂ) : star w ⬝ᵥ w = ((∑ i, Complex.normSq (w i) : ℝ) : ℂ) := by
   simp only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.normSq_eq_conj_mul_self, Complex.star_def]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hw`. Conclude with `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.2 hi⟩`.
+-/
 theorem sum_normSq_pos {w : m → ℂ} (hw : w ≠ 0) : 0 < ∑ i, Complex.normSq (w i) := by
   obtain ⟨i, hi⟩ := Function.ne_iff.1 hw
   exact Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.2 hi⟩
 
+/- English proof (translation)
+Simplify using `only`. Establish `hQP' : ∀ X : Matrix m m ℂ, Q * (P * X) = X` using `fun X => by rw [← Matrix.mul_assoc, hQP, Matrix.one_mul]`. Establish `hJ2' : ∀ X : Matrix m m ℂ, J * (J * X) = X` using `fun X => by rw [← Matrix.mul_assoc, hJ2, Matrix.one_mul]`. Establish `hPQh' : ∀ X : Matrix m m ℂ, Pᴴ * (Qᴴ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hQP, Matrix.conjTranspose_one, Matrix.one_mul]`.
+
+Establish `hH' : H = Qᴴ * (J * Q)`. Establish `hq : Qᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsI : star Complex.I = -Complex.I` using `by rw [Complex.star_def, Complex.conj_I]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc, hQP', hJ2', hPQ, Complex.I_mul_I, neg_smul, one_smul]`. Rewrite using `[hH']`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_smul, hJh, hsI, Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc, hQP', hJ2', hPQh']`. Rewrite using `[mul_neg, Complex.I_mul_I, neg_neg, one_smul]`. Rewrite using `[hH']`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_smul, hJh, hsI, Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc, hQP', hJ2', hPQh']`. Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, hQP, Matrix.one_mul, Matrix.trace_smul, smul_eq_mul]`.
+-/
 theorem cplx_str_core (H P Q J : Matrix m m ℂ) (hPQ : P * Q = 1) (hQP : Q * P = 1)
     (hJ2 : J * J = 1) (hJh : Jᴴ = J) (hH : Pᴴ * H * P = J) :
     let K := P * (Complex.I • J) * Q
@@ -50,6 +68,25 @@ theorem cplx_str_core (H P Q J : Matrix m m ℂ) (hPQ : P * Q = 1) (hQP : Q * P 
       smul_smul, Matrix.mul_assoc, hQP', hJ2', hPQh']
   · rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, hQP, Matrix.one_mul, Matrix.trace_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `set P0 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) with hP0`. Use `set Q0 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) with hQ0`. Use `set J0 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hJ0`. Establish `hPh : (P0.map (starRingEnd ℂ))ᵀ = P0ᴴ` using `rfl`. Rewrite `hP` using `[hPh]`.
+
+Establish `hPQ0 : P0 * Q0 = 1` using `P.mul_inv`. Establish `hQP0 : Q0 * P0 = 1` using `P.inv_mul`. Establish `hJJ0 : J0 * J0 = 1`. Simplify using `[hJ0, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`. Use `set Pn := P0.submatrix e e`.
+
+Use `set Qn := Q0.submatrix e e`. Use `set Jn := J0.submatrix e e`. Establish `hPQ : Pn * Qn = 1` using `by rw [Matrix.submatrix_mul_equiv, hPQ0, Matrix.submatrix_one_equiv]`. Establish `hQP : Qn * Pn = 1` using `by rw [Matrix.submatrix_mul_equiv, hQP0, Matrix.submatrix_one_equiv]`. Establish `hJ2 : Jn * Jn = 1` using `by rw [Matrix.submatrix_mul_equiv, hJJ0, Matrix.submatrix_one_equiv]`.
+
+Establish `hJh : Jnᴴ = Jn`. Simplify using `[Jn, hJ0, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]`. Establish `hH : Pnᴴ * H * Pn = Jn`. Establish `hH0 : H = (H.reindex e e).submatrix e e`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.reindex_apply]`. Rewrite using `[hH0, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hP]`. Take `⟨h1, h2, h3, h4⟩` from `cplx_str_core H Pn Qn Jn hPQ hQP hJ2 hJh hH`. Use `⟨Pn * (Complex.I • Jn) * Qn, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u`.
+
+Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.neg_mulVec, Matrix.one_mulVec]`. Introduce `u w`. Rewrite using `[Matrix.mulVec_mulVec, star_mulVec_dot, ← Matrix.mul_assoc, h2]`. Introduce `u hu`. Use `⟨∑ i, Complex.normSq ((Qn *ᵥ u) i), sum_normSq_pos ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Apply `hu` to reduce the goal to its premises. Use `congrArg (Pn *ᵥ ·) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hPQ]`. Rewrite using `[star_mulVec_dot, h3, Matrix.smul_mulVec, dotProduct_smul, ← star_mulVec_dot, star_dot_self_eq, smul_eq_mul, neg_mul]`.
+
+Rewrite using `[h4]`. Use `congr 1`. Establish `ht : Jn.trace = J0.trace`. Simplify using `only [Matrix.trace, Matrix.diag, Jn, Matrix.submatrix_apply]`. Conclude with `Equiv.sum_comp e (fun i => J0 i i)`.
+
+Rewrite using `[ht, hJ0]`. Simplify using `[Matrix.trace, Fintype.sum_sum_type, sub_eq_add_neg]`.
+-/
 theorem exists_cplx_str {n : Type} [Fintype n] [DecidableEq n] (H : Matrix n n ℂ) (p q : ℕ)
     (e : n ≃ Fin p ⊕ Fin q) (P : GL (Fin p ⊕ Fin q) ℂ)
     (hP : ((P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (starRingEnd ℂ))ᵀ * H.reindex e e *
@@ -117,8 +154,14 @@ def blk (N : ι → Matrix n n ℂ) : (ι → n → ℂ) →ₗ[ℝ] (ι → n �
     rw [Matrix.mulVec_smul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_apply (N : ι → Matrix n n ℂ) (u : ι → n → ℂ) (τ : ι) : blk N u τ = N τ *ᵥ u τ := rfl
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `u`. Use function extensionality and compare the values at `τ`. Simplify using `only [LinearMap.comp_apply, blk_apply, Matrix.mulVec_mulVec]`.
+-/
 theorem blk_comp (N N' : ι → Matrix n n ℂ) : blk N ∘ₗ blk N' = blk (fun τ => N τ * N' τ) := by
   apply LinearMap.ext
   intro u
@@ -130,8 +173,14 @@ def blkC (N : ι → Matrix n n ℂ) : (ι → n → ℂ) →ₗ[ℂ] (ι → n 
   map_add' u v := by ext τ : 1; simp [Matrix.mulVec_add]
   map_smul' c u := by ext τ : 1; simp [Matrix.mulVec_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blk_eq_restrict (N : ι → Matrix n n ℂ) : blk N = (blkC N).restrictScalars ℝ := rfl
 
+/- English proof (translation)
+Set `c` to `Module.Free.chooseBasis ℂ M`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℝ (Complex.basisOneI.smulTower c), LinearMap.trace_eq_matrix_trace ℂ c]`. Simplify using `only [Matrix.trace, Matrix.diag, LinearMap.toMatrix_apply, Module.Basis.smulTower_apply, Module.Basis.smulTower_repr, Fintype.sum_prod_type, LinearMap.restrictScalars_apply, LinearMap.map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, Complex.coe_basisOneI_repr, Complex.coe_bas …`. Simplify using `[Complex.re_sum, Finset.mul_sum, Finset.sum_add_distrib, two_mul]`.
+-/
 theorem trace_restrict_complex {M : Type} [AddCommGroup M] [Module ℂ M] [Module ℝ M]
     [IsScalarTower ℝ ℂ M] [Module.Free ℂ M] [Module.Finite ℂ M] (f : M →ₗ[ℂ] M) :
     LinearMap.trace ℝ M (f.restrictScalars ℝ) = 2 * (LinearMap.trace ℂ M f).re := by
@@ -143,11 +192,17 @@ theorem trace_restrict_complex {M : Type} [AddCommGroup M] [Module ℂ M] [Modul
     smul_eq_mul, Complex.coe_basisOneI_repr, Complex.coe_basisOneI, Fin.sum_univ_two]
   simp [Complex.re_sum, Finset.mul_sum, Finset.sum_add_distrib, two_mul]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Pi.basis fun _ : ι => Pi.basisFun ℂ n)]`. Simplify using `[Matrix.trace, LinearMap.toMatrix_apply, Fintype.sum_sigma, blkC, Matrix.mulVec_single_one]`.
+-/
 theorem trace_blkC [DecidableEq ι] [DecidableEq n] (N : ι → Matrix n n ℂ) :
     LinearMap.trace ℂ _ (blkC N) = ∑ τ, (N τ).trace := by
   rw [LinearMap.trace_eq_matrix_trace ℂ (Pi.basis fun _ : ι => Pi.basisFun ℂ n)]
   simp [Matrix.trace, LinearMap.toMatrix_apply, Fintype.sum_sigma, blkC, Matrix.mulVec_single_one]
 
+/- English proof (translation)
+Rewrite using `[blk_eq_restrict, trace_restrict_complex, trace_blkC, Complex.re_sum, Finset.mul_sum]`.
+-/
 theorem trace_blk [DecidableEq ι] [DecidableEq n] (N : ι → Matrix n n ℂ) :
     LinearMap.trace ℝ _ (blk N) = ∑ τ, 2 * (N τ).trace.re := by
   rw [blk_eq_restrict, trace_restrict_complex, trace_blkC, Complex.re_sum, Finset.mul_sum]

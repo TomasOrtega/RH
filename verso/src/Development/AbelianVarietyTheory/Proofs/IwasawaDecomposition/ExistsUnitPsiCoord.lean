@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.LocM.FJ.MultiData
 
+/- English proof (translation)
+Take `⟨x, ⟨j, h, hj, rfl⟩, e⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D χ r).1 hr`. Use `(GlobalTheory.PeriodFormCompare.psiCoord_iff (GlobalTheory.TauTwist.rescale D q) χ (s * r)).2 ⟨q χ * GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.genVal (D.psi χ) j h, ⟨j, h, hj, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.genVal, GlobalTheory.TauTwist.rescale, GlobalTheory.TauTwist.withPsi, ReciprocityTheory.ChartRestriction.G.DVR.scaleGen]`. Rewrite using `[map_mul, map_mul, GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.res_res]`. Use `congr 1`.
+
+Use `ext`. Use `show (q χ : FractionRing R) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom (((Sp (FractionRing R)).presheaf.map (𝟙 _)).hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom (q χ : FractionRing R)))`. Rewrite using `[CategoryTheory.Functor.map_id]`. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv_hom_id_apply _).symm`. Rewrite using `[Units.val_mul, hq, e, map_mul]`.
+-/
 theorem psiCoord_rescale {R : Type} [CommRing R] [IsDomain R] (D : Out.DegPre R) (q : D.X → (FractionRing R)ˣ)
     {χ : D.X} {r s : R} (hr : PsiCoord D χ r)
     (hq : ((q χ : (FractionRing R)ˣ) : FractionRing R) = algebraMap R (FractionRing R) s) :
@@ -39,6 +44,11 @@ theorem psiCoord_rescale {R : Type} [CommRing R] [IsDomain R] (D : Out.DegPre R)
     exact ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv_hom_id_apply _).symm
   · rw [Units.val_mul, hq, e, map_mul]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `GlobalTheory.PsiCoordLocal.exists_chart_top D χ`. Establish `hh` using `GlobalTheory.PsiCoordLocal.generic_le D χ j hj`. Take `⟨s, hs, e⟩` from `h j ⊤ (isAffineOpen_top _) (Set.subset_univ _) hj hh`. Take `⟨r, rfl⟩` from `GlobalTheory.PsiCoordLocal.toOpen_top_bijective.2 s`. Establish `hu : IsUnit r` using `(MulEquiv.isUnit_map (RingEquiv.ofBijective (Out.DegPre.toOpen (R := R) ⊤) GlobalTheory.PsiCoordLocal.toOpen_top_bijective).toMulEquiv).1 hs`.
+
+Conclude with `⟨hu.unit, j, hj, hh, e⟩`.
+-/
 theorem exists_unit_psiCoord {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : Out.DegPre R) (χ : D.X)
     (h : PsiUnitOn D χ Set.univ) : ∃ v : Rˣ, PsiCoord D χ v := by
   obtain ⟨j, hj⟩ := GlobalTheory.PsiCoordLocal.exists_chart_top D χ

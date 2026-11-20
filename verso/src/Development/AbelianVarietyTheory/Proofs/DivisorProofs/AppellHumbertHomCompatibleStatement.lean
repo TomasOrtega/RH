@@ -17,6 +17,9 @@ open scoped nonZeroDivisors
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint | exact GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint | (intros; apply GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.appell_humbert_hom_compatible : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M₁ M₂ : LB A.left) (u₁ : HolUnif A M₁ g) (u₂ : HolUnif A M₂ g) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)
       (χ₁ : u₁.Λ → ℂ) (χ₂ : u₂.Λ → ℂ) (f : A ⟶ A) (Fl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)),

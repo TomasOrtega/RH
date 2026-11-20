@@ -5,6 +5,21 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW
 
+/- English proof (translation)
+Introduce `D L C g j hR hnt`. Take `⟨-, hw100, hwη, hwb, hbT, -⟩` from `hR`. Use `set ρ := D.eTau.symm ⟨plc g, plc_mem g⟩ with hρ`. Establish `hρe : (D.eTau ρ : D.R.GG) = plc g` using `by rw [hρ, Equiv.apply_symm_apply]`. Establish `hj : j.1 + 1 ≤ D.R.m` using `j.2`.
+
+Establish `hw : wj D (j.1 + 1) ρ = (((D.hc ρ).e j : ℚ) : ℝ)`. Establish `hj' : j.1 + 1 - 1 < D.R.m` using `by have := j.2; omega`. Rewrite using `[wj, dif_pos hj']`. Establish `: (⟨j.1 + 1 - 1, hj'⟩ : Fin D.R.m) = j` using `Fin.ext (by simp)`. Rewrite using `[this]`.
+
+Take `⟨z, hz⟩` from `(D.hc ρ).e_int j`. Establish `hfl : (⌊(hcAt D g).e j⌋ : ℝ) = wj D (j.1 + 1) ρ`. Rewrite using `[hw]`. Use `show (⌊(D.hc ρ).e j⌋ : ℝ) = (((D.hc ρ).e j : ℚ) : ℝ)`. Rewrite using `[hz, Int.floor_intCast]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hfl]`. Establish `hx : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `hb' : 0 < L.sc.b'` using `by linarith`.
+
+Establish `hq : 0 < L.sc.b' / L.sc.x` using `div_pos hb' hx`. Establish `hS` using `L.Sc_pos`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hnt' : (D.eTau ρ : D.R.GG) ∉ D.host.thickPlaces` using `by rw [hρe]; exact hnt`. Distinguish the cases in `h2 : (D.eTau ρ : D.R.GG) ∈ D.host.topPlaces`.
+
+Take `⟨t, ht', e⟩` from `Finset.mem_image.mp h2`. Take `⟨a1, a2⟩` from `L.win_top _ (by omega) hj ρ ⟨t, ht'⟩ e.symm`. Establish `a3` using `L.bT_ge ⟨t, ht'⟩`. Establish `a4` using `hbT ⟨t, ht'⟩`. Apply the tactic sequence `constructor <;> linarith`.
+
+Take `⟨a1, a2⟩` from `L.win_thin _ (by omega) hj ρ ⟨(D.eTau ρ).2, h2, hnt'⟩`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem size_not_thick : ∀ {D : D7} (L : SizeData₂ D) (C : ℝ) (g : D.R.GG) (j : Fin D.R.m), Roomy L C → ¬ Thick D.host g → L.sc.w'' D.R.n ≤ (⌊(hcAt D g).e j⌋ : ℝ) ∧ (⌊(hcAt D g).e j⌋ : ℝ) ≤ 8 / 5 * L.sc.b' := by
   intro D L C g j hR hnt
   obtain ⟨-, hw100, hwη, hwb, hbT, -⟩ := hR

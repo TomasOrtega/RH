@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdmInt.adm_integral_comm | exact GlobalTheory.AdmInt.adm_integral_comm | (intros; apply GlobalTheory.AdmInt.adm_integral_comm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.admissible_integral_interchange : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (S₁ S₂ : Type) [TopologicalSpace S₁] [SecondCountableTopology S₁]
     [MeasurableSpace S₁] [BorelSpace S₁] [TopologicalSpace S₂] [SecondCountableTopology S₂] [MeasurableSpace S₂] [BorelSpace S₂]
     (μ₁ : Measure S₁) (μ₂ : Measure S₂) [IsFiniteMeasure μ₁] (r : ℕ) (g : Fin r → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)

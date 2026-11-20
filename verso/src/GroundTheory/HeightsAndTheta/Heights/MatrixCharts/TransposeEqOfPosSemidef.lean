@@ -12,18 +12,34 @@ section QF
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hZ, dotProduct_comm]`.
+-/
 theorem dot_mulVec_symm {Z : Matrix ι ι ℝ} (hZ : Zᵀ = Z) (u w : ι → ℝ) :
     u ⬝ᵥ (Z *ᵥ w) = w ⬝ᵥ (Z *ᵥ u) := by
   rw [dotProduct_mulVec, ← mulVec_transpose, hZ, dotProduct_comm]
 
+/- English proof (translation)
+Use `hZ.1` as an intermediate fact. Rewrite `this` using `[IsHermitian, conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis.
+-/
 theorem transpose_eq_of_posSemidef {Z : Matrix ι ι ℝ} (hZ : Z.PosSemidef) : Zᵀ = Z := by
   have := hZ.1
   rwa [IsHermitian, conjTranspose_eq_transpose_of_trivial] at this
 
+/- English proof (translation)
+Use `hZ.dotProduct_mulVec_nonneg u` as an intermediate fact. Simplify `this` using `[qf]`.
+-/
 theorem qf_nonneg {Z : Matrix ι ι ℝ} (hZ : Z.PosSemidef) (u : ι → ℝ) : 0 ≤ qf Z u := by
   have := hZ.dotProduct_mulVec_nonneg u
   simpa [qf] using this
 
+/- English proof (translation)
+Establish `hs` using `transpose_eq_of_posSemidef hZ`. Establish `key : ∀ x : ℝ, 0 ≤ qf Z w * (x * x) + (-2 * (w ⬝ᵥ (Z *ᵥ u))) * x + qf Z u`. Introduce `x`. Establish `h` using `qf_nonneg hZ (u - x • w)`. Establish `e : qf Z (u - x • w) = qf Z w * (x * x) + (-2 * (w ⬝ᵥ (Z *ᵥ u))) * x + qf Z u`.
+
+Simplify using `only [qf, mulVec_sub, mulVec_smul, sub_dotProduct, dotProduct_sub, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Rewrite using `[dot_mulVec_symm hs u w]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Use `discrim_le_zero key` as an intermediate fact.
+
+Unfold `discrim at this`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem bil_sq_le {Z : Matrix ι ι ℝ} (hZ : Z.PosSemidef) (u w : ι → ℝ) :
     (w ⬝ᵥ (Z *ᵥ u)) ^ 2 ≤ qf Z w * qf Z u := by
   have hs := transpose_eq_of_posSemidef hZ
@@ -42,6 +58,13 @@ theorem bil_sq_le {Z : Matrix ι ι ℝ} (hZ : Z.PosSemidef) (u w : ι → ℝ) 
 
 variable [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hs` using `transpose_eq_of_posSemidef hZ.posSemidef`. Establish `hu : IsUnit Z.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hZ.isUnit`. Use `set w := Z⁻¹ *ᵥ Pi.single i 1 with hw`. Establish `hZw : Z *ᵥ w = Pi.single i 1`. Rewrite using `[hw, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`.
+
+Establish `h1 : w ⬝ᵥ (Z *ᵥ x) = x i`. Rewrite using `[dot_mulVec_symm hs, hZw, dotProduct_single, mul_one]`. Establish `h2 : qf Z w = Z⁻¹ i i`. Rewrite using `[qf, hZw, dotProduct_single, mul_one, hw, mulVec_single]`. Simplify using the standard rewrite rules.
+
+Use `bil_sq_le hZ.posSemidef x w` as an intermediate fact. Rewrite `this` using `[h1, h2]`. Then use the resulting hypothesis.
+-/
 theorem sq_le_inv_diag_mul_qf {Z : Matrix ι ι ℝ} (hZ : Z.PosDef) (x : ι → ℝ) (i : ι) :
     x i ^ 2 ≤ Z⁻¹ i i * qf Z x := by
   have hs := transpose_eq_of_posSemidef hZ.posSemidef
@@ -57,6 +80,13 @@ theorem sq_le_inv_diag_mul_qf {Z : Matrix ι ι ℝ} (hZ : Z.PosDef) (x : ι →
   have := bil_sq_le hZ.posSemidef x w
   rwa [h1, h2] at this
 
+/- English proof (translation)
+Establish `hs` using `transpose_eq_of_posSemidef hZ.posSemidef`. Establish `hu : IsUnit Z.det` using `(Matrix.isUnit_iff_isUnit_det _).mp hZ.isUnit`. Use `set w := Z⁻¹ *ᵥ Pi.single i 1 with hw`. Establish `hZw : Z *ᵥ w = Pi.single i 1`. Rewrite using `[hw, mulVec_mulVec, mul_nonsing_inv _ hu, one_mulVec]`.
+
+Establish `hwi : w i = Z⁻¹ i i` using `by rw [hw, mulVec_single]; simp`. Establish `h2 : qf Z w = Z⁻¹ i i` using `by rw [qf, hZw, dotProduct_single, mul_one, hwi]`. Establish `hpos : 0 < Z⁻¹ i i` using `hZ.inv.diag_pos`. Use `h w` as an intermediate fact. Rewrite `this` using `[h2, hwi]`.
+
+Rewrite using `[le_div_iff₀ hε]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem inv_diag_le {Z : Matrix ι ι ℝ} (hZ : Z.PosDef) (i : ι) {ε : ℝ} (hε : 0 < ε)
     (h : ∀ x, ε * x i ^ 2 ≤ qf Z x) : Z⁻¹ i i ≤ 1 / ε := by
   have hs := transpose_eq_of_posSemidef hZ.posSemidef

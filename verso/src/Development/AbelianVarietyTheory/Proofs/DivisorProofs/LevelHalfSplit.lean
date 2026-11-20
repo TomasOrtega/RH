@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SplitLevel
 
+/- English proof (translation)
+Introduce `D T h EX`. Establish `hp : ∀ i, piOf T EX i * T.Q.H.bar (piOf T EX i) = ((D.host.g i : ℕ) : 𝓞 D.host.E)` using `fun i => by`. Rewrite using `[bar_core]`. Conclude with `piOf_mul_barE T EX i`. Establish `hM : T.Q.l.Mb = Ideal.span {piOf T EX 0 * piOf T EX 1}`.
+
+Rewrite using `[← Ideal.span_singleton_mul_span_singleton, span_piOf T h, span_piOf T h, Mb_eq T h]`. Conclude with `⟨piOf T EX 0, piOf T EX 1, D.host.g_prime 0, D.host.g_prime 1, D.host.g_ne, by rw [level_M T h, mul_comm], hp 0, hp 1, hM, GlobalTheory.LevelSplit.splitsIn_level_prime D 0, GlobalTheory.LevelSplit.splitsIn_level_prime D 1⟩`.
+-/
 theorem level_halfSplit : ∀ (D : D7) (T : Core D), LawsM T → ∀ (_ : ErrX D), ∃ π π' : 𝓞 D.host.E, HalfSplit T.Q.l (D.host.g 0) (D.host.g 1) π π' := by
   intro D T h EX
   have hp : ∀ i, piOf T EX i * T.Q.H.bar (piOf T EX i) = ((D.host.g i : ℕ) : 𝓞 D.host.E) := fun i => by

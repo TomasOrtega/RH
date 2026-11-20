@@ -13,6 +13,13 @@ section Abstract
 variable {R V E : Type} [Ring R] [AddCommGroup V] [Module R V] [NormedAddCommGroup E]
   [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] {ρ : V →+ E} {L : Submodule R V}
 
+/- English proof (translation)
+Take `⟨t, ht, hsup⟩` from `finSup R V E ρ L {N | N ≤ L ∧ N ≠ ⊥ ∧ θ < muMin ρ N} hL (fun N hN => hN.1)`. Choose the witnesses or unpack the hypotheses as in `⟨θ₀, hθ₀, hle⟩ : ∃ θ₀, θ < θ₀ ∧ ∀ N ∈ t, θ₀ ≤ muMin ρ N := by`. Break down `t.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨θ + 1, by linarith, by simp [h]⟩`. Take `⟨N₀, hN₀, hmin⟩` from `t.exists_min_image (fun N => muMin ρ N) h`.
+
+Conclude with `⟨muMin ρ N₀, (ht hN₀).2.2, hmin⟩`. Use `⟨θ₀, hθ₀, fun θ' h1 h2 => le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hsup]`. Unfold `hnStep`. Use `Finset.sup_le fun N hN => ?_` and prove the remaining obligations.
+
+Conclude with `le_sSup ⟨(ht hN).1, (ht hN).2.1, h2.trans (hle N hN)⟩`. Unfold `hnStep`. Conclude with `sSup_le_sSup fun N hN => ⟨hN.1, hN.2.1, lt_of_lt_of_le h1 hN.2.2⟩`.
+-/
 theorem strict_eq (hL : IsLat ρ L) (θ : ℝ) :
     ∃ θ₀, θ < θ₀ ∧ ∀ θ', θ < θ' → θ' ≤ θ₀ →
       sSup {N : Submodule R V | N ≤ L ∧ N ≠ ⊥ ∧ θ < muMin ρ N} = hnStep ρ L θ' := by
@@ -32,16 +39,27 @@ theorem strict_eq (hL : IsLat ρ L) (θ : ℝ) :
   · unfold hnStep
     exact sSup_le_sSup fun N hN => ⟨hN.1, hN.2.1, lt_of_lt_of_le h1 hN.2.2⟩
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Conclude with `⟨a, h ha, rfl⟩`.
+-/
 private lemma zl_mono' {A B : Submodule R V} (h : A ≤ B) : zl ρ A ≤ zl ρ B := by
   intro y hy
   obtain ⟨a, ha, rfl⟩ := hy
   exact ⟨a, h ha, rfl⟩
 
+/- English proof (translation)
+Unfold `IsSat Formalism.F.IsSaturated at *`. Conclude with `⟨h1, zl_mono' h1, fun y hy hspan => hS.2.2 y (zl_mono' h2 hy) hspan⟩`.
+-/
 theorem isSat_of_le {S N : Submodule R V} (hS : IsSat ρ L S) (h1 : S ≤ N) (h2 : N ≤ L) :
     IsSat ρ N S := by
   unfold IsSat Formalism.F.IsSaturated at *
   exact ⟨h1, zl_mono' h1, fun y hy hspan => hS.2.2 y (zl_mono' h2 hy) hspan⟩
 
+/- English proof (translation)
+Take `⟨hsat, -, -, hmax⟩` from `hnStep_spec R V E ρ L hL θ`. Take `⟨hsub, -, hsatEq, -, -, -, -, -⟩` from `satBasic R V E ρ L hL`. Take `⟨-, -, -, -, -, -, -, hq⟩` from `satBasic R V E ρ N (hsub N h2)`. Take `⟨hrk, hrkle, hdeg⟩` from `hq _ (isSat_of_le hsat h1.le h2)`. Establish `hne : rk ρ (hnStep ρ L θ) ≠ rk ρ N` using `fun h => h1.ne (hsatEq _ _ hsat h1.le h2 h.symm).symm`.
+
+Establish `hlt : (rk ρ (hnStep ρ L θ) : ℝ) < rk ρ N` using `by exact_mod_cast lt_of_le_of_ne hrkle hne`. Establish `key` using `hmax N h1 h2`. Unfold `Formalism.F.slope`. Rewrite using `[hrk, hdeg, Nat.cast_sub hrkle, div_lt_iff₀ (by linarith)]`. Conclude with `key`.
+-/
 theorem quot_slope_lt (hL : IsLat ρ L) (θ : ℝ) {N : Submodule R V} (h1 : hnStep ρ L θ < N) (h2 : N ≤ L) :
     Formalism.F.slope (Formalism.F.quot (zl ρ N) (zl ρ (hnStep ρ L θ))) < θ := by
   obtain ⟨hsat, -, -, hmax⟩ := hnStep_spec R V E ρ L hL θ
@@ -56,6 +74,21 @@ theorem quot_slope_lt (hL : IsLat ρ L) (θ : ℝ) {N : Submodule R V} (h1 : hnS
   rw [hrk, hdeg, Nat.cast_sub hrkle, div_lt_iff₀ (by linarith)]
   exact key
 
+/- English proof (translation)
+Take `⟨hsat, hmin, hcont, -⟩` from `hnStep_spec R V E ρ L hL θ`. Take `⟨hsub, -, -, hrk0, -, -, -, -⟩` from `satBasic R V E ρ L hL`. Take `⟨hmaxL, -, ⟨N, hNsat, hN0, hNslope⟩, -, -⟩` from `muChar R V E ρ L hL h0`. Establish `hdegL : ∀ S : Submodule R V, S ≤ L → deg ρ S ≤ muMax ρ L * rk ρ S` using `(hmaxL _).1 le_rfl`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hbot`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hNL : N ≤ L` using `hNsat.1`. Take `⟨-, hminN, -, -, -⟩` from `muChar R V E ρ N (hsub N hNL) hN0`.
+
+Establish `hrkpos : (0 : ℝ) < rk ρ N`. Establish `: rk ρ N ≠ 0` using `fun h => hN0 ((hrk0 N hNL).1 h)`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `hdegN : deg ρ N = muMax ρ L * rk ρ N`. Establish `e : slope ρ N = deg ρ N / rk ρ N` using `rfl`.
+
+Rewrite `hNslope` using `[e, div_eq_iff hrkpos.ne']`. Conclude with `hNslope`. Establish `hmm : muMax ρ L ≤ muMin ρ N` using `(hminN _).2 fun S hS => by`. Use `hdegL S (hS.trans hNL)` as an intermediate fact. Rewrite using `[mul_sub, ← hdegN]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle` using `hcont N hNL hN0 (hcon.trans hmm)`. Rewrite `hle` using `[hbot]`. Conclude with `hN0 (le_bot_iff.mp hle)`. Introduce `hlt`.
+
+Assume the negation of the conclusion as `hne`. Establish `hH` using `hmin hne`. Establish `hHL : hnStep ρ L θ ≤ L` using `hsat.1`. Take `⟨hmaxH, -, -, hm1, hm2⟩` from `muChar R V E ρ _ (hsub _ hHL) hne`. Establish `: muMax ρ (hnStep ρ L θ) ≤ muMax ρ L` using `(hmaxH _).2 fun S hS => hdegL S (hS.trans hHL)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem step_eq_bot (hL : IsLat ρ L) (h0 : L ≠ ⊥) (θ : ℝ) : hnStep ρ L θ = ⊥ ↔ muMax ρ L < θ := by
   obtain ⟨hsat, hmin, hcont, -⟩ := hnStep_spec R V E ρ L hL θ
   obtain ⟨hsub, -, -, hrk0, -, -, -, -⟩ := satBasic R V E ρ L hL
@@ -93,14 +126,63 @@ theorem step_eq_bot (hL : IsLat ρ L) (h0 : L ≠ ⊥) (θ : ℝ) : hnStep ρ L 
 
 end Abstract
 
+/- English proof (translation)
+Rewrite using `[← Real.le_log_iff_exp_le ht]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+-/
 theorem exp_le_iff {c m t : ℝ} (ht : 0 < t) : Real.exp (c - m) ≤ t ↔ c - Real.log t ≤ m := by
   rw [← Real.le_log_iff_exp_le ht]
   constructor <;> intro h <;> linarith
 
+/- English proof (translation)
+Rewrite using `[← Real.lt_log_iff_exp_lt ht]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+-/
 theorem exp_lt_iff {c m t : ℝ} (ht : 0 < t) : Real.exp (c - m) < t ↔ c - Real.log t < m := by
   rw [← Real.lt_log_iff_exp_lt ht]
   constructor <;> intro h <;> linarith
 
+/- English proof (translation)
+Introduce `I x t ht`. Take `⟨-, hfg, hspan, -, -⟩` from `GlobalTheory.T.autPointLatticeIntersection_selfDual_properties I x`. Take `⟨hTC, -, -, -, hw⟩` from `GlobalTheory.T.autPointMajorantFrames_give_majorants I x`. Use `hTC` as an intermediate fact. Establish `hdet : ∀ w, IsUnit (frm I x w).det` using `fun w => (hw w).1`.
+
+Use `set ρ := Formalism.HermitianLatticesTheory.realize (bas I) (frm I x) with hρ`. Use `set L := lamX I x with hLdef`. Establish `hLlat : IsLat ρ L` using `(plLat _ _ _ (bas I) (frm I x) hdet L hfg).1`. Establish `: IsNoetherian (𝓞 I.E) L` using `isNoetherian_of_fg_of_noetherian L hfg`. Establish `hNfg : ∀ N, N ≤ L → N.FG` using `fun N hN => Submodule.FG.of_le_of_isNoetherian hN`.
+
+Use `set c : ℝ := Real.log 2 / 2 - logDisc I.E / (2 * (Module.finrank ℚ I.E : ℝ)) with hc`. Establish `hlarge : ∀ N, N ≤ L → N ≠ ⊥ → largestSize (bas I) (frm I x) N = Real.exp (c - muMin ρ N)` using `fun N hN h0 => (sizeMu _ _ _ (bas I) (frm I x) hdet N (hNfg N hN) h0).2.2.2.2.1`. Establish `hsq : ∀ N S, N ≤ L → N ≠ ⊥ → IsSat ρ N S → S ≠ N → sizeQ (bas I) (frm I x) N S = Real.exp (c - Formalism.F.slope (Formalism.F.quot (zl ρ N) (zl ρ S)))` using `fun N S hN h0 hS hne => (sizeMu _ _ _ (bas I) (frm I x) hdet N (hNfg N hN) h0).2.2.1 S hS hne`. Use `set θ := c - Real.log t with hθ`. Establish `hLe : stepLe I x t = hnStep ρ L θ`.
+
+Unfold `stepLe hnStep`. Use `congrArg sSup (Set.ext fun N => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, h0, hs⟩`.
+
+Rewrite `hs` using `[hlarge N hN h0]`. Conclude with `⟨hN, h0, (exp_le_iff ht).1 hs⟩`. Introduce and unpack `⟨hN, h0, hs⟩`. Use `⟨hN, h0, ?_⟩` and prove the remaining obligations. Rewrite using `[hlarge N hN h0]`.
+
+Conclude with `(exp_le_iff ht).2 hs`. Establish `hLt : stepLt I x t = sSup {N : Submodule (𝓞 I.E) (Fin I.n → I.E) | N ≤ L ∧ N ≠ ⊥ ∧ θ < muMin ρ N}`. Unfold `stepLt`. Use `congrArg sSup (Set.ext fun N => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, h0, hs⟩`. Rewrite `hs` using `[hlarge N hN h0]`. Conclude with `⟨hN, h0, (exp_lt_iff ht).1 hs⟩`. Introduce and unpack `⟨hN, h0, hs⟩`.
+
+Use `⟨hN, h0, ?_⟩` and prove the remaining obligations. Rewrite using `[hlarge N hN h0]`. Conclude with `(exp_lt_iff ht).2 hs`. Take `⟨θ₀, hθ₀, hstrict⟩` from `strict_eq hLlat θ`. Establish `hLt' : stepLt I x t = hnStep ρ L θ₀` using `hLt.trans (hstrict θ₀ hθ₀ le_rfl)`.
+
+Establish `hsame : ∀ θ', θ < θ' → θ' ≤ θ₀ → hnStep ρ L θ' = hnStep ρ L θ₀` using `fun θ' h1 h2 => (hstrict θ' h1 h2).symm.trans (hstrict θ₀ hθ₀ le_rfl)`. Establish `hspec` using `hnStep_spec _ _ _ ρ L hLlat θ`. Establish `hspec₀` using `hnStep_spec _ _ _ ρ L hLlat θ₀`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hLe]`.
+
+Conclude with `hspec.1`. Rewrite using `[hLt']`. Conclude with `hspec₀.1`. Unfold `stepLt stepLe`. Conclude with `sSup_le_sSup fun N hN => ⟨hN.1, hN.2.1, hN.2.2.le⟩`.
+
+Introduce `t' htt'`. Unfold `stepLe stepLt`. Conclude with `sSup_le_sSup fun N hN => ⟨hN.1, hN.2.1, hN.2.2.trans_lt htt'⟩`. Introduce `h0`. Rewrite `h0`, the goal using `[hLe]`.
+
+Rewrite using `[hlarge _ hspec.1.1 h0]`. Conclude with `(exp_le_iff ht).2 (hspec.2.1 h0)`. Introduce `h0`. Rewrite `h0`, the goal using `[hLt']`. Rewrite using `[hlarge _ hspec₀.1.1 h0]`.
+
+Conclude with `(exp_lt_iff ht).2 (lt_of_lt_of_le hθ₀ (hspec₀.2.1 h0))`. Introduce `N h1 h2`. Rewrite `h1`, the goal using `[hLe]`. Rewrite using `[hsq N _ h2 (ne_bot_of_gt h1) (isSat_of_le hspec.1 h1.le h2) h1.ne]`. Establish `hs` using `quot_slope_lt hLlat θ h1 h2`.
+
+Conclude with `(Real.log_lt_iff_lt_exp ht).1 (by linarith)`. Introduce `N h1 h2`. Rewrite `h1`, the goal using `[hLt']`. Rewrite using `[hsq N _ h2 (ne_bot_of_gt h1) (isSat_of_le hspec₀.1 h1.le h2) h1.ne]`. Establish `key : ∀ θ', θ < θ' → θ' ≤ θ₀ → Formalism.F.slope (Formalism.F.quot (zl ρ N) (zl ρ (hnStep ρ L θ₀))) < θ'` using `fun θ' h1' h2' => by`.
+
+Establish `e` using `hsame θ' h1' h2'`. Use `quot_slope_lt hLlat θ' (by rw [e]; exact h1) h2` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Generalize the expression as in `Formalism.F.slope (Formalism.F.quot (zl ρ N) (zl ρ (hnStep ρ L θ₀))) = s at key ⊢`. Establish `hs : s ≤ θ`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `key (min s θ₀) (lt_min hcon hθ₀) (min_le_right _ _)` as an intermediate fact. Conclude with `lt_irrefl _ (this.trans_le (min_le_left _ _))`. Conclude with `(Real.log_le_iff_le_exp ht).1 (by linarith)`.
+
+Introduce `hn`. Establish `hL0 : L ≠ ⊥`. Introduce `h`. Establish `: Nonempty (Fin I.n)` using `⟨⟨0, hn⟩⟩`. Establish `htop : (⊤ : Submodule I.E (Fin I.n → I.E)) = ⊥`.
+
+Rewrite using `[← hspan, h]`. Simplify using the standard rewrite rules. Conclude with `top_ne_bot htop`. Establish `hleast : least I x = Real.exp (c - muMax ρ L)`. Unfold `least`.
+
+Conclude with `(sizeMu _ _ _ (bas I) (frm I x) hdet L hfg hL0).2.2.2.1`. Use `⟨by rw [hleast]; exact Real.exp_pos _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hLe, step_eq_bot hLlat hL0, hleast, ← Real.log_lt_iff_lt_exp ht]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`. Rewrite using `[hLt', hleast, ← Real.log_le_iff_le_exp ht]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hb`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h1 : θ < muMax ρ L` using `by linarith`.
+
+Establish `hm : muMax ρ L < θ₀` using `(step_eq_bot hLlat hL0 θ₀).1 hb`. Use `(step_eq_bot hLlat hL0 _).1 ((hsame _ h1 hm.le).trans hb)` as an intermediate fact. Conclude with `lt_irrefl _ this`. Introduce `h`. Conclude with `(step_eq_bot hLlat hL0 θ₀).2 (by linarith)`.
+-/
 theorem steps : ∀ (I : AutInst) (x : I.GA) (t : ℝ), 0 < t → IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) (stepLe I x t) ∧ IsSat (Formalism.HermitianLatticesTheory.realize (bas I) (frm I x)) (lamX I x) (stepLt I x t) ∧ stepLt I x t ≤ stepLe I x t ∧ (∀ t', t < t' → stepLe I x t ≤ stepLt I x t') ∧ (stepLe I x t ≠ ⊥ → largestSize (bas I) (frm I x) (stepLe I x t) ≤ t) ∧ (stepLt I x t ≠ ⊥ → largestSize (bas I) (frm I x) (stepLt I x t) < t) ∧ (∀ N, stepLe I x t < N → N ≤ lamX I x → t < sizeQ (bas I) (frm I x) N (stepLe I x t)) ∧ (∀ N, stepLt I x t < N → N ≤ lamX I x → t ≤ sizeQ (bas I) (frm I x) N (stepLt I x t)) ∧ (1 ≤ I.n → 0 < least I x ∧ (stepLe I x t = ⊥ ↔ t < least I x) ∧ (stepLt I x t = ⊥ ↔ t ≤ least I x)) := by
   intro I x t ht
   obtain ⟨-, hfg, hspan, -, -⟩ := GlobalTheory.T.autPointLatticeIntersection_selfDual_properties I x

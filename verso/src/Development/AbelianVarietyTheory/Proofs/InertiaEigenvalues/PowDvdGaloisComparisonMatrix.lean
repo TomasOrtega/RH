@@ -12,6 +12,17 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Establish `h1 : ((l : A) ^ k * t ^ N) • M = t' ^ N • (Y * y)`. Apply `Matrix.map_injective hi` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((l : A) ^ k * t ^ N) • M).map i = (t' ^ N • (Y * y)).map i`. Establish `e1 : (((l : A) ^ k * t ^ N) • M).map i = (l : D) ^ k • (i t ^ N • M.map i)`. Use extensionality with `p q`.
+
+Simplify using `[mul_assoc]`. Establish `e2 : (t' ^ N • (Y * y)).map i = i t' ^ N • (Y.map i * y.map i)`. Rewrite using `[← Matrix.map_mul]`. Use extensionality with `p q`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow]`.
+
+Rewrite using `[e1, e2, h, hy, Matrix.mul_smul, smul_comm]`. Establish `h2 : (l : W) ^ k • (j t ^ N • M.map j) = j t' ^ N • (Y.map j * y.map j)`. Establish `e` using `congrArg (fun Z : Matrix n n A => Z.map j) h1`. Rewrite using `[← Matrix.map_mul]`. Use extensionality with `p q`.
+
+Use `congrFun (congrFun e p) q` as an intermediate fact. Simplify `this` using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_natCast, mul_assoc]`. Take `⟨u, hu⟩` from `hY`. Take `⟨v, hv⟩` from `ht.pow N`. Establish `h3 : y.map j = (l : W) ^ k • ((↑v⁻¹ : W) • ((↑u⁻¹ : Matrix n n W) * (j t ^ N • M.map j)))`.
+
+Rewrite using `[smul_comm, ← Matrix.mul_smul, h2, ← hu, ← hv, Matrix.mul_smul, ← mul_assoc, Units.inv_mul, one_mul, smul_smul, Units.inv_mul, one_smul]`. Conclude with `⟨_, congrFun (congrFun h3 a) b⟩`.
+-/
 theorem pow_dvd_map_of_smul_eq {A D W : Type} [CommRing A] [CommRing D] [CommRing W] {n : Type} [Fintype n]
     [DecidableEq n] (i : A →+* D) (hi : Function.Injective i) (j : A →+* W) (t t' : A) (N l k : ℕ)
     (M Y y : Matrix n n A) (ε : Matrix n n D) (h : i t ^ N • M.map i = i t' ^ N • (Y.map i * ε))
@@ -39,6 +50,9 @@ theorem pow_dvd_map_of_smul_eq {A D W : Type} [CommRing A] [CommRing D] [CommRin
       smul_smul, Units.inv_mul, one_smul]
   exact ⟨_, congrFun (congrFun h3 a) b⟩
 
+/- English proof (translation)
+Introduce `l _ K bk d ρ τ s ht hτ _ g ε hε k y hy i j`. Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk`. Take `⟨-, hu, hsat⟩` from `GlobalTheory.T.breuilKisin_period_isUnit_and_ainf_saturated l K bk τ hτ`. Conclude with `hsat k _ (pow_dvd_map_of_smul_eq bk.iA (GlobalTheory.T.toDisc_injective_and_nonZeroDivisors_of_topBasis l K bk (Ainf l) bk.ev ι tb).1 (inclW l) τ _ s.N l k _ ht.Y y ε (GlobalTheory.T.rel_galois_comparison_matrix l K bk d ρ τ s ht hτ g ε hε) hy (hu g) ht.unit i j)`.
+-/
 theorem pow_dvd_of_rel_gal : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s), bk.IsPer τ → (∀ g, IsUnit (ρ g)) → ∀ (g : ↥(GK K)) (ε : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀)), ht.Rel (B := ainfObj K) (BK.hf bk.ι X) bk.ι ((ainfHom K g).comp bk.ι) ε → ∀ (k : ℕ) (y : Matrix (Fin d) (Fin d) (Ainf l)), y.map bk.iA = ((l : ℕ) : bk.DA bk.ρ₀) ^ k • ε → ∀ i j, ((l : ℕ) : Ainf l) ^ k ∣ y i j := by
   intro l _ K bk d ρ τ s ht hτ _ g ε hε k y hy i j
   obtain ⟨ι, ⟨tb⟩⟩ := GlobalTheory.T.ainf_adicTopologicalBasis_over_breuilKisin l K bk

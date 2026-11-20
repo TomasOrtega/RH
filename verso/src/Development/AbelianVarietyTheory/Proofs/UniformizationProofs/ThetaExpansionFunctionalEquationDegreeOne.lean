@@ -19,6 +19,11 @@ open GlobalTheory.UU
 noncomputable section
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `h₁ h₂ V _ _ _ hV D A G _ _ U θ f hθ hψ t s hts`. Take `⟨hp, hq⟩` from `PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1`. Take `⟨th, hth, -⟩` from `hp θ`. Take `⟨s₀, hs₀, -⟩` from `hq f`. Take `⟨c, hc⟩` from `(GlobalTheory.T.expF_of_theta_degree_one h₁ h₂ V hV D A G U θ f hθ th s₀ hth hs₀).2.2 t s hts`.
+
+Conclude with `famFE_one_of_psiRel h₁.globalFns V D (Kbar V) s₀ s c (GlobalTheory.T.thetaPsiRelation_of_pullback_extension_field V D (Kbar V) f s₀ hs₀ hψ) hc`.
+-/
 theorem fe_one_of_psiRel : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → PsiRel D (𝟙_ _) f → U.FE (Kbar V) 1) := by
   intro h₁ h₂ V _ _ _ hV D A G _ _ U θ f hθ hψ t s hts
   obtain ⟨hp, hq⟩ := PullSec.pullEx V hV D A G U (Kbar V) (𝟙_ _) (toUnit _) 1

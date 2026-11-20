@@ -15,15 +15,24 @@ variable {D : D7}
 
 def hA (T : HSp D) (y z : Fin T.rank → AE D) : AE D := ∑ k, cA D (z k) * (gA T *ᵥ y) k
 
+/- English proof (translation)
+Simplify using `only [pairS, hA, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Both sides reduce to the same expression.
+-/
 theorem pairS_eq_sum (T : HSp D) {ρ : ℕ} (x x' : Mx D T.rank ρ) :
     pairS T x x' = ∑ p, hA T (fun k => x k p) (fun k => x' k p) := by
   simp only [pairS, hA, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.mulVec, dotProduct]
   rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FinPl.LatMem.latO_mxAt hu.1`.
+-/
 theorem mxAt_of_mem_depLat {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {p : Pair T}
     {u : WO (G.pS p) (G.pT p)} (hu : u ∈ depLat G p) : MxAt (fun _ => True) u :=
   GlobalTheory.FinPl.LatMem.latO_mxAt hu.1
 
+/- English proof (translation)
+Simplify using `[hA]`.
+-/
 example (T : HSp D) : hA T 0 0 = 0 := by simp [hA]
 
 end GlobalTheory.CharXFB

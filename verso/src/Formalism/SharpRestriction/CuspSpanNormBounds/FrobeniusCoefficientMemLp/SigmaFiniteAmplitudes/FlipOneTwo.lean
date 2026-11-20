@@ -13,10 +13,34 @@ variable {k r : ℕ}
 
 attribute [local instance] Formalism.FourierDecayAlt.P.B7.properFD
 
+/- English proof (translation)
+The claim follows from `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.S3dx6.gN_nonneg _) _`.
+-/
 theorem pairMaj_nonneg (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (b : ℝ) (p : PairSp k r) :
     0 ≤ Formalism.MainNotions.S.Pv.AmpDD.pairMaj γ b p :=
   Real.rpow_nonneg (Formalism.FourierDecayAlt.P.S3dx6.gN_nonneg _) _
 
+/- English proof (translation)
+Establish `hσR : SigmaFinite μR` using `hμR.1`. Establish `hσνR : SigmaFinite νR` using `sigmaFinite_nuR hμG hμR hQ`. Establish `hσν : SigmaFinite ν` using `sigmaFinite_nu L hγ hμR hOQ hNI hpm`. Establish `hσW : SigmaFinite L.μW` using `L.hμW.1.1`. Establish `hσW' : SigmaFinite L.μW'` using `L.hμW'.1.1`.
+
+Establish `hWi` using `mp_inv_W_sk L.hz.1 L.hz.2 L.hμW.1`. Establish `hWi'` using `mp_inv_W_sk L.hz'.1 L.hz'.2 L.hμW'.1`. Establish `hNi : MeasurePreserving Formalism.FourierDecayAlt.P.B7.invM L.μN L.μN` using `⟨hinv.measurable, map_inv_haarLieN L.κN⟩`. Establish `hWae : ∀ᵐ x ∂L.μW, Matrix.of x ∈ UWset k r L.z` using `ae_mem_sk L.hμW.1`. Establish `hWae' : ∀ᵐ x ∂L.μW', Matrix.of x ∈ UWset k r L.z'` using `ae_mem_sk L.hμW'.1`.
+
+Establish `hNae : ∀ᵐ x ∂L.μN, Matrix.of x ∈ Nset k r` using `ae_mem_haarLieN L.κN`. Establish `hsm : StronglyMeasurable (fun q : (PairSp k r × Mt k r) × Mt k r => PsiM L w0 v v' ξ ξ' γ (mStab γ q.1, q.2))` using `(sm_PsiM L w0 v v' ξ ξ' γ).comp_measurable (((measurable_mStab γ).comp measurable_fst).prodMk measurable_snd)`. Establish `hF : Integrable (fun q : (PairSp k r × Mt k r) × Mt k r => PsiM L w0 v v' ξ ξ' γ (mStab γ q.1, q.2)) ((ν.prod μR).prod νR)`. Use `⟨hsm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hmeas : Measurable (fun q : (PairSp k r × Mt k r) × Mt k r => ‖PsiM L w0 v v' ξ ξ' γ (mStab γ q.1, q.2)‖ₑ)` using `hsm.measurable.enorm`.
+
+Establish `hmeas2 : Measurable (fun pa : PairSp k r × Mt k r => ∫⁻ x, ‖PsiM L w0 v v' ξ ξ' γ (mStab γ pa, x)‖ₑ ∂νR)` using `hmeas.lintegral_prod_right'`. Use `show ∫⁻ q, ‖PsiM L w0 v v' ξ ξ' γ (mStab γ q.1, q.2)‖ₑ ∂((ν.prod μR).prod νR) < ⊤`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae ((ae_inPair_nu L hμR hOQ).mono fun p hp => ?_)` and prove the remaining obligations. Conclude with `lint_cell L w0 v v' ξ ξ' hγ hrel hμG hμR hinv hQ hp`.
+
+Use `_ ≤ ∫⁻ p, ENNReal.ofReal ((‖ξ‖ * ‖ξ'‖ * (|C1| * |C2|) * ∫ x, Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ (b - a) ∂μG) * Formalism.MainNotions.S.Pv.AmpDD.pairMaj γ b p) ∂ν := by`. Use `lintegral_mono_ae ((ae_inPair_nu L hμR hOQ).mono fun p hp => ?_)` and prove the remaining obligations. Conclude with `lint_G_bound L hμG hNI hb hab hIG w0 v v' ξ ξ' hC1 hC2 hγ hp`. Use `_ < ⊤ := (hpm.const_mul _).lintegral_lt_top`. Establish `hmap` using `pairMeas_eq_map L hμR hOQ`.
+
+Establish `hL : ∀ᵐ x ∂νR, (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • (innerSL ℂ (l' (L.σ (Matrix.of x) w0))).smulRight (l (L.σ (γ * Matrix.of x) w0)) = ∫ pa, PsiM L w0 v v' ξ ξ' γ (mStab γ pa, x) ∂(ν.prod μR)` using `by filter_upwards [ae_uh_nuR hγ hμG hμR hQ, hF.prod_left_ae] with x hx hix`. Establish `hgx : γ * Matrix.of x ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_mul hγ hx`. Establish `hsmx : StronglyMeasurable (fun q : PairSp k r => PsiM L w0 v v' ξ ξ' γ (q, x))` using `(sm_PsiM L w0 v v' ξ ξ' γ).comp_measurable (measurable_id.prodMk measurable_const)`. Establish `hPM : (fun q => Psi L w0 v v' ξ ξ' γ q x) =ᵐ[pairMeas L] (fun q => PsiM L w0 v v' ξ ξ' γ (q, x))` using `(ae_inPair_pair L).mono fun q hq => (PsiM_eq L w0 v v' ξ ξ' hγ hq hx).symm`. Establish `hintM : Integrable (fun q : PairSp k r => PsiM L w0 v v' ξ ξ' γ (q, x)) (pairMeas L)`.
+
+Rewrite using `[hmap]`. Conclude with `(integrable_map_measure hsmx.aestronglyMeasurable (measurable_mStab γ).aemeasurable).2 hix`. Rewrite using `[← pair_split L hWi hWi' hNi hWae hWae' hNae w0 v v' ξ ξ' l l' hx hgx (hbe1 _ hgx) (hbe2 _ hx) (hintM.congr hPM.symm), integral_congr_ae hPM, hmap, integral_map (measurable_mStab γ).aemeasurable hsmx.aestronglyMeasurable]`. Establish `hsch : ∀ᵐ p ∂ν, ∫ a, ∫ x, PsiM L w0 v v' ξ ξ' γ (mStab γ (p, a), x) ∂νR ∂μR = ((d : ℂ)⁻¹) • besselIntg L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ') γ p` using `by filter_upwards [ae_inPair_nu L hμR hOQ] with p hp`. Establish `hs` using `schur_step L hμG hd hSch hw1 v v' ξ ξ' hγ hp`.
+
+Rewrite using `[int_cell L w0 v v' ξ ξ' hγ hrel hμG hμR hinv hQ hp hs.1, hs.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul]`. Simplify using `[ampJ]`. Use `_ = ∫ x, ∫ pa, PsiM L w0 v v' ξ ξ' γ (mStab γ pa, x) ∂(ν.prod μR) ∂νR := integral_congr_ae hL`.
+
+Use `_ = ∫ pa, ∫ x, PsiM L w0 v v' ξ ξ' γ (mStab γ pa, x) ∂νR ∂(ν.prod μR) := (integral_integral_swap (f := fun pa x => PsiM L w0 v v' ξ ξ' γ (mStab γ pa, x)) hF).symm`. Use `_ = ∫ p, ∫ a, ∫ x, PsiM L w0 v v' ξ ξ' γ (mStab γ (p, a), x) ∂νR ∂μR ∂ν := integral_prod _ hF.integral_prod_left`. Use `_ = ∫ p, ((d : ℂ)⁻¹) • besselIntg L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ') γ p ∂ν := integral_congr_ae hsch`. Use `_ = ((d : ℂ)⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ') γ ν := by`. Rewrite using `[integral_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem amp_core' (L : LocBessel k r) {μG : Measure (Mt k r)} (hμG : IsHaarOn (UH (Hpk k r)) μG) {d : ℝ}
     (hd : 0 < d)
     (hSch : ∀ v w v' w' : L.Hs,
@@ -119,6 +143,9 @@ theorem amp_core' (L : LocBessel k r) {μG : Measure (Mt k r)} (hμG : IsHaarOn 
         rw [integral_smul]
         rfl
 
+/- English proof (translation)
+Conclude with `amp_core' L hμG hd hSch hNI hw1 l l' hγ hrel hμR hOQ hQ hinv hb hab hIG hpm (fun t ht => hl _ (Submodule.subset_span ⟨t, ht, rfl⟩) v hv) (fun t ht => hl' _ (Submodule.subset_span ⟨t, ht, rfl⟩) v' hv') hC1 hC2 ξ ξ'`.
+-/
 theorem amp_core (L : LocBessel k r) {μG : Measure (Mt k r)} (hμG : IsHaarOn (UH (Hpk k r)) μG) {d : ℝ}
     (hd : 0 < d)
     (hSch : ∀ v w v' w' : L.Hs,

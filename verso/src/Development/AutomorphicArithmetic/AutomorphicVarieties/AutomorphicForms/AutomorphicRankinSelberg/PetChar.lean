@@ -4,6 +4,11 @@ open CongruenceSubgroup UpperTheory.V.Af
 open UpperHalfPlane hiding I
 open scoped MatrixGroups ModularForm ComplexConjugate
 
+/- English proof (translation)
+Introduce `k L _ χ ψ f g hf hg γ hγ z`. Establish `h` using `UpperHalfPlane.petersson_slash_SL (k : ℤ) g f γ z`. Rewrite `h` using `[hg γ hγ, hf γ hγ]`. Rewrite using `[← h]`. Simplify using `only [UpperHalfPlane.petersson, Pi.smul_apply, smul_eq_mul, map_mul, starRingEnd_apply, MulChar.star_apply', MulChar.mul_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Af.Rs.petChar :
     UpperTheory.V.Af.Rs.PetChar := by
   intro k L _ χ ψ f g hf hg γ hγ z

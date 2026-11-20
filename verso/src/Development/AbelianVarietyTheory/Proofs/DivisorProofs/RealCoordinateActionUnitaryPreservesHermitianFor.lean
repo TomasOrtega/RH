@@ -13,6 +13,9 @@ section Unitary
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `DenseRange.induction_on (NumberField.InfiniteAdeleRing.denseRange_algebraMap F) a (isClosed_eq (Complex.continuous_conj.comp hθ.2) hθ.2) fun f => ?_` and prove the remaining obligations. Establish `e : (algebraMap F (Ainf F) f) ⊗ₜ[F] (1 : E) = (1 : Ainf F) ⊗ₜ[F] (algebraMap F E f)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[e, hθ.1, starRingEnd_apply, ← hσ, AlgHom.commutes]`.
+-/
 theorem conj_tmul_one_F {σ : E →ₐ[F] E} {τ : E →+* ℂ} (hσ : ∀ x, τ (σ x) = star (τ x))
     {θ : Ainf F ⊗[F] E →+* ℂ} (hθ : IsInfEmbF τ θ) (a : Ainf F) :
     starRingEnd ℂ (θ (a ⊗ₜ[F] (1 : E))) = θ (a ⊗ₜ[F] (1 : E)) := by
@@ -22,6 +25,13 @@ theorem conj_tmul_one_F {σ : E →ₐ[F] E} {τ : E →+* ℂ} (hσ : ∀ x, τ
     rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
   rw [e, hθ.1, starRingEnd_apply, ← hσ, AlgHom.commutes]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a x`. Establish `e : ∀ y : E, fstA F a ⊗ₜ[F] y = (fstA F a ⊗ₜ[F] (1 : E)) * ((1 : Ainf F) ⊗ₜ[F] y)`.
+
+Introduce `y`. Simplify using the standard rewrite rules. Establish `e2 : infPartF F E (cAF σ (a ⊗ₜ[F] x)) = fstA F a ⊗ₜ[F] (σ x)` using `rfl`. Establish `e3 : infPartF F E (a ⊗ₜ[F] x) = fstA F a ⊗ₜ[F] x` using `rfl`. Rewrite using `[e2, e3, e (σ x), e x, map_mul, map_mul, map_mul, conj_tmul_one_F hσ hθ, hθ.1, hθ.1, hσ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem comp_cAF {σ : E →ₐ[F] E} {τ : E →+* ℂ} (hσ : ∀ x, τ (σ x) = star (τ x))
     {θ : Ainf F ⊗[F] E →+* ℂ} (hθ : IsInfEmbF τ θ) (z : AEF F E) :
     θ (infPartF F E (cAF σ z)) = starRingEnd ℂ (θ (infPartF F E z)) := by
@@ -36,6 +46,11 @@ theorem comp_cAF {σ : E →ₐ[F] E} {τ : E →+* ℂ} (hσ : ∀ x, τ (σ x)
     rw [e2, e3, e (σ x), e x, map_mul, map_mul, map_mul, conj_tmul_one_F hσ hθ, hθ.1, hθ.1, hσ]
     rfl
 
+/- English proof (translation)
+Establish `hg : ((mtF σ J g).map (cAF σ))ᵀ * JR (AF F) J * mtF σ J g = JR (AF F) J` using `g.2`. Establish `hJ : (JR (AF F) J).map ((θ w).comp (infPartF F E)) = J.map (tau w)`. Use extensionality with `i j`. Establish `: infPartF F E (inclR (AF F) (J i j)) = (1 : Ainf F) ⊗ₜ[F] J i j` using `rfl`. Use `show θ w (infPartF F E (inclR (AF F) (J i j))) = _`.
+
+Rewrite using `[this]`. Conclude with `(hθ w).1 (J i j)`. Rewrite using `[← hJ]`. Conclude with `GlobalTheory.FockCompare.RealAction.unitary_map (cAF σ) ((θ w).comp (infPartF F E)) (comp_cAF (hσ w) (hθ w)) _ _ hg`.
+-/
 theorem compAtF_unitary {σ : E →ₐ[F] E} {tau : InfinitePlace F → (E →+* ℂ)}
     {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)} (hσ : ∀ w x, tau w (σ x) = star (tau w x))
     (hθ : IsInfFamF tau θ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : GAF σ J) (w : InfinitePlace F) :
@@ -50,6 +65,9 @@ theorem compAtF_unitary {σ : E →ₐ[F] E} {tau : InfinitePlace F → (E →+*
   rw [← hJ]
   exact GlobalTheory.FockCompare.RealAction.unitary_map (cAF σ) ((θ w).comp (infPartF F E)) (comp_cAF (hσ w) (hθ w)) _ _ hg
 
+/- English proof (translation)
+Establish `h1 : mtF σ J 1 = 1` using `by unfold mtF; rw [map_one]; rfl`. Rewrite using `[compAtF, compAtF, ← Matrix.map_mul, ← GlobalTheory.WeilPartsF.mtF_mul, mul_inv_cancel, h1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem compAtF_mul_inv (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)) {σ : E →ₐ[F] E} {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (g : GAF σ J) (w : InfinitePlace F) :
     compAtF θ w (mtF σ J g) * compAtF θ w (mtF σ J g⁻¹) = 1 := by
@@ -59,6 +77,11 @@ theorem compAtF_mul_inv (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)) {
 
 end Unitary
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ θ hθ ι _ p`. Take `⟨g, h⟩` from `p`. Establish `hσ : ∀ w x, (B.emb w).1 (σ x) = star ((B.emb w).1 x)` using `fun w x => hB.cm.2.2.2 _ x`. Unfold `HMF`. Rewrite using `[mMF_apply, blk_conjTranspose, blk_mul, blk_mul]`.
+
+Apply the tactic sequence `congr 1 <;> funext w`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, compAtF_unitary hσ hθ]`. Establish `h1` using `compAtF_unitary hσ hθ JS g w`. Establish `h2` using `compAtF_mul_inv θ JS g w`. Use `conv_rhs => rw [← h1, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← conjTranspose_nonsing_inv, inv_eq_right_inv h2]`.
+-/
 theorem mMF_unitary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),

@@ -12,6 +12,11 @@ open Finset (range)
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k)
 
+/- English proof (translation)
+Rewrite using `[h]`. Use `congr 1`. Establish `: p.ι y = p.ι (p.π (incA D D.host.xi0 * p.ι (y / p.xi)))`. Rewrite using `[RingHom.map_mul, p.π_ι]`. Express the relevant statement in the definitionally equal form `_ = p.ι (p.xi * _)`.
+
+Rewrite using `[mul_div_cancel₀ _ (Witness.xi_ne p)]`. Rewrite using `[this, p.ι_π, mul_left_comm, Witness.e_ι]`.
+-/
 theorem psiE_ι {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (h : p.IsChar ψ ψk) (y : k) :
     psiE ψ (p.ι y) = ψk (y / p.xi) := by
   rw [h]
@@ -22,9 +27,15 @@ theorem psiE_ι {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (h : p
     rw [mul_div_cancel₀ _ (Witness.xi_ne p)]
   rw [this, p.ι_π, mul_left_comm, Witness.e_ι]
 
+/- English proof (translation)
+Rewrite using `[psiE, psiE, GlobalTheory.DualPairCheck.trace_cA]`.
+-/
 theorem psiE_cA (ψ : AddChar (AF D.host.F) ℂ) (x : AE D) : psiE ψ (cA D x) = psiE ψ x := by
   rw [psiE, psiE, GlobalTheory.DualPairCheck.trace_cA]
 
+/- English proof (translation)
+Establish `e : u = p.ι (p.π u) + cA D (p.ι (p.π (cA D u)))`. Rewrite using `[p.ι_π, p.ι_π, RingHom.map_mul, GlobalTheory.DualPairCheck.cA_cA, ← add_mul, hu]`. Use `conv_lhs => rw [e]`. Rewrite using `[psiE_add, psiE_cA, psiE_ι p h, psiE_ι p h, add_div, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+-/
 theorem psiE_supp {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (h : p.IsChar ψ ψk) {u : AE D}
     (hu : (p.e + cA D p.e) * u = u) : psiE ψ u = ψk ((p.π u + p.π (cA D u)) / p.xi) := by
   have e : u = p.ι (p.π u) + cA D (p.ι (p.π (cA D u))) := by
@@ -32,6 +43,11 @@ theorem psiE_supp {ψ : AddChar (AF D.host.F) ℂ} {ψk : AddChar k Circle} (h :
   conv_lhs => rw [e]
   rw [psiE_add, psiE_cA, psiE_ι p h, psiE_ι p h, add_div, AddChar.map_add_eq_mul, Circle.coe_mul]
 
+/- English proof (translation)
+Establish `e1 : hA V g x y = (ratV (star y) ᵥ* gA V) ⬝ᵥ (mt V g - 1) *ᵥ ratV x`. Rewrite using `[← dotProduct_mulVec, mulVec_mulVec, mul_sub, sub_mulVec, dotProduct_sub, ← mt_one V, ← hA, ← hA, ← GlobalTheory.LocFrame.incA_hQ, h, map_zero, sub_zero]`. Rewrite using `[e1]`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `hg i j` as an intermediate fact. Take the linear combination `((ratV (star y) ᵥ* gA V) i * ratV x j) * this`.
+-/
 theorem hA_supp {V : HSp D} {e : AE D} {g : GA D V} (hg : SuppAt e V g) {x y : Fin V.rank → D.host.E} (h : hQ V x y = 0) :
     (e + cA D e) * hA V g x y = hA V g x y := by
   have e1 : hA V g x y = (ratV (star y) ᵥ* gA V) ⬝ᵥ (mt V g - 1) *ᵥ ratV x := by
@@ -43,6 +59,9 @@ theorem hA_supp {V : HSp D} {e : AE D} {g : GA D V} (hg : SuppAt e V g) {x y : F
   have := hg i j
   linear_combination ((ratV (star y) ᵥ* gA V) i * ratV x j) * this
 
+/- English proof (translation)
+Establish `h1 : ratV (star y) ᵥ* gA V = ratV (star y ᵥ* V.gram)` using `funext fun i => (RingHom.map_vecMul (incA D) _ _ i).symm`. Rewrite using `[hA, ← mulVec_mulVec, dotProduct_mulVec, h1, GlobalTheory.LocFrame.map_dot]`. Both sides reduce to the same expression.
+-/
 theorem π_hA (V : HSp D) (g : GA D V) (x y : Fin V.rank → D.host.E) :
     p.π (hA V g x y) = (Witness.prH p ∘ (star y ᵥ* V.gram)) ⬝ᵥ (mt V g).map p.π *ᵥ (Witness.prH p ∘ x) := by
   have h1 : ratV (star y) ᵥ* gA V = ratV (star y ᵥ* V.gram) := funext fun i => (RingHom.map_vecMul (incA D) _ _ i).symm
@@ -51,6 +70,9 @@ theorem π_hA (V : HSp D) (g : GA D V) (x y : Fin V.rank → D.host.E) :
 
 variable {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
+/- English proof (translation)
+Establish `h1 : (mt V g⁻¹).map p.π * (mt V g).map p.π = 1`. Rewrite using `[← Matrix.map_mul, mt_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : (F.β * q.val * F.γ) * (F.β * (q⁻¹).val * F.γ) = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc F.β (q⁻¹).val, ← Matrix.mul_assoc F.γ, F.γβ, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.mul_assoc q.val, Units.mul_inv, Matrix.one_mul, F.βγ]`. Rewrite using `[← Matrix.mul_one ((mt V g⁻¹).map p.π), ← h2, ← Matrix.mul_assoc, ← h, h1, Matrix.one_mul]`.
+-/
 theorem map_mt_inv {V : HSp D} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k V.rank Y) {g : GA D V} {q : GL Y k}
     (h : (mt V g).map p.π = F.β * q.val * F.γ) : (mt V g⁻¹).map p.π = F.β * (q⁻¹).val * F.γ := by
   have h1 : (mt V g⁻¹).map p.π * (mt V g).map p.π = 1 := by
@@ -60,6 +82,9 @@ theorem map_mt_inv {V : HSp D} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame
       ← Matrix.mul_assoc q.val, Units.mul_inv, Matrix.one_mul, F.βγ]
   rw [← Matrix.mul_one ((mt V g⁻¹).map p.π), ← h2, ← Matrix.mul_assoc, ← h, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `e` and use `by have h1 := congrFun (congrFun F.γβ j) j simp [Matrix.mul_apply, h, e] at h1`.
+-/
 theorem col_ne_zero {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k N Y) (j : Y) {t : k} {x : Fin N → k}
     (h : ∀ r, F.β r j = t * x r) : t ≠ 0 := fun e => by
   have h1 := congrFun (congrFun F.γβ j) j
@@ -71,6 +96,19 @@ variable {V X : HSp D} {jX : Matrix (Fin V.rank) (Fin X.rank) D.host.E} {a : ℕ
   (hl : ∀ r b, F.β r (Sum.inl b) = (jX.map p.pr * M) r b) (hr : ∀ (i : Fin c) r, F.β r (Sum.inr i) = t i * p.pr (a i r))
 include H hl hr
 
+/- English proof (translation)
+Use `set u := Witness.prH p ∘ (star (a (c - 1 - i)) ᵥ* V.gram) with hu`. Establish `e1 : t j • (Witness.prH p ∘ a j) = F.β *ᵥ Pi.single (.inr j) 1`. Rewrite using `[mulVec_single_one]`. Conclude with `funext fun r => (hr j r).symm`. Establish `e2 (b : n) : (u ᵥ* F.β) (.inl b) = 0`.
+
+Establish `: (u ᵥ* (jX.map (Witness.prH p) * M)) b = 0`. Rewrite using `[← vecMul_vecMul, show u ᵥ* jX.map (Witness.prH p) = 0 from funext fun s => by`. Rewrite using `[hu, ← RingHom.map_vecMul, H.perp _ (by omega), Pi.zero_apply, map_zero, Pi.zero_apply], zero_vecMul, Pi.zero_apply]`. Rewrite using `[← this]`. Express the relevant statement in the definitionally equal form `∑ r, u r * F.β r (.inl b) = ∑ r, u r * (jX.map p.pr * M) r b`.
+
+Conclude with `Finset.sum_congr rfl fun r _ => congrArg (u r * ·) (hl r b)`. Establish `e3 (l : Fin c) : (u ᵥ* F.β) (.inr l) = if l = i then p.pr (κ i) * t i else 0`. Establish `h3 : (u ᵥ* F.β) (.inr l) = t l * Witness.prH p (hQ V (a l) (a (c - 1 - i)))`. Rewrite using `[hQ, dotProduct_mulVec, RingHom.map_dotProduct, dotProduct, Finset.mul_sum]`. Express the relevant statement in the definitionally equal form `∑ r, u r * F.β r (.inr l) = _`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u r * F.β r (.inr l) = t l * (u r * p.pr (a l r))`. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, H.pair i i.2 l l.2]`.
+
+Distinguish the cases in `e : l = i`. Substitute `e` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun e' => e (Fin.ext e')), if_neg e, map_zero, mul_zero]`.
+
+Rewrite using `[π_hA, h, ← smul_eq_mul, ← dotProduct_smul, ← mulVec_smul, e1, mulVec_mulVec, Matrix.mul_assoc, F.γβ, Matrix.mul_one, ← mulVec_mulVec, dotProduct_mulVec, mulVec_single_one, dotProduct, Fintype.sum_sum_type]`. Simplify using `[← hu, e2, e3]`.
+-/
 theorem π_coef {g : GA D V} {q : GL (n ⊕ Fin c) k} (h : (mt V g).map p.π = F.β * q.val * F.γ) (i j : Fin c) :
     t j * p.π (hA V g (a j) (a (c - 1 - i))) = p.pr (κ i) * t i * q.val (.inr i) (.inr j) := by
   set u := Witness.prH p ∘ (star (a (c - 1 - i)) ᵥ* V.gram) with hu
@@ -99,6 +137,11 @@ theorem π_coef {g : GA D V} {q : GL (n ⊕ Fin c) k} (h : (mt V g).map p.π = F
     ← mulVec_mulVec, dotProduct_mulVec, mulVec_single_one, dotProduct, Fintype.sum_sum_type]
   simp [← hu, e2, e3]
 
+/- English proof (translation)
+Establish `h1` using `π_coef p H hl hr h ⟨i, by omega⟩ ⟨i + 1, hi⟩`. Establish `h2 : t (i + 1) ≠ 0` using `col_ne_zero F _ (hr ⟨i + 1, hi⟩)`. Rewrite using `[ent, dif_pos hi]`. Use `mul_left_cancel₀ h2 (h1.trans ?_)` and prove the remaining obligations. Simplify using `only [hx]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem π_simple {g : GA D V} {q : GL (n ⊕ Fin c) k} (h : (mt V g).map p.π = F.β * q.val * F.γ) {i : ℕ} (hi : i + 1 < c)
     {x : k} (hx : p.pr (κ i) * t i = x * t (i + 1)) : p.π (hA V g (a (i + 1)) (a (c - 1 - i))) = x * ent q i := by
   have h1 := π_coef p H hl hr h ⟨i, by omega⟩ ⟨i + 1, hi⟩
@@ -113,6 +156,9 @@ end Coef
 def scal {ρ : ℕ} (B : BesLev D ρ) (s : k) (i : ℕ) : k :=
   if i < ρ then s * p.xi ^ (ρ - i) else if i = ρ then s else s * (-p.hz B / p.xi) * (-1 / p.xi) ^ (ρ - 1 - (2 * ρ - i))
 
+/- English proof (translation)
+Rewrite using `[if_neg hi.ne, show p.pr 1 = 1 from (Witness.prH p).map_one, scal, scal, if_pos hi]`. Use `split_ifs with h1 h2`. Rewrite using `[show ρ - i = ρ - (i + 1) + 1 by omega]; ring`. Rewrite using `[show ρ - i = 1 by omega]; ring`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem scal_lo {ρ : ℕ} (B : BesLev D ρ) (s : k) {i : ℕ} (hi : i < ρ) :
     p.pr (if i = ρ then hQ B.L B.ζ B.ζ else 1) * scal p B s i = p.xi * scal p B s (i + 1) := by
   rw [if_neg hi.ne, show p.pr 1 = 1 from (Witness.prH p).map_one, scal, scal, if_pos hi]
@@ -121,6 +167,11 @@ theorem scal_lo {ρ : ℕ} (B : BesLev D ρ) (s : k) {i : ℕ} (hi : i < ρ) :
   · rw [show ρ - i = 1 by omega]; ring
   · omega
 
+/- English proof (translation)
+Establish `hx` using `Witness.xi_ne p`. Rewrite using `[scal, scal, if_neg (show ¬ i < ρ by omega), if_neg (show ¬ i + 1 < ρ by omega), if_neg (show ¬ i + 1 = ρ by omega)]`. Use `split_ifs with h1`. Rewrite using `[show ρ - 1 - (2 * ρ - (i + 1)) = 0 by omega]`. Express the relevant statement in the definitionally equal form `p.hz B * s = _`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[show ρ - 1 - (2 * ρ - (i + 1)) = ρ - 1 - (2 * ρ - i) + 1 by omega, show p.pr 1 = 1 from (Witness.prH p).map_one, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem scal_hi {ρ : ℕ} (B : BesLev D ρ) (s : k) {i : ℕ} (hi : ρ ≤ i) (hi' : i < 2 * ρ) :
     p.pr (if i = ρ then hQ B.L B.ζ B.ζ else 1) * scal p B s i = -p.xi * scal p B s (i + 1) := by
   have hx := Witness.xi_ne p
@@ -132,6 +183,11 @@ theorem scal_hi {ρ : ℕ} (B : BesLev D ρ) (s : k) {i : ℕ} (hi : ρ ≤ i) (
   · rw [show ρ - 1 - (2 * ρ - (i + 1)) = ρ - 1 - (2 * ρ - i) + 1 by omega, show p.pr 1 = 1 from (Witness.prH p).map_one, pow_succ]
     field_simp
 
+/- English proof (translation)
+Take `⟨hc, -, h1, h2, h3⟩` from `h`. Use `i.2` as an intermediate fact. Unfold `scal besselAuxiliaryVectors`. Use `split_ifs with e1 e2`. Rewrite using `[h1 ⟨i, e1⟩ i rfl r, colN, dif_pos e1]`.
+
+Conclude with `h2 i e2 r`. Establish `e3 : 2 * ρ - i < ρ` using `by omega`. Rewrite using `[h3 ⟨2 * ρ - i, e3⟩ i (by simp only; omega) r, colN, dif_pos e3]`.
+-/
 theorem col_eq {ρ : ℕ} {B : BesLev D ρ} {s : k} {FA : Frame k B.A.rank n} {FV : Frame k B.V.rank (n ⊕ Fin c)}
     (h : p.IsBesFrame B s FA FV) (i : Fin c) (r) :
     FV.β r (Sum.inr i) = scal p B s i * p.pr (besselAuxiliaryVectors B.d (vecB B.o B.ζ) i r) := by
@@ -144,6 +200,17 @@ theorem col_eq {ρ : ℕ} {B : BesLev D ρ} {s : k} {FA : Frame k B.A.rank n} {F
   · have e3 : 2 * ρ - i < ρ := by omega
     rw [h3 ⟨2 * ρ - i, e3⟩ i (by simp only; omega) r, colN, dif_pos e3]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ ψk hψ σ B s n _ _ c FA FV hF g q hq hg`. Take `rfl` from `hF.1`. Establish `H` using `GlobalTheory.LocFrame.isHermitianAuxiliaryVectorSystem_besselVectors B.d B.o B.line`. Establish `hx` using `Witness.xi_ne p`. Rewrite using `[psiBes, map_one, one_mul, GlobalTheory.LocFrame.simpleSum_eq_sum_hA, psiE_supp p hψ, GlobalTheory.LocFrame.simpleSum_eq_sum_ent]`.
+
+Use `congr 2`. Rewrite using `[div_eq_iff hx, show 2 * σ + 1 - 1 = σ + σ by omega, Finset.sum_range_add, add_mul, map_sum, map_sum, map_sum, Finset.sum_mul, ← Finset.sum_range_reflect (fun i => ent q (σ + i)), Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`.
+
+Establish `h1` using `π_simple p H hF.2.1 (col_eq p hF) hg.2 (i := i) (by omega) (scal_lo p B s hi')`. Rewrite using `[show σ + σ - i = 2 * σ + 1 - 1 - i by omega, h1, mul_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `h1` using `π_simple p H hF.2.1 (col_eq p hF) (map_mt_inv p FV hg.2) (i := σ + (σ - 1 - i)) (by omega) (scal_hi p B s (by omega) (by omega))`.
+
+Rewrite `h1` using `[show 2 * σ + 1 - 1 - (σ + (σ - 1 - i)) = i + 1 by omega, show σ + (σ - 1 - i) + 1 = σ + σ - i by omega, GlobalTheory.LocFrame.ent_inv hq]`. Rewrite using `[GlobalTheory.LocFrame.cA_hA, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => hA_supp hg.1 ?_` and prove the remaining obligations.
+
+Establish `hi'` using `Finset.mem_range.1 hi`. Rewrite using `[H.pair i (by omega) _ (by omega), if_neg (by omega)]`.
+-/
 theorem psiBes_isLoc : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), p.IsChar ψ ψk → ∀ (σ : ℕ) (B : BesLev D σ) (s : k) (n : Type) [Fintype n] [DecidableEq n] (c : ℕ) (FA : Frame k B.A.rank n) (FV : Frame k B.V.rank (n ⊕ Fin c)), p.IsBesFrame B s FA FV → ∀ (g : GA D B.V) (q : GL (n ⊕ Fin c) k), q ∈ N k n c (σ + 1) → p.IsLoc FV g q → psiBes ψ B.d 1 (vecB B.o B.ζ) g = (ψk (GlobalTheory.RootEx.simpleSum q) : ℂ) := by
   intro D k _ _ _ _ p ψ ψk hψ σ B s n _ _ c FA FV hF g q hq hg
   obtain rfl := hF.1

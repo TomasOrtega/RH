@@ -5,6 +5,15 @@ import Formalism.LocalToGlobal.Columns.InvariantSubspaceNonzeroXOfRegular
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefU GlobalTheory.PRep Formalism.L2.Host GlobalTheory.HeckeGal UpperTheory.Gal.CertificateRingHomMap
 open scoped Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ n W j y s t hy v`. Establish `hy' : y = Formalism.L2.Col.brpSc E t` using `Units.ext (by rw [hy, Formalism.L2.Col.brpSc_coe])`. Establish `hinv : y⁻¹ = Formalism.L2.Col.brpSc E t⁻¹`. Rewrite using `[hy']`. Conclude with `(map_inv (Units.map (algebraMap E (Matrix (Fin n) (Fin n) E) : E →* Matrix (Fin n) (Fin n) E)) t).symm`.
+
+Establish `hemb : embAll E n y⁻¹ = fun u => Formalism.L2.Col.brpSc ℂ (Units.map (u.embedding : E →* ℂ) t⁻¹)`. Use function extensionality and compare the values at `u`. Use extensionality with `i k`. Rewrite using `[hinv]`. Express the relevant statement in the definitionally equal form `((((Formalism.L2.Col.brpSc E t⁻¹ : GL (Fin n) E)) : Matrix (Fin n) (Fin n) E).map u.embedding) i k = _`.
+
+Rewrite using `[Formalism.L2.Col.brpSc_coe, Formalism.L2.Col.brpSc_coe]`. Apply the tactic sequence `by_cases h : i = k <;> simp [Matrix.one_apply, h]`. Establish `hr` using `Formalism.L2.Col.tensorWeights_scalar_action (K := ℂ) W (fun u => Units.map (u.embedding : E →* ℂ) t⁻¹)`. Rewrite `hr` using `[← hemb]`. Simplify using `only [xi, MonoidHom.coe_mk, OneHom.coe_mk, Representation.dual_apply]`.
+
+Rewrite using `[MonoidHom.comp_apply, hr]`. Use extensionality with `x`. Simplify using `[Module.Dual.transpose_apply, smul_smul]`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pXiScalar_of :
     UpperTheory.Gal.CertificateRingHomMap.XiScalar := by
   intro E _ _ _ n W j y s t hy v

@@ -7,6 +7,9 @@ section Powers
 
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a b with`. Consider the case `zero => simp [PositivityTheory.RgBcC.RealD.epow, Matrix.one_apply]`. Consider the case `succ m ih`. Simplify using `only [PositivityTheory.RgBcC.RealD.epow, pow_succ', Matrix.mul_apply, Matrix.of_apply, ih]`.
+-/
 theorem epowLeft_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a b : Fin n) :
     PositivityTheory.RgBcC.RealD.epow E m a b =
       ((Matrix.of E : Matrix (Fin n) (Fin n) (Module.End ℂ V)) ^ m) a b := by
@@ -15,6 +18,9 @@ theorem epowLeft_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a 
   | succ m ih =>
     simp only [PositivityTheory.RgBcC.RealD.epow, pow_succ', Matrix.mul_apply, Matrix.of_apply, ih]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a b with`. Consider the case `zero => simp [Formalism.REAL.epow, Matrix.one_apply]`. Consider the case `succ m ih`. Simplify using `only [Formalism.REAL.epow, pow_succ, Matrix.mul_apply, Matrix.of_apply, ih]`.
+-/
 theorem epowRight_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a b : Fin n) :
     Formalism.REAL.epow E m a b =
       ((Matrix.of E : Matrix (Fin n) (Fin n) (Module.End ℂ V)) ^ m) a b := by
@@ -23,6 +29,9 @@ theorem epowRight_eq_pow (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) (a
   | succ m ih =>
     simp only [Formalism.REAL.epow, pow_succ, Matrix.mul_apply, Matrix.of_apply, ih]
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.etr, PositivityTheory.RgBcC.RealD.gelA, epowLeft_eq_pow, epowRight_eq_pow]`.
+-/
 theorem etr_eq_gelA (E : Fin n → Fin n → Module.End ℂ V) (m : ℕ) :
     Formalism.REAL.etr E m = PositivityTheory.RgBcC.RealD.gelA E m := by
   simp only [Formalism.REAL.etr, PositivityTheory.RgBcC.RealD.gelA, epowLeft_eq_pow, epowRight_eq_pow]

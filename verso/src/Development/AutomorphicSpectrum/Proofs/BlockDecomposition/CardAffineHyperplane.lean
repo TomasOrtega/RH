@@ -4,6 +4,19 @@ open Matrix Classical PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.GLFirs
 
 namespace GlobalTheory.CompanionTheory.GapOpCount
 
+/- English proof (translation)
+Introduce `k _ _ n a ha`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ha (funext h)`.
+
+Establish `hax₀ : a ⬝ᵥ Pi.single i (a i)⁻¹ = 1`. Rewrite using `[dotProduct_single, mul_inv_cancel₀ hi]`. Establish `hfib : ∀ c : k, (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = c)).card = (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1)).card`. Introduce `c`. Apply `Finset.card_bij' (fun x _ => x + (1 - c) • Pi.single i (a i)⁻¹) (fun x _ => x - (1 - c) • Pi.single i (a i)⁻¹)` to reduce the goal to its premises.
+
+Use `case hi =>`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Rewrite using `[dotProduct_add, dotProduct_smul, hax₀, hx, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `case hj =>`. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Rewrite using `[dotProduct_sub, dotProduct_smul, hax₀, hx, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `case left_inv =>`. Introduce `x _`. Simplify using the standard rewrite rules. Use `case right_inv =>`. Introduce `x _`.
+
+Simplify using the standard rewrite rules. Establish `htot : (Finset.univ : Finset (Fin (n + 1) → k)).card = ∑ c : k, (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = c)).card` using `Finset.card_eq_sum_card_fiberwise (fun x _ => Finset.mem_univ (a ⬝ᵥ x))`. Establish `hcard : (Finset.univ : Finset (Fin (n + 1) → k)).card = Fintype.card k ^ (n + 1)`. Rewrite using `[Finset.card_univ, Fintype.card_fun, Fintype.card_fin]`. Rewrite using `[← hcard, htot, Finset.sum_congr rfl (fun c _ => hfib c), Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+-/
 theorem card_dotProduct_eq_one :
     ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (a : Fin (n + 1) → k), a ≠ 0 →
   Fintype.card k * (Finset.univ.filter (fun x : Fin (n + 1) → k => a ⬝ᵥ x = 1)).card = Fintype.card k ^ (n + 1) := by

@@ -9,5 +9,8 @@ open GlobalTheory GlobalTheory.ZM GlobalTheory.ZH GlobalTheory.UMin GlobalTheory
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UMin.SymRing.sym_ring | exact GlobalTheory.UMin.SymRing.sym_ring | (intros; apply GlobalTheory.UMin.SymRing.sym_ring <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaSymmetricFunctions_mem_normalDomain : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (x : Sp R ⟶ S) (θ : SecAt G L x), Odd m → IsUnit (m : R) → N = m ^ (4 * g) → PolFib G L g x → ∃ e : Fin N → R, SymAt G L ρ m x θ e := by
   first | exact @GlobalTheory.UMin.SymRing.sym_ring | exact GlobalTheory.UMin.SymRing.sym_ring | (intros; apply GlobalTheory.UMin.SymRing.sym_ring <;> assumption)

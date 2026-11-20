@@ -13,6 +13,21 @@ open scoped ENNReal
 namespace GlobalTheory.CellDec
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hC : MeasurableSet (C0 E n S)` using `(GlobalTheory.T.isOpen_C0 E n S).measurableSet`. Set `cellS : abelian₂ E n S → Set (GA E n)` to `fun l => {g | (tl n ϖ l.1)⁻¹ * g ∈ C0 E n S}`. Establish `hmeas : ∀ l, MeasurableSet (cellS l)` using `fun l => ((GlobalTheory.T.isOpen_C0 E n S).preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hpart : ∀ g, ∑' l : abelian₂ E n S, (cellS l).indicator B g = B g`. Introduce `g`.
+
+Take `⟨l0, hl0S, hl0⟩` from `GlobalTheory.T.exists_tl_inv_mul_mem_C0_off_finset E n S ϖ hϖ g`. Establish `hz : ∀ l : abelian₂ E n S, l ≠ (⟨l0, hl0S⟩ : abelian₂ E n S) → (cellS l).indicator B g = 0` using `fun l hl => Set.indicator_of_notMem (show g ∉ cellS l from fun hg => hl (Subtype.ext (GlobalTheory.T.adelic_iwasawa_cells_disjoint_off_finset E n S ϖ hϖ l.1 l0 g l.2 hl0S hg hl0))) B`. Rewrite using `[tsum_eq_single _ hz]`. Conclude with `Set.indicator_of_mem (show g ∈ cellS ⟨l0, hl0S⟩ from hl0) _`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `t` to `tl n ϖ l.1`. Set `F : GA E n → ℝ≥0∞` to `(C0 E n S).indicator fun h => B (t * h)`. Establish `e : (cellS l).indicator B = fun g => F (t⁻¹ * g)`. Use function extensionality and compare the values at `g`. Use `show (cellS l).indicator B g = (C0 E n S).indicator (fun h => B (t * h)) (t⁻¹ * g)`.
+
+Distinguish the cases in `hg : t⁻¹ * g ∈ C0 E n S`. Rewrite using `[Set.indicator_of_mem (show g ∈ cellS l from hg), Set.indicator_of_mem hg, mul_inv_cancel_left]`. Rewrite using `[Set.indicator_of_notMem (show g ∉ cellS l from hg), Set.indicator_of_notMem hg]`. Establish `hF : Measurable F` using `(hB.comp (measurable_const_mul t)).indicator hC`. Establish `hFinv : ∀ u ∈ NA E n, ∀ g, F (u * g) = F g`.
+
+Introduce `u hu g`. Use `show (C0 E n S).indicator (fun h => B (t * h)) (u * g) = (C0 E n S).indicator (fun h => B (t * h)) g`. Distinguish the cases in `hg : g ∈ C0 E n S`. Rewrite using `[Set.indicator_of_mem (adelicUnitriangular_mul_mem_unipotentTimesIntegral hu hg), Set.indicator_of_mem hg]`. Express the relevant statement in the definitionally equal form `B (t * (u * g)) = B (t * g)`.
+
+Rewrite using `[show t * (u * g) = (t * u * t⁻¹) * (t * g) by group]`. Conclude with `hinv _ (tl_conj_mem ϖ l.1 hu) _`. Establish `: u * g ∉ C0 E n S` using `fun h => hg (by simpa using adelicUnitriangular_mul_mem_unipotentTimesIntegral (inv_mem hu) h)`. Rewrite using `[Set.indicator_of_notMem this, Set.indicator_of_notMem hg]`. Rewrite using `[e, GlobalTheory.T.lintegral_uniformizerTorus_translate_unipotentQuotient E n μ ϖ hϖ l.1 𝓕 h𝓕 F hF hFinv]`.
+
+Use `congr 1`. Rewrite using `[lintegral_indicator hC, Measure.restrict_restrict hC, Set.inter_comm]`.
+-/
 theorem cell_lintegral [MeasurableSpace (GA E n)] [BorelSpace (GA E n)] (μ : Measure (GA E n)) [μ.IsHaarMeasure]
     (S : Finset (HeightOneSpectrum (𝓞 E))) (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ)
     (hϖ : ∀ v, IsUnifV E v (ϖ v : v.adicCompletion E)) (𝓕 : Set (GA E n)) (h𝓕 : IsFundamentalDomain (NE E n) 𝓕 μ)
@@ -57,6 +72,9 @@ theorem cell_lintegral [MeasurableSpace (GA E n)] [BorelSpace (GA E n)] (μ : Me
   congr 1
   rw [lintegral_indicator hC, Measure.restrict_restrict hC, Set.inter_comm]
 
+/- English proof (translation)
+Establish `hpos : ∀ l : abelian₂ E n S, 0 < dinv n l.1` using `fun l => Finset.prod_pos fun v _ => zpow_pos (by exact_mod_cast (GlobalTheory.LFun.qV_ne_zero v).bot_lt) _`. Conclude with `GlobalTheory.T.hasSum_unfolding_of_complex_invariant_integrable μ 𝓕 (𝓕 ∩ C0 E n S) (fun l : abelian₂ E n S => dinv n l.1) hpos (fun l g => tl n ϖ l.1 * g) (fun l => measurable_const_mul _) ((fun u : GA E n => fun g => u * g) '' (NA E n : Set (GA E n))) (fun f hf hfi => cell_linte …`.
+-/
 theorem cell_integral [MeasurableSpace (GA E n)] [BorelSpace (GA E n)] (μ : Measure (GA E n)) [μ.IsHaarMeasure]
     (S : Finset (HeightOneSpectrum (𝓞 E))) (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ)
     (hϖ : ∀ v, IsUnifV E v (ϖ v : v.adicCompletion E)) (𝓕 : Set (GA E n)) (h𝓕 : IsFundamentalDomain (NE E n) 𝓕 μ)

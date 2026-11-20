@@ -5,6 +5,21 @@ import Development.WeilBound.CoreStatements.IdealCycleValues.ProdMapToMultiset
 
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ _ ι _ σ Z cls Q`. Use `set g : (σ →₀ ℕ) → ℝ := fun μ => (cycList Z (classList cls μ ++ Q) : ℝ) with hg`. Establish `key : ∀ (H : MvPolynomial σ ℝ) (s : Finset (σ →₀ ℕ)), H.support ⊆ s → cycNum Z cls H Q = ∑ μ ∈ s, MvPolynomial.coeff μ H * g μ`. Introduce `H s hs`. Use `show ∑ μ ∈ H.support, MvPolynomial.coeff μ H * g μ = _`.
+
+Use `Finset.sum_subset hs (fun μ _ hμ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp hμ, zero_mul]`. Establish `hadd : ∀ H H' : MvPolynomial σ ℝ, cycNum Z cls (H + H') Q = cycNum Z cls H Q + cycNum Z cls H' Q`. Introduce `H H'`. Rewrite using `[key (H + H') (H.support ∪ H'.support) MvPolynomial.support_add, key H (H.support ∪ H'.support) Finset.subset_union_left, key H' (H.support ∪ H'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl (fun _ _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, add_mul]`. Establish `hzero : cycNum Z cls (0 : MvPolynomial σ ℝ) Q = 0`. Rewrite using `[key 0 ∅ (by simp)]`. Simplify using the standard rewrite rules.
+
+Use `⟨hadd, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c H`. Establish `hs : (MvPolynomial.C c * H).support ⊆ H.support`. Introduce `μ hμ`. Rewrite `hμ`, the goal using `[MvPolynomial.mem_support_iff]`.
+
+Rewrite `hμ` using `[MvPolynomial.coeff_C_mul]`. Conclude with `right_ne_zero_of_mul hμ`. Rewrite using `[key _ H.support hs, key H H.support subset_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun _ _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, mul_assoc]`.
+
+Introduce `α s H`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hzero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd, ih]`. Introduce `μ c`.
+
+Rewrite using `[key _ {μ} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+-/
 theorem BaseChangeColon.cycNum_linear_in_polynomial : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (σ : Type) (Z : Ideal (MRing ι O) → ℤ) (cls : σ → K → ℤ) (Q : List (K → ℤ)), (∀ H H' : MvPolynomial σ ℝ, cycNum Z cls (H + H') Q = cycNum Z cls H Q + cycNum Z cls H' Q) ∧ (∀ (c : ℝ) (H : MvPolynomial σ ℝ), cycNum Z cls (C c * H) Q = c * cycNum Z cls H Q) ∧ (∀ (α : Type) (s : Finset α) (H : α → MvPolynomial σ ℝ), cycNum Z cls (∑ a ∈ s, H a) Q = ∑ a ∈ s, cycNum Z cls (H a) Q) ∧ ∀ (μ : σ →₀ ℕ) (c : ℝ), cycNum Z cls (monomial μ c) Q = c * (cycList Z (classList cls μ ++ Q) : ℝ) := by
   intro O _ _ _ K _ _ ι _ σ Z cls Q
   classical

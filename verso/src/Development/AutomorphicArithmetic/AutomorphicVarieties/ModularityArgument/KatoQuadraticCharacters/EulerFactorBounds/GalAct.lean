@@ -14,6 +14,9 @@ namespace UpperTheory.V.Z.Kato.Nb.GalAct
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.SpecialLinearGroup.coe_mul]`. Conclude with `Tower.act_act Ω ε X l _ _ (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos) (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos) b`.
+-/
 private theorem act_sl (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (g h : SL(2, ℤ)) (b : X.Fn l) :
     X.act l (h : Matrix (Fin 2) (Fin 2) ℤ) (X.act l (g : Matrix (Fin 2) (Fin 2) ℤ) b) =
       X.act l ((g * h : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) b := by
@@ -21,9 +24,15 @@ private theorem act_sl (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (g h : SL(2, �
   exact Tower.act_act Ω ε X l _ _ (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos)
     (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos) b
 
+/- English proof (translation)
+The claim follows from `inf_le_inf_right _ (CongruenceSubgroup.Gamma1_in_Gamma0 N)`.
+-/
 private theorem gam_le (N l : ℕ) : Gam N l ≤ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l :=
   inf_le_inf_right _ (CongruenceSubgroup.Gamma1_in_Gamma0 N)
 
+/- English proof (translation)
+Take `⟨a1, a2, a3⟩` from `(CongruenceSubgroup.Gamma1_mem N γ).1 (Subgroup.mem_inf.1 hγ).1`. Establish `a4 : ((δ 1 0 : ℤ) : ZMod N) = 0` using `CongruenceSubgroup.Gamma0_mem.1 (Subgroup.mem_inf.1 hδ).1`. Use `GamComm.mul_inv_mem_Gam N l _ δ (mul_mem hδ (gam_le N l hγ)) hδ ?_ ?_` and prove the remaining obligations. Simplify using `[en, Matrix.mul_apply, Fin.sum_univ_two, a1, a3]`. Simplify using `[en, Matrix.mul_apply, Fin.sum_univ_two, a2, a4]`.
+-/
 private theorem conj_mem (N l : ℕ) (γ δ : SL(2, ℤ)) (hγ : γ ∈ Gam N l)
     (hδ : δ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l) : δ * γ * δ⁻¹ ∈ Gam N l := by
   obtain ⟨a1, a2, a3⟩ := (CongruenceSubgroup.Gamma1_mem N γ).1 (Subgroup.mem_inf.1 hγ).1
@@ -32,11 +41,19 @@ private theorem conj_mem (N l : ℕ) (γ δ : SL(2, ℤ)) (hγ : γ ∈ Gam N l)
   · simp [en, Matrix.mul_apply, Fin.sum_univ_two, a1, a3]
   · simp [en, Matrix.mul_apply, Fin.sum_univ_two, a2, a4]
 
+/- English proof (translation)
+Rewrite using `[act_sl, act_sl, inv_mul_cancel_right]`.
+-/
 private theorem act_act_conj (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (γ δ : SL(2, ℤ)) (b : X.Fn l) :
     X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) (X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) b) =
       X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) (X.act l ((δ * γ * δ⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) b) := by
   rw [act_sl, act_sl, inv_mul_cancel_right]
 
+/- English proof (translation)
+Take `⟨φ, h1, h2⟩` from `X.j_hol`. Establish `hA` using `(kmap_A_stable ε X ε.injective ⟨φ, h2, h1⟩ l).2 s`. Establish `himg : X.galB l s '' X.BSet N l w ⊆ X.BSet N l w`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨StabGal.galB_mem_Pol X l w s hA c hc.1, fun γ hγ => StabGal.inv_galB X N l w hN s c hc γ hγ⟩`.
+
+Conclude with `Submodule.span_mono himg (Submodule.apply_mem_span_image_of_mem_span (X.galB l s) hb)`.
+-/
 private theorem galB_mem [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : ℕ) (hN : 0 < N)
     (s : Ω ≃ₐ[ℚ] Ω) (b : X.Fn l) (hb : b ∈ X.B N l w) : X.galB l s b ∈ X.B N l w := by
   obtain ⟨φ, h1, h2⟩ := X.j_hol
@@ -46,6 +63,11 @@ private theorem galB_mem [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact
     exact ⟨StabGal.galB_mem_Pol X l w s hA c hc.1, fun γ hγ => StabGal.inv_galB X N l w hN s c hc γ hγ⟩
   exact Submodule.span_mono himg (Submodule.apply_mem_span_image_of_mem_span (X.galB l s) hb)
 
+/- English proof (translation)
+Take `⟨φ, h1, h2⟩` from `X.j_hol`. Establish `hA` using `(kmap_A_stable ε X ε.injective ⟨φ, h2, h1⟩ l).1 (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))`. Establish `himg : X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) '' X.BSet N l w ⊆ X.BSet N l w`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `⟨GlobalTheory.T.intMatrixAction_mem_homogeneousPolyFunctions X l w _ hA c hc.1, fun γ hγ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[act_act_conj, hc.2 _ (conj_mem N l γ δ hγ hδ)]`. Conclude with `Submodule.span_mono himg (Submodule.apply_mem_span_image_of_mem_span (X.act l _) hb)`.
+-/
 private theorem act_mem [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : ℕ) (δ : SL(2, ℤ))
     (hδ : δ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l) (b : X.Fn l) (hb : b ∈ X.B N l w) :
     X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) b ∈ X.B N l w := by
@@ -57,6 +79,13 @@ private theorem act_mem [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact 
     rw [act_act_conj, hc.2 _ (conj_mem N l γ δ hγ hδ)]
   exact Submodule.span_mono himg (Submodule.apply_mem_span_image_of_mem_span (X.act l _) hb)
 
+/- English proof (translation)
+Take `⟨c, -, hc⟩` from `ht`. Establish `e : ∀ x, AdicCompletion.eval (idl l) (X.Kl l) n (a x) = AdicCompletion.eval (idl l) (X.Kl l) n (t x)` using `fun x => by`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hat x`. Rewrite using `[e, e, ← sub_eq_zero, ← map_sub, hc, hc, ← Finset.sum_sub_distrib, map_sum]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, map_smul]`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) n (c i))`. Rewrite using `[← hz, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Simplify using `[huv]`.
+-/
 private theorem eval_congr (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (a t : X.Fn l) (ht : PolMod X l w n t)
     (hat : CgF X l n a t) (u v : Fin 2 → ℤ_[l]) (huv : ∀ i, PadicInt.toZModPow n (u i) = PadicInt.toZModPow n (v i)) :
     AdicCompletion.eval (idl l) (X.Kl l) n (a u) = AdicCompletion.eval (idl l) (X.Kl l) n (a v) := by
@@ -72,6 +101,21 @@ private theorem eval_congr (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ
   rw [Ideal.span_singleton_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker]
   simp [huv]
 
+/- English proof (translation)
+Take `⟨⟨t, ht, hbt⟩, hinv, -⟩` from `hb`. Take `⟨hE, -, -, -, -, hact, hgal, -⟩` from `sApi Ω ε X l n`. Introduce `u`. Establish `hcls` using `GlobalTheory.KZ.H3.cls_props Ω ε X l n`. Establish `hF` using `hcls.2.2.2.2.2.1`.
+
+Take `⟨f, hf⟩` from `hcls.1 (AdicCompletion.eval (idl l) (X.Kl l) n (b ![(mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * (mZl l (δ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) 1]))`. Take `⟨M₀, hM₀, hlev⟩` from `X.level (f : X.K)`. Establish `hlp : 0 < l` using `(Fact.out : l.Prime).pos`. Take `⟨M, hM, hM0, hMN, hMl, hMn⟩ : ∃ M : ℕ, 0 < M ∧ M₀ ∣ M ∧ N ∣ M ∧ l ∣ M ∧ l ^ n ∣ M` from `⟨M₀ * N * l * l ^ n, by positivity, ⟨N * l * l ^ n, by ring⟩, ⟨M₀ * l * l ^ n, by ring⟩, ⟨M₀ * N * l ^ n, by ring⟩, ⟨M₀ * N * l, by ring⟩⟩`. Take `⟨ζ, hζ, i, hi, hs, hχ⟩` from `GlobalTheory.exists_primitiveRoot_pow_cyclotomicCharacter l n M hM hMn s`.
+
+Take `⟨g, h00, h01, h10, h11⟩` from `GlobalTheory.exists_sl2_conj_diag_zmod M i hi δ`. Establish `hc : (en δ 0 0 : ZMod M) = en g 0 0 ∧ (en δ 0 1 : ZMod M) = ((i : ℤ) : ZMod M) * en g 0 1 ∧ ((i : ℤ) : ZMod M) * en δ 1 0 = en g 1 0 ∧ (en δ 1 1 : ZMod M) = en g 1 1` using `⟨h00, by simpa only [Int.cast_natCast] using h01, by simpa only [Int.cast_natCast] using h10, h11⟩`. Establish `hrec` using `X.recip M f hM (fun γ hγ => hlev γ (GamComm.gamma_le_of_dvd hM0 hγ)) ζ hζ s i (by rw [zpow_natCast, hs]) g δ hc`. Establish `h10' : (((i : ℤ) * en δ 1 0 : ℤ) : ZMod M) = en g 1 0` using `by push_cast; exact h10`. Establish `hg0 : ∀ K : ℕ, K ∣ M → δ ∈ CongruenceSubgroup.Gamma0 K → g ∈ CongruenceSubgroup.Gamma0 K` using `fun K hK h => by`.
+
+Establish `a : (en δ 1 0 : ZMod K) = 0` using `CongruenceSubgroup.Gamma0_mem.1 h`. Use `CongruenceSubgroup.Gamma0_mem.2 ((GamComm.intCast_eq_of_dvd hK h10').symm.trans ?_)` and prove the remaining obligations. Rewrite using `[Int.cast_mul, a, mul_zero]`. Establish `hgam : g * δ⁻¹ ∈ Gam N l` using `GamComm.mul_inv_mem_Gam N l g δ (Subgroup.mem_inf.2 ⟨hg0 N hMN (Subgroup.mem_inf.1 hδ).1, hg0 l hMl (Subgroup.mem_inf.1 hδ).2⟩) hδ (GamComm.intCast_eq_of_dvd hMN h00) (GamComm.intCast_eq_of_dvd hMN h11)`. Establish `hdg : CgF X l n (X.act l (δ : Matrix (Fin 2) (Fin 2) ℤ) b) (X.act l (g : Matrix (Fin 2) (Fin 2) ℤ) b)`.
+
+Establish `h` using `hact (δ : Matrix (Fin 2) (Fin 2) ℤ) _ _ (hinv _ hgam)`. Rewrite `h` using `[act_sl, inv_mul_cancel_right]`. Conclude with `hE.symm h`. Establish `h1` using `hgal s _ _ hdg u`. Rewrite `h1`, the goal using `[map_sub, sub_eq_zero]`.
+
+Rewrite using `[h1]`. Establish `hpol` using `eval_congr X l w n b t ht hbt _ _ (StabGal.twist_congr l n M hMn δ g i (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) hc (by simpa only [Int.cast_natCast] using hχ) u)`. Establish `hL` using `hF (X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv _ _ (hF (X.gal s) _ _ hf.symm)`. Establish `hR` using `hF (X.gal s) _ _ (hF (X.sl (toGQ (g : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv _ _ (hpol.symm.trans hf.symm))`. Use `hR.trans (Eq.trans ?_ hL.symm)` and prove the remaining obligations.
+
+Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `X.gal s (X.sl (toGQ (g : Matrix (Fin 2) (Fin 2) ℤ)) f) = X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ)) (X.gal s f)`. Rewrite using `[StabGal.toGQ_SL, StabGal.toGQ_SL, hrec]`.
+-/
 private theorem comm [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n : ℕ) (hN : 0 < N)
     (s : Ω ≃ₐ[ℚ] Ω) (b : X.Fn l) (hb : InvM X l N w n b) (δ : SL(2, ℤ))
     (hδ : δ ∈ CongruenceSubgroup.Gamma0 N ⊓ CongruenceSubgroup.Gamma0 l) :
@@ -124,6 +168,15 @@ private theorem comm [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.P
   change X.gal s (X.sl (toGQ (g : Matrix (Fin 2) (Fin 2) ℤ)) f) = X.sl (toGQ (δ : Matrix (Fin 2) (Fin 2) ℤ)) (X.gal s f)
   rw [StabGal.toGQ_SL, StabGal.toGQ_SL, hrec]
 
+/- English proof (translation)
+Take `⟨c, hcU, hc⟩` from `ht`. Take `⟨-, -, -, -, hmap, -, hpow⟩` from `sCls Ω ε X l n`. Take `⟨-, -, -, -, -, hgU, hU, -⟩` from `sSlD Ω ε X 1 one_pos`. Use `⟨fun i => ((cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) ^ (w - (i : ℕ))) • X.kmap l (X.gal s) (c i), fun i => ?_, fun u => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hr⟩` from `hcU i`.
+
+Take `⟨j, hj⟩` from `hpow _ ((cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) ^ (w - (i : ℕ))) _ (hmap (X.gal s) f _ hr)`. Use `⟨_, ?_, hj⟩` and prove the remaining obligations. Establish `h0 : Units.map (X.gal s : X.K →* X.K) f ∈ X.Un (l ^ n)` using `hgU _ s f hf`. Use `clear hj`. Proceed by induction on `j with`.
+
+Consider the case `zero => rw [pow_zero]`. Conclude with `(hU _).1`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `((hU _).2 _ ih _ h0).1`. Use `show X.kmap l (X.gal s) (t ![u 0, (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) * u 1]) = _`.
+
+Rewrite using `[hc]`. Simplify using `only [map_sum, map_smul, Matrix.cons_val_zero, Matrix.cons_val_one, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem polMod_galB [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ)
     (s : Ω ≃ₐ[ℚ] Ω) (t : X.Fn l) (ht : PolMod X l w n t) : PolMod X l w n (X.galB l s t) := by
   obtain ⟨c, hcU, hc⟩ := ht
@@ -149,6 +202,13 @@ private theorem polMod_galB [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [F
 end UpperTheory.V.Z.Kato.Nb.GalAct
 
 open UpperTheory.V.Z.Kato.Nb.GalAct in
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ N w n hN s a ha`. Establish `hcomm` using `comm X l N w n hN s a ha`. Take `⟨⟨t, ht, hat⟩, hinv, b, hb, hba⟩` from `ha`. Take `⟨hE, -, -, -, -, hact, hgal, -⟩` from `sApi Ω ε X l n`. Establish `hba' : CgF X l n b (((l : ℤ_[l]) ^ cL X l N w) • a)` using `hba`.
+
+Use `⟨⟨⟨_, polMod_galB X l w n s t ht, hgal s _ _ hat⟩, fun γ hγ => ?_, X.galB l s b, galB_mem X l N w hN s b hb, ?_⟩, fun δ hδ => ⟨⟨⟨_, (sInvApi Ω ε X l N w n).2.2.2.2.2.2.2 _ t (by rw [Matrix.SpecialLinearGroup.det_coe]; exact one_pos) ht, hact _ _ _ hat⟩, fun γ hγ => ?_, X.act l (δ …` and prove the remaining obligations. Conclude with `hE.trans (hE.symm (hcomm γ (gam_le N l hγ))) (hgal s _ _ (hinv γ hγ))`. Establish `h` using `hgal s _ _ hba'`. Rewrite `h` using `[map_smul]`. Conclude with `h`.
+
+Rewrite using `[act_act_conj]`. Conclude with `hact _ _ _ (hinv _ (conj_mem N l γ δ hγ hδ))`. Establish `h` using `hact (δ : Matrix (Fin 2) (Fin 2) ℤ) _ _ hba'`. Rewrite `h` using `[map_smul]`. Conclude with `h`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sGalAct :
     UpperTheory.V.Z.Kato.Nb.SGalAct := by
   intro Ω _ _ _ ε X l _ N w n hN s a ha

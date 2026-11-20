@@ -13,6 +13,9 @@ section GramHadamard
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
+/- English proof (translation)
+Use `set U := Submodule.span ℂ (Set.range v)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.starProjection_minimal]`. Conclude with `ciInf_le ⟨0, fun _ ⟨_, h⟩ ↦ h ▸ norm_nonneg _⟩ (0 : U)`. Use `_ = ‖y‖ := by simp`.
+-/
 theorem norm_sub_starProjection_le {ι : Type*} [Fintype ι] (v : ι → V) (y : V) :
     ‖y - (Submodule.span ℂ (Set.range v)).starProjection y‖ ≤ ‖y‖ := by
   set U := Submodule.span ℂ (Set.range v)
@@ -21,6 +24,15 @@ theorem norm_sub_starProjection_le {ι : Type*} [Fintype ι] (v : ι → V) (y :
         exact ciInf_le ⟨0, fun _ ⟨_, h⟩ ↦ h ▸ norm_nonneg _⟩ (0 : U)
     _ = ‖y‖ := by simp
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+
+Introduce `c`. Set `e : Fin n ⊕ Unit ≃ Fin (n + 1)` to `(Equiv.sumCongr (Equiv.refl _) finOneEquiv.symm).trans finSumFinEquiv`. Establish `he : c ∘ e = Sum.elim (fun i ↦ c i.castSucc) (fun _ : Unit ↦ c (Fin.last n))`. Use function extensionality and compare the values at `b`. Break down `b with i | u` into its components or cases.
+
+Both sides reduce to the same expression. Simplify using `only [Function.comp_apply, Sum.elim_inr]`. Use `congr 1`. Establish `key : det (gram ℂ c) = det (gram ℂ fun i : Fin n ↦ c i.castSucc) * ((‖c (Fin.last n) - (Submodule.span ℂ (Set.range fun i : Fin n ↦ c i.castSucc)).starProjection (c (Fin.last n))‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[← det_gram_comp_equiv e c, he, det_gram_sumElim_eq, det_gram_unique]`.
+
+Rewrite using `[key, Complex.re_mul_ofReal, Fin.prod_univ_castSucc]`. Conclude with `mul_le_mul (ih _) (pow_le_pow_left₀ (norm_nonneg _) (norm_sub_starProjection_le _ _) 2) (sq_nonneg _) (Finset.prod_nonneg fun i _ ↦ sq_nonneg _)`.
+-/
 theorem re_det_gram_le_prod_fin : ∀ (n : ℕ) (c : Fin n → V),
     (det (gram ℂ c)).re ≤ ∏ i, ‖c i‖ ^ 2 := by
   intro n
@@ -45,6 +57,9 @@ theorem re_det_gram_le_prod_fin : ∀ (n : ℕ) (c : Fin n → V),
       (pow_le_pow_left₀ (norm_nonneg _) (norm_sub_starProjection_le _ _) 2) (sq_nonneg _)
       (Finset.prod_nonneg fun i _ ↦ sq_nonneg _)
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin ι).symm`. Establish `h` using `re_det_gram_le_prod_fin (Fintype.card ι) (c ∘ e)`. Rewrite `h` using `[det_gram_comp_equiv e c]`. Use `h.trans_eq ?_` and prove the remaining obligations. Conclude with `Fintype.prod_equiv e _ _ fun _ ↦ rfl`.
+-/
 theorem re_det_gram_le_prod {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι → V) :
     (det (gram ℂ c)).re ≤ ∏ i, ‖c i‖ ^ 2 := by
   let e := (Fintype.equivFin ι).symm
@@ -55,6 +70,17 @@ theorem re_det_gram_le_prod {ι : Type*} [Fintype ι] [DecidableEq ι] (c : ι �
 
 end GramHadamard
 
+/- English proof (translation)
+Introduce `K _ _ M ι _ x hx hcard`. Establish `hn : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Rewrite using `[HermitianBundle.deg, HermitianBundle.arithDegree, arithDegree_eq M.metric hx hcard, degreeWith]`. Use `(div_le_div_iff_of_pos_right hn).mpr ?_` and prove the remaining obligations. Establish `hσ : ∀ σ : K →+* ℂ, Real.log (gramDet M.metric σ x) ≤ 2 * ∑ i, Real.log (M.normAt σ (x i))`.
+
+Introduce `σ`. Establish `hne : ∀ i, fibreVec M.metric σ (x i) ≠ 0` using `fun i ↦ (linearIndependent_fibreVec M.metric σ hx).ne_zero i`. Establish `h1 : gramDet M.metric σ x ≤ ∏ i, ‖fibreVec M.metric σ (x i)‖ ^ 2` using `re_det_gram_le_prod _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_prod]`.
+
+Introduce `i _`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr (hne i))`. Use `_ = 2 * ∑ i, Real.log (M.normAt σ (x i)) := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_pow, HermitianBundle.normAt]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hsum : ∑ σ : K →+* ℂ, Real.log (gramDet M.metric σ x) ≤ 2 * ∑ i, ∑ σ : K →+* ℂ, Real.log (M.normAt σ (x i))`. Rewrite using `[Finset.sum_comm (f := fun i σ ↦ Real.log (M.normAt σ (x i))), Finset.mul_sum]`.
+
+Conclude with `Finset.sum_le_sum fun σ _ ↦ hσ σ`. Establish `hc` using `Real.log_natCast_nonneg (Nat.card (M.carrier ⧸ Submodule.span (𝓞 K) (Set.range x)))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HadamardMean.intersectionNumber_baseChange : HadamardMean.Statement := by
   intro K _ _ M ι _ x hx hcard
   classical
@@ -89,6 +115,9 @@ theorem HadamardMean.intersectionNumber_baseChange : HadamardMean.Statement := b
     (Nat.card (M.carrier ⧸ Submodule.span (𝓞 K) (Set.range x)))
   linarith
 
+/- English proof (translation)
+The claim follows from `HadamardMean.intersectionNumber_baseChange`.
+-/
 theorem HadamardMean.proof (_h1 : Sublattice.Statement) : HadamardMean.Statement :=
   HadamardMean.intersectionNumber_baseChange
 

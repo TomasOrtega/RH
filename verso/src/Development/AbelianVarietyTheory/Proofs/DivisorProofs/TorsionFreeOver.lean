@@ -22,7 +22,13 @@ def EtaleLow (A R C : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing C]
 
 end GlobalTheory.GoodEtale
 
+/- English proof (translation)
+Introduce `a ha m _` and use `⟨a⁻¹ * m, by simp [smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ ha]⟩`.
+-/
 example (k : Type) [Field k] : GlobalTheory.GoodEtale.Hart k k k := fun a ha m _ =>
   ⟨a⁻¹ * m, by simp [smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ ha]⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `rfl`.
+-/
 example (A : Type) [CommRing A] : GlobalTheory.GoodEtale.TorsionFreeOver A A Unit := fun _ _ _ _ => rfl

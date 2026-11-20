@@ -18,6 +18,9 @@ variable {D : D7} {n : ℕ}
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 2000000
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => rw [MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, MvPolynomial.eval_C, MvPolynomial.eval_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p v hp => rw [map_mul, map_mul, hp, MvPolynomial.aeval_X, map_mul, MvPolynomial.eval_X]`.
+-/
 theorem eval_aeval_subst {σ τ' : Type} (x : τ' → ℂ) (f : σ → MvPolynomial τ' ℂ) (p : MvPolynomial σ ℂ) :
     MvPolynomial.eval x (MvPolynomial.aeval f p) = MvPolynomial.eval (fun v => MvPolynomial.eval x (f v)) p := by
   induction p using MvPolynomial.induction_on with
@@ -36,6 +39,13 @@ open Classical in
 def g0 (D : D7) (m n : ℕ) : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ := fun a =>
   if (QuotientAddGroup.mk (show Matrix (Fin m) (Fin n) _ from a) : _ ⧸ intW D m n) = 0 then (1 : ℂ) else 0
 
+/- English proof (translation)
+Establish `hWe : ((intW D m n) : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) = ⋂ i, ⋂ j, (fun a : Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) => a i j) ⁻¹' (intAE D : Set (Af D.host.F ⊗[D.host.F] D.host.E))`. Use extensionality with `a`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression. Establish `hWo : IsOpen ((intW D m n) : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))`.
+
+Rewrite using `[hWe]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage ((continuous_apply j).comp (continuous_apply i))`. Establish `hWc : IsCompact ((intW D m n) : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))` using `isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => GlobalTheory.SchwartzBruhatTensor.isCompact_intAE D`. Use `GlobalTheory.SchwartzBruhatTensor.coset_mem_SB (intW D m n) hWo hWc 0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Unfold `g0`. Conclude with `if_congr Iff.rfl rfl rfl`.
+-/
 theorem gaussian_mem_schwartz_bruhat (D : D7) (m n : ℕ) : g0 D m n ∈ GlobalTheory.WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) := by
   classical
   have hWe : ((intW D m n) : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) =
@@ -55,6 +65,9 @@ theorem gaussian_mem_schwartz_bruhat (D : D7) (m n : ℕ) : g0 D m n ∈ GlobalT
   unfold g0
   exact if_congr Iff.rfl rfl rfl
 
+/- English proof (translation)
+Unfold `g0`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(h ((QuotientAddGroup.eq_zero_iff (N := intW D m n) (0 : Matrix (Fin m) (Fin n) _)).2 (intW D m n).zero_mem)).elim`.
+-/
 theorem gaussian_at_zero_eq_one (D : D7) (m n : ℕ) : g0 D m n 0 = 1 := by
   unfold g0
   split_ifs with h
@@ -65,6 +78,9 @@ def psi0 (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ) (s : 
     (τ : D.what₂.Tau) : Mx D V.rank n → ℂ :=
   fun x => gAway V l s τ (fun τ => compAt θ τ x) * g0 D V.rank n (fun i j => finPart D (x i j))
 
+/- English proof (translation)
+Use `Submodule.subset_span ⟨1, g0 D V.rank n, gaussian_mem_schwartz_bruhat D V.rank n, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Simplify using `at hv`. Use function extensionality and compare the values at `x`. Simplify using `[psi0, evalPoly]`.
+-/
 theorem unitaryFinitePointsToGLFiniteAdeles_isUnitary (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) : psi0 θ V n l s τ ∈ awayA θ V n l s τ := by
   refine Submodule.subset_span ⟨1, g0 D V.rank n, gaussian_mem_schwartz_bruhat D V.rank n, ?_, ?_⟩
@@ -75,6 +91,11 @@ theorem unitaryFinitePointsToGLFiniteAdeles_isUnitary (θ : InfFam D) (V : HSp D
 
 def xL (θ : InfFam D) (τ : D.what₂.Tau) {m : ℕ} (Z : Matrix (Fin m) (Fin n) ℂ) : Mx D m n := lineAt θ τ Z 1
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.FockAnnKill.compAt_add_lineAt hθ (0 : Mx D m n) τ Z 1`. Simplify using `only [zero_add] at h`. Rewrite using `[xL, h]`. Use function extensionality and compare the values at `τ'`. Establish `h0 : compAt θ τ' (0 : Mx D m n) = 0`.
+
+Use extensionality with `i j`. Simplify using `[compAt]`. Simplify using `[h0]`.
+-/
 theorem compAt_xL {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m : ℕ} (Z : Matrix (Fin m) (Fin n) ℂ) :
     (fun τ' => compAt θ τ' (xL θ τ Z)) = GlobalTheory.FockAnnKill.dirAt τ Z := by
   have h := GlobalTheory.FockAnnKill.compAt_add_lineAt hθ (0 : Mx D m n) τ Z 1
@@ -86,6 +107,9 @@ theorem compAt_xL {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m : 
     simp [compAt]
   simp [h0]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.FockAnnKill.finPart_add_lineAt hθ (0 : Mx D m n) τ Z 1`. Simplify using `only [zero_add] at h`. Rewrite using `[xL, h]`. Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules.
+-/
 theorem finPart_xL {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {m : ℕ} (Z : Matrix (Fin m) (Fin n) ℂ) :
     (fun i j => finPart D ((xL θ τ Z) i j)) = 0 := by
   have h := GlobalTheory.FockAnnKill.finPart_add_lineAt hθ (0 : Mx D m n) τ Z 1

@@ -35,6 +35,11 @@ def perL (X : Data E r) (x : Frame X.Ψ r) : (X.Ψ → Fin r → ℂ) →ₗ[ℝ
       exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
     · rw [Matrix.mulVec_smul, Pi.smul_apply]
 
+/- English proof (translation)
+Simplify using `only [hermC, FD.gram, FD.col, Matrix.of_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem hermC_col_mulVec (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) (a : Fin r)
     (c : Fin r → ℂ) : hermC τ G (FD.col x a) (x *ᵥ c) = ∑ b, FD.gram τ G x a b * conj (c b) := by
   simp only [hermC, FD.gram, FD.col, Matrix.of_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum,
@@ -45,6 +50,23 @@ theorem hermC_col_mulVec (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Use function extensionality and compare the values at `τ`. Establish `hd : (mat x τ).det ≠ 0` using `(hx τ).1`. Establish `hA : (X.gramPos x τ).det ≠ 0`.
+
+Establish `h` using `(hx τ).2 ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩`. Introduce `h0`. Establish `e : dmin X.Gm x τ ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ = (X.gramPos x τ).det` using `rfl`. Rewrite `h` using `[e, h0]`. Simplify using `at h`.
+
+Use `set c : Fin r → ℂ := (mat x τ)⁻¹ *ᵥ u τ with hc`. Establish `hu' : u τ = mat x τ *ᵥ c`. Rewrite using `[hc, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), Matrix.one_mulVec]`. Establish `h2 : ∀ a : Fin r, ¬ (a : ℕ) < X.p0 → c a = 0` using `fun a ha => by`. Use `congrFun hu (τ, a)` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `perC X x u (τ, a) = 0 at this`. Simplify `this` using `only [perC, if_neg ha]`. Establish `h1 : X.gramPos x τ *ᵥ (fun b => conj (c (Fin.castLE X.p0_le b))) = 0`. Use function extensionality and compare the values at `a`. Establish `ha : ((Fin.castLE X.p0_le a : Fin r) : ℕ) < X.p0` using `a.2`.
+
+Use `congrFun hu (τ, Fin.castLE X.p0_le a)` as an intermediate fact. Express the relevant statement in the definitionally equal form `perC X x u (τ, Fin.castLE X.p0_le a) = 0 at this`. Simplify using `only [perC, if_pos ha] at this`. Rewrite `this` using `[hu', hermC_col_mulVec]`. Rewrite using `[Pi.zero_apply, ← this]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Data.gramPos, Matrix.submatrix_apply]`. Use `Fintype.sum_of_injective (Fin.castLE X.p0_le) (Fin.castLE_injective _) _ _ (fun b hb => ?_) fun _ => rfl` and prove the remaining obligations. Rewrite using `[h2 b fun h => hb ⟨⟨b, h⟩, rfl⟩, map_zero, mul_zero]`. Establish `h3` using `Matrix.eq_zero_of_mulVec_eq_zero hA h1`. Establish `h4 : c = 0`.
+
+Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Use `congrFun h3 ⟨a, ha⟩` as an intermediate fact. Simplify using `using this`. Conclude with `h2 a ha`.
+
+Rewrite using `[hu', h4, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+-/
 theorem perL_injective (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : Function.Injective (perL X x) := by
   rw [injective_iff_map_eq_zero]
   intro u hu
@@ -84,6 +106,9 @@ theorem perL_injective (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : Fu
   rw [hu', h4, Matrix.mulVec_zero]
   rfl
 
+/- English proof (translation)
+Use `⟨perL_injective X hx, ?_⟩` and prove the remaining obligations. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 (perL_injective X hx)` and prove the remaining obligations. Simplify using `[Module.finrank_pi_fintype, mul_assoc]`.
+-/
 theorem perL_bijective (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) : Function.Bijective (perL X x) := by
   refine ⟨perL_injective X hx, ?_⟩
   refine (LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 (perL_injective X hx)
@@ -93,11 +118,17 @@ end Lin
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : ∃ ρ', tauE D ρ = tauE D ρ'` using `⟨ρ, rfl⟩`. Rewrite using `[realM, dif_pos h, ← GlobalTheory.PointAtPlace.tauE_injective h.choose_spec]`.
+-/
 theorem realM_tauE (θ : InfFam D) {m n : ℕ} (w : Mx D m n) (ρ : D.what₂.Tau) :
     realM θ w (tauE D ρ) = compAt θ ρ w := by
   have h : ∃ ρ', tauE D ρ = tauE D ρ' := ⟨ρ, rfl⟩
   rw [realM, dif_pos h, ← GlobalTheory.PointAtPlace.tauE_injective h.choose_spec]
 
+/- English proof (translation)
+Unfold `realM`. Use `split_ifs with h`. Use function extensionality and compare the values at `i j show θ _ (infPart D (v i j + w i j)) = θ _ (infPart D (v i j)) + θ _ (infPart D (w i j))`. Rewrite using `[RingHom.map_add, RingHom.map_add]`. Rewrite using `[add_zero]`.
+-/
 theorem realM_add (θ : InfFam D) {m n : ℕ} (v w : Mx D m n) (τ : D.host.E →+* ℂ) :
     realM θ (v + w) τ = realM θ v τ + realM θ w τ := by
   unfold realM
@@ -107,6 +138,9 @@ theorem realM_add (θ : InfFam D) {m n : ℕ} (v w : Mx D m n) (τ : D.host.E �
     rw [RingHom.map_add, RingHom.map_add]
   · rw [add_zero]
 
+/- English proof (translation)
+Unfold `realM`. Use `split_ifs with h`. Conclude with `(GlobalTheory.FockCompare.continuous_comp hθ _).comp ((continuous_apply j).comp (continuous_apply i))`. Conclude with `continuous_const`.
+-/
 theorem continuous_realM {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.host.E →+* ℂ) (i : Fin m) (j : Fin n) :
     Continuous fun w : Mx D m n => realM θ w τ i j := by
   unfold realM
@@ -114,6 +148,11 @@ theorem continuous_realM {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D
   · exact (GlobalTheory.FockCompare.continuous_comp hθ _).comp ((continuous_apply j).comp (continuous_apply i))
   · exact continuous_const
 
+/- English proof (translation)
+Establish `hL : IsLineAt θ ρ u (lineAt θ ρ u)` using `Classical.epsilon_spec (GlobalTheory.RealLineAt.lineAt_exists D θ hθ m n ρ u)`. Unfold `realM`. Use `split_ifs with h`. Rewrite using `[hL.2.2, hL.2.2] split_ifs`. Use function extensionality and compare the values at `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[smul_zero]`. Rewrite using `[smul_zero]`.
+-/
 theorem realM_lineAt {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (ρ : D.what₂.Tau) (u : Matrix (Fin m) (Fin n) ℂ)
     (t : ℝ) (τ : D.host.E →+* ℂ) : realM θ (lineAt θ ρ u t) τ = t • realM θ (lineAt θ ρ u 1) τ := by
   have hL : IsLineAt θ ρ u (lineAt θ ρ u) :=
@@ -127,6 +166,35 @@ theorem realM_lineAt {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (ρ : D.wha
     · rw [smul_zero]
   · rw [smul_zero]
 
+/- English proof (translation)
+Introduce `D ψ θ V W r g hr X bas idx _ hθ _ _ hM _ x`. Establish `hz : ∀ w b j, zOf θ V W hr X idx x w b j = perL X x (fun τ a => realM θ w τ.1 (Fin.cast hr.symm a) b) (idx j)` using `fun _ _ _ => rfl`. Use `⟨fun γ v hv => ?_, fun v w => ?_, fun ρ u t => ?_, ?_, fun hx => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b j show perC X x _ (idx j) = per X x _ (idx j)`. Rewrite using `[← perC_emb]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ a`. Take `⟨ρ, hρ⟩` from `(hM.psi τ.1).1 τ.2`. Establish `e : infPart D (v (Fin.cast hr.symm a) b) = infPart D (incA D (γ (Fin.cast hr.symm a) b))` using `congrFun (congrFun hv _) _`. Use `show realM θ v τ.1 _ _ = τ.1 (γ (Fin.cast hr.symm a) b)`.
+
+Rewrite using `[hρ, realM_tauE, ← GlobalTheory.FockCompare.comp_incA hθ, ← e]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `b j`. Rewrite using `[Pi.add_apply, Pi.add_apply, hz, hz, hz, ← Pi.add_apply (perL X x _), ← map_add]`. Use `congrFun (congrArg (perL X x) ?_) _` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `τ a`. Rewrite using `[realM_add]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `b j`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, hz, hz, Complex.coe_smul, ← Pi.smul_apply t (perL X x _), ← map_smul]`.
+
+Use `congrFun (congrArg (perL X x) ?_) _` and prove the remaining obligations. Use function extensionality and compare the values at `τ a`. Rewrite using `[realM_lineAt hθ]`. Both sides reduce to the same expression. Use `continuous_pi fun b => continuous_pi fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [hz]`. Conclude with `(continuous_apply (idx j)).comp ((perL X x).continuous_of_finiteDimensional.comp (continuous_pi fun τ => continuous_pi fun a => continuous_realM hθ τ.1 _ b))`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Set `L` to `LinearEquiv.ofBijective (perL X x) (perL_bijective X hx)`. Establish `hL : ∀ u, L u = perL X x u` using `fun _ => rfl`.
+
+Set `pl : D.what₂.Tau → X.Ψ` to `fun ρ => ⟨tauE D ρ, (hM.psi _).2 ⟨ρ, rfl⟩⟩`. Set `p : (Fin V.rank → Fin g → ℂ) →+ WO V W` to `{ toFun := fun z => Matrix.of fun i b => σ fun ρ => L.symm (fun q => z b (idx.symm q)) (pl ρ) (Fin.cast hr i) map_zero' := by`. Use function extensionality and compare the values at `i b`. Establish `: (fun q => (0 : Fin V.rank → Fin g → ℂ) b (idx.symm q)) = 0` using `rfl`. Rewrite using `[Matrix.of_apply, this, map_zero]`.
+
+Conclude with `σ.map_zero`. Use the proof step `map_add' := fun z z' => by`. Use function extensionality and compare the values at `i b`. Establish `: (fun q => (z + z') b (idx.symm q)) = (fun q => z b (idx.symm q)) + fun q => z' b (idx.symm q)` using `rfl`. Rewrite using `[Matrix.of_apply, this, map_add]`.
+
+Conclude with `σ.map_add _ _ }`. Establish `hp : ∀ z i b, p z i b = σ fun ρ => L.symm (fun q => z b (idx.symm q)) (pl ρ) (Fin.cast hr i)` using `fun _ _ _ => rfl`. Use `⟨p, ?_, fun z => ⟨?_, ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun b => hσ.cont.comp (continuous_pi fun ρ => ?_)` and prove the remaining obligations. Conclude with `(continuous_apply (Fin.cast hr i)).comp ((continuous_apply (pl ρ)).comp (L.symm.toLinearMap.continuous_of_finiteDimensional.comp (continuous_pi fun q => (continuous_apply (idx.symm q)).comp (continuous_apply b))))`.
+
+Use function extensionality and compare the values at `i b`. Conclude with `hσ.fin _`. Use function extensionality and compare the values at `b j`. Establish `e : (fun (τ : X.Ψ) a => realM θ (p z) τ.1 (Fin.cast hr.symm a) b) = L.symm (fun q => z b (idx.symm q))`. Use function extensionality and compare the values at `τ a`.
+
+Take `⟨ρ, hρ⟩` from `(hM.psi τ.1).1 τ.2`. Take `rfl : τ = pl ρ` from `Subtype.ext hρ`. Use `show realM θ (p z) (tauE D ρ) _ _ = _`. Rewrite using `[realM_tauE]`. Conclude with `hσ.comp _ ρ`.
+
+Rewrite using `[hz, e, ← hL, LinearEquiv.apply_symm_apply, Equiv.symm_apply_apply]`. Use function extensionality and compare the values at `i b`. Establish `e : (fun q => zOf θ V W hr X idx x w b (idx.symm q)) = L (fun τ a => realM θ w τ.1 (Fin.cast hr.symm a) b)`. Use function extensionality and compare the values at `q`. Rewrite using `[hz, Equiv.apply_symm_apply, hL]`.
+
+Rewrite using `[hp, e, LinearEquiv.symm_apply_apply]`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun ρ => ?_)` and prove the remaining obligations. Establish `e1 : finPart D (w i b) = 0` using `congrFun (congrFun hw i) b`. Rewrite using `[RingHom.map_sub, hσ.fin, e1, sub_zero]`. Rewrite using `[RingHom.map_sub, RingHom.map_sub, hσ.comp, sub_eq_zero] show realM θ w (tauE D ρ) i b = _`.
+
+Rewrite using `[realM_tauE]`. Both sides reduce to the same expression.
+-/
 theorem zOf_coordinates : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ (x : Frame X.Ψ r), (∀ (γ : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (v : WO V W), v.map (infPart D) = (ratW W V γ).map (infPart D) → zOf θ V W hr X idx x v = fun b => pv X idx x (colsR hr γ b)) ∧ (∀ v w : WO V W, zOf θ V W hr X idx x (v + w) = zOf θ V W hr X idx x v + zOf θ V W hr X idx x w) ∧ (∀ (τ : D.what₂.Tau) (u : Matrix (Fin W.rank) (Fin V.rank) ℂ) (t : ℝ), zOf θ V W hr X idx x (lineAt θ τ u t) = (t : ℂ) • zOf θ V W hr X idx x (lineAt θ τ u 1)) ∧ Continuous (zOf θ V W hr X idx x ) ∧ (x ∈ X.dom → ∃ p : (Fin V.rank → Fin g → ℂ) →+ WO V W, Continuous p ∧ (∀ z, (p z).map (finPart D) = 0 ∧ zOf θ V W hr X idx x (p z) = z) ∧ ∀ w : WO V W, w.map (finPart D) = 0 → p (zOf θ V W hr X idx x w) = w) := by
   intro D ψ θ V W r g hr X bas idx _ hθ _ _ hM _ x
   have hz : ∀ w b j, zOf θ V W hr X idx x w b j =

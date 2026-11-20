@@ -28,14 +28,30 @@ def blk (g : Matrix (Fin d₁) (Fin d₁) k) : Matrix (Fin d) (Fin d) k := reind
 
 variable {e} {ν : kˣ →* ℂˣ} {L : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] W}
 
+/- English proof (translation)
+Unfold `one`. Conclude with `cs_mem (V := Fin n → k) (H := bx (Fin n) (1 : k)) (bx_open (one_ne_zero' k)) (bx_compact (1 : k)) 0`.
+-/
 theorem one_sb : (one n : (Fin n → k) → ℂ) ∈ SB (Fin n → k) := by
   unfold one
   exact cs_mem (V := Fin n → k) (H := bx (Fin n) (1 : k)) (bx_open (one_ne_zero' k)) (bx_compact (1 : k)) 0
 
+/- English proof (translation)
+The claim follows from `continuous_id.matrix_submatrix _ _`.
+-/
 theorem cm : Continuous (mid e : Matrix (Fin n) (Fin d) k → _) := continuous_id.matrix_submatrix _ _
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => continuous_id.matrix_elem i _`.
+-/
 theorem cc (t : Bool) : Continuous (cl e t : Matrix (Fin n) (Fin d) k → _) := continuous_pi fun i => continuous_id.matrix_elem i _
 
+/- English proof (translation)
+Use `⟨((h.1.comp_continuous cm).mul (hf.1.comp_continuous (cc false))).mul (hf'.1.comp_continuous (cc true)), ?_⟩` and prove the remaining obligations. Set `a : Matrix (Fin n) (Fin d₁) k × (Fin n → k) × (Fin n → k) → Matrix (Fin n) (Fin d) k` to `fun x => Matrix.of fun i j => Sum.elim (x.1 i) (fun t => cond t (x.2.2 i) (x.2.1 i)) (e.symm j)`. Establish `ca : Continuous a` using `continuous_matrix fun i j => by`. Simplify using `only [a, Matrix.of_apply]`. Break down `e.symm j with s | _ | _` into its components or cases.
+
+Conclude with `continuous_fst.matrix_elem i s`. Conclude with `(continuous_apply i).comp (continuous_fst.comp continuous_snd)`. Conclude with `(continuous_apply i).comp (continuous_snd.comp continuous_snd)`. Use `HasCompactSupport.intro ((h.2.isCompact.prod (hf.2.isCompact.prod hf'.2.isCompact)).image ca) fun Y hY => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+
+Use `hY ⟨(mid e Y, cl e false Y, cl e true Y), ⟨subset_tsupport _ (left_ne_zero_of_mul (left_ne_zero_of_mul h0)), subset_tsupport _ (right_ne_zero_of_mul (left_ne_zero_of_mul h0)), subset_tsupport _ (right_ne_zero_of_mul h0)⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases j with s | _ | _ <;> simp [a, mid, cl]`.
+-/
 theorem tn_mem {ψ : Matrix (Fin n) (Fin d₁) k → ℂ} {f f' : (Fin n → k) → ℂ} (h : ψ ∈ SB _) (hf : f ∈ SB _) (hf' : f' ∈ SB _) :
     tn e ψ f f' ∈ SB _ := by
   refine ⟨((h.1.comp_continuous cm).mul (hf.1.comp_continuous (cc false))).mul (hf'.1.comp_continuous (cc true)), ?_⟩
@@ -55,9 +71,25 @@ theorem tn_mem {ψ : Matrix (Fin n) (Fin d₁) k → ℂ} {f f' : (Fin n → k) 
   obtain ⟨j, rfl⟩ := e.surjective j
   rcases j with s | _ | _ <;> simp [a, mid, cl]
 
+/- English proof (translation)
+Rewrite using `[← e.sum_comp, Fintype.sum_sum_type, Fintype.sum_bool]`.
+-/
 theorem sum_e (a : Fin d → k) : ∑ j, a j = ∑ s, a (e (.inl s)) + (a (e (.inr true)) + a (e (.inr false))) := by
   rw [← e.sum_comp, Fintype.sum_sum_type, Fintype.sum_bool]
 
+/- English proof (translation)
+Take `⟨U, hU, hi⟩` from `exists_invar hf'`. Establish `: Kil (LinearMap.ker (L ∘ₗ (tn₁ e f (fun x => f' (x + v)) - tn₁ e f f'))) {Z | RI Z}`. Use `kil_loc hV_mat fun Z₀ ⟨R, hR⟩ => ⟨{Z | v - Z *ᵥ (R *ᵥ v) ∈ U}, ?_, fun φ hφ hs => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_const.sub (continuous_id.matrix_mulVec continuous_const)).continuousAt.preimage_mem_nhds (by`. Simplify `hU)` using `[mulVec_mulVec, hR]`.
+
+Set `w : Fin d → k` to `fun j => Sum.elim (R *ᵥ v) 0 (e.symm j)`. Set `g : Matrix (Fin d) (Fin d) k` to `1 + vecMulVec w (Pi.single (e (.inr true)) 1)`. Establish `hg : InP e g`. Apply the tactic sequence `refine ⟨fun r hr => ?_, ?_, ?_, fun s s' => ?_, fun s => ?_⟩ <;> simp [g, w, vecMulVec_apply, Matrix.one_apply, *]`. Establish `e1` using `(hL.right g hg _ (tn_mem (e := e) hφ hf hf')).2`.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.sub_apply, map_sub, sub_eq_zero]`. Use `Eq.trans (congrArg L (funext fun Y => ?_)) e1` and prove the remaining obligations. Establish `yw : Y *ᵥ w = mid e Y *ᵥ (R *ᵥ v)` using `funext fun i => by`. Simplify using `only [mulVec, dotProduct]`. Rewrite using `[sum_e (e := e)]`.
+
+Simplify using `[w, mid, mulVec, dotProduct]`. Establish `yg : Y * g = Y + vecMulVec (mid e Y *ᵥ (R *ᵥ v)) (Pi.single (e (.inr true)) 1)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, mul_vecMulVec, yw]`. Establish `m1 : mid e (Y * g) = mid e Y` using `by ext i s; rw [yg]; simp [mid, vecMulVec_apply]`. Establish `m2 : cl e false (Y * g) = cl e false Y` using `by ext i; rw [yg]; simp [cl, vecMulVec_apply]`.
+
+Establish `m3 : cl e true (Y * g) = cl e true Y + mid e Y *ᵥ (R *ᵥ v)` using `by ext i; rw [yg]; simp [cl, vecMulVec_apply]`. Express the relevant statement in the definitionally equal form `φ _ * f _ * f' _ = φ _ * f _ * f' _`. Rewrite using `[m1, m2, m3]`. Distinguish the cases in `h0 : φ (mid e Y) = 0`. Simplify using `[h0]`.
+
+Rewrite using `[← hi _ (hs _ h0) (cl e true Y + mid e Y *ᵥ (R *ᵥ v))]`. Use `congr 2`. Normalize the expressions using the abelian group laws. Use `this ψ h.1 fun Z hZ => ri_iff.2 (by by_contra h'; exact hZ (h.2 Z h'))` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.sub_apply, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem trans_inv (hL : Inv e ν L) {ψ : Matrix (Fin n) (Fin d₁) k → ℂ} (h : Full ψ) {f f' : (Fin n → k) → ℂ} (hf : f ∈ SB _)
     (hf' : f' ∈ SB _) (v : Fin n → k) : L (tn e ψ f fun x => f' (x + v)) = L (tn e ψ f f') := by
   obtain ⟨U, hU, hi⟩ := exists_invar hf'
@@ -89,6 +121,9 @@ theorem trans_inv (hL : Inv e ν L) {ψ : Matrix (Fin n) (Fin d₁) k → ℂ} (
   have := this ψ h.1 fun Z hZ => ri_iff.2 (by by_contra h'; exact hZ (h.2 Z h'))
   rwa [LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.sub_apply, map_sub, sub_eq_zero] at this
 
+/- English proof (translation)
+Set `H : (Fin n → k) ≃ₜ (Fin n → k)` to `{ toFun := fun x => g.val *ᵥ x, invFun := fun x => (g⁻¹).val *ᵥ x, left_inv := fun x => by simp [mulVec_mulVec], right_inv := fun x => by simp [mulVec_mulVec], continuous_toFun := continuous_const.matrix_mulVec continuous_id, continuous_invFun := continuous_const.matrix_mulVec co …`. Conclude with `⟨hf.1.comp_continuous H.continuous, hf.2.comp_homeomorph H⟩`.
+-/
 theorem comp_mem {f : (Fin n → k) → ℂ} (hf : f ∈ SB _) (g : GL (Fin n) k) : (fun x => f (g.val *ᵥ x)) ∈ SB (Fin n → k) := by
   let H : (Fin n → k) ≃ₜ (Fin n → k) :=
     { toFun := fun x => g.val *ᵥ x, invFun := fun x => (g⁻¹).val *ᵥ x, left_inv := fun x => by simp [mulVec_mulVec],
@@ -96,6 +131,9 @@ theorem comp_mem {f : (Fin n → k) → ℂ} (hf : f ∈ SB _) (g : GL (Fin n) k
       continuous_invFun := continuous_const.matrix_mulVec continuous_id }
   exact ⟨hf.1.comp_continuous H.continuous, hf.2.comp_homeomorph H⟩
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `m`. Rewrite using `[map_sub, map_smul, sub_eq_zero]`. Conclude with `invariant_comp_mulVec (m ∘ₗ L ∘ₗ tn₃ e ψ f) (fun φ hφ a => congrArg m (trans_inv hL h hf hφ a)) g hf' (comp_mem hf' g)`.
+-/
 theorem mod_inv (hL : Inv e ν L) {ψ : Matrix (Fin n) (Fin d₁) k → ℂ} (h : Full ψ) {f f' : (Fin n → k) → ℂ} (hf : f ∈ SB _)
     (hf' : f' ∈ SB _) (g : GL (Fin n) k) :
     ((GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det g) : ℝ) : ℂ) • L (tn e ψ f fun x => f' (g.val *ᵥ x)) = L (tn e ψ f f') := by
@@ -104,6 +142,9 @@ theorem mod_inv (hL : Inv e ν L) {ψ : Matrix (Fin n) (Fin d₁) k → ℂ} (h 
   rw [map_sub, map_smul, sub_eq_zero]
   exact invariant_comp_mulVec (m ∘ₗ L ∘ₗ tn₃ e ψ f) (fun φ hφ a => congrArg m (trans_inv hL h hf hφ a)) g hf' (comp_mem hf' g)
 
+/- English proof (translation)
+Use `kil_one hL hl hν (tn e ψ f f' - c • tn e ψ f₁ f') (sub_mem (tn_mem h hf hf') ((SB _).smul_mem _ (tn_mem h hf₁ hf'))) fun Y hY h1 => hY (by simp only [Pi.sub_apply, Pi.smul_apply, tn, h1, h0, smul_eq_mul]; ring)` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, map_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem swap_mid (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1) {ψ : Matrix (Fin n) (Fin d₁) k → ℂ}
     (h : ψ ∈ SB _) {f f₁ f' : (Fin n → k) → ℂ} (hf : f ∈ SB _) (hf₁ : f₁ ∈ SB _) (hf' : f' ∈ SB _) (c : ℂ) (h0 : f 0 = c * f₁ 0) :
     L (tn e ψ f f') = c • L (tn e ψ f₁ f') := by
@@ -111,8 +152,32 @@ theorem swap_mid (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν
     fun Y hY h1 => hY (by simp only [Pi.sub_apply, Pi.smul_apply, tn, h1, h0, smul_eq_mul]; ring)
   rwa [LinearMap.mem_ker, map_sub, map_smul, sub_eq_zero] at this
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem (by simp [zero_mem]) _`.
+-/
 theorem one_zero : (one n : (Fin n → k) → ℂ) 0 = 1 := Set.indicator_of_mem (by simp [zero_mem]) _
 
+/- English proof (translation)
+Establish `h2 : Kil (LinearMap.ker L) {Y | RI (mid e Y)}`. Use `kil_loc hV_mat fun X₀ ⟨R, hR⟩ => ?_` and prove the remaining obligations. Take `⟨r, r0, hr⟩` from `mb_small (nhds_sub (det_nhds hR))`. Use `⟨{Y | mid e Y - mid e X₀ ∈ mb _ _ r}, ((mb_open r0).preimage (cm.sub continuous_const)).mem_nhds (by simp [zero_mem]), fun Φ hΦ hs => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hi⟩` from `exists_invar hΦ`.
+
+Take `⟨c, c0, hc⟩` from `mb_small (inter_mem hU (cm (e := e).continuousAt.preimage_mem_nhds ((mb_open r0).mem_nhds (zero_mem _))))`. Use `mem_of_cs (mb_open c0) hΦ (fun S hS => hi S (hc hS).1) _ fun y hy => ?_` and prove the remaining obligations. Establish `e1 : cs (mb _ _ c) y = tn e (cs (mb _ _ c ⊓ mb _ _ r) (mid e y)) (cs (bx _ c) (cl e false y)) (cs (bx _ c) (cl e true y))`. Use function extensionality and compare the values at `Y`. Establish `: Y - y ∈ mb _ _ c ↔ (mid e Y - mid e y ∈ mb _ _ c ⊓ mb _ _ r ∧ cl e false Y - cl e false y ∈ bx _ c) ∧ cl e true Y - cl e true y ∈ bx _ c`.
+
+Use `⟨fun h => ⟨⟨⟨fun i s => h i _, (hc h).2⟩, fun i => h i _⟩, fun i => h i _⟩, fun h i j => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `e.surjective j`. Break down `j with s | _ | _` into its components or cases. Use `exacts [h.1.1.1 i s, h.1.2 i, h.2 i]`. Simplify using `only [tn, cs, Set.indicator_apply, Set.mem_setOf_eq, this, Pi.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`. Establish `o : IsOpen ((mb (Fin n) (Fin d₁) c ⊓ mb _ _ r : AddSubgroup _) : Set (Matrix (Fin n) (Fin d₁) k))` using `(mb_open c0).inter (mb_open r0)`. Establish `fu : Full (cs (mb (Fin n) (Fin d₁) c ⊓ mb _ _ r) (mid e y))`. Use `⟨cs_mem o ((mb_compact c).inter_right (AddSubgroup.isClosed_of_isOpen _ (mb_open r0))) _, fun Z hZ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`.
+
+Use `hr (add_mem (cs_ne h').2 (hs y hy))` as an intermediate fact. Conclude with `hZ (ri_iff.1 (ri_of_det (R := R) (by simpa using this)))`. Establish `s1` using `fun x : Fin n → k => cs_mem (bx_open (S := Fin n) c0) (bx_compact c) x`. Rewrite using `[LinearMap.mem_ker, e1, swap_mid hL hl hν fu.1 (s1 _) one_sb (s1 _) (cs (bx _ c) (cl e false y) 0) (by rw [one_zero, mul_one])]`. Set `g : GL (Fin n) k` to `GeneralLinearGroup.scalar _ (Units.mk0 c c0)⁻¹`.
+
+Establish `e2` using `mod_inv hL fu one_sb one_sb g`. Establish `e3 : cs (bx _ c) (cl e true y) = fun x => (fun x => one n (g.val *ᵥ x)) (x + -cl e true y)`. Use function extensionality and compare the values at `x`. Establish `: g.val *ᵥ (x + -cl e true y) - 0 ∈ bx (Fin n) (1 : k) ↔ x - cl e true y ∈ bx _ c`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Establish `: (g.val *ᵥ (x + -cl e true y) - 0) i = c⁻¹ * (x - cl e true y) i`. Establish `gv : g.val = diagonal fun _ => c⁻¹`. Express the relevant statement in the definitionally equal form `Matrix.scalar _ ((Units.mk0 c c0)⁻¹).val = _`. Simplify using `[Matrix.scalar_apply]`. Rewrite using `[gv]`.
+
+Rewrite using `[sub_zero, mulVec_diagonal, sub_eq_add_neg]`. Rewrite using `[this, map_mul, map_inv₀, map_one, inv_mul_le_iff₀ (zero_lt_iff.2 (by simpa using c0)), mul_one]`. Simplify using `only [one, cs, Set.indicator_apply, Set.mem_setOf_eq, this, Pi.one_apply]`. Rewrite `e2` using `[h _ fu, smul_eq_zero]`. Rewrite using `[e3, trans_inv hL fu one_sb (comp_mem one_sb g), e2.resolve_left (by simpa [apow] using apow_ne_zero (GeneralLinearGroup.det g) 1), smul_zero]`.
+
+Introduce `Φ hΦ`. Take `⟨Φ₀, h0, ha⟩` from `surjectivity_statement k n d ν 1 hu (fun h => hν (by simp [h])) Φ hΦ`. Establish `h3 : aug n d ν 1 ≤ LinearMap.ker L` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, Ψ, hΨ, rfl⟩`. Conclude with `LinearMap.mem_ker.2 (by rw [map_sub, hL.left g Ψ hΨ, sub_self]))`.
+
+Establish `h4` using `kil_full hL hl hν h2 Φ₀ h0.1 fun Y hY => ri_iff.2 (by by_contra h'; exact hY (h0.2 Y h'))`. Use `add_mem (h3 ha) h4` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem red (hL : Inv e ν L) (hu : USm ν) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1)
     (h : ∀ ψ, Full ψ → L (tn e ψ (one n) (one n)) = 0) : ∀ Φ ∈ SB (Matrix (Fin n) (Fin d) k), L Φ = 0 := by
   have h2 : Kil (LinearMap.ker L) {Y | RI (mid e Y)} := by
@@ -168,6 +233,11 @@ theorem red (hL : Inv e ν L) (hu : USm ν) {l : kˣ} (hl : valuation k (l : k) 
   have := add_mem (h3 ha) h4
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Set `H : Matrix (Fin n) (Fin m) k ≃ₜ Matrix (Fin n) (Fin m) k` to `{ toFun := fun x => g.val * x * g'.val, invFun := fun x => (g⁻¹).val * x * (g'⁻¹).val, left_inv := fun x => by simp [Matrix.mul_assoc], right_inv := fun x => by simp [Matrix.mul_assoc], continuous_toFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const, c …`. Use `⟨⟨h.1.1.comp_continuous H.continuous, h.1.2.comp_homeomorph H⟩, fun Z hZ => h.2 _ fun h' => hZ ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `ri_iff.2 h'`. Use `ri_iff.1 ⟨g'.val * R * g.val, ?_⟩` and prove the remaining obligations. Use `congrArg (fun A => (g⁻¹).val * A * g.val) hR` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_assoc]`.
+-/
 theorem full_omB {m : ℕ} {ψ : Matrix (Fin n) (Fin m) k → ℂ} (h : Full ψ) (g : GL (Fin n) k) (g' : GL (Fin m) k) :
     Full fun Z : Matrix (Fin n) (Fin m) k => ψ (g.val * Z * g'.val) := by
   let H : Matrix (Fin n) (Fin m) k ≃ₜ Matrix (Fin n) (Fin m) k :=
@@ -181,6 +251,9 @@ theorem full_omB {m : ℕ} {ψ : Matrix (Fin n) (Fin m) k → ℂ} (h : Full ψ)
   have := congrArg (fun A => (g⁻¹).val * A * g.val) hR
   simpa [Matrix.mul_assoc] using this
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨g, ψ, h, rfl⟩ have hd : (d : ℂ) = d₁ + 2 := by have := Fintype.card_congr e simp only [Fintype.card_sum, Fintype.card_fin, Fintype.card_bool] at this exact_mod_cast this.symm let g' := invT g⁻¹ have hg : g'.val = g.valᵀ := by simp [g', invT] have …`.
+-/
 theorem aug_ker (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1) :
     augF n d₁ ν 1 ≤ LinearMap.ker (L ∘ₗ tn₁ e (one n) (one n)) := Submodule.span_le.2 (by
   rintro _ ⟨g, ψ, h, rfl⟩
@@ -212,6 +285,29 @@ theorem aug_ker (hL : Inv e ν L) {l : kˣ} (hl : valuation k (l : k) = 1) (hν 
   congr 1
   simp [apow, mul_assoc])
 
+/- English proof (translation)
+Set `S : Submodule ℂ (Matrix (Fin n) (Fin d₁) k → ℂ)` to `{ carrier := {ψ | Full ψ}, add_mem' := fun ha hb => ⟨add_mem ha.1 hb.1, fun Y h => by simp [ha.2 Y h, hb.2 Y h]⟩, zero_mem' := ⟨zero_mem _, fun _ _ => rfl⟩, smul_mem' := fun c a ha => ⟨(SB _).smul_mem c ha.1, fun Y h => by simp [ha.2 Y h]⟩ }`. Set `j` to `tn₁ e (one n) (one n : (Fin n → k) → ℂ)`. Set `A : GL (Fin d₁) k → S → S` to `fun g ψ => ⟨_, full_omB ψ.2 1 g⟩`. Establish `jA : ∀ (g : GL (Fin d₁) k) (ψ : Matrix (Fin n) (Fin d₁) k → ℂ), j (fun Z : Matrix (Fin n) (Fin d₁) k => ψ ((1 : GL (Fin n) k).val * Z * g.val)) = fun Y : Matrix (Fin n) (Fin d) k => j ψ (Y * blk e g.val)` using `fun (g : GL (Fin d₁) k) ψ => funext fun Y => by`. Establish `m1 : mid e (Y * blk e g.val) = mid e Y * g.val`.
+
+Use extensionality with `i s`. Simplify using `only [mid, submatrix_apply, Matrix.mul_apply, id]`. Rewrite using `[sum_e (e := e)]`. Simplify using `[blk]`. Establish `m2 : ∀ t, cl e t (Y * blk e g.val) = cl e t Y` using `fun t => by`.
+
+Apply the tactic sequence `ext i; simp only [cl, Matrix.mul_apply]; rw [sum_e (e := e)]; cases t <;> simp [blk]`. Simplify using `[j, tn₁, tn, m1, m2]`. Set `μ` to `L ∘ₗ j ∘ₗ S.subtype`. Set `μ'` to `L' ∘ₗ j ∘ₗ S.subtype`. Establish `eA : ∀ g ψ, μ (A g ψ) = ρ g (μ ψ)` using `fun g ψ => (congrArg L (jA g ψ)).trans (hM g _ (tn_mem ψ.2.1 one_sb one_sb))`.
+
+Establish `eA' : ∀ g ψ, μ' (A g ψ) = ρ g (μ' ψ)` using `fun g ψ => (congrArg L' (jA g ψ)).trans (hM' g _ (tn_mem ψ.2.1 one_sb one_sb))`. Establish `ne : ¬ ∀ ψ, Full ψ → L (tn e ψ (one n) (one n)) = 0` using `fun h => let ⟨Φ, h1, h2⟩ := h0`. Use `h2 (red hL hu hl hν h Φ h1)`. Establish `ker : ∀ ψ, μ ψ = 0 → μ' ψ = 0`. Break down `irrF' hB (α := 1) hn hu (LinearMap.ker (L ∘ₗ j) ⊓ S) (le_inf (aug_ker hL hl hν) (Submodule.span_le.2 (by` into its components or cases.
+
+Introduce and unpack `_ ⟨g, ψ, h, rfl⟩`. Use `sub_mem ?_ h` and prove the remaining obligations. Use `S.smul_mem ((ν (gdet g) : ℂ) * apow (gdet g) ((d₁ : ℂ) / 2)) (full_omB h (invT g⁻¹) 1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Y`.
+
+Simplify using `[omB, invT]))) (fun g ψ h _ => by`. Establish `e1 : omB ν 1 1 g ψ = apow (gdet g) ((n : ℂ) / 2) • (A g ⟨ψ, h.2⟩).1`. Use function extensionality and compare the values at `Y`. Simplify using `[omB, A]`. Rewrite using `[e1]`.
+
+Use `Submodule.smul_mem _ _ ⟨?_, (A g ⟨ψ, h.2⟩).2⟩` and prove the remaining obligations. Establish `: μ ⟨ψ, h.2⟩ = 0` using `h.1`. Conclude with `(eA g ⟨ψ, h.2⟩).trans (by rw [this, map_zero])) with h | h`. Conclude with `absurd (fun ψ hψ => (h ψ hψ).1) ne`. Conclude with `fun ψ hψ => aug_ker hL' hl hν (h ψ.1 ⟨hψ, ψ.2⟩ ψ.2)`.
+
+Establish `top : LinearMap.range μ = ⊤` using `(hi _ (by rintro g _ ⟨ψ, rfl⟩; exact ⟨A g ψ, eA g ψ⟩)).resolve_left fun h => ne fun ψ hψ => by`. Establish `: μ ⟨ψ, hψ⟩ ∈ LinearMap.range μ` using `⟨_, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `μ.exists_rightInverse_of_surjective top`. Establish `th : ∀ ψ, (μ' ∘ₗ s) (μ ψ) = μ' ψ` using `fun ψ => by`.
+
+Use `ker (s (μ ψ) - ψ) (by rw [map_sub, ← LinearMap.comp_apply μ s, hs, LinearMap.id_apply, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `dixmier_commutant_scalar _ W ρ hr hi (μ' ∘ₗ s) fun g => LinearMap.ext fun x => by`. Take `⟨ψ, rfl⟩` from `LinearMap.range_eq_top.1 top x`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, ← eA, th, th, eA']`.
+
+Use `⟨c, fun Φ hΦ => sub_eq_zero.1 (red (L := L' - c • L) (e := e) ⟨fun g Ψ h => ?_, fun g hg Ψ h => ⟨(hL.right g hg Ψ h).1, ?_⟩⟩ hu hl hν (fun ψ hψ => ?_) Φ hΦ)⟩` and prove the remaining obligations. Simplify using `[hL.left g Ψ h, hL'.left g Ψ h]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, (hL.right g hg Ψ h).2, (hL'.right g hg Ψ h).2]`. Use `th ⟨ψ, hψ⟩` as an intermediate fact. Rewrite `this` using `[hc]`.
+
+Conclude with `sub_eq_zero.2 this.symm`.
+-/
 theorem local_multiplicity_one_irreducible_GL (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {L' : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] W} (hL : Inv e ν L)
     (hL' : Inv e ν L') (hu : USm ν) {l : kˣ} (hl : valuation k (l : k) = 1) (hν : ν l ≠ 1) (hn : n ≤ d₁)
     (ρ : GL (Fin d₁) k → Module.End ℂ W) (hr : Module.rank ℂ W ≤ Cardinal.aleph0)

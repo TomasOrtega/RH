@@ -14,6 +14,15 @@ open NumberField IsDedekindDomain in
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] in
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_infinite_iff_finite]`. Establish `hfin : (Set.range fun P : HeightOneSpectrum (𝓞 E) => Ideal.comap (algebraMap ℤ (𝓞 E)) P.asIdeal).Finite` using `Set.finite_range _`. Apply `Nat.infinite_setOf_prime` to reduce the goal to its premises. Establish `hinj : Set.InjOn (fun p : ℕ => Ideal.span {(p : ℤ)}) {p | p.Prime}`.
+
+Introduce `p _ q _ hpq`. Use `Ideal.span_singleton_eq_span_singleton.mp hpq` as an intermediate fact. Rewrite `this` using `[Int.associated_iff_natAbs]`. Simplify using `using this`. Use `Set.Finite.of_finite_image (hfin.subset ?_) hinj` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨p, hp, rfl⟩`. Use `haveI hmax : (Ideal.span {(p : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Take `⟨Q, hQ, hlies⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) (Ideal.span {(p : ℤ)})`. Establish `hcomap : Ideal.comap (algebraMap ℤ (𝓞 E)) Q = Ideal.span {(p : ℤ)}` using `(hlies.over).symm`. Establish `hne : Q ≠ ⊥`.
+
+Introduce and unpack `rfl`. Establish `hmem : (p : ℤ) ∈ Ideal.comap (algebraMap ℤ (𝓞 E)) (⊥ : Ideal (𝓞 E))` using `hcomap ▸ Ideal.subset_span rfl`. Rewrite `hmem` using `[Ideal.mem_comap, Ideal.mem_bot, map_natCast, Nat.cast_eq_zero]`. Conclude with `hp.ne_zero hmem`. Conclude with `⟨⟨Q, hQ.isPrime, hne⟩, hcomap⟩`.
+-/
 theorem _root_.GlobalTheory.Published.JacquetShalikaModel.infinite_places : Infinite (HeightOneSpectrum (𝓞 E)) := by
   classical
   by_contra h
@@ -42,6 +51,11 @@ theorem _root_.GlobalTheory.Published.JacquetShalikaModel.infinite_places : Infi
     exact hp.ne_zero hmem
   exact ⟨⟨Q, hQ.isPrime, hne⟩, hcomap⟩
 
+/- English proof (translation)
+Take `rfl` from `hB.unique (CG.hasSat_ofChar hw)`. Introduce `α hα`. Take `rfl` from `Multiset.mem_singleton.1 hα`. Establish `e : ‖((χ.val w : ℂˣ) : ℂ)‖ = 1` using `h _`. Establish `hq : (1 : ℝ) < Ideal.absNorm w.asIdeal` using `by exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm w`.
+
+Rewrite using `[e]`. Conclude with `⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by norm_num), Real.one_lt_rpow hq (by norm_num)⟩`.
+-/
 theorem bound_ofChar {χ : HChar E} (h : χ.IsUnitary) {w : HeightOneSpectrum (𝓞 E)} (hw : χ.UnrAt w) (B : Multiset ℂˣ)
     (hB : (CG.ofChar χ).HasSat w B) : ∀ α ∈ B,
       (Ideal.absNorm w.asIdeal : ℝ) ^ (-(1 / 2) : ℝ) < ‖(α : ℂ)‖ ∧ ‖(α : ℂ)‖ < (Ideal.absNorm w.asIdeal : ℝ) ^ (1 / 2 : ℝ) := by
@@ -53,6 +67,11 @@ theorem bound_ofChar {χ : HChar E} (h : χ.IsUnitary) {w : HeightOneSpectrum (�
   rw [e]
   exact ⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by norm_num), Real.one_lt_rpow hq (by norm_num)⟩
 
+/- English proof (translation)
+Establish `h` using `absPow_isAbsPow E (1 / 2)`. Use `⟨_, CG.hasSat_ofChar (h.1 w), fun hh => ?_⟩` and prove the remaining obligations. Establish `h1` using `hh _ (Multiset.mem_singleton_self _)`. Establish `hq : 1 < Ideal.absNorm w.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm w`. Rewrite `h1` using `[h.2.1 w, Complex.norm_natCast_cpow_of_pos (zero_lt_one.trans hq), Complex.neg_re, Complex.ofReal_re]`.
+
+Conclude with `lt_irrefl _ h1`.
+-/
 theorem bound_fails_absPow (w : HeightOneSpectrum (𝓞 E)) :
     ∃ B, (CG.ofChar (absPow E (1 / 2))).HasSat w B ∧
       ¬ ∀ α ∈ B, (Ideal.absNorm w.asIdeal : ℝ) ^ (-(1 / 2) : ℝ) < ‖(α : ℂ)‖ := by
@@ -63,12 +82,20 @@ theorem bound_fails_absPow (w : HeightOneSpectrum (𝓞 E)) :
   rw [h.2.1 w, Complex.norm_natCast_cpow_of_pos (zero_lt_one.trans hq), Complex.neg_re, Complex.ofReal_re] at h1
   exact lt_irrefl _ h1
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : (CG.ofChar (1 : HChar E)).IsUnitary := CG.isUnitary_ofChar fun x => by simp have h0 : (1 : HChar E).IsAbsPow 0 := ⟨fun v x _ => rfl, fun v => by simp [HChar.val, HChar.locK, HChar.loc], fun k => by simp [HChar.inf]⟩ exact hs (CG.exponent_unique le_rfl h1 h (absPow_is …`.
+-/
 theorem not_isUnitary_absPow {s : ℝ} (hs : s ≠ 0) : ¬ (CG.ofChar (absPow E s)).IsUnitary := fun h => by
   have h1 : (CG.ofChar (1 : HChar E)).IsUnitary := CG.isUnitary_ofChar fun x => by simp
   have h0 : (1 : HChar E).IsAbsPow 0 := ⟨fun v x _ => rfl, fun v => by simp [HChar.val, HChar.locK, HChar.loc],
     fun k => by simp [HChar.inf]⟩
   exact hs (CG.exponent_unique le_rfl h1 h (absPow_isAbsPow E s) h0 (by rw [CG.twist_ofChar, one_mul, CG.twist_one]))
 
+/- English proof (translation)
+Use `infinite_places (E := E)` as an intermediate fact. Take `⟨w, B, B', h1, h2⟩` from `hw.exists`. Use `⟨fun j => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg Multiset.card h2`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, Multiset.card_zero, Multiset.card_sum] at h3`.
+
+Establish `h4` using `(Finset.sum_eq_zero_iff.1 h3.symm) j (Finset.mem_univ j)`. Use `(h1 j).card` as an intermediate fact. Use `hm j` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rigidity_empty {κ : Type} [Fintype κ] (m' : κ → ℕ) (π' : ∀ j, CG E (m' j)) (hm : ∀ j, 1 ≤ m' j)
     (hw : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ (B : Empty → Multiset ℂˣ) (B' : κ → Multiset ℂˣ),
       (∀ j, (π' j).HasSat w (B' j)) ∧ ∑ i, B i = ∑ j, B' j) : IsEmpty κ := by
@@ -82,6 +109,9 @@ theorem rigidity_empty {κ : Type} [Fintype κ] (m' : κ → ℕ) (π' : ∀ j, 
   have := hm j
   omega
 
+/- English proof (translation)
+Introduce `hw` and use `by have := infinite_places (E := E) obtain ⟨w, B, h1, h2⟩ := hw.exists have h := absPow_isAbsPow E 1 have e := (h1.unique (CG.hasSat_ofChar (χ := 1) fun x _ => rfl)).symm.trans (h2.unique (CG.hasSat_ofChar (h.1 w))) have e2 := congrArg (fun u : ℂˣ => ‖(u : ℂ)‖) (Multiset.singleto …`.
+-/
 theorem hyp_fails : ¬ ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite,
     ∃ B, (CG.ofChar (1 : HChar E)).HasSat w B ∧ (CG.ofChar (absPow E 1)).HasSat w B := fun hw => by
   have := infinite_places (E := E)

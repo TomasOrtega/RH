@@ -40,10 +40,16 @@ def completionsOverBasis (v : HeightOneSpectrum (𝓞 K)) :
   (Algebra.TensorProduct.basis (v.adicCompletion K) b).map (tensorEquiv L v).toLinearEquiv
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem completionsOverBasis_repr (v : HeightOneSpectrum (𝓞 K)) (z : CompletionsOver L v)
     (i : ι) : (completionsOverBasis b v).repr z i = localCoord b v i z :=
   rfl
 
+/- English proof (translation)
+Use `(norm_map_of_repr (finiteEval K v) (finiteRestrict L v) (adeleBasis (Module.finBasis K L)) (completionsOverBasis (Module.finBasis K L) v) (fun y i ↦ ?_) y).symm` and prove the remaining obligations. Rewrite using `[completionsOverBasis_repr, adeleBasis_repr]`. Both sides reduce to the same expression.
+-/
 theorem finiteEval_norm (v : HeightOneSpectrum (𝓞 K)) (y : 𝔸[L]) :
     finiteEval K v (Algebra.norm 𝔸[K] y) =
       Algebra.norm (v.adicCompletion K) (finiteRestrict L v y) := by
@@ -53,6 +59,9 @@ theorem finiteEval_norm (v : HeightOneSpectrum (𝓞 K)) (y : 𝔸[L]) :
   rw [completionsOverBasis_repr, adeleBasis_repr]
   rfl
 
+/- English proof (translation)
+The claim follows from `(finiteEval_norm v y).trans (norm_pi _)`.
+-/
 theorem norm_adeleRing_snd (v : HeightOneSpectrum (𝓞 K)) (y : 𝔸[L]) :
     (Algebra.norm 𝔸[K] y).2 v =
       ∏ w : PlacesOver L v, Algebra.norm (v.adicCompletion K) (y.2 w.1) :=
@@ -82,11 +91,17 @@ def piPlacesOverBasis (v : InfinitePlace K) :
   (Algebra.TensorProduct.basis v.Completion b).map
     (GroundTheory.Global.InfinitePlace.tensorPiEquiv (L := L) v).toLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piPlacesOverBasis_repr (v : InfinitePlace K)
     (z : GroundTheory.Global.InfinitePlace.PiPlacesOver (L := L) v) (i : ι) :
     (piPlacesOverBasis b v).repr z i = GroundTheory.Global.InfinitePlace.piPlacesOverCoord b v i z :=
   rfl
 
+/- English proof (translation)
+Use `(norm_map_of_repr (infiniteEval K v) (infiniteRestrict L v) (adeleBasis (Module.finBasis K L)) (piPlacesOverBasis (Module.finBasis K L) v) (fun y i ↦ ?_) y).symm` and prove the remaining obligations. Rewrite using `[piPlacesOverBasis_repr, adeleBasis_repr]`. Both sides reduce to the same expression.
+-/
 theorem infiniteEval_norm (v : InfinitePlace K) (y : 𝔸[L]) :
     infiniteEval K v (Algebra.norm 𝔸[K] y) =
       Algebra.norm v.Completion (infiniteRestrict L v y) := by
@@ -99,6 +114,9 @@ theorem infiniteEval_norm (v : InfinitePlace K) (y : 𝔸[L]) :
 
 open scoped Classical in
 
+/- English proof (translation)
+The claim follows from `(infiniteEval_norm v y).trans (GroundTheory.Global.Algebra.norm_pi _)`.
+-/
 theorem norm_adeleRing_fst (v : InfinitePlace K) (y : 𝔸[L]) :
     (Algebra.norm 𝔸[K] y).1 v =
       ∏ w : v.placesOver L, Algebra.norm v.Completion (y.1 w) :=
@@ -110,6 +128,9 @@ open AdeleBaseChange SemiLocal
 
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+The claim follows from `norm_adeleRing_snd (K := K) v (x : 𝔸[L])`.
+-/
 theorem ideleNorm_snd (x : IdeleGroup L) (v : HeightOneSpectrum (𝓞 K)) :
     ((ideleNorm K L x : IdeleGroup K) : 𝔸[K]).2 v =
       ∏ w : PlacesOver L v, Algebra.norm (v.adicCompletion K) ((x : 𝔸[L]).2 w.1) :=
@@ -117,6 +138,9 @@ theorem ideleNorm_snd (x : IdeleGroup L) (v : HeightOneSpectrum (𝓞 K)) :
 
 open scoped Classical in
 
+/- English proof (translation)
+The claim follows from `norm_adeleRing_fst (K := K) v (x : 𝔸[L])`.
+-/
 theorem ideleNorm_fst (x : IdeleGroup L) (v : InfinitePlace K) :
     ((ideleNorm K L x : IdeleGroup K) : 𝔸[K]).1 v =
       ∏ w : v.placesOver L, Algebra.norm v.Completion ((x : 𝔸[L]).1 w) :=

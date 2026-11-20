@@ -14,6 +14,13 @@ namespace GlobalTheory.PrincCore
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T h j hj σ hσ k γ hγ hc0`. Establish `hc : ∀ x ∈ ((T.U j σ).X k).Λ, ∃ y ∈ ((T.U j σ).X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) x - x = (T.Q.l.M : D.host.E) • y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `hc0 x hx`. Conclude with `⟨y, hy, by rw [e, add_sub_cancel_left, Nat.cast_smul_eq_nsmul]⟩`.
+
+Take `⟨hgood, hA, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Establish `hr : 0 < D.R.r` using `(hnum j hj).2.1`. Establish `hM : 3 ≤ T.Q.l.M` using `le_trans (hgood 2 Nat.prime_two) (Nat.div_le_self _ _)`. Take `⟨γ', hγ', u, n, hn, hu, he⟩` from `GlobalTheory.unf_group_contains_congruence_upto_rootsOfUnity _ _ _ _ _ _ σ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) (h.unf j hj σ hσ) hA hr k γ hγ hc`. Take `⟨th, hrk, hth, hD⟩` from `h.dictU j hj σ hσ`.
+
+Establish `hK` using `h.levelK j hj σ hσ`. Rewrite `hK` using `[← h.pins.2.1.1]`. Establish `h1` using `root_eq_one (T.V j σ) hrk hr (T.U j σ).X (T.dict j σ) (T.mu j σ) (T.Kf j σ) th hth hD (h.muUnit j hj σ hσ) _ hM hK k γ γ' hγ' hc u n hn hu he`. Rewrite `he` using `[h1, one_smul]`. Conclude with `Units.ext he ▸ hγ'`.
+-/
 theorem mem_group_of_congruent : ∀ (D : D7) (T : Core D), LawsM T → ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ → ∀ k (γ : GL (Fin D.R.r) D.host.E), ReciprocityTheory.ChartRestriction.G.FD.IsUStab ((T.U j σ).X k).Gm ((T.U j σ).X k).Λ γ → (∀ v ∈ ((T.U j σ).X k).Λ, ∃ u ∈ ((T.U j σ).X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) v = v + T.Q.l.M • u) → γ ∈ ((T.U j σ).X k).Γ := by
   intro D T h j hj σ hσ k γ hγ hc0
   have hc : ∀ x ∈ ((T.U j σ).X k).Λ, ∃ y ∈ ((T.U j σ).X k).Λ,

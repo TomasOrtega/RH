@@ -16,18 +16,29 @@ open GlobalTheory.ZM GlobalTheory.SiegelRingChange
 noncomputable section
 namespace GlobalTheory.SiegelFamilyBaseChange
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.SiegelPullComp.id_comp_cancel h k B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f').2 H`.
+-/
 theorem pb_iff {h k : ℕ} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRing B''] {ζ : B} {ζ' : B'} {ζ'' : B''}
     {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'} {s'' : S'' ⟶ Sp B''} {c : SiegPre h k ζ s}
     {c' : SiegPre h k ζ' s'} {f : S' ⟶ S} (H : SiegPB c' c f) (c'' : SiegPre h k ζ'' s'') (f' : S'' ⟶ S') :
     SiegPB c'' c' f' ↔ SiegPB c'' c (f' ≫ f) :=
   (GlobalTheory.SiegelPullComp.id_comp_cancel h k B B' B'' ζ ζ' ζ'' S S' S'' s s' s'' c c' c'' f f').2 H
 
+/- English proof (translation)
+Take `⟨N, i, -, hi, rfl⟩` from `h`. Establish `: IsProper (PSpace.str o N)` using `isProper_str o N`. Use `infer_instance`.
+-/
 theorem quasiCompact_of_isQProjOver {o : Type} [CommRing o] {X : Scheme.{0}} {f : X ⟶ Sp o} (h : IsQProjOver f) :
     QuasiCompact f := by
   obtain ⟨N, i, -, hi, rfl⟩ := h
   have : IsProper (PSpace.str o N) := isProper_str o N
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Use `Ideal.comap_ne_bot_of_algebraic_mem (I := RingHom.ker ψ) hx0 hx (ha.1 x) ?_` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`.
+
+Introduce `n hn`. Simplify `hn` using `[Ideal.mem_comap, RingHom.mem_ker]`.
+-/
 theorem injective_of_isAlgebraic {o O : Type} [CommRing o] [IsDomain o] [CommRing O] [CharZero O]
     (ha : Algebra.IsAlgebraic ℤ o) (ψ : o →+* O) : Function.Injective ψ := by
   rw [injective_iff_map_eq_zero]
@@ -38,6 +49,11 @@ theorem injective_of_isAlgebraic {o O : Type} [CommRing o] [IsDomain o] [CommRin
   intro n hn
   simpa [Ideal.mem_comap, RingHom.mem_ker] using hn
 
+/- English proof (translation)
+Set `x₀ : PrimeSpectrum O` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hx₀ : Dense ({x₀} : Set (PrimeSpectrum O))`. Rewrite using `[dense_iff_closure_eq, PrimeSpectrum.closure_singleton]`. Simplify using `[x₀]`. Use `Dense.mono (s₁ := ({x₀} : Set (Sp O))) ?_ hx₀` and prove the remaining obligations.
+
+Introduce and unpack `x rfl`. Conclude with `Ideal.comap_bot_of_injective ψ hψ`.
+-/
 theorem dense_generic {o O : Type} [CommRing o] [CommRing O] [IsDomain O] (ψ : o →+* O)
     (hψ : Function.Injective ψ) : Dense {x : Sp O | (spMap ψ x).asIdeal = ⊥} := by
   let x₀ : PrimeSpectrum O := ⟨⊥, Ideal.isPrime_bot⟩
@@ -50,6 +66,9 @@ theorem dense_generic {o O : Type} [CommRing o] [CommRing O] [IsDomain O] (ψ : 
 
 variable {h k : ℕ} {o B : Type} [CommRing o] [CommRing B] {ζ : o} {ζ' : B}
 
+/- English proof (translation)
+Take `⟨g, hg, H⟩` from `F.rep S _ (down j hj c) hr hd hp`. Use `⟨pullback.lift g s' hg, pullback.lift_snd _ _ _, (pb_iff hU c _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`. Conclude with `H`.
+-/
 theorem rep_baseChange (F : SFam h k ζ) (j : o →+* B) (hj : j ζ = ζ')
     (U : SiegPre h k ζ' (pullback.snd F.s (spMap j))) (hU : SiegPB U F.univ (pullback.fst F.s (spMap j)))
     {S : Scheme.{0}} (s' : S ⟶ Sp B) (c : SiegPre h k ζ' s') (hr : IsReduced S)
@@ -60,6 +79,9 @@ theorem rep_baseChange (F : SFam h k ζ) (j : o →+* B) (hj : j ζ = ζ')
   rw [pullback.lift_fst]
   exact H
 
+/- English proof (translation)
+Use `pullback.hom_ext ?_ e` and prove the remaining obligations. Use `F.inj R _ _ _ (down j hj c) ?_ ((pb_iff hU c _).1 hx) ((pb_iff hU c _).1 hy)` and prove the remaining obligations. Simplify using `only [Category.assoc, pullback.condition]`. Rewrite using `[reassoc_of% e]`.
+-/
 theorem inj_baseChange (F : SFam h k ζ) (j : o →+* B) (hj : j ζ = ζ')
     (U : SiegPre h k ζ' (pullback.snd F.s (spMap j))) (hU : SiegPB U F.univ (pullback.fst F.s (spMap j)))
     {R : Type} [CommRing R] [IsLocalRing R] (x y : Sp R ⟶ pullback F.s (spMap j)) (s' : Sp R ⟶ Sp B)
@@ -70,6 +92,19 @@ theorem inj_baseChange (F : SFam h k ζ) (j : o →+* B) (hj : j ζ = ζ')
   simp only [Category.assoc, pullback.condition]
   rw [reassoc_of% e]
 
+/- English proof (translation)
+Introduce `L₁ L₂ h k p o _ ζ j hodd hk hpp hinj hj hc ha F`. Establish `hpull` using `siegPre_pull_ringChange h k o (ZP p k) ζ (zetaZP p k) j F.X (pullback F.s (spMap j)) F.s (pullback.snd F.s (spMap j)) (pullback.fst F.s (spMap j)) hj pullback.condition`. Take `⟨U, hU⟩` from `hpull.1 F.univ`. Establish `hUp : U.Principal` using `hpull.2.1 _ _ hU F.princ`. Use `F.smooth` as an intermediate fact.
+
+Use `F.isSeparated` as an intermediate fact. Use `quasiCompact_of_isQProjOver F.qproj` as an intermediate fact. Establish `: IsDomain o` using `hinj.isDomain j`. Establish `hsm : SmoothOfRelativeDimension (h * (h + 1) / 2) (pullback.snd F.s (spMap j))` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) F.smooth`. Use `⟨⟨pullback F.s (spMap j), pullback.snd F.s (spMap j), hsm, inferInstance, U, hUp, ?_, ?_⟩, (inferInstance : IsSeparated (pullback.snd F.s (spMap j))), ?_⟩` and prove the remaining obligations.
+
+Introduce `C O _ _ _ _ _ _ _ _ hO hpn β c hgen hsp`. Establish `hp : c.Principal` using `GlobalTheory.T.principal_siegel_of_generic_principal_special_ample L₁ L₂ h k hodd hk _ _ C O hO p hpp hpn β c hgen hsp`. Establish `: IsDomain O` using `hO.1.isDomain (algebraMap O C)`. Establish `: CharZero O` using `RingHom.charZero (algebraMap O C)`. Use `rep_baseChange F j hj U hU _ c inferInstance ?_ hp` and prove the remaining obligations.
+
+Rewrite using `[← spMap_comp']`. Conclude with `dense_generic _ (injective_of_isAlgebraic ha _)`. Introduce `K _ x c h₁ h₂`. Use `inj_baseChange F j hj U hU x _ _ c ?_ h₁ h₂` and prove the remaining obligations. Rewrite using `[hc K (x ≫ _)]`.
+
+Simplify using `only [constPt, Category.assoc]`. Introduce `S s' c hr hd hp`. Use `rep_baseChange F j hj U hU s' c hr (hd.mono fun x hx => ?_) hp` and prove the remaining obligations. Establish `hx' : (s' x).asIdeal = ⊥` using `hx`. Express the relevant statement in the definitionally equal form `((s' x).asIdeal).comap j = ⊥`.
+
+Rewrite using `[hx']`. Conclude with `Ideal.comap_bot_of_injective j hinj`.
+-/
 theorem exists_siegelFamily : Out.Laws → Out.Laws2 → ∀ (h k p : ℕ) (o : Type) [CommRing o] (ζ : o) (j : o →+* ZP p k), Odd k → 3 ≤ k → p.Prime → Function.Injective j → j ζ = zetaZP p k → (∀ (K : Type) [Field K] (y : Sp (DualNumber K) ⟶ Sp (ZP p k)), y = constPt y) → Algebra.IsAlgebraic ℤ o → SFam h k ζ → ∃ Ag : SiegelFamily h p k, SRep Ag := by
   intro L₁ L₂ h k p o _ ζ j hodd hk hpp hinj hj hc ha F
   have hpull := siegPre_pull_ringChange h k o (ZP p k) ζ (zetaZP p k) j F.X (pullback F.s (spMap j)) F.s

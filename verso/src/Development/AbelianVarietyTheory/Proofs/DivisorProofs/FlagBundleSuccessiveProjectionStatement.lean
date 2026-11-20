@@ -7,6 +7,9 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmitFlag.main | exact GlobalTheory.OmitFlag.main | (intros; apply GlobalTheory.OmitFlag.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_successive_projection : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (B : Scheme.{0}) (q : B ⟶ Sp k), IsProjOver q →
     ∀ (Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι]
     (E : ι → B.Modules) (r : ι → ℕ), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) →

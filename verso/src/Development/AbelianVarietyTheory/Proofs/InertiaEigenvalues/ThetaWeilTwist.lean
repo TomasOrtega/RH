@@ -20,6 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.WeilTwistSeries
 
+/- English proof (translation)
+Take `⟨hE, ⟨n, hn, ho⟩, -, ht, -, hv⟩` from `h`. Establish `: IsTotallyComplex D.host.E` using `D.sp.cm.cmUnram.1`. Establish `hfin` using `(GlobalTheory.Mem.UnrAe.unr_ae_and_level _ δ).1`. Establish `hu : ∀ v, v ∉ hfin.toFinset → δ.UnrAt v` using `fun v hv' => by`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hv' (hfin.mem_toFinset.2 hc)`. Use `GlobalTheory.TwistValues.char_mem δc δ hE hn ho σ.fieldRange (fun P k => ?_) x` and prove the remaining obligations. Conclude with `GlobalTheory.TwistValues.locK_mem δ (GlobalTheory.RationalValues.unitsIn σ.fieldRange) hfin.toFinset ht (GlobalTheory.TypeValues.inf_eq_one δ hn ho) hu (fun v hv' => by`. Take `⟨y, hy⟩` from `hv v (hu v hv')`. Use `show ((δ.val v : ℂˣ) : ℂ) ∈ σ.fieldRange`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, Formalism.L2.Host.HChar.valTw]`. Use the proof step `simp) P k`.
+-/
 theorem twist_val_mem {D : D7} {pd : ℕ} {k : Type} [Field k] {σ : k →+* ℂ} {δ : Formalism.L2.Host.HChar D.host.E}
     {δc : (AE D)ˣ →* Circle} (h : IsTwist pd σ δ δc) (x : (AE D)ˣ) : ((δc x : Circle) : ℂ) ∈ σ.fieldRange := by
   obtain ⟨hE, ⟨n, hn, ho⟩, -, ht, -, hv⟩ := h
@@ -38,6 +45,19 @@ theorem twist_val_mem {D : D7} {pd : ℕ} {k : Type} [Field k] {σ : k →+* ℂ
       rw [hy, Formalism.L2.Host.HChar.valTw]
       simp) P k
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hJ hL hG hFam hMod hP hT i hV hpin gramR c0R c0L hB u hu C hC δ δc hδ om hom s hs f hf w hw`. Establish `hψ : IsStdChar D R.ψ (-1)` using `(hP.ωP i A.μ0).std`. Establish `hvac` using `(hP.vP i A.μ0).1`. Establish `hθ : IsInfFam R.θ` using `hvac.2.inf`. Establish `hf0 : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vacP i)` using `GlobalTheory.OneMapRef.isThetaFunO_of_isVacO hvac`.
+
+Take `⟨P, e, Φ, -, -, -, -, -, hTh⟩` from `hf`. Establish `hft : IsThetaFunO R.ψ (Vc D i) (Wc D i) f` using `GlobalTheory.VecTheta.isThetaFunO_of_thetaAt hψ hθ hTh hf0`. Establish `hH : IsThetaFunO R.ψ (Vc D i) (Wc D i) (harmVec R i u w f)` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hψ hθ _ _ _ _ hft _`. Establish `hxi : R.xi A.μ0 = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi A.μ0))`. Establish `hmu : R.toLevCh.mu A.μ0 = Lift.tup R.mu0 (1 : (AE D)ˣ →* Circle)`.
+
+Unfold `LevCh.mu`. Rewrite using `[hxi]`. Establish `hω : IsWeilDatumO R.ψ (Vc D i) (Wc D i) (Lift.chrTh R.mu0 R.eta ((i : ℕ) + 1)).1 (Lift.chrTh R.mu0 R.eta ((i : ℕ) + 1)).2 (R.ωP i A.μ0)`. Establish `h` using `hP.ωP i A.μ0`. Rewrite `h` using `[hmu, GlobalTheory.SplitChange.chrTh_tup]`.
+
+Simplify `h` using `only [mul_one]`. Rewrite `hom` using `[GlobalTheory.SplitChange.chrTh_tup]`. Establish `hδH : IsHeckeChar D δc` using `hδ.1.1`. Establish `hδF : ∀ a, δc (idF D a) = 1` using `GlobalTheory.GridWeil.triv_base hδ.1 hδ.2.2.1`. Take `⟨nV, hnV, -⟩` from `GlobalTheory.Member.exists_muVal D (Vc D i) δc hδH hδF`.
+
+Take `⟨nW, hnW, -⟩` from `GlobalTheory.Member.exists_muVal D (Wc D i) δc hδH hδF`. Take `⟨x, hx⟩` from `hnV.1 s`. Use `⟨(nV s)⁻¹, ?_, nW, Or.inl hnW, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hnV.2 s x hx]`. Conclude with `inv_mem (twist_val_mem hδ x)`.
+
+Rewrite using `[GlobalTheory.SplitChange.thetaKO_twist hω hδH hδF hom hnV hnW s g hH]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_weil_twist : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec),

@@ -18,6 +18,13 @@ def IsAdmP (P : LocPrime l) {d : ℕ} (G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]
   ∃ A B : Matrix (Fin d) (Fin d) P.R.BdR, (∀ i j, A i j ∈ Set.range P.ιB ∧ B i j ∈ Set.range P.ιB) ∧ A * B = 1 ∧
     ∀ σ : G, (r σ).map (algebraMap ℚ_[l] P.R.BdR) * A.map (P.actQdR σ.1) = A
 
+/- English proof (translation)
+Establish `hι : ∀ y, T.eD (P.ιB (T.eB.symm y)) = PositivityTheory.LocInh.ιCD l y` using `RingHom.congr_fun ((PositivityTheory.LocInh.isCrisDR_iff _).1 T.incl)`. Establish `hinv : ∀ y : Per6.Bcris l, IsUnit y → (PositivityTheory.LocInh.ιCD l y)⁻¹ ∈ (PositivityTheory.LocInh.ιCD l).range` using `fun y hy => ⟨↑(hy.unit⁻¹), by rw [map_units_inv]; rfl⟩`. Establish `hle : Bcr l ≤ (PositivityTheory.LocInh.ιCD l).range`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | rfl | rfl)`.
+
+Conclude with `⟨Per6.cB l a, PositivityTheory.LocInh.ιCD_cB a⟩`. Use `hinv _ (PositivityTheory.LocInh.isUnit_cB_l l)` as an intermediate fact. Rewrite `this` using `[PositivityTheory.LocInh.ιCD_cB, map_natCast]`. Then use the resulting hypothesis. Use `hinv _ (PositivityTheory.LocInh.cB_isFrac l).2.1` as an intermediate fact. Rewrite `this` using `[PositivityTheory.LocInh.ιCD_cB]`. Then use the resulting hypothesis.
+
+Take `⟨y, rfl⟩` from `hle hx`. Conclude with `⟨T.eB.symm y, by rw [← hι, RingEquiv.symm_apply_apply]⟩`.
+-/
 theorem mem_range (T : LocTied6 l P AI) {x : Per6.BdR l} (hx : x ∈ Bcr l) : T.eD.symm x ∈ Set.range P.ιB := by
   have hι : ∀ y, T.eD (P.ιB (T.eB.symm y)) = PositivityTheory.LocInh.ιCD l y :=
     RingHom.congr_fun ((PositivityTheory.LocInh.isCrisDR_iff _).1 T.incl)
@@ -34,6 +41,11 @@ theorem mem_range (T : LocTied6 l P AI) {x : Per6.BdR l} (hx : x ∈ Bcr l) : T.
   obtain ⟨y, rfl⟩ := hle hx
   exact ⟨T.eB.symm y, by rw [← hι, RingEquiv.symm_apply_apply]⟩
 
+/- English proof (translation)
+Take `⟨A, B, hm, hAB, hσ⟩` from `h`. Use `⟨A.map T.eD.symm, B.map T.eD.symm, fun i j => ⟨mem_range T (hm i j).1, mem_range T (hm i j).2⟩, ?_, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `i j`. Apply `T.eD.injective` to reduce the goal to its premises.
+
+Use `congrFun (congrFun (hσ σ) i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, UpperTheory.Lit.Drps.eD_alg T, T.actD, RingEquiv.apply_symm_apply] at this ⊢`. Conclude with `this`.
+-/
 theorem isAdmP_of_isAdm (T : LocTied6 l P AI) {d : ℕ} {G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)}
     {r : G → Matrix (Fin d) (Fin d) ℚ_[l]} (h : IsAdm (Bcr l) G r) : IsAdmP P G r := by
   obtain ⟨A, B, hm, hAB, hσ⟩ := h
@@ -46,6 +58,11 @@ theorem isAdmP_of_isAdm (T : LocTied6 l P AI) {d : ℕ} {G : Subgroup (PadicAlgC
       RingEquiv.apply_symm_apply] at this ⊢
     exact this
 
+/- English proof (translation)
+Take `⟨A, B, hm, hAB, hσ⟩` from `h`. Establish `hS : ∀ x ∈ Set.range P.ιB, T.eD x ∈ Set.range (T.eD ∘ P.ιB ∘ T.eB.symm)`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨T.eB y, by simp⟩`. Use `⟨A.map T.eD, B.map T.eD, fun i j => ⟨hS _ (hm i j).1, hS _ (hm i j).2⟩, ?_, fun σ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `i j`. Use `congrArg T.eD (congrFun (congrFun (hσ σ) i) j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, T.actD] at this ⊢`. Conclude with `this`.
+-/
 theorem isAdmD_of_isAdmP (T : LocTied l P AI) {d : ℕ} {G : Subgroup (PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)}
     {r : G → Matrix (Fin d) (Fin d) ℚ_[l]} (h : IsAdmP P G r) :
     GlobalTheory.AdmBr.IsAdmD ((T.eD : P.R.BdR →+* Per.BdR l).comp (algebraMap ℚ_[l] P.R.BdR))
@@ -68,6 +85,9 @@ def CrystallinePeriodMatrices : Prop :=
       GlobalTheory.AdmBr.IsAdmD ((T.eD : P.R.BdR →+* Per.BdR l).comp (algebraMap ℚ_[l] P.R.BdR))
         (Set.range (T.eD ∘ P.ιB ∘ T.eB.symm)) (Formalism.BasicNotions.Loc.GK ⟨K, hK⟩) (M.mat n b)
 
+/- English proof (translation)
+Introduce `l _ P AI T K _ M hM hs n a b` and use `(UpperTheory.Lit.Cmp.locTied6 l P AI ⟨T⟩).elim fun FreeQuotientRank => isAdmD_of_isAdmP T (isAdmP_of_isAdm FreeQuotientRank (h l K M hM hs n a b))`.
+-/
 theorem crystalline_periods_of_smooth (h : SmoothModelCrystalline) : CrystallinePeriodMatrices := fun l _ P AI T K _ M hM hs n a b =>
   (UpperTheory.Lit.Cmp.locTied6 l P AI ⟨T⟩).elim fun FreeQuotientRank => isAdmD_of_isAdmP T (isAdmP_of_isAdm FreeQuotientRank (h l K M hM hs n a b))
 

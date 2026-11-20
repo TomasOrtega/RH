@@ -150,6 +150,11 @@ def JExists (F : ∀ u, Formalism.L2.Forms.Forms0 D u) : Prop :=
   ∀ (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt →
     ∃ J : X.Vpi u →ₗ⋆[ℂ] (Formalism.L2.Forms.Fr D 0 (Nat.zero_le _) → ℂ), JOK X u (F u) wt J
 
+/- English proof (translation)
+Take `⟨wt, hw⟩` from `h1 X u`. Take `⟨ιA, hι⟩` from `h2 X`. Take `⟨g0, hg0⟩` from `h0g X u wt ιA hw hι`. Take `⟨h0, hL, hK⟩` from `h3 X u wt ιA g0 hw hι hg0`. Use `choose hcf hcr using h4 X u wt ιA h0 hw hι`.
+
+Take `⟨J, hJ1, hJ2, hJ3⟩` from `h5 X u wt hw`. Conclude with `⟨⟨wt, hw.1, hw.2.1, hw.2.2.1, hw.2.2.2, ιA, hι.1, hι.2, h0, hcf, hcr, J, hJ1, hJ2, hJ3⟩, hL, hK⟩`.
+-/
 theorem transport_of (F : ∀ u, Formalism.L2.Forms.Forms0 D u) (h1 : WittExists D) (h2 : AdeleIsoExists D)
     (h0g : GenusMatch D F) (h3 : LevelConj D F) (h4 : HcExists D F) (h5 : JExists D F) (X : HidaSetting D)
     (u : D.what₂.Word) :

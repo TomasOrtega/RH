@@ -22,6 +22,9 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
   [BorelSpace V] {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] {J : V ≃ₗᵢ[ℝ] V}
   {ρ : V → B →L[ℂ] B} {G : Type} [Group G] {k : G →* (V →L[ℝ] V)} {c : G → ℂ}
 
+/- English proof (translation)
+Use `⟨fun g f f' hf hf' => ?_, fun g a f _ => intw_smul a f, fun g f hf => sm_osc hJ h hk g hf, fun f hf => osc_one hJ h hk hc hf, fun g g' f hf => osc_mul hJ h hk hl hm g g' hf, fun g v f hf => osc_heis hJ h hk g v hf, fun g A hA f hf => ?_, fun H _ _ _ Φ hΦ g f hf => norm_osc hJ h h …` and prove the remaining obligations. Conclude with `intw_add (h.twist (k g) (hk g)) (vacOp_proj hJ h hk g) (good_of_sm hJ h hf) (good_of_sm hJ h hf')`. Use `intw_comm (h.twist (k g) (hk g)) (vacOp_proj hJ h hk g) (good_of_sm hJ h hf) A hA (fun v => hA _) fun x => ?_` and prove the remaining obligations. Rewrite using `[vacOp_apply, vacOp_apply, map_smul, proj_comm (h.twist (k g) (hk g)) A (fun v => hA _), proj_comm h A hA]`.
+-/
 theorem isOsc_osc (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ)
     (hk : ∀ g x y, omJ J (k g x) (k g y) = omJ J x y) (hc : c 1 = 1) (hl : ∀ g, star (c g) * c g * lam (k g) = 1)
     (hm : ∀ g g', c g * c g' * mu J (k (g * g')) (k g) = c (g * g') * lam (k (g * g'))) :
@@ -35,11 +38,19 @@ theorem isOsc_osc (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ)
       fun x => ?_
     rw [vacOp_apply, vacOp_apply, map_smul, proj_comm (h.twist (k g) (hk g)) A (fun v => hA _), proj_comm h A hA]
 
+/- English proof (translation)
+Simplify using `only [osc, intw, vacOp_apply, map_smul, integral_smul]`. Both sides reduce to the same expression.
+-/
 theorem osc_eq (h : IsHeis (omJ J) ρ) (hk : ∀ g x y, omJ J (k g x) (k g y) = omJ J x y) (g : G) (f : B) :
     osc h hk c g f = c g • ∫ w, ρ (k g w) (∫ u, gau u • ρ (k g u) (proj h (ρ (-w) f))) := by
   simp only [osc, intw, vacOp_apply, map_smul, integral_smul]
   rfl
 
+/- English proof (translation)
+Use `⟨∫ w, (∫ u : V, ‖gau u‖) * ‖proj h (ρ (-w) f)‖, integral_nonneg fun w => mul_nonneg (integral_nonneg fun _ => norm_nonneg _) (norm_nonneg _), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[osc_eq, norm_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `norm_integral_le_of_norm_le ((good_integrable (good_of_sm hJ h hf)).const_mul _) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Rewrite using `[h.2.2.1]`.
+
+Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_smul, h.2.2.1]`. Rewrite using `[integral_mul_const]`.
+-/
 theorem norm_osc_le (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ)
     (hk : ∀ g x y, omJ J (k g x) (k g y) = omJ J x y) {f : B} (hf : Sm ρ f) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ g, ‖osc h hk c g f‖ ≤ ‖c g‖ * K := by
@@ -54,6 +65,11 @@ theorem norm_osc_le (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ)
   simp only [norm_smul, h.2.2.1]
   rw [integral_mul_const]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `GlobalTheory.T.hasDerivAt_oscillatorIntegral_symplecticPath V B J ρ hJ h (fun t => k (γ t)) X (by simp only [hγ, map_one]) hX (fun t => hk (γ t)) κ a p q hq`. Use `⟨l + deriv (fun t => c (γ t)) 0, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1` using `hcγ.hasDerivAt.fun_smul (hl f hf)`. Establish `h2` using `osc_one hJ h hk hc hf`. Rewrite `h2` using `[osc_eq, hc, one_smul]`.
+
+Simplify using `only [hγ, hc, one_smul, h2] at h1`. Simplify using `only [osc_eq]`. Rewrite using `[add_smul, ← add_assoc]`. Conclude with `h1`.
+-/
 theorem hasDerivAt_osc (hJ : ∀ x, J (J x) = -x) (h : IsHeis (omJ J) ρ)
     (hk : ∀ g x y, omJ J (k g x) (k g y) = omJ J x y) (hc : c 1 = 1) (γ : ℝ → G) (hγ : γ 0 = 1) (X : V →L[ℝ] V)
     (hX : HasDerivAt (fun t => k (γ t)) X 0) (hcγ : DifferentiableAt ℝ (fun t => c (γ t)) 0)
@@ -77,16 +93,25 @@ section Transport
 variable {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup V'] [NormedSpace ℝ V']
   {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
 
+/- English proof (translation)
+Use `E.comp_right_fderiv (f := fun u => ρ u f) (x := 0)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `congrArg (fun T : V →L[ℝ] B => T v) this`.
+-/
 theorem dH_comp (E : V ≃L[ℝ] V') (ρ : V' → B →L[ℂ] B) (v : V) (f : B) :
     dH (fun u => ρ (E u)) v f = dH ρ (E v) f := by
   have := E.comp_right_fderiv (f := fun u => ρ u f) (x := 0)
   rw [map_zero] at this
   exact congrArg (fun T : V →L[ℝ] B => T v) this
 
+/- English proof (translation)
+Simplify using `only [quad, dH_comp, E.apply_symm_apply]`.
+-/
 theorem quad_comp (E : V ≃L[ℝ] V') (ρ : V' → B →L[ℂ] B) {κ : Type} [Fintype κ] (a : κ → ℂ) (p q : κ → V') (f : B) :
     quad (fun u => ρ (E u)) a (fun i => E.symm (p i)) (fun i => E.symm (q i)) f = quad ρ a p q f := by
   simp only [quad, dH_comp, E.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `l v`. Use `h (l ∘ₗ (E.symm : V' →L[ℝ] V).toLinearMap) (E v)` as an intermediate fact. Simplify using `only [← hE, E.apply_symm_apply]`. Rewrite `this` using `[← hX]`. Simplify using `using this`.
+-/
 theorem isQuadOf_comp (E : V ≃L[ℝ] V') {om : V' → V' → ℝ} {om' : V → V → ℝ} (hE : ∀ x y, om (E x) (E y) = om' x y)
     {X : V' → V'} {X' : V → V} (hX : ∀ v, E (X' v) = X (E v)) {κ : Type} [Fintype κ] {a : κ → ℂ} {p q : κ → V'}
     (h : IsQuadOf om X a p q) : IsQuadOf om' X' a (fun i => E.symm (p i)) (fun i => E.symm (q i)) := by
@@ -100,6 +125,13 @@ end Transport
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `⟨(Fintype.card ι).factorial * (‖T‖ + ‖C‖) ^ Fintype.card ι, fun M => ?_⟩` and prove the remaining obligations. Establish `hS : 0 ≤ ∑ i, ∑ j, ‖M i j‖` using `by positivity`. Establish `hM : ‖M‖ ≤ ∑ i, ∑ j, ‖M i j‖`. Use `(pi_norm_le_iff_of_nonneg hS).2 fun i => (pi_norm_le_iff_of_nonneg hS).2 fun j => ?_` and prove the remaining obligations. Conclude with `(Finset.single_le_sum (f := fun j => ‖M i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖M i j‖) (fun _ _ => by positivity) (Finset.mem_univ i))`.
+
+Use `Matrix.det_le (A := Matrix.of (T M + C)) (abv := NormedField.toAbsoluteValue ℂ) (x := (‖T‖ + ‖C‖) * (1 + ∑ i, ∑ j, ‖M i j‖)) fun i j => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `‖(T M + C) i j‖ ≤ _`. Use `((norm_le_pi_norm ((T M + C) i) j).trans (norm_le_pi_norm (T M + C) i)).trans ?_` and prove the remaining obligations. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `T.le_opNorm M`.
+
+Establish `h2` using `mul_le_mul_of_nonneg_left hM (norm_nonneg T)`. Use polynomial arithmetic with `[norm_nonneg T, norm_nonneg C, mul_nonneg (norm_nonneg C) hS]`. Rewrite `this` using `[nsmul_eq_mul, mul_pow, ← mul_assoc]`. Conclude with `this`.
+-/
 theorem norm_det_le (T : (ι → ι → ℂ) →L[ℝ] (ι → ι → ℂ)) (C : ι → ι → ℂ) :
     ∃ K : ℝ, ∀ M : ι → ι → ℂ, ‖(Matrix.of (T M + C)).det‖ ≤ K * (1 + ∑ i, ∑ j, ‖M i j‖) ^ Fintype.card ι := by
   refine ⟨(Fintype.card ι).factorial * (‖T‖ + ‖C‖) ^ Fintype.card ι, fun M => ?_⟩
@@ -119,6 +151,9 @@ theorem norm_det_le (T : (ι → ι → ℂ) →L[ℝ] (ι → ι → ℂ)) (C :
   rw [nsmul_eq_mul, mul_pow, ← mul_assoc] at this
   exact this
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Use `DifferentiableAt.fun_sum fun σ _ => DifferentiableAt.const_mul ?_ _` and prove the remaining obligations. Conclude with `DifferentiableAt.fun_finset_prod fun i _ => differentiableAt_pi.1 (differentiableAt_pi.1 hM _) _`.
+-/
 theorem differentiableAt_det {M : ℝ → ι → ι → ℂ} (hM : DifferentiableAt ℝ M 0) :
     DifferentiableAt ℝ (fun t => (Matrix.of (M t)).det) 0 := by
   simp only [Matrix.det_apply', Matrix.of_apply]
@@ -143,12 +178,18 @@ def kLL (ι : Type) [Fintype ι] : (ι → ι → ℂ) →L[ℝ] (EuclideanSpace
       map_smul' := fun r M => ContinuousLinearMap.ext fun v => (crd ι).injective (by
         rw [RingHom.id_apply, ContinuousLinearMap.smul_apply, map_smul (crd ι), crd_kL, crd_kL, ← smul_mulVec]; rfl) }
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (((1 / 2 : ℂ) • ((1 + s) * A)) * M * A' + (1 / 2 : ℂ) • (1 - s)).det`. Simplify using `only [dP, smul_mul_assoc, mul_assoc]`.
+-/
 theorem detPlus_sandwich (s A A' M : Matrix ι ι ℂ) : dP s (A * M * A') =
     (Matrix.of (sand ((1 / 2 : ℂ) • ((1 + s) * A)) A' (Matrix.of.symm M) +
       Matrix.of.symm ((1 / 2 : ℂ) • (1 - s)))).det := by
   change _ = (((1 / 2 : ℂ) • ((1 + s) * A)) * M * A' + (1 / 2 : ℂ) • (1 - s)).det
   simp only [dP, smul_mul_assoc, mul_assoc]
 
+/- English proof (translation)
+Establish `hX' : HasDerivAt (fun t => (Matrix.of.symm (M t) : ι → ι → ℂ)) (Matrix.of.symm X) 0` using `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hX i j`. Establish `e : ∀ N : Matrix ι ι ℂ, kL (A * N * A') = ((kLL ι).comp (sand A A')) (Matrix.of.symm N)` using `fun _ => rfl`. Simplify using `only [e]`. Conclude with `((kLL ι).comp (sand A A')).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hX'`.
+-/
 theorem hasDerivAt_kL (A A' : Matrix ι ι ℂ) {M : ℝ → Matrix ι ι ℂ} {X : Matrix ι ι ℂ}
     (hX : ∀ i j, HasDerivAt (fun t => M t i j) (X i j) 0) :
     HasDerivAt (fun t => kL (A * M t * A')) (kL (A * X * A')) 0 := by
@@ -158,6 +199,9 @@ theorem hasDerivAt_kL (A A' : Matrix ι ι ℂ) {M : ℝ → Matrix ι ι ℂ} {
   simp only [e]
   exact ((kLL ι).comp (sand A A')).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hX'
 
+/- English proof (translation)
+Establish `hX' : HasDerivAt (fun t => (Matrix.of.symm (M t) : ι → ι → ℂ)) (Matrix.of.symm X) 0` using `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hX i j`. Simplify using `only [detPlus_sandwich]`. Conclude with `differentiableAt_det (((ContinuousLinearMap.differentiableAt _).comp (0 : ℝ) hX'.differentiableAt).add_const _)`.
+-/
 theorem differentiableAt_dP (s A A' : Matrix ι ι ℂ) {M : ℝ → Matrix ι ι ℂ} {X : Matrix ι ι ℂ}
     (hX : ∀ i j, HasDerivAt (fun t => M t i j) (X i j) 0) :
     DifferentiableAt ℝ (fun t => dP s (A * M t * A')) 0 := by
@@ -172,14 +216,29 @@ def kM {G : Type} [Group G] (m : G →* Matrix ι ι ℂ) : G →* (EuclideanSpa
   map_one' := by rw [map_one, kL_one]
   map_mul' g g' := by rw [map_mul, kL_mul]
 
+/- English proof (translation)
+The claim follows from `crd_kL _ v`.
+-/
 theorem crd_kM {G : Type} [Group G] (m : G →* Matrix ι ι ℂ) (g : G) (v : EuclideanSpace ℂ ι) :
     crd ι (kM m g v) = m g *ᵥ crd ι v := crd_kL _ v
 
+/- English proof (translation)
+Rewrite using `[omJ_cplx, omJ_cplx, crd_kM, crd_kM, form_mulVec, hms]`.
+-/
 theorem omJ_kM {s : Matrix ι ι ℂ} (hs1 : sᴴ = s) (hs2 : s * s = 1) {G : Type} [Group G] (m : G →* Matrix ι ι ℂ)
     (hms : ∀ g, (m g)ᴴ * s * m g = s) (g : G) (x y : EuclideanSpace ℂ ι) :
     omJ (cplx s hs1 hs2) (kM m g x) (kM m g y) = omJ (cplx s hs1 hs2) x y := by
   rw [omJ_cplx, omJ_cplx, crd_kM, crd_kM, form_mulVec, hms]
 
+/- English proof (translation)
+Take `⟨hl, hmu⟩` from `GlobalTheory.T.gaussianPairing_unitaryGroup_two_three (EuclideanSpace ℂ ι) ι (crd ι) norm_sq_crd s hs1 hs2 (cplx s hs1 hs2) (crd_cplx s hs1 hs2)`. Establish `hk` using `crd_kM m`. Use `⟨fun g => ?_, fun g g' => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3⟩` from `hl (m g) (kM m g) (hms g) (hk g)`. Establish `: star (dP s (m g)) ≠ 0` using `star_ne_zero.2 e1`.
+
+Rewrite using `[e3, e2]`. Clear the denominators using the available nonvanishing facts. Take `⟨e1, e2, e3⟩` from `hl (m (g * g')) (kM m (g * g')) (hms _) (hk _)`. Establish `e4` using `(hl (m g) (kM m g) (hms g) (hk g)).1`. Establish `e5` using `(hl (m g') (kM m g') (hms g') (hk g')).1`.
+
+Establish `: star (dP s (m (g * g'))) ≠ 0` using `star_ne_zero.2 e1`. Establish `e6 : (m g)⁻¹ * m (g * g') = m g'`. Establish `: m g⁻¹ * m g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[Matrix.inv_eq_left_inv this, ← map_mul, inv_mul_cancel_left]`. Rewrite using `[hmu (m (g * g')) (m g) (kM m (g * g')) (kM m g) (hms _) (hms _) (hk _) (hk _), e3, e2, e6]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem detPlus_cocycle {s : Matrix ι ι ℂ} (hs1 : sᴴ = s) (hs2 : s * s = 1) {G : Type} [Group G] (m : G →* Matrix ι ι ℂ)
     (hms : ∀ g, (m g)ᴴ * s * m g = s) :
     (∀ g, star (dP s (m g)) * dP s (m g) * lam (kM m g) = 1) ∧
@@ -203,6 +262,23 @@ theorem detPlus_cocycle {s : Matrix ι ι ℂ} (hs1 : sᴴ = s) (hs2 : s * s = 1
     rw [hmu (m (g * g')) (m g) (kM m (g * g')) (kM m g) (hms _) (hms _) (hk _) (hk _), e3, e2, e6]
     field_simp
 
+/- English proof (translation)
+Introduce `ι _ _ H h1 h2 B _ _ _ ρ hρ G _ m hm`. Take `⟨R, s, hR, hs1, hs2, rfl⟩` from `GlobalTheory.hermitian_congr_involution ι H h1 h2`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det R).2 hR.isUnit`. Establish `hback : ∀ X : Matrix ι ι ℂ, (u⁻¹).1ᴴ * (u.1ᴴ * X * u.1) * (u⁻¹).1 = X` using `fun X =>`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `E₀ : (ι → ℂ) ≃L[ℝ] (ι → ℂ)` to `ContinuousLinearEquiv.equivOfInverse (mvL (u⁻¹).1) (mvL u.1) (fun v => by simp) fun v => by simp`. Set `E : EuclideanSpace ℂ ι ≃L[ℝ] (ι → ℂ)` to `(crd ι).trans E₀`. Establish `hE : ∀ v, E v = (u⁻¹).1 *ᵥ crd ι v` using `fun _ => rfl`. Establish `hJ` using `cplx_cplx s hs1 hs2`. Establish `hEom : ∀ x y, (star (E y) ⬝ᵥ (u.1ᴴ * s * u.1) *ᵥ E x).im = omJ (cplx s hs1 hs2) x y` using `fun x y => by`.
+
+Rewrite using `[hE, hE, form_mulVec, hback, omJ_cplx]`. Establish `hρ' : IsHeis (omJ (cplx s hs1 hs2)) fun v => ρ (E v)` using `isHeis_comp hρ (E : EuclideanSpace ℂ ι →L[ℝ] (ι → ℂ)) hEom`. Set `m' : G →* Matrix ι ι ℂ` to `{ toFun := fun g => u.1 * m g * (u⁻¹).1 map_one' := by simp map_mul' := fun g g' => by simp only [map_mul, mul_assoc, Units.inv_mul_cancel_left] }`. Establish `hm' : ∀ g, m' g = u.1 * m g * (u⁻¹).1` using `fun _ => rfl`. Establish `hms : ∀ g, (m' g)ᴴ * s * m' g = s` using `fun g => by`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hm', mul_assoc, conjTranspose_mul]`. Use `_ = s := by rw [hm, hback]`. Establish `hEk : ∀ (M : Matrix ι ι ℂ) v, E (kL (u.1 * M * (u⁻¹).1) v) = M *ᵥ E v` using `fun M v => by`. Simplify using `only [hE, crd_kL, mulVec_mulVec, mul_assoc, Units.inv_mul_cancel_left]`.
+
+Establish `hom` using `omJ_kM hs1 hs2 m' hms`. Establish `hc1 : (fun g => dP s (m' g)) 1 = 1` using `by simp only [map_one, detPlus_one₂]`. Take `⟨hl, hmu⟩` from `detPlus_cocycle hs1 hs2 m' hms`. Establish `hΩ` using `isOsc_osc (c := fun g => dP s (m' g)) hJ hρ' hom hc1 hl hmu`. Establish `hkM : ∀ g, kM m' g = kL (u.1 * m g * (u⁻¹).1)` using `fun _ => rfl`.
+
+Establish `hΩ' : IsOsc ρ (fun g v => m g *ᵥ v) fun g => osc hρ' hom (fun g => dP s (m' g)) (MonoidHom.id G g)` using `isOsc_comp E (MonoidHom.id G) (fun g v => by rw [MonoidHom.id_apply, hkM, hEk]) hΩ`. Simplify using `only [MonoidHom.id_apply] at hΩ'`. Use `⟨fun g => osc hρ' hom (fun g => dP s (m' g)) g, hΩ', ⟨Fintype.card ι, fun f hf => ?_⟩, fun γ X hγ hX κ _ a p q hq => ?_⟩` and prove the remaining obligations. Take `⟨K, hK0, hK⟩` from `norm_osc_le (c := fun g => dP s (m' g)) hJ hρ' hom ((sm_comp_iff E ρ f).2 hf)`. Take `⟨L, hL⟩` from `norm_det_le (sand ((1 / 2 : ℂ) • ((1 + s) * u.1)) (u⁻¹).1) (Matrix.of.symm ((1 / 2 : ℂ) • (1 - s)))`.
+
+Use `⟨L * K, fun g => (hK g).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_right_comm, hm', detPlus_sandwich]`. Conclude with `mul_le_mul_of_nonneg_right (hL _) hK0`. Establish `hkX : HasDerivAt (fun t => kM m' (γ t)) (kL (u.1 * X * (u⁻¹).1)) 0` using `hasDerivAt_kL u.1 (u⁻¹).1 hX`. Establish `hcγ : DifferentiableAt ℝ (fun t => dP s (m' (γ t))) 0` using `differentiableAt_dP s u.1 (u⁻¹).1 hX`.
+
+Take `⟨l, hl⟩` from `hasDerivAt_osc (c := fun g => dP s (m' g)) hJ hρ' hom hc1 γ hγ _ hkX hcγ a _ _ (isQuadOf_comp E hEom (hEk X) hq)`. Use `⟨l, fun f hf => ?_⟩` and prove the remaining obligations. Use `hl f ((sm_comp_iff E ρ f).2 hf)` as an intermediate fact. Rewrite `this` using `[quad_comp]`. Then use the resulting hypothesis.
+-/
 theorem exists_osc_bound_deriv : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (H : Matrix ι ι ℂ), Hᴴ = H → H.det ≠ 0 → ∀ (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (ρ : (ι → ℂ) → B →L[ℂ] B), IsHeis (fun x y => (star y ⬝ᵥ H *ᵥ x).im) ρ → ∀ (G : Type) [Group G] (m : G →* Matrix ι ι ℂ), (∀ g, (m g)ᴴ * H * m g = H) → ∃ Ω : G → B → B, IsOsc ρ (fun g v => m g *ᵥ v) Ω ∧ (∃ N : ℕ, ∀ f, Sm ρ f → ∃ C : ℝ, ∀ g, ‖Ω g f‖ ≤ C * (1 + ∑ i, ∑ j, ‖m g i j‖) ^ N) ∧ ∀ (γ : ℝ → G) (X : Matrix ι ι ℂ), γ 0 = 1 → (∀ i j, HasDerivAt (fun t => m (γ t) i j) (X i j) 0) → ∀ (κ : Type) [Fintype κ] (c : κ → ℂ) (p q : κ → ι → ℂ), IsQuadOf (fun x y => (star y ⬝ᵥ H *ᵥ x).im) (fun v => X *ᵥ v) c p q → ∃ lam : ℂ, ∀ f, Sm ρ f → HasDerivAt (fun t => Ω (γ t) f) (quad ρ c p q f + lam • f) 0 := by
   intro ι _ _ H h1 h2 B _ _ _ ρ hρ G _ m hm
   obtain ⟨R, s, hR, hs1, hs2, rfl⟩ := GlobalTheory.hermitian_congr_involution ι H h1 h2

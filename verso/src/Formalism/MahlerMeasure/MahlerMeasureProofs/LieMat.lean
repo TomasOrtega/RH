@@ -8,6 +8,11 @@ section Gauss
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Unfold `gaussR`. Rewrite using `[Finset.sup_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`. Distinguish the cases in `hk : k ∈ P.support`.
+
+Conclude with `h k hk`. Rewrite using `[Polynomial.notMem_support_iff.mp hk]`. Simplify using the standard rewrite rules. Introduce `h k _`. Conclude with `h k`.
+-/
 theorem gaussR_le_iff (ρ : NNReal) (P : K[X]) (b : NNReal) :
     gaussR ρ P ≤ b ↔ ∀ k, ‖P.coeff k‖₊ * ρ ^ k ≤ b := by
   unfold gaussR
@@ -19,9 +24,15 @@ theorem gaussR_le_iff (ρ : NNReal) (P : K[X]) (b : NNReal) :
     · rw [Polynomial.notMem_support_iff.mp hk]; simp
   · intro h k _; exact h k
 
+/- English proof (translation)
+The claim follows from `(gaussR_le_iff ρ P _).mp le_rfl k`.
+-/
 theorem coeff_le_gaussR (ρ : NNReal) (P : K[X]) (k : ℕ) : ‖P.coeff k‖₊ * ρ ^ k ≤ gaussR ρ P :=
   (gaussR_le_iff ρ P _).mp le_rfl k
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nnnorm_sum_mul_le {ι : Type*} (s : Finset ι) (f : ι → K) (r b : NNReal)
     (h : ∀ i ∈ s, ‖f i‖₊ * r ≤ b) : ‖∑ i ∈ s, f i‖₊ * r ≤ b := by
   classical
@@ -34,15 +45,26 @@ theorem nnnorm_sum_mul_le {ι : Type*} (s : Finset ι) (f : ι → K) (r b : NNR
       _ = max (‖f a‖₊ * r) (‖∑ i ∈ s, f i‖₊ * r) := max_mul_of_nonneg _ _ r.2
       _ ≤ b := max_le (h a (mem_insert_self a s)) (ih fun i hi => h i (mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[gaussR_le_iff]`. Introduce `k`. Rewrite using `[finsetSum_coeff]`. Conclude with `nnnorm_sum_mul_le s _ _ _ fun i hi => (coeff_le_gaussR ρ (f i) k).trans (h i hi)`.
+-/
 theorem gaussR_sum_le {ι : Type*} (ρ : NNReal) (s : Finset ι) (f : ι → K[X]) (b : NNReal)
     (h : ∀ i ∈ s, gaussR ρ (f i) ≤ b) : gaussR ρ (∑ i ∈ s, f i) ≤ b := by
   rw [gaussR_le_iff]; intro k
   rw [finsetSum_coeff]
   exact nnnorm_sum_mul_le s _ _ _ fun i hi => (coeff_le_gaussR ρ (f i) k).trans (h i hi)
 
+/- English proof (translation)
+Unfold `gaussR`. Simplify using `[support_neg]`.
+-/
 theorem gaussR_neg (ρ : NNReal) (P : K[X]) : gaussR ρ (-P) = gaussR ρ P := by
   unfold gaussR; simp [support_neg]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[gaussR_le_iff]`. Introduce `k`. Rewrite using `[coeff_C]`. Use `split_ifs with hk`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `using coeff_le_gaussR ρ (C a) 0`.
+-/
 theorem gaussR_C (ρ : NNReal) (a : K) : gaussR ρ (C a) = ‖a‖₊ := by
   apply le_antisymm
   · rw [gaussR_le_iff]; intro k
@@ -51,6 +73,11 @@ theorem gaussR_C (ρ : NNReal) (a : K) : gaussR ρ (C a) = ‖a‖₊ := by
     · simp
   · simpa using coeff_le_gaussR ρ (C a) 0
 
+/- English proof (translation)
+Rewrite using `[gaussR_le_iff]`. Introduce `k`. Rewrite using `[coeff_mul]`. Apply `nnnorm_sum_mul_le` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite `hx` using `[HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[nnnorm_mul, ← hx, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gaussR_mul_le (ρ : NNReal) (P Q : K[X]) : gaussR ρ (P * Q) ≤ gaussR ρ P * gaussR ρ Q := by
   rw [gaussR_le_iff]; intro k
   rw [coeff_mul]
@@ -62,6 +89,11 @@ theorem gaussR_mul_le (ρ : NNReal) (P Q : K[X]) : gaussR ρ (P * Q) ≤ gaussR 
       = (‖P.coeff x.1‖₊ * ρ ^ x.1) * (‖Q.coeff x.2‖₊ * ρ ^ x.2) := by ring
     _ ≤ _ := mul_le_mul' (coeff_le_gaussR _ _ _) (coeff_le_gaussR _ _ _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [prod_empty]`. Rewrite using `[← C_1, gaussR_C]`. Simplify using the standard rewrite rules. Consider the case `insert a s ha ih`.
+
+Rewrite using `[prod_insert ha, prod_insert ha]`. Conclude with `(gaussR_mul_le _ _ _).trans (by gcongr)`.
+-/
 theorem gaussR_prod_le {ι : Type*} (ρ : NNReal) (s : Finset ι) (f : ι → K[X]) :
     gaussR ρ (∏ i ∈ s, f i) ≤ ∏ i ∈ s, gaussR ρ (f i) := by
   classical
@@ -71,6 +103,11 @@ theorem gaussR_prod_le {ι : Type*} (ρ : NNReal) (s : Finset ι) (f : ι → K[
     rw [prod_insert ha, prod_insert ha]
     exact (gaussR_mul_le _ _ _).trans (by gcongr)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Apply `gaussR_sum_le` to reduce the goal to its premises. Introduce `σ _`. Establish `hsign : gaussR ρ (Equiv.Perm.sign σ • ∏ i, M (σ i) i) = gaussR ρ (∏ i, M (σ i) i)`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h` into its components or cases.
+
+Rewrite using `[h, one_smul]`. Rewrite using `[h, Units.neg_smul, one_smul, gaussR_neg]`. Rewrite using `[hsign]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gaussR_det_le (ρ : NNReal) {n : ℕ} (M : Matrix (Fin n) (Fin n) K[X]) (b : Fin n → NNReal)
     (hb : ∀ i j, gaussR ρ (M i j) ≤ b i) : gaussR ρ M.det ≤ ∏ i, b i := by
   rw [Matrix.det_apply]
@@ -85,6 +122,11 @@ theorem gaussR_det_le (ρ : NNReal) {n : ℕ} (M : Matrix (Fin n) (Fin n) K[X]) 
     _ ≤ ∏ i, b (σ i) := Finset.prod_le_prod' fun i _ => hb _ _
     _ = ∏ i, b i := Equiv.prod_comp σ b
 
+/- English proof (translation)
+Rewrite using `[gaussR_le_iff]`. Introduce `k`. Break down `Nat.eq_zero_or_pos k with hk | hk` into its components or cases. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `h1 : ‖P.coeff k‖₊ ≤ 1` using `by simpa using (coeff_le_gaussR 1 P k).trans hP`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gaussR_le_max_coeff_zero {ρ : NNReal} (hρ : ρ ≤ 1) (P : K[X]) (hP : gaussR 1 P ≤ 1) :
     gaussR ρ P ≤ max ‖P.coeff 0‖₊ ρ := by
   rw [gaussR_le_iff]; intro k
@@ -95,6 +137,11 @@ theorem gaussR_le_max_coeff_zero {ρ : NNReal} (hρ : ρ ≤ 1) (P : K[X]) (hP :
       _ = ρ := one_mul _
       _ ≤ _ := le_max_right _ _
 
+/- English proof (translation)
+Establish `h` using `gaussR_det_le 1 (M.map C) (fun _ => 1) (fun i j => by`. Rewrite using `[Matrix.map_apply, gaussR_C, ← NNReal.coe_le_coe]`. Simplify using `using hM i j)`. Establish `e : (M.map C).det = C M.det` using `(RingHom.map_det C M).symm`. Rewrite `h` using `[e, gaussR_C, prod_const_one, ← NNReal.coe_le_coe]`.
+
+Simplify using `using h`.
+-/
 theorem norm_det_le_one {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, ‖M i j‖ ≤ 1) :
     ‖M.det‖ ≤ 1 := by
   have h := gaussR_det_le 1 (M.map C) (fun _ => 1) (fun i j => by
@@ -103,6 +150,11 @@ theorem norm_det_le_one {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (hM : ∀ i j, 
   rw [e, gaussR_C, prod_const_one, ← NNReal.coe_le_coe] at h
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv, smul_eq_mul, norm_mul, norm_inv, hdet, inv_one, one_mul, Matrix.adjugate_apply]`. Apply `norm_det_le_one` to reduce the goal to its premises. Introduce `k l`. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`.
+
+Apply the tactic sequence `rw [Pi.single_apply]; split_ifs <;> simp`. Conclude with `hU k l`.
+-/
 theorem norm_inv_entry_le {n : ℕ} (U : Matrix (Fin n) (Fin n) K) (hU : ∀ i j, ‖U i j‖ ≤ 1)
     (hdet : ‖U.det‖ = 1) (i j : Fin n) : ‖U⁻¹ i j‖ ≤ 1 := by
   rw [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv, smul_eq_mul, norm_mul, norm_inv, hdet,
@@ -122,6 +174,47 @@ namespace Formalism.GM
 
 open Finset Polynomial DetBound
 
+/- English proof (translation)
+Introduce `p _ K _ _ _ n del₀ h E c t₀ U V d hc hU hV hdU hdV hE hdel hA`. Use `set L : K[X] := C ((p : K) ^ h) * X + C (t₀ : K) with hL`. Use `set ρ : NNReal := Real.toNNReal ((p : ℝ) ^ (-E)) with hρdef`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt.le`. Establish `hρ1 : ρ ≤ 1`.
+
+Rewrite using `[hρdef, Real.toNNReal_le_one]`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hp1 (by linarith)`. Use `set A := binMatK K del₀ c with hAdef`. Use `set B : Matrix (Fin n) (Fin n) K[X] := A.map (fun P => P.comp L) with hB`. Establish `hdetB : A.det.comp L = B.det`.
+
+Use `RingHom.map_det (Polynomial.compRingHom L) A` as an intermediate fact. Simplify `this` using `[Polynomial.coe_compRingHom_apply, RingHom.mapMatrix_apply]`. Establish `hC1 : ∀ a : K, ‖a‖ ≤ 1 → gaussR 1 (C a) ≤ 1`. Introduce `a ha`. Rewrite using `[gaussR_C, ← NNReal.coe_le_coe]`.
+
+Simplify using `using ha`. Establish `hmul1 : ∀ P Q : K[X], gaussR 1 P ≤ 1 → gaussR 1 Q ≤ 1 → gaussR 1 (P * Q) ≤ 1` using `fun P Q hP hQ => (gaussR_mul_le _ _ _).trans (mul_le_one' hP hQ)`. Establish `hBint : ∀ i j, gaussR 1 (B i j) ≤ 1`. Introduce `i j`. Simplify using `only [hB, Matrix.map_apply, hAdef, binMatK, Polynomial.sum_comp, mul_comp, C_comp]`.
+
+Apply `gaussR_sum_le` to reduce the goal to its premises. Introduce `k hk`. Apply `hmul1 _ _ (hC1 _ (hc i j k))` to reduce the goal to its premises. Rewrite using `[gaussR_le_iff]`. Introduce `m`.
+
+Rewrite using `[one_pow, mul_one, ← NNReal.coe_le_coe]`. Establish `hk' : k ≤ p ^ h`. Use `Finset.mem_range.mp hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[coe_nnnorm, NNReal.coe_one]`.
+
+Conclude with `hM p K h k t₀ hk' m`. Establish `hB0 : B.map (Polynomial.eval 0) = U * Matrix.diagonal d * V`. Rewrite using `[← hA]`. Use extensionality with `i j`. Simplify using `[hB, Matrix.map_apply, Polynomial.eval_comp, hL]`.
+
+Establish `hUu : IsUnit U.det` using `isUnit_iff_ne_zero.mpr (norm_ne_zero_iff.mp (by rw [hdU]; norm_num))`. Establish `hVu : IsUnit V.det` using `isUnit_iff_ne_zero.mpr (norm_ne_zero_iff.mp (by rw [hdV]; norm_num))`. Use `set B' : Matrix (Fin n) (Fin n) K[X] := (U⁻¹).map C * B * (V⁻¹).map C with hB'`. Establish `hB'0 : B'.map (Polynomial.eval 0) = Matrix.diagonal d`. Establish `hmul` using `fun (X Y : Matrix (Fin n) (Fin n) K[X]) => (Matrix.map_mul (L := X) (M := Y) (f := Polynomial.evalRingHom (0 : K)))`.
+
+Simplify using `only [coe_evalRingHom] at hmul`. Establish `hCm : ∀ W : Matrix (Fin n) (Fin n) K, (W.map C).map (Polynomial.eval 0) = W`. Introduce `W`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hB', hmul, hmul, hCm, hCm, hB0]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hVu, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ hUu]`. Establish `hB'int : ∀ i j, gaussR 1 (B' i j) ≤ 1`. Introduce `i j`.
+
+Simplify using `only [hB', Matrix.mul_apply, Matrix.map_apply]`. Apply `gaussR_sum_le` to reduce the goal to its premises. Introduce `l _`. Apply `hmul1 _ _ _ (hC1 _ (norm_inv_entry_le V hV hdV l j))` to reduce the goal to its premises. Apply `gaussR_sum_le` to reduce the goal to its premises.
+
+Introduce `k _`. Conclude with `hmul1 _ _ (hC1 _ (norm_inv_entry_le U hU hdU i k)) (hBint k l)`. Set `b : Fin n → NNReal` to `fun i => if ‖d i‖ ≤ (p : ℝ) ^ (-E) then ρ else 1`. Establish `hrow : ∀ i j, gaussR ρ (B' i j) ≤ b i`. Introduce `i j`.
+
+Use `(gaussR_le_max_coeff_zero hρ1 _ (hB'int i j)).trans ?_` and prove the remaining obligations. Establish `h0 : (B' i j).coeff 0 = Matrix.diagonal d i j`. Rewrite using `[coeff_zero_eq_eval_zero, ← hB'0, Matrix.map_apply]`. Rewrite using `[h0]`. Simplify using `only [b]`.
+
+Use `split_ifs with hd`. Use `max_le ?_ le_rfl` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs with hij`. Rewrite using `[hρdef, Real.le_toNNReal_iff_coe_le (Real.rpow_nonneg (by linarith) _)]`.
+
+Simplify using `using hd`. Simplify using the standard rewrite rules. Use `max_le ?_ hρ1` and prove the remaining obligations. Use `coeff_le_gaussR 1 (B' i j) 0` as an intermediate fact. Rewrite `this` using `[h0, pow_zero, mul_one]`.
+
+Conclude with `this.trans (hB'int i j)`. Establish `hdetB' : gaussR ρ B'.det ≤ ρ ^ (univ.filter (fun i => ‖d i‖ ≤ (p : ℝ) ^ (-E))).card`. Use `(gaussR_det_le ρ B' b hrow).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [b]`. Rewrite using `[Finset.prod_ite, prod_const, prod_const_one, mul_one]`.
+
+Establish `hBB' : B = U.map C * B' * V.map C`. Establish `hmulC` using `fun (X Y : Matrix (Fin n) (Fin n) K) => (Matrix.map_mul (L := X) (M := Y) (f := (C : K →+* K[X])))`. Rewrite using `[hB']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hmulC V⁻¹ V, Matrix.nonsing_inv_mul _ hVu, ← Matrix.mul_assoc (U.map C), ← hmulC U U⁻¹, Matrix.mul_nonsing_inv _ hUu]`.
+
+Rewrite using `[Matrix.map_one _ (map_zero C) (map_one C), Matrix.one_mul, Matrix.mul_one]`. Establish `hdetBB : B.det = C U.det * B'.det * C V.det`. Rewrite using `[hBB', Matrix.det_mul, Matrix.det_mul, RingHom.map_det C U, RingHom.map_det C V]`. Both sides reduce to the same expression. Establish `hnU : ‖U.det‖₊ = 1` using `by ext; simpa using hdU`.
+
+Establish `hnV : ‖V.det‖₊ = 1` using `by ext; simpa using hdV`. Establish `hfin : gaussR ρ (A.det.comp L) ≤ ρ ^ (univ.filter (fun i => ‖d i‖ ≤ (p : ℝ) ^ (-E))).card`. Rewrite using `[hdetB, hdetBB]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin'` using `NNReal.coe_le_coe.mpr hfin`.
+
+Use `hfin'.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[NNReal.coe_pow, hρdef, Real.coe_toNNReal _ (Real.rpow_nonneg (by linarith) _), ← Real.rpow_natCast, ← Real.rpow_mul (by linarith), neg_mul]`.
+-/
 theorem lieMat_of (hM : MahlerK) : LieMat := by
   intro p _ K _ _ _ n del₀ h E c t₀ U V d hc hU hV hdU hdV hE hdel hA
   set L : K[X] := C ((p : K) ^ h) * X + C (t₀ : K) with hL

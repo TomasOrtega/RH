@@ -39,14 +39,26 @@ open Formalism.GaloisCohomology UpperTheory.Top GlobalTheory.Mem.LiteralAutomorp
 
 namespace UpperTheory.V.HV.U
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PoitouTateConj.poitouTateDuality_of_normalised hN.coh.pt`.
+-/
 theorem pt (hN : LitN) : GlobalTheory.Published.PoitouTateDuality := GlobalTheory.PoitouTateConj.poitouTateDuality_of_normalised hN.coh.pt
 
+/- English proof (translation)
+The claim follows from `(K.lemmaK (pt hN) hN.coh.lfK hN.coh.ltK hK).imp fun _ h => h.2`.
+-/
 theorem lemmaK (hN : LitN) (hK : K.KBridge) : ∃ CK : ℝ, LemmaK CK :=
   (K.lemmaK (pt hN) hN.coh.lfK hN.coh.ltK hK).imp fun _ h => h.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hN.coh.lfK, hN.coh.ltK, hN.coh.leK, hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.bk⟩`.
+-/
 theorem localGaloisCohomology₂ (hN : LitN) : Loc.LocalPublishedTheorems :=
   ⟨hN.coh.lfK, hN.coh.ltK, hN.coh.leK, hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.bk⟩
 
+/- English proof (translation)
+Take `⟨CK, hL⟩` from `lemmaK hN hK`. Conclude with `X.So.hostVanE CK hL (pt hN) hN.coh.lfK hN.coh.ltK hN.coh.lf hN.coh.lt hN.coh.le`.
+-/
 theorem hostVanE (hN : LitN) (hK : K.KBridge) : UnitaryThreeInertia.HostVanE := by
   obtain ⟨CK, hL⟩ := lemmaK hN hK
   exact X.So.hostVanE CK hL (pt hN) hN.coh.lfK hN.coh.ltK hN.coh.lf hN.coh.lt hN.coh.le

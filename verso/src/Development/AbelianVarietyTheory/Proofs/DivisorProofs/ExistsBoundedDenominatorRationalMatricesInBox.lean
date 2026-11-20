@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ThetaConv
 
+/- English proof (translation)
+Introduce `D m n K hK`. Establish `hK1 : IsCompact (⋃ p : Fin m × Fin n, (fun x : Mx D m n => x p.1 p.2) '' K)` using `isCompact_iUnion fun p => hK.image (continuous_id.matrix_elem p.1 p.2)`. Take `⟨L, hL, h⟩` from `GlobalTheory.T.rational_finPart_in_compact_bounded_denominator D _ hK1`. Use `⟨L, hL, fun x ξ hx ⟨k, hk, hxk⟩ i j => ?_⟩` and prove the remaining obligations. Use `h (k i j) (Set.mem_iUnion.2 ⟨(i, j), k, hk, rfl⟩) (ξ i j) ?_` and prove the remaining obligations.
+
+Establish `h1 : finPart D (x i j) = finPart D (incA D (ξ i j))` using `congrFun (congrFun hx i) j`. Establish `h2 : finPart D (x i j - k i j) = 0` using `congrFun (congrFun hxk i) j`. Establish `h3 : finPart D (x i j) - finPart D (k i j) = 0` using `((finPart D).map_sub (x i j) (k i j)).symm.trans h2`. Conclude with `h1.symm.trans (sub_eq_zero.1 h3)`.
+-/
 theorem exists_den_of_inBox : ∀ (D : D7) (m n : ℕ) (K : Set (Mx D m n)), IsCompact K → ∃ L : ℕ, 0 < L ∧ ∀ (x : Mx D m n) (ξ : Matrix (Fin m) (Fin n) D.host.E), x.map (finPart D) = (ξ.map (incA D) : Mx D m n).map (finPart D) → GlobalTheory.Unf.InBox K x → ∀ i j, IsIntegral ℤ ((L : D.host.E) * ξ i j) := by
   intro D m n K hK
   have hK1 : IsCompact (⋃ p : Fin m × Fin n, (fun x : Mx D m n => x p.1 p.2) '' K) :=

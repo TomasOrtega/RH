@@ -5,6 +5,15 @@ open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V W _ _ _ _ _ _ f _ ϖ w e a I hϖ hw hfe hI`. Distinguish the cases in `h0 : I = ⊥`. It suffices to derive a contradiction. Substitute `h0` using the available equality. Rewrite `hI` using `[Ideal.map_bot, eq_comm, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hw.ne_zero (pow_eq_zero_iff'.mp hI).1`. Take `⟨b, hb⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible h0 hϖ`. Use `⟨b, ?_, hb⟩` and prove the remaining obligations. Rewrite `hI` using `[hb, Ideal.map_span, Set.image_singleton, map_pow, Ideal.span_singleton_eq_span_singleton]`. Establish `h1 : Associated (w ^ (e * b)) (w ^ a)`.
+
+Rewrite using `[pow_mul]`. Conclude with `(hfe.pow_pow (n := b)).symm.trans hI`. Establish `hw0 : w ≠ 0` using `hw.ne_zero`. Establish `hwu : ¬ IsUnit w` using `hw.not_isUnit`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `(pow_dvd_pow_iff hw0 hwu).mp h1.dvd`. Conclude with `(pow_dvd_pow_iff hw0 hwu).mp h1.symm.dvd`.
+-/
 theorem ideal_map_eq_span_pow_uniformizer
     : ∀ (V W : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (f : V →+* W), Function.Injective f → ∀ (ϖ : V) (w : W) (e a : ℕ) (I : Ideal V), Irreducible ϖ → Irreducible w → Associated (f ϖ) (w ^ e) → I.map f = Ideal.span {w ^ a} → ∃ b : ℕ, e * b = a ∧ I = Ideal.span {ϖ ^ b} := by
   intro V W _ _ _ _ _ _ f _ ϖ w e a I hϖ hw hfe hI

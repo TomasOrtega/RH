@@ -15,20 +15,35 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 
+/- English proof (translation)
+Introduce `_ hv x hx` and use `hv x (h hx)`.
+-/
 theorem perp_anti {S T : Submodule E V} (h : S ≤ T) : H.perp T ≤ H.perp S :=
   fun _ hv x hx => hv x (h hx)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.range_subset_iff.mpr fun a => ⟨a.castSucc, rfl⟩)`.
+-/
 theorem X_le_Xp {r : ℕ} (f : Fin (r + 1) → V) : H.X f ≤ H.Xp f :=
   Submodule.span_mono (Set.range_subset_iff.mpr fun a => ⟨a.castSucc, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `perp_anti H ((X_le_Xp H f).trans le_sup_left) hw`.
+-/
 theorem mem_perp_isotropicSpan_of_mem_framePerp {r : ℕ} {f f' : Fin (r + 1) → V} {w : V} (hw : w ∈ H.W0 f f') :
     w ∈ H.perp (H.X f) :=
   perp_anti H ((X_le_Xp H f).trans le_sup_left) hw
 
+/- English proof (translation)
+The claim follows from `perp_anti H ((X_le_Xp H f').trans le_sup_right) hw`.
+-/
 theorem mem_perp_isotropicSpan_of_mem_framePerp' {r : ℕ} {f f' : Fin (r + 1) → V} {w : V} (hw : w ∈ H.W0 f f') :
     w ∈ H.perp (H.X f') :=
   perp_anti H ((X_le_Xp H f').trans le_sup_right) hw
 
+/- English proof (translation)
+Establish `h'` using `(Submodule.Quotient.eq _).mp h`. Simplify using `using h'`.
+-/
 theorem sub_mem_X_of_mkW_eq {r : ℕ} {f : Fin (r + 1) → V} {x y : ↥(H.perp (H.X f))}
     (h : H.mkW f x = H.mkW f y) : (x : V) - y ∈ H.X f := by
   have h' := (Submodule.Quotient.eq _).mp h
@@ -47,6 +62,27 @@ def Lemma0L (M : Model F E) (r : ℕ) : Prop :=
       (w ∈ t.abelian₂ ↔ (H.mkW t.f ⟨w, mem_perp_isotropicSpan_of_mem_framePerp H hw⟩ ∈ H.Lset t.abelian₂ t.f ∧
         H.mkW t.f' ⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩ ∈ H.Lset t.abelian₂ t.f'))
 
+/- English proof (translation)
+Introduce `hsplit V _ _ H t hgen w hw`. Establish `hprim` using `hgen.2`. Simplify using `only [HermSp.MMfam, hsplit] at hprim`. Take `⟨hmem, hli, hspan⟩` from `hprim`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hwL`. Conclude with `⟨⟨⟨w, mem_perp_isotropicSpan_of_mem_framePerp H hw⟩, hwL, rfl⟩, ⟨⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩, hwL, rfl⟩⟩`. Introduce and unpack `⟨⟨x, hxL, hxw⟩, ⟨x', hx'L, hx'w⟩⟩`. Establish `hp : (x : V) - w ∈ Submodule.span E (Set.range fun a : Fin r => t.f a.castSucc)` using `sub_mem_X_of_mkW_eq H (y := ⟨w, mem_perp_isotropicSpan_of_mem_framePerp H hw⟩) hxw`. Establish `hq : (x' : V) - w ∈ Submodule.span E (Set.range fun a : Fin r => t.f' a.castSucc)` using `sub_mem_X_of_mkW_eq H (y := ⟨w, mem_perp_isotropicSpan_of_mem_framePerp' H hw⟩) hx'w`.
+
+Take `⟨cp, hcp⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hp`. Take `⟨cq, hcq⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hq`. Establish `hdiff : (x : V) - x' ∈ t.abelian₂` using `t.abelian₂.sub_mem hxL hx'L`. Establish `hdiffE : (x : V) - x' ∈ Submodule.span E (Set.range (Sum.elim t.f t.f'))`. Establish `e : (x : V) - x' = ((x : V) - w) - ((x' : V) - w)` using `by abel`.
+
+Rewrite using `[e]`. Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `(Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨Sum.inl a.castSucc, rfl⟩)) hp`. Conclude with `(Submodule.span_mono (by rintro _ ⟨a, rfl⟩; exact ⟨Sum.inr a.castSucc, rfl⟩)) hq`. Take `⟨l, hl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp (hspan _ hdiff hdiffE)`.
+
+Establish `hinjl : Function.Injective (fun a : Fin r => (Sum.inl a.castSucc : Fin (r + 1) ⊕ Fin (r + 1)))` using `Sum.inl_injective.comp (Fin.castSucc_injective r)`. Establish `hinjr : Function.Injective (fun a : Fin r => (Sum.inr a.castSucc : Fin (r + 1) ⊕ Fin (r + 1)))` using `Sum.inr_injective.comp (Fin.castSucc_injective r)`. Use `set e1 : (Fin (r + 1) ⊕ Fin (r + 1)) →₀ E := cp.mapDomain (fun a => Sum.inl a.castSucc) - cq.mapDomain (fun a => Sum.inr a.castSucc) with he1`. Use `set e2 : (Fin (r + 1) ⊕ Fin (r + 1)) →₀ E := l.mapRange (fun a : M.L.O => (a : E)) rfl with he2`. Establish `h1 : Finsupp.linearCombination E (Sum.elim t.f t.f') e1 = (x : V) - x'`.
+
+Rewrite using `[he1, map_sub, Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply, Finsupp.linearCombination_apply]`. Establish `e : (x : V) - x' = ((x : V) - w) - ((x' : V) - w)` using `by abel`. Rewrite using `[e, ← hcp, ← hcq]`. Both sides reduce to the same expression. Establish `h2 : Finsupp.linearCombination E (Sum.elim t.f t.f') e2 = (x : V) - x'`.
+
+Rewrite using `[← hl, he2, Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by simp)]`. Both sides reduce to the same expression. Establish `he : e1 = e2` using `hli (h1.trans h2.symm)`. Establish `hcoef : ∀ a : Fin r, cp a = (l (Sum.inl a.castSucc) : E)`. Introduce `a`.
+
+Establish `h` using `congrArg (fun e => e (Sum.inl a.castSucc)) he`. Simplify using `only [he1, he2, Finsupp.coe_sub, Pi.sub_apply, Finsupp.mapRange_apply] at h`. Rewrite using `[Finsupp.mapDomain_apply hinjl, Finsupp.mapDomain_notin_range _ _ (by`. Introduce and unpack `⟨b, hb⟩`. Simplify using `at hb), sub_zero] at h`.
+
+Conclude with `h`. Establish `hpL : (x : V) - w ∈ t.abelian₂`. Rewrite using `[← hcp]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hcoef a]`.
+
+Conclude with `t.abelian₂.smul_mem (l (Sum.inl a.castSucc)) (hmem (Sum.inl a.castSucc))`. Establish `e : w = (x : V) - ((x : V) - w)` using `by abel`. Rewrite using `[e]`. Conclude with `t.abelian₂.sub_mem hxL hpL`.
+-/
 theorem lemma0L_holds (M : Model F E) (r : ℕ) : Lemma0L M r := by
   intro hsplit V _ _ H t hgen w hw
   classical

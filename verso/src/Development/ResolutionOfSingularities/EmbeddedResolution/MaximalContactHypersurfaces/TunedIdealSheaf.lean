@@ -17,6 +17,11 @@ open AlgebraicGeometry CategoryTheory
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil, Scheme.IdealSheafData.one_eq_top, Scheme.IdealSheafData.ideal_top]`. Conclude with `Ideal.one_eq_top.symm`. Consider the case `cons a t ih`.
+
+Establish `hmul : ((g a) * (t.map g).prod).ideal U = (g a).ideal U * ((t.map g).prod).ideal U`. Simplify using `only [Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]`. Rewrite using `[List.map_cons, List.prod_cons, List.map_cons, List.prod_cons, hmul, ih]`.
+-/
 private theorem ideal_listProd_map {X : Scheme.{u}} (g : ℕ → X.IdealSheafData) (l : List ℕ)
     (U : X.affineOpens) :
     ((l.map g).prod).ideal U = (l.map (fun j => (g j).ideal U)).prod := by
@@ -31,11 +36,17 @@ private theorem ideal_listProd_map {X : Scheme.{u}} (g : ℕ → X.IdealSheafDat
         simp only [Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]
       rw [List.map_cons, List.prod_cons, List.map_cons, List.prod_cons, hmul, ih]
 
+/- English proof (translation)
+The claim follows from `map_prod (Ideal.mapHom φ) g (Finset.range n)`.
+-/
 private theorem ideal_map_prod_range {R S : Type u} [CommRing R] [CommRing S] (φ : R →+* S)
     (g : ℕ → Ideal R) (n : ℕ) :
     Ideal.map φ (∏ j ∈ Finset.range n, g j) = ∏ j ∈ Finset.range n, Ideal.map φ (g j) :=
   map_prod (Ideal.mapHom φ) g (Finset.range n)
 
+/- English proof (translation)
+Rewrite using `[tuningMonomial_eq_prod, tuningMonomial_eq_prod, ideal_map_prod_range]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_pow, h j]`.
+-/
 private theorem map_tuningMonomial_of_map_derivIdealIterate (k : Type u) [CommRing k] {R S : Type u}
     [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (φ : R →+* S) (J : Ideal R) (m : ℕ)
     (c : ℕ → ℕ)
@@ -45,6 +56,11 @@ private theorem map_tuningMonomial_of_map_derivIdealIterate (k : Type u) [CommRi
   refine Finset.prod_congr rfl fun j _ => ?_
   rw [Ideal.map_pow, h j]
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Use `(tunedIdeal_le_iff k J m s _).mpr ?_` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[← Ideal.map_le_iff_le_comap, map_tuningMonomial_of_map_derivIdealIterate k φ J m c h]`.
+
+Conclude with `tuningMonomial_le_tunedIdeal k (Ideal.map φ J) m s c hc`. Use `(tunedIdeal_le_iff k (Ideal.map φ J) m s _).mpr ?_` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[← map_tuningMonomial_of_map_derivIdealIterate k φ J m c h]`. Conclude with `Ideal.map_mono (tuningMonomial_le_tunedIdeal k J m s c hc)`.
+-/
 private theorem map_tunedIdeal_of_map_derivIdealIterate (k : Type u) [CommRing k] {R S : Type u}
     [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (φ : R →+* S) (J : Ideal R) (m s : ℕ)
     (h : ∀ j : ℕ, Ideal.map φ (derivIdealIterate k j J) = derivIdealIterate k j (Ideal.map φ J)) :
@@ -60,6 +76,13 @@ private theorem map_tunedIdeal_of_map_derivIdealIterate (k : Type u) [CommRing k
     rw [← map_tuningMonomial_of_map_derivIdealIterate k φ J m c h]
     exact Ideal.map_mono (tuningMonomial_le_tunedIdeal k J m s c hc)
 
+/- English proof (translation)
+Establish `hmem : m - 1 ∈ Finset.range m` using `Finset.mem_range.mpr (by omega)`. Establish `h1 : m - (m - 1) = 1` using `by omega`. Establish `hmono : tuningMonomial k J m (fun j => if j = m - 1 then t else 0) = (derivIdealIterate k (m - 1) J) ^ t`. Rewrite using `[tuningMonomial_eq_prod]`. Use `(Finset.prod_eq_single (m - 1) (fun b _ hb => by simp [hb]) (fun h => absurd hmem h)).trans ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `hw : tuningWeight m (fun j => if j = m - 1 then t else 0) = t`. Rewrite using `[tuningWeight_eq_sum]`. Use `(Finset.sum_eq_single (m - 1) (fun b _ hb => by simp [hb]) (fun h => absurd hmem h)).trans ?_` and prove the remaining obligations. Simplify using `[h1]`.
+
+Rewrite using `[← hmono]`. Conclude with `tuningMonomial_le_tunedIdeal k J m t _ (le_of_eq hw.symm)`.
+-/
 private theorem pow_derivIdealIterate_pred_le_tunedIdeal (k : Type u) [CommRing k] {S : Type u}
     [CommRing S] [Algebra k S] (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) (t : ℕ) :
     (derivIdealIterate k (m - 1) J) ^ t ≤ tunedIdeal k J m t := by
@@ -79,6 +102,11 @@ private theorem pow_derivIdealIterate_pred_le_tunedIdeal (k : Type u) [CommRing 
   rw [← hmono]
   exact tuningMonomial_le_tunedIdeal k J m t _ (le_of_eq hw.symm)
 
+/- English proof (translation)
+Establish `hpow : ∀ (J : X.IdealSheafData) (n : ℕ), (J ^ n).ideal U = (J.ideal U) ^ n`. Introduce `J n`. Conclude with `congrFun (show (J ^ n).ideal = J.ideal ^ n by`. Rewrite using `[Scheme.IdealSheafData.ideal_pow]) U`. Establish `key : ((List.range m).map (fun j => (@derivIdealIterate k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) j (I.ideal U)) ^ c j)).prod = @tuningMonomial k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) (I.ideal U) m c` using `listProd_map_range_eq_prod _ m`.
+
+Simplify using `only [ideal_listProd_map, hpow, derivIdealSheafIterate_ideal]`. Conclude with `key`.
+-/
 private theorem ideal_prod_derivIdealSheafIterate_pow (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
     (I : X.IdealSheafData) (m : ℕ) (c : ℕ → ℕ) (U : X.affineOpens) :
@@ -96,6 +124,13 @@ private theorem ideal_prod_derivIdealSheafIterate_pow (k : Type u) [CommRing k] 
   simp only [ideal_listProd_map, hpow, derivIdealSheafIterate_ideal]
   exact key
 
+/- English proof (translation)
+Introduce `U f`. Set `algU : Algebra k Γ(X, U.1)` to `sectionsAlgebra k p U.1`. Set `algV : Algebra k Γ(X, X.basicOpen f)` to `sectionsAlgebra k p (X.basicOpen f)`. Establish `hI : Ideal.map (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom (I.ideal U) = I.ideal (X.affineBasicOpen f)` using `I.map_ideal_basicOpen U f`. Establish `hd : ∀ j : ℕ, Ideal.map (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom (@derivIdealIterate k _ Γ(X, U.1) _ algU j (I.ideal U)) = @derivIdealIterate k _ Γ(X, X.basicOpen f) _ algV j (Ideal.map (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom (I.ideal U))`.
+
+Introduce `j`. Establish `h1` using `(derivIdealSheafIterate k p j I).map_ideal_basicOpen U f`. Rewrite `h1` using `[derivIdealSheafIterate_ideal, derivIdealSheafIterate_ideal]`. Conclude with `h1.trans (congrArg (@derivIdealIterate k _ Γ(X, X.basicOpen f) _ algV j) hI.symm)`. Establish `h2` using `@map_tunedIdeal_of_map_derivIdealIterate k _ Γ(X, U.1) Γ(X, X.basicOpen f) _ _ algU algV (X.presheaf.map (homOfLE (X.basicOpen_le f)).op).hom (I.ideal U) m s hd`.
+
+Conclude with `h2.trans (congrArg (fun J : Ideal Γ(X, X.basicOpen f) => @tunedIdeal k _ Γ(X, X.basicOpen f) _ algV J m s) hI)`.
+-/
 private theorem map_tunedIdeal_basicOpen (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
     (I : X.IdealSheafData) (m s : ℕ) :
@@ -130,6 +165,15 @@ private noncomputable def tunedIdealSheafOfSections (k : Type u) [CommRing k] [I
   ideal U := @tunedIdeal k _ _ _ (sectionsAlgebra k p U.1) (I.ideal U) m s
   map_ideal_basicOpen := map_tunedIdeal_basicOpen k p I m s
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `hle : tunedSheaf k p I m s ≤ tunedIdealSheafOfSections k p I m s`. Rewrite using `[tunedSheaf_eq_iSup]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Establish `key : ∀ V : X.affineOpens, (((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod).ideal V ≤ (tunedIdealSheafOfSections k p I m s).ideal V`.
+
+Introduce `V`. Rewrite using `[ideal_prod_derivIdealSheafIterate_pow k p I m c.1 V]`. Conclude with `@tuningMonomial_le_tunedIdeal k _ Γ(X, V.1) _ (sectionsAlgebra k p V.1) (I.ideal V) m s c.1 c.2`. Conclude with `key`. Conclude with `hle U`.
+
+Use `(@tunedIdeal_le_iff k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) (I.ideal U) m s _).mpr ?_` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[← ideal_prod_derivIdealSheafIterate_pow k p I m c U]`. Establish `hmono : ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c j))).prod ≤ tunedSheaf k p I m s`. Rewrite using `[tunedSheaf_eq_iSup]`.
+
+Conclude with `le_iSup (fun d : {d : ℕ → ℕ // s ≤ ∑ j ∈ Finset.range m, (m - j) * d j} => ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (d.1 j))).prod) ⟨c, hc⟩`. Conclude with `hmono U`.
+-/
 @[simp] theorem tunedSheaf_ideal (k : Type u) [CommRing k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData)
     (m s : ℕ) (U : X.affineOpens) :
@@ -159,6 +203,11 @@ private noncomputable def tunedIdealSheafOfSections (k : Type u) [CommRing k] [I
         ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (d.1 j))).prod) ⟨c, hc⟩
     exact hmono U
 
+/- English proof (translation)
+Establish `h : ∀ U : X.affineOpens, ((derivIdealSheafIterate k p (m - 1) I) ^ t).ideal U ≤ (tunedSheaf k p I m t).ideal U`. Introduce `U`. Establish `hpow : ((derivIdealSheafIterate k p (m - 1) I) ^ t).ideal U = ((derivIdealSheafIterate k p (m - 1) I).ideal U) ^ t` using `congrFun (show ((derivIdealSheafIterate k p (m - 1) I) ^ t).ideal = (derivIdealSheafIterate k p (m - 1) I).ideal ^ t by`. Rewrite using `[Scheme.IdealSheafData.ideal_pow]) U`. Rewrite using `[hpow, derivIdealSheafIterate_ideal, tunedSheaf_ideal]`.
+
+Conclude with `@pow_derivIdealIterate_pred_le_tunedIdeal k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) (I.ideal U) m hm t`. Conclude with `h`.
+-/
 private theorem derivIdealSheafIterate_pow_le_tunedSheaf (k : Type u) [CommRing k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
     [LocallyOfFiniteType p] (I : X.IdealSheafData) (m : ℕ) (hm : 1 ≤ m) (t : ℕ) :
@@ -176,6 +225,11 @@ private theorem derivIdealSheafIterate_pow_le_tunedSheaf (k : Type u) [CommRing 
       (I.ideal U) m hm t
   exact h
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h : ∀ U : X.affineOpens, (tunedSheaf k p I m 1).ideal U ≤ (derivIdealSheafIterate k p (m - 1) I).ideal U`. Introduce `U`. Rewrite using `[tunedSheaf_ideal, derivIdealSheafIterate_ideal]`. Conclude with `@tunedIdeal_one_le_derivIdealIterate k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) (I.ideal U) m hm`.
+
+Conclude with `h`. Establish `h` using `derivIdealSheafIterate_pow_le_tunedSheaf k p I m hm 1`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 private theorem tunedSheaf_one_eq_derivIdealSheafIterate (k : Type u) [CommRing k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
     [LocallyOfFiniteType p] (I : X.IdealSheafData) (m : ℕ) (hm : 1 ≤ m) :
@@ -190,6 +244,25 @@ private theorem tunedSheaf_one_eq_derivIdealSheafIterate (k : Type u) [CommRing 
   · have h := derivIdealSheafIterate_pow_le_tunedSheaf k p I m hm 1
     rwa [pow_one] at h
 
+/- English proof (translation)
+Introduce `k _ _ _ X p _ _ I m hm hmax s`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h : ∀ U : X.affineOpens, (derivIdealSheaf k p (tunedSheaf k p I m (s + 1))).ideal U ≤ (tunedSheaf k p I m s).ideal U`. Introduce `U`. Rewrite using `[derivIdealSheaf_ideal, tunedSheaf_ideal, tunedSheaf_ideal]`.
+
+Conclude with `@derivIdeal_tunedIdeal_succ_le k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) (I.ideal U) m s`. Conclude with `h`. Rewrite using `[le_iff_forall_stalkIdeal_le]`. Introduce `x`. Establish `hord : orderAt I x ≤ (m : ℕ∞)` using `hmax.orderLE x`.
+
+Break down `eq_or_lt_of_le hord with heq | hlt` into its components or cases. Take `⟨U, hU, hxU, n, c, j, hmc, -⟩` from `exists_isMaxContactCoord k p I hm x heq`. Establish `hcoord : c.coord j ∈ (maxContactIdeal k p I m).ideal ⟨U, hU⟩` using `(isMaxContactCoord_iff_coord_mem k p I m hU c j).mp hmc`. Rewrite `hcoord` using `[maxContactIdeal_ideal]`. Establish `hle : @tunedIdeal k _ Γ(X, U) _ (sectionsAlgebra k p U) (I.ideal ⟨U, hU⟩) m s ≤ @derivIdeal k _ Γ(X, U) _ (sectionsAlgebra k p U) (@tunedIdeal k _ Γ(X, U) _ (sectionsAlgebra k p U) (I.ideal ⟨U, hU⟩) m (s + 1))`.
+
+Set `algU : Algebra k Γ(X, U)` to `sectionsAlgebra k p U`. Set `algP : Algebra (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` to `c.algebra`. Establish `: IsScalarTower k (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.isScalarTower`. Establish `: Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin n)) k) Γ(X, U)` using `c.algebra_formallyEtale hU`. Set `algQ : Algebra ℚ Γ(X, U)` to `RingHom.toAlgebra ((algebraMap k Γ(X, U)).comp (algebraMap ℚ k))`.
+
+Establish `hδ : EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, U) (ULift.up j) (c.coord j) = 1`. Rewrite using `[← EtaleChart.etaleCoordinates_coord c j]`. Conclude with `EtaleCoordinates.partialDeriv_coord_self k (ULift.{u} (Fin n)) Γ(X, U) (ULift.up j)`. Conclude with `tunedIdeal_le_derivIdeal_tunedIdeal_succ k (I.ideal ⟨U, hU⟩) m hm hcoord (EtaleCoordinates.partialDeriv k (ULift.{u} (Fin n)) Γ(X, U) (ULift.up j)) hδ s`. Rewrite using `[stalkIdeal_eq_map_germ (tunedSheaf k p I m s) x ⟨U, hU⟩ hxU, stalkIdeal_eq_map_germ (derivIdealSheaf k p (tunedSheaf k p I m (s + 1))) x ⟨U, hU⟩ hxU]`.
+
+Use `Ideal.map_mono ?_` and prove the remaining obligations. Simplify using `only [tunedSheaf_ideal, derivIdealSheaf_ideal]`. Conclude with `hle`. Establish `hxns : x ∉ (derivIdealSheafIterate k p (m - 1) I).support`. Introduce `hc`.
+
+Establish `hmem : x ∈ orderAtLeastLocus I m`. Rewrite using `[← support_derivIdealSheafIterate_eq_orderAtLeastLocus k p I hm]`. Conclude with `hc`. Conclude with `absurd ((mem_orderAtLeastLocus_iff I m x).mp hmem) (not_le.mpr hlt)`. Establish `htop : stalkIdeal (derivIdealSheafIterate k p (m - 1) I) x = ⊤` using `not_not.mp fun hne2 => hxns ((mem_support_iff_stalkIdeal_ne_top _ x).mpr hne2)`.
+
+Establish `h1 : stalkIdeal ((derivIdealSheafIterate k p (m - 1) I) ^ (s + 1)) x = ⊤`. Rewrite using `[stalkIdeal_pow, htop, ← Ideal.one_eq_top, one_pow]`. Establish `h2 : stalkIdeal (tunedSheaf k p I m (s + 1)) x ≤ stalkIdeal (derivIdealSheaf k p (tunedSheaf k p I m (s + 1))) x` using `stalkIdeal_mono (le_derivIdealSheaf k p (tunedSheaf k p I m (s + 1))) x`. Establish `h3 : (⊤ : Ideal _) ≤ stalkIdeal (derivIdealSheaf k p (tunedSheaf k p I m (s + 1))) x`. Rewrite using `[← h1]`.
+
+Conclude with `le_trans (stalkIdeal_mono (derivIdealSheafIterate_pow_le_tunedSheaf k p I m hm (s + 1)) x) h2`. Conclude with `le_trans le_top h3`.
+-/
 theorem derivIdealSheaf_tunedSheaf_succ : DerivIdealSheafTunedSheafSucc.{u} := by
   intro k _ _ _ X p _ _ I m hm hmax s
   refine le_antisymm ?_ ?_
@@ -252,6 +325,15 @@ theorem derivIdealSheaf_tunedSheaf_succ : DerivIdealSheafTunedSheafSucc.{u} := b
           (stalkIdeal_mono (derivIdealSheafIterate_pow_le_tunedSheaf k p I m hm (s + 1)) x) h2
       exact le_trans le_top h3
 
+/- English proof (translation)
+Introduce `k _ _ _ X p _ _ I m hm hmax s hs`. Establish `h3 : ∀ t : ℕ, derivIdealSheaf k p (tunedSheaf k p I m (t + 1)) = tunedSheaf k p I m t` using `derivIdealSheaf_tunedSheaf_succ k X p I m hm hmax`. Establish `step : ∀ j t : ℕ, j ≤ t → derivIdealSheafIterate k p j (tunedSheaf k p I m t) = tunedSheaf k p I m (t - j)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Introduce `t _`. Rewrite using `[derivIdealSheafIterate_zero, Nat.sub_zero]`. Consider the case `succ n ih`. Introduce `t ht`.
+
+Take `⟨t', rfl⟩ : ∃ t', t = t' + 1` from `⟨t - 1, by omega⟩`. Establish `hn : n ≤ t'` using `by omega`. Establish `he : t' + 1 - (n + 1) = t' - n` using `by omega`. Rewrite using `[he, derivIdealSheafIterate_add k p n 1 (tunedSheaf k p I m (t' + 1)), derivIdealSheafIterate_one, h3 t', ih t' hn]`. Establish `hstep` using `step (s - 1) s (by omega)`.
+
+Establish `he2 : s - (s - 1) = 1` using `by omega`. Rewrite using `[hstep, he2, tunedSheaf_one_eq_derivIdealSheafIterate k p I m hm]`.
+-/
 theorem maxContactIdealTunedSheafEq : MaxContactIdealTunedSheafEq.{u} := by
   intro k _ _ _ X p _ _ I m hm hmax s hs
   have h3 : ∀ t : ℕ, derivIdealSheaf k p (tunedSheaf k p I m (t + 1)) = tunedSheaf k p I m t :=
@@ -274,6 +356,11 @@ theorem maxContactIdealTunedSheafEq : MaxContactIdealTunedSheafEq.{u} := by
   have he2 : s - (s - 1) = 1 := by omega
   rw [hstep, he2, tunedSheaf_one_eq_derivIdealSheafIterate k p I m hm]
 
+/- English proof (translation)
+Introduce `k _ _ _ X p _ _ I m _ _ s hs`. Establish `key : ∀ U : X.affineOpens, ((derivIdealSheafIterate k p (s - 1) (tunedSheaf k p I m s)) * derivIdealSheaf k p (tunedSheaf k p I m s)).ideal U ≤ (tunedSheaf k p I m s).ideal U`. Introduce `U`. Establish `hmul : ((derivIdealSheafIterate k p (s - 1) (tunedSheaf k p I m s)) * derivIdealSheaf k p (tunedSheaf k p I m s)).ideal U = (derivIdealSheafIterate k p (s - 1) (tunedSheaf k p I m s)).ideal U * (derivIdealSheaf k p (tunedSheaf k p I m s)).ideal U`. Simplify using `only [Scheme.IdealSheafData.ideal_mul, Pi.mul_apply]`.
+
+Rewrite using `[hmul, derivIdealSheafIterate_ideal, derivIdealSheaf_ideal, tunedSheaf_ideal]`. Conclude with `@derivIdealIterate_mul_derivIdeal_tunedIdeal_le k _ Γ(X, U.1) _ (sectionsAlgebra k p U.1) (I.ideal U) m s hs`. Conclude with `key`.
+-/
 theorem isMaxContactInvariantTunedSheaf :
     IsMaxContactInvariantTunedSheaf.{u} := by
   intro k _ _ _ X p _ _ I m _ _ s hs

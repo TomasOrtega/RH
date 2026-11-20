@@ -24,6 +24,9 @@ set_option autoImplicit false in
 open WittVector Ideal CategoryTheory Opposite in
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.PDivLat.ghost, iterate_map_add, map_add]`.
+-/
 theorem _root_.GlobalTheory.PDivLat.ghost_add (n : ℕ) (a b : _root_.GlobalTheory.Sandwich.Ainf p O) :
     _root_.GlobalTheory.PDivLat.ghost p O n (a + b) = _root_.GlobalTheory.PDivLat.ghost p O n a + _root_.GlobalTheory.PDivLat.ghost p O n b := by
   simp only [_root_.GlobalTheory.PDivLat.ghost, iterate_map_add, map_add]
@@ -32,6 +35,9 @@ set_option autoImplicit false in
 open WittVector Ideal CategoryTheory Opposite in
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.PDivLat.ghost, iterate_map_mul, map_mul]`.
+-/
 theorem _root_.GlobalTheory.PDivLat.ghost_mul (n : ℕ) (a b : _root_.GlobalTheory.Sandwich.Ainf p O) :
     _root_.GlobalTheory.PDivLat.ghost p O n (a * b) = _root_.GlobalTheory.PDivLat.ghost p O n a * _root_.GlobalTheory.PDivLat.ghost p O n b := by
   simp only [_root_.GlobalTheory.PDivLat.ghost, iterate_map_mul, map_mul]
@@ -40,9 +46,15 @@ set_option autoImplicit false in
 open WittVector Ideal CategoryTheory Opposite in
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.PDivLat.ghost, iterate_map_zero, map_zero]`.
+-/
 theorem _root_.GlobalTheory.PDivLat.ghost_zero (n : ℕ) : _root_.GlobalTheory.PDivLat.ghost p O n 0 = 0 := by
   simp only [_root_.GlobalTheory.PDivLat.ghost, iterate_map_zero, map_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ghost_frobenius (n : ℕ) (a : Ainf p O) :
     ghost p O n (WittVector.frobenius a) = ghost p O (n + 1) a := rfl
 

@@ -20,6 +20,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_intertwining_of_central_step | exact GlobalTheory.exists_intertwining_of_central_step | (intros; apply GlobalTheory.exists_intertwining_of_central_step <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_intertwining_of_central_filtration_step : ∀ {G V Y : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
     (ρ : Representation ℂ G V) (τ : Representation ℂ G Y) (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ),
     Monotone S → S 0 = ⊥ → S (Fin.last N) = ⊤ → ∀ (z : G), (∀ g, g * z = z * g) →

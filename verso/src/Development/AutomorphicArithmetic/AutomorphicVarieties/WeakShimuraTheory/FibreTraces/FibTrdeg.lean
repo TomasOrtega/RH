@@ -2,6 +2,25 @@ import Mathlib
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `D C K _ _ _ _ _ j T hj hD hE`. Use `letI : Algebra D K := (j.comp (algebraMap D C)).toAlgebra`. Use `haveI : FaithfulSMul D C := (faithfulSMul_iff_algebraMap_injective D C).mpr hD`. Use `haveI : FaithfulSMul D K := (faithfulSMul_iff_algebraMap_injective D K).mpr (hj.comp hD)`. Use `haveI : IsDomain C := Function.Injective.isDomain j hj`.
+
+Use `set M := AlgebraicIndependent.matroid D K with hM`. Take `⟨S, hS, hSalg⟩` from `AlgebraicIndependent.matroid_isFlat_iff.mp (Matroid.isFlat_closure (M := M) (T : Set K))`. Establish `hmemS : ∀ x, x ∈ S ↔ x ∈ M.closure (T : Set K)` using `fun x => Set.ext_iff.mp hS x`. Set `E : Subfield K` to `{ S.toSubring with inv_mem' := fun x hx => by`. Distinguish the cases in `h0 : x = 0`.
+
+Rewrite using `[h0, inv_zero]`. Conclude with `S.zero_mem`. Establish `halg : IsAlgebraic S x⁻¹`. Use `⟨Polynomial.C (⟨x, hx⟩ : S) * Polynomial.X - 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Establish `h'` using `congrArg (fun q => Polynomial.coeff q 0) h`. Simplify using `at h'`. Simplify using `[h0]`. Conclude with `(hmemS _).mpr (hSalg _ halg) }`. Establish `hjE : ∀ y, j y ∈ E`.
+
+Use `hE E (fun d => S.algebraMap_mem d) (fun t ht => ?_) (fun p x hp hc hr => ?_)` and prove the remaining obligations. Conclude with `(hmemS t).mpr (M.subset_closure (T : Set K) (by simp [M]) ht)`. Establish `hl : p ∈ Polynomial.lifts (algebraMap S K)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+
+Conclude with `⟨⟨p.coeff n, hc n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hp`. Establish `halg : IsAlgebraic S x`. Use `⟨q, hqm.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, hq]`.
+
+Conclude with `hr`. Conclude with `(hmemS x).mpr (hSalg x halg)`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis D C`. Rewrite using `[← hs.cardinalMk_eq_trdeg]`. Set `jA : C →ₐ[D] K` to `{ j with commutes' := fun _ => rfl }`.
+
+Establish `hind : AlgebraicIndependent D (jA ∘ ((↑) : s → C))` using `hs.1.map' (f := jA) hj`. Establish `hI : M.Indep (Set.range (jA ∘ ((↑) : s → C)))`. Rewrite using `[AlgebraicIndependent.matroid_indep_iff]`. Conclude with `hind.to_subtype_range`. Establish `hsub : Set.range (jA ∘ ((↑) : s → C)) ⊆ M.closure (T : Set K)`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(hmemS _).mp (hjE a)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Ws.fibTrdeg :
     ∀ {D C K : Type} [CommRing D] [IsDomain D] [CommRing C] [Algebra D C] [Field K] (j : C →+* K) (T : Finset K), Function.Injective j → Function.Injective (algebraMap D C) →
           (∀ E : Subfield K, (∀ d, j (algebraMap D C d) ∈ E) → (∀ t ∈ T, t ∈ E) →

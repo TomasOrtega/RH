@@ -15,6 +15,15 @@ open PositivityTheory.Rg.BcB.F
 variable {ι : Type} {H : ι → Type} [∀ s, NormedAddCommGroup (H s)] [∀ s, InnerProductSpace ℂ (H s)]
   [∀ s, CompleteSpace (H s)] {d : ℕ} {Γ : Type}
 
+/- English proof (translation)
+Establish `key : ∀ b : StarAlgebra.adjoin ℂ (Set.range gen), ∀ e : ℂ, e ≠ 0 → b.1.2 v = e • v → χ ⟨b.1.1 s, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨b, rfl⟩)⟩ = e`. Introduce `b e he hb`. Take `⟨c', hc', hχ⟩` from `heig b (by rw [hb]; exact smul_ne_zero he hv)`. Rewrite using `[hχ]`. Establish `h2 : (c' - e) • v = 0` using `by rw [sub_smul, ← hc', ← hb, sub_self]`.
+
+Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right hv)`. Distinguish the cases in `h0 : c = 0`. Substitute `h0` using the available equality. Set `g : StarAlgebra.adjoin ℂ (Set.range gen)` to `⟨gen a₀, StarAlgebra.subset_adjoin ℂ _ ⟨a₀, rfl⟩⟩`. Establish `hg : g.1.2 v = (1 : ℂ) • v` using `by rw [one_smul]; exact ha₀`.
+
+Establish `hab : (a + g).1.2 v = (1 : ℂ) • v`. Express the relevant statement in the definitionally equal form `(a.1.2 + g.1.2) v = _`. Rewrite using `[ContinuousLinearMap.add_apply, hc, hg, zero_smul, zero_add]`. Establish `e1` using `key (a + g) 1 one_ne_zero hab`. Establish `e2` using `key g 1 one_ne_zero hg`.
+
+Establish `hsum : (⟨(a + g).1.1 s, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨a + g, rfl⟩)⟩ : StarAlgebra.adjoin ℂ (Set.range (fun a : StarAlgebra.adjoin ℂ (Set.range gen) => (a : Prod' H d).1 s) ∪ {X})) = ⟨a.1.1 s, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨a, rfl⟩)⟩ + ⟨g.1.1 s, StarAlgebra.subset …` using `rfl`. Rewrite `e1` using `[hsum, show ∀ p q, χ (p + q) = χ p + χ q from fun p q => χ.toAlgHom.map_add p q, e2]`. Take the linear combination `e1`. Conclude with `key a c h0 hc`.
+-/
 theorem chi_pin (gen : Γ → Prod' H d) (a₀ : Γ) (v : EuclideanSpace ℂ (Fin d)) (hv : v ≠ 0) (ha₀ : (gen a₀).2 v = v)
     (s : ι) (X : H s →L[ℂ] H s)
     (χ : StarAlgebra.adjoin ℂ (Set.range (fun a : StarAlgebra.adjoin ℂ (Set.range gen) => (a : Prod' H d).1 s) ∪ {X})

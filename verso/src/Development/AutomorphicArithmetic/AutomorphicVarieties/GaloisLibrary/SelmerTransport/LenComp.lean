@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
+/- English proof (translation)
+Establish `e` using `Module.length_eq_add_of_exact (LinearMap.ker g).subtype g.rangeRestrict (Submodule.subtype_injective _) g.surjective_rangeRestrict (by`. Rewrite using `[LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype])`. Rewrite using `[e, add_comm]`. Use `add_le_add (Module.length_le_of_injective _ (Submodule.subtype_injective _)) ?_` and prove the remaining obligations. Conclude with `(Module.length_le_of_injective _ (Submodule.inclusion_injective h)).trans (Module.length_le_of_surjective _ f.surjective_rangeRestrict)`.
+-/
 private theorem length_le_of_exact {R A B C : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C] (f : A →ₗ[R] B) (g : B →ₗ[R] C)
     (h : LinearMap.ker g ≤ LinearMap.range f) :
@@ -14,6 +17,17 @@ private theorem length_le_of_exact {R A B C : Type} [CommRing R] [AddCommGroup A
   exact (Module.length_le_of_injective _ (Submodule.inclusion_injective h)).trans
     (Module.length_le_of_surjective _ f.surjective_rangeRestrict)
 
+/- English proof (translation)
+Introduce `R N _ _ _ a b`. Prove the components needed by the constructor for the conclusion. Establish `h1 : LinearMap.ker b ≤ LinearMap.ker (a * b)` using `fun x hx => by`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[Module.End.mul_apply, hx, map_zero]`.
+
+Establish `h2 : ∀ x ∈ LinearMap.ker (a * b), b x ∈ LinearMap.ker a` using `fun x hx => hx`. Use `length_le_of_exact (Submodule.inclusion h1) (LinearMap.restrict b h2) fun x hx => ?_` and prove the remaining obligations. Conclude with `⟨⟨x.1, congrArg Subtype.val hx⟩, rfl⟩`. Establish `h1 : LinearMap.range b ≤ (LinearMap.range (a * b)).comap a`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `⟨y, rfl⟩`. Establish `h2 : LinearMap.range (a * b) ≤ (LinearMap.range a).comap LinearMap.id`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨b y, rfl⟩`. Use `length_le_of_exact (Submodule.mapQ _ _ a h1) (Submodule.mapQ _ _ LinearMap.id h2) fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨y, hy⟩` from `hx`. Use `⟨Submodule.Quotient.mk y, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mapQ_apply, hy]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Base.lenComp :
     ∀ (R N : Type) [CommRing R] [AddCommGroup N] [Module R N] (a b : Module.End R N),
       Module.length R (LinearMap.ker (a * b)) ≤ Module.length R (LinearMap.ker a) + Module.length R (LinearMap.ker b) ∧

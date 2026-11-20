@@ -17,6 +17,11 @@ namespace GlobalTheory.CompanionTheory.Mass.One
 
 open PositivityTheory.Rg.Mass
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`. Establish `hri : Function.Injective (ratTup (F` using `F) (AF F) : (Fin n → Fin M → E) → _) := fun X Y h =>`. Use function extensionality and compare the values at `fun a => funext fun i => hinj (congrFun (congrFun h a) i)`.
+
+Set `f : (Fin n → Fin M → E) →+ (Fin n → Fin M → AF F ⊗[F] E)` to `AddMonoidHom.mk' (ratTup (F := F) (AF F)) (fun X Y => by funext a i; simp [ratTup, map_add])`. Establish `hdisc : DiscreteTopology f.range` using `Formalism.IndefR.Eqv.G5.tup_disc (F := F) (E := E) M n`. Establish `hcl : IsClosed (f.range : Set (Fin n → Fin M → AF F ⊗[F] E))` using `AddSubgroup.isClosed_of_discrete`. Establish `hfin : (K ∩ (f.range : Set (Fin n → Fin M → AF F ⊗[F] E))).Finite` using `(hK.inter_right hcl).finite ⟨DiscreteTopology.of_subset (s := (f.range : Set (Fin n → Fin M → AF F ⊗[F] E))) hdisc Set.inter_subset_right⟩`. Use `(hfin.preimage hri.injOn).subset fun X hX => ⟨hX, X, rfl⟩` and prove the remaining obligations.
+-/
 theorem finite_rat_compact {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (n M : ℕ) (K : Set (Fin n → Fin M → AF F ⊗[F] E)) (hK : IsCompact K) :
     {X : Fin n → Fin M → E | ratTup (AF F) X ∈ K}.Finite := by
@@ -34,6 +39,27 @@ theorem finite_rat_compact {F E : Type} [Field F] [NumberField F] [Field E] [Num
     (hK.inter_right hcl).finite ⟨DiscreteTopology.of_subset (s := (f.range : Set (Fin n → Fin M → AF F ⊗[F] E))) hdisc Set.inter_subset_right⟩
   refine (hfin.preimage hri.injOn).subset fun X hX => ⟨hX, X, rfl⟩
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB n M` as an intermediate fact. Take `⟨_, _, _, _, _, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`. Take `⟨ac, a1, a2, -⟩` from `hact n`.
+
+Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective _ _)`. Establish `hri : Function.Injective (ratTup (F` using `F) (AF F) : (Fin n → Fin M → E) → _) := fun X Y h =>`. Use function extensionality and compare the values at `fun a => funext fun i => hinj (congrFun (congrFun h a) i)`. Use `⟨fun X₀ => ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hX⟩` from `exists_compact_mem_nhds X₀`.
+
+Establish `hK' : IsCompact ((fun p : HA (AF F) σ J × (Fin n → Fin M → AF F ⊗[F] E) => actW (AF F) σ J p.1 p.2) '' (C ×ˢ K))` using `(hC.prod hK).image ac`. Establish `hP` using `finite_rat_compact σ hcm n M _ hK'`. Use `set P := {X : Fin n → Fin M → E | ratTup (AF F) X ∈ ((fun p : HA (AF F) σ J × (Fin n → Fin M → AF F ⊗[F] E) => actW (AF F) σ J p.1 p.2) '' (C ×ˢ K))} with hPdef`. Set `Γ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`. Establish `hcov' : ∀ h : HA (AF F) σ J, ∃ γ : Γ, ∃ c ∈ C, h = (γ : HA (AF F) σ J) * c` using `fun h => by`.
+
+Take `⟨γ, c, hc, e⟩` from `hcov h`. Conclude with `⟨γ, c, hc, e⟩`. Establish `hbound : ∀ h : HA (AF F) σ J, ∑' X : S, K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞) (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) ≤ (P.encard : ℝ≥0∞)` using `fun h => by`. Take `⟨γ, c, hc, rfl⟩` from `hcov' h`. Use `choose t ht using fun X : Fin n → Fin M → E => PositivityTheory.PlacePermOperatorBicommutantSpan.act_rat (n := n) γ⁻¹ X`.
+
+Establish `ht' : ∀ X, actW (AF F) σ J (γ : HA (AF F) σ J)⁻¹ (ratTup (AF F) X) = ratTup (AF F) (t X)` using `ht`. Establish `hti : Function.Injective t` using `fun X Y e => by`. Establish `h1` using `congrArg (actW (AF F) σ J (γ : HA (AF F) σ J)) ((ht' X).trans ((congrArg (ratTup (AF F)) e).trans (ht' Y).symm))`. Simplify using `only [← a2, mul_inv_cancel, a1] at h1`. Conclude with `hri h1`.
+
+Set `A : Set S` to `{X | actW (AF F) σ J ((γ : HA (AF F) σ J) * c)⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E)) ∈ K}`. Establish `e1 : ∑' X : S, K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞) (actW (AF F) σ J ((γ : HA (AF F) σ J) * c)⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) = (A.encard : ℝ≥0∞)`. Rewrite using `[← ENNReal.tsum_set_one, tsum_subtype A (fun _ => (1 : ℝ≥0∞))]`. Use `tsum_congr fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hx : X ∈ A`.
+
+Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show _ ∈ K from hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (show _ ∉ K from hx)]`. Rewrite using `[e1]`. Use `ENat.toENNReal_le.2 (Set.encard_le_encard_of_injOn (f := fun X : S => t X.1) ?_ ?_)` and prove the remaining obligations.
+
+Introduce `X hX`. Use `⟨(c, _), ⟨hc, hX⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `actW (AF F) σ J c (actW (AF F) σ J ((γ : HA (AF F) σ J) * c)⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) = ratTup (AF F) (t X.1)`. Rewrite using `[← a2, mul_inv_rev, mul_inv_cancel_left, ht']`. Introduce `X _ Y _ e`.
+
+Conclude with `Subtype.ext (hti e)`. Use `⟨K, hX, ?_⟩` and prove the remaining obligations. Establish `hm : Measurable (K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞))` using `measurable_one.indicator hK.measurableSet`. Rewrite using `[← lintegral_indicator_one hK.measurableSet, PositivityTheory.PlacePermOperatorBicommutantSpan.theta_lint F E σ hcm M J hJ μ 𝓕 hμ h𝓕 _ _ _ hm]`. Establish `hle : ∫⁻ h in 𝓕, ∑' X : S, K.indicator (1 : (Fin n → Fin M → AF F ⊗[F] E) → ℝ≥0∞) (actW (AF F) σ J h⁻¹ (ratTup (AF F) (X : Fin n → Fin M → E))) ∂μ ≤ (P.encard : ℝ≥0∞) * μ 𝓕`.
+
+Use `(lintegral_mono hbound).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hPt : (P.encard : ℝ≥0∞) ≠ ⊤`. Simplify using `using hP.encard_lt_top.ne`. Conclude with `ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (pos_iff_ne_zero.2 hμ0)) (lt_of_le_of_lt hle (ENNReal.mul_lt_top hPt.lt_top hμt.lt_top))`.
+-/
 theorem theta_locFin {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)) (hμ : IsHaarH F E σ M J μ) (h𝓕 : IsFDH F E σ M J μ 𝓕)
@@ -98,6 +124,37 @@ theorem theta_locFin {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   exact ENNReal.mul_lt_top (ENNReal.inv_lt_top.2 (pos_iff_ne_zero.2 hμ0))
     (lt_of_le_of_lt hle (ENNReal.mul_lt_top hPt.lt_top hμt.lt_top))
 
+/- English proof (translation)
+Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Establish `hLv : ∀ v, IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F`. Use `haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hFi` using `GlobalTheory.CompanionTheory.SW.Fact.fib_facts σ hCM J hJ (Ainf F) hLi T hT hdet b laminf hinf.1 minf hminf`. Establish `hFv : ∀ v, SigmaFinite (m v (hermOf (Fv F v) σ T hT)) ∧ (m v (hermOf (Fv F v) σ T hT) = 0 → ∀ X, gramR (Fv F v) σ J X ≠ T.map (inclR (Fv F v)))` using `fun v => by haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+
+Conclude with `GlobalTheory.CompanionTheory.SW.Fact.fib_facts σ hCM J hJ (Fv F v) (hLv v) T hT hdet b (lam v) (hlam v).1 (m v) (hm v)`. Distinguish the cases in `h0 : minf (hermOf (Ainf F) σ T hT) = 0 ∨ ∃ v, m v (hermOf (Fv F v) σ T hT) = 0`. Establish `hempty : {X | gramR (AF F) σ J X = T.map (inclR (AF F))} = ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce `hX`. Establish `hloc` using `(GlobalTheory.T.gram_matrix_local_global F E σ hCM M J hJ n X T).1.1 hX`. Break down `h0 with h | ⟨v, h⟩` into its components or cases. Conclude with `hFi.2 h _ hloc.1`. Conclude with `(hFv v).2 h _ (hloc.2 v)`.
+
+Rewrite `hIsupp` using `[hempty, Set.compl_empty]`. Rewrite using `[Measure.measure_univ_eq_zero.mp hIsupp]`. Conclude with `⟨0, (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b n M 0 0 _ _).2.2 hfin hsum h0⟩`. Use `push Not at h0`. Take `⟨hinf0, hv0⟩` from `h0`.
+
+Use `choose c hc using GlobalTheory.T.siegel_weil_orbital_measure F E σ hCM M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm I hIf hIinv hIsupp`. Take `⟨A, hAm, hA0, hAt⟩` from `@GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ (minf (hermOf (Ainf F) σ T hT)) hFi.1 hinf0`. Use `choose B hBm hB0 hBt using fun v => @GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ (m v (hermOf (Fv F v) σ T hT)) (hFv v).1 (hv0 v)`. Establish `hstep : ∀ S : Finset (HeightOneSpectrum (𝓞 F)), ∅ ⊆ S → ∀ v, v ∉ S → (c S : ℝ) = c (insert v S) * (m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal`. Introduce `S _ v hv`.
+
+Establish `hlatm : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `by haveI := GlobalTheory.CompanionTheory.SW.Fact.borel_tup σ hCM (Fv F v) (hLv v) n M`. Conclude with `((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet`. Set `φ0 : ∀ w : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F w ⊗[F] E) → ℝ≥0∞` to `fun w => (B w).indicator 1`. Set `φ1` to `Function.update φ0 v ((latV b v).indicator 1)`. Establish `hφ0 : ∀ w, Measurable (φ0 w)` using `fun w => measurable_one.indicator (hBm w)`.
+
+Establish `hφ1 : ∀ w, Measurable (φ1 w)`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify `measurable_one.indicator hlatm` using `[φ1]`.
+
+Simplify `hφ0 w` using `[φ1, Function.update_of_ne hw]`. Establish `hAφ : Measurable (A.indicator (1 : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞))` using `measurable_one.indicator hAm`. Establish `e1` using `hc S _ φ0 hAφ hφ0`. Establish `e2` using `hc (insert v S) _ φ1 hAφ hφ1`. Establish `e3 : ∫⁻ X, pureL b (insert v S) (A.indicator 1) φ1 X ∂I = ∫⁻ X, pureL b S (A.indicator 1) φ0 X ∂I` using `lintegral_congr fun X => GlobalTheory.CompanionTheory.SW.Fact.pureL_insert b S v hv _ φ0 X`.
+
+Rewrite `e2` using `[e3, e1, Finset.prod_insert hv]`. Establish `hp : ∏ w ∈ S, ∫⁻ X, φ1 w X ∂(m w (hermOf (Fv F w) σ T hT)) = ∏ w ∈ S, ∫⁻ X, φ0 w X ∂(m w (hermOf (Fv F w) σ T hT))` using `Finset.prod_congr rfl fun w hw => by`. Establish `hne : w ≠ v` using `fun h => hv (h ▸ hw)`. Simplify using `only [φ1, Function.update_of_ne hne]`. Establish `hL : ∫⁻ X, φ1 v X ∂(m v (hermOf (Fv F v) σ T hT)) = m v (hermOf (Fv F v) σ T hT) (latV b v)`.
+
+Simplify using `only [φ1, Function.update_self]`. Conclude with `lintegral_indicator_one hlatm`. Establish `hB : ∀ w, ∫⁻ X, φ0 w X ∂(m w (hermOf (Fv F w) σ T hT)) = m w (hermOf (Fv F w) σ T hT) (B w)` using `fun w => lintegral_indicator_one (hBm w)`. Establish `hA : ∫⁻ X, A.indicator (1 : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞) X ∂(minf (hermOf (Ainf F) σ T hT)) = minf (hermOf (Ainf F) σ T hT) A` using `lintegral_indicator_one hAm`. Rewrite `e2` using `[hp, hL, hA]`.
+
+Simplify using `only [hB] at e2`. Use `set Q := ∏ w ∈ S, m w (hermOf (Fv F w) σ T hT) (B w) with hQ`. Use `set a := minf (hermOf (Ainf F) σ T hT) A with ha`. Use `set L := m v (hermOf (Fv F v) σ T hT) (latV b v) with hLdef`. Establish `hQ0 : Q ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun w _ => hB0 w`.
+
+Establish `hQt : Q ≠ ⊤` using `ENNReal.prod_ne_top fun w _ => hBt w`. Establish `hP0 : a * Q ≠ 0` using `mul_ne_zero hA0 hQ0`. Establish `hPt : a * Q ≠ ⊤` using `ENNReal.mul_ne_top hAt hQt`. Establish `e4 : (c S : ℝ≥0∞) * (a * Q) = ((c (insert v S) : ℝ≥0∞) * L) * (a * Q)`. Rewrite using `[e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e5` using `(ENNReal.mul_left_inj hP0 hPt).mp e4`. Establish `e6` using `congrArg ENNReal.toReal e5`. Simplify `e6` using `[ENNReal.toReal_mul]`. Take `⟨c₀, S₀, -, hS₀⟩` from `GlobalTheory.T.infinite_product_renormalization _ (fun v => (m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal) c ∅ (fun _ => ENNReal.toReal_nonneg) hsum hstep`.
+
+Use `⟨c₀, hfin, hsum, S₀, fun S hS φinf φ hφi hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc S φinf φ hφi hφ]`. Establish `hcS : (c S : ℝ≥0∞) = (c₀ : ℝ≥0∞) * ENNReal.ofReal (∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal)`. Rewrite using `[← ENNReal.ofReal_coe_nnreal (p := c S), (hS₀ S hS).2, ENNReal.ofReal_mul (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`. Rewrite using `[hcS]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem euler_of_summable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ)
     (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (hdet : T.det ≠ 0) (d : ℕ)
@@ -203,6 +260,23 @@ theorem euler_of_summable {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     rw [hcS]
     ring
 
+/- English proof (translation)
+Introduce `hCo hLoc F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β hβ`. Take `⟨⟨C, hC, hcov⟩, hμ0, hμt⟩` from `hCo F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm`. Take `⟨C₁, hC₁⟩` from `hLoc F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm`. Establish `hE : algebraMap F E β ≠ 0` using `fun h => hβ ((map_eq_zero _).1 h)`. Set `T : Matrix (Fin 1) (Fin 1) E` to `fun _ _ => algebraMap F E β`.
+
+Establish `hT : ∀ a b, σ (T b a) = T a b` using `fun _ _ => σ.commutes β`. Establish `hd : T.det ≠ 0`. Rewrite using `[Matrix.det_unique]`. Conclude with `hE`. Take `⟨β', e, -, hh⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT`.
+
+Establish `hββ : β' = β` using `(algebraMap F E).injective (congrFun (congrFun e 0) 0).symm`. Rewrite `hh` using `[hββ]`. Take `⟨t1, t2⟩` from `PositivityTheory.PlacePermOperatorBicommutantSpan.theta_inv F E σ hcm 2 J hJ μ 𝓕 hμ h𝓕 1 T`. Establish `hlf : IsLocallyFiniteMeasure (thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin 2 → E | gramE σ J X = T})` using `theta_locFin σ hcm 2 J hJ μ 𝓕 hμ h𝓕 C hC hcov hμ0 hμt 1 _`. Establish `hfin : ∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤` using `fun v => by`.
+
+Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+
+Use `haveI := hT2`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hh'` using `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1`. Use `haveI hW := hh'.2.1 1 2`. Use `haveI hH := hh'.2.2 1`.
+
+Establish `hl` using `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 2 J hJ (Fv F v) hloc 1 _ _ (m v) hW hH (hm v) (hermOf (Fv F v) σ T hT)).1`. Conclude with `((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 2).2.2.2.1 v).1.measure_lt_top`. Establish `hsum : Summable fun v => |(m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1|`. Use `Summable.of_norm_bounded_eventually (g := fun v : HeightOneSpectrum (𝓞 F) => C₁ * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2)) ((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left C₁) ?_` and prove the remaining obligations. Use `filter_upwards [hC₁, (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 β hβ] with v h1 h2`.
+
+Establish `h3` using `h1.2.2 _ h2`. Rewrite using `[Real.norm_eq_abs, abs_abs, hh]`. Simplify `h3` using `[div_eq_mul_inv]`. Take `⟨c, hc⟩` from `euler_of_summable σ hcm 2 J hJ 1 T hT hd d b li lam hli hlam mi hmi m hm hfin hsum _ hlf t1 t2`. Simplify using `only [hh] at hc`.
+
+Conclude with `⟨c, hc⟩`.
+-/
 theorem vector_length_formula_up_to_constant : CoCpt → LocMass → Prop1 := by
   intro hCo hLoc F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β hβ
   obtain ⟨⟨C, hC, hcov⟩, hμ0, hμt⟩ := hCo F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm

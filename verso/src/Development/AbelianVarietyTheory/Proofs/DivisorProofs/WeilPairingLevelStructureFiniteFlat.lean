@@ -16,6 +16,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ _ _ _ θ hθ e hmul hne hint`. Use `haveI : Finite (A →ₐ[R] K) := (GlobalTheory.HopfPoints.finite_points_separate_rank R K A).1`. Use `haveI : Finite (A ⊗[R] A →ₐ[R] K) := by`. Use `Finite.of_injective (fun ψ : A ⊗[R] A →ₐ[R] K => ((ψ.comp Algebra.TensorProduct.includeLeft : A →ₐ[R] K), (ψ.comp Algebra.TensorProduct.includeRight : A →ₐ[R] K))) ?_` and prove the remaining obligations. Introduce `ψ ψ' h`.
+
+Conclude with `Algebra.TensorProduct.ext (congrArg Prod.fst h) (congrArg Prod.snd h)`. Take `⟨k, T, hT⟩` from `GlobalTheory.AlgPointsLocal.exists_pow_mul_of_locally_integral R K (A ⊗[R] A) 1 (fun ψ => e (ψ.comp Algebra.TensorProduct.includeLeft) (ψ.comp Algebra.TensorProduct.includeRight)) (by`. Introduce `P _ _`. Take `⟨z₁, s₁, h₁⟩` from `GlobalTheory.T.level_structure_local_points R K G hG N hN A θ hθ (Localization.AtPrime P) ((IsScalarTower.toAlgHom R (A ⊗[R] A) (Localization.AtPrime P)).comp Algebra.TensorProduct.includeLeft)`. Take `⟨z₂, s₂, h₂⟩` from `GlobalTheory.T.level_structure_local_points R K G hG N hN A θ hθ (Localization.AtPrime P) ((IsScalarTower.toAlgHom R (A ⊗[R] A) (Localization.AtPrime P)).comp Algebra.TensorProduct.includeRight)`.
+
+Take `⟨a₂, ha₂⟩` from `GlobalTheory.T.exists_element_of_multiplicative_function_hopf R K A (fun x => e x ((Algebra.ofId R K).comp s₂)) (fun x y z h => (hmul x y z _ h).1) (fun x => hne _ _)`. Take `⟨a₁, ha₁⟩` from `GlobalTheory.T.exists_element_of_multiplicative_function_hopf R K A (fun x => e ((Algebra.ofId R K).comp s₁) x) (fun x y z h => (hmul x y z _ h).2) (fun x => hne _ _)`. Take `⟨c, hc⟩` from `hint (Localization.AtPrime P) z₁ z₂`. Establish `key : ∀ (ψ : Localization.AtPrime P →ₐ[R] K) (φ : A →ₐ[R] Localization.AtPrime P) (z : Tors G N (Localization.AtPrime P)) (s : A →ₐ[R] R), toConv φ = toConv (θ.pt _ z) * toConv ((Algebra.ofId R _).comp s) → toConv (ψ.comp φ) = toConv (θ.pt K (torsMap ψ z)) * toConv ((Algebra.ofId …`. Introduce `ψ φ z s h`.
+
+Establish `h'` using `AlgHom.comp_convMul_distrib ψ (toConv (θ.pt _ z)) (toConv ((Algebra.ofId R _).comp s))`. Rewrite `h'` using `[← h, ofConv_toConv, ofConv_toConv, ofConv_toConv, ← θ.nat, ← AlgHom.comp_assoc, Subsingleton.elim (ψ.comp (Algebra.ofId R _)) (Algebra.ofId R K)]`. Rewrite using `[h', toConv_ofConv]`. Use `⟨c * θ.pt _ z₁ a₂ * θ.pt _ z₂ a₁ * algebraMap R _ (s₁ a₂), fun ψ => ?_⟩` and prove the remaining obligations. Establish `k₁` using `key ψ _ z₁ s₁ h₁`.
+
+Establish `k₂` using `key ψ _ z₂ s₂ h₂`. Use `show _ = e (ψ.comp ((IsScalarTower.toAlgHom R (A ⊗[R] A) (Localization.AtPrime P)).comp Algebra.TensorProduct.includeLeft)) (ψ.comp ((IsScalarTower.toAlgHom R (A ⊗[R] A) (Localization.AtPrime P)).comp Algebra.TensorProduct.includeRight))`. Rewrite using `[(hmul _ _ _ _ k₁).1, (hmul _ _ _ _ k₂).2, (hmul _ _ _ _ k₂).2, ← hc ψ, ← ha₂, ← ha₁, ← ha₂, θ.nat, θ.nat, map_mul, map_mul, map_mul, ψ.commutes, ← _root_.mul_assoc]`. Use the proof step `rfl)`. Use `⟨T, fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hT, map_one, one_pow, _root_.one_mul]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules. Use extensionality with `a`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_tensor_of_bicharacter : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (θ : TorsPt G N A), IsLevel K θ → ∀ e : (A →ₐ[R] K) → (A →ₐ[R] K) → K, (∀ x y z w : A →ₐ[R] K, toConv z = toConv x * toConv y → e z w = e x w * e y w ∧ e w z = e w x * e w y) → (∀ x y, e x y ≠ 0) → (∀ (B : Type) [CommRing B] [Algebra R B] (z z' : Tors G N B), ∃ c : B, ∀ ψ : B →ₐ[R] K, ψ c = e (θ.pt K (torsMap ψ z)) (θ.pt K (torsMap ψ z'))) → ∃ T : A ⊗[R] A, ∀ x y : A →ₐ[R] K, Algebra.TensorProduct.lift x y (fun _ _ => .all _ _) T = e x y := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ _ _ _ θ hθ e hmul hne hint
   haveI : Finite (A →ₐ[R] K) := (GlobalTheory.HopfPoints.finite_points_separate_rank R K A).1

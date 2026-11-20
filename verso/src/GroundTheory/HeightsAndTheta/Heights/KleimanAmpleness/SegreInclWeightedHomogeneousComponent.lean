@@ -15,6 +15,9 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {F : Type} [Fi
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun (v : Σ c, segreIdx ι c) (n : ℕ) => n • NumbersDVR.blockWeight (segreIdx ι) v) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Use function extensionality and compare the values at `c`. Break down `c with ⟨⟨⟩⟩ | k` into its components or cases. Simplify using `[Finsupp.sum, Finset.sum_apply, NumbersDVR.blockWeight]`. Simplify using `[Finsupp.sum, Finset.sum_apply, NumbersDVR.blockWeight, Pi.single_apply]`.
+-/
 theorem segre_weight_mapDomain (e : (Σ k, ι k) →₀ ℕ) :
     Finsupp.weight (NumbersDVR.blockWeight (segreIdx ι))
         (Finsupp.mapDomain (fun v : Σ k, ι k => (⟨Sum.inr v.1, v.2⟩ : Σ c, segreIdx ι c)) e) =
@@ -28,6 +31,15 @@ theorem segre_weight_mapDomain (e : (Σ k, ι k) →₀ ℕ) :
   · simp [Finsupp.sum, Finset.sum_apply, NumbersDVR.blockWeight]
   · simp [Finsupp.sum, Finset.sum_apply, NumbersDVR.blockWeight, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun v : Σ k, ι k => (⟨Sum.inr v.1, v.2⟩ : Σ c, segreIdx ι c))`. Introduce and unpack `⟨k, i⟩ ⟨k', i'⟩ h`. Establish `h1` using `Sigma.mk.inj h`. Take `rfl` from `Sum.inr_injective h1.1`. Take `rfl` from `eq_of_heq h1.2`.
+
+Both sides reduce to the same expression. Use extensionality with `e'`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Distinguish the cases in `he : ∃ e, Finsupp.mapDomain (fun v : Σ k, ι k => (⟨Sum.inr v.1, v.2⟩ : Σ c, segreIdx ι c)) e = e'`. Take `⟨e, rfl⟩` from `he`.
+
+Rewrite using `[segreIncl, coeff_rename_mapDomain _ hinj, coeff_rename_mapDomain _ hinj, coeff_weightedHomogeneousComponent, segre_weight_mapDomain]`. Distinguish the cases in `hd : Finsupp.weight (NumbersDVR.blockWeight ι) e = b`. Rewrite using `[if_pos hd, if_pos (by rw [hd])]`. Rewrite using `[if_neg hd, if_neg fun h => hd (funext fun k => congrFun h (Sum.inr k))]`. Use `push Not at he`.
+
+Rewrite using `[segreIncl, coeff_rename_eq_zero _ _ _ fun u hu => absurd hu (he u)]`. Use `split_ifs`. Rewrite using `[coeff_rename_eq_zero _ _ _ fun u hu => absurd hu (he u)]`. Both sides reduce to the same expression.
+-/
 theorem segreIncl_weightedHomogeneousComponent (b : K → ℕ) (f : MRing ι F) :
     segreIncl ι F (weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b f) =
       weightedHomogeneousComponent (NumbersDVR.blockWeight (segreIdx ι)) (Sum.elim (fun _ => 0) b)
@@ -55,6 +67,9 @@ theorem segreIncl_weightedHomogeneousComponent (b : K → ℕ) (f : MRing ι F) 
     · rw [coeff_rename_eq_zero _ _ _ fun u hu => absurd hu (he u)]
     · rfl
 
+/- English proof (translation)
+Break down `v with ⟨⟨⟨⟩⟩ | k, i⟩` into its components or cases. Conclude with `⟨Ideal.Quotient.mk W (∏ k, X ⟨k, i k⟩), by`. Simplify using `[segreLiftVal, NumbersDVR.blockWeight]⟩`. Conclude with `⟨Ideal.Quotient.mk W (X ⟨k, i⟩), by simp [segreLiftVal, NumbersDVR.blockWeight]⟩`.
+-/
 theorem segreLiftVal_eq (W : Ideal (MRing ι F)) (v : Σ c, segreIdx ι c) :
     ∃ β, segreLiftVal ι F W v =
       Polynomial.X ^ (NumbersDVR.blockWeight (segreIdx ι) v (Sum.inl ())) * Polynomial.C β := by
@@ -63,6 +78,13 @@ theorem segreLiftVal_eq (W : Ideal (MRing ι F)) (v : Σ c, segreIdx ι c) :
       simp [segreLiftVal, NumbersDVR.blockWeight]⟩
   · exact ⟨Ideal.Quotient.mk W (X ⟨k, i⟩), by simp [segreLiftVal, NumbersDVR.blockWeight]⟩
 
+/- English proof (translation)
+Use `Finsupp.induction s ?_ ?_` and prove the remaining obligations. Introduce `r`. Use `⟨algebraMap F _ r, ?_⟩` and prove the remaining obligations. Simplify using `[segreLiftMap, Polynomial.algebraMap_apply]`. Introduce `v n s _ _ ih r`.
+
+Take `⟨a, ha⟩` from `ih r`. Take `⟨β, hβ⟩` from `segreLiftVal_eq W v`. Use `⟨β ^ n * a, ?_⟩` and prove the remaining obligations. Establish `hm : (monomial (Finsupp.single v n + s) r : MRing (segreIdx ι) F) = X v ^ n * monomial s r`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul]`.
+
+Rewrite using `[hm, map_mul, map_pow, ha, segreLiftMap, aeval_X, hβ, map_add, Pi.add_apply, Finsupp.weight_single, Pi.smul_apply, smul_eq_mul, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem segreLiftMap_monomial (W : Ideal (MRing ι F)) (s : (Σ c, segreIdx ι c) →₀ ℕ) :
     ∀ r : F, ∃ a, segreLiftMap ι F W (monomial s r) =
       Polynomial.X ^ (Finsupp.weight (NumbersDVR.blockWeight (segreIdx ι)) s (Sum.inl ())) *
@@ -82,6 +104,11 @@ theorem segreLiftMap_monomial (W : Ideal (MRing ι F)) (s : (Σ c, segreIdx ι c
       Finsupp.weight_single, Pi.smul_apply, smul_eq_mul, map_mul, map_pow]
     ring
 
+/- English proof (translation)
+Use `choose a ha using fun s => segreLiftMap_monomial W s (coeff s f)`. Use `⟨∑ s ∈ f.support, a s, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations.
+
+Rewrite using `[ha s, hf (mem_support_iff.mp hs)]`.
+-/
 theorem segreLiftMap_of_isWeightedHomogeneous (W : Ideal (MRing ι F)) {f : MRing (segreIdx ι) F}
     {e : Unit ⊕ K → ℕ} (hf : IsWeightedHomogeneous (NumbersDVR.blockWeight (segreIdx ι)) f e) :
     ∃ a, segreLiftMap ι F W f = Polynomial.X ^ e (Sum.inl ()) * Polynomial.C a := by
@@ -95,6 +122,41 @@ theorem segreLiftMap_of_isWeightedHomogeneous (W : Ideal (MRing ι F)) {f : MRin
 
 end
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ W' hW' hrel`. Use `hW'.isPrime` as an intermediate fact. Establish `hW : IsMultiProjPrime (W'.comap (segreIncl ι F))`. Use `⟨inferInstance, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf b`.
+
+Rewrite using `[Ideal.mem_comap, segreIncl_weightedHomogeneousComponent]`. Conclude with `hW'.multiHomog _ hf _`. Introduce `k`. Take `⟨i, hi⟩` from `hW'.relevant (Sum.inr k)`. Conclude with `⟨i, by rwa [Ideal.mem_comap, segreIncl, rename_X]⟩`.
+
+Use `⟨hW, ?_⟩` and prove the remaining obligations. Use `set W := W'.comap (segreIncl ι F) with hWdef`. Use `choose c' hc using fun k => hW'.relevant (Sum.inr k)`. Set `c : ∀ k, ι k` to `c'`. Set `D` to `MRing (segreIdx ι) F ⧸ W'`.
+
+Set `L` to `FractionRing D`. Set `π : MRing (segreIdx ι) F →+* L` to `(algebraMap D L).comp (Ideal.Quotient.mk W')`. Establish `hπ : ∀ f, π f = 0 ↔ f ∈ W'`. Introduce `f`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `(IsFractionRing.injective D L).eq_iff' (map_zero _)`. Establish `hmc : segreMon (R` using `F) c ∉ W' := by`. Introduce `h`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp h`. Conclude with `hc k hk`.
+
+Establish `hYc : segreY (R` using `F) c ∉ W' := by`. Introduce `h`. Take `⟨d, hd⟩` from `hW'.relevant (Sum.inl ())`. Establish `hr : segreY c * segreMon d - segreY d * segreMon c ∈ W'` using `hrel ⟨c, d, rfl⟩`. Establish `: segreY (R` using `F) d * segreMon c ∈ W' := by`.
+
+Use `W'.sub_mem (W'.mul_mem_right (segreMon d) h) hr` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `(hW'.isPrime.mem_or_mem this).elim hd hmc`. Establish `hMc : π (segreMon c) ≠ 0` using `fun h => hmc ((hπ _).mp h)`. Set `u : L` to `π (segreY c) / π (segreMon c)`.
+
+Establish `hu : u ≠ 0` using `div_ne_zero (fun h => hYc ((hπ _).mp h)) hMc`. Set `j : MRing ι F ⧸ W →+* D` to `Ideal.quotientMap W' (segreIncl ι F : MRing ι F →+* MRing (segreIdx ι) F) le_rfl`. Establish `hj : Function.Injective j` using `Ideal.quotientMap_injective' le_rfl`. Establish `hjmk : ∀ x, j (Ideal.Quotient.mk W x) = Ideal.Quotient.mk W' (segreIncl ι F x)` using `fun x => Ideal.quotientMap_mk`. Set `Φ : Polynomial (MRing ι F ⧸ W) →+* L` to `Polynomial.eval₂RingHom ((algebraMap D L).comp j) u`.
+
+Establish `hΦ : ∀ a, Φ (Polynomial.C a) = algebraMap D L (j a)` using `fun a => by`. Simplify using `[Φ]`. Establish `hkey : ∀ f, Φ (segreLiftMap ι F W f) = π f`. Establish `: Φ.comp (segreLiftMap ι F W : MRing (segreIdx ι) F →+* Polynomial (MRing ι F ⧸ W)) = π`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, segreLiftMap, aeval_C, Polynomial.algebraMap_apply, hΦ]`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq, hjmk, segreIncl, rename_C]`. Both sides reduce to the same expression. Break down `v with ⟨⟨⟨⟩⟩ | k, i⟩` into its components or cases. Establish `hs : π (segreY c) * π (segreMon i) = π (segreY i) * π (segreMon c)`.
+
+Use `(hπ _).mpr (hrel ⟨c, i, rfl⟩)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hinc : segreIncl ι F (∏ k, X ⟨k, i k⟩) = segreMon i`. Simplify using `[segreIncl, segreMon, map_prod]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, segreLiftMap, aeval_X, segreLiftVal, map_mul, hΦ]`.
+
+Simplify using `only [Φ, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X]`. Rewrite using `[hjmk, hinc]`. Express the relevant statement in the definitionally equal form `u * π (segreMon i) = π (segreY i)`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hMc, hs]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, segreLiftMap, aeval_X, segreLiftVal, hΦ]`.
+
+Rewrite using `[hjmk, segreIncl, rename_X]`. Both sides reduce to the same expression. Introduce `f`. Conclude with `RingHom.congr_fun this f`. Use extensionality with `f`.
+
+Rewrite using `[segreLift, RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Rewrite using `[← sum_weightedHomogeneousComponent (NumbersDVR.blockWeight (segreIdx ι)) f, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp f), map_sum]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `segreLiftMap_of_isWeightedHomogeneous W (weightedHomogeneousComponent_isWeightedHomogeneous (w := NumbersDVR.blockWeight (segreIdx ι)) e f)`. Establish `h0 : Φ (Polynomial.X ^ e (Sum.inl ()) * Polynomial.C a) = 0`. Rewrite using `[← ha, hkey]`. Conclude with `(hπ _).mpr (hW'.multiHomog f hf e)`. Rewrite `h0` using `[map_mul, map_pow, hΦ]`.
+
+Establish `h1` using `(mul_eq_zero.mp h0).resolve_left (pow_ne_zero _ (by simpa [Φ] using hu))`. Establish `h2 : j a = 0` using `(IsFractionRing.injective D L) (by rw [h1, map_zero])`. Establish `h3 : a = 0` using `hj (by rw [h2, map_zero])`. Rewrite using `[ha, h3, map_zero, mul_zero]`. Introduce `hf`.
+
+Conclude with `(hπ f).mp (by rw [← hkey, hf, map_zero])`.
+-/
 theorem SegreLiftComap.proof : SegreLiftComap.Statement := by
   intro F _ K _ _ ι _ W' hW' hrel
   classical

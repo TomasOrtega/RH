@@ -24,12 +24,28 @@ noncomputable section
 
 namespace GlobalTheory.FockIsotypic
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.schur_isotypic_splitting_inner_product`.
+-/
 theorem isotypic_split : ∀ {G W H : Type} [Group G] [AddCommGroup W] [Module ℂ W] [Nontrivial W] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (act : G →* Module.End ℂ H), (∀ g (x y : H), inner ℂ x y = 0 → inner ℂ (act g x) (act g y) = 0) → ∀ (ρ : G →* Module.End ℂ W), (∀ U : Submodule ℂ W, (∀ g, U.map (ρ g) ≤ U) → U = ⊥ ∨ U = ⊤) → ∀ x : H, ∃ q ∈ Submodule.span ℂ {q | ∃ (φ : W →ₗ[ℂ] H) (w : W), (∀ g w', φ (ρ g w') = act g (φ w')) ∧ q = φ w}, ∃ E : Submodule ℂ H, (∀ g, ∀ e ∈ E, act g e ∈ E) ∧ (∀ φ : H →ₗ[ℂ] W, (∀ g, ∀ e ∈ E, φ (act g e) = ρ g (φ e)) → ∀ e ∈ E, φ e = 0) ∧ x - q ∈ E := GlobalTheory.T.schur_isotypic_splitting_inner_product
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fischerInnerForm_fockSubstitution_unitary_invariant`.
+-/
 theorem fis_fockSubst : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n), (∀ τ, (U τ).val ∈ Matrix.unitaryGroup (Fin n) ℂ) → ∀ P Q : PolF D m n, GlobalTheory.FockIsotypic.fis (GlobalTheory.ExportSeries.fockSubst p U P) (GlobalTheory.ExportSeries.fockSubst p U Q) = GlobalTheory.FockIsotypic.fis P Q := GlobalTheory.T.fischerInnerForm_fockSubstitution_unitary_invariant
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.realPoints_act_fock_scalar_unitary_substitution`.
+-/
 theorem om_ptP_fock : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (t : T) (u : GA D (Vc D i)), u ∈ GinfC (Vc D i) → ∃ (p : D.what₂.Tau → ℕ) (c : ℂ) (U : GlobalTheory.ExportSeries.GLR D (Vc D i).rank), (∀ τ, (U τ).val ∈ Matrix.unitaryGroup (Fin (Vc D i).rank) ℂ) ∧ ∀ P : PolF D (Wc D i).rank (Vc D i).rank, R.ωP i t (u, 1) (R.ptP i t P) = R.ptP i t (c • GlobalTheory.ExportSeries.fockSubst p U P) := GlobalTheory.T.realPoints_act_fock_scalar_unitary_substitution
 
+/- English proof (translation)
+Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `MvPolynomial.totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial]`. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+
+Establish `h0 : (algebraMap ℂ (MvPolynomial κ ℂ) (MvPolynomial.coeff s P)).totalDegree = 0` using `MvPolynomial.totalDegree_C _`. Rewrite using `[h0, zero_add]`. Use `le_trans ?_ (MvPolynomial.le_totalDegree hs)` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Use `(MvPolynomial.totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem totalDegree_aeval_le {σ κ : Type} (f : σ → MvPolynomial κ ℂ) (hf : ∀ v, (f v).totalDegree ≤ 1)
     (P : MvPolynomial σ ℂ) : (MvPolynomial.aeval f P).totalDegree ≤ P.totalDegree := by
   classical
@@ -49,6 +65,11 @@ theorem totalDegree_aeval_le {σ κ : Type} (f : σ → MvPolynomial κ ℂ) (hf
   calc s i * (f i).totalDegree ≤ s i * 1 := Nat.mul_le_mul_left _ (hf i)
     _ = s i := mul_one _
 
+/- English proof (translation)
+Unfold `GlobalTheory.ExportSeries.fockSubst`. Use `totalDegree_aeval_le _ (fun v => ?_) P` and prove the remaining obligations. Use `split_ifs`. Use `all_goals`. Use `MvPolynomial.totalDegree_finsetSum_le fun b _ => ?_` and prove the remaining obligations.
+
+Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, MvPolynomial.totalDegree_X]`.
+-/
 theorem totalDegree_fockSubst_le {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ) (U : GlobalTheory.ExportSeries.GLR D n)
     (P : PolF D m n) : (GlobalTheory.ExportSeries.fockSubst p U P).totalDegree ≤ P.totalDegree := by
   unfold GlobalTheory.ExportSeries.fockSubst
@@ -59,6 +80,33 @@ theorem totalDegree_fockSubst_le {D : D7} {m n : ℕ} (p : D.what₂.Tau → ℕ
     refine (MvPolynomial.totalDegree_mul _ _).trans ?_
     rw [MvPolynomial.totalDegree_C, MvPolynomial.totalDegree_X]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hgiv _ i t P`. Establish `hC` using `hgiv.core`. Establish `hinj : Function.Injective (R.ptP i t)` using `(GlobalTheory.CoefActIo.thetaVector_laws (i := i) hC t).2.2`. Establish `hcV : (R.cV i).Is` using `hC.models.cV i`. Use `haveI : Nontrivial (R.cV i).W := hcV.2.2.2.1`.
+
+Use `choose p c U hU hω using fun g : GinfC (Vc D i) => om_ptP_fock D G Pl0 T A Ks R F hC i t g.1 g.2`. Set `actL : GinfC (Vc D i) → Module.End ℂ (PolF D (Wc D i).rank (Vc D i).rank)` to `fun g => c g • (GlobalTheory.ExportSeries.fockSubst (p g) (U g)).toLinearMap`. Establish `hact : ∀ g Q, R.ptP i t (actL g Q) = R.ωP i t (g.1, 1) (R.ptP i t Q)` using `fun g Q => (hω g Q).symm`. Establish `hmul : ∀ g h Q, actL (g * h) Q = actL g (actL h Q)` using `fun g h Q => hinj (by`. Establish `e : (((g * h : GinfC (Vc D i)) : GA D (Vc D i)), (1 : GA D (Wc D i))) = ((g : GA D (Vc D i)), 1) * ((h : GA D (Vc D i)), 1)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hact, hact, hact, e, map_mul, Module.End.mul_apply])`. Establish `hone : ∀ Q, actL 1 Q = Q` using `fun Q => hinj (by`. Establish `e : (((1 : GinfC (Vc D i)) : GA D (Vc D i)), (1 : GA D (Wc D i))) = 1` using `by simp`. Rewrite using `[hact, e, map_one, Module.End.one_apply])`.
+
+Set `S : Submodule ℂ (PolF D (Wc D i).rank (Vc D i).rank)` to `MvPolynomial.restrictTotalDegree (FVar D (Wc D i).rank (Vc D i).rank) ℂ P.totalDegree`. Establish `hS : ∀ g, ∀ Q ∈ S, actL g Q ∈ S` using `fun g Q hQ => by`. Rewrite `hQ`, the goal using `[MvPolynomial.mem_restrictTotalDegree]`. Conclude with `(MvPolynomial.totalDegree_smul_le _ _).trans ((totalDegree_fockSubst_le _ _ _).trans hQ)`. Use `letI : InnerProductSpace.Core ℂ S := fisCore S`.
+
+Use `letI : NormedAddCommGroup S := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Use `letI : InnerProductSpace ℂ S := InnerProductSpace.ofCore _`. Set `actS : GinfC (Vc D i) →* Module.End ℂ S` to `{ toFun := fun g => (actL g).restrict (hS g) map_one' := LinearMap.ext fun x => Subtype.ext (hone x.1) map_mul' := fun g h => LinearMap.ext fun x => Subtype.ext (hmul g h x.1) }`. Establish `hconf : ∀ g (x y : S), inner ℂ x y = 0 → inner ℂ (actS g x) (actS g y) = 0`. Introduce `g x y h`.
+
+Express the relevant statement in the definitionally equal form `fis (actL g y.1) (actL g x.1) = 0`. Express the relevant statement in the definitionally equal form `fis y.1 x.1 = 0 at h`. Simplify using `only [actL, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[fis_smul_left, fis_smul_right, fis_fockSubst _ _ _ _ _ (hU g), h, mul_zero, mul_zero]`. Set `ρ' : GinfC (Vc D i) →* Module.End ℂ (R.cV i).W` to `(R.cV i).ρ.comp (GinfC (Vc D i)).subtype`.
+
+Establish `hirr : ∀ W' : Submodule ℂ (R.cV i).W, (∀ g, W'.map (ρ' g) ≤ W') → W' = ⊥ ∨ W' = ⊤` using `fun W' hW => hcV.2.2.2.2 W' fun h => by`. Take `⟨a, ha, k, hk, rfl⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D _).1 h`. Rewrite using `[map_mul, hcV.1 k hk, mul_one]`. Conclude with `hW ⟨a, ha⟩`. Take `⟨q, hq, E, hEst, hEs, hxE⟩` from `isotypic_split actS hconf ρ' hirr ⟨P, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 le_rfl⟩`.
+
+Use `⟨q.1, ?_, E.map S.subtype, inferInstance, ?_, ?_, ⟨_, hxE, rfl⟩⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ (Submodule.apply_mem_span_image_of_mem_span S.subtype hq)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨φ, w, hφ, rfl⟩, rfl⟩`. Use `⟨S.subtype ∘ₗ φ, w, fun u hu w' => ?_, rfl⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (hφ ⟨u, hu⟩ w')`.
+
+Use `show R.ptP i t (φ (ρ' ⟨u, hu⟩ w')).1 = R.ωP i t (u, 1) (R.ptP i t (φ w').1)`. Rewrite using `[e]`. Conclude with `hact ⟨u, hu⟩ _`. Introduce and unpack `u hu _ ⟨e, he, rfl⟩ P₂ h`. Establish `e2 : P₂ = actL ⟨u, hu⟩ e.1` using `hinj (h.trans (hact ⟨u, hu⟩ e.1).symm)`.
+
+Conclude with `⟨actS ⟨u, hu⟩ e, hEst _ e he, e2.symm⟩`. Introduce `φ' hφ'`. Set `ev` to `Module.evalEquiv ℂ (R.cV i).W`. Set `φ : S →ₗ[ℂ] (R.cV i).W` to `ev.symm.toLinearMap ∘ₗ φ' ∘ₗ S.subtype`. Establish `hφe : ∀ x : S, ev (φ x) = φ' x.1` using `fun x => ev.apply_symm_apply _`.
+
+Establish `key : ∀ g, ∀ e ∈ E, φ (actS g e) = ρ' g (φ e)`. Introduce `g e he`. Apply `ev.injective` to reduce the goal to its premises. Rewrite using `[hφe]`. Use extensionality with `l`.
+
+Establish `h1` using `hφ' g.1 g.2 e.1 ⟨e, he, rfl⟩ (actL g e.1) (hact g e.1) l`. Express the relevant statement in the definitionally equal form `φ' (actL g e.1) l = _`. Rewrite using `[h1, ← hφe e]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨e, he, rfl⟩`.
+
+Rewrite using `[Submodule.subtype_apply, ← hφe e, hEs φ key e he, map_zero]`.
+-/
 theorem decomp : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T), ∀ (P : PolF D (Wc D i).rank (Vc D i).rank), ∃ Q ∈ Submodule.span ℂ {Q : PolF D (Wc D i).rank (Vc D i).rank | ∃ (φ : (R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) (w : (R.cV i).W), (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (φ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (φ w'))) ∧ Q = φ w}, ∃ E : Submodule ℂ (PolF D (Wc D i).rank (Vc D i).rank), FiniteDimensional ℂ E ∧ (∀ u ∈ GinfC (Vc D i), ∀ P₁ ∈ E, ∀ P₂ : PolF D (Wc D i).rank (Vc D i).rank, R.ptP i t P₂ = R.ωP i t (u, 1) (R.ptP i t P₁) → P₂ ∈ E) ∧ (∀ φ : PolF D (Wc D i).rank (Vc D i).rank →ₗ[ℂ] Module.Dual ℂ (R.cV i).W →ₗ[ℂ] ℂ, (∀ u ∈ GinfC (Vc D i), ∀ P₁ ∈ E, ∀ P₂ : PolF D (Wc D i).rank (Vc D i).rank, R.ptP i t P₂ = R.ωP i t (u, 1) (R.ptP i t P₁) → ∀ l, φ P₂ l = φ P₁ (l ∘ₗ (R.cV i).ρ u)) → ∀ P₁ ∈ E, φ P₁ = 0) ∧ P - Q ∈ E := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hgiv _ i t P
   have hC := hgiv.core

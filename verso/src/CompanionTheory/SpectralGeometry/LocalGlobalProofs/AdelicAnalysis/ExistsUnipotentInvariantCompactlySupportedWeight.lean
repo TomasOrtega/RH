@@ -33,6 +33,9 @@ def matE (M : Matrix ι ι R) (hu : IsUnit M.det) : (ι → R) ≃ₜ+ (ι → R
   continuous_toFun := Continuous.matrix_mulVec continuous_const continuous_id
   continuous_invFun := Continuous.matrix_mulVec continuous_const continuous_id
 
+/- English proof (translation)
+Use `(Measure.pi_eq fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+-/
 theorem pi_smul {X : Type} [MeasurableSpace X] (lam : Measure X) [SigmaFinite lam] (c : ℝ≥0) :
     Measure.pi (fun _ : ι => c • lam) = c ^ Fintype.card ι • Measure.pi fun _ : ι => lam := by
   refine (Measure.pi_eq fun s hs => ?_)
@@ -43,6 +46,9 @@ theorem pi_smul {X : Type} [MeasurableSpace X] (lam : Measure X) [SigmaFinite la
 variable [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R]
   [BorelSpace R]
 
+/- English proof (translation)
+Use `GlobalTheory.T.selfdual_measure_twist_by_symmetric_auto (ι → R) μ (fun x y => ψR (x ⬝ᵥ y)) h (matE M hu) (fun x y => ?_) c hc` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψR (x ⬝ᵥ (M *ᵥ y)) = ψR ((M *ᵥ x) ⬝ᵥ y)`. Use `congr 1`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hM.eq]`.
+-/
 theorem selfDual_mat (ψR : R → ℂ) (M : Matrix ι ι R) (hM : M.IsSymm) (hu : IsUnit M.det)
     (μ : Measure (ι → R)) (h : SelfDual μ (fun x y => ψR (x ⬝ᵥ y))) (c : ℝ≥0)
     (hc : μ.map (fun x => M *ᵥ x) = c • μ) :
@@ -52,6 +58,11 @@ theorem selfDual_mat (ψR : R → ℂ) (M : Matrix ι ι R) (hM : M.IsSymm) (hu 
   congr 1
   rw [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hM.eq]
 
+/- English proof (translation)
+Establish `h1` using `selfDual_mat ψR M hM hu _ h c hc`. Establish `e : (NNReal.sqrt c)⁻¹ • Measure.pi (fun _ : ι => k) = ((NNReal.sqrt c)⁻¹ * c₀ ^ Fintype.card ι) • Measure.pi fun _ : ι => lam`. Substitute `hk` using the available equality. Rewrite using `[pi_smul, smul_smul]`. Rewrite `h1` using `[e]`.
+
+Conclude with `⟨fun h2 => hU _ _ h2 h1, fun h2 => h2 ▸ h1⟩`.
+-/
 theorem iff_of (ψR : R → ℂ) (M : Matrix ι ι R) (hM : M.IsSymm) (hu : IsUnit M.det)
     (k : Measure R) [SigmaFinite k] (lam : Measure R) [SigmaFinite lam] (c₀ c : ℝ≥0)
     (hk : k = c₀ • lam)
@@ -72,6 +83,9 @@ theorem iff_of (ψR : R → ℂ) (M : Matrix ι ι R) (hM : M.IsSymm) (hu : IsUn
 
 end Gen
 
+/- English proof (translation)
+Establish `e : (a • B).map (algebraMap F R) = algebraMap F R a • B.map (algebraMap F R)`. Use extensionality with `i j`. Simplify using `[Algebra.smul_def]`. Rewrite using `[e, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem dot_smul {F R : Type} [Field F] [CommRing R] [Algebra F R] {ι : Type} [Fintype ι]
     (a : F) (B : Matrix ι ι F) (x y : ι → R) :
     x ⬝ᵥ ((a • B).map (algebraMap F R) *ᵥ y) =
@@ -81,6 +95,9 @@ theorem dot_smul {F R : Type} [Field F] [CommRing R] [Algebra F R] {ι : Type} [
     simp [Algebra.smul_def]
   rw [e, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `(h.isUnit).map (algebraMap F R)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_det_map {F R : Type} [Field F] [CommRing R] [Algebra F R] {ι : Type} [Fintype ι]
     [DecidableEq ι] (A : Matrix ι ι F) (h : A.det ≠ 0) : IsUnit (A.map (algebraMap F R)).det := by
   have := (h.isUnit).map (algebraMap F R)
@@ -89,6 +106,9 @@ theorem isUnit_det_map {F R : Type} [Field F] [CommRing R] [Algebra F R] {ι : T
 section Lems
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `e : algebraMap F (AF F) a * pairA F s 0 = pairA F (algebraMap F (Ainf F) a * s) 0` using `Prod.ext rfl (mul_zero _)`. Rewrite using `[psiInf, psiInf, h, e]`.
+-/
 theorem scale_inf (ψ ψ₀ : AddChar (AF F) ℂ) (a : F)
     (h : ∀ x, ψ x = ψ₀ (algebraMap F (AF F) a * x)) (s : Ainf F) :
     psiInf F ψ s = psiInf F ψ₀ (algebraMap F (Ainf F) a * s) := by
@@ -96,6 +116,13 @@ theorem scale_inf (ψ ψ₀ : AddChar (AF F) ℂ) (a : F)
     Prod.ext rfl (mul_zero _)
   rw [psiInf, psiInf, h, e]
 
+/- English proof (translation)
+Establish `e : algebraMap F (AF F) a * pairA F 0 (singleV F v s) = pairA F 0 (singleV F v (algebraMap F (Fv F v) a * s))`. Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F (Fv F w) a * (singleV F v s) w = (singleV F v (algebraMap F (Fv F v) a * s)) w`. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Express the relevant statement in the definitionally equal form `_ * (Pi.single w s : ∀ u : HeightOneSpectrum (𝓞 F), Fv F u) w = (Pi.single w (algebraMap F (Fv F w) a * s) : ∀ u : HeightOneSpectrum (𝓞 F), Fv F u) w`. Simplify using `only [Pi.single_eq_same]`. Express the relevant statement in the definitionally equal form `_ * (Pi.single v s : ∀ u : HeightOneSpectrum (𝓞 F), Fv F u) w = (Pi.single v (algebraMap F (Fv F v) a * s) : ∀ u : HeightOneSpectrum (𝓞 F), Fv F u) w`. Simplify using `only [Pi.single_eq_of_ne hw, mul_zero]`.
+
+Rewrite using `[psiV, psiV, h, e]`.
+-/
 theorem scale_v (ψ ψ₀ : AddChar (AF F) ℂ) (a : F)
     (h : ∀ x, ψ x = ψ₀ (algebraMap F (AF F) a * x)) (v : HeightOneSpectrum (𝓞 F)) (s : Fv F v) :
     psiV F ψ v s = psiV F ψ₀ v (algebraMap F (Fv F v) a * s) := by
@@ -117,6 +144,23 @@ theorem scale_v (ψ ψ₀ : AddChar (AF F) ℂ) (a : F)
 
 end Lems
 
+/- English proof (translation)
+Introduce `F _ _ hF laminf lam hinf hlam ψ hψ ι _ _ B hB hdet`. Take `⟨ψ₀, hψ₀, c₀, e₀, hU0, hsd0, hsdv⟩` from `GlobalTheory.T.self_dual_standard_measures F hF laminf lam hinf hlam`. Take `⟨a, ha, hax⟩` from `GlobalTheory.CompanionTheory.SW.char_dual F ψ₀ ψ hψ₀ hψ`. Establish `hAdet : (a • B).det ≠ 0`. Rewrite using `[Matrix.det_smul]`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ ha) hdet`. Establish `hAs : (a • B).IsSymm`. Rewrite using `[Matrix.IsSymm, Matrix.transpose_smul, hB.eq]`. Take `⟨c₁, e₁, hU1, hm, hmv⟩` from `GlobalTheory.T.addHaar_map_mulVec_eq_smul_at_all_places F ι (a • B) hAdet`. Establish `hsq` using `(GlobalTheory.T.unit_product_closure_properties F c₁ c₁ e₁ e₁ hU1 hU1).2.2.2.2.2.1`.
+
+Establish `hinv` using `(GlobalTheory.T.unit_product_closure_properties F _ _ _ _ hsq hsq).2.2.2.1`. Establish `hpow` using `(GlobalTheory.T.unit_product_closure_properties F c₀ c₀ e₀ e₀ hU0 hU0).2.2.2.2.2.2.1 (Fintype.card ι)`. Establish `hprod` using `(GlobalTheory.T.unit_product_closure_properties F _ _ _ _ hinv hpow).2.2.1`. Use `⟨_, _, hprod, ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, -, -, -, -⟩` from `isLocR_Ainf F hF haveI := h1`.
+
+Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4 haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hA' : ∀ x y : ι → Ainf F, psiInf F ψ (x ⬝ᵥ (B.map (algebraMap F (Ainf F)) *ᵥ y)) = psiInf F ψ₀ (x ⬝ᵥ ((a • B).map (algebraMap F (Ainf F)) *ᵥ y))`. Introduce `x y`.
+
+Rewrite using `[scale_inf F ψ ψ₀ a hax, dot_smul]`. Introduce `μ`. Simplify using `only [hA']`. Use `haveI := hinf.1`. Conclude with `iff_of (psiInf F ψ₀) ((a • B).map (algebraMap F (Ainf F))) (hAs.map _) (isUnit_det_map _ hAdet) (c₀ • laminf) laminf c₀ c₁ rfl (GlobalTheory.T.archimedean_selfdual_measure_pi F hF ψ₀ hψ₀ _ hsd0 ι) (by haveI := (GlobalTheory.T.archimedean_selfdual_measure_pi F hF ψ₀ hψ₀ _ hsd0 ι). …`.
+
+Take `⟨h1, h2, h3, h4, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4 haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hA' : ∀ x y : ι → Fv F v, psiV F ψ v (x ⬝ᵥ (B.map (algebraMap F (Fv F v)) *ᵥ y)) = psiV F ψ₀ v (x ⬝ᵥ ((a • B).map (algebraMap F (Fv F v)) *ᵥ y))`.
+
+Introduce `x y`. Rewrite using `[scale_v F ψ ψ₀ a hax, dot_smul]`. Introduce `μ`. Simplify using `only [hA']`. Use `haveI := (hlam v).1`.
+
+Conclude with `iff_of (psiV F ψ₀ v) ((a • B).map (algebraMap F (Fv F v))) (hAs.map _) (isUnit_det_map _ hAdet) (e₀ v • lam v) (lam v) (e₀ v) (e₁ v) rfl (GlobalTheory.T.nonarchimedean_selfdual_measure_pi F ψ₀ hψ₀ v _ (hsdv v) ι) (by haveI := (GlobalTheory.T.nonarchimedean_selfdual_measure_pi F ψ …`.
+-/
 theorem selfDual_coord : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∀ ψ, IsCharAF F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι F), B.IsSymm → B.det ≠ 0 → ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (∀ μ : Measure (ι → Ainf F), SelfDual μ (fun x y => psiInf F ψ (x ⬝ᵥ (B.map (algebraMap F (Ainf F)) *ᵥ y))) ↔ μ = cinf • Measure.pi fun _ => laminf) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (∀ μ : Measure (ι → Fv F v), SelfDual μ (fun x y => psiV F ψ v (x ⬝ᵥ (B.map (algebraMap F (Fv F v)) *ᵥ y))) ↔ μ = c v • Measure.pi fun _ => lam v) := by
   intro F _ _ hF laminf lam hinf hlam ψ hψ ι _ _ B hB hdet
   obtain ⟨ψ₀, hψ₀, c₀, e₀, hU0, hsd0, hsdv⟩ := GlobalTheory.T.self_dual_standard_measures F hF laminf lam hinf hlam

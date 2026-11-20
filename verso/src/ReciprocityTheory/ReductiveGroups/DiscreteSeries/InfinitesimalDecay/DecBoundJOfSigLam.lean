@@ -18,6 +18,9 @@ variable {ε : Fin n → Bool}
   {H₁ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)}
   {H₂ : Type*} [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => rfl | X :: w, hw, x => by simp only [dSW] rw [dSW_map_isometry U hU w (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) x, dS_map_isometry U hU (hw X List.mem_cons_self)]`.
+-/
 theorem dSW_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε, ∀ x : H₁, U (σ₁ g x) = σ₂ g (U x)) :
     ∀ (w : List (Matrix (Fin n) (Fin n) ℂ)), (∀ X ∈ w, inG ε X) → ∀ x : H₁, dSW σ₂ w (U x) = U (dSW σ₁ w x)
   | [], _, _ => rfl
@@ -26,6 +29,9 @@ theorem dSW_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε
     rw [dSW_map_isometry U hU w (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) x,
       dS_map_isometry U hU (hw X List.mem_cons_self)]
 
+/- English proof (translation)
+Unfold `nuJ`. Use `congr 1`. Use `List.map_congr_left fun w hw => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [dSW_map_isometry U hU w (hWs w hw) x, U.norm_map]`.
+-/
 theorem nuJ_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε, ∀ x : H₁, U (σ₁ g x) = σ₂ g (U x))
     {Ws : List (List (Matrix (Fin n) (Fin n) ℂ))} (hWs : ∀ w ∈ Ws, ∀ X ∈ w, inG ε X) (x : H₁) :
     nuJ σ₂ Ws (U x) = nuJ σ₁ Ws x := by
@@ -36,6 +42,13 @@ theorem nuJ_map_isometry (U : H₁ ≃ₗᵢ[ℂ] H₂) (hU : ∀ g ∈ UJset ε
 
 end Equiv
 
+/- English proof (translation)
+Establish `hstd : StdGap ε lam` using `⟨hlam.1, h, hgap, lt_of_le_of_lt (le_max_left _ _) hth⟩`. Take `⟨U, hU⟩` from `equiv_sigLam_of_isDS hσ hstd hP hv₀`. Take `⟨C, Ws, hWs, hB⟩` from `hL`. Establish `hWs' : ∀ w ∈ Ws, ∀ X ∈ w, inG ε X` using `fun w hw => (hWs w hw).2`. Use `⟨C, Ws, hWs, fun u v hu hv g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `U.surjective u`. Take `⟨y, rfl⟩` from `U.surjective v`. Apply the tactic sequence `have hx := smooth_symm_of_isometry U hU hu`. Apply the tactic sequence `have hy := smooth_symm_of_isometry U hU hv`. Rewrite `hx`, `hy` using `[U.symm_apply_apply]`.
+
+Establish `hb` using `hB x y hx hy g hg`. Apply the tactic sequence `rw [← hU g hg x, U.inner_map_map, nuJ_map_isometry U hU hWs' x, nuJ_map_isometry U hU hWs' y]`. Conclude with `hb`.
+-/
 theorem decBoundJ_of_sigLam {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hlam : S7.IsHCParam lam) {h : ℝ} (hgap : GapAtLeast ε lam h) (hth : thrStar ε < h)

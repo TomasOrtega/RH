@@ -24,6 +24,11 @@ structure IsNormOn (C : Submodule K R) (σ : K →+* ℂ) (N : R → ℝ) : Prop
   smul : ∀ (a : K), ∀ f ∈ C, N (a • f) = ‖σ a‖ * N f
   add : ∀ f ∈ C, ∀ g ∈ C, N (f + g) ≤ N f + N g
 
+/- English proof (translation)
+Unfold `vAdd`. Establish `h1` using `la.valuation_le_one (K := K) a`. Establish `h2 : (la.valuation K) (a : K) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ha`. Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).mpr h1`. Rewrite `h3` using `[WithZero.log_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem vAdd_int_nonneg (la : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K} (ha : (a : K) ≠ 0) : 0 ≤ vAdd la (a : K) := by
   unfold vAdd
   have h1 := la.valuation_le_one (K := K) a
@@ -59,12 +64,18 @@ abbrev Deg (D : D7) (j : ℕ) : Type :=
 
 def deg {j : ℕ} (w : WeightFamilies.Wt D j) : Deg D j := (w.aP, w.aM, w.n)
 
+/- English proof (translation)
+Introduce and unpack `⟨a1, b1, _, _, n1, _⟩ ⟨a2, b2, _, _, n2, _⟩ h`. Simplify using `only [deg, Prod.mk.injEq] at h`. Take `⟨rfl, rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+-/
 theorem deg_inj {j : ℕ} : Function.Injective (deg (D := D) (j := j)) := by
   rintro ⟨a1, b1, _, _, n1, _⟩ ⟨a2, b2, _, _, n2, _⟩ h
   simp only [deg, Prod.mk.injEq] at h
   obtain ⟨rfl, rfl, rfl⟩ := h
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem deg_wadd {j : ℕ} (w w' : WeightFamilies.Wt D j) : deg (WeightAlgebra.wadd w w') = deg w + deg w' := rfl
 
 section Rec
@@ -76,15 +87,27 @@ variable {K : Type} [Field K] [NumberField K] (eO : 𝓞 K ≃+* D.what₂.O)
 def cutR (j : ℕ) (w : WeightFamilies.Wt D j) : Submodule K (R j) := C j w ⊓ ⨅ _ : ¬ InR D j, ⊥
 
 omit [NumberField K] [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)] in
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem cutR_le (j : ℕ) (w : WeightFamilies.Wt D j) : cutR C j w ≤ C j w := inf_le_left
 
 omit [NumberField K] [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)] in
+/- English proof (translation)
+Simplify using `[cutR, h]`.
+-/
 theorem cutR_eq {j : ℕ} (h : InR D j) (w : WeightFamilies.Wt D j) : cutR C j w = C j w := by simp [cutR, h]
 
 omit [NumberField K] [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)] in
+/- English proof (translation)
+Simplify using `[cutR, h]`.
+-/
 theorem cutR_out {j : ℕ} (h : ¬ InR D j) (w : WeightFamilies.Wt D j) : cutR C j w = ⊥ := by simp [cutR, h]
 
 omit [NumberField K] [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)] in
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `F.2` as an intermediate fact. Simplify `this` using `[cutR_out C h w]`.
+-/
 theorem cutR_zero {j : ℕ} (h : ¬ InR D j) {w : WeightFamilies.Wt D j} (F : cutR C j w) : F = 0 := by
   apply Subtype.ext
   have := F.2
@@ -103,16 +126,27 @@ include hN
 
 omit [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)]
 
+/- English proof (translation)
+Unfold `cutN`. Use `split_ifs with h`. Conclude with `(hN j h w σ).nonneg _ (cutR_le C j w F.2)`. Conclude with `le_rfl`.
+-/
 theorem cutN_nonneg (j w σ) (F : cutR C j w) : 0 ≤ cutN C N j w σ F := by
   unfold cutN; split_ifs with h
   · exact (hN j h w σ).nonneg _ (cutR_le C j w F.2)
   · exact le_rfl
 
+/- English proof (translation)
+Unfold `cutN`. Use `split_ifs with h`. Conclude with `(hN j h w σ).smul a _ (cutR_le C j w F.2)`. Simplify using the standard rewrite rules.
+-/
 theorem cutN_smul (j w σ) (a : K) (F : cutR C j w) : cutN C N j w σ (a • F) = ‖σ a‖ * cutN C N j w σ F := by
   unfold cutN; split_ifs with h
   · exact (hN j h w σ).smul a _ (cutR_le C j w F.2)
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Distinguish the cases in `h : InR D j`. Unfold `cutN at h0`. Rewrite `h0` using `[if_pos h]`.
+
+Conclude with `Subtype.ext ((hN j h w σ).defin _ (cutR_le C j w F.2) h0)`. Conclude with `cutR_zero C h F`. Introduce and unpack `rfl`. Use `cutN_smul hN j w σ 0 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cutN_eq_zero (j w σ) (F : cutR C j w) : cutN C N j w σ F = 0 ↔ F = 0 := by
   constructor
   · intro h0
@@ -124,6 +158,9 @@ theorem cutN_eq_zero (j w σ) (F : cutR C j w) : cutN C N j w σ F = 0 ↔ F = 0
     have := cutN_smul hN j w σ 0 0
     simpa using this
 
+/- English proof (translation)
+Unfold `cutN`. Use `split_ifs with h`. Conclude with `(hN j h w σ).add _ (cutR_le C j w F.2) _ (cutR_le C j w G.2)`. Simplify using the standard rewrite rules.
+-/
 theorem cutN_add (j w σ) (F G : cutR C j w) : cutN C N j w σ (F + G) ≤ cutN C N j w σ F + cutN C N j w σ G := by
   unfold cutN; split_ifs with h
   · exact (hN j h w σ).add _ (cutR_le C j w F.2) _ (cutR_le C j w G.2)

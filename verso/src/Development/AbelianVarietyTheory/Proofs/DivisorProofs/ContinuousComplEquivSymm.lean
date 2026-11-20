@@ -26,20 +26,35 @@ variable {k k' : Type} [Field k] [Field k'] {R C R' C' : Type}
 def trM (j : k ≃+* k') (eR : R' ≃ R) (eC : C' ≃ C) (Z : Matrix R C k) : Matrix R' C' k' :=
   Matrix.of fun r c => j (Z (eR r) (eC c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem trM_apply (j : k ≃+* k') (eR : R' ≃ R) (eC : C' ≃ C) (Z : Matrix R C k) (r : R') (c : C') :
     trM j eR eC Z r c = j (Z (eR r) (eC c)) := rfl
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem trM_symm_trM (j : k ≃+* k') (eR : R' ≃ R) (eC : C' ≃ C) (Z : Matrix R C k) :
     trM j.symm eR.symm eC.symm (trM j eR eC Z) = Z := by
   ext r c; simp
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem trM_trM_symm (j : k ≃+* k') (eR : R' ≃ R) (eC : C' ≃ C) (Y : Matrix R' C' k') :
     trM j eR eC (trM j.symm eR.symm eC.symm Y) = Y := by
   ext r c; simp
 
+/- English proof (translation)
+Introduce `Z Z' h` and use `by rw [← trM_symm_trM j eR eC Z, h, trM_symm_trM]`.
+-/
 theorem trM_injective (j : k ≃+* k') (eR : R' ≃ R) (eC : C' ≃ C) : Function.Injective (trM j eR eC) :=
   fun Z Z' h => by rw [← trM_symm_trM j eR eC Z, h, trM_symm_trM]
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using `only [trM_apply, Matrix.mul_apply, map_sum, map_mul]`. Conclude with `(Fintype.sum_equiv eM _ _ fun m => rfl).symm`.
+-/
 theorem trM_mul {M M' : Type} [Fintype M] [Fintype M'] (j : k ≃+* k') (eR : R' ≃ R) (eM : M' ≃ M) (eC : C' ≃ C)
     (X : Matrix R M k) (Y : Matrix M C k) : trM j eR eC (X * Y) = trM j eR eM X * trM j eM eC Y := by
   ext r c
@@ -54,6 +69,9 @@ variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 def glTrEquiv {k k' : Type} [Field k] [Field k'] (j : k ≃+* k') (e : n' ≃ n) : GL n k ≃* GL n' k' :=
   Units.mapEquiv ((j.mapMatrix (m := n)).toMulEquiv.trans (Matrix.reindexAlgEquiv k' k' e.symm).toMulEquiv)
 
+/- English proof (translation)
+Use extensionality with `r c`. Both sides reduce to the same expression.
+-/
 @[simp] theorem glTrEquiv_val {k k' : Type} [Field k] [Field k'] (j : k ≃+* k') (e : n' ≃ n) (g : GL n k) :
     (glTrEquiv j e g).val = trM j e e g.val := by
   ext r c; rfl
@@ -79,6 +97,9 @@ def glTr (hj : IsLocIso j) (e : n' ≃ n) : GL n k ≃ₜ* GL n' k' :=
       rw [this]
       exact (Units.continuous_val.matrix_map hj.2.1).matrix_submatrix e.symm e.symm) }
 
+/- English proof (translation)
+The claim follows from `glTrEquiv_val j e g`.
+-/
 @[simp] theorem glTr_val (hj : IsLocIso j) (e : n' ≃ n) (g : GL n k) : (glTr hj e g).val = trM j e e g.val :=
   glTrEquiv_val j e g
 
@@ -91,6 +112,9 @@ instance isHaar_pullMeas (hj : IsLocIso j) (e : n' ≃ n) (μ : MeasureTheory.Me
     (pullMeas hj e μ).IsHaarMeasure :=
   (glTr hj e).symm.isHaarMeasure_map μ
 
+/- English proof (translation)
+Establish `h1 : Measurable (glTr hj e)` using `(glTr hj e).continuous.measurable`. Establish `h2 : Measurable (glTr hj e).symm` using `(glTr hj e).symm.continuous.measurable`. Rewrite using `[pullMeas, MeasureTheory.Measure.map_map h1 h2]`. Simplify using the standard rewrite rules.
+-/
 theorem map_pullMeas (hj : IsLocIso j) (e : n' ≃ n) (μ : MeasureTheory.Measure (GL n' k')) :
     (pullMeas hj e μ).map (glTr hj e) = μ := by
   have h1 : Measurable (glTr hj e) := (glTr hj e).continuous.measurable
@@ -103,18 +127,29 @@ end Groups
 section Place
 variable {D : D7} {v : Pl D.host.F}
 
+/- English proof (translation)
+The claim follows from `haveI : (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _ ValuativeRel.isEquiv _ _`.
+-/
 theorem isEquiv_Fv_valued :
     (ValuativeRel.valuation (Fv D.host.F v)).IsEquiv (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))) :=
   haveI : (Valued.v : Valuation (Fv D.host.F v) (WithZero (Multiplicative ℤ))).Compatible :=
     Valuation.Compatible.ofValuation _
   ValuativeRel.isEquiv _ _
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (GlobalTheory.LFun.SplitTie.complEquiv τ hv).apply_symm_apply y]`. Rewrite using `[GlobalTheory.LFun.SplitTie.complEquiv_apply, GlobalTheory.LFun.SplitTie.valued_complMap]`.
+-/
 theorem valued_complEquiv_symm (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (hv : (splitPrime τ).under (𝓞 D.host.F) = v) (y : Kw (D := D) (splitPrime τ)) :
     Valued.v ((GlobalTheory.LFun.SplitTie.complEquiv τ hv).symm y) = Valued.v y := by
   conv_rhs => rw [← (GlobalTheory.LFun.SplitTie.complEquiv τ hv).apply_symm_apply y]
   rw [GlobalTheory.LFun.SplitTie.complEquiv_apply, GlobalTheory.LFun.SplitTie.valued_complMap]
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero (GlobalTheory.LFun.SplitTie.complEquiv τ hv).symm ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ _`. Establish `h0 : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Take `⟨m, hm⟩ : ∃ m : ℤ, MonoidWithZeroHom.ValueGroup₀.embedding γ.1 = WithZero.exp m` from `⟨_, (WithZero.exp_log h0).symm⟩`.
+
+Use `filter_upwards [(GlobalTheory.Idele.isOpen_valued_le (K := D.host.E) (splitPrime τ) (-((m.natAbs + 1 : ℕ) : ℤ))).mem_nhds (by simp)] with a ha`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hm, valued_complEquiv_symm]`. Conclude with `ha.trans_lt (WithZero.exp_lt_exp.2 (by omega))`.
+-/
 theorem continuous_complEquiv_symm (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (hv : (splitPrime τ).under (𝓞 D.host.F) = v) : Continuous (GlobalTheory.LFun.SplitTie.complEquiv τ hv).symm := by
   refine continuous_of_continuousAt_zero (GlobalTheory.LFun.SplitTie.complEquiv τ hv).symm ?_
@@ -128,6 +163,9 @@ theorem continuous_complEquiv_symm (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v
   rw [Valuation.restrict_lt_iff_lt_embedding, hm, valued_complEquiv_symm]
   exact ha.trans_lt (WithZero.exp_lt_exp.2 (by omega))
 
+/- English proof (translation)
+Use `⟨GlobalTheory.LFun.SplitChart.continuous_complMap _, continuous_complEquiv_symm τ hv, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, (Good.isEquiv_Kw (D := D) _).le_one_iff_le_one, isEquiv_Fv_valued.le_one_iff_le_one, GlobalTheory.LFun.SplitTie.complEquiv_apply, GlobalTheory.LFun.SplitTie.valued_complMap]`.
+-/
 theorem isLocIso_complEquiv (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (hv : (splitPrime τ).under (𝓞 D.host.F) = v) : IsLocIso (GlobalTheory.LFun.SplitTie.complEquiv τ hv) := by
   refine ⟨GlobalTheory.LFun.SplitChart.continuous_complMap _, continuous_complEquiv_symm τ hv, fun x => ?_⟩

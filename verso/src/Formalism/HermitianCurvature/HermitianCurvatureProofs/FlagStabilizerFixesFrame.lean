@@ -20,6 +20,27 @@ section iso
 
 variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Take `⟨A, hA⟩ : ∃ A : ℝ, A = ∑ j, ∑ k, ‖Γi j k‖` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N : ℝ, N = (Fintype.card ι : ℝ)` from `⟨_, rfl⟩`. Take `⟨R0, hR0⟩ : ∃ R0 : ℝ, R0 = ∑ i, eN (m i)` from `⟨_, rfl⟩`. Rewrite using `[← hA, ← hN, ← hR0]`. Establish `hA0 : 0 ≤ A` using `hA ▸ Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => norm_nonneg _`.
+
+Establish `hN0 : 0 ≤ N` using `hN ▸ Nat.cast_nonneg _`. Establish `hR00 : 0 ≤ R0` using `hR0 ▸ Finset.sum_nonneg fun i _ => eN_nonneg _`. Establish `hD0 : 0 ≤ N * A` using `mul_nonneg hN0 hA0`. Establish `hmR0 : ∀ k, eN (m k) ≤ R0` using `fun k => hR0 ▸ Finset.single_le_sum (f := fun i => eN (m i)) (fun i _ => eN_nonneg _) (Finset.mem_univ k)`. Establish `hGs : gramOf H (fun i => s *ᵥ m i) * Γi = 1` using `by rw [gram_image H s hs m]; exact hG`.
+
+Establish `hRR : Real.sqrt K * Real.sqrt K = K` using `Real.mul_self_sqrt hK`. Establish `hsmR : ∀ k, eN (s *ᵥ m k) ≤ Real.sqrt K` using `fun k => by`. Establish `h` using `Real.abs_le_sqrt ((eN_sq _).trans_le (hsm k) : eN (s *ᵥ m k) ^ 2 ≤ K)`. Rewrite `h` using `[abs_of_nonneg (eN_nonneg _)]`. Then use the resulting hypothesis. Establish `hu_orth : ∀ j, herm H (x - proj H Γi m x) (m j) = 0` using `proj_orth H Γi m hG x`.
+
+Establish `hub : eN (x - proj H Γi m x) ≤ (1 + N * A * R0 * R0) * eN x`. Establish `h1` using `proj_bound H hH hHH Γi m R0 hR00 hmR0 x`. Rewrite `h1` using `[← hA, ← hN]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsp : eN (s *ᵥ proj H Γi m x) ≤ N * A * R0 * Real.sqrt K * eN x`.
+
+Establish `h1 : s *ᵥ proj H Γi m x = ∑ i, coef H Γi m x i • (s *ᵥ m i)`. Unfold `proj`. Rewrite using `[mulVec_sum]`. Repeatedly rewrite using `[mulVec_smul]`. Rewrite using `[h1]`.
+
+Establish `h2` using `lincomb_bound (coef H Γi m x) (fun i => s *ᵥ m i) (A * (eN x * R0)) (Real.sqrt K) (Real.sqrt_nonneg _) (fun i => hA ▸ coef_bound H hH hHH Γi m R0 hmR0 x i) hsmR`. Rewrite `h2` using `[← hN]`. Combine the equalities or inequalities in the displayed calculation. Establish `hv_orth : ∀ j, herm H (s *ᵥ (x - proj H Γi m x)) (s *ᵥ m j) = 0` using `fun j => by`. Rewrite using `[herm_iso H s hs]`.
+
+Conclude with `hu_orth j`. Establish `hv` using `orth_bound H hH hHH Γi (fun i => s *ᵥ m i) hGs (Real.sqrt K) (Real.sqrt_nonneg _) hsmR (psd_image H s hHH hs m hpsd) _ hv_orth`. Rewrite `hv` using `[← hA, ← hN, hRR, herm_iso H s hs]`. Establish `hvv : (herm H (x - proj H Γi m x) (x - proj H Γi m x)).re ≤ (1 + N * A * R0 * R0) ^ 2 * nsq x`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc1 : 0 ≤ 1 + N * A * K` using `by have := mul_nonneg hD0 hK; linarith`. Establish `hnv : nsq (s *ᵥ (x - proj H Γi m x)) ≤ (1 + N * A * K) * ((1 + N * A * R0 * R0) ^ 2 * nsq x)` using `hv.trans (mul_le_mul_of_nonneg_left hvv hc1)`. Establish `hX : 0 ≤ nsq x` using `by rw [← eN_sq]; positivity`. Establish `hsx : eN (s *ᵥ x) ≤ eN (s *ᵥ proj H Γi m x) + eN (s *ᵥ (x - proj H Γi m x))`. Establish `hx : x = proj H Γi m x + (x - proj H Γi m x)` using `by abel`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `ha2 : eN (s *ᵥ proj H Γi m x) ^ 2 ≤ (N * A) ^ 2 * R0 ^ 2 * K * nsq x`. Establish `h1` using `pow_le_pow_left₀ (eN_nonneg _) hsp 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : nsq (s *ᵥ x) ≤ 2 * eN (s *ᵥ proj H Γi m x) ^ 2 + 2 * nsq (s *ᵥ (x - proj H Γi m x))`.
+
+Rewrite using `[← eN_sq, ← eN_sq (s *ᵥ (x - proj H Γi m x))]`. Establish `h1` using `pow_le_pow_left₀ (eN_nonneg _) hsx 2`. Use polynomial arithmetic with `[sq_nonneg (eN (s *ᵥ proj H Γi m x) - eN (s *ᵥ (x - proj H Γi m x)))]`. Unfold `cIso`. Conclude with `hsum.trans (final_alg (N * A) R0 (1 + N * A * R0 * R0) K (1 + N * A * K) (nsq x) _ _ hD0 hK hX rfl ha2 hnv)`.
+-/
 theorem isoExpl (H : Matrix (Fin n) (Fin n) ℂ) (m : ι → Fin n → ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (Γi : Matrix ι ι ℂ) (hG : gramOf H m * Γi = 1)
     (hpsd : ∀ x, (∀ i, herm H x (m i) = 0) → 0 ≤ (herm H x x).re)
@@ -96,19 +117,33 @@ theorem isoExpl (H : Matrix (Fin n) (Fin n) ℂ) (m : ι → Fin n → ℂ) (hH 
   exact hsum.trans (final_alg (N * A) R0 (1 + N * A * R0 * R0) K (1 + N * A * K) (nsq x) _ _
     hD0 hK hX rfl ha2 hnv)
 
+/- English proof (translation)
+Use `show Continuous fun x : Fin n → ℂ => ∑ i, Complex.normSq (x i)`. Conclude with `continuous_finset_sum _ fun i _ => Complex.continuous_normSq.comp (continuous_apply i)`.
+-/
 theorem nsq_cont : Continuous fun x : Fin n → ℂ => nsq x := by
   show Continuous fun x : Fin n → ℂ => ∑ i, Complex.normSq (x i)
   exact continuous_finset_sum _ fun i _ => Complex.continuous_normSq.comp (continuous_apply i)
 
+/- English proof (translation)
+Rewrite using `[eN, EuclideanSpace.norm_eq]`. Simplify using `[nsq, Complex.normSq_eq_norm_sq]`.
+-/
 theorem eN_eq_sqrt (x : Fin n → ℂ) : eN x = Real.sqrt (nsq x) := by
   rw [eN, EuclideanSpace.norm_eq]
   simp [nsq, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `e : (fun x : Fin n → ℂ => eN x) = fun x => Real.sqrt (nsq x)` using `funext eN_eq_sqrt`. Rewrite using `[e]`. Conclude with `Real.continuous_sqrt.comp nsq_cont`.
+-/
 theorem eN_cont : Continuous fun x : Fin n → ℂ => eN x := by
   have e : (fun x : Fin n → ℂ => eN x) = fun x => Real.sqrt (nsq x) := funext eN_eq_sqrt
   rw [e]
   exact Real.continuous_sqrt.comp nsq_cont
 
+/- English proof (translation)
+Establish `hmi : ∀ i l, ContinuousOn (fun x => m x i l) Kx` using `fun i l => continuousOn_pi.1 (continuousOn_pi.1 hm i) l`. Use `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [gramOf, Matrix.of_apply, herm, dotProduct, Matrix.mulVec, Pi.star_apply]`. Use `continuousOn_finset_sum _ fun l _ => ?_` and prove the remaining obligations. Use `((hmi i l).star).mul ?_` and prove the remaining obligations.
+
+Conclude with `continuousOn_finset_sum _ fun q _ => continuousOn_const.mul (hmi j q)`.
+-/
 theorem gramOf_cont {X : Type*} [TopologicalSpace X] (H : Matrix (Fin n) (Fin n) ℂ) (m : X → ι → Fin n → ℂ)
     (Kx : Set X) (hm : ContinuousOn m Kx) : ContinuousOn (fun x => gramOf H (m x)) Kx := by
   have hmi : ∀ i l, ContinuousOn (fun x => m x i l) Kx := fun i l =>
@@ -119,6 +154,15 @@ theorem gramOf_cont {X : Type*} [TopologicalSpace X] (H : Matrix (Fin n) (Fin n)
   refine ((hmi i l).star).mul ?_
   exact continuousOn_finset_sum _ fun q _ => continuousOn_const.mul (hmi j q)
 
+/- English proof (translation)
+Establish `hG` using `gramOf_cont H m Kx hm`. Establish `e : ∀ x, (gramOf H (m x))⁻¹ = (gramOf H (m x)).det⁻¹ • (gramOf H (m x)).adjugate` using `fun x => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Establish `hinv : ContinuousOn (fun x => (gramOf H (m x))⁻¹) Kx`. Establish `h1 : ContinuousOn (fun x => ((gramOf H (m x)).det)⁻¹) Kx` using `((continuous_id.matrix_det).comp_continuousOn hG).inv₀ fun x hx => (hdet x hx).ne_zero`.
+
+Establish `h2 : ContinuousOn (fun x => (gramOf H (m x)).adjugate) Kx` using `(continuous_id.matrix_adjugate).comp_continuousOn hG`. Establish `h3 : ContinuousOn (fun x => ((gramOf H (m x)).det)⁻¹ • (gramOf H (m x)).adjugate) Kx` using `h1.smul h2`. Conclude with `h3.congr fun x _ => e x`. Establish `hA : ContinuousOn (fun x => ∑ j, ∑ k, ‖(gramOf H (m x))⁻¹ j k‖) Kx` using `continuousOn_finset_sum _ fun j _ => continuousOn_finset_sum _ fun k _ => continuous_norm.comp_continuousOn (continuousOn_pi.1 (continuousOn_pi.1 hinv j) k)`. Establish `hR : ContinuousOn (fun x => ∑ i, eN (m x i)) Kx` using `continuousOn_finset_sum _ fun i _ => eN_cont.comp_continuousOn (continuousOn_pi.1 hm i)`.
+
+Establish `hc : ContinuousOn (fun x => cIso (Fintype.card ι) (∑ j, ∑ k, ‖(gramOf H (m x))⁻¹ j k‖) (∑ i, eN (m x i))) Kx`. Simplify using `only [cIso]`. Use `fun_prop`. Take `⟨C, hC⟩` from `hK.bddAbove_image hc`. Use `⟨C, fun x hx s hs K' hK' hsm v => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `isoExpl H (m x) hH hHH (gramOf H (m x))⁻¹ (Matrix.mul_nonsing_inv _ (hdet x hx)) (hpsd x hx) s hs K' hK' hsm v`. Establish `hn : 0 ≤ nsq v` using `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`. Establish `hcC` using `hC ⟨x, hx, rfl⟩`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hcC (sq_nonneg _)) hn)`.
+-/
 theorem isoUnif {X : Type*} [TopologicalSpace X] (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H)
     (hHH : H * H = 1) (m : X → ι → Fin n → ℂ) (Kx : Set X) (hK : IsCompact Kx) (hm : ContinuousOn m Kx)
     (hdet : ∀ x ∈ Kx, IsUnit (gramOf H (m x)).det)
@@ -159,11 +203,17 @@ section fibre
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[((unipotent_map_frame k r z hz).1 s hs).1 b, hu]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem fix_of_S (z : Fin (2 * r + k + 1) → ℂ) (hz : C2.StdZ k r z) {s : B.Mat k r} (hs : s ∈ Sset k r z)
     (hu : C2.uMap k r z s = 1) (b : Fin (r + 1)) : s *ᵥ fvec k r z b = fvec k r z b := by
   rw [((unipotent_map_frame k r z hz).1 s hs).1 b, hu]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨-, h1, h2⟩` from `hh`. Unfold `fvec`. Use `split_ifs with hb`. Conclude with `(h1 ⟨b.val, hb⟩).1`. Conclude with `h2`.
+-/
 theorem uw_fix (z : Fin (2 * r + k + 1) → ℂ) (hz : C2.StdZ k r z) {h : B.Mat k r} (hh : h ∈ UWset k r z)
     (b : Fin (r + 1)) : h *ᵥ fvec k r z b = fvec k r z b := by
   obtain ⟨-, h1, h2⟩ := hh
@@ -172,6 +222,11 @@ theorem uw_fix (z : Fin (2 * r + k + 1) → ℂ) (hz : C2.StdZ k r z) {h : B.Mat
   · exact (h1 ⟨b.val, hb⟩).1
   · exact h2
 
+/- English proof (translation)
+Take `⟨hN, hU⟩` from `hn`. Establish `h1 : (1 : B.Mat k r) ∈ UWset k r z`. Use `⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩` and prove the remaining obligations. Use `show (1 : B.Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+
+Conclude with `fix_of_S z hz ⟨1, h1, n, hN, (one_mul n).symm⟩ hU b`.
+-/
 theorem flagStabilizer_fixes_frame (z : Fin (2 * r + k + 1) → ℂ) (hz : C2.StdZ k r z) {n : B.Mat k r} (hn : n ∈ C2.N0set k r z)
     (b : Fin (r + 1)) : n *ᵥ fvec k r z b = fvec k r z b := by
   obtain ⟨hN, hU⟩ := hn
@@ -181,6 +236,9 @@ theorem flagStabilizer_fixes_frame (z : Fin (2 * r + k + 1) → ℂ) (hz : C2.St
     simp
   exact fix_of_S z hz ⟨1, h1, n, hN, (one_mul n).symm⟩ hU b
 
+/- English proof (translation)
+Establish `h1 : s⁻¹ * s = 1` using `((gvGroup k r).2 s hs).2.2.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_fix {s : B.Mat k r} (hs : s ∈ B.GV k r) {v : Fin (2 * r + k + 1) → ℂ} (hv : s *ᵥ v = v) :
     s⁻¹ *ᵥ v = v := by
   have h1 : s⁻¹ * s = 1 := ((gvGroup k r).2 s hs).2.2.2
@@ -188,17 +246,28 @@ theorem inv_fix {s : B.Mat k r} (hs : s ∈ B.GV k r) {v : Fin (2 * r + k + 1) �
     _ = (s⁻¹ * s) *ᵥ v := by rw [Matrix.mulVec_mulVec]
     _ = v := by rw [h1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl a => exact continuous_const`. Consider the case `inr b => exact continuous_id.matrix_mulVec continuous_const`.
+-/
 theorem gramVec_cont (z z' : Fin (2 * r + k + 1) → ℂ) : Continuous fun g : B.Mat k r => gramVec k r z z' g := by
   refine continuous_pi fun i => ?_
   cases i with
   | inl a => exact continuous_const
   | inr b => exact continuous_id.matrix_mulVec continuous_const
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem gram_eq (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) :
     gramOf (Hpk k r) (gramVec k r z z' g) = gramM k r z z' g := by
   ext i j
   rfl
 
+/- English proof (translation)
+Take `⟨-, ⟨hz, -⟩, ⟨hz', -⟩⟩` from `hstd`. Establish `h` using `gGram k r z z' hz hz' g hpos.1`. Rewrite using `[gram_eq]`. Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0, mul_zero]`.
+
+Establish `h2 : Gf k r z z' g = 0` using `by exact_mod_cast h`. Combine the linear relations using `[hpos.2]`.
+-/
 theorem fam_det (z z' : Fin (2 * r + k + 1) → ℂ) (hstd : C2.Std k r z z') {g : B.Mat k r}
     (hpos : C2.PosPt k r z z' g) : IsUnit (gramOf (Hpk k r) (gramVec k r z z' g)).det := by
   obtain ⟨-, ⟨hz, -⟩, ⟨hz', -⟩⟩ := hstd
@@ -209,6 +278,11 @@ theorem fam_det (z z' : Fin (2 * r + k + 1) → ℂ) (hstd : C2.Std k r z z') {g
   have h2 : Gf k r z z' g = 0 := by exact_mod_cast h
   linarith [hpos.2]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Simplify using `[herm]`. Establish `hmem : x ∈ C2.Uperp k r z z' g`. Rewrite using `[C2.Uperp, LinearMap.mem_ker, Matrix.mulVecLin_apply, ← Matrix.mulVec_mulVec]`.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `hx i`. Simplify using `only [herm] at h1`. Simplify `h1` using `[Matrix.mulVec, dotProduct, Pi.star_apply]`. Conclude with `((gram_independent_signature' k r z z' g hstd hpos).2.2.1 x hmem h0).le`.
+-/
 theorem fam_psd (z z' : Fin (2 * r + k + 1) → ℂ) (hstd : C2.Std k r z z') {g : B.Mat k r}
     (hpos : C2.PosPt k r z z' g) (x : Fin (2 * r + k + 1) → ℂ)
     (hx : ∀ i, herm (Hpk k r) x (gramVec k r z z' g i) = 0) : 0 ≤ (herm (Hpk k r) x x).re := by
@@ -223,6 +297,53 @@ theorem fam_psd (z z' : Fin (2 * r + k + 1) → ℂ) (hstd : C2.Std k r z z') {g
       simpa [Matrix.mulVec, dotProduct, Pi.star_apply] using h1
     exact ((gram_independent_signature' k r z z' g hstd hpos).2.2.1 x hmem h0).le
 
+/- English proof (translation)
+Establish `hz : C2.StdZ k r z` using `hstd.2.1`. Establish `hz' : C2.StdZ k r z'` using `hstd.2.2`. Establish `hH : (Hpk k r)ᴴ = Hpk k r` using `GN.hpk_herm k r`. Establish `hHH : Hpk k r * Hpk k r = 1` using `GN.hpk_sq k r`. Take `⟨Cu, hCu⟩` from `(PI.QuotSetU.UnitaryGroupMassFormula.unitary_weyl_compact k r z hz.1 hz.2).exists_bound_of_continuousOn (PI.UnitaryGroupMassFormula.DLm.gN_cont k r).continuousOn`.
+
+Take `⟨Cu', hCu'⟩` from `(PI.QuotSetU.UnitaryGroupMassFormula.unitary_weyl_compact k r z' hz'.1 hz'.2).exists_bound_of_continuousOn (PI.UnitaryGroupMassFormula.DLm.gN_cont k r).continuousOn`. Establish `hUb : ∀ h ∈ UWset k r z, B.gN h ≤ Cu` using `fun h hh => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hCu h hh)`. Establish `hUb' : ∀ h ∈ UWset k r z', B.gN h ≤ Cu'` using `fun h hh => (le_abs_self _).trans (by simpa [Real.norm_eq_abs] using hCu' h hh)`. Take `⟨C1, hC1⟩` from `isoUnif (Hpk k r) hH hHH (fun g => gramVec k r z z' g) Kg hK (gramVec_cont z z').continuousOn (fun g hg => fam_det z z' hstd (hKpos g hg)) (fun g hg => fam_psd z z' hstd (hKpos g hg))`. Establish `hc2 : Continuous fun g : B.Mat k r => fun i => (Hpk k r * gᴴ * Hpk k r) *ᵥ gramVec k r z z' g i` using `continuous_pi fun i => ((continuous_const.mul continuous_id.matrix_conjTranspose).mul continuous_const).matrix_mulVec ((continuous_apply i).comp (gramVec_cont z z'))`.
+
+Establish `hinvG : ∀ g ∈ Kg, (Hpk k r * gᴴ * Hpk k r) = g⁻¹` using `fun g hg => (GN.inv_eq (hKpos g hg).1).symm`. Take `⟨C2, hC2⟩` from `isoUnif (Hpk k r) hH hHH (fun g i => (Hpk k r * gᴴ * Hpk k r) *ᵥ gramVec k r z z' g i) Kg hK hc2.continuousOn (fun g hg => by`. Rewrite using `[hinvG g hg, gram_image (Hpk k r) g⁻¹ (GN.inv_mem (hKpos g hg).1)]`. Conclude with `fam_det z z' hstd (hKpos g hg))`. Use the proof step `(fun g hg => by`.
+
+Rewrite using `[hinvG g hg]`. Conclude with `psd_image (Hpk k r) g⁻¹ hHH (GN.inv_mem (hKpos g hg).1) _ (fam_psd z z' hstd (hKpos g hg)))`. Take `⟨Kf, hKf⟩ : ∃ Kf : ℝ, Kf = ∑ a, nsq (fvec k r z a) + ∑ b, nsq (fvec k r z' b)` from `⟨_, rfl⟩`. Establish `hKf0 : 0 ≤ Kf` using `hKf ▸ add_nonneg (Finset.sum_nonneg fun a _ => by rw [← eN_sq]; positivity) (Finset.sum_nonneg fun a _ => by rw [← eN_sq]; positivity)`. Establish `hfa : ∀ a, nsq (fvec k r z a) ≤ Kf` using `fun a => by`.
+
+Establish `h1` using `Finset.single_le_sum (f := fun a => nsq (fvec k r z a)) (fun a _ => by rw [← eN_sq]; positivity) (Finset.mem_univ a)`. Establish `h2 : 0 ≤ ∑ b, nsq (fvec k r z' b)` using `Finset.sum_nonneg fun a _ => by rw [← eN_sq]; positivity`. Rewrite using `[hKf]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfb : ∀ b, nsq (fvec k r z' b) ≤ Kf` using `fun b => by`.
+
+Establish `h1` using `Finset.single_le_sum (f := fun b => nsq (fvec k r z' b)) (fun a _ => by rw [← eN_sq]; positivity) (Finset.mem_univ b)`. Establish `h2 : 0 ≤ ∑ a, nsq (fvec k r z a)` using `Finset.sum_nonneg fun a _ => by rw [← eN_sq]; positivity`. Rewrite using `[hKf]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨K, hKdef⟩ : ∃ K : ℝ, K = Kf + R ^ 2 * Kf` from `⟨_, rfl⟩`.
+
+Establish `hK0 : 0 ≤ K` using `hKdef ▸ add_nonneg hKf0 (mul_nonneg (sq_nonneg _) hKf0)`. Take `⟨Bv, hBv⟩ : ∃ Bv : ℝ, Bv = ∑ j, nsq (bvec j : Fin (2 * r + k + 1) → ℂ)` from `⟨_, rfl⟩`. Establish `hBv0 : 0 ≤ Bv` using `hBv ▸ Finset.sum_nonneg fun a _ => by rw [← eN_sq]; positivity`. Establish `hcols : ∀ (C : ℝ) (t : B.Mat k r), (∀ v, nsq (t *ᵥ v) ≤ C * (1 + K) ^ 2 * nsq v) → B.gN t ≤ Real.sqrt (C * (1 + K) ^ 2 * Bv)` using `fun C t ht => by`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+
+Rewrite using `[gN_sq_cols, hBv, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun j _ => ht _`. Use `⟨max (max Cu Cu') (max (Cu * Real.sqrt (C1 * (1 + K) ^ 2 * Bv)) (Cu' * Real.sqrt (C2 * (1 + K) ^ 2 * Bv))), ?_⟩` and prove the remaining obligations. Introduce `g hg h hh n hn h' hh' n' hn' hy`. Establish `hhG : h ∈ B.GV k r` using `hh.1`.
+
+Establish `hnG : n ∈ B.GV k r` using `hn.1.1`. Establish `hh'G : h' ∈ B.GV k r` using `hh'.1`. Establish `hn'G : n' ∈ B.GV k r` using `hn'.1.1`. Establish `hgG : g ∈ B.GV k r` using `(hKpos g hg).1`. Take `⟨y, hydef⟩ : ∃ y, y = h⁻¹ * n⁻¹ * g * n' * h'` from `⟨_, rfl⟩`.
+
+Rewrite `hy` using `[← hydef]`. Establish `hyG : y ∈ B.GV k r`. Rewrite using `[hydef]`. Conclude with `GN.mul_mem (GN.mul_mem (GN.mul_mem (GN.mul_mem (GN.inv_mem hhG) (GN.inv_mem hnG))`. Use the proof step `hgG) hn'G) hh'G`.
+
+Establish `hy0 : 0 ≤ B.gN y` using `GN.gN_nonneg y`. Establish `hy2 : B.gN y ^ 2 ≤ R ^ 2` using `pow_le_pow_left₀ hy0 hy 2`. Establish `hCu0 : 0 ≤ Cu` using `(GN.gN_nonneg h).trans (hUb h hh)`. Establish `hCu0' : 0 ≤ Cu'` using `(GN.gN_nonneg h').trans (hUb' h' hh')`. Take `⟨t, htdef⟩ : ∃ t, t = h⁻¹ * n⁻¹` from `⟨_, rfl⟩`.
+
+Establish `htG : t ∈ B.GV k r`. Rewrite using `[htdef]`. Conclude with `GN.mul_mem (GN.inv_mem hhG) (GN.inv_mem hnG)`. Establish `htf : ∀ a, t *ᵥ fvec k r z a = fvec k r z a` using `fun a => by`. Rewrite using `[htdef, ← mulVec_mulVec, inv_fix hnG (flagStabilizer_fixes_frame z hz hn a), inv_fix hhG (uw_fix z hz hh a)]`.
+
+Establish `hty : ∀ b, t *ᵥ (g *ᵥ fvec k r z' b) = y *ᵥ fvec k r z' b` using `fun b => by`. Rewrite using `[hydef, htdef]`. Use `conv_rhs => rw [← mulVec_mulVec, uw_fix z' hz' hh' b, ← mulVec_mulVec, flagStabilizer_fixes_frame z' hz' hn' b]`. Rewrite using `[mulVec_mulVec]`. Establish `ht` using `hC1 g hg t htG K hK0 (fun i => by`.
+
+Break down `i with a | b` into its components or cases. Use `show nsq (t *ᵥ fvec k r z a) ≤ K`. Rewrite using `[htf a]`. Use `hfa a` as an intermediate fact. Rewrite using `[hKdef]`.
+
+Combine the linear relations using `[mul_nonneg (sq_nonneg R) hKf0]`. Use `show nsq (t *ᵥ (g *ᵥ fvec k r z' b)) ≤ K`. Rewrite using `[hty b]`. Combine the equalities or inequalities in the displayed calculation. Establish `htb` using `hcols C1 t ht`.
+
+Take `⟨t', ht'def⟩ : ∃ t', t' = h'⁻¹ * n'⁻¹` from `⟨_, rfl⟩`. Establish `ht'G : t' ∈ B.GV k r`. Rewrite using `[ht'def]`. Conclude with `GN.mul_mem (GN.inv_mem hh'G) (GN.inv_mem hn'G)`. Establish `ht'f : ∀ b, t' *ᵥ fvec k r z' b = fvec k r z' b` using `fun b => by`.
+
+Rewrite using `[ht'def, ← mulVec_mulVec, inv_fix hn'G (flagStabilizer_fixes_frame z' hz' hn' b), inv_fix hh'G (uw_fix z' hz' hh' b)]`. Establish `hyinv : y⁻¹ = h'⁻¹ * n'⁻¹ * g⁻¹ * n * h`. Rewrite using `[hydef]`. Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (GN.det_isUnit hnG), Matrix.nonsing_inv_nonsing_inv _ (GN.det_isUnit hhG), Matrix.mul_assoc]`. Establish `ht'y : ∀ a, t' *ᵥ (g⁻¹ *ᵥ fvec k r z a) = y⁻¹ *ᵥ fvec k r z a` using `fun a => by`.
+
+Rewrite using `[hyinv, ht'def]`. Use `conv_rhs => rw [← mulVec_mulVec, uw_fix z hz hh a, ← mulVec_mulVec, flagStabilizer_fixes_frame z hz hn a]`. Rewrite using `[mulVec_mulVec]`. Establish `ht'` using `hC2 g hg t' ht'G K hK0 (fun i => by`. Break down `i with a | b` into its components or cases.
+
+Use `show nsq (t' *ᵥ ((Hpk k r * gᴴ * Hpk k r) *ᵥ fvec k r z a)) ≤ K`. Rewrite using `[hinvG g hg, ht'y a]`. Combine the equalities or inequalities in the displayed calculation. Use `show nsq (t' *ᵥ ((Hpk k r * gᴴ * Hpk k r) *ᵥ (g *ᵥ fvec k r z' b))) ≤ K`. Rewrite using `[hinvG g hg, mulVec_mulVec (fvec k r z' b) g⁻¹ g, GN.inv_mul hgG, one_mulVec, ht'f b]`.
+
+Use `hfb b` as an intermediate fact. Rewrite using `[hKdef]`. Combine the linear relations using `[mul_nonneg (sq_nonneg R) hKf0])`. Establish `ht'b` using `hcols C2 t' ht'`. Establish `hnt : n⁻¹ = h * t`.
+
+Rewrite using `[htdef, ← Matrix.mul_assoc, GN.mul_inv hhG, Matrix.one_mul]`. Establish `hnt' : n'⁻¹ = h' * t'`. Rewrite using `[ht'def, ← Matrix.mul_assoc, GN.mul_inv hh'G, Matrix.one_mul]`. Establish `hnb : B.gN n ≤ Cu * Real.sqrt (C1 * (1 + K) ^ 2 * Bv)`. Rewrite using `[← GN.gN_inv hnG, hnt]`.
+
+Conclude with `(GN.gN_mul_le _ _).trans (mul_le_mul (hUb h hh) htb (GN.gN_nonneg _) hCu0)`. Establish `hnb' : B.gN n' ≤ Cu' * Real.sqrt (C2 * (1 + K) ^ 2 * Bv)`. Rewrite using `[← GN.gN_inv hn'G, hnt']`. Conclude with `(GN.gN_mul_le _ _).trans (mul_le_mul (hUb' h' hh') ht'b (GN.gN_nonneg _) hCu0')`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hUb h hh).trans ((le_max_left _ _).trans (le_max_left _ _))`. Conclude with `hnb.trans ((le_max_left _ _).trans (le_max_right _ _))`. Conclude with `(hUb' h' hh').trans ((le_max_right _ _).trans (le_max_left _ _))`. Conclude with `hnb'.trans ((le_max_right _ _).trans (le_max_right _ _))`.
+-/
 theorem fibreProper (z z' : Fin (2 * r + k + 1) → ℂ) (hstd : C2.Std k r z z') (Kg : Set (B.Mat k r))
     (hK : IsCompact Kg) (hKpos : ∀ g ∈ Kg, C2.PosPt k r z z' g) (R : ℝ) :
     ∃ Rp : ℝ, ∀ g ∈ Kg, ∀ h ∈ UWset k r z, ∀ n ∈ C2.N0set k r z, ∀ h' ∈ UWset k r z',

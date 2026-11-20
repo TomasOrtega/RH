@@ -16,11 +16,19 @@ variable {σ : Type} [Fintype σ]
 
 omit [Fintype σ] in
 
+/- English proof (translation)
+Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> intro <;> simp`.
+-/
 theorem map_int_complex_eq :
     (MvPolynomial.map (Int.castRingHom ℂ) : MvPolynomial σ ℤ →+* MvPolynomial σ ℂ) =
       (MvPolynomial.map (algebraMap ℚ ℂ)).comp (MvPolynomial.map (Int.castRingHom ℚ)) := by
   apply MvPolynomial.ringHom_ext <;> intro <;> simp
 
+/- English proof (translation)
+Establish `hP' : ∀ m : ℤ, (C m : MvPolynomial σ ℤ) ∈ P → m = 0` using `fun m hm => by`. Establish `: m ∈ P.comap (C : ℤ →+* MvPolynomial σ ℤ)` using `hm`. Rewrite `this` using `[hP]`. Conclude with `this`. Take `⟨hpr, hco, -⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P hP'`.
+
+Establish `: (P.map (MvPolynomial.map (Int.castRingHom ℚ))).IsPrime` using `hpr`. Rewrite `hQ` using `[map_int_complex_eq, ← Ideal.map_map]`. Establish `h` using `ReciprocityTheory.AnForm.R.BaseChangeC.comap_of_mem_minimalPrimes_map _ Q hQ`. Rewrite using `[map_int_complex_eq, ← Ideal.comap_comap, h]`. Conclude with `hco`.
+-/
 theorem comap_of_minimal (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
     (hP : P.comap (C : ℤ →+* MvPolynomial σ ℤ) = ⊥) (Q : Ideal (MvPolynomial σ ℂ))
     (hQ : Q ∈ (P.map (MvPolynomial.map (Int.castRingHom ℂ))).minimalPrimes) :
@@ -36,6 +44,9 @@ theorem comap_of_minimal (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime]
   rw [map_int_complex_eq, ← Ideal.comap_comap, h]
   exact hco
 
+/- English proof (translation)
+Use `ReciprocityTheory.AnForm.R.BaseChangeC.withBot_enat_cancel (h := 1) (N := N + 1) ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `h` after adjusting the coercions. Use `push_cast`. Rewrite using `[add_comm]`.
+-/
 theorem dim_cancel_one {d : WithBot ℕ∞} {N : ℕ} (h : d + 1 = ((N + 1 : ℕ) : WithBot ℕ∞)) :
     d = (N : WithBot ℕ∞) := by
   refine ReciprocityTheory.AnForm.R.BaseChangeC.withBot_enat_cancel (h := 1) (N := N + 1) ?_ ?_
@@ -46,6 +57,21 @@ end ConeComplexBaseChange
 
 open ConeComplexBaseChange in
 
+/- English proof (translation)
+Introduce `K _ ι _ P n s W' Wa hV hs hW hWh hWa`. Take `⟨-, ⟨hPp, -, -⟩, hPh, hdim⟩` from `hV`. Establish `hP' : ∀ m : ℤ, (C m : MRing ι) ∈ P → m = 0` using `fun m hm => by`. Establish `: m ∈ P.comap (C : ℤ →+* MRing ι)` using `hm`. Rewrite `this` using `[hPh]`.
+
+Conclude with `this`. Take `⟨hQp, -, hQdim⟩` from `ReciprocityTheory.AnForm.R.extQ_spec P hP'`. Establish `hmapP : P.map (MvPolynomial.map (Int.castRingHom ℂ)) = (ReciprocityTheory.AnForm.R.extQ P).map (MvPolynomial.map (algebraMap ℚ ℂ))`. Rewrite using `[map_int_complex_eq, ← Ideal.map_map]`. Both sides reduce to the same expression.
+
+Establish `: W'.IsPrime` using `hW.1.1.1`. Use `⟨?_, fun Q hQ => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hmapP]`. Conclude with `ReciprocityTheory.AnForm.R.BaseChangeC.isRadical_map _`. Establish `hQ'` using `hQ`.
+
+Rewrite `hQ'` using `[hmapP]`. Rewrite using `[ReciprocityTheory.AnForm.R.BaseChangeC.ringKrullDim_of_mem_minimalPrimes_map _ Q hQ']`. Rewrite `hQdim` using `[hdim, show n + 2 + Fintype.card K = (n + Fintype.card K + 1) + 1 by omega]`. Conclude with `dim_cancel_one hQdim`. Introduce `hsQ`.
+
+Apply `hs` to reduce the goal to its premises. Rewrite using `[← comap_of_minimal P hPh Q hQ]`. Conclude with `hsQ`. Establish `hco : Wa.comap (MvPolynomial.map (Int.castRingHom ℂ)) = W'` using `comap_of_minimal W' hWh Wa hWa`. Establish `hPW : P ⊔ Ideal.span {s} ≤ W'` using `hW.1.1.2`.
+
+Use `⟨⟨hWa.1.1, le_trans (Ideal.map_mono hPW) hWa.1.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q' ⟨hQ'p, hQ'le⟩ hQ'W`. Establish `h1 : P ⊔ Ideal.span {s} ≤ Q'.comap (MvPolynomial.map (Int.castRingHom ℂ))` using `Ideal.map_le_iff_le_comap.mp hQ'le`. Establish `h2 : Q'.comap (MvPolynomial.map (Int.castRingHom ℂ)) ≤ W'` using `hco ▸ Ideal.comap_mono hQ'W`. Establish `h3 : W' ≤ Q'.comap (MvPolynomial.map (Int.castRingHom ℂ))` using `hW.1.2 ⟨Ideal.comap_isPrime _ _, h1⟩ h2`.
+
+Conclude with `hWa.2 ⟨hQ'p, Ideal.map_le_iff_le_comap.mpr h3⟩ hQ'W`.
+-/
 theorem ConeComplexBaseChange.proof : ConeComplexBaseChange.Statement := by
   intro K _ ι _ P n s W' Wa hV hs hW hWh hWa
   obtain ⟨-, ⟨hPp, -, -⟩, hPh, hdim⟩ := hV

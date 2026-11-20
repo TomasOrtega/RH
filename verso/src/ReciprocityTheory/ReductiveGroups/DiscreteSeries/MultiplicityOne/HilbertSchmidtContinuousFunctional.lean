@@ -12,10 +12,16 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[hsVec]`.
+-/
 theorem hilbertSchmidt_vec_add (A B : Wp →L[ℂ] Wp) : hsVec (A + B) = hsVec A + hsVec B := by
   ext i
   simp [hsVec]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[hsVec]`.
+-/
 theorem hilbertSchmidt_vec_smul (c : ℂ) (A : Wp →L[ℂ] Wp) : hsVec (c • A) = c • hsVec A := by
   ext i
   simp [hsVec]
@@ -27,9 +33,15 @@ def hilbertSchmidtFunctional (X₀ : Wp →L[ℂ] Wp) : (Wp →L[ℂ] Wp) →ₗ
 
 def hilbertSchmidtContinuousFunctional (X₀ : Wp →L[ℂ] Wp) : (Wp →L[ℂ] Wp) →L[ℂ] ℂ := LinearMap.toContinuousLinearMap (hilbertSchmidtFunctional X₀)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hilbertSchmidt_functional_apply (X₀ T : Wp →L[ℂ] Wp) : hilbertSchmidtContinuousFunctional X₀ T = hsInner T X₀ := by
   rfl
 
+/- English proof (translation)
+Simplify using `only [hsInner, hilbertSchmidt_vec_smul, inner_smul_right]`.
+-/
 theorem hilbertSchmidt_inner_smul_left (c : ℂ) (A B : Wp →L[ℂ] Wp) : hsInner (c • A) B = c * hsInner A B := by
   simp only [hsInner, hilbertSchmidt_vec_smul, inner_smul_right]
 
@@ -37,11 +49,17 @@ section adj
 
 variable [CompleteSpace Wp] {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] {μ : Measure α} {ν : Measure β}
 
+/- English proof (translation)
+Use `hU.congr' (ContinuousLinearMap.adjoint.continuous.comp_aestronglyMeasurable hU.1) ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun a => (ContinuousLinearMap.adjoint.norm_map (U a)).symm`.
+-/
 theorem integrable_adjoint {U : α → Wp →L[ℂ] Wp} (hU : Integrable U μ) :
     Integrable (fun a => ContinuousLinearMap.adjoint (U a)) μ := by
   refine hU.congr' (ContinuousLinearMap.adjoint.continuous.comp_aestronglyMeasurable hU.1) ?_
   exact Filter.Eventually.of_forall fun a => (ContinuousLinearMap.adjoint.norm_map (U a)).symm
 
+/- English proof (translation)
+Conclude with `ContinuousLinearMap.integral_comp_commSL RCLike.conj_smul (ContinuousLinearMap.adjoint : (Wp →L[ℂ] Wp) ≃ₗᵢ⋆[ℂ] (Wp →L[ℂ] Wp)).toContinuousLinearEquiv.toContinuousLinearMap hU`.
+-/
 theorem integral_adjoint_comm {U : α → Wp →L[ℂ] Wp} (hU : Integrable U μ) :
     ∫ a, ContinuousLinearMap.adjoint (U a) ∂μ = ContinuousLinearMap.adjoint (∫ a, U a ∂μ) := by
   exact ContinuousLinearMap.integral_comp_commSL RCLike.conj_smul
@@ -49,6 +67,11 @@ theorem integral_adjoint_comm {U : α → Wp →L[ℂ] Wp} (hU : Integrable U μ
 
 variable [SFinite μ] [SFinite ν]
 
+/- English proof (translation)
+Establish `hG : Continuous fun x : (Wp →L[ℂ] Wp) × (Wp →L[ℂ] Wp) => hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint x.1).comp x.2)` using `(hilbertSchmidtContinuousFunctional X₀).continuous.comp ((ContinuousLinearMap.adjoint.continuous.comp continuous_fst).clm_comp continuous_snd)`. Establish `hm : AEStronglyMeasurable (fun q : α × β => hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (U q.1)).comp (V q.2))) (μ.prod ν)` using `Continuous.comp_aestronglyMeasurable₂ (g := fun A B : Wp →L[ℂ] Wp => hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint A).comp B)) hG (hU.1.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_fst) (hV.1.comp_quasiMeasurePreserving Measure.quasiMeasurePres …`. Establish `hb : Integrable (fun q : α × β => ‖hilbertSchmidtContinuousFunctional X₀‖ * (‖U q.1‖ * ‖V q.2‖)) (μ.prod ν)` using `(hU.norm.mul_prod hV.norm).const_mul _`. Use `hb.mono' hm (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrable_hilbertSchmidt_pairing (X₀ : Wp →L[ℂ] Wp) {U : α → Wp →L[ℂ] Wp} {V : β → Wp →L[ℂ] Wp}
     (hU : Integrable U μ) (hV : Integrable V ν) :
     Integrable (fun q : α × β => hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (U q.1)).comp (V q.2))) (μ.prod ν) := by
@@ -74,6 +97,11 @@ theorem integrable_hilbertSchmidt_pairing (X₀ : Wp →L[ℂ] Wp) {U : α → W
             ≤ ‖ContinuousLinearMap.adjoint (U q.1)‖ * ‖V q.2‖ := ContinuousLinearMap.opNorm_comp_le _ _
           _ = ‖U q.1‖ * ‖V q.2‖ := by rw [ContinuousLinearMap.adjoint.norm_map]
 
+/- English proof (translation)
+Rewrite using `[integral_prod _ (integrable_hilbertSchmidt_pairing X₀ hU hV)]`. Establish `hin : ∀ a, ∫ b, hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (U a)).comp (V b)) ∂ν = hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (U a)).comp (∫ b, V b ∂ν))` using `fun a => ((hilbertSchmidtContinuousFunctional X₀).comp (ContinuousLinearMap.compL ℂ Wp Wp Wp (ContinuousLinearMap.adjoint (U a)))).integral_comp_comm hV`. Repeatedly rewrite using `[hin]`. Establish `hout` using `((hilbertSchmidtContinuousFunctional X₀).comp ((ContinuousLinearMap.compL ℂ Wp Wp Wp).flip (∫ b, V b ∂ν))).integral_comp_comm (integrable_adjoint hU)`. Rewrite `hout` using `[integral_adjoint_comm hU]`.
+
+Conclude with `hout`.
+-/
 theorem integral_hilbertSchmidt_pairing (X₀ : Wp →L[ℂ] Wp) {U : α → Wp →L[ℂ] Wp} {V : β → Wp →L[ℂ] Wp}
     (hU : Integrable U μ) (hV : Integrable V ν) :
     ∫ q, hilbertSchmidtContinuousFunctional X₀ ((ContinuousLinearMap.adjoint (U q.1)).comp (V q.2)) ∂(μ.prod ν) =
@@ -90,10 +118,20 @@ theorem integral_hilbertSchmidt_pairing (X₀ : Wp →L[ℂ] Wp) {U : α → Wp 
 
 end adj
 
+/- English proof (translation)
+Establish `: IsFiniteMeasureOnCompacts μ` using `⟨h.finite_compact⟩`. Use `infer_instance`.
+-/
 theorem sigmaFinite_of_haar_on {U : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn U μ) : SigmaFinite μ := by
   have : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩
   infer_instance
 
+/- English proof (translation)
+Use `sigmaFinite_of_haar_on D.haarW` as an intermediate fact. Use `sigmaFinite_of_haar_on D.haarN` as an intermediate fact. Use `sigmaFinite_of_haar_on D.haarW'` as an intermediate fact. Establish `hW : ∀ᵐ x ∂D.μW, Matrix.of x ∈ UWset k r D.z` using `ae_iff.2 D.haarW.conc`. Establish `hN : ∀ᵐ x ∂D.μN, Matrix.of x ∈ Nset k r` using `ae_iff.2 D.haarN.conc`.
+
+Establish `hW' : ∀ᵐ x ∂D.μW', Matrix.of x ∈ UWset k r D.z'` using `ae_iff.2 D.haarW'.conc`. Establish `h1 : ∀ᵐ p ∂D.μSS, Matrix.of p.1.1 ∈ UWset k r D.z` using `Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae hW)`. Establish `h2 : ∀ᵐ p ∂D.μSS, Matrix.of p.1.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae hN)`. Establish `h3 : ∀ᵐ p ∂D.μSS, Matrix.of p.2.1 ∈ UWset k r D.z'` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_fst.ae hW')`. Establish `h4 : ∀ᵐ p ∂D.μSS, Matrix.of p.2.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_snd.ae hN)`.
+
+Use `filter_upwards [h1, h2, h3, h4] with p a b c d`. Conclude with `⟨a, b, c, d⟩`.
+-/
 theorem ae_mem_big_cell (D : RealPlaceData k r Wp Wp) : ∀ᵐ p ∂D.μSS, D.inSS p := by
   have := sigmaFinite_of_haar_on D.haarW
   have := sigmaFinite_of_haar_on D.haarN
@@ -112,6 +150,11 @@ theorem ae_mem_big_cell (D : RealPlaceData k r Wp Wp) : ∀ᵐ p ∂D.μSS, D.in
   filter_upwards [h1, h2, h3, h4] with p a b c d
   exact ⟨a, b, c, d⟩
 
+/- English proof (translation)
+Unfold `ell`. Use `continuous_finsetSum _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val + 1 < r`. Simplify using `only [h, dite_true]`. Conclude with `continuous_id.matrix_elem _ _`.
+
+Simplify using `only [h, dite_false]`. Conclude with `(continuous_apply (eI k r a)).comp (continuous_id.matrix_mulVec continuous_const)`.
+-/
 theorem linear_form_continuous (z : Fin (2 * r + k + 1) → ℂ) : Continuous (ell k r z) := by
   unfold ell
   refine continuous_finsetSum _ fun a _ => ?_
@@ -121,6 +164,9 @@ theorem linear_form_continuous (z : Fin (2 * r + k + 1) → ℂ) : Continuous (e
   · simp only [h, dite_false]
     exact (continuous_apply (eI k r a)).comp (continuous_id.matrix_mulVec continuous_const)
 
+/- English proof (translation)
+Establish `hl : ∀ z : Fin (2 * r + k + 1) → ℂ, Continuous fun n : Mt k r => lam k r z (Matrix.of n)` using `fun z => Complex.continuous_re.comp (continuous_const.mul ((linear_form_continuous z).comp continuous_id))`. Unfold `xiTau`. Use `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_const.mul ((hl D.z).comp (continuous_snd.comp continuous_fst))).sub (continuous_const.mul ((hl D.z').comp (continuous_snd.comp continuous_snd)))`.
+-/
 theorem character_continuous (D : RealPlaceData k r Wp Wp) (τ : ℝ × ℝ) : Continuous (xiTau D τ) := by
   have hl : ∀ z : Fin (2 * r + k + 1) → ℂ, Continuous fun n : Mt k r => lam k r z (Matrix.of n) :=
     fun z => Complex.continuous_re.comp (continuous_const.mul ((linear_form_continuous z).comp continuous_id))
@@ -129,16 +175,27 @@ theorem character_continuous (D : RealPlaceData k r Wp Wp) (τ : ℝ × ℝ) : C
   exact (continuous_const.mul ((hl D.z).comp (continuous_snd.comp continuous_fst))).sub
     (continuous_const.mul ((hl D.z').comp (continuous_snd.comp continuous_snd)))
 
+/- English proof (translation)
+Unfold `xiTau`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_character_eq_one (D : RealPlaceData k r Wp Wp) (τ : ℝ × ℝ) (p : SS k r) : ‖xiTau D τ p‖ = 1 := by
   unfold xiTau
   rw [mul_comm]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Rewrite using `[Complex.star_def, Complex.conj_mul', norm_character_eq_one]`. Simplify using the standard rewrite rules.
+-/
 theorem star_character_mul_self (D : RealPlaceData k r Wp Wp) (τ : ℝ × ℝ) (p : SS k r) :
     star (xiTau D τ p) * xiTau D τ p = 1 := by
   rw [Complex.star_def, Complex.conj_mul', norm_character_eq_one]
   simp
 
+/- English proof (translation)
+Unfold `xiTau psiD psi lam`. Rewrite using `[hz, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem character_at_one_eq_product (D : RealPlaceData k r Wp Wp) (hz : D.z' = D.z) (p : SS k r) :
     xiTau D (1, 1) p = psiD D (Matrix.of p.1.2) * star (psiD D (Matrix.of p.2.2)) := by
   unfold xiTau psiD psi lam
@@ -148,6 +205,13 @@ theorem character_at_one_eq_product (D : RealPlaceData k r Wp Wp) (hz : D.z' = D
   simp only [map_mul, Complex.conj_I, Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Establish `hi : h⁻¹ ∈ UWset k r D.z` using `hCW.inv_mem h hh`. Establish `h1 : (D.π h).comp (D.π h⁻¹) = 1`. Rewrite using `[← D.π_rep.2 h hh h⁻¹ hi, Matrix.mul_nonsing_inv _ (hCW.unit h hh), D.π_rep.1]`. Establish `hA : (ContinuousLinearMap.adjoint (D.π h)).comp (D.π h) = 1` using `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self (D.π h)).1 (D.π_unitary h hh)`. Establish `hadj : ContinuousLinearMap.adjoint (D.π h) = D.π h⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Both sides reduce to the same expression. Use `_ = ((ContinuousLinearMap.adjoint (D.π h)).comp (D.π h)).comp (D.π h⁻¹) := by`. Rewrite using `[ContinuousLinearMap.comp_assoc]`.
+
+Use `_ = D.π h⁻¹ := by rw [hA]; rfl`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_adjoint]`.
+-/
 theorem adjoint_representation_inv [CompleteSpace Wp] (D : RealPlaceData k r Wp Wp) (hCW : IsClosedSubgroup (UWset k r D.z))
     {h : Mat k r} (hh : h ∈ UWset k r D.z) : ContinuousLinearMap.adjoint (D.π h⁻¹) = D.π h := by
   have hi : h⁻¹ ∈ UWset k r D.z := hCW.inv_mem h hh

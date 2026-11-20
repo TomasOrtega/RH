@@ -7,9 +7,23 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5
 open NumberField Classical
 open scoped Pointwise
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma algebraMap_ringOfIntegers_tower {E F : Type} [Field E] [NumberField E] [Field F] [NumberField F] [Algebra E F]
     (x : 𝓞 E) : algebraMap (𝓞 F) F (algebraMap (𝓞 E) (𝓞 F) x) = algebraMap E F (algebraMap (𝓞 E) E x) := rfl
 
+/- English proof (translation)
+Establish `hden` using `FractionalIdeal.den_mul_self_eq_num J`. Rewrite using `[Submodule.map_span, Ideal.map, Ideal.span, Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨j, hj, rfl⟩, rfl⟩`. Establish `h1 : J.den • j ∈ J.den • (J : Submodule (𝓞 E) E)` using `Submodule.smul_mem_pointwise_smul j _ _ hj`. Rewrite `h1` using `[hden]`. Take `⟨n, hn, hnj⟩` from `Submodule.mem_map.mp h1`. Use `⟨algebraMap (𝓞 E) (𝓞 F) n, ⟨n, hn, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show algebraMap (𝓞 F) F (algebraMap (𝓞 E) (𝓞 F) n) = algebraMap (𝓞 F) F (algebraMap (𝓞 E) (𝓞 F) (J.den : 𝓞 E)) * algebraMap E F j`. Rewrite using `[algebraMap_ringOfIntegers_tower, algebraMap_ringOfIntegers_tower, ← map_mul]`. Use `congr 1`. Introduce and unpack `⟨_, ⟨n, hn, rfl⟩, rfl⟩`. Establish `h1 : algebraMap (𝓞 E) E n ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) J.num` using `Submodule.mem_map_of_mem hn`.
+
+Rewrite `h1` using `[← hden]`. Take `⟨j, hj, hjn⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp h1`. Use `⟨algebraMap E F j, ⟨j, hj, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 F) F (algebraMap (𝓞 E) (𝓞 F) (J.den : 𝓞 E)) * algebraMap E F j = algebraMap (𝓞 F) F (algebraMap (𝓞 E) (𝓞 F) n)`. Rewrite using `[algebraMap_ringOfIntegers_tower, algebraMap_ringOfIntegers_tower, ← map_mul, ← Algebra.smul_def]`.
+
+Conclude with `congrArg (algebraMap E F) hjn`.
+-/
 theorem map_mulLeft_den_span_image_eq_map_num {E F : Type} [Field E] [NumberField E] [Field F] [NumberField F] [Algebra E F]
     (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     Submodule.map (LinearMap.mulLeft (𝓞 F) ((algebraMap (𝓞 E) (𝓞 F) (J.den : 𝓞 E) : 𝓞 F) : F))
@@ -41,6 +55,9 @@ theorem map_mulLeft_den_span_image_eq_map_num {E F : Type} [Field E] [NumberFiel
     rw [algebraMap_ringOfIntegers_tower, algebraMap_ringOfIntegers_tower, ← map_mul, ← Algebra.smul_def]
     exact congrArg (algebraMap E F) hjn
 
+/- English proof (translation)
+The claim follows from `|Algebra.norm ℚ s| * |Algebra.norm ℚ ((J.den : 𝓞 E) : E)| ^ Module.finrank E F := by set A := Submodule.span (𝓞 F) (algebraMap E F '' (J : Set E)) with hA set c : 𝓞 F := algebraMap (𝓞 E) (𝓞 F) (J.den : 𝓞 E) with hcdef have hc : (c : F) = algebraMap E F ((J.den : 𝓞 E) : E) := rfl …`.
+-/
 theorem index_image_ideal {E F : Type} [Field E] [NumberField E] [Field F] [NumberField F] [Algebra E F]
     (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (s : F)
     (hs : s ∈ Submodule.span (𝓞 F) (algebraMap E F '' (J : Set E))) :
@@ -93,6 +110,9 @@ theorem index_image_ideal {E F : Type} [Field E] [NumberField E] [Field F] [Numb
   simp only [Nat.cast_mul, Nat.cast_pow] at hq
   rw [hq, Nat.cast_natAbs, Int.cast_abs, hnt, abs_mul, abs_pow]
 
+/- English proof (translation)
+The claim follows from `|Algebra.norm ℚ s| ^ Module.finrank ℚ E := by have haux := index_image_ideal J s hs have hJ : (FractionalIdeal.absNorm J : ℚ) = (Ideal.absNorm J.num : ℚ) / |Algebra.norm ℚ ((J.den : 𝓞 E) : E)| := by rw [FractionalIdeal.absNorm_eq, Int.cast_abs, Algebra.coe_norm_int] have hD : |Al …`.
+-/
 theorem index_imI_ext {E F : Type} [Field E] [NumberField E] [Field F] [NumberField F] [Algebra E F]
     (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (s : F)
     (hs : s ∈ Submodule.span (𝓞 F) (algebraMap E F '' (J : Set E))) :
@@ -112,6 +132,9 @@ theorem index_imI_ext {E F : Type} [Field E] [NumberField E] [Field F] [NumberFi
   rw [hJ, hf, div_pow, ← mul_div_assoc, div_eq_iff (pow_ne_zero _ hD),
     mul_comm (Module.finrank ℚ E) (Module.finrank E F), pow_mul, pow_mul, ← mul_pow, ← mul_pow, haux]
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ s : ℚ) : ℝ)| ^ Module.finrank ℚ E := by letI : Algebra E M := (σ.codRestrict M hσ).toAlgebra have hlift : ∀ a, algebraMap E M a = liftM M (σ a) := fun a => Subtype.ext (by rw [show ((liftM M (σ a) : M) : ℂ) = σ a by simp [liftM, hσ a]]; rfl) have hI : imI M σ J …`.
+-/
 theorem index_imI {E : Type} [Field E] [NumberField E] (M : IntermediateField ℚ ℂ) [NumberField M]
     (σ : E →+* ℂ) (hσ : ∀ y, σ y ∈ M) (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hJ : J ≠ 0) (s : M) (hs0 : s ≠ 0)
     (hs : s ∈ imI M σ J) :

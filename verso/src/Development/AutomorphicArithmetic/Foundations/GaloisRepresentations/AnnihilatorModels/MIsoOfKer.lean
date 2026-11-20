@@ -13,20 +13,32 @@ namespace UpperTheory.Gal.crystallineComparison.Mod.IsoOfKernelFactorization
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Conclude with `(IsMonHom.monoidHom f T).map_pow x n`.
+-/
 private lemma pow_comp' {T A B : Over S} [GrpObj A] [GrpObj B] (x : T ⟶ A) (f : A ⟶ B) [IsMonHom f] (n : ℕ) :
     (x ^ n) ≫ f = (x ≫ f) ^ n := by
   exact (IsMonHom.monoidHom f T).map_pow x n
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [Hom.one_def]`. Consider the case `succ n ih => simp only [pow_succ, Hom.mul_def, comp_lift_assoc, ih]`.
+-/
 private lemma comp_pow' {T' T A : Over S} [GrpObj A] (t : T' ⟶ T) (x : T ⟶ A) (n : ℕ) :
     t ≫ (x ^ n) = (t ≫ x) ^ n := by
   induction n with
   | zero => simp [Hom.one_def]
   | succ n ih => simp only [pow_succ, Hom.mul_def, comp_lift_assoc, ih]
 
+/- English proof (translation)
+Rewrite using `[pow_comp', Category.id_comp]`.
+-/
 private lemma self_pow {A B : Over S} [GrpObj A] [GrpObj B] (f : A ⟶ B) [IsMonHom f] (n : ℕ) :
     f ^ n = ((𝟙 A) ^ n) ≫ f := by
   rw [pow_comp', Category.id_comp]
 
+/- English proof (translation)
+Establish `h2 : ψ' ≫ ψ ≫ u = ψ' ≫ ψ ≫ v` using `by rw [h]`. Rewrite `h2` using `[← Category.assoc, ← Category.assoc, e, ← self_pow, ← self_pow]`. Conclude with `(hDiv S A B hA c hc).2 u v inferInstance inferInstance h2`.
+-/
 private lemma cancel (hDiv : DivC) {A₀ A B : Over S} [GrpObj A₀] [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (hA : IsAbelianScheme A) {c : ℕ} (hc : 0 < c) (ψ : A₀ ⟶ A) (ψ' : A ⟶ A₀) (e : ψ' ≫ ψ = (𝟙 A) ^ c)
     (u v : A ⟶ B) [IsMonHom u] [IsMonHom v] (h : ψ ≫ u = ψ ≫ v) : u = v := by
@@ -34,6 +46,11 @@ private lemma cancel (hDiv : DivC) {A₀ A B : Over S} [GrpObj A₀] [GrpObj A] 
   rw [← Category.assoc, ← Category.assoc, e, ← self_pow, ← self_pow] at h2
   exact (hDiv S A B hA c hc).2 u v inferInstance inferInstance h2
 
+/- English proof (translation)
+Take `⟨ν, hν, hνc⟩` from `(hDiv S A₁ A₂ h₁ c hc).1 (ψ₁' ≫ ψ₂) inferInstance (by`. Introduce `T g hg`. Establish `: (g ≫ ψ₁') ≫ ψ₁ = 1`. Rewrite using `[Category.assoc, v, comp_pow', Category.comp_id, hg]`. Rewrite using `[← Category.assoc]`.
+
+Conclude with `hk T _ this)`. Use `haveI := hν`. Use `⟨ν, hν, hνc, ?_⟩` and prove the remaining obligations. Use `(hDiv S A₀ A₂ h₀ c hc).2 (ψ₁ ≫ ν) ψ₂ inferInstance inferInstance ?_` and prove the remaining obligations. Rewrite using `[← comp_pow', hνc, ← Category.assoc, u, ← self_pow]`.
+-/
 private lemma factor (hDiv : DivC) {A₀ A₁ A₂ : Over S} [GrpObj A₀] [IsCommMonObj A₀] [GrpObj A₁] [IsCommMonObj A₁]
     [GrpObj A₂] [IsCommMonObj A₂] (h₀ : IsAbelianScheme A₀) (h₁ : IsAbelianScheme A₁) {c : ℕ} (hc : 0 < c)
     (ψ₁ : A₀ ⟶ A₁) (ψ₁' : A₁ ⟶ A₀) (ψ₂ : A₀ ⟶ A₂) [IsMonHom ψ₁] [IsMonHom ψ₁'] [IsMonHom ψ₂]
@@ -53,18 +70,29 @@ private lemma factor (hDiv : DivC) {A₀ A₁ A₂ : Over S} [GrpObj A₀] [IsCo
 
 variable {A T Y : Over S} [GrpObj A]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [IsAdditive.evc_one hM h]`. Consider the case `succ n ih => rw [pow_succ, (GlobalTheory.AbDual.isAdditive_iff hM).1 h, ih, succ_nsmul]`.
+-/
 private lemma evc_pow_left {M : LB (A ⊗ T).left} (hM : M.IsLB) (h : IsAdditive M) (a : Y ⟶ A) (t : Y ⟶ T) (n : ℕ) :
     evc hM (a ^ n) t = n • evc hM a t := by
   induction n with
   | zero => simp [IsAdditive.evc_one hM h]
   | succ n ih => rw [pow_succ, (GlobalTheory.AbDual.isAdditive_iff hM).1 h, ih, succ_nsmul]
 
+/- English proof (translation)
+Establish `hs : (swap (A` using `A) (B := B) P).IsLB := ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull hP _`. Rewrite using `[← GlobalTheory.AbDual.evc_swap hP hs, ← GlobalTheory.AbDual.evc_swap hP hs, ← GlobalTheory.AbDual.evc_swap hP hs]`. Conclude with `(GlobalTheory.AbDual.isAdditive_iff hs).1 h Y b b' a`.
+-/
 private lemma evc_add_right {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : IsAdditive (swap (A := A) (B := B) P))
     (a : Y ⟶ A) (b b' : Y ⟶ B) : evc hP a (b * b') = evc hP a b + evc hP a b' := by
   have hs : (swap (A := A) (B := B) P).IsLB := ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull hP _
   rw [← GlobalTheory.AbDual.evc_swap hP hs, ← GlobalTheory.AbDual.evc_swap hP hs, ← GlobalTheory.AbDual.evc_swap hP hs]
   exact (GlobalTheory.AbDual.isAdditive_iff hs).1 h Y b b' a
 
+/- English proof (translation)
+Establish `hs : (swap (A` using `A) (B := B) P).IsLB := LB.isLB_pull hP _`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, zero_smul, ← GlobalTheory.AbDual.evc_swap hP hs]`. Conclude with `IsAdditive.evc_one hs h a`.
+
+Consider the case `succ n ih => rw [pow_succ, evc_add_right hP h, ih, succ_nsmul]`.
+-/
 private lemma evc_pow_right {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (hP : P.IsLB) (h : IsAdditive (swap (A := A) (B := B) P))
     (a : Y ⟶ A) (b : Y ⟶ B) (n : ℕ) : evc hP a (b ^ n) = n • evc hP a b := by
   have hs : (swap (A := A) (B := B) P).IsLB := LB.isLB_pull hP _
@@ -77,6 +105,43 @@ private lemma evc_pow_right {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (hP 
 end UpperTheory.Gal.crystallineComparison.Mod.IsoOfKernelFactorization
 
 open UpperTheory.Gal.crystallineComparison.Mod.IsoOfKernelFactorization in
+/- English proof (translation)
+Introduce `hPC hAdj hDiv hTF`. Introduce `p _ D R _ b N k _ s c o o₁ o₂ ψ₁ ψ₂ h1 h2 hker`. Establish `hc : 0 < c` using `h1.pos`. Take `⟨-, hm1, hact1, heta1, hpol1, ψ₁', hψ₁', u1, v1⟩` from `h1`. Take `⟨-, hm2, hact2, heta2, hpol2, ψ₂', hψ₂', u2, v2⟩` from `h2`.
+
+Use `haveI := hm1`. Use `haveI := hm2`. Use `haveI := hψ₁'`. Use `haveI := hψ₂'`. Take `⟨ρ, hρ, -, hρ1⟩` from `factor hDiv o.ab o₁.ab hc ψ₁ ψ₁' ψ₂ u1 v1 (fun T g h => (hker T g).1 h)`.
+
+Take `⟨ρ', hρ', -, hρ2⟩` from `factor hDiv o.ab o₂.ab hc ψ₂ ψ₂' ψ₁ u2 v2 (fun T g h => (hker T g).2 h)`. Use `haveI := hρ`. Use `haveI := hρ'`. Establish `hrr : ρ ≫ ρ' = 𝟙 o₁.A` using `cancel hDiv o₁.ab hc ψ₁ ψ₁' v1 _ _ (by rw [← Category.assoc, hρ1, hρ2, Category.comp_id])`. Establish `hr'r : ρ' ≫ ρ = 𝟙 o₂.A` using `cancel hDiv o₂.ab hc ψ₂ ψ₂' v2 _ _ (by rw [← Category.assoc, hρ2, hρ1, Category.comp_id])`.
+
+Establish `hP0` using `hPC p D R b N (Sp k) s o`. Establish `hP1` using `hPC p D R b N (Sp k) s o₁`. Establish `hP2` using `hPC p D R b N (Sp k) s o₂`. Establish `e1` using `(hP0.2.2.2.2 o₁ ψ₁ c).1 hpol1`. Establish `e2` using `(hP0.2.2.2.2 o₂ ψ₂ c).1 hpol2`.
+
+Establish `hLp : (o₂.P.pull (sq2 ρ)).IsLB` using `LB.isLB_pull o₂.isLB _`. Establish `hL : ((o₂.P.pull (sq2 ρ)).div o₁.P).IsLB` using `LB.isLB_div hLp o₁.isLB`. Establish `hlift : ∀ {Y : Over (Sp k)} (a t : Y ⟶ o₁.A), (lift a t).left ≫ sq2 ρ = (lift (a ≫ ρ) (t ≫ ρ)).left`. Introduce `Y a t`. Use `show (lift a t).left ≫ (lift (fst o₁.A o₁.A ≫ ρ) (snd o₁.A o₁.A ≫ ρ)).left = _`.
+
+Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`. Establish `hevL : ∀ {Y : Over (Sp k)} (a t : Y ⟶ o₁.A), evc hL a t = evc o₂.isLB (a ≫ ρ) (t ≫ ρ) - evc o₁.isLB a t`. Introduce `Y a t`. Unfold `GlobalTheory.AbDual.evc`. Rewrite using `[GlobalTheory.CechPic.cls_div hLp o₁.isLB hL, map_sub, GlobalTheory.CechPic.cls_pull o₂.isLB _ hLp, ← GlobalTheory.CechPic.pull_comp, hlift]`.
+
+Establish `hadd1` using `(GlobalTheory.AbDual.isAdditive_iff o₁.isLB).1 hP1.1`. Establish `hadd2` using `(GlobalTheory.AbDual.isAdditive_iff o₂.isLB).1 hP2.1`. Establish `hmulρ : ∀ {Y : Over (Sp k)} (a a' : Y ⟶ o₁.A), (a * a') ≫ ρ = (a ≫ ρ) * (a' ≫ ρ)`. Introduce `Y a a'`. Conclude with `(IsMonHom.monoidHom ρ Y).map_mul a a'`.
+
+Establish `hLadd : IsAdditive ((o₂.P.pull (sq2 ρ)).div o₁.P)`. Rewrite using `[GlobalTheory.AbDual.isAdditive_iff hL]`. Introduce `Y a a' t`. Rewrite using `[hevL, hevL, hevL, hmulρ, hadd2, hadd1]`. Normalize the expressions using the abelian group laws.
+
+Establish `hsL : (swap ((o₂.P.pull (sq2 ρ)).div o₁.P)).IsLB` using `LB.isLB_pull hL _`. Establish `hLsadd : IsAdditive (swap ((o₂.P.pull (sq2 ρ)).div o₁.P))`. Rewrite using `[GlobalTheory.AbDual.isAdditive_iff hsL]`. Introduce `Y b' b'' a`. Rewrite using `[GlobalTheory.AbDual.evc_swap hL hsL, GlobalTheory.AbDual.evc_swap hL hsL, GlobalTheory.AbDual.evc_swap hL hsL, hevL, hevL, hevL, hmulρ, evc_add_right o₂.isLB hP2.2.1, evc_add_right o₁.isLB hP1.2.1]`.
+
+Normalize the expressions using the abelian group laws. Establish `hz : ∀ {Y : Over (Sp k)} (z w : Y ⟶ o.A), evc hL (z ≫ ψ₁) (w ≫ ψ₁) = 0`. Introduce `Y z w`. Rewrite using `[hevL, Category.assoc, Category.assoc, hρ1, e1, e2, sub_self]`. Establish `hxc : ∀ {Y : Over (Sp k)} (x : Y ⟶ o₁.A), x ^ c = (x ≫ ψ₁') ≫ ψ₁`.
+
+Introduce `Y x`. Rewrite using `[Category.assoc, v1, comp_pow', Category.comp_id]`. Establish `huniv : evc hL (fst o₁.A o₁.A) (snd o₁.A o₁.A) = GlobalTheory.CechPic.cls _ hL`. Unfold `GlobalTheory.AbDual.evc`. Rewrite using `[lift_fst_snd, Over.id_left, GlobalTheory.CechPic.pull_id]`.
+
+Establish `key : evc hL ((fst o₁.A o₁.A) ^ c) ((snd o₁.A o₁.A) ^ c) = 0`. Rewrite using `[hxc, hxc]`. Conclude with `hz _ _`. Rewrite `key` using `[evc_pow_left hL hLadd, evc_pow_right hL hLsadd, smul_smul, huniv]`. Establish `hcls` using `hTF k o₁.A o₁.A o₁.ab o₁.ab _ hL hLadd hLsadd (c * c) (Nat.mul_pos hc hc) key`.
+
+Rewrite `hcls` using `[GlobalTheory.CechPic.cls_div hLp o₁.isLB hL, sub_eq_zero]`. Establish `hpol : LBIso o₁.P (o₂.P.pull (sq2 ρ))` using `(GlobalTheory.CechPic.cls_eq_iff o₁.isLB hLp).1 hcls.symm`. Use `haveI : IsIso ρ.left := ⟨⟨ρ'.left, by rw [← Over.comp_left, hrr, Over.id_left], by rw [← Over.comp_left, hr'r, Over.id_left]⟩⟩`. Use `⟨⟨ρ.left, sq2 ρ, ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, ?_⟩, ⟨?_, ?_⟩, ?_, hpol, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `T x y x₀ y₀ hx hy`.
+
+Set `i : Over.mk (T.hom ≫ 𝟙 (Sp k)) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `hx' : x₀ = i ≫ x ≫ ρ` using `by ext1`. Rewrite using `[hx]`. Simplify using `[i]`. Establish `hy' : y₀ = i ≫ y ≫ ρ` using `by ext1`.
+
+Rewrite using `[hy]`. Simplify using `[i]`. Establish `hm : (i ≫ x ≫ ρ) * (i ≫ y ≫ ρ) = i ≫ (x * y) ≫ ρ`. Rewrite using `[hmulρ x y, Hom.mul_def, Hom.mul_def, comp_lift_assoc]`. Rewrite using `[hx', hy', hm]`.
+
+Simplify using `[i]`. Use `show (lift (fst o₁.A o₁.A ≫ ρ) (snd o₁.A o₁.A ≫ ρ)).left ≫ _ = _`. Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left]`. Use `show (lift (fst o₁.A o₁.A ≫ ρ) (snd o₁.A o₁.A ≫ ρ)).left ≫ _ = _`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`.
+
+Introduce `a haveI := o₁.act.hom a haveI := o₂.act.hom a`. Establish `h : o₁.act.act a ≫ ρ = ρ ≫ o₂.act.act a` using `cancel hDiv o₁.ab hc ψ₁ ψ₁' v1 _ _ (by`. Rewrite using `[← Category.assoc, ← hact1 a, Category.assoc, hρ1, hact2 a, ← hρ1, Category.assoc])`. Rewrite using `[← Over.comp_left, h, Over.comp_left]`. Introduce `y`.
+
+Rewrite using `[← Over.comp_left, heta1 y, Category.assoc, hρ1, ← heta2 y, Category.id_comp]`. Rewrite using `[← Over.comp_left, hρ1]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.isoOfKer_of :
     PairCalc → Adjoint → DivC → TorsFree → IsoOfKer := by
   intro hPC hAdj hDiv hTF

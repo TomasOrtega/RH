@@ -19,6 +19,27 @@ open scoped TensorProduct Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] IsCMField.starRing
 
+/- English proof (translation)
+Establish `hur` using `unramified hc`. Take `⟨σ, π, hσE, hσ⟩` from `GlobalTheory.FixedPrime.exists_isUnramInv v P hin`. Take `⟨ψ, hψE, hψσ, hψO⟩` from `GlobalTheory.T.exists_ringEquiv_tensor_inert_adicCompletion E v P hin σ hσE hσ.2.1`. Take `⟨h, hfr, hon⟩` from `exists_orthonormal hc V v`. Take `⟨s1, s2, s3⟩` from `GlobalTheory.T.adelicUnitary_supportedAtFinitePlace_eq_localUnitary _ E hc V v e he`.
+
+Set `ψ' : LocAlg v →+* P.adicCompletion E` to `ψ`. Set `φ : HA (AF (maximalRealSubfield E)) hc.sig V.gram →* GL (Fin V.rank) (P.adicCompletion E)` to `(bc ψ').comp ((MulAut.conj h⁻¹).toMonoidHom.comp (locMat hc V v))`. Establish `hφ : ∀ k, φ k = bc ψ' (h⁻¹ * locMat hc V v k * h)` using `fun k => rfl`. Establish `hO : ∀ z, z ∈ ordAt E v ↔ ψ' z ∈ intL (P.adicCompletion E)` using `fun z => (mem_ordAt_iff v z).trans (hψO z)`. Establish `hback : ∀ x : GL (Fin V.rank) (LocAlg v), bc (ψ.symm : P.adicCompletion E →+* LocAlg v) (bc ψ' x) = x` using `fun x => Units.ext (Matrix.ext fun i j => ψ.symm_apply_apply _)`.
+
+Establish `hback' : ∀ x : GL (Fin V.rank) (P.adicCompletion E), bc ψ' (bc (ψ.symm : P.adicCompletion E →+* LocAlg v) x) = x` using `fun x => Units.ext (Matrix.ext fun i j => ψ.apply_symm_apply _)`. Establish `hmem : ∀ k, φ k ∈ UJ σ (1 : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion E))` using `fun k => bc_mem_UJ_one (σ := locConj v) ψ' hψσ (conj_mem_UJ _ hon (locMat_mem hc V v k))`. Establish `hinj : ∀ k, Supp hc V e k → ∀ k', Supp hc V e k' → φ k = φ k' → k = k'` using `fun k hk k' hk' e => by`. Use `s2 k k' hk hk' ?_` and prove the remaining obligations. Use `congrArg (bc (ψ.symm : P.adicCompletion E →+* LocAlg v)) e` as an intermediate fact.
+
+Rewrite `this` using `[hφ, hφ, hback, hback]`. Conclude with `mul_left_cancel (mul_right_cancel this)`. Establish `hsurj : ∀ u : UJ σ (1 : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion E)), ∃ k, Supp hc V e k ∧ φ k = u` using `fun ⟨u, hu⟩ => by`. Establish `h1` using `bc_mem_UJ_one (σ' := locConj v) (ψ.symm : P.adicCompletion E →+* LocAlg v) (fun z => ψ.injective (by`. Rewrite using `[hψσ]`.
+
+Conclude with `(ψ.apply_symm_apply _).trans (congrArg σ (ψ.apply_symm_apply _).symm))) hu`. Take `⟨k, hk, ek⟩` from `s3 _ (conj_mem_UJ _ (inv_frame _ hon) h1)`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Use `show φ k = u`. Rewrite using `[hφ, ek, ← hback' u]`.
+
+Use `congr 1`. Rewrite using `[hback']`. Use `group`. Establish `hmul : ∀ k k', Supp hc V e k → Supp hc V e k' → Supp hc V e (k * k')` using `fun k k' hk hk' => by`. Take `⟨a1, a2⟩` from `(s1 k).1 hk`.
+
+Take `⟨b1, b2⟩` from `(s1 k').1 hk'`. Use `(s1 _).2 ⟨?_, fun w hw => by rw [map_mul, a2 w hw, b2 w hw, one_mul]⟩` and prove the remaining obligations. Conclude with `(map_mul (bc (infP (maximalRealSubfield E) E)) (HA.mat _ hc.sig V.gram k) (HA.mat _ hc.sig V.gram k')).trans (by rw [a1, b1, one_mul])`. Use `choose l hl1 hl2 using hsurj`. Set `μ : UJ σ (1 : Matrix (Fin V.rank) (Fin V.rank) (P.adicCompletion E)) →* Circle` to `MonoidHom.mk' (fun u => ν (l u)) fun a b => by`.
+
+Rewrite using `[← map_mul, hinj _ (hl1 _) _ (hmul _ _ (hl1 a) (hl1 b)) (by rw [map_mul, hl2, hl2, hl2]; rfl)]`. Establish `hv2 : Valued.v (2 : P.adicCompletion E) = 1`. Rewrite using `[← map_ofNat (algebraMap E (P.adicCompletion E)) 2, GlobalTheory.Idele.valued_algebraMap, ← map_ofNat (algebraMap (𝓞 E) E) 2, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 h2`. Establish `: CharZero (P.adicCompletion E)` using `algebraRat.charZero _`.
+
+Establish `key` using `GlobalTheory.T.unitaryGroup_character_eq_one_of_trivial_integral (P.adicCompletion E) π σ _ V.rank 1 hσ hv2 (one_mem _) (fun i j => by`. Simplify using `only [Units.val_one, Matrix.one_apply, eq_comm (a := j)]`. Use `split_ifs`. Conclude with `map_one σ`. Conclude with `map_zero σ) μ`.
+
+Use the proof step `(fun k hk => hν _ (hl1 k) ((GlobalTheory.T.stabilises_completedLattice_iff_localMatrix_integral _ E hc V v h hfr _ ((s1 _).1 (hl1 k)).2).2 ((bc_mem_range_iff ψ' hO _).2 (by rw [← hφ, hl2]; exact hk)))) ⟨φ g, hmem g⟩`. Rewrite using `[hinj g hg _ (hl1 ⟨φ g, hmem g⟩) (hl2 ⟨φ g, hmem g⟩).symm]`. Conclude with `key`.
+-/
 theorem core (hc : CMData (maximalRealSubfield E) E) (V : HSpace E)
     {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))} {P : HeightOneSpectrum (𝓞 E)}
     {e : AF (maximalRealSubfield E) ⊗[maximalRealSubfield E] E} (he : IsIdemOf E v e)
@@ -95,6 +116,9 @@ open Formalism.BasicNotions NumberField
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_one, LinearMap.restrictScalars_apply]`.
+-/
 theorem mem_dual (V : HSpace E) (L : Submodule (𝓞 E) V.V) (z : V.V) :
     z ∈ Formalism.HermitianLatticesTheory.dual V.hT L ↔ ∀ y ∈ L, ∃ o : 𝓞 E, (o : E) = V.hT y z := by
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_one,
@@ -122,6 +146,11 @@ def withLat (V : HSpace E) (Λ : Submodule (𝓞 E) (Fin V.rank → E)) (h1 : Su
         rwa [← GlobalTheory.WeilUnramifiedCompare.hT_coord, ← V.frame.equivFun_symm_apply,
           ← V.frame.equivFun_symm_apply] at this }
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Set.mem_ofPred_eq, ← V.frame.equivFun_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Take `rfl : y = x` from `V.frame.equivFun.symm.injective e`.
+
+Conclude with `hy`. Conclude with `fun h => ⟨x, h, rfl⟩`.
+-/
 theorem coord_withLat (V : HSpace E) (Λ : Submodule (𝓞 E) (Fin V.rank → E)) (h1 h2) :
     {x : Fin V.rank → E | ∑ i, x i • V.frame i ∈ (withLat V Λ h1 h2).L0} = Λ := by
   ext x
@@ -138,6 +167,21 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct Kronecker ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D V Λ hΛ v ε hv ν hν g hg`. Take `⟨⟨α, rfl, a1, a2⟩, hn⟩` from `hv`. Establish `hα : α = singleV D.host.F v 1` using `GlobalTheory.SplitIdem.af_ext _ fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[a1, GlobalTheory.SplitIdem.evalV_singleV_same]`. Rewrite using `[a2 w hw, GlobalTheory.SplitIdem.evalV_singleV_ne _ _ _ hw]`. Establish `hn' : ∀ e : Formalism.L2.Theta.AE D, e * e = e → e * cA D e = 0 → e + cA D e = algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (pairA D.host.F 0 (singleV D.host.F v 1)) → False` using `fun e e1 e2 e3 => by`. Rewrite `e3` using `[← hα]`. Conclude with `hn ⟨e, ⟨e1, e2, v, _, ⟨α, rfl, a1, a2⟩, e3⟩, e3⟩`.
+
+Establish `h2 : (2 : 𝓞 D.host.F) ∉ v.asIdeal` using `fun h2 => by`. Take `⟨e, e1, e2, e3, -⟩` from `GlobalTheory.SplitIdem.exists_split_idempotent D v h2`. Conclude with `hn' e e1 e2 e3`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hQv⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal (by`.
+
+Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))).1 (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `bot_le)`. Establish `hQ0 : Q ≠ ⊥` using `fun h0 => v.ne_bot (by`. Rewrite using `[← hQv, h0, Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)])`. Set `P : HeightOneSpectrum (𝓞 D.host.E)` to `⟨Q, hQ.isPrime, hQ0⟩`.
+
+Establish `hPv : P.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hQv`. Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Use `GlobalTheory.PlaceComp.unramified (E := D.host.E) D.sp.cm` as an intermediate fact. Establish `hin` using `GlobalTheory.FixedPrime.isInertAt_under P fun x hx => by`. Assume the negation of the conclusion as `hx'`.
+
+Take `⟨e, e1, e2, e3⟩` from `GlobalTheory.MovedSplit.exists_splitAt D v ⟨Q, hQ.isPrime, hQv, _, hx, x, (star_star (x : D.host.E)).symm, hx'⟩`. Conclude with `hn' e e1 e2 e3`. Establish `h2' : (2 : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h => h2 (by`. Rewrite using `[← hQv, Ideal.mem_comap, map_ofNat]`. Conclude with `h)`.
+
+Establish `he` using `GlobalTheory.PlaceComp.isIdemOf_algebraMap (E := D.host.E) a1 a2`. Substitute `hPv` using the available equality. Use `core (E := D.host.E) D.sp.cm (withLat V Λ hΛ.1 hΛ.2) he hin h2' ν (fun k hk hs => hν k hk ?_) g hg` and prove the remaining obligations. Rewrite using `[← coord_withLat V Λ hΛ.1 hΛ.2]`. Conclude with `hs`.
+-/
 theorem char_eq_one_of_nonSplit : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSelfDualC V Λ → ∀ v ε, NonSplitAt D v ε → ∀ ν : GA D V →* Circle, (∀ k, SuppPl ε V k → (∀ y, y ∈ latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E)) ↔ (finMat D.sp.cm.sig V.gram k).mulVec y ∈ latHat D.host.F D.host.E (Λ : Set (Fin V.rank → D.host.E))) → ν k = 1) → ∀ g, SuppPl ε V g → ν g = 1 := by
   intro D V Λ hΛ v ε hv ν hν g hg
   obtain ⟨⟨α, rfl, a1, a2⟩, hn⟩ := hv

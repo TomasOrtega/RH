@@ -12,6 +12,11 @@ namespace Formalism.L2.Geo
 variable {D : D7} {G : DV.Geo D.what₂.LL} {Lev : Type} {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)}
   {ng : NgPkg}
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum]`. Simplify using `only [Formalism.DegreeFormula.permExp, Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[Fintype.sum_prod_type]`. Establish `h1 : ∀ τ : ι, ∑ i : Fin N, (N - 1 - ((σ τ i : Fin N) : ℕ)) = N * (N - 1) / 2`. Introduce `τ`.
+
+Rewrite using `[Equiv.sum_comp (σ τ) (fun i : Fin N => N - 1 - (i : ℕ))]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N]`. Rewrite using `[Finset.sum_range_reflect (fun i => i) N]`. Conclude with `Finset.sum_range_id N`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ, smul_eq_mul, Formalism.DegreeFormula.dimFl]`.
+-/
 private theorem permExp_degree_eq_dimFl {ι : Type} [Fintype ι] {N : ℕ} (σ : ι → Equiv.Perm (Fin N)) :
     (Formalism.DegreeFormula.permExp σ).degree = Formalism.DegreeFormula.dimFl ι N := by
   rw [Finsupp.degree_eq_sum]
@@ -25,6 +30,9 @@ private theorem permExp_degree_eq_dimFl {ι : Type} [Fintype ι] {N : ℕ} (σ :
     exact Finset.sum_range_id N
   simp only [h1, Finset.sum_const, Finset.card_univ, smul_eq_mul, Formalism.DegreeFormula.dimFl]
 
+/- English proof (translation)
+Establish `hc : ∀ σ : Tau → Equiv.Perm (Fin N), P.coeff (Formalism.DegreeFormula.permExp σ) = 0` using `fun σ => hP.coeff_eq_zero (by rw [permExp_degree_eq_dimFl]; exact fun h => hd h.symm)`. Simplify using `[chernOf, degFlL, LinearMap.sum_apply, MvPolynomial.lcoeff_apply, hc]`.
+-/
 theorem chernOf_homog (Tau : Type) [Fintype Tau] (N : ℕ) (vol : ℝ) (P : MvPolynomial (DV.Rt Tau N) ℝ)
     (d : ℕ) (hd : d ≠ Formalism.DegreeFormula.dimFl Tau N) (hP : P.IsHomogeneous d) : chernOf Tau N vol P = 0 := by
   have hc : ∀ σ : Tau → Equiv.Perm (Fin N), P.coeff (Formalism.DegreeFormula.permExp σ) = 0 := fun σ =>
@@ -126,6 +134,9 @@ structure TiedX (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ 
 
   lev_κg : levPr κg = Finset.univ.image D.host.g
 
+/- English proof (translation)
+The claim follows from `(eC j h1 h2).nonempty_congr.mpr (U (datW D κg j)).compNe`.
+-/
 theorem comp_nonempty (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
     (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) (j : ℕ) (h1 : 1 ≤ j)
     (h2 : j ≤ D.R.m) : Nonempty (X.Comp j) :=
@@ -136,6 +147,9 @@ def MumfordU {w : Dat D Lev} (U : ShimU D G jC ng w) : Prop :=
     ((G.inter (U.alg.Yv c) (fun _ => U.alg.Lw c la) : ℤ) : ℝ) =
       U.cx.volC c * (by classical exact Formalism.DegreeFormula.flagDeg D.what₂.Tau w.N (fun τ i => (la τ i : ℝ)))
 
+/- English proof (translation)
+Establish `h1 : U.cx.chern (Formalism.DegreeFormula.linRoot (fun τ i => (la τ i : ℝ)) ^ Formalism.DegreeFormula.dimFl D.what₂.Tau w.N) = U.cx.vol * (by classical exact Formalism.DegreeFormula.flagDeg D.what₂.Tau w.N (fun τ i => (la τ i : ℝ)))`. Simplify using `only [CxPkg.chern, chernOf, degFlL, Formalism.DegreeFormula.flagDeg, Formalism.DegreeFormula.degFl, LinearMap.smul_apply, LinearMap.sum_apply, MvPolynomial.lcoeff_apply, smul_eq_mul]`. Rewrite using `[h1, CxPkg.vol, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun c _ => (hM c la).symm)`.
+-/
 theorem chern_linRoot_pow {w : Dat D Lev} (U : ShimU D G jC ng w) (hM : MumfordU U)
     (la : D.what₂.Tau → Fin w.N → ℤ) :
     U.cx.chern (Formalism.DegreeFormula.linRoot (fun τ i => (la τ i : ℝ)) ^ Formalism.DegreeFormula.dimFl D.what₂.Tau w.N) =
@@ -147,6 +161,9 @@ theorem chern_linRoot_pow {w : Dat D Lev} (U : ShimU D G jC ng w) (hM : MumfordU
   rw [h1, CxPkg.vol, Finset.sum_mul]
   exact Finset.sum_congr rfl (fun c _ => (hM c la).symm)
 
+/- English proof (translation)
+Conclude with `cm_type_meets_conjugate_pair p jc τ`.
+-/
 theorem psiOf_cm (p : ℕ) [Fact p.Prime] (jc : DV.KW p →+* ℂ) (τ : DV.Emb D p) :
     τ ∈ DV.PsiOf D jc ↔ DV.cEmb D τ ∉ DV.PsiOf D jc := by
   exact cm_type_meets_conjugate_pair p jc τ
@@ -157,6 +174,11 @@ def CurveHTDom {w : Dat D Lev} (U : ShimU D G jC ng w) : Prop :=
       ∃ (C : (U.pad.ex p).CrvS Z') (m : ℕ), 0 < m ∧ ∀ (τ : D.what₂.Tau) (i : Fin w.N),
         (m : ℝ) * U.pad.degHT p c (τ, i) = ((U.pad.ex p).degGr C (D.eTau τ) ((i : ℕ) + 1) : ℝ)
 
+/- English proof (translation)
+Establish `hj : jcl D j = j`. Unfold `jcl`. Rewrite using `[min_eq_left h2.le, max_eq_right h1]`. Establish `hS : (datW D κg j).S = (letI` using `D.host.cmStar; D.sp.W j) := by dsimp only [datW]`. Rewrite using `[hj]`.
+
+Establish `h` using `hT.shv (datW D κg j) (datW_indef D κg h1 h2)`. Rewrite `h` using `[hS]`. Conclude with `h`.
+-/
 theorem shimura_sheaf_of_indefinite_subspace (X : DivX D) (levPr : X.Lev → Finset ℕ) (hlev : ∀ κ, ∀ p ∈ levPr κ, p.Prime)
     (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w) (hT : CompatibleLevelPrimes X levPr hlev U) (κg : X.Lev) {j : ℕ}
     (h1 : 1 ≤ j) (h2 : j < D.R.m) :
@@ -172,6 +194,9 @@ theorem shimura_sheaf_of_indefinite_subspace (X : DivX D) (levPr : X.Lev → Fin
   rw [hS] at h
   exact h
 
+/- English proof (translation)
+Use `show U.cx.chern Q = U.cx.vol * _`. Simplify using `only [CxPkg.chern, chernOf, degFlL, Formalism.DegreeFormula.degFl, LinearMap.smul_apply, LinearMap.sum_apply, MvPolynomial.lcoeff_apply, smul_eq_mul]`.
+-/
 theorem chern_toShimX {w : Dat D Lev} (U : ShimU D G jC ng w) (h : w.Indef) (lev : Finset ℕ)
     (hlev : ∀ p ∈ lev, p.Prime) (Q : MvPolynomial (DV.Rt D.what₂.Tau w.N) ℝ) :
     (toShimX U h lev hlev).chern Q =
@@ -180,20 +205,32 @@ theorem chern_toShimX {w : Dat D Lev} (U : ShimU D G jC ng w) (h : w.Indef) (lev
   simp only [CxPkg.chern, chernOf, degFlL, Formalism.DegreeFormula.degFl, LinearMap.smul_apply,
     LinearMap.sum_apply, MvPolynomial.lcoeff_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `j h1 h2` and use `comp_nonempty X κg U eC j h1 h2`.
+-/
 theorem compNe_of (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
     (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) : Formalism.MainNotions.placeRankTwoOne.CompNe D X :=
   fun j h1 h2 => comp_nonempty X κg U eC j h1 h2
 
+/- English proof (translation)
+Rewrite using `[hG.yv j h1 h2 c, (U (datW D κg j)).alg.dim_eq, datW_N]`.
+-/
 theorem dim_Yv (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
     (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) (hG : CompatibleGeometry X κg U eC) {j : ℕ} (h1 : 1 ≤ j)
     (h2 : j ≤ D.R.m) (c : X.Comp j) : X.geo.dim (X.Yv j c) = Formalism.DegreeFormula.dimFl D.what₂.Tau D.R.r := by
   rw [hG.yv j h1 h2 c, (U (datW D κg j)).alg.dim_eq, datW_N]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq ha]`.
+-/
 theorem inter_congr (G : DV.Geo D.what₂.LL) {Y Y' : G.Var} (h : Y = Y') (a : G.Dv Y) (a' : G.Dv Y')
     (ha : HEq a a') : G.inter Y (fun _ => a) = G.inter Y' (fun _ => a') := by
   subst h
   rw [eq_of_heq ha]
 
+/- English proof (translation)
+Rewrite using `[chern_linRoot_pow (U (datW D κg j)) hM (fun τ i => la τ (Fin.cast (datW_N D κg j) i))]`. Use `symm`. Use `Fintype.sum_equiv (eC j h1 h2) _ _ (fun c => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun n : ℤ => (n : ℝ)) (inter_congr X.geo (hG.yv j h1 h2 c) _ _ (hG.lw j h1 h2 c la))`.
+-/
 theorem chern_record (X : DivX D) (κg : X.Lev) (U : ∀ w : Dat D X.Lev, ShimU D X.geo jC ng w)
     (eC : ∀ j, 1 ≤ j → j ≤ D.R.m → X.Comp j ≃ (U (datW D κg j)).Comp) (hG : CompatibleGeometry X κg U eC) {j : ℕ} (h1 : 1 ≤ j)
     (h2 : j ≤ D.R.m) (hM : MumfordU (U (datW D κg j))) (la : D.what₂.Tau → Fin D.R.r → ℤ) :

@@ -14,6 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZetaVals c_vp cE_vp a0)
 open TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolPrimeTo.perfect_of_primeTo | exact GlobalTheory.PolPrimeTo.perfect_of_primeTo | (intros; apply GlobalTheory.PolPrimeTo.perfect_of_primeTo <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polarization_form_over_dvr_prime_to_l : GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F)
     (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R],
     (∀ n : ℕ, n.Coprime l → IsUnit (n : R)) → ∀ (X : Obj F 𝔠 (Sp R)) (c₀ : 𝔠.elt), (c₀ : F) ≠ 0 →

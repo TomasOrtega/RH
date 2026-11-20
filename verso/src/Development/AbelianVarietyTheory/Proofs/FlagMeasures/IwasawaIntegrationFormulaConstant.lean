@@ -26,6 +26,11 @@ namespace GlobalTheory.IwConst
 
 open Filter Topology
 
+/- English proof (translation)
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [show N ∈ ae μN from mem_ae_iff.mpr hN] with u hu`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [show M ∈ ae μM from mem_ae_iff.mpr hM] with m hm`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations.
+
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [show K ∈ ae μK from mem_ae_iff.mpr hK] with k hk`. Conclude with `h u hu m hm k hk`.
+-/
 theorem triple_mono {G : Type} [MeasurableSpace G] {N M K : Set G} {μN μM μK : Measure G} (hN : μN Nᶜ = 0)
     (hM : μM Mᶜ = 0) (hK : μK Kᶜ = 0) (δ : G → ENNReal) {F F' : G → G → G → ENNReal}
     (h : ∀ u ∈ N, ∀ m ∈ M, ∀ k ∈ K, F u m k ≤ F' u m k) :
@@ -39,6 +44,11 @@ theorem triple_mono {G : Type} [MeasurableSpace G] {N M K : Set G} {μN μM μK 
   filter_upwards [show K ∈ ae μK from mem_ae_iff.mpr hK] with k hk
   exact h u hu m hm k hk
 
+/- English proof (translation)
+Establish `hVβ : V * β ≠ ⊤` using `ENNReal.mul_ne_top hV hβ`. Repeatedly rewrite using `[lintegral_smul_measure, smul_eq_mul, lintegral_mul_const' _ _ hβ]`. Establish `key : ∀ u m, δ m * (V * ((∫⁻ k, F u m k ∂μK) * β)) = V * β * (δ m * ∫⁻ k, F u m k ∂μK)`. Introduce `u m`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[key, lintegral_const_mul' _ _ hVβ]`.
+-/
 theorem triple_const {G : Type} [MeasurableSpace G] (μN μM μK : Measure G) (δ : G → ENNReal)
     (F : G → G → G → ENNReal) {V β : ENNReal} (hV : V ≠ ⊤) (hβ : β ≠ ⊤) :
     ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, F u m k * β ∂(V • μK) ∂μM ∂μN =
@@ -49,19 +59,33 @@ theorem triple_const {G : Type} [MeasurableSpace G] (μN μM μK : Measure G) (�
     intro u m; ring
   simp_rw [key, lintegral_const_mul' _ _ hVβ]
 
+/- English proof (translation)
+Unfold `ballVol`. Conclude with `(Metric.measure_ball_pos _ _ one_pos).ne'`.
+-/
 theorem ballVol_ne_zero (d : ℕ) : ballVol d ≠ 0 := by
   unfold ballVol
   exact (Metric.measure_ball_pos _ _ one_pos).ne'
 
+/- English proof (translation)
+Unfold `ballVol`. Conclude with `measure_ball_lt_top.ne`.
+-/
 theorem ballVol_ne_top (d : ℕ) : ballVol d ≠ ⊤ := by
   unfold ballVol
   exact measure_ball_lt_top.ne
 
+/- English proof (translation)
+Unfold `volU sphV`. Use `mul_pos (Finset.prod_pos fun l _ => ?_) (by positivity)` and prove the remaining obligations. Check the signs of the components of the expression.
+-/
 theorem volU_pos' (i : ℕ) : 0 < volU i := by
   unfold volU sphV
   refine mul_pos (Finset.prod_pos fun l _ => ?_) (by positivity)
   positivity
 
+/- English proof (translation)
+Establish `hlim : Tendsto (fun r : ℝ => V * ((f r / ENNReal.ofReal (r ^ d)) * (g r / ENNReal.ofReal (r ^ e)))) (𝓝[>] 0) (𝓝 (V * (ballVol d * ballVol e)))` using `ENNReal.Tendsto.const_mul (ENNReal.Tendsto.mul hf (Or.inr (ballVol_ne_top e)) hg (Or.inr (ballVol_ne_top d))) (Or.inr hV)`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hr' : (0 : ℝ) ≤ r` using `le_of_lt hr`. Rewrite using `[pow_add, ENNReal.ofReal_mul (pow_nonneg hr' _), div_eq_mul_inv, div_eq_mul_inv, div_eq_mul_inv, ENNReal.mul_inv (Or.inr ENNReal.ofReal_ne_top) (Or.inl ENNReal.ofReal_ne_top)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tendsto_mul_balls {f g : ℝ → ENNReal} {d e : ℕ} {V : ENNReal} (hV : V ≠ ⊤)
     (hf : Tendsto (fun r : ℝ => f r / ENNReal.ofReal (r ^ d)) (𝓝[>] 0) (𝓝 (ballVol d)))
     (hg : Tendsto (fun r : ℝ => g r / ENNReal.ofReal (r ^ e)) (𝓝[>] 0) (𝓝 (ballVol e))) :
@@ -78,6 +102,13 @@ theorem tendsto_mul_balls {f g : ℝ → ENNReal} {d e : ℕ} {V : ENNReal} (hV 
     ENNReal.mul_inv (Or.inr ENNReal.ofReal_ne_top) (Or.inl ENNReal.ofReal_ne_top)]
   ring
 
+/- English proof (translation)
+Establish `hU' : U * Uᴴ = 1` using `mul_eq_one_comm.mp hU`. Establish `key : ∀ Y : Matrix (Fin n) (Fin n) ℂ, ((Formalism.REAL.hs Y : ℝ) : ℂ) = (Y * Yᴴ).trace`. Introduce `Y`. Simplify using `only [Formalism.REAL.hs, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj']`. Establish `h1 : ((Formalism.REAL.hs (Uᴴ * X * U) : ℝ) : ℂ) = ((Formalism.REAL.hs X : ℝ) : ℂ)`. Rewrite using `[key, key, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc U Uᴴ, hU', Matrix.one_mul, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, hU', Matrix.mul_one]`. Conclude with `h1` after adjusting the coercions.
+-/
 private theorem hs_conjTranspose_mul_mul_of_unitary {n : ℕ} (U X : Matrix (Fin n) (Fin n) ℂ) (hU : Uᴴ * U = 1) :
     Formalism.REAL.hs (Uᴴ * X * U) = Formalism.REAL.hs X := by
   have hU' : U * Uᴴ = 1 := mul_eq_one_comm.mp hU
@@ -94,6 +125,23 @@ private theorem hs_conjTranspose_mul_mul_of_unitary {n : ℕ} (U X : Matrix (Fin
       Matrix.mul_assoc, hU', Matrix.mul_one]
   exact_mod_cast h1
 
+/- English proof (translation)
+Establish `huniq` using `(GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε A d E hA hE hAE μ hμ).2.2.1`. Establish `hcut : IsCut ε {g | uMat g - 1 ∈ A} E` using `⟨A, hA, hE, hAE, rfl⟩`. Take `⟨H, hH, -⟩` from `hcut.subgroup`. Establish `hlH : l ∈ H` using `by rw [← SetLike.mem_coe, hH]; exact hl`. Establish `hlinv : l⁻¹ ∈ {g : Formalism.REAL.UJ ε | uMat g - 1 ∈ A}`.
+
+Rewrite using `[← hH]`. Conclude with `H.inv_mem hlH`. Establish `hinvU : uMat l⁻¹ = (uMat l)ᴴ`. Establish `h1 : uMat l⁻¹ * uMat l = 1` using `by simp [uMat]`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `huniq` to reduce the goal to its premises. Take `⟨h0, hinv, hlim⟩` from `hμ`. Establish `he : (fun g : Formalism.REAL.UJ ε => g * l) = ⇑(MeasurableEquiv.mulRight l)` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[he, MeasurableEquiv.map_apply, ← hH]`.
+
+Establish `hpre : ⇑(MeasurableEquiv.mulRight l) ⁻¹' (↑H)ᶜ = (↑H : Set (Formalism.REAL.UJ ε))ᶜ`. Use extensionality with `g`. Simplify using `[H.mul_mem_cancel_right hlH]`. Rewrite using `[hpre, hH]`. Conclude with `h0`.
+
+Introduce `s hs`. Rewrite using `[Measure.map_map (measurable_const_mul s) (measurable_mul_const l), show ((fun g => s * g) ∘ fun g => g * l) = (fun g => g * l) ∘ (fun g => s * g) by`. Use function extensionality and compare the values at `g`. Simplify using `[mul_assoc],`. Use the proof step `← Measure.map_map (measurable_mul_const l) (measurable_const_mul s), hinv s hs]`.
+
+Use `hlim.congr (fun r => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[he, MeasurableEquiv.map_apply]`. Use `conv_rhs => rw [← hinv l⁻¹ hlinv]`. Establish `he2 : (fun g : Formalism.REAL.UJ ε => l⁻¹ * g) = ⇑(MeasurableEquiv.mulLeft l⁻¹)` using `rfl`.
+
+Rewrite using `[he2, MeasurableEquiv.map_apply]`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, MeasurableEquiv.coe_mulRight, MeasurableEquiv.coe_mulLeft]`. Establish `hg : uMat (l⁻¹ * g * l) - 1 = (uMat l)ᴴ * (uMat g - 1) * uMat l`.
+
+Rewrite using `[show uMat (l⁻¹ * g * l) = uMat l⁻¹ * uMat g * uMat l by simp [uMat], hinvU]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hu]`. Rewrite using `[hg, hs_conjTranspose_mul_mul_of_unitary _ _ hu]`.
+-/
 private theorem map_mul_right_eq_of_isGaugeSub {n : ℕ} {ε : Fin n → Bool} (A : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ))
     {d : ℕ} (E : Fin d → Matrix (Fin n) (Fin n) ℂ) (hA : ∀ X ∈ A, ∀ Y ∈ A, X * Y ∈ A)
     (hE : ∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0)
@@ -140,6 +188,9 @@ private theorem map_mul_right_eq_of_isGaugeSub {n : ℕ} {ε : Fin n → Bool} (
       simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hu]
     rw [hg, hs_conjTranspose_mul_mul_of_unitary _ _ hu]
 
+/- English proof (translation)
+Establish `h` using `triple_const μN μM μK δ F (V := 1) ENNReal.one_ne_top hβ`. Rewrite `h` using `[one_smul, one_mul]`. Conclude with `h`.
+-/
 private theorem lintegral_lintegral_mul_const {G : Type} [MeasurableSpace G] (μN μM μK : Measure G) (δ : G → ENNReal)
     (F : G → G → G → ENNReal) {β : ENNReal} (hβ : β ≠ ⊤) :
     ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, F u m k * β ∂μK ∂μM ∂μN = β * ∫⁻ u, ∫⁻ m, δ m * ∫⁻ k, F u m k ∂μK ∂μM ∂μN := by
@@ -147,6 +198,9 @@ private theorem lintegral_lintegral_mul_const {G : Type} [MeasurableSpace G] (μ
   rw [one_smul, one_mul] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `lintegral_indicator_one (μ := ν) (measurable_mul_const k hs)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 1`.
+-/
 private theorem lintegral_indicator_mul_right {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (ν : Measure G)
     {s : Set G} (hs : MeasurableSet s) (k : G) :
     ∫⁻ l, s.indicator 1 (l * k) ∂ν = ν {l | l * k ∈ s} := by
@@ -154,6 +208,69 @@ private theorem lintegral_indicator_mul_right {G : Type} [Group G] [MeasurableSp
   refine Eq.trans ?_ h
   congr 1
 
+/- English proof (translation)
+Introduce `n ε p q hp hq a j hj W hW μN μM μK hN hM hK0 hK1 hKinv c κ hc hform`. Take `⟨hpq, hn2, hdK⟩` from `GlobalTheory.T.isotropicFlag_dimension_count n ε a j W hW p q hp hq`. Take `⟨AN, EN, hAN, hEN, hAEN, hNset⟩` from `GlobalTheory.T.exists_nilpotentAlgebra_isotropicFlagUnipotentRadical n ε a j W hW`. Take `⟨AM, EM, hAM, hEM, hAEM, hMset⟩` from `GlobalTheory.T.exists_algebra_isotropicFlagSelfAdjointLevi n ε a j W hW`. Take `⟨⟨AK, EK, hAK, hEK, hAEK, hKset⟩, ⟨AL, EL, hAL, hEL, hAEL, hLset⟩⟩` from `GlobalTheory.T.exists_algebras_maxCompact_and_levi_inter n ε a j W hW p q hp hq`.
+
+Establish `cN : IsCut ε (flagN ε W) EN` using `⟨AN, hAN, hEN, hAEN, hNset⟩`. Establish `cM : IsCut ε (flagM ε W) EM` using `⟨AM, hAM, hEM, hAEM, hMset⟩`. Establish `cK : IsCut ε (maxK ε) EK` using `⟨AK, hAK, hEK, hAEK, hKset⟩`. Establish `cL : IsCut ε (maxK ε ∩ flagM ε W) EL` using `⟨AL, hAL, hEL, hAEL, hLset⟩`. Establish `hrel` using `GlobalTheory.T.iwasawa_lieAlgebras_relative_position n ε a j W hW _ _ _ _ EN EM EK EL cN cM cK cL`.
+
+Take `⟨hnd, hvol⟩` from `GlobalTheory.T.iwasawaGauge_definite_and_unitBody_volume n _ _ _ _ EN EM EK EL cN.isON cM.isON cK.isON cL.isON hrel hdK`. Establish `hN' : IsGaugeSub {g | uMat g - 1 ∈ AN} (dimN n j) μN` using `by rw [← hNset]; exact hN`. Establish `hM' : IsGaugeSub {g | uMat g - 1 ∈ AM} ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μM`. Rewrite using `[← hMset]`. Conclude with `hM`.
+
+Establish `: SigmaFinite μN` using `(GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε AN _ EN hAN hEN hAEN μN hN').1`. Establish `: SigmaFinite μM` using `(GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε AM _ EM hAM hEM hAEM μM hM').1`. Take `⟨νL, hνσ, hνL⟩` from `GlobalTheory.T.exists_riemannianHaar_unitaryJSubgroupOfAlgebra n ε AL _ EL hAL hEL hAEL`. Use `hνσ` as an intermediate fact. Establish `hνL' : IsGaugeSub (maxK ε ∩ flagM ε W) ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2) νL`.
+
+Rewrite using `[hLset]`. Conclude with `hνL`. Establish `: IsFiniteMeasureOnCompacts νL` using `(GlobalTheory.T.gaugeMeasure_matrixAlgebraSubgroup_local_asymptotics n ε AL _ EL hAL hEL hAEL νL hνL).2.1`. Take `⟨μ0, hμ0σ, hμ0⟩` from `GlobalTheory.T.exists_riemannianHaar_unitaryJSubgroupOfAlgebra n ε AK _ EK hAK hEK hAEK`. Use `hμ0σ` as an intermediate fact.
+
+Establish `hμ0' : IsGaugeSub (maxK ε) (p ^ 2 + q ^ 2) μ0` using `by rw [hKset]; exact hμ0`. Establish `hVK` using `GlobalTheory.T.volume_unitaryMaximalCompact_eq_prod n ε p q hp hq μ0 hμ0'`. Establish `hVL` using `GlobalTheory.T.volume_maximalCompact_inter_isotropicFlagLevi n ε p q hp hq a j W hW νL hνL'`. Establish `rK : ∀ l ∈ maxK ε, μ0.map (fun g => g * l) = μ0` using `fun l hl => map_mul_right_eq_of_isGaugeSub AK EK hAK hEK hAEK μ0 hμ0 l (by`. Establish `h : l ∈ {g : Formalism.REAL.UJ ε | uMat g - 1 ∈ AK}` using `by rw [← hKset]; exact hl`.
+
+Conclude with `h) hl`. Establish `rM : ∀ l ∈ maxK ε ∩ flagM ε W, μM.map (fun g => g * l) = μM` using `fun l hl => map_mul_right_eq_of_isGaugeSub AM EM hAM hEM hAEM μM hM' l (by`. Establish `h : l ∈ {g : Formalism.REAL.UJ ε | uMat g - 1 ∈ AM}` using `by rw [← hMset]; exact hl.2`. Conclude with `h) hl.1`. Establish `rL : ∀ l ∈ maxK ε ∩ flagM ε W, νL.map (fun g => g * l) = νL` using `fun l hl => map_mul_right_eq_of_isGaugeSub AL EL hAL hEL hAEL νL hνL l (by`.
+
+Establish `h : l ∈ {g : Formalism.REAL.UJ ε | uMat g - 1 ∈ AL}` using `by rw [← hLset]; exact hl`. Conclude with `h) hl.1`. Establish `: IsProbabilityMeasure μK` using `⟨hK1⟩`. Establish `hμ0eq` using `GlobalTheory.T.right_invariant_eq_smul_left_invariant_probability (Formalism.REAL.UJ ε) (maxK ε) μK μ0 hK0 hμ0'.1 hK1 hKinv rK`. Rewrite `hμ0eq` using `[hVK]`.
+
+Establish `hvpos : ∀ i, 0 < volU i` using `volU_pos'`. Establish `hVtop : ENNReal.ofReal (volU p * volU q) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hδ` using `GlobalTheory.T.leviFactorInverseModulus_properties n ε a j W`. Establish `hΓtop : volume {v | gau EN EM EK EL v ≤ 1} ≠ ⊤`. Rewrite using `[hvol]`.
+
+Conclude with `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ballVol_ne_top _)) (ballVol_ne_top _)`. Take `⟨ρ₀, hρ₀, hlimS⟩` from `GlobalTheory.T.localisedIwasawaIntegral_smallBall_asymptotics n ε a j W hW _ _ _ _ EN EM EK EL cN cM cK cL.isON hnd hΓtop μN μM μ0 hN hM hμ0'`. Establish `hρ : 0 < min ρ₀ (1 / 8)` using `lt_min hρ₀ (by norm_num)`. Establish `hS` using `hlimS (min ρ₀ (1 / 8)) hρ (min_le_left _ _)`. Use `set ρ := min ρ₀ (1 / 8) with hρdef`.
+
+Take `⟨Fp, hFp⟩ : ∃ F : ℝ → ENNReal, F = fun r => ∫⁻ u, ∫⁻ m, dlt j W m * ∫⁻ k, (hsBall ε r).indicator 1 (u * m * k) ∂μ0 ∂μM ∂μN` from `⟨_, rfl⟩`. Take `⟨Sp, hSp⟩ : ∃ F : ℝ → ENNReal, F = fun r => ∫⁻ u, ∫⁻ m, dlt j W m * ∫⁻ k, (hsBall ε r).indicator 1 (u * m * k) * (slab ε EL ρ r).indicator 1 k ∂μ0 ∂μM ∂μN` from `⟨_, rfl⟩`. Establish `hBtop : ∀ s, νL (hsBall ε s) ≠ ⊤` using `fun s => ((isCompact_hsBall ε s).measure_lt_top).ne`. Establish `hFmono : ∀ s r, s ≤ r → Fp s ≤ Fp r`. Introduce `s r hsr`.
+
+Simplify using `only [hFp]`. Use `triple_mono hN.1 hM.1 hμ0'.1 _ (fun u _ m _ k _ => ?_)` and prove the remaining obligations. Use `Set.indicator_le_indicator_of_subset (fun g hg => ?_) (fun _ => by positivity) _` and prove the remaining obligations. Conclude with `(le_trans hg hsr : nrm (uMat g - 1) ≤ r)`. Establish `hsand : ∀ η : ℝ, 0 < η → ∀ᶠ r in 𝓝[>] (0 : ℝ), νL (hsBall ε (r / (1 + η))) * Fp r ≤ νL Set.univ * Sp r ∧ νL Set.univ * Sp r ≤ νL (hsBall ε ((1 + η) * r)) * Fp r`.
+
+Introduce `η hη`. Use `filter_upwards [GlobalTheory.T.slab_measure_squeeze' n ε a j W hW _ EL cL hrel.2.2.2.2.2.1 νL hνL'.1 rL ρ η hρ (min_le_right _ _) hη] with r hr`. Establish `hswap` using `GlobalTheory.T.iwasawa_lintegral_unfold_compact_levi (Formalism.REAL.UJ ε) (flagM ε W) (maxK ε ∩ flagM ε W) μN μM μ0 νL (dlt j W) ((hsBall ε r).indicator 1) ((slab ε EL ρ r).indicator 1) hδ.1 (measurable_one.indicator (measurableSet_hsBall ε r)) (measurable_one.indicator (measura …`. Simplify using `only [hSp, hFp]`. Rewrite using `[hswap]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← lintegral_lintegral_mul_const _ _ _ _ _ (hBtop _)]`. Use `triple_mono hN.1 hM.1 hμ0'.1 _ (fun u hu m hm k hk => ?_)` and prove the remaining obligations. Distinguish the cases in `hmem : u * m * k ∈ hsBall ε r`. Rewrite using `[Set.indicator_of_mem hmem, lintegral_indicator_mul_right νL (measurableSet_slab ε EL ρ r) k]`.
+
+Simplify using `only [Pi.one_apply, one_mul]`. Conclude with `(hr u hu m hm k hk hmem).1`. Simplify using `[hmem]`. Rewrite using `[← lintegral_lintegral_mul_const _ _ _ _ _ (hBtop _)]`. Use `triple_mono hN.1 hM.1 hμ0'.1 _ (fun u hu m hm k hk => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hmem : u * m * k ∈ hsBall ε r`. Rewrite using `[Set.indicator_of_mem hmem, lintegral_indicator_mul_right νL (measurableSet_slab ε EL ρ r) k]`. Simplify using `only [Pi.one_apply, one_mul]`. Conclude with `(hr u hu m hm k hk hmem).2`. Simplify using `[hmem]`.
+
+Establish `hf : Tendsto (fun r : ℝ => ENNReal.ofReal c * Formalism.REAL.muG ε (hsBall ε r) / ENNReal.ofReal (r ^ (n ^ 2))) (𝓝[>] 0) (𝓝 (ballVol (n ^ 2)))`. Establish `h3` using `((GlobalTheory.T.riemannianHaarGauge_whole_group n ε).1 c hc).2.2.2`. Use `h3.congr (fun r => ?_)` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+
+Establish `hg : Tendsto (fun r : ℝ => νL (hsBall ε r) / ENNReal.ofReal (r ^ ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2))) (𝓝[>] 0) (𝓝 (ballVol ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2)))` using `hνL'.2.2`. Establish `hFK : ∀ r, Fp r = ENNReal.ofReal (volU p * volU q) * ∫⁻ u, ∫⁻ m, ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id) * ∫⁻ k, (hsBall ε r).indicator 1 (u * m * k) ∂μK ∂μM ∂μN`. Introduce `r`. Establish `h` using `triple_const μN μM μK (dlt j W) (fun u m k => (hsBall ε r).indicator 1 (u * m * k)) hVtop ENNReal.one_ne_top`. Simplify using `only [mul_one] at h`.
+
+Simplify using `only [hFp]`. Rewrite using `[hμ0eq, h]`. Both sides reduce to the same expression. Establish `hmuG : ∀ r, Formalism.REAL.muG ε (hsBall ε r) = κ * ∫⁻ u, ∫⁻ m, ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id) * ∫⁻ k, (hsBall ε r).indicator 1 (u * m * k) ∂μK ∂μM ∂μN`. Introduce `r`.
+
+Rewrite using `[← hform _ (measurable_one.indicator (measurableSet_hsBall ε r)), lintegral_indicator_one (measurableSet_hsBall ε r)]`. Establish `hb : Tendsto (fun r : ℝ => ENNReal.ofReal c * κ * (Fp r * νL (hsBall ε r)) / ENNReal.ofReal (r ^ (n ^ 2 + ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (volU p * volU q) * (ballVol (n ^ 2) * ballVol ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ …`. Use `(tendsto_mul_balls hVtop hf hg).congr (fun r => ?_)` and prove the remaining obligations. Rewrite using `[hFK, hmuG]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hvtop : ENNReal.ofReal (volU p * volU q) * (ballVol (n ^ 2) * ballVol ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2)) ≠ ⊤` using `ENNReal.mul_ne_top hVtop (ENNReal.mul_ne_top (ballVol_ne_top _) (ballVol_ne_top _))`. Establish `hF` using `GlobalTheory.T.tendsto_small_ball_density_of_squeeze (fun r => ENNReal.ofReal c * κ * (νL Set.univ * Sp r)) _ _ hvtop (fun η hη => by`. Use `⟨fun r => ENNReal.ofReal c * κ * (Fp r * νL (hsBall ε r)), hb, ?_⟩` and prove the remaining obligations. Establish `h1η : (1 : ENNReal) ≤ ENNReal.ofReal (1 + η)` using `ENNReal.one_le_ofReal.mpr (by linarith)`.
+
+Use `filter_upwards [hsand η hη, self_mem_nhdsWithin] with r hr hr0`. Establish `hr0' : (0 : ℝ) < r` using `hr0`. Prove the components needed by the constructor for the conclusion. Use `le_trans ?_ (le_mul_of_one_le_left (by positivity) h1η) show ENNReal.ofReal c * κ * (Fp (r / (1 + η)) * νL (hsBall ε (r / (1 + η)))) ≤ ENNReal.ofReal c * κ * (νL Set.univ * Sp r)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ (le_mul_of_one_le_left (by positivity) h1η) show ENNReal.ofReal c * κ * (νL Set.univ * Sp r) ≤ ENNReal.ofReal c * κ * (Fp ((1 + η) * r) * νL (hsBall ε ((1 + η) * r)))` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : dimN n j + ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2 + (p ^ 2 + q ^ 2)) = n ^ 2 + ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2)`.
+
+Rewrite using `[hdK, hn2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΓ0 : volume {v | gau EN EM EK EL v ≤ 1} ≠ 0`. Rewrite using `[hvol]`. Use `mul_ne_zero (mul_ne_zero ?_ (ballVol_ne_zero _)) (ballVol_ne_zero _)` and prove the remaining obligations.
+
+Conclude with `(ENNReal.ofReal_pos.mpr (by positivity)).ne'`. Establish `hF2 : Tendsto (fun r => ENNReal.ofReal c * κ * (νL Set.univ * Sp r) / ENNReal.ofReal (r ^ (n ^ 2 + ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal c * κ * νL Set.univ * volume {v | gau EN EM EK EL v ≤ 1}))`. Rewrite using `[← hexp]`. Use `(ENNReal.Tendsto.const_mul hS (Or.inl hΓ0)).congr (fun r => ?_)` and prove the remaining obligations. Simplify using `only [hSp]`.
+
+Rewrite using `[mul_div_assoc, mul_div_assoc, mul_assoc]`. Establish `heq` using `tendsto_nhds_unique hF2 hF`. Rewrite `heq` using `[hvol, hVL, ← hn2]`. Establish `hB0 : ballVol (n ^ 2) * ballVol ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2) ≠ 0` using `mul_ne_zero (ballVol_ne_zero _) (ballVol_ne_zero _)`. Establish `hBt : ballVol (n ^ 2) * ballVol ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2) ≠ ⊤` using `ENNReal.mul_ne_top (ballVol_ne_top _) (ballVol_ne_top _)`.
+
+Establish `hAL : 0 < (∏ i, volU (j i) * (2 : ℝ) ^ (((j i : ℝ)) ^ 2 / 2)) * volU (p - ∑ i, j i) * volU (q - ∑ i, j i)` using `mul_pos (mul_pos (Finset.prod_pos fun i _ => mul_pos (hvpos _) (by positivity)) (hvpos _)) (hvpos _)`. Establish `hT : (0 : ℝ) < (2 : ℝ) ^ ((dimN n j : ℝ) / 2)` using `by positivity`. Establish `heq2 : ENNReal.ofReal c * κ * (ENNReal.ofReal ((∏ i, volU (j i) * (2 : ℝ) ^ (((j i : ℝ)) ^ 2 / 2)) * volU (p - ∑ i, j i) * volU (q - ∑ i, j i)) * ENNReal.ofReal ((2 : ℝ) ^ ((dimN n j : ℝ) / 2))) = ENNReal.ofReal (volU p * volU q)`. Use `(ENNReal.mul_left_inj hB0 hBt).mp ?_` and prove the remaining obligations. Rewrite using `[← heq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : 0 ≤ cIw p q j`. Unfold `cIw`. Conclude with `(div_pos (mul_pos (by positivity) (mul_pos (hvpos p) (hvpos q))) hAL).le`. Establish `hcIw : ENNReal.ofReal (cIw p q j) * (ENNReal.ofReal ((∏ i, volU (j i) * (2 : ℝ) ^ (((j i : ℝ)) ^ 2 / 2)) * volU (p - ∑ i, j i) * volU (q - ∑ i, j i)) * ENNReal.ofReal ((2 : ℝ) ^ ((dimN n j : ℝ) / 2))) = ENNReal.ofReal (volU p * volU q)`.
+
+Rewrite using `[← ENNReal.ofReal_mul hAL.le, ← ENNReal.ofReal_mul hc0]`. Use `congr 1`. Establish `h2 : (2 : ℝ) ^ (-((dimN n j : ℝ) / 2)) * (2 : ℝ) ^ ((dimN n j : ℝ) / 2) = 1`. Rewrite using `[← Real.rpow_add (by norm_num)]; simp`. Unfold `cIw`.
+
+Rewrite using `[hpq]`. Rewrite using `[show ∀ x y z w : ℝ, x * y / z * (z * w) = x * w * y * (z / z) by intros; ring, div_self hAL.ne', h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne0 : ENNReal.ofReal ((∏ i, volU (j i) * (2 : ℝ) ^ (((j i : ℝ)) ^ 2 / 2)) * volU (p - ∑ i, j i) * volU (q - ∑ i, j i)) * ENNReal.ofReal ((2 : ℝ) ^ ((dimN n j : ℝ) / 2)) ≠ 0` using `mul_ne_zero (ENNReal.ofReal_pos.mpr hAL).ne' (ENNReal.ofReal_pos.mpr hT).ne'`. Establish `hnet : ENNReal.ofReal ((∏ i, volU (j i) * (2 : ℝ) ^ (((j i : ℝ)) ^ 2 / 2)) * volU (p - ∑ i, j i) * volU (q - ∑ i, j i)) * ENNReal.ofReal ((2 : ℝ) ^ ((dimN n j : ℝ) / 2)) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top`.
+
+Conclude with `(ENNReal.mul_left_inj hne0 hnet).mp (heq2.trans hcIw.symm)`.
+-/
 theorem iwasawa_constant : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (univ.filter fun a => ε a = true).card = p → (univ.filter fun a => ε a = false).card = q → ∀ (a : ℕ) (j : Fin a → ℕ), (∀ i, 1 ≤ j i) → ∀ (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (μN μM μK : Measure (Formalism.REAL.UJ ε)), IsGaugeSub (flagN ε W) (dimN n j) μN → IsGaugeSub (flagM ε W) ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) μM → μK (maxK ε)ᶜ = 0 → μK Set.univ = 1 → (∀ k ∈ maxK ε, μK.map (fun g => k * g) = μK) → ∀ (c : ℝ) (κ : ENNReal), IsGauge ε c → (∀ φ : Formalism.REAL.UJ ε → ENNReal, Measurable φ → ∫⁻ g, φ g ∂(Formalism.REAL.muG ε) = κ * ∫⁻ u, ∫⁻ m, ENNReal.ofReal (layerProd n 1 j (locSize j W (uMat m)) id) * ∫⁻ k, φ (u * m * k) ∂μK ∂μM ∂μN) → ENNReal.ofReal c * κ = ENNReal.ofReal (cIw p q j) := by
   intro n ε p q hp hq a j hj W hW μN μM μK hN hM hK0 hK1 hKinv c κ hc hform
   obtain ⟨hpq, hn2, hdK⟩ := GlobalTheory.T.isotropicFlag_dimension_count n ε a j W hW p q hp hq

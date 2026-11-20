@@ -8,6 +8,27 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E K _ _ _ _ _ w W j f b hfc hb hj hf`. Use `letI := f.toAlgebra`. Set `c : W.adicCompletion K →ₐ[w.adicCompletion E] Kbar w` to `{ toRingHom := b.symm.toRingHom.comp (algebraMap (W.adicCompletion K) (Kbar W)) commutes' := fun x => by`. Express the relevant statement in the definitionally equal form `b.symm (algebraMap _ _ (f x)) = _`. Rewrite using `[← hb x]`.
+
+Conclude with `b.symm_apply_apply _ }`. Establish `hcj : ∀ x : K, c (algebraMap K (W.adicCompletion K) x) = j x`. Introduce `x`. Express the relevant statement in the definitionally equal form `b.symm (algebraMap _ _ _) = _`. Rewrite using `[← hj x]`.
+
+Conclude with `b.symm_apply_apply _`. Establish `hrange : c.fieldRange = IntermediateField.adjoin (w.adicCompletion E) (Set.range j)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hspan` using `span_basis_image_adicCompletion_eq_top E K w W f hfc hf _ (Module.finBasis E K)`.
+
+Establish `hy : y ∈ Submodule.span (w.adicCompletion E) (Set.range fun i => algebraMap K (W.adicCompletion K) (Module.finBasis E K i))`. Rewrite using `[hspan]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨i, rfl⟩` from `hx`. Express the relevant statement in the definitionally equal form `c _ ∈ _`. Rewrite using `[hcj]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨_, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add] at hx hy ⊢`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_smul] at hx ⊢`.
+
+Conclude with `IntermediateField.smul_mem _ hx`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨algebraMap K _ x, hcj x⟩`. Set `e : W.adicCompletion K ≃ₐ[w.adicCompletion E] IntermediateField.adjoin (w.adicCompletion E) (Set.range j)` to `(AlgEquiv.ofInjectiveField c).trans (IntermediateField.equivOfEq hrange)`.
+
+Use extensionality with `u`. Simplify using `only [Neutral.B1.normGroup, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Use `⟨Units.map e.symm.toRingEquiv.toMonoidHom v, ?_⟩` and prove the remaining obligations.
+
+Use `ext`. Simplify using `[Algebra.norm_eq_of_algEquiv]`. Introduce and unpack `⟨v, rfl⟩`. Use `⟨Units.map e.toRingEquiv.toMonoidHom v, ?_⟩` and prove the remaining obligations. Use `ext`.
+
+Simplify using `[Algebra.norm_eq_of_algEquiv]`.
+-/
 theorem normGroup_adjoin_eq_norm_range_completion : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] (w : HeightOneSpectrum (𝓞 E)) (W : HeightOneSpectrum (𝓞 K)) (j : K → Kbar w) (f : w.adicCompletion E →+* W.adicCompletion K) (b : Kbar w ≃+* Kbar W), Continuous f → (∀ x, b (algebraMap _ _ x) = algebraMap _ _ (f x)) → (∀ x : K, b (j x) = algebraMap (W.adicCompletion K) _ (algebraMap K (W.adicCompletion K) x)) → (∀ x : E, f (algebraMap E _ x) = algebraMap K _ (algebraMap E K x)) → letI := f.toAlgebra; Neutral.B1.normGroup (w.adicCompletion E) (IntermediateField.adjoin (w.adicCompletion E) (Set.range j)) = (Units.map (Algebra.norm (w.adicCompletion E) : W.adicCompletion K →* w.adicCompletion E)).range := by
   intro E K _ _ _ _ _ w W j f b hfc hb hj hf
   letI := f.toAlgebra

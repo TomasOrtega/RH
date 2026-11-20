@@ -25,6 +25,9 @@ open GlobalTheory.LKMid.MoveMark
 
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p}
 
+/- English proof (translation)
+Unfold `Triv at hx ⊢`. Rewrite using `[← hx, ← hU, Units.val_mul, map_mul, MulOpposite.unop_mul]`. Simplify using `only [mul_assoc]`.
+-/
 theorem triv_mul (R : Type) [CommRing R] [Algebra ℚ R] (β β' : G.C) (x U : (R ⊗[ℚ] G.C)ˣ) (t : Rˣ)
     (hU : (U : R ⊗[ℚ] G.C) * inC G R β' * (starT G.star R U).unop = inC G R β) (hx : Triv G R β x t) :
     Triv G R β' (x * U) t := by
@@ -32,10 +35,16 @@ theorem triv_mul (R : Type) [CommRing R] [Algebra ℚ R] (β β' : G.C) (x U : (
   rw [← hx, ← hU, Units.val_mul, map_mul, MulOpposite.unop_mul]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem quad_conj {n : ℕ} (Z H : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) :
     star (Z *ᵥ y) ⬝ᵥ (H *ᵥ (Z *ᵥ y)) = star y ⬝ᵥ ((Zᴴ * H * Z) *ᵥ y) := by
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_apply]`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_diag {n : ℕ} (r : Fin n → ℝ) (y : Fin n → ℂ) :
     (star y ⬝ᵥ (Matrix.diagonal (fun i => (r i : ℂ)) *ᵥ y)).re = ∑ i, r i * Complex.normSq (y i) := by
   simp only [Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, Complex.re_sum]
@@ -44,18 +53,33 @@ theorem quad_diag {n : ℕ} (r : Fin n → ℝ) (y : Fin n → ℂ) :
   simp [Complex.mul_re, Complex.mul_im]
   ring
 
+/- English proof (translation)
+Unfold `HTGroup.a at ha`. Take `⟨z, hz⟩` from `Fintype.card_eq_one_iff.1 ha`. Conclude with `congrArg Subtype.val ((hz ⟨w, hw⟩).trans (hz ⟨v, hv⟩).symm)`.
+-/
 theorem place_unique (ha : G.a = 1) {v w : InfinitePlace G.F} (hv : sigPosH (G.gram_herm v) = 1)
     (hw : sigPosH (G.gram_herm w) = 1) : w = v := by
   unfold HTGroup.a at ha
   obtain ⟨z, hz⟩ := Fintype.card_eq_one_iff.1 ha
   exact congrArg Subtype.val ((hz ⟨w, hw⟩).trans (hz ⟨v, hv⟩).symm)
 
+/- English proof (translation)
+Break down `G.sig w with h | h` into its components or cases. Conclude with `absurd (place_unique ha hv h.1) hw`. Conclude with `h.1`.
+-/
 theorem sig_zero (ha : G.a = 1) {v w : InfinitePlace G.F} (hv : sigPosH (G.gram_herm v) = 1) (hw : w ≠ v) :
     sigPosH (G.gram_herm w) = 0 := by
   rcases G.sig w with h | h
   · exact absurd (place_unique ha hv h.1) hw
   · exact h.1
 
+/- English proof (translation)
+Establish `hD : (Matrix.diagonal (fun i => (r i : ℂ))).IsHermitian`. Rewrite using `[Matrix.IsHermitian, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Establish `hDd : (Matrix.diagonal (fun i => (r i : ℂ))).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]; exact Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast hr i`. Take `⟨W, hW⟩` from `GlobalTheory.T.hermitian_congr_of_positiveIndex_eq A _ hA hD hdet hDd (by rw [(GlobalTheory.LKTrip.sigPosH_sigNegH_diagonal n r hD).1, hc])`. Use `⟨W * Z⁻¹, ?_⟩` and prove the remaining obligations. Establish `e1 : ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᴴ * (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ = 1`.
+
+Rewrite using `[← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one]`. Establish `e2 : (Z : Matrix (Fin n) (Fin n) ℂ) * ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = 1` using `Units.mul_inv Z`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, e1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, e2, Matrix.mul_one]`.
+
+Use `_ = _ := by`. Rewrite using `[hZ, hW, Units.val_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem congr_of_diag {n : ℕ} (A h : Matrix (Fin n) (Fin n) ℂ) (hA : A.IsHermitian) (hdet : A.det ≠ 0)
     (Z : GL (Fin n) ℂ) (r : Fin n → ℝ) (hr : ∀ i, r i ≠ 0)
     (hZ : (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * h * (Z : Matrix (Fin n) (Fin n) ℂ) =
@@ -81,6 +105,13 @@ theorem congr_of_diag {n : ℕ} (A h : Matrix (Fin n) (Fin n) ℂ) (hA : A.IsHer
         rw [hZ, hW, Units.val_mul, Matrix.conjTranspose_mul]
         simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e` using `quad_conj g h x`. Rewrite `e` using `[hg, hx]`. Simplify using `only [Matrix.mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, Matrix.smul_mulVec, smul_eq_mul] at e`. Establish `hq : star x ⬝ᵥ (h *ᵥ x) ≠ 0` using `fun h0 => hdef x hx0 (by rw [h0, Complex.zero_re])`. Establish `e' : star μ * μ = (c : ℂ)`.
+
+Apply `mul_right_cancel₀ hq` to reduce the goal to its premises. Take the linear combination `e`. Establish `e'' : ((‖μ‖ ^ 2 : ℝ) : ℂ) = (c : ℂ)`. Rewrite using `[← e', Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `e''` after adjusting the coercions.
+-/
 theorem norm_eig_of_def {n : ℕ} (h g : Matrix (Fin n) (Fin n) ℂ) (c : ℝ)
     (hdef : ∀ x : Fin n → ℂ, x ≠ 0 → (star x ⬝ᵥ (h *ᵥ x)).re ≠ 0) (hg : gᴴ * h * g = (c : ℂ) • h)
     (μ : ℂ) (x : Fin n → ℂ) (hx0 : x ≠ 0) (hx : g *ᵥ x = μ • x) : ‖μ‖ ^ 2 = c := by
@@ -98,6 +129,27 @@ theorem norm_eig_of_def {n : ℕ} (h g : Matrix (Fin n) (Fin n) ℂ) (c : ℝ)
   exact_mod_cast e''
 
 open Polynomial in
+/- English proof (translation)
+Use `letI : Algebra G.F ℂ := v.embedding.toAlgebra`. Establish `hg : ∀ a, G.psi v (algebraMap G.F G.C a) = algebraMap G.F (Matrix (Fin G.n) (Fin G.n) ℂ) a` using `fun a => by rw [G.psi_F, Matrix.algebraMap_eq_diagonal]; rfl`. Set `g : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := hg }`. Set `L : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) g (fun r _ => Algebra.commute_algebraMap_left r _)`. Use `haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩`.
+
+Establish `hinj : Function.Injective L` using `(IsSimpleRing.injective_ringHom_or_subsingleton_codomain L.toRingHom).resolve_right (not_subsingleton _)`. Establish `hL : ∀ x : G.C, L ((1 : ℂ) ⊗ₜ x) = G.psi v x` using `fun x => by show (Algebra.TensorProduct.lift _ g _) ((1 : ℂ) ⊗ₜ x) = _ erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Use `set γ : G.C := (P.γ : G.C) with hγ`.
+
+Establish `hdeg : (minpoly G.F γ).natDegree = G.n` using `P.reg.1`. Establish `hli : LinearIndependent G.F (fun i : Fin G.n => γ ^ (i : ℕ))`. Use `linearIndependent_pow (K := G.F) γ` as an intermediate fact. Rewrite `this` using `[hdeg]`. Conclude with `this`.
+
+Establish `hT : LinearIndependent ℂ (fun i : Fin G.n => (1 : ℂ) ⊗ₜ[G.F] (γ ^ (i : ℕ)))` using `Module.Flat.linearIndependent_one_tmul hli`. Establish `hM : LinearIndependent ℂ (fun i : Fin G.n => (G.psi v γ) ^ (i : ℕ))`. Use `hT.map' L.toLinearMap (LinearMap.ker_eq_bot.2 hinj)` as an intermediate fact. Establish `e : (fun i : Fin G.n => (G.psi v γ) ^ (i : ℕ)) = L.toLinearMap ∘ (fun i : Fin G.n => (1 : ℂ) ⊗ₜ[G.F] (γ ^ (i : ℕ)))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Function.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[hL, map_pow]`. Rewrite using `[e]`. Conclude with `this`. Establish `hint : IsIntegral ℂ (G.psi v γ)` using `Algebra.IsIntegral.isIntegral _`.
+
+Use `set q := minpoly ℂ (G.psi v γ) with hq`. Establish `hqm : q.Monic` using `minpoly.monic hint`. Establish `hqdeg : G.n ≤ q.natDegree`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Establish `h0 : aeval (G.psi v γ) q = 0` using `minpoly.aeval _ _`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range' hlt, Finset.sum_range]`. Establish `h1` using `Fintype.linearIndependent_iff.1 hM (fun i => q.coeff i) h0 ⟨q.natDegree, hlt⟩`. Establish `h2 : q.coeff q.natDegree = 1` using `hqm.coeff_natDegree`. Rewrite `h1` using `[h2]`.
+
+Conclude with `one_ne_zero h1`. Establish `hpol : aeval (G.psi v γ) (P.pol.map v.embedding) = 0`. Establish `h : aeval (g γ) (minpoly G.F γ) = 0` using `by rw [Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Express the relevant statement in the definitionally equal form `aeval (G.psi v γ) ((minpoly G.F γ).map (algebraMap G.F ℂ)) = 0`. Rewrite using `[Polynomial.aeval_map_algebraMap]`.
+
+Conclude with `h`. Establish `hFint : IsIntegral G.F γ` using `Algebra.IsIntegral.isIntegral _`. Establish `hm1 : (P.pol.map v.embedding).Monic` using `(minpoly.monic hFint).map _`. Establish `hn1 : (P.pol.map v.embedding).natDegree = G.n`. Rewrite using `[Polynomial.natDegree_map]`.
+
+Conclude with `hdeg`. Establish `e1` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hqm hm1 (minpoly.dvd _ _ hpol) (by rw [hn1]; exact hqdeg)`. Establish `e2` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hqm (Matrix.charpoly_monic _) (Matrix.minpoly_dvd_charpoly _) (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]; exact hqdeg)`. Rewrite using `[e2, e1]`.
+-/
 theorem dcharpoly (P : DPair G) (v : InfinitePlace G.F) :
     (G.psi v (P.γ : G.C)).charpoly = P.pol.map v.embedding := by
   letI : Algebra G.F ℂ := v.embedding.toAlgebra
@@ -159,6 +211,21 @@ theorem dcharpoly (P : DPair G) (v : InfinitePlace G.F) :
   rw [e2, e1]
 
 open Polynomial in
+/- English proof (translation)
+Use `set Q := P.pol.map v.embedding with hQ`. Establish `hmon : P.pol.Monic` using `minpoly.monic (Algebra.IsIntegral.isIntegral _)`. Establish `hcard : ((P.pol.map v.embedding).roots.toFinset).card = G.n`. Establish `hsep : (P.pol.map v.embedding).Separable` using `P.reg.2.map`. Establish `hdeg : (P.pol.map v.embedding).natDegree = G.n`.
+
+Rewrite using `[Polynomial.natDegree_map]`. Conclude with `P.reg.1`. Rewrite using `[Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hsep), ← hdeg]`. Conclude with `IsAlgClosed.card_roots_eq_natDegree`. Establish `hsep : Q.Separable` using `P.reg.2.map`.
+
+Establish `hnd : Q.roots.Nodup` using `Polynomial.nodup_roots hsep`. Establish `hQm : Q.Monic` using `hmon.map _`. Establish `hne : P.pol ≠ 0` using `hmon.ne_zero`. Set `e : Fin G.n ≃ {x // x ∈ Q.roots.toFinset}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_coe]; exact hcard)).symm`. Set `lam : Fin G.n → ℂ` to `fun i => (e i : ℂ)`.
+
+Establish `hlam : Function.Injective lam` using `fun i j h => e.injective (Subtype.ext h)`. Establish `hprod : Q = ∏ k, (X - C (lam k))`. Establish `h1 : Q = (Q.roots.map (fun a => X - C a)).prod` using `(Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hQm (IsAlgClosed.card_roots_eq_natDegree)).symm`. Rewrite using `[h1]`. Establish `h2 : (Q.roots.map (fun a => X - C a)).prod = ∏ a ∈ Q.roots.toFinset, (X - C a)`.
+
+Rewrite using `[Finset.prod_eq_multiset_prod, Multiset.toFinset_val, Multiset.dedup_eq_self.2 hnd]`. Rewrite using `[h2, ← Finset.prod_coe_sort]`. Conclude with `(Fintype.prod_equiv e _ _ (fun _ => rfl)).symm`. Establish `hcp : (G.psi v (P.γ : G.C)).charpoly = ∏ k, (X - C (lam k))`. Rewrite using `[dcharpoly, ← hQ, ← hprod]`.
+
+Take `⟨Z, hZ⟩` from `GlobalTheory.matrix_diagonalizable_of_charpoly_eq_prod_distinct ℂ G.n _ lam hlam hcp`. Use `⟨Z, lam, hlam, fun z => ?_, hZ⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.mem_roots_map_of_injective v.embedding.injective hne, ← hQ, ← Multiset.mem_toFinset]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Conclude with `⟨e.symm ⟨z, hz⟩, by simp [lam]⟩`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(e i).2`.
+-/
 theorem deigenbasis (P : DPair G) (v : InfinitePlace G.F) :
     ∃ (Z : GL (Fin G.n) ℂ) (lam : Fin G.n → ℂ), Function.Injective lam ∧
       (∀ z : ℂ, P.pol.eval₂ v.embedding z = 0 ↔ ∃ i, lam i = z) ∧
@@ -200,6 +267,23 @@ theorem deigenbasis (P : DPair G) (v : InfinitePlace G.F) :
   · rintro ⟨i, rfl⟩
     exact (e i).2
 
+/- English proof (translation)
+Establish `hgu : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.mpr (G.gram_det v)`. Establish `hgg : G.gram v * (G.gram v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgu`. Establish `hgg' : (G.gram v)⁻¹ * G.gram v = 1` using `Matrix.nonsing_inv_mul _ hgu`. Establish `hH : ∀ x : G.C, (G.psi v x)ᴴ = G.gram v * G.psi v (sh G x) * (G.gram v)⁻¹`. Introduce `x`.
+
+Establish `e : G.psi v (sh G x) = (G.gram v)⁻¹ * (G.psi v x)ᴴ * G.gram v` using `G.psi_star v x`. Rewrite using `[e, ← mul_assoc, ← mul_assoc, hgg, one_mul, mul_assoc, hgg, mul_one]`. Establish `hshb : sh G ((P.β⁻¹ : G.Cˣ) : G.C) = ((P.β⁻¹ : G.Cˣ) : G.C)`. Establish `h1 : sh G ((P.β⁻¹ : G.Cˣ) : G.C) * sh G (P.β : G.C) = 1`. Simplify using `only [sh]`.
+
+Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]`. Rewrite `h1` using `[P.sym]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [h1, one_mul]`.
+
+Establish `hu : sh G (P.γ : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C) * P.γ = algebraMap ℚ G.C (P.c : ℚ) * ((P.β⁻¹ : G.Cˣ) : G.C)`. Apply `(Units.mul_right_inj (P.γ * P.β)).mp` to reduce the goal to its premises. Rewrite using `[Units.val_mul, ← Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = (P.c : ℚ) • ((P.β : G.C) * ((P.β⁻¹ : G.Cˣ) : G.C) * P.γ) := by`. Rewrite using `[P.sim, ← Algebra.smul_def]`. Simplify using `only [smul_mul_assoc]`. Use `_ = (P.c : ℚ) • ((P.γ : G.C) * P.β * ((P.β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[Units.mul_inv, one_mul, mul_assoc, Units.mul_inv, mul_one]`.
+
+Use `_ = _ := by rw [mul_smul_comm, mul_assoc]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C))ᴴ = _`. Rewrite using `[conjTranspose_mul, (G.gram_herm v).eq, hH, hshb, mul_assoc, hgg', mul_one]`. Establish `hb : IsUnit (G.psi v ((P.β⁻¹ : G.Cˣ) : G.C))` using `(Units.isUnit _).map (G.psi v)`.
+
+Rewrite using `[det_mul]`. Conclude with `mul_ne_zero (G.gram_det v) ((Matrix.isUnit_iff_isUnit_det _).mp hb).ne_zero`. Rewrite using `[hH]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgg', mul_one, map_mul, map_mul]`.
+
+Use `_ = G.gram v * ((P.c : ℚ) • G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[hu, map_mul, RingHom.map_rat_algebraMap, ← Algebra.smul_def]`. Use `_ = _ := by rw [mul_smul_comm, Rat.cast_smul_eq_qsmul]`.
+-/
 theorem dform_laws (P : DPair G) (v : InfinitePlace G.F) :
     (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)).IsHermitian ∧
     (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)).det ≠ 0 ∧
@@ -260,6 +344,13 @@ section Fld
 variable {M : Type} [Field M] [NumberField M] [Algebra G.F M]
 
 omit [NumberField M] in
+/- English proof (translation)
+Use `gen_ind pb (fun y => (P.β : G.C) * sh G (j y) = j (σ y) * P.β) ?_ ?_ ?_ ?_ y` and prove the remaining obligations. Establish `h1 : (P.γ : G.C) * j (σ pb.gen) = algebraMap ℚ G.C P.c`. Rewrite using `[← hj, ← map_mul, mul_comm, hπ, IsScalarTower.algebraMap_apply ℚ G.F G.C, ← j.commutes]`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Use `show (P.β : G.C) * sh G (j pb.gen) = j (σ pb.gen) * P.β`. Apply `P.γ.isUnit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hj, ← mul_assoc, P.sim, ← mul_assoc, h1]`. Introduce `x show (P.β : G.C) * sh G (j (algebraMap G.F M x)) = j (σ (algebraMap G.F M x)) * P.β`. Rewrite using `[hσ, j.commutes, j.commutes, sh, G.star_F, Algebra.commutes]`.
+
+Introduce `x y hx hy show (P.β : G.C) * sh G (j (x + y)) = j (σ (x + y)) * P.β`. Rewrite using `[map_add, sh_add, mul_add, hx, hy, map_add, map_add, add_mul]`. Introduce `x y hx hy show (P.β : G.C) * sh G (j (x * y)) = j (σ (x * y)) * P.β`. Rewrite using `[map_mul, sh_mul, ← mul_assoc, hy, mul_assoc, hx, ← mul_assoc, ← map_mul, ← map_mul, mul_comm y x]`.
+-/
 theorem dconj_law (P : DPair G) (pb : PowerBasis G.F M) (j : M →ₐ[G.F] G.C) (hj : j pb.gen = P.γ) (σ : M →+* M)
     (hσ : ∀ x : G.F, σ (algebraMap G.F M x) = algebraMap G.F M (IsCMField.complexConj G.F x))
     (hπ : σ pb.gen * pb.gen = ((P.c : ℚ) : M)) (y : M) : (P.β : G.C) * sh G (j y) = j (σ y) * P.β := by
@@ -283,12 +374,22 @@ theorem dconj_law (P : DPair G) (pb : PowerBasis G.F M) (j : M →ₐ[G.F] G.C) 
 
 end Fld
 
+/- English proof (translation)
+Distinguish the cases in `hw : sigPosH (G.gram_herm w) = 1`. Conclude with `((Q.posR w x hx).1 hw).ne'`. Conclude with `((Q.posR w x hx).2 hw).ne`.
+-/
 theorem dform_ne (Q : DPair G) (w : InfinitePlace G.F) (x : Fin G.n → ℂ) (hx : x ≠ 0) :
     (star x ⬝ᵥ ((G.gram w * G.psi w ((Q.β⁻¹ : G.Cˣ) : G.C)) *ᵥ x)).re ≠ 0 := by
   by_cases hw : sigPosH (G.gram_herm w) = 1
   · exact ((Q.posR w x hx).1 hw).ne'
   · exact ((Q.posR w x hx).2 hw).ne
 
+/- English proof (translation)
+Use `⟨fun h0 => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y => ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) *ᵥ y) h0` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Establish `h1` using `congrFun this i`. Simplify using `at h1`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hZ, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul]`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+-/
 theorem eig_vec {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) ℂ) (lam : Fin n → ℂ)
     (hZ : g * (Z : Matrix (Fin n) (Fin n) ℂ) = (Z : Matrix (Fin n) (Fin n) ℂ) * Matrix.diagonal lam) (i : Fin n) :
     (Z : Matrix (Fin n) (Fin n) ℂ) *ᵥ Pi.single i 1 ≠ 0 ∧
@@ -306,6 +407,9 @@ theorem eig_vec {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) ℂ) 
     · subst hk; simp
     · simp [hk]
 
+/- English proof (translation)
+Take `⟨Z, lam, _, hroot, hZ⟩` from `deigenbasis Q w`. Take `⟨i, rfl⟩` from `(hroot z).1 hz`. Take `⟨h1, h2, h3⟩` from `dform_laws Q w`. Take `⟨hx0, hx⟩` from `eig_vec _ Z lam hZ i`. Conclude with `norm_eig_of_def _ _ _ (dform_ne Q w) (by rw [h3]; norm_cast) _ _ hx0 hx`.
+-/
 theorem dell_at (Q : DPair G) (w : InfinitePlace G.F) (z : ℂ) (hz : Q.pol.eval₂ w.embedding z = 0) :
     ‖z‖ ^ 2 = ((Q.c : ℚ) : ℝ) := by
   obtain ⟨Z, lam, _, hroot, hZ⟩ := deigenbasis Q w
@@ -314,6 +418,13 @@ theorem dell_at (Q : DPair G) (w : InfinitePlace G.F) (z : ℂ) (hz : Q.pol.eval
   obtain ⟨hx0, hx⟩ := eig_vec _ Z lam hZ i
   exact norm_eig_of_def _ _ _ (dform_ne Q w) (by rw [h3]; norm_cast) _ _ hx0 hx
 
+/- English proof (translation)
+Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Conclude with `dell_at Q (InfinitePlace.mk φ) z (by rw [h]; exact hz)`. Establish `h' : Q.pol.eval₂ (InfinitePlace.mk φ).embedding ((starRingEnd ℂ) z) = 0`. Rewrite using `[h]`. Use `Polynomial.hom_eval₂ Q.pol φ (starRingEnd ℂ) z` as an intermediate fact.
+
+Rewrite `this` using `[hz, map_zero]`. Establish `e : ComplexEmbedding.conjugate φ = (starRingEnd ℂ).comp φ` using `RingHom.ext fun x => ComplexEmbedding.conjugate_coe_eq φ x`. Rewrite using `[e]`. Conclude with `this.symm`. Use `dell_at Q _ _ h'` as an intermediate fact.
+
+Rewrite `this` using `[Complex.norm_conj]`. Then use the resulting hypothesis.
+-/
 theorem dell (Q : DPair G) (φ : G.F →+* ℂ) (z : ℂ) (hz : Q.pol.eval₂ φ z = 0) :
     ‖z‖ ^ 2 = ((Q.c : ℚ) : ℝ) := by
   rcases InfinitePlace.embedding_mk_eq φ with h | h
@@ -333,6 +444,19 @@ variable {M : Type} [Field M] [NumberField M] [Algebra G.F M]
 
 omit [NumberField M] in
 
+/- English proof (translation)
+Take `⟨Z, lam, hinj, hroot, hZ⟩` from `deigenbasis Q w`. Establish `hr : ∀ i, Q.pol.eval₂ w.embedding (lam i) = 0` using `fun i => (hroot _).2 ⟨i, rfl⟩`. Use `choose e he he' using fun i => exists_emb pb w.embedding (lam i) (hpol ▸ hr i)`. Take `⟨h1, h2, h3⟩` from `dform_laws Q w`. Take `⟨d, hd, hD⟩` from `GlobalTheory.T.exists_diagonal_congr_of_similitude_distinct_eigenvalues _ (G.psi w Q.γ) ((Q.c : ℚ) : ℝ) Z lam h1 h2 (by exact_mod_cast Q.c.ne_zero) (by rw [h3]; simp) hinj (fun i => dell_at Q w _ (hr i)) hZ`.
+
+Establish `hl : (fun i => e i pb.gen) = lam` using `funext he'`. Establish `hdi : ∀ i, d i = (star ((Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ Pi.single i 1) ⬝ᵥ ((G.gram w * G.psi w ((Q.β⁻¹ : G.Cˣ) : G.C)) *ᵥ ((Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ Pi.single i 1))).re`. Introduce `i`. Rewrite using `[quad_conj, hD, quad_diag]`. Simplify using `[Pi.single_apply]`.
+
+Use `⟨Z, d, e, he, hl ▸ hinj, fun z hz => ?_, fun y => ?_, fun i hw => ?_, fun i hw => ?_, hD⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `(hroot z).1 hz`. Conclude with `⟨i, (he' i).trans hi⟩`. Use `gen_ind pb (fun y => G.psi w (j y) * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => e i y)) ?_ ?_ ?_ ?_ y` and prove the remaining obligations. Use `show G.psi w (j pb.gen) * _ = _`.
+
+Rewrite using `[hj, hl, hZ]`. Introduce `x show G.psi w (j (algebraMap G.F M x)) * _ = _`. Simplify using `only [he]`. Rewrite using `[j.commutes, G.psi_F]`. Conclude with `(Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).eq`.
+
+Introduce `a b h h' show G.psi w (j (a + b)) * _ = _`. Simplify using `only [map_add]`. Rewrite using `[Matrix.add_mul, h, h', ← Matrix.mul_add, Matrix.diagonal_add]`. Introduce `a b h h' show G.psi w (j (a * b)) * _ = _`. Simplify using `only [map_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, h', ← Matrix.mul_assoc, h, Matrix.mul_assoc, Matrix.diagonal_mul_diagonal]`. Rewrite using `[hdi]`. Conclude with `(Q.posR w _ (eig_vec _ Z lam hZ i).1).1 hw`. Rewrite using `[hdi]`. Conclude with `(Q.posR w _ (eig_vec _ Z lam hZ i).1).2 hw`.
+-/
 theorem dexists_basis (Q : DPair G) (pb : PowerBasis G.F M) (hpol : Q.pol = minpoly G.F pb.gen)
     (j : M →ₐ[G.F] G.C) (hj : j pb.gen = Q.γ) (w : InfinitePlace G.F) :
     ∃ (Z : GL (Fin G.n) ℂ) (d : Fin G.n → ℝ) (e : Fin G.n → (M →+* ℂ)),
@@ -381,6 +505,9 @@ theorem dexists_basis (Q : DPair G) (pb : PowerBasis G.F M) (hpol : Q.pol = minp
 
 end Fld2
 
+/- English proof (translation)
+Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use `congrArg (fun x => ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) *ᵥ x) h0` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.mulVec_zero]`.
+-/
 theorem gl_mulVec_ne {n : ℕ} (Z : GL (Fin n) ℂ) (y : Fin n → ℂ) (hy : y ≠ 0) :
     (Z : Matrix (Fin n) (Fin n) ℂ) *ᵥ y ≠ 0 := by
   intro h0
@@ -388,6 +515,11 @@ theorem gl_mulVec_ne {n : ℕ} (Z : GL (Fin n) ℂ) (y : Fin n → ℂ) (hy : y 
   have := congrArg (fun x => ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) *ᵥ x) h0
   simpa only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.mulVec_zero] using this
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hB]`. Use `_ = _ := by`. Rewrite using `[hD, Matrix.diagonal_mul_diagonal]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diag_mul {n : ℕ} (H B : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) ℂ) (d b : Fin n → ℝ)
     (hD : (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * H * (Z : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal (fun i => (d i : ℂ)))
     (hB : B * (Z : Matrix (Fin n) (Fin n) ℂ) = (Z : Matrix (Fin n) (Fin n) ℂ) * Matrix.diagonal (fun i => (b i : ℂ))) :
@@ -399,10 +531,18 @@ theorem diag_mul {n : ℕ} (H B : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) �
     _ = _ := by
         rw [hD, Matrix.diagonal_mul_diagonal]; congr 1; funext i; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[quad_diag]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem quad_single {n : ℕ} (r : Fin n → ℝ) (i : Fin n) :
     (star (Pi.single i (1 : ℂ) : Fin n → ℂ) ⬝ᵥ (Matrix.diagonal (fun k => (r k : ℂ)) *ᵥ Pi.single i 1)).re = r i := by
   rw [quad_diag]; simp [Pi.single_apply]
 
+/- English proof (translation)
+Use `set y := ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) *ᵥ x with hy`. Establish `hxy : x = (Z : Matrix (Fin n) (Fin n) ℂ) *ᵥ y`. Rewrite using `[hy, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hy0 : y ≠ 0` using `gl_mulVec_ne _ _ hx`. Rewrite using `[hxy, quad_conj, hZ, quad_diag]`.
+
+Take `⟨k, hk⟩` from `Function.ne_iff.1 hy0`. Conclude with `Finset.sum_pos' (fun i _ => mul_nonneg (hr i).le (Complex.normSq_nonneg _)) ⟨k, Finset.mem_univ _, mul_pos (hr k) (Complex.normSq_pos.2 hk)⟩`.
+-/
 theorem pos_of_diag {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) ℂ) (r : Fin n → ℝ)
     (hZ : (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * H * (Z : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal (fun i => (r i : ℂ)))
     (hr : ∀ i, 0 < r i) (x : Fin n → ℂ) (hx : x ≠ 0) : 0 < (star x ⬝ᵥ (H *ᵥ x)).re := by
@@ -415,6 +555,9 @@ theorem pos_of_diag {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) �
   exact Finset.sum_pos' (fun i _ => mul_nonneg (hr i).le (Complex.normSq_nonneg _))
     ⟨k, Finset.mem_univ _, mul_pos (hr k) (Complex.normSq_pos.2 hk)⟩
 
+/- English proof (translation)
+Establish `h` using `pos_of_diag (-H) Z (fun i => -r i) (by`. Apply the tactic sequence `rw [Matrix.mul_neg, Matrix.neg_mul, hZ]; ext i k; by_cases h : i = k <;> simp [Matrix.diagonal_apply, h])`. Use the proof step `(fun i => neg_pos.2 (hr i)) x hx`. Rewrite `h` using `[Matrix.neg_mulVec, dotProduct_neg, Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_of_diag {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (Z : GL (Fin n) ℂ) (r : Fin n → ℝ)
     (hZ : (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * H * (Z : Matrix (Fin n) (Fin n) ℂ) = Matrix.diagonal (fun i => (r i : ℂ)))
     (hr : ∀ i, r i < 0) (x : Fin n → ℂ) (hx : x ≠ 0) : (star x ⬝ᵥ (H *ᵥ x)).re < 0 := by
@@ -428,6 +571,9 @@ section Fld3
 variable {M : Type} [Field M] [NumberField M] [Algebra G.F M]
 
 omit [NumberField M] in
+/- English proof (translation)
+Establish `h0` using `emb_root pb η`. Rewrite `h0` using `[← hpol, show η.comp (algebraMap G.F M) = w.embedding from RingHom.ext hη]`. Take `⟨i, hi⟩` from `hsurj _ h0`. Conclude with `⟨i, emb_ext pb _ _ (fun x => (he i x).trans (hη x).symm) hi⟩`.
+-/
 theorem emb_index (pb : PowerBasis G.F M) (w : InfinitePlace G.F) (pol : Polynomial G.F)
     (hpol : pol = minpoly G.F pb.gen) (e : Fin G.n → (M →+* ℂ))
     (he : ∀ i x, e i (algebraMap G.F M x) = w.embedding x)
@@ -440,6 +586,23 @@ theorem emb_index (pb : PowerBasis G.F M) (w : InfinitePlace G.F) (pol : Polynom
 
 omit [NumberField M] in
 
+/- English proof (translation)
+Establish `hdiag : ∀ (w : InfinitePlace G.F) (Z : GL (Fin G.n) ℂ) (d : Fin G.n → ℝ) (e : Fin G.n → (M →+* ℂ)), (∀ y, G.psi w (j y) * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => e i y)) → (Z : Matrix (Fin G.n) (Fin G.n) ℂ)ᴴ * (G.gram w …`. Introduce `w Z d e hZ hD`. Establish `hB : G.psi w (j b) * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => (((e i b).re : ℝ) : ℂ))`. Rewrite using `[hZ]`. Use `congr 2`.
+
+Conclude with `funext fun i => hb _`. Rewrite using `[map_mul, ← Matrix.mul_assoc (G.gram w)]`. Conclude with `diag_mul (G.gram w * G.psi w ((Q.β⁻¹ : G.Cˣ) : G.C)) (G.psi w (j b)) Z d (fun i => (e i b).re) hD hB`. Use `⟨fun w => ?_, ?_⟩` and prove the remaining obligations. Take `⟨Z, d, e, he, hinj, hsurj, hZ, hdp, hdn, hD⟩` from `dexists_basis Q pb hpol j hj w`.
+
+Establish `hD'` using `hdiag w Z d e hZ hD`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Take `⟨i₀, hi₀⟩` from `emb_index pb w Q.pol hpol e he hsurj ε hε`. Establish `hr : ∀ i, i ≠ i₀ → d i * (e i b).re < 0` using `fun i hi => mul_neg_of_pos_of_neg (hdp i hv) (hb2 _ (he i) fun h => hi (hinj (by simp only [h, hi₀])))`.
+
+Establish `hr0 : 0 < d i₀ * (e i₀ b).re` using `mul_pos (hdp i₀ hv) (hi₀ ▸ hb1)`. Use `congr_of_diag _ _ (G.gram_herm w) (G.gram_det w) Z _ (fun i => ?_) hD' ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Conclude with `hr0.ne'`.
+
+Conclude with `(hr i hi).ne`. Rewrite using `[hv, Fintype.card_eq_one_iff]`. Use `⟨⟨i₀, hr0⟩, fun ⟨i, hi⟩ => Subtype.ext ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `lt_asymm hi (hr i hne)`.
+
+Establish `hs` using `sig_zero ha hv hw`. Establish `hr : ∀ i, d i * (e i b).re < 0` using `fun i => mul_neg_of_neg_of_pos (hdn i (by rw [hs]; exact zero_ne_one)) (hb3 w hw _ (he i))`. Use `congr_of_diag _ _ (G.gram_herm w) (G.gram_det w) Z _ (fun i => (hr i).ne) hD' ?_` and prove the remaining obligations. Rewrite using `[hs, Fintype.card_eq_zero_iff]`. Conclude with `⟨fun ⟨i, hi⟩ => lt_asymm hi (hr i)⟩`.
+
+Take `⟨Z, d, e, he, hinj, hsurj, hZ, hdp, hdn, hD⟩` from `dexists_basis Q pb hpol j hj v`. Establish `hD'` using `hdiag v Z d e hZ hD`. Take `⟨i₀, hi₀⟩` from `emb_index pb v Q.pol hpol e he hsurj ε hε`. Establish `hg : G.psi v Q.γ * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => e i pb.gen)`. Rewrite using `[← hj]`.
+
+Conclude with `hZ pb.gen`. Take `⟨_, hx⟩` from `eig_vec _ Z _ hg i₀`. Use `⟨_, by rw [hx, hi₀], ?_⟩` and prove the remaining obligations. Rewrite using `[quad_conj, hD', quad_single]`. Conclude with `mul_pos (hdp i₀ hv) (hi₀ ▸ hb1)`.
+-/
 theorem dreal_move (ha : G.a = 1) (Q : DPair G) (pb : PowerBasis G.F M) (hpol : Q.pol = minpoly G.F pb.gen)
     (j : M →ₐ[G.F] G.C) (hj : j pb.gen = Q.γ) (v : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1)
     (ε : M →+* ℂ) (hε : ∀ x, ε (algebraMap G.F M x) = v.embedding x) (b : M)
@@ -500,6 +663,21 @@ theorem dreal_move (ha : G.a = 1) (Q : DPair G) (pb : PowerBasis G.F M) (hpol : 
 
 omit [NumberField M] in
 
+/- English proof (translation)
+Take `⟨Z, d, e, he, hinj, hsurj, hZ, hd, hD⟩` from `exists_basis ha P _ hm pb hpol j hj w`. Establish `hD' : (Z : Matrix (Fin G.n) (Fin G.n) ℂ)ᴴ * (G.gram w * G.psi w (((P.β⁻¹ : G.Cˣ) : G.C) * j b)) * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = Matrix.diagonal (fun i => ((d i * (e i b).re : ℝ) : ℂ))`. Establish `hB : G.psi w (j b) * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => (((e i b).re : ℝ) : ℂ))`. Rewrite using `[hZ]`. Use `congr 2`.
+
+Conclude with `funext fun i => hb _`. Rewrite using `[map_mul, ← Matrix.mul_assoc (G.gram w)]`. Conclude with `diag_mul (G.gram w * G.psi w ((P.β⁻¹ : G.Cˣ) : G.C)) (G.psi w (j b)) Z d (fun i => (e i b).re) hD hB`. Take `⟨W, hW⟩` from `GlobalTheory.T.similitudePair_gram_inv_congruent p G P w`. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Use `⟨fun _ => pos_of_diag _ Z _ hD' (fun i => ?_) x hx, fun h => absurd hv h⟩` and prove the remaining obligations. Take `⟨i₀, hi₀⟩` from `emb_index pb w P.pol hpol e he hsurj ε hε`. Establish `hm'` using `hm`. Take `⟨v₀, hv₀, y, hy, hpos⟩` from `hm'`.
+
+Take `rfl : v₀ = w` from `place_unique ha hv hv₀`. Establish `hg : G.psi v₀ P.γ * (Z : Matrix (Fin G.n) (Fin G.n) ℂ) = (Z : Matrix (Fin G.n) (Fin G.n) ℂ) * Matrix.diagonal (fun i => e i pb.gen)`. Rewrite using `[← hj]`. Conclude with `hZ pb.gen`. Take `⟨hd0, hdn⟩` from `GlobalTheory.T.diagonal_sign_of_positive_eigenvector_one_positive _ _ (G.psi v₀ P.γ) (G.gram_herm v₀) W Z _ d (G.gram_det v₀) hv hW hD hinj hg i₀ y (by rw [hy, hi₀]) hpos`.
+
+Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Conclude with `mul_pos hd0 (hi₀ ▸ hb1)`. Conclude with `mul_pos_of_neg_of_neg (hdn i hi) (hb2 _ (he i) fun h => hi (hinj (by simp only [h, hi₀])))`. Establish `hs` using `sig_zero ha hv hw`.
+
+Use `⟨fun h => absurd h (by rw [hs]; exact zero_ne_one), fun _ => neg_of_diag _ Z _ hD' (fun i => ?_) x hx⟩` and prove the remaining obligations. Establish `hdi : d i = (star ((Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ Pi.single i 1) ⬝ᵥ ((G.gram w * G.psi w ((P.β⁻¹ : G.Cˣ) : G.C)) *ᵥ ((Z : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ Pi.single i 1))).re`. Rewrite using `[quad_conj, hD, quad_single]`. Establish `hneg : d i < 0`. Rewrite using `[hdi, hW, ← quad_conj]`.
+
+Conclude with `GlobalTheory.T.negDef_of_hermitianMatrixPositiveIndex_eq_zero _ (G.gram_herm w) (G.gram_det w) hs _ (gl_mulVec_ne _ _ (gl_mulVec_ne _ _ (by simp)))`. Conclude with `mul_neg_of_neg_of_pos hneg (hb3 w hw _ (he i))`.
+-/
 theorem real_back (ha : G.a = 1) (P : Pair G) (pb : PowerBasis G.F M) (hpol : P.pol = minpoly G.F pb.gen)
     (j : M →ₐ[G.F] G.C) (hj : j pb.gen = P.γ) (v : InfinitePlace G.F) (hv : sigPosH (G.gram_herm v) = 1)
     (ε : M →+* ℂ) (hε : ∀ x, ε (algebraMap G.F M x) = v.embedding x) (hm : P.Mark (ε pb.gen)) (b : M)
@@ -548,6 +726,9 @@ theorem real_back (ha : G.a = 1) (P : Pair G) (pb : PowerBasis G.F M) (hpol : P.
 
 end Fld3
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by rw [ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+-/
 theorem conj_conj {K : Type} [Field K] (φ : K →+* ℂ) :
     ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ :=
   RingHom.ext fun x => by
@@ -560,6 +741,13 @@ def sset (τ : G.F →+* ℂ) (ε : M →+* ℂ) : Finset (M →+* ℂ) :=
   Finset.univ.filter (fun φ => ((∀ x, φ (algebraMap G.F M x) = τ x) ∧ φ ≠ ε) ∨
     ((∀ x, ComplexEmbedding.conjugate φ (algebraMap G.F M x) = τ x) ∧ ComplexEmbedding.conjugate φ ≠ ε))
 
+/- English proof (translation)
+Establish `hne : minpoly G.F pb.gen ≠ 0` using `minpoly.ne_zero pb.isIntegral_gen`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.card_bij (fun φ _ => φ pb.gen) (fun φ hφ => ?_) (fun φ hφ ψ hψ h => ?_) (fun z hz => ?_)` and prove the remaining obligations. Rewrite `hφ` using `[Finset.mem_filter]`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots_map_of_injective τ.injective hne]`.
+
+Establish `h0` using `emb_root pb φ`. Rewrite `h0` using `[show φ.comp (algebraMap G.F M) = τ from RingHom.ext hφ.2]`. Then use the resulting hypothesis. Rewrite `hφ`, `hψ` using `[Finset.mem_filter]`. Conclude with `emb_ext pb φ ψ (fun x => (hφ.2 x).trans (hψ.2 x).symm) h`. Rewrite `hz` using `[Multiset.mem_toFinset, Polynomial.mem_roots_map_of_injective τ.injective hne]`.
+
+Take `⟨e, he, he'⟩` from `exists_emb pb τ z hz`. Conclude with `⟨e, Finset.mem_filter.2 ⟨Finset.mem_univ _, he⟩, he'⟩`. Use `_ = n := by`. Rewrite using `[Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hs.map), IsAlgClosed.card_roots_eq_natDegree, Polynomial.natDegree_map, hn]`.
+-/
 theorem card_over (pb : PowerBasis G.F M) (τ : G.F →+* ℂ) (n : ℕ) (hn : (minpoly G.F pb.gen).natDegree = n)
     (hs : (minpoly G.F pb.gen).Separable) :
     (Finset.univ.filter (fun φ : M →+* ℂ => ∀ x, φ (algebraMap G.F M x) = τ x)).card = n := by
@@ -579,6 +767,17 @@ theorem card_over (pb : PowerBasis G.F M) (τ : G.F →+* ℂ) (n : ℕ) (hn : (
         rw [Multiset.toFinset_card_of_nodup (Polynomial.nodup_roots hs.map), IsAlgClosed.card_roots_eq_natDegree,
           Polynomial.natDegree_map, hn]
 
+/- English proof (translation)
+Use `set T := Finset.univ.filter (fun φ : M →+* ℂ => (∀ x, φ (algebraMap G.F M x) = τ x) ∧ φ ≠ ε) with hT`. Use `set T' := Finset.univ.filter (fun φ : M →+* ℂ => (∀ x, ComplexEmbedding.conjugate φ (algebraMap G.F M x) = τ x) ∧ ComplexEmbedding.conjugate φ ≠ ε) with hT'`. Establish `hu : sset τ ε = T ∪ T'` using `by rw [sset, Finset.filter_or]`. Establish `hdis : Disjoint T T'`. Rewrite using `[hT, hT', Finset.disjoint_filter]`.
+
+Introduce `φ _ h1 h2`. Conclude with `ne_conj τ φ (ComplexEmbedding.conjugate φ) h1.1 h2.1 (conj_conj φ).symm`. Establish `hcT : T.card = n - 1`. Establish `e : T = (Finset.univ.filter (fun φ : M →+* ℂ => ∀ x, φ (algebraMap G.F M x) = τ x)).erase ε`. Use extensionality with `φ`.
+
+Simplify using `[hT, and_comm]`. Rewrite using `[e, Finset.card_erase_of_mem (Finset.mem_filter.2 ⟨Finset.mem_univ _, hε⟩), card_over pb τ n hn hs]`. Establish `hcT' : T'.card = T.card`. Use `Finset.card_nbij' ComplexEmbedding.conjugate ComplexEmbedding.conjugate ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `φ hφ`.
+
+Simplify `hφ` using `[hT, hT']`. Introduce `φ hφ`. Simplify `hφ` using `[hT, hT', conj_conj]`. Introduce `φ _`. Conclude with `conj_conj φ`.
+
+Introduce `φ _`. Conclude with `conj_conj φ`. Rewrite using `[hu, Finset.card_union_of_disjoint hdis, hcT', hcT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_sset (pb : PowerBasis G.F M) (n : ℕ) (hn : (minpoly G.F pb.gen).natDegree = n)
     (hs : (minpoly G.F pb.gen).Separable) (τ : G.F →+* ℂ) (ε : M →+* ℂ)
     (hε : ∀ x, ε (algebraMap G.F M x) = τ x) : (sset τ ε).card = 2 * (n - 1) := by
@@ -608,6 +807,49 @@ end Fld4
 section Core
 variable {M : Type} [Field M] [NumberField M] [Algebra G.F M]
 
+/- English proof (translation)
+Take `⟨σ, hσ, hπ, hφ⟩` from `GlobalTheory.T.cmField_conj_extends_of_adjoin_absSq G.F M pb.gen (c0 : ℚ) pb.adjoin_gen_eq_top c0.ne_zero hc0`. Take `⟨ε, hε, rfl⟩` from `exists_emb pb v.embedding μ hμ`. Establish `hσ1 : σ ≠ RingHom.id M`. Introduce `h`. Apply `IsCMField.complexConj_ne_one G.F` to reduce the goal to its premises.
+
+Use extensionality with `x`. Apply `(algebraMap G.F M).injective` to reduce the goal to its premises. Rewrite using `[← hσ, h]`. Both sides reduce to the same expression. Establish `hS : ∀ φ ∈ sset v.embedding ε, ComplexEmbedding.conjugate φ ∈ sset v.embedding ε`.
+
+Introduce `φ hφ`. Simplify using `only [sset, Finset.mem_filter, Finset.mem_univ, true_and, conj_conj] at hφ ⊢`. Conclude with `hφ.symm`. Establish `hcard : 4 ∣ (sset v.embedding ε).card`. Rewrite using `[card_sset pb G.n hdeg hsep _ ε hε]`.
+
+Take `⟨k, hk⟩` from `hn`. Rewrite using `[hk, Nat.add_sub_cancel]`. Conclude with `⟨k, by ring⟩`. Take `⟨a, ha0, hσa, hneg, hpos, u, hu⟩` from `GlobalTheory.T.exists_totallyReal_even_neg_places_local_norm M σ hσ1 hφ (sset v.embedding ε) hS hcard p`. Take `⟨A, hA⟩` from `pb.exists_eq_aeval' a`.
+
+Establish `hreal : ∀ φ : M →+* ℂ, φ a = ((φ a).re : ℂ)` using `fun φ => by`. Use `hφ φ a` as an intermediate fact. Rewrite `this` using `[hσa]`. Conclude with `(Complex.conj_eq_iff_re.1 this.symm).symm`. Establish `hinv : ∀ φ : M →+* ℂ, φ a⁻¹ = (((φ a).re⁻¹ : ℝ) : ℂ)` using `fun φ => by`.
+
+Rewrite using `[map_inv₀, Complex.ofReal_inv, ← hreal]`. Establish `hinv' : ∀ φ : M →+* ℂ, (φ a⁻¹).re = (φ a).re⁻¹` using `fun φ => by rw [hinv, Complex.ofReal_re]`. Establish `hs1 : 0 < (ε a).re`. Use `hpos ε fun h => ?_` and prove the remaining obligations. Simplify using `only [sset, Finset.mem_filter, Finset.mem_univ, true_and] at h`.
+
+Break down `h with h | h` into its components or cases. Conclude with `h.2 rfl`. Conclude with `ne_conj v.embedding ε (ComplexEmbedding.conjugate ε) hε h.1 (conj_conj ε).symm`. Establish `hs2 : ∀ φ : M →+* ℂ, (∀ x, φ (algebraMap G.F M x) = v.embedding x) → φ ≠ ε → (φ a).re < 0` using `fun φ h1 h2 => hneg φ (by`. Simplify using `only [sset, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Conclude with `Or.inl ⟨h1, h2⟩)`. Establish `hs3 : ∀ w : InfinitePlace G.F, w ≠ v → ∀ φ : M →+* ℂ, (∀ x, φ (algebraMap G.F M x) = w.embedding x) → 0 < (φ a).re`. Introduce `w hw φ hφw`. Use `hpos φ fun h => ?_` and prove the remaining obligations. Simplify using `only [sset, Finset.mem_filter, Finset.mem_univ, true_and] at h`.
+
+Break down `h with h | h` into its components or cases. Conclude with `hw (place_eq v w φ φ hφw h.1 (Or.inl rfl))`. Conclude with `hw (place_eq v w φ _ hφw h.1 (Or.inr (conj_conj φ).symm))`. Use `⟨A, fun Q hQ hc => ?_, fun P hP hc hm => ?_⟩` and prove the remaining obligations. Establish `h0 : Polynomial.aeval (Q.γ : G.C) (minpoly G.F pb.gen) = 0`.
+
+Rewrite using `[← hQ]`. Conclude with `minpoly.aeval _ _`. Set `j : M →ₐ[G.F] G.C` to `pb.lift (Q.γ : G.C) h0`. Establish `hj : j pb.gen = Q.γ` using `pb.lift_gen _ h0`. Establish `hja : j a = Polynomial.aeval (Q.γ : G.C) A` using `by rw [hA, ← Polynomial.aeval_algHom_apply, hj]`.
+
+Establish `hlaw` using `dconj_law Q pb j hj σ hσ (by rw [hc]; exact hπ)`. Establish `hcomm` using `comm_law (Q.γ : G.C) pb j hj`. Set `β' : G.Cˣ` to `Units.map (j : M →* G.C) (Units.mk0 a ha0) * Q.β`. Establish `hβ' : (β' : G.C) = j a * Q.β` using `rfl`. Establish `hβi : ((β'⁻¹ : G.Cˣ) : G.C) = ((Q.β⁻¹ : G.Cˣ) : G.C) * j a⁻¹`.
+
+Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hβ', mul_assoc, ← mul_assoc (Q.β : G.C), Units.mul_inv, one_mul, ← map_mul, mul_inv_cancel₀ ha0, map_one]`. Take `⟨U, hU, hUc⟩` from `GlobalTheory.T.exists_adelicUnit_carrying_form_to_normMultiple p G Q.β M (j : M →+* G.C) σ hlaw a u hu`. Take `⟨x, t, hx⟩` from `Q.trivAf`. Establish `hx' : Triv G (AfP p) β' (x * U⁻¹) t` using `triv_mul_inv (AfP p) _ _ x U t hU hx`.
+
+Take `⟨hR, hM⟩` from `dreal_move ha Q pb hQ j hj v hv ε hε a⁻¹ (fun φ => by rw [hinv', hinv]) (by rw [hinv']; exact inv_pos.2 hs1) (fun φ h1 h2 => by rw [hinv']; exact inv_lt_zero.2 (hs2 φ h1 h2)) (fun w hw φ h => by rw [hinv']; exact inv_pos.2 (hs3 w hw φ h))`. Rewrite `hR`, `hM` using `[← hβi]`. Set `P : Pair G` to `{ β := β' γ := Q.γ c := Q.c sym := by rw [hβ', sh_mul, Q.sym, hlaw, hσa] sim := by`. Rewrite using `[hβ', ← mul_assoc, hcomm _ rfl, mul_assoc, mul_assoc, ← mul_assoc (Q.γ : G.C), Q.sim, ← mul_assoc, ← mul_assoc, Algebra.commutes]`. Use `reg := Q.reg`.
+
+Use `trivAf := ⟨_, t, hx'⟩`. Use `trivR := GlobalTheory.T.hermitianTriple_trivial_over_reals_of_gram_congruent p G β' hR }`. Conclude with `⟨P, rfl, rfl, by rw [← hja]; exact hβ', ⟨v, hv, hM⟩, U, (hUc _ fun m => hcomm _ rfl m).symm, hU⟩`. Establish `h0 : Polynomial.aeval (P.γ : G.C) (minpoly G.F pb.gen) = 0`. Rewrite using `[← hP]`.
+
+Conclude with `minpoly.aeval _ _`. Set `j : M →ₐ[G.F] G.C` to `pb.lift (P.γ : G.C) h0`. Establish `hj : j pb.gen = P.γ` using `pb.lift_gen _ h0`. Establish `hja : j a = Polynomial.aeval (P.γ : G.C) A` using `by rw [hA, ← Polynomial.aeval_algHom_apply, hj]`. Establish `hlawP` using `conj_law P pb j hj σ hσ (by rw [hc]; exact hπ)`.
+
+Establish `hcomm` using `comm_law (P.γ : G.C) pb j hj`. Set `β' : G.Cˣ` to `Units.map (j : M →* G.C) (Units.mk0 a⁻¹ (inv_ne_zero ha0)) * P.β`. Establish `hβ' : (β' : G.C) = j a⁻¹ * P.β` using `rfl`. Establish `hβi : ((β'⁻¹ : G.Cˣ) : G.C) = ((P.β⁻¹ : G.Cˣ) : G.C) * j a`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises.
+
+Rewrite using `[hβ', mul_assoc, ← mul_assoc (P.β : G.C), Units.mul_inv, one_mul, ← map_mul, inv_mul_cancel₀ ha0, map_one]`. Establish `hlawQ : ∀ y : M, (β' : G.C) * sh G (j y) = j (σ y) * β'`. Introduce `y`. Rewrite using `[hβ', mul_assoc, hlawP y, ← mul_assoc, ← mul_assoc, ← map_mul, ← map_mul, mul_comm a⁻¹ (σ y)]`. Take `⟨U, hU, hUc⟩` from `GlobalTheory.T.exists_adelicUnit_carrying_form_to_normMultiple p G (β' : G.C) M (j : M →+* G.C) σ hlawQ a u hu`.
+
+Establish `hjβ : j a * (β' : G.C) = P.β`. Rewrite using `[hβ', ← mul_assoc, ← map_mul, mul_inv_cancel₀ ha0, map_one, one_mul]`. Establish `hjβ' : (j : M →+* G.C) a * (β' : G.C) = P.β` using `hjβ`. Rewrite `hU` using `[hjβ']`. Take `⟨x, t, hx⟩` from `P.trivAf`.
+
+Establish `hx' : Triv G (AfP p) β' (x * U) t` using `triv_mul (AfP p) _ _ x U t hU hx`. Establish `hposQ` using `real_back ha P pb hP j hj v hv ε hε hm a hreal hs1 hs2 hs3`. Set `Q : DPair G` to `{ β := β' γ := P.γ c := P.c sym := by rw [hβ', sh_mul, P.sym, hlawP, map_inv₀, hσa] sim := by`. Rewrite using `[hβ', ← mul_assoc, hcomm _ rfl, mul_assoc, mul_assoc, ← mul_assoc (P.γ : G.C), P.sim, ← mul_assoc, ← mul_assoc, Algebra.commutes]`. Use `reg := P.reg`.
+
+Use `trivAf := ⟨_, t, hx'⟩`. Use `posR := by`. Introduce `w y hy`. Rewrite using `[hβi]`. Conclude with `hposQ w y hy }`.
+
+Conclude with `⟨Q, rfl, rfl, by rw [← hja]; exact hjβ.symm, U, (hUc _ fun m => hcomm _ rfl m).symm, hU⟩`.
+-/
 theorem core (ha : G.a = 1) (hn : Odd G.n) (pb : PowerBasis G.F M) (hdeg : (minpoly G.F pb.gen).natDegree = G.n)
     (hsep : (minpoly G.F pb.gen).Separable) (c0 : ℚˣ) (μ : ℂ) (v : InfinitePlace G.F)
     (hv : sigPosH (G.gram_herm v) = 1) (hμ : (minpoly G.F pb.gen).eval₂ v.embedding μ = 0)
@@ -747,6 +989,17 @@ namespace GlobalTheory.LKDef
 
 open GlobalTheory.LKMid.MoveMark
 
+/- English proof (translation)
+Introduce `p _ G ha hn P0 μ v hv hirr hμ`. Distinguish the cases in `hex : (∃ Q : DPair G, Q.pol = P0) ∨ (∃ P : Pair G, P.pol = P0 ∧ P.Mark μ)`. Use `swap`. Use `push_neg at hex`. Conclude with `⟨1, fun Q hQ => absurd hQ (hex.1 Q), fun P hP hm => absurd hm (hex.2 P hP)⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c0, γ0, hγ0, hreg, hc0⟩ : ∃ (c0 : ℚˣ) (γ0 : G.C), minpoly G.F γ0 = P0 ∧ ((minpoly G.F γ0).natDegree = G.n ∧ (minpoly G.F γ0).Separable) ∧ ∀ (φ : G.F →+* ℂ) (z : ℂ), P0.eval₂ φ z = 0 → ‖z‖ ^ 2 = ((c0 : ℚ) : ℝ) := by`. Break down `hex with ⟨Q, hQ⟩ | ⟨P, hP, hm⟩` into its components or cases. Conclude with `⟨Q.c, Q.γ, hQ, Q.reg, fun φ z hz => DMove.dell Q φ z (by rw [hQ]; exact hz)⟩`. Conclude with `⟨P.c, P.γ, hP, P.reg, fun φ z hz => GlobalTheory.T.marked_similitude_pair_minpoly_roots_normSq_eq p G P μ ha hm φ z (by rw [hP]; exact hz)⟩`. Establish `hmon : P0.Monic` using `hγ0 ▸ minpoly.monic (Algebra.IsIntegral.isIntegral _)`.
+
+Use `haveI : Fact (Irreducible P0) := ⟨hirr⟩`. Set `pb` to `AdjoinRoot.powerBasis hmon.ne_zero`. Use `haveI : Module.Finite G.F (AdjoinRoot P0) := pb.finite`. Use `haveI : NumberField (AdjoinRoot P0) := NumberField.of_module_finite G.F _`. Establish `hmin : minpoly G.F pb.gen = P0` using `AdjoinRoot.minpoly_powerBasis_gen_of_monic hmon`.
+
+Establish `hcore` using `DMove.core ha hn pb (by rw [hmin, ← hγ0]; exact hreg.1) (by rw [hmin, ← hγ0]; exact hreg.2) c0 μ v hv (by rw [hmin]; exact hμ) (fun φ => hc0 _ _ (by have h := emb_root pb φ; rw [hmin] at h; exact h))`. Rewrite `hcore` using `[hmin]`. Take `⟨A, h1, h2⟩` from `hcore`. Establish `e2` using `hc0 v.embedding μ hμ`. Use `⟨A, fun Q hQ => h1 Q hQ ?_, fun P hP hm => h2 P hP ?_ hm⟩` and prove the remaining obligations.
+
+Establish `e1` using `DMove.dell Q v.embedding μ (by rw [hQ]; exact hμ)`. Conclude with `Units.ext (by exact_mod_cast e1.symm.trans e2)`. Establish `e1` using `GlobalTheory.T.marked_similitude_pair_minpoly_roots_normSq_eq p G P μ ha hm v.embedding μ (by rw [hP]; exact hμ)`. Conclude with `Units.ext (by exact_mod_cast e1.symm.trans e2)`.
+-/
 theorem move_definite : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → Odd G.n → ∀ (P0 : Polynomial G.F) (μ : ℂ) (v : InfinitePlace G.F), sigPosH (G.gram_herm v) = 1 → Irreducible P0 → P0.eval₂ v.embedding μ = 0 → ∃ A : Polynomial G.F, (∀ Q : DPair G, Q.pol = P0 → ∃ P : Pair G, P.γ = Q.γ ∧ P.c = Q.c ∧ (P.β : G.C) = Polynomial.aeval (Q.γ : G.C) A * Q.β ∧ P.Mark μ ∧ (∃ u : (AfP p ⊗[ℚ] G.C)ˣ, (u : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (Q.γ : G.C) = inC G (AfP p) (Q.γ : G.C) * u ∧ (u : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (Q.β : G.C) * (starT G.star (AfP p) u).unop = inC G (AfP p) (P.β : G.C))) ∧ (∀ P : Pair G, P.pol = P0 → P.Mark μ → ∃ Q : DPair G, Q.γ = P.γ ∧ Q.c = P.c ∧ (P.β : G.C) = Polynomial.aeval (P.γ : G.C) A * Q.β ∧ (∃ u : (AfP p ⊗[ℚ] G.C)ˣ, (u : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (Q.γ : G.C) = inC G (AfP p) (Q.γ : G.C) * u ∧ (u : AfP p ⊗[ℚ] G.C) * inC G (AfP p) (Q.β : G.C) * (starT G.star (AfP p) u).unop = inC G (AfP p) (P.β : G.C))) := by
   intro p _ G ha hn P0 μ v hv hirr hμ
   by_cases hex : (∃ Q : DPair G, Q.pol = P0) ∨ (∃ P : Pair G, P.pol = P0 ∧ P.Mark μ)

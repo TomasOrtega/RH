@@ -23,6 +23,11 @@ def thProd (X : PT E) (s : (Fin 1 → Vsp X.dim) → ℂ) (a : Fin X.r → Vsp X
 def thVal (X : PT E) (s : (Fin 1 → Vsp X.dim) → ℂ) (a : Vsp X.dim) : ℂ :=
   X.U 1 (fun _ => -a) s 0 / (Real.sqrt (X.l2 1 s) : ℂ)
 
+/- English proof (translation)
+Unfold `thVal thRatio PT.U PT.ptN2`. Establish `h0 : HC (0 : Fin 1 → Vsp X.dim) (fun _ => -a) = 0` using `by simp [HC, Hf]`. Establish `h1 : HC (fun _ : Fin 1 => -a) (fun _ => -a) = HC (fun _ : Fin 1 => a) (fun _ => a)` using `by simp [HC, Hf]`. Establish `h2 : (0 : Fin 1 → Vsp X.dim) - (fun _ => -a) = fun _ => a` using `by funext _; simp`. Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), h0, h1, h2, norm_mul, Complex.norm_exp, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _), mul_comm]`.
+
+Use `congr 2`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.exp_mul]`. Use `congr 1`. Simplify using `[Complex.div_ofNat_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_thVal (X : PT E) (s : (Fin 1 → Vsp X.dim) → ℂ) (a : Vsp X.dim) : ‖thVal X s a‖ = thRatio X s a := by
   unfold thVal thRatio PT.U PT.ptN2
   have h0 : HC (0 : Fin 1 → Vsp X.dim) (fun _ => -a) = 0 := by simp [HC, Hf]
@@ -53,6 +58,11 @@ def ProdForm (X : PT E) (s : (Fin 1 → Vsp X.dim) → ℂ) (r1 : ℕ) (Nc : ℝ
     (∀ g t, ∃ n : ℕ, 0 < n ∧ ζ g t ^ n = 1) ∧ (∀ g t, AdmTransl X r1 (a g t)) ∧
     y = ‖∏ g, ∑ t, (c g t : ℂ) * ζ g t * ∏ b, thVal X s (a g t b)‖
 
+/- English proof (translation)
+Take `⟨M, c, ζ, a, hM, hc, hζ, ha, rfl⟩` from `h`. Use `⟨M, c, a, hM, hc, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun g _ => (norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Take `⟨n, hn, h1⟩` from `hζ g t`. Rewrite using `[norm_mul, norm_mul, Complex.norm_eq_one_of_pow_eq_one h1 hn.ne', mul_one, norm_prod, Complex.norm_intCast]`. Simplify using `only [norm_thVal, thProd]`.
+-/
 theorem ProdForm.prodBound {X : PT E} {s : (Fin 1 → Vsp X.dim) → ℂ} {r1 : ℕ} {Nc : ℝ} {i : ℕ} {y : ℝ}
     (h : ProdForm X s r1 Nc i y) : ProdBound X s r1 Nc i y := by
   obtain ⟨M, c, ζ, a, hM, hc, hζ, ha, rfl⟩ := h
@@ -112,9 +122,15 @@ variable {E}
 def Carries (X : PT E) (r DF q : ℕ) (R0 : ℝ) (m : ℕ) : Prop :=
   X.r = r ∧ ∃ P : Par X DF, P.q = q ∧ P.R0 = R0 ∧ P.m = m
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+-/
 example (X : PT E) (DF : ℕ) (P : Par X DF) :
     P.p1 = p1 E X.r P.q ∧ P.p3 = p3 E X.r P.q P.m ∧ P.ka0 = ka0 E P.m := ⟨rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Unfold `A B`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (r m r1 : ℕ) : A E r m r1 = 2 * (r1 : ℝ) ^ 4 * B E r m := by unfold A B; ring
 
 end Constants

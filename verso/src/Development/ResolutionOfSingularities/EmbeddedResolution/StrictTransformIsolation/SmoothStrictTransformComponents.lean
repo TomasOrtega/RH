@@ -51,6 +51,47 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace OpenImmersionRestriction
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Smooth pY` using `hsm`. Establish `hN` using `isNoetherian_schemeAt_toEmbeddedBlowupSequence D (canonicalPrincipalization hres hrad)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+
+Introduce `_`. Use `set S := D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad) with _hS`. Establish `hker : AlgebraicGeometry.Scheme.Hom.ker (S.strictTransformι 0) = AlgebraicGeometry.Scheme.Hom.ker (S.emb ≫ S.ambientSeq.isoZero.inv)`. Rewrite using `[EmbeddedBlowupSequence.strictTransformι_eq_subschemeι, Scheme.IdealSheafData.ker_subschemeι, EmbeddedBlowupSequence.strictTransformIdeal_zero]`. Take `⟨e, he⟩` from `exists_iso_of_ker_eq (S.strictTransformι 0) (S.emb ≫ S.ambientSeq.isoZero.inv) hker`.
+
+Establish `hstruct : S.ambientSeq.isoZero.inv ≫ S.schemeAtToSpec 0 = S.ambientStruct`. Rewrite using `[EmbeddedBlowupSequence.schemeAtToSpec_eq, FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_zero, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]`. Establish `key : e.hom ≫ pY = S.strictTransformι 0 ≫ S.schemeAtToSpec 0`. Rewrite using `[← he]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[hstruct, S.emb_comp]`. Rewrite using `[← key]`. Use `infer_instance`. Consider the case `succ i ih`. Introduce `hi`.
+
+Use `set S := D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad) with _hS`. Establish `hi' : i < S.length` using `hi`. Establish `ih'` using `ih (Nat.le_of_succ_le hi)`. Establish `hredi : AlgebraicGeometry.IsReduced (S.strictTransform i)` using `EmbeddedBlowupSequence.isReduced_strictTransform_of_isNoetherian S hN i (Nat.le_of_lt hi')`. Establish `hredi1 : AlgebraicGeometry.IsReduced (S.strictTransform (i + 1))` using `EmbeddedBlowupSequence.isReduced_strictTransform_of_isNoetherian S hN (i + 1) hi`.
+
+Use `set U : (S.schemeAt (i + 1)).Opens := (TopologicalSpace.Opens.map (S.blowdown i).base).obj (S.ambientCenterSupportCompl i) with _hU`. Establish `hUsub : (U : Set ↥(S.schemeAt (i + 1))) ⊆ ⇑(S.blowdown i).base ⁻¹' ((S.ambientCenterSupportCompl i : (S.schemeAt i).Opens) : Set ↥(S.schemeAt i))` using `fun _ hx => hx`. Establish `hgi : AlgebraicGeometry.IsOpenImmersion (U.ι ≫ S.blowdown i)` using `EmbeddedBlowupSequence.isOpenImmersion_ι_comp_blowdown S i hi' U hUsub`. Establish `hrangeA : Set.range ⇑(S.strictTransformι (i + 1)).base ⊆ Set.range ⇑U.ι.base`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `z ⟨y, rfl⟩`. Conclude with `(S.mem_ambientCenterSupportCompl i _).mpr ((S.avoidsCenters_succ_iff i _).mp (avoidsCenters_strictTransformι_of_smooth hres hB hrad D hsm (i + 1) hi y)).1`. Use `set j := AlgebraicGeometry.IsOpenImmersion.lift U.ι (S.strictTransformι (i + 1)) hrangeA with _hjdef`. Establish `hj : j ≫ U.ι = S.strictTransformι (i + 1)` using `AlgebraicGeometry.IsOpenImmersion.lift_fac _ _ _`. Establish `hjc : AlgebraicGeometry.IsClosedImmersion (j ≫ U.ι)`.
+
+Rewrite using `[hj]`. Use `infer_instance`. Establish `: AlgebraicGeometry.IsClosedImmersion j` using `AlgebraicGeometry.IsClosedImmersion.of_comp j U.ι`. Establish `hbase : ∀ y : ↥(S.strictTransform (i + 1)), U.ι.base (j.base y) = (S.strictTransformι (i + 1)).base y`. Introduce `y`.
+
+Rewrite using `[show U.ι.base (j.base y) = (j ≫ U.ι).base y from rfl, hj]`. Establish `hkeymap : ∀ y : ↥(S.strictTransform (i + 1)), (S.blowdown i).base ((S.strictTransformι (i + 1)).base y) = (S.strictTransformι i).base ((S.strictTransformMap i).base y)`. Introduce `y`. Establish `h : (S.strictTransformMap i ≫ S.strictTransformι i).base y = (S.strictTransformι (i + 1) ≫ S.blowdown i).base y`. Rewrite using `[S.strictTransformMap_comp_strictTransformι i]`.
+
+Conclude with `h.symm`. Use `set pre : Set ↥(U.toScheme) := ⇑(U.ι ≫ S.blowdown i).base ⁻¹' (((S.strictTransformIdeal i).support : TopologicalSpace.Closeds ↥(S.schemeAt i)) : Set ↥(S.schemeAt i)) with hpre`. Establish `hsuppcl : IsClosed pre`. Rewrite using `[hpre]`. Conclude with `(S.strictTransformIdeal i).support.2.preimage (U.ι ≫ S.blowdown i).base.hom.continuous`.
+
+Establish `hker_eq : S.strictTransformIdeal i = AlgebraicGeometry.Scheme.Hom.ker (S.strictTransformι i)`. Rewrite using `[EmbeddedBlowupSequence.strictTransformι_eq_subschemeι, Scheme.IdealSheafData.ker_subschemeι]`. Establish `h1 : Scheme.IdealSheafData.vanishingIdeal ((S.strictTransformIdeal i).support) = S.strictTransformIdeal i`. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_support, hker_eq]`. Conclude with `radical_ker_eq_ker (S.strictTransformι i)`.
+
+Establish `hKvan : (S.strictTransformIdeal i).comap (U.ι ≫ S.blowdown i) = Scheme.IdealSheafData.vanishingIdeal (⟨pre, hsuppcl⟩ : TopologicalSpace.Closeds ↥(U.toScheme))`. Combine the equalities or inequalities in the displayed calculation. Establish `hrange1 : Set.range ⇑j.base = pre`. Rewrite using `[hpre]`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_range, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[show (U.ι ≫ S.blowdown i).base (j.base y) = (S.blowdown i).base (U.ι.base (j.base y)) from rfl, hbase y, hkeymap y, ← Scheme.IdealSheafData.range_subschemeι (S.strictTransformIdeal i)]`. Conclude with `⟨(S.strictTransformMap i).base y, rfl⟩`.
+
+Introduce `hz`. Establish `hzU : U.ι.base z ∈ ((U : (S.schemeAt (i + 1)).Opens) : Set ↥(S.schemeAt (i + 1)))`. Rewrite using `[← Scheme.Opens.range_ι U]`. Conclude with `⟨z, rfl⟩`. Establish `hnc : (S.blowdown i).base (U.ι.base z) ∉ (((S.ambientCenter i).support : TopologicalSpace.Closeds ↥(S.schemeAt i)) : Set ↥(S.schemeAt i))` using `(S.mem_ambientCenterSupportCompl i _).mp (hUsub hzU)`.
+
+Establish `hin : (S.blowdown i).base (U.ι.base z) ∈ (((S.strictTransformIdeal i).support : TopologicalSpace.Closeds ↥(S.schemeAt i)) : Set ↥(S.schemeAt i))` using `hz`. Establish `hrr : Set.range ⇑(S.strictTransformι (i + 1)).base = closure (⇑(S.blowdown i).base ⁻¹' ((((S.strictTransformIdeal i).support : TopologicalSpace.Closeds ↥(S.schemeAt i)) : Set ↥(S.schemeAt i)) \ (((S.ambientCenter i).support : TopologicalSpace.Closeds ↥(S.schemeAt i)) : Set ↥(S.sc …` using `EmbeddedBlowupSequence.range_strictTransformι_succ S hN i hi'`. Establish `hx : U.ι.base z ∈ Set.range ⇑(S.strictTransformι (i + 1)).base`. Rewrite using `[hrr]`. Conclude with `subset_closure ⟨hin, hnc⟩`.
+
+Take `⟨w, hw⟩` from `hx`. Use `⟨w, ?_⟩` and prove the remaining obligations. Apply `U.ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[hbase w, hw]`. Establish `hrange2 : Set.range ⇑(Scheme.IdealSheafData.vanishingIdeal (⟨pre, hsuppcl⟩ : TopologicalSpace.Closeds ↥(U.toScheme))).subschemeι.base = pre`.
+
+Rewrite using `[FunctorialResolution.EmbeddedResolution.range_base_subschemeι, AlgebraicGeometry.Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Both sides reduce to the same expression. Establish `: AlgebraicGeometry.IsReduced (Scheme.IdealSheafData.vanishingIdeal (⟨pre, hsuppcl⟩ : TopologicalSpace.Closeds ↥(U.toScheme))).subscheme` using `AlgebraicGeometry.Scheme.IdealSheafData.isReduced_subscheme_vanishingIdeal _ _`. Take `⟨e, he⟩` from `FunctorialResolution.EmbeddedResolution.exists_iso_of_range_base_eq j (Scheme.IdealSheafData.vanishingIdeal (⟨pre, hsuppcl⟩ : TopologicalSpace.Closeds ↥(U.toScheme))).subschemeι (hrange1.trans hrange2.symm)`. Establish `ihsub : AlgebraicGeometry.Smooth ((S.strictTransformIdeal i).subschemeι ≫ S.schemeAtToSpec i)`.
+
+Rewrite using `[← EmbeddedBlowupSequence.strictTransformι_eq_subschemeι]`. Conclude with `ih'`. Establish `hsm2` using `smooth_comap_subschemeι_of_isOpenImmersion (U.ι ≫ S.blowdown i) (S.strictTransformIdeal i) (S.schemeAtToSpec i) ihsub`. Rewrite `hsm2` using `[hKvan]`. Establish `hlev : S.blowdown i ≫ S.schemeAtToSpec i = S.schemeAtToSpec (i + 1)`.
+
+Rewrite using `[EmbeddedBlowupSequence.schemeAtToSpec_eq, EmbeddedBlowupSequence.schemeAtToSpec_eq, ← Category.assoc, ← FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.projectionToBase_succ]`. Establish `hgoal : S.strictTransformι (i + 1) ≫ S.schemeAtToSpec (i + 1) = e.hom ≫ ((Scheme.IdealSheafData.vanishingIdeal (⟨pre, hsuppcl⟩ : TopologicalSpace.Closeds ↥(U.toScheme))).subschemeι ≫ ((U.ι ≫ S.blowdown i) ≫ S.schemeAtToSpec i))`. Rewrite using `[← hj, ← hlev, ← he]`. Simplify using `only [Category.assoc]`. Rewrite using `[hgoal]`.
+
+Use `hsm2` as an intermediate fact. Use `infer_instance`.
+-/
 private theorem smooth_strictTransformι_comp_schemeAtToSpec
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})
@@ -217,6 +258,9 @@ private theorem smooth_strictTransformι_comp_schemeAtToSpec
       have := hsm2
       infer_instance
 
+/- English proof (translation)
+Establish `hP : (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).schemeAtToSpec t = chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t` using `rfl`. Rewrite using `[← hP]`. Conclude with `smooth_strictTransformι_comp_schemeAtToSpec hres hB hrad D hsm t ht`.
+-/
 theorem smooth_strictTransformι_comp_chartLevelStructureMorphism
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})
@@ -234,6 +278,9 @@ theorem smooth_strictTransformι_comp_chartLevelStructureMorphism
   rw [← hP]
   exact smooth_strictTransformι_comp_schemeAtToSpec hres hB hrad D hsm t ht
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.irreducibleComponentsDisjointOfSmooth k _ _ (smooth_strictTransformι_comp_chartLevelStructureMorphism hres hB hrad D hsm t ht) C₁ h₁ C₂ h₂ hne`.
+-/
 theorem disjoint_irreducibleComponents_strictTransform
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})
@@ -253,6 +300,13 @@ theorem disjoint_irreducibleComponents_strictTransform
   FunctorialResolution.EmbeddedResolution.irreducibleComponentsDisjointOfSmooth k _ _
     (smooth_strictTransformι_comp_chartLevelStructureMorphism hres hB hrad D hsm t ht) C₁ h₁ C₂ h₂ hne
 
+/- English proof (translation)
+Establish `hNoeth : TopologicalSpace.NoetherianSpace ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t)` using `(D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).noetherianSpace_strictTransform_of_isNoetherian (isNoetherian_schemeAt_toEmbeddedBlowupSequence D (canonicalPrincipalization hres hrad)) t ht`. Establish `hsep : ∀ C₁ ∈ irreducibleComponents ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t), ∀ C₂ ∈ irreducibleComponents ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t), (C₁ ∩ C₂).Nonempty → C₁ = C₂`. Introduce `C₁ h₁ C₂ h₂ hx`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx₁, hx₂⟩` from `hx`.
+
+Conclude with `Set.disjoint_left.mp (disjoint_irreducibleComponents_strictTransform hres hB hrad D hsm t ht h₁ h₂ hne) hx₁ hx₂`. Establish `hopen : IsOpen (⋃₀ ({C} : Set (Set ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t))))` using `FunctorialResolution.EmbeddedResolution.isOpen_sUnion_of_subset_irreducibleComponents hsep (by`. Introduce `C' hC'`. Take `rfl : C' = C` from `Set.mem_singleton_iff.mp hC'`. Conclude with `hC)`.
+
+Rewrite `hopen` using `[Set.sUnion_singleton]`. Conclude with `⟨isClosed_of_mem_irreducibleComponents _ hC, hopen⟩`.
+-/
 theorem isClopen_of_mem_irreducibleComponents_strictTransform
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})
@@ -289,6 +343,13 @@ theorem isClopen_of_mem_irreducibleComponents_strictTransform
   rw [Set.sUnion_singleton] at hopen
   exact ⟨isClosed_of_mem_irreducibleComponents _ hC, hopen⟩
 
+/- English proof (translation)
+Establish `hclopen : IsClopen C` using `isClopen_of_mem_irreducibleComponents_strictTransform hres hB hrad D hsm t ht hC`. Establish `hsmq : AlgebraicGeometry.Smooth ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t ≫ chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t)` using `smooth_strictTransformι_comp_chartLevelStructureMorphism hres hB hrad D hsm t ht`. Establish `hPlevel : (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).schemeAtToSpec t = chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t` using `rfl`. Establish `hftq : AlgebraicGeometry.LocallyOfFiniteType ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t ≫ chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t)`. Establish `h1` using `(D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).locallyOfFiniteType_strictTransformToSpec t ht`.
+
+Rewrite `h1` using `[FunctorialResolution.EmbeddedResolution.EmbeddedBlowupSequence.strictTransformToSpec_eq, hPlevel]`. Conclude with `h1`. Establish `hsub` using `FunctorialResolution.EmbeddedResolution.smooth_subschemeι_vanishingIdeal_comp_of_isClopen ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t ≫ chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t) C hclopen`. Establish `: AlgebraicGeometry.IsReduced (Scheme.IdealSheafData.vanishingIdeal (⟨C, hclopen.isClosed⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t))).subscheme` using `AlgebraicGeometry.Scheme.IdealSheafData.isReduced_subscheme_vanishingIdeal _ _`. Establish `: AlgebraicGeometry.IsReduced (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' C, hCcl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).schemeAt …` using `AlgebraicGeometry.Scheme.IdealSheafData.isReduced_subscheme_vanishingIdeal _ _`.
+
+Establish `hrange : Set.range ⇑((Scheme.IdealSheafData.vanishingIdeal (⟨C, hclopen.isClosed⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t))).subschemeι ≫ (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).s …`. Rewrite using `[Scheme.Hom.range_comp_base, FunctorialResolution.EmbeddedResolution.range_base_subschemeι, FunctorialResolution.EmbeddedResolution.range_base_subschemeι, AlgebraicGeometry.Scheme.IdealSheafData.coe_support_vanishingIdeal, AlgebraicGeometry.Scheme.IdealSheafData.coe_support_vanis …`. Both sides reduce to the same expression. Take `⟨e, he⟩` from `FunctorialResolution.EmbeddedResolution.exists_iso_of_range_base_eq _ _ hrange`. Conclude with `smooth_comp_of_iso_hom_eq e _ _ _ _ he hsub`.
+-/
 theorem smooth_vanishingIdeal_image_comp_chartLevelStructureMorphism
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})
@@ -364,6 +425,51 @@ theorem smooth_vanishingIdeal_image_comp_chartLevelStructureMorphism
   obtain ⟨e, he⟩ := FunctorialResolution.EmbeddedResolution.exists_iso_of_range_base_eq _ _ hrange
   exact smooth_comp_of_iso_hom_eq e _ _ _ _ he hsub
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_ C hC hCcl x hx`. Establish `hNoeth : TopologicalSpace.NoetherianSpace ↥((D.toEmbeddedBlowupSequence A).strictTransform 0)` using `(D.toEmbeddedBlowupSequence A).noetherianSpace_strictTransform_of_isNoetherian (isNoetherian_schemeAt_toEmbeddedBlowupSequence D A) 0 (Nat.zero_le _)`.
+
+Establish `hemb` using `(D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι 0`. Establish `hclr : IsClosed (Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base)` using `hemb.isClosed_range`. Establish `hid0` using `principalizationOfEmbedding_ideal_zero_eq_vanishingIdeal D A hclr`. Take `⟨Bad, hBaddef⟩ : ∃ B : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt 0), B = ⋃ C'' ∈ (irreducibleComponents ↥((D.toEmbeddedBlowupSequence A).strictTransform 0) \ {C}), ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base '' C''` from `⟨_, rfl⟩`. Establish `hfin : (irreducibleComponents ↥((D.toEmbeddedBlowupSequence A).strictTransform 0) \ {C}).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.subset Set.sdiff_subset`.
+
+Establish `hBadcl : IsClosed Bad`. Rewrite using `[hBaddef]`. Conclude with `hfin.isClosed_biUnion fun C'' hC'' => hemb.isClosedMap _ (isClosed_of_mem_irreducibleComponents _ hC''.1)`. Establish `hxU : x ∈ Badᶜ`. Introduce `hmem`.
+
+Rewrite `hmem` using `[hBaddef]`. Take `⟨C'', hC''D, hxim⟩` from `Set.mem_iUnion₂.mp hmem`. Take `⟨z, hzC'', hz⟩` from `hxim`. Take `⟨w, hwC, hw⟩` from `hx`. Establish `hzw : z = w` using `hemb.injective (hz.trans hw.symm)`.
+
+Rewrite `hzC''` using `[hzw]`. Establish `hne : C'' ≠ C` using `fun h => hC''D.2 (Set.mem_singleton_iff.mpr h)`. Conclude with `Set.disjoint_left.mp (hDisjAll 0 (Nat.zero_le _) C'' C hC''D.1 hC hne) hzC'' hwC`. Establish `hinter : (Set.range ⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base) ∩ Badᶜ = (⇑((D.toEmbeddedBlowupSequence A).strictTransformι 0).base '' C) ∩ Badᶜ`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨w, rfl⟩, hz⟩`. Use `⟨?_, hz⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ C`. Conclude with `⟨w, hw, rfl⟩`.
+
+Use `absurd ?_ hz` and prove the remaining obligations. Rewrite using `[hBaddef]`. Use `Set.mem_biUnion ⟨irreducibleComponent_mem_irreducibleComponents w, ?_⟩ ⟨w, mem_irreducibleComponent, rfl⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hw (h ▸ mem_irreducibleComponent)`.
+
+Introduce and unpack `⟨⟨w, hwC, rfl⟩, hz⟩`. Conclude with `⟨⟨w, rfl⟩, hz⟩`. Rewrite using `[hid0]`. Conclude with `agreeNear_vanishingIdeal_of_inter_eq _ _ ⟨Badᶜ, hBadcl.isOpen_compl⟩ _ hxU hinter`. Consider the case `succ i ih`.
+
+Introduce `hi C hC hCcl x hx`. Establish `hN` using `isNoetherian_schemeAt_toEmbeddedBlowupSequence D A`. Establish `hi' : i < (D.toEmbeddedBlowupSequence A).length` using `Nat.lt_of_succ_le hi`. Establish `hilt : i < (principalizationOfEmbedding k Y pY D A).length` using `hi'`. Take `⟨η, hηgen⟩` from `QuasiSober.sober hC.1 (isClosed_of_mem_irreducibleComponents _ hC)`.
+
+Take `⟨C', hC'm, hη', _⟩` from `(D.toEmbeddedBlowupSequence A).exists_irreducibleComponent_isGenericPoint_strictTransformMap hN i hi' C hC η hηgen`. Establish `hC'cl : IsClosed (⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C')` using `((D.toEmbeddedBlowupSequence A).isClosedEmbedding_strictTransformι i).isClosedMap _ (isClosed_of_mem_irreducibleComponents _ hC'm)`. Take `⟨y, hyC, hxy⟩` from `hx`. Establish `hclx : (D.toEmbeddedBlowupSequence A).AvoidsCenters (i + 1) x`. Rewrite using `[← hxy]`.
+
+Conclude with `hClearAll (i + 1) hi y`. Establish `hnot` using `(((D.toEmbeddedBlowupSequence A).avoidsCenters_succ_iff i x).mp hclx).1`. Establish `hblow : ((D.toEmbeddedBlowupSequence A).blowdown i).base x ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'` using `EmbeddedBlowupSequence.mem_image_strictTransformι_of_mem_image_succ (D.toEmbeddedBlowupSequence A) i C η hηgen C' hη' x ⟨y, hyC, hxy⟩`. Take `⟨V, hxV, hVeq⟩` from `(agreeNear_iff _ _ _).mp (ih (Nat.le_of_succ_le hi) C' hC'm hC'cl _ hblow)`. Take `⟨V', hV'⟩ : ∃ V' : ((D.toEmbeddedBlowupSequence A).schemeAt i).Opens, V' = V` from `⟨V, rfl⟩`.
+
+Establish `hxV' : ((D.toEmbeddedBlowupSequence A).blowdown i).base x ∈ V'`. Rewrite using `[hV']`. Conclude with `hxV`. Establish `hV'eq : ((principalizationOfEmbedding k Y pY D A).ideal i).comap V'.ι = (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C', hC'cl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt i))).comap V'.ι`. Rewrite using `[hV']`.
+
+Conclude with `hVeq`. Take `⟨U, hUdef⟩ : ∃ U : ((D.toEmbeddedBlowupSequence A).schemeAt (i + 1)).Opens, U = (TopologicalSpace.Opens.map ((D.toEmbeddedBlowupSequence A).blowdown i).base).obj (V' ⊓ (D.toEmbeddedBlowupSequence A).ambientCenterSupportCompl i)` from `⟨_, rfl⟩`. Establish `hUsub : (U : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt (i + 1))) ⊆ ⇑((D.toEmbeddedBlowupSequence A).blowdown i).base ⁻¹' (((D.toEmbeddedBlowupSequence A).ambientCenterSupportCompl i : ((D.toEmbeddedBlowupSequence A).schemeAt i).Opens) : Set ↥((D.toEmbeddedBlowupSequence A).sc …`. Rewrite using `[hUdef]`. Introduce `z hz`.
+
+Conclude with `hz.2`. Establish `hmemU : ∀ z : ↥U, ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base z) ∉ (((D.toEmbeddedBlowupSequence A).ambientCenter i).support : Set ↥((D.toEmbeddedBlowupSequence A).schemeAt i))`. Introduce `z`. Conclude with `hUsub z.2`. Establish `hxU : x ∈ U`.
+
+Rewrite using `[hUdef]`. Conclude with `⟨hxV', ((D.toEmbeddedBlowupSequence A).mem_ambientCenterSupportCompl i _).mpr hnot⟩`. Establish `: AlgebraicGeometry.IsOpenImmersion (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i)` using `EmbeddedBlowupSequence.isOpenImmersion_ι_comp_blowdown (D.toEmbeddedBlowupSequence A) i hi' U hUsub`. Establish `hexc : ((principalizationOfEmbedding k Y pY D A).exceptionalIdeal i).comap U.ι = ⊤`. Use `FunctorialResolution.EmbeddedResolution.comap_ι_eq_top_of_disjoint _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `z hz hmem`. Rewrite `hmem` using `[(principalizationOfEmbedding k Y pY D A).exceptionalIdeal_eq i]`. Conclude with `absurd (mem_support_of_mem_support_comap ((principalizationOfEmbedding k Y pY D A).transitionMapSucc i) _ z hmem) (hUsub hz)`. Establish `hJ : ((principalizationOfEmbedding k Y pY D A).ideal (i + 1)).comap U.ι = ((principalizationOfEmbedding k Y pY D A).ideal i).comap (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i)` using `comap_eq_comap_comp_of_mul_eq _ U _ _ _ ((principalizationOfEmbedding k Y pY D A).ideal_succ i hilt) hexc`.
+
+Establish `hle : U ≤ (TopologicalSpace.Opens.map ((D.toEmbeddedBlowupSequence A).blowdown i).base).obj V'`. Rewrite using `[hUdef]`. Introduce `z hz`. Conclude with `hz.1`. Establish `hcomapφ : ((principalizationOfEmbedding k Y pY D A).ideal i).comap (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) = (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C', hC'cl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupS …` using `AlgebraicGeometry.Scheme.IdealSheafData.comap_ι_comp_eq_of_comap_ι_eq ((D.toEmbeddedBlowupSequence A).blowdown i) V' U hle _ _ hV'eq`.
+
+Establish `hLHS : (Scheme.IdealSheafData.vanishingIdeal (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C', hC'cl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt i))).comap (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) = Scheme.IdealSheafData.vanishi …`. Use `FunctorialResolution.EmbeddedResolution.comap_vanishingIdeal_of_isOpenImmersion_of_coe_eq (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i) _ _ ?_` and prove the remaining obligations. Use extensionality with `z`. Establish `hcb : (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base z = ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base z)` using `rfl`. Establish `hiff` using `EmbeddedBlowupSequence.mem_image_strictTransformι_iff_of_notMem_ambientCenter (D.toEmbeddedBlowupSequence A) hN i hi' C η hηgen C' hη' (U.ι.base z) (hmemU z)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hz1 : U.ι.base z ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base '' C` using `hz`. Establish `hz2 : ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base z) ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'` using `hiff.mpr hz1`. Establish `hz3 : (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base z ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'`.
+
+Rewrite using `[hcb]`. Conclude with `hz2`. Conclude with `hz3`. Introduce `hz`. Establish `hz1 : (U.ι ≫ (D.toEmbeddedBlowupSequence A).blowdown i).base z ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'` using `hz`.
+
+Establish `hz2 : ((D.toEmbeddedBlowupSequence A).blowdown i).base (U.ι.base z) ∈ ⇑((D.toEmbeddedBlowupSequence A).strictTransformι i).base '' C'`. Rewrite using `[← hcb]`. Conclude with `hz1`. Conclude with `hiff.mp hz2`. Use `(agreeNear_iff _ _ _).mpr ⟨U, hxU, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hJ.trans (hcomapφ.trans (hLHS.trans (FunctorialResolution.EmbeddedResolution.comap_vanishingIdeal_of_isOpenImmersion U.ι (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base '' C, hCcl⟩ : TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt (i + 1)))).s …`.
+-/
 private theorem agreeNear_vanishingIdeal_image_of_forall_avoidsCenters_of_disjoint
     {k : Type u} [Field k] [CharZero k]
     {Y : Scheme.{u}} [AlgebraicGeometry.IsAffine Y] [AlgebraicGeometry.IsReduced Y]
@@ -549,6 +655,9 @@ private theorem agreeNear_vanishingIdeal_image_of_forall_avoidsCenters_of_disjoi
         (⟨⇑((D.toEmbeddedBlowupSequence A).strictTransformι (i + 1)).base '' C, hCcl⟩ :
           TopologicalSpace.Closeds ↥((D.toEmbeddedBlowupSequence A).schemeAt (i + 1)))).symm))
 
+/- English proof (translation)
+The claim follows from `agreeNear_vanishingIdeal_image_of_forall_avoidsCenters_of_disjoint D (canonicalPrincipalization hres hrad) (fun s hs y => avoidsCenters_strictTransformι_of_smooth hres hB hrad D hsm s hs y) (fun s hs _C₁ _C₂ h₁ h₂ hne => disjoint_irreducibleComponents_strictTransform hres hB hrad …`.
+-/
 theorem agreeNear_ideal_vanishingIdeal_image_of_smooth
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})
@@ -576,6 +685,23 @@ theorem agreeNear_ideal_vanishingIdeal_image_of_smooth
       disjoint_irreducibleComponents_strictTransform hres hB hrad D hsm s hs h₁ h₂ hne)
     t ht C hC hCcl x hx
 
+/- English proof (translation)
+Establish `hqc : AlgebraicGeometry.QuasiCompact pY` using `inferInstance`. Use `subset_detachedLocus_of_mem_detachedComponents (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)) t ?_ mem_irreducibleComponent` and prove the remaining obligations. Rewrite using `[EmbeddedBlowupSequence.mem_detachedComponents]`. Use `⟨irreducibleComponent_mem_irreducibleComponents y, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hsub`.
+
+Establish `hCmem : irreducibleComponent y ∈ irreducibleComponents ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransform t)` using `irreducibleComponent_mem_irreducibleComponents y`. Establish `hCfr : irreducibleComponent y ∉ (D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).detachedComponents t`. Introduce `hmem`. Conclude with `hsub (((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).mem_detachedComponents t (irreducibleComponent y)).1 hmem).2`. Establish `hCcl : IsClosed (irreducibleComponent y)` using `isClosed_of_mem_irreducibleComponents _ hCmem`.
+
+Take `⟨ξ, hξ⟩` from `QuasiSober.sober hCmem.1 hCcl`. Establish `hemb : Topology.IsClosedEmbedding ⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base` using `(D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).isClosedEmbedding_strictTransformι t`. Establish `himcl : IsClosed (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y)` using `hemb.isClosedMap _ hCcl`. Establish `himirr : IsIrreducible (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y)` using `hCmem.1.image _ hemb.continuous.continuousOn`. Establish `hgim : IsGenericPoint (((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base ξ) (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y)` using `FunctorialResolution.EmbeddedResolution.isGenericPoint_image_of_isClosedEmbedding hemb hξ`.
+
+Establish `hxi : ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base ξ ∉ ((((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).ambientCenter t).support) : Set ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).scheme …` using `(D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).notMem_ambientCenter_support_of_isGenericPoint t (irreducibleComponent y) hCmem hCfr ξ hξ`. Establish `hagreeId : ∀ x ∈ (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y), AgreeNear ((principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)).ideal t) (Scheme.IdealSheafData.vanishingIdeal (⟨⇑(( …`. Introduce `x hx`. Conclude with `agreeNear_ideal_vanishingIdeal_image_of_smooth hres hB hrad D hsm t (le_of_lt ht) (irreducibleComponent y) hCmem himcl x hx`. Establish `hsubsupp : (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y) ⊆ ((((principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)).ideal t).support) : Set ↥((principalizationOfEmbedding k Y pY D ( …`.
+
+Use `subset_support_of_agreeNear idealSheafGeometryHypotheses_vanishingIdealAssignment _ _ _ himcl ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[vanishingIdealAssignment_apply]`. Conclude with `hagreeId x hx`. Establish `hnz : FunctorialResolution.EmbeddedResolution.NonzeroOnComponents ((principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)).ideal t)` using `nonzeroOnComponents_ideal (principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)) D.nonzeroOnComponents_ker t (le_of_lt ht)`.
+
+Establish `hcomp : ∀ E ∈ irreducibleComponents ↥((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).schemeAt t), ¬ E ⊆ (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y)`. Introduce `E hE hEsub`. Conclude with `(FunctorialResolution.EmbeddedResolution.nonzeroOnComponents_iff _).1 hnz E hE (hEsub.trans hsubsupp)`. Establish `hdisj : Disjoint (⇑((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).strictTransformι t).base '' irreducibleComponent y) (⋃ E ∈ (principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)).boundary t, (E.support : Set ↥((principalizationOfEmbeddi …`. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `a ⟨z, hz, rfl⟩ ha`. Take `⟨E, hE, haE⟩` from `Set.mem_iUnion₂.mp ha`. Conclude with `strictTransformι_notMem_support_of_mem_boundary hres hB hrad D hsm t (le_of_lt ht) z E hE haE`. Establish `hspec` using `(PrincipalizationRules.isMaxOrderReduction_outputLevelData (canonicalAlgorithmRules hres) hB (krullDimSucc D.ambient)).cert (markedTripleOrderOne k D.ambient D.ambientStruct (AlgebraicGeometry.Scheme.Hom.ker D.emb) []) (markedTripleOrderOne_isAdmissible k D.ambient D.ambientStruc …`. Establish `hcert : FunctorialResolution.EmbeddedResolution.PrincipalizationCertificate ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).schemeAt t) (chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t) ((principalizationOfEmbedding k Y pY D (canon …` using `hspec`.
+
+Establish `hp : AlgebraicGeometry.Smooth (chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t)`. Rewrite using `[chartLevelStructureMorphism_eq_structureMorphism]`. Conclude with `IdealBlowupSequence.smooth_structureMorphism (principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)) t (le_of_lt ht)`. Conclude with `false_of_mem_support_center (chartLevelStructureMorphism k Y pY D (canonicalPrincipalization hres hrad) t) hp ((principalizationOfEmbedding k Y pY D (canonicalPrincipalization hres hrad)).ideal t) ((D.toEmbeddedBlowupSequence (canonicalPrincipalization hres hrad)).ambientCenter t …`.
+-/
 theorem mem_detachedLocus_of_mem_support_ambientCenter
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hB : (canonicalAlgorithmRules hres).ReducesInductivelyOnDimension)
     (hrad : SmoothSubschemeIdealIsRadical.{u})

@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.ThK.LemF.QuotInv.PowSet
 
+/- English proof (translation)
+Establish `h1 : M * M ^ 2 = 0` using `by rw [← h, pow_succ' M 2]`. Establish `h2 : M ^ 2 * M = 0` using `by rw [← h, pow_succ M 2]`. Establish `h3 : M ^ 2 * M ^ 2 = 0` using `by rw [← pow_add, show 2 + 2 = 3 + 1 from rfl, pow_succ, h, zero_mul]`. Establish `h4 : M * M = M ^ 2` using `(pow_two M).symm`. Simplify using `only [mul_add, add_mul, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, h1, h2, h3, h4, smul_zero, add_zero, add_smul, smul_smul, mul_comm s' s]`.
+
+Use `module`.
+-/
 theorem mul_quad {R A : Type} [CommRing R] [Ring A] [Algebra R A] (M : A) (h : M ^ 3 = 0) (s t s' t' : R) :
     (1 + s • M + t • M ^ 2) * (1 + s' • M + t' • M ^ 2) = 1 + (s + s') • M + (t + t' + s * s') • M ^ 2 := by
   have h1 : M * M ^ 2 = 0 := by rw [← h, pow_succ' M 2]
@@ -25,6 +30,11 @@ theorem mul_quad {R A : Type} [CommRing R] [Ring A] [Algebra R A] (M : A) (h : M
     add_smul, smul_smul, mul_comm s' s]
   module
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, ?_⟩` and prove the remaining obligations. Use `ha.1 u hu` as an intermediate fact. Rewrite `this`, the goal using `[smul_eq_mul]`. Rewrite using `[← mul_assoc, this, zero_mul]`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem ha.2 hb.2`.
+-/
 theorem mul_mem_intAt {F : Type} [Field F] [NumberField F] {v : Pl F} {a b : AF F}
     (ha : a ∈ GlobalTheory.LatAtClosed.intAt F v) (hb : b ∈ GlobalTheory.LatAtClosed.intAt F v) :
     a * b ∈ GlobalTheory.LatAtClosed.intAt F v := by
@@ -34,6 +44,25 @@ theorem mul_mem_intAt {F : Type} [Field F] [NumberField F] {v : Pl F} {a b : AF 
     rw [← mul_assoc, this, zero_mul]
   · rw [map_mul]; exact mul_mem ha.2 hb.2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n Y v x q hq`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `set M : Matrix (Fin n) (Fin n) (AE F E) := mat q.1.1 - 1 with hM`. Set `f : AF F × AF F → Matrix (Fin n) (Fin n) (AE F E)` to `fun st => 1 + st.1 • M + st.2 • M ^ 2`.
+
+Establish `hf : Continuous f`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun st : AF F × AF F => (1 : Matrix (Fin n) (Fin n) (AE F E)) i j + st.1 • M i j + st.2 • (M ^ 2) i j`. Conclude with `(continuous_const.add (continuous_fst.smul continuous_const)).add (continuous_snd.smul continuous_const)`. Set `R : Set (AF F)` to `GlobalTheory.LatAtClosed.intAt F v`.
+
+Set `P` to `f '' (R ×ˢ R)`. Set `S : Subgroup (stabAt σ Y (evFin F v) x)` to `{ carrier := {g | mat g.1.1 ∈ P} one_mem' := ⟨(0, 0), ⟨zero_mem (GlobalTheory.LatAtClosed.intAt F v), zero_mem (GlobalTheory.LatAtClosed.intAt F v)⟩, by show f (0, 0) = mat (1 : UA σ Y.J)`. Rewrite using `[GlobalTheory.StabHaar.mat_one]`. Simplify using `[f]⟩`. Use the proof step `mul_mem' := by`.
+
+Introduce and unpack `g h ⟨⟨s, t⟩, ⟨hs, ht⟩, hg⟩ ⟨⟨s', t'⟩, ⟨hs', ht'⟩, hh⟩`. Use `⟨(s + s', t + t' + s * s'), ⟨add_mem hs hs', add_mem (add_mem ht ht') (mul_mem_intAt hs hs')⟩, ?_⟩` and prove the remaining obligations. Use `show _ = mat (g.1.1 * h.1.1)`. Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← hg, ← hh]`. Conclude with `(mul_quad M hq s t s' t').symm`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `g ⟨⟨s, t⟩, ⟨hs, ht⟩, hg⟩`. Use `⟨(-s, s * s - t), ⟨neg_mem hs, sub_mem (mul_mem_intAt hs hs) ht⟩, ?_⟩` and prove the remaining obligations. Use `show _ = mat g.1.1⁻¹`. Establish `h1 : mat g.1.1 * f (-s, s * s - t) = 1`.
+
+Rewrite using `[← hg]`. Use `(mul_quad M hq s t (-s) (s * s - t)).trans ?_` and prove the remaining obligations. Rewrite using `[add_neg_cancel, show t + (s * s - t) + s * -s = 0 by ring]; simp`. Establish `h2 : mat g.1.1⁻¹ * mat g.1.1 = 1`. Rewrite using `[← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]`.
+
+Rewrite using `[← one_mul (f _), ← h2, mul_assoc, h1, mul_one] }`. Establish `hqS : q ∈ S`. Use `⟨(GlobalTheory.LatVac.liftV v 1, 0), ⟨⟨GlobalTheory.LatVac.at_liftV v 1, ?_⟩, zero_mem (GlobalTheory.LatAtClosed.intAt F v)⟩, ?_⟩` and prove the remaining obligations. Use `show evFin F v (GlobalTheory.LatVac.liftV v 1) ∈ _`. Rewrite using `[GlobalTheory.LatVac.evFin_liftV]`.
+
+Conclude with `one_mem _`. Establish `h : At (evFin F v) M` using `q.1.2`. Establish `h' : GlobalTheory.LatVac.liftV v 1 • M = M` using `GlobalTheory.ThK.partFin_of_at h`. Use `show 1 + GlobalTheory.LatVac.liftV v 1 • M + (0 : AF F) • M ^ 2 = _`. Rewrite using `[h', zero_smul, add_zero, hM, add_sub_cancel]`.
+
+Use `⟨P, ((GlobalTheory.LatAtClosed.isCompact_intAt v).prod (GlobalTheory.LatAtClosed.isCompact_intAt v)).image hf, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgS : g ∈ S` using `(Subgroup.zpowers_le.2 hqS) hg`. Conclude with `⟨hgS, S.inv_mem hgS⟩`.
+-/
 theorem exists_compact_zpowers : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (Y : Spc F E n) (v : Pl F) (x : Fin n → E) (q : stabAt σ Y (evFin F v) x), (mat q.1.1 - 1) ^ 3 = 0 →
     ∃ P : Set (Matrix (Fin n) (Fin n) (AE F E)), IsCompact P ∧

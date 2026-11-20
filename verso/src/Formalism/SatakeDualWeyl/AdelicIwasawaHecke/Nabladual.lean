@@ -11,6 +11,11 @@ variable (O : Type) [CommRing O] (n : Type) [Fintype n] [DecidableEq n]
 noncomputable def monFam (k : ℕ) : {d : n →₀ ℕ | d.degree = k} → MvPolynomial n O :=
   fun d => monomial (d : n →₀ ℕ) 1
 
+/- English proof (translation)
+Establish `h` using `(basisMonomials n O).linearIndependent.comp (Subtype.val : {d : n →₀ ℕ | d.degree = k} → n →₀ ℕ) Subtype.val_injective`. Establish `e : monFam O n k = ⇑(basisMonomials n O) ∘ Subtype.val`. Use function extensionality and compare the values at `d`. Simplify using `[monFam, coe_basisMonomials]`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem monFam_linearIndependent (k : ℕ) : LinearIndependent O (monFam O n k) := by
   have h := (basisMonomials n O).linearIndependent.comp
     (Subtype.val : {d : n →₀ ℕ | d.degree = k} → n →₀ ℕ) Subtype.val_injective
@@ -20,6 +25,9 @@ theorem monFam_linearIndependent (k : ℕ) : LinearIndependent O (monFam O n k) 
   rw [e]
   exact h
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.nabla, homogeneousSubmodule_eq_finsupp_supported]`. Express the relevant statement in the definitionally equal form `_ = restrictSupport O _`. Rewrite using `[restrictSupport_eq_span, Set.image_eq_range]`. Both sides reduce to the same expression.
+-/
 theorem span_monFam (k : ℕ) :
     Submodule.span O (Set.range (monFam O n k)) = Formalism.UG.nabla O n k := by
   rw [Formalism.UG.nabla, homogeneousSubmodule_eq_finsupp_supported]
@@ -38,6 +46,17 @@ section
 
 variable (n : Type) [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hd`. Establish `hne : d ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hd`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, d i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (Finsupp.ext h)`. Establish `hle : d i ≤ 1` using `hd ▸ Finsupp.le_degree i d`.
+
+Establish `hi1 : d i = 1` using `by omega`. Establish `hsle : Finsupp.single i 1 ≤ d`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hsplit : d = Finsupp.single i 1 + (d - Finsupp.single i 1)` using `(add_tsub_cancel_of_le hsle).symm`.
+
+Establish `hdeg : (d - Finsupp.single i 1).degree = 0`. Use `congrArg Finsupp.degree hsplit` as an intermediate fact. Rewrite `this` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Rewrite `hdeg` using `[Finsupp.degree_eq_zero_iff]`.
+
+Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite `hsplit` using `[hdeg, add_zero]`. Conclude with `hsplit`. Introduce and unpack `⟨i, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 theorem degree_eq_one_iff (d : n →₀ ℕ) : d.degree = 1 ↔ ∃ i, d = Finsupp.single i 1 := by
   constructor
   · intro hd

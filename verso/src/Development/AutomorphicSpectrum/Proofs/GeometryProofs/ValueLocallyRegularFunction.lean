@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.SectionNear
 
+/- English proof (translation)
+Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`.
+-/
 theorem germ_closedPoint {Y : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ Y) (U : Y.Opens)
     (hU : f (IsLocalRing.closedPoint R) ∈ U) (h : ⊤ ≤ f ⁻¹ᵁ U) :
     Y.presheaf.germ U _ hU ≫ Scheme.stalkClosedPointTo f =
@@ -21,6 +24,9 @@ theorem germ_closedPoint {Y : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R] 
   rw [Scheme.germ_stalkClosedPointTo]
   simp [Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]
 
+/- English proof (translation)
+Establish `e : (Spec Γ(T, V)).presheaf.map (eqToHom hV.fromSpec_preimage_self).op ≫ (Spec Γ(T, V)).presheaf.map (homOfLE h).op = 𝟙 _`. Establish `e₀ : (eqToHom hV.fromSpec_preimage_self).op ≫ (homOfLE h).op = 𝟙 _` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite using `[← Functor.map_comp, e₀, CategoryTheory.Functor.map_id]`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, Category.assoc, reassoc_of% e]`. Simplify using the standard rewrite rules.
+-/
 theorem fromSpec_appLE_self {T : Scheme.{0}} {V : T.Opens} (hV : IsAffineOpen V) (h : ⊤ ≤ hV.fromSpec ⁻¹ᵁ V) :
     hV.fromSpec.appLE V ⊤ h ≫ (Scheme.ΓSpecIso Γ(T, V)).hom = 𝟙 _ := by
   have e : (Spec Γ(T, V)).presheaf.map (eqToHom hV.fromSpec_preimage_self).op ≫
@@ -32,6 +38,11 @@ theorem fromSpec_appLE_self {T : Scheme.{0}} {V : T.Opens} (hV : IsAffineOpen V)
     reassoc_of% e]
   simp
 
+/- English proof (translation)
+Establish `h₁ : ⊤ ≤ hV.fromSpec ⁻¹ᵁ V` using `hV.fromSpec_preimage_self.ge`. Establish `n` using `Scheme.ΓSpecIso_naturality (R := Γ(T, V)) (S := CommRingCat.of ℂ) (CommRingCat.ofHom χ)`. Establish `a : (spMap χ).appLE ⊤ ⊤ le_top = Scheme.Hom.appTop (spMap χ)`. Simplify using `[Scheme.Hom.appLE, Scheme.Hom.appTop]`. Conclude with `Category.comp_id _`.
+
+Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap χ) hV.fromSpec V ⊤ ⊤ h₁ le_top, a, Category.assoc, n, reassoc_of% (fromSpec_appLE_self hV h₁)]`.
+-/
 theorem spMap_fromSpec_appLE {T : Scheme.{0}} {V : T.Opens} (hV : IsAffineOpen V) (χ : Γ(T, V) →+* ℂ)
     (h : ⊤ ≤ (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ V) :
     (spMap χ ≫ hV.fromSpec).appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom = CommRingCat.ofHom χ := by
@@ -43,6 +54,19 @@ theorem spMap_fromSpec_appLE {T : Scheme.{0}} {V : T.Opens} (hV : IsAffineOpen V
   rw [← Scheme.Hom.appLE_comp_appLE (spMap χ) hV.fromSpec V ⊤ ⊤ h₁ le_top, a, Category.assoc, n,
     reassoc_of% (fromSpec_appLE_self hV h₁)]
 
+/- English proof (translation)
+Introduce `X T j Ω _ ξ hξ y₀ t r₀ h₀`. Take `⟨h, s, hs, -⟩` from `h₀`. Take `⟨N, hp, G, rfl⟩` from `TopCat.Presheaf.germ_exist X.presheaf s`. Establish `hgen : genPt ξ ∈ N` using `h.mem_open N.2 hp`. Establish `hgerm : ∀ (p : Cpt ξ) (hp : p.1 ∈ N), genMap ξ p (X.presheaf.germ N p.1 hp G) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ N (genPt ξ) hgen G)`.
+
+Introduce `p hp`. Establish `e` using `TopCat.Presheaf.germ_stalkSpecializes X.presheaf hp p.2`. Establish `e' : (X.presheaf.stalkSpecializes p.2).hom (X.presheaf.germ N p.1 hp G) = X.presheaf.germ N (genPt ξ) hgen G`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom e'`. Use `⟨j ⁻¹ᵁ N, ?_, fun V hV hVN => ⟨j.appLE N V hVN G, fun χ r hr => ?_⟩⟩` and prove the remaining obligations. Introduce `x _`. Establish `hx : x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `hx` using the available equality.
+
+Conclude with `hp`. Take `⟨h', s', hs', rfl⟩` from `hr`. Establish `hcV : (spMap χ ≫ hV.fromSpec) (IsLocalRing.closedPoint ℂ) ∈ V`. Establish `: hV.fromSpec ((spMap χ) (IsLocalRing.closedPoint ℂ)) ∈ Set.range hV.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hV.range_fromSpec]`.
+
+Conclude with `this`. Establish `hq : centre ((spMap χ ≫ hV.fromSpec) ≫ j) ∈ N` using `hVN hcV`. Establish `e : s' = X.presheaf.germ N _ hq G` using `hξ.inj ⟨_, h'⟩ (hs'.trans ((hs.symm.trans (hgerm ⟨_, h⟩ hp)).trans (hgerm ⟨_, h'⟩ hq).symm))`. Substitute `e` using the available equality. Establish `e₂ : ⊤ ≤ (spMap χ ≫ hV.fromSpec) ⁻¹ᵁ V` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of ℂ) _ hcV).ge`.
+
+Establish `k` using `germ_closedPoint (R := CommRingCat.of ℂ) ((spMap χ ≫ hV.fromSpec) ≫ j) N hq (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of ℂ) _ hq).ge`. Establish `d : ((spMap χ ≫ hV.fromSpec) ≫ j).appLE N ⊤ (Scheme.preimage_eq_top_of_closedPoint_mem (R` using `CommRingCat.of ℂ) _ hq).ge ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom = j.appLE N V hVN ≫ CommRingCat.ofHom χ := by`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap χ ≫ hV.fromSpec) j N V ⊤ hVN e₂, Category.assoc, spMap_fromSpec_appLE hV χ e₂]`. Conclude with `congrArg (fun φ => φ.hom G) (k.trans d)`.
+-/
 theorem section_near : ∀ (X T : Scheme.{0}) (j : T ⟶ X) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → ∀ (y₀ : Sp ℂ ⟶ T) (t : Ω) (r₀ : ℂ), ValAt ξ (y₀ ≫ j) t r₀ → ∃ W₁ : T.Opens, ⊤ ≤ y₀ ⁻¹ᵁ W₁ ∧ ∀ (V : T.Opens) (hV : IsAffineOpen V), V ≤ W₁ → ∃ g : Γ(T, V), ∀ (χ : Γ(T, V) →+* ℂ) (r : ℂ), ValAt ξ ((spMap χ ≫ hV.fromSpec) ≫ j) t r → r = χ g := by
   intro X T j Ω _ ξ hξ y₀ t r₀ h₀
   obtain ⟨h, s, hs, -⟩ := h₀

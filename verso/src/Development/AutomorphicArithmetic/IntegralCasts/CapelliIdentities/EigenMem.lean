@@ -2,6 +2,17 @@ import Mathlib
 
 namespace UpperTheory.Reformulated.B.S2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing x with`. Consider the case `empty => intro j hj`. Simplify using `at hj`. Consider the case `insert a s ha ih`. Rewrite `h` using `[Finset.sum_insert ha]`.
+
+Establish `key : ∑ j ∈ s, (μ j - μ a) • x j = T (x a + ∑ j ∈ s, x j) - μ a • (x a + ∑ j ∈ s, x j)`. Simplify using `only [map_add, map_sum, hx, smul_add, Finset.smul_sum, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Establish `h1 : ∑ j ∈ s, (μ j - μ a) • x j ∈ Y`. Rewrite using `[key]`.
+
+Conclude with `Y.sub_mem (hY _ h) (Y.smul_mem _ h)`. Establish `h2` using `ih (fun j => (μ j - μ a) • x j) (fun j => by rw [map_smul, hx, smul_comm]) h1`. Establish `h3 : ∀ j ∈ s, x j ∈ Y`. Introduce `j hj`. Establish `hne : μ j - μ a ≠ 0`.
+
+Introduce `e`. Conclude with `ha (hμ (sub_eq_zero.mp e) ▸ hj)`. Conclude with `(Y.smul_mem_iff hne).mp (h2 j hj)`. Introduce `j hj`. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases.
+
+Conclude with `(Y.add_mem_iff_left (Y.sum_mem h3)).mp h`. Conclude with `h3 j hj`.
+-/
 theorem eigen_mem {k M ι : Type} [Field k] [AddCommGroup M] [Module k M] (T : Module.End k M) (μ : ι → k)
     (hμ : Function.Injective μ) (Y : Submodule k M) (hY : ∀ y ∈ Y, T y ∈ Y) (s : Finset ι) (x : ι → M)
     (hx : ∀ j, T (x j) = μ j • x j) (h : ∑ j ∈ s, x j ∈ Y) : ∀ j ∈ s, x j ∈ Y := by

@@ -9,6 +9,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
 open ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Introduce `e X _ _ _ A L s W B hL hs hSNC hB v hv Φ hΦ`. Establish `h` using `poincareLelong A L s ![1] ![W] (Fin.cons B (fun i => i.elim0) : ∀ k, FinHolAtlas e ((![W] : Fin 1 → Set X) k)) hL hs hSNC (Fin.cons hB (fun i => i.elim0)) v hv Φ hΦ`. Rewrite `h` using `[Fin.sum_univ_one]`. Establish `h1 : (((![1] : Fin 1 → ℕ) 0 : ℕ) : ℝ) = 1` using `by simp`. Rewrite `h` using `[h1, one_mul]`.
+
+Conclude with `h`.
+-/
 theorem projectiveLineZeroForm_holds.proof : projectiveLineZeroForm_holds.Statement := by
   intro e X _ _ _ A L s W B hL hs hSNC hB v hv Φ hΦ
   have h := poincareLelong A L s ![1] ![W]

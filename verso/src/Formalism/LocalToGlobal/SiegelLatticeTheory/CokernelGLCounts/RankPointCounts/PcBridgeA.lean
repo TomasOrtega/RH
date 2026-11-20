@@ -18,6 +18,9 @@ abbrev IsoT {C C' : Type} [AddCommGroup C] [Module R C] [AddCommGroup C'] [Modul
 
 variable {R}
 
+/- English proof (translation)
+Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(rw [LinearMap.mem_range]; exact Iff.rfl)`. Consider the case `(simp [Rs]; done)`.
+-/
 theorem mkQ_eq_zero_iff (τ : E) : (Rs R).mkQ τ = 0 ↔ ∃ r : R, (r : E) = τ := by
   rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]
   first
@@ -32,12 +35,18 @@ variable {C : Type} [AddCommGroup C] [Module R C] (α : C →ₗ[R] Qt R)
 def NF : Submodule R (C × E) :=
   LinearMap.ker (α.comp (LinearMap.fst R C E) + (Rs R).mkQ.comp (LinearMap.snd R C E))
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(rw [NF, LinearMap.mem_ker]; exact Iff.rfl)`. Consider the case `(simp [NF]; done)`.
+-/
 theorem mem_NF {x : C × E} : x ∈ NF α ↔ α x.1 + (Rs R).mkQ x.2 = 0 := by
   first
     | exact Iff.rfl
     | (rw [NF, LinearMap.mem_ker]; exact Iff.rfl)
     | (simp [NF]; done)
 
+/- English proof (translation)
+Rewrite using `[mem_NF]`. Use `show α 0 + (Rs R).mkQ 1 = 0`. Rewrite using `[map_zero, zero_add]`. Apply the tactic sequence `exact (mkQ_eq_zero_iff _).2 ⟨1, by first | rfl | simp⟩`.
+-/
 theorem one_mem_NF : ((0 : C), (1 : E)) ∈ NF α := by
   rw [mem_NF]
   show α 0 + (Rs R).mkQ 1 = 0
@@ -46,6 +55,9 @@ theorem one_mem_NF : ((0 : C), (1 : E)) ∈ NF α := by
 
 def e0 : NF α := ⟨(0, 1), one_mem_NF α⟩
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `(Rs R).mkQ_surjective (-α c)`. Use `⟨τ, (mem_NF α).2 ?_⟩` and prove the remaining obligations. Use `show α c + (Rs R).mkQ τ = 0`. Rewrite using `[hτ]`. Apply the tactic sequence `first | exact add_neg_cancel _ | simp`.
+-/
 theorem lift_exists (c : C) : ∃ τ : E, (c, τ) ∈ NF α := by
   obtain ⟨τ, hτ⟩ := (Rs R).mkQ_surjective (-α c)
   refine ⟨τ, (mem_NF α).2 ?_⟩
@@ -55,6 +67,13 @@ theorem lift_exists (c : C) : ∃ τ : E, (c, τ) ∈ NF α := by
 
 def liftN (c : C) : NF α := ⟨(c, (lift_exists α c).choose), (lift_exists α c).choose_spec⟩
 
+/- English proof (translation)
+Establish `hx` using `(mem_NF α).1 x.2`. Establish `hx'` using `(mem_NF α).1 x'.2`. Rewrite `hx` using `[h]`. Establish `h0 : (Rs R).mkQ ((x : C × E).2 - (x' : C × E).2) = 0`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `add_left_cancel (hx.trans hx'.symm)`. Take `⟨r, hr⟩` from `(mkQ_eq_zero_iff _).1 h0`. Use `⟨r, Subtype.ext (Prod.ext ?_ ?_)⟩` and prove the remaining obligations. Use `first`. Consider the case `(show (x : C × E).1 - (x' : C × E).1 = r • (0 : C); rw [h, sub_self, smul_zero])`.
+
+Consider the case `(simp [e0, h]; done)`. Use `first`. Consider the case `(show (x : C × E).2 - (x' : C × E).2 = (r : E) * 1; rw [mul_one, hr])`. Consider the case `(simp [e0, hr, Subring.smul_def]; done)`. Consider the case `(simp [e0, ← hr, Algebra.smul_def]; done)`.
+-/
 theorem diff_of_fst {x x' : NF α} (h : (x : C × E).1 = (x' : C × E).1) : ∃ r : R, x - x' = r • e0 α := by
   have hx := (mem_NF α).1 x.2
   have hx' := (mem_NF α).1 x'.2
@@ -90,6 +109,9 @@ def lamG (hu : IsUnit u) : CG α β u hb →ₗ[R] Qt R :=
         LinearMap.mulLeft_apply, Units.inv_mul, IsUnit.unit_spec]
       exact (mkQ_eq_zero_iff _).2 ⟨1, by simp⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamG_mk (hu : IsUnit u) (x : NF α) :
     lamG α β u hb hu (Submodule.Quotient.mk x) = (Rs R).mkQ (((hu.unit⁻¹ : Eˣ) : E) * (x : C × E).2) := rfl
 
@@ -102,6 +124,9 @@ variable {C₁ C₂ : Type} [AddCommGroup C₁] [Module R C₁] [AddCommGroup C�
   {hb₁ : α₁ β₁ + (Rs R).mkQ u = 0} {hb₂ : α₂ β₂ + (Rs R).mkQ u = 0}
 
 include hu in
+/- English proof (translation)
+Establish `h' : (r : E) = 0` using `by first`. Consider the case `exact hu.mul_left_eq_zero.1 h`. Consider the case `(obtain ⟨v, rfl⟩ := hu; simpa using h)`. Apply the tactic sequence `first | exact Subtype.ext h' | exact_mod_cast h' | simpa using h'`.
+-/
 theorem unit_cancel {r : R} (h : (r : E) * u = 0) : r = 0 := by
   have h' : (r : E) = 0 := by
     first
@@ -110,6 +135,13 @@ theorem unit_cancel {r : R} (h : (r : E) * u = 0) : r = 0 := by
   first | exact Subtype.ext h' | exact_mod_cast h' | simpa using h'
 
 include hu in
+/- English proof (translation)
+Rewrite `h1` using `[Submodule.Quotient.eq, Submodule.mem_span_singleton]`. Take `⟨r, hr⟩` from `h1`. Establish `h3 : (r : E) * u = 0`. Establish `h4 : ((r • bN α₂ β₂ u hb₂ : NF α₂) : C₂ × E).2 = ((z - z' : NF α₂) : C₂ × E).2`. Rewrite using `[hr]`.
+
+Simplify using `only [Submodule.coe_smul, Submodule.coe_sub, Prod.smul_snd, Prod.snd_sub, h2, sub_self] at h4`. Use `first`. Consider the case `exact h4`. Consider the case `simpa [Subring.smul_def, bN] using h4`. Consider the case `simpa [Algebra.smul_def, bN] using h4`.
+
+Establish `hr0` using `unit_cancel hu h3`. Rewrite `hr` using `[hr0, zero_smul]`. Conclude with `sub_eq_zero.1 hr.symm`.
+-/
 theorem uniq_N {z z' : NF α₂} (h1 : (Submodule.Quotient.mk z : CG α₂ β₂ u hb₂) = Submodule.Quotient.mk z')
     (h2 : (z : C₂ × E).2 = (z' : C₂ × E).2) : z = z' := by
   rw [Submodule.Quotient.eq, Submodule.mem_span_singleton] at h1
@@ -130,6 +162,13 @@ variable (ψ : CG α₁ β₁ u hb₁ →ₗ[R] CG α₂ β₂ u hb₂)
   (hψl : ∀ v, lamG α₂ β₂ u hb₂ hu (ψ v) = lamG α₁ β₁ u hb₁ hu v)
 
 include hψl in
+/- English proof (translation)
+Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ (ψ (Submodule.Quotient.mk x))`. Establish `hl` using `hψl (Submodule.Quotient.mk x)`. Rewrite `hl` using `[← hw, lamG_mk, lamG_mk]`. Establish `h0 : (Rs R).mkQ (((hu.unit⁻¹ : Eˣ) : E) * ((x : C₁ × E).2 - (w : C₂ × E).2)) = 0`. Rewrite using `[mul_sub, map_sub, hl, sub_self]`.
+
+Take `⟨s, hs⟩` from `(mkQ_eq_zero_iff _).1 h0`. Apply the tactic sequence `have hinv : ((hu.unit⁻¹ : Eˣ) : E) * u = 1 := by first | exact hu.val_inv_mul | exact hu.unit.inv_mul | simp`. Use `⟨w + s • bN α₂ β₂ u hb₂, ?_, ?_⟩` and prove the remaining obligations. Establish `hp : (Submodule.Quotient.mk (bN α₂ β₂ u hb₂) : CG α₂ β₂ u hb₂) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_span_singleton_self _)`. Rewrite using `[Submodule.Quotient.mk_add, Submodule.Quotient.mk_smul, hp, smul_zero, add_zero, hw]`.
+
+Use `show (w : C₂ × E).2 + (s : E) * u = (x : C₁ × E).2`. Take the linear combination `u * hs + ((x : C₁ × E).2 - (w : C₂ × E).2) * hinv`.
+-/
 theorem exists_rep (x : NF α₁) : ∃ z : NF α₂, (Submodule.Quotient.mk z : CG α₂ β₂ u hb₂) = ψ (Submodule.Quotient.mk x) ∧
     (z : C₂ × E).2 = (x : C₁ × E).2 := by
   obtain ⟨w, hw⟩ := Submodule.Quotient.mk_surjective _ (ψ (Submodule.Quotient.mk x))
@@ -149,11 +188,22 @@ theorem exists_rep (x : NF α₁) : ∃ z : NF α₂, (Submodule.Quotient.mk z :
 
 def Phi (x : NF α₁) : NF α₂ := (exists_rep hu ψ hψl x).choose
 
+/- English proof (translation)
+The claim follows from `(exists_rep hu ψ hψl x).choose_spec.1`.
+-/
 theorem Phi_mk (x : NF α₁) :
     (Submodule.Quotient.mk (Phi hu ψ hψl x) : CG α₂ β₂ u hb₂) = ψ (Submodule.Quotient.mk x) := (exists_rep hu ψ hψl x).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_rep hu ψ hψl x).choose_spec.2`.
+-/
 theorem Phi_snd (x : NF α₁) : ((Phi hu ψ hψl x : NF α₂) : C₂ × E).2 = (x : C₁ × E).2 := (exists_rep hu ψ hψl x).choose_spec.2
 
+/- English proof (translation)
+Use `uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `(simp only [Phi_mk, Submodule.Quotient.mk_add, map_add]; done)`. Consider the case `(simp [Phi_mk]; done)`. Use `first`.
+
+Consider the case `(simp only [Phi_snd, Submodule.coe_add, Prod.snd_add]; done)`. Consider the case `(simp [Phi_snd]; done)`.
+-/
 theorem Phi_add (x y : NF α₁) : Phi hu ψ hψl (x + y) = Phi hu ψ hψl x + Phi hu ψ hψl y := by
   refine uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_
   · first
@@ -163,6 +213,11 @@ theorem Phi_add (x y : NF α₁) : Phi hu ψ hψl (x + y) = Phi hu ψ hψl x + P
       | (simp only [Phi_snd, Submodule.coe_add, Prod.snd_add]; done)
       | (simp [Phi_snd]; done)
 
+/- English proof (translation)
+Use `uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `(simp only [Phi_mk, Submodule.Quotient.mk_smul, map_smul]; done)`. Consider the case `(simp [Phi_mk]; done)`. Use `first`.
+
+Consider the case `(simp only [Phi_snd, Submodule.coe_smul, Prod.smul_snd]; done)`. Consider the case `(simp [Phi_snd]; done)`.
+-/
 theorem Phi_smul (r : R) (x : NF α₁) : Phi hu ψ hψl (r • x) = r • Phi hu ψ hψl x := by
   refine uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_
   · first
@@ -172,12 +227,20 @@ theorem Phi_smul (r : R) (x : NF α₁) : Phi hu ψ hψl (r • x) = r • Phi h
       | (simp only [Phi_snd, Submodule.coe_smul, Prod.smul_snd]; done)
       | (simp [Phi_snd]; done)
 
+/- English proof (translation)
+Use `uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_` and prove the remaining obligations. Rewrite using `[Phi_mk]`. Conclude with `hψe`. Apply the tactic sequence `rw [Phi_snd] <;> rfl`.
+-/
 theorem fiberMap_fiberUnit (hψe : ψ (eG α₁ β₁ u hb₁) = eG α₂ β₂ u hb₂) : Phi hu ψ hψl (e0 α₁) = e0 α₂ := by
   refine uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_
   · rw [Phi_mk]
     exact hψe
   · rw [Phi_snd] <;> rfl
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `diff_of_fst α₁ h`. Apply the tactic sequence `have hx : x = x' + r • e0 α₁ := by first | exact sub_eq_iff_eq_add'.1 hr | (rw [← hr]; abel)`. Rewrite using `[hx, Phi_add, Phi_smul, fiberMap_fiberUnit hu ψ hψl hψe]`. Use `first`. Consider the case `(simp [e0]; done)`.
+
+Consider the case `(show ((Phi hu ψ hψl x' : NF α₂) : C₂ × E).1 + r • (0 : C₂) = _; rw [smul_zero, add_zero])`.
+-/
 theorem Phi_fst (hψe : ψ (eG α₁ β₁ u hb₁) = eG α₂ β₂ u hb₂) {x x' : NF α₁}
     (h : (x : C₁ × E).1 = (x' : C₁ × E).1) :
     ((Phi hu ψ hψl x : NF α₂) : C₂ × E).1 = ((Phi hu ψ hψl x' : NF α₂) : C₂ × E).1 := by
@@ -191,6 +254,9 @@ theorem Phi_fst (hψe : ψ (eG α₁ β₁ u hb₁) = eG α₂ β₂ u hb₂) {x
 
 def phiF (c : C₁) : C₂ := ((Phi hu ψ hψl (liftN α₁ c) : NF α₂) : C₂ × E).1
 
+/- English proof (translation)
+The claim follows from `Phi_fst hu ψ hψl hψe (x := liftN α₁ (x : C₁ × E).1) (x' := x) rfl`.
+-/
 theorem phiF_of (hψe : ψ (eG α₁ β₁ u hb₁) = eG α₂ β₂ u hb₂) (x : NF α₁) :
     phiF hu ψ hψl (x : C₁ × E).1 = ((Phi hu ψ hψl x : NF α₂) : C₂ × E).1 := Phi_fst hu ψ hψl hψe (x := liftN α₁ (x : C₁ × E).1) (x' := x) rfl
 
@@ -218,6 +284,11 @@ variable {C₁ C₂ : Type} [AddCommGroup C₁] [Module R C₁] [AddCommGroup C�
   (hb₁ : α₁ β₁ + (Rs R).mkQ u = 0) (hb₂ : α₂ β₂ + (Rs R).mkQ u = 0)
 
 omit hu hb₁ hb₂ in
+/- English proof (translation)
+Establish `hα' : ∀ w, α₁ (φ.symm w) = α₂ w` using `fun w => by`. Rewrite using `[← hα (φ.symm w), LinearEquiv.apply_symm_apply]`. Use extensionality with `y`. Use `first`. Consider the case `(rw [Submodule.mem_map_equiv, mem_NF, mem_NF] show α₁ (φ.symm y.1) + (Rs R).mkQ y.2 = 0 ↔ _`.
+
+Rewrite using `[hα'])`. Consider the case `(rw [Submodule.map_equiv_eq_comap_symm, Submodule.mem_comap, mem_NF, mem_NF] show α₁ (φ.symm y.1) + (Rs R).mkQ y.2 = 0 ↔ _`. Rewrite using `[hα'])`. Consider the case `(simp [Submodule.mem_map_equiv, mem_NF, hα']; done)`.
+-/
 theorem NF_map (φ : C₁ ≃ₗ[R] C₂) (hα : ∀ v, α₂ (φ v) = α₁ v) :
     (NF α₁).map ((φ.prodCongr (LinearEquiv.refl R E)) : C₁ × E →ₗ[R] C₂ × E) = NF α₂ := by
   have hα' : ∀ w, α₁ (φ.symm w) = α₂ w := fun w => by
@@ -238,6 +309,9 @@ def PhiN (φ : C₁ ≃ₗ[R] C₂) (hα : ∀ v, α₂ (φ v) = α₁ v) : NF �
   LinearEquiv.ofSubmodules (φ.prodCongr (LinearEquiv.refl R E)) (NF α₁) (NF α₂) (NF_map φ hα)
 
 omit hu hb₁ hb₂ in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem PhiN_apply (φ : C₁ ≃ₗ[R] C₂) (hα : ∀ v, α₂ (φ v) = α₁ v) (x : NF α₁) :
     ((PhiN φ hα x : NF α₂) : C₂ × E) = (φ (x : C₁ × E).1, (x : C₁ × E).2) := rfl
 
@@ -257,9 +331,19 @@ def Fψ (φ : IsoT R β₁ β₂ α₁ α₂) : IsoT R (eG α₁ β₁ u hb₁) 
         show lamG α₂ β₂ u hb₂ hu (Submodule.Quotient.mk (PhiN φ.1 φ.2.2 x)) = _
         rw [lamG_mk, lamG_mk, PhiN_apply]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Fψ_mk (φ : IsoT R β₁ β₂ α₁ α₂) (x : NF α₁) :
     (Fψ hu hb₁ hb₂ φ).1 (Submodule.Quotient.mk x) = Submodule.Quotient.mk (PhiN φ.1 φ.2.2 x) := rfl
 
+/- English proof (translation)
+Introduce `φ φ' h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `c`. Establish `h1 : (Submodule.Quotient.mk (PhiN φ.1 φ.2.2 (liftN α₁ c)) : CG α₂ β₂ u hb₂) = Submodule.Quotient.mk (PhiN φ'.1 φ'.2.2 (liftN α₁ c))`.
+
+Rewrite using `[← Fψ_mk hu hb₁ hb₂ φ, ← Fψ_mk hu hb₁ hb₂ φ', h]`. Establish `h2` using `uniq_N hu h1 (by simp only [PhiN_apply])`. Establish `h3 : ((PhiN φ.1 φ.2.2 (liftN α₁ c) : NF α₂) : C₂ × E).1 = ((PhiN φ'.1 φ'.2.2 (liftN α₁ c) : NF α₂) : C₂ × E).1`. Rewrite using `[h2]`. Rewrite `h3` using `[PhiN_apply, PhiN_apply]`.
+
+Conclude with `h3`.
+-/
 theorem Fψ_injective : Function.Injective (Fψ hu hb₁ hb₂) := by
   intro φ φ' h
   apply Subtype.ext
@@ -275,6 +359,33 @@ theorem Fψ_injective : Function.Injective (Fψ hu hb₁ hb₂) := by
   rw [PhiN_apply, PhiN_apply] at h3
   exact h3
 
+/- English proof (translation)
+Introduce `Ψ`. Take `⟨e, he, hl⟩` from `Ψ`. Establish `hl0 : ∀ v, lamG α₂ β₂ u hb₂ hu (e.toLinearMap v) = lamG α₁ β₁ u hb₁ hu v` using `hl`. Establish `hl1 : ∀ v, lamG α₁ β₁ u hb₁ hu (e.symm.toLinearMap v) = lamG α₂ β₂ u hb₂ hu v`. Introduce `v`.
+
+Establish `h` using `hl (e.symm v)`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h.symm`. Establish `he0 : e.toLinearMap (eG α₁ β₁ u hb₁) = eG α₂ β₂ u hb₂` using `he`. Establish `he1 : e.symm.toLinearMap (eG α₂ β₂ u hb₂) = eG α₁ β₁ u hb₁` using `by show e.symm _ = _`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `he.symm`. Establish `hinv1 : ∀ x, Phi hu e.symm.toLinearMap hl1 (Phi hu e.toLinearMap hl0 x) = x`. Introduce `x`. Use `uniq_N (β₂ := β₁) (hb₂ := hb₁) hu ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Phi_mk, Phi_mk]`. Conclude with `e.symm_apply_apply _`. Rewrite using `[Phi_snd, Phi_snd]`. Establish `hinv2 : ∀ y, Phi hu e.toLinearMap hl0 (Phi hu e.symm.toLinearMap hl1 y) = y`. Introduce `y`.
+
+Use `uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_` and prove the remaining obligations. Rewrite using `[Phi_mk, Phi_mk]`. Conclude with `e.apply_symm_apply _`. Rewrite using `[Phi_snd, Phi_snd]`. Establish `hfg : ∀ c, phiF hu e.toLinearMap hl0 (phiF hu e.symm.toLinearMap hl1 c) = c`.
+
+Introduce `c`. Establish `h` using `phiF_of hu e.toLinearMap hl0 he0 (Phi hu e.symm.toLinearMap hl1 (liftN α₂ c))`. Rewrite `h` using `[hinv2]`. Conclude with `h`. Establish `hgf : ∀ c, phiF hu e.symm.toLinearMap hl1 (phiF hu e.toLinearMap hl0 c) = c`.
+
+Introduce `c`. Establish `h` using `phiF_of hu e.symm.toLinearMap hl1 he1 (Phi hu e.toLinearMap hl0 (liftN α₁ c))`. Rewrite `h` using `[hinv1]`. Conclude with `h`. Establish `hp : Phi hu e.toLinearMap hl0 (bN α₁ β₁ u hb₁) = bN α₂ β₂ u hb₂`.
+
+Use `uniq_N (β₂ := β₂) (hb₂ := hb₂) hu ?_ ?_` and prove the remaining obligations. Rewrite using `[Phi_mk]`. Establish `h1 : (Submodule.Quotient.mk (bN α₁ β₁ u hb₁) : CG α₁ β₁ u hb₁) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_span_singleton_self _)`. Establish `h2 : (Submodule.Quotient.mk (bN α₂ β₂ u hb₂) : CG α₂ β₂ u hb₂) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_span_singleton_self _)`. Rewrite using `[h1, h2, map_zero]`.
+
+Apply the tactic sequence `rw [Phi_snd] <;> rfl`. Establish `hβ : phiF hu e.toLinearMap hl0 β₁ = β₂`. Establish `h` using `phiF_of hu e.toLinearMap hl0 he0 (bN α₁ β₁ u hb₁)`. Rewrite `h` using `[hp]`. Conclude with `h`.
+
+Establish `hα : ∀ c, α₂ (phiF hu e.toLinearMap hl0 c) = α₁ c`. Introduce `c`. Establish `h1` using `(mem_NF α₁).1 (liftN α₁ c).2`. Establish `h2` using `(mem_NF α₂).1 (Phi hu e.toLinearMap hl0 (liftN α₁ c)).2`. Rewrite `h2` using `[Phi_snd]`.
+
+Conclude with `add_right_cancel (h2.trans h1.symm)`. Use `⟨⟨LinearEquiv.ofLinear (phiL hu e.toLinearMap hl0 he0) (phiL hu e.symm.toLinearMap hl1 he1) (LinearMap.ext fun c => hfg c) (LinearMap.ext fun c => hgf c), hβ, fun c => hα c⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `v`.
+
+Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H x`. Use `(Fψ_mk hu hb₁ hb₂ _ x).trans ((congrArg Submodule.Quotient.mk ?_).trans (Phi_mk hu e.toLinearMap hl0 x))` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[PhiN_apply]`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `phiF_of hu e.toLinearMap hl0 he0 x`. Conclude with `(Phi_snd hu e.toLinearMap hl0 x).symm`.
+-/
 theorem Fψ_surjective : Function.Surjective (Fψ hu hb₁ hb₂) := by
   intro Ψ
   obtain ⟨e, he, hl⟩ := Ψ
@@ -346,6 +457,9 @@ theorem Fψ_surjective : Function.Surjective (Fψ hu hb₁ hb₂) := by
     · exact phiF_of hu e.toLinearMap hl0 he0 x
     · exact (Phi_snd hu e.toLinearMap hl0 x).symm
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Equiv.ofBijective _ ⟨Fψ_injective hu hb₁ hb₂, Fψ_surjective hu hb₁ hb₂⟩)`.
+-/
 theorem card_isoT_G :
     Nat.card (IsoT R β₁ β₂ α₁ α₂) =
       Nat.card (IsoT R (eG α₁ β₁ u hb₁) (eG α₂ β₂ u hb₂) (lamG α₁ β₁ u hb₁ hu) (lamG α₂ β₂ u hb₂ hu)) :=
@@ -361,6 +475,15 @@ variable {A₁ A₂ B₁ B₂ : Type} [AddCommGroup A₁] [Module R A₁] [AddCo
   {a₁ : A₁} {a₂ : A₂} {b₁ : B₁} {b₂ : B₂} {la₁ : A₁ →ₗ[R] Qt R} {la₂ : A₂ →ₗ[R] Qt R}
   {lb₁ : B₁ →ₗ[R] Qt R} {lb₂ : B₂ →ₗ[R] Qt R}
 
+/- English proof (translation)
+Take `⟨t₁, ht₁, hl₁⟩` from `θ₁`. Take `⟨t₂, ht₂, hl₂⟩` from `θ₂`. Conclude with `Nat.card_congr { toFun := fun φ => ⟨(t₁.symm.trans φ.1).trans t₂, by`. Establish `h : t₁.symm b₁ = a₁`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Conclude with `ht₁.symm`. Use `show t₂ (φ.1 (t₁.symm b₁)) = b₂`. Rewrite using `[h, φ.2.1, ht₂],`. Use `fun v => by show lb₂ (t₂ (φ.1 (t₁.symm v))) = lb₁ v`. Rewrite using `[hl₂, φ.2.2, ← hl₁, LinearEquiv.apply_symm_apply]⟩`.
+
+Use `invFun := fun ψ => ⟨(t₁.trans ψ.1).trans t₂.symm, by show t₂.symm (ψ.1 (t₁ a₁)) = a₂`. Rewrite using `[ht₁, ψ.2.1, LinearEquiv.symm_apply_eq]`. Conclude with `ht₂.symm,`. Use `fun v => by show la₂ (t₂.symm (ψ.1 (t₁ v))) = la₁ v`. Rewrite using `[← hl₂, LinearEquiv.apply_symm_apply, ψ.2.2, hl₁]⟩`.
+
+Use `left_inv := fun φ => Subtype.ext (LinearEquiv.ext fun v => by show t₂.symm (t₂ (φ.1 (t₁.symm (t₁ v)))) = φ.1 v`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply])`. Use `right_inv := fun ψ => Subtype.ext (LinearEquiv.ext fun v => by show t₂ (t₂.symm (ψ.1 (t₁ (t₁.symm v)))) = ψ.1 v`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]) }`.
+-/
 theorem card_isoT_congr (θ₁ : IsoT R a₁ b₁ la₁ lb₁) (θ₂ : IsoT R a₂ b₂ la₂ lb₂) :
     Nat.card (IsoT R a₁ a₂ la₁ la₂) = Nat.card (IsoT R b₁ b₂ lb₁ lb₂) := by
   obtain ⟨t₁, ht₁, hl₁⟩ := θ₁

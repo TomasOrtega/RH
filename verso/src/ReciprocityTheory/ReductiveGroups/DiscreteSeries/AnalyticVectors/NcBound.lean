@@ -13,6 +13,11 @@ section Unitary
 
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
+/- English proof (translation)
+Simplify using `only [casimir, casimirK, LinearMap.sum_apply, Module.End.mul_apply]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun b => ε b = ε a)]`. Use `congr 1`.
+
+Use `Finset.sum_congr (Finset.filter_congr fun b _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Conclude with `⟨fun h h' => h h'.symm, fun h h' => h h'.symm⟩`.
+-/
 theorem casimir_apply_eq_casimirK_add (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (x : M) :
     casimir E x = casimirK ε E x +
       ∑ a, ∑ b ∈ univ.filter (fun b => ε a ≠ ε b), E a b (E b a x) := by
@@ -24,6 +29,11 @@ theorem casimir_apply_eq_casimirK_add (ε : Fin n → Bool) (E : Fin n → Fin n
   refine Finset.sum_congr (Finset.filter_congr fun b _ => ?_) fun _ _ => rfl
   exact ⟨fun h h' => h h'.symm, fun h h' => h h'.symm⟩
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = ε b`. Simplify using `[h]`.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem sum_nc_swap (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
     ∑ a, ∑ b ∈ univ.filter (fun b => ε a ≠ ε b), f b a =
       ∑ a, ∑ b ∈ univ.filter (fun b => ε a ≠ ε b), f a b := by
@@ -34,6 +44,13 @@ theorem sum_nc_swap (ε : Fin n → Bool) (f : Fin n → Fin n → ℝ) :
   · simp [h]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[casimir_apply_eq_casimirK_add ε E x, inner_add_left, map_add, sum_inner, map_sum]`. Establish `key : ∀ a, RCLike.re (inner ℂ (∑ b ∈ univ.filter (fun b => ε a ≠ ε b), E a b (E b a x)) x) = -∑ b ∈ univ.filter (fun b => ε a ≠ ε b), ‖E b a x‖ ^ 2`. Introduce `a`. Rewrite using `[sum_inner, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations.
+
+Establish `hab : ε a ≠ ε b` using `(Finset.mem_filter.1 hb).2`. Rewrite using `[hU a b (E b a x) x, adjSign, if_neg hab, inner_self_eq_norm_sq_to_K]`. Simplify using `[← Complex.ofReal_pow]`. Simplify using `only [key, Finset.sum_neg_distrib]`. Rewrite using `[sum_nc_swap ε (fun a b => ‖E a b x‖ ^ 2)]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_inner_casimir_eq (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     (hU : IsInfUnitary ε E) (x : M) :
     RCLike.re (inner ℂ (casimir E x) x) = RCLike.re (inner ℂ (casimirK ε E x) x) -
@@ -51,11 +68,25 @@ theorem re_inner_casimir_eq (ε : Fin n → Bool) {E : Fin n → Fin n → Modul
   rw [sum_nc_swap ε (fun a b => ‖E a b x‖ ^ 2)]
   ring
 
+/- English proof (translation)
+Rewrite using `[inner_smul_left, inner_self_eq_norm_sq_to_K]`. Simplify using `[← Complex.ofReal_pow]`.
+-/
 theorem re_inner_smul_self (c : ℝ) (x : M) :
     RCLike.re (inner ℂ ((c : ℂ) • x) x) = c * ‖x‖ ^ 2 := by
   rw [inner_smul_left, inner_self_eq_norm_sq_to_K]
   simp [← Complex.ofReal_pow]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x hx`. Conclude with `hc x hx`.
+
+Consider the case `succ k ih`. Introduce `x hx`. Establish `hle : layer ε E V (k + 1) ≤ LinearMap.ker (casimir E - (c : ℂ) • 1)` using `by show layer ε E V k ⊔ _ ≤ _`. Use `sup_le (fun y hy => ?_) (iSup_le fun a => iSup_le fun b => iSup_le fun _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, ih y hy]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker, LinearMap.sub_apply]`. Establish `e` using `congrArg (fun f => f y) (casimir_comm hE a b)`.
+
+Simplify using `only [Module.End.mul_apply] at e`. Rewrite using `[e, ih y hy, map_smul]`. Simplify using the standard rewrite rules. Establish `h1` using `hle hx`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+
+Simplify using `using h1`.
+-/
 private theorem casimir_eq_smul_on_layer {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) {V : Submodule ℂ M} {c : ℝ} (hc : ∀ v ∈ V, casimir E v = (c : ℂ) • v) :
     ∀ k : ℕ, ∀ x ∈ layer ε E V k, casimir E x = (c : ℂ) • x := by
@@ -82,6 +113,11 @@ private theorem casimir_eq_smul_on_layer {ε : Fin n → Bool} {E : Fin n → Fi
     rw [LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at h1
     simpa using h1
 
+/- English proof (translation)
+Take `⟨R, hR, hK⟩` from `exists_re_inner_casimirK_layer_le hE hU hVf hVK`. Use `⟨R, hR, fun k x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `re_inner_casimir_eq ε hU x`. Rewrite `h1` using `[casimir_eq_smul_on_layer hE hc k x hx, re_inner_smul_self]`. Establish `h2` using `hK k x hx`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_sum_nc_norm_sq_le (ε : Fin n → Bool) {E : Fin n → Fin n → Module.End ℂ M}
     (hE : IsGlRep E) (hU : IsInfUnitary ε E) {V : Submodule ℂ M} (hVf : FiniteDimensional ℂ V) (hVK : IsKStableSub ε E V) {c : ℝ}
     (hc : ∀ v ∈ V, casimir E v = (c : ℂ) • v) :

@@ -25,11 +25,23 @@ noncomputable def psiS : MvPolynomial (Fin (D + 1) × Fin N) Ω →+* OmS Ω D N
   (algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N)).comp
     (rename (R := Ω) (Sum.inr : Fin (D + 1) × Fin N → SVar D N)).toRingHom
 
+/- English proof (translation)
+Unfold `kerP`. Conclude with `RingHom.ker_isPrime _`.
+-/
 theorem ker_eval_isPrime (j₀ : Fin (N + 1)) (x : Fin N → Ω) :
     (kerP (K := K) (D := D) j₀ x).IsPrime := by
   unfold kerP
   exact RingHom.ker_isPrime _
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `v`. Distinguish the cases in `hj : j = j₀`. Rewrite `hv`, the goal using `[hj]`. Establish `hi : i ≠ 0` using `fun h => hv ⟨h, rfl⟩`. Establish `h1 : chiImg j₀ x (i, j₀) = -∑ k, X (i, k) * C (x k)` using `Fin.insertNth_apply_same (α := fun _ => MvPolynomial (Fin (D + 1) × Fin N) Ω) j₀ _ _`.
+
+Establish `h2 : sImg (Ω` using `Ω) j₀ x (i, j₀) = algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (-∑ k, X (Sum.inr (i, k)) * C (x k)) := by`. Unfold `sImg`. Use `congr 1`. Conclude with `(Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _).trans (if_neg hi)`. Rewrite using `[h1, h2]`.
+
+Simplify using `[psiS, map_neg, map_sum, map_mul, MvPolynomial.rename_X, MvPolynomial.rename_C]`. Take `⟨k, hk⟩` from `Fin.exists_succAbove_eq hj`. Rewrite using `[← hk]`. Establish `h1 : chiImg j₀ x (i, j₀.succAbove k) = X (i, k)` using `Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (Fin (D + 1) × Fin N) Ω) j₀ _ _ k`. Establish `h2 : sImg (Ω` using `Ω) j₀ x (i, j₀.succAbove k) = algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (X (Sum.inr (i, k))) := by`.
+
+Unfold `sImg`. Use `congr 1`. Conclude with `Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _ k`. Rewrite using `[h1, h2]`. Simplify using `[psiS, MvPolynomial.rename_X]`.
+-/
 theorem psiS_chiImg (j₀ : Fin (N + 1)) (x : Fin N → Ω) (v : TVar D N)
     (hv : ¬ (v.1 = 0 ∧ v.2 = j₀)) :
     psiS (chiImg j₀ x v) = sImg (Ω := Ω) j₀ x v := by
@@ -59,6 +71,9 @@ theorem psiS_chiImg (j₀ : Fin (N + 1)) (x : Fin N → Ω) (v : TVar D N)
     rw [h1, h2]
     simp [psiS, MvPolynomial.rename_X]
 
+/- English proof (translation)
+Establish `h1 : chiImg j₀ x ((0 : Fin (D + 1)), j₀) = -∑ k, X ((0 : Fin (D + 1)), k) * C (x k)` using `Fin.insertNth_apply_same (α := fun _ => MvPolynomial (Fin (D + 1) × Fin N) Ω) j₀ _ _`. Rewrite using `[h1]`. Simplify using `[psiS, map_neg, map_sum, map_mul, MvPolynomial.rename_X, MvPolynomial.rename_C]`.
+-/
 theorem psiS_chiImg_base (j₀ : Fin (N + 1)) (x : Fin N → Ω) :
     psiS (chiImg j₀ x ((0 : Fin (D + 1)), j₀)) =
       algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N)
@@ -68,6 +83,9 @@ theorem psiS_chiImg_base (j₀ : Fin (N + 1)) (x : Fin N → Ω) :
   rw [h1]
   simp [psiS, map_neg, map_sum, map_mul, MvPolynomial.rename_X, MvPolynomial.rename_C]
 
+/- English proof (translation)
+Unfold `sImg`. Use `congr 1`. Use `first`. Consider the case `exact (Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _).trans (if_pos rfl)`. Consider the case `simp [Fin.succAboveCases]`.
+-/
 theorem sImg_base (j₀ : Fin (N + 1)) (x : Fin N → Ω) :
     sImg (Ω := Ω) j₀ x ((0 : Fin (D + 1)), j₀) =
       algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (X (Sum.inl ())) := by
@@ -77,6 +95,9 @@ theorem sImg_base (j₀ : Fin (N + 1)) (x : Fin N → Ω) :
   | exact (Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _).trans (if_pos rfl)
   | simp [Fin.succAboveCases]
 
+/- English proof (translation)
+Unfold `sImg`. Use `congr 1`. Conclude with `Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _ k`.
+-/
 theorem sImg_succAbove (j₀ : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) (k : Fin N) :
     sImg (Ω := Ω) j₀ x (i, j₀.succAbove k) =
       algebraMap (MvPolynomial (SVar D N) Ω) (OmS Ω D N) (X (Sum.inr (i, k))) := by
@@ -84,6 +105,13 @@ theorem sImg_succAbove (j₀ : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1))
   congr 1
   exact Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _ k
 
+/- English proof (translation)
+Introduce `hbot`. Establish `hinj : Function.Injective (chiP (K` using `K) (D := D) j₀ x) := (RingHom.injective_iff_ker_eq_bot (chiP (K := K) (D := D) j₀ x).toRingHom).mpr hbot`. Establish `hphi : MvPolynomial.aeval (fun i : TVar D N => chiP (K` using `K) (D := D) j₀ x (MvPolynomial.X i)) = chiP (K := K) (D := D) j₀ x := by first`. Consider the case `(ext i; simp)`. Consider the case `exact (MvPolynomial.aeval_unique _).symm`.
+
+Establish `hind : AlgebraicIndependent K (fun i : TVar D N => chiP (K` using `K) (D := D) j₀ x (MvPolynomial.X i)) := by`. Rewrite using `[algebraicIndependent_iff_injective_aeval, hphi]`. Conclude with `hinj`. Establish `h1` using `hind.cardinalMk_le_trdeg`. Establish `h2 : Algebra.trdeg K Ω + Algebra.trdeg Ω (MvPolynomial (Fin (D + 1) × Fin N) Ω) = Algebra.trdeg K (MvPolynomial (Fin (D + 1) × Fin N) Ω)` using `trdeg_add_eq K Ω`.
+
+Rewrite `h1` using `[← h2, MvPolynomial.trdeg_of_isDomain, hΩ, Cardinal.mk_fintype, Cardinal.mk_fintype, Cardinal.lift_natCast]`. Establish `h3 : Fintype.card (TVar D N) ≤ D + Fintype.card (Fin (D + 1) × Fin N)` using `by exact_mod_cast h1`. Simplify using `only [TVar, Fintype.card_prod, Fintype.card_fin] at h3`. Establish `h4 : (D + 1) * (N + 1) = (D + 1) * N + (D + 1)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ker_eval_ne_bot (hΩ : Algebra.trdeg K Ω = D) (j₀ : Fin (N + 1)) (x : Fin N → Ω) :
     kerP (K := K) (D := D) j₀ x ≠ ⊥ := by
   intro hbot
@@ -127,10 +155,22 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Unfold `Data.sH sHom`. Conclude with `MvPolynomial.aeval_X _ _`.
+-/
 theorem sH_X (c : ι) (v : TVar d.D d.N) : d.sH c (X v) = sImg (Ω := Ω c) (d.jc c) (d.x c) v := by
   unfold Data.sH sHom
   exact MvPolynomial.aeval_X _ _
 
+/- English proof (translation)
+Establish `hb` using `hd.w_base c`. Establish `key : ∀ (a b : Ω c) (g : A c), g ≠ 0 → a • g = b • g → a = b`. Introduce `a b g hg hab`. Assume the negation of the conclusion as `hne`. Apply `hg` to reduce the goal to its premises.
+
+Establish `h1 : (a - b) • g = 0` using `by rw [sub_smul, hab, sub_self]`. Establish `h2 : (a - b)⁻¹ • ((a - b) • g) = g`. Rewrite using `[smul_smul, inv_mul_cancel₀ (sub_ne_zero.mpr hne), one_smul]`. Rewrite using `[← h2, h1, smul_zero]`. Establish `hr1 : ratio (Ω` using `Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := by`.
+
+Establish `hex : ∃ a : Ω c, d.w (d.jc c) c = a • d.w (d.jc c) c` using `⟨1, (one_smul _ _).symm⟩`. Unfold `ratio`. Rewrite using `[dif_pos hex]`. Conclude with `(key _ _ _ hb ((one_smul _ _).trans hex.choose_spec)).symm`. Unfold `Data.rationalBaseRow`.
+
+Rewrite using `[Fin.sum_univ_succAbove _ (d.jc c), hr1, map_one, mul_one]`. Simplify using `only [sH_X, sImg_succAbove, sImg_base, map_add, map_sum, map_mul]`. Use `congr 1`.
+-/
 theorem w0rat_eq_base (hd : d.AxH 𝒜) (c : ι) :
     d.rationalBaseRow c = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)
       (X (Sum.inl ()) + ∑ k, X (Sum.inr ((0 : Fin (d.D + 1)), k)) * C (d.x c k)) := by
@@ -153,6 +193,35 @@ theorem w0rat_eq_base (hd : d.AxH 𝒜) (c : ι) :
   simp only [sH_X, sImg_succAbove, sImg_base, map_add, map_sum, map_mul]
   congr 1
 
+/- English proof (translation)
+Take `⟨_, hw2⟩` from `hw`. Introduce `F hF`. Establish `hF0 : chiP (K` using `K) (D := d.D) (d.jc c) (d.x c) F = 0 := RingHom.mem_ker.mp hF`. Establish `hsH : ∀ v, 0 ≤ w (sImg (Ω` using `Ω c) (d.jc c) (d.x c) v) := fun v => by`. Rewrite using `[← d.sH_X c v]`.
+
+Conclude with `(hw2 (MvPolynomial.X v)).1`. Establish `hv : ∀ v : TVar d.D d.N, 0 ≤ w (psiS (chiImg (d.jc c) (d.x c) v)) ∧ 0 < w (sImg (Ω` using `Ω c) (d.jc c) (d.x c) v - psiS (chiImg (d.jc c) (d.x c) v)) := by`. Introduce `v`. Distinguish the cases in `hv0 : v.1 = 0 ∧ v.2 = d.jc c`. Take `⟨v1, v2⟩` from `v`.
+
+Take `⟨h1, h2⟩` from `hv0`. Establish `h1' : v1 = 0` using `h1`. Establish `h2' : v2 = d.jc c` using `h2`. Substitute `h1'` using the available equality. Substitute `h2'` using the available equality.
+
+Establish `hdiff : sImg (Ω` using `Ω c) (d.jc c) (d.x c) ((0 : Fin (d.D + 1)), d.jc c) - psiS (chiImg (d.jc c) (d.x c) ((0 : Fin (d.D + 1)), d.jc c)) = d.rationalBaseRow c := by`. Rewrite using `[sImg_base, psiS_chiImg_base, d.w0rat_eq_base hd c, ← map_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdiff]`.
+
+Use `⟨?_, hy⟩` and prove the remaining obligations. Establish `e : psiS (chiImg (d.jc c) (d.x c) ((0 : Fin (d.D + 1)), d.jc c)) = sImg (Ω` using `Ω c) (d.jc c) (d.x c) ((0 : Fin (d.D + 1)), d.jc c) - d.rationalBaseRow c := by`. Rewrite using `[← hdiff]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `le_trans (le_min (hsH _) hy.le) (AddValuation.map_sub _ _ _)`. Rewrite using `[psiS_chiImg (d.jc c) (d.x c) v hv0, sub_self, AddValuation.map_zero]`. Conclude with `⟨hsH v, by simp⟩`. Establish `hC : ∀ k : K, d.sH c (MvPolynomial.C k) = psiS (chiP (K` using `K) (D := d.D) (d.jc c) (d.x c) (MvPolynomial.C k)) := by`. Introduce `k`.
+
+Establish `e1 : chiP (K` using `K) (D := d.D) (d.jc c) (d.x c) (MvPolynomial.C k) = algebraMap K (MvPolynomial (Fin (d.D + 1) × Fin d.N) (Ω c)) k := MvPolynomial.aeval_C _ _`. Establish `e2 : d.sH c (MvPolynomial.C k) = algebraMap K (OmS (Ω c) d.D d.N) k` using `MvPolynomial.aeval_C _ _`. Rewrite using `[e1, e2]`. Unfold `psiS`. Rewrite using `[RingHom.comp_apply]`.
+
+Use `first`. Consider the case `(rw [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Conclude with `IsScalarTower.algebraMap_apply K _ _ k)`. Consider the case `(simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Conclude with `IsScalarTower.algebraMap_apply K _ _ k)`.
+
+Consider the case `(simp [IsScalarTower.algebraMap_apply K (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N)])`. Establish `key : ∀ G : KTp K d.D d.N, 0 ≤ w (psiS (chiP (K` using `K) (D := d.D) (d.jc c) (d.x c) G)) ∧ 0 < w (d.sH c G - psiS (chiP (K := K) (D := d.D) (d.jc c) (d.x c) G)) := by`. Introduce `G`. Proceed by induction on `G using MvPolynomial.induction_on`. Name the introduced variables `k`.
+
+Rewrite using `[← hC k, sub_self, AddValuation.map_zero]`. Conclude with `⟨(hw2 _).1, by simp⟩`. Name the introduced variables `p q hp hq`. Simplify using `only [map_add]`. Use `⟨le_trans (le_min hp.1 hq.1) (AddValuation.map_add _ _ _), ?_⟩` and prove the remaining obligations.
+
+Establish `e : d.sH c p + d.sH c q - (psiS (chiP (K` using `K) (D := d.D) (d.jc c) (d.x c) p) + psiS (chiP (K := K) (D := d.D) (d.jc c) (d.x c) q)) = (d.sH c p - psiS (chiP (K := K) (D := d.D) (d.jc c) (d.x c) p)) + (d.sH c q - psiS (chiP (K := K) (D := d.D) (d.jc c) (d.x c) q)) := by ring`. Rewrite using `[e]`. Conclude with `lt_of_lt_of_le (lt_min hp.2 hq.2) (AddValuation.map_add _ _ _)`. Name the introduced variables `p v hp`. Establish `hX : chiP (K` using `K) (D := d.D) (d.jc c) (d.x c) (MvPolynomial.X v) = chiImg (d.jc c) (d.x c) v := MvPolynomial.aeval_X _ _`.
+
+Rewrite using `[map_mul (chiP (K := K) (D := d.D) (d.jc c) (d.x c)) p (MvPolynomial.X v), hX, map_mul (psiS (Ω := Ω c) (D := d.D) (N := d.N)), map_mul (d.sH c) p (MvPolynomial.X v), d.sH_X c v]`. Use `⟨by rw [AddValuation.map_mul]; exact add_nonneg hp.1 (hv v).1, ?_⟩` and prove the remaining obligations. Establish `e : d.sH c p * sImg (Ω` using `Ω c) (d.jc c) (d.x c) v - psiS (chiP (K := K) (D := d.D) (d.jc c) (d.x c) p) * psiS (chiImg (d.jc c) (d.x c) v) = d.sH c p * (sImg (Ω := Ω c) (d.jc c) (d.x c) v - psiS (chiImg (d.jc c) (d.x c) v)) + (d.sH c p - psiS (chiP (K := K) (D := d.D) (d.jc c) (d.x c) p)) * psiS (chiImg (d …`. Rewrite using `[e]`. Use `lt_of_lt_of_le (lt_min ?_ ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations.
+
+Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le (hv v).2 (le_add_of_nonneg_left (hw2 p).1)`. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le hp.2 (le_add_of_nonneg_right (hv v).1)`. Apply `(hw2 F).2.mp` to reduce the goal to its premises.
+
+Establish `h` using `(key F).2`. Rewrite `h` using `[hF0, map_zero, sub_zero]`. Conclude with `h`.
+-/
 theorem ker_eval_le_of_place (hd : d.AxH 𝒜) (c : ι) {p : Ideal (KTp K d.D d.N)}
     {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.OverP c p)
     (htriv : ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0) (hy : 0 < w (d.rationalBaseRow c)) :
@@ -234,6 +303,15 @@ theorem ker_eval_le_of_place (hd : d.AxH 𝒜) (c : ι) {p : Ideal (KTp K d.D d.
   rw [hF0, map_zero, sub_zero] at h
   exact h
 
+/- English proof (translation)
+Establish `hle` using `d.ker_eval_le_of_place hd c hw htriv hy`. Establish `hprime` using `ker_eval_isPrime (K := K) (D := d.D) (d.jc c) (d.x c)`. Establish `hne` using `ker_eval_ne_bot (K := K) (hd.trdeg c) (d.jc c) (d.x c)`. Take `⟨hpp, hph⟩` from `hp`. Assume the negation of the conclusion as `hneq`.
+
+Establish `hlt` using `lt_of_le_of_ne hle hneq`. Establish `h1 : p.height ≤ ((1 : ℕ) : ℕ∞)` using `by rw [hph]; simp`. Establish `h2` using `(Ideal.height_le_iff.mp h1) _ hprime hlt`. Establish `h3 : ¬ (kerP (K` using `K) (D := d.D) (d.jc c) (d.x c)).height ≤ ((0 : ℕ) : ℕ∞) := by`. Introduce `h0`.
+
+Establish `h4` using `(Ideal.height_le_iff.mp h0) ⊥ Ideal.bot_prime (bot_lt_iff_ne_bot.mpr hne)`. Simplify using `at h4`. Apply `h3` to reduce the goal to its premises. Establish `h5 : (kerP (K` using `K) (D := d.D) (d.jc c) (d.x c)).height = 0 := ENat.lt_one_iff_eq_zero.mp (by simpa using h2)`. Rewrite using `[h5]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem ker_eval_eq_of_place (hd : d.AxH 𝒜) (c : ι) {p : Ideal (KTp K d.D d.N)} (hp : p ∈ d.HtOne)
     {w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)} (hw : w ∈ d.OverP c p)
     (htriv : ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0) (hy : 0 < w (d.rationalBaseRow c)) :

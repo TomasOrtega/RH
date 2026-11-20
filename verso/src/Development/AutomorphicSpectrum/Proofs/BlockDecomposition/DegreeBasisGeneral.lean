@@ -10,10 +10,20 @@ namespace GlobalTheory.CompanionTheory.DegBasisGen
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (@IsUltrametricDist (w.adicCompletion E) (Valued.toNormedField (w.adicCompletion E) (WithZero (Multiplicative ℤ))).toDist)`.
+-/
 theorem ultra (w : HeightOneSpectrum (𝓞 E)) : IsUltrametricDist (w.adicCompletion E) :=
   inferInstanceAs (@IsUltrametricDist (w.adicCompletion E)
     (Valued.toNormedField (w.adicCompletion E) (WithZero (Multiplicative ℤ))).toDist)
 
+/- English proof (translation)
+Establish `inj : LinearMap.ker P.mulVecLin = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `h0` using `hv`. Rewrite `h0` using `[Matrix.mulVecLin_apply, Matrix.mulVec_eq_sum]`.
+
+Simplify using `only [op_smul_eq_smul] at h0`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hP v h0 i`. Take `⟨f, hf⟩` from `P.mulVecLin.exists_leftInverse_of_injective inj`. Use `⟨LinearMap.toMatrix' f, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg LinearMap.toMatrix' hf`. Rewrite `h` using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+-/
 theorem exists_left_inv {K ι κ : Type} [Field K] [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (P : Matrix ι κ K) (hP : LinearIndependent K Pᵀ) : ∃ Y : Matrix κ ι K, Y * P = 1 := by
   have inj : LinearMap.ker P.mulVecLin = ⊥ := by
@@ -30,6 +40,13 @@ theorem exists_left_inv {K ι κ : Type} [Field K] [Fintype ι] [DecidableEq ι]
   rwa [LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin',
     LinearMap.toMatrix'_id] at h
 
+/- English proof (translation)
+Establish `hfr : (x⁻¹ : GA E n).val * (M.submatrix id e).map (algebraMap E (Ad E)) = ((x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))).submatrix id e`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Take `⟨A, hA⟩ : ∃ A, A = (x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))` from `⟨_, rfl⟩`. Establish `hv : ∀ v, nI ((A.submatrix id e).map (cV v)) = nI (A.map (cV v))` using `fun v => by`.
+
+Rewrite using `[← Matrix.submatrix_map]`. Conclude with `(hI (Fin n)).reindex κ κ' e (A.map (cV v))`. Establish `hw : ∀ w, nF ((A.submatrix id e).map (cW w)) = nF (A.map (cW w))` using `fun w => by haveI := ultra w`. Rewrite using `[← Matrix.submatrix_map]`. Conclude with `(hF (w.adicCompletion E) (Fin n)).reindex κ κ' e (A.map (cW w))`.
+
+Simplify using `only [degG, hfr, ← hA, hv, hw]`.
+-/
 theorem degG_reindex (hF : WedgeF) (hI : WedgeI) {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ']
     [DecidableEq κ'] (e : κ' ≃ κ) (x : GA E n) (M : Matrix (Fin n) κ E) :
     degG x (M.submatrix id e) = degG x M := by
@@ -47,6 +64,17 @@ theorem degG_reindex (hF : WedgeF) (hI : WedgeI) {κ κ' : Type} [Fintype κ] [D
     exact (hF (w.adicCompletion E) (Fin n)).reindex κ κ' e (A.map (cW w))
   simp only [degG, hfr, ← hA, hv, hw]
 
+/- English proof (translation)
+Take `⟨A, hA⟩ : ∃ A, A = (x⁻¹ : GA E n).val * P.map (algebraMap E (Ad E))` from `⟨_, rfl⟩`. Establish `hfr : (x⁻¹ : GA E n).val * (P * s).map (algebraMap E (Ad E)) = A * s.map (algebraMap E (Ad E))`. Rewrite using `[hA, Matrix.map_mul, Matrix.mul_assoc]`. Take `⟨Y₀, hY₀⟩` from `exists_left_inv P hP`. Establish `hYA : (Y₀.map (algebraMap E (Ad E)) * x.val) * A = 1`.
+
+Rewrite using `[hA, Matrix.mul_assoc, ← Matrix.mul_assoc x.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, ← Matrix.map_mul, hY₀, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨h1, h2, h3⟩` from `(lg E).1, (lg E).2.1, (lg E).2.2`. Take `⟨f1, f2, f3⟩` from `fs E (Fin n) κ A _ hYA`. Establish `hu : IsUnit (algebraMap E (Ad E) s.det)` using `(IsUnit.mk0 _ hs).map _`. Establish `hdet : ∀ {R : Type} [CommRing R] (f : Ad E →+* R), ((s.map (algebraMap E (Ad E))).map f).det = f (algebraMap E (Ad E) s.det)` using `fun f => by`.
+
+Rewrite using `[RingHom.map_det, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hv : ∀ v, Real.log (nI ((A * s.map (algebraMap E (Ad E))).map (cV v))) = Real.log (nI (A.map (cV v))) + Real.log (‖cV v (algebraMap E (Ad E) s.det)‖ ^ 2)` using `fun v => by`. Establish `hne : ‖cV v (algebraMap E (Ad E) s.det)‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (hu.map (cV v)).ne_zero)`. Rewrite using `[Matrix.map_mul, (mI (Fin n) (Fin n) κ _).2.1, hdet, Real.log_mul (f1 v) hne]`.
+
+Establish `hw : ∀ w, Real.log (nF ((A * s.map (algebraMap E (Ad E))).map (cW w))) = Real.log (nF (A.map (cW w))) + Real.log ‖cW w (algebraMap E (Ad E) s.det)‖` using `fun w => by haveI := ultra w`. Establish `hne : ‖cW w (algebraMap E (Ad E) s.det)‖ ≠ 0` using `norm_ne_zero_iff.2 (hu.map (cW w)).ne_zero`. Rewrite using `[Matrix.map_mul, (mF _ (Fin n) (Fin n) κ _).2.1, hdet, Real.log_mul (f2 w) hne]`. Establish `hsupp : (Function.support fun w => Real.log (nF (A.map (cW w)))).Finite` using `f3.subset fun w hw' h => hw' (by simp [h])`. Establish `hprod` using `h3 s.det hs`.
+
+Simplify using `only [degG, hfr, ← hA, hv, hw]`. Rewrite using `[Finset.sum_add_distrib, finsum_add_distrib hsupp (h1 _ hu)]`. Unfold `logAbs at hprod`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degG_mul (mF : MulF) (mI : MulI) (lg : LogAbsBasic) (fs : FinSupp) {κ : Type} [Fintype κ] [DecidableEq κ]
     (x : GA E n) (P : Matrix (Fin n) κ E) (hP : LinearIndependent E Pᵀ) (s : Matrix κ κ E) (hs : s.det ≠ 0) :
     degG x (P * s) = degG x P := by
@@ -82,6 +110,21 @@ theorem degG_mul (mF : MulF) (mI : MulI) (lg : LogAbsBasic) (fs : FinSupp) {κ :
   unfold logAbs at hprod
   linarith
 
+/- English proof (translation)
+Introduce `hF hI mF mI lg fs E _ _ _ n κ _ _ x M hM`. Take `⟨W, hW⟩ : ∃ W, W = Submodule.span E (Set.range Mᵀ)` from `⟨_, rfl⟩`. Rewrite using `[← hW]`. Establish `hcard : Module.finrank E W = Fintype.card κ`. Rewrite using `[hW]`.
+
+Conclude with `finrank_span_eq_card hM`. Establish `hsub : ∀ k, (fun i => M i k) ∈ W` using `fun k => by`. Rewrite using `[hW]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Set `e : Fin (Module.finrank E W) ≃ κ` to `(Fintype.equivFinOfCardEq hcard.symm).symm`.
+
+Establish `hcol : ∀ j, (fun i => M i (e j)) ∈ W` using `fun j => hsub (e j)`. Set `b` to `Module.finBasis E W`. Set `s : Matrix (Fin (Module.finrank E W)) (Fin (Module.finrank E W)) E` to `Matrix.of fun i j => b.repr ⟨fun i' => M i' (e j), hcol j⟩ i`. Establish `hfac : M.submatrix id e = basisMat W * s`. Use extensionality with `i j`.
+
+Establish `h` using `congrArg (fun y : W => (y : Fin n → E) i) (b.sum_repr ⟨fun i' => M i' (e j), hcol j⟩)`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Simplify using `only [Matrix.mul_apply, basisMat, Matrix.of_apply, Matrix.submatrix_apply, id, s]`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+
+Establish `hlin : LinearIndependent E (M.submatrix id e)ᵀ` using `hM.comp e e.injective`. Establish `hs : s.det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `h1 : M.submatrix id e *ᵥ v = 0`.
+
+Rewrite using `[hfac, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`. Rewrite `h1` using `[Matrix.mulVec_eq_sum]`. Simplify using `only [op_smul_eq_smul] at h1`. Conclude with `hv0 (funext fun i => Fintype.linearIndependent_iff.1 hlin v h1 i)`. Establish `hP : LinearIndependent E (basisMat W)ᵀ` using `b.linearIndependent.map' W.subtype (Submodule.ker_subtype W)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem degBasisG_of : WedgeF → WedgeI → MulF → MulI → LogAbsBasic → FinSupp → DegBasisG := by
   intro hF hI mF mI lg fs E _ _ _ n κ _ _ x M hM
   obtain ⟨W, hW⟩ : ∃ W, W = Submodule.span E (Set.range Mᵀ) := ⟨_, rfl⟩

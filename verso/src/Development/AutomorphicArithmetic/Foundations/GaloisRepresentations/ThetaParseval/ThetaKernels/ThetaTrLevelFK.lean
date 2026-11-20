@@ -14,6 +14,19 @@ namespace GlobalTheory.ThetaLevelF
 open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ hψ nS nT JS JT _ _ ξ₀ _ _ JA JB ξ hA hB κ _ co _ Φ hΦ`. Use `haveI : IsModuleTopology (AF F) (WOF F E nS nT) := inferInstanceAs (IsModuleTopology (AF F) (Fin nT → Fin nS → AF F ⊗[F] E))`. Take `⟨K, hK⟩` from `GlobalTheory.ThetaLevel.schr_fin_fix F B.ψ hψ.1.1 Φ hΦ`. Establish `hcont : Continuous co.e` using `IsModuleTopology.continuous_of_linearMap co.e.toLinearMap`. Set `f1 : WOF F E nS nT →+ (κ → Af F)` to `AddMonoidHom.mk' (fun u i => ((co.e u).1 i).2) (fun u v => by funext i; rw [map_add]; rfl)`.
+
+Set `f2 : WOF F E nS nT →+ (κ → Af F)` to `AddMonoidHom.mk' (fun u i => ((co.e u).2 i).2) (fun u v => by funext i; rw [map_add]; rfl)`. Establish `hf1 : Continuous f1` using `continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_fst.comp hcont))`. Establish `hf2 : Continuous f2` using `continuous_pi fun i => continuous_snd.comp ((continuous_apply i).comp (continuous_snd.comp hcont))`. Set `U : OpenAddSubgroup (WOF F E nS nT)` to `K.comap f1 hf1 ⊓ K.comap f2 hf2`. Use `⟨(U : AddSubgroup _), U.isOpen, fun u hu hinf => funext fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `hfix : GlobalTheory.WeilM.schr B.ψ (co.e u) Φ = Φ`. Rewrite using `[e_eq_fin co u hinf]`. Conclude with `hK _ hu.1 _ hu.2`. Use `show B.ψ (symplOHF σ JS JT ξ₀ w u) * GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr B.ψ (co.e (w + u)) Φ) = GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr B.ψ (co.e w) Φ)`. Rewrite using `[map_add]`.
+
+Establish `h1 : GlobalTheory.WeilM.schr B.ψ (co.e w + co.e u) Φ = fun x => B.ψ (-(⅟(2 : AF F) * ((co.e w).1 ⬝ᵥ (co.e u).2 - (co.e u).1 ⬝ᵥ (co.e w).2))) * GlobalTheory.WeilM.schr B.ψ (co.e w) (GlobalTheory.WeilM.schr B.ψ (co.e u) Φ) x`. Use function extensionality and compare the values at `(GlobalTheory.ThetaLevel.schr_add B.ψ _ _ Φ)`. Rewrite using `[h1, hfix]`. Simplify using `only [GlobalTheory.WeilM.thetaSum]`. Rewrite using `[tsum_mul_left, ← mul_assoc, ← AddChar.map_add_eq_mul]`.
+
+Establish `h2 : symplOHF σ JS JT ξ₀ w u = ⅟(2 : AF F) * ((co.e w).1 ⬝ᵥ (co.e u).2 - (co.e u).1 ⬝ᵥ (co.e w).2)`. Rewrite using `[symplOHF, GlobalTheory.TransportF.symplOF_eq_symp hA hB, co.form]`. Use `congr 1`. Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`.
+
+Evaluate the numerical expressions. Rewrite using `[h2, add_neg_cancel, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem thetaTr_levelF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
     ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

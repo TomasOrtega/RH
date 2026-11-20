@@ -14,6 +14,13 @@ variable {n : ℕ}
 
 def cay {R : Type*} [CommRing R] (X : Matrix (Fin n) (Fin n) R) : Matrix (Fin n) (Fin n) R := (1 - X) * (1 + X)⁻¹
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv, hXv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `h1 : X *ᵥ v = -v`. Rewrite `hXv` using `[Matrix.add_mulVec, Matrix.one_mulVec]`. Conclude with `(neg_eq_of_add_eq_zero_right hXv).symm`.
+
+Establish `h2 : Xᴴ *ᵥ v = v` using `by rw [hX, Matrix.neg_mulVec, h1, neg_neg]`. Establish `h3 : star v ᵥ* X = star v`. Use `Matrix.star_mulVec Xᴴ v` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_conjTranspose, h2]`. Conclude with `this.symm`.
+
+Establish `h4 : star v ⬝ᵥ v = -(star v ⬝ᵥ v)`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : star v ⬝ᵥ v = 0` using `by linear_combination h4 / 2`. Conclude with `hv (dotProduct_star_self_eq_zero.1 h5)`.
+-/
 theorem det_one_add_ne_zero {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) : (1 + X).det ≠ 0 := by
   intro h
   obtain ⟨v, hv, hXv⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
@@ -32,13 +39,26 @@ theorem det_one_add_ne_zero {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) : 
   have h5 : star v ⬝ᵥ v = 0 := by linear_combination h4 / 2
   exact hv (dotProduct_star_self_eq_zero.1 h5)
 
+/- English proof (translation)
+The claim follows from `isUnit_iff_ne_zero.mpr (det_one_add_ne_zero hX)`.
+-/
 theorem isUnit_det_one_add {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) : IsUnit (1 + X).det := isUnit_iff_ne_zero.mpr (det_one_add_ne_zero hX)
 
+/- English proof (translation)
+Establish `h : (-X)ᴴ = -(-X)` using `by rw [Matrix.conjTranspose_neg, hX]`. Rewrite using `[sub_eq_add_neg]`. Conclude with `isUnit_det_one_add h`.
+-/
 theorem isUnit_det_one_sub {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) : IsUnit (1 - X).det := by
   have h : (-X)ᴴ = -(-X) := by rw [Matrix.conjTranspose_neg, hX]
   rw [sub_eq_add_neg]
   exact isUnit_det_one_add h
 
+/- English proof (translation)
+Establish `h1 : (1 + X)ᴴ = 1 - X`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one, hX, sub_eq_add_neg]`. Establish `h2 : (1 - X)ᴴ = 1 + X`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one, hX, sub_neg_eq_add]`. Establish `hu1` using `isUnit_det_one_add hX`.
+
+Establish `hu2` using `isUnit_det_one_sub hX`. Establish `hc : Commute (1 - X) (1 + X)` using `(Commute.one_right (1 - X)).add_right ((Commute.one_left X).sub_left (Commute.refl X))`. Establish `e : (1 + X)⁻¹ * (1 - X)⁻¹ = (1 - X)⁻¹ * (1 + X)⁻¹`. Rewrite using `[← Matrix.mul_inv_rev, hc.eq, Matrix.mul_inv_rev]`. Unfold `cay`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, h1, h2]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (1 + X)⁻¹ (1 - X)⁻¹, e, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu1, Matrix.mul_one, Matrix.mul_nonsing_inv _ hu2]`.
+-/
 theorem cay_mul_conjTranspose {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) : cay X * (cay X)ᴴ = 1 := by
   have h1 : (1 + X)ᴴ = 1 - X := by
     rw [Matrix.conjTranspose_add, Matrix.conjTranspose_one, hX, sub_eq_add_neg]
@@ -56,11 +76,31 @@ theorem cay_mul_conjTranspose {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) 
   rw [← Matrix.mul_assoc (1 + X)⁻¹ (1 - X)⁻¹, e, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu1,
     Matrix.mul_one, Matrix.mul_nonsing_inv _ hu2]
 
+/- English proof (translation)
+Unfold `cay`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.mul_smul]`.
+-/
 theorem cay_eq (X : Matrix (Fin n) (Fin n) ℂ) :
     cay X = ((1 + X).det)⁻¹ • ((1 - X) * (1 + X).adjugate) := by
   unfold cay
   rw [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.mul_smul]
 
+/- English proof (translation)
+Establish `hA : IsUnit (1 + Y).det` using `isUnit_iff_ne_zero.mpr h1`. Establish `hYY : Y * Yᴴ = 1` using `by first`. Consider the case `exact mul_eq_one_comm.1 hY`. Consider the case `exact (Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hY`. Establish `hc : Commute (1 + Y) (Y - 1)` using `((Commute.one_left Y).add_left (Commute.refl Y)).sub_right (Commute.one_right _)`.
+
+Establish `hcinv : (1 + Y)⁻¹ * (Y - 1) = (Y - 1) * (1 + Y)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hA, Matrix.mul_one]`. Use `_ = (1 + Y)⁻¹ * ((1 + Y) * (Y - 1)) * (1 + Y)⁻¹ := by`. Rewrite using `[hc.eq]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Y - 1) * (1 + Y)⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc (1 + Y)⁻¹, Matrix.nonsing_inv_mul _ hA, Matrix.one_mul]`. Use `⟨(1 - Y) * (1 + Y)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : ((1 + Y)ᴴ)⁻¹ = (1 + Y)⁻¹ * Y`.
+
+Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one, ← Matrix.mul_assoc]`. Establish `e : 1 + Yᴴ = Yᴴ * (1 + Y)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, hY, add_comm]`. Rewrite using `[e, Matrix.mul_assoc Yᴴ, Matrix.mul_nonsing_inv _ hA, Matrix.mul_one, hY]`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, hinv, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.mul_assoc, Matrix.mul_sub, Matrix.mul_one, hYY, hcinv, ← neg_mul, neg_sub]`. Establish `hsum : 1 + (1 - Y) * (1 + Y)⁻¹ = (2 : ℂ) • (1 + Y)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hA]`. Use `_ = ((1 + Y) + (1 - Y)) * (1 + Y)⁻¹ := (Matrix.add_mul _ _ _).symm`.
+
+Use `_ = (2 : ℂ) • (1 + Y)⁻¹ := by`. Rewrite using `[show (1 + Y) + (1 - Y) = (2 : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) by`. Rewrite using `[two_smul]`. Use the proof step `abel, Matrix.smul_mul, Matrix.one_mul]`. Establish `hdiff : 1 - (1 - Y) * (1 + Y)⁻¹ = (2 : ℂ) • (Y * (1 + Y)⁻¹)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hA]`. Use `_ = ((1 + Y) - (1 - Y)) * (1 + Y)⁻¹ := (Matrix.sub_mul _ _ _).symm`. Use `_ = (2 : ℂ) • (Y * (1 + Y)⁻¹) := by`. Rewrite using `[show (1 + Y) - (1 - Y) = (2 : ℂ) • Y by rw [two_smul]; abel, Matrix.smul_mul]`.
+
+Establish `hinv2 : ((2 : ℂ) • (1 + Y)⁻¹)⁻¹ = (2 : ℂ)⁻¹ • (1 + Y)`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.nonsing_inv_mul _ hA, mul_inv_cancel₀ two_ne_zero, one_smul]`. Unfold `cay`. Rewrite using `[hsum, hdiff, hinv2, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ two_ne_zero, one_smul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hA, Matrix.mul_one]`.
+-/
 theorem exists_cay {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Yᴴ * Y = 1) (h1 : (1 + Y).det ≠ 0) :
     ∃ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ = -X ∧ cay X = Y := by
   have hA : IsUnit (1 + Y).det := isUnit_iff_ne_zero.mpr h1
@@ -119,6 +159,11 @@ def cpt (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) : (L →+* ℂ) × 
   if p.1 = (InfinitePlace.mk p.1).embedding then Y (InfinitePlace.mk p.1) p.2.1 p.2.2
   else star (Y (InfinitePlace.mk p.1) p.2.1 p.2.2)
 
+/- English proof (translation)
+Unfold `repPt`. Use function extensionality and compare the values at `p`. Simplify using `only [cpt]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[Matrix.inv_eq_left_inv (hY _), Matrix.conjTranspose_apply]`.
+-/
 theorem repPt_eq_cpt (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (hY : ∀ w, (Y w)ᴴ * Y w = 1) :
     repPt Y = cpt Y := by
   unfold repPt
@@ -128,6 +173,17 @@ theorem repPt_eq_cpt (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (hY : 
   · rfl
   · rw [Matrix.inv_eq_left_inv (hY _), Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Establish `hcx : ∀ w : InfinitePlace L, w.IsComplex` using `fun w => by first`. Consider the case `exact NumberField.IsTotallyComplex.isComplex w`. Consider the case `exact IsTotallyComplex.isComplex w`. Establish `hd : DenseRange (algebraMap L (InfiniteAdeleRing L))` using `InfiniteAdeleRing.denseRange_algebraMap L`. Set `g : InfiniteAdeleRing L → (InfinitePlace L → ℂ)` to `fun a w => InfinitePlace.Completion.extensionEmbedding w (a w)`.
+
+Establish `hg : Continuous g` using `continuous_pi fun w => (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`. Establish `hs : Function.Surjective g`. Introduce `y`. Establish `h : ∀ w, ∃ a : w.Completion, InfinitePlace.Completion.extensionEmbedding w a = y w` using `fun w => InfinitePlace.Completion.surjective_extensionEmbedding_of_isComplex (hcx w) (y w)`. Use `choose a ha using h`.
+
+Conclude with `⟨a, funext ha⟩`. Establish `h` using `hs.denseRange.comp hd hg`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [Function.comp_apply, g]`. Use `first`. Consider the case `exact (InfinitePlace.Completion.extensionEmbedding_coe w _).symm`. Consider the case `exact (InfinitePlace.Completion.extensionEmbedding_coe w (WithAbs.equiv w |>.symm x)).symm`. Consider the case `simp [InfinitePlace.Completion.extensionEmbedding_coe]`.
+
+Consider the case `rfl`.
+-/
 theorem denseRange_emb [IsCMField L] :
     DenseRange (fun x : L => fun w : InfinitePlace L => w.embedding x) := by
   have hcx : ∀ w : InfinitePlace L, w.IsComplex := fun w => by
@@ -158,6 +214,9 @@ theorem denseRange_emb [IsCMField L] :
   | simp [InfinitePlace.Completion.extensionEmbedding_coe]
   | rfl
 
+/- English proof (translation)
+Conclude with `DenseRange.piMap fun _ => DenseRange.piMap fun _ => denseRange_emb`.
+-/
 theorem denseRange_matEmb [IsCMField L] :
     DenseRange (fun b : Matrix (Fin n) (Fin n) L => fun (i j : Fin n) (w : InfinitePlace L) => w.embedding (b i j)) := by
   exact DenseRange.piMap fun _ => DenseRange.piMap fun _ => denseRange_emb
@@ -165,11 +224,25 @@ theorem denseRange_matEmb [IsCMField L] :
 def skewOf (z : Fin n → Fin n → InfinitePlace L → ℂ) (w : InfinitePlace L) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of (fun i j => z i j w) - (Matrix.of (fun i j => z i j w))ᴴ
 
+/- English proof (translation)
+Unfold `skewOf`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, neg_sub]`.
+-/
 theorem skewOf_skew (z : Fin n → Fin n → InfinitePlace L → ℂ) (w : InfinitePlace L) :
     (skewOf z w)ᴴ = -(skewOf z w) := by
   unfold skewOf
   rw [Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose, neg_sub]
 
+/- English proof (translation)
+Establish `hs : ∀ w : InfinitePlace L, Continuous fun z : Fin n → Fin n → InfinitePlace L → ℂ => skewOf z w`. Introduce `w`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [skewOf, Matrix.sub_apply, Matrix.of_apply, Matrix.conjTranspose_apply]`. Establish `hc : ∀ a b : Fin n, Continuous fun z : Fin n → Fin n → InfinitePlace L → ℂ => z a b w` using `fun a b => (continuous_apply w).comp ((continuous_apply b).comp (continuous_apply a))`.
+
+Use `first`. Consider the case `exact (hc i j).sub (hc j i).star`. Consider the case `fun_prop`. Establish `hA : ∀ (w : InfinitePlace L) (i j : Fin n), Continuous fun z : Fin n → Fin n → InfinitePlace L → ℂ => cay (skewOf z w) i j`. Introduce `w i j`.
+
+Establish `e : (fun z : Fin n → Fin n → InfinitePlace L → ℂ => cay (skewOf z w) i j) = fun z => ((1 + skewOf z w).det)⁻¹ * ((1 - skewOf z w) * (1 + skewOf z w).adjugate) i j`. Use function extensionality and compare the values at `z`. Rewrite using `[cay_eq, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Establish `hd : Continuous fun z : Fin n → Fin n → InfinitePlace L → ℂ => (1 + skewOf z w).det` using `(continuous_const.add (hs w)).matrix_det`.
+
+Use `(hd.inv₀ fun z => det_one_add_ne_zero (skewOf_skew z w)).mul ?_` and prove the remaining obligations. Conclude with `(((continuous_const.sub (hs w)).matrix_mul (continuous_const.add (hs w)).matrix_adjugate)).matrix_elem i j`. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Simplify using `only [cpt]`. Use `split_ifs`.
+
+Conclude with `hA _ _ _`. Conclude with `(hA _ _ _).star`.
+-/
 theorem continuous_cpt_cay :
     Continuous (fun z : Fin n → Fin n → InfinitePlace L → ℂ => cpt (fun w => cay (skewOf z w))) := by
   have hs : ∀ w : InfinitePlace L,

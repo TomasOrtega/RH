@@ -9,6 +9,9 @@ namespace JSetup
 
 variable {K : Type*} [Field K] (S : JSetup K)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert c s hc ih => rw [Finset.sum_insert hc, Finset.sum_insert hc, add_mulVec, ih]`.
+-/
 theorem sum_mulVec' {ι κ : Type*} [Fintype ι] (s : Finset κ) (A : κ → Matrix ι ι K) (x : ι → K) :
     (∑ c ∈ s, A c) *ᵥ x = ∑ c ∈ s, A c *ᵥ x := by
   classical
@@ -16,6 +19,9 @@ theorem sum_mulVec' {ι κ : Type*} [Fintype ι] (s : Finset κ) (A : κ → Mat
   | empty => simp
   | insert c s hc ih => rw [Finset.sum_insert hc, Finset.sum_insert hc, add_mulVec, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert c s hc ih => rw [Finset.sum_insert hc, Finset.sum_insert hc, vecMul_add, ih]`.
+-/
 theorem vecMul_sum' {ι κ : Type*} [Fintype ι] (s : Finset κ) (A : κ → Matrix ι ι K) (x : ι → K) :
     x ᵥ* (∑ c ∈ s, A c) = ∑ c ∈ s, x ᵥ* A c := by
   classical
@@ -30,41 +36,77 @@ variable {m : ℕ} (i : Fin (m + 1))
 def ins (x : Fin m → K) : Fin (m + 1) → K := Fin.insertNth i 0 x
 
 omit S in
+/- English proof (translation)
+The claim follows from `Fin.insertNth_apply_same _ _ _`.
+-/
 theorem ins_same (x : Fin m → K) : ins i x i = 0 := Fin.insertNth_apply_same _ _ _
 
 omit S in
+/- English proof (translation)
+The claim follows from `Fin.insertNth_apply_succAbove _ _ _ _`.
+-/
 theorem ins_succAbove (x : Fin m → K) (s : Fin m) : ins i x (i.succAbove s) = x s :=
   Fin.insertNth_apply_succAbove _ _ _ _
 
 omit S in
+/- English proof (translation)
+Simplify using `only [mulVec, dotProduct, Fin.sum_univ_succAbove _ i, ins_same, ins_succAbove, mul_zero, zero_add, submatrix_apply]`.
+-/
 theorem mulVec_ins (G : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (x : Fin m → K) (s : Fin m) :
     (G *ᵥ ins i x) (i.succAbove s) = (G.submatrix i.succAbove i.succAbove *ᵥ x) s := by
   simp only [mulVec, dotProduct, Fin.sum_univ_succAbove _ i, ins_same, ins_succAbove, mul_zero, zero_add,
     submatrix_apply]
 
 omit S in
+/- English proof (translation)
+Simplify using `only [vecMul, dotProduct, Fin.sum_univ_succAbove _ i, ins_same, ins_succAbove, zero_mul, zero_add, submatrix_apply]`.
+-/
 theorem vecMul_ins (G : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (x : Fin m → K) (s : Fin m) :
     (ins i x ᵥ* G) (i.succAbove s) = (x ᵥ* G.submatrix i.succAbove i.succAbove) s := by
   simp only [vecMul, dotProduct, Fin.sum_univ_succAbove _ i, ins_same, ins_succAbove, zero_mul, zero_add,
     submatrix_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Break down `Fin.eq_self_or_eq_succAbove i r with rfl | ⟨s, rfl⟩` into its components or cases. Simplify using `[cv, ins_same]`. Simplify using `[cv, ins_succAbove]`.
+-/
 theorem cv_ins (x : Fin m → K) : S.cv (ins i x) = ins i (S.cv x) := by
   funext r
   rcases Fin.eq_self_or_eq_succAbove i r with rfl | ⟨s, rfl⟩
   · simp [cv, ins_same]
   · simp [cv, ins_succAbove]
 
+/- English proof (translation)
+Rewrite using `[hf, hf, S.cv_ins, dotProduct, dotProduct, Fin.sum_univ_succAbove _ i]`. Simplify using `only [ins_same, ins_succAbove, zero_mul, zero_add, mulVec_ins]`.
+-/
 theorem hf_ins (G : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (x y : Fin m → K) :
     S.hf G (ins i x) (ins i y) = S.hf (G.submatrix i.succAbove i.succAbove) x y := by
   rw [hf, hf, S.cv_ins, dotProduct, dotProduct, Fin.sum_univ_succAbove _ i]
   simp only [ins_same, ins_succAbove, zero_mul, zero_add, mulVec_ins]
 
+/- English proof (translation)
+Introduce `r`. Break down `Fin.eq_self_or_eq_succAbove i r with rfl | ⟨s, rfl⟩` into its components or cases. Rewrite using `[ins_same]`. Conclude with `S.O.zero_mem`. Rewrite using `[ins_succAbove]`.
+
+Conclude with `hx s`.
+-/
 theorem IntV_ins {x : Fin m → K} (hx : S.IntV x) : S.IntV (ins i x) := by
   intro r
   rcases Fin.eq_self_or_eq_succAbove i r with rfl | ⟨s, rfl⟩
   · rw [ins_same]; exact S.O.zero_mem
   · rw [ins_succAbove]; exact hx s
 
+/- English proof (translation)
+Establish `hcol : ∀ s, M (i.succAbove s) i = N (i.succAbove s) i`. Introduce `s`. Establish `e1` using `congrFun hM (i.succAbove s)`. Establish `e2` using `congrFun hN (i.succAbove s)`. Simplify using `only [mulVec, dotProduct, Fin.sum_univ_succAbove _ i, Pi.zero_apply] at e1 e2`.
+
+Simplify using `only [h] at e1`. Establish `: (M (i.succAbove s) i - N (i.succAbove s) i) * a i = 0` using `by linear_combination e1 - e2`. Break down `mul_eq_zero.mp this with h' | h'` into its components or cases. Conclude with `sub_eq_zero.mp h'`. Conclude with `absurd h' ha`.
+
+Establish `hrow : ∀ s j, M (i.succAbove s) j = N (i.succAbove s) j`. Introduce `s j`. Break down `Fin.eq_self_or_eq_succAbove i j with rfl | ⟨t, rfl⟩` into its components or cases. Conclude with `hcol s`. Conclude with `h s t`.
+
+Use extensionality with `r j`. Break down `Fin.eq_self_or_eq_succAbove i r with hr | ⟨s, rfl⟩` into its components or cases. Rewrite using `[hr]`. Establish `e1` using `congrFun hM' j`. Establish `e2` using `congrFun hN' j`.
+
+Simplify using `only [vecMul, dotProduct, Fin.sum_univ_succAbove _ i, Pi.zero_apply, cv] at e1 e2`. Simplify using `only [hrow] at e1`. Establish `: S.σ (a i) * (M i j - N i j) = 0` using `by linear_combination e1 - e2`. Break down `mul_eq_zero.mp this with h' | h'` into its components or cases. Conclude with `absurd h' hσa`.
+
+Conclude with `sub_eq_zero.mp h'`. Conclude with `hrow s j`.
+-/
 theorem ext_drop {M N : Matrix (Fin (m + 1)) (Fin (m + 1)) K} {a : Fin (m + 1) → K} (ha : a i ≠ 0)
     (hσa : S.σ (a i) ≠ 0) (hM : M *ᵥ a = 0) (hN : N *ᵥ a = 0) (hM' : S.cv a ᵥ* M = 0)
     (hN' : S.cv a ᵥ* N = 0)
@@ -97,6 +139,23 @@ theorem ext_drop {M N : Matrix (Fin (m + 1)) (Fin (m + 1)) K} {a : Fin (m + 1) �
     · exact sub_eq_zero.mp h'
   · exact hrow s j
 
+/- English proof (translation)
+Introduce `x hx hNU`. Establish `hall : ∀ s, S.NU ((G *ᵥ ins i x) (i.succAbove s))` using `fun s => by rw [mulVec_ins]; exact hNU s`. Establish `hσO` using `S.hσO _ (ha i)`. Establish `hσn` using `S.not_NU_σ (ha i) hai`. Establish `hne : S.σ (a i) ≠ 0` using `S.ne_zero_of_not_NU hσn`.
+
+Establish `hNU' : ∀ r, S.NU ((G *ᵥ ins i x) r)`. Introduce `r`. Break down `Fin.eq_self_or_eq_succAbove i r with hr | ⟨s, rfl⟩` into its components or cases. Rewrite using `[hr]`. Establish `e` using `congrArg (fun v => v ⬝ᵥ ins i x) haG`.
+
+Simplify using `only [zero_dotProduct] at e`. Rewrite `e` using `[← dotProduct_mulVec, dotProduct, Fin.sum_univ_succAbove _ i]`. Establish `e' : S.σ (a i) * (G *ᵥ ins i x) i = -(∑ s, S.cv a (i.succAbove s) * (G *ᵥ ins i x) (i.succAbove s))`. Simplify using `only [cv] at e ⊢`. Take the linear combination `e`.
+
+Establish `hv : (G *ᵥ ins i x) i = (S.σ (a i))⁻¹ * -(∑ s, S.cv a (i.succAbove s) * (G *ᵥ ins i x) (i.succAbove s))`. Rewrite using `[← e', ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`. Rewrite using `[hv]`. Conclude with `S.NU_mul (S.hinv _ hσO hσn) (S.NU_neg (S.NU_sum _ _ fun s _ => S.NU_mul (S.IntV_cv ha _) (hall s)))`. Conclude with `hall s`.
+
+Take `⟨x', hx', hxx⟩` from `hU (ins i x) (S.IntV_ins i hx) hNU'`. Establish `hai0 : a i ≠ 0` using `S.ne_zero_of_not_NU hai`. Use `set y := x' - (x' i * (a i)⁻¹) • a with hy_def`. Establish `hyI : S.IntV y` using `S.IntV_sub hx' (S.IntV_smul (S.O.mul_mem (hx' i) (S.hinv _ (ha i) hai)) ha)`. Establish `hyi : y i = 0`.
+
+Simplify using `only [hy_def, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hGy : G *ᵥ y = G *ᵥ x'`. Rewrite using `[hy_def, mulVec_sub, mulVec_smul, hGa, smul_zero, sub_zero]`.
+
+Establish `hins : ins i (fun s => y (i.succAbove s)) = y`. Use function extensionality and compare the values at `r`. Break down `Fin.eq_self_or_eq_succAbove i r with rfl | ⟨s, rfl⟩` into its components or cases. Rewrite using `[ins_same, hyi]`. Rewrite using `[ins_succAbove]`.
+
+Use `⟨fun s => y (i.succAbove s), fun s => hyI _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[← mulVec_ins, hxx, Pi.smul_apply, Pi.smul_apply, ← mulVec_ins, hins, hGy]`.
+-/
 theorem UM_drop {G : Matrix (Fin (m + 1)) (Fin (m + 1)) K} {a : Fin (m + 1) → K} (hU : S.UM G)
     (ha : S.IntV a) (hai : ¬ S.NU (a i)) (hGa : G *ᵥ a = 0) (haG : S.cv a ᵥ* G = 0) :
     S.UM (G.submatrix i.succAbove i.succAbove) := by
@@ -142,6 +201,9 @@ theorem UM_drop {G : Matrix (Fin (m + 1)) (Fin (m + 1)) K} {a : Fin (m + 1) → 
 
 end Drop
 
+/- English proof (translation)
+The claim follows from `| 0, Γ, _, _, _ => ⟨0, Fin.elim0, fun c => c.elim0, fun c => c.elim0, by ext i; exact i.elim0⟩ | m + 1, Γ, hΓ, hH, hU => by by_cases h0 : Γ = 0 · exact ⟨0, Fin.elim0, fun c => c.elim0, fun c => c.elim0, by simp [h0]⟩ obtain ⟨a, i, ha, hai, haa⟩ := S.exists_unit_vec hΓ hH hU h0 ha …`.
+-/
 theorem jac_fin : ∀ (m : ℕ) (Γ : Matrix (Fin m) (Fin m) K), S.IntM Γ → S.Herm Γ → S.UM Γ →
     ∃ (k : ℕ) (v : Fin k → Fin m → K), (∀ c, S.IntV (v c)) ∧
       (∀ c c', S.hf Γ (v c) (v c') = if c = c' then 1 else 0) ∧

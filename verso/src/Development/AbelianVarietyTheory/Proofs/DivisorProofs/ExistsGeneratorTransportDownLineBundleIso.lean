@@ -16,6 +16,9 @@ open GlobalTheory.Poinc.ThetaOne GlobalTheory.Poinc.Sep GlobalTheory.UT GlobalTh
 
 namespace GlobalTheory.GenTransport
 
+/- English proof (translation)
+Introduce `X X' Y L L' F Ix _ w hw hL hL' φ' ε a ha`. Take `⟨t, ht, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_up ((isGen_iff w).1 hw) hL hL' a ha`. Use `⟨t, ht, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `hv Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`.
+-/
 theorem exists_gen_down_pmaps : ∀ {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {Ix : Type} [Fintype Ix]
     (w : LB.Iso L' (L.pull F)), w.IsGen → L.IsLB → L'.IsLB → ∀ (φ' : Ix → (Y ⟶ X')) (ε : Ix → ℤ)
     (a : LB.Gen (LB.LinComb L' φ' ε)), a.IsGen →

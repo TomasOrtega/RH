@@ -21,11 +21,22 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ArchSchA
 
+/- English proof (translation)
+Simplify using `only [ech, ← Complex.exp_add, Complex.ofReal_add]`. Put the polynomial expressions in normal form.
+-/
 theorem echA_add (s t : ℝ) : ech (s + t) = ech s * ech t := by
   simp only [ech, ← Complex.exp_add, Complex.ofReal_add]; ring_nf
 
+/- English proof (translation)
+Simplify using `[ech]`.
+-/
 theorem echA_zero : ech 0 = 1 := by simp [ech]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [sch, map_add, LinearMap.add_apply]`. Rewrite using `[show x + (a + a') = x + a + a' by abel, ← mul_assoc, ← echA_add]`. Use `congr 2`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schA_add {Y : Type} [AddCommGroup Y] [Module ℝ Y] (β : LinearMap.BilinForm ℝ Y) (a b a' b' : Y)
     (h : β a b' = β a' b) (f : Y → ℂ) : sch β (a + a') (b + b') f = sch β a b (sch β a' b' f) := by
   funext x
@@ -36,14 +47,28 @@ theorem schA_add {Y : Type} [AddCommGroup Y] [Module ℝ Y] (β : LinearMap.Bili
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+-/
 theorem evIA_add (a b : AF F) : evI F (a + b) = evI F a + evI F b :=
   map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
+/- English proof (translation)
+The claim follows from `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+-/
 theorem evIA_zero : evI F 0 = 0 := map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
 
+/- English proof (translation)
+Simplify using `[evI, liftA]`.
+-/
 theorem evIA_liftA (ξ : mixedEmbedding.mixedSpace F) : evI F (liftA F ξ) = ξ := by
   simp [evI, liftA]
 
+/- English proof (translation)
+Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ξ) = 0`. Rewrite using `[h1, zero_mul]`. Use `show u.2 * 0 = 0`.
+
+Rewrite using `[mul_zero]`.
+-/
 theorem atA_liftA (ξ : mixedEmbedding.mixedSpace F) (u : AF F) (hu : evI F u = 0) : u * liftA F ξ = 0 := by
   have h1 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
   refine Prod.ext ?_ ?_
@@ -52,9 +77,15 @@ theorem atA_liftA (ξ : mixedEmbedding.mixedSpace F) (u : AF F) (hu : evI F u = 
   · show u.2 * 0 = 0
     rw [mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[arch, evIA_add]`.
+-/
 theorem archA_add {κ : Type} (v w : κ → AF F) : arch F (v + w) = arch F v + arch F w := by
   funext i; simp [arch, evIA_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[arch, evIA_zero]`.
+-/
 theorem archA_zero {κ : Type} : arch F (0 : κ → AF F) = 0 := by
   funext i; simp [arch, evIA_zero]
 
@@ -62,6 +93,17 @@ end GlobalTheory.ArchSchA
 
 open GlobalTheory.ArchSch GlobalTheory.ArchSchB GlobalTheory.ArchSchA in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d n₁ d₁ X W X₁ W₁ M M₁ H H'`. Establish `e2 : ∀ (a : AF F) (c : Fin d₁ → AE F E), Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (a • c)) = a • Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c)`. Introduce `a c`. Rewrite using `[Matrix.mulVec_smul]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply, mul_smul_comm]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨0, 0, 0, lagL_at_zero, lagL_at_zero, lagL_at_zero, by simp [lagL_arch_zero], ?_⟩` and prove the remaining obligations. Simplify using `[lagL_arch_zero, zero_vecMulVec', vecMulVec_zero']`. Both sides reduce to the same expression.
+
+Introduce and unpack `l ⟨y, c, z, hy, hc, hz, hz1, rfl⟩ l' ⟨y', c', z', hy', hc', hz', hz1', rfl⟩`. Use `⟨y + y', c + c', z + z', lagL_at_add hy hy', lagL_at_add hc hc', lagL_at_add hz hz', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Prod.fst_add, lagL_arch_add, hz1, hz1', add_zero]`. Establish `: Matrix.vecMulVec (y + y') (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (c + c')) + incM F H.ι * (z + z') * (incM F H'.ι)ᵀ = (Matrix.vecMulVec y (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c) + incM F H.ι * z * (incM F H'.ι)ᵀ) + (Matrix.vecMulV …`. Rewrite using `[Matrix.add_vecMulVec, Matrix.mulVec_add, Matrix.vecMulVec_add, Matrix.mul_add, Matrix.add_mul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Apply the tactic sequence `ext : 1 <;> simp only [Prod.fst_add, Prod.snd_add, LinearEquiv.map_add, lagL_arch_add] <;> abel`. Introduce and unpack `t l ⟨y, c, z, hy, hc, hz, hz1, rfl⟩`. Use `⟨realAd F t • y, realAd F t • c, realAd F t • z, lagL_at_smul _ hy, lagL_at_smul _ hc, lagL_at_smul _ hz, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Prod.smul_fst, lagL_arch_smul, hz1, smul_zero]`. Establish `: Matrix.vecMulVec (realAd F t • y) (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (realAd F t • c)) + incM F H.ι * (realAd F t • z) * (incM F H'.ι)ᵀ = realAd F t • (Matrix.vecMulVec y (incV F H'.x) + Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c) + incM F H.ι * …`. Rewrite using `[← lagL_smul_vmv, e2, smul_add, smul_add, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[this, map_smul, Prod.smul_fst, Prod.smul_snd, lagL_arch_smul, lagL_arch_smul]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.ArchSchA.lagSetA_submodule : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁),
     (0 ∈ lagSetA M M₁ H H') ∧ (∀ l ∈ lagSetA M M₁ H H', ∀ l' ∈ lagSetA M M₁ H H', l + l' ∈ lagSetA M M₁ H H') ∧
     ∀ t : ℝ, ∀ l ∈ lagSetA M M₁ H H', t • l ∈ lagSetA M M₁ H H' := by
@@ -102,6 +144,39 @@ theorem GlobalTheory.ArchSchA.lagSetA_submodule : ∀ {F E : Type} [Field F] [Nu
 
 open GlobalTheory.ArchSch GlobalTheory.ArchSchB GlobalTheory.ArchSchA in
 
+/- English proof (translation)
+Introduce `_hP F E _ _ _ _ _ σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M M₁ hB hX hW _hM hH hH' _hM₁ T T' hT hR hR'`. Establish `atι : ∀ z : Matrix (Fin n₁) (Fin d₁) (AE F E), At (evI F) z → At (evI F) (incM F H.ι * z * (incM F H'.ι)ᵀ)`. Introduce `z hz u hu`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz u hu]`. Simplify using the standard rewrite rules.
+
+Establish `F1 : ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁), GlobalTheory.ThK.EvFactor.InfRelG B M M₁ H.ι H'.ι (isoA H H') S → ∀ z, At (evI F) z → ∀ f f₁ : SInf F (Fin n × Fin d), ∀ g₁ : SInf F (Fin n₁ × Fin d₁), ⇑f₁ = sch (trP F _) (arch F (M.co.e (incM F H.ι * z * (incM F …`. Introduce `S hS z hz f f₁ g₁ h1 h2`. Conclude with `hS.1 z hz f f₁ (GlobalTheory.T.darboux_schroedinger_archimedean_acts M.co B.ψ hB.std (incM F H.ι * z * (incM F H'.ι)ᵀ) (atι z hz) f f₁ h1) g₁ (GlobalTheory.T.darboux_schroedinger_archimedean_acts M₁.co B.ψ hB.std z hz (S f) g₁ h2)`. Establish `F2 : ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁), GlobalTheory.ThK.EvFactor.InfRelG B M M₁ H.ι H'.ι (isoA H H') S → ∀ u ∈ isoA (F` using `F) H H', At (evI F) u → ∀ f f₁ : SInf F (Fin n × Fin d), ⇑f₁ = sch (trP F _) (arch F (M.co.e u).1) (arch F (M.co.e u).2) ⇑f → S f₁ = S f := fun S hS u hu hat f f₁ h => hS.2 u hu hat f f₁ (GlobalTheory.T.darboux_schroedinger_archimedean_acts M.co B.ψ hB.std u hat f f₁ h)`. Take `⟨h0, hadd, hsmul⟩` from `GlobalTheory.ArchSchA.lagSetA_submodule M M₁ H H'`.
+
+Establish `hiso` using `GlobalTheory.T.adapted_planes_good_models_descent B M M₁ H H' hB hX hW hH hH'`. Establish `hco` using `GlobalTheory.T.adapted_planes_good_models_local B M M₁ H H' hB hX hW hH hH'`. Set `Λ : Submodule ℝ ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F))` to `{ carrier := lagSetA M M₁ H H' add_mem' := fun ha hb => hadd _ ha _ hb zero_mem' := h0 smul_mem' := fun t l hl => hsmul t l hl }`. Set `ℓ : (SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁)) → SInf F (Fin n × Fin d) →L[ℂ] ℂ` to `fun S => ((BoundedContinuousFunction.evalCLM ℂ (0 : Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)).comp S`. Establish `hℓ : ∀ S f, ℓ S f = S f 0` using `fun _ _ => rfl`.
+
+Establish `eadd : ∀ x y : Matrix (Fin n) (Fin d) (AE F E), arch F (M.co.e (x + y)).1 = arch F (M.co.e x).1 + arch F (M.co.e y).1 ∧ arch F (M.co.e (x + y)).2 = arch F (M.co.e x).2 + arch F (M.co.e y).2` using `fun x y => ⟨by rw [map_add, Prod.fst_add, archA_add], by rw [map_add, Prod.snd_add, archA_add]⟩`. Establish `inv : ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁), GlobalTheory.ThK.EvFactor.InfRelG B M M₁ H.ι H'.ι (isoA H H') S → ∀ l ∈ Λ, ∀ f g : SInf F (Fin n × Fin d), ⇑g = sch (trP F _) l.1 l.2 ⇑f → ℓ S g = ℓ S f`. Introduce `S hS l hl f g hg`. Take `⟨y, c, z, hy, hc, hz, hz1, rfl⟩` from `hl`. Use `set u₁ := Matrix.vecMulVec y (incV F H'.x) with hu₁`.
+
+Use `set u₂ := Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ c) with hu₂`. Use `set w := incM F H.ι * z * (incM F H'.ι)ᵀ with hw`. Establish `hat1 : At (evI F) u₁` using `at_vecMulVec_left hy _`. Establish `hat2 : At (evI F) u₂` using `at_vecMulVec_right _ (at_mulVec _ hc)`. Establish `m1 : (arch F (M.co.e u₁).1, arch F (M.co.e u₁).2) ∈ lagSetA M M₁ H H'` using `mem_lagSetA_y M M₁ H H' hy`.
+
+Establish `m2 : (arch F (M.co.e (u₂ + w)).1, arch F (M.co.e (u₂ + w)).2) ∈ lagSetA M M₁ H H'` using `mem_lagSetA_cz M M₁ H H' hc hz hz1`. Establish `m3 : (arch F (M.co.e u₂).1, arch F (M.co.e u₂).2) ∈ lagSetA M M₁ H H'` using `mem_lagSetA_c M M₁ H H' hc`. Establish `m4 : (arch F (M.co.e w).1, arch F (M.co.e w).2) ∈ lagSetA M M₁ H H'` using `mem_lagrangian_set_archimedean M M₁ H H' hz hz1`. Establish `hsplit : ⇑g = sch (trP F _) (arch F (M.co.e u₁).1) (arch F (M.co.e u₁).2) (sch (trP F _) (arch F (M.co.e u₂).1) (arch F (M.co.e u₂).2) (sch (trP F _) (arch F (M.co.e w).1) (arch F (M.co.e w).2) ⇑f))`. Rewrite using `[hg]`.
+
+Simplify using `only`. Rewrite using `[add_assoc, (eadd _ _).1, (eadd _ _).2, schA_add _ _ _ _ _ (hiso _ m1 _ m2), (eadd _ _).1, (eadd _ _).2, schA_add _ _ _ _ _ (hiso _ m3 _ m4)]`. Take `⟨h₃, hh₃⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M.co.e w).1) (arch F (M.co.e w).2) f`. Take `⟨h₂, hh₂⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M.co.e u₂).1) (arch F (M.co.e u₂).2) h₃`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M₁.co.e z).1) (arch F (M₁.co.e z).2) (S f)`.
+
+Rewrite `hsplit` using `[← hh₃, ← hh₂]`. Rewrite using `[hℓ, hℓ, F2 S hS u₁ (Or.inl ⟨y, rfl⟩) hat1 h₂ g hsplit, F2 S hS u₂ (Or.inr ⟨c, rfl⟩) hat2 h₃ h₂ hh₂, F1 S hS z hz f h₃ g₁ hh₃ hg₁, hg₁]`. Simplify using `[sch, hz1, echA_zero]`. Establish `zξ : ∀ ξ : Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F, ∃ z : Matrix (Fin n₁) (Fin d₁) (AE F E), At (evI F) z ∧ arch F (M₁.co.e z).1 = ξ ∧ arch F (M₁.co.e z).2 = 0`. Introduce `ξ`.
+
+Use `⟨M₁.co.e.symm (fun i => liftA F (ξ i), 0), fun u hu => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearEquiv.map_smul]`. Establish `: u • ((fun i => liftA F (ξ i), 0) : (Fin n₁ × Fin d₁ → AF F) × (Fin n₁ × Fin d₁ → AF F)) = 0`. Use `Prod.ext (funext fun i => ?_) (by simp)` and prove the remaining obligations. Simplify using `[atA_liftA (ξ i) u hu]`.
+
+Rewrite using `[this, map_zero]`. Use function extensionality and compare the values at `i`. Simplify using `[arch, evIA_liftA]`. Simplify using `[archA_zero]`. Establish `key : ∀ (f : SInf F (Fin n × Fin d)) (ξ : Fin n₁ × Fin d₁ → mixedEmbedding.mixedSpace F), ∃ h : SInf F (Fin n × Fin d), ∀ S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁), GlobalTheory.ThK.EvFactor.InfRelG B M M₁ H.ι H'.ι (isoA H H') S → S h 0 = S f ξ`.
+
+Introduce `f ξ`. Take `⟨z, hz, hz1, hz2⟩` from `zξ ξ`. Take `⟨h, hh⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M.co.e (incM F H.ι * z * (incM F H'.ι)ᵀ)).1) (arch F (M.co.e (incM F H.ι * z * (incM F H'.ι)ᵀ)).2) f`. Use `⟨h, fun S hS => ?_⟩` and prove the remaining obligations. Take `⟨g₁, hg₁⟩` from `GlobalTheory.T.schroedinger_preserves_schwartz_real (trP F _) (arch F (M₁.co.e z).1) (arch F (M₁.co.e z).2) (S f)`.
+
+Rewrite using `[F1 S hS z hz f h g₁ hh hg₁, hg₁]`. Simplify using `[sch, hz1, hz2, echA_zero]`. Establish `hne : ℓ T ≠ 0`. Introduce `h`. Apply `hT` to reduce the goal to its premises.
+
+Use `ContinuousLinearMap.ext fun f => SchwartzMap.ext fun ξ => ?_` and prove the remaining obligations. Take `⟨h', hh'⟩` from `key f ξ`. Use `congrArg (fun L => L h') h` as an intermediate fact. Simplify using `only [hℓ, ContinuousLinearMap.zero_apply] at this`. Rewrite using `[← hh' T hR, this]`.
+
+Both sides reduce to the same expression. Establish `hiso' : ∀ l ∈ Λ, ∀ l' ∈ Λ, trP F (Fin n × Fin d) l.1 l'.2 = trP F (Fin n × Fin d) l'.1 l.2` using `fun l hl l' hl' => hiso l hl l' hl'`. Establish `hco' : ∀ v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F), (∀ l ∈ Λ, trP F (Fin n × Fin d) v.1 l.2 = trP F (Fin n × Fin d) l.1 v.2) → v ∈ Λ` using `fun v hv => hco v hv`. Establish `hT1` using `inv T hR`. Establish `hT2` using `inv T' hR'`.
+
+Take `⟨C, hC'⟩` from `GlobalTheory.T.aux_statement_2 (Y := Fin n × Fin d → mixedEmbedding.mixedSpace F) (trP F (Fin n × Fin d)) (GlobalTheory.T.trace_pairing_nondegenerate F (Fin n × Fin d)) Λ hiso' hco' (ℓ T) (ℓ T') hT1 hT2 hne`. Use `⟨C, ContinuousLinearMap.ext fun f => SchwartzMap.ext fun ξ => ?_⟩` and prove the remaining obligations. Take `⟨h', hh'⟩` from `key f ξ`. Use `congrArg (fun L => L h') hC'` as an intermediate fact. Simplify using `only [hℓ, ContinuousLinearMap.smul_apply, smul_eq_mul] at this`.
+
+Rewrite using `[← hh' T' hR', this, hh' T hR]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.ArchSchA.infRelA_proportional : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁)
     (H' : Plane E d d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' →

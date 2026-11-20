@@ -25,6 +25,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi (LB)
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Sp PSpace resG)
 open GlobalTheory.ProjSpace (toProj O1 coord)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LinChange.sum_f]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.smul_f, GlobalTheory.LinChange.resG_cst]`.
+-/
 theorem comb_f {R : Type} [CommRing R] {X : Scheme.{0}} {H : LB X} {n : ℕ} (g : X ⟶ Sp R) (c : Fin n → R)
     (t : Fin n → H.Sec) (k : H.ι) :
     (∑ j, GlobalTheory.AbLaw.cst g ⊤ (c j) • t j).f k = ∑ j, GlobalTheory.AbLaw.cst g (H.U k) (c j) * (t j).f k := by
@@ -32,6 +35,11 @@ theorem comb_f {R : Type} [CommRing R] {X : Scheme.{0}} {H : LB X} {n : ℕ} (g 
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [GlobalTheory.LB.smul_f, GlobalTheory.LinChange.resG_cst]
 
+/- English proof (translation)
+Establish `hc : ∀ (U : X.Opens) (r : R), (φ.app U).hom (GlobalTheory.AbLaw.cst p U r) = GlobalTheory.AbLaw.cst (φ ≫ p) (φ ⁻¹ᵁ U) r` using `fun U r => by`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `GlobalTheory.LinChange.appLE_cst p φ le_rfl r`. Simplify using `only [GlobalTheory.Cartier.secPull]`. Rewrite using `[comb_f, map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hc, GlobalTheory.LinChange.resG_cst]`.
+-/
 theorem secPull_comb_f {R : Type} [CommRing R] {X Y : Scheme.{0}} {L : LB X} {n : ℕ} (p : X ⟶ Sp R)
     (c : Fin n → R) (t : Fin n → L.Sec) (φ : Y ⟶ X) (q : (L.pull φ).ι) :
     (GlobalTheory.Cartier.secPull (∑ j, GlobalTheory.AbLaw.cst p ⊤ (c j) • t j) φ).f q =
@@ -49,6 +57,13 @@ end GlobalTheory.SpanVA
 
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus) in
 
+/- English proof (translation)
+Introduce `R _ X f H m N s t a hH ht hst i`. Rewrite using `[← GlobalTheory.Cartier.nonzeroLocus_secPull]`. Use `GlobalTheory.Cartier.SecMaps.nonzeroLocus_eq (pull_isLB (GlobalTheory.ProjSpace.O1_isLB R N) _) hH (w := GlobalTheory.ProjSpace.toProjIso f t ht) ?_` and prove the remaining obligations. Introduce and unpack `⟨k, q⟩`. Establish `hc` using `fun j => GlobalTheory.ProjSpace.secMaps_toProjIso f t ht j (k, q)`.
+
+Express the relevant statement in the definitionally equal form `resG X _ ((s i).f k) = _ * resG X _ ((GlobalTheory.Cartier.secPull (GlobalTheory.SpanVA.lin a i) (GlobalTheory.ProjSpace.toProj f t ht)).f q)`. Rewrite using `[GlobalTheory.SpanVA.lin]`. Rewrite using `[hst i, GlobalTheory.SpanVA.comb_f, GlobalTheory.SpanVA.secPull_comb_f, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, GlobalTheory.LinChange.resG_cst, GlobalTheory.LinChange.resG_cst, hc j, GlobalTheory.ProjSpace.toProj_str]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.SpanVA.toProj_preimage_nonzeroLocus_lin : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (H : LB X) (m N : ℕ) (s : Fin (m + 1) → LB.Sec H) (t : Fin (N + 1) → LB.Sec H) (a : Matrix (Fin (m + 1)) (Fin (N + 1)) R), H.IsLB → ∀ (ht : ⨆ j, nonzeroLocus (t j) = ⊤), (∀ i, s i = ∑ j, GlobalTheory.AbLaw.cst f ⊤ (a i j) • t j) → ∀ i, GlobalTheory.ProjSpace.toProj f t ht ⁻¹ᵁ nonzeroLocus (GlobalTheory.SpanVA.lin a i) = nonzeroLocus (s i) := by
   intro R _ X f H m N s t a hH ht hst i
   rw [← GlobalTheory.Cartier.nonzeroLocus_secPull]

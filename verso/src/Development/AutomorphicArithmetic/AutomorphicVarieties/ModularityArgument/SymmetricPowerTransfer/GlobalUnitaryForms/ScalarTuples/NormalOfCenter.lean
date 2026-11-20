@@ -24,10 +24,16 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open MulAction Fib
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n hn g => by rw [Subgroup.mem_center_iff.mp (h hn) g, mul_inv_cancel_right] exact hn⟩`.
+-/
 private lemma normal_of_center {Γ : Type} [Group Γ] {A : Subgroup Γ} (h : A ≤ Subgroup.center Γ) : A.Normal := ⟨fun n hn g => by
   rw [Subgroup.mem_center_iff.mp (h hn) g, mul_inv_cancel_right]
   exact hn⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_stabilizer_iff, Subgroup.mem_map_equiv, MulAut.conj_symm_apply, MulAction.Quotient.smul_coe, eq_comm, QuotientGroup.eq]`. Simplify using `[mul_assoc]`.
+-/
 private lemma stab_mk {G : Type} [Group G] (U : Subgroup G) (g : G) :
     stabilizer G (g : G ⧸ U) = U.map (MulAut.conj g).toMonoidHom := by
   ext x
@@ -35,12 +41,42 @@ private lemma stab_mk {G : Type} [Group G] (U : Subgroup G) (g : G) :
     QuotientGroup.eq]
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`. Rewrite using `[MulAction.Quotient.smul_coe, QuotientGroup.eq, smul_eq_mul, ← Subgroup.mem_center_iff.mp h1 g]`. Simplify `U.inv_mem h2` using `[mul_assoc]`.
+-/
 private lemma triv_act {Γ G : Type} [Group Γ] [Group G] (ι : Γ →* G) (U : Subgroup G) (z : Γ)
     (h1 : ι z ∈ Subgroup.center G) (h2 : ι z ∈ U) (y : G ⧸ U) : ι z • y = y := by
   obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective y
   rw [MulAction.Quotient.smul_coe, QuotientGroup.eq, smul_eq_mul, ← Subgroup.mem_center_iff.mp h1 g]
   simpa [mul_assoc] using U.inv_mem h2
 
+/- English proof (translation)
+Establish `hΓ₀n : Γ₀.Normal` using `normal_of_center h4`. Establish `htriv : ∀ z ∈ Γ₀, ∀ y : G ⧸ U', ι z • y = y` using `fun z hz y => triv_act ι U' z (h5' z hz).1 (h5' z hz).2 y`. Establish `hstab : ∀ y : G ⧸ U', Γ₀.relIndex ((stabilizer G y).comap ι) ≠ 0`. Introduce `y`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective y`.
+
+Rewrite using `[stab_mk]`. Conclude with `h11' g`. Take `⟨c, hc, hmain⟩` from `hM Γ G ι S U U' Γ₁ Γ₀ ι₁ h1 h2 h3 hΓ₀n htriv h6 h7 h8 h9 h10 hstab`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Introduce `n x hdis hcov V _ _ _ f B cl I δ Hi _ φ hf hfin hBι hBU hω hΓ hBF hT hcl hcl1 htr hφ hδ hsupp`.
+
+Set `Φ : G → ℂ` to `fun g => ∑ᶠ γ : Γ, cl γ * f (g⁻¹ * ι γ * g)`. Establish `hsub : ∀ g : G, ∑ᶠ γ : Γ₁, cl γ * f (g⁻¹ * ι γ * g) = Φ g`. Introduce `g`. Establish `hs : Function.support (fun γ => cl γ * f (g⁻¹ * ι γ * g)) ⊆ (Γ₁ : Set Γ)`. Introduce `γ hγ`.
+
+Conclude with `hcl1 γ (left_ne_zero_of_mul hγ)`. Use `show _ = ∑ᶠ γ : Γ, cl γ * f (g⁻¹ * ι γ * g)`. Use `(finsum_set_coe_eq_finsum_mem (f := fun γ => cl γ * f (g⁻¹ * ι γ * g)) (Γ₁ : Set Γ)).trans ?_` and prove the remaining obligations. Rewrite using `[finsum_mem_def, Set.indicator_eq_self.2 hs]`. Establish `hΦl : ∀ (h : Γ) (g : G), Φ (ι h * g) = Φ g`.
+
+Introduce `h g`. Use `show ∑ᶠ γ : Γ, cl γ * f ((ι h * g)⁻¹ * ι γ * (ι h * g)) = ∑ᶠ γ : Γ, cl γ * f (g⁻¹ * ι γ * g)`. Rewrite using `[← finsum_comp_equiv (MulAut.conj h).toEquiv]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `γ`.
+
+Use `show cl (h * γ * h⁻¹) * f ((ι h * g)⁻¹ * ι (h * γ * h⁻¹) * (ι h * g)) = cl γ * f (g⁻¹ * ι γ * g)`. Rewrite using `[hcl]`. Use `congr 2`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+
+Establish `hΦr : ∀ u ∈ U', ∀ g : G, Φ (g * u) = Φ g`. Introduce `u hu g`. Use `show ∑ᶠ γ : Γ, cl γ * f ((g * u)⁻¹ * ι γ * (g * u)) = ∑ᶠ γ : Γ, cl γ * f (g⁻¹ * ι γ * g)`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `γ`.
+
+Rewrite using `[← hf u hu (g⁻¹ * ι γ * g)]`. Use `congr 2`. Use `group`. Establish `hM'` using `hmain (Fin (n + 1)) x (fun i => (B i).U) Φ hdis hcov hBU hΦl hΦr`. Use `beta_reduce at hM'`.
+
+Establish `hL : ∀ i, LinearMap.trace ℂ (B i).Forms ((Base.Tw.one (B i)).R fun g : S => f ((x i)⁻¹ * g * x i)) = gqOn ι₁ ⊥ (B i).U (fun s => Φ (↑(Quotient.out s) * x i))`. Introduce `i`. Rewrite using `[hTr _ _ _ (B i) (hBF i) (hω i) (hΓ i) _ (hT i), hBι i]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[← hsub]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `γ`. Rewrite using `[htr i γ]`. Use `beta_reduce`.
+
+Use `congr 2`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, h1]`. Use `group`. Establish `hfinP : ∀ g : G, {γ | cl γ * f (g⁻¹ * ι γ * g) ≠ 0}.Finite`. Introduce `g`.
+
+Use `((hfin g).image Subtype.val).subset ?_` and prove the remaining obligations. Introduce `γ hγ`. Establish `hγ1` using `hcl1 γ (left_ne_zero_of_mul hγ)`. Conclude with `⟨⟨γ, hγ1⟩, right_ne_zero_of_mul hγ, rfl⟩`. Establish `hP` using `hPair Γ G I ι Γ₀ U' cl f δ Hi φ h4 htriv hcl hf hfinP h10 hstab hφ hδ hsupp`.
+
+Rewrite using `[Finset.sum_congr rfl (fun i _ => hL i), hM']`. Conclude with `congrArg (fun z => (c : ℂ) * z) hP`.
+-/
 private theorem glue (hM : Master) (hTr : TrKer) (hPair : Pair)
     {Γ G : Type} [Group Γ] [Group G] (ι : Γ →* G) (S U U' : Subgroup G) (Γ₁ Γ₀ : Subgroup Γ) (ι₁ : Γ₁ →* S)
     (h1 : ∀ γ, (ι₁ γ : G) = ι γ) (h2 : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ S) (h3 : Γ₁.Normal) (h4 : Γ₀ ≤ Subgroup.center Γ)
@@ -133,24 +169,41 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open NumberField IsDedekindDomain Matrix Loc MulAction Fib
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext h)`.
+-/
 private lemma dx_ext {K : Type} [Field K] {Δ : K} {g g' : DX Δ} (h : mt g = mt g') : g = g' :=
   Subtype.ext (Units.ext h)
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, map_mul, map_inv, map_inv, mul_right_comm (d a), mul_inv_cancel, one_mul, mul_inv_cancel]`.
+-/
 private lemma comm_abs {G A : Type} [Group G] [CommGroup A] (d : G →* A) (a b : G) : a * b * a⁻¹ * b⁻¹ ∈ d.ker := by
   rw [MonoidHom.mem_ker, map_mul, map_mul, map_mul, map_inv, map_inv, mul_right_comm (d a), mul_inv_cancel, one_mul,
     mul_inv_cancel]
 
+/- English proof (translation)
+Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv]`. Conclude with `comm_abs (GeneralLinearGroup.det.comp (DX (cv v Δ)).subtype) _ _`.
+-/
 private lemma comm_mem {F : Type} [Field F] [NumberField F] {Δ : F} (a b : DA Δ) : a * b * a⁻¹ * b⁻¹ ∈ SA Δ := by
   refine Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 ?_
   rw [map_mul, map_mul, map_mul, map_inv, map_inv]
   exact comm_abs (GeneralLinearGroup.det.comp (DX (cv v Δ)).subtype) _ _
 
+/- English proof (translation)
+Rewrite using `[Subsingleton.elim ((1 : Representation ℂ A PUnit) g) 0, map_zero]`.
+-/
 private lemma trz {A : Type} [Group A] (g : A) : LinearMap.trace ℂ PUnit ((1 : Representation ℂ A PUnit) g) = 0 := by
   rw [Subsingleton.elim ((1 : Representation ℂ A PUnit) g) 0, map_zero]
 
 section
 variable {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ)
 
+/- English proof (translation)
+Introduce `h0`. Establish `w : NumberField.InfinitePlace F` using `Classical.arbitrary _`. Establish `σ : F →+* ℝ` using `NumberField.InfinitePlace.embedding_of_isReal (ok.real.isReal w)`. Use `ok.neg σ` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `lt_irrefl _ this`.
+-/
 private lemma delta_ne (ok : D.Ok) : Δ ≠ 0 := by
   intro h0
   have w : NumberField.InfinitePlace F := Classical.arbitrary _
@@ -159,6 +212,17 @@ private lemma delta_ne (ok : D.Ok) : Δ ≠ 0 := by
   rw [h0, map_zero] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Take `⟨B, hB, -⟩` from `bK F Δ D ok PUnit 1 0 (fun _ _ _ _ => Subsingleton.elim _ _) (fun g _ _ _ => trz g)`. Establish `hF` using `(fK F Δ D ok PUnit 0 B hB).1`. Establish `hBι : B.ι = ι`. Use extensionality with `γ : 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `v`. Apply `dx_ext` to reduce the goal to its premises. Rewrite using `[hB.ι γ v, hι γ v]`. Establish `hU` using `hB.U`. Establish `hΓ` using `hB.Γ₀`.
+
+Use `⟨?_, fun z hz => ?_, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `B.cenΓ` as an intermediate fact. Rewrite `this` using `[hΓ]`. Then use the resulting hypothesis. Rewrite `hz` using `[← hΓ]`. Establish `h1` using `B.cenG z hz`.
+
+Establish `h2` using `B.memU z hz`. Rewrite `h1`, `h2` using `[hBι]`. Rewrite `h2` using `[hU]`. Conclude with `⟨h1, h2⟩`. Take `⟨T, hT⟩` from `hF.cls`.
+
+Use `⟨T, fun g => ?_⟩` and prove the remaining obligations. Use `hT g` as an intermediate fact. Rewrite `this` using `[hU, hBι]`. Then use the resulting hypothesis. Use `hF.stab g` as an intermediate fact. Rewrite `this` using `[hU, hBι, hΓ]`. Then use the resulting hypothesis.
+-/
 private lemma conK (bK : BaseK) (fK : FinK) (ok : D.Ok) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) :
     ZD Δ ≤ Subgroup.center (DX Δ) ∧ (∀ z ∈ ZD Δ, ι z ∈ Subgroup.center (DA Δ) ∧ ι z ∈ D.UZ) ∧
     (∃ T : Finset (DA Δ), ∀ g, ∃ γ, ∃ s ∈ T, ∃ u ∈ D.UZ, g = ι γ * s * u) ∧
@@ -189,15 +253,32 @@ private lemma conK (bK : BaseK) (fK : FinK) (ok : D.Ok) (ι : DX Δ →* DA Δ) 
   · have := hF.stab g
     rwa [hU, hBι, hΓ] at this
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun v => dx_ext ?_)` and prove the remaining obligations. Rewrite using `[hB.ι, hι]`.
+-/
 private lemma bι {V : Type} [AddCommGroup V] [Module ℂ V] (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) (ch : F → ℂ) (x : DA Δ)
     (B : Base (SU Δ) (SA Δ) V) (hB : D.IsBS ch x B) (γ : SU Δ) : ((B.ι γ : SA Δ) : DA Δ) = ι γ := by
   refine Subtype.ext (funext fun v => dx_ext ?_)
   rw [hB.ι, hι]
 
+/- English proof (translation)
+Take `⟨B, hB, -⟩` from `bS F Δ D ok PUnit 1 0 (fun γ _ _ => trz γ) x`. Conclude with `⟨B, hB⟩`.
+-/
 private lemma baseP (bS : BaseS) (ok : D.Ok) (x : DA Δ) : ∃ B : Base (SU Δ) (SA Δ) PUnit, D.IsBS 0 x B := by
   obtain ⟨B, hB, -⟩ := bS F Δ D ok PUnit 1 0 (fun γ _ _ => trz γ) x
   exact ⟨B, hB⟩
 
+/- English proof (translation)
+Take `⟨B0, hB0⟩` from `baseP D bS ok 1`. Establish `hι' : ∀ (x : DA Δ) (B : Base (SU Δ) (SA Δ) PUnit), D.IsBS 0 x B → B.ι = B0.ι` using `fun x B hB => by`. Use extensionality with `h : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[bι D ι hι 0 x B hB h, bι D ι hι 0 1 B0 hB0 h]`.
+
+Use `⟨B0.ι, fun γ => bι D ι hι 0 1 B0 hB0 γ, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `baseP D bS ok x`. Take `⟨T, hT⟩` from `(fS F Δ D ok PUnit 0 x B hB).1.cls`. Use `⟨T, fun s => ?_⟩` and prove the remaining obligations. Take `⟨h, t, ht, u, hu, rfl⟩` from `hT s`.
+
+Conclude with `⟨h, t, ht, u, (hB.U u).mp hu, by rw [hι' x B hB]⟩`. Take `⟨B, hB⟩` from `baseP D bS ok x`. Establish `hfin` using `(fS F Δ D ok PUnit 0 x B hB).1.stab 1`. Rewrite `hfin` using `[hB.Γ₀, Subgroup.relIndex_bot_left]`. Establish `hK` using `Nat.finite_of_card_ne_zero hfin`.
+
+Use `(Set.finite_coe_iff.mp hK).subset ?_` and prove the remaining obligations. Introduce `h hh`. Establish `hm : B.ι h ∈ B.U`. Rewrite using `[hB.U, hι' x B hB]`. Conclude with `hh`.
+
+Establish `he : (MulAut.conj (1 : SA Δ)).toMonoidHom (B.ι h) = B.ι h`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, one_mul, inv_one, mul_one]`. Conclude with `⟨B.ι h, hm, he⟩`.
+-/
 private lemma conS (bS : BaseS) (fS : FinS) (ok : D.Ok) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) :
     ∃ ι₁ : SU Δ →* SA Δ, (∀ γ, ((ι₁ γ : SA Δ) : DA Δ) = ι (γ : DX Δ)) ∧
     (∀ x : DA Δ, ∃ T : Finset (SA Δ), ∀ s, ∃ h, ∃ t ∈ T, ∃ u : SA Δ, x⁻¹ * u * x ∈ D.U2 ∧ s = ι₁ h * t * u) ∧
@@ -226,10 +307,18 @@ private lemma conS (bS : BaseS) (fS : FinS) (ok : D.Ok) (ι : DX Δ →* DA Δ) 
       simp only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, one_mul, inv_one, mul_one]
     exact ⟨B.ι h, hm, he⟩
 
+/- English proof (translation)
+Unfold `SA`. Conclude with `Subgroup.normal_iInf_normal fun v => Subgroup.Normal.comap (by unfold SU; infer_instance) _`.
+-/
 private lemma conN : (SA Δ).Normal := by
   unfold SA
   exact Subgroup.normal_iInf_normal fun v => Subgroup.Normal.comap (by unfold SU; infer_instance) _
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `baseP D bS ok g`. Establish `h1` using `fS F Δ D ok PUnit 0 g B hB`. Establish `h2` using `hSF _ _ _ B h1.1 hB.Γ₀ _ (h1.2 t ht) 1`. Use `h2.subset ?_` and prove the remaining obligations. Introduce `γ hγ`.
+
+Simplify using `only [Set.mem_setOf_eq, Dat.FSx, inv_one, mul_one, one_mul]`. Rewrite using `[bι D ι hι 0 g B hB γ]`. Conclude with `hγ`.
+-/
 private lemma conF (hSF : SuppFin) (bS : BaseS) (fS : FinS) (ok : D.Ok) (ι : DX Δ →* DA Δ) (hι : IsIotaD ι) (t : Dat.Par F)
     (ht : D.Cone t) (g : DA Δ) : {γ : SU Δ | D.FS t (g⁻¹ * ι γ * g) ≠ 0}.Finite := by
   obtain ⟨B, hB⟩ := baseP D bS ok g
@@ -241,6 +330,15 @@ private lemma conF (hSF : SuppFin) (bS : BaseS) (fS : FinS) (ok : D.Ok) (ι : DX
   rw [bι D ι hι 0 g B hB γ]
   exact hγ
 
+/- English proof (translation)
+Set `cl : DX Δ → ℂ` to `fun g => if h : ∃ s, HasTr g s then ch h.choose else 0`. Establish `key : ∀ g s, HasTr g s → cl g = ch s`. Introduce `g s hs`. Establish `he : ∃ s, HasTr g s` using `⟨s, hs⟩`. Use `show (if h : ∃ s, HasTr g s then ch h.choose else 0) = ch s`.
+
+Rewrite using `[dif_pos he, (hH F Δ g).2.1 _ _ he.choose_spec hs]`. Establish `zero : ∀ g, ¬ (∃ s, HasTr g s) → cl g = 0` using `fun g he => dif_neg he`. Use `⟨cl, key, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hg (zero g (fun he => hn ((hH F Δ g).1.mpr he)))`. Introduce `h g`. Distinguish the cases in `he : ∃ s, HasTr g s`. Take `⟨s, hs⟩` from `he`. Rewrite using `[key g s hs, key _ s (((hH F Δ g).2.2 h s).mpr hs)]`.
+
+Rewrite using `[zero g he, zero]`. Introduce and unpack `⟨s, hs⟩`. Conclude with `he ⟨s, ((hH F Δ g).2.2 h s).mp hs⟩`.
+-/
 private lemma clEx (hH : HasTrLaw) (ch : F → ℂ) : ∃ cl : DX Δ → ℂ, (∀ g s, HasTr g s → cl g = ch s) ∧ (∀ g, cl g ≠ 0 → g ∈ SU Δ) ∧
     ∀ h g, cl (h * g * h⁻¹) = cl g := by
   classical
@@ -266,6 +364,23 @@ private lemma clEx (hH : HasTrLaw) (ch : F → ℂ) : ∃ cl : DX Δ → ℂ, (�
 end
 
 set_option maxHeartbeats 3000000 in
+/- English proof (translation)
+Introduce `F _ _ Δ D ok ι hι x₀ hx₀`. Establish `hΔ` using `delta_ne D ok`. Take `⟨hU, hr⟩` from `hLev F Δ D ok`. Take `⟨hZ, hZt, hcls, hstab⟩` from `conK D bK fK ok ι hι`. Take `⟨ι₁, hι₁, hSc, hSf⟩` from `conS D bS fS ok ι hι`.
+
+Establish `hN1 : (SU Δ).Normal` using `MonoidHom.normal_ker _`. Take `⟨c, hc, hall⟩` from `glue hM hTr hPair ι (SA Δ) D.U2 D.UZ (SU Δ) (ZD Δ) ι₁ hι₁ comm_mem hN1 hZ hZt hU hr hSc hSf hcls hstab`. Take `⟨Y, hY, hYc⟩` from `cR F Δ D ok ι hι`. Take `⟨n, x, hx0, hxY, hsep, hcov⟩` from `hReps (DX Δ) (DA Δ) ι (SA Δ) D.UZ Y x₀ conN (fun g => by`. Take `⟨γ, s, hs, y, hy, u, hu, e⟩` from `hYc g`.
+
+Conclude with `⟨γ, s, hs, y, hy, u, hU hu, e⟩)`. Use `⟨n, x, c, hx0, fun i => ?_, hc, ?_⟩` and prove the remaining obligations. Break down `hxY i with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hx₀`.
+
+Conclude with `hY _ h`. Introduce `V _ _ _ ch B hB t ht I τ γ j hinj hi hcv`. Take `⟨cl, hcl, hcl0, hclc⟩` from `clEx hH ch`. Establish `hE` using `fun i => eA F Δ (τ i) hΔ (hi i).1 (γ i) (hi i).2.1`. Establish `key` using `hall n x hsep hcov V (D.FS t) B cl I γ (fun i => (Etau F (τ i))ˣ) j (fun u hu g => hC F Δ D ok t ht u hu g) (fun g => conF D hSF bS fS ok ι hι t ht g) (fun i => by ext1 γ'`.
+
+Conclude with `Subtype.ext ((bι D ι hι ch (x i) (B i) (hB i) γ').trans (hι₁ γ').symm))`. Use the proof step `(fun i => (hB i).U) (fun i => (hB i).ω) (fun i => (hB i).Γ₀) (fun i => (fS F Δ D ok V ch (x i) (B i) (hB i)).1)`. Use the proof step `(fun i => (fS F Δ D ok V ch (x i) (B i) (hB i)).2 t ht) hclc hcl0`. Use the proof step `(fun i γ' => by`. Take `⟨s, hs⟩` from `(hH F Δ γ').1.1 γ'.2`.
+
+Rewrite using `[(hB i).tr γ' s hs, hcl _ s hs])`. Use the proof step `(fun i y => ((hE i).2.1 (j i) (hi i).2.2).2.1 y)`. Use the proof step `(fun i i' h e => by`. Establish `h1 : HasTr (γ i) (τ i')` using `((hH F Δ (γ i)).2.2 h _).1 (e ▸ (hi i').2.1)`. Conclude with `hinj ((hH F Δ (γ i)).2.1 _ _ (hi i).2.1 h1))`.
+
+Use the proof step `(fun γ' g hne => by`. Take `⟨s, hs⟩` from `(hH F Δ γ').1.1 (hcl0 γ' (left_ne_zero_of_mul hne))`. Take `⟨i, rfl⟩` from `hcv γ' s hs (hSu F Δ D ok ι hι t ht γ' s g hs (right_ne_zero_of_mul hne))`. Take `⟨y, hy⟩` from `(hE i).2.2 γ' hs`. Conclude with `⟨i, y⁻¹, by rw [hy, inv_inv]⟩)`.
+
+Use `key.trans (congrArg _ (finsum_congr fun i => ?_))` and prove the remaining obligations. Rewrite using `[hcl _ _ (hi i).2.1, ((hE i).2.1 (j i) (hi i).2.2).2.2]`.
+-/
 private theorem fibre_of (hM : Master) (hTr : TrKer) (hSF : SuppFin) (hPair : Pair) (hReps : Reps) (hLev : LevFin) (hC : FSConj)
     (hSu : FSSupp) (hH : HasTrLaw) (bS : BaseS) (bK : BaseK) (fS : FinS) (fK : FinK) (cR : ClassRep) (eA : EmbAlg) : Fibre := by
   intro F _ _ Δ D ok ι hι x₀ hx₀
@@ -310,6 +425,9 @@ private theorem fibre_of (hM : Master) (hTr : TrKer) (hSF : SuppFin) (hPair : Pa
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Z.Sym.Glob.fibre_of UpperTheory.symmetric_fiber_master_formula UpperTheory.symmetric_fiber_trace_kernel UpperTheory.orbitalFiber_support_finite UpperTheory.orbitalFiber_pair_correspondence UpperTheory.orbitalFiber_representatives UpperTheory.orbitalFiber_level_finit …`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.fibre :
     UpperTheory.V.Z.Sym.Glob.Fibre :=
   UpperTheory.V.Z.Sym.Glob.fibre_of UpperTheory.symmetric_fiber_master_formula UpperTheory.symmetric_fiber_trace_kernel UpperTheory.orbitalFiber_support_finite UpperTheory.orbitalFiber_pair_correspondence UpperTheory.orbitalFiber_representatives

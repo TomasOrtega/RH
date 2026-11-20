@@ -27,9 +27,15 @@ variable {g : ℕ}
 
 def hf (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) : ℂ := z ⬝ᵥ Hm.mulVec (star w)
 
+/- English proof (translation)
+The claim follows from `add_dotProduct _ _ _`.
+-/
 theorem hf_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) : hf Hm (z + z') w = hf Hm z w + hf Hm z' w :=
   add_dotProduct _ _ _
 
+/- English proof (translation)
+Simplify using `only [hf, star_add, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hf_add_right (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) : hf Hm z (w + w') = hf Hm z w + hf Hm z w' := by
   simp only [hf, star_add, Matrix.mulVec_add, dotProduct_add]
 
@@ -37,6 +43,9 @@ def sumL (g : ℕ) (I : ULift.{0} (Finset (Fin 2))) : (Fin (g + g) → ℂ) →�
   (if (0 : Fin 2) ∈ I.down then (halfL g).toLinearMap else 0) +
     (if (1 : Fin 2) ∈ I.down then (halfR g).toLinearMap else 0)
 
+/- English proof (translation)
+Rewrite using `[← (Equiv.ulift.{0, 0} (α := Finset (Fin 2))).symm.prod_comp]`. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} from by decide]`. Rewrite using `[Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem prod_four {Mo : Type} [CommMonoid Mo] (F : ULift.{0} (Finset (Fin 2)) → Mo) :
     ∏ I, F I = F ⟨∅⟩ * F ⟨{0}⟩ * F ⟨{1}⟩ * F ⟨{0, 1}⟩ := by
   rw [← (Equiv.ulift.{0, 0} (α := Finset (Fin 2))).symm.prod_comp]
@@ -48,13 +57,27 @@ theorem prod_four {Mo : Type} [CommMonoid Mo] (F : ULift.{0} (Finset (Fin 2)) �
 
 variable {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+The claim follows from `(Hom.mul_def a b).symm`.
+-/
 theorem padd_eq {T : Over (Sp ℂ)} (a b : T ⟶ A) : padd A a b = a * b := (Hom.mul_def a b).symm
 
+/- English proof (translation)
+Rewrite using `[pzero, Hom.one_def]`.
+-/
 theorem pzero_eq (T : Over (Sp ℂ)) : pzero A T = 1 := by
   rw [pzero, Hom.one_def]
 
+/- English proof (translation)
+The claim follows from `(u.ker 0).2 (zero_mem _)`.
+-/
 theorem ex_zero {M : LB A.left} (u : HolUnif A M g) : u.ex 0 = 1 := (u.ker 0).2 (zero_mem _)
 
+/- English proof (translation)
+Establish `e : (sqUnif A u₀).ex v = lift (u₀.ex (halfL g v)) (u₀.ex (halfR g v))` using `rfl`. Rewrite using `[e, hex]`. Take `⟨I⟩` from `I`. Establish `hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1}` using `by revert I; decide`. Break down `hI with rfl | rfl | rfl | rfl` into its components or cases.
+
+Simplify using `[sumL, psum, pzero_eq, ex_zero]`. Simplify using `[sumL, psum, padd_eq, pzero_eq, x2, List.finRange_succ]`. Simplify using `[sumL, psum, padd_eq, pzero_eq, x2, List.finRange_succ]`. Simplify using `[sumL, psum, padd_eq, pzero_eq, x2, List.finRange_succ, u₀.ex_add, MonObj.comp_mul]`.
+-/
 theorem ex_sumL {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (hex : u.ex = u₀.ex)
     (I : ULift.{0} (Finset (Fin 2))) (v : Fin (g + g) → ℂ) :
     u.ex (sumL g I v) = (sqUnif A u₀).ex v ≫ psum A (x2 A) I.down := by
@@ -81,13 +104,22 @@ def lamUnif {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (
   GlobalTheory.linCombUnif (sqUnif A u₀) u (fun I : ULift.{0} (Finset (Fin 2)) => psum A (x2 A) I.down) (sumL g)
     (fun I => (-1) ^ (2 - I.down.card)) (fun I v => ex_sumL u₀ u hex I v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamUnif_fr {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (hex : u.ex = u₀.ex)
     (j : (abelian₂ A M).ι) (v : Fin (g + g) → ℂ) :
     (lamUnif u₀ u hex).fr j v = ∏ I, u.fr (j I) (sumL g I v) ^ ((-1 : ℤ) ^ (2 - I.down.card)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamUnif_ex {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (hex : u.ex = u₀.ex) :
     (lamUnif u₀ u hex).ex = (sqUnif A u₀).ex := rfl
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.CubeValues.le_preimage_wchart ((sqUnif A u₀).ex v).left M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) j).1 hv I`. Rewrite using `[ex_sumL u₀ u hex I v, Over.comp_left]`. Conclude with `h`.
+-/
 theorem lam_chart {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (hex : u.ex = u₀.ex)
     (j : (abelian₂ A M).ι) (v : Fin (g + g) → ℂ) (hv : ⊤ ≤ ((sqUnif A u₀).ex v).left ⁻¹ᵁ (abelian₂ A M).U j)
     (I : ULift.{0} (Finset (Fin 2))) : ⊤ ≤ (u.ex (sumL g I v)).left ⁻¹ᵁ M.U (j I) := by
@@ -97,11 +129,19 @@ theorem lam_chart {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A 
   exact h
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[u.ex_add, (u.ker w).2 hw, _root_.mul_one]`.
+-/
 theorem ex_add_mem {M : LB A.left} (u : HolUnif A M g) (z : Fin g → ℂ) {w : Fin g → ℂ} (hw : w ∈ u.Λ) :
     u.ex (z + w) = u.ex z := by
   rw [u.ex_add, (u.ker w).2 hw, _root_.mul_one]
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Set `p0 : Sp ℂ` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Establish `hmem : y p0 ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.mp hmem`. Use `⟨j, fun q _ => ?_⟩` and prove the remaining obligations. Establish `: q = p0` using `by haveI := q.isPrime haveI := p0.isPrime`.
+
+Conclude with `PrimeSpectrum.ext ((Ideal.eq_bot_of_prime q.asIdeal).trans (Ideal.eq_bot_of_prime p0.asIdeal).symm)`. Rewrite using `[this]`. Conclude with `hj`.
+-/
 theorem exists_chart_pt' {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : Sp ℂ ⟶ X) :
     ∃ j, ⊤ ≤ y ⁻¹ᵁ L.U j := by
   let p0 : Sp ℂ := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)
@@ -122,6 +162,19 @@ def chi {M : LB A.left} (u : HolUnif A M g) (χ : u.Λ → ℂ) (z : Fin g → �
 
 omit [IsCommMonObj A] in
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_chart_pt' M hM (u.ex 0).left`. Establish `hz : ∀ z ∈ u.Λ, ⊤ ≤ (u.ex z).left ⁻¹ᵁ M.U i`. Introduce `z hz`. Rewrite using `[(u.ker z).2 hz, ← (u.ker 0).2 (zero_mem _)]`. Conclude with `hi`.
+
+Establish `law1` using `hF.2.2 ⟨l, hl⟩ i 0 (hz 0 (zero_mem _))`. Establish `law2` using `hF.2.2 ⟨m, hm⟩ i l (hz l hl)`. Establish `law3` using `hF.2.2 ⟨l + m, add_mem hl hm⟩ i 0 (hz 0 (zero_mem _))`. Establish `hF0` using `u.fr_ne i (l + m) (hz _ (add_mem hl hm))`. Simplify using `only [zero_dotProduct, mul_zero, zero_add] at law1 law3`.
+
+Establish `hlm : (l + m) ⬝ᵥ Hm.mulVec (star (l + m)) = hf Hm l l + hf Hm l m + hf Hm m l + hf Hm m m`. Express the relevant statement in the definitionally equal form `hf Hm (l + m) (l + m) = _`. Rewrite using `[hf_add_left, hf_add_right, hf_add_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `law3` using `[hlm]`.
+
+Express the relevant statement in the definitionally equal form `u.fr i 0 = χ ⟨l, hl⟩ * Complex.exp (↑Real.pi / 2 * hf Hm l l) * u.fr i l at law1`. Express the relevant statement in the definitionally equal form `u.fr i l = χ ⟨m, hm⟩ * Complex.exp (↑Real.pi * hf Hm l m + ↑Real.pi / 2 * hf Hm m m) * u.fr i (l + m) at law2`. Rewrite using `[chi, dif_pos (add_mem hl hm), chi, dif_pos hl, chi, dif_pos hm]`. Use `set a := hf Hm l l`. Use `set b := hf Hm l m`.
+
+Use `set c := hf Hm m l`. Use `set d := hf Hm m m`. Establish `ex1 : Complex.exp (↑Real.pi / 2 * (b + c)) * Complex.exp (↑Real.pi / 2 * (a + d)) = Complex.exp (↑Real.pi / 2 * (a + b + c + d))`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form.
+
+Establish `ex2 : Complex.exp (↑Real.pi * b) * Complex.exp (↑Real.pi / 2 * (a + d)) = Complex.exp (↑Real.pi / 2 * a) * Complex.exp (↑Real.pi * b + ↑Real.pi / 2 * d)`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Put the polynomial expressions in normal form. Use `mul_right_cancel₀ (mul_ne_zero (Complex.exp_ne_zero (↑Real.pi / 2 * (a + d))) hF0) ?_` and prove the remaining obligations. Take the linear combination `(χ ⟨l + m, add_mem hl hm⟩ * u.fr i (l + m)) * ex1 - (χ ⟨l, hl⟩ * χ ⟨m, hm⟩ * u.fr i (l + m)) * ex2 - law3 + law1 + χ ⟨l, hl⟩ * Complex.exp (↑Real.pi / 2 * a) * law2`.
+-/
 theorem semichar {M : LB A.left} (hM : M.IsLB) (u : HolUnif A M g) {Hm : Matrix (Fin g) (Fin g) ℂ}
     {χ : u.Λ → ℂ} (hF : IsFactorAH u Hm χ) {l m : Fin g → ℂ} (hl : l ∈ u.Λ) (hm : m ∈ u.Λ) :
     chi u χ (l + m) * Complex.exp ((Real.pi : ℂ) / 2 * (hf Hm l m + hf Hm m l)) =
@@ -167,17 +220,35 @@ open GlobalTheory.ProdUnifSq
 
 variable {g : ℕ} {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Simplify using `[sumL]`.
+-/
 theorem sumL_empty (v : Fin (g + g) → ℂ) : sumL g ⟨∅⟩ v = 0 := by simp [sumL]
+/- English proof (translation)
+Simplify using `[sumL]`.
+-/
 theorem sumL_zero (v : Fin (g + g) → ℂ) : sumL g ⟨{0}⟩ v = halfL g v := by simp [sumL]
+/- English proof (translation)
+Simplify using `[sumL]`.
+-/
 theorem sumL_one (v : Fin (g + g) → ℂ) : sumL g ⟨{1}⟩ v = halfR g v := by simp [sumL]
+/- English proof (translation)
+Simplify using `[sumL]`.
+-/
 theorem sumL_both (v : Fin (g + g) → ℂ) : sumL g ⟨{0, 1}⟩ v = halfL g v + halfR g v := by simp [sumL]
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[← u.ker, ← u₀.ker, hex]`.
+-/
 theorem mem_iff {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (hex : u.ex = u₀.ex)
     (z : Fin g → ℂ) : z ∈ u.Λ ↔ z ∈ u₀.Λ := by
   rw [← u.ker, ← u₀.ker, hex]
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[mem_iff u₀ u hex]`. Take `⟨hl, hr⟩` from `(mem_sqLat _ _).1 hw`. Simplify using `only [sumL, LinearMap.add_apply]`. Apply the tactic sequence `refine add_mem ?_ ?_ <;> split_ifs <;> simp [hl, hr]`.
+-/
 theorem sumL_mem {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M g) (hex : u.ex = u₀.ex)
     (I : ULift.{0} (Finset (Fin 2))) {w : Fin (g + g) → ℂ} (hw : w ∈ sqLat u₀.Λ) : sumL g I w ∈ u.Λ := by
   rw [mem_iff u₀ u hex]
@@ -186,6 +257,9 @@ theorem sumL_mem {M₀ M : LB A.left} (u₀ : HolUnif A M₀ g) (u : HolUnif A M
   refine add_mem ?_ ?_ <;> split_ifs <;> simp [hl, hr]
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[chi, dif_pos hz]`. Introduce `h0`. Use `hF.2.1 ⟨z, hz⟩` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
+-/
 theorem chi_ne {M : LB A.left} (u : HolUnif A M g) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (hF : IsFactorAH u Hm χ) {z : Fin g → ℂ} (hz : z ∈ u.Λ) : chi u χ z ≠ 0 := by
   rw [chi, dif_pos hz]
@@ -195,6 +269,11 @@ theorem chi_ne {M : LB A.left} (u : HolUnif A M g) {Hm : Matrix (Fin g) (Fin g) 
   exact zero_ne_one this
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Establish `sc` using `semichar hM u hF hl hm`. Establish `e1 : ↑Real.pi * hf Hm (x + y) (l + m) + ↑Real.pi / 2 * hf Hm (l + m) (l + m) = ↑Real.pi / 2 * (hf Hm l m + hf Hm m l) + (↑Real.pi * (hf Hm x l + hf Hm x m + hf Hm y l + hf Hm y m) + ↑Real.pi / 2 * (hf Hm l l + hf Hm m m))`. Simplify using `only [hf_add_left, hf_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Complex.exp (↑Real.pi * (hf Hm x m + hf Hm y l + hf Hm l m)) * Complex.exp (↑Real.pi * hf Hm x l + ↑Real.pi / 2 * hf Hm l l) * Complex.exp (↑Real.pi * hf Hm y m + ↑Real.pi / 2 * hf Hm m m) = Complex.exp (↑Real.pi * hf Hm l m) * Complex.exp (↑Real.pi * (hf Hm x l + hf Hm x m …`.
+
+Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Complex.exp_add]`. Take the linear combination `(Complex.exp (↑Real.pi * (hf Hm x l + hf Hm x m + hf Hm y l + hf Hm y m) + ↑Real.pi / 2 * (hf Hm l l + hf Hm m m))) * sc - chi u χ l * chi u χ m * e2`.
+-/
 theorem key_exp {M : LB A.left} (hM : M.IsLB) (u : HolUnif A M g) {Hm : Matrix (Fin g) (Fin g) ℂ}
     {χ : u.Λ → ℂ} (hF : IsFactorAH u Hm χ) {l m : Fin g → ℂ} (hl : l ∈ u.Λ) (hm : m ∈ u.Λ) (x y : Fin g → ℂ) :
     chi u χ (l + m) * Complex.exp (↑Real.pi * hf Hm (x + y) (l + m) + ↑Real.pi / 2 * hf Hm (l + m) (l + m)) =
@@ -218,6 +297,21 @@ theorem key_exp {M : LB A.left} (hM : M.IsLB) (u : HolUnif A M g) {Hm : Matrix (
   linear_combination (Complex.exp (↑Real.pi * (hf Hm x l + hf Hm x m + hf Hm y l + hf Hm y m) +
       ↑Real.pi / 2 * (hf Hm l l + hf Hm m m))) * sc - chi u χ l * chi u χ m * e2
 
+/- English proof (translation)
+Establish `law : ∀ I, u.fr (j I) (sumL g I v) = chi u χ (sumL g I w) * Complex.exp (↑Real.pi * hf Hm (sumL g I v) (sumL g I w) + ↑Real.pi / 2 * hf Hm (sumL g I w) (sumL g I w)) * u.fr (j I) (sumL g I (v + w))`. Introduce `I`. Rewrite using `[chi, dif_pos (sumL_mem u₀ u hex I hw), map_add]`. Conclude with `hF.2.2 ⟨_, sumL_mem u₀ u hex I hw⟩ (j I) _ (lam_chart u₀ u hex j v hv I)`. Establish `hne : ∀ I, u.fr (j I) (sumL g I (v + w)) ≠ 0`.
+
+Introduce `I`. Use `u.fr_ne _ _ ?_` and prove the remaining obligations. Rewrite using `[map_add, ex_add_mem u _ (sumL_mem u₀ u hex I hw)]`. Conclude with `lam_chart u₀ u hex j v hv I`. Take `⟨hl, hr⟩` from `(mem_sqLat _ _).1 hw`.
+
+Establish `hl'` using `(mem_iff u₀ u hex _).2 hl`. Establish `hr'` using `(mem_iff u₀ u hex _).2 hr`. Establish `k` using `key_exp hM u hF hl' hr' (halfL g v) (halfR g v)`. Establish `l1` using `law ⟨{0}⟩`. Establish `l2` using `law ⟨{1}⟩`.
+
+Establish `l3` using `law ⟨{0, 1}⟩`. Establish `n1` using `hne ⟨{0}⟩`. Establish `n2` using `hne ⟨{1}⟩`. Establish `c1` using `chi_ne u hF hl'`. Establish `c2` using `chi_ne u hF hr'`.
+
+Simplify using `only [sumL_zero, sumL_one, sumL_both] at l1 l2 l3 n1 n2`. Rewrite using `[lamUnif_fr, lamUnif_fr, prod_four, prod_four]`. Establish `d0 : ((-1 : ℤ) ^ (2 - (⟨∅⟩ : ULift.{0} (Finset (Fin 2))).down.card)) = 1` using `by decide`. Establish `d1 : ((-1 : ℤ) ^ (2 - (⟨{0}⟩ : ULift.{0} (Finset (Fin 2))).down.card)) = -1` using `by decide`. Establish `d2 : ((-1 : ℤ) ^ (2 - (⟨{1}⟩ : ULift.{0} (Finset (Fin 2))).down.card)) = -1` using `by decide`.
+
+Establish `d3 : ((-1 : ℤ) ^ (2 - (⟨{0, 1}⟩ : ULift.{0} (Finset (Fin 2))).down.card)) = 1` using `by decide`. Rewrite using `[d0, d1, d2, d3]`. Simplify using `only [zpow_one, zpow_neg_one, sumL_empty, sumL_zero, sumL_one, sumL_both]`. Rewrite using `[l1, l2, l3, k]`. Establish `e1` using `Complex.exp_ne_zero (↑Real.pi * hf Hm (halfL g v) (halfL g w) + ↑Real.pi / 2 * hf Hm (halfL g w) (halfL g w))`.
+
+Establish `e2` using `Complex.exp_ne_zero (↑Real.pi * hf Hm (halfR g v) (halfR g w) + ↑Real.pi / 2 * hf Hm (halfR g w) (halfR g w))`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem lam_factor {M₀ M : LB A.left} (hM : M.IsLB) (u₀ : HolUnif A M₀ g) (u : HolUnif A M g)
     (hex : u.ex = u₀.ex) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hF : IsFactorAH u Hm χ)
     (j : (abelian₂ A M).ι) (v w : Fin (g + g) → ℂ) (hw : w ∈ sqLat u₀.Λ)
@@ -278,9 +372,15 @@ def twistMap (Fl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) : (Fin (g + g) �
     refine Fin.addCases (fun k => ?_) (fun k => ?_) q <;>
       simp only [Fin.append_left, Fin.append_right, map_smul, Pi.smul_apply, RingHom.id_apply]
 
+/- English proof (translation)
+The claim follows from `halfL_append _ _`.
+-/
 theorem halfL_twist (Fl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (v : Fin (g + g) → ℂ) :
     halfL g (twistMap Fl v) = halfL g v := halfL_append _ _
 
+/- English proof (translation)
+The claim follows from `halfR_append _ _`.
+-/
 theorem halfR_twist (Fl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (v : Fin (g + g) → ℂ) :
     halfR g (twistMap Fl v) = Fl (halfR g v) := halfR_append _ _
 
@@ -288,6 +388,25 @@ end GlobalTheory.LamPullFrame
 
 open GlobalTheory.LamPullFrame GlobalTheory.ProdUnifSq in
 
+/- English proof (translation)
+Introduce `g A _ hA hp M₁ M₂ u₁ u₂ H₁ H₂ χ₁ χ₂ f Fl hM₁ hM₂ hex hF₁ hF₂ hfm hFl hH hsa`. Use `haveI : IsCommMonObj A := hA.comm`. Use `haveI : IsMonHom f := hfm`. Establish `hFm : ∀ v, (lamUnif u₁ u₁ rfl).ex (twistMap Fl v) = (sqUnif A u₁).ex v ≫ lift (fst A A) (snd A A ≫ f)`. Introduce `v`.
+
+Express the relevant statement in the definitionally equal form `lift (u₁.ex (halfL g (twistMap Fl v))) (u₁.ex (halfR g (twistMap Fl v))) = lift (u₁.ex (halfL g v)) (u₁.ex (halfR g v)) ≫ lift (fst A A) (snd A A ≫ f)`. Rewrite using `[halfL_twist, halfR_twist, hFl, comp_lift, lift_fst, lift_snd_assoc]`. Set `UP` to `GlobalTheory.linCombUnif (sqUnif A u₁) (lamUnif u₁ u₁ rfl) (fun _ : PUnit => lift (fst A A) (snd A A ≫ f)) (fun _ => twistMap Fl) (fun _ => 1) (fun _ v => hFm v)`. Set `UN` to `GlobalTheory.SameFactor.divUnif (lamUnif u₁ u₂ hex) UP rfl`. Use `GlobalTheory.HolUnifSec.hasGen_of_periodic (A ⊗ A) (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hA hA) (GlobalTheory.ProjSpace.isProjOver_pullback hp hp) _ (LB.isLB_div (LB.isLB_linComb (LB.isLB_linComb hM₁ _ _) _ _) (LB.isLB_linComb hM₂ _ _)) (g + g) UN (fun _ => 1) (different …` and prove the remaining obligations.
+
+Introduce `w hw p z hz`. Take `⟨hz1, hz2⟩` from `(top_le_preimage_inf _ _ _).1 hz`. Establish `hw' : w ∈ sqLat u₁.Λ` using `hw`. Take `⟨hl, hr⟩` from `(mem_sqLat _ _).1 hw'`. Establish `hwt : twistMap Fl w ∈ sqLat u₁.Λ`.
+
+Use `(mem_sqLat _ _).2 ⟨by rw [halfL_twist]; exact hl, ?_⟩` and prove the remaining obligations. Rewrite using `[halfR_twist, ← u₁.ker, hFl, (u₁.ker _).2 hr, MonObj.one_comp]`. Establish `hc1 : ⊤ ≤ ((sqUnif A u₁).ex (twistMap Fl z)).left ⁻¹ᵁ (abelian₂ A M₁).U (p.1 PUnit.unit)`. Establish `h` using `(GlobalTheory.CubeValues.le_preimage_wchart ((sqUnif A u₁).ex z).left (abelian₂ A M₁) (fun _ : PUnit => (lift (fst A A) (snd A A ≫ f)).left) p.1).1 hz1 PUnit.unit`. Rewrite `h` using `[← Over.comp_left, ← hFm]`.
+
+Conclude with `h`. Establish `fac1` using `lam_factor hM₁ u₁ u₁ rfl hF₁ (p.1 PUnit.unit) (twistMap Fl z) (twistMap Fl w) hwt hc1`. Establish `fac2` using `lam_factor hM₂ u₁ u₂ hex hF₂ p.2 z w hw' hz2`. Rewrite `fac1` using `[halfL_twist, halfL_twist, halfR_twist, halfR_twist, ← map_add]`. Establish `hE : (hf H₁ (halfL g z) (Fl (halfR g w)) + hf H₁ (Fl (halfR g z)) (halfL g w) + hf H₁ (halfL g w) (Fl (halfR g w))) = hf H₂ (halfL g z) (halfR g w) + hf H₂ (halfR g z) (halfL g w) + hf H₂ (halfL g w) (halfR g w)`.
+
+Establish `e1` using `hH (halfL g z) (halfR g w)`. Establish `e2` using `hH (halfR g z) (halfL g w)`. Establish `e3` using `hH (halfL g w) (halfR g w)`. Establish `e4` using `hsa (halfR g z) (halfL g w)`. Simplify using `only [hf]`.
+
+Rewrite using `[e1, e2, e3, e4]`. Rewrite `fac1` using `[hE]`. Establish `hz2' : ⊤ ≤ ((sqUnif A u₁).ex (z + w)).left ⁻¹ᵁ (abelian₂ A M₂).U p.2`. Rewrite using `[ex_add_mem _ _ hw']`. Conclude with `hz2`.
+
+Establish `n2` using `(lamUnif u₁ u₂ hex).fr_ne p.2 (z + w) hz2'`. Establish `hPf : ∀ v, UP.fr p.1 v = (lamUnif u₁ u₁ rfl).fr (p.1 PUnit.unit) (twistMap Fl v)` using `fun v => by show (∏ k : PUnit, (lamUnif u₁ u₁ rfl).fr (p.1 k) (twistMap Fl v) ^ (1 : ℤ)) = _`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `1 * (UP.fr p.1 (z + w) * ((lamUnif u₁ u₂ hex).fr p.2 (z + w))⁻¹) = 1 * (UP.fr p.1 z * ((lamUnif u₁ u₂ hex).fr p.2 z)⁻¹)`. Rewrite using `[hPf, hPf, fac1, fac2]`.
+
+Establish `ne` using `Complex.exp_ne_zero (↑Real.pi * (hf H₂ (halfL g z) (halfR g w) + hf H₂ (halfR g z) (halfL g w) + hf H₂ (halfL g w) (halfR g w)))`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.TorusRM.lbIso_lam_pull_of_selfAdjoint : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → IsProjOver A.hom →
     ∀ (M₁ M₂ : LB A.left) (u₁ : HolUnif A M₁ g) (u₂ : HolUnif A M₂ g) (H₁ H₂ : Matrix (Fin g) (Fin g) ℂ)
       (χ₁ : u₁.Λ → ℂ) (χ₂ : u₂.Λ → ℂ) (f : A ⟶ A) (Fl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)),

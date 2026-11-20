@@ -9,6 +9,11 @@ def SubringPrimeMaximal.Statement : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (O : Subalgebra ℤ K) (q : Ideal O),
     q.IsPrime → q ≠ ⊥ → q.IsMaximal
 
+/- English proof (translation)
+Set `e` to `Algebra.botEquivOfInjective (R := ℤ) (A := ℚ) Int.cast_injective`. Establish `: (Ideal.span {(2 : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two`. Use `⟨Ideal.comap (e : (⊥ : Subalgebra ℤ ℚ) →+* ℤ) (Ideal.span {2}), Ideal.comap_isPrime _ _, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `hm : (2 : (⊥ : Subalgebra ℤ ℚ)) ∈ Ideal.comap (e : (⊥ : Subalgebra ℤ ℚ) →+* ℤ) (Ideal.span {2})`.
+
+Rewrite using `[Ideal.mem_comap, map_ofNat]`. Conclude with `Ideal.mem_span_singleton_self 2`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Use `congrArg Subtype.val hm` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+-/
 example : ∃ q : Ideal (⊥ : Subalgebra ℤ ℚ), q.IsPrime ∧ q ≠ ⊥ := by
   let e := Algebra.botEquivOfInjective (R := ℤ) (A := ℚ) Int.cast_injective
   have : (Ideal.span {(2 : ℤ)}).IsPrime :=

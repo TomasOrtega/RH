@@ -18,6 +18,11 @@ def leftInv : Submodule ℂ (Sm E a) where
   add_mem' {ψ ψ'} h h' γ g := by simp [h γ g, h' γ g]
   smul_mem' c ψ h γ g := by simp [h γ g]
 
+/- English proof (translation)
+Introduce `γ g`. Establish `e : chart ψ.1 (ratGL E a γ * g) = chart ψ.1 g`. Use function extensionality and compare the values at `x`. Simplify using `only [chart, mul_assoc]`. Use `split_ifs`.
+
+Conclude with `h γ _`. Both sides reduce to the same expression. Simplify using `only [lie_apply, lieD, e]`.
+-/
 theorem lie_mem_leftInv (X : Lie E a) {ψ : Sm E a} (h : ψ ∈ leftInv E a) : lie E a X ψ ∈ leftInv E a := by
   intro γ g
   have e : chart ψ.1 (ratGL E a γ * g) = chart ψ.1 g := by
@@ -36,6 +41,11 @@ def fixL (L : Subgroup (GL (Fin a) (Af E))) : Submodule ℂ (Sm E a) where
   add_mem' {ψ ψ'} h h' k hk := by rw [map_add, h k hk, h' k hk]
   smul_mem' c ψ h k hk := by rw [map_smul, h k hk]
 
+/- English proof (translation)
+Introduce `k hk`. Establish `e` using `LinearMap.congr_fun (lie_rt_fin X k) ψ`. Simplify using `only [Module.End.mul_apply] at e`. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) (lie E a X ψ) = lie E a X ψ`. Rewrite using `[← e]`.
+
+Conclude with `congrArg (lie E a X) (h k hk)`.
+-/
 theorem lie_mem_fixL (L : Subgroup (GL (Fin a) (Af E))) (X : Lie E a) {ψ : Sm E a} (h : ψ ∈ fixL E a L) :
     lie E a X ψ ∈ fixL E a L := by
   intro k hk
@@ -45,6 +55,11 @@ theorem lie_mem_fixL (L : Subgroup (GL (Fin a) (Af E))) (X : Lie E a) {ψ : Sm E
   rw [← e]
   exact congrArg (lie E a X) (h k hk)
 
+/- English proof (translation)
+Introduce `E _ _ _ a L W hW T hT z hz`. Use `⟨fun k w => ?_, fun w => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hT.1 k w]`. Conclude with `(LinearMap.congr_fun (GlobalTheory.ZalgCpt.zalg_comm_cptRep E a k z hz) (T w))`. Conclude with `Zalg_stable (V := tame E a) (fun X _ h => lie_mem_tame X h) hz _ (hT.2 w).1`.
+
+Conclude with `Zalg_stable (V := leftInv E a) (fun X _ h => lie_mem_leftInv X h) hz _ (hT.2 w).2.1`. Conclude with `Zalg_stable (V := fixL E a L) (fun X _ h => lie_mem_fixL L X h) hz _ (hT.2 w).2.2`.
+-/
 theorem comp_mem_maps : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Sm E a)) (hW : ∀ k, ∀ w ∈ W, cptRep E a k w ∈ W)
     (T : W →ₗ[ℂ] Sm E a), T ∈ maps L W hW → ∀ z ∈ Zalg E a, z ∘ₗ T ∈ maps L W hW := by

@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Take `⟨x, hx, ex⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D χ r).1 h`. Take `⟨x', hx', ex'⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D χ r').1 h'`. Take `⟨u, hu⟩` from `hx.unique hx'`. Establish `e1 : algebraMap R (FractionRing R) r = algebraMap R (FractionRing R) (u * r')`. Rewrite using `[← ex, hu, map_mul, ← ex']`.
+
+Both sides reduce to the same expression. Establish `e2 : r = u * r'` using `IsFractionRing.injective R (FractionRing R) e1`. Conclude with `⟨u⁻¹, by rw [e2, mul_comm, ← mul_assoc, Units.inv_mul, one_mul]⟩`.
+-/
 theorem psiCoord_associated {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {χ : D.X} {r r' : R}
     (h : PsiCoord D χ r) (h' : PsiCoord D χ r') : Associated r r' := by
   obtain ⟨x, hx, ex⟩ := (GlobalTheory.PeriodFormCompare.psiCoord_iff D χ r).1 h
@@ -24,6 +29,15 @@ theorem psiCoord_associated {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} 
   have e2 : r = u * r' := IsFractionRing.injective R (FractionRing R) e1
   exact ⟨u⁻¹, by rw [e2, mul_comm, ← mul_assoc, Units.inv_mul, one_mul]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H R R' _ _ _ _ _ _ φ t t' P P' e m γ hpsi hin`. Introduce `W _ _ _ hW ϖ hϖ f be hsym hF`. Establish `hF0 : FormAt P.D.toPre (f.comp φ) ϖ (pull e.symm.toLinearMap be)`. Introduce `y0`. Take `⟨r, hr⟩` from `(GlobalTheory.PeriodFormCompare.exists_psiCoord_iff P.D.toPre y0).2 (GlobalTheory.PeriodFormCompare.psiIn_top P.D y0)`.
+
+Take `⟨u, hu⟩` from `hpsi (e.symm y0) r (by rwa [e.apply_symm_apply])`. Take `⟨r', n, hr', hbe, hass⟩` from `hF (e.symm y0)`. Use `⟨r, n, hr, by simpa [pull_apply] using hbe, ?_⟩` and prove the remaining obligations. Establish `h1 : Associated (u * φ r) r'` using `psiCoord_associated hu hr'`. Establish `h2 : Associated (f (φ r)) (f (u * φ r))`.
+
+Rewrite using `[map_mul]`. Conclude with `⟨(Units.map f.toMonoidHom u), by simp [mul_comm]⟩`. Conclude with `h2.trans ((h1.map f).trans hass)`. Take `⟨cf, hc, heq⟩` from `hin W hW ϖ hϖ (f.comp φ) (pull e.symm.toLinearMap be) (fun a b => by simp [pull_apply, hsym]) hF0`. Use `⟨cf, hc, ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun a => LinearMap.ext fun b => ?_` and prove the remaining obligations. Use `congrArg (fun F => F (e a) (e b)) heq` as an intermediate fact. Simplify `this` using `[toReal, pull_apply, LinearMap.sum_apply]`.
+-/
 theorem inConePull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R R' : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     [CommRing R'] [IsDomain R'] [IsLocalRing R'] (φ : R →+* R') (t : SAB H (Sp R)) (t' : SAB H (Sp R'))
     (P : PELUnif (maximalIdeal R) t) (P' : PELUnif (maximalIdeal R') t') (e : P'.D.toPre.X ≃ₗ[𝓞 E] P.D.toPre.X) (m : ℕ)
@@ -51,6 +65,11 @@ theorem inConePull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H :
   have := congrArg (fun F => F (e a) (e b)) heq
   simpa [toReal, pull_apply, LinearMap.sum_apply] using this
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c X Z π Cn hCn hj hs hX z`. Take `⟨R, _, _, _, ξ, t, a, P, m, γ, hcn, hpt, het, hfu, htor, hcone, hin⟩` from `hX (π z)`. Take `⟨R', _, _, _, ξ', φ, hcn', hpt', het', hfu', hinj, hloc, hsq, hdense⟩` from `GlobalTheory.T.formally_unramified_compatible_map E H D l Xo c X Z π hj hs R ξ z hcn het hfu hpt`. Take `⟨t', a', P', e, htor', hpsi⟩` from `pullSt E H R R' φ t P hcn hcn' hinj hloc htor`. Take `⟨a'', -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp a a'`.
+
+Rewrite `a''` using `[← hsq]`. Take `⟨b⟩` from `GlobalTheory.T.sabMap_extends_dense E H D l Xo c X Z π hj R' ξ' t' hcn' hdense a''`. Conclude with `⟨R', inferInstance, inferInstance, inferInstance, ξ', t', b, P', m, fun i => pull e.toLinearMap (γ i), hcn', hpt', het', hfu', htor', hCn _ _ e m γ hcone, inConePull E H R R' φ t t' P P' e m γ hpsi hin⟩`.
+-/
 theorem hasCones_of_map : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (π : Z.X ⟶ X.X) (Cn : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ), (Fin m → LinearMap.BilinForm ℤ X) → Prop), (∀ (X₁ X₂ : Type) [AddCommGroup X₁] [Module (𝓞 E) X₁] [Module.Finite (𝓞 E) X₁] [AddCommGroup X₂] [Module (𝓞 E) X₂] [Module.Finite (𝓞 E) X₂] (f : X₁ ≃ₗ[𝓞 E] X₂) (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X₂), Cn X₂ m γ → Cn X₁ m (fun i => pull f.toLinearMap (γ i))) → Z.j ≫ π = X.j → π ≫ X.s = Z.s → HasCones Cn X → HasCones Cn Z := by
   intro E _ _ _ H D l Xo c X Z π Cn hCn hj hs hX z
   obtain ⟨R, _, _, _, ξ, t, a, P, m, γ, hcn, hpt, het, hfu, htor, hcone, hin⟩ := hX (π z)

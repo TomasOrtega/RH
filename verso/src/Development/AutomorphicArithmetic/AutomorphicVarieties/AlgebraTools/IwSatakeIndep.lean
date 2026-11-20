@@ -12,6 +12,9 @@ section SlopeTestRemainingChoices
 
 variable {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M]
 
+/- English proof (translation)
+Rewrite using `[(hkApply A G M ρ K K' x h).1 v, dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+-/
 private theorem double_coset_operator_sum_orbit (ρ : Representation A G M) (K K' : Subgroup G) (x : G) (h : FinOrb K K' x)
     [Fintype (MulAction.orbit K (x : G ⧸ K'))] (v : fixd ρ K') :
     (hk2 ρ K K' x v : M) = ∑ q : MulAction.orbit K (x : G ⧸ K'), ρ (q : G ⧸ K').out v := by
@@ -25,6 +28,21 @@ private noncomputable def permRepBaseCosetVector (A : Type) [CommRing A] (I : Su
     exact QuotientGroup.eq.mpr (by simpa using hu)⟩
 
 open Classical in
+/- English proof (translation)
+Use `haveI : Fintype (MulAction.orbit K ((1 : G) : G ⧸ I)) := hf.fintype`. Establish `hv : ((trc (permRep A I) K I (permRepBaseCosetVector A I) : fixd (permRep A I) K) : MonoidAlgebra A (G ⧸ I)) = ∑ q : MulAction.orbit K ((1 : G) : G ⧸ I), MonoidAlgebra.single (q : G ⧸ I) (1 : A)`. Rewrite using `[trc, double_coset_operator_sum_orbit _ K I 1 hf]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `show permRep A I _ (MonoidAlgebra.single ((1 : G) : G ⧸ I) 1) = _`.
+
+Rewrite using `[Representation.ofMulAction_single]`. Use `congr 1`. Use `show (((q : G ⧸ I).out * 1 : G) : G ⧸ I) = _`. Rewrite using `[mul_one, QuotientGroup.out_eq']`. Rewrite using `[hv, map_sum, MonoidAlgebra.coeff_sum]`.
+
+Simplify using `only [Representation.ofMulAction_single, MonoidAlgebra.coeff_single, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply]`. Establish `key : ∀ q : MulAction.orbit K ((1 : G) : G ⧸ I), (g • (q : G ⧸ I) = (y : G ⧸ I)) ↔ (q : G ⧸ I) = ((g⁻¹ * y : G) : G ⧸ I)`. Introduce `q`. Rewrite using `[smul_eq_iff_eq_inv_smul]`. Both sides reduce to the same expression.
+
+Simplify using `only [key]`. Distinguish the cases in `hy : g⁻¹ * y ∈ K`. Rewrite using `[if_pos hy]`. Establish `hmem : ((g⁻¹ * y : G) : G ⧸ I) ∈ MulAction.orbit K ((1 : G) : G ⧸ I)` using `MulAction.mem_orbit_iff.2 ⟨⟨g⁻¹ * y, hy⟩, by show (((g⁻¹ * y : G) * 1 : G) : G ⧸ I) = _`. Rewrite using `[mul_one]⟩`.
+
+Establish `e2 : ∀ q : MulAction.orbit K ((1 : G) : G ⧸ I), (q : G ⧸ I) = ((g⁻¹ * y : G) : G ⧸ I) ↔ q = ⟨_, hmem⟩` using `fun q => ⟨fun hq => Subtype.ext hq, fun hq => by rw [hq]⟩`. Simplify using `only [e2]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hy]`.
+
+Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hq`. Take `⟨k, hk⟩` from `MulAction.mem_orbit_iff.1 q.2`. Establish `h1 : (((k : G) * 1 : G) : G ⧸ I) = ((g⁻¹ * y : G) : G ⧸ I)` using `hk.trans hq`.
+
+Rewrite `h1` using `[QuotientGroup.eq]`. Apply `hy` to reduce the goal to its premises. Use `K.mul_mem k.2 (h h1)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem satInd_trc {I K : Subgroup G} (h : I ≤ K) (hf : FinOrb K I 1) (g y : G) :
     (permRep A I g (trc (permRep A I) K I (permRepBaseCosetVector A I) : MonoidAlgebra A (G ⧸ I))).coeff (y : G ⧸ I) =
       if g⁻¹ * y ∈ K then 1 else 0 := by
@@ -70,6 +88,23 @@ private theorem satInd_trc {I K : Subgroup G} (h : I ≤ K) (hf : FinOrb K I 1) 
     have := K.mul_mem k.2 (h h1)
     simpa using this
 
+/- English proof (translation)
+Establish `key : ∀ a b, (((hT A I (t a) * e).1 (permRepBaseCosetVector A I) : fixd (permRep A I) I) : MonoidAlgebra A (G ⧸ I)).coeff ((t b : G) : G ⧸ I) = if a = b then 1 else 0`. Introduce `a b`. Use `haveI : Fintype (MulAction.orbit I ((t a : G) : G ⧸ I)) := (hI (t a)).fintype`. Establish `h1 : (((hT A I (t a) * e).1 (permRepBaseCosetVector A I) : fixd (permRep A I) I) : MonoidAlgebra A (G ⧸ I)) = ∑ q : MulAction.orbit I ((t a : G) : G ⧸ I), permRep A I (q : G ⧸ I).out ((trc (permRep A I) K I (permRepBaseCosetVector A I) : fixd (permRep A I) K) : MonoidAlgebra A (G …` using `by show ((hk2 (permRep A I) I I (t a) (e.1 (permRepBaseCosetVector A I)) : fixd (permRep A I) I) : MonoidAlgebra A (G ⧸ I)) = _`. Rewrite using `[double_coset_operator_sum_orbit _ I I (t a) (hI (t a)), he]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, MonoidAlgebra.coeff_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Simplify using `only [satInd_trc h hf]`. Establish `hq : ∀ q : MulAction.orbit I ((t a : G) : G ⧸ I), ((q : G ⧸ I).out⁻¹ * t b ∈ K ↔ (a = b ∧ q = ⟨((t a : G) : G ⧸ I), MulAction.mem_orbit_self _⟩))`. Introduce `q`.
+
+Take `⟨i, hi⟩` from `MulAction.mem_orbit_iff.1 q.2`. Establish `hqi : (((i : G) * t a : G) : G ⧸ I) = (q : G ⧸ I)` using `hi`. Establish `hout : (((q : G ⧸ I).out : G) : G ⧸ I) = (q : G ⧸ I)` using `QuotientGroup.out_eq' _`. Establish `hm : ((i : G) * t a)⁻¹ * (q : G ⧸ I).out ∈ I` using `QuotientGroup.eq.1 (hqi.trans hout.symm)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hK`. Establish `h2 : ((i : G) * t a)⁻¹ * t b ∈ K`. Use `K.mul_mem (h hm) hK` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Take `⟨hab, hI'⟩` from `H a b i i.2 h2`.
+
+Use `⟨hab, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (q : G ⧸ I) = ((t a : G) : G ⧸ I)`. Rewrite using `[← hqi]`. Conclude with `QuotientGroup.eq.2 hI'`. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Establish `h3 : ((((⟨((t a : G) : G ⧸ I), MulAction.mem_orbit_self _⟩ : MulAction.orbit I ((t a : G) : G ⧸ I)) : G ⧸ I).out : G) : G ⧸ I) = ((t a : G) : G ⧸ I)` using `QuotientGroup.out_eq' _`. Conclude with `h (QuotientGroup.eq.1 h3)`. Simplify using `only [hq]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[Finset.sum_ite_eq']`. Simplify using `[hab]`. Rewrite using `[linearIndependent_iff']`. Introduce `s c hs i hi`. Establish `hc` using `congrArg (fun z : HkAlg A I => ((z.1 (permRepBaseCosetVector A I) : fixd (permRep A I) I) : MonoidAlgebra A (G ⧸ I)).coeff ((t i : G) : G ⧸ I)) hs`.
+
+Establish `key2 : ∀ a b, ((((hT A I (t a) : Module.End A (fixd (permRep A I) I)) (e.1 (permRepBaseCosetVector A I))) : fixd (permRep A I) I) : MonoidAlgebra A (G ⧸ I)).coeff ((t b : G) : G ⧸ I) = if a = b then 1 else 0` using `key`. Simplify using `[key2] at hc`. Simplify `hc` using `[hi]`.
+-/
 private theorem satInd_abs {I K : Subgroup G} (h : I ≤ K) (hI : HeckePair I) (hf : FinOrb K I 1)
     (e : HkAlg A I) (he : e.1 = inc (permRep A I) h ∘ₗ trc (permRep A I) K I) {ι : Type} (t : ι → G)
     (H : ∀ a b, ∀ i ∈ I, (i * t a)⁻¹ * t b ∈ K → a = b ∧ (i * t a)⁻¹ * t a ∈ I) :
@@ -127,6 +162,19 @@ private theorem satInd_abs {I K : Subgroup G} (h : I ≤ K) (hI : HeckePair I) (
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Take `⟨p, hp, hpx⟩` from `hx`. Establish `hx1 : valuation k (x : k) < 1`. Rewrite using `[← hpx]`. Conclude with `(Valuation.Integer.not_isUnit_iff_valuation_lt_one).1 hp.not_isUnit`. Take `⟨g, hg⟩` from `h`.
+
+Introduce `i`. Assume the negation of the conclusion as `hlt`. Establish `hlt' : b i < a i` using `lt_of_not_ge hlt`. Establish `hent : (((pw x a)⁻¹ * u * pw x b : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = ((x ^ (b i - a i) : kˣ) : k)`. Rewrite using `[Units.val_mul, Units.val_mul, pw, pw, ← map_inv, val_diagT, val_diagT, Matrix.mul_diagonal, Matrix.diagonal_mul, ((mem_unipB k).1 hu).2 i, mul_one, ← Units.val_mul, _root_.zpow_sub, mul_comm]`.
+
+Both sides reduce to the same expression. Establish `hint : valuation k ((((pw x a)⁻¹ * u * pw x b : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i) ≤ 1`. Rewrite using `[← hg]`. Conclude with `(g i i).2`. Rewrite `hint` using `[hent]`.
+
+Take `⟨d, hd⟩ : ∃ d : ℕ, a i - b i = (d : ℤ)` from `⟨(a i - b i).toNat, (Int.toNat_of_nonneg (by omega)).symm⟩`. Establish `hd0 : d ≠ 0` using `by omega`. Establish `hone : ((x ^ (b i - a i) : kˣ) : k) * (x : k) ^ d = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← hd, ← _root_.zpow_add]`. Simplify using the standard rewrite rules.
+
+Establish `hv` using `congrArg (valuation k) hone`. Rewrite `hv` using `[map_one, map_mul, map_pow]`. Establish `hlt1 : valuation k (x : k) ^ d < 1` using `pow_lt_one₀ zero_le' hx1 hd0`. Use `mul_le_of_le_one_left (zero_le' : (0 : ValueGroupWithZero k) ≤ valuation k (x : k) ^ d) hint` as an intermediate fact. Rewrite `this` using `[hv]`.
+
+Conclude with `absurd (this.trans_lt hlt1) (lt_irrefl 1)`.
+-/
 private theorem satInd_diag {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {x : kˣ} (hx : IsUnif x) {a b : Fin n → ℤ} {u : GL (Fin n) k} (hu : u ∈ unipB k (Fin n))
     (h : (pw x a)⁻¹ * u * pw x b ∈ KO k (Fin n)) : a ≤ b := by
@@ -159,6 +207,27 @@ private theorem satInd_diag {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   rw [hv] at this
   exact absurd (this.trans_lt hlt1) (lt_irrefl 1)
 
+/- English proof (translation)
+Establish `hx'` using `hx`. Take `⟨p, hp, hpx⟩` from `hx'`. Establish `hx1 : valuation k (x : k) < 1`. Rewrite using `[← hpx]`. Conclude with `(Valuation.Integer.not_isUnit_iff_valuation_lt_one).1 hp.not_isUnit`.
+
+Establish `hx0 : (0 : ValueGroupWithZero k) < valuation k (x : k)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 x.ne_zero)`. Take `⟨F, hU, hM, hL, hUI, hLI, hF⟩` from `factTorus k n ⊤`. Establish `dom : ∀ c : {a : Fin n → ℤ // Antitone a}, Dom (fun j => x ^ c.1 j)`. Introduce `c i j hij`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀]`.
+
+Conclude with `zpow_le_zpow_right_of_le_one₀ hx0 hx1.le (c.2 hij)`. Establish `step : ∀ (c d : {a : Fin n → ℤ // Antitone a}) (u m l : GL (Fin n) k), u ∈ F.Uf ⊓ iwC k n ⊤ → m ∈ F.Mf ⊓ iwC k n ⊤ → l ∈ F.Lf ⊓ iwC k n ⊤ → (pw x c.1)⁻¹ * (u * m * l) * pw x d.1 ∈ KO k (Fin n) → (pw x c.1)⁻¹ * u * pw x d.1 ∈ KO k (Fin n)`. Introduce `c d u m l hu hm hl hK'`. Establish `h1 : (pw x d.1)⁻¹ * m * pw x d.1 ∈ KO k (Fin n)` using `hle ((hF _).1 m hm).2`. Establish `h2 : (pw x d.1)⁻¹ * l * pw x d.1 ∈ KO k (Fin n)` using `hle (((hF _).2 (dom d)).2.2 l hl)`.
+
+Establish `e : (pw x c.1)⁻¹ * u * pw x d.1 = ((pw x c.1)⁻¹ * (u * m * l) * pw x d.1) * ((pw x d.1)⁻¹ * l * pw x d.1)⁻¹ * ((pw x d.1)⁻¹ * m * pw x d.1)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `(KO k (Fin n)).mul_mem ((KO k (Fin n)).mul_mem hK' ((KO k (Fin n)).inv_mem h2)) ((KO k (Fin n)).inv_mem h1)`. Take `⟨u, hu, m, hm, l, hl, hiu⟩` from `F.fact _ ((iwC k n ⊤).inv_mem hi)`. Take `⟨u', hu', m', hm', l', hl', hiu'⟩` from `F.fact _ hi`.
+
+Establish `hK1 : (pw x a.1)⁻¹ * (u * m * l) * pw x b.1 ∈ KO k (Fin n)`. Rewrite using `[← hiu]`. Simplify `hK` using `[mul_assoc]`. Establish `hK2 : (pw x b.1)⁻¹ * (u' * m' * l') * pw x a.1 ∈ KO k (Fin n)`. Rewrite using `[← hiu']`.
+
+Use `(KO k (Fin n)).inv_mem hK` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hUb : ∀ v, v ∈ F.Uf → v ∈ unipB k (Fin n)` using `fun v hv => hU ▸ hv`. Establish `hab : a.1 ≤ b.1` using `satInd_diag hx (hUb u hu.1) (step a b u m l hu hm hl hK1)`. Establish `hba : b.1 ≤ a.1` using `satInd_diag hx (hUb u' hu'.1) (step b a u' m' l' hu' hm' hl' hK2)`.
+
+Take `rfl : a = b` from `Subtype.ext (le_antisymm hab hba)`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `hu1 : (pw x a.1)⁻¹ * u * pw x a.1 ∈ KO k (Fin n)` using `step a a u m l hu hm hl hK1`. Establish `huU : (pw x a.1)⁻¹ * u * pw x a.1 ∈ F.Uf`. Use `F.M_U _ (F.Mf.inv_mem ((hF _).2 (dom a)).1) u hu.1` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Conclude with `this`. Establish `huI : (pw x a.1)⁻¹ * u * pw x a.1 ∈ iwC k n ⊤`. Establish `hmem : (pw x a.1)⁻¹ * u * pw x a.1 ∈ unipO k n` using `⟨hUb _ huU, hu1⟩`. Rewrite `hmem` using `[← hUI]`.
+
+Conclude with `hmem.2`. Establish `e : (i * pw x a.1)⁻¹ * pw x a.1 = ((pw x a.1)⁻¹ * u * pw x a.1) * ((pw x a.1)⁻¹ * m * pw x a.1) * ((pw x a.1)⁻¹ * l * pw x a.1)`. Rewrite using `[_root_.mul_inv_rev, hiu]`. Use `group`. Rewrite using `[e]`.
+
+Conclude with `(iwC k n ⊤).mul_mem ((iwC k n ⊤).mul_mem huI ((hF _).1 m hm).2) (((hF _).2 (dom a)).2.2 l hl)`.
+-/
 private theorem satInd_sep {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {x : kˣ} (hx : IsUnif x) (hle : iwC k n ⊤ ≤ KO k (Fin n)) (a b : {a : Fin n → ℤ // Antitone a})
     (i : GL (Fin n) k) (hi : i ∈ iwC k n ⊤) (hK : (i * pw x a.1)⁻¹ * pw x b.1 ∈ KO k (Fin n)) :
@@ -219,6 +288,9 @@ private theorem satInd_sep {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   rw [e]
   exact (iwC k n ⊤).mul_mem ((iwC k n ⊤).mul_mem huI ((hF _).1 m hm).2) (((hF _).2 (dom a)).2.2 l hl)
 
+/- English proof (translation)
+Take `⟨hf, hsum, -⟩` from `hkTrace A G _ (permRep A I) I K h κ w hI hw hw'`. Use `satInd_abs h hI hf (∑ i, hT A I (w i)) ?_ t H` and prove the remaining obligations. Rewrite using `[← hsum]`. Conclude with `AddSubmonoidClass.coe_finset_sum _ _`.
+-/
 private theorem satInd_gen {A G : Type} [CommRing A] [Group G] {I K : Subgroup G} (h : I ≤ K) (hI : HeckePair I)
     {κ : Type} [Fintype κ] (w : κ → G) (hw : ∀ i, w i ∈ K)
     (hw' : ∀ g ∈ K, ∃! i, ∃ a ∈ I, ∃ b ∈ I, g = a * w i * b) {ι : Type} (t : ι → G)
@@ -229,6 +301,13 @@ private theorem satInd_gen {A G : Type} [CommRing A] [Group G] {I K : Subgroup G
   rw [← hsum]
   exact AddSubmonoidClass.coe_finset_sum _ _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n A _ x hx`. Establish `hIw : iwC k n ⊤ = iwahori k (Fin n)` using `(memIwC k n ⊤).2.1`. Establish `hle : iwC k n ⊤ ≤ KO k (Fin n)`. Rewrite using `[hIw]`. Conclude with `iwahori_le_KO k (Fin n)`.
+
+Establish `hbr` using `bruhatKO k n`. Establish `hw' : ∀ g ∈ KO k (Fin n), ∃! w : Equiv.Perm (Fin n), ∃ a ∈ iwC k n ⊤, ∃ b ∈ iwC k n ⊤, g = a * pm k n w * b`. Rewrite using `[hIw]`. Conclude with `hbr.2`. Establish `hsep : ∀ (a b : {a : Fin n → ℤ // Antitone a}), ∀ i ∈ iwC k n ⊤, (i * pw x a.1)⁻¹ * pw x b.1 ∈ KO k (Fin n) → a = b ∧ (i * pw x a.1)⁻¹ * pw x a.1 ∈ iwC k n ⊤` using `fun a b i hi hK => satInd_sep hx hle a b i hi hK`.
+
+Conclude with `satInd_gen (A := A) (I := iwC k n ⊤) (K := KO k (Fin n)) hle (heckePairIwC k n ⊤).1 (pm k n) hbr.1 hw' (fun a : {a : Fin n → ℤ // Antitone a} => pw x a.1) hsep`.
+-/
 theorem UpperTheory.V.AlgebraTools.satakeIndep :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A : Type) [CommRing A] (x : kˣ), IsUnif x → LinearIndependent A fun a : {a : Fin n → ℤ // Antitone a} => hT A (iwC k n ⊤) (pw x a.1) * ∑ w : Equiv.Perm (Fin n), hT A (iwC k n ⊤) (pm k n w) := by
   intro k _ _ _ _ n A _ x hx

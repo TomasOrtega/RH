@@ -39,6 +39,25 @@ private def lrep (K : Subgroup G) : Representation ℂ G (cfun K) where
   map_one' := LinearMap.ext fun f => Subtype.ext (funext fun g => by simp)
   map_mul' x y := LinearMap.ext fun f => Subtype.ext (funext fun g => by simp [mul_assoc])
 
+/- English proof (translation)
+Establish `toH : ∀ v : fixed (lrep K) K, v.1.1 ∈ Hecke ℂ K` using `fun v => by`. Use `⟨fun a b g => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 v.2 a⁻¹ (inv_mem a.2))) g`. Rewrite using `[v.1.2.1 _ b b.2]`. Simplify `h` using `[lrep]`.
+
+Take `⟨S, hS⟩` from `v.1.2.2`. Use `⟨S, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, b, hb, e⟩` from `hS g hg`. Conclude with `⟨s, hs, 1, ⟨b, hb⟩, by simpa using e⟩`. Establish `ofH : ∀ f ∈ Hecke ℂ K, ∃ v : fixed (lrep K) K, v.1.1 = f` using `fun f hf => by`.
+
+Take `⟨h1, S, hS⟩` from `hf`. Use `⟨⟨⟨f, fun g b hb => by simpa using h1 1 ⟨b, hb⟩ g, S.biUnion fun s => (hfin s).toFinset.image Quotient.out, fun g hg => ?_⟩, GlobalTheory.LGrp.mem_fixed.2 fun a ha => Subtype.ext (funext fun g => ?_)⟩, rfl⟩` and prove the remaining obligations. Take `⟨s, hs, a, b, e⟩` from `hS g hg`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Use `⟨(g : G ⧸ K).out, Finset.mem_biUnion.2 ⟨s, hs, Finset.mem_image_of_mem _ ((hfin s).mem_toFinset.2 ⟨g, DoubleCoset.mem_doubleCoset.2 ⟨a, a.2, b, b.2, e⟩, rfl⟩)⟩, k⁻¹, inv_mem k.2, by rw [hk]; simp⟩` and prove the remaining obligations.
+
+Simplify `h1 ⟨a⁻¹, inv_mem ha⟩ 1 g` using `[lrep]`. Establish `hTc : ∀ v, (T v).1.1 = conv K (dosetInd ℂ K t) v.1.1` using `fun v => by`. Use function extensionality and compare the values at `g`. Rewrite using `[hT, finsum_mem_eq_finite_toFinset_sum _ (hfin t), Submodule.coe_sum, Finset.sum_apply, conv, finsum_eq_sum_of_support_subset (s := (hfin t).toFinset)]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy, rfl⟩` from `(hfin t).mem_toFinset.1 hq`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K y`. Take `⟨a, ha, b, hb, e⟩` from `DoubleCoset.mem_doubleCoset.1 hy`. Establish `: (y : G ⧸ K).out ∈ DoubleCoset.doubleCoset t (K : Set G) K` using `DoubleCoset.mem_doubleCoset.2 ⟨a, ha, b * k, mul_mem hb k.2, by rw [hk, e, mul_assoc]⟩`. Rewrite using `[dosetInd, Set.indicator_of_mem this, Pi.one_apply, one_mul]`.
+
+Both sides reduce to the same expression. Introduce `q hq`. Establish `h : dosetInd ℂ K t q.out ≠ 0` using `left_ne_zero_of_mul hq`. Conclude with `Finset.mem_coe.2 ((hfin t).mem_toFinset.2 ⟨q.out, Set.mem_of_indicator_ne_zero h, q.out_eq'⟩)`. Establish `ht` using `Final.DosetIndMem G K ℂ t`.
+
+Establish `h1` using `Final.DosetIndMem G K ℂ 1`. Take `⟨e, he⟩` from `ofH _ h1`. Establish `hφ` using `toH (T.symm e)`. Establish `h2 : conv K (dosetInd ℂ K t) (T.symm e).1.1 = dosetInd ℂ K 1` using `by rw [← hTc, T.apply_symm_apply, he]`. Use `⟨_, hφ, ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `ofH _ (Final.HeckeConvMem G K ℂ hK _ hφ _ ht)`. Rewrite using `[← hu, ← he]`. Use `congr 2`. Apply `T.injective` to reduce the goal to its premises. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations.
+
+Rewrite using `[hTc, hTc, hu, he, ← Final.HeckeAssoc G K ℂ hK _ ht _ hφ _ ht, h2, (Final.HeckeUnit G K ℂ _ ht).1, (Final.HeckeUnit G K ℂ _ ht).2]`.
+-/
 private theorem exists_conv_inv (K : Subgroup G) (hK : IsCommensurated K) (t : G) (hfin : ∀ x, (cosets K x).Finite)
     (T : fixed (lrep K) K ≃ₗ[ℂ] fixed (lrep K) K) (hT : ∀ v, (T v : cfun K) = ∑ᶠ q ∈ cosets K t, lrep K q.out v) :
     ∃ φ ∈ Hecke ℂ K, conv K φ (dosetInd ℂ K t) = dosetInd ℂ K 1 := by
@@ -89,6 +108,13 @@ private theorem exists_conv_inv (K : Subgroup G) (hK : IsCommensurated K) (t : G
   rw [hTc, hTc, hu, he, ← Final.HeckeAssoc G K ℂ hK _ ht _ hφ _ ht, h2,
     (Final.HeckeUnit G K ℂ _ ht).1, (Final.HeckeUnit G K ℂ _ ht).2]
 
+/- English proof (translation)
+Introduce `g`. Establish `h` using `hfin g`. Rewrite `h` using `[cosets_eq_orbit]`. Establish `e : (K.map (MulAut.conj g).toMonoidHom).subgroupOf K = MulAction.stabilizer K (g : G ⧸ K)`. Use extensionality with `k`.
+
+Rewrite using `[Subgroup.mem_subgroupOf, MulAction.mem_stabilizer_iff, Subgroup.mem_map_equiv]`. Use `show _ ↔ ((k.1 * g : G) : G ⧸ K) = g`. Rewrite using `[eq_comm, QuotientGroup.eq]`. Simplify using `[mul_assoc]`. Rewrite using `[Subgroup.relIndex, e, MulAction.index_stabilizer]`.
+
+Conclude with `((Set.ncard_pos h).2 ⟨_, MulAction.mem_orbit_self _⟩).ne'`.
+-/
 private theorem comm_of_fin (K : Subgroup G) (hfin : ∀ x, (cosets K x).Finite) : IsCommensurated K := by
   intro g
   have h := hfin g
@@ -104,6 +130,9 @@ private theorem comm_of_fin (K : Subgroup G) (hfin : ∀ x, (cosets K x).Finite)
 
 open ValuativeRel GlobalTheory.SmGL GlobalTheory.GLDoubling in
 
+/- English proof (translation)
+Take `⟨-, T, hT, -⟩` from `exists_equiv_doubleCoset k n ϖ hϖ ν hν ℂ _ (lrep (iwahori k (Fin n)))`. Conclude with `exists_conv_inv _ (comm_of_fin _ finite_cosets) _ finite_cosets T hT`.
+-/
 theorem iwInvT (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ϖ : kˣ)
     (hϖ : valuation k (ϖ : k) = uniformizer k) (ν : Fin n → ℤ) (hν : Antitone ν) :
     ∃ φ ∈ Hecke ℂ (iwahori k (Fin n)), conv (iwahori k (Fin n)) φ (dosetInd ℂ (iwahori k (Fin n)) (torusElt k (Fin n) ϖ ν)) =

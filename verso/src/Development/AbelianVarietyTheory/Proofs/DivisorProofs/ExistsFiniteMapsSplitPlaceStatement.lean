@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HoweDualit
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ComplementaryThetaInert
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KSplit.finMapsAt_split | exact GlobalTheory.KSplit.finMapsAt_split | (intros; apply GlobalTheory.KSplit.finMapsAt_split <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finite_maps_split_place : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HoweDualityGL →
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

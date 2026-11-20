@@ -15,6 +15,9 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -23,17 +26,34 @@ theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_neg]`. Conclude with `hf m hm k`.
+-/
 theorem isMultiHomog_neg {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (-f) a := by
   intro m hm k
   rw [MvPolynomial.support_neg] at hm
   exact hf m hm k
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem isMultiHomog_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
 end LocRingFrac
 
+/- English proof (translation)
+Introduce `K _ ι _ P W _ hW _ y hy`. Establish `h1 : (1 : MRing ι) ∉ W` using `fun h => hW.ne_top ((Ideal.eq_top_iff_one _).mpr h)`. Proceed by induction on `hy using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨u, v, a, hv, hvW, hu, hva, rfl⟩` from `hx`.
+
+Conclude with `⟨u, v, a, hu, hva, hvW, IsLocalization.mk'_spec _ _ _⟩`. Consider the case `zero => exact ⟨0, 1, 0, isMultiHomog_zero 0, AvoidRing.isMultiHomog_one, h1, by simp⟩`. Consider the case `one => exact ⟨1, 1, 0, AvoidRing.isMultiHomog_one, AvoidRing.isMultiHomog_one, h1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨u, v, a, hu, hv, hvW, e⟩` from `hx`.
+
+Take `⟨u', v', a', hu', hv', hvW', e'⟩` from `hy`. Use `⟨u * v' + u' * v, v * v', a + a', isMultiHomog_add (AvoidRing.isMultiHomog_mul hu hv') (by rw [add_comm]; exact AvoidRing.isMultiHomog_mul hu' hv), AvoidRing.isMultiHomog_mul hv hv', fun h => (hW.mem_or_mem h).elim hvW hvW', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_add, map_mul, map_mul, map_add, map_mul, map_mul, map_mul, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`.
+
+Take `⟨u, v, a, hu, hv, hvW, e⟩` from `hx`. Conclude with `⟨-u, v, a, isMultiHomog_neg hu, hv, hvW, by rw [map_neg, map_neg, ← e]; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨u, v, a, hu, hv, hvW, e⟩` from `hx`. Take `⟨u', v', a', hu', hv', hvW', e'⟩` from `hy`.
+
+Use `⟨u * u', v * v', a + a', AvoidRing.isMultiHomog_mul hu hu', AvoidRing.isMultiHomog_mul hv hv', fun h => (hW.mem_or_mem h).elim hvW hvW', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, map_mul, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LocRingFrac.proof : LocRingFrac.Statement := by
   intro K _ ι _ P W _ hW _ y hy
   have h1 : (1 : MRing ι) ∉ W := fun h => hW.ne_top ((Ideal.eq_top_iff_one _).mpr h)

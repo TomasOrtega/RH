@@ -18,6 +18,9 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+Rewrite using `[Ne, CharP.cast_eq_zero_iff 𝓀[L] (ringChar 𝓀[L]), ← Algebra.ringChar_eq 𝓀[K] 𝓀[L]]`. Introduce `hdvd`. Establish `h1` using `Nat.Coprime.eq_one_of_dvd he.symm hdvd`. Conclude with `Nat.not_prime_one (h1 ▸ CharP.char_is_prime 𝓀[K] (ringChar 𝓀[K]))`.
+-/
 theorem natCast_ramificationIndex_ne_zero
     (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :
     (ramificationIndex K L : 𝓀[L]) ≠ 0 := by
@@ -26,6 +29,23 @@ theorem natCast_ramificationIndex_ne_zero
   have h1 := Nat.Coprime.eq_one_of_dvd he.symm hdvd
   exact Nat.not_prime_one (h1 ▸ CharP.char_is_prime 𝓀[K] (ringChar 𝓀[K]))
 
+/- English proof (translation)
+Use `set e := ramificationIndex K L with he_def`. Take `⟨ϖK, hϖK⟩` from `exists_irreducible 𝒪[K]`. Take `⟨ϖL, hϖL⟩` from `exists_irreducible 𝒪[L]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : Associated (algebraMap 𝒪[K] 𝒪[L] ϖK) (ϖL ^ e) := by`. Establish `h` using `map_maximalIdeal K L`.
+
+Rewrite `h` using `[hϖK.maximalIdeal_eq, hϖL.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_pow, Ideal.span_singleton_eq_span_singleton]`. Conclude with `h`. Take `⟨c, hc⟩` from `exists_sub_algebraMap_mem_maximalIdeal K L hf (u : 𝒪[L])`. Establish `hcu : IsUnit c`. Assume the negation of the conclusion as `hn`.
+
+Establish `hnL : ¬ IsUnit (algebraMap 𝒪[K] 𝒪[L] c)` using `fun h ↦ hn (isUnit_of_map_unit _ _ h)`. Establish `hmem : algebraMap 𝒪[K] 𝒪[L] c ∈ 𝓂[L]` using `(mem_maximalIdeal _).mpr hnL`. Establish `: (u : 𝒪[L]) ∈ 𝓂[L]`. Use `add_mem hc hmem` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `(mem_maximalIdeal _).mp this u.isUnit`. Use `set c' := hcu.unit`. Use `set cL : 𝒪[L]ˣ := Units.map (algebraMap 𝒪[K] 𝒪[L] : 𝒪[K] →* 𝒪[L]) c' with hcL`. Establish `hcLval : (cL : 𝒪[L]) = algebraMap 𝒪[K] 𝒪[L] c` using `rfl`. Establish `hv : u * cL⁻¹ ∈ unitFiltration L 1`.
+
+Rewrite using `[mem_unitFiltration, pow_one, Units.val_mul, show (u : 𝒪[L]) * ((cL⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) - 1 = ((u : 𝒪[L]) - cL) * ((cL⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) by rw [sub_mul, Units.mul_inv], hcLval]`. Conclude with `Ideal.mul_mem_right _ _ hc`. Take `⟨w, hw⟩` from `unitFiltration_one_le_range_pow (natCast_ramificationIndex_ne_zero K L he) hv`. Establish `hw' : w ^ e = u * cL⁻¹` using `hw`. Establish `hinv : (w⁻¹) ^ e = cL * u⁻¹` using `by rw [inv_pow, hw', mul_inv_rev, inv_inv]`.
+
+Establish `htot : ramificationIndex K L = Module.finrank K L`. Use `ramificationIndex_mul_residueDegree K L` as an intermediate fact. Rewrite `this` using `[hf, mul_one]`. Then use the resulting hypothesis. Use `⟨ϖK * (c' : 𝒪[K]), (irreducible_mul_isUnit c'.isUnit).mpr hϖK, ϖL * ((w⁻¹ : 𝒪[L]ˣ) : 𝒪[L]), (irreducible_mul_isUnit (w⁻¹).isUnit).mpr hϖL, ?_, ?_⟩` and prove the remaining obligations. Establish `hui` using `Units.mul_inv u`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, Units.val_pow_eq_pow_val]`. Use `_ = algebraMap 𝒪[K] 𝒪[L] ϖK * u * (cL * ((u⁻¹ : 𝒪[L]ˣ) : 𝒪[L])) := by`. Rewrite using `[← hu, hinv, Units.val_mul]`. Use `_ = algebraMap 𝒪[K] 𝒪[L] (ϖK * (c' : 𝒪[K])) := by`.
+
+Rewrite using `[map_mul, show algebraMap 𝒪[K] 𝒪[L] (c' : 𝒪[K]) = cL from rfl]`. Take the linear combination `(algebraMap 𝒪[K] 𝒪[L] ϖK * cL) * hui`. Conclude with `adjoin_eq_top_of_irreducible htot ((irreducible_mul_isUnit (w⁻¹).isUnit).mpr hϖL)`.
+-/
 theorem exists_pow_eq_uniformizer_of_residueDegree_eq_one (hf : residueDegree K L = 1)
     (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :
     ∃ π : 𝒪[K], Irreducible π ∧ ∃ α : 𝒪[L], Irreducible α ∧
@@ -79,6 +99,11 @@ theorem exists_pow_eq_uniformizer_of_residueDegree_eq_one (hf : residueDegree K 
 
 variable {K L}
 
+/- English proof (translation)
+Establish `htow : ramificationIndex T L = ramificationIndex K L`. Rewrite using `[ramificationIndex_tower K T L, IsUnramified.ramificationIndex_eq_one (K := K) (L := T), one_mul]`. Establish `he' : Nat.Coprime (ramificationIndex T L) (ringChar 𝓀[T])`. Rewrite using `[htow, ← Algebra.ringChar_eq 𝓀[K] 𝓀[T]]`. Conclude with `he`.
+
+Use `⟨htow, ?_⟩` and prove the remaining obligations. Rewrite using `[← htow]`. Conclude with `exists_pow_eq_uniformizer_of_residueDegree_eq_one T L hf he'`.
+-/
 theorem exists_pow_eq_uniformizer_of_isUnramified (T : IntermediateField K L) [IsUnramified K T]
     (hf : residueDegree T L = 1) (he : Nat.Coprime (ramificationIndex K L) (ringChar 𝓀[K])) :
     ramificationIndex T L = ramificationIndex K L ∧

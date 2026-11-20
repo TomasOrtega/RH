@@ -14,6 +14,9 @@ namespace GlobalTheory.CompanionTheory.BetaRed
 
 universe w₁ w₂ w₃ w₄ u₁ u₂ u₃ u₄ v₁ v₂ v₃ v₄
 
+/- English proof (translation)
+Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) a b j x).1, ← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) c d j x).1]`. Conclude with `(CrystallineSemistableComparison.P.prism (c.comp d) (a.comp b) η hτ j x).symm`.
+-/
 theorem square_pull {R : Type} [CommRing R] {C₁ : Type u₁} [Category.{v₁} C₁] {C₂ : Type u₂} [Category.{v₂} C₂]
     {C₃ : Type u₃} [Category.{v₃} C₃] {C₄ : Type u₄} [Category.{v₄} C₄]
     {F₁ : C₁ ⥤ ModuleCat.{w₁} R} {F₂ : C₂ ⥤ ModuleCat.{w₂} R} {F₃ : C₃ ⥤ ModuleCat.{w₃} R} {F₄ : C₄ ⥤ ModuleCat.{w₄} R}
@@ -25,6 +28,9 @@ theorem square_pull {R : Type} [CommRing R] {C₁ : Type u₁} [Category.{v₁} 
   rw [← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) a b j x).1, ← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) c d j x).1]
   exact (CrystallineSemistableComparison.P.prism (c.comp d) (a.comp b) η hτ j x).symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Functor.map_comp_apply]`.
+-/
 theorem map_map_eq (P : CommRingCat.{0} ⥤ Type) {A B D : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ D) (f' : A ⟶ D)
     (h : f ≫ g = f') (y : P.obj A) : P.map g (P.map f y) = P.map f' y := by
   subst h
@@ -32,6 +38,9 @@ theorem map_map_eq (P : CommRingCat.{0} ⥤ Type) {A B D : CommRingCat.{0}} (f :
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective x rfl`.
+-/
 theorem uJ_red (k : Bool) (A : PAlg l) {m n : ℕ} (h : n ≤ m) (e) :
     (Ideal.quotientMap (JJ k A n) (A.red h) e).comp (uJ k A m) = uJ k A n := RingHom.ext fun x => by
   obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -56,6 +65,9 @@ def redNat (k : Bool) {m n : ℕ} (h : n ≤ m) :
   app T := redTh F κ k h ((jE (F.pt κ)).obj T)
   naturality T T' f := Thick.Hom.ext (RingHom.ext fun x => (pdOk_hom f.1.hom).red_acr h x) (funext fun j => j.elim)
 
+/- English proof (translation)
+The claim follows from `square_pull (redMor F κ k h) (βMor F κ k n) (βMor F κ k m) (CH.Mor.ofNatTrans (redEl (F.pt κ) h)) (redNat F κ k h) (fun _ _ => rfl) j x`.
+-/
 theorem beta_red (F : Fn O) (κ : O →+* OC l) (k : Bool) {m n : ℕ} (h : n ≤ m) (j : ℕ) (x : Hc F κ k m j) :
     β F κ k n j (redHc F κ k h j x) = (CH.Mor.ofNatTrans (redEl (F.pt κ) h)).pull j (β F κ k m j x) :=
   square_pull (redMor F κ k h) (βMor F κ k n) (βMor F κ k m) (CH.Mor.ofNatTrans (redEl (F.pt κ) h))

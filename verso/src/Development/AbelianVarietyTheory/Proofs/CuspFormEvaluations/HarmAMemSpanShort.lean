@@ -11,6 +11,9 @@ open MvPolynomial
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Use `forall_congr' fun j => ⟨?_, fun h => ⟨⟨v j, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.isIntegral_coe`.
+-/
 theorem mem_std {n : ℕ} (v : Fin n → E) : v ∈ stdLat E n ↔ ∀ j, IsIntegral ℤ (v j) := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
   refine forall_congr' fun j => ⟨?_, fun h => ⟨⟨v j, h⟩, rfl⟩⟩
@@ -18,6 +21,11 @@ theorem mem_std {n : ℕ} (v : Fin n → E) : v ∈ stdLat E n ↔ ∀ j, IsInte
   rw [← hy]
   exact y.isIntegral_coe
 
+/- English proof (translation)
+Rewrite using `[mem_std]`. Introduce `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `using isIntegral_one`.
+
+Simplify `isIntegral_zero` using `[h]`.
+-/
 theorem single_mem_std {n : ℕ} (j : Fin n) : (Pi.single j 1 : Fin n → E) ∈ stdLat E n := by
   rw [mem_std]
   intro k
@@ -25,6 +33,9 @@ theorem single_mem_std {n : ℕ} (j : Fin n) : (Pi.single j 1 : Fin n → E) ∈
   · subst h; simpa using isIntegral_one
   · simpa [h] using isIntegral_zero
 
+/- English proof (translation)
+The claim follows from `Submodule.fg_pi fun _ => by rw [Submodule.one_eq_span] exact Submodule.fg_span_singleton _`.
+-/
 theorem std_fg (n : ℕ) : (stdLat E n).FG :=
   Submodule.fg_pi fun _ => by
     rw [Submodule.one_eq_span]
@@ -32,6 +43,13 @@ theorem std_fg (n : ℕ) : (stdLat E n).FG :=
 
 variable [IsCMField E]
 
+/- English proof (translation)
+Establish `hc (x : E) (hx : IsIntegral ℤ x) : IsIntegral ℤ (IsCMField.complexConj E x)` using `hx.map_of_comp_eq (RingHom.id ℤ) (IsCMField.complexConj E : E →+* E) (RingHom.ext_int _ _)`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`. Establish `h : IsIntegral ℤ (∑ j, IsCMField.complexConj E (v j) * w j)` using `IsIntegral.sum _ fun j _ => (hc _ ((mem_std v).1 hv j)).mul ((mem_std w).1 hw j)`.
+
+Conclude with `⟨⟨_, h⟩, rfl⟩`. Introduce `h`. Use `(mem_std v).2 fun j => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `h _ (single_mem_std j)`. Establish `h1 : IsCMField.complexConj E (v j) = algebraMap (𝓞 E) E y`.
+
+Rewrite using `[hy]`. Simplify using `[Pi.single_apply]`. Establish `h2` using `hc _ y.isIntegral_coe`. Rewrite `h2` using `[← h1, IsCMField.complexConj_apply_apply]`. Then use the resulting hypothesis.
+-/
 theorem std_unimod (n : ℕ) : (⟨stdLat E n⟩ : GenLat E n).Unimod := by
   have hc (x : E) (hx : IsIntegral ℤ x) : IsIntegral ℤ (IsCMField.complexConj E x) :=
     hx.map_of_comp_eq (RingHom.id ℤ) (IsCMField.complexConj E : E →+* E) (RingHom.ext_int _ _)
@@ -52,6 +70,17 @@ theorem std_unimod (n : ℕ) : (⟨stdLat E n⟩ : GenLat E n).Unimod := by
 
 variable {H : Host E} {Dw : Datum H} {l : Level H} (c : Coeff l)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨o, rfl⟩ | ⟨σ, i, b, hb, rfl⟩)`. Conclude with `⟨C o, by simp⟩`. Use `Subring.sum_mem _ fun j _ => Subring.mul_mem _ ?_ ⟨X _, map_X _ _⟩` and prove the remaining obligations.
+
+Establish `h : IsIntegral ℤ (embF c σ (b j))` using `((mem_std b).1 hb j).map_of_comp_eq (RingHom.id ℤ) (embF c σ) (RingHom.ext_int _ _)`. Conclude with `⟨C ⟨_, h⟩, map_C _ _⟩`. Introduce and unpack `_ ⟨Q, rfl⟩`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C o => exact Subring.subset_closure (Or.inl ⟨o, by rw [map_C]; rfl⟩)`.
+
+Consider the case `add p q hp hq => rw [map_add]`. Conclude with `Subring.add_mem _ hp hq`. Consider the case `mul_X p s hp`. Rewrite using `[map_mul, map_X]`. Use `Subring.mul_mem _ hp (Subring.subset_closure (Or.inr ?_))` and prove the remaining obligations.
+
+Take `⟨σ, i, j⟩` from `s`. Use `⟨σ, i, Pi.single j 1, single_mem_std j, ?_⟩` and prove the remaining obligations. Rewrite using `[letB, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[hk]`. Simplify using the standard rewrite rules.
+-/
 theorem symO_std (n : ℕ) : Formalism.L2.Pj.symO (Dw := Dw) c (⟨stdLat E n⟩ : GenLat E n) =
     (MvPolynomial.map (σ := LtN Dw n) (algebraMap (integralClosure ℤ c.F) c.F)).range := by
   apply le_antisymm
@@ -77,6 +106,13 @@ theorem symO_std (n : ℕ) : Formalism.L2.Pj.symO (Dw := Dw) c (⟨stdLat E n⟩
         simp [hk]
       · simp
 
+/- English proof (translation)
+Use extensionality with `P`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[symO_std]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, rfl⟩ m`.
+
+Rewrite using `[coeff_map]`. Conclude with `(coeff m Q).2`. Introduce `h`. Use `mem_range_map_iff_coeffs_subset.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨m, -, rfl⟩` from `mem_coeffs_iff.1 hx`.
+
+Conclude with `⟨⟨_, h m⟩, rfl⟩`.
+-/
 theorem harmL_std (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) :
     harmL (Dw := Dw) c (⟨stdLat E n⟩ : GenLat E n) a = harmA c a n := by
   ext P
@@ -91,6 +127,9 @@ theorem harmL_std (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) :
     obtain ⟨m, -, rfl⟩ := mem_coeffs_iff.1 hx
     exact ⟨⟨_, h m⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c n`. Use `⟨harmL_std c n, fun hn a L hL h1 h2 h3 h4 P hP => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hspan, -⟩` from `GlobalTheory.T.exists_short_harmonic_family_unimodular E H Dw l c n ⟨stdLat E n⟩ (std_unimod n) (std_fg n) hn a L hL h1 h2 h3 h4`. Use `Submodule.span_mono (fun Q hQ => ?_) (hspan P hP.1)` and prove the remaining obligations. Conclude with `⟨harmL_std c n a ▸ (hS Q hQ).1, (hS Q hQ).2⟩`.
+-/
 theorem harmA_mem_span_short : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (n : ℕ), (∀ a : (E →+* ℂ) × ℕ → ℕ, harmL (Dw := Dw) c (⟨stdLat E n⟩ : GenLat E n) a = harmA c a n) ∧ (Dw.p + Dw.q ≤ n → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (L : ℝ), 2 ≤ L → Real.log (FD.rdE E) ≤ 2 * L → Real.log (FD.fdeg E) ≤ 2 * L → Real.log (1 + DF Dw a) ≤ 2 * L → Real.log n ≤ L → ∀ P ∈ harmA (Dw := Dw) c a n, P ∈ Submodule.span c.F {Q : MvPolynomial (LtN Dw n) c.F | Q ∈ harmA c a n ∧ ∀ σ' : c.F →+* ℂ, Real.log (∑ m ∈ Q.support, ‖σ' (Q.coeff m)‖) ≤ 140 * (Dw.p + Dw.q : ℕ) * L * DF Dw a}) := by
   intro E _ _ _ H Dw l c n
   refine ⟨harmL_std c n, fun hn a L hL h1 h2 h3 h4 P hP => ?_⟩

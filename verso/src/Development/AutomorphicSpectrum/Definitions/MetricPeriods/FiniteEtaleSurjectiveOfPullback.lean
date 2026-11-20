@@ -27,6 +27,13 @@ def ptIdeal (ξ : Spec (CommRingCat.of Ω) ⟶ Z) (x : (Σ k, J k) → Ω) (q : 
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ Z} {x : (Σ k, J k) → Ω} {R : Type} [Field R]
   {z : Spec (CommRingCat.of R) ⟶ Z} {w : (Σ k, J k) → R}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨_, s, rfl, rfl⟩` from `h`. Introduce and unpack `⟨h0, -, t, ht⟩ hr`. Establish `hs : ¬ IsUnit s` using `fun hu => (hu.map (Scheme.stalkClosedPointTo z).hom).ne_zero hr`. Establish `hu : IsUnit (1 - s * t)` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ fun hu => hs (isUnit_of_mul_isUnit_left hu)`.
+
+Use `hu.map (genMap ξ ⟨centre z, hz⟩)` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, map_mul, ht, mul_inv_cancel₀ h0, sub_self]`. Conclude with `not_isUnit_zero this`. Introduce `hr`. Take `⟨h0, _, t, ht, -⟩` from `CoordModel.valAt_inv (r := Units.mk0 r hr) h`.
+
+Take `⟨_, s, hs, -⟩` from `h`. Conclude with `⟨h0, ⟨s, hs⟩, ⟨t, ht⟩⟩`.
+-/
 theorem unitAt_iff_of_valAt {a : Ω} {r : R} (h : ValAt ξ z a r) (hz : genPt ξ ⤳ centre z) :
     unitAt ξ ⟨centre z, hz⟩ a ↔ r ≠ 0 := by
   constructor
@@ -45,6 +52,11 @@ theorem unitAt_iff_of_valAt {a : Ω} {r : R} (h : ValAt ξ z a r) (hz : genPt ξ
 
 omit [Fintype K] [∀ k, Fintype (J k)] in
 
+/- English proof (translation)
+Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C n => exact ⟨hz, n, by simp, (map_intCast (Scheme.stalkClosedPointTo z).hom n).trans (by simp)⟩`. Consider the case `add p q hp hq`. Take `⟨_, x, hx, hx'⟩` from `hp`. Take `⟨_, y, hy, hy'⟩` from `hq`.
+
+Conclude with `⟨hz, x + y, by rw [map_add, map_add, hx, hy], (map_add (Scheme.stalkClosedPointTo z).hom x y).trans (by rw [map_add, ← hx', ← hy']; rfl)⟩`. Consider the case `mul_X p i hp => simpa using CoordModel.valAt_mul hp (h i)`.
+-/
 theorem valAt_aeval {σ : Type} {a : σ → Ω} {r : σ → R} (hz : genPt ξ ⤳ centre z) (h : ∀ p, ValAt ξ z (a p) (r p))
     (s : MvPolynomial σ ℤ) : ValAt ξ z (MvPolynomial.aeval a s) (MvPolynomial.aeval r s) := by
   induction s using MvPolynomial.induction_on with
@@ -58,6 +70,13 @@ theorem valAt_aeval {σ : Type} {a : σ → Ω} {r : σ → R} (hz : genPt ξ �
 
 omit [Fintype K] [∀ k, Fintype (J k)] in
 
+/- English proof (translation)
+Use `forall_congr' fun k => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hw.1 k`. Take `⟨hd0, hv⟩` from `hw.2 k d hd`. Take `⟨r, hr, e⟩` from `hv (c k)`. Establish `hu : unitAt ξ ⟨centre z, hz⟩ (x ⟨k, c k⟩ / x ⟨k, d⟩)`.
+
+Take `⟨_, s, hs, -⟩` from `hr`. Use `⟨div_ne_zero h.1 hd0, ⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div]`. Conclude with `h.2 d`. Rewrite using `[e]`.
+
+Conclude with `mul_ne_zero ((unitAt_iff_of_valAt hr hz).1 hu) hd.ne_zero`. Take `⟨h0, hv⟩` from `hw.2 k (c k) (IsUnit.mk0 _ h)`. Use `⟨h0, fun i => ?_⟩` and prove the remaining obligations. Take `⟨r, ⟨_, s, hs, -⟩, -⟩` from `hv i`. Conclude with `⟨s, hs⟩`.
+-/
 theorem inBlockChart_centre_iff (hw : CoordsAt ξ x z w) (hz : genPt ξ ⤳ centre z) (c : ∀ k, J k) :
     InBlockChart ξ x c ⟨centre z, hz⟩ ↔ ∀ k, w ⟨k, c k⟩ ≠ 0 := by
   refine forall_congr' fun k => ⟨fun h => ?_, fun h => ?_⟩
@@ -76,6 +95,15 @@ theorem inBlockChart_centre_iff (hw : CoordsAt ξ x z w) (hz : genPt ξ ⤳ cent
     obtain ⟨r, ⟨_, s, hs, -⟩, -⟩ := hv i
     exact ⟨s, hs⟩
 
+/- English proof (translation)
+Establish `hy` using `fun k => (hw.2 k (c k) (IsUnit.mk0 _ (hc k))).1`. Use `choose r hr hr' using fun p : Σ k, J k => (hw.2 p.1 (c p.1) (IsUnit.mk0 _ (hc p.1))).2 p.2`. Use `valAt_aeval hz hr g using 1` and compare the differences between its conclusion and the goal. Establish `e : x = fun p => x ⟨p.1, c p.1⟩ * (x ⟨p.1, p.2⟩ / x ⟨p.1, c p.1⟩)`. Use function extensionality and compare the values at `fun p => (mul_div_cancel₀ _ (hy p.1)).symm`.
+
+Establish `e'` using `aeval_blockScale hg (fun k => x ⟨k, c k⟩) fun p => x ⟨p.1, p.2⟩ / x ⟨p.1, c p.1⟩`. Rewrite `e'` using `[← e]`. Establish `h0 : (∏ k, x ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`. Rewrite using `[e']`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e : w = fun p => w ⟨p.1, c p.1⟩ * r p` using `funext fun p => (hr' p).trans (mul_comm _ _)`. Establish `e'` using `aeval_blockScale hg (fun k => w ⟨k, c k⟩) r`. Rewrite `e'` using `[← e]`. Establish `h0 : (∏ k, w ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[e']`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem valAt_form (hw : CoordsAt ξ x z w) (hz : genPt ξ ⤳ centre z) {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
     {g : MRing J} {d : K → ℕ} (hg : IsMultiHomog g d) :
     ValAt ξ z (MvPolynomial.aeval x g / ∏ k, x ⟨k, c k⟩ ^ d k) (MvPolynomial.aeval w g / ∏ k, w ⟨k, c k⟩ ^ d k) := by
@@ -96,6 +124,11 @@ theorem valAt_form (hw : CoordsAt ξ x z w) (hz : genPt ξ ⤳ centre z) {c : �
     rw [e']
     field_simp
 
+/- English proof (translation)
+Use `⟨fun h => ?_, GroundTheory.Heights₂.Heights.LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero w hg⟩` and prove the remaining obligations. Establish `h' : mConeMap w g = 0` using `h`. Rewrite `h'` using `[GroundTheory.Heights₂.Heights.LowerBoundFree.mConeMap_of_isMultiHomog w hg]`. Break down `mul_eq_zero.1 h' with h1 | h1` into its components or cases. Conclude with `MvPolynomial.C_eq_zero.1 h1`.
+
+Conclude with `absurd h1 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero _))`.
+-/
 theorem form_mem_mCoordIdeal_iff (w : (Σ k, J k) → R) {g : MRing J} {d : K → ℕ} (hg : IsMultiHomog g d) :
     g ∈ mCoordIdeal w ↔ MvPolynomial.aeval w g = 0 := by
   refine ⟨fun h => ?_, GroundTheory.Heights₂.Heights.LowerBoundFree.mem_mCoordIdeal_of_aeval_eq_zero w hg⟩
@@ -105,6 +138,13 @@ theorem form_mem_mCoordIdeal_iff (w : (Σ k, J k) → R) {g : MRing J} {d : K �
   · exact MvPolynomial.C_eq_zero.1 h1
   · exact absurd h1 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero _))
 
+/- English proof (translation)
+Establish `key : ∀ (g : MRing J) (d : K → ℕ), IsMultiHomog g d → ∀ c, InBlockChart ξ x c ⟨centre z, hz⟩ → (¬ unitAt ξ ⟨centre z, hz⟩ (MvPolynomial.aeval x g / ∏ k, x ⟨k, c k⟩ ^ d k) ↔ g ∈ mCoordIdeal w)`. Introduce `g d hg c hc`. Establish `hc'` using `(inBlockChart_centre_iff hw hz c).1 hc`. Establish `h0 : (∏ k, w ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc' k)`. Rewrite using `[unitAt_iff_of_valAt (valAt_form hw hz hc' hg) hz, form_mem_mCoordIdeal_iff w hg, not_not, div_eq_zero_iff, or_iff_left h0]`.
+
+Use `le_antisymm (Ideal.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨d, hg, h⟩ choose c hc using hw.1`. Establish `hc'` using `(inBlockChart_centre_iff hw hz c).2 fun k => (hc k).ne_zero`. Conclude with `(key g d hg c hc').1 (h c hc')`. Take `⟨T, hT, e⟩` from `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal w`.
+
+Use `e.le.trans (Ideal.span_mono fun g hg => ?_)` and prove the remaining obligations. Take `⟨d, hd⟩` from `hT g hg`. Conclude with `⟨d, hd, fun c hc => (key g d hd c hc).2 (e ▸ Ideal.subset_span hg)⟩`.
+-/
 theorem ptIdeal_centre (hw : CoordsAt ξ x z w) (hz : genPt ξ ⤳ centre z) :
     ptIdeal ξ x ⟨centre z, hz⟩ = mCoordIdeal w := by
   have key : ∀ (g : MRing J) (d : K → ℕ), IsMultiHomog g d → ∀ c, InBlockChart ξ x c ⟨centre z, hz⟩ →
@@ -124,6 +164,9 @@ theorem ptIdeal_centre (hw : CoordsAt ξ x z w) (hz : genPt ξ ⤳ centre z) :
     obtain ⟨d, hd⟩ := hT g hg
     exact ⟨d, hd, fun c hc => (key g d hd c hc).2 (e ▸ Ideal.subset_span hg)⟩
 
+/- English proof (translation)
+Take `⟨T, hT, e⟩` from `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal x`. Use `e.le.trans (Ideal.span_mono fun g hg => ?_)` and prove the remaining obligations. Take `⟨d, hd⟩` from `hT g hg`. Use `⟨d, hd, fun c _ h => h.1 ?_⟩` and prove the remaining obligations. Rewrite using `[(form_mem_mCoordIdeal_iff x hd).1 (e ▸ Ideal.subset_span hg), zero_div]`.
+-/
 theorem mCoordIdeal_le_ptIdeal (ξ : Spec (CommRingCat.of Ω) ⟶ Z) (x : (Σ k, J k) → Ω) (q : Cpt ξ) :
     mCoordIdeal x ≤ ptIdeal ξ x q := by
   obtain ⟨T, hT, e⟩ := GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal x
@@ -134,6 +177,11 @@ theorem mCoordIdeal_le_ptIdeal (ξ : Spec (CommRingCat.of Ω) ⟶ Z) (x : (Σ k,
 
 omit [∀ k, Fintype (J k)] in
 
+/- English proof (translation)
+Take `⟨c, h0, hc⟩` from `h.cover q`. Establish `h1 : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 h0 k (Finset.mem_univ k)`. Use `⟨c, fun k => ⟨h1 k, fun i => ?_⟩⟩` and prove the remaining obligations. Use `hc (Function.update c k i) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`.
+
+Simplify using the standard rewrite rules. Introduce `k' _ hk`. Rewrite using `[Function.update_of_ne hk, div_self (h1 k')]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_inBlockChart (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) (q : Cpt ξ) :
     ∃ c, InBlockChart ξ x c q := by
   classical
@@ -147,6 +195,11 @@ theorem exists_inBlockChart (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏
     rw [Function.update_of_ne hk, div_self (h1 k')]
   · simp
 
+/- English proof (translation)
+Set `z : Spec (CommRingCat.of (Z.residueField q.1)) ⟶ Z` to `Z.fromSpecResidueField q.1`. Establish `e : centre z = q.1` using `Scheme.fromSpecResidueField_apply _ _`. Establish `hz : genPt ξ ⤳ centre z` using `by rw [e]; exact q.2`. Establish `eq : q = ⟨centre z, hz⟩` using `Subtype.ext e.symm`. Take `⟨c, hc⟩` from `exists_inBlockChart h ⟨centre z, hz⟩`.
+
+Take `⟨w, hw⟩` from `CoordModel.exists_coordsAt x hz (fun k => ⟨c k, hc k⟩) h.gen`. Conclude with `⟨_, inferInstance, z, w, e, hw, (congrArg (ptIdeal ξ x) eq).trans (ptIdeal_centre hw hz)⟩`.
+-/
 theorem exists_ptIdeal_eq (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) (q : Cpt ξ) :
     ∃ (R : Type) (_ : Field R) (z : Spec (CommRingCat.of R) ⟶ Z) (w : (Σ k, J k) → R),
       centre z = q.1 ∧ CoordsAt ξ x z w ∧ ptIdeal ξ x q = mCoordIdeal w := by
@@ -158,12 +211,18 @@ theorem exists_ptIdeal_eq (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k
   obtain ⟨w, hw⟩ := CoordModel.exists_coordsAt x hz (fun k => ⟨c k, hc k⟩) h.gen
   exact ⟨_, inferInstance, z, w, e, hw, (congrArg (ptIdeal ξ x) eq).trans (ptIdeal_centre hw hz)⟩
 
+/- English proof (translation)
+Take `⟨R, _, z, w, -, -, e⟩` from `exists_ptIdeal_eq h q`. Rewrite using `[e]`. Conclude with `RingHom.ker_isPrime _`.
+-/
 theorem ptIdeal_isPrime (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) (q : Cpt ξ) :
     (ptIdeal ξ x q).IsPrime := by
   obtain ⟨R, _, z, w, -, -, e⟩ := exists_ptIdeal_eq h q
   rw [e]
   exact RingHom.ker_isPrime _
 
+/- English proof (translation)
+Take `⟨R, _, z, w, -, hw, e⟩` from `exists_ptIdeal_eq h q`. Rewrite using `[e]`. Use `choose c hc using hw.1`. Conclude with `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.relevant w c fun k => (hc k).ne_zero`.
+-/
 theorem ptIdeal_isRelevant (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) (q : Cpt ξ) :
     IsRelevant (ptIdeal ξ x q) := by
   obtain ⟨R, _, z, w, -, hw, e⟩ := exists_ptIdeal_eq h q
@@ -171,6 +230,13 @@ theorem ptIdeal_isRelevant (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ 
   choose c hc using hw.1
   exact GroundTheory.Heights₂.Heights.CoordinateConeArithVar.relevant w c fun k => (hc k).ne_zero
 
+/- English proof (translation)
+Take `⟨R, _, z, w, e, hw, -⟩` from `exists_ptIdeal_eq h q`. Establish `hz : genPt ξ ⤳ centre z` using `e ▸ q.2`. Take `rfl : q = ⟨centre z, hz⟩` from `Subtype.ext e.symm`. Take `⟨d, g, t, hg, ht, htQ, e'⟩` from `hs`. Rewrite `htQ` using `[ptIdeal_centre hw hz, form_mem_mCoordIdeal_iff w ht]`.
+
+Use `choose c hc using hw.1`. Establish `hc' : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => (hc k).ne_zero`. Establish `h0 : (∏ k, w ⟨k, c k⟩ ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc' k)`. Take `⟨h1, -, h2⟩` from `(unitAt_iff_of_valAt (valAt_form hw hz hc' ht) hz).2 (div_ne_zero htQ h0)`. Take `⟨_, u, hu, -⟩` from `valAt_form hw hz hc' hg`.
+
+Establish `h3` using `(regAt ξ ⟨centre z, hz⟩).mul_mem ⟨u, hu⟩ h2`. Rewrite `h3` using `[e', mul_div_assoc, mul_assoc, mul_inv_cancel₀ h1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem RegAt.mem_regAt (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) {q : Cpt ξ} {s : Ω}
     (hs : RegAt x (ptIdeal ξ x q) s) : s ∈ regAt ξ q := by
   obtain ⟨R, _, z, w, e, hw, -⟩ := exists_ptIdeal_eq h q
@@ -186,6 +252,11 @@ theorem RegAt.mem_regAt (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, 
   have h3 := (regAt ξ ⟨centre z, hz⟩).mul_mem ⟨u, hu⟩ h2
   rwa [e', mul_div_assoc, mul_assoc, mul_inv_cancel₀ h1, mul_one] at h3
 
+/- English proof (translation)
+Take `⟨R, _, z, w, e, hw, -⟩` from `exists_ptIdeal_eq h q`. Establish `hz : genPt ξ ⤳ centre z` using `e ▸ q.2`. Take `rfl : q = ⟨centre z, hz⟩` from `Subtype.ext e.symm`. Rewrite using `[ptIdeal_centre hw hz, inBlockChart_centre_iff hw hz]`. Use `forall_congr' fun k => not_congr ?_` and prove the remaining obligations.
+
+Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, MvPolynomial.aeval_X, mul_eq_zero, MvPolynomial.C_eq_zero, or_iff_left (MvPolynomial.X_ne_zero _)]`.
+-/
 theorem inBlockChart_iff_X_notMem (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, x ⟨k, c' k⟩) (q : Cpt ξ)
     (c : ∀ k, J k) : InBlockChart ξ x c q ↔ ∀ k, (MvPolynomial.X ⟨k, c k⟩ : MRing J) ∉ ptIdeal ξ x q := by
   obtain ⟨R, _, z, w, e, hw, -⟩ := exists_ptIdeal_eq h q
@@ -210,27 +281,48 @@ def omBlock {R : Type} {p q : ℕ} (T : Matrix (Fin (p + q)) (Fin (p + q)) R) : 
 def wBlock {R : Type} {p q : ℕ} (T : Matrix (Fin (p + q)) (Fin (p + q)) R) : Matrix (Fin p) (Fin p) R :=
   T.submatrix (wEmb p q) (wEmb p q)
 
+/- English proof (translation)
+Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun h => ⟨⟨i, by omega⟩, rfl⟩, fun ⟨a, h⟩ => by subst h; show (a : ℕ) < _; omega⟩`.
+-/
 theorem mem_omIdx_iff (p q : ℕ) (i : Fin (p + q)) : i ∈ omIdx (p + q) p ↔ ∃ a, omEmb p q a = i := by
   simp only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]
   exact ⟨fun h => ⟨⟨i, by omega⟩, rfl⟩, fun ⟨a, h⟩ => by subst h; show (a : ℕ) < _; omega⟩
 
+/- English proof (translation)
+Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun h => ⟨⟨i - q, by omega⟩, Fin.ext (by show q + (i - q) = i; omega)⟩, fun ⟨a, h⟩ => by subst h; show _ ≤ q + (a : ℕ); omega⟩`.
+-/
 theorem mem_wIdx_iff (p q : ℕ) (i : Fin (p + q)) : i ∈ wIdx (p + q) p ↔ ∃ a, wEmb p q a = i := by
   simp only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]
   exact ⟨fun h => ⟨⟨i - q, by omega⟩, Fin.ext (by show q + (i - q) = i; omega)⟩,
     fun ⟨a, h⟩ => by subst h; show _ ≤ q + (a : ℕ); omega⟩
 
+/- English proof (translation)
+Introduce `_ _ h` and use `h`.
+-/
 theorem omEmb_strictMono (p q : ℕ) : StrictMono (omEmb p q) := fun _ _ h => h
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Nat.add_lt_add_left h q`.
+-/
 theorem wEmb_strictMono (p q : ℕ) : StrictMono (wEmb p q) := fun _ _ h => Nat.add_lt_add_left h q
 
 def blockEquiv (p q : ℕ) : Fin q ⊕ Fin p ≃ Fin (p + q) := finSumFinEquiv.trans (finCongr (Nat.add_comm q p))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockEquiv_inl (p q : ℕ) (a : Fin q) : blockEquiv p q (.inl a) = omEmb p q a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockEquiv_inr (p q : ℕ) (a : Fin p) : blockEquiv p q (.inr a) = wEmb p q a := rfl
 
 variable {R : Type} [CommRing R] {p q : ℕ}
 
+/- English proof (translation)
+Use extensionality with `(a | a) (b | b)`. Both sides reduce to the same expression. Conclude with `h _ _ (by show ¬ ((a : ℕ) < _ ↔ q + (b : ℕ) < _); omega)`. Conclude with `h _ _ (by show ¬ (q + (a : ℕ) < _ ↔ (b : ℕ) < _); omega)`. Both sides reduce to the same expression.
+-/
 theorem IsBlockDiag.eq_fromBlocks {T : Matrix (Fin (p + q)) (Fin (p + q)) R} (h : IsBlockDiag p T) :
     T.submatrix (blockEquiv p q) (blockEquiv p q) = Matrix.fromBlocks (omBlock T) 0 0 (wBlock T) := by
   ext (a | a) (b | b)
@@ -239,6 +331,9 @@ theorem IsBlockDiag.eq_fromBlocks {T : Matrix (Fin (p + q)) (Fin (p + q)) R} (h 
   · exact h _ _ (by show ¬ (q + (a : ℕ) < _ ↔ (b : ℕ) < _); omega)
   · rfl
 
+/- English proof (translation)
+Establish `e` using `h.eq_fromBlocks`. Rewrite `e` using `[e₁, e₂, ← h'.eq_fromBlocks]`. Use extensionality with `a b`. Simplify using `using congrFun (congrFun e ((blockEquiv p q).symm a)) ((blockEquiv p q).symm b)`.
+-/
 theorem IsBlockDiag.ext_blocks {T T' : Matrix (Fin (p + q)) (Fin (p + q)) R} (h : IsBlockDiag p T)
     (h' : IsBlockDiag p T') (e₁ : omBlock T = omBlock T') (e₂ : wBlock T = wBlock T') : T = T' := by
   have e := h.eq_fromBlocks
@@ -246,10 +341,18 @@ theorem IsBlockDiag.ext_blocks {T T' : Matrix (Fin (p + q)) (Fin (p + q)) R} (h 
   ext a b
   simpa using congrFun (congrFun e ((blockEquiv p q).symm a)) ((blockEquiv p q).symm b)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_submatrix_equiv_self (blockEquiv p q), h.eq_fromBlocks, Matrix.det_fromBlocks_zero₂₁]`.
+-/
 theorem IsBlockDiag.det_eq_blocks {T : Matrix (Fin (p + q)) (Fin (p + q)) R} (h : IsBlockDiag p T) :
     T.det = (omBlock T).det * (wBlock T).det := by
   rw [← Matrix.det_submatrix_equiv_self (blockEquiv p q), h.eq_fromBlocks, Matrix.det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Rewrite using `[minorIJ, dif_pos rfl]`. Set `e : Fin q ≃ omIdx (p + q) p` to `Equiv.ofBijective (fun a => ⟨omEmb p q a, (mem_omIdx_iff p q _).2 ⟨a, rfl⟩⟩) ⟨fun a b h => (omEmb_strictMono p q).injective (congrArg Subtype.val h), fun i => let ⟨a, ha⟩ := (mem_omIdx_iff p q _).1 i.2; ⟨a, Subtype.ext ha⟩⟩`. Rewrite using `[← Matrix.det_submatrix_equiv_self (e.trans ((omIdx (p + q) p).orderIsoOfFin rfl).symm.toEquiv)]`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using `[omBlock, ← Finset.coe_orderIsoOfFin_apply, e]`. Both sides reduce to the same expression.
+-/
 theorem minorIJ_omIdx (T : Matrix (Fin (p + q)) (Fin (p + q)) R) :
     minorIJ T (omIdx (p + q) p) (omIdx (p + q) p) = (omBlock T).det := by
   rw [minorIJ, dif_pos rfl]
@@ -262,6 +365,11 @@ theorem minorIJ_omIdx (T : Matrix (Fin (p + q)) (Fin (p + q)) R) :
   simp [omBlock, ← Finset.coe_orderIsoOfFin_apply, e]
   rfl
 
+/- English proof (translation)
+Rewrite using `[minorIJ, dif_pos rfl]`. Set `e : Fin p ≃ wIdx (p + q) p` to `Equiv.ofBijective (fun a => ⟨wEmb p q a, (mem_wIdx_iff p q _).2 ⟨a, rfl⟩⟩) ⟨fun a b h => (wEmb_strictMono p q).injective (congrArg Subtype.val h), fun i => let ⟨a, ha⟩ := (mem_wIdx_iff p q _).1 i.2; ⟨a, Subtype.ext ha⟩⟩`. Rewrite using `[← Matrix.det_submatrix_equiv_self (e.trans ((wIdx (p + q) p).orderIsoOfFin rfl).symm.toEquiv)]`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using `[wBlock, ← Finset.coe_orderIsoOfFin_apply, e]`. Both sides reduce to the same expression.
+-/
 theorem minorIJ_wIdx (T : Matrix (Fin (p + q)) (Fin (p + q)) R) :
     minorIJ T (wIdx (p + q) p) (wIdx (p + q) p) = (wBlock T).det := by
   rw [minorIJ, dif_pos rfl]
@@ -277,11 +385,17 @@ theorem minorIJ_wIdx (T : Matrix (Fin (p + q)) (Fin (p + q)) R) :
 def colFrame {V : Type} [AddCommGroup V] [Module R V] {r : ℕ} (e : Fin r → V) (T : Matrix (Fin r) (Fin r) R) :
     Fin r → V := fun b => ∑ a, T a b • e a
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `[colFrame, Matrix.one_apply]`.
+-/
 theorem colFrame_one {V : Type} [AddCommGroup V] [Module R V] {r : ℕ} (e : Fin r → V) :
     colFrame e (1 : Matrix (Fin r) (Fin r) R) = e := by
   funext b
   simp [colFrame, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [colFrame, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+-/
 theorem colFrame_mul {V : Type} [AddCommGroup V] [Module R V] {r : ℕ} (e : Fin r → V)
     (T U : Matrix (Fin r) (Fin r) R) : colFrame e (T * U) = colFrame (colFrame e T) U := by
   funext b
@@ -289,10 +403,16 @@ theorem colFrame_mul {V : Type} [AddCommGroup V] [Module R V] {r : ℕ} (e : Fin
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> decide`.
+-/
 example : omBlock (p := 1) (q := 2) !![(1 : ℤ), 2, 0; 3, 4, 0; 0, 0, 5] = !![1, 2; 3, 4] ∧
     wBlock (p := 1) (q := 2) !![(1 : ℤ), 2, 0; 3, 4, 0; 0, 0, 5] = !![5] := by
   constructor <;> decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : colFrame (R := ℤ) (fun a : Fin 2 => (Pi.single a 1 : Fin 2 → ℤ)) !![1, 2; 0, 1] 1 = ![2, 1] := by
   decide
 
@@ -308,11 +428,19 @@ def DualGramAt (M : LieModel G ξ Li) (L : LB G.left) (z : Spec (CommRingCat.of 
   ∃ (v : Fin r → V) (Γ : Matrix (Fin r) (Fin r) ℂ), (∀ a b, φ a (v b) = if a = b then 1 else 0) ∧
     M.GramAt L z (fun b => (v b : Li)) Γ ∧ Γ'ᵀ * Γ = 1
 
+/- English proof (translation)
+The claim follows from `let ⟨v, hv, h'⟩ := h ⟨v, hv, fun p q => (h' q p).conj⟩`.
+-/
 theorem gramAt_conjTranspose {M : LieModel G ξ Li} {L : LB G.left} {z : Spec (CommRingCat.of ℂ) ⟶ Z} {r : ℕ}
     {b : Fin r → Li} {Γ : Matrix (Fin r) (Fin r) ℂ} (h : M.GramAt L z b Γ) : M.GramAt L z b Γᴴ :=
   let ⟨v, hv, h'⟩ := h
   ⟨v, hv, fun p q => (h' q p).conj⟩
 
+/- English proof (translation)
+Establish `rep : ∀ {y u : Fin r → ℂ}, (∀ x, star u ⬝ᵥ Γ *ᵥ x = y ⬝ᵥ x) → star u ᵥ* Γ = y` using `fun {y u} hu => dotProduct_eq _ _ fun x => by rw [← Matrix.dotProduct_mulVec, hu]`. Establish `h1 : Γ' *ᵥ y' = star u'`. Rewrite using `[← rep hu', ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, mul_eq_one_comm.1 h, Matrix.vecMul_one]`. Establish `h2 : star y = Γ *ᵥ u`. Rewrite using `[← rep hu, Matrix.star_vecMul, star_star, hΓ.eq]`.
+
+Rewrite using `[h1, h2, dotProduct_comm]`.
+-/
 theorem dualGram_inner {r : ℕ} {Γ Γ' : Matrix (Fin r) (Fin r) ℂ} (hΓ : Γ.IsHermitian) (h : Γ'ᵀ * Γ = 1)
     {y y' u u' : Fin r → ℂ} (hu : ∀ x, star u ⬝ᵥ Γ *ᵥ x = y ⬝ᵥ x) (hu' : ∀ x, star u' ⬝ᵥ Γ *ᵥ x = y' ⬝ᵥ x) :
     star y ⬝ᵥ Γ' *ᵥ y' = star u' ⬝ᵥ Γ *ᵥ u := by
@@ -324,13 +452,22 @@ theorem dualGram_inner {r : ℕ} {Γ Γ' : Matrix (Fin r) (Fin r) ℂ} (hΓ : Γ
     rw [← rep hu, Matrix.star_vecMul, star_star, hΓ.eq]
   rw [h1, h2, dotProduct_comm]
 
+/- English proof (translation)
+The claim follows from `dualGram_inner hΓ h hu hu`.
+-/
 theorem dualGram_norm {r : ℕ} {Γ Γ' : Matrix (Fin r) (Fin r) ℂ} (hΓ : Γ.IsHermitian) (h : Γ'ᵀ * Γ = 1)
     {y u : Fin r → ℂ} (hu : ∀ x, star u ⬝ᵥ Γ *ᵥ x = y ⬝ᵥ x) : star y ⬝ᵥ Γ' *ᵥ y = star u ⬝ᵥ Γ *ᵥ u :=
   dualGram_inner hΓ h hu hu
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_transpose Γ', ← Matrix.det_mul, h, Matrix.det_one]`.
+-/
 theorem dualGram_det {r : ℕ} {Γ Γ' : Matrix (Fin r) (Fin r) ℂ} (h : Γ'ᵀ * Γ = 1) : Γ'.det * Γ.det = 1 := by
   rw [← Matrix.det_transpose Γ', ← Matrix.det_mul, h, Matrix.det_one]
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 example : (!![2, Complex.I; -Complex.I, 1] : Matrix (Fin 2) (Fin 2) ℂ)ᵀ * !![1, Complex.I; -Complex.I, 2] = 1 := by
   ext a b
   fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
@@ -346,15 +483,36 @@ def omBundle {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {x :
     (τ : CMType H) : Lat 𝔐.ξ (Module.Dual Ω (𝔐.Vgen (.inr τ))) :=
   ((𝔐.V (.inr τ)).comap (𝔐.Vgen (.inr τ)).subtype).dual
 
+/- English proof (translation)
+The claim follows from `(Lat.isVBOn_dual_and_bidual _ _ _ _ _ _ _ (Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (𝔐.vb (.inr τ))).1).1`.
+-/
 theorem omBundle_isVB {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {x : (Σ k, J k) → Ω}
     (𝔐 : HodgeCpt Y S x) (τ : CMType H) : (omBundle 𝔐 τ).IsVB D.q ⊤ :=
   (Lat.isVBOn_dual_and_bidual _ _ _ _ _ _ _ (Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (𝔐.vb (.inr τ))).1).1
 
+/- English proof (translation)
+The claim follows from `(Lat.isVBOn_dual_and_bidual _ _ _ _ _ _ _ (Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (𝔐.vb (.inr τ))).1).2 q trivial e`.
+-/
 theorem mem_V_iff_omBundle {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {x : (Σ k, J k) → Ω}
     (𝔐 : HodgeCpt Y S x) (τ : CMType H) (q : Cpt 𝔐.ξ) (e : 𝔐.Vgen (.inr τ)) :
     (e : 𝔐.Li) ∈ 𝔐.V (.inr τ) q ↔ ∀ φ ∈ omBundle 𝔐 τ q, φ e ∈ regAt 𝔐.ξ q :=
   (Lat.isVBOn_dual_and_bidual _ _ _ _ _ _ _ (Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (𝔐.vb (.inr τ))).1).2 q trivial e
 
+/- English proof (translation)
+Take `⟨hres, hmap⟩` from `Lat.restrict_isVBOn _ _ _ _ _ _ _ _ (𝔐.vb (.inr τ))`. Take `⟨U, hU, b, hb, hf⟩` from `hres q trivial`. Set `B : Module.Basis (Fin D.q) Ω (𝔐.Vgen (.inr τ))` to `Module.Basis.mk (hf q trivial hU).1 hb.ge`. Use `haveI := Module.Finite.of_basis B`. Establish `hrk : Module.finrank Ω (𝔐.Vgen (.inr τ)) = D.q` using `by simpa using Module.finrank_eq_card_basis B`.
+
+Prove the components needed by the constructor for the conclusion. Set `C` to `basisOfLinearIndependentOfCardEqFinrank' φ hφ.1 (by simp [Subspace.dual_finrank_eq, hrk])`. Establish `hC : ∀ a, C a = φ a` using `fun a => by simp [C]`. Use `⟨fun b => (Module.evalEquiv Ω _).symm (C.coord b), fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.apply_evalEquiv_symm_apply, ← hC, Module.Basis.coord_apply, C.repr_self, Finsupp.single_apply]`.
+
+Introduce `v hv`. Establish `hli : LinearIndependent Ω v` using `LinearIndependent.of_pairwise_dual_eq_zero_one v φ (fun a b hab => (hv a b).trans (if_neg hab)) (fun a => by rw [hv, if_pos rfl])`. Set `C` to `basisOfLinearIndependentOfCardEqFinrank' v hli (by simp [hrk])`. Establish `hC : ⇑C = v` using `by simp [C]`. Establish `hr : ∀ e a, C.repr e a = φ a e` using `fun e a => by conv_rhs => rw [← C.sum_repr e]`.
+
+Simplify using `[hC, hv]`. Use `⟨hli.map' (𝔐.Vgen (.inr τ)).subtype (Submodule.ker_subtype _), ?_⟩` and prove the remaining obligations. Establish `key : ∀ e : 𝔐.Vgen (.inr τ), (e : 𝔐.Li) ∈ 𝔐.V (.inr τ) q ↔ e ∈ Submodule.span (regAt 𝔐.ξ q) (Set.range v)` using `fun e => by`. Rewrite using `[← hC, LatDual.mem_span_basis_iff, mem_V_iff_omBundle, hφ.2]`. Use `⟨fun h a => hr e a ▸ h _ (Submodule.subset_span ⟨a, rfl⟩), fun h ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem ψ hψ => obtain ⟨a, rfl⟩ := hψ`. Conclude with `hr e a ▸ h a`. Consider the case `zero => simp`. Consider the case `add ψ ψ' _ _ h1 h2 => simpa using add_mem h1 h2`.
+
+Consider the case `smul t ψ _ h1 => exact mul_mem t.2 h1`. Use `le_antisymm (fun e he => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Establish `he' : e ∈ _` using `(hmap q trivial).ge he`. Take `⟨e, -, rfl⟩` from `Submodule.mem_map.1 he'`. Establish `h2` using `(key e).1 he`.
+
+Rewrite `h2` using `[← lat_restrict_comap_span]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `(key _).2 (Submodule.subset_span ⟨b, rfl⟩)`.
+-/
 theorem omBundle_dualFrame {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {x : (Σ k, J k) → Ω}
     (𝔐 : HodgeCpt Y S x) (τ : CMType H) (q : Cpt 𝔐.ξ) {φ : Fin D.q → Module.Dual Ω (𝔐.Vgen (.inr τ))}
     (hφ : (omBundle 𝔐 τ).IsFrameAt φ q) :
@@ -418,16 +576,25 @@ def FlagTie.wFrame (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.
 def FlagTie.omFrame (tie : FlagTie M 𝔐) (F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk) (τ : CMType H) :
     Fin D.q → Module.Dual M.Ω (𝔐.Vgen (.inr τ)) := colFrame (tie.eO τ) (omBlock (F.T τ))
 
+/- English proof (translation)
+The claim follows from `M.frames _ (ptIdeal_isPrime 𝔐.tie q) (ptIdeal_isRelevant 𝔐.tie q) (mCoordIdeal_le_ptIdeal _ _ q)`.
+-/
 theorem exists_goodFrame (𝔐 : HodgeCpt Y S M.x) (q : Cpt 𝔐.ξ) :
     ∃ F, M.IsFrame F ∧ M.GoodAt F (ptIdeal 𝔐.ξ M.x q) :=
   M.frames _ (ptIdeal_isPrime 𝔐.tie q) (ptIdeal_isRelevant 𝔐.tie q) (mCoordIdeal_le_ptIdeal _ _ q)
 
+/- English proof (translation)
+The claim follows from `let ⟨F, h, h'⟩ := exists_goodFrame 𝔐 q ⟨F, h, h', fun τ => ⟨tie.frameW q F h h' τ, tie.frameO q F h h' τ⟩⟩`.
+-/
 theorem FlagTie.exists_frames (tie : FlagTie M 𝔐) (q : Cpt 𝔐.ξ) :
     ∃ F, M.IsFrame F ∧ M.GoodAt F (ptIdeal 𝔐.ξ M.x q) ∧ ∀ τ,
       (𝔐.V (.inl τ)).IsFrameAt (tie.wFrame F τ) q ∧ (omBundle 𝔐 τ).IsFrameAt (tie.omFrame F τ) q :=
   let ⟨F, h, h'⟩ := exists_goodFrame 𝔐 q
   ⟨F, h, h', fun τ => ⟨tie.frameW q F h h' τ, tie.frameO q F h h' τ⟩⟩
 
+/- English proof (translation)
+Rewrite `h'` using `[← ptIdeal_centre hw (𝔐.all _)]`. Conclude with `⟨tie.frameW _ F h h' τ, tie.frameO _ F h h' τ⟩`.
+-/
 theorem FlagTie.frames_centre (tie : FlagTie M 𝔐) {R : Type} [Field R] {z : Spec (CommRingCat.of R) ⟶ 𝔐.X}
     {w : (Σ k, baseIdx ι M.blk k) → R} (hw : CoordsAt 𝔐.ξ M.x z w)
     {F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk} (h : M.IsFrame F) (h' : M.GoodAt F (mCoordIdeal w))
@@ -445,6 +612,9 @@ structure BaseMetric.IsHodge {n : ℕ} (BM : BaseMetric M n) (tie : FlagTie M �
     CoordsAt 𝔐.ξ M.x z (BM.Rb.lift x x) →
       DualGramAt 𝔐.M 𝔐.t.PP.L z (𝔐.Vgen (.inr τ)) (tie.omFrame (BM.F i) τ) (omBlock (BM.G i τ x))
 
+/- English proof (translation)
+The claim follows from `tie.frames_centre hz (BM.isFrame i) (BM.good i x hx) τ`.
+-/
 theorem BaseMetric.frames_of_tie {n : ℕ} (BM : BaseMetric M n) (tie : FlagTie M 𝔐) {i : Fin BM.q} {x : BM.Rb.X}
     (hx : x ∈ BM.O i) {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X} (hz : CoordsAt 𝔐.ξ M.x z (BM.Rb.lift x x))
     (τ : CMType H) : (𝔐.V (.inl τ)).IsFrameAt (tie.wFrame (BM.F i) τ) ⟨centre z, 𝔐.all _⟩ ∧

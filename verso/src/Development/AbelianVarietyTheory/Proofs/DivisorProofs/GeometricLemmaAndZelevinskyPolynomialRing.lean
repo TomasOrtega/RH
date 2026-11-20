@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GrothendieckRi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.geometricLemma_of_filtration GlobalTheory.Laid.bzfin_holds GlobalTheory.geometricLemmaFiltration_unconditional, GlobalTheory.zelevinskyPolynomialRing_of_parts GlobalTheory.Laid.bzfin_holds GlobalTheory.segmentRepresentation' GlobalTheory.grothendieckRingPolynomial_o …`.
+-/
 theorem geometricLemma_and_zelevinskyPolynomialRing :
     GlobalTheory.Published.GeometricLemma ∧ GlobalTheory.Published.ZelevinskyPolynomialRing :=
   ⟨GlobalTheory.geometricLemma_of_filtration GlobalTheory.Laid.bzfin_holds

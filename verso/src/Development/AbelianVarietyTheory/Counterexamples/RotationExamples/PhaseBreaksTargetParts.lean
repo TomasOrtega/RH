@@ -16,6 +16,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m}
   {σ : D.what₂.LL →+* ℂ}
 
+/- English proof (translation)
+Establish `key : ⟪U p, U p'⟫_ℂ = ⟪κ • g q, κ • g q'⟫_ℂ` using `by rw [h, h']`. Rewrite `key` using `[LinearIsometryEquiv.inner_map_map, inner_smul_left, inner_smul_right, hg, ← mul_assoc, RCLike.conj_mul, hκ]`. Simplify using `using key`.
+-/
 theorem inner_of_unitary {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] (U : X ≃ₗᵢ[ℂ] X) (g : X → X)
     (hg : ∀ a b, ⟪g a, g b⟫_ℂ = ⟪a, b⟫_ℂ) {κ : ℂ} (hκ : ‖κ‖ = 1) {p p' q q' : X} (h : U p = κ • g q) (h' : U p' = κ • g q') :
     ⟪p, p'⟫_ℂ = ⟪q, q'⟫_ℂ := by
@@ -26,6 +29,9 @@ theorem inner_of_unitary {X : Type} [NormedAddCommGroup X] [InnerProductSpace �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨-, -, u, U, z, ζ, -, -, hz, hall⟩` from `h`. Take `⟨-, κ, hκ, hlift⟩` from `hall μ' η' c c₁ H j th hd`. Conclude with `inner_of_unitary U (fun w => R.gW i σ z w) hz.unitary hκ (hlift x y hy) (hlift x' y' hy')`.
+-/
 theorem gram_of_conjAt {ph : ℂ} {c₀ : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W} (h : ConjAt R i σ ph c₀)
     {μ' η' : (AE D)ˣ →* Circle} {c : CoefA (Vc D i)} {c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W}
     {H : HMod (Bridge.Gf (Vc D i) → c.W)} {j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H} {th : H.H →ₗ[ℂ] (R.HW i σ).H}

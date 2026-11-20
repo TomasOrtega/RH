@@ -10,10 +10,16 @@ noncomputable section
 
 namespace PGaussPoissonDual
 
+/- English proof (translation)
+Rewrite using `[qf, qf, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem qf_smul {g : ℕ} (c : ℝ) (Y : Matrix (Fin g) (Fin g) ℝ) (w : Fin g → ℝ) :
     qf (c • Y) w = c * qf Y w := by
   rw [qf, qf, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[qf, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec w Bᵀ, Matrix.vecMul_transpose]`.
+-/
 theorem dot_mulVec_self {g : ℕ} (B : Matrix (Fin g) (Fin g) ℝ) (w : Fin g → ℝ) :
     (B *ᵥ w) ⬝ᵥ (B *ᵥ w) = qf (Bᵀ * B) w := by
   rw [qf, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec w Bᵀ, Matrix.vecMul_transpose]
@@ -22,6 +28,19 @@ end PGaussPoissonDual
 
 open PGaussPoissonDual in
 
+/- English proof (translation)
+Introduce `g Y ρ hY hρ hmin u`. Establish `hY2 : ((1 / 2 : ℝ) • Y).PosDef` using `hY.smul (by norm_num)`. Take `⟨B, hB⟩` from `hS g _ hY2`. Establish `hdetB : B.det ≠ 0`. Introduce `h0`.
+
+Establish `h1 : (Bᵀ * B).det = 0` using `by rw [det_mul, det_transpose, h0, mul_zero]`. Rewrite `h1` using `[hB]`. Conclude with `hY2.det_pos.ne' h1`. Establish `hterm : ∀ k : Fin g → ℤ, Real.exp (-(π / 2) * qf Y (intVec k + u)) = Real.exp (-π * ((B *ᵥ (intVec k + u)) ⬝ᵥ (B *ᵥ (intVec k + u))))`. Introduce `k`.
+
+Rewrite using `[dot_mulVec_self, hB, qf_smul]`. Put the polynomial expressions in normal form. Take `⟨hsum, -, hle⟩` from `hP g B hdetB u`. Use `⟨(summable_congr hterm).2 hsum, GroundTheory.Global.dualLattice (gaussLattice B), ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv hv0`.
+
+Take `⟨l, hl0, hl⟩` from `hM g B hdetB v hv hv0`. Establish `hYdet : IsUnit Y.det` using `isUnit_iff_ne_zero.2 hY.det_pos.ne'`. Establish `hinv : (Bᵀ * B)⁻¹ = (2 : ℝ) • Y⁻¹`. Rewrite using `[hB]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+
+Rewrite using `[smul_mul_smul_comm, Y.nonsing_inv_mul hYdet]`. Evaluate the numerical expressions. Rewrite `hl` using `[hinv, qf_smul]`. Establish `h2` using `hmin l hl0`. Establish `hq : 0 ≤ qf Y⁻¹ (intVec l)` using `le_trans (sq_nonneg ρ) h2`.
+
+Establish `h3 : ρ ^ 2 ≤ ‖v‖ ^ 2` using `by linarith`. Use polynomial arithmetic with `[norm_nonneg v]`. Rewrite using `[tsum_congr hterm, ← hD g Y B hY hB]`. Conclude with `hle`.
+-/
 theorem GaussPoissonDual.proof (hS : GaussSqrt.Statement) (hP : GaussPoissonBound.Statement)
     (hM : GaussDualMin.Statement) (hD : GaussDetFactor.Statement) :
     GaussPoissonDual.Statement := by

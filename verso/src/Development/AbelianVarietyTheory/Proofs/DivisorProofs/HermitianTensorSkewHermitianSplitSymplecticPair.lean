@@ -28,6 +28,9 @@ noncomputable section
 
 namespace GlobalTheory.HTensSplitPair
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem piW_cA_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ w) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ) w := by
@@ -36,6 +39,11 @@ theorem piW_cA_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   | tmul a e => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ProjectionInclusion.proj_incl`. Consider the case `exact _root_.GlobalTheory.ProjectionInclusion.proj_incl`. Consider the case `(apply _root_.GlobalTheory.ProjectionInclusion.proj_incl <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ProjectionInclusion.proj_incl <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ProjectionInclusion.proj_incl <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ProjectionInclusion.proj_incl ..)`.
+-/
 theorem piW_inclR_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) (e : E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ (inclR (F := F) (AF F) e) = τ e := by
@@ -47,6 +55,11 @@ theorem piW_inclR_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   | (intros; apply @_root_.GlobalTheory.ProjectionInclusion.proj_incl <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ProjectionInclusion.proj_incl ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FourSumComposition.main`. Consider the case `exact _root_.GlobalTheory.FourSumComposition.main`. Consider the case `(apply _root_.GlobalTheory.FourSumComposition.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FourSumComposition.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FourSumComposition.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FourSumComposition.main ..)`.
+-/
 theorem hTens_split_pair : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v) {m n : ℕ} (JA : Matrix (Fin m) (Fin m) E) (JB : Matrix (Fin n) (Fin n) E), (∀ i j, σ (JA j i) = JA i j) → (∀ i j, σ (JB j i) = -JB i j) → ∀ (x u : Matrix (Fin m) (Fin n) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)), x.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ) = 0 → u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ)) = 0 → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ (GlobalTheory.WeilM.hTens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JA) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JB) x u) + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ) (GlobalTheory.WeilM.hTens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JA) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JB) x u) = ∑ k, ∑ l, (-(JA.map τ * x.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ)) * (JB.map τ)ᵀ)) k l * u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ) k l := by
   first
   | exact @_root_.GlobalTheory.FourSumComposition.main

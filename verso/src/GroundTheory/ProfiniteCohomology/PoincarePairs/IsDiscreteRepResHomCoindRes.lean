@@ -22,12 +22,18 @@ def dualEvalPairing (D M : Rep.{u} k G) : dualRep D M ⊗ M ⟶ D :=
   (β_ (dualRep D M) M).hom ≫ evalPairing D M
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualEvalPairing_tmul (D M : Rep.{u} k G) (f : M →ₗ[k] D) (m : M) :
     (dualEvalPairing D M).hom ((f : dualRep D M) ⊗ₜ[k] m : (dualRep D M ⊗ M : Rep k G)) = f m :=
   rfl
 
 variable {H : Type u} [Group H]
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem resFunctor_map_comp_id (ψ : H →* G) {A B C : Rep.{u} k G} (μ : A ⊗ B ⟶ C) :
     (Rep.resFunctor ψ).map μ ≫ 𝟙 _ =
       resTensorHom ψ (𝟙 (Rep.res ψ A)) (𝟙 (Rep.res ψ B)) ≫ (Rep.resFunctor ψ).map μ := by
@@ -60,6 +66,9 @@ def compactDualityMap (D : Rep.{u} k G) [IsDiscreteRep D] {n m r s : ℕ} (h : r
   map_zero' := by ext; simp
   map_add' x y := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compactDualityMap_apply (D : Rep.{u} k G) [IsDiscreteRep D] {n m r s : ℕ} (h : r + s = m)
     (t : compactCohomologyRes φ D m →+ ZMod n) (M : Rep.{u} k G) [IsDiscreteRep M]
     [IsDiscreteRep (dualRep D M)] (x : cohomology M r)
@@ -121,6 +130,9 @@ def zmodCompactDualityMap (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D] {n :
   map_zero' := by ext; simp
   map_add' x y := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zmodCompactDualityMap_apply (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D] {n : ℕ}
     (hD : ∀ d : D, n • d = 0) (U : OpenSubgroup G) {m r s : ℕ} (h : r + s = m)
     (t : compactCohomologyRes φ D m →+ ZMod n) (x : cohomology (zmodRep.{u} (U : Subgroup G) n) r)

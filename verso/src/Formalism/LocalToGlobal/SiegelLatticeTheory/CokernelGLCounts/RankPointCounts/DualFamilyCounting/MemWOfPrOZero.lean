@@ -24,6 +24,13 @@ def InFib (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (𝔭 : Ideal (
     Λ ⊓ U.restrictScalars (𝓞 K) = locF 𝔭 M ∧
     Λ ⊓ (orthK h U).restrictScalars (𝓞 K) = locF 𝔭 T
 
+/- English proof (translation)
+Establish `e` using `prO_add hc x`. Rewrite `e` using `[hx, zero_add]`. Use `⟨?_, e⟩` and prove the remaining obligations. Rewrite using `[← e]`. Rewrite using `[prO_apply]`.
+
+Use `first`. Consider the case `exact Submodule.projection_apply_mem ..`. Consider the case `exact Submodule.projection_apply_mem _ _`. Consider the case `exact Submodule.projection_apply_mem _ _ _`. Consider the case `exact Submodule.projection_apply_mem _`.
+
+Consider the case `simp`.
+-/
 theorem mem_W_of_prO_zero {x : V} (hx : prO hc x = 0) : x ∈ orthK h U ∧ prO hc.symm x = x := by
   have e := prO_add hc x
   rw [hx, zero_add] at e
@@ -37,6 +44,9 @@ theorem mem_W_of_prO_zero {x : V} (hx : prO hc x = 0) : x ∈ orthK h U ∧ prO 
   | exact Submodule.projection_apply_mem _
   | simp
 
+/- English proof (translation)
+Take `⟨t, ht, hty⟩` from `(LocF.mem_locF_iff hp N y).mp hy`. Use `(LocF.mem_locF_iff hp _ _).mpr ⟨t, ht, ?_⟩` and prove the remaining obligations. Establish `hs` using `(prO hc.symm).map_smul (algebraMap (𝓞 F) (𝓞 K) t) y`. Rewrite using `[← hs]`. Conclude with `Submodule.mem_map_of_mem hty`.
+-/
 theorem prO_symm_locF (hp : 𝔭.IsPrime) {N : Submodule (𝓞 K) V} {y : V} (hy : y ∈ locF 𝔭 N) :
     prO hc.symm y ∈ locF 𝔭 (N.map (prO hc.symm)) := by
   obtain ⟨t, ht, hty⟩ := (LocF.mem_locF_iff hp N y).mp hy
@@ -45,6 +55,19 @@ theorem prO_symm_locF (hp : 𝔭.IsPrime) {N : Submodule (𝓞 K) V} {y : V} (hy
   rw [← hs]
   exact Submodule.mem_map_of_mem hty
 
+/- English proof (translation)
+Establish `hp` using `h𝔭.isPrime`. Take `⟨⟨N₀, hN₀, hΛ₀⟩, hd₀, -, -⟩` from `h0`. Establish `hd : dualF h 𝔭 (glue hc T 𝔭 Λ₀ P) = glue hc T 𝔭 Λ₀ P` using `le_antisymm (dual_le_glue hs hG₀ hd₀ hM hT hP hsurj) (glue_le_dual hs hd₀ hP)`. Establish `hIU` using `glue_inf_U hG₀ hd₀ hP`. Establish `hIW` using `glue_inf_orthK_eq_locF (P := P) hG₀`.
+
+Use `⟨?_, hd, hIU, hIW⟩` and prove the remaining obligations. Use `exists_lattice_locF h𝔭 (isLattice_sup hc hM hT) (L₂ := N₀ ⊔ N₀.map (prO hc.symm)) (hN₀.fg.sup (hN₀.fg.map _)) ?_ ?_ ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hd]`. Rewrite using `[locF_dualF h𝔭, hd]`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+
+Introduce `m hm`. Establish `: m ∈ locF 𝔭 M` using `LocF.le_locF 𝔭 M hm`. Rewrite `this` using `[← hIU]`. Conclude with `this.1`. Introduce `m hm`.
+
+Establish `: m ∈ locF 𝔭 T` using `LocF.le_locF 𝔭 T hm`. Rewrite `this` using `[← hIW]`. Conclude with `this.1`. Introduce and unpack `x ⟨b, hb, y, hy, c, hcy, hU, hPc⟩`. Take `⟨z, hz, hzb⟩` from `hG₀.oW b b.2`.
+
+Establish `hyN : y ∈ locF 𝔭 N₀` using `hΛ₀ ▸ hy`. Establish `hzN : z ∈ locF 𝔭 N₀` using `hΛ₀ ▸ hz`. Establish `ex : x = y - prO hc.symm y + prO hc.symm z`. Establish `e3 : prO hc y = y - prO hc.symm y` using `eq_sub_of_add_eq (prO_add hc y)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ex]`. Use `Submodule.add_mem _ (Submodule.sub_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `LocF.locF_mono 𝔭 le_sup_left hyN`. Conclude with `LocF.locF_mono 𝔭 le_sup_right (prO_symm_locF (hc := hc) hp hyN)`. Conclude with `LocF.locF_mono 𝔭 le_sup_right (prO_symm_locF (hc := hc) hp hzN)`.
+-/
 theorem glue_mem [FiniteDimensional K V] (hs : h.IsSymm) (h𝔭 : 𝔭.IsMaximal) (hM : IsLatIn U M)
     (hT : IsLatIn (orthK h U) T) (hG₀ : Good hc M T 𝔭 Λ₀) (h0 : InFib h U 𝔭 M T Λ₀)
     {P : Module.End (𝓞 K) (DiscMod h (orthK h U) T 𝔭)} (hP : FP P) (hsurj : Function.Surjective P) :
@@ -88,6 +111,13 @@ def isoOf (hG₀ : Good hc M T 𝔭 Λ₀) (hG : Good hc M T 𝔭 Λ) :
     Module.End (𝓞 K) (DiscMod h (orthK h U) T 𝔭) :=
   ((gam hG₀).symm.trans (gam hG)).toLinearMap
 
+/- English proof (translation)
+Establish `key : ∀ {Λ' : Submodule (𝓞 K) V} (hG' : Good hc M T 𝔭 Λ') (b : Λ'), gam hG' (toDisc h hc M Λ' 𝔭 hG'.iU b) = toDisc h hc.symm T Λ' 𝔭 hG'.iW b`. Introduce `Λ' hG' b`. Unfold `gam`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← LinearMap.quotKerEquivOfSurjective_apply_mk (toDisc h hc M Λ' 𝔭 hG'.iU) (toDisc_surj h hc M Λ' 𝔭 hG'.iU hG'.oU) b, LinearEquiv.symm_apply_apply, Submodule.quotEquivOfEq_mk, LinearMap.quotKerEquivOfSurjective_apply_mk]`.
+
+Establish `h1 : (Submodule.Quotient.mk ⟨prO hc.symm y, hG₀.iW y hy⟩ : DiscMod h (orthK h U) T 𝔭) = gam hG₀ (toDisc h hc M Λ₀ 𝔭 hG₀.iU ⟨y, hy⟩)` using `(key hG₀ ⟨y, hy⟩).symm`. Establish `h2 : toDisc h hc M Λ₀ 𝔭 hG₀.iU ⟨y, hy⟩ = toDisc h hc M Λ 𝔭 hG.iU ⟨w, hw⟩` using `congrArg Submodule.Quotient.mk (Subtype.ext hwU.symm)`. Unfold `isoOf`. Rewrite using `[h1]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+
+Rewrite using `[h2]`. Conclude with `key hG ⟨w, hw⟩`.
+-/
 theorem isoOf_mk (hG₀ : Good hc M T 𝔭 Λ₀) (hG : Good hc M T 𝔭 Λ) {y w : V} (hy : y ∈ Λ₀) (hw : w ∈ Λ)
     (hwU : prO hc w = prO hc y) :
     isoOf hG₀ hG (Submodule.Quotient.mk ⟨prO hc.symm y, hG₀.iW y hy⟩) =

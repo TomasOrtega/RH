@@ -46,6 +46,9 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {v : WO S T → ℂ}
     {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨p, hp⟩` from `hv.2.norm.1`. Use `hv.2.norm.2 p hp` as an intermediate fact. Simplify using `[nrm2] at this`.
+-/
 theorem vac_ne_zero (hv : IsVacO ψ θ S T sS sT (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) v) :
     v ≠ 0 := by
   rintro rfl
@@ -53,16 +56,25 @@ theorem vac_ne_zero (hv : IsVacO ψ θ S T sS sT (ΛS : Set (Fin S.rank → D.ho
   have := hv.2.norm.2 p hp
   simp [nrm2] at this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => 0, fun _ => isAlgebraic_one, fun _ => Matrix.ext fun _ _ => (infPart D).map_zero, by simp [GlobalTheory.SplitScalar.heisO_zero]⟩`.
+-/
 theorem alg_self : IsAlgComb ψ S T v v :=
   ⟨1, fun _ => 1, fun _ => 0, fun _ => isAlgebraic_one, fun _ => Matrix.ext fun _ _ => (infPart D).map_zero, by
     simp [GlobalTheory.SplitScalar.heisO_zero]⟩
 
+/- English proof (translation)
+Take `⟨n, c, w, -, -, rfl⟩` from `hF`. Use `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun p _ => GlobalTheory.OrientedHeis.theta_smul _ ((GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 _ _ hv)` and prove the remaining obligations.
+-/
 theorem theta_of_alg (hψ : IsStdChar D ψ (-1)) (hv : IsThetaFunO ψ S T v) {F : WO S T → ℂ} (hF : IsAlgComb ψ S T v F) :
     IsThetaFunO ψ S T F := by
   obtain ⟨n, c, w, -, -, rfl⟩ := hF
   refine Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero
     fun p _ => GlobalTheory.OrientedHeis.theta_smul _ ((GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 _ _ hv)
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff.2 ((mem_algebraicClosure_iff.1 ha).algHom (starRingEnd ℂ).toRatAlgHom)`.
+-/
 theorem star_mem {a : ℂ} (ha : a ∈ Qb) : star a ∈ Qb :=
   mem_algebraicClosure_iff.2 ((mem_algebraicClosure_iff.1 ha).algHom (starRingEnd ℂ).toRatAlgHom)
 
@@ -70,6 +82,11 @@ variable (hv : IsVacO ψ θ S T sS sT (ΛS : Set (Fin S.rank → D.host.E)) (ΛT
   (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
 include hv hS hT
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hv.2.norm.1`. Establish `h1` using `mem_algebraicClosure_iff.2 (GlobalTheory.T.vacuum_self_dual_lattices hv hS hT p.1 p.2 hp F F hF hF)`. Establish `h2` using `mem_algebraicClosure_iff.2 (GlobalTheory.T.vacuum_self_dual_lattices hv hS hT p.1 p.2 hp F F' hF hF')`. Establish `h3` using `GlobalTheory.RawLift.VecNonzero.thetaInner_self_ne_zero hv.1 (theta_of_alg hv.1 hv.2.theta hF) h0 hp`. Rewrite `h2` using `[hc, thetaInner_smul_right]`.
+
+Use `div_mem h2 h1` as an intermediate fact. Rewrite `this` using `[mul_div_cancel_right₀ _ h3]`. Conclude with `mem_algebraicClosure_iff.1 this`.
+-/
 theorem rigid {F F' : WO S T → ℂ} (hF : IsAlgComb ψ S T v F) (hF' : IsAlgComb ψ S T v F') (h0 : F ≠ 0) {c : ℂ}
     (hc : F' = c • F) : IsAlgebraic ℚ c := by
   obtain ⟨p, hp⟩ := hv.2.norm.1
@@ -81,6 +98,11 @@ theorem rigid {F F' : WO S T → ℂ} (hF : IsAlgComb ψ S T v F) (hF' : IsAlgCo
   rw [mul_div_cancel_right₀ _ h3] at this
   exact mem_algebraicClosure_iff.1 this
 
+/- English proof (translation)
+Take `⟨n, c, w, hc, hw, rfl⟩` from `hF`. Take `⟨x, h⟩` from `p`. Use `⟨∑ q, c q • heisO ψ S T (actO S T x h (w q)) F₀, IsAlgComb.finsum _ _ hc fun q => IsAlgComb.Heisenberg₂ (fun a b ha hb => mem_algebraicClosure_iff.1 (GlobalTheory.BotFourier.psiH_mem hv.1 hS hT ha hb)) (GlobalTheory.FinApprox.actO_fin _ _ (hw q)) h0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hW.om_heis x h (w q) v hv.2.theta, hp, GlobalTheory.VacSchurFin.heisO_smul', smul_comm]`.
+-/
 theorem om_scaled (hW : IsWeilDatumO ψ S T χS χT om) {p : GA D S × GA D T} {κ : ℂ} {F₀ : WO S T → ℂ}
     (h0 : IsAlgComb ψ S T v F₀) (hp : om p v = κ • F₀) {F : WO S T → ℂ} (hF : IsAlgComb ψ S T v F) :
     ∃ F₁, IsAlgComb ψ S T v F₁ ∧ om p F = κ • F₁ := by
@@ -93,11 +115,17 @@ theorem om_scaled (hW : IsWeilDatumO ψ S T χS χT om) {p : GA D S × GA D T} {
   refine Finset.sum_congr rfl fun q _ => ?_
   rw [map_smul, hW.om_heis x h (w q) v hv.2.theta, hp, GlobalTheory.VacSchurFin.heisO_smul', smul_comm]
 
+/- English proof (translation)
+Take `⟨F₁, h1, h2⟩` from `om_scaled hv hS hT hW (κ := 1) h0 (one_smul _ _).symm hF`. Rewrite using `[h2, one_smul]` and apply the resulting hypothesis.
+-/
 theorem om_alg (hW : IsWeilDatumO ψ S T χS χT om) {p : GA D S × GA D T}
     (h0 : IsAlgComb ψ S T v (om p v)) {F : WO S T → ℂ} (hF : IsAlgComb ψ S T v F) : IsAlgComb ψ S T v (om p F) := by
   obtain ⟨F₁, h1, h2⟩ := om_scaled hv hS hT hW (κ := 1) h0 (one_smul _ _).symm hF
   rwa [h2, one_smul]
 
+/- English proof (translation)
+Introduce `h` and use `vac_ne_zero hv (by have : om p⁻¹ (om p v) = v := by rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] rw [← this, h, map_zero])`.
+-/
 theorem om_ne_zero (p : GA D S × GA D T) : om p v ≠ 0 := fun h => vac_ne_zero hv (by
   have : om p⁻¹ (om p v) = v := by rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
   rw [← this, h, map_zero])
@@ -106,6 +134,13 @@ variable (hcS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hcT : ∀ τ, IsCa
   (hW : IsWeilDatumO ψ S T χS χT om)
 include hcS hcT hW
 
+/- English proof (translation)
+Take `⟨κ, F, hF, e⟩` from `GlobalTheory.T.weilDatum_finite_pair_vacuum_algebraic_combination hv hS hT hcS hcT hW x hx h hh`. Establish `key : ∀ k : ℕ, ∃ F₁, IsAlgComb ψ S T v F₁ ∧ om ((x, h) ^ k) v = κ ^ k • F₁`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨v, alg_self, by simp⟩`.
+
+Consider the case `succ k ih`. Take `⟨F₁, h1, h2⟩` from `ih`. Take `⟨F₂, h3, h4⟩` from `om_scaled hv hS hT hW hF e h1`. Conclude with `⟨F₂, h3, by rw [pow_succ', map_mul, Module.End.mul_apply, h2, map_smul, h4, smul_smul, pow_succ]⟩`. Take `⟨F₁, h1, h2⟩` from `key m`.
+
+Establish `h0 : F₁ ≠ 0` using `fun h0 => om_ne_zero hv hS hT _ (by rw [h2, h0, smul_zero])`. Rewrite using `[e]`. Conclude with `hF.smul (IsAlgebraic.of_pow hm (rigid hv hS hT h1 hp h0 h2))`.
+-/
 theorem root_closed {x : GA D S} (hx : x ∈ GfC S) {h : GA D T} (hh : h ∈ GfC T) {m : ℕ} (hm : 0 < m)
     (hp : IsAlgComb ψ S T v (om ((x, h) ^ m) v)) : IsAlgComb ψ S T v (om (x, h) v) := by
   obtain ⟨κ, F, hF, e⟩ := GlobalTheory.T.weilDatum_finite_pair_vacuum_algebraic_combination hv hS hT hcS hcT hW x hx h hh
@@ -137,6 +172,11 @@ def algGroup : Subgroup (GA D S × GA D T) where
     exact hF.smul (rigid hv hS hT (om_alg hv hS hT hW hp.2.2 hF) alg_self h0 h1)⟩
 
 omit hv hS hT hcS hcT hW in
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.SplitScalar.infPart_splitIdem he`. Establish `h2` using `GlobalTheory.PlaceDatum.infPart_cA h1`. Use `MonoidHom.mem_ker.2 (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Formalism.L2.Theta.mt V g).map (infPart D) = 1`. Rewrite using `[← sub_eq_zero]`.
+
+Use extensionality with `i j`. Rewrite using `[← GlobalTheory.SplitCharTrivial.map_sub_one, ← hg i j, RingHom.map_mul, RingHom.map_add, h1, h2, add_zero, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem mem_GfC_of_suppAt {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V}
     (hg : Formalism.L2.Theta.SuppAt e V g) : g ∈ GfC V := by
   have h1 := GlobalTheory.SplitScalar.infPart_splitIdem he
@@ -148,6 +188,25 @@ theorem mem_GfC_of_suppAt {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {
   rw [← GlobalTheory.SplitCharTrivial.map_sub_one, ← hg i j, RingHom.map_mul, RingHom.map_add, h1, h2, add_zero, zero_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨κ, F, hF, eF⟩` from `GlobalTheory.T.weilDatum_finite_pair_vacuum_algebraic_combination hv hS hT hcS hcT hW g (mem_GfC_of_suppAt he hg) h (mem_GfC_of_suppAt he hh)`. Take `⟨x, hx⟩` from `GlobalTheory.WeilDetermined.exists_isDetAt he.1 S g`. Take `⟨y, hy⟩` from `GlobalTheory.WeilDetermined.exists_isDetAt he.1 T h`. Take `⟨r, hr, hℓ⟩` from `hW.om_split e he g h hg hh x y hx hy`. Establish `h1` using `GlobalTheory.SplitScalar.infPart_splitIdem he`.
+
+Establish `hx1 : infPart D (x : Formalism.L2.Theta.AE D) = 1`. Rewrite using `[hx, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, h1, RingHom.map_one, zero_mul, zero_add, sub_zero]`. Establish `hy1 : infPart D (y : Formalism.L2.Theta.AE D) = 1`. Rewrite using `[hy, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, h1, RingHom.map_one, zero_mul, zero_add, sub_zero]`. Establish `hz : ((splitFacO χS χT x y : Circle) : ℂ) ∈ Qb`.
+
+Rewrite using `[splitFacO, Circle.coe_mul, Circle.coe_inv]`. Conclude with `mul_mem (inv_mem (mem_algebraicClosure_iff.2 (GlobalTheory.T.heckeChar_finiteIdeles_isAlgebraic_of_resEta hv.2.inf hW.hecT hW.resT x hx1))) (mem_algebraicClosure_iff.2 (GlobalTheory.T.heckeChar_finiteIdeles_isAlgebraic_of_resEta hv.2.inf hW.hecS hW.resS y hy1))`. Establish `hz1 : star ((splitFacO χS χT x y : Circle) : ℂ) * (splitFacO χS χT x y : Circle) = 1`. Rewrite using `[Complex.star_def, ← Circle.coe_inv_eq_conj, ← Circle.coe_mul, inv_mul_cancel, Circle.coe_one]`. Generalize the expression as in `((splitFacO χS χT x y : Circle) : ℂ) = z at hℓ hz hz1`.
+
+Take `⟨p, hp⟩` from `hv.2.norm.1`. Establish `hF0 : F ≠ 0` using `fun h0 => om_ne_zero hv hS hT _ (by rw [eF, h0, smul_zero])`. Establish `n1` using `GlobalTheory.WeilPairing.thetaInner_weilRep D ψ S T χS χT om p.1 p.2 hW hp (g, h) v v hv.2.theta hv.2.theta`. Rewrite `n1` using `[eF, thetaInner_smul_left, thetaInner_smul_right, ← mul_assoc]`. Establish `n2 : star κ * κ ∈ Qb`.
+
+Rewrite using `[eq_div_of_mul_eq (GlobalTheory.RawLift.VecNonzero.thetaInner_self_ne_zero hv.1 (theta_of_alg hv.1 hv.2.theta hF) hF0 hp) n1]`. Conclude with `div_mem (mem_algebraicClosure_iff.2 (GlobalTheory.T.vacuum_self_dual_lattices hv hS hT p.1 p.2 hp v v alg_self alg_self)) (mem_algebraicClosure_iff.2 (GlobalTheory.T.vacuum_self_dual_lattices hv hS hT p.1 p.2 hp F F hF hF))`. Take `⟨n, c, w, hc, hw, hFe⟩` from `id hF`. Take `⟨ℓ, l1, l2, l3⟩` from `GlobalTheory.T.exists_algebraicInvariantForm_vacuum_splitPlace hv hS hT e he n w hw`. Establish `ha : ℓ F ∈ Qb`.
+
+Rewrite using `[hFe, map_sum]`. Conclude with `sum_mem fun q _ => by`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `mul_mem (mem_algebraicClosure_iff.2 (hc q)) (mem_algebraicClosure_iff.2 (l3 q))`. Establish `e1` using `hℓ ℓ l1 v hv.2.theta`.
+
+Rewrite `e1` using `[eF, map_smul, smul_eq_mul, l2, mul_one]`. Establish `hr0 : (r : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hr.ne'`. Establish `hz0 : z ≠ 0` using `right_ne_zero_of_mul_eq_one hz1`. Establish `ha0 : ℓ F ≠ 0` using `fun h0 => mul_ne_zero hr0 hz0 (by rw [← e1, h0, mul_zero])`. Establish `e2 : (r : ℂ) ^ 2 = (star κ * κ) * (star (ℓ F) * ℓ F)`.
+
+Establish `e3` using `congrArg star e1`. Rewrite `e3` using `[star_mul', star_mul', Complex.star_def, Complex.conj_ofReal, ← Complex.star_def]`. Take the linear combination `(-(r : ℂ) ^ 2) * hz1 - (star κ * star (ℓ F)) * e1 - (r * z) * e3`. Establish `hrq : (r : ℂ) ∈ Qb` using `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow two_pos (mem_algebraicClosure_iff.1 (e2 ▸ mul_mem n2 (mul_mem (star_mem ha) ha))))`. Establish `hκ : κ ∈ Qb`.
+
+Rewrite using `[eq_div_of_mul_eq ha0 e1]`. Conclude with `div_mem (mul_mem hrq hz) ha`. Rewrite using `[eF]`. Conclude with `hF.smul (mem_algebraicClosure_iff.1 hκ)`.
+-/
 theorem split_alg {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {g : GA D S} {h : GA D T}
     (hg : Formalism.L2.Theta.SuppAt e S g) (hh : Formalism.L2.Theta.SuppAt e T h) : IsAlgComb ψ S T v (om (g, h) v) := by
   obtain ⟨κ, F, hF, eF⟩ := GlobalTheory.T.weilDatum_finite_pair_vacuum_algebraic_combination hv hS hT hcS hcT hW g (mem_GfC_of_suppAt he hg) h (mem_GfC_of_suppAt he hh)
@@ -201,14 +260,25 @@ theorem split_alg {e : Formalism.L2.Theta.AE D} (he : IsSplitIdem D e) {g : GA D
   exact hF.smul (mem_algebraicClosure_iff.1 hκ)
 
 omit hv hS hT hcS hcT hW in
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.Member.PrincLevel.levelGroup V N).one_mem`. Conclude with `h.2`.
+-/
 theorem finCong_one (V : HSp D) (N : ℕ) : GlobalTheory.Member.FinCong V N 1 := by
   have h := (GlobalTheory.Member.PrincLevel.levelGroup V N).one_mem
   exact h.2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_algGroup {p : GA D S × GA D T} :
     p ∈ algGroup hv hS hT hcS hcT hW ↔ p.1 ∈ GfC S ∧ p.2 ∈ GfC T ∧ IsAlgComb ψ S T v (om p v) := Iff.rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨N, hN, hlev⟩` from `GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum hv hS hT hcS hcT hW`. Use `GlobalTheory.T.finiteUnitaryPoints_mem_of_level_and_split_place S ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inl _ _)) N hN (fun g hg m hm hp => ?_) (fun k hk hc => ?_) (fun e he g hg => ?_) x hx` and prove the remaining obligations. Rewrite `hp` using `[Subgroup.mem_comap, map_pow, mem_algGroup]`. Rewrite using `[Subgroup.mem_comap, MonoidHom.inl_apply, mem_algGroup]`. Conclude with `⟨hg, one_mem _, root_closed hv hS hT hcS hcT hW hg (one_mem _) hm hp.2.2⟩`.
+
+Rewrite using `[Subgroup.mem_comap, MonoidHom.inl_apply, mem_algGroup, hlev k hk 1 (one_mem _) hc (finCong_one T N)]`. Conclude with `⟨hk, one_mem _, alg_self⟩`. Rewrite using `[Subgroup.mem_comap, MonoidHom.inl_apply, mem_algGroup]`. Conclude with `⟨mem_GfC_of_suppAt he hg, one_mem _, split_alg hv hS hT hcS hcT hW he hg (GlobalTheory.WeilDetermined.suppAt_one e T)⟩`.
+-/
 theorem source_mem {x : GA D S} (hx : x ∈ GfC S) : (x, (1 : GA D T)) ∈ algGroup hv hS hT hcS hcT hW := by
   obtain ⟨N, hN, hlev⟩ := GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum hv hS hT hcS hcT hW
   refine GlobalTheory.T.finiteUnitaryPoints_mem_of_level_and_split_place S ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inl _ _)) N hN (fun g hg m hm hp => ?_)
@@ -223,6 +293,11 @@ theorem source_mem {x : GA D S} (hx : x ∈ GfC S) : (x, (1 : GA D T)) ∈ algGr
       split_alg hv hS hT hcS hcT hW he hg (GlobalTheory.WeilDetermined.suppAt_one e T)⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨N, hN, hlev⟩` from `GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum hv hS hT hcS hcT hW`. Use `GlobalTheory.T.finiteUnitaryPoints_mem_of_level_and_split_place T ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inr _ _)) N hN (fun g hg m hm hp => ?_) (fun k hk hc => ?_) (fun e he g hg => ?_) h hh` and prove the remaining obligations. Rewrite `hp` using `[Subgroup.mem_comap, map_pow, mem_algGroup]`. Rewrite using `[Subgroup.mem_comap, MonoidHom.inr_apply, mem_algGroup]`. Conclude with `⟨one_mem _, hg, root_closed hv hS hT hcS hcT hW (one_mem _) hg hm hp.2.2⟩`.
+
+Rewrite using `[Subgroup.mem_comap, MonoidHom.inr_apply, mem_algGroup, hlev 1 (one_mem _) k hk (finCong_one S N) hc]`. Conclude with `⟨one_mem _, hk, alg_self⟩`. Rewrite using `[Subgroup.mem_comap, MonoidHom.inr_apply, mem_algGroup]`. Conclude with `⟨one_mem _, mem_GfC_of_suppAt he hg, split_alg hv hS hT hcS hcT hW he (GlobalTheory.WeilDetermined.suppAt_one e S) hg⟩`.
+-/
 theorem target_mem {h : GA D T} (hh : h ∈ GfC T) : ((1 : GA D S), h) ∈ algGroup hv hS hT hcS hcT hW := by
   obtain ⟨N, hN, hlev⟩ := GlobalTheory.T.congruent_pairs_fix_vacuum_weilDatum hv hS hT hcS hcT hW
   refine GlobalTheory.T.finiteUnitaryPoints_mem_of_level_and_split_place T ((algGroup hv hS hT hcS hcT hW).comap (MonoidHom.inr _ _)) N hN (fun g hg m hm hp => ?_)
@@ -236,6 +311,9 @@ theorem target_mem {h : GA D T} (hh : h ∈ GfC T) : ((1 : GA D S), h) ∈ algGr
     exact ⟨one_mem _, mem_GfC_of_suppAt he hg,
       split_alg hv hS hT hcS hcT hW he (GlobalTheory.WeilDetermined.suppAt_one e S) hg⟩
 
+/- English proof (translation)
+Establish `h3` using `(algGroup hv hS hT hcS hcT hW).mul_mem (source_mem hv hS hT hcS hcT hW hx) (target_mem hv hS hT hcS hcT hW hh)`. Rewrite `h3` using `[Prod.mk_mul_mk, mul_one, one_mul, mem_algGroup]`. Conclude with `h3.2.2`.
+-/
 theorem om_vac_algComb {x : GA D S} (hx : x ∈ GfC S) {h : GA D T} (hh : h ∈ GfC T) :
     IsAlgComb ψ S T v (om (x, h) v) := by
   have h3 := (algGroup hv hS hT hcS hcT hW).mul_mem (source_mem hv hS hT hcS hcT hW hx)
@@ -245,6 +323,15 @@ theorem om_vac_algComb {x : GA D S} (hx : x ∈ GfC S) {h : GA D T} (hh : h ∈ 
 
 end Gen
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t x hx h hh`. Establish `hW : IsWeilDatumO W.ψ A' WW _ _ (X.ω' t)` using `hX.is.weil' t`. Establish `hv : IsVacO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.Λ X.rW.Λ X.vac'` using `hX.is.isVac'`. Establish `hθ : IsInfFam W.θ` using `hv.2.inf`. Establish `hS : IsSelfDualC A' X.rA'.Λ` using `hX.is.rigA'.1`.
+
+Establish `hT : IsSelfDualC WW X.rW.Λ` using `hX.is.rigW.1`. Establish `hf` using `GlobalTheory.T.finiteDatum_isAlgebraicCombination_definiteBottom hX t`. Take `⟨k, c, w, hc, hw, e⟩` from `om_alg hv hS hT hW (om_vac_algComb hv hS hT (fun τ => (hX.is.rigA'.2.2 τ).1) (fun τ => (hX.is.rigW.2.2 τ).1) hW hx hh) hf`. Use `⟨k, c, w, hc, hw, fun l => GlobalTheory.PlaceDatum.exists_nsmul_mem_latO' hS.1 hT.1 _ (hw l), fun P => ?_⟩` and prove the remaining obligations. Establish `e1` using `(GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ A' WW _ _ (X.ω' t) hW hθ X.rA'.s X.rA'.s X.rA'.B X.rA'.B X.rW.s X.rW.s X.rW.B X.rW.B x h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ hx, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.Finit …`.
+
+Establish `e2` using `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ A' WW hv.1 hθ X.rA'.s X.rW.s X.rA'.B X.rW.B X.vac' hv.2.theta k c w hw P).1`. Establish `ft` using `(GlobalTheory.FinTranslate.finite_translate D W.ψ W.θ A' WW hv.1 hθ X.vac' hv.2.theta).2`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Tri.ker' thetaKO`. Rewrite using `[e1, e, ← e2, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(ft (w l) (hw l)).2, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem ker'_eq_sum_jets : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ → IsBottomTri W i j X →
     ∀ (t : T), ∀ x ∈ GfC A', ∀ h ∈ GfC WW, ∃ (k : ℕ) (c : Fin k → ℂ) (w : Fin k → WO A' WW),

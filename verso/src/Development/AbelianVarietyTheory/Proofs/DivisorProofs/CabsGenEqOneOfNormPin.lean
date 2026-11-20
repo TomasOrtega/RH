@@ -14,6 +14,49 @@ namespace GlobalTheory.GeoLevel
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ σ' g ty F i i' P P' ρ ν y₀ z₀ y' t hp hp' hu hu' hx hx' hmv hb`. Take `⟨Hm, χ, fr, θ, Fd, hH, -, him, hd, hn, hc, h0, ha, hv, hF, hI⟩` from `hx`. Take `⟨Hm', χ', fr', θ', Fd', hH', -, him', hd', hn', hc', h0', ha', hv', hF', hI'⟩` from `hx'`. Take `⟨O, ω, o1, o2, o3, o4, o5⟩` from `GlobalTheory.MoveValues.frMove_values E H Dw l Xo c σ ρ ν _ _ hmv`. Establish `hxρ : z₀.x = y₀.x ≫ ρ` using `hb.1.symm.trans hmv.1`.
+
+Take `⟨hxx, -, hbc⟩` from `hb`. Use `clear hmv`. Take `⟨gam, hl, hg1, hg4, hex0⟩` from `exists_isometry_of_sabMap F ν hp hp' ((congrArg (· ≫ ρ) hu).symm.trans (hxρ.symm.trans hu'))`. Take `⟨h, hdet, hh⟩ : ∃ h : Matrix (Fin g) (Fin g) ℂ, IsUnit h.det ∧ ∀ z, h *ᵥ z = hl z` from `⟨LinearMap.toMatrix' hl.toLinearMap, by`. Rewrite using `[LinearMap.det_toMatrix']`.
+
+Conclude with `LinearEquiv.isUnit_det' hl,`. Use `fun a => by rw [LinearMap.toMatrix'_mulVec]; rfl⟩`. Establish `hg : ∀ a, P' (gam a) = h *ᵥ P a` using `fun a => by rw [hh, hg4]`. Establish `hex : ∀ z, (F.ex i' P' (h *ᵥ z)).left = (F.ex i P z).left ≫ ν.φ` using `fun z => by rw [hh, hex0]`. Establish `hspan : Submodule.span ℝ (P.range : Set (Fin g → ℂ)) = ⊤`.
+
+Rewrite using `[AddMonoidHom.coe_range]`. Conclude with `hp.2.2.2.1`. Establish `hHH : ∀ z w, hermForm Hm' (h *ᵥ z) (h *ᵥ w) = hermForm Hm z w` using `hermForm_eq_of_im _ hspan Hm Hm' h (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Rewrite using `[← hg, ← hg, him, him', hg1])`.
+
+Establish `hexp : ∀ a ∈ P.range, ∀ z, F.ex i P (z + a) = F.ex i P z` using `fun a ha z => by`. Rewrite using `[F.ex_add i P hp, (F.ex_ker i P hp a).2 ha]`. Conclude with `@_root_.mul_one _ (CategoryTheory.Hom.monoid).toMulOneClass _`. Establish `hcov : ∀ z, ∃ j, ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun z => GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB _`. Establish `hcov2 : ∀ z, ∃ q : Xo.univ.t.PP.L.ι × Xo.univ.t.PP.L.ι, ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ O q.1 q.2` using `fun z => by`.
+
+Take `⟨j, hj⟩` from `hcov z`. Take `⟨j', hj'⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB ((F.ex i P z).left ≫ ν.φ)`. Conclude with `⟨(j', j), (o1 _ _ _).2 ⟨hj', hj⟩⟩`. Establish `tr : ∀ j j' z, ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ O j j' → ⊤ ≤ (F.ex i' P' (h *ᵥ z)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun j j' z hz => by`. Rewrite using `[hex]`.
+
+Conclude with `((o1 _ _ _).1 hz).1`. Establish `tr2 : ∀ j j' z, ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ O j j' → ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j'` using `fun j j' z hz => ((o1 _ _ _).1 hz).2`. Establish `hm : ∀ j, ∀ a ∈ P.range, ∀ z, ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j → ‖fr j z‖ = Real.exp (Real.pi * (hermForm Hm z a).re + Real.pi / 2 * (hermForm Hm a a).re) * ‖fr j (z + a)‖`. Introduce and unpack `j _ ⟨a, rfl⟩ z hz`. Conclude with `norm_factor Hm _ _ _ _ _ (ha a j z).1 ((ha a j z).2 hz)`.
+
+Establish `dl : Differentiable ℂ (fun z' : Fin g → ℂ => h *ᵥ z')` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin h)).differentiable`. Establish `hw0 : ∀ z, (F.ex i P z).left ≫ Xo.univ.t.G.hom = (y₀.x : Sp ℂ ⟶ Xo.X)` using `fun z => (Over.w (F.ex i P z)).trans hu.symm`. Establish `hw0' : ∀ z, (F.ex i' P' z).left ≫ Xo.univ.t.G.hom = (z₀.x : Sp ℂ ⟶ Xo.X)` using `fun z => (Over.w (F.ex i' P' z)).trans hu'.symm`. Establish `hz0 : (F.ex i P 0).left = (y₀.x : Sp ℂ ⟶ Xo.X) ≫ eSec Xo.univ.t.G`. Rewrite using `[(F.ex_ker i P hp 0).2 (zero_mem _), hu]`.
+
+Both sides reduce to the same expression. Establish `hfr : ∀ q : Xo.univ.t.PP.L.ι × Xo.univ.t.PP.L.ι, ∀ z, ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ O q.1 q.2 → fr' q.1 (h *ᵥ z) = valAt' (F.ex i P z).left (O q.1 q.2) (ω q.1 q.2) * fr q.2 z` using `frames_eq P.range hspan (fun q : Xo.univ.t.PP.L.ι × Xo.univ.t.PP.L.ι => {z | ⊤ ≤ (F.ex i P z).left ⁻¹ᵁ O q.1 q.2}) (fun j => GlobalTheory.FamilyUnif_isOpen_ex F i P hp _) hcov2 (fun j a ha z hz => by rw [Set.mem_setOf_eq, hexp a ha]; exact hz) (fun q z => valAt' (F.ex i P z).left …`. Rewrite using `[hc q.2 q'.2 z ((top_le_preimage_inf _ _ _).2 ⟨tr2 _ _ z h1, tr2 _ _ z h2⟩), ← mul_assoc, o3 _ _ _ _ _ h1 h2, mul_assoc])`. Use the proof step `(fun q q' z h1 h2 => by`. Establish `e2` using `hc' q.1 q'.1 (h *ᵥ z) ((top_le_preimage_inf _ _ _).2 ⟨tr _ _ _ h1, tr _ _ _ h2⟩)`.
+
+Rewrite `e2` using `[hex]`. Conclude with `e2)`. Use the proof step `(fun q hz => by`. Establish `t0` using `tr _ _ 0 hz`. Simplify using `only [Matrix.mulVec_zero] at t0 ⊢`.
+
+Rewrite using `[h0 _ (tr2 _ _ 0 hz), h0' _ t0, hxρ]`. Conclude with `o4 _ _ _ _ hz0 hz)`. Use the proof step `(fun q a haa z hz => by`. Rewrite using `[hexp a haa, norm_mul, norm_mul, hm _ a haa z (tr2 _ _ z hz)]`. Use the proof step `ring)`.
+
+Use the proof step `(by`. Introduce and unpack `q _ ⟨a, rfl⟩ z hz`. Use `norm_factor Hm' _ _ _ _ _ (ha' (gam a) q.1 (h *ᵥ z)).1 ((ha' (gam a) q.1 (h *ᵥ z)).2 (tr _ _ z hz))` as an intermediate fact. Rewrite `this` using `[hg, hHH, hHH, ← Matrix.mulVec_add]`. Conclude with `this)`.
+
+Establish `hS : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `by simp [spMap]`. Establish `hbc' : GlobalTheory.Frames.SecBC (RingHom.id ℂ) (Formalism.L2.PjFree.toC (t none : CAt σ)) z₀.x y'.x z₀.s y'.s`. Take `⟨pm, p1, p2, p3⟩` from `hbc`. Conclude with `⟨pm, p1, by rw [hid]; exact p2.trans (Category.comp_id _).symm, p3⟩`.
+
+Establish `hθ : ∀ z, θ z = Formalism.L2.PjFree.toC (t none : CAt σ) * θ' (h *ᵥ z)` using `fun z => by`. Take `⟨q, hq⟩` from `hcov2 z`. Set `p : Over.mk (y₀.x : Sp ℂ ⟶ Xo.X) ⟶ Xo.univ.t.G` to `Over.homMk (F.ex i P z).left (hw0 z)`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 _) p)`. Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 _) p)`.
+
+Establish `v1` using `hv q.2 z _ e1 e2 (tr2 _ _ z hq)`. Establish `hval` using `GlobalTheory.ThetaPtChg.val_of_secBC hS (Xo := Xo) _ _ hxx _ _ _ hbc' (Over.homMk (F.ex i' P' (h *ᵥ z)).left (hw0' _)) q.1 _ _ (fun pt h1 h2 => hv' q.1 (h *ᵥ z) pt h1 h2 (tr _ _ z hq)) (fun pt h1 h2 => o5 q.1 q.2 _ pt _ e1 e2 (h1.trans (hex z)) h2 hq)`. Establish `hval2 : valAt' (F.ex i P z).left (O q.1 q.2) (ω q.1 q.2) * (θ z * fr q.2 z) = Formalism.L2.PjFree.toC (t none : CAt σ) * (θ' (h *ᵥ z) * fr' q.1 (h *ᵥ z))` using `(congrArg (valAt' (F.ex i P z).left (O q.1 q.2) (ω q.1 q.2) * ·) v1).symm.trans hval`. Rewrite `hval2` using `[hfr q z hq]`. Apply `mul_right_cancel₀ (mul_ne_zero (o2 _ _ _ hq) (hn _ z (tr2 _ _ z hq)))` to reduce the goal to its premises.
+
+Take the linear combination `hval2`. Establish `ht0 : Formalism.L2.PjFree.toC (t none : CAt σ) ≠ 0` using `Units.ne_zero (M₀ := ℂ) (t none)`. Establish `hθp : ∀ a ∈ P.range, ∀ z, ‖θ (z + a)‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm (z + a) (z + a)).re) = ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re)` using `fun a ha z => by`. Take `⟨j, hj⟩` from `hcov z`. Establish `hj' : ⊤ ≤ (F.ex i P (z + a)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `by rw [hexp a ha]; exact hj`.
+
+Set `p : Over.mk (y₀.x : Sp ℂ ⟶ Xo.X) ⟶ Xo.univ.t.G` to `Over.homMk (F.ex i P z).left (hw0 z)`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 _) p)`. Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 _) p)`. Establish `v1` using `hv j z _ e1 e2 hj`. Establish `v2` using `hv j (z + a) _ (by rw [hexp a ha]; exact e1) e2 hj'`.
+
+Conclude with `normSq_periodic hH _ _ _ _ z a (hn j _ hj') (v2.symm.trans v1) (hm j a ha z hj)`. Use `haveI : Countable P.range := by haveI := hp.2.2.1`. Conclude with `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hinj : Function.Injective (fun z : Fin g → ℂ => h *ᵥ z)` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det h).2 hdet)`. Establish `hn0 : ‖Formalism.L2.PjFree.toC (t none : CAt σ)‖ ≠ 0` using `norm_ne_zero_iff.2 ht0`.
+
+Establish `key : ∀ z, ‖θ' (h *ᵥ z)‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm' (h *ᵥ z) (h *ᵥ z)).re) = (‖Formalism.L2.PjFree.toC (t none : CAt σ)‖ ^ 2)⁻¹ * (‖θ z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re))` using `fun z => by rw [hθ, hHH, norm_mul, mul_pow]; field_simp`. Establish `hmean` using `mean_comp_eq P.range P'.range h hdet (fun z => ⟨?_, ?_⟩) Fd Fd' hF hF' (fun z => ‖θ' z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm' z z).re)) (fun a ha z => by simp only [key, hθp a ha z])`. Simplify using `only [key] at hmean`. Rewrite `hmean` using `[hI', integral_const_mul, mul_div_assoc, hI, mul_one, inv_eq_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hmean`.
+
+Introduce and unpack `⟨a, ha⟩`. Use `⟨gam.symm a, hinj ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← hg, gam.apply_symm_apply, ha]`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨gam a, hg a⟩`.
+-/
 theorem cabs_gen_eq_one_of_normPin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (σ' : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ' ty) (i i' : Fin F.n) (P : (F.Di i).La →+ (Fin g → ℂ)) (P' : (F.Di i').La →+ (Fin g → ℂ)) (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) (y z y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), IsPeriod (F.Di i) ty P → IsPeriod (F.Di i') ty P' → y.x = F.u i P → z.x = F.u i' P' → NormPin F i P y → NormPin F i' P' z → FrMove ρ ν y y' → FrBor t z y' → cabs (t none : CAt σ) = 1 := by
   intro E _ _ _ H Dw l Xo c σ σ' g ty F i i' P P' ρ ν y₀ z₀ y' t hp hp' hu hu' hx hx' hmv hb
   obtain ⟨Hm, χ, fr, θ, Fd, hH, -, him, hd, hn, hc, h0, ha, hv, hF, hI⟩ := hx

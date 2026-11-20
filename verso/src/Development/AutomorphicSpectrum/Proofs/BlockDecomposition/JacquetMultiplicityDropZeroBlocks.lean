@@ -15,6 +15,13 @@ section Blocks
 
 variable {R : Type} [Field R] {r r' : ℕ} {d : Fin r → ℕ} {o : Fin r' → Fin r}
 
+/- English proof (translation)
+Introduce `x`. Establish `key : ∀ (j : Fin r) (b : Fin r') (hb : o b = j) (a : Fin r') (ha : o a = j), (hb ▸ x b : GL (Fin (d j)) R) = ha ▸ x a`. Introduce `j b hb a ha`. Take `rfl : b = a` from `ho (hb.trans ha.symm)`. Both sides reduce to the same expression.
+
+Use `⟨(fun j => if hj : ∃ a, o a = j then hj.choose_spec ▸ x hj.choose else 1 : ∀ j, GL (Fin (d j)) R), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `hj : ∃ b, o b = o a` using `⟨a, rfl⟩`. Use `show (if hj : ∃ b, o b = o a then (hj.choose_spec ▸ x hj.choose : GL (Fin (d (o a))) R) else 1) = x a`. Rewrite using `[dif_pos hj]`.
+
+Conclude with `key (o a) _ hj.choose_spec a rfl`.
+-/
 theorem dropHom_surjective (ho : Function.Injective o) :
     Function.Surjective (GlobalTheory.CompanionTheory.FineProd.dropHom (k := R) d o) := by
   classical
@@ -35,6 +42,15 @@ theorem dropHom_surjective (ho : Function.Injective o) :
 variable {n : Type} [Fintype n] [DecidableEq n]
   {e : (Σ j, Fin (d j)) ≃ n} {e' : (Σ a, Fin (d (o a))) ≃ n}
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[GlobalTheory.SmGL.mem_unipRad, GlobalTheory.SmGL.mem_unipRad, GlobalTheory.SmGL.mem_parab_iff, GlobalTheory.SmGL.mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a b i j hab => ?_, fun a i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, he]`. Conclude with `h1 _ _ i j (hm hab)`. Rewrite using `[he, he]`. Conclude with `h2 _ i j`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨fun A B i j hBA => ?_, fun A i j => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hne A (Fin.pos i).ne'`. Take `⟨b, rfl⟩` from `hne B (Fin.pos j).ne'`. Rewrite using `[← he, ← he]`. Conclude with `h1 a b i j (hm.lt_iff_lt.1 hBA)`.
+
+Take `⟨a, rfl⟩` from `hne A (Fin.pos i).ne'`. Rewrite using `[← he, ← he]`. Conclude with `h2 a i j`.
+-/
 theorem unipRad_eq (hm : StrictMono o) (hne : ∀ j, d j ≠ 0 → j ∈ Set.range o)
     (he : ∀ a t, e' ⟨a, t⟩ = e ⟨o a, t⟩) : unipRad R e = unipRad R e' := by
   ext g
@@ -57,6 +73,13 @@ theorem unipRad_eq (hm : StrictMono o) (hne : ∀ j, d j ≠ 0 → j ∈ Set.ran
       rw [← he, ← he]
       exact h2 a i j
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨a, i⟩, rfl⟩` from `e'.surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `e'.surjective q`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Establish `h1` using `GlobalTheory.SmGL.leviEmb_apply_same R e g (o a) i j`. Establish `h2` using `GlobalTheory.SmGL.leviEmb_apply_same R e' (GlobalTheory.CompanionTheory.FineProd.dropHom (k := R) d o g) a i j`. Rewrite `h1` using `[← he, ← he]`. Conclude with `h1.trans h2.symm`.
+
+Establish `h1` using `GlobalTheory.SmGL.leviEmb_apply_ne R e g (hm.injective.ne hab) i j`. Establish `h2` using `GlobalTheory.SmGL.leviEmb_apply_ne R e' (GlobalTheory.CompanionTheory.FineProd.dropHom (k := R) d o g) hab i j`. Rewrite `h1` using `[← he, ← he]`. Conclude with `h1.trans h2.symm`.
+-/
 theorem leviEmb_eq (hm : StrictMono o) (he : ∀ a t, e' ⟨a, t⟩ = e ⟨o a, t⟩)
     (g : Levi R fun j => Fin (d j)) :
     leviEmb R e g = leviEmb R e' (GlobalTheory.CompanionTheory.FineProd.dropHom (k := R) d o g) := by
@@ -79,6 +102,11 @@ theorem leviEmb_eq (hm : StrictMono o) (he : ∀ a t, e' ⟨a, t⟩ = e ⟨o a, 
 
 omit [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Unfold `GlobalTheory.SmGL.modExp`. Use `congr 1`. Use `all_goals`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `Fintype.sum_of_injective o hm.injective _ _ (fun j hj => ?_) (fun b => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hd : d j = 0`. Simplify using `[hd]`. Conclude with `absurd (hne j hd) hj`. Simplify using `[hm.lt_iff_lt]`.
+-/
 theorem modExp_drop (hm : StrictMono o) (hne : ∀ j, d j ≠ 0 → j ∈ Set.range o) (a : Fin r') :
     modExp (fun b => Fin (d (o b))) a = modExp (fun j => Fin (d j)) (o a) := by
   unfold GlobalTheory.SmGL.modExp
@@ -98,6 +126,15 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {r r' : ℕ} {d : Fin r → ℕ} {o : Fin r' → Fin r}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.SmGL.deltaHalf_apply, GlobalTheory.SmGL.deltaHalf_apply]`. Use `symm`. Use `Fintype.prod_of_injective o hm.injective _ _ (fun j hj => ?_) (fun a => ?_)` and prove the remaining obligations. Establish `hd : d j = 0`. Assume the negation of the conclusion as `hd`.
+
+Conclude with `hj (hne j hd)`. Use `haveI : IsEmpty (Fin (d j)) := by`. Rewrite using `[hd]`. Use `infer_instance`. Establish `hdet : Matrix.GeneralLinearGroup.det (g j) = 1`.
+
+Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_isEmpty]`. Rewrite using `[hdet, map_one]`. Rewrite using `[GlobalTheory.CompanionTheory.FineProd.JmDrop.modExp_drop hm hne a] first`. Consider the case `rfl`.
+
+Consider the case `skip`.
+-/
 theorem deltaHalf_drop (hm : StrictMono o) (hne : ∀ j, d j ≠ 0 → j ∈ Set.range o)
     (g : Levi k fun j => Fin (d j)) :
     deltaHalf k (fun j => Fin (d j)) g =
@@ -139,6 +176,9 @@ def jacDrop (hm : StrictMono o) (hne : ∀ j, d j ≠ 0 → j ∈ Set.range o)
 
 end Local
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r r' N y hd o hm hne hd' V _ _ π`. Establish `he` using `GlobalTheory.T.standard_blocks_reindex_strictMono (fun j => (y j).1) hd o hm hne hd'`. Take `⟨φ⟩` from `GlobalTheory.T.tensor_product_drop_zero_factors y o hm hne`. Unfold `Zc.jm`. Rewrite using `[GlobalTheory.SmGL.jhMult_congr_left φ, GlobalTheory.SmGL.jhMult_congr_right _ (GlobalTheory.CompanionTheory.FineProd.JmDrop.jacDrop (d := fun j => (y j).1) (o := o) hm hne he π), GlobalTheory.SmGL.EmptyBlocks.jhMult_comp_surjective _ (GlobalTheory.CompanionTheory.FineProd.JmDrop …`.
+-/
 theorem jm_drop : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {r r' N : ℕ} (y : Fin r → IrrGL k) (hd : ∑ a, (y a).1 = N) (o : Fin r' → Fin r), StrictMono o → (∀ j, (y j).1 ≠ 0 → j ∈ Set.range o) → ∀ (hd' : ∑ a, (y (o a)).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), jm y hd π = jm (fun a => y (o a)) hd' π := by
   intro k _ _ _ _ r r' N y hd o hm hne hd' V _ _ π
   have he := GlobalTheory.T.standard_blocks_reindex_strictMono (fun j => (y j).1) hd o hm hne hd'

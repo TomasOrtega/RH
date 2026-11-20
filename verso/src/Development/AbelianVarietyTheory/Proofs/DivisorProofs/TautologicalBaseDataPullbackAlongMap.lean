@@ -19,18 +19,50 @@ noncomputable section
 
 namespace GlobalTheory.PullFrom
 
+/- English proof (translation)
+Simplify using `[spMap]`.
+-/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap]
 
+/- English proof (translation)
+Take `⟨J, hJ, -⟩` from `exists_good L hL z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun k => k.elim)`. Conclude with `⟨J, hJ⟩`.
+-/
 theorem good_exists {X Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (z : Z) : ∃ J, Good L z J := by
   obtain ⟨J, hJ, -⟩ := exists_good L hL z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun k => k.elim)
   exact ⟨J, hJ⟩
 
+/- English proof (translation)
+The claim follows from `Over.tensorObj_ext _ _ h₁ h₂`.
+-/
 private theorem sq_ext_lemma {S Z : Scheme.{0}} {G : Over S} {f g : Z ⟶ (G2 G).left}
     (h₁ : f ≫ (fst G G).left = g ≫ (fst G G).left) (h₂ : f ≫ (snd G G).left = g ≫ (snd G G).left) : f = g :=
   Over.tensorObj_ext _ _ h₁ h₂
 
+/- English proof (translation)
+Introduce `o W _ _ _ T R V _ _ _ _ θ iw I _ s ε n Q e Q' e' hs hQ hQ'`. Take `⟨β₀, β₀₂, w₀, hpb₀, hsq₀, hw₀, hc₀, hτ₀⟩` from `hQ`. Take `⟨β₁, β₁₂, w₁, hpb₁, hsq₁, hw₁, hc₁, hτ₁⟩` from `hQ'`. Establish `hcomp : spMap θ ≫ spMap iw = spMap (θ.comp iw)` using `(spMap_comp_ring iw θ).symm`. Take `⟨β, β₂, hpb, hsq, hβ, hβ₂⟩` from `GlobalTheory.T.exists_cancel_grpPullback_with_squares (Sp V) (Sp R) (Sp W) Q'.B Q.B T.B (spMap θ) (spMap iw) β₁ β₀ β₁₂ β₀₂ (hcomp ▸ hpb₁) hpb₀ hsq₁ hsq₀`.
+
+Take `⟨w, hw, hrel⟩` from `GlobalTheory.T.mumfordBundleIso_cancel_values_mul (Sp V) (Sp R) (Sp W) Q'.B Q.B T.B Q'.M.L Q.M.L T.M.L Q'.M.isLB Q.M.isLB T.M.isLB β₂ β₀₂ β₁₂ hβ₂ w₀ hw₀ w₁ hw₁`. Establish `hcc : ∀ a, (Q'.c a).left ≫ β = spMap θ ≫ (Q.c ((e'.trans e.symm) a)).left`. Introduce `a`. Apply `hpb₀.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hβ, hc₁, hc₀, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`.
+
+Rewrite using `[← hcomp, Category.assoc]`. Simplify using `only [Category.assoc, hpb.1.w]`. Simplify using the standard rewrite rules. Establish `hsqT : ∀ a b : Q.X, (lift (Q.c a) (Q.c b)).left ≫ β₀₂ = spMap iw ≫ (lift (T.c₀ ((n : ℤ) • e a)) (T.c₀ ((n : ℤ) • e b))).left`. Introduce `a b`.
+
+Apply `sq_ext_lemma` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq₀.1, ← Category.assoc, ← Over.comp_left, lift_fst, hc₀, Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, hsq₀.2, ← Category.assoc, ← Over.comp_left, lift_snd, hc₀, Category.assoc, ← Over.comp_left, lift_snd]`. Use `⟨β, β₂, w, hpb, hsq, hw, hcc, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+
+Use `set a₀ := (e'.trans e.symm) a with ha₀def`. Use `set b₀ := (e'.trans e.symm) b with hb₀def`. Establish `ha₀ : e a₀ = e' a` using `by simp [a₀]`. Establish `hb₀ : e b₀ = e' b` using `by simp [b₀]`. Establish `hsqQ : (lift (toUnit (TK V) ≫ Q'.c a) (toUnit (TK V) ≫ Q'.c b)).left ≫ β₂ = ((TK V).hom ≫ spMap θ) ≫ (lift (Q.c a₀) (Q.c b₀)).left`.
+
+Establish `h₁ : (lift (Q.c a₀) (Q.c b₀)).left ≫ (fst Q.B Q.B).left = (Q.c a₀).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `h₂ : (lift (Q.c a₀) (Q.c b₀)).left ≫ (snd Q.B Q.B).left = (Q.c b₀).left`. Rewrite using `[← Over.comp_left, lift_snd]`. Apply `sq_ext_lemma` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Over.comp_left, Category.assoc, hcc, Category.assoc, Category.assoc, h₁]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Over.comp_left, Category.assoc, hcc, Category.assoc, Category.assoc, h₂]`. Both sides reduce to the same expression. Take `⟨k₀, hk₀, hv₀⟩` from `hτ₀ a₀ b₀`.
+
+Take `⟨k₁, hk₁, hv₁⟩` from `hτ₁ a b`. Take `⟨x, y, hy, hxy, hxy'⟩` from `GlobalTheory.LaurentFrac.exists_frac R V θ s (fun i => (n : ℤ) * ε i (e' a) (e' b)) hs`. Take `⟨u, hu, hvu⟩` from `GlobalTheory.T.exists_generator_transport_mumfordBundleIso (Sp R) (Sp W) Q.B T.B Q.M.L T.M.L Q.M.isLB T.M.isLB β₀₂ w₀ hw₀ (𝟙_ (Over (Sp R))) (𝟙_ (Over (Sp W))) (Q.c a₀) (Q.c b₀) (T.c₀ ((n : ℤ) • e a₀)) (T.c₀ ((n : ℤ) • e b₀)) (spMap iw) (hsqT a₀ b₀) (T.τ₀ _ _) (T.τ₀_gen _ _)`. Use `⟨u, x, y, k₀, k₁, hu, hy, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hk₀, ha₀, hb₀]`.
+
+Conclude with `hxy`. Rewrite using `[hk₁]`. Conclude with `hxy'`. Introduce `z J hJ`. Take `⟨J₀, hJ₀⟩` from `good_exists T.M.isLB z`.
+
+Establish `hl : (toUnit (TK R)).left ≫ (lift (Q.c a₀) (Q.c b₀)).left = (lift (toUnit (TK R) ≫ Q.c a₀) (toUnit (TK R) ≫ Q.c b₀)).left`. Rewrite using `[← Over.comp_left, comp_lift]`. Rewrite using `[hv₀ z J₀ J hJ₀ hJ, hvu _ _ z J₀ J hJ₀ hJ, hl]`. Both sides reduce to the same expression. Introduce `z J J' hJ hJ'`.
+
+Take `⟨J₀, hJ₀⟩` from `good_exists T.M.isLB z`. Rewrite `hvu` using `[ha₀, hb₀]`. Rewrite using `[hv₁ z J₀ J' hJ₀ hJ', hrel _ _ z J' J J₀ hJ' hJ hJ₀, hvu _ ((TK V).hom ≫ spMap θ) z J₀ J hJ₀ hJ, hsqQ, Category.assoc ((TK V).hom) (spMap θ) (spMap iw), hcomp, _root_.mul_assoc]`.
+-/
 theorem pullData_of_dataFrom : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) (R V : Type) [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (θ : R →+* V) (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ) (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)) (Q' : Data V) (e' : Q'.X ≃+ (Fin T.r → ℤ)), (∀ i, θ (s i) ≠ 0) → DataFrom T iw s ε n Q e → DataFrom T (θ.comp iw) (fun i => θ (s i)) ε n Q' e' → PullData Q θ Q' (e'.trans e.symm) := by
   intro o W _ _ _ T R V _ _ _ _ θ iw I _ s ε n Q e Q' e' hs hQ hQ'
   obtain ⟨β₀, β₀₂, w₀, hpb₀, hsq₀, hw₀, hc₀, hτ₀⟩ := hQ

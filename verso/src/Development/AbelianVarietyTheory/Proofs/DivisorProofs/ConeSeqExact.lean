@@ -7,6 +7,9 @@ namespace GlobalTheory.EtC.ConeSeq
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m hm]`. Conclude with `⟨β, by simp [h]⟩`.
+-/
 theorem cls_eq {K I : Cx R} {n : ℤ} (x y : Cocycle K I n) (m : ℤ) (hm : m + 1 = n) (β : Cochain K I m)
     (h : (x : Cochain K I n) = (y : Cochain K I n) + δ m n β) :
     CohomologyClass.mk x = CohomologyClass.mk y := by
@@ -16,6 +19,39 @@ theorem cls_eq {K I : Cx R} {n : ℤ} (x y : Cocycle K I n) (m : ℤ) (hm : m + 
 
 end GlobalTheory.EtC.ConeSeq
 
+/- English proof (translation)
+Introduce `R _ K L f I n`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hb`.
+
+Take `⟨b, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ b _) = 0 at hb`. Rewrite `hb` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Take `⟨β, hβ⟩` from `hb`. Use `⟨CohomologyClass.mk (mappingCone.descCocycle f (n.negOnePow • β) b (by omega) ?_), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[δ_units_smul, hβ]`. Simplify using `[zcomp]`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ _ _) = _`. Use `congr 1`. Use `ext1`.
+
+Simplify using `[zcomp]`. Introduce and unpack `⟨z, rfl⟩`. Take `⟨c, rfl⟩` from `z.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ (zcomp _ c _) _) = 0`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+
+Use `⟨n.negOnePow • (mappingCone.inl f).comp (c : Cochain _ I n) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_units_smul, δ_comp _ _ _ 0 (n + 1) n (by omega) (by omega) rfl]`. Simplify using `[zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain, smul_smul]`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `ha`. Take `⟨a, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ a _) = 0 at ha`. Rewrite `ha` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ n (by omega)]`. Take `⟨γ, hγ⟩` from `ha`.
+
+Establish `hβ : δ n (n + 1) ((Cochain.ofHom (mappingCone.inr f)).comp γ (zero_add n)) = 0`. Rewrite using `[δ_ofHom_comp, hγ]`. Simplify using `[zcomp]`. Use `⟨CohomologyClass.mk (Cocycle.mk (-(n.negOnePow • (Cochain.ofHom (mappingCone.inr f)).comp γ (zero_add n))) (n + 1) rfl (by rw [δ_neg, δ_units_smul, hβ]; simp)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ _ _) = _`.
+
+Use `ConeSeq.cls_eq _ _ (n - 1) (by omega) (-((mappingCone.inl f).comp γ (by omega))) ?_` and prove the remaining obligations. Establish `key` using `δ_comp (mappingCone.inl f) γ (show -1 + n = n - 1 by omega) 0 (n + 1) n (by omega) (by omega) rfl`. Rewrite `key` using `[hγ]`. Simplify using `[zcomp] at key`. Simplify using `[zcomp, key, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+
+Introduce and unpack `⟨z, rfl⟩`. Take `⟨b, rfl⟩` from `z.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ (zcomp _ b _) _) = 0`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ n (by omega)]`. Use `⟨-(n.negOnePow • (mappingCone.snd f).comp (b : Cochain _ I n) (zero_add n)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[δ_neg, δ_units_smul, δ_comp _ _ _ 1 (n + 1) (n + 1) rfl (zero_add 1) rfl]`. Simplify using `[zcomp, smul_smul, Cochain.comp_assoc_of_second_is_zero_cochain]`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hc`.
+
+Take `⟨c, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ c _) = 0 at hc`. Rewrite `hc` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ n (by omega)]`. Take `⟨β, hβ⟩` from `hc`. Use `set a : Cochain K I n := (mappingCone.inl f).comp (c : Cochain _ I (n + 1)) (by omega) + n.negOnePow • (Cochain.ofHom f).comp β (zero_add n) with ha_def`.
+
+Establish `hsnd` using `δ_comp (mappingCone.snd f) β (zero_add n) 1 (n + 1) (n + 1) rfl (zero_add 1) rfl`. Rewrite `hsnd` using `[hβ]`. Simplify using `[zcomp] at hsnd`. Establish `hdec : (c : Cochain _ I (n + 1)) = (mappingCone.fst f).1.comp a (by omega) + δ n (n + 1) ((mappingCone.snd f).comp β (zero_add n))`. Rewrite using `[mappingCone.ext_cochain_from_iff f n (n + 1) rfl]`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `[ha_def, hsnd, Cochain.comp_assoc_of_second_is_zero_cochain]`. Simplify using `[ha_def, hsnd, Cochain.comp_assoc_of_second_is_zero_cochain]`. Establish `hcoc : δ n (n + 1) a = 0`. Establish `h1` using `congrArg (δ (n + 1) (n + 2)) hdec`.
+
+Rewrite `h1` using `[δ_add, δ_δ, add_zero, Cocycle.δ_eq_zero c (n + 2)]`. Rewrite `h1` using `[δ_comp _ _ _ 2 (n + 1) (n + 2) (by omega) rfl rfl]`. Simplify using `at h1`. Establish `h2` using `congrArg (fun x => (mappingCone.inl f).comp x (show -1 + (n + 2) = n + 1 by omega)) h1`. Simplify using `using h2.symm`.
+
+Use `⟨CohomologyClass.mk (Cocycle.mk a (n + 1) rfl hcoc), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ _ _) = _`. Use `ConeSeq.cls_eq _ _ n rfl (-((mappingCone.snd f).comp β (zero_add n))) ?_` and prove the remaining obligations. Simplify using `[zcomp, hdec]`. Introduce and unpack `⟨z, rfl⟩`.
+
+Take `⟨a, rfl⟩` from `z.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp _ (zcomp _ a _) _) = 0`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ n (by omega)]`. Conclude with `⟨0, by simp [zcomp]⟩`.
+-/
 theorem GlobalTheory.EtC.coneSeq_exact : ∀ (R : Type) [CommRing R] {K L : Cx R} (f : K ⟶ L) (I : Cx R) (n : ℤ), Function.Exact (cpull (mappingCone.inr f) I n) (cpull f I n) ∧ Function.Exact (cpull f I n) (cpre (mappingCone.fst f) I n (n + 1) (by omega)) ∧ Function.Exact (cpre (mappingCone.fst f) I n (n + 1) (by omega)) (cpull (mappingCone.inr f) I (n + 1)) := by
   intro R _ K L f I n
   refine ⟨?_, ?_, ?_⟩

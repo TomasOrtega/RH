@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.EpsRigid
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h0 : TrivSqZeroExt.fst x = 0` using `hx`. Establish `hx' : x = TrivSqZeroExt.inr (TrivSqZeroExt.snd x)`. Use `ext`. Simplify using `[h0]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[mem_nilradical]`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, hx', TrivSqZeroExt.inr_mul_inr]`.
+-/
 theorem fst_ker_le_nilradical (k : Type) [Field k] :
     RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom ≤ nilradical (DualNumber k) := by
   intro x hx
@@ -25,6 +30,11 @@ theorem fst_ker_le_nilradical (k : Type) [Field k] :
   refine ⟨2, ?_⟩
   rw [pow_two, hx', TrivSqZeroExt.inr_mul_inr]
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom k k k).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, by simp⟩`. Use `⟨(RingHom.quotientKerEquivOfSurjective hs).symm.toRingHom, ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[RingEquiv.eq_symm_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem quot_mk_eq (k : Type) [Field k] :
     ∃ e : k →+* DualNumber k ⧸ RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom,
       Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom) = e.comp (TrivSqZeroExt.fstHom k k k).toRingHom := by
@@ -35,6 +45,19 @@ theorem quot_mk_eq (k : Type) [Field k] :
   rw [RingEquiv.eq_symm_apply]
   rfl
 
+/- English proof (translation)
+Introduce `k _ S G' _ hG G _ g₂ φ₁ φ₂ h₂ h0 u _ v _ hu`. Establish `hsq : (φ₂ ≫ v.left) ≫ G.hom = G'.hom ≫ g₂`. Rewrite using `[Category.assoc, Over.w v, h₂.1.w]`. Set `w : G' ⟶ G'` to `Over.homMk (h₂.1.lift (φ₂ ≫ v.left) G'.hom hsq) (h₂.1.lift_snd _ _ _)`. Establish `hw : w.left ≫ φ₂ = φ₂ ≫ v.left` using `h₂.1.lift_fst _ _ _`.
+
+It suffices to establish `huw : u = w by rw [huw, hw]`. Take `⟨e, he⟩` from `quot_mk_eq k`. Establish `hsp : spMap (Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom)) = spMap e ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom`. Rewrite using `[he, spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Use `GlobalTheory.NilRigidity.eq_of_eq_on_quotient _ (fst_ker_le_nilradical k) G' G' hG u w ?_ ?_` and prove the remaining obligations. Establish `hj : ∀ x : pullback G'.hom (spMap (Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom))) ⟶ G'.left, x ≫ G'.hom = pullback.fst G'.hom (spMap (Ideal.Quotient.mk (RingHom.ker (TrivSqZeroExt.fstHom k k k).toRingHom))) ≫ G'.hom → x ≫ φ₁ = x ≫ φ₂`. Introduce `x hx`. Use `h0 _ x (pullback.snd _ _ ≫ spMap e) ?_` and prove the remaining obligations. Rewrite using `[hx, pullback.condition, Category.assoc, hsp]`.
+
+Apply `h₂.1.hom_ext` to reduce the goal to its premises. Establish `a1` using `hj (pullback.fst _ _ ≫ u.left) (by rw [Category.assoc, Over.w u])`. Establish `a2` using `hj (pullback.fst _ _) rfl`. Simplify using `only [Category.assoc] at a1 a2 ⊢`. Rewrite using `[hw, ← a1, hu, ← Category.assoc, a2, Category.assoc]`.
+
+Rewrite using `[Category.assoc, Category.assoc, Over.w u, Over.w w]`. Rewrite using `[IsMonHom.one_hom]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left]`. Apply `h₂.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hw, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Out.PullGtPf.IsGrpPullback.one_left h₂, Category.assoc, ← Over.comp_left, IsMonHom.one_hom]`. Rewrite using `[Category.assoc, Over.w w]`.
+-/
 theorem comm_of_comm :
     ∀ (k : Type) [Field k] {S : Scheme.{0}} (G' : Over (Sp (DualNumber k))) [GrpObj G'], IsAbelianScheme G' → ∀ (G : Over S) [GrpObj G] (g₂ : Sp (DualNumber k) ⟶ S) (φ₁ φ₂ : G'.left ⟶ G.left), IsGrpPullback G' G g₂ φ₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ G'.left) (y : Z ⟶ Sp k), x ≫ G'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ φ₁ = x ≫ φ₂) → ∀ (u : G' ⟶ G') [IsMonHom u] (v : G ⟶ G) [IsMonHom v], u.left ≫ φ₁ = φ₁ ≫ v.left → u.left ≫ φ₂ = φ₂ ≫ v.left := by
   intro k _ S G' _ hG G _ g₂ φ₁ φ₂ h₂ h0 u _ v _ hu

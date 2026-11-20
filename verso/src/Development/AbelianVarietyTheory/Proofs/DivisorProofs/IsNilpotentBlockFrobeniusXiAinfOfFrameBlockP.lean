@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.WinLift
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U V hUV hnil`. Use `haveI : IsLocalRing O := ReciprocityTheory.PGsh.Ainf.O_local O hv`. Apply `isNil_of_map F.a (WittVector.fontaineTheta O p) F.θ WittVector.frobenius F.σ F.θ_a F.σ_a` to reduce the goal to its premises. Use `isNil_of_theta_eq p F.θ F.σ (Fact.out) F.σ_pow _ _ ?_ hnil` and prove the remaining obligations. Introduce `i j`.
+
+Establish `hU : F.θ (U i j) = F.θ (F.a (V i j))`. Take `⟨c, hc⟩` from `hUV i j`. Establish `h` using `congrArg F.θ hc`. Rewrite `h` using `[map_sub, map_mul, theta_tau F hv hε, zero_mul, sub_eq_zero]`. Conclude with `h`.
+
+Simplify using `only [blk, Matrix.mul_diagonal, Matrix.map_apply]`. Break down `j with j | j` into its components or cases. Simplify using `only [Sum.elim_inl, map_mul, map_natCast, hU, F.θ_a, theta_frob_xi hv hε]`. Simplify using `only [Sum.elim_inr, map_mul, map_one, mul_one, hU]`.
+-/
 theorem isNil_V_blk_frob_xi :
     ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B) (V : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) (Ainf p O)), (∀ i j, F.τ ∣ U i j - F.a (V i j)) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) → IsNil (WittVector.fontaineTheta O p) WittVector.frobenius (V * blk d k (WittVector.frobenius (xi ε)) 1) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F d k U V hUV hnil

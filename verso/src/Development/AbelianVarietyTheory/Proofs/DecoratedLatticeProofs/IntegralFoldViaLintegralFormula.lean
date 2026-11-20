@@ -3,6 +3,11 @@ open MeasureTheory
 
 namespace GlobalTheory.FoldIntegral
 
+/- English proof (translation)
+Establish `hN : Measurable fun y => ∫⁻ s, ‖h (y, s)‖ₑ ∂m` using `hh.enorm.lintegral_prod_right'`. Establish `hp : Measurable fun y => ∫⁻ s, ENNReal.ofReal (h (y, s)) ∂m` using `hh.ennreal_ofReal.lintegral_prod_right'`. Establish `hn : Measurable fun y => ∫⁻ s, ENNReal.ofReal (-h (y, s)) ∂m` using `hh.neg.ennreal_ofReal.lintegral_prod_right'`. Establish `bp : ∫⁻ y, ∫⁻ s, ENNReal.ofReal (h (y, s)) ∂m ∂ν < ⊤` using `lt_of_le_of_lt (lintegral_mono fun y => lintegral_mono fun s => Real.ofReal_le_enorm _) hfin`. Establish `bn : ∫⁻ y, ∫⁻ s, ENNReal.ofReal (-h (y, s)) ∂m ∂ν < ⊤` using `lt_of_le_of_lt (lintegral_mono fun y => lintegral_mono fun s => (Real.ofReal_le_enorm _).trans (enorm_neg _).le) hfin`.
+
+Rewrite using `[← integral_toReal hp.aemeasurable (ae_lt_top hp bp.ne), ← integral_toReal hn.aemeasurable (ae_lt_top hn bn.ne), ← integral_sub (integrable_toReal_of_lintegral_ne_top hp.aemeasurable bp.ne) (integrable_toReal_of_lintegral_ne_top hn.aemeasurable bn.ne)]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_lt_top hN hfin.ne] with y hy`. Conclude with `integral_eq_lintegral_pos_part_sub_lintegral_neg_part ⟨(hh.comp measurable_prodMk_left).aestronglyMeasurable, hy⟩`.
+-/
 theorem integral_integral_eq_pos_sub_neg {Y Z : Type} [MeasurableSpace Y] [MeasurableSpace Z]
     (ν : Measure Y) (m : Measure Z) [SFinite m] (h : Y × Z → ℝ) (hh : Measurable h)
     (hfin : ∫⁻ y, ∫⁻ s, ‖h (y, s)‖ₑ ∂m ∂ν < ⊤) :
@@ -28,6 +33,11 @@ theorem integral_integral_eq_pos_sub_neg {Y Z : Type} [MeasurableSpace Y] [Measu
   exact integral_eq_lintegral_pos_part_sub_lintegral_neg_part
     ⟨(hh.comp measurable_prodMk_left).aestronglyMeasurable, hy⟩
 
+/- English proof (translation)
+Establish `hN : Measurable fun y => ∫⁻ s, ‖H (y, s)‖ₑ ∂m` using `hH.enorm.lintegral_prod_right'`. Establish `hI : Integrable (fun y => ∫ s, H (y, s) ∂m) ν` using `⟨hH.stronglyMeasurable.integral_prod_right'.aestronglyMeasurable, lt_of_le_of_lt (lintegral_mono fun y => enorm_integral_le_lintegral_enorm _) hfin⟩`. Rewrite using `[← L.integral_comp_comm hI]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_lt_top hN hfin.ne] with y hy`.
+
+Conclude with `(L.integral_comp_comm ⟨(hH.comp measurable_prodMk_left).aestronglyMeasurable, hy⟩).symm`.
+-/
 theorem clm_integral_integral {Y Z : Type} [MeasurableSpace Y] [MeasurableSpace Z]
     (ν : Measure Y) (m : Measure Z) [SFinite m] (H : Y × Z → ℂ) (hH : Measurable H)
     (hfin : ∫⁻ y, ∫⁻ s, ‖H (y, s)‖ₑ ∂m ∂ν < ⊤) (L : ℂ →L[ℝ] ℝ) :
@@ -42,6 +52,17 @@ theorem clm_integral_integral {Y Z : Type} [MeasurableSpace Y] [MeasurableSpace 
   exact (L.integral_comp_comm
     ⟨(hH.comp measurable_prodMk_left).aestronglyMeasurable, hy⟩).symm
 
+/- English proof (translation)
+Introduce `α Y Z _ _ _ μ Fs ν m S hS Φ hΦ c hc P hQ G hG hP hfin`. Use `haveI : IsFiniteMeasure (m.restrict S) := ⟨by simpa using hS⟩`. Establish `hint : IntegrableOn G Fs μ`. Use `⟨hG.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, hQ _ hG.enorm (hP (fun z => ‖z‖ₑ) (by simp))]`.
+
+Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hH : Measurable fun p : Y × Z => G (Φ p.1 p.2)` using `hG.comp hΦ`. Establish `key : ∀ L : ℂ →L[ℝ] ℝ, (∀ z, ‖L z‖ ≤ ‖z‖) → L (∫ x in Fs, G x ∂μ) = c * L (∫ y, ∫ s in S, G (Φ y s) ∂m ∂ν)`. Introduce `L hL`.
+
+Establish `hLm : Measurable L` using `L.continuous.measurable`. Establish `h1` using `clm_integral_integral ν (m.restrict S) _ hH hfin L`. Establish `h2` using `integral_integral_eq_pos_sub_neg ν (m.restrict S) (fun p : Y × Z => L (G (Φ p.1 p.2))) (hLm.comp hH) (lt_of_le_of_lt (lintegral_mono fun y => lintegral_mono fun s => by`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hL _)) hfin)`.
+
+Establish `h3` using `hQ (fun x => ENNReal.ofReal (L (G x))) (hLm.comp hG).ennreal_ofReal (hP (fun z => ENNReal.ofReal (L z)) (by simp))`. Establish `h4` using `hQ (fun x => ENNReal.ofReal (-L (G x))) (hLm.comp hG).neg.ennreal_ofReal (hP (fun z => ENNReal.ofReal (-L z)) (by simp))`. Simplify using `only at h1 h2`. Rewrite using `[h1, h2, ← L.integral_comp_comm hint, integral_eq_lintegral_pos_part_sub_lintegral_neg_part (L.integrable_comp hint), h3, h4, ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc, mul_sub]`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Use `key Complex.reCLM (fun z => by simpa using Complex.abs_re_le_norm z)` as an intermediate fact. Simplify using `using this`. Use `key Complex.imCLM (fun z => by simpa using Complex.abs_im_le_norm z)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fold : ∀ {α Y Z : Type} [MeasurableSpace α] [MeasurableSpace Y] [MeasurableSpace Z] (μ : Measure α) (Fs : Set α) (ν : Measure Y) (m : Measure Z) (S : Set Z), m S < ⊤ → ∀ (Φ : Y → Z → α), Measurable (Function.uncurry Φ) → ∀ (c : ℝ), 0 ≤ c → ∀ (P : (α → ENNReal) → Prop), (∀ F : α → ENNReal, Measurable F → P F → ∫⁻ x in Fs, F x ∂μ = ENNReal.ofReal c * ∫⁻ y, ∫⁻ s in S, F (Φ y s) ∂m ∂ν) → ∀ (G : α → ℂ), Measurable G → (∀ φ : ℂ → ENNReal, φ 0 = 0 → P (fun x => φ (G x))) → ∫⁻ y, ∫⁻ s in S, ‖G (Φ y s)‖ₑ ∂m ∂ν < ⊤ → IntegrableOn G Fs μ ∧ ∫ x in Fs, G x ∂μ = (c : ℂ) * ∫ y, ∫ s in S, G (Φ y s) ∂m ∂ν := by
   intro α Y Z _ _ _ μ Fs ν m S hS Φ hΦ c hc P hQ G hG hP hfin
   haveI : IsFiniteMeasure (m.restrict S) := ⟨by simpa using hS⟩

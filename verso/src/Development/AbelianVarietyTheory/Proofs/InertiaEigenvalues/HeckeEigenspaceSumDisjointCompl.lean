@@ -6,6 +6,9 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal Re
 
 namespace GlobalTheory.EtaJoin
 
+/- English proof (translation)
+Introduce `D i Y`. Conclude with `(Formalism.MainNotions.PairedCharacterCondition.CongruenceModules.heckeEig_indep (D.nd.T i) (D.nd.act i) (D.nd.T_sep i)).disjoint_biSup_biSup disjoint_compl_right`.
+-/
 theorem eigSum_disjoint_compl : ∀ (D : D7) (i : D.nd.Loc) (Y : Set (D.nd.X i)),
     Disjoint (D.nd.eigSum i Y) (D.nd.eigSum i Yᶜ) := by
   intro D i Y

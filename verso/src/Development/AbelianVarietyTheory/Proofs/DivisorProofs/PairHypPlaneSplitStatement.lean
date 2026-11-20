@@ -14,6 +14,9 @@ open GlobalTheory.ThK.DescB
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThKEvKernel.kernel_basic | exact GlobalTheory.ThKEvKernel.kernel_basic | (intros; apply GlobalTheory.ThKEvKernel.kernel_basic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pair_hyp_plane_split : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (n₁ : ℕ) (H : Plane E n n₁), (n₁ + 2 = n ∧ form σ X.J H.x H.x = 0 ∧ form σ X.J H.y H.y = 0 ∧ form σ X.J H.x H.y = 1 ∧

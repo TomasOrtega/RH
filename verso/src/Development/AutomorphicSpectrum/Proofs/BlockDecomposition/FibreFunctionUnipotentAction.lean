@@ -21,6 +21,9 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.FibKer.FibU
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v w`. Rewrite using `[extTensor_tmul, LinearMap.rTensor_tmul]`. Use `show ρ a v ⊗ₜ[ℂ] σ 1 w = _`. Rewrite using `[map_one, Module.End.one_apply]`.
+-/
 theorem extTensor_fst_one {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (a : G) :
     extTensor ρ σ (a, 1) = LinearMap.rTensor W (ρ a) := by
@@ -30,19 +33,31 @@ theorem extTensor_fst_one {G H V W : Type} [Group G] [Group H] [AddCommGroup V] 
   show ρ a v ⊗ₜ[ℂ] σ 1 w = _
   rw [map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← uM_add, ← uM_add]`. Conclude with `congrArg _ (add_comm a b)`.
+-/
 theorem uM_comm (n : ℕ) (a b : Fin n → k) : uM k n a * uM k n b = uM k n b * uM k n a := by
   rw [← uM_add, ← uM_add]
   exact congrArg _ (add_comm a b)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp [midV]`.
+-/
 theorem midV_add (i t : ℕ) (a b : Fin t → k) : midV k i t (a + b) = midV k i t a + midV k i t b := by
   funext j
   induction j using Fin.addCases <;> simp [midV]
 
+/- English proof (translation)
+Rewrite using `[topV_add_midV]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp [topP, middlePart]`.
+-/
 theorem col_eq (i t : ℕ) (a : Fin (i + t) → k) : a = topV k i t (topP i t a) + midV k i t (middlePart i t a) := by
   rw [topV_add_midV]
   funext j
   induction j using Fin.addCases <;> simp [topP, middlePart]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, levi_mul_uM, ← mul_assoc, ← mul_assoc, midV_add, uM_add]`. Use `congr 1`. Use `conv_lhs => rw [col_eq i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y), uM_add]`. Rewrite using `[← mul_assoc, uM_comm (i + t) (midV k i t v)]`. Conclude with `mul_assoc _ _ _`.
+-/
 theorem point_mul_uM (i t : ℕ) (κ : GL (Fin (i + t)) k) (v : Fin t → k) (y : Fin (i + t) → k) :
     uM k (i + t) (midV k i t v) * levi k (i + t) κ * uM k (i + t) y =
       uM k (i + t) (topV k i t (topP i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y))) *
@@ -54,10 +69,16 @@ theorem point_mul_uM (i t : ℕ) (κ : GL (Fin (i + t)) k) (v : Fin t → k) (y 
   rw [← mul_assoc, uM_comm (i + t) (midV k i t v)]
   exact mul_assoc _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cInd_point {G U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup U] [Module ℂ U]
     (H : Subgroup G) (ρ : Representation ℂ H U) (x : G) (f : cIndSpace H ρ) (p : G) :
     (cInd H ρ x f).1.1.1 p = f.1.1.1 (p * x) := rfl
 
+/- English proof (translation)
+The claim follows from `f.1.1.2 h p`.
+-/
 theorem cInd_equi {G U : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup U] [Module ℂ U]
     (H : Subgroup G) (ρ : Representation ℂ H U) (f : cIndSpace H ρ) (h : H) (p : G) :
     f.1.1.1 ((h : G) * p) = ρ h (f.1.1.1 p) := f.1.1.2 h p
@@ -66,6 +87,9 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {i t : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `e1 : fibV (prodPG τ σ (uM k (i + t) y) f) κ v = f.1.1.1 (uM k (i + t) (midV k i t v) * levi k (i + t) κ * uM k (i + t) y)` using `cInd_point (HPG k i t) (hRep τ σ) (uM k (i + t) y) f _`. Establish `e2` using `congrArg f.1.1.1 (point_mul_uM i t κ v y)`. Establish `e3` using `cInd_equi (HPG k i t) (hRep τ σ) f ⟨_, h⟩ (uM k (i + t) (midV k i t (v + middlePart i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y))) * levi k (i + t) κ)`. Establish `e4 : hRep τ σ ⟨_, h⟩ = topRep τ W (Multiplicative.ofAdd (topP i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y)))` using `(congrArg (extTensor τ σ) hp).trans (extTensor_fst_one τ σ _)`. Conclude with `e1.trans (e2.trans (e3.trans (LinearMap.congr_fun e4 _)))`.
+-/
 theorem fibV_uM_of (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W)
     (f : cIndSpace (HPG k i t) (hRep τ σ)) (y : Fin (i + t) → k) (κ : GL (Fin (i + t)) k) (v : Fin t → k)
     (h : uM k (i + t) (topV k i t (topP i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y))) ∈ HPG k i t)
@@ -84,6 +108,9 @@ theorem fibV_uM_of (τ : Representation ℂ (Mir k i) V) (σ : Representation �
   exact e1.trans (e2.trans (e3.trans (LinearMap.congr_fun e4 _)))
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ f y κ v`. Conclude with `Exists.elim (GlobalTheory.T.unipotent_top_mem_parabolic k i t (topP i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y))) (fun h hp => fibV_uM_of τ σ f y κ v h hp)`.
+-/
 theorem fibV_uM : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W) (f : cIndSpace (HPG k i t) (hRep τ σ)) (y : Fin (i + t) → k) (κ : GL (Fin (i + t)) k) (v : Fin t → k), fibV (prodPG τ σ (uM k (i + t) y) f) κ v = topRep τ W (Multiplicative.ofAdd (topP i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y))) (fibV f κ (v + middlePart i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y))) := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ f y κ v
   exact Exists.elim (GlobalTheory.T.unipotent_top_mem_parabolic k i t (topP i t ((κ : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y)))

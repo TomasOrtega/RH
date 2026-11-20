@@ -2,4 +2,7 @@ import Mathlib
 import Formalism.PeriodIntegrals.WhitFunctDual
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WhittakerFunctionalDual.StableOfIrreducible
 
+/- English proof (translation)
+The claim follows from `PI.WhitFunctDualWork.whitFunctDual_main`.
+-/
 theorem whittaker_functional_dual : PI.WhitFunctDual := PI.WhitFunctDualWork.whitFunctDual_main

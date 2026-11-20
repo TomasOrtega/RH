@@ -14,6 +14,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl.lie_norm_square_of_family
 
+/- English proof (translation)
+Simplify using `only [hermForm, dotProduct, mulVec, star_sum, star_mul', Pi.star_apply, star_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hH.apply i j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem star_hermForm_self {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z : Fin g → ℂ) :
     star (hermForm Hm z z) = hermForm Hm z z := by
   simp only [hermForm, dotProduct, mulVec, star_sum, star_mul', Pi.star_apply, star_star, Finset.mul_sum]
@@ -22,14 +25,23 @@ theorem star_hermForm_self {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.
   rw [← hH.apply i j]
   ring
 
+/- English proof (translation)
+The claim follows from `(Complex.conj_eq_iff_re.1 (star_hermForm_self hH z)).symm`.
+-/
 theorem hermForm_self_eq_re {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z : Fin g → ℂ) :
     hermForm Hm z z = ((hermForm Hm z z).re : ℂ) :=
   (Complex.conj_eq_iff_re.1 (star_hermForm_self hH z)).symm
 
+/- English proof (translation)
+Simplify using `[hermForm, smul_dotProduct]`.
+-/
 theorem hermForm_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (c • z) w = c * hermForm Hm z w := by
   simp [hermForm, smul_dotProduct]
 
+/- English proof (translation)
+Unfold `IsTangent at hx ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hx, ← Over.comp_left, IsMonHom.one_hom]`.
+-/
 theorem isTangent_comp {A B : Over (Sp ℂ)} [GrpObj A] [GrpObj B] {x : epsR ℂ ⟶ A} (hx : IsTangent x) (f : A ⟶ B)
     [IsMonHom f] : IsTangent (x ≫ f) := by
   unfold IsTangent at hx ⊢

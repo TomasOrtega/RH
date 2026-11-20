@@ -21,6 +21,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.MidBlockCell
 open GlobalTheory.LeviBlockExponent GlobalTheory.CuspBlock
 
+/- English proof (translation)
+Use extensionality with `g v`. Simplify using `[jac, smul_smul]`.
+-/
 theorem jacU_eq_twist_jac {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α n : Type} [Fintype α] [LinearOrder α] [Fintype n] [DecidableEq n] {m : α → Type}
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -29,17 +32,26 @@ theorem jacU_eq_twist_jac {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   ext g v
   simp [jac, smul_smul]
 
+/- English proof (translation)
+The claim follows from `h.trans (.of_surjective e.symm.toIntertwiningMap e.symm.toLinearEquiv.surjective)`.
+-/
 theorem isSubquotient_of_equiv' {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup U] [Module ℂ U] {Q : Representation ℂ G U} {σ₁ : Representation ℂ G V}
     {σ₂ : Representation ℂ G W} (h : IsSubquotient Q σ₁) (e : σ₁.Equiv σ₂) : IsSubquotient Q σ₂ :=
   h.trans (.of_surjective e.symm.toIntertwiningMap e.symm.toLinearEquiv.surjective)
 
+/- English proof (translation)
+The claim follows from `h.trans (.of_surjective (compMap (twistMap e.symm.toIntertwiningMap χ) φ) e.symm.toLinearEquiv.surjective)`.
+-/
 theorem isSubquotient_twist_comp_of_equiv {G H V W U : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U] {Q : Representation ℂ H U}
     {σ₁ : Representation ℂ G V} {σ₂ : Representation ℂ G W} (e : σ₁.Equiv σ₂) (χ : G →* ℂˣ) (φ : H →* G)
     (h : IsSubquotient Q ((twist σ₁ χ).comp φ)) : IsSubquotient Q ((twist σ₂ χ).comp φ) :=
   h.trans (.of_surjective (compMap (twistMap e.symm.toIntertwiningMap χ) φ) e.symm.toLinearEquiv.surjective)
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Conclude with `⟨⟨S.toSubmodule, fun g _ hv => S.apply_mem_toSubmodule (φ g) hv⟩, ⟨f.toLinearMap, fun g => f.isIntertwining' (φ g)⟩, hf⟩`.
+-/
 theorem isSubquotient_comp' {G H V U : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup U] [Module ℂ U] {Q : Representation ℂ G U} {σ : Representation ℂ G V}
     (h : IsSubquotient Q σ) (φ : H →* G) : IsSubquotient (Q.comp φ) (σ.comp φ) := by
@@ -47,6 +59,9 @@ theorem isSubquotient_comp' {G H V U : Type} [Group G] [Group H] [AddCommGroup V
   exact ⟨⟨S.toSubmodule, fun g _ hv => S.apply_mem_toSubmodule (φ g) hv⟩,
     ⟨f.toLinearMap, fun g => f.isIntertwining' (φ g)⟩, hf⟩
 
+/- English proof (translation)
+Introduce `h0`. Apply `hF` to reduce the goal to its premises. Use extensionality with `v`. Conclude with `congrArg (fun T : Representation.IntertwiningMap (Q.comp φ) (Y.comp φ) => T v) h0`.
+-/
 theorem compMap_ne_zero' {G H V U : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup U] [Module ℂ U] {Q : Representation ℂ G U} {Y : Representation ℂ G V}
     (F : Q.IntertwiningMap Y) (hF : F ≠ 0) (φ : H →* G) : compMap F φ ≠ 0 := by
@@ -55,6 +70,9 @@ theorem compMap_ne_zero' {G H V U : Type} [Group G] [Group H] [AddCommGroup V] [
   ext v
   exact congrArg (fun T : Representation.IntertwiningMap (Q.comp φ) (Y.comp φ) => T v) h0
 
+/- English proof (translation)
+Unfold `pairChar`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) ?_ fun j _ => ?_` and prove the remaining obligations. Unfold `IsSmoothChar`. Simplify using the standard rewrite rules. Conclude with `(hχ j).detChar.comp _ (continuous_apply j)`.
+-/
 theorem isSmoothChar_pairChar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (b : Fin 2 → ℕ) {χ : Fin 2 → kˣ →* ℂˣ} (hχ : ∀ j, IsSmoothChar (χ j)) :
     IsSmoothChar (pairChar k b χ) := by
@@ -63,6 +81,9 @@ theorem isSmoothChar_pairChar {k : Type} [Field k] [ValuativeRel k] [Topological
   · unfold IsSmoothChar; simp
   · exact (hχ j).detChar.comp _ (continuous_apply j)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Rewrite using `[relJac_mk, ofChar_apply, ← smul_eq_mul, Submodule.Quotient.mk_smul, smul_smul]`. Use `congr 1`.
+-/
 theorem relJac_ofChar_apply {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α β : Type} [Fintype α] [Fintype β] [LinearOrder β] {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
     {c : α → β → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
@@ -78,6 +99,27 @@ namespace GlobalTheory.MidBlockCell
 open GlobalTheory.LeviBlockExponent GlobalTheory.CuspBlock
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hGL k _ _ _ _ N b hb χ hχ l d hld Vy _ _ Y W' _ _ Q hQ F hF`. Establish `hρ : IsSmooth (ofChar (pairChar k b χ))` using `(isSmooth_ofChar_iff _).2 (isSmoothChar_pairChar b hχ)`. Take `⟨Nn, bb, hbb⟩` from `hGL k (Fin 2) (Fin 3) (Fin N) (fun j => Fin (b j)) (fun j => Fin (tripSizes l d N j)) (pairPlace b hb) (tripPlace hld)`. Take `⟨S, hS, hS0, hSN, hcell⟩` from `hbb ℂ (ofChar (pairChar k b χ)) hρ`. Rewrite `hQ` using `[jacU_eq_twist_jac]`.
+
+Take `⟨t, V1, _, _, Q1, hQ1, F1, hF1⟩` from `GlobalTheory.T.subquotient_twist_filtration _ _ _ Nn S hS hS0 hSN Q Y hQ F hF`. Establish `hc : ∀ j, ∑ i, (bb t).1 i j = tripSizes l d N j` using `fun j => by simpa using (bb t).2.2 j`. Establish `hM1 : (bb t).1 0 1 + (bb t).1 1 1 = d` using `by simpa [Fin.sum_univ_two, tripSizes] using hc 1`. Establish `hM0 : (bb t).1 0 0 + (bb t).1 1 0 = l` using `by simpa [Fin.sum_univ_two, tripSizes] using hc 0`. Set `f : ∀ i, (Σ j, Fin ((bb t).1 i j)) ≃ Fin (b i)` to `(bb t).nonempty_rows.some`.
+
+Set `g : ∀ j, (Σ i, Fin ((bb t).1 i j)) ≃ Fin (tripSizes l d N j)` to `fun j => if hj : j = 1 then by subst hj; exact pairPlace (fun i => (bb t).1 i 1) hM1 else (bb t).nonempty_cols.some j`. Apply the tactic sequence `have hg1 : g 1 = pairPlace (fun i => (bb t).1 i 1) hM1 := by first | rfl | (simp only [g, dif_pos]; rfl) | (show dite _ _ _ = _; rw [dif_pos rfl])`. Take `⟨φ⟩` from `hcell t f g`. Establish `hQ2` using `isSubquotient_twist_comp_of_equiv φ _ _ hQ1`. Set `τ` to `(relJac f (ofChar (pairChar k b χ))).comp (swapBlocks k (fun i j => Fin ((bb t).1 i j)))`.
+
+Set `ψ` to `((relDeltaHalf k (fun i j => Fin ((bb t).1 i j)))⁻¹ * (pairChar k b χ).comp (relEmb k f)).comp (swapBlocks k (fun i j => Fin ((bb t).1 i j)))`. Establish `hτ : ∀ z w, τ z w = (ψ z : ℂ) • w`. Introduce `z w`. Conclude with `relJac_ofChar_apply f (pairChar k b χ) _ w`. Establish `hQ2' : IsSubquotient Q1 ((twist (relInd g τ) (deltaHalf k (fun j => Fin (tripSizes l d N j)))).comp (midHom k l d N))` using `hQ2`.
+
+Establish `hQ2'' : IsSubquotient Q1 ((twist (relInd g τ) (deltaHalf k (fun j => Fin (tripSizes l d N j)))).comp (MonoidHom.mulSingle (fun j => GL (Fin (tripSizes l d N j)) k) 1))` using `hQ2'`. Take `⟨V2, _, _, Q2, hQ3, F2, hF2⟩` from `GlobalTheory.T.representation_sigma_equiv_reindex k g τ ψ hτ 1 _ Q1 Y hQ2'' F1 hF1`. Set `μ : Fin 2 → kˣ →* ℂˣ` to `fun i => χ i * absPow k (((bb t).1 i 0 : ℂ) + (((bb t).1 i 1 : ℂ) - b i) / 2)`. Establish `hψ : ψ.comp (MonoidHom.mulSingle (fun j => Levi k (fun i => Fin ((bb t).1 i j))) 1) = pairChar k (fun i => (bb t).1 i 1) μ` using `MonoidHom.ext fun z => GlobalTheory.T.size_matrix_relative_modulus k N l d b χ (bb t) f z`. Establish `hν : (deltaHalf k (fun j => Fin (tripSizes l d N j))).comp (MonoidHom.mulSingle (fun j => GL (Fin (tripSizes l d N j)) k) 1) = detChar (Fin d) (absPow k (((N : ℂ) - 2 * l - d) / 2))` using `MonoidHom.ext fun x => GlobalTheory.T.modulus_middle_block_det k l d N hld x`.
+
+Rewrite `hQ3` using `[hg1, hψ, hν]`. Establish `hQ4` using `isSubquotient_of_equiv' hQ3 (GlobalTheory.T.pair_induced_twist_equiv k (fun i => (bb t).1 i 1) d hM1 μ (absPow k (((N : ℂ) - 2 * l - d) / 2)) (isSmoothChar_of_isUnram (isUnram_absPow k _))).some`. Establish `hQ5` using `isSubquotient_of_equiv' (isSubquotient_comp' hQ4 (glCast hM1)) (GlobalTheory.T.pair_induced_equiv_prod k (fun i => (bb t).1 i 1) d hM1 (fun i => μ i * absPow k (((N : ℂ) - 2 * l - d) / 2))).some`. Take `⟨s₁, hs₁⟩ : ∃ s : ℝ, s = ((bb t).1 0 0 : ℝ) + (((bb t).1 0 1 : ℝ) - b 0) / 2 + ((N : ℝ) - 2 * l - d) / 2` from `⟨_, rfl⟩`. Take `⟨s₂, hs₂⟩ : ∃ s : ℝ, s = ((bb t).1 1 0 : ℝ) + (((bb t).1 1 1 : ℝ) - b 1) / 2 + ((N : ℝ) - 2 * l - d) / 2` from `⟨_, rfl⟩`.
+
+Establish `hμ0 : μ 0 * absPow k (((N : ℂ) - 2 * l - d) / 2) = χ 0 * absPow k (s₁ : ℂ)`. Simplify using `only [μ]`. Rewrite using `[mul_assoc, ← absPow_add, hs₁]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hμ1 : μ 1 * absPow k (((N : ℂ) - 2 * l - d) / 2) = χ 1 * absPow k (s₂ : ℂ)`. Simplify using `only [μ]`. Rewrite using `[mul_assoc, ← absPow_add, hs₂]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ6 : IsSubquotient (Q2.comp (glCast hM1)) (prod₂ (detRep (Fin ((bb t).1 0 1)) (χ 0 * absPow k (s₁ : ℂ))) (detRep (Fin ((bb t).1 1 1)) (χ 1 * absPow k (s₂ : ℂ))))`. Rewrite using `[← hμ0, ← hμ1]`. Conclude with `hQ5`.
+
+Use `⟨(bb t).1 0 1, (bb t).1 1 1, (bb t).1 0 0, (bb t).1 1 0, hM1, s₁, s₂, hM0, ?_, _, _, _, Q2.comp (glCast hM1), hQ6, compMap F2 (glCast hM1), compMap_ne_zero' F2 hF2 _⟩` and prove the remaining obligations. Rewrite using `[hs₁, hs₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_map_of_midBlock : GlobalTheory.Published.GeometricLemmaFiltration → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (b : Fin 2 → ℕ) (hb : b 0 + b 1 = N) (χ : Fin 2 → kˣ →* ℂˣ),
     (∀ j, IsSmoothChar (χ j)) → ∀ (l d : ℕ) (hld : l + d ≤ N) (Vy : Type) [AddCommGroup Vy] [Module ℂ Vy]

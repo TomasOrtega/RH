@@ -5,11 +5,21 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ne
 
 open NumberField Filter Topology UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob GlobalTheory.QuadSymbol
 
+/- English proof (translation)
+Use `if_pos ⟨(x + 1) / 2, (x - 1) / (2 * s), ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hs_sq {A : Type} [Field A] [CharZero A] {s : A} (hs0 : s ≠ 0) (x : A) : Loc.hs (s * s) x = 1 := by
   refine if_pos ⟨(x + 1) / 2, (x - 1) / (2 * s), ?_⟩
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hq : 0 < q` using `lt_of_le_of_lt hp h`. Establish `hr0 : 0 ≤ p / q` using `div_nonneg hp hq.le`. Establish `hr1 : p / q < 1` using `(div_lt_one hq).mpr h`. Establish `hlim : Tendsto (fun k : ℕ => e * (p / q) ^ k) atTop (𝓝 (e * 0))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr1).const_mul e`. Rewrite `hlim` using `[mul_zero]`.
+
+Use `filter_upwards [hlim.eventually (eventually_lt_nhds hc)] with k hk`. Establish `hqk : 0 < q ^ k` using `pow_pos hq k`. Establish `hsplit : e * p ^ k = e * (p / q) ^ k * q ^ k`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hsplit]`. Conclude with `mul_lt_mul_of_pos_right hk hqk`.
+-/
 private theorem ev_lt {p q c : ℝ} (hp : 0 ≤ p) (h : p < q) (e : ℝ) (hc : 0 < c) :
     ∀ᶠ k : ℕ in atTop, e * p ^ k < c * q ^ k := by
   have hq : 0 < q := lt_of_le_of_lt hp h
@@ -26,6 +36,13 @@ private theorem ev_lt {p q c : ℝ} (hp : 0 ≤ p) (h : p < q) (e : ℝ) (hc : 0
   rw [hsplit]
   exact mul_lt_mul_of_pos_right hk hqk
 
+/- English proof (translation)
+Establish `e1 : ∀ k : ℕ, ((t + 1) ^ k) ^ 2 = ((t + 1) ^ 2) ^ k` using `fun k => by`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Establish `e2 : ∀ k : ℕ, ((t - 1) ^ k) ^ 2 = ((t - 1) ^ 2) ^ k` using `fun k => by`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Break down `lt_or_gt_of_ne ht with hneg | hpos` into its components or cases.
+
+Establish `hd` using `h hneg`. Establish `h1 : (t + 1) ^ 2 < (t - 1) ^ 2` using `by nlinarith`. Use `filter_upwards [ev_lt (sq_nonneg (t + 1)) h1 1 hd] with k hk`. Rewrite using `[e1, e2]`. Conclude with `mul_pos_of_neg_of_neg hneg (by linarith)`.
+
+Establish `h1 : (t - 1) ^ 2 < (t + 1) ^ 2` using `by nlinarith filter_upwards [ev_lt (sq_nonneg (t - 1)) h1 d one_pos] with k hk`. Rewrite using `[e1, e2]`. Conclude with `mul_pos hpos (by linarith)`.
+-/
 private theorem ev_sign {t d : ℝ} (ht : t ≠ 0) (h : t < 0 → 0 < d) :
     ∀ᶠ k : ℕ in atTop, 0 < t * (((t + 1) ^ k) ^ 2 - d * ((t - 1) ^ k) ^ 2) := by
   have e1 : ∀ k : ℕ, ((t + 1) ^ k) ^ 2 = ((t + 1) ^ 2) ^ k := fun k => by
@@ -43,6 +60,17 @@ private theorem ev_sign {t d : ℝ} (ht : t ≠ 0) (h : t < 0 → 0 < d) :
     rw [e1, e2]
     exact mul_pos hpos (by linarith)
 
+/- English proof (translation)
+Use `haveI : Finite (F →+* ℝ) := Finite.of_injective (fun σ : F →+* ℝ => Complex.ofRealHom.comp σ) (fun σ τ hστ => by`. Use extensionality with `x`. Use `congrArg (fun f : F →+* ℂ => f x) hστ` as an intermediate fact. Simplify using `using this)`. Establish `hev : ∀ᶠ k : ℕ in atTop, ∀ σ : F →+* ℝ, 0 < σ t * (((σ t + 1) ^ k) ^ 2 - σ d * ((σ t - 1) ^ k) ^ 2)` using `Filter.eventually_all.mpr fun σ => ev_sign ((map_ne_zero σ).mpr ht) (h σ)`.
+
+Take `⟨k, hk⟩` from `hev.exists`. Establish `hne : ((t + 1) ^ k) ^ 2 - d * ((t - 1) ^ k) ^ 2 ≠ 0`. Introduce `h0`. Distinguish the cases in `hb : (t - 1) ^ k = 0`. Establish `ht1 : t = 1`.
+
+Use `eq_zero_of_pow_eq_zero hb` as an intermediate fact. Take the linear combination `this`. Establish `ha : ((t + 1) ^ k) ^ 2 = 0`. Rewrite `h0` using `[hb]`. Take the linear combination `h0`.
+
+Establish `h2 : t + 1 = 0` using `eq_zero_of_pow_eq_zero (eq_zero_of_pow_eq_zero ha)`. Rewrite `h2` using `[ht1]`. Evaluate the numerical expressions using `at h2`. Apply `hd` to reduce the goal to its premises. Use `⟨(t + 1) ^ k / (t - 1) ^ k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_mul_div_comm, eq_div_iff (mul_ne_zero hb hb)]`. Take the linear combination `(-1 : F) * h0`. Use `⟨(t + 1) ^ k, (t - 1) ^ k, hne, fun σ => ?_⟩` and prove the remaining obligations. Simplify using `using hk σ`.
+-/
 private theorem sign_fix {F : Type} [Field F] [NumberField F] {d t : F} (hd : ¬ IsSquare d) (ht : t ≠ 0)
     (h : ∀ σ : F →+* ℝ, σ t < 0 → 0 < σ d) :
     ∃ a b : F, a ^ 2 - d * b ^ 2 ≠ 0 ∧ ∀ σ : F →+* ℝ, 0 < σ (t * (a ^ 2 - d * b ^ 2)) := by
@@ -74,6 +102,11 @@ private theorem sign_fix {F : Type} [Field F] [NumberField F] {d t : F} (hd : ¬
   refine ⟨(t + 1) ^ k, (t - 1) ^ k, hne, fun σ => ?_⟩
   simpa using hk σ
 
+/- English proof (translation)
+Unfold `Loc.hs eta`. Distinguish the cases in `hx : x ∈ normGroup F (QuadraticAlgebra F d 0) A`. Take `⟨a, b, hab⟩` from `(Model.mem_normGroup_sqrt d).mp hx`. Rewrite using `[if_pos hx, if_pos ⟨a, b, hab.symm⟩]`. Simplify using the standard rewrite rules.
+
+Establish `hn : ¬ ∃ a b : A, a ^ 2 - algebraMap F A d * b ^ 2 = (x : A)`. Introduce and unpack `⟨a, b, hab⟩`. Conclude with `hx ((Model.mem_normGroup_sqrt d).mpr ⟨a, b, hab.symm⟩)`. Rewrite using `[if_neg hx, if_neg hn]`. Simplify using the standard rewrite rules.
+-/
 private theorem hs_eta {F A : Type} [Field F] [Field A] [Algebra F A] (d : F) [Fact (∀ r : F, r ^ 2 ≠ d + 0 * r)] (x : Aˣ) :
     Loc.hs (algebraMap F A d) (x : A) = (((eta F (QuadraticAlgebra F d 0) A x : ℤˣ) : ℤ) : ℂ) := by
   unfold Loc.hs eta
@@ -87,6 +120,17 @@ private theorem hs_eta {F A : Type} [Field F] [Field A] [Algebra F A] (d : F) [F
     rw [if_neg hx, if_neg hn]
     simp
 
+/- English proof (translation)
+Use `set φ : F →+* ℂ := Complex.ofRealHom.comp σ with hφdef`. Establish `hφ : ComplexEmbedding.IsReal φ`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[φ, ComplexEmbedding.conjugate_coe_eq]`.
+
+Establish `hw : (InfinitePlace.mk φ).IsReal` using `InfinitePlace.isReal_mk_iff.mpr hφ`. Use `set ρ := InfinitePlace.Completion.extensionEmbeddingOfIsReal hw`. Establish `key : ∀ x : F, ρ (algebraMap F (InfinitePlace.mk φ).Completion x) = σ x`. Introduce `x`. Establish `h1` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv (InfinitePlace.mk φ).1).symm x)`.
+
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Establish `h2` using `InfinitePlace.embedding_of_isReal_apply hw x`. Rewrite `h2` using `[InfinitePlace.embedding_mk_eq_of_isReal hφ]`. Simplify using `only [RingEquiv.apply_symm_apply] at h1`. Establish `h3 : ρ (algebraMap F _ x) = InfinitePlace.embedding_of_isReal hw x` using `h1`.
+
+Rewrite using `[h3, h2]`. Both sides reduce to the same expression. Take `⟨a, b, hab⟩` from `(Model.mem_normGroup_sqrt d).mp (h (InfinitePlace.mk φ))`. Establish `hv : ρ ((infDiag F t (InfinitePlace.mk φ) : (InfinitePlace.mk φ).Completionˣ) : (InfinitePlace.mk φ).Completion) = σ t` using `key t`. Rewrite `hv` using `[hab, map_sub, map_mul, map_pow, map_pow, key]`.
+
+Assume the negation of the conclusion as `hd`. Use `push_neg at hd`. Use polynomial arithmetic with `[sq_nonneg (ρ a), mul_nonneg (neg_nonneg.mpr hd) (sq_nonneg (ρ b))]`.
+-/
 private theorem real_sign {F : Type} [Field F] [NumberField F] (d : F) [Fact (∀ r : F, r ^ 2 ≠ d + 0 * r)] (t : Fˣ)
     (h : ∀ w : InfinitePlace F, infDiag F t w ∈ normGroup F (QuadraticAlgebra F d 0) w.Completion) (σ : F →+* ℝ)
     (ht : σ t < 0) : 0 < σ d := by
@@ -116,6 +160,31 @@ private theorem real_sign {F : Type} [Field F] [NumberField F] (d : F) [Fact (�
   push_neg at hd
   nlinarith [sq_nonneg (ρ a), mul_nonneg (neg_nonneg.mpr hd) (sq_nonneg (ρ b))]
 
+/- English proof (translation)
+Introduce `F _ _ d hd0 y hfin hprod`. Distinguish the cases in `hsq : IsSquare d`. Take `⟨s, rfl⟩` from `hsq`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hd0`. Use `⟨1, one_ne_zero, fun σ => by simp, fun v => ?_⟩` and prove the remaining obligations. Use `haveI : CharZero (Kv v) := charZero_of_injective_algebraMap (algebraMap F (Kv v)).injective`. Establish `hs' : cv v s ≠ 0` using `(map_ne_zero _).mpr hs0`. Rewrite using `[map_mul, hs_sq hs', hs_sq hs']`.
+
+Use `haveI : Fact (∀ r : F, r ^ 2 ≠ d + 0 * r) := ⟨fun r hr => hsq ⟨r, by linear_combination (-1 : F) * hr⟩⟩ haveI := Model.numberField d haveI := Model.isQuadratic d`. Establish `E : ∀ (v : Pl F) (x : (Kv v)ˣ), Loc.hs (cv v d) (x : Kv v) = (((eta F (QuadraticAlgebra F d 0) (Kv v) x : ℤˣ) : ℤ) : ℂ)` using `fun v x => hs_eta d x`. Take `⟨-, -, h3, -⟩` from `exactSequence F (QuadraticAlgebra F d 0)`. Establish `hA : AlmostNorm F (QuadraticAlgebra F d 0) y`. Use `hfin.subset fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_setOf_eq] at hv ⊢`. Rewrite using `[E v (y v), eta_eq_neg_one_iff.mpr hv]`. Evaluate the numerical expressions. Establish `hP : etaProd F (QuadraticAlgebra F d 0) y 1 = 1`. Unfold `etaProd`.
+
+Establish `hinf1 : ∏ w : InfinitePlace F, eta F (QuadraticAlgebra F d 0) w.Completion ((1 : InfFam F) w) = 1` using `Finset.prod_eq_one fun w _ => eta_eq_one_iff.mpr (one_mem _)`. Rewrite using `[hinf1, mul_one]`. Set `g : ℤˣ →* ℂ` to `(Int.castRingHom ℂ).toMonoidHom.comp (Units.coeHom ℤ)`. Establish `hg : Function.Injective g`. Introduce `u w huw`.
+
+Establish `huw' : ((u : ℤ) : ℂ) = ((w : ℤ) : ℂ)` using `huw`. Conclude with `Units.ext (Int.cast_injective huw')`. Apply `hg` to reduce the goal to its premises. Rewrite using `[MonoidHom.map_finprod g (AlmostNorm.finite_mulSupport hA), map_one]`. Rewrite using `[← hprod]`.
+
+Apply `finprod_congr` to reduce the goal to its premises. Introduce `v`. Rewrite using `[E v (y v)]`. Both sides reduce to the same expression. Take `⟨t, hfinN, hinfN⟩` from `(h3 y 1 hA).mpr hP`.
+
+Establish `ht0 : (t : F) ≠ 0` using `t.ne_zero`. Establish `hreal : ∀ σ : F →+* ℝ, σ t < 0 → 0 < σ d` using `fun σ ht => real_sign d t (fun w => by`. Establish `hw` using `hinfN w`. Rewrite `hw` using `[Pi.div_apply, Pi.one_apply, one_div, inv_mem_iff]`. Conclude with `hw) σ ht`.
+
+Take `⟨a, b, hab, hpos⟩` from `sign_fix hsq ht0 hreal`. Use `⟨t * (a ^ 2 - d * b ^ 2), mul_ne_zero ht0 hab, hpos, fun v => ?_⟩` and prove the remaining obligations. Establish `hN : algebraMap F (Kv v) (t * (a ^ 2 - d * b ^ 2)) ≠ 0` using `(map_ne_zero _).mpr (mul_ne_zero ht0 hab)`. Take `⟨u, hu⟩ : ∃ u : (Kv v)ˣ, (u : Kv v) = algebraMap F (Kv v) (t * (a ^ 2 - d * b ^ 2))` from `⟨Units.mk0 _ hN, rfl⟩`. Establish `e1 : Loc.hs (cv v d) (cv v (t * (a ^ 2 - d * b ^ 2))) = (((eta F (QuadraticAlgebra F d 0) (Kv v) u : ℤˣ) : ℤ) : ℂ)`.
+
+Rewrite using `[← E v u, hu]`. Rewrite using `[e1, E v (y v)]`. Establish `hyt` using `hfinN v`. Rewrite `hyt` using `[Pi.div_apply]`. Establish `hut : u / finDiag F t v ∈ normGroup F (QuadraticAlgebra F d 0) (Kv v)`.
+
+Rewrite using `[Model.mem_normGroup_sqrt]`. Use `⟨algebraMap F (Kv v) a, algebraMap F (Kv v) b, ?_⟩` and prove the remaining obligations. Establish `hft : ((finDiag F t v : (Kv v)ˣ) : Kv v) = algebraMap F (Kv v) t` using `rfl`. Establish `ht' : algebraMap F (Kv v) (t : F) ≠ 0` using `(map_ne_zero _).mpr ht0`. Rewrite using `[Units.val_div_eq_div_val, hft, hu, div_eq_iff ht']`.
+
+Simplify using `only [map_mul, map_sub, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eta_eq_of_div_mem hut, eta_eq_of_div_mem hyt]`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.symbolEx :
     UpperTheory.V.Z.Sym.Glob.SymbolEx := by
   intro F _ _ d hd0 y hfin hprod

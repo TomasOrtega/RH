@@ -7,6 +7,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R h`. Take `⟨_, plg, iso, -⟩` from `h`. Use `⟨?_, fun PP hPP => ?_⟩` and prove the remaining obligations. Rewrite using `[← Fintype.card_coe, ← Nat.card_eq_fintype_card, ← Nat.card_congr plg, Nat.card_sigma]`. Establish `hk : ∀ k : Fin 2, Nat.card (D.nd.PlG k) = D.R.f` using `fun k => by`.
+
+Rewrite using `[← D.nd.card_PlG k]`. Conclude with `@Nat.card_eq_fintype_card _ (_)`. Simplify using `only [hk, Fin.sum_univ_two, two_mul]`. Take `⟨kv, hkv⟩` from `plg.surjective ⟨PP, hPP⟩`. Establish `h1 : Nat.card (kP (plg kv).1) = D.host.g kv.1`.
+
+Rewrite using `[← Nat.card_congr (iso kv).toEquiv, Nat.card_zmod]`. Rewrite `h1` using `[hkv]`. Express the relevant statement in the definitionally equal form `_ ≤ Nat.card (kP (⟨PP, hPP⟩ : R.Pg).1)`. Rewrite using `[h1]`. Generalize the expression as in `kv.1 = k`.
+
+Use `fin_cases k`. Conclude with `min_le_left _ _`. Conclude with `min_le_right _ _`.
+-/
 theorem typePlaces_card_and_residue_le : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.grp_record → R.Pg.card = 2 * D.R.f ∧ ∀ PP ∈ R.Pg, min (D.host.g 0) (D.host.g 1) ≤ Nat.card (kP PP) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R h
   obtain ⟨_, plg, iso, -⟩ := h

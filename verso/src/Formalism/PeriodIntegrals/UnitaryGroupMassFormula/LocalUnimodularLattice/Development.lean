@@ -25,6 +25,9 @@ def Transfer : Prop :=
       (∀ s ∈ {g : Formalism.REAL.UJ ε | uMat g ∈ T}, μ.map (fun x => s * x) = μ) →
       ∀ s ∈ {g : Formalism.REAL.UJ ε | uMat g ∈ T}, μ.map (fun x => x * s) = μ
 
+/- English proof (translation)
+Introduce `k r ε e f wf z0 z c hfr hc hz μ hμ hne hsupp hleft`. Take `⟨P, Q, hQP, hPQ, hiff⟩` from `hF k r ε e f wf z0 z c hfr hc hz`. Conclude with `hT (2 * r + k + 1) ε {g | InN ε e z g} (Nset k r) P Q hQP hPQ (fun g => hiff g) (nonstandard_unimodular_lattice k r) μ hμ hne hsupp hleft`.
+-/
 theorem nUnimodLoc_of (hF : FrameConj) (hT : Transfer) : NUnimodLoc := by
   intro k r ε e f wf z0 z c hfr hc hz μ hμ hne hsupp hleft
   obtain ⟨P, Q, hQP, hPQ, hiff⟩ := hF k r ε e f wf z0 z c hfr hc hz

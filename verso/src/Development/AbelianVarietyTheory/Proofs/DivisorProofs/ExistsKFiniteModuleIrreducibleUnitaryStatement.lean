@@ -11,5 +11,8 @@ open CompanionTheory.D.DSIC (KRel KUnit KStab IsSmMod)
 open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.KModExistsStep.kModExists_holds | exact GlobalTheory.CompanionTheory.KModExistsStep.kModExists_holds | (intros; apply GlobalTheory.CompanionTheory.KModExistsStep.kModExists_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_kFiniteModule_irreducible_unitary : CompanionTheory.D.LK.KModExists := by
   first | exact @GlobalTheory.CompanionTheory.KModExistsStep.kModExists_holds | exact GlobalTheory.CompanionTheory.KModExistsStep.kModExists_holds | (intros; apply GlobalTheory.CompanionTheory.KModExistsStep.kModExists_holds <;> assumption)

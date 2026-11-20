@@ -10,6 +10,11 @@ namespace Formalism.L2.Th1.F2
 
 open Formalism.L2.GlobalTheoryTheory Formalism.MainNotions
 
+/- English proof (translation)
+Introduce `d hd h4`. Use `⟨⟨_, rfl⟩, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hc : 4 * ((1 : ℕ) : ℤ) * (((1 + d) / 4 : ℕ) : ℤ) = (1 : ℤ) ^ 2 + (d : ℤ)`. Establish `: 4 * ((1 + d) / 4) = 1 + d` using `by omega`. Use `push_cast`.
+
+Establish `h2 : (4 : ℤ) * (((1 + d) / 4 : ℕ) : ℤ) = 1 + (d : ℤ)` using `by exact_mod_cast this`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `F.cmStable 1 1 _ d one_pos hd hc 0 1 x hx`. Simplify using `using h`.
+-/
 theorem cm_example_holds : CmExample := by
   intro d hd h4
   refine ⟨⟨_, rfl⟩, fun x hx => ?_⟩

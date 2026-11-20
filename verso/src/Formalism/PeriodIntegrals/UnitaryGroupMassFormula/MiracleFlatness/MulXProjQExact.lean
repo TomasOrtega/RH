@@ -12,6 +12,9 @@ variable {A : Type u} {B : Type v} [CommRing A] [CommRing B] [Algebra A B]
 noncomputable def mulMap (𝔞 : Ideal A) : B ⊗[A] 𝔞 →ₗ[B] B :=
   (AlgebraTensorModule.rid A B B).toLinearMap ∘ₗ AlgebraTensorModule.lTensor B B 𝔞.subtype
 
+/- English proof (translation)
+Simplify using `[mulMap]`.
+-/
 @[simp] lemma mulMap_tmul (𝔞 : Ideal A) (b : B) (a : 𝔞) : mulMap 𝔞 (b ⊗ₜ a) = (a : A) • b := by
   simp [mulMap]
 
@@ -20,6 +23,9 @@ variable (x : A)
 noncomputable def mulX (𝔞 𝔟 : Ideal A) (h1 : ∀ b ∈ 𝔟, x * b ∈ 𝔞) : 𝔟 →ₗ[A] 𝔞 :=
   (LinearMap.mulLeft A x).restrict (p := 𝔟) (q := 𝔞) h1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma mulX_apply (𝔞 𝔟 : Ideal A) (h1 : ∀ b ∈ 𝔟, x * b ∈ 𝔞) (b : 𝔟) :
     ((mulX x 𝔞 𝔟 h1 b : 𝔞) : A) = x * b := rfl
 

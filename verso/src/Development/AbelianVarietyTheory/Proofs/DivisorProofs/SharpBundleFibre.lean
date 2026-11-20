@@ -25,6 +25,15 @@ def sharpPair (ρ : V →+* V₁) (Q : Data V) (D : DegPre V₁) (pr : Fin 8 →
   (lift (pushPt (isGrpPullback_pullback Q.B (spMap ρ)).1.w (pr a))
     (pushPt (isGrpPullback_pullback Q.B (spMap ρ)).1.w (pr b))).left
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback Q.B (spMap ρ)`. Use `set xa := pushPt h.1.w (pr a) with hxa`. Use `set xb := pushPt h.1.w (pr b) with hxb`. Establish `e` using `GlobalTheory.PrimNorm.prod_square (lift xa xb) (fst Q.B Q.B) (snd Q.B Q.B) (GlobalTheory.PrimNorm.cls Q.M.L)`. Rewrite `e` using `[lift_fst, lift_snd]`.
+
+Establish `e' : sharpPair ρ Q D pr a b = (lift xa xb).left` using `rfl`. Rewrite using `[e', show x2 Q.B = ![fst Q.B Q.B, snd Q.B Q.B] from rfl, e]`. Establish `m : (pr a * pr b).left ≫ pullback.fst Q.B.hom (spMap ρ) = (xa * xb).left` using `(h.2 D.P.A (pr a) (pr b) xa xb rfl rfl).symm`. Establish `o : (1 : D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B).left ≫ pullback.fst Q.B.hom (spMap ρ) = (1 : Over.mk (D.P.A.hom ≫ spMap ρ) ⟶ Q.B).left` using `congrArg (fun z => z.left) (map_one (pushHom h D.P.A))`. Rewrite using `[Fin.prod_univ_four]`.
+
+Simplify using `only [lamPts, negε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, m, o]`. Express the relevant statement in the definitionally equal form `GlobalTheory.PrimNorm.diff₂ _ xa xb ^ W a b = _`. Simplify using `only [GlobalTheory.PrimNorm.diff₂]`. Establish `ha : (pr a).left ≫ pullback.fst Q.B.hom (spMap ρ) = xa.left` using `rfl`. Establish `hb : (pr b).left ≫ pullback.fst Q.B.hom (spMap ρ) = xb.left` using `rfl`.
+
+Rewrite using `[ha, hb]`. Simplify using `only [mul_neg, neg_neg, zpow_neg, mul_zpow, inv_zpow]`. The two sides agree by associativity and commutativity.
+-/
 theorem sharp_cls_pair (W : Matrix (Fin 8) (Fin 8) ℤ) (ρ : V →+* V₁) (Q : Data V) (D : DegPre V₁)
     (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (a b : Fin 8) :
     (∏ I : ULift.{0} (Finset (Fin 2)), GlobalTheory.PrimNorm.cls Q.M.L (sharpPair ρ Q D pr a b ≫ (psum Q.B (x2 Q.B) I.down).left) ^
@@ -54,6 +63,13 @@ theorem sharp_cls_pair (W : Matrix (Fin 8) (Fin 8) ℤ) (ρ : V →+* V₁) (Q :
   simp only [mul_neg, neg_neg, zpow_neg, mul_zpow, inv_zpow]
   ac_rfl
 
+/- English proof (translation)
+Establish `hL : Q.M.L.IsLB` using `Q.M.isLB`. Establish `hLam : (abelian₂ Q.B Q.M.L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hLam₀ : (abelian₂ B₀ M₀).IsLB` using `DVR.linComb_isLB _ hM₀ _ _`. Establish `hS : (LB.LinComb Q.M.L (K` using `(Fin 8 × Fin 8) × Fin 4) (fun k => lamPts (pr k.1.1) (pr k.1.2) k.2 ≫ pullback.fst Q.B.hom (spMap ρ)) (fun k => -(W k.1.1 k.1.2 * negε k.2))).IsLB := DVR.linComb_isLB _ hL _ _`. Establish `h₂ : LBIso (LB.LinComb (abelian₂ Q.B Q.M.L) (K` using `Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2) (fun p => W p.1 p.2)) (LB.LinComb Q.M.L (K := (Fin 8 × Fin 8) × Fin 4) (fun k => lamPts (pr k.1.1) (pr k.1.2) k.2 ≫ pullback.fst Q.B.hom (spMap ρ)) (fun k => -(W k.1.1 k.1.2 * negε k.2))) := by`.
+
+Use `GlobalTheory.PrimNorm.lbIso_nested hL _ _ _ _ _ _ ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Fintype.prod_prod_type _).symm` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun p _ => sharp_cls_pair W ρ Q D pr p.1 p.2`. Establish `h₃ : LBIso (LB.LinComb (abelian₂ Q.B Q.M.L) (K` using `Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2) (fun p => W p.1 p.2)) (LB.LinComb ((abelian₂ B₀ M₀).pull β₂) (K := Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2) (fun p => W p.1 p.2)) := GlobalTheory.PowPrimitive.lbIso_linComb ⟨w₀, hw₀⟩ _ _`. Establish `h₄ : LBIso (LB.LinComb ((abelian₂ B₀ M₀).pull β₂) (K` using `Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2) (fun p => W p.1 p.2)) (LB.LinComb (abelian₂ B₀ M₀) (K := Fin 8 × Fin 8) (fun p => sharpPair ρ Q D pr p.1 p.2 ≫ β₂) (fun p => W p.1 p.2)) := LBIso.chartPull (chartPullLinComb (abelian₂ B₀ M₀) β₂ _ _ _ (𝟙 _) fun p => (Category.id …`.
+
+Establish `hN₁` using `DVR.linComb_isLB (abelian₂ Q.B Q.M.L) hLam (fun p : Fin 8 × Fin 8 => sharpPair ρ Q D pr p.1 p.2) (fun p => W p.1 p.2)`. Establish `hN₂` using `DVR.linComb_isLB _ (pull_isLB hLam₀ β₂) (fun p : Fin 8 × Fin 8 => sharpPair ρ Q D pr p.1 p.2) (fun p => W p.1 p.2)`. Establish `hN₃` using `DVR.linComb_isLB (abelian₂ B₀ M₀) hLam₀ (fun p : Fin 8 × Fin 8 => sharpPair ρ Q D pr p.1 p.2 ≫ β₂) (fun p => W p.1 p.2)`. Conclude with `LBIso.trans D.P.isLB hS hN₃ ⟨w, hw⟩ (LBIso.trans hS hN₁ hN₃ h₂.symm (LBIso.trans hN₁ hN₂ hN₃ h₃ h₄))`.
+-/
 theorem sharp_bundle {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fin 8) ℤ) (ρ : V →+* V₁) (Q : Data V) (D : DegPre V₁)
     (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B))
     (w : LB.Iso D.P.L (LB.LinComb Q.M.L (K := (Fin 8 × Fin 8) × Fin 4)
@@ -94,6 +110,9 @@ theorem sharp_bundle {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fin 8) �
   exact LBIso.trans D.P.isLB hS hN₃ ⟨w, hw⟩
     (LBIso.trans hS hN₁ hN₃ h₂.symm (LBIso.trans hN₁ hN₂ hN₃ h₃ h₄))
 
+/- English proof (translation)
+Take `⟨pr, w, -, -, hw, -, -⟩` from `h₁`. Take `⟨B₀, iG, iC, M₀, -, -, -, β₂, w₀, -, hM₀, -, -, hw₀, -, -, -⟩` from `h₂`. Conclude with `⟨pr, B₀, iG, iC, M₀, β₂, sharp_bundle W ρ Q D pr w hw B₀ M₀ hM₀ β₂ w₀ hw₀⟩`.
+-/
 example {W₀ : Type} [CommRing W₀] (W : Matrix (Fin 8) (Fin 8) ℤ) (Q : Data V) (ρ : V →+* V₁) (D : DegPre V₁)
     (e : (Fin 8 → Q.X) ≃+ D.X) (τ₀ : Gens Q) (ib : W₀ →+* V) (h₁ : SharpRef W Q ρ D e) (h₂ : FromBase Q τ₀ ib) :
     ∃ (pr : Fin 8 → (D.P.A ⟶ (Over.pullback (spMap ρ)).obj Q.B)) (B₀ : Over (Sp W₀)) (_ : GrpObj B₀)

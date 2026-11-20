@@ -24,10 +24,16 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     (ρ : Representation LL G V)
 
+/- English proof (translation)
+Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_Dcris_iff (x : V ⊗[Qp] B) : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
     LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_Dcris_iff]`. Introduce `g`. Rewrite using `[← GlobalTheory.CobCrisLift.φVB_act, hx g]`.
+-/
 theorem φVB_mem_Dcris {x : V ⊗[Qp] B} (hx : x ∈ Dcris PD ρ) :
     φVB PD (LL := LL) (V := V) x ∈ Dcris PD ρ := by
   rw [mem_Dcris_iff] at hx ⊢
@@ -58,6 +64,9 @@ def projZ : pairs PD ρ →ₗ[LL] finiteCocycles PD ρ :=
   LinearMap.codRestrict (finiteCocycles PD ρ) ((LinearMap.fst LL (G → V) (V ⊗[Qp] B)).comp (pairs PD ρ).subtype)
     (fun p => ⟨p.2.1, p.1.2, p.2.2⟩)
 
+/- English proof (translation)
+Introduce and unpack `⟨c, hc, x, hx⟩`. Conclude with `⟨⟨(c, x), hc, hx⟩, rfl⟩`.
+-/
 theorem projZ_surjective : Function.Surjective (projZ PD ρ) := by
   rintro ⟨c, hc, x, hx⟩
   exact ⟨⟨(c, x), hc, hx⟩, rfl⟩
@@ -68,6 +77,11 @@ def toDcris : pairs PD ρ →ₗ[LL] Dcris PD ρ :=
       (pairs PD ρ).subtype)
     (fun p => GlobalTheory.CobCrisLift.sub_φ_mem_Dcris PD ρ p.1.1 p.1.2 p.2.2)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hp`. Establish `he' : (e : V ⊗[Qp] B) - φVB PD (LL` using `LL) (V := V) e = p.1.2 - φVB PD (LL := LL) (V := V) p.1.2 := congrArg Subtype.val he`. Use `⟨p.2.1, p.1.2 - e, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hg` using `(mem_Dcris_iff PD ρ e).1 e.2 g`. Rewrite using `[p.2.2 g, map_sub, hg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem fst_mem_exponential_cocycles (p : pairs PD ρ) (hp : toDcris PD ρ p ∈ LinearMap.range (oneSubφ PD ρ)) :
     (p : (G → V) × (V ⊗[Qp] B)).1 ∈ crystallineCocycles PD ρ := by
   obtain ⟨e, he⟩ := hp
@@ -83,6 +97,27 @@ theorem fst_mem_exponential_cocycles (p : pairs PD ρ) (hp : toDcris PD ρ p ∈
     rw [p.2.2 g, map_sub, hg]
     abel
 
+/- English proof (translation)
+Distinguish the cases in `hf : Module.Finite LL (finiteCocycles PD ρ)`. Use `swap`. Rewrite using `[Module.finrank_of_not_finite hf]`. Conclude with `Nat.zero_le _`. Take `⟨s, hs⟩` from `(projZ PD ρ).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 (projZ_surjective PD ρ))`.
+
+Use `set N := LinearMap.range (oneSubφ PD ρ) with hN`. Set `T : finiteCocycles PD ρ →ₗ[LL] (Dcris PD ρ ⧸ N)` to `N.mkQ ∘ₗ toDcris PD ρ ∘ₗ s`. Establish `hle : crystallineCocycles PD ρ ≤ finiteCocycles PD ρ` using `fun c ⟨hc, x, _, hx⟩ => ⟨hc, x, hx⟩`. Use `haveI : Module.Finite LL (crystallineCocycles PD ρ) := Module.Finite.of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`. Establish `hmem : ∀ k : LinearMap.ker T, ((k : finiteCocycles PD ρ) : G → V) ∈ crystallineCocycles PD ρ`.
+
+Introduce `k`. Establish `hk : T k = 0` using `LinearMap.mem_ker.1 k.2`. Establish `h` using `fst_mem_exponential_cocycles PD ρ (s k) ((Submodule.Quotient.mk_eq_zero N).1 hk)`. Establish `hsk : projZ PD ρ (s k) = k` using `LinearMap.congr_fun hs k`. Establish `hv : ((s k : pairs PD ρ) : (G → V) × (V ⊗[Qp] B)).1 = ((k : finiteCocycles PD ρ) : G → V)` using `congrArg Subtype.val hsk`.
+
+Rewrite `h` using `[hv]`. Then use the resulting hypothesis. Establish `h1 : finrank LL (LinearMap.ker T) ≤ finrank LL (crystallineCocycles PD ρ)`. Set `j : LinearMap.ker T →ₗ[LL] crystallineCocycles PD ρ` to `LinearMap.codRestrict (crystallineCocycles PD ρ) ((finiteCocycles PD ρ).subtype ∘ₗ (LinearMap.ker T).subtype) hmem`. Establish `hj : Function.Injective j`. Introduce `a b hab`.
+
+Establish `h` using `congrArg Subtype.val hab`. Simplify using `only [j, LinearMap.codRestrict_apply, LinearMap.comp_apply, Submodule.subtype_apply] at h`. Conclude with `Subtype.ext (Subtype.ext h)`. Conclude with `LinearMap.finrank_le_finrank_of_injective hj`. Establish `h2 : finrank LL (LinearMap.range T) ≤ finrank LL (Dcris PD ρ ⧸ N)` using `Submodule.finrank_le _`.
+
+Establish `h3` using `Submodule.finrank_quotient_add_finrank N`. Establish `h4` using `LinearMap.finrank_range_add_finrank_ker (oneSubφ PD ρ)`. Establish `h5` using `LinearMap.finrank_range_add_finrank_ker T`. Use `set W := Dcris PD ρ ⊓ LinearMap.ker (φVB PD (LL := LL) (V := V) - LinearMap.id) with hW`. Use `haveI : Module.Finite LL W := Module.Finite.of_injective (Submodule.inclusion (inf_le_left : W ≤ Dcris PD ρ)) (Submodule.inclusion_injective _)`.
+
+Establish `hmemW : ∀ k : LinearMap.ker (oneSubφ PD ρ), ((k : Dcris PD ρ) : V ⊗[Qp] B) ∈ W`. Introduce `k`. Establish `hk : oneSubφ PD ρ k = 0` using `LinearMap.mem_ker.1 k.2`. Establish `hk' : ((k : Dcris PD ρ) : V ⊗[Qp] B) - φVB PD (LL` using `LL) (V := V) (k : Dcris PD ρ) = 0 := congrArg Subtype.val hk`. Use `Submodule.mem_inf.2 ⟨(k : Dcris PD ρ).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite `hk'`, the goal using `[sub_eq_zero]`. Conclude with `hk'.symm`. Establish `h6 : finrank LL (LinearMap.ker (oneSubφ PD ρ)) ≤ finrank LL W`. Set `j : LinearMap.ker (oneSubφ PD ρ) →ₗ[LL] W` to `LinearMap.codRestrict W ((Dcris PD ρ).subtype ∘ₗ (LinearMap.ker (oneSubφ PD ρ)).subtype) hmemW`.
+
+Establish `hj : Function.Injective j`. Introduce `a b hab`. Establish `h` using `congrArg Subtype.val hab`. Simplify using `only [j, LinearMap.codRestrict_apply, LinearMap.comp_apply, Submodule.subtype_apply] at h`. Conclude with `Subtype.ext (Subtype.ext h)`.
+
+Conclude with `LinearMap.finrank_le_finrank_of_injective hj`. Establish `h7 : finrank LL N = finrank LL (LinearMap.range (oneSubφ PD ρ))` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_finite_cocycles_le [Module.Finite LL (Dcris PD ρ)] :
     finrank LL (finiteCocycles PD ρ) ≤ finrank LL (crystallineCocycles PD ρ) +
       finrank LL ↥(Dcris PD ρ ⊓ LinearMap.ker (φVB PD (LL := LL) (V := V) - LinearMap.id)) := by
@@ -148,6 +183,9 @@ end GlobalTheory.HyodoFE
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N GlobalTheory.HyodoDef GlobalTheory.Pst TensorProduct Module
 
+/- English proof (translation)
+Introduce `l _ P AI _ K V _ _ _ _ _ _ _ ρ _ hdR`. Use `haveI := GlobalTheory.DcrisFin.dcris_finite_of_isDR l P K V ρ hdR`. Conclude with `GlobalTheory.HyodoFE.finrank_finite_cocycles_le (P.PD K) ρ`.
+-/
 theorem GlobalTheory.HyodoFE.finrank_finite_le_exponential_add : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), (∀ v, Continuous fun g => ρ g v) → IsDR (P.PD K) ρ → finrank ℚ_[l] ↥(finiteCocycles (P.PD K) ρ) ≤ finrank ℚ_[l] ↥(crystallineCocycles (P.PD K) ρ) + finrank ℚ_[l] ↥(Dcris (P.PD K) ρ ⊓ LinearMap.ker (φVB (P.PD K) (LL := ℚ_[l]) (V := V) - LinearMap.id)) := by
   intro l _ P AI _ K V _ _ _ _ _ _ _ ρ _ hdR
   haveI := GlobalTheory.DcrisFin.dcris_finite_of_isDR l P K V ρ hdR

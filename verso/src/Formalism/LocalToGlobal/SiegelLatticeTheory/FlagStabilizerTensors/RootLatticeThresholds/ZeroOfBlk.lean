@@ -11,16 +11,25 @@ variable {m : ℕ}
 def IsUB (blk : Fin m → ℕ) (C : Matrix (Fin m) (Fin m) ℂ) : Prop :=
   (∀ i, C i i = 1) ∧ ∀ i j, C i j ≠ 0 → i ≤ j ∧ blk i = blk j
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `absurd hij (not_lt.mpr (h.2 i j hne).1)`.
+-/
 theorem IsUB.zero_of_lt {blk : Fin m → ℕ} {C : Matrix (Fin m) (Fin m) ℂ} (h : IsUB blk C) {i j : Fin m} (hij : j < i) :
     C i j = 0 := by
   by_contra hne
   exact absurd hij (not_lt.mpr (h.2 i j hne).1)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `hij (h.2 i j hne).2`.
+-/
 theorem IsUB.zero_of_blk {blk : Fin m → ℕ} {C : Matrix (Fin m) (Fin m) ℂ} (h : IsUB blk C) {i j : Fin m}
     (hij : blk i ≠ blk j) : C i j = 0 := by
   by_contra hne
   exact hij (h.2 i j hne).2
 
+/- English proof (translation)
+Establish `hup : C.BlockTriangular id`. Introduce `i j hij`. Conclude with `h.zero_of_lt hij`. Rewrite using `[Matrix.det_of_upperTriangular hup]`. Conclude with `Finset.prod_eq_one fun i _ => h.1 i`.
+-/
 theorem IsUB.det_eq_one {blk : Fin m → ℕ} {C : Matrix (Fin m) (Fin m) ℂ} (h : IsUB blk C) : C.det = 1 := by
   have hup : C.BlockTriangular id := by
     intro i j hij
@@ -28,6 +37,21 @@ theorem IsUB.det_eq_one {blk : Fin m → ℕ} {C : Matrix (Fin m) (Fin m) ℂ} (
   rw [Matrix.det_of_upperTriangular hup]
   exact Finset.prod_eq_one fun i _ => h.1 i
 
+/- English proof (translation)
+Establish `hup : C.BlockTriangular id`. Introduce `i j hij`. Conclude with `h.zero_of_lt hij`. Establish `hb1 : C.BlockTriangular blk`. Introduce `i j hij`.
+
+Conclude with `h.zero_of_blk hij.ne'`. Establish `hb2 : C.BlockTriangular (fun i => OrderDual.toDual (blk i))`. Introduce `i j hij`. Conclude with `h.zero_of_blk (OrderDual.toDual_lt_toDual.mp hij).ne`. Establish `hdet : IsUnit C.det`.
+
+Rewrite using `[h.det_eq_one]`. Conclude with `isUnit_one`. Use `letI : Invertible C := C.invertibleOfIsUnitDet hdet`. Establish `iup` using `Matrix.blockTriangular_inv_of_blockTriangular hup`. Establish `ib1` using `Matrix.blockTriangular_inv_of_blockTriangular hb1`.
+
+Establish `ib2` using `Matrix.blockTriangular_inv_of_blockTriangular hb2`. Use `⟨fun i => ?_, fun i j hij => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (C * C⁻¹) i i = 1`. Rewrite using `[Matrix.mul_nonsing_inv _ hdet, one_apply_eq]`. Rewrite `h1` using `[mul_apply, Finset.sum_eq_single i]`.
+
+Rewrite `h1` using `[h.1, one_mul]`. Then use the resulting hypothesis. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hlt | hlt` into its components or cases. Rewrite using `[h.zero_of_lt hlt, zero_mul]`. Rewrite using `[iup hlt, mul_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Assume the negation of the conclusion as `hlt`. Conclude with `hij (iup (not_le.mp hlt))`. Assume the negation of the conclusion as `hne`.
+
+Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Conclude with `hij (ib2 (OrderDual.toDual_lt_toDual.mpr hlt))`. Conclude with `hij (ib1 hlt)`.
+-/
 theorem IsUB.inv {blk : Fin m → ℕ} {C : Matrix (Fin m) (Fin m) ℂ} (h : IsUB blk C) : IsUB blk C⁻¹ := by
   have hup : C.BlockTriangular id := by
     intro i j hij
@@ -69,10 +93,20 @@ variable (π : Fin m → Fin m) (hπ : ∀ a, π (π a) = a) (Z : Matrix (Fin m)
   (hZ : ∀ c b, Z c b ≠ 0 ↔ c = π b)
 include hπ hZ
 
+/- English proof (translation)
+The claim follows from `(hZ i (π i)).mpr (hπ i).symm`.
+-/
 theorem Z_ne' (i : Fin m) : Z i (π i) ≠ 0 := (hZ i (π i)).mpr (hπ i).symm
 
 def Zi : Matrix (Fin m) (Fin m) ℂ := Matrix.of fun b c => if b = π c then (Z c b)⁻¹ else 0
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `only [mul_apply, Zi, of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, one_apply]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Conclude with `mul_inv_cancel₀ (Z_ne' π hπ Z hZ i)`. Rewrite using `[if_neg hik]`. Establish `h0 : Z i (π k) = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `(hZ i (π k)).mp hne`.
+
+Rewrite `h1` using `[hπ]`. Conclude with `hik h1`. Rewrite using `[h0, zero_mul]`.
+-/
 theorem Z_mul_Zi : Z * Zi π Z = 1 := by
   ext i k
   simp only [mul_apply, Zi, of_apply, mul_ite, mul_zero, Finset.sum_ite_eq',
@@ -89,10 +123,23 @@ theorem Z_mul_Zi : Z * Zi π Z = 1 := by
       exact hik h1
     rw [h0, zero_mul]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv (Z_mul_Zi π hπ Z hZ)`.
+-/
 theorem Z_inv_eq : Z⁻¹ = Zi π Z := Matrix.inv_eq_right_inv (Z_mul_Zi π hπ Z hZ)
 
+/- English proof (translation)
+The claim follows from `Matrix.isUnit_det_of_right_inverse (Z_mul_Zi π hπ Z hZ)`.
+-/
 theorem isUnit_Z : IsUnit Z.det := Matrix.isUnit_det_of_right_inverse (Z_mul_Zi π hπ Z hZ)
 
+/- English proof (translation)
+Rewrite using `[Z_inv_eq π hπ Z hZ]`. Simplify using `only [mul_apply, Zi, of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single (π j)]`. Introduce `l _ hl`.
+
+Establish `h0 : Z j l = 0`. Assume the negation of the conclusion as `hne`. Apply `hl` to reduce the goal to its premises. Rewrite using `[(hZ j l).mp hne, hπ]`. Rewrite using `[h0, zero_mul]`.
+
+Introduce `hj`. Conclude with `absurd (Finset.mem_univ _) hj`.
+-/
 theorem conj_apply (X : Matrix (Fin m) (Fin m) ℂ) (j i : Fin m) :
     (Z * X * Z⁻¹) j i = Z j (π j) * X (π j) (π i) * (Z i (π i))⁻¹ := by
   rw [Z_inv_eq π hπ Z hZ]
@@ -118,6 +165,15 @@ variable {blk : Fin m → ℕ} (π : Fin m → Fin m) (hπ : ∀ a, π (π a) = 
   (hZ : ∀ c b, Z c b ≠ 0 ↔ c = π b)
 include hπ hblk hanti hZ
 
+/- English proof (translation)
+Establish `hD` using `hC.inv`. Establish `hM : ∀ j i, (Z * C⁻¹ * Z⁻¹) j i = Z j (π j) * C⁻¹ (π j) (π i) * (Z i (π i))⁻¹` using `fun j i => conj_apply π hπ Z hZ _ j i`. Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_apply, hM, hD.1, mul_one, mul_inv_cancel₀ (Z_ne' π hπ Z hZ i), star_one]`. Rewrite `hij` using `[conjTranspose_apply, hM]`.
+
+Establish `h1 : C⁻¹ (π j) (π i) ≠ 0`. Introduce `h0`. Apply `hij` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Take `⟨hle, hb⟩` from `hD.2 _ _ h1`. Use `⟨?_, by simpa [hblk] using hb.symm⟩` and prove the remaining obligations. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Establish `h2` using `hanti _ _ hb hlt`. Rewrite `h2` using `[hπ, hπ]`.
+
+Conclude with `h2.le`. Establish `h2` using `congrArg π heq`. Rewrite `h2` using `[hπ, hπ]`. Conclude with `h2.symm.le`.
+-/
 theorem isUB_A {C : Matrix (Fin m) (Fin m) ℂ} (hC : IsUB blk C) : IsUB blk (Z * C⁻¹ * Z⁻¹)ᴴ := by
   have hD := hC.inv
   have hM : ∀ j i, (Z * C⁻¹ * Z⁻¹) j i = Z j (π j) * C⁻¹ (π j) (π i) * (Z i (π i))⁻¹ :=
@@ -141,6 +197,11 @@ theorem isUB_A {C : Matrix (Fin m) (Fin m) ℂ} (hC : IsUB blk C) : IsUB blk (Z 
       rw [hπ, hπ] at h2
       exact h2.symm.le
 
+/- English proof (translation)
+Rewrite using `[conjTranspose_conjTranspose]`. Establish `hZu` using `isUnit_Z π hπ Z hZ`. Establish `hCu : IsUnit C.det`. Rewrite using `[hC.det_eq_one]`. Conclude with `isUnit_one`.
+
+Rewrite using `[mul_assoc (Z * C⁻¹) Z⁻¹ Z, Matrix.nonsing_inv_mul _ hZu, mul_one, mul_assoc, Matrix.nonsing_inv_mul _ hCu, mul_one]`.
+-/
 theorem A_Z_C {C : Matrix (Fin m) (Fin m) ℂ} (hC : IsUB blk C) : (Z * C⁻¹ * Z⁻¹)ᴴᴴ * Z * C = Z := by
   rw [conjTranspose_conjTranspose]
   have hZu := isUnit_Z π hπ Z hZ
@@ -152,6 +213,19 @@ theorem A_Z_C {C : Matrix (Fin m) (Fin m) ℂ} (hC : IsUB blk C) : (Z * C⁻¹ *
 
 end Pair
 
+/- English proof (translation)
+Establish `hrow : ∀ j, A (Fin.last m) j = if j = Fin.last m then 1 else 0`. Introduce `j`. Distinguish the cases in `hj : j = Fin.last m`. Rewrite using `[if_pos hj, hj]`. Conclude with `hA.1 _`.
+
+Rewrite using `[if_neg hj]`. Conclude with `hA.zero_of_lt (lt_of_le_of_ne (Fin.le_last j) hj)`. Use extensionality with `i j`. Simplify using `only [mul_apply, conjTranspose_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last m)]`.
+
+Rewrite using `[Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[hrow i, hrow j]`. Distinguish the cases in `hi : i = Fin.last m`. Distinguish the cases in `hj : j = Fin.last m`. Substitute `hi` using the available equality.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hj, hΓ i j (Or.inr hj)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hi, hΓ i j (Or.inl hi)]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[hΓ k (Fin.last m) (Or.inl hk), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Introduce `l _ hl`. Rewrite using `[Finset.sum_eq_zero (fun k _ => by rw [hΓ k l (Or.inr hl), mul_zero]), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem gram_last {blk : Fin (m + 1) → ℕ} {A : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ} (hA : IsUB blk A)
     (Γ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hΓ : ∀ i j, (i ≠ Fin.last m ∨ j ≠ Fin.last m) → Γ i j = 0) :
     Aᴴ * Γ * A = Γ := by

@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.Loca
 section
 open scoped Matrix
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ n d X W M ψ χX χW om hcm hψ hw γ hγ f`. Take `⟨l, _, _, Φ, g, T, hgc, hg0, hgm, hgs, hT0, hTm, hTi, hTu, hTc, hTa⟩` from `_root_.GlobalTheory.T.archimedean_line_spanned_by_weil_vector hP M ψ χX χW om hcm hψ hw γ hγ`. Take `⟨Z, hZ, hgZ⟩` from `GlobalTheory.T.exists_symplecticLie_eq_exp_oneParam l g hgc hg0 hgm hgs`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.T.metaplectic_lift_scalar_derivative_eq hP l Z hZ T hT0 hTm (fun t w h h₁ e => by rw [← hgZ t]; exact hTi t w h h₁ e) hTu hTc`. Use `⟨fun t => Φ.symm (T t (Φ f)), Φ.symm (a • Φ f + GlobalTheory.RealWeil.quad Z (Φ f)), ?_, ?_, fun t => hTa t f⟩` and prove the remaining obligations.
+
+Simplify using `[hT0]`. Establish `h` using `(Φ.symm.continuous.tendsto _).comp (ha (Φ f))`. Use `h.congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ← Complex.coe_smul, map_smul, map_sub, ContinuousLinearEquiv.symm_apply_apply]`.
+-/
 theorem GlobalTheory.WeilArchSmooth.exists_weilRep_archimedean_smooth_orbit : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     IsCMExt F E σ → IsStd ψ → M.IsWeil ψ χX χW om →

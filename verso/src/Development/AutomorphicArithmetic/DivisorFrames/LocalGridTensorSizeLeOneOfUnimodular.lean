@@ -14,23 +14,35 @@ section Local
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 variable {K : Type} [Field K] (ι τ : K →+* ℂ)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Un ι τ ((1 : ℂˣ) : ℂ)`. Rewrite using `[Units.val_one]`. Conclude with `Un.one`.
+-/
 private theorem lam_principal_un {a : Type*} [Fintype a] [DecidableEq a] (g : (TypeDatum.principal k a).J) :
     Un ι τ (((TypeDatum.principal k a).lam g : ℂˣ) : ℂ) := by
   change Un ι τ ((1 : ℂˣ) : ℂ)
   rw [Units.val_one]
   exact Un.one
 
+/- English proof (translation)
+The claim follows from `hP _`.
+-/
 private theorem lam_reindex_un {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (P : TypeDatum k a)
     (e : a ≃ b) (hP : ∀ g, Un ι τ ((P.lam g : ℂˣ) : ℂ)) (g : (P.reindex e).J) :
     Un ι τ (((P.reindex e).lam g : ℂˣ) : ℂ) :=
   hP _
 
+/- English proof (translation)
+Rewrite using `[P.step_lam μ hμ h (P.corner h) (P.corner_val h), Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]`. Conclude with `((hP _).mul (hμF _).inv).mul (hμF _)`.
+-/
 private theorem lam_step_un {a t : Type*} [Fintype a] [DecidableEq a] [Fintype t] [DecidableEq t] (P : TypeDatum k a)
     (μ : kˣ →* ℂˣ) (hμ : IsTame μ) (hP : ∀ g, Un ι τ ((P.lam g : ℂˣ) : ℂ)) (hμF : ∀ x, Un ι τ ((μ x : ℂˣ) : ℂ))
     (h : (P.step t μ hμ).J) : Un ι τ (((P.step t μ hμ).lam h : ℂˣ) : ℂ) := by
   rw [P.step_lam μ hμ h (P.corner h) (P.corner_val h), Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]
   exact ((hP _).mul (hμF _).inv).mul (hμF _)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => exact lam_reindex_un ι τ P _ hP`. Consider the case `succ j ih => exact lam_reindex_un ι τ _ _ (lam_step_un ι τ _ _ _ ih (hμF _))`.
+-/
 private theorem lam_iter_un {r t : Type*} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r)
     (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (hP : ∀ g, Un ι τ ((P.lam g : ℂˣ) : ℂ))
     (hμF : ∀ j x, Un ι τ ((μ j x : ℂˣ) : ℂ)) (j : ℕ) : ∀ g, Un ι τ (((P.iter t μ hμ j).lam g : ℂˣ) : ℂ) := by
@@ -38,6 +50,11 @@ private theorem lam_iter_un {r t : Type*} [Fintype r] [DecidableEq r] [Fintype t
   | zero => exact lam_reindex_un ι τ P _ hP
   | succ j ih => exact lam_reindex_un ι τ _ _ (lam_step_un ι τ _ _ _ ih (hμF _))
 
+/- English proof (translation)
+Distinguish the cases in `h : P.Phi t μ x = 0`. Rewrite using `[h]`. Conclude with `Sz.zero zero_le_one`. Take `⟨⟨g, hg, e⟩, h2⟩` from `(P.Phi_ne_zero_iff μ).1 h`. Rewrite using `[P.Phi_of_mem μ ⟨g, hg⟩ e h2, Units.val_inv_eq_inv_val]`.
+
+Conclude with `((hP _).mul (hμF _).inv).sz`.
+-/
 private theorem Phi_sz {a t : Type*} [Fintype a] [DecidableEq a] (P : TypeDatum k a) (μ : kˣ →* ℂˣ)
     (hP : ∀ g, Un ι τ ((P.lam g : ℂˣ) : ℂ)) (hμF : ∀ x, Un ι τ ((μ x : ℂˣ) : ℂ)) (x : Matrix (a ⊕ t) a k) :
     Sz ι τ (P.Phi t μ x) 1 := by
@@ -47,12 +64,20 @@ private theorem Phi_sz {a t : Type*} [Fintype a] [DecidableEq a] (P : TypeDatum 
     rw [P.Phi_of_mem μ ⟨g, hg⟩ e h2, Units.val_inv_eq_inv_val]
     exact ((hP _).mul (hμF _).inv).sz
 
+/- English proof (translation)
+The claim follows from `Phi_sz ι τ _ _ (lam_iter_un ι τ P μ hμ hP hμF j) (hμF _) _`.
+-/
 private theorem iterPhi_sz {r t : Type*} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r)
     (μ : ℕ → kˣ →* ℂˣ) (hμ : ∀ j, IsTame (μ j)) (hP : ∀ g, Un ι τ ((P.lam g : ℂˣ) : ℂ))
     (hμF : ∀ j x, Un ι τ ((μ j x : ℂˣ) : ℂ)) (j : ℕ) (x : Matrix (Ix r t (j + 1)) (Ix r t j) k) :
     Sz ι τ (P.iterPhi t μ hμ j x) 1 :=
   Phi_sz ι τ _ _ (lam_iter_un ι τ P μ hμ hP hμF j) (hμF _) _
 
+/- English proof (translation)
+Distinguish the cases in `h : parPhi δ x = 0`. Rewrite using `[h]`. Conclude with `Sz.zero zero_le_one`. Take `⟨⟨g, hg, e⟩, h21, h12, h22⟩` from `(parPhi_ne_zero_iff δ).1 h`. Rewrite using `[parPhi_of_mem δ hg e h21 h12 h22, Units.val_inv_eq_inv_val]`.
+
+Conclude with `(hδ _).inv.sz`.
+-/
 private theorem parPhi_sz {r s s' : Type*} [Fintype r] [DecidableEq r] (δ : kˣ →* ℂˣ)
     (hδ : ∀ x, Un ι τ ((δ x : ℂˣ) : ℂ)) (x : Matrix (r ⊕ s) (r ⊕ s') k) : Sz ι τ (parPhi δ x) 1 := by
   by_cases h : parPhi δ x = 0
@@ -61,6 +86,9 @@ private theorem parPhi_sz {r s s' : Type*} [Fintype r] [DecidableEq r] (δ : kˣ
     rw [parPhi_of_mem δ hg e h21 h12 h22, Units.val_inv_eq_inv_val]
     exact (hδ _).inv.sz
 
+/- English proof (translation)
+Rewrite using `[Set.indicator_apply]`. Use `split_ifs`. Conclude with `Sz.one`. Conclude with `Sz.zero zero_le_one`.
+-/
 private theorem indicator_one_sz {X : Type*} (S : Set X) (x : X) : Sz ι τ (S.indicator (1 : X → ℂ) x) 1 := by
   classical
   rw [Set.indicator_apply]
@@ -75,6 +103,9 @@ section Global
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {K : Type} [Field K] (ι τ : K →+* ℂ)
   (w : Pl D.host.E)
 
+/- English proof (translation)
+Break down `c with _ | c` into its components or cases. Simplify `(Un.one : Un ι τ 1)` using `[muBase]`. Simplify using `only [muBase] split_ifs with h`. Conclude with `hmu _ _`. Simplify using `using (Un.one : Un ι τ 1)`.
+-/
 private theorem muBase_un (hmu : ∀ j x, Un ι τ ((L.C.mu0 j).loc w x : ℂ)) (c : ℕ) (x : (Kw w)ˣ) :
     Un ι τ (((muBase L c).loc w x : ℂˣ) : ℂ) := by
   rcases c with _ | c
@@ -87,6 +118,11 @@ private theorem muBase_un (hmu : ∀ j x, Un ι τ ((L.C.mu0 j).loc w x : ℂ)) 
 variable {t : T} (hmu : ∀ j x, Un ι τ ((L.C.mu0 j).loc w x : ℂ)) (hxi : ∀ x, Un ι τ ((L.xiH t).loc w x : ℂ))
 include hmu hxi
 
+/- English proof (translation)
+Unfold `stepFn`. Use `split_ifs`. Use `iterPhi_sz ι τ _ _ _ (lam_principal_un ι τ) (fun c y => ?_) _ _` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Conclude with `(muBase_un ι τ w hmu c y).inv`.
+
+Use `parPhi_sz ι τ _ (fun y => ?_) _` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`. Conclude with `(hxi y).inv`. Conclude with `indicator_one_sz ι τ _ _`.
+-/
 private theorem stepFn_sz (j : ℕ) (x) : Sz ι τ (stepFn L t w j x) 1 := by
   unfold stepFn
   split_ifs
@@ -98,6 +134,13 @@ private theorem stepFn_sz (j : ℕ) (x) : Sz ι τ (stepFn L t w j x) 1 := by
     exact (hxi y).inv
   · exact indicator_one_sz ι τ _ _
 
+/- English proof (translation)
+Break down `b with ⟨i, j⟩ | ⟨i, j⟩` into its components or cases. Break down `i with _ | i` into its components or cases. Simplify using `only [givenDatum]`. Conclude with `stepFn_sz ι τ w hmu hxi _ _`. Simplify using `only [givenDatum]`.
+
+Conclude with `Sz.zero zero_le_one`. Break down `j with _ | j` into its components or cases. Simplify using `only [givenDatum] split_ifs`. Conclude with `indicator_one_sz ι τ _ _`. Conclude with `Sz.zero zero_le_one`.
+
+Simplify using `only [givenDatum]`. Conclude with `Sz.zero zero_le_one`.
+-/
 private theorem givenDatum_sz (B : Frames G) (Φ : G.Datum) (b : Edge) (x) : Sz ι τ (givenDatum t w B Φ b x) 1 := by
   rcases b with ⟨i, j⟩ | ⟨i, j⟩
   · rcases i with _ | i
@@ -117,6 +160,9 @@ end Global
 
 end UpperTheory.IteratedPhiSize
 
+/- English proof (translation)
+Introduce `D T L sc G K _ ι τ B t Φ w hmu hxi z`. Use `show Sz ι τ ((GlobalTheory.SplitFlip.givenPath D.R.m).map fun b => givenDatum t w B Φ b (z b)).prod 1`. Use `Sz.list_prod fun y hy => ?_` and prove the remaining obligations. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `UpperTheory.IteratedPhiSize.givenDatum_sz ι τ w hmu hxi B Φ b _`.
+-/
 theorem UpperTheory.localGrid_tensor_size_le_one_of_unimodular :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {K : Type} [Field K] (ι τ : K →+* ℂ) (B : Frames G) (t : T) (Φ : G.Datum) (w : Pl D.host.E), (∀ j x, Un ι τ ((L.C.mu0 j).loc w x : ℂ)) → (∀ x, Un ι τ ((L.xiH t).loc w x : ℂ)) → ∀ z : (locGrid G t w).Args, Sz ι τ ((givenStage t w B Φ).tensor z) 1 := by
   intro D T L sc G K _ ι τ B t Φ w hmu hxi z

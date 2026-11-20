@@ -11,6 +11,19 @@ open UpperTheory.Gal.FiniteEtaleModels
 
 open private half_ker from Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.AnnihilatorModels.MSecInj
 
+/- English proof (translation)
+Introduce `hPE hPR hPK hKU hIK p _ D R _ b N hN hNp hm r w j e hw hu hj he M T K _ _ _ x y y' hy hy' hK`. Establish `hpK0 : IsUnit ((p : ℕ) : K)`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Establish `hpK : IsUnit ((p : ℕ) : Γ(Sp K, ⊤))`.
+
+Use `hpK0.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Simplify using `using this`. Take `⟨o₁, ⟨m₁⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D R b N M.X (Sp K) M.s x M.univ`. Take `⟨P⟩` from `hPE p D R b N hN hNp M r w j (p ^ e) T (Sp K) x (x ≫ M.s) rfl o₁ m₁ y hy`. Take `⟨P'⟩` from `hPE p D R b N hN hNp M r w j (p ^ e) T (Sp K) x (x ≫ M.s) rfl o₁ m₁ y' hy'`.
+
+Establish `hc : ∃ e', p ^ e = p ^ e' ∧ (0 < j → 0 < e')` using `⟨e, rfl, he⟩`. Establish `k1` using `half_ker hPR hPK hN hNp hm hw hu hj hc T hpK x y y' hy hy' (fun g hg h => (hK g hg).1 h) m₁ P P'`. Establish `k2` using `half_ker hPR hPK hN hNp hm hw hu hj hc T hpK x y' y hy' hy (fun g hg h => (hK g hg).2 h) m₁ P' P`. Establish `hker : ∀ (U : Over (Sp K)) (g : U ⟶ o₁.A), g ≫ P.ψ = 1 ↔ g ≫ P'.ψ = 1`. Introduce `U g`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `hKU p D R b N r w hw.ne_top hu K (x ≫ M.s) (p ^ e) o₁ P.o' P'.o' P.ψ P'.ψ P.isog P'.isog (fun U g => ⟨k1 U g, k2 U g⟩) U g`. Conclude with `hKU p D R b N r w hw.ne_top hu K (x ≫ M.s) (p ^ e) o₁ P'.o' P.o' P'.ψ P.ψ P'.isog P.isog (fun U g => ⟨k2 U g, k1 U g⟩) U g`. Take `⟨m, hm'⟩` from `hIK p D R b N K (x ≫ M.s) (p ^ e) o₁ P.o' P'.o' P.ψ P'.ψ P.isog P'.isog hker`. Take `⟨m'', hm''⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m P'.m'`.
+
+Establish `hU` using `T.univ (Sp K) x o₁ P.o' m₁ P.ψ hpK P.isog P.tj`. Establish `fix : ∀ (f : Sp K ⟶ T.Y) (_ : f = y') (n : GlobalTheory.UPel.HT.ObjMap P.o' T.o' f), ∃ n' : GlobalTheory.UPel.HT.ObjMap P.o' T.o' y', n'.φ = n.φ`. Introduce and unpack `f rfl n`. Conclude with `⟨n, rfl⟩`. Take `⟨n', hn'⟩` from `fix _ (Category.id_comp y') m''`.
+
+Use `hU.unique ⟨hy, P.m₀, P.m', P.sq⟩ ⟨hy', P'.m₀, n', ?_⟩` and prove the remaining obligations. Rewrite using `[hn', hm'', ← Category.assoc, hm', P'.sq]`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.secInjG_of :
     UpperTheory.Gal.crystallineComparison.Mod.PulledEx → UpperTheory.Gal.crystallineComparison.Mod.PulledRead → UpperTheory.Gal.crystallineComparison.Mod.PullKer → UpperTheory.Gal.crystallineComparison.Mod.KerFromU → UpperTheory.Gal.crystallineComparison.Mod.IsoOfKer → SecInjG := by
   intro hPE hPR hPK hKU hIK p _ D R _ b N hN hNp hm r w j e hw hu hj he M T K _ _ _ x y y' hy hy' hK

@@ -16,6 +16,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ D F _ _ T₀ φ k f s h α T ρ x z J hJ`. Establish `e : (lift ρ x).left ≫ (φ ▷ D.P.A).left = (lift (ρ ≫ φ) x).left`. Rewrite using `[← Over.comp_left, lift_whiskerRight]`. Establish `a` using `(values_natural _ _ _ _ D.P.L (Fin 4) _ _ (𝟙 (DegPre.BF D F).left) (lift ρ x).left z J hJ).2.1 (s α)`. Establish `b` using `(values_natural _ _ _ _ D.P.L (Fin 4) _ _ (φ ▷ D.P.A).left (lift ρ x).left z J hJ).2.1 (f α)`.
+
+Establish `hJ' : Good D.P.L ((lift ρ x).left z) (fun ψ => J ((lift ρ x).left ≫ ψ))` using `fun ψ => hJ _`. Rewrite `b` using `[e]`. Rewrite `a` using `[Category.comp_id]`. Conclude with `a.trans ((congrArg _ (h α _ _ hJ')).trans b.symm)`.
+-/
 theorem pullB_values : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (T₀ : Over (Spec (CommRingCat.of R))) (φ : TF (R := R) F ⟶ T₀) (k : ℕ) (f : ∀ α, SecBT D T₀ k α) (s : Raw D F k), PullB D F φ k f s → ∀ (α : D.X) (T : Over (Spec (CommRingCat.of R))) (ρ : T ⟶ TF (R := R) F) (x : T ⟶ D.P.A) (z : T.left) (J), Good D.P.L z J → sval (s α) (lift ρ x).left z J = sval (f α) (lift (ρ ≫ φ) x).left z J := by
   intro R _ _ D F _ _ T₀ φ k f s h α T ρ x z J hJ
   have e : (lift ρ x).left ≫ (φ ▷ D.P.A).left = (lift (ρ ≫ φ) x).left := by

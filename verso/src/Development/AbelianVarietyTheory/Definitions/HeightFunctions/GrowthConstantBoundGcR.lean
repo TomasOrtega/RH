@@ -49,6 +49,9 @@ structure PageOK (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 C
 def gcR (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) : ℝ :=
   max 1 (max (Gc large₂ B (1009 * Zb D large₂) D.host.pde) (Gc large₂ B (1009 * Zb D large₂) D.host.pde'))
 
+/- English proof (translation)
+Introduce and unpack `po (rfl | rfl)`. Conclude with `(le_max_left _ _).trans (le_max_right _ _)`. Conclude with `(le_max_right _ _).trans (le_max_right _ _)`.
+-/
 theorem growthConstantBound_gcR (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) : GrowthConstantBound large₂ B (gcR large₂ B) := by
   rintro po (rfl | rfl)
   · exact (le_max_left _ _).trans (le_max_right _ _)

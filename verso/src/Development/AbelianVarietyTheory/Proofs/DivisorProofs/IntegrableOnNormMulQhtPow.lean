@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.RapidInteg
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B d W r s hB hW μ 𝓕 hμ hD f hf hdec N`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hB.cm`. Take `⟨c, hc, hcs⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hB.cm`. Establish `hd : W.J.det ≠ 0` using `GlobalTheory.IsoPlaneProj.det_ne_zero_of_cartan B W hW.cartan`. Establish `hH : IsHermND σ (c • W.J.map σ)` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hW.skew hd hc hcs`.
+
+Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.ThKOrthVInt.measure_fundDom_lt_top_smul hK.siegelSetUnitary hB.cm hc hH hD`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ W.J`. Establish `hht : ∀ γ : ratU σ W.J, Measurable (fun h : UA σ W.J => ht (γ.1 * h))` using `fun γ => ((GlobalTheory.Grow.continuous_heightGL F).comp (continuous_subtype_val.comp (continuous_const.mul continuous_id))).measurable`.
+
+Establish `hq : Measurable (fun h : UA σ W.J => qht h)` using `Measurable.iInf hht`. Establish `hmeas : Measurable (fun h => ‖f h‖ * (qht h : ℝ) ^ N)` using `hf.norm.measurable.mul ((measurable_coe_nnreal_real.comp hq).pow_const N)`. Take `⟨C, hC⟩` from `hdec N`. Use `Measure.integrableOn_of_bounded hfin.ne hmeas.aestronglyMeasurable (M := C) (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (norm_nonneg _) (pow_nonneg (NNReal.coe_nonneg _) _))]`.
+
+Conclude with `hC h`.
+-/
 theorem integrableOn_norm_mul_qht_pow : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {d : ℕ}
     (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →
     ∀ (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J)), μ.IsHaarMeasure → IsFundamentalDomain (ratU σ W.J) 𝓕 μ →

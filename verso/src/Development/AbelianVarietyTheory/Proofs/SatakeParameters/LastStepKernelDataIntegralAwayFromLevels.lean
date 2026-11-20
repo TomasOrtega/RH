@@ -12,6 +12,9 @@ namespace GlobalTheory.TopInt
 open GlobalTheory.PhiRootVal (RootOrZero phiGS_root phiG_root phiQ_root)
 open GlobalTheory.CplTwoInt (intOff_prod ftY_intOff smul_symm_mem repY_mem)
 
+/- English proof (translation)
+Unfold `PhiTopG`. Use `split_ifs`. Conclude with `phiGS_root (x := x) ..`. Conclude with `phiG_root (x := x) ..`. Conclude with `phiQ_root (x := x) ..`.
+-/
 theorem phiTopG_root {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (sharp : Bool) (i j n : ℕ) (P : HeightOneSpectrum (𝓞 X.E)) (x) :
     RootOrZero (PhiTopG (R := R) Ch mu sharp i j n P x) := by
@@ -21,6 +24,11 @@ theorem phiTopG_root {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R
   · exact phiG_root (x := x) ..
   · exact phiQ_root (x := x) ..
 
+/- English proof (translation)
+Establish `hok` using `t.idx_ok μ`. Unfold `XiTop XiTopG`. Rewrite using `[map_mul, map_prod]`. Use `IntOff.mul ?_ (intOff_prod _ _ fun P _ => ?_)` and prove the remaining obligations. Unfold `phiT split_ifs`.
+
+Simplify using `using (IntOff.one : IntOff (t.O u μ).S 1)`. Simplify using `using (IntOff.zero : IntOff (t.O u μ).S 0)`. Rewrite using `[map_mul]`. Use `IntOff.mul ((phiTopG_root _ _ _ _ _ _ _ _).intOff _ _) ?_` and prove the remaining obligations. Conclude with `ftY_intOff t.sel (t.tup μ) (t.cst μ) hok.cst_ok P (hok.depthG P) (hok.depthQ P) _ (GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P) _ (smul_symm_mem (GlobalTheory.ColPeriod.isFrames_frsF p P) _ (repY_mem t.sel (t.tup μ) (t.cst μ) hY P))`.
+-/
 theorem xiTop_intOff (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts)
     (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex) (u) (μ)
     (i : ℕ) (p : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) i) (Yb : Set (Sp t.X.E (D.R.N i)))
@@ -41,6 +49,9 @@ theorem xiTop_intOff (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst 
       (GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P) _
       (smul_symm_mem (GlobalTheory.ColPeriod.isFrames_frsF p P) _ (repY_mem t.sel (t.tup μ) (t.cst μ) hY P))
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t hTop u μ c c' _ x`. Take `⟨-, -, pt, ix, yb, pT, -, hyb, -, -, hpin, -, -⟩` from `hTop u μ`. Rewrite using `[hpin.2 c c' x]`. Conclude with `xiTop_intOff D L hT Gi Gl K Y cX ex t u μ _ _ _ _ _ (hyb c)`.
+-/
 theorem topInt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), t.TopPinned → t.TopInt := by
   intro D L hT Gi Gl K Y cX ex t hTop u μ c c' _ x
   obtain ⟨-, -, pt, ix, yb, pT, -, hyb, -, -, hpin, -, -⟩ := hTop u μ

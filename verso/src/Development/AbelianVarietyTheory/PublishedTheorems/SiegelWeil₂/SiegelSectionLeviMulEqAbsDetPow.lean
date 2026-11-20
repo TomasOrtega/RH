@@ -56,10 +56,18 @@ def relat (V : HSp D) (l : Lvl V) (hl : l.Good) : HSp D :=
         rw [← e]
         exact Submodule.mem_one.2 (H _ hx) }
 
+/- English proof (translation)
+Use extensionality with `y`. Conclude with `iff_of_eq (congrArg (· ∈ l.L) (V.frame.equivFun.apply_symm_apply y))`.
+-/
 theorem frameLat_relat (V : HSp D) (l : Lvl V) (hl : l.Good) : frameLat (relat V l hl) = l.L := by
   ext y
   exact iff_of_eq (congrArg (· ∈ l.L) (V.frame.equivFun.apply_symm_apply y))
 
+/- English proof (translation)
+Set `d' : HypDec (relat V l hl) V₀ r` to `⟨d.e, d.e', d.i₀, d.ee, d.e'e', d.e'e, d.iso, d.i₀e, d.i₀e', d.rank_add⟩`. Establish `h` using `GlobalTheory.Core.Rk.IwAd.hasIw_Kmax D (relat V l hl) V₀ r d' l.c GlobalTheory.Core.Rk.IP.Model.isSplit_two hl.2.2`. Introduce `g`. Take `⟨q, k, hk, e⟩` from `h g`. Establish `e2 : (Kmax (relat V l hl) l.c : Subgroup (GA D V)) = l.K` using `congrArg (fun L => levelAll D.sp.cm.sig V.gram L l.c) (frameLat_relat V l hl)`.
+
+Conclude with `⟨⟨q.1, q.2⟩, k, e2 ▸ hk, e⟩`.
+-/
 theorem hasIw_of_good {V V₀ : HSp D} {r : ℕ} (d : HypDec V V₀ r) (l : Lvl V) (hl : l.Good) : HasIw d l.K := by
   let d' : HypDec (relat V l hl) V₀ r := ⟨d.e, d.e', d.i₀, d.ee, d.e'e', d.e'e, d.iso, d.i₀e, d.i₀e', d.rank_add⟩
   have h := GlobalTheory.Core.Rk.IwAd.hasIw_Kmax D (relat V l hl) V₀ r d' l.c GlobalTheory.Core.Rk.IP.Model.isSplit_two hl.2.2
@@ -69,12 +77,18 @@ theorem hasIw_of_good {V V₀ : HSp D} {r : ℕ} (d : HypDec V V₀ r) (l : Lvl 
     congrArg (fun L => levelAll D.sp.cm.sig V.gram L l.c) (frameLat_relat V l hl)
   exact ⟨⟨q.1, q.2⟩, k, e2 ▸ hk, e⟩
 
+/- English proof (translation)
+The claim follows from `haveI := hl.1 isIwasawa_of_isCompact (isClosed_stab d) (continuous_absDet d) (isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _) (hasIw_of_good d l hl)`.
+-/
 theorem isIwasawa_of_good {V V₀ : HSp D} {r : ℕ} (d : HypDec V V₀ r) (l : Lvl V) (hl : l.Good) :
     IsIwasawa (absDet d) l.K :=
   haveI := hl.1
   isIwasawa_of_isCompact (isClosed_stab d) (continuous_absDet d) (isCompact_levelAll (AdelicU.isCMExt_host D) _ _ _)
     (hasIw_of_good d l hl)
 
+/- English proof (translation)
+Use `(isIwasawa_of_good d l hl).iwAbs_mul ⟨_, levi_mem d α⟩ hk` as an intermediate fact. Rewrite `this` using `[absDet, MonoidHom.comp_apply, MonoidHom.comp_apply, onX_levi]`. Conclude with `congrArg (npow · _) this`.
+-/
 theorem siegel_section_levi_mul_eq_abs_det_pow {V V₀ : HSp D} {r : ℕ} (d : HypDec V V₀ r) (l : Lvl V) (hl : l.Good) (s : ℂ)
     (α : GL (Fin r) (AE D)) {k : GA D V} (hk : k ∈ l.K) :
     sphericalSectionIwasawa d l.K s (d.levi α * k) = npow (absA D (Matrix.GeneralLinearGroup.det α)) (s + rhoH V r) := by
@@ -87,6 +101,21 @@ section Arch
 variable {m k r : ℕ} {X Y : Matrix (Fin m) (Fin r) ℂ} {Z : Matrix (Fin m) (Fin k) ℂ} {P R : Matrix (Fin r) (Fin m) ℂ}
   {Q : Matrix (Fin k) (Fin m) ℂ} {G : Matrix (Fin m) (Fin m) ℂ} {G₀ s₀ B B' : Matrix (Fin k) (Fin k) ℂ}
 
+/- English proof (translation)
+Establish `h1 : P * (X * R + Z * (s₀ * Q) + Y * P) = R`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, PX, PZ, PY]`. Simplify using the standard rewrite rules. Establish `h2 : Q * (X * R + Z * (s₀ * Q) + Y * P) = s₀ * Q`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, QX, QZ, QY]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : R * (X * R + Z * (s₀ * Q) + Y * P) = P`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, RX, RZ, RY]`. Simplify using the standard rewrite rules. Generalize the expression as in `hS : X * R + Z * (s₀ * Q) + Y * P = s at h1 h2 h3`.
+
+Establish `h4 : G * s = Pᴴ * P + Qᴴ * (Bᴴ * B * Q) + Rᴴ * R`. Rewrite using `[hG, ← hB]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h2, h3]`. Normalize the expressions using the abelian group laws. Use `⟨⟨?_, ?_, ?_⟩, h4⟩` and prove the remaining obligations.
+
+Use `conv_lhs => lhs`. Rewrite using `[← hS]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h2, h3]`. Rewrite using `[← Matrix.mul_assoc s₀, h₀.1, Matrix.one_mul, hs]`. Establish `e : sᴴ * G * s = (R * s)ᴴ * (P * s) + (Q * s)ᴴ * (G₀ * (Q * s)) + (P * s)ᴴ * (R * s)`.
+
+Rewrite using `[hG]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Matrix.conjTranspose_mul]`. Rewrite using `[e, h1, h2, h3, hG, Matrix.conjTranspose_mul, Matrix.mul_assoc Qᴴ, ← Matrix.mul_assoc G₀, ← Matrix.mul_assoc s₀ᴴ, ← Matrix.mul_assoc s₀ᴴ, h₀.2.1]`. Normalize the expressions using the abelian group laws. Establish `e : G * s = (Matrix.fromRows (Matrix.fromRows P (B * Q)) R)ᴴ * Matrix.fromRows (Matrix.fromRows P (B * Q)) R`.
+
+Rewrite using `[h4]`. Simplify using `only [Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, Matrix.fromCols_mul_fromRows, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e]`. Establish `e2 : Matrix.fromCols (Matrix.fromCols X (Z * B')) Y * Matrix.fromRows (Matrix.fromRows P (B * Q)) R = 1`. Rewrite using `[Matrix.fromCols_mul_fromRows, Matrix.fromCols_mul_fromRows, Matrix.mul_assoc Z, ← Matrix.mul_assoc B', hB', Matrix.one_mul, hs]`.
+
+Use `Matrix.PosDef.conjTranspose_mul_self _ fun x y hxy => ?_` and prove the remaining obligations. Use `congrArg (Matrix.fromCols (Matrix.fromCols X (Z * B')) Y *ᵥ ·) hxy` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`.
+-/
 theorem cartan_sum (PX : P * X = 1) (PZ : P * Z = 0) (PY : P * Y = 0) (QX : Q * X = 0) (QZ : Q * Z = 1) (QY : Q * Y = 0)
     (RX : R * X = 0) (RZ : R * Z = 0) (RY : R * Y = 1) (hs : X * P + Z * Q + Y * R = 1)
     (hG : G = Rᴴ * P + Qᴴ * (G₀ * Q) + Pᴴ * R) (h₀ : IsCartanInv G₀ s₀) (hB : G₀ * s₀ = Bᴴ * B) (hB' : B' * B = 1) :
@@ -125,6 +154,11 @@ theorem cartan_sum (PX : P * X = 1) (PZ : P * Z = 0) (PY : P * Y = 0) (QX : Q * 
     have := congrArg (Matrix.fromCols (Matrix.fromCols X (Z * B')) Y *ᵥ ·) hxy
     simpa only [Matrix.mulVec_mulVec, e2, Matrix.one_mulVec] using this
 
+/- English proof (translation)
+Establish `hb' : b' * b = 1` using `mul_eq_one_comm.1 hb`. Establish `e : b'ᴴ * b' * (b * bᴴ * G * s) = G * s`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc b' b, hb', Matrix.one_mul, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hb]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← e, hs, h, Matrix.mul_one]`.
+-/
 theorem form_eq {b b' G s : Matrix (Fin m) (Fin m) ℂ} (hb : b * b' = 1) (hs : b * bᴴ * G = s) (h : s * s = 1) :
     G * s = b'ᴴ * b' := by
   have hb' : b' * b = 1 := mul_eq_one_comm.1 hb
@@ -140,6 +174,17 @@ section Standard
 
 variable {V V₀ : HSp D} {r : ℕ} (d : HypDec V V₀ r)
 
+/- English proof (translation)
+Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨r1, r2, r3, -⟩` from `GlobalTheory.StdUnn.RealComp.real_components D θ hθ`. Establish `cm : ∀ τ {a b c : ℕ} (x : Mx D a b) (y : Mx D b c), compAt θ τ (x ⬝ y) = compAt θ τ x * compAt θ τ y` using `fun τ _ _ _ x y => Matrix.map_mul (f := (θ τ).comp (infPart D))`. Establish `ca : ∀ τ {a b : ℕ} (x y : Mx D a b), compAt θ τ (x + y) = compAt θ τ x + compAt θ τ y` using `fun τ _ _ x y => Matrix.map_add ((θ τ).comp (infPart D)) (map_add _) x y`. Establish `c0 : ∀ τ {a b : ℕ}, compAt θ τ (0 : Mx D a b) = 0` using `fun τ _ _ => Matrix.map_zero ((θ τ).comp (infPart D)) (map_zero _)`.
+
+Establish `c1 : ∀ τ {a : ℕ}, compAt θ τ (1 : Mx D a a) = 1` using `fun τ _ => Matrix.map_one ((θ τ).comp (infPart D)) (map_zero _) (map_one _)`. Establish `cj : ∀ τ {a b : ℕ} (x : Mx D a b), compAt θ τ (adj x) = (compAt θ τ x)ᴴ` using `fun τ _ _ x => Matrix.ext fun i j => r2 _ τ`. Establish `cg : ∀ τ (S : HSp D), compAt θ τ (gA S) = gramAt D S τ` using `fun τ S => Matrix.ext fun i j => r3 _ τ`. Establish `z : ∀ τ {a b c : ℕ} {x : Mx D a b} {y : Mx D b c}, x ⬝ y = 0 → compAt θ τ x * compAt θ τ y = 0` using `fun τ _ _ _ x y h => by rw [← cm, h, c0]`. Establish `o : ∀ τ {a b : ℕ} {x : Mx D a b} {y : Mx D b a}, x ⬝ y = 1 → compAt θ τ x * compAt θ τ y = 1` using `fun τ _ _ x y h => by rw [← cm, h, c1]`.
+
+Establish `key` using `fun τ => cartan_sum (G := gramAt D V τ) (B := compAt θ τ (l₀.c⁻¹).1) (B' := compAt θ τ l₀.c.1) (o τ d.pX_jX) (z τ d.pX_j0) (z τ d.pX_jY) (z τ d.p0_jX) (o τ d.p0_j0) (z τ d.p0_jY) (z τ d.pY_jX) (z τ d.pY_j0) (o τ d.pY_jY) (by rw [← cm, ← cm, ← cm, ← ca, ← ca, d.sum_eq_one, c1]) (b …`. Take `⟨c, hc, -, hs⟩` from `exists_isMaj_frameInv_eq hθ fun τ => (key τ).1`. Use `⟨c, hc, fun w => ?_⟩` and prove the remaining obligations. Establish `e : ∀ τ, compAt θ τ (adj (c⁻¹).1 ⬝ (c⁻¹).1 : Mx D V.rank V.rank) = compAt θ τ (adj d.pX ⬝ d.pX + adj d.p0 ⬝ (l₀.form ⬝ d.p0) + adj d.pY ⬝ d.pY : Mx D V.rank V.rank)` using `fun τ => by`. Establish `h1` using `form_eq (compAt_mul_inv τ c) (hs τ) (key τ).1.1`.
+
+Rewrite using `[cm, cj, ← h1, (key τ).2]`. Simplify using `only [Lvl.form, ca, cm, cj]`. Use extensionality with `i j`. Use `sub_eq_zero.1 ((map_sub (compInf D.host.F D.host.E w) _ _).symm.trans ((r1 _).2 (fun τ => ?_) w))` and prove the remaining obligations. Rewrite using `[map_sub, map_sub]`.
+
+Conclude with `sub_eq_zero.2 (congrFun (congrFun (e τ) i) j)`.
+-/
 theorem exists_frame (l₀ : Lvl V₀) (h₀ : IsMaj V₀ l₀.c) : ∃ c : GL (Fin V.rank) (AE D), IsMaj V c ∧
     ∀ w, (adj (c⁻¹).1 ⬝ (c⁻¹).1 : Mx D V.rank V.rank).map (compInf D.host.F D.host.E w) =
       (adj d.pX ⬝ d.pX + adj d.p0 ⬝ (l₀.form ⬝ d.p0) + adj d.pY ⬝ d.pY : Mx D V.rank V.rank).map
@@ -182,35 +227,59 @@ def lat (L₀ : Submodule (𝓞 D.host.E) (Fin V₀.rank → D.host.E)) : Submod
   (stdLattice D.host.E r).comap (d.qX.mulVecLin.restrictScalars _) ⊓ L₀.comap (d.q0.mulVecLin.restrictScalars _) ⊓
     (stdLattice D.host.E r).comap (d.qY.mulVecLin.restrictScalars _)
 
+/- English proof (translation)
+The claim follows from `and_assoc`.
+-/
 theorem mem_lat {L₀ : Submodule (𝓞 D.host.E) (Fin V₀.rank → D.host.E)} {z : Fin V.rank → D.host.E} : z ∈ lat d L₀ ↔
     (d.qX *ᵥ z ∈ stdLattice D.host.E r ∧ d.q0 *ᵥ z ∈ L₀ ∧ d.qY *ᵥ z ∈ stdLattice D.host.E r) := and_assoc
 
+/- English proof (translation)
+The claim follows from `rat_injective (by rw [rat_mul, h, rat_zero])`.
+-/
 theorem rat_zero_of {a b c : ℕ} {x : Matrix (Fin a) (Fin b) D.host.E} {y : Matrix (Fin b) (Fin c) D.host.E}
     (h : (rat x ⬝ rat y : Mx D a c) = 0) : x * y = 0 := rat_injective (by rw [rat_mul, h, rat_zero])
 
+/- English proof (translation)
+The claim follows from `rat_injective (by rw [rat_mul, h, rat_one])`.
+-/
 theorem rat_one_of {a b : ℕ} {x : Matrix (Fin a) (Fin b) D.host.E} {y : Matrix (Fin b) (Fin a) D.host.E}
     (h : (rat x ⬝ rat y : Mx D a a) = 1) : x * y = 1 := rat_injective (by rw [rat_mul, h, rat_one])
 
 variable {L₀ : Submodule (𝓞 D.host.E) (Fin V₀.rank → D.host.E)}
 
+/- English proof (translation)
+Rewrite using `[mem_lat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, rat_one_of (x := d.qX) (y := d.e) d.pX_jX, rat_zero_of (x := d.q0) (y := d.e) d.p0_jX, rat_zero_of (x := d.qY) (y := d.e) d.pY_jX, Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.zero_mulVec]`. Conclude with `⟨h, zero_mem _, zero_mem _⟩`.
+-/
 theorem e_mem {x : Fin r → D.host.E} (h : x ∈ stdLattice D.host.E r) : d.e *ᵥ x ∈ lat d L₀ := by
   rw [mem_lat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, rat_one_of (x := d.qX) (y := d.e) d.pX_jX, rat_zero_of (x := d.q0) (y := d.e) d.p0_jX,
     rat_zero_of (x := d.qY) (y := d.e) d.pY_jX, Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.zero_mulVec]
   exact ⟨h, zero_mem _, zero_mem _⟩
 
+/- English proof (translation)
+Rewrite using `[mem_lat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, rat_zero_of (x := d.qX) (y := d.i₀) d.pX_j0, rat_one_of (x := d.q0) (y := d.i₀) d.p0_j0, rat_zero_of (x := d.qY) (y := d.i₀) d.pY_j0, Matrix.one_mulVec, Matrix.zero_mulVec]`. Conclude with `⟨zero_mem _, h, zero_mem _⟩`.
+-/
 theorem i_mem {x : Fin V₀.rank → D.host.E} (h : x ∈ L₀) : d.i₀ *ᵥ x ∈ lat d L₀ := by
   rw [mem_lat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, rat_zero_of (x := d.qX) (y := d.i₀) d.pX_j0, rat_one_of (x := d.q0) (y := d.i₀) d.p0_j0,
     rat_zero_of (x := d.qY) (y := d.i₀) d.pY_j0, Matrix.one_mulVec, Matrix.zero_mulVec]
   exact ⟨zero_mem _, h, zero_mem _⟩
 
+/- English proof (translation)
+Rewrite using `[mem_lat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, rat_zero_of (x := d.qX) (y := d.e') d.pX_jY, rat_zero_of (x := d.q0) (y := d.e') d.p0_jY, rat_one_of (x := d.qY) (y := d.e') d.pY_jY, Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.zero_mulVec]`. Conclude with `⟨zero_mem _, zero_mem _, h⟩`.
+-/
 theorem e'_mem {x : Fin r → D.host.E} (h : x ∈ stdLattice D.host.E r) : d.e' *ᵥ x ∈ lat d L₀ := by
   rw [mem_lat, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, rat_zero_of (x := d.qX) (y := d.e') d.pX_jY, rat_zero_of (x := d.q0) (y := d.e') d.p0_jY,
     rat_one_of (x := d.qY) (y := d.e') d.pY_jY, Matrix.one_mulVec, Matrix.zero_mulVec, Matrix.zero_mulVec]
   exact ⟨zero_mem _, zero_mem _, h⟩
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.add_mulVec, d.sum_eq_one_rat, Matrix.one_mulVec]`.
+-/
 theorem decomp (z : Fin V.rank → D.host.E) : z = d.e *ᵥ (d.qX *ᵥ z) + d.i₀ *ᵥ (d.q0 *ᵥ z) + d.e' *ᵥ (d.qY *ᵥ z) := by
   simp only [Matrix.mulVec_mulVec, ← Matrix.add_mulVec, d.sum_eq_one_rat, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `: Submodule.span D.host.E (M : Set (Fin b → D.host.E)) ≤ (Submodule.span D.host.E (L : Set (Fin a → D.host.E))).comap A.mulVecLin` using `Submodule.span_le.2 fun x hx => Submodule.subset_span (h x hx)`. Conclude with `this (hM.span_eq_top ▸ Submodule.mem_top)`.
+-/
 theorem mem_span_of {a b : ℕ} (A : Matrix (Fin a) (Fin b) D.host.E) {M : Submodule (𝓞 D.host.E) (Fin b → D.host.E)}
     {L : Submodule (𝓞 D.host.E) (Fin a → D.host.E)} (hM : Submodule.IsLattice D.host.E M) (h : ∀ x ∈ M, A *ᵥ x ∈ L)
     (x : Fin b → D.host.E) : A *ᵥ x ∈ Submodule.span D.host.E (L : Set (Fin a → D.host.E)) := by
@@ -219,6 +288,15 @@ theorem mem_span_of {a b : ℕ} (A : Matrix (Fin a) (Fin b) D.host.E) {M : Submo
     Submodule.span_le.2 fun x hx => Submodule.subset_span (h x hx)
   exact this (hM.span_eq_top ▸ Submodule.mem_top)
 
+/- English proof (translation)
+Establish `hs : Submodule.IsLattice D.host.E (stdLattice D.host.E r)` using `isLattice_stdLattice ..`. Prove the components needed by the constructor for the conclusion. Establish `e : lat d L₀ = (stdLattice D.host.E r).map (d.e.mulVecLin.restrictScalars _) ⊔ L₀.map (d.i₀.mulVecLin.restrictScalars _) ⊔ (stdLattice D.host.E r).map (d.e'.mulVecLin.restrictScalars _)`. Use `le_antisymm (fun z hz => ?_) (sup_le (sup_le ?_ ?_) ?_)` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `(mem_lat d).1 hz`.
+
+Rewrite using `[decomp d z]`. Conclude with `Submodule.add_mem_sup (Submodule.add_mem_sup ⟨_, h1, rfl⟩ ⟨_, h2, rfl⟩) ⟨_, h3, rfl⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `e_mem d hx`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `i_mem d hx`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `e'_mem d hx`. Rewrite using `[e]`. Conclude with `((hs.fg.map _).sup (h.fg.map _)).sup (hs.fg.map _)`.
+
+Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Rewrite using `[decomp d z]`. Conclude with `add_mem (add_mem (mem_span_of _ hs (fun _ => e_mem d) _) (mem_span_of _ h (fun _ => i_mem d) _)) (mem_span_of _ hs (fun _ => e'_mem d) _)`.
+-/
 theorem isLattice_lat (h : Submodule.IsLattice D.host.E L₀) : Submodule.IsLattice D.host.E (lat d L₀) := by
   have hs : Submodule.IsLattice D.host.E (stdLattice D.host.E r) := isLattice_stdLattice ..
   constructor
@@ -238,11 +316,17 @@ theorem isLattice_lat (h : Submodule.IsLattice D.host.E L₀) : Submodule.IsLatt
     exact add_mem (add_mem (mem_span_of _ hs (fun _ => e_mem d) _) (mem_span_of _ h (fun _ => i_mem d) _))
       (mem_span_of _ hs (fun _ => e'_mem d) _)
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem hE_eq {a : ℕ} (J : Matrix (Fin a) (Fin a) D.host.E) (x y : Fin a → D.host.E) :
     hE D.sp.cm.sig J x y = star x ⬝ᵥ J *ᵥ y := by
   simp only [hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `e : V.gram = d.qYᴴ * d.qX + d.q0ᴴ * (V₀.gram * d.q0) + d.qXᴴ * d.qY` using `rat_injective (by`. Simplify using `only [rat_add, rat_mul, rat_conjTranspose]`. Conclude with `d.gA_eq)`. Simplify using `only [hE_eq, Matrix.one_mulVec, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← dotProduct_add, ← Matrix.add_mulVec, Matrix.one_mul]`. Rewrite using `[← e]`.
+-/
 theorem hE_split (x y : Fin V.rank → D.host.E) : hE D.sp.cm.sig V.gram x y =
     hE D.sp.cm.sig 1 (d.qY *ᵥ x) (d.qX *ᵥ y) + hE D.sp.cm.sig V₀.gram (d.q0 *ᵥ x) (d.q0 *ᵥ y) +
       hE D.sp.cm.sig 1 (d.qX *ᵥ x) (d.qY *ᵥ y) := by
@@ -253,6 +337,15 @@ theorem hE_split (x y : Fin V.rank → D.host.E) : hE D.sp.cm.sig V.gram x y =
     ← dotProduct_add, ← Matrix.add_mulVec, Matrix.one_mul]
   rw [← e]
 
+/- English proof (translation)
+Establish `hs : Submodule.IsLattice D.host.E (stdLattice D.host.E r)` using `isLattice_stdLattice ..`. Establish `a0` using `(SelfDual.forall_isSelfDualAt_iff (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V₀).ne_zero h).1 h'`. Establish `a1` using `(SelfDual.forall_isSelfDualAt_iff (σ := D.sp.cm.sig) (J := 1) (by simp) hs).1 (isSelfDualAt_stdLattice_one _)`. Establish `z : ∀ {a : ℕ} (J : Matrix (Fin a) (Fin a) D.host.E) y, hE D.sp.cm.sig J 0 y = 0` using `fun J y => by`. Rewrite using `[hE_eq, star_zero, zero_dotProduct]`.
+
+Use `(SelfDual.forall_isSelfDualAt_iff (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero (isLattice_lat d h)).2 fun y => ⟨fun hy x hx => ?_, fun H => (mem_lat d).2 ⟨(a1 _).2 fun x hx => ?_, (a0 _).2 fun x hx => ?_, (a1 _).2 fun x hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨x1, x2, x3⟩` from `(mem_lat d).1 hx`. Take `⟨y1, y2, y3⟩` from `(mem_lat d).1 hy`. Rewrite using `[hE_split d]`. Conclude with `add_mem (add_mem ((a1 _).1 y1 _ x3) ((a0 _).1 y2 _ x2)) ((a1 _).1 y3 _ x1)`.
+
+Use `H _ (e'_mem d hx)` as an intermediate fact. Simplify `this` using `only [hE_split d, Matrix.mulVec_mulVec x d.qX d.e', Matrix.mulVec_mulVec x d.q0 d.e', Matrix.mulVec_mulVec x d.qY d.e', rat_zero_of (x := d.qX) (y := d.e') d.pX_jY, rat_zero_of (x := d.q0) (y := d.e') d.p0_jY, rat_one_of (x := d.qY) (y := d.e') d.pY_jY, Matrix.one_mulVec, Matrix. …`. Use `H _ (i_mem d hx)` as an intermediate fact. Simplify `this` using `only [hE_split d, Matrix.mulVec_mulVec x d.qX d.i₀, Matrix.mulVec_mulVec x d.q0 d.i₀, Matrix.mulVec_mulVec x d.qY d.i₀, rat_zero_of (x := d.qX) (y := d.i₀) d.pX_j0, rat_one_of (x := d.q0) (y := d.i₀) d.p0_j0, rat_zero_of (x := d.qY) (y := d.i₀) d.pY_j0, Matrix.one_mulVec, Matrix. …`. Use `H _ (e_mem d hx)` as an intermediate fact.
+
+Simplify `this` using `only [hE_split d, Matrix.mulVec_mulVec x d.qX d.e, Matrix.mulVec_mulVec x d.q0 d.e, Matrix.mulVec_mulVec x d.qY d.e, rat_one_of (x := d.qX) (y := d.e) d.pX_jX, rat_zero_of (x := d.q0) (y := d.e) d.p0_jX, rat_zero_of (x := d.qY) (y := d.e) d.pY_jX, Matrix.one_mulVec, Matrix.zero_m …`.
+-/
 theorem selfDual_lat (h : Submodule.IsLattice D.host.E L₀) (h' : ∀ v, IsSelfDualAt D.sp.cm.sig V₀.gram L₀ v) :
     ∀ v, IsSelfDualAt D.sp.cm.sig V.gram (lat d L₀) v := by
   have hs : Submodule.IsLattice D.host.E (stdLattice D.host.E r) := isLattice_stdLattice ..
@@ -279,6 +372,9 @@ theorem selfDual_lat (h : Submodule.IsLattice D.host.E L₀) (h' : ∀ v, IsSelf
       rat_one_of (x := d.qX) (y := d.e) d.pX_jX, rat_zero_of (x := d.q0) (y := d.e) d.p0_jX, rat_zero_of (x := d.qY) (y := d.e) d.pY_jX, Matrix.one_mulVec, Matrix.zero_mulVec, z, add_zero,
       zero_add] using this
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_isMaj V₀`. Establish `h₀ : (⟨frameLat V₀, a⟩ : Lvl V₀).Good` using `⟨isLattice_frameLat_host V₀, SelfDual.isSelfDualAt_frameLat D V₀, ha⟩`. Take `⟨c, hc, e⟩` from `exists_frame d ⟨frameLat V₀, a⟩ ha`. Establish `h : (⟨lat d (frameLat V₀), c⟩ : Lvl V).Good` using `⟨isLattice_lat d h₀.1, selfDual_lat d h₀.1 h₀.2.1, hc⟩`. Conclude with `⟨_, _, h, h₀, ⟨fun _ => mem_lat d, e⟩, hasIw_of_good d _ h⟩`.
+-/
 theorem exists_levels : ∃ (l : Lvl V) (l₀ : Lvl V₀), l.Good ∧ l₀.Good ∧ Compat d l l₀ ∧ HasIw d l.K := by
   obtain ⟨a, ha⟩ := exists_isMaj V₀
   have h₀ : (⟨frameLat V₀, a⟩ : Lvl V₀).Good := ⟨isLattice_frameLat_host V₀, SelfDual.isSelfDualAt_frameLat D V₀, ha⟩
@@ -288,6 +384,9 @@ theorem exists_levels : ∃ (l : Lvl V) (l₀ : Lvl V₀), l.Good ∧ l₀.Good 
 
 end Standard
 
+/- English proof (translation)
+Take `⟨l, l₀, h⟩` from `exists_levels (GlobalTheory.RegSW.Model.hypTwo D)`. Use `⟨_, _, 1, _, l, l₀, GlobalTheory.RegSW.Model.isAniso_zero D, Nat.one_pos, h.1, h.2.1, h.2.2.1, h.2.2.2, ?_⟩` and prove the remaining obligations. Use `show ((2 : ℕ) - (1 : ℕ) : ℝ) / 2 = 1 / 2`. Evaluate the numerical expressions.
+-/
 theorem hypotheses (D : D7) : ∃ (V V₀ : HSp D) (r : ℕ) (d : HypDec V V₀ r) (l : Lvl V) (l₀ : Lvl V₀),
     IsAniso V₀ ∧ 0 < r ∧ l.Good ∧ l₀.Good ∧ Compat d l l₀ ∧ HasIw d l.K ∧ rhoH V r = 1 / 2 := by
   obtain ⟨l, l₀, h⟩ := exists_levels (GlobalTheory.RegSW.Model.hypTwo D)

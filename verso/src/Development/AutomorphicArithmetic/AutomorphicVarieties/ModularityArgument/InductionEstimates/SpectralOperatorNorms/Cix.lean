@@ -2,4 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.BorelHeckeBounds.HeckeShiftSums.ProjInner
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.InductionEstimates.BorelHeckeBounds.HeckeShiftSums.TruncCpt
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cix_of UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.kernX UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.truncCpt`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cix : UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.CIx := UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.cix_of UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.kernX UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.truncCpt

@@ -11,6 +11,11 @@ open GlobalTheory.HomFixMat GlobalTheory.HomFixUniv
 noncomputable section
 namespace GlobalTheory.HomFixUniv.MapIff
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i, m i = d`. Use `hF (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply]`.
+
+Simplify using `[Finsupp.sum_fintype]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval₂_mul_of_isHomogeneous' {R S σ : Type} [CommRing R] [CommRing S] [Fintype σ] (g : R →+* S)
     (x : σ → S) (u : S) {F : MvPolynomial σ R} {d : ℕ} (hF : F.IsHomogeneous d) :
     MvPolynomial.eval₂ g (fun j => u * x j) F = u ^ d * MvPolynomial.eval₂ g x F := by
@@ -29,9 +34,15 @@ variable {X Z : Scheme.{0}}
 def gsH (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : Γ(X, U) →+* Z.presheaf.stalk z :=
   (Z.presheaf.germ (r ⁻¹ᵁ U) z h).hom.comp (r.app U).hom
 
+/- English proof (translation)
+The claim follows from `(gs_eq r z U h a).symm`.
+-/
 theorem gsH_apply (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (a : Γ(X, U)) :
     gsH r z U h a = gs r z U a := (gs_eq r z U h a).symm
 
+/- English proof (translation)
+Rewrite using `[← gsH_apply r z U h, ← RingHom.comp_apply, MvPolynomial.comp_eval₂Hom]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Conclude with `gsH_apply r z U h _`.
+-/
 theorem gs_eval₂Hom {R σ : Type} [CommRing R] (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U)
     (g : R →+* Γ(X, U)) (x : σ → Γ(X, U)) (F : MvPolynomial σ R) :
     gs r z U (MvPolynomial.eval₂Hom g x F) =
@@ -41,11 +52,17 @@ theorem gs_eval₂Hom {R σ : Type} [CommRing R] (r : Z ⟶ X) (z : Z) (U : X.Op
   funext j
   exact gsH_apply r z U h _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.MapToProj.gs_cst f r z U h c, gs_eq _ z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem gs_cst_gc {R : Type} [CommRing R] (f : X ⟶ Sp R) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) (c : R) :
     gs r z U (GlobalTheory.AbLaw.cst f U c) = gc (r ≫ f) z c := by
   rw [GlobalTheory.MapToProj.gs_cst f r z U h c, gs_eq _ z ⊤ trivial]
   rfl
 
+/- English proof (translation)
+Rewrite using `[gs_eval₂Hom r z U h, show (gsH r z U h).comp (GlobalTheory.AbLaw.cst f U) = gc (r ≫ f) z from RingHom.ext fun c => (gsH_apply r z U h _).trans (gs_cst_gc f r z U h c)]`.
+-/
 theorem gs_eval_cst {R σ : Type} [CommRing R] (f : X ⟶ Sp R) (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U)
     (x : σ → Γ(X, U)) (F : MvPolynomial σ R) :
     gs r z U (MvPolynomial.eval₂Hom (GlobalTheory.AbLaw.cst f U) x F) =
@@ -57,6 +74,15 @@ end
 
 variable {A₀ B₀ X T : Scheme.{0}} {N : LB A₀} {H : LB B₀} {mA mB : ℕ}
 
+/- English proof (translation)
+Establish `le : ∀ J : PUnit → N.ι, (N.pull φ).U J ≤ φ ⁻¹ᵁ N.U (J PUnit.unit)` using `fun J _ hy => mem_pull.1 hy`. Set `F : Fin mB → ∀ J : PUnit → N.ι, Γ(X, (N.pull φ).U J)` to `fun j J => ∑ i, (p.appLE ⊤ ((N.pull φ).U J) le_top).hom (c i j) * (φ.appLE (N.U (J PUnit.unit)) ((N.pull φ).U J) (le J)).hom ((a i).f (J PUnit.unit))`. Establish `hF : ∀ j (J : PUnit → N.ι) z, z ∈ (N.pull φ).U J → gs (𝟙 X) z ((N.pull φ).U J) (F j J) = comb a φ p c z (J PUnit.unit) j`. Introduce `j J z hz`. Simplify using `only [F, comb]`.
+
+Rewrite using `[GlobalTheory.AmpleSpan.gs_sum' (𝟙 X) z _ hz]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_mul (𝟙 X) z _ hz]`. Conclude with `congrArg₂ (· * ·) ((gs_appLE p ⊤ _ _ (𝟙 X) z hz _).trans (by rw [Category.id_comp])) ((gs_appLE φ _ _ _ (𝟙 X) z hz _).trans (by rw [Category.id_comp]))`. Use `⟨fun j => ⟨F j, fun J J' => fn_ext fun y hy => ?_⟩, fun j z q hz => hF j _ z (mem_pull.2 hz)⟩` and prove the remaining obligations.
+
+Establish `hJ : φ y ∈ N.U (J PUnit.unit)` using `mem_pull.1 hy.1`. Establish `hJ' : φ y ∈ N.U (J' PUnit.unit)` using `mem_pull.1 hy.2`. Rewrite using `[gs_res (𝟙 X) y _ hy, gs_mul (𝟙 X) y _ hy, gs_res (𝟙 X) y _ hy, gs_unit (𝟙 X) y _ hy, gm_pull_g N φ (𝟙 X) y J J' hy.1 hy.2, hF j J y hy.1, hF j J' y hy.2, Category.id_comp]`. Simplify using `only [comb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[gs_compat (a i) φ y hJ hJ']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_combSec (hN : N.IsLB) (a : Fin mA → LB.Sec N) (φ : X ⟶ A₀) (p : X ⟶ T)
     (c : Fin mA → Fin mB → Γ(T, ⊤)) : ∃ s : Fin mB → LB.Sec (N.pull φ), ∀ j z q, φ z ∈ N.U q →
       gs (𝟙 X) z ((N.pull φ).U (fun _ => q)) ((s j).f (fun _ => q)) = comb a φ p c z q j := by
@@ -89,6 +115,29 @@ namespace GlobalTheory.HomFixUniv
 
 open MapIff
 
+/- English proof (translation)
+Introduce `Rg _ A₀ B₀ X T f fB N H mA mB a b φ p t c hE hH hN _ hG`. Prove the components needed by the constructor for the conclusion. Introduce `hF`. Consider the cases of `mB with`. Consider the case `zero`.
+
+Establish `: IsEmpty X` using `⟨fun z => by`. Take `⟨q, hq⟩` from `exists_chart hN (φ z)`. Take `⟨j, -⟩` from `hG z q hq`. Conclude with `j.elim0⟩`. Conclude with `⟨isInitialOfIsEmpty.to B₀, isInitialOfIsEmpty.hom_ext _ _, fun z => (IsEmpty.false z).elim⟩`.
+
+Consider the case `succ n`. Take `⟨s, hs⟩` from `exists_combSec (mB := n + 1) hN a φ p c`. Establish `hva : GlobalTheory.AbLaw.VeryAmpleBy fB H b` using `(GlobalTheory.AmpleSpan.embedsBy_spec_iff fB b).1 hE`. Establish `hcov : ⨆ j, nonzeroLocus (s j) = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations.
+
+Take `⟨q, hq⟩` from `exists_chart hN (φ z)`. Take `⟨j, hj⟩` from `hG z q hq`. Establish `hk : (𝟙 X : X ⟶ X) z ∈ (N.pull φ).U (fun _ => q)` using `mem_pull.2 hq`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, (GlobalTheory.AmpleSpan.mem_nonzeroLocus_iff_gs (s j) (𝟙 X) z hk).2 (by rw [hs j z q hq]; exact hj)⟩`. Establish `hforms : ∀ (d : ℕ) (F : MvPolynomial (Fin (n + 1)) Rg), F.IsHomogeneous d → (∀ k : H.ι, MvPolynomial.eval₂Hom (GlobalTheory.AbLaw.cst fB (H.U k)) (fun j => (b j).f k) F = 0) → ∀ k : (N.pull φ).ι, MvPolynomial.eval₂Hom (GlobalTheory.AbLaw.cst (p ≫ t) ((N.pull φ).U k)) (fun j => (s …`.
+
+Introduce `d F hFd hK k`. Take `⟨q, rfl⟩ : ∃ q, k = fun _ => q` from `⟨k PUnit.unit, rfl⟩`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `hq : φ z ∈ N.U q` using `mem_pull.1 hz`. Establish `e : (fun j => gs (𝟙 X) z ((N.pull φ).U (fun _ => q)) ((s j).f (fun _ => q))) = comb a φ p c z q`.
+
+Use function extensionality and compare the values at `fun j => hs j z q hq`. Rewrite using `[gs_eval_cst (p ≫ t) (𝟙 X) z _ hz, Category.id_comp, e, gs_eq (𝟙 X) z _ hz 0, map_zero, map_zero]`. Conclude with `hF d F hFd hK z q hq`. Take `⟨Ψ, w, hΨ, -, hrel⟩` from `GlobalTheory.exists_hom_of_veryAmpleBy Rg B₀ fB H n b hH hva X (p ≫ t) (N.pull φ) s (LB.isLB_linComb hN _ _) hcov hforms`. Use `⟨Ψ, hΨ, fun z q k hq hk j j' => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : z ∈ (N.pull φ).U (fun _ => q)` using `mem_pull.2 hq`. Rewrite using `[hrel j z k (fun _ => q) hk hz, hrel j' z k (fun _ => q) hk hz, hs j z q hq, hs j' z q hq]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨Ψ, hΨ, hP⟩ d F hFd hK z q hq`. Take `⟨j₀, hj₀⟩` from `hG z q hq`.
+
+Take `⟨j', hj'⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show Ψ z ∈ ⨆ j, nonzeroLocus (b j) by rw [hE.1]; trivial)`. Take `⟨k, hk⟩` from `GlobalTheory.AmpleSpan.exists_chart_of_mem (b j') hj'`. Establish `hu' : IsUnit (gs Ψ z _ ((b j').f k))` using `(GlobalTheory.AmpleSpan.mem_nonzeroLocus_iff_gs (b j') Ψ z hk).1 hj'`. Establish `hPr` using `hP z q k hq hk`. Establish `hB0 : IsUnit (gs Ψ z (H.U k) ((b j₀).f k))`.
+
+Establish `hu : IsUnit (gs Ψ z (H.U k) ((b j₀).f k) * comb a φ p c z q j')` using `hPr j' j₀ ▸ hu'.mul hj₀`. Conclude with `isUnit_of_mul_isUnit_left hu`. Take `⟨u, hu⟩` from `hj₀`. Establish `hBC : ∀ j, gs Ψ z (H.U k) ((b j).f k) = (gs Ψ z (H.U k) ((b j₀).f k) * ↑u⁻¹) * comb a φ p c z q j` using `fun j => by`. Establish `h1` using `hPr j j₀`.
+
+Rewrite `h1` using `[← hu]`. Combine the equalities or inequalities in the displayed calculation. Establish `hK'` using `congrArg (gs Ψ z (H.U k)) (hK k)`. Rewrite `hK'` using `[gs_eval_cst fB Ψ z _ hk, hΨ, gs_eq Ψ z _ hk 0, map_zero, map_zero, funext hBC, MvPolynomial.coe_eval₂Hom, eval₂_mul_of_isHomogeneous' _ _ _ hFd]`. Establish `hl : IsUnit ((gs Ψ z (H.U k) ((b j₀).f k) * ↑u⁻¹) ^ d)` using `(hB0.mul u⁻¹.isUnit).pow d`.
+
+Rewrite using `[MvPolynomial.coe_eval₂Hom]`. Conclude with `hl.mul_right_eq_zero.1 hK'`.
+-/
 theorem formsOK_iff_exists_proport : ∀ (Rg : Type) [CommRing Rg] (A₀ B₀ X T : Scheme.{0}) (f : A₀ ⟶ Sp Rg)
     (fB : B₀ ⟶ Sp Rg) (N : LB A₀) (H : LB B₀) (mA mB : ℕ) (a : Fin mA → LB.Sec N) (b : Fin mB → LB.Sec H)
     (φ : X ⟶ A₀) (p : X ⟶ T) (t : T ⟶ Sp Rg) (c : Fin mA → Fin mB → Γ(T, ⊤)),

@@ -8,6 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi
 
 namespace GlobalTheory.AbFieldDim
 
+/- English proof (translation)
+Introduce `k _ A _ hA`. Conclude with `GlobalTheory.AbelianDim.exists_relDim k A hA`.
+-/
 theorem exists_smoothOfRelativeDimension : ∀ (k : Type) [Field k] (A : Over (Spec (CommRingCat.of k))) [GrpObj A],
     IsAbelianScheme A → ∃ g : ℕ, SmoothOfRelativeDimension g A.hom := by
   intro k _ A _ hA

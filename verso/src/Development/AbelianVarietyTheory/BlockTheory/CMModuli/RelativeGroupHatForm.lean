@@ -72,9 +72,19 @@ def trivAt (D : Datum H) (l : Level H) : Subgroup (Lhat D ≃ₗ[Zhat] Lhat D) :
 
 def relGroup (D : Datum H) (l l₂ : Level H) : Subgroup (Lhat D ≃ₗ[Zhat] Lhat D) := simGroup D l₂ ⊓ trivAt D l
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c x => by simp, 1, map_one _, fun x y => by simp⟩`.
+-/
 example (D : Datum H) (l : Level H) : LinearEquiv.neg Zhat ∈ simGroup D l :=
   ⟨fun c x => by simp, 1, map_one _, fun x y => by simp⟩
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Establish `hm : 0 < m` using `Nat.pos_of_mul_pos_right hn`. Establish `hk : 0 < k` using `Nat.pos_of_mul_pos_left hn`. Rewrite using `[Nat.mul_div_cancel_left k hm]`. Unfold `zeta`.
+
+Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Establish `hm' : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hm.ne'`. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hk.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem zeta_pow_div {m n : ℕ} (hn : 0 < n) (h : m ∣ n) : zeta n ^ (n / m) = zeta m := by
   obtain ⟨k, rfl⟩ := h
   have hm : 0 < m := Nat.pos_of_mul_pos_right hn
@@ -88,6 +98,11 @@ theorem zeta_pow_div {m n : ℕ} (hn : 0 < n) (h : m ∣ n) : zeta n ^ (n / m) =
   push_cast
   field_simp
 
+/- English proof (translation)
+Unfold `KA`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `x (rfl | rfl)`. Conclude with `IntermediateField.subset_adjoin _ _ (Set.mem_insert _ _)`. Establish `hz : zeta l₂.A ∈ IntermediateField.adjoin ℚ ({H.rt0, zeta l₂.A} : Set ℂ)` using `IntermediateField.subset_adjoin _ _ (Set.mem_insert_of_mem _ (Set.mem_singleton _))`.
+
+Rewrite using `[SetLike.mem_coe, ← zeta_pow_div l₂.A_pos h.2.2]`. Conclude with `pow_mem hz _`.
+-/
 theorem KA_le {l l₂ : Level H} (h : l.Dvd l₂) : KA l ≤ KA l₂ := by
   unfold KA
   rw [IntermediateField.adjoin_le_iff]
@@ -126,6 +141,9 @@ def ChangesLevelBy (Xo : Moduli D l) (g : Lhat D ≃ₗ[Zhat] Lhat D) (r : Xo.X 
     (∀ a b : D.La, g (1 ⊗ₜ a) - 1 ⊗ₜ b ∈ hatSub D (Ideal.span {(l.A : 𝓞 E)}) →
       (Xo.univ.etaA b).left ≫ m.φ = r ≫ (Xo.univ.etaA a).left)
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_inclusion_comp {A B C : IntermediateField ℚ ℂ} (h₁ : A ≤ B) (h₂ : B ≤ C) :
     spMap (IntermediateField.inclusion h₂).toRingHom ≫ spMap (IntermediateField.inclusion h₁).toRingHom =
       spMap (IntermediateField.inclusion (h₁.trans h₂)).toRingHom := by

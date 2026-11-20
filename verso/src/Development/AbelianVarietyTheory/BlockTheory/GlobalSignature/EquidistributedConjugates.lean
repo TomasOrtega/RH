@@ -39,9 +39,15 @@ def ConjugatesEquidistributed : Prop :=
         (∑ C : ClassGroup (𝓞 D.host.K), Real.log (normArea D (r C : Ideal (𝓞 D.host.K)))) /
           (classNumber D.host.K : ℝ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjEmb_apply (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (y : M) :
     conjEmb M ρ y = (starRingEnd ℂ) (ρ y) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Function.surjInv ClassGroup.mk0_surjective, Function.surjInv_eq _⟩`.
+-/
 theorem exists_representatives (D : D7) :
     ∃ r : ClassGroup (𝓞 D.host.K) → (Ideal (𝓞 D.host.K))⁰, ∀ C, ClassGroup.mk0 (r C) = C :=
   ⟨Function.surjInv ClassGroup.mk0_surjective, Function.surjInv_eq _⟩

@@ -2,6 +2,17 @@ import Mathlib
 
 namespace Bl.general_b_fact_third'''''
 
+/- English proof (translation)
+Introduce `E _ _ V _ _ _ _ Λ hspan x`. Establish `hx : x ∈ Submodule.span E (Λ : Set V)` using `by rw [hspan]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩`.
+
+Consider the case `add y z _ _ hy hz`. Take `⟨d1, hd1, h1⟩` from `hy`. Take `⟨d2, hd2, h2⟩` from `hz`. Use `⟨d1 * d2, mul_ne_zero hd1 hd2, ?_⟩` and prove the remaining obligations. Establish `e1 : (d1 * d2) • y = d2 • (d1 • y)` using `by rw [mul_comm d1 d2, mul_smul]`.
+
+Establish `e2 : (d1 * d2) • z = d1 • (d2 • z)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`. Conclude with `Λ.add_mem (Λ.smul_mem d2 h1) (Λ.smul_mem d1 h2)`. Consider the case `smul a y _ hy`. Take `⟨d, hd, h⟩` from `hy`.
+
+Take `⟨z, hs⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) a`. Use `⟨(z.2 : NumberField.RingOfIntegers E) * d, mul_ne_zero (nonZeroDivisors.ne_zero z.2.2) hd, ?_⟩` and prove the remaining obligations. Establish `key : (z.2 : NumberField.RingOfIntegers E) • (a • y) = z.1 • y`. Rewrite using `[← algebraMap_smul E (z.2 : NumberField.RingOfIntegers E) (a • y), smul_smul, mul_comm (algebraMap (NumberField.RingOfIntegers E) E (z.2 : NumberField.RingOfIntegers E)) a, hs, algebraMap_smul]`. Rewrite using `[mul_comm _ d, mul_smul, key, smul_smul, mul_comm d z.1, ← smul_smul]`.
+
+Conclude with `Λ.smul_mem z.1 h`.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] {V : Type} [inst_2 : AddCommGroup.{0} V]
   [inst_3 : Module.{0, 0} E V] [inst_4 : Module.{0, 0} (NumberField.RingOfIntegers.{0} E) V]

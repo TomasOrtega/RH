@@ -17,6 +17,13 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace MarkedIdealWithBoundary
 
+/- English proof (translation)
+Use `hV.smooth` as an intermediate fact. Use `hV.locallyOfFiniteType` as an intermediate fact. Use `hV.quasiCompact` as an intermediate fact. Establish `hflat : AlgebraicGeometry.Flat (specMapOfFieldHom T.base L f)` using `instFlatSpecMapOfFieldHom T.base L f`. Establish `hfst : AlgebraicGeometry.Flat (pullback.fst T.structMap (specMapOfFieldHom T.base L f))` using `inferInstance`.
+
+Use `{ charZero := ‹CharZero L› locallyOfFiniteType := ?_ nonzeroOnComponents := ?_ one_le_mult := hV.one_le_mult quasiCompact := ?_ smooth := ?_ snc := ?_ }` and prove the remaining obligations. Conclude with `(inferInstance : AlgebraicGeometry.LocallyOfFiniteType (pullback.snd T.structMap (specMapOfFieldHom T.base L f)))`. Conclude with `hV.nonzeroOnComponents.comap_of_flat (pullback.fst T.structMap (specMapOfFieldHom T.base L f))`. Conclude with `(inferInstance : AlgebraicGeometry.QuasiCompact (pullback.snd T.structMap (specMapOfFieldHom T.base L f)))`. Conclude with `smooth_pullbackSnd_specMap T.structMap (CommRingCat.ofHom f)`.
+
+Conclude with `inStrictNormalCrossingPosition_comap_pullback_specMap T.structMap (CommRingCat.ofHom f) T.boundary hV.snc`.
+-/
 theorem isAdmissible_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (L : Type u) [Field L]
     [CharZero L] (f : T.base →+* L) : (T.baseChange L f).IsAdmissible := by
   have := hV.smooth

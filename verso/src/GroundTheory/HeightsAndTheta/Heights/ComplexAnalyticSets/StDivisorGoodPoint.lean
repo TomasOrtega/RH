@@ -33,6 +33,11 @@ def NormalDoublePointsOnDivisor {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : Inde
     IndefiniteRowSideFullHecke.ComplexSets.firstCoords w = IndefiniteRowSideFullHecke.ComplexSets.firstCoords w' →
       IndefiniteRowSideFullHecke.ComplexSets.firstCoords w ∈ N → w ≠ w' → linEval u (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) = 0
 
+/- English proof (translation)
+Establish `hzd : z (Sum.inr 0) = z (Sum.inl 0)`. Establish `h1` using `hz (X (Sum.inr 0) - X (Sum.inl 0)) (by show IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalMap (X (Sum.inr 0) - X (Sum.inl 0)) = 0`. Rewrite using `[IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalMap, map_sub, aeval_X, aeval_X]`. Use the proof step `simp)`. Simplify using `only [map_sub, eval_X] at h1`.
+
+Conclude with `sub_eq_zero.mp h1`. Use function extensionality and compare the values at `s`. Break down `s with i | i` into its components or cases. Rewrite using `[Subsingleton.elim i 0]`. Rewrite using `[Subsingleton.elim i 0, hzd]`.
+-/
 theorem eq_const_of_mem_zeroSetIn_lineDiagonal {z : Fin 1 ⊕ Fin 1 → ℂ}
     (hz : z ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalIdeal) :
     z = fun _ => z (Sum.inl 0) := by
@@ -48,6 +53,19 @@ theorem eq_const_of_mem_zeroSetIn_lineDiagonal {z : Fin 1 ⊕ Fin 1 → ℂ}
   · rw [Subsingleton.elim i 0]
   · rw [Subsingleton.elim i 0, hzd]
 
+/- English proof (translation)
+Introduce `w hw hw0`. Establish `hw' : w = 0`. Rewrite using `[eq_const_of_mem_zeroSetIn_lineDiagonal hw]`. Establish `h0 : w (Sum.inl 0) = 0` using `congrFun hw0 0`. Use function extensionality and compare the values at `_`.
+
+Conclude with `h0`. Substitute `hw'` using the available equality. Use `⟨1, fun t _ => t 0, 1, one_pos, Differentiable.differentiableOn (by fun_prop), ?_, rfl, fun t _ => IndefiniteRowSideFullHecke.ComplexSets.const_mem_zeroSetIn_lineDiagonal (t 0), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s _ t _ hst`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[show i = 0 from Fin.ext (by omega)]`. Conclude with `congrFun hst (Sum.inl 0)`. Introduce `s hs`. Use `⟨Metric.ball 0 s, Metric.ball_mem_nhds 0 hs, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzB⟩`.
+
+Use `⟨fun _ => z (Sum.inl 0), ?_, (eq_const_of_mem_zeroSetIn_lineDiagonal hz).symm⟩` and prove the remaining obligations. Rewrite `hzB`, the goal using `[mem_ball_zero_iff]`. Use `lt_of_le_of_lt ?_ hzB` and prove the remaining obligations. Rewrite using `[pi_norm_le_iff_of_nonneg (norm_nonneg _)]`. Introduce `_`.
+
+Conclude with `norm_le_pi_norm z (Sum.inl 0)`. Use `⟨fun _ => 1, differentiableOn_const _, fun _ _ => one_ne_zero, fun t _ => ?_⟩` and prove the remaining obligations. Simplify using `[linEval, IndefiniteRowSideFullHecke.ComplexSets.firstCoords]`. Introduce `v hv _`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[show i = 0 from Fin.ext (by omega)]`. Conclude with `hv`.
+-/
 theorem lineNormalDivisorChartAt :
     NormalDivisorChartAt IndefiniteRowSideFullHecke.ComplexSets.lineDiagonalModel (fun _ => (1 : ℂ)) 0 0 := by
   intro w hw hw0

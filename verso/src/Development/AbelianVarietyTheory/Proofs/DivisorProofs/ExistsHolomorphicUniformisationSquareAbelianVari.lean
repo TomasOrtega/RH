@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Introduce `A _ g L u hA`. Establish `hAA : IsAbelianScheme (A ⊗ A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hg` using `GlobalTheory.AHPos.smoothOfRelativeDimension_of_holUnif hA u`. Take `⟨n, hn⟩` from `GlobalTheory.AbelianDim.exists_relDim ℂ (A ⊗ A) hAA`. Take `⟨L', ⟨v⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif (A ⊗ A) n hAA hn`.
+
+Take `⟨h₁, h₂⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u hg`. Take `⟨M₁, hM₁, hΛ₁, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom (A ⊗ A) A hAA hA L' L n g v u h₁ h₂ (fst A A) inferInstance`. Take `⟨M₂, hM₂, hΛ₂, -⟩` from `GlobalTheory.HomLinear.exists_linear_of_isMonHom (A ⊗ A) A hAA hA L' L n g v u h₁ h₂ (snd A A) inferInstance`. Use `⟨n, L', v, M₁, M₂, hAA, hM₁, hM₂, fun w => ?_, fun l => hΛ₁ l l.2, fun l => hΛ₂ l l.2⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, u.ex_add, hM₁, hM₂, Hom.mul_def, ← comp_lift, lift_fst_snd, Category.comp_id]`.
+-/
 theorem exists_holUnif_square : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), IsAbelianScheme A → ∃ (n : ℕ) (L' : LB (A ⊗ A).left) (v : HolUnif (A ⊗ A) L' n) (M₁ M₂ : (Fin n → ℂ) →ₗ[ℂ] (Fin g → ℂ)), IsAbelianScheme (A ⊗ A) ∧ (∀ w, u.ex (M₁ w) = v.ex w ≫ fst A A) ∧ (∀ w, u.ex (M₂ w) = v.ex w ≫ snd A A) ∧ (∀ w, u.ex ((M₁ + M₂) w) = v.ex w ≫ μ[A]) ∧ (∀ l : v.Λ, M₁ l ∈ u.Λ) ∧ ∀ l : v.Λ, M₂ l ∈ u.Λ := by
   intro A _ g L u hA
   have hAA : IsAbelianScheme (A ⊗ A) := AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA

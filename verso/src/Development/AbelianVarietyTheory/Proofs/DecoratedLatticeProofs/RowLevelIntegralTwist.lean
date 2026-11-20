@@ -21,6 +21,27 @@ namespace GlobalTheory.CongFlag
 open Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf.unitaryCongruence
 open scoped Matrix
 
+/- English proof (translation)
+Take `⟨n, hn, hnv⟩` from `hv`. Take `⟨n', hn', hnv'⟩` from `hv'`. Use `⟨n * n', Nat.Coprime.mul hn hn', ?_⟩` and prove the remaining obligations. Establish `hQ : Mo I g (Set.range e0) ≤ Qs I g z0`. Use `sup_le (Submodule.span_le.2 ?_) (mL_Qs I g hz0)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `show ZMod' I g (hA I z0 (e0 a))`. Rewrite using `[hA_symm]`. Conclude with `Z_sig I g (hze a)`. Establish `hmL : mL I g ≤ Qs I g z0` using `mL_Qs I g hz0`.
+
+Establish `hxmL : ∀ w ∈ mL I g, I.fmat x *ᵥ w ∈ mL I g` using `fun w hw => pres I hxK g ∅ (mL I g) (by simp) (by simp) le_rfl w (mL_Mo I hw)`. Establish `hNint : ∀ m : ℕ, ((m : I.E ⊗[I.F] Af I.F)) ∈ IntAf I.F I.E` using `fun m => natCast_mem _ m`. Establish `hA1 : ZMod' I g (((n * n' : ℕ) : I.E ⊗[I.F] Af I.F) * hA I z0 (I.fmat x *ᵥ v') + ((n * n' : ℕ) : I.E ⊗[I.F] Af I.F))`. Establish `e : I.fmat x *ᵥ v' = z0 + (I.fmat x - 1) *ᵥ z0 + I.fmat x *ᵥ (v' - z0)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `e2 : ((n * n' : ℕ) : I.E ⊗[I.F] Af I.F) * hA I z0 (I.fmat x *ᵥ (v' - z0)) = (n : I.E ⊗[I.F] Af I.F) * hA I z0 (I.fmat x *ᵥ ((n' : I.E ⊗[I.F] Af I.F) • (v' - z0)))`. Rewrite using `[Matrix.mulVec_smul, hA_smul_right, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ZMod' I g (hA I z0 ((I.fmat x - 1) *ᵥ z0))` using `hQ hxz`.
+
+Establish `h3 : ZMod' I g (hA I z0 (I.fmat x *ᵥ ((n' : I.E ⊗[I.F] Af I.F) • (v' - z0))))` using `hmL (hxmL _ hnv')`. Establish `h1` using `Z_smul I g (hNint (n * n')) hzz`. Use `Z_add I g (Z_add I g h1 (Z_smul I g (hNint (n * n')) h2)) (Z_smul I g (hNint n) h3)` as an intermediate fact. Rewrite using `[e, hA_add_right, hA_add_right]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA2 : ZMod' I g (((n * n' : ℕ) : I.E ⊗[I.F] Af I.F) * hA I z0 v + ((n * n' : ℕ) : I.E ⊗[I.F] Af I.F))`. Establish `e : v = z0 + (v - z0)` using `by abel`. Establish `e2 : ((n * n' : ℕ) : I.E ⊗[I.F] Af I.F) * hA I z0 (v - z0) = (n' : I.E ⊗[I.F] Af I.F) * hA I z0 ((n : I.E ⊗[I.F] Af I.F) • (v - z0))`.
+
+Rewrite using `[hA_smul_right, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ZMod' I g (hA I z0 ((n : I.E ⊗[I.F] Af I.F) • (v - z0)))` using `hmL hnv`. Establish `h1` using `Z_smul I g (hNint (n * n')) hzz`. Use `Z_add I g h1 (Z_smul I g (hNint n') h3)` as an intermediate fact.
+
+Rewrite using `[e, hA_add_right]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ε * (c * hA I z0 (I.fmat x *ᵥ v')) = ε * (c₂ * hA I z0 v)`.
+
+Use `congrArg (fun w => hA I z0 w) hyp` as an intermediate fact. Simplify using `only [hA_smul_right] at this`. Conclude with `this`. Use `Z_sub I g (Z_smul I g (mul_mem hε hc) hA1) (Z_smul I g (mul_mem hε hc₂) hA2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Take the linear combination `(-((n * n' : ℕ) : I.E ⊗[I.F] Af I.F)) * key`.
+-/
 theorem core (I : AutInst) (g : ℕ) {r : ℕ} (e0 : Fin r → VA I) (z0 : VA I) (hz0 : z0 ∈ I.Lf)
     (hzz : ZMod' I g (hA I z0 z0 + 1)) (hze : ∀ a, ZMod' I g (hA I (e0 a) z0))
     (x : I.Gf) (hxK : x ∈ I.Kset) (hxz : InMod I g (Set.range e0) ((I.fmat x - 1) *ᵥ z0))
@@ -82,6 +103,17 @@ namespace GlobalTheory.CongFlag
 
 open Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 
+/- English proof (translation)
+Take `⟨t, ht, he⟩` from `hZ`. Establish `hs : (⟨ε, hε⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) * (⟨c, hc⟩ - ⟨c₂, hc₂⟩) * (N : Formalism.L2.Herm.intAf D.host.F D.host.E) = (g : Formalism.L2.Herm.intAf D.host.F D.host.E) * ⟨t, ht⟩` using `Subtype.ext (by`. Use `push_cast`. Conclude with `he)`. Establish `hr` using `congrArg (Formalism.L2.DIV.resS D.host.F PP) hs`.
+
+Simplify using `only [map_mul, map_sub, map_natCast, hε1, one_mul] at hr`. Establish `hg0 : ((g : ℕ) : Formalism.L2.DIV.kP PP) = 0` using `by show ((g : 𝓞 D.host.E) : 𝓞 D.host.E ⧸ PP.asIdeal) = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hg`. Establish `hN0 : ((N : ℕ) : Formalism.L2.DIV.kP PP) ≠ 0`. Introduce `h0`.
+
+Establish `hNm : ((N : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `h0`. Establish `hco : IsCoprime ((N : ℤ) : 𝓞 D.host.E) ((g : ℤ) : 𝓞 D.host.E)` using `(Nat.isCoprime_iff_coprime.2 hN).map (Int.castRingHom (𝓞 D.host.E))`. Take `⟨a, b, hab⟩` from `hco`.
+
+Move the coercions through the operations in `at hab`. Apply `PP.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hNm) (Ideal.mul_mem_left _ _ hg)`. Rewrite `hr` using `[hg0, zero_mul]`.
+
+Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 hr).resolve_right hN0)`.
+-/
 theorem res_eq {D : D7} (PP : Formalism.L2.DIV.Pl D.host.E) (g : ℕ) (hg : ((g : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal)
     (ε c c₂ : Formalism.IndefR.Lev.EAf D) (hε : ε ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (hε1 : Formalism.L2.DIV.resS D.host.F PP ⟨ε, hε⟩ = 1)
@@ -119,6 +151,9 @@ namespace GlobalTheory.CongFlag
 open Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 open scoped Matrix
 
+/- English proof (translation)
+The claim follows from `(congrArg Units.val (map_inv (Formalism.IndefR.Lev.finE (Yc D 0)) (show GA D (Yc D 0) from y)).symm).trans ((GlobalTheory.SeeConjGroup.fmat_iota_eq_finE (D := D) (y⁻¹ : GA D (D.sp.Y 0))).symm.trans (congrArg (fun p : (Formalism.IndefR.RationalEmbedding.inst D).GA => (Formalism.L2 …`.
+-/
 theorem finE_inv_val {D : D7} (y : GA D (D.sp.Y 0)) :
     ((Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from y))⁻¹ : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)).val =
       (Formalism.L2.SG.InstExistsPf.instOf D).fmat (((Formalism.IndefR.RationalEmbedding.iota D) y).2)⁻¹ :=
@@ -126,6 +161,9 @@ theorem finE_inv_val {D : D7} (y : GA D (D.sp.Y 0)) :
     ((GlobalTheory.SeeConjGroup.fmat_iota_eq_finE (D := D) (y⁻¹ : GA D (D.sp.Y 0))).symm.trans
       (congrArg (fun p : (Formalism.IndefR.RationalEmbedding.inst D).GA => (Formalism.L2.SG.InstExistsPf.instOf D).fmat p.2) (map_inv (Formalism.IndefR.RationalEmbedding.iota D) y)))
 
+/- English proof (translation)
+Substitute `hM hw hw'` using the available equality. Take `⟨N, hN, hZ⟩` from `core (Formalism.L2.SG.InstExistsPf.instOf D) g e0 z0 hz0 hzz hze x hxK hxz w w' hv hv' ε c c₂ hε hc hc₂ hyp`. Conclude with `res_eq PP g hg ε c c₂ hε hε1 hc hc₂ N hN hZ`.
+-/
 theorem core_res {D : D7} {r : ℕ} (e0 : Fin r → VA (Formalism.L2.SG.InstExistsPf.instOf D)) (z0 : VA (Formalism.L2.SG.InstExistsPf.instOf D)) (g : ℕ) (hz0 : z0 ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf)
     (hzz : ZMod' (Formalism.L2.SG.InstExistsPf.instOf D) g (hA (Formalism.L2.SG.InstExistsPf.instOf D) z0 z0 + 1)) (hze : ∀ a, ZMod' (Formalism.L2.SG.InstExistsPf.instOf D) g (hA (Formalism.L2.SG.InstExistsPf.instOf D) (e0 a) z0))
     (x : (Formalism.L2.SG.InstExistsPf.instOf D).Gf) (hxK : x ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Kset) (hxz : InMod (Formalism.L2.SG.InstExistsPf.instOf D) g (Set.range e0) (((Formalism.L2.SG.InstExistsPf.instOf D).fmat x - 1) *ᵥ z0))
@@ -144,6 +182,15 @@ theorem core_res {D : D7} {r : ℕ} (e0 : Fin r → VA (Formalism.L2.SG.InstExis
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hi : ∀ u, (iotaX X h) ((iotaX X h).symm (1, X.xu u)) = (1, X.xu u)` using `fun u => (iotaX X h).apply_symm_apply _`. Take `⟨⟨I⟩, ιE, ιE_conj, ιE_F, bas, J_eq, L_eq, pl, φ_eq, n_eq, eps_eq, lam_eq, ds, low, g_eq, g0_eq, Rph, Rph_spec, eX, fY, ee, ff, ef, Lb, Lb_perp, Lam_split, zu, zu_norm, zu_orth, zu_Lb, Fu, Fu_e, flagZVector, Fu_fixed, psiEf, psiEf_add, psiEf_int, psiEf_rat, e0, f0, z0, bw, bwd, ew …` from `X`. Simplify using `only at h`. Substitute `h` using the available equality. Simplify using `only at g_eq`.
+
+Substitute `g_eq` using the available equality. Establish `hs : ∀ y : D.host.E, ιE.symm y = y` using `fun y => by`. Use `eq_of_heq (hId (ιE.symm y))` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+
+Use `⟨e0, z0, vectorsInLattice.2.1, formsAtZero.1, fun a => (formsAtZero.2 a).1, fun κ hκ => ?_, fun u => ?_⟩` and prove the remaining obligations. Establish `hk : ((Formalism.IndefR.RationalEmbedding.iota D) κ).2 ∈ K2set (Formalism.L2.SG.InstExistsPf.instOf D) (D.host.g 0 * D.host.g 1) e0 z0 bw` using `hκ.2`. Conclude with `⟨_, rfl, hk.1, hk.2.2.1⟩`. Use `⟨xu u, incl (Formalism.L2.SG.InstExistsPf.instOf D) (crdOf (Formalism.L2.SG.InstExistsPf.instOf D) ιE bas (zu u)), congrArg Prod.snd (hi u), ?_, xu_z u⟩` and prove the remaining obligations. Use function extensionality and compare the values at `r`.
+
+Use `show algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (ιE (ιE.symm (bas.repr (zu u) r))) = algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (ιE.symm (bas.repr (zu u) r))`. Rewrite using `[RingEquiv.apply_symm_apply, hs]`.
+-/
 theorem frame_facts {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = (Formalism.L2.SG.InstExistsPf.instOf D)) (hId : IdE X) :
     ∃ (e0 : Fin D.R.rS → VA (Formalism.L2.SG.InstExistsPf.instOf D)) (z0 : VA (Formalism.L2.SG.InstExistsPf.instOf D)), z0 ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Lf ∧ ZMod' (Formalism.L2.SG.InstExistsPf.instOf D) (D.host.g 0 * D.host.g 1) (hA (Formalism.L2.SG.InstExistsPf.instOf D) z0 z0 + 1) ∧
       (∀ a, ZMod' (Formalism.L2.SG.InstExistsPf.instOf D) (D.host.g 0 * D.host.g 1) (hA (Formalism.L2.SG.InstExistsPf.instOf D) (e0 a) z0)) ∧
@@ -175,6 +222,9 @@ theorem frame_facts {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h 
       algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (ιE.symm (bas.repr (zu u) r))
     rw [RingEquiv.apply_symm_apply, hs]
 
+/- English proof (translation)
+Substitute `hx hz` using the available equality. Conclude with `congrArg (fun M : Matrix (Fin (Yc D 0).rank) (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D) => Matrix.mulVec M w) (finE_inv_val y)`.
+-/
 theorem inv_mulVec_eq {D : D7} (y : GA D (D.sp.Y 0)) (x : (Formalism.L2.SG.InstExistsPf.instOf D).Gf) (hx : ((Formalism.IndefR.RationalEmbedding.iota D) y).2 = x)
     (w : Fin (Yc D 0).rank → Formalism.IndefR.Lev.EAf D) (z : VA (Formalism.L2.SG.InstExistsPf.instOf D)) (hz : w = z) :
     Matrix.mulVec ((Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from y))⁻¹ : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)).val w =
@@ -184,6 +234,11 @@ theorem inv_mulVec_eq {D : D7} (y : GA D (D.sp.Y 0)) (x : (Formalism.L2.SG.InstE
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨e0, z0, hz0, hzz, hze, hK, hu⟩` from `frame_facts X h hId`. Take `⟨x, hx, hxK, hxz⟩` from `hK κ hκ`. Take `⟨y, z, hy, hz, hv⟩` from `hu u`. Take `⟨y', z', hy', hz', hv'⟩` from `hu u'`. Establish `e1 : (Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from κ)).val = (Formalism.L2.SG.InstExistsPf.instOf D).fmat x` using `(GlobalTheory.SeeConjGroup.fmat_iota_eq_finE (D := D) κ).symm.trans (congrArg (Formalism.L2.SG.InstExistsPf.instOf D).fmat hx)`.
+
+Establish `e2` using `inv_mulVec_eq _ y hy _ z hz`. Establish `e3` using `inv_mulVec_eq _ y' hy' _ z' hz'`. Conclude with `core_res e0 z0 _ hz0 hzz hze x hxK hxz _ _ hv hv' PP hg ε c c₂ hε hε1 hc hc₂ _ _ _ e1 e2 e3 hE`.
+-/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (hId : IdE X)
     (u u' : D.what₂.Word) (κ : GA D (D.sp.Y 0)) (hκ : κ ∈ rowJ X h)
     (c c₂ : Formalism.IndefR.Lev.EAf D) (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hc₂ : c₂ ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
@@ -205,6 +260,11 @@ end GlobalTheory.CongFlag
 
 namespace GlobalTheory.CongFlag
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hP _ u u' κ hκ c c₂ hc hc₂ PP hPP hEq`. Establish `lev : (pk W).toLevCh.Is W.P.A3.A.μ0` using `hP.bot.hyp.2.2.2.1.lev`. Establish `hPP' : PP ∈ (pk W).Pg` using `hPP`. Establish `hg` using `(GlobalTheory.SeeConjRead.places_over_g (pk W) lev).1 PP hPP'`. Take `⟨ei, hei⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt (GlobalTheory.TypePlaces.not_isConjPl _ _ lev.Pg PP hPP' PP hPP')`.
+
+Take `⟨hε, hε1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D ei PP hei`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card W.S.X W.Q.instEq hP.bot.idE u u' κ hκ c c₂ hc hc₂ PP hg (toEAf D ei) hε hε1 (hEq ei hei)`.
+-/
 theorem resS_eq_of_flag : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → 1 ≤ D.R.rS → ∀ (u u' : D.what₂.Word) (κ : GA D (D.sp.Y 0)), κ ∈ rowJ W.S.X W.Q.instEq → ∀ (c c₂ : Formalism.IndefR.Lev.EAf D) (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hc₂ : c₂ ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), ∀ PP ∈ (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true)).Pg, (∀ ei : AE D, Formalism.L2.NTheta.IsIdemAt ei PP → toEAf D ei • (c • Matrix.mulVec (Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from κ)).val (Matrix.mulVec (((Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u'))))⁻¹ : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)).val (fun r => algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (W.S.X.ιE (W.S.X.zR u' (Fin.cast (rank_eq W.S.X W.Q.instEq) r)))))) = toEAf D ei • (c₂ • (Matrix.mulVec (((Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))))⁻¹ : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)).val (fun r => algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (W.S.X.ιE (W.S.X.zR u (Fin.cast (rank_eq W.S.X W.Q.instEq) r))))))) → Formalism.L2.DIV.resS D.host.F PP ⟨c, hc⟩ = Formalism.L2.DIV.resS D.host.F PP ⟨c₂, hc₂⟩ := by
   intro D L hT Gi Gl Kc Yd cX ex W hP _ u u' κ hκ c c₂ hc hc₂ PP hPP hEq
   have lev : (pk W).toLevCh.Is W.P.A3.A.μ0 := hP.bot.hyp.2.2.2.1.lev

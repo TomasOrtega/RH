@@ -15,6 +15,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagGenFib.isIntegral_Gf | exact GlobalTheory.FlagGenFib.isIntegral_Gf | (intros; apply GlobalTheory.FlagGenFib.isIntegral_Gf <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_generic_fibre_integral : ∀ {D : D7} {Bs Y₀ : Scheme.{0}} (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (π₀ : Y₀ ⟶ Bs) (n : ℕ),
     IsArithVar (π₀ ≫ q) n → IsIntegral (GlobalTheory.FlagGenFib.Gf q π₀) := by
   first | exact @GlobalTheory.FlagGenFib.isIntegral_Gf | exact GlobalTheory.FlagGenFib.isIntegral_Gf | (intros; apply GlobalTheory.FlagGenFib.isIntegral_Gf <;> assumption)

@@ -20,6 +20,9 @@ def chebotarevSet (C : Set Gal(L/K)) : Set (HeightOneSpectrum (𝓞 K)) :=
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Rewrite using `[fixingSubgroup_fixedField]`. Conclude with `Subgroup.mem_zpowers σ`.
+-/
 theorem mem_fixingSubgroup_fixedField_zpowers (σ : Gal(L/K)) :
     σ ∈ fixingSubgroup (fixedField (Subgroup.zpowers σ)) := by
   rw [fixingSubgroup_fixedField]
@@ -29,12 +32,18 @@ def galFixedZpowers (σ : Gal(L/K)) : Gal(L/fixedField (Subgroup.zpowers σ)) :=
   fixingSubgroupEquiv _ ⟨σ, mem_fixingSubgroup_fixedField_zpowers σ⟩
 
 omit [IsGalois K L] in
+/- English proof (translation)
+The claim follows from `AlgEquiv.ext fun _ ↦ rfl`.
+-/
 theorem restrictScalars_galFixedZpowers (σ : Gal(L/K)) :
     (galFixedZpowers σ).restrictScalars K = σ :=
   AlgEquiv.ext fun _ ↦ rfl
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Establish `h1 : g.restrictScalars K ∈ fixingSubgroup (fixedField (Subgroup.zpowers σ))` using `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx ↦ g.commutes ⟨x, hx⟩`. Rewrite `h1` using `[fixingSubgroup_fixedField]`. Then use the resulting hypothesis.
+-/
 theorem restrictScalars_mem_zpowers (σ : Gal(L/K)) (g : Gal(L/fixedField (Subgroup.zpowers σ))) :
     g.restrictScalars K ∈ Subgroup.zpowers σ := by
   have h1 : g.restrictScalars K ∈ fixingSubgroup (fixedField (Subgroup.zpowers σ)) :=
@@ -43,6 +52,9 @@ theorem restrictScalars_mem_zpowers (σ : Gal(L/K)) (g : Gal(L/fixedField (Subgr
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun a b ↦ by apply AlgEquiv.restrictScalars_injective K obtain ⟨i, hi⟩ := Subgroup.mem_zpowers_iff.1 (restrictScalars_mem_zpowers σ a) obtain ⟨j, hj⟩ := Subgroup.mem_zpowers_iff.1 (restrictScalars_mem_zpowers σ b) have h : ∀ c d : Gal(L/fixedField (Subgroup.zpowers σ)), (c * d) …`.
+-/
 theorem isMulCommutative_gal_fixedField_zpowers (σ : Gal(L/K)) :
     IsMulCommutative Gal(L/fixedField (Subgroup.zpowers σ)) := ⟨⟨fun a b ↦ by
   apply AlgEquiv.restrictScalars_injective K
@@ -53,6 +65,9 @@ theorem isMulCommutative_gal_fixedField_zpowers (σ : Gal(L/K)) :
     fun _ _ ↦ AlgEquiv.ext fun _ ↦ rfl
   rw [h, h, ← hi, ← hj, zpow_mul_comm]⟩⟩
 
+/- English proof (translation)
+Rewrite using `[IsGalois.card_aut_eq_finrank, finrank_fixedField_eq_card, Nat.card_zpowers]`.
+-/
 theorem natCard_gal_fixedField_zpowers (σ : Gal(L/K)) :
     Nat.card Gal(L/fixedField (Subgroup.zpowers σ)) = orderOf σ := by
   rw [IsGalois.card_aut_eq_finrank, finrank_fixedField_eq_card, Nat.card_zpowers]
@@ -63,6 +78,9 @@ def deuringSet (σ : Gal(L/K)) : Set (HeightOneSpectrum (𝓞 (fixedField (Subgr
       arithFrobAt (𝓞 (fixedField (Subgroup.zpowers σ))) Gal(L/fixedField (Subgroup.zpowers σ))
         w.asIdeal = galFixedZpowers σ}
 
+/- English proof (translation)
+Establish `h` using `Ideal.absNorm_pow_inertiaDeg (u.asIdeal.under (𝓞 K)) u.asIdeal`. Rewrite `h` using `[hf, pow_one]`. Rewrite using `[HeightOneSpectrum.under_asIdeal, h]`.
+-/
 theorem absNorm_eq_of_inertiaDeg_eq_one {E : Type*} [Field E] [NumberField E] [Algebra K E]
     (u : HeightOneSpectrum (𝓞 E)) (hf : u.asIdeal.inertiaDeg (𝓞 K) = 1) :
     Ideal.absNorm u.asIdeal = Ideal.absNorm (HeightOneSpectrum.under (𝓞 K) u).asIdeal := by
@@ -77,6 +95,13 @@ section Deuring
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L]
 
+/- English proof (translation)
+Use `set u := HeightOneSpectrum.under (𝓞 (fixedField (Subgroup.zpowers σ))) w with hudef`. Establish `hD : MulAction.stabilizer Gal(L/K) w.asIdeal = Subgroup.zpowers σ`. Rewrite using `[stabilizer_eq_zpowers_arithFrobAt (below K w) w he, hσ]`. Establish `hwu : w.asIdeal.LiesOver u.asIdeal` using `⟨rfl⟩`. Establish `huv : u.asIdeal.LiesOver (below K w).asIdeal` using `⟨by rw [hudef, HeightOneSpectrum.under_asIdeal, Ideal.under_under]; rfl⟩`.
+
+Establish `hf` using `ramificationIdx_eq_one_and_inertiaDeg_eq_one_of_stabilizer_le (Subgroup.zpowers σ) (below K w) u w hD.le`. Use `⟨hf.2, fun w' hw' ↦ ?_⟩` and prove the remaining obligations. Establish `hw'w : w' = w` using `eq_of_under_eq_of_le_stabilizer (Subgroup.zpowers σ) w w' hD.ge (by rw [← hw'.over, ← hwu.over])`. Substitute `w'` using the available equality. Use `⟨he, arithFrobAt_eq_of_isArithFrobAt w ?_ ?_⟩` and prove the remaining obligations.
+
+Use `Ideal.ramificationIdx_tower (R := 𝓞 K) u.asIdeal w.asIdeal` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `(mul_eq_one.1 this.symm).2`. Rewrite using `[← isArithFrobAt_restrictScalars_iff (fixedField (Subgroup.zpowers σ)) w hf.2, restrictScalars_galFixedZpowers, ← hσ]`. Conclude with `IsArithFrobAt.arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal`.
+-/
 theorem under_mem_deuringSet (σ : Gal(L/K)) (w : HeightOneSpectrum (𝓞 L))
     (he : w.asIdeal.ramificationIdx (𝓞 K) = 1) (hσ : arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal = σ) :
     HeightOneSpectrum.under (𝓞 (fixedField (Subgroup.zpowers σ))) w ∈ deuringSet σ := by
@@ -100,6 +125,11 @@ theorem under_mem_deuringSet (σ : Gal(L/K)) (w : HeightOneSpectrum (𝓞 L))
       restrictScalars_galFixedZpowers, ← hσ]
     exact IsArithFrobAt.arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal
 
+/- English proof (translation)
+Take `⟨he, hF⟩` from `hu.2 w hw`. Use `⟨he, arithFrobAt_eq_of_isArithFrobAt w he ?_⟩` and prove the remaining obligations. Establish `hf : (w.asIdeal.under (𝓞 (fixedField (Subgroup.zpowers σ)))).inertiaDeg (𝓞 K) = 1`. Rewrite using `[← hw.over]`. Conclude with `hu.1`.
+
+Establish `h0` using `IsArithFrobAt.arithFrobAt (𝓞 (fixedField (Subgroup.zpowers σ))) Gal(L/fixedField (Subgroup.zpowers σ)) w.asIdeal`. Rewrite `h0` using `[hF]`. Establish `h` using `(isArithFrobAt_restrictScalars_iff (fixedField (Subgroup.zpowers σ)) w hf (galFixedZpowers σ)).2 h0`. Rewrite `h` using `[restrictScalars_galFixedZpowers]`. Then use the resulting hypothesis.
+-/
 theorem arithFrobAt_eq_of_mem_deuringSet (σ : Gal(L/K))
     {u : HeightOneSpectrum (𝓞 (fixedField (Subgroup.zpowers σ)))} (hu : u ∈ deuringSet σ)
     (w : HeightOneSpectrum (𝓞 L)) [hw : w.asIdeal.LiesOver u.asIdeal] :
@@ -116,6 +146,11 @@ theorem arithFrobAt_eq_of_mem_deuringSet (σ : Gal(L/K))
     (galFixedZpowers σ)).2 h0
   rwa [restrictScalars_galFixedZpowers] at h
 
+/- English proof (translation)
+Establish `: IsGaloisGroup Gal(L/K) (𝓞 K) (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ K L`. Introduce `w hw`. Take `⟨⟨w0, hw0⟩⟩` from `nonempty_placesOver L u`. Take `⟨he0, hF0⟩` from `arithFrobAt_eq_of_mem_deuringSet σ hu w0`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 K) (𝓞 L) Gal(L/K) w0.asIdeal w.asIdeal (by rw [← hw.over, HeightOneSpectrum.under_asIdeal, hw0.over, Ideal.under_under])`.
+
+Establish `hgw : w = g • w0` using `HeightOneSpectrum.ext hg`. Substitute `hgw` using the available equality. Use `⟨by rw [ramificationIdx_smul, he0], ?_⟩` and prove the remaining obligations. Rewrite using `[arithFrobAt_smul g w0 he0, hF0]`. Conclude with `isConj_iff.2 ⟨g, rfl⟩`.
+-/
 theorem under_mem_chebotarevSet (σ : Gal(L/K))
     {u : HeightOneSpectrum (𝓞 (fixedField (Subgroup.zpowers σ)))} (hu : u ∈ deuringSet σ) :
     HeightOneSpectrum.under (𝓞 K) u ∈ chebotarevSet {τ : Gal(L/K) | IsConj σ τ} := by
@@ -139,6 +174,33 @@ section Count
 variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L]
 
+/- English proof (translation)
+Establish `: IsGaloisGroup Gal(L/K) (𝓞 K) (𝓞 L)` using `IsGaloisGroup.of_isFractionRing _ _ _ K L`. Use `set Z := Subgroup.centralizer {σ}`. Take `⟨⟨w1, hw1⟩⟩` from `nonempty_placesOver L v`. Take `⟨he1, hc⟩` from `hv w1 hw1`. Take `⟨c, hc⟩` from `isConj_iff.1 hc`.
+
+Use `set w0 := c⁻¹ • w1 with hw0def`. Establish `he0 : w0.asIdeal.ramificationIdx (𝓞 K) = 1` using `by rw [ramificationIdx_smul, he1]`. Establish `hF0 : arithFrobAt (𝓞 K) Gal(L/K) w0.asIdeal = σ`. Rewrite using `[hw0def, arithFrobAt_smul _ _ he1, ← hc]`. Use `group`.
+
+Establish `hw0 : w0.asIdeal.LiesOver v.asIdeal` using `(below_eq_iff _ _).1 ((below_smul _ _).trans ((below_eq_iff _ _).2 hw1))`. Establish `hD0 : MulAction.stabilizer Gal(L/K) w0.asIdeal = Subgroup.zpowers σ`. Rewrite using `[stabilizer_eq_zpowers_arithFrobAt (below K w0) w0 he0, hF0]`. Establish `hle : Subgroup.zpowers σ ≤ Z` using `Subgroup.zpowers_le.2 (Subgroup.mem_centralizer_singleton_iff.2 rfl)`. Use `set S : Set (HeightOneSpectrum (𝓞 L)) := {w | w.asIdeal.LiesOver v.asIdeal ∧ arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal = σ} with hSdef`.
+
+Establish `heS : ∀ w ∈ S, w.asIdeal.ramificationIdx (𝓞 K) = 1` using `fun w hw ↦ (hv w hw.1).1`. Establish `hDS : ∀ w ∈ S, MulAction.stabilizer Gal(L/K) w.asIdeal = Subgroup.zpowers σ`. Introduce `w hw`. Rewrite using `[stabilizer_eq_zpowers_arithFrobAt (below K w) w (heS w hw), hw.2]`. Establish `hSorb : S = MulAction.orbit Z w0`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hwv, hwF⟩`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 K) (𝓞 L) Gal(L/K) w0.asIdeal w.asIdeal (hw0.over.symm.trans hwv.over)`. Establish `hgw : w = g • w0` using `HeightOneSpectrum.ext hg`.
+
+Establish `hconj` using `arithFrobAt_smul g w0 he0`. Rewrite `hconj` using `[← hgw, hwF, hF0]`. Establish `hgZ : g ∈ Z`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `⟨⟨g, hgZ⟩, hgw.symm⟩`. Introduce and unpack `⟨z, rfl⟩`. Establish `hz : (z : Gal(L/K)) * σ = σ * z` using `Subgroup.mem_centralizer_singleton_iff.1 z.2`. Use `⟨(below_eq_iff _ _).1 ((below_smul (z : Gal(L/K)) w0).trans ((below_eq_iff _ _).2 hw0)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `arithFrobAt (𝓞 K) Gal(L/K) ((z : Gal(L/K)) • w0).asIdeal = σ`.
+
+Rewrite using `[arithFrobAt_smul _ w0 he0, hF0, hz]`. Use `group`. Establish `hstab : MulAction.stabilizer Z w0 = (Subgroup.zpowers σ).subgroupOf Z`. Use extensionality with `z`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf, ← hD0, MulAction.mem_stabilizer_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg HeightOneSpectrum.asIdeal h`. Introduce `h`. Conclude with `HeightOneSpectrum.ext h`.
+
+Establish `hcardS : Nat.card S * orderOf σ = Nat.card Z`. Rewrite using `[hSorb, Nat.card_coe_set_eq, ← MulAction.index_stabilizer, ← Nat.card_zpowers, ← Nat.card_congr (Subgroup.subgroupOfEquivOfLe hle).toEquiv, ← hstab, mul_comm, Subgroup.card_mul_index]`. Set `f : S → {u // u ∈ deuringSet σ ∧ HeightOneSpectrum.under (𝓞 K) u = v}` to `fun w ↦ ⟨HeightOneSpectrum.under (𝓞 (fixedField (Subgroup.zpowers σ))) w.1, under_mem_deuringSet σ w.1 (heS w.1 w.2) w.2.2, HeightOneSpectrum.ext (by`. Rewrite using `[HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal, Ideal.under_under]`. Conclude with `w.2.1.over.symm)⟩`.
+
+Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h` using `congrArg (fun x ↦ x.1.asIdeal) hab`. Simplify using `only [f, HeightOneSpectrum.under_asIdeal] at h`.
+
+Conclude with `(Subtype.ext (eq_of_under_eq_of_le_stabilizer (Subgroup.zpowers σ) a.1 b.1 (hDS a.1 a.2).ge h.symm)).symm`. Introduce and unpack `⟨u, hu, huv⟩`. Take `⟨⟨w, hw⟩⟩` from `nonempty_placesOver L u`. Take `⟨-, hF⟩` from `arithFrobAt_eq_of_mem_deuringSet σ hu w`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `⟨by rw [← huv, HeightOneSpectrum.under_asIdeal, hw.over, Ideal.under_under]⟩`.
+
+Conclude with `⟨⟨w, hwv, hF⟩, Subtype.ext (HeightOneSpectrum.ext hw.over.symm)⟩`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective f hf), hcardS]`.
+-/
 theorem card_fiber_deuringSet_mul_orderOf (σ : Gal(L/K)) {v : HeightOneSpectrum (𝓞 K)}
     (hv : v ∈ chebotarevSet {τ : Gal(L/K) | IsConj σ τ}) :
     Nat.card {u // u ∈ deuringSet σ ∧ HeightOneSpectrum.under (𝓞 K) u = v} * orderOf σ =

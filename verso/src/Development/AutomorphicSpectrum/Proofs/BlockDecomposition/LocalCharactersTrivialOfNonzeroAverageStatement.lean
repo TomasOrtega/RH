@@ -17,6 +17,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial | exact GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial | (intros; apply GlobalTheory.CompanionTheory.FexTheta.Orth.weights_trivial <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_characters_trivial_of_nonzero_average : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ (c : HeckeCharacter K)
   (M : ∀ v : Pl, LM c v), AdmM M → ∀ R : Finset (Pl →₀ ℤ), IsReps M R → ∀ Sv : Finset Pl, GoodSv M Sv →
   (∀ κ ∈ K1 K, ∏ᶠ v, (M v).ct (k1 (M v) κ) = 1) → (∑ m ∈ R, ∫ u, ctM M Sv m u ∂muU Sv) ≠ 0 →

@@ -9,9 +9,31 @@ namespace LateralTheory.CohomologicalPurity.Cl.DiscNrmPf
 
 def up {P : PSh} {U : Scheme.{0}} {p q : ℕ} (x : Sx (disc.obj P) p U) : Sx (disc.obj P) q U := x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem face_disc {P : PSh} {U : Scheme.{0}} {p : ℕ} (x : Sx (disc.obj P) (p + 1) U) (i : Fin (p + 2)) :
     ((disc.obj P).δ i).app (op U) x = up x := rfl
 
+/- English proof (translation)
+Establish `hα : δ n (n + 1) α.1 = 0` using `(Cocycle.mem_iff n (n + 1) rfl α.1).1 α.2`. Establish `hD` using `LateralTheory.KummerTheory.nrmDelta`. Take `⟨β, hβ⟩` from `LateralTheory.EtaleFoundations.etale_chain_cochain_exists_of_eval_data R (E := disc.obj P) (I := I) (n := n - 1) (fun p s h U x => if Odd p then n.negOnePow • ev α.1 (p + 1) s (by push_cast; omega) U (up x) else 0) (by`. Introduce `p s h V U g x`. Use `beta_reduce`.
+
+Use `split_ifs`. Rewrite using `[Units.smul_def, Units.smul_def]`. Use `(map_zsmul ((I.X s).obj.map g.op).hom _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun v => (n.negOnePow : ℤ) • v) (LateralTheory.KummerTheory.AW.ev_res α.1 (p + 1) s _ g (up x))`. Conclude with `map_zero _)`.
+
+Use `⟨β, ?_⟩` and prove the remaining obligations. Introduce `p s h U y`. Rewrite using `[LateralTheory.KummerTheory.ev_sub', sub_eq_zero]`. Rewrite using `[hD R (by omega) β U p (s - 1) s (by push_cast at h ⊢; omega) h y]`. Simplify using `only [face_disc, hβ]`.
+
+Break down `Nat.even_or_odd p with hp | hp` into its components or cases. Establish `hp1 : Odd (p + 1)` using `hp.add_one`. Establish `hp0 : ¬ Odd p` using `Nat.not_odd_iff_even.mpr hp`. Simplify using `only [hp1, hp0, if_true, if_false, smul_zero, Finset.sum_const_zero, add_zero]`. Establish `hc` using `hD R (n := n) (m := n + 1) rfl α.1 U (p + 1) (s - 1) s (by push_cast at h ⊢; omega) (by push_cast at h ⊢; omega) (up y)`.
+
+Rewrite `hc` using `[hα, LateralTheory.KummerTheory.ev_zero']`. Simplify using `only [face_disc] at hc`. Rewrite `hc` using `[← Finset.sum_smul, LateralTheory.KummerTheory.altsum]`. Establish `he : ¬ Even (p + 1 + 2)`. Rewrite using `[Nat.not_even_iff_odd]`.
+
+Conclude with `hp1.add_even even_two`. Simplify using `only [he, if_false, one_smul] at hc`. Rewrite `hc` using `[Int.negOnePow_succ, Units.neg_smul]`. Establish `key` using `add_neg_eq_zero.1 hc.symm`. Rewrite using `[Units.smul_def]`.
+
+Use `Eq.trans ?_ (map_zsmul ((I.d (s - 1) s).hom.app (op U)).hom _ _).symm` and prove the remaining obligations. Rewrite using `[show (ModuleCat.Hom.hom ((I.d (s - 1) s).hom.app (op U))) (ev α.1 (p + 1 + 1) (s - 1) (by push_cast at h ⊢; omega) U (up y)) = n.negOnePow • ev α.1 (p + 1) s (by push_cast at h ⊢; omega) U (up (up y)) from key]`. Rewrite using `[← Units.smul_def, smul_smul, Int.units_mul_self, one_smul]`. Both sides reduce to the same expression. Establish `hp1 : ¬ Odd (p + 1)` using `Nat.not_odd_iff_even.mpr hp.add_one`.
+
+Simplify using `only [hp1, hp, if_true, if_false, map_zero, zero_add]`. Rewrite using `[← Finset.sum_smul, LateralTheory.KummerTheory.altsum]`. Establish `he : ¬ Even (p + 2)`. Rewrite using `[Nat.not_even_iff_odd]`. Conclude with `hp.add_even even_two`.
+
+Simplify using `only [he, if_false, one_smul, smul_smul, Int.units_mul_self]`. Both sides reduce to the same expression.
+-/
 theorem normal (R : Type) [CommRing R] (I : Cx R) (P : PSh) (n : ℤ) (α : Cocycle ((chains R).obj (disc.obj P)) I n) :
     ∃ β : Cochain ((chains R).obj (disc.obj P)) I (n - 1), ∀ p s h U y,
       ev (α.1 - δ (n - 1) n β) (p + 1) s h U y = 0 := by
@@ -65,6 +87,13 @@ end LateralTheory.CohomologicalPurity.Cl.DiscNrmPf
 namespace LateralTheory.CohomologicalPurity.Cl
 
 open DiscNrmPf in
+/- English proof (translation)
+Introduce `R _ K n P z`. Take `⟨β, hβ⟩` from `normal R K P n z`. Use `⟨(chainsXIso R (disc.obj P) 0).inv ≫ (z.1 - δ (n - 1) n β).v (-((0 : ℕ) : ℤ)) n (by omega), β, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add]`. Apply `LateralTheory.KummerTheory.AW.ev_ext` to reduce the goal to its premises.
+
+Introduce `p s h U x`. Break down `p with _ | p` into its components or cases. Take `rfl : s = n` from `by omega`. Simplify using `only [ev, Cochain.single_v, Iso.inv_hom_id_assoc]`. Rewrite using `[hβ]`.
+
+Simplify using `only [ev]`. Rewrite using `[Cochain.single_v_eq_zero _ _ _ _ _ (by push_cast; omega), comp_zero]`. Both sides reduce to the same expression.
+-/
 theorem etale_discrete_presheaf_cocycle_normalization_holds : LeafDiscNrm := by
   intro R _ K n P z
   obtain ⟨β, hβ⟩ := normal R K P n z
@@ -80,6 +109,9 @@ theorem etale_discrete_presheaf_cocycle_normalization_holds : LeafDiscNrm := by
     rw [Cochain.single_v_eq_zero _ _ _ _ _ (by push_cast; omega), comp_zero]
     rfl
 
+/- English proof (translation)
+The claim follows from `LeafDisc_of etale_discrete_presheaf_cocycle_normalization_holds`.
+-/
 theorem LeafDisc_of' : LeafDisc := LeafDisc_of etale_discrete_presheaf_cocycle_normalization_holds
 
 end LateralTheory.CohomologicalPurity.Cl

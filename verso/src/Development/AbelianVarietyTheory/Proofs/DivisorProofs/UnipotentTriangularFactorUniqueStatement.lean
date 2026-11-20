@@ -14,5 +14,8 @@ open scoped ContDiff ComplexOrder Classical
 open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCell.uniR_unique_of_mul_eq | exact GlobalTheory.FlagCell.uniR_unique_of_mul_eq | (intros; apply GlobalTheory.FlagCell.uniR_unique_of_mul_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unipotent_triangular_factor_unique : ∀ (R : Type) [CommRing R] (m : ℕ) (n n' : Low m → R) (M M' : Matrix (Fin m) (Fin m) R), M.BlockTriangular id → M'.BlockTriangular id → IsUnit M.det → uniR n * M = uniR n' * M' → n = n' := by
   first | exact @GlobalTheory.FlagCell.uniR_unique_of_mul_eq | exact GlobalTheory.FlagCell.uniR_unique_of_mul_eq | (intros; apply GlobalTheory.FlagCell.uniR_unique_of_mul_eq <;> assumption)

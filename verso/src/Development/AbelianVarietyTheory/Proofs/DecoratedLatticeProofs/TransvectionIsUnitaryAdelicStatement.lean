@@ -10,5 +10,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TransvAdelic.transv_unitary | exact GlobalTheory.TransvAdelic.transv_unitary | (intros; apply GlobalTheory.TransvAdelic.transv_unitary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.transvection_isUnitaryAdelic : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.TransvUnitary D := by
   first | exact @GlobalTheory.TransvAdelic.transv_unitary | exact GlobalTheory.TransvAdelic.transv_unitary | (intros; apply GlobalTheory.TransvAdelic.transv_unitary <;> assumption)

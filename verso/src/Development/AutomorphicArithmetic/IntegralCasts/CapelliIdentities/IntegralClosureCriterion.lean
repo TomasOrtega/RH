@@ -15,6 +15,11 @@ noncomputable def UpperTheory.Reformulated.B.IntegralClosureCriterion.OKc :
     fun (D : Formalism.L2.Ker.Car) (z : ℂ) ↦
       ∃ (x : ℤ) (y : ℤ), Even (x - y) ∧ z = ((↑x : ℂ) + (↑y : ℂ) * UpperTheory.Reformulated.B.IntegralClosureCriterion.be D) / (2 : ℂ)
 
+/- English proof (translation)
+Introduce `D u`. Establish `hφ : D.host.φ₀ D.host.sqd = Complex.I * ((Real.sqrt (D.host.d : ℝ) : ℝ) : ℂ)` using `D.host.φ₀_mem`. Take `⟨a, b, hab⟩` from `UpperTheory.adjoin_sqrt_eq_rat_span D.host.E D.host.d D.host.sqd D.host.sqd_sq ((u : D.host.K) : D.host.E) (u : D.host.K).2`. Establish `hval : D.host.φ₀ ((u : D.host.K) : D.host.E) = (a : ℂ) + (b : ℂ) * (Complex.I * ((Real.sqrt (D.host.d : ℝ) : ℝ) : ℂ))`. Rewrite using `[hab, map_add, map_mul, map_ratCast, map_ratCast, hφ]`.
+
+Establish `hint : IsIntegral ℤ (D.host.φ₀ ((u : D.host.K) : D.host.E))` using `(u.isIntegral_coe).map (D.host.φ₀.comp (algebraMap D.host.K D.host.E)).toIntAlgHom`. Rewrite `hint` using `[hval]`. Take `⟨x, y, hxy, h⟩` from `UpperTheory.integral_quadratic_half_int D.host.d D.host.hyp.2.1 a b hint`. Conclude with `⟨x, y, hxy, hval.trans h⟩`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralClosureCriterion.okc_of :
     ∀ (D : Formalism.L2.Ker.Car) (u : NumberField.RingOfIntegers ↥D.host.K),
       UpperTheory.Reformulated.B.IntegralClosureCriterion.OKc D ((D.host.φ₀ : D.host.E → ℂ) (↑(↑u : ↥D.host.K) : D.host.E)) := by

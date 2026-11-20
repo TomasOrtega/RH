@@ -56,6 +56,9 @@ def StdHyp0 (Ch Cg : ℝ) (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
   (∃ bv : ℝ, Cg * ((2 * r + k + 1 : ℕ) : ℝ) ^ 7 ≤ bv ∧ ShapeS u lam bv) ∧
   (u = u' → HasSeparatingGap u lam (2 * (Cg * ((r : ℝ) + 1) ^ 2) + 1))
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17⟩` from `h`. Use `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, fun e => ?_⟩` and prove the remaining obligations. Break down `h17 with h | h` into its components or cases. Conclude with `h.2`. Conclude with `absurd e h.1`.
+-/
 theorem StdHyp.to0 {Ch Cg : ℝ} {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {u u' : Fin k → ℝ} {T T' ka b : ℝ} (h : StdHyp Ch Cg k r ε lam u u' T T' ka b) :
     StdHyp0 Ch Cg k r ε lam u u' T T' ka b := by
@@ -79,6 +82,9 @@ def LocOk0 (D : D7) (Ch Cg : ℝ) (L : LocBessel D.R.k D.R.rS) (lam0 : Fin (2 * 
       (Tz D.R.k D.R.rS L.z' * (κ / ka) ^ (2 * D.R.rS)) ka b ∧
     1 ≤ Tz D.R.k D.R.rS L.z * κ ^ (2 * D.R.rS) ∧ 1 ≤ Tz D.R.k D.R.rS L.z' * κ ^ (2 * D.R.rS)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1.to0, h.2.2.2.2.2.2⟩`.
+-/
 theorem LocOk.to0 {D : D7} {Ch Cg : ℝ} {L : LocBessel D.R.k D.R.rS} {lam0 : Fin (2 * D.R.rS + D.R.k + 1) → ℝ}
     {ka b κ : ℝ} (h : LocOk D Ch Cg L lam0 ka b κ) : LocOk0 D Ch Cg L lam0 ka b κ :=
   ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1.to0, h.2.2.2.2.2.2⟩

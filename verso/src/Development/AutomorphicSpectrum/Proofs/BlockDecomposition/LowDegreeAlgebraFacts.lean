@@ -18,19 +18,34 @@ def raiseSpan (L : Fin n → Fin n → Module.End ℂ M) (Φ : M) : Submodule �
 
 def wt (r : List (Fin n × Fin n)) : Fin n → ℝ := (r.map fun p => Formalism.REAL.root p.1 p.2).sum
 
+/- English proof (translation)
+Simplify using `[wt]`.
+-/
 theorem wt_cons (p : Fin n × Fin n) (r : List (Fin n × Fin n)) :
     wt (p :: r) = Formalism.REAL.root p.1 p.2 + wt r := by
   simp [wt]
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.root, Pi.single_apply]`.
+-/
 theorem root_apply (a b c : Fin n) :
     Formalism.REAL.root a b c = (if c = a then 1 else 0) - (if c = b then 1 else 0) := by
   simp [Formalism.REAL.root, Pi.single_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lword_cons (p : Fin n × Fin n) (r : List (Fin n × Fin n)) (y : M) :
     lword L (p :: r) y = L p.1 p.2 (lword L r y) := rfl
 
+/- English proof (translation)
+Introduce `_ h` and use `by simp at h`.
+-/
 theorem isRaising_nil : IsRaising ([] : List (Fin n × Fin n)) := fun _ h => by simp at h
 
+/- English proof (translation)
+Introduce `q hq`. Break down `List.mem_cons.mp hq with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `hp`. Conclude with `hr q h`.
+-/
 theorem isRaising_cons {p : Fin n × Fin n} {r : List (Fin n × Fin n)} (hp : p.1 < p.2)
     (hr : IsRaising r) : IsRaising (p :: r) := by
   intro q hq
@@ -38,11 +53,22 @@ theorem isRaising_cons {p : Fin n × Fin n} {r : List (Fin n × Fin n)} (hp : p.
   · subst h; exact hp
   · exact hr q h
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨r, hr, rfl⟩`.
+-/
 theorem word_mem {r : List (Fin n × Fin n)} (hr : IsRaising r) : lword L r Φ ∈ raiseSpan L Φ :=
   Submodule.subset_span ⟨r, hr, rfl⟩
 
+/- English proof (translation)
+The claim follows from `word_mem (L := L) (Φ := Φ) isRaising_nil`.
+-/
 theorem phi_mem : Φ ∈ raiseSpan L Φ := word_mem (L := L) (Φ := Φ) isRaising_nil
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨r, hr, rfl⟩` from `hy`. Conclude with `word_mem (r := (a, b) :: r) (isRaising_cons h hr)`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 theorem raise_stable {a b : Fin n} (h : a < b) : ∀ x ∈ raiseSpan L Φ, L a b x ∈ raiseSpan L Φ := by
   intro x hx
   induction hx using Submodule.span_induction with
@@ -53,6 +79,9 @@ theorem raise_stable {a b : Fin n} (h : a < b) : ∀ x ∈ raiseSpan L Φ, L a b
   | add y z _ _ hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
   | smul c y _ hy => rw [map_smul]; exact Submodule.smul_mem _ c hy
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : Module.End ℂ M => f y) (hL a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite using `[← sub_eq_iff_eq_add', h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gl_apply (hL : IsGlRep L) (a b c d : Fin n) (y : M) :
     L a b (L c d y) = L c d (L a b y) +
       ((if b = c then L a d y else 0) - (if d = a then L c b y else 0)) := by
@@ -61,6 +90,17 @@ theorem gl_apply (hL : IsGlRep L) (a b c d : Fin n) (y : M) :
   rw [← sub_eq_iff_eq_add', h]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `nil`. Introduce `_ a b`. Establish `h1 : lword L ([] : List (Fin n × Fin n)) Φ = Φ` using `rfl`.
+
+Rewrite using `[h1]`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `word_mem (r := [(a, b)]) (isRaising_cons h isRaising_nil)`. Substitute `h` using the available equality. Rewrite using `[hd a]`.
+
+Conclude with `Submodule.smul_mem _ _ phi_mem`. Rewrite using `[hlow a b h]`. Conclude with `Submodule.zero_mem _`. Consider the case `cons p r ih`. Introduce `hr a b`.
+
+Establish `hr' : IsRaising r` using `fun q hq => hr q (List.mem_cons_of_mem _ hq)`. Establish `hp : p.1 < p.2` using `hr p List.mem_cons_self`. Rewrite using `[lword_cons, gl_apply hL]`. Use `Submodule.add_mem _ (raise_stable hp _ (ih hr' a b)) (Submodule.sub_mem _ ?_ ?_)` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `ih hr' a p.2`. Conclude with `Submodule.zero_mem _`. Use `split_ifs`. Conclude with `ih hr' p.1 b`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem letter_word_mem (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a Φ = (μ a : ℂ) • Φ)
     (hlow : ∀ a b, b < a → L a b Φ = 0) :
     ∀ r : List (Fin n × Fin n), IsRaising r → ∀ a b, L a b (lword L r Φ) ∈ raiseSpan L Φ := by
@@ -89,6 +129,11 @@ theorem letter_word_mem (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a
       · exact ih hr' p.1 b
       · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨r, hr, rfl⟩` from `hy`. Conclude with `letter_word_mem hL hd hlow r hr a b`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hy`.
+-/
 theorem letter_stable (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a Φ = (μ a : ℂ) • Φ)
     (hlow : ∀ a b, b < a → L a b Φ = 0) (a b : Fin n) :
     ∀ x ∈ raiseSpan L Φ, L a b x ∈ raiseSpan L Φ := by
@@ -101,6 +146,9 @@ theorem letter_stable (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a �
   | add y z _ _ hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
   | smul c y _ hy => rw [map_smul]; exact Submodule.smul_mem _ c hy
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact phi_mem`. Consider the case `cons p w ih => exact letter_stable hL hd hlow p.1 p.2 _ ih`.
+-/
 theorem any_word_mem (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a Φ = (μ a : ℂ) • Φ)
     (hlow : ∀ a b, b < a → L a b Φ = 0) (w : List (Fin n × Fin n)) :
     lword L w Φ ∈ raiseSpan L Φ := by
@@ -108,6 +156,19 @@ theorem any_word_mem (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a Φ
   | nil => exact phi_mem
   | cons p w ih => exact letter_stable hL hd hlow p.1 p.2 _ ih
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `nil`. Introduce `_ c`. Establish `h1 : lword L ([] : List (Fin n × Fin n)) Φ = Φ` using `rfl`.
+
+Rewrite using `[h1, hd c]`. Simplify using `[wt]`. Consider the case `cons p r ih`. Introduce `hr c`. Establish `hr' : IsRaising r` using `fun q hq => hr q (List.mem_cons_of_mem _ hq)`.
+
+Establish `hp : p.1 < p.2` using `hr p List.mem_cons_self`. Rewrite using `[lword_cons, gl_apply hL, ih hr' c, map_smul, wt_cons]`. Simplify using `only [Pi.add_apply, root_apply]`. Distinguish the cases in `h1 : c = p.1`. Establish `h2 : p.2 ≠ c` using `by rw [h1]; exact hp.ne'`.
+
+Establish `h2' : c ≠ p.2` using `h2.symm`. Simplify using `only [if_pos h1, if_neg h2, if_neg h2']`. Substitute `h1` using the available equality. Use `push_cast`. Use `module`.
+
+Distinguish the cases in `h2 : p.2 = c`. Establish `h2' : c = p.2` using `h2.symm`. Simplify using `only [if_neg h1, if_pos h2, if_pos h2']`. Substitute `h2` using the available equality. Use `push_cast`.
+
+Use `module`. Establish `h2' : c ≠ p.2` using `fun h => h2 h.symm`. Simplify using `only [if_neg h1, if_neg h2, if_neg h2']`. Use `push_cast`. Use `module`.
+-/
 theorem diag_word (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a Φ = (μ a : ℂ) • Φ) :
     ∀ r : List (Fin n × Fin n), IsRaising r → ∀ c,
       L c c (lword L r Φ) = (((μ + wt r) c : ℝ) : ℂ) • lword L r Φ := by
@@ -142,6 +203,21 @@ theorem diag_word (hL : IsGlRep L) {μ : Fin n → ℝ} (hd : ∀ a, L a a Φ = 
         push_cast
         module
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `nil => intro _`. Simplify `inCone_refl μ` using `[wt]`. Consider the case `cons p r ih`.
+
+Introduce `hr`. Establish `hr' : IsRaising r` using `fun q hq => hr q (List.mem_cons_of_mem _ hq)`. Establish `hp : p.1 < p.2` using `hr p List.mem_cons_self`. Take `⟨c, hc, he⟩` from `ih hr'`. Use `⟨fun a b => c a b + (if a = p.1 then (if b = p.2 then 1 else 0) else 0), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b hab`. Establish `hab' : c a b + (if a = p.1 then (if b = p.2 then 1 else 0) else 0) ≠ 0` using `hab`. Distinguish the cases in `h0 : c a b = 0`. Distinguish the cases in `h1 : a = p.1`. Distinguish the cases in `h2 : b = p.2`.
+
+Rewrite using `[h1, h2]`. Conclude with `hp`. Rewrite `hab'` using `[h0, if_pos h1, if_neg h2]`. Conclude with `absurd rfl hab'`. Rewrite `hab'` using `[h0, if_neg h1]`.
+
+Conclude with `absurd rfl hab'`. Conclude with `hc a b h0`. Establish `hs : ∑ a, ∑ b, (((if a = p.1 then (if b = p.2 then 1 else 0) else 0 : ℕ) : ℝ)) • Formalism.REAL.root a b = Formalism.REAL.root p.1 p.2`. Rewrite using `[Finset.sum_eq_single p.1, Finset.sum_eq_single p.2]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`.
+
+Simplify using the standard rewrite rules. Establish `he' : wt r = ∑ a, ∑ b, (c a b : ℝ) • Formalism.REAL.root a b` using `add_left_cancel he`. Simplify using `only [Nat.cast_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[hs, ← he', wt_cons, add_comm (wt r)]`.
+-/
 theorem inCone_add_wt (μ : Fin n → ℝ) :
     ∀ r : List (Fin n × Fin n), IsRaising r → InCone μ (μ + wt r) := by
   intro r
@@ -176,6 +252,15 @@ theorem inCone_add_wt (μ : Fin n → ℝ) :
       simp only [Nat.cast_add, add_smul, Finset.sum_add_distrib]
       rw [hs, ← he', wt_cons, add_comm (wt r)]
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `nil => intro _`. Simplify using `[wt]`. Consider the case `cons p r ih`.
+
+Introduce `hr`. Establish `hr' : IsRaising r` using `fun q hq => hr q (List.mem_cons_of_mem _ hq)`. Establish `hp : p.1 < p.2` using `hr p List.mem_cons_self`. Establish `h1 : ∑ i : Fin n, (i : ℝ) * Formalism.REAL.root p.1 p.2 i = (p.1 : ℝ) - (p.2 : ℝ)`. Simplify using `[root_apply, mul_sub, Finset.sum_sub_distrib]`.
+
+Establish `h2 : ((p.1 : ℕ) : ℝ) + 1 ≤ ((p.2 : ℕ) : ℝ)`. Conclude with `hp` after adjusting the coercions. Establish `h3` using `ih hr'`. Rewrite using `[wt_cons]`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib, List.length_cons, h1]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pair_wt : ∀ r : List (Fin n × Fin n), IsRaising r →
     ∑ i : Fin n, (i : ℝ) * wt r i ≤ -(r.length : ℝ) := by
   intro r
@@ -195,6 +280,11 @@ theorem pair_wt : ∀ r : List (Fin n × Fin n), IsRaising r →
     push_cast
     linarith
 
+/- English proof (translation)
+Establish `h1` using `pair_wt r hr`. Rewrite `h1` using `[h]`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero] at h1`. Establish `h2 : (r.length : ℝ) ≤ 0` using `by linarith`. Establish `h3 : r.length = 0` using `by exact_mod_cast Nat.le_zero.mp (by exact_mod_cast h2)`.
+
+Conclude with `List.length_eq_zero_iff.mp h3`.
+-/
 theorem eq_nil_of_wt_eq_zero {r : List (Fin n × Fin n)} (hr : IsRaising r) (h : wt r = 0) : r = [] := by
   have h1 := pair_wt r hr
   rw [h] at h1
@@ -203,9 +293,17 @@ theorem eq_nil_of_wt_eq_zero {r : List (Fin n × Fin n)} (hr : IsRaising r) (h :
   have h3 : r.length = 0 := by exact_mod_cast Nat.le_zero.mp (by exact_mod_cast h2)
   exact List.length_eq_zero_iff.mp h3
 
+/- English proof (translation)
+The claim follows from `(Module.End.mem_maxGenEigenspace f c v).2 ⟨1, by simp [h]⟩`.
+-/
 theorem eig_mem (f : Module.End ℂ M) (c : ℂ) (v : M) (h : f v = c • v) : v ∈ f.maxGenEigenspace c :=
   (Module.End.mem_maxGenEigenspace f c v).2 ⟨1, by simp [h]⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `Commute.refl _`. Establish `h1` using `hL i i j j`. Establish `h' : j ≠ i` using `fun e => h e.symm`.
+
+Simplify using `only [if_neg h, if_neg h', sub_self] at h1`. Conclude with `sub_eq_zero.mp h1`.
+-/
 theorem diag_commute (hL : IsGlRep L) (i j : Fin n) : Commute (L i i) (L j j) := by
   by_cases h : i = j
   · subst h; exact Commute.refl _
@@ -214,6 +312,23 @@ theorem diag_commute (hL : IsGlRep L) (i j : Fin n) : Commute (L i i) (L j j) :=
     simp only [if_neg h, if_neg h', sub_self] at h1
     exact sub_eq_zero.mp h1
 
+/- English proof (translation)
+Use `set S₁ : Set M := {y | ∃ r, IsRaising r ∧ μ + wt r = η ∧ y = lword L r Φ} with hS₁`. Use `set S₂ : Set M := {y | ∃ r, IsRaising r ∧ μ + wt r ≠ η ∧ y = lword L r Φ} with hS₂`. Set `Wt : (Fin n → ℂ) → Submodule ℂ M` to `fun χ => ⨅ i, (L i i).maxGenEigenspace (χ i)`. Establish `hind : iSupIndep Wt` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun i => L i i) (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (diag_commute hL j i) φ)`. Set `χη : Fin n → ℂ` to `fun c => (η c : ℂ)`.
+
+Establish `hmemW : ∀ (χ : Fin n → ℂ) (v : M), (∀ c, L c c v = χ c • v) → v ∈ Wt χ`. Introduce `χ v hv`. Conclude with `Submodule.mem_iInf _ |>.2 fun i => eig_mem _ _ _ (hv i)`. Establish `hsup : raiseSpan L Φ ≤ Submodule.span ℂ S₁ ⊔ Submodule.span ℂ S₂`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨r, hr, rfl⟩`. Distinguish the cases in `h : μ + wt r = η`. Conclude with `(le_sup_left : Submodule.span ℂ S₁ ≤ _) (Submodule.subset_span ⟨r, hr, h, rfl⟩)`. Conclude with `(le_sup_right : Submodule.span ℂ S₂ ≤ _) (Submodule.subset_span ⟨r, hr, h, rfl⟩)`. Establish `h1 : Submodule.span ℂ S₁ ≤ Wt χη`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨r, hr, he, rfl⟩`. Use `hmemW _ _ fun c => ?_` and prove the remaining obligations. Rewrite using `[diag_word hL hd r hr c, he]`. Establish `h2 : Submodule.span ℂ S₂ ≤ ⨆ (χ) (_ : χ ≠ χη), Wt χ`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨r, hr, he, rfl⟩`. Establish `hne : (fun c => (((μ + wt r) c : ℝ) : ℂ)) ≠ χη`. Introduce `h`. Apply `he` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `c`. Conclude with `Complex.ofReal_injective (congrFun h c)`. Establish `hm` using `hmemW _ _ (diag_word hL hd r hr)`. Conclude with `(le_iSup₂ (f := fun (χ : Fin n → ℂ) (_ : χ ≠ χη) => Wt χ) _ hne) hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hsup hx)`.
+
+Establish `hxW : a + b ∈ Wt χη` using `hmemW _ _ hη`. Establish `hbW : b ∈ Wt χη`. Use `Submodule.sub_mem _ hxW (h1 ha)` as an intermediate fact. Simplify using `using this`. Establish `hb0 : b = 0` using `Submodule.disjoint_def.1 (hind χη) b hbW (h2 hb)`.
+
+Rewrite using `[hb0, add_zero]`. Conclude with `ha`.
+-/
 theorem mem_span_of_weight (hL : IsGlRep L) {μ η : Fin n → ℝ} (hd : ∀ a, L a a Φ = (μ a : ℂ) • Φ)
     {x : M} (hx : x ∈ raiseSpan L Φ) (hη : ∀ c, L c c x = (η c : ℂ) • x) :
     x ∈ Submodule.span ℂ {y | ∃ r, IsRaising r ∧ μ + wt r = η ∧ y = lword L r Φ} := by
@@ -258,6 +373,19 @@ theorem mem_span_of_weight (hL : IsGlRep L) {μ η : Fin n → ℝ} (hd : ∀ a,
   rw [hb0, add_zero]
   exact ha
 
+/- English proof (translation)
+Introduce `n M _ _ L μ η Φ x hL hd hlow hx hη h0`. Establish `hle : Submodule.span ℂ (Set.range fun w : List (Fin n × Fin n) => lword L w Φ) ≤ raiseSpan L Φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨w, rfl⟩`. Conclude with `any_word_mem hL hd hlow w`.
+
+Establish `hx1` using `mem_span_of_weight hL hd (hle hx) hη`. Prove the components needed by the constructor for the conclusion. Establish `hne : ({y | ∃ r, IsRaising r ∧ μ + wt r = η ∧ y = lword L r Φ} : Set M).Nonempty`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Set.not_nonempty_iff_eq_empty]`.
+
+Rewrite `hx1` using `[hemp, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `h0 hx1`. Take `⟨y, r, hr, he, -⟩` from `hne`. Rewrite using `[← he]`. Conclude with `inCone_add_wt μ r hr`.
+
+Introduce `hμ`. Establish `hsub : Submodule.span ℂ {y | ∃ r, IsRaising r ∧ μ + wt r = η ∧ y = lword L r Φ} ≤ Submodule.span ℂ {Φ}`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨r, hr, he, rfl⟩`. Establish `hw : wt r = 0`.
+
+Rewrite `he` using `[hμ]`. Conclude with `add_eq_left.mp he`. Establish `hnil` using `eq_nil_of_wt_eq_zero hr hw`. Substitute `hnil` using the available equality. Conclude with `Submodule.subset_span rfl`.
+
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hsub hx1)`. Conclude with `⟨c, hc.symm⟩`.
+-/
 theorem lowAlg : LowAlg := by
   intro n M _ _ L μ η Φ x hL hd hlow hx hη h0
   have hle : Submodule.span ℂ (Set.range fun w : List (Fin n × Fin n) => lword L w Φ) ≤ raiseSpan L Φ := by

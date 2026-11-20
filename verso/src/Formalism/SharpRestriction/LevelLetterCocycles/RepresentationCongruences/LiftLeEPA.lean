@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.MainNotions.N.FrobeniusPowerSeries
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.ePA Formalism.MainNotions.LiftingTheory.eUA Formalism.MainNotions.LiftingTheory.eWA Formalism.MainNotions.LiftingTheory.aA Formalism.MainNotions.LiftingTheory.JSet`. Conclude with `lift_le l hl h η H M h1 hη hH hM jumps hj`.
+-/
 theorem lift_le_ePA (l : ℕ) [Fact l.Prime] (hl : 11 ≤ l) (h η H M : ℕ) (h1 : 1 ≤ h) (hη : 20 * η ≤ h)
     (hH : H ≤ h + η) (hM : M ≤ h) (jumps : Finset ℤ)
     (hj : ∀ u ∈ jumps, -(M : ℤ) ≤ u ∧ u ≤ h) :

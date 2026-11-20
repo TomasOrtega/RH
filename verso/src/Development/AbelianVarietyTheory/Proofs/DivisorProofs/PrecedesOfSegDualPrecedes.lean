@@ -11,6 +11,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace GlobalTheory.LocLanglands
 
+/- English proof (translation)
+Introduce `k _ _ _ _ D hD hDD hnu _ _ Δ Γ Δ' Γ' ⟨l1, d1⟩ ⟨l2, d2⟩ H`. Take `⟨j, h0, h1, h2, e⟩` from `Segment.precedes_iff.1 H`. Rewrite `e` using `[(hD _ _).1 d1, (hD _ _).1 d2]`. Establish `e'` using `congrArg D e`. Rewrite `e'` using `[hnu (D _), hDD, hDD, IrrGL.nu_nu]`.
+
+Rewrite `h2` using `[l1]`. Rewrite `h1`, `h2` using `[l2]`. Take `⟨i, hi⟩ : ∃ i : ℕ, j + Δ.len = Γ.len + i` from `⟨j + Δ.len - Γ.len, by omega⟩`. Use `Segment.precedes_iff.2 ⟨i, by omega, by omega, by omega, ?_⟩` and prove the remaining obligations. Establish `hc : (j : ℂ) + Δ.len = Γ.len + i` using `by exact_mod_cast hi`.
+
+Establish `e2` using `congrArg (fun x => IrrGL.nu x (-((Γ.len : ℂ) - 1 + -(j : ℂ)))) e'`. Simplify using `only [IrrGL.nu_nu, add_neg_cancel, IrrGL.nu_zero] at e2`. Rewrite using `[← e2]`. Use `congr 1`. Take the linear combination `hc`.
+-/
 theorem precedes_of_segDual_precedes :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     ∀ D : IrrGL k → IrrGL k, (∀ x y, DualCl x y ↔ y = D x) → (∀ x, D (D x) = x) →

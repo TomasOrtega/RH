@@ -15,12 +15,18 @@ def Nsp (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ν
 
 variable {k}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, Ψ', hΨ', rfl⟩`. Conclude with `Submodule.sub_mem _ (GlobalTheory.SplitFlip.omB_mem_SB ν ν g 1 hΨ') hΨ'`.
+-/
 theorem Nsp_le_SB (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ν : kˣ →* ℂˣ) :
     Nsp k A D ν ≤ SB (Matrix A D k) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨g, Ψ', hΨ', rfl⟩
   exact Submodule.sub_mem _ (GlobalTheory.SplitFlip.omB_mem_SB ν ν g 1 hΨ') hΨ'
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨g, Ψ, hΨ, rfl⟩`.
+-/
 theorem sub_mem_Nsp {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ν : kˣ →* ℂˣ)
     (g : GL A k) {Ψ : Matrix A D k → ℂ} (hΨ : Ψ ∈ SB (Matrix A D k)) :
     GlobalTheory.SplitFlip.omB ν ν g 1 Ψ - Ψ ∈ Nsp k A D ν :=

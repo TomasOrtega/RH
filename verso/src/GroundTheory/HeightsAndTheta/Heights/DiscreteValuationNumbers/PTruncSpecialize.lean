@@ -19,12 +19,18 @@ def projCoordRing {B : Type*} [CommRing B] [Algebra Ω B] (y : (Σ k, ι k) → 
   | ⟨none, l⟩ => ∑ i, u i * algebraMap Ω B (φ l (w i))
   | ⟨some k, i⟩ => algebraMap Ω B (y ⟨k, i⟩)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases p with ⟨_ | k, l⟩ <;> simp [projCoordRing, map_sum]`.
+-/
 theorem projCoordRing_map {B B' : Type*} [CommRing B] [Algebra Ω B] [CommRing B'] [Algebra Ω B']
     (g : B →ₐ[Ω] B') (y : (Σ k, ι k) → Ω) (w : Module.Basis (Fin N) Ω E)
     (φ : Fin M → Module.Dual Ω E) (u : Fin N → B) (p : Σ o, bundleIdx ι M o) :
     g (projCoordRing y w φ u p) = projCoordRing y w φ (g ∘ u) p := by
   rcases p with ⟨_ | k, l⟩ <;> simp [projCoordRing, map_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Apply the tactic sequence `rcases p with ⟨_ | k, l⟩ <;> rfl`.
+-/
 theorem projCoord_eq_projCoordRing {Φ : Type*} [Field Φ] [Algebra Ω Φ] (y : (Σ k, ι k) → Ω)
     (w : Module.Basis (Fin N) Ω E) (φ : Fin M → Module.Dual Ω E) (t : Fin N → Φ) :
     projCoord y w φ t = projCoordRing y w φ t := by
@@ -33,6 +39,9 @@ theorem projCoord_eq_projCoordRing {Φ : Type*} [Field Φ] [Algebra Ω Φ] (y : 
 
 end Ring
 
+/- English proof (translation)
+Rewrite using `[eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext fun a => by simp`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+-/
 theorem map_coneMap {σ τ R B B' : Type*} [CommRing R] [CommRing B] [CommRing B'] (f : R →+* B)
     (g : B →+* B') (c : σ → B) (q : σ → τ) (x : MvPolynomial σ R) :
     map g (eval₂ (C.comp f) (fun p => C (c p) * X (q p)) x) =
@@ -43,6 +52,31 @@ theorem map_coneMap {σ τ R B B' : Type*} [CommRing R] [CommRing B] [CommRing B
   · funext p
     simp
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K ι y N E _ _ w M φ Φ _ _ t ht i`. Set `ev : MvPolynomial (Fin N) Ω →ₐ[Ω] Φ` to `aeval t`. Establish `hev : Function.Injective ev` using `ht`. Set `sub : MvPolynomial (Fin N) Ω →ₐ[Ω] MvPolynomial (Fin N) Ω` to `aeval fun k => if k = i then 0 else X k`. Establish `hevT : ∀ j : ℕ, ev ∘ truncCoord (X : Fin N → MvPolynomial (Fin N) Ω) j = truncCoord t j`.
+
+Introduce `j`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : (k : ℕ) < j <;> simp [truncCoord, hk, ev]`. Establish `hsubT : sub ∘ truncCoord (X : Fin N → MvPolynomial (Fin N) Ω) ((i : ℕ) + 1) = truncCoord X i`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Function.comp_apply, truncCoord]`. Break down `lt_trichotomy (k : ℕ) i with h | h | h` into its components or cases. Establish `hki : k ≠ i` using `fun e => by subst e; exact lt_irrefl _ h`. Simplify using `[h, Nat.lt_succ_of_lt h, sub, hki]`. Establish `hki : k = i` using `Fin.ext h`.
+
+Substitute `hki` using the available equality. Simplify using `[sub]`. Establish `h1 : ¬ (k : ℕ) < i + 1` using `by omega`. Establish `h2 : ¬ (k : ℕ) < i` using `by omega`. Simplify using `[h1, h2]`.
+
+Set `cA : ℕ → (Σ o, bundleIdx ι M o) → MvPolynomial (Fin N) Ω` to `fun j => projCoordRing y w φ (truncCoord X j)`. Establish `hcoord : ∀ j : ℕ, projCoord y w φ (truncCoord t j) = fun p => ev (cA j p)`. Introduce `j`. Use function extensionality and compare the values at `p`. Rewrite using `[projCoord_eq_projCoordRing, ← hevT, projCoordRing_map]`.
+
+Establish `hsubc : ∀ p, sub (cA ((i : ℕ) + 1) p) = cA i p`. Introduce `p`. Simplify using `only [cA]`. Rewrite using `[projCoordRing_map, hsubT]`. Set `algA : F →+* MvPolynomial (Fin N) Ω` to `(algebraMap Ω (MvPolynomial (Fin N) Ω)).comp (algebraMap F Ω)`.
+
+Establish `hevA : (ev : MvPolynomial (Fin N) Ω →+* Φ).comp algA = (algebraMap Ω Φ).comp (algebraMap F Ω)` using `RingHom.ext fun a => by simp [algA]`. Establish `hsubA : (sub : MvPolynomial (Fin N) Ω →+* MvPolynomial (Fin N) Ω).comp algA = algA` using `RingHom.ext fun a => by simp [algA]`. Use `⟨fun x hx => ?_, fun x z hxz => ?_⟩` and prove the remaining obligations. Establish `key : ∀ j : ℕ, eval₂Hom (C.comp ((algebraMap Ω Φ).comp (algebraMap F Ω))) (fun p => C (projCoord y w φ (truncCoord t j) p) * X p.1) x = map (ev : MvPolynomial (Fin N) Ω →+* Φ) (eval₂ (C.comp algA) (fun p => C (cA j p) * X p.1) x)`. Introduce `j`.
+
+Rewrite using `[map_coneMap, hevA, hcoord]`. Both sides reduce to the same expression. Establish `ksub : map (sub : MvPolynomial (Fin N) Ω →+* MvPolynomial (Fin N) Ω) (eval₂ (C.comp algA) (fun p => C (cA ((i : ℕ) + 1) p) * X p.1) x) = eval₂ (C.comp algA) (fun p => C (cA i p) * X p.1) x`. Rewrite using `[map_coneMap, hsubA]`. Simplify using `only [AlgHom.coe_toRingHom, hsubc]`.
+
+Simplify using `only [projIdeal, RingHom.mem_ker] at hx ⊢`. Rewrite `hx`, the goal using `[key]`. Establish `h0 : eval₂ (C.comp algA) (fun p => C (cA ((i : ℕ) + 1) p) * X p.1) x = 0` using `map_injective _ hev (hx.trans (map_zero _).symm)`. Rewrite using `[← ksub, h0, map_zero, map_zero]`. Establish `val : ∀ (j : ℕ) (v : MRing (bundleIdx ι M) F), eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord t j)) v = ev (eval₂ algA (cA j) v)`.
+
+Introduce `j v`. Rewrite using `[← AlgHom.coe_toRingHom, eval₂_comp_left, hevA, hcoord]`. Both sides reduce to the same expression. Establish `vsub : ∀ v : MRing (bundleIdx ι M) F, sub (eval₂ algA (cA ((i : ℕ) + 1)) v) = eval₂ algA (cA i) v`. Introduce `v`.
+
+Rewrite using `[← AlgHom.coe_toRingHom, eval₂_comp_left, hsubA]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Conclude with `hsubc p`. Rewrite `hxz` using `[val, val]`.
+
+Establish `hx' : eval₂ algA (cA ((i : ℕ) + 1)) x = X i * eval₂ algA (cA ((i : ℕ) + 1)) z` using `hev (by rw [hxz, map_mul]; simp [ev])`. Rewrite using `[val, ← vsub, hx', map_mul]`. Simplify using `[sub]`.
+-/
 theorem TruncSpecialize.proof : TruncSpecialize.Statement := by
   intro F _ Ω _ _ K ι y N E _ _ w M φ Φ _ _ t ht i
   let ev : MvPolynomial (Fin N) Ω →ₐ[Ω] Φ := aeval t

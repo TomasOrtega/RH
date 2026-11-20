@@ -10,9 +10,15 @@ variable (L : Type) [Field L] [NumberField L]
 def compAt (v : HeightOneSpectrum (𝓞 L)) (a : (AdeleRing (𝓞 L) L)ˣ) : v.adicCompletion L :=
   (a : AdeleRing (𝓞 L) L).2 v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compAt_mul (v : HeightOneSpectrum (𝓞 L)) (a b : (AdeleRing (𝓞 L) L)ˣ) :
     compAt L v (a * b) = compAt L v a * compAt L v b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compAt_one (v : HeightOneSpectrum (𝓞 L)) : compAt L v 1 = 1 := rfl
 
 def levSub (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ) : Subgroup (AdeleRing (𝓞 L) L)ˣ where
@@ -46,6 +52,11 @@ open IsDedekindDomain NumberField
 
 namespace GlobalTheory.LevelChars
 
+/- English proof (translation)
+Use `haveI : Finite (G ⧸ H) := Subgroup.finite_quotient_of_finiteIndex`. Use `haveI : NeZero (Nat.card (G ⧸ H)) := ⟨Nat.card_pos.ne'⟩`. Set `f : {ψ : G →* ℂˣ | H ≤ ψ.ker} → (G ⧸ H → rootsOfUnity (Nat.card (G ⧸ H)) ℂ)` to `fun ψ q => ⟨QuotientGroup.lift H ψ.1 ψ.2 q, by`. Rewrite using `[mem_rootsOfUnity, ← map_pow, pow_card_eq_one', map_one]⟩`. Establish `hf : Function.Injective f`.
+
+Introduce and unpack `⟨ψ, hψ⟩ ⟨ψ', hψ'⟩ h`. Use `Subtype.ext (MonoidHom.ext fun g => ?_)` and prove the remaining obligations. Use `congrArg (fun F => ((F (QuotientGroup.mk g) : rootsOfUnity _ ℂ) : ℂˣ)) h` as an intermediate fact. Simplify `this` using `[f]`. Conclude with `Set.finite_coe_iff.1 (Finite.of_injective f hf)`.
+-/
 theorem finite_chars {G : Type} [CommGroup G] (H : Subgroup G) [H.FiniteIndex] :
     {ψ : G →* ℂˣ | H ≤ ψ.ker}.Finite := by
   classical
@@ -61,6 +72,13 @@ theorem finite_chars {G : Type} [CommGroup G] (H : Subgroup G) [H.FiniteIndex] :
     simpa [f] using this
   exact Set.finite_coe_iff.1 (Finite.of_injective f hf)
 
+/- English proof (translation)
+Introduce `L _ _ I _ φ n S N hS`. Break down `Set.eq_empty_or_nonempty {χ : Formalism.L2.Host.HChar L | χ.HasInf φ n ∧ (∀ v, v ∉ S → χ.UnrAt v) ∧ ∀ v ∈ S, χ.LevelLe v N} with h | ⟨χ0, hχ0⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`. Use `haveI := hC L S N hS`.
+
+Use `((finite_chars ((Units.map (algebraMap L (AdeleRing (𝓞 L) L)).toMonoidHom).range ⊔ levSub L S N)).preimage (f := fun χ : Formalism.L2.Host.HChar L => (χ * χ0⁻¹).1) (fun χ _ χ' _ h => mul_right_cancel (Subtype.ext h))).subset ?_` and prove the remaining obligations. Introduce `χ hχ`. Use `show _ ≤ MonoidHom.ker _`. Use `sup_le ?_ fun a ha => MonoidHom.mem_ker.2 (hA L S N (χ * χ0⁻¹) (fun k => ?_) (fun v hv x hx => ?_) (fun v hv x hx hle => ?_) a ha)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `MonoidHom.mem_ker.2 ((χ * χ0⁻¹).2.2 k)`. Establish `e : χ.inf k = χ0.inf k` using `Units.ext ((hχ.1 k).trans (hχ0.1 k).symm)`. Rewrite using `[Formalism.L2.Host.HChar.inf_mul, Formalism.L2.Host.HChar.inf_inv, e, mul_inv_cancel]`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, hχ.2.1 v hv x hx, hχ0.2.1 v hv x hx, inv_one, one_mul]`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, hχ.2.2 v hv x hx hle, hχ0.2.2 v hv x hx hle, inv_one, one_mul]`.
+-/
 theorem heckeFin_of
     (hA : ∀ (L : Type) [Field L] [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L))) (N : ℕ) (ψ : Formalism.L2.Host.HChar L),
       (∀ k : Lˣ, ψ.inf k = 1) → (∀ v, v ∉ S → ψ.UnrAt v) → (∀ v ∈ S, ψ.LevelLe v N) → ∀ a ∈ levSub L S N, ψ.1 a = 1)

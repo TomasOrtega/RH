@@ -11,6 +11,13 @@ open scoped TensorProduct ContDiff Topology
 
 namespace UpperTheory.V.Lit.Geo.Cs
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_sz k τ p`. Take `⟨t, ht⟩` from `exists_sz k Θ p`. Take `⟨C, hC, H⟩` from `compSz V W ℂ k c`. Set `L : ℂ →L[ℝ] F →L[ℝ] F` to `ContinuousLinearMap.lsmul ℝ ℂ`. Use `⟨2 ^ k * (‖L‖ * C) * t, by have := ht.nonneg; positivity, fun u b hu hb => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `H u τ p b hτ hu (fun i _ hi => hc i hi) hb`. Establish `s1 : ContDiffAt ℝ ∞ (fun y => u (τ y)) p` using `hu.comp p hτ`. Establish `h2` using `(appSz V ℂ (F →L[ℝ] F) k p).2.1 L _ _ s1 h1`. Establish `s2 : ContDiffAt ℝ ∞ (fun y => L (u (τ y))) p` using `L.contDiff.contDiffAt.comp p s1`. Establish `h3` using `(appSz V F F k p).1 _ Θ _ _ s2 hΘ h2 ht`.
+
+Conclude with `h3.mono (le_of_eq (by ring))`.
+-/
 private theorem term_sz {V W F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup W] [NormedSpace ℝ W]
     [NormedAddCommGroup F] [NormedSpace ℂ F] (k : ℕ) (τ : V → W) (Θ : V → F) (p : V)
     (hτ : ContDiffAt ℝ ∞ τ p) (hΘ : ContDiffAt ℝ ∞ Θ p) :
@@ -28,6 +35,13 @@ private theorem term_sz {V W F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
   have h3 := (appSz V F F k p).1 _ Θ _ _ s2 hΘ h2 ht
   exact h3.mono (le_of_eq (by ring))
 
+/- English proof (translation)
+Take `⟨ι, _, X, j, Θ, τ, h1, hτ, hΘ, H⟩` from `corrForm E a Ξ q v`. Use `choose C hC HC using fun i => term_sz k τ (Θ i) (hOne E a) hτ (hΘ i)`. Use `choose D hD HD using fun i => chartSz E a k ρ hρ (Bor.cmp (j i) (α (X i))) (hb (X i) (j i))`. Use `⟨∑ i, C i * D i, Finset.sum_nonneg fun i _ => mul_nonneg (hC i) (hD i), fun g x => ?_⟩` and prove the remaining obligations. Establish `e` using `H U α w hw g x`.
+
+Establish `su : ∀ i, ContDiffAt ℝ ∞ (chart (Bor.cmp (j i) (α (X i))).1 (pt g x)) (τ (hOne E a))` using `fun i => by`. Rewrite using `[h1]`. Conclude with `contDiffAt_chart (Bor.cmp (j i) (α (X i))).2 _ isUnit_one`. Establish `st : ∀ i, ContDiffAt ℝ ∞ (fun p => chart (Bor.cmp (j i) (α (X i))).1 (pt g x) (τ p) • Θ i p) (hOne E a)` using `fun i => ((su i).comp _ hτ).smul (hΘ i)`. Use `⟨(ContDiffAt.sum fun i _ => st i).congr_of_eventuallyEq e, ?_⟩` and prove the remaining obligations.
+
+Use `(appSz (HV E a) ℝ (Fin Ξ.d → ℂ) k (hOne E a)).2.2 ι Finset.univ _ _ (fun i _ => st i) (fun i _ => HC i _ (D i * ρ (pt g x)) (su i) (by rw [h1]; exact HD i _))` as an intermediate fact. Use `(this.congr e.symm).mono (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 private theorem val_sz (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a)
     (q : ℕ) (α : Co Ξ q) (w : Fm U Ξ q) (hw : Corr U Ξ α w) (ρ : GA E a → ℝ) (hρ : ∀ g, 0 ≤ ρ g)
@@ -53,6 +67,11 @@ private theorem val_sz (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
 
 end UpperTheory.V.Lit.Geo.Cs
 
+/- English proof (translation)
+Introduce `E _ _ _ a U Ξ q α w hw ρ hρ hb k`. Take `⟨T, C, hC, H⟩` from `Cs.altEv (HV E a) (Fin Ξ.d → ℂ) q k`. Use `choose M hM HM using Cs.val_sz E a U Ξ q α w hw ρ hρ hb k`. Establish `h0 : 0 ≤ ∑ v ∈ T, M v` using `Finset.sum_nonneg fun v _ => hM v`. Use `⟨C * ∑ v ∈ T, M v, mul_nonneg hC h0, fun g x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Conclude with `H _ _ _ (mul_nonneg h0 (hρ _)) (fun v _ => (HM v g x).1) fun v hv => (HM v g x).2.mono (mul_le_mul_of_nonneg_right (Finset.single_le_sum (fun v _ => hM v) hv) (hρ _))`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.corrSz :
     UpperTheory.V.Lit.Geo.Cs.CorrSz := by
   intro E _ _ _ a U Ξ q α w hw ρ hρ hb k

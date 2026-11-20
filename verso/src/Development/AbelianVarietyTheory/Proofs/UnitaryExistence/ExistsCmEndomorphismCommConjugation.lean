@@ -14,12 +14,18 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CurveEndo
 
+/- English proof (translation)
+Rewrite using `[spMap_comp_spMap, spMap_comp_spMap]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem scale_dual (f : ℂ →+* ℂ) (c : ℂ) :
     spMap (Chart.dualMapR f) ≫ spMap (epsScaleR c) = spMap (epsScaleR (f c)) ≫ spMap (Chart.dualMapR f) := by
   rw [spMap_comp_spMap, spMap_comp_spMap]
   congr 1
   ext a <;> simp [Chart.dualMapR, epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[spMap_comp_spMap]`. Use `Eq.trans ?_ (Spec.map_id (CommRingCat.of (DualNumber ℂ)))` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dual_symm_dual (τ : ℂ ≃+* ℂ) :
     spMap (Chart.dualMapR (τ.symm : ℂ →+* ℂ)) ≫ spMap (Chart.dualMapR (τ : ℂ →+* ℂ)) = 𝟙 _ := by
   rw [spMap_comp_spMap]
@@ -27,6 +33,9 @@ theorem dual_symm_dual (τ : ℂ ≃+* ℂ) :
   congr 1
   ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Establish `hx` using `(LieMultiple.isLieComb_one_iff_comp α v _).2 rfl`. Establish `hxt : IsTangent (Chart.spMap (Chart.scaleD α) ≫ v)` using `(Chart.isTan_iff _).1 (Chart.isTan_scale α ((Chart.isTan_iff _).2 hv))`. Rewrite using `[(he (α • w)).unique ⟨hv', hw'⟩ ⟨hxt, CMNormIdentity.isDiff_of_isLieComb u hw α hx⟩]`. Conclude with `(LieMultiple.isLieComb_one_iff α v _).1 hx`.
+-/
 theorem left_eq_scale {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
     (he : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) {w : Fin g → ℂ} {v v' : epsR ℂ ⟶ A} (α : ℂ) (hv : IsTangent v)
     (hw : u.IsDiff w v) (hv' : IsTangent v') (hw' : u.IsDiff (α • w) v') :
@@ -37,6 +46,23 @@ theorem left_eq_scale {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (
   rw [(he (α • w)).unique ⟨hv', hw'⟩ ⟨hxt, CMNormIdentity.isDiff_of_isLieComb u hw α hx⟩]
   exact (LieMultiple.isLieComb_one_iff α v _).1 hx
 
+/- English proof (translation)
+Take `⟨W', hW', e⟩` from `HomDescent.exists_isMonHom_pull h h W`. Take `⟨v, ⟨hv, dv⟩, -⟩` from `he (fun _ => 1)`. Take `⟨v', hv', -⟩` from `existsUnique_isVecOver h.1 v`. Establish `tv'` using `hv'.isTangent h hv`. Unfold `IsVecOver at hv'`.
+
+Take `⟨w', dw', -⟩` from `hd v' tv'`. Establish `h1 : (v ≫ W).left = spMap (epsScaleR α) ≫ v.left` using `left_eq_scale u he α hv dv (HomLinear.isTangent_comp W hv) (HomLinear.isDiff_comp u u W (α • LinearMap.id) hW hv dv)`. Establish `h2 : (v' ≫ W').left = spMap (epsScaleR α) ≫ v'.left`. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, e, ← Category.assoc, hv', Category.assoc, ← Over.comp_left, h1, ← Category.assoc, scale_dual, Category.assoc, Category.assoc, hv']`.
+
+Simplify using `[hτ]`. Rewrite using `[Over.w, Category.assoc, Over.w]`. Use `Eq.trans ?_ (spMap_comp_spMap _ _).symm` and prove the remaining obligations. Use `show spMap _ = spMap _`. Use `congr 1`.
+
+Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hne : w' ≠ 0`. Introduce and unpack `rfl`. Establish `h3` using `left_eq_scale u he 0 tv' dw' tv' (by rwa [zero_smul])`. Establish `h4 : v.left = spMap (epsScaleR 0) ≫ v.left`.
+
+Establish `h5 : spMap (Chart.dualMapR (τ : ℂ →+* ℂ)) ≫ v.left = spMap (Chart.dualMapR (τ : ℂ →+* ℂ)) ≫ spMap (epsScaleR 0) ≫ v.left`. Rewrite using `[← Category.assoc, scale_dual, map_zero, Category.assoc, ← hv', ← Category.assoc, ← h3]`. Establish `h6` using `congrArg (spMap (Chart.dualMapR (τ.symm : ℂ →+* ℂ)) ≫ ·) h5`. Simplify `h6` using `only [← Category.assoc, dual_symm_dual, Category.id_comp]`. Establish `h7` using `(hd v hv).unique dv (CMNormIdentity.isDiff_of_isLieComb u dv 0 ((LieMultiple.isLieComb_one_iff 0 v v).2 h4))`.
+
+Simplify using `using congrFun h7 ⟨0, by omega⟩`. Take `⟨F, hF, -, hT, hu⟩` from `HomLinear.exists_linear_of_isMonHom P.A P.A P.isAb P.isAb P.L P.L _ _ u u hd he W' hW'`. Take `⟨tf, df⟩` from `hT w' v' tv' dw'`. Establish `h8 : F w' = α • w'` using `(hd _ tf).unique df (CMNormIdentity.isDiff_of_isLieComb u dw' α ((LieMultiple.isLieComb_one_iff α v' _).2 h2))`. Establish `h9 : ∀ z, F z = α • z` using `fun z => by`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hne`. Establish `hz : z = (z i / w' i) • w'`. Use function extensionality and compare the values at `j`. Establish `: j = i` using `Fin.ext (by have := j.2; have := i.2; omega)`. Rewrite using `[this, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hi]`.
+
+Rewrite using `[hz, map_smul, h8, smul_comm]`. Rewrite using `[← e, ← hu W fun z => by rw [h9, hW]]`.
+-/
 theorem comm_of_fixed (P : Out.PolAV (Sp ℂ)) (hg : P.g = 1) (u : HolUnif P.A P.L P.g)
     (hd : ∀ v, IsTangent v → ∃! w, u.IsDiff w v) (he : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v)
     (W : P.A ⟶ P.A) [IsMonHom W] (α : ℂ) (hW : ∀ z, u.ex (α • z) = u.ex z ≫ W)
@@ -88,14 +114,27 @@ theorem comm_of_fixed (P : Out.PolAV (Sp ℂ)) (hg : P.g = 1) (u : HolUnif P.A P
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Rewrite using `[← sq_eq_sq_iff_eq_or_eq_neg, H.sqrt_neg_disc_sq, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`. Simplify using the standard rewrite rules.
+-/
 theorem cmHost_rootComplex_eq_pm_sqrt (H : Host E) : H.rt0 = Complex.I * Real.sqrt H.d ∨ H.rt0 = -(Complex.I * Real.sqrt H.d) := by
   rw [← sq_eq_sq_iff_eq_or_eq_neg, H.sqrt_neg_disc_sq, mul_pow, Complex.I_sq, ← Complex.ofReal_pow,
     Real.sq_sqrt (by positivity)]
   simp
 
+/- English proof (translation)
+Apply the tactic sequence `rcases cmHost_rootComplex_eq_pm_sqrt H with h | h <;> rw [h] <;> simp`.
+-/
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   rcases cmHost_rootComplex_eq_pm_sqrt H with h | h <;> rw [h] <;> simp
 
+/- English proof (translation)
+Rewrite using `[C.lat z]`. Break down `cmHost_rootComplex_eq_pm_sqrt H with h | h` into its components or cases. Conclude with `⟨fun ⟨m, n, e⟩ => ⟨(m, n), by rw [e, wC, h]⟩, fun ⟨a, e⟩ => ⟨a.1, a.2, by rw [e, wC, h]⟩⟩`. Use `⟨fun ⟨m, n, e⟩ => ⟨(m + n, -n), ?_⟩, fun ⟨a, e⟩ => ⟨a.1 + a.2, -a.2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, wC, h]`.
+
+Use function extensionality and compare the values at `_`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, wC, h]`. Use function extensionality and compare the values at `_`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_lattice (C : Curve H) (z : Fin C.P.g → ℂ) : z ∈ C.u.Λ ↔ ∃ a, z = fun _ => C.c * wC H a := by
   rw [C.lat z]
   rcases cmHost_rootComplex_eq_pm_sqrt H with h | h
@@ -110,11 +149,35 @@ theorem mem_lattice (C : Curve H) (z : Fin C.P.g → ℂ) : z ∈ C.u.Λ ↔ ∃
       push_cast
       ring
 
+/- English proof (translation)
+Use `H.d_mod` as an intermediate fact. Use `⟨(1 + H.d) / 4, ?_⟩` and prove the remaining obligations. Conclude with `(by omega : 1 + H.d = 4 * ((1 + H.d) / 4))` after adjusting the coercions.
+-/
 theorem exists_norm (H : Host E) : ∃ n : ℕ, (1 + H.d : ℂ) = 4 * n := by
   have := H.d_mod
   refine ⟨(1 + H.d) / 4, ?_⟩
   exact_mod_cast (by omega : 1 + H.d = 4 * ((1 + H.d) / 4))
 
+/- English proof (translation)
+Introduce `E _ _ _ H C`. Take `⟨Hm, χ, Ef, hA, hd, he, hθ, -⟩` from `C.theta`. Take `⟨n, hn⟩` from `exists_norm H`. Establish `hsq` using `H.sqrt_neg_disc_sq`. Establish `hα : wC H (0, 1) = (1 + H.rt0) / 2` using `by simp [wC]`.
+
+Take `⟨W, hW, hF⟩` from `exists_hom_of_linear_scaling_hermForm C.P C.P C.u C.u Hm χ Hm χ hA hA (fun k => (hθ k).2) (fun k => (hθ k).1) (wC H (0, 1) • LinearMap.id) n (fun l hl => by`. Take `⟨a, rfl⟩` from `(mem_lattice C l).1 hl`. Use `(mem_lattice C _).2 ⟨(-(n * a.2), a.1 + a.2), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `_`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul, wC]`.
+
+Use `push_cast`. Take the linear combination `(C.c * a.2 / 4) * hsq - (C.c * a.2 / 4) * hn)`. Use the proof step `(fun x y => by`. Establish `e : wC H (0, 1) * starRingEnd ℂ (wC H (0, 1)) = n`. Rewrite using `[hα, map_div₀, map_add, rt0_conj_neg_ne_zero, map_one, map_ofNat]`.
+
+Take the linear combination `(-1 / 4 : ℂ) * hsq + (1 / 4 : ℂ) * hn`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, hermForm, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Rewrite using `[← e, ← _root_.mul_assoc, _root_.mul_comm (wC H (0, 1))]`. Use the proof step `rfl)`. Use `⟨W, hW, fun z => ?_, fun z z' => ?_, fun x hx => ?_, fun τ hτ io h => ?_⟩` and prove the remaining obligations.
+
+Unfold `Curve.pt`. Rewrite using `[← Over.comp_left, ← hF]`. Use `congr 2`. Use function extensionality and compare the values at `_`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e` using `C.u.ex_add (fun _ => C.c * (z - z')) (fun _ => C.c * z')`. Establish `e' : ((fun _ => C.c * (z - z')) + fun _ => C.c * z' : Fin C.P.g → ℂ) = fun _ => C.c * z`. Use function extensionality and compare the values at `_`. Simplify using `only [Pi.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[e']`. Establish `e₁ : C.pt z = C.pt z' ↔ C.u.ex (fun _ => C.c * z) = C.u.ex (fun _ => C.c * z')` using `⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (fun t => t.left) h⟩`. Rewrite using `[e₁, e, mul_eq_right, C.u.ker, mem_lattice]`. Use `exists_congr fun a => ⟨fun h => ?_, fun h => by rw [h]⟩` and prove the remaining obligations.
+
+Conclude with `mul_left_cancel₀ C.c_ne (congrFun h ⟨0, by rw [C.g_eq]; omega⟩)`. Take `⟨z, hz⟩` from `C.u.ex_onto (Over.homMk x hx)`. Establish `hg` using `C.g_eq`. Use `⟨z ⟨0, by omega⟩ / C.c, ?_⟩` and prove the remaining obligations. Establish `: (fun _ => C.c * (z ⟨0, by omega⟩ / C.c)) = z`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[mul_div_cancel₀ _ C.c_ne]`. Use `congr 1`. Conclude with `Fin.ext (by have := j.2; simp only; omega)`. Unfold `Curve.pt`.
+
+Rewrite using `[this, hz]`. Both sides reduce to the same expression. Use `comm_of_fixed C.P C.g_eq C.u hd he W (wC H (0, 1)) hF τ ?_ io h` and prove the remaining obligations. Rewrite using `[hα, map_div₀, map_add, hτ, map_one, map_ofNat]`.
+-/
 theorem exists_endo_comm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (C : Curve H), ∃ W : C.P.A ⟶ C.P.A, IsMonHom W ∧ (∀ z, C.pt z ≫ W.left = C.pt (wC H (0, 1) * z)) ∧ (∀ z z', C.pt z = C.pt z' ↔ ∃ a, z - z' = wC H a) ∧ (∀ x : Sp ℂ ⟶ C.P.A.left, x ≫ C.P.A.hom = 𝟙 _ → ∃ z, C.pt z = x) ∧ ∀ τ : ℂ ≃+* ℂ, τ H.rt0 = H.rt0 → ∀ io : C.P.A.left ⟶ C.P.A.left, IsGrpPullback C.P.A C.P.A (spMap (τ : ℂ →+* ℂ)) io → W.left ≫ io = io ≫ W.left := by
   intro E _ _ _ H C
   obtain ⟨Hm, χ, Ef, hA, hd, he, hθ, -⟩ := C.theta

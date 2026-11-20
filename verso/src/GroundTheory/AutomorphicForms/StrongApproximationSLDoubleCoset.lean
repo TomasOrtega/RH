@@ -48,19 +48,37 @@ def detDoubleCoset (U : Subgroup (FiniteAdelicGL K n)) :
       exact mul_mem (Subgroup.mem_sup_left ⟨_, rfl⟩) (Subgroup.mem_sup_right ⟨u, hu, rfl⟩))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem detDoubleCoset_mk (U : Subgroup (FiniteAdelicGL K n)) (g : FiniteAdelicGL K n) :
     detDoubleCoset U (DoubleCoset.mk _ _ g) = QuotientGroup.mk (Matrix.GeneralLinearGroup.det g) :=
   rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, coe_diagonalGL, det_diagonal, Units.coe_prod]`.
+-/
 theorem det_diagonalGL {R : Type*} [CommRing R] (d : Fin n → Rˣ) :
     Matrix.GeneralLinearGroup.det (diagonalGL d) = ∏ k, d k := by
   refine Units.ext ?_
   rw [Matrix.GeneralLinearGroup.val_det_apply, coe_diagonalGL, det_diagonal, Units.coe_prod]
 
+/- English proof (translation)
+Rewrite using `[det_diagonalGL, Finset.prod_pi_mulSingle', if_pos (Finset.mem_univ _)]`.
+-/
 theorem det_diagonalGL_mulSingle {R : Type*} [CommRing R] (hn : 0 < n) (a : Rˣ) :
     Matrix.GeneralLinearGroup.det (diagonalGL (Pi.mulSingle (⟨0, hn⟩ : Fin n) a)) = a := by
   rw [det_diagonalGL, Finset.prod_pi_mulSingle', if_pos (Finset.mem_univ _)]
 
+/- English proof (translation)
+Take `⟨_, ⟨κ, rfl⟩, _, ⟨u₀, hu₀, rfl⟩, hκ⟩` from `Subgroup.mem_sup.1 h`. Use `set δ : GL (Fin n) K := diagonalGL (Pi.mulSingle (⟨0, hn⟩ : Fin n) κ)`. Use `set g₁ : FiniteAdelicGL K n := finiteDiagonal K n δ * g * u₀`. Establish `hg₁ : Matrix.GeneralLinearGroup.det g₁ = Matrix.GeneralLinearGroup.det g'`. Simplify using `only [g₁, map_mul, det_finiteDiagonal, δ, det_diagonalGL_mulSingle hn]`.
+
+Rewrite using `[mul_comm _ (Matrix.GeneralLinearGroup.det g), mul_assoc, hκ, mul_inv_cancel_left]`. Use `set x : FiniteAdelicGL K n := g' * g₁⁻¹`. Establish `hx : Matrix.GeneralLinearGroup.det x = 1`. Rewrite using `[map_mul, map_inv, ← hg₁, mul_inv_cancel]`. Establish `hcont : Continuous fun h : FiniteAdelicGL K n => g₁⁻¹ * h⁻¹ * x * g₁` using `((continuous_const.mul continuous_inv).mul continuous_const).mul continuous_const`.
+
+Establish `hx1 : g₁⁻¹ * x⁻¹ * x * g₁ = 1` using `by group`. Establish `hO : (fun h : FiniteAdelicGL K n => g₁⁻¹ * h⁻¹ * x * g₁) ⁻¹' (U : Set (FiniteAdelicGL K n)) ∈ 𝓝 x` using `hcont.continuousAt.preimage_mem_nhds (hU.mem_nhds (by rw [hx1]; exact U.one_mem))`. Take `⟨γ, -, hγ⟩` from `exists_finiteDiagonal_mem_nhds K n hx hO`. Use `⟨γ * δ, u₀ * (g₁⁻¹ * (finiteDiagonal K n γ)⁻¹ * x * g₁), mul_mem hu₀ hγ, ?_⟩` and prove the remaining obligations. Simplify using `only [x, g₁, map_mul]`.
+
+Use `group`.
+-/
 theorem exists_eq_finiteDiagonal_mul_mul (hn : 0 < n) {U : Subgroup (FiniteAdelicGL K n)}
     (hU : IsOpen (U : Set (FiniteAdelicGL K n))) {g g' : FiniteAdelicGL K n}
     (h : (Matrix.GeneralLinearGroup.det g)⁻¹ * Matrix.GeneralLinearGroup.det g' ∈
@@ -86,6 +104,11 @@ theorem exists_eq_finiteDiagonal_mul_mul (hn : 0 < n) {U : Subgroup (FiniteAdeli
   simp only [x, g₁, map_mul]
   group
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `p q hpq`. Rewrite `hpq`, the goal using `[← DoubleCoset.out_eq' (rationalFiniteGL K n) U p, ← DoubleCoset.out_eq' (rationalFiniteGL K n) U q]`. Rewrite `hpq` using `[detDoubleCoset_mk, detDoubleCoset_mk, QuotientGroup.eq]`. Take `⟨γ, u, hu, heq⟩` from `exists_eq_finiteDiagonal_mul_mul hn hU hpq`.
+
+Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨finiteDiagonal K n γ, ⟨γ, rfl⟩, u, hu, heq⟩`. Introduce `q`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `⟨DoubleCoset.mk _ _ (diagonalGL (Pi.mulSingle (⟨0, hn⟩ : Fin n) a)), by`. Rewrite using `[detDoubleCoset_mk, det_diagonalGL_mulSingle hn]⟩`.
+-/
 theorem detDoubleCoset_bijective (hn : 0 < n) {U : Subgroup (FiniteAdelicGL K n)}
     (hU : IsOpen (U : Set (FiniteAdelicGL K n))) : Function.Bijective (detDoubleCoset U) := by
   constructor
@@ -105,6 +128,9 @@ def doubleCosetEquiv (hn : 0 < n) {U : Subgroup (FiniteAdelicGL K n)}
   Equiv.ofBijective _ (detDoubleCoset_bijective hn hU)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem doubleCosetEquiv_mk (hn : 0 < n) {U : Subgroup (FiniteAdelicGL K n)}
     (hU : IsOpen (U : Set (FiniteAdelicGL K n))) (g : FiniteAdelicGL K n) :
     doubleCosetEquiv hn hU (DoubleCoset.mk _ _ g) =
@@ -115,10 +141,18 @@ open GroundTheory.Global GroundTheory.Global.IdeleGroup
 
 variable (K)
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem toFinite_diagonal (a : Kˣ) :
     toFinite K (IdeleGroup.diagonal K a) = FiniteAdeleRing.unitEmbedding (𝓞 K) K a :=
   Units.ext rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨_, ⟨a, rfl⟩, l, hl, hal⟩` from `Subgroup.mem_sup.1 (Subgroup.mem_comap.1 hx)`. Use `Subgroup.mem_sup.2 ⟨IdeleGroup.diagonal K a, ⟨a, rfl⟩, (IdeleGroup.diagonal K a)⁻¹ * x, ?_, mul_inv_cancel_left _ _⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, toFinite_diagonal, ← hal, inv_mul_cancel_left]`.
+
+Conclude with `hl`. Use `sup_le ?_ (Subgroup.comap_mono le_sup_right)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Subgroup.mem_comap, toFinite_diagonal]`. Conclude with `Subgroup.mem_sup_left ⟨a, rfl⟩`.
+-/
 theorem comap_toFinite_sup (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ) :
     ((FiniteAdeleRing.unitEmbedding (𝓞 K) K).range ⊔ L).comap (toFinite K) =
       (IdeleGroup.diagonal K).range ⊔ L.comap (toFinite K) := by
@@ -138,10 +172,16 @@ def toFiniteQuotient (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ) :
     IdeleGroup K →* (FiniteAdeleRing (𝓞 K) K)ˣ ⧸ ((FiniteAdeleRing.unitEmbedding (𝓞 K) K).range ⊔ L) :=
   (QuotientGroup.mk' _).comp (toFinite K)
 
+/- English proof (translation)
+The claim follows from `(QuotientGroup.mk'_surjective _).comp fun x => ⟨ofFinite x, toFinite_ofFinite x⟩`.
+-/
 theorem toFiniteQuotient_surjective (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ) :
     Function.Surjective (toFiniteQuotient K L) :=
   (QuotientGroup.mk'_surjective _).comp fun x => ⟨ofFinite x, toFinite_ofFinite x⟩
 
+/- English proof (translation)
+Rewrite using `[toFiniteQuotient, ← MonoidHom.comap_ker, QuotientGroup.ker_mk', comap_toFinite_sup]`.
+-/
 theorem ker_toFiniteQuotient (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ) :
     (toFiniteQuotient K L).ker = (IdeleGroup.diagonal K).range ⊔ L.comap (toFinite K) := by
   rw [toFiniteQuotient, ← MonoidHom.comap_ker, QuotientGroup.ker_mk', comap_toFinite_sup]
@@ -153,6 +193,9 @@ def finiteQuotientEquiv (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ) :
     (QuotientGroup.quotientKerEquivOfSurjective _ (toFiniteQuotient_surjective K L))).symm
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[finiteQuotientEquiv, MulEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `_ = QuotientGroup.mk (toFinite K (ofFinite a))`. Rewrite using `[toFinite_ofFinite]`.
+-/
 theorem finiteQuotientEquiv_mk (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ)
     (a : (FiniteAdeleRing (𝓞 K) K)ˣ) :
     finiteQuotientEquiv K L (QuotientGroup.mk a) = QuotientGroup.mk (ofFinite a) := by
@@ -160,6 +203,9 @@ theorem finiteQuotientEquiv_mk (L : Subgroup (FiniteAdeleRing (𝓞 K) K)ˣ)
   change _ = QuotientGroup.mk (toFinite K (ofFinite a))
   rw [toFinite_ofFinite]
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun _ _ w hw => absurd hw (Set.notMem_empty w)`.
+-/
 theorem positiveAt_empty : positiveAt (∅ : Set {w : InfinitePlace K // w.IsReal}) = ⊤ :=
   eq_top_iff.2 fun _ _ w hw => absurd hw (Set.notMem_empty w)
 
@@ -193,6 +239,9 @@ def doubleCosetEquivRayClassGroup (hn : 0 < n) {U : Subgroup (FiniteAdelicGL K n
     ((QuotientGroup.quotientMulEquivOfEq (by rw [detClassSubgroup, hdet])).toEquiv.trans
       (finiteQuotientEquivRayClassGroup K 𝔪 h𝔪).toEquiv)
 
+/- English proof (translation)
+Establish `: M = T.subtype.mapMatrix (Matrix.of fun a b => (⟨M a b, hM a b⟩ : T))`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[this, ← RingHom.map_det]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem det_mem_of_forall_mem {R : Type*} [CommRing R] (T : Subring R) {M : Matrix (Fin n) (Fin n) R}
     (hM : ∀ a b, M a b ∈ T) : M.det ∈ T := by
   have : M = T.subtype.mapMatrix (Matrix.of fun a b => (⟨M a b, hM a b⟩ : T)) := by
@@ -201,6 +250,23 @@ theorem det_mem_of_forall_mem {R : Type*} [CommRing R] (T : Subring R) {M : Matr
   rw [this, ← RingHom.map_det]
   exact SetLike.coe_mem _
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite `hg` using `[SetLike.mem_coe, mem_integralFiniteGL_iff]`. Establish `h1` using `det_mem_of_forall_mem (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K) hg.1`. Establish `h2` using `det_mem_of_forall_mem (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K) hg.2`.
+
+Rewrite `h1`, `h2` using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[mem_finiteLevel]`. Introduce `v`. Rewrite using `[Pi.zero_apply, unitsLevel_zero, Submonoid.mem_units_iff]`. Use `⟨h1 v, ?_⟩` and prove the remaining obligations.
+
+Establish `: ((finiteComponent v (Matrix.GeneralLinearGroup.det g))⁻¹ : (v.adicCompletion K)ˣ) = finiteComponent v (Matrix.GeneralLinearGroup.det g⁻¹)`. Rewrite using `[map_inv, map_inv]`. Rewrite using `[this]`. Conclude with `h2 v`. Introduce `a ha`.
+
+Rewrite `ha` using `[mem_finiteLevel]`. Establish `hv : ∀ v, (a : FiniteAdeleRing (𝓞 K) K) v ∈ v.adicCompletionIntegers K ∧ ((a⁻¹ : (FiniteAdeleRing (𝓞 K) K)ˣ) : FiniteAdeleRing (𝓞 K) K) v ∈ v.adicCompletionIntegers K`. Introduce `v`. Use `ha v` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, unitsLevel_zero, Submonoid.mem_units_iff]`.
+
+Use `⟨this.1, ?_⟩` and prove the remaining obligations. Establish `h` using `this.2`. Rewrite `h` using `[← map_inv]`. Then use the resulting hypothesis. Use `⟨diagonalGL (Pi.mulSingle (⟨0, hn⟩ : Fin n) a), ?_, det_diagonalGL_mulSingle hn a⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_integralFiniteGL_iff, ← map_inv]`.
+
+Establish `key : ∀ b : (FiniteAdeleRing (𝓞 K) K)ˣ, (∀ v, (b : FiniteAdeleRing (𝓞 K) K) v ∈ v.adicCompletionIntegers K) → ∀ i j, ((diagonalGL (Pi.mulSingle (⟨0, hn⟩ : Fin n) b) : FiniteAdelicGL K n) : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) i j ∈ GroundTheory.Global.integralFiniteA …`. Introduce `b hb i j`. Rewrite using `[coe_diagonalGL, Matrix.diagonal_apply]`. Use `split_ifs with hij`. Rewrite using `[Pi.mulSingle_apply] split_ifs`.
+
+Conclude with `hb`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Use `⟨key a fun v => (hv v).1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Pi.mulSingle_inv]`.
+
+Conclude with `key a⁻¹ fun v => (hv v).2`.
+-/
 theorem map_det_integralFiniteGL (hn : 0 < n) :
     (integralFiniteGL K n).map
         (Matrix.GeneralLinearGroup.det : FiniteAdelicGL K n →* (FiniteAdeleRing (𝓞 K) K)ˣ) =

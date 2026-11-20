@@ -30,6 +30,11 @@ def LocA : Prop :=
           ∀ g ∈ O', g ∈ B.GV k r → 0 < Gf k r z z' g →
             af g ∈ UWset k r z ∧ af g * g * bf g ∈ gfSig D0
 
+/- English proof (translation)
+Introduce `k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀`. Take `⟨O, bf, hO, hg₀O, hbf, hbP⟩` from `hB k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀`. Take `⟨O', af, hsub, hO', hg₀O', haf, haP⟩` from `hA k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀ O bf hO hg₀O hbf hbP`. Use `⟨O', fun g => (af g, bf g), hO', hg₀O', haf.prodMk (hbf.mono hsub), ?_⟩` and prove the remaining obligations. Introduce `g hgO hgG hgP`.
+
+Conclude with `⟨(haP g hgO hgG hgP).1, (hbP g (hsub hgO) hgG hgP).1, (haP g hgO hgG hgP).2⟩`.
+-/
 theorem gfLocal_of (hB : LocB) (hA : LocA) : GfLocal := by
   intro k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀
   obtain ⟨O, bf, hO, hg₀O, hbf, hbP⟩ := hB k r z z' hk hr hz hz' D0 g₀ hg₀ hG₀
@@ -38,6 +43,9 @@ theorem gfLocal_of (hB : LocB) (hA : LocA) : GfLocal := by
   intro g hgO hgG hgP
   exact ⟨(haP g hgO hgG hgP).1, (hbP g (hsub hgO) hgG hgP).1, (haP g hgO hgG hgP).2⟩
 
+/- English proof (translation)
+The claim follows from `gsFrames_of_local (gfLocal_of hB hA)`.
+-/
 theorem gsFrames_of_loc (hB : LocB) (hA : LocA) : GsFrames := gsFrames_of_local (gfLocal_of hB hA)
 
 end PI.UnitaryGroupMassFormula.GsFr

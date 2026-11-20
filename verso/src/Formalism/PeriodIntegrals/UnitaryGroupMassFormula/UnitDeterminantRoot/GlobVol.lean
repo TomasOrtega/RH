@@ -11,6 +11,11 @@ section Vol
 
 variable (F : IntermediateField ℚ ℂ) {m : Type} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Unfold `vol volSet`. Rewrite using `[Submodule.span_mul_span]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, _, ⟨v, hv, rfl⟩, rfl⟩`. Take `rfl` from `Set.mem_singleton_iff.mp hx`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨fun j => c • v j, fun j => h _ (hv j), ?_⟩` and prove the remaining obligations. Rewrite using `[show (Matrix.of fun j => c • v j) = c • Matrix.of v from by ext i j; rfl, Matrix.det_smul]`.
+-/
 lemma vol_smul_le {Λ Λ' : AddSubgroup (m → ℂ)} (c : ℂ) (h : ∀ x ∈ Λ, c • x ∈ Λ') :
     Submodule.span (𝓞 F) {c ^ Fintype.card m} * vol F Λ ≤ vol F Λ' := by
   unfold vol volSet
@@ -22,6 +27,11 @@ lemma vol_smul_le {Λ Λ' : AddSubgroup (m → ℂ)} (c : ℂ) (h : ∀ x ∈ Λ
   refine ⟨fun j => c • v j, fun j => h _ (hv j), ?_⟩
   rw [show (Matrix.of fun j => c • v j) = c • Matrix.of v from by ext i j; rfl, Matrix.det_smul]
 
+/- English proof (translation)
+Establish `h : Matrix.of (fun j => δ (w j)) = Matrix.of w * Matrix.transpose (LinearMap.toMatrix' δ)`. Use extensionality with `j i`. Rewrite using `[Matrix.of_apply, ← LinearMap.toMatrix'_mulVec]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl (fun k _ => mul_comm _ _)`.
+
+Rewrite using `[h, Matrix.det_mul, Matrix.det_transpose, LinearMap.det_toMatrix', mul_comm]`.
+-/
 lemma det_rows_map (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w : m → m → ℂ) :
     (Matrix.of fun j => δ (w j)).det = LinearMap.det δ * (Matrix.of w).det := by
   have h : Matrix.of (fun j => δ (w j)) = Matrix.of w * Matrix.transpose (LinearMap.toMatrix' δ) := by
@@ -31,6 +41,13 @@ lemma det_rows_map (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w : m → m → �
     exact Finset.sum_congr rfl (fun k _ => mul_comm _ _)
   rw [h, Matrix.det_mul, Matrix.det_transpose, LinearMap.det_toMatrix', mul_comm]
 
+/- English proof (translation)
+Unfold `UnitDetRootDefs.imgLat vol volSet`. Rewrite using `[Submodule.span_mul_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, rfl⟩ choose w hw hwv using fun j => AddSubgroup.mem_map.mp (hv j)`. Use `Set.mem_mul.mpr ⟨_, Set.mem_singleton _, _, ⟨w, hw, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hv' : v = fun j => (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w j)` using `funext fun j => (hwv j).symm`. Rewrite using `[hv', det_rows_map]`. Introduce `hz`.
+
+Take `⟨_, h1, _, ⟨w, hw, rfl⟩, rfl⟩` from `Set.mem_mul.mp hz`. Take `rfl` from `Set.mem_singleton_iff.mp h1`. Use `⟨fun j => (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (w j), fun j => AddSubgroup.mem_map.mpr ⟨w j, hw j, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[det_rows_map]`.
+-/
 lemma vol_img (δ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)) (Λ : AddSubgroup (m → ℂ)) :
     vol F (UnitDetRootDefs.imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λ)
       = Submodule.span (𝓞 F) {LinearMap.det (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ))} * vol F Λ := by
@@ -72,10 +89,24 @@ def thetaO {a : ℕ} {b c : ℤ} {d : ℕ} (hok : UnitDetRootDefs.CmOK a b c d) 
       simp only [eq_intCast, Int.cast_mul, Int.cast_natCast]
       linear_combination theta_sq hok⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma algebraMap_thetaO {a : ℕ} {b c : ℤ} {d : ℕ} (hok : UnitDetRootDefs.CmOK a b c d) :
     algebraMap (𝓞 (KF b d)) ℂ (thetaO hok) = UnitDetRootDefs.cmTheta b d := by
   rfl
 
+/- English proof (translation)
+Unfold `vol volSet UnitDetRootDefs.stdLat`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `h1 : ∀ j i, v j i ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice` using `fun j i => (show ∀ i ∈ (Set.univ : Set m), v j i ∈ _ from hv j) i (Set.mem_univ i)`. Use `clear hv`.
+
+Establish `hent : ∀ j i, ∃ o : 𝓞 (KF b d), v j i = lam * algebraMap (𝓞 (KF b d)) ℂ o`. Introduce `j i`. Establish `h2` using `h1 j i`. Simplify using `only [PeriodPair.lattice, UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair] at h2`. Take `⟨p, q, hpq⟩` from `Submodule.mem_span_pair.mp h2`.
+
+Use `⟨p * (a : 𝓞 (KF b d)) + q * thetaO hok, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpq]`. Simplify using `only [map_add, map_mul, algebraMap_thetaO, map_intCast, map_natCast, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `choose o ho using hent`.
+
+Establish `hM : Matrix.of v = lam • (algebraMap (𝓞 (KF b d)) ℂ).mapMatrix (Matrix.of o)`. Use extensionality with `j i`. Simplify using `[ho j i]`. Rewrite using `[hM, Matrix.det_smul, ← RingHom.map_det]`. Use `Submodule.mem_span_singleton.mpr ⟨(Matrix.of o).det, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, mul_comm]`.
+-/
 lemma vol_std_le {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     (hok : UnitDetRootDefs.CmOK a b c d) {m : Type} [Fintype m] [DecidableEq m] :
     vol (KF b d) (UnitDetRootDefs.stdLat (UnitDetRootDefs.cmL a b d ha hd lam hlam) m) ≤ Submodule.span (𝓞 (KF b d)) {lam ^ Fintype.card m} := by
@@ -103,6 +134,15 @@ lemma vol_std_le {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam 
   refine Submodule.mem_span_singleton.mpr ⟨(Matrix.of o).det, ?_⟩
   rw [Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Unfold `vol volSet UnitDetRootDefs.stdLat`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨(Matrix.of fun (j i : m) => if i = j then lam * (a : ℂ) else 0).det, Submodule.subset_span ⟨_, fun j => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `fun i _ => ?_ show (if i = j then lam * (a : ℂ) else 0) ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice` and prove the remaining obligations. Establish `hω : lam * (a : ℂ) ∈ (UnitDetRootDefs.cmL a b d ha hd lam hlam).lattice`.
+
+Simplify using `only [PeriodPair.lattice, UnitDetRootDefs.cmL, UnitDetRootDefs.scalePair, UnitDetRootDefs.cmPair]`. Conclude with `Submodule.subset_span (Set.mem_insert _ _)`. Distinguish the cases in `h : i = j`. Rewrite using `[if_pos h]`. Conclude with `hω`.
+
+Rewrite using `[if_neg h]`. Conclude with `zero_mem _`. Establish `hD : (Matrix.of fun (j i : m) => if i = j then lam * (a : ℂ) else 0) = Matrix.diagonal (fun _ => lam * (a : ℂ))`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.diagonal_apply, h, eq_comm]`.
+
+Rewrite using `[hD, Matrix.det_diagonal, Finset.prod_const]`. Conclude with `pow_ne_zero _ (mul_ne_zero hlam (by exact_mod_cast ha.ne'))`.
+-/
 lemma vol_std_ne_bot {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     {m : Type} [Fintype m] [DecidableEq m] :
     vol (KF b d) (UnitDetRootDefs.stdLat (UnitDetRootDefs.cmL a b d ha hd lam hlam) m) ≠ ⊥ := by

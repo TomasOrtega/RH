@@ -19,6 +19,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocLanglandsBridge
 
+/- English proof (translation)
+Introduce `hEx hConv hDep hInd hBr hChev hArt hExh hMult hCos hZel hGeo hBZ`. Establish `hRec` using `GlobalTheory.T.rec_of_rec_literal hDep hInd hExh hMult hCos hZel hGeo hBZ`. Establish `hComp` using `GlobalTheory.T.local_langlands_transport hArt hChev hBr hEx hConv hExh hBZ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `E Ω _ _ _ _ _ A w h`.
+
+Take `⟨rc, hrc⟩` from `hEx E Ω A w h`. Use `⟨rc, hRec E Ω A w h rc hrc, ?_⟩` and prove the remaining obligations. Introduce `rc' hrc'`. Use function extensionality and compare the values at `x`. Take `⟨n, c⟩` from `x`.
+
+Establish `hC` using `hComp E Ω A w h E Ω A w h rc' rc hrc'.toLit hrc (RingEquiv.refl Ω) (RingHom.id E) (RingEquiv.refl _) (fun _ => Iff.rfl) (fun _ => rfl) continuous_id (fun _ => rfl) n c.rep c.rep (LinearEquiv.refl ℂ _) (fun g v => by`. Establish `hg : GeneralLinearGroup.map (RingEquiv.refl (w.adicCompletion E)).toRingHom g = g` using `Units.ext (Matrix.ext fun _ _ => rfl)`. Rewrite using `[hg]`. Use the proof step `rfl)`. Take `⟨b, b', hb, hb', hN, hρ⟩` from `hC`.
+
+Establish `hbb : WD.mk b = WD.mk b'` using `WD.sound ⟨LinearEquiv.refl ℂ _, fun σ v => by`. Simplify using `only [LinearEquiv.refl_apply]; rw [hρ σ σ (fun _ => rfl)], fun v => by`. Simplify using `only [LinearEquiv.refl_apply]`. Rewrite using `[hN]⟩`. Establish `hx : (⟨n, c⟩ : IrrGL (w.adicCompletion E)) = cls c.rep` using `congrArg (Sigma.mk _) c.cl_rep.symm`.
+
+Rewrite using `[hx, ← hb, ← hb', hbb]`. Introduce `E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' rc rc' hrc hrc'`. Conclude with `hComp E Ω A w h E' Ω' A' w' h' rc rc' hrc.toLit hrc'.toLit`.
+-/
 theorem localLanglandsGL_of_depthZero_zelevinsky_bernstein : LocalLanglandsExists → LocalConverseGL → DepthZeroCuspidalLL → DepthZeroInduction →
     BrauerDegreeZero → ChevalleyUnits → GlobalArtinReciprocity → LanglandsExhaustionGL → LanglandsMultisegments →
     StandardCosocleGL → ZelevinskyPolynomialRing → GeometricLemma → BernsteinZelevinskyFiniteness → LocalLanglandsGL := by

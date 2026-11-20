@@ -16,6 +16,9 @@ variable {X : Type}
 
 def homog (d : ℕ) (f : X → ℂ) : ℂ × X → ℂ := fun p => p.1 ^ d * f p.2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [homog, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem homog_mul (a b : ℕ) (f h : X → ℂ) :
     homog a f * homog b h = homog (a + b) (f * h) := by
   funext p; simp only [homog, Pi.mul_apply]; ring
@@ -25,6 +28,19 @@ def homogL (d : ℕ) : (X → ℂ) →ₗ[ℂ] (ℂ × X → ℂ) where
   map_add' f h := by funext p; simp only [homog, Pi.add_apply]; ring
   map_smul' c f := by funext p; simp only [homog, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Establish `key : ∀ F ∈ ⨆ k, (T k).map (homogL (X` using `X) k), ∃ u : Polynomial (X → ℂ), (∀ k, u.coeff k ∈ T k) ∧ ∀ t x, F (t, x) = (u.map (Pi.evalRingHom (fun _ : X => ℂ) x)).eval t := by`. Introduce `F hF`. Proceed by induction on `hF using Submodule.iSup_induction' with`. Consider the case `mem k F hF`. Take `⟨v, hv, rfl⟩` from `hF`.
+
+Use `⟨Polynomial.monomial k v, fun j => ?_, fun t x => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_monomial] split_ifs with hj`. Conclude with `hj ▸ hv`. Conclude with `zero_mem _`. Simplify using `[homogL, homog, mul_comm]`.
+
+Consider the case `zero => exact ⟨0, fun k => by simp, fun t x => by simp⟩`. Consider the case `add F G _ _ hF hG`. Take `⟨u, hu, hu'⟩` from `hF`. Take `⟨v, hv, hv'⟩` from `hG`. Conclude with `⟨u + v, fun k => by rw [Polynomial.coeff_add]; exact add_mem (hu k) (hv k), fun t x => by simp [hu', hv']⟩`.
+
+Take `⟨u, hu, hu'⟩` from `key _ h`. Establish `: f = u.coeff d`. Use function extensionality and compare the values at `x`. Establish `h1 : u.map (Pi.evalRingHom (fun _ : X => ℂ) x) = Polynomial.monomial d (f x)`. Apply `Polynomial.funext` to reduce the goal to its premises.
+
+Introduce `t`. Rewrite using `[← hu']`. Simplify using `[homog, mul_comm]`. Establish `h2` using `congrArg (fun q => Polynomial.coeff q d) h1`. Simplify using `using h2.symm`.
+
+Conclude with `this ▸ hu d`.
+-/
 theorem mem_of_homog_mem_iSup (T : ℕ → Submodule ℂ (X → ℂ)) (d : ℕ) (f : X → ℂ)
     (h : homog d f ∈ ⨆ k, (T k).map (homogL k)) : f ∈ T d := by
   have key : ∀ F ∈ ⨆ k, (T k).map (homogL (X := X) k),
@@ -63,6 +79,15 @@ variable (R : ℕ → Submodule ℂ (X → ℂ))
 def gradedRing : Subalgebra ℂ (ℂ × X → ℂ) :=
   Algebra.adjoin ℂ {F | ∃ d, ∃ f ∈ R d, F = homog d f}
 
+/- English proof (translation)
+Establish `: Subalgebra.toSubmodule (gradedRing R) = Submodule.span ℂ {F | ∃ d, ∃ f ∈ R d, F = homog d f}`. Unfold `gradedRing`. Rewrite using `[Algebra.adjoin_eq_span]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce `G hG`. Proceed by induction on `hG using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨0, 1, h1, by funext p; simp [homog]⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨a, f, hf, rfl⟩` from `hx`. Take `⟨b, h, hh, rfl⟩` from `hy`. Conclude with `⟨a + b, f * h, hmul a b (Submodule.mul_mem_mul hf hh), homog_mul _ _ _ _⟩`. Conclude with `Submodule.span_mono Submonoid.subset_closure`. Rewrite using `[← this]`.
+
+Conclude with `hF`.
+-/
 theorem gradedRing_le_iSup (h1 : (1 : X → ℂ) ∈ R 0)
     (hmul : ∀ a b, R a * R b ≤ R (a + b)) {F : ℂ × X → ℂ} (hF : F ∈ gradedRing R) :
     F ∈ Submodule.span ℂ {F | ∃ d, ∃ f ∈ R d, F = homog d f} := by
@@ -83,6 +108,37 @@ theorem gradedRing_le_iSup (h1 : (1 : X → ℂ) ∈ R 0)
     · exact Submodule.span_mono Submonoid.subset_closure
   rw [← this]; exact hF
 
+/- English proof (translation)
+Set `N : ℕ →o Submodule A (ℂ × X → ℂ)` to `⟨fun e => Submodule.span A {F | ∃ d ≤ e, ∃ f ∈ R d, F = homog d f}, fun a b hab => Submodule.span_mono (by`. Introduce and unpack `_ ⟨d, hd, h⟩`. Conclude with `⟨d, hd.trans hab, h⟩)⟩`. Establish `hN : ⨆ e, N e = M`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `iSup_le fun e => Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨d, -, f, hf, rfl⟩`. Conclude with `(hMR _).2 (Algebra.subset_adjoin ⟨d, f, hf, rfl⟩)`. Introduce `F hF`. Use `gradedRing_le_iSup R h1 hmul ((hMR F).1 hF)` as an intermediate fact.
+
+Use `clear hF`. Proceed by induction on `this using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, f, hf, rfl⟩` from `hx`. Conclude with `Submodule.mem_iSup_of_mem d (Submodule.subset_span ⟨d, le_rfl, f, hf, rfl⟩)`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx => exact Submodule.smul_of_tower_mem _ c hx`. Take `⟨e, he⟩` from `hM.stabilizes_of_iSup_eq N hN`. Use `⟨e, fun d hd f hf => ?_⟩` and prove the remaining obligations.
+
+Set `T : ℕ → Submodule ℂ (X → ℂ)` to `fun k => if k ≤ e then R k else R 1 * R (k - 1)`. Establish `hTR : ∀ k, T k ≤ R k`. Introduce `k`. Simplify using `only [T]`. Use `split_ifs with hk`.
+
+Conclude with `le_rfl`. Use `hmul 1 (k - 1)` as an intermediate fact. Rewrite `this` using `[show 1 + (k - 1) = k by omega]`. Then use the resulting hypothesis. Establish `hRT : ∀ k, R 1 * R k ≤ T (1 + k)`. Introduce `k`.
+
+Simplify using `only [T]`. Use `split_ifs with hk`. Conclude with `hmul 1 k`. Simplify using the standard rewrite rules. Set `W : Submodule ℂ (ℂ × X → ℂ)` to `⨆ k, (T k).map (homogL k)`.
+
+Establish `hAW : ∀ a ∈ Algebra.adjoin ℂ {F | ∃ f ∈ R 1, F = homog 1 f}, ∀ w ∈ W, a * w ∈ W`. Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨s, hs, rfl⟩` from `hx`.
+
+Introduce `w hw`. Proceed by induction on `hw using Submodule.iSup_induction' with`. Consider the case `mem k F hF`. Take `⟨v, hv, rfl⟩` from `hF`. Use `Submodule.mem_iSup_of_mem (1 + k) ⟨s * v, hRT k (Submodule.mul_mem_mul hs (hTR k hv)), ?_⟩` and prove the remaining obligations.
+
+Conclude with `(homog_mul _ _ _ _).symm`. Consider the case `zero => simp`. Consider the case `add F G _ _ hF hG => rw [mul_add]`. Conclude with `add_mem hF hG`. Consider the case `algebraMap c => intro w hw`.
+
+Rewrite using `[← Algebra.smul_def]`. Conclude with `W.smul_mem c hw`. Consider the case `add x y _ _ hx hy => intro w hw`. Rewrite using `[add_mul]`. Conclude with `add_mem (hx w hw) (hy w hw)`.
+
+Consider the case `mul x y _ _ hx hy => intro w hw`. Rewrite using `[mul_assoc]`. Conclude with `hx _ (hy w hw)`. Establish `hNW : ∀ F ∈ N e, F ∈ W`. Introduce `F hF`.
+
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, v, hv, rfl⟩` from `hx`. Conclude with `Submodule.mem_iSup_of_mem k ⟨v, by simpa [T, hk] using hv, rfl⟩`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact hAW a (hA a.2) x hx`. Establish `hmem : homog (d + 1) f ∈ N e`. Rewrite using `[← he, hMR]`. Conclude with `Algebra.subset_adjoin ⟨d + 1, f, hf, rfl⟩`.
+
+Use `mem_of_homog_mem_iSup T (d + 1) f (hNW _ hmem)` as an intermediate fact. Simplify `this` using `[T, show ¬ (d + 1 ≤ e) by omega]`.
+-/
 theorem exists_succ_le_mul (h1 : (1 : X → ℂ) ∈ R 0)
     (hmul : ∀ a b, R a * R b ≤ R (a + b)) (A : Subalgebra ℂ (ℂ × X → ℂ))
     (hA : A ≤ Algebra.adjoin ℂ {F | ∃ f ∈ R 1, F = homog 1 f})
@@ -156,6 +212,15 @@ theorem exists_succ_le_mul (h1 : (1 : X → ℂ) ∈ R 0)
   have := mem_of_homog_mem_iSup T (d + 1) f (hNW _ hmem)
   simpa [T, show ¬ (d + 1 ≤ e) by omega] using this
 
+/- English proof (translation)
+Establish `h : ∀ d, e ≤ d → ∀ k, R (d + (k + 1)) ≤ R (k + 1) * R d`. Introduce `d hd k`. Proceed by induction on `k with`. Consider the case `zero => exact he d hd`. Consider the case `succ k ih`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `hmul 1 (k + 1)` as an intermediate fact. Rewrite `this` using `[add_comm 1]`. Use `gcongr`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ih`. Break down `e with _ | k` into its components or cases. Use linear arithmetic over natural numbers and integers. Use `h ((k + 1) * (j + 1)) (Nat.le_mul_of_pos_right _ (by omega)) k` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem le_pow_of_succ_le_mul (hmul : ∀ a b, R a * R b ≤ R (a + b)) {e : ℕ} (h1e : 1 ≤ e)
     (he : ∀ d, e ≤ d → R (d + 1) ≤ R 1 * R d) (j : ℕ) : R (e * (j + 1)) ≤ R e ^ (j + 1) := by
   have h : ∀ d, e ≤ d → ∀ k, R (d + (k + 1)) ≤ R (k + 1) * R d := by
@@ -187,6 +252,11 @@ section Entire
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_or]`. Take `⟨x, hx⟩` from `Function.ne_iff.1 hne.1`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hne.2`. Establish `hl : Differentiable ℂ (fun t : ℂ => x + t • (y - x))` using `by fun_prop`.
+
+Establish `h1 : AnalyticOnNhd ℂ (fun t : ℂ => f (x + t • (y - x))) Set.univ` using `fun t _ => (hf.comp hl).analyticAt t`. Establish `h2 : AnalyticOnNhd ℂ (fun t : ℂ => h (x + t • (y - x))) Set.univ` using `fun t _ => (hh.comp hl).analyticAt t`. Break down `AnalyticOnNhd.eq_zero_or_eq_zero_of_mul_eq_zero h1 h2 (fun t _ => congrFun hfh _) isPreconnected_univ with h3 | h3` into its components or cases. Conclude with `hx (by simpa using h3 0 trivial)`. Conclude with `hy (by simpa using h3 1 trivial)`.
+-/
 theorem entire_mul_eq_zero {f h : E → ℂ} (hf : Differentiable ℂ f) (hh : Differentiable ℂ h)
     (hfh : f * h = 0) : f = 0 ∨ h = 0 := by
   by_contra hne
@@ -203,6 +273,9 @@ theorem entire_mul_eq_zero {f h : E → ℂ} (hf : Differentiable ℂ f) (hh : D
   · exact hx (by simpa using h3 0 trivial)
   · exact hy (by simpa using h3 1 trivial)
 
+/- English proof (translation)
+Proceed by induction on `hF using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `algebraMap c => exact differentiable_const _`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `mul x y _ _ hx hy => exact hx.mul hy`.
+-/
 theorem differentiable_of_mem_adjoin {S : Set (E → ℂ)} (hS : ∀ F ∈ S, Differentiable ℂ F)
     {F : E → ℂ} (hF : F ∈ Algebra.adjoin ℂ S) : Differentiable ℂ F := by
   induction hF using Algebra.adjoin_induction with
@@ -211,6 +284,17 @@ theorem differentiable_of_mem_adjoin {S : Set (E → ℂ)} (hS : ∀ F ∈ S, Di
   | add x y _ _ hx hy => exact hx.add hy
   | mul x y _ _ hx hy => exact hx.mul hy
 
+/- English proof (translation)
+Use `set A := Algebra.adjoin ℂ (Set.range fun (c : ι) (p : ℂ × E) => p.1 * θ c p.2) with hA`. Establish `hc : ∀ a ∈ A, ∀ x, a (0, x) = a (0, 0)`. Introduce `a ha x`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨c, rfl⟩ := hx`.
+
+Simplify using the standard rewrite rules. Consider the case `algebraMap c => rfl`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, hx, hy]`. Consider the case `mul x y _ _ hx hy => simp only [Pi.mul_apply, hx, hy]`. Take `⟨P, hP, hP0⟩` from `hint`.
+
+Set `φ : A →+* ℂ` to `(Pi.evalRingHom (fun _ : ℂ × E => ℂ) (0, 0)).comp (algebraMap A _)`. Establish `hroot : ∀ x, (P.map φ).IsRoot (f x)`. Introduce `x`. Establish `h1 : (Pi.evalRingHom (fun _ : ℂ × E => ℂ) (0, x)).comp (algebraMap A _) = φ` using `RingHom.ext fun a => hc a a.2 x`. Establish `h2` using `congrArg (Pi.evalRingHom (fun _ : ℂ × E => ℂ) (0, x)) hP0`.
+
+Rewrite `h2` using `[Polynomial.hom_eval₂, h1]`. Rewrite using `[Polynomial.IsRoot, Polynomial.eval_map]`. Simplify using `using h2`. Use `hf.apply_eq_apply_of_bounded (Set.Finite.isBounded ?_) z 0` and prove the remaining obligations. Use `(Polynomial.finite_setOf_isRoot (hP.map φ).ne_zero).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hroot x`.
+-/
 theorem const_of_isIntegral {ι : Type} (θ : ι → E → ℂ) {f : E → ℂ} (hf : Differentiable ℂ f)
     (hint : IsIntegral (Algebra.adjoin ℂ (Set.range fun (c : ι) (p : ℂ × E) => p.1 * θ c p.2))
       (fun p : ℂ × E => p.1 ^ 0 * f p.2)) (z : E) : f z = f 0 := by
@@ -237,6 +321,35 @@ theorem const_of_isIntegral {ι : Type} (θ : ι → E → ℂ) {f : E → ℂ} 
   rintro _ ⟨x, rfl⟩
   exact hroot x
 
+/- English proof (translation)
+Use `set A := Algebra.adjoin ℂ (Set.range fun (c : ι) (p : ℂ × E) => p.1 * θ c p.2) with hA`. Establish `hA1 : A ≤ Algebra.adjoin ℂ {F | ∃ f ∈ R 1, F = homog 1 f}`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨θ c, hθ c, by funext p; simp [homog]⟩`.
+
+Establish `hAR : A ≤ gradedRing R` using `hA1.trans (Algebra.adjoin_mono (by`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨1, f, hf, rfl⟩))`. Set `B : Subalgebra A (ℂ × E → ℂ)` to `Algebra.adjoin A {F | ∃ d, ∃ f ∈ R d, F = homog d f}`. Establish `hB : ∀ F, F ∈ B ↔ F ∈ gradedRing R`.
+
+Introduce `F`. Prove the components needed by the constructor for the conclusion. Introduce `hF`. Proceed by induction on `hF using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin hx`.
+
+Consider the case `algebraMap c => exact hAR c.2`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Introduce `hF`. Proceed by induction on `hF using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => exact Algebra.subset_adjoin hx`. Consider the case `algebraMap c => exact B.algebraMap_mem (algebraMap ℂ A c)`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Establish `hd : ∀ F ∈ gradedRing R, Differentiable ℂ F`.
+
+Introduce `F hF`. Use `differentiable_of_mem_adjoin ?_ hF` and prove the remaining obligations. Introduce and unpack `_ ⟨d, f, hf, rfl⟩`. Use `hdiff d f hf` as an intermediate fact. Unfold `homog`.
+
+Use `fun_prop`. Use `haveI : NoZeroDivisors A := ⟨fun {a b} hab => (entire_mul_eq_zero (hd _ (hAR a.2)) (hd _ (hAR b.2)) (congrArg Subtype.val hab)).imp Subtype.ext Subtype.ext⟩`. Use `haveI : NoZeroDivisors B := ⟨fun {a b} hab => (entire_mul_eq_zero (hd _ ((hB _).1 a.2)) (hd _ ((hB _).1 b.2)) (congrArg Subtype.val hab)).imp Subtype.ext Subtype.ext⟩`. Use `haveI : IsDomain A := NoZeroDivisors.to_isDomain _`. Use `haveI : Nontrivial B := ⟨⟨0, 1, fun h => zero_ne_one (congrArg Subtype.val h)⟩⟩`.
+
+Use `haveI : IsDomain B := NoZeroDivisors.to_isDomain _`. Use `haveI : Algebra.FiniteType ℂ A := (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩)`. Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).2 fun a b hab => Subtype.ext (congrArg (Subtype.val : B → (ℂ × E → ℂ)) hab)`. Use `haveI : Algebra.IsIntegral A B := Algebra.IsIntegral.adjoin (by`. Introduce and unpack `_ ⟨d, f, hf, rfl⟩`.
+
+Conclude with `(hint d f hf).1)`. Establish `hfrac : ∀ F ∈ B, ∃ a a' : A, a' ≠ 0 ∧ (a' : ℂ × E → ℂ) * F = a`. Introduce `F hF`. Proceed by induction on `hF using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Take `⟨d, f, hf, rfl⟩` from `hx`. Take `⟨a, ha, b, hb, hb0, h⟩` from `(hint d f hf).2`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, fun h0 => hb0 (congrArg Subtype.val h0), h⟩`. Consider the case `algebraMap c => exact ⟨c, 1, one_ne_zero, one_mul _⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, a', ha, h⟩` from `hx`. Take `⟨b, b', hb, h'⟩` from `hy`. Use `⟨b' * a + a' * b, a' * b', mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← h, ← h']`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨a, a', ha, h⟩` from `hx`. Take `⟨b, b', hb, h'⟩` from `hy`. Use `⟨a * b, a' * b', mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Rewrite using `[← h, ← h']`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : Module.Finite A B` using `hfin A B fun b => by`. Take `⟨a, a', ha, h⟩` from `hfrac b b.2`.
+
+Conclude with `⟨a, a', ha, Subtype.ext h⟩`. Conclude with `exists_succ_le_mul R h1 hmul A hA1 (Subalgebra.toSubmodule B) (Module.Finite.iff_fg.1 hF) hB`.
+-/
 theorem exists_succ_le_mul_of_integral {ι : Type} [Finite ι] (R : ℕ → Submodule ℂ (E → ℂ))
     (h1 : (1 : E → ℂ) ∈ R 0) (hmul : ∀ a b, R a * R b ≤ R (a + b))
     (hdiff : ∀ d, ∀ f ∈ R d, Differentiable ℂ f) (θ : ι → E → ℂ) (hθ : ∀ c, θ c ∈ R 1)
@@ -326,6 +439,11 @@ theorem exists_succ_le_mul_of_integral {ι : Type} [Finite ι] (R : ℕ → Subm
 
 end Entire
 
+/- English proof (translation)
+Establish `h : Submodule.span ℂ (Set.range θ) ^ d = Submodule.map (MvPolynomial.aeval θ).toLinearMap (MvPolynomial.homogeneousSubmodule ι ℂ d)`. Rewrite using `[← MvPolynomial.homogeneousSubmodule_one_pow, Submodule.map_pow]`. Simplify using `[MvPolynomial.homogeneousSubmodule_one_eq_span_X, Submodule.map_span, ← Set.range_comp, Function.comp_def]`. Rewrite `hf` using `[h]`. Take `⟨F, hF, rfl⟩` from `hf`.
+
+Use `⟨F, hF, fun z => ?_⟩` and prove the remaining obligations. Use `MvPolynomial.comp_aeval_apply θ (Pi.evalAlgHom ℂ (fun _ : X => ℂ) z) F` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_isHomogeneous_of_mem_span_pow {X ι : Type} (θ : ι → X → ℂ) (d : ℕ) {f : X → ℂ}
     (hf : f ∈ Submodule.span ℂ (Set.range θ) ^ d) :
     ∃ F : MvPolynomial ι ℂ, F.IsHomogeneous d ∧
@@ -352,6 +470,9 @@ def level {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (N : ℕ) : Submodule ℂ 
   smul_mem' := fun c a ha => ⟨ha.1.const_smul c, fun n n' z => by
     simp only [Pi.smul_apply, ha.2, smul_eq_mul]; ring⟩
 
+/- English proof (translation)
+Use `Submodule.mul_le.2 fun f hf h hh => ⟨hf.1.mul hh.1, fun n n' z => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, hf.2, hh.2]`. Rewrite using `[Nat.cast_add, neg_add, add_mul, eC_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem level_mul {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : ℕ) :
     level τ a * level τ b ≤ level τ (a + b) := by
   refine Submodule.mul_le.2 fun f hf h hh => ⟨hf.1.mul hh.1, fun n n' z => ?_⟩
@@ -359,6 +480,9 @@ theorem level_mul {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : ℕ) :
   rw [Nat.cast_add, neg_add, add_mul, eC_add]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiable_const _, fun n n' z => by simp [eC_zero]⟩`.
+-/
 theorem one_mem_level {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) :
     (1 : (Fin g → ℂ) → ℂ) ∈ level τ 0 :=
   ⟨differentiable_const _, fun n n' z => by simp [eC_zero]⟩
@@ -367,6 +491,15 @@ end ThetaGen
 
 open ThetaGen in
 
+/- English proof (translation)
+Introduce `hbasis hspan hint hfin g τ hτ`. Set `R : ℕ → Submodule ℂ ((Fin g → ℂ) → ℂ)` to `fun d => level τ (3 * d)`. Establish `hmul : ∀ a b, R a * R b ≤ R (a + b)` using `fun a b => by`. Simplify using `only [R, mul_add]`. Conclude with `level_mul τ _ _`.
+
+Set `θ : (Fin g → Fin 3) → (Fin g → ℂ) → ℂ` to `fun c z => theta (fun i => ((c i : ℕ) : ℝ) / (3 : ℕ)) 0 (((3 : ℕ) : ℂ) • z) (((3 : ℕ) : ℂ) • τ)`. Take `⟨e, he⟩` from `exists_succ_le_mul_of_integral R (one_mem_level τ) hmul (fun d f hf => hf.1) θ (fun c => (hbasis g τ hτ 3 (by norm_num)).1 c) (fun d f hf => hint g τ hτ 3 le_rfl d f hf) hfin`. Establish `hpow` using `le_pow_of_succ_le_mul R hmul (e := e + 1) (by omega) (fun d hd => he d (by omega))`. Use `⟨3 * (e + 1), by omega, fun d f hf => ?_⟩` and prove the remaining obligations. Break down `d with _ | j` into its components or cases.
+
+Establish `hc` using `const_of_isIntegral θ hf.1 (hint g τ hτ 3 le_rfl 0 f hf).1`. Conclude with `⟨MvPolynomial.C (f 0), MvPolynomial.isHomogeneous_C _ _, fun z => by simp [hc z]⟩`. Establish `h1 : f ∈ R ((e + 1) * (j + 1))`. Simplify using `only [R, ← mul_assoc]`. Conclude with `hf`.
+
+Use `exists_isHomogeneous_of_mem_span_pow (fun (c : Fin g → Fin (3 * (e + 1))) z => theta (fun i => ((c i : ℕ) : ℝ) / (3 * (e + 1) : ℕ)) 0 (((3 * (e + 1) : ℕ) : ℂ) • z) (((3 * (e + 1) : ℕ) : ℂ) • τ)) (j + 1) ?_` and prove the remaining obligations. Use `SetLike.le_def.1 (pow_le_pow_left' ?_ (j + 1)) (hpow j h1)` and prove the remaining obligations. Conclude with `fun u hu => hspan g τ hτ (3 * (e + 1)) (by omega) u hu`.
+-/
 theorem theta_ring_generated_in_degree_one :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → (∀ c : Fin g → Fin N, (Differentiable ℂ (fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * (fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) z)) ∧ LinearIndependent ℂ (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ))) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → ∀ f : (Fin g → ℂ) → ℂ, (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(N : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → f ∈ Submodule.span ℂ (Set.range (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)))) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∀ N : ℕ, 3 ≤ N → ∀ (d : ℕ) (f : (Fin g → ℂ) → ℂ), (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → IsIntegral (Algebra.adjoin ℂ (Set.range fun (c : Fin g → Fin N) (p : ℂ × (Fin g → ℂ)) => p.1 * theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • p.2) ((N : ℂ) • τ))) (fun p : ℂ × (Fin g → ℂ) => p.1 ^ d * f p.2) ∧ ∃ a ∈ (Algebra.adjoin ℂ (Set.range fun (c : Fin g → Fin N) (p : ℂ × (Fin g → ℂ)) => p.1 * theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • p.2) ((N : ℂ) • τ))), ∃ b ∈ (Algebra.adjoin ℂ (Set.range fun (c : Fin g → Fin N) (p : ℂ × (Fin g → ℂ)) => p.1 * theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • p.2) ((N : ℂ) • τ))), b ≠ 0 ∧ b * (fun p : ℂ × (Fin g → ℂ) => p.1 ^ d * f p.2) = a) → (∀ (A B : Type) [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra ℂ A] [Algebra.FiniteType ℂ A] [Algebra A B] [FaithfulSMul A B] [Algebra.IsIntegral A B], (∀ b : B, ∃ a a' : A, a' ≠ 0 ∧ algebraMap A B a' * b = algebraMap A B a) → Module.Finite A B) → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → ∃ N : ℕ, 3 ≤ N ∧ ∀ (d : ℕ) (f : (Fin g → ℂ) → ℂ), (Differentiable ℂ f ∧ ∀ (n n' : Fin g → ℤ) z, f (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-((N * d : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * f z) → ∃ F : MvPolynomial (Fin g → Fin N) ℂ, F.IsHomogeneous d ∧ ∀ z, f z = MvPolynomial.eval (fun c => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) F) := by
   intro hbasis hspan hint hfin g τ hτ

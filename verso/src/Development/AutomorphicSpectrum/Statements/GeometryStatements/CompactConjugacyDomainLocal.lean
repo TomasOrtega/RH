@@ -52,6 +52,17 @@ def CptFlatInputs : Prop :=
 
 namespace CptInputs
 
+/- English proof (translation)
+Use `letI : Algebra F Ω := cst.toAlgebra`. Establish `hle : ∀ g : MRing J, aeval y g ∈ IntermediateField.adjoin F (Set.range y)` using `fun g => by`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem hp (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`. Use `haveI : Algebra.EssFiniteType F Ω := by`.
+
+Rewrite using `[← IntermediateField.fg_top_iff]`. Use `⟨(Set.finite_range y).toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset, eq_top_iff]`. Introduce `a _`. Take `⟨d, g, h, -, -, h0, e⟩` from `hy a`.
+
+Rewrite using `[eq_div_of_mul_eq h0 e.symm]`. Conclude with `div_mem (hle g) (hle h)`. Set `L` to `algebraicClosure F Ω`. Use `haveI : FiniteDimensional F L := GlobalTheory.finiteDimensional_algebraicClosure_of_essFiniteType F Ω`. Use `haveI : NumberField L := NumberField.of_module_finite F L`.
+
+Use `⟨L, inferInstance, inferInstance, algebraMap F L, algebraMap L Ω, rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨f, hf, hx⟩`. Establish `h1 : IsAlgebraic L x` using `⟨f, hf, hx⟩`. Conclude with `⟨⟨x, mem_algebraicClosure_iff.2 (h1.restrictScalars F)⟩, rfl⟩`.
+-/
 theorem exists_constants {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
     {y : (Σ k, J k) → Ω} (hy : Birational y) {F : Type} [Field F] [NumberField F] (cst : F →+* Ω) :
     ∃ (F' : Type) (_ : Field F') (_ : NumberField F') (ι : F →+* F') (ψ : F' →+* Ω), ψ.comp ι = cst ∧
@@ -80,6 +91,15 @@ theorem exists_constants {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K �
   have h1 : IsAlgebraic L x := ⟨f, hf, hx⟩
   exact ⟨⟨x, mem_algebraicClosure_iff.2 (h1.restrictScalars F)⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hfin : (Function.support fun v : HeightOneSpectrum (𝓞 F') => ((-WithZero.log (v.valuation F' a) : ℤ) : ℚ)).Finite`. Use `((HeightOneSpectrum.Support.finite (𝓞 F') a).union (HeightOneSpectrum.Support.finite (𝓞 F') a⁻¹)).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [HeightOneSpectrum.Support, Set.mem_union, Set.mem_ofPred_eq, not_or, not_lt, map_inv₀] at hn`. Establish `h0 : 0 < v.valuation F' a` using `zero_lt_iff.2 (by simpa using ha)`.
+
+Establish `: v.valuation F' a = 1` using `le_antisymm hn.1 ((inv_le_one₀ h0).1 hn.2)`. Conclude with `hv (by simp [this])`. Use `⟨Finsupp.ofSupportFinite _ hfin, fun _ => rfl, fun v π hπ => ⟨1, -WithZero.log (v.valuation F' a), one_pos, by rw [Nat.cast_one, one_mul]; rfl, fun p hp => ?_⟩⟩` and prove the remaining obligations. Establish `hπ0 : π ≠ 0` using `by rintro rfl; simp at hπ; exact WithZero.exp_ne_zero hπ.symm`. Establish `hu : v.valuation F' (a / π ^ (-WithZero.log (v.valuation F' a))) = 1`.
+
+Rewrite using `[map_div₀, map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Simplify using `only [smul_eq_mul, mul_neg, mul_one, neg_neg]`. Rewrite using `[WithZero.exp_log (by simpa using ha), div_self (by simpa using ha)]`. Use `⟨e, ψ a, he, rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← map_zpow₀, ← map_div₀]`.
+
+Conclude with `⟨(map_ne_zero ψ).2 (div_ne_zero ha (zpow_ne_zero _ hπ0)), hp _ hu.le, by rw [← map_inv₀]; exact hp _ (by rw [map_inv₀, hu, inv_one])⟩`.
+-/
 theorem orders_const {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) {F' : Type} [Field F']
     [NumberField F'] (ψ : F' →+* Ω) {a : F'} (ha : a ≠ 0) {e : Ω} (he : e ≠ 0) :
     ∃ r : HeightOneSpectrum (𝓞 F') →₀ ℚ, (∀ v, r v = (-WithZero.log (v.valuation F' a) : ℤ)) ∧
@@ -108,6 +128,9 @@ theorem orders_const {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRin
   exact ⟨(map_ne_zero ψ).2 (div_ne_zero ha (zpow_ne_zero _ hπ0)), hp _ hu.le,
     by rw [← map_inv₀]; exact hp _ (by rw [map_inv₀, hu, inv_one])⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c _ Y U Z φ τ t S Ω _ K _ J _ y 𝔐 Fl xdeg e hx A n h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14`. Take `⟨F', _, _, ι, ψ, hc, hcl⟩` from `exists_constants h5 𝔐.cst`. Take `⟨c₀, r, cinf, g0, g1, g2, g3, g4, g5⟩` from `hI E H D l Xo c Y U Z φ τ t S Ω K J y 𝔐 Fl xdeg e hx A n F' ι ψ h1 h2 h3 h4 hc hcl h5 h6 h7 h8 h9 h10 h11 h12 h13 h14`. Take `⟨k1, Sf, k2⟩` from `hG E H D l Xo c _ _ Y S Ω K J y 𝔐 Fl xdeg e τ F' ψ A c₀ r cinf h7 h11 h5 h10 g0 g2 g3 g4 g5`. Conclude with `⟨F', inferInstance, inferInstance, ι, ψ, r, hc, k1, Sf, by simpa only [g1, Real.log_exp] using k2⟩`.
+-/
 example (hI : CptFlatInputs) (hG : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω]
     (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y)

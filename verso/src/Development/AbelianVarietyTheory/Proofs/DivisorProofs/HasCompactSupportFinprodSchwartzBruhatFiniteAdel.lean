@@ -18,6 +18,25 @@ open ValuativeRel
 
 namespace GlobalTheory.AdelicCoordSupport
 
+/- English proof (translation)
+Introduce `F _ _ κ _ φ hSB hae`. Set `L : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), Set (κ → Fv F v)` to `fun v => {x | ∀ i, x i ∈ v.adicCompletionIntegers F}`. Establish `hLc : ∀ v, IsClosed (L v)` using `fun v => by`. Establish `e : L v = Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v))`. Use extensionality with `x`.
+
+Simplify using `[L]`. Rewrite using `[e]`. Conclude with `isClosed_set_pi fun _ _ => (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v).isClosed`. Establish `hint : ∀ y : κ → FiniteAdeleRing (𝓞 F) F, ∀ᶠ v in Filter.cofinite, (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ∈ L v` using `fun y => Filter.eventually_all.2 fun i => (y i).2`. Establish `hfac : ∀ y : κ → FiniteAdeleRing (𝓞 F) F, (∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ≠ 0 → ∀ v, φ v (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) ≠ 0`.
+
+Introduce `y h v`. Establish `hfin : (Function.mulSupport fun v => φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)).Finite`. Use `(Filter.eventually_cofinite.1 (hae.and (hint y))).subset ?_` and prove the remaining obligations. Introduce `w hw h'`. Apply `hw` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[h'.1, Set.indicator_of_mem h'.2]`. Both sides reduce to the same expression. Rewrite `h` using `[finprod_eq_prod _ hfin]`. Distinguish the cases in `hv : v ∈ hfin.toFinset`.
+
+Conclude with `Finset.prod_ne_zero_iff.1 h v hv`. Rewrite `hv` using `[Set.Finite.mem_toFinset, Function.mem_mulSupport, not_not]`. Rewrite using `[hv]`. Conclude with `one_ne_zero`. Set `D : κ → ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), Set (Fv F v)` to `fun i v => ((fun Z : κ → Fv F v => Z i) '' tsupport (φ v)) ∪ (v.adicCompletionIntegers F : Set (Fv F v))`.
+
+Establish `hD : ∀ i v, IsCompact (D i v)` using `fun i v => ((hSB v).2.isCompact.image (continuous_apply i)).union (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v)`. Establish `hDe : ∀ i, ∀ᶠ v in Filter.cofinite, D i v = (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `i`. Use `filter_upwards [hae] with v hv`. Use `Set.union_eq_right.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨Z, hZ, rfl⟩`. Establish `hsub : tsupport (φ v) ⊆ L v`. Rewrite using `[hv]`. Conclude with `closure_minimal Set.support_indicator_subset (hLc v)`. Conclude with `hsub hZ i`.
+
+Set `Box : Set (κ → FiniteAdeleRing (𝓞 F) F)` to `Set.pi Set.univ fun i => {x | ∀ v, x v ∈ D i v}`. Establish `hbox : IsCompact Box` using `isCompact_univ_pi fun i => PI.VolStabS.AdmissibleCompactSupport.isCompact_finBox (hD i) (hDe i)`. Use `HasCompactSupport.intro hbox fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hy` to reduce the goal to its premises.
+
+Introduce `i _ v`. Conclude with `Or.inl ⟨_, subset_tsupport _ (hfac y h v), rfl⟩`.
+-/
 theorem hasCompactSupport_finprod : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (φ : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ), (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) →
     (∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) →

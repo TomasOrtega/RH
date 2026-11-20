@@ -12,6 +12,21 @@ namespace GlobalTheory.CoverPullComb
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T hL j hj σ hσ a n hD C hU hP la m β hβ y hy`. Establish `hpull : ∀ k, ∃ g₂ ∈ sec C.d.Xo₂ C.d.c₂ a n, C.IsPull (β k) g₂` using `fun k => GlobalTheory.CovPull.exists_pull D T hL j hj σ hσ C hU.1 a n (β k) (hβ k)`. Use `choose g hg hgp using hpull`. Use `⟨g, hg, hgp, ?_⟩` and prove the remaining obligations. Take `⟨f₂, ⟨hf₂c, hf₂i⟩, hf₂r⟩` from `hy`.
+
+Set `R : Rul C.d.Xo₂ C.d.c₂ →ₛₗ[C.σ₂] (GA D (T.V j σ) → ℂ)` to `(lieFac (T.Q.Dw j) (xiR D) a : ℂ) • ((adel (T.V j σ) C.dict₂ (muPin (T.V j σ) C.dict₂ (T.mu j σ) C.cc₂)).comp (rdU C.U₂))`. Establish `hR : ∀ f, C.rd a f = R f` using `fun _ => rfl`. Establish `hsum : C.rd a (∑ k, y k • g k) = ∑ k, C.σ₂ (y k) • T.phiJ j σ a (β k)`. Rewrite using `[hR, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, ← hR, hP.2 (β k) (hβ k) (g k) (hg k) (hgp k)]`. Use `set s := ∑ k, y k • g k with hs`. Establish `hsmem : s ∈ sec C.d.Xo₂ C.d.c₂ a n` using `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hg k)`. Establish `hdmem : f₂ - s ∈ sec C.d.Xo₂ C.d.c₂ a n` using `Submodule.sub_mem _ hf₂c.1 hsmem`. Establish `hd0 : C.rd a (f₂ - s) = 0`.
+
+Rewrite using `[hR, map_sub, ← hR, ← hR, hf₂r, hsum, sub_self]`. Establish `heq : f₂ = s`. Assume the negation of the conclusion as `hne`. Establish `hne' : f₂ - s ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hli : LinearIndependent C.d.c₂.F (fun _ : Fin 1 => f₂ - s)`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Rewrite `hc` using `[Fin.sum_univ_one]`. Establish `hi : i = 0` using `Subsingleton.elim _ _`. Substitute `hi` using the available equality.
+
+Assume the negation of the conclusion as `hc0`. Apply `hne'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hC` using `GlobalTheory.CoverIndep.cover_rd_linearIndependent D T hL j hj σ hσ C hU hP.1 a n hD 1 (fun _ => f₂ - s) (fun _ => hdmem) hli`. Conclude with `hC.ne_zero 0 hd0`.
+
+Introduce `v hv`. Rewrite using `[← heq]`. Conclude with `hf₂i la rfl v hv`.
+-/
 theorem exists_pull_comb_integral : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ C : Cover T j σ, C.IsUnif → C.IsPinned a n → ∀ (la : HeightOneSpectrum (𝓞 C.d.c₂.F)) (m : ℕ) (β : Fin m → Rul (T.Q.Xo j) T.Q.c), (∀ k, β k ∈ sec (T.Q.Xo j) T.Q.c a n) → ∀ y : Fin m → C.d.c₂.F, (∑ k, C.σ₂ (y k) • T.phiJ j σ a (β k)) ∈ C.intForms a n {la} → ∃ g : Fin m → Rul C.d.Xo₂ C.d.c₂, (∀ k, g k ∈ sec C.d.Xo₂ C.d.c₂ a n) ∧ (∀ k, C.IsPull (β k) (g k)) ∧ ∀ v ∈ valSet C.d.Xo₂ C.d.c₂ (algCls C.d.Xo₂ C.d.c₂) la, 0 ≤ v (∑ k, y k • g k) := by
   intro D T hL j hj σ hσ a n hD C hU hP la m β hβ y hy
   have hpull : ∀ k, ∃ g₂ ∈ sec C.d.Xo₂ C.d.c₂ a n, C.IsPull (β k) g₂ :=

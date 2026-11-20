@@ -17,10 +17,72 @@ def OnOldBound : Prop :=
       (∀ e, B.CCle (A + 3 * ((m + 1 : ℕ) : ℝ)) m (x e) c) →
       ∀ e, B.CCle A m (KB.onOld (PBO.mDiff Bs σ w) ys x e) (K * ‖σ‖ ^ 3 * c)
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.PBD.plusW_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem plusW_length (ys : List ℝ) (w : List C.Letter) : (KB.plusW ys w).length = ys.length + w.length := by
   rw [Formalism.FourierDecayAlt.P.PBD.plusW_eq]
   simp
 
+/- English proof (translation)
+Introduce `_hP Cb`. Take `⟨Cs, hCs0, hSQ⟩` from `Formalism.FourierDecayAlt.P.PBE.sliceQ`. Use `⟨2 * Cs + 2, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f χ ε A N cut _hInD hχ hε hf hfA hA hcut j hj w hw hwN h hh ys hys hcw`. Establish `hk2 : 2 ≤ P.k` using `p.hl.2.2`.
+
+Use `set N₂ : ℕ := 2 * N + 6 with hN₂`. Use `set R : ℝ := ((P.r : ℝ) + 1) ^ 4 with hRdef`. Establish `hR1 : 1 ≤ R` using `one_le_pow₀ (by have : (0 : ℝ) ≤ P.r := Nat.cast_nonneg _; linarith)`. Use `set n0 : ℝ := 2 * (P.r : ℝ) + P.k + 1 with hn0`. Establish `hn01 : 1 ≤ n0`.
+
+Establish `: (0 : ℝ) ≤ P.r` using `Nat.cast_nonneg _`. Establish `: (0 : ℝ) ≤ P.k` using `Nat.cast_nonneg _`. Rewrite using `[hn0]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set X : ℝ := ((N + 3 : ℕ) : ℝ) * n0 ^ 2 + n0 ^ 3 with hXdef`.
+
+Establish `hX1 : 1 ≤ X`. Establish `h1 : 1 ≤ n0 ^ 3` using `one_le_pow₀ hn01`. Establish `: 0 ≤ ((N + 3 : ℕ) : ℝ) * n0 ^ 2` using `by positivity`. Rewrite using `[hXdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hA' : Cs * ((P.r : ℝ) + 1) ^ 4 * ((N₂ : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A - 1`. Establish `hX2 : (N₂ : ℝ) * n0 ^ 2 + n0 ^ 3 ≤ 2 * X`. Rewrite using `[hXdef, hN₂]`. Use `push_cast`. Establish `: 0 ≤ n0 ^ 3` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hRX : 1 ≤ R * X` using `by nlinarith`. Establish `h0 : (2 * Cs + 2) * R * X ≤ A` using `hA`. Combine the equalities or inequalities in the displayed calculation. Use `set MM := 3 * (11 * (N₂ * (2 * P.r + P.k + 1) ^ 2 + (2 * P.r + P.k + 1) ^ 3) + 5) with hMM`.
+
+Take `⟨bf, hbf⟩` from `hfA MM`. Establish `hbf0 : 0 ≤ bf` using `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_nonneg hbf`. Establish `hbf' : B.CCle (A - 1) MM f bf` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by linarith) hbf`. Take `⟨Kp, hKp0, hKp⟩` from `Formalism.FourierDecayAlt.P.JCx2.pd_cut_ccle (k := P.k) (r := P.r) (E := Wq →L[ℂ] Wp) MM`. Establish `hψ : ∀ n : ℕ, B.CCle (A - 1) MM (fun g => Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g • f g) (Kp * bf / ((n : ℝ) + 1))` using `fun n => hKp _ (by positivity) A f bf hbf`.
+
+Establish `hψs : ∀ n : ℕ, B.CkOn ⊤ (B.GV P.k P.r) (fun g => Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g • f g)` using `fun n => Formalism.FourierDecayAlt.P.JCx2.pd_smooth_smul (Formalism.FourierDecayAlt.P.JCx2.pd_psi_cd _) hf`. Use `set hn : ℕ → B.Mat P.k P.r → (Wq →L[ℂ] Wp) := fun n g => cut n g • f g with hhn`. Establish `hneq : ∀ n, hn n = fun g => f g + (-1 : ℂ) • (Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g • f g)`. Introduce `n`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [hhn, Formalism.FourierDecayAlt.P.PBE.cut_eq cut hcut n g, sub_smul, one_smul]`. Simplify using `[sub_eq_add_neg]`. Establish `hnC : ∀ n, B.CCle (A - 1) MM (hn n) (bf + Kp * bf)`. Introduce `n`. Rewrite using `[hneq n]`.
+
+Use `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add hbf' (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul (-1) (hψ n))) ?_` and prove the remaining obligations. Establish `h1 : Kp * bf / ((n : ℝ) + 1) ≤ Kp * bf` using `div_le_self (by positivity) (by`. Establish `: (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use the proof step `linarith)`. Simplify using `only [norm_neg, norm_one, one_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hns : ∀ n, B.CkOn ⊤ (B.GV P.k P.r) (hn n)`. Introduce `n`. Rewrite using `[hneq n]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_add hf (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_smul (-1) (hψs n))`.
+
+Establish `hFn : ∀ n, (fun g => cut n g • D.cutF p.T.base χ f ε g) = D.cutF p.T.base χ (hn n) ε`. Introduce `n`. Use function extensionality and compare the values at `g`. Simplify using `only [D.cutF, hhn]`. Rewrite using `[smul_comm]`.
+
+Use `set w' := KB.plusW ys w with hw'`. Establish `hw'len : w'.length ≤ N + 3` using `by rw [hw', plusW_length]; omega`. Establish `hN₂w : w'.length ≤ N₂` using `by omega`. Establish `hc : P.r - j = P.r - D.ptSize h` using `by rw [hh.2]`. Establish `hQ` using `fun e => hSQ Cs le_rfl P.k P.r Wp Wq p.T χ (A - 1) N₂ P rfl rfl hk2 hχ hA' ε hε j hj w' hN₂w h hc hh e`.
+
+Use `choose εa Ka hεa hKa hQ1 _hQ2 using hQ`. Use `set KK : ℝ := ∑ e, Ka e with hKK`. Establish `hKa' : ∀ e, Ka e ≤ KK` using `fun e => Finset.single_le_sum (f := Ka) (fun e _ => hKa e) (Finset.mem_univ e)`. Establish `hKK0 : 0 ≤ KK` using `Finset.sum_nonneg fun e _ => hKa e`. Use `set cs : ℝ := KK * (bf + Kp * bf) with hcs`.
+
+Establish `hcs0 : 0 ≤ cs` using `by positivity`. Establish `hsl : ∀ n e, B.CCle (P5.Auser P N₂ + 1) (P5.mmUser P N₂) (Formalism.FourierDecayAlt.P.PBE.xs p.T χ ε j hj w' h hc (hn n) e) cs`. Introduce `n e`. Take `⟨-, h2⟩` from `hQ1 e (hn n) _ (hns n) (hnC n)`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c h2 (mul_le_mul_of_nonneg_right (hKa' e) (by positivity))`.
+
+Establish `hxs : ∀ n, KB.slv p.T (D.cutF p.T.base χ (hn n) ε) j hj w' h hh.2 = Formalism.FourierDecayAlt.P.PBE.xs p.T χ ε j hj w' h hc (hn n)` using `fun n => rfl`. Use `set mo : ℕ := 5 + (2 * (P.r - j) + P.k + 1) * w'.length with hmo`. Take `⟨K3, hK30, hK3⟩` from `hO P.k (P.r - j) Wp Wq (p.T.bs j) w mo`. Use `set Af : ℝ := P5.Auser P w'.length + 1 with hAf`. Take `⟨Cf, hCf0, hCf⟩` from `Formalism.FourierDecayAlt.P.JCx4.formLev_bound_mm P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w' Af le_rfl`.
+
+Establish `hq : ((2 * (P.r - j) + P.k + 1 : ℕ) : ℝ) ≤ n0`. Rewrite using `[hn0]`. Establish `: P.r - j ≤ P.r` using `Nat.sub_le _ _`. Establish `: ((P.r - j : ℕ) : ℝ) ≤ P.r` using `by exact_mod_cast this`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : (w'.length : ℝ) ≤ (N : ℝ) + 3` using `by exact_mod_cast hw'len`. Establish `hdec : Af - 1 + 3 * ((mo + 1 : ℕ) : ℝ) ≤ P5.Auser P N₂ + 1`. Establish `hmo' : ((mo + 1 : ℕ) : ℝ) = 6 + ((2 * (P.r - j) + P.k + 1 : ℕ) : ℝ) * (w'.length : ℝ)`. Rewrite using `[hmo]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnV : ((P5.nV P : ℕ) : ℝ) = n0` using `by rw [hn0]; unfold P5.nV; push_cast; ring`. Establish `hR3 : 1 ≤ ((P.r : ℝ) + 1) ^ 3` using `one_le_pow₀ (by have : (0 : ℝ) ≤ P.r := Nat.cast_nonneg _; linarith)`. Establish `hdiff : P5.Auser P N₂ - P5.Auser P w'.length = 127 * ((P.r : ℝ) + 1) ^ 3 * (n0 ^ 2 * ((N₂ : ℝ) - w'.length))`.
+
+Unfold `P5.Auser`. Rewrite using `[hnV]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgap : (N : ℝ) + 3 ≤ (N₂ : ℝ) - w'.length` using `by rw [hN₂]; push_cast; linarith`. Establish `hN3 : (3 : ℝ) ≤ (N : ℝ) + 3` using `by have : (0 : ℝ) ≤ N := Nat.cast_nonneg _; linarith`.
+
+Establish `h1 : 127 * (n0 ^ 2 * ((N : ℝ) + 3)) ≤ P5.Auser P N₂ - P5.Auser P w'.length`. Rewrite using `[hdiff]`. Establish `hb : n0 ^ 2 * ((N : ℝ) + 3) ≤ n0 ^ 2 * ((N₂ : ℝ) - w'.length)` using `mul_le_mul_of_nonneg_left hgap (by positivity)`. Establish `hpos : 0 ≤ n0 ^ 2 * ((N : ℝ) + 3)` using `by positivity`. Establish `hY : 0 ≤ n0 ^ 2 * ((N₂ : ℝ) - w'.length)` using `le_trans hpos hb`.
+
+Establish `hR : n0 ^ 2 * ((N₂ : ℝ) - w'.length) ≤ ((P.r : ℝ) + 1) ^ 3 * (n0 ^ 2 * ((N₂ : ℝ) - w'.length))` using `le_mul_of_one_le_left hY hR3`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 127 * ((P.r : ℝ) + 1) ^ 3 * (n0 ^ 2 * ((N₂ : ℝ) - w'.length)) := by ring`. Establish `h2 : ((2 * (P.r - j) + P.k + 1 : ℕ) : ℝ) * (w'.length : ℝ) ≤ n0 * ((N : ℝ) + 3)` using `mul_le_mul hq hL (Nat.cast_nonneg _) (by linarith)`.
+
+Establish `ha3 : 3 ≤ n0 * ((N : ℝ) + 3)`. Combine the equalities or inequalities in the displayed calculation. Establish `hb2 : n0 * ((N : ℝ) + 3) ≤ n0 ^ 2 * ((N : ℝ) + 3)`. Establish `e : n0 ^ 2 * ((N : ℝ) + 3) = n0 * (n0 * ((N : ℝ) + 3))` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `le_mul_of_one_le_left (by linarith) hn01`. Establish `h3 : 3 * (n0 * ((N : ℝ) + 3)) + 17 ≤ 127 * (n0 ^ 2 * ((N : ℝ) + 3))` using `by linarith`. Rewrite using `[hAf, hmo']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hord : mo ≤ P5.mmUser P N₂`.
+
+Establish `h1 : 2 * (P.r - j) + P.k + 1 ≤ P5.nV P` using `by unfold P5.nV; omega`. Establish `h2 : w'.length ≤ 3 * (P.r + 1) * (N₂ + 2)`. Establish `: N + 3 ≤ 3 * (P.r + 1) * (N₂ + 2)`. Establish `: 1 ≤ 3 * (P.r + 1)` using `by omega`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use linear arithmetic over natural numbers and integers. Establish `h3 : (2 * (P.r - j) + P.k + 1) * w'.length ≤ P5.nV P * (3 * (P.r + 1) * (N₂ + 2))` using `Nat.mul_le_mul h1 h2`. Establish `e : P5.mmUser P N₂ = 5 + 3 * (P.r + 1) * (N₂ + 2) * P5.nV P + N₂ * P.r` using `rfl`. Establish `e2 : P5.nV P * (3 * (P.r + 1) * (N₂ + 2)) = 3 * (P.r + 1) * (N₂ + 2) * P5.nV P` using `by ring`. Rewrite using `[e, hmo]`.
+
+Rewrite `h3` using `[e2]`. Conclude with `le_trans (Nat.add_le_add_left h3 5) (Nat.le_add_right _ _)`. Use `⟨Cf * (K3 * cs) * (K3 * cs), fun n σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[hFn n, hxs n]`. Establish `hx : ∀ e, B.CCle (Af - 1 + 3 * ((mo + 1 : ℕ) : ℝ)) mo (Formalism.FourierDecayAlt.P.PBE.xs p.T χ ε j hj w' h hc (hn n) e) cs` using `fun e => Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A hdec (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m hord (hsl n e))`.
+
+Establish `hu` using `hK3 σ hσ ys (Af - 1) _ cs hx`. Establish `hv : ∀ e, B.CCle (Af - 1 - 2 * (w'.length : ℝ)) 5 (KB.onOld (PBO.mDiff (p.T.bs j) σ w) ys (Formalism.FourierDecayAlt.P.PBE.xs p.T χ ε j hj w' h hc (hn n)) e) (K3 * ‖σ‖ ^ 3 * cs)` using `fun e => Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by have : (0 : ℝ) ≤ w'.length := Nat.cast_nonneg _; linarith) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m (by rw [hmo]; omega) (hu e))`. Establish `hb` using `hCf _ _ _ _ hu hv`. Use `show ‖D.formLev p.T (M.sgn P p.l0) ⟨j, by omega⟩ w' _ _‖ ≤ _`. Use `hb.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem waveDiffForm_of (hO : OnOldBound) : PBO.WaveDiffForm := by
   intro _hP Cb
   obtain ⟨Cs, hCs0, hSQ⟩ := Formalism.FourierDecayAlt.P.PBE.sliceQ

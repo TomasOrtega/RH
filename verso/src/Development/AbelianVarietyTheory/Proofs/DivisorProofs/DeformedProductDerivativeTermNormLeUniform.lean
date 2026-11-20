@@ -10,6 +10,9 @@ namespace GlobalTheory.DeformedSum.Bound
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
+/- English proof (translation)
+Establish `h1 : ‖z i * starRingEnd ℂ (φ i x)‖ = ‖z i‖ * ‖φ i x‖` using `by rw [norm_mul, Complex.norm_conj]`. Establish `h2` using `norm_sub_norm_le (φ i x) (-(z i * starRingEnd ℂ (φ i x)))`. Rewrite `h2` using `[norm_neg, h1, sub_neg_eq_add]`. Unfold `defCoord`. Use polynomial arithmetic with `[norm_nonneg (φ i x)]`.
+-/
 theorem defCoord_lower (φ : I → E →+* ℂ) (z : I → ℂ) (x : E) (i : I) {r : ℝ} (hz : ‖z i‖ ≤ r) :
     (1 - r) * ‖φ i x‖ ≤ ‖defCoord φ z x i‖ := by
   have h1 : ‖z i * starRingEnd ℂ (φ i x)‖ = ‖z i‖ * ‖φ i x‖ := by rw [norm_mul, Complex.norm_conj]
@@ -18,6 +21,13 @@ theorem defCoord_lower (φ : I → E →+* ℂ) (z : I → ℂ) (x : E) (i : I) 
   unfold defCoord
   nlinarith [norm_nonneg (φ i x)]
 
+/- English proof (translation)
+Establish `hp : 0 < ‖φ i x‖` using `by simpa using hx`. Establish `hr' : 0 < 1 - r` using `by linarith`. Establish `hl` using `defCoord_lower φ z x i hz`. Establish `hd : 0 < ‖defCoord φ z x i‖` using `lt_of_lt_of_le (mul_pos hr' hp) hl`. Establish `hinv : ‖defCoord φ z x i‖⁻¹ ≤ (1 - r)⁻¹ * ‖φ i x‖⁻¹`.
+
+Rewrite using `[← mul_inv]`. Conclude with `inv_anti₀ (mul_pos hr' hp) hl`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow, Complex.norm_conj, norm_inv]`. Rewrite using `[mul_assoc, mul_assoc]`. Use `gcongr ‖_‖ * ?_`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, pow_add ‖φ i x‖⁻¹]`. Establish `: ‖φ i x‖ ^ m i * ‖φ i x‖⁻¹ ^ m i = 1` using `by rw [← mul_pow, mul_inv_cancel₀ hp.ne', one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factor_le (φ : I → E →+* ℂ) (k : ℕ) (m : I → ℕ) (z : I → ℂ) (x : E) (hx : x ≠ 0) (i : I) {r : ℝ} (hr : r < 1)
     (hz : ‖z i‖ ≤ r) :
     ‖((-1 : ℂ) ^ m i * ∏ j ∈ Finset.range (m i), ((k : ℂ) + j)) * (starRingEnd ℂ (φ i x)) ^ m i *
@@ -41,6 +51,11 @@ theorem factor_le (φ : I → E →+* ℂ) (k : ℕ) (m : I → ℕ) (z : I → 
           = (1 - r)⁻¹ ^ (k + m i) * ‖φ i x‖⁻¹ ^ k * (‖φ i x‖ ^ m i * ‖φ i x‖⁻¹ ^ m i) := by ring
         _ = _ := by rw [this, mul_one]
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hφ s m r hr`. Use `⟨∏ i, (‖(-1 : ℂ) ^ m i * ∏ j ∈ Finset.range (m i), (((2 * s : ℕ) : ℂ) + j)‖ * ((1 - r)⁻¹) ^ (2 * s + m i)), fun z hz x hx => ?_⟩` and prove the remaining obligations. Establish `hN : |(Algebra.norm ℚ x : ℝ)| ^ (-(s : ℝ)) = ∏ i, (‖φ i x‖⁻¹) ^ (2 * s)`. Rewrite using `[← TermUnit.prod_norm_sq hφ x, Real.rpow_neg (Finset.prod_nonneg fun i _ => by positivity), Real.rpow_natCast, ← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_mul, inv_pow, inv_pow]`. Rewrite using `[hN, ← Finset.prod_mul_distrib, dTerm, norm_prod]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Conclude with `factor_le φ (2 * s) m z x hx i hr (hz i)`.
+-/
 theorem dTerm_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
     IsCMType φ → ∀ (s : ℕ) (m : I → ℕ) (r : ℝ), r < 1 → ∃ C : ℝ, ∀ z : I → ℂ, (∀ i, ‖z i‖ ≤ r) → ∀ x : E, x ≠ 0 →
       ‖dTerm φ (2 * s) m z x‖ ≤ C * |(Algebra.norm ℚ x : ℝ)| ^ (-(s : ℝ)) := by

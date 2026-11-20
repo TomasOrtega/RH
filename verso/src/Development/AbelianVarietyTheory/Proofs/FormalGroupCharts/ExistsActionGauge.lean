@@ -20,10 +20,18 @@ variable {k : Type} [CommRing k] {d : ℕ}
 def evAdd {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) : PS k m d →+ PS k n d :=
   AddMonoidHom.mk' (ev a) (gt_ev_add a ha)
 
+/- English proof (translation)
+The claim follows from `map_rat_smul (evAdd a ha) q f`.
+-/
 theorem ev_ratSmul [Algebra ℚ k] {m n : ℕ} (a : Fin m → Pt k n d) (ha : ∀ j, GP (a j)) (q : ℚ)
     (f : PS k m d) : ev a (q • f) = q • ev a f :=
   map_rat_smul (evAdd a ha) q f
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![pt k (n := 2) d 0, pt k (n := 2) d 1] p.1) p.2) f = f`. Establish `e : (fun p : Fin 2 × Fin d => (![pt k (n` using `2) d 0, pt k (n := 2) d 1] p.1) p.2) = X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`.
+
+Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_pt_two (f : PS k 2 d) : ev ![pt k (n := 2) d 0, pt k (n := 2) d 1] f = f := by
   change MvPowerSeries.subst
     (fun p : Fin 2 × Fin d => (![pt k (n := 2) d 0, pt k (n := 2) d 1] p.1) p.2) f = f
@@ -34,11 +42,17 @@ theorem ev_pt_two (f : PS k 2 d) : ev ![pt k (n := 2) d 0, pt k (n := 2) d 1] f 
   rw [e, MvPowerSeries.subst_self]
   rfl
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]`.
+-/
 theorem ev_ev_two {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (a b : Pt k m d)
     (ha : GP a) (hb : GP b) (f : PS k 2 d) :
     ev V (ev ![a, b] f) = ev ![evP V a, evP V b] f := by
   rw [gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant ha hb`. Rewrite using `[ev_ev_two _ hV _ _ (gp_comp1 _ _ hφ (gp_pt 0)) (gp_pt 1), evP_comp1 _ hV _ _ (gp_pt 0), evP_pt _ hV, evP_pt _ hV]`. Both sides reduce to the same expression.
+-/
 theorem ev_left {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (a b : Pt k n d) (ha : GP a) (hb : GP b)
     (g : PS k 2 d) :
     ev ![a, b] (ev ![comp1 φ (pt k (n := 2) d 0), pt k (n := 2) d 1] g) = ev ![comp1 φ a, b] g := by
@@ -47,6 +61,9 @@ theorem ev_left {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (a b : Pt k n d) (ha : G
     evP_comp1 _ hV _ _ (gp_pt 0), evP_pt _ hV, evP_pt _ hV]
   rfl
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant ha hb`. Rewrite using `[ev_ev_two _ hV _ _ (gp_pt 0) (gp_comp1 _ _ hφ (gp_pt 1)), evP_comp1 _ hV _ _ (gp_pt 1), evP_pt _ hV, evP_pt _ hV]`. Both sides reduce to the same expression.
+-/
 theorem ev_right {n : ℕ} (φ : Pt k 1 d) (hφ : GP φ) (a b : Pt k n d) (ha : GP a) (hb : GP b)
     (g : PS k 2 d) :
     ev ![a, b] (ev ![pt k (n := 2) d 0, comp1 φ (pt k (n := 2) d 1)] g) = ev ![a, comp1 φ b] g := by
@@ -61,6 +78,9 @@ section Act
 
 variable {k : Type} [CommRing k] {d : ℕ} {O : Type} [CommRing O] {G : FGLaw k d} (A : OAct O G)
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant hx hy`. Establish `hc : GP (A.act c)` using `A.const c`. Establish `h` using `congrArg (evP ![x, y]) (A.hom c)`. Rewrite `h` using `[evP_comp1 _ hV _ _ (gp_addOf _ G.const _ _ (gp_pt 0) (gp_pt 1)), evP_addOf _ hV _ _ _ (gp_pt 0) (gp_pt 1), evP_addOf _ hV _ _ _ (gp_comp1 _ _ hc (gp_pt 0)) (gp_comp1 _ _ hc (gp_pt 1)), evP_comp1 _ hV _ _ (gp_pt 0), evP_comp1 _ hV _ _ (gp_pt 1), evP_pt _ hV, evP_pt _ hV]`. Conclude with `h`.
+-/
 theorem act_addOf (c : O) {n : ℕ} (x y : Pt k n d) (hx : GP x) (hy : GP y) :
     comp1 (A.act c) (addOf G.F x y) = addOf G.F (comp1 (A.act c) x) (comp1 (A.act c) y) := by
   have hV := pair_points_zero_constant hx hy
@@ -73,16 +93,25 @@ theorem act_addOf (c : O) {n : ℕ} (x y : Pt k n d) (hx : GP x) (hy : GP y) :
     evP_pt _ hV, evP_pt _ hV] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[A.add_act]`. Conclude with `evP_addOf ![x] (single_point_zero_constant hx) G.F _ _ (A.const a) (A.const b)`.
+-/
 theorem add_act_apply (a b : O) {n : ℕ} (x : Pt k n d) (hx : GP x) :
     comp1 (A.act (a + b)) x = addOf G.F (comp1 (A.act a) x) (comp1 (A.act b) x) := by
   rw [A.add_act]
   exact evP_addOf ![x] (single_point_zero_constant hx) G.F _ _ (A.const a) (A.const b)
 
+/- English proof (translation)
+Rewrite using `[A.mul_act]`. Conclude with `gt_comp1_comp1 _ _ (A.const b) x hx`.
+-/
 theorem mul_act_apply (a b : O) {n : ℕ} (x : Pt k n d) (hx : GP x) :
     comp1 (A.act (a * b)) x = comp1 (A.act a) (comp1 (A.act b) x) := by
   rw [A.mul_act]
   exact gt_comp1_comp1 _ _ (A.const b) x hx
 
+/- English proof (translation)
+Rewrite using `[A.one_act]`. Conclude with `gt_comp1_pt x hx`.
+-/
 theorem one_act_apply {n : ℕ} (x : Pt k n d) (hx : GP x) : comp1 (A.act 1) x = x := by
   rw [A.one_act]
   exact gt_comp1_pt x hx
@@ -170,9 +199,15 @@ def rightMap (c : O) : Module.End ℚ (biadd G) where
   map_smul' q f := Subtype.ext
     (ev_ratSmul _ (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ (A.const c) (gp_pt 1))) _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leftMap_val (c : O) (g : biadd G) : (leftMap A c g : PS k 2 d) =
     ev ![comp1 (A.act c) (pt k (n := 2) d 0), pt k (n := 2) d 1] (g : PS k 2 d) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightMap_val (c : O) (g : biadd G) : (rightMap A c g : PS k 2 d) =
     ev ![pt k (n := 2) d 0, comp1 (A.act c) (pt k (n := 2) d 1)] (g : PS k 2 d) := rfl
 
@@ -214,6 +249,9 @@ def rightHom : O →+* Module.End ℚ (biadd G) :=
       exact g.2.2.2.2 _ _ _ _ (gp_pt 0) (gp_comp1 _ _ (A.const a) (gp_pt 1))
         (gp_comp1 _ _ (A.const b) (gp_pt 1)))
 
+/- English proof (translation)
+Use `LinearMap.ext fun g => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(leftMap A a (rightMap A b g) : PS k 2 d) = rightMap A b (leftMap A a g)`. Rewrite using `[leftMap_val, rightMap_val, rightMap_val, leftMap_val, ev_right _ (A.const b) _ _ (gp_comp1 _ _ (A.const a) (gp_pt 0)) (gp_pt 1), ev_left _ (A.const a) _ _ (gp_pt 0) (gp_comp1 _ _ (A.const b) (gp_pt 1))]`.
+-/
 theorem left_right_commute (a b : O) : Commute (leftHom A a) (rightHom A b) := by
   refine LinearMap.ext fun g => Subtype.ext ?_
   change (leftMap A a (rightMap A b g) : PS k 2 d) = rightMap A b (leftMap A a g)
@@ -228,28 +266,59 @@ section Log
 variable {k : Type} [CommRing k] [Algebra ℚ k] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
   (B : FB k d O)
 
+/- English proof (translation)
+The claim follows from `exp_inj hf hg h`.
+-/
 theorem expS_inj {n : ℕ} {f g : PS k n d} (hf : constantCoeff f = 0) (hg : constantCoeff g = 0)
     (h : FB.expS k f = FB.expS k g) : f = g := exp_inj hf hg h
 
 omit [Algebra ℚ k] in
+/- English proof (translation)
+Establish `h` using `congrArg constantCoeff (B.adjoint_zero_fst a)`. Rewrite `h` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_one]`. Then use the resulting hypothesis.
+-/
 theorem ad_const (a : O) : constantCoeff (B.ad a) = 1 := by
   have h := congrArg constantCoeff (B.adjoint_zero_fst a)
   rwa [gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_one] at h
 
 def logAd (a : O) : PS k 2 d := PowerSeries.subst (B.ad a - 1) (PowerSeries.log k)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_logS (ad_const B a)`.
+-/
 theorem logAd_const (a : O) : constantCoeff (logAd B a) = 0 := constantCoeff_logS (ad_const B a)
 
+/- English proof (translation)
+The claim follows from `exp_log (ad_const B a)`.
+-/
 theorem expS_logAd (a : O) : FB.expS k (logAd B a) = B.ad a := exp_log (ad_const B a)
 
+/- English proof (translation)
+Rewrite using `[← gt_ev_expS _ (pair_points_zero_constant ha hb) _ (logAd_const B c), expS_logAd]`.
+-/
 theorem expS_ev_logAd (c : O) {n : ℕ} (a b : Pt k n d) (ha : GP a) (hb : GP b) :
     FB.expS k (ev ![a, b] (logAd B c)) = ev ![a, b] (B.ad c) := by
   rw [← gt_ev_expS _ (pair_points_zero_constant ha hb) _ (logAd_const B c), expS_logAd]
 
+/- English proof (translation)
+The claim follows from `gt_const_ev _ (pair_points_zero_constant ha hb) _ (logAd_const B c)`.
+-/
 theorem ev_logAd_const (c : O) {n : ℕ} (a b : Pt k n d) (ha : GP a) (hb : GP b) :
     constantCoeff (ev ![a, b] (logAd B c)) = 0 :=
   gt_const_ev _ (pair_points_zero_constant ha hb) _ (logAd_const B c)
 
+/- English proof (translation)
+Use `⟨fun n b hb => ?_, fun n a ha => ?_, fun n a a' b ha ha' hb => ?_, fun n a b b' ha hb hb' => ?_⟩` and prove the remaining obligations. Use `eq_zero_of_exp_eq_one (ev_logAd_const B c _ _ gp_zero₂ hb) ?_` and prove the remaining obligations. Use `(expS_ev_logAd B c _ _ gp_zero₂ hb).trans ?_` and prove the remaining obligations. Establish `h` using `congrArg (ev ![b]) (B.adjoint_zero_fst c)`. Rewrite `h` using `[ev_ev_two _ (single_point_zero_constant hb) _ _ gp_zero₂ (gp_pt 0), evP_zero _ (single_point_zero_constant hb), evP_pt _ (single_point_zero_constant hb), ev_one]`.
+
+Conclude with `h`. Use `eq_zero_of_exp_eq_one (ev_logAd_const B c _ _ ha gp_zero₂) ?_` and prove the remaining obligations. Use `(expS_ev_logAd B c _ _ ha gp_zero₂).trans ?_` and prove the remaining obligations. Establish `h` using `congrArg (ev ![a]) (B.adjoint_zero_snd c)`. Rewrite `h` using `[ev_ev_two _ (single_point_zero_constant ha) _ _ (gp_pt 0) gp_zero₂, evP_zero _ (single_point_zero_constant ha), evP_pt _ (single_point_zero_constant ha), ev_one]`.
+
+Conclude with `h`. Establish `hs` using `gp_addOf _ B.G.const _ _ ha ha'`. Establish `hV` using `triple_points_zero_constant ha ha' hb`. Use `expS_inj (ev_logAd_const B c _ _ hs hb) (by rw [map_add, ev_logAd_const B c _ _ ha hb, ev_logAd_const B c _ _ ha' hb, add_zero]) ?_` and prove the remaining obligations. Rewrite using `[gt_expS_add _ _ (ev_logAd_const B c _ _ ha hb) (ev_logAd_const B c _ _ ha' hb), expS_ev_logAd B c _ _ hs hb, expS_ev_logAd B c _ _ ha hb, expS_ev_logAd B c _ _ ha' hb]`.
+
+Establish `h` using `B.adjoint_compat_left c`. Rewrite `h` using `[h1, ev_one, ev_one, one_mul, mul_one]`. Establish `h'` using `congrArg (ev ![a, a', b]) h`. Rewrite `h'` using `[gt_ev_mul _ hV, ev_ev_two _ hV _ _ (gp_addOf _ B.G.const _ _ (gp_pt 0) (gp_pt 1)) (gp_pt 2), ev_ev_two _ hV _ _ (gp_pt 0) (gp_pt 2), ev_ev_two _ hV _ _ (gp_pt 1) (gp_pt 2), evP_addOf _ hV _ _ _ (gp_pt 0) (gp_pt 1), evP_pt _ hV, evP_pt _ hV, evP_pt _ hV]`. Conclude with `h'`.
+
+Establish `hs` using `gp_addOf _ B.G.const _ _ hb hb'`. Establish `hV` using `triple_points_zero_constant ha hb hb'`. Use `expS_inj (ev_logAd_const B c _ _ ha hs) (by rw [map_add, ev_logAd_const B c _ _ ha hb, ev_logAd_const B c _ _ ha hb', add_zero]) ?_` and prove the remaining obligations. Rewrite using `[gt_expS_add _ _ (ev_logAd_const B c _ _ ha hb) (ev_logAd_const B c _ _ ha hb'), expS_ev_logAd B c _ _ ha hs, expS_ev_logAd B c _ _ ha hb, expS_ev_logAd B c _ _ ha hb']`. Establish `h` using `B.adjoint_compat_right c`.
+
+Rewrite `h` using `[h2, ev_one, ev_one, one_mul, mul_one]`. Establish `h'` using `congrArg (ev ![a, b, b']) h`. Rewrite `h'` using `[gt_ev_mul _ hV, ev_ev_two _ hV _ _ (gp_pt 0) (gp_addOf _ B.G.const _ _ (gp_pt 1) (gp_pt 2)), ev_ev_two _ hV _ _ (gp_pt 0) (gp_pt 1), ev_ev_two _ hV _ _ (gp_pt 0) (gp_pt 2), evP_addOf _ hV _ _ _ (gp_pt 1) (gp_pt 2), evP_pt _ hV, evP_pt _ hV, evP_pt _ hV]`. Conclude with `h'`.
+-/
 theorem logAd_mem (h1 : B.ph1 = 1) (h2 : B.ph2 = 1) (c : O) : logAd B c ∈ biadd B.G := by
   refine ⟨fun n b hb => ?_, fun n a ha => ?_, fun n a a' b ha ha' hb => ?_,
     fun n a b b' ha hb hb' => ?_⟩
@@ -296,6 +365,9 @@ theorem logAd_mem (h1 : B.ph1 = 1) (h2 : B.ph2 = 1) (c : O) : logAd B c ∈ biad
       evP_pt _ hV] at h'
     exact h'
 
+/- English proof (translation)
+Use `expS_inj (logAd_const B _) (by rw [map_add, logAd_const, logAd_const, add_zero]) ?_` and prove the remaining obligations. Rewrite using `[gt_expS_add _ _ (logAd_const B a) (logAd_const B b), expS_logAd, expS_logAd, expS_logAd]`. Establish `h` using `B.ad_add a b`. Rewrite `h` using `[h1, h2, ev_one, ev_one, one_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem logAd_add (h1 : B.ph1 = 1) (h2 : B.ph2 = 1) (a b : O) :
     logAd B (a + b) = logAd B a + logAd B b := by
   refine expS_inj (logAd_const B _) (by rw [map_add, logAd_const, logAd_const, add_zero]) ?_
@@ -303,6 +375,11 @@ theorem logAd_add (h1 : B.ph1 = 1) (h2 : B.ph2 = 1) (a b : O) :
   have h := B.ad_add a b
   rwa [h1, h2, ev_one, ev_one, one_mul, mul_one] at h
 
+/- English proof (translation)
+Establish `hx : GP (comp1 (B.A.act b) (pt k (n` using `2) d 0)) := gp_comp1 _ _ (B.A.const b) (gp_pt 0)`. Establish `hz : GP (comp1 (B.A.act (star a)) (pt k (n` using `2) d 1)) := gp_comp1 _ _ (B.A.const _) (gp_pt 1)`. Establish `c1` using `ev_logAd_const B a _ _ hx (gp_pt 1)`. Establish `c2` using `ev_logAd_const B b _ _ (gp_pt 0) hz`. Use `expS_inj (logAd_const B _) (by rw [map_add, c1, c2, add_zero]) ?_` and prove the remaining obligations.
+
+Rewrite using `[gt_expS_add _ _ c1 c2, expS_logAd, expS_ev_logAd B a _ _ hx (gp_pt 1), expS_ev_logAd B b _ _ (gp_pt 0) hz, B.ad_mul]`.
+-/
 theorem logAd_mul (a b : O) : logAd B (a * b) =
     ev ![comp1 (B.A.act b) (pt k (n := 2) d 0), pt k (n := 2) d 1] (logAd B a) +
       ev ![pt k (n := 2) d 0, comp1 (B.A.act (star a)) (pt k (n := 2) d 1)] (logAd B b) := by
@@ -318,6 +395,11 @@ theorem logAd_mul (a b : O) : logAd B (a * b) =
 
 end Log
 
+/- English proof (translation)
+Introduce `H k _ _ d O _ _ _ _ _ B h1 h2`. Set `δ : O →+ biadd B.G` to `AddMonoidHom.mk' (fun a => ⟨logAd B a, logAd_mem B h1 h2 a⟩) (fun a b => Subtype.ext (logAd_add B h1 h2 a b))`. Take `⟨v, hv⟩` from `H O (biadd B.G) (leftHom B.A) ((rightHom B.A).comp (starRingEnd O)) (fun a b => left_right_commute B.A a (star b)) δ (fun a b => Subtype.ext (logAd_mul B a b))`. Use `⟨v, ⟨v.2.1 _ _ (gp_pt 0), v.2.2.1 _ _ (gp_pt 0)⟩, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[v.2.2.2.1 _ _ _ _ (gp_pt 0) (gp_pt 1) (gp_pt 2), sub_self]`.
+
+Rewrite using `[v.2.2.2.2 _ _ _ _ (gp_pt 0) (gp_pt 1) (gp_pt 2), sub_self]`. Rewrite using `[← expS_logAd B a]`. Conclude with `congrArg (FB.expS k) (congrArg Subtype.val (hv a))`.
+-/
 theorem exists_action_gauge :
     (∀ (O : Type) [CommRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O] (V : Type) [AddCommGroup V] [Module ℚ V] (l r : O →+* Module.End ℚ V), (∀ a b, Commute (l a) (r b)) → ∀ δ : O →+ V, (∀ a b, δ (a * b) = l b (δ a) + r a (δ b)) → ∃ v : V, ∀ a, δ a = l a v - r a v) → ∀ (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ) (O : Type) [CommRing O] [StarRing O] [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O] (B : FB k d O), B.ph1 = 1 → B.ph2 = 1 → ∃ h : PS k 2 d, (ev (n := 1) ![0, pt k d 0] h = 0 ∧ ev (n := 1) ![pt k d 0, 0] h = 0) ∧ (ev (n := 3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf B.G.F (pt k d 0) (pt k d 1), pt k d 2] h) = 0 ∧ (ev (n := 3) ![pt k d 0, pt k d 1] h + ev (n := 3) ![pt k d 0, pt k d 2] h - ev (n := 3) ![pt k d 0, addOf B.G.F (pt k d 1) (pt k d 2)] h) = 0 ∧ ∀ a : O, B.ad a = FB.expS k (ev (n := 2) ![comp1 (B.A.act a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.A.act (star a)) (pt k d 1)] h) := by
   intro H k _ _ d O _ _ _ _ _ B h1 h2

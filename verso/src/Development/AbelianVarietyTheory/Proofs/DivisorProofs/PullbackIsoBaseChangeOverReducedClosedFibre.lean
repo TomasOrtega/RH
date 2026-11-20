@@ -15,10 +15,16 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.PrimeSpectrum.comap_residue _ _`.
+-/
 theorem spMap_residue_apply_eq_closedPoint (R : Type) [CommRing R] [IsLocalRing R] (w : Sp (ResidueField R)) :
     spMap (residue R) w = closedPoint R :=
   IsLocalRing.PrimeSpectrum.comap_residue _ _
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Simplify using `[pullback.map]`.
+-/
 theorem pullbackLeftPullbackSnd_congr_fst {X Y Z W : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (g' : W ⟶ Y) (g'' : W ⟶ Z)
     (hg : g' ≫ g = g'') :
     (pullbackLeftPullbackSndIso f g g' ≪≫ pullback.congrHom rfl hg).hom ≫ pullback.fst f g'' =
@@ -26,12 +32,48 @@ theorem pullbackLeftPullbackSnd_congr_fst {X Y Z W : Scheme.{0}} (f : X ⟶ Z) (
   subst hg
   simp [pullback.map]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Simplify using `[pullback.map]`.
+-/
 theorem pullbackLeftPullbackSnd_congr_snd {X Y Z W : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (g' : W ⟶ Y) (g'' : W ⟶ Z)
     (hg : g' ≫ g = g'') :
     (pullbackLeftPullbackSndIso f g g' ≪≫ pullback.congrHom rfl hg).hom ≫ pullback.snd f g'' = pullback.snd _ _ := by
   subst hg
   simp [pullback.map]
 
+/- English proof (translation)
+Use `haveI := hG`. Use `haveI : IsClosedImmersion (spMap (residue R)) := IsClosedImmersion.spec_of_surjective _ residue_surjective`. Use `haveI : IsImmersion E.j := E.imm`. Use `haveI : Smooth E.Y.hom := E.smooth`. Establish `hclosed : ∀ w : (pullback G'.hom t : Scheme.{0}), π (G'.hom (pullback.fst G'.hom t w)) = closedPoint R`.
+
+Introduce `w`. Establish `h1 : π (G'.hom (pullback.fst G'.hom t w)) = (pullback.fst G'.hom t ≫ G'.hom ≫ π) w` using `by simp`. Rewrite using `[h1, pullback.condition_assoc, htk]`. Simplify using `only [Scheme.Hom.comp_apply]`. Conclude with `spMap_residue_apply_eq_closedPoint R _`.
+
+Establish `hrng : Set.range (pullback.fst G'.hom t) ⊆ Set.range E.H.ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `E.H_all _ (hclosed w)`. Set `l : pullback G'.hom t ⟶ E.H.toScheme` to `IsOpenImmersion.lift E.H.ι (pullback.fst G'.hom t) hrng`.
+
+Establish `hl : l ≫ E.H.ι = pullback.fst G'.hom t` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : IsReduced (pullback G'.hom t) := GlobalTheory.isReduced_of_smooth_of_isReduced (pullback.snd G'.hom t)`. Establish `hrj : Set.range (l ≫ E.f) ⊆ Set.range E.j`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨y, hy⟩` from `(GlobalTheory.T.closedPoint_range_eq_fixedGroup_image R S π G' E).1 (l w) (by`.
+
+Establish `e1 : E.H.ι (l w) = pullback.fst G'.hom t w` using `by rw [← Scheme.Hom.comp_apply, hl]`. Rewrite using `[e1]`. Conclude with `hclosed w)`. Conclude with `⟨y, by rw [Scheme.Hom.comp_apply, hy]⟩`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_lift_of_isReduced_of_isImmersion_range _ _ _ (l ≫ E.f) E.j inferInstance E.imm hrj`.
+
+Establish `hgY : g ≫ E.Y.hom = pullback.snd G'.hom t ≫ k`. Rewrite using `[← cancel_mono (spMap (residue R)), Category.assoc, ← E.j_over, reassoc_of% hg, E.f_over, reassoc_of% hl, pullback.condition_assoc, htk, Category.assoc]`. Set `h : pullback G'.hom t ⟶ pullback E.Y.hom k` to `pullback.lift g (pullback.snd G'.hom t) hgY`. Establish `hh : h ≫ pullback.snd E.Y.hom k = pullback.snd G'.hom t` using `pullback.lift_snd _ _ _`. Establish `hhf : h ≫ pullback.fst E.Y.hom k = g` using `pullback.lift_fst _ _ _`.
+
+Use `haveI : IsIso h := by`. Use `GlobalTheory.T.isIso_of_isIso_on_geometric_fibres_of_smooth T _ _ (pullback.snd G'.hom t) (pullback.snd E.Y.hom k) h hh inferInstance inferInstance ?_` and prove the remaining obligations. Introduce `s`. Set `Ω` to `T.residueField s`. Set `x0 : Sp Ω ⟶ T` to `T.fromSpecResidueField s`.
+
+Establish `hx : ∀ w, (x0 ≫ t ≫ π) w = closedPoint R`. Introduce `w`. Rewrite using `[htk]`. Simplify using `only [Scheme.Hom.comp_apply]`. Conclude with `spMap_residue_apply_eq_closedPoint R _`.
+
+Take `⟨κ, hκ⟩` from `spMap_factor_residueField_of_closedPoint R Ω (x0 ≫ t ≫ π) hx`. Establish `hκk : x0 ≫ k = spMap κ`. Rewrite using `[← cancel_mono (spMap (residue R)), Category.assoc, ← htk, hκ]`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Take `⟨Ω', _, io, e', l', -, hl1, hl2⟩` from `E.fib Ω (x0 ≫ t) κ (by rw [Category.assoc]; exact hκ)`. Set `x : Sp Ω' ⟶ T` to `spMap io ≫ x0`. Use `⟨Ω', inferInstance, x, ?_, ?_⟩` and prove the remaining obligations. Set `w : Sp Ω'` to `closedPoint Ω'`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Use `show (spMap io ≫ T.fromSpecResidueField s) w = s`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Establish `hxk : x ≫ k = spMap (io.comp κ)`. Simplify using `only [x, Category.assoc, hκk, spMap, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Set `α : pullback (pullback.snd G'.hom t) x ≅ pullback G'.hom (spMap io ≫ x0 ≫ t)` to `pullbackLeftPullbackSndIso G'.hom t x ≪≫ pullback.congrHom rfl (Category.assoc _ _ _)`. Set `β : pullback (pullback.snd E.Y.hom k) x ≅ pullback E.Y.hom (spMap (io.comp κ))` to `pullbackLeftPullbackSndIso E.Y.hom k x ≪≫ pullback.congrHom rfl hxk`. Establish `hα : α.hom ≫ pullback.fst G'.hom (spMap io ≫ x0 ≫ t) = pullback.fst (pullback.snd G'.hom t) x ≫ pullback.fst G'.hom t` using `pullbackLeftPullbackSnd_congr_fst _ _ _ _ _`. Establish `hαs : α.hom ≫ pullback.snd G'.hom (spMap io ≫ x0 ≫ t) = pullback.snd (pullback.snd G'.hom t) x` using `pullbackLeftPullbackSnd_congr_snd _ _ _ _ _`.
+
+Establish `hβ : β.hom ≫ pullback.fst E.Y.hom (spMap (io.comp κ)) = pullback.fst (pullback.snd E.Y.hom k) x ≫ pullback.fst E.Y.hom k` using `pullbackLeftPullbackSnd_congr_fst _ _ _ _ _`. Establish `hβs : β.hom ≫ pullback.snd E.Y.hom (spMap (io.comp κ)) = pullback.snd (pullback.snd E.Y.hom k) x` using `pullbackLeftPullbackSnd_congr_snd _ _ _ _ _`. Establish `hll : pullback.fst (pullback.snd G'.hom t) x ≫ l = α.hom ≫ l'`. Rewrite using `[← cancel_mono E.H.ι, Category.assoc, Category.assoc, hl, hl1, hα]`. Establish `he's : e'.hom.left ≫ pullback.snd E.Y.hom (spMap (io.comp κ)) = pullback.snd G'.hom (spMap io ≫ x0 ≫ t)` using `Over.w e'.hom`.
+
+Set `eb` to `α ≪≫ (Over.forget _).mapIso e' ≪≫ β.symm`. Establish `key0 : ∀ φ : pullback (pullback.snd G'.hom t) x ⟶ pullback (pullback.snd E.Y.hom k) x, φ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ h → φ ≫ pullback.snd _ _ = pullback.snd _ _ → φ = eb.hom`. Introduce `φ hφ hφs`. Establish `heb : eb.hom = α.hom ≫ e'.hom.left ≫ β.inv` using `rfl`. Rewrite using `[heb, ← Category.assoc, Iso.eq_comp_inv]`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono E.j, Category.assoc, Category.assoc, reassoc_of% hβ, Category.assoc, Category.assoc, ← hl2, ← reassoc_of% hll, reassoc_of% hφ, reassoc_of% hhf, hg]`. Rewrite using `[Category.assoc, Category.assoc, hβs, he's, hαs, hφs]`. Rewrite using `[key0 (pullback.map _ x _ x h (𝟙 _) (𝟙 _) (by simp [hh]) (by simp)) (pullback.lift_fst _ _ _) ((pullback.lift_snd _ _ _).trans (Category.comp_id _))]`. Use `infer_instance`.
+
+Conclude with `⟨asIso h, l, hh, hl, by rw [asIso_hom, reassoc_of% hhf, hg]⟩`.
+-/
 theorem Emb.pullback_iso_of_closed (R : Type) [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R)
     (G' : Over S) [GrpObj G'] (hG : Smooth G'.hom) (E : Emb π G') (T : Scheme.{0}) (t : T ⟶ S)
     (k : T ⟶ Sp (ResidueField R)) (_hT : IsLocallyNoetherian T) (hTr : IsReduced T)

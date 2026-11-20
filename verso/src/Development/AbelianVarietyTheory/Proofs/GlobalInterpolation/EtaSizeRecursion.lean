@@ -22,6 +22,9 @@ open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 
 namespace GlobalTheory.Mem.Top.Bl
 
+/- English proof (translation)
+Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.mp he`. Take `⟨rfl, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Take `⟨b, -, hW⟩` from `hB q R' hR' c n hsc hv`. Conclude with `⟨b, q, b, hW, rfl⟩`.
+-/
 theorem exists_linked_of_eq {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx}
     (hB : ∀ (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex), RecPinE q R → ∀ (c : ℝ)
       (_ : {n : ℕ × ℕ // (q.w.D q.Z).s.Del = (n.1 : ℚ) ∧ q.O.L.etaSz = ((q.w.D q.Z).R.m : ℝ) * (n.2 : ℝ)}),
@@ -36,6 +39,15 @@ theorem exists_linked_of_eq {hL : GlobalTheory.Published.LocalLanglandsGL} {p : 
   obtain ⟨b, -, hW⟩ := hB q R' hR' c n hsc hv
   exact ⟨b, q, b, hW, rfl⟩
 
+/- English proof (translation)
+Introduce `hA hW hRay hL p hWit hZe hB`. Use `⟨fun _ _ _ _ _ => True, GlobalTheory.Fc.largeBaseProperty_true, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.Fc.ExB`. Use `GlobalTheory.Fc.EvP.mono (fun κ K _ H => ?_) (GlobalTheory.Fc.EvP.and hZe hB)` and prove the remaining obligations. Introduce `β hβ c`.
+
+Take `⟨q, hq, hE⟩` from `hWit K β hβ.1`. Take `⟨C5, c6, Cb, hG⟩` from `β.good`. Establish `hO : Over β.X.toD7 K.P K.Lv`. Take `⟨sp, hT, hY, hA', hV, hz, e, -⟩` from `β.c.isOver`. Conclude with `⟨sp, hT, hY, hA', hV, hz, β.X, e, rfl⟩`.
+
+Establish `hP : K.P.H.levelPrimes = {K.P.H.g 0, K.P.H.g 1, K.P.H.pde, K.P.H.pde', DC.q0H K.P.H}` using `hG.host.2.2.2.2.2.2.2.2.2.2.2.2.2`. Establish `hLT : Formalism.L2.Host.LevelTied β.D` using `GlobalTheory.Mem.HD.levelTied_of_levEx _ ((GlobalTheory.Mem.HD.levEx_of_over _ _ _ hO hP).2 _ _)`. Establish `hD : β.D = q.w.D q.Z` using `congrArg Sigma.fst hq`. Establish `hLT' : Formalism.L2.Host.LevelTied (q.w.D q.Z)` using `hD ▸ hLT`. Take `⟨R', hR'⟩` from `GlobalTheory.T.exists_level_data_ray_field hA hW hRay hL p K q hLT' (H.1 q) hE`.
+
+Take `⟨R, he⟩` from `exists_bdRec_of_eq hq R' c`. Establish `hv : Val K.C K.cD K.ch β.O.L` using `β.p.pt_val β.val`. Conclude with `exists_linked_of_eq H.2 q R' hR' c R he β.sc hv ⟨(_, _), hv.Del_eq, hv.eta_eq⟩`.
+-/
 theorem exBL_isLinked : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.NT.RayField → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL), WitExE p.s → (GlobalTheory.Fc.EvP fun _ K => ∀ q : WPt p.s K, Formalism.L2.Rows.ZetaCompatible (q.w.D q.Z)) → (GlobalTheory.Fc.EvP fun _ K => ∀ (q : WPt p.s K) (R : Formalism.L2.RecT q.O.ex), RecPinE q R → ∀ (c : ℝ) (_ : {n : ℕ × ℕ // (q.w.D q.Z).s.Del = (n.1 : ℚ) ∧ q.O.L.etaSz = ((q.w.D q.Z).R.m : ℝ) * (n.2 : ℝ)}), q.O.L.sc = K.s → Val K.C K.cD K.ch q.O.L → ∃ b : GlobalTheory.Fc.Bundle (q.w.D q.Z) q.O c, b.R = R ∧ Nonempty (BWit q b)) → GlobalTheory.Fc.ExBL KPx (IsBuiltE p.s) (IsGoodE p.s) (IsLinked p) := by
   intro hA hW hRay hL p hWit hZe hB
   refine ⟨fun _ _ _ _ _ => True, GlobalTheory.Fc.largeBaseProperty_true, ?_⟩

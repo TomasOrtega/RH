@@ -15,6 +15,15 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U U' hM k σ σ₀ σ' f f' hσ hG hB hE e`. Take `⟨S, hS⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U' e k σ f (hE e)`. Use `⟨S, fun Z x rG rB h1 h2 _ z JG J hJG hJ => ?_⟩` and prove the remaining obligations. Take `⟨h₀, h₁⟩` from `hS Z x z J hJ`. Use `clear hS hE`.
+
+Take `⟨-, hL, -, -, hgt, hw⟩` from `hM`. Consider the cases of `U'`. Simplify using `only at hL hgt hw`. Substitute `hL hgt` using the available equality. Consider the cases of `hw`.
+
+Consider the cases of `hσ`. Establish `eB : ∀ α, sval (f' α) rB z J = sval (f α) (x ≫ (U.gt e).pG.left) z J` using `fun α => by`. Rewrite using `[hB α Z rB z J hJ, h2]`. Use `⟨fun α hα => (eB α).trans (h₀ α hα), ?_⟩` and prove the remaining obligations. Establish `H` using `h₁ (JG (x ≫ (fstG I e G).left)) (hJG (x ≫ (fstG I e G).left))`.
+
+Rewrite using `[hG Z rG z JG hJG, h1, Finset.sum_congr rfl fun α _ => congrArg (· * _) (eB α)]`. Use `Eq.trans ?_ H` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, sval_of σ₀ _ z JG (fun _ => JG (x ≫ (fstG I e G).left)) (fun _ => by rw [Category.comp_id])]`. Both sides reduce to the same expression.
+-/
 theorem expT_of_expandsAt : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D.toPre A G) (U' : UnifPre I D A G), Match U U' → ∀ (k : ℕ) (σ : H0 U'.LG.L k) (σ₀ : H0 U.P.L.L k) (σ' : U.SecGT (𝟙_ _) k) (f) (f'), HEq σ σ₀ → SameG σ₀ σ' → SameB f f' → (∀ e, U'.ExpandsAt e k σ f) → U.ExpT (𝟙_ _) k σ' f' := by
   intro R _ _ I D A G _ _ U U' hM k σ σ₀ σ' f f' hσ hG hB hE e
   obtain ⟨S, hS⟩ := ReciprocityTheory.ChartRestriction.G.DVR.expandsAt_val U' e k σ f (hE e)

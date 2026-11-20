@@ -9,6 +9,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdForm
 
+/- English proof (translation)
+Introduce `B X I hOk hP l Z u a Ch₀ Ch A ι hIs hLive i hi φ hφ`. Use `⟨GlobalTheory.T.chainStepKernel_preserves_levelRamifiedForms I hOk hP l Z u a i hi φ hφ.1, ?_⟩` and prove the remaining obligations. Introduce `c' hc'`. Establish `hSB : IsSBHalf A.e (stdHom ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1))) (0 : WO ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) → ℂ)` using `⟨fun t h => absurd rfl h, 1, one_pos, fun _ _ _ _ => rfl, fun t h => absurd rfl h⟩`. Establish `key` using `fun (c : (I.chain l u a).cls i) (z : Matrix (Fin ((I.rec7 l Z).sp.X (i + 1)).rank) (Fin ((I.rec7 l Z).sp.X i).rank) (I.rec7 l Z).host.E) => (GlobalTheory.T.movedDatum_eq_finiteDatum_representativePair I hOk hP l Z u a Ch₀ A hIs i hi (A.chOf i c) (A.chOf (i+1) c') 0 hSB 1 (fun z = …`.
+
+Establish `hxi : ∀ c : (I.chain l u a).cls i, xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c') = 0`. Introduce `c`. Use function extensionality and compare the values at `x`. Choose the witnesses or unpack the hypotheses as in `⟨γ, rfl⟩ : ∃ γ, toHom _ _ (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)) (rankN (I.rec7 l Z) (i + 1) hi) γ = x := by`. Use `⟨(LinearMap.toMatrix' x).submatrix (finCongr (rankN (I.rec7 l Z) (i + 1) hi)) (finCongr (rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi))), ?_⟩` and prove the remaining obligations.
+
+Use `show Matrix.toLin' _ = x`. Use `conv_rhs => rw [← Matrix.toLin'_toMatrix' x]`. Both sides reduce to the same expression. Establish `h1` using `key c γ`. Simplify using `only [Pi.zero_apply, one_mul] at h1`.
+
+Conclude with `(map_eq_zero_iff _ B.embLL.injective).1 h1.symm`. Establish `hth : ∀ c : (I.chain l u a).cls i, I.th u a i c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c') = 0`. Introduce `c`. Unfold `TC.th thAt`. Rewrite using `[hxi c]`.
+
+Conclude with `thOf_zero ..`. Establish `hunf : ∀ c : (I.chain l u a).cls i, (I.chain l u a).unf i c c' = 0`. Introduce `c`. Use `show ChainIn.unf _ _ _ _ _ _ = 0`. Unfold `ChainIn.unf`.
+
+Use `show _ ∘ₗ jetMap (jetC I.J.cD (I.th u a i c.1 c'.1 ((I.stp u a i).rep c) ((I.stp u a (i + 1)).rep c'))) 0 ∘ₗ _ = 0`. Rewrite using `[hth c]`. Establish `hJ : jetC I.J.cD (0 : VCx B.fields.Tau (B.R.N i) (B.R.N (i + 1)) → ℂ) = 0`. Use function extensionality and compare the values at `m`. Simplify using `[jetC, derivAt0, iteratedFDeriv_zero_fun]`.
+
+Rewrite using `[hJ]`. Establish `hM : jetMap (0 : (DVar B.fields.Tau (B.R.N i) (B.R.N (i + 1)) →₀ ℕ) → ℂ) 0 = 0`. Establish `hL : jetLin (0 : (DVar B.fields.Tau (B.R.N i) (B.R.N (i + 1)) →₀ ℕ) → ℂ) = 0`. Apply `(MvPolynomial.basisMonomials _ ℂ).ext` to reduce the goal to its premises. Introduce `m`.
+
+Rewrite using `[jetLin, Module.Basis.constr_basis]`. Simplify using the standard rewrite rules. Unfold `jetMap`. Rewrite using `[hL]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hM]`. Simplify using the standard rewrite rules. Establish `hK : ∀ c : (I.chain l u a).cls i, (I.chain l u a).Kmap i c c' = 0`. Introduce `c`. Unfold `ColumnChain.Kmap`.
+
+Rewrite using `[hunf c]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `y`. Simplify using `only [ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, hK]`. Simplify using the standard rewrite rules.
+-/
 theorem kernels_keep_ramL : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch₀ Ch : ℕ → Type) (A : TwDat I l Z u a Ch₀) (ι : ∀ j, Ch j → Ch₀ j), A.Is → A.Live ι → ∀ i, i < B.R.m → ∀ φ, A.RamL ι i φ → A.RamL ι (i + 1) ((I.chain l u a).K i φ) := by
   intro B X I hOk hP l Z u a Ch₀ Ch A ι hIs hLive i hi φ hφ
   refine ⟨GlobalTheory.T.chainStepKernel_preserves_levelRamifiedForms I hOk hP l Z u a i hi φ hφ.1, ?_⟩

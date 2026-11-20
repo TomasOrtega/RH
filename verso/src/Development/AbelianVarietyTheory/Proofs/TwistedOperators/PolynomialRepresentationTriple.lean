@@ -22,6 +22,53 @@ open GlobalTheory.SquareComm
 
 namespace GlobalTheory.RealQuot
 
+/- English proof (translation)
+Introduce `hH hP _ _ D ψ θ hψ hθ W W₁ X A A₁ B a b`. Set `ρA : LieIx X → Module.End ℂ (PolF D X.rank W.rank)` to `fun i => actT true A B b i.1.1 i.1.2`. Set `CA` to `coinv true A B (fun τ => b τ - a τ)`. Set `ρB : LieIx X → Module.End ℂ (PolF D X.rank W₁.rank)` to `fun i => actT false A₁ B a i.1.1 i.1.2`. Set `CB` to `coinv false A₁ B (fun τ => a τ - b τ)`.
+
+Establish `fam : ∀ α β, IsTriple W W₁ X α β → (∀ τ, HasInfExp D α τ (a τ) ∧ HasInfExp D β τ (b τ)) → ∀ ωA ωB Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →`. Set `σ : LieIx X → Module.End ℂ Pi` to `fun i => rl i.1.1 i.1.2`. Set `βA : {f // IsFinF ψ θ true A B f} → PolF D X.rank W.rank →ₗ[ℂ] Pi` to `fun f => p ∘ₗ fockF ψ θ true A B f.1`. Set `βB : {f // IsFinF ψ θ false A₁ B f} → PolF D X.rank W₁.rank →ₗ[ℂ] Pi` to `fun f => p' ∘ₗ fockF ψ θ false A₁ B f.1`. Use the proof step `((∀ f i, βA f ∘ₗ ρA i = σ i ∘ₗ βA f) ∧ (∀ f, CA ≤ LinearMap.ker (βA f)) ∧ (∀ (j : {h // h ∈ GfC X}) f, ∃ f', rf j.1 ∘ₗ βA f = βA f') ∧ (⨆ f, LinearMap.range (βA f)) = ⊤) ∧`.
+
+Use the proof step `((∀ f i, βB f ∘ₗ ρB i = σ i ∘ₗ βB f) ∧ (∀ f, CB ≤ LinearMap.ker (βB f)) ∧ (∀ (j : {h // h ∈ GfC X}) f, ∃ f', rf j.1 ∘ₗ βB f = βB f') ∧ (⨆ f, LinearMap.range (βB f)) = ⊤) ∧`. Use the proof step `(∀ N : Submodule ℂ Pi, IsStab σ N → IsStab (fun j : {h // h ∈ GfC X} => rf j.1) N → N = ⊥ ∨ N = ⊤) ∧`. Use `HoweCond ρA CA ∧ HoweCond ρB CB ∧ Nontrivial Pi := by`. Introduce `α β htr hexp ωA ωB Pi rf rl p p' hm`. Establish `hexpA : ∀ τ, HasInfExp D β τ (b τ) ∧ HasInfExp D (β / α) τ (b τ - a τ)` using `fun τ => ⟨(hexp τ).2, hasInfExp_div D α β τ _ _ (hexp τ).1 (hexp τ).2⟩`.
+
+Establish `hexpB : ∀ τ, HasInfExp D α τ (a τ) ∧ HasInfExp D (α / β) τ (a τ - b τ)` using `fun τ => ⟨(hexp τ).1, hasInfExp_div D β α τ _ _ (hexp τ).2 (hexp τ).1⟩`. Take `⟨oA1, oA2, oA3⟩` from `GlobalTheory.T.orientedPair_fockMaps_lie_equivariant D ψ θ hθ true W X A B β (β / α) ωA b (fun τ => b τ - a τ) hm.weilA hexpA Pi rf rl p hm.mapA`. Take `⟨oB1, oB2, oB3⟩` from `GlobalTheory.T.orientedPair_fockMaps_lie_equivariant D ψ θ hθ false W₁ X A₁ B α (α / β) ωB a (fun τ => a τ - b τ) hm.weilB hexpB Pi rf rl p' hm.mapB`. Establish `hspan : ∀ {M : HSp D} {ε : Bool} {A' : Fr M} (pp : (WO M X → ℂ) →ₗ[ℂ] Pi), (algF ψ θ ε A' B).map pp = ⊤ → (⨆ f : {f // IsFinF ψ θ ε A' B f}, LinearMap.range (pp ∘ₗ fockF ψ θ ε A' B f.1)) = ⊤`. Introduce `M ε A' pp h`.
+
+Rewrite using `[eq_top_iff, ← h, algF, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨f, P, hf, rfl⟩, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem ⟨f, hf⟩ ⟨P, rfl⟩`. Use `⟨⟨fun f i => LinearMap.ext fun P => oA1 f.1 f.2 i.1.1 i.1.2 i.2 P, fun f P hP => oA2 f.1 f.2 P hP, fun j f => ?_, hspan p hm.mapA.onto⟩, ⟨fun f i => LinearMap.ext fun P => oB1 f.1 f.2 i.1.1 i.1.2 i.2 P, fun f P hP => oB2 f.1 f.2 P hP, fun j f => ?_, hspan p' hm.mapB.onto⟩, fun N …` and prove the remaining obligations. Take `⟨f', hf', e⟩` from `oA3 j.1 j.2 f.1 f.2`.
+
+Conclude with `⟨⟨f', hf'⟩, LinearMap.ext fun P => e P⟩`. Take `⟨f', hf', e⟩` from `oB3 j.1 j.2 f.1 f.2`. Conclude with `⟨⟨f', hf'⟩, LinearMap.ext fun P => e P⟩`. Distinguish the cases in `hex : ∃ α β, IsTriple W W₁ X α β ∧ (∀ τ, HasInfExp D α τ (a τ) ∧ HasInfExp D β τ (b τ)) ∧ ∃ ωA ωB Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p'`. Use `swap`.
+
+Use `⟨ModuleCat.of ℂ PUnit, fun _ _ => 0, 0, 0, fun _ => ⟨0, Subsingleton.elim _ _⟩, fun _ => ⟨0, Subsingleton.elim _ _⟩, ?_, fun N _ => Or.inl (Submodule.eq_bot_of_subsingleton), ?_⟩` and prove the remaining obligations. Use `show Module.rank ℂ PUnit ≤ _`. Simplify using the standard rewrite rules. Introduce `α β htr hexp ωA ωB Pi rf rl p p' hm`. Conclude with `absurd ⟨α, β, htr, hexp, ωA, ωB, Pi, rf, rl, p, p', hm⟩ hex`.
+
+Take `⟨α₀, β₀, htr₀, hexp₀, ωA₀, ωB₀, Pi₀, rf₀, rl₀, p₀, p₀', hm₀⟩` from `hex`. Take `⟨⟨iA, kA, cA, sA⟩, ⟨iB, kB, cB, sB⟩, irr₀, hHA, hHB, hnt⟩` from `fam α₀ β₀ htr₀ hexp₀ ωA₀ ωB₀ Pi₀ rf₀ rl₀ p₀ p₀' hm₀`. Use `set σ₀ : LieIx X → Module.End ℂ Pi₀ := fun i => rl₀ i.1.1 i.1.2`. Establish `nz : ∀ {Fm Q : Type} [AddCommGroup Q] [Module ℂ Q] (β : Fm → Q →ₗ[ℂ] Pi₀), (⨆ f, LinearMap.range (β f)) = ⊤ → ∃ f, β f ≠ 0`. Introduce `Fm Q _ _ β h`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: (⊤ : Submodule ℂ Pi₀) = ⊥`. Rewrite using `[← h]; exact iSup_eq_bot.2 fun f => by rw [hc f, LinearMap.range_zero]`. Conclude with `bot_ne_top this.symm`.
+
+Establish `wit : ∀ {Q : Type} [AddCommGroup Q] [Module ℂ Q] (ρ : LieIx X → Module.End ℂ Q) (C : Submodule ℂ Q) (β : Q →ₗ[ℂ] Pi₀), (∀ i, β ∘ₗ ρ i = σ₀ i ∘ₗ β) → C ≤ LinearMap.ker β → β ≠ 0 → IsStab ρ (LinearMap.ker β) ∧ C ≤ LinearMap.ker β ∧ LinearMap.ker β ≠ ⊤`. Introduce `Q _ _ ρ C β hi hk hne`. Use `⟨fun i x hx => ?_, hk, fun h => hne (LinearMap.ker_eq_top.1 h)⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← LinearMap.comp_apply, hi i, LinearMap.comp_apply, hx, map_zero]`.
+
+Take `⟨fA, hfA⟩` from `nz _ sA`. Take `⟨fB, hfB⟩` from `nz _ sB`. Take `⟨wA1, wA2, wA3⟩` from `wit ρA CA _ (iA fA) (kA fA) hfA`. Take `⟨wB1, wB2, wB3⟩` from `wit ρB CB _ (iB fB) (kB fB) hfB`. Establish `radA : rad ρA CA ≠ ⊤` using `rad_ne_top _ _ ρA CA _ hHA wA1 wA2 wA3`.
+
+Establish `radB : rad ρB CB ≠ ⊤` using `rad_ne_top _ _ ρB CB _ hHB wB1 wB2 wB3`. Establish `CleA : CA ≤ rad ρA CA` using `wA2.trans (le_sSup ⟨wA1, wA2, wA3⟩)`. Establish `CleB : CB ≤ rad ρB CB` using `wB2.trans (le_sSup ⟨wB1, wB2, wB3⟩)`. Establish `simA : ∀ N, IsStab ρA N → rad ρA CA ≤ N → N = rad ρA CA ∨ N = ⊤`. Introduce `N h1 h2`.
+
+Distinguish the cases in `h : N = ⊤`. Conclude with `Or.inr h`. Conclude with `Or.inl (le_antisymm (le_sSup ⟨h1, CleA.trans h2, h⟩) h2)`. Establish `simB : ∀ N, IsStab ρB N → rad ρB CB ≤ N → N = rad ρB CB ∨ N = ⊤`. Introduce `N h1 h2`.
+
+Distinguish the cases in `h : N = ⊤`. Conclude with `Or.inr h`. Conclude with `Or.inl (le_antisymm (le_sSup ⟨h1, CleB.trans h2, h⟩) h2)`. Establish `ss₀` using `GlobalTheory.T.exists_stable_complement_of_irreducible_span_intertwiners _ _ _ _ _ ρA CA σ₀ (fun j : {h // h ∈ GfC X} => rf₀ j.1) _ hHA iA kA cA sA irr₀`. Establish `killA₀ : ∀ f, rad ρA CA ≤ LinearMap.ker _` using `fun f => rad_le_ker _ _ _ ρA CA σ₀ _ (iA f) (kA f) radA ss₀`.
+
+Establish `killB₀` using `rad_le_ker _ _ _ ρB CB σ₀ _ (iB fB) (kB fB) radB ss₀`. Take `⟨e, he⟩` from `GlobalTheory.T.simple_quotients_iso_of_intertwined_semisimple _ _ _ _ _ ρA CA ρB CB σ₀ _ _ iA (iB fB) killA₀ killB₀ hfB sA simA simB ss₀`. Set `R` to `rad ρA CA`. Set `RB` to `rad ρB CB`. Use `⟨ModuleCat.of ℂ (PolF D X.rank W.rank ⧸ R), fun τ Y => if h : Y ∈ lieAt X τ then radAct ρA CA ⟨(τ, Y), h⟩ else 0, R.mkQ, e.symm.toLinearMap ∘ₗ RB.mkQ, R.mkQ_surjective, e.symm.surjective.comp RB.mkQ_surjective, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show Module.rank ℂ (PolF D X.rank W.rank ⧸ R) ≤ _`. Use `(rank_quotient_le R).trans ?_` and prove the remaining obligations. Rewrite using `[← (MvPolynomial.basisMonomials (FVar D X.rank W.rank) ℂ).mk_eq_rank'']`. Conclude with `Cardinal.mk_le_aleph0`. Introduce `N hN`.
+
+Establish `hst : IsStab ρA (N.comap R.mkQ)` using `fun i x hx => by`. Establish `h1` using `hN i.1.1 i.1.2 i.2 _ hx`. Simplify using `only [dif_pos i.2] at h1`. Conclude with `h1`. Establish `hle : R ≤ N.comap R.mkQ` using `fun x hx => by show R.mkQ x ∈ N`.
+
+Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero R).2 hx]`. Conclude with `N.zero_mem`. Break down `simA _ hst hle with h | h` into its components or cases. Use `left`. Rewrite using `[← Submodule.map_comap_eq_of_surjective R.mkQ_surjective N, h, Submodule.mkQ_map_self]`.
+
+Use `right`. Rewrite using `[← Submodule.map_comap_eq_of_surjective R.mkQ_surjective N, h, Submodule.map_top, Submodule.range_mkQ]`. Introduce `α β htr hexp ωA ωB Pi rf rl p p' hm`. Take `⟨⟨iA', kA', cA', sA'⟩, ⟨iB', kB', cB', sB'⟩, irr', -, -, -⟩` from `fam α β htr hexp ωA ωB Pi rf rl p p' hm`. Establish `ss'` using `GlobalTheory.T.exists_stable_complement_of_irreducible_span_intertwiners _ _ _ _ _ ρA CA (fun i : LieIx X => rl i.1.1 i.1.2) (fun j : {h // h ∈ GfC X} => rf j.1) _ hHA iA' kA' cA' sA' irr'`.
+
+Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hk` using `rad_le_ker _ _ _ ρA CA _ _ (iA' ⟨f, hf⟩) (kA' ⟨f, hf⟩) radA ss'`. Use `⟨R.liftQ (p ∘ₗ fockF ψ θ true A B f) hk, fun τ Y hY => ?_, fun P => rfl⟩` and prove the remaining obligations. Simplify using `only [dif_pos hY]`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun P => ?_)` and prove the remaining obligations.
+
+Conclude with `LinearMap.congr_fun (iA' ⟨f, hf⟩ ⟨(τ, Y), hY⟩) P`. Establish `hk` using `rad_le_ker _ _ _ ρB CB _ _ (iB' ⟨f, hf⟩) (kB' ⟨f, hf⟩) radB ss'`. Use `⟨RB.liftQ (p' ∘ₗ fockF ψ θ false A₁ B f) hk ∘ₗ e.toLinearMap, fun τ Y hY => ?_, fun P => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hY]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Establish `h1` using `LinearMap.congr_fun (he ⟨(τ, Y), hY⟩) x`. Simplify using `only [LinearMap.comp_apply] at h1 ⊢`. Rewrite using `[h1]`. Establish `key : ∀ y, RB.liftQ (p' ∘ₗ fockF ψ θ false A₁ B f) hk (radAct ρB CB ⟨(τ, Y), hY⟩ y) = rl τ Y (RB.liftQ (p' ∘ₗ fockF ψ θ false A₁ B f) hk y)`. Introduce `y`.
+
+Take `⟨P, rfl⟩` from `RB.mkQ_surjective y`. Conclude with `LinearMap.congr_fun (iB' ⟨f, hf⟩ ⟨(τ, Y), hY⟩) P`. Conclude with `key _`. Simplify using the standard rewrite rules.
+-/
 theorem realQuot : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (a b : D.what₂.Tau → ℚ),

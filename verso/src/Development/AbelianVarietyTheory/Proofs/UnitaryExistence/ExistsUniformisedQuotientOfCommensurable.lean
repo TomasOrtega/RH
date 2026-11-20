@@ -22,6 +22,9 @@ open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key Reciproci
 
 namespace GlobalTheory.CommensurableQuotient
 
+/- English proof (translation)
+Establish `e : φ.ker = AddSubgroup.toSubgroup p.toAddSubgroup` using `Subgroup.ext fun a => h a.toAdd`. Rewrite using `[← Subgroup.index_ker, e, AddSubgroup.index_toSubgroup]`. Both sides reduce to the same expression.
+-/
 theorem card_range_eq {R M Q : Type} [Ring R] [AddCommGroup M] [Module R M] [Group Q]
     (φ : Multiplicative M →* Q) (p : Submodule R M) (h : ∀ a, φ (Multiplicative.ofAdd a) = 1 ↔ a ∈ p) :
     Nat.card φ.range = Nat.card (M ⧸ p) := by
@@ -29,6 +32,11 @@ theorem card_range_eq {R M Q : Type} [Ring R] [AddCommGroup M] [Module R M] [Gro
   rw [← Subgroup.index_ker, e, AddSubgroup.index_toSubgroup]
   rfl
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `H1.SectionDivision.exists_section (k := k) (pullback.snd ψ.left c.left)`. Establish `hb : (u ≫ pullback.fst ψ.left c.left) ≫ ψ.left = c.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hu]`. Conclude with `Category.id_comp _`. Establish `hw : (u ≫ pullback.fst ψ.left c.left) ≫ A.hom = (𝟙_ (Over (Sp k))).hom`.
+
+Rewrite using `[← Over.w ψ, ← Category.assoc, hb]`. Conclude with `Over.w c`. Conclude with `⟨Over.homMk _ hw, Over.OverMorphism.ext hb⟩`.
+-/
 theorem exists_point_lift {k : Type} [Field k] [IsAlgClosed k] {A B : Over (Sp k)} (ψ : A ⟶ B) [IsFinite ψ.left]
     [Surjective ψ.left] (c : 𝟙_ (Over (Sp k)) ⟶ B) : ∃ d : 𝟙_ (Over (Sp k)) ⟶ A, d ≫ ψ = c := by
   obtain ⟨u, hu⟩ := H1.SectionDivision.exists_section (k := k) (pullback.snd ψ.left c.left)
@@ -38,6 +46,11 @@ theorem exists_point_lift {k : Type} [Field k] [IsAlgClosed k] {A B : Over (Sp k
     rw [← Over.w ψ, ← Category.assoc, hb]; exact Over.w c
   exact ⟨Over.homMk _ hw, Over.OverMorphism.ext hb⟩
 
+/- English proof (translation)
+Establish `: ConnectedSpace (Sp k)` using `inferInstanceAs (ConnectedSpace (PrimeSpectrum k))`. Establish `: ConnectedSpace B.left` using `GeometricallyConnected.connectedSpace B.hom B.hom.isOpenMap`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected B.hom (ψ.left x)`. Establish `h : SmoothOfRelativeDimension (0 + d) (ψ.left ≫ B.hom)` using `inferInstance`. Rewrite `h` using `[Over.w ψ, zero_add]`.
+
+Rewrite using `[H1.dim_unique _ hA h x]` and apply the resulting hypothesis.
+-/
 theorem smoothDim_of_etale {k : Type} [Field k] {A B : Over (Sp k)} (ψ : A ⟶ B) [Etale ψ.left] [Smooth B.hom]
     [GeometricallyConnected B.hom] (x : A.left) {g : ℕ} (hA : SmoothOfRelativeDimension g A.hom) :
     SmoothOfRelativeDimension g B.hom := by
@@ -48,6 +61,11 @@ theorem smoothDim_of_etale {k : Type} [Field k] {A B : Over (Sp k)} (ψ : A ⟶ 
   rw [Over.w ψ, zero_add] at h
   rwa [H1.dim_unique _ hA h x]
 
+/- English proof (translation)
+Introduce `U f`. Take `⟨h₁, h₂⟩` from `h (φ ⁻¹ᵁ U) ((φ.app U).hom f)`. Establish `hc : Differentiable ℂ (fun z : V => c • z)` using `differentiable_id.const_smul c`. Use `⟨h₁.preimage hc.continuous, ?_⟩` and prove the remaining obligations. Simplify using `only [← valAt'_comp]`.
+
+Conclude with `h₂.comp hc.differentiableOn fun z hz => hz`.
+-/
 theorem isHolTo_smul_comp {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X Y : Scheme.{0}}
     {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo Set.univ y) (c : ℂ) (φ : X ⟶ Y) :
     IsHolTo Set.univ (fun z => y (c • z) ≫ φ) := by
@@ -58,6 +76,9 @@ theorem isHolTo_smul_comp {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] 
   simp only [← valAt'_comp]
   exact h₂.comp hc.differentiableOn fun z hz => hz
 
+/- English proof (translation)
+Take `⟨-, ws, gs', -⟩` from `t.sym`. Set `P : Out.PolAV (Sp k)` to `{ A := t.G, g := g, smoothDim := hd, L := t.PP.L, isLB := t.PP.isLB, ample := ha, ktriv := hk isAb := AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi rigid := ⟨t.PP.rig, t.PP.rigGen⟩ sym := fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff ws).1 gs') _⟩ }`. Conclude with `((hL.weil _ P n T).1 x y hx hy).exists`.
+-/
 theorem exists_weilIs (hL : Out.Laws) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {k : Type}
     [Field k] (t : SAB H (Sp k)) [IsProper t.G.hom] {g : ℕ} (hd : SmoothOfRelativeDimension g t.G.hom)
     (ha : Out.RelAmple t.G t.PP.L) (hk : Out.KTriv t.G t.PP.L) (n : ℕ) {T : Over (Sp k)} (x y : T ⟶ t.G)
@@ -76,6 +97,47 @@ namespace GlobalTheory
 
 open CommensurableQuotient
 
+/- English proof (translation)
+Introduce `hL hQ E _ _ _ H D D' g ty P P' N j j' t e hp hq ⟨hN, _, _, _, hE, hcard⟩ _ hP' hj hj' ⟨hpr, hsm, ham, hkt, hdet, hadd, hsurj, hker, hlin, hhol, hweil⟩`. Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `e0 : e 0 = 1` using `(hker 0).2 (zero_mem _)`. Set `eh : Multiplicative (Fin g → ℂ) →* (𝟙_ (Over (Sp ℂ)) ⟶ t.G)` to `{ toFun := fun z => e z.toAdd, map_one' := e0, map_mul' := fun z w => hadd _ _ }`. Establish `epow : ∀ (n : ℕ) z, e z ^ n = e ((n : ℂ) • z)` using `fun n z => by`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `(map_pow eh (Multiplicative.ofAdd z) n).symm`. Establish `esub : ∀ z w, e z = e w ↔ z - w ∈ P.range` using `fun z w => by`. Rewrite using `[← hker, ← mul_inv_eq_one, ← div_eq_mul_inv]`. Conclude with `Eq.congr_left (map_div eh (Multiplicative.ofAdd z) (Multiplicative.ofAdd w)).symm`.
+
+Set `φ : Multiplicative D'.La →* (𝟙_ (Over (Sp ℂ)) ⟶ t.G)` to `{ toFun := fun a => e ((N : ℂ)⁻¹ • P' a.toAdd) map_one' := by rw [toAdd_one, map_zero, smul_zero, e0] map_mul' := fun a b => by rw [toAdd_mul, map_add, smul_add, hadd] }`. Establish `hmem : ∀ x, x ∈ φ.range ↔ ∃ a, e ((N : ℂ)⁻¹ • P' a) = x` using `fun x => Iff.rfl`. Establish `hrw : ∀ (k : ℕ) a, ((k * N ^ 2 : ℕ) : ℂ)⁻¹ • P (j' a) = (N : ℂ)⁻¹ • (k : ℂ)⁻¹ • P' a` using `fun k a => by`. Rewrite using `[hj', smul_smul, smul_smul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hw : ∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs t.G t.PP.L ((k * N ^ 2 : ℕ) : ℤ) (e ((N : ℂ)⁻¹ • (k : ℂ)⁻¹ • P' a)) (e ((N : ℂ)⁻¹ • (k : ℂ)⁻¹ • P' b)) (unitOn c)` using `fun k a b c hk hc => by`. Rewrite using `[← hrw, ← hrw]`. Use `hweil (k * N ^ 2) (j' a) (j' b) c (by positivity) (hc.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hE]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take `⟨t', ψ, hpr', ham', hkt', hψ, hfin, het, hsj, hkψ, hact, hiso⟩` from `hQ E H ℂ t g N φ.range hN hpr hsm ham hkt (by`.
+
+Introduce `x hx c`. Take `⟨a, rfl⟩` from `(hmem x).1 hx`. Use `(hmem _).2 ⟨c • a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hlin]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hP'.1]`. Use the proof step `ring)`. Use the proof step `(by`. Introduce `x hx`.
+
+Take `⟨a, rfl⟩` from `(hmem x).1 hx`. Rewrite using `[epow, hker]`. Use `⟨j' a, ?_⟩` and prove the remaining obligations. Rewrite using `[hj', smul_smul]`. Use `congr 1`.
+
+Use `push_cast`. Use the proof step `field_simp)`. Use the proof step `(by`. Introduce `x hx y hy`. Take `⟨a, rfl⟩` from `(hmem x).1 hx`.
+
+Take `⟨b, rfl⟩` from `(hmem y).1 hy`. Establish `h` using `hw 1 a b 1 one_pos (by`. Rewrite using `[Units.val_one, Nat.cast_one, div_one, ← Complex.exp_int_mul_two_pi_mul_I (-(D'.EF a b))]`. Use `congr 1`. Use `push_cast`.
+
+Use the proof step `ring)`. Rewrite `h` using `[_root_.one_mul, Nat.cast_one, inv_one, one_smul, one_smul, show unitOn (1 : ℂˣ) = 1 from map_one _]`. Conclude with `h)`. Use the proof step `(by`. Rewrite using `[← hcard]`.
+
+Use `card_range_eq φ _ fun a => (hker _).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Use `⟨b, hP'.2.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hj, hb, smul_inv_smul₀ hN']`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, by rw [toAdd_ofAdd, hj, inv_smul_smul₀ hN']⟩)`. Establish `hA` using `AbelianSchemeGerms.isAbelianScheme_of_proper t.G t.semi`. Establish `hB` using `AbelianSchemeGerms.isAbelianScheme_of_proper t'.G t'.semi`. Use `hB.smooth` as an intermediate fact.
+
+Use `hB.geomConnected` as an intermediate fact. Establish `hsm' : SmoothOfRelativeDimension g t'.G.hom` using `smoothDim_of_etale ψ ((e 0).left (default : PrimeSpectrum ℂ)) hsm`. Establish `hker' : ∀ z, e ((N : ℂ)⁻¹ • z) ≫ ψ = 1 ↔ z ∈ P'.range` using `fun z => by`. Rewrite using `[hkψ, hmem]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha⟩`. Take `⟨b, hb⟩` from `(esub _ _).1 ha`. Use `⟨a - j b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hj, hb, ← smul_sub, smul_inv_smul₀ hN', sub_sub_cancel]`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨a, rfl⟩`. Use `⟨t', fun z => e ((N : ℂ)⁻¹ • z) ≫ ψ, hpr', hsm', ham', hkt', fun τ => ?_, fun z w => ?_, fun y => ?_, hker', fun a z => ?_, isHolTo_smul_comp hhol _ ψ.left, fun k a b c hk hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hq, ← LieEtale.lieMult_iff_of_etale _ _ _ _ ψ t.act t'.act hψ het hact, ← LieEtale.lieMult_iff_of_etale _ _ _ _ ψ t.act t'.act hψ het hact]`. Conclude with `hdet τ`. Simplify using `only [smul_add, hadd, MonObj.mul_comp]`.
+
+Take `⟨x, rfl⟩` from `exists_point_lift ψ y`. Take `⟨z, rfl⟩` from `hsurj x`. Conclude with `⟨(N : ℂ) • z, by simp only [inv_smul_smul₀ hN']⟩`. Use `beta_reduce`. Rewrite using `[Category.assoc, ← hact, ← Category.assoc, ← hlin]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`.
+
+Establish `htor : ∀ a, (e ((N : ℂ)⁻¹ • (k : ℂ)⁻¹ • P' a) ≫ ψ) ^ k = 1` using `fun a => by`. Rewrite using `[← MonObj.pow_comp, epow, smul_comm (k : ℂ), smul_inv_smul₀ hk', hker']`. Conclude with `⟨a, rfl⟩`. Take `⟨c', hc'⟩` from `exists_weilIs hL t' hsm' ham' hkt' k _ _ (htor a) (htor b)`. Establish `h₁` using `(weilIs_along_hom hL.globalFns _ _ _ ψ _ _ _ _ _ _ _ c' c' hA hB t.PP.isLB t'.PP.isLB hψ hiso hc').1`.
+
+Establish `h₂` using `hw k a b c hk hc`. Rewrite `h₂` using `[Nat.cast_mul]`. Conclude with `CommutatorPairing.weilIs_unique hL.globalFns hA t.PP.isLB h₁ h₂ ▸ hc'`.
+-/
 theorem exists_uniformised_quotient_of_commensurable : Out.Laws → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (t : SAB H (Sp k)) (g p : ℕ) (C : Subgroup (𝟙_ (Over (Sp k)) ⟶ t.G)), 0 < p → IsProper t.G.hom → SmoothOfRelativeDimension g t.G.hom → Out.RelAmple t.G t.PP.L → Out.KTriv t.G t.PP.L → (∀ x ∈ C, ∀ a, x ≫ t.act.act a ∈ C) → (∀ x ∈ C, x ^ p ^ 2 = 1) → (∀ x ∈ C, ∀ y ∈ C, Out.WeilIs t.G t.PP.L ((p ^ 2 : ℕ) : ℤ) x y 1) → Nat.card C = p ^ (2 * g) → ∃ (t' : SAB H (Sp k)) (ψ : t.G ⟶ t'.G), IsProper t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L ∧ Out.KTriv t'.G t'.PP.L ∧ IsMonHom ψ ∧ IsFinite ψ.left ∧ Etale ψ.left ∧ Surjective ψ.left ∧ (∀ x : 𝟙_ (Over (Sp k)) ⟶ t.G, x ≫ ψ = 1 ↔ x ∈ C) ∧ (∀ a, t.act.act a ≫ ψ = ψ ≫ t'.act.act a) ∧ LBIso (lbPow t.PP.L (p ^ 2)) (t'.PP.L.pull ψ.left)) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (P' : D'.La →+ (Fin g → ℂ)) (N : ℕ) (j : D.La →ₗ[𝓞 E] D'.La) (j' : D'.La →ₗ[𝓞 E] D.La) (t : SAB H (Sp ℂ)) (e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ t.G)), D'.p = D.p → D'.q = D.q → (0 < N ∧ (∀ a, j' (j a) = (N ^ 2) • a) ∧ (∀ a, j (j' a) = (N ^ 2) • a) ∧ (∀ a b, D'.EF (j a) (j b) = (N : ℤ) ^ 2 * D.EF a b) ∧ (∀ a b, D.EF (j' a) (j' b) = (N : ℤ) ^ 2 * D'.EF a b) ∧ Nat.card (D'.La ⧸ LinearMap.range j) = N ^ (2 * g)) → IsPeriod D ty P → IsPeriod D' ty P' → (∀ a, P' (j a) = (N : ℂ) • P a) → (∀ a, P (j' a) = (N : ℂ) • P' a) → (IsProper t.G.hom ∧ SmoothOfRelativeDimension g t.G.hom ∧ Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L ∧ DetCond D t.act (𝟙 (Sp ℂ)) H.rt0 ∧ (∀ z w, e (z + w) = e z * e w) ∧ Function.Surjective e ∧ (∀ z, e z = 1 ↔ z ∈ P.range) ∧ (∀ (a : 𝓞 E) z, e (fun k => ty k (a : E) * z k) = e z ≫ t.act.act a) ∧ IsHolTo Set.univ (fun z => (e z).left) ∧ ∀ (k : ℕ) (a b : D.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D.EF a b : ℂ) / k) → Out.WeilIs t.G t.PP.L k (e ((k : ℂ)⁻¹ • P a)) (e ((k : ℂ)⁻¹ • P b)) (unitOn c)) → ∃ (t' : SAB H (Sp ℂ)) (e' : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ t'.G)), (IsProper t'.G.hom ∧ SmoothOfRelativeDimension g t'.G.hom ∧ Out.RelAmple t'.G t'.PP.L ∧ Out.KTriv t'.G t'.PP.L ∧ DetCond D' t'.act (𝟙 (Sp ℂ)) H.rt0 ∧ (∀ z w, e' (z + w) = e' z * e' w) ∧ Function.Surjective e' ∧ (∀ z, e' z = 1 ↔ z ∈ P'.range) ∧ (∀ (a : 𝓞 E) z, e' (fun k => ty k (a : E) * z k) = e' z ≫ t'.act.act a) ∧ IsHolTo Set.univ (fun z => (e' z).left) ∧ ∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs t'.G t'.PP.L k (e' ((k : ℂ)⁻¹ • P' a)) (e' ((k : ℂ)⁻¹ • P' b)) (unitOn c)) := by
   intro hL hQ E _ _ _ H D D' g ty P P' N j j' t e hp hq ⟨hN, _, _, _, hE, hcard⟩ _ hP' hj hj'
     ⟨hpr, hsm, ham, hkt, hdet, hadd, hsurj, hker, hlin, hhol, hweil⟩

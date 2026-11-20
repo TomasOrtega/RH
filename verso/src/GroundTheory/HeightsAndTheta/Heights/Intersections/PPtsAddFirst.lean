@@ -10,6 +10,13 @@ namespace GroundTheory.Heights₂.Heights.Inter
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Establish `h1 : fderiv ℝ ψ =ᶠ[𝓝 y] fun y' => fderiv ℝ a y' + fderiv ℝ b y'` using `by filter_upwards [hψ.fderiv (𝕜 := ℝ), ha, hb] with y' h1 h2 h3`. Rewrite using `[h1]`. Conclude with `((h2.differentiableAt (by norm_num)).hasFDerivAt.add (h3.differentiableAt (by norm_num)).hasFDerivAt).fderiv`. Establish `da2 : DifferentiableAt ℝ (fderiv ℝ a) y` using `(ha.self_of_nhds.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `db2 : DifferentiableAt ℝ (fderiv ℝ b) y` using `(hb.self_of_nhds.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`.
+
+Establish `hH : fderiv ℝ (fderiv ℝ ψ) y = fderiv ℝ (fderiv ℝ a) y + fderiv ℝ (fderiv ℝ b) y`. Rewrite using `[h1.fderiv_eq]`. Conclude with `(da2.hasFDerivAt.add db2.hasFDerivAt).fderiv`. Use extensionality with `i j`. Simplify using `only [cxHessian, hH, Matrix.add_apply, add_apply]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PtsAddFirst.cxHessian_add {D : ℕ} {a b ψ : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ}
     (ha : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 a y') (hb : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 b y')
     (hψ : ψ =ᶠ[𝓝 y] fun y' => a y' + b y') :
@@ -31,6 +38,9 @@ theorem PtsAddFirst.cxHessian_add {D : ℕ} {a b ψ : (Fin D → ℂ) → ℝ} {
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h` using `ReciprocityTheory.AnForm.A.mdisc_update_add (Fin.cons A C : Fin (D + 1) → _) 0 A B`. Simplify using `only [Fin.update_cons_zero] at h`. Conclude with `h`.
+-/
 theorem PtsAddFirst.mixedDisc_cons_add {D : ℕ} (A B : Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ)
     (C : Fin D → Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ) :
     mixedDisc (Fin.cons (A + B) C : Fin (D + 1) → _) =
@@ -39,6 +49,11 @@ theorem PtsAddFirst.mixedDisc_cons_add {D : ℕ} (A B : Matrix (Fin (D + 1)) (Fi
   simp only [Fin.update_cons_zero] at h
   exact h
 
+/- English proof (translation)
+Establish `hc : ∀ u : (Fin (D + 1) → ℂ) → ℝ, (fun k => cxHessian ((Fin.cons u ψ : Fin (D + 1) → _) k) y) = Fin.cons (cxHessian u y) (fun k => cxHessian (ψ k) y)`. Introduce `u`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) k <;> simp`. Simplify using `only [maDensity, hc, hH, PtsAddFirst.mixedDisc_cons_add, Complex.add_re]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PtsAddFirst.maDensity_cons_add {D : ℕ} (f g h : (Fin (D + 1) → ℂ) → ℝ)
     (ψ : Fin D → (Fin (D + 1) → ℂ) → ℝ) (y : Fin (D + 1) → ℂ)
     (hH : cxHessian h y = cxHessian f y + cxHessian g y) :
@@ -51,12 +66,22 @@ theorem PtsAddFirst.maDensity_cons_add {D : ℕ} (f g h : (Fin (D + 1) → ℂ) 
   simp only [maDensity, hc, hH, PtsAddFirst.mixedDisc_cons_add, Complex.add_re]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j z`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> simp [pot]`.
+-/
 theorem PtsAddFirst.pot_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
     (M : HermLine ι) (L : Fin e → HermLine ι) :
     pot (Fin.cons M L : Fin (e + 1) → HermLine ι) = Fin.cons (fun z => Real.log (M.h z)) (pot L) := by
   funext j z
   refine Fin.cases ?_ (fun i => ?_) j <;> simp [pot]
 
+/- English proof (translation)
+Distinguish the cases in `hγ : ∃ γ, IsSheet Q Ψ y w γ`. Simplify using `only [sheetDensity, dif_pos hγ] set γ := hγ.choose`. Establish `hs : IsSheet Q Ψ y w γ` using `hγ.choose_spec`. Establish `han : ∀ᶠ y' in 𝓝 y, AnalyticAt ℂ γ y'` using `(sheet_analyticAt osgood hs).eventually_analyticAt`. Establish `hmc : ∀ᶠ y' in 𝓝 y, γ y' ∈ mcPts Q` using `hs.2.mono fun _ h => h.2.1`.
+
+Establish `hcd : ∀ {A : HermLine ι}, IsSmoothHerm A → ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => Real.log (A.h (γ y''))) y'` using `fun hA => (han.and hmc).mono fun y' h => pot_contDiffAt hA h.1 h.2.1`. Establish `hsum : (fun y' => Real.log ((M.tensor N).h (γ y'))) =ᶠ[𝓝 y] fun y' => Real.log (M.h (γ y')) + Real.log (N.h (γ y'))` using `hmc.mono fun y' h => Real.log_mul (M.pos _ h.1).ne' (N.pos _ h.1).ne'`. Establish `hcons : ∀ u : ((Σ k, ι k) → ℂ) → ℝ, (fun j y' => (Fin.cons u (pot L) : Fin (e + 1) → _) j (γ y')) = Fin.cons (fun y' => u (γ y')) (fun j y' => pot L j (γ y'))`. Introduce `u`. Use function extensionality and compare the values at `j y'`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> simp`. Rewrite using `[hcons, hcons, hcons, PtsAddFirst.maDensity_cons_add _ _ _ _ _ (PtsAddFirst.cxHessian_add (hcd hM) (hcd hN) hsum), mul_add]`. Simplify using `only [sheetDensity, dif_neg hγ, add_zero]`.
+-/
 theorem PtsAddFirst.sheetDensity_add {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {e : ℕ} (Q : Ideal (MRing ι)) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1 + 1) → ℂ))
     (L : Fin e → HermLine ι) (M N : HermLine ι) (hM : IsSmoothHerm M) (hN : IsSmoothHerm N)
@@ -86,6 +111,13 @@ theorem PtsAddFirst.sheetDensity_add {K : Type} [Fintype K] {ι : K → Type} [�
       (PtsAddFirst.cxHessian_add (hcd hM) (hcd hN) hsum), mul_add]
   · simp only [sheetDensity, dif_neg hγ, add_zero]
 
+/- English proof (translation)
+Introduce `K _ ι _ Q e L M N E t hQ hL hM hN hE ht`. Establish `hL' : ∀ A : HermLine ι, IsSmoothHerm A → ∀ j, IsSmoothHerm ((Fin.cons A L : Fin (e + 1) → _) j)` using `fun A hA j => Fin.cases hA (fun i => hL i) j`. Establish `hMN : IsSmoothHerm (M.tensor N)` using `hM.mul hN`. Distinguish the cases in `hΨ : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1 + 1) → ℂ), IsGoodProj Q Ψ`. Simplify using `only [ptsIntegral, dif_pos hΨ, ptsIntegralAt]`.
+
+Establish `hI : ∀ A : HermLine ι, IsSmoothHerm A → Integrable (fun y => ∑ᶠ w ∈ fibre Q hΨ.choose y, sheetDensity Q hΨ.choose (Fin.cons (fun z => Real.log (A.h z)) (pot L)) (logNorm E t) y w)`. Introduce `A hA`. Establish `h` using `hInt K ι Q (e + 1) hΨ.choose (Fin.cons A L) E t hQ hΨ.choose_spec (hL' A hA) hE ht`. Rewrite `h` using `[PtsAddFirst.pot_cons]`. Then use the resulting hypothesis. Rewrite using `[← integral_add (hI M hM) (hI N hN)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[← finsum_mem_add_distrib (fibreFinite K ι Q (e + 1) hΨ.choose hQ hΨ.choose_spec y)]`. Conclude with `finsum_mem_congr rfl fun w _ => PtsAddFirst.sheetDensity_add Q _ L M N hM hN _ y w`. Simplify using `only [ptsIntegral, dif_neg hΨ, add_zero]`.
+-/
 theorem PtsAddFirst.proof (hInt : PtsIntegrableStatement) : PtsAddFirst.Statement := by
   intro K _ ι _ Q e L M N E t hQ hL hM hN hE ht
   have hL' : ∀ A : HermLine ι, IsSmoothHerm A → ∀ j, IsSmoothHerm ((Fin.cons A L : Fin (e + 1) → _) j) :=

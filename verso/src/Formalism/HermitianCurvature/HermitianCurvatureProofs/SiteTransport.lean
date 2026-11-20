@@ -14,6 +14,11 @@ section comp
 variable {V V' V'' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup V'']
   [Module ℂ V''] {T : V →ₗ[ℂ] V'} {T' : V' →ₗ[ℂ] V''}
 
+/- English proof (translation)
+Use `⟨LinearMap.ext fun v => ?_, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun h.1 v`. Establish `h2` using `LinearMap.congr_fun h'.1 (T v)`. Simplify using `only [LinearMap.comp_apply] at h1 h2 ⊢`. Rewrite using `[h2, h1]`.
+
+Establish `h1` using `LinearMap.congr_fun h.2 v`. Establish `h2` using `LinearMap.congr_fun h'.2 (T v)`. Simplify using `only [LinearMap.comp_apply] at h1 h2 ⊢`. Rewrite using `[h2, h1]`.
+-/
 theorem rel_comp {A : Pr V} {A' : Pr V'} {A'' : Pr V''} (h : Rel T A A') (h' : Rel T' A' A'') :
     Rel (T' ∘ₗ T) A A'' := by
   refine ⟨LinearMap.ext fun v => ?_, LinearMap.ext fun v => ?_⟩
@@ -26,6 +31,9 @@ theorem rel_comp {A : Pr V} {A' : Pr V'} {A'' : Pr V''} (h : Rel T A A') (h' : R
     simp only [LinearMap.comp_apply] at h1 h2 ⊢
     rw [h2, h1]
 
+/- English proof (translation)
+Introduce `a b` and use `rel_comp (h a b) (h' a b)`.
+-/
 theorem mrel_comp {M : Matrix (Fin 2) (Fin 2) (Pr V)} {M' : Matrix (Fin 2) (Fin 2) (Pr V')}
     {M'' : Matrix (Fin 2) (Fin 2) (Pr V'')} (h : MRel T M M') (h' : MRel T' M' M'') : MRel (T' ∘ₗ T) M M'' :=
   fun a b => rel_comp (h a b) (h' a b)
@@ -39,10 +47,16 @@ section bT
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {T : V →ₗ[ℂ] V'}
   {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Unfold `Wd.Ts`. Conclude with `mrel_Tm Y hp hc hci`.
+-/
 theorem mrel_Ts {σ : Wd.Site (Pr V)} {σ' : Wd.Site (Pr V')} (hp : Rel T σ.p σ'.p) (hc : Rel T σ.c σ'.c)
     (hci : Rel T σ.ci σ'.ci) (Y : ℂ) : MRel T (Wd.Ts σ Y) (Wd.Ts σ' Y) := by
   unfold Wd.Ts; exact mrel_Tm Y hp hc hci
 
+/- English proof (translation)
+The claim follows from `| [] => by unfold Wd.bT; exact arel_one | l :: w => by unfold Wd.bT Wd.vlet refine arel_mul (arel_ins _ (brel_lift0 ?_)) (arel_bT hp hc hci w) split_ifs · exact mrel_Ts hp hc hci _ · intro a b rw [Matrix.map_apply, Matrix.map_apply] exact rel_star (mrel_Ts hp hc hci _ a b)`.
+-/
 theorem arel_bT {σ : Wd.Site (Pr V)} {σ' : Wd.Site (Pr V')} (hp : Rel T σ.p σ'.p) (hc : Rel T σ.c σ'.c)
     (hci : Rel T σ.ci σ'.ci) : ∀ w : List (Wd.Letter ℂ S), ARel T (Wd.bT σ w) (Wd.bT σ' w)
   | [] => by unfold Wd.bT; exact arel_one
@@ -63,6 +77,11 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   {z z' : Fin (2 * ρ + k + 1) → ℂ} {π : Mx k (1 + ρ) → (Wp →L[ℂ] Wp)} {π' : Mx k (1 + ρ) → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Establish `hop` using `fun (i : Fin 6) Φ => op_tr ht X Xs l i Φ`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hL.1, hLs.1]`. Conclude with `rel_mk (fun v => hop 0 v) (fun v => by simp only [LinearMap.neg_apply, hop 3, map_neg])`. Rewrite using `[hL.2.2.1, hLs.2.2.1]`.
+
+Conclude with `rel_mk (fun v => hop 1 v) (fun v => hop 4 v)`. Rewrite using `[hL.2.2.2.1, hLs.2.2.2.1]`. Conclude with `rel_mk (fun v => hop 2 v) (fun v => hop 5 v)`.
+-/
 theorem site_ops {t : ℂ} (ht : t ≠ 0)
     {X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π'}
     {Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))}
@@ -80,6 +99,9 @@ theorem site_ops {t : ℂ} (ht : t ≠ 0)
   · rw [hL.2.2.2.1, hLs.2.2.2.1]
     exact rel_mk (fun v => hop 2 v) (fun v => hop 5 v)
 
+/- English proof (translation)
+Establish `hQ : MRel (trL ht z z' π π') (st.QQ Y) (sts.QQ Y)`. Rewrite using `[hst, hsts]`. Conclude with `mrel_smul s fun a b => rel_mk (fun v => t_tr ht hz hz' X Xs Y a b v) (fun v => t_tr ht hz hz' X Xs _ b a v)`. Unfold `P5.QQi`. Conclude with `mrel_mul (mrel_mul (mrel_conjTranspose (tprod_rel ht hL hLs _ _ n rfl)) hQ) (tprod_rel ht hL hLs _ _ n rfl)`.
+-/
 theorem qqi_rel_n {t : ℂ} (ht : t ≠ 0) (hz : inWb k ρ z) (hz' : inWb k ρ z')
     {X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π'}
     {Xs : ActualOps k ρ z z' (fun y => π (ιLev k 1 ρ y)) (fun y => π' (ιLev k 1 ρ y))}

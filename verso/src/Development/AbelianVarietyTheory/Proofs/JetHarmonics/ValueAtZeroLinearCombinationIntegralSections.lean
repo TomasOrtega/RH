@@ -21,6 +21,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GermValuation
 
+/- English proof (translation)
+Establish `hr` using `(hrep R G d x hx (Fin 1 × Fin d)).2.2.2.1`. Establish `hs` using `(h 1 _ _ hr 0).2`. Establish `e₁ : (1 : Chart.sp (R₀` using `R) (Chart.JetR R (Fin 1 × Fin d) 0) ⟶ G).left = Spec.map (CommRingCat.ofHom (algebraMap R (Chart.JetR R (Fin 1 × Fin d) 0))) ≫ e := by`. Rewrite using `[he, Hom.one_def, Over.comp_left]`. Use `congr 1`.
+
+Use `beta_reduce at hs`. Rewrite `hs` using `[e₁, JetSer.fnVal_specMap _ _ _ hU]`. Establish `e₂` using `congrArg (Chart.jetAug R (Fin 1 × Fin d) 0) hs`. Rewrite `e₂` using `[AlgHom.commutes, ((halg R (Fin 1 × Fin d)).2.1 0 _).2]`. Establish `e₃ : ev (n` using `1) ![(0 : Fin d → PS R 1 d)] g = MvPowerSeries.C (MvPowerSeries.constantCoeff g) := by`.
+
+Use `MvPowerSeries.subst_zero_eq_C_constantCoeff (τ := Fin 1 × Fin d) (S := R) (f := g)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Unfold `ev`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Take `⟨a, b⟩` from `p`. Use `fin_cases a`. Both sides reduce to the same expression. Rewrite `e₂` using `[e₃, MvPowerSeries.constantCoeff_C]`. Conclude with `e₂.symm`.
+-/
 theorem constantCoeff_of_isSer1 (halg : JetSer.JetAlgSt) (hrep : JetSer.RepSt) {R : Type} [CommRing R]
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ} {x : JetSer.Fam G (Fin d)} (hx : Chart.IsUnivChart G d x)
     {U : G.left.Opens} (e : Spec (CommRingCat.of R) ⟶ G.left) (he : e = η[G].left) (hU : ⊤ ≤ e ⁻¹ᵁ U) {f : Γ(G.left, U)} {g : PS R 1 d}
@@ -51,6 +60,11 @@ section Generic
 
 variable {X Y Y₁ Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Simplify using `only [sval_of (s _) (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k))` using `⟨hJ.mem φ₁ _, hJ.mem (fun k => h ≫ φ k) _⟩`. Establish `e` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ k)) (by`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (r ≫ q)) e)`. Establish `a₂ : LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k)) ≤ h ⁻¹ᵁ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `inf_le_right.trans (fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k)`.
+
+Use `(gs_res _ z _ hm _).symm.trans ((congrArg (gs r z _) e).trans ?_)` and prove the remaining obligations. Use `((gs_eq _ z _ hm _).trans (by rw [map_sum, map_sum])).trans (Finset.sum_congr rfl fun i _ => (gs_eq _ z _ hm _).symm.trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res _ z _ hm _) ((gs_res _ z a₂ hm _).trans (gs_pull _ h z _ (a₂ hm) _)))))` and prove the remaining obligations.
+-/
 theorem sval_of_secLin {φ₁ : K' → (Y₁ ⟶ X)} {ε₁ : K' → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {n : ℕ} {s : Fin n → LB.Sec (LB.LinComb L φ ε)} {h : Y₁ ⟶ Y} {c : Fin n → Γ(Y₁, ⊤)}
     (H : GeneratorPullback.SecLin L φ₁ ε₁ s₁ φ ε s h c) (r : Z ⟶ Y₁) (z : Z) {J} (hJ : Good L z J) :
@@ -76,6 +90,13 @@ section Value
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
 
+/- English proof (translation)
+Take `⟨τ, -, hc, he⟩` from `h`. Establish `T` using `val_corr hJ hc (𝟙 _)`. Rewrite `T` using `[val_pull hJ, val_pow, Category.id_comp, val_of τ (𝟙 _) z J (fun i => J ((DegPre.zF D.toPre F).left ≫ DegPre.famφ D.toPre F α i)) (fun i => by rw [Category.id_comp])]`. Rewrite using `[← T]`. Establish `hy'` using `hJ.mem (DegPre.famφ D.toPre F α) (DegPre.zF D.toPre F).left`.
+
+Establish `hy : z ∈ LB.wchart D.toPre.P.L (fun i => (DegPre.zF D.toPre F).left ≫ DegPre.famφ D.toPre F α i) (fun i => J ((DegPre.zF D.toPre F).left ≫ DegPre.famφ D.toPre F α i))` using `Set.mem_iInter.2 fun i => Set.mem_iInter.1 hy' i`. Establish `e` using `congrArg (gs (𝟙 _) z _) (he (fun i => J ((DegPre.zF D.toPre F).left ≫ DegPre.famφ D.toPre F α i)))`. Establish `l` using `(gs_res (𝟙 _) z _ hy _).symm.trans e`. Use `Eq.trans ?_ (l.trans ((gs_mul (𝟙 _) z _ hy _ _).trans (congrArg₂ (· * ·) (gs_res (𝟙 _) z le_top hy _) (gs_unit (𝟙 _) z _ hy _))))` and prove the remaining obligations. Use `Eq.trans ?_ (gs_pull (𝟙 _) (DegPre.zF D.toPre F).left z _ hy' _).symm` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem sectionValue_of_valueAtZero_stalk {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))} {x : F} (h : Val0 D F k α s x)
     (z : (TF (R := V) F).left) {J} (hJ : Good D.toPre.P.L z J) :
@@ -99,6 +120,11 @@ theorem sectionValue_of_valueAtZero_stalk {k : ℕ} {α : D.toPre.X}
   rw [Category.id_comp]
   rfl
 
+/- English proof (translation)
+Establish `hz : (DegPre.zF D.toPre F).left ≫ (DegPre.prB D.toPre F).left = (jFK (R` using `V) F ≫ jK V) ≫ eSec D.toPre.P.A := GC.zF_prB D.toPre F`. Establish `hK : (toUnit (TK V)).left = jK V` using `GC.toUnit_TK_left`. Rewrite using `[sval_of_secLin hs _ z hJ, ExpansionValueZero.cst_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hz, ha i _ _ z J hJ, H1.cst_mul, _root_.mul_assoc]`.
+
+Use `congrArg₂ (· * ·) ?_ (congrArg₂ (· * ·) ((ExpansionValueZero.cst_comp _ _ z (a i)).trans (H1.gs_spec _ z _)) (congrArg Units.val (congrArg (· ^ k) ?_)))` and prove the remaining obligations. Use `(gs_pull (DegPre.zF D.toPre F).left (fst (TF (R := V) F) D.toPre.P.A).left z ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[GC.zF_fst]`. Both sides reduce to the same expression. Conclude with `((val_pull hJ D.toPre.rig (toUnit (TK V)).left (jFK (R := V) F)).trans (by rw [hK])).symm`.
+-/
 theorem valueAtZero_linearCombination_integral_sections {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))} {l : ℕ} {c : Fin l → F}
     {g : Fin l → D.toPre.SecB k α}
@@ -124,6 +150,9 @@ theorem valueAtZero_linearCombination_integral_sections {k : ℕ} {α : D.toPre.
     rfl
   · exact ((val_pull hJ D.toPre.rig (toUnit (TK V)).left (jFK (R := V) F)).trans (by rw [hK])).symm
 
+/- English proof (translation)
+The claim follows from `H1.cst_ext fun z => by choose J hJ using fun ψ : (TF (R := V) F).left ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart D.toPre.P.isLB (ψ z) exact (Units.mul_left_inj _).1 ((sectionValue_of_valueAtZero_stalk h z hJ).symm.trans (h' z J hJ))`.
+-/
 theorem valueAtZero_unique_of_stalk_reading {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))} {x x' : F} (h : Val0 D F k α s x)
     (h' : ∀ (z : (TF (R := V) F).left) (J), Good D.toPre.P.L z J →
@@ -135,6 +164,15 @@ theorem valueAtZero_unique_of_stalk_reading {k : ℕ} {α : D.toPre.X}
 
 end Value
 
+/- English proof (translation)
+Substitute `he` using the available equality. Establish `h₁ : ⊤ ≤ (𝟙 (Spec (CommRingCat.of R))) ⁻¹ᵁ LB.wchart Lr.L (fun _ : PUnit.{1} => (eSec G : Spec (CommRingCat.of R) ⟶ G.left)) (fun _ => j)` using `fun z hz => Set.mem_iInter.2 fun _ => hj hz`. Establish `h₂ : ⊤ ≤ (eSec G : Spec (CommRingCat.of R) ⟶ G.left) ⁻¹ᵁ LB.wchart Lr.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => j)` using `fun z hz => Set.mem_iInter.2 fun _ => hj hz`. Establish `hu : IsUnit (JetSer.fnVal (𝟙 (Spec (CommRingCat.of R))) _ (Lr.rig.s (fun _ => j)).val)` using `(congrArg IsUnit (JetSer.fnVal_eq_fnValHom _ _ h₁ _)).mpr ((Units.isUnit _).map _)`. Take `⟨u, hu⟩` from `hu`.
+
+Use `⟨u, fun q σ x hx => H1.cst_ext fun z => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, eJ⟩` from `exists_good Lr.L Lr.isLB z (fun _ : PUnit.{1} => (eSec G : Spec (CommRingCat.of R) ⟶ G.left)) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hj (show z ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial))`. Establish `eJ' : J (eSec G) = j` using `eJ PUnit.unit`. Establish `H` using `hx _ (𝟙 _) z J hJ`. Establish `hc : ∀ a : R, cst (𝟙 (Sp R)) z a = ((Spec (CommRingCat.of R)).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)` using `fun a => gs_eq _ z ⊤ trivial _`.
+
+Establish `a₁ : sval σ (𝟙 (Sp R) ≫ eSec G) z J = cst (𝟙 (Sp R)) z (JetSer.fnVal (A` using `R) (eSec G) (LB.wchart Lr.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => j)) (σ.f (fun _ => j))) := by`. Rewrite using `[Category.id_comp, hc]`. Conclude with `(sval_of σ _ z J (fun _ => j) (fun _ => (congrArg J (Category.comp_id _)).trans eJ')).trans (JetSer.valSer_germ_fnVal _ _ h₂ z _).symm`. Establish `a₂ : (val (L` using `Lr.L) Lr.rig (𝟙 (Sp R)) z J).val = cst (𝟙 (Sp R)) z u.val := by`. Rewrite using `[hc, hu]`.
+
+Use `Eq.trans ?_ (JetSer.valSer_germ_fnVal _ _ h₁ z _).symm` and prove the remaining obligations. Conclude with `(congrArg Units.val (val_of (L := Lr.L) Lr.rig _ z J (fun _ => j) (fun _ => (congrArg J (Category.id_comp _)).trans eJ'))).trans (gs_unit _ z _ (h₁ (show z ∈ (⊤ : (Spec (CommRingCat.of R)).Opens) from trivial)) _).symm`. Use `a₁.symm.trans (H.trans ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, a₂, H1.cst_mul, hc u.val, hc (u.val ^ q), map_pow, map_pow]`.
+-/
 theorem exists_unit_frame {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
     (Lr : RigLB G) (j : Lr.L.ι) (e : Spec (CommRingCat.of R) ⟶ G.left) (he : e = eSec G) (hj : ⊤ ≤ e ⁻¹ᵁ Lr.L.U j) :
     ∃ u : Rˣ, ∀ (q : ℕ) (σ : H0 Lr.L q) (x : R), (∀ (Z : Scheme.{0}) (r : Z ⟶ Sp R) (z : Z) (J), Good Lr.L z J →
@@ -171,6 +209,17 @@ theorem exists_unit_frame {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.o
   refine a₁.symm.trans (H.trans ?_)
   rw [Units.val_pow_eq_pow_val, a₂, H1.cst_mul, hc u.val, hc (u.val ^ q), map_pow, map_pow]
 
+/- English proof (translation)
+Establish `hb : ∀ i, ∃ n : ℕ, ((r : ℚ) : WithTop ℚ) < v (c i) + (((n : ℕ) : ℚ) : WithTop ℚ)` using `fun i => by`. Proceed by induction on `v (c i) using WithTop.recTopCoe with`. Consider the case `top => exact ⟨0, by simp⟩`. Consider the case `coe t`. Take `⟨n, hn⟩` from `exists_nat_gt (r - t)`.
+
+Conclude with `⟨n, by rw [← WithTop.coe_add, WithTop.coe_lt_coe]; linarith⟩`. Use `choose n hn using hb`. Use `choose S hS using fun i => h i (n i)`. Set `T : Finset X` to `insert χ (Finset.univ.biUnion S)`. Establish `hT : ∀ i, S i ⊆ T` using `fun i => (Finset.subset_biUnion_of_mem S (Finset.mem_univ i)).trans (Finset.subset_insert _ _)`.
+
+Establish `e : ∑ i, c i * TWO.algVF (V` using `V) (F := F) (x i) = ∑ i, c i * TWO.algVF (V := V) (F := F) (a i χ) + (∑ β ∈ T.erase χ, ∑ i, c i * TWO.algVF (V := V) (F := F) (a i β) + ∑ i, c i * TWO.algVF (V := V) (F := F) (x i - ∑ α ∈ T, a i α)) := by`. Rewrite using `[← _root_.add_assoc, Finset.add_sum_erase T (fun β => ∑ i, c i * TWO.algVF (V := V) (F := F) (a i β)) (Finset.mem_insert_self _ _), Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← map_sum, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, AddValuation.map_add_eq_of_lt_left, hχ]`. Rewrite using `[hχ]`. Use `v.map_lt_add (v.map_lt_sum WithTop.coe_ne_top fun β hβ => ?_) (v.map_lt_sum WithTop.coe_ne_top fun i _ => ?_)` and prove the remaining obligations. Conclude with `(WithTop.coe_lt_coe.2 hr).trans_le (ho β (Finset.ne_of_mem_erase hβ))`. Rewrite using `[AddValuation.map_mul]`.
+
+Use `(hn i).trans_le (add_le_add le_rfl ?_)` and prove the remaining obligations. Conclude with `ExpansionValueZero.le_val_of_mem_pow hϖ hv (n i) (Ideal.pow_le_pow_right (Nat.le_succ _) (hS i T (hT i)))`.
+-/
 theorem val_eq_of_approx {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V} (hϖ : Irreducible ϖ)
     {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
     {X : Type} {l : ℕ} (c : Fin l → F) (x : Fin l → V) (a : Fin l → X → V)
@@ -206,6 +255,21 @@ theorem val_eq_of_approx {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuati
     refine (hn i).trans_le (add_le_add le_rfl ?_)
     exact ExpansionValueZero.le_val_of_mem_pow hϖ hv (n i) (Ideal.pow_le_pow_right (Nat.le_succ _) (hS i T (hT i)))
 
+/- English proof (translation)
+Introduce `hL _ _ halg hrep hser hex hG E _ _ _ H V _ _ _ F _ _ _ _ _ _ y q hq s f hf`. Establish `hU : ⊤ ≤ η[y.t.G].left ⁻¹ᵁ LB.wchart y.P.U.LG.L (fun _ : Fin 1 => 𝟙 y.t.G.left) (fun _ => y.j)` using `fun z hz => Set.mem_iInter.2 fun _ => y.hj hz`. Take `⟨l, c, σ, fi, g, ρ, hE, hlin, hρ, hg, hfe⟩` from `id hf`. Establish `hρu : IsUnit ρ` using `GermExist.isUnit_of_isSer1 hrep hser y.hx (Units.isUnit _) hρ`. Use `⟨fun r hr mo => ?_, fun χ x r r' hx hvx hr ho => ?_⟩` and prove the remaining obligations.
+
+Take `⟨gm, hgm⟩` from `hG E H V F y q hq`. Take `⟨l', c', σ', fi', hc', hE', hlin'⟩` from `exists_integral_expansions_of_vge hL V y.ϖ y.hϖ y.P.D _ y.t.G y.P.U y.Q y.hQ F y.v y.hv q hq s r hr`. Use `choose S hS using fun i => ((hex V y.t.G y.d y.x y.hx).1 _ hU ((σ' i).f (fun _ => y.j))).exists`. Take `⟨w, hw⟩` from `hρu.pow q`. Establish `hf' : y.Germ q s (∑ i, MvPowerSeries.C (c' i) * MvPowerSeries.map (TWO.algVF (V` using `V) (F := F)) (S i * (w⁻¹).val)) := ⟨l', c', σ', fi', fun i => S i * (w⁻¹).val, ρ, hE', hlin', hρ, fun i => ⟨S i, hS i, by rw [← hw, Units.inv_mul_cancel_right]⟩, rfl⟩`.
+
+Rewrite using `[(hgm s f).1 hf, ← (hgm s _).1 hf', map_sum]`. Use `y.v.map_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_map, AddValuation.map_mul]`. Conclude with `(hc' i).trans (le_add_of_nonneg_right (GC.v_alg_nonneg y.hϖ y.hv _))`. Use `choose a ha using fun i α => ExpansionValueZero.exists_value y.P.D.toPre q α (fi i α) choose x₀ hx₀ using fun i => ExpansionValueZero.exists_coeff (A := V) y.P.U.LG.isLB (σ i) (eSec y.t.G) (GeneratorPullback.powGen y.P.U.LG.L _ _ y.P.U.LG.rig q) (powGen_isGen _ _ _ _ y.P.U.LG.rig …`.
+
+Establish `hx₁ : ∀ i (Z : Scheme.{0}) (r : Z ⟶ Sp V) (z : Z) (J), Good y.P.U.LG.L z J → sval (σ i) (r ≫ eSec y.t.G) z J = cst r z (x₀ i) * (val (L` using `y.P.U.LG.L) y.P.U.LG.rig r z J ^ q).val := fun i Z r z J hJ => (hx₀ i Z r z J hJ).trans (by rw [val_pow])`. Take `⟨u, hu⟩` from `exists_unit_frame y.P.U.LG y.j _ rfl y.hj`. Take `⟨w, hw⟩` from `hρu.map (MvPowerSeries.constantCoeff (R := V))`. Establish `hgi : ∀ i, MvPowerSeries.constantCoeff (g i) = x₀ i * ((u * w⁻¹) ^ q).val` using `fun i => by`. Take `⟨S, hS, hgS⟩` from `hg i`.
+
+Establish `e₁` using `(constantCoeff_of_isSer1 halg hrep y.hx _ rfl hU hS).trans (hu q (σ i) (x₀ i) (hx₁ i))`. Rewrite `e₁` using `[← hgS, map_mul, map_pow, ← hw, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val]`. Rewrite using `[mul_pow, Units.val_mul, ← _root_.mul_assoc, ← e₁, inv_pow, Units.mul_inv_cancel_right]`. Establish `hv0` using `fun α => valueAtZero_linearCombination_integral_sections (hlin α) (fun i => a i α) (fun i => ha i α)`. Establish `key` using `val_eq_of_approx y.hϖ y.hv c x₀ a (fun i e => ExpansionValueZero.value_sub_sum_mem y.P.U.toUnifPre e q (σ i) (fi i) (hE i e) (x₀ i) (hx₁ i) (a i) (ha i)) χ r r' hr ((congrArg y.v (valueAtZero_unique_of_stalk_reading hx (hv0 χ))).symm.trans hvx) (fun β hβ => GC.valuation_ge_at_zer …`.
+
+Establish `e : MvPowerSeries.constantCoeff f = (∑ i, c i * TWO.algVF (V` using `V) (F := F) (x₀ i)) * TWO.algVF (V := V) (F := F) ((u * w⁻¹) ^ q).val := by`. Rewrite using `[hfe, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.constantCoeff_C, MvPowerSeries.constantCoeff_map, hgi, map_mul, _root_.mul_assoc]`. Rewrite using `[e, AddValuation.map_mul, key]`.
+
+Conclude with `(congrArg _ (GC.v_alg_unit y.hv _)).trans (add_zero _)`.
+-/
 theorem main : Laws → Laws4 → TwistBCSpanStatement → JetSer.JetAlgSt → JetSer.RepSt → JetSer.SerSt → JetSer.SerExSt →
     FamGerm.GermExSt → GermValSt := by
   intro hL _ _ halg hrep hser hex hG E _ _ _ H V _ _ _ F _ _ _ _ _ _ y q hq s f hf

@@ -26,6 +26,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 end Point
 end GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p _ _ w _ j => canEx_at p w j⟩⟩⟩`.
+-/
 theorem canEx_holds_alt : _root_.GlobalTheory.BigOn.Exp.CanonicalExists :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p _ _ w _ j => canEx_at p w j⟩⟩⟩
 end GlobalTheory.BigOn.Exp

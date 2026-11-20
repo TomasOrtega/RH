@@ -8,6 +8,9 @@ open Topology Filter Metric Complex Real
 
 noncomputable section
 
+/- English proof (translation)
+Proceed by induction on `Z using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a Z ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`. Conclude with `(differentiable_id.sub_const a).mul ih`.
+-/
 theorem CircleArgumentPrinciple.differentiable_prod_sub (Z : Multiset ℂ) :
     Differentiable ℂ fun s : ℂ => (Z.map fun a => s - a).prod := by
   induction Z using Multiset.induction_on with
@@ -16,6 +19,29 @@ theorem CircleArgumentPrinciple.differentiable_prod_sub (Z : Multiset ℂ) :
     simp only [Multiset.map_cons, Multiset.prod_cons]
     exact (differentiable_id.sub_const a).mul ih
 
+/- English proof (translation)
+Proceed by induction on `Z using Multiset.induction_on with`. Consider the case `empty`. Simplify using `only [Multiset.map_zero, Multiset.prod_zero, one_mul, Multiset.sum_zero]`. Establish `hd : ∀ z ∈ closedBall c r, DifferentiableAt ℂ (fun s => φ s * deriv u s / u s) z`. Introduce `z hz`.
+
+Establish `hzO : O ∈ 𝓝 z` using `hO.mem_nhds (hball hz)`. Conclude with `((hφ.differentiableAt hzO).mul ((hu.deriv hO).differentiableAt hzO)).div (hu.differentiableAt hzO) (hu0 z hz)`. Rewrite using `[circleIntegral_eq_zero_of_differentiable_on_off_countable hr.le Set.countable_empty (fun z hz => (hd z hz).continuousAt.continuousWithinAt) (fun z hz => hd z (ball_subset_closedBall hz.1)), mul_zero]`. Consider the case `cons a Z ih`. Establish `hZ' : ∀ b ∈ Z, b ∈ ball c r` using `fun b hb => hZ b (Multiset.mem_cons_of_mem hb)`.
+
+Establish `ha : a ∈ ball c r` using `hZ a (Multiset.mem_cons_self a Z)`. Use `set F : ℂ → ℂ := fun s => (Z.map fun b => s - b).prod * u s with hFdef`. Establish `hF : DifferentiableOn ℂ F O` using `((CircleArgumentPrinciple.differentiable_prod_sub Z).differentiableOn).mul hu`. Establish `hne : ∀ s ∈ sphere c r, ∀ b ∈ a ::ₘ Z, s - b ≠ 0`. Introduce `s hs b hb h0`.
+
+Establish `hb'` using `hZ b hb`. Take `rfl` from `sub_eq_zero.1 h0`. Rewrite `hb'` using `[mem_ball]`. Rewrite `hs` using `[mem_sphere]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hFne : ∀ s ∈ sphere c r, F s ≠ 0`. Introduce `s hs`. Use `mul_ne_zero (Multiset.prod_ne_zero ?_) (hu0 s (sphere_subset_closedBall hs))` and prove the remaining obligations. Simplify using `only [Multiset.mem_map, not_exists, not_and]`. Conclude with `fun b hb h0 => hne s hs b (Multiset.mem_cons_of_mem hb) h0`.
+
+Establish `hsplit : Set.EqOn (fun s => φ s * deriv (fun s => ((a ::ₘ Z).map fun b => s - b).prod * u s) s / (((a ::ₘ Z).map fun b => s - b).prod * u s)) (fun s => (s - a)⁻¹ • φ s + φ s * deriv F s / F s) (sphere c r)`. Introduce `s hs`. Establish `hsO : O ∈ 𝓝 s` using `hO.mem_nhds (hball (sphere_subset_closedBall hs))`. Establish `hfun : (fun s => ((a ::ₘ Z).map fun b => s - b).prod * u s) = fun s => (s - a) * F s`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [Multiset.map_cons, Multiset.prod_cons, hFdef, mul_assoc]`. Establish `hval : ((a ::ₘ Z).map fun b => s - b).prod * u s = (s - a) * F s`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, hFdef, mul_assoc]`. Establish `hder : deriv (fun s => (s - a) * F s) s = 1 * F s + (s - a) * deriv F s` using `(((hasDerivAt_id' s).sub_const a).mul (hF.differentiableAt hsO).hasDerivAt).deriv`. Establish `hsa : s - a ≠ 0` using `hne s hs a (Multiset.mem_cons_self a Z)`.
+
+Establish `hFs` using `hFne s hs`. Use `show φ s * deriv (fun s => ((a ::ₘ Z).map fun b => s - b).prod * u s) s / (((a ::ₘ Z).map fun b => s - b).prod * u s) = (s - a)⁻¹ • φ s + φ s * deriv F s / F s`. Rewrite using `[hfun, hder, hval, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hint1 : CircleIntegrable (fun s => (s - a)⁻¹ • φ s) c r`.
+
+Use `ContinuousOn.circleIntegrable hr.le ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Use `ContinuousOn.mul ?_ (hφ.continuousOn.mono (sphere_subset_closedBall.trans hball))` and prove the remaining obligations. Conclude with `(continuousOn_id.sub continuousOn_const).inv₀ (fun s hs => hne s hs a (Multiset.mem_cons_self a Z))`. Establish `hint2 : CircleIntegrable (fun s => φ s * deriv F s / F s) c r`.
+
+Use `ContinuousOn.circleIntegrable hr.le ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hsO : O ∈ 𝓝 s` using `hO.mem_nhds (hball (sphere_subset_closedBall hs))`. Conclude with `(((hφ.differentiableAt hsO).mul ((hF.deriv hO).differentiableAt hsO)).div (hF.differentiableAt hsO) (hFne s hs)).continuousAt.continuousWithinAt`. Establish `hcauchy : (2 * π * I : ℂ)⁻¹ • (∮ s in C(c, r), (s - a)⁻¹ • φ s) = φ a` using `two_pi_I_inv_smul_circleIntegral_sub_inv_smul_of_differentiable_on_off_countable Set.countable_empty ha (hφ.continuousOn.mono hball) (fun z hz => hφ.differentiableAt (hO.mem_nhds (hball (ball_subset_closedBall hz.1))))`.
+
+Rewrite using `[circleIntegral.integral_congr hr.le hsplit, circleIntegral.integral_add hint1 hint2, mul_add, ← smul_eq_mul, hcauchy, ih hZ', Multiset.map_cons, Multiset.sum_cons]`.
+-/
 theorem CircleArgumentPrinciple.integral_prod_mul {O : Set ℂ} {c : ℂ} {r : ℝ} (hr : 0 < r) (hO : IsOpen O)
     (hball : closedBall c r ⊆ O) {u φ : ℂ → ℂ} (hu : DifferentiableOn ℂ u O)
     (hu0 : ∀ s ∈ closedBall c r, u s ≠ 0) (hφ : DifferentiableOn ℂ φ O) (Z : Multiset ℂ)
@@ -90,6 +116,53 @@ theorem CircleArgumentPrinciple.integral_prod_mul {O : Set ℂ} {c : ℂ} {r : �
     rw [circleIntegral.integral_congr hr.le hsplit, circleIntegral.integral_add hint1 hint2, mul_add,
       ← smul_eq_mul, hcauchy, ih hZ', Multiset.map_cons, Multiset.sum_cons]
 
+/- English proof (translation)
+Establish `han : AnalyticOnNhd ℂ h O` using `hh.analyticOnNhd hO`. Establish `hord : ∀ z ∈ closedBall c r, analyticOrderAt h z ≠ ⊤`. Introduce `z hz htop`. Establish `h0` using `(han.mono hball).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_closedBall c r).isPreconnected hz (analyticOrderAt_eq_top.1 htop)`. Establish `hs : c + (r : ℂ) ∈ sphere c r`.
+
+Rewrite using `[mem_sphere, dist_eq_norm, add_sub_cancel_left, Complex.norm_real, Real.norm_of_nonneg hr.le]`. Conclude with `hsph _ hs (h0 (sphere_subset_closedBall hs))`. Use `set S0 : Set ℂ := {z | z ∈ closedBall c r ∧ h z = 0} with hS0def`. Establish `hS0fin : S0.Finite`. Apply `IsCompact.finite` to reduce the goal to its premises.
+
+Use `(isCompact_closedBall c r).of_isClosed_subset ?_ (fun z hz => hz.1)` and prove the remaining obligations. Conclude with `(hh.continuousOn.mono hball).preimage_isClosed_of_isClosed isClosed_closedBall isClosed_singleton`. Rewrite using `[isDiscrete_iff_nhdsNE]`. Introduce `z hz`. Break down `(han z (hball hz.1)).eventually_eq_zero_or_eventually_ne_zero with h1 | h1` into its components or cases.
+
+Conclude with `absurd (analyticOrderAt_eq_top.2 h1) (hord z hz.1)`. Rewrite using `[Filter.inf_principal_eq_bot] filter_upwards [h1] with w hw hwS`. Conclude with `hw hwS.2`. Use `set S : Finset ℂ := hS0fin.toFinset with hSdef`. Establish `hmemS : ∀ a, a ∈ S ↔ a ∈ closedBall c r ∧ h a = 0` using `fun a => hS0fin.mem_toFinset`.
+
+Use `set m : ℂ → ℕ := fun a => analyticOrderNatAt h a with hmdef`. Establish `hmcast : ∀ a ∈ S, analyticOrderAt h a = (m a : ℕ∞)` using `fun a ha => (Nat.cast_analyticOrderNatAt (hord a ((hmemS a).1 ha).1)).symm`. Establish `hmpos : ∀ a ∈ S, m a ≠ 0`. Introduce `a ha h0`. Establish `h1` using `hmcast a ha`.
+
+Rewrite `h1` using `[h0, Nat.cast_zero, analyticOrderAt_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `h1 (han a (hball ((hmemS a).1 ha).1))`. Conclude with `h1 ((hmemS a).1 ha).2`. Use `set P : ℂ → ℂ := fun s => ∏ a ∈ S, (s - a) ^ m a with hPdef`.
+
+Use `set Z : Multiset ℂ := ∑ a ∈ S, Multiset.replicate (m a) a with hZdef`. Establish `hPZ : ∀ s, (Z.map fun a => s - a).prod = P s`. Introduce `s`. Simplify using `only [hZdef, hPdef]`. Proceed by induction on `S using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert b T hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.prod_insert hb, Multiset.map_add, Multiset.prod_add, ih, Multiset.map_replicate, Multiset.prod_replicate]`. Establish `hPdiff : Differentiable ℂ P`. Simplify using `only [hPdef]`.
+
+Use `fun_prop`. Establish `hP0 : ∀ s, P s = 0 ↔ s ∈ S`. Introduce `s`. Simplify using `only [hPdef, Finset.prod_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, h0⟩`. Rewrite using `[sub_eq_zero.1 ((pow_eq_zero_iff (hmpos a ha)).1 h0)]`. Conclude with `ha`. Introduce `hs`. Conclude with `⟨s, hs, by rw [sub_self]; exact zero_pow (hmpos s hs)⟩`.
+
+Establish `hloc : ∀ a ∈ S, ∃ G : ℂ → ℂ, AnalyticAt ℂ G a ∧ G a ≠ 0 ∧ ∀ᶠ w in 𝓝[≠] a, P w ≠ 0 ∧ h w / P w = G w`. Introduce `a ha`. Take `⟨g, hg, hga, hev⟩` from `(han a (hball ((hmemS a).1 ha).1)).analyticOrderAt_eq_natCast.1 (hmcast a ha)`. Use `set Q : ℂ → ℂ := fun w => ∏ b ∈ S.erase a, (w - b) ^ m b with hQdef`. Establish `hPQ : ∀ w, P w = (w - a) ^ m a * Q w` using `fun w => (Finset.mul_prod_erase S (fun b => (w - b) ^ m b) ha).symm`.
+
+Establish `hQa : Q a ≠ 0`. Simplify using `only [hQdef]`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `b hb`. Conclude with `pow_ne_zero _ (sub_ne_zero.2 (Finset.ne_of_mem_erase hb).symm)`.
+
+Establish `hQan : AnalyticAt ℂ Q a`. Simplify using `only [hQdef]`. Use `fun_prop`. Use `⟨fun w => g w / Q w, hg.div hQan hQa, div_ne_zero hga hQa, ?_⟩` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds hev, nhdsWithin_le_nhds (hQan.continuousAt.eventually_ne hQa), self_mem_nhdsWithin] with w hw hQw hwa`.
+
+Establish `hpow : (w - a) ^ m a ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 hwa)`. Use `⟨by rw [hPQ]; exact mul_ne_zero hpow hQw, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, hPQ, smul_eq_mul, mul_div_mul_left _ _ hpow]`. Use `set u : ℂ → ℂ := fun s => if P s = 0 then limUnder (𝓝[≠] s) (fun w => h w / P w) else h s / P s with hudef`. Establish `hu_near : ∀ a ∈ S, ∃ G : ℂ → ℂ, AnalyticAt ℂ G a ∧ G a ≠ 0 ∧ u =ᶠ[𝓝 a] G`.
+
+Introduce `a ha`. Take `⟨G, hG, hGa, hev⟩` from `hloc a ha`. Use `⟨G, hG, hGa, ?_⟩` and prove the remaining obligations. Establish `hlim : limUnder (𝓝[≠] a) (fun w => h w / P w) = G a` using `Tendsto.limUnder_eq ((hG.continuousAt.tendsto.mono_left nhdsWithin_le_nhds).congr' (hev.mono fun w hw => hw.2.symm))`. Use `filter_upwards [eventually_nhdsWithin_iff.1 hev] with w hw`.
+
+Distinguish the cases in `hwa : w = a`. Substitute `hwa` using the available equality. Simplify using `only [hudef, (hP0 w).2 ha, if_true, hlim]`. Take `⟨hPw, hq⟩` from `hw hwa`. Simplify using `only [hudef, hPw, if_false, hq]`.
+
+Establish `hu_off : ∀ s, P s ≠ 0 → u =ᶠ[𝓝 s] fun w => h w / P w`. Introduce `s hs`. Use `filter_upwards [(hPdiff s).continuousAt.eventually_ne hs] with w hw`. Simplify using `only [hudef, hw, if_false]`. Use `⟨Z, u, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a haZ`. Take `⟨b, hb, hab⟩` from `Multiset.mem_sum.1 haZ`. Rewrite using `[Multiset.eq_of_mem_replicate hab]`. Take `⟨hbc, hb0⟩` from `(hmemS b).1 hb`. Rewrite using `[mem_ball]`.
+
+Use `lt_of_le_of_ne (mem_closedBall.1 hbc) fun hbr => hsph b ?_ hb0` and prove the remaining obligations. Conclude with `mem_sphere.2 hbr`. Introduce `s hs`. Distinguish the cases in `hPs : P s = 0`. Take `⟨G, hG, -, hEq⟩` from `hu_near s ((hP0 s).1 hPs)`.
+
+Conclude with `(hG.differentiableAt.congr_of_eventuallyEq hEq).differentiableWithinAt`. Conclude with `(((hh.differentiableAt (hO.mem_nhds hs)).div (hPdiff s) hPs).congr_of_eventuallyEq (hu_off s hPs)).differentiableWithinAt`. Introduce `s hs`. Distinguish the cases in `hPs : P s = 0`. Take `⟨G, -, hGs, hEq⟩` from `hu_near s ((hP0 s).1 hPs)`.
+
+Rewrite using `[hEq.eq_of_nhds]`. Conclude with `hGs`. Establish `hhs : h s ≠ 0` using `fun h0 => hPs ((hP0 s).2 ((hmemS s).2 ⟨hs, h0⟩))`. Simplify using `only [hudef, hPs, if_false]`. Conclude with `div_ne_zero hhs hPs`.
+
+Introduce `s hs`. Rewrite using `[hPZ]`. Distinguish the cases in `hPs : P s = 0`. Rewrite using `[hPs, zero_mul]`. Conclude with `((hmemS s).1 ((hP0 s).1 hPs)).2`.
+
+Simplify using `only [hudef, hPs, if_false]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem CircleArgumentPrinciple.factorisation {h : ℂ → ℂ} {O : Set ℂ} {c : ℂ} {r : ℝ} (hr : 0 < r)
     (hO : IsOpen O) (hball : closedBall c r ⊆ O) (hh : DifferentiableOn ℂ h O)
     (hsph : ∀ s ∈ sphere c r, h s ≠ 0) :
@@ -228,6 +301,11 @@ theorem CircleArgumentPrinciple.factorisation {h : ℂ → ℂ} {O : Set ℂ} {c
     · simp only [hudef, hPs, if_false]
       field_simp
 
+/- English proof (translation)
+Introduce `h O c r hr hO hball hh hsph`. Take `⟨Z, u, hZ, hu, hu0, hfac⟩` from `CircleArgumentPrinciple.factorisation hr hO hball hh hsph`. Use `⟨Z, u, hZ, hu, hu0, hfac, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← CircleArgumentPrinciple.integral_prod_mul hr hO hball hu hu0 hφ Z hZ]`. Use `congr 1`.
+
+Apply `circleIntegral.integral_congr hr.le` to reduce the goal to its premises. Introduce `s hs`. Establish `hsO : s ∈ O` using `hball (sphere_subset_closedBall hs)`. Establish `heq : h =ᶠ[𝓝 s] fun w => (Z.map fun a => w - a).prod * u w` using `Filter.eventually_of_mem (hO.mem_nhds hsO) hfac`. Simplify using `only [heq.deriv_eq, hfac s hsO]`.
+-/
 theorem CircleArgumentPrinciple.proof : CircleArgumentPrinciple.Statement := by
   intro h O c r hr hO hball hh hsph
   obtain ⟨Z, u, hZ, hu, hu0, hfac⟩ := CircleArgumentPrinciple.factorisation hr hO hball hh hsph

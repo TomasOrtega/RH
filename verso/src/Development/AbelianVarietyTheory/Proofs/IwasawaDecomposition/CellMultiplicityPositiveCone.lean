@@ -13,6 +13,13 @@ variable {M : Type} [AddCommGroup M]
 
 def sat (P : Submodule ℤ M) : Submodule ℤ M := (Submodule.torsion ℤ (M ⧸ P)).comap P.mkQ
 
+/- English proof (translation)
+Simplify using `only [sat, Submodule.mem_comap, Submodule.mkQ_apply, Submodule.mem_torsion_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨n, hn⟩, h⟩`. Use `⟨n, nonZeroDivisors.ne_zero hn, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Submonoid.smul_def]`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`. Conclude with `h`. Introduce and unpack `⟨n, hn, h⟩`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def]`.
+
+Use `show n • Submodule.Quotient.mk x = (0 : M ⧸ P)`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `h`.
+-/
 theorem mem_sat {P : Submodule ℤ M} {x : M} : x ∈ sat P ↔ ∃ n : ℤ, n ≠ 0 ∧ n • x ∈ P := by
   simp only [sat, Submodule.mem_comap, Submodule.mkQ_apply, Submodule.mem_torsion_iff]
   constructor
@@ -26,8 +33,16 @@ theorem mem_sat {P : Submodule ℤ M} {x : M} : x ∈ sat P ↔ ∃ n : ℤ, n �
     show n • Submodule.Quotient.mk x = (0 : M ⧸ P)
     rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]; exact h
 
+/- English proof (translation)
+Introduce `x hx` and use `mem_sat.2 ⟨1, one_ne_zero, by simpa using hx⟩`.
+-/
 theorem le_sat (P : Submodule ℤ M) : P ≤ sat P := fun x hx => mem_sat.2 ⟨1, one_ne_zero, by simpa using hx⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_sat, mem_sat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, h⟩`. Take `⟨k, hk, h'⟩` from `mem_sat.1 (hP h)`.
+
+Conclude with `⟨k * n, mul_ne_zero hk hn, by rw [mul_smul]; exact h'⟩`. Introduce and unpack `⟨n, hn, h⟩`. Conclude with `⟨n, hn, hEP h⟩`.
+-/
 theorem sat_eq {E P : Submodule ℤ M} (hEP : E ≤ P) (hP : P ≤ sat E) : sat P = sat E := by
   ext x
   rw [mem_sat, mem_sat]
@@ -38,6 +53,13 @@ theorem sat_eq {E P : Submodule ℤ M} (hEP : E ≤ P) (hP : P ≤ sat E) : sat 
   · rintro ⟨n, hn, h⟩
     exact ⟨n, hn, hEP h⟩
 
+/- English proof (translation)
+Set `f : (sat P).toAddSubgroup →+ Submodule.torsion ℤ (M ⧸ P)` to `{ toFun := fun x => ⟨P.mkQ x.1, x.2⟩, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hf : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, rfl⟩` from `P.mkQ_surjective y`. Conclude with `⟨⟨x, hy⟩, rfl⟩`.
+
+Establish `hker : f.ker = P.toAddSubgroup.addSubgroupOf (sat P).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf]`. Express the relevant statement in the definitionally equal form `(⟨P.mkQ x.1, x.2⟩ : Submodule.torsion ℤ (M ⧸ P)) = 0 ↔ x.1 ∈ P`. Rewrite using `[← Subtype.coe_inj]`.
+
+Conclude with `Submodule.Quotient.mk_eq_zero P`. Rewrite using `[AddSubgroup.relIndex, ← hker, AddSubgroup.index]`. Conclude with `(Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hf).toEquiv).symm`.
+-/
 theorem card_torsion_eq_relIndex (P : Submodule ℤ M) :
     Nat.card (Submodule.torsion ℤ (M ⧸ P)) = P.toAddSubgroup.relIndex (sat P).toAddSubgroup := by
   let f : (sat P).toAddSubgroup →+ Submodule.torsion ℤ (M ⧸ P) :=
@@ -55,6 +77,27 @@ theorem card_torsion_eq_relIndex (P : Submodule ℤ M) :
   rw [AddSubgroup.relIndex, ← hker, AddSubgroup.index]
   exact (Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hf).toEquiv).symm
 
+/- English proof (translation)
+Use `set u : Fin (p + 1) → M := Fin.cons v w with hu`. Use `set K := Submodule.span ℤ (Set.range u)`. Use `set K' := Submodule.span ℤ (Set.range (Fin.cons (n • v) w : Fin (p + 1) → M))`. Set `b` to `Module.Basis.span hli`. Establish `hb : ∀ i, (b i : M) = u i` using `fun i => by simp [b, Module.Basis.span_apply]`.
+
+Set `f : K →ₗ[ℤ] ℤ` to `b.coord 0`. Establish `hf0 : f (b 0) = 1` using `by simp [f]`. Establish `hfs : ∀ i : Fin p, f (b i.succ) = 0` using `fun i => by`. Simplify using `[f, Finsupp.single_apply, Fin.succ_ne_zero]`. Establish `hmem : ∀ x : K, (x : M) ∈ K' ↔ n ∣ f x`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Set `S' : Submodule ℤ K` to `Submodule.comap f (Ideal.span ({n} : Set ℤ))`. Establish `hle : K' ≤ S'.map K.subtype`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Use `⟨n • b 0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[S', Ideal.mem_span_singleton, hf0]`.
+
+Simplify using `[hb, u]`. Use `⟨b i.succ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[S', hfs]`. Simplify using `[hb, u]`. Take `⟨y, hy, hyx⟩` from `hle hx`.
+
+Establish `: y = x` using `Subtype.ext hyx`. Substitute `this` using the available equality. Simplify `hy` using `[S', Ideal.mem_span_singleton]`. Introduce and unpack `⟨q, hq⟩`. Establish `hx : (x : M) = ∑ i, b.repr x i • u i`.
+
+Establish `e0` using `congrArg Subtype.val (b.sum_repr x)`. Rewrite using `[← e0, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hb]`. Rewrite using `[hx, Fin.sum_univ_succ]`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations. Establish `h0 : b.repr x 0 = f x` using `rfl`. Rewrite using `[h0, hq, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, by simp [u]⟩)`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i.succ, by simp [u]⟩)`.
+
+Establish `hsurj : Function.Surjective f.toAddMonoidHom` using `fun t => ⟨t • b 0, by simp [hf0]⟩`. Establish `heq : K'.toAddSubgroup.addSubgroupOf K.toAddSubgroup = (AddSubgroup.zmultiples n).comap f.toAddMonoidHom`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_comap, Int.mem_zmultiples_iff]`. Conclude with `hmem x`.
+
+Rewrite using `[AddSubgroup.relIndex, heq, AddSubgroup.index_comap_of_surjective _ hsurj, Int.index_zmultiples]`.
+-/
 theorem relIndex_cons_smul {p : ℕ} (v : M) (w : Fin p → M) (n : ℤ)
     (hli : LinearIndependent ℤ (Fin.cons v w : Fin (p + 1) → M)) :
     (Submodule.span ℤ (Set.range (Fin.cons (n • v) w : Fin (p + 1) → M))).toAddSubgroup.relIndex
@@ -107,6 +150,39 @@ theorem relIndex_cons_smul {p : ℕ} (v : M) (w : Fin p → M) (n : ℤ)
     exact hmem x
   rw [AddSubgroup.relIndex, heq, AddSubgroup.index_comap_of_surjective _ hsurj, Int.index_zmultiples]
 
+/- English proof (translation)
+Establish `hli' : LinearIndependent ℤ (Fin.cons β w : Fin (p + 1) → M)`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hg`.
+
+Establish `h2 : (g 0 * a) • v + ∑ i, (g 0 * b i + k * g i.succ) • w i = 0`. Establish `e1` using `congrArg (k • ·) hg`. Simplify using `only [smul_add, smul_zero, Finset.smul_sum, smul_smul] at e1`. Rewrite `e1` using `[mul_comm k (g 0), mul_smul, hrel]`. Rewrite using `[← e1]`.
+
+Simplify using `only [smul_add, Finset.smul_sum, smul_smul, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Establish `h3` using `hli (Fin.cons (g 0 * a) fun i => g 0 * b i + k * g i.succ) (by`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `using h2)`.
+
+Establish `hg0 : g 0 = 0`. Use `h3 0` as an intermediate fact. Simplify using `only [Fin.cons_zero, mul_eq_zero] at this`. The claim follows by propositional logic. Introduce `i`.
+
+Use `Fin.cases hg0 (fun i => ?_) i` and prove the remaining obligations. Use `h3 i.succ` as an intermediate fact. Simplify using `only [Fin.cons_succ, hg0, zero_mul, zero_add, mul_eq_zero] at this`. The claim follows by propositional logic. Use `set D := Submodule.span ℤ (Set.range (Fin.cons v w : Fin (p + 1) → M)) with hD`.
+
+Use `set N := Submodule.span ℤ (Set.range (Fin.cons β w : Fin (p + 1) → M)) with hN`. Use `set E := Submodule.span ℤ (Set.range (Fin.cons (k • β) w : Fin (p + 1) → M)) with hE`. Establish `hw : ∀ P : Submodule ℤ M, (∀ i, w i ∈ P) → ∑ i, b i • w i ∈ P` using `fun P h => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h i)`. Establish `hwE : ∀ i, w i ∈ E` using `fun i => Submodule.subset_span ⟨i.succ, by simp⟩`. Establish `hkE : k • β ∈ E` using `Submodule.subset_span ⟨0, by simp⟩`.
+
+Establish `haE : a • v ∈ E`. Establish `: a • v = k • β - ∑ i, b i • w i` using `by rw [hrel]; abel`. Rewrite using `[this]`. Conclude with `sub_mem hkE (hw _ hwE)`. Establish `hE' : E = Submodule.span ℤ (Set.range (Fin.cons (a • v) w : Fin (p + 1) → M))`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero, SetLike.mem_coe]`.
+
+Rewrite using `[hrel]`. Conclude with `add_mem (Submodule.subset_span ⟨0, by simp⟩) (hw _ fun i => Submodule.subset_span ⟨i.succ, by simp⟩)`. Conclude with `Submodule.subset_span ⟨i.succ, by simp⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using haE`. Simplify using `using hwE i`. Establish `hED : E ≤ D`. Rewrite using `[hE', Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using Submodule.smul_mem D a (Submodule.subset_span ⟨0, by simp⟩)`. Conclude with `Submodule.subset_span ⟨i.succ, by simp⟩`. Establish `hEN : E ≤ N`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using Submodule.smul_mem N k (Submodule.subset_span ⟨0, by simp⟩)`. Conclude with `Submodule.subset_span ⟨i.succ, by simp⟩`.
+
+Establish `hDs : D ≤ sat E`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `mem_sat.2 ⟨a, ha, by simpa using haE⟩`.
+
+Conclude with `le_sat E (by simpa using hwE i)`. Establish `hNs : N ≤ sat E`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Conclude with `mem_sat.2 ⟨k, hk, by simpa using hkE⟩`. Conclude with `le_sat E (by simpa using hwE i)`. Establish `h1` using `card_torsion_eq_relIndex D`. Rewrite `h1` using `[sat_eq hED hDs]`. Establish `h2` using `card_torsion_eq_relIndex N`.
+
+Rewrite `h2` using `[sat_eq hEN hNs]`. Rewrite using `[h1, h2, ← relIndex_cons_smul β w k hli', ← relIndex_cons_smul v w a hli, ← hE']`. Express the relevant statement in the definitionally equal form `E.toAddSubgroup.relIndex N.toAddSubgroup * _ = E.toAddSubgroup.relIndex D.toAddSubgroup * _`. Rewrite using `[AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 hEN) ((Submodule.toAddSubgroup_le _ _).2 hNs), AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 hED) ((Submodule.toAddSubgroup_le _ _).2 hDs)]`.
+-/
 theorem card_torsion_cons_mul {p : ℕ} (v β : M) (w : Fin p → M) (k a : ℤ) (b : Fin p → ℤ) (hk : k ≠ 0) (ha : a ≠ 0)
     (hli : LinearIndependent ℤ (Fin.cons v w : Fin (p + 1) → M)) (hrel : k • β = a • v + ∑ i, b i • w i) :
     k.natAbs * Nat.card (Submodule.torsion ℤ (M ⧸ Submodule.span ℤ (Set.range (Fin.cons β w : Fin (p + 1) → M)))) =
@@ -191,6 +267,25 @@ theorem card_torsion_cons_mul {p : ℕ} (v β : M) (w : Fin p → M) (k a : ℤ)
   rw [AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 hEN) ((Submodule.toAddSubgroup_le _ _).2 hNs),
     AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).2 hED) ((Submodule.toAddSubgroup_le _ _).2 hDs)]
 
+/- English proof (translation)
+Establish `hind : ∀ (d : Fin 0 → ℤ) (g : Fin m → ℤ), ∑ i, g i • (δ i : LinearMap.BilinForm ℤ X) = ∑ k, d k • (Fin.elim0 k : LinearMap.BilinForm ℤ X) → g = 0` using `fun d g hg => by`. Use `funext (Fintype.linearIndependent_iff.1 hli g (Subtype.ext ?_))` and prove the remaining obligations. Simplify using `using hg`. Establish `hdep : ¬ LinearIndependent ℤ (Fin.cons β δ : Fin (m + 1) → balForms bar X)`. Introduce `h`.
+
+Establish `hind' : ∀ (d : Fin 0 → ℤ) (g : Fin (m + 1) → ℤ), ∑ i, g i • (((Fin.cons β δ : Fin (m + 1) → balForms bar X) i : balForms bar X) : LinearMap.BilinForm ℤ X) = ∑ k, d k • (Fin.elim0 k : LinearMap.BilinForm ℤ X) → g = 0` using `fun d g hg => by`. Use `funext (Fintype.linearIndependent_iff.1 h g (Subtype.ext ?_))` and prove the remaining obligations. Simplify using `using hg`. Use `eq_zero_of_toReal_rel hind' (r := Fin.cons 1 (-c)) (s := 0) (by` as an intermediate fact. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `[hc])`. Simplify using `using congrFun this 0`. Take `⟨g, hg, i0, hi0⟩` from `Fintype.not_linearIndependent_iff.1 hdep`. Rewrite `hg` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hg`.
+
+Establish `hg0 : g 0 ≠ 0`. Introduce `h0`. Rewrite `hg` using `[h0, zero_smul, zero_add]`. Use `Fintype.linearIndependent_iff.1 hli _ hg` as an intermediate fact. Conclude with `hi0 (Fin.cases h0 (fun i => this i) i0)`.
+
+Establish `hb : g 0 • β = -∑ i, g i.succ • δ i` using `eq_neg_of_add_eq_zero_left hg`. Use `⟨g 0 * g 0, fun i => -(g 0 * g i.succ), mul_ne_zero hg0 hg0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hb, smul_neg, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, neg_smul]`.
+
+Establish `hr` using `eq_zero_of_toReal_rel hind (r := fun i => (g 0 : ℝ) * c i + g i.succ) (s := 0) (by`. Use extensionality with `x y`. Establish `h1` using `LinearMap.congr_fun₂ hc x y`. Establish `h2` using `LinearMap.congr_fun₂ (congrArg Subtype.val hg) x y`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul, Submodule.coe_sum, LinearMap.add_apply, smul_eq_mul, ZeroMemClass.coe_zero, LinearMap.zero_apply] at h1 h2 ⊢`.
+
+Simplify using `only [Fin.sum_univ_zero]`. Establish `h3 : ((g 0 * (β : LinearMap.BilinForm ℤ X) x y + ∑ i, g i.succ * (δ i : LinearMap.BilinForm ℤ X) x y : ℤ) : ℝ) = 0`. Conclude with `h2` after adjusting the coercions. Move the coercions through the operations in `at h3`. Rewrite `h3` using `[h1]`.
+
+Rewrite `h3` using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use the proof step `ring)`. Introduce `i`.
+
+Use `congrFun hr i` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Use `push_cast`. Take the linear combination `(g 0 : ℝ) * this`.
+-/
 theorem exists_int_rel {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCommGroup X] [Module O X] {m : ℕ}
     (δ : Fin m → balForms bar X) (β : balForms bar X) (c : Fin m → ℝ) (hli : LinearIndependent ℤ δ)
     (hc : toReal (β : LinearMap.BilinForm ℤ X) = ∑ i, c i • toReal (δ i : LinearMap.BilinForm ℤ X)) :
@@ -246,6 +341,27 @@ theorem exists_int_rel {O : Type} [CommRing O] {bar : O → O} {X : Type} [AddCo
     push_cast
     linear_combination (g 0 : ℝ) * this
 
+/- English proof (translation)
+Introduce `O _ bar X _ _ m p δ β c j e hli hc hcj he _`. Take `⟨k, a, hk, hrel, hca⟩` from `exists_int_rel δ β c hli hc`. Establish `hinj : Function.Injective (Fin.cons j e : Fin (p + 1) → Fin m)`. Rewrite using `[Fin.cons_injective_iff]`. Conclude with `⟨fun h => (he j).1 h rfl, e.injective⟩`.
+
+Establish `hsurj : Function.Surjective (Fin.cons j e : Fin (p + 1) → Fin m)`. Introduce `i`. Distinguish the cases in `hij : i = j`. Conclude with `⟨0, by simp [hij]⟩`. Take `⟨l, hl⟩` from `(he i).2 hij`.
+
+Conclude with `⟨l.succ, by simp [hl]⟩`. Set `σ : Fin (p + 1) ≃ Fin m` to `Equiv.ofBijective _ ⟨hinj, hsurj⟩`. Establish `hσ0 : σ 0 = j` using `by show (Fin.cons j e : Fin (p + 1) → Fin m) 0 = j`. Conclude with `Fin.cons_zero _ _`. Establish `hσs : ∀ l, σ l.succ = e l` using `fun l => by show (Fin.cons j e : Fin (p + 1) → Fin m) l.succ = e l`.
+
+Conclude with `Fin.cons_succ _ _ _`. Establish `hσ : (Fin.cons (δ j) (fun k => δ (e k)) : Fin (p + 1) → balForms bar X) = δ ∘ σ`. Use function extensionality and compare the values at `r`. Use `Fin.cases ?_ (fun l => ?_) r` and prove the remaining obligations. Simplify using `[hσ0]`.
+
+Simplify using `[hσs]`. Establish `hli' : LinearIndependent ℤ (Fin.cons (δ j) (fun k => δ (e k)) : Fin (p + 1) → balForms bar X)`. Rewrite using `[hσ]`. Conclude with `hli.comp σ σ.injective`. Establish `hrange : Set.range (Fin.cons (δ j) (fun k => δ (e k)) : Fin (p + 1) → balForms bar X) = Set.range δ`.
+
+Rewrite using `[hσ]`. Conclude with `EquivLike.range_comp δ σ`. Establish `hsum : ∀ f : Fin m → balForms bar X, ∑ i, f i = f j + ∑ l, f (e l)` using `fun f => by`. Rewrite using `[← σ.sum_comp, Fin.sum_univ_succ, hσ0]`. Simplify using `only [hσs]`.
+
+Establish `hrel' : k • β = a j • δ j + ∑ l, a (e l) • δ (e l)` using `by rw [hrel, hsum (fun i => a i • δ i)]`. Establish `haj : (a j : ℝ) = k * c j` using `(hca j).symm`. Establish `haj0 : a j ≠ 0`. Introduce `h0`. Rewrite `haj` using `[h0, Int.cast_zero]`.
+
+Conclude with `(mul_ne_zero (by exact_mod_cast hk) hcj.ne') haj.symm`. Establish `key` using `card_torsion_cons_mul (δ j) β (fun l => δ (e l)) k (a j) (fun l => a (e l)) hk haj0 hli' hrel'`. Rewrite `key` using `[hrange]`. Establish `key' : (k.natAbs : ℝ) * (cellMult bar (Fin.cons β (fun k => δ (e k)) : Fin (p + 1) → balForms bar X) : ℝ) = ((a j).natAbs : ℝ) * (cellMult bar δ : ℝ)`. Unfold `cellMult`.
+
+Conclude with `key` after adjusting the coercions. Establish `hkabs : ((k.natAbs : ℕ) : ℝ) = |(k : ℝ)|` using `by rw [Nat.cast_natAbs, Int.cast_abs]`. Establish `haabs : (((a j).natAbs : ℕ) : ℝ) = |(k : ℝ)| * c j`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs, haj, abs_mul, abs_of_pos hcj]`. Rewrite `key'` using `[hkabs, haabs, mul_assoc]`.
+
+Conclude with `mul_left_cancel₀ (abs_ne_zero.2 (by exact_mod_cast hk)) key'`.
+-/
 theorem cellMult_cons_eq : ∀ {O : Type} [CommRing O] (bar : O → O) {X : Type} [AddCommGroup X] [Module O X] {m p : ℕ}
     (δ : Fin m → balForms bar X) (β : balForms bar X) (c : Fin m → ℝ) (j : Fin m) (e : Fin p ↪ Fin m),
     LinearIndependent ℤ δ → toReal (β : LinearMap.BilinForm ℤ X) = ∑ i, c i • toReal (δ i : LinearMap.BilinForm ℤ X) →

@@ -15,6 +15,9 @@ section Alg
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `actAll actP detTwK detPow trAct Formalism.GradedWeylDivisibility.blockAct`. Rewrite using `[LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem actAll_eq_actP (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (p : Pol K ι n) :
     actAll lam (fun τ => ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) p = actP lam g p := by
   unfold actAll actP detTwK detPow trAct Formalism.GradedWeylDivisibility.blockAct
@@ -28,8 +31,14 @@ def rhoEquiv (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) : VV K lam ≃
     (by rw [← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]; rfl)
     (by rw [← Module.End.mul_eq_comp, ← map_mul, inv_mul_cancel, map_one]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoEquiv_apply (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (y : VV K lam) : rhoEquiv lam g y = rhoK lam g y := rfl
 
+/- English proof (translation)
+Use `show actP lam g⁻¹ (y : Pol K ι n) = _`. Rewrite using `[← actAll_eq_actP]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules.
+-/
 theorem rhoEquiv_symm_coe (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (y : VV K lam) :
     (((rhoEquiv lam g).symm y : VV K lam) : Pol K ι n) =
       actAll lam (fun τ => ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)⁻¹) (y : Pol K ι n) := by
@@ -39,6 +48,11 @@ theorem rhoEquiv_symm_coe (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (
   funext τ
   simp
 
+/- English proof (translation)
+Establish `h : (Submodule.span R (Set.range b)).map (U.subtype.restrictScalars R) = Submodule.span R (Set.range fun i => (b i : P))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[← h]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨z, hz, hzy⟩`. Establish `: z = y` using `Subtype.ext hzy`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem mem_span_subtype {P : Type} [AddCommGroup P] [Module K P] (R : Subring K) (U : Submodule K P) {J : Type} (b : J → U) (y : U) :
     y ∈ Submodule.span R (Set.range b) ↔ (y : P) ∈ Submodule.span R (Set.range fun i => (b i : P)) := by
   have h : (Submodule.span R (Set.range b)).map (U.subtype.restrictScalars R) =
@@ -60,6 +74,11 @@ variable {K : Type} [Field K] [NumberField K] {V W : Type} [AddCommGroup V] [Mod
   [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module K W]
   {Cl : Type} [Fintype Cl] [DecidableEq Cl] {J0 : Type} [Fintype J0] [DecidableEq J0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨i, c⟩`. Rewrite using `[sumBasis_apply]`. Use `show coE.symm ((LinearEquiv.piCongrRight fun c => (Φ c).symm).symm (Pi.single c (BK i))) = _`. Use `congr 1`. Use function extensionality and compare the values at `c'`.
+
+Use `show (Φ c').symm.symm ((Pi.single c (BK i) : Cl → W) c') = _`. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem sumBasis_twist (coE : V ≃ₗ[K] (Cl → W)) (BK : Basis J0 K W) (Φ : Cl → (W ≃ₗ[K] W)) :
     ⇑(sumBasis (coE.trans (LinearEquiv.piCongrRight fun c => (Φ c).symm)) BK) =
       fun j : J0 × Cl => coE.symm (Pi.single j.2 (Φ j.2 (BK j.1))) := by
@@ -79,6 +98,13 @@ section Rec
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hn : Module.finrank D.what₂.LL Q.V = n`. Rewrite using `[Module.finrank_eq_card_basis Q.b, Fintype.card_congr e, Fintype.card_fin]`. Take `⟨bK, hbK⟩` from `exists_basis_locP (D.plEq w) hQ.2.1 hQ.2.2 hn`. Use `⟨(Q.b.reindex e).toMatrix bK, ?_, ?_⟩` and prove the remaining obligations. Use `(Q.b.reindex e).isUnit_det bK` as an intermediate fact.
+
+Rewrite `this` using `[Basis.det_apply]`. Then use the resulting hypothesis. Establish `hfam : (fun a : Fin n => ∑ i, (Q.b.reindex e).toMatrix bK i a • Q.b (e.symm i)) = bK`. Use function extensionality and compare the values at `a`. Use `(Q.b.reindex e).sum_repr (bK a)` as an intermediate fact. Simplify `this` using `[Basis.toMatrix_apply, Basis.reindex_apply]`.
+
+Rewrite using `[hfam]`. Use extensionality with `x`. Rewrite using `[← mem_localization_iff_localizationAtPlace, ← hbK, mem_localization_latticeOf_iff]`.
+-/
 theorem exists_locBasis (w : D.what₂.places.Pl) (Q : HLat D.what₂.LL) (hQ : Q.Good) {n : ℕ} (e : Q.ι ≃ Fin n) :
     ∃ γ, LocBasis D w Q e γ := by
   classical
@@ -96,6 +122,9 @@ theorem exists_locBasis (w : D.what₂.places.Pl) (Q : HLat D.what₂.LL) (hQ : 
     ext x
     rw [← mem_localization_iff_localizationAtPlace, ← hbK, mem_localization_latticeOf_iff]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_localization_iff_localizationAtPlace, h.2, mem_localization_latticeOf_iff]`.
+-/
 theorem localization_eq_of_locBasis (w : D.what₂.places.Pl) (Q : HLat D.what₂.LL) {n : ℕ} (e : Q.ι ≃ Fin n)
     (γ : Matrix (Fin n) (Fin n) D.what₂.LL) (h : LocBasis D w Q e γ) :
     localization₂ (D.plEq w).asIdeal Q.L =
@@ -109,9 +138,19 @@ def coL : ((D.fm u).lat 0).V →ₗ[D.what₂.LL] ((D.mem u).C.cls 0 → VV D.wh
   LinearMap.pi fun c => LinearMap.codRestrict (VV D.what₂.LL ((D.fm u).lam 0)) ((LinearMap.proj c).comp CV.co)
     (fun x => hTV ▸ ((CV.co_range _).1 ⟨x, rfl⟩ c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coL_coe (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     ((coL CV hTV x c : VV D.what₂.LL ((D.fm u).lam 0)) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0)) = CV.co x c := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `CV.co_inj` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Conclude with `congrArg Subtype.val (congrFun h c)`.
+
+Introduce `F`. Take `⟨x, hx⟩` from `(CV.co_range (fun c => ((F c : VV D.what₂.LL ((D.fm u).lam 0)) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0)))).2 (fun c => hTV.symm ▸ (F c).2)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[coL_coe, hx]`.
+-/
 theorem coL_bijective : Function.Bijective (coL CV hTV) := by
   constructor
   · intro x y h
@@ -129,11 +168,19 @@ theorem coL_bijective : Function.Bijective (coL CV hTV) := by
 def coE : ((D.fm u).lat 0).V ≃ₗ[D.what₂.LL] ((D.mem u).C.cls 0 → VV D.what₂.LL ((D.fm u).lam 0)) :=
   LinearEquiv.ofBijective (coL CV hTV) (coL_bijective CV hTV)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coE_coe (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     ((coE CV hTV x c : VV D.what₂.LL ((D.fm u).lam 0)) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0)) = CV.co x c := rfl
 
 open Classical in
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `hf` using `sumBasis_twist (coE CV hTV) (Z.basis D.what₂.LL) (fun c => rhoEquiv ((D.fm u).lam 0) (g c))`. Simplify using `only [rhoEquiv_apply] at hf`. Rewrite using `[mem_localization_iff_localizationAtPlace, CV.fin w (fun c τ => (g c τ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)) hg x, mem_localization_latticeOf_iff, ← hf, mem_span_sumBasis]`. Use `forall_congr' fun c => ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_span_subtype, mem_intSpanAt_iff w _ Z]`. Establish `h1 : (fun i => ((Z.basis D.what₂.LL i : VV D.what₂.LL ((D.fm u).lam 0)) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0))) = fun i => MvPolynomial.map (Int.castRingHom D.what₂.LL) (Z.bZ i)` using `funext fun i => Z.basis_coe D.what₂.LL i`. Rewrite using `[h1]`. Establish `h2 : ((((coE CV hTV).trans (LinearEquiv.piCongrRight fun c => (rhoEquiv ((D.fm u).lam 0) (g c)).symm)) x c : VV D.what₂.LL ((D.fm u).lam 0)) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0)) = actAll ((D.fm u).lam 0) (fun τ => (g c τ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)⁻¹) …` using `rhoEquiv_symm_coe _ _ _`. Rewrite using `[h2]`.
+-/
 theorem localization_lattice_eq (Z : ZBasis ((D.fm u).lam 0)) (w : D.what₂.places.Pl)
     (g : (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.N 0)) D.what₂.LL)
     (hg : ∀ c τ, LocBasis D w (CV.Q c τ) (CV.eQ c τ) (g c τ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)) :

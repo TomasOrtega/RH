@@ -5,15 +5,36 @@ open CategoryTheory Limits GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
+/- English proof (translation)
+The claim follows from `(IsPullback.of_hasPullback f g).map ((evaluation _ _).obj U)`.
+-/
 theorem ev_pb {P Q R : PSh} (f : P ⟶ R) (g : Q ⟶ R) (U : AlgebraicGeometry.Scheme.{0}ᵒᵖ) :
     IsPullback ((pullback.fst f g).app U) ((pullback.snd f g).app U) (f.app U) (g.app U) :=
   (IsPullback.of_hasPullback f g).map ((evaluation _ _).obj U)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isColimitMapCoconeCofanMkEquiv ((evaluation _ _).obj U) X c.inj).1 (isColimitOfPreserves ((evaluation _ _).obj U) hc)⟩`.
+-/
 theorem ev_cofan {A : Type} {X : A → PSh} (c : Cofan X) (hc : IsColimit c) (U : AlgebraicGeometry.Scheme.{0}ᵒᵖ) :
     Nonempty (IsColimit (Cofan.mk (c.pt.obj U) fun a => (c.inj a).app U)) :=
   ⟨(isColimitMapCoconeCofanMkEquiv ((evaluation _ _).obj U) X c.inj).1
     (isColimitOfPreserves ((evaluation _ _).obj U) hc)⟩
 
+/- English proof (translation)
+Introduce `A X c ⟨hc⟩ Y G f g`. Set `ι : ∀ a, pullback (c.inj a ≫ f) g ⟶ pullback f g` to `fun a => pullback.map (c.inj a ≫ f) g f g (c.inj a) (𝟙 G) (𝟙 Y) (by simp) (by simp)`. Establish `h1 : ∀ a, ι a ≫ pullback.fst f g = pullback.fst _ _ ≫ c.inj a` using `fun a => by simp only [ι, pullback.map, pullback.lift_fst]`. Establish `h2 : ∀ a, ι a ≫ pullback.snd f g = pullback.snd _ _` using `fun a => by simp only [ι, pullback.map, pullback.lift_snd, Category.comp_id]`. Express the relevant statement in the definitionally equal form `Nonempty (IsColimit (Cofan.mk (pullback f g) ι))`.
+
+Use `⟨evaluationJointlyReflectsColimits _ fun U => ?_⟩` and prove the remaining obligations. Use `(isColimitMapCoconeCofanMkEquiv ((evaluation _ _).obj U) _ ι).2 ?_` and prove the remaining obligations. Simplify using `only [evaluation_obj_obj, evaluation_obj_map]`. Establish `hcU` using `ev_cofan c hc U`. Establish `f1 : ∀ a z, (pullback.fst f g).app U ((ι a).app U z) = (c.inj a).app U ((pullback.fst (c.inj a ≫ f) g).app U z)` using `fun a z => show ((ι a ≫ pullback.fst f g).app U) z = ((pullback.fst _ _ ≫ c.inj a).app U) z by rw [h1 a]`.
+
+Establish `f2 : ∀ a z, (pullback.snd f g).app U ((ι a).app U z) = (pullback.snd (c.inj a ≫ f) g).app U z` using `fun a z => show ((ι a ≫ pullback.snd f g).app U) z = ((pullback.snd (c.inj a ≫ f) g).app U) z by rw [h2 a]`. Use `Classical.choice ((Cofan.nonempty_isColimit_iff_bijective_fromSigma (Cofan.mk ((pullback f g).obj U) fun j => (ι j).app U)).2 ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨a, z⟩ ⟨b, w⟩ e`. Express the relevant statement in the definitionally equal form `(ι a).app U z = (ι b).app U w at e`. Establish `e1` using `congr_arg ((pullback.fst f g).app U) e`.
+
+Rewrite `e1` using `[f1, f1]`. Take `⟨rfl, hw⟩` from `(Cofan.inj_apply_eq_iff_of_isColimit hcU.some _ _).1 e1`. Rewrite `hw` using `[cast_eq]`. Establish `e2` using `congr_arg ((pullback.snd f g).app U) e`. Rewrite `e2` using `[f2, f2]`.
+
+Rewrite using `[Types.ext_of_isPullback (ev_pb (c.inj a ≫ f) g U) hw.symm e2]`. Introduce `p`. Take `⟨a, y, hy⟩` from `Cofan.inj_jointly_surjective_of_isColimit hcU.some ((pullback.fst f g).app U p)`. Express the relevant statement in the definitionally equal form `(c.inj a).app U y = _ at hy`. Take `⟨z, hz1, hz2⟩` from `Types.exists_of_isPullback (ev_pb (c.inj a ≫ f) g U) y ((pullback.snd f g).app U p) (by`.
+
+Establish `: ((pullback.fst f g ≫ f).app U) p = ((pullback.snd f g ≫ g).app U) p` using `by rw [pullback.condition]`. Express the relevant statement in the definitionally equal form `f.app U ((c.inj a).app U y) = _`. Rewrite using `[hy]`. Conclude with `this)`. Use `⟨⟨a, z⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(ι a).app U z = p`. Use `Types.ext_of_isPullback (ev_pb f g U) ?_ ?_` and prove the remaining obligations. Rewrite using `[f1, hz1, hy]`. Rewrite using `[f2, hz2]`.
+-/
 theorem leafUnivSum : LeafUnivSum := by
   intro A X c ⟨hc⟩ Y G f g
   let ι : ∀ a, pullback (c.inj a ≫ f) g ⟶ pullback f g := fun a =>

@@ -98,6 +98,13 @@ def S5 : Prop :=
         - ∑ s, ((r1 : ℝ) * (lg p (al TT nu s) : ℝ) + (r0 : ℝ) * (r1 : ℝ) * (lg p (low rb TT nu s) : ℝ))
         - ∑ s ∈ TT, ∑ e ∈ range N, (lg p (ih s e) : ℝ)
 
+/- English proof (translation)
+Introduce `p Kc _ Oc Sh rb nu vp Th hSet hMM TT I`. Establish `hmem` using `hL p Kc Oc Sh rb nu vp Th I (AddSubgroup.closure (Gen p Oc vp Sh rb nu TT)) hSet hMM (fun u hu i g hg => hS p Kc Oc Sh rb nu vp hSet u hu i g hg TT I)`. Establish `key : ∀ y ∈ AddSubgroup.closure (Gen p Oc vp Sh rb nu TT), gaussGe p Oc y (formalValuationLowerBound p Sh rb nu TT)`. Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy => exact hV p Kc Oc Sh rb nu vp hSet TT y hy`. Consider the case `zero => intro n`. Simplify using `using geV_zero p Oc _`. Consider the case `add x y _ _ hx hy => intro n`. Simplify using `using geV_add p Oc hSet.valR (hx n) (hy n)`.
+
+Consider the case `neg x _ hx => intro n`. Simplify using `using geV_neg p Oc (hx n)`. Conclude with `key _ hmem`.
+-/
 theorem gain_bound_of_parts (hL : SLin) (hS : SStruct) (hV : SVal) : StatementFormalValuationAllFields := by
   intro p Kc _ Oc Sh rb nu vp Th hSet hMM TT I
   have hmem := hL p Kc Oc Sh rb nu vp Th I (AddSubgroup.closure (Gen p Oc vp Sh rb nu TT)) hSet hMM

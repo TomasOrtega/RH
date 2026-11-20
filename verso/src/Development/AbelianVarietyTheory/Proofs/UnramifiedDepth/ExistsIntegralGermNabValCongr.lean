@@ -16,12 +16,18 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory.IntegralColumnGerm
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq, map_prod, map_one]`. Use `Finset.prod_eq_one fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, Ideal.Quotient.eq.2 (hα l), map_one, one_pow]`.
+-/
 theorem prod_pow_sub_one_mem {R : Type} [CommRing R] (I : Ideal R) {ι : Type} [Fintype ι] (α : ι → R)
     (hα : ∀ l, α l - 1 ∈ I) (n : ι → ℕ) : ∏ l, α l ^ n l - 1 ∈ I := by
   rw [← Ideal.Quotient.eq, map_prod, map_one]
   refine Finset.prod_eq_one fun l _ => ?_
   rw [map_pow, Ideal.Quotient.eq.2 (hα l), map_one, one_pow]
 
+/- English proof (translation)
+Take `⟨Q, hQ⟩` from `hP.exists_left_inv`. Use `⟨Q * ((x - y) - (P - 1) * y), I.mul_mem_left _ (I.sub_mem hxy (I.mul_mem_right _ hP1)), ?_⟩` and prove the remaining obligations. Establish `e : y + Q * ((x - y) - (P - 1) * y) = Q * x` using `by linear_combination (-y) * hQ`. Rewrite using `[e, map_mul, ← h, ← mul_assoc, ← map_mul, hQ, map_one, one_mul]`.
+-/
 theorem exists_eq_of_unit_mul {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) (I : Ideal R) {P x y : R}
     {v : k} (hP : IsUnit P) (hP1 : P - 1 ∈ I) (hxy : x - y ∈ I) (h : φ P * v = φ x) :
     ∃ r ∈ I, v = φ (y + r) := by
@@ -36,6 +42,29 @@ namespace GlobalTheory
 
 open IntegralColumnGerm
 
+/- English proof (translation)
+Introduce `hS hL R _ d O _ _ k _ _ _ B h hh hinj w0 a c N m I hac hN ι _ u α hα1 hαu hα hβ χ`. Establish `hA : ∀ b : O, GP (B.actK k b)` using `fun b => QuadDeriv.constantCoeff_mapP_eq_zero _ _ (B.A.const b)`. Establish `hh0 : constantCoeff h = 0`. Use `congrArg constantCoeff hh.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero]`. Then use the resulting hypothesis.
+
+Establish `cL : ∀ w : O, constantCoeff (B.hL k h w) = 0` using `fun w => gt_const_ev _ (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ (hA w) (gp_pt 0))) h hh0`. Establish `e0 : star a * (w0 * a) = (N : O) * (c * w0)` using `by linear_combination w0 * hac`. Establish `h1` using `FramePull.expIntegral_ad hh a 1 (w0 * a)`. Rewrite `h1` using `[e0, mul_one, ← FramePull.ev_actK_hL, ← FramePull.hL_eq]`. Take `⟨cD, υ, υ1, hυ⟩` from `h1`.
+
+Establish `hinv : υ * invOfUnit υ 1 = 1` using `mul_invOfUnit υ 1 (by simpa using υ1)`. Take `⟨g, hg⟩ : ∃ g : PS R 1 d, g * υ ^ m = χ` from `⟨χ * invOfUnit υ 1 ^ m, by rw [mul_assoc, ← mul_pow, mul_comm _ υ, hinv, one_pow, mul_one]⟩`. Use `⟨g, fun mo => ?_⟩` and prove the remaining obligations. Establish `hga : FB.toK k (ev (n` using `1) ![B.A.act a] g) = ev (n := 1) ![B.actK k a] (FB.toK k g) := by`. Rewrite using `[FB.toK, QuadDeriv.map_ev _ _ (single_point_zero_constant (B.A.const a))]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Establish `hG : ev (n` using `1) ![B.actK k a] (FB.toK k g * FB.expS k ((m : k) • B.hL k h w0)) = FB.toK k (ev (n := 1) ![B.A.act a] g * υ ^ m) * FB.expS k ((m : k) • B.hL k h ((N : O) * (c * w0))) := by`.
+
+Establish `e : FB.toK k (ev (n` using `1) ![B.A.act a] g * υ ^ m) = FB.toK k (ev (n := 1) ![B.A.act a] g) * FB.toK k υ ^ m := by`. Rewrite using `[FB.toK, map_mul, map_pow]`. Rewrite using `[e, hga, hυ, PullbackColumn.expS_pow _ cD, mul_assoc, ← gt_expS_add _ _ (by rw [nt_const_smul, cD, mul_zero]) (by rw [nt_const_smul, cL, mul_zero]), gt_ev_mul _ (single_point_zero_constant (hA a)), gt_ev_expS _ (single_point_zero_constant (hA a)) _ (by rw [nt_const_smul, cL, mul_ …`. Establish `hend` using `(invariantDeriv_along_endo R d O k B a).2 ι (fun l i => algebraMap R k (u l i)) (fun l => algebraMap R k (α l)) hα`. Establish `hmap : ∀ (mo : ι →₀ ℕ) (f : PS R 1 d), constantCoeff (DmonOf (B.FK k) (fun l i => algebraMap R k (u l i)) mo (FB.toK k f)) = algebraMap R k (constantCoeff (DmonOf B.G.F u mo f))` using `fun mo f => by`.
+
+Rewrite using `[← constantCoeff_map, map_dmonOf]`. Both sides reduce to the same expression. Establish `hφ : ∀ mo : ι →₀ ℕ, ∃ r ∈ I, constantCoeff (DmonOf (B.FK k) (fun l i => algebraMap R k (u l i)) mo ((m : k) • B.hL k h ((N : O) * (c * w0)))) = algebraMap R k r`. Introduce `mo`. Take `⟨t, ht⟩` from `hS R d O k B h hh (c * w0) N ι u hβ mo`.
+
+Use `⟨(m : R) * (N * t), I.mul_mem_left _ (I.mul_mem_right _ hN), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, GE.dmonOf_Cmul, map_mul, constantCoeff_C, ht, map_mul (algebraMap R k) (m : R), map_natCast]`. Take `⟨r, hr, e⟩` from `dmonOf_mul_expS_congr R d k B.G.F I ι u _ (by rw [nt_const_smul, cL, mul_zero]) hφ (ev (n := 1) ![B.A.act a] g * υ ^ m) mo`. Establish `hcong : ∀ mo : ι →₀ ℕ, constantCoeff (DmonOf B.G.F u mo (ev (n` using `1) ![B.A.act a] g)) - constantCoeff (DmonOf B.G.F u mo g) ∈ I := by`. Introduce `mo`.
+
+Establish `e1 : constantCoeff (DmonOf B.G.F u mo (ev (n` using `1) ![B.A.act a] g)) = (∏ l, α l ^ mo l) * constantCoeff (DmonOf B.G.F u mo g) := by`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hmap, hga, hend, hmap]`. Simplify using `only [map_mul, map_prod, map_pow]`. Rewrite using `[e1, ← sub_one_mul]`.
+
+Conclude with `I.mul_mem_right _ (prod_pow_sub_one_mem I α hα1 mo)`. Establish `hleib` using `hL R d B.G.F I ι u _ _ (υ ^ m) hcong mo`. Rewrite `hleib` using `[hg]`. Use `exists_eq_of_unit_mul (algebraMap R k) I (P := ∏ l, α l ^ mo l) (x := constantCoeff (DmonOf B.G.F u mo (ev (n := 1) ![B.A.act a] g * υ ^ m)) + r) (IsUnit.prod_univ_iff.2 fun l => (hαu l).pow _) (prod_pow_sub_one_mem I α hα1 mo) ?_ ?_` and prove the remaining obligations. Rewrite using `[add_sub_right_comm]`.
+
+Conclude with `I.add_mem hleib hr`. Unfold `FB.nabVal`. Rewrite using `[PullbackColumn.dpolyOf_monomial_one, ← e]`. Simplify using `only [map_prod, map_pow]`. Rewrite using `[← hend, hG]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_integral_germ_nabVal_congr :
   (∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → ∀ (w : O) (N : ℕ) (ι : Type) [Fintype ι] (u : ι → Fin d → R),
     (∀ l l', dotProduct (fun i => algebraMap R k (u l i)) ((bilinPart k h).mulVec ((dAct k B w).mulVec (fun i => algebraMap R k (u l' i)))) ∈ (algebraMap R k).range) →

@@ -4,6 +4,21 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Introduce `X V _ _ _ K K₀ hle hidx Ψ hΨ`. Use `haveI : Finite (K ⧸ K₀.subgroupOf K) := Nat.finite_of_card_ne_zero hidx`. Use `haveI : Fintype (K ⧸ K₀.subgroupOf K) := Fintype.ofFinite _`. Set `e` to `Subgroup.quotientEquivProdOfLE hle`. Set `F : X ⧸ K → V` to `fun y => Ψ y.out`.
+
+Establish `he : ∀ x : X ⧸ K₀, Ψ x.out = F (e x).1`. Introduce `x`. Establish `h1 : (e x).1 = ((x.out : X) : X ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' x]`. Both sides reduce to the same expression. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K x.out`.
+
+Simplify using `only [F, h1, hk, hΨ k k.2]`. Establish `hcard : Fintype.card (K ⧸ K₀.subgroupOf K) = K₀.relIndex K`. Rewrite using `[Fintype.card_eq_nat_card]`. Both sides reduce to the same expression. Establish `h2 : ∑ᶠ x : X ⧸ K₀, Ψ x.out = ∑ᶠ p : (X ⧸ K) × (K ⧸ K₀.subgroupOf K), F p.1` using `(finsum_congr he).trans (finsum_comp_equiv e (f := fun p => F p.1))`.
+
+Rewrite using `[h2]`. Distinguish the cases in `hfin : (Function.support F).Finite`. Establish `hG : Function.HasFiniteSupport (fun p : (X ⧸ K) × (K ⧸ K₀.subgroupOf K) => F p.1)`. Use `(hfin.prod (Set.finite_univ (α := K ⧸ K₀.subgroupOf K))).subset ?_` and prove the remaining obligations. Introduce `p hp`.
+
+Conclude with `⟨hp, trivial⟩`. Rewrite using `[finsum_curry _ hG, smul_finsum]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `show ∑ᶠ _ : K ⧸ K₀.subgroupOf K, Ψ a.out = _`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, hcard, Nat.cast_smul_eq_nsmul ℂ]`.
+
+Establish `h3 : ∑ᶠ y : X ⧸ K, Ψ y.out = 0` using `finsum_of_infinite_support hfin`. Rewrite using `[h3, smul_zero]`. Apply `finsum_of_infinite_support` to reduce the goal to its premises. Introduce `hG`. Apply `hfin` to reduce the goal to its premises.
+
+Use `(hG.image Prod.fst).subset ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `⟨(a, ((1 : K) : K ⧸ K₀.subgroupOf K)), ha, rfl⟩`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pAvgK :
     ∀ (X V : Type) [Group X] [AddCommGroup V] [Module ℂ V] (K K₀ : Subgroup X), K₀ ≤ K → K₀.relIndex K ≠ 0 → ∀ Ψ : X → V, (∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g) → ∑ᶠ x : X ⧸ K₀, Ψ x.out = ((K₀.relIndex K : ℕ) : ℂ) • ∑ᶠ y : X ⧸ K, Ψ y.out := by
   intro X V _ _ _ K K₀ hle hidx Ψ hΨ

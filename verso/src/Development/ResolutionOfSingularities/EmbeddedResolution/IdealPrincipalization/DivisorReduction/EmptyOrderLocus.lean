@@ -37,6 +37,15 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReductionEmptyOrderLocus
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, (Nat.succ_pred_eq_of_pos hm).symm⟩`. Use `hsm i hi.le` as an intermediate fact. Use `hno (i + 1) hi` as an intermediate fact. Establish `hsnc : HasStrictNormalCrossingsWith (MarkedSequenceOfBlowups.projectionToSpec s i) (s.center i) (s.boundary i)`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`.
+
+Conclude with `s.center_snc i hi`. Establish `hord : (↑(s.center i).support : Set (s.schemeAt i)) ⊆ orderAtLeastLocus (s.ideal i) n` using `(s.center_order i hi).trans (orderAtLeastLocus_subset_of_le (s.ideal i) (Nat.le_succ n))`. Establish `hI : s.ideal i ≤ s.center i ^ n` using `le_pow_of_hasStrictNormalCrossingsWith (MarkedSequenceOfBlowups.projectionToSpec s i) (s.center i) (s.ideal i) (s.boundary i) hsnc n hord`. Establish `hpb : Blowup.IsBlowupAlongIdealSheaf (s.transitionMapSucc i) (s.center i)` using `s.isBlowupAlongIdealSheaf_blowupMorphism i hi`. Establish `key` using `orderAtLeastLocus_controlledTransform_subset_preimage k (MarkedSequenceOfBlowups.projectionToSpec s i) (s.transitionMapSucc i) (s.center i) (s.boundary i) hsnc hpb (s.ideal i) n hI`.
+
+Establish `hmul : Blowup.exceptionalIdeal (s.transitionMapSucc i) (s.center i) ^ n * (Blowup.exceptionalIdeal (s.transitionMapSucc i) (s.center i) * s.ideal (i + 1)) = (s.ideal i).comap (s.transitionMapSucc i)`. Rewrite using `[← mul_assoc, ← pow_succ]`. Conclude with `s.ideal_succ i hi`. Establish `heq` using `eq_controlledTransform_of_mul_eq_comap (s.transitionMapSucc i) (s.center i) (s.ideal i) n hpb hI (Blowup.exceptionalIdeal (s.transitionMapSucc i) (s.center i) * s.ideal (i + 1)) hmul`. Establish `hz' : z ∈ orderAtLeastLocus (Blowup.exceptionalIdeal (s.transitionMapSucc i) (s.center i) * s.ideal (i + 1)) (n + 1)`.
+
+Rewrite `hz`, the goal using `[mem_orderAtLeastLocus_iff]`. Conclude with `hz.trans ((self_le_add_left _ _).trans (add_orderAt_le_orderAt_mul (Blowup.exceptionalIdeal (s.transitionMapSucc i) (s.center i)) (s.ideal (i + 1)) z))`. Rewrite `hz'` using `[heq]`. Conclude with `key hz'`.
+-/
 private theorem blowupMorphism_mem_orderAtLeastLocus {k : Type u} [Field k] [CharZero k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData} (s : MarkedSequenceOfBlowups p I m E) (hm : 1 ≤ m)
@@ -77,6 +86,13 @@ private theorem blowupMorphism_mem_orderAtLeastLocus {k : Type u} [Field k] [Cha
   rw [heq] at hz'
   exact key hz'
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ z hz`.
+
+Rewrite `hz` using `[markedSequenceOfBlowups_ideal_zero s, MarkedSequenceOfBlowups.projectionToBase_zero s, orderAtLeastLocus_comap_iso_hom_eq_preimage]`. Rewrite using `[MarkedSequenceOfBlowups.projectionToBase_zero s]`. Conclude with `hz`. Consider the case `succ i ih`. Introduce `hi z hz`.
+
+Rewrite using `[MarkedSequenceOfBlowups.projectionToBase_succ_apply]`. Use `ih (Nat.le_of_succ_le hi) _ ?_` and prove the remaining obligations. Conclude with `blowupMorphism_mem_orderAtLeastLocus s hV.one_le_mult (fun j hj => MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hV s j hj) (fun j hj => MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s j hj …`.
+-/
 private theorem projectionToBase_mem_orderAtLeastLocus {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) (s : T.SequenceOfBlowups) :
     ∀ i, i ≤ s.length → ∀ z : s.schemeAt i,
       z ∈ orderAtLeastLocus (s.ideal i) T.mult → (s.projectionToBase i) z ∈ orderAtLeastLocus T.ideal T.mult := by
@@ -97,6 +113,11 @@ private theorem projectionToBase_mem_orderAtLeastLocus {T : MarkedIdealWithBound
         (fun j hj => MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hV s j hj)
         i (Nat.lt_of_succ_le hi) z hz
 
+/- English proof (translation)
+Introduce `i hi z hz y hy`. Establish `hz' : z ∈ (↑((s.center i).support) : Set (s.schemeAt i))` using `hz`. Establish `hzc : z ∈ orderAtLeastLocus (s.ideal i) T.mult` using `s.center_order i hi hz'`. Establish `himg` using `projectionToBase_mem_orderAtLeastLocus hV s i hi.le z hzc`. Rewrite `himg` using `[← hy]`.
+
+Establish `hmem : y ∈ (⇑h ⁻¹' orderAtLeastLocus T.ideal T.mult)` using `himg`. Rewrite `hmem` using `[hempty]`. Simplify using `at hmem`.
+-/
 theorem center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty
     {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) {Y : Scheme.{u}} (h : Y ⟶ T.scheme)
     (hempty : (⇑h ⁻¹' orderAtLeastLocus T.ideal T.mult) = ∅) (s : T.SequenceOfBlowups) :
@@ -111,6 +132,11 @@ theorem center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty
   rw [hempty] at hmem
   simp at hmem
 
+/- English proof (translation)
+Establish `hdisj` using `center_disjoint_range_of_preimage_orderAtLeastLocus_eq_empty hV h hempty s`. Use `(SequenceOfBlowupsPullback.ofBlowupDataOfSeq (SequenceOfBlowupsPullback.ofCentersMissImage h (BlowupSequenceData.ofSequenceOfBlowups s.toSequenceOfBlowups) ?_ (BlowupSequenceData.ofSequenceOfBlowups B') ?_)).isPullbackSequenceOfBlowups` and prove the remaining obligations. Introduce `i hi z hz y`. Rewrite using `[BlowupSequenceData.ofSequenceOfBlowups_projectionToBase]`. Conclude with `hdisj i hi z hz y`.
+
+Conclude with `hB'`.
+-/
 theorem isPullbackSequenceOfBlowups_of_preimage_orderAtLeastLocus_empty
     {T : MarkedIdealWithBoundary.{u}} (hV : T.IsAdmissible) {Y : Scheme.{u}} (h : Y ⟶ T.scheme)
     [AlgebraicGeometry.Flat h]
@@ -126,6 +152,13 @@ theorem isPullbackSequenceOfBlowups_of_preimage_orderAtLeastLocus_empty
     exact hdisj i hi z hz y
   · exact hB'
 
+/- English proof (translation)
+Use `hV.charZero` as an intermediate fact. Use `hV.smooth` as an intermediate fact. Establish `hsub : (⇑h ⁻¹' orderAtLeastLocus T.ideal T.mult) ⊆ ∅`. Introduce `y hy`. Establish `hy' : y ∈ orderAtLeastLocus (T.ideal.comap h) T.mult`.
+
+Rewrite using `[orderAtLeastLocus_comap T.base T.structMap h T.ideal T.mult]`. Conclude with `hy`. Establish `hy2 : y ∈ orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal T.mult` using `hy'`. Rewrite `hy2` using `[hempty]`. Conclude with `hy2`.
+
+Conclude with `isPullbackSequenceOfBlowups_of_preimage_orderAtLeastLocus_empty hV h (Set.subset_empty_iff.mp hsub) ((canonicalAlgorithmRules hres).divisorFamily L j T) B' hB'`.
+-/
 theorem divisorFamily_isPullbackSequenceOfBlowups_of_orderAtLeastLocus_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (L : PrincipalizationAssignment.{u}) (j : ℕ) (T : MarkedIdealWithBoundary.{u})

@@ -23,6 +23,9 @@ variable {W : Scheme.{0}}
 end Glue
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y)
+/- English proof (translation)
+Introduce `hP _ E _ _ _ H Dw l Xo c TF Z hF τ`. Use `letI := algebraΓOfHom (str₀ TF.X Z)`. Establish `hp` using `(VarFlag.isVariety₀_flag E H Dw l Xo c TF Z hF).2.1`. Conclude with `⟨(isGenerated_unitWt hP.p1 TF Z hF τ 1).isNef_of_isProjOver hp, (isGenerated_unitWt hP.p1 TF Z hF τ (-1)).isNef_of_isProjOver hp⟩`.
+-/
 theorem isNef_hodgeBundle_unitWeight : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NefNumerics → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ τ : Psi H, letI := algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.unitWt τ 1)) ∧ IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.unitWt τ (-1))) := by
   intro hP _ E _ _ _ H Dw l Xo c TF Z hF τ
   letI := algebraΓOfHom (str₀ TF.X Z)
@@ -40,6 +43,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CompHS GlobalTheory.CovTop
 open GlobalTheory.AllWt (Psi)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight | exact _root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight | (intros; apply _root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hodgeBundle_unitWeight_nef : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NefNumerics → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ τ : Psi H, letI := algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.unitWt τ 1)) ∧ IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.unitWt τ (-1))) := by
   first | exact @_root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight | exact _root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight | (intros; apply _root_.GlobalTheory.NefUnit.isNef_hodgeBundle_unitWeight <;> assumption)
 end

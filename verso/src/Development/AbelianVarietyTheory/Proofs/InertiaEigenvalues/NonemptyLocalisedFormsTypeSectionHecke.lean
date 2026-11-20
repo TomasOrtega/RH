@@ -12,6 +12,11 @@ open GlobalTheory.EtaJoin.TypeTieProof Formalism.L2.NG Formalism.AUTREP Reciproc
 
 def ioC {D : D7} (i : D.nd.Loc) : FractionRing (D.nd.O i) →+* ℂ := (D.naut.iotaQC i).toRingHom.comp (D.naut.iotaQ i)
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, finrank R (⨆ i ∈ s, S i : Submodule R V) ≤ ∑ i ∈ s, finrank R (S i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.iSup_insert, Finset.sum_insert ha]`. Conclude with `(Submodule.finrank_add_le_finrank_add_finrank _ _).trans (Nat.add_le_add_left ih _)`. Establish `hu : (⨆ i ∈ (Finset.univ : Finset ι), S i) = ⨆ i, S i` using `iSup_congr fun i => iSup_pos (Finset.mem_univ i)`. Rewrite using `[← hu]`. Conclude with `key Finset.univ`.
+-/
 theorem finrank_iSup_le_sum' {R V ι : Type} [Field R] [AddCommGroup V] [Module R V] [FiniteDimensional R V]
     [Fintype ι] (S : ι → Submodule R V) :
     finrank R (⨆ i, S i : Submodule R V) ≤ ∑ i, finrank R (S i) := by
@@ -27,6 +32,11 @@ theorem finrank_iSup_le_sum' {R V ι : Type} [Field R] [AddCommGroup V] [Module 
   rw [← hu]
   exact key Finset.univ
 
+/- English proof (translation)
+Establish `hι : ∀ a, ioC i (D.nd.embK i a) = D.what₂.embLL a` using `D.naut.iota_LL i`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i))`. Establish `hb` using `D.what₂.jMt_basis (D.nd.mu i) (D.nd.j i) b`. Set `f0 : D.what₂.MtL (D.nd.mu i) (D.nd.j i) →ₛₗ[D.what₂.embLL] ℂ` to `{ toFun := fun z => ioC i (φ (D.nd.prMt i z)) map_add' := fun a c => by simp only [map_add] map_smul' := fun a z => by show ioC i (φ (D.nd.prMt i (a • z))) = D.what₂.embLL a • ioC i (φ (D.nd.prMt i z))`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul, smul_eq_mul, map_mul, hι, smul_eq_mul] }`.
+
+Take `⟨Ψ, hΨ⟩` from `exists_ext_semilin D.what₂.embLL (D.what₂.jMt _ _) b hb.1 hb.2 f0`. Conclude with `⟨Ψ, hΨ⟩`.
+-/
 theorem exists_ext_dual {D : D7} (i : D.nd.Loc)
     (φ : Module.Dual (FractionRing (D.nd.O i)) (TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i))) :
     ∃ Ψ : D.what₂.Mt (D.nd.mu i) (D.nd.j i) →ₗ[ℂ] ℂ,
@@ -43,6 +53,23 @@ theorem exists_ext_dual {D : D7} (i : D.nd.Loc)
   obtain ⟨Ψ, hΨ⟩ := exists_ext_semilin D.what₂.embLL (D.what₂.jMt _ _) b hb.1 hb.2 f0
   exact ⟨Ψ, hΨ⟩
 
+/- English proof (translation)
+Set `ι` to `ioC (D := D) i`. Establish `hφe` using `dual_eig (D.nd.T i) (D.nd.act i) (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.EigSpan_holds D.nd i) x0 φ hφ0`. Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL (D.nd.mu i) (D.nd.j i))`. Establish `hb` using `D.what₂.jMt_basis (D.nd.mu i) (D.nd.j i) b`. Set `bC : Module.Basis _ ℂ (D.what₂.Mt (D.nd.mu i) (D.nd.j i))` to `Module.Basis.mk hb.1 hb.2.ge`.
+
+Establish `hbC : ∀ q, bC q = D.what₂.jMt _ _ (b q)` using `fun q => by simp [bC]`. Introduce `z hz`. Rewrite using `[LinearMap.mem_ker]`. Assume the negation of the conclusion as `hz0`. Apply `hP` to reduce the goal to its premises.
+
+Use `(AV.ptV i P x0).2 ?_` and prove the remaining obligations. Introduce `w k s ϖ hw hc hu hk1 hk2 y' hy'`. Take `⟨c, hcP⟩` from `HS P w k s ϖ hw hc hu hk1 hk2`. Use `choose x' hx' using HR i w k s ϖ hw hc hu hk1 hk2`. Set `Tt : Module.End ℂ (D.what₂.Mt (D.nd.mu i) (D.nd.j i))` to `bC.constr ℂ (fun q => D.what₂.jMt _ _ (x' (b q)))`.
+
+Establish `hTb : ∀ q, Tt (bC q) = D.what₂.jMt _ _ (x' (b q))` using `fun q => by`. Simplify using `only [Tt, Module.Basis.constr_basis]`. Establish `t0 : tN (M.loc i).J s ϖ k (0 : GAf D.host.E D.R.nV → (M.loc i).wt.W) = 0`. Establish `e` using `tN_lin HT i hw s hc ϖ hu k 1 0 0`. Simplify using `only [smul_zero, add_zero, one_smul] at e`.
+
+Simplify using `using e`. Set `tl : (GAf D.host.E D.R.nV → (M.loc i).wt.W) →ₗ[ℂ] (GAf D.host.E D.R.nV → (M.loc i).wt.W)` to `{ toFun := tN (M.loc i).J s ϖ k map_add' := fun f f' => by simpa using tN_lin HT i hw s hc ϖ hu k 1 f f' map_smul' := fun a f => by simpa [t0] using tN_lin HT i hw s hc ϖ hu k a f 0 }`. Establish `hreal : (M.loc i).real ∘ₗ Tt = tl ∘ₗ (M.loc i).real` using `bC.ext fun q => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hTb, hbC]`. Conclude with `hx' (b q)`.
+
+Establish `hΨT : Ψ ∘ₗ Tt = ι (algebraMap _ (FractionRing (D.nd.O i)) ((D.nd.hT i w k : D.nd.X i → D.nd.O i) x0)) • Ψ` using `bC.ext fun q => by`. Rewrite using `[LinearMap.comp_apply, hTb, LinearMap.smul_apply, hbC, hΨ, hΨ]`. Use `show ι (φ (D.nd.prMt i (x' (b q)))) = _ • ι (φ (D.nd.prMt i (b q)))`. Rewrite using `[HT.hT i w k s ϖ hw hc hu hk1 hk2 (b q) (x' (b q)) (hx' (b q)), hφe, map_mul, smul_eq_mul]`. Establish `hTz : Tt z = c • z` using `(M.loc i).real_inj (by`.
+
+Establish `e` using `LinearMap.congr_fun hreal z`. Rewrite `e` using `[LinearMap.comp_apply, LinearMap.comp_apply]`. Rewrite using `[e, map_smul]`. Conclude with `hcP z hz)`. Establish `hcz : c = ι (algebraMap _ (FractionRing (D.nd.O i)) ((D.nd.hT i w k : D.nd.X i → D.nd.O i) x0))`.
+
+Establish `e` using `LinearMap.congr_fun hΨT z`. Rewrite `e` using `[LinearMap.comp_apply, LinearMap.smul_apply, hTz, map_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hz0 e`. Rewrite using `[hcP y' hy', hcz]`. Both sides reduce to the same expression.
+-/
 theorem typeV_le_ker {D : D7} {M : MtFam D} (i : D.nd.Loc) (HT : HeckeTied D M) (HR : HeckeRational D M)
     (AV : AVTied D M) (HS : GlobalTheory.EtaJoin.HeckeScalar M i) (x0 : D.nd.X i)
     (φ : Module.Dual (FractionRing (D.nd.O i)) (TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)))
@@ -97,6 +124,9 @@ theorem typeV_le_ker {D : D7} {M : MtFam D} (i : D.nd.Loc) (HT : HeckeTied D M) 
   rw [hcP y' hy', hcz]
   rfl
 
+/- English proof (translation)
+The claim follows from `le_biSup (fun P => D.naut.typeV i P) (show P ∈ {P | D.naut.ptV i P = D.naut.ptV i P} from rfl)`.
+-/
 theorem typeV_le_typeSum (D : D7) (i : D.nd.Loc) (P : D.naut.AV i) :
     D.naut.typeV i P ≤ typeSum D i (D.naut.ptV i P) :=
   le_biSup (fun P => D.naut.typeV i P) (show P ∈ {P | D.naut.ptV i P = D.naut.ptV i P} from rfl)
@@ -109,6 +139,69 @@ open GlobalTheory.EtaJoin.TypeTieProof Formalism.L2.NG Formalism.AUTREP Reciproc
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D M i HT HR AV _ HS`. Set `E` to `heckeEig (D.nd.T i) (D.nd.act i)`. Establish `hint : DirectSum.IsInternal E` using `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).2 ⟨heckeEig_iSupIndep _ _ (D.nd.T_sep i), Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.EigSpan_holds D.nd i⟩`. Set `v` to `fun x => Module.Free.chooseBasis (FractionRing (D.nd.O i)) (E x)`. Set `bW` to `hint.collectedBasis v`.
+
+Set `ι` to `ioC (D := D) i`. Set `πh : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i) →+ ((Σ x, Module.Free.ChooseBasisIndex (FractionRing (D.nd.O i)) (E x)) → ℂ)` to `{ toFun := fun u k => ι (bW.repr u k) map_zero' := by funext k; simp map_add' := fun u u' => by funext k; simp }`. Establish `hπ : ∀ u k, πh u k = ι (bW.repr u k)` using `fun _ _ => rfl`. Establish `hπs : ∀ (c : FractionRing (D.nd.O i)) u, πh (c • u) = ι c • πh u` using `fun c u => by`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [hπ, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Pi.smul_apply]`. Establish `hext : ∀ k : (Σ x, Module.Free.ChooseBasisIndex (FractionRing (D.nd.O i)) (E x)), ∃ Ψ : D.what₂.Mt (D.nd.mu i) (D.nd.j i) →ₗ[ℂ] ℂ, ∀ y, Ψ (D.what₂.jMt _ _ y) = ioC i (bW.coord k (D.nd.prMt i y))` using `fun k => exists_ext_dual i _`. Use `choose Ψ hΨ using hext`. Set `p : D.what₂.Mt (D.nd.mu i) (D.nd.j i) →ₗ[ℂ] ((Σ x, Module.Free.ChooseBasisIndex (FractionRing (D.nd.O i)) (E x)) → ℂ)` to `LinearMap.pi Ψ`. Establish `hpj : ∀ y, p (D.what₂.jMt _ _ y) = πh (D.nd.prMt i y)` using `fun y => by`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [p, LinearMap.pi_apply, hΨ, hπ, Module.Basis.coord_apply]`. Both sides reduce to the same expression. Establish `hkey : ∀ P z, z ∈ D.naut.typeV i P → ∀ k : (Σ x, Module.Free.ChooseBasisIndex (FractionRing (D.nd.O i)) (E x)), D.naut.ptV i P ≠ some k.1 → p z k = 0`. Introduce `P z hz k hk`.
+
+Establish `h0 : ∀ x, x ≠ k.1 → ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x, bW.coord k u = 0`. Introduce `x hx u hu`. Rewrite using `[Module.Basis.coord_apply]`. Conclude with `hint.collectedBasis_repr_of_mem_ne v hx hu`. Conclude with `typeV_le_ker i HT HR AV HS k.1 (bW.coord k) h0 (Ψ k) (hΨ k) P hk hz`.
+
+Establish `hsum : ∀ (o : Option (D.nd.X i)) k, o ≠ some (Sigma.fst k) → typeSum D i o ≤ LinearMap.ker ((LinearMap.proj k) ∘ₗ p)`. Introduce `o k hok`. Use `iSup₂_le fun P hP z hz => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.proj_apply]`. Conclude with `hkey P z hz k (by rw [show D.naut.ptV i P = o from hP]; exact hok)`.
+
+Establish `hnone : ∀ z ∈ typeSum D i none, p z = 0` using `fun z hz => by`. Use function extensionality and compare the values at `k`. Use `hsum none k (by simp) hz` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.proj_apply]`. Then use the resulting hypothesis. Set `G : Submodule ℂ (D.what₂.Mt (D.nd.mu i) (D.nd.j i))` to `⨆ x, typeSum D i (some x)`.
+
+Establish `hGtop : G ⊔ typeSum D i none = ⊤`. Rewrite using `[eq_top_iff, ← D.naut.typeV_top i]`. Use `iSup_le fun P => ?_` and prove the remaining obligations. Break down `h : D.naut.ptV i P with _ | x` into its components or cases. Conclude with `le_sup_of_le_right (h ▸ typeV_le_typeSum D i P)`.
+
+Conclude with `le_sup_of_le_left (le_iSup_of_le x (h ▸ typeV_le_typeSum D i P))`. Establish `hπr : ∀ u, πh u ∈ LinearMap.range p`. Introduce `u`. Establish `hu : u ∈ Submodule.span (FractionRing (D.nd.O i)) (Set.range (D.nd.prMt i))`. Rewrite using `[D.nd.prMt_span i]`.
+
+Conclude with `Submodule.mem_top`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨_, hpj y⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a c _ _ ha hc => rw [map_add]`. Conclude with `add_mem ha hc`. Consider the case `smul c a _ ha => rw [hπs]`.
+
+Conclude with `Submodule.smul_mem _ _ ha`. Establish `hrange : LinearMap.range p = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun ℂ _).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `: πh (bW k) = Pi.basisFun ℂ _ k`.
+
+Use function extensionality and compare the values at `k'`. Rewrite using `[hπ, Module.Basis.repr_self, Pi.basisFun_apply]`. Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Finsupp.single_apply, Pi.single_apply, hk, Ne.symm hk]`. Rewrite using `[← this]`. Conclude with `hπr _`. Set `q` to `p ∘ₗ G.subtype`. Establish `hqs : Function.Surjective q`.
+
+Introduce `f`. Take `⟨z, rfl⟩` from `LinearMap.range_eq_top.1 hrange f`. Establish `hz : z ∈ G ⊔ typeSum D i none` using `by rw [hGtop]; exact Submodule.mem_top`. Take `⟨a, ha, n, hn, rfl⟩` from `Submodule.mem_sup.1 hz`. Conclude with `⟨⟨a, ha⟩, by simp [q, map_add, hnone n hn]⟩`.
+
+Establish `hdim : finrank ℂ G ≤ Fintype.card (Σ x, Module.Free.ChooseBasisIndex (FractionRing (D.nd.O i)) (E x))`. Use `(finrank_iSup_le_sum' _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Fintype.card_sigma]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `h1` using `D.naut.eig_dim i x`.
+
+Rewrite `h1` using `[NData.mult, heckeMult]`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex]`. Conclude with `h1.symm`. Establish `hfr : finrank ℂ G = finrank ℂ ((Σ x, Module.Free.ChooseBasisIndex (FractionRing (D.nd.O i)) (E x)) → ℂ)`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Module.finrank_fintype_fun_eq_card]`. Conclude with `hdim`. Use `LinearMap.finrank_range_le q` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.2 hqs, finrank_top]`. Then use the resulting hypothesis. Establish `hqi : Function.Injective q` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).2 hqs`.
+
+Establish `hkerG : ∀ z, p z = 0 → z ∈ typeSum D i none`. Introduce `z hz`. Establish `hz' : z ∈ G ⊔ typeSum D i none` using `by rw [hGtop]; exact Submodule.mem_top`. Take `⟨a, ha, n, hn, rfl⟩` from `Submodule.mem_sup.1 hz'`. Establish `hpa : q ⟨a, ha⟩ = q 0`.
+
+Rewrite using `[map_zero]`. Use `show p a = 0`. Rewrite `hz` using `[map_add, hnone n hn, add_zero]`. Conclude with `hz`. Use `congrArg Subtype.val (hqi hpa)` as an intermediate fact.
+
+Simplify using `only [Submodule.coe_zero] at this`. Rewrite using `[this, zero_add]`. Conclude with `hn`. Set `e` to `LinearEquiv.ofBijective q ⟨hqi, hqs⟩`. Establish `hpe : ∀ f, p (e.symm f : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) = f` using `fun f => e.apply_symm_apply f`.
+
+Set `Φ : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i) →+ D.what₂.Mt (D.nd.mu i) (D.nd.j i)` to `(G.subtype ∘ₗ e.symm.toLinearMap).toAddMonoidHom.comp πh`. Establish `hΦ : ∀ u, Φ u = (e.symm (πh u) : D.what₂.Mt (D.nd.mu i) (D.nd.j i))` using `fun _ => rfl`. Use `⟨⟨Φ, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero Φ).2 fun u hu => ?_` and prove the remaining obligations. Rewrite `hu` using `[hΦ]`.
+
+Establish `h1 : e.symm (πh u) = 0` using `Subtype.ext hu`. Establish `h2 : πh u = 0` using `by simpa using congrArg e h1`. Use `bW.repr.injective (Finsupp.ext fun k => ?_)` and prove the remaining obligations. Establish `h3` using `congrFun h2 k`. Rewrite `h3` using `[hπ]`.
+
+Simplify using `using (map_eq_zero_iff ι ι.injective).1 h3`. Introduce `c u`. Rewrite using `[hΦ, hΦ, hπs, map_smul, Submodule.coe_smul]`. Both sides reduce to the same expression. Introduce `x u hu`.
+
+Rewrite using `[hΦ]`. Use `set g := e.symm (πh u) with hg`. Establish `hpg : p (g : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) = πh u` using `hpe _`. Establish `hGle : G ≤ typeSum D i (some x) ⊔ ⨆ (x') (_ : x' ≠ x), typeSum D i (some x')`. Use `iSup_le fun x' => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x' = x`. Substitute `hx` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_biSup (fun x' => typeSum D i (some x')) hx)`. Take `⟨a, ha, c, hc, hac⟩` from `Submodule.mem_sup.1 (hGle g.2)`.
+
+Establish `hcG : c ∈ G`. Use `(iSup₂_le fun x' _ => le_iSup (fun x => typeSum D i (some x)) x') hc` and prove the remaining obligations. Establish `hpc : p c = 0`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k.1 = x`.
+
+Establish `hle : (⨆ (x') (_ : x' ≠ x), typeSum D i (some x')) ≤ LinearMap.ker ((LinearMap.proj k) ∘ₗ p)` using `iSup₂_le fun x' hx' => hsum (some x') k (by rw [hk]; simpa using hx')`. Use `hle hc` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.proj_apply]`. Then use the resulting hypothesis. Establish `h1` using `hsum (some x) k (by simpa using Ne.symm hk) ha`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.comp_apply, LinearMap.proj_apply]`.
+
+Establish `h2 : p (g : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) k = 0`. Rewrite using `[hpg, hπ, show bW.repr u k = 0 from hint.collectedBasis_repr_of_mem_ne v (Ne.symm hk) hu, map_zero]`. Rewrite `h2` using `[← hac, map_add, Pi.add_apply, h1, zero_add]`. Simplify using `using h2`. Establish `hc0 : c = 0`.
+
+Use `congrArg Subtype.val (hqi (a₁ := ⟨c, hcG⟩) (a₂ := 0) (by` as an intermediate fact. Rewrite using `[map_zero]`. Conclude with `hpc))`. Simplify using `using this`. Rewrite using `[← hac, hc0, add_zero]`.
+
+Conclude with `ha`. Introduce `y`. Use `hkerG _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, hΦ, hpe, hpj, sub_self]`.
+-/
 theorem main : ∀ (D : D7) (M : MtFam D) (i : D.nd.Loc), HeckeTied D M → HeckeRational D M → AVTied D M →
     GlobalTheory.EtaJoin.SplitUnif D → GlobalTheory.EtaJoin.HeckeScalar M i → Nonempty (Sec D i) := by
   intro D M i HT HR AV _ HS

@@ -22,6 +22,13 @@ namespace GlobalTheory.UCanon.LatId
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hw : H.w0 + H.bar H.w0 = 1` using `GlobalTheory.PelPrim.cmHostUnit_add_conj_eq_one H`. Establish `hg' : ∀ y, (g y : K) = (∏ k, s k ^ (n * ε k (e y) (H.w0 • e y)))⁻¹` using `fun y => by`. Rewrite using `[← hg, Units.val_inv_eq_inv_val, inv_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, hg, hg', hg', ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_neg, ← zpow_neg, ← zpow_add₀ (hs k), ← zpow_add₀ (hs k)]`. Use `congr 1`. Establish `h1 : ε k (e a') (H.w0 • e a) = ε k (e a) (H.bar H.w0 • e a')` using `by rw [(hε k).1, (hε k).2]`. Establish `h2 : ε k (e a) (H.w0 • e a') + ε k (e a) (H.bar H.w0 • e a') = ε k (e a) (e a')`. Rewrite using `[← map_add, ← add_smul, hw, one_smul]`.
+
+Simplify using `only [map_add, smul_add, LinearMap.add_apply, h1]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem second_diff_bal {X Y K I : Type} [AddCommGroup X] [Module (𝓞 E) X] [AddCommGroup Y] [Module (𝓞 E) Y] [Field K]
     [Fintype I] (e : X ≃ₗ[𝓞 E] Y) (s : I → K) (hs : ∀ k, s k ≠ 0) (ε : I → LinearMap.BilinForm ℤ Y)
     (hε : ∀ k, ε k ∈ balForms H.bar Y) (n : ℤ) (g : X → Kˣ)
@@ -44,6 +51,33 @@ theorem second_diff_bal {X Y K I : Type} [AddCommGroup X] [Module (𝓞 E) X] [A
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ hpq hφ hns R _ _ _ hR C Cn V _ _ _ _ hVc f₁ f₂ hf₁ hf₂ lf₁ lf₂ D₁ D₂ hD₁ hD₂ j₁ j₂ b ph hE₁ hE₂ hM hlin hpairs`. Use `letI := H.starRing`. Establish `hn : 3 ≤ l.M'` using `l.three_le.trans (Nat.le_of_dvd (Nat.lcm_pos (by have := l.three_le; omega) l.A_pos) (Nat.dvd_lcm_left _ _))`. Establish `hn1 : 1 ≤ l.M'` using `by omega`. Use `set iw := Cn.ψ.comp MvPolynomial.C with hiwd`.
+
+Establish `hiw : Function.Injective iw`. Establish `hfl : iw.Flat` using `RingHom.Flat.comp (RingHom.flat_algebraMap_iff.2 inferInstance) Cn.compl.2.2.1`. Use `letI := iw.toAlgebra`. Establish `: Module.Flat Cn.L.W R` using `hfl`. Establish `: IsLocalHom (algebraMap Cn.L.W R)` using `Cn.ψ_loc`.
+
+Establish `: Module.FaithfullyFlat Cn.L.W R` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective Cn.L.W R`. Set `s : Fin C.m ⊕ Fin Cn.N → R` to `fun k => Cn.ψ (MvPolynomial.X k)`. Establish `hs0 : ∀ k, s k ≠ 0`. Introduce and unpack `(k | k)`.
+
+Conclude with `(Cn.bd k).trans_ne (C.s_ne_zero k)`. Conclude with `(Cn.tor k).ne_zero`. Take `⟨hev, hbi, hgen, -⟩` from `GlobalTheory.T.degenerationDataNsmulRescale_keeps_laws Cn.L.W Cn.L.D (𝓞 E) Cn.L.oa H.w0 l.M' Cn.L.even Cn.L.bimult Cn.L.w0 Cn.L.gen`. Take `⟨T, ib, β₀, ββ₀, w₀, hF₀⟩` from `GlobalTheory.T.exists_tautologicalBase_nsmul_degenerationData Cn.L.b Cn.L.D Cn.L.bimult Cn.L.gen l.M'`. Take `⟨g, hD, hg, hxe, -⟩` from `Cn.data`.
+
+Set `ε : Fin C.m ⊕ Fin Cn.N → LinearMap.BilinForm ℤ (Fin T.r → ℤ)` to `fun k => (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X).compl₁₂ ib.symm.toIntLinearEquiv.toLinearMap ib.symm.toIntLinearEquiv.toLinearMap`. Establish `hε : ∀ k a b, ε k (ib a) (ib b) = (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) a b` using `fun k a b => congrArg₂ (fun x y => (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) x y) (ib.symm_apply_apply a) (ib.symm_apply_apply b)`. Set `e : C.P.D.toPre.X ≃+ (Fin T.r → ℤ)` to `Cn.e.toAddEquiv.trans ib`. Establish `he : ∀ y, e y = ib (Cn.e y)` using `fun _ => rfl`. Take `⟨β, ββ, w, hF⟩` from `GlobalTheory.T.comesFromTautBase_of_rescaled_pullback_monomial T l.M' (mulDeg Cn.L.D l.M') hev hbi hgen ib β₀ ββ₀ w₀ hF₀ R iw hiw C.P.D.toPre g hD s ε e (fun y => congrArg ib (hxe y).symm) (fun a a' => by`.
+
+Simplify using `only [he, hε]`. Conclude with `second_diff_bal Cn.e _ (fun k => (map_ne_zero_iff _ (IsFractionRing.injective R _)).2 (hs0 k)) _ (fun k => (Cn.ε k).2) _ g hg a a')`. Take `⟨ββ₁, w₁, hF₁⟩` from `GlobalTheory.TInj.from_pull T ε l.M' R V _ C.P.D iw s e β ββ w f₁ D₁.toPre hD₁ hf₁ hF`. Take `⟨ββ₂, w₂, hF₂⟩` from `GlobalTheory.TInj.from_pull T ε l.M' R V _ C.P.D iw s e β ββ w f₂ D₂.toPre hD₂ hf₂ hF`. Set `ga : C.P.D.toPre.X ≃ₗ[𝓞 E] C.P.D.toPre.X` to `{ (hD₁.xe.symm.trans ph).trans hD₂.xe with map_smul' := hlin }`.
+
+Establish `hga : ∀ y, ga y = hD₂.xe (ph (hD₁.xe.symm y))` using `fun _ => rfl`. Establish `hcong : ∀ y, ∃ z, ga y = y + l.M' • z`. Introduce `y`. Take `⟨p₀, hp₀y, -⟩` from `GlobalTheory.TInj.exists_qkPt_tautPt T ε l.M' R C.P.D.toPre iw s e β ββ w C.P.D.tau_bimult hF hs0 (AlgebraicClosure (FractionRing R)) (e y)`. Take `⟨p₁, p₂, hy₁, -, hy₂, -, p', hp', -, z, hz, -⟩` from `hpairs p₀`.
+
+Rewrite `hy₁`, `hy₂` using `[hp₀y, AddEquiv.symm_apply_apply]`. Establish `h : hD₂.xe p₂.y = hD₂.xe (ph p₁.y) + l.M' • hD₂.xe z` using `by rw [hz, map_add, hp', map_nsmul]`. Rewrite `h` using `[hy₂, hy₁, AddEquiv.apply_symm_apply]`. Use `⟨-(hD₂.xe z), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, hga, ← sub_eq_add_neg, eq_sub_iff_add_eq]`.
+
+Conclude with `h.symm`. Establish `hbd : ∀ f : R →+* V, Function.Injective f → IsLocalHom f → ∀ k, f (s (.inl k)) ∈ maximalIdeal V ∧ f (s (.inl k)) ≠ 0` using `fun f hf hl k => ⟨map_nonunit f _ (show Cn.ψ _ ∈ maximalIdeal R from (Cn.bd k).symm ▸ C.s_mem k), (map_ne_zero_iff f hf).2 (hs0 _)⟩`. Establish `hpu` using `GlobalTheory.T.tautologicalBase_matching_monomials_ratio_unit T ε l.M' V D₁.toPre D₂.toPre _ _ _ _ ββ₁ w₁ _ _ _ _ ββ₂ w₂ b ph _ D₁.tau_bimult D₂.tau_bimult hF₁ hF₂ hM`. Set `gz : (Fin T.r → ℤ) ≃ₗ[ℤ] (Fin T.r → ℤ)` to `((e.symm.trans ga.toAddEquiv).trans e).toIntLinearEquiv`. Establish `hgz : ∀ y, gz (e y) = e (ga y)` using `fun y => by show e (ga (e.symm (e y))) = e (ga y)`.
+
+Rewrite using `[AddEquiv.symm_apply_apply]`. Take `⟨d₁, d₂, hd₁, hd₂, hsum⟩` from `GlobalTheory.T.monomials_differ_by_units_positive_boundaryCombination V T.r C.m Cn.N l.M' hn1 ε (fun k => f₁ (s k)) (fun k => f₂ (s k)) gz (hbd f₁ hf₁ lf₁) (fun k => (Cn.tor k).map f₁) (hbd f₂ hf₂ lf₂) (fun k => (Cn.tor k).map f₂) (fun a a' => by`. Take `⟨u, hu⟩` from `hpu (hD₁.xe.symm (e.symm a)) (hD₁.xe.symm (e.symm a'))`. Simplify using `only [AddEquiv.trans_apply, AddEquiv.apply_symm_apply] at hu`. Conclude with `⟨u, hu⟩)`.
+
+Establish `hδ : ∀ k a a', C.δ k a a' = ε (.inl k) (e a) (e a')` using `fun k a a' => by rw [he, he, hε, Cn.cone]; rfl`. Establish `hform : ∀ y z, ∑ i, (d₂ i : ℤ) * C.δ i (ga y) (ga z) = ∑ i, (d₁ i : ℤ) * C.δ i y z`. Introduce `y z`. Establish `h` using `LinearMap.congr_fun₂ hsum (e y) (e z)`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, pull_apply, LinearEquiv.coe_coe, hgz, nsmul_eq_mul] at h`.
+
+Simplify using `only [hδ]`. Conclude with `h.symm`. Establish `hpos : ∀ y, y ≠ 0 → 0 < ∑ i, C.δ i y y`. Introduce `y hy`. Take `⟨i, hi⟩` from `C.mono.exists_pos (maximalIdeal.isMaximal _).ne_top hy`.
+
+Establish `hi' : 0 < C.δ i y y` using `(mul_pos_iff_of_pos_left (show (0 : ℤ) < l.M' by exact_mod_cast (by omega : 0 < l.M'))).1 hi`. Conclude with `Finset.sum_pos' (fun j _ => C.cone.nonneg j y) ⟨i, Finset.mem_univ _, hi'⟩`. Establish `hid` using `GlobalTheory.UCanon.eq_self_of_cone_congMod H φ (min Dw.p Dw.q) hφ hns C.P.D.toPre.X C.rank C.m C.δ C.cone hpos ga d₂ d₁ hd₂ hd₁ hform l.M' hn hcong`. Introduce `y`. Conclude with `hid y`.
+-/
 theorem lattice_eq_id : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V → ∀ f₁ f₂ : R →+* V, Function.Injective f₁ → Function.Injective f₂ → IsLocalHom f₁ → IsLocalHom f₂ → ∀ (D₁ D₂ : DegData V (maximalIdeal V)) (hD₁ : IsPullDeg f₁ C.P.D.toPre D₁.toPre) (hD₂ : IsPullDeg f₂ C.P.D.toPre D₂.toPre) (j₁ j₂ : (AlgebraicClosure (FractionRing R)) →+* (AlgebraicClosure (FractionRing V))) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (φ' : D₁.toPre.X ≃+ D₂.toPre.X), GlobalTheory.TInj.Ext f₁ j₁ → GlobalTheory.TInj.Ext f₂ j₂ → GlobalTheory.TInj.Match D₁.toPre D₂.toPre b φ' (AlgebraicClosure (FractionRing V)) → (∀ (x : 𝓞 E) (y : C.P.D.toPre.X), hD₂.xe (φ' (hD₁.xe.symm (x • y))) = x • hD₂.xe (φ' (hD₁.xe.symm y))) → (∀ p₀ : QkPt C.P.D.toPre (AlgebraicClosure (FractionRing R)) l.M', ∃ (p₁ : QkPt D₁.toPre (AlgebraicClosure (FractionRing V)) l.M') (p₂ : QkPt D₂.toPre (AlgebraicClosure (FractionRing V)) l.M'), p₁.y = hD₁.xe.symm p₀.y ∧ GlobalTheory.TInj.Tr f₁ hD₁ j₁ p₀.g p₁.g ∧ p₂.y = hD₂.xe.symm p₀.y ∧ GlobalTheory.TInj.Tr f₂ hD₂ j₂ p₀.g p₂.g ∧ GlobalTheory.TInj.QImg b φ' p₁ p₂) → ∀ y : C.P.D.toPre.X, hD₂.xe (φ' (hD₁.xe.symm y)) = y := by
   intro E _ _ _ H Dw l Xo c φ hpq hφ hns R _ _ _ hR C Cn V _ _ _ _ hVc f₁ f₂ hf₁ hf₂ lf₁ lf₂ D₁ D₂ hD₁ hD₂ j₁ j₂ b ph hE₁ hE₂
     hM hlin hpairs

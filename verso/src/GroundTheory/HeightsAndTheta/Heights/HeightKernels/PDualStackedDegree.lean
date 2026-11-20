@@ -18,9 +18,19 @@ namespace DualStackedDegreeAlt
 
 variable {K : Type} [Field K] [NumberField K] {i : ℕ}
 
+/- English proof (translation)
+The claim follows from `LinesIsLattice.proof K (Fin i) F.lattice (F.fg.restrictScalars) F.span_eq`.
+-/
 theorem isLattice (F : HermLattice K i) : Submodule.IsLattice ℚ (F.lattice.restrictScalars ℤ) :=
   LinesIsLattice.proof K (Fin i) F.lattice (F.fg.restrictScalars) F.span_eq
 
+/- English proof (translation)
+Establish `hspan : Submodule.span K (Set.range fun j : Fin i => (Pi.single j 1 : Fin i → K)) = ⊤`. Establish `h : (Set.range fun j : Fin i => (Pi.single j 1 : Fin i → K)) = Set.range (Pi.basisFun K (Fin i))`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(Pi.basisFun_apply _ _ _).symm`.
+
+Rewrite using `[h]`. Conclude with `(Pi.basisFun K (Fin i)).span_eq`. Establish `hlat : F.withStdMetric.lattice = F.lattice` using `rfl`. Establish `hstd : F.withStdMetric.metric = fun _ => 1` using `rfl`. Simplify using `only [HermLattice.degree, subDegree, hlat, hstd, hspan, Submodule.restrictScalars_top, inf_top_eq, TopDualLatticeChange.gramAt_one_single, Matrix.det_one, Complex.one_re, Real.log_one, Finset.sum_const_zero, mul_zero, sub_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem degree_withStdMetric (F : HermLattice K i) :
     F.withStdMetric.degree = Real.log (genIndex F.lattice.toAddSubgroup
       (HermLattice.standard K i).lattice.toAddSubgroup) := by
@@ -36,6 +46,11 @@ theorem degree_withStdMetric (F : HermLattice K i) :
     Finset.sum_const_zero, mul_zero, sub_zero]
   rfl
 
+/- English proof (translation)
+Establish `hT` using `LinesGenIndexTrans.proof LinesLatticeBasis.proof (LinesGenIndexDet.proof LinesLatticeBasis.proof)`. Take `⟨hpos1, hmul⟩` from `hT (Fin i → K) (F.lattice.restrictScalars ℤ) (F'.lattice.restrictScalars ℤ) ((HermLattice.standard K i).lattice.restrictScalars ℤ) (isLattice F) (isLattice F') (isLattice _)`. Take `⟨hpos2, -⟩` from `hT (Fin i → K) (F'.lattice.restrictScalars ℤ) ((HermLattice.standard K i).lattice.restrictScalars ℤ) ((HermLattice.standard K i).lattice.restrictScalars ℤ) (isLattice F') (isLattice _) (isLattice _)`. Establish `e : ∀ L : Submodule (𝓞 K) (Fin i → K), (L.restrictScalars ℤ).toAddSubgroup = L.toAddSubgroup` using `fun _ => rfl`. Simplify using `only [e] at hpos1 hmul hpos2`.
+
+Rewrite using `[degree_withStdMetric, degree_withStdMetric, ← hmul, Real.log_mul hpos1.ne' hpos2.ne', add_sub_cancel_right, genIndex, (AddSubgroup.relIndex_eq_one (H := F.lattice.toAddSubgroup) (K := F'.lattice.toAddSubgroup)).mpr (fun _ hx => h hx), Nat.cast_one, div_one]`.
+-/
 theorem degree_sub (F F' : HermLattice K i) (h : F'.lattice ≤ F.lattice) :
     F.withStdMetric.degree - F'.withStdMetric.degree =
       Real.log (F'.lattice.toAddSubgroup.relIndex F.lattice.toAddSubgroup) := by
@@ -53,6 +68,15 @@ theorem degree_sub (F F' : HermLattice K i) (h : F'.lattice ≤ F.lattice) :
     add_sub_cancel_right, genIndex, (AddSubgroup.relIndex_eq_one (H := F.lattice.toAddSubgroup)
       (K := F'.lattice.toAddSubgroup)).mpr (fun _ hx => h hx), Nat.cast_one, div_one]
 
+/- English proof (translation)
+Rewrite using `[AddSubgroup.relIndex_eq_natAbs_det _ _ (DualTopStackedExistence.dualLattice_mono h) b b']`. Establish `hv : (fun t => (⟨(b t : Fin i → K), DualTopStackedExistence.dualLattice_mono h (b t).2⟩ : dualLattice F')) = fun t => a t • b' t`. Use function extensionality and compare the values at `t`. Conclude with `Subtype.ext (hab t)`. Establish `hdet : b'.det (fun t => a t • b' t) = ∏ t, a t`.
+
+Rewrite using `[Module.Basis.det_apply]`. Establish `hm : b'.toMatrix (fun t => a t • b' t) = Matrix.diagonal a`. Use extensionality with `s t`. Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality.
+
+Simplify using `[Module.Basis.toMatrix_apply]`. Simplify using `[Module.Basis.toMatrix_apply, hst]`. Rewrite using `[hm, Matrix.det_diagonal]`. Use `erw [hv, hdet]`. Move the coercions through the operations in `[Nat.cast_natAbs, Int.cast_abs, Int.cast_prod, Finset.abs_prod]`.
+
+Both sides reduce to the same expression.
+-/
 theorem relIndex_stacked {T : Type} [Fintype T] [DecidableEq T] {F F' : HermLattice K i}
     (h : F'.lattice ≤ F.lattice) (b : Module.Basis T ℤ (dualLattice F))
     (b' : Module.Basis T ℤ (dualLattice F')) (a : T → ℤ)
@@ -78,6 +102,9 @@ end DualStackedDegreeAlt
 
 open DualStackedDegreeAlt in
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a h hab`. Establish `ha : ∀ t, a t ≠ 0` using `fun t ht => b.ne_zero t (Subtype.ext (by rw [hab t, ht, zero_smul]; rfl))`. Rewrite using `[degree_sub F F' h, ← hIdx K i F F' h, relIndex_stacked h b b' a hab, Real.log_prod (fun t _ => abs_ne_zero.mpr (Int.cast_ne_zero.mpr (ha t)))]`.
+-/
 theorem DualStackedDegree.proof (hIdx : DualLatticeIndex.Statement) : DualStackedDegree.Statement := by
   intro K _ _ i F F' T _ _ b b' a h hab
   have ha : ∀ t, a t ≠ 0 := fun t ht => b.ne_zero t (Subtype.ext (by rw [hab t, ht, zero_smul]; rfl))

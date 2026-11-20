@@ -13,6 +13,9 @@ def embMat {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     (v : Fin k → Fin r → K) : Matrix (Fin r) (Fin k) ℂ :=
   Matrix.of fun a j => σ (v j a)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramC, embMat, embVec, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by ring`.
+-/
 theorem gramC_eq_mul {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (v : Fin k → Fin r → K) :
     gramC H σ v = (embMat σ v)ᴴ * H * embMat σ v := by
@@ -23,6 +26,15 @@ theorem gramC_eq_mul {K : Type} [Field K] [NumberField K] {r k : ℕ}
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+Use `set B : Matrix (Fin r) (Fin k) K := Matrix.of fun a j => v j a`. Establish `hcol : B.col = v`. Use function extensionality and compare the values at `j a`. Both sides reduce to the same expression. Establish `hB : Function.Injective B.mulVec`.
+
+Rewrite using `[Matrix.mulVec_injective_iff, hcol]`. Conclude with `hv`. Establish `hker : LinearMap.ker (Matrix.toLin' B) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Introduce `x y h`.
+
+Conclude with `hB (by simpa [Matrix.toLin'_apply] using h)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' B) hker`. Establish `hNB : LinearMap.toMatrix' g * B = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' B, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`. Establish `hE : embMat σ v = B.map σ` using `rfl`.
+
+Establish `h1 : (LinearMap.toMatrix' g).map σ * embMat σ v = 1`. Rewrite using `[hE, ← Matrix.map_mul, hNB, Matrix.map_one _ σ.map_zero σ.map_one]`. Introduce `x y hxy`. Establish `h` using `congrArg ((LinearMap.toMatrix' g).map σ).mulVec hxy`. Simplify `h` using `[Matrix.mulVec_mulVec, h1]`.
+-/
 theorem embMat_mulVec_injective {K : Type} [Field K] [NumberField K] {r k : ℕ} (σ : K →+* ℂ)
     {v : Fin k → Fin r → K} (hv : LinearIndependent K v) :
     Function.Injective (embMat σ v).mulVec := by
@@ -47,12 +59,18 @@ theorem embMat_mulVec_injective {K : Type} [Field K] [NumberField K] {r k : ℕ}
   have h := congrArg ((LinearMap.toMatrix' g).map σ).mulVec hxy
   simpa [Matrix.mulVec_mulVec, h1] using h
 
+/- English proof (translation)
+Rewrite using `[gramC_eq_mul]`. Conclude with `hH.conjTranspose_mul_mul_same (embMat_mulVec_injective σ hv)`.
+-/
 theorem gramC_posDef {K : Type} [Field K] [NumberField K] {r k : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) {v : Fin k → Fin r → K} (hH : H.PosDef)
     (hv : LinearIndependent K v) : (gramC H σ v).PosDef := by
   rw [gramC_eq_mul]
   exact hH.conjTranspose_mul_mul_same (embMat_mulVec_injective σ hv)
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [gramC, gramX]`.
+-/
 theorem gramC_append_blocks {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
     (c : Fin m → Fin r → K) :
@@ -60,6 +78,13 @@ theorem gramC_append_blocks {K : Type} [Field K] [NumberField K] {r k m : ℕ}
       Matrix.fromBlocks (gramC H σ b) (gramX H σ b c) (gramX H σ c b) (gramC H σ c) := by
   ext (i | i) (j | j) <;> simp [gramC, gramX]
 
+/- English proof (translation)
+Establish `hG` using `(gramC_posDef H σ hH h).det_pos`. Establish `hGb` using `(gramC_posDef H σ hH hb).det_pos`. Establish `: Invertible (gramC H σ b)` using `(gramC_posDef H σ hH hb).isUnit.invertible`. Establish `hdet : (gramC H σ (Fin.append b c)).det = (gramC H σ b).det * (quotGramC H σ b c).det`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv (gramC H σ (Fin.append b c)), gramC_append_blocks, Matrix.det_fromBlocks₁₁, Matrix.invOf_eq_nonsing_inv]`.
+
+Both sides reduce to the same expression. Rewrite `hG`, the goal using `[hdet]`. Rewrite `hG`, `hGb` using `[Complex.pos_iff]`. Establish `hre : ((gramC H σ b).det * (quotGramC H σ b c).det).re = (gramC H σ b).det.re * (quotGramC H σ b c).det.re`. Simplify using `[Complex.mul_re, ← hGb.2]`.
+
+Establish `hy : 0 < (quotGramC H σ b c).det.re`. Rewrite `hG` using `[hre]`. Conclude with `(pos_iff_pos_of_mul_pos hG.1).mp hGb.1`. Rewrite using `[hre, Real.log_mul hGb.1.ne' hy.ne']`.
+-/
 theorem log_det_gram_append {K : Type} [Field K] [NumberField K] {r k m : ℕ}
     (H : Matrix (Fin r) (Fin r) ℂ) (σ : K →+* ℂ) (b : Fin k → Fin r → K)
     (c : Fin m → Fin r → K) (hH : H.PosDef) (hb : LinearIndependent K b)

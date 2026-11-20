@@ -34,6 +34,9 @@ def awayDegEquiv {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (k : ℤ) :
         obtain ⟨z, hz, h⟩ := (mem_LDeg_iff i k ℓ.1).1 ℓ.2
         exact ⟨⟨z, hz⟩, Subtype.ext h⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma awayDegEquiv_apply {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (k : ℤ) (z) :
     (awayDegEquiv (A := A) i k z).1 = awayToLaurent i z.1 := rfl
 
@@ -60,6 +63,9 @@ def theta {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (k : ℤ) :
   ((awayDegEquiv i k).symm.trans (sectionEquiv i k)).trans
     (resEquiv (twistAb A n k) (inter_stdOpen i))
 
+/- English proof (translation)
+Establish `hx : x.1 ∈ Proj.basicOpen (grading A n) (xprod i)`. Rewrite using `[← inter_stdOpen]`. Conclude with `x.2`. Conclude with `hx`.
+-/
 lemma nmem_of_mem_inter {p : ℕ} {i : Fin (p + 1) → Fin (n + 1)}
     (x : inter (cover A n) i) : xprod (A := A) i ∉ x.1.asHomogeneousIdeal := by
   have hx : x.1 ∈ Proj.basicOpen (grading A n) (xprod i) := by
@@ -67,11 +73,19 @@ lemma nmem_of_mem_inter {p : ℕ} {i : Fin (p + 1) → Fin (n + 1)}
     exact x.2
   exact hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma val_theta {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (k : ℤ) (ℓ : LDeg A (Set.range i) k)
     (x : inter (cover A n) i) :
     ProjTwist.val (theta i k ℓ) x =
       ProjTwist.locMap x.1 (nmem_of_mem_inter x) ((awayDegEquiv i k).symm ℓ).1 := rfl
 
+/- English proof (translation)
+Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ProjTwist.val (theta i k ℓ) ⟨x.1, hle x.2⟩ = _`. Rewrite using `[val_theta, val_theta]`. Apply `locMap_eq_of_awayToLaurent_eq h` to reduce the goal to its premises.
+
+Rewrite using `[← awayDegEquiv_apply, ← awayDegEquiv_apply, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+-/
 lemma res_theta {p q : ℕ} {i : Fin (p + 1) → Fin (n + 1)} {i' : Fin (q + 1) → Fin (n + 1)}
     (h : Set.range i ⊆ Set.range i') (hle : inter (cover A n) i' ≤ inter (cover A n) i) (k : ℤ)
     (ℓ : LDeg A (Set.range i) k) :
@@ -88,14 +102,23 @@ def lval {k : ℤ} {p : ℕ} (σ : Cochain (twistAb A n k) (cover A n) p) (i : F
     Laurent A n :=
   ((theta i k).symm (σ i)).1
 
+/- English proof (translation)
+The claim follows from `((theta i k).symm (σ i)).2`.
+-/
 lemma lval_mem {k : ℤ} {p : ℕ} (σ : Cochain (twistAb A n k) (cover A n) p)
     (i : Fin (p + 1) → Fin (n + 1)) : lval σ i ∈ LDeg A (Set.range i) k :=
   ((theta i k).symm (σ i)).2
 
+/- English proof (translation)
+The claim follows from `(theta i k).apply_symm_apply _`.
+-/
 lemma theta_lval {k : ℤ} {p : ℕ} (σ : Cochain (twistAb A n k) (cover A n) p)
     (i : Fin (p + 1) → Fin (n + 1)) : theta i k ⟨lval σ i, lval_mem σ i⟩ = σ i :=
   (theta i k).apply_symm_apply _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[← theta_lval σ i, ← theta_lval τ i]`. Use `congr 1`. Conclude with `Subtype.ext (h i)`.
+-/
 lemma cochain_ext {k : ℤ} {p : ℕ} {σ τ : Cochain (twistAb A n k) (cover A n) p}
     (h : ∀ i, lval σ i = lval τ i) : σ = τ := by
   funext i
@@ -103,14 +126,23 @@ lemma cochain_ext {k : ℤ} {p : ℕ} {σ τ : Cochain (twistAb A n k) (cover A 
   congr 1
   exact Subtype.ext (h i)
 
+/- English proof (translation)
+Simplify using `[lval]`.
+-/
 @[simp] lemma lval_add {k : ℤ} {p : ℕ} (σ τ : Cochain (twistAb A n k) (cover A n) p) (i) :
     lval (σ + τ) i = lval σ i + lval τ i := by
   simp [lval]
 
+/- English proof (translation)
+Simplify using `[lval]`.
+-/
 @[simp] lemma lval_zero {k : ℤ} {p : ℕ} (i) :
     lval (0 : Cochain (twistAb A n k) (cover A n) p) i = 0 := by
   simp [lval]
 
+/- English proof (translation)
+Simplify using `[lval]`.
+-/
 @[simp] lemma lval_sub {k : ℤ} {p : ℕ} (σ τ : Cochain (twistAb A n k) (cover A n) p) (i) :
     lval (σ - τ) i = lval σ i - lval τ i := by
   simp [lval]
@@ -119,15 +151,26 @@ def ofL {k : ℤ} {p : ℕ} (f : ∀ i : Fin (p + 1) → Fin (n + 1), LDeg A (Se
     Cochain (twistAb A n k) (cover A n) p :=
   fun i => theta i k (f i)
 
+/- English proof (translation)
+Simplify using `[lval, ofL]`.
+-/
 @[simp] lemma lval_ofL {k : ℤ} {p : ℕ} (f : ∀ i : Fin (p + 1) → Fin (n + 1), LDeg A (Set.range i) k)
     (i) : lval (ofL f) i = (f i).1 := by
   simp [lval, ofL]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨f a, rfl⟩`.
+-/
 lemma range_comp_subset {α β γ : Type*} (f : α → β) (g : β → γ) :
     Set.range (g ∘ f) ⊆ Set.range g := by
   rintro _ ⟨a, rfl⟩
   exact ⟨f a, rfl⟩
 
+/- English proof (translation)
+Establish `key : d _ _ p σ i = theta i k (∑ a : Fin (p + 2), ((-1 : ℤ) ^ (a : ℕ)) • ⟨lval σ (i ∘ a.succAbove), LDeg_mono (range_comp_subset _ _) k (lval_mem σ _)⟩)`. Rewrite using `[d_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `congr 1`.
+
+Use `conv_lhs => rw [← theta_lval σ (i ∘ a.succAbove)]`. Conclude with `res_theta (range_comp_subset _ _) _ k _`. Rewrite using `[lval, key, AddEquiv.symm_apply_apply, AddSubgroup.val_finsetSum]`. Simplify using the standard rewrite rules.
+-/
 lemma lval_d {k : ℤ} {p : ℕ} (σ : Cochain (twistAb A n k) (cover A n) p)
     (i : Fin (p + 2) → Fin (n + 1)) :
     lval (d _ _ p σ) i = ∑ a : Fin (p + 2), ((-1 : ℤ) ^ (a : ℕ)) • lval σ (i ∘ a.succAbove) := by

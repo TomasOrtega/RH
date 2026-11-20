@@ -17,6 +17,17 @@ open GlobalTheory.ConjUnif GlobalTheory.CM.LieMetricConj
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨Λ, Hm, W, ⟨Q, -, ψ, v, u, χ, a, -, b, c⟩, d⟩` from `H s`. Take `⟨Λ', Hm', W', ⟨Q', -, ψ', v', u', χ', a', -, b', c'⟩, d'⟩` from `H ((starRingEnd ℂ).comp s)`. Take `⟨A'', _, ψc, hc⟩ : ∃ (A'' : Over (Sp ℂ)) (_ : GrpObj A'') (ψc : A''.left ⟶ Q'.A.left), IsGrpPullback A'' Q'.A cj ψc` from `⟨_, _, _, isGrpPullback_pullback Q'.A cj⟩`. Set `Q'' : Out.PolAV (Sp ℂ)` to `pullPol Q' hc`. Establish `hQ : IsPolFibre (starRingEnd ℂ) Q' Q'' ψc` using `⟨rfl, hc, ⟨idIso _, idIso_isGen (pull_isLB Q'.isLB ψc)⟩⟩`.
+
+Establish `a'' : IsPolFibre s F.P₀ Q'' (ψc ≫ ψ')`. Rewrite using `[← conj_conj_comp s]`. Conclude with `PolFibre.comp a' hQ`. Use `choose v'' hv'' using fun k => (existsUnique_isVecOver hc.1 (v' k)).exists`. Establish `ht : ∀ k, IsTangent (v' k)` using `fun k => (c' k).1.isTangent a'.2.1 (F.basis.1 k)`.
+
+Establish `c'' : ∀ k, IsVecOver s (ψc ≫ ψ') (F.v k) (v'' k) ∧ (conjPull hc u').IsDiff (star (W' k)) (v'' k)`. Introduce `k`. Use `⟨?_, cj_isDiff hc (pullId u') (ht k) (hv'' k) (c' k).2⟩` and prove the remaining obligations. Rewrite using `[← conj_conj_comp s]`. Conclude with `(PolFibre.vec_iff a'.2.1.1 hc.1.w (c' k).1).1 (hv'' k)`.
+
+Establish `e` using `LieMetric.hermForm_eq thetaUnifAV_all a a'' b (conjPull_isAH hc u' b') F.basis.1 c c'' j i`. Rewrite using `[d, d', e]`. Unfold `hermForm`. Rewrite using `[map_mul, Complex.conj_ofReal, star_star]`. Use `congr 1`.
+
+Simplify using `[dotProduct, Matrix.mulVec, map_sum, Complex.star_def]`.
+-/
 theorem single_conj (F : SemiFib K) (h : HermFam K (Fin F.P₀.g → K))
     (H : F.IsHerm h) (s : K →+* ℂ) (i j : Fin F.P₀.g) :
     h.form ((starRingEnd ℂ).comp s) (Pi.single i 1) (Pi.single j 1) =
@@ -45,6 +56,9 @@ theorem single_conj (F : SemiFib K) (h : HermFam K (Fin F.P₀.g → K))
   congr 1
   simp [dotProduct, Matrix.mulVec, map_sum, Complex.star_def]
 
+/- English proof (translation)
+Introduce `_ _ _ F h H σ a b` and use `form_conj_of_single h σ (single_conj F h H σ) a b`.
+-/
 theorem conjInv : ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (h : HermFam K (Fin F.P₀.g → K)),
     F.IsHerm h → GlobalTheory.Published.ConjInv h :=
   fun _ _ _ F h H σ a b => form_conj_of_single h σ (single_conj F h H σ) a b

@@ -8,6 +8,9 @@ namespace GlobalTheory.K5.DlogCoef
 
 variable {p : ℕ} [Fact p.Prime] {n : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `exact (Submodule.Quotient.mk_smul _ _ _).symm`. Consider the case `simp [Algebra.smul_def]`.
+-/
 theorem smul_mk (J : Ideal (On p n)) (a b : On p n) :
     a • (Ideal.Quotient.mk J b) = Ideal.Quotient.mk J (a * b) := by
   first
@@ -15,6 +18,11 @@ theorem smul_mk (J : Ideal (On p n)) (a b : On p n) :
   | exact (Submodule.Quotient.mk_smul _ _ _).symm
   | simp [Algebra.smul_def]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Derivation.leibniz, ih, h, smul_mk, smul_mk, ← map_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv_pow (J : Ideal (On p n)) (D : Derivation (O0 p) (On p n) (On p n ⧸ J))
     (r c : On p n) (h : D r = Ideal.Quotient.mk J (c * r)) (i : ℕ) :
     D (r ^ i) = Ideal.Quotient.mk J ((i : On p n) * c * r ^ i) := by

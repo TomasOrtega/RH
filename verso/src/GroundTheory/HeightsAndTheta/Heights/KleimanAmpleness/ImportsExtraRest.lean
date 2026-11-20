@@ -11,6 +11,9 @@ def ModelWithBaseLocalization.Statement : Prop :=
     (M : Submonoid S) [IsLocalization M S'],
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀ → IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S' y k₀
 
+/- English proof (translation)
+The claim follows from `h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () exF (nonZeroDivisors exO) isModelWithBase_exO_pnPt`.
+-/
 example (h : ModelWithBaseLocalization.Statement) :=
   h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () exF
     (nonZeroDivisors exO) isModelWithBase_exO_pnPt

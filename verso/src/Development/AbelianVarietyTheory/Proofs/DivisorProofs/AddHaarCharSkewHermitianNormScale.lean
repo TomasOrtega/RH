@@ -28,6 +28,11 @@ namespace GlobalTheory.ResidueEisenstein.ModConj.SkewSplit
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Rewrite using `[mem_skewA]`. Prove the components needed by the constructor for the conclusion. Introduce `h i k`. Use `congrFun (congrFun h i) k` as an intermediate fact. Simplify `this` using `[cT]`.
+
+Introduce `h`. Use extensionality with `i k`. Simplify `h i k` using `[cT]`.
+-/
 theorem mem_skewA_iff {σ : E →ₐ[F] E} {j : ℕ} {c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)} :
     c ∈ skewA σ j ↔ ∀ i k, c i k + sigR (AF F) σ (c k i) = 0 := by
   rw [mem_skewA]
@@ -39,26 +44,41 @@ theorem mem_skewA_iff {σ : E →ₐ[F] E} {j : ℕ} {c : Matrix (Fin j) (Fin j)
     ext i k
     simpa [cT] using h i k
 
+/- English proof (translation)
+Simplify using `[cT]`.
+-/
 theorem cT_apply (σ : E →ₐ[F] E) {j : ℕ} (M : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) (i k : Fin j) :
     cT (sigR (AF F) σ) M i k = sigR (AF F) σ (M k i) := by
   simp [cT]
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.ImaginaryModulus.cA_eq_sigR, ← GlobalTheory.ImaginaryModulus.cA_eq_sigR]`. Conclude with `cA_cA σ hσ z`.
+-/
 theorem sigR_sigR {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) (z : AF F ⊗[F] E) :
     sigR (AF F) σ (sigR (AF F) σ z) = z := by
   rw [← GlobalTheory.ImaginaryModulus.cA_eq_sigR, ← GlobalTheory.ImaginaryModulus.cA_eq_sigR]
   exact cA_cA σ hσ z
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.ImaginaryModulus.cA_eq_sigR]`. Conclude with `GlobalTheory.ImaginaryModulus.cA_inclR σ e`.
+-/
 theorem sigR_inclR (σ : E →ₐ[F] E) (e : E) :
     sigR (AF F) σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   rw [← GlobalTheory.ImaginaryModulus.cA_eq_sigR]
   exact GlobalTheory.ImaginaryModulus.cA_inclR σ e
 
+/- English proof (translation)
+Establish `: (sigR (AF F) σ : AF F ⊗[F] E → AF F ⊗[F] E) = cA σ`. Use function extensionality and compare the values at `fun z => (GlobalTheory.ImaginaryModulus.cA_eq_sigR σ z).symm`. Rewrite using `[this]`. Conclude with `continuous_cA σ`.
+-/
 theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR (AF F) σ) := by
   have : (sigR (AF F) σ : AF F ⊗[F] E → AF F ⊗[F] E) = cA σ :=
     funext fun z => (GlobalTheory.ImaginaryModulus.cA_eq_sigR σ z).symm
   rw [this]
   exact continuous_cA σ
 
+/- English proof (translation)
+Establish `hs` using `continuous_sigR σ`. Conclude with `continuous_pi fun i => continuous_pi fun k => hs.comp ((continuous_apply i).comp (continuous_apply k))`.
+-/
 theorem continuous_cT (σ : E →ₐ[F] E) (j : ℕ) :
     Continuous (fun M : Matrix (Fin j) (Fin j) (AF F ⊗[F] E) => cT (sigR (AF F) σ) M) := by
   have hs := continuous_sigR σ
@@ -131,6 +151,9 @@ def split (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (j : ℕ) (δ : E) (
       ((continuous_id.add hc).const_smul (inclR (F := F) (AF F) δ⁻¹)).const_smul (inclR (F := F) (AF F) (2⁻¹ : E))
     exact (h1.subtype_mk _).prodMk (h2.subtype_mk _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem split_apply (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (j : ℕ) (δ : E) (hδ0 : δ ≠ 0) (hδ : σ δ = -δ)
     (p : skewA σ j × skewA σ j) :
     split σ hσ j δ hδ0 hδ p = (p.1 : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) +
@@ -142,6 +165,25 @@ namespace GlobalTheory.ResidueEisenstein.ModConj
 
 open GlobalTheory.ResidueEisenstein.ModConj.SkewSplit in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm j _ _ _ _ l L hL`. Use `haveI : IsTotallyReal F := hcm.1`. Establish `hσ` using `GlobalTheory.ImaginaryModulus.sig_sig hcm`. Take `⟨δ, hδ0, hδ⟩` from `GlobalTheory.ImaginaryModulus.exists_anti hcm`. Take `⟨-, hlc, hsc, ht2⟩` from `topAE F E`.
+
+Use `haveI : LocallyCompactSpace (AF F ⊗[F] E) := hlc`. Use `haveI : SecondCountableTopology (AF F ⊗[F] E) := hsc`. Use `haveI : T2Space (AF F ⊗[F] E) := ht2`. Use `haveI : LocallyCompactSpace (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin j → Fin j → AF F ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin j → Fin j → AF F ⊗[F] E))`.
+
+Use `letI : MeasurableSpace (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) := borel _`. Use `haveI : BorelSpace (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) := ⟨rfl⟩`. Use `haveI : T2Space (skewA σ j) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : BorelSpace (skewA σ j × skewA σ j) := Prod.borelSpace`. Use `set Φ := split σ hσ j δ hδ0 hδ`.
+
+Use `set M : Matrix (Fin j) (Fin j) (AF F ⊗[F] E) ≃ₜ+ Matrix (Fin j) (Fin j) (AF F ⊗[F] E) := (Φ.symm.trans (GlobalTheory.ModuLR.prodCE L L)).trans Φ`. Use `set a : (AF F ⊗[F] E)ˣ := l * GlobalTheory.Doubling.conjUnit σ l`. Establish `ha : (a : AF F ⊗[F] E) = l * sigR (AF F) σ l` using `rfl`. Establish `hM : ∀ z, M z = (a : AF F ⊗[F] E) • z`. Introduce `z`.
+
+Take `⟨p, rfl⟩` from `Φ.surjective z`. Use `show Φ (GlobalTheory.ModuLR.prodCE L L (Φ.symm (Φ p))) = (a : AF F ⊗[F] E) • Φ p`. Rewrite using `[ContinuousAddEquiv.symm_apply_apply, GlobalTheory.ModuLR.prodCE_apply, split_apply, split_apply, hL, hL, ha, smul_add, smul_comm (inclR (F := F) (AF F) δ)]`. Use `set g : GL (Fin j) (AF F ⊗[F] E) := Units.map (Matrix.scalar (Fin j) : (AF F ⊗[F] E) →+* _).toMonoidHom a`. Establish `hg : Matrix.GeneralLinearGroup.det g = a ^ j`.
+
+Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_pow_eq_pow_val]`. Use `show (Matrix.scalar (Fin j) (a : AF F ⊗[F] E)).det = _`. Rewrite using `[Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hT : M = GlobalTheory.ModuLR.lrCE g 1`.
+
+Use extensionality with `u i k`. Rewrite using `[hM, GlobalTheory.ModuLR.lrCE_apply, Units.val_one, Matrix.mul_one]`. Use `show ((a : AF F ⊗[F] E) • u) i k = (Matrix.scalar (Fin j) (a : AF F ⊗[F] E) * u) i k`. Rewrite using `[Matrix.scalar_apply, Matrix.smul_eq_diagonal_mul]`. Establish `h1 : addEquivAddHaarChar M = absE F E a ^ (j * j)`.
+
+Rewrite using `[hT, GlobalTheory.ModuLR.chi_lr F E j j g 1, hg, map_one, map_one, one_pow, mul_one, map_pow, ← pow_mul]`. Establish `h2 : addEquivAddHaarChar M = addEquivAddHaarChar L * addEquivAddHaarChar L`. Rewrite using `[GlobalTheory.ModuLR.addEquivAddHaarChar_transport Φ, GlobalTheory.ModuLR.addEquivAddHaarChar_prodCE]`. Establish `h3 : absE F E a = absE F E l * absE F E l`. Rewrite using `[map_mul, GlobalTheory.Doubling.absE_conjUnit]`.
+
+Establish `h4 : addEquivAddHaarChar L * addEquivAddHaarChar L = absE F E l ^ (j * j) * absE F E l ^ (j * j)`. Rewrite using `[← h2, h1, h3, mul_pow]`. Conclude with `(mul_self_inj (by positivity) (by positivity)).1 h4`.
+-/
 theorem addEquivAddHaarChar_skewA_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (j : ℕ) [LocallyCompactSpace (GlobalTheory.ResidueEisenstein.ModConj.skewA σ j)] [SecondCountableTopology (GlobalTheory.ResidueEisenstein.ModConj.skewA σ j)] [MeasurableSpace (GlobalTheory.ResidueEisenstein.ModConj.skewA σ j)] [BorelSpace (GlobalTheory.ResidueEisenstein.ModConj.skewA σ j)] (l : (AF F ⊗[F] E)ˣ) (L : GlobalTheory.ResidueEisenstein.ModConj.skewA σ j ≃ₜ+ GlobalTheory.ResidueEisenstein.ModConj.skewA σ j), (∀ s, (L s : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) = ((l : AF F ⊗[F] E) * sigR (AF F) σ (l : AF F ⊗[F] E)) • (s : Matrix (Fin j) (Fin j) (AF F ⊗[F] E))) → addEquivAddHaarChar L = absE F E l ^ (j * j) := by
   intro F E _ _ _ _ _ σ hcm j _ _ _ _ l L hL
   haveI : IsTotallyReal F := hcm.1

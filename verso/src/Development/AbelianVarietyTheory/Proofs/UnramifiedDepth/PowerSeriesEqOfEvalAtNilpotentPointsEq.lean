@@ -29,6 +29,13 @@ private def lowZero {A κ : Type} [CommRing A] (e : κ →₀ ℕ) : Ideal (MvPo
     refine Finset.sum_eq_zero fun p hp => ?_
     rw [hx p.2 (le_trans (le_of_le_of_eq le_add_self (Finset.HasAntidiagonal.mem_antidiagonal.1 hp)) h), mul_zero]
 
+/- English proof (translation)
+Establish `hm : ∀ b : κ → ℕ, ∏ i, (MvPowerSeries.X i : MvPowerSeries κ A) ^ b i = MvPowerSeries.monomial (Finsupp.equivFunOnFinite.symm b) 1` using `fun b => by`. Rewrite using `[MvPowerSeries.monomial_one_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Both sides reduce to the same expression. Establish `he' : (Finsupp.equivFunOnFinite.symm fun i => ((⟨e i, he i⟩ : Fin N) : ℕ)) = e`. Use extensionality with `i`.
+
+Both sides reduce to the same expression. Rewrite using `[map_sum, Finset.sum_eq_single (fun i => (⟨e i, he i⟩ : Fin N))]`. Rewrite using `[hm, MvPowerSeries.coeff_C_mul, he', MvPowerSeries.coeff_monomial_same, _root_.mul_one]`. Introduce `b _ hb`. Rewrite using `[hm, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_monomial_ne, mul_zero]`.
+
+Introduce `h`. Conclude with `hb (funext fun i => Fin.ext (by simp [h]))`. Simplify using the standard rewrite rules.
+-/
 private theorem coeff_box {A κ : Type} [CommRing A] [Fintype κ] [DecidableEq κ] (N : ℕ) (c : (κ →₀ ℕ) → A)
     (e : κ →₀ ℕ) (he : ∀ i, e i < N) :
     MvPowerSeries.coeff e (∑ b : κ → Fin N, MvPowerSeries.C (c (Finsupp.equivFunOnFinite.symm fun i => (b i : ℕ))) *
@@ -47,6 +54,23 @@ private theorem coeff_box {A κ : Type} [CommRing A] [Fintype κ] [DecidableEq �
     exact hb (funext fun i => Fin.ext (by simp [h]))
   · simp
 
+/- English proof (translation)
+Introduce `R _ I hI n d f f' H`. Use extensionality with `e`. Rewrite using `[← sub_eq_zero]`. Use `hI.haus _ fun k => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq.zero]`.
+
+Use `Ideal.pow_le_pow_right (Nat.le_succ k) ?_` and prove the remaining obligations. Set `A` to `R ⧸ I ^ (k + 1)`. Set `J : Ideal (MvPowerSeries (Fin n × Fin d) A)` to `lowZero e`. Set `N : ℕ` to `(∑ i, e i) + 1`. Establish `he : ∀ i, e i < N` using `fun i => Nat.lt_succ_of_le (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))`.
+
+Establish `halg : ∀ t : R, algebraMap R (MvPowerSeries (Fin n × Fin d) A ⧸ J) t = Ideal.Quotient.mk J (MvPowerSeries.C (Ideal.Quotient.mk (I ^ (k + 1)) t))` using `fun t => by`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, MvPowerSeries.algebraMap_apply]`. Both sides reduce to the same expression. Establish `hN : ∀ q : Fin n × Fin d, (Ideal.Quotient.mk J (MvPowerSeries.X q)) ^ N = 0` using `fun q => by`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Introduce `e' h`. Conclude with `(MvPowerSeries.X_pow_dvd_iff.1 dvd_rfl) e' (lt_of_le_of_lt (h q) (he q))`. Establish `hv : ∀ g : PS R n d, nv (algebraMap R (MvPowerSeries (Fin n × Fin d) A ⧸ J)) g (fun i j => Ideal.Quotient.mk J (MvPowerSeries.X (i, j))) = Ideal.Quotient.mk J (∑ b : Fin n × Fin d → Fin N, MvPowerSeries.C ((fun x => Ideal.Quotient.mk (I ^ (k + 1)) (MvPowerSeries.coeff x g)) (Fins …` using `fun g => by`. Use `letI := (algebraMap R (MvPowerSeries (Fin n × Fin d) A ⧸ J)).toAlgebra`. Use `(evBasic_nEval_eq_tEval g (fun q : Fin n × Fin d => Ideal.Quotient.mk J (MvPowerSeries.X q)) N hN).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [tEval, map_sum, map_mul, map_prod, map_pow]`. Conclude with `Finset.sum_congr rfl fun b _ => congrArg (· * _) (halg _)`. Establish `h` using `H (MvPowerSeries (Fin n × Fin d) A ⧸ J) k (fun t ht => by`. Rewrite using `[halg, Ideal.Quotient.eq_zero_iff_mem.2 ht, map_zero, map_zero]) (fun hR hne => ?_)`. Use the proof step `(fun i j => Ideal.Quotient.mk J (MvPowerSeries.X (i, j))) (fun i j => ⟨N, hN (i, j)⟩)`.
+
+Rewrite `h` using `[hv, hv, Ideal.Quotient.eq]`. Establish `h2` using `h e le_rfl`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `Ideal.Quotient.eq.1 (((coeff_box N (fun x => Ideal.Quotient.mk (I ^ (k + 1)) (MvPowerSeries.coeff x f)) e he).symm.trans h2).trans (coeff_box N (fun x => Ideal.Quotient.mk (I ^ (k + 1)) (MvPowerSeries.coeff x f')) e he))`. Establish `hA : I ^ (k + 1) ≠ ⊤` using `fun h => hne (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero k))) haveI : Nontrivial A := Ideal.Quotient.nontrivial_iff.2 hA haveI : IsLocalRing A := IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+
+Establish `hJ : J ≠ ⊤` using `fun h => by`. Establish `: (1 : MvPowerSeries (Fin n × Fin d) A) ∈ J` using `h ▸ Submodule.mem_top`. Use `this 0 zero_le` as an intermediate fact. Simplify using `at this`. Use `haveI : Nontrivial (MvPowerSeries (Fin n × Fin d) A ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hJ`.
+
+Use `⟨IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, ⟨fun t ht => ?_⟩⟩` and prove the remaining obligations. Rewrite `ht` using `[halg]`. Establish `h1` using `(IsLocalHom.of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective).map_nonunit _ ht`. Rewrite `h1` using `[MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_C]`. Conclude with `(IsLocalHom.of_surjective (Ideal.Quotient.mk (I ^ (k + 1))) Ideal.Quotient.mk_surjective).map_nonunit _ h1`.
+-/
 theorem eq_of_nv_eq : ∀ (R : Type) [CommRing R] (I : Ideal R), IsHausdorff I R → ∀ (n d : ℕ) (f f' : PS R n d), (∀ (S : Type) [CommRing S] [Algebra R S] (k : ℕ), Kills I k S → (IsLocalRing R → I ≠ ⊤ → IsLocalRing S ∧ IsLocalHom (algebraMap R S)) → ∀ a : Fin n → Fin d → S, (∀ i j, IsNilpotent (a i j)) → nv (algebraMap R S) f a = nv (algebraMap R S) f' a) → f = f' := by
   intro R _ I hI n d f f' H
   ext e

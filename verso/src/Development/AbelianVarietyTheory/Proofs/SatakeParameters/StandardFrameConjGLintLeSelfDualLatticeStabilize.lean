@@ -20,6 +20,21 @@ namespace GlobalTheory.SplitFrameLattice
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D hF V Ps sp β β' hββ' hβ'β hfr hK ε sec B hsec hsecI hint hε b1 b2 g hg z hz`. Set `φ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E →+* sp.v.adicCompletion (maximalRealSubfield D.host.E)` to `sp.proj.comp (GlobalTheory.NJoin.tensCast hF).toRingHom`. Establish `hfun : (fun x => sp.proj (GlobalTheory.NJoin.tensCast hF x)) = ⇑φ` using `rfl`. Establish `hφε : φ ε = 1` using `hε`. Rewrite using `[hfun]`.
+
+Take `⟨emb, htriv, hloc⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc D.host.E V.rank sp`. Establish `hκ : emb g ∈ ReciprocityTheory.Aut.Umax D.host.E V.rank` using `GlobalTheory.SplitHeckeComm.mem_Umax_of_loc sp (emb g) (htriv g) (by rw [hloc]; exact hg)`. Establish `hKs` using `(hK (emb g)).1 hκ`. Establish `hz0 : Formalism.IndefR.Mult.IntVec (sec ∘ z)` using `fun i => hsecI _ (hz i)`. Establish `hy` using `b1 _ hz0`.
+
+Establish `hy'` using `(hKs.2.1 _).1 hy`. Take `⟨z'', hz'', e⟩` from `b2 _ hy'`. Use `⟨φ ∘ z'', fun i => hint _ (hz'' i), ?_⟩` and prove the remaining obligations. Establish `mv : ∀ (M : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) x, φ ∘ (M.mulVec x) = (M.map φ).mulVec (φ ∘ x)` using `fun M x => funext fun i => RingHom.map_mulVec φ M x i`. Establish `hε' : ∀ w : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E, φ ∘ (fun a => ε * w a) = φ ∘ w` using `fun w => funext fun a => by`.
+
+Simplify using `only [Function.comp_apply, map_mul, hφε, one_mul]`. Establish `hg' : (((emb g).1 : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)).map (GlobalTheory.NJoin.tensCast hF).symm).map φ = (g : Matrix (Fin V.rank) (Fin V.rank) _)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Use `show sp.proj (GlobalTheory.NJoin.tensCast hF ((GlobalTheory.NJoin.tensCast hF).symm _)) = _`.
+
+Rewrite using `[RingEquiv.apply_symm_apply]`. Use `conv_rhs => rw [← hloc g]`. Both sides reduce to the same expression. Establish `hM : (Formalism.MainNotions.StandardLattice.finMat D.sp.cm.sig V.gram (Ps.ψ (emb g))).map φ = β.map φ * (g : Matrix (Fin V.rank) (Fin V.rank) _) * β'.map φ`. Rewrite using `[hfr (emb g), Matrix.map_mul, Matrix.map_mul, hg']`.
+
+Establish `hzφ : φ ∘ (sec ∘ z) = z` using `funext fun i => hsec _`. Establish `hβ : β'.map φ * β.map φ = 1`. Rewrite using `[← Matrix.map_mul, hβ'β, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Establish `E` using `congrArg (fun w => φ ∘ w) e`. Rewrite `E` using `[hε', hε', mv, mv, hε', mv, hzφ, hM]`.
+
+Establish `E2` using `congrArg (fun w => (β'.map φ).mulVec w) E`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hβ, Matrix.one_mul] at E2`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc]`. Conclude with `E2`.
+-/
 theorem glint_mul_frame_basis : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V V.rank) (sp : SplitPlace D.host.E)
     (β β' : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)),

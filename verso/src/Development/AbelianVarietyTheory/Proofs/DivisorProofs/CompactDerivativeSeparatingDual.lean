@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CochainInv
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ V`. Establish `h : ∀ x : ι → V, f x = ∑ r : ι → Fin (Module.finrank ℝ V), (∏ i, b.coord (r i) (x i)) • f (fun i => b (r i))`. Introduce `x`. Use `conv_lhs => rw [show x = fun i => ∑ j, b.coord j (x i) • b j from funext fun i => (b.sum_repr (x i)).symm]`. Rewrite using `[MultilinearMap.map_sum]`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← MultilinearMap.map_smul_univ]`. Rewrite using `[show (f : (ι → V) → G) = fun x => ∑ r : ι → Fin (Module.finrank ℝ V), (∏ i, b.coord (r i) (x i)) • f (fun i => b (r i)) from funext h]`. Use `continuous_finsetSum _ fun r _ => (continuous_finsetProd _ fun i _ => ?_).smul continuous_const` and prove the remaining obligations. Conclude with `((b.coord (r i)).continuous_of_finiteDimensional).comp (continuous_apply i)`.
+-/
 theorem continuous_multilinear {ι : Type} [Fintype ι] {V G : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [NormedAddCommGroup G] [NormedSpace ℝ G] (f : MultilinearMap ℝ (fun _ : ι => V) G) :
     Continuous f := by
@@ -36,6 +41,9 @@ def hermPart : Lie E a →ₗ[ℝ] Herm E a where
     rw [RingHom.id_apply, smul_comm]; congr 1; ext1
     simp only [SetLike.val_smul, ← Matrix.smul_of, star_smul, star_trivial, smul_add]
 
+/- English proof (translation)
+Use `ext1`. Establish `h : star X.1 = X.1` using `X.2.star_eq`. Express the relevant statement in the definitionally equal form `(2⁻¹ : ℝ) • (Matrix.of (toL X.1) + star (Matrix.of (toL X.1))) = X.1`. Rewrite using `[show Matrix.of (toL X.1) = X.1 from Matrix.of.apply_symm_apply _, h, ← two_smul ℝ, smul_smul, inv_mul_cancel₀ two_ne_zero, one_smul]`.
+-/
 theorem hermPart_toL (X : Herm E a) : hermPart (toL X.1) = X := by
   ext1
   have h : star X.1 = X.1 := X.2.star_eq
@@ -49,6 +57,23 @@ namespace GlobalTheory.CochainInv
 
 open GlobalTheory.GKCoh in
 
+/- English proof (translation)
+Introduce `E _ _ a M _ _ _ _ κ L S c Z hZ hc0 hc hS hκ q ω hω Y W hW`. Establish `hE : ∀ r m, HasDerivAt (fun t => (c t).1 r m) (Z r m) 0` using `fun r m => hasDerivAt_pi.1 (hasDerivAt_pi.1 hc r) m`. Set `u : ℝ → Fin q → Lie E a` to `fun t i => toL ((c t).1 * (Y i).1 * star (c t).1)`. Establish `hu : HasDerivAt u (fun i => toL (W i).1) 0`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun r => hasDerivAt_pi.2 fun s => ?_` and prove the remaining obligations.
+
+Establish `key : HasDerivAt (fun t => ((c t).1 * (Y i).1 * star (c t).1) r s) ((Z * (Y i).1 * star (c 0).1 + (c 0).1 * (Y i).1 * star Z) r s) 0`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.add_apply, ← Finset.sum_add_distrib]`. Use `HasDerivAt.fun_sum fun k _ => ?_` and prove the remaining obligations. Establish `h1 : HasDerivAt (fun t => ∑ m, (c t).1 r m * (Y i).1 m k) (∑ m, Z r m * (Y i).1 m k) 0` using `HasDerivAt.fun_sum fun m _ => (hE r m).mul_const _`. Conclude with `h1.mul (hE s k).star`.
+
+Establish `e : Z * (Y i).1 * star (c 0).1 + (c 0).1 * (Y i).1 * star Z = (W i).1`. Rewrite using `[hW, hc0, hZ]`. Simplify using `[sub_eq_add_neg]`. Rewrite `key` using `[e]`. Conclude with `key`.
+
+Use `sub_eq_zero.1 (hS _ fun l hl => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Set `f : MultilinearMap ℝ (fun _ : Fin q => Lie E a) ℂ` to `(l.restrictScalars ℝ).compMultilinearMap (ω.toMultilinearMap.compLinearMap fun _ => hermPart)`. Set `F : ContinuousMultilinearMap ℝ (fun _ : Fin q => Lie E a) ℂ` to `⟨f, continuous_multilinear f⟩`. Establish `hF : ∀ x, F x = l (ω (fun i => hermPart (x i)))` using `fun x => rfl`.
+
+Establish `h1` using `(F.hasFDerivAt (u 0)).comp_hasDerivAt (0 : ℝ) hu`. Establish `h2 : (F ∘ u) = fun t => l (κ (c t) (ω Y))`. Use function extensionality and compare the values at `t`. Rewrite using `[Function.comp_apply, hF, ← hω (c t) Y]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Conclude with `hermPart_toL (adHerm (c t) (Y i))`. Rewrite `h1` using `[h2, ContinuousMultilinearMap.linearDeriv_apply]`. Rewrite using `[(hκ l hl (ω Y)).unique h1, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hF]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j i with rfl | hj` into its components or cases. Simplify using `[hermPart_toL]`.
+
+Rewrite using `[Function.update_of_ne hj, Function.update_of_ne hj]`. Express the relevant statement in the definitionally equal form `hermPart (toL ((c 0).1 * (Y j).1 * star (c 0).1)) = Y j`. Simplify using `[hc0, hermPart_toL]`.
+-/
 theorem lie_apply_eq_sum : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M] (κ : Kinf E a → Module.End ℂ M) (L : Lie E a →ₗ[ℝ] Module.End ℂ M) (S : Set (Module.Dual ℂ M)) (c : ℝ → Kinf E a) (Z : Matrix (Fin a) (Fin a) (Cinf E)), star Z = -Z → c 0 = 1 → HasDerivAt (fun t => toL (c t).1) (toL Z) 0 → (∀ m, (∀ l ∈ S, l m = 0) → m = 0) → (∀ l ∈ S, ∀ m, HasDerivAt (fun t => l (κ (c t) m)) (l (L (toL Z) m)) 0) → ∀ (q : ℕ) (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M), IsCochain κ ω → ∀ Y W : Fin q → Herm E a, (∀ i, (W i).1 = Z * (Y i).1 - (Y i).1 * Z) → L (toL Z) (ω Y) = ∑ i, ω (Function.update Y i (W i)) := by
   intro E _ _ a M _ _ _ _ κ L S c Z hZ hc0 hc hS hκ q ω hω Y W hW
   classical

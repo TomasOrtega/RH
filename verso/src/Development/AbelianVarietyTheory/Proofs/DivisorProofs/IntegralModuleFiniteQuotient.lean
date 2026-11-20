@@ -5,12 +5,46 @@ open scoped ContDiff
 
 namespace GlobalTheory.TorFin
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hx`. Consider the case `succ m ih => rw [pow_succ', mul_assoc]`. Conclude with `hH _ ih`.
+-/
 theorem pow_mul_mem_of_mul_mem {A : Type} [Ring A] [Algebra ℂ A] {I : Submodule ℂ A} {H : A}
     (hH : ∀ i ∈ I, H * i ∈ I) (m : ℕ) {x : A} (hx : x ∈ I) : H ^ m * x ∈ I := by
   induction m with
   | zero => simpa using hx
   | succ m ih => rw [pow_succ', mul_assoc]; exact hH _ ih
 
+/- English proof (translation)
+Introduce `A U W _ _ _ _ _ _ Z I H H' κ Λ hc hHI hH'I hIZ hΛ ⟨N, hN⟩ ⟨N', hN'⟩ hfin hker`. Use `set K : Submodule ℂ A := Subalgebra.toSubmodule Z with hK`. Set `κK : K →ₗ[ℂ] U` to `κ ∘ₗ K.subtype`. Set `f : ℕ × ℕ → K →ₗ[ℂ] W` to `fun p => Λ ∘ₗ LinearMap.mulLeft ℂ (H ^ p.1 * H' ^ p.2) ∘ₗ K.subtype`. Establish `hle : ∀ p, LinearMap.ker κK ≤ LinearMap.ker (f p)`.
+
+Introduce `p z hz`. Simplify using `only [LinearMap.mem_ker] at hz ⊢`. Conclude with `hker z.1 z.2 hz _`. Establish `hQ : Module.Finite ℂ (K ⧸ LinearMap.ker κK)`. Establish `hr : LinearMap.range κK = K.map κ`.
+
+Simplify using `[κK, LinearMap.range_comp, Submodule.range_subtype]`. Use `haveI : Module.Finite ℂ (LinearMap.range κK) := by rw [hr]; exact hfin`. Conclude with `Module.Finite.equiv (κK.quotKerEquivRange).symm`. Establish `hfp : ∀ p, Module.Finite ℂ (LinearMap.range (f p))`. Introduce `p`.
+
+Rewrite using `[← Submodule.range_liftQ _ (f p) (hle p)]`. Conclude with `Module.Finite.range _`. Set `V : Submodule ℂ W` to `⨆ p : Fin N × Fin N', LinearMap.range (f (p.1.1, p.2.1))`. Use `haveI : Module.Finite ℂ V := by haveI := fun p : Fin N × Fin N' => hfp (p.1.1, p.2.1) infer_instance`. Establish `hbase : ∀ i j, i < N → j < N' → ∀ z ∈ Z, Λ (H ^ i * H' ^ j * z) ∈ V`.
+
+Introduce `i j hi hj z hz`. Use `Submodule.mem_iSup_of_mem (⟨i, hi⟩, ⟨j, hj⟩) ⟨⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Simplify using `[f, mul_assoc]`. Establish `main : ∀ n i j, i + j ≤ n → ∀ z ∈ Z, Λ (H ^ i * H' ^ j * z) ∈ V`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `i j hij z hz`. Distinguish the cases in `hi : N ≤ i`. Take `⟨ι, hι, s, hs, hsum⟩` from `Submodule.mem_sup.1 hN`.
+
+Establish `e : H ^ i * H' ^ j * z = H ^ (i - N) * (H' ^ j * (ι * z)) + H ^ (i - N) * H' ^ j * s * z`. Rewrite using `[← pow_sub_mul_pow H hi, mul_assoc (H ^ (i - N)), (hc.pow_pow N j).eq, ← hsum]`. Simplify using `only [mul_add, add_mul, mul_assoc]`. Rewrite using `[e, map_add, hΛ _ (pow_mul_mem_of_mul_mem hHI _ (pow_mul_mem_of_mul_mem hH'I _ (hIZ _ hι _ hz))), zero_add]`. Use `clear e hsum`.
+
+Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, zk, hzk, rfl⟩` from `hx`. Establish `e2 : H ^ (i - N) * H' ^ j * (H ^ k * zk) * z = H ^ (i - N + k) * H' ^ j * (zk * z)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = H ^ (i - N) * (H ^ k * H' ^ j) * (zk * z) := by rw [(hc.pow_pow k j).eq]`. Use `_ = _ := by rw [pow_add]; simp only [mul_assoc]`. Rewrite using `[e2]`. Conclude with `ih (i - N + k + j) (by omega) _ _ le_rfl _ (Z.mul_mem hzk hz)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, add_mul, map_add]`. Conclude with `V.add_mem hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm, smul_mul_assoc, map_smul]`. Conclude with `V.smul_mem c hx`.
+
+Distinguish the cases in `hj : N' ≤ j`. Take `⟨ι, hι, s, hs, hsum⟩` from `Submodule.mem_sup.1 hN'`. Establish `e : H ^ i * H' ^ j * z = H ^ i * (H' ^ (j - N') * (ι * z)) + H ^ i * H' ^ (j - N') * s * z`. Rewrite using `[← pow_sub_mul_pow H' hj, ← hsum]`. Simplify using `only [mul_add, add_mul, mul_assoc]`.
+
+Rewrite using `[e, map_add, hΛ _ (pow_mul_mem_of_mul_mem hHI _ (pow_mul_mem_of_mul_mem hH'I _ (hIZ _ hι _ hz))), zero_add]`. Use `clear e hsum`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, hk, zk, hzk, rfl⟩` from `hx`.
+
+Establish `e2 : H ^ i * H' ^ (j - N') * (H' ^ k * zk) * z = H ^ i * H' ^ (j - N' + k) * (zk * z)`. Rewrite using `[pow_add]`. Simplify using `only [mul_assoc]`. Rewrite using `[e2]`. Conclude with `ih (i + (j - N' + k)) (by omega) _ _ le_rfl _ (Z.mul_mem hzk hz)`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, add_mul, map_add]`. Conclude with `V.add_mem hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm, smul_mul_assoc, map_smul]`. Conclude with `V.smul_mem c hx`.
+
+Conclude with `hbase i j (by omega) (by omega) z hz`. Apply `Submodule.finiteDimensional_of_le (S₂ := V)` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨i, j⟩, rfl⟩`. Simplify using `using main (i + j) i j le_rfl 1 Z.one_mem`.
+-/
 theorem finiteDimensional_span_pow_mul_pow :
     ∀ (A U W : Type) [Ring A] [Algebra ℂ A] [AddCommGroup U] [Module ℂ U] [AddCommGroup W] [Module ℂ W]
       (Z : Subalgebra ℂ A) (I : Submodule ℂ A) (H H' : A) (κ : A →ₗ[ℂ] U) (Λ : A →ₗ[ℂ] W), Commute H H' →
@@ -91,6 +125,9 @@ theorem finiteDimensional_span_pow_mul_pow :
   rintro _ ⟨⟨i, j⟩, rfl⟩
   simpa using main (i + j) i j le_rfl 1 Z.one_mem
 
+/- English proof (translation)
+The claim follows from `finiteDimensional_span_pow_mul_pow`.
+-/
 example : ∀ (A U W : Type) [Ring A] [Algebra ℂ A] [AddCommGroup U] [Module ℂ U] [AddCommGroup W] [Module ℂ W] (Z : Subalgebra ℂ A) (I : Submodule ℂ A) (H H' : A) (κ : A →ₗ[ℂ] U) (Λ : A →ₗ[ℂ] W), Commute H H' → (∀ i ∈ I, H * i ∈ I) → (∀ i ∈ I, H' * i ∈ I) → (∀ i ∈ I, ∀ z ∈ Z, i * z ∈ I) → (∀ i ∈ I, Λ i = 0) → IsIntMod Z I H → IsIntMod Z I H' → FiniteDimensional ℂ ((Subalgebra.toSubmodule Z).map κ) → (∀ z ∈ Z, κ z = 0 → ∀ T, Λ (T * z) = 0) → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun p : ℕ × ℕ => Λ (H ^ p.1 * H' ^ p.2))) :=
   finiteDimensional_span_pow_mul_pow
 

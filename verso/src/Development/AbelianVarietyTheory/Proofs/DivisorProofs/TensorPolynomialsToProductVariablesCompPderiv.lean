@@ -8,6 +8,11 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 noncomputable section
 namespace GlobalTheory.CCRFock
 
+/- English proof (translation)
+Proceed by induction on `r using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, MvPolynomial.rename_X, Derivation.leibniz, hp, MvPolynomial.pderiv_X_of_ne]`.
+
+Simplify using the standard rewrite rules. Introduce `e`. Conclude with `h (congrArg Prod.fst e)`.
+-/
 theorem pderiv_rename_prodMk_of_ne {W Λ : Type} {v w : W} (h : v ≠ w) (l : Λ) (r : MvPolynomial Λ ℂ) :
     MvPolynomial.pderiv (w, l) (MvPolynomial.rename (Prod.mk v) r) = 0 := by
   induction r using MvPolynomial.induction_on with
@@ -18,6 +23,11 @@ theorem pderiv_rename_prodMk_of_ne {W Λ : Type} {v w : W} (h : v ≠ w) (l : Λ
     · simp
     · intro e; exact h (congrArg Prod.fst e)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite `hs` using `[Finset.mem_insert, not_or]`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih hs.2, pderiv_rename_prodMk_of_ne (fun e => hs.1 e.symm)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pderiv_prod_rename_of_notMem {W Λ : Type} {w : W} (l : Λ) (q : W → MvPolynomial Λ ℂ) (s : Finset W)
     (hs : w ∉ s) :
     MvPolynomial.pderiv (w, l) (∏ v ∈ s, MvPolynomial.rename (Prod.mk v) (q v)) = 0 := by
@@ -29,6 +39,11 @@ theorem pderiv_prod_rename_of_notMem {W Λ : Type} {w : W} (l : Λ) (q : W → M
       pderiv_rename_prodMk_of_ne (fun e => hs.1 e.symm)]
     simp
 
+/- English proof (translation)
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use `ext1 q`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, polMap, atPl, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w)]`. Establish `h1 : ∏ i ∈ Finset.univ.erase w, MvPolynomial.rename (Prod.mk i) ((Function.update (fun _ : W => (LinearMap.id : MvPolynomial Λ ℂ →ₗ[ℂ] MvPolynomial Λ ℂ)) w (MvPolynomial.pderiv l).toLinearMap i) (q i)) = ∏ i ∈ Finset.univ.erase w, MvPolynomial.rename (Prod.mk i) (q i)` using `Finset.prod_congr rfl fun i hi => by`.
+
+Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi), LinearMap.id_apply]`. Rewrite using `[h1, Function.update_self, Derivation.coeFn_coe, Derivation.coeFn_coe, Derivation.leibniz, pderiv_prod_rename_of_notMem l q _ (Finset.notMem_erase w _), MvPolynomial.pderiv_rename (Prod.mk_right_injective w) l (q w)]`. Simplify using `[mul_comm]`.
+-/
 theorem polMap_comp_atPl_pderiv (W Λ : Type) [Fintype W] [DecidableEq W] (w : W) (l : Λ) :
     GlobalTheory.CCRFock.polMap W Λ ∘ₗ GlobalTheory.RealLift.atPl (V := fun _ : W => MvPolynomial Λ ℂ) w
                  (MvPolynomial.pderiv l).toLinearMap =

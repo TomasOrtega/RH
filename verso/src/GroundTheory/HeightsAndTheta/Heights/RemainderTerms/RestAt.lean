@@ -12,6 +12,9 @@ noncomputable section
 
 namespace RestBoundEq
 
+/- English proof (translation)
+The claim follows from `|∑' p : IndefiniteRowSideFullHecke.RestTerms.primesOver P B₀, IndefiniteRowSideFullHecke.RestTerms.restAt f j k I vol σ Q p.1| ≤ 1.6 * ((IndefiniteRowSideFullHecke.RestTerms.nDim f j k : ℝ) + 1) * vol * |I (IndefiniteRowSideFullHecke.RestTerms.degPoly f j k bot)| := by have hB₀' …`.
+-/
 theorem core (hA : RestBound.Statement)
     (f r a j k : ℕ) (c : SmallBlock) (bot : Bool) (h : r + a = j + k)
     (hf : 1 ≤ f) (hr : 1 ≤ r) (ha : 1 ≤ a) (hj : 1 ≤ j) (hk : 1 ≤ k)
@@ -117,6 +120,11 @@ theorem core (hA : RestBound.Statement)
 
 end RestBoundEq
 
+/- English proof (translation)
+Introduce `hA f j k hf hj hk bot _hsmall I hI vol hvol P _hP B₀ hB₀ σ Q hQ`. Consider the cases of `bot with`. Consider the case `false`. Conclude with `RestBoundEq.core hA f j k j k .first false rfl hf hj hk hj hk (rootRingToReal_smallPowerSum_first f j k) (rootRingToReal_restPolynomial_first f j k) (rootRingToReal_degreePolynomial_first f j k) (by unfold IndefiniteRowSideFullHecke.RestTerms.nDim; ring) I hI vol hvol P B₀ hB₀ σ …`. Consider the case `true`.
+
+Conclude with `RestBoundEq.core hA f k j j k .last true (Nat.add_comm k j) hf hk hj hj hk (rootRingToReal_smallPowerSum_last f k j) (rootRingToReal_restPolynomial_last f k j) (rootRingToReal_degreePolynomial_last f k j) (by unfold IndefiniteRowSideFullHecke.RestTerms.nDim; ring) I hI vol hvol P …`.
+-/
 theorem RestBound.imp : RestBound.Statement → IndefiniteRowSideFullHecke.RestTerms.RestBound.Statement := by
   intro hA f j k hf hj hk bot _hsmall I hI vol hvol P _hP B₀ hB₀ σ Q hQ
   cases bot with

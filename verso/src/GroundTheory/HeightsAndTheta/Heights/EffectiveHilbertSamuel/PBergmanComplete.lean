@@ -18,6 +18,15 @@ namespace BergmanCompleteProof
 
 variable {D : ℕ} {U : Type} [TopologicalSpace U]
 
+/- English proof (translation)
+Establish `hf : AnalyticOnNhd ℂ (fun w => H (w + z)) (Metric.closedBall 0 (R / Real.sqrt ((1 : ℕ) : ℝ)))`. Introduce `w hw`. Establish `hw' : w + z ∈ Metric.closedBall z R`. Simplify `hw` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h2 : AnalyticAt ℂ (fun w : Fin D → ℂ => w + z) w` using `analyticAt_id.add analyticAt_const`.
+
+Conclude with `AnalyticAt.comp (g := H) (f := fun v : Fin D → ℂ => v + z) (x := w) (hH _ hw') h2`. Establish `h` using `PolydiscSubmean.proof D 1 (fun _ => 0) R (fun w => H (w + z)) one_pos hR (fun _ => le_rfl) hf`. Establish `hg : ∏ _j : Fin D, gaussDiscMass 0 R = (Real.pi * R ^ 2) ^ D`. Simplify using `[gaussDiscMass]`. Simplify using `only [Nat.cast_one, Real.sqrt_one, div_one, one_pow, inv_one, mul_one, zero_mul, Finset.sum_const_zero, mul_zero, Real.exp_zero, zero_add, hg] at h`.
+
+Establish `htr : ∫ w in Metric.closedBall (0 : Fin D → ℂ) R, ‖H (w + z)‖ ^ 2 = ∫ y in Metric.closedBall z R, ‖H y‖ ^ 2`. Establish `e : (fun w : Fin D → ℂ => w + z) ⁻¹' Metric.closedBall z R = Metric.closedBall 0 R`. Use extensionality with `w`. Simplify using `[dist_eq_norm]`. Rewrite using `[← e]`.
+
+Conclude with `(measurePreserving_add_right volume z).setIntegral_preimage_emb (Homeomorph.addRight z).measurableEmbedding (fun y => ‖H y‖ ^ 2) _`. Rewrite `h` using `[htr]`. Establish `hint : IntegrableOn (fun y => ‖H y‖ ^ 2) (Metric.closedBall z R)` using `(hH.continuousOn.norm.pow 2).integrableOn_compact (isCompact_closedBall z R)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem subMean {H : (Fin D → ℂ) → ℂ} {z : Fin D → ℂ} {R : ℝ} (hR : 0 < R)
     (hH : AnalyticOnNhd ℂ H (Metric.closedBall z R)) :
     ENNReal.ofReal (‖H z‖ ^ 2 * (Real.pi * R ^ 2) ^ D) ≤
@@ -50,6 +59,9 @@ theorem subMean {H : (Fin D → ℂ) → ℂ} {z : Fin D → ℂ} {R : ℝ} (hR 
       ≤ ENNReal.ofReal (∫ y in Metric.closedBall z R, ‖H y‖ ^ 2) := ENNReal.ofReal_le_ofReal h
     _ = _ := ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun _ => by positivity)
 
+/- English proof (translation)
+Use `ExtensionProof.aem_of_continuousOn A k ?_` and prove the remaining obligations. Establish `h1` using `ExtensionProof.continuousOn_of_holoOn A k hu`. Conclude with `ENNReal.continuous_ofReal.comp_continuousOn ((continuousOn_const.mul (h1.norm.pow 2)).mul (hψc k).neg.rexp)`.
+-/
 theorem aem_dens (A : FinHolAtlas D U) (ψ : Fin A.n → U → ℝ)
     (hψc : ∀ k, ContinuousOn (ψ k ∘ (A.chart k).symm) (A.chart k).target) (k : Fin A.n)
     {u : U → ℂ} (hu : A.HoloOn (A.chart k).source u) :
@@ -60,6 +72,23 @@ theorem aem_dens (A : FinHolAtlas D U) (ψ : Fin A.n → U → ℝ)
   exact ENNReal.continuous_ofReal.comp_continuousOn
     ((continuousOn_const.mul (h1.norm.pow 2)).mul (hψc k).neg.rexp)
 
+/- English proof (translation)
+Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 (A.chart c).open_target y₀ hy₀`. Use `set R := r / 3 with hRdef`. Establish `hR : 0 < R` using `by positivity`. Use `set K := Metric.closedBall y₀ (2 * R) with hKdef`. Establish `hK : K ⊆ (A.chart c).target` using `(Metric.closedBall_subset_ball (by rw [hRdef]; linarith)).trans hball`.
+
+Take `⟨M, hM⟩` from `(isCompact_closedBall y₀ (2 * R)).exists_bound_of_continuousOn ((hψc c).mono hK)`. Use `set b : ℝ := (Real.pi * R ^ 2) ^ D with hbdef`. Establish `hb : 0 < b` using `by positivity`. Use `⟨R, hR, ENNReal.ofReal (Real.exp M / 2 ^ D) * ENNReal.ofReal b⁻¹, ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top, fun H hH z hz => ?_⟩` and prove the remaining obligations. Use `set h : (Fin D → ℂ) → ℂ := fun y => H c ((A.chart c).symm y) with hhdef`.
+
+Establish `hzK : Metric.closedBall z R ⊆ K`. Introduce `y hy`. Rewrite `hy`, `hz`, the goal using `[Metric.mem_closedBall]`. Combine the linear relations using `[dist_triangle y z y₀]`. Establish `han : AnalyticOnNhd ℂ h (Metric.closedBall z R)` using `fun y hy => hH.1 c c y ⟨hK (hzK hy), (A.chart c).map_target (hK (hzK hy))⟩`.
+
+Establish `h1` using `subMean hR han`. Establish `h2 : ∫⁻ y in Metric.closedBall z R, ENNReal.ofReal (‖h y‖ ^ 2) ≤ ∫⁻ y in K, ENNReal.ofReal (‖h y‖ ^ 2)` using `lintegral_mono_set hzK`. Establish `h3 : ∫⁻ y in K, ENNReal.ofReal (‖h y‖ ^ 2) ≤ ∫⁻ y in K, ENNReal.ofReal (Real.exp M / 2 ^ D) * ENNReal.ofReal (2 ^ D * ‖H c ((A.chart c).symm y)‖ ^ 2 * Real.exp (-ψ c ((A.chart c).symm y)))`. Use `setLIntegral_mono' Metric.isClosed_closedBall.measurableSet fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hψy : ψ c ((A.chart c).symm y) ≤ M` using `(le_abs_self _).trans (hM y hy)`. Establish `he : 1 ≤ Real.exp M * Real.exp (-ψ c ((A.chart c).symm y))`. Rewrite using `[← Real.exp_add]; exact Real.one_le_exp (by linarith)`. Establish `h2D : (0 : ℝ) < 2 ^ D` using `by positivity`.
+
+Establish `hs : 0 ≤ ‖h y‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hhdef]`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Establish `h4` using `hD D U A L₂ L m ψ H hψ hH.2.1 c K Metric.isClosed_closedBall.measurableSet hK`. Establish `h5 : ENNReal.ofReal (‖h z‖ ^ 2 * b) ≤ ENNReal.ofReal (Real.exp M / 2 ^ D) * topNormSq A ψ H` using `h1.trans (h2.trans (h3.trans (mul_le_mul_right h4 _)))`. Establish `h6 : ENNReal.ofReal (‖h z‖ ^ 2) = ENNReal.ofReal (‖h z‖ ^ 2 * b) * ENNReal.ofReal b⁻¹`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), mul_assoc, mul_inv_cancel₀ hb.ne', mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h6]`. Conclude with `mul_le_mul_left h5 _`. Use `_ = _ := by ring`.
+-/
 theorem local_bound (hD : TopDensityChart.Statement) (A : FinHolAtlas D U)
     (L₂ L : HolLineBundle A) (m : ℕ) (ψ : Fin A.n → U → ℝ)
     (hψc : ∀ k, ContinuousOn (ψ k ∘ (A.chart k).symm) (A.chart k).target)
@@ -121,6 +150,39 @@ theorem local_bound (hD : TopDensityChart.Statement) (A : FinHolAtlas D U)
 
 end BergmanCompleteProof
 
+/- English proof (translation)
+Introduce `D U _ A L₂ L m ψ hψc hψ G hG hGf hGc`. Establish `hcau : ∀ c, ∀ y₀ ∈ (A.chart c).target, ∃ R > 0, UniformCauchySeqOn (fun n y => G n c ((A.chart c).symm y)) atTop (Metric.closedBall y₀ R)`. Introduce `c y₀ hy₀`. Take `⟨R, hR, C, hC, hb⟩` from `BergmanCompleteProof.local_bound hD A L₂ L m ψ hψc hψ c y₀ hy₀`. Use `⟨R, hR, Metric.uniformCauchySeqOn_iff.2 fun ε hε => ?_⟩` and prove the remaining obligations.
+
+Establish `ht : Tendsto (fun p : ℕ × ℕ => C * topNormSq A ψ (G p.1 - G p.2)) atTop (𝓝 0)`. Simplify using `using ENNReal.Tendsto.const_mul hGc (Or.inr hC)`. Establish `hε2 : (0 : ℝ) < ε ^ 2` using `pow_pos hε 2`. Take `⟨⟨N₁, N₂⟩, hN⟩` from `eventually_atTop.1 (ht.eventually (gt_mem_nhds (ENNReal.ofReal_pos.2 hε2)))`. Use `⟨max N₁ N₂, fun n hn p hp z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(hb _ (sub_mem (hG n) (hG p)) z hz).trans_lt (hN (n, p) (Prod.mk_le_mk.2 ⟨le_of_max_le_left hn, le_of_max_le_right hp⟩))`. Rewrite `h1` using `[ENNReal.ofReal_lt_ofReal_iff hε2]`. Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 hε.le (by simpa using h1)`. Set `F : Fin A.n → U → ℂ` to `fun k x => if x ∈ (A.chart k).source then limUnder atTop (fun n => G n k x) else 0`.
+
+Establish `hlim : ∀ k x, Tendsto (fun n => G n k x) atTop (𝓝 (F k x))`. Introduce `k x`. Distinguish the cases in `hx : x ∈ (A.chart k).source`. Take `⟨R, hR, hU⟩` from `hcau k (A.chart k x) ((A.chart k).map_source hx)`. Establish `hcs` using `hU.cauchySeq (Metric.mem_closedBall_self hR.le)`.
+
+Simplify using `only [(A.chart k).left_inv hx] at hcs`. Take `⟨a, ha⟩` from `cauchySeq_tendsto_of_complete hcs`. Simplify using `only [F, if_pos hx]`. Conclude with `tendsto_nhds_limUnder ⟨a, ha⟩`. Establish `h0 : ∀ n, G n k x = 0` using `fun n => (hG n).2.2 k x hx`.
+
+Simplify using `only [F, if_neg hx, h0]`. Conclude with `tendsto_const_nhds`. Establish `hloc : ∀ k, TendstoLocallyUniformlyOn (fun n y => G n k ((A.chart k).symm y)) (fun y => F k ((A.chart k).symm y)) atTop (A.chart k).target`. Introduce `k u hu y₀ hy₀`. Take `⟨R, hR, hU⟩` from `hcau k y₀ hy₀`.
+
+Establish `hT` using `hU.tendstoUniformlyOn_of_tendsto fun y _ => hlim k ((A.chart k).symm y)`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds (Metric.closedBall_mem_nhds y₀ hR), hT u hu⟩`. Establish `hF : F ∈ topSections A L₂ L m`. Use `⟨fun k j => ?_, fun j k x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Use `set V := (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source`.
+
+Establish `hV : IsOpen V` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (A.chart k).open_source`. Establish `hmaps : MapsTo (fun y => A.chart k ((A.chart j).symm y)) V (A.chart k).target` using `fun y hy => (A.chart k).map_source hy.2`. Establish `hcont : ContinuousOn (fun y => A.chart k ((A.chart j).symm y)) V` using `(A.chart k).continuousOn.comp ((A.chart j).continuousOn_symm.mono inter_subset_left) fun y hy => hy.2`. Establish `h1` using `(hloc k).comp _ hmaps hcont`. Establish `h2 : TendstoLocallyUniformlyOn (fun n => G n k ∘ (A.chart j).symm) (F k ∘ (A.chart j).symm) atTop V`.
+
+Use `(h1.congr fun n y hy => ?_).congr_right fun y hy => ?_` and prove the remaining obligations. Simplify using `[(A.chart k).left_inv hy.2]`. Simplify using `[(A.chart k).left_inv hy.2]`. Conclude with `hW D V _ _ hV (fun n => (hG n).1 k j) h2`. Establish `h1 : Tendsto (fun n => jac A j k x * L₂.g j k x * L.g j k x ^ m * G n k x) atTop (𝓝 (jac A j k x * L₂.g j k x * L.g j k x ^ m * F k x))` using `(hlim k x).const_mul _`.
+
+Use `tendsto_nhds_unique (hlim j x) (h1.congr fun n => ?_)` and prove the remaining obligations. Conclude with `((hG n).2.1 j k x hx).symm`. Simplify using `[F, if_neg hx]`. Establish `hconv : Tendsto (fun n => topNormSq A ψ (G n - F)) atTop (𝓝 0)`. Rewrite using `[ENNReal.tendsto_nhds_zero]`.
+
+Introduce `ε hε`. Take `⟨⟨N₁, N₂⟩, hN⟩` from `eventually_atTop.1 (hGc.eventually (gt_mem_nhds hε))`. Rewrite using `[eventually_atTop]`. Use `⟨max N₁ N₂, fun n hn => ?_⟩` and prove the remaining obligations. Use `ExtensionProof.chartIntegral_le_of_liminf A (fun p k x => ENNReal.ofReal (2 ^ D * ‖(G n - G (p + max N₁ N₂)) k x‖ ^ 2 * Real.exp (-ψ k x))) _ ε (fun p k => ?_) (fun p => ?_) (fun k x => ?_)` and prove the remaining obligations.
+
+Conclude with `BergmanCompleteProof.aem_dens A ψ hψc k ((sub_mem (hG n) (hG _)).1 k)`. Conclude with `(hN (n, p + max N₁ N₂) (Prod.mk_le_mk.2 ⟨le_of_max_le_left hn, (le_max_right N₁ N₂).trans (Nat.le_add_left _ _)⟩)).le`. Establish `ht : Tendsto (fun p => ENNReal.ofReal (2 ^ D * ‖(G n - G (p + max N₁ N₂)) k x‖ ^ 2 * Real.exp (-ψ k x))) atTop (𝓝 (ENNReal.ofReal (2 ^ D * ‖(G n - F) k x‖ ^ 2 * Real.exp (-ψ k x))))`. Establish `hp` using `(hlim k x).comp (tendsto_add_atTop_nat (max N₁ N₂))`. Use `ENNReal.tendsto_ofReal (((((tendsto_const_nhds (x := G n k x)).sub hp).norm.pow 2).const_mul _).mul_const _)` and prove the remaining obligations.
+
+Conclude with `ht.liminf_eq.ge`. Use `⟨F, hF, ?_, hconv⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(hconv.eventually (gt_mem_nhds zero_lt_one)).exists`. Establish `key : ∀ k x, ENNReal.ofReal (2 ^ D * ‖F k x‖ ^ 2 * Real.exp (-ψ k x)) ≤ 2 * ENNReal.ofReal (2 ^ D * ‖G n k x‖ ^ 2 * Real.exp (-ψ k x)) + 2 * ENNReal.ofReal (2 ^ D * ‖(G n - F) k x‖ ^ 2 * Real.exp (-ψ k x))`. Introduce `k x`.
+
+Establish `h1 : ‖F k x‖ ≤ ‖G n k x‖ + ‖(G n - F) k x‖`. Establish `e : F k x = G n k x - (G n - F) k x` using `by simp`. Rewrite using `[e]`. Conclude with `norm_sub_le _ _`. Establish `h2 : ‖F k x‖ ^ 2 ≤ 2 * ‖G n k x‖ ^ 2 + 2 * ‖(G n - F) k x‖ ^ 2`.
+
+Use polynomial arithmetic with `[norm_nonneg (F k x), norm_nonneg (G n k x), norm_nonneg ((G n - F) k x), sq_nonneg (‖G n k x‖ - ‖(G n - F) k x‖)]`. Establish `hc : 0 ≤ 2 ^ D * Real.exp (-ψ k x)` using `by positivity`. Rewrite using `[← ENNReal.ofReal_ofNat 2, ← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_mul (by norm_num), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left h2 hc` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsum` using `ExtensionProof.chartIntegral_mono A key`. Rewrite `hsum` using `[ExtensionProof.chartIntegral_add A _ _ fun k => (BergmanCompleteProof.aem_dens A ψ hψc k ((hG n).1 k)).const_mul 2, ExtensionProof.chartIntegral_const_mul A 2 (by norm_num), ExtensionProof.chartIntegral_const_mul A 2 (by norm_num)]`. Use `hsum.trans_lt (ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top (by norm_num) (hGf n), ENNReal.mul_lt_top (by norm_num) (hn.trans ENNReal.one_lt_top)⟩)` and prove the remaining obligations.
+-/
 theorem BergmanComplete.proof (hD : TopDensityChart.Statement) (hW : LocUnifAnalytic.Statement) :
     BergmanComplete.Statement := by
   intro D U _ A L₂ L m ψ hψc hψ G hG hGf hGc

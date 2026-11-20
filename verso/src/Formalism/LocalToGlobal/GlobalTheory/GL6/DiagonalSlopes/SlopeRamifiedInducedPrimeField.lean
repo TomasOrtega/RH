@@ -15,6 +15,13 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
   {ι : Type} [Fintype ι] [DecidableEq ι] (G : ι → Type) [∀ i, CommGroup (G i)] [∀ i, Fintype (G i)]
   [∀ i, DecidableEq (G i)]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hmaj]`. Simplify using `only [T2.kronMap_apply]`. Establish `hs` using `fun a : α => T2.sesq_sum_zsmul (isSesq_maj Wh.b Wh.X) v (fun b => t b a) F (fun c => t c a) F'`. Simplify using `only [hs]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, Matrix.mul_apply]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem majorant_kronecker_map (B Wh : HLat K) {α β : Type} [Fintype α] [Fintype β]
     (Ψ : (α → Wh.V) →ₗ[K] B.V)
     (hmaj : ∀ v F F', majAt B.b B.X v (Ψ F) (Ψ F') = ∑ a, majAt Wh.b Wh.X v (F a) (F' a))
@@ -33,6 +40,9 @@ theorem majorant_kronecker_map (B Wh : HLat K) {α β : Type} [Fintype α] [Fint
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `e` using `T2.kron_mu B Wh hB hW hW0 (Ψ ∘ₗ T2.kronMap K Wh.V (1 : Matrix α α ℤ)) (by rw [T2.kronMap_one]; exact hΨ) (1 * (1 : Matrix α α ℤ).transpose) (by simp) (majorant_kronecker_map B Wh Ψ hmaj 1)`. Rewrite `e` using `[T2.kronMap_one, LinearMap.comp_id, ← hL]`. Simplify using `using e`.
+-/
 theorem slope_eq_of_isometric_sum (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (hW0 : Wh.L ≠ ⊥)
     {α : Type} [Fintype α] [DecidableEq α] [Nonempty α]
     (Ψ : (α → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
@@ -45,6 +55,19 @@ theorem slope_eq_of_isometric_sum (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good
   rw [T2.kronMap_one, LinearMap.comp_id, ← hL] at e
   simpa using e
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K Wh.V := Module.Finite.of_basis Wh.b`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hL]`. Use `⟨T2.kronMap K Wh.V (T2.szVec G) F, fun a _ => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[T2.kronMap_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => zsmul_mem (hF c (Set.mem_univ c)) _`. Use `show Ψ (T2.kronMap K Wh.V (T2.szVec G) F) ∈ U`.
+
+Rewrite using `[hU]`. Conclude with `Submodule.mem_map_of_mem (T2.kron_szVec_mem G F)`. Introduce and unpack `⟨hx, hxU⟩`. Rewrite `hx` using `[hL]`. Take `⟨F0, hF0, rfl⟩` from `hx`.
+
+Establish `hxU' : Ψ F0 ∈ U` using `hxU`. Rewrite `hxU'` using `[hU]`. Take `⟨F1, hF1, he⟩` from `hxU'`. Establish `h01 : F1 = F0` using `hΨ he`. Substitute `h01` using the available equality.
+
+Rewrite `hF1` using `[← T2.range_kron_szVec]`. Take `⟨F, hF⟩` from `hF1`. Use `⟨F, fun c _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← T2.kron_szVec_pt (K := K) G F c, hF]`. Conclude with `hF0 _ (Set.mem_univ _)`.
+
+Use `show Ψ (T2.kronMap K Wh.V (T2.szVec G) F) = Ψ F1`. Rewrite using `[hF]`.
+-/
 theorem induced_lattice_map_sz (B Wh : HLat K) (Ψ : ((∀ i, G i) → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
     (hL : B.L = (T2.piL (∀ i, G i) Wh.L).map (Ψ.restrictScalars (𝓞 K)))
     (U : Submodule K B.V) (hU : U = (RamFun.ramFun K G Wh.V).map Ψ) :
@@ -78,6 +101,11 @@ theorem induced_lattice_map_sz (B Wh : HLat K) (Ψ : ((∀ i, G i) → Wh.V) →
     · show Ψ (T2.kronMap K Wh.V (T2.szVec G) F) = Ψ F1
       rw [hF]
 
+/- English proof (translation)
+Use `T2.nonempty_SzIdx G h2` as an intermediate fact. Use `haveI : Nonempty (∀ i, G i) := ⟨1⟩`. Establish `hinj : Function.Injective (Ψ ∘ₗ T2.kronMap K Wh.V (T2.szVec G))` using `hΨ.comp (T2.kron_szVec_injective G)`. Establish `e1` using `T2.kron_mu B Wh hB hW hW0 (Ψ ∘ₗ T2.kronMap K Wh.V (T2.szVec G)) hinj (T2.szVec G * (T2.szVec G).transpose) (by rw [T2.szVec_mul_transpose]; exact T2.det_szGram_pos G) (majorant_kronecker_map B Wh Ψ hmaj (T2.szVec G))`. Rewrite `e1` using `[induced_lattice_map_sz G B Wh Ψ hΨ hL U hU, T2.szVec_mul_transpose]`.
+
+Rewrite using `[e1, slope_eq_of_isometric_sum B Wh hB hW hW0 Ψ hΨ hmaj hL]`.
+-/
 theorem slope_ramified_induced (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (hW0 : Wh.L ≠ ⊥)
     (Ψ : ((∀ i, G i) → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
     (hmaj : ∀ v F F', majAt B.b B.X v (Ψ F) (Ψ F') = ∑ a, majAt Wh.b Wh.X v (F a) (F' a))
@@ -95,6 +123,9 @@ theorem slope_ramified_induced (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (
   rw [induced_lattice_map_sz G B Wh Ψ hΨ hL U hU, T2.szVec_mul_transpose] at e1
   rw [e1, slope_eq_of_isometric_sum B Wh hB hW hW0 Ψ hΨ hmaj hL]
 
+/- English proof (translation)
+Rewrite using `[slope_ramified_induced G B Wh hB hW hW0 Ψ hΨ hmaj hL U hU (fun i => by rw [hG i]; omega), T2.log_det_szGram_div G q hq hG]`.
+-/
 theorem slope_ramified_induced_prime_field (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (hW0 : Wh.L ≠ ⊥)
     (Ψ : ((∀ i, G i) → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
     (hmaj : ∀ v F F', majAt B.b B.X v (Ψ F) (Ψ F') = ∑ a, majAt Wh.b Wh.X v (F a) (F' a))
@@ -118,6 +149,9 @@ def t2sPsi (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule
     ((∀ i, G i) → W) →ₗ[K] B.V :=
   ∑ g, (ρ g).comp (W.subtype.comp (LinearMap.proj g))
 
+/- English proof (translation)
+Simplify using `[t2sPsi]`.
+-/
 theorem t2sPsi_apply (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule K B.V)
     (F : (∀ i, G i) → W) : t2sPsi B ρ W F = ∑ g, ρ g (F g : B.V) := by
   simp [t2sPsi]
@@ -125,6 +159,9 @@ theorem t2sPsi_apply (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W :
 def t2sNm (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (i : ι) : Module.End K B.V :=
   ∑ a : G i, ρ (Pi.mulSingle i a)
 
+/- English proof (translation)
+Rewrite using `[t2sPsi_apply, t2sPsi_apply, t2sNm, LinearMap.sum_apply]`. Simplify using `only [Submodule.coe_sum, map_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Fintype.sum_equiv (Equiv.mulLeft (Pi.mulSingle i a)) _ _ fun g => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`.
+-/
 theorem norm_slice_map_sum (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule K B.V) (i : ι)
     (F : (∀ i, G i) → W) :
     t2sNm B ρ i (t2sPsi B ρ W F) =
@@ -136,6 +173,9 @@ theorem norm_slice_map_sum (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V
     Fintype.sum_equiv (Equiv.mulLeft (Pi.mulSingle i a)) _ _ fun g => ?_
   simp only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `h : (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = fun h => ∑ a : G i, F (Pi.mulSingle i a * h)`. Use function extensionality and compare the values at `fun h => Fintype.sum_equiv (Equiv.inv (G i)) _ _ fun a => by simp [Pi.mulSingle_inv]`. Rewrite using `[h]`.
+-/
 theorem sum_inv_mulSingle_zero_iff (i : ι) {M : Type} [AddCommGroup M] (F : (∀ i, G i) → M) :
     (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0 ↔
       (fun h => ∑ a : G i, F (Pi.mulSingle i a * h)) = 0 := by
@@ -146,6 +186,47 @@ theorem sum_inv_mulSingle_zero_iff (i : ι) {M : Type} [AddCommGroup M] (F : (�
 
 variable [IsTotallyComplex K]
 
+/- English proof (translation)
+Use `haveI : Module.Finite K B.V := Module.Finite.of_basis B.b`. Establish `hsub : Function.Injective W.subtype` using `Subtype.val_injective`. Take `⟨hX, hm, -⟩` from `pull_spec1 B (Module.finBasis K W) W.subtype hB.1 hsub`. Use `set Ψ := t2sPsi B ρ W with hΨ`. Establish `hL : B.L = (T2.piL (∀ i, G i) (B.L.comap (W.subtype.restrictScalars (𝓞 K)))).map (Ψ.restrictScalars (𝓞 K))`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨F, rfl⟩` from `hbij.2 x`. Conclude with `⟨F, fun g _ => (hLc F).1 hx g, rfl⟩`.
+
+Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `(hLc F).2 fun g => hF g (Set.mem_univ g)`. Set `e` to `LinearEquiv.ofBijective Ψ hbij`. Set `π : B.V →ₗ[K] W` to `(LinearMap.proj (1 : ∀ i, G i)).comp e.symm.toLinearMap`. Establish `hπ : ∀ w : W, π (w : B.V) = w`.
+
+Introduce `w`. Establish `h1 : Ψ (Pi.single 1 w) = (w : B.V)`. Rewrite using `[hΨ, t2sPsi_apply, Finset.sum_eq_single (1 : ∀ i, G i)]`. Simplify using the standard rewrite rules. Introduce `g _ hg`.
+
+Simplify using `[hg]`. Simplify using the standard rewrite rules. Use `show (e.symm (w : B.V)) 1 = w`. Establish `h2 : e.symm (w : B.V) = Pi.single 1 w`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+
+Conclude with `h1.symm`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `hπL : ∀ x ∈ B.L, π x ∈ B.L.comap (W.subtype.restrictScalars (𝓞 K))`. Introduce `x hx`.
+
+Take `⟨F, rfl⟩` from `hbij.2 x`. Establish `h3 : π (Ψ F) = F 1` using `by show (e.symm (e F)) 1 = F 1`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Conclude with `(hLc F).1 hx 1`.
+
+Use `⟨sub B W, ⟨hX, comap_fg W.subtype hsub hB.2.1, ?_⟩, ?_, Ψ, hbij.1, ?_, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : (w : B.V) ∈ Submodule.span K (B.L : Set B.V)` using `by rw [hB.2.2]; trivial`. Establish `h4` using `Submodule.mem_map_of_mem (f := π) hw`.
+
+Rewrite `h4` using `[Submodule.map_span, hπ]`. Use `Submodule.span_mono ?_ h4` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hπL x hx`. Introduce `h0`.
+
+Apply `hB0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Take `⟨F, rfl⟩` from `hbij.2 x`.
+
+Establish `hF : ∀ g, F g = 0`. Introduce `g`. Establish `h5 : (F g : B.V) ∈ B.L` using `(hLc F).1 hx g`. Establish `h6 : F g ∈ (sub B W).L` using `h5`. Rewrite `h6` using `[h0, Submodule.mem_bot]`.
+
+Conclude with `h6`. Rewrite using `[t2sPsi_apply]`. Simplify using `[hF]`. Introduce `v F F'`. Rewrite using `[hΨ, t2sPsi_apply, t2sPsi_apply]`.
+
+Establish `hs` using `T2.sesq_sum_zsmul (isSesq_maj B.b B.X) v (fun _ => (1 : ℤ)) (fun g => ρ g (F g : B.V)) (fun _ => (1 : ℤ)) (fun h => ρ h (F' h : B.V))`. Simplify using `only [one_smul, Int.cast_one, one_mul] at hs`. Rewrite using `[hs]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single g]`.
+
+Rewrite using `[horth, if_pos rfl, hm]`. Both sides reduce to the same expression. Introduce `h _ hgh`. Rewrite using `[horth, if_neg (Ne.symm hgh)]`. Simplify using the standard rewrite rules.
+
+Use extensionality with `x`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨F, rfl⟩` from `hbij.2 x`.
+
+Use `⟨F, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [RamFun.ramFun, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `i`. Establish `h7` using `hx i`. Rewrite `h7` using `[norm_slice_map_sum]`.
+
+Establish `h8 : (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0` using `hbij.1 (h7.trans (map_zero _).symm)`. Rewrite `h8` using `[sum_inv_mulSingle_zero_iff]`. Use function extensionality and compare the values at `h`. Use `congrFun h8 h` as an intermediate fact. Simplify using `only [RamFun.nmF, LinearMap.sum_apply, Finset.sum_apply, RamFun.trl_apply, Pi.zero_apply] at this ⊢`.
+
+Conclude with `this`. Introduce and unpack `⟨F, hF, rfl⟩ i`. Simplify using `only [RamFun.ramFun, Submodule.mem_iInf, LinearMap.mem_ker] at hF`. Establish `h9` using `hF i`. Rewrite using `[norm_slice_map_sum]`.
+
+Establish `h10 : (fun h => ∑ a : G i, F (Pi.mulSingle i a * h)) = 0`. Use function extensionality and compare the values at `h`. Use `congrFun h9 h` as an intermediate fact. Simplify using `only [RamFun.nmF, LinearMap.sum_apply, Finset.sum_apply, RamFun.trl_apply, Pi.zero_apply] at this ⊢`. Conclude with `this`.
+
+Rewrite `h10` using `[← sum_inv_mulSingle_zero_iff]`. Use `show t2sPsi B ρ W (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0`. Rewrite using `[h10, map_zero]`.
+-/
 theorem induced_of_slice (B : HLat K) (hB : B.Good) (hB0 : B.L ≠ ⊥)
     (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule K B.V)
     (hbij : Function.Bijective (t2sPsi B ρ W))
@@ -285,6 +366,11 @@ def InducedLattice : Prop :=
       ((D.fm u).lat 0).L = (T2.piL (∀ v, t2sG D u v) Wh.L).map (Ψ.restrictScalars (𝓞 D.what₂.LL)) ∧
       (D.fm u).ramSub = (RamFun.ramFun D.what₂.LL (t2sG D u) Wh.V).map Ψ
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `hS`. Establish `hf : 2 ≤ D.R.f` using `le_trans D.R.two_le_m D.R.m_le_f`. Establish `hN : 1 ≤ D.R.N D.R.m` using `by first`. Consider the case `(unfold Formalism.BasicNotions.Ranks.N; omega)`. Consider the case `(simp [Formalism.BasicNotions.Ranks.N]; omega)`.
+
+Consider the case `(have := D.R.m_sq_le_N; unfold Formalism.BasicNotions.Ranks.N; nlinarith [D.R.two_le_m])`. Establish `h2 : 2 * 1 ≤ D.R.f * D.R.N D.R.m` using `Nat.mul_le_mul hf hN`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem three_le_level_prime (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) : 3 ≤ (D.mem u).A.T := by
   obtain ⟨h1, -⟩ := hS
   have hf : 2 ≤ D.R.f := le_trans D.R.two_le_m D.R.m_le_f
@@ -296,6 +382,11 @@ theorem three_le_level_prime (hS : Formalism.MainNotions.product_first_zeroth_pa
   have h2 : 2 * 1 ≤ D.R.f * D.R.N D.R.m := Nat.mul_le_mul hf hN
   nlinarith
 
+/- English proof (translation)
+Take `⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, hU⟩` from `h`. Establish `hB : FrameOK ((D.fm u).lat 0)` using `((D.fm u).lat_good 0).1`. Establish `hG : ∀ v, Fintype.card (t2sG D u v) = (D.mem u).A.T - 1` using `fun v => by`. Rewrite using `[Fintype.card_units, (D.mem u).A.card_Fv v]`. Establish `e` using `slope_ramified_induced_prime_field (t2sG D u) ((D.fm u).lat 0) Wh hB hW hW0 Ψ hΨ hmaj hL (D.fm u).ramSub hU (D.mem u).A.T (three_le_level_prime D u hS) hG`.
+
+Rewrite `e` using `[(D.mem u).A.card_vT]`. Conclude with `e`.
+-/
 theorem slope_formula_of_induced (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (h : InducedLattice D u) : RamifiedSlopeFormula D u := by
   obtain ⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, hU⟩ := h
   have hB : FrameOK ((D.fm u).lat 0) := ((D.fm u).lat_good 0).1
@@ -314,6 +405,11 @@ variable (D : D7) (u : D.what₂.Word)
 
 open Classical
 
+/- English proof (translation)
+Rewrite using `[← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]`. Establish `hx` using `((D.fm u).lat 0).b.sum_repr x`. Rewrite using `[← hx, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem embedding_mem_forms_level_zero (x : ((D.fm u).lat 0).V) : (D.fm u).emb 0 x ∈ (D.mem u).A.Mu0 := by
   rw [← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]
   have hx := ((D.fm u).lat 0).b.sum_repr x
@@ -322,6 +418,13 @@ theorem embedding_mem_forms_level_zero (x : ((D.fm u).lat 0).V) : (D.fm u).emb 0
   rw [map_smulₛₗ]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Establish `key : ∀ v x, (D.fm u).emb 0 (t2sNm ((D.fm u).lat 0) ρ v x) = (D.mem u).A.Nm v ((D.fm u).emb 0 x)`. Introduce `v x`. Simplify using `only [t2sNm, ColumnsAtT.Nm, LinearMap.sum_apply, map_sum, hρ]`. Use extensionality with `x`. Simplify using `only [MemberForms.ramSub, Submodule.mem_comap, ColumnsAtT.Mram, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ v`. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Rewrite using `[key, h v, map_zero]`. Introduce `h`.
+
+Conclude with `⟨embedding_mem_forms_level_zero D u x, fun v => by rw [← key, h v, map_zero]⟩`.
+-/
 theorem ramified_sub_eq_inf_norm_ker (ρ : (∀ v, t2sG D u v) →* Module.End D.what₂.LL ((D.fm u).lat 0).V)
     (hρ : ∀ v a x, (D.fm u).emb 0 (ρ (Pi.mulSingle v a) x) = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x)) :
     (D.fm u).ramSub = ⨅ v, LinearMap.ker (t2sNm ((D.fm u).lat 0) ρ v) := by
@@ -338,6 +441,9 @@ theorem ramified_sub_eq_inf_norm_ker (ρ : (∀ v, t2sG D u v) →* Module.End D
   · intro h
     exact ⟨embedding_mem_forms_level_zero D u x, fun v => by rw [← key, h v, map_zero]⟩
 
+/- English proof (translation)
+Take `⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, hU⟩` from `induced_of_slice ((D.fm u).lat 0) ((D.fm u).lat_good 0) hL0 ρ W hbij horth hLc`. Conclude with `slope_formula_of_induced D u hS ⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, (ramified_sub_eq_inf_norm_ker D u ρ hρ).trans hU⟩`.
+-/
 theorem slope_formula_of_slice (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u)
     (ρ : (∀ v, t2sG D u v) →* Module.End D.what₂.LL ((D.fm u).lat 0).V)
     (hρ : ∀ v a x, (D.fm u).emb 0 (ρ (Pi.mulSingle v a) x) = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x))
@@ -370,6 +476,9 @@ def t2sDesc (e : V →ₛₗ[σ] Y) (he : Function.Injective e) (R : Y →ₗ[�
     rw [(hR (c • x)).choose_spec, RingHom.id_apply, map_smulₛₗ e c (hR x).choose, (hR x).choose_spec, map_smulₛₗ,
       map_smul])
 
+/- English proof (translation)
+The claim follows from `(hR x).choose_spec`.
+-/
 theorem t2sDesc_spec (e : V →ₛₗ[σ] Y) (he : Function.Injective e) (R : Y →ₗ[ℂ] Y) (hR : ∀ x, ∃ y, e y = R (e x))
     (x : V) : e (t2sDesc e he R hR x) = R (e x) := (hR x).choose_spec
 
@@ -381,6 +490,13 @@ variable {D : D7} {u : D.what₂.Word}
 
 open Classical Formalism.L2.Forms
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`. Rewrite using `[((D.fm u).lat_good 0).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨y, -, hy⟩` from `(D.fm u).rhoT_lat v a x hx`. Conclude with `⟨y, hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨y, hy⟩` from `hx`.
+
+Take `⟨y', hy'⟩` from `hx'`. Conclude with `⟨y + y', by rw [map_add, hy, hy', map_add, map_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨y, hy⟩` from `hx`. Conclude with `⟨c • y, by rw [map_smulₛₗ, hy, map_smulₛₗ, map_smul]⟩`.
+-/
 theorem rho_preserves_rational_forms (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (x : ((D.fm u).lat 0).V) :
     ∃ y, (D.fm u).emb 0 y = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x) := by
   have hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V) := by
@@ -410,12 +526,23 @@ def t2sRv (v : (D.mem u).A.vT) : ((D.mem u).A.Fv v)ˣ →* Module.End D.what₂.
     apply (D.fm u).emb_inj 0
     rw [t2sDesc_spec, map_mul, Module.End.mul_apply, Module.End.mul_apply, t2sDesc_spec, t2sDesc_spec]
 
+/- English proof (translation)
+The claim follows from `t2sDesc_spec ((D.fm u).emb 0) ((D.fm u).emb_inj 0) ((D.mem u).A.rhoT v a) (rho_preserves_rational_forms v a) x`.
+-/
 theorem t2sRv_spec (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (x : ((D.fm u).lat 0).V) :
     (D.fm u).emb 0 (t2sRv v a x) = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x) := t2sDesc_spec ((D.fm u).emb 0) ((D.fm u).emb_inj 0) ((D.mem u).A.rhoT v a) (rho_preserves_rational_forms v a) x
 
+/- English proof (translation)
+Rewrite using `[(D.fm u).Fi_zero]`. Conclude with `embedding_mem_forms_level_zero D u x`.
+-/
 theorem embedding_mem_forms (x : ((D.fm u).lat 0).V) : (D.fm u).emb 0 x ∈ (D.fm u).Fi 0 := by
   rw [(D.fm u).Fi_zero]; exact embedding_mem_forms_level_zero D u x
 
+/- English proof (translation)
+Use `haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩`. Introduce `v v' hvv x y`. Use `show t2sRv v x * t2sRv v' y = t2sRv v' y * t2sRv v x`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises.
+
+Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, t2sRv_spec, t2sRv_spec, t2sRv_spec, t2sRv_spec]`. Establish `h` using `congrArg (fun f => ((f ⟨(D.fm u).emb 0 z, embedding_mem_forms_level_zero D u z⟩ : (D.mem u).A.Mu0) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)) (rho_ops_commute_distinct Tf hE hvv (t2xU v x) (t2xU v' y)).eq`. Simplify `h` using `[t2xRv, t2xR]`.
+-/
 theorem t2sRv_comm (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) :
     Pairwise fun v v' => ∀ x y, Commute (t2sRv (D := D) (u := u) v x) (t2sRv v' y) := by
   haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩
@@ -432,6 +559,9 @@ def t2sRho (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) :
     (∀ v, t2sG D u v) →* Module.End D.what₂.LL ((D.fm u).lat 0).V :=
   MonoidHom.noncommPiCoprod t2sRv (t2sRv_comm Tf hE)
 
+/- English proof (translation)
+Simplify using `only [t2sRho, MonoidHom.noncommPiCoprod_mulSingle]`. Conclude with `t2sRv_spec v a x`.
+-/
 theorem t2sRho_single (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ)
     (x : ((D.fm u).lat 0).V) :
     (D.fm u).emb 0 (t2sRho Tf hE (Pi.mulSingle v a) x) = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x) := by
@@ -451,6 +581,13 @@ def t2sDv (v : (D.mem u).A.vT) : ((D.mem u).A.Fv v)ˣ →* Function.End ((D.mem 
   map_one' := by funext c; exact (D.fm u).dil_one 0 v c
   map_mul' a b := by funext c; exact (D.fm u).dil_mul 0 v a b c
 
+/- English proof (translation)
+Use `haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩`. Introduce `v v' hvv x y`. Establish `h` using `diamond_ops_commute_distinct Tf hE hvv (t2xU v x) (t2xU v' y)`. Establish `e1 : t2xDv v (t2xU v x) = t2sDv (D` using `D) (u := u) v x := by`. Use function extensionality and compare the values at `c`.
+
+Use `show (D.fm u).dil 0 v ((t2xU v).symm (t2xU v x)) c = (D.fm u).dil 0 v x c`. Rewrite using `[MulEquiv.symm_apply_apply]`. Establish `e2 : t2xDv v' (t2xU v' y) = t2sDv (D` using `D) (u := u) v' y := by`. Use function extensionality and compare the values at `c`. Use `show (D.fm u).dil 0 v' ((t2xU v').symm (t2xU v' y)) c = (D.fm u).dil 0 v' y c`.
+
+Rewrite using `[MulEquiv.symm_apply_apply]`. Rewrite `h` using `[e1, e2]`. Then use the resulting hypothesis.
+-/
 theorem t2sDv_comm (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) :
     Pairwise fun v v' => ∀ x y, Commute (t2sDv (D := D) (u := u) v x) (t2sDv v' y) := by
   haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩
@@ -469,16 +606,29 @@ theorem t2sDv_comm (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) :
 def t2sAc (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) : (∀ v, t2sG D u v) →* Function.End ((D.mem u).C.cls 0) :=
   MonoidHom.noncommPiCoprod t2sDv (t2sDv_comm Tf hE)
 
+/- English proof (translation)
+Simplify using `only [t2sAc, MonoidHom.noncommPiCoprod_mulSingle]`. Both sides reduce to the same expression.
+-/
 theorem t2sAc_single (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ)
     (c : (D.mem u).C.cls 0) : t2sAc Tf hE (Pi.mulSingle v a) c = (D.fm u).dil 0 v a c := by
   simp only [t2sAc, MonoidHom.noncommPiCoprod_mulSingle]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem group_action_mul (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (g h : ∀ v, t2sG D u v) (c : (D.mem u).C.cls 0) :
     t2sAc Tf hE (g * h) c = t2sAc Tf hE g (t2sAc Tf hE h c) := by
   rw [map_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : ∀ v, t2sG D u v => ∀ c : (D.mem u).C.cls 0, ∃ e : ((D.mem u).C.Y 0 → ℂ) ≃ₗ[ℂ] ((D.mem u).C.Y 0 → ℂ), ∀ x, (D.fm u).emb 0 (t2sRho Tf hE g x) c = e ((D.fm u).emb 0 x (t2sAc Tf hE g c))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb c`. Take `⟨ea, hea⟩` from `ha c`. Take `⟨eb, heb⟩` from `hb (t2sAc Tf hE a c)`.
+
+Use `⟨eb.trans ea, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, hea, heb, mul_comm a b, group_action_mul]`. Both sides reduce to the same expression. Introduce `c`. Use `⟨LinearEquiv.refl ℂ _, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_one, map_one]`. Both sides reduce to the same expression. Introduce `v _ c`. Use `⟨(D.fm u).dilT 0 v (g v) c, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[t2sRho_single, (D.fm u).rhoT_dil, t2sAc_single]`.
+-/
 theorem group_rep_transport_value (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v) :
     ∀ c : (D.mem u).C.cls 0, ∃ e : ((D.mem u).C.Y 0 → ℂ) ≃ₗ[ℂ] ((D.mem u).C.Y 0 → ℂ),
       ∀ x, (D.fm u).emb 0 (t2sRho Tf hE g x) c = e ((D.fm u).emb 0 x (t2sAc Tf hE g c)) := by
@@ -503,6 +653,9 @@ theorem group_rep_transport_value (Tf : Forms0 D u) (hE : DiamondElementsExist T
 def t2sPc [Fact (D.mem u).A.T.Prime] : (∀ v, t2sG D u v) ≃* ((D.mem u).A.vT → (ZMod (D.mem u).A.T)ˣ) :=
   MulEquiv.piCongrRight fun v => t2xU v
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[t2sPc]`. Simplify using `[t2sPc, Pi.mulSingle_eq_of_ne hw]`.
+-/
 theorem t2sPc_single [Fact (D.mem u).A.T.Prime] (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) :
     t2sPc (D := D) (u := u) (Pi.mulSingle v a) = Pi.mulSingle v (t2xU v a) := by
   funext w
@@ -511,6 +664,13 @@ theorem t2sPc_single [Fact (D.mem u).A.T.Prime] (v : (D.mem u).A.vT) (a : ((D.me
     simp [t2sPc]
   · simp [t2sPc, Pi.mulSingle_eq_of_ne hw]
 
+/- English proof (translation)
+Introduce `c`. Rewrite using `[← Finset.univ_prod_mulSingle g]`. It suffices to establish `H : ∀ s : Finset (D.mem u).A.vT, ∀ c, t2sAc Tf hE (∏ w ∈ s, Pi.mulSingle w (g w)) c = t2xAc Tf hE (t2sPc (∏ w ∈ s, Pi.mulSingle w (g w))) c from H _ c`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => intro c`. Simplify using the standard rewrite rules. Consider the case `insert w s hw ih`. Introduce `c`. Rewrite using `[Finset.prod_insert hw, group_action_mul, map_mul, map_mul]`.
+
+Use `show _ = t2xAc Tf hE (t2sPc (Pi.mulSingle w (g w))) (t2xAc Tf hE (t2sPc (∏ x ∈ s, Pi.mulSingle x (g x))) c)`. Rewrite using `[← ih, t2sAc_single, t2sPc_single, group_action_mulSingle_eq_dilation, MulEquiv.symm_apply_apply]`.
+-/
 theorem group_action_eq_unit_action [Fact (D.mem u).A.T.Prime] (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v) :
     ∀ c, t2sAc Tf hE g c = t2xAc Tf hE (t2sPc g) c := by
   intro c
@@ -527,6 +687,11 @@ theorem group_action_eq_unit_action [Fact (D.mem u).A.T.Prime] (Tf : Forms0 D u)
       (t2xAc Tf hE (t2sPc (∏ x ∈ s, Pi.mulSingle x (g x))) c)
     rw [← ih, t2sAc_single, t2sPc_single, group_action_mulSingle_eq_dilation, MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩`. Establish `h1 : t2xAc Tf hE (t2sPc g) c = c`. Rewrite using `[← group_action_eq_unit_action Tf hE g c]`. Conclude with `h`. Establish `h2` using `group_acts_freely_classes Tf hS hE (t2sPc g) c h1`.
+
+Conclude with `(t2sPc (D := D) (u := u)).injective (h2.trans (map_one _).symm)`.
+-/
 theorem group_acts_freely_classes' (Tf : Forms0 D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v)
     (c : (D.mem u).C.cls 0) (h : t2sAc Tf hE g c = c) : g = 1 := by
   haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩
@@ -544,6 +709,15 @@ variable {D : D7} {u : D.what₂.Word}
 
 open Classical Formalism.L2.Forms
 
+/- English proof (translation)
+Establish `hr` using `((Tf.val 0 (Nat.zero_le _) rfl).rat ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩`. Establish `h0 : (D.fm u).emb 0 x ∈ (D.mem u).A.Mu0` using `by rw [← (D.fm u).Fi_zero]; exact hr.1`. Rewrite `h0` using `[mem_forms_level_zero_iff Tf hS]`. Use `((Tf.val 0 (Nat.zero_le _) rfl).rat _).2 ⟨?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[(D.fm u).Fi_zero, mem_forms_level_zero_iff Tf hS]`.
+
+Introduce `c`. Distinguish the cases in `hc : S c`. Simplify using `only [hc, if_true]`. Conclude with `h0 c`. Simplify using `only [hc, if_false]`.
+
+Conclude with `(levelZeroValues Tf).zero_mem`. Distinguish the cases in `hc : S c`. Simplify using `only [hc, if_true]`. Conclude with `hr.2 c`. Use `⟨0, zero_mem _, fun z => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hc, if_false, map_zero, Pi.zero_apply]`.
+-/
 theorem restriction_rational_form (Tf : Forms0 D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (x : ((D.fm u).lat 0).V)
     (S : (D.mem u).C.cls 0 → Prop) :
     ∃ y, (D.fm u).emb 0 y = fun c => if S c then (D.fm u).emb 0 x c else 0 := by
@@ -561,6 +735,19 @@ theorem restriction_rational_form (Tf : Forms0 D u) (hS : Formalism.MainNotions.
     · refine ⟨0, zero_mem _, fun z => ?_⟩
       simp only [hc, if_false, map_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Introduce `h0`. Establish `hV : ∀ x : ((D.fm u).lat 0).V, x = 0`. Introduce `x`. Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`. Rewrite using `[((D.fm u).lat_good 0).2.2]`.
+
+Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[h0, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `(Submodule.mem_bot _).1 hx`. Take `⟨c0, -⟩` from `(Tf.cls 0 (Nat.zero_le _) rfl).y_bij.2 (Quotient.mk'' 1)`. Take `⟨w, hw, hw0⟩` from `level_zero_values_ne_bot Tf`.
+
+Establish `hmem : (Pi.single c0 w : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) ∈ (D.mem u).A.Mu0`. Rewrite using `[mem_forms_level_zero_iff Tf hS]`. Introduce `c`. Distinguish the cases in `hc : c = c0`. Substitute `hc` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Conclude with `hw`. Rewrite using `[Pi.single_eq_of_ne hc]`. Conclude with `(levelZeroValues Tf).zero_mem`. Rewrite `hmem` using `[← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]`.
+
+Establish `hsp : Submodule.span ℂ (Set.range fun a => (D.fm u).emb 0 (((D.fm u).lat 0).b a)) = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `show (D.fm u).emb 0 (((D.fm u).lat 0).b a) = 0`. Rewrite using `[hV (((D.fm u).lat 0).b a), map_zero]`.
+
+Rewrite `hmem` using `[hsp, Submodule.mem_bot]`. Apply `hw0` to reduce the goal to its premises. Use `congrFun hmem c0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem lattice_level_zero_ne_bot (Tf : Forms0 D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) : ((D.fm u).lat 0).L ≠ ⊥ := by
   intro h0
   have hV : ∀ x : ((D.fm u).lat 0).V, x = 0 := by
@@ -600,18 +787,33 @@ def t2sSetoid : Setoid ((D.mem u).C.cls 0) where
 def t2sRep (c : (D.mem u).C.cls 0) : (D.mem u).C.cls 0 :=
   (Quotient.mk (t2sSetoid Tf hE) c).out
 
+/- English proof (translation)
+The claim follows from `Quotient.mk_out (s := t2sSetoid Tf hE) c`.
+-/
 theorem t2sRep_spec (c : (D.mem u).C.cls 0) : ∃ g, t2sAc Tf hE g c = t2sRep Tf hE c := Quotient.mk_out (s := t2sSetoid Tf hE) c
 
+/- English proof (translation)
+Unfold `t2sRep`. Conclude with `congrArg Quotient.out (Quotient.sound (s := t2sSetoid Tf hE) h)`.
+-/
 theorem t2sRep_eq {a b : (D.mem u).C.cls 0} (h : ∃ g, t2sAc Tf hE g b = a) : t2sRep Tf hE a = t2sRep Tf hE b := by
   unfold t2sRep
   exact congrArg Quotient.out (Quotient.sound (s := t2sSetoid Tf hE) h)
 
+/- English proof (translation)
+The claim follows from `t2sRep_eq Tf hE ⟨g, rfl⟩`.
+-/
 theorem t2sRep_ac (g) (c : (D.mem u).C.cls 0) : t2sRep Tf hE (t2sAc Tf hE g c) = t2sRep Tf hE c := t2sRep_eq Tf hE ⟨g, rfl⟩
 
 def t2sH (c : (D.mem u).C.cls 0) : ∀ v, t2sG D u v := (t2sRep_spec Tf hE c).choose
 
+/- English proof (translation)
+The claim follows from `(t2sRep_spec Tf hE c).choose_spec`.
+-/
 theorem class_rep_group_elem_spec (c : (D.mem u).C.cls 0) : t2sAc Tf hE (t2sH Tf hE c) c = t2sRep Tf hE c := (t2sRep_spec Tf hE c).choose_spec
 
+/- English proof (translation)
+Establish `h1 : t2sAc Tf hE (g'⁻¹ * g) c = c`. Rewrite using `[group_action_mul, h, ← group_action_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Conclude with `(inv_mul_eq_one.mp (group_acts_freely_classes' Tf hS hE _ c h1)).symm`.
+-/
 theorem group_action_injective (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) {g g' : ∀ v, t2sG D u v} {c : (D.mem u).C.cls 0}
     (h : t2sAc Tf hE g c = t2sAc Tf hE g' c) : g = g' := by
   have h1 : t2sAc Tf hE (g'⁻¹ * g) c = c := by
@@ -619,6 +821,9 @@ theorem group_action_injective (hS : Formalism.MainNotions.product_first_zeroth_
     rfl
   exact (inv_mul_eq_one.mp (group_acts_freely_classes' Tf hS hE _ c h1)).symm
 
+/- English proof (translation)
+The claim follows from `group_action_injective Tf hE hS (h.trans (class_rep_group_elem_spec Tf hE c).symm)`.
+-/
 theorem class_rep_group_elem_unique (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) {g : ∀ v, t2sG D u v} {c : (D.mem u).C.cls 0}
     (h : t2sAc Tf hE g c = t2sRep Tf hE c) : g = t2sH Tf hE c := group_action_injective Tf hE hS (h.trans (class_rep_group_elem_spec Tf hE c).symm)
 
@@ -628,6 +833,11 @@ def t2sW : Submodule D.what₂.LL ((D.fm u).lat 0).V where
   zero_mem' c _ := by rw [map_zero]; rfl
   smul_mem' r x hx c hc := by rw [map_smulₛₗ, Pi.smul_apply, hx c hc, smul_zero]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `group_rep_transport_value Tf hE g c`. Rewrite using `[he]`. Establish `h0 : (D.fm u).emb 0 (F g : ((D.fm u).lat 0).V) (t2sAc Tf hE g c) = 0`. Apply `(F g).2` to reduce the goal to its premises. Introduce `hrep`.
+
+Apply `hg` to reduce the goal to its premises. Apply `class_rep_group_elem_unique Tf hE hS` to reduce the goal to its premises. Rewrite using `[← t2sRep_ac Tf hE g c, hrep]`. Rewrite using `[h0, map_zero]`.
+-/
 theorem slice_value_off_summand (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (F : (∀ v, t2sG D u v) → t2sW Tf hE) (g : ∀ v, t2sG D u v)
     (c : (D.mem u).C.cls 0) (hg : g ≠ t2sH Tf hE c) :
     (D.fm u).emb 0 (t2sRho Tf hE g (F g : ((D.fm u).lat 0).V)) c = 0 := by
@@ -641,6 +851,9 @@ theorem slice_value_off_summand (hS : Formalism.MainNotions.product_first_zeroth
     rw [← t2sRep_ac Tf hE g c, hrep]
   rw [h0, map_zero]
 
+/- English proof (translation)
+Rewrite using `[t2sPsi_apply, map_sum, Finset.sum_apply, Finset.sum_eq_single (t2sH Tf hE c)]`. Introduce `g _ hg`. Conclude with `slice_value_off_summand Tf hE hS F g c hg`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem slice_map_value_at_class (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (F : (∀ v, t2sG D u v) → t2sW Tf hE) (c : (D.mem u).C.cls 0) :
     (D.fm u).emb 0 (t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE) F) c =
       (D.fm u).emb 0 (t2sRho Tf hE (t2sH Tf hE c) (F (t2sH Tf hE c) : ((D.fm u).lat 0).V)) c := by
@@ -650,6 +863,27 @@ theorem slice_map_value_at_class (hS : Formalism.MainNotions.product_first_zerot
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `F F' hFF`. Establish `hz : ∀ F0 : (∀ v, t2sG D u v) → t2sW Tf hE, t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE) F0 = 0 → F0 = 0`. Introduce `F0 h0`. Use function extensionality and compare the values at `g`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Use function extensionality and compare the values at `r`. Use `show (D.fm u).emb 0 (F0 g : ((D.fm u).lat 0).V) r = (D.fm u).emb 0 0 r`. Rewrite using `[map_zero]`.
+
+Distinguish the cases in `hr : t2sRep Tf hE r = r`. Use `set c := t2sAc Tf hE g⁻¹ r with hc`. Establish `hgc : t2sAc Tf hE g c = r`. Rewrite using `[hc, ← group_action_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+
+Establish `hrep : t2sAc Tf hE g c = t2sRep Tf hE c`. Rewrite using `[hgc, hc, t2sRep_ac, hr]`. Establish `hH` using `class_rep_group_elem_unique Tf hE hS hrep`. Establish `h1` using `slice_map_value_at_class Tf hE hS F0 c`. Rewrite `h1` using `[h0, map_zero, ← hH]`.
+
+Take `⟨e, he⟩` from `group_rep_transport_value Tf hE g c`. Rewrite `h1` using `[he, hgc]`. Establish `h2` using `congrFun h1.symm`. Conclude with `(e.map_eq_zero_iff).1 (funext fun z => by simpa using congrFun h1.symm z)`. Conclude with `(F0 g).2 r hr`.
+
+Use `hz (F - F') (by rw [map_sub, hFF, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Introduce `x`. Establish `hy` using `fun g : ∀ v, t2sG D u v => restriction_rational_form Tf hS x (fun c => t2sH Tf hE c = g)`. Use `choose y hy using hy`.
+
+Establish `hmem : ∀ g, t2sRho Tf hE g⁻¹ (y g) ∈ t2sW Tf hE`. Introduce `g c hc`. Take `⟨e, he⟩` from `group_rep_transport_value Tf hE g⁻¹ c`. Rewrite using `[he, hy g]`. Establish `hne : t2sH Tf hE (t2sAc Tf hE g⁻¹ c) ≠ g`.
+
+Introduce `h`. Establish `h1` using `class_rep_group_elem_spec Tf hE (t2sAc Tf hE g⁻¹ c)`. Rewrite `h1` using `[h, ← group_action_mul, mul_inv_cancel, map_one, t2sRep_ac]`. Conclude with `hc h1.symm`. Simplify using `only [hne, if_false, map_zero]`.
+
+Use `⟨fun g => ⟨_, hmem g⟩, ?_⟩` and prove the remaining obligations. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Rewrite using `[slice_map_value_at_class Tf hE hS]`. Use `show (D.fm u).emb 0 (t2sRho Tf hE (t2sH Tf hE c) (t2sRho Tf hE (t2sH Tf hE c)⁻¹ (y (t2sH Tf hE c)))) c = _`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, hy]`. Simplify using the standard rewrite rules.
+-/
 theorem slice_map_bijective (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) :
     Function.Bijective (t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE)) := by
   constructor
@@ -700,6 +934,13 @@ theorem slice_map_bijective (hS : Formalism.MainNotions.product_first_zeroth_par
     rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, hy]
     simp
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : ∀ v, t2sG D u v => ∀ x ∈ ((D.fm u).lat 0).L, t2sRho Tf hE g x ∈ ((D.fm u).lat 0).L) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb x hx`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `ha _ (hb x hx)`.
+
+Introduce `x hx`. Rewrite using `[map_one]`. Conclude with `hx`. Introduce `v _ x hx`. Take `⟨y, hyL, hy⟩` from `(D.fm u).rhoT_lat v (g v) x hx`.
+
+Establish `: y = t2sRho Tf hE (Pi.mulSingle v (g v)) x` using `(D.fm u).emb_inj 0 (by rw [hy, t2sRho_single])`. Rewrite using `[← this]`. Conclude with `hyL`.
+-/
 theorem group_rep_preserves_lattice (g : ∀ v, t2sG D u v) : ∀ x ∈ ((D.fm u).lat 0).L, t2sRho Tf hE g x ∈ ((D.fm u).lat 0).L := by
   rw [← Finset.univ_prod_mulSingle g]
   refine Finset.prod_induction (fun i => Pi.mulSingle i (g i))
@@ -722,12 +963,25 @@ def t2sQ (c : (D.mem u).C.cls 0) (f : (D.mem u).C.Y 0 → ℂ) : Prop :=
       ∀ z, f z = fnOf _ (shiftOf (lamT u 0)) (atInf (embT D) (B⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1) P
         ((Tf.val 0 (Nat.zero_le _) rfl).eY z)
 
+/- English proof (translation)
+Introduce `w B _` and use `⟨0, zero_mem _, fun z => by simp⟩`.
+-/
 theorem local_integral_zero (c : (D.mem u).C.cls 0) : t2sQ Tf c 0 := fun w B _ => ⟨0, zero_mem _, fun z => by simp⟩
 
+/- English proof (translation)
+Rewrite using `[(Tf.val 0 (Nat.zero_le _) rfl).lat x]`. Conclude with `⟨fun h c w B hB => h w c B hB, fun h w c B hB => h c w B hB⟩`.
+-/
 theorem mem_lattice_iff_local (x : ((D.fm u).lat 0).V) : x ∈ ((D.fm u).lat 0).L ↔ ∀ c, t2sQ Tf c ((D.fm u).emb 0 x c) := by
   rw [(Tf.val 0 (Nat.zero_le _) rfl).lat x]
   exact ⟨fun h c w B hB => h w c B hB, fun h w c B hB => h c w B hB⟩
 
+/- English proof (translation)
+Establish `hρ : ∀ g, (F g : ((D.fm u).lat 0).V) ∈ ((D.fm u).lat 0).L ↔ t2sRho Tf hE g (F g : ((D.fm u).lat 0).V) ∈ ((D.fm u).lat 0).L`. Introduce `g`. Use `⟨group_rep_preserves_lattice Tf hE g _, fun h => ?_⟩` and prove the remaining obligations. Use `group_rep_preserves_lattice Tf hE g⁻¹ _ h` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+
+Simplify using `only [hρ, mem_lattice_iff_local Tf, slice_map_value_at_class Tf hE hS]`. Prove the components needed by the constructor for the conclusion. Introduce `h g c`. Distinguish the cases in `hg : g = t2sH Tf hE c`. Substitute `hg` using the available equality.
+
+Conclude with `h c`. Rewrite using `[slice_value_off_summand Tf hE hS F g c hg]`. Conclude with `local_integral_zero Tf c`. Introduce `h c`. Conclude with `h _ c`.
+-/
 theorem slice_mem_lattice_iff (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (F : (∀ v, t2sG D u v) → t2sW Tf hE) :
     t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE) F ∈ ((D.fm u).lat 0).L ↔
       ∀ g, (F g : ((D.fm u).lat 0).V) ∈ ((D.fm u).lat 0).L := by
@@ -754,6 +1008,9 @@ variable (D : D7) (u : D.what₂.Word)
 
 open Classical Formalism.L2.Forms
 
+/- English proof (translation)
+The claim follows from `slope_formula_of_slice D u hS (t2sRho Tf hE) (fun v a x => t2sRho_single Tf hE v a x) W hbij horth hLc hL0`.
+-/
 theorem slope_formula_of_compatible_slice (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : Forms0 D u) (hE : DiamondElementsExist Tf)
     (W : Submodule D.what₂.LL ((D.fm u).lat 0).V)
     (hbij : Function.Bijective (t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) W))
@@ -786,6 +1043,13 @@ def DiamondIsometry : Prop :=
 
 variable {D u}
 
+/- English proof (translation)
+Introduce `v x y`. Establish `hs : ∀ w a z, t2sRho Tf hE (Pi.mulSingle w a) z = t2sRv w a z` using `fun w a z => by`. Simplify using `only [t2sRho, MonoidHom.noncommPiCoprod_mulSingle]`. Establish `hprod : g = ∏ w, Pi.mulSingle w (g w)` using `(Finset.univ_prod_mulSingle g).symm`. Rewrite using `[hprod]`.
+
+It suffices to establish `H : ∀ s : Finset (D.mem u).A.vT, ∀ x y, majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v (t2sRho Tf hE (∏ w ∈ s, Pi.mulSingle w (g w)) x) (t2sRho Tf hE (∏ w ∈ s, Pi.mulSingle w (g w)) y) = majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y from H _ x y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x y`. Simplify using the standard rewrite rules.
+
+Consider the case `insert w s hw ih`. Introduce `x y`. Rewrite using `[Finset.prod_insert hw, map_mul, Module.End.mul_apply, Module.End.mul_apply, hs, hs, hI, ih]`.
+-/
 theorem group_rep_majorant_isometry (hI : DiamondIsometry D u) (Tf : Forms0 D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v) :
     ∀ (v : InfinitePlace D.what₂.LL) (x y : ((D.fm u).lat 0).V),
       majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v (t2sRho Tf hE g x) (t2sRho Tf hE g y) =
@@ -806,6 +1070,15 @@ theorem group_rep_majorant_isometry (hI : DiamondIsometry D u) (Tf : Forms0 D u)
     intro x y
     rw [Finset.prod_insert hw, map_mul, Module.End.mul_apply, Module.End.mul_apply, hs, hs, hI, ih]
 
+/- English proof (translation)
+Introduce `v g h x y`. Use `split_ifs with hgh`. Substitute `hgh` using the available equality. Apply the tactic sequence `exact group_rep_majorant_isometry hI Tf hE g v _ _`. Apply `hO` to reduce the goal to its premises.
+
+Introduce `c`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨hx, hy⟩` from `hc`. Establish `key : ∀ (k : ∀ w, t2sG D u w) (z : t2sW Tf hE), (D.fm u).emb 0 (t2sRho Tf hE k (z : ((D.fm u).lat 0).V)) c ≠ 0 → t2sAc Tf hE k c = t2sRep Tf hE c`.
+
+Introduce `k z hz`. Take `⟨e, he⟩` from `group_rep_transport_value Tf hE k c`. Rewrite `hz` using `[he]`. Establish `h1 : (D.fm u).emb 0 (z : ((D.fm u).lat 0).V) (t2sAc Tf hE k c) ≠ 0` using `fun h0 => hz (by rw [h0, map_zero])`. Establish `h2 : t2sRep Tf hE (t2sAc Tf hE k c) = t2sAc Tf hE k c`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `h1 (z.2 _ hne)`. Rewrite using `[← h2, t2sRep_ac]`. Conclude with `hgh (group_action_injective Tf hE hS ((key g x hx).trans (key h y hy).symm))`.
+-/
 theorem slice_summands_orthogonal (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hO : MetricOrthogonalClasses D u) (hI : DiamondIsometry D u) (Tf : Forms0 D u)
     (hE : DiamondElementsExist Tf) :
     ∀ v g h (x y : t2sW Tf hE), majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v
@@ -835,10 +1108,16 @@ theorem slice_summands_orthogonal (hS : Formalism.MainNotions.product_first_zero
       rw [← h2, t2sRep_ac]
     exact hgh (group_action_injective Tf hE hS ((key g x hx).trans (key h y hy).symm))
 
+/- English proof (translation)
+The claim follows from `slope_formula_of_compatible_slice D u hS Tf hE (t2sW Tf hE) (slice_map_bijective Tf hE hA) (slice_summands_orthogonal hA hO hI Tf hE) (slice_mem_lattice_iff Tf hE hA) (lattice_level_zero_ne_bot Tf hA)`.
+-/
 theorem slope_formula_of_diamonds (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : Forms0 D u) (hA : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hE : DiamondElementsExist Tf)
     (hO : MetricOrthogonalClasses D u) (hI : DiamondIsometry D u) : RamifiedSlopeFormula D u := slope_formula_of_compatible_slice D u hS Tf hE (t2sW Tf hE) (slice_map_bijective Tf hE hA) (slice_summands_orthogonal hA hO hI Tf hE)
     (slice_mem_lattice_iff Tf hE hA) (lattice_level_zero_ne_bot Tf hA)
 
+/- English proof (translation)
+The claim follows from `slope_formula_of_diamonds hS Tf hA (diamond_elements_of_split Tf hs) hO hI`.
+-/
 theorem slope_formula_of_split (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : Forms0 D u) (hA : Formalism.MainNotions.product_first_zeroth_parts.admS D u)
     (hs : SplitAtT Tf.atT) (hO : MetricOrthogonalClasses D u) (hI : DiamondIsometry D u) : RamifiedSlopeFormula D u :=
   slope_formula_of_diamonds hS Tf hA (diamond_elements_of_split Tf hs) hO hI

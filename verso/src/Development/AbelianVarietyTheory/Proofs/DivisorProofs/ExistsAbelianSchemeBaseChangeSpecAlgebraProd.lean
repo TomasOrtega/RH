@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hA hg`. Apply the tactic sequence `refine ⟨(Over.pullback (spMap (algebraMap R D))).obj B, inferInstance, CategoryTheory.Limits.pullback.fst B.hom _, (CategoryTheory.Limits.pullbackSymmetry B.hom (spMap (algebraMap R D))).hom, ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback B _, GlobalTheory.is …`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem exists_baseChange_spAlg_prod (R D : Type) [CommRing R] [CommRing D] [Algebra R D] (B : Over (Sp R)) [GrpObj B] (g : ℕ) :
     IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∃ (B' : Over (Sp D)) (_ : GrpObj B') (π : B'.left ⟶ B.left) (q : B'.left ⟶ (SpAlg R D ⊗ B).left), IsGrpPullback B' B (spMap (algebraMap R D)) π ∧ IsAbelianScheme B' ∧ SmoothOfRelativeDimension g B'.hom ∧ IsIso q ∧ q ≫ (fst (SpAlg R D) B).left = B'.hom ∧ q ≫ (snd (SpAlg R D) B).left = π := by
   intro hA hg

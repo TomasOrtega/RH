@@ -19,6 +19,11 @@ namespace GlobalTheory.WeilSchrodinger.DblTarget.ThetaBox
 
 variable {F : Type} [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)]
 
+/- English proof (translation)
+Establish `hc : ∀ t, starRingEnd ℂ (ψ t) = ψ (-t)` using `fun t => by`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hu t)]`. Unfold `GlobalTheory.WeilM.thetaSum`. Rewrite using `[Complex.star_def, Complex.conj_tsum]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+
+Generalize the expression as in `(fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) = a`. Simplify using `only [GlobalTheory.WeilM.schr, map_mul, Complex.star_def, Complex.conj_conj, hc, dotProduct_neg, neg_add, mul_neg]`.
+-/
 theorem thetaSum_schr_negY (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hu : ∀ a, ‖ψ a‖ = 1) {κ : Type} [Fintype κ]
     (x y : κ → AdeleRing (𝓞 F) F) (φ : (κ → AdeleRing (𝓞 F) F) → ℂ) :
     GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ (x, -y) φ) =
@@ -35,6 +40,11 @@ end GlobalTheory.WeilSchrodinger.DblTarget.ThetaBox
 
 open GlobalTheory.WeilSchrodinger.DblTarget.ThetaBox in
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JA JB ξ hA κ _ co φ₁ h₁ φ₂ h₂`. Use function extensionality and compare the values at `w`. Establish `he : (GlobalTheory.WeilSchrodinger.DblTarget.coDbl hA co).e w = (Sum.elim (co.e (w.submatrix (finSumFinEquiv ∘ Sum.inl) id)).1 (co.e (w.submatrix (finSumFinEquiv ∘ Sum.inr) id)).1, Sum.elim (co.e (w.submatrix (finSumFinEquiv ∘ Sum.inl) id)).2 (-(co.e (w.submatrix (finSumFinEquiv …` using `rfl`. Establish `hs : ∀ (v : (κ → AF D.host.F) × (κ → AF D.host.F)) (φ : (κ → AF D.host.F) → ℂ), φ ∈ GlobalTheory.WeilM.schA D.host.F κ → GlobalTheory.WeilM.schr ψ v φ ∈ GlobalTheory.WeilM.schA D.host.F κ` using `fun v φ hφ => GlobalTheory.SchrSchA.schr_mem_schA_of_isStdChar D ψ hψ κ v φ hφ`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho]`.
+
+Rewrite using `[he, DoublingThetaSums.GlobalTheory.CompanionTheory.DblTheta.schr_boxFun_elim, DoublingThetaSums.GlobalTheory.CompanionTheory.DblTheta.thetaSum_boxFun _ (hs _ _ h₁) (hs _ _ h₂), thetaSum_schr_negY ψ hψ.1.2.1]`.
+-/
 theorem GlobalTheory.WeilSchrodinger.DblTarget.thetaTr_coDbl_boxFun : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JA : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
       (ξ : AF D.host.F ⊗[D.host.F] D.host.E) (hA : JA = T.gramᵀ) (κ : Type) [Fintype κ]

@@ -12,6 +12,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ProdSupport
 
+/- English proof (translation)
+Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, smul_comm, piTensor_tprod]`. Use `congr 1`.
+
+Establish `h1 : (fun b => ρ b (Pi.mulSingle (M` using `Γ) a g b) (x b)) = Function.update x a (c • x a) := by`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[h]`.
+
+Simplify using `[Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]`. Rewrite using `[h1, MultilinearMap.map_update_smul, Function.update_eq_self]`.
+-/
 theorem piTensor_mulSingle {α : Type} [DecidableEq α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
     (a : α) (g : Γ a) (c : ℂ) (h : ∀ v, ρ a g v = c • v) (y : ⨂[ℂ] a, X a) :
@@ -29,6 +36,11 @@ theorem piTensor_mulSingle {α : Type} [DecidableEq α] {Γ X : α → Type} [�
       · simp [Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]
     rw [h1, MultilinearMap.map_update_smul, Function.update_eq_self]
 
+/- English proof (translation)
+Establish `h1 : ∀ a, ∃ (x : X a) (l : Module.Dual ℂ (X a)), l x = 1` using `fun a => by`. Take `⟨x, hx⟩` from `exists_ne (0 : X a)`. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hx`. Conclude with `⟨x, l, hl⟩`. Use `choose x l hl using h1`.
+
+Use `⟨PiTensorProduct.tprod ℂ x, 0, fun h0 => ?_⟩` and prove the remaining obligations. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ α ℂ).compLinearMap l)) h0` as an intermediate fact. Simplify using `[hl] at this`.
+-/
 theorem nontrivial_piTensor {α : Type} [Fintype α] (X : α → Type) [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (h : ∀ a, Nontrivial (X a)) : Nontrivial (⨂[ℂ] a, X a) := by
   have h1 : ∀ a, ∃ (x : X a) (l : Module.Dual ℂ (X a)), l x = 1 := fun a => by
@@ -45,12 +57,18 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GeneralLinearGroup.scalar, hd]`.
+-/
 theorem det_scalar_one {d : ℕ} (hd : d = 1) (z : kˣ) :
     GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin d) z) = z := by
   ext; simp [GeneralLinearGroup.scalar, hd]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `[GeneralLinearGroup.scalar, GeneralLinearGroup.val_det_apply]`.
+-/
 theorem eq_scalar_det {d : ℕ} (hd : d = 1) (g : GL (Fin d) k) :
     g = GeneralLinearGroup.scalar (Fin d) (GeneralLinearGroup.det g) := by
   subst hd
@@ -58,6 +76,21 @@ theorem eq_scalar_det {d : ℕ} (hd : d = 1) (g : GL (Fin d) k) :
   rw [Subsingleton.elim i 0, Subsingleton.elim j 0]
   simp [GeneralLinearGroup.scalar, GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Introduce `z f`. Establish `h1 : leviEmb k e (Pi.mulSingle a (GeneralLinearGroup.scalar (c a) z)) = GeneralLinearGroup.scalar n z`. Use extensionality with `i j`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `e.surjective j`.
+
+Take `rfl : b = a` from `by_contra fun h => (ha b h).elim y`. Take `rfl : b' = b` from `by_contra fun h => (ha b' h).elim y'`. Rewrite using `[leviEmb_apply_same]`. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply]`. Establish `h2 : modExp c a = 0`.
+
+Unfold `modExp`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero]`. Introduce `b hb`. Use `ha b (Finset.mem_filter.1 hb).2.ne` as an intermediate fact. Simplify using the standard rewrite rules.
+
+Introduce `b hb`. Use `ha b (Finset.mem_filter.1 hb).2.ne'` as an intermediate fact. Simplify using the standard rewrite rules. Establish `h3 : deltaHalf k c (Pi.mulSingle a (GeneralLinearGroup.scalar (c a) z)) = 1`. Rewrite using `[deltaHalf_apply]`.
+
+Use `Finset.prod_eq_one fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[h2]`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one, map_one]`.
+
+Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Establish `h4` using `parInd_law e (piTensor σ) f ⟨_, leviEmb_mem_parab k e (Pi.mulSingle a (GeneralLinearGroup.scalar (c a) z))⟩ x`. Rewrite `h4` using `[leviProj_leviEmb, h3, piTensor_mulSingle σ a _ _ (hω z)]`. Establish `hc : x * GeneralLinearGroup.scalar n z = GeneralLinearGroup.scalar n z * x`. Use extensionality with `i j`.
+
+Simplify using `[GeneralLinearGroup.scalar, mul_comm]`. Use `show f.1.1 (x * GeneralLinearGroup.scalar n z) = (ω z : ℂ) • f.1.1 x`. Rewrite using `[hc, ← h1]`. Simplify using `using h4`.
+-/
 theorem hasCentralChar_multiProd {α n : Type} [Fintype α] [LinearOrder α] [Fintype n] [DecidableEq n]
     {c : α → Type} [∀ a, Fintype (c a)] [∀ a, DecidableEq (c a)] (e : (Σ a, c a) ≃ n)
     {X : α → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
@@ -100,6 +133,17 @@ theorem hasCentralChar_multiProd {α n : Type} [Fintype α] [LinearOrder α] [Fi
   rw [hc, ← h1]
   simpa using h4
 
+/- English proof (translation)
+Introduce `hG k _ _ _ _ α _ _ m _ _ n _ _ e X _ _ ρ χ hs hi`. Introduce and unpack `⟨r, d, e', a, ha, Y, _, _, τ, hτ, hsub, hact⟩`. Take `⟨b, f, g, s, hrow, hcol⟩` from `exists_cell_of_isSubquotient (hG k).1 (hG k).2 e e' hs (fun i => hasFiniteLength_of_isIrreducible (hi i)) hτ hsub`. Establish `hsum : ∑ i, b.1 i a = 1` using `by simpa [ha] using b.2.2 a`. Take `⟨i, -, hi0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.trans_ne one_ne_zero)`.
+
+Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun j => b.1 j a) (Finset.mem_univ i)`. Establish `hi1 : b.1 i a = 1` using `by simp only at hsplit; omega`. Establish `hz : ∀ j, j ≠ i → IsEmpty (Fin (b.1 j a))` using `fun j hj => by`. Establish `h0 : ∑ j ∈ Finset.univ.erase i, b.1 j a = 0` using `by simp only at hsplit; omega`. Rewrite using `[Finset.sum_eq_zero_iff.1 h0 j (Finset.mem_erase.2 ⟨hj, Finset.mem_univ j⟩)]`.
+
+Use `infer_instance`. Take `⟨ω, -, hω⟩` from `LocGL.exists_smooth_hasCentralChar (s i a).smooth (s i a).irr`. Establish `hcen` using `hasCentralChar_multiProd (g a) (fun j => (s j a).ρ) i hz hω`. Choose the witnesses or unpack the hypotheses as in `rfl : χ = ω := by`. Use `Model.nontrivial_of_isIrreducible hτ` as an intermediate fact.
+
+Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Use `MonoidHom.ext fun z => ?_` and prove the remaining obligations. Establish `h1` using `Model.scalar_of_isSubquotient hcol (piTensor_mulSingle (fun j => multiProd (g j) fun i => (s i j).ρ) a _ _ (hcen z)) y`. Rewrite `h1` using `[hact, det_scalar_one ha]`. Conclude with `Units.ext (smul_left_injective ℂ hy h1)`.
+
+Take `⟨Z, _, _, υ, hυ, hυs⟩` from `IrrSubquot.exists_irreducible_subquotient _ _ (piTensor fun j => (s i j).ρ) (nontrivial_piTensor _ fun j => Model.nontrivial_of_isIrreducible (s i j).irr)`. Use `⟨i, r, b.1 i, f i, a, hi1, Z, _, _, υ, hυ, hυs.trans (hrow i), fun h y => ?_⟩` and prove the remaining obligations. Use `Model.scalar_of_isSubquotient hυs (piTensor_mulSingle (fun j => (s i j).ρ) a h _ fun v => ?_) y` and prove the remaining obligations. Use `conv_lhs => rw [eq_scalar_det hi1 h]`. Conclude with `hω _ v`.
+-/
 theorem exists_inSupport_of_multiProd : GlobalTheory.Published.GeometricLemma → ∀ (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α : Type) [Fintype α] [LinearOrder α]
     (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] (n : Type) [Fintype n] [DecidableEq n]

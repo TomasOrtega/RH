@@ -46,6 +46,9 @@ section Point
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (hI : SIso D.s (sOf hF))
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 (D.mem u').A.T_prime.ne_zero`.
+-/
 theorem tu_ne (u' : D.what₂.Word) : ((Tu D u' : ℕ) : D.host.E) ≠ 0 :=
   Nat.cast_ne_zero.2 (D.mem u').A.T_prime.ne_zero
 
@@ -141,6 +144,11 @@ section Lemmas
 
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_nonneg fun i _ => ?_` and prove the remaining obligations. Use `first`. Consider the case `(rw [inner_self_eq_norm_sq_to_K, ← Complex.ofReal_pow, Complex.ofReal_re]; positivity)`.
+
+Consider the case `exact inner_self_nonneg (𝕜 := ℂ)`. Consider the case `simp`.
+-/
 theorem hsNormSq_nonneg {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : 0 ≤ hsNormSq A := by
   unfold hsNormSq hsInner
@@ -151,6 +159,11 @@ theorem hsNormSq_nonneg {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpa
     | exact inner_self_nonneg (𝕜 := ℂ)
     | simp
 
+/- English proof (translation)
+Unfold `hsNormSq hsInner`. Simplify using `only [ContinuousLinearMap.smul_apply, inner_smul_left, inner_smul_right]`. Establish `hx : ∀ z : ℂ, (starRingEnd ℂ) c * (c * z) = (Complex.normSq c : ℂ) * z` using `fun z => by`. Rewrite using `[← mul_assoc, Complex.normSq_eq_conj_mul_self]`. Establish `hy : ∀ z : ℂ, c * ((starRingEnd ℂ) c * z) = (Complex.normSq c : ℂ) * z` using `fun z => by`.
+
+Rewrite using `[← mul_assoc, Complex.mul_conj]`. Simplify using `only [hx, hy]`. Rewrite using `[← Finset.mul_sum, Complex.re_ofReal_mul]`.
+-/
 theorem hsNormSq_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (c : ℂ) (A : Wq →L[ℂ] Wp) :
     hsNormSq (c • A) = Complex.normSq c * hsNormSq A := by
@@ -163,6 +176,9 @@ theorem hsNormSq_smul {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace
   simp only [hx, hy]
   rw [← Finset.mul_sum, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Unfold `IsQuotMeas at h ⊢`. Introduce `f hf`. Rewrite using `[h f hf]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ hT, ← mul_assoc, ENNReal.inv_mul_cancel h0 hT, one_mul]`.
+-/
 theorem isQuotMeas_smul {k r : ℕ} {μG μS ν : Measure (Formalism.QuantumDeterminants.Mt k r)} (h : IsQuotMeas μG μS ν) {c : ENNReal}
     (h0 : c ≠ 0) (hT : c ≠ ⊤) : IsQuotMeas μG (c • μS) (c⁻¹ • ν) := by
   unfold IsQuotMeas at h ⊢
@@ -171,6 +187,9 @@ theorem isQuotMeas_smul {k r : ℕ} {μG μS ν : Measure (Formalism.QuantumDete
   simp only [lintegral_smul_measure, smul_eq_mul]
   rw [lintegral_const_mul' _ _ hT, ← mul_assoc, ENNReal.inv_mul_cancel h0 hT, one_mul]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.LocS.J Formalism.MainNotions.S.ampJ`. Rewrite using `[MeasureTheory.integral_smul_measure, Complex.coe_smul]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem locJ_smul {k r : ℕ} {W : LocW k r} (A : LocS W) (ν : Measure (Formalism.QuantumDeterminants.Mt k r)) (c : ENNReal)
     (γ : MatKR k r) : A.J (c • ν) γ = ((c.toReal : ℝ) : ℂ) • A.J ν γ := by
   unfold Formalism.MainNotions.S.LocS.J Formalism.MainNotions.S.ampJ
@@ -183,6 +202,13 @@ section Clauses
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (hI : SIso D.s (sOf hF)) {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Unfold `JtOf`. Use `split_ifs with h`. Establish `hs : ¬ h.choose.relevant`. Introduce `hr`. Apply `hn` to reduce the goal to its premises.
+
+Rewrite using `[hI.relevant t]`. Unfold `Formalism.L2.SG.TermOp.GTerm.relevant at hr`. Rewrite `hr` using `[h.choose_spec]`. Conclude with `hr`. Establish `h0` using `Formalism.L2.SG.TermOp.Vanish.ooVanish_of hA Formalism.L2.SG.Pf.ginfUnimod_holds Formalism.L2.SG.Pf.nLamNinf_holds hK Formalism.L2.SG.Pf.psiInfChar_holds Formalism.L2.SG.Pf.rClosedC_holds Formalism.L2.SG.Pf.roDiscreteC_holds h3 h4 Y h.choose hs`.
+
+Unfold `Formalism.L2.SG.TermOp.ampN`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem jt_irr (hA : Formalism.L2.SG.TermOp.Vanish.AvgCore) (hK : Formalism.L2.SG.TermOp.Vanish.ChiTrivialC)
     (h3 : Formalism.L2.SG.TermOp.Vanish.RCocompactC) (h4 : Formalism.L2.SG.TermOp.Vanish.NonRelCharC)
     {u u' : D.what₂.Word} (t : D.s.Term u u') (hn : ¬ D.s.relevant t) : JtOf hI t = 0 := by
@@ -202,6 +228,15 @@ theorem jt_irr (hA : Formalism.L2.SG.TermOp.Vanish.AvgCore) (hK : Formalism.L2.S
     simp
   · rfl
 
+/- English proof (translation)
+Unfold `volRC`. Use `split_ifs with h`. Establish `hs` using `h.2.2.choose_spec`. Establish `hr : (h.2.2.choose).relevant` using `by show (h.2.2.choose).toTerm.relevant`. Rewrite using `[hs]`.
+
+Conclude with `(hI.relevant t).1 h.1`. Establish `hg : (h.2.2.choose).G ≠ 0` using `by show (h.2.2.choose).toTerm.G ≠ 0`. Rewrite using `[hs]`. Introduce `h0`. Apply `h.2.1` to reduce the goal to its premises.
+
+Apply `(algebraMap D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[gterm_val hI t, h0, map_zero]`. Establish `hp` using `hPin _ hr hg`. Unfold `covR`. Rewrite using `[dif_pos hp]`.
+
+Conclude with `hCv _ hr hg _ _ _ hp.choose_spec.1 hp.choose_spec.2.1 hp.choose_spec.2.2`. Conclude with `one_pos`.
+-/
 theorem volRC_pos {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : CovolPos (Y := Y) u u') (t : D.s.Term u u') :
     0 < volRC hI t := by
   unfold volRC
@@ -224,6 +259,9 @@ theorem volRC_pos {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : C
     exact hCv _ hr hg _ _ _ hp.choose_spec.1 hp.choose_spec.2.1 hp.choose_spec.2.2
   · exact one_pos
 
+/- English proof (translation)
+Rewrite using `[ptC, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem ptC_spec {u u' : D.what₂.Word} (t : D.s.Term u u') (τ : D.what₂.Tau)
     (h : ∃ p, RelPt D (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ) p) :
     RelPt D (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ) (ptC hI C t τ) := by
@@ -232,16 +270,27 @@ theorem ptC_spec {u u' : D.what₂.Word} (t : D.s.Term u u') (τ : D.what₂.Tau
 
 variable (hB : WuBessel C)
 
+/- English proof (translation)
+Unfold `P1 j1`. Conclude with `Finset.prod_nonneg fun τ _ => Formalism.L2.SG.LoopTerm.hsNormSq_nonneg _`.
+-/
 theorem productNorm_nonneg {u u' : D.what₂.Word} (t : D.s.Term u u') : 0 ≤ P1 hI C hB t := by
   unfold P1 j1
   exact Finset.prod_nonneg fun τ _ => Formalism.L2.SG.LoopTerm.hsNormSq_nonneg _
 
+/- English proof (translation)
+Unfold `thetaS`. Use `split_ifs with h`. Conclude with `Real.rpow_pos_of_pos (div_pos (mul_pos (pow_pos (volRC_pos hI hPin hCv t) 2) h.2) h.1) _`. Conclude with `one_pos`.
+-/
 theorem thetaS_pos {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : CovolPos (Y := Y) u u') (t : D.s.Term u u') : 0 < thetaS hI C hB t := by
   unfold thetaS
   split_ifs with h
   · exact Real.rpow_pos_of_pos (div_pos (mul_pos (pow_pos (volRC_pos hI hPin hCv t) 2) h.2) h.1) _
   · exact one_pos
 
+/- English proof (translation)
+Establish `hν : RMeas D (locW C u u' τ) (gamR hI C t τ) 1 (nu1 hI C t τ)`. Unfold `nu1`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Take `⟨p, μR, hp, hq⟩` from `hν`.
+
+Establish `hθ` using `thetaS_pos hI C hB hPin hCv t`. Use `⟨p, μR, hp, ?_⟩` and prove the remaining obligations. Rewrite `hq` using `[ENNReal.ofReal_one, one_smul]`. Conclude with `isQuotMeas_smul hq (ENNReal.ofReal_pos.2 hθ).ne' ENNReal.ofReal_ne_top`.
+-/
 theorem rmeas_nuR {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : CovolPos (Y := Y) u u') (t : D.s.Term u u') (τ : D.what₂.Tau)
     (h : ∃ ν, RMeas D (locW C u u' τ) (gamR hI C t τ) 1 ν) :
     RMeas D (locW C u u' τ) (gamR hI C t τ) (thetaS hI C hB t) (nuR hI C hB t τ) := by
@@ -255,6 +304,21 @@ theorem rmeas_nuR {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : C
   rw [ENNReal.ofReal_one, one_smul] at hq
   exact isQuotMeas_smul hq (ENNReal.ofReal_pos.2 hθ).ne' ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+Establish `hθ` using `thetaS_pos hI C hB hPin hCv t`. Establish `hv` using `volRC_pos hI hPin hCv t`. Establish `hterm : ∀ τ, hsNormSq ((locS hB u u' τ).J (nuR hI C hB t τ) (gamR hI C t τ)) = (thetaS hI C hB t)⁻¹ ^ 2 * j1 hI C hB t τ`. Introduce `τ`. Unfold `nuR j1`.
+
+Rewrite using `[locJ_smul, hsNormSq_smul, Complex.normSq_ofReal, ENNReal.toReal_inv, ENNReal.toReal_ofReal hθ.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `hP1 : ∏ τ, j1 hI C hB t τ = P1 hI C hB t` using `rfl`. Rewrite using `[Finset.prod_congr rfl (fun τ _ => hterm τ), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hP1]`. Distinguish the cases in `hpos : 0 < hsNormSq (JtOf hI t) ∧ 0 < P1 hI C hB t`.
+
+Establish `hcard : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 hTau`. Establish `hn : 2 * Fintype.card D.what₂.Tau ≠ 0` using `by omega`. Establish `hx : 0 ≤ volRC hI t ^ 2 * P1 hI C hB t / hsNormSq (JtOf hI t)` using `div_nonneg (mul_nonneg (sq_nonneg _) hpos.2.le) hpos.1.le`. Establish `h2f : thetaS hI C hB t ^ (2 * Fintype.card D.what₂.Tau) = volRC hI t ^ 2 * P1 hI C hB t / hsNormSq (JtOf hI t)`. Unfold `thetaS`.
+
+Rewrite using `[if_pos hpos]`. Rewrite using `[show (1 : ℝ) / (2 * Fintype.card D.what₂.Tau) = ((2 * Fintype.card D.what₂.Tau : ℕ) : ℝ)⁻¹ by push_cast; ring]`. Conclude with `Real.rpow_inv_natCast_pow hx hn`. Rewrite using `[← pow_mul, inv_pow, h2f]`. Establish `h1 : hsNormSq (JtOf hI t) ≠ 0` using `hpos.1.ne'`.
+
+Establish `h2 : P1 hI C hB t ≠ 0` using `hpos.2.ne'`. Establish `h3 : volRC hI t ≠ 0` using `hv.ne'`. Clear the denominators using the available nonvanishing facts. Establish `hs0 : hsNormSq (JtOf hI t) = 0 ∧ P1 hI C hB t = 0`. Establish `a` using `Formalism.L2.SG.LoopTerm.hsNormSq_nonneg (JtOf hI t)`.
+
+Establish `b` using `productNorm_nonneg hI C hB t`. Establish `hz` using `hZ t hG hr`. Distinguish the cases in `ha : hsNormSq (JtOf hI t) = 0`. Conclude with `⟨ha, hz.1 ha⟩`. Establish `hb : P1 hI C hB t ≠ 0` using `fun hb => ha (hz.2 hb)`.
+
+Conclude with `absurd ⟨lt_of_le_of_ne a (Ne.symm ha), lt_of_le_of_ne b (Ne.symm hb)⟩ hpos`. Rewrite using `[hs0.1, hs0.2]`. Simplify using the standard rewrite rules.
+-/
 theorem jnorm {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : CovolPos (Y := Y) u u') (hZ : JZeroIff hI C hB u u')
     (hTau : Nonempty D.what₂.Tau) (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) (hr : D.s.relevant t) :
     hsNormSq (JtOf hI t) = volRC hI t ^ 2 *
@@ -306,17 +370,30 @@ open scoped ComplexConjugate
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF)) {θ : ℝ}
   (C : Choice X θ)
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [Matrix.dotProduct_mulVec, Matrix.star_mulVec]`. Consider the case `rw [dotProduct_mulVec, Matrix.star_mulVec]`.
+-/
 theorem star_dot_conjT {n m : Type*} [Fintype n] [Fintype m] (Q : Matrix n m ℂ) (x : m → ℂ) (y : n → ℂ) :
     star x ⬝ᵥ (Qᴴ *ᵥ y) = star (Q *ᵥ x) ⬝ᵥ y := by
   first
     | rw [Matrix.dotProduct_mulVec, Matrix.star_mulVec]
     | rw [dotProduct_mulVec, Matrix.star_mulVec]
 
+/- English proof (translation)
+Simplify using `only [hJ]`. Apply the tactic sequence `simp [Matrix.mulVec_smul, star_smul] <;> ring`.
+-/
 theorem hJ_smul_real {n : ℕ} (ε : Fin n → Bool) (r s : ℝ) (x y : Fin n → ℂ) :
     hJ ε ((r : ℂ) • x) ((s : ℂ) • y) = ((r * s : ℝ) : ℂ) * hJ ε x y := by
   simp only [hJ]
   simp [Matrix.mulVec_smul, star_smul] <;> ring
 
+/- English proof (translation)
+Establish `hk : D.host.ka / (2 * Real.pi) = D.host.rdE⁻¹`. Simplify using `only [Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v]`. Break down `eq_or_ne D.host.rdE 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Establish `hπ : Real.pi ≠ 0` using `Real.pi_ne_zero`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hr : 0 ≤ D.host.rdE` using `Real.rpow_nonneg (abs_nonneg _) _`. Unfold `frS rhoF`. Rewrite using `[← Complex.ofReal_pow, hk]`. Use `congr 1`.
+
+Rewrite using `[Real.rpow_neg hr, show (D.R.rS : ℝ) - ((a : ℕ) : ℝ) = ((D.R.rS - a.val : ℕ) : ℝ) by`. Rewrite using `[Nat.cast_sub h.le], Real.rpow_natCast, inv_pow]`.
+-/
 theorem frS_pow (D : D7) (a : Fin (D.R.rS + 1)) (h : a.val < D.R.rS) :
     frS D ^ (D.R.rS - a.val) = ((rhoF D a : ℝ) : ℂ) := by
   have hk : D.host.ka / (2 * Real.pi) = D.host.rdE⁻¹ := by
@@ -332,9 +409,21 @@ theorem frS_pow (D : D7) (a : Fin (D.R.rS + 1)) (h : a.val < D.R.rS) :
   rw [Real.rpow_neg hr, show (D.R.rS : ℝ) - ((a : ℕ) : ℝ) = ((D.R.rS - a.val : ℕ) : ℝ) by
     rw [Nat.cast_sub h.le], Real.rpow_natCast, inv_pow]
 
+/- English proof (translation)
+Simplify using `[rhoF]`.
+-/
 theorem rhoF_last (D : D7) : rhoF D (Fin.last D.R.rS) = 1 := by
   simp [rhoF]
 
+/- English proof (translation)
+Take `⟨_, hQQi, _, hfr⟩` from `C.isT τ`. Unfold `Formalism.QuantumDeterminants.fvec`. Use `split_ifs with h`. Establish `e` using `(hfr ⟨a.val, h⟩ ⟨a.val, h⟩ rfl).1`. Unfold `Formalism.QuantumDeterminants.bvec`.
+
+Rewrite using `[e, frS_pow D a h]`. Establish `hv : (X.Fu u).fvec a = X.eX ⟨a.val, h⟩`. Establish `ha : a = Fin.castSucc ⟨a.val, h⟩` using `Fin.ext rfl`. Use `conv_lhs => rw [ha]`. Rewrite using `[FlagG.fvec, Fin.snoc_castSucc, X.Fu_e u]`.
+
+Rewrite using `[hv]`. Both sides reduce to the same expression. Establish `ha : a = Fin.last D.R.rS` using `Fin.ext (by rw [Fin.val_last]; have := a.isLt; omega)`. Substitute `ha` using the available equality. Rewrite using `[rhoF_last, Complex.ofReal_one, one_smul]`.
+
+Unfold `zB`. Rewrite using `[Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec, FlagG.fvec, Fin.snoc_last, X.flagZVector u]`. Both sides reduce to the same expression.
+-/
 theorem Q_fvec (u : D.what₂.Word) (τ : D.what₂.Tau) (a : Fin (D.R.rS + 1)) :
     C.Q τ *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u τ) a =
       ((rhoF D a : ℝ) : ℂ) • rv X.B.I (vOf X τ) (X.crd ((X.Fu u).fvec a)) := by
@@ -357,6 +446,21 @@ theorem Q_fvec (u : D.what₂.Word) (τ : D.what₂.Tau) (a : Fin (D.R.rS + 1)) 
     rw [Matrix.mulVec_mulVec, hQQi, Matrix.one_mulVec, FlagG.fvec, Fin.snoc_last, X.flagZVector u]
     rfl
 
+/- English proof (translation)
+Introduce `t τ a b`. Take `⟨_, hQQi, hH, _⟩` from `C.isT τ`. Establish `hlin : IsFrameLift hI t (linOf hI t)`. Unfold `linOf`. Rewrite using `[dif_pos (hL t)]`.
+
+Conclude with `(hL t).choose_spec`. Establish `hrat : Formalism.L2.SG.TermOp.RatLink X (ptR hI t) (linOf hI t)`. Establish `hex` using `Formalism.L2.SG.Pf.ratPt_holds D X (linOf hI t) hlin.1`. Unfold `ptR`. Rewrite using `[dif_pos hex]`.
+
+Conclude with `hex.choose_spec`. Take `⟨M, _, hM1, _, hM3⟩` from `hrat`. Establish `hA : Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ) a b = hJ (X.B.I.ε (vOf X τ)) (C.Q τ *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u τ) a) (uMat ((ptR hI t).1 (vOf X τ)) *ᵥ (C.Q τ *ᵥ Formalism.Quantu …`. Unfold `Formalism.QuantumDeterminants.Zhat Formalism.QuantumDeterminants.herm gamR Formalism.L2.SG.RealObj.trG hJ`. Rewrite using `[← hH, ← star_dot_conjT]`.
+
+Use `congr 1`. Simplify using `only [Matrix.mulVec_mulVec]`. Use `congr 1`. Rewrite using `[show (C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * C.Q τ * (C.Qi τ * uMat ((ptR hI t).1 (vOf X τ)) * C.Q τ) = (C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * C.Qi τ) * uMat ((ptR hI t).1 (vOf X τ)) * C.Q τ by`. Simplify using `only [Matrix.mul_assoc], hQQi]`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Establish `hC : ∀ y, uMat ((ptR hI t).1 (vOf X τ)) *ᵥ rv X.B.I (vOf X τ) y = rv X.B.I (vOf X τ) ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y)`. Introduce `y`. Rewrite using `[hM1 (vOf X τ)]`. Conclude with `Formalism.L2.SG.Pf.Level.rv_mulVec X (vOf X τ) _ y`.
+
+Establish `hfr : linOf hI t ((X.Fu u').fvec b) = (repF (tc hI t)).fl.fvec b`. Use `Fin.lastCases ?_ (fun b' => ?_) b` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `hlin.2.2`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+
+Conclude with `hlin.2.1 b'`. Rewrite using `[hA, Q_fvec C u τ a, Q_fvec C u' τ b, Matrix.mulVec_smul, hC, ← hM3, hfr, hJ_smul_real, Formalism.L2.SG.Pf.Level.hJ_rv, X.φ_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Use `congrArg (fun z => ((rhoF D a * rhoF D b : ℝ) : ℂ) * embS D τ z) ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrFun (congrFun (zhatL_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) (repF (tc hI t))) a) b).symm` and prove the remaining obligations. Conclude with `Formalism.L2.SG.PoincareInHH.Cut.hform_crd X _ _`.
+-/
 theorem gram_holds {u u' : D.what₂.Word} (hL : FrameLiftEx hI u u') : GramTr W hI C u u' := by
   intro t τ a b
   obtain ⟨_, hQQi, hH, _⟩ := C.isT τ
@@ -406,9 +510,19 @@ section Witt
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (hI : SIso D.s (sOf hF))
 
+/- English proof (translation)
+Introduce `t` and use `Formalism.L2.SG.Pf.WittFlags.flag_witt (tu_ne u') rfl (X.Fu u') (repF (tc hI t)).fl`.
+-/
 theorem frameLiftEx_holds (u u' : D.what₂.Word) : FrameLiftEx hI u u' := fun t =>
   Formalism.L2.SG.Pf.WittFlags.flag_witt (tu_ne u') rfl (X.Fu u') (repF (tc hI t)).fl
 
+/- English proof (translation)
+Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_le_f`. Use `first`. Consider the case `(unfold Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n; positivity)`.
+
+Consider the case `(unfold Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n; omega)`. Consider the case `(simp [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]; omega)`. Consider the case `(simp [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n])`. Consider the case `(unfold Formalism.BasicNotions.Ranks.f Formalism.HC.Frame.n; positivity)`. Consider the case `(unfold Formalism.BasicNotions.Ranks.f Formalism.HC.Frame.n; omega)`.
+
+Consider the case `(simp [Formalism.BasicNotions.Ranks.f, Formalism.HC.Frame.n])`. Consider the case `(unfold Formalism.BasicNotions.Ranks.f; positivity)`.
+-/
 theorem tau_nonempty (D : D7) : Nonempty D.what₂.Tau := by
   rw [← Fintype.card_pos_iff, D.what₂.card_Tau]
   have h1 := D.R.two_le_m
@@ -429,6 +543,9 @@ section UHmem
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (hI : SIso D.s (sOf hF)) {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Establish `h1 : Qiᴴ * Qᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQQi, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Qᴴ * J * Q := by rw [h1, hQQi, Matrix.mul_one, Matrix.mul_one, hU]`.
+-/
 private theorem conjTranspose_QiUQ_preserves_QJQ {n m : ℕ} (J : Matrix (Fin n) (Fin n) ℂ) (Q : Matrix (Fin n) (Fin m) ℂ)
     (Qi : Matrix (Fin m) (Fin n) ℂ) (U : Matrix (Fin n) (Fin n) ℂ) (hQQi : Q * Qi = 1) (hU : Uᴴ * J * U = J) :
     (Qi * U * Q)ᴴ * (Qᴴ * J * Q) * (Qi * U * Q) = Qᴴ * J * Q := by
@@ -438,6 +555,9 @@ private theorem conjTranspose_QiUQ_preserves_QJQ {n m : ℕ} (J : Matrix (Fin n)
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Qᴴ * J * Q := by rw [h1, hQQi, Matrix.mul_one, Matrix.mul_one, hU]
 
+/- English proof (translation)
+Use `show (Qi * _ * Q)ᴴ * H * (Qi * _ * Q) = H`. Substitute `hH` using the available equality. Conclude with `conjTranspose_QiUQ_preserves_QJQ _ Q Qi _ hQQi g.2`.
+-/
 theorem trG_mem {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ)
     (H : Matrix (Fin m) (Fin m) ℂ) (hQQi : Q * Qi = 1) (hH : Qᴴ * Formalism.REAL.Jm ε * Q = H) (g : Formalism.REAL.UJ ε) :
     Formalism.L2.SG.RealObj.trG Q Qi g ∈ Formalism.QuantumDeterminants.UH H := by
@@ -445,6 +565,9 @@ theorem trG_mem {n m : ℕ} {ε : Fin n → Bool} (Q : Matrix (Fin n) (Fin m) �
   subst hH
   exact conjTranspose_QiUQ_preserves_QJQ _ Q Qi _ hQQi g.2
 
+/- English proof (translation)
+Unfold `gamR`. Take `⟨_, hQQi, hH, _⟩` from `C.isT τ`. Conclude with `trG_mem (C.Q τ) (C.Qi τ) _ hQQi hH ((ptR hI t).1 (vOf X τ))`.
+-/
 theorem gamR_mem {u u' : D.what₂.Word} (t : D.s.Term u u') (τ : D.what₂.Tau) :
     gamR hI C t τ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := by
   unfold gamR
@@ -455,6 +578,9 @@ end UHmem
 
 section Scale
 
+/- English proof (translation)
+Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero _))`.
+-/
 theorem rdE_pos (D : D7) : 0 < D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
   apply Real.rpow_pos_of_pos
@@ -466,6 +592,11 @@ def scaleBl : List (K × ℕ) → ℕ → List (ℂ × ℕ)
   | [], _ => []
   | (t, s) :: bs, o => (c (2 * o + s - 1) * e t, s) :: scaleBl bs (o + s)
 
+/- English proof (translation)
+Proceed by induction on `bs generalizing o i j with`. Consider the case `nil => simp [scaleBl, ptEntry]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [scaleBl, ptEntry]`.
+
+Use `split_ifs with h1 h2 h3`. Rewrite using `[show 2 * o + s - 1 = 2 * o + i + j by omega]`. Simplify using the standard rewrite rules. Rewrite using `[ih, show 2 * (o + s) + (i - s) + (j - s) = 2 * o + i + j by omega]`. Simplify using the standard rewrite rules.
+-/
 theorem ptEntry_scaleBl (bs : List (K × ℕ)) (o i j : ℕ) :
     ptEntry (scaleBl e c bs o) i j = c (2 * o + i + j) * e (ptEntry bs i j) := by
   induction bs generalizing o i j with
@@ -479,6 +610,9 @@ theorem ptEntry_scaleBl (bs : List (K × ℕ)) (o i j : ℕ) :
     · rw [ih, show 2 * (o + s) + (i - s) + (j - s) = 2 * o + i + j by omega]
     · simp
 
+/- English proof (translation)
+Proceed by induction on `bs generalizing o with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `[scaleBl, ih]`.
+-/
 theorem snd_scaleBl (bs : List (K × ℕ)) (o : ℕ) : (scaleBl e c bs o).map Prod.snd = bs.map Prod.snd := by
   induction bs generalizing o with
   | nil => rfl
@@ -486,6 +620,11 @@ theorem snd_scaleBl (bs : List (K × ℕ)) (o : ℕ) : (scaleBl e c bs o).map Pr
     obtain ⟨t, s⟩ := b
     simp [scaleBl, ih]
 
+/- English proof (translation)
+Proceed by induction on `bs generalizing o with`. Consider the case `nil => simp [scaleBl]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Introduce `x hx`.
+
+Simplify using `only [scaleBl, List.mem_cons] at hx`. Break down `hx with rfl | hx` into its components or cases. Establish `hts` using `hb (t, s) (List.mem_cons_self ..)`. Conclude with `⟨mul_ne_zero (hc _) ((map_ne_zero e).2 hts.1), hts.2⟩`. Conclude with `ih (fun b hb' => hb b (List.mem_cons_of_mem _ hb')) _ x hx`.
+-/
 theorem mem_scaleBl (hc : ∀ n, c n ≠ 0) (bs : List (K × ℕ)) (hb : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) (o : ℕ) :
     ∀ b ∈ scaleBl e c bs o, b.1 ≠ 0 ∧ 1 ≤ b.2 := by
   induction bs generalizing o with
@@ -502,12 +641,30 @@ theorem mem_scaleBl (hc : ∀ n, c n ≠ 0) (bs : List (K × ℕ)) (hb : ∀ b �
 def scalePt (hc : ∀ n, c n ≠ 0) {N : ℕ} (w : Point K N) : Point ℂ N :=
   ⟨scaleBl e c w.1 0, mem_scaleBl e c hc w.1 w.2.1 0, by rw [snd_scaleBl]; exact w.2.2⟩
 
+/- English proof (translation)
+Apply the tactic sequence `show ptEntry (scaleBl e c w.1 0) a.val b.val = _`. Rewrite using `[ptEntry_scaleBl]`. Simplify using `[ptMat]`.
+-/
 theorem ptMat_scalePt (hc : ∀ n, c n ≠ 0) {N : ℕ} (w : Point K N) (a b : Fin N) :
     ptMat (scalePt e c hc w) a b = c (a + b) * e (ptMat w a b) := by
   show ptEntry (scaleBl e c w.1 0) a.val b.val = _
   rw [ptEntry_scaleBl]
   simp [ptMat]
 
+/- English proof (translation)
+Take `⟨L, U, hL, hU, hZ⟩` from `h`. Establish `hi1 : Matrix.diagonal (fun i => (ρ i)⁻¹) * Matrix.diagonal ρ = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `inv_mul_cancel₀ (hρ i)`. Establish `hi2 : Matrix.diagonal ρ * Matrix.diagonal (fun i => (ρ i)⁻¹) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `mul_inv_cancel₀ (hρ i)`. Use `⟨Matrix.diagonal ρ * e.mapMatrix L * Matrix.diagonal (fun i => (ρ i)⁻¹), Matrix.diagonal (fun i => (ρ i)⁻¹) * e.mapMatrix U * Matrix.diagonal ρ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, (hL i j).1 hij]`.
+
+Substitute `hij` using the available equality. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, (hL i i).2 rfl, hρ i]`. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, (hU i j).1 hij]`.
+
+Substitute `hij` using the available equality. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, (hU i i).2 rfl, hρ i]`. Establish `hP : ptMat (scalePt e c hc w) = Matrix.diagonal ρ * e.mapMatrix (ptMat w) * Matrix.diagonal ρ`. Use extensionality with `a b`. Rewrite using `[ptMat_scalePt, ← hρc]`.
+
+Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hZ' : (Matrix.of fun a b => ρ a * ρ b * e (Z a b)) = Matrix.diagonal ρ * e.mapMatrix Z * Matrix.diagonal ρ`. Use extensionality with `a b`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hZ', hP, hZ, map_mul, map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.diagonal fun i => (ρ i)⁻¹) (Matrix.diagonal ρ), hi1, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.diagonal ρ) (Matrix.diagonal fun i => (ρ i)⁻¹), hi2, Matrix.one_mul]`.
+-/
 theorem inCell_scale {N : ℕ} (ρ : Fin N → ℂ) (hρ : ∀ a, ρ a ≠ 0) (hc : ∀ n, c n ≠ 0) (hρc : ∀ a b, ρ a * ρ b = c (a + b))
     (Z : Matrix (Fin N) (Fin N) K) (w : Point K N) (h : IsInCell Z w) :
     IsInCell (Matrix.of fun a b => ρ a * ρ b * e (Z a b)) (scalePt e c hc w) := by
@@ -556,6 +713,11 @@ section Rel
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF)) {θ : ℝ}
   (C : Choice X θ)
 
+/- English proof (translation)
+Establish `hM : (Matrix.of fun i j => ρ i * ρ j * e (M i j)) = Matrix.diagonal ρ * e.mapMatrix M * Matrix.diagonal ρ`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, ← RingHom.map_det]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_scaled {K : Type*} [Field K] {N : ℕ} (ρ : Fin N → ℂ) (M : Matrix (Fin N) (Fin N) K) (e : K →+* ℂ) :
     (Matrix.of fun i j => ρ i * ρ j * e (M i j)).det = (∏ i, ρ i) ^ 2 * e M.det := by
   have hM : (Matrix.of fun i j => ρ i * ρ j * e (M i j)) =
@@ -566,6 +728,9 @@ theorem det_scaled {K : Type*} [Field K] {N : ℕ} (ρ : Fin N → ℂ) (M : Mat
   rw [hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, ← RingHom.map_det]
   ring
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[gram_holds W hI C (frameLiftEx_holds hI u u') t τ a b, Matrix.of_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_eq {u u' : D.what₂.Word} (t : D.s.Term u u') (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ) =
       Matrix.of fun a b => ((rhoF D a : ℝ) : ℂ) * ((rhoF D b : ℝ) : ℂ) *
@@ -575,16 +740,27 @@ theorem zhat_eq {u u' : D.what₂.Word} (t : D.s.Term u u') (τ : D.what₂.Tau)
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `rhoF`. Conclude with `Real.rpow_pos_of_pos (rdE_pos D) _`.
+-/
 theorem rhoF_pos (D : D7) (a : Fin (D.R.rS + 1)) : 0 < rhoF D a := by
   unfold rhoF
   exact Real.rpow_pos_of_pos (rdE_pos D) _
 
 def cRho (D : D7) (n : ℕ) : ℂ := ((D.host.rdE ^ (-(2 * (D.R.rS : ℝ) - n)) : ℝ) : ℂ)
 
+/- English proof (translation)
+Unfold `cRho`. Conclude with `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (rdE_pos D) _).ne'`.
+-/
 theorem cRho_ne (D : D7) (n : ℕ) : cRho D n ≠ 0 := by
   unfold cRho
   exact Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos (rdE_pos D) _).ne'
 
+/- English proof (translation)
+Unfold `cRho`. Rewrite using `[← Complex.ofReal_mul]`. Use `congr 1`. Unfold `rhoF`. Rewrite using `[← Real.rpow_add (rdE_pos D)]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_mul (D : D7) (a b : Fin (D.R.rS + 1)) :
     ((rhoF D a : ℝ) : ℂ) * ((rhoF D b : ℝ) : ℂ) = cRho D (a + b) := by
   unfold cRho
@@ -598,6 +774,11 @@ theorem rho_mul (D : D7) (a b : Fin (D.R.rS + 1)) :
 
 include W in
 
+/- English proof (translation)
+Establish `hc` using `pt_cellC W hI hAt t hG hr`. Establish `h` using `inCell_scale (embS D τ) (cRho D) (fun a => ((rhoF D a : ℝ) : ℂ)) (fun a => Complex.ofReal_ne_zero.2 (rhoF_pos D a).ne') (cRho_ne D) (rho_mul D) _ _ hc`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Unfold `Formalism.MainNotions.S.ZhatO`.
+
+Rewrite using `[zhat_eq W hI C t τ, Matrix.of_apply, Matrix.of_apply]`. Unfold `ZhatOM`. Rewrite using `[map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inCell_real (hAt : ∀ u u', AtSome Y u u') {u u' : D.what₂.Word} (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0)
     (hr : D.s.relevant t) (τ : D.what₂.Tau) :
     IsInCell (Formalism.MainNotions.S.ZhatO D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ))
@@ -620,6 +801,15 @@ section GfSec
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF)) {θ : ℝ}
   (C : Choice X θ)
 
+/- English proof (translation)
+Take `⟨_, _, hH, _⟩` from `C.isT τ`. Establish `hz : Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u τ) (Fin.last D.R.rS) = zB X (C.Qi τ) u τ`. Unfold `Formalism.QuantumDeterminants.fvec`. Rewrite using `[dif_neg (by simp)]`. Establish `hQ` using `Q_fvec C u τ (Fin.last D.R.rS)`.
+
+Rewrite `hQ` using `[hz, rhoF_last, Complex.ofReal_one, one_smul]`. Establish `hl : (X.Fu u).fvec (Fin.last D.R.rS) = X.zu u`. Rewrite using `[FlagG.fvec, Fin.snoc_last, X.flagZVector u]`. Rewrite `hQ` using `[hl]`. Unfold `Formalism.QuantumDeterminants.Tz Formalism.QuantumDeterminants.herm`.
+
+Rewrite using `[← hH, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, star_dot_conjT, hQ]`. Establish `h2` using `Formalism.L2.SG.Pf.Level.hJ_rv X (vOf X τ) (X.crd (X.zu u)) (X.crd (X.zu u))`. Unfold `hJ at h2`. Rewrite using `[h2, X.φ_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Establish `h3` using `Formalism.L2.SG.PoincareInHH.Cut.hform_crd X (X.zu u) (X.zu u)`.
+
+Establish `h4 : (VS D).hT (X.zu u) (X.zu u) = -((Tu D u : ℕ) : D.host.E)`. Use `(X.Fu u).z_norm` as an intermediate fact. Rewrite `this` using `[X.flagZVector u]`. Then use the resulting hypothesis. Rewrite using `[show X.ιE (Formalism.L2.SG.Pf.Level.hE X (X.crd (X.zu u)) (X.crd (X.zu u))) = (VS D).hT (X.zu u) (X.zu u) from h3, h4]`. Simplify using the standard rewrite rules.
+-/
 theorem tz_zB (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ) = ((Tu D u : ℕ) : ℝ) := by
   obtain ⟨_, _, hH, _⟩ := C.isT τ
@@ -643,6 +833,9 @@ theorem tz_zB (u : D.what₂.Word) (τ : D.what₂.Tau) :
   rw [show X.ιE (Formalism.L2.SG.Pf.Level.hE X (X.crd (X.zu u)) (X.crd (X.zu u))) = (VS D).hT (X.zu u) (X.zu u) from h3, h4]
   simp
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Dmin`. Rewrite using `[zhat_eq W hI C t τ]`. Rewrite using `[← det_scaled]`. Both sides reduce to the same expression.
+-/
 theorem dmin_eq {u u' : D.what₂.Word} (t : D.s.Term u u') (τ : D.what₂.Tau) (l : Fin (D.R.rS + 2)) :
     Formalism.QuantumDeterminants.Dmin D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ) l =
       (∏ i : Fin l.val, ((rhoF D (Fin.castLE (Nat.le_of_lt_succ l.isLt) i) : ℝ) : ℂ)) ^ 2 *
@@ -657,6 +850,9 @@ end GfSec
 
 section GfNe
 
+/- English proof (translation)
+Rewrite using `[Formalism.BasicNotions.bridge_star_holds D.R D.host x]`. Conclude with `Formalism.MainNotions.BesselShellMomentBounds.plEmb_conj D τ x`.
+-/
 theorem embS_star' (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : embS D τ (star x) = starRingEnd ℂ (embS D τ x) := by
   rw [Formalism.BasicNotions.bridge_star_holds D.R D.host x]
   exact Formalism.MainNotions.BesselShellMomentBounds.plEmb_conj D τ x
@@ -664,6 +860,9 @@ theorem embS_star' (D : D7) (τ : D.what₂.Tau) (x : D.host.E) : embS D τ (sta
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF)) {θ : ℝ}
   (C : Choice X θ)
 
+/- English proof (translation)
+Use `show (∏ i : Fin (D.R.rS + 1), ((rhoF D i : ℝ) : ℂ)) = ∏ i : Fin D.R.rS, ((rhoF D (Fin.castSucc i) : ℝ) : ℂ)`. Rewrite using `[Fin.prod_univ_castSucc, rhoF_last, Complex.ofReal_one, mul_one]`.
+-/
 theorem prod_rho_last (D : D7) :
     (∏ i : Fin (Fin.last (D.R.rS + 1)).val, ((rhoF D (Fin.castLE (Nat.le_of_lt_succ (Fin.last (D.R.rS + 1)).isLt) i) : ℝ) : ℂ)) =
       ∏ i : Fin (⟨D.R.rS, by omega⟩ : Fin (D.R.rS + 2)).val,
@@ -671,6 +870,9 @@ theorem prod_rho_last (D : D7) :
   show (∏ i : Fin (D.R.rS + 1), ((rhoF D i : ℝ) : ℂ)) = ∏ i : Fin D.R.rS, ((rhoF D (Fin.castSucc i) : ℝ) : ℂ)
   rw [Fin.prod_univ_castSucc, rhoF_last, Complex.ofReal_one, mul_one]
 
+/- English proof (translation)
+Establish `hP' : Complex.normSq (P ^ 2) ≠ 0` using `fun h0 => pow_ne_zero 2 hP (Complex.normSq_eq_zero.1 h0)`. Rewrite `h` using `[Complex.normSq_mul, Complex.normSq_mul]`. Establish `h2 : Complex.normSq (P ^ 2) * (Complex.normSq x - T * T' * Complex.normSq y) = 0`. Take the linear combination `h`. Conclude with `(mul_eq_zero.1 h2).resolve_left hP'`.
+-/
 theorem normSq_sub_scaled_eq_zero {P x y : ℂ} {T T' : ℝ}
     (h : Complex.normSq (P ^ 2 * x) - T * T' * Complex.normSq (P ^ 2 * y) = 0) (hP : P ≠ 0) :
     Complex.normSq x - T * T' * Complex.normSq y = 0 := by
@@ -682,6 +884,15 @@ theorem normSq_sub_scaled_eq_zero {P x y : ℂ} {T T' : ℝ}
 
 include W in
 
+/- English proof (translation)
+Establish `hGv : Gval (lf D (FlagOfWord W u)) (fl'Of W hI t) ≠ 0`. Rewrite using `[← G_eqC W hI t]`. Introduce `h0`. Apply `hG` to reduce the goal to its premises. Conclude with `(algebraMap D.host.F D.host.E).injective (by rw [h0, map_zero])`.
+
+Unfold `Formalism.QuantumDeterminants.Gf`. Rewrite using `[dmin_eq W hI C t τ, dmin_eq W hI C t τ, tz_zB C u τ, tz_zB C u' τ, prod_rho_last D]`. Introduce `h0`. Establish `hP0 : (∏ i : Fin (⟨D.R.rS, by omega⟩ : Fin (D.R.rS + 2)).val, ((rhoF D (Fin.castLE (Nat.le_of_lt_succ (⟨D.R.rS, by omega⟩ : Fin (D.R.rS + 2)).isLt) i) : ℝ) : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => Complex.ofReal_ne_zero.2 (rhoF_pos D _).ne'`. Establish `h1` using `normSq_sub_scaled_eq_zero h0 hP0`.
+
+Apply `hGv` to reduce the goal to its premises. Apply `(embS D τ).injective` to reduce the goal to its premises. Use `show embS D τ (Gflag (FlagOfWord W u) (fl'Of W hI t).fl) = embS D τ 0`. Unfold `Gflag Dl leadMinorE`. Rewrite using `[dif_pos le_rfl, dif_pos (Nat.le_succ _), map_zero, map_sub, map_mul, map_mul, map_mul, map_mul, embS_star' D τ, embS_star' D τ, Complex.mul_conj, Complex.mul_conj, map_natCast, map_natCast]`.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem gf_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0) (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.Gf D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamR hI C t τ) ≠ 0 := by
   have hGv : Gval (lf D (FlagOfWord W u)) (fl'Of W hI t) ≠ 0 := by
@@ -705,6 +916,9 @@ theorem gf_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 
     map_natCast]
   exact_mod_cast h1
 
+/- English proof (translation)
+Take `⟨W⟩` from `Formalism.L2.SG.Pf.WittFlags.WittExists_holds D X`. Introduce `t hG hr τ`. Conclude with `⟨_, gamR_mem hI C t τ, inCell_real W hI C (Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y) t hG hr τ, gf_ne W hI C t hG τ⟩`.
+-/
 theorem relPtEx_holds (u u' : D.what₂.Word) : RelPtEx hI C u u' := by
   obtain ⟨W⟩ := Formalism.L2.SG.Pf.WittFlags.WittExists_holds D X
   intro t hG hr τ
@@ -757,6 +971,15 @@ def ThetaEqN (u u' : D.what₂.Word) : Prop :=
 def CovWinN (large₂ : SizeData₂ D) (C1 : ℝ) (u u' : D.what₂.Word) : Prop :=
   normWin D large₂ C1 ((covN (Y := Y) C u * covN (Y := Y) C u') ^ ((1 : ℝ) / (2 * Fintype.card D.what₂.Tau)))
 
+/- English proof (translation)
+Introduce `t hG hr`. Distinguish the cases in `h : 0 < hsNormSq (JtOf hI t) ∧ 0 < P1 hI C hB t`. Establish `hE'` using `hE t hG hr h.1 h.2`. Establish `hcard : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 (tau_nonempty D)`. Establish `h0 : 0 ≤ thetaS hI C hB t` using `(thetaS_pos hI C hB hPin hCv t).le`.
+
+Establish `hth : thetaS hI C hB t = (covN (Y` using `Y) C u * covN (Y := Y) C u') ^ ((1 : ℝ) / (2 * Fintype.card D.what₂.Tau)) := by`. Rewrite using `[← hE', ← Real.rpow_natCast, ← Real.rpow_mul h0]`. Establish `he : ((2 * Fintype.card D.what₂.Tau : ℕ) : ℝ) * ((1 : ℝ) / (2 * Fintype.card D.what₂.Tau)) = 1`. Establish `: (Fintype.card D.what₂.Tau : ℝ) ≠ 0` using `by exact_mod_cast hcard.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[he, Real.rpow_one]`. Rewrite using `[hth]`. Conclude with `hW`. Unfold `thetaS`.
+
+Rewrite using `[if_neg h]`. Conclude with `h1`.
+-/
 theorem thetaWin_of {large₂ : SizeData₂ D} {C1 : ℝ} {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u')
     (hCv : CovolPos (Y := Y) u u') (hE : ThetaEqN hI C hB u u') (hW : CovWinN (Y := Y) C large₂ C1 u u')
     (h1 : normWin D large₂ C1 1) : ThetaWin hI C hB large₂ C1 u u' := by
@@ -806,6 +1029,11 @@ def JFactN (u u' : D.what₂.Word) : Prop :=
   ∀ t : D.s.Term u u', D.s.Gterm t ≠ 0 → D.s.relevant t →
     hsNormSq (JtOf hI t) * (covN (Y := Y) C u * covN (Y := Y) C u') = volRC hI t ^ 2 * P1 hI C hB t
 
+/- English proof (translation)
+Introduce `t hG hr`. Establish `h` using `hJ t hG hr`. Establish `hv` using `volRC_pos hI hPin hCv t`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+
+Rewrite `h` using `[h0, zero_mul]`. Conclude with `(mul_eq_zero.1 h.symm).resolve_left (pow_ne_zero 2 hv.ne')`. Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `(mul_eq_zero.1 h).resolve_right hc.ne'`.
+-/
 theorem jZeroIff_of {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv : CovolPos (Y := Y) u u')
     (hJ : JFactN hI C hB u u') (hc : 0 < covN (Y := Y) C u * covN (Y := Y) C u') : JZeroIff hI C hB u u' := by
   intro t hG hr
@@ -819,6 +1047,11 @@ theorem jZeroIff_of {u u' : D.what₂.Word} (hPin : PinAll (Y := Y) u u') (hCv :
     rw [h0, mul_zero] at h
     exact (mul_eq_zero.1 h).resolve_right hc.ne'
 
+/- English proof (translation)
+Introduce `t hG hr hJ0 hP0`. Establish `h` using `hJ t hG hr`. Establish `hcard : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 (tau_nonempty D)`. Establish `hn : 2 * Fintype.card D.what₂.Tau ≠ 0` using `by omega`. Establish `hx : 0 ≤ volRC hI t ^ 2 * P1 hI C hB t / hsNormSq (JtOf hI t)` using `div_nonneg (mul_nonneg (sq_nonneg _) hP0.le) hJ0.le`.
+
+Unfold `thetaS`. Rewrite using `[if_pos ⟨hJ0, hP0⟩]`. Rewrite using `[show (1 : ℝ) / (2 * Fintype.card D.what₂.Tau) = ((2 * Fintype.card D.what₂.Tau : ℕ) : ℝ)⁻¹ by push_cast; ring]`. Rewrite using `[Real.rpow_inv_natCast_pow hx hn, div_eq_iff hJ0.ne']`. Take the linear combination `-h`.
+-/
 theorem thetaEqN_of {u u' : D.what₂.Word} (hJ : JFactN hI C hB u u') : ThetaEqN hI C hB u u' := by
   intro t hG hr hJ0 hP0
   have h := hJ t hG hr
@@ -852,6 +1085,11 @@ open Set
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X}
 
+/- English proof (translation)
+Take `⟨h, hh, n0, hn0, rfl⟩` from `Formalism.L2.SG.Pf.Sinf.levi X u ha`. Set `hS` to `Formalism.L2.SG.Pf.NinfSub (I := X.B.I) X.eR (X.zR u)`. Establish `h1 : n0 * n * n0⁻¹ ∈ X.NinfU u` using `hS.mul_mem (hS.mul_mem (show n0 ∈ hS from hn0) (show n ∈ hS from hn)) (hS.inv_mem (show n0 ∈ hS from hn0))`. Establish `h2` using `Formalism.L2.SG.Pf.Sinf.conj_ninf X u hh h1`. Establish `e : h * n0 * n * (h * n0)⁻¹ = h * (n0 * n * n0⁻¹) * h⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem sinf_norm {u : D.what₂.Word} {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) {n : X.B.I.Ginf} (hn : n ∈ X.NinfU u) :
     a * n * a⁻¹ ∈ X.NinfU u := by
   obtain ⟨h, hh, n0, hn0, rfl⟩ := Formalism.L2.SG.Pf.Sinf.levi X u ha
@@ -863,6 +1101,11 @@ theorem sinf_norm {u : D.what₂.Word} {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) {
   rw [e]
   exact h2
 
+/- English proof (translation)
+Take `⟨hx1, hx2⟩` from `hx`. Substitute `hf` using the available equality. Use `⟨sinf_norm hs hx1, ?_⟩` and prove the remaining obligations. Establish `h2 : (s * γw * s'⁻¹)⁻¹ * (s * x * s⁻¹) * (s * γw * s'⁻¹) = s' * (γw⁻¹ * x * γw) * s'⁻¹` using `by group`. Rewrite using `[h2]`.
+
+Conclude with `sinf_norm hs' hx2`.
+-/
 theorem stInf_conj {u u' : D.what₂.Word} {γ γw s s' : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (hs' : s' ∈ X.SinfU u')
     (hf : γ = s * γw * s'⁻¹) {x : X.B.I.Ginf} (hx : x ∈ Formalism.L2.SG.RealObj.StInf X u u' γw) :
     s * x * s⁻¹ ∈ X.NinfU u ∧ γ⁻¹ * (s * x * s⁻¹) * γ ∈ X.NinfU u' := by
@@ -874,6 +1117,15 @@ theorem stInf_conj {u u' : D.what₂.Word} {γ γw s s' : X.B.I.Ginf} (hs : s �
   rw [h2]
   exact sinf_norm hs' hx2
 
+/- English proof (translation)
+Take `⟨hy1, hy2⟩` from `hy`. Substitute `hf` using the available equality. Establish `hsi : s⁻¹ ∈ X.SinfU u` using `by first`. Consider the case `exact (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u)).inv_mem hs`. Consider the case `exact (Formalism.L2.SG.Pf.SinfSub X.eR (X.zR u)).inv_mem hs`.
+
+Establish `hs'i : s'⁻¹ ∈ X.SinfU u'` using `by first`. Consider the case `exact (Formalism.L2.SG.Pf.SinfSub X.B.I X.eR (X.zR u')).inv_mem hs'`. Consider the case `exact (Formalism.L2.SG.Pf.SinfSub X.eR (X.zR u')).inv_mem hs'`. Use `show s⁻¹ * y * s ∈ X.NinfU u ∧ γw⁻¹ * (s⁻¹ * y * s) * γw ∈ X.NinfU u'`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `sinf_norm hsi hy1`. Rewrite `h1` using `[inv_inv]`. Then use the resulting hypothesis. Establish `h2` using `sinf_norm hs'i hy2`. Establish `h3 : γw⁻¹ * (s⁻¹ * y * s) * γw = s'⁻¹ * ((s * γw * s'⁻¹)⁻¹ * y * (s * γw * s'⁻¹)) * s'⁻¹⁻¹` using `by group`. Rewrite using `[h3]`.
+
+Conclude with `h2`.
+-/
 theorem stInf_conj_inv {u u' : D.what₂.Word} {γ γw s s' : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (hs' : s' ∈ X.SinfU u')
     (hf : γ = s * γw * s'⁻¹) {y : X.B.I.Ginf} (hy : y ∈ X.NinfU u ∧ γ⁻¹ * y * γ ∈ X.NinfU u') :
     s⁻¹ * y * s ∈ Formalism.L2.SG.RealObj.StInf X u u' γw := by

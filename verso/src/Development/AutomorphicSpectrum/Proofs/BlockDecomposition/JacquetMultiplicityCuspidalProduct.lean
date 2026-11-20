@@ -29,6 +29,13 @@ def permMatrix {l c : ℕ} (x : Fin l → IrrGL k) (y : Fin c → IrrGL k) (e : 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `key : ∀ b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1), IsPermCell x y b → ∃ (f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Fin (x i).1) (g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Fin (y j).1), jhMult (piTensor fun j => (y j).rep) (cellFunctor f g (piTensor fun i => (x i).rep)) = 1`. Introduce and unpack `b ⟨e, he, hb⟩`. Conclude with `GlobalTheory.T.size_matrix_permutation_equivs_exist hA x y e he b hb`. Establish `key' : ∀ b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1), ∃ (f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Fin (x i).1) (g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Fin (y j).1), IsPermCell x y b → jhMult (piTensor fun j => (y j).rep) (cellFunctor f g (piTensor fun i => (x i).rep)) = 1`. Introduce `b`.
+
+Distinguish the cases in `h : IsPermCell x y b`. Take `⟨f, g, hfg⟩` from `key b h`. Conclude with `⟨f, g, fun _ => hfg⟩`. Conclude with `⟨b.nonempty_rows.some, b.nonempty_cols.some, fun h' => absurd h' h⟩`. Use `choose f g hfg using key'`.
+
+Conclude with `⟨f, g, hfg⟩`.
+-/
 theorem exists_choice (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {l c : ℕ} (x : Fin l → IrrGL k) (y : Fin c → IrrGL k) :
     ∃ (f : ∀ (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) i, (Σ j, Fin (b.1 i j)) ≃ Fin (x i).1)
       (g : ∀ (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) j, (Σ i, Fin (b.1 i j)) ≃ Fin (y j).1),
@@ -50,6 +57,13 @@ theorem exists_choice (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {l c
   choose f g hfg using key'
   exact ⟨f, g, hfg⟩
 
+/- English proof (translation)
+Rewrite using `[Set.ncard_eq_toFinset_card']`. Use `symm`. Use `Finset.card_bij (fun e he => permMatrix x y e (Set.mem_toFinset.1 he)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `e he`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, e, Set.mem_toFinset.1 he, fun i j => rfl⟩`.
+
+Introduce `e he e' he' H`. Use `Equiv.ext fun j => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1) => b.1 (e j) j) H`. Simplify using `only [permMatrix, if_true] at h2`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `h2` using `[if_neg (Ne.symm hne)]`. Conclude with `(hxc (e j)).1.ne' h2`. Introduce `b hb`. Take `⟨e, he, hb⟩` from `(Finset.mem_filter.1 hb).2`. Conclude with `⟨e, Set.mem_toFinset.2 he, Subtype.ext (funext fun i => funext fun j => (hb i j).symm)⟩`.
+-/
 theorem card_permCell {l c : ℕ} (x : Fin l → IrrGL k) (y : Fin c → IrrGL k) (hxc : ∀ a, (x a).IsCusp)
     [Fintype (SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1))] [DecidablePred (IsPermCell x y)] :
     (Finset.univ.filter (IsPermCell x y)).card = Set.ncard {e : Fin c ≃ Fin l | ∀ a, y a = x (e a)} := by
@@ -72,6 +86,13 @@ theorem card_permCell {l c : ℕ} (x : Fin l → IrrGL k) (y : Fin c → IrrGL k
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI : Fintype (SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) := Fintype.ofFinite _`. Take `⟨f, g, hfg⟩` from `exists_choice hA x y`. Establish `hτ : (piTensor fun j => (y j).rep).IsIrreducible` using `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k _ _ fun j => (y j).2.rep`. Establish `h1` using `(GlobalTheory.CompanionTheory.GeoLink.geometricLemma k).1.jhMult_eq (stdBlocks (fun a => (x a).1) hx) (stdBlocks (fun a => (y a).1) hy) (isSmooth_piTensor fun i => (x i).2.rep.smooth) f g hτ`. Establish `hterm : ∀ b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1), jhMult (piTensor fun j => (y j).rep) (cellFunctor (f b) (g b) (piTensor fun i => (x i).rep)) = if IsPermCell x y b then 1 else 0`.
+
+Introduce `b`. Use `split_ifs with h`. Conclude with `hfg b h`. Assume the negation of the conclusion as `hne`. Conclude with `h (GlobalTheory.T.cuspidal_cell_multiplicity_of_size_matrix x y hxc hyc b (f b) (g b) hne)`.
+
+Establish `h2 : jm y hy (prodIrr x hx) = jhMult (piTensor fun j => (y j).rep) (jac (stdBlocks (fun a => (y a).1) hy) (parInd (stdBlocks (fun a => (x a).1) hx) (piTensor fun i => (x i).rep)))` using `rfl`. Rewrite using `[h2, h1, Finset.sum_congr rfl fun b _ => hterm b, Finset.sum_boole, card_permCell x y hxc]`.
+-/
 theorem main (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {l c N : ℕ} (x : Fin l → IrrGL k) (y : Fin c → IrrGL k)
     (hx : ∑ a, (x a).1 = N) (hy : ∑ a, (y a).1 = N) (hxc : ∀ a, (x a).IsCusp) (hyc : ∀ a, (y a).IsCusp) :
     jm y hy (prodIrr x hx) = (Set.ncard {e : Fin c ≃ Fin l | ∀ a, y a = x (e a)} : ℕ∞) := by

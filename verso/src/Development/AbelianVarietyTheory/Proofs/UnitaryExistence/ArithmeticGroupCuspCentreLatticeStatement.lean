@@ -13,5 +13,8 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CuspCentre.latZ | exact GlobalTheory.CuspCentre.latZ | (intros; apply GlobalTheory.CuspCentre.latZ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmeticGroup_cuspCentre_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (Comp : Type) (X : Comp → Data E r), FJ.LatZ X ρ := by
   first | exact @GlobalTheory.CuspCentre.latZ | exact GlobalTheory.CuspCentre.latZ | (intros; apply GlobalTheory.CuspCentre.latZ <;> assumption)

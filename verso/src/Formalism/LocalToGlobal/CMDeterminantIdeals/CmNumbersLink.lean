@@ -5,12 +5,24 @@ import Formalism.LocalToGlobal.CMDeterminantIdeals.CMIdealValuations.AbsNormSpan
 
 namespace Formalism.L2.LamCM
 
+/- English proof (translation)
+The claim follows from `CMNumbersLink_of hadamardIdeals detLineAdmissible`.
+-/
 theorem cm_numbers_link : CMNumbersLink := CMNumbersLink_of hadamardIdeals detLineAdmissible
 
+/- English proof (translation)
+The claim follows from `DegDe_of hadamardIdeals detLineAdmissible`.
+-/
 theorem degree_delta : DegDe := DegDe_of hadamardIdeals detLineAdmissible
 
+/- English proof (translation)
+The claim follows from `DegNN_of hadamardIdeals detLineAdmissible`.
+-/
 theorem degree_norm : DegNN := DegNN_of hadamardIdeals detLineAdmissible
 
+/- English proof (translation)
+The claim follows from `LamNumber_of hadamardIdeals detLineAdmissible`.
+-/
 theorem lambda_number : LamNumber := LamNumber_of hadamardIdeals detLineAdmissible
 
 end Formalism.L2.LamCM

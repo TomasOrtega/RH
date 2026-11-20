@@ -24,6 +24,11 @@ noncomputable section
 
 namespace GlobalTheory.HeisLineTransfer
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.WeilM.schr, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc]`. Use `congr 2`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Rewrite using `[dotProduct_comm w'.1 w.2]`. Use `first`.
+
+Consider the case `linear_combination (w.1 ⬝ᵥ w'.2) * invOf_mul_self (2 : R)`. Consider the case `linear_combination (-(w.1 ⬝ᵥ w'.2)) * invOf_mul_self (2 : R)`.
+-/
 theorem schr_schr_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) (x : κ → R) :
     GlobalTheory.WeilM.schr ψ w (GlobalTheory.WeilM.schr ψ w' Φ) x =
@@ -42,6 +47,33 @@ namespace GlobalTheory.HeisLineTransfer
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hemb M hM cS hc g φ hφ hvac f hf τ z g₁ hact`. Substitute `hψ` using the available equality. Take `⟨hΦ, hfΦ⟩` from `hf`. Establish `hF : IsTotallyReal D.host.F` using `hBs.cm.1`. Establish `hψc : IsCharAF D.host.F Bs.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hBs.std`.
+
+Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x : Fin S.rank × Fin d → v.adicCompletion D.host.F | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1` using `(hvac.and hM.std).mono fun v h => h.1.trans h.2`. Establish `h1` using `GlobalTheory.TensUniq.pure_mem_schA g₁ φ hφ hstd`. Use `⟨h1, fun u => ?_⟩` and prove the remaining obligations. Take `⟨G, hGdef⟩ : ∃ G : Matrix (Fin S.rank) (Fin S.rank) D.host.E, (if ε then -1 else 1 : D.host.E) • S.gram = G` from `⟨_, rfl⟩`. Rewrite `hc` using `[hGdef]`.
+
+Establish `hs : (sgn ε S).gram = G`. Rewrite using `[← hGdef]`. Consider the cases of `ε`. Simplify using `[sgn]`. Use extensionality with `i j`.
+
+Simplify using `[HSpace.gram]`. Establish `hVJ : Vs.J = -G`. Apply the tactic sequence `rw [hJ, ← hGdef]; cases ε <;> simp`. Establish `hdet : IsUnit G.det` using `by rw [← hs]; exact (Formalism.L2.Theta.gram_det_ne (sgn ε S)).isUnit`. Establish `hHG : (G⁻¹).map (incA D) * G.map (incA D) = 1`.
+
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hG : (G.map (incA D)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = (G.map (incA D))ᵀ`. Use extensionality with `i j`. Establish `h` using `hV.herm j i`. Rewrite `h` using `[hVJ, Matrix.neg_apply, Matrix.neg_apply, map_neg, neg_inj]`.
+
+Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig (incA D (G i j)) = incA D (G j i)`. Rewrite using `[← h]`. Both sides reduce to the same expression. Take `⟨co, hco⟩` from `GlobalTheory.SquareAgree.exists_darboux_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e (X.gram.map (incA D)) (incA D D.host.xi0) hHG hG (JV := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J) (JW := GlobalTheo …`. Establish `hform : ∀ w w' : Matrix (Fin S.rank) (Fin d) (AE D), symplO (sgn ε S) X (cS w) (cS w') = (M.co.e w).1 ⬝ᵥ (M.co.e w').2 - (M.co.e w').1 ⬝ᵥ (M.co.e w).2`.
+
+Introduce `w w'`. Rewrite using `[← GlobalTheory.WeilSchrodinger.symp_eq_symplO D (sgn ε S) X X.gramᵀ (D.host.xi0 • (sgn ε S).gram⁻¹) 1 rfl (one_smul _ _), co.form, hco, hco]`. Take `⟨hline, -⟩` from `GlobalTheory.LineRealAd.lineAt_realAd_smul D θ hθ τ z`. Use `set u₀ := cS.symm (lineAt θ τ z 1) with hu₀`. Establish `hcs : ∀ (a : AF D.host.F) (v : Matrix (Fin S.rank) (Fin d) (AE D)), cS (a • v) = a • cS v`.
+
+Introduce `a v`. Rewrite using `[hc, hc, ← Matrix.smul_mul]`. Both sides reduce to the same expression. Establish `hL : ∀ t : ℝ, lineAt θ τ z t = cS (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀)`. Introduce `t`.
+
+Rewrite using `[hcs, hu₀, AddEquiv.apply_symm_apply, hline]`. Establish `h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) = ⅟(2 : AF D.host.F)` using `(invOf_eq_right_inv (by rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]; norm_num)).symm`. Establish `hkey : ∀ t : ℝ, heisO Bs.ψ (sgn ε S) X (lineAt θ τ z t) f (cS u) = GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u (M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure …`. Introduce `t`. Use `set u' := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀`.
+
+Establish `e1 : ∀ x, M.co.rho Bs.ψ u (M.co.rho Bs.ψ u' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ)) x = Bs.ψ (⅟(2 : AF D.host.F) * ((M.co.e u).1 ⬝ᵥ (M.co.e u').2 - (M.co.e u').1 ⬝ᵥ (M.co.e u).2)) * M.co.rho Bs.ψ (u + u') (GlobalTheory.IndefiniteRowSideFullHecke.WeilT …`. Introduce `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, map_add]`. Conclude with `schr_schr_apply Bs.ψ _ _ _ x`. Rewrite using `[hL t]`.
+
+Simplify using `only [heisO]`. Rewrite using `[← map_add, ← hfΦ (u + u')]`. Simplify using `only [GlobalTheory.WeilM.thetaSum, e1, tsum_mul_left]`. Rewrite using `[symplOH, hform, h2]`. Establish `hd : ∀ x, HasDerivAt (fun t : ℝ => M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) x) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ x) 0` using `fun x => hact _ (GlobalTheory.ThK.EvUniqInf.rest_pure g φ hφ hstd) x`.
+
+Establish `hder` using `GlobalTheory.ThetaLineDeriv.hasDerivAt_thetaSum_rho M.co Bs.ψ hF hψc u₀ _ hΦ _ h1 hd u`. Use `show GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ)) = Formalism.IndefR.Datum.dRho (heisO Bs.ψ (sgn ε S) X) θ τ z f (cS u)`. Establish `hfun : (fun t : ℝ => heisO Bs.ψ (sgn ε S) X (lineAt θ τ z t) f (cS u)) = fun t : ℝ => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u (M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀) (GlobalTheory.IndefiniteRowSideFullHecke.We …` using `funext hkey`. Unfold `Formalism.IndefR.Datum.dRho`. Rewrite using `[hfun]`.
+
+Conclude with `hder.deriv.symm`.
+-/
 theorem isDatum_dRho_heisO : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)
       (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E), Bs.IsGood D.sp.cm.sig → Bs.ψ = ψ →

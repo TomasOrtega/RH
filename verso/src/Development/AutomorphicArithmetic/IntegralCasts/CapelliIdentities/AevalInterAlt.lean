@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `L M N _ _ _ _ _ c f g h Q x`. Establish `hp : ∀ (n : ℕ) (y : M), c ((f ^ n) y) = (g ^ n) (c y)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `y`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`. Proceed by induction on `Q using Polynomial.induction_on' with`.
+
+Consider the case `add p q hp' hq' => simp only [map_add, LinearMap.add_apply, hp', hq']`. Consider the case `monomial n a`. Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hp]`.
+-/
 theorem UpperTheory.Reformulated.B.Qi58.aeval_inter :
     ∀ {L M N : Type} [inst : Field L]
     [inst_1 : AddCommGroup M] [inst_2 : _root_.Module L M] [inst_3 : AddCommGroup N] [inst_4 : _root_.Module L N]

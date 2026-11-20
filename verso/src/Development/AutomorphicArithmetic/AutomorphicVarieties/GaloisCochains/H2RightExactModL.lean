@@ -7,6 +7,13 @@ section
 
 variable {k G M : Type} [CommRing k] [Group G] [AddCommGroup M] [Module k M]
 
+/- English proof (translation)
+Establish `e0 : (fun i : Fin 2 => (![x, y, z] : Fin 3 → G) i.succ) = ![y, z]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e1 : Fin.contractNth 0 (· * ·) (![x, y, z] : Fin 3 → G) = ![x * y, z]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e2 : Fin.contractNth 1 (· * ·) (![x, y, z] : Fin 3 → G) = ![x, y * z]`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e3 : Fin.contractNth 2 (· * ·) (![x, y, z] : Fin 3 → G) = ![x, y]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Express the relevant statement in the definitionally equal form `ρ _ (b _) + Finset.univ.sum (fun j : Fin 3 => (-1 : k) ^ ((j : ℕ) + 1) • b (Fin.contractNth j (· * ·) ![x, y, z])) = _`. Rewrite using `[Fin.sum_univ_three, e0, e1, e2, e3]`.
+
+Establish `p3 : (-1 : k) ^ 3 = -1` using `by ring`. Simplify using `[p3]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem dn_two (ρ : Representation k G M) (b : (Fin 2 → G) → M) (x y z : G) :
     dn ρ 2 b ![x, y, z] = ρ x (b ![y, z]) - b ![x * y, z] + b ![x, y * z] - b ![x, y] := by
   have e0 : (fun i : Fin 2 => (![x, y, z] : Fin 3 → G) i.succ) = ![y, z] := by
@@ -24,6 +31,15 @@ private theorem dn_two (ρ : Representation k G M) (b : (Fin 2 → G) → M) (x 
   simp [p3]
   abel
 
+/- English proof (translation)
+Establish `e0 : (fun i : Fin 3 => (![x, y, z, w] : Fin 4 → G) i.succ) = ![y, z, w]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e1 : Fin.contractNth 0 (· * ·) (![x, y, z, w] : Fin 4 → G) = ![x * y, z, w]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e2 : Fin.contractNth 1 (· * ·) (![x, y, z, w] : Fin 4 → G) = ![x, y * z, w]`.
+
+Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e3 : Fin.contractNth 2 (· * ·) (![x, y, z, w] : Fin 4 → G) = ![x, y, z * w]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Establish `e4 : Fin.contractNth 3 (· * ·) (![x, y, z, w] : Fin 4 → G) = ![x, y, z]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`.
+
+Express the relevant statement in the definitionally equal form `ρ _ (b _) + Finset.univ.sum (fun j : Fin 4 => (-1 : k) ^ ((j : ℕ) + 1) • b (Fin.contractNth j (· * ·) ![x, y, z, w])) = _`. Rewrite using `[Fin.sum_univ_four, e0, e1, e2, e3, e4]`. Establish `p3 : (-1 : k) ^ 3 = -1` using `by ring`. Establish `p4 : (-1 : k) ^ 4 = 1` using `by ring`. Simplify using `[p3, p4]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem dn_three (ρ : Representation k G M) (b : (Fin 3 → G) → M) (x y z w : G) :
     dn ρ 3 b ![x, y, z, w] = ρ x (b ![y, z, w]) - b ![x * y, z, w] + b ![x, y * z, w]
       - b ![x, y, z * w] + b ![x, y, z] := by
@@ -45,6 +61,23 @@ private theorem dn_three (ρ : Representation k G M) (b : (Fin 3 → G) → M) (
   simp [p3, p4]
   abel
 
+/- English proof (translation)
+Introduce `cl`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ cl`. Take `⟨sec, hsec⟩` from `hs.hasRightInverse`. Set `Φ : G × G → M` to `fun p => sec (f.1 p)`. Establish `hΦ : Continuous Φ` using `continuous_of_discreteTopology.comp f.2.1`.
+
+Establish `hqΦ : ∀ p, q (Φ p) = f.1 p` using `fun p => hsec _`. Set `c : (Fin 3 → G) → M` to `fun g => ρ (g 0) (Φ (g 1, g 2)) - Φ (g 0 * g 1, g 2) + Φ (g 0, g 1 * g 2) - Φ (g 0, g 1)`. Establish `hcc : Continuous c`. Establish `h0 : Continuous fun g : Fin 3 → G => ρ (g 0) (Φ (g 1, g 2))` using `hc.comp (f := fun g : Fin 3 → G => (g 0, Φ (g 1, g 2))) (by fun_prop)`. Conclude with `((h0.sub (by fun_prop)).add (by fun_prop)).sub (by fun_prop)`.
+
+Establish `hqc : ∀ g, q (c g) = 0` using `fun g => by`. Simplify using `only [c, map_sub, map_add, hq, hqΦ]`. Conclude with `f.2.2 _ _ _`. Set `r : M → N` to `Function.invFun i`. Establish `hr : ∀ g, i (r (c g)) = c g` using `fun g => Function.invFun_eq ((hex _).1 (hqc g))`.
+
+Take `⟨b, hb, hbc⟩` from `(GlobalTheory.Published.subsingleton_Hn_succ_iff τ 2).1 h3 (fun g => r (c g)) ((continuous_of_discreteTopology (f := r)).comp hcc) (by`. Use function extensionality and compare the values at `g`. Apply the tactic sequence `obtain ⟨x, y, z, w, rfl⟩ : ∃ x y z w, g = ![x, y, z, w] := ⟨g 0, g 1, g 2, g 3, by funext j; fin_cases j <;> rfl⟩`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[dn_three]`.
+
+Simplify using `only [map_add, map_sub, hi, hr, Pi.zero_apply, map_zero]`. Simplify using `[c, mul_assoc]`. Use the proof step `abel)`. Establish `hb' : Continuous fun p : G × G => i (b ![p.1, p.2])` using `continuous_of_discreteTopology.comp (hb.comp (by fun_prop))`. Use `⟨Submodule.Quotient.mk ⟨fun p => Φ p - i (b ![p.1, p.2]), hΦ.sub hb', fun x y z => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg i (congrFun hbc ![x, y, z])`. Rewrite `e` using `[dn_two]`. Simplify using `only [map_add, map_sub, hi, hr] at e`. Simplify using `only [c, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons] at e`. Simplify using `only [map_sub]`.
+
+Rewrite using `[← sub_eq_zero.2 e.symm]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `q (Φ p - i (b ![p.1, p.2])) = _`. Rewrite using `[map_sub, hqΦ, (hex _).2 ⟨_, rfl⟩, sub_zero]`.
+-/
 private theorem H2_map_surjective_of_H3_subsingleton [TopologicalSpace G] [ContinuousMul G] [TopologicalSpace M] [DiscreteTopology M]
     {Q N : Type} [AddCommGroup Q] [Module k Q] [TopologicalSpace Q] [DiscreteTopology Q]
     [AddCommGroup N] [Module k N] [TopologicalSpace N] [DiscreteTopology N]
@@ -100,6 +133,11 @@ private theorem H2_map_surjective_of_H3_subsingleton [TopologicalSpace G] [Conti
 
 end
 
+/- English proof (translation)
+Introduce `hLF F Ω _ _ _ _ _ l _ v A hA k _ _ _ M _ _ _ _ _ Q _ _ _ _ ρ σ hc q hq hs`. Use `haveI : Finite M := Module.finite_of_finite k`. Establish `hst : ∀ g, LinearMap.ker q ≤ (LinearMap.ker q).comap (ρ g)` using `fun g m hm => by`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker, hq, LinearMap.mem_ker.1 hm, map_zero]`. Set `τ` to `ρ.subrepresentation (LinearMap.ker q) hst`.
+
+Establish `hτ : ContAction τ` using `Continuous.subtype_mk (hc.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))) _`. Use `H2_map_surjective_of_H3_subsingleton ρ σ τ hc q hq hs (LinearMap.ker q).subtype (fun _ _ => rfl) Subtype.val_injective (fun m => ⟨fun h => ⟨⟨m, h⟩, rfl⟩, by rintro ⟨n, rfl⟩; exact n.2⟩) ?_` and prove the remaining obligations. Use `(GlobalTheory.Published.cohDimTwoLocal_of_localFiniteness hLF).of_nsmul l 1 (fun m => ?_) τ hA hτ 3 le_rfl` and prove the remaining obligations. Rewrite using `[pow_one, ← Nat.cast_smul_eq_nsmul k, CharP.cast_eq_zero, zero_smul]`.
+-/
 theorem UpperTheory.V.GC.local_second_cohomology_surjective_at_place :
     LocalFiniteness → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω), IsPlaceOver A v → ∀ (k : Type) [Field k] [Finite k] [CharP k l] (M : Type) [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] (Q : Type) [AddCommGroup Q] [Module k Q] [TopologicalSpace Q] [DiscreteTopology Q]
     (ρ : Representation k (Dec (F := F) A) M) (σ : Representation k (Dec (F := F) A) Q), ContAction ρ → ∀ (q : M →ₗ[k] Q) (hq : ∀ s m, q (ρ s m) = σ s (q m)), Function.Surjective q →

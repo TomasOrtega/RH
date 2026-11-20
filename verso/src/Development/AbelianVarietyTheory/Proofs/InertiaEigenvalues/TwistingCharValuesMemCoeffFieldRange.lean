@@ -10,6 +10,15 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.DeltaRange
 
+/- English proof (translation)
+Introduce `D N X ρ hρ i j b z`. Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym z`. Establish `hopen : IsOpen ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i)).ker : Set (G D.host.E N.Om))`. Establish `e : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i)).ker = (X.delta i).ker`. Use extensionality with `g`.
+
+Apply the tactic sequence `cases b <;> simp [Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`. Rewrite using `[e]`. Conclude with `X.delta_open i`. Establish `: Finite (G D.host.E N.Om ⧸ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i)).ker)` using `Subgroup.quotient_finite_of_isOpen _ hopen`. Establish `hfi : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i)).ker.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`.
+
+Establish `hn : (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i)).ker.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hpow : Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i) σ ^ (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i)).ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `MonoidHom.mem_ker.1 (Subgroup.pow_index_mem _ σ)`. Use `⟨algebraMap (X.O i) (FractionRing (X.O i)) (algebraMap (X.O0 i) (X.O i) ((Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (X.delta i) σ : (X.O0 i)ˣ) : X.O0 i)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hρ.delta i j b]`. Conclude with `(charOf_eq ρ.rc ((ρ.eO i b).comp (algebraMap (X.O0 i) (X.O i))) hopen hσ hn hpow).symm`.
+-/
 theorem delta_value_mem_range : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {ρ : Setup X}, ρ.Good → ∀ (i : X.Tw) (j : Fin D.R.m) (b : Bool) (z : (AE D)ˣ), ∃ a : FractionRing (X.O i), ρ.e i b a = (((ρ.B i j b).de.chi z : Circle) : ℂ) := by
   intro D N X ρ hρ i j b z
   obtain ⟨σ, hσ⟩ := ρ.rc.exists_sym z

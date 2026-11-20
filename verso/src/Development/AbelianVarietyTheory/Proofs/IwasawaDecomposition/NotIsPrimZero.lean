@@ -25,6 +25,9 @@ def maxMult (q : ℕ) (φ : InvFun O) : ℕ∞ :=
 
 variable {bar}
 
+/- English proof (translation)
+Introduce `h` and use `by have := h 0 0 (by simp) exact zero_ne_one this`.
+-/
 theorem not_isPrim_zero : ¬ IsPrim bar (0 : balForms bar X) := fun h => by
   have := h 0 0 (by simp)
   exact zero_ne_one this

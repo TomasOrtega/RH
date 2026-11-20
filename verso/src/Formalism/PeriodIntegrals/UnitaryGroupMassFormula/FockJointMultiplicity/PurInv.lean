@@ -9,14 +9,29 @@ namespace PI.FJMB
 
 variable {σ : Type*}
 
+/- English proof (translation)
+Rewrite using `[PI.FJM.bRow, LinearMap.sum_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem bRow_apply {m n : ℕ} (ι : Fin m × Fin n → σ) (a b : Fin m) (P : MvPolynomial σ ℂ) :
     PI.FJM.bRow ι a b P = ∑ k : Fin n, X (ι (a, k)) * pderiv (ι (b, k)) P := by
   rw [PI.FJM.bRow, LinearMap.sum_apply]; simp
 
+/- English proof (translation)
+Rewrite using `[PI.FJM.bCol, LinearMap.sum_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem bCol_apply {m n : ℕ} (ι : Fin m × Fin n → σ) (c d : Fin n) (P : MvPolynomial σ ℂ) :
     PI.FJM.bCol ι c d P = ∑ i : Fin m, X (ι (i, c)) * pderiv (ι (i, d)) P := by
   rw [PI.FJM.bCol, LinearMap.sum_apply]; simp
 
+/- English proof (translation)
+Use `aeval_translate_eq f (Finset.univ.image w) (fun v => ∑ k, if w k = v then X (u k) else 0) ?_ y (fun v => ∑ k, if w k = v then y (u k) else 0) ?_ ?_ t` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [Finset.sum_mul]; refine Finset.sum_congr rfl (fun k _ => ?_); split_ifs <;> simp`.
+
+Use `_ = ∑ k, X (u k) * pderiv (w k) f := by`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `_ = 0 := h`.
+
+Introduce `v hv`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations. Establish `: w k ≠ v` using `fun e => hv (by rw [← e]; exact Finset.mem_image_of_mem w (Finset.mem_univ k))`. Simplify using `[this]`. Introduce `v _`.
+
+Establish `hz : ∀ k, (∑ k', if w k' = u k then (Polynomial.C (y (u k')) : Polynomial K) else 0) = 0` using `fun k => Finset.sum_eq_zero (fun k' _ => by simp [Ne.symm (huw k k')])`. Simplify using `only [map_sum, apply_ite (aeval _), aeval_X, map_zero, apply_ite Polynomial.C]`. Simplify using `only [hz, mul_zero, add_zero]`.
+-/
 theorem translate_pairs {R : Type*} [CommRing R] {κ : Type*} [Fintype κ] [DecidableEq σ] (u w : κ → σ)
     (_hw : Function.Injective w) (huw : ∀ k k', u k ≠ w k') (f : MvPolynomial σ R)
     (h : ∑ k, X (u k) * pderiv (w k) f = 0) {K : Type*} [Field K] [CharZero K] [Algebra R K] (y : σ → K) (t : K) :
@@ -45,10 +60,16 @@ theorem translate_pairs {R : Type*} [CommRing R] {κ : Type*} [Fintype κ] [Deci
 def fill {K : Type*} {m n : ℕ} (ι : Fin m × Fin n → σ) (M : Fin m → Fin n → K) (p : σ → K) : σ → K :=
   Function.extend ι (fun x => M x.1 x.2) p
 
+/- English proof (translation)
+The claim follows from `hι.extend_apply _ _ _`.
+-/
 theorem fill_ι {K : Type*} {m n : ℕ} {ι : Fin m × Fin n → σ} (hι : Function.Injective ι) (M : Fin m → Fin n → K)
     (p : σ → K) (x : Fin m × Fin n) : fill ι M p (ι x) = M x.1 x.2 :=
   hι.extend_apply _ _ _
 
+/- English proof (translation)
+The claim follows from `Function.extend_apply' _ _ _ (fun ⟨x, hx⟩ => hv x hx)`.
+-/
 theorem fill_not {K : Type*} {m n : ℕ} (ι : Fin m × Fin n → σ) (M : Fin m → Fin n → K)
     (p : σ → K) (v : σ) (hv : ∀ x, ι x ≠ v) : fill ι M p v = p v :=
   Function.extend_apply' _ _ _ (fun ⟨x, hx⟩ => hv x hx)
@@ -59,6 +80,15 @@ def rowAddM {K : Type*} [Field K] {m n : ℕ} (M : Fin m → Fin n → K) (a b :
 def colAddM {K : Type*} [Field K] {m n : ℕ} (M : Fin m → Fin n → K) (c d : Fin n) (t : K) : Fin m → Fin n → K :=
   fun i k => if k = d then M i k + t * M i c else M i k
 
+/- English proof (translation)
+Establish `key` using `translate_pairs (R := ℂ) (fun k : Fin n => ι (a, k)) (fun k => ι (b, k)) (fun k k' e => by have := hι e; simp at this; exact this) (fun k k' e => hab (by have := hι e; simp at this; exact this.1)) f (by rw [← bRow_apply]; exact hf) (fill ι M p) t`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Distinguish the cases in `hv : ∃ x, ι x = v`. Take `⟨⟨i, k⟩, rfl⟩` from `hv`. Rewrite using `[fill_ι hι, fill_ι hι]`. Simplify using `only [rowAddM]`. Establish `hs : (∑ k', if ι (b, k') = ι (i, k) then fill ι M p (ι (a, k')) else 0) = if i = b then M a k else 0`.
+
+Simplify using `only [hι.eq_iff, Prod.mk.injEq, fill_ι hι]`. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hib, hib]`.
+
+Apply the tactic sequence `rw [hs]; split_ifs <;> simp`. Use `push Not at hv`. Rewrite using `[fill_not _ _ _ _ hv, fill_not _ _ _ _ hv]`. Establish `: (∑ k', if ι (b, k') = v then fill ι M p (ι (a, k')) else 0) = 0` using `Finset.sum_eq_zero (fun k' _ => by simp [hv (b, k')])`. Rewrite using `[this, mul_zero, add_zero]`.
+-/
 theorem row_inv {m n : ℕ} (ι : Fin m × Fin n → σ) (hι : Function.Injective ι) (a b : Fin m) (hab : a ≠ b)
     (f : MvPolynomial σ ℂ) (hf : PI.FJM.bRow ι a b f = 0) {K : Type*} [Field K] [CharZero K] [Algebra ℂ K]
     (M : Fin m → Fin n → K) (p : σ → K) (t : K) :
@@ -88,6 +118,15 @@ theorem row_inv {m n : ℕ} (ι : Fin m × Fin n → σ) (hι : Function.Injecti
       Finset.sum_eq_zero (fun k' _ => by simp [hv (b, k')])
     rw [this, mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `key` using `translate_pairs (R := ℂ) (fun i : Fin m => ι (i, c)) (fun i => ι (i, d)) (fun i i' e => by have := hι e; simp at this; exact this) (fun i i' e => hcd (by have := hι e; simp at this; exact this.2)) f (by rw [← bCol_apply]; exact hf) (fill ι M p) t`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Distinguish the cases in `hv : ∃ x, ι x = v`. Take `⟨⟨i, k⟩, rfl⟩` from `hv`. Rewrite using `[fill_ι hι, fill_ι hι]`. Simplify using `only [colAddM]`. Establish `hs : (∑ i', if ι (i', d) = ι (i, k) then fill ι M p (ι (i', c)) else 0) = if k = d then M i c else 0`.
+
+Simplify using `only [hι.eq_iff, Prod.mk.injEq, fill_ι hι]`. Distinguish the cases in `hkd : k = d`. Substitute `hkd` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hkd, hkd]`.
+
+Apply the tactic sequence `rw [hs]; split_ifs <;> simp`. Use `push Not at hv`. Rewrite using `[fill_not _ _ _ _ hv, fill_not _ _ _ _ hv]`. Establish `: (∑ i', if ι (i', d) = v then fill ι M p (ι (i', c)) else 0) = 0` using `Finset.sum_eq_zero (fun i' _ => by simp [hv (i', d)])`. Rewrite using `[this, mul_zero, add_zero]`.
+-/
 theorem col_inv {m n : ℕ} (ι : Fin m × Fin n → σ) (hι : Function.Injective ι) (c d : Fin n) (hcd : c ≠ d)
     (f : MvPolynomial σ ℂ) (hf : PI.FJM.bCol ι c d f = 0) {K : Type*} [Field K] [CharZero K] [Algebra ℂ K]
     (M : Fin m → Fin n → K) (p : σ → K) (t : K) :

@@ -20,12 +20,24 @@ def LeafThomRel : Prop := E8.Base → ∀ (q : ℕ) [NeZero q] (k : Type) [Field
             (by rw [← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, hg]))
           (tw q d) (2 * d) θ
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+-/
 theorem hkPull_comp {R : Type} [CommRing R] {K L M : Cx R} (a : K ⟶ L) (b : L ⟶ M) (F : Shv R) (n : ℤ) (x : HK R M F n) :
     HK.pull R (a ≫ b) F n x = HK.pull R a F n (HK.pull R b F n x) := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp, Cochain.ofHom_comp]
 
+/- English proof (translation)
+Introduce `B q _ k _ _ hq X p _ d _`. Establish `hcl : IsClosed (Set.range (pullback.diagonal p))` using `(pullback.diagonal p).isClosedEmbedding.isClosed_range`. Set `W0 : (pullback p p).Opens` to `⟨(Set.range (pullback.diagonal p))ᶜ, hcl.isOpen_compl⟩`. Take `⟨θ, hθ⟩` from `h2 B q k hq p d W0 rfl`. Use `⟨HK.pull (ZMod q) (mappingCone.inr ((chains _).map (sch.map W0.ι))) (tw q d) (2 * d) θ, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `W hW`. Establish `hWW : W = W0` using `TopologicalSpace.Opens.ext hW`. Substitute `hWW` using the available equality. Conclude with `(h1 _ _ _ _ _).mpr ⟨θ, rfl⟩`. Introduce `x hx U hU c hc`.
+
+Take `⟨g, hg, hr⟩` from `hθ x hx U hU`. Take `⟨r, rfl⟩` from `(h1 _ _ _ _ c).mp hc`. Take `⟨m, rfl⟩` from `hr r`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+
+Use `congr 1`. Use `show _ = HK.pull _ _ _ _ (HK.pull _ _ _ _ θ)`. Rewrite using `[← hkPull_comp, ← hkPull_comp]`. Use `congr 1`. Simplify using `[mappingCone.map]`.
+-/
 theorem goal_of (h1 : LeafConeExact) (h2 : LeafThomRel) : E8.LeafDiag := by
   intro B q _ k _ _ hq X p _ d _
   have hcl : IsClosed (Set.range (pullback.diagonal p)) := (pullback.diagonal p).isClosedEmbedding.isClosed_range

@@ -9,12 +9,18 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.Conservation.conservation_iff_degree_statement.mp (GroundTheory.Heights₂.Heights.Inter.Conservation.conservation_degree_form_of_existence ⟨II, hII⟩ GroundTheory.Heights₂.Heights.Inter.Conservation.statement_holds)`.
+-/
 theorem degree_of_isIntersectionSystem (II : IntersectionSystem) (hII : IsIntersectionSystem II) :
     ReciprocityTheory.ChartRestriction.G.Geo.DegreeStatement :=
   GroundTheory.Heights₂.Heights.Inter.Conservation.conservation_iff_degree_statement.mp
     (GroundTheory.Heights₂.Heights.Inter.Conservation.conservation_degree_form_of_existence ⟨II, hII⟩
       GroundTheory.Heights₂.Heights.Inter.Conservation.statement_holds)
 
+/- English proof (translation)
+Introduce `⟨II, hII⟩` and use `degree_of_isIntersectionSystem II hII.1`.
+-/
 theorem degree_of_system :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.Geo.DegreeStatement :=
   fun ⟨II, hII⟩ => degree_of_isIntersectionSystem II hII.1

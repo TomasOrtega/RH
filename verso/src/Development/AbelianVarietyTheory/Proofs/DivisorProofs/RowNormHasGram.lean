@@ -13,6 +13,11 @@ namespace GlobalTheory.CovTop.GramPt
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = InfinitePlace.mk σ₀`. Rewrite using `[sgAt_mk σ₀ hv]`. Break down `InfinitePlace.embedding_mk_eq σ₀ with h | h` into its components or cases. Conclude with `Or.inl fun a => by rw [hv, h]`. Conclude with `Or.inr fun a => by rw [hv, h]; simp`.
+
+Conclude with `Or.inl fun a => by simp [sgAt, hv]`.
+-/
 theorem embedding_eq_or {K : Type} [Field K] (σ₀ : K →+* ℂ) (v : InfinitePlace K) :
     (∀ a, sgAt σ₀ v a = v.embedding a) ∨ ∀ a, sgAt σ₀ v a = starRingEnd ℂ (v.embedding a) := by
   by_cases hv : v = InfinitePlace.mk σ₀
@@ -22,6 +27,11 @@ theorem embedding_eq_or {K : Type} [Field K] (σ₀ : K →+* ℂ) (v : Infinite
     · exact Or.inr fun a => by rw [hv, h]; simp
   · exact Or.inl fun a => by simp [sgAt, hv]
 
+/- English proof (translation)
+Use `GlobalTheory.HSApp.hasGram_of_inner _ _ _ fun v => ?_` and prove the remaining obligations. Use `⟨(R.HW i (sgAt D.what₂.embLL v)).H, inferInstance, inferInstance, ((R.FW i).j (sgAt D.what₂.embLL v)).toAddMonoidHom, ?_, fun x => ?_, fun n e he => (hU i _).1 n e he⟩` and prove the remaining obligations. Use `(embedding_eq_or D.what₂.embLL v).imp (fun h a x => ?_) fun h a x => ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `map_smulₛₗ ((R.FW i).j (sgAt D.what₂.embLL v)) a x`.
+
+Rewrite using `[← h]`. Conclude with `map_smulₛₗ ((R.FW i).j (sgAt D.what₂.embLL v)) a x`. Unfold `nrmR`. Rewrite using `[InfinitePlace.mk_embedding]`. Both sides reduce to the same expression.
+-/
 theorem hasGram_of_unif {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hU : R.LUnif) (i : Fin D.R.m) :
     HasGram (nrmR R i) := by
@@ -35,6 +45,9 @@ theorem hasGram_of_unif {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type
     rw [InfinitePlace.mk_embedding]
     rfl
 
+/- English proof (translation)
+Introduce `p hp _ i` and use `hasGram_of_unif p.R.toRealDat hp.prim.unif i`.
+-/
 theorem hasGram_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.Rows → RecTied D L → ∀ i : Fin D.R.m, HasGram (nrmR p.R.toRealDat i) :=
   fun p hp _ i => hasGram_of_unif p.R.toRealDat hp.prim.unif i
 

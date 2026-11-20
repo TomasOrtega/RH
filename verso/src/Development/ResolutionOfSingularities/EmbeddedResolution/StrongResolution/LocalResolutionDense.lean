@@ -15,6 +15,15 @@ namespace LocalResolutionData
 variable {k : Type u} [Field k] {X : Scheme.{u}} {f : X ⟶ Spec (CommRingCat.of k)}
   [LocallyOfFiniteType f] {s : SequenceOfBlowups X}
 
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce `V hV hVne`. Take `⟨x, hxV⟩` from `hVne`. Take `⟨i, y, hy⟩` from `d.exists_chartToLastObj_eq x`. Establish `hres` using `(d.isResolution i).2.2.2.1`.
+
+Establish `hW : IsOpen (((d.chartToLastObj i) ⁻¹ᵁ (⟨V, hV⟩ : TopologicalSpace.Opens ↥(s.lastObj)) : TopologicalSpace.Opens ↥((d.seq i).lastObj)) : Set ↥((d.seq i).lastObj))` using `((d.chartToLastObj i) ⁻¹ᵁ (⟨V, hV⟩ : TopologicalSpace.Opens ↥(s.lastObj))).2`. Establish `hyW : y ∈ (((d.chartToLastObj i) ⁻¹ᵁ (⟨V, hV⟩ : TopologicalSpace.Opens ↥(s.lastObj)) : TopologicalSpace.Opens ↥((d.seq i).lastObj)) : Set ↥((d.seq i).lastObj))` using `by show (d.chartToLastObj i).base y ∈ V`. Rewrite using `[hy]`. Conclude with `hxV`. Take `⟨z, hz1, hz2⟩` from `dense_iff_inter_open.mp hres _ hW ⟨y, hyW⟩`.
+
+Use `⟨(d.chartToLastObj i).base z, hz1, ?_⟩` and prove the remaining obligations. Establish `hmem : ((d.seq i).lastStructMap).base z ∈ (d.cover.f i) ⁻¹ᵁ f.smoothLocus`. Rewrite using `[d.preimage_smoothLocus_cover_map i]`. Conclude with `hz2`. Establish `hbase : (s.lastStructMap).base ((d.chartToLastObj i).base z) = (d.cover.f i).base (((d.seq i).lastStructMap).base z)`.
+
+Establish `h` using `congrArg (fun m : (d.seq i).lastObj ⟶ X => m.base z) (d.chartToLastObj_comp_lastStructMap i)`. Simplify using `using h`. Use `show (s.lastStructMap).base ((d.chartToLastObj i).base z) ∈ f.smoothLocus`. Rewrite using `[hbase]`. Conclude with `hmem`.
+-/
 theorem dense_preimage_smoothLocus (d : LocalResolutionData k f s) :
     Dense ((s.lastStructMap ⁻¹ᵁ f.smoothLocus : TopologicalSpace.Opens ↥(s.lastObj)) : Set ↥(s.lastObj)) := by
   rw [dense_iff_inter_open]

@@ -9,6 +9,9 @@ open MvPolynomial Finset
 section
 variable {p : ℕ} [hp : Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp1 : p.Prime` using `Fact.out`. Rewrite using `[norm_inv, show ((n : ℚ_[p])) = ((n : ℚ) : ℚ_[p]) by push_cast; rfl, Padic.eq_padicNorm, padicNorm.eq_zpow_of_nonzero (by exact_mod_cast hn), padicValRat.of_nat, Nat.factorization_def n hp1]`. Use `push_cast`. Simplify using `[padicValRat.of_nat]`.
+-/
 theorem norm_natCast_inv_le (n : ℕ) (hn : n ≠ 0) :
     ‖((n : ℚ_[p]))⁻¹‖ ≤ (p : ℝ) ^ (n.factorization p) := by
 
@@ -18,6 +21,9 @@ theorem norm_natCast_inv_le (n : ℕ) (hn : n ≠ 0) :
   push_cast
   simp [padicValRat.of_nat]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_choose_inv_le (j k : ℕ) (hk : k ≤ j) :
     ‖(((j.choose k : ℕ) : ℚ_[p]))⁻¹‖ ≤ (p : ℝ) ^ (Nat.log p j) := by
 
@@ -29,6 +35,11 @@ def Bnd {σ : Type} (B : ℝ) (u : MvPolynomial σ ℚ_[p]) : Prop := ∀ m, ‖
 
 variable {σ : Type}
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hB]`. Consider the case `@insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, MvPolynomial.coeff_add]`.
+
+Conclude with `(Padic.nonarchimedean _ _).trans (max_le (h a (Finset.mem_insert_self _ _) m) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem bnd_sum {ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ ℚ_[p]) {B : ℝ} (hB : 0 ≤ B)
     (h : ∀ i ∈ s, Bnd B (f i)) : Bnd B (∑ i ∈ s, f i) := by
 
@@ -41,6 +52,9 @@ theorem bnd_sum {ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ ℚ_[p])
     exact (Padic.nonarchimedean _ _).trans (max_le (h a (Finset.mem_insert_self _ _) m)
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (h m) (norm_nonneg _)`.
+-/
 theorem bnd_smul {B : ℝ} (a : ℚ_[p]) {u : MvPolynomial σ ℚ_[p]} (h : Bnd B u) :
     Bnd (‖a‖ * B) (a • u) := by
 
@@ -48,8 +62,16 @@ theorem bnd_smul {B : ℝ} (a : ℚ_[p]) {u : MvPolynomial σ ℚ_[p]} (h : Bnd 
   rw [MvPolynomial.coeff_smul, smul_eq_mul, norm_mul]
   exact mul_le_mul_of_nonneg_left (h m) (norm_nonneg _)
 
+/- English proof (translation)
+Introduce `m` and use `(h m).trans hB`.
+-/
 theorem bnd_mono {B B' : ℝ} {u : MvPolynomial σ ℚ_[p]} (h : Bnd B u) (hB : B ≤ B') : Bnd B' u := fun m => (h m).trans hB
 
+/- English proof (translation)
+Establish `e : T u = ∑ v ∈ u.support, u.coeff v • T (monomial v 1)` using `by conv_lhs => rw [u.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e]`.
+
+Use `bnd_sum _ _ (mul_nonneg hB hC) fun v _ => ?_` and prove the remaining obligations. Conclude with `bnd_mono (bnd_smul (u.coeff v) (hT v)) (mul_le_mul_of_nonneg_right (hu v) hC)`.
+-/
 theorem bnd_linear (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) {C B : ℝ} (hC : 0 ≤ C)
     (hT : ∀ m, Bnd C (T (monomial m 1))) {u : MvPolynomial σ ℚ_[p]} (hu : Bnd B u) (hB : 0 ≤ B) :
     Bnd (B * C) (T u) := by
@@ -63,6 +85,11 @@ theorem bnd_linear (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ 
   refine bnd_sum _ _ (mul_nonneg hB hC) fun v _ => ?_
   exact bnd_mono (bnd_smul (u.coeff v) (hT v)) (mul_le_mul_of_nonneg_right (hu v) hC)
 
+/- English proof (translation)
+Introduce `m'`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs`. Use `Padic.norm_int_le_one (p := p) (n : ℤ)` as an intermediate fact. Simplify using `using this`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem bnd_monomial (m : σ →₀ ℕ) (n : ℕ) : Bnd 1 (monomial m ((n : ℕ) : ℚ_[p])) := by
 
   classical
@@ -80,6 +107,11 @@ open MvPolynomial Finset
 section
 variable {p : ℕ} [hp : Fact p.Prime] {σ : Type}
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f k ih`. Establish `h0 : ∀ a b : σ, pderiv a ((Pi.single b (1 : MvPolynomial σ ℚ_[p]) : σ → MvPolynomial σ ℚ_[p]) k) = 0`.
+
+Apply the tactic sequence `intro a b; rw [Pi.single_apply]; split_ifs <;> simp`. Simplify using `only [Derivation.leibniz, map_add, pderiv_X, smul_eq_mul, ih, h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_comm' (i j : σ) (f : MvPolynomial σ ℚ_[p]) :
     pderiv i (pderiv j f) = pderiv j (pderiv i f) := by
   classical
@@ -92,12 +124,20 @@ theorem pderiv_comm' (i j : σ) (f : MvPolynomial σ ℚ_[p]) :
     simp only [Derivation.leibniz, map_add, pderiv_X, smul_eq_mul, ih, h0]
     ring
 
+/- English proof (translation)
+Use `LinearMap.ext fun f => ?_` and prove the remaining obligations. Simplify using `using pderiv_comm' i j f`.
+-/
 theorem commute_pderiv (i j : σ) :
     Commute (pderiv i : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap
       (pderiv j).toLinearMap := by
   refine LinearMap.ext fun f => ?_
   simpa using pderiv_comm' i j f
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih]`. Use `erw [MvPolynomial.pderiv_monomial]`.
+
+Use `congr 1`. Rewrite using `[tsub_tsub, ← Finsupp.single_add]`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same, Nat.descFactorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_pow_monomial (i : σ) (s : ℕ) (m : σ →₀ ℕ) (a : ℚ_[p]) :
     (((pderiv i : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ^ s)
       (monomial m a)) = monomial (m - Finsupp.single i s) (a * ((m i).descFactorial s : ℚ_[p])) := by
@@ -114,6 +154,9 @@ theorem pderiv_pow_monomial (i : σ) (s : ℕ) (m : σ →₀ ℕ) (a : ℚ_[p])
 def Contr (C : ℝ) (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) : Prop :=
   ∀ B, 0 ≤ B → ∀ u, Bnd B u → Bnd (B * C) (T u)
 
+/- English proof (translation)
+Introduce `B hB u hu`. Use `bnd_linear _ zero_le_one (fun m => ?_) hu hB` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, pderiv_pow_monomial, MvPolynomial.smul_monomial, one_mul, smul_eq_mul, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul, ← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero s), one_mul]`. Conclude with `bnd_monomial _ _`.
+-/
 theorem contr_divDeriv (i : σ) (s : ℕ) :
     Contr 1 (((s.factorial : ℚ_[p]))⁻¹ •
       ((pderiv i : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ^ s)) := by
@@ -125,6 +168,9 @@ theorem contr_divDeriv (i : σ) (s : ℕ) :
     inv_mul_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero s), one_mul]
   exact bnd_monomial _ _
 
+/- English proof (translation)
+Introduce `B hB u hu`. Establish `h1` using `h' (B * C) (mul_nonneg hB hC) (T u) (h B hB u hu)`. Rewrite using `[Module.End.mul_apply, ← mul_assoc]`. Conclude with `h1`.
+-/
 theorem contr_comp {C C' : ℝ} {T T' : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]}
     (hC : 0 ≤ C) (h : Contr C T) (h' : Contr C' T') : Contr (C * C') (T' * T) := by
 
@@ -133,6 +179,9 @@ theorem contr_comp {C C' : ℝ} {T T' : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] 
   rw [Module.End.mul_apply, ← mul_assoc]
   exact h1
 
+/- English proof (translation)
+Establish `e : (((k.factorial : ℚ_[p]) ^ 2))⁻¹ • (((pderiv i : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ∘ₗ (pderiv j).toLinearMap) ^ k) = ((((k.factorial : ℚ_[p]))⁻¹ • ((pderiv i : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap …`. Rewrite using `[smul_mul_smul_comm, ← mul_inv, ← sq, ← (commute_pderiv i j).mul_pow, Module.End.mul_eq_comp]`. Rewrite using `[e]`. Simplify using `using contr_comp zero_le_one (contr_divDeriv j k) (contr_divDeriv i k)`.
+-/
 theorem contr_D (i j : σ) (k : ℕ) :
     Contr 1 ((((k.factorial : ℚ_[p]) ^ 2))⁻¹ •
       (((pderiv i : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ∘ₗ
@@ -149,6 +198,11 @@ theorem contr_D (i j : σ) (k : ℕ) :
   rw [e]
   simpa using contr_comp zero_le_one (contr_divDeriv j k) (contr_divDeriv i k)
 
+/- English proof (translation)
+Introduce `B hB u hu`. Use `bnd_linear _ zero_le_one (fun m => ?_) hu hB` and prove the remaining obligations. Simplify using `only [Formalism.GM.tieE, LinearMap.mulLeft_apply, Finset.sum_mul]`. Use `bnd_sum _ _ zero_le_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.X, MvPolynomial.X, monomial_mul, monomial_mul, show (1 : ℚ_[p]) * 1 * 1 = ((1 : ℕ) : ℚ_[p]) by simp]`.
+
+Conclude with `bnd_monomial _ _`.
+-/
 theorem contr_E {r : ℕ} (w e : Fin r → σ) : Contr (p := p) 1 (Formalism.GM.tieE (k := ℚ_[p]) w e) := by
 
   intro B hB u hu
@@ -159,6 +213,11 @@ theorem contr_E {r : ℕ} (w e : Fin r → σ) : Contr (p := p) 1 (Formalism.GM.
     show (1 : ℚ_[p]) * 1 * 1 = ((1 : ℕ) : ℚ_[p]) by simp]
   exact bnd_monomial _ _
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `B hB u hu`. Simplify using `using hu`. Consider the case `succ j ih`.
+
+Rewrite using `[pow_succ' C j, pow_succ T j]`. Conclude with `contr_comp hC h ih`.
+-/
 theorem contr_pow {C : ℝ} (hC : 0 ≤ C) {T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]}
     (h : Contr C T) (j : ℕ) : Contr (C ^ j) (T ^ j) := by
 
@@ -177,6 +236,9 @@ open MvPolynomial Finset
 section
 variable {p : ℕ} [hp : Fact p.Prime] {σ : Type}
 
+/- English proof (translation)
+Introduce `B hB u hu`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `bnd_sum _ _ (mul_nonneg hB hC) fun i hi => h i hi B hB u hu`.
+-/
 private theorem contr_finset_sum {ι : Type} {C : ℝ} (hC : 0 ≤ C) (s : Finset ι)
     (T : ι → (MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]))
     (h : ∀ i ∈ s, Contr C (T i)) : Contr C (∑ i ∈ s, T i) := by
@@ -184,6 +246,9 @@ private theorem contr_finset_sum {ι : Type} {C : ℝ} (hC : 0 ≤ C) (s : Finse
   rw [LinearMap.sum_apply]
   exact bnd_sum _ _ (mul_nonneg hB hC) fun i hi => h i hi B hB u hu
 
+/- English proof (translation)
+Introduce `B hB u hu`. Rewrite using `[LinearMap.smul_apply]`. Conclude with `bnd_mono (bnd_smul a (h B hB u hu)) (le_of_eq (by ring))`.
+-/
 private theorem contr_smul_mahler_measure {C : ℝ} (a : ℚ_[p])
     {T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]} (h : Contr C T) :
     Contr (‖a‖ * C) (a • T) := by
@@ -191,11 +256,19 @@ private theorem contr_smul_mahler_measure {C : ℝ} (a : ℚ_[p])
   rw [LinearMap.smul_apply]
   exact bnd_mono (bnd_smul a (h B hB u hu)) (le_of_eq (by ring))
 
+/- English proof (translation)
+Introduce `B hB u hu` and use `bnd_mono (h B hB u hu) (mul_le_mul_of_nonneg_left hCC hB)`.
+-/
 private theorem contr_mono' {C C' : ℝ}
     {T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]} (h : Contr C T) (hCC : C ≤ C') :
     Contr C' T :=
   fun B hB u hu => bnd_mono (h B hB u hu) (mul_le_mul_of_nonneg_left hCC hB)
 
+/- English proof (translation)
+Establish `h` using `Nat.choose_mul_factorial_mul_factorial hm`. Establish `hc : ((j.choose m : ℕ) : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.choose_pos hm).ne'`. Establish `h1 : (m.factorial : ℚ_[p]) ≠ 0` using `by exact_mod_cast m.factorial_ne_zero`. Establish `h2 : ((j - m).factorial : ℚ_[p]) ≠ 0` using `by exact_mod_cast (j - m).factorial_ne_zero`. Rewrite using `[← h]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem inv_factorial_sq_mul_choose_eq {j m : ℕ} (hm : m ≤ j) :
     (((j.factorial : ℚ_[p]) ^ 2))⁻¹ * ((j.choose m : ℕ) : ℚ_[p]) =
       (((j.choose m : ℕ) : ℚ_[p]))⁻¹ *
@@ -208,6 +281,15 @@ private theorem inv_factorial_sq_mul_choose_eq {j m : ℕ} (hm : m ≤ j) :
   push_cast
   field_simp
 
+/- English proof (translation)
+Establish `hMc0 : (0 : ℝ) ≤ Mc` using `zero_le_one.trans hM1`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `j _`. Break down `j with _ | j` into its components or cases.
+
+Introduce `B hB u hu m`. Simplify using `using hu m`. Introduce `B hB u hu m`. Simplify using `[hB]`. Consider the case `@insert a s ha ih`.
+
+Introduce `j hj`. Establish `hc : Commute (D a) (∑ c ∈ s, D c)` using `Commute.sum_right _ _ _ fun c _ => hcomm a c`. Rewrite using `[Finset.sum_insert ha, Finset.card_insert_of_notMem ha, hc.add_pow, Finset.smul_sum]`. Use `contr_finset_sum (pow_nonneg hMc0 _) _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hmj : m ≤ j` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hm)`.
+
+Rewrite using `[← Nat.cast_comm, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul ℚ_[p], smul_smul, inv_factorial_sq_mul_choose_eq hmj, ← smul_smul, ← smul_mul_smul_comm]`. Establish `h1` using `contr_smul_mahler_measure (((j.choose m : ℕ) : ℚ_[p]))⁻¹ (contr_comp (pow_nonneg hMc0 _) (ih (j - m) (by omega)) (hdiv a m))`. Use `contr_mono' h1 ?_` and prove the remaining obligations. Rewrite using `[mul_one, pow_succ']`. Conclude with `mul_le_mul_of_nonneg_right (hM j hj m hmj) (pow_nonneg hMc0 _)`.
+-/
 theorem contr_Fsum {ι : Type} [DecidableEq ι]
     (D : ι → (MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]))
     (hcomm : ∀ a b, Commute (D a) (D b))
@@ -245,6 +327,23 @@ open MvPolynomial Finset
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `p hp σ r w e hw he hwe hr o n z u hu`. Establish `hp1 : (1 : ℝ) ≤ p` using `by exact_mod_cast hp.out.one_lt.le`. Use `set L := Nat.log p (o + n + r + z) with hL`. Use `set Mc : ℝ := (p : ℝ) ^ L with hMcdef`. Establish `hM1 : 1 ≤ Mc` using `one_le_pow₀ hp1`.
+
+Establish `hMc0 : (0 : ℝ) ≤ Mc` using `zero_le_one.trans hM1`. Establish `hM : ∀ j ≤ o, ∀ k ≤ j, ‖(((j.choose k : ℕ) : ℚ_[p]))⁻¹‖ ≤ Mc` using `fun j hj k hk => (norm_choose_inv_le j k hk).trans (pow_le_pow_right₀ hp1 (Nat.log_mono_right (by omega)))`. Establish `hcomm : ∀ a b : Fin r, Commute ((pderiv (w a) : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ∘ₗ (pderiv (e a)).toLinearMap) ((pderiv (w b) : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])).toLinearMap ∘ₗ (pderiv (e b)).toLinearMap)` using `fun a b => ((commute_pderiv _ _).mul_right (commute_pderiv _ _)).mul_left ((commute_pderiv _ _).mul_right (commute_pderiv _ _))`. Establish `hΦ : Contr (p` using `p) (Mc ^ (r + 1)) (Formalism.GM.tiePhi (k := ℚ_[p]) w e o n z) := by`. Unfold `Formalism.GM.tiePhi`.
+
+Use `contr_finset_sum (pow_nonneg hMc0 _) _ _ fun j hj => ?_` and prove the remaining obligations. Establish `hjo : j ≤ o` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Establish `hterm : (((-1 : ℚ_[p]) ^ j) / (((j.factorial : ℚ_[p]) ^ 2) * ((o + n + r + z - 1).choose j : ℚ_[p]))) • (((Formalism.GM.tieE (k` using `ℚ_[p]) w e) ^ j).comp ((Formalism.GM.tieF (k := ℚ_[p]) w e) ^ j)) = ((-1 : ℚ_[p]) ^ j * (((o + n + r + z - 1).choose j : ℕ) : ℚ_[p])⁻¹) • ((Formalism.GM.tieE (k := ℚ_[p]) w e) ^ j * ((((j.factorial : ℚ_[p]) ^ 2))⁻¹ • (Formalism.GM.tieF (k := ℚ_[p]) w e) ^ j)) := by`. Rewrite using `[mul_smul_comm, smul_smul, Module.End.mul_eq_comp]`. Use `congr 1`.
+
+Rewrite using `[div_eq_mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hterm]`. Establish `hF` using `contr_Fsum (p := p) _ hcomm (fun a k => contr_D (w a) (e a) k) hM1 o hM Finset.univ j hjo`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at hF`.
+
+Establish `hE` using `contr_pow (C := 1) zero_le_one (contr_E (p := p) w e) j`. Establish `h1` using `contr_smul_mahler_measure ((-1 : ℚ_[p]) ^ j * (((o + n + r + z - 1).choose j : ℕ) : ℚ_[p])⁻¹) (contr_comp (pow_nonneg hMc0 _) hF hE)`. Use `contr_mono' (by unfold Formalism.GM.tieF; exact h1) ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, mul_one, pow_succ' Mc r]`. Use `mul_le_mul_of_nonneg_right ?_ (pow_nonneg hMc0 _)` and prove the remaining obligations.
+
+Conclude with `(norm_choose_inv_le _ j (by omega)).trans (pow_le_pow_right₀ hp1 (Nat.log_mono_right (by omega)))`. Establish `hv` using `hΦ 1 zero_le_one u hu`. Establish `hs` using `bnd_smul ((p : ℚ_[p]) ^ ((r + 1) * (L + 1))) hv`. Use `bnd_mono hs ?_` and prove the remaining obligations. Rewrite using `[norm_pow, Padic.norm_p, one_mul, hMcdef, ← pow_mul, inv_pow]`.
+
+Establish `: ((p : ℝ) ^ ((r + 1) * (L + 1)))⁻¹ * (p : ℝ) ^ (L * (r + 1)) = ((p : ℝ) ^ (r + 1))⁻¹`. Establish `hp0 : (p : ℝ) ≠ 0` using `by positivity`. Rewrite using `[show (r + 1) * (L + 1) = L * (r + 1) + (r + 1) by ring, pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ hp1)`.
+-/
 theorem phi_integrality : PhiInt := by
 
   intro p hp σ r w e hw he hwe hr o n z u hu
@@ -301,6 +400,9 @@ end Formalism.GM.M.PhiIntegrality
 
 namespace Formalism.GM
 
+/- English proof (translation)
+The claim follows from `M.PhiIntegrality.phi_integrality`.
+-/
 theorem projectorIntegral : M.PhiInt := M.PhiIntegrality.phi_integrality
 
 end Formalism.GM

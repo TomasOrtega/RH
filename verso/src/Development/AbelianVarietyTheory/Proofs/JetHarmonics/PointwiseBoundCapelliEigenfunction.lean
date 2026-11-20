@@ -11,6 +11,11 @@ open BpJoin Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P Formalism.Four
 
 namespace GlobalTheory.BpEigen
 
+/- English proof (translation)
+Introduce `γ hγ hG`. Use `(h γ hγ hG).trans ?_` and prove the remaining obligations. Use `mul_le_mul' (ENNReal.ofReal_le_ofReal ?_) le_rfl` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (pow_nonneg (inv_nonneg.2 hG.le) _)` and prove the remaining obligations. Use `Real.rpow_le_rpow_of_exponent_le hb ?_` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_right hC (by positivity)`.
+-/
 theorem pointwise_bound_mono {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     {p : KB.Pl P Wp Wq} {f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} {b C C' : ℝ} {n₀ p₀ : ℕ}
@@ -22,6 +27,17 @@ theorem pointwise_bound_mono {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] 
   refine Real.rpow_le_rpow_of_exponent_le hb ?_
   exact mul_le_mul_of_nonneg_right hC (by positivity)
 
+/- English proof (translation)
+Introduce `hX hP C C₃ C₀ hC hC₃ hC₀`. Establish `hN` using `GlobalTheory.T.topDensity_cutoff_dominated_of_HC_xi hX`. Take `⟨D₁, E₁, h₁⟩` from `GlobalTheory.T.capelliEigenfunction_pointwiseBound_of_differentTypes hX hP hN C C₃ C₀ hC hC₃ hC₀`. Take `⟨D₂, E₂, h₂⟩` from `GlobalTheory.T.capelliEigenfunction_pointwiseBound_of_equalTypes hX hP hN C C₃ C₀ hC hC₃ hC₀`. Use `⟨max D₁ D₂, max E₁ E₂, ?_⟩` and prove the remaining obligations.
+
+Introduce `P Wp Wq _ _ _ _ _ _ p f b c A₀ n₀ p₀ lam lam' hS hc h3 hp hE hA hl hR`. Establish `key : ∀ E : ℝ, E ≤ max E₁ E₂ → E * ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ)`. Introduce `E hE'`. Use `le_trans ?_ hA` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hE' (by positivity)) (by positivity)`.
+
+Break down `hc with hc | hc` into its components or cases. Establish `hb : 1 ≤ b`. Take `⟨-, l, hl', -⟩` from `hc`. Take `⟨a1, a2, -⟩` from `hS.1 l hl'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `pointwise_bound_mono hb (le_max_left _ _) (h₁ P Wp Wq p f b c A₀ n₀ p₀ lam lam' hS hc h3 hp hE (key _ (le_max_left _ _)) hl hR)`. Establish `hb : 1 ≤ b`. Take `⟨-, -, l, hl1, hl2, -⟩` from `hc`. Take `⟨a1, a2, -⟩` from `hS.1 l (Finset.mem_Icc.2 ⟨hl1, hl2.le⟩)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `pointwise_bound_mono hb (le_max_right _ _) (h₂ P Wp Wq p f b c A₀ n₀ p₀ lam lam' hS hc h3 hp hE (key _ (le_max_right _ _)) hl hR)`.
+-/
 theorem pointwise_bound_eigenfunction : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → ∀ C C₃ C₀ : ℝ, 0 ≤ C → 0 ≤ C₃ → 0 ≤ C₀ → ∃ C₄ Cc : ℝ, ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b c A₀ : ℝ) (n₀ p₀ : ℕ) (lam lam' : Fin (2 * P.r + P.k + 1) → ℝ), StdNum C b c P lam → Cases P n₀ → 3 * (P.r + 1) ≤ 2 * p₀ → (p₀ : ℝ) ≤ C₀ * ((P.r : ℝ) + 1) ^ 2 → EigDec f A₀ lam' → Cc * ((P.r : ℝ) + 1) ^ 4 * (((3 * (P.r + 1) : ℕ) : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A₀ - (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) → (∀ s, |lam' s - lam s| + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) ≤ c - 1) → TBB.RegularityBoundBigCell p f b C₃ (2 * p₀ + n₀) → TBB.ThmBpAt p f b C₄ n₀ p₀ := by
   intro hX hP C C₃ C₀ hC hC₃ hC₀
   have hN := GlobalTheory.T.topDensity_cutoff_dominated_of_HC_xi hX

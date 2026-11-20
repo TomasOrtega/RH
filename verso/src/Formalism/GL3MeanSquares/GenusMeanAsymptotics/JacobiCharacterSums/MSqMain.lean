@@ -16,17 +16,29 @@ namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
 open Formalism.HermitianLattices.ZeroFreeRegionGL2
 
+/- English proof (translation)
+Unfold `cN`. Conclude with `mul_nonneg ArithmeticFunction.vonMangoldt_nonneg (le_min zero_le_one (by positivity))`.
+-/
 theorem cN_nonneg (x : ℝ) (hx : 0 ≤ x) (n : ℕ) : 0 ≤ cN x n := by
   unfold cN
   exact mul_nonneg ArithmeticFunction.vonMangoldt_nonneg (le_min zero_le_one (by positivity))
 
+/- English proof (translation)
+Unfold `cN at h`. Conclude with `ArithmeticFunction.vonMangoldt_ne_zero_iff.mp (left_ne_zero_of_mul h)`.
+-/
 theorem cN_primePow (x : ℝ) (n : ℕ) (h : cN x n ≠ 0) : IsPrimePow n := by
   unfold cN at h
   exact ArithmeticFunction.vonMangoldt_ne_zero_iff.mp (left_ne_zero_of_mul h)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun n _ => hc n`.
+-/
 theorem RR_nonneg (c : ℕ → ℝ) (hc : ∀ n, 0 ≤ c n) (m₀ N : ℕ) : 0 ≤ RR c m₀ N :=
   Finset.sum_nonneg fun n _ => hc n
 
+/- English proof (translation)
+The claim follows from `|∑ q ∈ PP, (jacobiSym (q : ℤ) s : ℝ)| ≤ (PP.card : ℝ) := by refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ have : ∀ q ∈ PP, |(jacobiSym (q : ℤ) s : ℝ)| ≤ 1 := by intro q _ rcases jacobiSym.trichotomy (q : ℤ) s with h | h | h <;> simp [h] simpa using Finset.sum_le_sum this`.
+-/
 theorem abs_sum_jacobi_le (PP : Finset ℕ) (s : ℕ) :
     |∑ q ∈ PP, (jacobiSym (q : ℤ) s : ℝ)| ≤ (PP.card : ℝ) := by
   refine (Finset.abs_sum_le_sum_abs _ _).trans ?_
@@ -35,6 +47,9 @@ theorem abs_sum_jacobi_le (PP : Finset ℕ) (s : ℕ) :
     rcases jacobiSym.trichotomy (q : ℤ) s with h | h | h <;> simp [h]
   simpa using Finset.sum_le_sum this
 
+/- English proof (translation)
+The claim follows from `|∑ q ∈ PP, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)| = |∑ q ∈ PP, (jacobiSym (q : ℤ) (soutPart m₀ (n * n')) : ℝ)| := by obtain ⟨σ, hσ, h⟩ := jacobi_class m₀ a₀ (n * n') h8 ha (Nat.mul_pos hn hn') have h1 : ∑ q ∈ PP, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) …`.
+-/
 theorem abs_pair_sum_eq (PP : Finset ℕ) (m₀ a₀ n n' : ℕ) (h8 : 8 ∣ m₀) (ha : a₀.Coprime m₀) (hn : 0 < n)
     (hn' : 0 < n') (hPP : ∀ q ∈ PP, q.Prime ∧ q % m₀ = a₀ % m₀ ∧ n * n' < q) :
     |∑ q ∈ PP, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)| =
@@ -52,6 +67,41 @@ theorem abs_pair_sum_eq (PP : Finset ℕ) (m₀ a₀ n n' : ℕ) (h8 : 8 ∣ m�
   rw [h1, abs_mul]
   rcases hσ with h | h <;> simp [h]
 
+/- English proof (translation)
+Introduce `ε hε hε1`. Take `⟨xa, hxa⟩` from `count_a hP Formalism.ZeroFreeDirichlet.excBound ε hε`. Take `⟨xt, hxt⟩` from `twist_bound hP Formalism.ZeroFreeDirichlet.zFRDirichlet Formalism.ZeroFreeDirichlet.excBound ε hε`. Take `⟨C1, x1, h1⟩` from `sum_cN_le`. Take `⟨C2, x2, h2⟩` from `exists_primePowerSum_le`.
+
+Take `⟨C3, x3, h3⟩` from `RR_cN_le`. Take `⟨C4, x4, h4⟩` from `sum_sP_sq_le`. Use `⟨|C4| + 25 * C3 ^ 2 + 2 * C2 ^ 2 + 10 * |C2| * |C3| + C1 ^ 2, max (max xa xt) (max (max x1 x2) (max (max x3 x4) (max 3 ((19200 / ε) ^ (12 / ε))))), ?_⟩` and prove the remaining obligations. Introduce `x X m₀ a₀ κ hx h8 hsm hcop ha4 hX1 hX2 hX3 hκ _`. Simplify using `only [max_le_iff] at hx`.
+
+Take `⟨⟨hxxa, hxxt⟩, ⟨hx1, hx2⟩, ⟨hx3, hx4⟩, hx5, hx6⟩` from `hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hm0 : 0 < m₀`. Break down `Nat.eq_zero_or_pos m₀ with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Rewrite `hcop` using `[Nat.coprime_zero_right]`. Substitute `hcop` using the available equality. Evaluate the numerical expressions using `at ha4`. Conclude with `h`. Use `⟨hxa x X m₀ a₀ hxxa hm0 h8 hcop hX1 hX2 hX3, ?_⟩` and prove the remaining obligations.
+
+Take `⟨ns0, hns0⟩` from `hxt x X m₀ a₀ hxxt hm0 h8 hcop hX1 hX2 hX3`. Use `set N := ⌊x ^ 400⌋₊ with hN`. Use `set PP := PPset m₀ a₀ X with hPPdef`. Choose the witnesses or unpack the hypotheses as in `⟨nstar, hns1, hns⟩ : ∃ nstar : ℕ, 1 < nstar ∧ ∀ s : ℕ, 1 < s → Odd s → Squarefree s → s.Coprime m₀ → s ≤ N ^ 2 → s ≠ nstar → |∑ q ∈ PP, (jacobiSym (q : ℤ) s : ℝ)| ≤ x ^ (-3 : ℝ) * (PP.card : ℝ) := by`. Distinguish the cases in `hc : 1 < ns0`.
+
+Conclude with `⟨ns0, hc, hns0⟩`. Conclude with `⟨2, by norm_num, fun s hs1 hs2 hs3 hs4 hs5 _ => hns0 s hs1 hs2 hs3 hs4 hs5 (by omega)⟩`. Establish `hc0 : ∀ n, 0 ≤ cN x n` using `cN_nonneg x hx0.le`. Establish `hcpp : ∀ n, cN x n ≠ 0 → IsPrimePow n` using `cN_primePow x`. Establish `hl0 : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`.
+
+Establish `hbig : ∀ n ∈ Icc 1 N, ∀ n' ∈ Icc 1 N, ∀ q ∈ PP, q.Prime ∧ q % m₀ = a₀ % m₀ ∧ n * n' < q`. Introduce `n hn n' hn' q hq`. Rewrite `hq` using `[hPPdef, PPset, Finset.mem_filter, Finset.mem_Icc]`. Take `⟨⟨hq1, hq2⟩, hqp, hqm, hqX⟩` from `hq`. Use `⟨hqp, hqm, ?_⟩` and prove the remaining obligations.
+
+Establish `hXpos : 0 < X`. Assume the negation of the conclusion as `hneg`. Establish `: ⌊X⌋₊ = 0` using `Nat.floor_of_nonpos (not_lt.mp hneg)`. Use linear arithmetic over natural numbers and integers. Establish `hpow` using `pow_le_sqrt_of_rpow_le_log ε hε x X hx5 hx6 hXpos hX2`.
+
+Establish `hfl : ((N : ℕ) : ℝ) ≤ x ^ 400` using `Nat.floor_le (by positivity)`. Establish `hnr : (n : ℝ) ≤ x ^ 400` using `le_trans (by exact_mod_cast (Finset.mem_Icc.mp hn).2) hfl`. Establish `hnr' : (n' : ℝ) ≤ x ^ 400` using `le_trans (by exact_mod_cast (Finset.mem_Icc.mp hn').2) hfl`. Establish `hmul : (n : ℝ) * (n' : ℝ) ≤ x ^ 400 * x ^ 400` using `mul_le_mul hnr hnr' (Nat.cast_nonneg _) (by positivity)`. Establish `h800 : x ^ 400 * x ^ 400 = x ^ 800` using `by rw [← pow_add]`.
+
+Establish `: ((n * n' : ℕ) : ℝ) < (q : ℝ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Establish `hPc : (0 : ℝ) ≤ (PP.card : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hη : (0 : ℝ) ≤ x ^ (-3 : ℝ)` using `Real.rpow_nonneg hx0.le _`. Establish `step1` using `meansq_expand PP (Icc 1 N) (cN x) hc0 κ hκ (fun n q => jacobiSym (n : ℤ) q)`. Establish `step2` using `meansq_split (Icc 1 N) (cN x) hc0 (fun n n' => soutPart m₀ (n * n')) (fun n n' => |∑ q ∈ PP, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)|) (PP.card : ℝ) (x ^ (-3 : ℝ)) hPc hη nstar (by`. Introduce `n hn n' hn'`. Use `show |∑ q ∈ PP, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)| ≤ _`.
+
+Rewrite using `[abs_pair_sum_eq PP m₀ a₀ n n' h8 hcop (Finset.mem_Icc.mp hn).1 (Finset.mem_Icc.mp hn').1 (hbig n hn n' hn')]`. Conclude with `abs_sum_jacobi_le PP _)`. Use the proof step `(by`. Introduce `n hn n' hn' e1 e2`. Use `show |∑ q ∈ PP, ((jacobiSym (n : ℤ) q * jacobiSym (n' : ℤ) q : ℤ) : ℝ)| ≤ _`.
+
+Establish `hn1` using `(Finset.mem_Icc.mp hn)`. Establish `hn1'` using `(Finset.mem_Icc.mp hn')`. Rewrite using `[abs_pair_sum_eq PP m₀ a₀ n n' h8 hcop hn1.1 hn1'.1 (hbig n hn n' hn')]`. Establish `hpos` using `soutPart_pos m₀ (n * n')`. Use `hns _ (by change soutPart m₀ (n * n') ≠ 1 at e1; omega) (soutPart_odd m₀ _ (dvd_trans (by norm_num) h8)) (soutPart_squarefree m₀ _) (soutPart_coprime m₀ _) ?_ e2` and prove the remaining obligations.
+
+Use `(soutPart_le m₀ _ (Nat.mul_pos hn1.1 hn1'.1)).trans ?_` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul hn1.2 hn1'.2)`. Establish `hp1` using `pairs_one (cN x) hc0 hcpp m₀ N`. Establish `hB : ∀ p, sP (cN x) N p ≤ |C2| * Real.log x` using `fun p => (h2 x hx2 p).trans (mul_le_mul_of_nonneg_right (le_abs_self _) hl0)`.
+
+Establish `hpr` using `pairs_r (cN x) hc0 hcpp m₀ N nstar hns1 (|C2| * Real.log x) hB`. Establish `hy1 : (1 : ℝ) ≤ x ^ (ε / 5)` using `Real.one_le_rpow (by linarith) (by positivity)`. Establish `hRR` using `h3 x hx3 m₀ (x ^ (ε / 5)) hy1 (by`. Introduce `p hp hpm hpN`. Break down `hsm p hp hpm with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `hfl : ((N : ℕ) : ℝ) ≤ x ^ 400` using `Nat.floor_le (by positivity)`. Establish `: (p : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hpN`. Use the proof step `linarith)`.
+
+Establish `hfin` using `final_size ε hε1 x hx5 C1 C2 C3 C4 (∑ n ∈ Icc 1 N, cN x n) (∑ p ∈ (Icc 1 N).filter Nat.Prime, sP (cN x) N p ^ 2) (RR (cN x) m₀ N) (Finset.sum_nonneg fun n _ => hc0 n) (h1 x hx1) (h4 x hx4) (RR_nonneg _ hc0 _ _) hRR`. Use `step1.trans (step2.trans ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ hPc` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem meanSquareHypW_of_pnt (hP : PNTAPRelW) :
     ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∃ C x₀ : ℝ, MeanSquareHypW ε C x₀ := by
   intro ε hε hε1

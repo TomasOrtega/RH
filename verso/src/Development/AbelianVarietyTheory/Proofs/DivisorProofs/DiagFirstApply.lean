@@ -21,6 +21,9 @@ def diagFirst {d : ℕ} (x : kˣ) : GL (Fin d) k where
   inv_val := by
     rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext i; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[diagFirst, Matrix.diagonal_apply]`.
+-/
 theorem diagFirst_apply {d : ℕ} (x : kˣ) (i j : Fin d) :
     (diagFirst (d := d) x).1 i j = if i = j then (if i.1 = 0 then (x : k) else 1) else 0 := by
   simp [diagFirst, Matrix.diagonal_apply]

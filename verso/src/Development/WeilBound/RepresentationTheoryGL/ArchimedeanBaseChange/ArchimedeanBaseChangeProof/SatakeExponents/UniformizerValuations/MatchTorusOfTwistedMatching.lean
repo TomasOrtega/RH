@@ -22,8 +22,14 @@ def MatchLin2 : Prop :=
     (∀ j, IsLocallyConstant (f j) ∧ HasCompactSupport (f j) ∧ IsLocallyConstant (φ j) ∧ HasCompactSupport (φ j)) →
     (∀ j, Match n a b w μ (f j) (φ j)) → Match n a b w μ (fun γ => ∑ j, c j * f j γ) (fun y => ∑ j, c j * φ j y)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.MatchLinear.matchLin`.
+-/
 theorem matchLin2 : MatchLin2 := GlobalTheory.CompanionTheory.MatchLinear.matchLin
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq f).2 fun x => ?_` and prove the remaining obligations. Establish `hop : IsOpen {y : G | x⁻¹ * y ∈ L}` using `ho.preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [hop.mem_nhds (by simp [L.one_mem] : x ∈ {y : G | x⁻¹ * y ∈ L})] with y hy`. Use `(h.2 _ hy x).2` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem isHecke_lc {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {L : Subgroup G}
     (ho : IsOpen (L : Set G)) {f : G → ℂ} (h : IsHecke L f) : IsLocallyConstant f := by
   refine (IsLocallyConstant.iff_eventually_eq f).2 fun x => ?_
@@ -34,6 +40,19 @@ theorem isHecke_lc {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
 
 def MatchTOf2 : Prop := M4 → FUMul → DcosMul → MatchLin2 → MatchT
 
+/- English proof (translation)
+Introduce `hM4 hFU hD hLin E _ _ _ hU w hw n a ha b hb ϖ hϖ J _ c x hx k hk`. Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Take `⟨J', _, c', x', hx', e1, e2⟩` from `GlobalTheory.CompanionTheory.MatchPow.pow_claim hFU hD hU hw a hb hϖ c x hx k`. Establish `hc : Continuous (cj w)` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`. Establish `hoU` using `GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b`.
+
+Establish `hoG` using `GlobalTheory.CompanionTheory.MatchPow.iwahori_pair_open a (n - a) w`. Establish `hm` using `hLin E hU n a (n - a) w 1 J' (fun j => GlobalTheory.CompanionTheory.MatchPow.alpha n w b ^ k * c' j) (fun j => fU n w b ϖ (lOf (x' j))) (fun j => phiX n w b ϖ (x' j) a) (fun j => ⟨isHecke_lc hoU (GlobalTheory.CompanionTheory.MatchPow.fU_hecke hw b ϖ _ hc), (GlobalTheory.Companion …`. Establish `hcon : cR n a w b * GlobalTheory.CompanionTheory.MatchPow.beta a (n - a) w = GlobalTheory.CompanionTheory.MatchPow.alpha n w b`. Establish `h1 : (((iwGL a w).relIndex (GlobalTheory.LFun.KGL w a) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.CompanionTheory.MatchPow.iw_idx a w)`. Establish `h2 : (((iwGL (n - a) w).relIndex (GlobalTheory.LFun.KGL w (n - a)) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.CompanionTheory.MatchPow.iw_idx (n - a) w)`.
+
+Unfold `cR GlobalTheory.CompanionTheory.MatchPow.beta GlobalTheory.CompanionTheory.MatchPow.alpha`. Rewrite using `[GlobalTheory.CompanionTheory.MatchPow.relIndex_prod, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Establish `ef : lpow (iwU n w b) (fun γ => ∑ j, c j * fU n w b ϖ (lOf (x j)) γ) (k + 1) = fun γ => ∑ j, (GlobalTheory.CompanionTheory.MatchPow.alpha n w b ^ k * c' j) * fU n w b ϖ (lOf (x' j)) γ`. Rewrite using `[e1]`.
+
+Use function extensionality and compare the values at `γ`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `eφ : (fun y => cR n a w b ^ (k + 1) * ∑ s, mpow w (entT n w ϖ a c x s) (k + 1) y) = fun y => ∑ j, (GlobalTheory.CompanionTheory.MatchPow.alpha n w b ^ k * c' j) * phiX n w b ϖ (x' j) a y`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [e2, GlobalTheory.CompanionTheory.MatchPow.entT_eq, GlobalTheory.CompanionTheory.MatchPow.phiX_eq]`. Establish `e3 : ∑ s, GlobalTheory.CompanionTheory.MatchPow.beta a (n - a) w ^ k * ∑ j, c' j * GlobalTheory.CompanionTheory.MatchPow.tm n w ϖ a (x' j) s y = GlobalTheory.CompanionTheory.MatchPow.beta a (n - a) w ^ k * ∑ j, c' j * ∑ s, GlobalTheory.CompanionTheory.MatchPow.tm n w ϖ a (x' j) s …`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[e3, ← hcon, mul_pow, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ef, eφ]`. Conclude with `hm`.
+-/
 theorem matchTOf2 : MatchTOf2 := by
   intro hM4 hFU hD hLin E _ _ _ hU w hw n a ha b hb ϖ hϖ J _ c x hx k hk
   obtain ⟨k, rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
@@ -73,6 +92,9 @@ theorem matchTOf2 : MatchTOf2 := by
   rw [ef, eφ]
   exact hm
 
+/- English proof (translation)
+The claim follows from `matchTOf2 h GlobalTheory.CompanionTheory.FUMulPf.fuMul GlobalTheory.CompanionTheory.DcosProduct.dcosMul matchLin2`.
+-/
 theorem match_torus_of_twisted_matching (h : M4) : MatchT :=
   matchTOf2 h GlobalTheory.CompanionTheory.FUMulPf.fuMul GlobalTheory.CompanionTheory.DcosProduct.dcosMul matchLin2
 

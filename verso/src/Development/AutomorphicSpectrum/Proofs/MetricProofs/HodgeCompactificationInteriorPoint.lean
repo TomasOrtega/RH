@@ -21,6 +21,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgeMetric.GramFrame
 
+/- English proof (translation)
+Establish `h₁ : Mono (CommRingCat.ofHom β).op` using `Scheme.Spec.mono_of_mono_map h`. Establish `h₂ : Epi (CommRingCat.ofHom β)` using `inferInstanceAs (Epi (CommRingCat.ofHom β).op.unop)`. Set `K` to `Subfield.closure (Set.range β)`. Establish `h₃ : Epi (CommRingCat.ofHom (algebraMap K F))` using `epi_of_epi_fac (f := CommRingCat.ofHom (β.codRestrict K fun a => Subfield.subset_closure ⟨a, rfl⟩)) (h := CommRingCat.ofHom β) rfl`. Establish `h₄` using `(Algebra.isEpi_iff_forall_one_tmul_eq K F).1 (CommRingCat.epi_iff_epi.1 h₃) x`.
+
+Establish `hx : x ∈ K`. Assume the negation of the conclusion as `hx`. Establish `hx' : x ∉ Submodule.span K {(1 : F)}` using `fun hm => by`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hm`. Conclude with `hx (by rw [← ha, Algebra.smul_def, _root_.mul_one]; exact a.2)`.
+
+Take `⟨f, hf, hf'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hx' inferInstance`. Establish `f₁ : f 1 = 0` using `(Submodule.mem_bot K).1 (hf' ▸ Submodule.mem_map_of_mem (Submodule.mem_span_singleton_self _))`. Use `congrArg (fun z => TensorProduct.rid K F (LinearMap.lTensor F f z)) h₄` as an intermediate fact. Simplify using `[f₁, hf] at this`. Take `⟨y, hy, z, hz, e⟩` from `Subfield.mem_closure_iff.1 hx`.
+
+Establish `r : Subring.closure (Set.range β) = β.range` using `Subring.closure_eq β.range`. Rewrite `hy`, `hz` using `[r]`. Take `⟨p, rfl⟩` from `hy`. Take `⟨q, rfl⟩` from `hz`. Distinguish the cases in `hq : β q = 0`.
+
+Conclude with `⟨0, 1, by simp, by simp [← e, hq]⟩`. Conclude with `⟨p, q, hq, by rw [← e, div_mul_cancel₀ _ hq]⟩`.
+-/
 theorem generates_of_mono {O F : Type} [CommRing O] [Field F] (β : O →+* F) (h : Mono (spMap β)) (x : F) :
     ∃ p q : O, β q ≠ 0 ∧ x * β q = β p := by
   have h₁ : Mono (CommRingCat.ofHom β).op := Scheme.Spec.mono_of_mono_map h
@@ -49,6 +60,19 @@ theorem generates_of_mono {O F : Type} [CommRing O] [Field F] (β : O →+* F) (
   · exact ⟨0, 1, by simp, by simp [← e, hq]⟩
   · exact ⟨p, q, hq, by rw [← e, div_mul_cancel₀ _ hq]⟩
 
+/- English proof (translation)
+Establish `hgen` using `generates_of_mono β hm`. Set `R` to `O ⧸ RingHom.ker β`. Set `i : R →+* F` to `RingHom.kerLift β`. Establish `hi : Function.Injective i` using `RingHom.kerLift_injective β`. Set `gb : R →+* ℂ` to `Ideal.Quotient.lift (RingHom.ker β) g fun a ha => hk a ha`.
+
+Use `haveI : IsDomain R := hi.isDomain i`. Use `letI : Algebra R F := i.toAlgebra`. Establish `hinj : Function.Injective gb`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hZ : IsAlgebraic ℤ (algebraMap R F x)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Establish `hxa : IsAlgebraic ℤ x` using `(isAlgebraic_algebraMap_iff hi).1 hZ`. Use `Ideal.comap_ne_bot_of_algebraic_mem hx0 hx hxa ?_` and prove the remaining obligations. Establish `e : Ideal.comap (algebraMap ℤ R) (RingHom.ker gb) = RingHom.ker (gb.comp (algebraMap ℤ R))` using `RingHom.comap_ker _ _`.
+
+Rewrite using `[e, (RingHom.injective_iff_ker_eq_bot _).1]`. Establish `e2 : gb.comp (algebraMap ℤ R) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Rewrite using `[e2]`. Conclude with `Int.cast_injective`. Use `haveI : FaithfulSMul R F := (faithfulSMul_iff_algebraMap_injective R F).2 hi`.
+
+Use `haveI : IsFractionRing R F := IsFractionRing.of_field R F fun x => by`. Take `⟨p, q, hq, hx⟩` from `hgen x`. Use `⟨Ideal.Quotient.mk _ p, Ideal.Quotient.mk _ q, ?_⟩` and prove the remaining obligations. Use `show x = β p / β q`. Rewrite using `[eq_div_iff hq, hx]`.
+
+Use `⟨IsFractionRing.lift hinj, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Establish `: (IsFractionRing.lift hinj : F →+* ℂ) (algebraMap R F (Ideal.Quotient.mk _ a)) = gb (Ideal.Quotient.mk _ a)` using `IsFractionRing.lift_algebraMap hinj _`. Conclude with `this`.
+-/
 theorem exists_comp_eq_of_mono {O F : Type} [CommRing O] [Field F] [CharZero F] [Algebra.IsAlgebraic ℚ F] (β : O →+* F)
     (hm : Mono (spMap β)) (g : O →+* ℂ) (hk : ∀ a, β a = 0 → g a = 0) : ∃ g' : F →+* ℂ, g'.comp β = g := by
   have hgen := generates_of_mono β hm
@@ -88,6 +112,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Set `g : O →+* ℂ` to `(Spec.preimage ((z ≫ 𝔐.f) ≫ Y.s)).hom`. Establish `hs : (z ≫ 𝔐.f) ≫ Y.s = spMap g` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage ((z ≫ 𝔐.f) ≫ Y.s)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hsp : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`.
+
+Establish `h2` using `hsp.map (𝔐.f ≫ Y.s).continuous`. Establish `hk : ∀ a, β a = 0 → g a = 0`. Introduce `a ha`. Establish `e1 : (𝔐.f ≫ Y.s) (genPt 𝔐.ξ) = spMap (𝔐.cst.comp β) (IsLocalRing.closedPoint Ω)` using `(Scheme.Hom.comp_apply 𝔐.ξ (𝔐.f ≫ Y.s) _).symm.trans (congrArg (fun m : Sp Ω ⟶ Sp O => m (IsLocalRing.closedPoint Ω)) 𝔐.cst_over)`. Establish `e2 : (𝔐.f ≫ Y.s) (centre z) = spMap g (IsLocalRing.closedPoint ℂ)` using `(Scheme.Hom.comp_apply z (𝔐.f ≫ Y.s) _).symm.trans (congrArg (fun m : Sp ℂ ⟶ Sp O => m (IsLocalRing.closedPoint ℂ)) ((Category.assoc _ _ _).symm.trans hs))`.
+
+Rewrite `h2` using `[e1, e2]`. Establish `hle : PrimeSpectrum.comap (𝔐.cst.comp β) (IsLocalRing.closedPoint Ω) ≤ PrimeSpectrum.comap g (IsLocalRing.closedPoint ℂ)` using `(PrimeSpectrum.le_iff_specializes _ _).2 h2`. Establish `hmem : a ∈ (PrimeSpectrum.comap (𝔐.cst.comp β) (IsLocalRing.closedPoint Ω)).asIdeal`. Simplify using `[ha]`. Establish `h3 : g a ∈ IsLocalRing.maximalIdeal ℂ` using `hle hmem`.
+
+Rewrite `h3` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Take `⟨g', hg'⟩` from `exists_comp_eq_of_mono β hm g hk`. Use `⟨g', ?_⟩` and prove the remaining obligations. Rewrite using `[hs, ← hg']`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem exists_spMap_of_point (𝔐 : HodgeCpt Y S y) (hm : Mono (spMap β)) (z : Sp ℂ ⟶ 𝔐.X) :
     ∃ g' : c.F →+* ℂ, (z ≫ 𝔐.f) ≫ Y.s = spMap g' ≫ spMap β := by
   haveI : FiniteDimensional ℚ c.F := c.fin
@@ -117,6 +150,21 @@ theorem exists_spMap_of_point (𝔐 : HodgeCpt Y S y) (hm : Mono (spMap β)) (z 
   rw [hs, ← hg']
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Set `p : Sp ℂ` to `IsLocalRing.closedPoint ℂ`. Establish `hsub : Subsingleton (Sp ℂ)` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Establish `h₁ : (z ≫ 𝔐.f) p ∈ abLocus Y.t.G`. Use `(abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 (z p)).2 hz` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨g', hg'⟩` from `exists_spMap_of_point 𝔐 hm z`. Set `w : Sp ℂ ⟶ pullback Y.s (spMap β)` to `pullback.lift (z ≫ 𝔐.f) (spMap g') hg'`. Establish `hw : w ≫ pullback.fst _ _ = z ≫ 𝔐.f` using `pullback.lift_fst _ _ _`. Establish `h₂ : w p ∈ Set.range Y.jQ`. Rewrite using `[← Y.ab_gen]`.
+
+Use `show (pullback.fst Y.s _) (w p) ∈ abLocus Y.t.G`. Establish `: (pullback.fst Y.s (spMap β)) (w p) = (z ≫ 𝔐.f) p`. Rewrite using `[← hw]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `h₁`. Establish `h₃ : Set.range w ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q p]` and apply the resulting hypothesis. Use `haveI := Y.jQ_open`.
+
+Set `v : Sp ℂ ⟶ Xo.XF c` to `IsOpenImmersion.lift Y.jQ w h₃`. Establish `hv : v ≫ Y.jQ ≫ pullback.fst _ _ = z ≫ 𝔐.f`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, hw]`. Take `⟨t', ⟨m₁⟩⟩` from `exists_sab z 𝔐.t`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ 𝔐.m m₁`.
+
+Establish `cancel : ∀ (q : Sp ℂ ⟶ Y.X) (_ : q = v ≫ Y.jQ ≫ pullback.fst _ _) (_ : SABMap t' Y.t q), Nonempty (SABMap t' Y.oF.t v)`. Introduce `q hq n`. Substitute `hq` using the available equality. Conclude with `⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n).choose⟩`. Take `⟨m₃⟩` from `cancel _ hv.symm n`.
+
+Take `⟨w₂, g₂, -⟩` from `m₃.lin`. Take `⟨am, -⟩` from `amplePt _ _ v _ _ m₃.φ m₃.cart _ _ Y.oF.t.PP.isLB t'.PP.isLB ⟨w₂, g₂⟩ Y.oF.ample Y.oF.ktriv`. Conclude with `⟨t', m₁, MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 Y.oF.proper, am⟩`.
+-/
 theorem polarisedAt_of_interior_mono (𝔐 : HodgeCpt Y S y) (hm : Mono (spMap β)) (z : Sp ℂ ⟶ 𝔐.X) (hz : 𝔐.Interior z) :
     HodgeMetric.PolarisedAt 𝔐.t z := by
   let p : Sp ℂ := IsLocalRing.closedPoint ℂ
@@ -151,6 +199,17 @@ theorem polarisedAt_of_interior_mono (𝔐 : HodgeCpt Y S y) (hm : Mono (spMap �
   obtain ⟨am, -⟩ := amplePt _ _ v _ _ m₃.φ m₃.cart _ _ Y.oF.t.PP.isLB t'.PP.isLB ⟨w₂, g₂⟩ Y.oF.ample Y.oF.ktriv
   exact ⟨t', m₁, MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 Y.oF.proper, am⟩
 
+/- English proof (translation)
+Establish `hcst : Function.Injective 𝔐.cst` using `𝔐.cst.injective`. Use `haveI hchar : CharZero Ω := charZero_of_injective_ringHom hcst`. Establish `hinj : Function.Injective 𝔐.emb`. Introduce `s s' h`. Use `HodgeBasic.labelEmb_injective c (RingHom.ext fun a => hcst ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg (fun m : 𝓞 E →+* Ω => m a) h`. Use `letI : Fintype (CMType H) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E`. Rewrite using `[Fintype.card_of_bijective (HodgeBasic.labelHom_bijective H), Embeddings.card]`. Establish `hint` using `GlobalTheory.T.eigenspace_decomposition_internal Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard`.
+
+Establish `htop` using `hint.submodule_iSup_eq_top`. Establish `hreg : ∀ s a, 𝔐.emb s a ∈ regAt 𝔐.ξ q` using `fun s a => HodgeBasic.mem_regAt_of_isIntegral 𝔐.tie.gen 𝔐.all 𝔐.normal q ((Algebra.IsIntegral.isIntegral (R := ℤ) a).map (𝔐.emb s).toIntAlgHom)`. Establish `hnat` using `HodgeChar0.unitAt_natCast (q := q) hq`. Establish `hV : ∀ s, 𝔐.V s q = 𝔐.dR s q` using `fun s => Lat.patch_of_not S _ _ fun p hp => hq p (𝔐.S_prime p hp)`. Establish `hintg : ∀ (s : CMType H ⊕ CMType H) a, _root_.IsIntegral ℤ (𝔐.emb s a)` using `fun s a => (Algebra.IsIntegral.isIntegral (R := ℤ) a).map (𝔐.emb s).toIntAlgHom`.
+
+Establish `hsep : ∀ s t, s ≠ t → ∃ a, 𝔐.emb s a ≠ 𝔐.emb t a ∧ (𝔐.emb s a - 𝔐.emb t a)⁻¹ ∈ regAt 𝔐.ξ q`. Introduce `s t hst`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 (fun e => hst (hinj e))`. Conclude with `⟨a, ha, HodgeChar0.inv_mem_regAt hnat (sub_mem (hreg s a) (hreg t a)) ((hintg s a).sub (hintg t a))⟩`. Use `⟨hint.submodule_iSupIndep, hV, le_antisymm (fun e he => ?_) (iSup_le fun s => inf_le_left)⟩` and prove the remaining obligations.
+
+Establish `he' : e ∈ ⨆ s, 𝔐.Vgen s` using `by rw [show (⨆ s, 𝔐.Vgen s) = ⊤ from htop]; trivial`. Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 he'`. Rewrite `he`, the goal using `[Finsupp.sum_fintype _ _ fun _ => rfl]`. Establish `h1` using `HodgeChar0.mem_of_sum_mem (𝔐.M.lat q) 𝔐.ρ 𝔐.emb (fun a e he => HodgeChar0.lat_stable 𝔐.M 𝔐.t.act 𝔐.ρ 𝔐.act q a he) hreg hsep Finset.univ f (fun s _ => hf s) he`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s ⟨h1 s (Finset.mem_univ s), hf s⟩`.
+-/
 theorem lattices_off_fibres (𝔐 : HodgeCpt Y S y) (q : Cpt 𝔐.ξ) (hq : ∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q) :
     iSupIndep 𝔐.Vgen ∧ (∀ s, 𝔐.V s q = 𝔐.dR s q) ∧ 𝔐.M.lat q = ⨆ s, 𝔐.dR s q := by
   classical
@@ -187,6 +246,25 @@ theorem lattices_off_fibres (𝔐 : HodgeCpt Y S y) (q : Cpt 𝔐.ξ) (hq : ∀ 
   exact Submodule.sum_mem _ fun s _ =>
     Submodule.mem_iSup_of_mem s ⟨h1 s (Finset.mem_univ s), hf s⟩
 
+/- English proof (translation)
+Use `haveI hchar : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective`. Establish `hξ : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Take `⟨hind, hV, hlat⟩` from `lattices_off_fibres 𝔐 ⟨centre z, hgen⟩ fun r hr => GramEx.not_inFibre_centre hgen hr`. Establish `hmem : ∀ k, b k ∈ 𝔐.V s ⟨centre z, hgen⟩` using `fun k => by`. Rewrite using `[hfr.2]`.
+
+Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Establish `hmemd : ∀ k, b k ∈ 𝔐.dR s ⟨centre z, hgen⟩` using `fun k => hV s ▸ hmem k`. Set `bb : Fin N → ↥(𝔐.Vgen s ⊔ 𝔐.Vgen s)` to `fun k => ⟨b k, Submodule.mem_sup_left (hmemd k).2⟩`. Establish `hfr' : (Lat.comap (fun p => 𝔐.V s p ⊔ 𝔐.V s p) (𝔐.Vgen s ⊔ 𝔐.Vgen s).subtype).IsFrameAt bb ⟨centre z, hgen⟩`. Use `⟨LinearIndependent.of_comp (𝔐.Vgen s ⊔ 𝔐.Vgen s).subtype hfr.1, le_antisymm (fun x hx => ?_) ?_⟩` and prove the remaining obligations.
+
+Establish `hx' : (x : 𝔐.Li) ∈ 𝔐.V s ⟨centre z, hgen⟩`. Establish `h0 : (x : 𝔐.Li) ∈ 𝔐.V s ⟨centre z, hgen⟩ ⊔ 𝔐.V s ⟨centre z, hgen⟩` using `hx`. Rewrite `h0` using `[sup_idem]`. Then use the resulting hypothesis. Rewrite `hx'` using `[hfr.2]`. Take `⟨c', hc'⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hx'`.
+
+Establish `e : x = ∑ k, c' k • bb k` using `Subtype.ext (by`. Rewrite using `[← hc', Submodule.coe_sum]`. Use the proof step `rfl)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.mem_sup_left (hmem k)`. Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`. Take `⟨Vz, _, _, ⟨MR⟩⟩` from `lieModel_exists 𝔐.X 𝔐.t.G ℂ z`.
+
+Take `⟨f, hHI, hh, hp⟩` from `GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z Vz MR hpol`. Take `⟨π, hπ, hreg⟩` from `GramEx.exists_dual_sum 𝔐 hind ⟨centre z, hgen⟩ hV hlat s s bb hfr'`. Establish `hval : ∀ k, ∃ x : Vz, 𝔐.M.ValAt z (b k) (MR.pt x)` using `fun k => by`. Take `⟨w, hw⟩` from `(𝔐.M.exists_valAt_iff z _).2 ⟨hgen, (hmemd k).1⟩`. Take `⟨x, rfl⟩` from `MR.onto w hw.isTanAt`.
+
+Conclude with `⟨x, hw⟩`. Use `choose x hx using hval`. Establish `hg : ∀ j, ∃ g : Vz →ₗ[ℂ] ℂ, ∀ k, g (x k) = if j = k then 1 else 0` using `fun j => by`. Take `⟨g, hg⟩` from `GlobalTheory.T.lattice_regular_at_local_point 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ℂ z hgen Vz MR (π j) hξ (hreg j)`. Use `⟨g, fun k => hg _ _ _ (hx k) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show π j (b k) = if j = k then 1 else 0 from hπ j k]`. Use `split_ifs`. Conclude with `CxVal.one hgen`. Conclude with `⟨hgen, 0, map_zero _, map_zero _⟩`. Use `choose g hg using hg`.
+
+Conclude with `⟨Matrix.of fun p q => f (x p) (x q), ⟨fun k => MR.pt (x k), hx, fun p q => (hHI _ _ _).2 rfl⟩, GramEx.posDef_of_dual f hh hp x g hg⟩`.
+-/
 theorem exists_gramAt_posDef_of_frame (𝔐 : HodgeCpt Y S y) (z : Sp ℂ ⟶ 𝔐.X) (hgen : genPt 𝔐.ξ ⤳ centre z)
     (hpol : HodgeMetric.PolarisedAt 𝔐.t z) (s : CMType H ⊕ CMType H) {N : ℕ} (b : Fin N → 𝔐.Li)
     (hfr : (𝔐.V s).IsFrameAt b ⟨centre z, hgen⟩) :
@@ -236,6 +314,11 @@ theorem exists_gramAt_posDef_of_frame (𝔐 : HodgeCpt Y S y) (z : Sp ℂ ⟶ �
   exact ⟨Matrix.of fun p q => f (x p) (x q), ⟨fun k => MR.pt (x k), hx, fun p q => (hHI _ _ _).2 rfl⟩,
     GramEx.posDef_of_dual f hh hp x g hg⟩
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y A Fl hm z hz s`. Establish `hgen : genPt A.ξ ⤳ centre z` using `A.all _`. Take `⟨U, hU, b, hb, hfr⟩` from `Fl.sub s ⟨centre z, hgen⟩ (Set.mem_univ _)`. Establish `hfz` using `hfr ⟨centre z, hgen⟩ (Set.mem_univ _) hU`. Take `⟨Γ, hΓ, hP⟩` from `exists_gramAt_posDef_of_frame A z hgen (polarisedAt_of_interior_mono A hm z hz) s b hfz`.
+
+Conclude with `⟨hgen, b, Γ, hb, hfz, hΓ, hP⟩`.
+-/
 theorem main : ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (A : HodgeCpt Y S y) (Fl : A.Flag), Mono (spMap β) → ∀ (z : Sp ℂ ⟶ A.X), A.Interior z → ∀ s, ∃ (h : genPt A.ξ ⤳ centre z) (b : Fin (labelRk D s) → A.Li) (Γ : Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) ℂ), (∀ k, flagStep Ω b k = flagStep Ω (Fl.b s) k) ∧ (A.V s).IsFrameAt b ⟨centre z, h⟩ ∧ A.M.GramAt A.t.PP.L z b Γ ∧ Γ.PosDef := by
   intro _ E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y A Fl hm z hz s
   have hgen : genPt A.ξ ⤳ centre z := A.all _

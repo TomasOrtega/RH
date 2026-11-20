@@ -9,6 +9,27 @@ open scoped Matrix
 
 namespace GlobalTheory.WildCob
 
+/- English proof (translation)
+Take `⟨X, rfl⟩ : ∃ X, A = 1 + X` from `⟨A - 1, by abel⟩`. Simplify using `only [add_sub_cancel_left] at h1`. Assume the negation of the conclusion as `hne`. Establish `hX : ∃ i j, X i j ≠ 0`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hne (by rw [show X = 0 from Matrix.ext hc, add_zero])`. Take `⟨i₀, j₀, h0⟩` from `hX`. Take `⟨⟨a, b⟩, -, hab⟩` from `Finset.exists_max_image (Finset.univ : Finset (n × n)) (fun p => ‖X p.1 p.2‖) ⟨(i₀, j₀), Finset.mem_univ _⟩`. Use `set r := ‖X a b‖ with hr`.
+
+Establish `hle : ∀ i j, ‖X i j‖ ≤ r` using `fun i j => hab (i, j) (Finset.mem_univ _)`. Establish `hr0 : 0 < r` using `(norm_pos_iff.2 h0).trans_le (hle _ _)`. Establish `hr1 : r < 1` using `h1 a b`. Establish `hmul : ∀ (Y Z : Matrix n n K) (s t : ℝ), 0 ≤ s → 0 ≤ t → (∀ i j, ‖Y i j‖ ≤ s) → (∀ i j, ‖Z i j‖ ≤ t) → ∀ i j, ‖(Y * Z) i j‖ ≤ s * t`. Introduce `Y Z s t hs ht hY hZ i j`.
+
+Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hs ht) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hY _ _) (hZ _ _) (norm_nonneg _) hs`. Establish `hrr : 0 ≤ r * r` using `mul_nonneg hr0.le hr0.le`.
+
+Establish `key : ∀ m : ℕ, ∀ i j, ‖((1 + X) ^ m - 1 - (m : K) • X) i j‖ ≤ r * r`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro i j`. Simplify using `using hrr`.
+
+Consider the case `succ m ih`. Introduce `i j`. Establish `e : (1 + X) ^ (m + 1) - 1 - ((m + 1 : ℕ) : K) • X = ((1 + X) ^ m - 1 - (m : K) • X) + (((1 + X) ^ m - 1 - (m : K) • X) * X + (m : K) • (X * X))`. Simplify using `only [pow_succ, mul_add, sub_mul, mul_one, one_mul, Nat.cast_succ, add_smul, one_smul, Matrix.smul_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e, Matrix.add_apply, Matrix.add_apply]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ih i j) ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)))` and prove the remaining obligations. Conclude with `(hmul _ _ _ _ hrr hr0.le ih hle i j).trans (mul_le_of_le_one_right hrr hr1.le)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one K m)).trans (hmul _ _ _ _ hr0.le hr0.le hle hle i j)`.
+
+Take `⟨m, hm, hm'⟩` from `h r hr0`. Establish `e : (m : K) * X a b = ((1 + X) ^ m - 1) a b + -(((1 + X) ^ m - 1 - (m : K) • X) a b)`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖(m : K) * X a b‖ < r`.
+
+Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hm' a b) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `(key m a b).trans_lt (mul_lt_of_lt_one_right hr0 hr1)`. Rewrite `h2` using `[norm_mul, hm, one_mul]`.
+
+Conclude with `lt_irrefl _ h2`.
+-/
 theorem eq_one_of_pow_near {K : Type} [NormedField K] [IsUltrametricDist K] {n : Type} [Fintype n] [DecidableEq n]
     (A : Matrix n n K) (h1 : ∀ i j, ‖(A - 1) i j‖ < 1)
     (h : ∀ ε : ℝ, 0 < ε → ∃ m : ℕ, ‖(m : K)‖ = 1 ∧ ∀ i j, ‖(A ^ m - 1) i j‖ < ε) : A = 1 := by
@@ -63,6 +84,9 @@ theorem eq_one_of_pow_near {K : Type} [NormedField K] [IsUltrametricDist K] {n :
   rw [norm_mul, hm, one_mul] at h2
   exact lt_irrefl _ h2
 
+/- English proof (translation)
+Take `⟨L, hL, hsub⟩` from `(krullTopology_mem_nhds_one_iff ℚ Ω _).mp hV`. Establish `: IsGalois ℚ Ω` using `IsAlgClosure.isGalois ℚ Ω`. Use `⟨L.fixingSubgroup, L.fixingSubgroup_isOpen, ?_, hsub⟩` and prove the remaining obligations. Rewrite using `[← IntermediateField.finrank_eq_fixingSubgroup_index]`. Conclude with `Module.finrank_pos.ne'`.
+-/
 theorem exists_open_subgroup {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (V : Set (G ℚ Ω)) (hV : V ∈ nhds (1 : G ℚ Ω)) :
     ∃ H : Subgroup (G ℚ Ω), IsOpen (H : Set (G ℚ Ω)) ∧ H.index ≠ 0 ∧ (H : Set (G ℚ Ω)) ⊆ V := by
   obtain ⟨L, hL, hsub⟩ := (krullTopology_mem_nhds_one_iff ℚ Ω _).mp hV
@@ -71,6 +95,11 @@ theorem exists_open_subgroup {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosu
   rw [← IntermediateField.finrank_eq_fixingSubgroup_index]
   exact Module.finrank_pos.ne'
 
+/- English proof (translation)
+Take `⟨H, ho, hidx, hsub⟩` from `exists_open_subgroup V hV`. Establish `hvl1 : B.valuation (l : Ω) = 1` using `le_antisymm ((B.valuation_le_one_iff _).mpr (natCast_mem B l)) (not_lt.mp hvl)`. Take `⟨N, hN, -, hmem⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hidx σ`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN.ne' l hl.ne_one`. Use `⟨m, hm, hsub (GlobalTheory.WildKill.mem_of_wild B H ho (σ ^ m) (l ^ a) ?_ ((GlobalTheory.WeilDeligne.Wild ℚ B).pow_mem hσ m) ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_pow, map_pow, hvl1, one_pow]`. Conclude with `lt_irrefl _`. Rewrite using `[← pow_mul, mul_comm]`. Conclude with `hmem`.
+-/
 theorem exists_pow_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (B : ValuationSubring Ω) {l : ℕ} (hl : l.Prime)
     (hvl : ¬ B.valuation (l : Ω) < 1) {σ : G ℚ Ω} (hσ : σ ∈ GlobalTheory.WeilDeligne.Wild ℚ B) (V : Set (G ℚ Ω))
     (hV : V ∈ nhds (1 : G ℚ Ω)) : ∃ m : ℕ, ¬ l ∣ m ∧ σ ^ m ∈ V := by
@@ -84,10 +113,16 @@ theorem exists_pow_mem {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ
   · rw [Nat.cast_pow, map_pow, hvl1, one_pow]; exact lt_irrefl _
   · rw [← pow_mul, mul_comm]; exact hmem
 
+/- English proof (translation)
+Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hm`.
+-/
 theorem isUnit_natCast {l : ℕ} [hl : Fact l.Prime] {m : ℕ} (hm : ¬ l ∣ m) : IsUnit (m : ℤ_[l]) := by
   rw [PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]
   exact (Nat.Prime.coprime_iff_not_dvd hl.out).2 hm
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hm`.
+-/
 theorem norm_natCast_eq_one {l : ℕ} [hl : Fact l.Prime] {m : ℕ} (hm : ¬ l ∣ m) : ‖(m : Qbar l)‖ = 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact (Nat.Prime.coprime_iff_not_dvd hl.out).2 hm
@@ -96,6 +131,39 @@ noncomputable def aff {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.
     (s : G ℚ Ω) : Matrix (Fin 2 ⊕ Unit) (Fin 2 ⊕ Unit) (Qbar l) :=
   Matrix.fromBlocks (mat W s) (Matrix.of fun i _ => z s i) 0 1
 
+/- English proof (translation)
+Introduce `l hl Ω _ _ _ W c B q hW _ hB hq z hz`. Take `⟨hzc, hzO, hzm⟩` from `mem_coc.1 hz`. Establish `hvl : ¬ B.valuation (l : Ω) < 1`. Introduce `h`. Apply `hq` to reduce the goal to its premises.
+
+Rewrite using `[← hB]`. Simplify using `using h`. Use `set P := GlobalTheory.WeilDeligne.Wild ℚ B with hP`. Establish `hPI : P ≤ Ine (F` using `ℚ) B := GlobalTheory.WeilDeligne.Wild_le_Ine`. Establish `hz1 : z 1 = 0`.
+
+Use `hzm 1 (one_mem _) 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one, mat, map_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `left_eq_add.1 this`. Establish `ha1 : aff W z 1 = 1`. Rewrite using `[aff, ← Matrix.fromBlocks_one]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `[hz1]`. Set `M : P →* Matrix (Fin 2 ⊕ Unit) (Fin 2 ⊕ Unit) (Qbar l)` to `{ toFun := fun s => aff W z s map_one' := ha1 map_mul' := fun s t => by`.
+
+Simplify using `only [aff, Matrix.fromBlocks_multiply, Subgroup.coe_mul]`. Use `congr 1`. Simplify using `[mat]`. Use extensionality with `i j`. Rewrite using `[hzm s (hPI s.2) t (hPI t.2), Matrix.mul_one]`.
+
+Conclude with `add_comm _ _`. Simplify using the standard rewrite rules. Simplify using `}`. Establish `hM : ∀ s : P, M s = aff W z s` using `fun _ => rfl`. Establish `hcont : ∀ i j, Continuous fun s => aff W z s i j`.
+
+Establish `hWc : Continuous fun s => mat W s` using `Units.continuous_val.comp hW`. Introduce and unpack `(i | i) (j | j)`. Conclude with `hWc.matrix_elem i j`. Conclude with `hzc i`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`. Establish `hV : ∀ ε : ℝ, 0 < ε → {s : G ℚ Ω | ∀ i j, ‖(aff W z s - 1) i j‖ < ε} ∈ nhds (1 : G ℚ Ω)`. Introduce `ε hε`. Use `IsOpen.mem_nhds ?_ (by simp [ha1, hε])` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`.
+
+Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Conclude with `isOpen_lt ((hcont i j).sub continuous_const).norm continuous_const`. Establish `hker : ∀ s : P, (∀ i j, ‖(aff W z s - 1) i j‖ < 1) → s ∈ M.ker`. Introduce `s hs`. Use `eq_one_of_pow_near (M s) hs fun ε hε => ?_` and prove the remaining obligations.
+
+Take `⟨m, hm, hm'⟩` from `exists_pow_mem B hl.out hvl s.2 _ (hV ε hε)`. Conclude with `⟨m, norm_natCast_eq_one hm, by rw [← map_pow]; exact hm'⟩`. Establish `hfi : M.ker.FiniteIndex`. Take `⟨H, -, hidx, hsub⟩` from `exists_open_subgroup _ (hV 1 one_pos)`. Establish `: H.FiniteIndex` using `⟨hidx⟩`.
+
+Conclude with `Subgroup.finiteIndex_of_le (H := H.subgroupOf P) fun s hs => hker s (hsub hs)`. Set `Q` to `P ⧸ M.ker`. Use `letI : Fintype Q := Fintype.ofFinite _`. Establish `hcard : ¬ l ∣ Fintype.card Q`. Introduce `hd`.
+
+Take `⟨x, hx⟩` from `exists_prime_orderOf_dvd_card l hd`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨m, hm, hm'⟩` from `exists_pow_mem B hl.out hvl s.2 _ (hV 1 one_pos)`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← hx, orderOf_dvd_iff_pow_eq_one, ← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`.
+
+Conclude with `hker _ hm'`. Set `Mq : Q →* Matrix (Fin 2 ⊕ Unit) (Fin 2 ⊕ Unit) (Qbar l)` to `QuotientGroup.lift M.ker M fun _ h => h`. Establish `hMq : ∀ x : Q, Mq x = aff W z (x.out : P)` using `fun x => by conv_lhs => rw [← QuotientGroup.out_eq' x]`. Both sides reduce to the same expression. Establish `hS : ∀ s : P, aff W z s * ∑ x : Q, Mq x = ∑ x : Q, Mq x` using `fun s => by`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft (s : Q)) _ _ fun x => by`. Rewrite using `[Equiv.coe_mulLeft, map_mul]`. Both sides reduce to the same expression. Take `⟨u, hu⟩` from `isUnit_natCast hcard`.
+
+Establish `hinv : (Fintype.card Q : Qbar l) * algebraMap ℤ_[l] (Qbar l) (↑u⁻¹) = 1`. Rewrite using `[← map_natCast (algebraMap ℤ_[l] (Qbar l)), ← hu, ← map_mul, Units.mul_inv, map_one]`. Use `⟨fun i => -(algebraMap ℤ_[l] (Qbar l) (↑u⁻¹) * ∑ x : Q, z (x.out : P) i), fun i => c.O.neg_mem (c.O.mul_mem (c.O.algebraMap_mem _) (c.O.sum_mem fun x _ => hzO _ _)), fun σ hσ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (congrFun (hS ⟨σ, hσ⟩) (Sum.inl i)) (Sum.inr ())`.
+
+Simplify using `only [hMq, Matrix.mul_apply, Matrix.sum_apply, aff, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.of_apply, Matrix.one_apply_eq, Fin.sum_univ_two, Finset.univ_unique, Finset.sum_singleton, Finset.sum_const, Finset.ca …`. Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Take the linear combination `(algebraMap ℤ_[l] (Qbar l) (↑u⁻¹)) * h1 - z σ i * hinv`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (B : ValuationSubring Ω) (q : Pl), Continuous W → (∀ s i j, mat W s i j ∈ c.O) → IsPlaceOver B q → ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∀ z ∈ coc W c (Ine (F := ℚ) B), ∃ v : Fin 2 → Qbar l, (∀ i, v i ∈ c.O) ∧ ∀ σ : G ℚ Ω, (∀ y : Ω, y ≠ 0 → B.valuation (σ y / y - 1) < 1) → z σ = mat W σ *ᵥ v - v := by
   intro l hl Ω _ _ _ W c B q hW _ hB hq z hz
   obtain ⟨hzc, hzO, hzm⟩ := mem_coc.1 hz

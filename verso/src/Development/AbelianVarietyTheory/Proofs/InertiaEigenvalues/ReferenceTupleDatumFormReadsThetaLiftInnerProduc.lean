@@ -20,6 +20,9 @@ open scoped TensorProduct InnerProductSpace
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun μ _ i => GlobalTheory.ThetaPRead.isThetaP_toLiftReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj core.thP.thF μ i, GlobalTheory.ThetaFireLift.thetaFireL R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj core.lev core.grp core.models core.thP R.toRealDat.hv0 Y.IL, GlobalTheory.Lift …`.
+-/
 theorem fire (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (core : GlobalTheory.Hk3.Core R.toRealDat F.lv2) :
     ThetaFireRow (toLiftReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj) Y.IL :=
   ⟨fun μ _ i => GlobalTheory.ThetaPRead.isThetaP_toLiftReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj core.thP.thF μ i,
@@ -29,6 +32,21 @@ theorem fire (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (cor
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hM` using `core.models`. Establish `hF` using `fire Y core`. Take `⟨w, hw1, hw2, hw3⟩` from `hF.2.1 μ hμ j x`. Establish `hth` using `Y.tied.lift.theta μ hμ j x w (hF.1 _ hμ j) hw1 hw2 hw3`. Take `⟨U, hU, hUw⟩` from `hw1`.
+
+Establish `hUw' : PiTensorProduct.lift U = w` using `hUw`. Take `⟨T₀, hT₀, hT₀y⟩` from `(Y.IL.jMj j y).2`. Establish `hTT : T₀ = T'` using `PiTensorProduct.lift.injective (hT₀y.trans hT.symm)`. Substitute `hTT` using the available equality. Take `⟨hT1, hT2⟩` from `(mem_goodPart _ _ _ _ _ _).1 hT₀`.
+
+Establish `hT'U : T'' = postOn (R.MW j (sg0 D A3.A)) (R.eWf j (sg0 D A3.A)) U`. Apply `PiTensorProduct.lift.injective` to reduce the goal to its premises. Rewrite using `[hT', hth, ← hUw']`. Conclude with `(lift_post (R.MW j (sg0 D A3.A)) _ U).symm`. Establish `hin : ∀ g, (∫ h in R.fdV j (Y.tupT μ), thetaKO (R.ωP j (Y.tupT μ)) h g (R.ptP j (Y.tupT μ) (R.ioP j (kUnit (R.MW j (sg0 D A3.A))) ((Y.IL.jMt μ hμ j x).1 h))) ∂(R.νV j (Y.tupT μ))) = PiTensorProduct.lift U (emb _ (kUnit (R.MW j (sg0 D A3.A)))) g`.
+
+Introduce `g`. Establish `e1` using `(hF.1 _ hμ j).eq (Y.IL.jMt μ hμ j x) (kUnit (R.MW j (sg0 D A3.A))) g`. Rewrite `e1` using `[← hw2, ← hUw']`. Conclude with `e1.symm`. Take `⟨p1, p2⟩` from `ipM_proj R.toRealDat hM hX j (mult_le_wall R.toRealDat F.lv2 false j hT1) (mult_le_wall R.toRealDat F.lv2 false j hU) hT2`.
+
+Simplify using `only [hin]`. Rewrite using `[hT'U]`. Use `p1.trans ?_` and prove the remaining obligations. Distinguish the cases in `hne : ∀ τ, lowT (R.MW j (sg0 D A3.A)) τ ≠ ⊥`. Conclude with `(integral_kUnit _ hne _ _ _ _ p2).symm`.
+
+Use `push Not at hne`. Take `⟨τ, hτ⟩` from `hne`. Establish `h0` using `emb_eq_zero _ hτ`. Establish `hw0 : w = 0` using `hF.2.2 j w ⟨U, hU, hUw⟩ ((congrArg (fun e => w ∘ₗ e) h0).trans (LinearMap.comp_zero _))`. Establish `hU0 : U = 0` using `PiTensorProduct.lift.injective (by rw [hUw', hw0, map_zero])`.
+
+Conclude with `integral_zero_right (R.MW j (sg0 D A3.A)) _ _ _ _ hU0 _`.
+-/
 theorem ipM_theta (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (core : GlobalTheory.Hk3.Core R.toRealDat F.lv2)
     (hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ) {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m)
     (x : D.what₂.Mt μ (j.1 + 1)) (y : D.what₂.Mj (j.1 + 1))
@@ -77,6 +95,13 @@ theorem ipM_theta (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `e : (fun k => Ad.eW D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i ((Fm : GAf D.host.E D.R.nV → (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.W) (preF (Ad.PV i) k))) = fun k => (Y.IL.jMt D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i x).1 ((Ad.PV …`. Use function extensionality and compare the values at `k`. Rewrite using `[hFm]`. Conclude with `Ad.read _ _ i x _`. Express the relevant statement in the definitionally equal form `(R.cV i).ext (fun k => Ad.eW D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i ((Fm : GAf D.host.E D.R.nV → (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.W) (preF (Ad.PV i) k))) = _`.
+
+Rewrite using `[e]`. Take `⟨z, hz⟩ : (Y.IL.jMt D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i x).1 ∈ LinearMap.range (R.extV i (Y.tupT D.what₂.mu0))` from `(Y.IL.jMt D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i x).2.1`. Establish `hz' : (R.cV i).ext ((R.HV i (Y.tupT D.what₂.mu0)).e z) = (Y.IL.jMt D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i x).1` using `hz`. Generalize the expression as in `(Y.IL.jMt D.what₂.mu0 (GlobalTheory.RefTheta.reference_tuple_used D) i x).1 = φ at hz' ⊢`. Substitute `hz'` using the available equality.
+
+Conclude with `ext_pre _ (core.models.cV i).1 _ _`.
+-/
 theorem fV_eq (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (core : GlobalTheory.Hk3.Core R.toRealDat F.lv2) {M : MtFam D}
     (Ad : GlobalTheory.HeightCounting.MtAd Y M) (i : Fin D.R.m) (x : D.what₂.Mt D.what₂.mu0 (i.1 + 1))
     (Fm : ↥(NG.AFall D.host.E D.R.nV (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.ρ))
@@ -101,6 +126,11 @@ theorem fV_eq (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (co
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hEx M Ad i X hc x y Fm hFm`. Establish `core` using `(GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hEx).1`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hH.ok.ok2.irr`. Establish `hf` using `fV_eq Y core Ad i x Fm hFm`. Take `⟨-, -, -, -, hB, hφ⟩` from `Classical.choose_spec (Classical.choose_spec hc)`.
+
+Establish `key : inner ℂ y (D.what₂.thetaP D.what₂.mu0 (i.1 + 1) x) = (GlobalTheory.RefTheta.cC hc : ℂ) * ∫ g in R.fdW i, star (GlobalTheory.RefTheta.yv hc ⟨X.φ y, X.φ_mem y⟩ g) * (∫ h in R.fdV i (Y.tupT D.what₂.mu0), thetaKO (R.ωP i (Y.tupT D.what₂.mu0)) h g (GlobalTheory.RefTheta.phi0 Y i …`. Use `(X.φ_inner _ _).trans ((hB _ (X.φ_mem _) _ (X.φ_mem _)).trans (congrArg (fun z => (GlobalTheory.RefTheta.cC hc : ℂ) * z) ?_))` and prove the remaining obligations. Conclude with `ipM_theta Y core hX (GlobalTheory.RefTheta.reference_tuple_used D) i x y _ _ (hφ y) (hφ _)`. Rewrite using `[key, ← hf]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : Formalism.IndefR.Links.RealDat3 D A3 Ks) (F : Formalism.IndefR.Links.Face3 D A3) (cG : Formalism.L2.DIV.G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0), GlobalTheory.Mem.R3.Pins R F cG → GlobalTheory.Mem.R3.Holds R F → R.toRealDat.ExAt → ∀ (M : MtFam D) (Ad : GlobalTheory.HeightCounting.MtAd Y M) (i : Fin D.R.m) (X : GlobalTheory.NPin.RowMod D (GlobalTheory.RefTheta.repY Y) (i.1 + 1)) (hc : GlobalTheory.RefTheta.IsCanonR Y i rfl X) (x : D.what₂.Mt D.what₂.mu0 (i.1 + 1)) (y : D.what₂.Mj (i.1 + 1)) (Fm : ↥(NG.AFall D.host.E D.R.nV (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.ρ)), (Fm : GAf D.host.E D.R.nV → (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.W) = (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).real x → inner ℂ y (D.what₂.thetaP D.what₂.mu0 (i.1 + 1) x) = GlobalTheory.RefTheta.lamV Ad i hc (GlobalTheory.RefTheta.phi0 Y i) Fm ⟨X.φ y, X.φ_mem y⟩ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hEx M Ad i X hc x y Fm hFm
   have core := (GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hEx).1

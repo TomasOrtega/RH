@@ -12,13 +12,24 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem of_lmul (a : Matrix (Fin n) (Fin n) (Rinf E)) (x : Lie E n) :
     lmul (toL a) x = toL (a * Matrix.of x) := rfl
 
+/- English proof (translation)
+Rewrite using `[of_lmul, of_lmul, add_mul, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem lmul_one_add (a : Matrix (Fin n) (Fin n) (Rinf E)) (x : Lie E n) :
     lmul (toL (1 + a)) x = x + lmul (toL a) x := by
   rw [of_lmul, of_lmul, add_mul, one_mul]; rfl
 
+/- English proof (translation)
+Set `B0 : V →ₗ[ℝ] Lie E n →L[ℝ] Lie E n` to `{ toFun := fun u => lmul (toL (L u)) map_add' := fun u v => by ext1 x`. Rewrite using `[ContinuousLinearMap.add_apply, of_lmul, of_lmul, of_lmul, map_add, add_mul]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c u => by ext1 x`. Rewrite using `[ContinuousLinearMap.smul_apply, of_lmul, of_lmul, map_smul, smul_mul_assoc]`.
+
+Use `rfl }`. Conclude with `⟨LinearMap.toContinuousLinearMap B0, fun _ _ => rfl⟩`.
+-/
 private theorem exists_bil {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (L : V →ₗ[ℝ] Matrix (Fin n) (Fin n) (Rinf E)) :
     ∃ B : V →L[ℝ] Lie E n →L[ℝ] Lie E n, ∀ u x, B u x = lmul (toL (L u)) x := by
@@ -32,6 +43,9 @@ private theorem exists_bil {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
         rw [ContinuousLinearMap.smul_apply, of_lmul, of_lmul, map_smul, smul_mul_assoc]; rfl }
   exact ⟨LinearMap.toContinuousLinearMap B0, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Establish `hi : Function.Injective (LinearMap.mulLeft ℝ a)` using `(injective_iff_map_eq_zero _).2 fun y hy => h (toL y) hy`. Take `⟨b, hb⟩` from `LinearMap.injective_iff_surjective.1 hi 1`. Conclude with `IsUnit.of_mul_eq_one b hb`.
+-/
 private theorem isUnit_of_inj (a : Matrix (Fin n) (Fin n) (Rinf E)) (h : ∀ y : Lie E n, lmul (toL a) y = 0 → y = 0) :
     IsUnit a := by
   have hi : Function.Injective (LinearMap.mulLeft ℝ a) :=
@@ -64,6 +78,11 @@ private noncomputable def rowL (m : Fin n) : EuclideanSpace ℝ (Fin n × Infini
 private noncomputable def eta (m : Fin n) (ξ : Fin n → Rinf E) : EuclideanSpace ℝ (Fin n × InfinitePlace E) :=
   WithLp.toLp 2 fun z => if z.1 ≤ m then -ξ z.1 z.2 else 0
 
+/- English proof (translation)
+Use `ext1 i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `only [colL, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply]`. Distinguish the cases in `h : k ≤ m`.
+
+Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `⟨-, h'⟩`. Rewrite `h` using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg (fun h' : k ≤ m ∧ _ => h h'.1), mul_zero]`.
+-/
 private theorem colL_sq (m : Fin n) (u : EuclideanSpace ℝ (Fin n × InfinitePlace E)) : colL m u * colL m u = 0 := by
   ext1 i j
   rw [Matrix.mul_apply, Matrix.zero_apply]
@@ -76,6 +95,11 @@ private theorem colL_sq (m : Fin n) (u : EuclideanSpace ℝ (Fin n × InfinitePl
     omega
   · rw [if_neg (fun h' : k ≤ m ∧ _ => h h'.1), mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j w`. Simplify using `only [rowM, rowL, eta, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Matrix.add_apply]`. Use `split_ifs with h`. Take `⟨rfl, h⟩` from `h`. Simplify using `[h]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem rowM_eq (m : Fin n) (ξ : Fin n → Rinf E) :
     rowM m ξ = 1 + rowL m (eta m ξ - eta m ((1 : Matrix (Fin n) (Fin n) (Rinf E)) m)) := by
   ext i j w
@@ -85,6 +109,9 @@ private theorem rowM_eq (m : Fin n) (ξ : Fin n → Rinf E) :
     simp [h]
   · simp
 
+/- English proof (translation)
+Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type_right, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[dotLe, Finset.sum_apply, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : j ≤ m <;> simp [eta, h, mul_comm]`.
+-/
 private theorem inner_eta (m : Fin n) (ξ : Fin n → Rinf E) (u : EuclideanSpace ℝ (Fin n × InfinitePlace E)) :
     ⟪eta m ξ, u⟫ = -∑ v, dotLe m ξ (fun j v => u (j, v)) v := by
   rw [PiLp.inner_apply, Fintype.sum_prod_type_right, ← Finset.sum_neg_distrib]
@@ -95,6 +122,19 @@ private theorem inner_eta (m : Fin n) (ξ : Fin n → Rinf E) (u : EuclideanSpac
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 E _ _ n m _`. Take `⟨B, hB⟩` from `exists_bil (colL (E := E) m)`. Take `⟨A, hA⟩` from `exists_bil (rowL (E := E) m)`. Establish `hBB : ∀ u x, B u (B u x) = 0` using `fun u x => by`. Rewrite using `[hB, hB, of_lmul, of_lmul]`.
+
+Express the relevant statement in the definitionally equal form `toL (colL m u * (colL m u * Matrix.of x)) = 0`. Rewrite using `[← mul_assoc, colL_sq, zero_mul]`. Both sides reduce to the same expression. Take `⟨h, he, hu, hG⟩` from `h1 _ _ A (eta m ((1 : Matrix (Fin n) (Fin n) (Rinf E)) m))`. Establish `hrow : ∀ ξ y, y + A (eta m ξ - eta m ((1 : Matrix (Fin n) (Fin n) (Rinf E)) m)) y = lmul (toL (rowM m ξ)) y` using `fun ξ y => by rw [rowM_eq, lmul_one_add, hA]`.
+
+Use `⟨fun ξ => h (eta m ξ), he, fun ξ hξ => isUnit_of_inj _ fun y hy => hu _ hξ y (by rw [hrow, hy]), fun α => ?_⟩` and prove the remaining obligations. Take `⟨G, hG⟩` from `hG α`. Take `⟨K, hK⟩` from `h2 _ _ G`. Take `⟨K', β, hK', hβ⟩` from `h3 _ _ B hBB K`. Use `⟨β, fun w ξ hw hb hw' => ?_⟩` and prove the remaining obligations.
+
+Use `haveI : (volume : Measure (Rinf E)).IsAddHaarMeasure := isAddHaarMeasure_volume_pi _`. Use `haveI : (volume : Measure (Fin n → Rinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Lie E n)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `h4 _ _ (volume : Measure (Lie E n)) B hBB G K K' hK hK' w (eta m ξ) hw hb fun u x => by` as an intermediate fact. Rewrite using `[hB, ← lmul_one_add, inner_eta]`.
+
+Conclude with `hw' (fun j v => u (j, v)) x`. Simplify using `only [hβ]`. Rewrite using `[this, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hG, hrow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Af.Smo.archStep :
     UpperTheory.V.Af.Smo.SchTw → UpperTheory.V.Af.Smo.PftSch → UpperTheory.V.Af.Smo.BetaSch → UpperTheory.V.Af.Smo.BetaInt → UpperTheory.V.Af.Smo.ArchStep := by
   intro h1 h2 h3 h4 E _ _ n m _

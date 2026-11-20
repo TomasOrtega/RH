@@ -3,6 +3,13 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Introduce `F H _ _ _ _ f w p n hp`. Use `letI : Algebra F H := f.toAlgebra`. Use `haveI := w.isMaximal`. Take `⟨P, hPm, hP⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 H) w.asIdeal`. Use `⟨P, hPm.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot w.ne_bot P, ?_⟩` and prove the remaining obligations.
+
+Establish `hle : w.asIdeal.map (algebraMap (𝓞 F) (𝓞 H)) ≤ P`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Conclude with `le_of_eq hP.over`. Establish `h1` using `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 H)) hp`. Rewrite `h1` using `[Ideal.map_pow, map_natCast]`.
+
+Conclude with `Ideal.pow_right_mono hle n h1`.
+-/
 theorem exists_prime_natCast_mem_pow_of_ringHom :
     ∀ (F H : Type) [Field F] [NumberField F] [Field H] [NumberField H] (f : F →+* H) (w : HeightOneSpectrum (𝓞 F)) (p n : ℕ), (p : 𝓞 F) ∈ w.asIdeal ^ n → ∃ P : Ideal (𝓞 H), P.IsPrime ∧ P ≠ ⊥ ∧ (p : 𝓞 H) ∈ P ^ n := by
   intro F H _ _ _ _ f w p n hp

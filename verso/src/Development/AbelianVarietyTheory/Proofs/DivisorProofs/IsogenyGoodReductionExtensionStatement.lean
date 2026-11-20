@@ -24,6 +24,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (IsClassZe
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.QuotModel.exists_quotModel | exact GlobalTheory.QuotModel.exists_quotModel | (intros; apply GlobalTheory.QuotModel.exists_quotModel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isogeny_good_reduction_extension : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (k₁ : IntermediateField ℚ ℂ) (R₁ : Subring ℂ),
     FiniteDimensional ℚ k₁ → IsPlaceOver l lam k₁ R₁ → (∀ x ∈ R₁, x ∈ k₁) →
     ∀ (P : Out.PolAV (Sp R₁)) (A' : Over (Sp ℂ)) [GrpObj A'] (φ' : A'.left ⟶ P.A.left),

@@ -19,6 +19,9 @@ abbrev blk (R : Ranks) : Fin R.nV → Fin (R.t + 1) := blkG R.r R.t
 
 def repX : GE N →* (N.X i → MatN N i) := MonoidHom.pi fun x => rO N i r x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repX_apply (γ : GE N) (x : N.X i) : repX N r γ x = rO N i r x γ := rfl
 
 def NormAt : Prop :=
@@ -27,10 +30,18 @@ def NormAt : Prop :=
     ((chiU N i ((c : ℕ) + 1) g : (N.O i)ˣ) : N.O i)) ∧
   (∀ g (a b : Fin R.r), rO N i r π g (Fin.castAdd R.t a) (Fin.castAdd R.t b) = rhoO N i ρ π g a b)
 
+/- English proof (translation)
+Use `⟨{γ}, fun _ => 1, fun _ => one_mem _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem repX_mem (γ : GE N) : repX N r γ ∈ tSpan (N.T i) (repX N r) := by
   refine ⟨{γ}, fun _ => 1, fun _ => one_mem _, ?_⟩
   simp
 
+/- English proof (translation)
+Use `(eG_mulVec (M.map (toK N i)) (fun a b h => by show toK N i (M a b) = 0` and prove the remaining obligations. Rewrite using `[hM a b h, map_zero]) u).trans ?_`. Use `congr 1`. Use `congr 2`. Use extensionality with `a b`.
+
+Use `show toK N i (M (Fin.castAdd R.t a) (Fin.castAdd R.t b)) = toK N i (B a b)`. Rewrite using `[hB]`. Use function extensionality and compare the values at `c show toK N i (M (Fin.natAdd R.r c) (Fin.natAdd R.r c)) * _ = _`. Rewrite using `[hχ]`.
+-/
 theorem e_of_bd (M : MatN N i) (hM : ∀ a b, blk R a ≠ blk R b → M a b = 0)
     (B : Matrix (Fin R.r) (Fin R.r) (N.O i))
     (hB : ∀ a b, M (Fin.castAdd R.t a) (Fin.castAdd R.t b) = B a b) (χ : Fin R.t → N.O i)
@@ -77,6 +88,9 @@ variable (hfin : Finite (SplitPts R.t (Pf N eB X0))) (π' : SplitPts R.t (Pf N e
 
 end Mk
 
+/- English proof (translation)
+Rewrite using `[blockPoly]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h] <;> ring`.
+-/
 theorem blockPoly_eq {A : Type} [CommRing A] {d : Type} [Fintype d] [DecidableEq d] (e a : Matrix d d A) :
     blockPoly e a = Matrix.det ((Polynomial.X : Polynomial A) • e.map (Polynomial.C (R := A)) -
       a.map (Polynomial.C (R := A)) + 1 - e.map (Polynomial.C (R := A))) := by
@@ -85,6 +99,17 @@ theorem blockPoly_eq {A : Type} [CommRing A] {d : Type} [Fintype d] [DecidableEq
   ext i j
   by_cases h : i = j <;> simp [Matrix.one_apply, h] <;> ring
 
+/- English proof (translation)
+Use `(eG_mulVec _ (fun a b h => ?_) u).trans ?_` and prove the remaining obligations. Establish `hab : a ≠ b` using `fun hab => h (by rw [hab]) show toK N i (if a = b then (if blk R a = 0 then (0 : N.O i) else β a) else 0) = 0`. Rewrite using `[if_neg hab, map_zero]`. Use `congr 1`. Establish `h0 : ∀ a b : Fin R.r, ((Matrix.diagonal (fun a => if blk R a = 0 then (0 : N.O i) else β a)).map (toK N i)) (Fin.castAdd R.t a) (Fin.castAdd R.t b) = 0`.
+
+Introduce `a b`. Use `show toK N i (if Fin.castAdd R.t a = Fin.castAdd R.t b then (if blk R (Fin.castAdd R.t a) = 0 then (0 : N.O i) else β (Fin.castAdd R.t a)) else 0) = 0`. Establish `hblk : blk R (Fin.castAdd R.t a) = 0` using `by simp [blkG]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos hblk, map_zero]`. Rewrite using `[if_neg (fun h => hab (Fin.castAdd_injective _ _ h)), map_zero]`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply]`. Conclude with `Finset.sum_eq_zero fun b _ => by`.
+
+Rewrite using `[mul_eq_zero]`. Use `left`. Conclude with `h0 a b`. Use function extensionality and compare the values at `c`. Establish `hblk : blk R (Fin.natAdd R.r c) ≠ 0` using `by simp [blkG, Fin.ext_iff]`.
+
+Use `show toK N i (if Fin.natAdd R.r c = Fin.natAdd R.r c then (if blk R (Fin.natAdd R.r c) = 0 then (0 : N.O i) else β (Fin.natAdd R.r c)) else 0) * _ = _`. Rewrite using `[if_pos rfl, if_neg hblk]`.
+-/
 theorem e_of_diag (β : Fin R.nV → N.O i) (u : Fin R.nV → KK N i) :
     eG R.r R.t (KK N i) (((Matrix.diagonal fun a => if blk R a = 0 then 0 else β a : MatN N i).map
         (toK N i)).mulVec u) =

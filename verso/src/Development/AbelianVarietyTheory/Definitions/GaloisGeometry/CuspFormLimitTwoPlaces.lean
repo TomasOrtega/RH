@@ -87,10 +87,16 @@ def CuspFormLimitTwoPlaces : Prop :=
       (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → Apart w v' → (∃ B, (CG.mk π).HasSat w B) →
         ClauseAt .crys π ι r w ∧ ClauseAt .dR π ι r w)
 
+/- English proof (translation)
+Introduce `τ _ lam` and use `h τ lam`.
+-/
 theorem sameWtOff_of_eq (ι : Qbar l ≃+* ℂ) (w₀ v' : HeightOneSpectrum (𝓞 E)) (U U' : Submodule ℂ (UA E a → ℂ))
     (h : ∀ τ lam, HasWeightAt U τ lam ↔ HasWeightAt U' τ lam) : SameWtOff ι w₀ v' U U' :=
   fun τ _ lam => h τ lam
 
+/- English proof (translation)
+Introduce `τ hτ lam` and use `h τ (fun u hu => by rw [hw τ hτ u hu]; exact ⟨h₀, h'⟩) lam`.
+-/
 theorem sameWtAt_of_off (ι : Qbar l ≃+* ℂ) {w₀ v' w : HeightOneSpectrum (𝓞 E)} {U U' : Submodule ℂ (UA E a → ℂ)}
     (h : SameWtOff ι w₀ v' U U') (hw : ∀ τ : E →+* ℂ, OverPl ι τ w → ∀ u, OverPl ι τ u → u = w)
     (h₀ : Apart w w₀) (h' : Apart w v') : SameWtAt ι w U U' :=
@@ -101,6 +107,9 @@ def SeedWtU.ofWeightPredicate
       HeightOneSpectrum (𝓞 E) → Submodule ℂ (UA E a → ℂ) → Prop) : SeedWtU :=
   fun E _ _ _ l _ a ι _ v' _ U' => P E l a ι v' U'
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a ha d hd T hT U hU w₀ v' hw₀ hs hv' hap S Y`. Take `⟨Z₀, hZ, hr⟩` from `hS E Ω l ι a ha d hd T hT U hU w₀ v' hw₀ hs hv' hap S Y`. Conclude with `⟨Z₀, hZ, fun U' hA hoff hW => hr U' hA hoff (h E l a ι w₀ v' U U' hW)⟩`.
+-/
 theorem SeedWU2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} {Wt Wt' : SeedWtU}
     (h : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (a : ℕ) (ι : Qbar l ≃+* ℂ)
       (w₀ v' : HeightOneSpectrum (𝓞 E)) (U U' : Submodule ℂ (UA E a → ℂ)), Wt' E l a ι w₀ v' U U' → Wt E l a ι w₀ v' U U')
@@ -109,6 +118,11 @@ theorem SeedWU2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → M
   obtain ⟨Z₀, hZ, hr⟩ := hS E Ω l ι a ha d hd T hT U hU w₀ v' hw₀ hs hv' hap S Y
   exact ⟨Z₀, hZ, fun U' hA hoff hW => hr U' hA hoff (h E l a ι w₀ v' U U' hW)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ ι a ha T hT U hU w₀ v' hw₀ hs hv' hap`. Take `⟨Kw, h1, h2, h3, h4⟩` from `hC E l ι a ha T hT U hU w₀ v' hw₀ hs hv' hap`. Use `⟨Kw, h1, h2, h3, fun Z hZ J O θ hθ => ?_⟩` and prove the remaining obligations. Take `⟨hP, hL⟩` from `h4 Z hZ J O θ hθ`. Use `⟨GlobalTheory.Cong.PolyApprox.mono hP ?_, hL⟩` and prove the remaining obligations.
+
+Introduce and unpack `θ' ⟨U', g1, g2, g3, g4, g5⟩`. Conclude with `⟨U', g1, g2, g3, h E l a ι w₀ v' U U' g4, g5⟩`.
+-/
 theorem CongUW2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} {Wt Wt' : SeedWtU}
     (h : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime] (a : ℕ) (ι : Qbar l ≃+* ℂ)
       (w₀ v' : HeightOneSpectrum (𝓞 E)) (U U' : Submodule ℂ (UA E a → ℂ)), Wt' E l a ι w₀ v' U U' → Wt E l a ι w₀ v' U U')
@@ -121,10 +135,16 @@ theorem CongUW2.mono {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → M
   rintro θ' ⟨U', g1, g2, g3, g4, g5⟩
   exact ⟨U', g1, g2, g3, h E l a ι w₀ v' U U' g4, g5⟩
 
+/- English proof (translation)
+The claim follows from `SeedWU2.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ => trivial) hS`.
+-/
 theorem SeedWU2.of_any {Ty : UnitaryAutomorphicTypeClass} {Gen : ℕ → ℕ → Multiset ℂˣ → Prop} (Wt : SeedWtU) (hS : SeedWU2 Ty Gen) :
     SeedWU2 Ty Gen Wt :=
   SeedWU2.mono (fun _ _ _ _ _ _ _ _ _ _ _ _ _ => trivial) hS
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a _ d _ T _ U _ w₀ v' _ _ _ _ S Y`. Conclude with `⟨∅, by simp, fun _ _ _ hW => hW.elim⟩`.
+-/
 example (Ty : UnitaryAutomorphicTypeClass) (Gen : ℕ → ℕ → Multiset ℂˣ → Prop) :
     SeedWU2 Ty Gen (fun _ _ _ _ _ _ _ _ _ _ _ _ => False) := by
   intro E Ω _ _ _ _ _ _ l _ ι a _ d _ T _ U _ w₀ v' _ _ _ _ S Y

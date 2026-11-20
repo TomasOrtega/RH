@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.ZetaSer
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `h`. Introduce `i`. Establish `hpos` using `D.what₂.restRowsFiniteGroupCard_pos`. Establish `hz : IsPrimitiveRoot (D.nd.embK i ζ) D.what₂.restRowsFiniteGroupCard` using `hζ.map_of_injective (D.nd.embK i).injective`. Establish `hint : IsIntegral (D.nd.O i) (D.nd.embK i ζ)` using `⟨Polynomial.X ^ D.what₂.restRowsFiniteGroupCard - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hpos.ne', by simp [hz.pow_eq_one]⟩`.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hint`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← hy]`. Conclude with `hz.of_map_of_injective (IsFractionRing.injective _ _)`.
+-/
 theorem coeffRings_contain_rootsOfUnity_of_groupOrder (D : D7) (h : RootsLL D) : GlobalTheory.PendOf.CoeffRingsHaveRootsOfUnity D := by
   obtain ⟨ζ, hζ⟩ := h
   intro i
@@ -24,6 +29,15 @@ theorem coeffRings_contain_rootsOfUnity_of_groupOrder (D : D7) (h : RootsLL D) :
   rw [← hy] at hz
   exact hz.of_map_of_injective (IsFractionRing.injective _ _)
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ V`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace_eq_sum_roots_charpoly]`. Use `multiset_sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hroot : (LinearMap.charpoly f).IsRoot μ`. Rewrite using `[← LinearMap.charpoly_toMatrix f b]`.
+
+Conclude with `(Polynomial.mem_roots'.mp hμ).2`. Take `⟨v, hv⟩` from `((Module.End.hasEigenvalue_iff_isRoot_charpoly f μ).2 hroot).exists_hasEigenvector`. Establish `hpow : μ ^ n = 1`. Establish `h1` using `hv.pow_apply n`. Rewrite `h1` using `[hf, Module.End.one_apply]`.
+
+Establish `h2 : (μ ^ n - 1) • v = 0` using `by rw [sub_smul, one_smul, ← h1, sub_self]`. Conclude with `sub_eq_zero.mp ((smul_eq_zero.mp h2).resolve_right hv.2)`. Establish `hζc` using `hζ.map_of_injective e.injective`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Take `⟨j, -, hj⟩` from `hζc.eq_pow_of_pow_eq_one hpow`.
+
+Conclude with `⟨ζ ^ j, by rw [map_pow, hj]⟩`.
+-/
 theorem trace_mem_fieldRange {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     {L : Type} [Field L] (e : L →+* ℂ) {n : ℕ} (hn : 0 < n) {ζ : L} (hζ : IsPrimitiveRoot ζ n)
     (f : Module.End ℂ V) (hf : f ^ n = 1) : LinearMap.trace ℂ V f ∈ e.fieldRange := by
@@ -49,6 +63,9 @@ end GlobalTheory.ZetaSer
 
 namespace GlobalTheory.ZetaSer
 
+/- English proof (translation)
+Rewrite using `[D.nd.restN_card_levelGroup_eq]`. Establish `hf : D.R.f ≠ 0`. Unfold `Formalism.BasicNotions.Ranks.f Formalism.BasicNotions.Ranks.n`. Check the signs of the components of the expression. Conclude with `(dvd_pow_self _ hf).trans (Finset.dvd_prod_of_mem _ (Finset.mem_univ k))`.
+-/
 theorem card_GL_residue_typePrime_dvd_card_typeGroup (D : D7) (k : Fin 2) :
     Nat.card (GL (Fin D.R.r) (ZMod (D.host.g k))) ∣ D.what₂.restRowsFiniteGroupCard := by
   rw [D.nd.restN_card_levelGroup_eq]
@@ -57,6 +74,9 @@ theorem card_GL_residue_typePrime_dvd_card_typeGroup (D : D7) (k : Fin 2) :
     positivity
   exact (dvd_pow_self _ hf).trans (Finset.dvd_prod_of_mem _ (Finset.mem_univ k))
 
+/- English proof (translation)
+Rewrite using `[Formalism.IrreducibleCountingLemmas.TYPES.zIdem_coeff]`. Use `mul_mem (div_mem (natCast_mem _ _) (natCast_mem _ _)) (trace_mem_fieldRange e hn hζ _ ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hΓ`. Rewrite using `[← map_pow, hc, pow_mul, pow_card_eq_one', one_pow, map_one]`.
+-/
 theorem coeff_zIdem_mem {Γ : Type} [Group Γ] [Fintype Γ] {L : Type} [Field L] (e : L →+* ℂ) {n : ℕ} (hn : 0 < n)
     {ζ : L} (hζ : IsPrimitiveRoot ζ n) (hΓ : Nat.card Γ ∣ n) (τ : FDRep ℂ Γ) (γ : Γ) :
     (Formalism.IrreducibleCountingLemmas.TYPES.zIdem τ).coeff γ ∈ e.fieldRange := by
@@ -65,6 +85,13 @@ theorem coeff_zIdem_mem {Γ : Type} [Group Γ] [Fintype Γ] {L : Type} [Field L]
   obtain ⟨c, hc⟩ := hΓ
   rw [← map_pow, hc, pow_mul, pow_card_eq_one', one_pow, map_one]
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `h`. Introduce `k f γ`. Apply `RingHom.mem_fieldRange.mp` to reduce the goal to its premises. Rewrite using `[G.eSer_def k f]`. Unfold `eSerO`.
+
+Use `finsum_induction (fun x : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))) => x.coeff γ ∈ D.what₂.embLL.fieldRange) ?_ ?_ fun z => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `x y hx hy`. Simplify using `using add_mem hx hy`. Use `finsum_induction (fun x : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k))) => x.coeff γ ∈ D.what₂.embLL.fieldRange) ?_ ?_ fun hz => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Introduce `x y hx hy`. Simplify using `using add_mem hx hy`. Take `⟨τ, -, rfl, -⟩` from `hz`. Conclude with `coeff_zIdem_mem _ D.what₂.restRowsFiniteGroupCard_pos hζ (card_GL_residue_typePrime_dvd_card_typeGroup D k) τ γ`.
+-/
 theorem serLL_of_rootsLL (D : D7) (h : RootsLL D) (G : GrpSide D) : GlobalTheory.PendOf.SerLL D := by
   obtain ⟨ζ, hζ⟩ := h
   intro k f γ
@@ -82,6 +109,9 @@ theorem serLL_of_rootsLL (D : D7) (h : RootsLL D) (G : GrpSide D) : GlobalTheory
     · obtain ⟨τ, -, rfl, -⟩ := hz
       exact coeff_zIdem_mem _ D.what₂.restRowsFiniteGroupCard_pos hζ (card_GL_residue_typePrime_dvd_card_typeGroup D k) τ γ
 
+/- English proof (translation)
+Introduce `D h` and use `⟨coeffRings_contain_rootsOfUnity_of_groupOrder D h, serLL_of_rootsLL D h⟩`.
+-/
 theorem rootsOfUnity_and_seriesIdempotent_rational : ∀ D : D7, RootsLL D → GlobalTheory.PendOf.CoeffRingsHaveRootsOfUnity D ∧ (GrpSide D → GlobalTheory.PendOf.SerLL D) :=
   fun D h => ⟨coeffRings_contain_rootsOfUnity_of_groupOrder D h, serLL_of_rootsLL D h⟩
 

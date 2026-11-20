@@ -8,6 +8,9 @@ noncomputable section
 
 namespace period_ring_base
 
+/- English proof (translation)
+Introduce `l _` and use `{ dom := base_dom l ι_inj := base_ι_inj l σ_one := base_σ_one l σ_mul := base_σ_mul l σD_one := base_σD_one l σD_mul := base_σD_mul l σC_one := base_σC_one l σC_mul := base_σC_mul l φ_σ := base_φ_σ l ι_σ := base_ι_σ l φ_q := base_φ_q l σ_q := base_σ_q l ι_q := base_ι_q l ι_t := p …`.
+-/
 theorem base : PeriodRingBase := fun l _ =>
   { dom := base_dom l
     ι_inj := base_ι_inj l

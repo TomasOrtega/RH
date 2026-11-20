@@ -9,6 +9,15 @@ noncomputable section
 
 namespace Formalism.L2.Th1.A
 
+/- English proof (translation)
+Introduce `R _ W xT yT hT h2`. Take `⟨hDer, hConst, hC, hD⟩` from `dLSpec R W`. Establish `hx` using `(plusChord R W xT yT hT).1`. Establish `h2' : 2 * (HahnSeries.C yT : LaurentSeries R) + (curveL W).a₁ * HahnSeries.C xT + (curveL W).a₃ = 0`. Establish `h` using `congrArg (HahnSeries.C : R →+* LaurentSeries R) h2`.
+
+Simplify `h` using `only [map_add, map_mul, map_ofNat, map_zero, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]`. Take `⟨a, b, c⟩` from `flowTwoTorsion _ (curveL W) (DL W) (xL W) (yL W) (HahnSeries.C xT) (HahnSeries.C yT) (toL (tS W xT)) hDer hConst (flowL R W).1 (Plus.equation_C W hT) (hC xT) (hC yT) h2' (Plus.toL_tS_mul W xT)`. Rewrite `b`, `c` using `[hD]`. Rewrite `c` using `[hD]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `toL_injective` to reduce the goal to its premises. Rewrite using `[hx, slopeL, a]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, toL_C, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄]`. Apply `toL_injective` to reduce the goal to its premises. Rewrite using `[map_pow, b]`.
+
+Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, toL_C, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄, WeierstrassCurve.map_b₂]`. Apply `toL_injective` to reduce the goal to its premises. Rewrite using `[c]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, toL_C, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄, WeierstrassCurve.map_b₂]`.
+-/
 theorem two_torsion_unit : TwoTorsionU.{u} := by
   intro R _ W xT yT hT h2
   obtain ⟨hDer, hConst, hC, hD⟩ := dLSpec R W
@@ -41,27 +50,51 @@ namespace Two
 
 variable {K : Type u} [Field K] [CharZero K] (W : WeierstrassCurve K)
 
+/- English proof (translation)
+Unfold `expSer compInv`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Simplify using the standard rewrite rules.
+-/
 theorem e0 : constantCoeff (expSer W) = 0 := by
   unfold expSer compInv
   split_ifs with h
   · exact h.choose_spec.1
   · simp
 
+/- English proof (translation)
+The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero' (e0 W)`.
+-/
 theorem he : HasSubst (expSer W) := PowerSeries.HasSubst.of_constantCoeff_zero' (e0 W)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `(expSpec K W).2.1`. Rewrite `h1` using `[(map_eq_zero_iff _ HahnSeries.ofPowerSeries_injective).mp h, map_zero]`. Conclude with `zero_ne_one h1`.
+-/
 theorem toL_exp_ne : toL (expSer W) ≠ 0 := by
   intro h
   have h1 := (expSpec K W).2.1
   rw [(map_eq_zero_iff _ HahnSeries.ofPowerSeries_injective).mp h, map_zero] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+The claim follows from `mul_inv_cancel₀ (toL_exp_ne W)`.
+-/
 theorem exp_mul_inv : toL (expSer W) * (toL (expSer W))⁻¹ = 1 := mul_inv_cancel₀ (toL_exp_ne W)
 
+/- English proof (translation)
+Simplify using `only [uPow]`. Rewrite using `[← map_pow, HahnSeries.ofPowerSeries_X_pow, HahnSeries.single_mul_single]`. Evaluate the numerical expressions using `[HahnSeries.single_zero_one]`.
+-/
 theorem uPow_mul_sq : (uPow (-2) : LaurentSeries K) * toL X ^ 2 = 1 := by
   simp only [uPow]
   rw [← map_pow, HahnSeries.ofPowerSeries_X_pow, HahnSeries.single_mul_single]
   norm_num [HahnSeries.single_zero_one]
 
+/- English proof (translation)
+Establish `hne` using `toL_exp_ne W`. Establish `hc : constantCoeff (tDen W xP) = 1`. Simplify using `[tDen, xS, PowerSeries.constantCoeff_invOfUnit]`. Establish `hm : tDen W xP * invOfUnit (tDen W xP) 1 = 1` using `PowerSeries.mul_invOfUnit _ _ (by simpa using hc)`. Establish `hC : (C xP : K⟦X⟧).subst (expSer W) = C xP`.
+
+Rewrite using `[← PowerSeries.coe_substAlgHom (he W)]`. Conclude with `(PowerSeries.substAlgHom (he W)).commutes xP`. Establish `ht : (xS W).subst (expSer W) = (tDen W xP).subst (expSer W) + C xP * expSer W ^ 2`. Rewrite using `[tDen, ← PowerSeries.coe_substAlgHom (he W), map_sub, map_mul, map_pow, PowerSeries.coe_substAlgHom, PowerSeries.subst_X (he W), hC]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1 : toL ((tDen W xP).subst (expSer W)) * toL ((invOfUnit (tDen W xP) 1).subst (expSer W)) = 1`. Rewrite using `[← map_mul, ← PowerSeries.coe_substAlgHom (he W), ← map_mul, hm, map_one, map_one]`. Establish `hE : toL (expSer W) * (toL (expSer W))⁻¹ = 1` using `mul_inv_cancel₀ hne`. Establish `hs : (tS W xP).subst (expSer W) = expSer W ^ 2 * (invOfUnit (tDen W xP) 1).subst (expSer W)`. Rewrite using `[tS, ← PowerSeries.coe_substAlgHom (he W), map_mul, map_pow, PowerSeries.coe_substAlgHom, PowerSeries.subst_X (he W)]`.
+
+Rewrite using `[hs, xZ, ht]`. Simplify using `only [map_add, map_mul, map_pow, HahnSeries.ofPowerSeries_C]`. Take the linear combination `(toL (expSer W) * (toL (expSer W))⁻¹ + 1) * (toL ((invOfUnit (tDen W xP) 1).subst (expSer W)) * toL ((tDen W xP).subst (expSer W)) + HahnSeries.C xP * toL ((invOfUnit (tDen W xP) 1).subst (expSer W)) * toL (expSer W) ^ 2) * hE + h1`.
+-/
 theorem tS_mul (xP : K) :
     toL ((tS W xP).subst (expSer W)) * (xZ W - HahnSeries.C xP) = 1 := by
   have hne := toL_exp_ne W
@@ -86,6 +119,13 @@ theorem tS_mul (xP : K) :
   simp only [map_add, map_mul, map_pow, HahnSeries.ofPowerSeries_C]
   linear_combination (toL (expSer W) * (toL (expSer W))⁻¹ + 1) * (toL ((invOfUnit (tDen W xP) 1).subst (expSer W)) * toL ((tDen W xP).subst (expSer W)) + HahnSeries.C xP * toL ((invOfUnit (tDen W xP) 1).subst (expSer W)) * toL (expSer W) ^ 2) * hE + h1
 
+/- English proof (translation)
+Take `⟨hX, -⟩` from `chordRegular _ (curveL W) (xZ W) (yZ W) (HahnSeries.C xP) (HahnSeries.C yP) (toL ((tS W xP).subst (expSer W))) (flowZ K W).1.1 (Plus.equation_C W hP) (tS_mul W xP)`. Establish `h` using `exp_mul_inv W`. Rewrite using `[hX, xZ, yZ]`. Simplify using `only [← Wp.sig_apply (he W)]`. Simplify using `only [xPlus, nS, tS, map_add, map_sub, map_mul, map_pow, map_ofNat, Wp.sig_C, Wp.sig_X, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`.
+
+Generalize the expression as in `Wp.sig (he W) (invOfUnit (tDen W xP) 1) = v`. Generalize the expression as in `Wp.sig (he W) (xS W) = xs`. Generalize the expression as in `Wp.sig (he W) (yS W) = ys`. Generalize the expression as in `(toL (expSer W))⁻¹ = q at h ⊢`. Generalize the expression as in `toL (expSer W) = E at h ⊢`.
+
+Take the linear combination `(-(HahnSeries.C W.a₄ - HahnSeries.C W.a₁ * HahnSeries.C yP + 2 * HahnSeries.C W.a₂ * HahnSeries.C xP + 3 * HahnSeries.C xP ^ 2) * xs * v ^ 2 * E ^ 2 * (E * q + 1) + (2 * HahnSeries.C yP + HahnSeries.C W.a₁ * HahnSeries.C xP + HahnSeries.C W.a₃) * ys * v ^ 2 * E * ((E * q) ^ 2 + E …`.
+-/
 theorem chordZ {xP yP : K} (hP : W.toAffine.Equation xP yP) :
     toL ((xPlus W xP yP).subst (expSer W)) = (curveL W).toAffine.addX (xZ W) (HahnSeries.C xP)
       ((yZ W - HahnSeries.C yP) * toL ((tS W xP).subst (expSer W))) := by
@@ -109,6 +149,13 @@ theorem chordZ {xP yP : K} (hP : W.toAffine.Equation xP yP) :
       + (2 * HahnSeries.C yP + HahnSeries.C W.a₁ * HahnSeries.C xP + HahnSeries.C W.a₃) * ys
           * v ^ 2 * E * ((E * q) ^ 2 + E * q + 1)) * h
 
+/- English proof (translation)
+Take `⟨hE, hDa, hDb⟩` from `h`. Establish `hφ : ∀ f : K⟦X⟧, f.subst (expSer W) = PowerSeries.substAlgHom (he W) f` using `fun f => by`. Rewrite using `[PowerSeries.coe_substAlgHom]`. Establish `hC : ∀ c : K, PowerSeries.substAlgHom (he W) (C c) = C c` using `fun c => (PowerSeries.substAlgHom (he W)).commutes c`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hE`, the goal using `[WeierstrassCurve.Affine.equation_iff]`. Establish `h2` using `congrArg (PowerSeries.substAlgHom (he W)) hE`. Simplify using `only [map_add, map_mul, map_pow, curveS, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, hC] at h2 ⊢`. Rewrite using `[hφ, hφ]`. Conclude with `h2`.
+
+Rewrite using `[chainZ K W, hDa]`. Simplify using `only [hφ, map_add, map_mul, map_ofNat, curveS, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃, hC]`. Rewrite using `[chainZ K W, hDb]`. Simplify using `only [hφ, map_add, map_sub, map_mul, map_pow, map_ofNat, curveS, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄, hC]`.
+-/
 theorem isFlow_subst {a b : K⟦X⟧} (h : IsFlow (curveS W) (D W) a b) :
     IsFlow (curveS W) (derivative K) (a.subst (expSer W)) (b.subst (expSer W)) := by
   obtain ⟨hE, hDa, hDb⟩ := h
@@ -129,11 +176,17 @@ theorem isFlow_subst {a b : K⟦X⟧} (h : IsFlow (curveS W) (D W) a b) :
     simp only [hφ, map_add, map_sub, map_mul, map_pow, map_ofNat, curveS, WeierstrassCurve.map_a₁,
       WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄, hC]
 
+/- English proof (translation)
+Rewrite using `[tS, ← PowerSeries.coe_substAlgHom (he W), map_mul, map_pow, PowerSeries.coe_substAlgHom, PowerSeries.subst_X (he W)]`.
+-/
 theorem subst_tS (xP : K) : (tS W xP).subst (expSer W)
     = expSer W ^ 2 * (invOfUnit (tDen W xP) 1).subst (expSer W) := by
   rw [tS, ← PowerSeries.coe_substAlgHom (he W), map_mul, map_pow, PowerSeries.coe_substAlgHom,
     PowerSeries.subst_X (he W)]
 
+/- English proof (translation)
+Establish `hC : (C (constantCoeff f) : R⟦X⟧).subst e = C (constantCoeff f)`. Rewrite using `[← PowerSeries.coe_substAlgHom he]`. Conclude with `(PowerSeries.substAlgHom he).commutes _`. Use `conv_lhs => rw [PowerSeries.eq_shift_mul_X_add_const f]`. Rewrite using `[← PowerSeries.coe_substAlgHom he, map_add, map_mul, PowerSeries.coe_substAlgHom, PowerSeries.subst_X he, hC, map_add, map_mul, he0, mul_zero, zero_add, PowerSeries.constantCoeff_C]`.
+-/
 private theorem cc_subst_lemma {R : Type*} [CommRing R] {e : R⟦X⟧} (he : HasSubst e)
     (he0 : constantCoeff e = 0) (f : R⟦X⟧) : constantCoeff (f.subst e) = constantCoeff f := by
   have hC : (C (constantCoeff f) : R⟦X⟧).subst e = C (constantCoeff f) := by
@@ -143,6 +196,11 @@ private theorem cc_subst_lemma {R : Type*} [CommRing R] {e : R⟦X⟧} (he : Has
   rw [← PowerSeries.coe_substAlgHom he, map_add, map_mul, PowerSeries.coe_substAlgHom,
     PowerSeries.subst_X he, hC, map_add, map_mul, he0, mul_zero, zero_add, PowerSeries.constantCoeff_C]
 
+/- English proof (translation)
+Establish `hc : constantCoeff (tDen W xP) = 1`. Simplify using `[tDen, xS, PowerSeries.constantCoeff_invOfUnit]`. Establish `hm : tDen W xP * invOfUnit (tDen W xP) 1 = 1` using `PowerSeries.mul_invOfUnit _ _ (by simpa using hc)`. Establish `h1 : (tDen W xP).subst (expSer W) * (invOfUnit (tDen W xP) 1).subst (expSer W) = 1`. Rewrite using `[← PowerSeries.coe_substAlgHom (he W), ← map_mul, hm, map_one]`.
+
+Establish `h2` using `congrArg constantCoeff h1`. Rewrite `h2` using `[map_mul, map_one, cc_subst_lemma (he W) (e0 W) (tDen W xP), hc, one_mul]`. Conclude with `h2`.
+-/
 theorem inv_subst_cc (xP : K) :
     constantCoeff ((invOfUnit (tDen W xP) 1).subst (expSer W)) = 1 := by
   have hc : constantCoeff (tDen W xP) = 1 := by
@@ -155,10 +213,18 @@ theorem inv_subst_cc (xP : K) :
   rw [map_mul, map_one, cc_subst_lemma (he W) (e0 W) (tDen W xP), hc, one_mul] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite using `[subst_tS]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd (PowerSeries.X_dvd_iff.mpr (e0 W)) 2) _`.
+-/
 theorem sq_dvd_tS (xP : K) : X ^ 2 ∣ (tS W xP).subst (expSer W) := by
   rw [subst_tS]
   exact Dvd.dvd.mul_right (pow_dvd_pow_of_dvd (PowerSeries.X_dvd_iff.mpr (e0 W)) 2) _
 
+/- English proof (translation)
+Take `⟨e1, he1⟩ : X ∣ expSer W` from `PowerSeries.X_dvd_iff.mpr (e0 W)`. Establish `hc1 : constantCoeff e1 = 1`. Establish `h1` using `(expSpec K W).2.1`. Rewrite `h1` using `[he1, PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `h1`.
+
+Rewrite using `[subst_tS]`. Establish `hg` using `inv_subst_cc W xP`. Generalize the expression as in `(invOfUnit (tDen W xP) 1).subst (expSer W) = g at hg ⊢`. Rewrite using `[he1, mul_pow, mul_assoc, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, map_pow, hc1, hg]`. Evaluate the numerical expressions.
+-/
 theorem coeff_two_tS (xP : K) : coeff 2 ((tS W xP).subst (expSer W)) = 1 := by
   obtain ⟨e1, he1⟩ : X ∣ expSer W := PowerSeries.X_dvd_iff.mpr (e0 W)
   have hc1 : constantCoeff e1 = 1 := by
@@ -172,6 +238,11 @@ theorem coeff_two_tS (xP : K) : coeff 2 ((tS W xP).subst (expSer W)) = 1 := by
     PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, map_pow, hc1, hg]
   norm_num
 
+/- English proof (translation)
+Establish `hX : HasSubst (-X : K⟦X⟧)` using `HasSubst.of_constantCoeff_zero' (by simp)`. Establish `hi : HasSubst (iSer W)` using `HasSubst.of_constantCoeff_zero' (iSerSpec K W).1`. Establish `k1` using `subst_comp_subst_apply (he W) hX (tS W xP)`. Establish `k2` using `subst_comp_subst_apply hi (he W) (tS W xP)`. Rewrite `k2` using `[(tSpec K W xP).2.2.2.2.2]`.
+
+Rewrite using `[k1, (logNeg K W).2, ← k2]`.
+-/
 theorem tS_even (xP : K) :
     PowerSeries.subst (-X : K⟦X⟧) ((tS W xP).subst (expSer W) : K⟦X⟧)
       = (tS W xP).subst (expSer W) := by
@@ -186,6 +257,11 @@ end Two
 
 open Two
 
+/- English proof (translation)
+Introduce `K _ _ W xP yP hP`. Use `⟨isFlow_subst W (plusFlow K W xP yP hP).1, tS_mul W xP, ?_⟩` and prove the remaining obligations. Establish `h` using `flowLogDeriv _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xP) (HahnSeries.C yP) (toL ((tS W xP).subst (expSer W))) Wp.isDer_dL' (Wp.constCurve_dL W) (flowZ K W).1 (Plus.equation_C W hP) (dL_C _) (dL_C _) (tS_mul W xP)`. Rewrite `h` using `[WeierstrassCurve.Affine.map_negY]`. Establish `hw : dL (wpL W) = dL (xZ W)` using `by rw [wpL, map_add, dL_C, add_zero]`.
+
+Rewrite using `[hw, chordZ W hP, chordZ W ((WeierstrassCurve.Affine.equation_neg xP yP).2 hP), h]`.
+-/
 theorem addition_integral : PlusZ.{u} := by
   intro K _ _ W xP yP hP
   refine ⟨isFlow_subst W (plusFlow K W xP yP hP).1, tS_mul W xP, ?_⟩
@@ -196,6 +272,41 @@ theorem addition_integral : PlusZ.{u} := by
   have hw : dL (wpL W) = dL (xZ W) := by rw [wpL, map_add, dL_C, add_zero]
   rw [hw, chordZ W hP, chordZ W ((WeierstrassCurve.Affine.equation_neg xP yP).2 hP), h]
 
+/- English proof (translation)
+Introduce `K _ _ W xT yT hT h2 e₁ kap w₁`. Take `⟨he₁⟩ : Nonempty (e₁ = xT + W.b₂ / 12)` from `⟨rfl⟩`. Take `⟨hkap⟩ : Nonempty (kap = 3 * e₁ ^ 2 - g₂ W / 4)` from `⟨rfl⟩`. Take `⟨hw₁⟩ : Nonempty (w₁ = (tS W xT).subst (expSer W))` from `⟨rfl⟩`. Use `clear_value w₁ kap e₁`.
+
+Establish `hinj : Function.Injective (HahnSeries.C : K →+* LaurentSeries K)` using `HahnSeries.C_injective`. Establish `cE : (HahnSeries.C e₁ : LaurentSeries K) = HahnSeries.C xT + HahnSeries.C (W.b₂ / 12)`. Rewrite using `[he₁, map_add]`. Establish `h6 : IsUnit (6 : LaurentSeries K)`. Establish `h` using `(IsUnit.mk0 (6 : K) (by norm_num)).map (HahnSeries.C : K →+* LaurentSeries K)`.
+
+Rewrite `h` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hb : 12 * (HahnSeries.C (W.b₂ / 12) : LaurentSeries K) = (curveL W).b₂`. Rewrite using `[WeierstrassCurve.map_b₂, ← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 12, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hg2 : 12 * (HahnSeries.C (g₂ W) : LaurentSeries K) = (curveL W).c₄`. Rewrite using `[WeierstrassCurve.map_c₄, ← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 12, ← map_mul]`. Use `congr 1`. Rewrite using `[g₂]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hg3 : 216 * (HahnSeries.C (g₃ W) : LaurentSeries K) = (curveL W).c₆`. Rewrite using `[WeierstrassCurve.map_c₆, ← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 216, ← map_mul]`. Use `congr 1`. Rewrite using `[g₃]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hk : 4 * (HahnSeries.C kap : LaurentSeries K) = 12 * (HahnSeries.C xT + HahnSeries.C (W.b₂ / 12)) ^ 2 - HahnSeries.C (g₂ W)`. Establish `h : 4 * kap = 12 * e₁ ^ 2 - g₂ W` using `by rw [hkap]; ring`. Establish `h'` using `congrArg (HahnSeries.C : K →+* LaurentSeries K) h`. Rewrite using `[← cE]`. Simplify `h'` using `only [map_sub, map_mul, map_pow, map_ofNat]`.
+
+Establish `h2' : 2 * (HahnSeries.C yT : LaurentSeries K) + (curveL W).a₁ * HahnSeries.C xT + (curveL W).a₃ = 0`. Establish `h` using `congrArg (HahnSeries.C : K →+* LaurentSeries K) h2`. Simplify `h` using `only [map_add, map_mul, map_ofNat, map_zero, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]`. Establish `ht : toL w₁ * (xZ W - HahnSeries.C xT) = 1` using `by rw [hw₁]; exact tS_mul W xT`. Take `⟨p1, p2, -, p4, p5⟩` from `flowTwoTorsionWp _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xT) (HahnSeries.C yT) (toL w₁) (HahnSeries.C (W.b₂ / 12)) (HahnSeries.C (g₂ W)) (HahnSeries.C (g₃ W)) (HahnSeries.C kap) Wp.isDer_dL' (Wp.constCurve_dL W) (flowZ K W).1 (Plus.equation_C W hT) (dL_C _) (dL_C _) h2' ht h6 …`.
+
+Take `⟨-, -, s3⟩` from `flowTwoTorsion _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C xT) (HahnSeries.C yT) (toL w₁) Wp.isDer_dL' (Wp.constCurve_dL W) (flowZ K W).1 (Plus.equation_C W hT) (dL_C _) (dL_C _) h2' ht`. Rewrite `p1`, `p4`, `p5` using `[← cE]`. Rewrite `s3` using `[← p2, ← hb, dL_toL, dL_toL]`. Rewrite `p4`, `p5` using `[dL_toL]`. Establish `q1 : 4 * e₁ ^ 3 - g₂ W * e₁ - g₃ W = 0`.
+
+Apply `hinj` to reduce the goal to its premises. Simplify `p1` using `only [map_sub, map_mul, map_pow, map_ofNat, map_zero]`. Establish `q3 : kap = 3 * xT ^ 2 + 2 * W.a₂ * xT + W.a₄ - W.a₁ * yT`. Apply `hinj` to reduce the goal to its premises. Simplify `p2` using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄]`.
+
+Use `⟨q1, ?_, q3, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hg3' : g₃ W = 4 * e₁ ^ 3 - g₂ W * e₁` using `by linear_combination -q1`. Establish `h4 : (4 : Polynomial K) * Polynomial.C (g₂ W / 4) = Polynomial.C (g₂ W)`. Rewrite using `[← map_ofNat (Polynomial.C : K →+* Polynomial K) 4, ← map_mul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hg3']`. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`. Take the linear combination `(Polynomial.X - Polynomial.C e₁) * h4`. Rewrite using `[wpL, cE]`.
+
+Take the linear combination `ht`. Rewrite using `[hw₁]`. Conclude with `sq_dvd_tS W xT`. Rewrite using `[hw₁]`. Conclude with `coeff_two_tS W xT`.
+
+Rewrite using `[hw₁]`. Conclude with `tS_even W xT`. Apply `toL_injective` to reduce the goal to its premises. Simplify `p4` using `only [map_add, map_mul, map_pow, map_one, map_ofNat, toL_C]`. Apply `toL_injective` to reduce the goal to its premises.
+
+Simplify using `only [map_add, map_mul, map_pow, map_ofNat, toL_C]`. Rewrite using `[s3, cE]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(two_torsion_unit K W xT yT hT h2).1, ← q3, subst_add (he W), subst_mul (he W), ← hw₁, ← ISer.subHom_apply _ (e0 W), ← ISer.subHom_apply _ (e0 W), ISer.subHom_C, ISer.subHom_C, he₁, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `e₂ e₃ hf`. Establish `v0` using `congrArg (Polynomial.eval 0) hf`. Establish `v1` using `congrArg (Polynomial.eval 1) hf`. Establish `vm` using `congrArg (Polynomial.eval (-1)) hf`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_ofNat] at v0 v1 vm`.
+
+Establish `s1 : e₁ + e₂ + e₃ = 0` using `by linear_combination (1 / 8) * (v1 + vm - 2 * v0)`. Establish `s2 : 4 * (e₁ * e₂ + e₁ * e₃ + e₂ * e₃) = -g₂ W`. Take the linear combination `(-1 / 2) * (v1 - vm)`. Use `⟨by rw [hkap]; linear_combination 2 * e₁ * s1 - (1 / 4) * s2, ?_⟩` and prove the remaining obligations. Establish `p` using `p5 (HahnSeries.C e₂) (HahnSeries.C e₃) (by rw [← map_add, ← map_add, s1, map_zero]) (by`.
+
+Establish `h` using `congrArg (HahnSeries.C : K →+* LaurentSeries K) s2`. Simplify `h)` using `only [map_add, map_mul, map_neg, map_ofNat]`. Apply `toL_injective` to reduce the goal to its premises. Simplify `p` using `only [map_add, map_sub, map_mul, map_pow, map_one, map_ofNat, toL_C]`.
+-/
 theorem two_torsion_integral : TwoTorsionZ.{u} := by
   intro K _ _ W xT yT hT h2 e₁ kap w₁
   obtain ⟨he₁⟩ : Nonempty (e₁ = xT + W.b₂ / 12) := ⟨rfl⟩
@@ -297,6 +408,11 @@ namespace Two
 
 variable {K : Type u} [Field K] [CharZero K] (W : WeierstrassCurve K)
 
+/- English proof (translation)
+Apply `HahnSeries.ofPowerSeries_injective (Γ := ℤ) (R := K)` to reduce the goal to its premises. Establish `hw` using `(hS K W).1`. Unfold `wpL xZ at hw`. Establish `hP : (uPow (-2) : LaurentSeries K) * toL X ^ 2 = 1` using `uPow_mul_sq`. Establish `hE1 : toL (expSer W) * (toL (expSer W))⁻¹ = 1` using `mul_inv_cancel₀ (toL_exp_ne W)`.
+
+Simplify using `only [map_mul, map_pow, map_add, map_one, HahnSeries.ofPowerSeries_C]`. Take the linear combination `(-(toL X ^ 2 * toL (expSer W) ^ 2)) * hw + (-(toL (expSer W) ^ 2)) * hP + (toL X ^ 2 * toL ((xS W).subst (expSer W)) * (toL (expSer W) * (toL (expSer W))⁻¹ + 1)) * hE1`.
+-/
 theorem wpInZ (hS : WpShape.{u}) : expSer W ^ 2 * (1 + X ^ 2 * wpReg W)
     = X ^ 2 * ((xS W).subst (expSer W) + C (W.b₂ / 12) * expSer W ^ 2) := by
   apply HahnSeries.ofPowerSeries_injective (Γ := ℤ) (R := K)
@@ -310,6 +426,17 @@ theorem wpInZ (hS : WpShape.{u}) : expSer W ^ 2 * (1 + X ^ 2 * wpReg W)
 
 end Two
 
+/- English proof (translation)
+Introduce `K _ _ W`. Establish `h` using `Two.wpInZ W hS`. Establish `hl : PowerSeries.HasSubst (logSer W)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (logSpec K W).1`. Establish `hel : (expSer W).subst (logSer W) = X` using `(expSpec K W).2.2.2.1`. Establish `hself : ∀ f : K⟦X⟧, f.subst (X : K⟦X⟧) = f` using `fun f => by show MvPowerSeries.subst (fun _ => (PowerSeries.X : K⟦X⟧)) f = f`.
+
+Establish `e : (fun _ : Unit => (PowerSeries.X : K⟦X⟧)) = MvPowerSeries.X` using `funext fun _ => rfl`. Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (PowerSeries.substAlgHom hl) h`. Simplify using `only [map_mul, map_pow, map_add, map_one, PowerSeries.coe_substAlgHom, PowerSeries.subst_X hl] at h2`.
+
+Establish `e1 : PowerSeries.substAlgHom hl (expSer W) = X` using `by rw [PowerSeries.coe_substAlgHom]; exact hel`. Establish `e2 : PowerSeries.substAlgHom hl (wpReg W) = (wpReg W).subst (logSer W)`. Rewrite using `[PowerSeries.coe_substAlgHom]`. Establish `e3 : PowerSeries.substAlgHom hl ((xS W).subst (expSer W)) = xS W`. Rewrite using `[PowerSeries.coe_substAlgHom, PowerSeries.subst_comp_subst_apply (Two.he W) hl, hel, hself]`.
+
+Establish `e4 : PowerSeries.substAlgHom hl (C (W.b₂ / 12)) = C (W.b₂ / 12)` using `(PowerSeries.substAlgHom hl).commutes _`. Establish `e3' : PowerSeries.subst (logSer W : K⟦X⟧) (PowerSeries.subst (expSer W : K⟦X⟧) (xS W)) = xS W`. Rewrite using `[PowerSeries.subst_comp_subst_apply (Two.he W) hl, hel, hself]`. Establish `e4' : PowerSeries.subst (logSer W : K⟦X⟧) (C (W.b₂ / 12) : K⟦X⟧) = C (W.b₂ / 12)`. Rewrite using `[← PowerSeries.coe_substAlgHom hl]`.
+
+Conclude with `(PowerSeries.substAlgHom hl).commutes _`. Simplify using `only [e1, e2, e3, e4, hel, e3', e4'] at h2`. Conclude with `h2`.
+-/
 theorem wpInU_of (hS : WpShape.{u}) : WpInU.{u} := by
   intro K _ _ W
   have h := Two.wpInZ W hS
@@ -337,6 +464,11 @@ theorem wpInU_of (hS : WpShape.{u}) : WpInU.{u} := by
   simp only [e1, e2, e3, e4, hel, e3', e4'] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `K _ _ W xP`. Apply `HahnSeries.ofPowerSeries_injective (Γ := ℤ) (R := K)` to reduce the goal to its premises. Establish `h1` using `Two.tS_mul W xP`. Establish `hw` using `(hS K W).1`. Unfold `wpL at hw`.
+
+Establish `hP : (uPow (-2) : LaurentSeries K) * toL X ^ 2 = 1` using `Two.uPow_mul_sq`. Simplify using `only [map_mul, map_sub, map_add, map_one, map_pow, HahnSeries.ofPowerSeries_C]`. Take the linear combination `(-(toL ((tS W xP).subst (expSer W)) * toL X ^ 2)) * hw + toL X ^ 2 * h1 + (-(toL ((tS W xP).subst (expSer W)))) * hP`.
+-/
 theorem tInZ_of (hS : WpShape.{u}) : TInZ.{u} := by
   intro K _ _ W xP
   apply HahnSeries.ofPowerSeries_injective (Γ := ℤ) (R := K)
@@ -348,6 +480,9 @@ theorem tInZ_of (hS : WpShape.{u}) : TInZ.{u} := by
   linear_combination (-(toL ((tS W xP).subst (expSer W)) * toL X ^ 2)) * hw + toL X ^ 2 * h1
     + (-(toL ((tS W xP).subst (expSer W)))) * hP
 
+/- English proof (translation)
+Introduce `K _ _ W n`. Simplify using `only [logSer, integ, PowerSeries.coeff_mk, if_neg (Nat.succ_ne_zero n), Nat.add_sub_cancel]`. Establish `hn : ((n + 1 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.succ_ne_zero n)`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem logarithm_coeff : LogCoeff.{u} := by
   intro K _ _ W n
   simp only [logSer, integ, PowerSeries.coeff_mk, if_neg (Nat.succ_ne_zero n), Nat.add_sub_cancel]

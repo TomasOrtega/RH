@@ -52,9 +52,15 @@ def tame : Submodule ℂ (Sm E a) where
     rw [map_smul, Submodule.coe_smul]
     exact Submodule.smul_mem _ c (h l)
 
+/- English proof (translation)
+Simplify using `using h []`.
+-/
 theorem growth_of_tame {ψ : Sm E a} (h : ψ ∈ tame E a) : ψ.1 ∈ growth E a := by
   simpa using h []
 
+/- English proof (translation)
+Introduce `l`. Establish `e : (l.map (lie E a)).prod (lie E a X ψ) = ((l ++ [X]).map (lie E a)).prod ψ`. Simplify using `[List.map_append, List.prod_append, Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `h _`.
+-/
 theorem lie_mem_tame (X : Lie E a) {ψ : Sm E a} (h : ψ ∈ tame E a) : lie E a X ψ ∈ tame E a := by
   intro l
   have e : (l.map (lie E a)).prod (lie E a X ψ) = ((l ++ [X]).map (lie E a)).prod ψ := by
@@ -83,6 +89,11 @@ def maps (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Sm E a))
      fun γ g => by simp [(h.2 w).2.1 γ g],
      fun k hk => by simp [(h.2 w).2.2 k hk]⟩⟩
 
+/- English proof (translation)
+Establish `hs : Function.support (dens X α) ⊆ tsupport α`. Introduce `x hx`. Assume the negation of the conclusion as `hn`. Apply `hx` to reduce the goal to its premises. Establish `h1 : α x = 0` using `image_eq_zero_of_notMem_tsupport hn`.
+
+Establish `h2 : fderiv ℝ α x = 0` using `fderiv_of_notMem_tsupport ℝ hn`. Simplify using `[dens, h1, h2]`. Establish `ht : tsupport (dens X α) ⊆ tsupport α` using `closure_minimal hs (isClosed_tsupport α)`. Use `⟨?_, h.2.1.mono' hs, ht.trans h.2.2⟩` and prove the remaining obligations. Use `(((h.1.fderiv_right (m := ∞) (by simp)).clm_apply (lmul X).contDiff).add (contDiff_const.mul h.1)).neg` and prove the remaining obligations.
+-/
 theorem isTest_dens (X : Lie E a) {α : Lie E a → ℂ} (h : GlobalTheory.CuspQuot.IsTest (invSet E a) α) :
     GlobalTheory.CuspQuot.IsTest (invSet E a) (dens X α) := by
   have hs : Function.support (dens X α) ⊆ tsupport α := by

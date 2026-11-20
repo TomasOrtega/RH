@@ -38,6 +38,9 @@ def ofGram (G : (K →+* ℂ) → Matrix (Fin g) (Fin g) ℂ) (hG : ∀ s, (G s)
     rw [Matrix.mul_assoc]
     rfl
 
+/- English proof (translation)
+Establish `e : ∀ i : Fin g, s ∘ (Pi.single i 1 : Fin g → K) = Pi.single i 1` using `fun i => by`. Use extensionality with `k`. Apply the tactic sequence `by_cases h : k = i <;> simp [h]`. Simplify using `[ofGram, e, ← Pi.single_star]`.
+-/
 theorem ofGram_single (G : (K →+* ℂ) → Matrix (Fin g) (Fin g) ℂ) (hG : ∀ s, (G s).PosDef) (s : K →+* ℂ) (i j : Fin g) :
     (ofGram G hG).form s (Pi.single i 1) (Pi.single j 1) = G s i j := by
   have e : ∀ i : Fin g, s ∘ (Pi.single i 1 : Fin g → K) = Pi.single i 1 := fun i => by
@@ -45,12 +48,22 @@ theorem ofGram_single (G : (K →+* ℂ) → Matrix (Fin g) (Fin g) ℂ) (hG : �
     by_cases h : k = i <;> simp [h]
   simp [ofGram, e, ← Pi.single_star]
 
+/- English proof (translation)
+Set `f : (Fin g → K) →+ ℂ` to `AddMonoidHom.mk' (h.form s x) (h.add_right s x)`. Establish `e : y = ∑ j, y j • Pi.single j (1 : K)` using `pi_eq_sum_univ' y`. Use `(congrArg f e).trans ((map_sum f _ _).trans (Finset.sum_congr rfl fun j _ => h.smul_right s _ _ _))` and prove the remaining obligations.
+-/
 theorem form_sum_right (h : HermFam K (Fin g → K)) (s : K →+* ℂ) (x y : Fin g → K) :
     h.form s x y = ∑ j, s (y j) * h.form s x (Pi.single j 1) := by
   let f : (Fin g → K) →+ ℂ := AddMonoidHom.mk' (h.form s x) (h.add_right s x)
   have e : y = ∑ j, y j • Pi.single j (1 : K) := pi_eq_sum_univ' y
   refine (congrArg f e).trans ((map_sum f _ _).trans (Finset.sum_congr rfl fun j _ => h.smul_right s _ _ _))
 
+/- English proof (translation)
+Establish `e1 : ∀ s i y, h.form s (Pi.single i 1) y = h'.form s (Pi.single i 1) y` using `fun s i y => by`. Rewrite using `[form_sum_right h, form_sum_right h']`. Simplify using `only [e]`. Establish `e2 : h.form = h'.form`. Use function extensionality and compare the values at `s x y`.
+
+Rewrite using `[form_sum_right h, form_sum_right h']`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← h.conj_symm, ← h'.conj_symm, e1]`. Consider the cases of `h`. Consider the cases of `h'`.
+
+Reduce the equality to equality of the corresponding arguments.
+-/
 theorem ext_single {h h' : HermFam K (Fin g → K)}
     (e : ∀ s i j, h.form s (Pi.single i 1) (Pi.single j 1) = h'.form s (Pi.single i 1) (Pi.single j 1)) : h = h' := by
   have e1 : ∀ s i y, h.form s (Pi.single i 1) y = h'.form s (Pi.single i 1) y := fun s i y => by
@@ -65,6 +78,9 @@ theorem ext_single {h h' : HermFam K (Fin g → K)}
   cases h'
   congr
 
+/- English proof (translation)
+Establish `h1 : Hm.PosDef` using `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => Complex.pos_iff.2 ⟨by simpa using hp (star x) (by simpa using hx), (hH.im_star_dotProduct_mulVec_self x).symm⟩`. Establish `h2` using `(h1.mul_mul_conjTranspose_same (B := Matrix.of W) (Matrix.vecMul_injective_iff.2 hW)).transpose.smul (a := (Real.pi : ℂ)) (by exact_mod_cast Real.pi_pos)`. Rewrite `h2` using `[Matrix.mul_assoc]`. Conclude with `h2`.
+-/
 theorem posDef_gram {n : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (hp : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) {W : Fin n → Fin g → ℂ}
     (hW : LinearIndependent ℂ W) : (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)).PosDef := by
@@ -77,6 +93,13 @@ theorem posDef_gram {n : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermi
 
 end Linear
 
+/- English proof (translation)
+Establish `key : ∀ c : Fin n → ℂ, ∃ w, IsTangent w ∧ IsLieComb c v w ∧ u.IsDiff (∑ i, c i • W i) w` using `fun c => by`. Establish `h` using `UnifDifferential.isDiff_prod u (fun i => c i • W i) _ (fun i => Chart.isTan_scale (c i) ((Chart.isTan_iff _).2 (hv.1 i))) (fun i => UnifDifferential.isDiff_scale u (hW i) (c i))`. Conclude with `⟨_, (Chart.isTan_iff _).1 h.1, (Chart.isLieComb_iff c v _).2 rfl, h.2⟩`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`.
+
+Take `⟨w, h1, h2, h3⟩` from `key c`. Take `⟨w', h1', h2', h3'⟩` from `key 0`. Rewrite `h3` using `[hc]`. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero] at h3'`. Take `rfl` from `(hu 0).unique ⟨h1, h3⟩ ⟨h1', h3'⟩`.
+
+Conclude with `congrFun ((hv.2 w h1).unique h2 h2')`.
+-/
 theorem linearIndependent_of_isLieBasis {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g n : ℕ} (u : HolUnif A L g)
     (hu : ∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) {v : Fin n → (epsR ℂ ⟶ A)} (hv : IsLieBasis v)
     {W : Fin n → Fin g → ℂ} (hW : ∀ i, u.IsDiff (W i) (v i)) : LinearIndependent ℂ W := by
@@ -94,6 +117,13 @@ theorem linearIndependent_of_isLieBasis {A : Over (Sp ℂ)} [GrpObj A] {L : LB A
   obtain rfl := (hu 0).unique ⟨h1, h3⟩ ⟨h1', h3'⟩
   exact congrFun ((hv.2 w h1).unique h2 h2')
 
+/- English proof (translation)
+Take `⟨e, he, heψ⟩` from `grpPullback_iso h.2.1 h'.2.1`. Take `⟨-, -, -, -, t1, t2, -⟩` from `AHWeil.tangent_and_weil_of_isAH hU Q' g' u' Hm' χ' hu'`. Take `⟨F, hF, -, hd, -⟩` from `HomLinear.exists_linear_of_isMonHom Q.A Q'.A Q.isAb Q'.isAb Q.L Q'.L g g' u u' t1 t2 e.hom he`. Establish `hW : ∀ k, F (W k) = W' k` using `fun k => by`. Take `⟨a, b⟩` from `hd _ _ ((hw k).1.isTangent h.2.1 (hv k)) (hw k).2`.
+
+Establish `c : w k ≫ e.hom = w' k` using `(existsUnique_isVecOver h'.2.1.1 (v k)).unique (by unfold IsVecOver; rw [Over.comp_left, Category.assoc, heψ]; exact (hw k).1) (hw' k).1`. Rewrite `a`, `b` using `[c]`. Conclude with `(t1 _ a).unique b (hw' k).2`. Take `⟨t, ht⟩ : LBIso (Q'.L.pull e.hom.left) Q.L` from `LBIso.trans (pull_isLB Q'.isLB _) (pull_isLB P.isLB _) Q.isLB (PolFibre.lbIso_pull_comp h'.2.2 _).symm (heψ ▸ h.2.2)`. Use `hermForm_pull_eq_of_lbIso_pow Q.A Q'.A Q.L Q'.L Q.isLB Q'.isLB g g' u u' Hm χ Hm' χ' hu hu' e.hom F hF 1 1 ⟨LB.linCombIso t _ _, DVR.linCombIso_isGen t ht _ _⟩ (W i) (W j)` as an intermediate fact.
+
+Simplify `this.symm` using `[hW]`.
+-/
 theorem hermForm_eq (hU : ThetaUnifAV) {R : Type} [CommRing R] {P : Out.PolAV (Sp R)} {s : R →+* ℂ}
     {Q Q' : Out.PolAV (Sp ℂ)} {ψ : Q.A.left ⟶ P.A.left} {ψ' : Q'.A.left ⟶ P.A.left} (h : IsPolFibre s P Q ψ)
     (h' : IsPolFibre s P Q' ψ') {g g' : ℕ} {u : HolUnif Q.A Q.L g} {u' : HolUnif Q'.A Q'.L g'}
@@ -120,6 +150,15 @@ theorem hermForm_eq (hU : ThetaUnifAV) {R : Type} [CommRing R] {P : Out.PolAV (S
     ⟨LB.linCombIso t _ _, DVR.linCombIso_isGen t ht _ _⟩ (W i) (W j)
   simpa [hW] using this.symm
 
+/- English proof (translation)
+Introduce `hU hL K _ _ P F`. Use `⟨?_, fun h h' H H' => ext_single fun s i j => ?_⟩` and prove the remaining obligations. Establish `key : ∀ s : K →+* ℂ, ∃ G : Matrix (Fin F.P₀.g) (Fin F.P₀.g) ℂ, G.PosDef ∧ ∃ (Q : Out.PolAV (Sp ℂ)) (ψ : Q.A.left ⟶ F.P₀.A.left) (v' : Fin F.P₀.g → (epsR ℂ ⟶ Q.A)) (u : HolUnif Q.A Q.L Q.g) (Hm : Matrix (Fin Q.g) (Fin Q.g) ℂ) (χ : u.Λ → ℂ) (W : Fin F.P₀.g → Fin Q.g → ℂ), IsPolFibr …` using `fun s => by`. Take `⟨Q, ψ, h⟩` from `exists_isPolFibre hL.polBaseChange s F.P₀`. Use `haveI := F.P₀.isAb.comm`.
+
+Use `haveI := Q.isAb.comm`. Use `haveI := F.P₀.smoothDim`. Take `⟨v', hb, hv'⟩` from `exists_isLieBasis_baseChange K ℂ s F.P₀.A Q.A ψ h.2.1 (SmoothOfRelativeDimension.smooth F.P₀.g _) _ F.v F.basis`. Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨u, Hm, χ, -, hA, -, hd, hd', -⟩` from `hU Q rig hrig`.
+
+Use `choose W hW using fun i => (hd _ (hb.1 i)).exists`. Conclude with `⟨_, posDef_gram hA.1 hA.2.1 (linearIndependent_of_isLieBasis u hd' hb hW), Q, ψ, v', u, Hm, χ, W, h, hA, fun i => ⟨hv' i, hW i⟩, fun _ _ => rfl⟩`. Use `choose G hG H using key`. Use `⟨ofGram G hG, fun s => ?_⟩` and prove the remaining obligations. Simplify `H s` using `only [ofGram_single]`.
+
+Take `⟨Q, ψ, v, u, Hm, χ, W, a, b, c, d⟩` from `H s`. Take `⟨Q', ψ', v', u', Hm', χ', W', a', b', c', d'⟩` from `H' s`. Rewrite using `[d, d', hermForm_eq hU a a' b b' F.basis.1 c c']`.
+-/
 theorem exists_unique_isHerm : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (F : GenFib P), (∃ h : HermFam K (Fin F.P₀.g → K), F.IsHerm h) ∧ ∀ h h' : HermFam K (Fin F.P₀.g → K), F.IsHerm h → F.IsHerm h' → h = h' := by
   intro hU hL K _ _ P F
   refine ⟨?_, fun h h' H H' => ext_single fun s i j => ?_⟩

@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.ThK.InducedCons
 
+/- English proof (translation)
+Rewrite using `[infPts, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Units.val h`. Introduce `h`.
+
+Conclude with `Units.ext h`.
+-/
 theorem mem_infPts_iff_map {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (g : GAd σ J) :
     g ∈ infPts σ J ↔ (g.1.1 : Matrix (Fin n) (Fin n) (AE F E)).map
@@ -28,6 +33,15 @@ theorem mem_infPts_iff_map {F E : Type} [Field F] [NumberField F] [Field E] [Alg
   · intro h
     exact Units.ext h
 
+/- English proof (translation)
+Take `⟨ax, ay, aι⟩` from `hm`. Simplify using `only [inv_one, Units.val_one, map_one, one_smul] at ax ay`. Use extensionality with `i j`. Take `⟨α, β, z, e⟩` from `h.decompA hσ hsk hd (Pi.single j 1)`. Establish `e1 : mat m i j = (mat m *ᵥ (Pi.single j 1 : Fin n → AE F E)) i`.
+
+Simplify using the standard rewrite rules. Establish `e2 : (1 : Matrix (Fin n) (Fin n) R) i j = φ ((Pi.single j 1 : Fin n → AE F E) i)`. Simplify using `[Matrix.one_apply, Pi.single_apply, apply_ite φ]`. Establish `e3 : ∀ k, φ ((mat h₁ *ᵥ z) k) = φ (z k)` using `fun k => by`. Rewrite using `[RingHom.map_mulVec, h1, Matrix.one_mulVec]`.
+
+Both sides reduce to the same expression. Establish `e4 : φ ((incM F H.ι *ᵥ (mat h₁ *ᵥ z)) i) = φ ((incM F H.ι *ᵥ z) i)`. Rewrite using `[RingHom.map_mulVec, RingHom.map_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Conclude with `e3 k`. Rewrite using `[Matrix.map_apply, e1, e2, e]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, ax, ay, Matrix.mulVec_mulVec, aι]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Simplify using `only [Pi.add_apply, map_add, e4]`.
+-/
 theorem levi_map_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n₁} {W : Spc F E n} {W₁ : Spc F E n₁}
     (h : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁) (hsk : ∀ i j, σ (W.J j i) = -W.J i j) (hd : W₁.J.det ≠ 0)
@@ -53,6 +67,15 @@ theorem levi_map_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [Number
   rw [← Matrix.mulVec_mulVec]
   simp only [Pi.add_apply, map_add, e4]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ hσ n n₁ W W₁ H hsk hn hxx hyy hxy hperp hgram c₀ hc₀ hW₁ _ M hMc hM K₁ hK₁ hK₁c`. Establish `h : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, hperp, hgram⟩`. Establish `hd : W₁.J.det ≠ 0` using `fun h0 => hW₁.2 (by`. Establish `e : (W₁.J.map σ).det = (σ : E →+* E) W₁.J.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[Matrix.det_smul, e, h0, map_zero, mul_zero])`.
+
+Take `⟨M', hM'c, hM', -⟩` from `h.exists_leviHom hσ hsk hd`. Establish `hMM : ∀ a, M a = M' a` using `fun a => h.levi_unique hσ hsk hd (hM a) (hM' a)`. Set `ψ : GAd σ (c₀ • W₁.J.map σ) →* GAd σ (c₀ • W.J.map σ)` to `(GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀).toMonoidHom.comp (M'.comp (GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀).symm.toMonoidHom)`. Establish `hψ : ∀ y, ψ y = GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ (M' ((GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀).symm y))` using `fun _ => rfl`. Establish `hψc : Continuous ψ` using `(GlobalTheory.ThK.GLTwo.continuous_toGAd hσ W.J hc₀).1.comp (hM'c.comp (GlobalTheory.ThK.GLTwo.continuous_toGAd hσ W₁.J hc₀).2)`.
+
+Use `⟨K₁.map ψ, ?_, ?_, fun y hy => ⟨y, hy, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[mem_infPts_iff_map, hψ]`. Conclude with `levi_map_eq_one hσ h hsk hd _ (hM' _) ((mem_infPts_iff_map σ _ y).1 (hK₁ hy))`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hK₁c.image hψc`. Rewrite using `[hψ, ← hMM]`. Both sides reduce to the same expression.
+-/
 theorem exists_compact_emb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

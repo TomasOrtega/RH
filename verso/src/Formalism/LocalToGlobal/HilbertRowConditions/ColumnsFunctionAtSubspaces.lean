@@ -99,9 +99,15 @@ noncomputable def RowSideDetermined.columnsOfSubspaces {T : TiedDataSK ex} {P : 
 noncomputable def RowSideDetermined.periodOfSubspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) : ∀ Zs, SPer (h.columnsOfSubspaces Zs) :=
   Classical.choose (Classical.choose_spec h.faces)
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (Classical.choose_spec h.faces)).1`.
+-/
 theorem RowSideDetermined.columns_function_at_subspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) : h.columnsOfSubspaces P.Zs = P.Dc :=
   (Classical.choose_spec (Classical.choose_spec h.faces)).1
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (Classical.choose_spec h.faces)).2`.
+-/
 theorem RowSideDetermined.period_function_at_subspaces {T : TiedDataSK ex} {P : RowSideFamily ex} (h : RowSideDetermined T P) : HEq (h.periodOfSubspaces P.Zs) P.Sp :=
   (Classical.choose_spec (Classical.choose_spec h.faces)).2
 

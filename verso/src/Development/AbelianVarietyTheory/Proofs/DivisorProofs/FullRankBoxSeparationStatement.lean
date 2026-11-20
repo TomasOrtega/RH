@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RankCoinv.OffDiagAssemble.bf_eq_zero_of_local | exact GlobalTheory.RankCoinv.OffDiagAssemble.bf_eq_zero_of_local | (intros; apply GlobalTheory.RankCoinv.OffDiagAssemble.bf_eq_zero_of_local <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.full_rank_box_separation : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (Bf : GlobalTheory.FullRankCoinv.fullRk k n d →ₗ[ℂ] GlobalTheory.FullRankCoinv.fullRk k n d →ₗ⋆[ℂ] ℂ),
     (∀ Y₁ Y₂ : Matrix (Fin n) (Fin d) k, Y₁.rank = n → Y₂.rank = n → (∀ a : GL (Fin n) k, Y₁ ≠ a.1 * Y₂) →
       ∃ N₀ : ℕ, ∀ N ≥ N₀, ∀ Z₁ ∈ GlobalTheory.RankCoinv.box ϖ Y₁ (fun _ => N₀), ∀ Z₂ ∈ GlobalTheory.RankCoinv.box ϖ Y₂ (fun _ => N₀),

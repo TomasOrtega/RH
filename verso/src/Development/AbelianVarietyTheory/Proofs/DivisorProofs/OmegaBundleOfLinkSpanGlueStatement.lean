@@ -9,5 +9,8 @@ open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | exact GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | (intros; apply GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.omega_bundle_of_link_span_glue : GlobalTheory.OmegaHT.LinkSt → GlobalTheory.OmegaHT.SpanSt → GlobalTheory.OmegaHT.GlueSt → GlobalTheory.OmegaHT.BundleSt := by
   first | exact @GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | exact GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis | (intros; apply GlobalTheory.OmegaHT.Bundle.bundle_of_locBasis <;> assumption)

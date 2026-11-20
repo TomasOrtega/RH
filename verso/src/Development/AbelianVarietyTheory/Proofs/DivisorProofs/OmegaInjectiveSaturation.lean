@@ -14,6 +14,9 @@ namespace GlobalTheory
 
 namespace PDivGroup
 
+/- English proof (translation)
+Establish `h1 : G.rigToExt (r • x) = 0` using `(G.exact_rigOfOmega_rigToExt _).2 hx`. Rewrite `h1` using `[map_smul]`. Conclude with `(G.exact_rigOfOmega_rigToExt x).1 ((smul_eq_zero.1 h1).resolve_left hr)`.
+-/
 theorem mem_range_rigOfOmega_of_smul {p : ℕ} {R : Type} [CommRing R] [IsDomain R]
     (G : PDivGroup p R) [Module.Free R G.VecExt] (r : R) (x : G.RigExt) (hr : r ≠ 0)
     (hx : r • x ∈ LinearMap.range G.rigOfOmega) : x ∈ LinearMap.range G.rigOfOmega := by
@@ -21,6 +24,23 @@ theorem mem_range_rigOfOmega_of_smul {p : ℕ} {R : Type} [CommRing R] [IsDomain
   rw [map_smul] at h1
   exact (G.exact_rigOfOmega_rigToExt x).1 ((smul_eq_zero.1 h1).resolve_left hr)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hG1, -, hG2, hG3⟩` from `GlobalTheory.T.dieudonne_modules_free_finite hW p R h G`. Take `⟨-, -, -, -, hH1, -, hH2, hH3⟩` from `GlobalTheory.T.dieudonne_modules_free_finite hW p R h H`. Take `⟨tG1, tG2⟩` from `GlobalTheory.T.frobenius_pullback_basis hW p R h G`. Take `⟨tH1, tH2⟩` from `GlobalTheory.T.frobenius_pullback_basis hW p R h H`. Take `⟨eG1, eG2, eG3, -⟩` from `GlobalTheory.T.verschiebung_frobenius_kernel_range hW p R h G`.
+
+Take `⟨eH1, eH2, eH3, -⟩` from `GlobalTheory.T.verschiebung_frobenius_kernel_range hW p R h H`. Establish `iG` using `G.rigOfOmega_injective_of_eq_zero h`. Establish `key` using `GlobalTheory.T.semilinear_rank_comparison p R (frobRing h) (frobRing_apply h) G.RigExt (frobTwist h G).RigExt H.RigExt (frobTwist h H).RigExt (LinearMap.range G.rigOfOmega) (LinearMap.range H.rigOfOmega) (frobProj h G).rig (frobProj h H).rig (rigExtMap (relFrob h G)) (rigExtMap ( …`. Use `congrArg (fun g => rigExtMap g x) (relFrob_naturality h f)` as an intermediate fact. Simplify `this)` using `only [rigExtMap_comp, LinearMap.comp_apply]`.
+
+Use the proof step `(fun x => by`. Use `congrArg (fun g => rigExtMap g x) (verschiebung_naturality h f)` as an intermediate fact. Simplify `this)` using `only [rigExtMap_comp, LinearMap.comp_apply]`. Use the proof step `(by`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `⟨_, (rigExtMap_rigOfOmega f w).symm⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨w, rfl⟩ hw`. Rewrite `hw` using `[rigExtMap_rigOfOmega, ← map_zero G.rigOfOmega]`. Establish `h0 : w = 0` using `hinj ((iG hw).trans (map_zero _).symm)`.
+
+Rewrite using `[h0, map_zero])`. Use the proof step `(fun x => by`. Take `⟨r, hr, y, hy⟩` from `hgen (G.rigToExt x)`. Take `⟨z, rfl⟩` from `H.rigToExt_surjective y`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : G.rigToExt (r • x - rigExtMap f z) = 0`. Rewrite using `[map_sub, map_smul, rigToExt_rigExtMap, hy, sub_self]`. Establish `h1` using `(G.exact_rigOfOmega_rigToExt _).1 h0`. Rewrite using `[← add_sub_cancel (rigExtMap f z) (r • x)]`. Conclude with `Submodule.add_mem_sup ⟨z, rfl⟩ h1)`.
+
+Use `⟨fun r w hr hw => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hw`. Take `⟨_, ⟨u, rfl⟩, hu⟩` from `key.1 r (G.rigOfOmega w) hr ⟨w, rfl⟩ ⟨H.rigOfOmega v, ⟨v, rfl⟩, by rw [rigExtMap_rigOfOmega, hv, map_smul]⟩`. Rewrite `hu` using `[rigExtMap_rigOfOmega]`. Conclude with `⟨u, iG hu⟩`.
+
+Take `⟨y, rfl⟩` from `G.rigToExt_surjective x`. Establish `hy : y ∈ LinearMap.range (rigExtMap f) ⊔ LinearMap.range G.rigOfOmega` using `key.2 ▸ Submodule.mem_top`. Take `⟨_, ⟨z, rfl⟩, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Use `⟨H.rigToExt z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, rigToExt_rigExtMap, (G.exact_rigOfOmega_rigToExt b).2 hb, add_zero]`.
+-/
 theorem saturated_omegaMap_and_surjective_vecExtMap
     (hW : GlobalTheory.Published.BarsottiTateDieudonne.WittModule) (p : ℕ) [Fact p.Prime] (R : Type)
     [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (h : (p : R) = 0)

@@ -13,6 +13,13 @@ open Formalism.L2.PT GlobalTheory.SerOSys.TranspLabel
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
+/- English proof (translation)
+Set `E : V ≃ₗ[ℂ] V` to `LinearEquiv.ofLinear (ρ P) (ρ P⁻¹) (LinearMap.ext fun v => by show (ρ P * ρ P⁻¹) v = v`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Use the proof step `rfl)`. Use the proof step `(LinearMap.ext fun v => by show (ρ P⁻¹ * ρ P) v = v`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+
+Use the proof step `rfl)`. Establish `h : E.conj (ρ g) = ρ (P * g * P⁻¹)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[LinearEquiv.conj_apply_apply, map_mul, map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h, LinearMap.trace_conj']`.
+-/
 theorem trace_conj_rep {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (P g : G) : LinearMap.trace ℂ V (ρ (P * g * P⁻¹)) = LinearMap.trace ℂ V (ρ g) := by
   let E : V ≃ₗ[ℂ] V := LinearEquiv.ofLinear (ρ P) (ρ P⁻¹)
@@ -38,6 +45,11 @@ def lamT (e : ι ≃ κ) (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL 
     FDRep ℂ (GL {k // (b ∘ e.symm) k = c} K) :=
   transp (blockEquiv e b c) (lam c)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `p.2`. Use `⟨fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show Matrix.reindex e.symm e.symm (p.1 : Matrix κ κ K) i j = 0`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Conclude with `h1 _ _ (by simpa using hij)`.
+
+Rewrite using `[← map_inv] show Matrix.reindex e.symm e.symm ((p.1⁻¹ : GL κ K) : Matrix κ κ K) i j = 0`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]`. Conclude with `h2 _ _ (by simpa using hij)`.
+-/
 theorem mem_parab_symm (e : ι ≃ κ) (b : ι → Fin s) (p : parab K (b ∘ e.symm)) :
     (glEquiv K e).symm p.1 ∈ parab K b := by
   obtain ⟨h1, h2⟩ := p.2
@@ -50,6 +62,11 @@ theorem mem_parab_symm (e : ι ≃ κ) (b : ι → Fin s) (p : parab K (b ∘ e.
     simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_symm]
     exact h2 _ _ (by simpa using hij)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `p.2`. Use `⟨fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show Matrix.reindex e e (p.1 : Matrix ι ι K) i j = 0`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `h1 _ _ (by simpa using hij)`.
+
+Rewrite using `[← map_inv] show Matrix.reindex e e ((p.1⁻¹ : GL ι K) : Matrix ι ι K) i j = 0`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `h2 _ _ (by simpa using hij)`.
+-/
 theorem mem_parab (e : ι ≃ κ) (b : ι → Fin s) (p : parab K b) :
     glEquiv K e p.1 ∈ parab K (b ∘ e.symm) := by
   obtain ⟨h1, h2⟩ := p.2
@@ -62,6 +79,9 @@ theorem mem_parab (e : ι ≃ κ) (b : ι → Fin s) (p : parab K b) :
     simp only [Matrix.reindex_apply, Matrix.submatrix_apply]
     exact h2 _ _ (by simpa using hij)
 
+/- English proof (translation)
+Unfold `infl`. Use `congr 1`.
+-/
 theorem infl_symm (e : ι ≃ κ) (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
     (p : parab K (b ∘ e.symm)) :
     infl K b lam ⟨(glEquiv K e).symm p.1, mem_parab_symm e b p⟩ = infl K (b ∘ e.symm) (lamT e b lam) p := by
@@ -95,6 +115,11 @@ def hcEquiv (e : ι ≃ κ) (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (
     show F.1 (glEquiv K e ((glEquiv K e).symm x)) = F.1 x
     rw [MulEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hconj : (hcEquiv e b lam).conj (hcRep K b lam ((glEquiv K e).symm g)) = hcRep K (b ∘ e.symm) (lamT e b lam) g`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `F`. Rewrite using `[LinearEquiv.conj_apply_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `x`. Use `show F.1 (glEquiv K e ((glEquiv K e).symm x * (glEquiv K e).symm g)) = F.1 (x * g)`. Rewrite using `[← map_mul, MulEquiv.apply_symm_apply]`. Rewrite using `[← hconj, LinearMap.trace_conj']`.
+-/
 theorem trace_hcRep_lamT (e : ι ≃ κ) (b : ι → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K))
     (g : GL κ K) :
     LinearMap.trace ℂ _ (hcRep K (b ∘ e.symm) (lamT e b lam) g) =
@@ -113,6 +138,13 @@ end GlobalTheory.HCSort
 
 namespace GlobalTheory.HCSort
 
+/- English proof (translation)
+Introduce `K _ _ _ r s b lam hb hl`. Set `e : Fin r ≃ Fin r` to `(Tuple.sort b).symm`. Use `⟨b ∘ e.symm, lamT e b lam, hb.comp e.symm.surjective, fun c => ⟨Formalism.L2.PT.simple_transp _ (hl c).1, Formalism.L2.PT.isCuspidal_transp _ (hl c).2⟩, ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show Monotone (b ∘ (Tuple.sort b).symm.symm)`. Rewrite using `[Equiv.symm_symm]`.
+
+Conclude with `Tuple.monotone_sort b`. Rewrite using `[trace_hcRep_lamT]`. Establish `h : (glEquiv K e).symm x = glEquiv K e.symm x`. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+
+Rewrite using `[h, GlobalTheory.SerOSys.TranspLabel.glEquiv_perm, trace_conj_rep]`.
+-/
 theorem exists_monotone_same_trace : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (r s : ℕ) (b : Fin r → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)), Function.Surjective b → (∀ c, Simple (lam c) ∧ IsCuspidal K (lam c)) → ∃ (b' : Fin r → Fin s) (lam' : ∀ c : Fin s, FDRep ℂ (GL {i // b' i = c} K)), Function.Surjective b' ∧ (∀ c, Simple (lam' c) ∧ IsCuspidal K (lam' c)) ∧ Monotone b' ∧ ∀ x : GL (Fin r) K, LinearMap.trace ℂ (hcSpace K b' lam') (hcRep K b' lam' x) = LinearMap.trace ℂ (hcSpace K b lam) (hcRep K b lam x) := by
   intro K _ _ _ r s b lam hb hl
   let e : Fin r ≃ Fin r := (Tuple.sort b).symm

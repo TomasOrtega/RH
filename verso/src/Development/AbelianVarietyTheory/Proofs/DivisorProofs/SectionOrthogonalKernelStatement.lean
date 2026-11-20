@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SectionOrthogonalKe
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SteepMult.section1_mem_orthogonal_ker | exact GlobalTheory.SteepMult.section1_mem_orthogonal_ker | (intros; apply GlobalTheory.SteepMult.section1_mem_orthogonal_ker <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.section_orthogonal_kernel : ∀ (R S : ℕ) (M : GKMod R S) (N : Submodule ℂ M.V), KStable M.act N →
     ∀ (B : N →ₗ⋆[ℂ] N →ₗ[ℂ] ℂ) (k : ℕ) (Ψ : (Fin (k + 1) → NC R S) → N),
     Ψ ∈ ((filt M.act N k).comap (phiN M.act N (k + 1))).orthogonalBilin (formT (k + 1) B) →

@@ -18,6 +18,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups GlobalTheory.Au
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
   {R R' R'' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] [CommRing R''] [Algebra F R'']
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`.
+-/
 theorem tens_comp (φ : R'' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (k : R' →ₗ[F] R'')
     (hk : ∀ a b, k (a * b) = k a * k b) (h : ∀ a, k (j (φ a)) = k (j 1) * a) (z : R'' ⊗[F] E) :
     tensNU k hk (tensNU j hj (Algebra.TensorProduct.map φ (AlgHom.id F E) z)) = (k (j 1) ⊗ₜ[F] (1 : E)) * z := by
@@ -26,6 +29,11 @@ theorem tens_comp (φ : R'' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, j (
   | tmul a e => simp [h]
   | add x y hx hy => simp only [map_add, hx, hy, mul_add]
 
+/- English proof (translation)
+Use `Matrix.ext fun r s => ?_` and prove the remaining obligations. Establish `e1 : tensNU (E` using `E) k hk (tensNU (E := E) j hj 1) = k (j 1) ⊗ₜ[F] (1 : E) := by`. Rewrite using `[Algebra.TensorProduct.one_def, tensNU_tmul, tensNU_tmul]`. Rewrite using `[mat_extH, mat_extH, mat_mapH, map_add, tens_comp φ j hj k hk h, Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `e : r = s`.
+
+Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, mul_one, mul_one, mul_one, map_sub, e1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, mul_zero, mul_zero, mul_zero, map_zero, zero_add, zero_add, add_zero]`.
+-/
 theorem mat_ext_ext_map (φ : R'' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a b, j (a * b) = j a * j b) (k : R' →ₗ[F] R'')
     (hk : ∀ a b, k (a * b) = k a * k b) (h : ∀ a, k (j (φ a)) = k (j 1) * a) (g : HA R'' σ J) :
     (HA.mat R'' σ J (extH σ J k hk (extH σ J j hj (mapH σ J φ g)))).1 =
@@ -43,6 +51,9 @@ theorem mat_ext_ext_map (φ : R'' →ₐ[F] R) (j : R →ₗ[F] R') (hj : ∀ a 
   · rw [Matrix.one_apply_ne e, Matrix.one_apply_ne e, mul_zero, mul_zero, mul_zero, map_zero, zero_add, zero_add,
       add_zero]
 
+/- English proof (translation)
+Establish `h1 : b * (1 - b) = 0` using `by linear_combination -hb`. Establish `h2 : (1 - b) * b = 0` using `by linear_combination -hb`. Establish `h3 : (1 - b) * (1 - b) = 1 - b` using `by linear_combination hb`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, hb, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+-/
 theorem mix_mul {A l m n : Type} [CommRing A] [Fintype m] {b : A} (hb : b * b = b) (X X' : Matrix l m A)
     (Y Y' : Matrix m n A) :
     (b • X + (1 - b) • X') * (b • Y + (1 - b) • Y') = b • (X * Y) + (1 - b) • (X' * Y') := by
@@ -52,6 +63,9 @@ theorem mix_mul {A l m n : Type} [CommRing A] [Fintype m] {b : A} (hb : b * b = 
   simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, smul_add, hb, h1, h2, h3,
     zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Establish `e : w = b • w + (1 - b) • w` using `by rw [← add_smul, add_sub_cancel, one_smul]`. Use `conv_lhs => rw [e]`. Rewrite using `[mix_mul hb, mix_mul hb, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem mix_act {A m n : Type} [CommRing A] [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] {b : A}
     (hb : b * b = b) (X : Matrix m m A) (w : Matrix m n A) (Y : Matrix n n A) :
     (b • X + (1 - b) • (1 : Matrix m m A)) * w * (b • Y + (1 - b) • (1 : Matrix n n A)) =
@@ -60,6 +74,9 @@ theorem mix_act {A m n : Type} [CommRing A] [Fintype m] [Fintype n] [DecidableEq
   conv_lhs => rw [e]
   rw [mix_mul hb, mix_mul hb, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h2 : (1 - b) * b = 0` using `by linear_combination -hb`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, smul_smul, hb, h2, zero_smul, add_zero]`.
+-/
 theorem mix_act_smul {A m n : Type} [CommRing A] [Fintype m] [Fintype n] {b : A}
     (hb : b * b = b) (X : Matrix m m A) (w : Matrix m n A) (Y : Matrix n n A) :
     b • (X * w * Y) = b • (X * (b • w) * Y) + (1 - b) • b • w := by
@@ -70,6 +87,15 @@ end General
 
 variable {D : D7}
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `inl v`. Use `mat_ext_ext_map (R'' := AF D.host.F) D.sp.cm.sig V.gram (GlobalTheory.AdelicU.evFin D.host.F v) (GlobalTheory.AdelicU.singleFin v) (GlobalTheory.AdelicU.singleFin_mul v) (LinearMap.inr D.host.F (Ainf D.host.F) (Af D.host.F)) (fun _ _ => Prod.ext (mul_zero _).symm rfl) (fun a => ? …` and prove the remaining obligations. Use `Prod.ext (zero_mul _).symm (GlobalTheory.AdelicU.af_ext fun u => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV _ u (GlobalTheory.AdelicU.singleFin v _) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV _ u (GlobalTheory.AdelicU.singleFin v 1 * a.2)`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self, GlobalTheory.AdelicU.evalV_singleFin_self, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne e, GlobalTheory.AdelicU.evalV_singleFin_ne e, zero_mul]`. Consider the case `inr τ`. Use `mat_ext_ext_map (R'' := AF D.host.F) D.sp.cm.sig V.gram (GlobalTheory.AdelicU.evInf D.host.F (plTau D τ)) (GlobalTheory.AutFunCompare.sgW (plTau D τ)) (GlobalTheory.AutFunCompare.sgW_mul _) (LinearMap.inl D.host.F (Ainf D.host.F) (Af D.host.F)) (fun _ _ => Prod.ext rfl (mul_zero …` and prove the remaining obligations. Use `Prod.ext (funext fun u => ?_) (zero_mul _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Pi.single (M := fun w : InfinitePlace D.host.F => w.Completion) (plTau D τ) (a.1 (plTau D τ))) u = (Pi.single (M := fun w : InfinitePlace D.host.F => w.Completion) (plTau D τ) 1) u * a.1 u`.
+
+Distinguish the cases in `e : u = plTau D τ`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, one_mul]`. Rewrite using `[Pi.single_eq_of_ne e, Pi.single_eq_of_ne e, zero_mul]`.
+-/
 theorem mt_gAt (V : HSp D) (p : Place D) (g : GA D V) :
     Formalism.L2.Theta.mt V (gAt V p g) =
       idem D p • Formalism.L2.Theta.mt V g + (1 - idem D p) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
@@ -100,6 +126,13 @@ theorem mt_gAt (V : HSp D) (p : Place D) (g : GA D V) :
       rw [Pi.single_eq_same, Pi.single_eq_same, one_mul]
     · rw [Pi.single_eq_of_ne e, Pi.single_eq_of_ne e, zero_mul]
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `inl v`. Express the relevant statement in the definitionally equal form `algebraMap (AF D.host.F) (AE D) _ * algebraMap (AF D.host.F) (AE D) _ = algebraMap (AF D.host.F) (AE D) _`. Rewrite using `[← map_mul]`. Use `congrArg _ (Prod.ext (mul_zero _) ?_)` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.AdelicU.singleFin_mul v 1 1).symm.trans (by rw [mul_one]; rfl)`. Consider the case `inr τ`. Express the relevant statement in the definitionally equal form `algebraMap (AF D.host.F) (AE D) _ * algebraMap (AF D.host.F) (AE D) _ = algebraMap (AF D.host.F) (AE D) _`. Rewrite using `[← map_mul]`. Use `congrArg _ (Prod.ext ?_ (mul_zero _))` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.AutFunCompare.sgW_mul (plTau D τ) 1 1).symm.trans (by rw [mul_one]; rfl)`.
+-/
 theorem idem_mul_self (p : Place D) : idem D p * idem D p = idem D p := by
   cases p with
   | inl v =>
@@ -113,9 +146,19 @@ theorem idem_mul_self (p : Place D) : idem D p * idem D p = idem D p := by
     refine congrArg _ (Prod.ext ?_ (mul_zero _))
     exact (GlobalTheory.AutFunCompare.sgW_mul (plTau D τ) 1 1).symm.trans (by rw [mul_one]; rfl)
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp [gAt]`.
+-/
 theorem gAt_gAt_self (V : HSp D) (p : Place D) (g : GA D V) : gAt V p (gAt V p g) = gAt V p g := by
   cases p <;> simp [gAt]
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `inl v`. Consider the cases of `q with`. Consider the case `inl u`. Establish `e : u ≠ v` using `fun e => h (congrArg _ e)`.
+
+Simplify using `only [gAt]`. Rewrite using `[GlobalTheory.AdelicU.proj_emb_ne _ _ e, map_one]`. Consider the case `inr ρ => simp [gAt]`. Consider the case `inr τ`. Consider the cases of `q with`.
+
+Consider the case `inl u => simp [gAt]`. Consider the case `inr ρ`. Establish `e : plTau D ρ ≠ plTau D τ` using `fun e => h (congrArg _ ((GlobalTheory.AdelicU.placeOf_bijective D).1 e))`. Simplify using `only [gAt]`. Rewrite using `[GlobalTheory.AdelicU.projArch_embArch_ne _ _ e, map_one]`.
+-/
 theorem gAt_gAt_ne (V : HSp D) (p : Place D) (g : GA D V) (q : Place D) (h : q ≠ p) : gAt V q (gAt V p g) = 1 := by
   cases p with
   | inl v =>
@@ -133,17 +176,26 @@ theorem gAt_gAt_ne (V : HSp D) (p : Place D) (g : GA D V) (q : Place D) (h : q �
       simp only [gAt]
       rw [GlobalTheory.AdelicU.projArch_embArch_ne _ _ e, map_one]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[← gAt_inv, mt_gAt, mt_gAt]`. Conclude with `mix_act (idem_mul_self p) _ _ _`.
+-/
 theorem actO_gAt (S T : HSp D) (p : Place D) (g : GA D S) (h : GA D T) (w : WO S T) :
     actO S T (gAt S p g) (gAt T p h) w = idem D p • actO S T g h w + (1 - idem D p) • w := by
   unfold actO
   rw [← gAt_inv, mt_gAt, mt_gAt]
   exact mix_act (idem_mul_self p) _ _ _
 
+/- English proof (translation)
+Rewrite using `[actO_gAt]`. Conclude with `mix_act_smul (idem_mul_self p) _ _ _`.
+-/
 theorem wAt_actO (S T : HSp D) (p : Place D) (g : GA D S) (h : GA D T) (w : WO S T) :
     wAt p (actO S T g h w) = actO S T (gAt S p g) (gAt T p h) (wAt p w) := by
   rw [actO_gAt]
   exact mix_act_smul (idem_mul_self p) _ _ _
 
+/- English proof (translation)
+Introduce `_` and use `⟨fun V p g => ⟨mt_gAt V p g, gAt_gAt_self V p g, gAt_gAt_ne V p g⟩, fun S T p g h w => ⟨actO_gAt S T p g h w, wAt_actO S T p g h w⟩⟩`.
+-/
 theorem gAt_laws : ∀ (D : D7), (∀ (V : HSp D) (p : Place D) (g : GA D V), Formalism.L2.Theta.mt V (gAt V p g) = idem D p • Formalism.L2.Theta.mt V g + (1 - idem D p) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) ∧ gAt V p (gAt V p g) = gAt V p g ∧ ∀ q, q ≠ p → gAt V q (gAt V p g) = 1) ∧ ∀ (S T : HSp D) (p : Place D) (g : GA D S) (h : GA D T) (w : WO S T), actO S T (gAt S p g) (gAt T p h) w = idem D p • actO S T g h w + (1 - idem D p) • w ∧ wAt p (actO S T g h w) = actO S T (gAt S p g) (gAt T p h) (wAt p w) :=
   fun _ => ⟨fun V p g => ⟨mt_gAt V p g, gAt_gAt_self V p g, gAt_gAt_ne V p g⟩,
     fun S T p g h w => ⟨actO_gAt S T p g h w, wAt_actO S T p g h w⟩⟩

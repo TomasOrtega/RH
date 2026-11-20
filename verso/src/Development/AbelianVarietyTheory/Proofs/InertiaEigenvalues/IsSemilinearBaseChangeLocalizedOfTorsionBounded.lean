@@ -17,6 +17,9 @@ def fracMap {A : Type} [CommRing A] {N P : Type} [AddCommGroup N] [Module A N] [
   map_smul' c x := by
     rw [map_smul, RingHom.id_apply, LocalizedModule.smul'_mk]
 
+/- English proof (translation)
+The claim follows from `IsLocalizedModule.map_units (LocalizedModule.mkLinearMap (Submonoid.powers t) N) surj z := by induction z using LocalizedModule.induction_on with | _ m r => obtain ⟨y, hy⟩ := hc m refine ⟨⟨(s : A) • y, r * ⟨t ^ n, n, rfl⟩⟩, ?_⟩ change ((r : A) * t ^ n) • LocalizedModule.mk m r = …`.
+-/
 theorem isLocalizedModule_fracMap {A : Type} [CommRing A] (t : A) {N P : Type} [AddCommGroup N] [Module A N]
     [AddCommGroup P] [Module A P] (L : P →ₗ[A] N) (n : ℕ) (hk : ∀ y, L y = 0 → t ^ n • y = 0)
     (hc : ∀ x, ∃ y, L y = t ^ n • x) (s : ↥(Submonoid.powers t)) :
@@ -44,6 +47,13 @@ theorem isLocalizedModule_fracMap {A : Type} [CommRing A] (t : A) {N P : Type} [
     rw [smul_smul, smul_sub, sub_eq_zero] at h1
     exact h1
 
+/- English proof (translation)
+Introduce `Q _ _ v`. Use `letI : Module A Q := Module.compHom Q (algebraMap A (Localization.Away t))`. Use `haveI : IsScalarTower A (Localization.Away t) Q := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Set `s : ↥(Submonoid.powers t)` to `⟨t ^ a, a, rfl⟩`. Use `haveI := isLocalizedModule_fracMap t L n hk hc s`.
+
+Establish `hb` using `IsLocalizedModule.isBaseChange (Submonoid.powers t) (Localization.Away t) (fracMap (Submonoid.powers t) L s)`. Establish `hΦ' : ∀ x, Φ x = fracMap (Submonoid.powers t) L s (u x)` using `hΦ`. Set `v' : N →ₛₗ[φ] Q` to `{ toFun := v map_add' := v.map_add map_smul' := fun c x => v.map_smulₛₗ c x }`. Take `⟨w₀, hw₀, hun⟩` from `hu Q v'`. Use `⟨hb.lift w₀, fun x => ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΦ', hb.lift_eq]`. Conclude with `hw₀ x`. Use `hb.algHom_ext _ _ fun y => ?_` and prove the remaining obligations. Rewrite using `[hb.lift_eq, ← hun ((w.restrictScalars A).comp (fracMap (Submonoid.powers t) L s)) fun x => (congrArg w (hΦ' x).symm).trans (hw x)]`. Both sides reduce to the same expression.
+-/
 theorem semiBC_localized (A : Type) [CommRing A] (φ : A →+* A) (t : A) (N : Type) [AddCommGroup N] [Module A N]
     (P : Type) [AddCommGroup P] [Module A P] (u : N →ₛₗ[φ] P) (hu : SemiBC u) (L : P →ₗ[A] N) (n a : ℕ)
     (hk : ∀ y, L y = 0 → t ^ n • y = 0) (hc : ∀ x, ∃ y, L y = t ^ n • x)

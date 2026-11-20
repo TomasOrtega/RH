@@ -21,6 +21,9 @@ noncomputable def B (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ⟨fun w => InfinitePlace.not_isComplex_iff_isReal.2 (IsTotallyReal.isReal _) w.2⟩
   (mixedEmbedding.latticeBasis F).equivFun.symm.trans LinearEquiv.prodUnique
 
+/- English proof (translation)
+Simplify using `[B, Basis.equivFun_symm_apply, mixedEmbedding.mixedEmbedding_apply_isReal]`.
+-/
 lemma B_apply (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (m : Ix F → ℝ) (w : Rp F) :
     B F m w = ∑ i, m i * InfinitePlace.embedding_of_isReal w.2 (integralBasis F i) := by
   simp [B, Basis.equivFun_symm_apply, mixedEmbedding.mixedEmbedding_apply_isReal]
@@ -29,6 +32,9 @@ noncomputable def Phi (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     (Ix F ⊕ Ix F → ℝ) ≃ₗ[ℝ] (Rp F → ℝ) × (Rp F → ℝ) :=
   (LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans ((B F).prodCongr (B F))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma Phi_apply (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (y : Ix F ⊕ Ix F → ℝ) :
     Phi F y = (B F (fun i => y (Sum.inl i)), B F (fun i => y (Sum.inr i))) := rfl
 
@@ -37,14 +43,39 @@ noncomputable def cst (F : Type) [Field F] [NumberField F] [IsTotallyReal F] : N
     (Measure.map (Phi F).toContinuousLinearEquiv (volume : Measure (Ix F ⊕ Ix F → ℝ)))
     ((volume : Measure (Rp F → ℝ)).prod (volume : Measure (Rp F → ℝ)))
 
+/- English proof (translation)
+Unfold `cst`. Conclude with `Measure.isAddLeftInvariant_eq_smul _ _`.
+-/
 lemma map_eq (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     Measure.map (Phi F).toContinuousLinearEquiv (volume : Measure (Ix F ⊕ Ix F → ℝ))
       = cst F • ((volume : Measure (Rp F → ℝ)).prod (volume : Measure (Rp F → ℝ))) := by
   unfold cst; exact Measure.isAddLeftInvariant_eq_smul _ _
 
+/- English proof (translation)
+Unfold `cst`. Conclude with `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _`.
+-/
 lemma cst_pos (F : Type) [Field F] [NumberField F] [IsTotallyReal F] : 0 < cst F := by
   unfold cst; exact Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _
 
+/- English proof (translation)
+Establish `hS : MeasurableSet {p : (κ → ℝ) × (κ → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * x w + p.2 w| ≤ β w}`. Establish `: IsClosed {p : (κ → ℝ) × (κ → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * x w + p.2 w| ≤ β w}`. Simplify using `only [Set.ofPred_forall, Set.ofPred_and]`. Conclude with `isClosed_iInter fun w => (isClosed_le (by fun_prop) continuous_const).inter (isClosed_le (by fun_prop) continuous_const)`. Conclude with `this.measurableSet`.
+
+Rewrite using `[Measure.prod_apply hS]`. Establish `hslice : (fun p1 : κ → ℝ => volume (Prod.mk p1 ⁻¹' {p : (κ → ℝ) × (κ → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * x w + p.2 w| ≤ β w})) = (Set.Icc (-α) α).indicator (fun _ => ∏ w, ENNReal.ofReal (2 * β w))`. Use function extensionality and compare the values at `p1`. Distinguish the cases in `h : p1 ∈ Set.Icc (-α) α`. Rewrite using `[Set.indicator_of_mem h]`.
+
+Rewrite `h` using `[Set.mem_Icc, Pi.le_def, Pi.le_def]`. Establish `hA : ∀ w, |p1 w| ≤ α w` using `fun w => abs_le.2 ⟨by simpa using h.1 w, h.2 w⟩`. Establish `e : Prod.mk p1 ⁻¹' {p : (κ → ℝ) × (κ → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * x w + p.2 w| ≤ β w} = Set.Icc (fun w => -β w - p1 w * x w) (fun w => β w - p1 w * x w)`. Use extensionality with `q`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_Icc, Pi.le_def]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hq`. Use `⟨fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Use `abs_le.1 (hq w).2` as an intermediate fact. Combine the linear relations using `[this.1]`.
+
+Use `abs_le.1 (hq w).2` as an intermediate fact. Combine the linear relations using `[this.2]`. Introduce and unpack `⟨h1, h2⟩ w`. Conclude with `⟨hA w, abs_le.2 ⟨by linarith [h1 w], by linarith [h2 w]⟩⟩`. Rewrite using `[e, Real.volume_Icc_pi]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem h]`.
+
+Establish `e : Prod.mk p1 ⁻¹' {p : (κ → ℝ) × (κ → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * x w + p.2 w| ≤ β w} = ∅`. Use extensionality with `q`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hq`. Apply `h` to reduce the goal to its premises.
+
+Rewrite using `[Set.mem_Icc, Pi.le_def, Pi.le_def]`. Conclude with `⟨fun w => by simpa using (abs_le.1 (hq w).1).1, fun w => (abs_le.1 (hq w).1).2⟩`. Rewrite using `[e, measure_empty]`. Rewrite using `[hslice, lintegral_indicator_const measurableSet_Icc, Real.volume_Icc_pi, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[← ENNReal.ofReal_mul (by linarith [hβ w])]`. Use `congr 1`. Simplify using `only [Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vol_S {κ : Type} [Fintype κ] (α β x : κ → ℝ) (hβ : ∀ w, 0 ≤ β w) :
     ((volume : Measure (κ → ℝ)).prod (volume : Measure (κ → ℝ)))
       {p : (κ → ℝ) × (κ → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * x w + p.2 w| ≤ β w}
@@ -96,6 +127,9 @@ lemma vol_S {κ : Type} [Fintype κ] (α β x : κ → ℝ) (hβ : ∀ w, 0 ≤ 
   rw [← ENNReal.ofReal_mul (by linarith [hβ w])]
   congr 1; simp only [Pi.neg_apply]; ring
 
+/- English proof (translation)
+Establish `: (∑ i, (u i : F) * integralBasis F i) ∈ integralClosure ℤ F` using `Subalgebra.sum_mem _ fun i _ => Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ _) (by rw [integralBasis_apply]; exact RingOfIntegers.isIntegral_coe _)`. Conclude with `this`.
+-/
 lemma sum_integral (F : Type) [Field F] [NumberField F] (u : Ix F → ℤ) :
     IsIntegral ℤ (∑ i, (u i : F) * integralBasis F i) := by
   have : (∑ i, (u i : F) * integralBasis F i) ∈ integralClosure ℤ F :=
@@ -103,11 +137,75 @@ lemma sum_integral (F : Type) [Field F] [NumberField F] (u : Ix F → ℤ) :
       (by rw [integralBasis_apply]; exact RingOfIntegers.isIntegral_coe _)
   exact this
 
+/- English proof (translation)
+Rewrite using `[B_apply]`. Simplify using `[map_sum, map_mul, map_intCast]`.
+-/
 lemma emb_sum (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (u : Ix F → ℤ) (w : Rp F) :
     InfinitePlace.embedding_of_isReal w.2 (∑ i, (u i : F) * integralBasis F i)
       = B F (fun i => (u i : ℝ)) w := by
   rw [B_apply]; simp [map_sum, map_mul, map_intCast]
 
+/- English proof (translation)
+Use `set c : ℝ := (cst F : ℝ) with hc_def`. Establish `hc : 0 < c` using `cst_pos F`. Use `set t : ℝ := 1 + 1 / c with ht_def`. Establish `ht1 : 1 ≤ t` using `by have := one_div_pos.2 hc; linarith`. Use `⟨2 * t ^ 2, by positivity, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Use `set d := Fintype.card (Rp F) with hd_def`. Establish `hne : Nonempty (Rp F)` using `⟨⟨Classical.arbitrary (InfinitePlace F), IsTotallyReal.isReal _⟩⟩`. Establish `hd : d ≠ 0` using `Fintype.card_ne_zero`. Establish `hcard : Fintype.card (Ix F) = d`. Use `(B F).finrank_eq` as an intermediate fact.
+
+Rewrite `this` using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card]`. Then use the resulting hypothesis. Set `r : Rp F → ℝ` to `fun w => Real.sqrt |(z w.1).im|`. Establish `hr : ∀ w, 0 < r w` using `fun w => Real.sqrt_pos.2 (abs_pos.2 (hz w.1))`. Establish `hr2 : ∀ w, r w ^ 2 = |(z w.1).im|` using `fun w => Real.sq_sqrt (abs_nonneg _)`. Set `α : Rp F → ℝ` to `fun w => t / r w`.
+
+Set `β : Rp F → ℝ` to `fun w => t * r w`. Set `xx : Rp F → ℝ` to `fun w => (z w.1).re`. Set `S` to `{p : (Rp F → ℝ) × (Rp F → ℝ) | ∀ w, |p.1 w| ≤ α w ∧ |p.1 w * xx w + p.2 w| ≤ β w}`. Establish `hSm : MeasurableSet S`. Establish `: IsClosed S`.
+
+Simplify using `only [S, Set.ofPred_forall, Set.ofPred_and]`. Conclude with `isClosed_iInter fun w => (isClosed_le (by fun_prop) continuous_const).inter (isClosed_le (by fun_prop) continuous_const)`. Conclude with `this.measurableSet`. Establish `hαβ : ∀ w, α w * β w = t ^ 2` using `fun w => by`. Simplify using `only [α, β]`.
+
+Clear denominators, using `[(hr w).ne']` for the nonvanishing conditions. Establish `hvS : ((volume : Measure (Rp F → ℝ)).prod (volume : Measure (Rp F → ℝ))) S = ENNReal.ofReal ((4 * t ^ 2) ^ d)`. Rewrite using `[vol_S α β xx (fun w => by positivity)]`. Simplify using `only [hαβ, Finset.prod_const, Finset.card_univ]`. Rewrite using `[ENNReal.ofReal_pow (by positivity)]`.
+
+Establish `hvs : volume ((Phi F) ⁻¹' S) = ENNReal.ofReal (c * (4 * t ^ 2) ^ d)`. Establish `e1 : volume ((Phi F) ⁻¹' S) = Measure.map (Phi F).toContinuousLinearEquiv (volume : Measure (Ix F ⊕ Ix F → ℝ)) S`. Rewrite using `[Measure.map_apply (Phi F).toContinuousLinearEquiv.continuous.measurable hSm]`. Both sides reduce to the same expression. Rewrite using `[e1, map_eq, Measure.smul_apply, hvS, ENNReal.smul_def, smul_eq_mul, ENNReal.ofReal_mul hc.le, hc_def, ENNReal.ofReal_coe_nnreal]`.
+
+Establish `hsymm : ∀ y ∈ (Phi F) ⁻¹' S, -y ∈ (Phi F) ⁻¹' S`. Introduce `y hy`. Simplify using `only [S, Set.mem_preimage, Set.mem_ofPred_eq, map_neg] at hy ⊢`. Introduce `w`. Take `⟨h1, h2⟩` from `hy w`.
+
+Use `⟨by simpa using h1, ?_⟩` and prove the remaining obligations. Establish `e : (-(Phi F y)).1 w * xx w + (-(Phi F y)).2 w = -((Phi F y).1 w * xx w + (Phi F y).2 w)`. Simplify using `only [Prod.fst_neg, Prod.snd_neg, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, abs_neg]`.
+
+Conclude with `h2`. Establish `hconvS : Convex ℝ S`. Introduce `p hp q hq a b ha hb hab`. Simplify using `only [S, Set.mem_ofPred_eq] at hp hq ⊢`. Introduce `w`.
+
+Take `⟨h1, h2⟩` from `hp w`. Take `⟨h3, h4⟩` from `hq w`. Simplify using `only [Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg ha, abs_of_nonneg hb]`. Use `_ ≤ a * β w + b * β w := by gcongr`. Use `_ = β w := by rw [← add_mul, hab, one_mul]`. Establish `hconv : Convex ℝ ((Phi F) ⁻¹' S)` using `hconvS.linear_preimage (Phi F).toLinearMap`.
+
+Establish `hF0 : volume (ZSpan.fundamentalDomain (Pi.basisFun ℝ (Ix F ⊕ Ix F))) = 1`. Rewrite using `[ZSpan.fundamentalDomain_pi_basisFun, volume_pi, Measure.pi_pi]`. Simplify using `[Real.volume_Ico]`. Establish `key : (2 : ℝ) ^ (d + d) < c * (4 * t ^ 2) ^ d`. Establish `h4 : (2 : ℝ) ^ (d + d) = 4 ^ d` using `by rw [pow_add, ← mul_pow]; norm_num`.
+
+Establish `ht2 : t ≤ (t ^ 2) ^ d` using `le_trans (by nlinarith) (le_self_pow₀ (by nlinarith) hd)`. Establish `hct : c * t = c + 1` using `by rw [ht_def]; field_simp`. Establish `h4p : (0 : ℝ) < 4 ^ d` using `by positivity`. Rewrite using `[h4, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hvol : volume (ZSpan.fundamentalDomain (Pi.basisFun ℝ (Ix F ⊕ Ix F))) * 2 ^ finrank ℝ (Ix F ⊕ Ix F → ℝ) < volume ((Phi F) ⁻¹' S)`. Rewrite using `[hF0, one_mul, hvs, Module.finrank_fintype_fun_eq_card, Fintype.card_sum, hcard]`. Rewrite using `[show (2 : ENNReal) ^ (d + d) = ENNReal.ofReal ((2 : ℝ) ^ (d + d)) by`. Rewrite using `[ENNReal.ofReal_pow (by norm_num)]; simp]`. Conclude with `(ENNReal.ofReal_lt_ofReal_iff (by positivity)).2 key`.
+
+Establish `: Countable (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Ix F ⊕ Ix F)))).toAddSubgroup` using `inferInstanceAs (Countable (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Ix F ⊕ Ix F)))))`. Take `⟨⟨y, hyL⟩, hy0, hys⟩` from `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure (μ := volume) (ZSpan.isAddFundamentalDomain' (Pi.basisFun ℝ (Ix F ⊕ Ix F)) volume) hsymm hconv hvol`. Establish `hint : ∀ j, ∃ n : ℤ, y j = n`. Introduce `j`. Take `⟨n, hn⟩` from `(Basis.mem_span_iff_repr_mem (R := ℤ) (Pi.basisFun ℝ (Ix F ⊕ Ix F)) y).1 hyL j`.
+
+Conclude with `⟨n, by simpa using hn.symm⟩`. Use `choose n hn using hint`. Use `set a : F := ∑ i, (n (Sum.inl i) : F) * integralBasis F i with ha_def`. Use `set b : F := ∑ i, (n (Sum.inr i) : F) * integralBasis F i with hb_def`. Establish `hPhi : Phi F y = (B F (fun i => (n (Sum.inl i) : ℝ)), B F (fun i => (n (Sum.inr i) : ℝ)))`.
+
+Apply the tactic sequence `rw [Phi_apply]; congr 1 <;> congr 1 <;> funext i <;> exact hn _`. Establish `hys' : Phi F y ∈ S` using `hys`. Rewrite `hys'` using `[hPhi]`. Simplify using `only [S, Set.mem_ofPred_eq] at hys'`. Use `⟨![a, b], ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `ha0 : a = 0` using `by simpa using congrFun h0 0`. Establish `hb0 : b = 0` using `by simpa using congrFun h0 1`. Establish `hm : (fun i => (n (Sum.inl i) : ℝ)) = 0`. Apply `(B F).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use function extensionality and compare the values at `w`. Rewrite using `[← emb_sum F (fun i => n (Sum.inl i)) w, ← ha_def, ha0, map_zero]`. Both sides reduce to the same expression. Establish `hm' : (fun i => (n (Sum.inr i) : ℝ)) = 0`.
+
+Apply `(B F).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `w`. Rewrite using `[← emb_sum F (fun i => n (Sum.inr i)) w, ← hb_def, hb0, map_zero]`. Both sides reduce to the same expression.
+
+Apply `hy0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Consider the cases of `j with`. Consider the case `inl i => show y (Sum.inl i) = 0`.
+
+Rewrite using `[hn]`. Simplify using `using congrFun hm i`. Consider the case `inr i => show y (Sum.inr i) = 0`. Rewrite using `[hn]`. Simplify using `using congrFun hm' i`.
+
+Conclude with `Fin.forall_fin_two.2 ⟨sum_integral F _, sum_integral F _⟩`. Introduce `v`. Take `⟨h1, h2⟩` from `hys' ⟨v, IsTotallyReal.isReal v⟩`. Rewrite `h1` using `[← emb_sum F (fun i => n (Sum.inl i))]`. Rewrite `h2` using `[← emb_sum F (fun i => n (Sum.inl i)), ← emb_sum F (fun i => n (Sum.inr i))]`.
+
+Establish `h1' : |InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) a| ≤ t / r ⟨v, IsTotallyReal.isReal v⟩` using `h1`. Establish `h2' : |InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) a * (z v).re + InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) b| ≤ t * r ⟨v, IsTotallyReal.isReal v⟩` using `h2`. Establish `hrv : 0 < r ⟨v, IsTotallyReal.isReal v⟩` using `hr _`. Establish `hr2v : r ⟨v, IsTotallyReal.isReal v⟩ ^ 2 = |(z v).im|` using `hr2 _`. Use `show ‖((InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) a : ℝ) : ℂ) * z v + ((InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) b : ℝ) : ℂ)‖ ^ 2 ≤ 2 * t ^ 2 * |(z v).im|`.
+
+Use `clear_value r α β xx S a b c t`. Generalize the expression as in `InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) a = A at h1' h2' ⊢`. Generalize the expression as in `InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) b = Bb at h2' ⊢`. Generalize the expression as in `r ⟨v, IsTotallyReal.isReal v⟩ = R at hrv hr2v h1' h2'`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+
+Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.add_im, Complex.mul_im, zero_mul, sub_zero, add_zero, mul_zero]`. Establish `e1 : (A * (z v).re + Bb) ^ 2 ≤ (t * R) ^ 2`. Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h2' 2`. Establish `e2 : A ^ 2 ≤ (t / R) ^ 2`.
+
+Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) h1' 2`. Establish `hy2 : (z v).im ^ 2 = R ^ 4`. Rewrite using `[← sq_abs, ← hr2v]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e3 : A ^ 2 * (z v).im ^ 2 ≤ t ^ 2 * R ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy2, div_pow, div_mul_eq_mul_div, div_eq_iff (by positivity)]; ring`. Establish `e4 : (t * R) ^ 2 = t ^ 2 * R ^ 2` using `by ring`. Rewrite using `[← hr2v]`.
+
+Use polynomial arithmetic with `[e1, e3, e4]`.
+-/
 theorem core (F : Type) [Field F] [NumberField F] [IsTotallyReal F] : ∃ C : ℝ, 0 < C ∧
     ∀ z : InfinitePlace F → ℂ, (∀ v, (z v).im ≠ 0) →
     ∃ s : Fin 2 → F, s ≠ 0 ∧ (∀ i, IsIntegral ℤ (s i)) ∧ ∀ v,
@@ -283,6 +381,9 @@ open scoped Matrix NNReal
 
 namespace UpperTheory.Esk
 
+/- English proof (translation)
+Introduce `F _ _ _` and use `MinkowskiBoundLemmas.core F`.
+-/
 theorem aMink : AMink := fun F _ _ _ => MinkowskiBoundLemmas.core F
 
 end UpperTheory.Esk

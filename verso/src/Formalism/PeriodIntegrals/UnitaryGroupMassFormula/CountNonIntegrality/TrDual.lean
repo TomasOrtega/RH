@@ -11,6 +11,9 @@ open Classical ValuativeRel
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hc` using `Formalism.BasicNotions.Examples₂.conj_bE (H := D.host)`. Use `⟨(1 + D.host.sqd) / 2, Formalism.BasicNotions.Examples₂.isIntegral_halfB (H := D.host), ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(rw [Formalism.BasicNotions.Examples₂.conj_half (H := D.host), hc]; ring)`. Consider the case `(rw [map_div₀, map_add, map_one, hc, map_ofNat]; ring)`.
+-/
 theorem exists_trOne (D : Formalism.BasicNotions.D7) : ∃ x : D.host.E, IsIntegral ℤ x ∧ x + D.host.conj x = 1 := by
   have hc := Formalism.BasicNotions.Examples₂.conj_bE (H := D.host)
   refine ⟨(1 + D.host.sqd) / 2, Formalism.BasicNotions.Examples₂.isIntegral_halfB (H := D.host), ?_⟩
@@ -18,6 +21,15 @@ theorem exists_trOne (D : Formalism.BasicNotions.D7) : ∃ x : D.host.E, IsInteg
     | (rw [Formalism.BasicNotions.Examples₂.conj_half (H := D.host), hc]; ring)
     | (rw [map_div₀, map_add, map_one, hc, map_ofNat]; ring)
 
+/- English proof (translation)
+Use `haveI := (D.s.atP p).free`. Use `haveI : Module.Finite (D.s.atP p).Fp (D.s.atP p).Ep := by first`. Consider the case `exact Module.finite_of_finrank_pos (by rw [(D.s.atP p).rank]; norm_num)`. Consider the case `exact Module.finite_of_finrank_eq_succ (D.s.atP p).rank`. Consider the case `exact FiniteDimensional.of_finrank_pos (by rw [(D.s.atP p).rank]; norm_num)`.
+
+Use `haveI : CharZero (D.s.atP p).Fp := (D.s.atP p).char0`. Establish `hsum : (D.s.atP p).ιE x + (D.s.atP p).cj ((D.s.atP p).ιE x) = 1`. Rewrite using `[(D.s.atP p).cj_ιE, D.conjF_eq, ← map_add, hx1, map_one]`. Establish `hinv : Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).cj ((D.s.atP p).ιE x)) = Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιE x)` using `by first`. Consider the case `exact Algebra.trace_eq_of_algEquiv (D.s.atP p).cj _`.
+
+Consider the case `exact (Algebra.trace_eq_of_algEquiv (D.s.atP p).cj _).symm`. Establish `hone : Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep 1 = 2`. Establish `h` using `Algebra.trace_algebraMap (S := (D.s.atP p).Ep) (1 : (D.s.atP p).Fp)`. Rewrite `h` using `[map_one, (D.s.atP p).rank]`. Rewrite using `[h]`.
+
+Evaluate the numerical expressions. Establish `h2 : Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιE x + (D.s.atP p).cj ((D.s.atP p).ιE x)) = Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep 1`. Rewrite using `[hsum]`. Rewrite `h2` using `[map_add, hinv, hone]`. Take the linear combination `h2 / 2`.
+-/
 theorem trace_iE_eq_one (D : Formalism.BasicNotions.D7) (p : PlF D) (x : D.host.E) (hx1 : x + D.host.conj x = 1) :
     Algebra.trace (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιE x) = 1 := by
   haveI := (D.s.atP p).free
@@ -46,6 +58,17 @@ theorem trace_iE_eq_one (D : Formalism.BasicNotions.D7) (p : PlF D) (x : D.host.
   rw [map_add, hinv, hone] at h2
   linear_combination h2 / 2
 
+/- English proof (translation)
+Take `⟨a, -, hle, hexp⟩` from `hψ y`. Rewrite `hexp` using `[h1]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp hexp.symm`. Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+
+Establish `ha : (a : ℂ) = ((n : ℚ) : ℂ)`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Rewrite using `[hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `haq : a = (n : ℚ)` using `by exact_mod_cast ha`. Establish `hna : ‖((a : ℚ) : ℚ_[ℓ])‖ ≤ 1`. Rewrite using `[haq]`. Use `push_cast`. Use `first`.
+
+Consider the case `exact Padic.norm_int_le_one n`. Consider the case `exact PadicInt.norm_le_one (n : ℤ_[ℓ])`. Consider the case `simpa using (PadicInt.norm_le_one (n : ℤ_[ℓ]))`. Establish `key : ∀ T : ℚ_[ℓ], ‖T - ((a : ℚ) : ℚ_[ℓ])‖ ≤ 1 → ‖T‖ ≤ 1`. Introduce `T hT`.
+
+Combine the equalities or inequalities in the displayed calculation. Consider the case `exact Padic.nonarchimedean _ _`. Consider the case `exact IsUltrametricDist.norm_add_le_max _ _`. Use `_ ≤ 1 := max_le hT hna`. Conclude with `key _ hle`.
+-/
 theorem norm_trace_le_of_psi {ℓ : ℕ} [Fact ℓ.Prime] {Fp Ep : Type} [Field Fp] [CommRing Ep] [Algebra Fp Ep]
     [Algebra ℚ_[ℓ] Fp] (ψ : AddChar Ep ℂ)
     (hψ : ∀ y : Ep, ∃ a : ℚ, (∃ n : ℕ, a.den = ℓ ^ n) ∧
@@ -82,6 +105,11 @@ theorem norm_trace_le_of_psi {ℓ : ℕ} [Fact ℓ.Prime] {Fp Ep : Type} [Field 
       _ ≤ 1 := max_le hT hna
   exact key _ hle
 
+/- English proof (translation)
+Use `letI : Algebra ℚ_[ℓ] Ep := ((algebraMap Fp Ep).comp (algebraMap ℚ_[ℓ] Fp)).toAlgebra`. Use `haveI : IsScalarTower ℚ_[ℓ] Fp Ep := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `h1 : Algebra.trace Fp Ep (θ * algebraMap Fp Ep z) = z`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, hθ, smul_eq_mul, mul_one]`. Establish `h2` using `Algebra.trace_trace (R := ℚ_[ℓ]) (S := Fp) (T := Ep) (θ * algebraMap Fp Ep z)`.
+
+Rewrite `h2` using `[h1]`. Conclude with `h2.symm`.
+-/
 theorem trace_tower_theta {ℓ : ℕ} [Fact ℓ.Prime] {Fp Ep : Type} [Field Fp] [CommRing Ep] [Algebra Fp Ep]
     [Algebra ℚ_[ℓ] Fp] [FiniteDimensional ℚ_[ℓ] Fp] [Module.Free Fp Ep] [Module.Finite Fp Ep]
     (θ : Ep) (hθ : Algebra.trace Fp Ep θ = 1) (z : Fp) :
@@ -95,6 +123,23 @@ theorem trace_tower_theta {ℓ : ℕ} [Fact ℓ.Prime] {Fp Ep : Type} [Field Fp]
   rw [h1] at h2
   exact h2.symm
 
+/- English proof (translation)
+Introduce `D δ M hA p c hc`. Establish `h` using `hA p`. Simplify using `only [Agree] at h`. Take `⟨-, -, -, hO, hpsi, -⟩` from `h`. Take `⟨x, hxint, hx1⟩` from `exists_trOne D`.
+
+Establish `htr` using `trace_iE_eq_one D p x hx1`. Use `haveI : Fact (Loc.resChar p).Prime := (D.s.atP p).ellPrime`. Use `haveI := (D.s.atP p).qlFin`. Use `haveI := (D.s.atP p).free`. Use `haveI : Module.Finite (D.s.atP p).Fp (D.s.atP p).Ep := by first`.
+
+Consider the case `exact Module.finite_of_finrank_pos (by rw [(D.s.atP p).rank]; norm_num)`. Consider the case `exact Module.finite_of_finrank_eq_succ (D.s.atP p).rank`. Consider the case `exact FiniteDimensional.of_finrank_pos (by rw [(D.s.atP p).rank]; norm_num)`. Establish `hθO : (D.s.atP p).ιE x ∈ (D.s.atP p).O`. Rewrite using `[(D.s.atP p).O_def]`.
+
+Conclude with `(hxint.map (D.s.atP p).ιE.toIntAlgHom).tower_top`. Establish `hcO : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c ∈ (D.s.atP p).O`. Rewrite using `[(D.s.atP p).O_def]`. Establish `hi` using `isIntegral_algebraMap (R := 𝒪[(D.s.atP p).Fp]) (A := (D.s.atP p).Ep) (x := ⟨c, hc⟩)`. Use `first`.
+
+Consider the case `exact hi`. Consider the case `simpa [IsScalarTower.algebraMap_apply 𝒪[(D.s.atP p).Fp] (D.s.atP p).Fp (D.s.atP p).Ep] using hi`. Establish `hyO : -((D.s.atP p).ιE x * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c) ∈ (M p).L.O`. Rewrite using `[hO]`. Conclude with `neg_mem (mul_mem hθO hcO)`.
+
+Establish `h1 : (M p).L.psi0 (-((D.s.atP p).ιE x * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c)) = 1`. Establish `h0` using `((M p).L.additive_character_dual_ring _).mpr hyO 1 (one_mem _)`. Rewrite `h0` using `[mul_one]`. Then use the resulting hypothesis. Rewrite `h1` using `[hpsi]`. Establish `hAB : (D.s.atP p).ιE x * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (c * (δ p)⁻¹) = -(-((D.s.atP p).ιE x * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep c) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹)`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (D.s.atP p).psiE ((D.s.atP p).ιE x * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (c * (δ p)⁻¹)) = 1`. Rewrite using `[hAB]`. Conclude with `h1`.
+
+Establish `key` using `norm_trace_le_of_psi (D.s.atP p).psiE (D.s.atP p).psiE_def _ h2`. Rewrite `key` using `[trace_tower_theta _ htr]`. Conclude with `key`.
+-/
 theorem trace_dual_lattice : TrDual := by
   intro D δ M hA p c hc
   have h := hA p

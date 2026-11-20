@@ -4,12 +4,24 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+Use `IsPullback.of_bot ?_ (bcMap_fst g s rfl).symm (IsPullback.of_hasPullback p g)` and prove the remaining obligations. Rewrite using `[bcMap_snd]`. Conclude with `IsPullback.of_hasPullback (s ≫ p) g`.
+-/
 private theorem bc_isPullback {B B' Z Y : Scheme.{0}} (g : B ⟶ B') (p : Z ⟶ B') (s : Y ⟶ Z) :
     IsPullback (pullback.fst (s ≫ p) g) (bcMap g s rfl) s (pullback.fst p g) := by
   refine IsPullback.of_bot ?_ (bcMap_fst g s rfl).symm (IsPullback.of_hasPullback p g)
   rw [bcMap_snd]
   exact IsPullback.of_hasPullback (s ≫ p) g
 
+/- English proof (translation)
+Introduce `hb B B' Z Y W g p q r s hs c hc J _ σ hσ _ _`. Substitute `hs` using the available equality. Substitute `hc` using the available equality. Establish `sq` using `bc_isPullback g p s`. Use `⟨MorphismProperty.of_isPullback (P := @IsFinite) sq ‹_›, MorphismProperty.of_isPullback (P := @Etale) sq ‹_›, fun h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h0, -⟩` from `id h`. Establish `hcomp : ∀ j, bcMap g (σ j) (hσ j) ≫ bcMap g s rfl = bcMap g c rfl`. Introduce `j`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcMap_fst g s rfl, ← Category.assoc, bcMap_fst g (σ j) (hσ j), Category.assoc, h0 j, bcMap_fst g c rfl]`.
+
+Rewrite using `[Category.assoc, bcMap_snd g s rfl, bcMap_snd g (σ j) (hσ j), bcMap_snd g c rfl]`. Establish `e1 : bcMap g c rfl ≫ pullback.fst p g = pullback.fst (c ≫ p) g ≫ c` using `bcMap_fst g c rfl`. Establish `e2 : (fun j => bcMap g (σ j) (hσ j) ≫ pullback.fst (s ≫ p) g) = fun j => pullback.fst (c ≫ p) g ≫ σ j`. Use function extensionality and compare the values at `fun j => bcMap_fst g (σ j) (hσ j)`. Establish `h2 : Splits s (bcMap g c rfl ≫ pullback.fst p g) (fun j => bcMap g (σ j) (hσ j) ≫ pullback.fst (s ≫ p) g)`.
+
+Rewrite using `[e1, e2]`. Conclude with `hb.1 s c J σ (pullback.fst (c ≫ p) g) h`. Conclude with `(hb.2 (pullback.fst (s ≫ p) g) (bcMap g s rfl) s (pullback.fst p g) sq (bcMap g c rfl) J (fun j => bcMap g (σ j) (hσ j)) hcomp).2 h2`.
+-/
 theorem UpperTheory.Gal.G3.pBcSplits :
     SplitsBasic → BcSplits := by
   intro hb B B' Z Y W g p q r s hs c hc J _ σ hσ _ _

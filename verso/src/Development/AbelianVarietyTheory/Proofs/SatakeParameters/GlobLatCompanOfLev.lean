@@ -17,6 +17,11 @@ section HatS
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
 
+/- English proof (translation)
+Use `Formalism.L2.Geo.Def.PN.latS_of_loc S.Lb S.Lb_span _ fun v => ?_` and prove the remaining obligations. Establish `h1` using `Formalism.L2.Geo.Def.PN.prV_latS S.Lb v hz`. Establish `h2 : bc (prV (E` using `E) v) g ∈ levelVL σ J v S.Lb := S.Uloc_lev v (((S.U_eq g).1 hg).2 v)`. Establish `h3` using `(h2.2 _).1 h1`. Establish `e : (fun i => prV (E` using `E) v (((g : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ z) i)) = ((bc (prV (E := E) v) g : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ fun i => prV (E := E) v (z i) := by`.
+
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (prV (E := E) v) (g : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) z i`. Rewrite using `[e]`. Conclude with `h3`.
+-/
 theorem lev_mulVec_mem (S : StepLevel F E σ J T f bad) (g : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hg : g ∈ S.U)
     (z : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) (hz : z ∈ Formalism.L2.Herm.hatL (F := F) S.Lb) :
     (g : Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ z ∈ Formalism.L2.Herm.hatL (F := F) S.Lb := by
@@ -32,6 +37,11 @@ theorem lev_mulVec_mem (S : StepLevel F E σ J T f bad) (g : GL (Fin n) (E ⊗[F
   rw [e]
   exact h3
 
+/- English proof (translation)
+Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `lev_mulVec_mem S κ.1 κ.2 _ hz` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+
+Introduce `hz`. Conclude with `lev_mulVec_mem S κ.1⁻¹ (S.U.inv_mem κ.2) z hz`.
+-/
 theorem hatStab_lev (S : StepLevel F E σ J T f bad) (κ : S.U) : HatStab S.Lb κ.1 := by
   intro z
   constructor
@@ -49,15 +59,32 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local notation "ιA" => Formalism.UG.inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E x, x, rfl⟩, rfl⟩)`.
+-/
 theorem incl_int_mem (x : 𝓞 E) : ιA (algebraMap (𝓞 E) E x) ∈ Formalism.L2.Herm.intAf F E :=
   Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E x, x, rfl⟩, rfl⟩)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Conclude with `(RingHom.map_mulVec ιA (γ : Matrix (Fin N) (Fin N) E) v l).symm`.
+-/
 theorem ratA_mulVec (γ : GL (Fin N) E) (v : Fin N → E) :
     ((ratA F γ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ
       (fun l => ιA (v l)) = fun l => ιA (((γ : Matrix (Fin N) (Fin N) E) *ᵥ v) l) := by
   funext l
   exact (RingHom.map_mulVec ιA (γ : Matrix (Fin N) (Fin N) E) v l).symm
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hΛ`. Establish `h1 : ∀ y ∈ S, ∃ s ∈ Q.asIdeal.primeCompl, s • y ∈ mvL B (stdLat E N)`. Introduce `y hy`. Establish `hy' : y ∈ mvL B (stdAt E N Q)`. Rewrite using `[hB]`.
+
+Conclude with `⟨1, Q.asIdeal.primeCompl.one_mem, by simpa using Submodule.subset_span hy⟩`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 hy'`. Take `⟨s, hs, hsu⟩` from `hu`. Conclude with `⟨s, hs, Submodule.mem_map.2 ⟨s • u, hsu, by simp⟩⟩`. Use `choose! s hs hsS using h1`.
+
+Use `⟨∏ y ∈ S, s y, Finset.prod_induction _ (fun z => z ∈ Q.asIdeal.primeCompl) (fun _ _ ha hb => Q.asIdeal.primeCompl.mul_mem ha hb) Q.asIdeal.primeCompl.one_mem hs, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Rewrite using `[← Finset.mul_prod_erase S s hy, mul_comm, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (hsS y hy)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ h => rw [smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ _ h`.
+-/
 theorem exists_den (Q : HeightOneSpectrum (𝓞 E)) (B : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) (hΛ : Λ.FG)
     (hB : mvL B (stdAt E N Q) = Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal Λ) :
     ∃ t ∈ Q.asIdeal.primeCompl, ∀ x ∈ Λ, t • x ∈ mvL B (stdLat E N) := by
@@ -91,6 +118,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local notation "ιA" => Formalism.UG.inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨x, hx, rfl⟩` from `hw`. Take `⟨u, hu, hux⟩` from `Submodule.mem_map.1 (ht x hx)`. Establish `hux' : (B : Matrix (Fin N) (Fin N) E) *ᵥ u = t • x` using `hux`.
+
+Rewrite using `[← map_inv, GlobalTheory.LevStab.ratA_mulVec]`. Establish `e : ιA (algebraMap (𝓞 E) E t) * ιA ((((B⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ x) k) = ιA ((((B⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ (t • x)) k)`. Rewrite using `[← map_mul, Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[e, ← hux', Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (Submodule.mem_pi.1 hu k (Set.mem_univ k))`.
+
+Rewrite using `[← hr]`. Conclude with `GlobalTheory.LevStab.incl_int_mem r`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, Pi.add_apply, mul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ h`. Rewrite using `[Subring.smul_def, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem c.2 h`.
+-/
 theorem coord_int (B : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) (t : 𝓞 E)
     (ht : ∀ x ∈ Λ, t • x ∈ mvL B (stdLat E N)) (z : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F)
     (hz : z ∈ Formalism.L2.Herm.hatL (F := F) Λ) (k : Fin N) :
@@ -115,6 +151,17 @@ theorem coord_int (B : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) (t 
     rw [Subring.smul_def, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]
     exact mul_mem c.2 h
 
+/- English proof (translation)
+Take `⟨t, ht, hΛt⟩` from `GlobalTheory.LevStab.exists_den Q B Λ hΛ hB`. Establish `hstd : (Pi.single j 1 : Fin N → E) ∈ stdLat E N`. Use `Submodule.mem_pi.2 fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Conclude with `zero_mem _`. Establish `hej : (B : Matrix (Fin N) (Fin N) E) *ᵥ Pi.single j 1 ∈ Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal Λ`. Rewrite using `[← hB]`. Conclude with `Submodule.mem_map.2 ⟨Pi.single j 1, ⟨1, Q.asIdeal.primeCompl.one_mem, by simpa using hstd⟩, rfl⟩`.
+
+Take `⟨s, hs, hsΛ⟩` from `hej`. Establish `h1` using `GlobalTheory.LevStab.coord_int B Λ t hΛt _ (hg _ hsΛ) i`. Use `⟨t * s, Q.asIdeal.primeCompl.mul_mem ht hs, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun l => ιA ((s • ((B : Matrix (Fin N) (Fin N) E) *ᵥ (Pi.single j (1 : E) : Fin N → E))) l)) = ιA (algebraMap (𝓞 E) E s) • (((ratA F B : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ fun l => ιA ((Pi.single j (1 : …`. Rewrite using `[GlobalTheory.LevStab.ratA_mulVec]`.
+
+Use function extensionality and compare the values at `l`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, map_mul, smul_eq_mul]`. Establish `e2 : (fun l => ιA ((Pi.single j (1 : E) : Fin N → E) l)) = (Pi.single j 1 : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F)`. Use function extensionality and compare the values at `l`. Rewrite using `[Pi.single_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h1` using `[e1, e2, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← map_mul, Matrix.mulVec_single_one]`. Simplify `h1` using `only [Units.val_mul, Matrix.mul_assoc, Matrix.col_apply, map_mul]`.
+-/
 theorem int_conj (Q : HeightOneSpectrum (𝓞 E)) (B : GL (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) (hΛ : Λ.FG)
     (hB : mvL B (stdAt E N Q) = Formalism.HermitianLatticesTheory.localization₂ Q.asIdeal Λ) (g : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hg : ∀ x ∈ Λ, (g : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ (fun l => ιA (x l)) ∈
@@ -152,6 +199,13 @@ theorem int_conj (Q : HeightOneSpectrum (𝓞 E)) (B : GL (Fin N) E) (Λ : Submo
 
 end Gen2
 
+/- English proof (translation)
+Establish `hLb : Formalism.L2.GlobalTheoryTheory.Comp.IsLat lev.Lb` using `⟨lev.Lb_fin, lev.Lb_span⟩`. Establish `hU : g ∈ UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `((lev.U_eq g).1 hg).1`. Establish `hL : Formalism.UG.CS.globLat g lev.Lb = lev.Lb`. Establish `h1` using `latAd_stab 1 g lev.Lb (GlobalTheory.LevStab.hatStab_lev lev ⟨g, hg⟩)`. Rewrite `h1` using `[one_mul, GlobalTheory.SDCompan.latAd_eq, GlobalTheory.SDCompan.latAd_eq]`.
+
+Rewrite using `[h1]`. Conclude with `Formalism.UG.P.global_lattice_one_holds _ _ _ _ lev.Lb_fin lev.Lb_span`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[GlobalTheory.SDCompan.compan_zero (sp := D.sp)]`.
+
+Conclude with `hL`. Use `Formalism.L2.GlobalTheoryTheory.Comp.glob_companion (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.Br.isLat_dlN D i hi) hLb ha g hU` as an intermediate fact. Rewrite `this` using `[hL]`. Rewrite using `[GlobalTheory.SDCompan.compan_eq (sp := D.sp)]`. Conclude with `this`.
+-/
 theorem globLat_compan_of_lev {D : D7} (i : ℕ) (hi : i ≤ D.R.m) {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T D.R.f bad) (a : 𝓞 D.host.E) (g) (hg : g ∈ lev.U) :
     Formalism.UG.CS.globLat g (compan (sp := D.sp) (gramN D i hi) a lev.Lb) = compan (sp := D.sp) (gramN D i hi) a lev.Lb := by
@@ -171,6 +225,21 @@ theorem globLat_compan_of_lev {D : D7} (i : ℕ) (hi : i ≤ D.R.m) {T : ℕ} {b
     rw [GlobalTheory.SDCompan.compan_eq (sp := D.sp)]
     exact this
 
+/- English proof (translation)
+Introduce `D i hi T bad lev a κ B Q hB`. Establish `hLb : Formalism.L2.GlobalTheoryTheory.Comp.IsLat lev.Lb` using `⟨lev.Lb_fin, lev.Lb_span⟩`. Establish `hfix : ∀ g ∈ lev.U, Formalism.UG.CS.globLat g (compan (sp` using `D.sp) (gramN D i hi) a lev.Lb) = compan (sp := D.sp) (gramN D i hi) a lev.Lb := fun g hg => GlobalTheory.LevStab.globLat_compan_of_lev i hi lev a g hg`. Establish `hmem : ∀ g ∈ lev.U, ∀ x ∈ compan (sp` using `D.sp) (gramN D i hi) a lev.Lb, (Units.val g) *ᵥ (fun l => Formalism.UG.inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x l)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) (compan (sp := D.sp) (gramN D i hi) a lev.Lb) := by`. Introduce `g hg x hx`.
+
+Rewrite `hx` using `[← hfix g⁻¹ (inv_mem hg)]`. Establish `hx' : (Units.val (g⁻¹)⁻¹) *ᵥ (fun l => Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (x l)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) (compan (sp := D.sp) (gramN D i hi) a lev.Lb) := hx`. Rewrite `hx'` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hfg : (compan (sp` using `D.sp) (gramN D i hi) a lev.Lb).FG := by`. Distinguish the cases in `ha : a = 0`.
+
+Substitute `ha` using the available equality. Rewrite using `[GlobalTheory.SDCompan.compan_zero (sp := D.sp)]`. Conclude with `Module.Finite.iff_fg.1 lev.Lb_fin`. Rewrite using `[GlobalTheory.SDCompan.compan_eq (sp := D.sp)]`. Conclude with `Module.Finite.iff_fg.1 (Formalism.L2.GlobalTheoryTheory.Comp.isLat_sup hLb (Formalism.L2.GlobalTheoryTheory.Comp.isLat_smul (Formalism.L2.GlobalTheoryTheory.Br.isLat_dlN D i hi _ hLb) ha)).1`.
+
+Establish `hcong : ∀ g ∈ lev.U, CongAt (F` using `D.host.F) Q 0 ((ratA D.host.F B)⁻¹ * g * ratA D.host.F B) := by`. Introduce `g hg c d`. Take `⟨s, hs, h⟩` from `GlobalTheory.LevStab.int_conj (F := D.host.F) (E := D.host.E) Q B _ hfg hB g (hmem g hg) c d`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, inv_one, map_one, one_mul, Matrix.sub_apply, mul_sub]`.
+
+Use `sub_mem h ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[mul_one]`. Conclude with `GlobalTheory.LevStab.incl_int_mem s`.
+
+Rewrite using `[mul_zero]`. Conclude with `zero_mem _`. Use `⟨hcong κ.1 κ.2, ?_⟩` and prove the remaining obligations. Establish `e : ((ratA D.host.F B)⁻¹ * κ.1 * ratA D.host.F B)⁻¹ = (ratA D.host.F B)⁻¹ * κ.1⁻¹ * ratA D.host.F B` using `by group`. Rewrite using `[e]`.
+
+Conclude with `hcong _ (inv_mem κ.2)`.
+-/
 theorem lev_stab_cong : ∀ {D : D7} (i : ℕ) (hi : i ≤ D.R.m) {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T D.R.f bad) (a : 𝓞 D.host.E) (κ : lev.U)
     (B : GL (Fin (D.R.N i)) D.host.E) (Q : HeightOneSpectrum (𝓞 D.host.E)),

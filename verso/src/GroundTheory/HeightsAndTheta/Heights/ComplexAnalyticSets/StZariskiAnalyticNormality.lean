@@ -22,6 +22,11 @@ def holGerms {σ : Type} [Fintype σ] (w : σ → ℂ) : Subring (Germ (𝓝 w) 
     rintro _ ⟨f, hf, rfl⟩
     exact ⟨-f, hf.neg, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using (analyticAt_const : AnalyticAt ℂ (fun _ : σ → ℂ => a) w)`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp`. Establish `hi : AnalyticAt ℂ (fun z : σ → ℂ => z i) w` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i).analyticAt w`. Simplify using `only [map_mul, eval_X]`. Conclude with `hp.mul hi`.
+-/
 theorem analyticAt_eval_polynomial {σ : Type} [Fintype σ] (w : σ → ℂ) (q : MvPolynomial σ ℂ) :
     AnalyticAt ℂ (fun z : σ → ℂ => eval z q) w := by
   induction q using MvPolynomial.induction_on with

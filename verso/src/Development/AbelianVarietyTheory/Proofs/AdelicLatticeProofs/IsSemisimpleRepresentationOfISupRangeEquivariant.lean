@@ -8,6 +8,17 @@ namespace GlobalTheory.ClassFin
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Introduce `G _ W _ _ ρ J V _ _ r p hr hp htop`. Set `f : ∀ j, (r j).IntertwiningMap ρ` to `fun j => ⟨p j, fun g => LinearMap.ext fun v => hp j g v⟩`. Set `F : ∀ j, (r j).asModule →ₗ[MonoidAlgebra ℂ G] ρ.asModule` to `fun j => Representation.IntertwiningMap.equivLinearMapAsModule (r j) ρ (f j)`. Establish `hF : ∀ j (v : V j), F j v = p j v` using `fun j v => rfl`. Establish `hs : ∀ j, IsSemisimpleModule (MonoidAlgebra ℂ G) (LinearMap.range (F j))`.
+
+Introduce `j`. Use `haveI := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule (r j)).mp (hr j)`. Conclude with `IsSemisimpleModule.range (F j)`. Rewrite using `[Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule]`. Use `isSemisimpleModule_of_isSemisimpleModule_submodule' hs ?_` and prove the remaining obligations.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : (show W from x) ∈ ⨆ j, LinearMap.range (p j)`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+
+Use `Submodule.iSup_induction (fun j => LinearMap.range (p j)) (motive := fun y : W => (show ρ.asModule from y) ∈ ⨆ j, LinearMap.range (F j)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `j y ⟨v, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem j ⟨v, hF j v⟩`. Conclude with `Submodule.zero_mem _`. Introduce `y z hy hz`.
+
+Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem _root_.GlobalTheory.ClassFin.isSemisimpleRepresentation_of_iSup_range :
     ∀ (G : Type) [Group G] (W : Type) [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (J : Type) (V : J → Type) [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)] (r : ∀ j, Representation ℂ G (V j)) (p : ∀ j, V j →ₗ[ℂ] W), (∀ j, (r j).IsSemisimpleRepresentation) → (∀ j g v, p j (r j g v) = ρ g (p j v)) → (⨆ j, LinearMap.range (p j)) = ⊤ → ρ.IsSemisimpleRepresentation := by
   intro G _ W _ _ ρ J V _ _ r p hr hp htop

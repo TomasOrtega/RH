@@ -18,6 +18,15 @@ private def baseChangePts {R A S K : Type} [CommRing R] [CommRing A] [CommRing S
     ext s
     simp [Algebra.ofId_apply]
 
+/- English proof (translation)
+Introduce `hRank hSplitEq l d R S _ _ _ hE`. Use `haveI := hE.fin`. Use `haveI := hE.et`. Establish `hdeg : ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (Localization.Away (l : R)) K], Nat.card (Localization.Away (l : R) ⊗[R] S →ₐ[Localization.Away (l : R)] K) = d`. Introduce `K _ _ _`.
+
+Use `letI : Algebra R K := ((algebraMap (Localization.Away (l : R)) K).comp (algebraMap R (Localization.Away (l : R)))).toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away (l : R)) K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hl : (l : K) ≠ 0`. Establish `hu : IsUnit (algebraMap R (Localization.Away (l : R)) (l : R))` using `IsLocalization.Away.algebraMap_isUnit (l : R)`. Establish `hu'` using `hu.map (algebraMap (Localization.Away (l : R)) K)`.
+
+Simplify using `using hu'.ne_zero`. Rewrite using `[Nat.card_congr baseChangePts]`. Conclude with `hE.deg K hl`. Establish `hn` using `hRank (Localization.Away (l : R)) (Localization.Away (l : R) ⊗[R] S) d hdeg`. Take `⟨T, _, _, _, _, _, hT⟩` from `Algebra.IsFiniteSplit.exists_tensorProduct_of_etale hn`.
+
+Take `⟨n, ⟨e⟩⟩` from `hT.nonempty_algEquiv_fun`. Take `⟨z, hz⟩` from `hSplitEq (Localization.Away (l : R)) (Localization.Away (l : R) ⊗[R] S) T (Fin n) e`. Conclude with `⟨T, inferInstance, inferInstance, n, z, FaithfulSMul.algebraMap_injective (Localization.Away (l : R)) T, hz⟩`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.injSplit_of :
     RankOfDeg → SplitsOfEquiv → InjSplit := by
   intro hRank hSplitEq l d R S _ _ _ hE

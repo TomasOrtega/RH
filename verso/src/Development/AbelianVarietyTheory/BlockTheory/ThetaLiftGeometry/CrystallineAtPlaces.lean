@@ -96,6 +96,9 @@ def SmallJumps (L : SizeData₂ D) : Prop :=
 
 def SmallJumpsAll : Prop := ∀ (D : D7) (L : SizeData₂ D), SmallJumps L
 
+/- English proof (translation)
+Use `RingHom.congr_fun D.embE_φ₀ (D.host.sigmaOf g x)` as an intermediate fact. Simplify `this` using `[Host.emb]`.
+-/
 theorem embLL_sigmaOf (g : D.R.GG) (x : D.host.E) :
     D.what₂.embLL (D.embE (D.host.sigmaOf g x)) = D.host.emb g x := by
   have := RingHom.congr_fun D.embE_φ₀ (D.host.sigmaOf g x)

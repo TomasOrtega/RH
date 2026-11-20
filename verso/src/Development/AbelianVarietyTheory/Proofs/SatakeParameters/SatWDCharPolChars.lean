@@ -14,6 +14,11 @@ namespace GlobalTheory.SatChar
 variable {Ω : Type} [Field Ω] {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω]
   {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
+/- English proof (translation)
+Establish `hs : ∀ {ι : Type} (c : ℂ) (d : ι → ℂ), c • diagEnd d = diagEnd (fun i => c * d i)` using `fun c d => LinearMap.ext fun v => funext fun i => by simp [mul_assoc]`. Rewrite using `[satWD, WD.lpUnr, WD.lpTw_mk, WD.charPol_mk, WDRep.tw_ρ, WDRep.diag_ρ, hs, charpoly_diagEnd, ← Finset.prod_map_val]`. Rewrite using `[Multiset.map_univ (B.map fun b : ℂˣ => ((b⁻¹ : ℂˣ) : ℂ)) (fun z : ℂ => X - C ((((normV w : ℕ) : ℂ) ^ ((((1 : ℝ) - n) / 2 : ℝ) : ℂ)) ^ deg g * ((WD.unitOf z : ℂˣ) : ℂ) ^ deg g)), Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[WD.coe_unitOf (by simp), Units.val_inv_eq_inv_val]`.
+-/
 theorem charPol_satWD (h : IsPlaceOver A w) (n : ℕ) (B : Multiset ℂˣ) (g : Weil h) :
     (satWD h n B).charPol g = (B.map fun b : ℂˣ =>
       X - C ((((normV w : ℕ) : ℂ) ^ (((((1 : ℝ) - n) / 2 : ℝ)) : ℂ)) ^ deg g * ((b : ℂ)⁻¹) ^ deg g)).prod := by
@@ -33,6 +38,15 @@ def ordHom (w : HeightOneSpectrum (𝓞 E)) : (w.adicCompletion E)ˣ →* Multip
   MonoidHom.mk' (fun x => Multiplicative.ofAdd (ord (w.adicCompletion E) x)) fun x y => by
     rw [ord_mul, ofAdd_add]
 
+/- English proof (translation)
+Establish `h1 : ord (w.adicCompletion E) ϖ = 1`. Rewrite using `[SphCompletion.ord_completion, hϖ, WithZero.log_exp]`. Simplify using the standard rewrite rules. Establish `h2 : ord (w.adicCompletion E) (a g * ϖ ^ deg g) = 0`. Use `congrArg Multiplicative.toAdd (map_mul (ordHom w) (a g) (ϖ ^ deg g))` as an intermediate fact.
+
+Rewrite `this` using `[map_zpow]`. Simplify using `only [ordHom, MonoidHom.mk'_apply, toAdd_ofAdd, toAdd_mul, toAdd_zpow, smul_eq_mul] at this`. Rewrite using `[this, ha.ord_eq, h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : Valued.v ((a g * ϖ ^ deg g : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`.
+
+Rewrite `h2` using `[SphCompletion.ord_completion, neg_eq_zero]`. Establish `h0 : Valued.v ((a g * ϖ ^ deg g : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Units.ne_zero _)`. Rewrite using `[← WithZero.exp_log h0, h2, WithZero.exp_zero]`. Establish `h4 : a g = (a g * ϖ ^ deg g) * ϖ ^ (-deg g)`. Rewrite using `[mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`.
+
+Rewrite using `[h4, map_mul, hχ _ h3, one_mul, map_zpow]`.
+-/
 theorem unram_art {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     (χ : (w.adicCompletion E)ˣ →* ℂˣ) (hχ : ∀ x : (w.adicCompletion E)ˣ, Valued.v (x : w.adicCompletion E) = 1 → χ x = 1)
     (ϖ : (w.adicCompletion E)ˣ) (hϖ : Valued.v (ϖ : w.adicCompletion E) = WithZero.exp (-1 : ℤ)) (g : Weil h) :
@@ -53,6 +67,11 @@ theorem unram_art {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion E)ˣ}
     rw [mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]
   rw [h4, map_mul, hχ _ h3, one_mul, map_zpow]
 
+/- English proof (translation)
+Establish `hq : (0 : ℝ) < ((normV w : ℕ) : ℝ)`. Use `GlobalTheory.WeilDeligne.one_lt_normV w` as an intermediate fact. Conclude with `(zero_lt_one.trans this)` after adjusting the coercions. Rewrite using `[val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, ha.ord_eq, neg_neg, resCard_eq_normV]`. Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_cpow hq.le, ← Complex.ofReal_zpow, ← Complex.ofReal_cpow (zpow_pos hq _).le]`.
+
+Use `congr 1`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul hq.le, ← Real.rpow_mul hq.le, mul_comm]`.
+-/
 theorem absPow_art {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a) (s : ℝ)
     (g : Weil h) :
     (absPow (w.adicCompletion E) (s : ℂ) (a g) : ℂ) = (((normV w : ℕ) : ℂ) ^ (s : ℂ)) ^ deg g := by
@@ -65,6 +84,11 @@ theorem absPow_art {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion E)ˣ
   congr 1
   rw [← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul hq.le, ← Real.rpow_mul hq.le, mul_comm]
 
+/- English proof (translation)
+Introduce `Ω _ E _ _ _ _ w A h n ξ ξ' hξ' hun ϖ hϖ a ha g`. Rewrite using `[charPol_satWD, Multiset.map_map, Finset.prod_map_val]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hξ' j, MonoidHom.mul_apply, Units.val_mul, unram_art ha (ξ j) (hun j) ϖ hϖ g, absPow_art ha]`.
+
+Use `congr 2`. Rewrite using `[Units.val_zpow_eq_zpow_val, zpow_neg, inv_zpow, mul_comm]`.
+-/
 theorem satWD_charPol_chars : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω] (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (h : IsPlaceOver A w), ∀ (n : ℕ) (ξ ξ' : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)), (∀ j, ξ' j = ξ j * absPow (w.adicCompletion E) ((((1 : ℝ) - n) / 2 : ℝ) : ℂ)) → (∀ j (x : (w.adicCompletion E)ˣ), Valued.v (x : w.adicCompletion E) = 1 → ξ j x = 1) → ∀ ϖ : (w.adicCompletion E)ˣ, Valued.v (ϖ : w.adicCompletion E) = WithZero.exp (-1 : ℤ) → ∀ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a → ∀ g : Weil h, (satWD h n (Finset.univ.val.map fun j => ξ j ϖ)).charPol g = ∏ j, (X - C ((ξ' j (a g) : ℂˣ) : ℂ)) := by
   intro Ω _ E _ _ _ _ w A h n ξ ξ' hξ' hun ϖ hϖ a ha g
   rw [charPol_satWD, Multiset.map_map, Finset.prod_map_val]

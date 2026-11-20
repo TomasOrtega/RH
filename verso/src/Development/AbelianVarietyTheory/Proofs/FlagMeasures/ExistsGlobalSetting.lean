@@ -29,6 +29,11 @@ namespace GlobalTheory.St.SpectralData
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨wt, hw⟩` from `GlobalTheory.St.WittT.wittExists D X u`. Take `⟨ιA, hι⟩` from `hι`. Take `⟨g0, hg0⟩` from `GlobalTheory.St.G.genusMatch_holds D F X u wt ιA hw hι`. Take `⟨h0, hL, hKm⟩` from `GlobalTheory.St.G.levelConj_holds D F X hK u wt ιA g0 hw hι hg0`. Use `choose hcf hcr using GlobalTheory.St.G.hcExists_all D F X u wt ιA h0 hw hι`.
+
+Take `⟨J, hJ1, hJ2, hJ3⟩` from `GlobalTheory.jExists_all D F X u wt hw`. Conclude with `⟨⟨wt, hw.1, hw.2.1, hw.2.2.1, hw.2.2.2, ιA, hι.1, hι.2, h0, hcf, hcr, J, hJ1, hJ2, hJ3⟩, hL, hKm⟩`.
+-/
 theorem exists_transport {D : D7} (F : ∀ u, Formalism.L2.Forms.Forms0 D u)
     (X : HidaSetting D) (hK : X.LevelSubgroupCharacter) (hι : ∃ ιA, GlobalTheory.St.IsAdeleIso X ιA) (u : D.what₂.Word) :
     ∃ Tr : Transport X u (F u), LevelMatch X Tr hK := by
@@ -42,6 +47,13 @@ theorem exists_transport {D : D7} (F : ∀ u, Formalism.L2.Forms.Forms0 D u)
 
 open Formalism.L2.SG.SplitPrimeNormLemmas in
 
+/- English proof (translation)
+Establish `hB : BesselNVGap` using `Formalism.L2.SG.Closed.BesselNVGap_holds`. Establish `hC : CoefWeightedLoc` using `Formalism.L2.SG.Closed.CoefWeightedLoc_holds`. Set `A` to `Formalism.L2.SG.InstExistsPf.instanceOfRecord D`. Take `⟨L⟩` from `GlobalTheory.St.Lat.latExists_of_forms0 D (F D.u₀)`. Take `⟨P⟩` from `Formalism.L2.SG.Closed.PsiExists_holds D A`.
+
+Take `⟨Rf⟩` from `Formalism.L2.SG.Closed.RefExists_holds D A L`. Take `⟨Xu⟩` from `Formalism.L2.SG.Closed.XuExists_holds D A L Rf`. Take `⟨Bu⟩` from `Formalism.L2.SG.Closed.BunExists_holds D hC hG A L P Rf`. Take `⟨Pi⟩` from `Formalism.L2.SG.Closed.PiExists_holds D A L`. Take `⟨Mu⟩` from `Formalism.L2.SG.Closed.MuExists_holds D A L`.
+
+Take `⟨Wb⟩` from `GlobalTheory.WBlockExists.realPlaceFunctionBlockExists_of_bessel_coef hB hC D hG A L P Rf Bu Pi Mu`. Take `⟨Mb, hb, hM⟩` from `GlobalTheory.St.mExists_holds D A L P Rf Xu Bu Pi Mu Wb`. Take `⟨mg, hg, mw, hw, hM', ψ, hψ, hstd, hCm, hL⟩` from `GlobalTheory.St.Rescale.rescaleStep3 hSW D (mk A L P Rf Xu Bu Pi Mu Wb Mb) hb hM`. Use `⟨Formalism.L2.SG.SettingExistsMeasured.withMeas (mk A L P Rf Xu Bu Pi Mu Wb Mb) mg hg mw hw, hb, ψ, rfl, fun _ => HEq.rfl, hM', hψ, hstd, hCm, hL, fun hK u => ?_⟩` and prove the remaining obligations. Conclude with `exists_transport F _ hK ⟨RingEquiv.refl _, fun _ => rfl, fun _ => Iff.rfl⟩ u`.
+-/
 theorem exists_setting (hSW : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent)
     (D : D7) (F : ∀ u, Formalism.L2.Forms.Forms0 D u) (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) :
       ∃ (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I)
@@ -68,6 +80,11 @@ theorem exists_setting (hSW : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnit
     fun _ => HEq.rfl, hM', hψ, hstd, hCm, hL, fun hK u => ?_⟩
   exact exists_transport F _ hK ⟨RingEquiv.refl _, fun _ => rfl, fun _ => Iff.rfl⟩ u
 
+/- English proof (translation)
+Introduce `hSW hMU hRF D F hG hLT`. Take `⟨X, hb, ψ, hI, hι, hM, hψ, hstd, hCm, hL, hT⟩` from `exists_setting hSW D F hG`. Take `⟨Y⟩` from `GlobalTheory.fullExists_of_locTied D X hLT`. Take `⟨hWD, hph⟩` from `Formalism.L2.SG.Pf.wuDecayOfGap_of_jsz hMU D hG X`. Establish `hF : FinX Y` using `GlobalTheory.FinitenessBundle.finX_of_decay hRF D X Y hWD hph`.
+
+Use `choose tr htr using hT Y.hK`. Use `⟨X, hb, ψ, Y, hF, tr, hI, hι, hM, hψ, hstd, hCm, hL, hph, fun u => ?_⟩` and prove the remaining obligations. Take `⟨-, h1, h2, h3⟩` from `GlobalTheory.St.colDictCore_holds D X u (F u) (tr u) Y.hK (htr u) (GlobalTheory.columnLevel_stabTriv D X Y.hK u)`. Conclude with `⟨htr u, h1, h2, h3 _ (Y.cs u) (hF.shInj u) (Y.colReps u)⟩`.
+-/
 theorem exists_spectralData : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → PI.BesselMapUniq.BesselMapUniq → Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (D : D7) (F : ∀ u, Formalism.L2.Forms.Forms0 D u), Formalism.L2.SG.ConcreteSettingExists.GapHyp D → Formalism.L2.SG.Pf.LocCP.LocTied D → ∃ (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (Y : Formalism.L2.SG.Full.Full X) (hF : FinX Y) (tr : ∀ u, Transport X u (F u)), X.B.I = Formalism.L2.SG.InstExistsPf.instOf D ∧ (∀ x : X.B.I.E, HEq (X.ιE x) x) ∧ X.MeasTie hb ∧ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF X.B.I.F ψ ∧ Formalism.L2.SG.LocVol.IsStdChar ψ ∧ Formalism.L2.SG.MassDataConc.MeasCompatψ X ψ ∧ (∀ w, Formalism.L2.SG.LocVol.LocCompatX X ψ w) ∧ Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) ∧ ∀ u, LevelMatch X (tr u) Y.hK ∧ ColDictInto X (tr u) Y.hK ∧ ColDictBij X (tr u) Y.hK ∧ ColDictIsom X (tr u) Y.hK (Y.cs u) (hF.shInj u) := by
   intro hSW hMU hRF D F hG hLT
   obtain ⟨X, hb, ψ, hI, hι, hM, hψ, hstd, hCm, hL, hT⟩ := exists_setting hSW D F hG

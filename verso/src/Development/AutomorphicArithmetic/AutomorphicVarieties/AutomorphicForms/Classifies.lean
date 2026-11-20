@@ -40,10 +40,24 @@ def sum (D D' : TrData q e) : TrData q e where
   bd s := by cases s; exacts [D.bd _, D'.bd _]
   int s := by cases s; exacts [D.int _, D'.int _]
 
+/- English proof (translation)
+Use `D.fin` as an intermediate fact. Use `D'.fin` as an intermediate fact. Conclude with `Nat.card_sum`.
+-/
 theorem card_sum (D D' : TrData q e) : Nat.card (D.sum D').S = Nat.card D.S + Nat.card D'.S := by
   have := D.fin; have := D'.fin
   exact Nat.card_sum
 
+/- English proof (translation)
+Take `⟨cl, h1, h2⟩` from `h`. Take `⟨cl', h1', h2'⟩` from `h'`. Set `F : {r // P r ∨ P' r} → D.S ⊕ D'.S` to `fun r => if hr : P r.1 then Sum.inl (cl ⟨r.1, hr⟩) else Sum.inr (cl' ⟨r.1, r.2.resolve_left hr⟩)`. Establish `e1 : ∀ r (hr : P r.1), F r = Sum.inl (cl ⟨r.1, hr⟩)` using `fun r hr => dif_pos hr`. Establish `e2 : ∀ r (hr : ¬ P r.1), F r = Sum.inr (cl' ⟨r.1, r.2.resolve_left hr⟩)` using `fun r hr => dif_neg hr`.
+
+Use `⟨F, fun r r' (H : F r = F r') => ?_, fun r => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hr : P r.1 <;> by_cases hr' : P r'.1`. Rewrite `H` using `[e1 r hr, e1 r' hr']`. Conclude with `h1 _ _ (Sum.inl.inj H)`. Rewrite `H` using `[e1 r hr, e2 r' hr']`.
+
+Consider the cases of `H`. Rewrite `H` using `[e2 r hr, e1 r' hr']`. Consider the cases of `H`. Rewrite `H` using `[e2 r hr, e2 r' hr']`. Conclude with `h1' _ _ (Sum.inr.inj H)`.
+
+Express the relevant statement in the definitionally equal form `_ = ι.symm (Sum.elim D.t D'.t (F r))`. Distinguish the cases in `hr : P r.1`. Rewrite using `[e1 r hr]`. Conclude with `h2 ⟨r.1, hr⟩`. Rewrite using `[e2 r hr]`.
+
+Conclude with `h2' ⟨r.1, _⟩`.
+-/
 theorem Classifies.sum {Γ : Type} [Group Γ] {l : ℕ} [Fact l.Prime] {D D' : TrData q e} {ι : Qbar l ≃+* ℂ} {g : Γ}
     {P P' : (Γ →* GL (Fin 3) (Qbar l)) → Prop} (h : D.Classifies ι g P) (h' : D'.Classifies ι g P') :
     (D.sum D').Classifies ι g fun r => P r ∨ P' r := by

@@ -24,6 +24,13 @@ namespace GlobalTheory.SstTwist
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K L : FinExt l}
   {V : Type} [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V]
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hcl` using `mem_closure_mulV_of_finrank_eq l P K L V ρ hV (Dst P ρ) le_rfl (fun c hc x hx => (mem_Dst P ρ).mpr fun h => by`. Rewrite using `[← Module.End.mul_apply, stRep_mulV P ρ h c c (mem_GK.mp h.2 _ hc), Module.End.mul_apply, (mem_Dst P ρ).mp hx h]) hs`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Use `AddSubgroup.closure_induction (p := fun y _ => stRep P ρ g y = y) ?_ (map_zero _) ?_ ?_ (hcl x x.2)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, s, hs', rfl⟩`. Rewrite using `[← Module.End.mul_apply, stRep_mulV P ρ g c c ((IntermediateField.mem_fixingSubgroup_iff _ _).mp hg _ c.2), Module.End.mul_apply, (mem_Dst P ρ).mp hs' g]`. Introduce `y z _ _ hy hz`. Rewrite using `[map_add, hy, hz]`. Introduce `y _ hy`.
+
+Rewrite using `[map_neg, hy]`.
+-/
 theorem ineTriv_of_isSst [FiniteDimensional ↥L.1 V] (ρ : Representation ↥L.1 ↥(GK K) V) (hV : IsPst P ρ)
     (hs : IsSst P ρ) : GlobalTheory.PstLaws.IneTriv P ρ := by
   intro g hg
@@ -51,6 +58,19 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) {K L : Fin
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI := L.2`. Use `haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans ↥L.1 V`. Establish `hPs : IsPst P ρs` using `GlobalTheory.GalCut.IwaAll.isPst_of_isSst P AI T ρs hs`. Establish `hPm : IsPst P ρm` using `GlobalTheory.PstOfCrys.isPst_of_isCrys T ρm hc`. Establish `hIs` using `ineTriv_of_isSst P ρs hPs hs`.
+
+Establish `hIm` using `GlobalTheory.PstLaws.ineTriv_of_isCrys P ρm hPm hc`. Take `⟨y, hy, y', hyy'⟩` from `GlobalTheory.Pst.UnitLetter.exists_unit_Dpst P AI ⟨T⟩ ρm χ hm hPm`. Set `y₀ : ↥(Dpst P ρm)` to `⟨y, hy⟩`. Establish `hsurj` using `GlobalTheory.Pst.TwistLetters.exists_dmul_eq_of_inv P ρs ρt ρm χ hm ht y₀ y' hyy'`. Set `Φ : DpstUr P ρs →ₗ[↥(MaximalUnramifiedExtension l)] DpstUr P ρt` to `{ toFun := fun x => toUr P ρt (dmul P ρs ρt ρm χ hm ht ((toUr P ρs).symm x) y₀) map_add' := fun x x' => by simp only [map_add, LinearMap.add_apply] map_smul' := fun c x => dmul_mulD_left P ρs ρt ρm χ hm ht c _ y₀ }`.
+
+Establish `hinj : Function.Injective Φ`. Introduce `x x' hxx`. Establish `h1 : mulB P V y' (mulB P V y ((toUr P ρs).symm x : V ⊗[ℚ_[l]] Bst P)) = mulB P V y' (mulB P V y ((toUr P ρs).symm x' : V ⊗[ℚ_[l]] Bst P))` using `congrArg (fun z : ↥(Dpst P ρt) => mulB P V y' (z : V ⊗[ℚ_[l]] Bst P)) hxx`. Rewrite `h1` using `[mulB_assoc, mulB_assoc, hyy', one_mulB, one_mulB]`. Conclude with `(toUr P ρs).symm.injective (Subtype.ext h1)`.
+
+Establish `hsur : Function.Surjective Φ`. Introduce `z`. Take `⟨x, hx⟩` from `hsurj ((toUr P ρt).symm z)`. Conclude with `⟨toUr P ρs x, by`. Express the relevant statement in the definitionally equal form `toUr P ρt (dmul P ρs ρt ρm χ hm ht ((toUr P ρs).symm (toUr P ρs x)) y₀) = z`.
+
+Rewrite using `[AddEquiv.symm_apply_apply, hx, AddEquiv.apply_symm_apply]⟩`. Establish `hPt : IsPst P ρt`. Rewrite using `[IsPst, ← (LinearEquiv.ofBijective Φ ⟨hinj, hsur⟩).rank_eq]`. Conclude with `hPs`. Use `GlobalTheory.PstLaws.isSst_of_ineTriv P ρt hPt fun g hg => LinearMap.ext fun z => ?_` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `hsurj z`. Rewrite using `[actD_dmul, LinearMap.congr_fun (hIs g hg) x, LinearMap.congr_fun (hIm g hg) y₀]`. Both sides reduce to the same expression.
+-/
 theorem isSst_twist (T : LocTied l P AI) [FiniteDimensional ↥L.1 V] (ρs ρt : Representation ↥L.1 ↥(GK K) V)
     (ρm : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) (χ : ↥(GK K) → ↥L.1)
     (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v)
@@ -94,6 +114,15 @@ end GlobalTheory.SstTwist
 
 open GlobalTheory.Pst.TwistLetters
 
+/- English proof (translation)
+Introduce `_ l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw a r c _ _ hr hc`. Take `⟨T⟩` from `hT`. Take `⟨L₁, r₁, hm₁, hs₁⟩` from `hr`. Take `⟨L₂, c₂, hm₂, hc₂⟩` from `hc`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`.
+
+Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Use `set L := supExt L₁ L₂`. Use `set s := Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₁).toRingHom r₁`. Use `set m := Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₂).toRingHom c₂`. Use `⟨L, _, GlobalTheory.TwistParamAbove.isModel_twist (hm₁.enlarge l₁) (hm₂.enlarge l₂), ?_⟩` and prove the remaining obligations.
+
+Establish `hsL : IsSst P (Bw.repE L s)` using `GlobalTheory.AboveL.RepConj.isSst_enlarge P Bw l₁ r₁ hs₁`. Establish `hcL : Bw.IsCrysE P L m` using `(GlobalTheory.Pst.local_ext P Bw l₂ c₂).1.2 hc₂`. Set `χ : ↥(GK Bw.Kw) → ↥L.1` to `fun g => ((GlobalTheory.TwistAbove.chr m (Bw.e.symm g) : (↥L.1)ˣ) : ↥L.1)`. Establish `hχm : ∀ g v, Bw.repE L m g v = χ g • v` using `fun g v => GlobalTheory.TwistAbove.repE_rank_one Bw m g v`. Establish `hχt : ∀ g v, Bw.repE L (Formalism.MainNotions.SumRepresentations.At.twGL s (Matrix.GeneralLinearGroup.det.comp m)) g v = χ g • Bw.repE L s g v`.
+
+Introduce `g v`. Rewrite using `[GlobalTheory.TwistBridgeDR.twGL_eq]`. Conclude with `GlobalTheory.TwistBridgeDR.repE_twGL' Bw _ s g v`. Conclude with `GlobalTheory.SstTwist.isSst_twist P AI T (Bw.repE L s) _ (Bw.repE L m) χ hχm hχt hsL hcL`.
+-/
 theorem GlobalTheory.SstTwist.isSstAt_twist : GlobalTheory.Published.DeRhamPotSemistable → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] (Gw : Subgroup (Ω ≃ₐ[E] Ω)) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (a : ℕ) (r : ↥Gw →* GL (Fin a) (Om l)) (c : ↥Gw →* GL (Fin 1) (Om l)), (Continuous fun g => ((r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) → (Continuous fun g => ((c g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l))) → IsSstAt P Bw r → IsCrysAt P Bw c → IsSstAt P Bw (Formalism.MainNotions.SumRepresentations.At.twGL r (Matrix.GeneralLinearGroup.det.comp c)) := by
   intro _ l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw a r c _ _ hr hc
   obtain ⟨T⟩ := hT

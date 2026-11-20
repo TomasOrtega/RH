@@ -8,6 +8,11 @@ namespace GlobalTheory.SSCont
 
 variable {Γ k : Type} [Group Γ] [Field k] {n : ℕ}
 
+/- English proof (translation)
+Establish `h : (Submonoid.closure (Set.range fun g => (r g : Matrix (Fin n) (Fin n) k)) : Set (Matrix (Fin n) (Fin n) k)) = Set.range fun g => (r g : Matrix (Fin n) (Fin n) k)`. Establish `e : (Set.range fun g => (r g : Matrix (Fin n) (Fin n) k)) = (MonoidHom.mrange ((Units.coeHom _).comp r) : Set (Matrix (Fin n) (Fin n) k))`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[e, Submonoid.closure_eq]`.
+
+Rewrite using `[PI.SSAscent.UnitaryGroupMassFormula.imAlg, ← Subalgebra.mem_toSubmodule, Algebra.adjoin_eq_span, h]`.
+-/
 theorem mem_imAlg_iff (r : Γ →* GL (Fin n) k) (x : Matrix (Fin n) (Fin n) k) :
     x ∈ PI.SSAscent.UnitaryGroupMassFormula.imAlg r ↔
       x ∈ Submodule.span k (Set.range fun g => (r g : Matrix (Fin n) (Fin n) k)) := by
@@ -20,6 +25,19 @@ theorem mem_imAlg_iff (r : Γ →* GL (Fin n) k) (x : Matrix (Fin n) (Fin n) k) 
     rw [e, Submonoid.closure_eq]
   rw [PI.SSAscent.UnitaryGroupMassFormula.imAlg, ← Subalgebra.mem_toSubmodule, Algebra.adjoin_eq_span, h]
 
+/- English proof (translation)
+Establish `hnd : PI.SSAscent.UnitaryGroupMassFormula.TrNondeg (PI.SSAscent.UnitaryGroupMassFormula.imAlg r)` using `PI.SSAscent.UnitaryGroupMassFormula.downStep_of PI.SSAscent.UnitaryGroupMassFormula.trace_nilpotent_ascent k Γ n r hr`. Use `set S : Set (Matrix (Fin n) (Fin n) k) := Set.range fun g => (r g : Matrix (Fin n) (Fin n) k) with hS`. Take `⟨f, hf, hspan, -⟩` from `Submodule.exists_fun_fin_finrank_span_eq k S`. Use `choose c hc using hf`. Set `φ : Submodule.span k S →ₗ[k] (Fin (Module.finrank k (Submodule.span k S)) → k)` to `LinearMap.pi fun i => (Matrix.traceLinearMap (Fin n) k k) ∘ₗ (LinearMap.mulRight k (f i)) ∘ₗ (Submodule.span k S).subtype`.
+
+Establish `hφ : LinearMap.ker φ = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hnd x.1 ((mem_imAlg_iff r _).2 x.2) fun y hy => ?_` and prove the remaining obligations.
+
+Establish `hy'` using `(mem_imAlg_iff r _).1 hy`. Rewrite `hy'` using `[← hS, ← hspan]`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Simplify `congrFun hx i` using `[φ]`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [mul_add, Matrix.trace_add, hy, hz, add_zero]`. Consider the case `smul a y _ hy => rw [Matrix.mul_smul, Matrix.trace_smul, hy, smul_zero]`.
+
+Take `⟨ψ, hψ⟩` from `LinearMap.exists_leftInverse_of_injective φ hφ`. Use `⟨_, c, (Submodule.span k S).subtype ∘ₗ ψ, fun g => ?_⟩` and prove the remaining obligations. Set `x : Submodule.span k S` to `⟨r g, Submodule.subset_span ⟨g, rfl⟩⟩`. Establish `h1 : (fun i => ((r (g * c i) : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) = φ x`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[φ, x, ← hc i]`. Establish `h2 : ψ (φ x) = x` using `LinearMap.congr_fun hψ x`. Rewrite using `[h1, LinearMap.comp_apply, h2]`. Both sides reduce to the same expression.
+-/
 theorem exists_linear_of_trace [CharZero k] (r : Γ →* GL (Fin n) k) (hr : IsSSRep r) :
     ∃ (m : ℕ) (c : Fin m → Γ) (ψ : (Fin m → k) →ₗ[k] Matrix (Fin n) (Fin n) k),
       ∀ g, (r g : Matrix (Fin n) (Fin n) k) =
@@ -57,6 +75,11 @@ theorem exists_linear_of_trace [CharZero k] (r : Γ →* GL (Fin n) k) (hr : IsS
   rw [h1, LinearMap.comp_apply, h2]
   rfl
 
+/- English proof (translation)
+Introduce `Γ k _ _ _ _ _ _ _ n r hr ht`. Take `⟨m, c, ψ, h⟩` from `exists_linear_of_trace r hr`. Establish `hc : Continuous fun g => ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Rewrite using `[funext h]`. Conclude with `ψ.continuous_on_pi.comp (continuous_pi fun i => ht.comp (continuous_mul_const (c i)))`.
+
+Rewrite using `[Units.continuous_iff]`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `hc.comp continuous_inv`.
+-/
 theorem continuous_of_continuous_trace : ∀ (Γ k : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Field k] [CharZero k] [TopologicalSpace k] [IsTopologicalRing k] (n : ℕ) (r : Γ →* GL (Fin n) k), IsSSRep r → Continuous (fun g => ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → Continuous r := by
   intro Γ k _ _ _ _ _ _ _ n r hr ht
   obtain ⟨m, c, ψ, h⟩ := exists_linear_of_trace r hr

@@ -6,6 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `J _ _ D c hc B g hg`. Take `⟨-, hsurj⟩` from `(etFF_iff_spec g).1 hg`. Take `⟨j₀⟩` from `IsFiltered.nonempty (C := J)`. Take `⟨j, -, B', g', h, hgh, hcov⟩` from `GlobalTheory.EtaleCoverDescent.exists_etale_cover_model_of_isColimit J D c hc Unit (fun _ ↦ B) (fun _ ↦ g) (fun _ ↦ hg.1) (fun p ↦ by`. Take `⟨v, hv⟩` from `hsurj.surj p`.
+
+Conclude with `⟨(), v, hv⟩) j₀`. Use `⟨j, B' (), g' (), h (), ?_, (hgh ()).2⟩` and prove the remaining obligations. Rewrite using `[etFF_iff_spec]`. Use `⟨HasRingHomProperty.Spec_iff.2 (hgh ()).1, ⟨fun p ↦ ?_⟩⟩` and prove the remaining obligations. Take `⟨i, v, hv⟩` from `hcov p`.
+
+Consider the cases of `i`. Conclude with `⟨v, hv⟩`.
+-/
 theorem etFF_descends_of_isColimit :
     ∀ (J : Type) [SmallCategory J] [IsFiltered J] (D : J ⥤ CommRingCat.{0}) (c : Cocone D),
       IsColimit c → ∀ (B : CommRingCat.{0}) (g : c.pt ⟶ B), EtFF g →

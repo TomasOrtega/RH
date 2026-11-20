@@ -14,6 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun i => pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(x * y) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (‖toL x‖ * ‖toL y‖) fun l _ => ?_).trans_eq (by simp))` and prove the remaining obligations. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ((norm_le_pi_norm (toL x i) l).trans (norm_le_pi_norm (toL x) i)) ((norm_le_pi_norm (toL y l) j).trans (norm_le_pi_norm (toL y) l)) (norm_nonneg _) (norm_nonneg _))`.
+-/
 theorem norm_toL_mul (x y : Matrix (Fin a) (Fin a) (Cinf E)) : ‖toL (x * y)‖ ≤ a * (‖toL x‖ * ‖toL y‖) := by
   refine pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun i => pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun j => ?_
   change ‖(x * y) i j‖ ≤ _
@@ -24,6 +27,15 @@ theorem norm_toL_mul (x y : Matrix (Fin a) (Fin a) (Cinf E)) : ‖toL (x * y)‖
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h1` using `norm_toL_mul x.val y.val`. Establish `h2` using `norm_toL_mul (y⁻¹).val (x⁻¹).val`. Establish `hx` using `one_le_height x`. Establish `hy` using `one_le_height y`. Establish `a1 : ‖toL x.val‖ ≤ height x` using `by unfold height; linarith [norm_nonneg (toL (x⁻¹).val)]`.
+
+Establish `a2 : ‖toL (x⁻¹).val‖ ≤ height x` using `by unfold height; linarith [norm_nonneg (toL x.val)]`. Establish `b1 : ‖toL y.val‖ ≤ height y` using `by unfold height; linarith [norm_nonneg (toL (y⁻¹).val)]`. Establish `b2 : ‖toL (y⁻¹).val‖ ≤ height y` using `by unfold height; linarith [norm_nonneg (toL y.val)]`. Establish `c1 : ‖toL x.val‖ * ‖toL y.val‖ ≤ height x * height y` using `mul_le_mul a1 b1 (norm_nonneg _) (by linarith)`. Establish `c2 : ‖toL (y⁻¹).val‖ * ‖toL (x⁻¹).val‖ ≤ height x * height y`.
+
+Rewrite using `[mul_comm]; exact mul_le_mul a2 b2 (norm_nonneg _) (by linarith)`. Establish `c0 : 1 ≤ height x * height y` using `one_le_mul_of_one_le_of_one_le hx hy`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `e : height (x * y) = 1 + ‖toL (x.val * y.val)‖ + ‖toL ((y⁻¹).val * (x⁻¹).val)‖`. Unfold `height`.
+
+Rewrite using `[mul_inv_rev]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left c1 ha, mul_le_mul_of_nonneg_left c2 ha]`.
+-/
 theorem height_mul_le (x y : GL (Fin a) (Cinf E)) : height (x * y) ≤ (1 + 2 * a) * (height x * height y) := by
   have h1 := norm_toL_mul x.val y.val
   have h2 := norm_toL_mul (y⁻¹).val (x⁻¹).val
@@ -73,6 +85,11 @@ def modGr : Submodule ℂ (GA E a → ℂ) where
     · rw [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]
       exact mul_le_mul_of_nonneg_left (h1 y) (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨m, C, N, h0, hC⟩` from `hF g`. Establish `h : Measurable fun x => toL (γ x).val` using `hk.2.1`. Establish `e : (fun x => F (g * infGL E a (γ x))) = fun x => chart F g (toL (γ x).val)`. Use function extensionality and compare the values at `fun x => (chart_val F g (γ x)).symm`. Establish `hm : Measurable fun x => F (g * infGL E a (γ x))` using `by rw [e]; exact m.comp h`.
+
+Use `((hk.2.2 N).const_mul C).mono' (hk.1.mul hm).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrable_of_modGr {F : GA E a → ℂ} (hF : F ∈ modGr E a) {X : Type} [MeasurableSpace X] {ν : Measure X}
     {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) (g : GA E a) :
     Integrable (fun x => k x * F (g * infGL E a (γ x))) ν := by
@@ -87,6 +104,31 @@ theorem integrable_of_modGr {F : GA E a → ℂ} (hF : F ∈ modGr E a) {X : Typ
         mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)
     _ = C * (‖k x‖ * height (γ x) ^ N) := by ring
 
+/- English proof (translation)
+Use `rspan_le (fun φ hφ g => ⟨measurable_chart φ.2 g, ?_⟩) (fun F hF h g => ?_) fun F hF X _ ν _ k γ hk g => ?_` and prove the remaining obligations. Take `⟨C, N, hC⟩` from `(π.cusp φ hφ).1.growth g`. Conclude with `⟨|C|, N, abs_nonneg C, fun y => (hC y).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (by linarith [one_le_height y]) N))⟩`. Rewrite using `[← infGL_mul_finGL h] set y := Matrix.GeneralLinearGroup.map (pInf E) h set k := Matrix.GeneralLinearGroup.map (pFin E) h`. Take `⟨m, C, N, h0, hC⟩` from `hF (g * finGL E a k)`.
+
+Use `⟨?_, C * ((1 + 2 * a) * height y) ^ N, N, by have := one_le_height y; positivity, fun z => ?_⟩` and prove the remaining obligations. Establish `e : (fun x => F (x * (infGL E a y * finGL E a k))) = fun x => (fun x => F (x * finGL E a k)) (x * infGL E a y)`. Use function extensionality and compare the values at `x`. Simplify using `only [mul_assoc]`. Rewrite using `[e, chart_rt_inf (fun x => F (x * finGL E a k)), chart_rt_fin]`.
+
+Conclude with `m.comp (rmul (toL y.val)).continuous.measurable`. Establish `e : g * infGL E a z * (infGL E a y * finGL E a k) = g * finGL E a k * infGL E a (z * y)`. Rewrite using `[mul_assoc g (finGL E a k), ← infGL_comm, map_mul]`. Simplify using `only [mul_assoc]`. Express the relevant statement in the definitionally equal form `‖F (g * infGL E a z * (infGL E a y * finGL E a k))‖ ≤ _`.
+
+Rewrite using `[e]`. Use `(hC _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc C, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (z * y)]) ?_ N) h0` and prove the remaining obligations. Conclude with `(height_mul_le z y).trans_eq (by ring)`.
+
+Take `⟨m, C, N, h0, hC⟩` from `hF g`. Use `⟨?_, C * (1 + 2 * a) ^ N * ∫ x, ‖k x‖ * height (γ x) ^ N ∂ν, N, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `e : chart (kerInf ν k γ F) g = fun x => ∫ t, k t * chart F g (toL (Matrix.of x * (γ t).val)) ∂ν`. Use function extensionality and compare the values at `x`. Distinguish the cases in `h : IsUnit (Matrix.of x)`.
+
+Take `⟨u, hu⟩` from `h`. Establish `hx : x = (toL u.val)` using `hu.symm`. Rewrite using `[hx, chart_val, kerInf]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[mul_assoc, ← map_mul, ← chart_val F g]`. Both sides reduce to the same expression. Establish `h' : ∀ t, ¬ IsUnit (Matrix.of (toL (Matrix.of x * (γ t).val)))` using `fun t h' => h ((Units.isUnit_mul_units _ (γ t)).1 h')`. Simplify using `only [chart, dif_neg h, dif_neg (h' _), mul_zero, integral_zero]`. Rewrite using `[e]`.
+
+Establish `hγ : Measurable fun x => toL (γ x).val` using `hk.2.1`. Establish `hm : Measurable fun p : Lie E a × X => toL (Matrix.of p.1 * (γ p.2).val)`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Measurable fun p : Lie E a × X => (Matrix.of p.1 * (γ p.2).val) i j`. Simplify using `only [Matrix.mul_apply]`.
+
+Use `Finset.measurable_sum _ fun l _ => Measurable.mul ?_ ?_` and prove the remaining obligations. Conclude with `(measurable_pi_apply l).comp ((measurable_pi_apply i).comp measurable_fst)`. Conclude with `(measurable_pi_apply j).comp ((measurable_pi_apply l).comp (hγ.comp measurable_snd))`. Establish `hs : StronglyMeasurable fun p : Lie E a × X => k p.2 * chart F g (toL (Matrix.of p.1 * (γ p.2).val))` using `((hk.1.comp measurable_snd).mul (m.comp hm)).stronglyMeasurable`. Conclude with `hs.integral_prod_right'.measurable`.
+
+Use `mul_nonneg (by positivity) (integral_nonneg fun x => ?_)` and prove the remaining obligations. Use `one_le_height (γ x)` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[kerInf]`. Establish `hz` using `one_le_height z`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le ((hk.2.2 N).const_mul _) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc g, ← map_mul]`. Establish `h1` using `(hC (z * γ x)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (z * γ x)]) (height_mul_le z (γ x)) N) h0)`. Use `(mul_le_mul_of_nonneg_left h1 (norm_nonneg _)).trans_eq ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [integral_const_mul]; ring`.
+-/
 theorem rspan_le_modGr (π : CuspSub E a) : rspan π ≤ modGr E a := by
   refine rspan_le (fun φ hφ g => ⟨measurable_chart φ.2 g, ?_⟩) (fun F hF h g => ?_) fun F hF X _ ν _ k γ hk g => ?_
   · obtain ⟨C, N, hC⟩ := (π.cusp φ hφ).1.growth g
@@ -151,11 +193,17 @@ theorem rspan_le_modGr (π : CuspSub E a) : rspan π ≤ modGr E a := by
             rw [mul_pow, mul_pow]; ring
         _ = _ := by rw [integral_const_mul]; ring
 
+/- English proof (translation)
+The claim follows from `integrable_of_modGr (rspan_le_modGr π hF) hk g`.
+-/
 theorem kerInf_integrable_of_mem_rspan {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ rspan π) {X : Type}
     [MeasurableSpace X] {ν : Measure X} {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) (g : GA E a) :
     Integrable (fun x => k x * F (g * infGL E a (γ x))) ν :=
   integrable_of_modGr (rspan_le_modGr π hF) hk g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[Pi.add_apply, kerInf, kerInf, kerInf, ← integral_add (kerInf_integrable_of_mem_rspan hF hk g) (kerInf_integrable_of_mem_rspan hG hk g)]`. Simplify using `only [Pi.add_apply, mul_add]`.
+-/
 theorem kerInf_add {π : CuspSub E a} {F G : GA E a → ℂ} (hF : F ∈ rspan π) (hG : G ∈ rspan π) {X : Type}
     [MeasurableSpace X] {ν : Measure X} {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) :
     kerInf ν k γ (F + G) = kerInf ν k γ F + kerInf ν k γ G := by
@@ -164,9 +212,23 @@ theorem kerInf_add {π : CuspSub E a} {F G : GA E a → ℂ} (hF : F ∈ rspan �
     (kerInf_integrable_of_mem_rspan hG hk g)]
   simp only [Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Rewrite using `[rspan_eq_mspanR, WhitModel.mspanR_triv]`.
+-/
 theorem rspan_triv (ha : a ≤ 1) : rspan (CuspSub.triv E ha) = Submodule.span ℂ {fun _ => 1} := by
   rw [rspan_eq_mspanR, WhitModel.mspanR_triv]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `rspan_le ?_ (fun F hF h => ?_) fun F hF X _ ν _ k γ _ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, by funext g; simp [oneFn]⟩`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hF`. Conclude with `Submodule.mem_span_singleton.2 ⟨c * ((chiDet a χ h : ℂˣ) : ℂ), by funext g; simp; ring⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hF`. Use `Submodule.mem_span_singleton.2 ⟨∫ x, k x * (c * ((chiDet a χ (infGL E a (γ x)) : ℂˣ) : ℂ)) ∂ν, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, kerInf, map_mul, Units.val_mul]`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Establish `h` using `mem_rspan (π := (CuspSub.triv E ha).twist χ) (φ := mulChi a χ (oneFn E a)) ⟨oneFn E a, Submodule.mem_span_singleton_self _, rfl⟩`. Establish `e : (mulChi a χ (oneFn E a)).1 = fun g => ((chiDet a χ g : ℂˣ) : ℂ)` using `by funext g; simp [oneFn]`. Rewrite `h` using `[e]`.
+
+Conclude with `h`.
+-/
 theorem rspan_twist_triv (ha : a ≤ 1) (χ : Formalism.L2.Host.HChar E) :
     rspan ((CuspSub.triv E ha).twist χ) = Submodule.span ℂ {fun g => ((chiDet a χ g : ℂˣ) : ℂ)} := by
   apply le_antisymm
@@ -190,6 +252,9 @@ theorem rspan_twist_triv (ha : a ≤ 1) (χ : Formalism.L2.Host.HChar E) :
     rw [e] at h
     exact h
 
+/- English proof (translation)
+Introduce `g h e` and use `by have h1 := map_plGL w g w rw [e, map_plGL, if_pos rfl, if_pos rfl] at h1 exact h1.symm`.
+-/
 theorem plGL_injective (w : InfinitePlace E) : Function.Injective (plGL (a := a) w) := fun g h e => by
   have h1 := map_plGL w g w
   rw [e, map_plGL, if_pos rfl, if_pos rfl] at h1

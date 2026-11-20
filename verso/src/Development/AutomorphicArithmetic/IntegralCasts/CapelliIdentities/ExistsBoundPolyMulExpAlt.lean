@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `c hc N`. Use `⟨Real.exp ((N : ℝ) ^ 2 / (4 * c)), fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 + r) ^ N ≤ Real.exp ((N : ℝ) * r)`. Rewrite using `[Real.exp_nat_mul]`. Use `pow_le_pow_left₀ (by positivity) ?_ N` and prove the remaining obligations.
+
+Combine the linear relations using `[Real.add_one_le_exp r]`. Establish `h2 : (N : ℝ) * r + -(c * r ^ 2) ≤ (N : ℝ) ^ 2 / (4 * c)`. Rewrite using `[le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg ((N : ℝ) - 2 * c * r)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.Rd2.exists_bound_poly_mul_exp :
     ∀ (c : ℝ),
     (0 : ℝ) < c →

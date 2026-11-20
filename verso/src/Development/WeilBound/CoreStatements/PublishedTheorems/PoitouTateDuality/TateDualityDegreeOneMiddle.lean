@@ -12,6 +12,9 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+The claim follows from `resCmpChar1' d.e (ι := S) (Lv := fun v : S => ↥(Dec (F := Kf.1) (Av v))) (Hv := fun v : S => (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1) ≃ₐ[ (v : HeightOneSpectrum (𝓞 Kf.1)).adicCompletion Kf.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 Kf.1)).adicC …`.
+-/
 theorem tate_duality_degree_one_middle (Kf : FiniteSubfield) [NumberField Kf.1]
     [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)] (S : Finset (HeightOneSpectrum (𝓞 Kf.1))) {l r : ℕ}
     [Fact l.Prime] (ζ : AlgebraicClosure ℚ) (Av : S → ValuationSubring (AlgebraicClosure ℚ))

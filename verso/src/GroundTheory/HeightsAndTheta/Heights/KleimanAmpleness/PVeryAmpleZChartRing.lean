@@ -16,6 +16,13 @@ namespace VeryAmpleZChartRing
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Establish `hI : ∀ I : Chart x, ∃ M, c ^ M * y ∈ ampleChart H.toSubSystem m h I`. Introduce `I`. Establish `h1 : y ∈ ampleChart H.toSubSystem m h (AmpleAffineGen.unionChart I K)` using `AmpleAffineGen.ampleChart_mono (AmpleAffineGen.subset_unionChart_right I K) hy`. Take `⟨D, hD⟩` from `AmpleAffineGen.ampleChart_loc H I K h1`. Take `⟨e, he⟩` from `hrat I`.
+
+Use `⟨e * D, ?_⟩` and prove the remaining obligations. Use `mul_mem (pow_mem (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from he) D) (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from hD)` as an intermediate fact. Rewrite `this` using `[show c ^ e * (xProd I ^ K.1.card / xProd K ^ I.1.card) = c ^ e * AmpleAffineGen.chartRatio K I from rfl, AmpleAffineGen.pow_mul_cancel (AmpleAffineGen.chartRatio_mul_chartRatio I K)]`. Then use the resulting hypothesis. Use `choose M hM using hI`. Use `⟨Finset.univ.sup M, Set.mem_iInter.mpr fun I => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : M I ≤ Finset.univ.sup M` using `Finset.le_sup (Finset.mem_univ I)`. Establish `e1 : c ^ Finset.univ.sup M * y = c ^ (Finset.univ.sup M - M I) * (c ^ M I * y)`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Rewrite using `[e1]`. Conclude with `mul_mem (pow_mem (show c ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from Set.mem_iInter.mp hc I) _) (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from hM I)`.
+-/
 theorem exists_pow_mul_mem_ampleRing (H : LineBundle S x) {m : ℕ} {h : Ω}
     (hh : ∀ I, h ∈ (H.pow m).sub I) {c : Ω} (hc : c ∈ ampleRing H.toSubSystem m h) (K : Chart x)
     (hrat : ∀ I : Chart x, ∃ e : ℕ,
@@ -46,12 +53,18 @@ theorem exists_pow_mul_mem_ampleRing (H : LineBundle S x) {m : ℕ} {h : Ω}
       Set.mem_iInter.mp hc I) _)
     (show _ ∈ AmpleAffineGen.ampleSubalg H.toSubSystem m h I (hh I) from hM I)
 
+/- English proof (translation)
+The claim follows from `Algebra.adjoin_le (by rintro _ ⟨l, rfl⟩ exact ⟨X l, X j, 1, X_mem_monos hj, isHomogeneous_X S l, isHomogeneous_X S j, by simp⟩)`.
+-/
 theorem ampleBase_le_chartRing {r : ℕ} {h : Fin (r + 1) → Ω} (J : Chart h) {j : Fin (r + 1)} (hj : j ∈ J.1) :
     ampleBase (S := S) h j ≤ chartRing S h J :=
   Algebra.adjoin_le (by
     rintro _ ⟨l, rfl⟩
     exact ⟨X l, X j, 1, X_mem_monos hj, isHomogeneous_X S l, isHomogeneous_X S j, by simp⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X j ^ J.1.card, AmpleAffineGen.monoProd J.1, J.1.card, AmpleAffineGen.monoProd_mem_monos subset_rfl, by simpa using (isHomogeneous_X S j).pow J.1.card, AmpleAffineGen.monoProd_isHomogeneous J.1, by rw [map_pow, aeval_X, AmpleAffineGen.aeval_monoProd, xProd]⟩`.
+-/
 theorem pow_div_xProd_mem {r : ℕ} {h : Fin (r + 1) → Ω} (J : Chart h) (j : Fin (r + 1)) :
     h j ^ J.1.card / xProd J ∈ chartRing S h J :=
   ⟨X j ^ J.1.card, AmpleAffineGen.monoProd J.1, J.1.card, AmpleAffineGen.monoProd_mem_monos subset_rfl,
@@ -62,6 +75,19 @@ end VeryAmpleZChartRing
 
 open VeryAmpleZChartRing in
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x H r h hv J j hjJ c hc K hrat α hα`. Establish `hj0 : h j ≠ 0` using `(mem_support h).mp (J.2.2 hjJ)`. Establish `hh : ∀ I : Chart x, h j ∈ (H.pow 1).sub I` using `fun I => by`. Rewrite using `[SubSystem.pow_sub, pow_one]`. Conclude with `(Submodule.mem_iInf _).mp (hv.mem_secs j) I`.
+
+Establish `hJ0 : xProd J ≠ 0` using `AmpleAffineGen.xProd_ne_zero J`. Take `⟨n, hn⟩` from `hα`. Use `set g : Ω := xProd J / h j ^ J.1.card with hg`. Establish `hy : α * g ^ n ∈ ampleChart H.toSubSystem 1 (h j) K`. Use `⟨J.1.card * n, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : α * g ^ n * h j ^ (J.1.card * n) = α * xProd J ^ n`. Rewrite using `[hg, div_pow, pow_mul, ← pow_mul, mul_comm J.1.card n, pow_mul, mul_assoc, div_mul_cancel₀ _ (pow_ne_zero _ (pow_ne_zero _ hj0))]`. Rewrite using `[e1, one_mul]`. Conclude with `hn`. Take `⟨M₀, hM₀⟩` from `exists_pow_mul_mem_ampleRing H hh hc K hrat hy`.
+
+Establish `hbase` using `ampleBase_le_chartRing (S := S) J hjJ`. Establish `h1 : c ^ M₀ * (α * g ^ n) ∈ chartRing S h J` using `hbase (hv.closed j hj0 hM₀)`. Establish `hcJ : c ∈ chartRing S h J` using `hbase (hv.closed j hj0 hc)`. Establish `h2 : c ^ M₀ * α ∈ chartRing S h J`. Establish `e2 : c ^ M₀ * α = c ^ M₀ * (α * g ^ n) * (h j ^ J.1.card / xProd J) ^ n`.
+
+Rewrite using `[hg, mul_assoc (c ^ M₀), mul_assoc α, ← mul_pow, div_mul_div_cancel₀ (pow_ne_zero _ hj0), div_self hJ0, one_pow, mul_one]`. Rewrite using `[e2]`. Conclude with `mul_mem h1 (pow_mem (pow_div_xProd_mem J j) n)`. Use `eventually_atTop.mpr ⟨M₀, fun M hM => ?_⟩` and prove the remaining obligations. Establish `e3 : c ^ M * α = c ^ (M - M₀) * (c ^ M₀ * α)`.
+
+Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hM]`. Rewrite using `[e3]`. Conclude with `mul_mem (pow_mem hcJ _) h2`.
+-/
 theorem VeryAmpleZChartRing.proof : VeryAmpleZChartRing.Statement.{u, w} := by
   intro S _ Ω _ _ N x H r h hv J j hjJ c hc K hrat α hα
   have hj0 : h j ≠ 0 := (mem_support h).mp (J.2.2 hjJ)

@@ -18,8 +18,14 @@ def diagGL {K : Type} [Field K] (d : Fin n → Kˣ) : GL (Fin n) K where
   val_inv := by rw [Matrix.diagonal_mul_diagonal]; simp
   inv_val := by rw [Matrix.diagonal_mul_diagonal]; simp
 
+/- English proof (translation)
+The claim follows from `nnnorm_le_one_iff_mem.symm`.
+-/
 theorem mem_int_iff {a : Fv F v} : a ∈ v.adicCompletionIntegers F ↔ ‖a‖₊ ≤ 1 := nnnorm_le_one_iff_mem.symm
 
+/- English proof (translation)
+Rewrite using `[← mem_int_iff]`. Set `N : Matrix (Fin n) (Fin n) (v.adicCompletionIntegers F).toSubring` to `Matrix.of fun i j => ⟨M i j, hM i j⟩`. Establish `hN : M = N.map (v.adicCompletionIntegers F).toSubring.subtype` using `by ext i j; rfl`. Rewrite using `[hN, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(N.det).2`.
+-/
 theorem nnnorm_det_le {M : Matrix (Fin n) (Fin n) (Fv F v)} (hM : ∀ i j, M i j ∈ v.adicCompletionIntegers F) :
     ‖M.det‖₊ ≤ 1 := by
   rw [← mem_int_iff]
@@ -28,6 +34,11 @@ theorem nnnorm_det_le {M : Matrix (Fin n) (Fin n) (Fv F v)} (hM : ∀ i j, M i j
   rw [hN, ← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (N.det).2
 
+/- English proof (translation)
+Rewrite `hk` using `[mem_GLint_iff]`. Establish `h1` using `nnnorm_det_le hk.1`. Establish `h2` using `nnnorm_det_le hk.2`. Establish `h3 : ‖k.1.det‖₊ * ‖(k⁻¹).1.det‖₊ = 1`. Rewrite using `[← nnnorm_mul, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one, nnnorm_one]`.
+
+Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nnnorm_det_eq_one {k : GL (Fin n) (Fv F v)}
     (hk : k ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring) : ‖k.1.det‖₊ = 1 := by
   rw [mem_GLint_iff] at hk
@@ -41,6 +52,11 @@ theorem nnnorm_det_eq_one {k : GL (Fin n) (Fv F v)}
     _ ≤ ‖k.1.det‖₊ * 1 := mul_le_mul_of_nonneg_left h2 (by positivity)
     _ = ‖k.1.det‖₊ := mul_one _
 
+/- English proof (translation)
+Rewrite `hk`, the goal using `[mem_GLint_iff]`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[dualConj_val]`. Simplify using `using hk.2 j i`. Rewrite using `[← map_inv, dualConj_val]`.
+
+Simplify using `using hk.1 j i`.
+-/
 theorem dualConj_mem {k : GL (Fin n) (Fv F v)}
     (hk : k ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring) :
     dualConj 1 k ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring := by
@@ -51,6 +67,11 @@ theorem dualConj_mem {k : GL (Fin n) (Fv F v)}
   · rw [← map_inv, dualConj_val]
     simpa using hk.1 j i
 
+/- English proof (translation)
+Unfold `IsElemDiv at hd ⊢`. Take `⟨k₁, hk₁, k₂, hk₂, hx⟩` from `hd`. Establish `hx' : x = k₁ * diagGL d * k₂` using `Units.ext (by rw [hx]; rfl)`. Use `⟨dualConj 1 k₁, dualConj_mem hk₁, dualConj 1 k₂, dualConj_mem hk₂, ?_⟩` and prove the remaining obligations. Establish `hD : (dualConj 1 (diagGL d)).1 = Matrix.diagonal fun i => (((d i)⁻¹ : (Fv F v)ˣ) : Fv F v)`.
+
+Rewrite using `[dualConj_val]`. Use `show (1 * Matrix.diagonal (fun i => (((d i)⁻¹ : (Fv F v)ˣ) : Fv F v)) * 1)ᵀ = _`. Rewrite using `[Matrix.one_mul, Matrix.mul_one, Matrix.diagonal_transpose]`. Rewrite using `[hx', map_mul, map_mul, Units.val_mul, Units.val_mul, hD]`.
+-/
 theorem isElemDiv_dual {x : GL (Fin n) (Fv F v)} {d : Fin n → (Fv F v)ˣ} (hd : IsElemDiv x d) :
     IsElemDiv (dualConj 1 x) fun i => (d i)⁻¹ := by
   unfold IsElemDiv at hd ⊢
@@ -63,6 +84,11 @@ theorem isElemDiv_dual {x : GL (Fin n) (Fv F v)} {d : Fin n → (Fv F v)ˣ} (hd 
     rw [Matrix.one_mul, Matrix.mul_one, Matrix.diagonal_transpose]
   rw [hx', map_mul, map_mul, Units.val_mul, Units.val_mul, hD]
 
+/- English proof (translation)
+Establish `ht : 0 < ‖(t : Fv F v)‖₊` using `nnnorm_pos.2 t.ne_zero`. Use `split_ifs with h`. Simplify using `only [mem_int_iff, nnnorm_mul, Units.val_inv_eq_inv_val, nnnorm_inv, inv_mul_le_iff₀ ht, mul_one]`. Conclude with `⟨fun h' => h'.2, fun h' => ⟨h'.trans h, h'⟩⟩`. Simplify using `only [mem_int_iff, nnnorm_mul, Units.val_inv_eq_inv_val, nnnorm_inv, inv_mul_le_iff₀ ht, mul_one, inv_one, Units.val_one, nnnorm_one, one_mul]`.
+
+Conclude with `⟨fun h' => h'.1, fun h' => ⟨h', h'.trans (not_le.1 h).le⟩⟩`.
+-/
 private theorem unit_mul_mem_iff' (t : (Fv F v)ˣ) (z : Fv F v) :
     (z ∈ v.adicCompletionIntegers F ∧ ((t⁻¹ : (Fv F v)ˣ) : Fv F v) * z ∈ v.adicCompletionIntegers F) ↔
       (((if ‖(t : Fv F v)‖₊ ≤ 1 then t else 1 : (Fv F v)ˣ)⁻¹ : (Fv F v)ˣ) : Fv F v) * z ∈
@@ -75,6 +101,23 @@ private theorem unit_mul_mem_iff' (t : (Fv F v)ˣ) (z : Fv F v) :
       inv_one, Units.val_one, nnnorm_one, one_mul]
     exact ⟨fun h' => h'.1, fun h' => ⟨h', h'.trans (not_le.1 h).le⟩⟩
 
+/- English proof (translation)
+Unfold `IsElemDiv at hd`. Take `⟨k₁, hk₁, k₂, hk₂, hx⟩` from `hd`. Take `⟨m, hm⟩ : ∃ m : Fin n → (Fv F v)ˣ, m = fun i => if ‖(d i : Fv F v)‖₊ ≤ 1 then d i else 1` from `⟨_, rfl⟩`. Establish `hx' : x = k₁ * diagGL d * k₂` using `Units.ext (by rw [hx]; rfl)`. Take `⟨c, hc⟩ : ∃ c : GL (Fin n) (Fv F v), c = k₁ * diagGL m` from `⟨_, rfl⟩`.
+
+Establish `hdinv : ∀ (e : Fin n → (Fv F v)ˣ) (w : Fin n → Fv F v) (i : Fin n), (((diagGL e)⁻¹).1 *ᵥ w) i = (((e i)⁻¹ : (Fv F v)ˣ) : Fv F v) * w i`. Introduce `e w i`. Use `show (Matrix.diagonal (fun j => (((e j)⁻¹ : (Fv F v)ˣ) : Fv F v)) *ᵥ w) i = _`. Rewrite using `[Matrix.mulVec_diagonal]`. Establish `hk₁' : k₁⁻¹ ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring` using `inv_mem hk₁`.
+
+Establish `hk₂' : k₂⁻¹ ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring` using `inv_mem hk₂`. Establish `key : ∀ u : Fin n → Fv F v, (∀ i, ((a⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F) ↔ ∀ i, ((c⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F`. Introduce `u`. Rewrite using `[← H]`. Establish `e1 : (x⁻¹).1 *ᵥ u = (k₂⁻¹).1 *ᵥ (((diagGL d)⁻¹).1 *ᵥ ((k₁⁻¹).1 *ᵥ u))`.
+
+Rewrite using `[hx', mul_inv_rev, mul_inv_rev, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `e2 : (c⁻¹).1 *ᵥ u = ((diagGL m)⁻¹).1 *ᵥ ((k₁⁻¹).1 *ᵥ u)`. Rewrite using `[hc, mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Rewrite using `[e1, e2, (mem_GLint_iff_mulVec.1 hk₁') u, ← (mem_GLint_iff_mulVec.1 hk₂') _]`. Simplify using `only [hdinv]`.
+
+Rewrite using `[← forall_and]`. Conclude with `forall_congr' fun i => by rw [hm]; exact unit_mul_mem_iff' (d i) _`. Establish `hg : a⁻¹ * c ∈ GLint (Fin n) (v.adicCompletionIntegers F).toSubring`. Rewrite using `[mem_GLint_iff_mulVec]`. Introduce `u`.
+
+Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, key, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hdet : ‖a.1.det‖₊ = ‖c.1.det‖₊`. Rewrite using `[← mul_inv_cancel_left a c, Units.val_mul, Matrix.det_mul, nnnorm_mul, nnnorm_det_eq_one hg, mul_one]`. Rewrite using `[hdet, hc, Units.val_mul, Matrix.det_mul, nnnorm_mul, nnnorm_det_eq_one hk₁, one_mul]`. Use `show ‖(Matrix.diagonal fun i => ((m i : (Fv F v)ˣ) : Fv F v)).det‖₊ = _`.
+
+Rewrite using `[Matrix.det_diagonal, nnnorm_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hm]`. Use `show ‖((if ‖(d i : Fv F v)‖₊ ≤ 1 then d i else 1 : (Fv F v)ˣ) : Fv F v)‖₊ = _`. Use `split_ifs with hi`.
+
+Conclude with `(min_eq_left hi).symm`. Rewrite using `[Units.val_one, nnnorm_one]`. Conclude with `(min_eq_right (not_le.1 hi).le).symm`.
+-/
 theorem nnnorm_det_inter {a x : GL (Fin n) (Fv F v)} {d : Fin n → (Fv F v)ˣ} (hd : IsElemDiv x d)
     (H : ∀ u : Fin n → Fv F v, ((∀ i, u i ∈ v.adicCompletionIntegers F) ∧
       ∀ i, ((x⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F) ↔ ∀ i, ((a⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F) :
@@ -122,6 +165,9 @@ theorem nnnorm_det_inter {a x : GL (Fin n) (Fv F v)} {d : Fin n → (Fv F v)ˣ} 
   · rw [Units.val_one, nnnorm_one]
     exact (min_eq_right (not_le.1 hi).le).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, splitIncl, Matrix.map_apply]`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, mul_comm (M i j), splitIdem_mul, smul_smul, mul_comm (u j)]`.
+-/
 theorem mulVec_splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (u : Fin n → Fv F v) : M *ᵥ splitIncl h τ u = splitIncl h τ (M.map (splitProj τ) *ᵥ u) := by
   funext i
@@ -130,6 +176,17 @@ theorem mulVec_splitIncl (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (M : Mat
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [mul_smul_comm, mul_comm (M i j), splitIdem_mul, smul_smul, mul_comm (u j)]
 
+/- English proof (translation)
+Take `⟨αw, hαw⟩ : ∃ αw : GL (Fin n) (Fv F v), αw.1 = α.1.map (splitProj τ)` from `⟨Matrix.GeneralLinearGroup.map (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) α, rfl⟩`. Establish `hdet : splitProj τ α.1.det = (β⁻¹ * αw * β).1.det`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, mul_right_comm, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one, one_mul, hαw, AlgHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hdet]`.
+
+Use `nnnorm_det_inter hd fun u => ?_` and prove the remaining obligations. Establish `hA : splitIncl h τ (β.1 *ᵥ u) ∈ latLoc F L v ↔ ∀ i, u i ∈ v.adicCompletionIntegers F` using `(splitIncl_mem_latLoc_iff h).trans (hβ u).symm`. Establish `hB : splitIncl h τ (β.1 *ᵥ u) ∈ latMoved σ J L v g ↔ ∀ i, (((splitEquivIn h hJ τ β g)⁻¹).1 *ᵥ u) i ∈ v.adicCompletionIntegers F`. Rewrite using `[mem_latMoved, matHom_mulVec_splitIncl, splitIncl_mem_latLoc_iff h, hβ.mem_iff, splitEquivIn_apply]`. Simplify using `only [mul_inv_rev, inv_inv, map_inv, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+
+Establish `hC : (∃ z ∈ latLoc F L v, splitIncl h τ (β.1 *ᵥ u) = α.1 *ᵥ z) ↔ (αw⁻¹).1 *ᵥ (β.1 *ᵥ u) ∈ splitLat τ L`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hyz⟩`. Establish `e` using `congrArg (splitVec τ) hyz`. Rewrite `e` using `[splitVec_splitIncl, splitVec_mulVec, ← hαw]`.
+
+Rewrite using `[e, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `mem_splitLat.2 ⟨z, hz, rfl⟩`. Introduce `hs`. Use `⟨splitIncl h τ ((αw⁻¹).1 *ᵥ (β.1 *ᵥ u)), (splitIncl_mem_latLoc_iff h).2 hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_splitIncl, ← hαw, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Rewrite using `[← hA, ← hB, H, hC, hβ.mem_iff]`. Simplify using `only [mul_inv_rev, inv_inv, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem nnnorm_splitProj_det (h : IsCMExt F E σ) (hJ : IsHermND σ J) {L : Submodule (𝓞 E) (Fin n → E)}
     {τ : E →ₐ[F] Fv F v} {β : GL (Fin n) (Fv F v)} (hβ : IsSplitBasis τ L β) {g : GLoc σ J v}
     {α : GL (Fin n) (Fv F v ⊗[F] E)}
@@ -166,17 +223,26 @@ theorem nnnorm_splitProj_det (h : IsCMExt F E σ) (hJ : IsHermND σ J) {L : Subm
   rw [← hA, ← hB, H, hC, hβ.mem_iff]
   simp only [mul_inv_rev, inv_inv, Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply]`. Establish `e : Algebra.lmul K (K × K) (a, b) = LinearMap.prodMap (LinearMap.mulLeft K a) (LinearMap.mulLeft K b)`. Apply the tactic sequence `refine LinearMap.ext fun p => Prod.ext ?_ ?_ <;> simp`. Rewrite using `[e, LinearMap.det_prodMap, LinearMap.det_mulLeft, LinearMap.det_mulLeft]`.
+-/
 private theorem algebra_norm_prod_pair_eq_mul {K : Type} [Field K] (a b : K) : Algebra.norm K ((a, b) : K × K) = a * b := by
   rw [Algebra.norm_apply]
   have e : Algebra.lmul K (K × K) (a, b) = LinearMap.prodMap (LinearMap.mulLeft K a) (LinearMap.mulLeft K b) := by
     refine LinearMap.ext fun p => Prod.ext ?_ ?_ <;> simp
   rw [e, LinearMap.det_prodMap, LinearMap.det_mulLeft, LinearMap.det_mulLeft]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.norm_eq_of_algEquiv (splitAlgEquiv h τ) x, splitAlgEquiv_apply]`. Conclude with `algebra_norm_prod_pair_eq_mul _ _`.
+-/
 theorem norm_eq_split (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (x : Fv F v ⊗[F] E) :
     Algebra.norm (Fv F v) x = splitProj τ x * splitProj (τ.comp σ) x := by
   rw [← Algebra.norm_eq_of_algEquiv (splitAlgEquiv h τ) x, splitAlgEquiv_apply]
   exact algebra_norm_prod_pair_eq_mul _ _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[dualConj_val, dualConj_val]`. Simplify using `only [mul_inv_rev, inv_inv, Units.val_mul, Units.val_one, inv_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`.
+-/
 private theorem dualConj_eq_dualConj_one_conj {K : Type} [Field K] (A x : GL (Fin n) K) :
     dualConj A x = dualConj 1 (A * x * A⁻¹) := by
   apply Units.ext
@@ -184,6 +250,13 @@ private theorem dualConj_eq_dualConj_one_conj {K : Type} [Field K] (A x : GL (Fi
   simp only [mul_inv_rev, inv_inv, Units.val_mul, Units.val_one, inv_one, Matrix.one_mul, Matrix.mul_one,
     Matrix.mul_assoc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hu s hs`. Conclude with `sum_mem fun i _ => mul_mem (hu i) (hs i)`. Introduce `H i`. Use `H (Pi.single i 1) fun j => by` as an intermediate fact.
+
+Break down `eq_or_ne j i with rfl | hji` into its components or cases. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hji]`. Conclude with `zero_mem _`.
+
+Rewrite `this` using `[dotProduct_single, mul_one]`. Then use the resulting hypothesis.
+-/
 private theorem forall_mem_integers_iff_dotProduct_mem (u : Fin n → Fv F v) : (∀ i, u i ∈ v.adicCompletionIntegers F) ↔
     ∀ s : Fin n → Fv F v, (∀ i, s i ∈ v.adicCompletionIntegers F) → u ⬝ᵥ s ∈ v.adicCompletionIntegers F := by
   classical
@@ -197,6 +270,23 @@ private theorem forall_mem_integers_iff_dotProduct_mem (u : Fin n → Fv F v) : 
       · rw [Pi.single_eq_of_ne hji]; exact zero_mem _
     rwa [dotProduct_single, mul_one] at this
 
+/- English proof (translation)
+Take `⟨β', hβ'eq⟩ : ∃ β' : GL (Fin n) (Fv F v), β' = dualConj 1 (splitGram hJ τ * β)` from `⟨_, rfl⟩`. Establish `hXJ : ((splitGram hJ τ * β)⁻¹).1 * J.map τ = (β⁻¹).1`. Rewrite using `[mul_inv_rev, Units.val_mul, Matrix.mul_assoc, ← splitGram_val hJ τ, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Establish `key : ∀ u t : Fin n → Fv F v, (β'.1 *ᵥ u) ⬝ᵥ (J.map τ *ᵥ t) = u ⬝ᵥ ((β⁻¹).1 *ᵥ t)`. Introduce `u t`.
+
+Rewrite using `[hβ'eq, dualConj_val]`. Simplify using `only [Units.val_one, inv_one, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hXJ]`. Establish `hβ' : IsSplitBasis (τ.comp σ) L β'`. Unfold `IsSplitBasis`.
+
+Introduce `u`. Rewrite using `[mem_splitLat_comp_iff h hJ hL, forall_mem_integers_iff_dotProduct_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `H' t ht`. Rewrite using `[key]`.
+
+Conclude with `H' _ (hβ.mem_iff.1 ht)`. Introduce `H' s hs`. Establish `hts : β.1 *ᵥ s ∈ splitLat τ L`. Rewrite using `[hβ.mem_iff, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hs`.
+
+Use `H' _ hts` as an intermediate fact. Rewrite `this` using `[key, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hd' : IsElemDiv (splitEquivIn h hJ (τ.comp σ) β' g) fun i => (d i)⁻¹`. Establish `e : splitEquivIn h hJ (τ.comp σ) β' g = dualConj 1 (splitEquivIn h hJ τ β g)`. Rewrite using `[splitEquivIn_apply, splitEquivIn_apply, splitHom_comp hJ τ g, dualConj_eq_dualConj_one_conj (splitGram hJ τ), hβ'eq, ← map_inv, ← map_mul, ← map_mul]`.
+
+Use `congr 1`. Use `group`. Rewrite using `[e]`. Conclude with `isElemDiv_dual hd`. Rewrite using `[absEv_apply, Matrix.GeneralLinearGroup.val_det_apply, norm_eq_split h τ, nnnorm_mul, nnnorm_splitProj_det h hJ hβ H hd, nnnorm_splitProj_det h hJ hβ' H hd', ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hpos : 0 < ‖(d i : Fv F v)‖₊` using `nnnorm_pos.2 (d i).ne_zero`. Rewrite using `[Units.val_inv_eq_inv_val, nnnorm_inv]`. Break down `le_total ‖(d i : Fv F v)‖₊ 1 with hle | hle` into its components or cases. Rewrite using `[min_eq_left hle, min_eq_right ((one_le_inv₀ hpos).2 hle), mul_one, min_eq_left (hle.trans ((one_le_inv₀ hpos).2 hle))]`.
+
+Rewrite using `[min_eq_right hle, min_eq_left ((inv_le_one₀ hpos).2 hle), one_mul, min_eq_right (((inv_le_one₀ hpos).2 hle).trans hle)]`.
+-/
 theorem absEv_det_split (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] (v : HeightOneSpectrum (𝓞 F))

@@ -12,6 +12,13 @@ open ReciprocityTheory.ChartRestriction.DS
 
 namespace GlobalTheory.PsCo.PcEF
 
+/- English proof (translation)
+Introduce `n ε lam hgap H _ _ _ σ hσ hirr V hV hV0 hc X _ _ D hD`. Use `haveI : CompleteSpace X := hD.1`. Establish `hσD : IsURepOn (UJset ε) D` using `hD.2.2.1`. Establish `hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v` using `kStable_of_isKStableSub hσ (isDerivedOn_smE hσ) V hV.1 hV.2.1`. Take `⟨V', hV', hV0', hVK', hc'⟩` from `arb_datum hD (casOnSmooth_of_isDS hD hgap)`.
+
+Establish `htop` using `data_closGen_eq_top hgap hσ (isDerivedOn_smE hσ) hV hc hVK hirr hV0`. Establish `htop'` using `data_closGen_eq_top hgap hσD (isDerivedOn_smE hσD) hV' hc' hVK' hD.2.2.2.1 hV0'`. Take `⟨U, hU⟩` from `data_unitary_equiv hgap hσ (isDerivedOn_smE hσ) hV hc hVK hV0 hσD (isDerivedOn_smE hσD) hV' hc' hVK' hV0'`. Use `⟨((LinearIsometryEquiv.ofTop _ _ htop).symm.trans U).trans (LinearIsometryEquiv.ofTop _ _ htop'), fun g hg x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.ofTop_apply]`.
+
+Apply `hU g hg` to reduce the goal to its premises. Simplify using `only [LinearIsometryEquiv.ofTop_symm_apply_coe]`.
+-/
 theorem eq_discreteSeries_of_lowestKType_casimir : DatumEquiv := by
   intro n ε lam hgap H _ _ _ σ hσ hirr V hV hV0 hc X _ _ D hD
   haveI : CompleteSpace X := hD.1

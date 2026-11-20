@@ -16,6 +16,15 @@ section Alg
 
 variable {M : Type*} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => simp [adLW, wordE]`. Consider the case `cons p w ih`. Take `⟨c, d⟩` from `p`.
+
+Establish `h1 : Finsupp.linearCombination ℂ (fun w' => wordE E w' x) ((adL a b (c, d)).mapDomain (· :: w)) = E a b (E c d (wordE E w x)) - E c d (E a b (wordE E w x))`. Rewrite using `[Finsupp.linearCombination_mapDomain]`. Establish `hg` using `congrArg (fun T : Module.End ℂ M => T (wordE E w x)) (hE a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at hg`. Rewrite using `[hg, adL, map_sub]`.
+
+Simplify using `only [Function.comp_def, wordAction_cons]`. Apply the tactic sequence `congr 1 <;> split_ifs with h <;> simp_all`. Establish `h2 : Finsupp.linearCombination ℂ (fun w' => wordE E w' x) ((adLW a b w).mapDomain ((c, d) :: ·)) = E c d (Finsupp.linearCombination ℂ (fun w' => wordE E w' x) (adLW a b w))`. Rewrite using `[Finsupp.linearCombination_mapDomain, Finsupp.apply_linearCombination]`. Use `congr 1`.
+
+Simplify using `only [adLW, map_add]`. Rewrite using `[h1, h2, ih, wordAction_cons, wordAction_cons, map_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lc_adLW (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a b : Fin n) (x : M) :
     ∀ w : List (Fin n × Fin n),
       Finsupp.linearCombination ℂ (fun w' => wordE E w' x) (adLW a b w) =
@@ -41,6 +50,13 @@ theorem lc_adLW (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a b
     rw [h1, h2, ih, wordAction_cons, wordAction_cons, map_sub]
     abel
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+
+Establish `key` using `lc_adLW E hE a b (v : M) w`. Rewrite `key` using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Rewrite using `[Cone.compactWordAction_single, dif_pos hab, map_add, map_sum, sT_single, Pi.add_apply, Finset.sum_apply]`. Simplify using `only [map_smul, sT_single, Pi.smul_apply]`. Distinguish the cases in `hd : d = c`.
+
+Substitute `hd` using the available equality. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[key, sub_add_cancel]`. Simplify using `[hd]`.
+-/
 theorem contraction_compactWordAction (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) (a b : Fin n) (hab : ε a = ε b)
     (x : KS (n := n) V) (d : Fin n) : sT E V (Cone.compactWordAction ε E V hV a b x) d = E a b (sT E V x d) := by
@@ -59,6 +75,9 @@ theorem contraction_compactWordAction (ε : Fin n → Bool) (E : Fin n → Fin n
       rw [key, sub_add_cancel]
     · simp [hd]
 
+/- English proof (translation)
+Establish `e : sA ε E V hV a b x = Cone.compactWordAction ε E V hV a b x + Cone.sC V a b x`. Simplify using `[Cone.compactWordAction]`. Use function extensionality and compare the values at `d`. Rewrite using `[e, map_add, Pi.add_apply, contraction_compactWordAction ε E V hV hE a b hab, Cone.sT_sC, Cone.tensV_eq]`.
+-/
 theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) (a b : Fin n) (hab : ε a = ε b) (x : KS (n := n) V) :
     sT E V (sA ε E V hV a b x) = tensV E a b (sT E V x) := by
@@ -67,6 +86,9 @@ theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (
   funext d
   rw [e, map_add, Pi.add_apply, contraction_compactWordAction ε E V hV hE a b hab, Cone.sT_sC, Cone.tensV_eq]
 
+/- English proof (translation)
+Simplify using `only [sA, Finsupp.lsum_single, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.lsingle_apply]`. Use `congr 1`. Apply the tactic sequence `congr 1 split_ifs <;> rfl`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem sA_single' (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (a b : Fin n) (p : List (Fin n × Fin n) × Fin n) (v : V) :
     sA ε E V hV a b (Finsupp.single p v) =
@@ -86,6 +108,13 @@ section IP
 
 variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `single p v`. Proceed by induction on `y using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [map_add, h, h']`. Consider the case `single q u`. Take `⟨w, c⟩` from `p`. Take `⟨w', c'⟩` from `q`.
+
+Rewrite using `[Cone.sC_single, Cone.sC_single]`. Apply the tactic sequence `by_cases h1 : c = b <;> by_cases h2 : c' = a <;>`. Simplify using `[h1, h2, Cone.ipK_single, Finsupp.single_apply, Prod.ext_iff]`.
+-/
 theorem ipK_sC (V : Submodule ℂ M) (a b : Fin n) (x y : KS (n := n) V) :
     Cone.ipK V (Cone.sC V a b x) y = Cone.ipK V x (Cone.sC V b a y) := by
   classical
@@ -103,6 +132,9 @@ theorem ipK_sC (V : Submodule ℂ M) (a b : Fin n) (x y : KS (n := n) V) :
       by_cases h1 : c = b <;> by_cases h2 : c' = a <;>
         simp [h1, h2, Cone.ipK_single, Finsupp.single_apply, Prod.ext_iff]
 
+/- English proof (translation)
+Establish `e : ∀ a b (z : KS (n` using `n) V), sA ε E V hV a b z = Cone.compactWordAction ε E V hV a b z + Cone.sC V a b z := by`. Introduce `a b z`. Simplify using `[Cone.compactWordAction]`. Rewrite using `[e, e, map_add, LinearMap.add_apply, map_add, Cone.inner_compactWordAction_adjoint hV hU hab, ipK_sC]`.
+-/
 theorem ipK_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hU : IsKUnitary ε E) {a b : Fin n} (hab : ε a = ε b)
     (x y : KS (n := n) V) : Cone.ipK V (sA ε E V hV a b x) y = Cone.ipK V x (sA ε E V hV b a y) := by
@@ -110,6 +142,23 @@ theorem ipK_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) 
     intro a b z; simp [Cone.compactWordAction]
   rw [e, e, map_add, LinearMap.add_apply, map_add, Cone.inner_compactWordAction_adjoint hV hU hab, ipK_sC]
 
+/- English proof (translation)
+Establish `hU' : IsKUnitary ε E` using `hU`. Take `⟨x, rfl⟩` from `sT_surj E V f hf`. Use `set R := x.support.sup fun p => p.1.length with hR`. Set `S : Set (List (Fin n × Fin n) × Fin n)` to `{p | p.1.length ≤ R}`. Establish `hSf : S.Finite` using `((List.finite_length_le (Fin n × Fin n) R).prod Set.finite_univ).subset fun p hp => ⟨hp, trivial⟩`.
+
+Use `hSf.to_subtype` as an intermediate fact. Establish `hfd : FiniteDimensional ℂ (Finsupp.supported V ℂ S)` using `Module.Finite.equiv (Finsupp.supportedEquivFinsupp (M := V) (R := ℂ) S).symm`. Establish `hS : IsKStableSub ε (sA ε E V hV) (Finsupp.supported V ℂ S)`. Introduce `a b hab y hy`. Rewrite using `[← Finsupp.sum_single y, Finsupp.sum, map_sum]`.
+
+Use `Submodule.sum_mem _ fun p hp => ?_` and prove the remaining obligations. Establish `hpS : p.1.length ≤ R` using `hy hp`. Rewrite using `[sA_single']`. Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun w' hw' => Submodule.smul_mem _ _ (Finsupp.single_mem_supported ℂ _ ?_)) ?_) ?_` and prove the remaining obligations. Use `show w'.length ≤ R`.
+
+Rewrite using `[TRA.adLW_length a b _ _ hw']`. Conclude with `hpS`. Rewrite using `[dif_pos hab]`. Conclude with `Finsupp.single_mem_supported ℂ _ hpS`. Use `split_ifs`.
+
+Conclude with `Finsupp.single_mem_supported ℂ _ (show p.1.length ≤ R from hpS)`. Conclude with `Submodule.zero_mem _`. Set `cr : InnerProductSpace.Core ℂ (KS (n` to `n) V) := { inner := fun x y => Cone.ipK V x y conj_inner_symm := fun x y => Cone.ipK_symm x y re_inner_nonneg := fun x => by`. Rewrite using `[Cone.ipK_apply, map_sum]`. Conclude with `sum_nonneg fun p _ => inner_self_nonneg`.
+
+Use `add_left := fun x y z => by rw [map_add, LinearMap.add_apply]`. Use `smul_left := fun x y r => by rw [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Use `definite := fun x hx => by`. Establish `h1` using `congrArg RCLike.re hx`. Rewrite `h1` using `[Cone.ipK_apply, map_sum, map_zero, sum_eq_zero_iff_of_nonneg fun p _ => inner_self_nonneg]`.
+
+Use `ext1 p`. Distinguish the cases in `hp : p ∈ x.support`. Establish `h2` using `h1 p hp`. Rewrite `h2` using `[inner_self_eq_norm_sq]`. Conclude with `norm_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp h2)`.
+
+Conclude with `Finsupp.notMem_support_iff.mp hp }`. Set `_ : NormedAddCommGroup (KS (n` to `n) V) := @InnerProductSpace.Core.toNormedAddCommGroup ℂ _ _ _ _ cr`. Set `_ : InnerProductSpace ℂ (KS (n` to `n) V) := InnerProductSpace.ofCore cr.toCore`. Take `⟨u, -, -, h1, h2⟩` from `lift_khw (ε := ε) (A := sA ε E V hV) (μ := μ) (B := tensV E) (fun a b hab x y => ipK_sA ε E V hV hU' hab x y) (sT E V) (fun a b hab x => sT_sA ε E V hV hE a b hab x) hfd hS (x₀ := x) (fun p hp => Finset.le_sup (f := fun p : List (Fin n × Fin n) × Fin n => p.1.length) hp) hμ`. Conclude with `⟨u, h1, h2⟩`.
+-/
 theorem lift_highestWeightVector {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M) (hV : IsKStableSub ε E V)
     [FiniteDimensional ℂ V] (hE : IsGlRep E)

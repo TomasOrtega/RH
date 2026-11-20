@@ -11,6 +11,23 @@ namespace GlobalTheory.InertNbr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨N, hN, hNa⟩` from `GlobalTheory.PlaceDatum.exists_den_adele (F := F) (E := E) a`. Establish `hN0 : (N : 𝓞 E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hv0 : Q.intValuation (N : 𝓞 E) ≠ 0` using `Q.intValuation_ne_zero _ hN0`. Use `set k : ℕ := (-(WithZero.log (Q.intValuation (N : 𝓞 E)))).toNat with hk`. Establish `hvk : Q.intValuation (N : 𝓞 E) = WithZero.exp (-(k : ℤ))`.
+
+Establish `h1` using `Q.intValuation_le_one (N : 𝓞 E)`. Rewrite `h1`, the goal using `[← WithZero.exp_log hv0]`. Establish `h2 : WithZero.log (Q.intValuation (N : 𝓞 E)) ≤ 0`. Rewrite using `[← WithZero.exp_le_exp]`. Simplify using `using h1`.
+
+Use `congr 1`. Rewrite using `[hk]`. Use linear arithmetic over natural numbers and integers. Choose the witnesses or unpack the hypotheses as in `⟨t, htk, htw⟩ : ∃ t ∈ Q.asIdeal ^ k, t ∉ w.asIdeal := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push Not at hn`. Establish `hle : Q.asIdeal ≤ w.asIdeal` using `w.isPrime.le_of_pow_le hn`. Conclude with `hw (HeightOneSpectrum.ext (Q.isMaximal.eq_of_le w.isPrime.ne_top hle)).symm`. Establish `hNE : ((N : 𝓞 E) : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hval : Q.valuation E ((t : E) * ((N : 𝓞 E) : E)⁻¹) ≤ 1`.
+
+Rewrite using `[map_mul, map_inv₀, show (t : E) = algebraMap (𝓞 E) E t from rfl, show ((N : 𝓞 E) : E) = algebraMap (𝓞 E) E (N : 𝓞 E) from rfl, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, hvk, mul_inv_le_iff₀ (zero_lt_iff.2 WithZero.exp_ne_zero), one_mul …`. Conclude with `(Q.intValuation_le_pow_iff_mem t k).2 htk`. Establish `hNc : ((N : ℕ) : E ⊗[F] Formalism.L2.Herm.Af F) = iA F E ((N : 𝓞 E) : E)` using `by simp`. Establish `hinv : iA F E ((N : 𝓞 E) : E) * iA F E (((N : 𝓞 E) : E))⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hNE, map_one]`.
+
+Establish `e : iA F E (algebraMap (𝓞 E) E t) * (ε * a) = ε * iA F E ((t : E) * ((N : 𝓞 E) : E)⁻¹) * ((N : E ⊗[F] Formalism.L2.Herm.Af F) * a)`. Rewrite using `[hNc, map_mul, show algebraMap (𝓞 E) E t = (t : E) from rfl]`. Take the linear combination `(-(iA F E (t : E) * ε * a)) * hinv`. Establish `hm : iA F E (algebraMap (𝓞 E) E t) * (ε * a) ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (h.mul_mem_of_val hval) hNa`. Establish `hm2 : ε * (iA F E (algebraMap (𝓞 E) E t) * a) ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[mul_left_comm]`. Conclude with `hm`. Use `⟨t, htw, hm, ?_⟩` and prove the remaining obligations.
+
+Establish `e2 : (⟨_, hm⟩ : Formalism.L2.Herm.intAf F E) = ⟨_, hm2⟩` using `Subtype.ext (mul_left_comm _ _ _)`. Rewrite using `[e2]`. Conclude with `h.resS_eq_zero hw hm2`.
+-/
 theorem exists_den_idem {Q w : Pl E} {ε : E ⊗[F] Formalism.L2.Herm.Af F} (h : IdemOf F Q ε) (hw : w ≠ Q)
     (a : E ⊗[F] Formalism.L2.Herm.Af F) :
     ∃ t : 𝓞 E, t ∉ w.asIdeal ∧ ∃ hm : iA F E (algebraMap (𝓞 E) E t) * (ε * a) ∈ Formalism.L2.Herm.intAf F E,
@@ -58,6 +75,9 @@ section Lat
 
 variable [StarRing E] {n : ℕ} [NeZero n]
 
+/- English proof (translation)
+Rewrite using `[pullV_mul_inv]`. Use `conv_lhs => rw [← sub_add_cancel (g : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) 1, ← hg]`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, add_comm]`. Use `congr 1`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem pullV_mul_idem {ε : E ⊗[F] Formalism.L2.Herm.Af F} (x g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (hg : ε • ((g : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1) = (g : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1)
     (v : Fin n → E) (i : Fin n) :
@@ -69,6 +89,19 @@ theorem pullV_mul_idem {ε : E ⊗[F] Formalism.L2.Herm.Af F} (x g : GL (Fin n) 
   congr 1
   simp only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Take `⟨s, hs, hsu⟩` from `pullV_den hv`. Use `set c := ((g : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1) *ᵥ pullV x v with hc`. Use `choose t ht hm hz using fun i => exists_den_idem h hw (c i)`. Establish `hT : (∏ i, t i) ∉ w.asIdeal` using `fun hT => by`. Take `⟨i, _, hi⟩` from `(w.isPrime.prod_mem_iff).1 hT`.
+
+Conclude with `ht i hi`. Establish `hTc : ∀ i, iA F E (algebraMap (𝓞 E) E (∏ j, t j)) * (ε * c i) ∈ Formalism.L2.Herm.intAf F E`. Introduce `i`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem t (Finset.mem_univ i)`. Rewrite using `[hr, map_mul, map_mul, mul_comm (iA F E (algebraMap (𝓞 E) E (t i))), mul_assoc]`.
+
+Conclude with `mul_mem (iA_mem r) (hm i)`. Use `⟨(Formalism.L2.Col.mem_locP w _ v).2 ⟨s * ∏ j, t j, fun hh => (w.isPrime.mem_or_mem hh).elim hs hT, (mem_globLat _ _).2 fun i => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[pullV_osmul, pullV_mul_idem x g hg, map_mul, map_mul, mul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm (iA F E (algebraMap (𝓞 E) E s)), mul_assoc]`.
+
+Conclude with `mul_mem (iA_mem _) (hsu i)`. Rewrite using `[mul_assoc]`. Conclude with `mul_mem (iA_mem _) (hTc i)`. Establish `h1 : iA F E (algebraMap (𝓞 E) E (s * t i)) * pullV x v i ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[map_mul, map_mul, mul_comm (iA F E (algebraMap (𝓞 E) E s)), mul_assoc]`.
+
+Conclude with `mul_mem (iA_mem _) (hsu i)`. Establish `h2 : iA F E (algebraMap (𝓞 E) E (s * t i)) * (ε * c i) ∈ Formalism.L2.Herm.intAf F E`. Rewrite using `[map_mul, map_mul, mul_assoc]`. Conclude with `mul_mem (iA_mem _) (hm i)`. Establish `hst : s * t i ∉ w.asIdeal` using `fun hh => (w.isPrime.mem_or_mem hh).elim hs (ht i)`.
+
+Rewrite using `[pullV_mul_idem x g hg, redA_add w hst h1 h2]`. Establish `h0 : redA w (ε * c i) = 0` using `redA_eq w (ht i) (hm i) (by rw [mul_zero, hz i])`. Rewrite using `[h0, add_zero]`.
+-/
 theorem mem_localization_globLat_mul_inv_of_ne {Q w : Pl E} {ε : E ⊗[F] Formalism.L2.Herm.Af F} (h : IdemOf F Q ε) (hw : w ≠ Q)
     (x g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (hg : ε • ((g : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1) = (g : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1)
@@ -107,6 +140,21 @@ theorem mem_localization_globLat_mul_inv_of_ne {Q w : Pl E} {ε : E ⊗[F] Forma
 
 end Lat
 
+/- English proof (translation)
+Establish `hb' : ε • (((b⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1) = ((b⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1`. Establish `e : ((b⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1 = -(((b⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) * ((b : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism …`. Rewrite using `[Matrix.mul_sub, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.mul_smul]`.
+
+Use `congr 2`. Establish `hiff : ∀ w : Pl E, w ≠ Q → ∀ v : Fin n → E, v ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Formalism.UG.CS.globLat (y * b) (stdLat E n)) ↔ v ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Formalism.UG.CS.globLat y (stdLat E n))`. Introduce `w hw v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Use `(mem_localization_globLat_mul_inv_of_ne h hw (y * b) b hb v hv).1` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis. Introduce `hv`. Use `(mem_localization_globLat_mul_inv_of_ne h hw y b⁻¹ hb' v hv).1` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+
+Establish `hred : ∀ w : Pl E, w ≠ Q → ∀ v : Fin n → E, v ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Formalism.UG.CS.globLat y (stdLat E n)) → ∀ i, redA w (pullV (y * b) v i) = redA w (pullV y v i)`. Introduce `w hw v hv i`. Use `(mem_localization_globLat_mul_inv_of_ne h hw y b⁻¹ hb' v hv).2 i` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Use `⟨funext fun P => funext fun v => ?_, funext fun w => funext fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `hP : P.1 ≠ Q` using `fun e => hQT (e ▸ P.2)`. Simplify using `only [decoRaw]`. Distinguish the cases in `hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.UG.CS.globLat y (stdLat E n))`. Rewrite using `[if_pos ((hiff P.1 hP v).2 hv), if_pos hv, hred P.1 hP v hv]`. Rewrite using `[if_neg (fun h' => hv ((hiff P.1 hP v).1 h')), if_neg hv]`.
+
+Establish `hP : w.1 ≠ Q` using `fun e => hQG (e ▸ w.2)`. Simplify using `only [decoRaw]`. Distinguish the cases in `hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ w.1.asIdeal (Formalism.UG.CS.globLat y (stdLat E n))`. Rewrite using `[if_pos ((hiff w.1 hP v).2 hv), if_pos hv]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `hred w.1 hP v hv i`. Rewrite using `[if_neg (fun h' => hv ((hiff w.1 hP v).1 h')), if_neg hv]`.
+-/
 theorem decoRaw_mul_idem [StarRing E] {n : ℕ} [NeZero n] (ST SG : Finset (Pl E)) (Q : Pl E)
     (ε : E ⊗[F] Formalism.L2.Herm.Af F) (h : IdemOf F Q ε) (hQT : Q ∉ ST) (hQG : Q ∉ SG)
     (y b : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hb : ε • (b.1 - 1) = b.1 - 1) :

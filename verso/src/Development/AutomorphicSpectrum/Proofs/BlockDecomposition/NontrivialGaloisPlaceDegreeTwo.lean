@@ -10,6 +10,15 @@ open GlobalTheory.CompanionTheory.DualHol
 
 namespace GlobalTheory.CompanionTheory.QuadPlace
 
+/- English proof (translation)
+Introduce `K _ _ h2 v w hw σ hσ`. Use `haveI := hw`. Establish `hs` using `SemiLocal.sum_ramificationIdx_mul_inertiaDeg K v`. Rewrite `hs` using `[h2]`. Establish `hle : Module.finrank (Qv v) (Kv K w) ≤ 2`.
+
+Rewrite using `[finrank_adicCompletion v w, ← hs]`. Conclude with `Finset.single_le_sum (f := fun b : SemiLocal.PlacesOver K v => b.1.asIdeal.ramificationIdx (𝓞 ℚ) * b.1.asIdeal.inertiaDeg (𝓞 ℚ)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ (⟨w, hw⟩ : SemiLocal.PlacesOver K v))`. Establish `hpos : 0 < Module.finrank (Qv v) (Kv K w)` using `Module.finrank_pos`. Establish `hne : Module.finrank (Qv v) (Kv K w) ≠ 1`. Introduce `h1`.
+
+Apply `hσ` to reduce the goal to its premises. Establish `hbt` using `Subalgebra.bot_eq_top_of_finrank_eq_one (F := Qv v) (E := Kv K w) h1`. Use extensionality with `x`. Establish `hx : x ∈ (⊥ : Subalgebra (Qv v) (Kv K w))`. Rewrite using `[hbt]`.
+
+Conclude with `Algebra.mem_top`. Take `⟨y, rfl⟩` from `Algebra.mem_bot.1 hx`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq_two_of_ne_refl : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (v : Pl) (w : PlK K) (_ : w.asIdeal.LiesOver v.asIdeal) (σ : Kv K w ≃ₐ[Qv v] Kv K w), σ ≠ AlgEquiv.refl → Module.finrank (Qv v) (Kv K w) = 2 := by
   classical
   intro K _ _ h2 v w hw σ hσ

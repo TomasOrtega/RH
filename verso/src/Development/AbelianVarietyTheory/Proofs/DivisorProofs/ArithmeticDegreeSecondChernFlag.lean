@@ -23,6 +23,13 @@ namespace GlobalTheory.FlagCh2Ring
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.psum_eq_mul_esymm_sub_sum (Fin r) ℚ 2 (by norm_num)]`. Establish `e : ({a ∈ Finset.HasAntidiagonal.antidiagonal 2 | a.1 ∈ Set.Ioo 0 2} : Finset (ℕ × ℕ)) = {(1, 1)}`. Use extensionality with `⟨a, b⟩`. Simplify using `only [Finset.mem_filter, Set.mem_Ioo, Finset.mem_singleton, Prod.mk.injEq]`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨rfl, rfl⟩`.
+
+Evaluate the numerical expressions. Rewrite using `[e, Finset.sum_singleton, MvPolynomial.psum_one, ← esymm_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psum_two (r : ℕ) : psum (Fin r) ℚ 2 = esymm (Fin r) ℚ 1 ^ 2 - 2 * esymm (Fin r) ℚ 2 := by
   rw [MvPolynomial.psum_eq_mul_esymm_sub_sum (Fin r) ℚ 2 (by norm_num)]
   have e : ({a ∈ Finset.HasAntidiagonal.antidiagonal 2 | a.1 ∈ Set.Ioo 0 2} : Finset (ℕ × ℕ)) = {(1, 1)} := by
@@ -39,6 +46,11 @@ theorem psum_two (r : ℕ) : psum (Fin r) ℚ 2 = esymm (Fin r) ℚ 1 ^ 2 - 2 * 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} {B : CxForm.BottChern}
   {h : IsRegVar p D}
 
+/- English proof (translation)
+Establish `e : CxForm.chPart r 2 = (1 / 2 : ℚ) • ((⟨esymm (Fin r) ℚ 1, esymm_isSymmetric _ _ 1⟩ : symmetricSubalgebra (Fin r) ℚ) ^ 2 - 2 * ⟨esymm (Fin r) ℚ 2, esymm_isSymmetric _ _ 2⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [CxForm.chPart, psum_two]`. Evaluate the numerical expressions. Use `left`.
+
+Both sides reduce to the same expression. Rewrite using `[e, map_smul, map_sub, map_mul, map_pow, map_ofNat, R.char_esymm, R.char_esymm]`.
+-/
 theorem char_chPart_two (R : CxForm.ArRing B h) {r : ℕ} (E : HermVB p r) :
     R.char E (CxForm.chPart r 2) = (1 / 2 : ℚ) • (R.cl E 1 ^ 2 - 2 * R.cl E 2) := by
   have e : CxForm.chPart r 2 = (1 / 2 : ℚ) •
@@ -56,6 +68,9 @@ namespace GlobalTheory.FlagCh2Ring
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Introduce `B k _ X p _ h S hS r s g G hi h₁ h₃ θ hθ hex hb`. Rewrite using `[IsRegVar.integral, VMetric.bcInt, ← finsum_neg_distrib]`. Conclude with `finsum_congr fun σ => (GlobalTheory.T.integral_eq_of_exact_real_form_curve k X p h σ _ _ (hθ.1 σ) (hex σ)).trans (GlobalTheory.T.integral_bott_chern_short_exact B k X p h S hS r s g G hi h₁ h₃ σ (hb σ))`.
+-/
 theorem bcInt_eq : ∀ (B : CxForm.BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X]
     (h : IsRegVar p 1) (S : ShortComplex X.Modules) (hS : S.ShortExact) (r s : ℕ) (g : VMetric p S.X₂ (r + s))
     (G : g.IsCInf) (hi : VB.IsSubbundle S.f) (h₁ : VB.IsVB S.X₁ r) (h₃ : VB.IsVB S.X₃ s) (θ : h.Fld),
@@ -66,6 +81,9 @@ theorem bcInt_eq : ∀ (B : CxForm.BottChern) (k : Type) [CommRing k] (X : Schem
   exact finsum_congr fun σ => (GlobalTheory.T.integral_eq_of_exact_real_form_curve k X p h σ _ _ (hθ.1 σ) (hex σ)).trans
     (GlobalTheory.T.integral_bott_chern_short_exact B k X p h S hS r s g G hi h₁ h₃ σ (hb σ))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hermVB_congr {F : X.Modules} {r : ℕ} {m₁ m₂ : VMetric p F r} (e : m₁ = m₂) (H₁ : m₁.IsCInf)
     (H₂ : m₂.IsCInf) : (⟨F, m₁, H₁⟩ : HermVB p r) = ⟨F, m₂, H₂⟩ := by
   subst e; rfl
@@ -75,6 +93,11 @@ variable {E : X.Modules} {r : ℕ} {h : VMetric p E r}
 def stepVB (H : h.IsCInf) (fl : Vert.Flag E r) (j : Fin (r + 1)) : HermVB p j :=
   ⟨fl.F j, h.restrict (fl.isSubbundle j) (fl.isVB j), H.restrict _ _⟩
 
+/- English proof (translation)
+Use `VMetric.ext (funext fun σ => Met.ext_form fun V s t y hy => ?_)` and prove the remaining obligations. Establish `key : ∀ t : Γ(fl.F i.castSucc, V), (fl.ι i.succ).app V ((fl.step i).app V t) = (fl.ι i.castSucc).app V t` using `fun t => by rw [← fl.step_ι i]; rfl`. Use `(((h.stepMet fl i).met σ).form_restrict hf (fl.isVB i.castSucc) s t hy).trans ?_` and prove the remaining obligations. Use `(((h.met σ).form_restrict (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hy)).trans ?_` and prove the remaining obligations. Rewrite using `[key, key]`.
+
+Conclude with `((h.met σ).form_restrict (fl.isSubbundle i.castSucc) (fl.isVB i.castSucc) s t hy).symm`.
+-/
 theorem restrict_stepMet (fl : Vert.Flag E r) (i : Fin r) (hf : VB.IsSubbundle (fl.step i)) :
     (h.stepMet fl i).restrict hf (fl.isVB i.castSucc) = h.restrict (fl.isSubbundle i.castSucc) (fl.isVB i.castSucc) := by
   refine VMetric.ext (funext fun σ => Met.ext_form fun V s t y hy => ?_)
@@ -85,6 +108,11 @@ theorem restrict_stepMet (fl : Vert.Flag E r) (i : Fin r) (hf : VB.IsSubbundle (
   rw [key, key]
   exact ((h.met σ).form_restrict (fl.isSubbundle i.castSucc) (fl.isVB i.castSucc) s t hy).symm
 
+/- English proof (translation)
+Establish `hf : VB.IsSubbundle (fl.step i)` using `⟨inferInstance, 1, fl.isVB_gr i⟩`. Establish `e` using `VMetric.isometric_det_tens_det k X p (VMetric.stepSeq fl i) i 1 (h.stepMet fl i) (H.restrict _ _) (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) hf`. Use `(HermLB.Isometric.tens_right ?_ _).trans e` and prove the remaining obligations. Use `HermLB.isometric_of_chart (fun c => c) (fun _ => le_rfl) (fun x c c' _ _ => rfl) fun σ c y hy => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-Real.log ((((h.stepMet fl i).met σ).restrict hf (fl.isVB i.castSucc)).G c y).det.re = -Real.log (((h.met σ).restrict (fl.isSubbundle i.castSucc) (fl.isVB i.castSucc)).G c y).det.re`.
+
+Rewrite using `[show ((h.stepMet fl i).met σ).restrict hf (fl.isVB i.castSucc) = (h.met σ).restrict (fl.isSubbundle i.castSucc) (fl.isVB i.castSucc) from congrArg (fun m : VMetric p _ _ => m.met σ) (restrict_stepMet fl i hf)]`.
+-/
 theorem isometric_det_step (H : h.IsCInf) (fl : Vert.Flag E r) (i : Fin r) :
     ((VMetric.det (H.restrict (fl.isSubbundle i.castSucc) (fl.isVB i.castSucc))).tens (VMetric.grLB fl i H)).Isometric
       (VMetric.det (H.restrict (fl.isSubbundle i.succ) (fl.isVB i.succ))) := by
@@ -109,6 +137,15 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} [IsIntegral X
 def twiceCh (H : h.IsCInf) (fl : Vert.Flag E r) (j : Fin (r + 1)) : R.CH :=
   R.cl (stepVB H fl j) 1 ^ 2 - 2 * R.cl (stepVB H fl j) 2
 
+/- English proof (translation)
+Establish `hf : VB.IsSubbundle (fl.step i)` using `⟨inferInstance, 1, fl.isVB_gr i⟩`. Establish `H₂ : (h.stepMet fl i).IsCInf` using `H.restrict _ _`. Establish `H₁ : ((h.stepMet fl i).restrict hf (fl.isVB i.castSucc)).IsCInf` using `H₂.restrict _ _`. Take `⟨θ, hθ, hex, hw⟩` from `R.whitney (VMetric.stepSeq_shortExact fl i) H₁ H₂ (H.grMet fl i)`. Establish `hint` using `bcInt_eq B k X p hX (VMetric.stepSeq fl i) (VMetric.stepSeq_shortExact fl i) i 1 (h.stepMet fl i) H₂ hf (fl.isVB i.castSucc) (fl.isVB_gr i) θ hθ hex hb`.
+
+Establish `e₁ : (⟨_, (h.stepMet fl i).restrict hf (fl.isVB i.castSucc), H₁⟩ : HermVB p i) = stepVB H fl i.castSucc` using `hermVB_congr (restrict_stepMet fl i hf) _ _`. Establish `e₂ : (⟨_, h.stepMet fl i, H₂⟩ : HermVB p (i + 1)) = stepVB H fl i.succ` using `rfl`. Rewrite `hw` using `[e₁, e₂, R.cl_eq_zero (⟨_, h.grMet fl i, H.grMet fl i⟩ : HermVB p 1) 2 (by norm_num)]`. Establish `hl : R.cl (⟨_, h.grMet fl i, H.grMet fl i⟩ : HermVB p 1) 1 = R.c1 (VMetric.grLB fl i H)` using `R.cl_one _`. Rewrite `hw` using `[hl]`.
+
+Establish `hc : R.cl (stepVB H fl i.succ) 1 = R.cl (stepVB H fl i.castSucc) 1 + R.c1 (VMetric.grLB fl i H)`. Rewrite using `[R.cl_one, R.cl_one, ← R.firstChernTensor]`. Conclude with `(R.firstChernCongr _ _ (isometric_det_step H fl i)).symm`. Establish `e₃ : twiceCh R H fl i.succ = twiceCh R H fl i.castSucc + R.c1 (VMetric.grLB fl i H) ^ 2 + (R.a θ + R.a θ)`. Simplify using `only [twiceCh]`.
+
+Rewrite using `[hc]`. Take the linear combination `2 * hw`. Establish `hsq : R.deg (R.c1 (VMetric.grLB fl i H) ^ 2) = x` using `R.degreeFirstChernPow _ _ hx`. Rewrite using `[e₃, map_add, map_add, map_add, hsq, R.deg_a θ hθ, hint]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_twiceCh_succ (H : h.IsCInf) (fl : Vert.Flag E r) (i : Fin r) {x : ℝ}
     (hx : (VMetric.grLB fl i H).IsSelfInter x)
     (hb : (h.stepMet fl i).BcFinite (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)) :
@@ -141,6 +178,17 @@ end GlobalTheory.FlagCh2Ring
 
 namespace GlobalTheory.FlagCh2Ring
 
+/- English proof (translation)
+Introduce `B k _ S p _ h R r E fl a ha`. Take `⟨hfin, x, hx, rfl⟩` from `ha`. Establish `hE (j : ℕ) : R.cl E j = R.cl (stepVB E.cInf fl (Fin.last r)) j` using `(R.cl_congr (stepVB E.cInf fl (Fin.last r)) E (@asIso _ _ _ _ (fl.ι (Fin.last r)) fl.isIso_last) (fun σ V s t y hy => ((E.h.met σ).form_restrict (fl.isSubbundle _) (fl.isVB _) s t hy).symm) j).symm`. Set `t : Fin (r + 1) → ℝ` to `fun j => R.deg (twiceCh R E.cInf fl j)`. Establish `h₀ : t 0 = 0`.
+
+Simplify using `only [t, twiceCh]`. Rewrite using `[R.cl_eq_zero _ 1 (by simp), R.cl_eq_zero _ 2 (by simp)]`. Simplify using the standard rewrite rules. Establish `hstep (i : Fin r) : t i.succ - t i.castSucc = x i - (E.h.stepMet fl i).bcInt (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)`. Simplify using `only [t]`.
+
+Rewrite using `[deg_twiceCh_succ R E.cInf fl i (hx i) (hfin i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `(Fin.sum_univ_succ t).symm.trans (Fin.sum_univ_castSucc t)`. Establish `hlast : t (Fin.last r) = ∑ i, (x i - (E.h.stepMet fl i).bcInt (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i))`. Rewrite using `[← Finset.sum_congr rfl fun i _ => hstep i, Finset.sum_sub_distrib]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[char_chPart_two, map_smul, hE 1, hE 2]`. Express the relevant statement in the definitionally equal form `(1 / 2 : ℚ) • t (Fin.last r) = _`. Rewrite using `[hlast, Rat.smul_def, Finset.sum_sub_distrib, VMetric.flagBc, Finset.sum_div]`. Use `push_cast`.
+
+Rewrite using `[← Finset.sum_div, ← Finset.sum_div]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_ch2_eq_flag : ∀ (B : CxForm.BottChern) (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S]
     (h : IsRegVar p 1) (R : CxForm.ArRing B h) (r : ℕ) (E : HermVB p r) (fl : Vert.Flag E.E r) (a : ℝ),
     VMetric.IsFlagCh2 E.cInf fl a → R.deg (R.char E (CxForm.chPart r 2)) = a := by

@@ -10,6 +10,9 @@ open scoped Classical nonZeroDivisors
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.LocIdeal (locId)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TateIdelic.integrable_tate | exact GlobalTheory.TateIdelic.integrable_tate | (intros; apply GlobalTheory.TateIdelic.integrable_tate <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_norm_integral_fractional_ideal : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (μ : Measure (AE F E)ˣ), μ.IsHaarMeasure →
     ∀ (μi : Measure (idelesAt E (evI F))), μi.IsHaarMeasure → ∀ (s : ℕ), 2 ≤ s →
     ∀ (g : (AE F E)ˣ → ℝ), Measurable g → (∀ l, ∀ m ∈ idelesAt E (fun x : AF F => x.2), g (l * m) = g l) →

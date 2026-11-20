@@ -22,6 +22,9 @@ open ValuativeRel
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatBound.locCo_latAtV_bounded | exact GlobalTheory.LatBound.locCo_latAtV_bounded | (intros; apply GlobalTheory.LatBound.locCo_latAtV_bounded <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tensorLattice_localDarbouxCoords_bounded : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F))
     {B : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → AF F}

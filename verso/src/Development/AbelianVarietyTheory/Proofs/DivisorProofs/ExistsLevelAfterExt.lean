@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.LevelAfterExt
 
+/- English proof (translation)
+Establish `H` using `hQ.2.1`. Use `Q.isAb.comm` as an intermediate fact. Establish `hG : GlobalFnsSt` using `GlobalTheory.laws_without_cohomology.1`. Set `e : Over.mk (spMap β) ⟶ 𝟙_ (Over (Sp O))` to `Over.homMk (spMap β) (Category.comp_id _)`. Take `⟨c, hc, -⟩` from `LevelCompare.weil_existsUnique Q n x y hx hy`.
+
+Establish `h₁` using `CommPairing.weilIs_pull hG Q.isAb Q.isLB e hc`. Establish `h₂` using `(weilIs_grpPullback_of_comm _ _ Q.A Q'.A _ ψ Q.L Q'.L Q.isLB Q'.isLB H hQ.2.2.symm _ n _ _ (pushPt H.1.w _) (pushPt H.1.w _) _ rfl rfl).1 hw`. Establish `h₃ : WeilIs Q.A Q.L n (e ≫ x) (e ≫ y) (unitOn (Units.map β.toMonoidHom u))` using `UnifPoint.weilIs_congr (Category.id_comp _) (ObjPull.secPull_left H x) (ObjPull.secPull_left H y) h₂`. Establish `h₄` using `CommutatorPairing.weilIs_unique hG Q.isAb Q.isLB h₁ h₃`. Take `⟨w, rfl⟩ : ∃ w : Oˣ, unitOn w = c` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom.toMonoidHom c, Units.ext (CommRingCat.inv_hom_apply (Scheme.ΓSpecIso (CommRingCat.of O)) c.val)⟩`.
+
+Establish `e' : Units.map e.left.appTop.hom.toMonoidHom (unitOn w) = unitOn (Units.map β.toMonoidHom w)` using `Units.ext (congrArg (fun q => q.hom w.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`. Establish `inj : Function.Injective (unitOn (R` using `C)) := Units.map_injective (Scheme.ΓSpecIso (CommRingCat.of C)).symm.commRingCatIsoToRingEquiv.injective`. Establish `h₅` using `congrArg Units.val (inj (e'.symm.trans h₄))`. Take `rfl : w = u` from `Units.ext (β.injective h₅)`. Conclude with `hc`.
+-/
 theorem weilIs_of_ext {O C : Type} [Field O] [Field C] (β : O →+* C) {Q : PolAV (Sp O)}
     {Q' : PolAV (Sp C)} {ψ : Q'.A.left ⟶ Q.A.left} (hQ : IsPolFibre β Q Q' ψ)
     (n : ℕ) (x y : 𝟙_ (Over (Sp O)) ⟶ Q.A) (u : Oˣ) (hx : x ^ n = 1) (hy : y ^ n = 1)
@@ -44,6 +51,23 @@ theorem weilIs_of_ext {O C : Type} [Field O] [Field C] (β : O →+* C) {Q : Pol
   obtain rfl : w = u := Units.ext (β.injective h₅)
   exact hc
 
+/- English proof (translation)
+Take `⟨K', _, _, hfin, H⟩` from `TorsRational.exists_ext_points K (torsion P₀.A N) (AbTorsionAnyBase.isFinite_and_flat_torsion (Sp K) P₀.A P₀.isAb N hN).1`. Use `⟨K', inferInstance, inferInstance, hfin, ?_⟩` and prove the remaining obligations. Introduce `K'' Ω _ _ i f hf P ψ hP σ Q ψσ hQ y hy`. Use `letI : Algebra K' K'' := i.toAlgebra`. Use `letI : Algebra K K'' := f.toAlgebra`.
+
+Use `haveI : IsScalarTower K K' K'' := IsScalarTower.of_algebraMap_eq' hf.symm`. Establish `hPg : IsGrpPullback P.A P₀.A (spMap f) ψ` using `hP.2.1`. Establish `hQg : IsGrpPullback Q.A P.A (spMap σ) ψσ` using `hQ.2.1`. Set `x0` to `ObjPull.pushEquiv hPg _ (ObjPull.pushEquiv hQg (𝟙_ _) y)`. Establish `hx0 : x0 ^ N = 1` using `by simp only [x0, ← map_pow, hy, map_one]`.
+
+Establish `hx0l : x0.left = (y.left ≫ ψσ) ≫ ψ` using `rfl`. Establish `hmul : x0 ≫ mulN P₀.A N = toUnit _ ≫ η`. Rewrite using `[GrpTangent.mulN_eq_pow, MonObj.comp_pow, Category.comp_id, hx0, Hom.one_def]`. Set `t0 : _ ⟶ torsion P₀.A N` to `pullback.lift x0 (toUnit _) hmul`. Establish `ht0 : t0 ≫ torsion.ι P₀.A N = x0` using `pullback.lift_fst _ _ _`.
+
+Establish `hs : ((𝟙_ (Over (Sp Ω))).hom ≫ spMap σ) ≫ spMap f = spMap (σ.comp f)`. Rewrite using `[Category.assoc, spMap_comp_spMap]`. Conclude with `Category.id_comp _`. Take `⟨w, hw⟩` from `H K'' Ω σ t0.left ((Over.w t0).trans hs)`. Establish `hw2 : w ≫ (torsion P₀.A N).hom = (𝟙_ (Over (Sp K''))).hom ≫ spMap f`.
+
+Use `spec_map_field_cancel σ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hw, Over.w t0]`. Use `hs.trans ?_` and prove the remaining obligations. Rewrite using `[← spMap_comp_spMap]`. Conclude with `congrArg (spMap σ ≫ ·) (Category.id_comp _).symm`.
+
+Set `w1 : Over.mk ((𝟙_ (Over (Sp K''))).hom ≫ spMap f) ⟶ P₀.A` to `Over.homMk (w ≫ (torsion.ι P₀.A N).left) (by rw [Category.assoc, Over.w, hw2]; rfl)`. Set `x` to `(ObjPull.pushEquiv hPg (𝟙_ _)).symm w1`. Establish `hxl : x.left ≫ ψ = w ≫ (torsion.ι P₀.A N).left` using `ObjPull.pushEquiv_symm_left hPg _ w1`. Use `⟨x, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Use `hQg.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[ObjPull.secPull_left]`. Use `hPg.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hxl, ← Category.assoc, hw, ← Over.comp_left, ht0, hx0l]`. Rewrite using `[Category.assoc, Over.w x, Category.assoc, hQg.1.w, ← Category.assoc, Over.w y]`.
+
+Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem exists_ext_torsion (K : Type) [Field K] (P₀ : PolAV (Sp K)) (N : ℕ) (hN : 1 ≤ N) :
     ∃ (K' : Type) (_ : Field K') (_ : Algebra K K'), Module.Finite K K' ∧
       ∀ (K'' Ω : Type) [Field K''] [Field Ω] (i : K' →+* K'') (f : K →+* K''), i.comp (algebraMap K K') = f →
@@ -90,6 +114,13 @@ theorem exists_ext_torsion (K : Type) [Field K] (P₀ : PolAV (Sp K)) (N : ℕ) 
       exact (Category.comp_id _).trans (Category.id_comp _).symm
   · rw [Over.w, Over.w]
 
+/- English proof (translation)
+Take `⟨K', _, _, hfin, H⟩` from `exists_ext_torsion K P₀ N hN`. Use `⟨K', inferInstance, inferInstance, hfin, fun K'' _ i f hf P ψ hP g hg ze hze => ?_⟩` and prove the remaining obligations. Set `Ω` to `AlgebraicClosure K''`. Set `σ : K'' →+* Ω` to `algebraMap K'' Ω`. Use `haveI : CharZero Ω := (σ.comp f).charZero_iff (σ.comp f).injective |>.1 inferInstance`.
+
+Take `⟨Q, φ, hQ⟩` from `exists_isPolFibre GlobalTheory.laws_without_cohomology.2.2.1 σ P`. Take `⟨l, h₁, h₂, h₃⟩` from `SiegPt.exists_level (O := Ω) (C := Ω) Q g N (Units.map σ.toMonoidHom ze) (hQ.1.trans hg) (IsUnit.mk0 _ (Nat.cast_ne_zero.2 (by omega))) (hze.map_of_injective σ.injective)`. Establish `hinj : Function.Injective (ObjPull.secPull hQ.2.1)` using `fun a b h => Over.OverMorphism.ext (spec_map_field_cancel σ _ _ (by`. Rewrite using `[← ObjPull.secPull_left hQ.2.1, ← ObjPull.secPull_left hQ.2.1, h]))`. Use `choose t ht using fun a => H K'' Ω i f hf P ψ hP σ Q φ hQ (l a) (h₂ a)`.
+
+Establish `tors : ∀ a, t a ^ N = 1` using `fun a => hinj (by rw [map_pow, ht, map_one, h₂])`. Use `⟨t, fun a b => hinj ?_, tors, fun a b => weilIs_of_ext σ hQ N _ _ _ (tors a) (tors b) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ht, ht, ht, h₁]`. Rewrite using `[ht, ht, map_zpow]`. Conclude with `h₃ a b`.
+-/
 theorem exists_ext_level (K : Type) [Field K] [CharZero K] (P₀ : PolAV (Sp K)) (N : ℕ) (hN : 1 ≤ N) :
     ∃ (K' : Type) (_ : Field K') (_ : Algebra K K'), Module.Finite K K' ∧
       ∀ (K'' : Type) [Field K''] (i : K' →+* K'') (f : K →+* K''), i.comp (algebraMap K K') = f →
@@ -117,6 +148,19 @@ theorem exists_ext_level (K : Type) [Field K] [CharZero K] (P₀ : PolAV (Sp K))
 
 open GlobalTheory.ArcPull ReciprocityTheory.ChartRestriction.G.DVR in
 
+/- English proof (translation)
+Take `⟨-, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Establish `sq : spMap (fracMap hg) ≫ jK R = jK R' ≫ spMap g` using `(fracMap_sq hg).symm.trans (Category.id_comp _)`. Take `⟨dA, gpA, tA⟩` from `hA`. Establish `gpG` using `ThetaBaseChange.grp_generic U.toUnifPre`. Establish `gp' : IsGrpPullback ((Over.pullback (jK R')).obj ((Over.pullback (specOf g)).obj G)) G (spMap (fracMap hg) ≫ jK R) (pullback.fst ((Over.pullback (specOf g)).obj G).hom (jK R') ≫ pullback.fst G.hom (spMap g))` using `((isGrpPullback_pullback ((Over.pullback (specOf g)).obj G) (jK R')).comp (isGrpPullback_pullback G (spMap g))).congr sq.symm rfl`.
+
+Take `⟨eA, mE, heA⟩` from `grpPullback_iso gp' (gpA.comp gpG)`. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hbc : (Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g) = pullback.fst G.hom (spMap g)` using `Category.id_comp _`. Establish `wA : LBIso (A'.L.pull eA.hom.left) (U.LG.L.pull (pullback.fst ((Over.pullback (specOf g)).obj G).hom (jK R') ≫ (Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g)))`.
+
+Use `LBIso.trans (pull_isLB A'.isLB _) (pull_isLB (pull_isLB A.isLB gA) eA.hom.left) (pull_isLB U.LG.isLB _) ((LBIso.symm tA).chartPull (Geo.Tor.chartPullPull A'.L _ _ rfl) (Geo.Tor.chartPullPull (A.L.pull gA) _ _ rfl)) ?_` and prove the remaining obligations. Use `LBIso.chartPull (h := eA.hom.left ≫ gA ≫ U.gen.inv.left) (chartPullLinComb A.L gA (fun _ => eA.hom.left) (fun _ => U.gen.hom.left) _ _ fun _ => ?_) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => ?_) U.ext` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hgi, Category.comp_id]`. Rewrite using `[hbc, ← heA]`. Simplify using `only [Category.assoc]`.
+
+Establish `he : eSec ((Over.pullback (specOf g)).obj G) ≫ (Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g) = specOf g ≫ eSec G`. Rewrite using `[hbc]`. Conclude with `(cubeMapOf (isGrpPullback_pullback G (spMap g))).e_comm`. Establish `hr : (rigPullOf (G` using `G) (G' := (Over.pullback (specOf g)).obj G) _ (specOf g) he U.LG.L U.LG.rig).IsGen := LBxP.isGen_pullAlong U.LG.L _ (specOf g) (fun _ : PUnit => eSec G) (fun _ => 1) (fun _ => eSec ((Over.pullback (specOf g)).obj G)) (fun _ => he) U.LG.rig U.LG.rigGen`. Set `L' : RigLB ((Over.pullback (specOf g)).obj G)` to `⟨U.LG.L.pull ((Iso.refl ((Over.pullback (specOf g)).obj G)).hom.left ≫ pullback.fst G.hom (specOf g)), rigPullOf (G := G) (G' := (Over.pullback (specOf g)).obj G) _ (specOf g) he U.LG.L U.LG.rig, pull_isLB U.LG.isLB _, hr⟩`.
+
+Take `⟨Wo, hWo, hψ⟩` from `h5.psiOnExists R I hR D`. Establish `hgen : (specOf g).base (genericPoint (Spec (CommRingCat.of R'))) ∈ Wo`. Establish `: (specOf g).base (genericPoint (Spec (CommRingCat.of R'))) = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective g hg)`.
+
+Rewrite using `[this]`. Conclude with `hWo`. Establish `mR : IsMonHom (Iso.refl ((Over.pullback (specOf g)).obj G)).hom` using `by show IsMonHom (𝟙 _); infer_instance`. Take `⟨D', hD, U', -, -, -⟩` from `h4.unifBaseChange R R' I I' hR hR' g hI D A G hG U Wo hψ hgen ((Over.pullback (specOf g)).obj G) (Iso.refl _) mR A' dA eA mE wA L' (idIso _) he (idIso_isGen L'.isLB) (fun p => hr p.1 p.2)`. Conclude with `⟨D', hD, ⟨U'⟩⟩`.
+-/
 theorem exists_pull {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {I : Ideal R} {I' : Ideal R'}
     (hR : AdmBase R I) (hR' : AdmBase R' I') (g : R →+* R') (hg : Function.Injective g) (hI : I.map g ≤ I')
     {D : DegData R I} {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)}

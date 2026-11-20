@@ -15,12 +15,23 @@ private def dualIncl (K : IntermediateField F E) : DualNumber ↥K →+* DualNum
   map_zero' := by ext <;> simp
   map_add' x y := by ext <;> simp
 
+/- English proof (translation)
+Simplify using `[dualIncl]`.
+-/
 private theorem dualIncl_fst (K : IntermediateField F E) (x : DualNumber ↥K) :
     (dualIncl K x).fst = ((x.fst : ↥K) : E) := by simp [dualIncl]
 
+/- English proof (translation)
+Simplify using `[dualIncl]`.
+-/
 private theorem dualIncl_snd (K : IntermediateField F E) (x : DualNumber ↥K) :
     (dualIncl K x).snd = ((x.snd : ↥K) : E) := by simp [dualIncl]
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h1` using `congrArg TrivSqZeroExt.fst h`. Establish `h2` using `congrArg TrivSqZeroExt.snd h`. Rewrite `h1` using `[dualIncl_fst, dualIncl_fst]`. Rewrite `h2` using `[dualIncl_snd, dualIncl_snd]`.
+
+Conclude with `TrivSqZeroExt.ext (Subtype.ext h1) (Subtype.ext h2)`.
+-/
 private theorem dualIncl_inj (K : IntermediateField F E) : Function.Injective (dualIncl K) := by
   intro x y h
   have h1 := congrArg TrivSqZeroExt.fst h
@@ -29,6 +40,15 @@ private theorem dualIncl_inj (K : IntermediateField F E) : Function.Injective (d
   rw [dualIncl_snd, dualIncl_snd] at h2
   exact TrivSqZeroExt.ext (Subtype.ext h1) (Subtype.ext h2)
 
+/- English proof (translation)
+Set `A : Matrix (Fin 3) (Fin 3) (DualNumber ↥K)` to `Matrix.of fun a b => TrivSqZeroExt.inl (⟨_, (hu a b).1⟩ : ↥K) + TrivSqZeroExt.inr (⟨_, (hu a b).2⟩ : ↥K)`. Establish `hA : A.map (dualIncl K) = (u : Matrix (Fin 3) (Fin 3) (DualNumber E))`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, dualIncl_fst]`.
+
+Simplify using `[A]`. Rewrite using `[Matrix.map_apply, dualIncl_snd]`. Simplify using `[A]`. Establish `hd : IsUnit A.det`. Establish `h1 : IsUnit (dualIncl K A.det)`.
+
+Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hA]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 u.isUnit`. Rewrite `h1` using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, dualIncl_fst, isUnit_iff_ne_zero]`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero]`. Introduce `h0`.
+
+Conclude with `h1 (by rw [h0]; rfl)`. Conclude with `⟨((Matrix.isUnit_iff_isUnit_det _).2 hd).unit, Units.ext hA⟩`.
+-/
 private theorem gl_desc (K : IntermediateField F E) (u : GL (Fin 3) (DualNumber E))
     (hu : ∀ a b, ((u : Matrix (Fin 3) (Fin 3) (DualNumber E)) a b).fst ∈ K ∧
       ((u : Matrix (Fin 3) (Fin 3) (DualNumber E)) a b).snd ∈ K) :
@@ -50,6 +70,11 @@ private theorem gl_desc (K : IntermediateField F E) (u : GL (Fin 3) (DualNumber 
     exact h1 (by rw [h0]; rfl)
   exact ⟨((Matrix.isUnit_iff_isUnit_det _).2 hd).unit, Units.ext hA⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ a b`. Rewrite using `[GG.map_mat, Matrix.map_apply, dualIncl_fst, dualIncl_snd]`. Conclude with `⟨SetLike.coe_mem _, SetLike.coe_mem _⟩`. Introduce `h`.
+
+Take `⟨v, hv⟩` from `gl_desc K x.left h`. Conclude with `⟨⟨v, x.right⟩, SemidirectProduct.ext hv rfl⟩`.
+-/
 private theorem gg_range_iff (K : IntermediateField F E) (x : GG 3 (DualNumber E)) :
     x ∈ (GG.map (m := 3) (dualIncl K)).range ↔
       ∀ a b, (x.mat a b).fst ∈ K ∧ (x.mat a b).snd ∈ K := by
@@ -61,6 +86,9 @@ private theorem gg_range_iff (K : IntermediateField F E) (x : GG 3 (DualNumber E
     obtain ⟨v, hv⟩ := gl_desc K x.left h
     exact ⟨⟨v, x.right⟩, SemidirectProduct.ext hv rfl⟩
 
+/- English proof (translation)
+Introduce `x y h` and use `by refine SemidirectProduct.ext (Units.ext ?_) (congrArg SemidirectProduct.right h :) refine Matrix.ext fun a b => ?_ exact hι (congrFun (congrFun (congrArg GG.mat h) a) b)`.
+-/
 private theorem ggmap_inj {C B : Type} [CommRing C] [CommRing B] (ι : C →+* B) (hι : Function.Injective ι) :
     Function.Injective (GG.map (m := 3) ι) := fun x y h => by
   refine SemidirectProduct.ext (Units.ext ?_) (congrArg SemidirectProduct.right h :)
@@ -71,15 +99,36 @@ private def ents (A : Matrix (Fin 3) (Fin 3) (DualNumber E)) : Set E :=
   Set.range (fun p : Fin 3 × Fin 3 => (A p.1 p.2).fst) ∪
     Set.range (fun p : Fin 3 × Fin 3 => (A p.1 p.2).snd)
 
+/- English proof (translation)
+The claim follows from `(Set.finite_range _).union (Set.finite_range _)`.
+-/
 private theorem ents_finite (A : Matrix (Fin 3) (Fin 3) (DualNumber E)) : (ents A).Finite :=
   (Set.finite_range _).union (Set.finite_range _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h (Or.inl ⟨(a, b), rfl⟩), h (Or.inr ⟨(a, b), rfl⟩)⟩`.
+-/
 private theorem of_ents {A : Matrix (Fin 3) (Fin 3) (DualNumber E)} {K : IntermediateField F E}
     (h : ents A ⊆ K) (a b : Fin 3) : (A a b).fst ∈ K ∧ (A a b).snd ∈ K :=
   ⟨h (Or.inl ⟨(a, b), rfl⟩), h (Or.inr ⟨(a, b), rfl⟩)⟩
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ _ r' h hc1 hc2`. Take `⟨ι, _, K, hK, hcov⟩` from `GlobalTheory.CompactRepField.exists_countable_family l`. Set `S : IntermediateField ℚ_[l] (PadicAlgCl l) → Subgroup Γ` to `fun M => (GG.map (m := 3) (dualIncl M)).range.comap r'`. Establish `hS : ∀ M g, g ∈ S M ↔ ∀ a b, ((r' g).mat a b).fst ∈ M ∧ ((r' g).mat a b).snd ∈ M` using `fun M g => gg_range_iff M (r' g)`. Establish `hKcl : ∀ m, IsClosed (K m : Set (PadicAlgCl l))` using `fun m => haveI : FiniteDimensional ℚ_[l] (K m).toSubalgebra.toSubmodule := hK m Submodule.closed_of_finiteDimensional (K m).toSubalgebra.toSubmodule`.
+
+Establish `hcl : ∀ m, IsClosed (S (K m) : Set Γ)` using `fun m => by`. Establish `: (S (K m) : Set Γ) = ⋂ a, ⋂ b, ((fun g => ((r' g).mat a b).fst) ⁻¹' (K m) ∩ (fun g => ((r' g).mat a b).snd) ⁻¹' (K m))`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter]`. Conclude with `hS _ g`.
+
+Rewrite using `[this]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => ((hKcl m).preimage (hc1 a b)).inter ((hKcl m).preimage (hc2 a b))`. Establish `hun : ⋃ m, (S (K m) : Set Γ) = Set.univ`. Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hcov _ (ents_finite (r' g).mat)`.
+
+Conclude with `Set.mem_iUnion.2 ⟨m, (hS _ g).2 (of_ents hm)⟩`. Take `⟨m, x, hx⟩` from `nonempty_interior_of_iUnion_of_closed hcl hun`. Establish `hop : IsOpen (S (K m) : Set Γ)` using `Subgroup.isOpen_of_mem_nhds _ (mem_interior_iff_mem_nhds.1 hx)`. Use `haveI : Finite (Γ ⧸ S (K m)) := Subgroup.quotient_finite_of_isOpen _ hop`. Take `⟨n, hn⟩` from `hcov (ents (h : Matrix (Fin 3) (Fin 3) (DualNumber (PadicAlgCl l))) ∪ ⋃ q : Γ ⧸ S (K m), ents (r' q.out).mat) ((ents_finite _).union (Set.finite_iUnion fun q => ents_finite _))`.
+
+Use `haveI := hK m`. Use `haveI := hK n`. Establish `hmono : ∀ M M', M ≤ M' → S M ≤ S M'` using `fun M M' hM g hg => (hS _ g).2 fun a b => ⟨hM ((hS _ g).1 hg a b).1, hM ((hS _ g).1 hg a b).2⟩`. Establish `hall : ∀ g, g ∈ S (K n ⊔ K m)` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (S (K m)) g`.
+
+Establish `hg : g = (g : Γ ⧸ S (K m)).out * (k : Γ)⁻¹`. Rewrite using `[hk, mul_inv_cancel_right]`. Rewrite using `[hg]`. Use `mul_mem (hmono _ _ le_sup_left ?_) (hmono _ _ le_sup_right (inv_mem k.2))` and prove the remaining obligations. Conclude with `(hS _ _).2 (of_ents fun z hz => hn (Or.inr (Set.mem_iUnion.2 ⟨_, hz⟩)))`.
+
+Take `⟨h₁, hh₁⟩` from `gl_desc (K n ⊔ K m) h (of_ents fun z hz => (le_sup_left : K n ≤ K n ⊔ K m) (hn (Or.inl hz)))`. Establish `hall' : ∀ g, ∃ y, GG.map (m` using `3) (dualIncl (K n ⊔ K m)) y = r' g := hall`. Use `choose u hu using hall'`. Conclude with `⟨⟨K n ⊔ K m, inferInstance⟩, dualIncl (K n ⊔ K m), MonoidHom.mk' u fun g g' => ggmap_inj _ (dualIncl_inj _) (by rw [map_mul, hu, hu, hu, map_mul]), h₁, fun x => ⟨dualIncl_fst _ x, dualIncl_snd _ x⟩, MonoidHom.ext hu, hh₁⟩`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.rig_desc :
     ∀ {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (r' : Γ →* GG 3 (DualNumber (PadicAlgCl l))) (h : GL (Fin 3) (DualNumber (PadicAlgCl l))), (∀ a b, Continuous fun g => ((r' g).mat a b).fst) → (∀ a b, Continuous fun g => ((r' g).mat a b).snd) → ∃ (L : Formalism.BasicNotions.Loc.FinExt l) (f : DualNumber ↥L.1 →+* DualNumber (PadicAlgCl l)) (r₁ : Γ →* GG 3 (DualNumber ↥L.1)) (h₁ : GL (Fin 3) (DualNumber ↥L.1)), (∀ x, (f x).fst = ((x.fst : ↥L.1) : PadicAlgCl l) ∧ (f x).snd = ((x.snd : ↥L.1) : PadicAlgCl l)) ∧ (GG.map f).comp r₁ = r' ∧ Matrix.GeneralLinearGroup.map f h₁ = h := by
   intro l _ Γ _ _ _ _ _ r' h hc1 hc2

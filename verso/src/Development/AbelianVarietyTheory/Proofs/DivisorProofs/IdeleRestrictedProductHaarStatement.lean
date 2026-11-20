@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ConeSoB GlobalTheory.ThK.ConeEuler GlobalTheory.UnrEuler
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.ConeEuler.integral_euler_ideles | exact GlobalTheory.ThK.ConeEuler.integral_euler_ideles | (intros; apply GlobalTheory.ThK.ConeEuler.integral_euler_ideles <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_restricted_product_haar : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (μI : Measure (idelesAt E (evI F))), μI.IsHaarMeasure →
     ∀ (μv : ∀ v : Pl F, Measure (idelesAt E (evFin F v))), (∀ v, IsNormE E v (μv v)) →

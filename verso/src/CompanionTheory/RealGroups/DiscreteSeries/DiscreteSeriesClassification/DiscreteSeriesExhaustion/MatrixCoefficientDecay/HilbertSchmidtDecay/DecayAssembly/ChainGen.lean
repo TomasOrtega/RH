@@ -9,6 +9,15 @@ namespace CompanionTheory.RgExh.Dec.L.SA
 
 open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Establish `hgt : ReciprocityTheory.ChartRestriction.DS.inUJ ε (g * aT A t)`. Establish `h2` using `hexp t`. Unfold `ReciprocityTheory.ChartRestriction.DS.inUJ at hg h2 ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h0` using `hR n ε H σ D E hK χ ss hU i u A hA (g * aT A t) hgt`. Establish `h1` using `HasDerivAt.comp_sub_const (f := fun s : ℝ => (famP σ D E hK.gl χ ss i u) (g * aT A t * NormedSpace.exp ((s : ℂ) • A))) t t (by rw [sub_self]; exact h0)`. Establish `hfun : (fun s : ℝ => (famP σ D E hK.gl χ ss i u) (g * aT A t * NormedSpace.exp (((s - t : ℝ) : ℂ) • A))) = fun s : ℝ => famP σ D E hK.gl χ ss i u (g * aT A s)`. Use function extensionality and compare the values at `s`. Unfold `aT`.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.exp_add_of_commute]`. Rewrite using `[← add_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `((Commute.refl A).smul_left _).smul_right _`.
+
+Establish `hval : (∑ a, ∑ b, A a b • (path ⟨D, E, hK.gl⟩ χ ss).E a b u) = actM (path ⟨D, E, hK.gl⟩ χ ss) A u`. Simplify using `[actM, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite `h1` using `[hval]`. Simplify `h1` using `only [hfun]`.
+-/
 theorem line_deriv (hR : N.RightRule) {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ D} (hK : CompanionTheory.D.LK.IsKMod ε σ D E) (χ : Fin n → ℂ) (ss : List (Fin n))
@@ -44,6 +53,9 @@ theorem line_deriv (hR : N.RightRule) {n : ℕ} {ε : Fin n → Bool} {H : Type}
 def wv {n : ℕ} (X : GMod n) (A : Matrix (Fin n) (Fin n) ℂ) (zs : List ℂ) (u : X.V) (k : ℕ) : X.V :=
   ((zs.drop k).map (fun z => actM X A - z • (1 : Module.End ℂ X.V))).prod u
 
+/- English proof (translation)
+Establish `h : wv X A zs u k = actM X A (wv X A zs u (k + 1)) - zs[k] • wv X A zs u (k + 1)`. Simplify using `only [wv]`. Rewrite using `[List.drop_eq_getElem_cons hk, List.map_cons, List.prod_cons, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem wv_succ {n : ℕ} (X : GMod n) (A : Matrix (Fin n) (Fin n) ℂ) (zs : List ℂ) (u : X.V) (k : ℕ)
     (hk : k < zs.length) :
     actM X A (wv X A zs u (k + 1)) = zs[k] • wv X A zs u (k + 1) + wv X A zs u k := by
@@ -54,10 +66,18 @@ theorem wv_succ {n : ℕ} (X : GMod n) (A : Matrix (Fin n) (Fin n) ℂ) (zs : Li
   rw [h]
   abel
 
+/- English proof (translation)
+Simplify using `[wv]`.
+-/
 theorem wv_length {n : ℕ} (X : GMod n) (A : Matrix (Fin n) (Fin n) ℂ) (zs : List ℂ) (u : X.V) :
     wv X A zs u zs.length = u := by
   simp [wv]
 
+/- English proof (translation)
+Establish `hsplit` using `(IsAlgClosed.splits p).eq_prod_roots_of_monic hp`. Establish `hl : (p.roots.map (fun a => Polynomial.X - Polynomial.C a)).prod = ((p.roots.toList).map (fun a => Polynomial.X - Polynomial.C a)).prod` using `by conv_lhs => rw [← Multiset.coe_toList p.roots]`. Rewrite using `[Multiset.map_coe, Multiset.prod_coe]`. Establish `key : (p.roots.toList.map (fun z => actM X A - z • (1 : Module.End ℂ X.V))).prod = Polynomial.aeval (actM X A) p` using `by conv_rhs => rw [hsplit, hl, map_list_prod, List.map_map]`. Use `congr 1`.
+
+Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `z _`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Unfold `wv`. Rewrite using `[List.drop_zero, key]`.
+-/
 theorem wv_zero {n : ℕ} (X : GMod n) (A : Matrix (Fin n) (Fin n) ℂ) (p : Polynomial ℂ) (hp : p.Monic) (u : X.V) :
     wv X A p.roots.toList u 0 = Polynomial.aeval (actM X A) p u := by
   have hsplit := (IsAlgClosed.splits p).eq_prod_roots_of_monic hp

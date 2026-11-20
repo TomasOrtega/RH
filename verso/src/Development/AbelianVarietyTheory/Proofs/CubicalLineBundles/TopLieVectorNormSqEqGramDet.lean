@@ -11,6 +11,13 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 noncomputable section
 namespace GlobalTheory.CM.TopLieVector
 
+/- English proof (translation)
+Introduce `hU _ K _ _ P x φ₀ hf₀ h hH T abelian₂ σ hx`. Take `⟨x', u, Hm, W, χ, θ, Fd, hx, hA, -, -, hW, hF, -, hn⟩` from `hx`. Take `⟨φ, -, w, e, D, hp, hw, -, -, h₁, h₂, hv⟩` from `hx`. Take `rfl` from `TopDifferential.eq_dualMapR h₁ h₂`. Take `⟨Q, ψ, v, u', Hm', χ', W', a, b, c, d⟩` from `hH σ`.
+
+Establish `hf : IsPolFibre σ x.P x'.P φ` using `⟨e, hp, LBIso.symm ⟨w, hw⟩⟩`. Establish `key` using `LieMetric.hermForm_eq hU a hf b hA x.basis.1 c (w' := fun i => x'.v (i.cast e.symm)) (W' := fun i => W (i.cast e.symm)) fun i => ⟨hv (i.cast e.symm), hW _⟩`. Establish `e₁ : h.gram σ (fun i : Fin x.P.g => Pi.single i 1) = (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)).submatrix (finCongr e.symm) (finCongr e.symm)`. Use extensionality with `i j`. Conclude with `(d i j).trans (congrArg (fun z => (Real.pi : ℂ) * z) (key j i))`.
+
+Take `⟨Ef, t₁, t₂, -, -, t₃, -⟩` from `AHWeil.tangent_and_weil_of_isAH hU x'.P _ u Hm χ hA`. Use `u.discrete` as an intermediate fact. Establish `hvol` using `volume_mul_det_eq_one_of_unimodular _ u.Λ u.full Hm Ef Fd hA.1 hA.2.1 t₁ t₂ hF`. Rewrite using `[e₁, Matrix.det_submatrix_equiv_self, TopDifferential.det_gram, hn, div_eq_mul_inv, eq_inv_of_mul_eq_one_right hvol]`.
+-/
 theorem sq_eq_det_gram : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left) (hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ) (h : HermFam K (Fin x.P.g → K)), (GenFib.mk x.P φ hf x.v x.basis : GenFib A).IsHerm h → ∀ (T abelian₂ : MLine K) (s : K →+* ℂ), KeyArchAt x T abelian₂ s → abelian₂.n s ^ 2 = (h.gram s (fun i : Fin x.P.g => Pi.single i 1)).det.re := by
   intro hU _ K _ _ P x φ₀ hf₀ h hH T abelian₂ σ hx
   obtain ⟨x', u, Hm, W, χ, θ, Fd, hx, hA, -, -, hW, hF, -, hn⟩ := hx

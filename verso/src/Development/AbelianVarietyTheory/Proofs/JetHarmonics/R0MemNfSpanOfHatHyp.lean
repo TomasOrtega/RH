@@ -8,6 +8,9 @@ namespace GlobalTheory.HatNF.HatCommutators
 section lists
 variable {A : Type} [Ring A]
 
+/- English proof (translation)
+Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[List.mem_ofFn]`. Take `⟨l, rfl⟩` from `hx`. Conclude with `h l`.
+-/
 theorem comm_ofFn {n : ℕ} (f : Fin n → A) (a : A) (h : ∀ l, Commute a (f l)) :
     Commute a (List.ofFn f).prod := by
   apply Commute.list_prod_right
@@ -16,6 +19,9 @@ theorem comm_ofFn {n : ℕ} (f : Fin n → A) (a : A) (h : ∀ l, Commute a (f l
   obtain ⟨l, rfl⟩ := hx
   exact h l
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _ => by simp | n + 1, f, g, h, hc => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons] have ih := ofFn_mul_inv (fun i => f i.succ) (fun i => g i.succ) (fun l => h _) (fun l m => hc _ _) have hc' := comm_ofFn (fun i : Fin n => f i.succ) (g 0) (fu …`.
+-/
 theorem ofFn_mul_inv : ∀ {n : ℕ} (f g : Fin n → A), (∀ l, f l * g l = 1) → (∀ l m, Commute (g l) (f m)) →
     (List.ofFn f).prod * (List.ofFn g).prod = 1
   | 0, _, _, _, _ => by simp
@@ -25,6 +31,9 @@ theorem ofFn_mul_inv : ∀ {n : ℕ} (f g : Fin n → A), (∀ l, f l * g l = 1)
     have hc' := comm_ofFn (fun i : Fin n => f i.succ) (g 0) (fun l => hc _ _)
     rw [mul_assoc, ← mul_assoc _ (g 0), ← hc'.eq, mul_assoc, ih, mul_one, h]
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _ => by simp | n + 1, f, g, h, hc => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, star_mul] have ih := star_ofFn (fun i => f i.succ) (fun i => g i.succ) (fun l => h _) (fun l m => hc _ _) have hc' := comm_ofFn (fun i : Fin n => g i.succ) (g …`.
+-/
 theorem star_ofFn [StarRing A] : ∀ {n : ℕ} (f g : Fin n → A), (∀ l, star (f l) = g l) →
     (∀ l m, Commute (g l) (g m)) → star (List.ofFn f).prod = (List.ofFn g).prod
   | 0, _, _, _, _ => by simp
@@ -41,23 +50,56 @@ variable {A : Type} [Ring A] [Algebra ℂ A]
 section level
 variable {r : ℕ} (L : LevelData A r)
 
+/- English proof (translation)
+Simplify using `[LevelData.fns]`.
+-/
 theorem c_mem (l : Fin r) : L.c l ∈ L.fns := by simp [LevelData.fns]
+/- English proof (translation)
+Simplify using `[LevelData.fns]`.
+-/
 theorem ci_mem (l : Fin r) : L.ci l ∈ L.fns := by simp [LevelData.fns]
+/- English proof (translation)
+Simplify using `[LevelData.fns]`.
+-/
 theorem cb_mem (l : Fin r) : L.cb l ∈ L.fns := by simp [LevelData.fns]
+/- English proof (translation)
+Simplify using `[LevelData.fns]`.
+-/
 theorem cbi_mem (l : Fin r) : L.cbi l ∈ L.fns := by simp [LevelData.fns]
+/- English proof (translation)
+Simplify using `[LevelData.fns]`.
+-/
 theorem GG_mem : L.GG ∈ L.fns := by simp [LevelData.fns]
 
+/- English proof (translation)
+The claim follows from `L.fns_comm x hx y hy`.
+-/
 theorem fcomm {x y : A} (hx : x ∈ L.fns) (hy : y ∈ L.fns) : Commute x y := L.fns_comm x hx y hy
 
+/- English proof (translation)
+The claim follows from `comm_ofFn _ _ fun l => h _ (c_mem L l)`.
+-/
 theorem comm_Dr {a : A} (h : ∀ g ∈ L.fns, Commute a g) : Commute a L.Dr :=
   comm_ofFn _ _ fun l => h _ (c_mem L l)
+/- English proof (translation)
+The claim follows from `comm_ofFn _ _ fun l => h _ (cb_mem L l)`.
+-/
 theorem comm_Drb {a : A} (h : ∀ g ∈ L.fns, Commute a g) : Commute a L.Drb :=
   comm_ofFn _ _ fun l => h _ (cb_mem L l)
 
+/- English proof (translation)
+The claim follows from `ofFn_mul_inv _ _ L.ci_c fun l m => fcomm L (c_mem L l) (ci_mem L m)`.
+-/
 theorem Dri_Dr : L.Dri * L.Dr = 1 :=
   ofFn_mul_inv _ _ L.ci_c fun l m => fcomm L (c_mem L l) (ci_mem L m)
+/- English proof (translation)
+The claim follows from `ofFn_mul_inv _ _ L.cbi_cb fun l m => fcomm L (cb_mem L l) (cbi_mem L m)`.
+-/
 theorem Drbi_Drb : L.Drbi * L.Drb = 1 :=
   ofFn_mul_inv _ _ L.cbi_cb fun l m => fcomm L (cb_mem L l) (cbi_mem L m)
+/- English proof (translation)
+The claim follows from `comm_ofFn _ _ fun l => (comm_Dr L fun _ hg => fcomm L (cb_mem L l) hg).symm`.
+-/
 theorem Dr_Drb : Commute L.Dr L.Drb :=
   comm_ofFn _ _ fun l => (comm_Dr L fun _ hg => fcomm L (cb_mem L l) hg).symm
 
@@ -65,18 +107,41 @@ end level
 
 variable [StarRing A] {P : M.Par} (d : Q.NFData P A)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨b, hb, [h], rfl, by simpa using hh, by simp⟩`.
+-/
 theorem mem_span {b h : A} (hb : b ∈ bmon d) (hh : h ∈ basics d) : b * h ∈ nfSpan d (basics d) 0 0 1 :=
   Submodule.subset_span ⟨b, hb, [h], rfl, by simpa using hh, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inl (Or.inl (Or.inr ⟨f, rfl⟩)))`.
+-/
 theorem kap_mem (f : M.Ty P → ℂ) : d.κ f ∈ bmon d :=
   Submonoid.subset_closure (Or.inl (Or.inl (Or.inr ⟨f, rfl⟩)))
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inl (Or.inr ⟨l, by simpa using hl, rfl⟩))`.
+-/
 theorem ssn_mem {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) : ssn d l ∈ bmon d :=
   Submonoid.subset_closure (Or.inl (Or.inr ⟨l, by simpa using hl, rfl⟩))
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inr ⟨l, by simpa using hl, rfl⟩)`.
+-/
 theorem star_ssn_mem {l : ℕ} (hl : l ∈ Finset.Icc 1 (P.k - 1)) : star (ssn d l) ∈ bmon d :=
   Submonoid.subset_closure (Or.inr ⟨l, by simpa using hl, rfl⟩)
 
+/- English proof (translation)
+Take `⟨-, hκ, hS, -⟩` from `hR`. Establish `hκ' : ∀ f, ∀ g ∈ d.L.fns, Commute (d.κ f) g` using `fun f g hg => hκ f g (Or.inl hg)`. Establish `hS' : ∀ l, ∀ g ∈ d.L.fns, Commute (d.SS l) g` using `fun l g hg => hS l g (Or.inl (Or.inl hg))`. Establish `h1 : d.L.Drb * (d.L.GG * d.x y) = d.x y * (d.L.Drb * d.L.GG)`. Use `((comm_Drb d.L (hκ' fun ρ => M.xC P ρ y)).mul_right (hκ' _ _ (GG_mem d.L))).eq` as an intermediate fact.
+
+Rewrite using `[← mul_assoc]`. Conclude with `this.symm`. Establish `h2 : ∀ l, ssn d l * (d.κ fun ρ => M.xEx P {l} ρ y) * d.L.Ahat y = d.L.Drb * (d.SS l * (d.κ fun ρ => M.xEx P {l} ρ y)) * d.L.Ar y`. Introduce `l`. Establish `hc` using `((comm_Dr d.L (hS' l)).mul_left (comm_Dr d.L (hκ' fun ρ => M.xEx P {l} ρ y))).eq`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ssn, LevelData.Ahat, mul_assoc]`. Use `_ = d.L.Drb * (d.L.Dri * d.L.Dr) * (d.SS l * (d.κ fun ρ => M.xEx P {l} ρ y)) * d.L.Ar y := by`. Rewrite using `[hc]`. Simplify using `only [mul_assoc]`.
+
+Use `_ = _ := by rw [Dri_Dr, mul_one]`. Simplify using `only [h2]`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum]`. Express the relevant statement in the definitionally equal form `d.L.Drb * ((d.L.GG * d.x y * d.L.l0 y + d.weightedSumBis y) * d.L.Ar y + d.L.GG * d.x y * d.L.Br y) = d.x y * (d.L.Drb * d.L.GG * (d.L.l0 y * d.L.Ar y + d.L.Br y)) + d.L.Drb * d.weightedSumBis y * d.L.Ar y`. Rewrite using `[← mul_assoc (d.x y), ← h1]`.
+
+Use `noncomm_ring`.
+-/
 theorem rh_eq (hR : d.Rel) (y : ℂ) :
     rh d y = d.x y * d.L.R0 y +
       ∑ l ∈ Finset.Icc 1 (P.k - 1), ssn d l * (d.κ fun ρ => M.xEx P {l} ρ y) * d.L.Ahat y := by
@@ -102,6 +167,17 @@ theorem rh_eq (hR : d.Rel) (y : ℂ) :
   rw [← mul_assoc (d.x y), ← h1]
   noncomm_ring
 
+/- English proof (translation)
+Take `⟨-, hκ, hS, -⟩` from `hR`. Establish `hκ' : ∀ f, ∀ g ∈ d.L.fns, Commute (d.κ f) g` using `fun f g hg => hκ f g (Or.inl hg)`. Establish `hS' : ∀ l, ∀ g ∈ d.L.fns, Commute (d.SS l) g` using `fun l g hg => hS l g (Or.inl (Or.inl hg))`. Establish `h1 : d.L.Dr * (d.L.GG * d.x y) = d.x y * (d.L.Dr * d.L.GG)`. Use `((comm_Dr d.L (hκ' fun ρ => M.xC P ρ y)).mul_right (hκ' _ _ (GG_mem d.L))).eq` as an intermediate fact.
+
+Rewrite using `[← mul_assoc]`. Conclude with `this.symm`. Establish `s1 : star d.L.Drb = d.L.Dr` using `star_ofFn _ _ (fun l => by rw [← hc, star_star]) fun l m => fcomm d.L (c_mem _ l) (c_mem _ m)`. Establish `s2 : star d.L.Dri = d.L.Drbi` using `star_ofFn _ _ hci fun l m => fcomm d.L (cbi_mem _ l) (cbi_mem _ m)`. Establish `h2 : ∀ l, (d.κ fun ρ => M.xEx P {l} ρ y) * star (ssn d l) * d.L.Ahatv y = d.L.Dr * ((d.κ fun ρ => M.xEx P {l} ρ y) * star (d.SS l)) * d.L.Avr y`.
+
+Introduce `l`. Establish `hs : Commute (star (d.SS l)) d.L.Dr`. Rewrite using `[← s1]`. Conclude with `(comm_Drb d.L (hS' l)).star_star`. Establish `hc` using `((comm_Dr d.L (hκ' fun ρ => M.xEx P {l} ρ y)).mul_left hs).eq`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ssn, LevelData.Ahatv, star_mul, s1, s2, mul_assoc]`. Use `_ = (d.κ fun ρ => M.xEx P {l} ρ y) * star (d.SS l) * d.L.Dr * d.L.Avr y := by`. Rewrite using `[(Dr_Drb d.L).eq, ← mul_assoc d.L.Drbi, Drbi_Drb, one_mul]`. Use `_ = _ := by rw [hc]`.
+
+Simplify using `only [h2]`. Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum]`. Express the relevant statement in the definitionally equal form `d.L.Dr * ((d.L.GG * d.x y * d.L.m0 y + d.S12 y) * d.L.Avr y + d.L.GG * d.x y * d.L.Bvr y) = d.x y * (d.L.Dr * d.L.GG * (d.L.m0 y * d.L.Avr y + d.L.Bvr y)) + d.L.Dr * d.S12 y * d.L.Avr y`. Rewrite using `[← mul_assoc (d.x y), ← h1]`. Use `noncomm_ring`.
+-/
 theorem rhv_eq (hR : d.Rel) (hc : ∀ l, star (d.L.c l) = d.L.cb l) (hci : ∀ l, star (d.L.ci l) = d.L.cbi l)
     (y : ℂ) :
     rhv d y = d.x y * d.L.R0v y +
@@ -134,6 +210,9 @@ theorem rhv_eq (hR : d.Rel) (hc : ∀ l, star (d.L.c l) = d.L.cb l) (hci : ∀ l
   rw [← mul_assoc (d.x y), ← h1]
   noncomm_ring
 
+/- English proof (translation)
+Rewrite using `[Q.NFData.x, ← map_mul, ← map_one d.κ]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Conclude with `inv_mul_cancel₀ (hy ρ)`.
+-/
 theorem xinv_mul (y : ℂ) (hy : ∀ ρ : M.Ty P, M.xC P ρ y ≠ 0) :
     (d.κ fun ρ => (M.xC P ρ y)⁻¹) * d.x y = 1 := by
   rw [Q.NFData.x, ← map_mul, ← map_one d.κ]
@@ -147,6 +226,15 @@ namespace GlobalTheory.HatNF
 
 open HatCommutators
 
+/- English proof (translation)
+Introduce `P A _ _ _ _ d hd y hy`. Take `⟨-, -, hR, -, hc, hci, -⟩` from `hd`. Establish `hx` using `xinv_mul d (y : ℂ) fun ρ => (hy ρ).1`. Establish `hk` using `kap_mem d fun ρ => (M.xC P ρ (y : ℂ))⁻¹`. Use `set k := d.κ fun ρ => (M.xC P ρ (y : ℂ))⁻¹`.
+
+Prove the components needed by the constructor for the conclusion. Establish `e : d.L.R0 y = k * rh d y - ∑ l ∈ Finset.Icc 1 (P.k - 1), (k * ssn d l * (d.κ fun ρ => M.xEx P {l} ρ y)) * d.L.Ahat y`. Rewrite using `[rh_eq d hR, mul_add, ← mul_assoc, hx, one_mul, Finset.mul_sum]`. Simplify using `only [mul_assoc, add_sub_cancel_right]`. Rewrite using `[e]`.
+
+Use `Submodule.sub_mem _ (mem_span d hk ⟨y, hy, by simp⟩) (Submodule.sum_mem _ fun l hl => ?_)` and prove the remaining obligations. Conclude with `mem_span d (mul_mem (mul_mem hk (ssn_mem d hl)) (kap_mem d _)) ⟨y, hy, by simp⟩`. Establish `e : d.L.R0v y = k * rhv d y - ∑ l ∈ Finset.Icc 1 (P.k - 1), (k * (d.κ fun ρ => M.xEx P {l} ρ y) * star (ssn d l)) * d.L.Ahatv y`. Rewrite using `[rhv_eq d hR hc hci, mul_add, ← mul_assoc, hx, one_mul, Finset.mul_sum]`. Simplify using `only [mul_assoc, add_sub_cancel_right]`.
+
+Rewrite using `[e]`. Use `Submodule.sub_mem _ (mem_span d hk ⟨y, hy, by simp⟩) (Submodule.sum_mem _ fun l hl => ?_)` and prove the remaining obligations. Conclude with `mem_span d (mul_mem (mul_mem hk (kap_mem d _)) (star_ssn_mem d hl)) ⟨y, hy, by simp⟩`.
+-/
 theorem r0_mem_nfSpan_basics : ∀ (P : M.Par) (A : Type) [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] (d : Q.NFData P A), HatHyp d → ∀ y : ℝ, (∀ ρ : M.Ty P, M.xC P ρ (y : ℂ) ≠ 0 ∧ M.xC P ρ ((y : ℂ) - 1) ≠ 0 ∧ M.xC P ρ ((y : ℂ) + 1) ≠ 0) → d.L.R0 y ∈ nfSpan d (basics d) 0 0 1 ∧ d.L.R0v y ∈ nfSpan d (basics d) 0 0 1 := by
   intro P A _ _ _ _ d hd y hy
   obtain ⟨-, -, hR, -, hc, hci, -⟩ := hd

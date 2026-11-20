@@ -26,6 +26,9 @@ open MeasureTheory
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h` using `group_exponential_facts n ε Y hY.1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[(h.2.2.2 hY).1 0, h.1]`. Both sides reduce to the same expression.
+-/
 theorem casInv_expK_zero {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) :
     expK ε Y 0 = 1 := by
   have h := group_exponential_facts n ε Y hY.1
@@ -33,11 +36,19 @@ theorem casInv_expK_zero {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} 
   rw [(h.2.2.2 hY).1 0, h.1]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (muK ε) := ⟨isCompact_univ.measure_lt_top⟩`. Conclude with `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem casInv_integrable {ε : Fin n → Bool} {E : Type*} [NormedAddCommGroup E] {f : KG ε → E}
     (hf : Continuous f) : Integrable f (muK ε) := by
   haveI : IsFiniteMeasure (muK ε) := ⟨isCompact_univ.measure_lt_top⟩
   exact hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons Y L ih`. Use function extensionality and compare the values at `k`. Rewrite using `[rder_cons, ih]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem casInv_rder_zero (ε : Fin n → Bool) (L : List (Matrix (Fin n) (Fin n) ℂ)) :
     rder ε L (0 : KG ε → ℂ) = 0 := by
   induction L with
@@ -47,18 +58,30 @@ theorem casInv_rder_zero (ε : Fin n → Bool) (L : List (Matrix (Fin n) (Fin n)
     rw [rder_cons, ih]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem casInv_rder_pair (ε : Fin n → Bool) (Y : Matrix (Fin n) (Fin n) ℂ) (φ : KG ε → ℂ) :
     rder ε [Y, Y] φ = rder ε [Y] (rder ε [Y] φ) := rfl
 
+/- English proof (translation)
+The claim follows from `(rder_mem_and_hasDerivAt ε d φ hφ Y hY).1`.
+-/
 theorem casInv_rder_mem {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {d : ℕ}
     {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) : rder ε [Y] φ ∈ polyV ε d :=
   (rder_mem_and_hasDerivAt ε d φ hφ Y hY).1
 
+/- English proof (translation)
+Rewrite using `[casInv_rder_pair]`. Conclude with `casInv_rder_mem hY (casInv_rder_mem hY hφ)`.
+-/
 theorem casInv_rder2_mem {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {d : ℕ}
     {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) : rder ε [Y, Y] φ ∈ polyV ε d := by
   rw [casInv_rder_pair]
   exact casInv_rder_mem hY (casInv_rder_mem hY hφ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Conclude with `((rder_mem_and_hasDerivAt ε d _ (add_mem hφ hψ) Y hY).2 k).unique (((rder_mem_and_hasDerivAt ε d φ hφ Y hY).2 k).add ((rder_mem_and_hasDerivAt ε d ψ hψ Y hY).2 k))`.
+-/
 theorem casInv_rder_add {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {d : ℕ}
     {φ ψ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) (hψ : ψ ∈ polyV ε d) :
     rder ε [Y] (φ + ψ) = rder ε [Y] φ + rder ε [Y] ψ := by
@@ -66,6 +89,9 @@ theorem casInv_rder_add {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (
   exact ((rder_mem_and_hasDerivAt ε d _ (add_mem hφ hψ) Y hY).2 k).unique
     (((rder_mem_and_hasDerivAt ε d φ hφ Y hY).2 k).add ((rder_mem_and_hasDerivAt ε d ψ hψ Y hY).2 k))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Conclude with `((rder_mem_and_hasDerivAt ε d _ (Submodule.smul_mem _ c hφ) Y hY).2 k).unique (((rder_mem_and_hasDerivAt ε d φ hφ Y hY).2 k).const_mul c)`.
+-/
 theorem casInv_rder_smul {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {d : ℕ}
     {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) (c : ℂ) :
     rder ε [Y] (c • φ) = c • rder ε [Y] φ := by
@@ -73,6 +99,9 @@ theorem casInv_rder_smul {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} 
   exact ((rder_mem_and_hasDerivAt ε d _ (Submodule.smul_mem _ c hφ) Y hY).2 k).unique
     (((rder_mem_and_hasDerivAt ε d φ hφ Y hY).2 k).const_mul c)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Conclude with `((rder_mem_and_hasDerivAt ε d _ (star_mem hφ) Y hY).2 k).unique ((rder_mem_and_hasDerivAt ε d φ hφ Y hY).2 k).star`.
+-/
 theorem casInv_rder_star {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {d : ℕ}
     {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) :
     rder ε [Y] (fun k => star (φ k)) = fun k => star (rder ε [Y] φ k) := by
@@ -80,6 +109,13 @@ theorem casInv_rder_star {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} 
   exact ((rder_mem_and_hasDerivAt ε d _ (star_mem hφ) Y hY).2 k).unique
     ((rder_mem_and_hasDerivAt ε d φ hφ Y hY).2 k).star
 
+/- English proof (translation)
+Establish `hra` using `rder_mem_and_hasDerivAt ε d a ha Y hY`. Establish `hrb` using `rder_mem_and_hasDerivAt ε d b hb Y hY`. Establish `ca` using `continuous_of_mem ha`. Establish `cb` using `continuous_of_mem hb`. Establish `cra` using `continuous_of_mem hra.1`.
+
+Establish `crb` using `continuous_of_mem hrb.1`. Establish `h0` using `casInv_expK_zero hY`. Establish `key` using `compact_integration_by_parts n ε ℂ (fun k => a k * b k) (fun k => rder ε [Y] a k * b k + a k * rder ε [Y] b k) Y hY (ca.mul cb) ((cra.mul cb).add (ca.mul crb)) (fun k => by`. Use `(hra.2 k).fun_mul (hrb.2 k)` as an intermediate fact. Simplify `this)` using `only [h0, mul_one]`.
+
+Rewrite `key` using `[integral_add (casInv_integrable (f := fun k => rder ε [Y] a k * b k) (cra.mul cb)) (casInv_integrable (f := fun k => a k * rder ε [Y] b k) (ca.mul crb))]`. Conclude with `eq_neg_of_add_eq_zero_left key`.
+-/
 theorem casInv_byParts {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y) {d : ℕ}
     {a b : KG ε → ℂ} (ha : a ∈ polyV ε d) (hb : b ∈ polyV ε d) :
     ∫ k, rder ε [Y] a k * b k ∂(muK ε) = -∫ k, a k * rder ε [Y] b k ∂(muK ε) := by
@@ -112,10 +148,16 @@ section Lap
 variable {ε : Fin n → Bool} {r : ℕ} (X : Fin r → Matrix (Fin n) (Fin n) ℂ) (hX : ∀ j, inK ε (X j))
 include hX
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun j _ => casInv_rder2_mem (hX j) hφ`.
+-/
 theorem casInv_lap_mem {d : ℕ} {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) :
     (∑ j, rder ε [X j, X j] φ) ∈ polyV ε d :=
   Submodule.sum_mem _ fun j _ => casInv_rder2_mem (hX j) hφ
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[casInv_rder_pair, casInv_rder_pair, casInv_rder_pair, casInv_rder_add (hX j) hφ hψ, casInv_rder_add (hX j) (casInv_rder_mem (hX j) hφ) (casInv_rder_mem (hX j) hψ)]`.
+-/
 theorem casInv_lap_add {d : ℕ} {φ ψ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) (hψ : ψ ∈ polyV ε d) :
     (∑ j, rder ε [X j, X j] (φ + ψ)) = (∑ j, rder ε [X j, X j] φ) + ∑ j, rder ε [X j, X j] ψ := by
   rw [← Finset.sum_add_distrib]
@@ -123,6 +165,9 @@ theorem casInv_lap_add {d : ℕ} {φ ψ : KG ε → ℂ} (hφ : φ ∈ polyV ε 
   rw [casInv_rder_pair, casInv_rder_pair, casInv_rder_pair, casInv_rder_add (hX j) hφ hψ,
     casInv_rder_add (hX j) (casInv_rder_mem (hX j) hφ) (casInv_rder_mem (hX j) hψ)]
 
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[casInv_rder_pair, casInv_rder_pair, casInv_rder_smul (hX j) hφ, casInv_rder_smul (hX j) (casInv_rder_mem (hX j) hφ)]`.
+-/
 theorem casInv_lap_smul {d : ℕ} {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d) (c : ℂ) :
     (∑ j, rder ε [X j, X j] (c • φ)) = c • ∑ j, rder ε [X j, X j] φ := by
   rw [Finset.smul_sum]
@@ -130,6 +175,11 @@ theorem casInv_lap_smul {d : ℕ} {φ : KG ε → ℂ} (hφ : φ ∈ polyV ε d)
   rw [casInv_rder_pair, casInv_rder_pair, casInv_rder_smul (hX j) hφ,
     casInv_rder_smul (hX j) (casInv_rder_mem (hX j) hφ)]
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[integral_finset_sum _ (fun j _ => casInv_integrable (f := fun k => a k * rder ε [X j, X j] b k) ((continuous_of_mem ha).mul (continuous_of_mem (casInv_rder2_mem (hX j) hb)))), integral_finset_sum _ (fun j _ => casInv_integrable (f := fun k => rder ε [X j, X j] a k * b k) ((conti …`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[casInv_rder_pair, casInv_rder_pair]`. Establish `h1` using `casInv_byParts (hX j) ha (casInv_rder_mem (hX j) hb)`.
+
+Establish `h2` using `casInv_byParts (hX j) (casInv_rder_mem (hX j) ha) hb`. Rewrite using `[h2, h1, neg_neg]`.
+-/
 theorem casInv_lap_symm {d : ℕ} {a b : KG ε → ℂ} (ha : a ∈ polyV ε d) (hb : b ∈ polyV ε d) :
     ∫ k, a k * (∑ j, rder ε [X j, X j] b) k ∂(muK ε) =
       ∫ k, (∑ j, rder ε [X j, X j] a) k * b k ∂(muK ε) := by
@@ -144,6 +194,11 @@ theorem casInv_lap_symm {d : ℕ} {a b : KG ε → ℂ} (ha : a ∈ polyV ε d) 
   have h2 := casInv_byParts (hX j) (casInv_rder_mem (hX j) ha) hb
   rw [h2, h1, neg_neg]
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `zero`. Rewrite `hq`, the goal using `[lowV, Submodule.mem_bot]`. Substitute `hq` using the available equality. Simplify using `only [casInv_rder_zero, Finset.sum_const_zero]`.
+
+Consider the case `succ d => exact casInv_lap_mem X hX hq`.
+-/
 theorem casInv_lap_low {i : ℕ} {q : KG ε → ℂ} (hq : q ∈ lowV ε i) :
     (∑ j, rder ε [X j, X j] q) ∈ lowV ε i := by
   cases i with
@@ -153,6 +208,13 @@ theorem casInv_lap_low {i : ℕ} {q : KG ε → ℂ} (hq : q ∈ lowV ε i) :
     simp only [casInv_rder_zero, Finset.sum_const_zero]
   | succ d => exact casInv_lap_mem X hX hq
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_apply, Finset.sum_mul]`. Rewrite using `[integral_finset_sum _ (fun j _ => casInv_integrable (f := fun k => rder ε [X j, X j] p k * star (p k)) ((continuous_of_mem (casInv_rder2_mem (hX j) hp)).mul (continuous_star.comp (continuous_of_mem hp))))]`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[casInv_rder_pair]`. Establish `h1` using `casInv_byParts (hX j) (casInv_rder_mem (hX j) hp) (star_mem hp)`. Simplify using `only [casInv_rder_star (hX j) hp] at h1`. Rewrite using `[h1, ← integral_complex_ofReal]`. Use `congr 1`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `Complex.mul_conj' (rder ε [X j] p k)` as an intermediate fact. Simplify using `only [Complex.ofReal_pow]`. Conclude with `this`.
+-/
 theorem casInv_energy {d : ℕ} {p : KG ε → ℂ} (hp : p ∈ polyV ε d) :
     ∫ k, (∑ j, rder ε [X j, X j] p) k * star (p k) ∂(muK ε) =
       -(((∑ j, ∫ k, ‖rder ε [X j] p k‖ ^ 2 ∂(muK ε) : ℝ)) : ℂ) := by
@@ -182,6 +244,11 @@ open MeasureTheory
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hc : Continuous fun k => ‖p k‖ ^ 2` using `(continuous_norm.comp hp).pow 2`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun k => sq_nonneg ‖p k‖) (casInv_integrable hc)).1 h`. Establish `h3` using `(Continuous.ae_eq_iff_eq (muK ε) hc (continuous_const (y := (0 : ℝ)))).1 h2`. Use function extensionality and compare the values at `k`. Establish `: ‖p k‖ ^ 2 = 0` using `congrFun h3 k`.
+
+Simplify using `using this`.
+-/
 theorem casInv_eq_zero {ε : Fin n → Bool} {p : KG ε → ℂ} (hp : Continuous p)
     (h : ∫ k, ‖p k‖ ^ 2 ∂(muK ε) = 0) : p = 0 := by
   have hc : Continuous fun k => ‖p k‖ ^ 2 := (continuous_norm.comp hp).pow 2
@@ -220,6 +287,15 @@ def casInvOp (ε : Fin n → Bool) {r : ℕ} (X : Fin r → Matrix (Fin n) (Fin 
   map_add' a b := Subtype.ext (casInv_lap_add X hX a.2.1 b.2.1)
   map_smul' c a := Subtype.ext (casInv_lap_smul X hX a.2.1 c)
 
+/- English proof (translation)
+Establish `hS` using `hyp p hp.1 hp.2`. Establish `hE` using `casInv_energy X hX hp.1`. Use `set S := ∑ j, ∫ k, ‖rder ε [X j] p k‖ ^ 2 ∂(muK ε)`. Use `set L := ∑ j, rder ε [X j, X j] p with hL`. Establish `cp` using `continuous_of_mem hp.1`.
+
+Establish `cL : Continuous L` using `continuous_of_mem (casInv_lap_mem X hX hp.1)`. Establish `h1 : S ≤ ∫ k, ‖L k‖ * ‖p k‖ ∂(muK ε)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 2 * l * ∫ k, ‖L k‖ * ‖p k‖ ∂(muK ε) ≤ ∫ k, ‖L k‖ ^ 2 ∂(muK ε) + l ^ 2 * ∫ k, ‖p k‖ ^ 2 ∂(muK ε)`. Establish `cLn` using `continuous_norm.comp cL`.
+
+Establish `cpn` using `continuous_norm.comp cp`. Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add (casInv_integrable (f := fun k => ‖L k‖ ^ 2) (cLn.pow 2)) (casInv_integrable (f := fun k => l ^ 2 * ‖p k‖ ^ 2) (continuous_const.mul (cpn.pow 2)))]`. Use `integral_mono (casInv_integrable (f := fun k => 2 * l * (‖L k‖ * ‖p k‖)) (continuous_const.mul (cLn.mul cpn))) (casInv_integrable (f := fun k => ‖L k‖ ^ 2 + l ^ 2 * ‖p k‖ ^ 2) ((cLn.pow 2).add (continuous_const.mul (cpn.pow 2)))) (fun k => ?_)` and prove the remaining obligations. Use `sq_nonneg (‖L k‖ - l * ‖p k‖)` as an intermediate fact. Simplify using `only`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `mul_le_mul_of_nonneg_left (hS.trans h1) (by positivity : (0 : ℝ) ≤ 2 * l)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem casInv_coercive {ε : Fin n → Bool} {r : ℕ} (X : Fin r → Matrix (Fin n) (Fin n) ℂ)
     (hX : ∀ j, inK ε (X j)) {i : ℕ} {l : ℝ} (hl : 0 < l)
     (hyp : ∀ p ∈ polyV ε i, (∀ q ∈ lowV ε i, ∫ k, q k * p k ∂(muK ε) = 0) →
@@ -252,6 +328,25 @@ theorem casInv_coercive {ε : Fin n → Bool} {r : ℕ} (X : Fin r → Matrix (F
   have h3 := mul_le_mul_of_nonneg_left (hS.trans h1) (by positivity : (0 : ℝ) ≤ 2 * l)
   nlinarith
 
+/- English proof (translation)
+Introduce `n ε r X hX i l hl hyp M e he heo`. Establish `hinj : Function.Injective (casInvOp ε X hX i)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp`. Establish `h0 : (∑ j, rder ε [X j, X j] (p : KG ε → ℂ)) = 0` using `congrArg Subtype.val hp`.
+
+Establish `h1` using `casInv_coercive X hX hl hyp p.2`. Establish `hz : ∫ k, ‖(0 : KG ε → ℂ) k‖ ^ 2 ∂(muK ε) = 0` using `by simp`. Rewrite `h1` using `[h0, hz]`. Establish `hA0 : 0 ≤ ∫ k, ‖(p : KG ε → ℂ) k‖ ^ 2 ∂(muK ε)` using `integral_nonneg fun k => sq_nonneg _`. Establish `hl2 : 0 < l ^ 2` using `by positivity`.
+
+Establish `hA : ∫ k, ‖(p : KG ε → ℂ) k‖ ^ 2 ∂(muK ε) = 0` using `le_antisymm (by nlinarith) hA0`. Conclude with `Subtype.ext (casInv_eq_zero (continuous_of_mem p.2.1) hA)`. Establish `hbij : Function.Bijective (casInvOp ε X hX i)` using `⟨hinj, LinearMap.injective_iff_surjective.mp hinj⟩`. Establish `hcoe : ∀ (m : ℕ) (p : casInvSpace ε i), (((casInvOp ε X hX i)^[m] p : casInvSpace ε i) : KG ε → ℂ) = (fun φ : KG ε → ℂ => ∑ j, rder ε [X j, X j] φ)^[m] (p : KG ε → ℂ)`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => intro p`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `p`.
+
+Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih p]`. Both sides reduce to the same expression. Establish `hbound : ∀ (m : ℕ) (p : casInvSpace ε i), l ^ (2 * m) * ∫ k, ‖(p : KG ε → ℂ) k‖ ^ 2 ∂(muK ε) ≤ ∫ k, ‖(((casInvOp ε X hX i)^[m] p : casInvSpace ε i) : KG ε → ℂ) k‖ ^ 2 ∂(muK ε)`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro p`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `p`. Rewrite using `[Function.iterate_succ_apply']`.
+
+Establish `h1` using `casInv_coercive X hX hl hyp ((casInvOp ε X hX i)^[m] p).2`. Establish `h2` using `ih p`. Establish `hl2 : (0 : ℝ) ≤ l ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Take `⟨s, hs⟩` from `(hbij.iterate M).2 ⟨e, he, heo⟩`.
+
+Use `⟨s, s.2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcoe, hs]`. Establish `h` using `hbound M s`. Rewrite `h` using `[hs]`. Rewrite using `[le_inv_mul_iff₀ (by positivity)]`.
+
+Conclude with `h`.
+-/
 theorem casimir_inverse_bound : ∀ {n : ℕ} (ε : Fin n → Bool) {r : ℕ} (X : Fin r → Mx n), (∀ j, inK ε (X j)) →
     ∀ (i : ℕ) (l : ℝ), 0 < l →
     (∀ p ∈ polyV ε i, (∀ q ∈ lowV ε i, ∫ k, q k * p k ∂(muK ε) = 0) →

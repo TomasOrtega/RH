@@ -13,6 +13,31 @@ open Formalism.UG (IsUnifV qV)
 
 namespace GlobalTheory.ZetaGL
 
+/- English proof (translation)
+Introduce `F _ _ v n s hs z φ hz hφ`. Establish `hqN : qV F v ≠ 0` using `GlobalTheory.LFun.qV_ne_zero v`. Establish `hqC : (qV F v : ℂ) ≠ 0` using `by exact_mod_cast hqN`. Establish `hq1 : (1 : ℝ) < (qV F v : ℝ)` using `by show (1 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ); exact_mod_cast GlobalTheory.LFun.one_lt_absNorm v`. Establish `hφ' : ∀ ϖ, IsUnifV F v ϖ → ∀ (d : Fin n → ℤ) (t : GL (Fin n) (v.adicCompletion F)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL v n, ∀ k₂ ∈ KGL v n, φ (k₁ * t * k₂) = (z : ℂ) ^ (∑ i, d i) * (qV F v : ℂ) ^ (-((n : ℂ) / 2 + s) * ((∑ i, |d i| : ℤ) : ℂ))` using `fun ϖ hϖ => hφ (Units.mk0 ϖ (GlobalTheory.LFun.SatCompare.ne_zero_of_isUnifV hϖ)) hϖ`.
+
+Use `⟨fun g k hk => ?_, ?_⟩` and prove the remaining obligations. Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LFun.exists_isUnifV v`. Establish `h0 : ϖ ≠ 0` using `GlobalTheory.LFun.SatCompare.ne_zero_of_isUnifV hϖ`. Take `⟨d, hd⟩` from `(GlobalTheory.ZetaGL.cartan_existsUnique F v n hϖ (fun d => GlobalTheory.WeylGL.tor h0 d) (fun d => rfl) g).exists`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hd`.
+
+Rewrite using `[mul_assoc (k₁ * _), hφ' ϖ hϖ d.1 _ rfl k₁ hk₁ k₂ hk₂, hφ' ϖ hϖ d.1 _ rfl k₁ hk₁ _ (mul_mem hk₂ hk)]`. Establish `hB : ∀ β ∈ Finset.univ.val.map (GlobalTheory.Core.Rk.TrivCoef.trivParGL v n), ‖(β : ℂ)‖ ≤ (qV F v : ℝ) ^ ((n : ℝ) / 2) ∧ ‖((β⁻¹ : ℂˣ) : ℂ)‖ ≤ (qV F v : ℝ) ^ ((n : ℝ) / 2)`. Introduce `β hβ`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hβ`. Establish `hi : ((i : ℕ) : ℝ) + 1 ≤ n` using `by exact_mod_cast i.2`.
+
+Establish `hi0 : (0 : ℝ) ≤ ((i : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hre : (((n : ℂ) - 1 - 2 * ((i : ℕ) : ℂ)) / 2).re = ((n : ℝ) - 1 - 2 * ((i : ℕ) : ℝ)) / 2` using `by simp`. Simplify using `only [GlobalTheory.Core.Rk.TrivCoef.trivParGL, Units.val_inv_eq_inv_val, Units.val_mk0]`. Rewrite using `[← Complex.cpow_neg, Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hqN), Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hqN), Complex.neg_re, hre]`. Conclude with `⟨Real.rpow_le_rpow_of_exponent_le hq1.le (by linarith), Real.rpow_le_rpow_of_exponent_le hq1.le (by linarith)⟩`.
+
+Establish `h` using `GlobalTheory.ZetaGL.zeta_sum_GL_complex GlobalTheory.UnramDoublingProof.unramifiedDoublingGL F v n s hs z φ hz hφ' ℂ 1 1 _ (GlobalTheory.Core.Rk.TrivCoef.isSatVecGL_one v n) LinearMap.id ⟨1, fun g => by simp⟩ (fun _ => hB)`. Establish `hnp : GlobalTheory.LFun.npow v (-(s + 1 / 2)) = (qV F v : ℂ) ^ (-(s + 1 / 2))` using `rfl`. Establish `e1 : eulerFac ((Finset.univ.val.map (GlobalTheory.Core.Rk.TrivCoef.trivParGL v n)).map (z * ·)) (GlobalTheory.LFun.npow v (-(s + 1 / 2))) = ∏ j ∈ Finset.range n, (1 - (z : ℂ) * (qV F v : ℂ) ^ (-(s + (n : ℂ) / 2 - (j : ℂ))))⁻¹`. Rewrite using `[eulerFac_eq_prod, Multiset.map_map, Multiset.map_map, ← Finset.prod_range_reflect, ← Fin.prod_univ_eq_prod_range (fun j => (1 - (z : ℂ) * (qV F v : ℂ) ^ (-(s + (n : ℂ) / 2 - ((n - 1 - j : ℕ) : ℂ))))⁻¹)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hc : ((n - 1 - (i : ℕ) : ℕ) : ℂ) = (n : ℂ) - 1 - (i : ℕ)`. Use `i.2` as an intermediate fact. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Function.comp, GlobalTheory.Core.Rk.TrivCoef.trivParGL, Units.val_mul, Units.val_mk0, hnp]`. Rewrite using `[hc, mul_assoc, ← Complex.cpow_add _ _ hqC]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : eulerFac ((Finset.univ.val.map (GlobalTheory.Core.Rk.TrivCoef.trivParGL v n)).map fun β => (z * β)⁻¹) (GlobalTheory.LFun.npow v (-(s + 1 / 2))) = ∏ j ∈ Finset.range n, (1 - (z : ℂ)⁻¹ * (qV F v : ℂ) ^ (-(s + (n : ℂ) / 2 - (j : ℂ))))⁻¹`.
+
+Rewrite using `[eulerFac_eq_prod, Multiset.map_map, Multiset.map_map, ← Fin.prod_univ_eq_prod_range (fun j => (1 - (z : ℂ)⁻¹ * (qV F v : ℂ) ^ (-(s + (n : ℂ) / 2 - ((j : ℕ) : ℂ))))⁻¹)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, GlobalTheory.Core.Rk.TrivCoef.trivParGL, Units.val_inv_eq_inv_val, Units.val_mul, Units.val_mk0, hnp]`. Rewrite using `[mul_inv, ← Complex.cpow_neg, mul_assoc, ← Complex.cpow_add _ _ hqC]`. Use `congr 4`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ∏ i ∈ Finset.range n, (1 - (qV F v : ℂ) ^ (-(2 * s + n - i))) = ∏ j ∈ Finset.Icc 1 n, (1 - (qV F v : ℂ) ^ (-(2 * s + (j : ℂ))))`. Use `Finset.prod_bij' (fun i _ => n - i) (fun j _ => n - j) (fun i hi => ?_) (fun j hj => ?_) (fun i hi => ?_) (fun j hj => ?_) (fun i hi => ?_)` and prove the remaining obligations. Use `Finset.mem_range.1 hi` as an intermediate fact. Conclude with `Finset.mem_Icc.2 ⟨by omega, by omega⟩`.
+
+Use `Finset.mem_Icc.1 hj` as an intermediate fact. Conclude with `Finset.mem_range.2 (by omega)`. Use `Finset.mem_range.1 hi show n - (n - i) = i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `Finset.mem_Icc.1 hj show n - (n - j) = j` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.cast_sub (Finset.mem_range.1 hi).le]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e1, e2, e3, ← Finset.prod_mul_distrib]`.
+
+Simplify using `using h`.
+-/
 theorem zeta_sum_GL_trivial : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (n : ℕ) (s : ℂ), (n : ℝ) / 2 < s.re → ∀ (z : ℂˣ) (φ : GL (Fin n) (Fv F v) → ℂ), ‖(z : ℂ)‖ = 1 →
     (∀ (ϖ : (Fv F v)ˣ), IsUnifV F v ϖ.1 → ∀ (e : Fin n → ℤ) (T : GL (Fin n) (Fv F v)), T.1 = Matrix.diagonal (fun i => ϖ.1 ^ e i) → ∀ k₁ ∈ KGL v n, ∀ k₂ ∈ KGL v n, φ (k₁ * T * k₂) = (z : ℂ) ^ (∑ i, e i) * (qV F v : ℂ) ^ (-((n : ℂ) / 2 + s) * ((∑ i, |e i| : ℤ) : ℂ))) →
     (∀ g, ∀ k ∈ KGL v n, φ (g * k) = φ g) ∧

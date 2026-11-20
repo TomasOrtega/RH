@@ -12,6 +12,23 @@ noncomputable section
 
 namespace GlobalTheory.Mum.SecEmb.ThetaPt
 
+/- English proof (translation)
+Introduce `R _ _ _ hR M x hx`. Take `⟨⟨hRn, -, -, -⟩, hR0⟩` from `hR`. Use `haveI := M.integral`. Use `haveI := M.proper`. Use `haveI : IsLocallyNoetherian M.S := LocallyOfFiniteType.isLocallyNoetherian M.π`.
+
+Set `A` to `M.S.presheaf.stalk x`. Set `ψc : CommRingCat.of R ⟶ A` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ M.π.appTop ≫ M.S.presheaf.germ ⊤ x trivial`. Establish `hcomp : M.S.fromSpecStalk x ≫ M.π = Spec.map ψc`. Simplify using `only [ψc]`. Rewrite using `[Spec.map_comp, Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+
+Establish `hπinj : Function.Injective M.π.appTop.hom` using `fun a b h => GlobalTheory.Mum.jK_appTop_injective R (by`. Rewrite using `[← M.appTop_comp, ← M.appTop_comp, h])`. Establish `hψi : Function.Injective ψc.hom`. Simplify using `only [ψc, CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `(germ_injective_of_isIntegral M.S (U := ⊤) x trivial).comp (hπinj.comp (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.symm.injective)`.
+
+Establish `hψl : IsLocalHom ψc.hom`. Use `((IsLocalRing.local_hom_TFAE ψc.hom).out 0 4).2 ?_` and prove the remaining obligations. Establish `e1 : (Spec.map ψc) (closedPoint A) = closedPoint R`. Establish `h0` using `congrArg M.π (Scheme.fromSpecStalk_closedPoint (x := x))`. Rewrite `h0` using `[hx]`.
+
+Rewrite using `[← hcomp]`. Conclude with `h0`. Conclude with `congrArg PrimeSpectrum.asIdeal e1`. Use `haveI : CharZero A := charZero_of_injective_ringHom hψi`. Choose the witnesses or unpack the hypotheses as in `⟨V, _, _, _, φ₀, hV, hφ₀i, hφ₀l⟩ : ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (φ₀ : A →+* V), GlobalTheory.LN.CDvr V ∧ Function.Injective φ₀ ∧ IsLocalHom φ₀ := by`.
+
+Distinguish the cases in `h : IsField A`. Use `letI := h.toField`. Use `⟨PowerSeries A, inferInstance, inferInstance, inferInstance, PowerSeries.C, ⟨inferInstance, ?_, ?_⟩, PowerSeries.C_injective, inferInstance⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`.
+
+Conclude with `charZero_of_injective_ringHom (f := PowerSeries.C (R := A)) PowerSeries.C_injective`. Take `⟨O, _, _, _, _, φ, h1, h2⟩` from `GlobalTheory.exists_complete_discreteValuationRing_dominating A h`. Conclude with `⟨O, inferInstance, inferInstance, inferInstance, φ, ⟨inferInstance, inferInstance, charZero_of_injective_ringHom h1⟩, h1, h2⟩`. Use `⟨V, inferInstance, inferInstance, inferInstance, φ₀.comp ψc.hom, spMap φ₀ ≫ M.S.fromSpecStalk x, hV, hφ₀i.comp hψi, RingHom.isLocalHom_comp _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hcomp]`.
+
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (M.S.fromSpecStalk x) (IsLocalRing.comap_closedPoint φ₀)) Scheme.fromSpecStalk_closedPoint)`.
+-/
 theorem exists_trait_pt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (M : Modif R) (x : M.S),
     M.π x = closedPoint R → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W) (φ : R →+* W)
       (ξ : Sp W ⟶ M.S), GlobalTheory.LN.CDvr W ∧ Function.Injective φ ∧ IsLocalHom φ ∧ ξ ≫ M.π = spMap φ ∧
@@ -61,6 +78,11 @@ theorem exists_trait_pt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing 
   · exact (Scheme.Hom.comp_apply _ _ _).trans
       (Eq.trans (congrArg (M.S.fromSpecStalk x) (IsLocalRing.comap_closedPoint φ₀)) Scheme.fromSpecStalk_closedPoint)
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `haveI : Module.Finite W W' := hf`. Establish `hmax : (maximalIdeal W').comap (algebraMap W W') = maximalIdeal W` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal W'))`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Establish `: a ∈ (maximalIdeal W').comap (algebraMap W W')` using `hmax ▸ (IsLocalRing.mem_maximalIdeal a).2 h`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (Ideal.mem_comap.1 this) ha`.
+-/
 theorem isLocalHom_of_finite {W W' : Type} [CommRing W] [IsLocalRing W] [CommRing W'] [IsLocalRing W']
     (io : W →+* W') (hf : io.Finite) : IsLocalHom io := by
   letI := io.toAlgebra
@@ -72,6 +94,11 @@ theorem isLocalHom_of_finite {W W' : Type} [CommRing W] [IsLocalRing W] [CommRin
   have : a ∈ (maximalIdeal W').comap (algebraMap W W') := hmax ▸ (IsLocalRing.mem_maximalIdeal a).2 h
   exact (IsLocalRing.mem_maximalIdeal _).1 (Ideal.mem_comap.1 this) ha
 
+/- English proof (translation)
+Establish `h1 : (spMap io) (closedPoint W') = closedPoint W` using `IsLocalRing.comap_closedPoint io`. Take `⟨z, hz1, hz2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := spMap io ≫ ξ) g (closedPoint W') (by rw [hg]; exact (congrArg ξ h1).symm)`. Establish `hg1 : β (h.isoPullback.inv z) = g`. Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_fst, hz1]`. Establish `hg2 : G'.hom (h.isoPullback.inv z) = closedPoint W'`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, h.isoPullback_inv_snd, hz2]`. Establish `h2 : (spMap (residue W')) (closedPoint (ResidueField W')) = closedPoint W'` using `IsLocalRing.comap_closedPoint (residue W')`. Take `⟨q, hq1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G'.hom) (g := spMap (residue W')) (h.isoPullback.inv z) (closedPoint _) (hg2.trans h2.symm)`. Conclude with `⟨q, by rw [Scheme.Hom.comp_apply, hq1, hg1]⟩`.
+-/
 theorem exists_closedFibre_pt {W W' : Type} [CommRing W] [IsLocalRing W] [CommRing W'] [IsLocalRing W']
     (io : W →+* W') [IsLocalHom io] {S : Scheme.{0}} (G : Over S) (G' : Over (Sp W')) (ξ : Sp W ⟶ S)
     (β : G'.left ⟶ G.left) (h : IsPullback β G'.hom G.hom (spMap io ≫ ξ)) (g : G.left)
@@ -90,11 +117,37 @@ theorem exists_closedFibre_pt {W W' : Type} [CommRing W] [IsLocalRing W] [CommRi
     (h.isoPullback.inv z) (closedPoint _) (hg2.trans h2.symm)
   exact ⟨q, by rw [Scheme.Hom.comp_apply, hq1, hg1]⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem toProj_congr {R : Type} [CommRing R] {M : ℕ} {Y : Scheme.{0}} {L : LB Y} {f f' : Y ⟶ Sp R}
     (e : f = f') (s : Fin (M + 1) → L.Sec) (hs hs' : ⨆ i, nonzeroLocus (s i) = ⊤) :
     GlobalTheory.ProjSpace.toProj f s hs = GlobalTheory.ProjSpace.toProj f' s hs' := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `R _ _ _ hR M G _ hG B L hB hL N s θ Y _ hY j hj hji O hT g y hy hgc hgj`. Take `⟨W, _, _, _, φ, ξ, hW, hφi, hφl, hξ, hξx⟩` from `exists_trait_pt R hR M _ hgc`. Take `⟨W', _, _, _, io, G', _, β, κ, e, hW', hio, hiof, hpb, hκ, he, H⟩` from `hT W hW φ ξ hφi hφl hξ`. Use `haveI := isLocalHom_of_finite io hiof`. Take `⟨q, hq⟩` from `exists_closedFibre_pt io G G' ξ β hpb.1 _ hξx.symm`.
+
+Set `Ω : Type` to `(((Over.pullback (spMap (residue W'))).obj G').left).residueField q`. Set `p : Sp Ω ⟶ ((Over.pullback (spMap (residue W'))).obj G').left` to `(((Over.pullback (spMap (residue W'))).obj G').left).fromSpecResidueField q`. Use `haveI : Subsingleton (Sp Ω) := inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`. Take `⟨p', hp'⟩ : ∃ p', p' = p ≫ pullback.fst G'.hom (spMap (residue W'))` from `⟨_, rfl⟩`. Take `⟨y', hy'⟩ : ∃ y', y' = p ≫ e.hom.left ≫ pullback.fst Y.hom (spMap κ)` from `⟨_, rfl⟩`.
+
+Take `⟨⟨hs, hproj⟩, hnz⟩` from `H Ω p p' y' hp' hy'`. Set `pt : Sp Ω` to `closedPoint Ω`. Establish `hpt : ∀ z : Sp Ω, z = pt` using `fun z => Subsingleton.elim _ _`. Establish `hppt : p pt = q` using `Scheme.fromSpecResidueField_apply q pt`. Establish `hg' : (p' ≫ β) pt = (embH s).ι g`.
+
+Rewrite using `[hp', Category.assoc, Scheme.Hom.comp_apply, hppt]`. Conclude with `hq`. Establish `hrange : Set.range (p' ≫ β) ⊆ Set.range (embH s).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hpt z, hg']`.
+
+Conclude with `⟨g, rfl⟩`. Take `⟨l₀, hl₀⟩ : ∃ l₀ : Sp Ω ⟶ (embH s).toScheme, l₀ ≫ (embH s).ι = p' ≫ β` from `⟨_, IsOpenImmersion.lift_fac _ _ hrange⟩`. Establish `hl₀pt : l₀ pt = g`. Apply `(embH s).ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hl₀, hg']`.
+
+Take `⟨-, hs2, e2⟩` from `GlobalTheory.Mum.toProj_secPull_of_gs (Z := Sp Ω) s (fun i => GlobalTheory.secPull (s i) (embH s).ι) ((embH s).ι ≫ G.hom ≫ M.π) (iSup_nonzeroLocus_embH s) (p' ≫ β) l₀ (fun z => by`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hB.cover.ge (Set.mem_univ ((p' ≫ β) z)))`. Establish `hla : l₀ z ∈ (B.pull (embH s).ι).U (fun _ => a)` using `Set.mem_iInter.2 fun _ => by show (embH s).ι (l₀ z) ∈ B.U a`. Rewrite using `[← Scheme.Hom.comp_apply, hl₀]`. Conclude with `ha`.
+
+Use `⟨a, fun _ => a, 1, ha, hla, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, _root_.one_mul]`. Use `Eq.trans ?_ (GlobalTheory.gs_chartSec (GlobalTheory.chartPullPull B (embH s).ι) (s i) l₀ z (fun _ => a) hla).symm` and prove the remaining obligations. Rewrite using `[hl₀]`. Use the proof step `rfl)`.
+
+Establish `hstr : p' ≫ G'.hom ≫ spMap (io.comp φ) = l₀ ≫ (embH s).ι ≫ G.hom ≫ M.π`. Establish `hw : β ≫ G.hom ≫ M.π = G'.hom ≫ spMap io ≫ ξ ≫ M.π`. Rewrite using `[← Category.assoc, hpb.1.w]`. Simplify using `only [Category.assoc]`. Establish `hc : spMap (io.comp φ) = spMap io ≫ spMap φ`.
+
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Rewrite using `[reassoc_of% hl₀, hw, hξ, hc]`. Establish `key : y' ≫ j = l₀ ≫ embF (G.hom ≫ M.π) s`. Rewrite using `[← hproj, toProj_congr hstr _ hs hs2]`. Conclude with `e2`.
+
+Establish `hyy : y' pt = y`. Apply `hji.isEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, key, Scheme.Hom.comp_apply, hl₀pt, hgj]`. Establish `hθ` using `hnz pt (hyy ▸ hy)`. Rewrite `hθ` using `[hg']`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 hθ`.
+-/
 theorem mem_basicOpen_theta : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (M : Modif R) (G : Over M.S) [GrpObj G],
     IsSemiAbelian G → ∀ (B L : LB G.left), B.IsLB → L.IsLB → ∀ (N : ℕ) (s : Fin (N + 1) → B.Sec) (θ : L.Sec)
     (Y : Over (Sp (ResidueField R))) [GrpObj Y], Smooth Y.hom → ∀ (j : Y.left ⟶ PSpace R N),

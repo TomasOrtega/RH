@@ -4,6 +4,35 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F _ _ κ ρ s τ j R hR a b hab`. Take `⟨h1, h2⟩` from `hR`. Establish `hA : ∀ (i : Fin j) (u : Fin τ), κ + (s + 1) + i.val * τ + u.val < κ + s + 1 + j * τ`. Introduce `i u`. Establish `hi : i.val + 1 ≤ j` using `i.2`.
+
+Establish `hu` using `u.2`. Establish `: (i.val + 1) * τ ≤ j * τ` using `Nat.mul_le_mul_right _ hi`. Establish `e : (i.val + 1) * τ = i.val * τ + τ` using `by ring`. Use linear arithmetic over natural numbers and integers. Establish `hdiv : ∀ (i : Fin j) (u : Fin τ), (κ + (s + 1) + i.val * τ + u.val - (κ + s + 1)) / τ = i.val`.
+
+Introduce `i u`. Establish `hτ : 0 < τ` using `Nat.pos_of_ne_zero (fun h => by subst h; exact u.elim0)`. Establish `e : κ + (s + 1) + i.val * τ + u.val - (κ + s + 1) = u.val + τ * i.val`. Rewrite using `[Nat.mul_comm]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e, Nat.add_mul_div_left _ _ hτ, Nat.div_eq_of_lt u.2, zero_add]`. Apply the tactic sequence `rcases a with (i | i) | ⟨i, u⟩ <;> rcases b with (i' | i') | ⟨i', u'⟩`. Simplify using `only [FreeIx, FreeTop, not_lt, Fin.le_def] at hab`. Simplify using `only [zPos]`. Distinguish the cases in `h : i.val = i'.val`.
+
+Establish `: i = i'` using `Fin.ext h`. Substitute `this` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `(h1 _ (by omega)).1`. Rewrite using `[if_neg (by intro e; simp only [Sum.inl.injEq] at e; exact h (congrArg Fin.val e))]`.
+
+Use `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inr (Or.inl ?_))` and prove the remaining obligations. Apply the tactic sequence `simp only [symIdx]; split_ifs <;> omega`. Simplify using `only [FreeIx, FreeTop, not_lt] at hab`. Simplify using `only [zPos]`. Rewrite using `[if_neg (by simp)]`.
+
+Break down `Nat.lt_or_eq_of_le hab with hl | hl` into its components or cases. Use `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inr (Or.inl ?_))` and prove the remaining obligations. Apply the tactic sequence `simp only [symIdx]; split_ifs <;> omega`. Conclude with `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inr (Or.inr ⟨by omega, by omega⟩))`. Simplify using `[FreeIx] at hab`.
+
+Simplify using `only [FreeIx, FreeTop, not_lt] at hab`. Simplify using `only [zPos]`. Rewrite using `[if_neg (by simp)]`. Use `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inr (Or.inl ?_))` and prove the remaining obligations. Apply the tactic sequence `simp only [symIdx]; split_ifs <;> omega`.
+
+Simplify using `only [FreeIx, FreeTop, not_lt, Fin.le_def] at hab`. Simplify using `only [zPos]`. Distinguish the cases in `h : i.val = i'.val`. Establish `: i = i'` using `Fin.ext h`. Substitute `this` using the available equality.
+
+Rewrite using `[if_pos rfl]`. Conclude with `(h1 _ (by omega)).1`. Rewrite using `[if_neg (by intro e; simp only [Sum.inl.injEq, Sum.inr.injEq] at e; exact h (congrArg Fin.val e))]`. Use `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inr (Or.inl ?_))` and prove the remaining obligations. Apply the tactic sequence `simp only [symIdx]; split_ifs <;> omega`.
+
+Simplify using `[FreeIx] at hab`. Simplify using `only [zPos]`. Rewrite using `[if_neg (by simp)]`. Use `hA i u` as an intermediate fact. Conclude with `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inl (by omega))`.
+
+Simplify using `only [zPos]`. Rewrite using `[if_neg (by simp)]`. Use `hA i u` as an intermediate fact. Conclude with `(h1 _ (by omega)).2 _ (by omega) (by omega) (Or.inl (by omega))`. Simplify using `only [FreeIx, not_le, Fin.lt_def] at hab`.
+
+Simplify using `only [zPos]`. Rewrite using `[if_neg (by intro e; simp only [Sum.inr.injEq, Prod.mk.injEq] at e; rw [e.1] at hab; omega)]`. Establish `hu` using `hA i u`. Establish `hu'` using `hA i' u'`. Apply `h2 _ _ (by omega) (by omega) (by omega)` to reduce the goal to its premises.
+
+Rewrite using `[hdiv, hdiv]`. Conclude with `hab`.
+-/
 theorem patOfPlaces : ∀ (F : Type) [Zero F] [One F] (κ ρ s τ j : ℕ) (R : ℕ → ℕ → F), ((∀ p', p' < κ + s + 1 → R p' p' = 1 ∧ ∀ p, p < κ + s + 1 + j * τ → p ≠ p' →
         (κ + s + 1 ≤ p ∨ symIdx κ ρ p' < symIdx κ ρ p ∨ (p' = κ + ρ ∧ p < κ)) → R p p' = 0) ∧
       (∀ p p', κ + s + 1 ≤ p' → p' < κ + s + 1 + j * τ → p < κ + s + 1 + j * τ →

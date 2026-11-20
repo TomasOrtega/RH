@@ -15,6 +15,11 @@ def toQC {K : Type} [Field K] [NumberField K] (χ : HChar K) : GroundTheory.Glob
     exact χ.2.2 a)
   continuous_toFun := (QuotientGroup.isQuotientMap_mk _).continuous_iff.2 χ.2.1
 
+/- English proof (translation)
+Introduce `K _ _ χ`. Use `⟨-(toQC χ).exponent, fun w => ?_⟩` and prove the remaining obligations. Establish `h1` using `(toQC χ).norm_apply (GroundTheory.Global.IdeleClassGroup.mk K (GroundTheory.Global.IdeleGroup.finiteEmbedding w (atFin w (unif w))))`. Rewrite `h1` using `[GroundTheory.Global.IdeleClassGroup.ideleModule_mk, GroundTheory.Global.ideleModule_finiteEmbedding_of_uniformizer (unif_spec w)]`. Establish `h2 : ((χ.val w : ℂˣ) : ℂ) = (((toQC χ) (GroundTheory.Global.IdeleClassGroup.mk K (GroundTheory.Global.IdeleGroup.finiteEmbedding w (atFin w (unif w)))) : ℂˣ) : ℂ)` using `rfl`.
+
+Rewrite using `[h2, h1, Real.inv_rpow (by positivity), Real.rpow_neg (by positivity)]`.
+-/
 theorem norm_val_eq_rpow : ∀ (K : Type) [Field K] [NumberField K] (χ : HChar K), ∃ s : ℝ,
     ∀ w : HeightOneSpectrum (𝓞 K), ‖((χ.val w : ℂˣ) : ℂ)‖ = (Ideal.absNorm w.asIdeal : ℝ) ^ s := by
   intro K _ _ χ

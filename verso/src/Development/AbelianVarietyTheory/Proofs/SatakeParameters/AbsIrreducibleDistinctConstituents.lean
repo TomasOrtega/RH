@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D h32 hS i r hr`. Take `⟨K', hK', hA, _, hK⟩` from `(((h32 i).2.2 r hr).2.2.1).1`. Conclude with `GlobalTheory.T.absIrr_distinct_constituents_after_extension D i r (hS i) hr K' (algebraMap (Kf D.nd i) K') (fun x => (hK x).2)`.
+-/
 theorem abs_irreducible_distinct_constituents : ∀ (D : D7), SumRepresentations.Conclusion41 D → GlobalTheory.SplitCoef.OSplit D → ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r → AbsIrreducibleDistinct D i r := by
   intro D h32 hS i r hr
   obtain ⟨K', hK', hA, _, hK⟩ := (((h32 i).2.2 r hr).2.2.1).1

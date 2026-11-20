@@ -13,6 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RealGal.SatAeProof
 
+/- English proof (translation)
+Introduce `hA F _ _ _ a π`. Establish `: Nontrivial π.V` using `Submodule.nontrivial_iff_ne_bot.2 π.ne_bot`. Establish `hsm : GlobalTheory.PRep.IsSmooth π.finPart` using `fun v => by`. Use `(π.cusp v.1 v.2).1.level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`.
+
+Conclude with `Subtype.ext_iff`. Conclude with `sat_ae_of_smooth GlobalTheory.RealGal.SatLocProof.main π.finPart hsm fun w =>`. Set `⟨⟨σ, hσ⟩, hiso⟩` to `GlobalTheory.RealGal.locCompR_of_admissibleReal hA F a π w`. Use the proof step `⟨σ, hiso σ hσ⟩`.
+-/
 theorem main : AdmissibleReal → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (π : TR.CuspSub F a), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∃ B, π.HasSat v B := by
   intro hA F _ _ _ a π
   have : Nontrivial π.V := Submodule.nontrivial_iff_ne_bot.2 π.ne_bot

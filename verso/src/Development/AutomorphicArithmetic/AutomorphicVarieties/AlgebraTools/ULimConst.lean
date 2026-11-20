@@ -4,6 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Ultra
 open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `R ι _ U m Z _ _ hc hfin`. Use `⟨fun a b hab => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h0 : ULim.mk (U : Filter ι) (fun j => m ^ j) (fun _ => Z) (fun _ => a - b) = 0`. Establish `h1 : (fun _ : ι => a - b) = (fun _ : ι => a) - (fun _ : ι => b)` using `rfl`. Rewrite using `[h1, map_sub]`.
+
+Conclude with `sub_eq_zero.2 hab`. Rewrite `h0` using `[ULim.mk_eq_zero]`. Use `sub_eq_zero.1 (IsHausdorff.haus hc.toIsHausdorff _ fun j => ?_)` and prove the remaining obligations. Take `⟨_, h⟩` from `(h0 j).exists`. Conclude with `SModEq.zero.2 h`.
+
+Take `⟨p, rfl⟩` from `ULim.mk_surjective _ _ _ x`. Establish `hz : ∀ j : ℕ, ∃ z : Z, ∀ᶠ i in (U : Filter ι), p i ≡ z [SMOD (m ^ j • ⊤ : Submodule R Z)]`. Introduce `j`. Use `haveI := hfin j`. Take `⟨q, hq⟩` from `Ultrafilter.eq_pure_of_finite (U.map fun i => (Submodule.Quotient.mk (p i) : Z ⧸ (m ^ j • ⊤ : Submodule R Z)))`.
+
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `h : ({Submodule.Quotient.mk z} : Set (Z ⧸ (m ^ j • ⊤ : Submodule R Z))) ∈ U.map fun i => (Submodule.Quotient.mk (p i) : Z ⧸ (m ^ j • ⊤ : Submodule R Z))`. Rewrite using `[hq]`. Simplify using the standard rewrite rules.
+
+Conclude with `h`. Use `choose z hz using hz`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hc.toIsPrecomplete (f := z) (fun {j k} hjk => by`. Take `⟨i, h1, h2⟩` from `((hz j).and (hz k)).exists`. Conclude with `h1.symm.trans (h2.mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hjk))))`.
+
+Use `⟨L, ?_⟩` and prove the remaining obligations. Use `show ULim.mk _ _ _ _ = _`. Rewrite using `[← sub_eq_zero, ← map_sub, ULim.mk_eq_zero]`. Introduce `j`. Use `(hz j).mono fun i hi => ?_` and prove the remaining obligations.
+
+Conclude with `SModEq.sub_mem.1 (hi.trans (hL j)).symm`.
+-/
 theorem UpperTheory.V.AlgebraTools.ULim.const_bijective :
     ∀ (R ι : Type) [CommRing R] (U : Ultrafilter ι) (m : Ideal R) (Z : Type) [AddCommGroup Z] [Module R Z], IsAdicComplete m Z →
       (∀ j : ℕ, Finite (Z ⧸ (m ^ j • ⊤ : Submodule R Z))) →

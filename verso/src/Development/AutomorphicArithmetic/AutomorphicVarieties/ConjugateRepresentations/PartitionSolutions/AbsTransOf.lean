@@ -10,6 +10,23 @@ open scoped ContDiff
 
 namespace UpperTheory.V.Cj.A
 
+/- English proof (translation)
+Introduce `Γ V S _ _ _ _ d d' G ξ' τ hτ hc hn hcone hp ⟨l, hl⟩ q w hw hdw ⟨T, K, hT, hK, hKY, hz⟩`. Take `⟨K1, hK1, hKK, hK1Y⟩` from `exists_compact_between hK G.isOpen hKY`. Take `⟨s1, -, s3, -⟩` from `h11 Γ V S d G T K`. Take `⟨o1, o2, o3, -⟩` from `h11 Γ V S d G T (interior K1)`. Take `⟨-, -, -, f4⟩` from `h11 Γ V S d G T K1`.
+
+Take `⟨C, φ, hC, hφ, hCA, hCO⟩` from `h9 Γ V S d G hp (fun s => G.Y \ sat G T K s) (sat G T (interior K1)) (fun s => ⟨h10 Γ V S d G hp hcone l hl T K hT hK hKY s, Set.diff_subset, o2 isOpen_interior s, fun p hp' => by`. Distinguish the cases in `h : p ∈ sat G T K s`. Conclude with `Or.inr (s3 _ hKK s h)`. Conclude with `Or.inl ⟨hp', h⟩⟩)`. Use the proof step `(fun γ s p => by simp only [Set.mem_diff, G.ρ_mem_iff, s1 γ s p]) o1`.
+
+Take `⟨c, z1, z2, z3, z4⟩` from `h2 Γ V S (Idx Γ V) d G hc hn Idx.g (fun _ _ => rfl) C hC q 0 q (zero_add q) (fun _ => w) (fun γ _ _ => (hw γ).symm) (fun _ _ => hdw) (fun x hx => by simp [hd, hx, Finset.sum_range_succ]) (fun x hx s p _ h => by`. Take `⟨i, rfl⟩` from `List.length_eq_one_iff.1 hx`. Use `hCA i s (h i (by simp))` as an intermediate fact. Conclude with `hz s p this.1 this.2)`. Set `G'` to `chg G ξ'`.
+
+Set `f : (S → Fin d → ℂ) →+ (S → Fin d' → ℂ)` to `τ.compLeft S`. Establish `hC' : IsCvx G' C` using `⟨hC.1, hC.2, hC.3, hC.4⟩`. Establish `hφ' : IsPart G' φ` using `⟨hφ.1, hφ.2, hφ.3, hφ.4⟩`. Establish `hF : ∀ i s, ∀ p ∈ G.Y \ sat G T K1 s, φ i s p ≠ 0 → p ∈ C i s` using `fun i s p hp' h => hCO i s p (fun h' => hp'.2 (o3 _ interior_subset s h')) h`. Take `⟨u, u1, u2, u3, u4, u5⟩` from `h3 Γ V S (Idx Γ V) d' G' hc hn φ hφ' C (fun s => G.Y \ sat G T K1 s) hC' (h10 Γ V S d G hp hcone l hl T K1 hT hK1 hK1Y) hF q (fun x => f (c x)) (fun γ x hx => by beta_reduce`.
+
+Rewrite using `[z2 γ x hx]`. Conclude with `funext fun s => hτ γ _)`. Use the proof step `(fun x hx => by rw [h1.2.2.2.1 _ _ _ f c x, z3 x hx, map_zero])`. Use the proof step `(fun x hx s p h => by`. Express the relevant statement in the definitionally equal form `τ (c x s) = 0`.
+
+Rewrite using `[z4 x hx s p h, map_zero]) q 0 (zero_add q)`. Take `⟨w', w1, w2, w3⟩` from `h4 Γ V S (Idx Γ V) d' G' φ hφ' C _ hF q u u2 u4 u5`. Establish `hl' : G'.IsInvGauge l` using `hl`. Take `⟨P, p1, p2, p3⟩` from `h6 Γ V S d' G' hcone l hl'`. Establish `p4` using `fun k => h7 Γ V S d' G' hcone l hl' k (P k) (p1 k)`.
+
+Establish `hι : ∀ γ δ : Γ, (⟨γ * δ, 0⟩ : Idx Γ V) = γ • (⟨δ, 0⟩ : Idx Γ V)` using `fun _ _ => rfl`. Establish `y1` using `(h5 Γ V S (Idx Γ V) d G).2 (fun γ => ⟨γ, 0⟩) hι q 0 _ _ z1`. Establish `y2` using `(h5 Γ V S (Idx Γ V) d' G').2 (fun γ => ⟨γ, 0⟩) hι q 0 _ _ ((h5 Γ V S (Idx Γ V) d' G').1 q 0 u (fun _ => w') _ w2 u1)`. Use `⟨_, P q w', y1, h8 Γ V S d' G' P p2 p3 p4 q 0 _ _ y2, fun γ => by rw [p4, w1], ?_, fun s p hp' v i hv => ?_, T, K1, hT, hK1, hK1Y, fun s p hp' h => ?_⟩` and prove the remaining obligations. Rewrite using `[p2, ← w2 [⟨1, 0⟩] rfl, u3 _ rfl, map_zero]`.
+
+Rewrite using `[p1 q w' s p hp']`. Conclude with `(pullA V _ G.Y G.isOpen hcone (l s) (hl.1 s) q _).1 p hp' v i hv`. Establish `h0` using `(hl.1 s).2.1 p hp'`. Rewrite using `[p1 q w' s p hp', pull, w3 s _ ⟨hcone _ h0 p hp', fun h' => h ((f4 s p _ h0).1 h')⟩]`. Both sides reduce to the same expression.
+-/
 theorem absTrans_of (h1 : HdFacts) (h2 : ZigFwd) (h3 : ZigBwd) (h4 : BwdLast) (h5 : ZigFormal) (h6 : PullOp) (h7 : PullAct)
     (h8 : ZigMap) (h9 : CoverEx) (h10 : SatClosed) (h11 : SatFacts) : AbsTrans := by
   intro Γ V S _ _ _ _ d d' G ξ' τ hτ hc hn hcone hp ⟨l, hl⟩ q w hw hdw ⟨T, K, hT, hK, hKY, hz⟩
@@ -61,6 +78,17 @@ theorem absTrans_of (h1 : HdFacts) (h2 : ZigFwd) (h3 : ZigBwd) (h4 : BwdLast) (h
     rw [p1 q w' s p hp', pull, w3 s _ ⟨hcone _ h0 p hp', fun h' => h ((f4 s p _ h0).1 h')⟩]
     rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha U hUo hU σ Ξ Ξ' h hσ q α hα hd0 hs`. Establish `ho : IsOpen (cone E a)` using `isOpen_iff_mem_nhds.2 fun p hp => by`. Take `⟨τ, -, hτ⟩` from `locSec E a p hp`. Conclude with `hτ.mono fun x hx => ⟨τ x, hx⟩`. Take `⟨w, w1, w2, w3⟩` from `(h4 E a ho U Ξ q).1 α hα hd0`.
+
+Set `τ : (Fin Ξ.d → ℂ) →+ (Fin Ξ'.d → ℂ)` to `AddMonoidHom.mk' (fun v i => σ (v (Fin.cast h.symm i))) fun v v' => by`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hτ : ∀ γ v, τ ((geo ho U Ξ).ξ γ *ᵥ v) = (geo ho U Ξ').ξ γ *ᵥ τ v` using `fun γ v => by`. Use extensionality with `i`.
+
+Express the relevant statement in the definitionally equal form `σ (∑ j, ratC Ξ γ.1 (Fin.cast h.symm i) j * v j) = ∑ j, ratC Ξ' γ.1 i j * σ (v (Fin.cast h.symm j))`. Rewrite using `[map_sum, ← (finCongr h).sum_comp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hσ]`. Both sides reduce to the same expression.
+
+Take `⟨c, w', z1, z2, z3, z4, z5, z6⟩` from `h1 _ _ _ _ _ (geo ho U Ξ) (geo ho U Ξ').ξ τ hτ (coneConvex E a).1 ⟨_, hOne_mem_cone⟩ (coneConvex E a).2 (geoProper E a ho U Ξ hU) (Dr.gauge E a ha ho U Ξ hU) q w w2 w3 (h2 E a ho U hUo Ξ q α _ w1 hs)`. Take `⟨β, b1, b2, b3⟩` from `(h4 E a ho U Ξ' q).2 w' z3 z4 z5`. Use `⟨U, le_rfl, hUo, hU, β, b3, h3 E a ho U hU Ξ' q β _ b1 z6, hα, b2, c, sigC σ h c, ⟨ho, w, w1, z1⟩, ⟨ho, w', b1, z2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self]`. Consider the cases of `q with`.
+
+Consider the case `zero => exact fun _ _ => rfl`. Consider the case `succ q => exact ⟨0, fun _ _ _ => by simp, fun x _ => by simp [hd]⟩`.
+-/
 theorem partA_of (h1 : AbsTrans) (h2 : SuppFwd) (h3 : SuppBwd) (h4 : LevCorr) : PartA := by
   intro E _ _ _ a ha U hUo hU σ Ξ Ξ' h hσ q α hα hd0 hs
   have ho : IsOpen (cone E a) := isOpen_iff_mem_nhds.2 fun p hp => by

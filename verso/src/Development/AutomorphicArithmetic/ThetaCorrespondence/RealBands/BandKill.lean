@@ -6,6 +6,23 @@ import Development.AutomorphicArithmetic.ThetaCorrespondence.RealBands.Fourier
 open MeasureTheory Filter UpperTheory.Lit.Cusp
 open scoped Topology
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ N a H f h hR hf hfi hK hB x`. Establish `ha` using `hR.cont`. Establish `hh : Continuous h` using `hB.1`. Take `⟨B, hBd⟩` from `hB.2.1`. Take `⟨C, -, hC⟩` from `isEig_of_isBand G N a H h hR hB 0`.
+
+Establish `a0 : a 0 = 1`. Use `hR.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`. Establish `hFc : Continuous (fun p : G × ℝ => f p.1 * h (p.1⁻¹ * x * a p.2))` using `by fun_prop`.
+
+Establish `hF : Integrable (fun p : G × ℝ => f p.1 * h (p.1⁻¹ * x * a p.2)) (μ.prod volume)`. Rewrite using `[integrable_prod_iff hFc.aestronglyMeasurable]`. Use `⟨Eventually.of_forall fun g => (hC (g⁻¹ * x)).1.const_mul (f g), ?_⟩` and prove the remaining obligations. Use `Integrable.mono' (hfi.norm.mul_const C) (hFc.norm.aestronglyMeasurable.integral_prod_right') (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun t => norm_nonneg _)]`.
+
+Simplify using `only [norm_mul]`. Rewrite using `[integral_const_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hC (g⁻¹ * x)).2 (norm_nonneg _)`. Establish `huc : Continuous (fun t : ℝ => ∫ g, f g * h (g⁻¹ * x * a t) ∂μ)`. Use `continuous_of_dominated (bound := fun g => ‖f g‖ * B) (fun t => ?_) (fun t => ?_) (hfi.norm.mul_const B) (Eventually.of_forall fun g => by fun_prop)` and prove the remaining obligations.
+
+Conclude with `Continuous.aestronglyMeasurable (by fun_prop)`. Use `Eventually.of_forall fun g => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hBd _) (norm_nonneg _)`. Establish `hui : Integrable (fun t : ℝ => ∫ g, f g * h (g⁻¹ * x * a t) ∂μ)` using `hF.integral_prod_right`.
+
+Establish `key` using `fourier_zero _ huc hui (fun s => ?_) 0`. Simplify `key` using `[a0, conv]`. Take `⟨D, hE, -⟩` from `isEig_of_isBand G N a H h hR hB s`. Establish `h0` using `hK s D _ hE x`. Establish `hF' : Integrable (fun p : G × ℝ => Complex.exp (-((s * p.2 : ℝ) * Complex.I)) * (f p.1 * h (p.1⁻¹ * x * a p.2))) (μ.prod volume)`.
+
+Use `hF.bdd_mul (c := 1) (Continuous.aestronglyMeasurable (by fun_prop)) (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Rewrite using `[← neg_mul, ← Complex.ofReal_neg, Complex.norm_exp_ofReal_mul_I]`. Establish `hsw` using `integral_integral_swap (μ := μ) (ν := (volume : Measure ℝ)) (f := fun g t => Complex.exp (-((s * t : ℝ) * Complex.I)) * (f g * h (g⁻¹ * x * a t))) hF'`. Simplify using `only [← integral_const_mul]`. Rewrite using `[← hsw, ← h0, conv]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Lit.Cusp.conv_band :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
       [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (N : Set G) (a : ℝ → G) (H : G → ℝ) (f h : G → ℂ),

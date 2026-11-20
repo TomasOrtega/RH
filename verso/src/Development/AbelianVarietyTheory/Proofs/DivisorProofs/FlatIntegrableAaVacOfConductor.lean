@@ -21,6 +21,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 section Gen
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simp [apow, nabs_one]`. Consider the case `succ n ih`. Rewrite using `[_root_.zpow_add_one, apow_mul, ih, ← apow_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `pred n ih`. Rewrite using `[_root_.zpow_sub_one, apow_mul, ih, apow_inv, ← apow_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem apow_zpow (x : kˣ) (n : ℤ) (z : ℂ) : apow (x ^ n) z = apow x (n * z) := by
   induction n using Int.induction_on with
   | zero => simp [apow, nabs_one]
@@ -31,6 +38,9 @@ theorem apow_zpow (x : kˣ) (n : ℤ) (z : ℂ) : apow (x ^ n) z = apow x (n * z
     rw [_root_.zpow_sub_one, apow_mul, ih, apow_inv, ← apow_add]
     congr 1; push_cast; ring
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp [apow]`. Consider the case `cons b l ih => rw [List.map_cons, List.prod_cons, ih, List.map_cons, List.sum_cons, apow_add]`.
+-/
 theorem prod_apow {α : Type*} (x : kˣ) (f : α → ℂ) (l : List α) :
     (l.map fun b => apow x (f b)).prod = apow x (l.map f).sum := by
   induction l with
@@ -39,11 +49,17 @@ theorem prod_apow {α : Type*} (x : kˣ) (f : α → ℂ) (l : List α) :
 
 end Gen
 
+/- English proof (translation)
+Break down `Nat.even_or_odd a with h | h` into its components or cases. Conclude with `h.mul_right _`. Conclude with `(h.add_odd hd).mul_left _`.
+-/
 theorem even_mul_add_odd (a d : ℕ) (hd : Odd d) : Even (a * (a + d)) := by
   rcases Nat.even_or_odd a with h | h
   · exact h.mul_right _
   · exact (h.add_odd hd).mul_left _
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp | b :: l, h => by rw [List.map_cons, List.sum_cons] exact (h b List.mem_cons_self).add (even_sum_of_even P l fun c hc => h c (List.mem_cons_of_mem _ hc))`.
+-/
 theorem even_sum_of_even {α : Type*} (P : α → ℕ) : ∀ l : List α, (∀ b ∈ l, Even (P b)) → Even (l.map P).sum
   | [], _ => by simp
   | b :: l, h => by
@@ -52,6 +68,11 @@ theorem even_sum_of_even {α : Type*} (P : α → ℕ) : ∀ l : List α, (∀ b
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [oppositePath, List.mem_append, List.mem_map, List.mem_range, List.mem_reverse]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩)`. Conclude with `Or.inl ⟨i, hi, rfl⟩`. Conclude with `Or.inr ⟨j, hj, rfl⟩`.
+
+Introduce and unpack `(⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩)`. Conclude with `Or.inl ⟨i, hi, rfl⟩`. Conclude with `Or.inr ⟨j, hj, rfl⟩`.
+-/
 theorem mem_oppositePath {m : ℕ} {b : Edge} : b ∈ oppositePath m ↔ (∃ i < m, b = .ex i m) ∨ ∃ j < m, b = .theta m j := by
   simp only [oppositePath, List.mem_append, List.mem_map, List.mem_range, List.mem_reverse]
   constructor
@@ -62,6 +83,11 @@ theorem mem_oppositePath {m : ℕ} {b : Edge} : b ∈ oppositePath m ↔ (∃ i 
     · exact Or.inl ⟨i, hi, rfl⟩
     · exact Or.inr ⟨j, hj, rfl⟩
 
+/- English proof (translation)
+Break down `mem_oppositePath.1 hb with ⟨i, -, rfl⟩ | ⟨j, -, rfl⟩` into its components or cases. Use `even_mul_add_odd ((bareGrid w).rank (i, (bareGrid w).m)) (sLen D) (odd_sLen D)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Grid.rank, bareGrid]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `even_mul_add_odd ((bareGrid w).rank ((bareGrid w).m, j)) D.R.t D.R.t_odd` as an intermediate fact. Rewrite using `[mul_comm]`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Grid.rank, bareGrid]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even_rank_mul_path (w : Pl D.host.E) {b : Edge} (hb : b ∈ oppositePath (bareGrid w).m) :
     Even ((bareGrid w).rank b.src * (bareGrid w).rank b.tgt) := by
   rcases mem_oppositePath.1 hb with ⟨i, -, rfl⟩ | ⟨j, -, rfl⟩
@@ -73,6 +99,11 @@ theorem even_rank_mul_path (w : Pl D.host.E) {b : Edge} (hb : b ∈ oppositePath
     convert this using 2
     simp only [Grid.rank, bareGrid]; ring
 
+/- English proof (translation)
+Establish `hr : D.R.r + 1 = D.R.k + D.R.m` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Establish `key : ∀ i j, i ≤ D.R.m → j ≤ D.R.m → (bareGrid w).rank (i, j) ≤ bigN D` using `fun i j hi hj => by`. Simplify using `only [Grid.rank, bareGrid, bigN]`. Establish `h1` using `Nat.mul_le_mul_right D.R.t hj`. Establish `h2` using `Nat.mul_le_mul_right (sLen D) hi`.
+
+Use the polynomial consequences of the given equalities and inequalities. Break down `mem_oppositePath.1 hb with ⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Conclude with `⟨key _ _ hi.le le_rfl, key _ _ hi le_rfl⟩`. Conclude with `⟨key _ _ le_rfl hj, key _ _ le_rfl hj.le⟩`.
+-/
 theorem rank_path_le (w : Pl D.host.E) {b : Edge} (hb : b ∈ oppositePath (bareGrid w).m) :
     (bareGrid w).rank b.src ≤ bigN D ∧ (bareGrid w).rank b.tgt ≤ bigN D := by
   have hr : D.R.r + 1 = D.R.k + D.R.m := by unfold Ranks.r; have := D.R.two_le_m; omega
@@ -85,6 +116,9 @@ theorem rank_path_le (w : Pl D.host.E) {b : Edge} (hb : b ∈ oppositePath (bare
   · exact ⟨key _ _ hi.le le_rfl, key _ _ hi le_rfl⟩
   · exact ⟨key _ _ le_rfl hj, key _ _ le_rfl hj.le⟩
 
+/- English proof (translation)
+The claim follows from `|n| ≤ (D.R.m : ℤ) ^ 3 * (bigN D : ℤ) ^ 2 * (|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.host.E w D.host.AAbar|) := by set a := FractionalIdeal.count D.host.E w D.host.AA set a' := FractionalIdeal.count D.host.E w D.host.AAbar set P : Edge → ℕ := fun b …`.
+-/
 theorem path_apow_pow (w : Pl D.host.E) : ∃ n : ℤ, ((oppositePath D.R.m).map fun b =>
     apow (genAt w D.host.AAbar / genAt w D.host.AA)
       (((bareGrid w).rank b.src * (bareGrid w).rank b.tgt : ℕ) / 4)).prod =
@@ -127,6 +161,15 @@ theorem path_apow_pow (w : Pl D.host.E) : ∃ n : ℤ, ((oppositePath D.R.m).map
       _ ≤ (|a| + |a'|) * (D.R.m ^ 3 * bigN D ^ 2) := mul_le_mul_of_nonneg_left h4 (by positivity)
       _ = _ := by ring
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Use `set c : Kw w := (((genAt w D.host.AA)⁻¹ : (Kw w)ˣ) : Kw w)`. Establish `h : ∀ᶠ y in nhds x, ∀ b ∈ (oppositePath (bareGrid w).m).toFinset, ∀ i j, c * (y b i j - x b i j) ∈ 𝒪[Kw w]`. Use `(Filter.eventually_all_finset _).2 fun b _ => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : (bareGrid w).Args => c * (y b i j - x b i j)` using `continuous_const.mul (((continuous_apply b).matrix_elem i j).sub continuous_const)`.
+
+Conclude with `(Model.isOpen_int.preimage hc).mem_nhds (by simp)`. Use `filter_upwards [h] with y hy`. Establish `key : ∀ b ∈ oppositePath (bareGrid w).m, ∀ i j, (c * y b i j ∈ 𝒪[Kw w] ↔ c * x b i j ∈ 𝒪[Kw w])` using `fun b hb i j => by`. Establish `hd` using `hy b (List.mem_toFinset.2 hb) i j`. Establish `e : c * y b i j = c * x b i j + c * (y b i j - x b i j)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `⟨fun h1 => by simpa using sub_mem h1 hd, fun h1 => add_mem h1 hd⟩`. Establish `hs : (y ∈ {z : (bareGrid w).Args | ∀ b ∈ oppositePath (bareGrid w).m, ∀ i j, c * z b i j ∈ 𝒪[Kw w]}) ↔ (x ∈ {z : (bareGrid w).Args | ∀ b ∈ oppositePath (bareGrid w).m, ∀ i j, c * z b i j ∈ 𝒪[Kw w]})`. Conclude with `forall₂_congr fun b hb => forall₂_congr fun i j => key b hb i j`. Unfold `aaVac`.
+
+Distinguish the cases in `hx : x ∈ {z : (bareGrid w).Args | ∀ b ∈ oppositePath (bareGrid w).m, ∀ i j, c * z b i j ∈ 𝒪[Kw w]}`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (hs.2 hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt hs.1 hx)]`.
+-/
 theorem isLocallyConstant_aaVac (w : Pl D.host.E) : IsLocallyConstant (aaVac w) := by
   classical
   refine (IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_
@@ -152,6 +195,15 @@ theorem isLocallyConstant_aaVac (w : Pl D.host.E) : IsLocallyConstant (aaVac w) 
   · rw [Set.indicator_of_mem hx, Set.indicator_of_mem (hs.2 hx)]; rfl
   · rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt hs.1 hx)]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := Kw w)`. Apply the tactic sequence `choose a b c h using exists_fill_entry (G := bareGrid w) one_le_sLen x y`. Use `set u : (Kw w)ˣ := (genAt w D.host.AA)⁻¹`. Use `choose K hK hK' using fun j : Fin ((bareGrid w).m - 1) => exists_isCompact_of_mul_mem (SplitFlip.diagGL (fun _ => u) * (Assignment.one.read (g (Edge.theta (bareGrid w).m j).tgt))⁻¹) (Assignment.one.read (g (Edge.theta (bareGrid w).m j).src))`. Use `HasCompactSupport.intro (K := Set.univ.pi fun j => Set.univ.pi fun rs => (fun M => M (a j rs) (b j rs) - c j rs) '' K j) (isCompact_univ_pi fun j => isCompact_univ_pi fun rs => (hK j).image ((continuous_id.matrix_elem _ _).sub continuous_const)) fun v hv => ?_` and prove the remaining obligations.
+
+Establish `h0 : aaVac w ((bareGrid w).moveArgs .one g (fill one_le_sLen x y v)) = 0`. Assume the negation of the conclusion as `hne`. Establish `hmem` using `Set.mem_of_indicator_ne_zero hne`. Use `hv fun j _ rs _ => ⟨_, hK' j _ ?_, (h j rs v).symm⟩` and prove the remaining obligations. Use `mem_matLat_stdLat.2 fun r s => ?_` and prove the remaining obligations.
+
+Establish `hb : Edge.theta (bareGrid w).m j ∈ oppositePath (bareGrid w).m`. Use `j.2` as an intermediate fact. Simplify using `[oppositePath]`. Use linear arithmetic over natural numbers and integers. Use `hmem _ hb r s` as an intermediate fact.
+
+Simplify using `only [Grid.moveArgs] at this`. Simplify `this` using `[Units.val_mul, diagGL_val, Matrix.mul_assoc, Matrix.diagonal_mul, u]`. Simplify using `[flatIntegrand, moved, Grid.pathAct, h0]`.
+-/
 theorem hasCompactSupport_aaVac (w : Pl D.host.E) (ψ : AddChar (Kw w) Circle) (keep : Bool) (g : (bareGrid w).VertexGroup)
     (x : ColArgs (bareGrid w)) (y : RowArgs (bareGrid w)) :
     HasCompactSupport (flatIntegrand one_le_sLen ψ (moved (bareGrid w) keep g (aaVac w)) x y) := by
@@ -177,6 +229,11 @@ theorem hasCompactSupport_aaVac (w : Pl D.host.E) (ψ : AddChar (Kw w) Circle) (
     simpa [Units.val_mul, diagGL_val, Matrix.mul_assoc, Matrix.diagonal_mul, u] using this
   simp [flatIntegrand, moved, Grid.pathAct, h0]
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := Kw w)`. Use `(isUnitVol_unitVol w).1` as an intermediate fact. Introduce `g x y`. Unfold `varsVol`. Establish `hm : Continuous ((bareGrid w).moveArgs .one g)` using `continuous_pi fun b => (continuous_const.matrix_mul (continuous_apply b)).matrix_mul continuous_const`.
+
+Establish `hc : Continuous (flatIntegrand one_le_sLen ψ (moved (bareGrid w) true g (aaVac w)) x y)` using `(continuous_const.mul (continuous_const.mul ((isLocallyConstant_aaVac w).continuous.comp (hm.comp (continuous_fill one_le_sLen x y))))).mul (continuous_subtype_val.comp (hψ.comp (continuous_phase x).neg))`. Conclude with `hc.integrable_of_hasCompactSupport (hasCompactSupport_aaVac w ψ true g x y)`.
+-/
 theorem flatIntegrable_aaVac (w : Pl D.host.E) {ψ : AddChar (Kw w) Circle} (hψ : Continuous ψ) :
     FlatIntegrable (G := bareGrid w) one_le_sLen ψ (unitVol w) (aaVac w) := by
   classical
@@ -194,6 +251,9 @@ theorem flatIntegrable_aaVac (w : Pl D.host.E) {ψ : AddChar (Kw w) Circle} (hψ
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil)
 
+/- English proof (translation)
+The claim follows from `|n| ≤ 16 * ((D.R.m : ℤ) ^ 3 * (bigN D : ℤ) ^ 2 * (|FractionalIdeal.count D.host.E w D.host.AA| + |FractionalIdeal.count D.host.E w D.host.AAbar|)) := by obtain ⟨n1, h1, b1⟩ := GlobalTheory.T.unfoldingTerm_coef_eq_residueCard_zpow W w obtain ⟨n2, h2, b2⟩ := GlobalTheory.T.originDa …`.
+-/
 theorem aaScalar_eq_pow (w : Pl D.host.E) (hψ : HasConductor (psiAt W w) (genAt w D.host.AA * genAt w D.host.AAbar)) :
     ∃ n : ℤ, aaScalar W w = (resCard (Kw w) : ℂ) ^ ((n : ℂ) / 2) ∧
     |n| ≤ 16 * ((D.R.m : ℤ) ^ 3 * (bigN D : ℤ) ^ 2 *
@@ -215,6 +275,15 @@ theorem aaScalar_eq_pow (w : Pl D.host.E) (hψ : HasConductor (psiAt W w) (genAt
           rw [abs_mul, abs_two] at *; linarith
       _ ≤ _ := by linarith
 
+/- English proof (translation)
+Establish `hw : ∀ w ∈ S.PA, ∃ n : ℤ, aaScalar W w = (resCard (Kw w) : ℂ) ^ ((n : ℂ) / 2)` using `fun w hw => (aaScalar_eq_pow W w (hψ w hw)).imp fun _ h => h.1`. Use `choose! n hn using hw`. Establish `e : ∀ w ∈ S.PA, aaScalar W w = (((resCard (Kw w) : ℝ) ^ ((n w : ℝ) / 2) : ℝ) : ℂ)` using `fun w hw => by`. Rewrite using `[hn w hw, Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hr : S.sAA = ((∏ w ∈ S.PA, (resCard (Kw w) : ℝ) ^ ((n w : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[GridChoice.sAA, Complex.ofReal_prod]`. Conclude with `Finset.prod_congr rfl e`. Establish `hpos : 0 < ∏ w ∈ S.PA, (resCard (Kw w) : ℝ) ^ ((n w : ℝ) / 2)` using `Finset.prod_pos fun w _ => Real.rpow_pos_of_pos (by have : 1 < resCard (Kw w) := Finite.one_lt_card; positivity) _`.
+
+Establish `hsq : (∏ w ∈ S.PA, (resCard (Kw w) : ℝ) ^ ((n w : ℝ) / 2)) ^ 2 = ((∏ w ∈ S.PA, (resCard (Kw w) : ℚ) ^ n w : ℚ) : ℝ)`. Rewrite using `[← Finset.prod_pow, Rat.cast_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _), Rat.cast_zpow, Rat.cast_natCast, ← Real.rpow_intCast]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨by rw [hr]; exact_mod_cast hpos.ne', ⟨_, hpos, hr⟩, ∏ w ∈ S.PA, (resCard (Kw w) : ℚ) ^ n w, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, ← Complex.ofReal_pow, hsq, Complex.ofReal_ratCast]`.
+-/
 theorem sAA_facts {U : Set T} (S : GridChoice W U)
     (hψ : ∀ w ∈ S.PA, HasConductor (psiAt W w) (genAt w D.host.AA * genAt w D.host.AAbar)) :
     S.sAA ≠ 0 ∧ (∃ r : ℝ, 0 < r ∧ S.sAA = r) ∧ ∃ Q : ℚ, S.sAA ^ 2 = Q := by
@@ -237,6 +306,9 @@ theorem sAA_facts {U : Set T} (S : GridChoice W U)
   refine ⟨by rw [hr]; exact_mod_cast hpos.ne', ⟨_, hpos, hr⟩, ∏ w ∈ S.PA, (resCard (Kw w) : ℚ) ^ n w, ?_⟩
   rw [hr, ← Complex.ofReal_pow, hsq, Complex.ofReal_ratCast]
 
+/- English proof (translation)
+The claim follows from `flatIntegrable_aaVac w hψ.continuous`.
+-/
 theorem flatIntegrable_aaVac_of_conductor (w : Pl D.host.E)
     (hψ : HasConductor (psiAt W w) (genAt w D.host.AA * genAt w D.host.AAbar)) :
     FlatIntegrable (G := bareGrid w) one_le_sLen (psiAt W w) (unitVol w) (aaVac w) :=

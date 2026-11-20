@@ -17,11 +17,41 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.GLift
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ p _ y₀ u l q hq χ`. Use `GlobalTheory.ZH.RealCase.psiNorm_unique u χ (l.q_eq χ) (hq χ)` as an intermediate fact. Conclude with `neg_injective (Real.exp_injective this)`.
+-/
 theorem psiQ : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (q : u.D.toPre.X → ℝ), (∀ χ, u.PsiNorm χ (Real.exp (-q χ))) → ∀ χ, l.q χ = q χ := by
   intro o Ω _ _ _ S ρ p _ y₀ u l q hq χ
   have := GlobalTheory.ZH.RealCase.psiNorm_unique u χ (l.q_eq χ) (hq χ)
   exact neg_injective (Real.exp_injective this)
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D p _ z₁ c yy₁ hLab y h`. Take `⟨c₀, hc, R', fg, frac, hth', hev, ρ', ε', hS, hi, hR, y₀, hy₀, u, l, j, hq, hyy, hmat⟩` from `hLab`. Take `⟨c₂, hc₂, R₂, fg₂, frac₂, hth₂, hev₂, ρ₂, ε₂, hS₂, hi₂, hR₂, y₂, hy₂, hint₂⟩` from `GlobalTheory.T.thetaSetup_rescale_into_localRing_classicalTrait g n F W Z i D.X hg hn hodd himm he8 hth D.proj D.ε D.diag p (y (cPt p)) (D.lift c y h)`. Take `⟨u₂, e, T, hpsi, htor, heps, hfw, hbw⟩` from `GlobalTheory.T.uniformisedModel_transport_deeperThetaSetup g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D p z₁ c y h c₀ hc R' fg frac hth' hev ρ' ε' hS hi hR y₀ hy₀ u c₂ hc₂ R₂ fg₂ frac₂ hth₂ hev₂ ρ₂ ε₂ hS₂ hi₂ hR₂ y₂ hy₂`. Take `⟨l₂⟩` from `GlobalTheory.ZH.labels_exist GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed _ _ _ ρ₂ p y₂ u₂ hint₂`.
+
+Use `set L₂ : ℕ := D.X.S.r * D.X.S.N with hL₂`. Use `set L₁ : ℕ := X₁.S.r * X₁.S.N with hL₁`. Set `jj : u₂.D.toPre.X ≃+ (Fin 8 → c.T.D.toPre.X)` to `e.trans j`. Establish `hrange : (nsmulAddMonoidHom L₂ : u₂.D.toPre.X →+ u₂.D.toPre.X).range ≤ ((nsmulAddMonoidHom L₂ : (Fin 8 → c.T.D.toPre.X) →+ (Fin 8 → c.T.D.toPre.X)).range).comap jj.toAddMonoidHom`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Conclude with `⟨jj z, by simp⟩`. Set `f` to `QuotientAddGroup.map _ _ jj.toAddMonoidHom hrange`. Establish `hf : ∀ χ, f (QuotientAddGroup.mk χ) = QuotientAddGroup.mk (jj χ)` using `fun χ => rfl`. Use `⟨f.comp l₂.yy, ⟨c₂, hc₂, R₂, fg₂, frac₂, hth₂, hev₂, ρ₂, ε₂, hS₂, hi₂, hR₂, y₂, hy₂, u₂, l₂, jj, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `χ`.
+
+Rewrite using `[GlobalTheory.Poinc.GLift.psiQ _ _ _ ρ₂ p y₂ u₂ l₂ (fun χ => l.q (e χ)) (fun χ => hpsi χ _ (l.q_eq (e χ))) χ]`. Conclude with `hq (e χ)`. Introduce `a χ ha`. Simplify using `only [AddMonoidHom.comp_apply, ha]`. Both sides reduce to the same expression.
+
+Introduce `m pk pk' x x' E hm hx hx' hxx`. Take `⟨q₁, hq₁y, hq₁⟩` from `hfw m pk x hm hx`. Take `⟨q₁', hq₁y', hq₁'⟩` from `hfw m pk' x' hm hx'`. Use `hmat m q₁ q₁' (T x) (T x') E hm hq₁ hq₁' (heps x x' E hxx)` as an intermediate fact. Rewrite `this` using `[hq₁y, hq₁y']`.
+
+Conclude with `this`. Introduce `a μ hμ`. Take `⟨pk, x, hx, hxa⟩` from `GlobalTheory.T.exists_thetaTorsion_preimage_uniformised_model _ _ _ ρ' p y₀ u a`. Establish `h1` using `l.yy_eq a pk x hx hxa`. Establish `h2` using `hyy a pk.y h1`.
+
+Establish `hL₁pos : 1 ≤ L₁`. Take `⟨jr, hjr, hr⟩` from `X₁.ρ.r_eq`. Establish `h1' : 0 < X₁.S.r` using `by rw [hr]; exact pow_pos X₁.ρ.n_prime.pos _`. Establish `h2' : 0 < X₁.S.N` using `by rw [X₁.ρ.N_eq]; exact pow_pos (pow_pos X₁.ρ.n_prime.pos _) _`. Conclude with `Nat.mul_pos h1' h2'`.
+
+Establish `hdvd : L₁ ∣ L₂`. Take `⟨t, ht⟩` from `D.dvd`. Use `⟨t * (D.m * D.X.S.r), ?_⟩` and prove the remaining obligations. Rewrite using `[hL₂, D.sq, ht]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hL₂pos : 1 ≤ L₂`. Take `⟨jr, hjr, hr⟩` from `D.X.ρ.r_eq`. Establish `h1' : 0 < D.X.S.r` using `by rw [hr]; exact pow_pos D.X.ρ.n_prime.pos _`. Establish `h2' : 0 < D.X.S.N` using `by rw [D.X.ρ.N_eq]; exact pow_pos (pow_pos D.X.ρ.n_prime.pos _) _`. Conclude with `Nat.mul_pos h1' h2'`.
+
+Establish `hdpos : 1 ≤ L₂ / L₁`. Rewrite using `[Nat.one_le_div_iff (by omega)]`. Conclude with `Nat.le_of_dvd (by omega) hdvd`. Take `⟨pk', hpk'y, hpk'⟩` from `GlobalTheory.T.exists_levelPoint_rescale_same_torsionPoint _ _ _ ρ' p y₀ u L₁ L₂ (L₂ / L₁) pk x hL₁pos hdpos (Nat.div_mul_cancel hdvd).symm hx`. Take `⟨pk₂, hpk₂y, hpk₂⟩` from `hbw L₂ pk' x hL₂pos hpk'`.
+
+Establish `h3` using `(htor (T.symm x) a).2 (by simpa using hxa)`. Establish `h4` using `l₂.yy_eq (D.lab a) pk₂ (T.symm x) hpk₂ h3`. Use `show f (l₂.yy (D.lab a)) = _`. Rewrite using `[h4, hf]`. Establish `h5 : jj pk₂.y = (L₂ / L₁) • j pk.y` using `by show j (e pk₂.y) = _`.
+
+Rewrite using `[hpk₂y, hpk'y, map_nsmul]`. Rewrite using `[h5]`. Rewrite `h2` using `[hμ]`. Take `⟨z, hz⟩` from `(QuotientAddGroup.eq).1 h2.symm`. Apply `(QuotientAddGroup.eq).2` to reduce the goal to its premises.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Simplify using `only [nsmulAddMonoidHom_apply] at hz ⊢`. Rewrite using `[← smul_neg, ← smul_add, ← hz, smul_smul, Nat.div_mul_cancel hdvd]`.
+-/
 theorem labels_lift : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁), ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (c : CTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab X₁ ε₁ c yy₁ → ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = c.y), ∃ yy : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X), IsLab D.X D.ε (D.lift c y h) yy ∧ D.Compat yy₁ yy := by
   intro g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D p _ z₁ c yy₁ hLab y h
   obtain ⟨c₀, hc, R', fg, frac, hth', hev, ρ', ε', hS, hi, hR, y₀, hy₀, u, l, j, hq, hyy, hmat⟩ := hLab

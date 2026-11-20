@@ -23,6 +23,15 @@ end FrobTwist
 
 open FrobTwist in
 
+/- English proof (translation)
+Use `letI : Algebra K (Tw K V) := twAlg p`. Set `g : V →ₗ[K] Tw K V` to `{ toFun := fun v => (ExteriorAlgebra.ι K (f v) : ExteriorAlgebra K V) map_add' := fun v w => by show ExteriorAlgebra.ι K (f (v + w)) = ExteriorAlgebra.ι K (f v) + ExteriorAlgebra.ι K (f w)`. Rewrite using `[map_add, map_add]`. Use the proof step `map_smul' := fun c v => by`. Establish `h1 : ExteriorAlgebra.ι K (f (c • v)) = algebraMap K (ExteriorAlgebra K V) (c ^ p) * ExteriorAlgebra.ι K (f v)`.
+
+Rewrite using `[hf, map_smul, Algebra.smul_def]`. Conclude with `h1 }`. Establish `hg : ∀ v, g v * g v = 0` using `fun v => ExteriorAlgebra.ι_sq_zero (R := K) (f v)`. Set `Γ : ExteriorAlgebra K V →ₐ[K] Tw K V` to `ExteriorAlgebra.lift K ⟨g, hg⟩`. Use `⟨(Γ.toRingHom : ExteriorAlgebra K V →+* ExteriorAlgebra K V), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c`. Use `Γ.commutes c` as an intermediate fact. Conclude with `this`. Introduce `v`. Use `ExteriorAlgebra.lift_ι_apply K (A := Tw K V) g hg v` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem exists_isGamma {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V] (p : ℕ)
     [Fact p.Prime] [CharP K p] (f : V →+ V) (hf : ∀ (c : K) v, f (c • v) = c ^ p • f v) :
     ∃ γ : ExteriorAlgebra K V →+* ExteriorAlgebra K V, IsGamma p f γ := by

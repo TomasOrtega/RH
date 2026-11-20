@@ -24,6 +24,11 @@ def interPoly : MvPolynomial κ ℝ →ₗ[ℝ] ℝ :=
   (basisMonomials κ ℝ).constr ℝ fun d =>
     if h : ∃ s : Fin Y.dim → κ, ∑ i, Finsupp.single (s i) 1 = d then (Y.inter (Δ ∘ h.choose) : ℝ) else 0
 
+/- English proof (translation)
+Establish `hc : ∀ k, Fintype.card {i // t i = k} = Fintype.card {i // s i = k}`. Introduce `k`. Establish `hk` using `congrArg (fun f : κ →₀ ℕ => f k) h`. Simplify using `only [Finsupp.finsetSum_apply, Finsupp.single_apply] at hk`. Simplify `hk` using `[Fintype.card_subtype, Finset.sum_boole]`.
+
+Set `σ : Fin Y.dim ≃ Fin Y.dim` to `(Equiv.sigmaFiberEquiv t).symm.trans ((Equiv.sigmaCongrRight fun k => Fintype.equivOfCardEq (hc k)).trans (Equiv.sigmaFiberEquiv s))`. Establish `hσ : ∀ i, s (σ i) = t i` using `fun i => ((Fintype.equivOfCardEq (hc (t i))) ⟨i, rfl⟩).2`. Establish `hcomp : Δ ∘ t = (Δ ∘ s) ∘ σ` using `funext fun i => by simp only [Function.comp_apply, hσ]`. Rewrite using `[hcomp, inter_comp_perm]`.
+-/
 private theorem inter_comp_eq_of_sum_single_eq (s t : Fin Y.dim → κ)
     (h : ∑ i, Finsupp.single (t i) 1 = ∑ i, Finsupp.single (s i) (1 : ℕ)) :
     Y.inter (Δ ∘ t) = Y.inter (Δ ∘ s) := by
@@ -39,6 +44,11 @@ private theorem inter_comp_eq_of_sum_single_eq (s t : Fin Y.dim → κ)
   have hcomp : Δ ∘ t = (Δ ∘ s) ∘ σ := funext fun i => by simp only [Function.comp_apply, hσ]
   rw [hcomp, inter_comp_perm]
 
+/- English proof (translation)
+Establish `hprod : (∏ i, MvPolynomial.X (s i) : MvPolynomial κ ℝ) = (basisMonomials κ ℝ) (∑ i, Finsupp.single (s i) 1)`. Simplify using `only [coe_basisMonomials]`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression. Establish `h : ∃ t : Fin Y.dim → κ, ∑ i, Finsupp.single (t i) 1 = ∑ i, Finsupp.single (s i) 1` using `⟨s, rfl⟩`.
+
+Rewrite using `[hprod]`. Unfold `interPoly`. Rewrite using `[Module.Basis.constr_basis, dif_pos h]`. Conclude with `inter_comp_eq_of_sum_single_eq Y Δ s h.choose h.choose_spec` after adjusting the coercions.
+-/
 theorem interPoly_prod (s : Fin Y.dim → κ) : Y.interPoly Δ (∏ i, MvPolynomial.X (s i)) = Y.inter (Δ ∘ s) := by
   classical
   have hprod : (∏ i, MvPolynomial.X (s i) : MvPolynomial κ ℝ) =
@@ -52,6 +62,13 @@ theorem interPoly_prod (s : Fin Y.dim → κ) : Y.interPoly Δ (∏ i, MvPolynom
   rw [Module.Basis.constr_basis, dif_pos h]
   exact_mod_cast inter_comp_eq_of_sum_single_eq Y Δ s h.choose h.choose_spec
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sum, map_sum, ← interForm_apply, MultilinearMap.map_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[interForm_apply]`. Establish `e1 : (∏ i, C (a i (p i) : ℝ) * MvPolynomial.X (p i) : MvPolynomial κ ℝ) = ((∏ i, a i (p i) : ℤ) : ℝ) • ∏ i, MvPolynomial.X (p i)`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, C_mul']`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e1, map_smul, interPoly_prod, smul_eq_mul]`. Rewrite using `[show (fun i => a i (p i) • Δ (p i)) = fun i => a i (p i) • (Δ ∘ p) i from rfl, inter_zsmul]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem interPoly_prod_sum [Fintype κ] (a : Fin Y.dim → κ → ℤ) :
     Y.interPoly Δ (∏ i, ∑ x, C (a i x : ℝ) * MvPolynomial.X x) = Y.inter fun i => ∑ x, a i x • Δ x := by
   classical

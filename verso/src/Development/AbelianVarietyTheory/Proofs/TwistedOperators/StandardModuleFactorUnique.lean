@@ -32,6 +32,9 @@ def toReal (U : H ≃ₗᵢ[ℂ] H') : H ≃L[ℝ] H' :=
     continuous_toFun := U.continuous
     continuous_invFun := U.symm.continuous }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toReal_apply (U : H ≃ₗᵢ[ℂ] H') (x : H) : toReal U x = U x := rfl
 
 variable (U : H ≃ₗᵢ[ℂ] H') (hU : ∀ g ∈ UJset ε, ∀ v, U (ρ g v) = ρ' g (U v))

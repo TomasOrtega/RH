@@ -20,6 +20,15 @@ namespace GlobalTheory.HTGeomExt
 
 variable {p : ℕ} [Fact p.Prime] {D : Datum p}
 
+/- English proof (translation)
+Establish `htor : ∀ n, 0 < n → n.Coprime p → ∀ x, I.ev n x ^ n = 1` using `fun n h1 h2 x => (I.onto n h1 h2 _).2 ⟨x, rfl⟩`. Use `⟨ { ζ := ζ' ζ_prim := hprim ζ_pow := hpow ev := fun n x => r (I.ev n x) add := fun n x y => by simp only [I.add, map_mul] lin := fun n c x => by simp only [I.lin, hact] ker := fun n h1 h2 x => ?_ onto := fun n h1 h2 q => ?_ tower := fun n m h1 h2 h3 x => by simp only [← map_pow, …` and prove the remaining obligations. Rewrite using `[← I.ker n h1 h2 x]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `(hbij n h1 h2).injOn (htor n h1 h2 x) (show (1 : Q) ^ n = 1 from one_pow n) ?_` and prove the remaining obligations. Rewrite using `[h, map_one]`. Introduce `h show r (I.ev n x) = 1`. Rewrite using `[h, map_one]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hq`. Take `⟨y, hy, rfl⟩` from `(hbij n h1 h2).surjOn hq`. Take `⟨x, hx⟩` from `(I.onto n h1 h2 y).1 hy`. Conclude with `⟨x, by rw [hx]⟩`. Introduce and unpack `⟨x, rfl⟩ show r (I.ev n x) ^ n = 1`.
+
+Rewrite using `[← map_pow, htor n h1 h2 x, map_one]`.
+-/
 theorem tateIsoO_transport {k k' : Type} [Field k] [Field k'] {Q Q' : Type} [Group Q] [Group Q']
     {act : D.O → Q → Q} {act' : D.O → Q' → Q'} {e : ℕ → Q → Q → kˣ → Prop} {e' : ℕ → Q' → Q' → k'ˣ → Prop}
     (I : TateIsoO D k Q act e) (r : Q →* Q') (hact : ∀ c q, r (act c q) = act' c (r q))
@@ -63,6 +72,25 @@ end GlobalTheory.HTGeomExt
 
 namespace GlobalTheory.HTGeomExt
 
+/- English proof (translation)
+Introduce `p _ D R _ b N W L _ _ _ _ _ _ gm G _ _ hab act P hP y hy hgen k _ _ β`. Take `⟨V, j, h, hj, hx⟩` from `GlobalTheory.T.geometric_point_dvr_factors_valuation_subring_closure W L k (spMap β)`. Establish `hunit : ∀ n : ℕ, n.Coprime p → IsUnit (n : V)` using `fun n hn => by`. Simplify using `using (b.unit n hn).map (j.comp gm)`. Take `⟨r, hr1, hr2, hr3, hr4⟩` from `GlobalTheory.T.exists_reduction_points_abelianScheme_valuationRing V (AlgebraicClosure L) k h (Sp W) G hab (spMap j)`.
+
+Establish `hs : spMap ((algebraMap V (AlgebraicClosure L)).comp j) = spMap (algebraMap V (AlgebraicClosure L)) ≫ spMap j` using `by dsimp only [spMap]`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hg` using `hgen (AlgebraicClosure L) (algebraMap L (AlgebraicClosure L))`. Rewrite `hg` using `[← hj, hs]`. Take `⟨I, hI⟩` from `hg`.
+
+Rewrite using `[hx]`. Establish `hz : ∀ n, ∃ z : Vˣ, 0 < n → n.Coprime p → (algebraMap V (AlgebraicClosure L) (z : V) = (I.ζ n : AlgebraicClosure L) ∧ IsPrimitiveRoot (Units.map (h : V →* k) z) n)`. Introduce `n`. Distinguish the cases in `hn : 0 < n ∧ n.Coprime p`. Take `⟨z, ⟨hz1, hz2⟩, -⟩` from `valuationRing_rootOfUnity_lift_reduce V (AlgebraicClosure L) k h n (hunit n hn.2) (I.ζ n) (I.ζ_prim n hn.1 hn.2).pow_eq_one`.
+
+Conclude with `⟨z, fun _ _ => ⟨hz1, hz2 (I.ζ_prim n hn.1 hn.2)⟩⟩`. Conclude with `⟨1, fun h1 h2 => absurd ⟨h1, h2⟩ hn⟩`. Use `choose z hz using hz`. Establish `hzU : ∀ n, 0 < n → n.Coprime p → Units.map (algebraMap V (AlgebraicClosure L) : V →* AlgebraicClosure L) (z n) = I.ζ n` using `fun n h1 h2 => Units.ext (hz n h1 h2).1`. Establish `hinj : Function.Injective (algebraMap V (AlgebraicClosure L))` using `IsFractionRing.injective V (AlgebraicClosure L)`.
+
+Establish `hLb` using `LB.isLB_pull hP (lift (𝟙 G) (𝟙 G)).left`. Establish `hpow : ∀ n m : ℕ, 0 < n → 0 < m → (n * m).Coprime p → Units.map (h : V →* k) (z (n * m)) ^ m = Units.map (h : V →* k) (z n)`. Introduce `n m h1 h2 h3`. Establish `hn : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro m rfl) h3`. Rewrite using `[← map_pow]`.
+
+Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, (hz _ (Nat.mul_pos h1 h2) h3).1, (hz n h1 hn).1, ← Units.val_pow_eq_pow_val, I.ζ_pow n m h1 h2 h3]`. Establish `hisom : ∀ n : ℕ, 0 < n → n.Coprime p → ∀ x x', Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) n (r (I.ev n x)) (r (I.ev n x')) (unitOn (Units.map (h : V →* k) (z n) ^ (2 * D.EF x x')))`.
+
+Introduce `n h1 h2 x x'`. Establish `hi` using `I.isom n h1 h2 x x'`. Rewrite `hi` using `[← hzU n h1 h2, ← map_zpow]`. Establish `ho` using `hr4 _ hLb n (hunit n h2) _ _ (z n ^ (2 * D.EF x x')) ((I.onto n h1 h2 _).2 ⟨x, rfl⟩) ((I.onto n h1 h2 _).2 ⟨x', rfl⟩) hi`. Rewrite `ho` using `[map_zpow]`.
+
+Conclude with `ho`. Take `⟨I', hI'⟩` from `tateIsoO_transport (act' := fun c g => g ≫ act.act c) (e' := fun n g g' z => Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) n g g' (unitOn z)) I r (fun c q => hr2 (act.act c) q) (fun n _ h2 => hr3 n (hunit n h2)) (fun n => Units.map (h : V →* k) (z n)) (fun n h1 h2 => (hz n h1 h2) …`. Use `⟨I', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hI', ← hI x]`. Use `(hr1 (toUnit _ ≫ y x) _ _ ?_ ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[Over.comp_left, Over.comp_left]`. Conclude with `Category.assoc _ _ _`. Rewrite using `[Over.comp_left, Over.comp_left]`. Conclude with `Category.assoc _ _ _`.
+-/
 theorem tateIsoO_geom_of_generic : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (gm : R →+* W) (G : Over (Sp W)) [GrpObj G] [IsCommMonObj G], IsAbelianScheme G → ∀ (act : OActN D.O G) (P : LB (G2 G).left), P.IsLB → ∀ (y : D.La → (𝟙_ (Over (Sp W)) ⟶ G)), (∀ x x', y (x + x') = y x * y x') → (∀ (k : Type) [Field k] [IsAlgClosed k] (β : L →+* k), ∃ I : TateIsoO D k (Over.mk (spMap (β.comp (algebraMap W L))) ⟶ G) (fun c g => g ≫ act.act c) (fun n g g' z => Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) n g g' (unitOn z)), ∀ x, toUnit _ ≫ y x = I.ev N x) → ∀ (k : Type) [Field k] [IsAlgClosed k] (β : W →+* k), ∃ I : TateIsoO D k (Over.mk (spMap β) ⟶ G) (fun c g => g ≫ act.act c) (fun n g g' z => Out.WeilIs G (P.pull (lift (𝟙 G) (𝟙 G)).left) n g g' (unitOn z)), ∀ x, toUnit _ ≫ y x = I.ev N x := by
   intro p _ D R _ b N W L _ _ _ _ _ _ gm G _ _ hab act P hP y hy hgen k _ _ β
   obtain ⟨V, j, h, hj, hx⟩ := GlobalTheory.T.geometric_point_dvr_factors_valuation_subring_closure W L k (spMap β)

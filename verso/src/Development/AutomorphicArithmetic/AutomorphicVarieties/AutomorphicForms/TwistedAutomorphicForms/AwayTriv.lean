@@ -3,6 +3,19 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.DenseRangeUn
 
 open NumberField IsDedekindDomain Neutral.B1
 
+/- English proof (translation)
+Introduce `F B _ _ _ _ _ _ N S hN hinf hS b hbS hbin`. Establish `k1 : (b : AdeleRing (𝓞 F) F).1 * ((b⁻¹ : Ideles F) : AdeleRing (𝓞 F) F).1 = 1` using `congrArg Prod.fst (Units.mul_inv b)`. Establish `k2 : ((b⁻¹ : Ideles F) : AdeleRing (𝓞 F) F).1 * (b : AdeleRing (𝓞 F) F).1 = 1` using `congrArg Prod.fst (Units.inv_mul b)`. Establish `k3 : (b : AdeleRing (𝓞 F) F).2 * ((b⁻¹ : Ideles F) : AdeleRing (𝓞 F) F).2 = 1` using `congrArg Prod.snd (Units.mul_inv b)`. Establish `k4 : ((b⁻¹ : Ideles F) : AdeleRing (𝓞 F) F).2 * (b : AdeleRing (𝓞 F) F).2 = 1` using `congrArg Prod.snd (Units.inv_mul b)`.
+
+Set `binf : Ideles F` to `⟨((b : AdeleRing (𝓞 F) F).1, 1), (((b⁻¹ : Ideles F) : AdeleRing (𝓞 F) F).1, 1), Prod.ext k1 (mul_one 1), Prod.ext k2 (mul_one 1)⟩`. Set `bfin : Ideles F` to `⟨(1, (b : AdeleRing (𝓞 F) F).2), (1, ((b⁻¹ : Ideles F) : AdeleRing (𝓞 F) F).2), Prod.ext (mul_one 1) k3, Prod.ext (mul_one 1) k4⟩`. Establish `hb : b = binf * bfin`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Prod.ext (mul_one _).symm (one_mul _).symm`.
+
+Establish `hfin2 : (↑bfin : AdeleRing (𝓞 F) F).2 = (↑b : AdeleRing (𝓞 F) F).2` using `rfl`. Establish `h1 : N binf = 1` using `hinf binf rfl`. Establish `h2 : N bfin = 1`. Use `GlobalTheory.FrobDense.eq_one_of_local N hN bfin rfl ?_` and prove the remaining obligations. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ S`. Establish `hone : Units.map (GlobalTheory.Mem.LocTriv.ev v) bfin = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, Units.val_one]`. Express the relevant statement in the definitionally equal form `(↑bfin : AdeleRing (𝓞 F) F).2 v = 1`.
+
+Rewrite using `[hfin2]`. Conclude with `hbin v hv`. Rewrite using `[hone, map_one, map_one]`. Apply `hS v hv` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Valued.v ((↑bfin : AdeleRing (𝓞 F) F).2 v) = 1`.
+
+Rewrite using `[hfin2]`. Conclude with `hbS v hv`. Rewrite using `[hb, map_mul, h1, h2, one_mul]`.
+-/
 theorem UpperTheory.V.Af.Tw.awayTriv :
     UpperTheory.V.Af.Tw.AwayTriv := by
   intro F B _ _ _ _ _ _ N S hN hinf hS b hbS hbin

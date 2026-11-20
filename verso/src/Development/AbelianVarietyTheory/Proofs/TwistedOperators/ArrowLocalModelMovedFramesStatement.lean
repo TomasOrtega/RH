@@ -9,5 +9,8 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.FlatPlace GlobalTheory.LocMod GlobalTheory.SplitWeil
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArrowModel.arrow_model | exact GlobalTheory.ArrowModel.arrow_model | (intros; apply GlobalTheory.ArrowModel.arrow_model <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arrowLocalModel_movedFrames : Big fun ch => LatP ch → ChrP ch → ArrP ch := by
   first | exact @GlobalTheory.ArrowModel.arrow_model | exact GlobalTheory.ArrowModel.arrow_model | (intros; apply GlobalTheory.ArrowModel.arrow_model <;> assumption)

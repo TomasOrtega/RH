@@ -15,6 +15,23 @@ open scoped ContDiff
 
 namespace GlobalTheory.Mean4O.ReadsProj
 
+/- English proof (translation)
+Introduce `k _ X p ι _ L n σ D c y hy i hi m hm`. Take `⟨i₀, hi₀, e₀⟩` from `halfWeight_comb (fun l => halfWeight_locPot (σ := σ) (L l)) n y`. Use `choose j hj ej using fun l => halfWeight_locPot (σ := σ) (L l) y`. Use `set F : ι → ReciprocityTheory.L2DbarEstimates.V D → ℝ := fun l v => ((L l).φ σ).φ (j l) (c.e.symm v) with hF`. Establish `e : ∀ z, ((ArInt.comb L n).φ σ).φ i₀ z = ∑ l, (n l : ℝ) * ((L l).φ σ).φ (j l) z`.
+
+Introduce `z`. Establish `h` using `e₀ z`. Simplify using `only [← ej] at h`. Establish `h2 : ∑ l, (n l : ℝ) * (((L l).φ σ).φ (j l) z / 2) = (∑ l, (n l : ℝ) * ((L l).φ σ).φ (j l) z) / 2`. Rewrite using `[Finset.sum_div]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Ω := c.e.target ∩ c.e.symm ⁻¹' ⋂ l, ptsIn p σ ((L l).B.U (j l)) with hΩdef`. Establish `hΩ : IsOpen Ω` using `ChartGlue.isOpen_over c.e (isOpen_iInter_of_finite fun l => isOpen_ptsIn _)`. Establish `hmem : c.e y ∈ Ω` using `ChartGlue.mem_over c.e hy (Set.mem_iInter.2 hj)`.
+
+Establish `hs : ∀ l, ContDiffOn ℝ ∞ (F l) Ω` using `fun l => (contDiffOn_chart ((L l).cInf σ (j l)) c).mono fun v hv => ⟨hv.1, Set.mem_iInter.1 hv.2 l⟩`. Establish `key : ∀ s : Finset ι, ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((∑ l ∈ s, (n l : ℝ) * F l v : ℝ) : ℂ)) (c.e y) = ∑ l ∈ s, ((n l : ℝ) : ℂ) • ReciprocityTheory.L2DbarEstimates.cHess D (fun v => (F l v : ℂ)) (c.e y)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Establish `h0` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul hΩ (p := fun _ => (0 : ℝ)) (q := fun _ => (0 : ℝ)) contDiffOn_const contDiffOn_const 1 hmem`. Simplify using `only [mul_zero, add_zero, Complex.ofReal_one, one_smul] at h0`. Simplify using `only [Finset.sum_empty]`. Conclude with `left_eq_add.1 h0`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha]`. Establish `h1` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul hΩ (p := fun w => ∑ l ∈ s, (n l : ℝ) * F l w) (q := F a) (ContDiffOn.sum fun l _ => contDiffOn_const.mul (hs l)) (hs a) (n a) hmem`. Establish `h3 : (fun v => ((∑ l ∈ insert a s, (n l : ℝ) * F l v : ℝ) : ℂ)) = fun v => ((∑ l ∈ s, (n l : ℝ) * F l v + (n a : ℝ) * F a v : ℝ) : ℂ)`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_insert ha, add_comm]`.
+
+Rewrite using `[h3, h1, ih, add_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [AlgChart.hess, e, hF]`. Use `_ = ∑ l, ((n l : ℝ) : ℂ) • ReciprocityTheory.L2DbarEstimates.cHess D (fun v => (F l v : ℂ)) (c.e y) := key _`. Use `_ = ∑ l, ((n l : ℝ) : ℂ) • c.hess ((L l).φ σ) (m l) y := Finset.sum_congr rfl fun l _ => by`.
+
+Rewrite using `[← c.hess_eq ((L l).cInf σ) hy (hm l) (hj l)]`. Both sides reduce to the same expression.
+-/
 theorem hess_comb : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {ι : Type} [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ) (σ : k →+* ℂ) {D : ℕ} (c : AlgChart p σ D) {y : CxPts p σ}, y ∈ c.e.source → ∀ (i : (ArInt.comb L n).B.ι), y ∈ ptsIn p σ ((ArInt.comb L n).B.U i) → ∀ (m : ∀ l, (L l).B.ι), (∀ l, y ∈ ptsIn p σ ((L l).B.U (m l))) → c.hess ((ArInt.comb L n).φ σ) i y = ∑ l, ((n l : ℝ) : ℂ) • c.hess ((L l).φ σ) (m l) y := by
   classical
   intro k _ X p ι _ L n σ D c y hy i hi m hm

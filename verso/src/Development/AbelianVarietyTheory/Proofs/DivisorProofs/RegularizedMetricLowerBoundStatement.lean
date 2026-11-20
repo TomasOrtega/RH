@@ -16,6 +16,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ChernPotentialPosit
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory GlobalTheory.ShFam GlobalTheory.CxPts GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.FlagPoly
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RegCurvAlg.curv_lower | exact GlobalTheory.RegCurvAlg.curv_lower | (intros; apply GlobalTheory.RegCurvAlg.curv_lower <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.regularized_metric_lower_bound : HessSt → CentSt → OnCore fun D O x P => ∃ C t₀ : ℝ, 0 ≤ C ∧ 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ →
     ∀ c σ (u : D.what₂.Tau → Fin O.N → ℝ), Dom u → ∀ ch : AlgChart (O.var c).str σ (O.var c).dim, ∀ y ∈ ch.e.source, ∀ ξ,
       -(C * ‖u‖ * (Real.log (Real.log (1 / t)) / Real.log (1 / t)) * P.om c σ ch y ξ) ≤

@@ -15,6 +15,11 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F)
 
+/- English proof (translation)
+Establish `h : GoodEmb c' σ' ↔ GoodEmb c (σ'.comp (incF c c' hle))` using `Iff.rfl`. Unfold `goodOf`. Distinguish the cases in `hg : GoodEmb c' σ'`. Rewrite using `[if_pos hg, if_pos (h.1 hg)]`. Rewrite using `[if_neg hg, if_neg (fun h' => hg (h.2 h'))]`.
+
+Both sides reduce to the same expression.
+-/
 theorem goodOf_comp (σ' : c'.F →+* ℂ) :
     (goodOf c' σ').comp (incF c c' hle) = goodOf c (σ'.comp (incF c c' hle)) := by
   have h : GoodEmb c' σ' ↔ GoodEmb c (σ'.comp (incF c c' hle)) := Iff.rfl
@@ -26,6 +31,9 @@ theorem goodOf_comp (σ' : c'.F →+* ℂ) :
 
 variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 
+/- English proof (translation)
+Establish `hr : relab c' σ' = relab c (σ'.comp (incF c c' hle))` using `funext fun τ => RingHom.ext fun x => rfl`. Unfold `modelWt`. Rewrite using `[hr]`. Both sides reduce to the same expression.
+-/
 theorem modelWt_unfBC (σ' : c'.F →+* ℂ) (G : WTZ E) :
     modelWt (unfBC hle U σ') G = modelWt (U (σ'.comp (incF c c' hle))) G := by
   have hr : relab c' σ' = relab c (σ'.comp (incF c c' hle)) := funext fun τ => RingHom.ext fun x => rfl
@@ -33,6 +41,9 @@ theorem modelWt_unfBC (σ' : c'.F →+* ℂ) (G : WTZ E) :
   rw [hr]
   rfl
 
+/- English proof (translation)
+Establish `hrd` using `(rulBC_cusp E H Dw l Xo c c' hle r U a n f hf).1 σ'`. Unfold `petAt`. Rewrite using `[hrd, modelWt_unfBC hle U σ' G]`. Both sides reduce to the same expression.
+-/
 theorem petAt_unfBC (σ' : c'.F →+* ℂ) (x : ℝ) {D : D7} (V : HSp D)
     (dict : GA D V → Σ k, Frame ((U (σ'.comp (incF c c' hle))).X k).Ψ r) (μ : Measure (AutQ V)) (G : WTZ E)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
@@ -44,6 +55,17 @@ theorem petAt_unfBC (σ' : c'.F →+* ℂ) (x : ℝ) {D : D7} (V : HSp D)
 
 end
 
+/- English proof (translation)
+Introduce `D j H Dw l Xo c c' hle U dict hL`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `{ inR := hL.inR host := hL.host dat := hL.dat levA := hL.levA unf := fun σ' hσ' => GlobalTheory.OneMapAll.isUnf_unfExt hle σ' (fun _ => rfl) (hL.unf (σ'.comp (incF c c' hle)) hσ') chiTriv := fun σ' hσ' a n hd k γ hγ => by`. Rewrite using `[laU_unfBC hle U σ' a n]`. Conclude with `hL.chiTriv (σ'.comp (incF c c' hle)) hσ' a n hd k γ hγ`.
+
+Use `dictU := fun σ' hσ' => hL.dictU (σ'.comp (incF c c' hle)) hσ'`. Use `modelW := fun σ' hσ' => hL.modelW (σ'.comp (incF c c' hle)) hσ' }`. Introduce `a n _ f`. Establish `hf : (f : Rul Xo c) ∈ cusp Xo c U a n` using `(cuspW_wtZ (U := U) a n).le f.2`. Establish `hsec : (f : Rul Xo c) ∈ sec Xo c a n` using `cusp_le_sec _ _ _ _ _ hf`.
+
+Establish `hmem : rulBC hle (f : Rul Xo c) ∈ cuspW Xo c' (unfBC hle U) (wtZ a n)`. Rewrite using `[cuspW_wtZ]`. Conclude with `(rulBC_cusp _ H Dw l Xo c c' hle D.R.r U a n _ hsec).2.2 hf`. Use `⟨hmem, fun σ' => ?_⟩` and prove the remaining obligations. Establish `e1 : normW (unfBC hle U) (xiR D) (fun _ => D.sp.W j) (fun σ => dict (σ.comp (incF c c' hle))) (wtZ a n) σ' ⟨_, hmem⟩ = petAt (unfBC hle U (goodOf c' σ')) (xiR D) (D.sp.W j) (dict ((goodOf c' σ').comp (incF c c' hle))) (muQ1 (D.sp.W j)) (wtZ a n) (rulBC hle (f : Rul Xo c))` using `rfl`.
+
+Establish `e2 : normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) (σ'.comp (incF c c' hle)) f = petAt (U (goodOf c (σ'.comp (incF c c' hle)))) (xiR D) (D.sp.W j) (dict (goodOf c (σ'.comp (incF c c' hle)))) (muQ1 (D.sp.W j)) (wtZ a n) (f : Rul Xo c)` using `rfl`. Rewrite using `[e1, e2, petAt_unfBC hle U (goodOf c' σ') _ _ _ _ _ hsec]`. Establish `key : ∀ τ τ' : c.F →+* ℂ, τ = τ' → petAt (U τ) (xiR D) (D.sp.W j) (dict τ) (muQ1 (D.sp.W j)) (wtZ a n) (f : Rul Xo c) = petAt (U τ') (xiR D) (D.sp.W j) (dict τ') (muQ1 (D.sp.W j)) (wtZ a n) (f : Rul Xo c)`. Introduce and unpack `τ _ rfl`. Both sides reduce to the same expression.
+
+Conclude with `key _ _ (goodOf_comp hle σ')`.
+-/
 theorem laws_fieldChange : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c c' : Coeff l) (hle : c.F ≤ c'.F) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → Laws D j Xo c' (unfBC hle U) (fun σ => dict (σ.comp (incF c c' hle))) ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ f : cuspW Xo c U (wtZ a n), ∃ h : rulBC hle (f : Rul Xo c) ∈ cuspW Xo c' (unfBC hle U) (wtZ a n), ∀ σ : c'.F →+* ℂ, normW (unfBC hle U) (xiR D) (fun _ => D.sp.W j) (fun σ => dict (σ.comp (incF c c' hle))) (wtZ a n) σ ⟨_, h⟩ = normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) (σ.comp (incF c c' hle)) f := by
   intro D j H Dw l Xo c c' hle U dict hL
   refine ⟨?_, ?_⟩

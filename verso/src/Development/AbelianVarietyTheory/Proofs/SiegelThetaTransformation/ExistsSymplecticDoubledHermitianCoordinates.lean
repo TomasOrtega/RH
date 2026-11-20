@@ -10,18 +10,32 @@ namespace GlobalTheory.SW.DblLat
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Unfold `cc`. Conclude with `IsCMField.complexConj_apply_apply E a`.
+-/
 theorem cc_cc (a : E) : cc (cc a) = a := by
   unfold cc
   exact IsCMField.complexConj_apply_apply E a
 
+/- English proof (translation)
+Unfold `cc`. Conclude with `map_mul _ a b`.
+-/
 theorem cc_mul (a b : E) : cc (a * b) = cc a * cc b := by
   unfold cc
   exact map_mul _ a b
 
+/- English proof (translation)
+Unfold `cc`. Conclude with `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a`.
+-/
 theorem trace_cc (a : E) : Algebra.trace ℚ E (cc a) = Algebra.trace ℚ E a := by
   unfold cc
   exact Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a
 
+/- English proof (translation)
+Establish `hd : cc d = ∑ j, B.repr d j • cc (B j)` using `by conv_lhs => rw [← B.sum_repr d]`. Unfold `cc`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => map_rat_smul _ _ _`. Rewrite using `[hd, Finset.mul_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem sum_trace {ι : Type} [Fintype ι] (B : Module.Basis ι ℚ E) (b d : E) :
     ∑ j, Algebra.trace ℚ E (b * cc (B j)) * B.repr d j = Algebra.trace ℚ E (b * cc d) := by
 
@@ -34,10 +48,16 @@ theorem sum_trace {ι : Type} [Fintype ι] (B : Module.Basis ι ℚ E) (b d : E)
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [mul_smul_comm, map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Simplify using `[dblT, Matrix.vecMul, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg]`.
+-/
 theorem vec_inl (y₁ y₂ : Fin r → E) (a : Fin r) :
     (Sum.elim y₁ y₂ ᵥ* dblT X) (Sum.inl a) = y₁ a - y₂ a := by
   simp [dblT, Matrix.vecMul, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `only [dblT, Matrix.vecMul, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+-/
 theorem vec_inr (y₁ y₂ : Fin r → E) (a : Fin r) :
     (Sum.elim y₁ y₂ ᵥ* dblT X) (Sum.inr a) = X.κ0 / 4 * ∑ c, (y₁ c + y₂ c) * X.Gm c a := by
   simp only [dblT, Matrix.vecMul, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr,
@@ -45,6 +65,15 @@ theorem vec_inr (y₁ y₂ : Fin r → E) (a : Fin r) :
   rw [← Finset.sum_add_distrib, Finset.mul_sum]
   exact Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+Establish `hadd : ∀ a b : E, cc (a + b) = cc a + cc b` using `fun a b => by unfold cc; exact map_add _ a b`. Establish `hsub : ∀ a b : E, cc (a - b) = cc a - cc b` using `fun a b => by unfold cc; exact map_sub _ a b`. Establish `hsum : ∀ f : Fin r → E, cc (∑ c, f c) = ∑ c, cc (f c)` using `fun f => by`. Unfold `cc`. Conclude with `map_sum _ _ _`.
+
+Establish `hk : cc (X.κ0 / 4) = -(X.κ0 / 4)`. Establish `h4 : cc (4 : E) = 4` using `by unfold cc; exact map_ofNat _ 4`. Establish `hd : cc (X.κ0 / 4) = cc X.κ0 / cc 4` using `by unfold cc; exact map_div₀ _ _ _`. Rewrite using `[hd, h4, DblPer.cc_kappa X, neg_div]`. Simplify using `only [vec_inl, vec_inr, cc_mul, hadd, hsub, hsum, hk, X.Gm_herm, herm]`.
+
+Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => arg 1`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem split_form (y₁ y₂ z₁ z₂ : Fin r → E) :
     ∑ a, (Sum.elim y₁ y₂ ᵥ* dblT X) (Sum.inr a) * cc ((Sum.elim z₁ z₂ ᵥ* dblT X) (Sum.inl a)) -
       ∑ a, cc ((Sum.elim z₁ z₂ ᵥ* dblT X) (Sum.inr a)) * (Sum.elim y₁ y₂ ᵥ* dblT X) (Sum.inl a) =
@@ -74,6 +103,11 @@ noncomputable def dv (u : (Fin g ⊕ Fin g → ℚ) × (Fin g ⊕ Fin g → ℚ)
   Sum.elim (vecQ X bas (Sum.elim (u.1 ∘ Sum.inl) (u.2 ∘ Sum.inl)))
     (vecQ X bas (Sum.elim (u.1 ∘ Sum.inr) (-(u.2 ∘ Sum.inr)))) ᵥ* dblT X
 
+/- English proof (translation)
+Establish `h₁ : Sum.elim ((u + v).1 ∘ Sum.inl) ((u + v).2 ∘ Sum.inl) = Sum.elim (u.1 ∘ Sum.inl) (u.2 ∘ Sum.inl) + Sum.elim (v.1 ∘ Sum.inl) (v.2 ∘ Sum.inl)`. Apply the tactic sequence `ext (i | i) <;> rfl`. Establish `h₂ : Sum.elim ((u + v).1 ∘ Sum.inr) (-((u + v).2 ∘ Sum.inr)) = Sum.elim (u.1 ∘ Sum.inr) (-(u.2 ∘ Sum.inr)) + Sum.elim (v.1 ∘ Sum.inr) (-(v.2 ∘ Sum.inr))`. Use extensionality with `(i | i)`. Both sides reduce to the same expression.
+
+Simplify using `only [Sum.elim_inr, Pi.neg_apply, Function.comp_apply, Prod.snd_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Unfold `dv`. Rewrite using `[h₁, h₂, vecQ_add, vecQ_add, ← Matrix.add_vecMul, Sum.elim_add_add]`.
+-/
 theorem dv_add (u v) : dv X bas (u + v) = dv X bas u + dv X bas v := by
   have h₁ : Sum.elim ((u + v).1 ∘ Sum.inl) ((u + v).2 ∘ Sum.inl) =
       Sum.elim (u.1 ∘ Sum.inl) (u.2 ∘ Sum.inl) + Sum.elim (v.1 ∘ Sum.inl) (v.2 ∘ Sum.inl) := by
@@ -87,6 +121,11 @@ theorem dv_add (u v) : dv X bas (u + v) = dv X bas u + dv X bas v := by
   unfold dv
   rw [h₁, h₂, vecQ_add, vecQ_add, ← Matrix.add_vecMul, Sum.elim_add_add]
 
+/- English proof (translation)
+Establish `h₁ : Sum.elim ((q • u).1 ∘ Sum.inl) ((q • u).2 ∘ Sum.inl) = q • Sum.elim (u.1 ∘ Sum.inl) (u.2 ∘ Sum.inl)`. Apply the tactic sequence `ext (i | i) <;> rfl`. Establish `h₂ : Sum.elim ((q • u).1 ∘ Sum.inr) (-((q • u).2 ∘ Sum.inr)) = q • Sum.elim (u.1 ∘ Sum.inr) (-(u.2 ∘ Sum.inr))`. Apply the tactic sequence `ext (i | i) <;> simp`. Establish `h₃ : ∀ f g' : Fin r → E, Sum.elim (q • f) (q • g') = q • Sum.elim f g'` using `fun f g' => by`.
+
+Apply the tactic sequence `ext (i | i) <;> rfl`. Unfold `dv`. Rewrite using `[h₁, h₂, vecQ_smul, vecQ_smul, h₃, Matrix.smul_vecMul]`.
+-/
 theorem dv_smul (q : ℚ) (u) : dv X bas (q • u) = q • dv X bas u := by
   have h₁ : Sum.elim ((q • u).1 ∘ Sum.inl) ((q • u).2 ∘ Sum.inl) =
       q • Sum.elim (u.1 ∘ Sum.inl) (u.2 ∘ Sum.inl) := by
@@ -108,6 +147,11 @@ noncomputable def crdMap : ((Fin g ⊕ Fin g → ℚ) × (Fin g ⊕ Fin g → �
   map_smul' q u := by
     ext p <;> simp [dv_smul]
 
+/- English proof (translation)
+Establish `e₁ : ∀ p : QI E r, (crdMap X bas u).1 p = Algebra.trace ℚ E (dv X bas u (Sum.inr p.1) * cc (Module.finBasis ℚ E p.2))` using `fun p => rfl`. Establish `e₂ : ∀ p : QI E r, (crdMap X bas v).2 p = (Module.finBasis ℚ E).repr (dv X bas v (Sum.inl p.1)) p.2` using `fun p => rfl`. Simplify using `only [dotProduct, e₁, e₂]`. Rewrite using `[Fintype.sum_prod_type, map_sum (Algebra.trace ℚ E)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[sum_trace (Module.finBasis ℚ E) (dv X bas u (Sum.inr a)) (dv X bas v (Sum.inl a))]`.
+-/
 theorem crdMap_pair (u v) : (crdMap X bas u).1 ⬝ᵥ (crdMap X bas v).2 =
     Algebra.trace ℚ E (∑ a, dv X bas u (Sum.inr a) * cc (dv X bas v (Sum.inl a))) := by
   have e₁ : ∀ p : QI E r, (crdMap X bas u).1 p =
@@ -120,6 +164,13 @@ theorem crdMap_pair (u v) : (crdMap X bas u).1 ⬝ᵥ (crdMap X bas v).2 =
   dsimp only
   rw [sum_trace (Module.finBasis ℚ E) (dv X bas u (Sum.inr a)) (dv X bas v (Sum.inl a))]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas hs`. Use `⟨crdMap X bas, fun u v => ?_, fun u y₁ y₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hsum : ∀ f : Fin r → E, cc (∑ a, f a) = ∑ a, cc (f a)` using `fun f => by`. Unfold `cc`. Conclude with `map_sum _ _ _`.
+
+Establish `hsw : (crdMap X bas u).2 ⬝ᵥ (crdMap X bas v).1 = Algebra.trace ℚ E (∑ a, cc (dv X bas v (Sum.inr a)) * dv X bas u (Sum.inl a))`. Rewrite using `[dotProduct_comm, crdMap_pair, ← trace_cc, hsum]`. Simplify using `only [cc_mul, cc_cc]`. Rewrite using `[crdMap_pair, hsw, ← map_sub]`. Unfold `dv`.
+
+Rewrite using `[split_form, map_sub, ← EF_def, ← EF_def, EF_vecQ hs, EF_vecQ hs]`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Function.comp_apply, Pi.neg_apply, Finset.sum_sub_distrib, Finset.sum_neg_distrib, mul_neg, neg_mul]`. Expand and normalize the polynomial expressions, which then agree. Substitute `h₁ h₂` using the available equality. Conclude with `⟨fun a => ((Module.finBasis ℚ E).sum_repr _).symm, fun a j => rfl⟩`.
+-/
 theorem dbl_lat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ), IsSympl X bas → ∃ F : ((Fin g ⊕ Fin g → ℚ) × (Fin g ⊕ Fin g → ℚ)) →ₗ[ℚ] ((QI E r → ℚ) × (QI E r → ℚ)), (∀ u v, (F u).1 ⬝ᵥ (F v).2 - (F u).2 ⬝ᵥ (F v).1 = u.1 ⬝ᵥ v.2 - u.2 ⬝ᵥ v.1) ∧ ∀ (u : (Fin g ⊕ Fin g → ℚ) × (Fin g ⊕ Fin g → ℚ)) (y₁ y₂ : Fin r → E), y₁ = vecQ X bas (Sum.elim (u.1 ∘ Sum.inl) (u.2 ∘ Sum.inl)) → y₂ = vecQ X bas (Sum.elim (u.1 ∘ Sum.inr) (-(u.2 ∘ Sum.inr))) → (∀ a, (Sum.elim y₁ y₂ ᵥ* dblT X) (Sum.inl a) = ∑ j, (F u).2 (a, j) • Module.finBasis ℚ E j) ∧ ∀ a j, (F u).1 (a, j) = Algebra.trace ℚ E ((Sum.elim y₁ y₂ ᵥ* dblT X) (Sum.inr a) * cc (Module.finBasis ℚ E j)) := by
   intro E _ _ _ r X g bas hs
   refine ⟨crdMap X bas, fun u v => ?_, fun u y₁ y₂ h₁ h₂ => ?_⟩

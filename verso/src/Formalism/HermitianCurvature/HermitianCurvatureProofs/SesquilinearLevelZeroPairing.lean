@@ -12,10 +12,28 @@ section One
 
 variable {A S : Type} [Ring A] [Algebra ℂ A] [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Simplify using `[RRw, TTw]`.
+-/
 theorem rrw_one (QQ : ℂ → M2 A) (s0 : S) (Y : ℂ) :
     RRw QQ [(⟨true, s0, Y⟩ : Letter ℂ S)] = ins s0 (lift0 (QQ Y)) := by
   simp [RRw, TTw]
 
+/- English proof (translation)
+Unfold `ins lift0`. Simplify using `only [Matrix.sum_apply, Matrix.map_apply]`. Establish `h1 : ∀ (i j : Fin 2), (eU s0 i j * io (M i j) : SlopeTestRemainingChoices S A) z z' = if z s0 = i ∧ z' s0 = j ∧ ∀ b, b ≠ s0 → z b = z' b then M i j else 0`. Introduce `i j`. Unfold `io`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single z']`. Apply the tactic sequence `simp only [eU, Matrix.of_apply, Matrix.scalar_apply, Matrix.diagonal_apply_eq] split_ifs <;> simp`. Introduce `b _ hb`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ z') h`. Simplify using `only [h1]`. Distinguish the cases in `h : ∀ b, b ≠ s0 → z b = z' b`. Rewrite using `[if_pos h, Finset.sum_eq_single (z s0)]`. Rewrite using `[Finset.sum_eq_single (z' s0)]`.
+
+Rewrite using `[if_pos ⟨rfl, rfl, h⟩]`. Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `hh`. Conclude with `hj hh.2.1.symm`.
+
+Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+
+Introduce `hh`. Conclude with `hi hh.1.symm`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ _) hh`. Rewrite using `[if_neg h]`.
+
+Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hh`. Conclude with `h hh.2.2`.
+-/
 theorem ins_lift0_apply (s0 : S) (M : M2 A) (z z' : Ix S) :
     ins s0 (lift0 M) z z' = if (∀ b, b ≠ s0 → z b = z' b) then M (z s0) (z' s0) else 0 := by
   unfold ins lift0
@@ -47,8 +65,14 @@ theorem ins_lift0_apply (s0 : S) (M : M2 A) (z z' : Ix S) :
 
 def eS (s0 : S) (i : Fin 2) : Ix S := Function.update (fun _ => 0) s0 i
 
+/- English proof (translation)
+Simplify using `[eS]`.
+-/
 theorem eS_self (s0 : S) (i : Fin 2) : eS s0 i s0 = i := by simp [eS]
 
+/- English proof (translation)
+Introduce `b hb`. Simplify using `[eS, Function.update_of_ne hb]`.
+-/
 theorem eS_agree (s0 : S) (i j : Fin 2) : ∀ b, b ≠ s0 → eS s0 i b = eS s0 j b := by
   intro b hb; simp [eS, Function.update_of_ne hb]
 
@@ -58,6 +82,11 @@ section ActOne
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Rewrite using `[rrw_one]`. Unfold `actP`. Rewrite using `[Finset.sum_eq_single (eS s0 j)]`. Rewrite using `[Pi.single_eq_same, ins_lift0_apply, if_pos (eS_agree s0 i j), eS_self, eS_self]`. Introduce `b _ hb`.
+
+Rewrite using `[Pi.single_eq_of_ne hb, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem blockMulVec_one_letter (QQ : ℂ → M2 (Q.Pr V)) (s0 : S) (Y : ℂ) (i j : Fin 2) (Φ : V) :
     actP (RRw QQ [(⟨true, s0, Y⟩ : Letter ℂ S)]) (Pi.single (eS s0 j) Φ) (eS s0 i) = (QQ Y i j).1 Φ := by
   rw [rrw_one]
@@ -78,19 +107,34 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r} {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))} {l0 : ℕ}
   {K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π')}
 
+/- English proof (translation)
+Introduce `_` and use `one_ne_zero`.
+-/
 theorem constant_one_mem_nonvanishing : (fun _ => (1 : ℂ)) ∈ OmX P.r := fun _ => one_ne_zero
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_eq_actP (M : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))) (x : Ix S → RadSp P.k P.r z z' π π') :
     P5.act M x = actP M x := rfl
 
+/- English proof (translation)
+Simplify using `[WordOK, Fr.admitted]`.
+-/
 theorem wordOK_nil : WordOK P z z' π π' st l0 ([] : List (Letter ℂ S)) := by
   simp [WordOK, Fr.admitted]
 
+/- English proof (translation)
+Unfold `form`. Simplify using `[pairAt_zero_left]`.
+-/
 theorem form_zero_left' (x : Ix S → RadSp P.k P.r z z' π π') (c : Fin P.r → ℂ) :
     form μ 0 (0 : Ix S → RadSp P.k P.r z z' π π') x c = 0 := by
   unfold form
   simp [pairAt_zero_left]
 
+/- English proof (translation)
+Establish `h` using `((hThm [] wordOK_nil).2.2 0 (fun _ => 1) constant_one_mem_nonvanishing).1`. Introduce `x hx x' hx' y hy a`. Use `h x hx x' hx' y hy a` as an intermediate fact. Simplify `this` using `[RRform, RRi, RRw, act_eq_actP, polyAction_one₂]`.
+-/
 theorem sesqOn_form (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) :
     SesqOn (Submodule.pi Set.univ fun _ : Ix S => K 0) (fun x y => form μ 0 x y (fun _ => 1)) := by
   have h := ((hThm [] wordOK_nil).2.2 0 (fun _ => 1) constant_one_mem_nonvanishing).1
@@ -98,6 +142,15 @@ theorem sesqOn_form (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) :
   have := h x hx x' hx' y hy a
   simpa [RRform, RRi, RRw, act_eq_actP, polyAction_one₂] using this
 
+/- English proof (translation)
+Establish `hS` using `sesqOn_form hThm`. Set `s1 : Ix S` to `fun _ => 0`. Establish `hsg : ∀ Φ ∈ K 0, Pi.single s1 Φ ∈ Submodule.pi Set.univ fun _ : Ix S => K 0`. Introduce `Φ hΦ b _`. Distinguish the cases in `h : b = s1`.
+
+Substitute `h` using the available equality. Simplify using `using hΦ`. Simplify using `[Pi.single_eq_of_ne h]`. Establish `hb : ∀ Φ Ψ : RadSp P.k P.r z z' π π', bet μ Φ Ψ = form μ 0 (Pi.single s1 Φ) (Pi.single s1 Ψ) (fun _ => 1)`. Introduce `Φ Ψ`.
+
+Rewrite using `[form_single_left, Pi.single_eq_same]`. Both sides reduce to the same expression. Use `⟨fun x _ y _ => pairLev_swap _ _ _, fun x hx x' hx' y hy => ?_, fun x hx y hy c => ?_⟩` and prove the remaining obligations. Rewrite using `[hb, hb, hb, Pi.single_add]`. Use `(hS _ (hsg x hx) _ (hsg x' hx') _ (hsg y hy) 1).1` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[hb, hb, Pi.single_smul]`. Use `(hS 0 (Submodule.zero_mem _) _ (hsg x hx) _ (hsg y hy) c).1` as an intermediate fact. Simplify using `only [zero_add] at this`. Rewrite using `[this, form_zero_left', zero_add]`.
+-/
 theorem sesquilinear_level_zero_pairing (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) : SesqCls (K 0) (bet μ) := by
   have hS := sesqOn_form hThm
   let s1 : Ix S := fun _ => 0
@@ -118,6 +171,13 @@ theorem sesquilinear_level_zero_pairing (hThm : ThmPOn (S := S) P z z' π π' μ
     simp only [zero_add] at this
     rw [this, form_zero_left', zero_add]
 
+/- English proof (translation)
+Take `⟨hSq, hNn⟩` from `(hThm _ hw).2.2 0 (fun _ => 1) constant_one_mem_nonvanishing`. Establish `hsg : ∀ (s : Ix S) (Φ : RadSp P.k P.r z z' π π'), Φ ∈ K 0 → Pi.single s Φ ∈ Submodule.pi Set.univ fun _ : Ix S => K 0`. Introduce `s Φ hΦ b _`. Distinguish the cases in `h : b = s`. Substitute `h` using the available equality.
+
+Simplify using `using hΦ`. Simplify using `[Pi.single_eq_of_ne h]`. Establish `hh` using `herm_on _ _ hSq hNn (Pi.single (eS s0 j) Φ) (hsg _ _ hΦ) (Pi.single (eS s0 i) Ψ) (hsg _ _ hΨ)`. Establish `ev : ∀ (a b : Fin 2) (Φ Ψ : RadSp P.k P.r z z' π π'), RRform L st μ 0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ S)] (Pi.single (eS s0 b) Φ) (Pi.single (eS s0 a) Ψ) (fun _ => 1) = pairLev μ 0 ((QQi L st 0 Y a b).1 Φ) Ψ (fun _ => 1)`. Introduce `a b Φ Ψ`.
+
+Unfold `RRform RRi`. Rewrite using `[form_single_right, act_eq_actP, blockMulVec_one_letter]`. Rewrite `hh` using `[ev, ev]`. Unfold `bet`. Rewrite using `[pairLev_swap ((QQi L st 0 (Y : ℂ) j i).1 Ψ) Φ, hh, Complex.conj_conj]`.
+-/
 theorem qq_adj (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) (s0 : S) (Y : ℝ)
     (hw : WordOK P z z' π π' st l0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ S)]) (i j : Fin 2)
     (Φ Ψ : RadSp P.k P.r z z' π π') (hΦ : Φ ∈ K 0) (hΨ : Ψ ∈ K 0) :
@@ -151,14 +211,25 @@ def Ucls (K0 : Submodule ℂ (RadSp P.k P.r z z' π π')) (G : Set (Pr (RadSp P.
   zero_mem' m _ := by rw [map_zero]; exact K0.zero_mem
   smul_mem' c Φ hΦ m hm := by rw [map_smul]; exact K0.smul_mem c (hΦ m hm)
 
+/- English proof (translation)
+Introduce `Φ hΦ` and use `hΦ 1 (Submonoid.one_mem _)`.
+-/
 theorem Ucls_le (K0 : Submodule ℂ (RadSp P.k P.r z z' π π')) (G : Set (Pr (RadSp P.k P.r z z' π π'))) :
     Ucls K0 G ≤ K0 := fun Φ hΦ => hΦ 1 (Submonoid.one_mem _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx y hy => h.herm x (hle hx) y (hle hy), fun x hx x' hx' y hy => h.add_left x (hle hx) x' (hle hx') y (hle hy), fun x hx y hy c => h.smul_left x (hle hx) y (hle hy) c⟩`.
+-/
 theorem SesqCls.mono {V : Type} [AddCommGroup V] [Module ℂ V] {U U' : Submodule ℂ V} {β : V → V → ℂ}
     (h : SesqCls U β) (hle : U' ≤ U) : SesqCls U' β :=
   ⟨fun x hx y hy => h.herm x (hle hx) y (hle hy), fun x hx x' hx' y hy => h.add_left x (hle hx) x' (hle hx') y (hle hy),
     fun x hx y hy c => h.smul_left x (hle hx) y (hle hy) c⟩
 
+/- English proof (translation)
+Take `⟨Y, hY, i, j, rfl⟩` from `ha`. Use `⟨Y, hY, j, i, ?_⟩` and prove the remaining obligations. Establish `h` using `hS.herm (Y : ℂ) (Complex.conj_ofReal Y)`. Use `congrFun (congrFun h j) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`.
+
+Conclude with `this`.
+-/
 theorem gen_star (hS : IsStart (QQi L st 0) (M.qC P)) (Pts : Set ℝ) {a : Pr (RadSp P.k P.r z z' π π')}
     (ha : a ∈ Gen L st Pts) : star a ∈ Gen L st Pts := by
   obtain ⟨Y, hY, i, j, rfl⟩ := ha
@@ -168,6 +239,13 @@ theorem gen_star (hS : IsStart (QQi L st 0) (M.qC P)) (Pts : Set ℝ) {a : Pr (R
   rw [Matrix.conjTranspose_apply] at this
   exact this
 
+/- English proof (translation)
+Establish `hsa` using `gen_star hS Pts ha`. Use `⟨fun Φ hΦ m hm => ?_, fun Φ hΦ m hm => ?_, fun Φ hΦ Ψ hΨ => ?_⟩` and prove the remaining obligations. Conclude with `hΦ (m * a) (Submonoid.mul_mem _ hm (Submonoid.subset_closure ha))`. Conclude with `hΦ (m * star a) (Submonoid.mul_mem _ hm (Submonoid.subset_closure hsa))`. Take `⟨Y, hY, i, j, rfl⟩` from `ha`.
+
+Take `⟨s0, hw⟩` from `hPts Y hY`. Establish `e : (QQi L st 0 (Y : ℂ) i j).2.unop = (QQi L st 0 (Y : ℂ) j i).1`. Establish `h` using `hS.herm (Y : ℂ) (Complex.conj_ofReal Y)`. Use `congrFun (congrFun h j) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`.
+
+Rewrite using `[← this]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `qq_adj hThm s0 Y hw i j Φ Ψ (Ucls_le _ _ hΦ) (Ucls_le _ _ hΨ)`.
+-/
 theorem gen_mem_adjB (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) (hS : IsStart (QQi L st 0) (M.qC P))
     (Pts : Set ℝ) (hPts : ∀ Y ∈ Pts, ∃ s0 : S, WordOK P z z' π π' st l0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ S)])
     {a : Pr (RadSp P.k P.r z z' π π')} (ha : a ∈ Gen L st Pts) :
@@ -186,11 +264,19 @@ theorem gen_mem_adjB (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) (hS : I
     rw [e]
     exact qq_adj hThm s0 Y hw i j Φ Ψ (Ucls_le _ _ hΦ) (Ucls_le _ _ hΨ)
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.JCx2.form_zero_indep μ Y₁ Y₂ 0 (fun _ => 1)]`. Conclude with `form_eq_pairS μ (K 0) _ (sesqOn_form hThm) Y₁ Y₂ h₁ h₂`.
+-/
 theorem form_zero_eq_position_pairing (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) (Y₁ Y₂ : Ix S → RadSp P.k P.r z z' π π')
     (h₁ : ∀ a, Y₁ a ∈ K 0) (h₂ : ∀ a, Y₂ a ∈ K 0) : form μ 0 Y₁ Y₂ 0 = pairS (bet μ) Y₁ Y₂ := by
   rw [Formalism.FourierDecayAlt.P.JCx2.form_zero_indep μ Y₁ Y₂ 0 (fun _ => 1)]
   exact form_eq_pairS μ (K 0) _ (sesqOn_form hThm) Y₁ Y₂ h₁ h₂
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact (entSub 𝒜).one_mem`. Consider the case `cons l L ih`. Rewrite using `[JL]`. Use `(entSub 𝒜).mul_mem (ins_mem _ ?_) ih` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `symplectic_form_mem_entrywise`. Conclude with `entries_mem_transpose symplectic_form_mem_entrywise`.
+-/
 theorem jl_mem {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S]
     {𝒜 : StarSubalgebra ℂ A} (L : List (Letter ℂ S)) : (JL L : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 := by
   induction L with
@@ -202,6 +288,25 @@ theorem jl_mem {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule �
     · exact symplectic_form_mem_entrywise
     · exact entries_mem_transpose symplectic_form_mem_entrywise
 
+/- English proof (translation)
+Establish `hS` using `isStart_QQi P z z' π π' X μ L st l0 hD 0`. Establish `hK` using `sesquilinear_level_zero_pairing hThm`. Establish `hle` using `Ucls_le (K 0) (Gen L st Pts)`. Establish `hU` using `hK.mono hle`. Establish `hGen : ∀ Y ∈ Pts, ∀ i j, QQi L st 0 (Y : ℂ) i j ∈ adjB _ (bet μ) hU` using `fun Y hY i j => gen_mem_adjB hThm hS Pts hPts ⟨Y, hY, i, j, rfl⟩`.
+
+Establish `hat : ∀ Y : ℂ, (∃ Y' ∈ Pts, Y = (Y' : ℂ)) → ∀ i j, QQi L st 0 Y i j ∈ adjB _ (bet μ) hU`. Introduce and unpack `Y ⟨Y', hY', rfl⟩ i j`. Conclude with `hGen Y' hY' i j`. Establish `hPs : Ps (QQi L st 0) (M.qC P) w Lw ∈ entSub (adjB _ (bet μ) hU)`. Use `ps_mem_at _ _ _ _ fun l hl a b => ⟨fun _ => hat _ (hP2 l hl) a b, fun hneg => ?_⟩` and prove the remaining obligations.
+
+Use `hDK.1 l hl` as an intermediate fact. Rewrite using `[this] at hneg; exact absurd hneg (by decide)`. Establish `hRRe : RRw (QQi L st 0) (Lw ++ w) ∈ entSub (adjB _ (bet μ) hU)` using `rrw_mem_at _ _ fun l hl a b => hat _ (hP1 l hl) a b`. Establish `hRRe2 : RRw (QQi L st 0) (Lw.map dl ++ w) ∈ entSub (adjB _ (bet μ) hU)`. Use `rrw_mem_at _ _ fun l hl a b => hat _ ?_ a b` and prove the remaining obligations.
+
+Break down `List.mem_append.mp hl with h | h` into its components or cases. Take `⟨l', hl', rfl⟩` from `List.mem_map.mp h`. Establish `hp` using `hDK.1 l' hl'`. Take `⟨Y, hY, e⟩` from `hP2 l' hl'`. Use `⟨Y, hY, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[dl, hp, e]`. Conclude with `hP1 l (List.mem_append_right _ h)`. Establish `hRRw : RRw (QQi L st 0) w ∈ entSub (adjB _ (bet μ) hU)` using `rrw_mem_at _ _ fun l hl a b => hat _ (hP1 l (List.mem_append_right _ hl)) a b`. Establish `hJR : JL Lw * RRw (QQi L st 0) w ∈ entSub (adjB _ (bet μ) hU)` using `(entSub _).mul_mem (jl_mem Lw) hRRw`. Establish `pres : ∀ {M : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π'))}, M ∈ entSub (adjB _ (bet μ) hU) → ∀ a b, ∀ x ∈ Ucls (K 0) (Gen L st Pts), (M a b).1 x ∈ Ucls (K 0) (Gen L st Pts)` using `fun hM a b x hx => (hM a b).1 x hx`.
+
+Establish `hSq` using `sesqOn_form (S := S) hThm`. Establish `conv : ∀ (Y₁ Y₂ : Ix S → RadSp P.k P.r z z' π π'), InU (Ucls (K 0) (Gen L st Pts)) Y₁ → InU (Ucls (K 0) (Gen L st Pts)) Y₂ → form μ 0 Y₁ Y₂ 0 = pairS (bet μ) Y₁ Y₂`. Introduce `Y₁ Y₂ hY₁ hY₂`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx2.form_zero_indep μ Y₁ Y₂ 0 (fun _ => 1)]`. Conclude with `form_eq_pairS μ (K 0) _ hSq Y₁ Y₂ (fun a => hle (hY₁ a)) (fun a => hle (hY₂ a))`.
+
+Establish `posOf : ∀ u : List (Letter ℂ S), WordOK P z z' π π' st l0 u → RRw (QQi L st 0) u ∈ entSub (adjB _ (bet μ) hU) → ∀ Y : Ix S → RadSp P.k P.r z z' π π', InU (Ucls (K 0) (Gen L st Pts)) Y → 0 ≤ (pairS (bet μ) (actP (RRw (QQi L st 0) u) Y) Y).re ∧ (pairS (bet μ) (actP (RRw (QQi L st 0 …`. Introduce `u hu hM Y hY`. Establish `hn` using `((hThm u hu).2.2 0 (fun _ => 1) constant_one_mem_nonvanishing).2 Y (fun a _ => hle (hY a))`. Establish `e : RRform L st μ 0 u Y Y (fun _ => 1) = pairS (bet μ) (actP (RRw (QQi L st 0) u) Y) Y` using `form_eq_pairS μ (K 0) _ hSq _ _ (fun a => hle (blockMulVec_apply_mem (pres hM) hY a)) (fun a => hle (hY a))`. Use `beta_reduce at hn`.
+
+Rewrite `hn` using `[e]`. Conclude with `⟨(Complex.nonneg_iff.mp hn).1, (Complex.nonneg_iff.mp hn).2.symm⟩`. Establish `hPos` using `posOf _ hOK1 hRRe`. Establish `hPos2` using `posOf _ hOK2 hRRe2 X₂ h2`. Establish `dk` using `dk_partial hU (QQi L st 0) (M.qC P) w Lw hS hDK hPs (pres hRRe) hPos X₁ X₂ h1 h2`.
+
+Establish `hP1'` using `hPos X₁ h1`. Establish `eA : form μ 0 (P5.act (RRi L st 0 (Lw ++ w)) X₁) X₁ 0 = pairS (bet μ) (actP (RRw (QQi L st 0) (Lw ++ w)) X₁) X₁` using `conv _ _ (blockMulVec_apply_mem (pres hRRe) h1) h1`. Establish `eB : form μ 0 (P5.act (RRi L st 0 (Lw.map dl ++ w)) X₂) X₂ 0 = pairS (bet μ) (actP (RRw (QQi L st 0) (Lw.map dl ++ w)) X₂) X₂` using `conv _ _ (blockMulVec_apply_mem (pres hRRe2) h2) h2`. Rewrite using `[eA, eB]`. Conclude with `⟨hP1'.2, hP1'.1, hPos2.2, hPos2.1, dk.2⟩`.
+-/
 theorem dk_radial {X : ActualOps P.k P.r z z' π π'} (hD : IsData P z z' π π' X μ L st l0)
     (hThm : ThmPOn (S := S) P z z' π π' μ L st K l0) (Pts : Set ℝ)
     (hPts : ∀ Y ∈ Pts, ∃ s0 : S, WordOK P z z' π π' st l0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ S)])

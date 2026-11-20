@@ -26,6 +26,11 @@ def oneBlock (N : ℕ) : (Σ _ : Fin 1, Fin N) ≃ Fin N where
     rw [Subsingleton.elim a 0]
   right_inv _ := rfl
 
+/- English proof (translation)
+Take `⟨M, rfl⟩ : ∃ M, c = fun _ => M` from `⟨c 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `⟨s₀, rfl⟩ : ∃ s₀, s = fun _ => s₀` from `⟨s 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `rfl : M = N` from `by simpa using Fintype.card_congr g`. Take `⟨φ₁⟩` from `(Placing.parInd_jac_placing k (Fin 1) (Fin M) (fun _ => Fin M) g (oneBlock M) _).1 (piTensor fun _ : Fin 1 => s₀.ρ)`. Take `⟨φ₂⟩` from `LocGL.nonempty_equiv_multiProd_one s₀.smooth (oneBlock M) fun _ _ => rfl`.
+
+Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv (φ₂.trans φ₁.symm) s₀.irr`.
+-/
 theorem isIrreducible_multiProd_fin_one {N : ℕ} {c : Fin 1 → ℕ} (g : (Σ i, Fin (c i)) ≃ Fin N)
     (s : ∀ i, IrrRep (GL (Fin (c i)) k)) : (multiProd g fun i => (s i).ρ).IsIrreducible := by
   obtain ⟨M, rfl⟩ : ∃ M, c = fun _ => M := ⟨c 0, funext fun i => by rw [Subsingleton.elim i 0]⟩
@@ -40,6 +45,9 @@ end GlobalTheory.JacTensor
 
 open GlobalTheory.JacTensor in
 
+/- English proof (translation)
+Introduce `hGL k _ _ _ _ n π s d e Y _ _ τ hτ hs`. Take `⟨φ⟩` from `LocGL.nonempty_equiv_multiProd_one π.smooth (oneBlock n) fun _ _ => rfl`. Establish `h1 : IsSubquotient τ (jac e (multiProd (oneBlock n) fun _ : Fin 1 => π.π))` using `hs.trans (GlobalTheory.JacquetExact.isSubquotient_jac e (isSmooth_parInd _ _) (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective))`. Take `⟨b, f, g, t, -, ht⟩` from `exists_cell_of_isSubquotient (hGL k).1 (hGL k).2 (m' := fun a => Fin (d a)) (oneBlock n) e (fun _ => π.smooth) (fun _ => hasFiniteLength_of_isIrreducible π.irr) hτ h1`. Conclude with `⟨fun a => ⟨_, multiProd (g a) fun i => (t i a).ρ, isSmooth_parInd _ _, isIrreducible_multiProd_fin_one (g a) fun i => t i a⟩, ht⟩`.
+-/
 theorem GlobalTheory.JacTensor.exists_irr_tensor_of_isSubquotient_jac : GlobalTheory.Published.GeometricLemma → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (π : Irr k n) (s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin n) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (τ : Representation ℂ (Levi k fun a => Fin (d a)) Y), τ.IsIrreducible → IsSubquotient τ (jac e π.π) → ∃ σ : ∀ a, Irr k (d a), IsSubquotient τ (piTensor fun a => (σ a).π) := by
   intro hGL k _ _ _ _ n π s d e Y _ _ τ hτ hs
   obtain ⟨φ⟩ := LocGL.nonempty_equiv_multiProd_one π.smooth (oneBlock n) fun _ _ => rfl

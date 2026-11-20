@@ -13,12 +13,29 @@ variable {I C : Type} [Fintype I] [Fintype C]
 
 def lin {σ : Type} [Fintype σ] : (σ → ℂ) →ₗ[ℂ] MvPolynomial σ ℂ := ∑ i, (LinearMap.proj i : (σ → ℂ) →ₗ[ℂ] ℂ).smulRight (X i)
 
+/- English proof (translation)
+Simplify using `[lin, LinearMap.sum_apply]`.
+-/
 theorem lin_apply {σ : Type} [Fintype σ] (u : σ → ℂ) : lin u = ∑ i, u i • (X i : MvPolynomial σ ℂ) := by
   simp [lin, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[lin_apply, pderiv_X, Pi.single_apply]`.
+-/
 theorem pderiv_lin {σ : Type} [Fintype σ] (u : σ → ℂ) (j : σ) : pderiv j (lin u) = u j • (1 : MvPolynomial σ ℂ) := by
   simp [lin_apply, pderiv_X, Pi.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => intro l h`. Rewrite using `[← mul_one (MvPolynomial.C a), ← smul_eq_C_mul, map_smul, ← pow_zero (lin 0), h, smul_zero]`. Consider the case `add p q hp hq => intro l h`. Rewrite using `[map_add, hp l h, hq l h, add_zero]`.
+
+Consider the case `mul_X p i hp`. Introduce `l h`. Use `hp (l ∘ₗ LinearMap.mulRight ℂ (X i)) fun u n => ?_` and prove the remaining obligations. Establish `hx : (X i : MvPolynomial σ ℂ) = lin (Pi.single i 1)` using `by simp [lin_apply, Pi.single_apply]`. Set `c : Polynomial ℂ` to `∑ m ∈ Finset.range (n + 2), Polynomial.monomial m (l (X i ^ m * lin u ^ (n + 1 - m)) * (n + 1).choose m)`.
+
+Establish `hc : c = 0` using `Polynomial.funext fun s => by`. Use `h (s • Pi.single i 1 + u) (n + 1)` as an intermediate fact. Rewrite `this` using `[map_add, map_smul, ← hx, add_pow, map_sum]`. Rewrite using `[Polynomial.eval_zero, ← this, Polynomial.eval_finsetSum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.eval_monomial, smul_pow, smul_mul_assoc, smul_mul_assoc, map_smul, ← nsmul_eq_mul' (X i ^ m * lin u ^ (n + 1 - m)), map_nsmul]`. Simplify using `[mul_comm, mul_left_comm]`. Establish `h1` using `congrArg (Polynomial.coeff · 1) hc`. Simplify using `only [c, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial, Finset.sum_ite_eq', Finset.mem_range] at h1`. Establish `h2 : ((n : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero n`.
+
+Simplify `h1` using `[h2, mul_comm]`.
+-/
 theorem eq_zero_of_pow {σ : Type} [Fintype σ] (f : MvPolynomial σ ℂ) :
     ∀ l : MvPolynomial σ ℂ →ₗ[ℂ] ℂ, (∀ u n, l (lin u ^ n) = 0) → l f = 0 := by
   induction f using MvPolynomial.induction_on with
@@ -45,6 +62,11 @@ def der (p : C → Bool) (v w : I → ℂ) : Derivation ℂ (MvPolynomial (I × 
   ∑ a, ∑ b, ∑ c, (v a * w b) • (if p c then (X (a, c) : MvPolynomial (I × C) ℂ) • pderiv (b, c)
     else -((X (b, c) : MvPolynomial (I × C) ℂ) • pderiv (a, c)))
 
+/- English proof (translation)
+Establish `hs : ∀ {ι : Type} [Fintype ι] (D : ι → Derivation ℂ (MvPolynomial (I × C) ℂ) (MvPolynomial (I × C) ℂ)), (∑ i, D i) f = ∑ i, D i f` using `fun D => by`. Rewrite using `[← Finset.sum_apply]`. Conclude with `congrFun (map_sum Derivation.coeFnAddMonoidHom D _) f`. Simplify using `only [der, hs, Derivation.smul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem der_apply (p : C → Bool) (v w : I → ℂ) (f : MvPolynomial (I × C) ℂ) : der p v w f =
     ∑ a, ∑ b, ∑ c, (v a * w b) • (if p c then X (a, c) * pderiv (b, c) f else -(X (b, c) * pderiv (a, c) f)) := by
   have hs : ∀ {ι : Type} [Fintype ι] (D : ι → Derivation ℂ (MvPolynomial (I × C) ℂ) (MvPolynomial (I × C) ℂ)),
@@ -54,12 +76,22 @@ theorem der_apply (p : C → Bool) (v w : I → ℂ) (f : MvPolynomial (I × C) 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[der_apply, der_apply, Finset.sum_comm]`. Simplify using `only [← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases p c <;> simp [mul_comm]`.
+-/
 theorem der_neg (p : C → Bool) (v w : I → ℂ) (f) : der (fun c => !p c) v w f = -der p w v f := by
   rw [der_apply, der_apply, Finset.sum_comm]
   simp only [← Finset.sum_neg_distrib]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_
   cases p c <;> simp [mul_comm]
 
+/- English proof (translation)
+Establish `e : ∀ c, ∑ a, ∑ b, (v a * w b) • (if p c then X (a, c) * pderiv (b, c) (lin u) else -(X (b, c) * pderiv (a, c) (lin u))) = ∑ a, (if p c then v a * ∑ b, w b * u (b, c) else -(w a * ∑ b, v b * u (b, c))) • (X (a, c) : MvPolynomial (I × C) ℂ)` using `fun c => by`. Simplify using `only [pderiv_lin, mul_smul_comm, mul_one]`. Consider the cases of `p c`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Bool.false_eq_true, if_false, Finset.mul_sum, ← Finset.sum_neg_distrib, Finset.sum_smul, smul_neg, neg_smul, smul_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by congr 2; ring`. Simplify using `only [if_true, Finset.mul_sum, Finset.sum_smul, smul_smul, mul_assoc]`. Rewrite using `[der_apply]`. Use `Eq.trans ?_ (((Finset.sum_congr rfl fun c _ => e c).trans (Fintype.sum_prod_type_right' _).symm).trans (lin_apply _).symm)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (γ := C)]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+-/
 theorem der_lin (p : C → Bool) (v w : I → ℂ) (u : I × C → ℂ) : der p v w (lin u) =
     lin fun x => if p x.2 then v x.1 * ∑ b, w b * u (b, x.2) else -(w x.1 * ∑ a, v a * u (a, x.2)) := by
   have e : ∀ c, ∑ a, ∑ b, (v a * w b) • (if p c then X (a, c) * pderiv (b, c) (lin u) else -(X (b, c) * pderiv (a, c) (lin u))) =
@@ -75,6 +107,25 @@ theorem der_lin (p : C → Bool) (v w : I → ℂ) (u : I × C → ℂ) : der p 
   rw [Finset.sum_comm (γ := C)]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_comm
 
+/- English proof (translation)
+Use `LinearMap.ext fun f => eq_zero_of_pow f l fun u n => ?_` and prove the remaining obligations. Set `A : ({a // S a} → ℂ) →ₗ[ℂ] ({c // p c} → ℂ)` to `Matrix.vecMulLinear (Matrix.of fun a c => u (a.1, c.1))`. Take `⟨w₀, hw₀, hne⟩` from `(Submodule.ne_bot_iff _).1 (LinearMap.ker_ne_bot_of_finrank_lt (f := A) (by simpa using hc))`. Take `⟨a₀, ha₀⟩` from `Function.ne_iff.1 hne`. Set `w : I → ℂ` to `fun a => if h : S a then w₀ ⟨a, h⟩ else 0`.
+
+Set `v : I → ℂ` to `Pi.single a₀.1 (w₀ a₀)⁻¹`. Establish `hvw : ∑ a, v a * w a = 1`. Simplify using `only [v, Pi.single_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, w, dif_pos a₀.2]`. Conclude with `inv_mul_cancel₀ ha₀`. Establish `hwu : ∀ c, p c → ∑ b, w b * u (b, c) = 0` using `fun c hc => by`.
+
+Use `congrFun hw₀ ⟨c, hc⟩` as an intermediate fact. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype S, Finset.sum_eq_zero (s := Finset.univ) fun (b : {b // ¬ S b}) _ => by simp [w, b.2], add_zero]`. Use `Eq.trans (Finset.sum_congr rfl (g := fun a => w₀ a * u (a.1, c)) fun a _ => by simp only [w, dif_pos a.2]) ?_` and prove the remaining obligations. Simplify `this` using `[A, Matrix.vecMul, dotProduct]`. Set `u' : I × C → ℂ` to `fun x => if p x.2 then 0 else w x.1 * ∑ a, v a * u (a, x.2)`.
+
+Establish `d1 : der p v w (lin u) = -lin u'`. Rewrite using `[der_lin, ← map_neg]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : p x.2 <;> simp [u', hx, hwu]`.
+
+Establish `d2 : der p v w (lin u') = -lin u'`. Rewrite using `[der_lin, ← map_neg]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : p x.2`.
+
+Simplify using `[u', hx]`. Simplify using `only [u', hx, Bool.false_eq_true, if_false, ← mul_assoc, ← Finset.sum_mul, hvw, one_mul, Pi.neg_apply]`. Establish `d3 : der p v w (lin u - lin u') = 0` using `by rw [map_sub, d1, d2, sub_self]`. Establish `hl` using `h v w (fun a ha => ⟨Pi.single_eq_of_ne (fun e => ha (by rw [e]; exact a₀.2)) _, dif_neg ha⟩) hvw`. Establish `key : ∀ i j : ℕ, l ((lin u - lin u') ^ i * lin u' ^ j) = 0` using `fun i j => by`.
+
+Establish `e : der p v w ((lin u - lin u') ^ i * lin u' ^ j) = -(j : ℂ) • ((lin u - lin u') ^ i * lin u' ^ j)`. Rewrite using `[Derivation.leibniz, Derivation.leibniz_pow, Derivation.leibniz_pow, d3, d2]`. Break down `j with _ | j` into its components or cases. Simplify using the standard rewrite rules. Simplify using `only [smul_zero, add_zero, smul_eq_mul, Nat.add_sub_cancel, nsmul_eq_mul, smul_eq_C_mul, map_neg, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `hl ((lin u - lin u') ^ i * lin u' ^ j)` as an intermediate fact. Rewrite `this` using `[e, map_smul, smul_eq_mul]`. Establish `h0 : (k : ℂ) + j ≠ 0` using `by exact_mod_cast (by positivity : (0 : ℝ) < k + j).ne'`. Conclude with `(mul_eq_zero.1 (show ((k : ℂ) + j) * _ = 0 by linear_combination -this)).resolve_left h0`.
+
+Rewrite using `[← sub_add_cancel (lin u) (lin u'), add_pow, map_sum]`. Conclude with `Finset.sum_eq_zero fun m _ => by rw [← nsmul_eq_mul', map_nsmul, key, smul_zero]`.
+-/
 theorem core_pos (p : C → Bool) (S : I → Prop) (k : ℝ) (hk : 0 < k) (hc : Nat.card {c // p c} < Nat.card {a // S a})
     (l : MvPolynomial (I × C) ℂ →ₗ[ℂ] ℂ)
     (h : ∀ v w : I → ℂ, (∀ a, ¬ S a → v a = 0 ∧ w a = 0) → ∑ a, v a * w a = 1 → ∀ f, l (der p v w f) = k * l f) : l = 0 := by
@@ -121,6 +172,9 @@ theorem core_pos (p : C → Bool) (S : I → Prop) (k : ℝ) (hk : 0 < k) (hc : 
   rw [← sub_add_cancel (lin u) (lin u'), add_pow, map_sum]
   exact Finset.sum_eq_zero fun m _ => by rw [← nsmul_eq_mul', map_nsmul, key, smul_zero]
 
+/- English proof (translation)
+The claim follows from `core_pos (fun c => !p c) S (-k) (by linarith) hc l fun v w h1 h2 f => by rw [der_neg, map_neg, h w v (fun a ha => (h1 a ha).symm) (by simpa only [mul_comm] using h2)] simp`.
+-/
 theorem core_neg (p : C → Bool) (S : I → Prop) (k : ℝ) (hk : k < 0) (hc : Nat.card {c // !p c} < Nat.card {a // S a})
     (l : MvPolynomial (I × C) ℂ →ₗ[ℂ] ℂ)
     (h : ∀ v w : I → ℂ, (∀ a, ¬ S a → v a = 0 ∧ w a = 0) → ∑ a, v a * w a = 1 → ∀ f, l (der p v w f) = k * l f) : l = 0 :=
@@ -132,6 +186,19 @@ end Core
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Establish `e : fockAct1 P Q R S (Matrix.vecMulVec v w) f = ∑ a, ∑ b, ∑ c, (v a * w b) • omE (a, c) (b, c) f`. Simplify using `only [fockAct1, omAct, LinearMap.comp_apply, LinearMap.flip_apply, LinearMap.sum_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single c (fun c' _ hc => by simp [Matrix.one_apply_ne hc.symm]) (by simp)]`. Simplify using `[Matrix.vecMulVec_apply]`. Establish `e2 : ∀ a b c, (v a * w b) • omE (a, c) (b, c) f = (v a * w b) • (if (Sum.isLeft c == t) then X (a, c) * pderiv (b, c) f else -(X (b, c) * pderiv (a, c) f)) + (if a = b then v a * w a * (if (Sum.isLeft c == t) then 1 / 2 else -(1 / 2)) else 0 : ℂ) • f` using `fun a b c => by`. Distinguish the cases in `ha : a.isLeft = t`. Use `swap`.
+
+Simplify using `[(h a ha).1]`. Distinguish the cases in `hb : b.isLeft = t`. Use `swap`. Distinguish the cases in `e : a = b`. Conclude with `absurd (e ▸ ha) hb`.
+
+Simplify using `[(h b hb).2, e]`. Apply the tactic sequence `have pa : linePos (a, c) = (Sum.isLeft c == t) := by subst ha; cases a <;> cases c <;> rfl`. Apply the tactic sequence `have pb : linePos (b, c) = (Sum.isLeft c == t) := by subst hb; cases b <;> cases c <;> rfl`. Simplify using `only [omE, raiB, lowB, pa, pb, Prod.mk.injEq, and_true]`. Distinguish the cases in `e : a = b`.
+
+Substitute `e` using the available equality. Apply the tactic sequence `cases (Sum.isLeft c == t) <;> simp [smul_add, smul_smul] <;> module`. Establish `: (b, c) ≠ (a, c)` using `fun x => e (congrArg Prod.fst x).symm`. Apply the tactic sequence `cases (Sum.isLeft c == t) <;> simp [e, pderiv_X_of_ne this]`. Rewrite using `[e, der_apply]`.
+
+Simplify using `only [e2, Finset.sum_add_distrib, ← Finset.sum_smul]`. Use `congr 2`. Simplify using `only [Finset.sum_comm (γ := Ix P Q) (α := Ix R S), Finset.sum_ite_eq, Finset.mem_univ, if_true, ← Finset.mul_sum, ← Finset.sum_mul, h1]`. Apply the tactic sequence `cases t <;> simp <;> ring`.
+-/
 theorem fockAction_first_eq (t : Bool) (v w : Ix P Q → ℂ) (h : ∀ a, ¬ a.isLeft = t → v a = 0 ∧ w a = 0) (h1 : ∑ a, v a * w a = 1) (f : Pol P Q R S) :
     fockAct1 P Q R S (Matrix.vecMulVec v w) f =
       der (fun c : Ix R S => c.isLeft == t) v w f + ((if t then ((R : ℝ) - S) / 2 else ((S : ℝ) - R) / 2 : ℝ) : ℂ) • f := by
@@ -166,6 +233,19 @@ theorem fockAction_first_eq (t : Bool) (v w : Ix P Q → ℂ) (h : ∀ a, ¬ a.i
   simp only [Finset.sum_comm (γ := Ix P Q) (α := Ix R S), Finset.sum_ite_eq, Finset.mem_univ, if_true, ← Finset.mul_sum, ← Finset.sum_mul, h1]
   cases t <;> simp <;> ring
 
+/- English proof (translation)
+Establish `key : ∀ t : Bool, ∀ v w : Ix P Q → ℂ, (∀ a, ¬ a.isLeft = t → v a = 0 ∧ w a = 0) → ∑ a, v a * w a = 1 → ∀ f, l (der (fun c : Ix R S => c.isLeft == t) v w f) = ((-((m : ℝ) / 2) - (if t then ((R : ℝ) - S) / 2 else ((S : ℝ) - R) / 2) : ℝ) : ℂ) * l f` using `fun t v w h0 h1 f => by`. Use `h (Matrix.vecMulVec v w) (fun a b hab => by` as an intermediate fact. Distinguish the cases in `ha : a.isLeft = t`. Apply the tactic sequence `have : ¬ b.isLeft = t := fun hb => hab (by subst ha; cases a <;> cases b <;> simp_all [sameBlock])`. Simplify using `[Matrix.vecMulVec_apply, (h0 b this).2]`.
+
+Simplify using `[Matrix.vecMulVec_apply, (h0 a ha).1]) f`. Rewrite `this` using `[fockAction_first_eq t v w h0 h1, map_add, map_smul, Matrix.trace_vecMulVec, dotProduct, h1, smul_eq_mul]`. Rewrite using `[Complex.ofReal_sub]`. Move the coercions through the operations in `at this ⊢`. Take the linear combination `this`.
+
+Establish `cI : ∀ (A B : ℕ) (t : Bool), Nat.card {a : Ix A B // a.isLeft = t} = if t then A else B` using `fun A B t => by`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, Finset.card_filter, Fintype.sum_sum_type]`. Apply the tactic sequence `cases t <;> simp`. Establish `c1 : ∀ t : Bool, Nat.card {c : Ix R S // c.isLeft == t} = if t then R else S` using `fun t => by`. Rewrite using `[← cI]; exact Nat.card_congr (Equiv.subtypeEquivRight fun c => by simp)`.
+
+Establish `c2 : ∀ t : Bool, Nat.card {c : Ix R S // !(c.isLeft == t)} = if t then S else R` using `fun t => by`. Apply the tactic sequence `rw [show (if t then S else R) = if !t then R else S by cases t <;> rfl, ← cI]`. Apply the tactic sequence `exact Nat.card_congr (Equiv.subtypeEquivRight fun c => by cases t <;> cases c <;> simp)`. Establish `hR : (0 : ℝ) ≤ R` using `Nat.cast_nonneg R`. Establish `hS : (0 : ℝ) ≤ S` using `Nat.cast_nonneg S`.
+
+Break down `lt_abs.1 hm with h1 | h1` into its components or cases. Establish `h2 : (R : ℝ) + S < m` using `by exact_mod_cast h1`. Break down `le_total R S with e | e` into its components or cases. Conclude with `core_neg _ (fun a => a.isLeft = false) _ (by simp; linarith) (by rw [c2, cI]; simp; omega) l (key false)`. Conclude with `core_neg _ (fun a => a.isLeft = true) _ (by simp; linarith) (by rw [c2, cI]; simp; omega) l (key true)`.
+
+Establish `h2 : (R : ℝ) + S < -m` using `by exact_mod_cast h1`. Break down `le_total R S with e | e` into its components or cases. Conclude with `core_pos _ (fun a => a.isLeft = true) _ (by simp; linarith) (by rw [c1, cI]; simp; omega) l (key true)`. Conclude with `core_pos _ (fun a => a.isLeft = false) _ (by simp; linarith) (by rw [c1, cI]; simp; omega) l (key false)`.
+-/
 theorem noForm (m : ℤ) (hm : ((R + S : ℕ) : ℤ) < |m|) (hr : min R S < min P Q) (l : Pol P Q R S →ₗ[ℂ] ℂ)
     (h : ∀ Y : Mat P Q, IsKC Y → ∀ f, l (fockAct1 P Q R S Y f) = -((m : ℂ) / 2 * Y.trace) * l f) : l = 0 := by
   have key : ∀ t : Bool, ∀ v w : Ix P Q → ℂ, (∀ a, ¬ a.isLeft = t → v a = 0 ∧ w a = 0) → ∑ a, v a * w a = 1 → ∀ f,

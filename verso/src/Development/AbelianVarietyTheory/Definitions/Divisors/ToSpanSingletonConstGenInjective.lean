@@ -38,24 +38,41 @@ section Basic
 
 variable (G : PDivGroup p O)
 
+/- English proof (translation)
+The claim follows from `(rankAtStalk_eq q).symm.trans (G.rank_eq n q)`.
+-/
 theorem fibreDim_eq (n : ℕ) (q : PrimeSpectrum O) : fibreDim (G.A n) q = p ^ (n * G.height) :=
   (rankAtStalk_eq q).symm.trans (G.rank_eq n q)
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `G.res_surjective n a`. Rewrite using `[← map_mulBy, CoalgHomClass.counit_comp_apply]`. Conclude with `(kerIdeal_le_ker_iff _ (G.res n : G.A (n + 1) →ₐ[O] G.A n)).1 (G.ker_res n).ge b`.
+-/
 theorem mulBy_pow_self (n : ℕ) (a : G.A n) :
     mulBy O (G.A n) (p ^ n) a = algebraMap O _ (counit a) := by
   obtain ⟨b, rfl⟩ := G.res_surjective n a
   rw [← map_mulBy, CoalgHomClass.counit_comp_apply]
   exact (kerIdeal_le_ker_iff _ (G.res n : G.A (n + 1) →ₐ[O] G.A n)).1 (G.ker_res n).ge b
 
+/- English proof (translation)
+The claim follows from `ofConv_injective <| (comp_mulBy_pts x.ofConv _).symm.trans <| AlgHom.ext fun a => (congrArg x.ofConv (G.mulBy_pow_self n a)).trans (x.ofConv.commutes _)`.
+-/
 theorem pts_pow_self (n : ℕ) {B : Type*} [CommRing B] [Algebra O B]
     (x : WithConv (G.A n →ₐ[O] B)) : x ^ p ^ n = 1 :=
   ofConv_injective <| (comp_mulBy_pts x.ofConv _).symm.trans <| AlgHom.ext fun a =>
     (congrArg x.ofConv (G.mulBy_pow_self n a)).trans (x.ofConv.commutes _)
 
+/- English proof (translation)
+The claim follows from `toPts_injective (by rw [map_pow, map_one, pts_pow_self])`.
+-/
 theorem hom_pow_self (n : ℕ) {B : Type*} [CommRing B] [Bialgebra O B]
     (x : WithConv (G.A n →ₐc[O] B)) : x ^ p ^ n = 1 :=
   toPts_injective (by rw [map_pow, map_one, pts_pow_self])
 
+/- English proof (translation)
+Rewrite using `[← torsionIdeal_le_ker_iff, ← G.ker_res]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ a ha`. Establish `ha' : G.res n a = 0` using `ha`. Express the relevant statement in the definitionally equal form `y (G.res n a) = 0`.
+
+Rewrite using `[ha', map_zero]`. Introduce `h`. Conclude with `⟨AlgHom.liftOfSurjective _ (G.res_surjective n) x h, AlgHom.liftOfSurjective_comp ..⟩`.
+-/
 theorem exists_comp_res_iff (n : ℕ) {B : Type*} [CommRing B] [Algebra O B]
     (x : G.A (n + 1) →ₐ[O] B) :
     (∃ y : G.A n →ₐ[O] B, y.comp (G.res n : G.A (n + 1) →ₐ[O] G.A n) = x) ↔
@@ -76,19 +93,38 @@ def mulP (n : ℕ) : G.A n →ₐc[O] G.A (n + 1) :=
     change mulBy O _ p (mulBy O _ (p ^ n) c) = _
     rw [mulBy_mulBy, ← pow_succ', mulBy_pow_self]
 
+/- English proof (translation)
+The claim follows from `liftSurj_apply ..`.
+-/
 @[simp] theorem mulP_res (n : ℕ) (a : G.A (n + 1)) : G.mulP n (G.res n a) = mulBy O _ p a :=
   liftSurj_apply ..
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `G.res_surjective n a`. Rewrite using `[mulP_res, map_mulBy]`.
+-/
 @[simp] theorem res_mulP (n : ℕ) (a : G.A n) : G.res n (G.mulP n a) = mulBy O _ p a := by
   obtain ⟨b, rfl⟩ := G.res_surjective n a
   rw [mulP_res, map_mulBy]
 
+/- English proof (translation)
+The claim follows from `BialgHom.ext (G.mulP_res n)`.
+-/
 theorem mulP_comp_res (n : ℕ) : (G.mulP n).comp (G.res n) = mulBy O _ p :=
   BialgHom.ext (G.mulP_res n)
 
+/- English proof (translation)
+The claim follows from `BialgHom.ext (G.res_mulP n)`.
+-/
 theorem res_comp_mulP (n : ℕ) : (G.res n).comp (G.mulP n) = mulBy O _ p :=
   BialgHom.ext (G.res_mulP n)
 
+/- English proof (translation)
+Proceed by induction on `n, h using Nat.le_induction with`. Consider the case `base`. Use `⟨BialgHom.id O _, Function.surjective_id, le_antisymm (fun a ha => ?_) ?_⟩` and prove the remaining obligations. Rewrite using `[show a = 0 from ha]`. Conclude with `zero_mem _`.
+
+Conclude with `(kerIdeal_le_ker_iff _ (AlgHom.id O _)).2 (G.mulBy_pow_self _)`. Consider the case `succ n hmn ih`. Take `⟨f, hf, hk⟩` from `ih`. Use `⟨f.comp (G.res _), hf.comp (G.res_surjective _), ?_⟩` and prove the remaining obligations. Establish `h1 : RingHom.ker (f.comp (G.res n)) = (RingHom.ker f).comap (G.res n : G.A (n + 1) →ₐ[O] G.A n)` using `rfl`.
+
+Rewrite using `[h1, hk, ← map_torsionIdeal (G.res_surjective n), Ideal.comap_map_of_surjective (G.res n : G.A (n + 1) →ₐ[O] G.A n) (G.res_surjective n), sup_eq_left]`. Conclude with `(G.ker_res n).le.trans (torsionIdeal_le_of_dvd (pow_dvd_pow p hmn))`.
+-/
 theorem exists_res_le {m n : ℕ} (h : m ≤ n) : ∃ f : G.A n →ₐc[O] G.A m,
     Function.Surjective f ∧ RingHom.ker f = torsionIdeal O _ (p ^ m) := by
   induction n, h using Nat.le_induction with
@@ -111,6 +147,11 @@ section Dual
 
 variable (G : PDivGroup p O)
 
+/- English proof (translation)
+Use `dual_map_surjective _ fun q => ?_` and prove the remaining obligations. Take `⟨f, hf, hk⟩` from `G.exists_res_le (m := 1) (n := n + 1) (by omega)`. Establish `h1 : kerIdeal (G.mulP n) = RingHom.ker (f : G.A (n + 1) →ₐ[O] G.A 1)`. Rewrite using `[← kerIdeal_comp_of_surjective _ (G.res_surjective n), mulP_comp_res]`. Rewrite `hk` using `[pow_one]`.
+
+Conclude with `hk.symm`. Rewrite using `[h1, fibreDim_congr (Ideal.quotientKerAlgEquivOfSurjective (f := (f : G.A (n + 1) →ₐ[O] G.A 1)) hf).toLinearEquiv, fibreDim_eq, fibreDim_eq, fibreDim_eq, ← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dual_mulP_surjective (n : ℕ) : Function.Surjective (CartierDual.map (G.mulP n)) := by
   refine dual_map_surjective _ fun q => ?_
   obtain ⟨f, hf, hk⟩ := G.exists_res_le (m := 1) (n := n + 1) (by omega)
@@ -124,6 +165,11 @@ theorem dual_mulP_surjective (n : ℕ) : Function.Surjective (CartierDual.map (G
   congr 1
   ring
 
+/- English proof (translation)
+Use `ker_eq_of_fibreDim_eq (CartierDual.map (G.mulP n) : CartierDual O (G.A (n + 1)) →ₐ[O] CartierDual O (G.A n)) (G.dual_mulP_surjective n) _ ?_ fun q => ?_` and prove the remaining obligations. Use `(kerIdeal_le_ker_iff _ _).2 fun φ => CartierDual.ext_apply fun a => ?_` and prove the remaining obligations. Rewrite using `[← dual_mulBy]`. Express the relevant statement in the definitionally equal form `φ.ofConv (mulBy O _ (p ^ n) (G.mulP n a)) = (algebraMap O (CartierDual O (G.A n)) (φ.ofConv 1)) a`. Rewrite using `[← map_mulBy, mulBy_pow_self, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, map_smul, map_one, map_smul]`.
+
+Express the relevant statement in the definitionally equal form `_ = φ.ofConv 1 * counit a`. Rewrite using `[smul_eq_mul, mul_comm]`. Establish `h1 : kerIdeal (mulBy O (G.A (n + 1)) (p ^ n)) = RingHom.ker (G.res n : G.A (n + 1) →ₐ[O] G.A n)` using `(G.ker_res n).symm`. Rewrite using `[torsionIdeal, ← dual_mulBy, fibreDim_ker_dual, fibreDim_dual, h1]`. Conclude with `fibreDim_congr (Ideal.quotientKerAlgEquivOfSurjective (f := (G.res n : G.A (n + 1) →ₐ[O] G.A n)) (G.res_surjective n)).toLinearEquiv q`.
+-/
 theorem ker_dual_mulP (n : ℕ) : RingHom.ker (CartierDual.map (G.mulP n)) =
     torsionIdeal O (CartierDual O (G.A (n + 1))) (p ^ n) := by
   refine ker_eq_of_fibreDim_eq
@@ -151,6 +197,9 @@ theorem ker_dual_mulP (n : ℕ) : RingHom.ker (CartierDual.map (G.mulP n)) =
   res_surjective := G.dual_mulP_surjective
   ker_res := G.ker_dual_mulP
 
+/- English proof (translation)
+The claim follows from `BialgHom.ext fun φ => by obtain ⟨ψ, rfl⟩ := G.dual.res_surjective n φ rw [mulP_res, ← dual_mulBy, ← mulP_comp_res] rfl`.
+-/
 theorem dual_mulP (n : ℕ) : G.dual.mulP n = CartierDual.map (G.res n) :=
   BialgHom.ext fun φ => by
     obtain ⟨ψ, rfl⟩ := G.dual.res_surjective n φ
@@ -175,16 +224,31 @@ section Hom
 
 variable {G H K : PDivGroup p O}
 
+/- English proof (translation)
+The claim follows from `Hom.ext (funext h)`.
+-/
 @[ext] theorem hom_ext {f g : G ⟶ H} (h : ∀ n, f.app n = g.app n) : f = g := Hom.ext (funext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem id_app (n : ℕ) : Hom.app (𝟙 G) n = BialgHom.id O _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_app (f : G ⟶ H) (g : H ⟶ K) (n : ℕ) :
     Hom.app (f ≫ g) n = (f.app n).comp (g.app n) := rfl
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun (f.comm n) a`.
+-/
 theorem res_app (f : G ⟶ H) (n : ℕ) (a : H.A (n + 1)) :
     G.res n (f.app (n + 1) a) = f.app n (H.res n a) := DFunLike.congr_fun (f.comm n) a
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `H.res_surjective n a`. Rewrite using `[mulP_res, ← res_app, mulP_res, map_mulBy]`.
+-/
 theorem app_mulP (f : G ⟶ H) (n : ℕ) (a : H.A n) :
     f.app (n + 1) (H.mulP n a) = G.mulP n (f.app n a) := by
   obtain ⟨b, rfl⟩ := H.res_surjective n a
@@ -192,9 +256,15 @@ theorem app_mulP (f : G ⟶ H) (n : ℕ) (a : H.A n) :
 
 abbrev Hom.conv (f : G ⟶ H) (n : ℕ) : WithConv (H.A n →ₐc[O] G.A n) := toConv (f.app n)
 
+/- English proof (translation)
+The claim follows from `hom_ext fun n => congrArg ofConv (h n)`.
+-/
 theorem hom_ext_conv {f g : G ⟶ H} (h : ∀ n, f.conv n = g.conv n) : f = g :=
   hom_ext fun n => congrArg ofConv (h n)
 
+/- English proof (translation)
+The claim follows from `congrArg toConv (f.comm n)`.
+-/
 theorem Hom.comm_conv (f : G ⟶ H) (n : ℕ) :
     postcomp _ (G.res n) (f.conv (n + 1)) = precomp _ (H.res n) (f.conv n) :=
   congrArg toConv (f.comm n)
@@ -207,8 +277,14 @@ instance : Add (G ⟶ H) := ⟨fun f g => ⟨fun n => (f.conv n * g.conv n).ofCo
       precomp _ (H.res n) (f.conv n * g.conv n) by
     rw [map_mul, map_mul, f.comm_conv, g.comm_conv])⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_conv (n : ℕ) : Hom.conv (0 : G ⟶ H) n = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_conv (f g : G ⟶ H) (n : ℕ) : Hom.conv (f + g) n = f.conv n * g.conv n := rfl
 
 variable [Fact p.Prime]
@@ -218,6 +294,9 @@ instance : SMul ℤ_[p] (G ⟶ H) := ⟨fun a f => ⟨fun n => (f.conv n ^ digit
       precomp _ (H.res n) (f.conv n ^ digit n a) by
     rw [map_pow, f.comm_conv, ← map_pow, pow_digit_succ (H.hom_pow_self n _)])⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_conv (a : ℤ_[p]) (f : G ⟶ H) (n : ℕ) :
     Hom.conv (a • f) n = f.conv n ^ digit n a := rfl
 
@@ -244,11 +323,17 @@ instance : Module ℤ_[p] (G ⟶ H) where
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_conv_left (f : G ⟶ H) (g : H ⟶ K) (n : ℕ) :
     Hom.conv (f ≫ g) n = precomp (G.A n) (g.app n) (f.conv n) := rfl
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_conv_right (f : G ⟶ H) (g : H ⟶ K) (n : ℕ) :
     Hom.conv (f ≫ g) n = postcomp (K.A n) (f.app n) (g.conv n) := rfl
 
@@ -266,6 +351,9 @@ instance : Linear ℤ_[p] (PDivGroup p O) where
   comp_smul _ _ _ f a g := hom_ext_conv fun n => by
     rw [smul_conv, comp_conv_right, comp_conv_right, smul_conv, map_pow]
 
+/- English proof (translation)
+The claim follows from `congrArg ofConv (pow_digit_natCast (G.hom_pow_self n (toConv (BialgHom.id O _))) k)`.
+-/
 theorem natCast_smul_id_app (G : PDivGroup p O) (k n : ℕ) :
     Hom.app ((k : ℤ_[p]) • 𝟙 G) n = mulBy O _ k :=
   congrArg ofConv (pow_digit_natCast (G.hom_pow_self n (toConv (BialgHom.id O _))) k)
@@ -274,9 +362,17 @@ abbrev Action (Λ : Type*) [Semiring Λ] (G : PDivGroup p O) : Type _ := Λ →+
 
 def padicAction (G : PDivGroup p O) : Action ℤ_[p] G := algebraMap ℤ_[p] (End G)
 
+/- English proof (translation)
+Rewrite using `[smul_conv, ← Nat.cast_pow, pow_digit_natCast (H.hom_pow_self n _), H.hom_pow_self]`.
+-/
 theorem pow_smul_conv (f : G ⟶ H) (n : ℕ) : Hom.conv ((p : ℤ_[p]) ^ n • f) n = 1 := by
   rw [smul_conv, ← Nat.cast_pow, pow_digit_natCast (H.hom_pow_self n _), H.hom_pow_self]
 
+/- English proof (translation)
+Establish `key : ∀ (ψ : Action ℤ_[p] G) (a : ℤ_[p]) (n : ℕ), Hom.conv (ψ a : G ⟶ G) n = Hom.conv (show G ⟶ G from (digit n a : End G)) n`. Introduce `ψ a n`. Take `⟨c, hc⟩` from `pow_dvd_sub_digit n a`. Establish `h` using `congrArg ψ (sub_eq_iff_eq_add.1 hc)`. Establish `h2 : (p : End G) ^ n * ψ c = (p : ℤ_[p]) ^ n • ψ c`.
+
+Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`. Rewrite `h` using `[map_add, map_mul, map_pow, map_natCast, map_natCast, h2]`. Rewrite using `[h]`. Conclude with `(add_conv _ _ n).trans (by rw [pow_smul_conv, one_mul])`. Conclude with `RingHom.ext fun a => hom_ext_conv fun n => (key ρ a n).trans (key _ a n).symm`.
+-/
 theorem Action.eq_padicAction (ρ : Action ℤ_[p] G) : ρ = G.padicAction := by
   have key : ∀ (ψ : Action ℤ_[p] G) (a : ℤ_[p]) (n : ℕ),
       Hom.conv (ψ a : G ⟶ G) n = Hom.conv (show G ⟶ G from (digit n a : End G)) n := by
@@ -290,6 +386,9 @@ theorem Action.eq_padicAction (ρ : Action ℤ_[p] G) : ρ = G.padicAction := by
     exact (add_conv _ _ n).trans (by rw [pow_smul_conv, one_mul])
   exact RingHom.ext fun a => hom_ext_conv fun n => (key ρ a n).trans (key _ a n).symm
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun (Action.eq_padicAction (RingHom.comp ρ (algebraMap ℤ_[p] Λ))) a`.
+-/
 theorem Action.map_algebraMap {Λ : Type*} [Semiring Λ] [Algebra ℤ_[p] Λ] (ρ : Action Λ G)
     (a : ℤ_[p]) : ρ (algebraMap ℤ_[p] Λ a) = algebraMap ℤ_[p] (End G) a :=
   DFunLike.congr_fun (Action.eq_padicAction (RingHom.comp ρ (algebraMap ℤ_[p] Λ))) a
@@ -307,11 +406,20 @@ def dualHom : (G ⟶ H) →ₗ[ℤ_[p]] (H.dual ⟶ G.dual) where
   map_smul' a f := hom_ext_conv fun n =>
     map_pow (dualMonoidHom O (G.A n) (H.A n)) (f.conv n) (digit n a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dualHom_app (f : G ⟶ H) (n : ℕ) :
     (dualHom G H f).app n = CartierDual.map (f.app n) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dualHom_id : dualHom G G (𝟙 G) = 𝟙 G.dual := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualHom_comp (f : G ⟶ H) (g : H ⟶ K) :
     dualHom G K (f ≫ g) = dualHom H K g ≫ dualHom G H f := rfl
 
@@ -335,18 +443,30 @@ def bidual : G ≅ G.dual.dual where
   inv_hom_id := hom_ext fun n => BialgHom.ext fun a =>
     (CartierDual.bidual O (G.A n)).apply_symm_apply a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualHom_dualHom_bidual_inv (f : G ⟶ H) :
     dualHom _ _ (dualHom G H f) ≫ H.bidual.inv = G.bidual.inv ≫ f := rfl
 
+/- English proof (translation)
+Rewrite using `[← Iso.comp_inv_eq, Category.assoc, dualHom_dualHom_bidual_inv, Iso.hom_inv_id_assoc]`.
+-/
 theorem bidual_hom_dualHom_dualHom (f : G ⟶ H) :
     G.bidual.hom ≫ dualHom _ _ (dualHom G H f) = f ≫ H.bidual.hom := by
   rw [← Iso.comp_inv_eq, Category.assoc, dualHom_dualHom_bidual_inv, Iso.hom_inv_id_assoc]
 
+/- English proof (translation)
+Rewrite using `[← cancel_epi G.dual.bidual.inv, Iso.inv_hom_id, ← cancel_mono G.dual.bidual.inv, Category.id_comp, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem dualHom_bidual_inv : dualHom _ _ G.bidual.inv = G.dual.bidual.hom := by
   rw [← cancel_epi G.dual.bidual.inv, Iso.inv_hom_id, ← cancel_mono G.dual.bidual.inv,
     Category.id_comp, Category.assoc]
   rfl
 
+/- English proof (translation)
+Use `⟨fun f g h => hom_ext fun n => CartierDual.map_injective (congrArg (fun x => Hom.app x n) h), fun g => ?_⟩` and prove the remaining obligations. Use `⟨G.bidual.hom ≫ dualHom _ _ g ≫ H.bidual.inv, ?_⟩` and prove the remaining obligations. Establish `h : dualHom _ _ G.bidual.hom = G.dual.bidual.inv`. Rewrite using `[← cancel_epi G.dual.bidual.hom, Iso.hom_inv_id, ← dualHom_bidual_inv, ← dualHom_comp, Iso.hom_inv_id, dualHom_id]`. Rewrite using `[dualHom_comp, dualHom_comp, h, dualHom_bidual_inv, bidual_hom_dualHom_dualHom, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+-/
 theorem dualHom_bijective : Function.Bijective (dualHom G H) := by
   refine ⟨fun f g h => hom_ext fun n => CartierDual.map_injective
     (congrArg (fun x => Hom.app x n) h), fun g => ?_⟩
@@ -362,6 +482,9 @@ variable (G H) in
 def dualHomEquiv : (G ⟶ H) ≃ₗ[ℤ_[p]] (H.dual ⟶ G.dual) :=
   LinearEquiv.ofBijective (dualHom G H) dualHom_bijective
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dualHomEquiv_apply (f : G ⟶ H) : dualHomEquiv G H f = dualHom G H f := rfl
 
 end Hom
@@ -383,15 +506,27 @@ namespace TateOver
 
 abbrev conv (x : G.TateOver B) (n : ℕ) : WithConv (G.A n →ₐ[O] B) := toConv (x.pt n)
 
+/- English proof (translation)
+The claim follows from `TateOver.ext (funext fun n => congrArg ofConv (h n))`.
+-/
 theorem ext_conv {x y : G.TateOver B} (h : ∀ n, x.conv n = y.conv n) : x = y :=
   TateOver.ext (funext fun n => congrArg ofConv (h n))
 
+/- English proof (translation)
+The claim follows from `congrArg toConv (x.compat n)`.
+-/
 theorem compat_conv (x : G.TateOver B) (n : ℕ) :
     pointsMap B (G.mulP n) (x.conv (n + 1)) = x.conv n := congrArg toConv (x.compat n)
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun (x.compat n) a`.
+-/
 theorem pt_mulP (x : G.TateOver B) (n : ℕ) (a : G.A n) : x.pt (n + 1) (G.mulP n a) = x.pt n a :=
   DFunLike.congr_fun (x.compat n) a
 
+/- English proof (translation)
+The claim follows from `ofConv_injective <| (comp_mulBy_pts (x.pt (n + 1)) p).symm.trans <| AlgHom.ext fun a => (congrArg (x.pt (n + 1)) (G.mulP_res n a).symm).trans (x.pt_mulP n _)`.
+-/
 theorem conv_succ_pow (x : G.TateOver B) (n : ℕ) :
     x.conv (n + 1) ^ p = pointsMap B (G.res n) (x.conv n) :=
   ofConv_injective <| (comp_mulBy_pts (x.pt (n + 1)) p).symm.trans <| AlgHom.ext fun a =>
@@ -404,8 +539,14 @@ instance : Add (G.TateOver B) := ⟨fun x y => ⟨fun n => (x.conv n * y.conv n)
   congrArg ofConv (show pointsMap B (G.mulP n) (x.conv (n + 1) * y.conv (n + 1)) =
       x.conv n * y.conv n by rw [map_mul, compat_conv, compat_conv])⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_conv (n : ℕ) : conv (0 : G.TateOver B) n = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_conv (x y : G.TateOver B) (n : ℕ) :
     conv (x + y) n = x.conv n * y.conv n := rfl
 
@@ -416,6 +557,9 @@ instance : SMul ℤ_[p] (G.TateOver B) := ⟨fun a x => ⟨fun n => (x.conv n ^ 
       x.conv n ^ digit n a by
     rw [map_pow, compat_conv, pow_digit_succ (G.pts_pow_self n _)])⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_conv (a : ℤ_[p]) (x : G.TateOver B) (n : ℕ) :
     conv (a • x) n = x.conv n ^ digit n a := rfl
 
@@ -461,11 +605,20 @@ def tateMap : (G ⟶ H) →ₗ[ℤ_[p]] G.TateOver B →ₗ[ℤ_[p]] H.TateOver 
     (fun f x y => TateOver.ext_conv fun n => map_mul (pointsMap B (f.app n)) (x.conv n) (y.conv n))
     (fun a f x => TateOver.ext_conv fun n => map_pow (pointsMap B (f.app n)) (x.conv n) (digit n a))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tateMap_pt (f : G ⟶ H) (x : G.TateOver B) (n : ℕ) (a : H.A n) :
     (tateMap G H B f x).pt n a = x.pt n (f.app n a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tateMap_id (x : G.TateOver B) : tateMap G G B (𝟙 G) x = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tateMap_comp (f : G ⟶ H) (g : H ⟶ K) (x : G.TateOver B) :
     tateMap G K B (f ≫ g) x = tateMap H K B g (tateMap G H B f x) := rfl
 
@@ -478,6 +631,9 @@ def tateCongr (e : G ≅ H) : G.TateOver B ≃ₗ[ℤ_[p]] H.TateOver B :=
     (LinearMap.ext fun x => by
       rw [LinearMap.comp_apply, ← tateMap_comp, e.hom_inv_id, tateMap_id, LinearMap.id_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tateCongr_apply (e : G ≅ H) (x : G.TateOver B) :
     tateCongr B e x = tateMap G H B e.hom x := rfl
 
@@ -486,6 +642,9 @@ variable (G B) in
 def tateEnd : End G →ₐ[ℤ_[p]] Module.End ℤ_[p] (G.TateOver B) :=
   AlgHom.ofLinearMap (tateMap G G B) rfl fun _ _ => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tateEnd_apply (f : End G) : tateEnd G B f = tateMap G G B f := rfl
 
 variable (G) in
@@ -495,11 +654,19 @@ def tatePush (g : B →ₐ[O] B') : G.TateOver B →ₗ[ℤ_[p]] G.TateOver B' w
   map_add' x y := TateOver.ext_conv fun n => map_mul (ptsPush (G.A n) g) (x.conv n) (y.conv n)
   map_smul' a x := TateOver.ext_conv fun n => map_pow (ptsPush (G.A n) g) (x.conv n) (digit n a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tatePush_pt (g : B →ₐ[O] B') (x : G.TateOver B) (n : ℕ) (a : G.A n) :
     (G.tatePush g x).pt n a = g (x.pt n a) := rfl
 
 variable (G B) in
 
+/- English proof (translation)
+Establish `hi : Function.Injective (Algebra.ofId O B)` using `IsIntegralClosure.algebraMap_injective O O B`. Use `⟨fun x y h => TateOver.ext (funext fun n => AlgHom.ext fun a => hi (congrArg (fun z => z.pt n a) h)), fun y => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ n a, y.pt n a ∈ (Algebra.ofId O B).range` using `fun n a => IsIntegrallyClosedIn.isIntegral_iff.1 ((Algebra.IsIntegral.isIntegral a).map (y.pt n))`. Set `e` to `AlgEquiv.ofInjective _ hi`. Set `x : ∀ n, G.A n →ₐ[O] O` to `fun n => (e.symm : (Algebra.ofId O B).range →ₐ[O] O).comp ((y.pt n).codRestrict _ (hm n))`.
+
+Establish `hx : ∀ n a, Algebra.ofId O B (x n a) = y.pt n a` using `fun n a => congrArg Subtype.val (e.apply_symm_apply ⟨y.pt n a, hm n a⟩)`. Use `⟨⟨x, fun n => AlgHom.ext fun a => hi ?_⟩, TateOver.ext (funext fun n => AlgHom.ext (hx n))⟩` and prove the remaining obligations. Rewrite using `[hx, ← y.pt_mulP]`. Conclude with `hx _ _`.
+-/
 theorem tatePush_bijective [IsIntegrallyClosedIn O B] :
     Function.Bijective (G.tatePush (Algebra.ofId O B)) := by
   have hi : Function.Injective (Algebra.ofId O B) := IsIntegralClosure.algebraMap_injective O O B
@@ -532,12 +699,18 @@ abbrev omega : Type := G.omegaSub
 
 abbrev Lie : Type := Module.Dual O G.omega
 
+/- English proof (translation)
+Establish `h` using `cotMap_pow (toConv (BialgHom.id O (G.A n))) (p ^ n)`. Rewrite `h` using `[G.hom_pow_self, cotMap_one, ofConv_toConv, cotMap_id]`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `(LinearMap.congr_fun h w).symm`.
+-/
 theorem pow_smul_cot (n : ℕ) (w : Cot O (G.A n)) : (p : O) ^ n • w = 0 := by
   have h := cotMap_pow (toConv (BialgHom.id O (G.A n))) (p ^ n)
   rw [G.hom_pow_self, cotMap_one, ofConv_toConv, cotMap_id] at h
   rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
   exact (LinearMap.congr_fun h w).symm
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `pow_dvd_sub_digit n a`. Establish `h` using `congrArg φ (sub_eq_iff_eq_add.1 hc)`. Rewrite `h` using `[map_add, map_mul, map_pow, map_natCast, map_natCast, mul_comm]`. Rewrite using `[h, add_smul, mul_smul, pow_smul_cot, smul_zero, zero_add, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem digit_smul_cot [Fact p.Prime] (φ : ℤ_[p] →+* O) (a : ℤ_[p]) (n : ℕ) (w : Cot O (G.A n)) :
     digit n a • w = φ a • w := by
   obtain ⟨c, hc⟩ := pow_dvd_sub_digit n a
@@ -560,17 +733,29 @@ def omegaMap : (G ⟶ H) →+ (H.omega →ₗ[O] G.omega) :=
 
 variable {G H K}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem omegaMap_val (f : G ⟶ H) (w : H.omega) (n : ℕ) :
     (omegaMap G H f w).1 n = cotMap (f.app n) (w.1 n) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun w => Subtype.ext (funext fun n => LinearMap.congr_fun cotMap_id (w.1 n))`.
+-/
 @[simp] theorem omegaMap_id : omegaMap G G (𝟙 G) = LinearMap.id :=
   LinearMap.ext fun w => Subtype.ext (funext fun n => LinearMap.congr_fun cotMap_id (w.1 n))
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun w => Subtype.ext (funext fun n => LinearMap.congr_fun (cotMap_comp (f.app n) (g.app n)) (w.1 n))`.
+-/
 theorem omegaMap_comp (f : G ⟶ H) (g : H ⟶ K) :
     omegaMap G K (f ≫ g) = omegaMap G H f ∘ₗ omegaMap H K g :=
   LinearMap.ext fun w => Subtype.ext (funext fun n =>
     LinearMap.congr_fun (cotMap_comp (f.app n) (g.app n)) (w.1 n))
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun w => Subtype.ext (funext fun n => (LinearMap.congr_fun (cotMap_pow (f.conv n) (digit n a)) (w.1 n)).trans (G.digit_smul_cot φ a n _))`.
+-/
 theorem omegaMap_smul (φ : ℤ_[p] →+* O) (a : ℤ_[p]) (f : G ⟶ H) :
     omegaMap G H (a • f) = φ a • omegaMap G H f :=
   LinearMap.ext fun w => Subtype.ext (funext fun n =>
@@ -583,16 +768,28 @@ def lieMap : (G ⟶ H) →+ (G.Lie →ₗ[O] H.Lie) :=
   AddMonoidHom.mk' (fun f => (omegaMap G H f).dualMap) fun f g => by
     rw [map_add]; ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lieMap_apply (f : G ⟶ H) (x : G.Lie) (w : H.omega) :
     lieMap G H f x w = x (omegaMap G H f w) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => LinearMap.ext fun w => by simp`.
+-/
 @[simp] theorem lieMap_id : lieMap G G (𝟙 G) = LinearMap.id :=
   LinearMap.ext fun x => LinearMap.ext fun w => by simp
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => LinearMap.ext fun w => by simp [omegaMap_comp]`.
+-/
 theorem lieMap_comp (f : G ⟶ H) (g : H ⟶ K) :
     lieMap G K (f ≫ g) = lieMap H K g ∘ₗ lieMap G H f :=
   LinearMap.ext fun x => LinearMap.ext fun w => by simp [omegaMap_comp]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => LinearMap.ext fun w => by simp [omegaMap_smul φ]`.
+-/
 theorem lieMap_smul (φ : ℤ_[p] →+* O) (a : ℤ_[p]) (f : G ⟶ H) :
     lieMap G H (a • f) = φ a • lieMap G H f :=
   LinearMap.ext fun x => LinearMap.ext fun w => by simp [omegaMap_smul φ]
@@ -604,6 +801,9 @@ def lieEnd : End G →+* Module.End O G.Lie where
   map_one' := lieMap_id
   map_mul' f g := lieMap_comp g f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem lieEnd_apply (f : End G) : lieEnd G f = lieMap G G f := rfl
 
 variable (G H) in
@@ -611,11 +811,20 @@ variable (G H) in
 def omegaDualMap : (G ⟶ H) →+ (G.dual.omega →ₗ[O] H.dual.omega) :=
   (omegaMap H.dual G.dual).comp (dualHom G H).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omegaDualMap_apply (f : G ⟶ H) :
     omegaDualMap G H f = omegaMap H.dual G.dual (dualHom G H f) := rfl
 
+/- English proof (translation)
+The claim follows from `omegaMap_id`.
+-/
 @[simp] theorem omegaDualMap_id : omegaDualMap G G (𝟙 G) = LinearMap.id := omegaMap_id
 
+/- English proof (translation)
+The claim follows from `omegaMap_comp (dualHom H K g) (dualHom G H f)`.
+-/
 theorem omegaDualMap_comp (f : G ⟶ H) (g : H ⟶ K) :
     omegaDualMap G K (f ≫ g) = omegaDualMap H K g ∘ₗ omegaDualMap G H f :=
   omegaMap_comp (dualHom H K g) (dualHom G H f)
@@ -627,6 +836,9 @@ def omegaDualEnd : End G →+* Module.End O G.dual.omega where
   map_one' := omegaDualMap_id
   map_mul' f g := omegaDualMap_comp g f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem omegaDualEnd_apply (f : End G) : omegaDualEnd G f = omegaDualMap G G f := rfl
 
 namespace Action
@@ -639,9 +851,15 @@ def onTate (B : Type) [CommRing B] [Algebra O B] : Λ →+* Module.End ℤ_[p] (
 def onTateAlg [Algebra ℤ_[p] Λ] (B : Type) [CommRing B] [Algebra O B] :
     Λ →ₐ[ℤ_[p]] Module.End ℤ_[p] (G.TateOver B) := (tateEnd G B).comp ρ.toAlgHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem onTate_apply (B : Type) [CommRing B] [Algebra O B] (a : Λ) :
     ρ.onTate B a = tateMap G G B (ρ a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem onTateAlg_apply [Algebra ℤ_[p] Λ] (B : Type) [CommRing B] [Algebra O B] (a : Λ) :
     ρ.onTateAlg B a = tateMap G G B (ρ a) := rfl
 
@@ -649,8 +867,14 @@ def onLie : Λ →+* Module.End O G.Lie := (lieEnd G).comp ρ
 
 def onOmegaDual : Λ →+* Module.End O G.dual.omega := (omegaDualEnd G).comp ρ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem onLie_apply (a : Λ) : ρ.onLie a = lieMap G G (ρ a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem onOmegaDual_apply (a : Λ) : ρ.onOmegaDual a = omegaDualMap G G (ρ a) := rfl
 
 def dual {Λ : Type*} [CommSemiring Λ] (ρ : Action Λ G) : Action Λ G.dual where
@@ -670,6 +894,9 @@ variable (p O) [Fact p.Prime]
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Rewrite using `[pow_succ, pow_mul, muT_pow_self, one_pow]`.
+-/
 theorem muT_pow_succ (n : ℕ) : muT O (p ^ n) ^ p ^ (n + 1) = 1 := by
   rw [pow_succ, pow_mul, muT_pow_self, one_pow]
 
@@ -677,6 +904,9 @@ def muRes (n : ℕ) :
     AddMonoidAlgebra O (ZMod (p ^ (n + 1))) →ₐc[O] AddMonoidAlgebra O (ZMod (p ^ n)) :=
   muChar (muT O (p ^ n)) (isGroupLikeElem_muT O _) (muT_pow_succ p O n)
 
+/- English proof (translation)
+The claim follows from `muChar_muT ..`.
+-/
 @[simp] theorem muRes_muT (n : ℕ) : muRes p O n (muT O _) = muT O _ := muChar_muT ..
 
 @[reducible] def mu : PDivGroup p O where
@@ -718,6 +948,9 @@ def muRes (n : ℕ) :
       exact Ideal.Quotient.eq_zero_iff_mem.1 h3
     · exact (congrArg (· ^ p ^ n) (muRes_muT p O n)).trans (muT_pow_self O _)
 
+/- English proof (translation)
+Rewrite using `[← muRes_muT]`. Conclude with `((mu p O).mulP_res n _).trans (mulBy_groupLike p (isGroupLikeElem_muT O _))`.
+-/
 @[simp] theorem mu_mulP_muT (n : ℕ) : (mu p O).mulP n (muT O _) = muT O (p ^ (n + 1)) ^ p := by
   rw [← muRes_muT]
   exact ((mu p O).mulP_res n _).trans (mulBy_groupLike p (isGroupLikeElem_muT O _))
@@ -731,12 +964,18 @@ abbrev const : PDivGroup p O := (mu p O).dual
 def constFun (n : ℕ) : (const p O).A n ≃ₐ[O] (ZMod (p ^ n) → O) :=
   CartierDual.addMonoidAlgebraEquiv O (ZMod (p ^ n))
 
+/- English proof (translation)
+Simplify using `only [constFun, CartierDual.addMonoidAlgebraEquiv_apply, ← muT_pow]`. Express the relevant statement in the definitionally equal form `φ.ofConv ((mu p O).mulP n (muT O (p ^ n) ^ k)) = _`. Rewrite using `[map_pow, mu_mulP_muT, pow_mul]`.
+-/
 theorem constFun_res (n : ℕ) (φ : (const p O).A (n + 1)) (k : ℕ) :
     constFun p O n ((const p O).res n φ) k = constFun p O (n + 1) φ (p * k : ℕ) := by
   simp only [constFun, CartierDual.addMonoidAlgebraEquiv_apply, ← muT_pow]
   change φ.ofConv ((mu p O).mulP n (muT O (p ^ n) ^ k)) = _
   rw [map_pow, mu_mulP_muT, pow_mul]
 
+/- English proof (translation)
+Simplify using `only [constFun, CartierDual.addMonoidAlgebraEquiv_apply, ← muT_pow, dual_mulP]`. Express the relevant statement in the definitionally equal form `φ.ofConv (muRes p O n (muT O (p ^ (n + 1)) ^ k)) = _`. Rewrite using `[map_pow, muRes_muT]`.
+-/
 theorem constFun_mulP (n : ℕ) (φ : (const p O).A n) (k : ℕ) :
     constFun p O (n + 1) ((const p O).mulP n φ) k = constFun p O n φ k := by
   simp only [constFun, CartierDual.addMonoidAlgebraEquiv_apply, ← muT_pow, dual_mulP]
@@ -747,29 +986,50 @@ variable {p O} {B : Type} [CommRing B] [Algebra O B]
 
 def muRoot (x : (mu p O).TateOver B) (n : ℕ) : B := x.pt n (muT O (p ^ n))
 
+/- English proof (translation)
+Rewrite using `[muRoot, ← map_pow, muT_pow_self, map_one]`.
+-/
 theorem muRoot_pow_self (x : (mu p O).TateOver B) (n : ℕ) : muRoot x n ^ p ^ n = 1 := by
   rw [muRoot, ← map_pow, muT_pow_self, map_one]
 
+/- English proof (translation)
+Rewrite using `[muRoot, ← map_pow, ← mu_mulP_muT]`. Conclude with `x.pt_mulP n _`.
+-/
 theorem muRoot_succ_pow (x : (mu p O).TateOver B) (n : ℕ) : muRoot x (n + 1) ^ p = muRoot x n := by
   rw [muRoot, ← map_pow, ← mu_mulP_muT]
   exact x.pt_mulP n _
 
+/- English proof (translation)
+The claim follows from `TateOver.ext (funext fun n => mu_algHom_ext (h n))`.
+-/
 theorem muRoot_ext {x y : (mu p O).TateOver B} (h : ∀ n, muRoot x n = muRoot y n) : x = y :=
   TateOver.ext (funext fun n => mu_algHom_ext (h n))
 
+/- English proof (translation)
+The claim follows from `(congrArg (algebraMap O B) (isGroupLikeElem_muT O _).counit_eq_one).trans (map_one _)`.
+-/
 @[simp] theorem muRoot_zero (n : ℕ) : muRoot (0 : (mu p O).TateOver B) n = 1 :=
   (congrArg (algebraMap O B) (isGroupLikeElem_muT O _).counit_eq_one).trans (map_one _)
 
+/- English proof (translation)
+The claim follows from `convMul_apply_groupLike (x.conv n) (y.conv n) (isGroupLikeElem_muT O _)`.
+-/
 @[simp] theorem muRoot_add (x y : (mu p O).TateOver B) (n : ℕ) :
     muRoot (x + y) n = muRoot x n * muRoot y n :=
   convMul_apply_groupLike (x.conv n) (y.conv n) (isGroupLikeElem_muT O _)
 
+/- English proof (translation)
+The claim follows from `convPow_apply_groupLike (x.conv n) (isGroupLikeElem_muT O _) _`.
+-/
 @[simp] theorem muRoot_smul (a : ℤ_[p]) (x : (mu p O).TateOver B) (n : ℕ) :
     muRoot (a • x) n = muRoot x n ^ digit n a :=
   convPow_apply_groupLike (x.conv n) (isGroupLikeElem_muT O _) _
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [pow_succ', pow_mul, h, ih]`.
+-/
 theorem pow_self_of_compat {ζ : ℕ → B} (h0 : ζ 0 = 1) (h : ∀ n, ζ (n + 1) ^ p = ζ n) (n : ℕ) :
     ζ n ^ p ^ n = 1 := by
   induction n with
@@ -783,6 +1043,9 @@ def muTate (ζ : ℕ → B) (h0 : ζ 0 = 1) (h : ∀ n, ζ (n + 1) ^ p = ζ n) :
     (congrArg (muPoint O (ζ (n + 1)) (pow_self_of_compat h0 h (n + 1))) (mu_mulP_muT p O n)).trans
       (by rw [map_pow, muPoint_muT, muPoint_muT, h])⟩
 
+/- English proof (translation)
+The claim follows from `muPoint_muT _ (pow_self_of_compat h0 h n)`.
+-/
 @[simp] theorem muRoot_muTate (ζ : ℕ → B) (h0 : ζ 0 = 1) (h : ∀ n, ζ (n + 1) ^ p = ζ n) (n : ℕ) :
     muRoot (muTate O ζ h0 h) n = ζ n := muPoint_muT _ (pow_self_of_compat h0 h n)
 
@@ -816,11 +1079,17 @@ variable {O A}
 
 omit [IsCocomm O A] in
 
+/- English proof (translation)
+The claim follows from `CartierDual.apply_bidual_symm _ φ`.
+-/
 @[simp] theorem apply_charFun (χ : WithConv (CartierDual O A →ₐ[O] O)) (φ : CartierDual O A) :
     φ (charFun O A χ) = χ φ := CartierDual.apply_bidual_symm _ φ
 
 omit [IsCocomm O A] in
 
+/- English proof (translation)
+The claim follows from `(CartierDual.isGroupLikeElem_iff_mul _).2 ⟨by rw [apply_charFun]; exact map_one χ.ofConv, fun φ ψ => by rw [apply_charFun, apply_charFun, apply_charFun]; exact map_mul χ.ofConv φ ψ⟩`.
+-/
 theorem isGroupLikeElem_charFun (χ : WithConv (CartierDual O A →ₐ[O] O)) :
     IsGroupLikeElem O (charFun O A χ) :=
   (CartierDual.isGroupLikeElem_iff_mul _).2 ⟨by rw [apply_charFun]; exact map_one χ.ofConv,
@@ -832,6 +1101,9 @@ def evalPoint (u : A) (hu : IsGroupLikeElem O u) : CartierDual O A →ₐ[O] O :
 
 omit [IsCocomm O A] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evalPoint_apply (u : A) (hu : IsGroupLikeElem O u) (φ : CartierDual O A) :
     evalPoint u hu φ = φ u := rfl
 
@@ -841,49 +1113,82 @@ variable {G H : PDivGroup p O}
 
 def charElem (χ : G.dual.Tate) (n : ℕ) : G.A n := charFun O (G.A n) (χ.conv n)
 
+/- English proof (translation)
+The claim follows from `apply_charFun _ φ`.
+-/
 @[simp] theorem apply_charElem (χ : G.dual.Tate) (n : ℕ) (φ : CartierDual O (G.A n)) :
     φ (charElem χ n) = χ.pt n φ := apply_charFun _ φ
 
+/- English proof (translation)
+The claim follows from `isGroupLikeElem_charFun _`.
+-/
 theorem isGroupLikeElem_charElem (χ : G.dual.Tate) (n : ℕ) : IsGroupLikeElem O (charElem χ n) :=
   isGroupLikeElem_charFun _
 
+/- English proof (translation)
+Rewrite using `[charElem, ← map_pow, G.dual.pts_pow_self, map_one]`.
+-/
 theorem charElem_pow_self (χ : G.dual.Tate) (n : ℕ) : charElem χ n ^ p ^ n = 1 := by
   rw [charElem, ← map_pow, G.dual.pts_pow_self, map_one]
 
+/- English proof (translation)
+The claim follows from `CartierDual.eq_of_forall_apply (R := O) fun φ => by rw [apply_charElem, ← χ.pt_mulP, dual_mulP, ← apply_charElem] rfl`.
+-/
 @[simp] theorem res_charElem (χ : G.dual.Tate) (n : ℕ) :
     G.res n (charElem χ (n + 1)) = charElem χ n :=
   CartierDual.eq_of_forall_apply (R := O) fun φ => by
     rw [apply_charElem, ← χ.pt_mulP, dual_mulP, ← apply_charElem]
     rfl
 
+/- English proof (translation)
+The claim follows from `map_one (charFun O (G.A n))`.
+-/
 @[simp] theorem charElem_zero (n : ℕ) : charElem (0 : G.dual.Tate) n = 1 :=
   map_one (charFun O (G.A n))
 
+/- English proof (translation)
+The claim follows from `map_mul (charFun O (G.A n)) (χ.conv n) (ψ.conv n)`.
+-/
 @[simp] theorem charElem_add (χ ψ : G.dual.Tate) (n : ℕ) :
     charElem (χ + ψ) n = charElem χ n * charElem ψ n :=
   map_mul (charFun O (G.A n)) (χ.conv n) (ψ.conv n)
 
 variable [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `map_pow (charFun O (G.A n)) (χ.conv n) _`.
+-/
 @[simp] theorem charElem_smul (a : ℤ_[p]) (χ : G.dual.Tate) (n : ℕ) :
     charElem (a • χ) n = charElem χ n ^ digit n a :=
   map_pow (charFun O (G.A n)) (χ.conv n) _
 
+/- English proof (translation)
+The claim follows from `CartierDual.eq_of_forall_apply (R := O) fun φ => by rw [apply_charElem, tateMap_pt, ← apply_charElem] rfl`.
+-/
 @[simp] theorem charElem_tateMap (f : G ⟶ H) (χ : H.dual.Tate) (n : ℕ) :
     charElem (tateMap _ _ O (dualHom G H f) χ) n = f.app n (charElem χ n) :=
   CartierDual.eq_of_forall_apply (R := O) fun φ => by
     rw [apply_charElem, tateMap_pt, ← apply_charElem]
     rfl
 
+/- English proof (translation)
+The claim follows from `hom_ext fun n => mu_bialgHom_ext (h n)`.
+-/
 theorem hom_mu_ext {f g : G ⟶ mu p O} (h : ∀ n, f.app n (muT O _) = g.app n (muT O _)) : f = g :=
   hom_ext fun n => mu_bialgHom_ext (h n)
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+The claim follows from `convMul_apply_groupLike (toPts (f.conv n)) (toPts (g.conv n)) hu`.
+-/
 theorem add_app_groupLike (f g : G ⟶ H) (n : ℕ) {u : H.A n} (hu : IsGroupLikeElem O u) :
     Hom.app (f + g) n u = f.app n u * g.app n u :=
   convMul_apply_groupLike (toPts (f.conv n)) (toPts (g.conv n)) hu
 
+/- English proof (translation)
+The claim follows from `(DFunLike.congr_fun (congrArg ofConv (map_pow toPts (f.conv n) (digit n a))) u).trans (convPow_apply_groupLike (toPts (f.conv n)) hu _)`.
+-/
 theorem smul_app_groupLike (a : ℤ_[p]) (f : G ⟶ H) (n : ℕ) {u : H.A n}
     (hu : IsGroupLikeElem O u) : Hom.app (a • f) n u = f.app n u ^ digit n a :=
   (DFunLike.congr_fun (congrArg ofConv (map_pow toPts (f.conv n) (digit n a))) u).trans
@@ -895,6 +1200,9 @@ def toMuHom (χ : G.dual.Tate) : G ⟶ mu p O :=
       rw [BialgHom.comp_apply, BialgHom.comp_apply, muChar_muT, res_charElem, muRes_muT,
         muChar_muT]⟩
 
+/- English proof (translation)
+The claim follows from `muChar_muT _ (isGroupLikeElem_charElem χ n) (charElem_pow_self χ n)`.
+-/
 theorem toMuHom_app_muT (χ : G.dual.Tate) (n : ℕ) :
     (toMuHom χ).app n (muT O (p ^ n)) = charElem χ n :=
   muChar_muT _ (isGroupLikeElem_charElem χ n) (charElem_pow_self χ n)
@@ -922,12 +1230,21 @@ def charHom : G.dual.Tate ≃ₗ[ℤ_[p]] (G ⟶ mu p O) where
   right_inv f := hom_mu_ext fun n => (toMuHom_app_muT _ n).trans <|
     CartierDual.eq_of_forall_apply (R := O) fun φ => apply_charElem _ n φ
 
+/- English proof (translation)
+The claim follows from `toMuHom_app_muT χ n`.
+-/
 @[simp] theorem charHom_app_muT (χ : G.dual.Tate) (n : ℕ) :
     (charHom G χ).app n (muT O _) = charElem χ n := toMuHom_app_muT χ n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem charHom_symm_pt (f : G ⟶ mu p O) (n : ℕ) (φ : CartierDual O (G.A n)) :
     ((charHom G).symm f).pt n φ = φ (f.app n (muT O _)) := rfl
 
+/- English proof (translation)
+The claim follows from `hom_mu_ext fun n => by rw [charHom_app_muT, charElem_tateMap, comp_app, BialgHom.comp_apply, charHom_app_muT]`.
+-/
 theorem charHom_tateMap (f : G ⟶ H) (χ : H.dual.Tate) :
     charHom G (tateMap _ _ O (dualHom G H f) χ) = f ≫ charHom H χ :=
   hom_mu_ext fun n => by
@@ -941,18 +1258,30 @@ def dlog : G.dual.Tate →+ G.omega :=
     fun χ ψ => Subtype.ext (funext fun n => (congrArg (dUnit O) (charElem_add χ ψ n)).trans
       (dUnit_mul_groupLike (isGroupLikeElem_charElem χ n) (isGroupLikeElem_charElem ψ n)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dlog_val (χ : G.dual.Tate) (n : ℕ) :
     (dlog G χ).1 n = dUnit O (charElem χ n) := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun n => ((cotMap_d ((charHom G χ).app n) _).trans (congrArg (dUnit O) (charHom_app_muT χ n))).symm)`.
+-/
 theorem dlog_eq_omegaMap (χ : G.dual.Tate) :
     dlog G χ = omegaMap G (mu p O) (charHom G χ) (dlogT p O) :=
   Subtype.ext (funext fun n => ((cotMap_d ((charHom G χ).app n) _).trans
     (congrArg (dUnit O) (charHom_app_muT χ n))).symm)
 
+/- English proof (translation)
+Rewrite using `[dlog_eq_omegaMap, dlog_eq_omegaMap, map_smul, omegaMap_smul φ, LinearMap.smul_apply]`.
+-/
 theorem dlog_smul (φ : ℤ_[p] →+* O) (a : ℤ_[p]) (χ : G.dual.Tate) :
     dlog G (a • χ) = φ a • dlog G χ := by
   rw [dlog_eq_omegaMap, dlog_eq_omegaMap, map_smul, omegaMap_smul φ, LinearMap.smul_apply]
 
+/- English proof (translation)
+Rewrite using `[dlog_eq_omegaMap, dlog_eq_omegaMap, charHom_tateMap, omegaMap_comp, LinearMap.comp_apply]`.
+-/
 theorem dlog_tateMap (f : G ⟶ H) (χ : H.dual.Tate) :
     dlog G (tateMap _ _ O (dualHom G H f) χ) = omegaMap G H f (dlog H χ) := by
   rw [dlog_eq_omegaMap, dlog_eq_omegaMap, charHom_tateMap, omegaMap_comp, LinearMap.comp_apply]
@@ -966,6 +1295,9 @@ def dlogLinear [Algebra ℤ_[p] O] : O ⊗[ℤ_[p]] G.dual.Tate →ₗ[O] G.omeg
   LinearMap.liftBaseChange O
     { toFun := dlog G, map_add' := map_add _, map_smul' := dlog_smul (algebraMap ℤ_[p] O) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem dlogLinear_tmul [Algebra ℤ_[p] O] (c : O) (χ : G.dual.Tate) :
     dlogLinear G (c ⊗ₜ χ) = c • dlog G χ := rfl
 
@@ -973,13 +1305,22 @@ variable (p O) in
 
 def constGen : (const p O).Tate := (charHom (mu p O)).symm (𝟙 _)
 
+/- English proof (translation)
+The claim follows from `(CartierDual.addMonoidAlgebraEquiv_apply φ 1).symm`.
+-/
 theorem constGen_pt (n : ℕ) (φ : (const p O).A n) :
     (constGen p O).pt n φ = constFun p O n φ 1 :=
   (CartierDual.addMonoidAlgebraEquiv_apply φ 1).symm
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.apply_symm_apply ..`.
+-/
 @[simp] theorem charHom_constGen : charHom (mu p O) (constGen p O) = 𝟙 _ :=
   LinearEquiv.apply_symm_apply ..
 
+/- English proof (translation)
+Rewrite using `[dlog_eq_omegaMap, charHom_constGen, omegaMap_id, LinearMap.id_apply]`.
+-/
 @[simp] theorem dlog_constGen : dlog (mu p O) (constGen p O) = dlogT p O := by
   rw [dlog_eq_omegaMap, charHom_constGen, omegaMap_id, LinearMap.id_apply]
 
@@ -988,6 +1329,9 @@ variable (G) in
 def dualChar : G.Tate ≃ₗ[ℤ_[p]] (G.dual ⟶ mu p O) :=
   tateCongr O G.bidual ≪≫ₗ charHom G.dual
 
+/- English proof (translation)
+The claim follows from `(charHom_app_muT _ n).trans <| CartierDual.ext_apply fun a => (apply_charElem (G := G.dual) _ n (CartierDual.bidual O (G.A n) a)).trans (congrArg (t.pt n) ((CartierDual.bidual O (G.A n)).symm_apply_apply a))`.
+-/
 @[simp] theorem dualChar_app_muT (t : G.Tate) (n : ℕ) :
     (dualChar G t).app n (muT O _) = toConv (t.pt n).toLinearMap :=
   (charHom_app_muT _ n).trans <| CartierDual.ext_apply fun a =>
@@ -999,10 +1343,16 @@ variable (G) in
 def constHom : G.Tate ≃ₗ[ℤ_[p]] (const p O ⟶ G) :=
   dualChar G ≪≫ₗ dualHomEquiv G.dual (mu p O) ≪≫ₗ Linear.homCongr ℤ_[p] (Iso.refl _) G.bidual.symm
 
+/- English proof (translation)
+Simplify using `[constHom, Linear.homCongr_apply]`.
+-/
 theorem constHom_eq (t : G.Tate) :
     constHom G t = dualHom G.dual (mu p O) (dualChar G t) ≫ G.bidual.inv := by
   simp [constHom, Linear.homCongr_apply]
 
+/- English proof (translation)
+Rewrite using `[constHom_eq]`. Simplify using `only [constFun, CartierDual.addMonoidAlgebraEquiv_apply, ← muT_pow]`. Express the relevant statement in the definitionally equal form `((dualChar G t).app n (muT O (p ^ n) ^ k)) a = _`. Rewrite using `[map_pow, dualChar_app_muT, ← AlgHom.toLinearMap_convPow (t.conv n)]`. Both sides reduce to the same expression.
+-/
 theorem constFun_constHom (t : G.Tate) (n k : ℕ) (a : G.A n) :
     constFun p O n ((constHom G t).app n a) k = (t.conv n ^ k) a := by
   rw [constHom_eq]
@@ -1011,20 +1361,32 @@ theorem constFun_constHom (t : G.Tate) (n k : ℕ) (a : G.A n) :
   rw [map_pow, dualChar_app_muT, ← AlgHom.toLinearMap_convPow (t.conv n)]
   rfl
 
+/- English proof (translation)
+The claim follows from `TateOver.ext (funext fun n => AlgHom.ext fun a => by rw [tateMap_pt, constGen_pt, ← Nat.cast_one, constFun_constHom, pow_one])`.
+-/
 @[simp] theorem tateMap_constHom (t : G.Tate) :
     tateMap _ G O (constHom G t) (constGen p O) = t :=
   TateOver.ext (funext fun n => AlgHom.ext fun a => by
     rw [tateMap_pt, constGen_pt, ← Nat.cast_one, constFun_constHom, pow_one])
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `(constHom G).surjective f`. Rewrite using `[LinearEquiv.symm_apply_apply, tateMap_constHom]`.
+-/
 theorem constHom_symm_apply (f : const p O ⟶ G) :
     (constHom G).symm f = tateMap _ G O f (constGen p O) := by
   obtain ⟨t, rfl⟩ := (constHom G).surjective f
   rw [LinearEquiv.symm_apply_apply, tateMap_constHom]
 
+/- English proof (translation)
+Rewrite using `[← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_comp, tateMap_constHom]`.
+-/
 theorem constHom_tateMap (f : G ⟶ H) (t : G.Tate) :
     constHom H (tateMap G H O f t) = constHom G t ≫ f := by
   rw [← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_comp, tateMap_constHom]
 
+/- English proof (translation)
+Rewrite using `[constHom_eq, dualHom_comp, Category.assoc, dualHom_dualHom_bidual_inv, dualHom_bidual_inv, Iso.hom_inv_id_assoc]`.
+-/
 theorem dualHom_constHom (t : G.Tate) :
     dualHom _ G (constHom G t) ≫ (mu p O).bidual.inv = dualChar G t := by
   rw [constHom_eq, dualHom_comp, Category.assoc, dualHom_dualHom_bidual_inv, dualHom_bidual_inv,
@@ -1035,20 +1397,35 @@ variable (G) in
 def hodgeTate : G.Tate →+ G.dual.omega :=
   (dlog G.dual).comp (tateMap G G.dual.dual O G.bidual.hom).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hodgeTate_apply (t : G.Tate) :
     hodgeTate G t = dlog G.dual (tateMap G G.dual.dual O G.bidual.hom t) := rfl
 
+/- English proof (translation)
+The claim follows from `dlog_eq_omegaMap _`.
+-/
 theorem hodgeTate_eq_omegaMap (t : G.Tate) :
     hodgeTate G t = omegaMap G.dual (mu p O) (dualChar G t) (dlogT p O) := dlog_eq_omegaMap _
 
+/- English proof (translation)
+The claim follows from `congrArg (dUnit O) ((charHom_app_muT _ n).symm.trans (dualChar_app_muT t n))`.
+-/
 theorem hodgeTate_val (t : G.Tate) (n : ℕ) :
     (hodgeTate G t).1 n = dUnit O (toConv (t.pt n).toLinearMap : CartierDual O (G.A n)) :=
   congrArg (dUnit O) ((charHom_app_muT _ n).symm.trans (dualChar_app_muT t n))
 
+/- English proof (translation)
+Rewrite using `[hodgeTate_apply, map_smul, dlog_smul φ, hodgeTate_apply]`.
+-/
 theorem hodgeTate_smul (φ : ℤ_[p] →+* O) (a : ℤ_[p]) (t : G.Tate) :
     hodgeTate G (a • t) = φ a • hodgeTate G t := by
   rw [hodgeTate_apply, map_smul, dlog_smul φ, hodgeTate_apply]
 
+/- English proof (translation)
+Rewrite using `[hodgeTate_apply, hodgeTate_apply, omegaDualMap_apply, ← dlog_tateMap, ← tateMap_comp, ← tateMap_comp, bidual_hom_dualHom_dualHom]`.
+-/
 theorem hodgeTate_tateMap (f : G ⟶ H) (t : G.Tate) :
     hodgeTate H (tateMap G H O f t) = omegaDualMap G H f (hodgeTate G t) := by
   rw [hodgeTate_apply, hodgeTate_apply, omegaDualMap_apply, ← dlog_tateMap, ← tateMap_comp,
@@ -1059,6 +1436,9 @@ variable (p O) in
 def constDlogT : (const p O).dual.omega :=
   omegaMap _ (mu p O) (mu p O).bidual.inv (dlogT p O)
 
+/- English proof (translation)
+Rewrite using `[hodgeTate_eq_omegaMap, ← dualHom_constHom, omegaMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem hodgeTate_eq_omegaDualMap (t : G.Tate) :
     hodgeTate G t = omegaDualMap _ G (constHom G t) (constDlogT p O) := by
   rw [hodgeTate_eq_omegaMap, ← dualHom_constHom, omegaMap_comp]
@@ -1069,12 +1449,18 @@ variable (G) in
 def hodgeTateLinear [Algebra ℤ_[p] O] : O ⊗[ℤ_[p]] G.Tate →ₗ[O] G.dual.omega :=
   dlogLinear G.dual ∘ₗ (tateMap G G.dual.dual O G.bidual.hom).baseChange O
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hodgeTateLinear_tmul [Algebra ℤ_[p] O] (c : O) (t : G.Tate) :
     hodgeTateLinear G (c ⊗ₜ t) = c • hodgeTate G t := rfl
 
 def epsHom (ζ : ℕ → O) (h0 : ζ 0 = 1) (h : ∀ n, ζ (n + 1) ^ p = ζ n) : const p O ⟶ mu p O :=
   constHom (mu p O) (muTate O ζ h0 h)
 
+/- English proof (translation)
+The claim follows from `(constFun_constHom _ n k _).trans <| (convPow_apply_groupLike _ (isGroupLikeElem_muT O _) k).trans (congrArg (· ^ k) (muRoot_muTate ζ h0 h n))`.
+-/
 theorem constFun_epsHom (ζ : ℕ → O) (h0 : ζ 0 = 1) (h : ∀ n, ζ (n + 1) ^ p = ζ n) (n k : ℕ) :
     constFun p O n ((epsHom ζ h0 h).app n (muT O _)) k = ζ n ^ k :=
   (constFun_constHom _ n k _).trans <|
@@ -1088,17 +1474,29 @@ variable (G B) in
 def pairing : G.TateOver B →ₗ[ℤ_[p]] G.dual.Tate →ₗ[ℤ_[p]] (mu p O).TateOver B :=
   (tateMap G (mu p O) B ∘ₗ (charHom G).toLinearMap).flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairing_apply (t : G.TateOver B) (χ : G.dual.Tate) :
     pairing G B t χ = tateMap G (mu p O) B (charHom G χ) t := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (t.pt n) (charHom_app_muT χ n)`.
+-/
 @[simp] theorem muRoot_pairing (t : G.TateOver B) (χ : G.dual.Tate) (n : ℕ) :
     muRoot (pairing G B t χ) n = t.pt n (charElem χ n) :=
   congrArg (t.pt n) (charHom_app_muT χ n)
 
+/- English proof (translation)
+Rewrite using `[pairing_apply, pairing_apply, charHom_tateMap, tateMap_comp]`.
+-/
 theorem pairing_tateMap (f : G ⟶ H) (t : G.TateOver B) (χ : H.dual.Tate) :
     pairing H B (tateMap G H B f t) χ = pairing G B t (tateMap _ _ O (dualHom G H f) χ) := by
   rw [pairing_apply, pairing_apply, charHom_tateMap, tateMap_comp]
 
+/- English proof (translation)
+The claim follows from `(constHom_tateMap _ t).symm`.
+-/
 theorem constHom_comp_charHom (t : G.Tate) (χ : G.dual.Tate) :
     constHom G t ≫ charHom G χ = constHom (mu p O) (pairing G O t χ) :=
   (constHom_tateMap _ t).symm
@@ -1109,6 +1507,13 @@ section Values
 
 variable (p O) [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `AugCot.d_surjective _ w`. Set `e` to `constFun p O n`. Establish `he : ∀ φ, counitAlgHom O ((const p O).A n) φ = e φ 0` using `CartierDual.counit_addMonoidAlgebra`. Set `b` to `a - algebraMap O _ (e a 0)`. Set `c` to `e.symm (1 - Pi.single 0 1)`.
+
+Establish `hb : e b 0 = 0` using `by simp [b]`. Establish `hc : e c 0 = 0` using `by simp [c]`. Establish `hbc : b = b * c` using `e.injective <| funext fun k => by`. Rewrite using `[map_mul, Pi.mul_apply]`. Distinguish the cases in `hk : k = 0`.
+
+Rewrite using `[hk, hb, zero_mul]`. Simplify using `[c, hk]`. Establish `h : AugCot.d (counitAlgHom O ((const p O).A n)) b = 0`. Rewrite using `[hbc, AugCot.d_mul, he, he, hb, hc, zero_smul, zero_smul, add_zero]`. Rewrite `h` using `[map_sub, AugCot.d_algebraMap, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem const_cot_eq_zero (n : ℕ) (w : Cot O ((const p O).A n)) : w = 0 := by
   obtain ⟨a, rfl⟩ := AugCot.d_surjective _ w
   let e := constFun p O n
@@ -1133,6 +1538,13 @@ instance : Subsingleton (const p O).omega :=
 
 instance : Subsingleton (const p O).Lie := inferInstance
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `AugCot.d_surjective _ w`. Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨c, hc⟩` from `hx`.
+
+Take `⟨c', hc'⟩` from `hy`. Conclude with `⟨c + c', by rw [add_smul, hc, hc', map_add]⟩`. Consider the case `single k r`. Establish `h : ∀ j : ℕ, dUnit O (muT O (p ^ n) ^ j) = (j : O) • dUnit O (muT O (p ^ n))`. Introduce `j`.
+
+Rewrite using `[← mulBy_groupLike j (isGroupLikeElem_muT O _), ← cotMap_d, mulBy, cotMap_pow, ofConv_toConv, cotMap_id, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression. Use `⟨r * k.val, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← h, ← map_smul, muT_pow, ZMod.natCast_zmod_val]`. Simplify using the standard rewrite rules.
+-/
 theorem mu_cot_span (n : ℕ) (w : Cot O ((mu p O).A n)) :
     ∃ c : O, c • dUnit O (muT O (p ^ n)) = w := by
   obtain ⟨a, rfl⟩ := AugCot.d_surjective _ w
@@ -1154,6 +1566,11 @@ theorem mu_cot_span (n : ℕ) (w : Cot O ((mu p O).A n)) :
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Establish `hc : ((p ^ n : ℕ) : O ⧸ Ideal.span {(p : O) ^ n}) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem, Nat.cast_pow]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `ext`. Simplify using the standard rewrite rules.
+
+Simplify using `[← Nat.cast_smul_eq_nsmul (O ⧸ Ideal.span {(p : O) ^ n}), hc]`.
+-/
 theorem one_add_inr_pow (n : ℕ) :
     (1 + TrivSqZeroExt.inr 1 : TrivSqZeroExt O (O ⧸ Ideal.span {(p : O) ^ n})) ^ p ^ n = 1 := by
   have hc : ((p ^ n : ℕ) : O ⧸ Ideal.span {(p : O) ^ n}) = 0 := by
@@ -1169,11 +1586,19 @@ def muDer (n : ℕ) : Cot O ((mu p O).A n) →ₗ[O] O ⧸ Ideal.span {(p : O) ^
       (x := (TrivSqZeroExt.fstHom O O _).comp (muPoint O _ (one_add_inr_pow p O n)))
       (y := counitAlgHom O _) (by simp [(isGroupLikeElem_muT O _).counit_eq_one])) a
 
+/- English proof (translation)
+Use `(AugCot.ofSqZero_d _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[muPoint_muT]`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem muDer_muT (n : ℕ) : muDer p O n (dUnit O (muT O (p ^ n))) = 1 := by
   refine (AugCot.ofSqZero_d _ _ _ _).trans ?_
   rw [muPoint_muT]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg (muDer p O n) h`. Rewrite `h1` using `[map_smul, muDer_muT, map_zero, ← Algebra.algebraMap_eq_smul_one]`. Conclude with `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 h1)`.
+
+Introduce and unpack `⟨d, rfl⟩`. Rewrite using `[mul_comm, mul_smul, (mu p O).pow_smul_cot n, smul_zero]`.
+-/
 theorem smul_dUnit_muT_eq_zero_iff (n : ℕ) (c : O) :
     c • dUnit O (muT O (p ^ n)) = 0 ↔ (p : O) ^ n ∣ c := by
   constructor
@@ -1184,12 +1609,24 @@ theorem smul_dUnit_muT_eq_zero_iff (n : ℕ) (c : O) :
   · rintro ⟨d, rfl⟩
     rw [mul_comm, mul_smul, (mu p O).pow_smul_cot n, smul_zero]
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : (1 : O) • dUnit O (muT O (p ^ 1)) = 0 := (one_smul _ _).trans (congrArg (fun w : (mu p O).omega => w.1 1) h) rw [smul_dUnit_muT_eq_zero_iff, pow_one] at h1 exact hp (isUnit_of_dvd_one h1)`.
+-/
 theorem dlogT_ne_zero (hp : ¬ IsUnit (p : O)) : dlogT p O ≠ 0 := fun h => by
   have h1 : (1 : O) • dUnit O (muT O (p ^ 1)) = 0 :=
     (one_smul _ _).trans (congrArg (fun w : (mu p O).omega => w.1 1) h)
   rw [smul_dUnit_muT_eq_zero_iff, pow_one] at h1
   exact hp (isUnit_of_dvd_one h1)
 
+/- English proof (translation)
+Establish `hm : ∀ (n : ℕ) (a b : O), a ≡ b [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔ a • dUnit O (muT O (p ^ n)) = b • dUnit O (muT O (p ^ n))` using `fun n a b => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← smul_dUnit_muT_eq_zero_iff, sub_smul, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`.
+
+Use `IsHausdorff.haus' (I := Ideal.span {(p : O)}) c fun n => (hm n c 0).2 ?_` and prove the remaining obligations. Rewrite using `[zero_smul]`. Conclude with `congrArg (fun w : (mu p O).omega => w.1 n) hc`. Introduce `w choose c hc using fun n => mu_cot_span p O n (w.1 n)`. Establish `h1 : ∀ n, c n ≡ c (n + 1) [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)]` using `fun n => (hm n _ _).2 <| by`.
+
+Rewrite using `[hc, ← w.2 n, ← hc, map_smul, cotMap_d, muRes_muT]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : O)}) c fun {m n} hmn => by`. Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hmn ih`.
+
+Conclude with `ih.trans ((h1 n).mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hmn)))`. Conclude with `⟨L, Subtype.ext (funext fun n => ((hm n _ _).1 (hL n)).symm.trans (hc n))⟩`.
+-/
 theorem toSpanSingleton_dlogT_bijective [IsAdicComplete (Ideal.span {(p : O)}) O] :
     Function.Bijective (LinearMap.toSpanSingleton O _ (dlogT p O)) := by
   have hm : ∀ (n : ℕ) (a b : O),
@@ -1221,12 +1658,18 @@ def muOmegaEquiv [IsAdicComplete (Ideal.span {(p : O)}) O] : O ≃ₗ[O] (mu p O
 def muLieGen [IsAdicComplete (Ideal.span {(p : O)}) O] : (mu p O).Lie :=
   (muOmegaEquiv p O).symm.toLinearMap
 
+/- English proof (translation)
+The claim follows from `(muOmegaEquiv p O).symm_apply_eq.2 (one_smul O _).symm`.
+-/
 @[simp] theorem muLieGen_dlogT [IsAdicComplete (Ideal.span {(p : O)}) O] :
     muLieGen p O (dlogT p O) = 1 :=
   (muOmegaEquiv p O).symm_apply_eq.2 (one_smul O _).symm
 
 variable {p O} in
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun w => by obtain ⟨c, rfl⟩ := (toSpanSingleton_dlogT_bijective p O).2 w rw [LinearMap.toSpanSingleton_apply, map_smul, map_smul, LinearMap.smul_apply, muLieGen_dlogT, lieMap_apply, ← dlog_eq_omegaMap, smul_eq_mul (x _), mul_one]`.
+-/
 theorem lieMap_charHom [IsAdicComplete (Ideal.span {(p : O)}) O] {G : PDivGroup p O}
     (χ : G.dual.Tate) (x : G.Lie) :
     lieMap G (mu p O) (charHom G χ) x = x (dlog G χ) • muLieGen p O :=
@@ -1235,6 +1678,9 @@ theorem lieMap_charHom [IsAdicComplete (Ideal.span {(p : O)}) O] {G : PDivGroup 
     rw [LinearMap.toSpanSingleton_apply, map_smul, map_smul, LinearMap.smul_apply, muLieGen_dlogT,
       lieMap_apply, ← dlog_eq_omegaMap, smul_eq_mul (x _), mul_one]
 
+/- English proof (translation)
+Establish `h : constHom _ (constGen p O) = 𝟙 _`. Rewrite using `[← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id]`. Establish `h1` using `constFun_constHom (constGen p O) n (digit n a) φ`. Rewrite `h1` using `[h, cast_digit]`. Conclude with `h1.symm`.
+-/
 theorem smul_constGen_pt (a : ℤ_[p]) (n : ℕ) (φ : (const p O).A n) :
     (a • constGen p O).pt n φ = constFun p O n φ (PadicInt.toZModPow n a) := by
   have h : constHom _ (constGen p O) = 𝟙 _ := by
@@ -1243,6 +1689,9 @@ theorem smul_constGen_pt (a : ℤ_[p]) (n : ℕ) (φ : (const p O).A n) :
   rw [h, cast_digit] at h1
   exact h1.symm
 
+/- English proof (translation)
+Introduce `a b h` and use `by refine PadicInt.ext_of_toZModPow.1 fun n => ?_ have h1 := congrArg (fun t : (const p O).Tate => t.pt n ((constFun p O n).symm (Pi.single (PadicInt.toZModPow n b) 1))) h simp only [LinearMap.toSpanSingleton_apply] at h1 rw [smul_constGen_pt, smul_constGen_pt, AlgEquiv.apply_sym …`.
+-/
 theorem toSpanSingleton_constGen_injective [Nontrivial O] :
     Function.Injective (LinearMap.toSpanSingleton ℤ_[p] _ (constGen p O)) := fun a b h => by
   refine PadicInt.ext_of_toZModPow.1 fun n => ?_
@@ -1254,16 +1703,28 @@ theorem toSpanSingleton_constGen_injective [Nontrivial O] :
   rw [Pi.single_eq_of_ne hne] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example : (mu p O).height = 1 ∧ (const p O).height = 1 := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[hodgeTate_eq_omegaDualMap, show constHom _ (constGen p O) = 𝟙 _ by`. Rewrite using `[← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id], omegaDualMap_id,`. Use the proof step `LinearMap.id_apply]`.
+-/
 example : hodgeTate (const p O) (constGen p O) = constDlogT p O := by
   rw [hodgeTate_eq_omegaDualMap, show constHom _ (constGen p O) = 𝟙 _ by
     rw [← LinearEquiv.eq_symm_apply, constHom_symm_apply, tateMap_id], omegaDualMap_id,
     LinearMap.id_apply]
 
+/- English proof (translation)
+Rewrite using `[pairing_apply, charHom_constGen, tateMap_id]`.
+-/
 example (t : (mu p O).Tate) : pairing (mu p O) O t (constGen p O) = t := by
   rw [pairing_apply, charHom_constGen, tateMap_id]
 
+/- English proof (translation)
+Use `⟨?_, dlogT_ne_zero p ℤ_[p] PadicInt.prime_p.not_isUnit⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lieMap _ _ (algebraMap ℤ_[p] (End (mu p ℤ_[p])) a) x = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `(LinearMap.congr_fun (lieMap_smul (RingHom.id _) a (𝟙 _)) x).trans (by simp)`.
+-/
 example (a : ℤ_[p]) (x : (mu p ℤ_[p]).Lie) :
     (padicAction (mu p ℤ_[p])).onLie a x = a • x ∧ dlogT p ℤ_[p] ≠ 0 := by
   refine ⟨?_, dlogT_ne_zero p ℤ_[p] PadicInt.prime_p.not_isUnit⟩

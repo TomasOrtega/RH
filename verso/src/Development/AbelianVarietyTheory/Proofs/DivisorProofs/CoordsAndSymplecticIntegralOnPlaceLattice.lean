@@ -29,19 +29,34 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def Gd (v : HeightOneSpectrum (𝓞 F)) (x : AF F) : Prop :=
   GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) x ∧ evFin F v x ∈ v.adicCompletionIntegers F
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u _ => smul_zero u, by rw [map_zero]; exact zero_mem _⟩`.
+-/
 theorem gd_zero (v : HeightOneSpectrum (𝓞 F)) : Gd v (0 : AF F) :=
   ⟨fun u _ => smul_zero u, by rw [map_zero]; exact zero_mem _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u hu => by rw [smul_add, hx.1 u hu, hy.1 u hu, add_zero], by rw [map_add]; exact add_mem hx.2 hy.2⟩`.
+-/
 theorem gd_add {v : HeightOneSpectrum (𝓞 F)} {x y : AF F} (hx : Gd v x) (hy : Gd v y) : Gd v (x + y) :=
   ⟨fun u hu => by rw [smul_add, hx.1 u hu, hy.1 u hu, add_zero], by rw [map_add]; exact add_mem hx.2 hy.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u hu => by rw [smul_neg, hx.1 u hu, neg_zero], by rw [map_neg]; exact neg_mem hx.2⟩`.
+-/
 theorem gd_neg {v : HeightOneSpectrum (𝓞 F)} {x : AF F} (hx : Gd v x) : Gd v (-x) :=
   ⟨fun u hu => by rw [smul_neg, hx.1 u hu, neg_zero], by rw [map_neg]; exact neg_mem hx.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u hu => by rw [← smul_mul_assoc, hx.1 u hu, zero_mul], by rw [map_mul]; exact mul_mem hx.2 hy⟩`.
+-/
 theorem gd_mul {v : HeightOneSpectrum (𝓞 F)} {x y : AF F} (hx : Gd v x)
     (hy : evFin F v y ∈ v.adicCompletionIntegers F) : Gd v (x * y) :=
   ⟨fun u hu => by rw [← smul_mul_assoc, hx.1 u hu, zero_mul], by rw [map_mul]; exact mul_mem hx.2 hy⟩
 
+/- English proof (translation)
+The claim follows from `AlgHom.commutes _ y`.
+-/
 theorem ev_alg (v : HeightOneSpectrum (𝓞 F)) (y : F) :
     evFin F v (algebraMap F (AF F) y) = algebraMap F (Fv F v) y := AlgHom.commutes _ y
 
@@ -58,6 +73,9 @@ def bil (σ : E →ₐ[F] E) {n d : ℕ} (ξ : E) (JX : Matrix (Fin n) (Fin n) E
     (fun a x y => by
       simp only [symp, hTens, Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, mul_smul_comm, map_smul])
 
+/- English proof (translation)
+Establish `ht : ∀ e : E, Algebra.trace (AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) (inclR (F` using `F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := fun e => by show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`. Establish `hc : ∀ e : E, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Rewrite using `[symp, symp, ← ht]`. Simplify using `only [hTens, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM, Matrix.map_apply, hc, map_mul, map_sum]`.
+-/
 theorem symp_incM (σ : E →ₐ[F] E) {n d : ℕ} (ξ : E) (JX : Matrix (Fin n) (Fin n) E)
     (JY : Matrix (Fin d) (Fin d) E) (x y : Matrix (Fin n) (Fin d) E) :
     symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (inclR (F := F) (AF F) ξ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JX) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JY)
@@ -74,6 +92,29 @@ end GlobalTheory.LatticeAtPlace
 
 namespace GlobalTheory.LatticeAtPlace
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d JX JY ξ v co T₀ yf zf hco hyz hs γ hγ`. Use `set S : Set (Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) := {z | ∃ a : AF F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) a ∧ evFin F v a ∈ v.adicCompletionIntegers F ∧ ∃ t ∈ T₀, z = a • GlobalTheory.Indefin …`. Establish `hcoord : ∀ z ∈ AddSubgroup.closure S, ∀ k, Gd v ((co z).1 k) ∧ Gd v ((co z).2 k)`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+
+Consider the case `mem z hz`. Take `⟨a, ha1, ha2, t, ht, rfl⟩` from `hz`. Introduce `k`. Rewrite using `[map_smul, hco]`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `⟨gd_mul ⟨ha1, ha2⟩ (by rw [ev_alg]; exact (hyz t ht k).1), gd_mul ⟨ha1, ha2⟩ (by rw [ev_alg]; exact (hyz t ht k).2)⟩`. Consider the case `zero`. Introduce `k`. Simplify using `only [map_zero, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply]`. Conclude with `⟨gd_zero v, gd_zero v⟩`.
+
+Consider the case `add x y _ _ hx hy`. Introduce `k`. Simplify using `only [map_add, Prod.fst_add, Prod.snd_add, Pi.add_apply]`. Conclude with `⟨gd_add (hx k).1 (hy k).1, gd_add (hx k).2 (hy k).2⟩`. Consider the case `neg x _ hx`.
+
+Introduce `k`. Simplify using `only [map_neg, Prod.fst_neg, Prod.snd_neg, Pi.neg_apply]`. Conclude with `⟨gd_neg (hx k).1, gd_neg (hx k).2⟩`. Establish `hgen : ∀ x ∈ S, ∀ y ∈ S, Gd v (bil σ ξ JX JY x y)`. Introduce and unpack `_ ⟨a, ha1, ha2, t, ht, rfl⟩ _ ⟨b, -, hb2, t', ht', rfl⟩`.
+
+Rewrite using `[LinearMap.map_smul₂, LinearMap.map_smul, smul_eq_mul, smul_eq_mul]`. Establish `e : bil σ ξ JX JY (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F t) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F t') = algebraMap F (AF F) (symp σ ξ JX JY t t')` using `symp_incM σ ξ JX JY t t'`. Rewrite using `[e]`. Use `gd_mul ⟨ha1, ha2⟩ ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_alg]`.
+
+Conclude with `mul_mem hb2 (hs t ht t' ht')`. Establish `hpair : ∀ x ∈ AddSubgroup.closure S, ∀ y ∈ AddSubgroup.closure S, Gd v (bil σ ξ JX JY x y)`. Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy => exact hgen x hx y hy`. Consider the case `zero => rw [map_zero]`. Conclude with `gd_zero v`.
+
+Consider the case `add y y' _ _ h h' => rw [map_add]`. Conclude with `gd_add h h'`. Consider the case `neg y _ h => rw [map_neg]`. Conclude with `gd_neg h`. Consider the case `zero => intro y _`.
+
+Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `gd_zero v`. Consider the case `add x x' _ _ h h' => intro y hy`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `gd_add (h y hy) (h' y hy)`.
+
+Consider the case `neg x _ h => intro y hy`. Rewrite using `[map_neg, LinearMap.neg_apply]`. Conclude with `gd_neg (h y hy)`. Establish `hp` using `hpair γ hγ γ hγ`. Conclude with `⟨fun k => ⟨(hcoord γ hγ k).1.1, (hcoord γ hγ k).1.2, (hcoord γ hγ k).2.1, (hcoord γ hγ k).2.2⟩, hp.1, hp.2⟩`.
+-/
 theorem coords_symp_integral : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n d : ℕ}
     (JX : Matrix (Fin n) (Fin n) E) (JY : Matrix (Fin d) (Fin d) E) (ξ : E) (v : HeightOneSpectrum (𝓞 F))
     (co : (Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) →ₗ[AF F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F))

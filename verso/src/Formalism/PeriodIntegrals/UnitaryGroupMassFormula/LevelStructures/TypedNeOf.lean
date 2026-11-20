@@ -19,6 +19,9 @@ def KSpOpen : Prop :=
     IsOpen (Subtype.val ⁻¹' Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 :
       Set (Ssub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w)))
 
+/- English proof (translation)
+Introduce `D X hb _ _ w p`. Establish `hH : ((X.measW w).μSv p.1).IsHaarMeasure` using `(X.measW_norm w).2.2.2.2.2.2.2.1 p.1`. Establish `hne : (Subtype.val ⁻¹' Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 : Set (Ssub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w))).Nonempty` using `⟨1, (Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))).one_mem⟩`. Unfold `muSv`. Conclude with `(ENNReal.toReal_pos (hH.toIsOpenPosMeasure.open_pos _ (h2 X w p) hne) (hH.toIsFiniteMeasureOnCompacts.lt_top_of_isCompact (h1 X w p)).ne).ne'`.
+-/
 theorem typedNe_of (h1 : KSpCompact) (h2 : KSpOpen) : TypedNe := by
   intro D X hb _ _ w p
   have hH : ((X.measW w).μSv p.1).IsHaarMeasure := (X.measW_norm w).2.2.2.2.2.2.2.1 p.1

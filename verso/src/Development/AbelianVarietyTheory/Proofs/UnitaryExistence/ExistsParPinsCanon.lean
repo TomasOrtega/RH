@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.Member.ParExist
 
+/- English proof (translation)
+Introduce `j hj` and use `⟨datInt_holds D j, { unimod := efW_unimod_holds D j _, rank := latW_rank D j hj, dom := datDom_holds D j hj _ }⟩`.
+-/
 theorem datLaws_all (D : D7) : ∀ j, InR D j → ∃ hI : DatInt D j, DatLaws D j hI :=
   fun j hj => ⟨datInt_holds D j,
     { unimod := efW_unimod_holds D j _, rank := latW_rank D j hj, dom := datDom_holds D j hj _ }⟩
@@ -48,6 +51,11 @@ def parAtLevel (D : D7) (hF : OFull D) (hz : OZeta D) (hN : N1ab) (l : Level (ho
   Xo := fun j => Classical.choice (hN D.host.E _ (datumAtLift D _ (datLaws_all D) j) l (datumAtLift_pq_pos D _ (datLaws_all D) j))
   eO := eOf D hF
 
+/- English proof (translation)
+Take `⟨l, hl, hb⟩` from `levelPb_exists D pb hg`. Use `⟨parAtLevel D hF hz GlobalTheory.Moduli.moduli_scheme_exists l hl, ?_, ⟨rfl, fun j hj => ?_⟩, fun j => datumAtLift_pq_pos D _ (datLaws_all D) j, hb⟩` and prove the remaining obligations. Use `⟨⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, hl, eOf_spec D hF, fun j hj => ?_⟩ show IsDatW D j (datumAtLift D _ (datLaws_all D) j)` and prove the remaining obligations. Unfold `datumAtLift`. Rewrite using `[dif_pos hj]`.
+
+Conclude with `isDatW_datumOf D _ j _ _`. Use `show ∃ hP hd, HEq (datumAtLift D _ (datLaws_all D) j) (datumOfRecord D j hj hP hd)`. Unfold `datumAtLift`. Rewrite using `[dif_pos hj]`. Conclude with `⟨Formalism.IndefR.Fin.factPrincipalDatum, datDom_holds D j hj _, HEq.rfl⟩`.
+-/
 theorem exists_par_pins_canon (D : D7) (hF : OFull D) (hz : OZeta D)
     (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K))
     (hg : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal) :

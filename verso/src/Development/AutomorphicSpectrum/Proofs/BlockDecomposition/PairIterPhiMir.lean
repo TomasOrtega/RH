@@ -14,6 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `| 0, s, _, _, _, _, B, hB, hn => ⟨B, hB, hn⟩ | j + 1, s, τ, τ', hs, hs', B, hB, hn => by obtain ⟨B₁, hB₁, hn₁⟩ := GlobalTheory.CompanionTheory.MirPair.pairing_phi k ψ hc h1 (n + 1 + j) s _ _ τ.ρ τ'.ρ hs hs' B hB hn obtain ⟨B₂, hB₂, hn₂⟩ := pair_iterPhi_mir ψ hc h1 n j (s + 1) (MR …`.
+-/
 theorem pair_iterPhi_mir (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (n : ℕ) :
     ∀ (j s : ℕ) (τ τ' : MRep k (n + 1 + j)),
     IsSmooth τ.ρ → IsSmooth τ'.ρ → ∀ B : τ.V →ₗ[ℂ] τ'.V →ₗ[ℂ] ℂ,
@@ -36,6 +39,11 @@ theorem pair_iterPhi_mir (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hB0 : ∀ (p : Mir k (n + 1 + j)) v v', B ((resM k π).ρ p v) ((resM k π').ρ p v') = ((detChar (Fin (n + 1 + j + 1)) (absPow k ((0 : ℕ) : ℂ)) (p : GL (Fin (n + 1 + j + 1)) k) : ℂˣ) : ℂ) * B v v'`. Introduce `p v v'`. Rewrite using `[GlobalTheory.CompanionTheory.BZCuspPair.detChar_zero, one_mul]`. Conclude with `hB (p : GL (Fin (n + 1 + j + 1)) k) v v'`. Take `⟨B', h2, h3⟩` from `pair_iterPhi_mir ψ hc h1 n j 0 (resM k π) (resM k π') (GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_resM hs) (GlobalTheory.CompanionTheory.BZCuspPair.isSmooth_resM hs') B hB0 hn`.
+
+Use `⟨B', fun p w w' => ?_, h3⟩` and prove the remaining obligations. Use `h2 p w w'` as an intermediate fact. Rewrite `this` using `[Nat.zero_add]`. Then use the resulting hypothesis.
+-/
 theorem pair_iterPhi (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (n j : ℕ) {V V' : Type} [AddCommGroup V]
     [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (π : Representation ℂ (GL (Fin (n + 1 + j + 1)) k) V)
     (π' : Representation ℂ (GL (Fin (n + 1 + j + 1)) k) V') (hs : IsSmooth π) (hs' : IsSmooth π')

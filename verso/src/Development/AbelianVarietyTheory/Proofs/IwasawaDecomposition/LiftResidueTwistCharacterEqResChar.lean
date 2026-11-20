@@ -14,6 +14,15 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.Mem.LevResXi
 
+/- English proof (translation)
+Introduce `X px I U L hI hV hL t PP hPP c`. Establish `hQ : PP ∈ L.Q t`. Rewrite using `[hL.Q t]`. Express the relevant statement in the definitionally equal form `PP ∈ Formalism.L2.Col.QE I.sel (I.tup (ixOf I U t))`. Rewrite using `[tup_ixOf]`.
+
+Conclude with `hPP`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (c : 𝓞 X.B.fields.E ⧸ PP.asIdeal)`. Establish `hn : b ∉ PP.asIdeal` using `fun hm => c.ne_zero (hb ▸ Ideal.Quotient.eq_zero_iff_mem.2 hm)`. Establish `h0 : (b : X.B.fields.E) ≠ 0` using `fun e => hn ((RingOfIntegers.coe_eq_zero_iff.1 e) ▸ zero_mem _)`. Establish `h1` using `hL.is.xiR t PP hQ b (Units.mk0 _ h0) c rfl hb.symm`.
+
+Establish `ht : ∀ P, (I.xi (ixOf I U t)).TameAt P` using `fun P => hL.xiH t ▸ hL.is.xi_tame t P`. Establish `h2` using `GlobalTheory.NormOneUnit.resChar_eq (hI.xi_reads (ixOf I U t)) ht PP c b (Units.mk0 _ h0) rfl hb`. Rewrite `h2` using `[tup_ixOf]`. Rewrite `h1` using `[hL.xiH t]`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Conclude with `h2.symm`.
+-/
 theorem xiR_eq_map_resChar : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)),
     I.Ok → ValsIn I → LevOf X I U L → ∀ (t : TupU I U) (PP : HeightOneSpectrum (𝓞 X.B.fields.E)), PP ∈ Formalism.L2.Col.QE I.sel t.1 →
       ∀ c : (𝓞 X.B.fields.E ⧸ PP.asIdeal)ˣ, L.xiR t PP c = Units.map X.toD7.what₂.embLL.toMonoidHom

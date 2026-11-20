@@ -14,6 +14,13 @@ open GlobalTheory.Ex.AbPartIso
 noncomputable section
 namespace GlobalTheory.Ex.AbPartCube
 
+/- English proof (translation)
+Take `rfl : (fun k => φ' k ≫ f₁) = φ₁` from `funext e`. Establish `le : ∀ j : K → PUnit → L₁.ι, LB.wchart (L₁.pull f₁) φ' j ≤ LB.wchart L₁ (fun k => φ' k ≫ f₁) (fun k => j k PUnit.unit)` using `fun j y hy => Set.mem_iInter.2 fun k => mem_pull (x := φ' k y).1 (Set.mem_iInter.1 hy k)`. Set `a : LB.Gen (LB.LinComb (L₁.pull f₁) φ' ε)` to `⟨fun j => res (le j) (t₁.s fun k => j k PUnit.unit)⟩`. Establish `ha : a.IsGen` using `isGen_of_gm a fun y j j' hj hj' => by`. Use `(gm_res (𝟙 Y) y (le j) hj _).trans ((gen_trans ht (𝟙 Y) y (le j hj) (le j' hj')).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_) (gm_res (𝟙 Y) y (le j') hj' _).symm))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (gm_pull_g L₁ f₁ (𝟙 Y ≫ φ' k) y (j k) (j' k) (Set.mem_iInter.1 hj k) (Set.mem_iInter.1 hj' k)).symm` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Take `⟨t, ht', hv⟩` from `exists_up ((isGen_iff w).1 hw) h₂ (pull_isLB h₁ f₁) a ha`. Use `⟨t, ht', fun Z r z J₁ J₂ hJ₁ hJ₂ => ?_⟩` and prove the remaining obligations. Establish `m : r z ∈ LB.wchart (L₁.pull f₁) φ' (fun k _ => J₁ (r ≫ φ' k ≫ f₁))` using `Set.mem_iInter.2 fun k => mem_pull.2 (hJ₁ (r ≫ φ' k ≫ f₁))`.
+
+Use `(hv Z r z _ _ (hJ₂.mem _ r) m).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) (gm_res r z (le _) m _))` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc]`.
+-/
 theorem exists_move {X₁ X₂ B Y : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : B ⟶ X₁} {f₂ : B ⟶ X₂}
     (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (hw : w.IsGen) (h₁ : L₁.IsLB) (h₂ : L₂.IsLB) {K : Type} [Fintype K]
     (φ' : K → (Y ⟶ B)) {φ₁ : K → (Y ⟶ X₁)} (e : ∀ k, φ' k ≫ f₁ = φ₁ k) {ε : K → ℤ}
@@ -42,6 +49,9 @@ theorem exists_move {X₁ X₂ B Y : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X�
 
 variable {S : Scheme.{0}} {A A' T : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
 
+/- English proof (translation)
+Set `h' : (Z.left ⟶ A.left) → U` to `fun q => if hq : q ≫ A.hom = Z.hom then h (Over.homMk q hq) else 1`. Establish `e : ∀ q : Z ⟶ A, h' q.left = h q` using `fun q => dif_pos (Over.w q)`. Establish `p` using `prod_cub x x' y h'`. Simplify using `only [e] at p`. Conclude with `(Finset.prod_congr rfl fun I _ => congrArg (· ^ thε I) (e _).symm).trans p`.
+-/
 theorem prod_cub_pt {Z : Over S} (x x' y : Z ⟶ A) {U : Type} [CommGroup U] (h : (Z ⟶ A) → U) :
     ∏ I : thK, h (lift x (lift x' y) ≫ psum A (x3 A) I.down) ^ thε I =
       h (x * x' * y) * (h (x * x'))⁻¹ * (h (x * y))⁻¹ * (h (x' * y))⁻¹ * h x * h x' * h y * (h 1)⁻¹ := by
@@ -52,6 +62,21 @@ theorem prod_cub_pt {Z : Over S} (x x' y : Z ⟶ A) {U : Type} [CommGroup U] (h 
   simp only [e] at p
   exact (Finset.prod_congr rfl fun I _ => congrArg (· ^ thε I) (e _).symm).trans p
 
+/- English proof (translation)
+Establish `g1 : ∀ (Z : Over S) (t : Z ⟶ T), lift t (1 : Z ⟶ A) ≫ g = 1` using `fun Z t => mul_eq_left.1 ((hg Z t 1 1).symm.trans (by rw [_root_.mul_one]))`. Set `Y : Over S` to `A ⊗ A ⊗ A ⊗ T`. Set `t : Y ⟶ T` to `snd _ _ ≫ snd _ _ ≫ snd _ _`. Set `x₁ : Y ⟶ A` to `fst _ _`. Set `x₂ : Y ⟶ A` to `snd _ _ ≫ fst _ _`.
+
+Set `x₃ : Y ⟶ A` to `snd _ _ ≫ snd _ _ ≫ fst _ _`. Take `⟨t₂, ht₂, hv⟩` from `exists_move w hw L.isLB L'.isLB (fun I : thK => (lift t (lift x₁ (lift x₂ x₃) ≫ psum A (x3 A) I.down)).left) (φ₁ := fun I => (lift x₁ (lift x₂ x₃)).left ≫ thφ A (x3 A) I) (fun I => by rw [← Over.comp_left, lift_snd]; rfl) (LB.pullGen L.L (thφ A (x3 A)) thε c.t (lift x₁ (lift x₂ x …`. Establish `ev : ∀ {Z : Over S} (σ : Z ⟶ T) (z : Z.left) {J J'}, Good L.L z J → Good L'.L z J' → ∀ (Ω : (Z ⟶ A) → (Z.left.presheaf.stalk z)ˣ), (∀ q, Ω q = gw w (lift σ q).left z (J' (lift σ q ≫ g).left) (fun _ => J q.left)) → ∀ x y u : Z ⟶ A, val t₂ (lift x (lift y (lift u σ)) : Z ⟶ Y).left …`. Introduce `Z σ z J J' hJ hJ' Ω hΩ x y u`. Establish `r₀ : (lift x (lift y (lift u σ)) : Z ⟶ Y) ≫ t = σ` using `by simp [t, Y]`.
+
+Establish `r₁ : (lift x (lift y (lift u σ)) : Z ⟶ Y) ≫ x₁ = x` using `by simp [x₁, Y]`. Establish `r₂ : (lift x (lift y (lift u σ)) : Z ⟶ Y) ≫ x₂ = y` using `by simp [x₂, Y]`. Establish `r₃ : (lift x (lift y (lift u σ)) : Z ⟶ Y) ≫ x₃ = u` using `by simp [x₃, Y]`. Use `⟨(hv _ _ z J J' hJ hJ').trans (congrArg₂ (· * ·) (Eq.trans (Finset.prod_congr rfl fun I _ => ?_) (prod_cub_pt x y u Ω)) ((val_cub c _ hJ _ _ _).trans (by rw [r₁, r₂, r₃]))), (val_cub c' _ hJ' _ _ _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left, comp_lift, r₀, ← Category.assoc, comp_lift, comp_lift, r₁, r₂, r₃, lift_snd, hΩ]`.
+
+Rewrite using `[comp_lift_assoc, comp_lift_assoc, comp_lift_assoc, r₀, r₁, r₂, r₃]`. Establish `sj : Function.Surjective ((snd A (A ⊗ A ⊗ T)).left ≫ (snd A (A ⊗ T)).left ≫ (snd A T).left).appTop.hom` using `surj_comp (surj_snd hG hA _) (surj_comp (surj_snd hG hA _) (surj_snd hG hA _))`. Establish `key` using `gen_unique' L'.isLB (fun V _ k => ?_) _ (lift 1 (lift 1 (lift 1 (𝟙 T))) : T ⟶ Y).left ?_ sj (DVR.pullGen_isGen L'.L (thφ A' (x3 A')) thε c'.t c'.isGen (lift (lift t x₁ ≫ g) (lift (lift t x₂ ≫ g) (lift t x₃ ≫ g))).left) ht₂ (fun y I' hI' => ?_) _ (lift x (lift y (lift u σ)) : Z ⟶ …`. Conclude with `(ev σ z hJ hJ' Ω hΩ x y u).2.symm.trans (key.trans (ev σ z hJ hJ' Ω hΩ x y u).1)`. Use `(prod_cub_pt x₁ x₂ x₃ (fun q => k (lift t q ≫ g).left)).trans (Eq.trans ?_ (prod_cub _ _ _ k).symm)` and prove the remaining obligations.
+
+Simplify using `only [hg, g1]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left, lift_snd_assoc, lift_snd_assoc, lift_snd]`. Both sides reduce to the same expression. Use `choose I hI using fun χ : T.left ⟶ A.left => exists_chart L.isLB (χ y)`. Establish `E` using `ev (𝟙 T) y hI hI' _ (fun _ => rfl) 1 1 1`.
+
+Establish `E₂` using `E.2`. Rewrite `E₂` using `[g1, (isCub_cubV c' hI').face]`. Use `E₂.trans (Eq.trans ?_ E.1.symm)` and prove the remaining obligations. Rewrite using `[(isCub_cubV c hI).face]`. Establish `fin : ∀ {G U : Type} [Group G] [CommGroup U] (h : G → U), 1 = h (1 * 1 * 1) * (h (1 * 1))⁻¹ * (h (1 * 1))⁻¹ * (h (1 * 1))⁻¹ * h 1 * h 1 * h 1 * (h 1)⁻¹ * 1` using `fun h => by simp`.
+
+Conclude with `fin fun q : T ⟶ A => gw w (lift (𝟙 T) q).left y (I' (lift (𝟙 T) q ≫ g).left) (fun _ => I q.left)`.
+-/
 theorem cubV_move (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} {L' : RigLB A'} (c : CubicalStr A L)
     (c' : CubicalStr A' L') (g : T ⊗ A ⟶ A')
     (hg : ∀ (Z : Over S) (t : Z ⟶ T) (x y : Z ⟶ A), lift t (x * y) ≫ g = (lift t x ≫ g) * (lift t y ≫ g))
@@ -111,6 +136,19 @@ theorem cubV_move (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {L : RigLB A} {L' 
         (h (1 * 1))⁻¹ * h 1 * h 1 * h 1 * (h 1)⁻¹ * 1 := fun h => by simp
     exact fin fun q : T ⟶ A => gw w (lift (𝟙 T) q).left y (I' (lift (𝟙 T) q ≫ g).left) (fun _ => I q.left)
 
+/- English proof (translation)
+Introduce `hG R _ _ D D' F _ _ N N' ν ν' φ w f hφ hw hf x y u`. Take `⟨z⟩ : Nonempty (Sp F)` from `inferInstanceAs (Nonempty (PrimeSpectrum F))`. Establish `hJ : Good D.P.L z ν.J` using `fun ψ => ν.good ψ trivial`. Establish `hJ' : Good D'.P.L z ν'.J` using `fun ψ => ν'.good ψ trivial`. Establish `im : ∀ a, lift (𝟙 _) (ν.eA a) ≫ φ.hom ≫ snd _ _ = ν'.eA (f a)` using `fun a => by`.
+
+Rewrite using `[← Category.assoc, hf a, lift_snd]`. Set `Ω : (TF (R` to `R) F ⟶ D.P.A) → ((Sp F).presheaf.stalk z)ˣ := fun q => gw w (lift (𝟙 _) q).left z (ν'.J (lift (𝟙 _) q ≫ φ.hom ≫ snd _ _).left) (fun _ => ν.J q.left)`. Establish `vw : ∀ a, toStk z (wVal ν ν' w f a) = (Ω (ν.eA a)).val` using `fun a => by`. Establish `m₁ : (snd (TF (R` using `R) F) D.P.A).left ((lift (𝟙 _) (ν.eA a)).left z) ∈ D.P.L.U (ν.J (ν.eA a).left) := by`. Conclude with `(congrArg (fun q : TF (R := R) F ⟶ D.P.A => q.left z ∈ D.P.L.U (ν.J (ν.eA a).left)) (lift_snd (𝟙 _) (ν.eA a))).mpr (hJ _)`.
+
+Establish `m₂ : (φ.hom ≫ snd (TF (R` using `R) F) D'.P.A).left ((lift (𝟙 _) (ν.eA a)).left z) ∈ D'.P.L.U (ν'.J (ν'.eA (f a)).left) := by`. Conclude with `(congrArg (fun q : TF (R := R) F ⟶ D'.P.A => q.left z ∈ D'.P.L.U (ν'.J (ν'.eA (f a)).left)) (im a)).mpr (hJ' _)`. Use `(toStk_valF (lift (𝟙 (TF (R := R) F)) (ν.eA a)).left _ z (by exact ⟨mem_pull.2 m₂, mem_pull.2 m₁⟩) _).trans ?_` and prove the remaining obligations. Simplify using `only [Ω, im]`. Both sides reduce to the same expression.
+
+Establish `v : toStk z (N.θ x y u : F) = (cubV D.cub (T` using `TF (R := R) F) z ν.J (ν.eA x) (ν.eA y) (ν.eA u)).val := (congrArg (toStk z) (ν.θ_eq x y u)).trans (toStk_valF _ _ z (hJ.mem _ _) _)`. Establish `v' : toStk z (N'.θ (f x) (f y) (f u) : F) = (cubV D'.cub (T` using `TF (R := R) F) z ν'.J (ν'.eA (f x)) (ν'.eA (f y)) (ν'.eA (f u))).val := (congrArg (toStk z) (ν'.θ_eq _ _ _)).trans (toStk_valF _ _ z (hJ'.mem _ _) _)`. Establish `key` using `cubV_move hG D.P.isAb D.cub D'.cub (φ.hom ≫ snd _ _) hφ.2 w hw (𝟙 (TF (R := R) F)) z hJ hJ' Ω (fun _ => rfl) (ν.eA x) (ν.eA y) (ν.eA u)`. Rewrite `key` using `[im, im, im]`. Establish `alg : ∀ {U : Type} [CommRing U] {a b p₁ p₂ p₃ p₄ p₅ p₆ p₇ p₈ : Uˣ}, a = p₁ * p₂⁻¹ * p₃⁻¹ * p₄⁻¹ * p₅ * p₆ * p₇ * p₈⁻¹ * b → a.val * p₂.val * p₃.val * p₄.val * p₈.val = b.val * p₁.val * p₅.val * p₆.val * p₇.val`.
+
+Introduce and unpack `U _ a b p₁ p₂ p₃ p₄ p₅ p₆ p₇ p₈ rfl`. Simplify using `only [← Units.val_mul]`. Use `congrArg Units.val (Additive.ofMul.injective ?_)` and prove the remaining obligations. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Apply `(toStk z).injective` to reduce the goal to its premises. Simplify using `only [map_mul, vw, v, v', map_one]`. Conclude with `alg key`.
+-/
 theorem theta_move : GlobalFnsSt → AllIso fun {_} _ _ {_} {_} {F} _ _ {N} {N'} ν ν' {_} w f => ∀ x y u, (N'.θ (f x) (f y) (f u) : F) * wVal ν ν' w f (x * y) * wVal ν ν' w f (x * u) * wVal ν ν' w f (y * u) * wVal ν ν' w f 1 = (N.θ x y u : F) * wVal ν ν' w f (x * y * u) * wVal ν ν' w f x * wVal ν ν' w f y * wVal ν ν' w f u := by
   intro hG R _ _ D D' F _ _ N N' ν ν' φ w f hφ hw hf x y u
   obtain ⟨z⟩ : Nonempty (Sp F) := inferInstanceAs (Nonempty (PrimeSpectrum F))

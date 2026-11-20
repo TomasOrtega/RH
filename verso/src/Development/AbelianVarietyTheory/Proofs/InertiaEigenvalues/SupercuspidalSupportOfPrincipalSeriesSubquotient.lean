@@ -19,6 +19,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LocLanglands
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ n χ hχ π h`. Establish `hd : ∑ a : Fin n, (IrrGL.ofChar (χ a) (hχ a)).1 = n`. Simplify using `[IrrGL.ofChar]`. Use `hasSupport_of_isSubquotient π.irr (fun a => IrrGL.isCusp_ofChar (χ a) (hχ a)) (hd := hd) ?_` and prove the remaining obligations. Use `h.trans ((GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n χ).trans ?_)` and prove the remaining obligations.
+
+Establish `he : stdBlocks (fun a => (IrrGL.ofChar (χ a) (hχ a)).1) hd = Equiv.sigmaUnique (Fin n) (fun _ => Fin 1)`. Use extensionality with `⟨a, i⟩`. Rewrite using `[stdBlocks_val]`. Simplify using `[IrrGL.ofChar, Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression.
+
+Unfold `prodIrr`. Rewrite using `[he]`. Set `φ` to `multiProdEquiv (Equiv.sigmaUnique (Fin n) (fun _ => Fin 1)) (fun a => equivRep (IrrRep.det (Fin 1) (χ a) (hχ a)))`. Conclude with `IsSubquotient.of_injective φ.toIntertwiningMap (fun u v huv => φ.toLinearEquiv.injective huv)`.
+-/
 theorem hasSupport_of_isSubquotient_prinSeries :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (n : ℕ) (χ : Fin n → kˣ →* ℂˣ) (hχ : ∀ i, IsSmoothChar (χ i)) (π : IrrRep (GL (Fin n) k)), GlobalTheory.SmGL.IsSubquotient π.ρ (prinSeries χ) → HasSupport π.ρ (Finset.univ.val.map fun i => IrrGL.ofChar (χ i) (hχ i)) := by
   intro k _ _ _ _ _ n χ hχ π h

@@ -13,6 +13,9 @@ section General
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [OpensMeasurableSpace G]
   [T2Space G]
 
+/- English proof (translation)
+Establish `h` using `hF.continuousOn.integrableOn_compact (μ := ν) hU`. Rewrite `h` using `[IntegrableOn, Measure.restrict_eq_self_of_ae_mem hs]`. Then use the resulting hypothesis.
+-/
 private theorem integ {U : Set G} (hU : IsCompact U) {ν : Measure G} [IsProbabilityMeasure ν] (hs : ∀ᵐ k ∂ν, k ∈ U)
     {F : G → ℂ} (hF : Continuous F) : Integrable F ν := by
   have h := hF.continuousOn.integrableOn_compact (μ := ν) hU
@@ -33,6 +36,19 @@ private def fixSub {U : Set G} (hU : IsCompact U) (ν : Measure G) [IsProbabilit
     simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]
     rw [integral_const_mul, h]
 
+/- English proof (translation)
+Establish `h1 : ∀ u ∈ (U : Set G), {x : G | ∀ k ∈ (U : Set G), ‖e (x⁻¹ * k) - e (u⁻¹ * k)‖ < 1 / 2} ∈ 𝓝 u`. Introduce `u _`. Use `hU.eventually_forall_of_forall_eventually (x₀ := u) (P := fun x k => ‖e (x⁻¹ * k) - e (u⁻¹ * k)‖ < 1 / 2) fun k _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : G × G => ‖e (p.1⁻¹ * p.2) - e (u⁻¹ * p.2)‖` using `by fun_prop`. Conclude with `(isOpen_lt hc continuous_const).mem_nhds (by simp)`.
+
+Take `⟨t, ht, hcov⟩` from `hU.elim_nhds_subcover _ h1`. Use `⟨t, ht, fun F hF hfix h0 => ?_⟩` and prove the remaining obligations. Establish `hrep : ∀ u ∈ U, F u = ∫ k, e (u⁻¹ * k) * F k ∂ν`. Introduce `u hu`. Rewrite using `[← hfix u]`.
+
+Use `conv_rhs => rw [← (hinv u hu).map_eq]`. Rewrite using `[integral_map (hinv u hu).measurable.aemeasurable (Continuous.aestronglyMeasurable (by fun_prop))]`. Simplify using the standard rewrite rules. Take `⟨x, hx, hmax⟩` from `hU.exists_isMaxOn ⟨1, U.one_mem⟩ hF.norm.continuousOn`. Establish `hx0 : ‖F x‖ ≤ 1 / 2 * ‖F x‖`.
+
+Take `⟨u, hu, hxu⟩` from `mem_iUnion₂.1 (hcov hx)`. Establish `e1 : F x = ∫ k, (e (x⁻¹ * k) - e (u⁻¹ * k)) * F k ∂ν`. Simplify using `only [sub_mul]`. Rewrite using `[integral_sub (integ hU hs (by fun_prop)) (integ hU hs (by fun_prop)), ← hrep x hx, ← hrep u (ht u hu), h0 u hu, sub_zero]`. Establish `e2` using `norm_integral_le_of_norm_le_const (μ := ν) (f := fun k => (e (x⁻¹ * k) - e (u⁻¹ * k)) * F k) (C := 1 / 2 * ‖F x‖) (by filter_upwards [hs] with k hk`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hxu k hk).le (hmax hk) (norm_nonneg _) (by norm_num))`. Rewrite `e2` using `[← e1]`. Simplify using `using e2`. Introduce `y hy`.
+
+Establish `: ‖F y‖ ≤ ‖F x‖` using `hmax hy`. Use `norm_nonneg (F x)` as an intermediate fact. Conclude with `norm_le_zero_iff.1 (by linarith)`.
+-/
 private theorem detect (U : Subgroup G) (hU : IsCompact (U : Set G)) (ν : Measure G) [IsProbabilityMeasure ν]
     (hs : ∀ᵐ k ∂ν, k ∈ U) (hinv : ∀ k ∈ U, MeasurePreserving (k * ·) ν ν) {e : G → ℂ} (he : Continuous e) :
     ∃ t : Finset G, (∀ x ∈ t, x ∈ U) ∧ ∀ F : G → ℂ, Continuous F → (∀ g, ∫ k, e k * F (g * k) ∂ν = F g) →
@@ -72,6 +88,17 @@ private theorem detect (U : Subgroup G) (hU : IsCompact (U : Set G)) (ν : Measu
 
 end General
 
+/- English proof (translation)
+Set `B` to `Module.finBasis ℂ V`. Set `L : H → V →ₗ[ℂ] V` to `fun g => { toFun := fun a => ⟨fun x => (a : H → ℂ) (g * x), hV a a.2 g⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `c : Fin (Module.finrank ℂ V) × Fin (Module.finrank ℂ V) → H → ℂ` to `fun p x => B.repr (L x (B p.2)) p.1`. Establish `hfin : FiniteDimensional ℂ (Submodule.span ℂ (Set.range c))` using `FiniteDimensional.span_of_finite ℂ (Set.finite_range c)`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range c)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, u, rfl⟩`. Establish `key : (fun x => a (x * u)) = ∑ p : Fin (Module.finrank ℂ V) × Fin (Module.finrank ℂ V), (B.repr ⟨a, ha⟩ p.2 * (B p.1 : H → ℂ) u) • c p`. Use function extensionality and compare the values at `x`. Establish `h1 : a (x * u) = (L x ⟨a, ha⟩ : H → ℂ) u` using `rfl`. Establish `h2 : L x ⟨a, ha⟩ = ∑ i, ∑ j, (B.repr ⟨a, ha⟩ j * c (i, j) x) • B i` using `by conv_lhs => rw [← B.sum_repr ⟨a, ha⟩, map_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `conv_lhs => rw [← B.sum_repr (L x (B j))]`. Rewrite using `[Finset.smul_sum]`.
+
+Simplify using `only [smul_smul, c]`. Rewrite using `[h1, h2, Fintype.sum_prod_type]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, key]`.
+
+Conclude with `Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, rfl⟩)`.
+-/
 private theorem leftRight {H : Type} [Group H] (V : Submodule ℂ (H → ℂ)) [FiniteDimensional ℂ V]
     (hV : ∀ a ∈ V, ∀ g, (fun x => a (g * x)) ∈ V) :
     FiniteDimensional ℂ (Submodule.span ℂ {b : H → ℂ | ∃ a ∈ V, ∃ u, b = fun x => a (x * u)}) := by
@@ -104,6 +131,25 @@ private theorem leftRight {H : Type} [Group H] (V : Submodule ℂ (H → ℂ)) [
   rw [SetLike.mem_coe, key]
   exact Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, rfl⟩)
 
+/- English proof (translation)
+Introduce `K _ _ n D`. Take `⟨O, hO, hUO⟩` from `D.isOpen`. Establish `hle : D.U ≤ KG K n` using `fun g hg => ((hUO g).1 hg).2`. Establish `hK : IsCompact (KG K n : Set (G1 K n))` using `((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 n).1`. Establish `hU : IsCompact (D.U : Set (G1 K n))` using `by haveI : CompactSpace (KG K n) := isCompact_iff_compactSpace.1 hK`.
+
+Establish `hop : IsOpen ((D.U.subgroupOf (KG K n) : Subgroup (KG K n)) : Set (KG K n))`. Establish `: ((D.U.subgroupOf (KG K n) : Subgroup (KG K n)) : Set (KG K n)) = (fun k : KG K n => ((k : G1 K n) : AdelicGLn.AdelicGL K n)) ⁻¹' O`. Use extensionality with `k`. Conclude with `⟨fun h => ((hUO k).1 h).1, fun h => (hUO k).2 ⟨h, k.2⟩⟩`. Rewrite using `[this]`.
+
+Conclude with `hO.preimage (continuous_subtype_val.comp continuous_subtype_val)`. Use `((Subgroup.isClosed_of_isOpen _ hop).isCompact).image continuous_subtype_val` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun h => ⟨⟨g, hle h⟩, h, rfl⟩, by rintro ⟨k, hk, rfl⟩; exact hk⟩`.
+
+Use `⟨hU, hle, ?_⟩` and prove the remaining obligations. Use `haveI := D.prob`. Set `V : Submodule ℂ (D.U → ℂ)` to `(fixSub hU D.ν D.supp D.cont).map (LinearMap.funLeft ℂ ℂ (Subtype.val : D.U → G1 K n))`. Establish `hmem : ∀ f : G1 K n → ℂ, Continuous f → D.Fix f → ∀ g, (fun u : D.U => f (g * u)) ∈ V`. Introduce `f hf hfix g`.
+
+Use `⟨fun x => f (g * x), ⟨by fun_prop, fun y => ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Conclude with `hfix (g * y)`. Use `haveI : FiniteDimensional ℂ V := by`. Take `⟨t, ht, h⟩` from `detect D.U hU D.ν D.supp D.inv D.cont`.
+
+Set `ev : V →ₗ[ℂ] (t → ℂ)` to `(LinearMap.funLeft ℂ ℂ (fun x : t => (⟨x, ht x x.2⟩ : D.U))).comp V.subtype`. Use `FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero _).2 ?_)` and prove the remaining obligations. Introduce and unpack `⟨_, F, ⟨hF, hfix⟩, rfl⟩ h0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`.
+
+Conclude with `h F hF hfix (fun x hx => congrFun h0 ⟨x, hx⟩) u u.2`. Use `⟨_, leftRight V ?_, fun a ha => ?_, fun f hf hfix g => Submodule.subset_span ⟨_, hmem f hf hfix g, 1, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨F, ⟨hF, hfix⟩, rfl⟩ g`. Conclude with `hmem F hF hfix g`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem b hb`. Take `⟨_, ⟨F, ⟨hF, hfix⟩, rfl⟩, u, rfl⟩` from `hb`. Use `⟨?_, fun w => Submodule.subset_span ⟨_, ⟨F, ⟨hF, hfix⟩, rfl⟩, w * u, by simp only [mul_assoc]⟩⟩` and prove the remaining obligations. Conclude with `hF.comp (continuous_subtype_val.comp (continuous_id.mul continuous_const))`. Consider the case `zero => exact ⟨continuous_const, fun _ => Submodule.zero_mem _⟩`.
+
+Consider the case `add a b _ _ ha hb => exact ⟨ha.1.add hb.1, fun u => Submodule.add_mem _ (ha.2 u) (hb.2 u)⟩`. Consider the case `smul c a _ ha => exact ⟨ha.1.const_smul c, fun u => Submodule.smul_mem _ c (ha.2 u)⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.typeFin :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n), IsCompact (D.U : Set (G1 K n)) ∧ D.U ≤ KG K n ∧ ∃ 𝒜 : Submodule ℂ (D.U → ℂ), FiniteDimensional ℂ 𝒜 ∧
       (∀ a ∈ 𝒜, Continuous a ∧ ∀ u : D.U, (fun x => a (x * u)) ∈ 𝒜) ∧

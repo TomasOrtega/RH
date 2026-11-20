@@ -10,8 +10,18 @@ section
 
 variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [Fintype S] [DecidableEq S] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `L.fns_comm x (Set.mem_union_right _ hx) y (Set.mem_union_right _ hy)`.
+-/
 theorem fnc (L : LevelData A r) {x y : A} (hx : x ∈ zfns L) (hy : y ∈ zfns L) : x * y = y * x := L.fns_comm x (Set.mem_union_right _ hx) y (Set.mem_union_right _ hy)
 
+/- English proof (translation)
+Unfold `kAlg at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨Y, hY, rfl⟩ | ⟨Y, hYi, hY, rfl⟩` into its components or cases. Conclude with `hS.x Y hY`.
+
+Conclude with `hS.xi Y hYi hY`. Consider the case `algebraMap z`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `hS.smul z hS.one`. Consider the case `add x y _ _ hx hy => exact hS.add hx hy`.
+
+Consider the case `mul x y _ _ hx hy => simpa using hS.mul hx hy`.
+-/
 theorem kLf {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ → A → Prop} (hS : LiftSys L st n Lf) {a : A}
     (ha : a ∈ kAlg st) : Lf 0 0 a := by
   unfold kAlg at ha
@@ -26,6 +36,11 @@ theorem kLf {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ → A
   | add x y _ _ hx hy => exact hS.add hx hy
   | mul x y _ _ hx hy => simpa using hS.mul hx hy
 
+/- English proof (translation)
+Introduce `y hy`. Simplify using `only [siteOps, Set.mem_union, Set.mem_range] at hy`. Break down `hy with (((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩)` into its components or cases. Conclude with `(L.p_GGi l).symm`. Conclude with `(L.pb_GGi l).symm`.
+
+Conclude with `L.fns_comm _ (by simp) _ (by simp)`. Conclude with `L.fns_comm _ (by simp) _ (by simp)`. Conclude with `L.fns_comm _ (by simp) _ (by simp)`. Conclude with `L.fns_comm _ (by simp) _ (by simp)`.
+-/
 theorem gi_site (L : LevelData A r) : ∀ y ∈ siteOps L, Commute L.GGi y := by
   intro y hy
   simp only [siteOps, Set.mem_union, Set.mem_range] at hy
@@ -37,6 +52,11 @@ theorem gi_site (L : LevelData A r) : ∀ y ∈ siteOps L, Commute L.GGi y := by
   · exact L.fns_comm _ (by simp) _ (by simp)
   · exact L.fns_comm _ (by simp) _ (by simp)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1 : Commute (L.GG * st.x Y) y`. Use `h.qq_site Y 1 1 y hy` as an intermediate fact. Rewrite `this` using `[h.start.tau Y]`. Then use the resulting hypothesis. Establish `h3 : L.GGi * (L.GG * st.x Y) = st.x Y` using `by rw [← mul_assoc, L.GGi_GG, one_mul]`.
+
+Rewrite using `[← h3]`. Conclude with `(gi_site L y hy).mul_left h1`.
+-/
 theorem x_site {L : LevelData A r} {st : Start A} (h : AHyp L st) (Y : ℂ) : ∀ y ∈ siteOps L, Commute (st.x Y) y := by
   intro y hy
   have h1 : Commute (L.GG * st.x Y) y := by
@@ -46,6 +66,19 @@ theorem x_site {L : LevelData A r} {st : Start A} (h : AHyp L st) (Y : ℂ) : �
   rw [← h3]
   exact (gi_site L y hy).mul_left h1
 
+/- English proof (translation)
+Establish `hp : ∀ l, Commute x (L.p l)` using `fun l => hx _ (by simp [siteOps])`. Establish `hc : ∀ l, Commute x (L.c l)` using `fun l => hx _ (by simp [siteOps])`. Establish `hci : ∀ l, Commute x (L.ci l)` using `fun l => hx _ (by simp [siteOps])`. Establish `key : ∀ (l : List (Matrix (Fin 2) (Fin 2) A)), (∀ M ∈ l, ∀ i j, Commute x (M i j)) → ∀ i j, Commute x (l.prod i j)`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ i j`. Rewrite using `[List.prod_nil, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `Commute.one_right x`. Conclude with `Commute.zero_right x`. Consider the case `cons M l ih`. Introduce `h i j`. Rewrite using `[List.prod_cons, Matrix.mul_apply]`.
+
+Use `Commute.sum_right _ _ _ (fun k _ => ?_)` and prove the remaining obligations. Conclude with `(h M (List.mem_cons_self ..) i k).mul_right (ih (fun N hN => h N (List.mem_cons_of_mem _ hN)) k j)`. Establish `hT : ∀ M ∈ (List.ofFn (L.Tl Y)).reverse, ∀ i j, Commute x (M i j)`. Introduce `M hM i j`. Rewrite `hM` using `[List.mem_reverse, List.mem_ofFn]`.
+
+Take `⟨l, rfl⟩` from `hM`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.FourierDecayAlt.R.LevelData.Tl, hc, hci] <;> first`. Consider the case `exact Commute.add_right (Algebra.commutes Y x).symm (hp l)`. Consider the case `exact hc l`. Consider the case `exact (hc l).neg_right`.
+
+Consider the case `exact hci l`. Conclude with `⟨key _ hT 0 0, key _ hT 1 0⟩`.
+-/
 theorem comm_TP {L : LevelData A r} {x : A} (hx : ∀ y ∈ siteOps L, Commute x y) (Y : ℂ) :
     Commute x (L.Ar Y) ∧ Commute x (L.Br Y) := by
   have hp : ∀ l, Commute x (L.p l) := fun l => hx _ (by simp [siteOps])
@@ -78,6 +111,19 @@ theorem comm_TP {L : LevelData A r} {x : A} (hx : ∀ y ∈ siteOps L, Commute x
       | exact hci l
   exact ⟨key _ hT 0 0, key _ hT 1 0⟩
 
+/- English proof (translation)
+Establish `hp : ∀ l, Commute x (L.pb l)` using `fun l => hx _ (by simp [siteOps])`. Establish `hc : ∀ l, Commute x (L.cb l)` using `fun l => hx _ (by simp [siteOps])`. Establish `hci : ∀ l, Commute x (L.cbi l)` using `fun l => hx _ (by simp [siteOps])`. Establish `key : ∀ (l : List (Matrix (Fin 2) (Fin 2) A)), (∀ M ∈ l, ∀ i j, Commute x (M i j)) → ∀ i j, Commute x (l.prod i j)`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ i j`. Rewrite using `[List.prod_nil, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `Commute.one_right x`. Conclude with `Commute.zero_right x`. Consider the case `cons M l ih`. Introduce `h i j`. Rewrite using `[List.prod_cons, Matrix.mul_apply]`.
+
+Use `Commute.sum_right _ _ _ (fun k _ => ?_)` and prove the remaining obligations. Conclude with `(h M (List.mem_cons_self ..) i k).mul_right (ih (fun N hN => h N (List.mem_cons_of_mem _ hN)) k j)`. Establish `hT : ∀ M ∈ (List.ofFn (L.Tvl Y)).reverse, ∀ i j, Commute x (M i j)`. Introduce `M hM i j`. Rewrite `hM` using `[List.mem_reverse, List.mem_ofFn]`.
+
+Take `⟨l, rfl⟩` from `hM`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Formalism.FourierDecayAlt.R.LevelData.Tvl, hc, hci] <;> first`. Consider the case `exact Commute.sub_right (Algebra.commutes Y x).symm (hp l)`. Consider the case `exact hc l`. Consider the case `exact (hc l).neg_right`.
+
+Consider the case `exact hci l`. Conclude with `⟨key _ hT 0 0, key _ hT 1 0⟩`.
+-/
 theorem comm_TM {L : LevelData A r} {x : A} (hx : ∀ y ∈ siteOps L, Commute x y) (Y : ℂ) :
     Commute x (L.Avr Y) ∧ Commute x (L.Bvr Y) := by
   have hp : ∀ l, Commute x (L.pb l) := fun l => hx _ (by simp [siteOps])
@@ -110,6 +156,17 @@ theorem comm_TM {L : LevelData A r} {x : A} (hx : ∀ y ∈ siteOps L, Commute x
       | exact hci l
   exact ⟨key _ hT 0 0, key _ hT 1 0⟩
 
+/- English proof (translation)
+Establish `hk : ∀ (M : SlopeTestRemainingChoices S A), kMat st M → ∀ i j, Lf 0 0 (M i j)` using `fun M hM i j => kLf hS (hM i j)`. Establish `hsum : ∀ {o κ : ℕ} (f : Ix S → A), (∀ k ∈ (Finset.univ : Finset (Ix S)), Lf o κ (f k)) → Lf o κ (∑ k, f k)` using `fun f hf => Finset.sum_induction _ _ (fun a b ha hb => hS.add ha hb) (hS.zero _ _) hf`. Establish `hsub : ∀ {o κ : ℕ} {a b : A}, Lf o κ a → Lf o κ b → Lf o κ (a - b)`. Introduce `o κ a b ha hb`. Use `hS.add ha (hS.smul (-1 : ℂ) hb)` as an intermediate fact.
+
+Rewrite `this` using `[neg_one_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `hle : 3 * (r + 1) * n ≤ 5 * (r + 1) * n`. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Evaluate the numerical expressions.
+
+Establish `hD : ∀ k m, Lf n (5 * (r + 1) * n) ((io u * β - β * io u : SlopeTestRemainingChoices S A) k m)`. Introduce `k m`. Establish `e1 : (io u * β - β * io u : SlopeTestRemainingChoices S A) k m = u * β k m - β k m * u` using `by simp [io]`. Rewrite using `[e1]`. Use `hsub ?_ ?_` and prove the remaining obligations.
+
+Conclude with `hS.mono (le_of_eq (by ring)) (le_of_eq (by ring)) (hS.mul hu (hk β hβ k m))`. Conclude with `hS.mono (le_of_eq (by ring)) (le_trans (le_of_eq (by ring)) hle) (hS.mul (hk β hβ k m) hu)`. Simplify using `only [Matrix.mul_apply]`. Use `hsum _ (fun m _ => ?_)` and prove the remaining obligations. Establish `h1 : Lf n (5 * (r + 1) * n) (∑ k, α e k * (io u * β - β * io u : SlopeTestRemainingChoices S A) k m)` using `hsum _ (fun k _ => hS.mono (le_of_eq (by ring)) (le_of_eq (by ring)) (hS.mul (hk α hα e k) (hD k m)))`.
+
+Conclude with `hS.mono (le_of_eq (by ring)) (le_of_eq (by ring)) (hS.mul h1 (hk γ hγ m e'))`.
+-/
 theorem ent3 {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ → A → Prop} (hS : LiftSys L st n Lf)
     {α β γ : SlopeTestRemainingChoices S A} (hα : kMat st α) (hβ : kMat st β) (hγ : kMat st γ) {u : A} (hu : Lf n (3 * (r + 1) * n) u)
     (e e' : Ix S) : Lf n (7 * (r + 1) * n) ((α * (io u * β - β * io u) * γ : SlopeTestRemainingChoices S A) e e') := by
@@ -138,6 +195,47 @@ theorem ent3 {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ → 
     hsum _ (fun k _ => hS.mono (le_of_eq (by ring)) (le_of_eq (by ring)) (hS.mul (hk α hα e k) (hD k m)))
   exact hS.mono (le_of_eq (by ring)) (le_of_eq (by ring)) (hS.mul h1 (hk γ hγ m e'))
 
+/- English proof (translation)
+Substitute `hX` using the available equality. Establish `comK : ∀ c : A, (∀ Y, Commute (st.x Y) c) → ∀ a ∈ kAlg st, Commute a c`. Introduce `c hc a ha`. Unfold `kAlg at ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Break down `hx with ⟨Y, _, rfl⟩ | ⟨Y, hYi, _, rfl⟩` into its components or cases. Conclude with `hc Y`. Take `⟨h1, h2⟩` from `hst.x_xi Y hYi show st.xi Y * c = c * st.xi Y`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `algebraMap z => exact Algebra.commutes z c`. Consider the case `add x y _ _ hx hy => exact hx.add_left hy`. Consider the case `mul x y _ _ hx hy => exact hx.mul_left hy`. Establish `hcomm : ∀ (c : A) (N : SlopeTestRemainingChoices S A), (∀ i j, Commute c (N i j)) → io c * N = N * io c`. Introduce `c N h`.
+
+Use extensionality with `i j`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Conclude with `(h i j).eq`. Establish `h39 : 3 * (r + 1) * n ≤ 9 * (r + 1) * n`. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises.
+
+Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Evaluate the numerical expressions. Establish `h79 : 7 * (r + 1) * n ≤ 9 * (r + 1) * n`. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises.
+
+Evaluate the numerical expressions. Establish `h89 : 8 * (r + 1) * n ≤ 9 * (r + 1) * n`. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Evaluate the numerical expressions.
+
+Establish `hr9 : r + 8 * (r + 1) * n ≤ 9 * (r + 1) * n` using `by nlinarith [hn]`. Establish `key : ∀ D : SlopeTestRemainingChoices S A, D ∈ dSpan st (io E : SlopeTestRemainingChoices S A) (io f) (io t) → ∀ e e', Lf n (9 * (r + 1) * n) (s * D e e' * V)`. Introduce `D hD`. Unfold `dSpan at hD`. Proceed by induction on `hD using Submodule.span_induction with`.
+
+Consider the case `mem D hD`. Break down `hD with ⟨α, β, γ, hα, hβ, hγ, rfl⟩ | ⟨γ, hγ, rfl | rfl⟩` into its components or cases. Introduce `e e'`. Establish `cs : ∀ N : SlopeTestRemainingChoices S A, kMat st N → io s * N = N * io s` using `fun N hN => hcomm s N (fun i j => (comK s hs _ (hN i j)).symm)`. Establish `cV : ∀ N : SlopeTestRemainingChoices S A, kMat st N → io V * N = N * io V` using `fun N hN => hcomm V N (fun i j => (comK V hV _ (hN i j)).symm)`.
+
+Establish `hsW : ∀ Y, Commute (st.x Y) (s * W)` using `fun Y => (hs Y).mul_right (hW Y)`. Establish `cSW : io (s * W) * β = β * io (s * W)` using `hcomm _ β (fun i j => (comK _ hsW _ (hβ i j)).symm)`. Establish `hsEV : s * E * V = u - s * W` using `by rw [← hu]; simp only [mul_add, mul_assoc]; abel`. Establish `e3 : io s * (io E * β - β * io E) * io V = io u * β - β * io u`. Establish `e2 : io s * (io E * β - β * io E) * io V = io s * io E * (β * io V) - io s * β * io E * io V` using `by simp only [mul_sub, sub_mul, mul_assoc]`.
+
+Rewrite using `[e2, ← cV β hβ, cs β hβ]`. Establish `e4 : io s * io E * (io V * β) - β * io s * io E * io V = io (s * E * V) * β - β * io (s * E * V)`. Simplify using `only [io, map_mul, mul_assoc]`. Rewrite using `[e4, hsEV]`. Establish `e5 : io (u - s * W) * β - β * io (u - s * W) = io u * β - β * io u - (io (s * W) * β - β * io (s * W))`.
+
+Simplify using `only [io, map_sub, sub_mul, mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e5, cSW, sub_self, sub_zero]`. Establish `e6 : io s * (α * (io E * β - β * io E) * γ) * io V = α * (io u * β - β * io u) * γ`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e7 : s * (α * (io E * β - β * io E) * γ : SlopeTestRemainingChoices S A) e e' * V = (io s * (α * (io E * β - β * io E) * γ) * io V : SlopeTestRemainingChoices S A) e e'`. Simplify using `[io, mul_assoc]`. Rewrite using `[e7, e6]`. Conclude with `hS.mono le_rfl h79 (ent3 hS hα hβ hγ hLu e e')`. Introduce `e e'`.
+
+Establish `c1 : Commute (γ e e') s` using `comK s hs _ (hγ e e')`. Establish `c2 : Commute (γ e e') f` using `comK f hf _ (hγ e e')`. Establish `eq : s * (io f * γ : SlopeTestRemainingChoices S A) e e' * V = γ e e' * aa`. Rewrite using `[← ha]`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq]`. Conclude with `hS.mono (le_of_eq (by ring)) (le_trans (le_of_eq (by ring)) h89) (hS.mul (kLf hS (hγ e e')) hLa)`. Introduce `e e'`. Establish `c1 : Commute (γ e e') s` using `comK s hs _ (hγ e e')`.
+
+Establish `c2 : Commute (γ e e') f` using `comK f hf _ (hγ e e')`. Establish `c4 : Commute (γ e e') t` using `comK t ht _ (hγ e e')`. Establish `eq : s * (io f * io t * γ : SlopeTestRemainingChoices S A) e e' * V = γ e e' * z2 * aa`. Rewrite using `[mul_assoc (γ e e'), ← hz]`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq]`. Conclude with `hS.mono (le_of_eq (by ring)) (le_trans (le_of_eq (by ring)) hr9) (hS.mul (hS.mul (kLf hS (hγ e e')) hLz) hLa)`. Consider the case `zero => intro e e'`. Simplify using `using hS.zero n (9 * (r + 1) * n)`.
+
+Consider the case `add x y _ _ hx hy => intro e e'`. Simplify `hS.add (hx e e') (hy e e')` using `[mul_add, add_mul]`. Consider the case `smul a x _ hx => intro e e'`. Simplify using `using hS.smul a (hx e e')`. Establish `eM : (io s * (M * io V + io W) : SlopeTestRemainingChoices S A) e e' = (if e = e' then u else 0) + s * (M - io E : SlopeTestRemainingChoices S A) e e' * V`.
+
+Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.add_apply, Matrix.mul_diagonal, Matrix.sub_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[← hu]`. Simplify using `only [mul_add, mul_sub, sub_mul, mul_assoc]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[mul_assoc]`. Rewrite using `[eM]`. Use `hS.add ?_ (key (M - io E) hM e e')` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `hS.mono le_rfl h39 hLu`. Conclude with `hS.zero _ _`.
+-/
 theorem colLift {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ → A → Prop} (hst : IsLevelStart L st)
     (hS : LiftSys L st n Lf) (hn : r + 1 ≤ n) {E s V W u f t aa z2 : A} {X M : SlopeTestRemainingChoices S A} (hX : X = io E)
     (hs : ∀ Y, Commute (st.x Y) s) (hV : ∀ Y, Commute (st.x Y) V) (hW : ∀ Y, Commute (st.x Y) W)
@@ -264,6 +362,9 @@ theorem colLift {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ �
   · exact hS.mono le_rfl h39 hLu
   · exact hS.zero _ _
 
+/- English proof (translation)
+Establish `c1 : L.GG * L.ζb = L.ζb * L.GG` using `fnc L (by simp [zfns]) (by simp [zfns])`. Establish `c2 : L.GG * L.ζi = L.ζi * L.GG` using `fnc L (by simp [zfns]) (by simp [zfns])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem s1p (L : LevelData A r) : L.ζbi * L.GG * (L.ζb * L.ζi * L.GGi) = L.ζi := by
   have c1 : L.GG * L.ζb = L.ζb * L.GG := fnc L (by simp [zfns]) (by simp [zfns])
   have c2 : L.GG * L.ζi = L.ζi * L.GG := fnc L (by simp [zfns]) (by simp [zfns])
@@ -272,6 +373,9 @@ theorem s1p (L : LevelData A r) : L.ζbi * L.GG * (L.ζb * L.ζi * L.GGi) = L.ζ
     _ = L.ζi * (L.GG * L.GGi) := by rw [L.ζbi_ζb, c2, one_mul, mul_assoc]
     _ = L.ζi := by rw [L.GG_GGi, mul_one]
 
+/- English proof (translation)
+Establish `h1 : L.GG * L.ζ = L.ζ * L.GG` using `fnc L (by simp [zfns]) (by simp [zfns])`. Establish `h2 : L.GG * L.ζbi = L.ζbi * L.GG` using `fnc L (by simp [zfns]) (by simp [zfns])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem s1m (L : LevelData A r) : L.ζi * L.GG * (L.ζ * L.ζbi * L.GGi) = L.ζbi := by
   have h1 : L.GG * L.ζ = L.ζ * L.GG := fnc L (by simp [zfns]) (by simp [zfns])
   have h2 : L.GG * L.ζbi = L.ζbi * L.GG := fnc L (by simp [zfns]) (by simp [zfns])
@@ -281,6 +385,47 @@ theorem s1m (L : LevelData A r) : L.ζi * L.GG * (L.ζ * L.ζbi * L.GGi) = L.ζb
     _ = L.ζi * L.ζ * L.ζbi * (L.GG * L.GGi) := by rw [h2]; simp only [mul_assoc]
     _ = L.ζbi := by rw [L.ζi_ζ, L.GG_GGi, one_mul, mul_one]
 
+/- English proof (translation)
+Establish `hst` using `h.start`. Establish `hL` using `h.starLev`. Take `⟨hnd, hre, hpt, hpw⟩` from `hA`. Establish `hnd' : l.intersection_update_fsHerm_neg_one ∉ w.map Letter.intersection_update_fsHerm_neg_one ∧ (w.map Letter.intersection_update_fsHerm_neg_one).Nodup` using `List.nodup_cons.mp (by simpa only [List.map_cons] using hnd)`. Establish `hpw'` using `List.pairwise_cons.mp hpw`.
+
+Establish `hAw : admitted st w` using `⟨hnd'.2, fun l' h => hre l' (by simp [h]), fun l' h => hpt l' (by simp [h]), hpw'.2⟩`. Take `⟨p0, p1, pm1, -, -⟩` from `hpt l (by simp)`. Establish `hd` using `hpw'.1`. Establish `m0 : l.pt ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p0 (fun l' hl' => ⟨fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combin …`. Establish `m1 : l.pt + 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ p1 (fun l' hl' => ⟨fun e => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' (-2) (by norm_num) (by push_cast; linear_com …`.
+
+Establish `mm1 : l.pt - 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ pm1 (fun l' hl' => ⟨fun e => hd l' hl' 1 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 2 (by norm_num) (by push_cast; linear_combination e), fun e => hd l' hl' 0 (by norm_num) (by push_cast; linear_combinat …`. Establish `hr : star l.pt = l.pt` using `hre l (by simp)`. Take `⟨lbP, lbM, laP, laM⟩` from `hB A r n L st Lf h hS hn l.pt hr pm1 p0 p1`. Take `⟨fD, fDb, fDr, fDrb, fDi, fDbi, -⟩` from `hS.fns`. Establish `xz : ∀ g ∈ zfns L, ∀ Y, Commute (st.x Y) g` using `fun g hg Y => hst.x_fn Y g hg`.
+
+Establish `hxx : st.xi l.pt * st.x l.pt = 1` using `(hst.x_xi l.pt p0).2`. Establish `xiz : ∀ g ∈ zfns L, Commute (st.xi l.pt) g` using `fun g hg => L1.xi_comm hst p0 (hst.x_fn l.pt g hg)`. Establish `mζ : L.ζ ∈ zfns L` using `by simp [zfns]`. Establish `mζi : L.ζi ∈ zfns L` using `by simp [zfns]`. Establish `mζb : L.ζb ∈ zfns L` using `by simp [zfns]`.
+
+Establish `mζbi : L.ζbi ∈ zfns L` using `by simp [zfns]`. Establish `mG : L.GG ∈ zfns L` using `by simp [zfns]`. Establish `mGi : L.GGi ∈ zfns L` using `by simp [zfns]`. Establish `sum : ∀ {ι : Type} (s : Finset ι) (f : ι → A) o κ, (∀ i ∈ s, Lf o κ (f i)) → Lf o κ (∑ i ∈ s, f i)` using `fun s f o κ hf => Finset.sum_induction f _ (fun _ _ => hS.add) (hS.zero o κ) hf`. Establish `ioE : ∀ a : A, Lf n (8 * (r + 1) * n) a → Lf n (9 * (r + 1) * n) ((io a : SlopeTestRemainingChoices S A) e e')` using `fun a ha => by`.
+
+Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hS.mono le_rfl (by nlinarith) ha`. Conclude with `hS.zero _ _`. Unfold `letterCol`.
+
+Distinguish the cases in `hp : l.plus`. Simplify using `only [hp, if_true] fin_cases i`. Conclude with `ioE _ laP`. Simplify using `only [Fin.mk_one, Matrix.cons_val_one]`. Establish `hX : (st.frame : FrameData S A).l L l.pt = io (L.l0 l.pt + L.ζb * L.ζi * L.GGi * st.ee l.pt)` using `by show io (L.l0 l.pt) + io (L.ζb * L.ζi * L.GGi) * io (st.ee l.pt) = _`.
+
+Rewrite using `[← M2.io_mul, ← M2.io_add]`. Establish `hu : L.ζbi * L.GG * ((L.l0 l.pt + L.ζb * L.ζi * L.GGi * st.ee l.pt) * L.Ar l.pt + L.Br l.pt) = st.xi l.pt * bP L st l.pt`. Unfold `bP nP`. Rewrite using `[hst.low l.pt p0, hst.tau]`. Use `symm`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(xiz _ mζbi).left_comm]`. Use `congr 2`. Use `noncomm_ring`. Use `_ = L.ζbi * (L.GG * (st.xi l.pt * (st.x l.pt * ((L.l0 l.pt + L.ζb * L.ζi * L.GGi * st.ee l.pt) * L.Ar l.pt + L.Br l.pt)))) := by`.
+
+Rewrite using `[(xiz _ mG).left_comm]`. Use `_ = _ := by rw [← mul_assoc (st.xi l.pt), hxx, one_mul, ← mul_assoc]`. Establish `hz : L.ζbi * L.GG * (L.ζb * L.ζi * L.GGi) * (L.TT • L.ζbi) * L.Ar l.pt = (L.TT • L.ζbi) * aP L l.pt`. Rewrite using `[s1p, aP, smul_mul_assoc, mul_smul_comm, smul_mul_assoc, fnc L mζi mζbi, mul_assoc]`. Establish `hLz : Lf 0 r (L.TT • L.ζbi)`.
+
+Establish `e1 : L.Dbi * L.Drb = L.ζbi`. Rewrite using `[LevelData.Dbi, mul_assoc, Drbi_Drb, mul_one]`. Rewrite using `[← e1]`. Conclude with `hS.smul _ (hS.mono le_rfl (by simp) (hS.mul fDbi fDrb))`. Conclude with `colLift hst hS hn hX (fun Y => (xz _ mζbi Y).mul_right (xz _ mG Y)) (fun Y => (comm_TP (x_site h Y) l.pt).1) (fun Y => (comm_TP (x_site h Y) l.pt).2) (fun Y => ((xz _ mζb Y).mul_right (xz _ mζi Y)).mul_right (xz _ mGi Y)) (fun Y => (xz _ mζbi Y).smul_right L.TT) hu (hS.mono (by o …`.
+
+Simplify using `only [hp, Bool.false_eq_true, if_false] fin_cases i`. Conclude with `ioE _ laM`. Simplify using `only [Fin.mk_one, Matrix.cons_val_one]`. Establish `hfr0 : IsFrame L (st.frame : FrameData S A)` using `Formalism.FourierDecayAlt.P.frame_of_admissible_word A S r L st [] hL hst ⟨List.nodup_nil, by simp, by simp, List.Pairwise.nil⟩`. Establish `fm` using `Formalism.FourierDecayAlt.P.frame_adjoint_m A S r L (st.frame : FrameData S A) l.pt hL hfr0 hr p0 pm1`.
+
+Establish `fm' : (io (st.QQ l.pt 0 1) : SlopeTestRemainingChoices S A) = io L.GG * io (st.x l.pt) * (st.frame : FrameData S A).m L l.pt`. Use `fm` as an intermediate fact. Simplify using `only [Start.frame, lift0, Matrix.map_apply, one_mul, mul_one] at this`. Conclude with `this`. Establish `hX : (st.frame : FrameData S A).m L l.pt = io (st.xi l.pt * L.GGi * st.QQ l.pt 0 1)`.
+
+Establish `h1 : st.xi l.pt * L.GGi * L.GG * st.x l.pt = 1`. Rewrite using `[mul_assoc (st.xi l.pt), L.GGi_GG, mul_one, hxx]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Use `show _ = Matrix.scalar (Ix S) (1 : A) * _`.
+
+Rewrite using `[map_one, one_mul]`. Use `_ = _ := by`. Rewrite using `[M2.io_mul (st.xi l.pt * L.GGi), fm', M2.io_mul, M2.io_mul, M2.io_mul]`. Simplify using `only [mul_assoc]`. Establish `hxG : Commute (st.xi l.pt) L.GG` using `xiz _ mG`.
+
+Establish `hu : L.ζi * L.GG * (st.xi l.pt * L.GGi * st.QQ l.pt 0 1 * L.Avr l.pt + L.Bvr l.pt) = st.xi l.pt * bM L st l.pt`. Unfold `bM`. Rewrite using `[hst.tau]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hxG.eq]`.
+
+Use `noncomm_ring`. Use `_ = L.ζi * (st.xi l.pt * st.QQ l.pt 0 1 * L.Avr l.pt + L.GG * (st.xi l.pt * st.x l.pt) * L.Bvr l.pt) := by`. Rewrite using `[L.GG_GGi, hxx]`. Use `noncomm_ring`. Use `_ = L.ζi * (st.xi l.pt * st.QQ l.pt 0 1 * L.Avr l.pt + (st.xi l.pt * L.GG) * st.x l.pt * L.Bvr l.pt) := by`.
+
+Rewrite using `[hxG.eq]`. Use `noncomm_ring`. Use `_ = st.xi l.pt * (L.ζi * (st.QQ l.pt 0 1 * L.Avr l.pt + L.GG * st.x l.pt * L.Bvr l.pt)) := by`. Rewrite using `[(xiz _ mζi).left_comm]`. Use `congr 1`.
+
+Use `noncomm_ring`. Establish `hz : L.ζi * L.GG * (L.ζ * L.ζbi * L.GGi) * (L.TT • L.ζi) * L.Avr l.pt = (L.TT • L.ζi) * aM L l.pt`. Rewrite using `[s1m, aM, smul_mul_assoc, mul_smul_comm, smul_mul_assoc, fnc L mζbi mζi, mul_assoc]`. Establish `hLz : Lf 0 r (L.TT • L.ζi)`. Establish `e1 : L.Di * L.Dr = L.ζi`.
+
+Rewrite using `[LevelData.Di, mul_assoc, Dri_Dr, mul_one]`. Rewrite using `[← e1]`. Conclude with `hS.smul _ (hS.mono le_rfl (by simp) (hS.mul fDi fDr))`. Conclude with `colLift hst hS hn hX (fun Y => (xz _ mζi Y).mul_right (xz _ mG Y)) (fun Y => (comm_TM (x_site h Y) l.pt).1) (fun Y => (comm_TM (x_site h Y) l.pt).2) (fun Y => ((xz _ mζ Y).mul_right (xz _ mζbi Y)).mul_right (xz _ mGi Y)) (fun Y => (xz _ mζi Y).smul_right L.TT) hu (hS.mono (by ome …`.
+-/
 theorem letter {L : LevelData A r} {st : Start A} {n : ℕ} {Lf : ℕ → ℕ → A → Prop} (hB : BasicLift) (hLS : LShape)
     (hMS : MShape) (h : AHyp L st) (hS : LiftSys L st n Lf) (hn : r + 1 ≤ n) (l : Letter ℂ S) (w : List (Letter ℂ S))
     (hA : admitted st (l :: w)) (i : Fin 2) (e e' : Ix S) : Lf n (9 * (r + 1) * n) (letterCol L st l w i e e') := by
@@ -418,10 +563,16 @@ end Formalism.FourierDecayAlt.P.TLA.ColumnLift
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `hB hLS hMS A S _ _ _ _ _ _ r n L st Lf l w h hS hn hA i e e'`. Conclude with `TLA.ColumnLift.letter hB hLS hMS h hS hn l w hA i e e'`.
+-/
 theorem letter_lift_of_parts : Formalism.FourierDecayAlt.TL.LetterLiftOfParts := by
   intro hB hLS hMS A S _ _ _ _ _ _ r n L st Lf l w h hS hn hA i e e'
   exact TLA.ColumnLift.letter hB hLS hMS h hS hn l w hA i e e'
 
+/- English proof (translation)
+The claim follows from `TLA.M2.mShape_of l_shape`.
+-/
 theorem m_shape_of_l_shape : Formalism.FourierDecayAlt.TL.MShape := TLA.M2.mShape_of l_shape
 
 end Formalism.FourierDecayAlt.P

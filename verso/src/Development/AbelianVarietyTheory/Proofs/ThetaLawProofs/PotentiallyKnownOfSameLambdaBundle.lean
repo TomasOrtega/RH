@@ -25,28 +25,46 @@ variable {S S' X Y : Scheme.{0}} {A : Over S} [GrpObj A]
 def IsProd (A : Over S) [GrpObj A] (u v w : X ⟶ A.left) : Prop :=
   ∃ (s : X ⟶ S) (x y : Over.mk s ⟶ A), x.left = u ∧ y.left = v ∧ (x * y).left = w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T.hom, x, y, rfl, rfl, rfl⟩`.
+-/
 theorem isProd_mul {T : Over S} (x y : T ⟶ A) : IsProd A x.left y.left (x * y).left :=
   ⟨T.hom, x, y, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, v ≫ A.hom, Over.homMk u h, Over.homMk v rfl, rfl, rfl, rfl⟩`.
+-/
 theorem exists_isProd (u v : X ⟶ A.left) (h : u ≫ A.hom = v ≫ A.hom) : ∃ w, IsProd A u v w :=
   ⟨_, v ≫ A.hom, Over.homMk u h, Over.homMk v rfl, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨s, x, y, rfl, rfl, rfl⟩` from `h`. Take `⟨s', x', y', rfl, rfl, rfl⟩` from `h'`. Conclude with `mul_left_congr ((Over.w x).symm.trans ((congrArg (· ≫ A.hom) hu).trans (Over.w x'))) _ _ _ _ hu hv`.
+-/
 theorem IsProd.unique {u v w u' v' w' : X ⟶ A.left} (h : IsProd A u v w) (h' : IsProd A u' v' w') (hu : u = u')
     (hv : v = v') : w = w' := by
   obtain ⟨s, x, y, rfl, rfl, rfl⟩ := h
   obtain ⟨s', x', y', rfl, rfl, rfl⟩ := h'
   exact mul_left_congr ((Over.w x).symm.trans ((congrArg (· ≫ A.hom) hu).trans (Over.w x'))) _ _ _ _ hu hv
 
+/- English proof (translation)
+Take `⟨s, x, y, rfl, rfl, rfl⟩` from `h`. Set `g' : Over.mk (g ≫ s) ⟶ Over.mk s` to `Over.homMk g rfl`. Conclude with `⟨g ≫ s, g' ≫ x, g' ≫ y, rfl, rfl, by rw [← MonObj.comp_mul]; rfl⟩`.
+-/
 theorem IsProd.comp {u v w : X ⟶ A.left} (h : IsProd A u v w) (g : Y ⟶ X) : IsProd A (g ≫ u) (g ≫ v) (g ≫ w) := by
   obtain ⟨s, x, y, rfl, rfl, rfl⟩ := h
   let g' : Over.mk (g ≫ s) ⟶ Over.mk s := Over.homMk g rfl
   exact ⟨g ≫ s, g' ≫ x, g' ≫ y, rfl, rfl, by rw [← MonObj.comp_mul]; rfl⟩
 
+/- English proof (translation)
+Take `⟨s, x, y, rfl, rfl, rfl⟩` from `h`. Conclude with `⟨_, pushPt hφ.1.w x, pushPt hφ.1.w y, rfl, rfl, hφ.2 _ x y _ _ rfl rfl⟩`.
+-/
 theorem IsProd.push {A' : Over S'} [GrpObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left} (hφ : IsGrpPullback A' A f φ)
     {u v w : X ⟶ A'.left} (h : IsProd A' u v w) : IsProd A (u ≫ φ) (v ≫ φ) (w ≫ φ) := by
   obtain ⟨s, x, y, rfl, rfl, rfl⟩ := h
   exact ⟨_, pushPt hφ.1.w x, pushPt hφ.1.w y, rfl, rfl, hφ.2 _ x y _ _ rfl rfl⟩
 
+/- English proof (translation)
+Establish `h` using `isProd_mul (toUnit Q ≫ t) e`. Establish `hu : (toUnit Q).left = Q.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit Q))`. Rewrite `h` using `[Over.comp_left, hu]`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`. Conclude with `h`.
+-/
 theorem isProd_transl {Q : Over S} (e : Q ⟶ A) (t : 𝟙_ (Over S) ⟶ A) :
     IsProd A (Q.hom ≫ t.left) e.left (e ≫ ((toUnit A ≫ t) * 𝟙 A)).left := by
   have h := isProd_mul (toUnit Q ≫ t) e
@@ -55,6 +73,9 @@ theorem isProd_transl {Q : Over S} (e : Q ⟶ A) (t : 𝟙_ (Over S) ⟶ A) :
   rw [MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
   exact h
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝟙_ (Over S) ⟶ A).left = eSec A`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[pow_two]`. Conclude with `⟨fun h => h1 ▸ h ▸ isProd_mul t t, fun h => Over.OverMorphism.ext (((isProd_mul t t).unique h rfl rfl).trans h1.symm)⟩`.
+-/
 theorem sq_eq_one_iff (t : 𝟙_ (Over S) ⟶ A) : t ^ 2 = 1 ↔ IsProd A t.left t.left (eSec A) := by
   have h1 : (1 : 𝟙_ (Over S) ⟶ A).left = eSec A := by
     rw [Hom.one_def, toUnit_unit, Category.id_comp]; rfl
@@ -64,6 +85,19 @@ theorem sq_eq_one_iff (t : 𝟙_ (Over S) ⟶ A) : t ^ 2 = 1 ↔ IsProd A t.left
 
 end Prod
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨A, i, _, t, ht⟩ : ∃ (A : CommRingCat.{0}) (i : Spec A ⟶ X) (_ : IsOpenImmersion i) (t : Spec A), i t = a (IsLocalRing.closedPoint Ω) := by`. Take `⟨n, t, ht⟩` from `X.affineCover.exists_eq (a (IsLocalRing.closedPoint Ω))`. Conclude with `⟨_, X.affineCover.f n, X.affineCover.map_prop n, t, ht⟩`. Establish `hr : Set.range a ⊆ Set.range i`. Introduce and unpack `_ ⟨u, rfl⟩`.
+
+Conclude with `⟨t, ht.trans (congrArg a (Subsingleton.elim _ _))⟩`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (IsOpenImmersion.lift i a hr)`. Establish `hφa : Spec.map φ ≫ i = a` using `by rw [hφ, IsOpenImmersion.lift_fac]`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (i ≫ p)`. Establish `h₂ : LocallyOfFiniteType (Spec.map ψ)` using `by rw [hψ]; infer_instance`.
+
+Rewrite `h₂` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `hc : ψ ≫ φ = CommRingCat.ofHom (algebraMap K Ω)` using `Spec.map_injective (by rw [Spec.map_comp, hψ, ← Category.assoc, hφa, ha])`. Set `: Algebra K A` to `ψ.hom.toAlgebra`. Take `⟨s, hs⟩ : (⊤ : Subalgebra K A).FG` from `(show Algebra.FiniteType K A from h₂).out`. Use `⟨s.image φ.hom, ?_⟩` and prove the remaining obligations.
+
+Use `set F := IntermediateField.adjoin K ((s.image φ.hom : Finset Ω) : Set Ω) with hF`. Establish `hm : ∀ x : A, φ.hom x ∈ F` using `fun x => by`. Establish `hx : x ∈ Algebra.adjoin K (s : Set A)` using `hs ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact IntermediateField.subset_adjoin _ _ (by simpa using ⟨x, hx, rfl⟩)`.
+
+Consider the case `algebraMap q`. Rewrite using `[show φ.hom (algebraMap K A q) = algebraMap K Ω q from congrArg (fun z => z.hom q) hc]`. Conclude with `F.algebraMap_mem q`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Use `⟨Spec.map (CommRingCat.ofHom (φ.hom.codRestrict F hm)) ≫ i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφa, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_finset_point {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {X : Scheme.{0}} (p : X ⟶ Sp K)
     [LocallyOfFiniteType p] (a : Sp Ω ⟶ X) (ha : a ≫ p = spMap (algebraMap K Ω)) :
     ∃ (s : Finset Ω) (b : Sp (IntermediateField.adjoin K (s : Set Ω)) ⟶ X),
@@ -100,15 +134,30 @@ theorem exists_finset_point {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {X
   rw [← hφa, ← Spec.map_comp_assoc]
   rfl
 
+/- English proof (translation)
+Take `⟨φ, he, w, hg, F, hp, hw, -⟩` from `h`. Conclude with `⟨φ, ⟨hp, hg, w, hw⟩, he⟩`.
+-/
 theorem polPB_of_keyPB {R R' : Type} [CommRing R] [CommRing R'] {x' : KeyIn R'} {x : KeyIn R} {f : R →+* R'}
     (h : KeyPB x' x f) : ∃ φ, PolPB x'.P x.P (spMap f) φ ∧ eSec x'.P.A ≫ φ = spMap f ≫ eSec x.P.A := by
   obtain ⟨φ, he, w, hg, F, hp, hw, -⟩ := h
   exact ⟨φ, ⟨hp, hg, w, hw⟩, he⟩
 
+/- English proof (translation)
+Introduce `e x hx` and use `hk.choose_spec (e.comp j) x (keyPB_trans _ _ _ y y' x j e h hx)`.
+-/
 theorem known_of_keyPB {K F : Type} [Field K] [Field F] {y : KeyIn K} {y' : KeyIn F} {j : K →+* F} (h : KeyPB y' y j)
     (hk : Known K y) : ∀ (e : F →+* ℂ) (x : KeyIn ℂ), KeyPB x y' e → Val x (e (j hk.choose)) :=
   fun e x hx => hk.choose_spec (e.comp j) x (keyPB_trans _ _ _ y y' x j e h hx)
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `exists_keyPB_ring y j`. Take `⟨χ, hχ, he⟩` from `polPB_of_keyPB hz`. Take `⟨e, hm, hφe⟩` from `grpPullback_iso hφ hχ.1`. Set `t : 𝟙_ (Over (Sp F)) ⟶ z.P.A` to `Over.homMk (hχ.1.1.lift p (𝟙 _) (hp.trans (Category.id_comp _).symm)) (hχ.1.1.lift_snd _ _ _)`. Establish `ht : t.left ≫ χ = p` using `hχ.1.1.lift_fst _ _ _`.
+
+Use `GlobalTheory.T.thetaFrameValueKnown_of_twoTorsion_translate hL hT F z y' e t hm ?_ ?_ ⟨_, known_of_keyPB hz hk⟩` and prove the remaining obligations. Establish `h1 : (1 : 𝟙_ (Over (Sp F)) ⟶ z.P.A).left = eSec z.P.A`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Both sides reduce to the same expression. Rewrite using `[pow_two]`.
+
+Use `Over.OverMorphism.ext (hχ.1.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Rewrite using `[h1, he]`. Conclude with `((isProd_mul t t).push hχ.1).unique h₂ ht ht`. Establish `hw'` using `((isProd_transl e.hom t).push hχ.1).unique hw (by rw [Category.assoc, ht]) hφe`. Establish `k` using `lbIso_pull_comp hχ.2.2 (e.hom ≫ ((toUnit z.P.A ≫ t) * 𝟙 z.P.A)).left`.
+
+Rewrite `k` using `[hw']`. Conclude with `LBIso.trans y'.P.isLB (pull_isLB y.P.isLB _) (pull_isLB z.P.isLB _) hi k.symm`.
+-/
 theorem known_of_point (hL : Out.Laws) (hT : ThetaUnifAV) {K F : Type} [Field K] [Field F] (j : K →+* F) (y : KeyIn K)
     (y' : KeyIn F) (φ w : y'.P.A.left ⟶ y.P.A.left) (hφ : IsGrpPullback y'.P.A y.P.A (spMap j) φ)
     (p : Sp F ⟶ y.P.A.left) (hp : p ≫ y.P.A.hom = spMap j) (h₂ : IsProd y.P.A p p (spMap j ≫ eSec y.P.A))
@@ -131,6 +180,11 @@ theorem known_of_point (hL : Out.Laws) (hT : ThetaUnifAV) {K F : Type} [Field K]
     rw [hw'] at k
     exact LBIso.trans y'.P.isLB (pull_isLB y.P.isLB _) (pull_isLB z.P.isLB _) hi k.symm
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Use `haveI : Flat (spMap σ) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance`. Use `haveI : Surjective (spMap σ) := ⟨fun p => ⟨IsLocalRing.closedPoint Ω, Subsingleton.elim _ _⟩⟩`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_spMap {k Ω : Type} [Field k] [Field Ω] (σ : k →+* Ω) : Epi (spMap σ) := by
   letI := σ.toAlgebra
   haveI : Flat (spMap σ) := by
@@ -139,6 +193,11 @@ theorem epi_spMap {k Ω : Type} [Field k] [Field Ω] (σ : k →+* Ω) : Epi (sp
   haveI : Surjective (spMap σ) := ⟨fun p => ⟨IsLocalRing.closedPoint Ω, Subsingleton.elim _ _⟩⟩
   exact Flat.epi_of_flat_of_surjective _
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback P.A (spMap f)`. Set `φ : ((Over.pullback (spMap f)).obj P.A).left ⟶ P.A.left` to `pullback.fst P.A.hom (spMap f)`. Express the relevant statement in the definitionally equal form `IsGrpPullback _ _ _ φ at h`. Establish `hL'` using `pull_isLB P.isLB φ`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`.
+
+Conclude with `⟨{ A := (Over.pullback (spMap f)).obj P.A isAb := Out.TLinPf.isAb_pullback (spMap f) P.A P.isAb g := P.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim L := P.L.pull φ isLB := hL' rigid := PolBaseChange.rigidified_pull h P.rigid s …`.
+-/
 theorem exists_polPB {R R' : Type} [CommRing R] [CommRing R'] (P : Out.PolAV (Sp R)) (f : R →+* R') :
     ∃ (P' : Out.PolAV (Sp R')) (φ : P'.A.left ⟶ P.A.left), PolPB P' P (spMap f) φ := by
   have h := isGrpPullback_pullback P.A (spMap f)
@@ -157,6 +216,15 @@ theorem exists_polPB {R R' : Type} [CommRing R] [CommRing R'] (P : Out.PolAV (Sp
            ample := relAmple_pull h.1 P.isLB hL' hw ⊤ (isAffineOpen_top _) (fun _ => trivial) P.ample
            ktriv := kTriv_pull h P.isLB hL' hw P.ktriv }, φ, h, rfl, idIso _, idIso_isGen hL'⟩
 
+/- English proof (translation)
+Take `⟨Q', χ, hχ⟩` from `exists_polPB Q σ`. Take `⟨P', ψ, hψ⟩` from `exists_polPB P σ`. Take `⟨e', hm, he'⟩` from `grpPullback_iso ((hψ.1.comp (isGrpPullback_of_iso e)).congr (Category.comp_id _) rfl) hχ.1`. Establish `lQ : (abelian₂ Q.A Q.L).IsLB` using `DVR.linComb_isLB _ Q.isLB _ _`. Establish `hl' : LamIs P'.A P'.L Q'.A (abelian₂ Q'.A Q'.L) e'.hom.left`.
+
+Take `⟨φ₂, s₂, i₂⟩` from `hχ.lamIs`. Take `⟨φ₂', s₂', i₂'⟩` from `LamIs.comp P'.isLB P.isLB lQ hψ.lamIs hl`. Use `⟨_, isSquare_tensor e'.hom, ?_⟩` and prove the remaining obligations. Establish `k₁` using `lbIso_pull_comp i₂ (e'.hom ⊗ₘ e'.hom).left`. Rewrite `k₁` using `[isSquare_unique (isSquare_comp (isSquare_tensor e'.hom) s₂) s₂' he']`.
+
+Conclude with `LBIso.trans (DVR.linComb_isLB _ P'.isLB _ _) (pull_isLB lQ _) (pull_isLB (DVR.linComb_isLB _ Q'.isLB _ _) _) i₂' k₁.symm`. Take `⟨t, ht, hi⟩` from `GlobalTheory.T.exists_twoTorsion_translate_same_lambdaBundle hL Ω Q' P' e' hm hl'`. Use `⟨t.left ≫ χ, P'.A, ψ, (e'.hom ≫ ((toUnit Q'.A ≫ t) * 𝟙 Q'.A)).left ≫ χ, ?_, ?_, hψ.1.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hχ.1.1.w, ← Category.assoc, Over.w t]`. Conclude with `Category.id_comp _`.
+
+Rewrite using `[← PolBaseChange.eSec_comm hχ.1]`. Conclude with `((sq_eq_one_iff t).1 ht).push hχ.1`. Rewrite using `[← he', ← Category.assoc]`. Conclude with `(isProd_transl e'.hom t).push hχ.1`. Conclude with `LBIso.trans (pull_isLB P.isLB _) P'.isLB (pull_isLB Q.isLB _) hψ.2.2.symm (LBIso.trans P'.isLB (pull_isLB Q'.isLB _) (pull_isLB Q.isLB _) hi (lbIso_pull_comp hχ.2.2 _))`.
+-/
 theorem exists_point (hL : Out.Laws) {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed Ω] (σ : K →+* Ω)
     (Q P : Out.PolAV (Sp K)) (e : P.A ≅ Q.A) [IsMonHom e.hom] (hl : LamIs P.A P.L Q.A (abelian₂ Q.A Q.L) e.hom.left) :
     ∃ (p : Sp Ω ⟶ Q.A.left) (X : Over (Sp Ω)) (ψ : X.left ⟶ P.A.left) (w : X.left ⟶ Q.A.left),
@@ -186,6 +254,11 @@ theorem exists_point (hL : Out.Laws) {K Ω : Type} [Field K] [Field Ω] [IsAlgCl
   · exact LBIso.trans (pull_isLB P.isLB _) P'.isLB (pull_isLB Q.isLB _) hψ.2.2.symm
       (LBIso.trans P'.isLB (pull_isLB Q'.isLB _) (pull_isLB Q.isLB _) hi (lbIso_pull_comp hχ.2.2 _))
 
+/- English proof (translation)
+Establish `k₁` using `lbIso_pull_comp (⟨idIso _, idIso_isGen (pull_isLB hL a)⟩ : LBIso (L.pull a) (L.pull a)) j`. Establish `k₂` using `lbIso_pull_comp (⟨idIso _, idIso_isGen (pull_isLB hM b)⟩ : LBIso (M.pull b) (M.pull b)) j`. Establish `a₁` using `pull_isLB (pull_isLB hL a) j`. Establish `a₂` using `pull_isLB (pull_isLB hM b) j`. Establish `b₁` using `pull_isLB hL (j ≫ a)`.
+
+Establish `b₂` using `pull_isLB hM (j ≫ b)`. Conclude with `⟨fun h => LBIso.trans b₁ a₁ b₂ k₁.symm (LBIso.trans a₁ a₂ b₂ h k₂), fun h => LBIso.trans a₁ b₁ a₂ k₁ (LBIso.trans b₁ b₂ a₂ h k₂.symm)⟩`.
+-/
 theorem lbIso_pull_both {W Y X Z : Scheme.{0}} {L : LB X} {M : LB Z} {a : Y ⟶ X} {b : Y ⟶ Z} (j : W ⟶ Y)
     (hL : L.IsLB) (hM : M.IsLB) :
     LBIso ((L.pull a).pull j) ((M.pull b).pull j) ↔ LBIso (L.pull (j ≫ a)) (M.pull (j ≫ b)) := by
@@ -198,6 +271,27 @@ theorem lbIso_pull_both {W Y X Z : Scheme.{0}} {L : LB X} {M : LB Z} {a : Y ⟶ 
   exact ⟨fun h => LBIso.trans b₁ a₁ b₂ k₁.symm (LBIso.trans a₁ a₂ b₂ h k₂),
     fun h => LBIso.trans a₁ b₁ a₂ k₁ (LBIso.trans b₁ b₂ a₂ h k₂.symm)⟩
 
+/- English proof (translation)
+Introduce `hL hT K _ _ y P e he hl hk`. Set `Ω` to `AlgebraicClosure K`. Take `⟨p, X, ψ, w, hp, h₂, hψ, hw, hi⟩` from `exists_point hL (algebraMap K Ω) y.P P e hl`. Use `haveI := y.P.isAb.smooth`. Use `haveI := P.isAb.proper`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨K₁, p₁, hp₁, _⟩ : ∃ (K₁ : IntermediateField K Ω) (p₁ : Sp K₁ ⟶ y.P.A.left), spMap (algebraMap K₁ Ω) ≫ p₁ = p ∧ FiniteDimensional K K₁ := by`. Take `⟨s, p₁, hp₁⟩` from `exists_finset_point y.P.A.hom p hp`. Conclude with `⟨_, p₁, hp₁, IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩`. Use `haveI := epi_spMap (algebraMap K₁ Ω)`. Establish `c₁ : spMap (algebraMap K Ω) = spMap (algebraMap K₁ Ω) ≫ spMap (algebraMap K K₁)` using `spMap_comp (algebraMap K K₁) (algebraMap K₁ Ω)`.
+
+Establish `q₁ : p₁ ≫ y.P.A.hom = spMap (algebraMap K K₁)`. Rewrite using `[← cancel_epi (spMap (algebraMap K₁ Ω)), ← Category.assoc, hp₁, hp, c₁]`. Establish `r₁ : IsProd y.P.A p₁ p₁ (spMap (algebraMap K K₁) ≫ eSec y.P.A)`. Take `⟨u, hu⟩` from `exists_isProd p₁ p₁ rfl`. Rewrite `hu` using `[(cancel_epi (spMap (algebraMap K₁ Ω))).1 (((hu.comp _).unique h₂ hp₁ hp₁).trans (by rw [c₁, Category.assoc]) : _ ≫ u = _ ≫ spMap (algebraMap K K₁) ≫ eSec y.P.A)]`. Then use the resulting hypothesis.
+
+Set `X₁ : Over (Sp K₁)` to `Over.mk (pullback.snd P.A.hom (spMap (algebraMap K K₁)))`. Set `ψ₁ : X₁.left ⟶ P.A.left` to `pullback.fst _ _`. Establish `hψ₁ : IsPullback ψ₁ X₁.hom P.A.hom (spMap (algebraMap K K₁))` using `IsPullback.of_hasPullback _ _`. Take `⟨w₁, hw₁⟩` from `exists_isProd (X₁.hom ≫ p₁) (ψ₁ ≫ e.hom.left) (by rw [Category.assoc, q₁, Category.assoc, Over.w e.hom, hψ₁.w])`. Set `π : X.left ⟶ X₁.left` to `hψ₁.lift ψ (X.hom ≫ spMap (algebraMap K₁ Ω)) (by rw [hψ.w, c₁, Category.assoc])`.
+
+Establish `π₁ : π ≫ ψ₁ = ψ` using `hψ₁.lift_fst _ _ _`. Establish `π₂ : π ≫ X₁.hom = X.hom ≫ spMap (algebraMap K₁ Ω)` using `hψ₁.lift_snd _ _ _`. Establish `hπ : IsPullback π X.hom X₁.hom (spMap (algebraMap K₁ Ω))` using `IsPullback.of_right (by rw [π₁, ← c₁]; exact hψ) π₂ hψ₁`. Establish `πw : π ≫ w₁ = w` using `(hw₁.comp π).unique hw (by rw [← Category.assoc, π₂, Category.assoc, hp₁]) (by rw [← Category.assoc, π₁])`. Use `haveI : IsProper X₁.hom := MorphismProperty.of_isPullback (P := @IsProper) hψ₁ inferInstance`.
+
+Take `⟨s', hs'⟩` from `lbIso_descends_to_subfield_containing_finset K₁ Ω (algebraMap K₁ Ω) X₁ X π (P.L.pull ψ₁) (y.P.L.pull w₁) hπ inferInstance inferInstance (pull_isLB P.isLB _) (pull_isLB y.P.isLB _) ((lbIso_pull_both π P.isLB y.P.isLB).2 (by rw [π₁, πw]; exact hi))`. Set `K₂` to `IntermediateField.adjoin K₁ (s' : Set Ω)`. Use `haveI : FiniteDimensional K₁ K₂ := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsIntegral.isIntegral (R := K) x).tower_top`. Use `haveI : NumberField K₁ := NumberField.of_module_finite K K₁`. Use `haveI : NumberField K₂ := NumberField.of_module_finite K₁ K₂`.
+
+Set `X₂ : Over (Sp K₂)` to `Over.mk (pullback.snd X₁.hom (spMap (algebraMap K₁ K₂)))`. Set `χ : X₂.left ⟶ X₁.left` to `pullback.fst _ _`. Establish `hχ : IsPullback χ X₂.hom X₁.hom (spMap (algebraMap K₁ K₂))` using `IsPullback.of_hasPullback _ _`. Establish `i₂` using `(lbIso_pull_both χ P.isLB y.P.isLB).1 (hs' K₂ (algebraMap K₁ K₂) (algebraMap K₂ Ω) rfl (fun x hx => ⟨⟨x, IntermediateField.subset_adjoin _ _ hx⟩, rfl⟩) X₂ χ hχ)`. Use `⟨K₂, inferInstance, inferInstance, (algebraMap K₁ K₂).comp (algebraMap K K₁), fun F _ j y' φ hφ => ?_⟩` and prove the remaining obligations.
+
+Establish `c₂ : spMap (j.comp ((algebraMap K₁ K₂).comp (algebraMap K K₁))) = (spMap j ≫ spMap (algebraMap K₁ K₂)) ≫ spMap (algebraMap K K₁)`. Rewrite using `[spMap_comp, spMap_comp, Category.assoc]`. Set `a : y'.P.A.left ⟶ X₁.left` to `hψ₁.lift φ (y'.P.A.hom ≫ spMap j ≫ spMap (algebraMap K₁ K₂)) (by rw [hφ.1.1.w, c₂]; simp only [Category.assoc])`. Establish `a₁ : a ≫ ψ₁ = φ` using `hψ₁.lift_fst _ _ _`. Establish `a₂ : a ≫ X₁.hom = y'.P.A.hom ≫ spMap j ≫ spMap (algebraMap K₁ K₂)` using `hψ₁.lift_snd _ _ _`.
+
+Set `b : y'.P.A.left ⟶ X₂.left` to `hχ.lift a (y'.P.A.hom ≫ spMap j) (by rw [a₂, Category.assoc])`. Establish `b₁ : b ≫ χ = a` using `hχ.lift_fst _ _ _`. Establish `i₃` using `(lbIso_pull_both b P.isLB y.P.isLB).1 (LBIso.chartPull (chartPullPull _ b b rfl) (chartPullPull _ b b rfl) i₂)`. Rewrite `i₃` using `[← Category.assoc, ← Category.assoc, b₁, a₁]`. Use `known_of_point hL hT _ y y' (φ ≫ e.hom.left) (a ≫ w₁) ((hφ.1.comp (isGrpPullback_of_iso e)).congr (Category.comp_id _) rfl) ((spMap j ≫ spMap (algebraMap K₁ K₂)) ≫ p₁) (by rw [Category.assoc, q₁, c₂]) ?_ ?_ (LBIso.trans y'.P.isLB (pull_isLB P.isLB _) (pull_isLB y.P.isLB _) hφ.2.2 …` and prove the remaining obligations.
+
+Rewrite using `[c₂, Category.assoc _ (spMap (algebraMap K K₁))]`. Conclude with `r₁.comp _`. Rewrite using `[← Category.assoc, ← a₂, ← a₁, Category.assoc, Category.assoc]`. Conclude with `hw₁.comp a`.
+-/
 theorem potKnown_of_lamIs : Out.Laws → ThetaUnifAV → ∀ (K : Type) [Field K] [NumberField K] (y : KeyIn K) (P : Out.PolAV (Sp K)) (e : P.A ≅ y.P.A), IsMonHom e.hom → LamIs P.A P.L y.P.A (abelian₂ y.P.A y.P.L) e.hom.left → Known K y → PotKnown K P := by
   intro hL hT K _ _ y P e he hl hk
   let Ω := AlgebraicClosure K

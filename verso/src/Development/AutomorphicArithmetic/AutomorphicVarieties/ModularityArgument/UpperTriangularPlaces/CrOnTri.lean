@@ -20,6 +20,9 @@ private noncomputable def mrep {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) 
   map_one' := by simp [Module.End.one_eq_id]
   map_mul' g h := by simp [Module.End.mul_eq_comp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem mrep_apply {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) (g : Γ) (x : Fin n → E) (i : Fin n) :
     mrep M g x i = ∑ j, M g i j * x j := rfl
 
@@ -34,11 +37,20 @@ private def topBlock {n : ℕ} (M : Γ →* Matrix (Fin (n + 1)) (Fin (n + 1)) E
 private def pad (n : ℕ) : (Fin n → E) →ₗ[E] (Fin (n + 1) → E) :=
   LinearMap.pi fun i => Fin.lastCases 0 (fun j => LinearMap.proj j) i
 
+/- English proof (translation)
+Simplify using `[pad]`.
+-/
 @[simp] private theorem pad_last (n : ℕ) (x : Fin n → E) : pad n x (Fin.last n) = 0 := by simp [pad]
 
+/- English proof (translation)
+Simplify using `[pad]`.
+-/
 @[simp] private theorem pad_cast (n : ℕ) (x : Fin n → E) (j : Fin n) : pad n x j.castSucc = x j := by
   simp [pad]
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [mrep_apply]`. Conclude with `continuous_finset_sum _ fun j _ => ((h i j).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd)`.
+-/
 private theorem cont_mrep [TopologicalSpace Γ] [TopologicalSpace E] [IsTopologicalRing E] {n : ℕ}
     (M : Γ →* Matrix (Fin n) (Fin n) E) (h : ∀ i j, Continuous fun g => M g i j) : ContAction (mrep M) := by
   refine continuous_pi fun i => ?_
@@ -46,6 +58,13 @@ private theorem cont_mrep [TopologicalSpace Γ] [TopologicalSpace E] [IsTopologi
   exact continuous_finset_sum _ fun j _ =>
     ((h i j).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `j hj`. Rewrite using `[mrep_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge i k with hk | hk` into its components or cases.
+
+Rewrite using `[hx k hk, mul_zero]`. Rewrite using `[h g j k (hk.trans_lt hj), zero_mul]`. Rewrite using `[mrep_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (by simp)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases.
+
+Rewrite using `[h g i k hk, zero_mul]`. Rewrite using `[hx k hk, mul_zero]`.
+-/
 private theorem tri_apply {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) (h : ∀ g i j, j < i → M g i j = 0)
     (g : Γ) (i : Fin n) (x : Fin n → E) (hx : ∀ j, i < j → x j = 0) :
     (∀ j, i < j → mrep M g x j = 0) ∧ mrep M g x i = M g i i * x i := by
@@ -62,6 +81,21 @@ private theorem tri_apply {n : ℕ} (M : Γ →* Matrix (Fin n) (Fin n) E) (h : 
     · rw [h g i k hk, zero_mul]
     · rw [hx k hk, mul_zero]
 
+/- English proof (translation)
+Set `U : ℕ → Submodule E (Fin n → E)` to `fun i => { carrier := {x | ∀ j : Fin n, i ≤ j.val → x j = 0} zero_mem' := fun _ _ => rfl add_mem' := fun ha hb j hj => by simp [ha j hj, hb j hj] smul_mem' := fun c x hx j hj => by simp [hx j hj] }`. Establish `hU : ∀ i x, x ∈ U i ↔ ∀ j : Fin n, i ≤ j.val → x j = 0` using `fun _ _ => Iff.rfl`. Use `⟨n, U, ?_, ?_, fun i hi => ⟨fun x hx j hj => hx j (Nat.le_of_succ_le hj), ψ ⟨i, hi⟩, hψ _, Pi.single ⟨i, hi⟩ 1, ?_, fun g => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+
+Conclude with `funext fun j => hx j (Nat.zero_le _)`. Rewrite using `[eq_top_iff]`. Introduce `x _ j hj`. Conclude with `absurd j.2 (not_lt.2 hj)`. Use `le_antisymm (fun x hx => ?_) (sup_le (fun x hx j hj => hx j (Nat.le_of_succ_le hj)) ?_)` and prove the remaining obligations.
+
+Establish `e : x = (x - x ⟨i, hi⟩ • Pi.single ⟨i, hi⟩ (1 : E)) + x ⟨i, hi⟩ • Pi.single ⟨i, hi⟩ (1 : E)` using `by simp`. Rewrite using `[e]`. Use `Submodule.add_mem_sup (fun j hj => ?_) (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))` and prove the remaining obligations. Break down `hj.lt_or_eq with h | h` into its components or cases. Establish `hne : j ≠ ⟨i, hi⟩` using `fun e => by rw [e] at h; exact lt_irrefl _ h`.
+
+Simplify using `[hx j h, Pi.single_apply, hne]`. Establish `e2 : j = ⟨i, hi⟩` using `Fin.ext h.symm`. Substitute `e2` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+
+Introduce `j hj`. Establish `hne : j ≠ ⟨i, hi⟩` using `fun e => by rw [e] at hj; exact absurd hj (by simp)`. Simplify using `[Pi.single_apply, hne]`. Establish `h0 : ∀ j : Fin n, (⟨i, hi⟩ : Fin n) < j → (Pi.single ⟨i, hi⟩ (1 : E) : Fin n → E) j = 0` using `fun j hj => Pi.single_eq_of_ne hj.ne' _`. Take `⟨a, b⟩` from `hρ g ⟨i, hi⟩ _ h0`.
+
+Introduce `j hj`. Break down `hj.lt_or_eq with h | h` into its components or cases. Establish `hij : (⟨i, hi⟩ : Fin n) < j` using `h`. Simplify using `[a j hij, h0 j hij, Units.smul_def]`. Establish `e2 : j = ⟨i, hi⟩` using `Fin.ext h.symm`.
+
+Substitute `e2` using the available equality. Simplify using `[b]`.
+-/
 private theorem filt_std {n : ℕ} (ρ : Representation E Γ (Fin n → E)) (S : Set (Γ →* Eˣ))
     (ψ : Fin n → Γ →* Eˣ) (hψ : ∀ i, ψ i ∈ S)
     (hρ : ∀ g (i : Fin n) (x : Fin n → E), (∀ j, i < j → x j = 0) →
@@ -106,6 +140,17 @@ private theorem filt_std {n : ℕ} (ρ : Representation E Γ (Fin n → E)) (S :
       subst e2
       simp [b]
 
+/- English proof (translation)
+Take `⟨n, F, h0, hn, hF⟩` from `h`. Rewrite using `[eq_bot_iff]`. Introduce `f hf`. Establish `key : ∀ i ≤ n, F i ≤ LinearMap.ker f`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => intro _`. Simplify using `[h0]`. Consider the case `succ i ih`. Introduce `hi`.
+
+Take `⟨-, κ, hκ, x, hx, hg⟩` from `hF i hi`. Establish `h1` using `ih (Nat.le_of_succ_le hi)`. Rewrite using `[hx, sup_le_iff, Submodule.span_singleton_le_iff_mem]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Take `⟨g, hne⟩` from `hS κ hκ`.
+
+Establish `h2` using `h1 (hg g)`. Rewrite `h2` using `[LinearMap.mem_ker, map_sub, map_smul, hf g x, smul_eq_mul, ← sub_mul]`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h3).symm hne`. Conclude with `h3`.
+
+Use `key n le_rfl` as an intermediate fact. Rewrite `this` using `[hn, top_le_iff, LinearMap.ker_eq_top]`. Simplify using `[this]`.
+-/
 private theorem h0dual_none {V : Type} [AddCommGroup V] [Module E V] {ρ : Representation E Γ V}
     {S : Set (Γ →* Eˣ)} (h : FiltBy ρ S) (χ : Γ →* Eˣ)
     (hS : ∀ κ ∈ S, ∃ g, (κ g : E) ≠ χ g) : H0dual χ ρ = ⊥ := by
@@ -134,11 +179,57 @@ private theorem h0dual_none {V : Type} [AddCommGroup V] [Module E V] {ρ : Repre
 
 end Alg
 
+/- English proof (translation)
+The claim follows from `hπ.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`.
+-/
 private theorem res_cont {l : ℕ} {Γ E V : Type} [Group Γ] [TopologicalSpace Γ] [CommRing E] [AddCommGroup V]
     [Module E V] [TopologicalSpace V] (H : Subgroup Γ) (π : Representation E Γ V) (hπ : ContAction π) :
     ContAction (π.comp H.subtype : Representation E H V) :=
   hπ.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)
 
+/- English proof (translation)
+Establish `hφH : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `M hM κ w _ _ _ _ _`. Conclude with `crUnr _ hφH _ (res_cont (l := l) H _ (cont_mrep M hM)) 0 fun _ _ _ => Subsingleton.elim _ _`.
+
+Consider the case `succ n ih`. Introduce `M hM κ w htri hdiag hw hI hne`. Use `set M0 := topBlock M htri with hM0`. Establish `hM0c : ∀ i j, Continuous fun g => M0 g i j` using `fun i j => hM _ _`. Establish `htri0 : ∀ g i j, j < i → M0 g i j = 0` using `fun g i j h => htri g _ _ (Fin.castSucc_lt_castSucc_iff.2 h)`.
+
+Establish `h0 : CrOn φ (mrep M0) H` using `ih M0 hM0c (fun i => κ i.castSucc) (fun i => w i.castSucc) htri0 (fun g i => hdiag g _) (fun i j h => hw (Fin.castSucc_lt_castSucc_iff.2 h)) (fun i => hI _) (fun i j h => hne _ _ (Fin.castSucc_lt_castSucc_iff.2 h))`. Use `set k := κ (Fin.last n) with hk`. Establish `hkc : Continuous fun g => (k g : E)`. Simplify using `only [hk, ← hdiag]`. Conclude with `hM _ _`.
+
+Establish `hkc' : Continuous fun g => ((k⁻¹ g : Eˣ) : E)`. Establish `: (fun g => ((k⁻¹ g : Eˣ) : E)) = (fun g => (k g : E)) ∘ fun g => g⁻¹`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `hkc.comp continuous_inv`. Establish `hch : ∀ χ : Γ →* Eˣ, Continuous (fun g => (χ g : E)) → ContAction (chRep χ)` using `fun χ h => (h.comp continuous_fst).mul continuous_snd`. Establish `hkcr : CrOn φ (chRep k) H` using `crUnr _ hφH _ (res_cont (l := l) H _ (hch _ hkc)) (w (Fin.last n)) fun g hg x => by`. Express the relevant statement in the definitionally equal form `(k g : E) • x = _`. Rewrite using `[hk, hI _ g g.2 hg]`.
+
+Both sides reduce to the same expression. Establish `hkcr' : CrOn φ (chRep k⁻¹) H` using `crUnr _ hφH _ (res_cont (l := l) H _ (hch _ hkc')) (-w (Fin.last n)) fun g hg x => by`. Express the relevant statement in the definitionally equal form `((k⁻¹ g : Eˣ) : E) • x = _`. Rewrite using `[MonoidHom.inv_apply, hk, hI _ g g.2 hg, zpow_neg]`. Both sides reduce to the same expression.
+
+Establish `htw : ContAction (twist k⁻¹ (mrep M0))` using `(hkc'.comp continuous_fst).smul (cont_mrep M0 hM0c)`. Establish `htwH` using `res_cont (l := l) H _ htw`. Establish `htwcr : IsCr (φ.comp H.subtype) ((twist k⁻¹ (mrep M0)).comp H.subtype : Representation E H (Fin n → E))`. Use `(admissible_of_bilinear_openSubgroup_galois _ hφH ((chRep k⁻¹).comp H.subtype : Representation E H E) ((mrep M0).comp H.subtype : Representation E H (Fin n → E)) _ (res_cont (l := l) H _ (hch _ hkc')) (res_cont (l := l) H _ (cont_mrep M0 hM0c)) htwH ((LinearMap.lsmul E (Fin n → E …` and prove the remaining obligations. Introduce `g x y`.
+
+Simplify using `[chRep, twist, smul_smul, mul_comm]`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `Submodule.subset_span ⟨(1, x), by simp⟩`. Establish `hdr : IsDr φ (twist k⁻¹ (mrep M0))` using `((isCrys_isDR_restrict_openSubgroup φ hφ _ htw).2 H hH).2.2 ((isCrys_isDR_restrict_openSubgroup _ hφH _ htwH).1 htwcr)`.
+
+Set `ψ : Fin n → Γ →* Eˣ` to `fun i => k⁻¹ * κ i.castSucc`. Establish `hfil : ∀ S : Set (Γ →* Eˣ), (∀ i, ψ i ∈ S) → FiltBy (twist k⁻¹ (mrep M0)) S`. Introduce `S hS`. Use `filt_std _ S ψ hS ?_` and prove the remaining obligations. Introduce `g i x hx`.
+
+Take `⟨a, b⟩` from `tri_apply M0 htri0 g i x hx`. Establish `e : ∀ j, twist k⁻¹ (mrep M0) g x j = ((k⁻¹ g : Eˣ) : E) * mrep M0 g x j` using `fun j => rfl`. Use `⟨fun j hj => by rw [e, a j hj, mul_zero], ?_⟩` and prove the remaining obligations. Establish `: M0 g i i = κ i.castSucc g` using `hdiag g _`. Rewrite using `[e, b, this]`.
+
+Simplify using `[ψ, mul_assoc]`. Establish `hpos : Positive φ (twist k⁻¹ (mrep M0))`. Use `⟨hdr, hfil _ fun i => ⟨w i.castSucc - w (Fin.last n), ?_, H, hH, ?_⟩⟩` and prove the remaining obligations. Use `hw (Fin.castSucc_lt_last i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Introduce `g hgH hg`. Simplify using `only [ψ, MonoidHom.mul_apply, MonoidHom.inv_apply, hk, hI _ g hgH hg]`. Rewrite using `[zpow_sub]`. Conclude with `mul_comm _ _`. Establish `hdual : H0dual ((cycA l l E).comp φ) (twist k⁻¹ (mrep M0)) = ⊥`.
+
+Use `h0dual_none (hfil (Set.range ψ) fun i => ⟨i, rfl⟩) _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨g, hg⟩` from `hne _ _ (Fin.castSucc_lt_last i)`. Use `⟨g, fun h => hg ?_⟩` and prove the remaining obligations. Establish `h' : (ψ i g : E) = (cycA l l E (φ g) : E)` using `h`.
+
+Rewrite using `[← h']`. Simplify using `[ψ, hk]`. Establish `hF` using `prF hP φ hφ (twist k⁻¹ (mrep M0)) htw hpos hdual`. Set `c : Γ → Fin n → E` to `fun g i => ((k⁻¹ g : Eˣ) : E) * M g i.castSucc (Fin.last n)`. Establish `hc : c ∈ Z1 (twist k⁻¹ (mrep M0))`.
+
+Use `⟨continuous_pi fun i => hkc'.mul (hM _ _), fun g h => funext fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((k⁻¹ (g * h) : Eˣ) : E) * M (g * h) i.castSucc (Fin.last n) = ((k⁻¹ g : Eˣ) : E) * M g i.castSucc (Fin.last n) + ((k⁻¹ g : Eˣ) : E) * ∑ j : Fin n, M g i.castSucc j.castSucc * (((k⁻¹ h : Eˣ) : E) * M h j.castSucc (Fin.last n))`. Establish `e : ((k⁻¹ h : Eˣ) : E) * (k h : E) = 1` using `by simp`. Establish `e2 : ∑ j : Fin n, M g i.castSucc j.castSucc * (((k⁻¹ h : Eˣ) : E) * M h j.castSucc (Fin.last n)) = ((k⁻¹ h : Eˣ) : E) * ∑ j : Fin n, M g i.castSucc j.castSucc * M h j.castSucc (Fin.last n)`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[map_mul, map_mul, Matrix.mul_apply, Fin.sum_univ_castSucc, hdiag, ← hk, Units.val_mul, e2]`. Take the linear combination `((k⁻¹ g : Eˣ) : E) * M g i.castSucc (Fin.last n) * e`. Rewrite `hc` using `[← hF]`. Use `(crExt φ hφ (mrep M0) (mrep M) (cont_mrep M0 hM0c) (cont_mrep M hM) k (pad n) (LinearMap.proj (Fin.last n)) (Pi.single (Fin.last n) 1) c ?_ ?_ (by simp) ?_ ?_ H hH h0 hkcr).2 hc` and prove the remaining obligations.
+
+Introduce `x y h`. Use function extensionality and compare the values at `j`. Simplify using `using congrFun h j.castSucc`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨fun j => y j.castSucc, funext fun j => ?_⟩` and prove the remaining obligations. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [pad_last]`. Conclude with `h.symm`.
+
+Consider the case `cast j => simp`. Introduce and unpack `⟨x, rfl⟩`. Simplify using the standard rewrite rules. Introduce `g x`. Use function extensionality and compare the values at `j`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Simplify using `[mrep_apply, Fin.sum_univ_castSucc, fun j : Fin n => htri g _ _ (Fin.castSucc_lt_last j)]`. Consider the case `cast j => simp [mrep_apply, Fin.sum_univ_castSucc, hM0, topBlock]`. Introduce `g`.
+
+Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [mrep_apply, Pi.single_apply, hdiag, hk]`. Consider the case `cast j => simp [mrep_apply, Pi.single_apply, c, (Fin.castSucc_lt_last j).ne]`.
+-/
 private theorem key (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E]
     [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E]
@@ -266,6 +357,9 @@ end UpperTheory.V.Z.Keep.PotentialOfUnlocked
 
 open UpperTheory.V.Z.Keep.PotentialOfUnlocked in
 
+/- English proof (translation)
+The claim follows from `key hP φ hφ H hH n ((Units.coeHom _).comp t) ht κ w (fun g => (htri g).1) (fun g => (htri g).2) hw hI hne`.
+-/
 theorem UpperTheory.V.Z.Keep.crOnTri (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E]
     [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] [TopologicalSpace E]
@@ -278,6 +372,29 @@ theorem UpperTheory.V.Z.Keep.crOnTri (hP : LocalPublishedTheorems) {l : ℕ} [Fa
 
 namespace UpperTheory.V.Z.Keep.PotentialOfUnlocked
 
+/- English proof (translation)
+Set `t : Set (Om l)` to `Set.range (fun p : Fin n × Fin n => (P : Matrix (Fin n) (Fin n) (Om l)) p.1 p.2) ∪ Set.range (fun p : Fin n × Fin n => ((P⁻¹ : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l)) p.1 p.2)`. Use `haveI : Finite t := ((Set.finite_range _).union (Set.finite_range _)).to_subtype`. Set `L₀ : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] t, IntermediateField.finiteDimensional_adjoin fun z _ => (Algebra.IsAlgebraic.isAlgebraic z).isIntegral⟩`. Take `⟨L, hL, hent⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l Γ n r₀ hr L₀`. Take `⟨s, hs⟩` from `GlobalTheory.CompactRepField.exists_hom_of_entries_mem r₀ L.1 hent`.
+
+Use `L.2` as an intermediate fact. Use `haveI : IsModuleTopology ℚ_[l] ↥L.1 := isModuleTopologyOfFiniteDimensional`. Establish `hPm : ∀ a b, (P : Matrix (Fin n) (Fin n) (Om l)) a b ∈ L.1` using `fun a b => hL (IntermediateField.subset_adjoin _ _ (Or.inl ⟨(a, b), rfl⟩))`. Establish `hPi : ∀ a b, ((P⁻¹ : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l)) a b ∈ L.1` using `fun a b => hL (IntermediateField.subset_adjoin _ _ (Or.inr ⟨(a, b), rfl⟩))`. Set `Pm : Matrix (Fin n) (Fin n) ↥L.1` to `Matrix.of fun a b => ⟨_, hPm a b⟩`.
+
+Set `Pv : Matrix (Fin n) (Fin n) ↥L.1` to `Matrix.of fun a b => ⟨_, hPi a b⟩`. Establish `hPmm : Pm.map L.1.val = (P : Matrix (Fin n) (Fin n) (Om l))` using `rfl`. Establish `hPvm : Pv.map L.1.val = ((P⁻¹ : GL (Fin n) (Om l)) : Matrix (Fin n) (Fin n) (Om l))` using `rfl`. Establish `hinj : Function.Injective fun X : Matrix (Fin n) (Fin n) ↥L.1 => X.map L.1.val` using `Matrix.map_injective Subtype.val_injective`. Establish `hone : (1 : Matrix (Fin n) (Fin n) ↥L.1).map L.1.val = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `h1 : Pm * Pv = 1` using `hinj (by`. Simplify using `only []`. Rewrite using `[Matrix.map_mul, hPmm, hPvm, hone, Units.mul_inv])`. Establish `h2 : Pv * Pm = 1` using `hinj (by`. Simplify using `only []`.
+
+Rewrite using `[Matrix.map_mul, hPmm, hPvm, hone, Units.inv_mul])`. Set `Pe : GL (Fin n) ↥L.1` to `⟨Pm, Pv, h1, h2⟩`. Set `u : Γ →* GL (Fin n) ↥L.1` to `conjGL Pe s`. Establish `hsm : ∀ g, (s g : Matrix (Fin n) (Fin n) ↥L.1).map L.1.val = (r₀ g : Matrix (Fin n) (Fin n) (Om l))` using `fun g => Matrix.ext fun a b => hs g a b`. Establish `hum : ∀ g, (u g : Matrix (Fin n) (Fin n) ↥L.1).map L.1.val = (P * r₀ g * P⁻¹ : GL (Fin n) (Om l))` using `fun g => by`.
+
+Express the relevant statement in the definitionally equal form `(Pm * (s g : Matrix (Fin n) (Fin n) ↥L.1) * Pv).map L.1.val = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hsm, hPmm, hPvm]`. Both sides reduce to the same expression. Establish `hu : ∀ g a b, (((u g : Matrix (Fin n) (Fin n) ↥L.1) a b : ↥L.1) : Om l) = (P * r₀ g * P⁻¹ : GL (Fin n) (Om l)) a b` using `fun g a b => congrFun (congrFun (hum g) a) b`. Establish `hκE : ∀ i g, (κ i g : Om l) ∈ L.1` using `fun i g => by`.
+
+Rewrite using `[← (hfl g).2 i, ← hu]`. Conclude with `SetLike.coe_mem _`. Set `κ' : Fin n → Γ →* (↥L.1)ˣ` to `fun i => MonoidHom.toHomUnits { toFun := fun g => ⟨κ i g, hκE i g⟩ map_one' := Subtype.ext (by simp) map_mul' := fun g h => Subtype.ext (by simp) }`. Establish `hPc : Continuous fun g => (P * r₀ g * P⁻¹ : GL (Fin n) (Om l)).val` using `(continuous_const.matrix_mul hr).matrix_mul continuous_const`. Establish `huc : ∀ i j, Continuous fun g => (u g : Matrix (Fin n) (Fin n) ↥L.1) i j` using `fun i j => continuous_induced_rng.2 ((hPc.matrix_elem i j).congr fun g => (hu g i j).symm)`.
+
+Establish `hcr : CrOn φ (colRep u) H` using `UpperTheory.V.Z.Keep.crOnTri hP φ hφ H hH u huc κ' w (fun g => ⟨fun a b hab => Subtype.ext ((hu g a b).trans ((hfl g).1 a b hab)), fun a => Subtype.ext ((hu g a a).trans ((hfl g).2 a))⟩) hw (fun i g hg hg' => Units.ext (Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(κ i g : Om l) = L.1.val _`. Rewrite using `[hI i g hg hg', Units.val_zpow_eq_zpow_val, Units.val_zpow_eq_zpow_val, map_zpow₀]`. Use the proof step `rfl)))`. Use the proof step `(fun i j _ => by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne i j (MonoidHom.ext fun g => Units.ext (congrArg Subtype.val (hcon g))))`. Establish `hφH : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Establish `hsc : Continuous fun g => (s g : Matrix (Fin n) (Fin n) ↥L.1)` using `continuous_matrix fun a b => continuous_induced_rng.2 ((hr.matrix_elem a b).congr fun g => (hs g a b).symm)`.
+
+Establish `cu : ContAction ((colRep u).comp H.subtype : Representation ↥L.1 H (Fin n → ↥L.1))` using `res_cont (l := l) H _ (((continuous_matrix huc).comp continuous_fst).matrix_mulVec continuous_snd)`. Establish `cs : ContAction (colRep (s.comp H.subtype))` using `((hsc.comp continuous_subtype_val).comp continuous_fst).matrix_mulVec continuous_snd`. Set `f : (Fin n → ↥L.1) →ₗ[ℚ_[l]] (Fin n → ↥L.1)` to `(Matrix.toLin' Pv).restrictScalars ℚ_[l]`. Use `⟨L, s.comp H.subtype, fun h a b => hs h a b, ?_⟩` and prove the remaining obligations. Use `((isCrys_isDR_sub_quot _ hφH _ _ cu cs f (fun g x => ?_)).2 fun y => ⟨Matrix.toLin' Pm y, ?_⟩).1 hcr` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Matrix.mulVec Pv (Matrix.mulVec (Pm * (s g : Matrix (Fin n) (Fin n) ↥L.1) * Pv) x) = Matrix.mulVec (s g : Matrix (Fin n) (Fin n) ↥L.1) (Matrix.mulVec Pv x)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `Matrix.mulVec Pv (Matrix.mulVec Pm y) = y`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`.
+-/
 private theorem cr_descend (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ)
     (H : Subgroup Γ) [H.Normal] (hH : IsOpen (H : Set Γ)) {n : ℕ} (r₀ : Γ →* GL (Fin n) (Om l))
@@ -370,6 +487,9 @@ end UpperTheory.V.Z.Keep.PotentialOfUnlocked
 
 open UpperTheory.V.Z.Keep.PotentialOfUnlocked in
 
+/- English proof (translation)
+The claim follows from `cr_descend hP φ hφ H hH r₀ hr P κ w hfl hw hI hne`.
+-/
 theorem UpperTheory.V.Z.Keep.crDescend (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] (φ : Γ →* GQ l) (hφ : IsOpenEmbedding φ)
     (H : Subgroup Γ) [H.Normal] (hH : IsOpen (H : Set Γ)) {n : ℕ} (r₀ : Γ →* GL (Fin n) (Om l))

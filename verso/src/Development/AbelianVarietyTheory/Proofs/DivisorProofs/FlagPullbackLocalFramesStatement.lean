@@ -7,5 +7,8 @@ open scoped Classical
 open CategoryTheory.Limits
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagQ.exists_isFrame | exact GlobalTheory.FlagQ.exists_isFrame | (intros; apply GlobalTheory.FlagQ.exists_isFrame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_pullback_local_frames : ∀ (ι : Type) [Fintype ι] (N : ℕ) (Y : GlobalTheory.ProjVar.Var ℚ) (j : Y.X ⟶ GlobalTheory.FlagZ.Fl ι N), IsPullback j Y.str (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ)) → ∀ y : Y.X, ∃ (U : Y.X.Opens) (A : GlobalTheory.FlagBundle.Mat (fun _ : ι => N) Y.Fn), y ∈ U ∧ ∀ z ∈ U, GlobalTheory.FlagQ.IsFrame j z A := by
   first | exact @GlobalTheory.FlagQ.exists_isFrame | exact GlobalTheory.FlagQ.exists_isFrame | (intros; apply GlobalTheory.FlagQ.exists_isFrame <;> assumption)

@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R O B σ _ _ _ _ _ _ ω x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul o b`. Use `⟨fun s => ω.repr o s • b, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← ω.sum_repr o]`. Rewrite using `[TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun s _ => TensorProduct.smul_tmul _ _ _`. Consider the case `add x₁ x₂ h₁ h₂`. Take `⟨y₁, rfl⟩` from `h₁`.
+
+Take `⟨y₂, rfl⟩` from `h₂`. Use `⟨y₁ + y₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun s _ => (TensorProduct.tmul_add _ _ _).symm`.
+-/
 theorem UpperTheory.Reformulated.B.Qj2.exists_sum_tmul :
     ∀ {R O B σ : Type} [inst : CommRing R]
     [inst_1 : AddCommGroup O] [inst_2 : _root_.Module R O] [inst_3 : AddCommGroup B] [inst_4 : _root_.Module R B]

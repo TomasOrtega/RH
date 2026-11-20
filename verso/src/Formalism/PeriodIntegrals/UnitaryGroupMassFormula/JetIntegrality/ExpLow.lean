@@ -10,6 +10,11 @@ open PI.JetsPhW
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `he : e ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hd`. Establish `h1 : (e.sum fun _ k => k) = 1`. Rewrite using `[← hd]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(∑ n ∈ Finset.range ((e.sum fun _ k => k) + 1), MvPowerSeries.coeff e (F ^ n) / (n.factorial : ℂ_[p])) = _`. Rewrite using `[h1, Finset.sum_range_succ, Finset.sum_range_one, pow_zero, pow_one, MvPowerSeries.coeff_one, if_neg he]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_truncatedExp_of_degree_eq_one {σ : Type*} (F : MvPowerSeries σ ℂ_[p]) {e : σ →₀ ℕ}
     (hd : Finsupp.degree e = 1) :
     MvPowerSeries.coeff e (expMv F) = MvPowerSeries.coeff e F := by
@@ -25,6 +30,9 @@ theorem coeff_truncatedExp_of_degree_eq_one {σ : Type*} (F : MvPowerSeries σ �
   rw [h1, Finset.sum_range_succ, Finset.sum_range_one, pow_zero, pow_one, MvPowerSeries.coeff_one, if_neg he]
   simp
 
+/- English proof (translation)
+Establish `h : ‖((2 : ℕ) : ℚ_[p])‖ = 1` using `Padic.norm_natCast_eq_one_iff.2 ((Nat.coprime_primes (Fact.out) Nat.prime_two).2 hp)`. Establish `e : (2 : ℂ_[p]) = ((algebraMap ℚ_[p] (PadicAlgCl p) ((2 : ℕ) : ℚ_[p]) : PadicAlgCl p) : ℂ_[p])`. Rewrite using `[map_natCast, PadicComplex.coe_natCast]`. Evaluate the numerical expressions. Rewrite using `[e, PadicComplex.norm_extends, PadicAlgCl.norm_extends, h]`.
+-/
 theorem norm_two (hp : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have h : ‖((2 : ℕ) : ℚ_[p])‖ = 1 :=
     Padic.norm_natCast_eq_one_iff.2 ((Nat.coprime_primes (Fact.out) Nat.prime_two).2 hp)

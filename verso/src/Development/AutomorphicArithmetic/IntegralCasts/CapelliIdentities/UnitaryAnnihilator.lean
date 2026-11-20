@@ -2,6 +2,19 @@ import Mathlib
 
 open Topology Filter
 
+/- English proof (translation)
+Establish `key : ∀ n : ℕ, ∀ y, ‖φ y - 1‖ ≤ (2 / 3 : ℝ) ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`. Use `h y` as an intermediate fact.
+
+Simplify using `only [pow_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ n ih`. Introduce `y`. Establish `h1` using `ih (y + y)`.
+
+Establish `e : φ (y + y) - 1 = (φ y - 1) * (φ y + 1)` using `by rw [h2]; ring`. Establish `h3 : (3 / 2 : ℝ) ≤ ‖φ y + 1‖`. Establish `e2 : (2 : ℂ) = (φ y + 1) - (φ y - 1)` using `by ring`. Establish `h4 : ‖(2 : ℂ)‖ ≤ ‖φ y + 1‖ + ‖φ y - 1‖`. Rewrite using `[e2]`.
+
+Conclude with `norm_sub_le _ _`. Establish `h5 : ‖(2 : ℂ)‖ = 2` using `by simp`. Use `h y` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[e, norm_mul]`.
+
+Establish `h6` using `norm_nonneg (φ y - 1)`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `ht : Tendsto (fun n : ℕ => (2 / 3 : ℝ) ^ n) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)`. Establish `: ‖φ y - 1‖ ≤ 0` using `ge_of_tendsto' ht (fun n => key n y)`.
+
+Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 this)`.
+-/
 private theorem small_trivial {G : Type*} [AddCommGroup G] (φ : G → ℂ)
     (h2 : ∀ y, φ (y + y) = φ y * φ y) (h : ∀ y, ‖φ y - 1‖ < 1 / 2) (y : G) : φ y = 1 := by
   have key : ∀ n : ℕ, ∀ y, ‖φ y - 1‖ ≤ (2 / 3 : ℝ) ^ n := by
@@ -28,6 +41,53 @@ private theorem small_trivial {G : Type*} [AddCommGroup G] (φ : G → ℂ)
   have : ‖φ y - 1‖ ≤ 0 := ge_of_tendsto' ht (fun n => key n y)
   exact sub_eq_zero.1 (norm_le_zero_iff.1 this)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Establish `hM' : ∀ y, ‖ψ y‖ ≤ M`. Introduce `y`. Take `⟨c, hc⟩` from `hcov y`.
+
+Use `hM _ hc` as an intermediate fact. Establish `e : ψ y = ψ (y - algebraMap F A c) * ψ (algebraMap F A c)`. Rewrite using `[← AddChar.map_add_eq_mul, sub_add_cancel]`. Rewrite using `[e, hF, mul_one]`. Conclude with `this`.
+
+Establish `hle : ∀ y, ‖ψ y‖ ≤ 1`. Introduce `y`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M hlt`.
+
+Use `hM' (n • y)` as an intermediate fact. Rewrite `this` using `[AddChar.map_nsmul_eq_pow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x`. Establish `e : ‖ψ x‖ * ‖ψ (-x)‖ = 1`.
+
+Rewrite using `[← norm_mul, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, norm_one]`. Establish `h1` using `hle x`. Establish `h2` using `hle (-x)`. Establish `h3` using `norm_nonneg (ψ x)`. Establish `h4` using `norm_nonneg (ψ (-x))`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hU0 : ∀ᶠ u in 𝓝 (0 : A), ∀ k ∈ K, ‖ψ (u * k) - 1‖ < 1 / 2`. Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `k _`. Establish `hcont : Continuous fun z : A × A => ‖ψ (z.1 * z.2) - 1‖` using `by fun_prop`.
+
+Apply `hcont.continuousAt.eventually_lt continuousAt_const` to reduce the goal to its premises. Simplify using the standard rewrite rules. Take `⟨C, hCc, hC0⟩` from `exists_compact_mem_nhds (0 : A)`. Take `⟨U, hU, hUs, hUC⟩ : ∃ U ∈ 𝓝 (0 : A), (∀ u ∈ U, ∀ k ∈ K, ‖ψ (u * k) - 1‖ < 1 / 2) ∧ U ⊆ C` from `⟨_, inter_mem hU0 hC0, fun u hu => hu.1, fun u hu => hu.2⟩`. Establish `hS : ∀ u ∈ U, (∀ a : F, ψ (u * algebraMap F A a) = 1) → ∀ y, ψ (u * y) = 1`.
+
+Introduce `u hu hua`. Apply `small_trivial (fun y => ψ (u * y))` to reduce the goal to its premises. Introduce `y`. Rewrite using `[mul_add, AddChar.map_add_eq_mul]`. Introduce `y`.
+
+Take `⟨c, hc⟩` from `hcov y`. Establish `e : ψ (u * y) = ψ (u * (y - algebraMap F A c)) * ψ (u * algebraMap F A c)`. Rewrite using `[← AddChar.map_add_eq_mul, ← mul_add, sub_add_cancel]`. Rewrite using `[e, hua, mul_one]`. Conclude with `hUs u hu _ hc`.
+
+Take `⟨V, hV, hVU⟩` from `exists_nhds_half_neg hU`. Take `⟨T, -, hT⟩` from `hK.elim_nhds_subcover (fun k => {z | z - k ∈ V}) (by`. Introduce `k _`. Establish `hcont : Continuous fun z : A => z - k` using `by fun_prop`. Apply `hcont.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+
+Simplify using `using hV)`. Establish `hnet : ∀ y : A, ∃ t : T, ∃ c : F, y - algebraMap F A c - t ∈ V`. Introduce `y`. Take `⟨c, hc⟩` from `hcov y`. Use `hT hc` as an intermediate fact.
+
+Simplify using `only [Set.mem_iUnion] at this`. Take `⟨t, ht, h⟩` from `this`. Conclude with `⟨⟨t, ht⟩, c, h⟩`. Use `choose τ γ hτ using hnet`. Establish `hdiff : ∀ y z, τ y = τ z → y - z - algebraMap F A (γ y - γ z) ∈ U`.
+
+Introduce `y z h`. Use `hVU _ (hτ y) _ (hτ z)` as an intermediate fact. Rewrite `this` using `[h]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsubW : ∀ (x : A) (c : F), (∀ a : F, ψ (x * algebraMap F A a) = 1) → ∀ a : F, ψ ((x - algebraMap F A c) * algebraMap F A a) = 1`. Introduce `x c hx a`. Establish `e : (x - algebraMap F A c) * algebraMap F A a = x * algebraMap F A a + algebraMap F A (-(c * a))`. Rewrite using `[map_neg, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, AddChar.map_add_eq_mul, hx, hF, mul_one]`. Establish `hsubI : ∀ x z : A, (∀ y, ψ (x * y) = 1) → (∀ y, ψ (z * y) = 1) → ∀ y, ψ ((x - z) * y) = 1`. Introduce `x z hx hz y`. Establish `e : (x - z) * y = x * y + z * (-y)` using `by ring`.
+
+Rewrite using `[e, AddChar.map_add_eq_mul, hx, hz, mul_one]`. Establish `hI : ∀ x : A, (∀ y, ψ (x * y) = 1) → x = 0`. Introduce `x hx`. Establish `hclose : ∀ y z : A, τ (x * y) = τ (x * z) → x * y - x * z ∈ U`. Introduce `y z h`.
+
+Establish `h1` using `hdiff _ _ h`. Use `set c := γ (x * y) - γ (x * z) with hcdef`. Establish `hyz : ∀ w, ψ ((x * y - x * z) * w) = 1`. Introduce `w`. Rewrite using `[← mul_sub, mul_assoc, hx]`.
+
+Establish `h2` using `hS _ h1 (hsubW _ c (fun a => hyz _))`. Establish `h3` using `hsubI _ _ hyz h2`. Distinguish the cases in `hc0 : c = 0`. Simplify `h1` using `[hc0]`. It suffices to derive a contradiction.
+
+Apply `hne` to reduce the goal to its premises. Use extensionality with `w`. Use `h3 (algebraMap F A c⁻¹ * w)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hc0, map_one, one_mul]`. Simplify using `using this`.
+
+Set `σ : A → T` to `fun y => τ (x * y)`. Set `ρ : T → A` to `fun t => x * Function.invFun σ t`. Apply `hb (⋃ t : T, (fun u => ρ t + u) '' C)` to reduce the goal to its premises. Conclude with `isCompact_iUnion fun t => hCc.image (by fun_prop)`. Introduce `a`.
+
+Establish `h1 : σ (Function.invFun σ (σ (algebraMap F A a))) = σ (algebraMap F A a)` using `Function.invFun_eq ⟨_, rfl⟩`. Use `Set.mem_iUnion.2 ⟨σ (algebraMap F A a), _, hUC (hclose _ _ h1.symm), ?_⟩` and prove the remaining obligations. Simplify using `[ρ]`. Introduce `x hx`. Take `⟨a, b, hab, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun a : F => τ (x * algebraMap F A a))`.
+
+Establish `h1` using `hdiff _ _ h`. Use `set c := γ (x * algebraMap F A a) - γ (x * algebraMap F A b) with hcdef`. Establish `h2` using `hI _ (hS _ h1 (hsubW _ c (by`. Introduce `d`. Rewrite using `[← mul_sub, mul_assoc, ← map_sub, ← map_mul, hx])))`.
+
+Establish `hab' : a - b ≠ 0` using `sub_ne_zero.2 hab`. Use `⟨c * (a - b)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[sub_eq_zero, ← mul_sub, ← map_sub]`. Rewrite using `[map_mul, ← h2, mul_assoc, ← map_mul, mul_inv_cancel₀ hab', map_one, mul_one]`.
+-/
 private theorem abstract_thm {F A : Type*} [Field F] [Infinite F] [CommRing A]
     [TopologicalSpace A] [IsTopologicalRing A] [LocallyCompactSpace A] [Algebra F A]
     (K : Set A) (hK : IsCompact K) (hcov : ∀ y : A, ∃ c : F, y - algebraMap F A c ∈ K)
@@ -158,6 +218,11 @@ private theorem abstract_thm {F A : Type*} [Field F] [Infinite F] [CommRing A]
   rw [sub_eq_zero, ← mul_sub, ← map_sub] at h2
   rw [map_mul, ← h2, mul_assoc, ← map_mul, mul_inv_cancel₀ hab', map_one, mul_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hU : ∀ᶠ u in 𝓝 (0 : E), ∀ k ∈ C, u * k ≠ x`. Apply `hC.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `k _`. Establish `hcont : Continuous fun z : E × E => z.1 * z.2` using `by fun_prop`.
+
+Apply `hcont.continuousAt.eventually_ne` to reduce the goal to its premises. Simplify using `using Ne.symm h0`. Take `⟨b, hb, hbU⟩` from `hf _ hU`. Apply `hbU _ (hx b⁻¹)` to reduce the goal to its premises. Rewrite using `[mul_left_comm, ← map_mul, mul_inv_cancel₀ hb, map_one, mul_one]`.
+-/
 private theorem field_bounded {F E : Type*} [Field F] [CommRing E] [TopologicalSpace E]
     [IsTopologicalRing E] [T1Space E] (f : F →+* E)
     (hf : ∀ U ∈ 𝓝 (0 : E), ∃ b : F, b ≠ 0 ∧ f b ∈ U) (C : Set E) (hC : IsCompact C) (x : E)
@@ -180,6 +245,15 @@ section Finite
 variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hU`. Use `set g : WithZero (Multiplicative ℤ) := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hg`. Establish `hg0 : g ≠ 0`. Rewrite using `[hg]`. Conclude with `(map_ne_zero _).2 γ.ne_zero`.
+
+Take `⟨b, hb⟩` from `valuation_surjective K v (g * WithZero.exp (-1 : ℤ))`. Establish `hlt : g * WithZero.exp (-1 : ℤ) < g`. Use `mul_lt_of_lt_one_right (zero_lt_iff.2 hg0) ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+
+Use `⟨b, ?_, fun z hz => hγ ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hb` using `[map_zero]`. Conclude with `mul_ne_zero hg0 WithZero.exp_ne_zero hb.symm`. Rewrite using `[Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding, map_mul]`.
+
+Establish `h1 : Valued.v (algebraMap K (v.adicCompletion K) b) = v.valuation K b` using `valuedAdicCompletion_eq_valuation' v b`. Rewrite using `[h1, hb]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hz) hlt`.
+-/
 private theorem exists_scale (v : HeightOneSpectrum R) (U : Set (v.adicCompletion K))
     (hU : U ∈ 𝓝 (0 : v.adicCompletion K)) :
     ∃ b : K, b ≠ 0 ∧ ∀ z ∈ v.adicCompletionIntegers K,
@@ -202,10 +276,22 @@ private theorem exists_scale (v : HeightOneSpectrum R) (U : Set (v.adicCompletio
     rw [h1, hb]
     exact lt_of_le_of_lt (mul_le_of_le_one_right' hz) hlt
 
+/- English proof (translation)
+The claim follows from `Valued.isOpen_valuationSubring _`.
+-/
 private theorem isOpen_int (v : HeightOneSpectrum R) :
     IsOpen (v.adicCompletionIntegers K : Set (v.adicCompletion K)) :=
   Valued.isOpen_valuationSubring _
 
+/- English proof (translation)
+Establish `hemb` using `RestrictedProduct.isOpenEmbedding_structureMap (R := fun v : HeightOneSpectrum R => v.adicCompletion K) (A := fun v : HeightOneSpectrum R => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) (fun v => isOpen_int v)`. Use `haveI : LocallyCompactSpace (RestrictedProduct (fun v : HeightOneSpectrum R => v.adicCompletion K) (fun v : HeightOneSpectrum R => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) cofinite) := ‹LocallyCompactSpace (FiniteAdeleRing R K)›`. Use `haveI := hemb.locallyCompactSpace`. Use `haveI : ∀ v : HeightOneSpectrum R, CompactSpace (v.adicCompletionIntegers K : Set (v.adicCompletion K)) := by`. Introduce `v`.
+
+Rewrite using `[← isCompact_iff_compactSpace]`. Take `⟨C, hC, hC0⟩` from `exists_compact_mem_nhds (fun w : HeightOneSpectrum R => (⟨0, zero_mem _⟩ : (w.adicCompletionIntegers K : Set (w.adicCompletion K))))`. Establish `h1` using `(isOpenMap_eval v).image_mem_nhds hC0`. Establish `h2` using `(isOpen_int (K := K) v).isOpenMap_subtype_val.image_mem_nhds h1`. Establish `h3` using `(hC.image (continuous_apply v)).image continuous_subtype_val`.
+
+Take `⟨b, hb0, hb⟩` from `exists_scale v _ h2`. Use `(h3.image (continuous_const_mul (algebraMap K (v.adicCompletion K) b⁻¹))).of_isClosed_subset (Valued.isClosed_valuationSubring _) ?_` and prove the remaining obligations. Introduce `z hz`. Use `⟨_, hb z hz, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hb0, map_one, one_mul]`. Use `isCompact_range hemb.continuous` as an intermediate fact. Rewrite `this` using `[RestrictedProduct.range_structureMap]`. Conclude with `this`.
+-/
 private theorem compact_int [LocallyCompactSpace (FiniteAdeleRing R K)] :
     IsCompact {y : FiniteAdeleRing R K | ∀ v, y v ∈ v.adicCompletionIntegers K} := by
   have hemb := RestrictedProduct.isOpenEmbedding_structureMap
@@ -238,6 +324,25 @@ private theorem compact_int [LocallyCompactSpace (FiniteAdeleRing R K)] :
   rw [RestrictedProduct.range_structureMap] at this
   exact this
 
+/- English proof (translation)
+Establish `h1 : ∀ v : HeightOneSpectrum R, ∃ k : K, y v - algebraMap K _ k ∈ v.adicCompletionIntegers K ∧ (y v ∈ v.adicCompletionIntegers K → k = 0)`. Introduce `v`. Distinguish the cases in `h : y v ∈ v.adicCompletionIntegers K`. Conclude with `⟨0, by simpa using h, fun _ => rfl⟩`. Establish `ho : IsOpen {z : v.adicCompletion K | y v - z ∈ v.adicCompletionIntegers K}` using `(isOpen_int v).preimage (f := fun z => y v - z) (by fun_prop)`.
+
+Take `⟨k, hk⟩` from `(denseRange_algebraMap K v).exists_mem_open ho ⟨y v, by simp⟩`. Conclude with `⟨k, hk, fun h' => absurd h' h⟩`. Use `choose k hk hk0 using h1`. Establish `hfin : {v : HeightOneSpectrum R | y v ∉ v.adicCompletionIntegers K}.Finite` using `Filter.eventually_cofinite.1 y.2`. Take `⟨⟨d, hd⟩, hdk⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (ι := hfin.toFinset) (fun v => k v)`.
+
+Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hn : ∀ v, ∃ n : R, algebraMap R K n = algebraMap R K d * k v`. Introduce `v`. Distinguish the cases in `h : y v ∈ v.adicCompletionIntegers K`. Conclude with `⟨0, by simp [hk0 v h]⟩`.
+
+Take `⟨n, hn⟩` from `hdk ⟨v, by simpa using h⟩`. Conclude with `⟨n, by simpa [Algebra.smul_def] using hn⟩`. Use `choose n hn using hn`. Establish `hfin2 : {v : HeightOneSpectrum R | v.asIdeal ∣ Ideal.span {d}}.Finite` using `Ideal.finite_factors (by simpa using hd0)`. Take `⟨r, hr⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hfin2.toFinset) (fun v => v.asIdeal) (fun v => multiplicity v.asIdeal (Ideal.span {d})) (fun v _ => v.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun v => n v)`.
+
+Establish `hdK : algebraMap R K d ≠ 0` using `by simpa using hd0`. Establish `hle : ∀ v : HeightOneSpectrum R, v.intValuation (r - n v) ≤ v.intValuation d`. Introduce `v`. Distinguish the cases in `h : v.asIdeal ∣ Ideal.span {d}`. Rewrite using `[v.intValuation_eq_exp_neg_multiplicity hd0, intValuation_le_pow_iff_mem]`.
+
+Conclude with `hr v (by simpa using h)`. Rewrite using `[(intValuation_eq_one_iff (x := d)).2 (by rwa [Ideal.dvd_span_singleton] at h)]`. Conclude with `intValuation_le_one v _`. Use `⟨algebraMap R K r / algebraMap R K d, fun v => ?_⟩` and prove the remaining obligations. Establish `e : algebraMap R K r / algebraMap R K d = k v + algebraMap R K (r - n v) / algebraMap R K d`.
+
+Rewrite using `[map_sub, hn]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : algebraMap K (v.adicCompletion K) (algebraMap R K (r - n v) / algebraMap R K d) ∈ v.adicCompletionIntegers K`. Establish `h3 : Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K (r - n v) / algebraMap R K d)) = v.valuation K (algebraMap R K (r - n v) / algebraMap R K d)` using `valuedAdicCompletion_eq_valuation' v _`.
+
+Rewrite using `[mem_adicCompletionIntegers, h3, map_div₀]`. Establish `h4 : ∀ s : R, v.valuation K (algebraMap R K s) = v.intValuation s` using `fun s => valuation_of_algebraMap v s`. Rewrite using `[h4, h4]`. Conclude with `div_le_one_of_le₀ (hle v) zero_le`. Express the relevant statement in the definitionally equal form `y v - algebraMap K (v.adicCompletion K) (algebraMap R K r / algebraMap R K d) ∈ _`.
+
+Rewrite using `[e, map_add, ← sub_sub]`. Conclude with `sub_mem (hk v) h2`.
+-/
 private theorem finite_approx (y : FiniteAdeleRing R K) :
     ∃ a : K, ∀ v, (y - algebraMap K (FiniteAdeleRing R K) a) v ∈ v.adicCompletionIntegers K := by
   classical
@@ -303,6 +408,15 @@ section Infinite
 
 variable {F : Type*} [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `(ZSpan.fundamentalDomain_isBounded (mixedEmbedding.latticeBasis F)).exists_norm_le`. Use `⟨Set.pi Set.univ (fun v : InfinitePlace F => InfinitePlace.Completion.extensionEmbedding v ⁻¹' Metric.closedBall 0 M), ?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `isCompact_univ_pi fun v => (InfinitePlace.Completion.isometry_extensionEmbedding v).isClosedEmbedding.isCompact_preimage (isCompact_closedBall 0 M)`. Use `set e := InfiniteAdeleRing.ringEquiv_mixedSpace F with he`. Establish `h1` using `hM _ (ZSpan.fract_mem_fundamentalDomain (mixedEmbedding.latticeBasis F) (e x))`.
+
+Take `⟨r, hr⟩` from `(mixedEmbedding.mem_span_latticeBasis F).1 (ZSpan.floor (mixedEmbedding.latticeBasis F) (e x)).2`. Use `⟨r, fun v _ => ?_⟩` and prove the remaining obligations. Use `set z := x - algebraMap F (InfiniteAdeleRing F) (algebraMap _ F r) with hz`. Establish `h2 : e z = ZSpan.fract (mixedEmbedding.latticeBasis F) (e x)`. Rewrite using `[ZSpan.fract_apply, ← hr, hz, map_sub, he, ← InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[← h2]`. Simplify using `only [Set.mem_preimage, mem_closedBall_zero_iff]`. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Establish `h3` using `((norm_le_pi_norm (e z).1 ⟨v, hv⟩).trans (norm_fst_le _)).trans h1`.
+
+Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv, Complex.norm_real]`. Conclude with `h3`. Conclude with `((norm_le_pi_norm (e z).2 ⟨v, hv⟩).trans (norm_snd_le _)).trans h1`.
+-/
 private theorem infinite_cover : ∃ B : Set (InfiniteAdeleRing F), IsCompact B ∧
     ∀ x : InfiniteAdeleRing F, ∃ r : RingOfIntegers F,
       x - algebraMap F (InfiniteAdeleRing F) (algebraMap _ F r) ∈ B := by
@@ -331,6 +445,9 @@ private theorem infinite_cover : ∃ B : Set (InfiniteAdeleRing F), IsCompact B 
       exact h3
     · exact ((norm_le_pi_norm (e z).2 ⟨v, hv⟩).trans (norm_snd_le _)).trans h1
 
+/- English proof (translation)
+Take `⟨ε, hε, h⟩` from `Metric.mem_nhds_iff.1 hU`. Take `⟨n, hn⟩` from `exists_nat_one_div_lt hε`. Use `⟨1 / ((n + 1 : ℕ) : F), one_div_ne_zero (Nat.cast_ne_zero.2 (Nat.succ_ne_zero n)), h ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, ← (InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _), map_div₀, map_div₀, map_one, map_one, map_natCast, map_natCast, norm_div, norm_one, Complex.norm_natCast]`. Conclude with `hn` after adjusting the coercions.
+-/
 private theorem exists_small_inf (v : InfinitePlace F) (U : Set v.Completion)
     (hU : U ∈ 𝓝 (0 : v.Completion)) : ∃ b : F, b ≠ 0 ∧ algebraMap F v.Completion b ∈ U := by
   obtain ⟨ε, hε, h⟩ := Metric.mem_nhds_iff.1 hU
@@ -348,6 +465,13 @@ section Adele
 
 variable {F : Type*} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (InfiniteAdeleRing F × FiniteAdeleRing (RingOfIntegers F) F) := ‹LocallyCompactSpace (AdeleRing (RingOfIntegers F) F)›`. Use `haveI : LocallyCompactSpace (FiniteAdeleRing (RingOfIntegers F) F) := (isOpenQuotientMap_snd (X := InfiniteAdeleRing F)).locallyCompactSpace`. Take `⟨B, hB, hBc⟩` from `infinite_cover (F := F)`. Use `⟨B ×ˢ _, hB.prod (compact_int (R := RingOfIntegers F) (K := F)), fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `finite_approx y.2`.
+
+Take `⟨r, hr⟩` from `hBc (y.1 - algebraMap F _ a)`. Use `⟨a + algebraMap _ F r, ?_, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y.1 - algebraMap F (InfiniteAdeleRing F) (a + algebraMap _ F r) ∈ B`. Rewrite using `[map_add, ← sub_sub]` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `y.2 v - algebraMap F (v.adicCompletion F) (a + algebraMap _ F r) ∈ _`.
+
+Rewrite using `[map_add, ← sub_sub]`. Conclude with `sub_mem (ha v) (coe_algebraMap_mem _ F v r)`.
+-/
 private theorem adele_cover [LocallyCompactSpace (AdeleRing (RingOfIntegers F) F)] :
     ∃ K : Set (AdeleRing (RingOfIntegers F) F), IsCompact K ∧
       ∀ y, ∃ c : F, y - algebraMap F (AdeleRing (RingOfIntegers F) F) c ∈ K := by
@@ -367,6 +491,11 @@ private theorem adele_cover [LocallyCompactSpace (AdeleRing (RingOfIntegers F) F
     rw [map_add, ← sub_sub]
     exact sub_mem (ha v) (coe_algebraMap_mem _ F v r)
 
+/- English proof (translation)
+Use `Prod.ext (funext fun v => ?_) (FiniteAdeleRing.ext F fun v => ?_)` and prove the remaining obligations. Establish `hc : Continuous fun z : AdeleRing (RingOfIntegers F) F => z.1 v` using `(continuous_apply v).comp continuous_fst`. Conclude with `field_bounded (algebraMap F v.Completion) (exists_small_inf v) _ (hC.image hc) (x.1 v) (fun a => ⟨_, hx a, rfl⟩)`. Establish `hc : Continuous fun z : AdeleRing (RingOfIntegers F) F => z.2 v` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`. Use `field_bounded (algebraMap F (v.adicCompletion F)) (fun U hU => ?_) _ (hC.image hc) (x.2 v) (fun a => ⟨_, hx a, rfl⟩)` and prove the remaining obligations.
+
+Take `⟨b, hb0, hb⟩` from `exists_scale v U hU`. Conclude with `⟨b, hb0, by simpa using hb 1 (one_mem _)⟩`.
+-/
 private theorem adele_bounded (C : Set (AdeleRing (RingOfIntegers F) F)) (hC : IsCompact C)
     (x : AdeleRing (RingOfIntegers F) F)
     (hx : ∀ a : F, x * algebraMap F (AdeleRing (RingOfIntegers F) F) a ∈ C) : x = 0 := by
@@ -384,6 +513,9 @@ private theorem adele_bounded (C : Set (AdeleRing (RingOfIntegers F) F)) (hC : I
 
 end Adele
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ψ hc hne hF`. Take `⟨K, hK, hcov⟩` from `adele_cover (F := F)`. Conclude with `abstract_thm K hK hcov adele_bounded ψ hc hne hF`.
+-/
 theorem UpperTheory.Reformulated.B.UnitaryAnnihilator.unitary_and_annihilator_eq :
     ∀ (F : Type) [inst : Field F] [inst_1 : NumberField F]
     [LocallyCompactSpace (NumberField.AdeleRing (NumberField.RingOfIntegers F) F)]

@@ -12,6 +12,9 @@ open MvPolynomial Filter Topology Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hle : J ⊔ Ideal.span {linForm u} ≤ RingHom.ker (eval x)`. Use `sup_le (fun g hg => RingHom.mem_ker.2 (hx g hg)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker]`. Simplify `hu` using `[linForm, GroundTheory.Heights₂.Heights.linEval]`. Conclude with `fun g hg => RingHom.mem_ker.1 (hle hg)`.
+-/
 private theorem mem_zeroSet_sup_linForm {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {u x : Fin n → ℂ}
     (hx : x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J) (hu : GroundTheory.Heights₂.Heights.linEval u x = 0) :
     x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet (J ⊔ Ideal.span {linForm u}) := by
@@ -21,6 +24,25 @@ private theorem mem_zeroSet_sup_linForm {n : ℕ} {J : Ideal (MvPolynomial (Fin 
     simpa [linForm, GroundTheory.Heights₂.Heights.linEval] using hu
   exact fun g hg => RingHom.mem_ker.1 (hle hg)
 
+/- English proof (translation)
+Introduce `n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj _`. Take `⟨N₁, hN₁, hcov₁⟩` from `hcov`. Take `⟨N₂, hN₂, hsl₂⟩` from `hsl`. Take `⟨V, hV, hVd⟩` from `hI n d J W u p m γ hJ hdim hu hW hp ⟨N₂, hN₂, hsl₂⟩`. Take `⟨U, hUo, hUd, hUg⟩` from `hO n _ W hW`.
+
+Use `set O := interior (N₁ ∩ N₂ ∩ V) with hOdef`. Establish `hOp : O ∈ 𝓝 p` using `interior_mem_nhds.2 (inter_mem (inter_mem hN₁ hN₂) hV)`. Take `⟨y, hyO, hyW, hyU⟩` from `mem_closure_iff_nhds.1 (hUd hp) O hOp`. Establish `hyV : y ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W ∩ V` using `⟨hyW, (interior_subset hyO).2⟩`. Take `⟨q, ⟨hqO, hqU⟩, hqW, hqs⟩` from `mem_closure_iff_nhds.1 (hVd hyV) (O ∩ U) (inter_mem (isOpen_interior.mem_nhds hyO) (hUo.mem_nhds hyU))`.
+
+Establish `hqN : N₁ ∩ N₂ ∩ V ∈ 𝓝 q` using `mem_interior_iff_mem_nhds.1 hqO`. Use `choose s hs hs0 hsq hsinj using hqs`. Use `set L : Fin m → (Fin d → ℂ) →ₗ[ℂ] (Fin n → ℂ) := fun b => (fderiv ℂ (γ b).toFun (s b) : (Fin (d + 1) → ℂ) →ₗ[ℂ] (Fin n → ℂ)) ∘ₗ ((Fin.consEquivL ℂ (fun _ : Fin (d + 1) => ℂ)).toLinearEquiv.toLinearMap ∘ₗ LinearMap.inr ℂ ℂ (Fin d → ℂ)) with hLdef`. Establish `hLapp : ∀ b w, L b w = fderiv ℂ (γ b).toFun (s b) (Fin.cons 0 w)` using `fun b w => rfl`. Establish `hL : ∀ b, Function.Injective (L b)`.
+
+Introduce `b`. Use `(injective_iff_map_eq_zero (L b)).2 fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[hLapp]`. Establish `h0` using `hsinj b (Fin.cons 0 w) (by simp) hw`. Use function extensionality and compare the values at `i`.
+
+Simplify using `using congrFun h0 i.succ`. Take `⟨π, hπ⟩` from `hP n d m L hL`. Use `⟨q, π, s, hqW, ⟨N₁, mem_of_superset hqN fun x hx => hx.1.1, hcov₁⟩, ⟨N₂, mem_of_superset hqN fun x hx => hx.1.2, hsl₂⟩, ?_, fun b => ⟨hs b, hs0 b, hsq b⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hNW⟩` from `hUg q ⟨hqW, hqU⟩`. Conclude with `⟨N, hN, fun x hx hux => hNW ⟨mem_zeroSet_sup_linForm hx.1 hux, hx.2⟩⟩`.
+
+Introduce `b`. Establish `hd : DifferentiableAt ℂ (γ b).toFun (s b)` using `(γ b).differentiableOn.differentiableAt (Metric.isOpen_ball.mem_nhds (hs b))`. Use `set πL : (Fin n → ℂ) →L[ℂ] (Fin d → ℂ) := (Matrix.mulVecLin π).toContinuousLinearMap`. Use `set Φ : (Fin (d + 1) → ℂ) →L[ℂ] (Fin (d + 1) → ℂ) := (Fin.consEquivL ℂ (fun _ : Fin (d + 1) => ℂ) : _ →L[ℂ] _) ∘L ((ContinuousLinearMap.proj 0).prod (πL ∘L fderiv ℂ (γ b).toFun (s b))) with hΦdef`. Establish `h1 : HasFDerivAt (fun τ : Fin (d + 1) → ℂ => ((τ 0, πL ((γ b).toFun τ)) : ℂ × (Fin d → ℂ))) ((ContinuousLinearMap.proj 0).prod (πL ∘L fderiv ℂ (γ b).toFun (s b))) (s b)` using `(hasFDerivAt_apply 0 (s b)).prodMk (πL.hasFDerivAt.comp (s b) hd.hasFDerivAt)`.
+
+Establish `hF : HasFDerivAt (fun τ => vecCons (τ 0) (π *ᵥ (γ b).toFun τ)) Φ (s b)` using `(Fin.consEquivL ℂ (fun _ : Fin (d + 1) => ℂ)).hasFDerivAt.comp (s b) h1`. Rewrite using `[hF.fderiv]`. Establish `hinj : Function.Injective Φ`. Use `(injective_iff_map_eq_zero Φ).2 fun v hv => ?_` and prove the remaining obligations. Establish `hv' : ((v 0, πL (fderiv ℂ (γ b).toFun (s b) v)) : ℂ × (Fin d → ℂ)) = 0` using `(Fin.consEquivL ℂ (fun _ : Fin (d + 1) => ℂ)).injective (by simpa [hΦdef] using hv)`.
+
+Establish `hv0 : v 0 = 0` using `congrArg Prod.fst hv'`. Establish `hvc : v = Fin.cons 0 (Fin.tail v)` using `by rw [← hv0, Fin.cons_self_tail]`. Establish `hw : π *ᵥ L b (Fin.tail v) = π *ᵥ L b 0`. Rewrite using `[map_zero, Matrix.mulVec_zero, hLapp, ← hvc]`. Conclude with `congrArg Prod.snd hv'`.
+
+Rewrite using `[hvc, hπ b hw]`. Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun j => rfl) i` and prove the remaining obligations. Conclude with `⟨hinj, (LinearMap.injective_iff_surjective (f := (Φ : (Fin (d + 1) → ℂ) →ₗ[ℂ] _))).1 hinj⟩`. Conclude with `fun b => hB n (d + 1) J u p q m γ hJ hdim hu ⟨N₁, mem_of_superset hqN fun x hx => hx.1.1, hcov₁⟩ hdisj b (s b) (hs b) (hsq b)`.
+-/
 theorem BranchesGoodPoint.proof (hP : GeneralProjection.Statement)
     (hO : OneComponentGeneralPoint.Statement) (hI : SliceImmersiveGeneral.Statement)
     (hB : BranchProperAtPoint.Statement) : BranchesGoodPoint.Statement := by

@@ -12,25 +12,51 @@ open PositivityTheory.SiegelWeilFormula
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)`.
+-/
 theorem th_inclR_injective : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Matrix.map_injective th_inclR_injective h`.
+-/
 theorem th_incM_injective {m n : Type} : Function.Injective (incM F : Matrix m n E → Matrix m n (AE F E)) :=
   fun _ _ h => Matrix.map_injective th_inclR_injective h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem th_inclR_eq (x : E) : HeckeCharacterZeroLocus.SiegelWeilU.inclR (F := F) (AF F) x = inclR (F := F) (E := E) (AF F) x := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem th_sigR_eq (x : AE F E) : HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ x = cA σ x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a b => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[HeckeCharacterZeroLocus.SiegelWeilU.JR, Jd, incM, th_inclR_eq, Matrix.transpose_apply, map_mul]`.
+-/
 theorem th_JR (d : SD σ) (η : E) :
     HeckeCharacterZeroLocus.SiegelWeilU.JR (AF F) (Jd d η) = inclR (F := F) (E := E) (AF F) η • (incM F d.A.J)ᵀ := by
   ext i j
   simp [HeckeCharacterZeroLocus.SiegelWeilU.JR, Jd, incM, th_inclR_eq, Matrix.transpose_apply, map_mul]
 
+/- English proof (translation)
+Establish `hc : IsUnit (inclR (F` using `F) (E := E) (AF F) η) := (Ne.isUnit hη).map _`. Establish `hm : (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ) = (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ)`. Use extensionality with `i j`. Conclude with `th_sigR_eq _`. Use `show (g : Matrix (Fin d.m) (Fin d.m) (AE F E))ᵀ * incM F d.A.J * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ) = incM F d.A.J ↔ HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ) (g : Matrix (Fin d.m) (Fin d.m) (AE F E)) * HeckeChara …`.
+
+Rewrite using `[th_JR, HeckeCharacterZeroLocus.SiegelWeilU.cT, hm]`. Use `set L := (g : Matrix (Fin d.m) (Fin d.m) (AE F E))ᵀ * incM F d.A.J * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ)`. Establish `hL : ((g : Matrix (Fin d.m) (Fin d.m) (AE F E)).map (cA σ))ᵀ * (inclR (F` using `F) (E := E) (AF F) η • (incM F d.A.J)ᵀ) * (g : Matrix (Fin d.m) (Fin d.m) (AE F E)) = inclR (F := F) (E := E) (AF F) η • Lᵀ := by`. Simplify using `only [L, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[hL]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Introduce `h`. Establish `h2` using `congrArg (fun M => (hc.unit⁻¹ : (AE F E)ˣ) • M) h`.
+
+Simplify using `only [Units.smul_def, smul_smul] at h2`. Establish `h3 : ((hc.unit⁻¹ : (AE F E)ˣ) : AE F E) * inclR (F` using `F) (E := E) (AF F) η = 1 := by`. Conclude with `hc.val_inv_mul`. Rewrite `h2` using `[h3, one_smul, one_smul]`. Use `congrArg Matrix.transpose h2` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem th_mem_iff (d : SD σ) {η : E} (hη : η ≠ 0) (g : GL (Fin d.m) (AE F E)) :
     g ∈ UG (cA σ) (incM F d.A.J) ↔ g ∈ HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (Jd d η) := by
   have hc : IsUnit (inclR (F := F) (E := E) (AF F) η) := (Ne.isUnit hη).map _
@@ -61,12 +87,37 @@ theorem th_mem_iff (d : SD σ) {η : E} (hη : η ≠ 0) (g : GL (Fin d.m) (AE F
 def thE (d : SD σ) {η : E} (hη : η ≠ 0) : UA σ d.A.J ≃* HeckeCharacterZeroLocus.SiegelWeilU.HA (AF F) σ (Jd d η) :=
   MulEquiv.subgroupCongr (Subgroup.ext (th_mem_iff d hη))
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.subtype_mk _`.
+-/
 theorem thE_cont (d : SD σ) {η : E} (hη : η ≠ 0) : Continuous (thE d hη) :=
   continuous_subtype_val.subtype_mk _
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.subtype_mk _`.
+-/
 theorem thE_symm_cont (d : SD σ) {η : E} (hη : η ≠ 0) : Continuous (thE d hη).symm :=
   continuous_subtype_val.subtype_mk _
 
+/- English proof (translation)
+Set `f : G ≃ᵐ H` to `(Homeomorph.mk e.toEquiv he hs).toMeasurableEquiv`. Establish `hf : ∀ x, f x = e x` using `fun _ => rfl`. Establish `hfe : μ.map e = μ.map f` using `rfl`. Establish `hne : μ ≠ 0`. Introduce `h0`.
+
+Use `(isOpen_univ : IsOpen (Set.univ : Set G)).measure_ne_zero μ Set.univ_nonempty` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this rfl`. Establish `hmeas : ∀ g : G, AEMeasurable (fun x => g * x) μ`. Introduce `g`.
+
+Assume the negation of the conclusion as `hn`. Use `Measure.map_of_not_aemeasurable hn` as an intermediate fact. Rewrite `this` using `[map_mul_left_eq_self μ g]`. Conclude with `hne this`. Rewrite using `[hfe]`.
+
+Use `{ lt_top_of_isCompact := ?_, map_mul_left_eq_self := ?_, open_pos := ?_ }` and prove the remaining obligations. Introduce `K hK`. Rewrite using `[MeasurableEquiv.map_apply]`. Establish `: f ⁻¹' K = e.symm '' K`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hx; exact ⟨e x, by rw [← hf]; exact hx, e.symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[hf, e.apply_symm_apply]`.
+
+Conclude with `hy`. Rewrite using `[this]`. Conclude with `(hK.image hs).measure_lt_top`. Introduce `h`. Establish `hg : AEMeasurable (fun x => e.symm h * x) μ` using `hmeas _`.
+
+Establish `hcomp : (fun y => h * y) ∘ f = f ∘ (fun x => e.symm h * x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp, hf, map_mul, MulEquiv.apply_symm_apply]`. Establish `hh : AEMeasurable (fun y => h * y) (μ.map f)`. Rewrite using `[aemeasurable_map_equiv_iff, hcomp]`.
+
+Conclude with `f.measurable.comp_aemeasurable hg`. Use extensionality with `S hS`. Rewrite using `[Measure.map_apply_of_aemeasurable hh hS, MeasurableEquiv.map_apply, MeasurableEquiv.map_apply]`. Establish `hpre : f ⁻¹' ((fun y => h * y) ⁻¹' S) = (fun x => e.symm h * x) ⁻¹' (f ⁻¹' S)`. Rewrite using `[← Set.preimage_comp, ← Set.preimage_comp, hcomp]`.
+
+Rewrite using `[hpre, ← Measure.map_apply_of_aemeasurable hg (f.measurableSet_preimage.mpr hS), map_mul_left_eq_self μ]`. Introduce `U hU hne'`. Rewrite using `[MeasurableEquiv.map_apply]`. Conclude with `(hU.preimage he).measure_ne_zero μ (hne'.preimage f.surjective)`.
+-/
 theorem th_haar_map {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G] [Group H]
     [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H] (μ : Measure G) [hμ : μ.IsHaarMeasure] (e : G ≃* H)
     (he : Continuous e) (hs : Continuous e.symm) : (μ.map e).IsHaarMeasure := by

@@ -10,6 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.DefiniteQuotient.exists_compact`.
+-/
 theorem definite_unitary_cocompact :
     ∀ {D : D7} (V : HSp D), (∀ τ, (gramAt D V τ).PosDef) →
       ∃ C : Set (GA D V), IsCompact C ∧ ∀ h : GA D V, ∃ γ ∈ GQ V, ∃ c ∈ C, h = γ * c :=

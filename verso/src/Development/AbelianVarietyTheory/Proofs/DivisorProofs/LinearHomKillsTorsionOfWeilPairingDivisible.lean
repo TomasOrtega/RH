@@ -19,22 +19,36 @@ section Act
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {O : Type} [CommRing O] (o : OAct O G) {T : Over S}
 
+/- English proof (translation)
+Establish `h : x ≫ o.act (0 + 0) = (x ≫ o.act 0) * (x ≫ o.act 0)` using `by rw [o.add, MonObj.comp_mul]`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := x ≫ o.act 0) (by rw [_root_.mul_one]; exact h.symm)`.
+-/
 theorem comp_act_zero (x : T ⟶ G) : x ≫ o.act 0 = 1 := by
   have h : x ≫ o.act (0 + 0) = (x ≫ o.act 0) * (x ≫ o.act 0) := by rw [o.add, MonObj.comp_mul]
   rw [add_zero] at h
   exact mul_left_cancel (a := x ≫ o.act 0) (by rw [_root_.mul_one]; exact h.symm)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, pow_zero, comp_act_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, o.add, MonObj.comp_mul, ih, o.one, Category.comp_id, pow_succ]`.
+-/
 theorem comp_act_nat (x : T ⟶ G) (n : ℕ) : x ≫ o.act (n : O) = x ^ n := by
   induction n with
   | zero => rw [Nat.cast_zero, pow_zero, comp_act_zero]
   | succ n ih => rw [Nat.cast_succ, o.add, MonObj.comp_mul, ih, o.one, Category.comp_id, pow_succ]
 
+/- English proof (translation)
+Use `o.hom r` as an intermediate fact. Rewrite using `[o.mul, ← Category.assoc, comp_act_nat, hx, MonObj.one_comp]`.
+-/
 theorem comp_act_nat_mul (x : T ⟶ G) (n : ℕ) (hx : x ^ n = 1) (r : O) : x ≫ o.act ((n : O) * r) = 1 := by
   have := o.hom r
   rw [o.mul, ← Category.assoc, comp_act_nat, hx, MonObj.one_comp]
 
 end Act
 
+/- English proof (translation)
+Take `⟨e, he, hu⟩` from `(hW S P k T).1 1 y (one_pow k) hy`. Establish `h2` using `(hW S P k T).2.1 1 1 y e e he he`. Rewrite `h2` using `[_root_.one_mul]`. Establish `h3 : e * e = e` using `hu _ h2`. Establish `he1 : e = 1` using `mul_left_cancel (a := e) (by rw [_root_.mul_one]; exact h3)`.
+
+Rewrite `he` using `[he1]`. Then use the resulting hypothesis.
+-/
 theorem weilIs_one_left (hW : Out.WeilSt) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : Out.PolAV S) {T : Over S}
     (k : ℕ) (y : T ⟶ P.A) (hy : y ^ k = 1) : Out.WeilIs P.A P.L k 1 y 1 := by
   obtain ⟨e, he, hu⟩ := (hW S P k T).1 1 y (one_pow k) hy
@@ -44,6 +58,21 @@ theorem weilIs_one_left (hW : Out.WeilSt) {S : Scheme.{0}} [IsLocallyNoetherian 
   have he1 : e = 1 := mul_left_cancel (a := e) (by rw [_root_.mul_one]; exact h3)
   rwa [he1] at he
 
+/- English proof (translation)
+Introduce `E _ _ _ H hH K _ _ ρ σ₁ p X ψ hψ n hn hWe u hu`. Establish `laws` using `GlobalTheory.lawsFieldsSeparately`. Establish `hWS : Out.WeilSt` using `laws.2.2.2.2.2.2.2.2.2.1`. Establish `hND : Out.WeilNondegSt` using `laws.2.2.2.2.2.2.2.2.2.2.1`. Establish `hBC : Out.PolBaseChangeSt` using `laws.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+
+Establish `u1 : unitOn (1 : ℂˣ) = 1` using `map_one _`. Establish `hgen : ∀ (x : Over.mk (spMap (σ₁.comp (algebraMap (𝓞 K) K))) ⟶ (X.A true).t.G) (f : (X.A true).t.G ⟶ X.B.t.G), x ^ n = 1 → Serre.IsLinearHom (X.A true).t.act X.B.t.act f → (∃ m : ℕ, 0 < m ∧ ∃ z : Fin p → 𝓞 E, f ^ m = ∏ a, ((X.A true).t.act.act (z a) ≫ GlobalTheory.FlatCM.phiP X a …`. Introduce `x f hx hf hm`. Take `⟨r, hr⟩` from `hWe f hf hm`. Establish `h` using `(hr n x u 1 hn hx hu).2`.
+
+Rewrite `h` using `[u1]`. Apply `h` to reduce the goal to its premises. Rewrite using `[comp_act_nat_mul _ x n hx r, Category.comp_id]`. Conclude with `weilIs_one_left hWS (X.A true).pol n u hu`. Establish `hall : ∀ y : Over.mk (spMap (σ₁.comp (algebraMap (𝓞 K) K))) ⟶ X.B.t.G, y ^ n = 1 → Out.WeilIs X.B.pol.A X.B.pol.L n (u ≫ ψ) y 1`.
+
+Introduce `y hy`. Establish `hψn : (u ≫ ψ) ^ n = 1` using `GlobalTheory.LevelRigid.pairing_tors u ψ hψ.isMonHom n hu`. It suffices to establish `h : Out.WeilIs X.B.pol.A X.B.pol.L n y (u ≫ ψ) 1 by`. Use `GlobalTheory.CommPairing.weilIs_symm X.B.pol.isLB h` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis.
+
+Establish `hmem` using `GlobalTheory.T.torsion_cmUnitaryShimura_mem_closure_linearHom_images E H hH K ρ σ₁ p X n hn y hy`. Use `clear hy`. Proceed by induction on `hmem using Submonoid.closure_induction with`. Consider the case `mem w hw`. Take `⟨x, f, hx, hf, hm, rfl⟩` from `hw`.
+
+Conclude with `hgen x f hx hf hm`. Consider the case `one => exact weilIs_one_left hWS X.B.pol n (u ≫ ψ) hψn`. Consider the case `mul a b _ _ ha hb`. Use `(hWS _ X.B.pol n _).2.1 a b (u ≫ ψ) 1 1 ha hb` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Then use the resulting hypothesis.
+
+Conclude with `GlobalTheory.LevelRigid.pairing_nondeg hWS hND hBC X.B.pol ℂ _ n (Nat.cast_ne_zero.2 hn.ne') (u ≫ ψ) (GlobalTheory.LevelRigid.pairing_tors u ψ hψ.isMonHom n hu) hall`.
+-/
 theorem kill : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0) (ψ : (X.A true).t.G ⟶ X.B.t.G),

@@ -27,27 +27,47 @@ def latS (c : L.Fp) : AddSubgroup L.Ep where
 
 variable {L}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latS {c : L.Fp} {x : L.Ep} : x ∈ latS L c ↔ ∃ y ∈ L.O, x = algebraMap L.Fp L.Ep c * y := Iff.rfl
 
+/- English proof (translation)
+Use `(L.O_def _).mpr ?_` and prove the remaining obligations. Use `first`. Consider the case `exact isIntegral_algebraMap (x := (⟨s, hs⟩ : 𝒪[L.Fp]))`. Consider the case `exact (IsScalarTower.algebraMap_apply (𝒪[L.Fp]) L.Fp L.Ep ⟨s, hs⟩) ▸ isIntegral_algebraMap`.
+-/
 theorem alg_mem_O {s : L.Fp} (hs : s ∈ 𝒪[L.Fp]) : algebraMap L.Fp L.Ep s ∈ L.O := by
   refine (L.O_def _).mpr ?_
   first
   | exact isIntegral_algebraMap (x := (⟨s, hs⟩ : 𝒪[L.Fp]))
   | exact (IsScalarTower.algebraMap_apply (𝒪[L.Fp]) L.Fp L.Ep ⟨s, hs⟩) ▸ isIntegral_algebraMap
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Conclude with `⟨a * b, L.O.mul_mem ha hb, by rw [map_mul]; ring⟩`.
+-/
 theorem latS_mul {c c' : L.Fp} {x y : L.Ep} (hx : x ∈ latS L c) (hy : y ∈ latS L c') : x * y ∈ latS L (c * c') := by
   obtain ⟨a, ha, rfl⟩ := hx
   obtain ⟨b, hb, rfl⟩ := hy
   exact ⟨a * b, L.O.mul_mem ha hb, by rw [map_mul]; ring⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨y * a, L.O.mul_mem hy ha, by ring⟩`.
+-/
 theorem O_mul_latS {c : L.Fp} {x y : L.Ep} (hy : y ∈ L.O) (hx : x ∈ latS L c) : y * x ∈ latS L c := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ⟨y * a, L.O.mul_mem hy ha, by ring⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `⟨algebraMap L.Fp L.Ep c' * a, L.O.mul_mem (alg_mem_O hc') ha, by rw [map_mul]; ring⟩`.
+-/
 theorem latS_mono {c c' : L.Fp} (hc' : c' ∈ 𝒪[L.Fp]) {x : L.Ep} (hx : x ∈ latS L (c * c')) : x ∈ latS L c := by
   obtain ⟨a, ha, rfl⟩ := hx
   exact ⟨algebraMap L.Fp L.Ep c' * a, L.O.mul_mem (alg_mem_O hc') ha, by rw [map_mul]; ring⟩
 
+/- English proof (translation)
+Distinguish the cases in `ha : a ∈ 𝒪[L.Fp]`. Conclude with `⟨1, one_ne_zero, one_mem _, by rw [one_mul]; exact ha⟩`. Establish `h0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `ha (zero_mem _)`.
+
+Use `⟨a⁻¹, inv_ne_zero h0, ?_, by rw [inv_mul_cancel₀ h0]; exact one_mem _⟩` and prove the remaining obligations. Rewrite `ha`, the goal using `[Valuation.mem_integer_iff]`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (le_of_lt (not_le.mp ha))`.
+-/
 theorem bounded_Fp (a : L.Fp) : ∃ s : L.Fp, s ≠ 0 ∧ s ∈ 𝒪[L.Fp] ∧ s * a ∈ 𝒪[L.Fp] := by
   by_cases ha : a ∈ 𝒪[L.Fp]
   · exact ⟨1, one_ne_zero, one_mem _, by rw [one_mul]; exact ha⟩
@@ -59,6 +79,13 @@ theorem bounded_Fp (a : L.Fp) : ∃ s : L.Fp, s ≠ 0 ∧ s ∈ 𝒪[L.Fp] ∧ s
     rw [map_inv₀]
     exact inv_le_one_of_one_le₀ (le_of_lt (not_le.mp ha))
 
+/- English proof (translation)
+Take `⟨n, b, hbint, hbspan⟩` from `intSpan' F E`. Take `⟨α, hα⟩` from `local_span_holds F E sig p L n b hbspan x`. Use `choose s hs0 hsO hsa using fun i => bounded_Fp (L := L) (α i)`. Establish `hbO : ∀ i, L.ιE (b i) ∈ L.O`. Introduce `i`.
+
+Use `local_integral_of_substitution F E sig p L 1 (b i) (by simp) (hbint i)` as an intermediate fact. Simplify using `using this`. Use `⟨∏ i, s i, Finset.prod_ne_zero_iff.2 fun i _ => hs0 i, Subring.prod_mem _ fun i _ => hsO i, ?_⟩` and prove the remaining obligations. Rewrite using `[hα, Finset.mul_sum]`. Use `L.O.sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Establish `e : algebraMap L.Fp L.Ep (∏ j, s j) * (α i • L.ιE (b i)) = algebraMap L.Fp L.Ep ((∏ j ∈ Finset.univ.erase i, s j) * (s i * α i)) * L.ιE (b i)`. Rewrite using `[Algebra.smul_def, ← mul_assoc, ← map_mul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `L.O.mul_mem (alg_mem_O (Subring.mul_mem _ (Subring.prod_mem _ fun j _ => hsO j) (hsa i))) (hbO i)`.
+-/
 theorem bounded (x : L.Ep) : ∃ s : L.Fp, s ≠ 0 ∧ s ∈ 𝒪[L.Fp] ∧ algebraMap L.Fp L.Ep s * x ∈ L.O := by
   classical
   obtain ⟨n, b, hbint, hbspan⟩ := intSpan' F E
@@ -78,6 +105,9 @@ theorem bounded (x : L.Ep) : ∃ s : L.Fp, s ≠ 0 ∧ s ∈ 𝒪[L.Fp] ∧ alge
   rw [e]
   exact L.O.mul_mem (alg_mem_O (Subring.mul_mem _ (Subring.prod_mem _ fun j _ => hsO j) (hsa i))) (hbO i)
 
+/- English proof (translation)
+Use `choose s hs0 hsO hsB using fun (p : Fin n × Fin n) => bounded (B p.1 p.2)`. Use `⟨∏ p, s p, Finset.prod_ne_zero_iff.mpr fun p _ => hs0 p, prod_mem fun p _ => hsO p, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ (i, j)), map_mul, mul_comm (algebraMap L.Fp L.Ep (s (i, j))), mul_assoc]`. Conclude with `L.O.mul_mem (alg_mem_O (prod_mem fun p _ => hsO p)) (hsB (i, j))`.
+-/
 theorem bounded_mat {n : ℕ} (B : Matrix (Fin n) (Fin n) L.Ep) :
     ∃ s : L.Fp, s ≠ 0 ∧ s ∈ 𝒪[L.Fp] ∧ ∀ i j, algebraMap L.Fp L.Ep s * B i j ∈ L.O := by
   choose s hs0 hsO hsB using fun (p : Fin n × Fin n) => bounded (B p.1 p.2)
@@ -86,6 +116,11 @@ theorem bounded_mat {n : ℕ} (B : Matrix (Fin n) (Fin n) L.Ep) :
   rw [← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ (i, j)), map_mul, mul_comm (algebraMap L.Fp L.Ep (s (i, j))), mul_assoc]
   exact L.O.mul_mem (alg_mem_O (prod_mem fun p _ => hsO p)) (hsB (i, j))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `AddSubgroup.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `hX k j`. Use `⟨algebraMap L.Fp L.Ep s * B i k * y, L.O.mul_mem (hs i k) hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hxy, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entIn_mul_left {n : ℕ} {B : Matrix (Fin n) (Fin n) L.Ep} {s : L.Fp}
     (hs : ∀ i j, algebraMap L.Fp L.Ep s * B i j ∈ L.O) {c : L.Fp} {X : Matrix (Fin n) (Fin n) L.Ep}
     (hX : EntIn (latS L (s * c)) X) : EntIn (latS L c) (B * X) := by
@@ -97,6 +132,11 @@ theorem entIn_mul_left {n : ℕ} {B : Matrix (Fin n) (Fin n) L.Ep} {s : L.Fp}
   rw [hxy, map_mul]
   ring
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `AddSubgroup.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `hX i k`. Use `⟨algebraMap L.Fp L.Ep s * B k j * y, L.O.mul_mem (hs k j) hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hxy, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entIn_mul_right {n : ℕ} {B : Matrix (Fin n) (Fin n) L.Ep} {s : L.Fp}
     (hs : ∀ i j, algebraMap L.Fp L.Ep s * B i j ∈ L.O) {c : L.Fp} {X : Matrix (Fin n) (Fin n) L.Ep}
     (hX : EntIn (latS L (s * c)) X) : EntIn (latS L c) (X * B) := by
@@ -108,6 +148,9 @@ theorem entIn_mul_right {n : ℕ} {B : Matrix (Fin n) (Fin n) L.Ep} {s : L.Fp}
   rw [hxy, map_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `latS_mono hc (latS_mul hx hy)`.
+-/
 theorem latS_mul_self {c : L.Fp} (hc : c ∈ 𝒪[L.Fp]) {x y : L.Ep} (hx : x ∈ latS L c) (hy : y ∈ latS L c) :
     x * y ∈ latS L c := latS_mono hc (latS_mul hx hy)
 

@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.WaveCp.Rep.Frame
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.DS.Lap.LemK.contDiffOn_inv_det_ne_zero.restrict_scalars ℝ`.
+-/
 theorem contDiffOn_inv_real : ContDiffOn ℝ ∞ (fun x : Mat n => x⁻¹) (GLs n) :=
   ReciprocityTheory.ChartRestriction.DS.Lap.LemK.contDiffOn_inv_det_ne_zero.restrict_scalars ℝ
 

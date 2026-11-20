@@ -11,12 +11,18 @@ namespace CrystallineSemistableComparison.Pb.G3
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.frobenius_eq_map_frobenius]`. Use extensionality with `n`. Simplify using `only [WittVector.map_coeff, frobenius_def, map_pow]`.
+-/
 theorem map_frob_w (r : Res l K) (w : WittVector l r.k) :
     WittVector.map r.s (WittVector.frobenius w) = WittVector.frobenius (WittVector.map r.s w) := by
   rw [WittVector.frobenius_eq_map_frobenius, WittVector.frobenius_eq_map_frobenius]
   ext n
   simp only [WittVector.map_coeff, frobenius_def, map_pow]
 
+/- English proof (translation)
+Use `show ACris.phi ℂ_[l] l (algebraMap (Ainf l) (Acris l) (WittVector.map r.s w)) = algebraMap (Ainf l) (Acris l) (WittVector.map r.s (WittVector.frobenius w))`. Rewrite using `[ACris.phi_algebraMap, map_frob_w]`. Both sides reduce to the same expression.
+-/
 theorem w_phi (r : Res l K) (w : WittVector l r.k) :
     ACris.phi ℂ_[l] l (r.w w) = r.w (WittVector.frobenius w) := by
   show ACris.phi ℂ_[l] l (algebraMap (Ainf l) (Acris l) (WittVector.map r.s w)) =

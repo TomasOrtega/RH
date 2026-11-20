@@ -44,6 +44,9 @@ namespace GlobalTheory.EtC.ShiftCocycle
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `show CohomologyClass.mk _ = _`. Use `congr 1`. Conclude with `(Cocycle.rightShiftAddEquiv (K := K) (L := L) n a n' h).symm_apply_apply x`.
+-/
 theorem runsh_rsh (K L : CochainComplex C ℤ) (a n n' : ℤ) (h : n' + a = n) (x) :
     runsh K L a n n' h (rsh K L a n n' h x) = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -51,6 +54,9 @@ theorem runsh_rsh (K L : CochainComplex C ℤ) (a n n' : ℤ) (h : n' + a = n) (
   congr 1
   exact (Cocycle.rightShiftAddEquiv (K := K) (L := L) n a n' h).symm_apply_apply x
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `show CohomologyClass.mk _ = _`. Use `congr 1`. Conclude with `(Cocycle.rightShiftAddEquiv (K := K) (L := L) n a n' h).apply_symm_apply x`.
+-/
 theorem rsh_runsh (K L : CochainComplex C ℤ) (a n n' : ℤ) (h : n' + a = n) (x) :
     rsh K L a n n' h (runsh K L a n n' h x) = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
@@ -60,6 +66,11 @@ theorem rsh_runsh (K L : CochainComplex C ℤ) (a n n' : ℤ) (h : n' + a = n) (
 
 def sgn (d : ℤ) : ℤˣ := ((-d) * 0 + ((-d) * (-d - 1)) / 2).negOnePow
 
+/- English proof (translation)
+Use extensionality with `p q hpq`. Establish `e1 : (↑(Cocycle.ofHom (Cocycle.homOf (ψ.leftShift (-d) 0 (by omega)))) : Cochain (L⟦-d⟧) M 0) = (ψ.leftShift (-d) 0 (by omega) : Cochain _ _ 0)`. Rewrite using `[Cocycle.ofHom_coe, Cocycle.cochain_ofHom_homOf_eq_coe]`. Simplify using `only [zcomp, Cocycle.mk_coe, e1, Cocycle.coe_units_smul, Cochain.units_smul_comp, Cochain.comp_v _ _ (add_zero n) p q q hpq (add_zero q), Cochain.comp_v _ _ (show n - d + d = n by omega) p (p + (n - d)) q rfl (by omega), Cochain.units_smul_v, Cocycle.rightShift_coe, Cocycle.leftS …`. Simplify using `only [Linear.comp_units_smul, Linear.units_smul_comp, smul_smul, Category.assoc, Iso.inv_hom_id_assoc]`.
+
+Establish `hs : sgn d * (-d * 0 + -d * (-d - 1) / 2).negOnePow = 1` using `Int.units_mul_self _`. Rewrite using `[hs, one_smul]`.
+-/
 theorem zcomp_rightShift_homOf_leftShift {K L M : CochainComplex C ℤ} (d n : ℤ) (α : Cocycle K L (n - d)) (ψ : Cocycle L M d) :
     zcomp (sgn d • α.rightShift (-d) n (by omega)) (Cocycle.ofHom (Cocycle.homOf (ψ.leftShift (-d) 0 (by omega))))
       (add_zero n) = zcomp α ψ (by omega) := by
@@ -83,15 +94,24 @@ namespace GlobalTheory.EtC.ShiftCocycle
 universe v u
 variable {C : Type u} [Category.{v} C] [Preadditive C]
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or u with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Units.neg_smul, one_smul, Units.neg_smul, one_smul, CohomologyClass.mk_neg]`.
+-/
 theorem smul_mk {K L : CochainComplex C ℤ} {n : ℤ} (u : ℤˣ) (z : Cocycle K L n) :
     CohomologyClass.mk (u • z) = u • CohomologyClass.mk z := by
   rcases Int.units_eq_one_or u with rfl | rfl
   · simp
   · rw [Units.neg_smul, one_smul, Units.neg_smul, one_smul, CohomologyClass.mk_neg]
 
+/- English proof (translation)
+Rewrite using `[smul_smul, Int.units_mul_self, one_smul]`.
+-/
 theorem smul_smul_self {G : Type*} [AddCommGroup G] (u : ℤˣ) (x : G) : u • u • x = x := by
   rw [smul_smul, Int.units_mul_self, one_smul]
 
+/- English proof (translation)
+Break down `Int.units_eq_one_or u with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Units.neg_smul, one_smul, Units.neg_smul, one_smul, map_neg]`.
+-/
 theorem map_units_smul' {G H : Type*} [AddCommGroup G] [AddCommGroup H] (f : G →+ H) (u : ℤˣ) (x : G) :
     f (u • x) = u • f x := by
   rcases Int.units_eq_one_or u with rfl | rfl
@@ -103,6 +123,15 @@ end GlobalTheory.EtC.ShiftCocycle
 namespace GlobalTheory.EtC
 open ShiftCocycle in
 
+/- English proof (translation)
+Introduce `R _ L C d ψ`. Use `⟨L⟦-d⟧, Cocycle.homOf (ψ.leftShift (-d) 0 (by omega)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Conclude with `L.isStrictlyGE_shift m (-d) (m + d) (by omega)`. Introduce `hI n`.
+
+Conclude with `Injective.of_iso (L.shiftFunctorObjXIso (-d) n (n + -d) rfl).symm (hI _)`. Introduce `K n`. Use `⟨{ toFun := fun x => sgn d • rsh K L (-d) (n - d) n (by omega) x invFun := fun y => sgn d • runsh K L (-d) (n - d) n (by omega) y left_inv := fun x => by` and prove the remaining obligations. Simplify using `only [map_units_smul', runsh_rsh, smul_smul_self]`. Use `right_inv := fun y => by`.
+
+Simplify using `only [map_units_smul', rsh_runsh, smul_smul_self] }, ?_⟩`. Introduce `a`. Take `⟨α, rfl⟩` from `a.mk_surjective`. Use `show cpush K _ n (sgn d • CohomologyClass.mk (α.rightShift (-d) n (by omega))) = _`. Rewrite using `[← smul_mk, cpost_mk]`.
+
+Conclude with `congrArg CohomologyClass.mk (zcomp_rightShift_homOf_leftShift d n α ψ)`.
+-/
 theorem cocycle_as_chainMap_of_shift : ∀ (R : Type) [CommRing R] (L C : Cx R) (d : ℤ) (ψ : Cocycle L C d),
     ∃ (L' : Cx R) (g : L' ⟶ C), (∀ m, L.IsStrictlyGE m → L'.IsStrictlyGE (m + d)) ∧
       ((∀ n, CategoryTheory.Injective (L.X n)) → ∀ n, CategoryTheory.Injective (L'.X n)) ∧

@@ -12,8 +12,16 @@ namespace GlobalTheory.Mem.Cert
 noncomputable def powMod (a m k : ℕ) : ℕ → ℕ :=
   Nat.rec (fun _ => 1) (fun _ ih e => (ih (e / 2) ^ 2 * a ^ (e % 2)) % m) k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem powMod_succ (a m k e : ℕ) : powMod a m (k + 1) e = (powMod a m k (e / 2) ^ 2 * a ^ (e % 2)) % m := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `e h`. Take `rfl : e = 0` from `by omega`. Simplify using `[powMod]`.
+
+Consider the case `succ k ih`. Introduce `e h`. Rewrite using `[powMod_succ, ZMod.natCast_mod, Nat.cast_mul, Nat.cast_pow, Nat.cast_pow, ih (e / 2) (by rw [pow_succ] at h; omega), ← pow_mul, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem powMod_cast (a m k : ℕ) : ∀ e : ℕ, e < 2 ^ k → ((powMod a m k e : ℕ) : ZMod m) = (a : ZMod m) ^ e := by
   induction k with
   | zero =>
@@ -27,11 +35,17 @@ theorem powMod_cast (a m k : ℕ) : ∀ e : ℕ, e < 2 ^ k → ((powMod a m k e 
     congr 1
     omega
 
+/- English proof (translation)
+Take `⟨x, hx, hqx⟩` from `hq.prime.dvd_prod_iff.1 (hq.dvd_of_dvd_pow (h.trans hn))`. Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq (hl x hx)).1 hqx]` and apply the resulting hypothesis.
+-/
 theorem mem_of_dvd_prod_pow {l : List ℕ} (hl : ∀ q ∈ l, q.Prime) {n N q : ℕ} (hn : n ∣ l.prod ^ N) (hq : q.Prime)
     (h : q ∣ n) : q ∈ l := by
   obtain ⟨x, hx, hqx⟩ := hq.prime.dvd_prod_iff.1 (hq.dvd_of_dvd_pow (h.trans hn))
   rwa [(Nat.prime_dvd_prime_iff_eq hq (hl x hx)).1 hqx]
 
+/- English proof (translation)
+Establish `key : ∀ e, e ≤ p - 1 → ((a : ZMod p) ^ e = 1 ↔ powMod a p k e % p = 1)` using `fun e he => by`. Rewrite using `[← powMod_cast a p k e (by omega), ← Nat.cast_one, ZMod.natCast_eq_natCast_iff', Nat.mod_eq_of_lt hp]`. Use `lucas_primality p a ((key _ le_rfl).2 h1) fun q hq hd h => ?_` and prove the remaining obligations. Conclude with `h2 q (mem_of_dvd_prod_pow hl hN hq hd) ((key _ (Nat.div_le_self _ _)).1 h)`.
+-/
 theorem prime_of_cert (p a k N : ℕ) (l : List ℕ) (hl : ∀ q ∈ l, q.Prime) (hp : 1 < p) (hk : p < 2 ^ k)
     (hN : p - 1 ∣ l.prod ^ N) (h1 : powMod a p k (p - 1) % p = 1)
     (h2 : ∀ q ∈ l, powMod a p k ((p - 1) / q) % p ≠ 1) : p.Prime := by
@@ -40,22 +54,37 @@ theorem prime_of_cert (p a k N : ℕ) (l : List ℕ) (hl : ∀ q ∈ l, q.Prime)
   refine lucas_primality p a ((key _ le_rfl).2 h1) fun q hq hd h => ?_
   exact h2 q (mem_of_dvd_prod_pow hl hN hq hd) ((key _ (Nat.div_le_self _ _)).1 h)
 
+/- English proof (translation)
+The claim follows from `prime_of_cert _ 3 24 5 [2, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel) (by decide +kernel) (by decide +kernel)`.
+-/
 theorem foundations_prime_fact_ter : Nat.Prime 10944929 :=
   prime_of_cert _ 3 24 5 [2, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel)
     (by decide +kernel) (by decide +kernel)
 
+/- English proof (translation)
+The claim follows from `prime_of_cert _ 13 40 4 [2, 3, 47, 167, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel) (by decide +kernel) (by decide +kernel)`.
+-/
 theorem prime_128860109809 : Nat.Prime 128860109809 :=
   prime_of_cert _ 13 40 4 [2, 3, 47, 167, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel)
     (by decide +kernel) (by decide +kernel)
 
+/- English proof (translation)
+The claim follows from `prime_of_cert _ 11 32 6 [2, 3, 5, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel) (by decide +kernel) (by decide +kernel)`.
+-/
 theorem foundations_prime_fact : Nat.Prime 328347841 :=
   prime_of_cert _ 11 32 6 [2, 3, 5, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel)
     (by decide +kernel) (by decide +kernel)
 
+/- English proof (translation)
+The claim follows from `prime_of_cert _ 11 32 4 [2, 3, 5, 17, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel) (by decide +kernel) (by decide +kernel)`.
+-/
 theorem foundations_prime_fact_bis : Nat.Prime 1395478321 :=
   prime_of_cert _ 11 32 4 [2, 3, 5, 17, 571, 599] (by norm_num) (by norm_num) (by norm_num) (by decide +kernel)
     (by decide +kernel) (by decide +kernel)
 
+/- English proof (translation)
+The claim follows from `prime_of_cert _ 5 320 8 [2, 3, 41, 571, 599, 10944929, 128860109809] (by have h0 := foundations_prime_fact_ter have h1 := prime_128860109809 simp only [List.mem_cons, List.not_mem_nil, or_false, forall_eq_or_imp, forall_eq] exact ⟨by norm_num, by norm_num, by norm_num, by norm_nu …`.
+-/
 theorem siteGood_prime_torsion : Nat.Prime (1 + 599 * (123 * (16 * 571 * 599 * (10944929 * 128860109809) ^ 2)) ^ 2) :=
   prime_of_cert _ 5 320 8 [2, 3, 41, 571, 599, 10944929, 128860109809]
     (by
@@ -65,6 +94,11 @@ theorem siteGood_prime_torsion : Nat.Prime (1 + 599 * (123 * (16 * 571 * 599 * (
       exact ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num, h0, h1⟩)
     (by decide +kernel) (by decide +kernel) (by decide +kernel) (by decide +kernel) (by decide +kernel)
 
+/- English proof (translation)
+Introduce and unpack `⟨-, hlt⟩`. Establish `hv : padicValNat l (g ^ e - 1) ≤ k`. Assume the negation of the conclusion as `hc`. Conclude with `h ((pow_dvd_pow l (by omega)).trans pow_padicValNat_dvd)`. Establish `h1 : l ^ (4 * padicValNat l (g ^ e - 1)) ≤ l ^ (4 * k)` using `Nat.pow_le_pow_right (by omega) (by omega)`.
+
+Establish `h2 : g ≤ g ^ e` using `Nat.le_self_pow (by omega) g`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_exc {g e l k : ℕ} (hl : 1 < l) (he : 1 ≤ e) (hg : l ^ (4 * k) ≤ g) (h : ¬ l ^ (k + 1) ∣ g ^ e - 1) :
     ¬ Formalism.CyclotomicNorms.Exc g e l := by
   rintro ⟨-, hlt⟩
@@ -75,6 +109,15 @@ theorem not_exc {g e l k : ℕ} (hl : 1 < l) (he : 1 ≤ e) (hg : l ^ (4 * k) �
   have h2 : g ≤ g ^ e := Nat.le_self_pow (by omega) g
   omega
 
+/- English proof (translation)
+Establish `key : ∀ g l : ℕ, g.Prime → l ∈ Formalism.CyclotomicNorms.BB 9 g → l.Prime ∧ l ∣ g * ∏ i ∈ Finset.range 9, (g ^ (i + 1) - 1)`. Introduce and unpack `g l hg (h | ⟨e, h1, h9, h⟩)`. Rewrite using `[Set.mem_singleton_iff.1 h]`. Conclude with `⟨hg, Dvd.intro _ rfl⟩`. Conclude with `⟨h.1, (Formalism.MainNotions.Inhab.exc_dvd_prod hg.pos h1 h9 h).trans (Dvd.intro_left _ rfl)⟩`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `l h0 h1`. Take `⟨hl, d0⟩` from `key _ _ foundations_prime_fact_ter h0`. Establish `hmem : l ∈ [2, 3, 5, 7, 19, 571, 599]` using `mem_of_dvd_prod_pow (N := 43) (by norm_num) (by decide +kernel) hl (Nat.dvd_gcd d0 (key _ _ prime_128860109809 h1).2)`. Break down `h1 with h | ⟨e, h1, h9, h⟩` into its components or cases.
+
+Rewrite `hmem` using `[Set.mem_singleton_iff.1 h]`. Conclude with `absurd hmem (by decide +kernel)`. Establish `hall : ∀ x ∈ [(2, 7), (3, 3), (5, 1), (7, 2), (19, 1), (571, 1), (599, 1)], 1 < x.1 ∧ x.1 ^ (4 * x.2) ≤ 128860109809 ∧ ∀ e < 10, 1 ≤ e → ¬ x.1 ^ (x.2 + 1) ∣ 128860109809 ^ e - 1`. Use `decide +kernel`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, (l, k) ∈ [(2, 7), (3, 3), (5, 1), (7, 2), (19, 1), (571, 1), (599, 1)] := by`.
+
+Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hmem`. Apply the tactic sequence `rcases hmem with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> simp`. Take `⟨a1, a2, a3⟩` from `hall _ hk`. Conclude with `not_exc a1 h1 a2 (a3 e (by omega) h1) h`.
+-/
 theorem bb_disjoint : Disjoint (Formalism.CyclotomicNorms.BB 9 10944929) (Formalism.CyclotomicNorms.BB 9 128860109809) := by
   have key : ∀ g l : ℕ, g.Prime → l ∈ Formalism.CyclotomicNorms.BB 9 g → l.Prime ∧ l ∣ g * ∏ i ∈ Finset.range 9, (g ^ (i + 1) - 1) := by
     rintro g l hg (h | ⟨e, h1, h9, h⟩)
@@ -104,12 +147,18 @@ namespace GlobalTheory.Mem.Explicit
 open Formalism.BasicNotions Formalism.BasicNotions.Examples₂ Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition NumberField GlobalTheory.Mem.Cert
 open scoped Pointwise
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num⟩`.
+-/
 theorem hyp : HostHyp 571 599 := ⟨by norm_num, by norm_num, by norm_num, by norm_num, by norm_num⟩
 
 def modulus : ℕ := 16 * 571 * 599 * (10944929 * 128860109809) ^ 2
 
 def level : ℕ := 1 + 599 * (123 * modulus) ^ 2
 
+/- English proof (translation)
+The claim follows from `siteGood_prime_torsion`.
+-/
 theorem level_prime : level.Prime := siteGood_prime_torsion
 
 section
@@ -118,11 +167,17 @@ variable {L : Type} [Field L] [NumberField L] {ζ a b : L} (hl : IsLayer (R0.e +
 
 def ax : Formalism.HC.HostAx R0.toFrame := Formalism.HC.D7.hostAx R0.toFrame exampleRanks_h_injective hyp le_rfl hl
 
+/- English proof (translation)
+Apply `Set.nonempty_of_ncard_ne_zero` to reduce the goal to its premises. Rewrite using `[(ax hl).der.cmType.2.1]`. Simplify using the standard rewrite rules.
+-/
 theorem cm_nonempty : (ax hl).cmType.Nonempty := by
   apply Set.nonempty_of_ncard_ne_zero
   rw [(ax hl).der.cmType.2.1]
   simp
 
+/- English proof (translation)
+The claim follows from `(ax hl).der.principal`.
+-/
 theorem half_exists : ∃ 𝔟 : Ideal (𝓞 (ax hl).E),
     differentIdeal (𝓞 (ax hl).K) (𝓞 (ax hl).E) = 𝔟 * ((ax hl).conj • 𝔟) ∧ 𝔟 ⊔ (ax hl).conj • 𝔟 = ⊤ ∧
     ∀ σ : (ax hl).E ≃ₐ[ℚ] (ax hl).E, (ax hl).gal σ ∈ R0.Psi → σ • 𝔟 = 𝔟 :=
@@ -199,6 +254,11 @@ def rootInt {R : Ranks} (H : Host R) : 𝓞 H.E :=
     rw [show H.sqrtMinusD ^ 2 = -(H.d : H.E) from H.sqd_sq]
     exact (isIntegral_natCast _).neg)⟩
 
+/- English proof (translation)
+Establish `h : ((1 + c * rootInt H : 𝓞 H.E) : H.E) = 1 + c * H.sqrtMinusD`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_add, map_one, map_mul, map_natCast]`. Both sides reduce to the same expression. Establish `h1 : H.conj H.sqrtMinusD = -H.sqrtMinusD` using `H.conj_sqd`. Establish `h2 : H.sqrtMinusD ^ 2 = -(H.d : H.E)` using `H.sqd_sq`.
+
+Rewrite using `[h, map_add, map_one, map_mul, map_natCast, h1]`. Use `push_cast`. Take the linear combination `(-(c : H.E) ^ 2) * h2`.
+-/
 theorem norm_one_add {R : Ranks} (H : Host R) (c : ℕ) :
     ((1 + c * rootInt H : 𝓞 H.E) : H.E) * H.conj ((1 + c * rootInt H : 𝓞 H.E) : H.E) = ((1 + H.d * c ^ 2 : ℕ) : H.E) := by
   have h : ((1 + c * rootInt H : 𝓞 H.E) : H.E) = 1 + c * H.sqrtMinusD := by
@@ -210,6 +270,9 @@ theorem norm_one_add {R : Ranks} (H : Host R) (c : ℕ) :
   push_cast
   linear_combination (-(c : H.E) ^ 2) * h2
 
+/- English proof (translation)
+Establish `h : ((1 + c * rootInt H : 𝓞 H.E) : H.E) = 1 + c * H.sqrtMinusD`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_add, map_one, map_mul, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `add_mem (one_mem _) (mul_mem (natCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _))`.
+-/
 theorem one_add_mem {R : Ranks} (H : Host R) (c : ℕ) : ((1 + c * rootInt H : 𝓞 H.E) : H.E) ∈ H.K := by
   have h : ((1 + c * rootInt H : 𝓞 H.E) : H.E) = 1 + c * H.sqrtMinusD := by
     simp only [RingOfIntegers.coe_eq_algebraMap, map_add, map_one, map_mul, map_natCast]
@@ -217,6 +280,9 @@ theorem one_add_mem {R : Ranks} (H : Host R) (c : ℕ) : ((1 + c * rootInt H : �
   rw [h]
   exact add_mem (one_mem _) (mul_mem (natCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _))
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_one, div_one, Real.mul_rpow (by norm_num) (by positivity), ← Real.rpow_mul hx.le, mul_one_div_cancel hs.ne', Real.rpow_one, show (4 : ℝ) = 2 ^ (2 : ℝ) by norm_num, ← Real.rpow_mul (by norm_num), mul_right_comm, ← Real.rpow_add (by norm_num)]`. Rewrite using `[show (2 : ℝ) * (1 / s) + -2 / s = 0 by ring, Real.rpow_zero, one_mul]`.
+-/
 theorem window {x s : ℝ} (hx : 0 < x) (hs : 0 < s) :
     (4 * x ^ s / ((1 : ℕ) : ℝ)) ^ ((1 : ℝ) / s) * (2 : ℝ) ^ (-(2 : ℝ) / s) = x := by
   rw [Nat.cast_one, div_one, Real.mul_rpow (by norm_num) (by positivity), ← Real.rpow_mul hx.le,
@@ -228,6 +294,9 @@ section
 
 variable {L : Type} [Field L] [NumberField L] {ζ a b : L} (hl : IsLayer (R0.e + 2) 571 599 ζ a b)
 
+/- English proof (translation)
+Rewrite using `[mul_comm, bridge_star_holds R0 (host hl)]`. Conclude with `norm_one_add (host hl) _`.
+-/
 theorem gen_norm : letI := (host hl).cmStar;
     star ((1 + (123 * modulus : ℕ) * rootInt (host hl) : 𝓞 (host hl).E) : (host hl).E) *
       ((1 + (123 * modulus : ℕ) * rootInt (host hl) : 𝓞 (host hl).E) : (host hl).E) = (level : (host hl).E) := by
@@ -291,6 +360,11 @@ def pre : Pre where
     have := one_div_pos.2 hs
     linarith
 
+/- English proof (translation)
+Establish `hne : Nonempty (Tau R0)` using `⟨1⟩`. Take `⟨τ⟩` from `hne`. Introduce `u u' h`. Establish `h1` using `congrArg (fun x => (x τ).u ⟨1, (by norm_num : 1 < 8)⟩) h`. Use `revert h1`.
+
+Express the relevant statement in the definitionally equal form `Bool at u u'`. Apply the tactic sequence `cases u <;> cases u' <;> simp [pre, hcParamOfCodeWord] <;> norm_num`.
+-/
 theorem pre_hcW_injective : Function.Injective (pre hl).hcW := by
   have hne : Nonempty (Tau R0) := ⟨1⟩
   obtain ⟨τ⟩ := hne
@@ -304,6 +378,9 @@ end
 
 end GlobalTheory.Mem.Explicit
 
+/- English proof (translation)
+Take `⟨L, _, _, ζ, a, b, hl⟩` from `Formalism.TwoAdicCyclotomicDecomposition.layerExists (Formalism.BasicNotions.Examples₂.R0.e + 2) 571 599`. Conclude with `⟨GlobalTheory.Mem.Explicit.pre hl, rfl, GlobalTheory.Mem.Explicit.pre_hcW_injective hl⟩`.
+-/
 theorem GlobalTheory.Mem.exists_pre : ∃ B : GlobalTheory.Mem.Pre, Fintype.card B.Word = 2 ∧ Function.Injective B.hcW := by
   obtain ⟨L, _, _, ζ, a, b, hl⟩ := Formalism.TwoAdicCyclotomicDecomposition.layerExists (Formalism.BasicNotions.Examples₂.R0.e + 2) 571 599
   exact ⟨GlobalTheory.Mem.Explicit.pre hl, rfl, GlobalTheory.Mem.Explicit.pre_hcW_injective hl⟩

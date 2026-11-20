@@ -11,6 +11,17 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
+/- English proof (translation)
+Introduce `V _ _ G _ _ A _ _ θ _ φ hφ he LP LL LM hP hL hM rA rL rM ψ e w₀ hpt hψ hε z JA JG gA gG`. Establish `h1 : eSec ((Over.pullback (jK V)).obj G) ≫ θ.left = eSec A` using `by show η[(Over.pullback (jK V)).obj G].left ≫ θ.left = η[A].left`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Establish `h2 : eSec ((Over.pullback (jK V)).obj G) ≫ pullback.fst G.hom (jK V) = jK V ≫ eSec G`. Rewrite using `[← hφ, ← Category.assoc, h1, he]`.
+
+Establish `p1 : θ.left (eSec ((Over.pullback (jK V)).obj G) z) = eSec A z` using `congrArg (fun f => f z) h1`. Establish `p2 : pullback.fst G.hom (jK V) (eSec ((Over.pullback (jK V)).obj G) z) = eSec G (jK V z)` using `congrArg (fun f => f z) h2`. Establish `p3 : φ (eSec A z) = eSec G (jK V z)` using `congrArg (fun f => f z) he`. Establish `hA : eSec A z ∈ LP.U (JA (eSec A))` using `gA (eSec A)`. Establish `hG : eSec G (jK V z) ∈ LM.U (JG (jK V ≫ eSec G))` using `gG (jK V ≫ eSec G)`.
+
+Take `⟨i, hi⟩` from `exists_chart hL (eSec G (jK V z))`. Establish `s2` using `hpt _ (eSec ((Over.pullback (jK V)).obj G)) z i (JG (jK V ≫ eSec G)) (JA (eSec A)) (by rw [p2]; exact hi) (by rw [p2]; exact hG) (by rw [p1]; exact hA)`. Rewrite `s2` using `[h2, h1]`. Establish `s3` using `(maps_iff ψ (fun _ : PUnit => eSec A) (fun _ => eSec G) (fun _ => 1) rA rL (spMap (algebraMap V (FractionRing V))) _ (rigPull_le φ _ he LL) (fun _ => rfl)).1 hψ _ (𝟙 _) z (fun _ => i) (fun _ => JA (eSec A)) (fun _ => by show φ (eSec A z) ∈ _; rw [p3]; exact hi) (fun _ => hA)`. Simplify using `only [Category.id_comp, Fintype.prod_unique, zpow_one] at s3`.
+
+Establish `hm : jK V z ∈ (LB.wchart LL (fun _ : PUnit => eSec G) (fun _ => i) ⊓ LB.wchart LM (fun _ : PUnit => eSec G) (fun _ => JG (jK V ≫ eSec G)) : (Sp V).Opens)`. Conclude with `⟨Set.mem_iInter.2 fun _ => hi, Set.mem_iInter.2 fun _ => hG⟩`. Establish `s4` using `congrArg (gm (jK V) z _) (hε (fun _ => i, fun _ => JG (jK V ≫ eSec G)))`. Establish `eU : gm (jK V) z _ ((LB.linCombIso e (K` using `PUnit) (fun _ => eSec G) (fun _ => 1)).s (fun _ => i, fun _ => JG (jK V ≫ eSec G))) = gm (jK V ≫ eSec G) z (LL.U i ⊓ LM.U (JG (jK V ≫ eSec G))) (e.s (i, JG (jK V ≫ eSec G))) := by show gm _ z _ (∏ _k : PUnit, (res _ (pullU (eSec G) _ (e.s (i, JG (jK V ≫ eSec G))))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`.
+
+Conclude with `(gm_res _ z _ hm _).trans (gm_pull _ _ z _ (show eSec G (jK V z) ∈ LL.U i ⊓ LM.U (JG (jK V ≫ eSec G)) from ⟨hi, hG⟩) _)`. Establish `s4'` using `(gm_res _ z _ hm _).symm.trans (s4.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) eU (gm_res _ z _ hm _))))`. Rewrite using `[val_of rA (𝟙 _) z JA (fun _ => JA (eSec A)) (fun _ => by rw [Category.id_comp]), val_of rM (jK V) z JG (fun _ => JG (jK V ≫ eSec G)) (fun _ => rfl), s2, _root_.mul_assoc, ← s3]`. Conclude with `inv_mul_eq_of_eq_mul s4'`.
+-/
 theorem GlobalTheory.normW_origin : ∀ (V : Type) [CommRing V] [IsDomain V] (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G]
     (A : Over (Sp (FractionRing V))) [GrpObj A] [IsCommMonObj A] (θ : (Over.pullback (jK V)).obj G ⟶ A) [IsMonHom θ]
     (φ : A.left ⟶ G.left), θ.left ≫ φ = pullback.fst G.hom (jK V) →

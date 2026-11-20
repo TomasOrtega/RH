@@ -22,5 +22,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovGminTop.gmin | exact GlobalTheory.CovGminTop.gmin | (intros; apply GlobalTheory.CovGminTop.gmin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.minimal_genus_bound : Hypotheses2 → Gram → DeepGood → Size → Gmin := by
   first | exact @GlobalTheory.CovGminTop.gmin | exact GlobalTheory.CovGminTop.gmin | (intros; apply GlobalTheory.CovGminTop.gmin <;> assumption)

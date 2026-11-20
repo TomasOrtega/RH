@@ -18,6 +18,9 @@ def wt : Option (HeightOneSpectrum k[X]) → ℕ
   | none => 1
   | some P => (Submodule.IsPrincipal.generator P.asIdeal).natDegree
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `none => exact Nat.one_pos`. Consider the case `some P`. Establish `: Prime (Submodule.IsPrincipal.generator P.asIdeal)` using `Submodule.IsPrincipal.prime_generator_of_isPrime P.asIdeal P.ne_bot`. Conclude with `this.irreducible.natDegree_pos`.
+-/
 theorem wt_pos (i : Option (HeightOneSpectrum k[X])) : 0 < wt k i := by
   cases i with
   | none => exact Nat.one_pos
@@ -28,12 +31,18 @@ theorem wt_pos (i : Option (HeightOneSpectrum k[X])) : 0 < wt k i := by
 
 def ord (i : Option (HeightOneSpectrum k[X])) (x : RatFunc k) : ℤ := wt k i * -log (val k i x)
 
+/- English proof (translation)
+Simplify using `only [ord, map_mul]`. Rewrite using `[log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ord_mul (i) {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord k i (x * y) = ord k i x + ord k i y := by
   simp only [ord, map_mul]
   rw [log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy)]
   ring
 
+/- English proof (translation)
+Establish `hw : (0 : ℤ) < wt k i` using `by exact_mod_cast wt_pos k i`. Rewrite using `[ord, mul_nonneg_iff_of_pos_left hw, neg_nonneg, log_le_iff_le_exp ((Valuation.ne_zero_iff _).2 hx), exp_zero]`.
+-/
 theorem ord_nonneg_iff (i) {x : RatFunc k} (hx : x ≠ 0) : 0 ≤ ord k i x ↔ val k i x ≤ 1 := by
   have hw : (0 : ℤ) < wt k i := by exact_mod_cast wt_pos k i
   rw [ord, mul_nonneg_iff_of_pos_left hw, neg_nonneg,
@@ -42,29 +51,46 @@ theorem ord_nonneg_iff (i) {x : RatFunc k} (hx : x ≠ 0) : 0 ≤ ord k i x ↔ 
 def Good (x : RatFunc k) : Prop :=
   (Function.support fun i => ord k i x).Finite ∧ ∑ᶠ i, ord k i x = 0
 
+/- English proof (translation)
+Simplify using `only [Good, ord_mul k _ hx hy]`. Use `⟨(h.1.union h'.1).subset (Function.support_add _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_add_distrib h.1 h'.1, h.2, h'.2, add_zero]`.
+-/
 theorem good_mul {x y : RatFunc k} (hx : x ≠ 0) (hy : y ≠ 0) (h : Good k x) (h' : Good k y) :
     Good k (x * y) := by
   simp only [Good, ord_mul k _ hx hy]
   refine ⟨(h.1.union h'.1).subset (Function.support_add _ _), ?_⟩
   rw [finsum_add_distrib h.1 h'.1, h.2, h'.2, add_zero]
 
+/- English proof (translation)
+Establish `e : ∀ i, ord k i x⁻¹ = - ord k i x` using `fun i => by simp [ord]`. Simplify using `only [Good, e]`. Use `⟨by simpa using h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_neg_distrib, h.2, neg_zero]`.
+-/
 theorem good_inv {x : RatFunc k} (h : Good k x) : Good k x⁻¹ := by
   have e : ∀ i, ord k i x⁻¹ = - ord k i x := fun i => by simp [ord]
   simp only [Good, e]
   refine ⟨by simpa using h.1, ?_⟩
   rw [finsum_neg_distrib, h.2, neg_zero]
 
+/- English proof (translation)
+Simplify using `only [ord, wt, val, RatFunc.inftyValuation_apply, RatFunc.inftyValuation.polynomial k hp]`. Simplify using the standard rewrite rules.
+-/
 theorem ord_none {p : k[X]} (hp : p ≠ 0) :
     ord k none (algebraMap k[X] (RatFunc k) p) = -(p.natDegree : ℤ) := by
   simp only [ord, wt, val, RatFunc.inftyValuation_apply, RatFunc.inftyValuation.polynomial k hp]
   simp
 
+/- English proof (translation)
+Establish `: P.valuation (RatFunc k) (algebraMap k[X] (RatFunc k) p) = 1` using `(P.valuation_eq_one_iff_notMem (K := RatFunc k)).2 hp`. Simplify using `[ord, val, this]`.
+-/
 theorem ord_some_of_notMem {p : k[X]} (P : HeightOneSpectrum k[X]) (hp : p ∉ P.asIdeal) :
     ord k (some P) (algebraMap k[X] (RatFunc k) p) = 0 := by
   have : P.valuation (RatFunc k) (algebraMap k[X] (RatFunc k) p) = 1 :=
     (P.valuation_eq_one_iff_notMem (K := RatFunc k)).2 hp
   simp [ord, val, this]
 
+/- English proof (translation)
+Establish `h1 : P.valuation (RatFunc k) (algebraMap k[X] (RatFunc k) p) = exp (-1 : ℤ)`. Rewrite using `[P.valuation_of_algebraMap, P.intValuation_singleton hp hP]`. Establish `h2 : Associated (Submodule.IsPrincipal.generator P.asIdeal) p`. Rewrite using `[← Ideal.span_singleton_eq_span_singleton, ← hP]`. Conclude with `Ideal.span_singleton_generator _`.
+
+Simplify using `[ord, val, wt, h1, natDegree_eq_of_degree_eq (degree_eq_degree_of_associated h2)]`.
+-/
 theorem ord_some_self {p : k[X]} (hp : p ≠ 0) (P : HeightOneSpectrum k[X])
     (hP : P.asIdeal = Ideal.span {p}) :
     ord k (some P) (algebraMap k[X] (RatFunc k) p) = p.natDegree := by
@@ -75,6 +101,11 @@ theorem ord_some_self {p : k[X]} (hp : p ≠ 0) (P : HeightOneSpectrum k[X])
     exact Ideal.span_singleton_generator _
   simp [ord, val, wt, h1, natDegree_eq_of_degree_eq (degree_eq_degree_of_associated h2)]
 
+/- English proof (translation)
+Establish `e : ∀ i, ord k i (algebraMap k[X] (RatFunc k) p) = 0` using `fun i => by`. Consider the cases of `i with`. Consider the case `none => rw [ord_none k hp.ne_zero, natDegree_eq_zero_of_isUnit hp]`. Simplify using the standard rewrite rules. Consider the case `some P => exact ord_some_of_notMem k P fun h => P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hp)`.
+
+Simplify using `[Good, e]`.
+-/
 theorem good_unit {p : k[X]} (hp : IsUnit p) : Good k (algebraMap k[X] (RatFunc k) p) := by
   have e : ∀ i, ord k i (algebraMap k[X] (RatFunc k) p) = 0 := fun i => by
     cases i with
@@ -82,6 +113,13 @@ theorem good_unit {p : k[X]} (hp : IsUnit p) : Good k (algebraMap k[X] (RatFunc 
     | some P => exact ord_some_of_notMem k P fun h => P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hp)
   simp [Good, e]
 
+/- English proof (translation)
+Set `P : HeightOneSpectrum k[X]` to `⟨Ideal.span {p}, (Ideal.span_singleton_prime hp.ne_zero).2 hp, by simpa using hp.ne_zero⟩`. Establish `hs : (Function.support fun i => ord k i (algebraMap k[X] (RatFunc k) p)) ⊆ (({none, some P} : Finset _) : Set _)`. Introduce `i hi`. Consider the cases of `i with`. Consider the case `none => simp`.
+
+Consider the case `some Q`. Distinguish the cases in `hQ : p ∈ Q.asIdeal`. Establish `: P.asIdeal = Q.asIdeal` using `P.isMaximal.eq_of_le Q.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hQ)`. Establish `: P = Q` using `HeightOneSpectrum.ext this`. Simplify using `[this]`.
+
+Conclude with `absurd (ord_some_of_notMem k Q hQ) hi`. Use `⟨(Finset.finite_toSet _).subset hs, ?_⟩` and prove the remaining obligations. Rewrite using `[finsum_eq_sum_of_support_subset _ hs, Finset.sum_pair (by simp), ord_none k hp.ne_zero, ord_some_self k hp.ne_zero P rfl, neg_add_cancel]`.
+-/
 theorem good_prime {p : k[X]} (hp : Prime p) : Good k (algebraMap k[X] (RatFunc k) p) := by
   let P : HeightOneSpectrum k[X] := ⟨Ideal.span {p}, (Ideal.span_singleton_prime hp.ne_zero).2 hp,
     by simpa using hp.ne_zero⟩
@@ -101,6 +139,11 @@ theorem good_prime {p : k[X]} (hp : Prime p) : Good k (algebraMap k[X] (RatFunc 
   rw [finsum_eq_sum_of_support_subset _ hs, Finset.sum_pair (by simp), ord_none k hp.ne_zero,
     ord_some_self k hp.ne_zero P rfl, neg_add_cancel]
 
+/- English proof (translation)
+Proceed by induction on `p using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hp`. Consider the case `h₂ p h => exact good_unit k h`. Consider the case `h₃ a p ha hpr ih`. Rewrite using `[map_mul]`.
+
+Conclude with `good_mul k (by simpa using hpr.ne_zero) (by simpa using ha) (good_prime k hpr) (ih ha)`.
+-/
 theorem good_poly (p : k[X]) (hp : p ≠ 0) : Good k (algebraMap k[X] (RatFunc k) p) := by
   induction p using UniqueFactorizationMonoid.induction_on_prime with
   | h₁ => exact absurd rfl hp
@@ -109,6 +152,9 @@ theorem good_poly (p : k[X]) (hp : p ≠ 0) : Good k (algebraMap k[X] (RatFunc k
     rw [map_mul]
     exact good_mul k (by simpa using hpr.ne_zero) (by simpa using ha) (good_prime k hpr) (ih ha)
 
+/- English proof (translation)
+Rewrite using `[← RatFunc.num_div_denom x, div_eq_mul_inv]`. Establish `hn` using `RatFunc.num_ne_zero hx`. Establish `hd` using `RatFunc.denom_ne_zero x`. Conclude with `good_mul k (by simpa using hn) (by simpa using hd) (good_poly k _ hn) (good_inv k (good_poly k _ hd))`.
+-/
 theorem good_all {x : RatFunc k} (hx : x ≠ 0) : Good k x := by
   rw [← RatFunc.num_div_denom x, div_eq_mul_inv]
   have hn := RatFunc.num_ne_zero hx
@@ -132,10 +178,18 @@ def places : Places k (RatFunc k) where
   fin := fun x => (good_all k x.ne_zero).1
   sum := fun x => (good_all k x.ne_zero).2
 
+/- English proof (translation)
+Use `ord_none k (X_ne_zero (R := k))` as an intermediate fact. Simplify `this` using `[places]`.
+-/
 theorem places_v_X : (places k).v none (Units.mk0 RatFunc.X RatFunc.X_ne_zero) = -1 := by
   have := ord_none k (X_ne_zero (R := k))
   simpa [places] using this
 
+/- English proof (translation)
+Use `⟨Inh.trivLB_isLB _, ⟨⟨fun _ => 1⟩, fun i j => ?_⟩, ⟨⟨fun _ => 1⟩, fun i j => ?_⟩, 1, le_rfl, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(map_one _).trans ((congrArg₂ (· * ·) (Inh.linComb_triv_g _ _ i j) (map_one _)).trans (_root_.one_mul _)).symm`. Conclude with `(map_one _).trans ((congrArg₂ (· * ·) (Inh.linComb_triv_g _ _ i j) (map_one _)).trans (_root_.one_mul _)).symm`. Rewrite using `[Nat.cast_one, pw_one]`. Apply the tactic sequence `refine ⟨oneSec _, ?_, ?_⟩ <;> rw [nonzeroLocus_oneSec]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `isAffineOpen_top _`.
+-/
 theorem ampleCub_triv {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsAffine G.left] :
     AmpleCub G (Inh.trivLB _) := by
   refine ⟨Inh.trivLB_isLB _, ⟨⟨fun _ => 1⟩, fun i j => ?_⟩, ⟨⟨fun _ => 1⟩, fun i j => ?_⟩, 1, le_rfl, fun x => ?_⟩
@@ -146,9 +200,19 @@ theorem ampleCub_triv {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsAffine G.left]
     · trivial
     · exact isAffineOpen_top _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Inh.linComb_triv_g _ _ i j) (map_one _)).trans (_root_.one_mul _)).symm⟩`.
+-/
 theorem pullPow_triv {X : Scheme.{0}} (F : X ⟶ X) (q : ℤ) : PullPow F (Inh.trivLB X) q :=
   ⟨⟨fun _ => 1⟩, fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Inh.linComb_triv_g _ _ i j) (map_one _)).trans (_root_.one_mul _)).symm⟩
 
+/- English proof (translation)
+Establish `key : ∀ (m : ℕ) (U : G.left.Opens) (f g : Γ(G.left, U)), (∃ h : U = (show G ⟶ G from (1 : End G) ^ m).left ⁻¹ᵁ U, ((show G ⟶ G from (1 : End G) ^ m).left.appLE U U h.le).hom f = g) ↔ f = g`. Introduce `m U f g`. Generalize the expression as in `hF : (1 : End G) ^ m = F`. Rewrite `hF` using `[one_pow]`. Substitute `hF` using the available equality.
+
+Establish `e : ∀ h, ((show G ⟶ G from (1 : End G)).left.appLE U U h).hom f = f` using `fun h => by`. Express the relevant statement in the definitionally equal form `((𝟙 G.left : G.left ⟶ G.left).appLE U U h).hom f = f`. Simplify using `[Scheme.Hom.appLE]`. Conclude with `rs_self h f`. Conclude with `⟨fun ⟨h, h'⟩ => (e _).symm.trans h', fun h => ⟨rfl, (e _).trans h⟩⟩`.
+
+Simplify using `only [FrobG, key]`. Conclude with `and_iff_right (inferInstanceAs (IsMonHom (𝟙 G)))`.
+-/
 theorem frobG_one_iff {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (q : ℕ) :
     FrobG G 1 q ↔ ∀ U : G.left.Opens, IsAffineOpen U → ∀ f : Γ(G.left, U), ∃ m, 1 ≤ m ∧ f = f ^ (q ^ m) := by
   have key : ∀ (m : ℕ) (U : G.left.Opens) (f g : Γ(G.left, U)),
@@ -166,9 +230,19 @@ theorem frobG_one_iff {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (q : ℕ
   simp only [FrobG, key]
   exact and_iff_right (inferInstanceAs (IsMonHom (𝟙 G)))
 
+/- English proof (translation)
+The claim follows from `(frobG_one_iff G 1).2 fun _ _ _ => ⟨1, le_rfl, by simp⟩`.
+-/
 theorem frobG_one_one {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] : FrobG G 1 1 :=
   (frobG_one_iff G 1).2 fun _ _ _ => ⟨1, le_rfl, by simp⟩
 
+/- English proof (translation)
+Use `(frobG_one_iff _ _).2 fun U _ f => ⟨1, le_rfl, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hU : U = ⊤`. Take `⟨c, rfl⟩` from `(cst_bijective (𝟙 (Spec (CommRingCat.of k))) hU).2 f`. Rewrite using `[pow_one]`. Conclude with `(congrArg _ (FiniteField.pow_card c).symm).trans (map_pow _ _ _)`.
+
+Establish `hb : U = ⊥`. Apply `le_bot_iff.1` to reduce the goal to its premises. Introduce `x hx`. Use `absurd (top_unique fun y _ => ?_) hU` and prove the remaining obligations. Establish `: y = x` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`.
+
+Conclude with `this ▸ hx`. Substitute `hb` using the available equality. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem frobG_unit_finite (k : Type) [Field k] [Fintype k] :
     FrobG (𝟙_ (Over (Sp k))) 1 (Fintype.card k) := by
   refine (frobG_one_iff _ _).2 fun U _ f => ⟨1, le_rfl, ?_⟩
@@ -185,6 +259,11 @@ theorem frobG_unit_finite (k : Type) [Field k] [Fintype k] :
     subst hb
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Introduce `h`. Establish `hb` using `cst_bijective (𝟙 (Spec (CommRingCat.of ℚ))) (W := ⊤) rfl`. Use `haveI : IsAffine (𝟙_ (Over (Sp ℚ))).left := inferInstanceAs (IsAffine (Spec _))`. Take `⟨m, hm, e⟩` from `(frobG_one_iff _ _).1 h ⊤ (isAffineOpen_top _) (cst (𝟙 (Spec (CommRingCat.of ℚ))) ⊤ 2)`. Establish `e' : (2 : ℚ) = 2 ^ (q ^ m)` using `hb.1 (e.trans (map_pow _ _ _).symm)`.
+
+Establish `h1 : 1 < q ^ m` using `Nat.one_lt_pow (by omega) (by omega)`. Use `pow_lt_pow_right₀ (one_lt_two (α := ℚ)) h1` as an intermediate fact. Rewrite `this` using `[pow_one, ← e']`. Conclude with `lt_irrefl _ this`.
+-/
 theorem not_frobG_unit_rat {q : ℕ} (hq : 2 ≤ q) : ¬ FrobG (𝟙_ (Over (Sp ℚ))) 1 q := by
   intro h
   have hb := cst_bijective (𝟙 (Spec (CommRingCat.of ℚ))) (W := ⊤) rfl
@@ -231,6 +310,9 @@ def absFrob {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) : X.left ⟶ X.le
       rw [map_pow] at h2
       exact (isUnit_pow_iff Fintype.card_ne_zero).1 h2⟩ }⟩
 
+/- English proof (translation)
+Use `Scheme.Hom.ext rfl fun U => ?_` and prove the remaining obligations. Use extensionality with `a`. Establish `e : (X.left.presheaf.map (eqToHom (rfl : f ⁻¹ᵁ U = f ⁻¹ᵁ U)).op).hom (((f.app U).hom a) ^ Fintype.card k) = (f.app U).hom (a ^ Fintype.card k)` using `by simp`. Conclude with `e`.
+-/
 theorem absFrob_comm {k : Type} [Field k] [Fintype k] {X Y : Over (Sp k)} (f : X.left ⟶ Y.left) :
     absFrob X ≫ f = f ≫ absFrob Y := by
   refine Scheme.Hom.ext rfl fun U => ?_
@@ -239,6 +321,11 @@ theorem absFrob_comm {k : Type} [Field k] [Fintype k] {X Y : Over (Sp k)} (f : X
       (f.app U).hom (a ^ Fintype.card k) := by simp
   exact e
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono X.hom, absFrob_comm (Y := Over.mk (𝟙 _)) X.hom, Category.id_comp]`. Establish `: absFrob (Over.mk (𝟙 (Sp k))) = 𝟙 (Sp k)` using `by haveI : IsAffine (Over.mk (𝟙 (Sp k))).left := inferInstanceAs (IsAffine (Spec _))`. Apply `ext_of_isAffine` to reduce the goal to its premises. Use extensionality with `a`. Take `⟨c, rfl⟩` from `(cst_bijective (𝟙 (Spec (CommRingCat.of k))) (W := ⊤) rfl).2 a`.
+
+Conclude with `(map_pow (cst (𝟙 (Spec (CommRingCat.of k))) ⊤) c _).symm.trans (congrArg _ (FiniteField.pow_card c))`. Rewrite using `[this]`. Conclude with `Category.comp_id _`.
+-/
 theorem absFrob_base (k : Type) [Field k] [Fintype k] (X : Over (Sp k)) [IsIso X.hom] : absFrob X = 𝟙 _ := by
   rw [← cancel_mono X.hom, absFrob_comm (Y := Over.mk (𝟙 _)) X.hom, Category.id_comp]
   have : absFrob (Over.mk (𝟙 (Sp k))) = 𝟙 (Sp k) := by
@@ -257,9 +344,19 @@ def frobOver {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) : X ⟶ X :=
     rw [absFrob_base k (Over.mk (𝟙 _))] at this
     exact this.trans (Category.comp_id _))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (absFrob_comm f.left)`.
+-/
 theorem frobOver_comm {k : Type} [Field k] [Fintype k] {X Y : Over (Sp k)} (f : X ⟶ Y) :
     frobOver X ≫ f = f ≫ frobOver Y := Over.OverMorphism.ext (absFrob_comm f.left)
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_⟩, fun U _ f => ⟨1, le_rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← frobOver_comm, toUnit_unique (frobOver _) (𝟙 _), Category.id_comp]`. Rewrite using `[← frobOver_comm]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [frobOver_comm]`.
+
+Establish `key : ∀ φ : G.left ⟶ G.left, φ = absFrob G → ∃ h : U = φ ⁻¹ᵁ U, (φ.appLE U U h.le).hom f = f ^ (Fintype.card k ^ 1)`. Introduce and unpack `_ rfl`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `rs_self (X := G.left) le_rfl (f ^ Fintype.card k)`.
+
+Conclude with `key _ (by rw [pow_one]; rfl)`.
+-/
 theorem frobG_frobOver {k : Type} [Field k] [Fintype k] (G : Over (Sp k)) [GrpObj G] :
     FrobG G (frobOver G) (Fintype.card k) := by
   refine ⟨⟨?_, ?_⟩, fun U _ f => ⟨1, le_rfl, ?_⟩⟩
@@ -275,6 +372,11 @@ theorem frobG_frobOver {k : Type} [Field k] [Fintype k] (G : Over (Sp k)) [GrpOb
       exact rs_self (X := G.left) le_rfl (f ^ Fintype.card k)
     exact key _ (by rw [pow_one]; rfl)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨x⟩ : Nonempty G.left` from `⟨(η[G]).left (⊥ : PrimeSpectrum k)⟩`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `G.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Take `⟨m, hm, e, h'⟩` from `h.2 U hU 0`. Rewrite `h'` using `[map_zero, zero_pow (by omega : m ≠ 0), pow_zero]`.
+
+Use `haveI : Nonempty U := ⟨⟨x, hx⟩⟩`. Conclude with `zero_ne_one h'`.
+-/
 theorem not_frobG_zero {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (F : End G) : ¬ FrobG G F 0 := by
   intro h
   obtain ⟨x⟩ : Nonempty G.left := ⟨(η[G]).left (⊥ : PrimeSpectrum k)⟩
@@ -284,13 +386,24 @@ theorem not_frobG_zero {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (F : En
   haveI : Nonempty U := ⟨⟨x, hx⟩⟩
   exact zero_ne_one h'
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (F : End G) (q : ℕ) : FrobG G F q ↔
   (IsMonHom (show G ⟶ G from F) ∧ ∀ U : G.left.Opens, IsAffineOpen U → ∀ f : Γ(G.left, U), ∃ m : ℕ, 1 ≤ m ∧
     ∃ h : U = (show G ⟶ G from ((F ^ m : End G) : End G)).left ⁻¹ᵁ U, ((show G ⟶ G from ((F ^ m : End G) : End G)).left.appLE U U h.le).hom f = f ^ (q ^ m)) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `pow_two F`.
+-/
 example {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (F : End G) :
   (show G ⟶ G from F ^ 2) = (show G ⟶ G from F) ≫ (show G ⟶ G from F) := pow_two F
 
+/- English proof (translation)
+Establish `h1 : P.v i 1 = 0` using `by have := P.v_mul i 1 1; rw [_root_.mul_one] at this; omega`. Establish `h2` using `P.v_mul i (Units.map (algebraMap k K : k →* K) c) (Units.map (algebraMap k K : k →* K) c⁻¹)`. Rewrite `h2` using `[← map_mul, mul_inv_cancel, map_one, h1]`. Establish `h3` using `(P.mem i (Units.map (algebraMap k K : k →* K) c)).1 (P.const i c)`. Establish `h4` using `(P.mem i (Units.map (algebraMap k K : k →* K) c⁻¹)).1 (P.const i (c⁻¹ : kˣ))`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem places_v_const {k K : Type} [Field k] [Field K] [Algebra k K] (P : Places k K) (i : P.I) (c : kˣ) :
     P.v i (Units.map (algebraMap k K : k →* K) c) = 0 := by
   have h1 : P.v i 1 = 0 := by have := P.v_mul i 1 1; rw [_root_.mul_one] at this; omega

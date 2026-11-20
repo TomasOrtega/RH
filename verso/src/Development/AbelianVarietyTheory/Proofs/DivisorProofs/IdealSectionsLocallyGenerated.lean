@@ -12,6 +12,19 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X M hM I hg`. Take `⟨n, a, ha⟩` from `isGloballyGenerated_iff_spanStalks.1 hg`. Use `⟨n, fun k => Twist.secOfTwist (idealModuleι I) (a k), ?_, ?_⟩` and prove the remaining obligations. Introduce `k i W h`. Establish `hW : W.1 ≤ ⊤ ⊓ M.U i` using `le_inf le_top h`.
+
+Rewrite using `[Twist.secOfTwist_f, LB.resG_resG]`. Use `(exists_idealModuleι_app_eq_iff_mem I W _).1 ⟨Twist.resM _ hW (Twist.coord (a k) i), ?_⟩` and prove the remaining obligations. Rewrite using `[Twist.app_resM]`. Conclude with `structureModuleSectionsEquiv_res hW _`. Introduce `x i hx W hxW f hf`.
+
+Take `⟨t, rfl⟩` from `(exists_idealModuleι_app_eq_iff_mem I W f).2 hf`. Set `l` to `(structureModuleStalkEquiv x).toLinearMap ∘ₗ stalkLinear (idealModuleι I) x ∘ₗ (Twist.stalkEquiv (idealModule I) hM i hx).toLinearMap`. Establish `hm : x ∈ ⊤ ⊓ M.U i` using `⟨trivial, hx⟩`. Establish `e : (l ∘ fun k => ((twist (idealModule I) M).presheaf.germ ⊤ x trivial (a k) : ((twist (idealModule I) M).presheaf.stalk x :))) = fun k => X.presheaf.germ (M.U i) x hx ((Twist.secOfTwist (idealModuleι I) (a k)).f i)`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Twist.secOfTwist_f, X.presheaf.germ_res_apply (homOfLE _) x hx]`. Rewrite using `[Function.comp_apply, ← structureModuleStalkEquiv_germ, ← stalkLinear_germ]`. Conclude with `congrArg (fun u => structureModuleStalkEquiv x (stalkLinear (idealModuleι I) x u)) (Twist.stalkEquiv_germ hM i hx (V := ⊤) trivial (a k))`. Establish `hu : X.presheaf.germ W.1 x hxW (structureModuleSectionsEquiv W.1 ((idealModuleι I).app W t)) = l ((Twist.stalkEquiv (idealModule I) hM i hx).symm ((idealModule I).presheaf.germ W.1 x hxW t))`. Simplify using `only [l, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, stalkLinear_germ, structureModuleStalkEquiv_germ]`.
+
+Establish `hmem : (Twist.stalkEquiv (idealModule I) hM i hx).symm ((idealModule I).presheaf.germ W.1 x hxW t) ∈ Submodule.span (X.presheaf.stalk x) (Set.range fun k => ((twist (idealModule I) M).presheaf.germ ⊤ x trivial (a k) : ((twist (idealModule I) M).presheaf.stalk x :)))`. Rewrite using `[ha x]`. Conclude with `Submodule.mem_top`. Establish `h2` using `Submodule.apply_mem_span_image_of_mem_span l hmem`. Rewrite `h2` using `[← Set.range_comp, e]`.
+
+Rewrite using `[hu]`. Conclude with `h2`.
+-/
 theorem Twist.exists_secs_generating_ideal : ∀ (X : Scheme.{0}) (M : LB X), M.IsLB → ∀ (I : X.IdealSheafData), IsGloballyGenerated (twist (idealModule I) M) → ∃ (n : ℕ) (σ : Fin n → M.Sec), (∀ (k : Fin n) (i : M.ι) (W : X.affineOpens) (h : W.1 ≤ M.U i), resG X h ((σ k).f i) ∈ I.ideal W) ∧ ∀ (x : X) (i : M.ι) (hx : x ∈ M.U i) (W : X.affineOpens) (hxW : x ∈ W.1) (a : Γ(X, W.1)), a ∈ I.ideal W → X.presheaf.germ W.1 x hxW a ∈ Ideal.span (Set.range fun k => X.presheaf.germ (M.U i) x hx ((σ k).f i)) := by
   intro X M hM I hg
   obtain ⟨n, a, ha⟩ := isGloballyGenerated_iff_spanStalks.1 hg

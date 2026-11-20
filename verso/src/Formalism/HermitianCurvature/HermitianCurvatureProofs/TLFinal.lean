@@ -17,12 +17,54 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.XFibreOfParts
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `lift_of_x_of_parts lift_zero_order lift_closed_under_operations (x_fibre_of_parts big_cell_values omega_polynomial_facts capelli_vector_frame capelli_vector_equivariance)`.
+-/
 theorem lift_of_x : Formalism.FourierDecayAlt.TL.LiftX :=
   lift_of_x_of_parts lift_zero_order lift_closed_under_operations
     (x_fibre_of_parts big_cell_values omega_polynomial_facts capelli_vector_frame capelli_vector_equivariance)
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `⟨11, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 hl1 hlk hD`. Take `⟨hA, hcap, hxi⟩` from `actual_algebra_facts Wp Wq P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 hD`. Take `⟨hmono, hzero, hadd, hsmul, hmul⟩` from `lift_closed_under_operations Wp Wq P Bs`. Establish `hF` using `lift_of_functions Wp Wq P Bs X L hD.2.2.1`.
+
+Establish `hX` using `lift_of_x Wp Wq P Bs X μ L st l0 hD`. Establish `hK` using `lift_capelli_operators Wp Wq P Bs X μ L st l0 hD`. Establish `hpoly : ∀ (p : Polynomial ℂ) (a : Q.Pr ↥(Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')), TL.Lifts P Bs 0 0 a → TL.Lifts P Bs 0 0 (Polynomial.aeval a p)`. Introduce `p a ha`. Establish `hpow : ∀ m : ℕ, TL.Lifts P Bs 0 0 (a ^ m)`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hF.1`. Consider the case `succ m ih => simpa [pow_succ] using hmul 0 0 0 0 _ _ ih ha`. Proceed by induction on `p using Polynomial.induction_on' with`.
+
+Consider the case `add p q hp hq => simpa using hadd 0 0 _ _ hp hq`. Consider the case `monomial m c`. Rewrite using `[Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`. Conclude with `hsmul 0 0 _ c (hpow m)`. Establish `hn : P.r + 1 ≤ 2 * P.r + P.k + 1` using `by omega`.
+
+Establish `hSys : TL.LiftSys L st (2 * P.r + P.k + 1) (TL.Lifts P Bs)` using `{ mono := fun h1 h2 h => hmono _ _ _ _ _ h1 h2 h zero := hzero add := fun h1 h2 => hadd _ _ _ _ h1 h2 smul := fun z h => hsmul _ _ _ z h one := hF.1 mul := fun h1 h2 => hmul _ _ _ _ _ _ h1 h2 fns := hF.2 x := fun Y _ => hX Y xi := fun Y hY _ => by`. Take `⟨p, hp⟩` from `hxi Y hY`. Rewrite using `[hp]`. Conclude with `hpoly p _ (hX Y)`. Use `cap := fun Y hY => by`.
+
+Rewrite using `[← hcap Y hY]`. Conclude with `hK Y }`. Establish `hWL` using `TL.wordLiftOfParts word_recursion (letter_lift_of_parts TL.basicLift l_shape m_shape_of_l_shape)`. Establish `hAdm : ∀ w : List C.Letter, KB.CutWord P l0 w → Fr.admitted st (D.positionted w)`. Introduce `w hw`.
+
+Establish `hM : M.CutWord P l0 (D.positionted w)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[D.positionted, List.map_ofFn]`. Conclude with `List.nodup_ofFn.mpr (fun a b h => h)`. Introduce `a ha`.
+
+Take `⟨i, rfl⟩` from `List.mem_ofFn.mp ha`. Conclude with `⟨by simp, by simpa using hw.1 i⟩`. Rewrite using `[D.positionted, List.pairwise_ofFn]`. Introduce `i j hij`. Simplify using `using hw.2 i j (ne_of_lt hij)`.
+
+Take `⟨h1, h2, h3, h4⟩` from `cut_admissible interlacing_sign q_positive_interlacing q_positive_shift types_interlace realPoints_statement P hD.1.1 l0 hl1 hlk (Fin w.length) (D.positionted w) hM`. Use `⟨h1, h2, ?_, h4⟩` and prove the remaining obligations. Rewrite using `[hD.2.2.2.2.1, hD.2.2.2.2.2.1]`. Conclude with `h3`. Establish `hLift : ∀ (w : List C.Letter) (e : Wd.Ix (Fin w.length)), ∃ Dop : B.DiffOp P.k P.r Wp Wq, KB.CutWord P l0 w → ∃ (nf : ℕ) (fib : Fin nf → B.Mat P.k P.r → C6.EndH Wp Wq), (∀ j, C6.FibBound Bs (fib j)) ∧ C6.InDDPlus Bs fib ∅ (w.length * (2 * P.r + P.k + 1)) (11 * w.length * (P.r + 1 …`.
+
+Introduce `w e`. Distinguish the cases in `hw : KB.CutWord P l0 w`. Establish `h` using `hWL _ (Fin w.length) P.r (2 * P.r + P.k + 1) L st (TL.Lifts P Bs) (D.positionted w) hA hSys hn (hAdm w hw) e`. Establish `hl : (D.positionted w).length = w.length` using `List.length_ofFn`. Rewrite `h` using `[hl]`.
+
+Take `⟨nf, fib, Dop, h1, h2, h3⟩` from `h`. Conclude with `⟨Dop, fun _ => ⟨nf, fib, h1, h2, h3⟩⟩`. Take `⟨Dop, -⟩` from `identity_operator P.k P.r Wp Wq Bs`. Conclude with `⟨Dop, fun h => absurd h hw⟩`. Use `choose Dw hDw using hLift`.
+
+Take `⟨D0, hD0, hD0F⟩` from `identity_operator P.k P.r Wp Wq Bs`. Use `⟨⟨fun w e F => if w = [] then F else B.opApply (Dw w e) F, fun e F => by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw F hFc Φ hΦ e dsimp only`. Establish `hact : ∀ (M0 : Wd.SlopeTestRemainingChoices (Fin w.length) (Q.Pr ↥(Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))), P5.act M0 (Top.firstStateVector Φ) e = (M0 e Wd.e1).1 Φ`. Introduce `M0`.
+
+Unfold `P5.act Top.firstStateVector`. Rewrite using `[Finset.sum_eq_single Wd.e1]`. Conclude with `congrArg _ (if_pos rfl)`. Introduce `b _ hb`. Establish `hb' : ¬ (b = fun _ => 0)` using `hb`.
+
+Rewrite using `[if_neg hb', map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hact]`. Distinguish the cases in `hne : w = []`. Substitute `hne` using the available equality.
+
+Simplify using `only [if_true]`. Establish `h1 : (Fr.ofWord L st (D.positionted ([] : List C.Letter))).F * P5.bTall L (D.positionted ([] : List C.Letter)) = 1`. Simplify using `[D.positionted, Fr.ofWord, P5.bTall, P5.bTl, Wd.bT, Fr.Start.frame]`. Establish `he : e = Wd.e1` using `funext fun i => (Nat.not_lt_zero _ i.2).elim`. Rewrite using `[h1, he]`.
+
+Simplify using `using hΦ`. Rewrite using `[if_neg hne]`. Take `⟨nf, fib, -, -, hR⟩` from `hDw w e hw`. Conclude with `hR F hFc Φ hΦ`. Introduce `w hw e dsimp only`.
+
+Distinguish the cases in `hne : w = []`. Apply the tactic sequence `refine ⟨0, fun j => j.elim0, 0, 0, D0, fun j => j.elim0, ?_, by norm_num <;> positivity, by norm_num <;> positivity, ?_⟩`. Use `hD0 using 2` and compare the differences between its conclusion and the goal. Introduce `F g _`. Rewrite using `[if_pos hne, hD0F]`.
+
+Take `⟨nf, fib, h1, h2, -⟩` from `hDw w e hw`. Use `⟨nf, fib, _, _, Dw w e, h1, h2, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Use polynomial arithmetic with `[show (0:ℝ) ≤ (w.length:ℝ) * (2 * (P.r:ℝ) + P.k + 1) by positivity]`. Use `push_cast`.
+
+Use polynomial arithmetic with `[show (0:ℝ) ≤ (w.length:ℝ) * (2 * (P.r:ℝ) + P.k + 1) by positivity]`. Introduce `F g _`. Rewrite using `[if_neg hne]`.
+-/
 theorem top_lift_exists : Formalism.FourierDecayAlt.TL.TopLiftExists3 := by
   classical
   refine ⟨11, by norm_num, ?_⟩

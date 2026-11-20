@@ -25,6 +25,9 @@ def PriceBound (C₀ : ℝ) : Prop :=
           ((Y.Fl u w hg).w (Y.vOf u w hg t0)) j ≤
           Formalism.MainNotions.G.Pr X K (Formalism.MainNotions.G.bL L) (D.what₂.places.resChar w) j t0
 
+/- English proof (translation)
+Introduce `D L X Y K _ _ h3 h4 hSz hT hL u w hg hlog t0 ht0 j hj` and use `⟨hS D L X Y hSz hT hL u w hg hlog t0 ht0 j hj, hP D L X Y K h3 h4 hSz hT hL u w hg hlog t0 ht0 j hj⟩`.
+-/
 theorem nc_need3_of (C₀ : ℝ) (hS : nd_NeedSize) (hP : PriceBound C₀) : nc_Need3 C₀ :=
   fun D L X Y K _ _ h3 h4 hSz hT hL u w hg hlog t0 ht0 j hj =>
     ⟨hS D L X Y hSz hT hL u w hg hlog t0 ht0 j hj, hP D L X Y K h3 h4 hSz hT hL u w hg hlog t0 ht0 j hj⟩

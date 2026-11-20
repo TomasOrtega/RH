@@ -15,12 +15,20 @@ open scoped nonZeroDivisors
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `ddS`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective]`. Conclude with `differentIdeal_ne_bot`. Conclude with `FaithfulSMul.algebraMap_injective _ _`.
+-/
 theorem ddS_ne_zero : ddS D ≠ 0 := by
   unfold ddS
   rw [Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective]
   · exact differentIdeal_ne_bot
   · exact FaithfulSMul.algebraMap_injective _ _
 
+/- English proof (translation)
+Establish `hle : ddS D ≤ 1`. Unfold `ddS`. Conclude with `FractionalIdeal.coeIdeal_le_one`. Establish `h1 : (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≤ (ddS D)⁻¹`. Simplify using `using FractionalIdeal.inv_anti_mono ddS_ne_zero one_ne_zero hle`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Simplify using `using FractionalIdeal.mul_mem_mul ih (h1 (FractionalIdeal.one_mem_one _))`.
+-/
 theorem one_mem_inv_pow (k : ℕ) : (1 : D.host.E) ∈ (ddS D)⁻¹ ^ k := by
   have hle : ddS D ≤ 1 := by
     unfold ddS
@@ -33,6 +41,15 @@ theorem one_mem_inv_pow (k : ℕ) : (1 : D.host.E) ∈ (ddS D)⁻¹ ^ k := by
     rw [pow_succ]
     simpa using FractionalIdeal.mul_mem_mul ih (h1 (FractionalIdeal.one_mem_one _))
 
+/- English proof (translation)
+Take `⟨b, hb, hint⟩` from `J.isFractional`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Use `⟨Ideal.absNorm (Ideal.span {b}), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`.
+
+Introduce `y hy`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {b}))`. Take `⟨z, hz⟩` from `hint y hy`. Use `⟨c * z, ?_⟩` and prove the remaining obligations. Establish `hz' : (z : E) = (b : E) * y`.
+
+Rewrite `hz` using `[Algebra.smul_def]`. Conclude with `hz`. Establish `hN : ((Ideal.absNorm (Ideal.span {b}) : 𝓞 E) : E) = (Ideal.absNorm (Ideal.span {b}) : E)`. Use `push_cast`. Both sides reduce to the same expression.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_nat_mul_mem_ringOfIntegers_of_fractionalIdeal {E : Type} [Field E] [NumberField E]
     (J : FractionalIdeal (𝓞 E)⁰ E) :
     ∃ N : ℕ, N ≠ 0 ∧ ∀ y ∈ J, ∃ z : 𝓞 E, (N : E) * y = (z : E) := by
@@ -57,6 +74,9 @@ private theorem exists_nat_mul_mem_ringOfIntegers_of_fractionalIdeal {E : Type} 
       _ = (c : E) * (z : E) := by rw [hz']
       _ = ((c * z : 𝓞 E) : E) := by push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[(D.s.atP p).O_def]`. Establish `h : IsIntegral ℤ ((D.s.atP p).ιE (z : D.host.E))` using `(RingOfIntegers.isIntegral_coe z).map ((D.s.atP p).ιE.toIntAlgHom)`. Conclude with `h.tower_top`.
+-/
 private theorem ιE_ringOfIntegers_mem_O (D : D7) (p : PlF D) (z : 𝓞 D.host.E) :
     (D.s.atP p).ιE (z : D.host.E) ∈ (D.s.atP p).O := by
   rw [(D.s.atP p).O_def]
@@ -64,6 +84,17 @@ private theorem ιE_ringOfIntegers_mem_O (D : D7) (p : PlF D) (z : 𝓞 D.host.E
     (RingOfIntegers.isIntegral_coe z).map ((D.s.atP p).ιE.toIntAlgHom)
   exact h.tower_top
 
+/- English proof (translation)
+Establish `hI : Ideal.span {(N : 𝓞 D.host.F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `p hp`.
+
+Simplify using `only [Set.mem_ofPred_eq] at hp ⊢`. Rewrite using `[Ideal.dvd_span_singleton]`. Assume the negation of the conclusion as `hmem`. Apply `hp` to reduce the goal to its premises. Establish `hv : p.valuation D.host.F (N : D.host.F) = 1`.
+
+Use `(IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem (K := D.host.F) (v := p)).mpr hmem` as an intermediate fact. Simplify using `using this`. Establish `hle : (D.s.atP p).ιF ((N : D.host.F)⁻¹) ≤ᵥ (D.s.atP p).ιF 1`. Rewrite using `[(D.s.atP p).val]`. Simplify using `[map_inv₀, hv]`.
+
+Rewrite `hle` using `[map_one]`. Establish `hint : (D.s.atP p).ιF ((N : D.host.F)⁻¹) ∈ Valuation.integer (ValuativeRel.valuation (D.s.atP p).Fp)`. Rewrite using `[Valuation.mem_integer_iff, ← (ValuativeRel.valuation _).vle_one_iff]`. Conclude with `hle`. Establish `hNE : (N : D.host.E) ≠ 0` using `by exact_mod_cast hN`.
+
+Use `⟨algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((D.s.atP p).ιF ((N : D.host.F)⁻¹)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(D.s.atP p).O_def]`. Conclude with `isIntegral_algebraMap (R := Valuation.integer (ValuativeRel.valuation (D.s.atP p).Fp)) (A := (D.s.atP p).Ep) (x := ⟨_, hint⟩)`. Rewrite using `[← (D.s.atP p).compat, ← map_mul, map_inv₀, map_natCast, mul_inv_cancel₀ hNE, map_one]`.
+-/
 private theorem finite_setOf_not_isUnit_natCast_atP (D : D7) (N : ℕ) (hN : N ≠ 0) :
     {p : PlF D | ¬ ∃ w ∈ (D.s.atP p).O, (D.s.atP p).ιE (N : D.host.E) * w = 1}.Finite := by
   have hI : Ideal.span {(N : 𝓞 D.host.F)} ≠ 0 := by
@@ -96,6 +127,23 @@ end GlobalTheory.FrameFactorUnit
 
 open GlobalTheory.FrameFactorUnit in
 
+/- English proof (translation)
+Introduce `D Z a`. Establish `hL` using `Formalism.L2.SG.Pf.locDiffC_holds D Z`. Unfold `Formalism.L2.SG.Pf.LocDiffC at hL`. Take `⟨N, hN0, hN⟩` from `exists_nat_mul_mem_ringOfIntegers_of_fractionalIdeal (ddS D ^ (-((D.R.rS : ℤ) - ((a : ℕ) : ℤ))))`. Use `(finite_setOf_not_isUnit_natCast_atP D N hN0).subset ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Simplify using `only [Set.mem_ofPred_eq] at hp ⊢`. Introduce `hgood`. Apply `hp` to reduce the goal to its premises. Take `⟨w, hwO, hw1⟩` from `hgood`.
+
+Establish `hO` using `Formalism.L2.SG.Pf.LocFacts.lf_hO Z p`. Establish `hc : Formalism.L2.SG.Pf.LocFacts.cP p Z ^ (D.R.rS - a.val) ∈ (D.s.atP p).O`. Use `Formalism.L2.SG.Pf.LocFacts.lf_mem_pow p Formalism.L2.SG.Pf.dualLoc_holds Z (D.R.rS - a.val) 1 (one_mem_inv_pow _)` as an intermediate fact. Simplify using `using this`. Establish `hunit : IsUnit (Formalism.L2.SG.Pf.LocFacts.cP p Z ^ (D.R.rS - a.val))` using `(Formalism.L2.SG.Pf.LocFacts.isUnit_localConstant p Z).pow _`.
+
+Establish `hinv : frFac Z.δ p a * Formalism.L2.SG.Pf.LocFacts.cP p Z ^ (D.R.rS - a.val) = 1`. Unfold `frFac`. Conclude with `Ring.inverse_mul_cancel _ hunit`. Establish `hmem : frFac Z.δ p a ∈ (Z.M p).L.O`. Establish `hs` using `Submodule.mem_span_singleton_self (R := (Z.M p).L.O) (frFac Z.δ p a)`.
+
+Rewrite `hs` using `[← hL p a]`. Use `revert hs`. Generalize the expression as in `frFac Z.δ p a = f`. Introduce `hs`. Proceed by induction on `hs using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨z, hz⟩` from `hN y hy`. Rewrite using `[hO]`. Establish `hy' : (D.s.atP p).ιE y = w * (D.s.atP p).ιE (z : D.host.E)`.
+
+Rewrite using `[← hz, map_mul, ← mul_assoc, mul_comm w, hw1, one_mul]`. Rewrite using `[hy']`. Conclude with `mul_mem hwO (ιE_ringOfIntegers_mem_O D p z)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+
+Consider the case `smul r x _ hx`. Rewrite using `[Subring.smul_def]`. Conclude with `mul_mem r.2 hx`. Use `show frFac Z.δ p a ∈ (Z.M p).L.O ∧ ∃ y ∈ (Z.M p).L.O, frFac Z.δ p a * y = 1`. Conclude with `⟨hmem, _, hO ▸ hc, hinv⟩`.
+-/
 theorem GlobalTheory.FrameFactorUnit.frFac_isUnitO_finite : ∀ (D : D7) (Z : LocDat D) (a : Fin (D.R.rS + 1)),
     {p : PlF D | ¬ Formalism.MainNotions.S.LocNG.IsUnitO (Z.M p) (frFac Z.δ p a)}.Finite := by
   intro D Z a

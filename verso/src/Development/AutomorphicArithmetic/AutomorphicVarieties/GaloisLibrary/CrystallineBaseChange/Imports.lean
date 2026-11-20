@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `hP K _ _ _ n hn m hm M _ π hπ p w hp hw _ hd B hB`. Take `⟨hinf, ⟨χ, hpol⟩, -⟩` from `hπ`. Establish `hic : ∀ τ, (CG.mk π).infChar τ = infOf m` using `fun τ => CG.HasInfChar.infChar_eq (hinf τ)`. Establish `hreg : (CG.mk π).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Rewrite using `[hic]`.
+
+Use `⟨Finset.univ.nodup.map fun i j e => hm.injective ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `add_left_cancel e` after adjusting the coercions. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨m i, add_comm _ _⟩`. Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompC hP K n π w`.
+
+Establish `hBσ` using `((satLoc hP K n w σ).2 _ π.finPart (hiso σ hσ) B).1 hB`. Use `slopesOf hP m hp w hw hd σ B hBσ fun l _ ι => ?_` and prove the remaining obligations. Take `⟨r, wt, HT, H⟩` from `hP.litN.aut.gal K (AlgebraicClosure K) l ι n (by omega) π _ hreg hpol`. Establish `hHT : ∀ τ, HT τ = Finset.univ.val.map fun i => -m i` using `fun τ => by`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises.
+
+Rewrite using `[H.weights τ, hic, infOf, Multiset.map_map, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun i _ => by simp`. Use `⟨r, H.cont, fun hl A h rc hrc => H.away w hl A h rc hrc σ hσ, fun A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Establish `a` using `H.above _ _ (UpperTheory.V.Loc.tiedP l) w A h O Bw hj`. Conclude with `⟨a.crys σ hσ, fun τ LL' τ' hτ => hHT τ ▸ a.jumps τ LL' τ' hτ, fun hi => (a.iwahori σ hσ hi).2⟩`.
+-/
 theorem UpperTheory.V.Br.intP :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Br.IntP := by
   intro hP K _ _ _ n hn m hm M _ π hπ p w hp hw _ hd B hB

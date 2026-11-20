@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ t P a κ _ ρ hρ G₀ _ φ h f₀ hf`. Use `letI := H.starRing`. Take `⟨τ, hτ, hi⟩` from `P.lin.i_lin 0 a`. Establish `e : τ = GlobalTheory.SplitTorus.torusMap _ (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a))` using `(GlobalTheory.SplitTorus.eq_torusMap_iff _ _).2 fun x => (GlobalTheory.SplitTorus.res_pullU_charUnit τ x _).symm.trans ((congrArg Units.val (hτ x)).trans (GlobalTheory.SplitTorus.charUnit_val _))`. Establish `k` using `GlobalTheory.TorusPart.isGrpPullback_thickLift hρ h`.
+
+Establish `c : f₀.left ≫ GlobalTheory.TorusPart.thickLift hρ h = GlobalTheory.TorusPart.thickLift hρ h ≫ ((Over.pullback (Out.thick R (maximalIdeal R) 0)).map (t.act.act a)).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (GlobalTheory.TorusPart.thickLift_fst _ _)).trans (hf.trans ?_))` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (GlobalTheory.ExtUnique.pullback_map_left_fst _ _).symm)` and prove the remaining obligations.
+
+Conclude with `(congrArg (· ≫ _) (GlobalTheory.TorusPart.thickLift_fst _ _).symm).trans (Category.assoc _ _ _)`. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) k.1.w).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (Over.w ((Over.pullback (Out.thick R (maximalIdeal R) 0)).map (t.act.act a))).symm)` and prove the remaining obligations. Use `Eq.trans ?_ k.1.w.symm` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, Over.w]`. Conclude with `(GlobalTheory.TorusPart.pullTorus_comp k k _ _ c (P.U.gt 0).i).symm.trans ((congrArg (GlobalTheory.TorusPart.pullTorus k) (hi.trans (congrArg (· ≫ _) e))).trans (GlobalTheory.TorusPart.pullTorus_torusMap_comp k _ _))`.
+-/
 theorem endChar_act : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (a : 𝓞 E), EndChar P.U (t.act.act a) (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a)) := by
   intro E _ _ _ H R _ _ _ _ t P a κ _ ρ hρ G₀ _ φ h f₀ hf
   letI := H.starRing

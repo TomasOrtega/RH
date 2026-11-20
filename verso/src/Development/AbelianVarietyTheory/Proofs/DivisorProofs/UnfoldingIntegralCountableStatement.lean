@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnfoldingIntegralCountable
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnfoldSemidirect.lintegral_fundamentalDomain_eq | exact GlobalTheory.UnfoldSemidirect.lintegral_fundamentalDomain_eq | (intros; apply GlobalTheory.UnfoldSemidirect.lintegral_fundamentalDomain_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unfolding_integral_countable : ∀ {G G₁ L Kt : Type} [Group G] [MeasurableSpace G] [Group G₁] [MeasurableSpace G₁] [MeasurableSpace L] [MeasurableSpace Kt]
     (μG : Measure G) (ν : Measure G₁) (μL : Measure L) (μK : Measure Kt) (N Q : Subgroup G) (Γ : Subgroup G₁) (μN : Measure N)
     (kk : Kt → G) (m : L → G₁ → G) (ι : G₁ → G) (w : L → ENNReal) (c : ENNReal) (dom : Set G₁) (𝓕 : Set N),

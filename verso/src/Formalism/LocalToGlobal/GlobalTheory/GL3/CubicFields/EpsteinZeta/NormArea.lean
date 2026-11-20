@@ -7,6 +7,9 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5
 open NumberField Classical
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hn : Complex.normSq a ≠ 0` using `(Complex.normSq_pos.mpr ha).ne'`. Rewrite using `[Complex.div_im, Complex.mul_im, Complex.conj_re, Complex.conj_im]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma conj_mul_im_eq_normSq_mul_div_im (a b : ℂ) (ha : a ≠ 0) :
     ((starRingEnd ℂ) a * b).im = Complex.normSq a * (b / a).im := by
   have hn : Complex.normSq a ≠ 0 := (Complex.normSq_pos.mpr ha).ne'
@@ -14,6 +17,11 @@ lemma conj_mul_im_eq_normSq_mul_div_im (a b : ℂ) (ha : a ≠ 0) :
   field_simp
   ring
 
+/- English proof (translation)
+Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hab`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[conj_mul_im_eq_normSq_mul_div_im a b ha]`.
+
+Conclude with `pos_of_mul_pos_right hab (Complex.normSq_nonneg a)`.
+-/
 lemma ne_zero_and_div_im_pos (a b : ℂ) (hab : 0 < ((starRingEnd ℂ) a * b).im) :
     a ≠ 0 ∧ 0 < (b / a).im := by
   have ha : a ≠ 0 := by
@@ -23,6 +31,11 @@ lemma ne_zero_and_div_im_pos (a b : ℂ) (hab : 0 < ((starRingEnd ℂ) a * b).im
   rw [conj_mul_im_eq_normSq_mul_div_im a b ha] at hab
   exact pos_of_mul_pos_right hab (Complex.normSq_nonneg a)
 
+/- English proof (translation)
+Take `⟨ha, hpos⟩` from `ne_zero_and_div_im_pos a b hab`. Rewrite using `[discr_closure_pair a b hpos]`. Establish `hpi : (2 * Real.pi / a : ℂ) ≠ 0`. Use `div_ne_zero ?_ ha` and prove the remaining obligations. Conclude with `mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.mpr Real.pi_ne_zero)`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hpi) (pow_ne_zero _ (ModularForm.eta_ne_zero hpos))`.
+-/
 theorem discr_closure_pair_ne_zero (a b : ℂ) (hab : 0 < ((starRingEnd ℂ) a * b).im) :
     discr (AddSubgroup.closure {a, b}) ≠ 0 := by
   obtain ⟨ha, hpos⟩ := ne_zero_and_div_im_pos a b hab

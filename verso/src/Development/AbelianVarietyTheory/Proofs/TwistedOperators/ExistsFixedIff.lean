@@ -14,6 +14,9 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
+/- English proof (translation)
+Use `letI := _root_.GlobalTheory.LocalData.complRel v`. Establish `: Valuation.Compatible (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))` using `Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).le_one_iff_le_one`.
+-/
 private theorem valuation_le_one_iff_adicValuation_le_one (x : v.adicCompletion F) :
     letI := _root_.GlobalTheory.LocalData.complRel v
     (valuation (v.adicCompletion F)) x ≤ 1 ↔ Valued.v x ≤ 1 := by
@@ -25,6 +28,9 @@ private theorem valuation_le_one_iff_adicValuation_le_one (x : v.adicCompletion 
 
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.LocalData.isLocalField v _root_.GlobalTheory.SplitWeil.resCard (v.adicCompletion F) = _root_.Formalism.UG.qV F v := by letI := _root_.GlobalTheory.LocalData.complRel v haveI := _root_.GlobalTheory.LocalData.isLocalField v have hmem : ∀ x : v.adicCompletion F, …`.
+-/
 private theorem residueFieldCard_adicCompletion_lemma :
     letI := _root_.GlobalTheory.LocalData.complRel v
     haveI := _root_.GlobalTheory.LocalData.isLocalField v
@@ -49,6 +55,9 @@ private theorem residueFieldCard_adicCompletion_lemma :
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.LocalData.isLocalField v _root_.GlobalTheory.SmGL.ord (v.adicCompletion F) x = -WithZero.log (Valued.v (x : v.adicCompletion F)) := by letI := _root_.GlobalTheory.LocalData.complRel v haveI := _root_.GlobalTheory.LocalData.isLocalField v have h := _root_.Globa …`.
+-/
 theorem _root_.GlobalTheory.SmGL.SphCompletion.ord_completion (x : (v.adicCompletion F)ˣ) :
     letI := _root_.GlobalTheory.LocalData.complRel v
     haveI := _root_.GlobalTheory.LocalData.isLocalField v
@@ -67,6 +76,9 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.ord_completion (x : (v.adicComple
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.LocalData.isLocalField v _root_.GlobalTheory.SplitWeil.KO (v.adicCompletion F) (Fin n) = _root_.Formalism.UG.GLint (Fin n) (_root_.Formalism.UG.Ov F v) := by letI := _root_.GlobalTheory.LocalData.complRel v haveI := _root_.GlobalTheory.LocalData.isLocalField v …`.
+-/
 theorem _root_.GlobalTheory.SmGL.SphCompletion.KO_completion (n : ℕ) :
     letI := _root_.GlobalTheory.LocalData.complRel v
     haveI := _root_.GlobalTheory.LocalData.isLocalField v
@@ -80,6 +92,11 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.KO_completion (n : ℕ) :
 
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
+/- English proof (translation)
+Establish `hq : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `h1 : ((((n : ℤ) - 1 - 2 * (i : ℤ) : ℤ) : ℂ) / 2) = ((((n : ℝ) - 1 - 2 * (i : ℝ)) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `h2 : (-(m : ℂ) * (((n : ℂ) - 1 - 2 * (i : ℂ)) / 2)) = (((-m : ℝ) * (((n : ℝ) - 1 - 2 * (i : ℝ)) / 2) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h1, h2, ← Complex.ofReal_cpow (zpow_nonneg hq _), ← Complex.ofReal_natCast, ← Complex.ofReal_cpow hq, Real.rpow_mul hq, ← Real.rpow_intCast]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 private theorem natCast_zpow_neg_cpow_eq_cpow_mul (q : ℕ) (m : ℤ) (n : ℕ) (i : Fin n) :
     (((q : ℝ) ^ (-m) : ℝ) : ℂ) ^ ((((n : ℤ) - 1 - 2 * (i : ℤ) : ℤ) : ℂ) / 2) =
       (q : ℂ) ^ (-(m : ℂ) * (((n : ℂ) - 1 - 2 * (i : ℂ)) / 2)) := by
@@ -98,6 +115,9 @@ private theorem natCast_zpow_neg_cpow_eq_cpow_mul (q : ℕ) (m : ℤ) (n : ℕ) 
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.LocalData.isLocalField v (_root_.GlobalTheory.SmGL.deltaHalf (v.adicCompletion F) (fun _ : Fin n => Unit) (_root_.GlobalTheory.SmGL.leviProj _ (_root_.GlobalTheory.SmGL.points (Fin n)) b) : ℂ) • ((_root_.GlobalTheory.SmGL.ofChar (_root_.GlobalTheory.SmGL.torus …`.
+-/
 theorem _root_.GlobalTheory.SmGL.SphCompletion.law_completion (n : ℕ) (α : Fin n → ℂˣ)
     (b : _root_.GlobalTheory.SmGL.borel (v.adicCompletion F) (Fin n)) (c : ℂ) :
     letI := _root_.GlobalTheory.LocalData.complRel v
@@ -137,6 +157,15 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.law_completion (n : ℕ) (α : Fi
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Rewrite `hf` using `[_root_.GlobalTheory.LGrp.mem_fixed]`. Use `⟨fun b g => _root_.GlobalTheory.SmGL.parInd_law _ _ f b g, fun g hg x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun f' => f'.1.1 x) (hf g hg)` as an intermediate fact.
+
+Conclude with `(_root_.GlobalTheory.SmGL.parInd_apply _ _ g x f).symm.trans this`. Introduce and unpack `⟨hlaw, hinv⟩`. Set `f₀ : _root_.GlobalTheory.PRep.indSpace (_root_.GlobalTheory.SmGL.parab k (_root_.GlobalTheory.SmGL.points (Fin n))) ((_root_.GlobalTheory.SmGL.twist ((_root_.GlobalTheory.SmGL.ofChar (_root_.GlobalTheory.SmGL.torusChar χ)).comp (_root_.GlobalTheory.SmGL.leviTorus k (Fin n)).symm. …` to `⟨φ, fun b g => hlaw b g⟩`. Establish `hfix : ∀ g ∈ _root_.GlobalTheory.SplitWeil.KO k (Fin n), _root_.GlobalTheory.PRep.ind _ _ g f₀ = f₀` using `fun g hg => by`. Use extensionality with `x`.
+
+Conclude with `hinv g hg x`. Establish `hsm : f₀ ∈ _root_.GlobalTheory.PRep.smoothPart (_root_.GlobalTheory.PRep.ind _ _)`. Apply `_root_.GlobalTheory.SmGL.mem_smoothPart_of_nhds` to reduce the goal to its premises. Use `Filter.mem_of_superset (_root_.GlobalTheory.SplitFlip.isOpen_KO.mem_nhds (_root_.GlobalTheory.SplitWeil.KO k (Fin n)).one_mem) fun g hg => hfix g hg` and prove the remaining obligations. Use `⟨⟨f₀, hsm⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[_root_.GlobalTheory.LGrp.mem_fixed]`. Introduce `g hg`. Use extensionality with `x`. Conclude with `(_root_.GlobalTheory.SmGL.parInd_apply _ _ g x _).trans (hinv g hg x)`.
+-/
 theorem _root_.GlobalTheory.SmGL.SphCompletion.exists_fixed_iff {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (χ : Fin n → kˣ →* ℂˣ)
     (φ : GL (Fin n) k → ℂ) :
@@ -181,6 +210,9 @@ theorem _root_.GlobalTheory.SmGL.SphCompletion.exists_fixed_iff {k : Type} [Fiel
 open ValuativeRel MeasureTheory NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.LocalData.isLocalField v; (_root_.Formalism.UG.IsSpherical F v (fun i => (α i : ℂ)) φ ↔ ∃ f ∈ _root_.GlobalTheory.PRep.fixed (_root_.GlobalTheory.SmGL.prinSeries fun i => _root_.GlobalTheory.SmGL.unrChar (v.adicCompletion F) (α i)) (_root_.GlobalTheory.SplitWe …`.
+-/
 theorem _root_.GlobalTheory.SmGL.SphCompletion.isSpherical_iff : ∀ (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) (α : Fin n → ℂˣ)
     (φ : GL (Fin n) (v.adicCompletion F) → ℂ),

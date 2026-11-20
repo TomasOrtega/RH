@@ -14,6 +14,9 @@ namespace GlobalTheory.KaehlerFamily
 
 variable {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {d : ℕ} {σ σ' : k →+* ℂ}
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[mem_ptsIn]`. Rewrite using `[hj z]`. Establish `e : ∀ a b : PrimeSpectrum ℂ, a = b` using `fun a b => Subsingleton.elim a b`. Conclude with `(congrArg (· ∈ U) ((Scheme.Hom.comp_apply _ _ _).trans (congrArg z.1 (e _ _)))).mpr hz`.
+-/
 theorem mem_ptsIn_conj {j : CxPts p σ' → CxPts p σ} (hj : IsConjMap j) {U : Y.Opens} {z : CxPts p σ'}
     (hz : z ∈ ptsIn p σ' U) : j z ∈ ptsIn p σ U := by
   rw [mem_ptsIn] at hz ⊢
@@ -21,6 +24,11 @@ theorem mem_ptsIn_conj {j : CxPts p σ' → CxPts p σ} (hj : IsConjMap j) {U : 
   have e : ∀ a b : PrimeSpectrum ℂ, a = b := fun a b => Subsingleton.elim a b
   exact (congrArg (· ∈ U) ((Scheme.Hom.comp_apply _ _ _).trans (congrArg z.1 (e _ _)))).mpr hz
 
+/- English proof (translation)
+Take `⟨ho, hs, H⟩` from `GlobalTheory.T.conj_smoothOn_preimage_charts k Y p d σ σ' j hj W φ hφ.1 hφ.2.1`. Use `⟨ho, hs, fun c' z hz hW ξ => ?_⟩` and prove the remaining obligations. Take `⟨c, hc', e⟩` from `H c' z hz`. Establish `hi` using `mem_pick ψ'.isLB z`. Rewrite using `[e, ← hφ.2.2 c _ hc' hW, (isPotential_curvForm h (pick ψ'.isLB z)).2.2 c _ hc' (mem_ptsIn_conj hj hi), ← e]`.
+
+Conclude with `congrArg (· / Real.pi) (AlgChart.levi_congr (isOpen_ptsIn _) hz hi (fun y hy => (hc _ y (j y) (hj y) hy).symm) ξ)`.
+-/
 theorem isPotential_conj [SmoothOfRelativeDimension d p] {B : ReciprocityTheory.ChartRestriction.G.Semi.LB Y} {ψ : Weight p σ B}
     {ψ' : Weight p σ' B} (h : ψ.IsSmooth (AnRead.all p σ d)) (hc : ψ'.IsConj ψ)
     {j : CxPts p σ' → CxPts p σ} (hj : IsConjMap j) {W : Set (CxPts p σ)} {φ : CxPts p σ → ℝ}
@@ -34,6 +42,9 @@ theorem isPotential_conj [SmoothOfRelativeDimension d p] {B : ReciprocityTheory.
   exact congrArg (· / Real.pi) (AlgChart.levi_congr (isOpen_ptsIn _) hz hi
     (fun y hy => (hc _ y (j y) (hj y) hy).symm) ξ)
 
+/- English proof (translation)
+Introduce and unpack `k _ Y p d _ ⟨N, i, _, h⟩`. Use `⟨fun σ => curvForm ((ProjAn.fsO1 k σ N).pull i h), fun σ => isKaehlerForm_curvForm (ProjPos.fubiniStudy_weight_pullback_isSmooth i h _) (ProjPos.fubiniStudy_weight_pullback_closed_immersion_strictPos i h _), fun σ σ' j hj W φ hφ => isPotential_conj (ProjPos.fubiniStudy_weight_pul …` and prove the remaining obligations. Conclude with `(Weight.isConj_fsBasis _ _ _ _ _ (Matrix.map_one _ (map_zero _) (map_one _)).symm).pull i h`.
+-/
 theorem exists_kaehlerFamily : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ)
     [SmoothOfRelativeDimension d p], IsProjOver p → ∃ a : ∀ σ : k →+* ℂ, ChartForm p σ d,
       (∀ σ, IsKaehlerForm (AnRead.all p σ d) (a σ)) ∧ ∀ σ σ' (j : CxPts p σ' → CxPts p σ), IsConjMap j →

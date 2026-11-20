@@ -218,18 +218,30 @@ def Statement : Prop :=
 section Examples
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : Type} {c : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[← gluedLat_one]`. Conclude with `inX_mem_gluedLat le_rfl hc`.
+-/
 example (hc : 1 ≤ c) (q : Unif k) (L : Submodule 𝒪[k] (n → k)) (η : n → k) : interX (gluedS q c L η) = L := by
   ext x
   rw [← gluedLat_one]
   exact inX_mem_gluedLat le_rfl hc
 
+/- English proof (translation)
+Use `inf_eq_left.2 fun y _ l hl => ?_` and prove the remaining obligations. Conclude with `absurd l.2 (by omega)`.
+-/
 example (L : Submodule 𝒪[k] (n ⊕ Fin c → k)) : latStep L c = L := by
   refine inf_eq_left.2 fun y _ l hl => ?_
   exact absurd l.2 (by omega)
 
+/- English proof (translation)
+Introduce `l hl` and use `by simp [flagIn, not_lt.2 hl]`.
+-/
 example (i : ℕ) (y : n ⊕ Fin i → k) : flagIn c i y ∈ flagSub k n c i := fun l hl => by
   simp [flagIn, not_lt.2 hl]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example [Fintype n] [DecidableEq n] (g : GL n k) (x : n → k) : g • x = g.val *ᵥ x := rfl
 
 end Examples

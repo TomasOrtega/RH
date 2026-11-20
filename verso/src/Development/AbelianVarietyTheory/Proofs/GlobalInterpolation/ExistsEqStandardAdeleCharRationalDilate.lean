@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.AdelicCharDilate
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hCM _ _ ψ₀ h₀ ψ h`. Use `haveI := hCM.1`. Conclude with `GlobalTheory.T.exists_ne_zero_adele_char_eq_comp_mul_totally_real F ψ₀ ψ h₀.1 h`.
+-/
 theorem exists_eq_std_dilate : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [StarRing E] (σ : E →ₐ[F] E), IsCMExt F E σ → (∀ x : E, star x = σ x) → Formalism.HermitianLatticesTheory.IsCMUnram E →
     ∀ ψ₀, IsStdChar F ψ₀ → ∀ ψ, IsCharAF F ψ →

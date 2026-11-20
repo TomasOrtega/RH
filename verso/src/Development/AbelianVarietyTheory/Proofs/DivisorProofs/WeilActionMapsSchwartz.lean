@@ -11,6 +11,13 @@ open GlobalTheory.ArchLocality
 noncomputable section
 namespace GlobalTheory.ArchLocalityX
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hW`. Use `set w := M.co.e.symm (p, q) with hw`. Establish `he : M.co.e (u • w) = (u • p, u • q)`. Rewrite using `[LinearEquiv.map_smul, hw, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `e1 : u • mat g = u • (1 : Matrix (Fin n) (Fin n) (AE F E))`.
+
+Use `hg u hu` as an intermediate fact. Rewrite `this` using `[smul_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hact : actAB (cA σ) ((g, 1) : UA σ X.J × UA σ W.J) (u • w) = u • w`. Express the relevant statement in the definitionally equal form `mat g * (u • w) * (mat (1 : UA σ W.J))ᵀ = u • w`. Establish `h1 : mat (1 : UA σ W.J) = 1` using `rfl`.
+
+Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_smul, ← Matrix.smul_mul, e1, Matrix.smul_mul, Matrix.one_mul]`. Establish `h2` using `hS.impl (g, 1) (u • w) Φ hΦ`. Simplify using `only [Darboux.rho, he, hact] at h2`. Conclude with `h2`.
+-/
 theorem comm_fin_left {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W)
     (hW : M.IsWeil ψ χX χW om) (g : UA σ X.J) (hg : g ∈ UAt σ X (evI F))
@@ -33,6 +40,33 @@ theorem comm_fin_left {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   simp only [Darboux.rho, he, hact] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ n d X W M ψ χX χW om _ hψ hW g hg f`. Establish `hS` using `IsUWeilPair.isUSplitting hW`. Use `set T := om (g, 1) with hTdef`. Establish `hpres : ∀ Φ ∈ schA F (Fin n × Fin d), T Φ ∈ schA F (Fin n × Fin d)` using `fun Φ hΦ => hS.pres (g, 1) Φ hΦ`. Establish `hcomm` using `comm_fin_left M ψ χX χW om hW g hg`.
+
+Take `⟨r₀, hr₀1, hr₀⟩` from `ref_fun (F := F) (Fin n × Fin d)`. Use `set Φ₀ := tens (evI F) (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) r₀ with hΦ₀`. Establish `hm₀ : Φ₀ ∈ schA F _` using `(hr₀ f).2`. Take `⟨f₁, hf₁⟩` from `res_arch (T Φ₀) (hpres Φ₀ hm₀)`. Use `⟨f₁, fun r hr => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `y`. Use `set u : AF F := (0, 1) with hu`. Establish `hu0 : evI F u = 0` using `evI_fin`. Establish `htr : ∀ Ψ ∈ schA F (Fin n × Fin d), T (fun w => Ψ (w + u • (-y))) = fun w => T Ψ (w + u • (-y))`. Introduce `Ψ hΨ`.
+
+Establish `e` using `hcomm u hu0 (-y) 0 Ψ hΨ`. Establish `hs0 : ∀ G : (Fin n × Fin d → AF F) → ℂ, schr ψ (u • (-y), u • (0 : Fin n × Fin d → AF F)) G = fun w => G (w + u • (-y))`. Introduce `G`. Use function extensionality and compare the values at `w`. Simplify using `[schr]`.
+
+Rewrite `e` using `[hs0, hs0]`. Conclude with `e`. Use `set Φ₁ := tens (evI F) (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) r with hΦ₁`. Use `set Φ₂ : (Fin n × Fin d → AF F) → ℂ := r y • (fun w => Φ₀ (w + u • (-y))) with hΦ₂`. Establish `hm₂ : Φ₂ ∈ schA F _` using `Submodule.smul_mem _ _ (GlobalTheory.SchwartzTranslation.schA_add_const _ _ hm₀)`.
+
+Establish `hz2 : ∀ z : Fin n × Fin d → AF F, At (evI F) z → ∀ i, (z i).2 = 0`. Introduce `z hz i`. Use `congrArg Prod.snd (congrFun (hz u hu0) i)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(u * z i).2 = (0 : AF F).2 at this`. Establish `e : (u * z i).2 = (z i).2` using `one_mul _`.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Establish `hvan : ∀ z, At (evI F) z → (Φ₁ - Φ₂) (y + z) = 0`. Introduce `z hz`. Establish `e1 : r (y + z) = r y` using `hr.1 y z hz`.
+
+Establish `e2 : (fun i => evI F ((y + z + u • (-y)) i)) = fun i => evI F ((y + z) i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, evI_add, evI_mul, hu0, zero_mul, add_zero]`. Establish `e3 : r₀ (y + z + u • (-y)) = 1`. Use `hr₀1 _ fun i => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((y i + z i) + u * -(y i)).2 = 0`. Express the relevant statement in the definitionally equal form `(y i).2 + (z i).2 + 1 * -(y i).2 = 0`. Rewrite using `[hz2 z hz i]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.sub_apply, hΦ₂, hΦ₁, hΦ₀, Pi.smul_apply, smul_eq_mul, tens]`.
+
+Rewrite using `[e2, e3, e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `fibre ψ hψ T hcomm (Φ₁ - Φ₂) (sub_mem hr.2 hm₂) y hvan`. Rewrite `h0` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Establish `hy0 : y + u • (-y) = fun i => (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (evI F (y i)), 0) : AF F)`.
+
+Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y i).1 + 0 * -(y i).1 = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1)`. Rewrite using `[RingEquiv.symm_apply_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `(y i).2 + 1 * -(y i).2 = 0`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : T Φ₂ y = r y * f₁ (fun i => evI F (y i))`. Rewrite using `[hΦ₂, map_smul, htr Φ₀ hm₀, Pi.smul_apply, smul_eq_mul, hy0, hf₁]`. Rewrite using `[h0, h2]`.
+
+Simplify using `only [tens]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem acts_arch_left : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     IsCMExt F E σ → IsStd ψ → M.IsWeil ψ χX χW om →

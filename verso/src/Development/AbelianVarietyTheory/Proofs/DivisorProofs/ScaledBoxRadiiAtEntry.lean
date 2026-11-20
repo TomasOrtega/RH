@@ -13,9 +13,17 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def ebox {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (r : A → D → ℕ) : Set (Matrix A D k) :=
   {X | ∀ i j, valuation k (X i j - C i j) ≤ valuation k ((ϖ ^ r i j : kˣ) : k)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem box_eq_ebox {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
     GlobalTheory.RankCoinv.box ϖ C e = ebox ϖ C (fun i _ => e i) := rfl
 
+/- English proof (translation)
+Use extensionality with `Y`. Use `⟨fun hY i j => ?_, fun hY i j => ?_⟩` and prove the remaining obligations. Rewrite using `[show Y i j - C i j = (Y i j - X i j) + (X i j - C i j) by ring]`. Conclude with `Valuation.map_add_le _ (hY i j) (hX i j)`. Rewrite using `[show Y i j - X i j = (Y i j - C i j) - (X i j - C i j) by ring]`.
+
+Conclude with `Valuation.map_sub_le _ (hY i j) (hX i j)`.
+-/
 theorem ebox_eq_of_mem {A D : Type} {ϖ : kˣ} {C X : Matrix A D k} {r : A → D → ℕ} (hX : X ∈ ebox ϖ C r) :
     ebox ϖ X r = ebox ϖ C r := by
   ext Y
@@ -33,6 +41,11 @@ def pv {n d : ℕ} (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] �
     Bf ⟨_, h.1⟩ ⟨_, h.2⟩
   else 0
 
+/- English proof (translation)
+Establish `m₁ : B₁.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d` using `h₁ ▸ Ψ₁.2`. Establish `m₂ : B₂.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d` using `h₂ ▸ Ψ₂.2`. Rewrite using `[pv, dif_pos ⟨m₁, m₂⟩]`. Use `congr 1`. Conclude with `congrArg Bf (Subtype.ext h₁.symm)`.
+
+Conclude with `Subtype.ext h₂.symm`.
+-/
 theorem pv_eq {n d : ℕ} (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ) {B₁ B₂ : Set (Matrix (Fin n) (Fin d) k)}
     (Ψ₁ Ψ₂ : fullRk k n d) (h₁ : Ψ₁.1 = B₁.indicator 1) (h₂ : Ψ₂.1 = B₂.indicator 1) : pv Bf B₁ B₂ = Bf Ψ₁ Ψ₂ := by
   have m₁ : B₁.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d := h₁ ▸ Ψ₁.2
@@ -63,9 +76,15 @@ def dgl {m : ℕ} (i₀ : Fin m) (t : kˣ) : GL (Fin m) k where
     congr 1; ext i
     by_cases h : i = i₀ <;> simp [h, Function.update_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dgl_val {m : ℕ} (i₀ : Fin m) (t : kˣ) :
     (dgl i₀ t).1 = diagonal (Function.update (1 : Fin m → k) i₀ (t : k)) := rfl
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [gdet, Matrix.GeneralLinearGroup.val_det_apply, dgl_val, det_diagonal]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i₀)]`. Rewrite using `[Finset.prod_eq_one (fun i hi => by simp [Function.update_apply, (Finset.ne_of_mem_erase hi)])]`. Simplify using the standard rewrite rules.
+-/
 theorem gdet_dgl {m : ℕ} (i₀ : Fin m) (t : kˣ) : gdet (dgl i₀ t) = t := by
   ext
   simp only [gdet, Matrix.GeneralLinearGroup.val_det_apply, dgl_val, det_diagonal]

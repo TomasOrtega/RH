@@ -12,6 +12,11 @@ open GlobalTheory GlobalTheory.Ex GlobalTheory.Relabel
 namespace GlobalTheory.Relabel
 open GlobalTheory.TorusExt
 
+/- English proof (translation)
+Use `letI := gtGroup D F`. Take `⟨z, h₁, h₂⟩` from `(equiv_iff hB _ _).1 h`. Rewrite `h₁` using `[hy, hy', zero_add]`. Establish `hz : z = 0`. Establish `: (j : ℤ) • z = 0` using `by rw [natCast_zsmul]; exact h₁.symm`.
+
+Conclude with `(smul_eq_zero.1 this).resolve_left (by exact_mod_cast hj.ne')`. Rewrite using `[h₂, hz, map_zero, add_zero]`.
+-/
 theorem b_eq_of_equiv {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] (hB : D.TauBimult) {j : ℕ} (hj : 0 < j) {p p' : QkPt D F j}
     (h : QkPt.Equiv D F p p') (hy : p.y = 0) (hy' : p'.y = 0) : p'.g.b = p.g.b := by
@@ -23,6 +28,27 @@ theorem b_eq_of_equiv {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : T
     exact (smul_eq_zero.1 this).resolve_left (by exact_mod_cast hj.ne')
   rw [h₂, hz, map_zero, add_zero]
 
+/- English proof (translation)
+Introduce `hL hBr E _ _ _ H D R _ _ C _ _ _ A o M hT N' ν' k β u r J j hj hr hlab x b hb`. Use `letI := H.starRing`. Establish `hG` using `hL.globalFns`. Establish `hB` using `A.bimult`. Establish `hB' : M.P.D.toPre.TauBimult` using `M.P.D.tau_bimult`.
+
+Take `⟨-, -, -, -, br⟩` from `hBr R A.D₀ A.even A.bimult C A.N A.ν`. Take `⟨-, -, -, -, br'⟩` from `hBr M.W M.P.D.toPre M.P.D.psi_even hB' C N' ν'`. Take `⟨e1, -, e3⟩` from `br j`. Take `⟨-, e2', e3'⟩` from `br' j`. Take `⟨τ, hτ, hQ, -⟩` from `(twJ_mulEquiv C A.N N' k β u J).1 r j hr`.
+
+Take `⟨f, f1, -, f3, -, f5, -⟩` from `hT C j hj`. Establish `key : ∀ (v : D.La) (p : QkPt A.D₀ C j), QkPt.Equiv A.D₀ C (A.I.ev j v) p → p.y = 0 → ∃ p' : QkPt M.P.D.toPre C j, p'.y = 0 ∧ p'.g.b = ν'.eA (J.φ (A.ν.eA.symm p.g.b)) ∧ (f p').left = (o.I.ev j v).left ≫ M.φ`. Introduce `v p hp hy`. Take `⟨q, hq, -⟩` from `e1 p`. Take `⟨p', hp'⟩` from `e2' (τ q)`.
+
+Take `⟨pv, hpv⟩` from `e2' (τ (A.q j v))`. Establish `hE : QkPt.Equiv _ C pv p'` using `(e3' _ _ _ _ hpv hp').2 ((hQ _ _).1 ((e3 _ _ _ _ (A.hq j v) hq).1 hp))`. Take `⟨t, t1, t2, t3⟩` from `(hτ q _).1 rfl`. Take `⟨s, s1, s2, s3⟩` from `(hτ (A.q j v) _).1 rfl`. Set `z : TFK (R` to `M.W) C ⟶ M.P.A.A := Over.homMk ((o.I.ev j v).left ≫ M.φ) (by`.
+
+Rewrite using `[Category.assoc, M.cart.1.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _)`. Establish `hz` using `(f1 _ _).1 (hlab v s _ pv z s1 s2 s3 hpv rfl)`. Use `⟨p', ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : q.1.1.toAdd = 0` using `A.ν.eX.injective (hq.1.trans (hy.trans (map_zero _).symm))`.
+
+Rewrite using `[← hp'.1, t2, t1.1]`. Use `erw [h0, map_zero, map_zero]`. Rewrite using `[← hp'.2.1, t3.1, t1.2.1, ← hq.2.1, MulEquiv.symm_apply_apply]`. Rewrite using `[← (f3 _ _).2 hE, ← hz]`. Both sides reduce to the same expression.
+
+Take `⟨p₀, y₀, b₀⟩` from `exists_qkPt_of_torsion (F := C) hB hj.ne' (b := A.ν.eA b) (by rw [← map_pow, hb, map_one])`. Take `⟨v, hv⟩` from `A.I.onto j hj p₀`. Establish `hv₁ : QkPt.Equiv A.D₀ C (A.I.ev j (x • v)) (qkSmul hB hG A.oa x p₀)` using `(qkAct_iff_of_equiv hB hG A.oa hv (A.I.lin j hj x v)).1 (qkAct_qkSmul hB hG A.oa x p₀)`. Take `⟨p₀', c₀, d₀, g₀⟩` from `key v p₀ hv y₀`. Take `⟨p₁', c₁, d₁, g₁⟩` from `key (x • v) _ hv₁ (by`.
+
+Express the relevant statement in the definitionally equal form `x • p₀.y = 0`. Rewrite using `[y₀, smul_zero])`. Establish `hf : f (qkSmul hB' hG M.P.oD x p₀') = f p₁'`. Rewrite using `[f5 x _ _ (qkAct_qkSmul hB' hG M.P.oD x p₀')]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[g₁, Over.comp_left, g₀, o.I.lin, Over.comp_left, Category.assoc, Category.assoc, M.act]`. Establish `hb'` using `b_eq_of_equiv hB' hj ((f3 _ _).1 hf) (by`. Express the relevant statement in the definitionally equal form `x • p₀'.y = 0`. Rewrite using `[c₀, smul_zero]) c₁`. Establish `a₁ : (qkSmul hB' hG M.P.oD x p₀').g.b = p₀'.g.b ≫ M.P.oD.onB.act x` using `gtSmul_b hG M.P.oD x _`.
+
+Establish `a₀ : (qkSmul hB hG A.oa x p₀).g.b = p₀.g.b ≫ A.oa.onB.act x` using `gtSmul_b hG A.oa x _`. Rewrite `hb'` using `[d₁, a₁, a₀, d₀, b₀, MulEquiv.symm_apply_apply]`. Unfold `actV`. Rewrite using `[← hb', MulEquiv.symm_apply_apply]`.
+-/
 theorem act_compat_on_torsion : Laws → BrGtSt → AllD fun {E} _ _ _ {H} D => letI := H.starRing; ∀ (R : Type) [CommRing R] [IsDomain R] (C : Type) [NormedField C] [IsAlgClosed C] [Algebra (FractionRing R) C] (A : ArcF D R C) (o : Full D C) (M : Mdl o), M.P.TorsionIso → ∀ (N' : NumD C) (ν' : NumOf M.P.D.toPre C N') (k : ℕ) (β : A.N.Form k) (u r : Cˣ) (J : NumD.Iso (A.N.twist β u) N') (j : ℕ), 0 < j → r ^ j = u → (∀ x (p : (A.N.twist β u).QT j) (q' : N'.QT j) p' z, TwRel β u r (A.q _ x) p → q'.1.1.toAdd = J.e p.1.1.toAdd → J.Rel p.1.2 q'.1.2 → ν'.QPt p' q' → z.left = (o.I.ev j x).left ≫ M.φ → M.P.ToA C j p' z) → ∀ (x : 𝓞 E) (b : A.N.A), b ^ j = 1 → J.φ (actV (N := A.N) A.ν A.oa.onB x b) = actV ν' M.P.oD.onB x (J.φ b) := by
   intro hL hBr E _ _ _ H D R _ _ C _ _ _ A o M hT N' ν' k β u r J j hj hr hlab x b hb
   letI := H.starRing

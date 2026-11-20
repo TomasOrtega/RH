@@ -6,6 +6,9 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.DiscreteSeries
 
+/- English proof (translation)
+Introduce `h` and use `h`.
+-/
 theorem isDS_sk_imp_upqRep (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type)
     [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :

@@ -23,6 +23,19 @@ noncomputable section
 
 namespace GlobalTheory.NrmVol
 
+/- English proof (translation)
+Introduce `D PP v φ hP a b r ξ mu hL x`. Distinguish the cases in `hx : x ∈ GlobalTheory.NrmVol.suppQ v r`. Rewrite using `[Set.indicator_of_mem hx]`. Establish `h : IsUnit (topL r x).det ∧ Valued.v (topL r x).det = 1 ∧ (∀ i j, x i j ∈ v.adicCompletionIntegers D.host.F) ∧ ∀ i j, r ≤ i.val → j.val < r → Valued.v (x i j) < 1` using `hx`. Unfold `phiQ`.
+
+Rewrite using `[dif_pos h]`. Take `⟨⟨red, -, -, hrel, -⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v φ PP hP`. Use `set u := h.1.unit with hu`. Establish `hv : Valued.v (u : Fv D.host.F v) = 1` using `by rw [hu, IsUnit.unit_spec]; exact h.2.1`. Establish `hvi : Valued.v ((u⁻¹ : (Fv D.host.F v)ˣ) : Fv D.host.F v) = 1`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]`. Establish `hint : (u : Fv D.host.F v) ∈ v.adicCompletionIntegers D.host.F` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hv.le`. Establish `hint' : ((u⁻¹ : (Fv D.host.F v)ˣ) : Fv D.host.F v) ∈ v.adicCompletionIntegers D.host.F` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hvi.le`. Establish `hunit : IsUnit (⟨(u : Fv D.host.F v), hint⟩ : v.adicCompletionIntegers D.host.F)` using `⟨⟨⟨_, hint⟩, ⟨_, hint'⟩, Subtype.ext (by simp), Subtype.ext (by simp)⟩, rfl⟩`. Use `haveI : Finite (kP PP) := PP.asIdeal.finiteQuotientOfFreeOfNeBot PP.ne_bot`.
+
+Use `set k := (hunit.map red).unit with hk`. Establish `hR : GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.RedRel φ PP (u : Fv D.host.F v) (k : kP PP)` using `(hrel _ _).2 ⟨hint, (IsUnit.unit_spec (hunit.map red)).symm⟩`. Establish `hmu : mu u = ξ k` using `hL u k hR`. Use `haveI : Finite (kP PP)ˣ := Finite.of_injective _ Units.val_injective`. Take `⟨n, hn0, hn⟩` from `(ξ.isOfFinOrder (isOfFinOrder_of_finite k)).exists_pow_eq_one`.
+
+Establish `hpow : ((mu u : ℂˣ) : ℂ) ^ n = 1`. Rewrite using `[hmu, ← Units.val_pow_eq_pow_val, hn, Units.val_one]`. Establish `hnorm : ‖((mu u : ℂˣ) : ℂ)‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one hpow hn0.ne'`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_inv, hnorm]`. Evaluate the numerical expressions.
+
+Rewrite using `[Set.indicator_of_notMem hx, phiQ_eq_zero_of_not_mem v r mu x hx, zero_mul]`.
+-/
 theorem phiQ_mul_conj_eq_indicator : ∀ (D : D7) (PP : Pl D.host.E) (v : FinPl D) (φ : SplitProj D v), IsProjAt φ PP → ∀ (a b r : ℕ) (ξ : (kP PP)ˣ →* ℂˣ) (mu : (Fv D.host.F v)ˣ →* ℂˣ), LiftsChar φ PP mu ξ → ∀ x : Matrix (Fin b) (Fin a) (Fv D.host.F v), phiQ v r mu x * (starRingEnd ℂ) (phiQ v r mu x) = (GlobalTheory.NrmVol.suppQ v r).indicator (fun _ => (1 : ℂ)) x := by
   intro D PP v φ hP a b r ξ mu hL x
   by_cases hx : x ∈ GlobalTheory.NrmVol.suppQ v r

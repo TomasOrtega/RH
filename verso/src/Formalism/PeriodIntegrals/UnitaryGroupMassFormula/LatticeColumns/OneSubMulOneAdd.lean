@@ -9,15 +9,26 @@ open scoped Matrix
 
 variable {K : Type} [Field K] (O : Subring K) {r k : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases s with a | ((i | u) | c) <;> simp [dlH]`.
+-/
 theorem dlH_dlH' (s : Idx r k) : dlH (dlH s) = s := by
   rcases s with a | ((i | u) | c) <;> simp [dlH]
 
+/- English proof (translation)
+Use extensionality with `t`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem nMat_col_w (o : Idx r k → Fin k → K) (l : Idx r k → K) (g : K) (i : Fin k) :
     nMat o l g *ᵥ Pi.single (wI i) 1 = coefv o l g i := by
   ext t
   rw [Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Use extensionality with `t`. Rewrite using `[Matrix.mulVec_single_one]`. Break down `s with a | ((i | u) | b)` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd ⟨i, rfl⟩ hs`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem nMat_col_frame (o : Idx r k → Fin k → K) (l : Idx r k → K) (g : K) (s : Idx r k) (hs : ¬ IsW s) :
     nMat o l g *ᵥ Pi.single s 1 = 0 := by
   ext t
@@ -28,12 +39,27 @@ theorem nMat_col_frame (o : Idx r k → Fin k → K) (l : Idx r k → K) (g : K)
   · rfl
   · rfl
 
+/- English proof (translation)
+Rewrite using `[sub_mul, one_mul, mul_add, mul_one, hN, add_zero, add_sub_cancel_right]`.
+-/
 theorem one_sub_mul_one_add (N : Matrix (Idx r k) (Idx r k) K) (hN : N * N = 0) : (1 - N) * (1 + N) = 1 := by
   rw [sub_mul, one_mul, mul_add, mul_one, hN, add_zero, add_sub_cancel_right]
 
+/- English proof (translation)
+Rewrite using `[add_mul, one_mul, mul_sub, mul_one, hN, sub_zero, sub_add_cancel]`.
+-/
 theorem one_add_mul_one_sub (N : Matrix (Idx r k) (Idx r k) K) (hN : N * N = 0) : (1 + N) * (1 - N) = 1 := by
   rw [add_mul, one_mul, mul_sub, mul_one, hN, sub_zero, sub_add_cancel]
 
+/- English proof (translation)
+Introduce `t s`. Unfold `nMat ofCols`. Break down `s with a | ((i | u) | b)` into its components or cases. Conclude with `O.zero_mem`. Use `show coefv o l g i t ∈ O`.
+
+Unfold `coefv`. Use `split_ifs with ht`. Conclude with `O.zero_mem`. Establish `hW : ¬ IsW (dlH t)`. Introduce and unpack `⟨j, hj⟩`.
+
+Apply `ht` to reduce the goal to its premises. Apply the tactic sequence `rcases t with a' | ((i' | u') | c') <;> simp [dlH] at hj`. Conclude with `⟨i', rfl⟩`. Conclude with `O.mul_mem (O.mul_mem hg (ho _ _)) (hl _ hW)`. Conclude with `O.zero_mem`.
+
+Conclude with `O.zero_mem`.
+-/
 theorem intO_nMat (o : Idx r k → Fin k → K) (l : Idx r k → K) (g : K) (hg : g ∈ O) (ho : ∀ s i, o s i ∈ O)
     (hl : ∀ s, ¬ IsW s → (l s)⁻¹ ∈ O) : IntO O (nMat o l g) := by
   intro t s
@@ -53,12 +79,20 @@ theorem intO_nMat (o : Idx r k → Fin k → K) (l : Idx r k → K) (g : K) (hg 
   · exact O.zero_mem
   · exact O.zero_mem
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `O.sum_mem (fun x _ => O.mul_mem (hA i x) (hB x j))`.
+-/
 private theorem intO_mul' {A B : Matrix (Idx r k) (Idx r k) K} (hA : IntO O A) (hB : IntO O B) :
     IntO O (A * B) := by
   intro i j
   rw [Matrix.mul_apply]
   exact O.sum_mem (fun x _ => O.mul_mem (hA i x) (hB x j))
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.sub_apply]`. Use `O.sub_mem ?_ (hN i j)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Use `exacts [O.one_mem, O.zero_mem]`.
+-/
 private theorem intO_one_sub {N : Matrix (Idx r k) (Idx r k) K} (hN : IntO O N) : IntO O (1 - N) := by
   intro i j
   rw [Matrix.sub_apply]
@@ -67,6 +101,11 @@ private theorem intO_one_sub {N : Matrix (Idx r k) (Idx r k) K} (hN : IntO O N) 
   split_ifs
   exacts [O.one_mem, O.zero_mem]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.add_apply]`. Use `O.add_mem ?_ (hN i j)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Use `exacts [O.one_mem, O.zero_mem]`.
+-/
 private theorem intO_one_add {N : Matrix (Idx r k) (Idx r k) K} (hN : IntO O N) : IntO O (1 + N) := by
   intro i j
   rw [Matrix.add_apply]
@@ -75,6 +114,15 @@ private theorem intO_one_add {N : Matrix (Idx r k) (Idx r k) K} (hN : IntO O N) 
   split_ifs
   exacts [O.one_mem, O.zero_mem]
 
+/- English proof (translation)
+Use extensionality with `t s`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x _`. Distinguish the cases in `hx : IsW x`.
+
+Establish `e : nMat o l g x s = 0`. Unfold `nMat ofCols`. Break down `s with a | ((i | u) | b)` into its components or cases. Both sides reduce to the same expression. Use `show coefv o l g i x = 0`.
+
+Unfold `coefv`. Rewrite using `[if_pos hx]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[e, mul_zero]`.
+
+Establish `e` using `congrFun (nMat_col_frame o l g x hx) t`. Rewrite `e` using `[Matrix.mulVec_single_one]`. Establish `e' : nMat o l g t x = 0` using `e`. Rewrite using `[e', zero_mul]`.
+-/
 private theorem nMat_mul_self_eq_zero (o : Idx r k → Fin k → K) (l : Idx r k → K) (g : K) :
     nMat o l g * nMat o l g = 0 := by
   ext t s
@@ -97,6 +145,61 @@ private theorem nMat_mul_self_eq_zero (o : Idx r k → Fin k → K) (l : Idx r k
     have e' : nMat o l g t x = 0 := e
     rw [e', zero_mul]
 
+/- English proof (translation)
+Establish `hPP : ((P : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K) * (((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hPu : IsUnit (((P : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)).det` using `Matrix.isUnits_det_units P`. Establish `hN2 : (nMat o l g : Matrix (Idx r k) (Idx r k) K) * (nMat o l g : Matrix (Idx r k) (Idx r k) K) = 0` using `nMat_mul_self_eq_zero o l g`. Establish `hCu : IsUnit ((((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)).det` using `isUnit_iff_exists_inv.2 ⟨u, hdet⟩`. Establish `hBeq : (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) = ((P : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K) * ((((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K))` using `by rw [← Matrix.mul_assoc, hPP, Matrix.one_mul]`.
+
+Establish `hBu : IsUnit ((ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)).det`. Rewrite using `[hBeq, Matrix.det_mul]`. Conclude with `hPu.mul hCu`. Establish `h1N : IsUnit (1 - (nMat o l g : Matrix (Idx r k) (Idx r k) K)).det`. Establish `e` using `congrArg Matrix.det (one_sub_mul_one_add _ hN2)`.
+
+Rewrite `e` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, e⟩`. Establish `hQu : IsUnit ((ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) * (1 - (nMat o l g : Matrix (Idx r k) (Idx r k) K))).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hBu.mul h1N`.
+
+Establish `hdlW : ∀ s : Idx r k, ¬ IsW s → ¬ IsW (dlH s)`. Introduce `s hs ⟨j, hj⟩`. Apply `hs` to reduce the goal to its premises. Apply the tactic sequence `rcases s with a' | ((i' | u') | c') <;> simp [dlH] at hj`. Conclude with `⟨i', rfl⟩`.
+
+Establish `hcolv : ∀ x, ¬ IsW x → colv c y x = c x`. Introduce `x hx`. Break down `x with a' | ((i' | u') | c')` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd ⟨i', rfl⟩ hx`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Establish `hcol : ∀ s, ¬ IsW s → (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) *ᵥ Pi.single s 1 = c s`. Introduce `s hs`. Use extensionality with `t`.
+
+Rewrite using `[Matrix.mulVec_single_one]`. Use `show colv c y s t = c s t`. Rewrite using `[hcolv s hs]`. Establish `hcolW : ∀ i, (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) *ᵥ Pi.single (wI i) 1 = y i`. Introduce `i`.
+
+Use extensionality with `t`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hNv : ∀ v : Idx r k → K, (∀ x, IsW x → v x = 0) → (nMat o l g : Matrix (Idx r k) (Idx r k) K) *ᵥ v = 0`. Introduce `v hv`.
+
+Use extensionality with `t`. Rewrite using `[Matrix.mulVec, dotProduct, Pi.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x _`. Distinguish the cases in `hx : IsW x`.
+
+Rewrite using `[hv x hx, mul_zero]`. Establish `e` using `congrFun (nMat_col_frame o l g x hx) t`. Rewrite `e` using `[Matrix.mulVec_single_one]`. Establish `e' : nMat o l g t x = 0` using `e`. Rewrite using `[e', zero_mul]`.
+
+Establish `hvB : ∀ (v : Idx r k → K) (x : Idx r k), ¬ IsW x → (v ᵥ* (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)) x = v ⬝ᵥ c x`. Introduce `v x hx`. Rewrite using `[← hcolv x hx]`. Both sides reduce to the same expression. Establish `hdotB : ∀ s, ¬ IsW s → ∀ v : Idx r k → K, (∀ x, IsW x → v x = 0) → a s ⬝ᵥ ((ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) *ᵥ v) = l s * v (dlH s)`.
+
+Introduce `s hs v hv`. Rewrite using `[Matrix.dotProduct_mulVec, dotProduct, Finset.sum_eq_single (dlH s)]`. Rewrite using `[hvB _ _ (hdlW s hs), hac s _ hs (hdlW s hs), if_pos rfl]`. Introduce `x _ hx`. Distinguish the cases in `hW : IsW x`.
+
+Rewrite using `[hv x hW, mul_zero]`. Rewrite using `[hvB _ _ hW, hac s x hs hW, if_neg hx, zero_mul]`. Simplify using the standard rewrite rules. Set `Q : GL (Idx r k) K` to `Matrix.nonsingInvUnit ((ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) * (1 - (nMat o l g : Matrix (Idx r k) (Idx r k) K))) hQu`. Establish `hQ : (Q : Matrix (Idx r k) (Idx r k) K) = (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) * (1 - (nMat o l g : Matrix (Idx r k) (Idx r k) K))` using `rfl`.
+
+Establish `hQs : ∀ s, ¬ IsW s → (Q : Matrix (Idx r k) (Idx r k) K) *ᵥ Pi.single s 1 = c s`. Introduce `s hs`. Rewrite using `[hQ, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, nMat_col_frame o l g s hs, sub_zero, hcol s hs]`. Use `⟨Q, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+
+Rewrite using `[← hQs s hs, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Introduce `s hs`. Use extensionality with `t`. Rewrite using `[Matrix.mulVec_transpose]`. Establish `hvt : ∀ (M : Matrix (Idx r k) (Idx r k) K) (v : Idx r k → K) (t : Idx r k), (v ᵥ* M) t = v ⬝ᵥ (M *ᵥ Pi.single t 1)`.
+
+Introduce `M v t`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Rewrite using `[hvt]`. Distinguish the cases in `ht : IsW t`.
+
+Take `⟨i, rfl⟩` from `ht`. Establish `hW0 : ∀ x, IsW x → coefv o l g i x = 0`. Introduce `x hx`. Unfold `coefv`. Rewrite using `[if_pos hx]`.
+
+Rewrite using `[hQ, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, hcolW, nMat_col_w, dotProduct_sub, hay s i hs, hdotB s hs _ hW0]`. Establish `hne : (Sum.inr (Sum.inl (Sum.inl i)) : Idx r k) ≠ dlH s` using `fun h => hdlW s hs ⟨i, h.symm⟩`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne hne, smul_zero]`. Unfold `coefv`. Rewrite using `[if_neg (hdlW s hs), dlH_dlH', mul_comm (l s), mul_assoc, inv_mul_cancel₀ (hl0 s hs), mul_one, sub_self]`.
+
+Apply the tactic sequence `rw [hQs t ht, hac s t hs ht, Pi.smul_apply, Pi.single_apply] split_ifs <;> simp`. Rewrite using `[hQ, ← Matrix.mul_assoc]`. Conclude with `intO_mul' O hC (intO_one_sub O (intO_nMat O o l g hg ho hlinv))`. Establish `hinvN : (1 - (nMat o l g : Matrix (Idx r k) (Idx r k) K))⁻¹ = 1 + (nMat o l g : Matrix (Idx r k) (Idx r k) K)` using `Matrix.inv_eq_right_inv (one_sub_mul_one_add _ hN2)`. Set `C' : Matrix (Idx r k) (Idx r k) O` to `fun i j => ⟨((((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)) i j, hC i j⟩`.
+
+Establish `hCC : C'.map O.subtype = (((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hadj : ∀ i j, ((((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)).adjugate i j ∈ O`. Introduce `i j`.
+
+Establish `e` using `RingHom.map_adjugate O.subtype C'`. Rewrite `e` using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hCC]`. Rewrite using `[← e]`. Conclude with `(C'.adjugate i j).2`. Establish `hCinv : IntO O (((((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K))⁻¹)`.
+
+Rewrite using `[Matrix.inv_eq_left_inv (B := u • ((((P⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)) * (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K)).adjugate) (by`. Rewrite using `[Matrix.smul_mul, Matrix.adjugate_mul, smul_smul, mul_comm u, hdet, one_smul])]`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `O.mul_mem huO (hadj i j)`.
+
+Rewrite using `[Matrix.coe_units_inv, hQ, Matrix.mul_inv_rev, hinvN, hBeq, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPu, Matrix.mul_one]`. Conclude with `intO_mul' O (intO_one_add O (intO_nMat O o l g hg ho hlinv)) hCinv`. Introduce `i`. Establish `hvO : ∀ t, (fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹) t ∈ O`. Introduce `t`.
+
+Use `show (if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹) ∈ O`. Use `split_ifs with ht`. Conclude with `O.zero_mem`. Conclude with `O.mul_mem (ho _ _) (hlinv _ (hdlW t ht))`. Use `⟨fun t => ⟨-((fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹) t), O.neg_mem (hvO t)⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hcoef : coefv o l g i = g • (fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹)`. Use function extensionality and compare the values at `t`. Unfold `coefv`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [mul_assoc]`.
+
+Establish `hvW : ∀ x, IsW x → (fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹) x = 0`. Introduce `x hx`. Use `show (if IsW x then (0 : K) else o (dlH x) i * (l (dlH x))⁻¹) = 0`. Rewrite using `[if_pos hx]`. Establish `hQv : (Q : Matrix (Idx r k) (Idx r k) K) *ᵥ (fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹) = (ofCols (colv c y) : Matrix (Idx r k) (Idx r k) K) *ᵥ (fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹)`.
+
+Rewrite using `[hQ, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hNv _ hvW, sub_zero]`. Express the relevant statement in the definitionally equal form `_ = g • ((Q : Matrix (Idx r k) (Idx r k) K) *ᵥ (-(fun t : Idx r k => if IsW t then (0 : K) else o (dlH t) i * (l (dlH t))⁻¹)))`. Rewrite using `[Matrix.mulVec_neg, hQv, hQ, ← Matrix.mulVec_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, hcolW, nMat_col_w, hcoef, Matrix.mulVec_smul, smul_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem adapted_gen (P : GL (Idx r k) K) (c : Idx r k → Idx r k → K) (y : Fin k → Idx r k → K)
     (a : Idx r k → Idx r k → K) (l : Idx r k → K) (o : Idx r k → Fin k → K) (g : K)
     (hac : ∀ s t, ¬ IsW s → ¬ IsW t → a s ⬝ᵥ c t = if t = dlH s then l s else 0)

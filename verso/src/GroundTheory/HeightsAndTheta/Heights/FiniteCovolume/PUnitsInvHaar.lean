@@ -25,26 +25,46 @@ def scaleMap (t : I → ℂˣ) : (I → ℂ) →ₗ[ℝ] (I → ℂ) :=
   LinearMap.pi fun i => (Algebra.lmul ℝ ℂ (t i : ℂ)).comp (LinearMap.proj i)
 
 omit [Fintype I] in
+/- English proof (translation)
+Simplify using `[scaleMap]`.
+-/
 theorem scaleMap_apply (t : I → ℂˣ) (b : I → ℂ) (i : I) : scaleMap t b i = (t i : ℂ) * b i := by
   simp [scaleMap]
 
+/- English proof (translation)
+Rewrite using `[scaleMap, LinearMap.det_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.norm_apply, Algebra.norm_complex_apply]`.
+-/
 theorem det_scaleMap (t : I → ℂˣ) :
     LinearMap.det (scaleMap t) = ∏ i, Complex.normSq (t i : ℂ) := by
   rw [scaleMap, LinearMap.det_pi]
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [← Algebra.norm_apply, Algebra.norm_complex_apply]
 
+/- English proof (translation)
+Introduce `_ hs` and use `⟨_, hs, rfl⟩`.
+-/
 theorem measurable_units_val : Measurable (Units.val : ℂˣ → ℂ) := fun _ hs => ⟨_, hs, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hf ht`.
+-/
 theorem measurable_to_units {α : Type*} [MeasurableSpace α] {f : α → ℂˣ}
     (hf : Measurable fun x => (f x : ℂ)) : Measurable f := by
   rintro _ ⟨t, ht, rfl⟩
   exact hf ht
 
+/- English proof (translation)
+The claim follows from `Finset.measurable_prod _ fun i _ => ((measurable_pi_apply i).enorm.inv).pow_const 2`.
+-/
 theorem measurable_invSqWeight : Measurable (invSqWeight : (I → ℂ) → ℝ≥0∞) :=
   Finset.measurable_prod _ fun i _ => ((measurable_pi_apply i).enorm.inv).pow_const 2
 
 omit [Fintype I] in
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun i => measurable_to_units ?_` and prove the remaining obligations. Establish `: (fun b : I → ℂ => ((invUnits b i : ℂˣ) : ℂ)) = fun b => if b i = 0 then 1 else (b i)⁻¹`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `by_cases h : b i = 0 <;> simp [invUnits, h]`. Rewrite using `[this]`.
+
+Conclude with `Measurable.ite ((measurableSet_singleton 0).preimage (measurable_pi_apply i)) measurable_const (measurable_pi_apply i).inv`.
+-/
 theorem measurable_invUnits : Measurable (invUnits : (I → ℂ) → I → ℂˣ) := by
   refine measurable_pi_lambda _ fun i => measurable_to_units ?_
   have : (fun b : I → ℂ => ((invUnits b i : ℂˣ) : ℂ)) = fun b => if b i = 0 then 1 else (b i)⁻¹ := by
@@ -54,14 +74,33 @@ theorem measurable_invUnits : Measurable (invUnits : (I → ℂ) → I → ℂˣ
   exact Measurable.ite ((measurableSet_singleton 0).preimage (measurable_pi_apply i))
     measurable_const (measurable_pi_apply i).inv
 
+/- English proof (translation)
+Establish `h0 : ∀ᵐ z ∂(volume : Measure ℂ), z ≠ 0` using `compl_mem_ae_iff.2 (measure_singleton 0)`. Conclude with `ae_all_iff.2 fun i => (Measure.tendsto_eval_ae_ae (μ := fun _ : I => (volume : Measure ℂ)) (i := i)).eventually h0`.
+-/
 theorem ae_ne_zero : ∀ᵐ b ∂(volume : Measure (I → ℂ)), ∀ i, b i ≠ 0 := by
   have h0 : ∀ᵐ z ∂(volume : Measure ℂ), z ≠ 0 := compl_mem_ae_iff.2 (measure_singleton 0)
   exact ae_all_iff.2 fun i =>
     (Measure.tendsto_eval_ae_ae (μ := fun _ : I => (volume : Measure ℂ)) (i := i)).eventually h0
 
+/- English proof (translation)
+The claim follows from `(withDensity_absolutelyContinuous _ _).ae_le ae_ne_zero`.
+-/
 theorem ae_ne_zero_weighted : ∀ᵐ b ∂(weightedVolume I), ∀ i, b i ≠ 0 :=
   (withDensity_absolutelyContinuous _ _).ae_le ae_ne_zero
 
+/- English proof (translation)
+Establish `hL : Measurable (scaleMap t)` using `(scaleMap t).continuous_of_finiteDimensional.measurable`. Establish `hDpos : 0 < ∏ i, Complex.normSq (t i : ℂ)` using `Finset.prod_pos fun i _ => Complex.normSq_pos.2 (t i).ne_zero`. Establish `hD : LinearMap.det (scaleMap t) ≠ 0` using `by rw [det_scaleMap]; exact hDpos.ne'`. Use `set κ : ℝ≥0∞ := ∏ i, ‖(t i : ℂ)‖ₑ ^ 2 with hκdef`. Establish `hκ0 : κ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (enorm_ne_zero.2 (t i).ne_zero)`.
+
+Establish `hκtop : κ ≠ ⊤` using `ENNReal.prod_ne_top fun i _ => ENNReal.pow_ne_top enorm_ne_top`. Establish `hκD : ENNReal.ofReal (∏ i, Complex.normSq (t i : ℂ)) = κ`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun i _ => Complex.normSq_nonneg _]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq, ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+
+Establish `hκ : κ * ENNReal.ofReal |(LinearMap.det (scaleMap t))⁻¹| = 1`. Rewrite using `[det_scaleMap, abs_of_pos (inv_pos.2 hDpos), ENNReal.ofReal_inv_of_pos hDpos, hκD, ENNReal.mul_inv_cancel hκ0 hκtop]`. Establish `hW : ∀ b, invSqWeight b = κ * invSqWeight (scaleMap t b)`. Introduce `b`. Rewrite using `[invSqWeight, invSqWeight, hκdef, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : ‖(t i : ℂ)‖ₑ ≠ 0` using `enorm_ne_zero.2 (t i).ne_zero`. Rewrite using `[scaleMap_apply, enorm_mul, ENNReal.mul_inv (Or.inl h0) (Or.inl enorm_ne_top), mul_pow, ← mul_assoc, ← mul_pow, ENNReal.mul_inv_cancel h0 enorm_ne_top, one_pow, one_mul]`. Use extensionality with `s hs`. Rewrite using `[map_apply hL hs, weightedVolume, withDensity_apply _ (hL hs), withDensity_apply _ hs, ← lintegral_indicator (hL hs), ← lintegral_indicator hs]`.
+
+Establish `hind : (scaleMap t ⁻¹' s).indicator invSqWeight = fun b => κ * s.indicator invSqWeight (scaleMap t b)`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : scaleMap t b ∈ s`. Rewrite using `[indicator_of_mem (show b ∈ scaleMap t ⁻¹' s from hb), indicator_of_mem hb, hW]`. Rewrite using `[indicator_of_notMem (show b ∉ scaleMap t ⁻¹' s from hb), indicator_of_notMem hb, mul_zero]`.
+
+Establish `hm : Measurable (s.indicator (invSqWeight : (I → ℂ) → ℝ≥0∞))` using `measurable_invSqWeight.indicator hs`. Rewrite using `[hind]`. Use `beta_reduce`. Rewrite using `[lintegral_const_mul _ (f := fun b => s.indicator invSqWeight (scaleMap t b)) (hm.comp hL), ← lintegral_map hm hL, map_linearMap_addHaar_eq_smul_addHaar _ hD, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, hκ, one_mul]`.
+-/
 theorem map_scaleMap (t : I → ℂˣ) : (weightedVolume I).map (scaleMap t) = weightedVolume I := by
   have hL : Measurable (scaleMap t) := (scaleMap t).continuous_of_finiteDimensional.measurable
   have hDpos : 0 < ∏ i, Complex.normSq (t i : ℂ) :=
@@ -163,6 +202,11 @@ instance : IsFiniteMeasureOnCompacts (invHaar I) := by
   exact ENNReal.mul_lt_top (ENNReal.prod_ne_top fun i _ => ENNReal.pow_ne_top ENNReal.ofReal_ne_top).lt_top
     measure_closedBall_lt_top
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : invHaar I univ = 0` using `by rw [h]; rfl`. Rewrite `h1` using `[invHaar, map_apply measurable_invUnits MeasurableSet.univ, preimage_univ, weightedVolume, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, lintegral_eq_zero_iff measurable_invSqWeight]`. Establish `hpos : ∀ b : I → ℂ, invSqWeight b ≠ 0` using `fun b => Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (ENNReal.inv_ne_zero.2 enorm_ne_top)`. Establish `hF : ∀ᵐ b ∂(volume : Measure (I → ℂ)), False` using `h1.mono fun b hb => hpos b hb`.
+
+Conclude with `NeZero.ne (volume : Measure (I → ℂ)) (ae_eq_bot.1 (Filter.eventually_false_iff_eq_bot.1 hF))`.
+-/
 theorem invHaar_ne_zero : invHaar I ≠ 0 := by
   intro h
   have h1 : invHaar I univ = 0 := by rw [h]; rfl
@@ -174,6 +218,19 @@ theorem invHaar_ne_zero : invHaar I ≠ 0 := by
   have hF : ∀ᵐ b ∂(volume : Measure (I → ℂ)), False := h1.mono fun b hb => hpos b hb
   exact NeZero.ne (volume : Measure (I → ℂ)) (ae_eq_bot.1 (Filter.eventually_false_iff_eq_bot.1 hF))
 
+/- English proof (translation)
+Introduce `ρ _`. Establish `hlam` using `isMulLeftInvariant_eq_smul (invHaar I) ρ`. Use `set c' := haarScalarFactor (invHaar I) ρ`. Establish `hc' : c' ≠ 0`. Introduce `h`.
+
+Apply `invHaar_ne_zero (I := I)` to reduce the goal to its premises. Rewrite using `[hlam, h, zero_smul]`. Use `⟨c'⁻¹, inv_ne_zero hc', fun k g g' hg hg' => ?_⟩` and prove the remaining obligations. Establish `hρ : ρ = (c'⁻¹ : ℝ≥0) • invHaar I`. Rewrite using `[hlam, smul_smul, inv_mul_cancel₀ hc', one_smul]`.
+
+Establish `hF : Measurable fun a : I → ℂˣ => (∏ i, ‖(a i : ℂ)‖ₑ⁻¹ ^ (2 * (k + 1))) * g a` using `(Finset.measurable_prod _ fun i _ => ((measurable_units_val.comp (measurable_pi_apply i)).enorm.inv).pow_const _).mul hg`. Rewrite using `[hρ, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Use `congr 1`. Rewrite using `[invHaar, lintegral_map hF measurable_invUnits, weightedVolume, lintegral_withDensity_eq_lintegral_mul _ measurable_invSqWeight (g := fun b => (∏ i, ‖(invUnits b i : ℂ)‖ₑ⁻¹ ^ (2 * (k + 1))) * g (invUnits b)) (hF.comp measurable_invUnits)]`. Apply `lintegral_congr_ae` to reduce the goal to its premises.
+
+Use `filter_upwards [ae_ne_zero] with b hb`. Establish `hinv : invUnits b = fun i => (Units.mk0 (b i) (hb i))⁻¹`. Use function extensionality and compare the values at `i`. Simplify using `[invUnits, hb i]`. Simplify using `only [Pi.mul_apply]`.
+
+Rewrite using `[hinv, ← hg' b hb, ← mul_assoc]`. Use `congr 1`. Rewrite using `[invSqWeight, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : ‖b i‖ₑ ≠ 0` using `enorm_ne_zero.2 (hb i)`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, Units.val_mk0, enorm_inv (hb i), inv_inv, show 2 * (k + 1) = 2 + 2 * k by ring, pow_add, ← mul_assoc, ← mul_pow, ENNReal.inv_mul_cancel h0 enorm_ne_top, one_pow, one_mul]`.
+-/
 theorem proof (I : Type*) [Fintype I] : UnitsInvHaar.Statement I := by
   intro ρ _
   have hlam := isMulLeftInvariant_eq_smul (invHaar I) ρ

@@ -4,6 +4,65 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S A EE O W RW D Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a ι c jD hinj hunit hjD ha d r o ho ⟨b⟩ q x hq huniq N hN`. Substitute `hq` using the available equality. Establish `hxN : ∀ i, x i ∈ N`. Introduce `i`. Use `(hN _).2 ⟨Pi.single i 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+
+Establish `hjsum : ∀ e : Fin (d * r) → EE, ∀ v : Fin (d * r) → D, jD (∑ i, e i • v i) = ∑ i, ι (e i) • jD (v i)`. Introduce `e v`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hjD _ _`. Establish `hspan : ∀ y : D, y ∈ Submodule.span EE (Set.range x)` using `by choose e' he' hdec using ho choose w' hw' using he'`.
+
+Set `u : Fin (d * r) → D` to `fun l => algebraMap O EE (o (finProdFinEquiv.symm l).1) • b (finProdFinEquiv.symm l).2`. Set `C' : Matrix (Fin (d * r)) (Fin (d * r)) EE` to `fun i l => e' (b.repr (x i) (finProdFinEquiv.symm l).2) (finProdFinEquiv.symm l).1`. Set `C : Matrix (Fin (d * r)) (Fin (d * r)) W` to `fun i l => w' (b.repr (x i) (finProdFinEquiv.symm l).2) (finProdFinEquiv.symm l).1`. Establish `hCC : ∀ i l, c (C i l) = ι (C' i l)` using `fun i l => hw' _ _`. Establish `hx : ∀ i, x i = ∑ l, C' i l • u l`.
+
+Introduce `i`. Rewrite using `[← finProdFinEquiv.sum_comp]`. Simplify using `only [C', u, Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Use `conv_lhs => rw [← b.sum_repr (x i)]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [hdec (b.repr (x i) k)]`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, Algebra.smul_def, mul_comm]`.
+
+Use `choose B hB using fun l => (huniq (jD (u l))).exists`. Establish `hCB : C * Matrix.of B = 1`. Use extensionality with `i m`. Establish `h1 : jD (x i) = ∑ m, c ((C * Matrix.of B) i m) • jD (x m)` using `by conv_lhs => rw [hx i, hjsum]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, Matrix.of_apply]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hB l, Finset.smul_sum, ← hCC]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Establish `h2 : jD (x i) = ∑ m, c ((1 : Matrix _ _ W) i m) • jD (x m)`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne hj.symm]`.
+
+Simplify using the standard rewrite rules. Conclude with `congrFun ((huniq _).unique h1 h2) m`. Establish `hdetC : IsUnit C.det` using `Matrix.isUnit_det_of_right_inverse hCB`. Establish `hdetC' : IsUnit C'.det`. Apply `hunit` to reduce the goal to its premises.
+
+Establish `h1 : ι C'.det = c C.det`. Rewrite using `[RingHom.map_det, AlgHom.map_det]`. Use `congr 1`. Use extensionality with `i l`. Simplify using `[hCC]`.
+
+Rewrite using `[h1]`. Conclude with `hdetC.map c`. Establish `hu : ∀ l, u l ∈ Submodule.span EE (Set.range x)`. Introduce `l`. Establish `h1 : u l = ∑ i, C'⁻¹ l i • x i`.
+
+Establish `h2 : ∑ i, C'⁻¹ l i • x i = ∑ m, (C'⁻¹ * C') l m • u m`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hx i, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Rewrite using `[h2, Matrix.nonsing_inv_mul _ hdetC', Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+
+Simplify using `[Matrix.one_apply_ne hj.symm]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hb : ∀ k, b k ∈ Submodule.span EE (Set.range x)`.
+
+Introduce `k`. Establish `h1 : b k = ∑ j, e' 1 j • u (finProdFinEquiv (j, k))` using `by conv_lhs => rw [← one_smul EE (b k), hdec 1, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [u, Equiv.symm_apply_apply]`. Rewrite using `[smul_smul, Algebra.smul_def, mul_comm]`.
+
+Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hu _)`. Introduce `y`. Rewrite using `[← b.sum_repr y]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hb k)`.
+
+Establish `hnf : ∀ t : EE ⊗[A] N, ∃ e : Fin (d * r) → EE, (∀ i, ι (e i) ∈ c.range) ∧ t = ∑ i, e i ⊗ₜ[A] (⟨x i, hxN i⟩ : N)`. Set `P : AddSubmonoid (EE ⊗[A] N)` to `{ carrier := {t | ∃ e : Fin (d * r) → EE, (∀ i, ι (e i) ∈ c.range) ∧ t = ∑ i, e i ⊗ₜ[A] (⟨x i, hxN i⟩ : N)} zero_mem' := ⟨0, fun i => by simp, by simp⟩ add_mem' := by`. Introduce and unpack `_ _ ⟨e₁, h₁, rfl⟩ ⟨e₂, h₂, rfl⟩`. Use `⟨e₁ + e₂, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add]`.
+
+Conclude with `add_mem (h₁ i) (h₂ i)`. Simplify using `[TensorProduct.add_tmul, Finset.sum_add_distrib] }`. Establish `hP : ∀ (e : EE) (n : N), ι e ∈ c.range → e ⊗ₜ[A] n ∈ P`. Introduce `e n he`. Take `⟨s, hs⟩` from `(hN n).1 n.2`.
+
+Establish `hn : n = ∑ i, a (s i) • (⟨x i, hxN i⟩ : N)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Use `⟨fun i => a (s i) • e, fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_mem (ha (s i)) he`. Rewrite using `[hn, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.smul_tmul]`. Introduce `t`. Express the relevant statement in the definitionally equal form `t ∈ P`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add _ _ h₁ h₂ => exact add_mem h₁ h₂`. Consider the case `tmul e n`. Take `⟨e', he', hdec⟩` from `ho e`. Rewrite using `[hdec, TensorProduct.sum_tmul]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul A (o j) (e' j), TensorProduct.smul_tmul]`. Conclude with `hP _ _ (he' j)`. Establish `hbij : Function.Bijective (N.subtype.liftBaseChange EE)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `t ht`. Take `⟨e, he, rfl⟩` from `hnf t`. Use `choose w hw using he`. Establish `h1 : ∑ i, e i • x i = 0`. Simplify `ht` using `[map_sum, LinearMap.liftBaseChange_tmul]`.
+
+Establish `h2 : (0 : Y) = ∑ i, c (w i) • jD (x i)`. Simplify using `only [hw]`. Rewrite using `[← hjsum, h1, map_zero]`. Establish `h3 : (0 : Y) = ∑ i, c ((0 : Fin (d * r) → W) i) • jD (x i)` using `by simp`. Establish `h4 : w = 0` using `(huniq 0).unique h2 h3`.
+
+Establish `h5 : ∀ i, e i = 0`. Introduce `i`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hw, h4]`. Simplify using the standard rewrite rules.
+
+Simplify using `[h5]`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff]`. Introduce `y _`. Use `Submodule.span_le.2 ?_ (hspan y)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `⟨1 ⊗ₜ[A] (⟨x i, hxN i⟩ : N), by simp [LinearMap.liftBaseChange_tmul]⟩`. Use `IsBaseChange.of_equiv (LinearEquiv.ofBijective _ hbij) fun n => ?_` and prove the remaining obligations. Simplify using `[LinearMap.liftBaseChange_tmul]`.
+-/
 theorem isBaseChange_subtype_of_basis_after_extension : ∀ (S A EE O W RW D Y : Type) [CommRing S] [CommRing A] [CommRing EE] [CommRing O] [CommRing W] [CommRing RW] [Algebra O A] [Algebra A EE] [Algebra O EE] [IsScalarTower O A EE] [Algebra O RW] [AddCommGroup D] [Module EE D] [Module A D] [IsScalarTower A EE D] [AddCommGroup Y] [Module RW Y] (a : S →+* A) (ι : EE →ₐ[O] RW) (c : W →+* RW) (jD : D →+ Y), Function.Injective ι → (∀ e, IsUnit (ι e) → IsUnit e) → (∀ (e : EE) (x : D), jD (e • x) = ι e • jD x) → (∀ s, ι (algebraMap A EE (a s)) ∈ Set.range c) → ∀ (d r : ℕ) (o : Fin d → O), (∀ e : EE, ∃ e' : Fin d → EE, (∀ j, ι (e' j) ∈ Set.range c) ∧ e = ∑ j, o j • e' j) → Nonempty (Module.Basis (Fin r) EE D) → ∀ (q : ℕ) (x : Fin q → D), q = d * r → (∀ y : Y, ∃! w : Fin q → W, y = ∑ i, c (w i) • jD (x i)) → ∀ N : Submodule A D, (∀ y, y ∈ N ↔ ∃ s : Fin q → S, y = ∑ i, a (s i) • x i) → IsBaseChange EE N.subtype := by
   intro S A EE O W RW D Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ a ι c jD hinj hunit hjD ha d r o ho
     ⟨b⟩ q x hq huniq N hN

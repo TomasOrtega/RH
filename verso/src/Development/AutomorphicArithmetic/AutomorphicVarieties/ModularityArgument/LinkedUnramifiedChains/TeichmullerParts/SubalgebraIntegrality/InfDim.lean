@@ -21,6 +21,15 @@ private def eqv (R : Representation ℂ G X) (Gi : Subgroup G) (τ : G → Modul
   zero_mem' x _ v := by simp
   smul_mem' c Φ h x hx v := by simp only [LinearMap.smul_apply, map_smul, h x hx]
 
+/- English proof (translation)
+Establish `key : ∀ a : Module.End ℂ D, ∑ i, Φ i (a (b i)) = 0` using `fun a => by`. Establish `ha : a ∈ Submodule.span ℂ (Set.range fun x : Gi => τ x)` using `hτ ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨x, rfl⟩` from `ha`.
+
+Establish `h1` using `congrArg (R x) h`. Rewrite `h1` using `[map_sum, map_zero]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun i _ => (hΦ i x x.2 _).symm`. Consider the case `zero => simp`.
+
+Consider the case `add a a' _ _ h1 h2 => simp only [LinearMap.add_apply, map_add, Finset.sum_add_distrib, h1, h2, add_zero]`. Consider the case `smul c a _ h1 => simp only [LinearMap.smul_apply, map_smul, ← Finset.smul_sum, h1, smul_zero]`. Use extensionality with `v`. Establish `h1` using `key ((b.coord j).smulRight v)`. Rewrite `h1` using `[Finset.sum_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`.
+
+Simplify using `using h1`.
+-/
 private theorem sum_zero {R : Representation ℂ G X} {Gi : Subgroup G} {τ : G → Module.End ℂ D}
     (hτ : Submodule.span ℂ (Set.range fun x : Gi => τ x) = ⊤) {I : Type} [Fintype I] (b : Module.Basis I ℂ D)
     (Φ : I → D →ₗ[ℂ] X) (hΦ : ∀ i, Φ i ∈ eqv R Gi τ) (h : ∑ i, Φ i (b i) = 0) (j : I) : Φ j = 0 := by
@@ -42,6 +51,17 @@ private theorem sum_zero {R : Representation ℂ G X} {Gi : Subgroup G} {τ : G 
   rw [Finset.sum_eq_single j (fun i _ hi => by simp [hi]) (by simp)] at h1
   simpa using h1
 
+/- English proof (translation)
+Set `N : Submodule ℂ X` to `{ carrier := {φ | ∃ Φ : I → D →ₗ[ℂ] X, (∀ i, Φ i ∈ eqv R Gi τ) ∧ (∀ i v, Φ i v ∈ σ) ∧ ∑ i, Φ i (b i) = φ} add_mem' := by`. Introduce and unpack `_ _ ⟨A, a1, a2, rfl⟩ ⟨B, b1, b2, rfl⟩`. Conclude with `⟨A + B, fun i => add_mem (a1 i) (b1 i), fun i v => add_mem (a2 i v) (b2 i v), by`. Simplify using `[Finset.sum_add_distrib]⟩`. Use the proof step `zero_mem' := ⟨0, fun _ => zero_mem _, fun _ _ => zero_mem _, by simp⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨A, a1, a2, rfl⟩`. Conclude with `⟨c • A, fun i => Submodule.smul_mem _ c (a1 i), fun i v => σ.smul_mem c (a2 i v), by`. Simplify using `[Finset.smul_sum]⟩ }`. Establish `hval : ∀ Φ ∈ eqv R Gi τ, (∀ v, Φ v ∈ σ) → ∀ v, Φ v ∈ N` using `fun Φ a1 a2 v => ⟨fun i => b.repr v i • Φ, fun i => Submodule.smul_mem _ _ a1, fun i w => σ.smul_mem _ (a2 w), by conv_rhs => rw [← b.sum_repr v]`.
+
+Simplify using `only [map_sum, map_smul, LinearMap.smul_apply]⟩`. Establish `hle : N ≤ σ`. Introduce and unpack `_ ⟨A, -, a2, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => a2 i _`. Establish `hN : ∀ g, ∀ φ ∈ N, R g φ ∈ N`.
+
+Introduce and unpack `g _ ⟨A, a1, a2, rfl⟩`. Take `⟨k, hk, x, hx, rfl⟩` from `hsp g`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, a1 i x hx]`.
+
+Use `hval (R k ∘ₗ A i) (fun y hy v => ?_) (fun v => hst _ _ (a2 i v)) _` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← a1 i y hy, ← Module.End.mul_apply, ← map_mul, ← hcm k hk y hy, map_mul, Module.End.mul_apply]`. Break down `hirr N hle hN with h | h` into its components or cases. Conclude with `(h0 (LinearMap.ext fun v => (Submodule.mem_bot ℂ).1 (h ▸ hval Φ₀ h2 h1 v))).elim`. Conclude with `(h.ge hφ :)`.
+-/
 private theorem sum_ex {R : Representation ℂ G X} {Gi Gf : Subgroup G} {τ : G → Module.End ℂ D}
     (hsp : ∀ g, ∃ k ∈ Gf, ∃ x ∈ Gi, g = k * x) (hcm : ∀ k ∈ Gf, ∀ x ∈ Gi, k * x = x * k)
     {σ : Submodule ℂ X} (hst : ∀ g, ∀ φ ∈ σ, R g φ ∈ σ)
@@ -80,6 +100,17 @@ private theorem sum_ex {R : Representation ℂ G X} {Gi Gf : Subgroup G} {τ : G
   · exact (h0 (LinearMap.ext fun v => (Submodule.mem_bot ℂ).1 (h ▸ hval Φ₀ h2 h1 v))).elim
   · exact (h.ge hφ :)
 
+/- English proof (translation)
+Set `ev : (Fin d → B) →ₗ[ℂ] N` to `(∑ i, (tf.flip (b i)) ∘ₗ B.subtype ∘ₗ LinearMap.proj i).codRestrict N fun F => by`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => hB _ (F i).2 _`. Establish `hev : ∀ F, (ev F : X) = ∑ i, tf (F i) (b i)` using `fun F => LinearMap.sum_apply _ _ _`. Establish `hi : Function.Injective ev`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Establish `h3` using `(hev F).symm.trans (congrArg Subtype.val hF)`. Conclude with `funext fun j => Subtype.ext (hinj _ (F j).2 (sum_zero hτ b _ (fun i => hB' _ (F i).2) h3 j))`. Establish `hs : Function.Surjective ev`.
+
+Introduce and unpack `⟨φ, hφ⟩`. Take `⟨Φ, a1, a2, rfl⟩` from `sum_ex hsp hcm hst hirr Φ₀ h0 h1 h2 b φ ((hN φ).1 hφ).1`. Establish `hfix : ∀ k ∈ U, ∀ j, R k ∘ₗ Φ j - Φ j = 0` using `fun k hk j => by`. Use `sum_zero (R := R) hτ b (fun i => R k ∘ₗ Φ i - Φ i) (fun i => sub_mem (fun y hy v => ?_) (a1 i)) ?_ j` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← a1 i y hy, ← Module.End.mul_apply, ← map_mul, ← hcm k k.2 y hy, map_mul, Module.End.mul_apply]`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, Finset.sum_sub_distrib, ← map_sum]`. Rewrite using `[((hN _).1 hφ).2 k hk, sub_self]`. Use `choose F hF hF' using fun j => hsur (Φ j) (a1 j) fun v => (hN _).2 ⟨a2 j v, fun k hk => LinearMap.congr_fun (sub_eq_zero.1 (hfix k hk j)) v⟩`. Use `⟨fun j => ⟨F j, hF j⟩, Subtype.ext ((hev _).trans ?_)⟩` and prove the remaining obligations. Simplify using `only [hF']`.
+
+Rewrite using `[← (LinearEquiv.ofBijective ev ⟨hi, hs⟩).rank_eq, rank_fun_eq_lift_mul]`. Simplify using `[mul_comm]`.
+-/
 private theorem rank_eq {R : Representation ℂ G X} {Gi Gf : Subgroup G} {τ : G → Module.End ℂ D}
     (hτ : Submodule.span ℂ (Set.range fun x : Gi => τ x) = ⊤)
     (hsp : ∀ g, ∃ k ∈ Gf, ∃ x ∈ Gi, g = k * x) (hcm : ∀ k ∈ Gf, ∀ x ∈ Gi, k * x = x * k)
@@ -117,6 +148,13 @@ private theorem rank_eq {R : Representation ℂ G X} {Gi Gf : Subgroup G} {τ : 
   rw [← (LinearEquiv.ofBijective ev ⟨hi, hs⟩).rank_eq, rank_fun_eq_lift_mul]
   simp [mul_comm]
 
+/- English proof (translation)
+Use `or_iff_not_imp_left.2 fun h => top_le_iff.1 fun w _ => ?_` and prove the remaining obligations. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h`. Establish `key : ∀ a : Module.End ℂ D, a v ∈ S` using `fun a => by`. Establish `ha : a ∈ Submodule.span ℂ (Set.range fun x : Gi => τ x)` using `hτ ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Take `⟨x, rfl⟩` from `ha`. Conclude with `hS x x.2 v hv`. Consider the case `zero => exact zero_mem _`. Consider the case `add a a' _ _ h1 h2 => exact add_mem h1 h2`.
+
+Consider the case `smul c a _ h1 => exact S.smul_mem c h1`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one ℂ hv0`. Simplify `key (f.smulRight w)` using `[hf]`.
+-/
 private theorem stab {τ : G → Module.End ℂ D} {Gi : Subgroup G}
     (hτ : Submodule.span ℂ (Set.range fun x : Gi => τ x) = ⊤) (S : Submodule ℂ D)
     (hS : ∀ x ∈ Gi, ∀ v ∈ S, τ x v ∈ S) : S = ⊥ ∨ S = ⊤ := by
@@ -134,6 +172,9 @@ private theorem stab {τ : G → Module.End ℂ D} {Gi : Subgroup G}
   obtain ⟨f, hf⟩ := Module.Projective.exists_dual_eq_one ℂ hv0
   simpa [hf] using key (f.smulRight w)
 
+/- English proof (translation)
+Break down `stab hτ (LinearMap.ker Φ) (fun x hx v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← h x hx, hv, map_zero]) with h1 | h1`. Conclude with `LinearMap.ker_eq_bot.1 h1`. Conclude with `(h0 (LinearMap.ker_eq_top.1 h1)).elim`.
+-/
 private theorem inj_of {R : Representation ℂ G X} {τ : G → Module.End ℂ D} {Gi : Subgroup G}
     (hτ : Submodule.span ℂ (Set.range fun x : Gi => τ x) = ⊤) {Φ : D →ₗ[ℂ] X} (h0 : Φ ≠ 0) (h : Φ ∈ eqv R Gi τ) :
     Function.Injective Φ := by
@@ -143,6 +184,13 @@ private theorem inj_of {R : Representation ℂ G X} {τ : G → Module.End ℂ D
   · exact LinearMap.ker_eq_bot.1 h1
   · exact (h0 (LinearMap.ker_eq_top.1 h1)).elim
 
+/- English proof (translation)
+Establish `hr : LinearMap.range Φ = LinearMap.range T`. Use `le_antisymm (by rintro _ ⟨v, rfl⟩; exact hle v) ?_` and prove the remaining obligations. Break down `stab hτ' ((LinearMap.range Φ).comap T) (by` into its components or cases. Introduce and unpack `x hx w ⟨v, hv⟩`. Conclude with `⟨τ x v, by rw [← h x hx, hv, h' x hx]⟩) with h1 | h1`.
+
+Use `(h0 (LinearMap.ext fun v => ?_)).elim` and prove the remaining obligations. Take `⟨w, hw⟩` from `hle v`. Establish `: w ∈ (LinearMap.range Φ).comap T` using `⟨v, hw.symm⟩`. Rewrite `this` using `[h1, Submodule.mem_bot]`. Rewrite using `[← hw, this, map_zero, LinearMap.zero_apply]`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `(h1.ge Submodule.mem_top :)`. Rewrite using `[← LinearMap.finrank_range_of_inj (inj_of hτ h0 h), hr, LinearMap.finrank_range_of_inj (inj_of hτ' h0' h')]`.
+-/
 private theorem finrank_eq {R : Representation ℂ G X} {τ : G → Module.End ℂ D} {τ' : G → Module.End ℂ Y} {Gi : Subgroup G}
     (hτ : Submodule.span ℂ (Set.range fun x : Gi => τ x) = ⊤) (hτ' : Submodule.span ℂ (Set.range fun x : Gi => τ' x) = ⊤)
     {Φ : D →ₗ[ℂ] X} (h0 : Φ ≠ 0) (h : Φ ∈ eqv R Gi τ) {T : Y →ₗ[ℂ] X} (h0' : T ≠ 0) (h' : T ∈ eqv R Gi τ')
@@ -161,6 +209,13 @@ private theorem finrank_eq {R : Representation ℂ G X} {τ : G → Module.End �
       exact (h1.ge Submodule.mem_top :)
   rw [← LinearMap.finrank_range_of_inj (inj_of hτ h0 h), hr, LinearMap.finrank_range_of_inj (inj_of hτ' h0' h')]
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (Module.Dual.transpose : (D →ₗ[ℂ] D) →ₗ[ℂ] _)`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 ?_` and prove the remaining obligations. Simplify using `[Module.finrank_linearMap]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+
+Use extensionality with `v`. Conclude with `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun f => LinearMap.congr_fun (LinearMap.congr_fun ha f) v`. Establish `h1` using `congrArg (Submodule.map (Module.Dual.transpose : (D →ₗ[ℂ] D) →ₗ[ℂ] _)) h`. Rewrite `h1` using `[Submodule.map_top, LinearMap.range_eq_top.2 hs, Submodule.map_span]`. Use `top_le_iff.1 (h1.ge.trans (Submodule.span_mono ?_))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Use `⟨x⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_inv, inv_inv]`. Both sides reduce to the same expression.
+-/
 private theorem span_dual [FiniteDimensional ℂ D] {Gi : Subgroup G} {ρ : G → Module.End ℂ D}
     (h : Submodule.span ℂ (Set.range fun x : Gi => ρ x) = ⊤) :
     Submodule.span ℂ (Set.range fun x : Gi => (ρ (x : G)⁻¹).dualMap) = ⊤ := by
@@ -179,6 +234,23 @@ private theorem span_dual [FiniteDimensional ℂ D] {Gi : Subgroup G} {ρ : G �
   simp only [Subgroup.coe_inv, inv_inv]
   rfl
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite I`. Use `set S := Submodule.span ℂ (Set.range fun x : Gi => PiTensorProduct.map fun i => ρ i x)`. Establish `hx : ∀ (y : ∀ i, H i) (T : Finset I), ∃ x ∈ Gi, ∀ i, ρ i x = if i ∈ T then ρ i (y i) else 1` using `fun y T => by`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, fun i => by simp⟩`.
+
+Consider the case `insert j T hj ih`. Take `⟨x, hx, hx'⟩` from `ih`. Use `⟨y j * x, mul_mem (hH j (y j).2) hx, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hx']`. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Simplify using `[hj]`. Simplify using `[e, h1 j i e _ (y j).2]`. Establish `hm : S.mkQ.compMultilinearMap (PiTensorProduct.mapMultilinear ℂ M M) = 0`. Use `MultilinearMap.ext_of_span_eq_top (g := fun i (x : H i) => ρ i x) h fun y => ?_` and prove the remaining obligations.
+
+Take `⟨x, hx, hx'⟩` from `hx y Finset.univ`. Simplify using `only [Finset.mem_univ, if_true] at hx'`. Use `(Submodule.Quotient.mk_eq_zero S).2 (Submodule.subset_span ⟨⟨x, hx⟩, ?_⟩)` and prove the remaining obligations. Simplify using `only [hx']`. Both sides reduce to the same expression.
+
+Establish `hf : ∀ f : ∀ i, M i →ₗ[ℂ] M i, PiTensorProduct.map f ∈ S` using `fun f => (Submodule.Quotient.mk_eq_zero S).1 (congrArg (fun m => m f) hm)`. Set `b` to `fun i => Module.finBasis ℂ (M i)`. Set `B` to `Basis.piTensorProduct b`. Use `top_le_iff.1 ((B.linearMap B).span_eq.ge.trans (Submodule.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨p, q⟩, rfl⟩`.
+
+Establish `: B.linearMap B (p, q) = PiTensorProduct.map fun i => ((b i).coord (q i)).smulRight (b i (p i))`. Use `B.ext fun r => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.linearMap_apply_apply, Basis.piTensorProduct_apply b r, PiTensorProduct.map_tprod]`. Simplify using `only [LinearMap.smulRight_apply, MultilinearMap.map_smul_univ, Module.Basis.coord_apply, Module.Basis.repr_self]`. Use `split_ifs with e`.
+
+Substitute `e` using the available equality. Simplify using `[B]`. Take `⟨i, hi⟩` from `Function.ne_iff.1 e`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Finsupp.single_apply, hi, Ne.symm hi]), zero_smul]`. Rewrite using `[this]`.
+
+Conclude with `hf _`.
+-/
 private theorem span_pi {I : Type} [Finite I] {M : I → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
     [∀ i, FiniteDimensional ℂ (M i)] {Gi : Subgroup G} (ρ : ∀ i, G →* Module.End ℂ (M i)) (H : I → Subgroup G)
     (hH : ∀ i, H i ≤ Gi) (h1 : ∀ i j, j ≠ i → ∀ x ∈ H i, ρ j x = 1)
@@ -228,6 +300,13 @@ end Abs
 section Mid
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Use `span_pi (fun i => (GlobalTheory.Branching.sqRep ℂ n (lam i)).comp (cEmb (emb i))) (fun i => embU n (emb i)) (fun i => GlobalTheory.DefU.embU_le_infU _) (fun i j hj x hx => ?_) fun i => ?_` and prove the remaining obligations. Establish `h1` using `(Subgroup.mem_inf.1 hx).2`. Rewrite `h1` using `[Subgroup.mem_iInf]`. Establish `h2` using `h1 (emb j)`. Rewrite `h2` using `[Subgroup.mem_iInf]`.
+
+Establish `h3 : cEmb (emb j) x = 1` using `h2 fun e => hj (hi e)`. Rewrite using `[MonoidHom.comp_apply, h3, map_one]`. Take `⟨e, he⟩` from `GlobalTheory.EmbUnitary.exists_equiv_unitaryGroup E n (emb i)`. Use `top_le_iff.1 ((GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ _ (GlobalTheory.Branching.isIrreducible_smallRep_unitary n (lam i))).ge.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`.
+
+Take `⟨x, rfl⟩` from `e.surjective u`. Use `⟨x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam i) (cEmb (emb i) (x : UA E n)) = GlobalTheory.Branching.sqRep ℂ n (lam i) (GlobalTheory.Branching.unitaryIncl n (e x))`. Rewrite using `[he]`.
+-/
 private theorem span_emb {I : Type} [Finite I] (emb : I → E →+* ℂ)
     (hi : Function.Injective fun i => InfinitePlace.mk (emb i)) (lam : I → DomWeight n) :
     Submodule.span ℂ (Set.range fun x : infU E n =>
@@ -250,10 +329,26 @@ private theorem span_emb {I : Type} [Finite I] (emb : I → E →+* ℂ)
       GlobalTheory.Branching.sqRep ℂ n (lam i) (GlobalTheory.Branching.unitaryIncl n (e x))
     rw [he]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h k hk => by simpa [GlobalTheory.BCT.RF] using h ⟨k, hk⟩, fun h k => by simpa [GlobalTheory.BCT.RF] using h k k.2⟩`.
+-/
 private theorem mem_fixed (U : Subgroup (finU E n)) (φ : UA E n → ℂ) :
     φ ∈ GlobalTheory.PRep.fixed (GlobalTheory.BCT.RF E n) U ↔ ∀ k ∈ U, RU E n k φ = φ :=
   ⟨fun h k hk => by simpa [GlobalTheory.BCT.RF] using h ⟨k, hk⟩, fun h k => by simpa [GlobalTheory.BCT.RF] using h k k.2⟩
 
+/- English proof (translation)
+Take `⟨T, hT0, hT1, hT2⟩` from `GlobalTheory.BCT.TrKer.exists_ne_zero_wsp_intertwining E n lam' σ hσ hw`. Establish `hTσ : LinearMap.range T ≤ σ`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `hT1 w`. Take `⟨Φ, h0, h1, h2⟩` from `hex (LinearMap.range T) (fun h => hT0 (LinearMap.range_eq_bot.1 h)) hTσ (by`.
+
+Introduce and unpack `x hx _ ⟨w, rfl⟩`. Conclude with `⟨_, hT2 x hx w⟩)`. Establish `hk : ∀ F ℓ (k : finU E n), RU E n k (tf F ℓ) = tf (fun g => F (g * J k)) ℓ` using `fun F ℓ k => by`. Rewrite using `[htr, hfin k k.2]`. Prove the components needed by the constructor for the conclusion.
+
+Use `rank_eq (R := RU E n) (Gf := finU E n) hτ (fun g => ⟨_, (GlobalTheory.BCT.TrKer.splitFin E n g).2, _, (GlobalTheory.BCT.TrKer.splitInf E n g).2, GlobalTheory.BCT.TrKer.eq_splitFin_mul_splitInf g⟩) (fun k hk x hx => GlobalTheory.DefU.fin_mul_inf hk hx) hσ.stable hσ.irred Φ h0 (fun …` and prove the remaining obligations. Establish `h3 : Submodule.span ℂ {F | ∀ ℓ, tf F ℓ ∈ σ} ≤ σ.comap (tf.flip v)` using `Submodule.span_le.2 fun F' h => h v`. Conclude with `h3 hF.1.2`. Establish `: (fun g => F (g * J k)) = F` using `hF.2 _ ⟨k, hk', rfl⟩`. Rewrite using `[hk, this]`.
+
+Use `htr F v x` as an intermediate fact. Simplify using `only [hJ x hx, mul_one] at this`. Conclude with `this`. Take `⟨F, hF, hF'⟩` from `hsur Ψ (fun ℓ => hσ.aut _ (a2 ℓ).1) fun ℓ x hx => a1 x hx ℓ`. Use `⟨F, ⟨⟨hF, Submodule.subset_span fun ℓ => (hF' ℓ).symm ▸ (a2 ℓ).1⟩, ?_⟩, LinearMap.ext hF'⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk', rfl⟩`. Use `sub_eq_zero.1 (hinj _ (sub_mem (hA F hF (J k)) hF) fun ℓ => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Use `(hk F ℓ k).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hF', (mem_fixed U _).1 (a2 ℓ).2 k hk']`.
+
+Establish `h3` using `finrank_eq (R := RU E n) hτ (τ' := fun x => GlobalTheory.BCT.TrKer.wInf lam' x) (GlobalTheory.BCT.TrKer.span_wInf_infU_eq_top E n lam') h0 h2 hT0 (fun x hx w => (hT2 x hx w).symm) h1`. Rewrite using `[← GlobalTheory.BCT.TrKer.finrank_wsp, ← h3, Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+-/
 private theorem mid {P D : Type} [Group P] [AddCommGroup D] [Module ℂ D] {d : ℕ} (b : Module.Basis (Fin d) ℂ D)
     (τ : UA E n → Module.End ℂ D) (hτ : Submodule.span ℂ (Set.range fun x : infU E n => τ x) = ⊤)
     (hfin : ∀ k ∈ finU E n, ∀ v, τ k v = v) (J : UA E n →* P) (hJ : ∀ x ∈ infU E n, J x = 1)
@@ -304,6 +399,9 @@ private theorem mid {P D : Type} [Group P] [AddCommGroup D] [Module ℂ D] {d : 
       (GlobalTheory.BCT.TrKer.span_wInf_infU_eq_top E n lam') h0 h2 hT0 (fun x hx w => (hT2 x hx w).symm) h1
     rw [← GlobalTheory.BCT.TrKer.finrank_wsp, ← h3, Module.finrank_eq_card_basis b, Fintype.card_fin]
 
+/- English proof (translation)
+Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Take `⟨Φ, a0, a1, a2⟩` from `UpperTheory.exists_tensor_dual_embedding_of_hasWeightAt E n hn I emb hb lam σ hσ hw 1 (Submodule.pi Set.univ fun _ => N) ((Submodule.ne_bot_iff _).2 ⟨fun _ => φ, fun _ _ => hφ, fun h => hφ0 (congrFun h 0)⟩) (fun F hF k => h1 (hF k trivial)) fun x hx F hF k _ => h2 x hx _ (hF k tr …`. Use `⟨LinearMap.proj 0 ∘ₗ Φ, fun h => a0 (LinearMap.ext fun ℓ => funext fun k => ?_), fun ℓ => a1 ℓ 0 trivial, fun x hx ℓ => a2 ℓ x hx 0⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim k 0]`. Conclude with `LinearMap.congr_fun h ℓ`.
+-/
 private theorem ex_emb (hn : 1 ≤ n) {I : Type} [Finite I] (emb : I → E →+* ℂ)
     (hb : Function.Bijective fun i => InfinitePlace.mk (emb i)) (lam : I → DomWeight n)
     (σ : Submodule ℂ (UA E n → ℂ)) (hσ : IsAutRepU σ) (hw : ∀ i, HasWeightAt σ (emb i) (lam i).dual)
@@ -322,12 +420,26 @@ private theorem ex_emb (hn : 1 ≤ n) {I : Type} [Finite I] (emb : I → E →+*
 
 end Mid
 
+/- English proof (translation)
+Introduce `γ g` and use `by have := hF γ (g * p) rw [← mul_assoc] at this exact this`.
+-/
 private theorem af_tr {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] {d : ℕ} (X : Frame Γ Ga Gp) (ξ : Gp →* GL (Fin d) ℂ)
     (F : Ga × Gp → Fin d → ℂ) (hF : F ∈ X.AF ξ) (p : Ga × Gp) : (fun g => F (g * p)) ∈ X.AF ξ := fun γ g => by
   have := hF γ (g * p)
   rw [← mul_assoc] at this
   exact this
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V _ Q c ι m τ₀ lam d e ξ hξ lam' hl σ hσ hw U U' hU`. Set `J : UA L n →* Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1)` to `MonoidHom.prod (away l L n).rangeRestrict (Pi.monoidHom fun v : V.frame.Vl => cLoc (s.w v.1))`. Take `⟨hinj, -, htr, -, hsur⟩` from `UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ J (fun _ => rfl)`. Take `⟨hfin, hb⟩` from `UpperTheory.placeEmbeddings_bijective_infinitePlaces l L Ω s V ι`. Use `haveI := e.finiteDimensional`.
+
+Set `tf : (Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) →ₗ[ℂ] Module.Dual ℂ (⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) →ₗ[ℂ] (UA L n → ℂ)` to `LinearMap.mk₂ ℂ (toForm ι e) (fun F F' ℓ => funext fun g => by simp only [toForm, Pi.add_apply, map_add]) (fun a F ℓ => funext fun g => by simp only [toForm, Pi.smul_apply, map_smul]) (fun F ℓ ℓ' => funext fun g => by simp only [toForm, Pi.add_apply, LinearMap.add_apply]) (fun a …`. Establish `hJ : ∀ x ∈ infU L n, J x = 1` using `fun x hx => by`. Establish `h1 : ∀ w, cLoc w x = 1` using `fun w => by`. Establish `h2 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `hx`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (pLoc L w) (Matrix.GeneralLinearGroup.map (pFin L) x.1) = 1`.
+
+Rewrite using `[h2, map_one]`. Conclude with `Prod.ext (Subtype.ext (funext fun w => h1 _)) (funext fun v => h1 _)`. Establish `hrep : ∀ x, infRep (V` using `V) ι lam x = PiTensorProduct.map fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) x) := fun _ => rfl`. Establish `hsp : Submodule.span ℂ (Set.range fun x : infU L n => infRep (V` using `V) ι lam x) = ⊤ := span_emb _ hb.1 fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => lam y.res`. Substitute `hU` using the available equality.
+
+Use `mid ((Pi.basisFun ℂ (Fin d)).map e).dualBasis (fun x => (infRep (V := V) ι lam x⁻¹).dualMap) (span_dual (ρ := fun x => infRep (V := V) ι lam x) hsp) (fun k hk ℓ => ?_) J hJ ((hset Q τ₀).X.AF ξ) (af_tr (hset Q τ₀).X ξ) tf hinj htr hsur σ hσ lam' hw (ex_emb hn _ hb (fun y : Emb l ( …` and prove the remaining obligations. Establish `h1 : infRep (V` using `V) ι lam k⁻¹ = LinearMap.id := by`. Rewrite using `[hrep]`. Simplify using `only [GlobalTheory.BCT.TrKer.cEmb_fin _ ⟨k⁻¹, (finU L n).inv_mem hk⟩, map_one]`. Conclude with `PiTensorProduct.map_id`.
+
+Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.J.D.infDim :
     InfDim := by
   intro l _ L Ω _ _ _ _ _ _ s n hn V _ Q c ι m τ₀ lam d e ξ hξ lam' hl σ hσ hw U U' hU

@@ -20,6 +20,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Establish `hid : A * s + b * t = A * (s - j * (t / n)) + (j * A + n * b) * (t / n)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hKL : 0 ≤ K * abelian₂` using `mul_nonneg hK hL`. Establish `h1 : -(K * abelian₂ * a) ≤ A * (s - j * (t / n))`.
+
+Establish `e1 : -(K * abelian₂) * (s - j * (t / n)) ≤ A * (s - j * (t / n))` using `mul_le_mul_of_nonneg_right hA hc0`. Establish `e2 : K * abelian₂ * (s - j * (t / n)) ≤ K * abelian₂ * a` using `mul_le_mul_of_nonneg_left hc1 hKL`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : -(C' * abelian₂ * a) ≤ (j * A + n * b) * (t / n)`. Establish `e0 : |(j * A + n * b) * (t / n)| ≤ C' * abelian₂ * a`.
+
+Rewrite using `[abs_mul, abs_div, abs_of_pos hn]`. Establish `e3 : |j * A + n * b| * (|t| / n) ≤ C' * n * abelian₂ * (|t| / n)` using `mul_le_mul_of_nonneg_right hflat (div_nonneg (abs_nonneg _) hn.le)`. Establish `e4 : C' * n * abelian₂ * (|t| / n) = C' * abelian₂ * |t|`. Clear the denominators using the available nonvanishing facts. Establish `e5 : C' * abelian₂ * |t| ≤ C' * abelian₂ * a` using `mul_le_mul_of_nonneg_left ht (mul_nonneg hC hL)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(abs_le.mp e0).1`. Rewrite using `[hid]`. Use polynomial arithmetic with `[h1, h2]`.
+-/
 theorem label_term_lower {A b K C' abelian₂ n j s t a : ℝ} (hn : 0 < n) (hK : 0 ≤ K) (hC : 0 ≤ C') (hL : 0 ≤ abelian₂)
     (hA : -(K * abelian₂) ≤ A) (hflat : |j * A + n * b| ≤ C' * n * abelian₂)
     (hc0 : 0 ≤ s - j * (t / n)) (hc1 : s - j * (t / n) ≤ a) (ht : |t| ≤ a) :
@@ -46,12 +55,20 @@ theorem label_term_lower {A b K C' abelian₂ n j s t a : ℝ} (hn : 0 < n) (hK 
   rw [hid]
   nlinarith [h1, h2]
 
+/- English proof (translation)
+Unfold `linRoot`. Use `IsHomogeneous.neg ?_` and prove the remaining obligations. Conclude with `IsHomogeneous.sum _ _ _ fun x _ => isHomogeneous_C_mul_X _ _`.
+-/
 theorem linRoot_isHomogeneous {Ψ : Type} [Fintype Ψ] {N : ℕ} (u : Wt Ψ N) :
     (linRoot u : RP Ψ N).IsHomogeneous 1 := by
   unfold linRoot
   refine IsHomogeneous.neg ?_
   exact IsHomogeneous.sum _ _ _ fun x _ => isHomogeneous_C_mul_X _ _
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`. Use `Finset.sum_nonneg fun τ _ => ?_` and prove the remaining obligations. Establish `i₀ : Fin N` using `⟨0, hN⟩`. Establish `h1 : u τ i₀ ≤ ⨆ i, u τ i` using `le_ciSup (Set.finite_range _).bddAbove i₀`. Establish `h2 : (⨅ i, u τ i) ≤ u τ i₀` using `ciInf_le (Set.finite_range _).bddBelow i₀`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem spread_nonneg {Ψ : Type} [Fintype Ψ] {N : ℕ} (hN : 0 < N) (u : Wt Ψ N) : 0 ≤ spread u := by
   haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩
   refine Finset.sum_nonneg fun τ _ => ?_
@@ -60,12 +77,50 @@ theorem spread_nonneg {Ψ : Type} [Fintype Ψ] {N : ℕ} (hN : 0 < N) (u : Wt Ψ
   have h2 : (⨅ i, u τ i) ≤ u τ i₀ := ciInf_le (Set.finite_range _).bddBelow i₀
   linarith
 
+/- English proof (translation)
+Introduce `τ a b hab`. Break down `hab.lt_or_eq with h1 | h1` into its components or cases. Conclude with `(h τ a b h1).le`. Rewrite using `[h1]`.
+-/
 theorem RegDominant.dominant' {Ψ : Type} {N : ℕ} {u : Wt Ψ N} (h : RegDominant u) : Dominant u := by
   intro τ a b hab
   rcases hab.lt_or_eq with h1 | h1
   · exact (h τ a b h1).le
   · rw [h1]
 
+/- English proof (translation)
+Introduce `II Ψ _ _ N T hh frob K C' rd Lval hK hC hrd hprop hshape hI9 hP6 hBA hF hA0 u g hW B hB128 hB0 hbad`. Establish `hN2 : 2 ≤ N`. Use `T.j_pos` as an intermediate fact. Use `T.j_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Break down `isEmpty_or_nonempty Ψ with hΨ | hΨ` into its components or cases. Establish `h0 : (linRoot u : RP Ψ N) = 0` using `by simp [linRoot]`. Establish `hPB : T.PB II B u = 0`. Simplify using `[RootTower.PB, RootTower.PPt, RootTower.PPc, h0, toA]`.
+
+Establish `hbr : T.bracket rd Lval B u = 0`. Simplify using `[RootTower.bracket, l1, spread]`. Rewrite using `[hPB, hbr]`. Simplify using the standard rewrite rules. Take `⟨hg, hreg, -, -⟩` from `id hW`.
+
+Establish `hdom : Dominant u` using `RegDominant.dominant' hreg`. Establish `hfpos : 1 ≤ Fintype.card Ψ` using `Fintype.card_pos`. Establish `hBig : 4 * Fintype.card Ψ * N ^ 2 ≤ B`. Establish `h1 : (4 * (Fintype.card Ψ : ℝ) * (N : ℝ) ^ 2) ≤ bigB0 u g`. Unfold `bigB0`.
+
+Establish `h2 : 0 ≤ ‖u‖ / g` using `div_nonneg (norm_nonneg _) hg.le`. Establish `h3 : 0 ≤ 4 * (Fintype.card Ψ : ℝ) * (N : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (4 * (Fintype.card Ψ : ℝ) * (N : ℝ) ^ 2) < (B : ℝ) + 1` using `lt_of_le_of_lt h1 hB0`. Establish `h5 : 4 * Fintype.card Ψ * N ^ 2 < B + 1` using `by exact_mod_cast h4`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨A₀, b₀, hId⟩` from `GlobalTheory.T.tower_identity_at_cutoff II Ψ N T hh frob hprop hshape hP6 hBA B (by omega)`. Establish `hAl` using `hA0 B A₀ b₀ hB128 hBig hbad hId`. Establish `hfl` using `GlobalTheory.T.cutoff_coefficients_bound II Ψ N T hh frob C' rd Lval B A₀ b₀ hprop hI9 hF hB128 hbad hId`. Establish `hHom : (linRoot u ^ (dimFl Ψ N + 1) : RP Ψ N).IsHomogeneous (dimFl Ψ N + 1)`.
+
+Simplify using `using (linRoot_isHomogeneous u).pow (dimFl Ψ N + 1)`. Take `⟨Q, hQ1, hQ2⟩` from `GlobalTheory.T.homogeneous_power_sum_decomposition Ψ N _ hN2 hHom`. Establish `hDec : IsDecomp (linRoot u ^ (dimFl Ψ N + 1)) Q` using `⟨hQ1, hQ2⟩`. Establish `hEq` using `GlobalTheory.T.tower_height_identity_expansion II Ψ N T hh frob B A₀ b₀ _ Q hId hDec`. Establish `hRest` using `GlobalTheory.T.lin_root_remainder_bound Ψ N T.j T.bad frob u g B Q T.j_pos T.j_lt hW hB0 hDec`.
+
+Establish `hhF : 0 ≤ hh (linRoot u ^ (dimFl Ψ N + 1))` using `hI9.2.1 u hdom`. Establish `hdeg : 0 < flagDeg u` using `(GlobalTheory.CompanionTheory.Ar.Top.flagDeg_eq_weyl Ψ N u).2.1 hreg`. Establish `hV : 0 < T.volT` using `Finset.sum_pos (fun c _ => hprop.1 c) Finset.univ_nonempty`. Establish `hLam : 0 ≤ bigLam B rd Lval`. Unfold `bigLam`.
+
+Establish `h1 : (1 : ℝ) ≤ (B : ℝ) * rd`. Establish `: (1 : ℝ) ≤ B` using `by exact_mod_cast (by omega : 1 ≤ B)`. Use the polynomial consequences of the given equalities and inequalities. Use `Real.log_nonneg h1` as an intermediate fact. Use `abs_nonneg Lval` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set E : ℝ := ((dimFl Ψ N : ℝ) + 1) * flagDeg u with hE`. Establish `hEpos : 0 < E` using `by positivity`. Use `set abelian₂ := bigLam B rd Lval with hLamDef`. Establish `hsum : -((K + C') * abelian₂ * l1 u) ≤ ∑ σ, (A₀ * (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < T.j), u σ i) + b₀ * ∑ i, u σ i)`.
+
+Establish `: ∀ σ ∈ (Finset.univ : Finset Ψ), -((K + C') * abelian₂ * ∑ i, |u σ i|) ≤ A₀ * (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < T.j), u σ i) + b₀ * ∑ i, u σ i`. Introduce `σ _`. Take `⟨l1', l2', l3'⟩` from `GlobalTheory.T.dominant_partial_sum_bounds N T.j (u σ) T.j_lt.le (by omega) (fun a b h => hdom σ a b h)`. Conclude with `label_term_lower hNpos hK hC hLam hAl hfl l1' l2' l3'`. Establish `h2` using `Finset.sum_le_sum this`.
+
+Establish `h3 : ∑ σ, -((K + C') * abelian₂ * ∑ i, |u σ i|) = -((K + C') * abelian₂ * l1 u)`. Rewrite using `[Finset.sum_neg_distrib, ← Finset.mul_sum]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Establish `hShTot : -(A₀ * ∑ σ, Sh T.j σ (linRoot u ^ (dimFl Ψ N + 1))) - b₀ * ∑ σ, Tot σ (linRoot u ^ (dimFl Ψ N + 1)) = E * ∑ σ, (A₀ * (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < T.j), u σ i) + b₀ * ∑ i, u σ i)`.
+
+Simplify using `only [fun σ => (GlobalTheory.T.flag_shift_total_lin_root_power Ψ N T.j σ u).1, fun σ => (GlobalTheory.T.flag_shift_total_lin_root_power Ψ N T.j σ u).2]`. Simplify using `only [Finset.sum_neg_distrib, ← Finset.mul_sum, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hSpread : 0 ≤ ((min T.j (N - T.j) : ℕ) : ℝ) * spread u` using `mul_nonneg (Nat.cast_nonneg _) (spread_nonneg (by omega) u)`. Establish `hl1 : 0 ≤ l1 u` using `Finset.sum_nonneg fun τ _ => Finset.sum_nonneg fun i _ => abs_nonneg _`.
+
+Establish `hLl : 0 ≤ abelian₂ * l1 u` using `mul_nonneg hLam hl1`. Use `set R := ∑ τ, ∑ k ∈ Finset.Icc 1 N, restSum T.j T.bad frob B τ k (Q τ k) with hR`. Use `set Sp := ((min T.j (N - T.j) : ℕ) : ℝ) * spread u with hSp`. Establish `hRl : -(2 * E * Sp) ≤ R` using `(abs_le.mp hRest).1`. Establish `hinner : -((K + C' + 2) * E * (abelian₂ * l1 u + Sp)) ≤ hh (linRoot u ^ (dimFl Ψ N + 1)) - A₀ * ∑ σ, Sh T.j σ (linRoot u ^ (dimFl Ψ N + 1)) - b₀ * ∑ σ, Tot σ (linRoot u ^ (dimFl Ψ N + 1)) + R`.
+
+Establish `e1 : E * -((K + C') * abelian₂ * l1 u) ≤ E * ∑ σ, (A₀ * (∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < T.j), u σ i) + b₀ * ∑ i, u σ i)` using `mul_le_mul_of_nonneg_left hsum hEpos.le`. Rewrite `e1` using `[← hShTot]`. Establish `e2 : 0 ≤ E * (2 * (abelian₂ * l1 u))` using `by positivity`. Establish `e3 : 0 ≤ E * ((K + C') * Sp)` using `mul_nonneg hEpos.le (mul_nonneg (add_nonneg hK hC) hSpread)`. Use polynomial arithmetic with `[e1, e2, e3, hRl, hhF]`.
+
+Establish `hfin : T.volT * -((K + C' + 2) * E * (abelian₂ * l1 u + Sp)) ≤ T.PB II B u`. Establish `: T.PB II B u = T.PPt II B (linRoot u ^ (dimFl Ψ N + 1))` using `rfl`. Rewrite using `[this, hEq]`. Conclude with `mul_le_mul_of_nonneg_left hinner hV.le`. Establish `hgoal : -((K + C' + 2) * ((dimFl Ψ N : ℝ) + 1) * (T.volT * flagDeg u) * T.bracket rd Lval B u) = T.volT * -((K + C' + 2) * E * (abelian₂ * l1 u + Sp))`.
+
+Simplify using `only [RootTower.bracket, hE, hSp, hLamDef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hgoal]`. Conclude with `hfin`.
+-/
 theorem tower_T2_of_inputs : ∀ II : IntersectionSystem, ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N)
     (hh : RP Ψ N →ₗ[ℝ] ℝ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (K C' rd Lval : ℝ), 0 ≤ K → 0 ≤ C' → 1 ≤ rd →
     T.Proportional → FrobShape frob → I9 (Ψ := Ψ) (N := N) hh → T.Prop6 II frob → T.ThmBA II hh →

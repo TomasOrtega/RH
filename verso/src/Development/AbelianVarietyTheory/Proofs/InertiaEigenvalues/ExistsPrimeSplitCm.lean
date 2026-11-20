@@ -20,6 +20,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SplitRealPrime
 
+/- English proof (translation)
+Introduce `E _ _ _`. Take `⟨p, hp, -, hs⟩` from `GlobalTheory.LargeSplitPrime.exists_splitsCompl E 0`. Use `⟨p, hp, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hv : (p : 𝓞 (maximalRealSubfield E)) ∈ (w.under (𝓞 (maximalRealSubfield E))).asIdeal` using `by show algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]` and apply the resulting hypothesis. Take `⟨a, b, hab, ha, hb⟩` from `GlobalTheory.SplitPlace.isSplit_of_norm h2 hp (fun u hu => hs u.asIdeal u.isMaximal hu) _ hv`. Distinguish the cases in `h : a = w`. Conclude with `⟨b, fun e => hab (h.trans e.symm), HeightOneSpectrum.ext hb⟩`. Conclude with `⟨a, h, HeightOneSpectrum.ext ha⟩`.
+-/
 theorem exists_prime_isSplitAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ p : ℕ, p.Prime ∧ ∀ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal → IsSplitAt w := by
   intro E _ _ _
   obtain ⟨p, hp, -, hs⟩ := GlobalTheory.LargeSplitPrime.exists_splitsCompl E 0

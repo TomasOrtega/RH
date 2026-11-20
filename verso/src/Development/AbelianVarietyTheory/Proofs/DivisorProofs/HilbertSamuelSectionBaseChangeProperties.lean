@@ -20,14 +20,28 @@ section Lemmas
 
 variable {F : Type} [Field F] [NumberField F] (G : Geo F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shift_apply_zero (u : Fin G.N → F) (x : Tot G) : shift G u x 0 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shift_apply_succ (u : Fin G.N → F) (x : Tot G) (j : ℕ) : shift G u x (j + 1) = G.mulW j u (x j) := rfl
 
 variable (E : Type) [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem totExt_apply (x : Tot G) (j : ℕ) : totExt G E x j = G.toExt E j (x j) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[totExt_apply]`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, Pi.single_eq_same]`.
+
+Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, map_zero]`.
+-/
 theorem totExt_single (j : ℕ) (s : G.Sec j) :
     totExt G E (Pi.single j s) = Pi.single j (G.toExt E j s) := by
   funext k
@@ -37,6 +51,11 @@ theorem totExt_single (j : ℕ) (s : G.Sec j) :
     rw [Pi.single_eq_same, Pi.single_eq_same]
   · rw [Pi.single_eq_of_ne h, Pi.single_eq_of_ne h, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Consider the cases of `j with`. Consider the case `zero => rw [shift_apply_zero, totExt_apply, shift_apply_zero, map_zero]`. Consider the case `succ j`. Rewrite using `[shift_apply_succ, totExt_apply, totExt_apply, shift_apply_succ, Geo.toExt_mulW]`.
+
+Both sides reduce to the same expression.
+-/
 theorem shift_totExt (u : Fin G.N → F) (x : Tot G) :
     shift (G.baseChange E) (fun k => algebraMap F E (u k)) (totExt G E x) = totExt G E (shift G u x) := by
   funext j
@@ -48,6 +67,21 @@ theorem shift_totExt (u : Fin G.N → F) (x : Tot G) :
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `F _ _ X Λ₀ E _ _ _`. Use `⟨?_, fun u x => shift_totExt X.toGeo E u x, ?_⟩` and prove the remaining obligations. Introduce `m v hv`. Establish `hv'` using `hv.map' ((sysOf X Λ₀).V X.T).subtype (Submodule.ker_subtype _)`. Establish `hform : ∀ i, ∃ y : X.toGeo.Sec X.T, (v i : Tot X.toGeo) = Pi.single X.T y`.
+
+Introduce `i`. Take `⟨y, hy⟩` from `(v i).2`. Conclude with `⟨y, hy.symm⟩`. Use `choose f hf using hform`. Establish `h1 : LinearIndependent F (LinearMap.single F (fun k => X.toGeo.Sec k) X.T ∘ f)`.
+
+Establish `e : (LinearMap.single F (fun k => X.toGeo.Sec k) X.T ∘ f) = ((sysOf X Λ₀).V X.T).subtype ∘ v`. Use function extensionality and compare the values at `fun i => (hf i).symm`. Rewrite using `[e]`. Conclude with `hv'`. Establish `h2` using `X.toGeo.linearIndependent_toExt E X.T m f h1.of_comp`.
+
+Establish `h3` using `h2.map' (LinearMap.single E (fun k => (X.toGeo.baseChange E).Sec k) X.T) (LinearMap.ker_eq_bot.2 (Pi.single_injective _))`. Establish `e2 : (fun i => totExt X.toGeo E (v i)) = (LinearMap.single E (fun k => (X.toGeo.baseChange E).Sec k) X.T ∘ fun i => X.toGeo.toExt E X.T (f i))`. Use function extensionality and compare the values at `i`. Rewrite using `[hf i, totExt_single]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2]`. Conclude with `h3`. Introduce `j`. Establish `hset : (totExt X.toGeo E '' ((sysOf X Λ₀).V j : Set (Tot X.toGeo))) = (LinearMap.single E (fun k => (X.toGeo.baseChange E).Sec k) j) '' (X.toGeo.toExt E j '' (X.V j : Set (X.toGeo.Sec j)))`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨y, y.2, rfl⟩, (totExt_single X.toGeo E j y).symm⟩`. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨⟨y, hy⟩, rfl⟩, totExt_single X.toGeo E j y⟩`.
+
+Rewrite using `[hset, ← Submodule.map_span]`. Use `Eq.trans ?_ (LinearMap.range_comp ((X.baseChange E).V j).subtype (LinearMap.single E _ j)).symm` and prove the remaining obligations. Rewrite using `[Submodule.range_subtype]`. Both sides reduce to the same expression.
+-/
 theorem totExt_props : ∀ (F : Type) [Field F] [NumberField F] (X : Data F) (Λ₀ : ℝ) (E : Type) [Field E] [NumberField E] [Algebra F E], (∀ (m : ℕ) (v : Fin m → (sysOf X Λ₀).V X.T), LinearIndependent F v → LinearIndependent E fun i => totExt X.toGeo E (v i)) ∧ (∀ u x, shift (X.toGeo.baseChange E) (fun k => algebraMap F E (u k)) (totExt X.toGeo E x) = totExt X.toGeo E (shift X.toGeo u x)) ∧ ∀ j, Submodule.span E (totExt X.toGeo E '' (sysOf X Λ₀).V j) = LinearMap.range (incl (X.baseChange E) j) := by
   intro F _ _ X Λ₀ E _ _ _
   refine ⟨?_, fun u x => shift_totExt X.toGeo E u x, ?_⟩

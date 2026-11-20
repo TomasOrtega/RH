@@ -17,6 +17,17 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.NSizes
 
+/- English proof (translation)
+Introduce `hP D L P nch HW F Cm X C₂ hS`. Establish `hb : ((0 : ℕ) : ℝ) ≤ L.sc.b`. Simplify using `only [Nat.cast_zero]`. Conclude with `(Real.exp_pos _).le`. Establish `hub` using `GlobalTheory.T.split_bound_of_params hP.font hP.fin GlobalTheory.Published.cheb_holds D L HW F (rowC C₂) nch X 120 0 hS.canon P (le_trans (by norm_num) hS.big) le_rfl hb (hS.facts.admJ L hS.par) hS.par67 hS.facts.toCore.admA hS.facts.Conclusion1.1 hS.facts.Conclusion1.2.2 hS.fact …`.
+
+Take `⟨-, -, -, -, hCB, hC0, ⟨M0, h0', hW⟩, -⟩` from `hub`. Introduce `i hT hg hR`. Use `⟨hCB i hT hg hR, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.maxLength_localInvariants_twisted_fractionModInteger_le D i (X.dc i).col (fun h => hR.1 (Or.inl h)) (fun h => hR.2.1 (Or.inl h)) (fun h => hR.2.1 (Or.inr h)) (fun u hu => ((X.dc i).cover u).1 (Or.inr hu))`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hsp u hu`. Use `⟨hC0 i hT hg hR hsp u hu, fun π hπ => ?_⟩` and prove the remaining obligations. Take `⟨hu', s, hs, hc, hcrys, hJ, hnj, hcle⟩` from `hW i hT hg hsp u hu π hπ`. Establish `hWat` using `GlobalTheory.T.crystallineLatticeWachModuleExists_proof D HW F Cm (D.nd.l i) (D.nbr i u hu').Kw s (D.nbr i u hu').LL hs`.
+
+Establish `hHW` using `hWat (GlobalTheory.HubX.wLat D i (X.ρ i) π u hu' hc) M0 h0' hcrys hJ`. Establish `hkill` using `GlobalTheory.T.torsion_exponent_kills_invariants_of_good hP.bk hP.tate hP.euler D HW F Cm (D.nd.l i) (D.nbr i u hu').Kw s (D.nbr i u hu').LL hs M0 h0' (GlobalTheory.HubX.wLat D i (X.ρ i) π u hu' hc) hHW hnj`. Establish `hlen` using `GlobalTheory.T.lenUnit_invariants_twistedLattice_le_of_killingExponent D HW i (X.ρ i) π u hu' s hs hc (X.c0 i u) _ rfl (by`. Introduce `x hx`. Establish `e` using `hkill x hx`.
+
+Rewrite using `[← Nat.sub_add_cancel hcle, pow_add, mul_smul, e, smul_zero])`. Establish `h1` using `hC0 i hT hg hR hsp u hu`. Establish `hr : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → KillingConditions.InvariantsBoundsWithCoarseColumnConstant L X 120 := by
   intro hP D L P nch HW F Cm X C₂ hS
   have hb : ((0 : ℕ) : ℝ) ≤ L.sc.b := by

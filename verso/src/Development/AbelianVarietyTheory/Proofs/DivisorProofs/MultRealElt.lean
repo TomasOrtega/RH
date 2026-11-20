@@ -15,6 +15,17 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : Datum.InfFam D}
 
 open Classical in
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Use function extensionality and compare the values at `x`. Simplify using `[rTr]`. Consider the case `cons a l ih`.
+
+Rewrite `hl` using `[List.nodup_cons]`. Establish `e` using `hU.equiv a (g a) (hg a) (fun ρ => if ρ ∈ l then w ρ else v ρ) (w a) (by`. Simplify using `only [if_neg hl.1]`. Conclude with `h a)`. Rewrite `e` using `[ih hl.2]`.
+
+Establish `e2 : rTr V ((a :: l).map fun ρ => atTau θ V ρ (g ρ)).prod (U v) = rTr V (atTau θ V a (g a)) (rTr V (l.map fun ρ => atTau θ V ρ (g ρ)).prod (U v))`. Use function extensionality and compare the values at `x`. Simplify using `only [rTr, List.map_cons, List.prod_cons, mul_assoc]`. Rewrite using `[e2, ← e]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = a`. Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hρ]`.
+
+Simplify using `[hρ]`.
+-/
 theorem list_equiv {U : MMap M} (hU : IsMultMap θ M J χ U)
     (g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : ∀ ρ, g ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ))
     (v w : M.Vec) (h : ∀ ρ, (w ρ : M.H ρ) = M.rep ρ (g ρ) (v ρ : M.H ρ)) (l : List D.what₂.Tau) (hl : l.Nodup) :
@@ -41,6 +52,17 @@ theorem list_equiv {U : MMap M} (hU : IsMultMap θ M J χ U)
     · rw [Function.update_of_ne hρ]
       simp [hρ]
 
+/- English proof (translation)
+Introduce `D V S θ M J χ U hU g hg v w h`. Proceed by induction on `hU using Submodule.span_induction with`. Consider the case `mem U hU`. Establish `e` using `list_equiv hU g hg v w h (Finset.univ : Finset D.what₂.Tau).toList (Finset.nodup_toList _)`. Rewrite using `[realElt, ← e]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `ρ`. Simplify using the standard rewrite rules. Consider the case `zero => funext x`. Simplify using `[rTr]`.
+
+Consider the case `add U U' _ _ h1 h2`. Use function extensionality and compare the values at `x`. Establish `a` using `congrFun h1 x`. Establish `b` using `congrFun h2 x`. Simplify using `only [rTr, MultilinearMap.add_apply, Pi.add_apply] at a b ⊢`.
+
+Rewrite using `[a, b]`. Consider the case `smul c U _ h1`. Use function extensionality and compare the values at `x`. Establish `a` using `congrFun h1 x`. Simplify using `only [rTr, MultilinearMap.smul_apply, Pi.smul_apply] at a ⊢`.
+
+Rewrite using `[a]`.
+-/
 theorem mult_realElt : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (θ : Datum.InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ U ∈ Mult θ M J χ, ∀ g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ, (∀ ρ, g ρ ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)) → ∀ v w : M.Vec, (∀ ρ, (w ρ : M.H ρ) = M.rep ρ (g ρ) (v ρ : M.H ρ)) → U w = rTr V (realElt θ V g) (U v) := by
   intro D V S θ M J χ U hU g hg v w h
   classical

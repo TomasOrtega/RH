@@ -28,6 +28,27 @@ open GlobalTheory.UAut GlobalTheory.SiegelSet GlobalTheory.ThK.SquareIntegrabili
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `set C : Matrix (Fin n) (Fin 1) E := Matrix.of fun i (_ : Fin 1) => H.x i with hCdef`. Set `e` to `toGAd hσ Y.J hc`. Establish `hd₁ : Y₁.J.det ≠ 0` using `GlobalTheory.IsoPlaneProj.det_ne_zero_of_cartan B Y₁ hP.2.2.2.2.2.2.2`. Establish `hmem : ∀ g : UA σ Y.J, g ∈ unip σ Y H ↔ e g ∈ unipRad σ (c • Y.J.map σ) C` using `fun g => GlobalTheory.UnipCocptForm.mem_unip_iff σ hσ Y Y₁.J H hsk hP.1 hP.2.1 hP.2.2.1 hP.2.2.2.1 hP.2.2.2.2.1 hP.2.2.2.2.2.1 hd₁ c hc g`. Set `e' : unip σ Y H ≃* unipRad σ (c • Y.J.map σ) C` to `{ toFun := fun u => ⟨e u.1, (hmem u.1).1 u.2⟩ invFun := fun v => ⟨e.symm v.1, (hmem _).2 (by rw [e.apply_symm_apply]; exact v.2)⟩ left_inv := fun u => Subtype.ext (e.symm_apply_apply u.1) right_inv := fun v => Subtype.ext (e.apply_symm_apply v.1) map_mul' := fun u v => Subtype.ex …`.
+
+Establish `he : Continuous e`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `continuous_subtype_val`. Establish `hes : Continuous e.symm`. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+
+Conclude with `continuous_subtype_val`. Establish `he' : Continuous e'` using `(he.comp continuous_subtype_val).subtype_mk _`. Establish `hes' : Continuous e'.symm` using `(hes.comp continuous_subtype_val).subtype_mk _`. Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Use `haveI : ContinuousMul (UA σ Y.J) := ⟨by`.
+
+Establish `h : (fun p : UA σ Y.J × UA σ Y.J => p.1 * p.2) = e.symm ∘ (fun q : GAd σ (c • Y.J.map σ) × GAd σ (c • Y.J.map σ) => q.1 * q.2) ∘ Prod.map e e`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `hes.comp (continuous_mul.comp (he.prodMap he))⟩`.
+
+Use `haveI : ContinuousMul (unip σ Y H) := ⟨(continuous_mul.comp (continuous_subtype_val.prodMap continuous_subtype_val)).subtype_mk _⟩`. Set `t : unip σ Y H ≃ₜ unipRad σ (c • Y.J.map σ) C` to `⟨e'.toEquiv, he', hes'⟩`. Set `me` to `t.toMeasurableEquiv`. Establish `hp : MeasurePreserving me μ (μ.map me)` using `⟨me.measurable, rfl⟩`. Establish `hH : (μ.map me).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ e' he' hes'`.
+
+Establish `hps : MeasurePreserving me.symm (μ.map me) μ` using `hp.symm`. Establish `hmemU : ∀ γ : (ratPts σ (c • Y.J.map σ)).subgroupOf (unipRad σ (c • Y.J.map σ) C), e'.symm γ.1 ∈ (ratU σ Y.J).subgroupOf (unip σ Y H)` using `fun γ => by`. Take `⟨u, -, hu2⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 γ.2))`. Conclude with `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 ⟨u, hu2⟩)`. Establish `hmemP : ∀ δ : (ratU σ Y.J).subgroupOf (unip σ Y H), e' δ.1 ∈ (ratPts σ (c • Y.J.map σ)).subgroupOf (unipRad σ (c • Y.J.map σ) C)` using `fun δ => by`.
+
+Take `⟨m, hm⟩` from `Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 δ.2)`. Establish `h2` using `(e δ.1.1).2`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨m, ?_, hm⟩))` and prove the remaining obligations. Conclude with `unitary_of_map_inclR σ n _ m _ (by rw [hm]; rfl) h2`. Set `fm : (ratU σ Y.J).subgroupOf (unip σ Y H) → (ratPts σ (c • Y.J.map σ)).subgroupOf (unipRad σ (c • Y.J.map σ) C)` to `fun δ => ⟨e' δ.1, hmemP δ⟩`.
+
+Establish `hf : Function.Bijective fm` using `⟨fun a b hab => Subtype.ext (e'.injective (congrArg Subtype.val hab)), fun γ => ⟨⟨e'.symm γ.1, hmemU γ⟩, Subtype.ext (e'.apply_symm_apply γ.1)⟩⟩`. Establish `hfd` using `h𝓕.preimage_of_equiv hps.quasiMeasurePreserving hf fun δ x => by show e'.symm (e' δ.1 * x) = δ.1 * e'.symm x`. Rewrite using `[map_mul, e'.symm_apply_apply]`. Establish `hset : me ⁻¹' (me.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Establish `hmass : (μ.map me) (me.symm ⁻¹' 𝓕) = 1`. Rewrite using `[me.map_apply, hset, h1]`. Establish `hc'` using `hcc (μ.map me) (me.symm ⁻¹' 𝓕) hH hfd hmass (e g)`. Rewrite using `[hc', ← hp.setIntegral_preimage_emb me.measurableEmbedding, hset]`.
+
+Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Use `show f (u.1 * g) = f (e.symm (e u.1 * e g))`. Rewrite using `[← map_mul, e.symm_apply_apply]`.
+-/
 theorem setIntegral_unip_eq_constTerm_iso (σ : E →ₐ[F] E) (B : Base F E) {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁)
     (H : Plane E n n₁) (hsk : ∀ i j, σ (Y.J j i) = -Y.J i j) (hP : IsIsoPlane σ B H Y Y₁) (hσ : ∀ x, σ (σ x) = x)
     (c : E) (hc : c ≠ 0) (f : UA σ Y.J → ℂ) (μ : Measure (unip σ Y H)) [μ.IsHaarMeasure] (𝓕 : Set (unip σ Y H))

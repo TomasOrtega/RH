@@ -7,6 +7,17 @@ namespace Formalism.MainNotions.Pf14
 
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning MvPolynomial
 
+/- English proof (translation)
+Establish `hsp : 0 ≤ lam s 0 - lam s (Fin.last m)` using `sub_nonneg.2 (hd s (Fin.zero_le _))`. Establish `hterm : ∀ a : Fin (m + 1), lamAt lam s a - lamAt lam s (Fin.last m) ≤ lam s 0 - lam s (Fin.last m)`. Introduce `a`. Unfold `lamAt`. Use `split_ifs`.
+
+Use `hd s (Fin.zero_le a)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hd s (Fin.le_last a.rev)`. Simplify using `only [Fin.rev_last]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hcard : ((Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card : ℤ) ≤ r`. Establish `: (Finset.univ.filter fun a : Fin (m + 1) => a.val < r).card ≤ r`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn (fun a => a.val)` to reduce the goal to its premises. Introduce `a ha`.
+
+Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at ha`. Simplify using `using ha`. Introduce `a _ b _ hab`. Conclude with `Fin.ext hab`. Use `_ = r := Finset.card_range r`.
+
+Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right hcard hsp`.
+-/
 theorem ord_pos {n' m : ℕ} (r : ℕ) (lam : Fin n' → Fin (m + 1) → ℤ) (hd : IsDominant lam) (s : Fin n') :
     ∑ a : Fin (m + 1) with a.val < r, (lamAt lam s a - lamAt lam s (Fin.last m)) ≤
       (r : ℤ) * (lam s 0 - lam s (Fin.last m)) := by
@@ -38,6 +49,23 @@ theorem ord_pos {n' m : ℕ} (r : ℕ) (lam : Fin n' → Fin (m + 1) → ℤ) (h
         rw [Finset.sum_const, nsmul_eq_mul]
     _ ≤ _ := mul_le_mul_of_nonneg_right hcard hsp
 
+/- English proof (translation)
+Take `⟨hb, hdom, hw⟩` from `hW`. Establish `hdr` using `restW_dom (by omega) TT lam0 hdom`. Establish `hl0 : Fin.last m ≠ 0`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hv1 : ((1 : Fin (m + 1)) : ℕ) = 1`. Rewrite using `[Fin.val_one']`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+
+Establish `key : ∀ s, restW TT lam0 s 0 - restW TT lam0 s (Fin.last m) ≤ (if s ∈ TT then (c0 : ℤ) else 0) + 2 * cpp`. Introduce `s`. Establish `e1 : restW TT lam0 s (Fin.last m) = lam0 s (Fin.last m)`. Unfold `restW flW`. Simplify using `[Pi.single_apply, hl0]`.
+
+Establish `e0 : restW TT lam0 s 0 = lam0 s 0 - (dT TT lam0 s : ℤ)`. Unfold `restW flW`. Simplify using the standard rewrite rules. Rewrite using `[e0, e1]`. Distinguish the cases in `hs : s ∈ TT`.
+
+Take `⟨_, elast, hc⟩` from `(hb s).1 hs`. Take `⟨_, _, hb0, hbc⟩` from `hw s hs`. Establish `h01 : lam0 s 1 ≤ lam0 s 0` using `hdom s (Fin.zero_le _)`. Establish `hc1` using `abs_le.1 (hc 1 (by omega) (by omega))`. Unfold `dT flatDeg`.
+
+Rewrite using `[if_pos hs, if_pos hs, Int.toNat_of_nonneg (by omega), elast]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `abs_le.1 ((hb s).2 hs 0)`. Establish `h2` using `abs_le.1 ((hb s).2 hs (Fin.last m))`. Unfold `dT`.
+
+Rewrite using `[if_neg hs, if_neg hs]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Unfold `ordMax`. Establish `hr0 : (0 : ℤ) ≤ r` using `Int.natCast_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Use `push_cast`. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordMax_rest {n' m : ℕ} (hm : 2 ≤ m) {TT : Finset (Fin n')} {aT bT : Fin n' → ℤ} {cpp c0 : ℕ} {a : ℝ}
     {lam0 : Fin n' → Fin (m + 1) → ℤ} (hW : tableLineDegreeFive.WeightHyp TT aT bT cpp c0 a lam0) (r : ℕ) :
     ordMax r (restW TT lam0) ≤ ((r * TT.card * c0 + 2 * r * n' * cpp : ℕ) : ℤ) := by

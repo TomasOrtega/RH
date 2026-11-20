@@ -10,6 +10,9 @@ open PositivityTheory.Rg.Bc.ArchbcB.B.M4 PositivityTheory.Rg.Bc.ArchbcB.B.M4.Tw
 
 namespace GlobalTheory.CompanionTheory.UnitarySide
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj, hD, Matrix.charpoly_diagonal]`.
+-/
 theorem charpoly_conj_diagonal {K : Type} [Field K] {n : ℕ} (c D g : GL (Fin n) K) (d : Fin n → K)
     (hD : D.val = Matrix.diagonal d) (hg : g = c * D * c⁻¹) :
     g.val.charpoly = ∏ i, (X - C (d i)) := by
@@ -23,6 +26,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => (u i : w.adicCompletion E), charpoly_conj_diagonal c _ g _ (GlobalTheory.SmGL.val_diagT _ _) hg, fun i => ⟨(u i).ne_zero, hu i⟩⟩`.
+-/
 theorem hasVals_conj_diag (w : Pl E) (n : ℕ) (c : GLw n w) (u : Fin n → (w.adicCompletion E)ˣ)
     (a : Fin n → ℤ) (hu : ∀ i, ordL (u i : w.adicCompletion E) = a i) (g : GLw n w)
     (hg : g = c * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * c⁻¹) :
@@ -31,6 +37,17 @@ theorem hasVals_conj_diag (w : Pl E) (n : ℕ) (c : GLw n w) (u : Fin n → (w.a
     charpoly_conj_diagonal c _ g _ (GlobalTheory.SmGL.val_diagT _ _) hg,
     fun i => ⟨(u i).ne_zero, hu i⟩⟩
 
+/- English proof (translation)
+Introduce `hcontr _ _ hiw E _ _ _ hU w hw n b hb ϖ hϖ l hl γ hP`. Establish `hyp : ∀ (y : Fin n → ℤ), StrictAnti y → ∀ δ : GLw n w, dcos n w (tdiag ϖ y) δ ≠ 0 → ∃ m ∈ iwGL n w, ∃ τ : GLw n w, ((∀ i j : Fin n, i ≠ j → τ.val i j = 0) ∧ ∀ i, Valued.v (τ.val i i) = 1) ∧ m⁻¹ * δ * m = tdiag ϖ y * τ`. Introduce `y hy δ hδ`. Take `⟨m, hm, τ, hτ, e⟩` from `hcontr w ϖ hϖ n y hy δ hδ`. Conclude with `⟨m, hm, τ, hτ, e⟩`.
+
+Take `⟨p₀, u, hu, hγ0, hsupp, hcpt⟩` from `GlobalTheory.CompanionTheory.SuppCent.main E hU w hw n b hb ϖ hϖ l hl hyp γ hP`. Take `⟨-, hKc, -, -, -⟩` from `hiw w hw n b hb ϖ l`. Take `⟨-, -, hWc, -⟩` from `GlobalTheory.CompanionTheory.UnitaryWitt.unitary_hyperbolic_basis E hU w hw n b hb`. Establish `hle : cptPart (twCent (MonoidHom.id (UL n w)) γ) ≤ (iwU n w b).map (MulAut.conj p₀).toMonoidHom`. Rewrite using `[hcpt]`.
+
+Conclude with `inf_le_right`. Use `⟨⟨p₀, fun p => ?_, hle⟩, fun x => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `hsupp p`. Conclude with `GlobalTheory.LocFin.inf_le_cptPart _ _ (GlobalTheory.LocFin.isCompact_map_conj _ hKc x)`. Conclude with `GlobalTheory.LocFin.relIndex_cptPart_ne_zero _ _ _ (GlobalTheory.LocFin.isOpen_map_conj _ (GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b) x) (GlobalTheory.LocFin.isCompact_map_conj _ hWc p₀) hle`.
+
+Establish `hγ : γ.1 = (p₀.1 * b) * GlobalTheory.SmGL.diagT (w.adicCompletion E) (Fin n) u * (p₀.1 * b)⁻¹`. Establish `e : γ.1 = p₀.1 * (p₀⁻¹ * γ * p₀).1 * p₀.1⁻¹`. Express the relevant statement in the definitionally equal form `γ.1 = p₀.1 * (p₀.1⁻¹ * γ.1 * p₀.1) * p₀.1⁻¹`. Use `group`. Rewrite using `[e, hγ0]`.
+
+Use `group`. Conclude with `hasVals_conj_diag w n _ u _ hu _ hγ`.
+-/
 theorem s2 : P_contr_id → DiagonalConjDistinctValuations → Hilbert90InertPlace → P_iwU_facts → UnitaryHeckeSingleCoset := by
   intro hcontr _ _ hiw E _ _ _ hU w hw n b hb ϖ hϖ l hl γ hP
   have hyp : ∀ (y : Fin n → ℤ), StrictAnti y → ∀ δ : GLw n w, dcos n w (tdiag ϖ y) δ ≠ 0 →

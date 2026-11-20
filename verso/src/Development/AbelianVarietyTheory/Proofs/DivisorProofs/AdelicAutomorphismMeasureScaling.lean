@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.LeviModulus
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_eq_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (x : AE F E) : sigR (AF F) σ x = cA σ x := by
   induction x using TensorProduct.induction_on with
@@ -21,6 +24,17 @@ theorem sigR_eq_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   | tmul a e => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hM : ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E))ᵀ * incM F J₁ * ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).map (cA σ) = incM F J₁` using `g.2`. Establish `hdet` using `congrArg Matrix.det hM`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hmap : (((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).map (cA σ)).det = cA σ ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).det` using `(RingHom.map_det (cA σ).toRingHom _).symm`. Establish `hJu : IsUnit (incM F J₁).det`.
+
+Establish `: (incM F J₁).det = inclR (F` using `F) (AF F) J₁.det := (RingHom.map_det _ _).symm`. Rewrite using `[this]`. Conclude with `(isUnit_iff_ne_zero.2 hJ).map _`. Rewrite `hdet` using `[hmap]`. Establish `key : cA σ ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).det * ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).det = 1`.
+
+Establish `e2 : cA σ ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).det * ((g : GL (Fin b) (AE F E)) : Matrix (Fin b) (Fin b) (AE F E)).det * (incM F J₁).det = 1 * (incM F J₁).det`. Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← hdet]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hJu.mul_right_cancel e2`.
+
+Establish `hu : GlobalTheory.Doubling.conjUnit σ (Matrix.GeneralLinearGroup.det (g : GL (Fin b) (AE F E))) * Matrix.GeneralLinearGroup.det (g : GL (Fin b) (AE F E)) = 1`. Use `ext`. Use `show sigR (AF F) σ _ * _ = 1`. Rewrite using `[sigR_eq_cA]`. Conclude with `key`.
+
+Establish `h2` using `congrArg (absE F E) hu`. Rewrite `h2` using `[map_mul, GlobalTheory.Doubling.absE_conjUnit, map_one, ← sq]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 h2`.
+-/
 theorem absE_det_UA (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {b : ℕ} (J₁ : Matrix (Fin b) (Fin b) E) (hJ : J₁.det ≠ 0) (g : UA σ J₁) :
     absE F E (Matrix.GeneralLinearGroup.det (g : GL (Fin b) (AE F E))) = 1 := by
@@ -65,6 +79,21 @@ def colCE (R : Type) [TopologicalSpace R] [AddCommGroup R] (b : ℕ) : Matrix (F
   continuous_toFun := continuous_pi fun i => continuous_id.matrix_elem i 0
   continuous_invFun := continuous_pi fun i => continuous_pi fun _ => continuous_apply i
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM b J₁ hJ l g₀ _ _ _ _ A hA`. Use `haveI : IsTotallyReal F := hCM.1`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `letI : MeasurableSpace (Matrix (Fin b) (Fin 1) (AF F ⊗[F] E)) := borel _`.
+
+Use `haveI : BorelSpace (Matrix (Fin b) (Fin 1) (AF F ⊗[F] E)) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Matrix (Fin b) (Fin 1) (AF F ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin b → Fin 1 → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin b) (Fin 1) (AF F ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin b → Fin 1 → AE F E))`. Set `M : Matrix (Fin b) (Fin b) (AE F E)` to `l.1 • (mat g₀⁻¹)ᵀ`. Establish `hMdet : M.det = l.1 ^ b * (Matrix.GeneralLinearGroup.det ((g₀⁻¹ : UA σ J₁) : GL (Fin b) (AE F E))).1`.
+
+Simplify using `only [M, Matrix.det_smul, Matrix.det_transpose, Fintype.card_fin, Matrix.GeneralLinearGroup.val_det_apply]`. Both sides reduce to the same expression. Establish `hMu : IsUnit M.det`. Rewrite using `[hMdet]`. Conclude with `(l.isUnit.pow b).mul (Units.isUnit _)`.
+
+Set `G : GL (Fin b) (AE F E)` to `Matrix.nonsingInvUnit M hMu`. Establish `hG : Matrix.GeneralLinearGroup.det G = l ^ b * Matrix.GeneralLinearGroup.det ((g₀⁻¹ : UA σ J₁) : GL (Fin b) (AE F E))`. Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `hMdet`.
+
+Establish `hAeq : A = ((colCE (AE F E) b).symm.trans (GlobalTheory.ModuLR.lrCE G 1)).trans (colCE (AE F E) b)`. Use extensionality with `x i`. Rewrite using `[hA]`. Use `show (l.1 • ((mat g₀⁻¹)ᵀ *ᵥ x)) i = (M * Matrix.of (fun i (_ : Fin 1) => x i) * (1 : Matrix (Fin 1) (Fin 1) (AE F E))) i 0`. Rewrite using `[Matrix.mul_one]`.
+
+Simplify using `only [M, Matrix.mulVec, Matrix.mul_apply, dotProduct, Matrix.of_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[hAeq, GlobalTheory.ModuLR.addEquivAddHaarChar_transport, GlobalTheory.ModuLR.chi_lr F E b 1 G 1, hG]`. Simplify using `only [map_one, one_pow, mul_one, pow_one, map_mul, map_pow, absE_det_UA F E σ J₁ hJ]`.
+-/
 theorem modulus_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (b : ℕ) (J₁ : Matrix (Fin b) (Fin b) E), J₁.det ≠ 0 → ∀ (l : (AE F E)ˣ) (g₀ : UA σ J₁)
     [IsTopologicalAddGroup (Fin b → AE F E)] [LocallyCompactSpace (Fin b → AE F E)] [MeasurableSpace (Fin b → AE F E)]

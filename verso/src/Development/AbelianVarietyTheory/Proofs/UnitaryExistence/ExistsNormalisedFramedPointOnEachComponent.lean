@@ -15,6 +15,9 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.FrameUnif
 
+/- English proof (translation)
+Unfold `normConst`. Use `Real.sqrt_pos.mpr (div_pos (by positivity) (Finset.prod_pos fun j _ => ?_))` and prove the remaining obligations. Use `norm_pos_iff.mpr ((map_ne_zero (ty j)).mpr h)` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem normConst_pos_of_ne_zero {E : Type} [Field E] {g : ℕ} (ty : Fin g → (E →+* ℂ)) {ξ₀ : E} (h : ξ₀ ≠ 0) :
     0 < normConst ty ξ₀ := by
   unfold normConst
@@ -22,6 +25,13 @@ theorem normConst_pos_of_ne_zero {E : Type} [Field E] {g : ℕ} (ty : Fin g → 
   have := norm_pos_iff.mpr ((map_ne_zero (ty j)).mpr h)
   positivity
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c σ g e F r M k T`. Establish `key : ∀ x : (M.X k).dom, ∃ y : FrPt Xo c (CAt σ), ∃ κ : ℂ, κ ^ 2 = (normConst (fun j => relab c σ (e j).1) (M.X k).ξ0 : ℂ) * (T.h (T.co.symm x.1)).det ∧ IsThetaPt T (T.co.symm x.1) κ y`. Introduce `x`. Establish `hb : T.co.symm x.1 ∈ T.co ⁻¹' (M.X k).dom`. Simplify using `using x.2`.
+
+Establish `hne : (normConst (fun j => relab c σ (e j).1) (M.X k).ξ0 : ℂ) * (T.h (T.co.symm x.1)).det ≠ 0` using `mul_ne_zero (Complex.ofReal_ne_zero.mpr (normConst_pos_of_ne_zero _ (M.X k).ξ0_ne).ne') (T.norm _ hb).1.ne_zero`. Take `⟨κ, hκ⟩` from `IsAlgClosed.exists_pow_nat_eq ((normConst (fun j => relab c σ (e j).1) (M.X k).ξ0 : ℂ) * (T.h (T.co.symm x.1)).det) (n := 2) two_pos`. Establish `hκ0 : κ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by rw [← hκ]; simp)`.
+
+Take `⟨y, hy⟩` from `GlobalTheory.T.exists_isThetaPt' hS E H Dw l Xo c σ g e F r M k T _ hb κ hκ0`. Conclude with `⟨y, κ, hκ, hy⟩`. Use `choose un hun using key`. Conclude with `⟨un, hun⟩`.
+-/
 theorem exists_isNormUn : Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (k : Fin F.n) (T : ThetaData e F M k), ∃ un, IsNormUn T un := by
   intro hS E _ _ _ H Dw l Xo c σ g e F r M k T
   have key : ∀ x : (M.X k).dom, ∃ y : FrPt Xo c (CAt σ), ∃ κ : ℂ,

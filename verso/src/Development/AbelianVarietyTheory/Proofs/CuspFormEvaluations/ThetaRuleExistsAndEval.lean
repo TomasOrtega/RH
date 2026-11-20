@@ -21,6 +21,13 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c _ nab hn a n xx P hP`. Establish `hL : ReciprocityTheory.ChartRestriction.G.Out.Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hT` using `GlobalTheory.thValTot_of_chartIndep hL hC E H Dw l Xo c nab hn`. Use `⟨?_, fun f hf k _ _ y => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, -⟩` from `existsUnique_thRule Xo c nab hT xx hP`.
+
+Conclude with `⟨f, hf, GlobalTheory.thetaRule_mem_sec hL hC E H Dw l Xo c nab hn a n f ⟨xx, P, hP, hf⟩⟩`. Establish `h` using `GlobalTheory.Frames.allTest_of_secBaseChange hL.secBaseChange E H Dw l Xo c k y`. Take `⟨w, hw, -⟩` from `hT k y a n xx P hP`. Establish `e : evR Xo c f y = w`. Unfold `evR Formalism.L2.Pj.evalAt`.
+
+Rewrite using `[dif_pos h]`. Conclude with `GlobalTheory.thetaValue_natural hL hC E H Dw l Xo c nab hn _ _ _ _ y h.choose_spec.choose_spec.choose_spec a n xx P hP _ _ (hf _ _) hw`. Rewrite using `[e]`. Conclude with `hw`.
+-/
 theorem thetaRule_exists_and_eval : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (xx : Fin n → Dw.La) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n → (∃ f : Rul Xo c, IsThRule Xo c nab xx P f ∧ f ∈ sec Xo c a n) ∧ ∀ f : Rul Xo c, IsThRule Xo c nab xx P f → ∀ (k : Type) [Field k] [Algebra c.F k] (y : FrPt Xo c k), ThValAt Xo c nab y xx P (evR Xo c f y) := by
   intro hC E _ _ _ H Dw l Xo c _ nab hn a n xx P hP
   have hL : ReciprocityTheory.ChartRestriction.G.Out.Laws := GlobalTheory.abelianSchemeLaws_all.1

@@ -4,6 +4,21 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.HeckeFamilyMatrices
 
+/- English proof (translation)
+Introduce `hl hB`. Set `ε : SL(2, ℤ)` to `⟨!![(l : ℤ), a; (N : ℤ), b], by rw [Matrix.det_fin_two_of]; linear_combination h⟩`. Establish `hε : ε ∈ Gamma0 N`. Rewrite using `[Gamma0_mem]`. Simplify using `[ε]`.
+
+Establish `hεB : B ∣[k] toGL (mat ε) = χ (b : ZMod N) • B`. Rewrite using `[← slash_SL_eq, hB ε hε]`. Both sides reduce to the same expression. Set `u : ℕ → Matrix (Fin 2) (Fin 2) ℤ` to `fun j => !![1, (j : ℤ); 0, (l : ℤ)]`. Establish `hu : ∀ j, 0 < (u j).det`.
+
+Introduce `j`. Simplify using `[u, Matrix.det_fin_two_of]`. Conclude with `hl` after adjusting the coercions. Establish `hD : (dg (l : ℤ) 1).det ≠ 0`. Simplify using `[dg, Matrix.det_fin_two_of]`.
+
+Conclude with `hl.ne'` after adjusting the coercions. Establish `key : ∀ j : ℕ, (B ∣[k] toGL (dg l 1)) ∣[k] gaOld N l a b h j = χ (b : ZMod N) • (B ∣[k] toGL (u j))`. Introduce `j`. Establish `hg : (mat (gaOld N l a b h j)).det ≠ 0` using `by simp [mat]`. Establish `hεd : (mat ε).det ≠ 0` using `by simp [mat]`.
+
+Establish `hm : dg (l : ℤ) 1 * mat (gaOld N l a b h j) = mat ε * u j`. Apply the tactic sequence `ext i i' <;> fin_cases i <;> fin_cases i' <;>`. Apply the tactic sequence `simp [dg, gaOld, mat, ε, u, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Rewrite using `[slash_SL_eq, ← SlashAction.slash_mul, ← toGL_mul _ _ hD hg, hm, toGL_mul _ _ hεd (hu j).ne', SlashAction.slash_mul, hεB, smul_slash_toGL k _ (hu j)]`. Establish `hsum : trOld k N l a b h (B ∣[k] toGL (dg l 1)) - B ∣[k] toGL (dg l 1) = χ (b : ZMod N) • UlF k l B`.
+
+Rewrite using `[trOld, add_sub_cancel_left, UlF, hkF, Finset.smul_sum]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j)]`. Conclude with `(Fin.sum_univ_eq_sum_range (fun j => χ (b : ZMod N) • (B ∣[k] toGL (u j))) l).symm`. Establish `hlb : (l : ZMod N) * (b : ZMod N) = 1`. Use `congrArg (fun x : ℤ => (x : ZMod N)) h` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Simplify `this` using `[ZMod.natCast_self]`. Rewrite using `[hsum, smul_smul, ← map_mul, hlb, map_one, one_smul]`.
+-/
 theorem ulF_eq_trOld (N l : ℕ) (k : ℤ) (a b : ℤ) (h : (l : ℤ) * b - N * a = 1)
     (χ : DirichletCharacter ℂ N) (B : ℍ → ℂ) :
     0 < l → ChiInv k N N χ B → UlF k l B = χ (l : ZMod N) •

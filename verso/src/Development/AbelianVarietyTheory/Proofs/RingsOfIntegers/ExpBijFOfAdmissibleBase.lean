@@ -15,6 +15,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL _ R _ _ I _ D A G _ _ U` and use `expansion_bijective_over_fields hL.globalFns R I D A G U`.
+-/
 theorem expBijF_of_admissible_base : Laws → Laws2 → ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I →
     ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R)))
       [GrpObj G] [IsCommMonObj G] (U : Unif I D A G), Geo.Tor.ExpBijF U.toUnifPre :=

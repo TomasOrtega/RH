@@ -19,8 +19,16 @@ def basis2 {B : Base F E} (h : B.IsGood σ) : Module.Basis (Fin 2) F E :=
 
 def evAt (x : G2 σ Y) : modFun σ Y →ₗ[ℂ] ℂ := (LinearMap.proj x).comp (modFun σ Y).subtype
 
+/- English proof (translation)
+Introduce `N` and use `⟨(ht2 x : ℝ) ^ N, fun _ hf => hf x⟩`.
+-/
 theorem isGrowForm_evAt (x : G2 σ Y) : IsGrowForm (evAt x) := fun N => ⟨(ht2 x : ℝ) ^ N, fun _ hf => hf x⟩
 
+/- English proof (translation)
+Introduce `s₀ _`. Take `⟨k, U, H, hU, he, hd⟩` from `hw s₀`. Establish `ha : AnalyticAt ℂ (fun s => (H s).1 x) s₀` using `(hd _ (isGrowForm_evAt x)).analyticAt hU`. Establish `hm : MeromorphicAt (fun s => (s - s₀) ^ (-(k : ℤ)) * (H s).1 x) s₀` using `(((analyticAt_id.sub analyticAt_const).meromorphicAt).zpow _).mul ha.meromorphicAt`. Use `hm.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_nhdsWithin_of_eventually_nhds hU, self_mem_nhdsWithin] with s hs hne`. Establish `: s - s₀ ≠ 0` using `sub_ne_zero.2 hne`. Rewrite using `[he s hs hne, zpow_neg, zpow_natCast, inv_mul_cancel_left₀ (pow_ne_zero _ this)]`.
+-/
 theorem meromorphicOn_of_weak {Ê : ℂ → G2 σ Y → ℂ}
     (hw : ∀ s₀, ∃ (k : ℕ) (U : Set ℂ) (H : ℂ → modFun σ Y), U ∈ 𝓝 s₀ ∧
       (∀ s ∈ U, s ≠ s₀ → ∀ x, (H s).1 x = (s - s₀) ^ k * Ê s x) ∧
@@ -36,6 +44,9 @@ theorem meromorphicOn_of_weak {Ê : ℂ → G2 σ Y → ℂ}
   have : s - s₀ ≠ 0 := sub_ne_zero.2 hne
   rw [he s hs hne, zpow_neg, zpow_natCast, inv_mul_cancel_left₀ (pow_ne_zero _ this)]
 
+/- English proof (translation)
+Take `⟨p, t, hp, k, hk, rfl⟩` from `h.iwa x`. Rewrite using `[h.val p t hp k hk]`. Conclude with `NNReal.coe_nonneg _`.
+-/
 theorem hgt_nonneg {K : Subgroup (G2 σ Y)} {a : G2 σ Y → ℝ} (h : IsHgt K a) (x : G2 σ Y) : 0 ≤ a x := by
   obtain ⟨p, t, hp, k, hk, rfl⟩ := h.iwa x
   rw [h.val p t hp k hk]
@@ -69,6 +80,21 @@ def mkSD {B : Base F E} {m : ℕ} {A : Spc F E m} {r s r' s' : ℕ} {χ : Chr F 
   ok := ⟨H.good, H.hm, H.hn, H.aniso, H.sign.imp (fun h => ⟨h.1, h.2.skew⟩) (fun h => ⟨h.1, h.2.herm⟩), H.hecke, H.res, H.dbl,
     H.frame, H.stdK, H.hgt, H.haar, H.dom⟩
 
+/- English proof (translation)
+Introduce `hBL hSec hStrong hMain F E _ _ _ _ _ σ B m n A Y r s r' s' χ κ _ dd om S l b K a μ D Φ H`. Use `set d := mkSD H with hd`. Establish `hK : d.KFin Φ` using `⟨H.sch, H.fin⟩`. Establish `hY : Y.IsHerm σ B r' s' ∨ Y.IsSkew σ B r' s'` using `H.sign.elim (fun h => .inr h.2) (fun h => .inl h.2)`. Take `⟨Ê, ⟨t, hsum, -⟩, hw⟩` from `hBL F E σ B n Y r' s' H.good H.hn hY χ H.hecke m H.res b K a H.frame H.stdK H.hgt (s0 m n) (d.sec0 Φ) (hSec F E σ d Φ hK)`.
+
+Introduce `x`. Establish `hfl : ∀ z, (fun y => ((d.Ht y : ℝ) : ℂ) ^ (z - s0 m n) * d.sec0 Φ y) = flat a (d.sec0 Φ) (s0 m n) z` using `fun z =>`. Use function extensionality and compare the values at `fun y => by`. Simplify using `only [SD.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (hgt_nonneg d.ok.hgt y)]`.
+
+Both sides reduce to the same expression. Establish `Heisenberg₂ : ∀ z : ℂ, t < z.re → d.eis (d.sec0 Φ) (s0 m n) z x = Ê z x` using `fun z hz => by`. Simplify using `only [SD.eis]`. Rewrite using `[hfl z]`. Conclude with `(hsum z hz x).tsum_eq`.
+
+Establish `hmer` using `meromorphicOn_of_weak hw x`. Establish `hext : IsExtAt (fun z => d.eis (d.sec0 Φ) (s0 d.m d.n) z x) (s0 d.m d.n) (Ê · x)` using `⟨Set.univ, trivial, isRightDomain_univ, hmer, t, fun z hz => (Heisenberg₂ z hz).symm⟩`. Establish `hEA : d.EisAll` using `fun Φ' hΦ' => hStrong F E σ d ⟨r', s', hY⟩ _ _ (hSec F E σ d Φ' hΦ')`. Take `⟨H', hext', han, hval⟩` from `hMain F E σ d H.hnm hEA Φ hK x`. Establish `hev` using `hext'.eventuallyEq hext`.
+
+Establish `hloc : Function.update (Ê · x) (s0 m n) (d.I Φ x) =ᶠ[𝓝 (s0 m n)] H'` using `by filter_upwards [eventually_nhdsWithin_iff.1 hev] with z hz`. Distinguish the cases in `e : z = s0 m n`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hval.symm`.
+
+Rewrite using `[Function.update_of_ne e]`. Conclude with `(hz e).symm`. Use `⟨Function.update (Ê · x) (s0 m n) (d.I Φ x), fun z _ => (hmer z trivial).update _ _, ⟨max t (s0 m n).re, fun z hz => ?_⟩, han.congr hloc.symm, Function.update_self _ _ _⟩` and prove the remaining obligations. Establish `hz1 : t < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Establish `hz2 : z ≠ s0 m n` using `fun e => by subst e; exact lt_irrefl _ (lt_of_le_of_lt (le_max_right _ _) hz)`.
+
+Rewrite using `[Function.update_of_ne hz2]`. Conclude with `hsum z hz1 x`.
+-/
 theorem headOf : HeadOf := by
   intro hBL hSec hStrong hMain F E _ _ _ _ _ σ B m n A Y r s r' s' χ κ _ dd om S l b K a μ D Φ H
   set d := mkSD H with hd

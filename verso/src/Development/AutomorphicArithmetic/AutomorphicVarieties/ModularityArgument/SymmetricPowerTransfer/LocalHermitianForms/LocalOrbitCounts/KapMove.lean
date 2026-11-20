@@ -8,12 +8,40 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Introduce `t ht x` and use `by rw [Units.val_mul, mul_smul] exact lcountNorm O K Δ τ L c d _ (datSmul K Δ τ c d m h x) t ht`.
+-/
 private theorem inv_norm {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K} (L : IsLoc O Δ)
     {c : K} {d m : EL Δ τ} (h : IsDat c d m) : ∀ t ∈ NE τ, ∀ x : Kˣ,
     lcount O c d (((t * x : Kˣ) : K) • m) = lcount O c d ((x : K) • m) := fun t ht x => by
   rw [Units.val_mul, mul_smul]
   exact lcountNorm O K Δ τ L c d _ (datSmul K Δ τ c d m h x) t ht
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ L hr c hc z hz lam lam' hn hn' htr htr'`. Establish `h2 : (2 + τ : K) ≠ 0`. Introduce `h0`. Apply `hr` to reduce the goal to its premises. Establish `: τ = -2` using `by linear_combination h0`.
+
+Rewrite using `[this]`. Evaluate the numerical expressions. Take `⟨ul, hul⟩ : IsUnit lam` from `QuadraticAlgebra.isUnit_iff_norm_isUnit.2 (by rw [hn]; exact h2.isUnit)`. Establish `hβ : QuadraticAlgebra.norm (lam' * ((ul⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ)) = 1`. Establish `e : QuadraticAlgebra.norm (ul : Lsq K Δ) * QuadraticAlgebra.norm ((ul⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ) = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite `e` using `[hul, hn]`. Rewrite using `[map_mul, hn', e]`. Take `⟨y, hy⟩` from `h90L O K Δ L _ hβ`. Establish `hl' : lam' = lam * star (y : Lsq K Δ) * ((y⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ)`.
+
+Rewrite using `[hy, ← hul]`. Establish `e1 : (ul : Lsq K Δ) * ((ul⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ) = 1` using `Units.mul_inv ul`. Establish `e2 : (y : Lsq K Δ) * ((y⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ) = 1` using `Units.mul_inv y`. Take the linear combination `(-lam' * ((y : Lsq K Δ) * ((y⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ))) * e1 + (-lam') * e2`. Use `set Y : (EL Δ τ)ˣ := Units.map (algebraMap (Lsq K Δ) (EL Δ τ)).toMonoidHom y with hYdef`.
+
+Establish `hsig : ∀ a : Lsq K Δ, sigL (algebraMap (Lsq K Δ) (EL Δ τ) a) = algebraMap (Lsq K Δ) (EL Δ τ) (star a)`. Introduce `a`. Apply the tactic sequence `ext <;> simp [sigL]`. Establish `hstar : ∀ a : Lsq K Δ, star (algebraMap (Lsq K Δ) (EL Δ τ) a) = algebraMap (Lsq K Δ) (EL Δ τ) a`. Introduce `a`.
+
+Apply the tactic sequence `ext <;> simp`. Establish `hYc : (Y : EL Δ τ) = algebraMap (Lsq K Δ) (EL Δ τ) y` using `rfl`. Establish `hYi : ((Y⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) = algebraMap (Lsq K Δ) (EL Δ τ) ((y⁻¹ : (Lsq K Δ)ˣ) : Lsq K Δ)` using `rfl`. Establish `hA : dLam lam z * sigL (Y : EL Δ τ) * ((Y⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) = dLam lam' z`. Rewrite using `[hYc, hYi, hsig, hl']`.
+
+Simplify using `only [dLam, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `set g : Kˣ := Units.map (QuadraticAlgebra.norm : Lsq K Δ →* K) y with hgdef`. Establish `hB : ∀ x : Kˣ, ((x : K) • (1 : EL Δ τ)) * ↑Y * star (sigL (Y : EL Δ τ)) = ((x * g : Kˣ) : K) • (1 : EL Δ τ)`. Introduce `x`.
+
+Rewrite using `[hYc, hsig, hstar, mul_assoc, ← map_mul, ← QuadraticAlgebra.algebraMap_norm_eq_mul_star]`. Rewrite using `[Units.val_mul, mul_smul]`. Establish `hgc : ((g : Kˣ) : K) = QuadraticAlgebra.norm (y : Lsq K Δ)` using `rfl`. Rewrite using `[hgc, smul_one_mul]`. Use `congr 1`.
+
+Rewrite using `[Algebra.smul_def, mul_one]`. Conclude with `(IsScalarTower.algebraMap_apply K (Lsq K Δ) (EL Δ τ) _).symm`. Establish `hD'` using `datLam K Δ τ c hr hc lam' hn' z hz`. Establish `hf : ∀ t ∈ NE τ, ∀ x : Kˣ, (fun x : Kˣ => lcount O c (dLam lam' z) ((x : K) • (1 : EL Δ τ))) (t * x) = (fun x : Kˣ => lcount O c (dLam lam' z) ((x : K) • (1 : EL Δ τ))) x` using `fun t ht x => inv_norm L hD' t ht x`. Establish `hss` using `(sumShift O K Δ τ L hr (fun x : Kˣ => lcount O c (dLam lam' z) ((x : K) • (1 : EL Δ τ))) hf g).2.1`.
+
+Establish `hk : kapSum O c (dLam lam z) 1 = hs (τ ^ 2 - 4) (QuadraticAlgebra.norm (y : Lsq K Δ)) * kapSum O c (dLam lam' z) 1`. Unfold `kapSum`. Rewrite using `[← show ((g : Kˣ) : K) = QuadraticAlgebra.norm (y : Lsq K Δ) from rfl, ← hss]`. Use `finsum_congr (fun t => ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[(datIso O K Δ τ c (dLam lam z) (((Quotient.out t : Kˣ) : K) • 1) Y).1, hA, hB]`. Establish `hε : eps τ lam' = hs (τ ^ 2 - 4) (QuadraticAlgebra.norm (y : Lsq K Δ)) * eps τ lam`. Establish `htr''` using `htr'`. Rewrite `htr''`, the goal using `[hl']`. Conclude with `signLaw O K Δ τ L hr lam y hn htr htr''`.
+
+Rewrite using `[hk, hε]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.kapMove : UpperTheory.V.Z.Sym.Loc.KapMove := by
   intro O K _ _ _ _ _ Δ τ L hr c hc z hz lam lam' hn hn' htr htr'
   have h2 : (2 + τ : K) ≠ 0 := by

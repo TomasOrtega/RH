@@ -70,6 +70,13 @@ def pendCut (Q : PairedCharacterCondition.Pend D) : PairedCharacterCondition.Pen
   kty := fun i => Q.kty i.1
   kty_spec := fun i => Q.kty_spec i.1
 
+/- English proof (translation)
+Introduce `i z x a ha u hu`. Establish `hu' : u ∈ (heckeEig (D.nd.T i.1) (D.nd.act i.1) x.1).map (qK (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1))`. Rewrite using `[map_eig _ _ _ (D.nd.T_sep i.1) x]`. Conclude with `hu`. Take `⟨v, hv, rfl⟩` from `hu'`.
+
+Establish `e` using `h i.1 z x.1 a (fun PI hP => ha PI (optIn_eq_some.2 hP)) v hv`. Use `(qK_desc (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1) _ (Q.zO_comm i.1 z) v).trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Establish `k : ∀ (b : D.nd.O i.1) (w : TensorProduct (D.nd.O i.1) (FractionRing (D.nd.O i.1)) (D.nd.Mt i.1)), qK (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1) (b • w) = b • qK (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1) w` using `fun b w => by`. Rewrite using `[← algebraMap_smul (FractionRing (D.nd.O i.1)) b w, map_smul, algebraMap_smul]`.
+
+Conclude with `k a v`.
+-/
 theorem eigSpan_cut {Q : PairedCharacterCondition.Pend D} (h : GlobalTheory.Pass.EigSpan Q) : GlobalTheory.Pass.EigSpan (pendCut c Q) := by
   intro i z x a ha u hu
   have hu' : u ∈ (heckeEig (D.nd.T i.1) (D.nd.act i.1) x.1).map (qK (D.nd.T i.1) (D.nd.act i.1) (c.Xs i.1)) := by
@@ -83,6 +90,9 @@ theorem eigSpan_cut {Q : PairedCharacterCondition.Pend D} (h : GlobalTheory.Pass
     rw [← algebraMap_smul (FractionRing (D.nd.O i.1)) b w, map_smul, algebraMap_smul]
   exact k a v
 
+/- English proof (translation)
+Take `⟨a, ⟨Q, hDZ, hE⟩, b, d⟩` from `h`. Conclude with `⟨fun i => a i.1, ⟨pendCut c Q, fun i => hDZ i.1, eigSpan_cut c hE⟩, fun i => b i.1, fun i => d i.1⟩`.
+-/
 theorem compatibilityTies_eigenRestriction (h : Tie4 D) : Tie4 (cut D c) := by
   obtain ⟨a, ⟨Q, hDZ, hE⟩, b, d⟩ := h
   exact ⟨fun i => a i.1, ⟨pendCut c Q, fun i => hDZ i.1, eigSpan_cut c hE⟩, fun i => b i.1, fun i => d i.1⟩

@@ -9,6 +9,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedMeasureTuples
 
+/- English proof (translation)
+Introduce `i k hi hk`. Set `π` to `Ideal.Quotient.mk I`. Set `g : GL (Fin (r + d)) (O ⧸ I)` to `Matrix.GeneralLinearGroup.map π h`. Set `b : Fin (r + d) → ℕ` to `fun a => if r ≤ a.1 then 1 else 0`. Establish `hg : Matrix.BlockTriangular (g : Matrix (Fin (r + d)) (Fin (r + d)) (O ⧸ I)) b`.
+
+Introduce `a c hac`. Establish `h1 : r ≤ a.1`. Assume the negation of the conclusion as `h1`. Simplify using `[b, h1] at hac`. Establish `h2 : c.1 < r`.
+
+Assume the negation of the conclusion as `h2`. Establish `h2' : r ≤ c.1` using `not_lt.mp h2`. Simplify using `[b, h1, h2'] at hac`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hh a c h1 h2)`. Use `letI : Invertible (g : Matrix (Fin (r + d)) (Fin (r + d)) (O ⧸ I)) := g.invertible`.
+
+Establish `hinv` using `Matrix.blockTriangular_inv_of_blockTriangular hg`. Establish `hb : b k < b i`. Establish `: ¬ r ≤ k.1` using `not_le.mpr hk`. Simplify using `[b, hi, this]`. Establish `h0` using `hinv hb`.
+
+Rewrite `h0` using `[← Matrix.GeneralLinearGroup.coe_inv, ← map_inv]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h0`.
+-/
 theorem inv_lower_mem {O : Type} [CommRing O] (I : Ideal O) (r d : ℕ) (h : GL (Fin (r + d)) O)
     (hh : ∀ i k : Fin (r + d), r ≤ i.1 → k.1 < r → (h : Matrix _ _ O) i k ∈ I) :
     ∀ i k : Fin (r + d), r ≤ i.1 → k.1 < r → ((h⁻¹ : GL (Fin (r + d)) O) : Matrix _ _ O) i k ∈ I := by
@@ -102,6 +113,9 @@ structure MeasTupleTied (T : ThetaTied D X) (XD : DivX D) : Prop where
 
   factor : MeasFactor T
 
+/- English proof (translation)
+Simplify using `[indexValue, Finset.prod_Icc_succ_top]`. Evaluate the numerical expressions.
+-/
 example : indexValue 2 1 1 = 3 := by
   simp [indexValue, Finset.prod_Icc_succ_top]
   norm_num

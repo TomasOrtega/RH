@@ -18,6 +18,11 @@ def RatActG : Prop := ∀ (i : G.comp) (γ : (G.lev i).Γ) (ξ : G.P.Xsp), RatX 
 def HRat : Prop := ∀ L : G.P.Tup, G.P.IsLatTup L →
   G.P.HtupW L ≤ Submodule.span G.O {ξ | ξ ∈ G.P.HtupW L ∧ RatX G e ξ}
 
+/- English proof (translation)
+Introduce `i' L`. Simplify using `only [delta]`. Use `split_ifs with h h'`. Substitute `h'` using the available equality. Conclude with `hA i' _ ξ hξ`.
+
+Conclude with `⟨0, map_zero _⟩`. Conclude with `⟨0, map_zero _⟩`.
+-/
 theorem delta_rat (hA : RatActG G e) (i : G.comp) (L0 : G.P.Tup) (ξ : G.P.Xsp) (hξ : RatX G e ξ) :
     RatFn G e (delta G i L0 ξ) := by
   intro i' L
@@ -28,6 +33,19 @@ theorem delta_rat (hA : RatActG G e) (i : G.comp) (L0 : G.P.Tup) (ξ : G.P.Xsp) 
   · exact ⟨0, map_zero _⟩
   · exact ⟨0, map_zero _⟩
 
+/- English proof (translation)
+Unfold `MRatSpan`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`.
+
+Introduce `F hF`. Take `⟨reps, hR⟩` from `jd_reps G h2`. Rewrite using `[jd_decomp G h1 reps hR G.P.HtupW F hF]`. Use `Submodule.sum_mem _ (fun r hr => ?_)` and prove the remaining obligations. Establish `hL` using `hR.1 r hr`.
+
+Establish `hmem : F r.1 r.2 ∈ G.P.HtupW r.2` using `((jd_fmem G _ F).1 hF r.1).1 r.2 hL`. It suffices to establish `key : ∀ ξ ∈ Submodule.span G.O {ξ | ξ ∈ G.P.HtupW r.2 ∧ RatX G e ξ}, delta G r.1 r.2 ξ ∈ Submodule.span G.O (cmpF G.P G.comp e G.M '' intLL G.P G.comp e G.M) from key _ (hH r.2 hL hmem)`. Introduce `ξ hξ`. Proceed by induction on `hξ using Submodule.span_induction with`. Consider the case `mem ξ hξ`.
+
+Take `⟨hξW, hξR⟩` from `hξ`. Establish `hD` using `jd_mem G h1 _ hE r.1 r.2 hL ξ hξW`. Conclude with `Submodule.subset_span ⟨⟨delta G r.1 r.2 ξ, ⟨Submodule.subset_span hD, delta_rat G e hA r.1 r.2 ξ hξR⟩⟩, hD, rfl⟩`. Consider the case `zero`. Establish `h0 : delta G r.1 r.2 0 = 0`.
+
+Establish `h3` using `jd_smul G r.1 r.2 0 0`. Rewrite `h3` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add ξ η _ _ hξ hη`.
+
+Rewrite using `[jd_add]`. Conclude with `Submodule.add_mem _ hξ hη`. Consider the case `smul a ξ _ hξ`. Rewrite using `[jd_smul]`. Conclude with `Submodule.smul_mem _ a hξ`.
+-/
 theorem mRatSpan_of (h1 : G.TrivStab) (h2 : G.FinClasses) (hE : EquivSys G G.P.HtupW) (hA : RatActG G e)
     (hH : HRat G e) : MRatSpan G.P G.comp e G.M := by
   classical

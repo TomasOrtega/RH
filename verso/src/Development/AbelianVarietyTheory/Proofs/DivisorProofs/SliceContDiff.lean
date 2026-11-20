@@ -17,6 +17,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.TorsionForm.PullbackMain
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (fun y : Fin g → ℂ => K t y z')` using `hK.comp_contDiff (f := fun y : Fin g → ℂ => ((t, y, z') : ℝ × (Fin g → ℂ) × (Fin g → ℂ))) (by fun_prop) (fun y => ⟨ht, trivial⟩)`. Conclude with `((ContinuousLinearMap.apply ℂ (Ext m) w).restrictScalars ℝ).contDiff.comp h1`.
+-/
 theorem slice_contDiff {m g : ℕ} {K : ℝ → (Fin g → ℂ) → (Fin g → ℂ) → Ext m →L[ℂ] Ext m}
     (hK : ContDiffOn ℝ ∞ (fun a : ℝ × (Fin g → ℂ) × (Fin g → ℂ) => K a.1 a.2.1 a.2.2) (Ioi 0 ×ˢ univ))
     {t : ℝ} (ht : 0 < t) (z' : Fin g → ℂ) (w : Ext m) : ContDiff ℝ ∞ (fun y => K t y z' w) := by
@@ -25,6 +28,21 @@ theorem slice_contDiff {m g : ℕ} {K : ℝ → (Fin g → ℂ) → (Fin g → �
       (by fun_prop) (fun y => ⟨ht, trivial⟩)
   exact ((ContinuousLinearMap.apply ℂ (Ext m) w).restrictScalars ℝ).contDiff.comp h1
 
+/- English proof (translation)
+Use `set β'' : Fin n → E := fun i => fderiv ℂ φ b (β i) with hβ''`. Use `set s0 : Pt E g → Ext (n + n + g) := fun Q => f Q.2 with hs0def`. Use `set s1 := superconn τ h β'' u s0 with hs1def`. Use `set R : Pt E' g → Ext (n + n + g) := fun P => ∑ i, nabPiece τ h s0 (φ P.1, P.2) i (fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i)) with hRdef`. Establish `hopen : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`.
+
+Establish `hmem : ∀ P : Pt E' g, P.1 ∈ B' → ((φ P.1, P.2) : Pt E g) ∈ cov B g` using `fun P hP => ⟨hmap hP, trivial⟩`. Establish `hτd : ∀ c ∈ B, ∀ i j, DifferentiableAt ℂ (fun b => τ b i j) c` using `fun c hc i j => (hτ.2.1 i j).differentiableAt (hτ.1.mem_nhds hc)`. Establish `hφd : ∀ c ∈ B', DifferentiableAt ℂ φ c` using `fun c hc => hφ.differentiableAt (hB'.mem_nhds hc)`. Establish `hdiff : ∀ {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {F : Pt E g → W}, ContDiffOn ℝ ∞ F (cov B g) → ∀ Q ∈ cov B g, DifferentiableAt ℝ F Q` using `fun hF Q hQ => (hF.differentiableOn (by simp)).differentiableAt (hopen.mem_nhds hQ)`. Establish `hs0 : ContDiffOn ℝ ∞ s0 (cov B g)` using `(hf.comp contDiff_snd).contDiffOn`.
+
+Establish `hs1 : ContDiffOn ℝ ∞ s1 (cov B g)`. Establish `e : s1 = fun Q => ∑ i, nabPiece τ h s0 Q i (β'' i) + (Real.sqrt u : ℂ) • (dbarV s0 Q + dbarAdj τ h s0 Q)` using `rfl`. Rewrite using `[e]`. Conclude with `(ContDiffOn.sum fun i _ => GlobalTheory.T.nabla_piece_smooth B τ h s0 hτ hh hpos hs0 i (β'' i)).add ((GlobalTheory.T.dbar_plus_adjoint_smooth B τ h s0 hτ hh hpos hs0).const_smul _)`. Establish `step1 : ∀ P : Pt E' g, P.1 ∈ B' → superconn (τ ∘ φ) (fun P => h (φ P.1, P.2)) β u (fun P => f P.2) P = s1 (φ P.1, P.2) + R P`.
+
+Introduce `P hP`. Use `GlobalTheory.T.connection_pullback_differentiable τ h φ β u s0 P (hφd _ hP) (hτd _ (hmap hP)) (hdiff hh _ (hmem P hP)) (hpos _ (hmem P hP)).ne' (hdiff hs0 _ (hmem P hP))` as an intermediate fact. Rewrite using `[show (fun P : Pt E' g => f P.2) = fun Q => s0 (φ Q.1, Q.2) from rfl, this]`. Establish `e : (fun i => fderiv ℂ φ P.1 (β i)) = fun i => β'' i + (fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[β'']`. Rewrite using `[e, superconn_add_vec]`. Establish `hev : superconn (τ ∘ φ) (fun P => h (φ P.1, P.2)) β u (fun P => f P.2) =ᶠ[𝓝 (b, z)] fun P => s1 (φ P.1, P.2) + R P` using `by filter_upwards [(hB'.prod isOpen_univ).mem_nhds (show (b, z) ∈ B' ×ˢ (univ : Set (Fin g → ℂ)) from ⟨hb, trivial⟩)] with P hP using step1 P hP.1`. Establish `hφev : ∀ᶠ c in 𝓝 b, DifferentiableAt ℂ φ c` using `by filter_upwards [hB'.mem_nhds hb] with c hc using hφd c hc`. Establish `hC1` using `GlobalTheory.T.tensorial_pullback_differentiable (fun i Q v => nabPiece τ h s0 Q i v) φ β b z (fun i Q => isLinearMap_nabPiece τ h s0 Q i) (fun i v => hdiff (GlobalTheory.T.nabla_piece_smooth B τ h s0 hτ hh hpos hs0 i v) _ (hmem (b, z) hb)) hφev`.
+
+Establish `hRd : DifferentiableAt ℝ R (b, z)` using `hC1.1`. Establish `hRf : ∀ w : Pt E' g, fderiv ℝ R (b, z) w = ∑ i, (wedge (dt g i) (nabHol τ h s0 (φ b, z) (fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b w.1)) + wedge (dtb g i) (nabAnti τ s0 (φ b, z) (fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b w.1)))` using `hC1.2`. Establish `hR0 : R (b, z) = 0` using `by simp [R, nabPiece_zero]`. Establish `hΦ : DifferentiableAt ℝ (fun P : Pt E' g => ((φ P.1, P.2) : Pt E g)) (b, z)` using `(((hφd b hb).restrictScalars ℝ).comp _ differentiableAt_fst).prodMk differentiableAt_snd`. Establish `hs1Φ : DifferentiableAt ℝ (fun P : Pt E' g => s1 (φ P.1, P.2)) (b, z)` using `DifferentiableAt.comp (g := s1) (f := fun P : Pt E' g => ((φ P.1, P.2) : Pt E g)) (b, z) (hdiff hs1 _ (hmem (b, z) hb)) hΦ`.
+
+Establish `hψ : ∀ i k, fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b (β k) = fderiv ℂ (fun c => fderiv ℂ φ c (β k)) b (β i)` using `fun i k => GlobalTheory.T.second_derivative_holomorphic_symm φ b (β i) (β k) hφev`. Unfold `curv`. Rewrite using `[superconn_congr _ _ _ _ hev, superconn_add _ _ _ _ hs1Φ hRd, GlobalTheory.T.connection_pullback_differentiable τ h φ β u s1 (b, z) (hφd _ hb) (hτd _ (hmap hb)) (hdiff hh _ (hmem _ hb)) (hpos _ (hmem _ hb)).ne' (hdiff hs1 _ (hmem _ hb)), GlobalTheory.T.tensorial_form_pullback_spl …`.
+-/
 theorem curv_pullback {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup E'] [NormedSpace ℂ E'] [FiniteDimensional ℂ E'] {g n : ℕ} {B : Set E}
     {τ : E → Matrix (Fin g) (Fin g) ℂ} {h : Pt E g → ℝ}
@@ -97,6 +115,13 @@ theorem curv_pullback {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [
       (nabHol_add τ h s0 _) (nabHol_I τ h s0 _) (nabAnti_add τ s0 _) (nabAnti_I τ s0 _) hψ hR0 hRf,
     add_zero]
 
+/- English proof (translation)
+Introduce `E E' _ _ _ _ _ _ g n B τ M j h hD B' φ hB' hφ hmap β b hb T`. Establish `key : ∀ u D K, IsHeatKernel (τ ∘ φ) M (fun l P => j l (φ P.1, P.2)) (fun P => h (φ P.1, P.2)) β b u D K ↔ IsHeatKernel τ M j h (fun i => fderiv ℂ φ b (β i)) (φ b) u D K`. Introduce `u D K`. Establish `hc : ∀ t, 0 < t → ∀ z' w z, ContDiffOn ℝ ∞ (fun a : ℝ × (Fin g → ℂ) × (Fin g → ℂ) => K a.1 a.2.1 a.2.2) (Ioi 0 ×ˢ univ) → curv (τ ∘ φ) (fun P => h (φ P.1, P.2)) β b u (fun y => K t y z' w) z = curv τ h (fun i => fderiv ℂ φ b (β i)) (φ b) u (fun y => K t y z' w) z` using `fun t ht z' w z hK => curv_pullback hD.1 hD.2.2.2.1 hD.2.2.2.2.1 hB' hφ hmap β hb u (slice_contDiff hK ht z' w) z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨h1, h2, fun t ht z z' w => by rw [← hc t ht z' w z h1]; exact h3 t ht z z' w, h4⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `⟨h1, h2, fun t ht z z' w => by rw [hc t ht z' w z h1]; exact h3 t ht z z' w, h4⟩`. Unfold `IsTorsionForm IsHeatTrace`.
+
+Simplify using `only [key]`. Conclude with `Iff.rfl`.
+-/
 theorem baseChange : BaseChange := by
   intro E E' _ _ _ _ _ _ g n B τ M j h hD B' φ hB' hφ hmap β b hb T
   have key : ∀ u D K, IsHeatKernel (τ ∘ φ) M (fun l P => j l (φ P.1, P.2))

@@ -16,6 +16,15 @@ noncomputable section
 namespace GlobalTheory.HeatSym
 open GlobalTheory.HeatMod
 
+/- English proof (translation)
+Introduce `R Ω _ _ _ _ φ Y p L x g hxp k s s' ⟨r, σ, ω, hr, hv, he⟩ ⟨r', σ', ω', hr', hv', he'⟩`. Use `⟨r * r', constFn p ⊤ r' • σ - constFn p ⊤ r • σ', φ r' * ω - φ r * ω', mul_ne_zero hr hr', ?_, ?_⟩` and prove the remaining obligations. Introduce `Z t z J hJ`. Establish `e : ∀ a : R, ((spMap φ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) = (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (φ a)`. Introduce `a`.
+
+Use `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Conclude with `this.symm`. Establish `key : ∀ a : R, germConstHom ((t ≫ x) ≫ p) z a = gs t z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (φ a))`. Introduce `a`. Rewrite using `[Category.assoc, hxp, gs_eq t z ⊤ trivial, ← e]`.
+
+Both sides reduce to the same expression. Establish `hm` using `hJ.mem (fun _ : Fin 1 => 𝟙 Y) (t ≫ x)`. Establish `h2 : ∀ (a : R) (τ : SecM (𝟙 Y) L k), sval (constFn p ⊤ a • τ) (t ≫ x) z J = germConstHom ((t ≫ x) ≫ p) z a * sval τ (t ≫ x) z J` using `fun a τ => (gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) ((gs_res _ z le_top hm _).trans (gs_constFn_eq_germConstHom p _ z a)) rfl)`. Rewrite using `[sval_sub_constFn_smul p _ _ r (t ≫ x) z hJ, h2, hv Z t z J hJ, hv' Z t z J hJ, key, key]`. Simplify using `only [gs_eq t z ⊤ trivial, map_sub, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, map_mul, map_mul, he, he', map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem VS.sub : ∀ {R Ω : Type} [CommRing R] [IsDomain R] [CommRing Ω] [IsDomain Ω] (φ : R →+* Ω) {Y : Scheme.{0}} (p : Y ⟶ Sp R) (L : LB Y) (x : Sp Ω ⟶ Y) (g : GlobalTheory.RayEv.Transport.Frame L (x ≫ 𝟙 Y)), x ≫ p = spMap φ → ∀ (k : ℕ) (s s' : FractionRing Ω), GlobalTheory.HeatSym.VS φ L x g k s → GlobalTheory.HeatSym.VS φ L x g k s' → GlobalTheory.HeatSym.VS φ L x g k (s - s') := by
   intro R Ω _ _ _ _ φ Y p L x g hxp k s s' ⟨r, σ, ω, hr, hv, he⟩ ⟨r', σ', ω', hr', hv', he'⟩
   refine ⟨r * r', constFn p ⊤ r' • σ - constFn p ⊤ r • σ', φ r' * ω - φ r * ω', mul_ne_zero hr hr', ?_, ?_⟩

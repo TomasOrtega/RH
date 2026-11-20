@@ -18,6 +18,9 @@ def dualRep {Γ k : Type} [Group Γ] [CommRing k] {a : ℕ} (r : Γ →* GL (Fin
     apply Units.ext
     simp [mul_inv_rev, Matrix.transpose_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_dualRep {Γ k : Type} [Group Γ] [CommRing k] {a : ℕ} (r : Γ →* GL (Fin a) k) (g : Γ) :
     ((dualRep r g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) =
       ((r g⁻¹ : GL (Fin a) k) : Matrix (Fin a) (Fin a) k).transpose := rfl

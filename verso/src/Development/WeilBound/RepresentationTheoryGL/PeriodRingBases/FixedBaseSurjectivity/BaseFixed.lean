@@ -17,6 +17,15 @@ namespace BaseA
 variable {l : ℕ} [Fact l.Prime]
 
 open GroundTheory.PAdicHodge.ACris in
+/- English proof (translation)
+Take `⟨T, hT, hθT⟩` from `exists_teichmuller_rootOfUnity hm hc hζ`. Establish `hζ0 : (ζ : ℂ_[l]) ≠ 0`. Introduce `h0`. Use `norm_eq_one_of_pow_eq_one hm (show (ζ : ℂ_[l]) ^ m = 1 by` as an intermediate fact. Rewrite using `[PadicComplex.coe_eq, ← map_pow, hζ, map_one])`.
+
+Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hx : iota ℂ_[l] l (algebraMap (AInf ℂ_[l] l) (ACris.ACris ℂ_[l] l) T) = algClToBdR l ζ`. Apply `eq_of_pow_eq_one_of_theta_eq hm` to reduce the goal to its premises. Rewrite using `[← map_pow, ← map_pow, hT, map_one, map_one]`.
+
+Rewrite using `[← map_pow, hζ, map_one]`. Rewrite using `[thetaAlgHom_apply, thetaField_iota, theta_algebraMap, hθT, thetaAlgHom_algClToBdR]`. Rewrite using `[thetaAlgHom_algClToBdR]`. Conclude with `hζ0`. Establish `e : aB l T = PositivityTheory.LocInh.uB l ⟨ζ, h⟩`.
+
+Apply `base_ι_inj l` to reduce the goal to its premises. Establish `e1 : ι l (aB l T) = algebraMap (BdRp l) (BdR l) (iota ℂ_[l] l (algebraMap (AInf ℂ_[l] l) (ACris.ACris ℂ_[l] l) T))` using `ι_cB l _`. Rewrite using `[e1, hx, ι_eq, PositivityTheory.LocInh.ιCD_uB, PositivityTheory.LocInh.GaloisCommutant.oD_apply]`. Rewrite using `[← e]`. Conclude with `Subring.subset_closure (Or.inl ⟨T, rfl⟩)`.
+-/
 theorem uB_root {ζ : PadicAlgCl l} {m : ℕ} (hm : 0 < m) (hc : m.Coprime l) (hζ : ζ ^ m = 1)
     (h : ζ ∈ Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l) : PositivityTheory.LocInh.uB l ⟨ζ, h⟩ ∈ Ainf' l := by
   obtain ⟨T, hT, hθT⟩ := exists_teichmuller_rootOfUnity hm hc hζ
@@ -40,6 +49,19 @@ theorem uB_root {ζ : PadicAlgCl l} {m : ℕ} (hm : 0 < m) (hc : m.Coprime l) (h
   rw [← e]
   exact Subring.subset_closure (Or.inl ⟨T, rfl⟩)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `c`. Establish `e : (Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l).toSubalgebra = Algebra.adjoin ℚ_[l] {x : PadicAlgCl l | ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ x ^ m = 1}` using `IntermediateField.adjoin_toSubalgebra_of_isAlgebraic fun x _ => Algebra.IsAlgebraic.isAlgebraic x`. Establish `adj : ∀ x, x ∈ Algebra.adjoin ℚ_[l] {x : PadicAlgCl l | ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ x ^ m = 1} → x ∈ Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l` using `fun x hx => by`. Establish `: x ∈ (Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l).toSubalgebra` using `e ▸ hx`. Conclude with `this`.
+
+Establish `key : ∀ x ∈ Algebra.adjoin ℚ_[l] {x : PadicAlgCl l | ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ x ^ m = 1}, ∀ h : x ∈ Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l, PositivityTheory.LocInh.uB l ⟨x, h⟩ ∈ Ainf' l`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Introduce `h`.
+
+Take `⟨m, hm, hl, hxm⟩` from `hx`. Conclude with `uB_root hm (Nat.Coprime.symm (((Fact.out : l.Prime).coprime_iff_not_dvd).2 hl)) hxm h`. Consider the case `algebraMap r`. Introduce `h`. Establish `: (⟨algebraMap ℚ_[l] (PadicAlgCl l) r, h⟩ : ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l)) = algebraMap ℚ_[l] ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l) r` using `rfl`.
+
+Rewrite using `[this, PositivityTheory.LocInh.uB_algebraMap, ← qB_eq]`. Conclude with `EstT.qB_mem_ainf r`. Consider the case `add x y hx hy ihx ihy`. Introduce `h`. Establish `: (⟨x + y, h⟩ : ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l)) = ⟨x, adj x hx⟩ + ⟨y, adj y hy⟩` using `rfl`.
+
+Rewrite using `[this, map_add]`. Conclude with `Subring.add_mem _ (ihx (adj x hx)) (ihy (adj y hy))`. Consider the case `mul x y hx hy ihx ihy`. Introduce `h`. Establish `: (⟨x * y, h⟩ : ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l)) = ⟨x, adj x hx⟩ * ⟨y, adj y hy⟩` using `rfl`.
+
+Rewrite using `[this, map_mul]`. Conclude with `Subring.mul_mem _ (ihx (adj x hx)) (ihy (adj y hy))`. Conclude with `key c (by have : c ∈ (Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l).toSubalgebra := hc; rwa [e] at this) hc`.
+-/
 theorem uB_mem (c : ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l)) : PositivityTheory.LocInh.uB l c ∈ Ainf' l := by
   obtain ⟨c, hc⟩ := c
   have e : (Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l).toSubalgebra =
@@ -79,6 +101,17 @@ end BaseA
 
 open BaseA
 
+/- English proof (translation)
+Introduce `L hL`. Set `L0 : IntermediateField ℚ_[l] (PadicAlgCl l)` to `L ⊓ Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l`. Establish `: FiniteDimensional ℚ_[l] L0`. Establish `: FiniteDimensional ℚ_[l] L.toSubalgebra.toSubmodule` using `hL`. Conclude with `Submodule.finiteDimensional_of_le (S₂ := L.toSubalgebra.toSubmodule) (S₁ := L0.toSubalgebra.toSubmodule) fun x hx => (IntermediateField.mem_inf.1 hx).1`.
+
+Set `bas` to `Module.finBasis ℚ_[l] L0`. Set `c : Fin (Module.finrank ℚ_[l] L0) → ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l)` to `fun i => ⟨(bas i : PadicAlgCl l), (IntermediateField.mem_inf.1 (bas i).2).2⟩`. Use `⟨_, fun i => PositivityTheory.LocInh.uB l (c i), fun i => ⟨uB_mem _, fun σ hσ => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Apply `base_ι_inj l` to reduce the goal to its premises. Rewrite using `[base_ι_σ, ι_eq, PositivityTheory.LocInh.ιCD_uB, PositivityTheory.LocInh.σD_oD]`.
+
+Use `congr 1`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ _ (IntermediateField.mem_inf.1 (bas i).2).1`. Take `⟨k, hkL, hk⟩` from `PositivityTheory.LocInh.invB ⟨L, hL⟩ x fun g hg => hx g hg`. Set `k0 : L0` to `⟨k, IntermediateField.mem_inf.2 ⟨hkL, k.2⟩⟩`. Use `⟨fun i => bas.repr k0 i, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hk]`. Establish `hsum` using `congrArg (fun y : L0 => (y : PadicAlgCl l)) (bas.sum_repr k0).symm`. Establish `hk' : k = ∑ i, algebraMap ℚ_[l] ↥(Formalism.BasicNotions.Loc.MaximalUnramifiedExtension l) (bas.repr k0 i) * c i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hsum.trans ?_` and prove the remaining obligations.
+
+Simplify using `only [IntermediateField.coe_sum, Algebra.smul_def, IntermediateField.coe_mul, c]`. Both sides reduce to the same expression. Rewrite using `[hk', map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, PositivityTheory.LocInh.uB_algebraMap, qB_eq]`.
+-/
 theorem base_fixed' (l : ℕ) [Fact l.Prime] : ∀ L : Fld l, FiniteDimensional ℚ_[l] L →
     ∃ (f : ℕ) (b : Fin f → B l),
     (∀ i, b i ∈ Ainf' l ∧ ∀ σ ∈ L.fixingSubgroup, σB σ (b i) = b i) ∧

@@ -11,6 +11,15 @@ namespace GlobalTheory.GLq.ConstIff
 
 open Formalism.IrreducibleCountingLemmas.TYPES
 
+/- English proof (translation)
+Set `W` to `FDRep.of ρ`. Set `H` to `FDRep.of (Representation.linHom τ.ρ W.ρ)`. Set `_ : Invertible (Nat.card G : ℂ)` to `invertibleOfNonzero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Establish `havg` using `FDRep.average_char_eq_finrank_invariants H`. Establish `hH : ∀ g, H.character g = τ.character g⁻¹ * LinearMap.trace ℂ V (ρ g)` using `fun g => FDRep.char_linHom τ W g`.
+
+Establish `hsum : ∑ x, τ.character x * LinearMap.trace ℂ V (ρ x⁻¹) = ∑ g, H.character g`. Use `Fintype.sum_equiv (Equiv.inv G) _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[Equiv.inv_apply, hH, inv_inv]`. Establish `hcard : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `key : GlobalTheory.GLq.ip (fun x => τ.character x) (fun x => LinearMap.trace ℂ V (ρ x)) = (Module.finrank ℂ (Representation.invariants H.ρ) : ℂ)`.
+
+Rewrite using `[← havg, ← hsum, GlobalTheory.GLq.ip, Nat.card_eq_fintype_card]`. Rewrite using `[key, Ne, Nat.cast_eq_zero, Submodule.finrank_eq_zero, ← Ne, Submodule.ne_bot_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, hne⟩`. Conclude with `⟨φ, (PI.SerBridgeGLW.mem_inv_linHom_iff τ.ρ W.ρ φ).mpr hφ, hne⟩`.
+
+Introduce and unpack `⟨φ, hφ, hne⟩`. Conclude with `⟨φ, (PI.SerBridgeGLW.mem_inv_linHom_iff τ.ρ W.ρ φ).mp hφ, hne⟩`.
+-/
 theorem isConstituent_iff_ip_ne_zero {G : Type} [Group G] [Fintype G] (τ : FDRep ℂ G)
     {V : Type} [AddCommGroup V] [Module ℂ V] [Module.Finite ℂ V] (ρ : Representation ℂ G V) :
     IsConstituent τ ρ ↔ GlobalTheory.GLq.ip (fun x => τ.character x) (fun x => LinearMap.trace ℂ V (ρ x)) ≠ 0 := by
@@ -35,6 +44,9 @@ theorem isConstituent_iff_ip_ne_zero {G : Type} [Group G] [Fintype G] (τ : FDRe
   · rintro ⟨φ, hφ, hne⟩
     exact ⟨φ, (PI.SerBridgeGLW.mem_inv_linHom_iff τ.ρ W.ρ φ).mp hφ, hne⟩
 
+/- English proof (translation)
+Introduce `g _ r s b lam τ _`. Establish `: Module.Finite ℂ (PiTensorProduct ℂ (fun c => (lam c : Type)))` using `Module.Finite.of_basis (Basis.piTensorProduct fun c => Module.Free.chooseBasis ℂ (lam c))`. Conclude with `isConstituent_iff_ip_ne_zero τ (Formalism.IrreducibleCountingLemmas.TYPES.hcRep (ZMod g) b lam)`.
+-/
 theorem constituent_hcRep_iff : ∀ (g : ℕ) [Fact g.Prime] (r s : ℕ) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} (ZMod g))) (τ : FDRep ℂ (GL (Fin r) (ZMod g))),
     CategoryTheory.Simple τ →

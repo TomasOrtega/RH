@@ -9,6 +9,19 @@ namespace GlobalTheory.IntBallMinorOne
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Distinguish the cases in `hu : IsUnit P.det`. Establish `hPD : P.PosDef` using `hP.posDef_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det P).2 hu)`. Establish `hinv : (P⁻¹).PosSemidef` using `hPD.inv.posSemidef`. Establish `e : (c : ℂ) • (replicateCol (Fin 1) v * replicateRow (Fin 1) (star v)) = replicateCol (Fin 1) ((c : ℂ) • v) * replicateRow (Fin 1) (star v)`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply, mul_assoc]`. Establish `h1 : ((1 : Matrix (Fin 1) (Fin 1) ℂ) + replicateRow (Fin 1) (star v) * P⁻¹ * replicateCol (Fin 1) ((c : ℂ) • v)).det = 1 + (c : ℂ) * (star v ⬝ᵥ P⁻¹ *ᵥ v)`. Rewrite using `[Matrix.det_fin_one]`. Simplify using `[Matrix.mul_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[e]`. Use `erw [det_add_replicateCol_mul_replicateRow (ι := Fin 1) hu]`. Rewrite using `[norm_mul]`. Use `erw [h1]`. Establish `hre : 0 ≤ (star v ⬝ᵥ P⁻¹ *ᵥ v).re`.
+
+Use `hinv.re_dotProduct_nonneg v` as an intermediate fact. Simplify using `using this`. Establish `h2 : 1 ≤ ‖(1 : ℂ) + (c : ℂ) * (star v ⬝ᵥ P⁻¹ *ᵥ v)‖`. Use `le_trans ?_ (Complex.re_le_norm _)` and prove the remaining obligations. Simplify using `only [Complex.add_re, Complex.one_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : 0 ≤ ‖P.det‖` using `norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `: P.det = 0` using `by simpa using hu`. Rewrite using `[this, norm_zero]`.
+
+Conclude with `norm_nonneg _`.
+-/
 theorem norm_det_le_add_rankOne {k : ℕ} (P : Matrix (Fin k) (Fin k) ℂ) (hP : P.PosSemidef)
     (v : Fin k → ℂ) (c : ℝ) (hc : 0 ≤ c) :
     ‖P.det‖ ≤ ‖(P + (c : ℂ) • (replicateCol (Fin 1) v * replicateRow (Fin 1) (star v))).det‖ := by
@@ -45,6 +58,25 @@ namespace GlobalTheory.IntBallMinorOne
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Use `set d : Matrix (Fin 1) (Fin 1) ℂ := 1 - Zᴴ * Z with hdd`. Establish `hprod : (fromBlocks (1 : Matrix (Fin 1) (Fin 1) ℂ) 0 Z N)ᴴ * fromBlocks (1 : Matrix (Fin 1) (Fin 1) ℂ) 0 0 (-1 : Matrix (Fin m) (Fin m) ℂ) * fromBlocks (1 : Matrix (Fin 1) (Fin 1) ℂ) 0 Z N = fromBlocks d (-(Zᴴ * N)) (-(Nᴴ * Z)) (-(Nᴴ * N))`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hdd, sub_eq_add_neg, Matrix.neg_mul, Matrix.mul_neg]`. Establish `hdet : d.det = d 0 0` using `Matrix.det_fin_one d`.
+
+Establish `hherm : d.IsHermitian` using `Matrix.isHermitian_one.sub (Matrix.isHermitian_conjTranspose_mul_self Z)`. Establish `him : (d 0 0).im = 0`. Use `hherm.apply 0 0` as an intermediate fact. Establish `h2 : (starRingEnd ℂ) (d 0 0) = d 0 0` using `this`. Conclude with `Complex.conj_eq_iff_im.1 h2`.
+
+Use `set δ : ℝ := d.det.re with hδ`. Establish `hreal : d.det = (δ : ℂ)`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hδ]`. Simplify using `[hdet, him]`.
+
+Establish `hne : d.det ≠ 0`. Rewrite using `[hreal]`. Conclude with `hd.ne'` after adjusting the coercions. Use `haveI : Invertible d := Matrix.invertibleOfIsUnitDet d (isUnit_iff_ne_zero.2 hne)`. Establish `hinvd : ⅟d = (((δ : ℂ))⁻¹) • (1 : Matrix (Fin 1) (Fin 1) ℂ)`.
+
+Rewrite using `[Matrix.invOf_eq_nonsing_inv]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Matrix.inv_def, Matrix.adjugate_fin_one, hreal]`.
+
+Rewrite using `[← hdet, hreal]`. Rewrite using `[hprod, det_fromBlocks₁₁]`. Use `set v : Fin k → ℂ := fun j => (Nᴴ * Z) j 0 with hv`. Establish `hs : ∀ j, (Zᴴ * N) 0 j = star (v j)`. Introduce `j`.
+
+Simplify using `only [hv, Matrix.mul_apply, Matrix.conjTranspose_apply, star_sum, star_mul', star_star]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hcr : Nᴴ * Z * (Zᴴ * N) = replicateCol (Fin 1) v * replicateRow (Fin 1) (star v)`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_apply (M := Nᴴ * Z), Fin.sum_univ_one, hs j, Matrix.mul_apply (M := replicateCol (Fin 1) v), Fin.sum_univ_one]`. Both sides reduce to the same expression. Establish `hrk : -(Nᴴ * N) - -(Nᴴ * Z) * ⅟d * -(Zᴴ * N) = -((Nᴴ * N) + ((δ⁻¹ : ℝ) : ℂ) • (replicateCol (Fin 1) v * replicateRow (Fin 1) (star v)))`. Rewrite using `[hinvd, ← hcr]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one]`.
+
+Use `push_cast`. Use `module`. Rewrite using `[hrk, Matrix.det_neg, norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, hreal, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd]`. Use `gcongr`. Conclude with `norm_det_le_add_rankOne _ (Matrix.posSemidef_conjTranspose_mul_self N) v _ (inv_nonneg.2 hd.le)`.
+-/
 theorem schur_bound {m k : ℕ} (Z : Matrix (Fin m) (Fin 1) ℂ) (N : Matrix (Fin m) (Fin k) ℂ)
     (hd : 0 < (1 - Zᴴ * Z).det.re) :
     (1 - Zᴴ * Z).det.re * ‖(Nᴴ * N).det‖ ≤
@@ -109,14 +141,37 @@ open Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Simplify using `[lowMat]`.
+-/
 theorem lowMat_diag (w : Low r → ℂ) (a : Fin r) : lowMat w a a = 1 := by
   simp [lowMat]
 
+/- English proof (translation)
+Establish `h1 : ¬ b < a` using `fun h' => lt_asymm h h'`. Establish `h2 : a ≠ b` using `ne_of_lt h`. Simplify using `[lowMat, h1, h2]`.
+-/
 theorem lowMat_upper (w : Low r → ℂ) {a b : Fin r} (h : a < b) : lowMat w a b = 0 := by
   have h1 : ¬ b < a := fun h' => lt_asymm h h'
   have h2 : a ≠ b := ne_of_lt h
   simp [lowMat, h1, h2]
 
+/- English proof (translation)
+Rewrite using `[← nmat_eq_lowMat]`. Use extensionality with `a b`. Use `show ∑ c, zFrame X z τ a c * leviFrame X z τ c b = nmat X z τ a b`. Simplify using `only [zFrame, leviFrame, hp]`. Establish `hr : 0 < r` using `lt_of_le_of_lt (Nat.zero_le _) a.isLt`.
+
+Establish `n00 : ∀ c : Fin r, nmat X z τ c c = 1` using `fun c => by simp [nmat]`. Establish `nup : ∀ c d : Fin r, c < d → nmat X z τ c d = 0` using `fun c d h => by`. Establish `h1 : ¬ d < c` using `fun h' => lt_asymm h h'`. Establish `h2 : c ≠ d` using `ne_of_lt h`. Simplify using `[nmat, h1, h2]`.
+
+Distinguish the cases in `hb : (b : ℕ) < 1`. Establish `hb0 : b = ⟨0, hr⟩` using `Fin.ext (by simp; omega)`. Substitute `hb0` using the available equality. Rewrite using `[Finset.sum_eq_single ⟨0, hr⟩]`. Distinguish the cases in `ha : 1 ≤ (a : ℕ)`.
+
+Simplify using `[ha, n00]`. Establish `ha0 : a = ⟨0, hr⟩` using `Fin.ext (by simp; omega)`. Substitute `ha0` using the available equality. Simplify using `[n00]`. Introduce `c _ hc`.
+
+Establish `hc1 : 1 ≤ (c : ℕ)`. Assume the negation of the conclusion as `h; apply hc; exact Fin.ext (by simp; omega)`. Simplify using `[hc1]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single a]`.
+
+Establish `: ¬ (1 ≤ (a : ℕ) ∧ (a : ℕ) < 1)` using `by omega`. Simplify using `[this, hb]`. Introduce `h1 h2`. Use linear arithmetic over natural numbers and integers. Introduce `c _ hca`.
+
+Distinguish the cases in `hc : (c : ℕ) < 1`. Establish `h1 : c < b` using `Fin.lt_def.2 (by omega)`. Simplify using `[hb, nup c b h1]`. Establish `: ¬ (1 ≤ (a : ℕ) ∧ (c : ℕ) < 1)` using `by omega`. Simplify using `[this, Ne.symm hca]`.
+
+Introduce `_ _ h3`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+-/
 theorem mat_nFrame (X : Data E r) (hp : X.p0 = 1) (z : V (nd X)) (τ : X.Ψ) :
     mat (nFrame X z) τ = lowMat (zOf X z τ) := by
   rw [← nmat_eq_lowMat]
@@ -162,6 +217,9 @@ open Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_eq_transpose (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
   ext a b
@@ -169,6 +227,9 @@ theorem gram_eq_transpose (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x :
     Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Rewrite using `[gram_eq_transpose, gram_eq_transpose, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem gram_mul_right (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (M N : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G (M * N) = Nᵀ * gram τ G M * N.map (starRingEnd ℂ) := by
   rw [gram_eq_transpose, gram_eq_transpose, Matrix.transpose_mul, Matrix.map_mul]
@@ -180,15 +241,27 @@ def eR (r : ℕ) (hr : 1 ≤ r) : Fin 1 ⊕ Fin (r - 1) ≃ Fin r :=
 def eC (k : ℕ) : Fin 1 ⊕ Fin k ≃ Fin (k + 1) :=
   finSumFinEquiv.trans (finCongr (by omega))
 
+/- English proof (translation)
+Simplify using `[eR]`.
+-/
 @[simp] theorem eR_inl (hr : 1 ≤ r) (i : Fin 1) : ((eR r hr (Sum.inl i) : Fin r) : ℕ) = i := by
   simp [eR]
 
+/- English proof (translation)
+Simplify using `[eR]`.
+-/
 @[simp] theorem eR_inr (hr : 1 ≤ r) (i : Fin (r - 1)) : ((eR r hr (Sum.inr i) : Fin r) : ℕ) = 1 + i := by
   simp [eR]
 
+/- English proof (translation)
+Simplify using `[eC]`.
+-/
 @[simp] theorem eC_inl (k : ℕ) (i : Fin 1) : ((eC k (Sum.inl i) : Fin (k + 1)) : ℕ) = i := by
   simp [eC]
 
+/- English proof (translation)
+Simplify using `[eC]`. Use linear arithmetic over natural numbers and integers.
+-/
 @[simp] theorem eC_inr (k : ℕ) (i : Fin k) : ((eC k (Sum.inr i) : Fin (k + 1)) : ℕ) = 1 + i := by
   simp [eC]; omega
 
@@ -196,6 +269,39 @@ end GlobalTheory.IntBallMinorOne
 
 namespace GlobalTheory.IntBallMinorOne
 
+/- English proof (translation)
+Introduce `E _ _ _ r X hp x0 z hz τ k`. Establish `hr : 1 ≤ r` using `by have := k.isLt; omega`. Establish `hk : (k : ℕ) + 1 ≤ r` using `by have := k.isLt; omega`. Use `set w := zOf X z τ with hw`. Use `set L : Matrix (Fin r) (Fin r) ℂ := lowMat w with hL`.
+
+Use `set D : Matrix (Fin r) (Fin r) ℂ := Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) with hD`. Establish `hgram : gram τ.1 X.Gm (mat (point X x0 z) τ) = Lᵀ * D * L.map (starRingEnd ℂ)`. Establish `: mat (point X x0 z) τ = mat x0.1 τ * mat (nFrame X z) τ` using `rfl`. Rewrite using `[this, gram_mul_right, x0.2 τ, mat_nFrame X hp]`. Use `set f : Fin 1 ⊕ Fin k → Fin r := fun j => Fin.castLE hk (eC k j) with hf`.
+
+Use `set A : Matrix (Fin 1 ⊕ Fin (r - 1)) (Fin 1 ⊕ Fin k) ℂ := L.submatrix (eR r hr) f with hA`. Use `set D' : Matrix (Fin 1 ⊕ Fin (r - 1)) (Fin 1 ⊕ Fin (r - 1)) ℂ := D.submatrix (eR r hr) (eR r hr) with hD'`. Establish `hdmin : dmin X.Gm (point X x0 z) τ ⟨(k : ℕ) + 1, by omega⟩ = (Aᵀ * D' * A.map (starRingEnd ℂ)).det`. Unfold `dmin lminor`. Rewrite using `[hgram, ← Matrix.det_submatrix_equiv_self (eC k), Matrix.submatrix_submatrix]`.
+
+Use `congr 1`. Rewrite using `[Matrix.submatrix_mul _ _ _ (eR r hr) _ (eR r hr).bijective, Matrix.submatrix_mul _ _ _ (eR r hr) _ (eR r hr).bijective, hA, hD', Matrix.transpose_submatrix, Matrix.submatrix_map]`. Both sides reduce to the same expression. Use `set Zm : Matrix (Fin (r - 1)) (Fin 1) ℂ := fun i _ => A (Sum.inr i) (Sum.inl 0) with hZm`. Use `set Nm : Matrix (Fin (r - 1)) (Fin k) ℂ := fun i j => A (Sum.inr i) (Sum.inr j) with hNm`.
+
+Establish `hAb : A = Matrix.fromBlocks 1 0 Zm Nm`. Use extensionality with `(i | i) (j | j)`. Establish `h : eR r hr (Sum.inl i) = f (Sum.inl j)` using `Fin.ext (by simp [hf, Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j])`. Simplify using `only [Matrix.fromBlocks_apply₁₁, hA, Matrix.submatrix_apply]`. Rewrite using `[h, hL, lowMat_diag, Subsingleton.elim i j, Matrix.one_apply_eq]`.
+
+Establish `h : eR r hr (Sum.inl i) < f (Sum.inr j)` using `Fin.lt_def.2 (by simp [hf, Fin.fin_one_eq_zero i])`. Simplify using `only [Matrix.fromBlocks_apply₁₂, hA, Matrix.submatrix_apply, Matrix.zero_apply]`. Rewrite using `[hL, lowMat_upper w h]`. Rewrite using `[Fin.fin_one_eq_zero j]`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Establish `hDb : D' = Matrix.fromBlocks 1 0 0 (-1)`. Apply the tactic sequence `ext (i | i) (j | j) <;>`. Apply the tactic sequence `simp [hD', hD, Matrix.diagonal_apply, sgn, hp, Matrix.one_apply, (eR r hr).injective.eq_iff] <;>`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hT : Aᵀ * D' * A.map (starRingEnd ℂ) = (Aᴴ * D' * A)ᵀ`. Establish `h1 : D'ᵀ = D'` using `by rw [hDb, Matrix.fromBlocks_transpose]; simp`. Establish `h2 : (Aᴴ)ᵀ = A.map (starRingEnd ℂ)` using `by ext i j; simp`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, h1, h2, Matrix.mul_assoc]`. Establish `hzD : zDet X z τ = (1 - Zmᴴ * Zm).det.re`.
+
+Unfold `zDet`. Use `haveI : Unique {b : Fin r // (b : ℕ) < X.p0} := { default := ⟨⟨0, by omega⟩, by show 0 < X.p0; omega⟩ uniq := fun b => Subtype.ext (Fin.ext (by`. Establish `h1 : ((b : Fin r) : ℕ) < X.p0` using `b.2`. Use `show ((b : Fin r) : ℕ) = 0`. Use the proof step `omega)) }`.
+
+Rewrite using `[Matrix.det_unique, Matrix.det_fin_one]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Establish `hmem : ∀ i : Fin (r - 1), X.p0 ≤ (i : ℕ) + 1` using `fun i => by omega`. Set `eqv : Fin (r - 1) ≃ {a : Fin r // X.p0 ≤ (a : ℕ)}` to `{ toFun := fun i => ⟨⟨(i : ℕ) + 1, by omega⟩, hmem i⟩ invFun := fun a => ⟨(a.1 : ℕ) - 1, by have := a.1.2; omega⟩ left_inv := fun i => Fin.ext (by simp) right_inv := fun a => Subtype.ext (Fin.ext (by`. Establish `h1 : X.p0 ≤ ((a : Fin r) : ℕ)` using `a.2`.
+
+Use `show ((a : Fin r) : ℕ) - 1 + 1 = (a : Fin r)`. Use the proof step `omega)) }`. Establish `key : ∀ i : Fin (r - 1), Zm i 0 = zBlock X z τ ⟨⟨(i : ℕ) + 1, by omega⟩, hmem i⟩ default`. Introduce `i`. Simplify using `only [hZm, hA, Matrix.submatrix_apply, hL, zBlock, Matrix.of_apply]`.
+
+Rewrite using `[← congrFun (congrFun (nmat_eq_lowMat X z τ) _) _, Matrix.of_apply]`. Use `congr 1`. Conclude with `Fin.ext (by simp; omega)`. Establish `h1 : (((default : {b : Fin r // (b : ℕ) < X.p0}) : Fin r) : ℕ) < X.p0` using `(default : {b : Fin r // (b : ℕ) < X.p0}).2`. Conclude with `Fin.ext (by simp [hf]; omega)`.
+
+Use `congr 2`. Conclude with `(Fintype.sum_equiv eqv _ _ fun i => by rw [key i]; rfl).symm`. Establish `hcG : colGram (blkW X.p0 (zOf X z τ)) k.castSucc = ‖(Nmᴴ * Nm).det‖`. Unfold `colGram lminor`. Rewrite using `[Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, ← Matrix.conjTranspose_submatrix]`.
+
+Establish `hN : (blkW X.p0 (zOf X z τ)).submatrix id (Fin.castLE (Nat.le_of_lt_succ (Fin.castSucc k).isLt)) = Nm`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, blkW, hp, if_true, hNm, hA, hL, id]`. Use `congr 1`. Conclude with `Fin.ext (by simp; omega)`.
+
+Conclude with `Fin.ext (by simp [hf]; omega)`. Rewrite using `[hN]`. Rewrite using `[hdmin, hT, Matrix.det_transpose, hzD, hcG, hAb, hDb]`. Apply `schur_bound` to reduce the goal to its premises. Rewrite using `[← hzD]`.
+
+Conclude with `zDet_pos X hz τ`.
+-/
 theorem zDet_mul_colGram_le_norm_dmin : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r), X.p0 = 1 →
     ∀ (x0 : Base X) (z : V (nd X)), z ∈ Om X → ∀ (τ : X.Ψ) (k : Fin (r - 1)),
     zDet X z τ * colGram (blkW X.p0 (zOf X z τ)) k.castSucc ≤

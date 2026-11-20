@@ -9,6 +9,15 @@ open PositivityTheory.KB.SplitAffineSpectral
 
 variable {Y : Type}
 
+/- English proof (translation)
+Unfold `dc`. Rewrite using `[Fin.sum_univ_succ]`. Establish `h0 : (fun j => (Fin.cons a t : Fin (m + 3) → Y) ((0 : Fin (m + 3)).succAbove j)) = t`. Use function extensionality and compare the values at `j`. Simplify using `[Fin.succAbove_zero]`.
+
+Establish `hs : ∀ i : Fin (m + 2), (fun j => (Fin.cons a t : Fin (m + 3) → Y) (i.succ.succAbove j)) = Fin.cons a (fun j => t (i.succAbove j))`. Introduce `i`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[Fin.succ_succAbove_zero]`.
+
+Simplify using `[Fin.succ_succAbove_succ]`. Rewrite using `[h0]`. Simplify using `only [hs, Fin.val_zero, pow_zero, one_mul, Fin.val_succ, pow_succ]`. Rewrite using `[sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dc_cons {m : ℕ} (G : (Fin (m + 2) → Y) → ℝ) (a : Y) (t : Fin (m + 2) → Y) :
     dc G (Fin.cons a t) = G t - dc (fun z => G (Fin.cons a z)) t := by
   unfold dc
@@ -28,6 +37,9 @@ theorem dc_cons {m : ℕ} (G : (Fin (m + 2) → Y) → ℝ) (a : Y) (t : Fin (m 
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `dc`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dc_sub {m : ℕ} (G H : (Fin (m + 1) → Y) → ℝ) (x : Fin (m + 2) → Y) :
     dc (fun z => G z - H z) x = dc G x - dc H x := by
   unfold dc
@@ -35,6 +47,13 @@ theorem dc_sub {m : ℕ} (G H : (Fin (m + 1) → Y) → ℝ) (x : Fin (m + 2) �
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `dc`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Establish `h0 : (fun j : Fin 1 => y ((0 : Fin 2).succAbove j)) = fun _ => y 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Fin.fin_one_eq_zero j]`.
+
+Both sides reduce to the same expression. Establish `h1 : (fun j : Fin 1 => y ((Fin.succ 0 : Fin 2).succAbove j)) = fun _ => y 0`. Use function extensionality and compare the values at `j`. Rewrite using `[Fin.fin_one_eq_zero j]`. Both sides reduce to the same expression.
+
+Rewrite using `[h0, h1]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dc1 (G : (Fin 1 → Y) → ℝ) (y : Fin 2 → Y) :
     dc G y = G (fun _ => y 1) - G (fun _ => y 0) := by
   unfold dc
@@ -49,6 +68,9 @@ def prism (φ : Y → Y) : (m : ℕ) → ((Fin (m + 2) → Y) → ℝ) → (Fin 
   | 0, F, x => F (Fin.cons (x 0) (φ ∘ x))
   | m + 1, F, x => F (Fin.cons (x 0) (φ ∘ x)) - prism φ m (fun z => F (Fin.cons (x 0) z)) (Fin.tail x)
 
+/- English proof (translation)
+The claim follows from `| 0, F, G, x => rfl | m + 1, F, G, x => by simp only [prism] rw [prism_sub φ m] ring`.
+-/
 theorem prism_sub (φ : Y → Y) : ∀ (m : ℕ) (F G : (Fin (m + 2) → Y) → ℝ) (x : Fin (m + 1) → Y),
     prism φ m (fun z => F z - G z) x = prism φ m F x - prism φ m G x
   | 0, F, G, x => rfl
@@ -57,6 +79,9 @@ theorem prism_sub (φ : Y → Y) : ∀ (m : ℕ) (F G : (Fin (m + 2) → Y) → 
     rw [prism_sub φ m]
     ring
 
+/- English proof (translation)
+The claim follows from `| 0, x => rfl | m + 1, x => by simp only [prism] rw [prism_zero φ m] ring`.
+-/
 theorem prism_zero (φ : Y → Y) : ∀ (m : ℕ) (x : Fin (m + 1) → Y),
     prism φ m (fun _ => (0 : ℝ)) x = 0
   | 0, x => rfl
@@ -65,6 +90,11 @@ theorem prism_zero (φ : Y → Y) : ∀ (m : ℕ) (x : Fin (m + 1) → Y),
     rw [prism_zero φ m]
     ring
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩ : ∃ a b, x = Fin.cons a (fun _ : Fin 1 => b)` from `⟨x 0, x 1, by`. Use function extensionality and compare the values at `j`. Use `Fin.cases rfl (fun k => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero k]`. Use the proof step `rfl⟩`.
+
+Simplify using `only [prism, Fin.cons_zero, Fin.tail_cons]`. Simplify using `only [Fin.comp_cons]`. Simplify using `only [dc_cons, dc1]`. Simplify using `only [Fin.cons_zero, Fin.cons_one, Fin.tail_cons, Function.comp_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prism_base (φ : Y → Y) (F : (Fin 2 → Y) → ℝ) (x : Fin 2 → Y) :
     dc (prism φ 0 F) x + prism φ 1 (dc F) x = F (φ ∘ x) - F x := by
   obtain ⟨a, b, rfl⟩ : ∃ a b, x = Fin.cons a (fun _ : Fin 1 => b) := ⟨x 0, x 1, by
@@ -75,6 +105,9 @@ theorem prism_base (φ : Y → Y) (F : (Fin 2 → Y) → ℝ) (x : Fin 2 → Y) 
   simp only [Fin.cons_zero, Fin.cons_one, Fin.tail_cons, Function.comp_def]
   ring
 
+/- English proof (translation)
+The claim follows from `| 0, F, x => prism_base φ F x | m + 1, F, x => by obtain ⟨a, t, rfl⟩ : ∃ a t, x = Fin.cons a t := ⟨x 0, Fin.tail x, (Fin.cons_self_tail x).symm⟩ have ih := prism_htpy φ m (fun z => F (Fin.cons a z)) t rw [dc_cons] have hK : (fun z => prism φ (m + 1) F (Fin.cons a z)) = fun z => F …`.
+-/
 theorem prism_htpy (φ : Y → Y) : ∀ (m : ℕ) (F : (Fin (m + 2) → Y) → ℝ) (x : Fin (m + 2) → Y),
     dc (prism φ m F) x + prism φ (m + 1) (dc F) x = F (φ ∘ x) - F x
   | 0, F, x => prism_base φ F x
@@ -98,6 +131,9 @@ theorem prism_htpy (φ : Y → Y) : ∀ (m : ℕ) (F : (Fin (m + 2) → Y) → �
     rw [h4]
     linarith [ih]
 
+/- English proof (translation)
+The claim follows from `| 0, F, x => by simp only [prism] congr 1 funext i refine Fin.cases ?_ (fun j => ?_) i · simp · simp [hφ] | m + 1, F, x => by simp only [prism] have e1 : (Fin.cons (k * x 0) (φ ∘ fun i => k * x i) : Fin (m + 3) → P) = fun i => k * (Fin.cons (x 0) (φ ∘ x) : Fin (m + 3) → P) i := b …`.
+-/
 theorem prism_smul {P : Type} [Group P] (φ : P → P) (k : P) (hφ : ∀ y, φ (k * y) = k * φ y) :
     ∀ (m : ℕ) (F : (Fin (m + 2) → P) → ℝ) (x : Fin (m + 1) → P),
       prism φ m F (fun i => k * x i) = prism φ m (fun z => F (fun i => k * z i)) x

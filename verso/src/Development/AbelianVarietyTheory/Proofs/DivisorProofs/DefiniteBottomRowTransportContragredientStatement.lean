@@ -20,6 +20,9 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowTransport.row_transport | exact GlobalTheory.RowTransport.row_transport | (intros; apply GlobalTheory.RowTransport.row_transport <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.definite_bottom_row_transport_contragredient : ∀ (D : D7) (M M' X : HSp D) (A : GlobalTheory.ChainFr.Fr M) (A' : GlobalTheory.ChainFr.Fr M') (B : GlobalTheory.ChainFr.Fr X)
     (eS eS' : D.what₂.Tau → ℚ) (n₀ : D.what₂.Tau → ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q]
     (q : PolF D X.rank M.rank →ₗ[ℂ] Q) (q' : PolF D X.rank M'.rank →ₗ[ℂ] Q),

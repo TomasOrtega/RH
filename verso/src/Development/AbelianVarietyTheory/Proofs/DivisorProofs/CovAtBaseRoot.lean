@@ -32,6 +32,9 @@ open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.AdTh.CoverVal
 
+/- English proof (translation)
+Establish `hs` using `hU.2.2.2.2.1 0 0 ⟨fun τ _ _ _ => le_rfl, Even.zero⟩ f hf k`. Rewrite `hs` using `[show laU U 0 0 k = 0 from GlobalTheory.Reg.IdemCusp.laU_zero (Formalism.L2.PjFree.Unf.ofPj U) k]`. Rewrite using `[hs.2.1 _ (dom_lact (U.X k) hx ((U.X k).Γ_stab γ hγ)) b hb, hs.2.2 γ hγ x hx, GlobalTheory.Reg.IdemCusp.chi_zero _ hγ]`. Simplify using `[bchar]`.
+-/
 theorem rdU_move {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (hU : IsUnf U)
     {f : Rul Xo c} (hf : f ∈ sec Xo c 0 0) (k : U.Comp) {x : Frame (U.X k).Ψ r} (hx : x ∈ (U.X k).dom)
@@ -49,6 +52,27 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalis
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨c1, hm, hc⟩` from `hO.cxi`. Take `⟨hU, hW, g', e', F', ik, φ, th, hth, hD, hval⟩` from `hc ()`. Take `⟨hlev, hA, -⟩` from `hO.cov ()`. Establish `hs0 : O.s0 = T.toCore.σ₀` using `sOv_eq _ _ _`. Take `⟨hX₀, hon₀, -, hp₀, hrk, -, h1, -, hΨ₀, -⟩` from `GlobalTheory.AdTh.models_at_record_core D G Pl0 T0 A T R F κ v₀ hR hT i O.s0 hs0 (T.dict _ O.s0 1).1`.
+
+Establish `hσ : GoodEmb (O.dδ ()).c₂ ((inC O.c').comp ((O.dδ ()).eF.symm : (O.dδ ()).c₂.F →+* O.c'.F))` using `rfl`. Establish `hmod : ∀ j, IsMod (Wc D i) (rank_Wc i) ((O.U₂ ()).X j)` using `fun j => isMod_of _ _ _ (hW j) fun ρ => ((hU.2.1 j).2 _).2 ((hΨ₀ _).1 ((hX₀.psi _).2 ⟨ρ, rfl⟩))`. Establish `hor : ∀ j, IsOrthogonalFrame ((O.U₂ ()).X j) (T.x₀ ((i : ℕ) + 1) O.s0)` using `fun j τ hτ => by`. Establish `hsp` using `sameSp_of (hmod j) hX₀ ((hU.2.1 j).1.trans hp₀.symm)`. Rewrite using `[hsp.gm, hsp.p0]`.
+
+Conclude with `hon₀ ⟨τ, hsp.psi ▸ hτ⟩`. Establish `hU'` using `(Formalism.L2.PjFree.isUnf_ofPj _).2 hU`. Take `⟨Wt⟩` from `nonempty_uw hU'`. Take `⟨hroot, -⟩` from `GlobalTheory.Member.isDetRoot_laws D (Wc D i)`. Establish `hxi : ∀ x, R.xi A.μ0 x = 1` using `GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (χ := R.xi A.μ0) (hR.lev.xi_base ▸ hR.lev.xi A.μ0)`.
+
+Establish `hf : (O.dδ ()).cδ ∈ sec (O.dδ ()).Xo₂ (O.dδ ()).c₂ 0 0` using `hlev.2.2.2.2.2.2.2.1`. Establish `hv : ∀ h, rdU (O.U₂ ()) (O.dδ ()).cδ (O.dict₂ () h).1 (O.dict₂ () h).2 = c1` using `fun h => by`. Take `⟨γ', hγ', h2, h3, -⟩` from `hD.2 h`. Take `⟨x, hx⟩` from `hroot (γ' * h)`. Establish `hv` using `hval h γ' ⟨hγ', h2, h3⟩`.
+
+Rewrite `hv` using `[(hO.tuple ()).xi _ _ hx, hxi, Circle.coe_one, _root_.mul_one]`. Conclude with `hv`. Establish `key : ∀ h, (O.dict₂ () h).2 ∈ ((O.U₂ ()).X (O.dict₂ () h).1).dom ∧ rdU (O.U₂ ()) (O.dδ ()).cδ (O.dict₂ () h).1 (O.dict₂ () h).2 = c0` using `fun h => by`. Take `⟨hon, γ, ⟨hγ, hl, hfr⟩, hma, -⟩` from `GlobalTheory.AdTh.dict_atComp_markAd D _ _ _ _ _ _ _ (O.U₂ ()) hσ hU h1 hA R.θ (Wc D i) (rank_Wc i) (O.dict₂ ()) (iotaW T i) g' e' F' ik φ th _ hR.models.inf hmod hor hth hD Wt h`. Take `⟨-, hsd, hmark, -⟩` from `uw_lattice _ _ _ _ _ _ _ _ (Formalism.L2.PjFree.Unf.ofPj (O.U₂ ())) hσ hU' h1 Wt (O.dict₂ () h).1`.
+
+Take `⟨Dc, hDc, -⟩` from `exists_dic _ _ _ _ (O.dδ ()).c₂ _ _ Wt.g 0 ((O.U₂ ()).X (O.dict₂ () h).1) 0 Wt.e hσ hU.1 (hU.2.1 _).1 (hU.2.1 _).2 hsd ⟨fun _ => antitone_const, Even.zero⟩`. Establish `hper` using `Dc.per_eq`. Establish `hty` using `Dc.ty_eq`. Rewrite `hper`, `hty` using `[hDc]`. Take `⟨hd', hu', -⟩` from `hx_of_isONFr _ _ _ 0 _ Dc.bas Dc.idx Dc.sympl Even.zero _ hon`.
+
+Establish `hA'` using `uw_anFib _ _ _ _ _ _ _ _ (Formalism.L2.PjFree.Unf.ofPj (O.U₂ ())) hσ hU' h1 Wt (O.dict₂ () h).1 Dc.bas Dc.idx Dc.sympl hper hty ⟨_, hd'⟩ hu'`. Take `⟨x, hx⟩` from `hroot (γ * h)`. Establish `h3` using `h0 () _ Wt.g Dc.bas Dc.idx Wt.e (γ * h) x (Wt.mark (O.dict₂ () h).1) (hmod _) (hU.2.1 _).1 Dc.sympl ⟨hper, hty⟩ hl hx hmark hma`. Rewrite `h3` using `[← hfr, hxi, Circle.coe_one, _root_.mul_one]`. Take `⟨A', hA'', -⟩` from `hA'`.
+
+Conclude with `⟨hd', (dif_pos hd').trans (h3 _ A' hA'')⟩`. Take `rfl : c0 = c1` from `(key 1).2.symm.trans (hv 1)`. Use `⟨?_, hm⟩` and prove the remaining obligations. Take `⟨hio, hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T hT.laws _ (inR i) O.s0 (hs0 ▸ T.toCore.good_σ₀) (Wc D i) O.hV (rank_Wc i)`. Establish `hpq` using `hrk ▸ h1`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.T.weightZero_const_frameValue_mem_coeff_range _ _ _ _ _ _ _ _ (O.U₂ ()) hσ hU hpq _ hf c0 fun k x hx => by`. Take `⟨h, γ, hγ, b, hb, e⟩` from `GlobalTheory.CoverIndep.dict_onto (Wc D i) (rank_Wc i) (O.U₂ ()) (O.dict₂ ()) (iotaW T i) e' F' ik φ th _ hσ hA hpq hU hW hD hio hth hx₀ (fun h => (key h).1) k x hx`. Establish `h4` using `hv h`. Rewrite `h4` using `[e]`. Conclude with `(rdU_move (O.U₂ ()) hU hf k hx hγ hb).symm.trans h4`.
+
+Conclude with `⟨_, ha⟩`.
+-/
 theorem covAt_mem (hR : GlobalTheory.Hk3.Core R F) (hT : TieIn T R κ v₀) (O : OMDat T.toCore R i Unit (fun _ => A.μ0))
     (hO : O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0)) (c0 : ℂ) (h0 : GlobalTheory.PtId.CovAt O c0) :
     c0 ∈ (inC O.c').range ∧ ∃ m : ℕ, 0 < m ∧ c0 ^ m = 1 := by
@@ -121,6 +145,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.OnCmp GlobalTheory.BigOn GlobalTheory.RealIndexBound
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw O _ hC i hOP c0 h0`. Take `⟨⟨a, rfl⟩, hm⟩` from `covAt_mem hC ⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩ (O i) hOP.2 c0 h0`. Use `⟨?_, hm⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hOP.1.le a.2`. Conclude with `⟨b, hb⟩`.
+-/
 theorem covAt_base_root : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (O : ∀ i, OMDat T.J.toCore R i Unit (fun _ => A.μ0)) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), OMPins T.J R κ v₀ O i → ∀ c0 : ℂ, GlobalTheory.PtId.CovAt (O i) c0 → c0 ∈ D.what₂.embLL.range ∧ ∃ m : ℕ, 0 < m ∧ c0 ^ m = 1 := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw O _ hC i hOP c0 h0
   obtain ⟨⟨a, rfl⟩, hm⟩ := covAt_mem hC ⟨fw.laws, fw.alg_eq, fw.kap, fw.hv₀, fw.chiR, fw.x0⟩ (O i) hOP.2 c0 h0

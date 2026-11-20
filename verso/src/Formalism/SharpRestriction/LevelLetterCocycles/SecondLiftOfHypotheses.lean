@@ -14,6 +14,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hS`. Take `⟨hDom, hDVR, hFr⟩` from `hS.2.2.2.1`. Use `⟨2 * sigC PD.p (hpar n b S) η, Step2A.sigma_bound_le _ _ _ hS.2.1, ?_⟩` and prove the remaining obligations. Introduce `s₁ FF _ _ _ _ g N y z μ ν hX F₁ ms hO`. Conclude with `second_lift_at_situation W hZ hF hB hK hD hR hE h2a h5 h9 hEx hCs hDq hS s₁ g N y z μ ν hX F₁ ms hO`.
+-/
 theorem second_lift_of_hypotheses [NeZero n] (W : LocWach PD LL O v n) (hZ : TTool2Z W)
     (hF : Formalism.MainNotions.CrystallineLiftingInputs.FTool W) (hB : Sh.BasTool W) (hK : Sh.LemK W) (hD : Sh.FilDim W)
     (hR : Sh.ExpRing W) (hE : Sh.ExpRules W)

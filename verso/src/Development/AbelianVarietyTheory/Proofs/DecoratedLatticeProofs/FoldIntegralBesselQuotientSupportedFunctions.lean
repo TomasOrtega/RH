@@ -19,6 +19,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Mi.Fold
 
+/- English proof (translation)
+Introduce `D X h u ψ A B 𝓢 h𝓢 Fs hFs`. Take `⟨c₁, hc₁, hL1⟩` from `GlobalTheory.T.haarMeasure_disintegration_besselGroup D X h u ψ A B`. Take `⟨β, hβm, hβ1, hβF⟩` from `GlobalTheory.T.exists_besselRational_cutoff_fundamentalDomain D X u Fs hFs`. Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_properties X`. Establish `hK0 : X.B.μf X.K2 ≠ 0` using `hK.2.2.1.ne'`.
+
+Establish `hKT : X.B.μf X.K2 ≠ ⊤` using `hK.2.2.2.ne`. Use `⟨c₁ * (X.B.μf X.K2).toReal, mul_pos hc₁ (ENNReal.toReal_pos hK0 hKT), ?_⟩` and prove the remaining obligations. Introduce `F hFm hFl hFr hFsupp`. Establish `hR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`. Use `haveI : BorelSpace X.B.I.GA := hR.2.2.2.1`.
+
+Use `haveI : SecondCountableTopology X.B.I.GA := hR.2.1`. Use `haveI : LocallyCompactSpace X.B.I.GA := hR.1`. Use `haveI : SecondCountableTopology X.B.I.Gf := Formalism.L2.SG.Pf.gf_secondCountable X.B.I`. Use `haveI : SecondCountableTopology (GA D (D.sp.Y 0)) := (iotaX X h).toHomeomorph.secondCountableTopology`. Use `haveI : LocallyCompactSpace (GA D (D.sp.Y 0)) := (iotaX X h).toHomeomorph.isClosedEmbedding.locallyCompactSpace`.
+
+Establish `hcl : IsClosed (besGrp B.d B.o : Set (GA D (D.sp.Y 0)))` using `GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ B.d B.o`. Use `haveI : LocallyCompactSpace (besGrp B.d B.o) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : B.lev.μR.IsHaarMeasure := (GlobalTheory.T.besselGroup_quotient_fundamentalDomain_cocompact D D.R.rS B.lev).1`. Use `haveI : SigmaFinite B.lev.μR := inferInstance`. Establish `hK2m : MeasurableSet X.K2` using `(Formalism.L2.SG.Pf.DstarIdxPf.isOpen_levelSubgroup' X).measurableSet`.
+
+Establish `hι : Continuous (fun s : besGrp B.d B.o => iotaX X h s.1)` using `(iotaX X h).continuous.comp continuous_subtype_val`. Establish `key : ∀ y : X.B.I.Ginf, ∫⁻ s, ∫⁻ k in X.K2, β (iotaX X h s.1 * (y, X.xu u) * (1, k)) * F (iotaX X h s.1 * (y, X.xu u) * (1, k)) ∂X.B.μf ∂B.lev.μR = X.B.μf X.K2 * ∫⁻ s in 𝓢, F (iotaX X h s.1 * (y, X.xu u)) ∂B.lev.μR`. Introduce `y`. Use `set g : X.B.I.GA := (y, X.xu u) with hg`. Establish `e1 : ∀ s : besGrp B.d B.o, ∫⁻ k in X.K2, β (iotaX X h s.1 * g * (1, k)) * F (iotaX X h s.1 * g * (1, k)) ∂X.B.μf = ∫⁻ k in X.K2, β (iotaX X h s.1 * g * (1, k)) * F (iotaX X h s.1 * g) ∂X.B.μf`.
+
+Introduce `s`. Use `setLIntegral_congr_fun hK2m (fun k hk => ?_)` and prove the remaining obligations. Rewrite using `[hFr k hk]`. Repeatedly rewrite using `[e1]`. Establish `hmeas : Measurable (Function.uncurry fun (s : besGrp B.d B.o) (k : X.B.I.Gf) => β (iotaX X h s.1 * g * (1, k)) * F (iotaX X h s.1 * g))`.
+
+Establish `c1 : Continuous (fun p : besGrp B.d B.o × X.B.I.Gf => iotaX X h p.1.1 * g * (1, p.2))` using `((hι.comp continuous_fst).mul continuous_const).mul (continuous_const.prodMk continuous_snd)`. Establish `c2 : Continuous (fun p : besGrp B.d B.o × X.B.I.Gf => iotaX X h p.1.1 * g)` using `(hι.comp continuous_fst).mul continuous_const`. Conclude with `(hβm.comp c1.measurable).mul (hFm.comp c2.measurable)`. Rewrite using `[lintegral_lintegral_swap hmeas.aemeasurable]`. Establish `e2 : ∀ k ∈ X.K2, ∫⁻ s, β (iotaX X h s.1 * g * (1, k)) * F (iotaX X h s.1 * g) ∂B.lev.μR = ∫⁻ s in 𝓢, F (iotaX X h s.1 * g) ∂B.lev.μR`.
+
+Introduce `k hk`. Establish `hf : Measurable (fun x : X.B.I.GA => β (x * g * (1, k)) * F (x * g))` using `(hβm.comp ((continuous_id.mul continuous_const).mul continuous_const).measurable).mul (hFm.comp (continuous_id.mul continuous_const).measurable)`. Rewrite using `[GlobalTheory.T.lintegral_besselGroup_unfold_fundamental_domain D X h u ψ A B 𝓢 h𝓢 _ hf]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Establish `e3 : ∀ σ : Srat X u, β ((σ : X.B.I.GA) * iotaX X h s.1 * g * (1, k)) * F ((σ : X.B.I.GA) * iotaX X h s.1 * g) = β ((σ : X.B.I.GA) * (iotaX X h s.1 * g * (1, k))) * F (iotaX X h s.1 * g)`.
+
+Introduce `σ`. Rewrite using `[mul_assoc (σ : X.B.I.GA) (iotaX X h s.1) g, hFl _ σ.2, mul_assoc (σ : X.B.I.GA) (iotaX X h s.1 * g)]`. Simplify using `only [e3]`. Rewrite using `[ENNReal.tsum_mul_right, hβ1, one_mul]`. Rewrite using `[setLIntegral_congr_fun hK2m (fun k hk => e2 k hk), setLIntegral_const, mul_comm]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `hL1 (fun x => β x * F x) (hβm.mul hFm) (fun x hx => hFsupp x ?_)` and prove the remaining obligations. Introduce `h0; exact hx (by rw [h0, mul_zero])`. Use `_ = ENNReal.ofReal c₁ * ∫⁻ y, X.B.μf X.K2 * ∫⁻ s in 𝓢, F (iotaX X h s.1 * (y, X.xu u)) ∂B.lev.μR ∂(X.nuQ u) := by`. Use `congr 1`.
+
+Conclude with `lintegral_congr key`. Use `_ = _ := by`. Rewrite using `[lintegral_const_mul' _ _ hKT, ← mul_assoc, ENNReal.ofReal_mul hc₁.le, ENNReal.ofReal_toReal hKT]`.
+-/
 theorem fold_quot : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (𝓢 : Set (besGrp B.d B.o)), IsFundamentalDomain ((GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o)) 𝓢 B.lev.μR → ∀ Fs : Set X.B.I.GA, IsFundamentalDomain (Srat X u) Fs (X.B.I.muA X.B.μf) → ∃ c : ℝ, 0 < c ∧ ∀ F : X.B.I.GA → ENNReal, Measurable F → (∀ γ ∈ Srat X u, ∀ x, F (γ * x) = F x) → (∀ k ∈ X.K2, ∀ x, F (x * (1, k)) = F x) → (∀ x, F x ≠ 0 → ∃ s ∈ SfinU X u, ∃ k ∈ X.K2, x.2 = s * X.xu u * k) → ∫⁻ x in Fs, F x ∂(X.B.I.muA X.B.μf) = ENNReal.ofReal c * ∫⁻ y, ∫⁻ s in 𝓢, F (iotaX X h s.1 * (y, X.xu u)) ∂B.lev.μR ∂(X.nuQ u) := by
   intro D X h u ψ A B 𝓢 h𝓢 Fs hFs
   obtain ⟨c₁, hc₁, hL1⟩ := GlobalTheory.T.haarMeasure_disintegration_besselGroup D X h u ψ A B

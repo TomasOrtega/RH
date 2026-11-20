@@ -20,6 +20,9 @@ local instance instBorelUpqT (P Q : ℕ) : BorelSpace (Formalism.BasicNotions.Up
 def reU {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) : GL (Fin P ⊕ Fin Q) ℂ ≃* (Matrix (Fin n) (Fin n) ℂ)ˣ :=
   Units.mapEquiv (Matrix.reindexAlgEquiv ℂ ℂ e).toMulEquiv
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Jm, Matrix.diagonal_apply, EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Formalism.UG.Jpq, he1, he2, Matrix.one_apply]`. Apply the tactic sequence `all_goals try split_ifs all_goals simp_all`.
+-/
 lemma Jpq_eq {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
     Formalism.UG.Jpq P Q = (Jm ε).submatrix e e := by
@@ -31,9 +34,25 @@ lemma Jpq_eq {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     try split_ifs
     all_goals simp_all
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma cT_eq {m : Type} (M : Matrix m m ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   rfl
 
+/- English proof (translation)
+Establish `hJ` using `Jpq_eq e he1 he2`. Establish `hJ' : Jm ε = (Formalism.UG.Jpq P Q).submatrix e.symm e.symm`. Rewrite using `[hJ, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]`. Establish `hval : ∀ h : GL (Fin P ⊕ Fin Q) ℂ, ((reU e h : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = Matrix.reindex e e (h : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` using `fun h => rfl`. Establish `hk : ∀ M : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, (Matrix.reindex e e M)ᴴ * Jm ε * Matrix.reindex e e M = Matrix.reindex e e (Mᴴ * Formalism.UG.Jpq P Q * M)`.
+
+Introduce `M`. Simplify using `only [Matrix.reindex_apply]`. Rewrite using `[hJ', Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Establish `hh' : (h : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)ᴴ * Formalism.UG.Jpq P Q * h = Formalism.UG.Jpq P Q`. Rewrite using `[← cT_eq]`. Conclude with `hh`.
+
+Use `show (Matrix.reindex e e (h : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))ᴴ * Jm ε * Matrix.reindex e e (h : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = Jm ε`. Rewrite using `[hk, hh', Matrix.reindex_apply, ← hJ']`. Introduce `hg`. Establish `hg' : (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * g = Jm ε` using `hg`. Use `⟨(reU e).symm g, ?_, by simp⟩` and prove the remaining obligations.
+
+Establish `hgM : (g : Matrix (Fin n) (Fin n) ℂ) = Matrix.reindex e e (((reU e).symm g : GL (Fin P ⊕ Fin Q) ℂ) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)`. Rewrite using `[← hval, MulEquiv.apply_symm_apply]`. Use `show Formalism.UG.cT (starRingEnd ℂ) (((reU e).symm g : GL (Fin P ⊕ Fin Q) ℂ) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) * Formalism.UG.Jpq P Q * (((reU e).symm g : GL (Fin P ⊕ Fin Q) ℂ) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = Formalism.UG.Jpq P Q`. Rewrite using `[cT_eq]`. Apply `(Matrix.reindex e e).injective` to reduce the goal to its premises.
+
+Rewrite using `[← hk, ← hgM, hg', Matrix.reindex_apply, ← hJ']`.
+-/
 lemma map_eq {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
     (Formalism.UG.Upq P Q).map ((reU e : GL (Fin P ⊕ Fin Q) ℂ ≃* (Matrix (Fin n) (Fin n) ℂ)ˣ) :
@@ -80,6 +99,11 @@ def psi {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     Formalism.BasicNotions.UpqT P Q ≃* UJ ε :=
   ((reU e).subgroupMap (Formalism.UG.Upq P Q)).trans (MulEquiv.subgroupCongr (map_eq e he1 he2))
 
+/- English proof (translation)
+Establish `hre : Continuous (fun M : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ => Matrix.reindex e e M)`. Conclude with `continuous_id.matrix_reindex e e`. Establish `hc : Continuous (fun g : ↥(Formalism.UG.Upq P Q) => (g : GL (Fin P ⊕ Fin Q) ℂ))` using `continuous_subtype_val`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `hre.comp (Units.continuous_val.comp hc)`. Conclude with `hre.comp (Units.continuous_coe_inv.comp hc)`.
+-/
 lemma psi_cont {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
     Continuous (psi e he1 he2) := by
@@ -93,6 +117,11 @@ lemma psi_cont {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
   · exact hre.comp (Units.continuous_val.comp hc)
   · exact hre.comp (Units.continuous_coe_inv.comp hc)
 
+/- English proof (translation)
+Establish `hre : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => M.submatrix e e)`. Conclude with `continuous_id.matrix_submatrix e e`. Establish `hc : Continuous (fun g : ↥(UJ ε) => (g : (Matrix (Fin n) (Fin n) ℂ)ˣ))` using `continuous_subtype_val`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `hre.comp (Units.continuous_val.comp hc)`. Conclude with `hre.comp (Units.continuous_coe_inv.comp hc)`.
+-/
 lemma psi_symm_cont {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
     Continuous (psi e he1 he2).symm := by
@@ -118,6 +147,9 @@ def psiM {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     Formalism.BasicNotions.UpqT P Q ≃ᵐ UJ ε :=
   (psiC e he1 he2).toHomeomorph.toMeasurableEquiv
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private theorem jm_sq_lemma (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -125,6 +157,21 @@ private theorem jm_sq_lemma (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Forma
   funext i
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Use `set J := Formalism.REAL.Jm ε with hJdef`. Establish `hJJ : J * J = 1` using `jm_sq_lemma ε`. Establish `hleft : ∀ M : Matrix (Fin n) (Fin n) ℂ, Mᴴ * J * M = J → (J * Mᴴ * J) * M = 1`. Introduce `M hM`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hinv : ∀ g : H, (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = J * ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)ᴴ * J`. Introduce `g`. Conclude with `Units.inv_eq_of_mul_eq_one_left (hleft _ ((hH _).1 g.2))`. Establish `hcont : Continuous (fun g : H => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hct : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => J * Mᴴ * J)`.
+
+Conclude with `(continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const`. Establish `hψ : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => (M, MulOpposite.op (J * Mᴴ * J)))`. Conclude with `continuous_id.prodMk (MulOpposite.continuous_op.comp hct)`. Establish `hcomp : ((fun M : Matrix (Fin n) (Fin n) ℂ => (M, MulOpposite.op (J * Mᴴ * J))) ∘ (fun g : H => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))) = (Units.embedProduct (Matrix (Fin n) (Fin n) ℂ)) ∘ (Subtype.val : H → (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [Function.comp_apply, Units.embedProduct_apply, hinv]`. Establish `hind : Topology.IsInducing ((fun M : Matrix (Fin n) (Fin n) ℂ => (M, MulOpposite.op (J * Mᴴ * J))) ∘ (fun g : H => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)))`. Rewrite using `[hcomp]`. Conclude with `Units.isInducing_embedProduct.comp Topology.IsInducing.subtypeVal`. Establish `hemb : Topology.IsEmbedding (fun g : H => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))` using `⟨Topology.IsInducing.of_comp hcont hψ hind, fun a b hab => Subtype.ext (Units.ext hab)⟩`.
+
+Use `⟨hemb, ?_⟩` and prove the remaining obligations. Establish `hrange : Set.range (fun g : H => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = {M | Mᴴ * J * M = J}`. Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`.
+
+Conclude with `(hH _).1 g.2`. Introduce `hM`. Establish `h1` using `hleft M hM`. Establish `h2 : M * (J * Mᴴ * J) = 1` using `mul_eq_one_comm.1 h1`. Conclude with `⟨⟨⟨M, J * Mᴴ * J, h2, h1⟩, (hH _).2 hM⟩, rfl⟩`.
+
+Rewrite using `[hrange]`. Establish `hq : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => Mᴴ * J * M)`. Conclude with `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_eq hq continuous_const`.
+-/
 private theorem isClosedEmbedding_coe_of_mem_iff_conjTranspose_Jm_mul_eq (ε : Fin n → Bool) (H : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ)
     (hH : ∀ g : (Matrix (Fin n) (Fin n) ℂ)ˣ, g ∈ H ↔
       (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε) :
@@ -174,16 +221,31 @@ private theorem isClosedEmbedding_coe_of_mem_iff_conjTranspose_Jm_mul_eq (ε : F
     exact (continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id
   exact isClosed_eq hq continuous_const
 
+/- English proof (translation)
+Establish `h` using `isClosedEmbedding_coe_of_mem_iff_conjTranspose_Jm_mul_eq ε (UJ ε) (fun g => Iff.rfl)`. Conclude with `Topology.IsClosedEmbedding.measurableEmbedding (β := Fin n → Fin n → ℂ) h`.
+-/
 lemma toM_emb (ε : Fin n → Bool) :
     MeasurableEmbedding (β := Fin n → Fin n → ℂ) (fun g : UJ ε => toM g) := by
   have h := isClosedEmbedding_coe_of_mem_iff_conjTranspose_Jm_mul_eq ε (UJ ε) (fun g => Iff.rfl)
   exact Topology.IsClosedEmbedding.measurableEmbedding (β := Fin n → Fin n → ℂ) h
 
+/- English proof (translation)
+Establish `h` using `isClosedEmbedding_coe_of_mem_iff_conjTranspose_Jm_mul_eq ε (Formalism.REAL.UJ ε) (fun g => Iff.rfl)`. Conclude with `Topology.IsClosedEmbedding.measurableEmbedding (β := Fin n → Fin n → ℂ) h`.
+-/
 lemma umat_emb (ε : Fin n → Bool) :
     MeasurableEmbedding (β := Fin n → Fin n → ℂ) (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) := by
   have h := isClosedEmbedding_coe_of_mem_iff_conjTranspose_Jm_mul_eq ε (Formalism.REAL.UJ ε) (fun g => Iff.rfl)
   exact Topology.IsClosedEmbedding.measurableEmbedding (β := Fin n → Fin n → ℂ) h
 
+/- English proof (translation)
+Use `cd.haar P Q` as an intermediate fact. Use `muPolar_isHaar ε` as an intermediate fact. Establish `: (Measure.map (psiC e he1 he2) (cd.cd P Q)).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map (cd.cd P Q) (psiC e he1 he2)`. Establish `hmap : Measure.map (psiM e he1 he2) (cd.cd P Q) = Measure.map (psiC e he1 he2) (cd.cd P Q)` using `rfl`. Take `⟨s, hs⟩ : ∃ s : NNReal, Measure.map (psiC e he1 he2) (cd.cd P Q) = s • muPolar ε` from `⟨_, Measure.isMulLeftInvariant_eq_smul (Measure.map (psiC e he1 he2) (cd.cd P Q)) (muPolar ε)⟩`.
+
+Use `⟨(s : ENNReal), ENNReal.coe_ne_top, fun E => ?_⟩` and prove the remaining obligations. Establish `hemb : MeasurableEmbedding (β` using `Fin n → Fin n → ℂ) (fun g : Formalism.BasicNotions.UpqT P Q => Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) := (toM_emb ε).comp (psiM e he1 he2).measurableEmbedding`. Establish `h1 : cd.cd P Q E = Measure.map (psiM e he1 he2) (cd.cd P Q) (psiM e he1 he2 '' E)`. Rewrite using `[MeasurableEquiv.map_apply, Set.preimage_image_eq _ (psiM e he1 he2).injective]`. Establish `h2 : muPolar ε (psiM e he1 he2 '' E) = muPolarMat ε ((fun g : Formalism.BasicNotions.UpqT P Q => Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) '' E)`.
+
+Unfold `muPolar`. Rewrite using `[(toM_emb ε).comap_apply]`. Conclude with `congrArg (muPolarMat ε) (Set.image_image _ _ _)`. Establish `h3 : muCDtr e ε E = ENNReal.ofReal (cPQ ε) * muPolarMat ε ((fun g : Formalism.BasicNotions.UpqT P Q => Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) '' E)`. Unfold `muCDtr`.
+
+Rewrite using `[hemb.comap_apply, Measure.smul_apply, smul_eq_mul]`. Rewrite using `[h1, hmap, hs, Measure.coe_nnreal_smul_apply, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma key (cd : Formalism.BasicNotions.CDHaar) {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
     ∃ a : ENNReal, a ≠ ⊤ ∧ ∀ E : Set (Formalism.BasicNotions.UpqT P Q),
@@ -213,6 +275,25 @@ lemma key (cd : Formalism.BasicNotions.CDHaar) {P Q : ℕ} (e : Fin P ⊕ Fin Q 
   rw [h1, hmap, hs, Measure.coe_nnreal_smul_apply, h2, h3]
   ring
 
+/- English proof (translation)
+Take `⟨hH, hv⟩` from `h`. Take `⟨hH', hv'⟩` from `h'`. Use `haveI := hH`. Use `haveI := hH'`. Use `haveI : LocallyCompactSpace (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := inferInstanceAs (LocallyCompactSpace ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))`.
+
+Use `haveI : SecondCountableTopology (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) := inferInstanceAs (SecondCountableTopology ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))`. Establish `hcl : IsClosed (Formalism.BasicNotions.lieU P Q : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))`. Establish `hset : (Formalism.BasicNotions.lieU P Q : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) = {X | Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0}` using `rfl`. Rewrite using `[hset]`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).add (continuous_const.matrix_mul continuous_id)) continuous_const`.
+
+Use `haveI : LocallyCompactSpace ↥(Formalism.BasicNotions.lieU P Q) := hcl.locallyCompactSpace`. Use `haveI : SecondCountableTopology ↥(Formalism.BasicNotions.lieU P Q) := inferInstanceAs (SecondCountableTopology ↥(Formalism.BasicNotions.lieU P Q : Set (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)))`. Choose the witnesses or unpack the hypotheses as in `⟨c, hsm⟩ : ∃ c : ENNReal, lam = c • lam' := by`. Conclude with `⟨_, MeasureTheory.Measure.isAddLeftInvariant_eq_smul_of_innerRegular lam lam'⟩`. Establish `hvol : (c * c) • (volume : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ)) = volume` using `by conv_rhs => rw [← hv]`.
+
+Rewrite using `[hsm, MeasureTheory.Measure.prod_smul_left, MeasureTheory.Measure.prod_smul_right, MeasureTheory.Measure.map_smul, MeasureTheory.Measure.map_smul, hv', smul_smul]`. Establish `hpos : 0 < (volume : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ)) (Metric.ball 0 1)` using `Metric.measure_ball_pos _ _ one_pos`. Establish `hfin : (volume : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ)) (Metric.ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hcc : c * c = 1`. Establish `h1` using `congrArg (fun μ : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ) => μ (Metric.ball 0 1)) hvol`.
+
+Simplify using `only [Measure.smul_apply, smul_eq_mul] at h1`. Generalize the expression as in `hvdef : (volume : Measure ((Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) → ℂ)) (Metric.ball 0 1) = v at h1 hpos hfin`. Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : c = 1`. Break down `lt_trichotomy c 1 with h1 | h1 | h1` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h2 : c * c < 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `h1.le`. Use `gcongr`.
+
+Use `_ = c := mul_one c`. Use `_ < 1 := h1`. Conclude with `h2.ne hcc`. Conclude with `h1`. It suffices to derive a contradiction.
+
+Establish `h2 : 1 < c * c`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `h1.le`. Use `gcongr`. Conclude with `h2.ne' hcc`.
+
+Rewrite using `[hsm, hc1, one_smul]`.
+-/
 lemma isOmegaLeb_unique {P Q : ℕ} (lam lam' : Measure (Formalism.BasicNotions.lieU P Q)) (h : Formalism.BasicNotions.IsOmegaLeb lam)
     (h' : Formalism.BasicNotions.IsOmegaLeb lam') : lam = lam' := by
   obtain ⟨hH, hv⟩ := h
@@ -273,6 +354,9 @@ lemma isOmegaLeb_unique {P Q : ℕ} (lam lam' : Measure (Formalism.BasicNotions.
       exact h2.ne' hcc
   rw [hsm, hc1, one_smul]
 
+/- English proof (translation)
+Take `⟨lam, hlam, hc⟩` from `h`. Take `⟨lam', hlam', hc'⟩` from `h'`. Take `rfl : lam' = lam` from `isOmegaLeb_unique lam' lam hlam' hlam`. Conclude with `tendsto_nhds_unique hc hc'`.
+-/
 lemma omegaDensity_unique {P Q : ℕ} {μ : Measure (Formalism.BasicNotions.UpqT P Q)} {c c' : ENNReal}
     (h : Formalism.BasicNotions.OmegaDensity μ c) (h' : Formalism.BasicNotions.OmegaDensity μ c') : c = c' := by
   obtain ⟨lam, hlam, hc⟩ := h
@@ -280,6 +364,11 @@ lemma omegaDensity_unique {P Q : ℕ} {μ : Measure (Formalism.BasicNotions.UpqT
   obtain rfl : lam' = lam := isOmegaLeb_unique lam' lam hlam' hlam
   exact tendsto_nhds_unique hc hc'
 
+/- English proof (translation)
+Take `⟨lam, hlam, hc⟩` from `hμ`. Take `⟨lam', hlam', hd'⟩` from `hν`. Take `rfl : lam' = lam` from `isOmegaLeb_unique lam' lam hlam' hlam`. Establish `h1` using `ENNReal.Tendsto.mul_const hc (Or.inr hb)`. Establish `h2` using `ENNReal.Tendsto.const_mul (a := a) hd' (Or.inl hd)`.
+
+Use `tendsto_nhds_unique h1 (h2.congr fun r => ?_)` and prove the remaining obligations. Simplify using `only [div_eq_mul_inv]`. Rewrite using `[← mul_assoc, ← hrel, mul_right_comm]`.
+-/
 lemma omegaDensity_rel {P Q : ℕ} {μ ν : Measure (Formalism.BasicNotions.UpqT P Q)} {a b c d : ENNReal}
     (hb : b ≠ ⊤) (hd : d ≠ 0) (hrel : ∀ E, μ E * b = a * ν E)
     (hμ : Formalism.BasicNotions.OmegaDensity μ c) (hν : Formalism.BasicNotions.OmegaDensity ν d) : c * b = a * d := by
@@ -295,6 +384,19 @@ lemma omegaDensity_rel {P Q : ℕ} {μ ν : Measure (Formalism.BasicNotions.UpqT
 end UpperTriangularPsiTransport
 
 open UpperTriangularPsiTransport in
+/- English proof (translation)
+Take `⟨a, -, hrel⟩` from `key cd e he1 he2`. Establish `hn : P + Q = n` using `by simpa using Fintype.card_congr e`. Take `⟨c', -, -, h1, h2⟩` from `cd.trick P Q`. Establish `hc' : c' = ENNReal.ofReal (cOmega (P + Q))` using `omegaDensity_unique h2 (omegaDensity_cd cd (P + Q))`. Establish `hc0 : ENNReal.ofReal (cPQ ε) ≠ 0` using `by simpa using cPQ_pos ε`.
+
+Establish `hw0 : ENNReal.ofReal (cOmega n) ≠ 0` using `by simpa using cOmega_pos n`. Establish `hrel2` using `omegaDensity_rel ENNReal.ofReal_ne_top hw0 hrel h1 (omegaDensity_muCDtr e he1 he2)`. Rewrite `hrel2` using `[hc', hn, mul_comm a]`. Establish `hac : a = ENNReal.ofReal (cPQ ε)` using `((ENNReal.mul_right_inj hw0 ENNReal.ofReal_ne_top).1 hrel2).symm`. Use `set E := {g : Formalism.BasicNotions.UpqT P Q | ∃ a ∈ A, Formalism.MainNotions.S.umat a = Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)} with hEdef`.
+
+Establish `hE` using `hrel E`. Rewrite `hE` using `[hac, mul_comm]`. Rewrite using `[(ENNReal.mul_right_inj hc0 ENNReal.ofReal_ne_top).1 hE]`. Establish `hemb : MeasurableEmbedding (β` using `Fin n → Fin n → ℂ) (fun g : Formalism.BasicNotions.UpqT P Q => Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) := (toM_emb ε).comp (psiM e he1 he2).measurableEmbedding`. Establish `himg : (fun g : Formalism.BasicNotions.UpqT P Q => Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) '' E = (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) '' A`.
+
+Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, ⟨x, hx, hxg⟩, rfl⟩`. Conclude with `⟨x, hx, hxg⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Establish `hx2 : x.1 ∈ UJ ε` using `by rw [← real_UJ_eq_UJ ε]; exact x.2`. Establish `hy` using `congrArg (fun y : UJ ε => toM y) ((psi e he1 he2).apply_symm_apply ⟨x.1, hx2⟩)`. Conclude with `⟨(psi e he1 he2).symm ⟨x.1, hx2⟩, ⟨x, hx, hy.symm⟩, hy⟩`. Establish `hL : muCD ε A = ENNReal.ofReal (cPQ ε) * muPolarMat ε ((fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.umat g) '' A)` using `(Measure.smul_apply _ _ _).trans (congrArg _ ((umat_emb ε).comap_apply _ _))`. Establish `hR : muCDtr e ε E = ENNReal.ofReal (cPQ ε) * muPolarMat ε ((fun g : Formalism.BasicNotions.UpqT P Q => Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g)) '' E)` using `(hemb.comap_apply _ _).trans (Measure.smul_apply _ _ _)`.
+
+Rewrite using `[hL, hR]`. Conclude with `congrArg (fun S => ENNReal.ofReal (cPQ ε) * muPolarMat ε S) himg.symm`.
+-/
 theorem muCD_eq_cd_vol (cd : Formalism.BasicNotions.CDHaar) {P Q : ℕ} (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false)
     (A : Set (Formalism.REAL.UJ ε)) (hA : MeasurableSet A) :

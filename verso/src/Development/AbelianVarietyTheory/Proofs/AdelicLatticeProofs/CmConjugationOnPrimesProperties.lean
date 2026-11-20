@@ -11,9 +11,15 @@ section ConjIdem
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjIdem_sigR_tmul (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (a : R) (x : E) :
     sigR R σ (a ⊗ₜ[F] x) = a ⊗ₜ[F] σ x := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rw [conjIdem_sigR_tmul, conjIdem_sigR_tmul, h]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+-/
 theorem conjIdem_sigR_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E)
     (h : ∀ x, σ (σ x) = x) (y : R ⊗[F] E) : sigR R σ (sigR R σ y) = y := by
   induction y using TensorProduct.induction_on with
@@ -21,17 +27,26 @@ theorem conjIdem_sigR_sigR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[
   | tmul a x => rw [conjIdem_sigR_tmul, conjIdem_sigR_tmul, h]
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Use `show sigR R σ (a ⊗ₜ[F] 1) = a ⊗ₜ[F] 1`. Rewrite using `[conjIdem_sigR_tmul, map_one]`.
+-/
 theorem conjIdem_sigR_algebraMap (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (a : R) :
     sigR R σ (algebraMap R (R ⊗[F] E) a) = algebraMap R (R ⊗[F] E) a := by
   show sigR R σ (a ⊗ₜ[F] 1) = a ⊗ₜ[F] 1
   rw [conjIdem_sigR_tmul, map_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjIdem_sigR_inclR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (x : E) :
     sigR R σ (inclR (F := F) R x) = inclR (F := F) R (σ x) := rfl
 
 variable [NumberField F] [NumberField E]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`.
+-/
 theorem conjIdem_finPart_cA (σ : E →ₐ[F] E) (y : AE F E) :
     finPart F E (cA σ y) = sigR (Af F) σ (finPart F E y) := by
   induction y using TensorProduct.induction_on with
@@ -40,6 +55,13 @@ theorem conjIdem_finPart_cA (σ : E →ₐ[F] E) (y : AE F E) :
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold `intAE at hy ⊢`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, rfl⟩` from `hy`. Take `⟨z, hz⟩` from `h x`.
+
+Conclude with `AddSubgroup.subset_closure ⟨a, ha, z, by rw [conjIdem_sigR_tmul, hz]⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`.
+-/
 theorem conjIdem_sigR_mem_intAE (σ : E →ₐ[F] E) (h : ∀ x : 𝓞 E, ∃ y : 𝓞 E, (y : E) = σ x)
     (y : Af F ⊗[F] E) (hy : y ∈ intAE F E) : sigR (Af F) σ y ∈ intAE F E := by
   unfold intAE at hy ⊢
@@ -54,6 +76,23 @@ theorem conjIdem_sigR_mem_intAE (σ : E →ₐ[F] E) (h : ∀ x : 𝓞 E, ∃ y 
 
 end ConjIdem
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM`. Take `⟨h1, h2, h3, h4⟩` from `hCM`. Take `⟨hinv, c, hc1, hc2, hint, hc3, hc4⟩` from `cmConjugation_on_primes F E σ h1 h2 h3 h4`. Establish `hcc : ∀ y : AE F E, cA σ (cA σ y) = y` using `conjIdem_sigR_sigR (AF F) σ hinv`. Establish `hfin : ∀ y : AE F E, finPart F E (cA σ y) ∈ intAE F E ↔ finPart F E y ∈ intAE F E`.
+
+Establish `key : ∀ y : AE F E, finPart F E y ∈ intAE F E → finPart F E (cA σ y) ∈ intAE F E`. Introduce `y hy`. Rewrite using `[conjIdem_finPart_cA]`. Conclude with `conjIdem_sigR_mem_intAE σ hint _ hy`. Introduce `y`.
+
+Conclude with `⟨fun h => by have := key _ h; rwa [hcc] at this, key y⟩`. Establish `hcrit : ∀ (P : HeightOneSpectrum (𝓞 E)) (e : AE F E), (∀ x : 𝓞 E, x ≠ 0 → (x ∈ P.asIdeal ↔ finPart F E (e * incA F E ((x : E)⁻¹)) ∉ intAE F E)) → ∀ x : 𝓞 E, x ≠ 0 → (x ∈ (c P).asIdeal ↔ finPart F E (cA σ e * incA F E ((x : E)⁻¹)) ∉ intAE F E)`. Introduce `P e h x hx`. Take `⟨z, hz⟩` from `hint x`. Establish `hxz : (x : E) = σ z` using `by rw [hz, hinv]`.
+
+Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hxz]`.
+
+Simplify using the standard rewrite rules. Establish `hm : cA σ e * incA F E ((x : E)⁻¹) = cA σ (e * incA F E ((z : E)⁻¹))`. Rewrite using `[map_mul, conjIdem_sigR_inclR, map_inv₀ σ, hxz]`. Rewrite using `[(hc3 P z x hxz).1, h z hz0, hm, hfin]`. Use `⟨c, hc1, hc2, hc3, hc4, hcc, hfin, ?_⟩` and prove the remaining obligations.
+
+Introduce `P e f h`. Break down `h with ⟨⟨⟨he1, he2, v, ε, hv, he3⟩, hP⟩, hf⟩ | ⟨hf, ⟨v, ε, hv, he⟩, hP⟩` into its components or cases. Use `left`. Use `⟨⟨⟨?_, ?_, v, ε, hv, ?_⟩, hcrit P e hP⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, he1]`.
+
+Rewrite using `[hcc, mul_comm, he2]`. Rewrite using `[hcc, add_comm, he3]`. Rewrite using `[hcc, add_comm, hf]`. Use `right`. Establish `hce : cA σ e = e` using `by rw [he]; exact conjIdem_sigR_algebraMap _ σ ε`.
+
+Conclude with `⟨by rw [hce, hf], ⟨v, ε, hv, by rw [hce, he]⟩, hcrit P e hP⟩`.
+-/
 theorem cmConjugation_on_primes_adeles_idempotents : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∃ c : HeightOneSpectrum (𝓞 E) ≃ HeightOneSpectrum (𝓞 E), (∀ P, c (c P) = P) ∧ (∀ P, normP (c P) = normP P) ∧ (∀ P (x y : 𝓞 E), (y : E) = σ x → (y ∈ (c P).asIdeal ↔ x ∈ P.asIdeal) ∧ (y ∈ (c P).asIdeal ^ 2 ↔ x ∈ P.asIdeal ^ 2)) ∧ (∀ P Q : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) = Q.under (𝓞 F) ↔ Q = P ∨ Q = c P) ∧ (∀ y, cA σ (cA σ y) = y) ∧ (∀ y : AE F E, finPart F E (cA σ y) ∈ intAE F E ↔ finPart F E y ∈ intAE F E) ∧ ∀ P e f, IsPrimeIdem σ P e f → IsPrimeIdem σ (c P) (cA σ e) f := by
   intro F E _ _ _ _ _ σ hCM
   obtain ⟨h1, h2, h3, h4⟩ := hCM

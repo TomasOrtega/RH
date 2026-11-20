@@ -9,6 +9,11 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Establish `hd : Disjoint (Icc 1 a) (Ioc a b)`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ioc] at hx hx'`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hu : Icc 1 b = Icc 1 a ∪ Ioc a b`. Use extensionality with `x`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ioc, Finset.mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hu, Finset.sum_union hd]`.
+-/
 lemma sharp_split (g : ℕ → ℂ) {a b : ℕ} (hab : a ≤ b) :
     ∑ n ∈ Icc 1 b, g n = ∑ n ∈ Icc 1 a, g n + ∑ n ∈ Ioc a b, g n := by
   have hd : Disjoint (Icc 1 a) (Ioc a b) := by
@@ -22,6 +27,11 @@ lemma sharp_split (g : ℕ → ℂ) {a b : ℕ} (hab : a ≤ b) :
     omega
   rw [hu, Finset.sum_union hd]
 
+/- English proof (translation)
+Rewrite using `[Formalism.ZeroFreeDirichlet.Schi.eq_1, Finset.sum_div]`. Use `Finset.sum_congr rfl (fun n hn => ?_)` and prove the remaining obligations. Establish `hn1 : (1:ℝ) ≤ n` using `by exact_mod_cast (Finset.mem_Icc.mp hn).1`. Establish `hn0 : (n:ℝ) ≠ 0` using `by positivity`. Establish `hv0 : v ≠ 0` using `hv.ne'`.
+
+Rewrite using `[mul_div_assoc]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_div]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma sharp_schi_div {N : ℕ} (χ : DirichletCharacter ℂ N) {v : ℝ} (hv : 0 < v) :
     Formalism.ZeroFreeDirichlet.Schi χ v / (v : ℂ) =
       ∑ n ∈ Icc 1 ⌊v⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) * ((1 / n - 1 / v : ℝ) : ℂ) := by
@@ -36,6 +46,17 @@ lemma sharp_schi_div {N : ℕ} (χ : DirichletCharacter ℂ N) {v : ℝ} (hv : 0
   congr 1
   field_simp
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hu0 : 0 < u` using `by linarith`. Establish `huy : u - y ≠ 0` using `(sub_pos.mpr hu).ne'`. Establish `hfl : ⌊y⌋₊ ≤ ⌊u⌋₊` using `Nat.floor_mono hu.le`. Rewrite using `[sharp_schi_div χ hu0, sharp_schi_div χ hy0, sharp_split _ hfl, Formalism.ZeroFreeDirichlet.psiChi.eq_1]`.
+
+Establish `hc1 : y * u / (u - y) * (1 / y - 1 / u) = 1`. Clear the denominators using the available nonvanishing facts. Establish `hAC : (∑ n ∈ Icc 1 ⌊y⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) * ((1 / n - 1 / u : ℝ) : ℂ)) - ∑ n ∈ Icc 1 ⌊y⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) * ((1 / n - 1 / y : ℝ) : ℂ) = ((1 / y - 1 / u : ℝ) : ℂ) * ∑ n ∈ Icc 1 ⌊y⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N)`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hE : ∑ n ∈ Ioc ⌊y⌋₊ ⌊u⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) * ((y * u / (u - y) * (1 / n - 1 / u) : ℝ) : ℂ) = ((y * u / (u - y) : ℝ) : ℂ) * ∑ n ∈ Ioc ⌊y⌋₊ ⌊u⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) * ((1 / n - 1 / u : ℝ) : ℂ)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun n _ => ?_)` and prove the remaining obligations.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hc1' : ((y * u / (u - y) : ℝ) : ℂ) * ((1 / y - 1 / u : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, hc1, Complex.ofReal_one]`. Rewrite using `[hE]`.
+
+Take the linear combination `((y * u / (u - y) : ℝ) : ℂ) * hAC + (∑ n ∈ Icc 1 ⌊y⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N)) * hc1'`.
+-/
 lemma sharp_identity {N : ℕ} (χ : DirichletCharacter ℂ N) {y u : ℝ} (hy : 1 ≤ y) (hu : y < u) :
     ((y * u / (u - y) : ℝ) : ℂ) * (Formalism.ZeroFreeDirichlet.Schi χ u / (u : ℂ) - Formalism.ZeroFreeDirichlet.Schi χ y / (y : ℂ)) - psiChi χ y =
       ∑ n ∈ Ioc ⌊y⌋₊ ⌊u⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) *
@@ -68,6 +89,19 @@ lemma sharp_identity {N : ℕ} (χ : DirichletCharacter ℂ N) {y u : ℝ} (hy :
   linear_combination ((y * u / (u - y) : ℝ) : ℂ) * hAC +
     (∑ n ∈ Icc 1 ⌊y⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N)) * hc1'
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hu0 : 0 < u` using `by linarith`. Take `⟨hn1, hn2⟩` from `Finset.mem_Ioc.mp hn`. Establish `hyn : y < n` using `(Nat.floor_lt hy0.le).mp hn1`. Establish `hnu : (n : ℝ) ≤ u` using `(Nat.le_floor_iff hu0.le).mp hn2`.
+
+Establish `hnpos : (0:ℝ) < n` using `by linarith`. Establish `huy : 0 < u - y` using `by linarith`. Establish `hf0 : 0 ≤ y * u / (u - y) * (1 / n - 1 / u)`. Apply `mul_nonneg (div_nonneg (by positivity) huy.le)` to reduce the goal to its premises. Rewrite using `[sub_nonneg]`.
+
+Conclude with `one_div_le_one_div_of_le hnpos hnu`. Establish `hf1 : y * u / (u - y) * (1 / n - 1 / u) ≤ 1`. Rewrite using `[div_mul_eq_mul_div, div_le_one huy]`. Establish `h1 : y * u * (1 / n - 1 / u) = y * u / n - y`. Rewrite using `[mul_sub, mul_one_div, mul_one_div, mul_div_cancel_right₀ y hu0.ne']`.
+
+Rewrite using `[h1]`. Establish `h2 : y * u / n ≤ u`. Rewrite using `[div_le_iff₀ hnpos]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hΛ0 : 0 ≤ Λ n` using `ArithmeticFunction.vonMangoldt_nonneg`. Establish `hΛ : Λ n ≤ Real.log u` using `ArithmeticFunction.vonMangoldt_le_log.trans (Real.log_le_log hnpos hnu)`. Establish `hχ : ‖χ (n : ZMod N)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ (n : ZMod N)`. Simplify using `only [norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[abs_of_nonneg hΛ0, ← abs_mul, abs_of_nonneg hf0]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma sharp_term {N : ℕ} (χ : DirichletCharacter ℂ N) {y u : ℝ} (hy : 1 ≤ y) (hu : y < u)
     {n : ℕ} (hn : n ∈ Ioc ⌊y⌋₊ ⌊u⌋₊) :
     ‖((Λ n : ℝ) : ℂ) * χ (n : ZMod N) * ((y * u / (u - y) * (1 / n - 1 / u) : ℝ) : ℂ)‖ ≤
@@ -103,6 +137,13 @@ lemma sharp_term {N : ℕ} (χ : DirichletCharacter ℂ N) {y u : ℝ} (hy : 1 �
     _ = Λ n := by ring
     _ ≤ Real.log u := hΛ
 
+/- English proof (translation)
+Rewrite using `[sharp_identity χ hy hu]`. Establish `hu1 : 1 ≤ u` using `by linarith`. Establish `hlog : 0 ≤ Real.log u` using `Real.log_nonneg hu1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Nat.card_Ioc, nsmul_eq_mul]`.
+
+Use `_ ≤ (u - y + 1) * Real.log u := by`. Apply `mul_le_mul_of_nonneg_right _ hlog` to reduce the goal to its premises. Establish `h1 : (⌊u⌋₊ : ℝ) ≤ u` using `Nat.floor_le (by linarith)`. Establish `h2 : y < ⌊y⌋₊ + 1` using `Nat.lt_floor_add_one y`. Establish `h3 : ⌊y⌋₊ ≤ ⌊u⌋₊` using `Nat.floor_mono hu.le`.
+
+Rewrite using `[Nat.cast_sub h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sharp_arith {N : ℕ} (χ : DirichletCharacter ℂ N) {y u : ℝ} (hy : 1 ≤ y) (hu : y < u) :
     ‖((y * u / (u - y) : ℝ) : ℂ) * (Formalism.ZeroFreeDirichlet.Schi χ u / (u : ℂ) - Formalism.ZeroFreeDirichlet.Schi χ y / (y : ℂ)) - psiChi χ y‖ ≤
       (u - y + 1) * Real.log u := by

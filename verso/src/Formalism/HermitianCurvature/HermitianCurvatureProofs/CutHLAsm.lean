@@ -3,6 +3,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutHLFrozen
 
 namespace Formalism.FourierDecayAlt.P.CutHL
 
+/- English proof (translation)
+The claim follows from `headLetter_of_open hL hT hSL hST frozen_X_identity frozen_V_identity hPP hPZ hMP hMZ`.
+-/
 theorem headLetter_of_rest (hL : LeftActionRuleAtBasePoint) (hT : TorusDirectionAtBasePoint) (hSL : ConjugateActionRuleAtBasePoint) (hST : ConjugateTorusDirectionAtBasePoint)
     (hPP : PlusPosOfParts) (hPZ : PlusZeroOfParts) (hMP : MinusPosOfParts) (hMZ : MinusZeroOfParts) :
     LevelPointCoordinates.HeadLetter :=

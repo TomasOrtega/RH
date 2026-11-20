@@ -17,6 +17,21 @@ noncomputable section
 
 namespace GlobalTheory.UnifDvrBaseChange
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ hV t P W _ _ _ hW hWd f hfi hfl tW ⟨m⟩`. Take `⟨hVd, hVc, hV0⟩` from `hV`. Take `⟨⟨hWN, -, hWI, hWc⟩, hW0⟩` from `hW`. Take `⟨L₁, L₂, -⟩` from `GlobalTheory.firstFiveLaws`. Establish `j : Function.Injective ((algebraMap W (FractionRing W)).comp f)` using `(IsFractionRing.injective W _).comp hfi`.
+
+Set `g : FractionRing V →+* FractionRing W` to `IsFractionRing.lift j`. Establish `eg : jK W ≫ spMap f = spMap g ≫ jK V` using `(GlobalTheory.Ex.UnifModel.spMap_comp fun _ => rfl).trans (GlobalTheory.Ex.UnifModel.spMap_comp (IsFractionRing.lift_algebraMap j)).symm`. Establish `hpW : GlobalTheory.LN.PolAt tW (jK W)` using `GlobalTheory.DatUniq.polAt_pull m (GlobalTheory.DatUniq.polAt_of_unif P) (jK W) (spMap g) eg.symm`. Take `⟨B, -, gen, hg, hw, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt L₁ L₂ E H W tW hpW`. Use `t.semi.separated` as an intermediate fact.
+
+Use `t.semi.smooth` as an intermediate fact. Set `p₀ : Sp (FractionRing V)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V))`. Establish `hgen : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum V) ∈ abLocus t.G`. Rewrite using `[← GlobalTheory.TraitChartForm.jK_apply_eq_bot V p₀]`. Conclude with `(GlobalTheory.ZJ.AbelianLocus.mem_abLocus_iff t.G (IsPullback.of_hasPullback t.G.hom (jK V)) p₀).2 (GlobalTheory.DatUniq.polAt_of_unif P).1`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Set `Wv : Set (Sp V)` to `abLocus t.G ∩ {p | ϖ ∉ p.asIdeal}`. Establish `hWo : IsOpen Wv` using `(GlobalTheory.AbLocusOpen.isOpen_abLocus_local t.G t.semi).inter (PrimeSpectrum.isOpen_basicOpen (a := ϖ))`. Establish `hne : Wv ≠ Set.univ` using `fun h => by`. Establish `: closedPoint V ∈ Wv` using `h ▸ Set.mem_univ _`.
+
+Conclude with `this.2 hϖ.not_isUnit`. Establish `hψ : ∀ y, PsiUnitOn P.D.toPre y Wv` using `fun y => GlobalTheory.DvrDataCompare.psiUnitOn_of_ne_univ P.D.toPre y hne`. Establish `hker : (⟨RingHom.ker f, RingHom.ker_isPrime f⟩ : PrimeSpectrum V) ∈ Wv`. Establish `hk : (⟨RingHom.ker f, RingHom.ker_isPrime f⟩ : PrimeSpectrum V) = ⟨⊥, Ideal.isPrime_bot⟩` using `PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot f).1 hfi)`. Rewrite using `[hk]`.
+
+Conclude with `⟨hgen, fun h => hϖ.ne_zero ((Submodule.mem_bot V).1 h)⟩`. Establish `hloc : ∀ a ∈ maximalIdeal V, f a ∈ maximalIdeal W` using `fun a ha => (mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit f a h)`. Take `⟨PW, e, he⟩` from `GlobalTheory.PelCoordPull.exists_pelUnif_psiCoord E H V W f t tW m P Wv inferInstance inferInstance hVc hWN hWI hWc hloc hWo Set.inter_subset_left hψ hker ⟨B, gen, hg, hw⟩`. Use `⟨PW, e.symm, fun y r hr => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `he _ r hr`.
+
+Conclude with `⟨u, by simpa using hu⟩`.
+-/
 theorem exists_pelUnif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V]
     [IsLocalRing V], CDvr V → ∀ (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (W : Type) [CommRing W] [IsDomain W]
     [IsLocalRing W], GlobalTheory.Mum.Base W → IsDiscreteValuationRing W → ∀ f : V →+* W, Function.Injective f → IsLocalHom f →

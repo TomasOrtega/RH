@@ -18,6 +18,9 @@ namespace GlobalTheory.HodgeFrameGen
 variable {S' T : Scheme.{0}} {G : Over S'} [GrpObj G] {H : Over T} [GrpObj H] {x : T ⟶ S'}
   {ψ : H.left ⟶ G.left} [QuasiSeparated G.hom] {g : ℕ}
 
+/- English proof (translation)
+Establish `e : ∀ u : Γ(Y, L.wchart (fun _ => f) j ⊓ L.wchart (fun _ => f) j')ˣ, (∏ _k : PUnit.{1}, u ^ (1 : ℤ)) = u` using `fun u => by simp`. Conclude with `e _`.
+-/
 theorem pulled_back_lineBundle_transition_unit_eq_restriction {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (j j' : PUnit.{1} → L.ι) :
     (L.pull f).g j j' = res (le_inf (inf_le_left.trans (LB.wchart_le L (fun _ => f) j PUnit.unit))
       (inf_le_right.trans (LB.wchart_le L (fun _ => f) j' PUnit.unit)))
@@ -26,6 +29,11 @@ theorem pulled_back_lineBundle_transition_unit_eq_restriction {X Y : Scheme.{0}}
     fun u => by simp
   exact e _
 
+/- English proof (translation)
+Establish `e₁` using `IsFrame.detUnit_map_iso (GlobalTheory.BadPt.Fibre.frame_pb x (j PUnit.unit).isFrame (LB.wchart_le (hodge G g) (fun _ => x) j PUnit.unit)) (GlobalTheory.BadPt.Fibre.frame_pb x (j' PUnit.unit).isFrame (LB.wchart_le (hodge G g) (fun _ => x) j' PUnit.unit)) (omegaBase h) (inf_le_left …`. Use `Eq.trans ?_ e₁.symm` and prove the remaining obligations. Establish `hT : LB.wchart (hodge G g) (fun _ => x) j ⊓ LB.wchart (hodge G g) (fun _ => x) j' ≤ x ⁻¹ᵁ ((j PUnit.unit).U ⊓ (j' PUnit.unit).U)` using `le_inf (inf_le_left.trans (LB.wchart_le (hodge G g) (fun _ => x) j PUnit.unit)) (inf_le_right.trans (LB.wchart_le (hodge G g) (fun _ => x) j' PUnit.unit))`. Use `Eq.trans ?_ (GlobalTheory.Vert.DivPull.detUnit_congr _ _ ((j PUnit.unit).isFrame.pullback x) ((j' PUnit.unit).isFrame.pullback x) _ _ (hT.trans (x.preimage_mono inf_le_left)) (hT.trans (x.preimage_mono inf_le_right)) (fun i => (QCoh.res_pullbackSections _ _ _ _ _).trans (QCoh.res …` and prove the remaining obligations. Use `Units.ext ?_` and prove the remaining obligations.
+
+Use `(congrArg Units.val (pulled_back_lineBundle_transition_unit_eq_restriction (hodge G g) x j j')).trans (Eq.trans ?_ (IsFrame.val_detUnit_pullback (j PUnit.unit).isFrame (j' PUnit.unit).isFrame x inf_le_left inf_le_right hT).symm)` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem pull_g_eq (h : IsGrpPullback H G x ψ) (j j' : ((hodge G g).pull x).ι) :
     ((hodge G g).pull x).g j j' =
       (isFrame_chart h j).detUnit (isFrame_chart h j') inf_le_left inf_le_right := by
@@ -49,6 +57,9 @@ theorem pull_g_eq (h : IsGrpPullback H G x ψ) (j j' : ((hodge G g).pull x).ι) 
     (IsFrame.val_detUnit_pullback (j PUnit.unit).isFrame (j' PUnit.unit).isFrame x inf_le_left inf_le_right hT).symm)
   rfl
 
+/- English proof (translation)
+Introduce `S' T G _ H _ x ψ _ g h a ha j j'`. Use `(IsFrame.res_detUnit _ _ _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (pull_g_eq h j j').symm (IsFrame.res_detUnit _ _ _ _ _).symm)` and prove the remaining obligations. Conclude with `(IsFrame.detUnit_mul _ _ _ _ _ _).symm`.
+-/
 theorem gen_isGen : ∀ {S' T : Scheme.{0}} {G : Over S'} [GrpObj G] {H : Over T} [GrpObj H] {x : T ⟶ S'}
     {ψ : H.left ⟶ G.left} [QuasiSeparated G.hom] {g : ℕ} (h : IsGrpPullback H G x ψ)
     {a : Fin g → Γ(omega H, ⊤)} (ha : IsFrame a), (gen h ha).IsGen := by

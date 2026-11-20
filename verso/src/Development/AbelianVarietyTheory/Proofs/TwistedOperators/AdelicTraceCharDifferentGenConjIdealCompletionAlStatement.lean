@@ -11,5 +11,8 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 open GlobalTheory.XCharBF
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.XCharBF.adelicTraceChar_differentGen_conj_idealCompletion | exact GlobalTheory.XCharBF.adelicTraceChar_differentGen_conj_idealCompletion | (intros; apply GlobalTheory.XCharBF.adelicTraceChar_differentGen_conj_idealCompletion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.psiE_xi0_mul_cA_eq_one_of_mem_complId : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ}, IsStdChar D ψ (-1) → ∀ s ∈ complId (D.host.AA * D.host.AAbar), psiE ψ (incA D D.host.xi0 * cA D s) = 1 := by
   first | exact @GlobalTheory.XCharBF.adelicTraceChar_differentGen_conj_idealCompletion | exact GlobalTheory.XCharBF.adelicTraceChar_differentGen_conj_idealCompletion | (intros; apply GlobalTheory.XCharBF.adelicTraceChar_differentGen_conj_idealCompletion <;> assumption)

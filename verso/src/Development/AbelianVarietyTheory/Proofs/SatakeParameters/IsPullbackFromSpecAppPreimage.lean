@@ -8,6 +8,9 @@ set_option autoImplicit false
 namespace GlobalTheory.HodgeCoh
 open GlobalTheory.CechDR
 
+/- English proof (translation)
+Use `(IsOpenImmersion.isPullback (Spec.map (π.app W)) hV.fromSpec hW.fromSpec π ?_ ?_).flip` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE, IsAffineOpen.SpecMap_appLE_fromSpec π hW hV le_rfl]`. Rewrite using `[IsAffineOpen.opensRange_fromSpec, IsAffineOpen.opensRange_fromSpec]`.
+-/
 theorem isPullback_fromSpec_app_preimage {X Y : Scheme.{0}} (π : X ⟶ Y) {W : Y.Opens}
     (hW : IsAffineOpen W) (hV : IsAffineOpen (π ⁻¹ᵁ W)) :
     IsPullback hV.fromSpec (Spec.map (π.app W)) π hW.fromSpec := by

@@ -6,6 +6,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ P AI T K x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨hdom, h2, -⟩` from `GlobalTheory.Pst.stRegular l P AI ⟨T⟩`. Use `haveI := hdom`.
+
+Take `⟨c, hcK, hc⟩` from `h2 K 1 x one_ne_zero fun g => by rw [map_one, h g, one_mul]`. Establish `hmem : (c : Om l) ∈ K0 K` using `IntermediateField.mem_inf.2 ⟨hcK, c.2⟩`. Use `⟨⟨c, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_one, Polynomial.algebraMap_apply]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨c, rfl⟩ g`. Establish `hc : (c : Om l) ∈ (K.1 : IntermediateField ℚ_[l] (Om l))` using `(IntermediateField.mem_inf.1 c.2).1`. Establish `hg : (g : GQ l) (c : Om l) = (c : Om l)` using `(mem_fixingSubgroup_iff _).1 g.2 _ hc`. Establish `hK0 : algebraMap ↥(K0 K) P.R.B c = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ⟨c, (IntermediateField.mem_inf.1 c.2).2⟩` using `rfl`. Rewrite using `[actSt]`.
+
+Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, stHom_apply, Polynomial.map_C, Polynomial.C_comp]`. Use `congr 1`. Rewrite using `[hK0]`. Conclude with `P.actQ_Kur _ _ _ hg`.
+-/
 theorem stInv_iff : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l)
     (x : Bst P), (∀ g : ↥(GK K), actSt P (g : GQ l) x = x) ↔
       ∃ c : ↥(K0 K), x = Polynomial.C (algebraMap ↥(K0 K) P.R.B c) := by

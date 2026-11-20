@@ -37,6 +37,9 @@ def LTorsLatticeSt : Prop :=
         {x : Vl l A | vmap l q x ∈ LinearMap.range (tv l B)} = latSet l G ∧
         ∀ (l' : ℕ) [Fact l'.Prime], l' ≠ l → (l' : K) ≠ 0 → Function.Bijective (tmap l' A B q))
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsAlgClosed (AlgebraicClosure (ZMod 3)) := inferInstance
 
 end GlobalTheory.AV.LTors

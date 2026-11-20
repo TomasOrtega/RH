@@ -27,6 +27,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.PointSurjectivity
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PointSurjectivity.exists_acyclic_cechLB_fibre | exact GlobalTheory.CompanionTheory.PointSurjectivity.exists_acyclic_cechLB_fibre | (intros; apply GlobalTheory.CompanionTheory.PointSurjectivity.exists_acyclic_cechLB_fibre <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_affine_cover_cech_acyclic_of_fibAc_off_finite : ∀ {k : Type} [Field k] [IsAlgClosed k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X)
     (q : Z ⟶ T) (H : IsPullback p q a b) (ha : IsProjBy a) [IsProper a] [Flat a] [IsProper b] (G : LB Z) (hG : G.IsLB)
     (F : Set (Sp k ⟶ T)) (hF : F.Finite)

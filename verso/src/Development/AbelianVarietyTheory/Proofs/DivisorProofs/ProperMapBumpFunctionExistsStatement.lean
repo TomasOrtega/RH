@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ProperMapBumpFunctionExists
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_schwartz_bump_of_proper_onto_open | exact GlobalTheory.exists_schwartz_bump_of_proper_onto_open | (intros; apply GlobalTheory.exists_schwartz_bump_of_proper_onto_open <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.proper_map_bump_function_exists : ∀ {P U : Type} [TopologicalSpace P] [NormedAddCommGroup U] [InnerProductSpace ℝ U]
     [FiniteDimensional ℝ U] (π : P → U), Continuous π → ∀ (W' : Set U), IsOpen W' →
     (∀ S : Set U, IsCompact S → S ⊆ W' → IsCompact (π ⁻¹' S)) → ∀ (p₀ : P), π p₀ ∈ W' →

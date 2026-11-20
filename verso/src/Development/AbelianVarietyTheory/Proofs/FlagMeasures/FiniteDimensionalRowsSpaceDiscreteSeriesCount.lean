@@ -26,6 +26,15 @@ noncomputable section
 
 namespace GlobalTheory.RowsFinMult
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hW`. Use `set b := Module.Basis.ofVectorSpace ℂ W with hb`. Use `haveI : Infinite (Module.Basis.ofVectorSpaceIndex ℂ W) := by`. Assume the negation of the conclusion as `hfin`. Rewrite `hfin` using `[not_infinite_iff_finite]`.
+
+Conclude with `hW (Module.Finite.of_basis b)`. Take `⟨s, hs⟩` from `Infinite.exists_subset_card_eq (Module.Basis.ofVectorSpaceIndex ℂ W) (N + 1)`. Set `u : s → V` to `fun i => ((b i : W) : V)`. Establish `hli : LinearIndependent ℂ u` using `(b.linearIndependent.comp _ Subtype.val_injective).map' W.subtype (Submodule.ker_subtype W)`. Establish `hle : Submodule.span ℂ (Set.range u) ≤ W`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(b i).2`. Establish `hbd` using `h _ hle (FiniteDimensional.span_of_finite ℂ (Set.finite_range u))`. Rewrite `hbd` using `[finrank_span_eq_card hli]`.
+
+Simplify using `[hs] at hbd`.
+-/
 theorem finiteDimensional_of_bound {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V) (N : ℕ)
     (h : ∀ S : Submodule ℂ V, S ≤ W → FiniteDimensional ℂ S → Module.finrank ℂ S ≤ N) :
     FiniteDimensional ℂ W := by
@@ -48,6 +57,13 @@ theorem finiteDimensional_of_bound {V : Type} [AddCommGroup V] [Module ℂ V] (W
   rw [finrank_span_eq_card hli] at hbd
   simp [hs] at hbd
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Unfold `GlobalTheory.Dec.IsContRep`. Rewrite using `[Finset.sum_empty]`. Use `⟨continuous_const, fun γ _ x => rfl, ?_⟩` and prove the remaining obligations. Conclude with `Lp.coeFn_zero _ _ _`.
+
+Introduce `a s ha ih`. Establish `e1 : (∑ i ∈ insert a s, c i • y i) = (∑ i ∈ s, c i • y i) + c a • y a`. Rewrite using `[Finset.sum_insert ha, add_comm]`. Establish `e2 : (fun x => ∑ i ∈ insert a s, c i * F i x) = (fun x => (∑ i ∈ s, c i * F i x) + c a * F a x)`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[Finset.sum_insert ha, add_comm]`. Rewrite using `[e1, e2]`. Conclude with `(GlobalTheory.ContRepUniq.contRep_unique_linear B).2.1 _ _ _ _ (c a) ih (h a)`.
+-/
 theorem isContRep_sum (B : RowsAut) {ι : Type} (s : Finset ι) (y : ι → B.I.L2 B.μf B.fund)
     (F : ι → B.I.GA → ℂ) (c : ι → ℂ) (h : ∀ i, IsContRep B (y i) (F i)) :
     IsContRep B (∑ i ∈ s, c i • y i) (fun x => ∑ i ∈ s, c i * F i x) := by
@@ -67,6 +83,15 @@ theorem isContRep_sum (B : RowsAut) {ι : Type} (s : Finset ι) (y : ι → B.I.
     rw [e1, e2]
     exact (GlobalTheory.ContRepUniq.contRep_unique_linear B).2.1 _ _ _ _ (c a) ih (h a)
 
+/- English proof (translation)
+Use `haveI := B.haar`. Use `haveI := B.sf`. Establish `hpos` using `(GlobalTheory.CovolRat.covol_eq_inter_fund B.I B.μf B.fund Set.univ B.fund_spec MeasurableSet.univ (by simp)).2`. Use `⟨hpos, ?_⟩` and prove the remaining obligations. Use `choose c hc0 hc hcu using fun v => GlobalTheory.GaugeConst.exists_unique_isGauge B.I.n (B.I.ε v)`.
+
+Establish `hf0 : (0 : ℝ) ≤ B.I.f` using `by positivity`. Establish `hrd1 : (1 : ℝ) ≤ B.I.rd` using `hrd`. Establish `hx` using `hV B.I p q hs hq hn (2 * B.I.f * B.I.rd + B.I.rd + 2) (by nlinarith) (by nlinarith) (by nlinarith) c B.μf`. Apply the tactic sequence `first | unfold GlobalTheory.FlagMeas.gaugeVol at hx | unfold gaugeVol at hx | skip`. Apply the tactic sequence `first | unfold GlobalTheory.FlagMeas.IsGaugeAll at hx | unfold IsGaugeAll at hx | skip`.
+
+Establish `hx2` using `hx hc`. Establish `hcov` using `(GlobalTheory.CovolRat.covol_eq_inter_fund B.I B.μf B.fund Set.univ B.fund_spec MeasurableSet.univ (by simp)).1`. Rewrite `hx2` using `[hcov, Set.univ_inter]`. Establish `hK` using `(GlobalTheory.CongIndex.measure_Kset_le B.I B.μf 1 le_rfl).2.2`. Establish `ha : ENNReal.ofReal (∏ v, c v) ≠ 0` using `(ENNReal.ofReal_pos.mpr (Finset.prod_pos fun v _ => hc0 v)).ne'`.
+
+Assume the negation of the conclusion as `htop`. Rewrite `htop` using `[not_lt, top_le_iff]`. Rewrite `hx2` using `[htop, ENNReal.mul_top ha, ENNReal.top_div_of_ne_top hK.ne, top_le_iff]`. Conclude with `ENNReal.ofReal_ne_top hx2`.
+-/
 theorem vol_lt_top (hV : GlobalTheory.FlagMeas.AbsoluteVolume) (B : RowsAut) (p q : ℕ) (hs : SigIs B p q)
     (hq : q ^ 2 ≤ B.I.n) (hn : 8 ≤ B.I.n) (hrd : 1 ≤ B.I.rd) :
     0 < B.I.muA B.μf B.fund ∧ B.I.muA B.μf B.fund < ⊤ := by
@@ -94,6 +119,13 @@ theorem vol_lt_top (hV : GlobalTheory.FlagMeas.AbsoluteVolume) (B : RowsAut) (p 
   rw [htop, ENNReal.mul_top ha, ENNReal.top_div_of_ne_top hK.ne, top_le_iff] at hx2
   exact ENNReal.ofReal_ne_top hx2
 
+/- English proof (translation)
+Take `⟨v⟩ : Nonempty (InfinitePlace I.F)` from `by first`. Consider the case `exact inferInstance`. Consider the case `exact ⟨InfinitePlace.mk (Classical.arbitrary _)⟩`. Establish `h1` using `(GlobalTheory.FlagIso.flag_isotropic I x).2.1 v`. Rewrite `h1` using `[h0 v]`.
+
+Establish `hbot : stepLt I x (1 / 2) = ⊥`. Establish `h2 : Formalism.HN.rkK (stepLt I x (1 / 2)) = 0` using `by omega`. Unfold `Formalism.HN.rkK at h2`. Rewrite `h2` using `[Submodule.finrank_eq_zero]`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `y hy`. Establish `hy' : y ∈ Submodule.span I.E (stepLt I x (1 / 2) : Set (Fin I.n → I.E))` using `Submodule.subset_span hy`. Rewrite `hy'` using `[h2]`. Simplify using `using hy'`. Conclude with `((GlobalTheory.CountSteps.steps I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.2 hn).2.2.mp hbot`.
+-/
 theorem half_le_least (I : AutInst) (hn : 1 ≤ I.n) (h0 : ∀ v, rkR (I.ε v) = 0) (x : I.GA) :
     1 / 2 ≤ least I x := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace I.F) := by
@@ -114,6 +146,29 @@ theorem half_le_least (I : AutInst) (hn : 1 ≤ I.n) (h0 : ∀ v, rkR (I.ε v) =
     simpa using hy'
   exact ((GlobalTheory.CountSteps.steps I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.2 hn).2.2.mp hbot
 
+/- English proof (translation)
+Use `set c : Fin D → ℂ := fun i => star (F i x) with hc`. Use `set A : B.Hs →L[ℂ] B.I.L2 B.μf B.fund := ∑ i, c i • T i with hA`. Establish `hAw : A w = ∑ i, c i • T i w`. Rewrite using `[hA, ContinuousLinearMap.sum_apply]`. Both sides reduce to the same expression.
+
+Establish `hAmem : A ∈ B.I.HomS B.σs B.μf B.fund B.R` using `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (hT i))`. Establish `hAk : ∀ k ∈ B.I.Kg B.g, B.R (1, k) (A w) = A w`. Introduce `k hk'`. Rewrite using `[hAw, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hk i k hk']`. Take `⟨f, hf, hfb⟩` from `hC A hAmem hAk`. Establish `hsum` using `isContRep_sum B Finset.univ (fun i => T i w) F c hF`. Rewrite `hsum` using `[← hAw]`. Establish `hfeq` using `(GlobalTheory.ContRepUniq.contRep_unique_linear B).1 _ _ _ hf hsum`.
+
+Use `set S := ∑ i, ‖F i x‖ ^ 2 with hSdef`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `hfxS : f x = (S : ℂ)`. Rewrite using `[hfeq, hSdef]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hc]`. Use `first`. Consider the case `exact Complex.conj_mul' _`. Consider the case `exact RCLike.conj_mul _`.
+
+Consider the case `simp [Complex.conj_mul']`. Establish `hon : Orthonormal ℂ (fun i => T i w)` using `⟨fun i => by simp [hiso, hw], fun i j hij => horth i j hij w w⟩`. Establish `hAn : ‖A w‖ ^ 2 = S`. Rewrite using `[@norm_sq_eq_re_inner ℂ, hAw, hon.inner_sum c c Finset.univ, hSdef]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `e1 : (starRingEnd ℂ) (c i) * c i = ((‖F i x‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[RCLike.conj_mul, hc]`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+
+Use `first`. Consider the case `exact RCLike.ofReal_re _`. Consider the case `exact Complex.ofReal_re _`. Consider the case `simp only [RCLike.re_to_complex, Complex.ofReal_re]`. Consider the case `rfl`.
+
+Establish `hAn' : ‖A w‖ = Real.sqrt S`. Rewrite using `[← hAn, Real.sqrt_sq (norm_nonneg _)]`. Establish `key : S ≤ C * t x * Real.sqrt S`. Establish `h1` using `hfb x`. Rewrite `h1` using `[hfxS, Complex.norm_of_nonneg hS0, hAn']`.
+
+Conclude with `h1`. Establish `hr` using `Real.sq_sqrt hS0`. Establish `hr0` using `Real.sqrt_nonneg S`. Distinguish the cases in `hS : S = 0`. Rewrite using `[hS]`.
+
+Check the signs of the components of the expression. Establish `hrpos : 0 < Real.sqrt S` using `Real.sqrt_pos.mpr (lt_of_le_of_ne hS0 (Ne.symm hS))`. Establish `hra : Real.sqrt S ≤ C * t x` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem bessel (B : RowsAut) (C : ℝ) (t : B.I.GA → ℝ) (w : B.Hs) (hw : ‖w‖ = 1)
     (hC : ∀ A ∈ B.I.HomS B.σs B.μf B.fund B.R, (∀ k ∈ B.I.Kg B.g, B.R (1, k) (A w) = A w) →
       ∃ f : B.I.GA → ℂ, IsContRep B (A w) f ∧ ∀ x, ‖f x‖ ≤ C * t x * ‖A w‖)
@@ -181,6 +236,9 @@ theorem bessel (B : RowsAut) (C : ℝ) (t : B.I.GA → ℝ) (w : B.Hs) (hw : ‖
   have hra : Real.sqrt S ≤ C * t x := by nlinarith
   nlinarith
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sum_lintegral_le_lintegral_sum {X : Type} [MeasurableSpace X] (μ : Measure X) {ι : Type}
     (s : Finset ι) (f : ι → X → ENNReal) :
     ∑ i ∈ s, ∫⁻ x, f i x ∂μ ≤ ∫⁻ x, ∑ i ∈ s, f i x ∂μ := by
@@ -193,6 +251,17 @@ private theorem sum_lintegral_le_lintegral_sum {X : Type} [MeasurableSpace X] (�
         ≤ ∫⁻ x, f a x ∂μ + ∫⁻ x, ∑ i ∈ s, f i x ∂μ := by gcongr
       _ ≤ ∫⁻ x, (f a x + ∑ i ∈ s, f i x) ∂μ := le_lintegral_add _ _
 
+/- English proof (translation)
+Establish `hU` using `GlobalTheory.ContRepUniq.contRep_unique_linear B`. Establish `hone : ∀ i, ∫⁻ x in B.fund, ‖F i x‖ₑ ^ 2 ∂(B.I.muA B.μf) = 1`. Introduce `i`. Rewrite using `[(hU.2.2.2 _ _ (hF i)).2, hy i]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : (D : ENNReal) ≤ ∫⁻ x in B.fund, ∑ i, ‖F i x‖ₑ ^ 2 ∂(B.I.muA B.μf)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hone]`. Use `_ ≤ _ := sum_lintegral_le_lintegral_sum _ _ _`. Establish `h2 : ∫⁻ x in B.fund, ∑ i, ‖F i x‖ₑ ^ 2 ∂(B.I.muA B.μf) ≤ ENNReal.ofReal K * B.I.muA B.μf B.fund`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono` to reduce the goal to its premises. Introduce `x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun i _ => by positivity)]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Use `_ ≤ ENNReal.ofReal K := ENNReal.ofReal_le_ofReal (hK x)`. Use `_ = ENNReal.ofReal K * B.I.muA B.μf B.fund := by rw [setLIntegral_const]`. Establish `h3 : (D : ENNReal) ≤ ENNReal.ofReal K * B.I.muA B.μf B.fund` using `h1.trans h2`.
+
+Establish `hne : ENNReal.ofReal K * B.I.muA B.μf B.fund ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin.ne`. Establish `h4` using `(ENNReal.toReal_le_toReal (by simp) hne).mpr h3`. Rewrite `h4` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hK0]`. Simplify using `using h4`.
+-/
 theorem card_le_of_pointwise (B : RowsAut) (hfin : B.I.muA B.μf B.fund < ⊤) {D : ℕ}
     (y : Fin D → B.I.L2 B.μf B.fund) (F : Fin D → B.I.GA → ℂ) (hy : ∀ i, ‖y i‖ = 1)
     (hF : ∀ i, IsContRep B (y i) (F i)) (K : ℝ) (hK0 : 0 ≤ K) (hK : ∀ x, ∑ i, ‖F i x‖ ^ 2 ≤ K) :
@@ -225,6 +294,9 @@ theorem card_le_of_pointwise (B : RowsAut) (hfin : B.I.muA B.μf B.fund < ⊤) {
   rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal hK0] at h4
   simpa using h4
 
+/- English proof (translation)
+Establish `h3 : P * Q / R ≤ e / V`. Rewrite using `[le_div_iff₀ hV]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem le_mul_div_of_le_mul_div_of_mul_le (S P Q R Dr V e : ℝ) (hV : 0 < V) (hDr : 0 ≤ Dr)
     (h1 : S ≤ P * Dr * Q / R) (h2 : P * Q / R * V ≤ e) : S ≤ Dr * e / V := by
   have h3 : P * Q / R ≤ e / V := by
@@ -235,6 +307,47 @@ private theorem le_mul_div_of_le_mul_div_of_mul_le (S P Q R Dr V e : ℝ) (hV : 
     _ ≤ (e / V) * Dr := mul_le_mul_of_nonneg_right h3 hDr
     _ = Dr * e / V := by ring
 
+/- English proof (translation)
+Introduce `hD hV B Cg n₀ d p q b hn₀ hH`. Establish `hB : IsDSData B d` using `hH.1`. Establish `hs : SigIs B p q` using `hH.2.1`. Establish `hqn : q ^ 2 ≤ B.I.n` using `hH.2.2.2.1`. Establish `hn8 : 8 ≤ B.I.n` using `le_trans hn₀ hH.2.2.1`.
+
+Establish `hg : 1 ≤ B.g` using `hH.2.2.2.2.2.2.2.2.2.1`. Take `⟨-, hrd, hf1, -, -, -, hrk, -, -, -, hts, -, h, -, hgap, hbig40, -, -, h120, -⟩` from `GlobalTheory.Dec.countHyp_numerics B Cg n₀ d p q b hn₀ hH`. Establish `hK` using `GlobalTheory.Dec.countHyp_isKTypeOf_lowKSub B Cg n₀ d p q b hn₀ hH`. Establish `h120' : ∀ v, 120 * (B.I.n : ℝ) * ((rkR (B.I.ε v) : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h`. Introduce `v`.
+
+Rewrite using `[hrk v]`. Conclude with `h120`. Establish `hLoc` using `GlobalTheory.Dec.locDec_of_decGap hD B d h hB hgap h120'`. Establish `hE` using `GlobalTheory.T.idempotent_intertwiner_images_cuspidal_of_level B d h hB hK hg h120' hLoc hbig40`. Take `⟨hvpos, hvtop⟩` from `vol_lt_top hV B p q hs hqn hn8 hrd`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.EvalBound.exists_contRep_bound_of_isKTypeOf B d hB hK (by omega) hg`. Establish `hw1 : ‖B.tens B.w‖ = 1`. Establish `e' : ∀ v, ⟪B.w v, B.w v⟫_ℂ = 1` using `fun v => by`. Rewrite using `[inner_self_eq_norm_sq_to_K, (hB v).2.2.1.1]`. Simplify using the standard rewrite rules.
+
+Establish `e3 : ‖B.tens B.w‖ ^ 2 = 1`. Rewrite using `[@norm_sq_eq_re_inner ℂ, B.tens_spec.1, Finset.prod_congr rfl (fun v _ => e' v), Finset.prod_const_one]`. Simplify using the standard rewrite rules. Establish `e4` using `norm_nonneg (B.tens B.w)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `choose c hc0 hc hcu using fun v => GlobalTheory.GaugeConst.exists_unique_isGauge B.I.n (B.I.ε v)`. Establish `hVpos : 0 < (B.I.muA B.μf B.fund).toReal` using `ENNReal.toReal_pos hvpos.ne' hvtop.ne`. Use `set V := (B.I.muA B.μf B.fund).toReal with hVdef`. Use `set m : ℝ := min (1 / 2) (tauStar B q b) with hmdef`. Establish `hm : 0 < m` using `lt_min (by norm_num) hts`.
+
+Use `set M : ℝ := m⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) with hMdef`. Use `set e : ℝ := Real.exp (-((B.I.n : ℝ) ^ 2 * B.I.f)) with hedef`. Establish `he : e ≤ 1 / 2`. Establish `hy1 : (1 : ℝ) ≤ (B.I.n : ℝ) ^ 2 * B.I.f`. Establish `a1 : (8 : ℝ) ≤ B.I.n` using `by exact_mod_cast hn8`.
+
+Establish `a2 : (1 : ℝ) ≤ B.I.f` using `by exact_mod_cast hf1`. Use the polynomial consequences of the given equalities and inequalities. Establish `a3` using `Real.add_one_le_exp ((B.I.n : ℝ) ^ 2 * B.I.f)`. Establish `a4 : e * Real.exp ((B.I.n : ℝ) ^ 2 * B.I.f) = 1`. Rewrite using `[hedef, ← Real.exp_add]`.
+
+Simplify using the standard rewrite rules. Establish `a5` using `Real.exp_pos (-((B.I.n : ℝ) ^ 2 * B.I.f))`. Rewrite `a5` using `[← hedef]`. Use the polynomial consequences of the given equalities and inequalities. Use `finiteDimensional_of_bound _ (Nat.ceil (2 * (C ^ 2 * M ^ 2) * V)) (fun S hS hSfd => ?_)` and prove the remaining obligations.
+
+Establish `hSH : S ≤ B.I.HomS B.σs B.μf B.fund B.R` using `fun A hA => (hE A (hS hA)).1`. Take `⟨T, hTS, hiso, horth⟩` from `GlobalTheory.IntertwinerFrame.exists_orthonormal_frame_of_le B d hB S hSH hSfd`. Establish `hTH : ∀ i, T i ∈ B.I.HomS B.σs B.μf B.fund B.R` using `fun i => hSH (hTS i)`. Establish `hTk : ∀ i u, ∀ k ∈ B.I.Kg B.g, B.R (1, k) (T i u) = T i u` using `fun i u => ((hE _ (hS (hTS i))).2 u).2`. Establish `hTc : ∀ i u, B.I.IsCuspFn (B.I.muA B.μf) (B.I.ext (T i u))` using `fun i u => ((hE _ (hS (hTS i))).2 u).1`.
+
+Use `choose Fr hFr using fun i => GlobalTheory.T.exists_continuousRowRepresentatives_lowestKType B d hB hK hg (T i) (hTH i) (fun u k hk => hTk i u k hk)`. Establish `hmem : B.tens B.w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.VP B 0`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨[], B.w, by simp, fun v => (hB v).2.2.1.2, ?_⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `rfl`. Consider the case `simp [GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.wordAct]`. Establish `hG : ∀ i, IsContRep B (T i (B.tens B.w)) (Fr i (B.tens B.w))` using `fun i => (hFr i 0 _ hmem).1`. Establish `hy : ∀ i, ‖T i (B.tens B.w)‖ = 1` using `fun i => by rw [hiso, hw1]`. Establish `hD0 : (0 : ℝ) ≤ (Module.finrank ℂ S)` using `Nat.cast_nonneg _`.
+
+Establish `hpt : ∀ x, ∑ i, ‖Fr i (B.tens B.w) x‖ ^ 2 ≤ (Module.finrank ℂ S) * e / V + C ^ 2 * M ^ 2`. Introduce `x`. Establish `hfirst : 0 ≤ ((Module.finrank ℂ S) : ℝ) * e / V` using `by positivity`. Establish `hsecond : 0 ≤ C ^ 2 * M ^ 2` using `by positivity`. Distinguish the cases in `hx : 1 ≤ q ∧ least B.I x < tauStar B q b`.
+
+Establish `h1` using `GlobalTheory.T.deepPoint_bound_cuspidalIsometricIntertwinerFamily B Cg n₀ d p q b c x (Module.finrank ℂ S) T Fr hn₀ hx.1 hH hc hx.2 hFr hiso hTc`. Establish `h2` using `(GlobalTheory.T.measure_fundamentalDomain_lt_of_deepPoint_bound hV B Cg n₀ d p q b c x hn₀ hx.1 hH hc hx.2).2`. Establish `hvv : ‖GlobalTheory.Deep.vv B Fr (B.tens B.w) x‖ ^ 2 = ∑ i, ‖Fr i (B.tens B.w) x‖ ^ 2`. Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `[GlobalTheory.Deep.vv]`.
+
+Rewrite `h1` using `[hvv]`. Establish `h3` using `le_mul_div_of_le_mul_div_of_mul_le _ _ _ _ _ _ _ hVpos hD0 h1 h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htau : m ≤ tau1 B.I x` using `by show m ≤ min (1 / 2) (least B.I x)`. Break down `Nat.eq_zero_or_pos q with hq0 | hq1` into its components or cases.
+
+Establish `hl` using `half_le_least B.I (by omega) (fun v => by rw [hrk v, hq0]) x`. Rewrite using `[min_eq_left hl]`. Conclude with `min_le_left _ _`. Establish `hle : tauStar B q b ≤ least B.I x`. Assume the negation of the conclusion as `hlt`.
+
+Conclude with `hx ⟨hq1, not_le.mp hlt⟩`. Conclude with `min_le_min le_rfl hle`. Establish `hb` using `bessel B C (fun x => (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)) (B.tens B.w) hw1 hC T (fun i => Fr i (B.tens B.w)) hTH (fun i => hTk i _) hiso horth hG x`. Establish `ht0 : 0 ≤ (tau1 B.I x)⁻¹` using `inv_nonneg.mpr (le_trans hm.le htau)`. Establish `ht1 : (tau1 B.I x)⁻¹ ≤ m⁻¹` using `inv_anti₀ hm htau`.
+
+Establish `ht2 : (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) ≤ M` using `pow_le_pow_left₀ ht0 ht1 _`. Establish `ht3 : 0 ≤ (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)` using `pow_nonneg ht0 _`. Establish `h4 : (C * (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)) ^ 2 ≤ C ^ 2 * M ^ 2`. Rewrite using `[mul_pow]`. Use `gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK0 : 0 ≤ ((Module.finrank ℂ S) : ℝ) * e / V + C ^ 2 * M ^ 2` using `by positivity`. Establish `hcard` using `card_le_of_pointwise B hvtop (fun i => T i (B.tens B.w)) (fun i => Fr i (B.tens B.w)) hy hG _ hK0 hpt`. Rewrite `hcard` using `[← hVdef, add_mul, div_mul_cancel₀ _ hVpos.ne']`. Establish `hDB : ((Module.finrank ℂ S) : ℝ) ≤ 2 * (C ^ 2 * M ^ 2) * V` using `by nlinarith`.
+
+Establish `hfin : ((Module.finrank ℂ S) : ℝ) ≤ (Nat.ceil (2 * (C ^ 2 * M ^ 2) * V) : ℕ)` using `le_trans hDB (Nat.le_ceil _)`. Conclude with `hfin` after adjusting the coercions.
+-/
 theorem rows_finiteDimensional : GlobalTheory.DSId.DecGap → GlobalTheory.FlagMeas.AbsoluteVolume → ∀ (B : RowsAut) (Cg : ℝ) (n₀ : ℕ) (d : InfinitePlace B.I.F → ℝ) (p q : ℕ) (b : ℝ), 8 ≤ n₀ → CountHyp B Cg n₀ d p q b → FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re) := by
   intro hD hV B Cg n₀ d p q b hn₀ hH
   have hB : IsDSData B d := hH.1

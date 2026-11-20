@@ -6,6 +6,15 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp
 
+/- English proof (translation)
+Introduce `Y _ _ _ _ hY μ _ ι _ f γ hf K hK`. Use `haveI := hY.sc`. Use `haveI := hY.lc`. Use `haveI := hY.t2`. Use `haveI : SigmaFinite μ := sigmaFinite_of_locallyFinite`.
+
+Establish `hL : ∀ i, ∃ L : AddSubgroup Y, IsCompact (L : Set Y) ∧ IsOpen (L : Set Y) ∧ (Function.eval i '' K) ⊆ L ∧ ∫ x in (L : Set Y), f i x ∂μ = γ i` using `fun i => hf i _ (hK.image (continuous_apply i))`. Use `choose L hLc hLo hLK hLi using hL`. Use `⟨AddSubgroup.pi Set.univ L, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_pi]`. Conclude with `isCompact_univ_pi hLc`.
+
+Rewrite using `[AddSubgroup.coe_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun i _ => hLo i`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_pi]`. Introduce `i _`.
+
+Conclude with `hLK i ⟨x, hx, rfl⟩`. Rewrite using `[AddSubgroup.coe_pi, Measure.restrict_pi_pi, integral_fintype_prod_eq_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => hLi i`.
+-/
 theorem hasGauss_pi : ∀ (Y : Type) [AddCommGroup Y] [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y] (_ : Good Y) (μ : Measure Y) [μ.IsAddHaarMeasure] (ι : Type) [Fintype ι] (f : ι → Y → ℂ) (γ : ι → ℂ), (∀ i, HasGauss μ (f i) (γ i)) → HasGauss (Measure.pi fun _ : ι => μ) (fun x => ∏ i, f i (x i)) (∏ i, γ i) := by
   intro Y _ _ _ _ hY μ _ ι _ f γ hf K hK
   haveI := hY.sc

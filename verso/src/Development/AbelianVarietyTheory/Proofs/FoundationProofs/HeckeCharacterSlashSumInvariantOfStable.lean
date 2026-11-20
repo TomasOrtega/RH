@@ -7,6 +7,31 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SlashIntMatrixPo
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM UpperTheory.V.Af Filter Topology
 open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
+/- English proof (translation)
+Introduce `k L L' N ε Δ ι _ β f hk hNL hNL' hΔ hΔγ hβ hf`. Establish `hcoc` using `(GlobalTheory.T.slashIntMatrixPosDet_properties k f hk).1`. Rewrite using `[(GlobalTheory.T.slashIntMatrixPosDet_properties k (hsum k (ch ε) β f) hk).2.2.1 L' (ch ε)]`. Introduce `γ hγ`. Establish `hNγ : (N : ℤ) ∣ γ 1 0` using `(Int.natCast_dvd_natCast.mpr hNL').trans hγ`.
+
+Establish `hβmem : ∀ i, β i ∈ Δ` using `fun i => by`. Use `hβ.mapsTo (Set.mem_univ ((1 : Gamma0 L), i))` as an intermediate fact. Simplify using `using this`. Establish `hγγ : (γ : M2) * ((γ⁻¹ : SL(2,ℤ)) : M2) = 1`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, mul_inv_cancel, Matrix.SpecialLinearGroup.coe_one]`.
+
+Establish `hγγ' : ((γ⁻¹ : SL(2,ℤ)) : M2) * (γ : M2) = 1`. Rewrite using `[← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel, Matrix.SpecialLinearGroup.coe_one]`. Establish `hγinv : (L' : ℤ) ∣ (γ⁻¹ : SL(2,ℤ)) 1 0`. Rewrite using `[Matrix.SpecialLinearGroup.SL2_inv_expl]`. Simplify using `using hγ.neg_right`.
+
+Use `set β' : ι → M2 := fun i => β i * (γ : M2) with hβ'`. Establish `hβ'rep : LRep L Δ β'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, i⟩ -`. Use `hβ.mapsTo (Set.mem_univ (g, i))` as an intermediate fact.
+
+Simplify using `only [β', ← mul_assoc]`. Conclude with `hΔγ _ this γ hγ`. Introduce and unpack `⟨g, i⟩ - ⟨g', j⟩ - h`. Establish `h'` using `congrArg (· * ((γ⁻¹ : SL(2,ℤ)) : M2)) h`. Simplify using `only [β', mul_assoc, hγγ, mul_one] at h'`.
+
+Conclude with `hβ.injOn (Set.mem_univ _) (Set.mem_univ _) h'`. Introduce `δ hδ`. Establish `h1` using `hΔγ δ hδ γ⁻¹ hγinv`. Take `⟨⟨g, i⟩, -, hgi⟩` from `hβ.surjOn h1`. Use `⟨(g, i), Set.mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only at hgi ⊢`. Rewrite using `[← mul_assoc, hgi, mul_assoc, hγγ', mul_one]`. Establish `hsumeq` using `GlobalTheory.T.heckeCharacterSlashSum_indep_reps k L N ε Δ ι ι β β' f hk hNL hΔ hβ hβ'rep hf`. Establish `hdetγ : (0 : ℤ) < (γ : M2).det` using `by rw [Matrix.SpecialLinearGroup.det_coe]; norm_num`. Establish `hch : ∀ i, ch ε (β' i 0 0) = ch ε (β i 0 0) * ch ε (γ 0 0)`.
+
+Introduce `i`. Establish `hz : ((γ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr hNγ`. Simplify using `only [ch, β', Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[hz, mul_zero, add_zero, map_mul]`.
+
+Establish `hγd : ch ε (γ 0 0) * ch ε (γ 1 1) = 1`. Establish `hd` using `Matrix.SpecialLinearGroup.det_coe γ`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `hz : ((γ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr hNγ`. Establish `h2 : ((γ 0 0 : ℤ) : ZMod N) * ((γ 1 1 : ℤ) : ZMod N) = 1`.
+
+Use `congrArg (fun x : ℤ => (x : ZMod N)) hd` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[hz, mul_zero, sub_zero]`. Conclude with `this`. Simplify using `only [ch]`.
+
+Rewrite using `[← map_mul, h2, map_one]`. Use function extensionality and compare the values at `τ`. Establish `hlin : slz k (γ : M2) (hsum k (ch ε) β f) τ = ∑ i, ch ε (β i 0 0) * slz k (γ : M2) (slz k (β i) f) τ`. Simplify using `only [slz, hsum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+
+Rewrite using `[hlin, hsumeq]`. Simplify using `only [hsum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hcoc (β i) γ (hΔ _ (hβmem i)).1 hdetγ, hch i]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.EisM.hsum_inv_of_stable : ∀ (k L L' N : ℕ) (ε : DirichletCharacter ℂ N) (Δ : Set M2) (ι : Type) [Fintype ι] (β : ι → M2) (f : ℍ → ℂ), 1 ≤ k → N ∣ L → N ∣ L' → (∀ δ ∈ Δ, 0 < δ.det ∧ (N : ℤ) ∣ δ 1 0) → (∀ δ ∈ Δ, ∀ γ : SL(2, ℤ), (L' : ℤ) ∣ γ 1 0 → δ * (γ : M2) ∈ Δ) → LRep L Δ β → Inv k L (ch ε) f → Inv k L' (ch ε) (hsum k (ch ε) β f) := by
   intro k L L' N ε Δ ι _ β f hk hNL hNL' hΔ hΔγ hβ hf
   have hcoc := (GlobalTheory.T.slashIntMatrixPosDet_properties k f hk).1

@@ -10,5 +10,8 @@ open GroundTheory.Global.AdicLiesOver
 open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.DualHol
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | exact GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | (intros; apply GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_induced_of_functional_equation : Ad3.SchwartzSpaceL2.FeGen → ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ μ₁ μ₂ : Fˣ →* ℂˣ, IsUnit1 μ₁ → IsUnit1 μ₂ → WhittakerModelGL2 ψ μ₁ μ₂ (V2 ψ μ₁ μ₂) := by
   first | exact @GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | exact GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space | (intros; apply GlobalTheory.CompanionTheory.WhittakerInducedSpan.whittaker_induced_space <;> assumption)

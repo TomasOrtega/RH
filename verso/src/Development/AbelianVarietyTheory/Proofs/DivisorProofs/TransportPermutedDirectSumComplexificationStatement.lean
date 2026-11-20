@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TransportPermutedDi
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexificationBaseChangeLinearOneTmul
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DefRead.Transport.transport | exact GlobalTheory.DefRead.Transport.transport | (intros; apply GlobalTheory.DefRead.Transport.transport <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.transport_permuted_directSum_complexification : ∀ (Ks LL WL C H G X : Type) [Field Ks] [Field LL] [Algebra Ks LL] [AddCommGroup WL] [Module LL WL] [Module Ks WL]
     [IsScalarTower Ks LL WL] [AddCommGroup C] [Module Ks C] [Group G] [Group H] [Fintype X] [DecidableEq X] [MulAction H X]
     (σ : LL →+* ℂ) (WK : Submodule Ks WL) (n : ℕ) (b : Fin n → WL), (∀ j, b j ∈ WK) → LinearIndependent Ks b →

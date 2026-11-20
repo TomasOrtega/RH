@@ -9,6 +9,15 @@ open scoped nonZeroDivisors
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hs : ∀ x : D.host.E, star x = ReciprocityTheory.ChartRestriction.G.FD.cc x` using `fun _ => rfl`. Establish `hcc : ∀ a : D.host.E, ReciprocityTheory.ChartRestriction.G.FD.cc a = D.host.conj a` using `fun a => bridge_star_holds D.R D.host a`. Establish `key : ∀ nn : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E, nn ≠ 0 → GlobalTheory.conjFrac nn = nn → GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.IsCStable (D` using `D) nn := fun nn h0 h => ⟨h0, fun x => by rw [hs, ← GlobalTheory.mem_conjFrac, h]⟩`.
+
+Establish `hb : D.host.AAbar = GlobalTheory.conjFrac D.host.AA`. Use extensionality with `a`. Rewrite using `[GlobalTheory.mem_conjFrac, hcc]`. Conclude with `⟨Formalism.L2.Pj.conj_mem_AA D, fun ha => by`. Simplify `Formalism.L2.Pj.conj_mem_AAbar D ha⟩` using `only [Formalism.L2.Pj.conj_conj]`.
+
+Establish `hA : D.host.AA ≠ 0` using `Formalism.L2.Pj.AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D`. Establish `hg : (((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E))⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.2 (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero))`. Use `⟨key _ (inv_ne_zero GlobalTheory.coe_different_ne_zero) ?_, key _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.conjFrac_inv]`. Conclude with `congrArg _ GlobalTheory.conjFrac_different`.
+
+Rewrite using `[hb]`. Conclude with `mul_ne_zero (mul_ne_zero (FractionalIdeal.spanSingleton_ne_zero_iff.2 hg) hA) (GlobalTheory.conjFrac_ne_zero hA)`. Establish `hc : ReciprocityTheory.ChartRestriction.G.FD.cc (((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E))⁻¹ = (((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E))⁻¹`. Rewrite using `[hcc, map_inv₀, map_natCast]`. Rewrite using `[hb, map_mul, map_mul, GlobalTheory.conjFrac_spanSingleton, GlobalTheory.conjFrac_conjFrac, hc, mul_right_comm]`.
+-/
 theorem GlobalTheory.Twist.isCStable_inv_different_and_norm_ideal : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.IsCStable (D := D) ((D.host.ddE : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E))⁻¹ ∧ GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.IsCStable (D := D) (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E))⁻¹ * D.host.AA * D.host.AAbar) := by
   intro D
   haveI : IsCMField D.host.E := D.host.isCMField_hostE

@@ -117,6 +117,11 @@ def ClosureIntegral : Prop :=
 
 def JetPointStatement : Prop := Substitution ∧ DetIndex ∧ PointIntegral ∧ ClosureIntegral
 
+/- English proof (translation)
+Use `⟨fun _ i => ?_, fun _ j hj => ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Both sides reduce to the same expression. Use `fin_cases j`. Simplify using `at hj`.
+
+Both sides reduce to the same expression. Simplify using `[DomWeight.detShift]`.
+-/
 example : WtCompat (ι := Unit) (a := 1) (b := 2) (by norm_num)
     (fun _ => ⟨fun _ => 3, fun _ _ _ => le_rfl⟩)
     (fun _ => ⟨![4, -1], by intro i j h; fin_cases i <;> fin_cases j <;> simp_all⟩)
@@ -128,6 +133,9 @@ example : WtCompat (ι := Unit) (a := 1) (b := 2) (by norm_num)
     · rfl
   · simp [DomWeight.detShift]
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨1, fun _ => 1, fun _ => ap, fun _ => by simp, fun _ => h, fun m _ => by simp⟩`.
+-/
 example {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation K Γ) {a b : ℕ} (lam : ι → DomWeight a) (s' : ι → ℤ)
     (M : ι → Submodule (𝓞 K) (Fin a → K)) (MW : ι → Submodule (𝓞 K) (Fin b → K))
@@ -135,6 +143,9 @@ example {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {Γ : Type
     InClosure v (RingHom.id K) lam s' M MW 1 (ptTable ap) :=
   fun _ _ => ⟨1, fun _ => 1, fun _ => ap, fun _ => by simp, fun _ => h, fun m _ => by simp⟩
 
+/- English proof (translation)
+Simplify using `[ptTable]`.
+-/
 example {R : Type} [CommRing R] {ι : Type} {a b : ℕ} (ap : ι → Matrix (Fin a) (Fin b) R) (τ : ι) (β : Fin b)
     (α : Fin a) : ptTable ap (Finsupp.single (τ, β, α) 1) = ap τ α β := by
   simp [ptTable]

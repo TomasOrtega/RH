@@ -18,6 +18,17 @@ namespace GlobalTheory.QFinOneAt
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `haveI := Q'.unitVol.1`. Establish `e0 : j + (2 * σ + 2 + 1) = Q'.s + 1` using `by have := Q'.hs; omega`. Establish `e1 : j + 1 + (2 * σ + 2) = Q'.s + 1` using `by have := Q'.hs; omega`. Establish `e2 : j + 1 + 1 + (2 * σ + 1) = Q'.s + 1` using `by have := Q'.hs; omega`. Establish `e01 : j + (2 * σ + 2) = Q'.s` using `by have := Q'.hs; omega`.
+
+Establish `e12 : j + 1 + (2 * σ + 1) = Q'.s` using `by have := Q'.hs; omega`. Set `S : Dbl2 c.ψ σ` to `{ B := c.B j (σ + 1) h, J := c.J j (σ + 1) h, B' := c.B (j + 1 + 1) σ (idx_step h), s₁ := t.sBF j (σ + 1) h, s₂ := t.sFB j σ h, l := c.lnk j σ h, vL := c.vL j σ h, χ₁ := χ j, χ₂ := χ (j + 1), χz := χz, oma := t.kom j, omb := t.kom (j + 1), V₁ := V₁, W₁ := W₁, V₂ := V₂, W₂ := W₂, …`. Set `Fd : Dbl (ofSplit Q'.q) S.B S.J S.B' (Q'.X j) (Q'.X (j + 1)) (Q'.X (j + 1 + 1)) (2 * σ)` to `{ s := Q'.sc j, s_ne := Q'.sc_ne j, F₀ := Q'.FX j (by omega), F₁ := Q'.FX (j + 1) (by omega), F₂ := Q'.FX (j + 1 + 1) (by omega), G₀ := Q'.FY j _ e0, G₁ := Q'.FY (j + 1) _ e1, G₂ := Q'.FY (j + 1 + 1) _ e2, bes := Q'.bes j (σ + 1) h _ e0, jac := Q'.jac j (σ + 1) h _ e1, bes' := by …`. Establish `reg1` using `(Q'.reg.2.2 (j + 1) _ e1)`. Establish `reg2` using `(Q'.reg.2.2 (j + 1 + 1) _ e2)`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, A₁, A₂, cov₁, cov₂, d₁, d₂, ent₁, ent₂, e₀, e₂, one₀, one₂, m₁, m₂, haar₁, haar₂, vol₁, vol₂, -, -, -⟩` from `GlobalTheory.QPl.Inhab.exists_qstep hψ S Q'.ν Q'.unitVol Q'.q Q'.ψk Q'.char Q'.cond (Q'.X j) (Q'.X (j + 1)) (Q'.X (j + 1 + 1)) (2 * σ) Fd (Q'.T.mu (j + 1)) (Q'.T.mu (j + 1 + 1)) (Q'.mu j (by omega)).1 (Q'.mu (j + 1) (by omega)).1 (Q'.mu j (by omega)).2 (Q'.mu (j + 1) (by omega)). …`. Set `Q : QStep S` to `{ k := Q'.k, ν := Q'.ν, unitVol := Q'.unitVol, q := Q'.q, ψk := Q'.ψk, char := Q'.char, cond := Q'.cond, n₀ := Q'.X j, n₁ := Q'.X (j + 1), n₂ := Q'.X (j + 1 + 1), c := 2 * σ, F := Fd, gl₀ := Q'.gl j _ e0, gl₁ := Q'.gl (j + 1) _ e1, gl₂ := Q'.gl (j + 1 + 1) _ e2, loc₀ := Q'.gl_loc …`. Take `⟨T₁, hT₁, -⟩` from `GlobalTheory.T.splitPlaceDoubleStepFinitelyManyCellsUniform_proof D c.ψ hψ σ S Q a`. Use `⟨T₁, fun f₁ hf₁ g hg h₁ hh₁ x hx => ?_⟩` and prove the remaining obligations. Take `⟨Tm, hTm, hTmO⟩` from `(GlobalTheory.LocMod.indicator_vac D Q'.k Q'.q Q'.unit (Q'.X (j + 1) ⊕ Fin (2 * σ + 2)) (Q'.X j ⊕ Fin (2 * σ + 2 + 1)) (c.V j) (c.V (j + 1)) (Q'.FY j _ e0) (Q'.FY (j + 1) _ e1) c.ψ Q'.ψk hψ Q'.char Q'.cond (v.N j) (v.N (j + 1)) (hv.sd j (by omega)) (hv.sd (j + 1) (by omega)) (Q'. …`.
+
+Take `⟨O, hO, -⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := Q'.k) (Y := Q'.X (j + 1) ⊕ Fin (2 * σ + 2)) (Y' := Q'.X j ⊕ Fin (2 * σ + 2 + 1))`. Take `⟨f₀, f₂, -, -, -, -, hv2⟩` from `GlobalTheory.QPl.Inhab.exists_vac hψ (ι := Unit) (fun _ => Q) (fun _ _ _ => rfl)`. Establish `hvac : Q.Vac f₁ f₂` using `⟨⟨Tm, O, hTm, hO, hTmO O hO⟩, (hv2 ()).2⟩`. Establish `hom` using `(ht.sBF j (σ + 1) h).1`. Take `⟨τ, hτ, r, hr, κ, hκ, hx'⟩` from `hT₁ f₁ f₂ hvac g hg h₁ hh₁ x (by`.
+
+Express the relevant statement in the definitionally equal form `flatBF (t.sBF j (σ + 1) h) ((t.sBF j (σ + 1) h).om _ _) ≠ 0`. Rewrite using `[hom]`. Conclude with `hx)`. Conclude with `⟨τ, hτ, r, hr, κ, hκ, hx'⟩`.
+-/
 theorem core {D : D7} {c : Comm D} {v : VCom c} {t : Tup c} (hψ : IsStdChar D c.ψ (-1)) (hv : v.Is) (ht : t.Is)
     {χ : ℕ → (AE D)ˣ →* Circle} (Q' : QAt v χ) (χz : (AE D)ˣ →* Circle) (j σ : ℕ) (h : j + 2 * (σ + 1) + 2 = D.R.m)
     (V₁ : (t.sBF j (σ + 1) h).χV = χ j * χz) (W₁ : (t.sBF j (σ + 1) h).χW = χ j)
@@ -86,6 +97,9 @@ theorem core {D : D7} {c : Comm D} {v : VCom c} {t : Tup c} (hψ : IsStdChar D c
     rw [hom]; exact hx)
   exact ⟨τ, hτ, r, hr, κ, hκ, hx'⟩
 
+/- English proof (translation)
+Introduce `D c v t w F hc ht hv _ hP j σ h i a`. Take `⟨χz, V₁, W₁, V₂, W₂⟩` from `hP.mid j σ h`. Conclude with `core hc.std hv ht (F.Q i) χz j σ h V₁ W₁ V₂ W₂ (hP.kom j (by omega)) (hP.kom (j + 1) (by omega)) a`.
+-/
 theorem finOne_pin : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → t.Is → v.Is → WeilOK (t := t) v → F.Pins w → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m) (i : Fin F.r) (a : GL ((F.Q i).X j ⊕ Fin (2 * σ + 2 + 1)) (F.Q i).k), ∃ T : Finset (GL ((F.Q i).X (j + 1) ⊕ Fin (2 * σ + 2)) (F.Q i).k), ∀ f₁, GlobalTheory.FinPl.Vac c.ψ _ _ (v.N j) (v.N (j + 1)) (· = (F.Q i).q.v) f₁ → ∀ g ∈ GlobalTheory.FinPl.grpOff (c.V j) (· = (F.Q i).q.v), ∀ h₁ ∈ GlobalTheory.FinPl.grpOff (c.V (j + 1)) (· = (F.Q i).q.v), ∀ x, flatBF (t.sBF j (σ + 1) h) (t.om j (g * (F.Q i).gl j (2 * σ + 2 + 1) (by have := (F.Q i).hs; omega) a, h₁ * (F.Q i).gl (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega) x) (comb c.ψ _ _ ((F.Q i).eL j) f₁)) ≠ 0 → ∃ τ ∈ T, ∃ r, (F.Q i).gl (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega) r ∈ jacGrp (c.jac j (σ + 1) h).d ∧ ∃ κ ∈ ((F.Q i).T.lev (j + 1) (2 * σ + 2) (by have := (F.Q i).hs; omega)).J, x = r * τ * κ := by
   intro D c v t w F hc ht hv _ hP j σ h i a
   obtain ⟨χz, V₁, W₁, V₂, W₂⟩ := hP.mid j σ h

@@ -13,6 +13,9 @@ variable (k) in
 
 def unif : 𝒪[k] := Classical.choose (IsDiscreteValuationRing.exists_irreducible 𝒪[k])
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible 𝒪[k])`.
+-/
 theorem irreducible_unif : Irreducible (unif k) :=
   Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible 𝒪[k])
 

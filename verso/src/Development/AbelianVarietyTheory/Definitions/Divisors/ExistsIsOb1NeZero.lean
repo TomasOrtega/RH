@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Obs.Model
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_hom_eq {R₀ : Type} [CommRing R₀] (A : Over (Sp R₀)) [GrpObj A] :
     lift (𝟙 A) (1 : A ⟶ A) = lift (𝟙 A) (toUnit A ≫ η[A]) := rfl
 
@@ -29,11 +32,17 @@ instance : Module R (Idl hI hs hk) := inferInstanceAs (Module R I)
 instance : SMul R₀ (Idl hI hs hk) := ⟨fun r x ↦ Function.surjInv hs r • x⟩
 
 include hI in
+/- English proof (translation)
+Use `Ideal.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[← pow_two, hI]`. Simplify using `using this`.
+-/
 theorem mul_eq_zero_of_mem {a b : R} (ha : a ∈ I) (hb : b ∈ I) : a * b = 0 := by
   have := Ideal.mul_mem_mul ha hb
   rw [← pow_two, hI] at this
   simpa using this
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Function.surjInv hs (π r) • x = r • x`. Rewrite using `[← sub_eq_zero, ← sub_smul]`. Use `Subtype.ext (mul_eq_zero_of_mem hI ?_ x.2)` and prove the remaining obligations. Rewrite using `[← hk, RingHom.mem_ker, map_sub, Function.surjInv_eq hs, sub_self]`.
+-/
 theorem smul_idl (r : R) (x : Idl hI hs hk) : π r • x = r • x := by
   change Function.surjInv hs (π r) • x = r • x
   rw [← sub_eq_zero, ← sub_smul]
@@ -61,6 +70,9 @@ variable {R₁ : Type} [CommRing R₁] [Algebra R₀ R₁]
 
 include hk in
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `α.surj b hb`. Establish `: π a = 0` using `RingHom.mem_ker.1 (hk ▸ ha)`. Rewrite using `[← α.smul, this, zero_smul, map_zero]`.
+-/
 theorem sq_of_aug (α : Aug I π R₁) {a b : R} (ha : a ∈ I) (hb : b ∈ I) : a * b = 0 := by
   obtain ⟨y, -, rfl⟩ := α.surj b hb
   have : π a = 0 := RingHom.mem_ker.1 (hk ▸ ha)
@@ -68,6 +80,13 @@ theorem sq_of_aug (α : Aug I π R₁) {a b : R} (ha : a ∈ I) (hb : b ∈ I) :
 
 include hI hs in
 
+/- English proof (translation)
+Establish `key : ∀ (y : R₁) (b b' : B), p b = p b' → α.k y • b = α.k y • b'`. Introduce `y b b' h`. Establish `h0 : b - b' ∈ I.map (algebraMap R B)` using `(ker _).1 (by rw [map_sub, h, sub_self])`. Rewrite using `[← sub_eq_zero, ← smul_sub, Algebra.smul_def]`. Conclude with `mul_eq_zero_of_mem (map_sq hI B) (Ideal.mem_map_of_mem _ (α.mem y)) h0`.
+
+Establish `e` using `Function.surjInv_eq surj`. Set `f : R₁ →+ B₀ →+ B` to `AddMonoidHom.mk' (fun y ↦ AddMonoidHom.mk' (fun b ↦ α.k y • Function.surjInv surj b) fun b b' ↦ by rw [← smul_add]; exact key _ _ _ (by rw [map_add, e, e, e])) fun y y' ↦ by`. Use extensionality with `b`. Simplify using `[add_smul]`. Use `⟨TensorProduct.liftAddHom f fun r y b ↦ ?_, fun y b ↦ ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, rfl⟩` from `hs r`. Express the relevant statement in the definitionally equal form `α.k (π r • y) • Function.surjInv surj b = α.k y • Function.surjInv surj (π r • b)`. Rewrite using `[α.smul, mul_comm, mul_smul]`. Conclude with `key _ _ _ (by rw [semi, e, e])`. Conclude with `key _ _ _ (e _)`.
+-/
 theorem exists_isSig (α : Aug I π R₁) {B B₀ : Type} [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀]
     (p : B →+* B₀) (semi : SemiHom π p) (surj : Function.Surjective p)
     (ker : ∀ b, p b = 0 ↔ b ∈ I.map (algebraMap R B)) : ∃ σ, α.IsSig p σ := by
@@ -91,6 +110,9 @@ variable {C C' : Type} [Category.{0} C] [Category.{0} C'] {F : C ⥤ CommAlgCat.
 
 include hI hs in
 
+/- English proof (translation)
+Use `choose σ hσ using fun T ↦ exists_isSig hI hs α (L.p T) (L.semi T) (L.surj T) (L.ker T)`. Use `⟨0, σ, 0, fun T T' T'' a b ↦ ⟨fun _ _ ↦ by simp, fun x ↦ by simp [h a b x], fun _ ↦ by simp⟩, hσ, (map_zero _).symm, fun T T' T'' a b ↦ ⟨map_zero _, map_zero _⟩⟩` and prove the remaining obligations.
+-/
 theorem isOb2_zero (L : Pre I π F) (h : L.IsFun) (α : Aug I π R₁) (w : Glob1 F) : L.IsOb2 α w 0 := by
   choose σ hσ using fun T ↦ exists_isSig hI hs α (L.p T) (L.semi T) (L.surj T) (L.ker T)
   refine ⟨0, σ, 0, fun T T' T'' a b ↦ ⟨fun _ _ ↦ by simp, fun x ↦ by simp [h a b x], fun _ ↦ by simp⟩, hσ,
@@ -98,6 +120,9 @@ theorem isOb2_zero (L : Pre I π F) (h : L.IsFun) (α : Aug I π R₁) (w : Glob
 
 include hI hs in
 
+/- English proof (translation)
+Use `choose σ hσ using fun T ↦ exists_isSig hI hs α (L'.p T) (L'.semi T) (L'.surj T) (L'.ker T)`. Use `⟨0, σ, 0, fun T T' a ↦ ⟨fun _ _ ↦ by simp, fun x ↦ by simp [h a x], fun _ ↦ by simp⟩, hσ, (map_zero _).symm, fun T T' a ↦ ⟨map_zero _, map_zero _⟩⟩` and prove the remaining obligations.
+-/
 theorem isOb1_zero (L : Pre I π F) (L' : Pre I π F') (n : CoefMap (RingHom.id R₀) F F')
     (l : ∀ T : C', L.B (n.G.obj T) →ₐ[R] L'.B T) (h : L.IsNat L' n l) (α : Aug I π R₁) (w : Glob1 F) :
     L.IsOb1 L' n l α w 0 := by
@@ -116,14 +141,38 @@ def sec (α : Aug I π R₁) : I →+ R₁ := AddMonoidHom.mk' (fun i ↦ (α.su
   rw [← sub_eq_zero]
   exact α.inj _ (by simp only [map_sub, map_add, (h _).1]; ring) (by simp only [map_sub, map_add, (h _).2]; simp)
 
+/- English proof (translation)
+The claim follows from `(α.surj i.1 i.2).choose_spec.1`.
+-/
 theorem q_sec (α : Aug I π R₁) (i : I) : α.q (sec α i) = 0 := (α.surj i.1 i.2).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(α.surj i.1 i.2).choose_spec.2`.
+-/
 theorem k_sec (α : Aug I π R₁) (i : I) : α.k (sec α i) = i := (α.surj i.1 i.2).choose_spec.2
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Conclude with `α.inj _ (by simp [q_sec]) (by simp [k_sec, α.smul])`.
+-/
 theorem sec_smul (α : Aug I π R₁) (r : R) (i : I) : sec α (r • i) = π r • sec α i := by
   rw [← sub_eq_zero]
   exact α.inj _ (by simp [q_sec]) (by simp [k_sec, α.smul])
 
+/- English proof (translation)
+Set `f : I →+ B →+ R₁ ⊗[R₀] B₀` to `AddMonoidHom.mk' (fun i ↦ AddMonoidHom.mk' (fun b ↦ sec α i ⊗ₜ p b) fun b b' ↦ by rw [map_add, TensorProduct.tmul_add]) fun i j ↦ by`. Use extensionality with `b`. Simplify using `[TensorProduct.add_tmul]`. Set `τ : I ⊗[R] B →+ R₁ ⊗[R₀] B₀` to `TensorProduct.liftAddHom f fun r i b ↦ by`. Express the relevant statement in the definitionally equal form `sec α (r • i) ⊗ₜ p b = sec α i ⊗ₜ p (r • b)`.
+
+Rewrite using `[sec_smul, semi, TensorProduct.smul_tmul]`. Establish `hτ : ∀ i b, τ (i ⊗ₜ b) = sec α i ⊗ₜ p b` using `fun _ _ ↦ rfl`. Establish `h1 : ∀ t, σ (τ t) = TensorProduct.lid R B (I.subtype.rTensor B t)` using `fun t ↦ by`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul i b => rw [hτ, hσ, k_sec]`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `h2 : ∀ y : R₁ ⊗[R₀] B₀, ∃ t, τ t = y - Algebra.TensorProduct.map (Algebra.ofId R₀ R₁) (AlgHom.id R₀ B₀) (Algebra.TensorProduct.map α.q (AlgHom.id R₀ B₀) y)` using `fun y ↦ by`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul x b`. Take `⟨b, rfl⟩` from `surj b`. Use `⟨(⟨_, α.mem (x - algebraMap R₀ R₁ (α.q x))⟩ : I) ⊗ₜ b, ?_⟩` and prove the remaining obligations. Establish `: sec α ⟨_, α.mem (x - algebraMap R₀ R₁ (α.q x))⟩ = x - algebraMap R₀ R₁ (α.q x)`.
+
+Rewrite using `[← sub_eq_zero]`. Conclude with `α.inj _ (by simp [q_sec]) (by rw [map_sub, k_sec]; simp)`. Rewrite using `[hτ, this, TensorProduct.sub_tmul]`. Simplify using `[Algebra.ofId_apply]`. Consider the case `add x y hx hy`.
+
+Take `⟨t, ht⟩` from `hx`. Take `⟨t', ht'⟩` from `hy`. Conclude with `⟨t + t', by simp only [map_add, ht, ht']; ring⟩`. Take `⟨t, ht⟩` from `h2 y`. Rewrite `ht` using `[show Algebra.TensorProduct.map α.q (AlgHom.id R₀ B₀) y = 0 from hy, map_zero, sub_zero]`.
+
+Substitute `ht` using the available equality. Rewrite `h0` using `[h1, LinearEquiv.map_eq_zero_iff]`. Establish `: t = 0` using `Module.Flat.rTensor_preserves_injective_linearMap (M := B) I.subtype Subtype.val_injective (h0.trans (map_zero _).symm)`. Rewrite using `[this, map_zero]`.
+-/
 theorem sig_inj (α : Aug I π R₁) {B B₀ : Type} [CommRing B] [Algebra R B] [Module.Flat R B] [CommRing B₀]
     [Algebra R₀ B₀] (p : B →+* B₀) (semi : SemiHom π p) (surj : Function.Surjective p) {σ : R₁ ⊗[R₀] B₀ →+ B}
     (hσ : α.IsSig p σ) {y : R₁ ⊗[R₀] B₀} (hy : α.KerQ y) (h0 : σ y = 0) : y = 0 := by
@@ -163,6 +212,9 @@ theorem sig_inj (α : Aug I π R₁) {B B₀ : Type} [CommRing B] [Algebra R B] 
     (h0.trans (map_zero _).symm)
   rw [this, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => obtain ⟨b, rfl⟩ := surj b`. Rewrite using `[hσ, hσ']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sig_unique (α : Aug I π R₁) {B B₀ : Type} [CommRing B] [Algebra R B] [CommRing B₀]
     [Algebra R₀ B₀] (p : B →+* B₀) (surj : Function.Surjective p) {σ σ' : R₁ ⊗[R₀] B₀ →+ B}
     (hσ : α.IsSig p σ) (hσ' : α.IsSig p σ') (y : R₁ ⊗[R₀] B₀) : σ y = σ' y := by
@@ -171,6 +223,11 @@ theorem sig_unique (α : Aug I π R₁) {B B₀ : Type} [CommRing B] [Algebra R 
   | tmul x b => obtain ⟨b, rfl⟩ := surj b; rw [hσ, hσ']
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `w using ind1 with`. Consider the case `h b c`. Take `⟨b, rfl⟩` from `surj b`. Take `⟨c, rfl⟩` from `surj c`. Rewrite using `[h.smul, h'.smul, h.der, h'.der]`.
+
+Consider the case `h0 => simp`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem theta_unique {B B₀ B' : Type} [CommRing B] [Algebra R B] [CommRing B₀] [Algebra R₀ B₀] [CommRing B']
     [Algebra R B'] {p : B →+* B₀} (surj : Function.Surjective p) {α β : B →ₐ[R] B'} {θ θ' : Ω[B₀⁄R₀] →+ B'}
     (h : IsTheta I p α β θ) (h' : IsTheta I p α β θ') (w : Ω[B₀⁄R₀]) : θ w = θ' w := by
@@ -184,6 +241,11 @@ theorem theta_unique {B B₀ B' : Type} [CommRing B] [Algebra R B] [CommRing B�
 
 variable {C C' : Type} [Category.{0} C] [Category.{0} C'] {F : C ⥤ CommAlgCat.{0} R₀} {F' : C' ⥤ CommAlgCat.{0} R₀}
 
+/- English proof (translation)
+Take `⟨θ, σ, z, hθ, hσ, rfl, hz⟩` from `h`. Take `⟨θ', σ', z', hθ', hσ', rfl, hz'⟩` from `h'`. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' a b`. Use `haveI := L.smooth T''`.
+
+Use `sub_eq_zero.1 (sig_inj α (L.p T'') (L.semi _) (L.surj _) (hσ T'') ?_ ?_)` and prove the remaining obligations. Conclude with `(map_sub _ _ _).trans (by rw [(hz T T' T'' a b).1, (hz' T T' T'' a b).1, sub_zero])`. Rewrite using `[map_sub, sig_unique α _ (L.surj _) (hσ T'') (hσ' T'') (z'.1 _ _ _ a b), (hz T T' T'' a b).2, (hz' T T' T'' a b).2, theta_unique (L.surj T) (hθ T T' T'' a b) (hθ' T T' T'' a b), sub_self]`.
+-/
 theorem isOb2_unique (L : Pre I π F) (α : Aug I π R₁) (w : Glob1 F) {c c' : CatCoh.H2 (ext R₁ F)}
     (h : L.IsOb2 α w c) (h' : L.IsOb2 α w c') : c = c' := by
   obtain ⟨θ, σ, z, hθ, hσ, rfl, hz⟩ := h
@@ -196,6 +258,11 @@ theorem isOb2_unique (L : Pre I π F) (α : Aug I π R₁) (w : Glob1 F) {c c' :
   · rw [map_sub, sig_unique α _ (L.surj _) (hσ T'') (hσ' T'') (z'.1 _ _ _ a b), (hz T T' T'' a b).2,
       (hz' T T' T'' a b).2, theta_unique (L.surj T) (hθ T T' T'' a b) (hθ' T T' T'' a b), sub_self]
 
+/- English proof (translation)
+Take `⟨θ, σ, z, hθ, hσ, rfl, hz⟩` from `h`. Take `⟨θ', σ', z', hθ', hσ', rfl, hz'⟩` from `h'`. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' a`. Use `haveI := L'.smooth T'`.
+
+Use `sub_eq_zero.1 (sig_inj α (L'.p T') (L'.semi _) (L'.surj _) (hσ T') ?_ ?_)` and prove the remaining obligations. Conclude with `(map_sub _ _ _).trans (by rw [(hz T T' a).1, (hz' T T' a).1, sub_zero])`. Rewrite using `[map_sub, sig_unique α _ (L'.surj _) (hσ T') (hσ' T') (z'.1 _ _ a), (hz T T' a).2, (hz' T T' a).2, theta_unique (L.surj _) (hθ T T' a) (hθ' T T' a), sub_self]`.
+-/
 theorem isOb1_unique (L : Pre I π F) (L' : Pre I π F') (n : CoefMap (RingHom.id R₀) F F')
     (l : ∀ T : C', L.B (n.G.obj T) →ₐ[R] L'.B T) (α : Aug I π R₁) (w : Glob1 F) {c c' : CatCoh.H1 (ext R₁ F')}
     (h : L.IsOb1 L' n l α w c) (h' : L.IsOb1 L' n l α w c') : c = c' := by
@@ -226,10 +293,18 @@ variable (hI : I ^ 2 = 0) (hs : Function.Surjective π) (hk : RingHom.ker π = I
 
 abbrev sh (i : I) : R[X] →ₐ[R] R[X] := aeval (X + C (i : R))
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sh_comp (i j : I) : (sh j).comp (sh i) = sh (i + j) := by
   ext; simp; ring
 
 include hI in
+/- English proof (translation)
+Establish `h : (C (i : R) : R[X]) * C (i : R) = 0` using `by rw [← C_mul, mul_eq_zero_of_mem hI i.2 i.2, C_0]`. Proceed by induction on `b using Polynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, smul_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← _root_.mul_assoc, map_mul, ih, derivative_mul (f := C a * X ^ n), aeval_X, derivative_X, smul_eq_C_mul, smul_eq_C_mul]`. Take the linear combination `(derivative (C a * X ^ n)) * h`.
+-/
 theorem sh_apply (i : I) (b : R[X]) : sh i b = b + (i : R) • derivative b := by
   have h : (C (i : R) : R[X]) * C (i : R) = 0 := by rw [← C_mul, mul_eq_zero_of_mem hI i.2 i.2, C_0]
   induction b using Polynomial.induction_on with
@@ -240,6 +315,9 @@ theorem sh_apply (i : I) (b : R[X]) : sh i b = b + (i : R) • derivative b := b
     linear_combination (derivative (C a * X ^ n)) * h
 
 include hk in
+/- English proof (translation)
+Establish `hi : π i = 0` using `RingHom.mem_ker.1 (hk ▸ i.2)`. Establish `: (mapRingHom π).comp (sh i : R[X] →+* R[X]) = mapRingHom π`. Apply the tactic sequence `ext <;> simp [hi]`. Conclude with `RingHom.congr_fun this b`.
+-/
 theorem map_sh (i : I) (b : R[X]) : mapRingHom π (sh i b) = mapRingHom π b := by
   have hi : π i = 0 := RingHom.mem_ker.1 (hk ▸ i.2)
   have : (mapRingHom π).comp (sh i : R[X] →+* R[X]) = mapRingHom π := by
@@ -259,6 +337,11 @@ variable {C : Type} [Category.{0} C]
   ρ a := sh (c _ _ a)
   nat a b := map_sh hk _ b
 
+/- English proof (translation)
+Use `⟨fun h T T' T'' a b ↦ ?_, fun h T T' T'' a b x ↦ ?_⟩` and prove the remaining obligations. Establish `e : sh (c _ _ (a ≫ b)) X = ((sh (c _ _ b)).comp (sh (c _ _ a))) X` using `h a b X`. Rewrite `e` using `[sh_comp, aeval_X, aeval_X, add_right_inj, C_inj]`. Conclude with `Subtype.ext e`. Express the relevant statement in the definitionally equal form `sh (c _ _ (a ≫ b)) x = ((sh (c _ _ b)).comp (sh (c _ _ a))) x`.
+
+Rewrite using `[sh_comp, h]`.
+-/
 theorem shPre_isFun_iff (c : ∀ T T' : C, (T ⟶ T') → I) : (shPre hs hk c).IsFun ↔
     ∀ ⦃T T' T'' : C⦄ (a : T ⟶ T') (b : T' ⟶ T''), c _ _ (a ≫ b) = c _ _ a + c _ _ b := by
   refine ⟨fun h T T' T'' a b ↦ ?_, fun h T T' T'' a b x ↦ ?_⟩
@@ -268,6 +351,9 @@ theorem shPre_isFun_iff (c : ∀ T T' : C, (T ⟶ T') → I) : (shPre hs hk c).I
   · change sh (c _ _ (a ≫ b)) x = ((sh (c _ _ b)).comp (sh (c _ _ a))) x
     rw [sh_comp, h]
 
+/- English proof (translation)
+The claim follows from `fun h ↦ hi (by simpa using (shPre_isFun_iff hs hk _).1 h (𝟙 ⟨⟨⟩⟩) (𝟙 _))`.
+-/
 theorem not_isFun {i : I} (hi : i ≠ 0) : ¬ (shPre (C := Discrete PUnit.{1}) hs hk fun _ _ _ ↦ i).IsFun := fun h ↦
   hi (by simpa using (shPre_isFun_iff hs hk _).1 h (𝟙 ⟨⟨⟩⟩) (𝟙 _))
 
@@ -276,6 +362,13 @@ def th (α : Aug I π R₁) (σ : R₁ ⊗[R₀] R₀[X] →+ R[X]) (i : I) : Ω
     rw [map_add, TensorProduct.tmul_add, map_add]
 
 include hI hs in
+/- English proof (translation)
+Establish `v : ∀ w b, mapRingHom π b = polynomialEquiv R₀ w → th α σ (i - j) w = ((i - j : I) : R) • b` using `fun w b e ↦ by`. Express the relevant statement in the definitionally equal form `σ (_ ⊗ₜ polynomialEquiv R₀ w) = _`. Rewrite using `[← e, hσ, k_sec]`. Use `⟨fun b w ↦ ?_, fun b ↦ ?_, fun w ↦ ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `Polynomial.map_surjective π hs (polynomialEquiv R₀ w)`.
+
+Rewrite using `[v w u hu, v _ (b * u) (by rw [map_smul, map_mul, ← hu]; rfl), sh_apply hI, add_mul, smul_mul_smul_comm, mul_eq_zero_of_mem hI i.2 (i - j).2, zero_smul, add_zero, mul_smul_comm]`. Rewrite using `[v _ (derivative b) (by simp), sh_apply hI, sh_apply hI]`. Simplify using `[sub_smul]`. Take `⟨u, hu⟩` from `Polynomial.map_surjective π hs (polynomialEquiv R₀ w)`. Rewrite using `[v w u hu, Algebra.smul_def]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (i - j).2)`.
+-/
 theorem isTheta_th (α : Aug I π R₁) {σ : R₁ ⊗[R₀] R₀[X] →+ R[X]} (hσ : α.IsSig (mapRingHom π) σ) (i j : I) :
     IsTheta I (mapRingHom π) (sh i) (sh j) (th α σ (i - j)) := by
   have v : ∀ w b, mapRingHom π b = polynomialEquiv R₀ w → th α σ (i - j) w = ((i - j : I) : R) • b := fun w b e ↦ by
@@ -297,6 +390,13 @@ def dX (R₀ : Type) [CommRing R₀] (C : Type) [Category.{0} C] : Glob1 (lineF 
 
 include hI in
 
+/- English proof (translation)
+Set `L` to `shPre hs hk c`. Take `⟨σ, hσ⟩` from `exists_isSig hI hs α (B := R[X]) (B₀ := R₀[X]) (mapRingHom π) (fun r b ↦ by simp [smul_eq_C_mul]) (Polynomial.map_surjective π hs) (fun b ↦ by rw [← RingHom.mem_ker, Polynomial.ker_mapRingHom, hk]; rfl)`. Set `z : Z2 (ext R₁ (lineF R₀ C))` to `⟨fun T T' T'' a b ↦ sec α (c _ _ a + c _ _ b - c _ _ (a ≫ b)) ⊗ₜ 1, fun T T' T'' T''' a b d ↦ by`. Express the relevant statement in the definitionally equal form `extHom R₁ (AlgHom.id R₀ R₀[X]) _ + _ = _`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, ← TensorProduct.add_tmul, ← map_add, Category.assoc]`.
+
+Use `congr 2`. Use the proof step `abel⟩`. Use `⟨_, fun T T' T'' a b ↦ th α σ (c _ _ a + c _ _ b - c _ _ (a ≫ b)), fun _ ↦ σ, z, fun T T' T'' a b ↦ ?_, fun _ ↦ hσ, rfl, fun T T' T'' a b ↦ ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `isTheta_th hI hs α hσ (c _ _ a + c _ _ b) (c _ _ (a ≫ b))` as an intermediate fact. Rewrite `this` using `[← sh_comp]`.
+
+Conclude with `this`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map α.q (AlgHom.id R₀ R₀[X]) (_ ⊗ₜ 1) = 0`. Simplify using `[q_sec]`. Express the relevant statement in the definitionally equal form `σ (_ ⊗ₜ 1) = σ (_ ⊗ₜ polynomialEquiv R₀ (D R₀ R₀[X] X))`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isOb2 (c : ∀ T T' : C, (T ⟶ T') → I) (α : Aug I π R₁) :
     ∃ z, (shPre hs hk c).IsOb2 α (dX R₀ C) z := by
   let L := shPre hs hk c
@@ -320,6 +420,15 @@ theorem exists_isOb2 (c : ∀ T T' : C, (T ⟶ T') → I) (α : Aug I π R₁) :
 
 include hI hs hk in
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_isSig hI hs α (B := R[X]) (B₀ := R₀[X]) (mapRingHom π) (fun r b ↦ by simp [smul_eq_C_mul]) (Polynomial.map_surjective π hs) (fun b ↦ by rw [← RingHom.mem_ker, Polynomial.ker_mapRingHom, hk]; rfl)`. Set `c : ∀ T T' : SingleObj (Multiplicative I), (T ⟶ T') → I` to `fun _ _ a ↦ Multiplicative.toAdd a`. Establish `hc : ∀ ⦃T T' T''⦄ (a : T ⟶ T') (b : T' ⟶ T''), c _ _ (a ≫ b) = c _ _ a + c _ _ b` using `fun _ _ _ a b ↦ add_comm _ _`. Set `z : Z1 (ext R₁ (lineF R₀ (SingleObj (Multiplicative I))))` to `⟨fun T T' a ↦ sec α (c _ _ a) ⊗ₜ 1, fun T T' T'' a b ↦ by`. Express the relevant statement in the definitionally equal form `_ = extHom R₁ (AlgHom.id R₀ R₀[X]) _ + _`.
+
+Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, ← TensorProduct.add_tmul, ← map_add, hc]⟩`. Use `⟨shPre hs hk fun _ _ _ ↦ 0, shPre hs hk c, fun _ ↦ AlgHom.id R R[X], H1.mk _ z, (shPre_isFun_iff hs hk _).2 fun _ _ _ _ _ ↦ (add_zero _).symm, (shPre_isFun_iff hs hk _).2 hc, fun _ _ ↦ rfl, ⟨fun T T' a ↦ th α σ (c _ _ a - 0), fun _ ↦ σ, z, fun T T' a ↦ isTheta_th hI hs α hσ _ 0, …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map α.q (AlgHom.id R₀ R₀[X]) (_ ⊗ₜ 1) = 0`. Simplify using `[q_sec]`. Express the relevant statement in the definitionally equal form `σ (_ ⊗ₜ 1) = σ (_ ⊗ₜ polynomialEquiv R₀ (D R₀ R₀[X] X))`.
+
+Simplify using the standard rewrite rules. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 h`. Establish `e` using `congrFun (congrFun (congrFun hg (SingleObj.star _)) (SingleObj.star _)) (Multiplicative.ofAdd i)`. Express the relevant statement in the definitionally equal form `g _ - extHom R₁ (AlgHom.id R₀ R₀[X]) (g _) = sec α i ⊗ₜ 1 at e`. Rewrite `e` using `[extHom, Algebra.TensorProduct.map_id, AlgHom.id_apply, sub_self]`.
+
+Establish `e'` using `hσ (sec α i) 1`. Rewrite `e'` using `[map_one, ← e, map_zero, k_sec, smul_eq_C_mul, _root_.mul_one, eq_comm, C_eq_zero]`. Conclude with `Subtype.ext e'`.
+-/
 theorem exists_isOb1_ne_zero {i : I} (hi : i ≠ 0) (α : Aug I π R₁) :
     ∃ (L L' : Pre I π (lineF R₀ (SingleObj (Multiplicative I)))) (l : ∀ T, L.B T →ₐ[R] L'.B T) (z : CatCoh.H1 _),
       L.IsFun ∧ L'.IsFun ∧ L.IsLift L' (CoefMap.id _) l ∧ L.IsOb1 L' (CoefMap.id _) l α (dX R₀ _) z ∧ z ≠ 0 := by
@@ -350,6 +459,9 @@ theorem exists_isOb1_ne_zero {i : I} (hi : i ≠ 0) (α : Aug I π R₁) :
 
 end Line
 
+/- English proof (translation)
+Use `⟨_, ZMod.castHom (show 2 ∣ 4 by norm_num) (ZMod 2), ?_, ZMod.ringHom_surjective _, rfl, ⟨2, by rw [RingHom.mem_ker]; decide⟩, fun h ↦ absurd (congrArg Subtype.val h) (by decide)⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Simplify using `only [RingHom.mem_ker, Ideal.mem_bot]`. Evaluate the decidable proposition.
+-/
 theorem four_two : ∃ (I : Ideal (ZMod 4)) (π : ZMod 4 →+* ZMod 2), I ^ 2 = 0 ∧ Function.Surjective π ∧
     RingHom.ker π = I ∧ ∃ i : I, i ≠ 0 := by
   refine ⟨_, ZMod.castHom (show 2 ∣ 4 by norm_num) (ZMod 2), ?_, ZMod.ringHom_surjective _, rfl,

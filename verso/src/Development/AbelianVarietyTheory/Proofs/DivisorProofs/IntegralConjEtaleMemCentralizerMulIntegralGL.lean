@@ -8,6 +8,25 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SplitUniq
 
+/- English proof (translation)
+Introduce `E _ _ n w N g hN hs hg`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ _`. Establish `key : ∀ x : w.adicCompletion E, ‖x‖ ≤ 1 ↔ x ∈ w.adicCompletionIntegers E` using `fun x => by`. Rewrite using `[Valued.toNormedField.norm_le_one_iff, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `memK : ∀ h : GL (Fin n) (w.adicCompletion E), h ∈ GlobalTheory.LFun.KGL w n ↔ (∀ i j, h.1 i j ∈ w.adicCompletionIntegers E) ∧ ∀ i j, (h⁻¹).1 i j ∈ w.adicCompletionIntegers E` using `fun h => by`.
+
+Rewrite using `[GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff]`. Both sides reduce to the same expression. Take `⟨hN1, -⟩` from `(memK N).1 hN`. Take `⟨hg1, -⟩` from `(memK _).1 hg`. Take `⟨u, v, hu, hv, huv⟩` from `hs`.
+
+Establish `hconj : ((g⁻¹ * N * g : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (g : Matrix (Fin n) (Fin n) (w.adicCompletion E))⁻¹ * N * g`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`. Take `⟨t, k, ht, htN, hk, hdet, hgtk⟩` from `GlobalTheory.SplitLattice.split_place (w.adicCompletion E) n N.val g.val (fun i j => (key _).2 (hN1 i j)) ⟨u, v, fun i => (key _).2 (hu i), fun i => (key _).2 (hv i), huv⟩ g.isUnit (fun i j => (key _).2 (by rw [← hconj]; exact hg1 i j))`. Use `set tU := ht.unit with htU`. Use `⟨tU, Units.ext htN, tU⁻¹ * g, ?_, by rw [mul_inv_cancel_left]⟩` and prove the remaining obligations.
+
+Establish `hkv : ((tU⁻¹ * g : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = k`. Establish `htt : (tU : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = t` using `ht.unit_spec`. Rewrite using `[Units.val_mul, hgtk, ← htt, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`. Establish `hkI : ∀ i j, k i j ∈ w.adicCompletionIntegers E` using `fun i j => (key _).1 (hk i j)`. Set `M : Matrix (Fin n) (Fin n) (w.adicCompletionIntegers E)` to `Matrix.of fun i j => ⟨k i j, hkI i j⟩`.
+
+Establish `hMk : M.map (w.adicCompletionIntegers E).subtype = k` using `by ext i j; rfl`. Establish `hdetM : ((M.det : w.adicCompletionIntegers E) : w.adicCompletion E) = k.det`. Rewrite using `[← hMk]`. Conclude with `(RingHom.map_det (w.adicCompletionIntegers E).subtype M)`. Establish `hk0 : k.det ≠ 0`.
+
+Introduce `h0`. Rewrite `hdet` using `[h0, norm_zero]`. Conclude with `zero_ne_one hdet`. Establish `hMu : IsUnit M.det`. Establish `h1 : M.det * ⟨(k.det)⁻¹, (key _).1 (by rw [norm_inv, hdet, inv_one])⟩ = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((M.det : w.adicCompletionIntegers E) : w.adicCompletion E) * (k.det)⁻¹ = 1`. Rewrite using `[hdetM, mul_inv_cancel₀ hk0]`. Conclude with `⟨⟨_, _, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Establish `hMM : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hMu`.
+
+Establish `hinv : k⁻¹ = M⁻¹.map (w.adicCompletionIntegers E).subtype`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← hMk, ← Matrix.map_mul, hMM, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `(memK _).2 ⟨fun i j => by rw [hkv]; exact hkI i j, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv, hkv, hinv]`.
+
+Conclude with `(M⁻¹ i j).2`.
+-/
 theorem splitUniq : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (N g : GL (Fin n) (w.adicCompletion E)), N ∈ GlobalTheory.LFun.KGL w n →
     (∃ u v : (w.adicCompletion E)[X], (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧

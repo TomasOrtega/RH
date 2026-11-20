@@ -26,6 +26,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TowerDim
 
+/- English proof (translation)
+Introduce `hH p _ R _ hp A _ hA G t`. Establish `hF : GlobalTheory.Published.AbelianDeRham.Free` using `(GlobalTheory.abelianDeRham_free_baseChange_rigid hH).1`. Establish `hs` using `hA.smooth`. Use `⟨G.height / 2, GlobalTheory.FibreDim.smoothOfRelativeDimension_of_forall_field R A _ hs fun k _ _ ↦ ?_⟩` and prove the remaining obligations. Establish `hk : IsNilpotent (p : k)` using `by simpa using hp.map (algebraMap R k)`.
+
+Establish `hk0 : (p : k) = 0` using `hk.eq_zero`. Use `letI : GrpObj ((Over.pullback (spMap (algebraMap R k))).obj A) := Functor.grpObjObj`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback A (spMap (algebraMap R k))`. Establish `hAk : IsAbelianScheme ((Over.pullback (spMap (algebraMap R k))).obj A)` using `GlobalTheory.isAbelianScheme_pullback_obj _ A hA`. Take `⟨gk, hgk⟩` from `GlobalTheory.AbelianDim.exists_relDim k ((Over.pullback (spMap (algebraMap R k))).obj A) hAk`.
+
+Set `tk` to `t.baseChange h`. Take `⟨L, hL⟩` from `GlobalTheory.PtExt.exists_canMap k ((Over.pullback (spMap (algebraMap R k))).obj A) p (G.baseChange k) tk hAk`. Establish `hbij : Function.Bijective L` using `GlobalTheory.T.deRham_to_rigidified_extension_bijective_p_nilpotent hH p k hk _ gk hAk hgk (G.baseChange k) tk L fun c ↦ (hL c (L c)).2 rfl`. Take `⟨hfin, hprj, hrk⟩` from `hF.prim hAk hgk`. Establish `h1 : Module.finrank k (primDR ((Over.pullback (spMap (algebraMap R k))).obj A)) = 2 * gk`.
+
+Use `hrk ⊥` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis. Establish `h2 : Module.finrank k (G.baseChange k).RigExt = G.height` using `(GlobalTheory.PDivGroup.finrank_rigExt_omega p k hk0 (G.baseChange k)).2.2.1`. Establish `h3 : 2 * gk = G.height`. Rewrite using `[← h1, ← h2]`.
+
+Conclude with `(LinearEquiv.ofBijective L hbij).finrank_eq`. Establish `h4 : G.height / 2 = gk` using `by omega`. Rewrite using `[h4]`. Conclude with `hgk`.
+-/
 theorem exists_smoothOfRelativeDimension_of_hodgeDeRham : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (p : ℕ) [Fact p.Prime]
     (R : Type) [CommRing R], IsNilpotent (p : R) → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A →
     ∀ G : PDivGroup p R, G.TorsionTower A → ∃ g, SmoothOfRelativeDimension g A.hom := by

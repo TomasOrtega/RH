@@ -6,12 +6,32 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hcL_cons p Y n`.
+-/
 private theorem hcL_cons_of {F : Type} [Field F] (p : Σ m : ℕ, GL (Fin m) F → ℂ)
     (Y : List (Σ m : ℕ, GL (Fin m) F → ℂ)) (b : ℕ) (h : (Y.map Sigma.fst).sum = b) (n : ℕ) :
     hcL (p :: Y) n = hc p.1 b p.2 (hcL Y b) n := by
   subst h
   exact hcL_cons p Y n
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite G`. Use `haveI := Fintype.ofFinite X`. Use `haveI := Fintype.ofFinite Z`. Establish `key : ∀ p : G, (∑ x, ∑ p' : Subtype B, u x * (v p' * if I p ∧ tl p = x ∧ br p = p'.1 then T p else 0)) = if h : A p then w ⟨p, h⟩ * T p else 0`. Introduce `p`.
+
+Distinguish the cases in `hI : I p`. Distinguish the cases in `hB : B (br p)`. Establish `hAp : A p` using `(hA p).2 ⟨hI, hB⟩`. Rewrite using `[dif_pos hAp, hw p hAp hB, Fintype.sum_eq_single (tl p), Fintype.sum_eq_single ⟨br p, hB⟩]`. Simplify using `[hI]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `q hq`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨_, _, h⟩`.
+
+Conclude with `hq (Subtype.ext h.symm)`. Introduce `x hx`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[if_neg]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨_, h, _⟩`. Conclude with `hx h.symm`. Rewrite using `[dif_neg (fun h => hB ((hA p).1 h).2)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `x _`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨_, _, h⟩`. Conclude with `hB (h ▸ q.2)`. Rewrite using `[dif_neg (fun h => hI ((hA p).1 h).1)]`. Simplify using `[hI]`. Simplify using `only [finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_congr rfl fun x _ => Finset.sum_comm, Finset.sum_comm, Finset.sum_congr rfl fun p _ => key p, ← Fintype.sum_subtype_add_sum_subtype A, Finset.sum_congr rfl fun p _ => dif_pos p.2, Finset.sum_congr rfl (fun (p : {p // ¬A p}) _ => dif_neg p.2), Finset.sum_const_zero, ad …`.
+-/
 private theorem collapse {G X Z : Type} [Finite G] [Finite X] [Finite Z]
     (A : G → Prop) (B : Z → Prop) (I : G → Prop) (tl : G → X) (br : G → Z)
     (hA : ∀ p, A p ↔ I p ∧ B (br p))
@@ -62,6 +82,21 @@ private theorem collapse {G X Z : Type} [Finite G] [Finite X] [Finite Z]
     Finset.sum_congr rfl fun p _ => dif_pos p.2,
     Finset.sum_congr rfl (fun (p : {p // ¬A p}) _ => dif_neg p.2), Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Introduce `hF2 hRes hPar F _ _ s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `d n hd`. Use `⟨1, one_ne_zero, fun Y T _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hn : n = 0` using `by rw [← hd]; simp`. Substitute `hn` using the available equality. Establish `hall : ∀ g : GL (Fin 0) F, g ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.stdBlocks d hd)` using `fun g => GlobalTheory.SmGL.mem_parab_iff.2 fun a => a.elim0`. Simplify using `only [List.ofFn_zero, hcL_nil, star_one, one_mul, Fin.prod_univ_zero]`. Conclude with `(finsum_comp_equiv (Equiv.subtypeUnivEquiv hall)).symm`.
+
+Consider the case `succ s ih`. Introduce `d n hd`. Establish `hn : n = d 0 + ∑ i : Fin s, d i.succ` using `by rw [← hd, Fin.sum_univ_succ]`. Take `⟨c1, hc1, h1⟩` from `hF2 F (d 0) (∑ i : Fin s, d i.succ) n hn`. Take `⟨c2, hc2, h2⟩` from `ih (fun i => d i.succ) _ rfl`.
+
+Use `⟨c1 * c2, mul_ne_zero hc1 hc2, fun Y T hT => ?_⟩` and prove the remaining obligations. Establish `htail : (List.map Sigma.fst (List.ofFn fun i : Fin s => (⟨d i.succ, Y i.succ⟩ : Σ m : ℕ, GL (Fin m) F → ℂ))).sum = ∑ i : Fin s, d i.succ`. Simplify using `[List.sum_ofFn]`. Rewrite using `[List.ofFn_succ, hcL_cons_of _ _ _ htail, h1 _ _ T hT]`. Establish `h2'` using `fun x => h2 (fun i => Y i.succ) _ (hRes F _ _ n hn T hT x)`.
+
+Rewrite using `[finsum_congr fun x => by rw [h2' x, mul_left_comm], ← mul_finsum, ← mul_assoc]`. Use `clear h1 h2 h2' ih htail hF2 hRes`. Use `congrArg (c1 * c2 * ·) ?_` and prove the remaining obligations. Unfold `UpperTheory.Gal.InertialTypesAlt.resT`. Establish `hc` using `collapse (fun p => p ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.stdBlocks d hd)) (fun z => z ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.stdBlocks (fun i => d i.succ) rfl)) (GlobalTheory.Shin.InPar (d 0)) (GlobalTheory.Shin.tlG (d 0)) (GlobalTheory.Shin.brG (d 0) _) (fun p …`.
+
+Introduce `p hp hp'`. Take `⟨h0, hs⟩` from `(hPar F s n d hd _ rfl p).2 hp hp'`. Rewrite using `[Fin.prod_univ_succ, h0, star_mul']`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hs i])`.
+
+Use `hc` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.frobL :
     FrobTwo → ResCl → ParCons → FrobL := by
   intro hF2 hRes hPar F _ _ s

@@ -12,6 +12,11 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Establish `hP (g : Mat m Ω) : IsOpen {z : M.Z | Par k (M.O z).toSubring g}`. Establish `: {z : M.Z | Par k (M.O z).toSubring g} = ⋂ τ, ((⋂ i, ⋂ j, {z : M.Z | g τ i j ∈ M.O z}) ∩ ({_z : M.Z | (g τ).det ≠ 0} ∩ ({z : M.Z | (g τ).det⁻¹ ∈ M.O z} ∩ {_z : M.Z | ∀ i j : Fin (m τ), (i : ℕ) < k τ → i < j → g τ i j = 0})))`. Use extensionality with `z`. Simplify using `only [Par, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun τ => (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => M.isOpen_setOf_mem_O _).inter (isOpen_const.inter ((M.isOpen_setOf_mem_O _).inter isOpen_const))`. Use `isOpen_iff_forall_mem_open.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨U, A, hzU, -, hU⟩` from `S.loc z`. Conclude with `⟨(U : Set M.Z) ∩ {z' | Par k (M.O z').toSubring (B * A⁻¹)}, fun w hw => (hU w hw.1 B).2 hw.2, U.isOpen.inter (hP _), hzU, (hU z hzU B).1 hz⟩`.
+-/
 theorem isOpen_setOf_mem_frames {F Ω ι : Type} [Field F] [Field Ω] [Algebra F Ω] [Finite ι] {m k : ι → ℕ}
     {M : GlobalTheory.ZH.RatModel F Ω} (S : Fr M m k) (B : Mat m Ω) : IsOpen {z : M.Z | B ∈ S.S z} := by
   have hP (g : Mat m Ω) : IsOpen {z : M.Z | Par k (M.O z).toSubring g} := by
@@ -29,6 +34,13 @@ theorem isOpen_setOf_mem_frames {F Ω ι : Type} [Field F] [Field Ω] [Algebra F
   exact ⟨(U : Set M.Z) ∩ {z' | Par k (M.O z').toSubring (B * A⁻¹)}, fun w hw => (hU w hw.1 B).2 hw.2,
     U.isOpen.inter (hP _), hzU, (hU z hzU B).1 hz⟩
 
+/- English proof (translation)
+Introduce `F _ X Y ι _ m E E' φ f hR A u`. Use `⟨((isOpen_setOf_mem_frames E A).preimage f.continuous).inter (isOpen_setOf_mem_frames E' _), ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hA, hu⟩ ⟨τ, ⟨b, a⟩, hab⟩`. Establish `h` using `hR.sub y _ hu A hA`. Establish `hd : ∀ τ, (A.map φ τ).det ≠ 0` using `fun τ => by`.
+
+Use `Mat.det_map A (φ : X.Fn →+* Y.Fn) τ` as an intermediate fact. Conclude with `this.trans_ne ((map_ne_zero _).2 (Fr.det_ne hA τ))`. Rewrite `h` using `[mul_assoc, Mat.mul_inv hd, mul_one]`. Establish `h2` using `(h τ).1 a b`. Establish `hab' : a < b` using `hab`.
+
+Establish `e : upM u τ a b = u ⟨τ, ⟨(b, a), hab⟩⟩`. Simplify using `only [upM, upU, Matrix.of_apply, dif_pos hab']`. Rewrite `h2` using `[e]`. Conclude with `mem_O_ratOf.1 h2`.
+-/
 theorem isOpen_inCell_and_regAt : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ)
     (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f →
     ∀ (A : Mat m X.Fn) (u : Cell m → Y.Fn), IsOpen {y : Y.X | InCell E E' φ f A u y} ∧

@@ -25,6 +25,17 @@ namespace UpperTheory.EvaluationPowerKernel
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨_, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion B (hG := hB) hn`. Use `haveI := hfin`. Use `haveI := het`. Use `haveI := GlobalTheory.HTTorsRep.mono_ι (A := B) n`. Establish `hw : g ≫ mulN B n = toUnit Z ≫ η`.
+
+Rewrite using `[GlobalTheory.GrpTangent.mulN_eq_pow, comp_pow, Category.comp_id, hg]`. Both sides reduce to the same expression. Set `g' : Z ⟶ torsion B n` to `pullback.lift g (toUnit Z) hw`. Establish `hg' : g' ≫ torsion.ι B n = g` using `pullback.lift_fst _ _ _`. Set `e : Z ⟶ torsion B n` to `toUnit Z ≫ GlobalTheory.HTTorsRep.torsEta n`.
+
+Establish `he : e ≫ torsion.ι B n = 1`. Simplify using `only [e, Category.assoc, GlobalTheory.HTTorsRep.torsEta_ι]`. Both sides reduce to the same expression. Establish `hrange : Set.range (𝟙 Z.left) ⊆ Set.range (GlobalTheory.FinEt.agreeι g' e)`. Use `GlobalTheory.LevCover.range_subset_of_geom (𝟙 Z) (Set.range (GlobalTheory.FinEt.agreeι g' e)) (fun k _ _ x y => by` as an intermediate fact.
+
+Rewrite using `[Category.comp_id, ← GlobalTheory.FinEt.comp_eq_comp_iff_range, ← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Rewrite using `[← cancel_mono (torsion.ι B n), Category.assoc, Category.assoc, hg', he, h k x y]`. Use the proof step `simp)`. Simplify using `using this`.
+
+Establish `key : g' = e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h2` using `(GlobalTheory.FinEt.comp_eq_comp_iff_range g' e (𝟙 Z.left)).2 hrange`. Simplify using `using h2`. Rewrite using `[← hg', key, he]`.
+-/
 private theorem eq_one_of_geom {Z B : Over S} [GrpObj B] [IsCommMonObj B] (hB : IsAbelianScheme B) {n : ℕ}
     (hn : IsUnit (n : Γ(S, ⊤))) (g : Z ⟶ B) (hg : g ^ n = 1)
     (h : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (y : Over.mk x ⟶ Z), y ≫ g = 1) : g = 1 := by
@@ -61,6 +72,13 @@ namespace UpperTheory.EvaluationPowerKernel
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hxn : x ^ n = 1`. Establish `e : x ≫ (𝟙 A) ^ n = x ^ n` using `by rw [comp_pow, Category.comp_id]`. Rewrite using `[← e, ← h1, ← Category.assoc, hx]`. Simplify using the standard rewrite rules. Apply `eq_one_of_geom hC hn (x ≫ ψ₂)` to reduce the goal to its premises.
+
+Rewrite using `[← pow_comp, hxn]`. Simplify using the standard rewrite rules. Introduce `k _ _ s y`. Rewrite using `[← Category.assoc]`. Apply `hg k s (y ≫ x)` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hx]`. Simplify using the standard rewrite rules.
+-/
 private theorem comp_eq_one_of_ker {A B C : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     [GrpObj C] [IsCommMonObj C] (hC : IsAbelianScheme C) {n : ℕ} (hn : IsUnit (n : Γ(S, ⊤)))
     (ψ₁ : A ⟶ B) (ψ₁' : B ⟶ A) (ψ₂ : A ⟶ C) [IsMonHom ψ₁'] [IsMonHom ψ₂] (h1 : ψ₁ ≫ ψ₁' = (𝟙 A) ^ n)
@@ -79,6 +97,23 @@ private theorem comp_eq_one_of_ker {A B C : Over S} [GrpObj A] [IsCommMonObj A] 
     rw [Category.assoc, hx]
     simp
 
+/- English proof (translation)
+Take `⟨_, _, _, _⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S A n hA hn`. Take `⟨_, _, _, _⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S B n hB hn`. Use `haveI : EffectiveEpi (Over.Hom.left ((𝟙 A) ^ n)) := inferInstance`. Use `haveI : EffectiveEpi (Over.Hom.left ((𝟙 B) ^ n)) := inferInstance`. Establish `e1 : ψ₁.left ≫ ψ₁'.left = Over.Hom.left ((𝟙 A) ^ n)` using `by rw [← Over.comp_left, h1]`.
+
+Establish `e2 : ψ₁'.left ≫ ψ₁.left = Over.Hom.left ((𝟙 B) ^ n)` using `by rw [← Over.comp_left, h2]`. Use `haveI : Epi (ψ₁.left ≫ ψ₁'.left) := by rw [e1]; infer_instance`. Use `haveI : Epi ψ₁'.left := epi_of_epi ψ₁.left ψ₁'.left`. Use `haveI : EffectiveEpi (ψ₁'.left ≫ ψ₁.left) := by rw [e2]; infer_instance`. Use `haveI : EffectiveEpi ψ₁.left := effectiveEpi_of_effectiveEpi_epi_comp ψ₁.left ψ₁'.left`.
+
+Establish `compat : ∀ {W : Scheme} (a b : W ⟶ A.left), a ≫ ψ₁.left = b ≫ ψ₁.left → a ≫ ψ₂.left = b ≫ ψ₂.left`. Introduce `W a b hab`. Establish `hb : b ≫ A.hom = a ≫ A.hom`. Rewrite using `[← Over.w ψ₁, ← Category.assoc, ← hab, Category.assoc]`. Set `Z : Over S` to `Over.mk (a ≫ A.hom)`.
+
+Set `a' : Z ⟶ A` to `Over.homMk a rfl`. Set `b' : Z ⟶ A` to `Over.homMk b hb`. Establish `q1 : a' ≫ ψ₁ = b' ≫ ψ₁`. Use `ext`. Simplify `hab` using `[a', b']`.
+
+Establish `q2 : (a' / b') ≫ ψ₁ = 1`. Rewrite using `[GrpObj.div_comp, q1, div_self']`. Establish `q3` using `hker Z (a' / b') q2`. Rewrite `q3` using `[GrpObj.div_comp, div_eq_one]`. Use `congrArg Over.Hom.left q3` as an intermediate fact.
+
+Simplify `this` using `[a', b']`. Set `φ₀ : B.left ⟶ C.left` to `EffectiveEpi.desc ψ₁.left ψ₂.left compat`. Establish `hfac : ψ₁.left ≫ φ₀ = ψ₂.left` using `EffectiveEpi.fac _ _ _`. Establish `hw : φ₀ ≫ C.hom = B.hom`. Rewrite using `[← cancel_epi ψ₁.left, ← Category.assoc, hfac, Over.w, Over.w]`.
+
+Set `φ : B ⟶ C` to `Over.homMk φ₀ hw`. Establish `hφ : ψ₁ ≫ φ = ψ₂`. Use `ext`. Simplify using `[φ, hfac]`. Use `⟨φ, GlobalTheory.rigidity_holds S B C hB hC φ ?_, hφ⟩` and prove the remaining obligations.
+
+Rewrite using `[← IsMonHom.one_hom ψ₁, Category.assoc, hφ, IsMonHom.one_hom]`.
+-/
 private theorem exists_factor {A B C : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     [GrpObj C] [IsCommMonObj C] (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hC : IsAbelianScheme C)
     {n : ℕ} (hn : IsUnit (n : Γ(S, ⊤)))
@@ -131,6 +166,9 @@ namespace UpperTheory.EvaluationPowerKernel
 variable {S : Scheme.{0}}
 
 open GlobalTheory.AbDual GlobalTheory.CechPic in
+/- English proof (translation)
+Establish `key` using `(isAdditive_iff hQ).1 hadd`. Proceed by induction on `m with`. Consider the case `zero => simp [IsAdditive.evc_one hQ hadd]`. Consider the case `succ k ih => rw [pow_succ, key, ih, succ_nsmul]`.
+-/
 private theorem evc_pow_left {B T Y : Over S} [GrpObj B] {Q : LB (B ⊗ T).left} (hQ : Q.IsLB)
     (hadd : IsAdditive Q) (a : Y ⟶ B) (t : Y ⟶ T) (m : ℕ) : evc hQ (a ^ m) t = m • evc hQ a t := by
   have key := (isAdditive_iff hQ).1 hadd
@@ -139,6 +177,11 @@ private theorem evc_pow_left {B T Y : Over S} [GrpObj B] {Q : LB (B ⊗ T).left}
   | succ k ih => rw [pow_succ, key, ih, succ_nsmul]
 
 open GlobalTheory.AbDual GlobalTheory.CechPic in
+/- English proof (translation)
+Establish `hs : (swap Q).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hQ _`. Establish `key` using `(isAdditive_iff hs).1 hadd`. Rewrite using `[← evc_swap hQ hs, ← evc_swap hQ hs]`. Proceed by induction on `m with`. Consider the case `zero => simp [IsAdditive.evc_one hs hadd]`.
+
+Consider the case `succ k ih => rw [pow_succ, key, ih, succ_nsmul]`.
+-/
 private theorem evc_pow_right {B T Y : Over S} [GrpObj B] [GrpObj T] {Q : LB (B ⊗ T).left} (hQ : Q.IsLB)
     (hadd : IsAdditive (swap Q)) (a : Y ⟶ B) (t : Y ⟶ T) (m : ℕ) : evc hQ a (t ^ m) = m • evc hQ a t := by
   have hs : (swap Q).IsLB := ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB hQ _
@@ -149,6 +192,11 @@ private theorem evc_pow_right {B T Y : Over S} [GrpObj B] [GrpObj T] {Q : LB (B 
   | succ k ih => rw [pow_succ, key, ih, succ_nsmul]
 
 open GlobalTheory.AbDual GlobalTheory.CechPic in
+/- English proof (translation)
+Establish `e1 : (cls Q hQ) = evc hQ (fst B B) (snd B B)`. Simplify using `only [evc]`. Apply the tactic sequence `have : lift (fst B B) (snd B B) = 𝟙 (B ⊗ B) := by ext <;> simp`. Rewrite using `[this, Over.id_left, pull_id]`. Establish `e2 : pull (sq2 ((𝟙 B) ^ n)) (cls Q hQ) = evc hQ ((fst B B) ^ n) ((snd B B) ^ n)`.
+
+Simplify using `only [evc, sq2]`. Rewrite using `[comp_pow, comp_pow, Category.comp_id, Category.comp_id]`. Rewrite using `[e2, evc_pow_left hQ a₁, evc_pow_right hQ s₁, ← e1, smul_smul, mul_comm]`.
+-/
 private theorem pull_square_pow_eq_sq_smul {B : Over S} [GrpObj B] [IsCommMonObj B] {Q : LB (G2 B).left} (hQ : Q.IsLB)
     (a₁ : IsAdditive Q) (s₁ : IsAdditive (swap Q)) (n : ℕ) :
     pull (sq2 ((𝟙 B) ^ n)) (cls Q hQ) = (n * n) • cls Q hQ := by
@@ -168,6 +216,39 @@ namespace UpperTheory.EvaluationPowerKernel
 variable {S : Scheme.{0}}
 
 open GlobalTheory.AbDual GlobalTheory.CechPic in
+/- English proof (translation)
+Establish `hM : (Q₁.div Q₂).IsLB` using `LB.isLB_div h₁ h₂`. Establish `hc' : cls (Q₁.div Q₂) hM = cls Q₁ h₁ - cls Q₂ h₂` using `cls_div h₁ h₂ hM`. Establish `ax1 : pull (lift (1 : B ⟶ B) (𝟙 B)).left (cls (Q₁.div Q₂) hM) = 0`. Rewrite using `[hc', map_sub, ← cls_pull h₁ _ (pull_isLB h₁ _), ← cls_pull h₂ _ (pull_isLB h₂ _), (cls_eq_zero_iff _).2 r₁, (cls_eq_zero_iff _).2 r₂, sub_zero]`. Establish `ax2 : pull (lift (𝟙 B) (1 : B ⟶ B)).left (cls (Q₁.div Q₂) hM) = 0`.
+
+Rewrite using `[hc', map_sub, ← cls_pull h₁ _ (pull_isLB h₁ _), ← cls_pull h₂ _ (pull_isLB h₂ _), (cls_eq_zero_iff _).2 r₁', (cls_eq_zero_iff _).2 r₂', sub_zero]`. Establish `hadd` using `additive_of_cube GlobalTheory.CubeTop.cubeTheorem hB hB hM ((triv_ev_iff hM 1 (𝟙 B)).2 ax1) ((triv_ev_iff hM (𝟙 B) 1).2 ax2)`. Establish `htors : (n * n) • cls (Q₁.div Q₂) hM = 0`. Rewrite using `[← pull_square_pow_eq_sq_smul hM hadd.1 hadd.2 n, hc', map_sub, hp, sub_self]`. Establish `hfin : cls (Q₁.div Q₂) hM = 0`.
+
+Set `A' : Over B.left` to `(Over.pullback B.hom).obj B`. Establish `hA' : IsAbelianScheme A'` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback B.hom B hB`. Establish `hkS : IsUnit ((n * n : ℕ) : Γ(S, ⊤))`. Rewrite using `[Nat.cast_mul]`. Conclude with `hn.mul hn`.
+
+Establish `hkB : IsUnit ((n * n : ℕ) : Γ(B.left, ⊤))`. Use `hkS.map (B.hom.appTop).hom` as an intermediate fact. Simplify using `using this`. Establish `e0 : Over.Hom.left (1 : 𝟙_ (Over B.left) ⟶ A') = (lift (1 : B ⟶ B) (𝟙 B)).left`. Establish `e1 : (1 : 𝟙_ (Over B.left) ⟶ A') = η` using `by show toUnit _ ≫ η = η`.
+
+Rewrite using `[toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `e2 : (1 : B ⟶ B).left = B.hom ≫ (η : 𝟙_ (Over S) ⟶ B).left` using `by show (toUnit B ≫ η).left = _`. Rewrite using `[Over.comp_left]`. Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Establish `h` using `GlobalTheory.TorsFrameInt.one_comm (ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback B B.hom)`. Rewrite using `[e1, h]`. Use `show _ = (lift (1 : B ⟶ B) (𝟙 B)).left ≫ (fst B B).left`. Rewrite using `[← Over.comp_left, lift_fst, e2]`. Use `show _ = (lift (1 : B ⟶ B) (𝟙 B)).left ≫ (snd B B).left`.
+
+Rewrite using `[← Over.comp_left, lift_snd]`. Conclude with `Over.w (1 : 𝟙_ (Over B.left) ⟶ A')`. Use `(cls_eq_zero_iff hM).2 ?_` and prove the remaining obligations. Use `GlobalTheory.RigTorsTriv.triv_of_geometricFibres B.left A' hA' (Q₁.div Q₂) hM ?_ (n * n) hkB ?_ ?_` and prove the remaining obligations. Use `(cls_eq_zero_iff (pull_isLB hM _)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[cls_pull hM, e0]`. Conclude with `ax1`. Use `(cls_eq_zero_iff (LB.isLB_linComb hM _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hM]`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, one_smul]`.
+
+Conclude with `(congrArg (fun z => (n * n) • z) (pull_id (cls (Q₁.div Q₂) hM))).trans htors`. Introduce `K _ _ y`. Use `(cls_eq_zero_iff (pull_isLB hM _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hM]`. Take `⟨_, hfK, _, hsK⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S B (n * n) hB hkS`.
+
+Take `⟨s, hs⟩` from `ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_section (pullback.snd (Over.Hom.left ((𝟙 B) ^ (n * n))) y)`. Set `y'` to `s ≫ pullback.fst (Over.Hom.left ((𝟙 B) ^ (n * n))) y`. Establish `hy' : y' ≫ Over.Hom.left ((𝟙 B) ^ (n * n)) = y`. Simplify using `only [y', Category.assoc, pullback.condition]`. Rewrite using `[← Category.assoc, hs, Category.id_comp]`.
+
+Set `g` to `pullback.fst A'.hom y`. Set `W : Over S` to `Over.mk (g ≫ pullback.fst B.hom B.hom ≫ B.hom)`. Set `a : W ⟶ B` to `Over.homMk (g ≫ pullback.fst B.hom B.hom) (by simp [W])`. Establish `hyB : y' ≫ B.hom = y ≫ B.hom`. Establish `hw` using `Over.w ((𝟙 B) ^ (n * n))`.
+
+Combine the equalities or inequalities in the displayed calculation. Set `t : W ⟶ B` to `Over.homMk (pullback.snd A'.hom y ≫ y') (by show (pullback.snd A'.hom y ≫ y') ≫ B.hom = g ≫ pullback.fst B.hom B.hom ≫ B.hom`. Rewrite using `[Category.assoc, hyB, ← Category.assoc, ← pullback.condition, Category.assoc]`. Use `show g ≫ pullback.snd B.hom B.hom ≫ B.hom = _`. Rewrite using `[← pullback.condition])`.
+
+Establish `htk : t ^ (n * n) = t ≫ (𝟙 B) ^ (n * n)`. Rewrite using `[comp_pow, Category.comp_id]`. Establish `hg : pullback.fst A'.hom y = (lift a (t ^ (n * n))).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ = (lift a (t ^ (n * n))).left ≫ (fst B B).left`.
+
+Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Use `show _ = (lift a (t ^ (n * n))).left ≫ (snd B B).left`. Rewrite using `[← Over.comp_left, lift_snd, htk, Over.comp_left]`. Use `show g ≫ A'.hom = (pullback.snd A'.hom y ≫ y') ≫ _`.
+
+Rewrite using `[Category.assoc, hy', pullback.condition]`. Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `evc hM a (t ^ (n * n)) = 0`. Rewrite using `[evc_pow_right hM hadd.2]`. Use `show (n * n) • pull (lift a t).left (cls (Q₁.div Q₂) hM) = 0`.
+
+Rewrite using `[← map_nsmul, htors, map_zero]`. Rewrite `hfin` using `[hc', sub_eq_zero]`. Conclude with `(cls_eq_iff h₁ h₂).1 hfin`.
+-/
 private theorem lbIso_of_pull {B : Over S} [GrpObj B] [IsCommMonObj B] (hB : IsAbelianScheme B) {n : ℕ}
     (hn : IsUnit (n : Γ(S, ⊤))) {Q₁ Q₂ : LB (G2 B).left} (h₁ : Q₁.IsLB) (h₂ : Q₂.IsLB)
     (r₁ : ∃ t : (Q₁.pull (lift (1 : B ⟶ B) (𝟙 B)).left).Gen, t.IsGen)
@@ -268,12 +349,18 @@ namespace UpperTheory.EvaluationPowerKernel
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Simplify using `only [sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [Category.assoc]`.
+-/
 private theorem grpSchemeSquareProductMap_comp {A B C : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     [GrpObj C] [IsCommMonObj C] (f : A ⟶ B) (g : B ⟶ C) : sq2 (f ≫ g) = sq2 f ≫ sq2 g := by
   simp only [sq2, ← Over.comp_left]
   congr 1
   ext <;> simp [Category.assoc]
 
+/- English proof (translation)
+Simplify using `only [sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+-/
 private theorem square_axis_left_comm {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (f : A ⟶ B) [IsMonHom f] :
     (lift (1 : A ⟶ A) (𝟙 A)).left ≫ sq2 f = f.left ≫ (lift (1 : B ⟶ B) (𝟙 B)).left := by
@@ -281,6 +368,9 @@ private theorem square_axis_left_comm {A B : Over S} [GrpObj A] [IsCommMonObj A]
   congr 1
   ext <;> simp
 
+/- English proof (translation)
+Simplify using `only [sq2, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+-/
 private theorem square_axis_right_comm {A B : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B]
     (f : A ⟶ B) [IsMonHom f] :
     (lift (𝟙 A) (1 : A ⟶ A)).left ≫ sq2 f = f.left ≫ (lift (𝟙 B) (1 : B ⟶ B)).left := by
@@ -291,6 +381,33 @@ private theorem square_axis_right_comm {A B : Over S} [GrpObj A] [IsCommMonObj A
 end UpperTheory.EvaluationPowerKernel
 
 open GlobalTheory.CechPic in
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp hpR c T s o o₁ o₂ ψ₁ ψ₂ h1 h2 hgeom`. Take `⟨⟨k, hck⟩, hm1, hact1, heta1, ⟨hpol1⟩, ψ₁', hm1', h11, h12⟩` from `h1`. Take `⟨_, hm2, hact2, heta2, ⟨hpol2⟩, ψ₂', hm2', h21, h22⟩` from `h2`. Use `haveI := hm1`. Use `haveI := hm2`.
+
+Use `haveI := hm1'`. Use `haveI := hm2'`. Establish `hpT : IsUnit ((p : ℕ) : Γ(T, ⊤))`. Establish `e1` using `hpR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Establish `e2` using `e1.map (s.appTop).hom`.
+
+Simplify using `using e2`. Establish `hc : IsUnit ((c : ℕ) : Γ(T, ⊤))`. Rewrite using `[hck, Nat.cast_pow]`. Conclude with `hpT.pow k`. Establish `epi1 : ∀ {X : Over T} (u v : o₁.A ⟶ X), ψ₁ ≫ u = ψ₁ ≫ v → u = v`.
+
+Introduce `X u v huv`. Take `⟨_, _, _, _⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective T o₁.A c o₁.ab hc`. Establish `e : ((𝟙 o₁.A) ^ c) ≫ u = ((𝟙 o₁.A) ^ c) ≫ v`. Rewrite using `[← h12, Category.assoc, Category.assoc, huv]`. Use `ext`.
+
+Rewrite using `[← cancel_epi (Over.Hom.left ((𝟙 o₁.A) ^ c)), ← Over.comp_left, ← Over.comp_left, e]`. Establish `epi2 : ∀ {X : Over T} (u v : o₂.A ⟶ X), ψ₂ ≫ u = ψ₂ ≫ v → u = v`. Introduce `X u v huv`. Take `⟨_, _, _, _⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective T o₂.A c o₂.ab hc`. Establish `e : ((𝟙 o₂.A) ^ c) ≫ u = ((𝟙 o₂.A) ^ c) ≫ v`.
+
+Rewrite using `[← h22, Category.assoc, Category.assoc, huv]`. Use `ext`. Rewrite using `[← cancel_epi (Over.Hom.left ((𝟙 o₂.A) ^ c)), ← Over.comp_left, ← Over.comp_left, e]`. Establish `ker12` using `fun Z x hx => UpperTheory.EvaluationPowerKernel.comp_eq_one_of_ker o₂.ab hc ψ₁ ψ₁' ψ₂ h11 (fun k _ _ x g hg => (hgeom k x g).1 hg) (Z := Z) x hx`. Establish `ker21` using `fun Z x hx => UpperTheory.EvaluationPowerKernel.comp_eq_one_of_ker o₁.ab hc ψ₂ ψ₂' ψ₁ h21 (fun k _ _ x g hg => (hgeom k x g).2 hg) (Z := Z) x hx`.
+
+Take `⟨φ, hφm, hφ⟩` from `UpperTheory.EvaluationPowerKernel.exists_factor o.ab o₁.ab o₂.ab hc ψ₁ ψ₁' ψ₂ h11 h12 ker12`. Take `⟨φ', hφm', hφ'⟩` from `UpperTheory.EvaluationPowerKernel.exists_factor o.ab o₂.ab o₁.ab hc ψ₂ ψ₂' ψ₁ h21 h22 ker21`. Use `haveI := hφm`. Establish `hinv1 : φ ≫ φ' = 𝟙 _` using `epi1 _ _ (by rw [← Category.assoc, hφ, hφ', Category.comp_id])`. Establish `hinv2 : φ' ≫ φ = 𝟙 _` using `epi2 _ _ (by rw [← Category.assoc, hφ', hφ, Category.comp_id])`.
+
+Set `e : o₁.A ≅ o₂.A` to `⟨φ, φ', hinv1, hinv2⟩`. Use `haveI : IsMonHom e.hom := hφm`. Use `⟨⟨φ.left, sq2 φ, ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_of_iso e, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Use `show (lift (fst _ _ ≫ φ) (snd _ _ ≫ φ)).left ≫ (fst o₂.A o₂.A).left = _`.
+
+Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left]`. Use `show (lift (fst _ _ ≫ φ) (snd _ _ ≫ φ)).left ≫ (snd o₂.A o₂.A).left = _`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Introduce `c'`. Establish `: o₁.act.act c' ≫ φ = φ ≫ o₂.act.act c'`.
+
+Apply `epi1` to reduce the goal to its premises. Rewrite using `[← Category.assoc, ← hact1, Category.assoc, hφ, hact2, ← Category.assoc, hφ]`. Rewrite using `[← Over.comp_left, this, Over.comp_left]`. Establish `hQ2 : (o₂.P.pull (sq2 φ)).IsLB` using `pull_isLB o₂.isLB _`. Use `UpperTheory.EvaluationPowerKernel.lbIso_of_pull o₁.ab hc o₁.isLB hQ2 o₁.rig₁ o₁.rig₂ ?_ ?_ ?_` and prove the remaining obligations.
+
+Use `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hQ2 _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull hQ2, GlobalTheory.CechPic.cls_pull o₂.isLB, ← GlobalTheory.CechPic.pull_comp, UpperTheory.EvaluationPowerKernel.square_axis_left_comm φ, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull o₂.isLB _ (pull_isLB o₂.isLB _), (GlobalTheory.C …`. Use `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hQ2 _)).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull hQ2, GlobalTheory.CechPic.cls_pull o₂.isLB, ← GlobalTheory.CechPic.pull_comp, UpperTheory.EvaluationPowerKernel.square_axis_right_comm φ, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull o₂.isLB _ (pull_isLB o₂.isLB _), (GlobalTheory. …`. Establish `eq1` using `(GlobalTheory.CechPic.cls_eq_iff (LB.isLB_linComb o.isLB _ _) (pull_isLB o₁.isLB (sq2 ψ₁))).2 hpol1`.
+
+Establish `eq2` using `(GlobalTheory.CechPic.cls_eq_iff (LB.isLB_linComb o.isLB _ _) (pull_isLB o₂.isLB (sq2 ψ₂))).2 hpol2`. Rewrite `eq1` using `[GlobalTheory.CechPic.cls_pull o₁.isLB]`. Rewrite `eq2` using `[GlobalTheory.CechPic.cls_pull o₂.isLB]`. Rewrite using `[GlobalTheory.CechPic.cls_pull o₂.isLB, ← h12, UpperTheory.EvaluationPowerKernel.grpSchemeSquareProductMap_comp, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_comp, ← eq1, ← GlobalTheory.CechPic.pull_comp (sq2 ψ₁) (sq2 φ), ← UpperTheory.EvaluationPowerKernel.grpScheme …`. Introduce `y`.
+
+Rewrite using `[heta1, ← Over.comp_left, Category.assoc, hφ, ← heta2, Category.id_comp]`. Rewrite using `[← Over.comp_left, hφ]`.
+-/
 private theorem UpperTheory.EvaluationPowerKernel.main :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → ∀ (c : ℕ) (T : Scheme.{0}) (s : T ⟶ Sp R) (o o₁ o₂ : Obj b N s) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o.A ⟶ o₂.A), IsPIsog c o o₁ ψ₁ → IsPIsog c o o₂ ψ₂ → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T) (g : Over.mk x ⟶ o.A), g ≫ ψ₁ = 1 ↔ g ≫ ψ₂ = 1) → ∃ m : ObjMap o₁ o₂ (𝟙 T), ψ₁.left ≫ m.φ = ψ₂.left := by
   intro p _ D R _ b N hN hNp hpR c T s o o₁ o₂ ψ₁ ψ₂ h1 h2 hgeom
@@ -370,6 +487,9 @@ private theorem UpperTheory.EvaluationPowerKernel.main :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+The claim follows from `UpperTheory.EvaluationPowerKernel.main`.
+-/
 theorem UpperTheory.exists_iso_of_pIsogeny_kernel_eq :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → IsUnit ((p : ℕ) : R) → ∀ (c : ℕ) (T : Scheme.{0}) (s : T ⟶ Sp R) (o o₁ o₂ : Obj b N s) (ψ₁ : o.A ⟶ o₁.A) (ψ₂ : o.A ⟶ o₂.A), IsPIsog c o o₁ ψ₁ → IsPIsog c o o₂ ψ₂ → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ T) (g : Over.mk x ⟶ o.A), g ≫ ψ₁ = 1 ↔ g ≫ ψ₂ = 1) → ∃ m : ObjMap o₁ o₂ (𝟙 T), ψ₁.left ≫ m.φ = ψ₂.left :=
   UpperTheory.EvaluationPowerKernel.main

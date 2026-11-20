@@ -6,6 +6,23 @@ open scoped TensorProduct ContDiff
 
 namespace GlobalTheory.UAut
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J hJ w`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Use `set A : Matrix (Fin n) (Fin n) ℂ := J.map τ.1 with hA`. Take `⟨d, Z, s₀, hZ, hs, hev⟩` from `GlobalTheory.T.coordsSecondKind_formPreservingGroup n A`. Establish `hd : IsUnit A.det`.
+
+Rewrite using `[hA, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(IsUnit.mk0 _ hJ.2).map _`. Establish `hy : ∀ (i : Fin d) (t : ℝ), ∃ y : GArch σ J w, GlobalTheory.Orb.archMat σ J τ y = NormedSpace.exp (t • Z i)`. Introduce `i t`. Take `⟨u, hu⟩` from `Matrix.isUnit_exp (t • Z i)`.
+
+Establish `h1` using `GlobalTheory.SmoothForms.exp_mem_UH (X := t • Z i) hd (by`. Rewrite using `[conjTranspose_smul, star_trivial, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hZ i, smul_zero])`. Use `⟨(archEquiv J h τ).symm ⟨u, show _ * _ * _ = _ from hu ▸ h1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h, MulEquiv.apply_symm_apply]`. Conclude with `hu`.
+
+Use `choose y hy using hy`. Establish `hS : ∀ g : GArch σ J w, GlobalTheory.Orb.archMat σ J τ g ∈ {X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * A * X = A}`. Introduce `g`. Use `(archEquiv J h τ g).2` as an intermediate fact. Rewrite using `[Set.mem_ofPred_eq, GlobalTheory.Orb.archMat_eq_archEquiv J h]`.
+
+Conclude with `this`. Establish `hc : Tendsto (GlobalTheory.Orb.archMat σ J τ) (𝓝 1) (𝓝[{X : Matrix (Fin n) (Fin n) ℂ | Xᴴ * A * X = A}] 1)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, Eventually.of_forall hS⟩` and prove the remaining obligations. Simplify using `using (GlobalTheory.Orb.continuous_archMat σ J τ).tendsto 1`. Establish `hinj : Function.Injective (GlobalTheory.Orb.archMat σ J τ)` using `fun a b e => (GlobalTheory.Orb.isEmbedding_archMat J h τ).injective (by show (fun i j => GlobalTheory.Orb.archMat σ J τ a i j) = fun i j => GlobalTheory.Orb.archMat σ J τ b i j`.
+
+Rewrite using `[e])`. Use `⟨d, fun i t => embArch σ J w (y i t), fun g => s₀ (GlobalTheory.Orb.archMat σ J τ g), fun i => ⟨w, τ, Z i, hZ i, fun t => ⟨y i t, rfl, hy i t⟩⟩, hs.comp hc, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc.eventually hev] with g hg`. Establish `e1 : (List.ofFn fun i => embArch σ J w (y i (s₀ (GlobalTheory.Orb.archMat σ J τ g) i))).prod = embArch σ J w (List.ofFn fun i => y i (s₀ (GlobalTheory.Orb.archMat σ J τ g) i)).prod`. Rewrite using `[map_list_prod, List.map_ofFn]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1]`. Use `congr 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_list_prod, List.map_ofFn]`.
+
+Use `hg.trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `List.ofFn_inj.2 (funext fun i => (hy i _).symm)`.
+-/
 theorem exists_coordSecondKind_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ w : InfinitePlace F, ∃ (d : ℕ) (η : Fin d → ℝ → GAd σ J) (s : GArch σ J w → Fin d → ℝ),

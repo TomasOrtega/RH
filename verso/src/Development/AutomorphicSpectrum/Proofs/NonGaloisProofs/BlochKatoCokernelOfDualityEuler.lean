@@ -29,14 +29,25 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 abbrev aT (L : Lattice (O := O) A.ρ) (a : O) : Submodule O ↥L.T := Ideal.span {a} • ⊤
 
+/- English proof (translation)
+Rewrite using `[aT, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨fun ⟨y, _, h⟩ => ⟨y, h.symm⟩, fun ⟨y, h⟩ => ⟨y, trivial, h.symm⟩⟩`.
+-/
 theorem mem_aT {L : Lattice (O := O) A.ρ} {a : O} {x : ↥L.T} :
     x ∈ aT L a ↔ ∃ y : ↥L.T, x = a • y := by
   rw [aT, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
   exact ⟨fun ⟨y, _, h⟩ => ⟨y, h.symm⟩, fun ⟨y, h⟩ => ⟨y, trivial, h.symm⟩⟩
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective I c).choose.2`.
+-/
 theorem liftQ_mem (L : Lattice (O := O) A.ρ) (I : Submodule O ↥L.T) (c : ↥L.T ⧸ I) :
     liftQ L I c ∈ L.T := (Submodule.Quotient.mk_surjective I c).choose.2
 
+/- English proof (translation)
+Establish `h` using `(Submodule.Quotient.mk_surjective (aT L a) (Submodule.Quotient.mk t)).choose_spec`. Take `⟨y, hy⟩` from `mem_aT.1 ((Submodule.Quotient.eq _).1 h)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : ↥L.T => (z : A.V)) hy` as an intermediate fact. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul] at this`.
+
+Rewrite using `[← this, liftQ]`. Normalize the expressions using the abelian group laws.
+-/
 theorem liftQ_mk (L : Lattice (O := O) A.ρ) (a : O) (t : ↥L.T) :
     ∃ y : ↥L.T, liftQ L (aT L a) (Submodule.Quotient.mk t) = (t : A.V) + a • (y : A.V) := by
   have h := (Submodule.Quotient.mk_surjective (aT L a) (Submodule.Quotient.mk t)).choose_spec
@@ -47,6 +58,9 @@ theorem liftQ_mk (L : Lattice (O := O) A.ρ) (a : O) (t : ↥L.T) :
   rw [← this, liftQ]
   abel
 
+/- English proof (translation)
+Establish `: algebraMap O LL a ≠ 0` using `fun h => ha (IsFractionRing.injective O LL (by rw [h, map_zero]))`. Rewrite using `[← algebraMap_smul LL a v, smul_smul, inv_mul_cancel₀ this, one_smul]`.
+-/
 theorem inv_smul_smul {a : O} (ha : a ≠ 0) (v : A.V) :
     (algebraMap O LL a)⁻¹ • a • v = v := by
   have : algebraMap O LL a ≠ 0 := fun h => ha (IsFractionRing.injective O LL (by rw [h, map_zero]))
@@ -55,12 +69,22 @@ theorem inv_smul_smul {a : O} (ha : a ≠ 0) (v : A.V) :
 def io (L : Lattice (O := O) A.ρ) (a : O) (c : ↥L.T ⧸ aT L a) : A.V ⧸ L.T :=
   Submodule.Quotient.mk ((algebraMap O LL a)⁻¹ • liftQ L (aT L a) c)
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `liftQ_mk L a t`. Rewrite using `[io, hy, smul_add, inv_smul_smul ha, Submodule.Quotient.eq, add_sub_cancel_left]`. Conclude with `y.2`.
+-/
 theorem io_mk (L : Lattice (O := O) A.ρ) {a : O} (ha : a ≠ 0) (t : ↥L.T) :
     io L a (Submodule.Quotient.mk t) = Submodule.Quotient.mk ((algebraMap O LL a)⁻¹ • (t : A.V)) := by
   obtain ⟨y, hy⟩ := liftQ_mk L a t
   rw [io, hy, smul_add, inv_smul_smul ha, Submodule.Quotient.eq, add_sub_cancel_left]
   exact y.2
 
+/- English proof (translation)
+Use `⟨hc.1.comp (io L a), fun g h => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `Submodule.Quotient.mk_surjective _ (c g)`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ (c h)`. Establish `e : c (g * h) = Submodule.Quotient.mk (s + actT L g t)`. Rewrite using `[hc.2 g h, ← hs, ← ht]`.
+
+Both sides reduce to the same expression. Use `show io L a (c (g * h)) = io L a (c g) + actD L g (io L a (c h))`. Rewrite using `[e, ← hs, ← ht, io_mk L ha, io_mk L ha, io_mk L ha, Submodule.coe_add, smul_add]`. Use `show _ = Submodule.Quotient.mk _ + Submodule.Quotient.mk (A.ρ g (_ • (t : A.V)))`. Rewrite using `[map_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem io_Z1D (L : Lattice (O := O) A.ρ) {a : O} (ha : a ≠ 0) (hI : StableSub L (aT L a))
     {c : G → ↥L.T ⧸ aT L a} (hc : c ∈ quotientCocycles L _ hI) : (fun g => io L a (c g)) ∈ divisibleCocycles L := by
   refine ⟨hc.1.comp (io L a), fun g h => ?_⟩
@@ -74,6 +98,11 @@ theorem io_Z1D (L : Lattice (O := O) A.ρ) {a : O} (ha : a ≠ 0) (hI : StableSu
   rw [map_smul]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨_, ⟨d, hd, rfl⟩, _, ⟨x, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `ht : cob A.ρ (t : A.V) ∈ latticeCocycles L` using `⟨coboundary_mem_cocycles A _, fun g _ => L.T.sub_mem (L.stable g _ t.2) t.2⟩`.
+
+Use `⟨d + ⟨_, ht⟩, (latticeFiniteCocycles PD L).add_mem hd ⟨ht, coboundary_mem_finite_cocycles PD A _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Both sides reduce to the same expression. Introduce and unpack `⟨d, hd, rfl⟩`. Conclude with `Submodule.mem_sup_left ⟨d, hd, rfl⟩`.
+-/
 theorem mem_HfQ (L : Lattice (O := O) A.ρ) (I : Submodule O ↥L.T) (hI : StableSub L I)
     (c : G → ↥L.T ⧸ I) :
     c ∈ HfQ PD L I hI ↔ ∃ d : ↥(latticeCocycles L), (d : G → A.V) ∈ latticeFiniteCocycles PD L ∧ c = redT L I d := by
@@ -89,6 +118,11 @@ theorem mem_HfQ (L : Lattice (O := O) A.ρ) (I : Submodule O ↥L.T) (hI : Stabl
   · rintro ⟨d, hd, rfl⟩
     exact Submodule.mem_sup_left ⟨d, hd, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨_, ⟨d, hd, rfl⟩, _, ⟨x, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨d + cob A.ρ t, (finiteCocycles PD A.ρ).add_mem hd (coboundary_mem_finite_cocycles PD A _), rfl⟩`.
+
+Introduce and unpack `⟨d, hd, rfl⟩`. Conclude with `Submodule.mem_sup_left ⟨d, hd, rfl⟩`.
+-/
 theorem mem_HfD (L : Lattice (O := O) A.ρ) (c : G → A.V ⧸ L.T) :
     c ∈ HfD PD L ↔ ∃ b ∈ finiteCocycles PD A.ρ, c = fun g => Submodule.Quotient.mk (b g) := by
   constructor
@@ -99,6 +133,19 @@ theorem mem_HfD (L : Lattice (O := O) A.ρ) (c : G → A.V ⧸ L.T) :
   · rintro ⟨d, hd, rfl⟩
     exact Submodule.mem_sup_left ⟨d, hd, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[mem_HfQ, mem_HfD]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd, rfl⟩`. Use `⟨(algebraMap O LL a)⁻¹ • (d : G → A.V), (finiteCocycles PD A.ρ).smul_mem _ hd.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Conclude with `io_mk L ha (evT L g d)`. Introduce and unpack `⟨b, hb, h⟩`. Establish `key : ∀ g, ∃ t y : ↥L.T, c g = Submodule.Quotient.mk t ∧ a • b g = (t : A.V) - a • (y : A.V)`. Introduce `g`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ (c g)`.
+
+Establish `h1 : io L a (c g) = Submodule.Quotient.mk (b g)` using `congrFun h g`. Rewrite `h1` using `[← ht, io_mk L ha, Submodule.Quotient.eq]`. Use `⟨t, ⟨_, h1⟩, ht.symm, ?_⟩` and prove the remaining obligations. Use `show _ = (t : A.V) - a • (_ - b g)`. Rewrite using `[smul_sub, smul_comm, inv_smul_smul ha, sub_sub_cancel]`.
+
+Establish `hab : a • b ∈ finiteCocycles PD A.ρ` using `((finiteCocycles PD A.ρ).restrictScalars O).smul_mem a hb`. Establish `hT : a • b ∈ latticeCocycles L`. Use `⟨hab.1, fun g _ => ?_⟩` and prove the remaining obligations. Take `⟨t, y, -, e⟩` from `key g`. Use `show a • b g ∈ L.T`.
+
+Rewrite using `[e]`. Conclude with `L.T.sub_mem t.2 (L.T.smul_mem a y.2)`. Use `⟨⟨_, hT⟩, ⟨hT, hab⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Take `⟨t, y, hc, e⟩` from `key g`.
+
+Rewrite using `[hc]`. Use `(Submodule.Quotient.eq _).2 (mem_aT.2 ⟨y, Subtype.ext ?_⟩)` and prove the remaining obligations. Use `show (t : A.V) - a • b g = a • (y : A.V)`. Rewrite using `[e, sub_sub_cancel]`.
+-/
 theorem mem_HfQ_iff_io (L : Lattice (O := O) A.ρ) {a : O} (ha : a ≠ 0) (hI : StableSub L (aT L a))
     (c : G → ↥L.T ⧸ aT L a) : c ∈ HfQ PD L _ hI ↔ (fun g => io L a (c g)) ∈ HfD PD L := by
   rw [mem_HfQ, mem_HfD]
@@ -140,6 +187,9 @@ variable {LA : Lattice (O := O) A.ρ} {LA' : Lattice (O := O) A'.ρ}
     (L1 : Lattice (O := O) (charRep (cycLL PD LL))) (hL1 : L1.T = OL O LL) {a : O} (ha : a ≠ 0)
 
 include ha in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `liftQ_mk LA a (evT LA x.1 d)`. Use `show Submodule.Quotient.mk (_ * P (liftQ LA _ (Submodule.Quotient.mk (evT LA x.1 d))) _) = Submodule.Quotient.mk (P (evT LA x.1 d : A.V) (A'.ρ x.1 (_ • liftQ LA' _ (c' x.2))))`. Rewrite using `[hy, Submodule.Quotient.eq, map_smul, map_smul, ← smul_eq_mul, ← LinearMap.smul_apply, ← map_smul, smul_add, inv_smul_smul ha, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, add_sub_cancel_left, hL1]`. Take `⟨z, hz⟩` from `(hd.2 _).1 (LA'.stable x.1 _ (liftQ_mem LA' _ (c' x.2))) y y.2`. Conclude with `⟨z, hz.symm⟩`.
+-/
 theorem cupQ_red_left (d : ↥(latticeCocycles LA)) (c' : G → ↥LA'.T ⧸ aT LA' a) (x : G × G) :
     (Submodule.Quotient.mk (cupQ LA LA' P a (redT LA _ d) c' x) : LL ⧸ L1.T) =
       torsionPairing PD hd L1 hL1 (repD LA' x.1 (io LA' a (c' x.2))) (evT LA x.1 d) := by
@@ -153,6 +203,9 @@ theorem cupQ_red_left (d : ↥(latticeCocycles LA)) (c' : G → ↥LA'.T ⧸ aT 
   exact ⟨z, hz.symm⟩
 
 include ha in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `liftQ_mk LA' a (evT LA' x.2 d')`. Use `show Submodule.Quotient.mk (_ * P _ (A'.ρ x.1 (liftQ LA' _ (Submodule.Quotient.mk (evT LA' x.2 d'))))) = Submodule.Quotient.mk (P (_ • liftQ LA _ (c x.1)) (A'.ρ x.1 (evT LA' x.2 d' : A'.V)))`. Rewrite using `[hy, Submodule.Quotient.eq, map_smul, LinearMap.smul_apply, ← smul_eq_mul, ← map_smul, ← map_smul, smul_add, inv_smul_smul ha, map_add, map_add, map_smul, map_smul, add_sub_cancel_left, hL1]`. Take `⟨z, hz⟩` from `(hd.2 _).1 (LA'.stable x.1 _ y.2) _ (liftQ_mem LA _ (c x.1))`. Conclude with `⟨z, hz.symm⟩`.
+-/
 theorem cupQ_red_right (c : G → ↥LA.T ⧸ aT LA a) (d' : ↥(latticeCocycles LA')) (x : G × G) :
     (Submodule.Quotient.mk (cupQ LA LA' P a c (redT LA' _ d') x) : LL ⧸ L1.T) =
       torsionPairing PD (isDualLat1_flip PD hd) L1 hL1 (io LA a (c x.1))
@@ -168,6 +221,13 @@ theorem cupQ_red_right (c : G → ↥LA.T ⧸ aT LA a) (d' : ↥(latticeCocycles
 
 include hd hL1 ha in
 
+/- English proof (translation)
+Establish `hz` using `io_Z1D LA' ha hI' hc'`. Establish `key : ∀ d : ↥(latticeCocycles LA), CobO PD L1 (cupLD LA' P d (fun g => io LA' a (c' g))) ↔ CobO PD L1 (cupQ LA LA' P a (redT LA _ d) c')` using `fun d => cobO_congr PD L1 _ _ fun x => by`. Rewrite using `[cupQ_red_left PD hd L1 hL1 ha]`. Conclude with `(congrFun (cup_eq_pairing PD hd L1 hL1 ⟨_, hz⟩ d) x).symm`. Rewrite using `[mem_HfQ_iff_io PD LA' ha, (hB LL O hO L1 hL1 A A' LA LA' P hA hd).1 _ hz]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Take `⟨d, hd', rfl⟩` from `(mem_HfQ PD LA _ hI c).1 hc`. Conclude with `(key d).1 (h _ hd')`. Introduce `h d hd'`.
+
+Conclude with `(key ⟨d, hd'.1⟩).2 (h _ ((mem_HfQ PD LA _ hI _).2 ⟨⟨d, hd'.1⟩, hd', rfl⟩))`.
+-/
 theorem right_half (hO : GoodO (Qp := Qp) LL O) (hB : bkBCore PD) (hA : IsDR PD A.ρ)
     (hI : StableSub LA (aT LA a)) (hI' : StableSub LA' (aT LA' a))
     {c' : G → ↥LA'.T ⧸ aT LA' a} (hc' : c' ∈ quotientCocycles LA' _ hI') :
@@ -186,6 +246,11 @@ theorem right_half (hO : GoodO (Qp := Qp) LL O) (hB : bkBCore PD) (hA : IsDR PD 
   · intro h d hd'
     exact (key ⟨d, hd'.1⟩).2 (h _ ((mem_HfQ PD LA _ hI _).2 ⟨⟨d, hd'.1⟩, hd', rfl⟩))
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g₀`. Take `⟨U₂, hU₂, hh₀, hc⟩` from `(IsLocallyConstant.iff_exists_open _).1 c.2.1 g₀`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ ((c : G → A'.V ⧸ LA'.T) g₀)`. Establish `hcont : Continuous fun g : G => P.flip v ((d : G → A.V) g)` using `(IsModuleTopology.continuous_of_linearMap (P.flip v)).comp d.2.1.1`.
+
+Take `⟨U₁, hU₁, hg₀, hf⟩` from `(IsLocallyConstant.iff_exists_open _).1 (locConst_mk L1.T (integers_isOpen PD L1 hL1 hopen) _ hcont) g₀`. Use `⟨U₁ ∩ U₂, hU₁.inter hU₂, ⟨hg₀, hh₀⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hg, hh⟩`. Rewrite using `[hc g hh, ← hv]`. Conclude with `hf g hg`.
+-/
 theorem pair_locConst (hopen : IsOpen (Set.range (algebraMap O LL))) (c : ↥(divisibleCocycles LA'))
     (d : ↥(latticeCocycles LA)) : IsLocallyConstant
       (fun g => torsionPairing PD hd L1 hL1 ((c : G → A'.V ⧸ LA'.T) g) (evT LA g d)) := by
@@ -204,6 +269,15 @@ theorem pair_locConst (hopen : IsOpen (Set.range (algebraMap O LL))) (c : ↥(di
 
 include hd hL1 ha in
 
+/- English proof (translation)
+Establish `hz` using `io_Z1D LA ha hI hc`. Establish `hfl` using `isDualLat1_flip PD hd`. Establish `hsum : (fun x => (Submodule.Quotient.mk (cupQ LA' LA P.flip a (redT LA' _ d') c x) : LL ⧸ L1.T)) + (fun x => (Submodule.Quotient.mk (cupQ LA LA' P a c (redT LA' _ d') x) : LL ⧸ L1.T)) ∈ ReciprocityTheory.Def.B2 (repD L1) ⊤`. Use `(Submodule.neg_mem_iff _).1 ⟨_, ⟨pair_locConst PD hfl L1 hL1 hopen ⟨_, hz⟩ d', fun _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Take `⟨g, h⟩` from `x`. Establish `e1 : io LA a (c (g * h)) = io LA a (c g) + repD LA g (io LA a (c h))` using `hz.2 g h`. Use `show repD L1 g (torsionPairing PD hfl L1 hL1 (io LA a (c h)) (evT LA' h d')) - torsionPairing PD hfl L1 hL1 (io LA a (c (g * h))) (evT LA' (g * h) d') + torsionPairing PD hfl L1 hL1 (io LA a (c g)) (evT LA' g d') = -(Submodule.Quotient.mk (cupQ LA' LA P.flip a (redT LA' _ d') c ( …`. Rewrite using `[cupQ_red_left PD hfl L1 hL1 ha, cupQ_red_right PD hd L1 hL1 ha, ← torsionPairing_equivariant, e1, lattice_cocycle_mul]`. Simplify using `only [map_add, LinearMap.add_apply]`.
+
+Normalize the expressions using the abelian group laws. Unfold `CobO`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(Submodule.add_mem_iff_right _ h).1 hsum`.
+
+Introduce `h`. Conclude with `(Submodule.add_mem_iff_left _ h).1 hsum`.
+-/
 theorem cupQ_flip (hopen : IsOpen (Set.range (algebraMap O LL))) (hI : StableSub LA (aT LA a))
     {c : G → ↥LA.T ⧸ aT LA a} (hc : c ∈ quotientCocycles LA _ hI) (d' : ↥(latticeCocycles LA')) :
     CobO PD L1 (cupQ LA' LA P.flip a (redT LA' _ d') c) ↔
@@ -245,6 +319,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] [TopologicalSpace Qp]
     (PD : PeriodData G Qp K₀ K B BdR)
 
+/- English proof (translation)
+Introduce `LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' P hA hd ϖ hϖ r hI hI' cup`. Take `⟨hdom, hdvr, hfr⟩` from `hO.1`. Use `haveI := hO.2.2.2.1`. Establish `ha : ϖ ^ r ≠ 0` using `pow_ne_zero r hϖ.ne_zero`. Establish `hcup : ∀ c c', cup c c' = cupQ LA LA' P (ϖ ^ r) c c'` using `fun c c' => by`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [cup, cupQ, map_pow, inv_pow]`. Simplify using `only [hcup]`. Use `⟨fun c hc => ?_, fun c' hc' => right_half PD hd L1 hL1 ha hO hB hA hI hI' hc'⟩` and prove the remaining obligations. Rewrite using `[right_half PD (isDualLat1_flip PD hd) L1 hL1 ha hO hB (hD LL O hO A A' P hA hd.1) hI' hI hc]`.
+
+Use `forall₂_congr fun c' hc' => ?_` and prove the remaining obligations. Take `⟨d', -, rfl⟩` from `(mem_HfQ PD LA' _ hI' c').1 hc'`. Conclude with `cupQ_flip PD hd L1 hL1 ha hO.2.2.2.2 hI hc d'`.
+-/
 theorem bkC_of_bkB (hB : bkBCore PD) (hD : drDualCore PD) : bkC PD := by
   intro LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' P hA hd ϖ hϖ r hI hI' cup
   obtain ⟨hdom, hdvr, hfr⟩ := hO.1
@@ -262,6 +343,9 @@ theorem bkC_of_bkB (hB : bkBCore PD) (hD : drDualCore PD) : bkC PD := by
 
 end Main
 
+/- English proof (translation)
+Introduce `_ _ D l _ K _ hB` and use `bkC_of_bkB _ hB (GlobalTheory.TateDualFil.main D l K).1`.
+-/
 theorem main : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), bkACore ((D.loc l).PD K) →
       bkBCore ((D.loc l).PD K) → LocalSituation.bkC ((D.loc l).PD K) :=

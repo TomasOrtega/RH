@@ -25,6 +25,9 @@ noncomputable def spm {R R' : Type} [CommRing R] [Algebra K R] [CommRing R'] [Al
     ext r
     simp)
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 lemma spm_comp {R R' R'' : Type} [CommRing R] [Algebra K R] [CommRing R'] [Algebra K R']
     [CommRing R''] [Algebra K R''] (g : R →ₐ[K] R') (h : R' →ₐ[K] R'') :
     spm h ≫ spm g = spm (h.comp g) := by
@@ -33,10 +36,18 @@ lemma spm_comp {R R' R'' : Type} [CommRing R] [Algebra K R] [CommRing R'] [Algeb
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+Use `ext1`. Conclude with `Spec.map_id _`.
+-/
 lemma spm_id {R : Type} [CommRing R] [Algebra K R] : spm (AlgHom.id K R) = 𝟙 _ := by
   ext1
   exact Spec.map_id _
 
+/- English proof (translation)
+Use `ext1`. Establish `hd : IsDominant (Spec.map (CommRingCat.ofHom j.toRingHom))`. Prove the components needed by the constructor for the conclusion. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j.toRingHom).2 (by rw [(RingHom.injective_iff_ker_eq_bot j.toRingHom).1 hj]; exact bot_le)`. Establish `: IsReduced (sp K V).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of V)))`.
+
+Conclude with `ext_of_isDominant_of_isSeparated B.hom ((Over.w b).trans (Over.w b').symm) (Spec.map (CommRingCat.ofHom j.toRingHom)) (congrArg CommaMorphism.left h)`.
+-/
 lemma point_ext {V F : Type} [CommRing V] [IsDomain V] [Algebra K V] [CommRing F] [Algebra K F]
     (j : V →ₐ[K] F) (hj : Function.Injective j)
     {B : Over (Spec (CommRingCat.of K))} [IsSeparated B.hom] {b b' : sp K V ⟶ B}
@@ -50,6 +61,11 @@ lemma point_ext {V F : Type} [CommRing V] [IsDomain V] [Algebra K V] [CommRing F
   exact ext_of_isDominant_of_isSeparated B.hom ((Over.w b).trans (Over.w b').symm)
     (Spec.map (CommRingCat.ofHom j.toRingHom)) (congrArg CommaMorphism.left h)
 
+/- English proof (translation)
+Establish `hE : ValuativeCriterion.Existence B.hom`. Establish `h : UniversallyClosed B.hom` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Set `S : ValuativeCommSq B.hom` to `{ R := V, K := F, i₁ := p.left, i₂ := Spec.map (CommRingCat.ofHom (algebraMap K V)), commSq := ⟨(Over.w p).trans (Over.w (spm (IsScalarTower.toAlgHom K V F))).symm⟩ }`.
+
+Take `⟨⟨l, h1, h2⟩⟩` from `hE S`. Conclude with `⟨Over.homMk l h2, by ext1; exact h1⟩`.
+-/
 lemma point_extend {V F : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Algebra K V] [Field F]
     [Algebra K F] [Algebra V F] [IsScalarTower K V F] [IsFractionRing V F]
     {B : Over (Spec (CommRingCat.of K))} [IsProper B.hom] (p : sp K F ⟶ B) :
@@ -66,6 +82,23 @@ lemma point_extend {V F : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Alg
 
 open PowerSeries in
 
+/- English proof (translation)
+Set `F` to `FractionRing L⟦X⟧`. Set `j : L⟦X⟧ →ₐ[K] F` to `IsScalarTower.toAlgHom K L⟦X⟧ F`. Establish `hj : Function.Injective j` using `IsFractionRing.injective L⟦X⟧ F`. Set `σ : L⟦X⟧ →ₐ[K] L⟦X⟧` to `(rescaleAlgHom (x : L)).restrictScalars K`. Establish `hσ : ∀ a, σ a = rescale (x : L) a` using `fun a => RingHom.congr_fun (coe_rescaleAlgHom (x : L)) a`.
+
+Establish `hσi : Function.Injective (j.comp σ)`. Introduce `a b hab`. Establish `h1 : σ a = σ b` using `hj hab`. Rewrite `h1` using `[hσ, hσ]`. Conclude with `rescale_injective x.ne_zero h1`.
+
+Set `τ : F →ₐ[K] F` to `IsFractionRing.liftAlgHom (g := j.comp σ) hσi`. Establish `hτ : τ.comp j = j.comp σ`. Use extensionality with `a`. Simplify using `[τ, j]`. Set `c : L →ₐ[K] L⟦X⟧` to `IsScalarTower.toAlgHom K L L⟦X⟧`.
+
+Set `ev : L⟦X⟧ →ₐ[K] L` to `{ toRingHom := constantCoeff, commutes' := fun r => by simp [PowerSeries.algebraMap_apply] }`. Establish `hev : ∀ a, ev a = constantCoeff a` using `fun _ => rfl`. Establish `h1 : ev.comp σ = ev`. Use extensionality with `a`. Rewrite using `[AlgHom.comp_apply, hσ, hev, hev, ← coeff_zero_eq_constantCoeff_apply, coeff_rescale]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : ev.comp c = AlgHom.id K L`. Use extensionality with `a`. Simplify using `[hev, c, PowerSeries.algebraMap_apply]`. Establish `hX : j X ≠ 0` using `fun h => X_ne_zero (hj (h.trans (map_zero j).symm))`.
+
+Set `u : Fˣ` to `Units.mk0 (j X) hX`. Take `⟨b, hb⟩` from `point_extend (K := K) (V := L⟦X⟧) (Φ F u)`. Establish `hu : Units.map (τ : F →* F) u = Units.map ((j.comp c : L →ₐ[K] F) : L →* F) x * u`. Use `ext`. Use `congrArg (fun g : L⟦X⟧ →ₐ[K] F => g X) hτ` as an intermediate fact.
+
+Simplify using `only [AlgHom.comp_apply, hσ, rescale_X, map_mul] at this`. Simplify `this` using `[u, c, PowerSeries.algebraMap_apply]`. Establish `key : spm σ ≫ b = (spm c ≫ Φ L x) * b`. Apply `point_ext j hj` to reduce the goal to its premises. Rewrite using `[← Category.assoc, spm_comp, ← hτ, ← spm_comp, Category.assoc, MonObj.comp_mul, hb, ← hΦ, hu, map_mul, hΦ, ← Category.assoc, spm_comp]`.
+
+Establish `k2` using `congrArg (fun t => spm ev ≫ t) key`. Simplify using `only [MonObj.comp_mul, ← Category.assoc, spm_comp, h1, h2, spm_id, Category.id_comp] at k2`. Conclude with `right_eq_mul.1 k2`.
+-/
 lemma units_family_trivial {B : Over (Spec (CommRingCat.of K))} [GrpObj B] [IsProper B.hom]
     (Φ : ∀ (R : Type) [CommRing R] [Algebra K R], Rˣ →* (sp K R ⟶ B))
     (hΦ : ∀ (R R' : Type) [CommRing R] [Algebra K R] [CommRing R'] [Algebra K R'] (g : R →ₐ[K] R')
@@ -112,6 +145,13 @@ lemma units_family_trivial {B : Over (Spec (CommRingCat.of K))} [GrpObj B] [IsPr
   simp only [MonObj.comp_mul, ← Category.assoc, spm_comp, h1, h2, spm_id, Category.id_comp] at k2
   exact right_eq_mul.1 k2
 
+/- English proof (translation)
+Establish `A : ∀ {X Y : Over S} (a : X ⟶ Y), ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Set `z : Over.mk a ⟶ (Over.pullback f).obj (G ⊗ G)` to `lift x y ≫ Functor.LaxMonoidal.μ (Over.pullback f) G G`. Establish `z₁ : z ≫ (Over.pullback f).map (fst G G) = x` using `by simp [z]`. Establish `z₂ : z ≫ (Over.pullback f).map (snd G G) = y` using `by simp [z]`. Establish `hz : (lift x₀ y₀).left = z.left ≫ pullback.fst (G ⊗ G).hom f`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (lift x₀ y₀ ≫ fst G G).left = _ ≫ (fst G G).left`. Rewrite using `[lift_fst, hx, Category.assoc, ← A, ← Category.assoc, ← Over.comp_left, z₁]`. Use `show (lift x₀ y₀ ≫ snd G G).left = _ ≫ (snd G G).left`. Rewrite using `[lift_snd, hy, Category.assoc, ← A, ← Category.assoc, ← Over.comp_left, z₂]`.
+
+Establish `hxy : x * y = z ≫ (Over.pullback f).map μ[G]`. Rewrite using `[Hom.mul_def, Functor.obj.μ_def, ← Category.assoc]`. Rewrite using `[hxy, Over.comp_left, Category.assoc, A, ← Category.assoc, ← hz]`. Both sides reduce to the same expression.
+-/
 lemma mul_left_fst {S S' A : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] {a : A ⟶ S'} {c : A ⟶ S}
     (x y : Over.mk a ⟶ (Over.pullback f).obj G) (x₀ y₀ : Over.mk c ⟶ G)
     (hx : x₀.left = x.left ≫ pullback.fst G.hom f) (hy : y₀.left = y.left ≫ pullback.fst G.hom f) :
@@ -147,6 +187,9 @@ noncomputable def charRing (R : Type) [CommRing R] (φ : Multiplicative X →* R
   letI : Algebra (ULift.{0} ℤ) R := ULift.algebra' ℤ R
   (charAlg X R φ).toRingHom
 
+/- English proof (translation)
+Simplify using `[charRing, charAlg]`.
+-/
 lemma charRing_single (R : Type) [CommRing R] (φ : Multiplicative X →* Rˣ) (a : X) :
     charRing X R φ (AddMonoidAlgebra.single a 1) = φ (Multiplicative.ofAdd a) := by
   simp [charRing, charAlg]
@@ -157,11 +200,17 @@ noncomputable def ptFun (R : Type) [CommRing R] [Algebra K R] (φ : Multiplicati
     _ ⟶ (splitTorusAff ZU X).left) (sp K R).hom (specULiftZIsTerminal.hom_ext _ _))
     (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 lemma ptFun_fst (R : Type) [CommRing R] [Algebra K R] (φ : Multiplicative X →* Rˣ) :
     (ptFun K X R φ).left ≫ Rosenlicht.torusFst _ X = Spec.map (CommRingCat.ofHom (charRing X R φ)) :=
   pullback.lift_fst _ _ _
 
 variable {K X} in
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h`. Conclude with `(Over.w t).trans (Over.w t').symm`.
+-/
 lemma torus_ext {Z : Over (Spec (CommRingCat.of K))} {t t' : Z ⟶ splitTorus (Spec (CommRingCat.of K)) X}
     (h : t.left ≫ Rosenlicht.torusFst _ X = t'.left ≫ Rosenlicht.torusFst _ X) : t = t' := by
   apply Over.OverMorphism.ext
@@ -169,6 +218,13 @@ lemma torus_ext {Z : Over (Spec (CommRingCat.of K))} {t t' : Z ⟶ splitTorus (S
   · exact h
   · exact (Over.w t).trans (Over.w t').symm
 
+/- English proof (translation)
+Use `letI : Algebra (ULift.{0} ℤ) R := ULift.algebra' ℤ R`. Apply `torus_ext` to reduce the goal to its premises. Establish `h` using `mul_left_fst (toZ (Spec (CommRingCat.of K))) (splitTorusAff ZU X) (ptFun K X R φ) (ptFun K X R ψ) (Spec.mapMulEquiv (WithConv.toConv (charAlg X R φ))) (Spec.mapMulEquiv (WithConv.toConv (charAlg X R ψ))) (ptFun_fst K X R φ).symm (ptFun_fst K X R ψ).symm`. Establish `h2 : WithConv.toConv (charAlg X R φ) * WithConv.toConv (charAlg X R ψ) = WithConv.toConv (charAlg X R (φ * ψ))`. Apply `WithConv.ofConv_injective` to reduce the goal to its premises.
+
+Apply `AddMonoidAlgebra.algHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[AlgHom.convMul_apply, charAlg]`. Conclude with `Subsingleton.elim _ _`. Establish `h3` using `(Spec.mapMulEquiv (R := ULift.{0} ℤ) (S := AddMonoidAlgebra (ULift.{0} ℤ) X) (T := R)).map_mul (WithConv.toConv (charAlg X R φ)) (WithConv.toConv (charAlg X R ψ))`.
+
+Rewrite `h3` using `[h2]`. Rewrite using `[ptFun_fst]`. Conclude with `(congrArg CommaMorphism.left h3).trans h.symm`.
+-/
 lemma ptFun_mul (R : Type) [CommRing R] [Algebra K R] (φ ψ : Multiplicative X →* Rˣ) :
     ptFun K X R (φ * ψ) = ptFun K X R φ * ptFun K X R ψ := by
   letI : Algebra (ULift.{0} ℤ) R := ULift.algebra' ℤ R
@@ -195,6 +251,11 @@ noncomputable def pt (R : Type) [CommRing R] [Algebra K R] :
     (Multiplicative X →* Rˣ) →* (sp K R ⟶ splitTorus (Spec (CommRingCat.of K)) X) :=
   MonoidHom.mk' (ptFun K X R) (ptFun_mul K X R)
 
+/- English proof (translation)
+Apply `torus_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(ptFun K X R' _).left ≫ _ = (Spec.map _ ≫ (ptFun K X R φ).left) ≫ _`. Rewrite using `[Category.assoc, ptFun_fst, ptFun_fst, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply `Rosenlicht.ringHom_ext_ZU` to reduce the goal to its premises.
+
+Introduce `y`. Simplify using `[charRing_single]`.
+-/
 lemma pt_nat {R R' : Type} [CommRing R] [Algebra K R] [CommRing R'] [Algebra K R'] (g : R →ₐ[K] R')
     (φ : Multiplicative X →* Rˣ) :
     pt K X R' ((Units.map (g : R →* R')).comp φ) = spm g ≫ pt K X R φ := by
@@ -209,6 +270,11 @@ lemma pt_nat {R R' : Type} [CommRing R] [Algebra K R] [CommRing R'] [Algebra K R
 noncomputable def univ : Multiplicative X →* (AddMonoidAlgebra K X)ˣ :=
   (AddMonoidAlgebra.of K X).toHomUnits
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Use `(ptFun_fst K X _ _).trans (Eq.trans ?_ (Rosenlicht.torusIso_hom_fst K X).symm)` and prove the remaining obligations. Use `congr 2`. Apply `Rosenlicht.ringHom_ext_ZU` to reduce the goal to its premises. Introduce `y`.
+
+Rewrite using `[charRing_single]`. Simplify using `[univ]`. Conclude with `(Over.w (pt K X _ (univ K X))).trans (Rosenlicht.torusIso_hom_hom K X).symm`.
+-/
 lemma pt_univ : (pt K X _ (univ K X)).left = (Rosenlicht.torusIso K X).hom := by
   apply pullback.hom_ext
   · refine (ptFun_fst K X _ _).trans (Eq.trans ?_ (Rosenlicht.torusIso_hom_fst K X).symm)
@@ -229,6 +295,11 @@ def coch (l : X →+ ℤ) (G : Type) [CommGroup G] : G →* (Multiplicative X �
   map_one' := by ext; simp
   map_mul' x y := by ext; simp [mul_zpow]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.finset_prod_apply]`. Use `conv_lhs => rw [← ofAdd_toAdd a, ← e.sum_repr a.toAdd, ofAdd_sum, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul, map_zpow]`.
+
+Both sides reduce to the same expression.
+-/
 lemma char_eq_prod {I : Type} [Fintype I] (e : Module.Basis I ℤ X) (G : Type) [CommGroup G]
     (φ : Multiplicative X →* G) :
     φ = ∏ i, coch (e.coord i).toAddMonoidHom G (φ (Multiplicative.ofAdd (e i))) := by
@@ -243,6 +314,19 @@ end TorusToProper
 
 open TorusToProper in
 
+/- English proof (translation)
+Set `Ψ : ∀ (R : Type) [CommRing R] [Algebra K R], (Multiplicative X →* Rˣ) →* (sp K R ⟶ B)` to `fun R _ _ => (MonoidHom.mk' (fun t => t ≫ f) (fun s t => MonObj.mul_comp s t f)).comp (pt K X R)`. Establish `hΨ : ∀ (R : Type) [CommRing R] [Algebra K R] φ, Ψ R φ = pt K X R φ ≫ f` using `fun _ _ _ _ => rfl`. Establish `h1 : ∀ (l : X →+ ℤ) (L : Type) [Field L] [Algebra K L] (x : Lˣ), Ψ L (coch l Lˣ x) = 1`. Introduce `l L _ _ x`. Use `units_family_trivial (fun R _ _ => (Ψ R).comp (coch l Rˣ)) ?_ L x` and prove the remaining obligations.
+
+Introduce `R R' _ _ _ _ g y`. Simplify using `only [MonoidHom.comp_apply, hΨ]`. Rewrite using `[← Category.assoc, ← pt_nat]`. Use `congr 2`. Use `MonoidHom.ext fun a => ?_` and prove the remaining obligations.
+
+Conclude with `(map_zpow (Units.map (g : R →* R')) y _).symm`. Establish `h2 : ∀ (L : Type) [Field L] [Algebra K L] φ, Ψ L φ = 1`. Introduce `L _ _ φ`. Rewrite using `[char_eq_prod X (Module.Free.chooseBasis ℤ X) _ φ, ← MonoidHom.mem_ker]`. Conclude with `Subgroup.prod_mem _ fun i _ => h1 _ L _`.
+
+Establish `: IsDomain (AddMonoidAlgebra K X)` using `NoZeroDivisors.to_isDomain _`. Set `R` to `AddMonoidAlgebra K X`. Set `F` to `FractionRing R`. Establish `h3 : pt K X R (univ K X) ≫ f = pt K X R (univ K X) ≫ toUnit _ ≫ η[B]`. Apply `point_ext (IsScalarTower.toAlgHom K R F) (IsFractionRing.injective R F)` to reduce the goal to its premises.
+
+Rewrite using `[← Category.assoc, ← pt_nat, ← hΨ, h2, ← Category.assoc, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Establish `h4 : (pt K X R (univ K X)).left ≫ f.left = (pt K X R (univ K X)).left ≫ (toUnit _ ≫ η[B]).left` using `congrArg CommaMorphism.left h3`. Rewrite `h4` using `[pt_univ]`.
+
+Use `ext1`. Conclude with `(cancel_epi _).1 h4`.
+-/
 theorem splitTorus_hom_proper_trivial_field (K : Type) [Field K] (X : Type) [AddCommGroup X]
     [Module.Free ℤ X] [Module.Finite ℤ X] (B : Over (Spec (CommRingCat.of K))) [GrpObj B]
     [IsProper B.hom] (f : splitTorus (Spec (CommRingCat.of K)) X ⟶ B) (hf : IsMonHom f) :

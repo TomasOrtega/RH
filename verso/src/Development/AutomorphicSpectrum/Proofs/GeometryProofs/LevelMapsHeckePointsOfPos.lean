@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Introduce `E _ _ _ H D h` and use `GlobalTheory.moduliScheme_levelMaps_heckePoints.2 E H D h`.
+-/
 theorem levelMaps_heckePoints_of_pos :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H),
       1 ≤ D.p + D.q → ToroidalLevelCompatibility (H := H) (D := D) ∧ ToroidalHeckeCompatibility (H := H) (D := D) :=

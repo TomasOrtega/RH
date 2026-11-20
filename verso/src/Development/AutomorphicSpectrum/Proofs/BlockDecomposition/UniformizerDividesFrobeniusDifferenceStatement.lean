@@ -12,6 +12,9 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 open GlobalTheory.CompanionTheory.LTPer.Tilt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self | exact GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self | (intros; apply GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.uniformizer_divides_frobenius_difference : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), (Ideal.span {π}).IsMaximal →
     Finite (↥(OL K) ⧸ Ideal.span {π}) → ∀ c : ↥(OL K), π ∣ c ^ qOf π - c := by
   first | exact @GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self | exact GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self | (intros; apply GlobalTheory.CompanionTheory.LTPer.Tilt.dvd_pow_qOf_sub_self <;> assumption)

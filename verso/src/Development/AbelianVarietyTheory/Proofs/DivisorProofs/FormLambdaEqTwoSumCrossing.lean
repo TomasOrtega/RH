@@ -6,6 +6,19 @@ open MvPolynomial GlobalTheory.FlagPoly GlobalTheory.FlagForm GlobalTheory.FlagC
 
 namespace GlobalTheory.FlagCurve
 
+/- English proof (translation)
+Establish `key : ∀ τ : ι, (toForm (pHigh j τ 1 - pLow j τ 1) : FormPol ι N) = ∑ a : Fin N, ∑ b : Fin N, 2 * (if a < b ∧ (a : ℕ) < j ∧ j ≤ (b : ℕ) then (X (τ, a, b) : FormPol ι N) else 0)`. Introduce `τ`. Establish `h1 : ∀ (p : Fin N → Prop) [DecidablePred p], ∑ i ∈ Finset.univ.filter p, (rootForm (τ, i) : FormPol ι N) = ∑ a : Fin N, ∑ b : Fin N, ((if p b then (if a < b then (X (τ, a, b) : FormPol ι N) else 0) else 0) - (if p a then (if a < b then (X (τ, a, b) : FormPol ι N) else 0) else 0))`. Introduce `p _`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_filter]`.
+
+Rewrite using `[Finset.sum_comm (f := fun a b => if p b then (if a < b then (X (τ, a, b) : FormPol ι N) else 0) else 0), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : p i <;> simp [hi, rootForm]`. Simplify using `only [toForm, pHigh, pLow, map_sub, map_sum, pow_one, aeval_X]`. Rewrite using `[h1, h1, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a < b`. Establish `hab' : (a : ℕ) < b` using `hab`.
+
+Distinguish the cases in `ha : (a : ℕ) < j`. Distinguish the cases in `hb : (b : ℕ) < j`. Simplify using `[hab, ha, hb, not_le.mpr ha, not_le.mpr hb]`. Simplify using `[hab, ha, hb, not_le.mpr ha, not_lt.mp hb, two_mul]`. Establish `hb : ¬ (b : ℕ) < j` using `by omega`.
+
+Simplify using `[hab, ha, hb, not_lt.mp ha, not_lt.mp hb]`. Simplify using `[hab]`. Establish `h2 : (toForm (lamA ι N j) : FormPol ι N) = ∑ τ : ι, toForm (pHigh j τ 1 - pLow j τ 1)`. Simplify using `only [lamA, toForm, map_sum]`. Rewrite using `[h2, crSet, Finset.sum_filter, Finset.mul_sum, Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[key, Fintype.sum_prod_type]`.
+-/
 theorem toForm_lamA_eq_two_mul_cross (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) :
     (toForm (lamA ι N j) : FormPol ι N) = 2 * ∑ s ∈ crSet ι N j, X s := by
   have key : ∀ τ : ι, (toForm (pHigh j τ 1 - pLow j τ 1) : FormPol ι N) =

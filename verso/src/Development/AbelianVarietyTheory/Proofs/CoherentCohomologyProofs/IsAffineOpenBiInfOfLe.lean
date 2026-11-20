@@ -18,6 +18,11 @@ section
 variable {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Spec (CommRingCat.of R)) {M : LB Y}
   {ν κ : Type}
 
+/- English proof (translation)
+Rewrite using `[← inf_eq_left.2 h]`. Use `clear h`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simpa using hV`. Consider the case `insert a s _ ih`.
+
+Rewrite using `[Finset.iInf_insert, inf_assoc]`. Conclude with `hE a _ ih`.
+-/
 theorem isAffineOpen_biInf_of_le (E : ν → Y.Opens)
     (hE : ∀ i V, IsAffineOpen V → IsAffineOpen (E i ⊓ V)) (u : Finset ν) {V : Y.Opens}
     (hV : IsAffineOpen V) (h : ⨅ i ∈ u, E i ≤ V) : IsAffineOpen (⨅ i ∈ u, E i) := by
@@ -30,6 +35,9 @@ theorem isAffineOpen_biInf_of_le (E : ν → Y.Opens)
     rw [Finset.iInf_insert, inf_assoc]
     exact hE a _ ih
 
+/- English proof (translation)
+Rewrite using `[Cube.comap_congr hg (Cube.monotone_union_map e s₀) hgs]`. Conclude with `acyclic_slice_secCube_of_isAffineOpen R Y f M ν κ E e s₀ hM (hc ▸ le_top) fun t => isAffineOpen_biInf_of_le E hE _ hV ((iInf_le_iInf_of_subset E Finset.subset_union_left).trans h)`.
+-/
 theorem acyclic_comap_secCube [LinearOrder ν] [LinearOrder κ] [Fintype κ] (hM : M.IsLB)
     (E : ν → Y.Opens) (hE : ∀ i V, IsAffineOpen V → IsAffineOpen (E i ⊓ V)) (e : κ ↪o ν)
     (hc : ⨆ k, E (e k) = ⊤) (s₀ : Finset ν) {V : Y.Opens} (hV : IsAffineOpen V)
@@ -51,6 +59,11 @@ def comapSecCubeIso (E : ν → Y.Opens) (D : κ → Y.Opens) (g : Finset κ →
     fun hst x => (SecOnR.restrict_restrict f (iInf_le_iInf_of_subset E (hg hst)) (h _).ge x).trans
       (SecOnR.restrict_restrict f (h _).ge (iInf_le_iInf_of_subset D hst) x).symm
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_inf (le_iInf₂ fun i hi => iInf₂_le _ (Cube.inl_mem_sumVertex.2 hi)) (le_iInf₂ fun i hi => iInf₂_le _ (Cube.inr_mem_sumVertex.2 hi))`. Use `le_iInf₂ fun i hi => ?_` and prove the remaining obligations. Take `⟨i | i, rfl⟩` from `toLex.surjective i`. Conclude with `inf_le_left.trans (iInf₂_le _ (Cube.inl_mem_sumVertex.1 hi))`.
+
+Conclude with `inf_le_right.trans (iInf₂_le _ (Cube.inr_mem_sumVertex.1 hi))`.
+-/
 theorem biInf_sumVertex [LinearOrder ν] [LinearOrder κ] (E : ν ⊕ₗ κ → Y.Opens) (s : Finset ν)
     (t : Finset κ) : ⨅ i ∈ Cube.sumVertex s t, E i =
       (⨅ i ∈ s, E (toLex (Sum.inl i))) ⊓ ⨅ k ∈ t, E (toLex (Sum.inr k)) := by
@@ -64,6 +77,17 @@ theorem biInf_sumVertex [LinearOrder ν] [LinearOrder κ] (E : ν ⊕ₗ κ → 
 
 end
 
+/- English proof (translation)
+Introduce `R _ Y f M κ _ _ D κ₁ _ _ U κ₂ _ _ W hM hf hD cD cU cW hU hW hUW n`. Establish `hY : Y.IsSeparated` using `⟨by rw [← terminal.comp_from f]; infer_instance⟩`. Set `E : (κ₁ ⊕ₗ κ₂) ⊕ₗ κ → Y.Opens` to `fun u => Sum.elim (fun v : κ₁ ⊕ₗ κ₂ => Sum.elim U W (ofLex v)) D (ofLex u)`. Establish `hE : ∀ i V, IsAffineOpen V → IsAffineOpen (E i ⊓ V)`. Introduce and unpack `((i | j) | k) V hV`.
+
+Conclude with `hU i V hV`. Conclude with `hW j V hV`. Conclude with `(hD k).inf hV`. Set `A` to `secCube f M E`. Set `e₁` to `trunc₃HomologyIsoDropLast A (fun s t ⟨i, hi⟩ ⟨j, hj⟩ => acyclic_comap_secCube f hM E hE (Cube.inrEmb _ _) cD ((Cube.sumVertex s t).map (Cube.inlEmb _ _).toEmbedding) (hUW i j) (le_inf (iInf₂_le (toLex (Sum.inl (toLex (Sum.inl i)))) (Finset.mem_map_of_mem _ (Cube.inl_mem_sumVertex …`.
+
+Set `e₂` to `trunc₃HomologyIsoDropFirst A (fun t w _ ⟨k, hk⟩ => acyclic_comap_secCube f hM E hE (Cube.firstEmb _ _ _) cU ((Cube.sumVertex t w).map (Cube.lastTwoEmb _ _ _).toEmbedding) (hD k) (iInf₂_le (toLex (Sum.inr k)) (Finset.mem_map_of_mem _ (Cube.inr_mem_sumVertex.2 hk))) (fun s => Cube. …`. Set `e₃` to `trunc₂HomologyIsoSnd (Cube.lowerFace (Cube.lastTwoEmb κ₁ κ₂ κ) A) (fun w ⟨k, hk⟩ => acyclic_comap_secCube f hM E hE ((Cube.inlEmb κ₂ κ).trans (Cube.lastTwoEmb κ₁ κ₂ κ)) cW (w.map (Cube.inrEmb _ _).toEmbedding) (hD k) (iInf₂_le (toLex (Sum.inr k)) (Finset.mem_map_of_mem _ hk)) (fu …`. Rewrite using `[Cube.sumVertex, Finset.map_union, Finset.map_map, Finset.map_map, Finset.union_comm]`. Use the proof step `rfl) n`. Set `e₄ : Cube.sliceFst A ∅ ≅ secCube f M fun u : κ₁ ⊕ₗ κ₂ => Sum.elim U W (ofLex u)` to `comapSecCubeIso f M E _ _ (fun _ _ h => Cube.sumVertex_mono h (subset_refl _)) fun t => by`.
+
+Rewrite using `[biInf_sumVertex]`. Simplify using `[E]`. Set `e₅ : Cube.sliceSnd A (Cube.sumVertex ∅ ∅) ≅ secCube f M D` to `comapSecCubeIso f M E _ _ (fun _ _ h => Cube.sumVertex_mono (subset_refl _) h) fun t => by`. Rewrite using `[biInf_sumVertex]`. Simplify using `[E, Cube.sumVertex]`.
+
+Conclude with `⟨((cechHomologyMapIso (eqToIso (Cube.sliceSnd_lowerFace_lastTwoEmb A ∅) ≪≫ e₅) n).symm ≪≫ e₃.symm ≪≫ e₂.symm ≪≫ e₁ ≪≫ cubeHomologyMapIso (Cube.trunc₂Iso e₄.hom fun _ _ _ _ => ConcreteCategory.bijective_of_isIso (e₄.hom.app _)) (n + 2)).toLinearEquiv⟩`.
+-/
 theorem cechLB_homology_equiv_trunc₂ :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens) (κ₁ : Type) [LinearOrder κ₁] [Fintype κ₁] (U : κ₁ → Y.Opens) (κ₂ : Type) [LinearOrder κ₂] [Fintype κ₂] (W : κ₂ → Y.Opens), M.IsLB → IsSeparated f → (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → ⨆ i, U i = ⊤ → ⨆ j, W j = ⊤ → (∀ i V, IsAffineOpen V → IsAffineOpen (U i ⊓ V)) → (∀ j V, IsAffineOpen V → IsAffineOpen (W j ⊓ V)) → (∀ i j, IsAffineOpen (U i ⊓ W j)) → ∀ n, Nonempty ((cechLB f M D).homology n ≃ₗ[R] (cubeComplex (Cube.trunc₂ (secCube f M fun u : κ₁ ⊕ₗ κ₂ => Sum.elim U W (ofLex u)))).homology (n + 2)) := by
   intro R _ Y f M κ _ _ D κ₁ _ _ U κ₂ _ _ W hM hf hD cD cU cW hU hW hUW n

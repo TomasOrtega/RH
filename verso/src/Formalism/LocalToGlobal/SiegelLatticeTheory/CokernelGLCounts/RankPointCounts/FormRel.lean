@@ -29,6 +29,11 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.Pf.FormRel
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨C'₀, Cl₀, hC⟩` from `h Cg cb Cw cT CT C0`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u u' hx ν hν t ht hv => ?_⟩` and prove the remaining obligations. Establish `hnz : t ∈ (Y.tO u u').nzSet`. Conclude with `ht.1`.
+
+Conclude with `hC C' Cl h1 h2 D large₂ X Y u u' hx ν hν t hnz hv`.
+-/
 theorem formNGC_of_rel (h : FormRelC) : Formalism.L2.SG.NGVanish.FormNGC := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C'₀, Cl₀, hC⟩ := h Cg cb Cw cT CT C0
@@ -37,6 +42,11 @@ theorem formNGC_of_rel (h : FormRelC) : Formalism.L2.SG.NGVanish.FormNGC := by
     exact ht.1
   exact hC C' Cl h1 h2 D large₂ X Y u u' hx ν hν t hnz hv
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨C'₀, Cl₀, hC⟩` from `h Cg cb Cw cT CT C0`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u hx ν hν t ht hv => ?_⟩` and prove the remaining obligations. Establish `hnz : t ∈ (Y.tO u u).nzSet`. Conclude with `ht.1`.
+
+Conclude with `hC C' Cl h1 h2 D large₂ X Y u u hx ν hν t hnz hv`.
+-/
 theorem formGC_of_rel (h : FormRelC) : Formalism.L2.SG.Pf.MainEqVanish.FormGC := by
   intro Cg cb Cw cT CT C0
   obtain ⟨C'₀, Cl₀, hC⟩ := h Cg cb Cw cT CT C0

@@ -3,6 +3,27 @@ open NumberField Polynomial
 
 namespace GlobalTheory.KummerUnits
 
+/- English proof (translation)
+Introduce `E F Ω _ _ _ _ _ _ _ _ _ M hM ⟨ζ, hζ⟩`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap E F).injective`. Take `⟨S, hS⟩` from `Monoid.fg_def.1 (inferInstance : Monoid.FG (𝓞 E)ˣ)`. Set `c : (𝓞 E)ˣ → F` to `fun u => algebraMap E F ((u : 𝓞 E) : E)`.
+
+Set `p : F[X]` to `∏ s ∈ S, (X ^ M - C (c s))`. Establish `hp : p ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => X_pow_sub_C_ne_zero hM _`. Set `L` to `IntermediateField.adjoin F (p.rootSet Ω)`. Establish `hsp : p.IsSplittingField F L` using `IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits _)`. Use `haveI := Polynomial.IsSplittingField.finiteDimensional L p`.
+
+Use `haveI := Normal.of_isSplittingField (F := F) (E := L) p`. Use `⟨L, inferInstance, ⟨⟩, ?_⟩` and prove the remaining obligations. Establish `hζΩ : IsPrimitiveRoot (algebraMap F Ω ζ) M` using `hζ.map_of_injective (algebraMap F Ω).injective`. Establish `hroot : ∀ ξ : Ω, ξ ^ M = 1 → ξ ∈ L`. Introduce `ξ hξ`.
+
+Take `⟨i, -, rfl⟩` from `hζΩ.eq_pow_of_pow_eq_one hξ`. Conclude with `pow_mem (L.algebraMap_mem ζ) i`. Set `φ : (𝓞 E)ˣ →* Ω` to `((algebraMap E Ω).toMonoidHom.comp (algebraMap (𝓞 E) E).toMonoidHom).comp (Units.coeHom _)`. Establish `hφ : ∀ u, φ u = algebraMap E Ω ((u : 𝓞 E) : E)` using `fun u => rfl`. Establish `hφc : ∀ u, φ u = algebraMap F Ω (c u)` using `fun u => IsScalarTower.algebraMap_apply E F Ω _`.
+
+Establish `hφ0 : ∀ u, φ u ≠ 0` using `fun u => ((Group.isUnit u).map φ).ne_zero`. Introduce `u`. Simplify using `only [← hφ]`. Establish `hall : u ∈ Submonoid.closure (S : Set (𝓞 E)ˣ)` using `by rw [hS]; trivial`. Proceed by induction on `hall using Submonoid.closure_induction with`.
+
+Consider the case `mem s hs`. Introduce `w hw`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨hp, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [p, map_prod]`. Use `Finset.prod_eq_zero hs ?_` and prove the remaining obligations. Simplify using `[hw, hφc]`. Consider the case `one`. Introduce `w hw`.
+
+Conclude with `hroot w (by rw [hw, map_one])`. Consider the case `mul a b _ _ ha hb`. Introduce `w hw`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (φ a) hM`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (φ b) hM`.
+
+Establish `hxy : x * y ≠ 0`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Introduce and unpack `rfl; exact hφ0 a (by rw [← hx, zero_pow hM.ne'])`. Introduce and unpack `rfl; exact hφ0 b (by rw [← hy, zero_pow hM.ne'])`. Rewrite using `[← div_mul_cancel₀ w hxy]`.
+
+Use `mul_mem (hroot _ ?_) (mul_mem (ha x hx) (hb y hy))` and prove the remaining obligations. Rewrite using `[div_pow, mul_pow, hx, hy, hw, map_mul, div_self (mul_ne_zero (hφ0 a) (hφ0 b))]`.
+-/
 theorem exists_finite_galois_mem_of_pow_eq_unit : ∀ (E F Ω : Type) [Field E] [NumberField E] [Field F] [Field Ω] [IsAlgClosed Ω]
     [Algebra E F] [Algebra E Ω] [Algebra F Ω] [IsScalarTower E F Ω] (M : ℕ), 0 < M →
     (∃ ζ : F, IsPrimitiveRoot ζ M) → ∃ L : IntermediateField F Ω, FiniteDimensional F L ∧ IsGalois F L ∧

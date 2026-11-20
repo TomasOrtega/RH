@@ -10,6 +10,13 @@ namespace GlobalTheory.Grow
 open scoped TensorProduct NNReal ENNReal Topology
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG GlobalTheory.AdelicU
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `h1 : Tendsto (fun x => h (g⁻¹ * x)) (𝓝 g) (𝓝 1)` using `hh.comp (Continuous.tendsto' (by fun_prop) g 1 (inv_mul_cancel g))`. Establish `h2 : Tendsto (fun x => q g * h (g⁻¹ * x)) (𝓝 g) (𝓝 (q g))` using `by simpa using h1.const_mul (q g)`. Establish `h3 : Tendsto (fun x => q g / h (g⁻¹ * x)) (𝓝 g) (𝓝 (q g))`. Use `(tendsto_const_nhds (x := q g)).div h1 one_ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[div_one]`. Then use the resulting hypothesis. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le h3 h2 (fun x => ?_) fun x => ?_` and prove the remaining obligations. Use `hq x (g⁻¹ * x)⁻¹` as an intermediate fact. Rewrite `this` using `[hinv, mul_inv_rev, inv_inv, mul_inv_cancel_left]`. Conclude with `(div_le_iff₀ (hpos _)).2 this`.
+
+Simplify using `using hq g (g⁻¹ * x)`.
+-/
 theorem continuous_of_le_mul {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {q h : G → ℝ}
     (hh : Tendsto h (𝓝 1) (𝓝 1)) (hpos : ∀ k, 0 < h k) (hinv : ∀ k, h k⁻¹ = h k)
     (hq : ∀ g k, q (g * k) ≤ q g * h k) : Continuous q := by
@@ -30,6 +37,13 @@ section GeneralLinearIntegers
 
 variable (F : Type) [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨y, c, rfl⟩ : ∃ (y : 𝓞 E) (c : F), x = c • (y : E) := by`. Take `⟨m, hm, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_integral_multiple`. Use `⟨⟨_, hi⟩, (m : F)⁻¹, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (m : F)⁻¹ • (m • x)`. Rewrite using `[← Int.cast_smul_eq_zsmul F, inv_smul_smul₀ (by exact_mod_cast hm)]`.
+
+Establish `ho : IsOpen {a : Af F | ∀ v, a v ∈ v.adicCompletionIntegers F}` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) fun _ => Valued.isOpen_valuationSubring _`. Establish `hs : Continuous (sndA F)` using `continuous_snd`. Establish `hc : Continuous fun a : AF F => sndA F (algebraMap F (AF F) c * a)` using `hs.comp (continuous_const.mul continuous_id)`. Establish `h1 : {a : Af F | ∀ v, a v ∈ v.adicCompletionIntegers F} ∈ 𝓝 (0 : Af F)` using `ho.mem_nhds fun v => zero_mem (v.adicCompletionIntegers F)`. Use `Eventually.mono (hc.tendsto' 0 0 (by rw [mul_zero, map_zero]) h1) fun a ha v => ?_` and prove the remaining obligations.
+
+Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def]`. Use `(absFin_tmul_le F v (evFin F v (algebraMap F (AF F) c * a)) y).trans ?_` and prove the remaining obligations. Conclude with `Valued.toNormedField.norm_le_one_iff.2 (ha v)`.
+-/
 theorem eventually_absFin_tmul_le_one (x : E) :
     ∀ᶠ a in 𝓝 (0 : AF F), ∀ v, absFin F v (compFin F E v (a ⊗ₜ[F] x)) ≤ 1 := by
   obtain ⟨y, c, rfl⟩ : ∃ (y : 𝓞 E) (c : F), x = c • (y : E) := by
@@ -52,6 +66,13 @@ theorem eventually_absFin_tmul_le_one (x : E) :
   refine (absFin_tmul_le F v (evFin F v (algebraMap F (AF F) c * a)) y).trans ?_
   exact Valued.toNormedField.norm_le_one_iff.2 (ha v)
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `b` to `Module.finBasis F E`. Set `e` to `(Algebra.TensorProduct.basis (AF F) b).equivFun`.
+
+Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : ∀ i, ∀ᶠ z in 𝓝 (0 : AF F ⊗[F] E), ∀ v, absFin F v (compFin F E v (e z i ⊗ₜ[F] b i)) ≤ 1` using `fun i => (Continuous.tendsto' ((continuous_apply i).comp h1) 0 0 (by simp)).eventually (eventually_absFin_tmul_le_one F (b i))`. Use `(eventually_all.2 h2).mono fun z hz v => ?_` and prove the remaining obligations. Establish `h3 : z = ∑ i, e z i ⊗ₜ[F] b i` using `by conv_lhs => rw [← (Algebra.TensorProduct.basis (AF F) b).sum_equivFun z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[e, TensorProduct.smul_tmul']`. Rewrite using `[h3, map_sum]`. Conclude with `absFin_sum_le F v _ _ fun i _ => hz i v`.
+-/
 theorem eventually_absFin_le_one_nhds :
     ∀ᶠ z in 𝓝 (0 : AF F ⊗[F] E), ∀ v, absFin F v (compFin F E v z) ≤ 1 := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -71,6 +92,15 @@ theorem eventually_absFin_le_one_nhds :
   rw [h3, map_sum]
   exact absFin_sum_le F v _ _ fun i _ => hz i v
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Set `b` to `Module.finBasis F E`. Set `e` to `(Algebra.TensorProduct.basis (AF F) b).equivFun`.
+
+Establish `h1 : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `h2 : (fun z : AF F ⊗[F] E => infEmb τ (compInf F E w z)) = fun z => ∑ i, InfinitePlace.Completion.extensionEmbedding w ((e z i).1 w) * τ.1 (b i)`. Use function extensionality and compare the values at `z`. Establish `h3 : z = ∑ i, e z i ⊗ₜ[F] b i` using `by conv_lhs => rw [← (Algebra.TensorProduct.basis (AF F) b).sum_equivFun z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[e, TensorProduct.smul_tmul']`. Use `conv_lhs => rw [h3, map_sum, map_sum]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Use `continuous_finsetSum _ fun i _ => Continuous.mul ?_ continuous_const` and prove the remaining obligations.
+
+Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp (continuous_fst.comp ((continuous_apply i).comp h1)))`.
+-/
 theorem continuous_infEmb_compInf (w : InfinitePlace F) (τ : EmbOver E w) :
     Continuous fun z : AF F ⊗[F] E => infEmb τ (compInf F E w z) := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -95,10 +125,16 @@ theorem continuous_infEmb_compInf (w : InfinitePlace F) (τ : EmbOver E w) :
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `continuous_nnnorm.comp (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toLinearMap.continuous_of_finiteDimensional`.
+-/
 theorem continuous_opNorm : Continuous (opNorm : Matrix n n ℂ → ℝ≥0) :=
   continuous_nnnorm.comp
     (Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toLinearMap.continuous_of_finiteDimensional
 
+/- English proof (translation)
+Establish `h : Continuous fun y : Matrix n n (AF F ⊗[F] E) => normInf F w (y.map (compInf F E w))` using `by classical`. Conclude with `Continuous.finset_sup_apply (s := Finset.univ) (f := fun (τ : EmbOver E w) (y : Matrix n n (AF F ⊗[F] E)) => opNorm ((y.map (compInf F E w)).map (infEmb τ))) fun τ _ => continuous_opNorm.comp (continuous_id.matrix_map (continuous_infEmb_compInf F w τ))`. Conclude with `continuous_const.max ((h.comp Units.continuous_val).max (h.comp Units.continuous_coe_inv))`.
+-/
 theorem continuous_htInf (w : InfinitePlace F) :
     Continuous fun g : GL n (AF F ⊗[F] E) => htInf F w (bc (compInf F E w) g) := by
   have h : Continuous fun y : Matrix n n (AF F ⊗[F] E) => normInf F w (y.map (compInf F E w)) := by
@@ -108,6 +144,13 @@ theorem continuous_htInf (w : InfinitePlace F) :
       fun τ _ => continuous_opNorm.comp (continuous_id.matrix_map (continuous_infEmb_compInf F w τ))
   exact continuous_const.max ((h.comp Units.continuous_val).max (h.comp Units.continuous_coe_inv))
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `h : ∀ᶠ y in 𝓝 (1 : Matrix n n (AF F ⊗[F] E)), ∀ v, normFin F v (y.map (compFin F E v)) ≤ 1`. Establish `h1 : ∀ i j, ∀ᶠ y in 𝓝 (1 : Matrix n n (AF F ⊗[F] E)), ∀ v, absFin F v (compFin F E v ((y - 1) i j)) ≤ 1` using `fun i j => (Continuous.tendsto' (f := fun y : Matrix n n (AF F ⊗[F] E) => (y - 1) i j) ((continuous_id.sub continuous_const).matrix_elem i j) 1 0 (by simp)).eventually (eventually_absFin_le_one_nhds F)`.
+
+Use `(eventually_all.2 fun i => eventually_all.2 (h1 i)).mono fun y hy v => (normFin_le_iff F v).2 fun i j => ?_` and prove the remaining obligations. Establish `e : (y.map (compFin F E v)) i j = compFin F E v ((y - 1) i j) + (1 : Matrix n n (Fv F v ⊗[F] E)) i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[e]`. Conclude with `(absFin_add_le F v _ _).trans (max_le (hy i j v) ((absFin_le_normFin F v _ i j).trans (normFin_one_le F v)))`.
+
+Establish `h1` using `(Units.continuous_val.tendsto' (1 : GL n (AF F ⊗[F] E)) 1 rfl).eventually h`. Establish `h2` using `(Units.continuous_coe_inv.tendsto' (1 : GL n (AF F ⊗[F] E)) 1 rfl).eventually h`. Conclude with `(h1.and h2).mono fun g hg v => htOf_eq_one.2 ⟨hg.1 v, hg.2 v⟩`.
+-/
 theorem eventually_htFin_eq_one :
     ∀ᶠ g in 𝓝 (1 : GL n (AF F ⊗[F] E)), ∀ v, htFin F v (bc (compFin F E v) g) = 1 := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -128,6 +171,13 @@ theorem eventually_htFin_eq_one :
   have h2 := (Units.continuous_coe_inv.tendsto' (1 : GL n (AF F ⊗[F] E)) 1 rfl).eventually h
   exact (h1.and h2).mono fun g hg v => htOf_eq_one.2 ⟨hg.1 v, hg.2 v⟩
 
+/- English proof (translation)
+Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `h1 : Continuous fun g : GL n (AF F ⊗[F] E) => ∏ w, htInf F w (bc (compInf F E w) g)` using `continuous_finsetProd _ fun w _ => continuous_htInf F w`. Establish `h2 : Tendsto (heightGL F : GL n (AF F ⊗[F] E) → ℝ≥0) (𝓝 1) (𝓝 1)`.
+
+Use `(h1.tendsto' 1 1 ?_).congr' ((eventually_htFin_eq_one F).mono fun g hg => ?_)` and prove the remaining obligations. Conclude with `Finset.prod_eq_one fun w _ => ((heightGL_eq_one_iff F).1 (heightGL_one F)).1 w`. Simplify using `[heightGL, hg]`. Use `continuous_induced_rng.2 (continuous_of_le_mul (q := fun g => (heightGL F g : ℝ)) (h := fun g => (heightGL F g : ℝ)) (NNReal.tendsto_coe.2 h2) (fun k => ?_) (fun k => by rw [heightGL_inv]) fun g k => ?_)` and prove the remaining obligations. Conclude with `zero_lt_one.trans_le (one_le_heightGL F k)` after adjusting the coercions.
+
+Conclude with `heightGL_mul_le F g k` after adjusting the coercions.
+-/
 theorem continuous_heightGL : Continuous (heightGL F : GL n (AF F ⊗[F] E) → ℝ≥0) := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   have : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -143,11 +193,21 @@ theorem continuous_heightGL : Continuous (heightGL F : GL n (AF F ⊗[F] E) → 
   · exact_mod_cast zero_lt_one.trans_le (one_le_heightGL F k)
   · exact_mod_cast heightGL_mul_le F g k
 
+/- English proof (translation)
+The claim follows from `(Finset.single_le_prod' (f := fun w => htInf F w (bc (compInf F E w) g)) (fun _ _ => one_le_htOf _ _) (Finset.mem_univ w)).trans (le_mul_of_one_le_right' (one_le_finprod' fun _ => one_le_htOf _ _))`.
+-/
 theorem htInf_le_heightGL (g : GL n (AF F ⊗[F] E)) (w : InfinitePlace F) :
     htInf F w (bc (compInf F E w) g) ≤ heightGL F g :=
   (Finset.single_le_prod' (f := fun w => htInf F w (bc (compInf F E w) g)) (fun _ _ => one_le_htOf _ _)
     (Finset.mem_univ w)).trans (le_mul_of_one_le_right' (one_le_finprod' fun _ => one_le_htOf _ _))
 
+/- English proof (translation)
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Use `le_trans ?_ (((normInf_le_iff F w).1 (le_htOf _ _) τ).trans (htInf_le_heightGL F _ w))` and prove the remaining obligations. Use `le_of_eq_of_le ?_ (le_of_eq (congrArg opNorm (a₁ := (2 : ℂ) • 1) ?_))` and prove the remaining obligations. Unfold `opNorm`.
+
+Rewrite using `[map_smul, map_one, nnnorm_smul]`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Take `rfl` from `Subsingleton.elim i j`. Express the relevant statement in the definitionally equal form `_ = infEmb τ (compInf F E w (Matrix.scalar (Fin 1) (inclR (F := F) (AF F) (2 : E)) i i))`.
+
+Rewrite using `[Matrix.scalar_apply, Matrix.diagonal_apply_eq, map_ofNat, map_ofNat, map_ofNat]`. Simplify using the standard rewrite rules.
+-/
 example : 2 ≤ heightGL F (Matrix.GeneralLinearGroup.scalar (Fin 1)
     (Units.map (inclR (F := F) (AF F) : E →+* _).toMonoidHom (Units.mk0 (2 : E) two_ne_zero))) := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -175,9 +235,15 @@ def IsQuotIntL1 (μR : Measure R) (μG : Measure G) (f : G → ℂ) (z : ℂ) : 
 
 variable {μR : Measure R} {μG : Measure G} {f f' : G → ℂ} {z z' : ℂ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, integrable_zero _ _ _, fun _ => integrable_zero _ _ _, fun _ => by simp, by simp⟩`.
+-/
 theorem IsQuotIntL1.zero : IsQuotIntL1 μR μG 0 0 :=
   ⟨0, integrable_zero _ _ _, fun _ => integrable_zero _ _ _, fun _ => by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨F, h1, h2, h3, h4⟩` from `h`. Take `⟨F', h1', h2', h3', h4'⟩` from `h'`. Conclude with `⟨F + F', h1.add h1', fun x => (h2 x).add (h2' x), fun x => by rw [Pi.add_apply, h3, h3', ← integral_add (h2 x) (h2' x)]; rfl, by rw [h4, h4', ← integral_add h1 h1']; rfl⟩`.
+-/
 theorem IsQuotIntL1.add (h : IsQuotIntL1 μR μG f z) (h' : IsQuotIntL1 μR μG f' z') :
     IsQuotIntL1 μR μG (f + f') (z + z') := by
   obtain ⟨F, h1, h2, h3, h4⟩ := h
@@ -186,12 +252,18 @@ theorem IsQuotIntL1.add (h : IsQuotIntL1 μR μG f z) (h' : IsQuotIntL1 μR μG 
     fun x => by rw [Pi.add_apply, h3, h3', ← integral_add (h2 x) (h2' x)]; rfl,
     by rw [h4, h4', ← integral_add h1 h1']; rfl⟩
 
+/- English proof (translation)
+Take `⟨F, h1, h2, h3, h4⟩` from `h`. Conclude with `⟨c • F, h1.smul c, fun x => (h2 x).const_mul c, fun x => by rw [Pi.smul_apply, h3, smul_eq_mul, ← integral_const_mul]; rfl, by rw [h4, ← integral_const_mul]; rfl⟩`.
+-/
 theorem IsQuotIntL1.smul (c : ℂ) (h : IsQuotIntL1 μR μG f z) : IsQuotIntL1 μR μG (c • f) (c * z) := by
   obtain ⟨F, h1, h2, h3, h4⟩ := h
   exact ⟨c • F, h1.smul c, fun x => (h2 x).const_mul c,
     fun x => by rw [Pi.smul_apply, h3, smul_eq_mul, ← integral_const_mul]; rfl,
     by rw [h4, ← integral_const_mul]; rfl⟩
 
+/- English proof (translation)
+Take `⟨F, h1, h2, h3, h4⟩` from `h`. Conclude with `⟨fun g => starRingEnd ℂ (F g), (RCLike.conjCLE (K := ℂ)).toContinuousLinearMap.integrable_comp h1, fun x => (RCLike.conjCLE (K := ℂ)).toContinuousLinearMap.integrable_comp (h2 x), fun x => by simp only [h3, integral_conj], by rw [h4, integral_conj]⟩`.
+-/
 theorem IsQuotIntL1.conj (h : IsQuotIntL1 μR μG f z) :
     IsQuotIntL1 μR μG (fun g => starRingEnd ℂ (f g)) (starRingEnd ℂ z) := by
   obtain ⟨F, h1, h2, h3, h4⟩ := h
@@ -199,18 +271,27 @@ theorem IsQuotIntL1.conj (h : IsQuotIntL1 μR μG f z) :
     fun x => (RCLike.conjCLE (K := ℂ)).toContinuousLinearMap.integrable_comp (h2 x),
     fun x => by simp only [h3, integral_conj], by rw [h4, integral_conj]⟩
 
+/- English proof (translation)
+Take `⟨F, h1, h2, h3, h4⟩` from `h`. Conclude with `⟨fun g => F (g * k), h1.comp_mul_right k, fun x => by simpa only [mul_assoc] using h2 (x * k), fun x => by simpa only [mul_assoc] using h3 (x * k), by rw [h4, integral_mul_right_eq_self]⟩`.
+-/
 theorem IsQuotIntL1.mul_right [MeasurableMul G] [μG.IsMulRightInvariant] (h : IsQuotIntL1 μR μG f z) (k : G) :
     IsQuotIntL1 μR μG (fun g => f (g * k)) z := by
   obtain ⟨F, h1, h2, h3, h4⟩ := h
   exact ⟨fun g => F (g * k), h1.comp_mul_right k, fun x => by simpa only [mul_assoc] using h2 (x * k),
     fun x => by simpa only [mul_assoc] using h3 (x * k), by rw [h4, integral_mul_right_eq_self]⟩
 
+/- English proof (translation)
+Take `⟨F, -, -, h3, -⟩` from `h`. Rewrite using `[h3, h3, ← integral_mul_right_eq_self (μ := μR) (fun r : R => F (r * x)) ⟨s, hs⟩]`. Simplify using `[mul_assoc]`.
+-/
 theorem IsQuotIntL1.left [MeasurableMul R] [μR.IsMulRightInvariant] (h : IsQuotIntL1 μR μG f z) {s : G} (hs : s ∈ R)
     (x : G) : f (s * x) = f x := by
   obtain ⟨F, -, -, h3, -⟩ := h
   rw [h3, h3, ← integral_mul_right_eq_self (μ := μR) (fun r : R => F (r * x)) ⟨s, hs⟩]
   simp [mul_assoc]
 
+/- English proof (translation)
+Establish `hi : Integrable (fun x => (b x : ℝ)) μ` using `integrable_toReal_of_lintegral_ne_top (f := fun x => (b x : ℝ≥0∞)) hm.coe_nnreal_ennreal.aemeasurable (by rw [h]; exact ENNReal.one_ne_top)`. Conclude with `⟨hi, ENNReal.ofReal_eq_one.1 ((lintegral_coe_eq_integral b hi).symm.trans h)⟩`.
+-/
 theorem integrable_of_lintegral_eq_one {α : Type} [MeasurableSpace α] {μ : Measure α} {b : α → ℝ≥0} (hm : Measurable b)
     (h : ∫⁻ x, b x ∂μ = 1) : Integrable (fun x => (b x : ℝ)) μ ∧ ∫ x, (b x : ℝ) ∂μ = 1 := by
   have hi : Integrable (fun x => (b x : ℝ)) μ :=
@@ -222,6 +303,17 @@ variable [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
 
 open GlobalTheory.Tw in
 
+/- English proof (translation)
+Take `⟨F, h1, h2, h3, h4⟩` from `h`. Establish `hc : Measurable fun p : R × G => (p.1 : G) * p.2` using `(measurable_subtype_coe.comp measurable_fst).mul measurable_snd`. Establish `hc' : Measurable fun p : R × G => ((p.1⁻¹ : R) : G) * p.2` using `(measurable_subtype_coe.comp measurable_fst.inv).mul measurable_snd`. Establish `hb : ∀ x, Integrable (fun t : R => (β ((t⁻¹ : R) * x) : ℝ)) μR ∧ ∫ t : R, (β ((t⁻¹ : R) * x) : ℝ) ∂μR = 1` using `fun x => integrable_of_lintegral_eq_one (hβ.1.comp (hc'.comp measurable_prodMk_right)) (by rw [lintegral_inv_eq_self (μ := μR) (fun t : R => (β (t * x) : ℝ≥0∞)), hβ.2])`. Establish `hb'` using `fun x => (hb x).2`.
+
+Establish `hT : MeasurePreserving (fun p : R × G => (p.1, (p.1 : G) * p.2)) (μR.prod μG) (μR.prod μG)` using `(MeasurePreserving.id μR).skew_product hc (Eventually.of_forall fun r => map_mul_left_eq_self μG (r : G))`. Establish `hm : AEStronglyMeasurable (fun p : R × G => (β ((p.1⁻¹ : R) * p.2) : ℝ) • F p.2) (μR.prod μG)` using `(hβ.1.comp hc').coe_nnreal_real.aestronglyMeasurable.smul h1.1.comp_snd`. Establish `hI : Integrable (fun p : R × G => (β ((p.1⁻¹ : R) * p.2) : ℝ) • F p.2) (μR.prod μG)`. Use `(integrable_prod_iff' hm).2 ⟨Eventually.of_forall fun x => (hb x).1.smul_const (F x), ?_⟩` and prove the remaining obligations. Simplify `h1.norm` using `only [norm_smul, integral_mul_const, hb', one_mul, Real.norm_of_nonneg (NNReal.coe_nonneg _)]`.
+
+Establish `hI' : Integrable (fun p : R × G => (β p.2 : ℝ) • F (p.1 * p.2)) (μR.prod μG)`. Simplify `(hT.integrable_comp hm).2 hI` using `[Function.comp_def]`. Establish `e : ∀ x, ∫ r : R, (β x : ℝ) • F (r * x) ∂μR = (β x : ℝ) • f x` using `fun x => by rw [integral_smul, h3]`. Use `⟨by simpa only [e] using hI'.integral_prod_right, ?_⟩` and prove the remaining obligations. Establish `e1` using `integral_prod_symm _ hI`.
+
+Establish `e2` using `integral_prod_symm _ hI'`. Establish `e3 : ∫ p : R × G, (β p.2 : ℝ) • F (p.1 * p.2) ∂μR.prod μG = ∫ p : R × G, (β ((p.1⁻¹ : R) * p.2) : ℝ) • F p.2 ∂μR.prod μG`. Use `integral_map hT.aemeasurable (f := fun p : R × G => (β ((p.1⁻¹ : R) * p.2) : ℝ) • F p.2) (by rwa [hT.map_eq])` as an intermediate fact. Rewrite `this` using `[hT.map_eq]`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [e] at e2`. Simplify using `only [integral_smul_const, hb', one_smul] at e1`. Rewrite using `[h4, ← e1, ← e3, e2]`.
+-/
 theorem IsQuotIntL1.cutoff [SFinite μG] [μG.IsMulLeftInvariant] [SFinite μR] [μR.IsInvInvariant]
     (h : IsQuotIntL1 μR μG f z) {β : G → ℝ≥0} (hβ : IsCosetCutoff R μR β) :
     Integrable (fun x => (β x : ℝ) • f x) μG ∧ z = ∫ x, (β x : ℝ) • f x ∂μG := by
@@ -260,6 +352,9 @@ theorem IsQuotIntL1.cutoff [SFinite μG] [μG.IsMulLeftInvariant] [SFinite μR] 
 
 variable [LocallyCompactSpace G] [T2Space G] [SFinite μG] [μG.IsMulLeftInvariant] [μR.IsHaarMeasure] [μR.IsInvInvariant]
 
+/- English proof (translation)
+Take `⟨β, -, hβ⟩` from `GlobalTheory.Tw.exists_isCosetCutoff (μT := μR) hR`. Establish `: LocallyCompactSpace R` using `hR.locallyCompactSpace`. Establish `: SecondCountableTopology R` using `TopologicalSpace.Subtype.secondCountableTopology (R : Set G)`. Rewrite using `[(h.cutoff hβ).2, (h'.cutoff hβ).2]`.
+-/
 theorem IsQuotIntL1.unique (hR : IsClosed (R : Set G)) (h : IsQuotIntL1 μR μG f z) (h' : IsQuotIntL1 μR μG f z') :
     z = z' := by
   obtain ⟨β, -, hβ⟩ := GlobalTheory.Tw.exists_isCosetCutoff (μT := μR) hR
@@ -269,6 +364,13 @@ theorem IsQuotIntL1.unique (hR : IsClosed (R : Set G)) (h : IsQuotIntL1 μR μG 
 
 open GlobalTheory.Tw in
 
+/- English proof (translation)
+Take `⟨β, -, hβ⟩` from `exists_isCosetCutoff (μT := μR) hR`. Establish `: LocallyCompactSpace R` using `hR.locallyCompactSpace`. Establish `: SecondCountableTopology R` using `TopologicalSpace.Subtype.secondCountableTopology (R : Set G)`. Establish `: μR.IsMulRightInvariant` using `by rw [← Measure.inv_eq_self μR]; infer_instance`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `hl : ∀ s ∈ R, ∀ x, f (s * x) = f x` using `fun s hs => h.left hs`. Conclude with `⟨hl, (quotIntegrable_iff_cutoff hR hβ hm hl).2 (h.cutoff hβ).1, by rw [quotInt_eq_cutoff hR hβ hm hl, (h.cutoff hβ).2]⟩`. Introduce and unpack `⟨hl, hi, rfl⟩`. Establish `hb` using `fun x => integrable_of_lintegral_eq_one (μ := μR) (b := fun t : R => β (t * x)) (hβ.1.comp (measurable_subtype_coe.mul_const x)) (hβ.2 x)`.
+
+Establish `hb'` using `fun x => (hb x).2`. Use `⟨fun x => (β x : ℝ) • f x, (quotIntegrable_iff_cutoff hR hβ hm hl).1 hi, fun x => ?_, fun x => ?_, quotInt_eq_cutoff hR hβ hm hl⟩` and prove the remaining obligations. Simplify `(hb x).1.smul_const (f x)` using `only [hl _ (Subtype.property _)]`. Simplify using `only [hl _ (Subtype.property _), integral_smul_const, hb', one_smul]`.
+-/
 theorem isQuotIntL1_iff (hR : IsClosed (R : Set G)) (hm : Measurable f) :
     IsQuotIntL1 μR μG f z ↔
       (∀ s ∈ R, ∀ x, f (s * x) = f x) ∧ QuotIntegrable R μG μR f ∧ z = quotInt R μG μR f := by
@@ -302,63 +404,117 @@ variable {D : D7} (V W : HSp D)
 
 def height (g : GA D V) : ℝ := heightGL D.host.F (Formalism.L2.Theta.matHom V g)
 
+/- English proof (translation)
+Unfold `height`. Conclude with `one_le_heightGL _ _` after adjusting the coercions.
+-/
 theorem one_le_height (g : GA D V) : 1 ≤ height V g := by
   unfold height; exact_mod_cast one_le_heightGL _ _
 
+/- English proof (translation)
+The claim follows from `zero_lt_one.trans_le (one_le_height V g)`.
+-/
 theorem height_pos (g : GA D V) : 0 < height V g := zero_lt_one.trans_le (one_le_height V g)
 
+/- English proof (translation)
+Unfold `height`. Rewrite using `[map_one, heightGL_one, NNReal.coe_one]`.
+-/
 @[simp] theorem height_one : height V 1 = 1 := by
   unfold height; rw [map_one, heightGL_one, NNReal.coe_one]
 
+/- English proof (translation)
+Unfold `height`. Rewrite using `[map_inv, heightGL_inv]`.
+-/
 @[simp] theorem height_inv (g : GA D V) : height V g⁻¹ = height V g := by
   unfold height; rw [map_inv, heightGL_inv]
 
+/- English proof (translation)
+Unfold `height`. Rewrite using `[map_mul]`. Conclude with `heightGL_mul_le _ _ _` after adjusting the coercions.
+-/
 theorem height_mul_le (g h : GA D V) : height V (g * h) ≤ height V g * height V h := by
   unfold height; rw [map_mul]; exact_mod_cast heightGL_mul_le _ _ _
 
+/- English proof (translation)
+Unfold `height`. Conclude with `htInf_le_heightGL _ _ w` after adjusting the coercions.
+-/
 theorem htInf_le_height (g : GA D V) (w : InfinitePlace D.host.F) :
     (htInf D.host.F w (bc (compInf D.host.F D.host.E w) (Formalism.L2.Theta.matHom V g)) : ℝ) ≤ height V g := by
   unfold height; exact_mod_cast htInf_le_heightGL _ _ w
 
+/- English proof (translation)
+The claim follows from `NNReal.continuous_coe.comp ((continuous_heightGL _).comp continuous_subtype_val)`.
+-/
 theorem continuous_height : Continuous (height V) :=
   NNReal.continuous_coe.comp ((continuous_heightGL _).comp continuous_subtype_val)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hK.bddAbove_image (continuous_height V).continuousOn`. Conclude with `⟨C, fun g hg => hC ⟨g, hg, rfl⟩⟩`.
+-/
 theorem exists_height_le_of_isCompact {K : Set (GA D V)} (hK : IsCompact K) : ∃ C, ∀ g ∈ K, height V g ≤ C := by
   obtain ⟨C, hC⟩ := hK.bddAbove_image (continuous_height V).continuousOn
   exact ⟨C, fun g hg => hC ⟨g, hg, rfl⟩⟩
 
 def quotHeight (g : GA D V) : ℝ := ⨅ γ : GQ V, height V (γ * g)
 
+/- English proof (translation)
+The claim follows from `ciInf_le (f := fun γ : GQ V => height V (γ * g)) ⟨1, by rintro _ ⟨_, rfl⟩; exact one_le_height V _⟩ ⟨γ, hγ⟩`.
+-/
 theorem quotHeight_le (g : GA D V) {γ : GA D V} (hγ : γ ∈ GQ V) : quotHeight V g ≤ height V (γ * g) :=
   ciInf_le (f := fun γ : GQ V => height V (γ * g)) ⟨1, by rintro _ ⟨_, rfl⟩; exact one_le_height V _⟩ ⟨γ, hγ⟩
 
+/- English proof (translation)
+Simplify using `using quotHeight_le V g (one_mem _)`.
+-/
 theorem quotHeight_le_height (g : GA D V) : quotHeight V g ≤ height V g := by
   simpa using quotHeight_le V g (one_mem _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ hγ => h.trans (quotHeight_le V g hγ), fun h => le_ciInf fun γ => h γ γ.2⟩`.
+-/
 theorem le_quotHeight_iff {g : GA D V} {c : ℝ} : c ≤ quotHeight V g ↔ ∀ γ ∈ GQ V, c ≤ height V (γ * g) :=
   ⟨fun h _ hγ => h.trans (quotHeight_le V g hγ), fun h => le_ciInf fun γ => h γ γ.2⟩
 
+/- English proof (translation)
+The claim follows from `(le_quotHeight_iff V).2 fun _ _ => one_le_height V _`.
+-/
 theorem one_le_quotHeight (g : GA D V) : 1 ≤ quotHeight V g := (le_quotHeight_iff V).2 fun _ _ => one_le_height V _
 
+/- English proof (translation)
+The claim follows from `zero_lt_one.trans_le (one_le_quotHeight V g)`.
+-/
 theorem quotHeight_pos (g : GA D V) : 0 < quotHeight V g := zero_lt_one.trans_le (one_le_quotHeight V g)
 
+/- English proof (translation)
+Use `le_antisymm ((le_quotHeight_iff V).2 fun δ hδ => ?_) ((le_quotHeight_iff V).2 fun δ hδ => ?_)` and prove the remaining obligations. Simplify `quotHeight_le V (γ * g) (mul_mem hδ (inv_mem hγ))` using `[mul_assoc]`. Simplify `quotHeight_le V g (mul_mem hδ hγ)` using `[mul_assoc]`.
+-/
 theorem quotHeight_left {γ : GA D V} (hγ : γ ∈ GQ V) (g : GA D V) : quotHeight V (γ * g) = quotHeight V g := by
   refine le_antisymm ((le_quotHeight_iff V).2 fun δ hδ => ?_) ((le_quotHeight_iff V).2 fun δ hδ => ?_)
   · simpa [mul_assoc] using quotHeight_le V (γ * g) (mul_mem hδ (inv_mem hγ))
   · simpa [mul_assoc] using quotHeight_le V g (mul_mem hδ hγ)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (by simpa using quotHeight_le V γ (inv_mem hγ)) (one_le_quotHeight V γ)`.
+-/
 theorem quotHeight_of_mem {γ : GA D V} (hγ : γ ∈ GQ V) : quotHeight V γ = 1 :=
   le_antisymm (by simpa using quotHeight_le V γ (inv_mem hγ)) (one_le_quotHeight V γ)
 
+/- English proof (translation)
+Rewrite using `[← div_le_iff₀ (height_pos V h)]`. Use `(le_quotHeight_iff V).2 fun γ hγ => (div_le_iff₀ (height_pos V h)).2 ?_` and prove the remaining obligations. Conclude with `(quotHeight_le V _ hγ).trans (by rw [← mul_assoc]; exact height_mul_le V _ _)`.
+-/
 theorem quotHeight_mul_le (g h : GA D V) : quotHeight V (g * h) ≤ quotHeight V g * height V h := by
   rw [← div_le_iff₀ (height_pos V h)]
   refine (le_quotHeight_iff V).2 fun γ hγ => (div_le_iff₀ (height_pos V h)).2 ?_
   exact (quotHeight_le V _ hγ).trans (by rw [← mul_assoc]; exact height_mul_le V _ _)
 
+/- English proof (translation)
+The claim follows from `continuous_of_le_mul ((continuous_height V).tendsto' 1 1 (height_one V)) (height_pos V) (height_inv V) (quotHeight_mul_le V)`.
+-/
 theorem continuous_quotHeight : Continuous (quotHeight V) :=
   continuous_of_le_mul ((continuous_height V).tendsto' 1 1 (height_one V)) (height_pos V) (height_inv V)
     (quotHeight_mul_le V)
 
+/- English proof (translation)
+Use `by_contra! h`. Use `(le_quotHeight_iff V).2 fun γ hγ => (h γ hγ).le` as an intermediate fact. Combine the linear relations using `[quotHeight_pos V g]`.
+-/
 theorem exists_height_le_two_mul_quotHeight (g : GA D V) : ∃ γ ∈ GQ V, height V (γ * g) ≤ 2 * quotHeight V g := by
   by_contra! h
   have := (le_quotHeight_iff V).2 fun γ hγ => (h γ hγ).le
@@ -379,22 +535,37 @@ def UnifModGrowth (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
 
 variable {V W}
 
+/- English proof (translation)
+The claim follows from `exists_comm`.
+-/
 theorem modGrowth_iff_exp {f : GA D V → X} : ModGrowth V f ↔ ∃ A, ModGrowthExp V A f := exists_comm
 
+/- English proof (translation)
+Simplify using `using (norm_nonneg _).trans (h 1)`.
+-/
 theorem nonneg_of_growth {f : GA D V → X} {C : ℝ} {A : ℕ} (h : ∀ g, ‖f g‖ ≤ C * height V g ^ A) : 0 ≤ C := by
   simpa using (norm_nonneg _).trans (h 1)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Conclude with `⟨C, fun g => (hC g).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_height V g) hAB) (nonneg_of_growth hC))⟩`.
+-/
 theorem ModGrowthExp.mono {f : GA D V → X} {A B : ℕ} (h : ModGrowthExp V A f) (hAB : A ≤ B) : ModGrowthExp V B f := by
   obtain ⟨C, hC⟩ := h
   exact ⟨C, fun g => (hC g).trans
     (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_height V g) hAB) (nonneg_of_growth hC))⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Take `⟨C', hC'⟩` from `h'`. Conclude with `⟨C + C', fun g => (norm_add_le _ _).trans (by rw [add_mul]; exact add_le_add (hC g) (hC' g))⟩`.
+-/
 theorem ModGrowthExp.add {f f' : GA D V → X} {A : ℕ} (h : ModGrowthExp V A f) (h' : ModGrowthExp V A f') :
     ModGrowthExp V A (f + f') := by
   obtain ⟨C, hC⟩ := h
   obtain ⟨C', hC'⟩ := h'
   exact ⟨C + C', fun g => (norm_add_le _ _).trans (by rw [add_mul]; exact add_le_add (hC g) (hC' g))⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Take `⟨C', hC'⟩` from `h'`. Use `⟨C * C', fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, norm_mul, pow_add, mul_mul_mul_comm]`. Conclude with `mul_le_mul (hC g) (hC' g) (norm_nonneg _) ((norm_nonneg _).trans (hC g))`.
+-/
 theorem ModGrowthExp.mul {f f' : GA D V → ℂ} {A B : ℕ} (h : ModGrowthExp V A f) (h' : ModGrowthExp V B f') :
     ModGrowthExp V (A + B) (f * f') := by
   obtain ⟨C, hC⟩ := h
@@ -403,6 +574,9 @@ theorem ModGrowthExp.mul {f f' : GA D V → ℂ} {A B : ℕ} (h : ModGrowthExp V
   rw [Pi.mul_apply, norm_mul, pow_add, mul_mul_mul_comm]
   exact mul_le_mul (hC g) (hC' g) (norm_nonneg _) ((norm_nonneg _).trans (hC g))
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Use `⟨C * (height V a * height V b) ^ A, fun g => (hC _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc C, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos V _).le ?_ _) (nonneg_of_growth hC)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ModGrowthExp.translate {f : GA D V → X} {A : ℕ} (h : ModGrowthExp V A f) (a b : GA D V) :
     ModGrowthExp V A fun g => f (a * g * b) := by
   obtain ⟨C, hC⟩ := h
@@ -413,43 +587,70 @@ theorem ModGrowthExp.translate {f : GA D V → X} {A : ℕ} (h : ModGrowthExp V 
         (height_mul_le V _ _).trans (mul_le_mul_of_nonneg_right (height_mul_le V _ _) (height_pos V b).le)
     _ = _ := by ring
 
+/- English proof (translation)
+Take `⟨γ, hγ, h2⟩` from `exists_height_le_two_mul_quotHeight V g`. Rewrite using `[← hf γ hγ g, mul_assoc, ← mul_pow]`. Conclude with `(h _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos V _).le h2 _) (nonneg_of_growth h))`.
+-/
 theorem norm_le_quotHeight_pow {f : GA D V → X} (hf : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) {C : ℝ} {A : ℕ}
     (h : ∀ g, ‖f g‖ ≤ C * height V g ^ A) (g : GA D V) : ‖f g‖ ≤ C * 2 ^ A * quotHeight V g ^ A := by
   obtain ⟨γ, hγ, h2⟩ := exists_height_le_two_mul_quotHeight V g
   rw [← hf γ hγ g, mul_assoc, ← mul_pow]
   exact (h _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos V _).le h2 _) (nonneg_of_growth h))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨C, 0, by simpa using h⟩`.
+-/
 theorem ModGrowth.of_bounded {f : GA D V → X} {C : ℝ} (h : ∀ g, ‖f g‖ ≤ C) : ModGrowth V f :=
   ⟨C, 0, by simpa using h⟩
 
+/- English proof (translation)
+Take `⟨C, A, hC⟩` from `h`. Conclude with `⟨C, A, fun g => (hle g).trans (hC g)⟩`.
+-/
 theorem ModGrowth.of_le {Y : Type} [NormedAddCommGroup Y] {f : GA D V → X} {f' : GA D V → Y} (h : ModGrowth V f)
     (hle : ∀ g, ‖f' g‖ ≤ ‖f g‖) : ModGrowth V f' := by
   obtain ⟨C, A, hC⟩ := h
   exact ⟨C, A, fun g => (hle g).trans (hC g)⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `modGrowth_iff_exp.1 h`. Take `⟨B, hB⟩` from `modGrowth_iff_exp.1 h'`. Conclude with `modGrowth_iff_exp.2 ⟨max A B, (hA.mono (le_max_left _ _)).add (hB.mono (le_max_right _ _))⟩`.
+-/
 theorem ModGrowth.add {f f' : GA D V → X} (h : ModGrowth V f) (h' : ModGrowth V f') : ModGrowth V (f + f') := by
   obtain ⟨A, hA⟩ := modGrowth_iff_exp.1 h
   obtain ⟨B, hB⟩ := modGrowth_iff_exp.1 h'
   exact modGrowth_iff_exp.2 ⟨max A B, (hA.mono (le_max_left _ _)).add (hB.mono (le_max_right _ _))⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `modGrowth_iff_exp.1 h`. Take `⟨B, hB⟩` from `modGrowth_iff_exp.1 h'`. Conclude with `modGrowth_iff_exp.2 ⟨A + B, hA.mul hB⟩`.
+-/
 theorem ModGrowth.mul {f f' : GA D V → ℂ} (h : ModGrowth V f) (h' : ModGrowth V f') : ModGrowth V (f * f') := by
   obtain ⟨A, hA⟩ := modGrowth_iff_exp.1 h
   obtain ⟨B, hB⟩ := modGrowth_iff_exp.1 h'
   exact modGrowth_iff_exp.2 ⟨A + B, hA.mul hB⟩
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `modGrowth_iff_exp.1 h`. Conclude with `modGrowth_iff_exp.2 ⟨A, hA.translate a b⟩`.
+-/
 theorem ModGrowth.translate {f : GA D V → X} (h : ModGrowth V f) (a b : GA D V) :
     ModGrowth V fun g => f (a * g * b) := by
   obtain ⟨A, hA⟩ := modGrowth_iff_exp.1 h
   exact modGrowth_iff_exp.2 ⟨A, hA.translate a b⟩
 
+/- English proof (translation)
+Take `⟨C, A, hC⟩` from `h`. Conclude with `⟨C * height V g ^ A, A, fun h => by rw [mul_assoc, ← mul_pow]; exact hC g h⟩`.
+-/
 theorem ModGrowth₂.right {f : GA D V → GA D W → X} (h : ModGrowth₂ V W f) (g : GA D V) : ModGrowth W (f g) := by
   obtain ⟨C, A, hC⟩ := h
   exact ⟨C * height V g ^ A, A, fun h => by rw [mul_assoc, ← mul_pow]; exact hC g h⟩
 
+/- English proof (translation)
+Take `⟨C, A, hC⟩` from `h`. Conclude with `⟨C, A, fun h g => by rw [mul_comm (height W h)]; exact hC g h⟩`.
+-/
 theorem ModGrowth₂.swap {f : GA D V → GA D W → X} (h : ModGrowth₂ V W f) : ModGrowth₂ W V fun h g => f g h := by
   obtain ⟨C, A, hC⟩ := h
   exact ⟨C, A, fun h g => by rw [mul_comm (height W h)]; exact hC g h⟩
 
+/- English proof (translation)
+The claim follows from `h.swap.right k`.
+-/
 theorem ModGrowth₂.left {f : GA D V → GA D W → X} (h : ModGrowth₂ V W f) (k : GA D W) : ModGrowth V fun g => f g k :=
   h.swap.right k
 
@@ -460,6 +661,9 @@ def RapidDec (Φ : GA D V → X) : Prop :=
 
 def decaySize (N : ℕ) (Φ : GA D V → X) : ℝ≥0∞ := ⨆ g, ENNReal.ofReal (‖Φ g‖ * quotHeight V g ^ N)
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => by simp only [quotHeight_left V hγ], Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_quotHeight V).neg), fun N => ⟨N.factorial, fun g => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `Real.pow_div_factorial_le_exp _ (quotHeight_pos V g).le N`. Rewrite `h` using `[div_le_iff₀ (by positivity)]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_neg, inv_mul_le_iff₀ (Real.exp_pos _)]`. Conclude with `h`.
+-/
 theorem rapidDec_exp_neg : RapidDec V fun g => (Real.exp (-quotHeight V g) : ℂ) := by
   refine ⟨fun γ hγ g => by simp only [quotHeight_left V hγ],
     Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_quotHeight V).neg),
@@ -471,10 +675,16 @@ theorem rapidDec_exp_neg : RapidDec V fun g => (Real.exp (-quotHeight V g) : ℂ
 
 variable {V}
 
+/- English proof (translation)
+Simplify using `only [decaySize, iSup_le_iff, ENNReal.ofReal_le_ofReal_iff hC]`.
+-/
 theorem decaySize_le_iff {N : ℕ} {Φ : GA D V → X} {C : ℝ} (hC : 0 ≤ C) :
     decaySize V N Φ ≤ ENNReal.ofReal C ↔ ∀ g, ‖Φ g‖ * quotHeight V g ^ N ≤ C := by
   simp only [decaySize, iSup_le_iff, ENNReal.ofReal_le_ofReal_iff hC]
 
+/- English proof (translation)
+Use `and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun N => ⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨C, hC⟩`. Conclude with `ne_top_of_le_ne_top ENNReal.ofReal_ne_top (iSup_le fun g => ENNReal.ofReal_le_ofReal (hC g))`. Conclude with `⟨_, (decaySize_le_iff ENNReal.toReal_nonneg).1 (ENNReal.ofReal_toReal h).ge⟩`.
+-/
 theorem rapidDec_iff_decaySize {Φ : GA D V → X} :
     RapidDec V Φ ↔ (∀ γ ∈ GQ V, ∀ g, Φ (γ * g) = Φ g) ∧ Continuous Φ ∧ ∀ N, decaySize V N Φ ≠ ∞ := by
   refine and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun N => ⟨?_, fun h => ?_⟩
@@ -482,17 +692,32 @@ theorem rapidDec_iff_decaySize {Φ : GA D V → X} :
     exact ne_top_of_le_ne_top ENNReal.ofReal_ne_top (iSup_le fun g => ENNReal.ofReal_le_ofReal (hC g))
   · exact ⟨_, (decaySize_le_iff ENNReal.toReal_nonneg).1 (ENNReal.ofReal_toReal h).ge⟩
 
+/- English proof (translation)
+The claim follows from `h.1 γ hγ g`.
+-/
 theorem RapidDec.left {Φ : GA D V → X} (h : RapidDec V Φ) {γ : GA D V} (hγ : γ ∈ GQ V) (g : GA D V) :
     Φ (γ * g) = Φ g := h.1 γ hγ g
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem RapidDec.continuous {Φ : GA D V → X} (h : RapidDec V Φ) : Continuous Φ := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2 N`.
+-/
 theorem RapidDec.decay {Φ : GA D V → X} (h : RapidDec V Φ) (N : ℕ) : ∃ C : ℝ, ∀ g, ‖Φ g‖ * quotHeight V g ^ N ≤ C :=
   h.2.2 N
 
+/- English proof (translation)
+Simplify using `using h.decay 0`.
+-/
 theorem RapidDec.bounded {Φ : GA D V → X} (h : RapidDec V Φ) : ∃ C : ℝ, ∀ g, ‖Φ g‖ ≤ C := by
   simpa using h.decay 0
 
+/- English proof (translation)
+Use `⟨hl, hc, fun N => (h N).imp fun C hC g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hg⟩` from `hS g`. Rewrite using `[← hl γ hγ g]`. Conclude with `(mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (quotHeight_pos V g).le (quotHeight_le V g hγ) N) (norm_nonneg _)).trans (hC _ hg)`.
+-/
 theorem RapidDec.of_cover {Φ : GA D V → X} (hl : ∀ γ ∈ GQ V, ∀ g, Φ (γ * g) = Φ g) (hc : Continuous Φ) {S : Set (GA D V)}
     (hS : ∀ g, ∃ γ ∈ GQ V, γ * g ∈ S) (h : ∀ N : ℕ, ∃ C : ℝ, ∀ g ∈ S, ‖Φ g‖ * height V g ^ N ≤ C) : RapidDec V Φ := by
   refine ⟨hl, hc, fun N => (h N).imp fun C hC g => ?_⟩
@@ -501,15 +726,26 @@ theorem RapidDec.of_cover {Φ : GA D V → X} (hl : ∀ γ ∈ GQ V, ∀ g, Φ (
   exact (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (quotHeight_pos V g).le (quotHeight_le V g hγ) N)
     (norm_nonneg _)).trans (hC _ hg)
 
+/- English proof (translation)
+Use `.of_cover hl hc hS fun N => ?_` and prove the remaining obligations. Take `⟨C, hC⟩` from `hK.bddAbove_image (hc.norm.mul ((continuous_height V).pow N)).continuousOn`. Conclude with `⟨C, fun g hg => hC ⟨g, hg, rfl⟩⟩`.
+-/
 theorem RapidDec.of_isCompact {Φ : GA D V → X} (hl : ∀ γ ∈ GQ V, ∀ g, Φ (γ * g) = Φ g) (hc : Continuous Φ)
     {K : Set (GA D V)} (hK : IsCompact K) (hS : ∀ g, ∃ γ ∈ GQ V, γ * g ∈ K) : RapidDec V Φ := by
   refine .of_cover hl hc hS fun N => ?_
   obtain ⟨C, hC⟩ := hK.bddAbove_image (hc.norm.mul ((continuous_height V).pow N)).continuousOn
   exact ⟨C, fun g hg => hC ⟨g, hg, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, continuous_const, fun _ => ⟨0, fun _ => by simp⟩⟩`.
+-/
 theorem RapidDec.zero : RapidDec V (0 : GA D V → X) :=
   ⟨fun _ _ _ => rfl, continuous_const, fun _ => ⟨0, fun _ => by simp⟩⟩
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => by rw [Pi.add_apply, h.left hγ, h'.left hγ, Pi.add_apply], h.continuous.add h'.continuous, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h.decay N`. Take `⟨C', hC'⟩` from `h'.decay N`. Use `⟨C + C', fun g => le_trans ?_ (add_le_add (hC g) (hC' g))⟩` and prove the remaining obligations. Rewrite using `[← add_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (pow_pos (quotHeight_pos V g) N).le`.
+-/
 theorem RapidDec.add {Φ Ψ : GA D V → X} (h : RapidDec V Φ) (h' : RapidDec V Ψ) : RapidDec V (Φ + Ψ) := by
   refine ⟨fun γ hγ g => by rw [Pi.add_apply, h.left hγ, h'.left hγ, Pi.add_apply], h.continuous.add h'.continuous,
     fun N => ?_⟩
@@ -519,14 +755,23 @@ theorem RapidDec.add {Φ Ψ : GA D V → X} (h : RapidDec V Φ) (h' : RapidDec V
   rw [← add_mul]
   exact mul_le_mul_of_nonneg_right (norm_add_le _ _) (pow_pos (quotHeight_pos V g) N).le
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hl, hc, fun N => (h.decay N).imp fun _ hC g => (mul_le_mul_of_nonneg_right (hle g) (pow_pos (quotHeight_pos V g) N).le).trans (hC g)⟩`.
+-/
 theorem RapidDec.of_le {Y : Type} [NormedAddCommGroup Y] {Φ : GA D V → X} {Ψ : GA D V → Y} (h : RapidDec V Φ)
     (hl : ∀ γ ∈ GQ V, ∀ g, Ψ (γ * g) = Ψ g) (hc : Continuous Ψ) (hle : ∀ g, ‖Ψ g‖ ≤ ‖Φ g‖) : RapidDec V Ψ :=
   ⟨hl, hc, fun N => (h.decay N).imp fun _ hC g =>
     (mul_le_mul_of_nonneg_right (hle g) (pow_pos (quotHeight_pos V g) N).le).trans (hC g)⟩
 
+/- English proof (translation)
+The claim follows from `h.of_le (fun γ hγ g => by rw [h.left hγ]) (Complex.continuous_conj.comp h.continuous) fun g => (Complex.norm_conj _).le`.
+-/
 theorem RapidDec.conj {Φ : GA D V → ℂ} (h : RapidDec V Φ) : RapidDec V fun g => starRingEnd ℂ (Φ g) :=
   h.of_le (fun γ hγ g => by rw [h.left hγ]) (Complex.continuous_conj.comp h.continuous) fun g => (Complex.norm_conj _).le
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => by simp only [mul_assoc, h.left hγ], h.continuous.comp (continuous_mul_const k), fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h.decay N`. Use `⟨C * height V k ^ N, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : quotHeight V g ≤ quotHeight V (g * k) * height V k` using `by simpa using quotHeight_mul_le V (g * k) k⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem RapidDec.mul_right {Φ : GA D V → X} (h : RapidDec V Φ) (k : GA D V) : RapidDec V fun g => Φ (g * k) := by
   refine ⟨fun γ hγ g => by simp only [mul_assoc, h.left hγ], h.continuous.comp (continuous_mul_const k), fun N => ?_⟩
   obtain ⟨C, hC⟩ := h.decay N
@@ -537,6 +782,11 @@ theorem RapidDec.mul_right {Φ : GA D V → X} (h : RapidDec V Φ) (k : GA D V) 
     _ = ‖Φ (g * k)‖ * quotHeight V (g * k) ^ N * height V k ^ N := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_right (hC _) (pow_pos (height_pos V k) N).le
 
+/- English proof (translation)
+Use `⟨fun γ hγ g => by rw [Pi.mul_apply, h.left hγ, hl γ hγ, Pi.mul_apply], hc.mul h.continuous, fun N => ?_⟩` and prove the remaining obligations. Take `⟨B, A, hB⟩` from `hf`. Take `⟨C, hC⟩` from `h.decay (A + N)`. Establish `hB0` using `nonneg_of_growth hB`. Use `⟨B * 2 ^ A * C, fun g => ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Pi.mul_apply, norm_mul, mul_assoc]`. Use `_ ≤ B * 2 ^ A * quotHeight V g ^ A * (‖Φ g‖ * quotHeight V g ^ N) := mul_le_mul_of_nonneg_right (norm_le_quotHeight_pow hl hB g) (mul_nonneg (norm_nonneg _) (pow_pos (quotHeight_pos V g) N).le)`. Use `_ = B * 2 ^ A * (‖Φ g‖ * quotHeight V g ^ (A + N)) := by ring`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left (hC g) (by positivity)`.
+-/
 theorem RapidDec.modGrowth_mul {f Φ : GA D V → ℂ} (h : RapidDec V Φ) (hf : ModGrowth V f)
     (hl : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) (hc : Continuous f) : RapidDec V (f * Φ) := by
   refine ⟨fun γ hγ g => by rw [Pi.mul_apply, h.left hγ, hl γ hγ, Pi.mul_apply], hc.mul h.continuous, fun N => ?_⟩
@@ -552,21 +802,38 @@ theorem RapidDec.modGrowth_mul {f Φ : GA D V → ℂ} (h : RapidDec V Φ) (hf :
     _ = B * 2 ^ A * (‖Φ g‖ * quotHeight V g ^ (A + N)) := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_left (hC g) (by positivity)
 
+/- English proof (translation)
+The claim follows from `h.modGrowth_mul (f := fun _ => c) (.of_bounded fun _ => le_rfl) (fun _ _ _ => rfl) continuous_const`.
+-/
 theorem RapidDec.smul {Φ : GA D V → ℂ} (c : ℂ) (h : RapidDec V Φ) : RapidDec V (c • Φ) :=
   h.modGrowth_mul (f := fun _ => c) (.of_bounded fun _ => le_rfl) (fun _ _ _ => rfl) continuous_const
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h.bounded`. Conclude with `Measure.integrableOn_of_bounded hS h.continuous.aestronglyMeasurable (Eventually.of_forall hC)`.
+-/
 theorem RapidDec.integrableOn {Φ : GA D V → ℂ} (h : RapidDec V Φ) {μ : Measure (GA D V)} {S : Set (GA D V)}
     (hS : μ S ≠ ∞) : IntegrableOn Φ S μ := by
   obtain ⟨C, hC⟩ := h.bounded
   exact Measure.integrableOn_of_bounded hS h.continuous.aestronglyMeasurable (Eventually.of_forall hC)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun g => by simp [abs_of_pos (height_pos V g)]⟩`.
+-/
 example : ModGrowthExp V 1 (height V) := ⟨1, fun g => by simp [abs_of_pos (height_pos V g)]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rapidDec_exp_neg V, by simp only [quotHeight_of_mem V (one_mem _)]⟩`.
+-/
 example : ∃ Φ : GA D V → ℂ, RapidDec V Φ ∧ Φ 1 = Real.exp (-1) :=
   ⟨_, rapidDec_exp_neg V, by simp only [quotHeight_of_mem V (one_mem _)]⟩
 
 end Unitary
 
+/- English proof (translation)
+Establish `e : ∀ (F : G → ℂ) (h : G), (fun r : (⊥ : Subgroup G) => F (r * h)) = fun _ => F h` using `fun F h =>`. Use function extensionality and compare the values at `fun r => by rw [Subsingleton.elim r 1]; simp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, h1, -, h3, h4⟩`. Take `rfl : f = F` from `funext fun h => by simp [h3, e]`.
+
+Conclude with `⟨h1, h4⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨f, h1, fun h => by rw [e]; exact integrable_const _, fun h => by simp [e], h2⟩`.
+-/
 theorem isQuotIntL1_bot {G : Type} [Group G] [MeasurableSpace G] {μG : Measure G} {f : G → ℂ} {z : ℂ} :
     IsQuotIntL1 (R := ⊥) (Measure.dirac 1) μG f z ↔ Integrable f μG ∧ z = ∫ g, f g ∂μG := by
   have e : ∀ (F : G → ℂ) (h : G), (fun r : (⊥ : Subgroup G) => F (r * h)) = fun _ => F h := fun F h =>
@@ -578,6 +845,9 @@ theorem isQuotIntL1_bot {G : Type} [Group G] [MeasurableSpace G] {μG : Measure 
   · rintro ⟨h1, h2⟩
     exact ⟨f, h1, fun h => by rw [e]; exact integrable_const _, fun h => by simp [e], h2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, integrable_const _, fun _ => integrable_const _, fun _ => by simp, by simp⟩`.
+-/
 example {G : Type} [Group G] [MeasurableSpace G] {R : Subgroup G} (μR : Measure R) (μG : Measure G)
     [IsProbabilityMeasure μR] [IsProbabilityMeasure μG] : IsQuotIntL1 μR μG 1 1 :=
   ⟨1, integrable_const _, fun _ => integrable_const _, fun _ => by simp, by simp⟩

@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial Ideal
 
+/- English proof (translation)
+Establish `hPp : P.IsPrime` using `hP.1.1`. Unfold `localMult`. Rewrite using `[dif_pos hPp]`. Set `R` to `Localization.AtPrime P`. Set `I : Ideal R` to `J.map (algebraMap A R)`.
+
+Establish `hmin : IsLocalRing.maximalIdeal R ∈ I.minimalPrimes`. Rewrite using `[IsLocalization.minimalPrimes_map P.primeCompl R J, Set.mem_preimage, Localization.AtPrime.under_maximalIdeal]`. Conclude with `hP`. Use `IsLocalRing.quotient_artinian_of_mem_minimalPrimes_of_isLocalRing I hmin` as an intermediate fact. Establish `: IsArtinian R (R ⧸ I)` using `isArtinian_of_surjective_algebraMap (Ideal.Quotient.mk_surjective (I := I))`.
+
+Establish `: IsNoetherian R (R ⧸ I)` using `isNoetherian_quotient I`. Establish `hI : I ≠ ⊤` using `ne_top_of_le_ne_top (IsLocalRing.maximalIdeal.isMaximal R).ne_top hmin.1.2`. Establish `: Nontrivial (R ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr hI`. Rewrite using `[Ne, ENat.toNat_eq_zero, not_or]`. Conclude with `⟨(Module.length_pos (R := R) (M := R ⧸ I)).ne', Module.length_ne_top⟩`.
+-/
 theorem localMult_ne_zero_of_mem_minimalPrimes {A : Type*} [CommRing A] [IsNoetherianRing A]
     {J P : Ideal A} (hP : P ∈ J.minimalPrimes) : localMult J P ≠ 0 := by
   have hPp : P.IsPrime := hP.1.1
@@ -26,6 +33,27 @@ theorem localMult_ne_zero_of_mem_minimalPrimes {A : Type*} [CommRing A] [IsNoeth
   rw [Ne, ENat.toNat_eq_zero, not_or]
   exact ⟨(Module.length_pos (R := R) (M := R ⧸ I)).ne', Module.length_ne_top⟩
 
+/- English proof (translation)
+Introduce `n W u u' hW hu hu' hadm W'' hW'' hlu`. Establish `hval` using `Finsupp.mem_support_iff.mp hW''`. Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply] at hval`. Establish `hrel : W'' ∈ relComps (W ⊔ span {linForm u'})`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hval (if_neg h)`. Take `⟨hmin'', hrel''⟩` from `hrel`. Establish `: W''.IsPrime` using `hmin''.1.1`. Establish `hle : W ⊔ span {linForm u} ≤ W''` using `sup_le (le_sup_left.trans hmin''.1.2) ((span_singleton_le_iff_mem _).mpr hlu)`. Take `⟨W', hW', hW'le⟩` from `Ideal.exists_minimalPrimes_le hle`.
+
+Establish `hrel' : IsRelevant W'`. Take `⟨j, hj⟩` from `hrel''`. Conclude with `⟨j, fun h => hj (hW'le h)⟩`. Establish `hsupp : W' ∈ (divCycle W u).support`. Rewrite using `[Finsupp.mem_support_iff]`.
+
+Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply]`. Rewrite using `[if_pos ⟨hW', hrel'⟩]`. Conclude with `localMult_ne_zero_of_mem_minimalPrimes hW'`. Establish `hu'W' : linForm u' ∉ W'` using `hadm W' hsupp`. Establish `: W'.IsPrime` using `hW'.1.1`.
+
+Establish `: W.IsPrime` using `hW.isPrime`. Establish `hWW' : W ≤ W'` using `le_sup_left.trans hW'.1.2`. Establish `huW' : linForm u ∈ W'` using `hW'.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hu'W'' : linForm u' ∈ W''` using `hmin''.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Set `f` to `Ideal.Quotient.mk W`.
+
+Establish `hf : Function.Surjective f` using `Ideal.Quotient.mk_surjective`. Establish `hker : RingHom.ker f = W` using `Ideal.mk_ker`. Establish `: (W'.map f).IsPrime` using `Ideal.map_isPrime_of_surjective hf (by rw [hker]; exact hWW')`. Establish `: (W''.map f).IsPrime` using `Ideal.map_isPrime_of_surjective hf (by rw [hker]; exact hWW'.trans hW'le)`. Establish `: IsDomain (MvPolynomial (Fin n) ℂ ⧸ W)` using `Ideal.Quotient.isDomain W`.
+
+Establish `: (⊥ : Ideal (MvPolynomial (Fin n) ℂ ⧸ W)).IsPrime` using `Ideal.isPrime_bot`. Establish `h0 : (⊥ : Ideal (MvPolynomial (Fin n) ℂ ⧸ W)) < W'.map f`. Use `bot_lt_iff_ne_bot.mpr fun h => hu ?_` and prove the remaining obligations. Establish `hm` using `Ideal.mem_map_of_mem f huW'`. Rewrite `hm` using `[h, Ideal.mem_bot]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp hm`. Establish `h1 : W'.map f < W''.map f`. Use `lt_of_le_of_ne (Ideal.map_mono hW'le) fun h => hu'W' ?_` and prove the remaining obligations. Establish `hm` using `Ideal.mem_map_of_mem f hu'W''`. Rewrite `hm` using `[← h, ← Ideal.mem_comap, Ideal.comap_map_of_surjective' f hf, hker, sup_eq_left.mpr hWW']`.
+
+Conclude with `hm`. Establish `e1` using `Ideal.height_add_one_le_of_lt_of_isPrime h0`. Establish `e2` using `Ideal.height_add_one_le_of_lt_of_isPrime h1`. Establish `e3 : (W''.map f).height ≤ 1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hmin''`. Rewrite `e1` using `[Ideal.height_bot, zero_add]`.
+
+Establish `h2 : (2 : ℕ∞) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h2 (by norm_num)`.
+-/
 theorem ProperSymm.proof : ProperSymm.Statement := by
   intro n W u u' hW hu hu' hadm W'' hW'' hlu
   classical

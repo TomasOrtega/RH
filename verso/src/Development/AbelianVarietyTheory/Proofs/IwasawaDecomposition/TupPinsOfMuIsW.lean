@@ -27,6 +27,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
   {cG : G0 R.Pg D.R.r ≃* G0g D.nd} {X0 : BaseLevelRowSide D} {Y : Read (A3 := A3) R.toRealDat F.lv2 X0}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Div.nonempty_ix_of_pos A3 F.P0 F.ψ0 (R.toCx3 F).zs hH.ok hH.prim.block (hH.prim.pos false)`.
+-/
 theorem nonempty_ix (hH : Holds R F) : Nonempty A3.fam3.base3.Ix :=
   GlobalTheory.Div.nonempty_ix_of_pos A3 F.P0 F.ψ0 (R.toCx3 F).zs hH.ok hH.prim.block (hH.prim.pos false)
 
@@ -35,6 +38,9 @@ open Classical in
 def labOf (Z : ReadL R F X0 Y) (hH : Holds R F) (σ : D.what₂.FT) : A3.fam3.base3.Ix :=
   if h : ∃ c, Bl.OverIx Z σ c then h.choose else (nonempty_ix hH).some
 
+/- English proof (translation)
+Rewrite using `[labOf, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem overIx_labOf (Z : ReadL R F X0 Y) (hH : Holds R F) (σ : D.what₂.FT) (h : ∃ c, Bl.OverIx Z σ c) :
     Bl.OverIx Z σ (labOf Z hH σ) := by
   rw [labOf, dif_pos h]
@@ -48,6 +54,9 @@ def logLamOf (Z : ReadL R F X0 Y) (hH : Holds R F) (j : ℕ) (σ : D.what₂.FT)
     if D.what₂.isot j σ = ⊥ then 0 else Real.log ((s0Of R F).lam ⟨j - 1, h⟩ A3.A.μ0 (labOf Z hH σ) (InfinitePlace.mk e))
   else 0
 
+/- English proof (translation)
+Use `⟨labOf Z hH, overIx_labOf Z hH, fun i σ e he => ?_⟩` and prove the remaining obligations. Establish `h : (i : ℕ) + 1 - 1 < D.R.m` using `i.2`. Rewrite using `[hX, logLamOf, if_neg he, dif_pos h]`. Conclude with `⟨fun h0 => if_neg h0, fun h0 => if_pos h0⟩`.
+-/
 theorem lamAre_of_eq (Z : ReadL R F X0 Y) (hH : Holds R F) (Xd : DivX D) (hX : Xd.logLam = logLamOf Z hH) : Bl.LamAre Z Xd := by
   refine ⟨labOf Z hH, overIx_labOf Z hH, fun i σ e he => ?_⟩
   have h : (i : ℕ) + 1 - 1 < D.R.m := i.2
@@ -133,6 +142,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `⟨fun μ v hv => ?_, fun w v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[hxi]`. Take `⟨h1, h2, h3, h4⟩` from `(GlobalTheory.Mem.HD.TupPin.isTwist_types X.B f T (xi μ) (h.range ▸ Set.mem_range_self μ)).2.2.2 v hv`. Conclude with `⟨h1, h2, h3, fun k hk => h4 ⟨k, Examples₂.PlacesToy.prime_mem_unique v (X.B.host.g_prime k) h2 hk (Ideal.absNorm_mem _)⟩⟩`. Rewrite using `[hxi] show (xi (X.W.muAt w)).UnrAt v`.
+
+Distinguish the cases in `hw : w ∈ Wt`. Rewrite using `[h.on w hw, h.tw w]`. Conclude with `GlobalTheory.Mem.HD.TupPin.xiTw_unr X.B f T w v hv`. Rewrite using `[h.off w hw, h.mu0]`. Conclude with `fun x _ => HChar.loc_one _ _`.
+-/
 theorem tupPins_of_muIsW (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (Wt : Set X.B.places.Pl)
     (xi : X.C.Tup → HChar X.B.host.E) (h : V4.MuIsW X f T Wt xi) {C : CharFrame X.toD7} {nch : NChoice X.toD7}
     (tp : TupTied X.toD7 C nch) (hxi : tp.xi = xi) : GlobalTheory.Mem.HD.TupPins tp := by
@@ -152,6 +166,11 @@ theorem tupPins_of_muIsW (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (Wt : S
 
 open Formalism.L2.Rows Formalism.L2.Geo GlobalTheory.GeoGraft GlobalTheory.GeoModel in
 
+/- English proof (translation)
+Set `D` to `X.toD7`. Set `eO : 𝓞 X.B.Ks ≃+* D.what₂.O` to `RingEquiv.refl _`. Set `kL : X.B.Ks →+* D.what₂.LL` to `X.B.Ks.val.toRingHom`. Establish `hk : ∀ x : 𝓞 X.B.Ks, kL (x : X.B.Ks) = D.what₂.OtoLL (eO x)` using `fun _ => rfl`. Set `jc : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)` to `fun p _ la => Classical.choose (GlobalTheory.WittFracPlace.exists_jcPin D p la)`.
+
+Establish `hjc : ComplexEmbeddingsCompatible jc` using `GlobalTheory.ShFam.PinPlace.pinned_tiedFor D jc (fun p _ la => Classical.choose_spec (GlobalTheory.WittFracPlace.exists_jcPin D p la))`. Use `⟨divXFl D jc X₀, fun _ _ => True, ⟨divXFl D jc X₀, (divXFl D jc X₀).iMj, (divXFl D jc X₀).iMj_mem, rfl⟩, ⟨famFlJ D jc X.B.Ks eO kL hk, fun p _ => Equiv.refl _, fun _ _ _ => Equiv.refl _, tiedX_fl D jc X₀, hjc, fun _ _ _ _ _ => trivial, isoInv_famFlJ D jc X.B.Ks eO kL hk, levInTie …` and prove the remaining obligations.
+-/
 theorem geoOver_stages (X : Stages) (X₀ : DivX X.toD7) : GeoOver (fun _ => True) X₀ := by
   let D := X.toD7
   let eO : 𝓞 X.B.Ks ≃+* D.what₂.O := RingEquiv.refl _
@@ -167,14 +186,25 @@ theorem geoOver_stages (X : Stages) (X₀ : DivX X.toD7) : GeoOver (fun _ => Tru
 
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mem.Top.Bl.QpIsOf.qpIs_qpSet w pin Z tp hxi hp`.
+-/
 theorem qpIs_qpSet (w : ColW B f T) (pin : ColPin w) (Z : w.Lt) {nch : NChoice (w.D Z)}
     (tp : TupTied (w.D Z) (TC.cf w.I w.l Z) nch) (hxi : tp.xi = w.I.xi) (hp : GlobalTheory.Mem.HD.TupPins tp) :
     TC.QpIs w.I (GlobalTheory.Mem.HD.ReQ.qpSet tp) := GlobalTheory.Mem.Top.Bl.QpIsOf.qpIs_qpSet w pin Z tp hxi hp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mem.R3.exists_mjHTie t.r.Z _ rfl HEq.rfl`.
+-/
 theorem mjAre_x0 {K : Ctx} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) :
     MjAre t.r.Z (x0 t.r.Z t.r.z.pins t.r.intersectionNumber_baseChange) :=
   GlobalTheory.Mem.R3.exists_mjHTie t.r.Z _ rfl HEq.rfl
 
+/- English proof (translation)
+Establish `hp : GlobalTheory.Mem.HD.TupPins l.n.tp` using `tupPins_of_muIsW (w.st Z) f T l.Wt w.I.xi l.what₂.mu l.n.tp l.n.xi`. Set `X₁` to `x0 l.what₂.r.Z l.what₂.r.z.pins l.what₂.r.intersectionNumber_baseChange`. Set `X₂` to `GlobalTheory.Mem.HD.ReQ.reQ l.n.tp hp w.I.sel pin.above X₁`. Take `⟨X, inK, ⟨Xg, iM, hiM, rfl⟩, hG, -⟩` from `geoOver_stages (w.st Z) X₂`. Set `c` to `GlobalTheory.Mem.HD.ReQ.reducedDivisorCharacter l.n.tp hp w.I.sel pin.above X₁`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.Mem.HD.ReQ.reLoc l.n.tp hp w.I.sel pin.above X₁`. Set `chr : DivisorCharacterCompatibility (w.D Z) (TC.cf w.I w.l Z) _ l.n.tp (GlobalTheory.GeoGraft.graft Xg X₂ iM hiM)` to `⟨c.Qp_iff, c.eQPl, c.qv_eq⟩`. Use `⟨GlobalTheory.GeoGraft.graft Xg X₂ iM hiM, ⟨{ Qp := qpIs_qpSet w pin Z l.n.tp l.n.xi hp, chr := chr, loc := ⟨h1, ?_⟩, inK := inK, geo := hG }⟩, GlobalTheory.Mem.R3.exists_mjHTie l.what₂.r.Z _ rfl HEq.rfl, fun _ => rfl, lamAre_of_eq l.what₂.r.Z l.what₂.r.intersectionNumber_baseCha …` and prove the remaining obligations. Conclude with `⟨h2.qv_eq, h2.deg1, h2.ram, h2.off_g, h2.nu_eq, h2.typeDim_eq, h2.ZQ_eq, h2.quotientLocalValueFirst_eq⟩`.
+-/
 theorem exists_divT {𝒮 : Slots} {K : Ctx} (w : ColW B f T) (pin : ColPin w) (Z : w.Lt) (l : Lv4 𝒮 K w Z) :
     ∃ Y : DivX (w.D Z), Nonempty (DivT l.n Y) ∧ MjAre l.what₂.r.Z Y ∧ (∀ σ, Y.kapR σ = kapSharp (w.D Z)) ∧
       LamAre l.what₂.r.Z Y := by
@@ -191,16 +221,25 @@ theorem exists_divT {𝒮 : Slots} {K : Ctx} (w : ColW B f T) (pin : ColPin w) (
     lamAre_of_eq l.what₂.r.Z l.what₂.r.intersectionNumber_baseChange _ rfl⟩
   exact ⟨h2.qv_eq, h2.deg1, h2.ram, h2.off_g, h2.nu_eq, h2.typeDim_eq, h2.ZQ_eq, h2.quotientLocalValueFirst_eq⟩
 
+/- English proof (translation)
+The claim follows from `lamAre_of_eq t.r.Z t.r.intersectionNumber_baseChange _ rfl`.
+-/
 theorem lamAre_x0 {K : Ctx} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) :
     LamAre t.r.Z (x0 t.r.Z t.r.z.pins t.r.intersectionNumber_baseChange) :=
   lamAre_of_eq t.r.Z t.r.intersectionNumber_baseChange _ rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `rfl` from `eq_of_heq h`. Conclude with `hX`.
+-/
 theorem lamAre_heq {K : Ctx} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 p0' : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0}
     {t' : RowsT K w Z Wt p0'} (e : p0 = p0') (h : HEq t t') {X : DivX (w.D Z)} (hX : LamAre t'.r.Z X) : LamAre t.r.Z X := by
   subst e
   obtain rfl := eq_of_heq h
   exact hX
 
+/- English proof (translation)
+The claim follows from `StepW.of_all fun _ _ _ _ w _ _ hpin Z l => let ⟨Y, h1, h2, h3, h4⟩ := exists_divT w hpin.some Z l ⟨Y, h1, h2, h3, fun O t hX hp ht => by rw [hOx] exact ⟨⟨trivial, lamAre_heq hp ht (hX ▸ h4)⟩⟩⟩`.
+-/
 theorem divEx_prov (𝒮 : Slots) (hOx : 𝒮.Ox = OX anyGeometry) : DivEx 𝒮 :=
   StepW.of_all fun _ _ _ _ w _ _ hpin Z l =>
     let ⟨Y, h1, h2, h3, h4⟩ := exists_divT w hpin.some Z l
@@ -208,6 +247,9 @@ theorem divEx_prov (𝒮 : Slots) (hOx : 𝒮.Ox = OX anyGeometry) : DivEx 𝒮 
       rw [hOx]
       exact ⟨⟨trivial, lamAre_heq hp ht (hX ▸ h4)⟩⟩⟩
 
+/- English proof (translation)
+Introduce `_ _ _ 𝒮 hOx` and use `divEx_prov 𝒮 hOx`.
+-/
 theorem divEx_of_ox : GlobalTheory.NT.RayField → GlobalTheory.Published.PrincipalIdealSt → GlobalTheory.Published.CMCurveGoodOutsidePrimeSt → ∀ 𝒮 : Slots,
     𝒮.Ox = OX anyGeometry → DivEx 𝒮 :=
   fun _ _ _ 𝒮 hOx => divEx_prov 𝒮 hOx

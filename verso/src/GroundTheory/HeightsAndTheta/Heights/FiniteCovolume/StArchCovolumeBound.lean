@@ -17,12 +17,18 @@ def vecAtHom (v : Basis ι E W) : W →+ (InfinitePlace E → ι → ℂ) where
   map_add' x y := by funext w i; simp [vecAt]
 
 omit [IsTotallyComplex E] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecAtHom_apply (v : Basis ι E W) (x : W) : vecAtHom v x = vecAt v x := rfl
 
 def archLattice (v : Basis ι E W) (La : AddSubgroup W) : Submodule ℤ (InfinitePlace E → ι → ℂ) :=
   AddSubgroup.toIntSubmodule (La.map (vecAtHom v))
 
 omit [IsTotallyComplex E] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `y ∈ La.map (vecAtHom v) ↔ _`. Rewrite using `[AddSubgroup.mem_map]`. Both sides reduce to the same expression.
+-/
 theorem mem_archLattice {v : Basis ι E W} {La : AddSubgroup W} {y : InfinitePlace E → ι → ℂ} :
     y ∈ archLattice v La ↔ ∃ x ∈ La, vecAt v x = y := by
   change y ∈ La.map (vecAtHom v) ↔ _

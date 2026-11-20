@@ -17,14 +17,23 @@ noncomputable def lwP₂ (S : Finset κ) (z : κ → ℂ) : ℝ :=
 def coordDivisor (S : Finset κ) (w : X → κ → ℂ) : Set X :=
   {x | ∃ j ∈ S, w x j = 0}
 
+/- English proof (translation)
+Simplify using `[coordDivisor]`.
+-/
 theorem notMem_coordDivisor {S : Finset κ} {w : X → κ → ℂ} {x : X} :
     x ∉ coordDivisor S w ↔ ∀ j ∈ S, w x j ≠ 0 := by
   simp [coordDivisor]
 
+/- English proof (translation)
+Simplify using `[coordDivisor, Finset.prod_eq_zero_iff]`.
+-/
 theorem mem_coordDivisor_iff_prod_eq_zero {S : Finset κ} {w : X → κ → ℂ} {x : X} :
     x ∈ coordDivisor S w ↔ ∏ j ∈ S, w x j = 0 := by
   simp [coordDivisor, Finset.prod_eq_zero_iff]
 
+/- English proof (translation)
+Establish `: coordDivisor S w = {x | ∏ j ∈ S, w x j = 0}` using `Set.ext fun _ => mem_coordDivisor_iff_prod_eq_zero`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_finset_prod S hw) continuous_const`.
+-/
 theorem isClosed_coordDivisor [TopologicalSpace X] (S : Finset κ) {w : X → κ → ℂ}
     (hw : ∀ j ∈ S, Continuous fun x => w x j) : IsClosed (coordDivisor S w) := by
   have : coordDivisor S w = {x | ∏ j ∈ S, w x j = 0} :=
@@ -32,17 +41,29 @@ theorem isClosed_coordDivisor [TopologicalSpace X] (S : Finset κ) {w : X → κ
   rw [this]
   exact isClosed_eq (continuous_finset_prod S hw) continuous_const
 
+/- English proof (translation)
+The claim follows from `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)`.
+-/
 theorem one_le_logWeight (S : Finset κ) (z : κ → ℂ) : 1 ≤ lwP₂ S z :=
   le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)
 
+/- English proof (translation)
+The claim follows from `one_pos.trans_le (one_le_logWeight S z)`.
+-/
 theorem logWeight_pos (S : Finset κ) (z : κ → ℂ) : 0 < lwP₂ S z :=
   one_pos.trans_le (one_le_logWeight S z)
 
+/- English proof (translation)
+The claim follows from `|Real.log ‖z j‖| ≤ lwP₂ S z := (Finset.single_le_sum (f := fun j => |Real.log ‖z j‖|) (fun _ _ => abs_nonneg _) hj).trans (le_add_of_nonneg_left zero_le_one)`.
+-/
 theorem abs_log_norm_le_logWeight {S : Finset κ} (z : κ → ℂ) {j : κ} (hj : j ∈ S) :
     |Real.log ‖z j‖| ≤ lwP₂ S z :=
   (Finset.single_le_sum (f := fun j => |Real.log ‖z j‖|) (fun _ _ => abs_nonneg _) hj).trans
     (le_add_of_nonneg_left zero_le_one)
 
+/- English proof (translation)
+The claim follows from `mul_le_mul hC (pow_le_pow_right₀ (one_le_logWeight S z) hN) (pow_nonneg (logWeight_pos S z).le _) hC'`.
+-/
 theorem mul_logWeight_pow_le (S : Finset κ) (z : κ → ℂ) {C C' : ℝ} {N N' : ℕ} (hC : C ≤ C')
     (hC' : 0 ≤ C') (hN : N ≤ N') : C * lwP₂ S z ^ N ≤ C' * lwP₂ S z ^ N' :=
   mul_le_mul hC (pow_le_pow_right₀ (one_le_logWeight S z) hN)
@@ -69,6 +90,9 @@ variable {S : Finset κ} {w : X → κ → ℂ} {U : Set X}
 
 namespace HasLogGrowth
 
+/- English proof (translation)
+Take `⟨C, N, h⟩` from `hf K hKU hK`. Conclude with `⟨max C 1, N, le_max_right _ _, fun x hx hB => (h x hx hB).trans (mul_logWeight_pow_le _ _ (le_max_left _ _) (zero_le_one.trans (le_max_right _ _)) le_rfl)⟩`.
+-/
 theorem exists_one_le {f : X → E} (hf : HasLogGrowth S w U f) {K : Set X} (hKU : K ⊆ U)
     (hK : IsCompact K) : ∃ (C : ℝ) (N : ℕ), 1 ≤ C ∧ ∀ x ∈ K, x ∉ coordDivisor S w →
       ‖f x‖ ≤ C * lwP₂ S (w x) ^ N := by
@@ -76,41 +100,73 @@ theorem exists_one_le {f : X → E} (hf : HasLogGrowth S w U f) {K : Set X} (hKU
   exact ⟨max C 1, N, le_max_right _ _, fun x hx hB => (h x hx hB).trans
     (mul_logWeight_pow_le _ _ (le_max_left _ _) (zero_le_one.trans (le_max_right _ _)) le_rfl)⟩
 
+/- English proof (translation)
+Introduce `K hK` and use `hf K (hK.trans hV)`.
+-/
 theorem mono {f : X → E} (hf : HasLogGrowth S w U f) {V : Set X} (hV : V ⊆ U) :
     HasLogGrowth S w V f :=
   fun K hK => hf K (hK.trans hV)
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC⟩` from `hg K hKU hK`. Conclude with `⟨C, N, fun x hx hB => (h x (hKU hx) hB).trans (hC x hx hB)⟩`.
+-/
 theorem of_norm_le {f : X → E} {g : X → F} (hg : HasLogGrowth S w U g)
     (h : ∀ x ∈ U, x ∉ coordDivisor S w → ‖f x‖ ≤ ‖g x‖) : HasLogGrowth S w U f := by
   intro K hKU hK
   obtain ⟨C, N, hC⟩ := hg K hKU hK
   exact ⟨C, N, fun x hx hB => (h x (hKU hx) hB).trans (hC x hx hB)⟩
 
+/- English proof (translation)
+The claim follows from `hg.of_norm_le fun x hx hB => (h x hx hB).trans (le_abs_self _)`.
+-/
 theorem of_le {f : X → E} {g : X → ℝ} (hg : HasLogGrowth S w U g)
     (h : ∀ x ∈ U, x ∉ coordDivisor S w → ‖f x‖ ≤ g x) : HasLogGrowth S w U f :=
   hg.of_norm_le fun x hx hB => (h x hx hB).trans (le_abs_self _)
 
+/- English proof (translation)
+The claim follows from `hg.of_norm_le fun x hx hB => by rw [h x hx hB]`.
+-/
 theorem congr {f g : X → E} (hg : HasLogGrowth S w U g)
     (h : ∀ x ∈ U, x ∉ coordDivisor S w → f x = g x) : HasLogGrowth S w U f :=
   hg.of_norm_le fun x hx hB => by rw [h x hx hB]
 
+/- English proof (translation)
+The claim follows from `hf.of_norm_le fun _ _ _ => (norm_norm _).le`.
+-/
 theorem norm {f : X → E} (hf : HasLogGrowth S w U f) : HasLogGrowth S w U fun x => ‖f x‖ :=
   hf.of_norm_le fun _ _ _ => (norm_norm _).le
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hf.mono hKU)`. Conclude with `⟨C, 0, fun x hx _ => by simpa using hC x hx⟩`.
+-/
 theorem of_continuousOn {f : X → E} (hf : ContinuousOn f U) : HasLogGrowth S w U f := by
   intro K hKU hK
   obtain ⟨C, hC⟩ := hK.exists_bound_of_continuousOn (hf.mono hKU)
   exact ⟨C, 0, fun x hx _ => by simpa using hC x hx⟩
 
+/- English proof (translation)
+The claim follows from `of_continuousOn continuousOn_const`.
+-/
 theorem const (c : E) : HasLogGrowth S w U fun _ => c :=
   of_continuousOn continuousOn_const
 
+/- English proof (translation)
+Introduce `_ _ _` and use `⟨1, 1, fun x _ _ => by simp [abs_of_pos (logWeight_pos S (w x))]⟩`.
+-/
 theorem lwP₂ : HasLogGrowth S w U fun x => lwP₂ S (w x) :=
   fun _ _ _ => ⟨1, 1, fun x _ _ => by simp [abs_of_pos (logWeight_pos S (w x))]⟩
 
+/- English proof (translation)
+The claim follows from `lwP₂.of_le fun x _ _ => abs_log_norm_le_logWeight (w x) hj`.
+-/
 theorem log_norm {j : κ} (hj : j ∈ S) : HasLogGrowth S w U fun x => Real.log ‖w x j‖ :=
   lwP₂.of_le fun x _ _ => abs_log_norm_le_logWeight (w x) hj
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC1, hC⟩` from `hf.exists_one_le hKU hK`. Take `⟨D, M, hD1, hD⟩` from `hg.exists_one_le hKU hK`. Use `⟨C + D, max N M, fun x hx hB => (norm_add_le _ _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[add_mul]`.
+
+Conclude with `add_le_add ((hC x hx hB).trans (mul_logWeight_pow_le _ _ le_rfl (by linarith) (le_max_left _ _))) ((hD x hx hB).trans (mul_logWeight_pow_le _ _ le_rfl (by linarith) (le_max_right _ _)))`.
+-/
 theorem add {f g : X → E} (hf : HasLogGrowth S w U f) (hg : HasLogGrowth S w U g) :
     HasLogGrowth S w U fun x => f x + g x := by
   intro K hKU hK
@@ -122,13 +178,22 @@ theorem add {f g : X → E} (hf : HasLogGrowth S w U f) (hg : HasLogGrowth S w U
     ((hC x hx hB).trans (mul_logWeight_pow_le _ _ le_rfl (by linarith) (le_max_left _ _)))
     ((hD x hx hB).trans (mul_logWeight_pow_le _ _ le_rfl (by linarith) (le_max_right _ _)))
 
+/- English proof (translation)
+The claim follows from `hf.of_norm_le fun _ _ _ => (norm_neg _).le`.
+-/
 theorem neg {f : X → E} (hf : HasLogGrowth S w U f) : HasLogGrowth S w U fun x => -f x :=
   hf.of_norm_le fun _ _ _ => (norm_neg _).le
 
+/- English proof (translation)
+The claim follows from `(hf.add hg.neg).congr fun _ _ _ => sub_eq_add_neg _ _`.
+-/
 theorem sub {f g : X → E} (hf : HasLogGrowth S w U f) (hg : HasLogGrowth S w U g) :
     HasLogGrowth S w U fun x => f x - g x :=
   (hf.add hg.neg).congr fun _ _ _ => sub_eq_add_neg _ _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using const 0`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(hf a (Finset.mem_insert_self _ _)).add (ih fun b hb => hf b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem sum {α : Type*} {s : Finset α} {f : α → X → E} (hf : ∀ a ∈ s, HasLogGrowth S w U (f a)) :
     HasLogGrowth S w U fun x => ∑ a ∈ s, f a x := by
   classical
@@ -139,6 +204,11 @@ theorem sum {α : Type*} {s : Finset α} {f : α → X → E} (hf : ∀ a ∈ s,
     exact (hf a (Finset.mem_insert_self _ _)).add
       (ih fun b hb => hf b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC1, hC⟩` from `hf.exists_one_le hKU hK`. Take `⟨D, M, hD1, hD⟩` from `hg.exists_one_le hKU hK`. Use `⟨C * D, N + M, fun x hx hB => (norm_mul_le _ _).trans ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_mul_mul_comm]`.
+
+Conclude with `mul_le_mul (hC x hx hB) (hD x hx hB) (norm_nonneg _) ((norm_nonneg _).trans (hC x hx hB))`.
+-/
 theorem mul {R : Type*} [SeminormedRing R] {f g : X → R} (hf : HasLogGrowth S w U f)
     (hg : HasLogGrowth S w U g) : HasLogGrowth S w U fun x => f x * g x := by
   intro K hKU hK
@@ -148,11 +218,17 @@ theorem mul {R : Type*} [SeminormedRing R] {f g : X → R} (hf : HasLogGrowth S 
   rw [pow_add, mul_mul_mul_comm]
   exact mul_le_mul (hC x hx hB) (hD x hx hB) (norm_nonneg _) ((norm_nonneg _).trans (hC x hx hB))
 
+/- English proof (translation)
+The claim follows from `(hc.norm.mul hf.norm).of_le fun _ _ _ => (norm_smul _ _).le`.
+-/
 theorem smul {𝕜 : Type*} [NormedField 𝕜] [NormedSpace 𝕜 E] {c : X → 𝕜} {f : X → E}
     (hc : HasLogGrowth S w U c) (hf : HasLogGrowth S w U f) :
     HasLogGrowth S w U fun x => c x • f x :=
   (hc.norm.mul hf.norm).of_le fun _ _ _ => (norm_smul _ _).le
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using const 1`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hf a (Finset.mem_insert_self _ _)).mul (ih fun b hb => hf b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem prod {R α : Type*} [SeminormedCommRing R] {s : Finset α} {f : α → X → R}
     (hf : ∀ a ∈ s, HasLogGrowth S w U (f a)) : HasLogGrowth S w U fun x => ∏ a ∈ s, f a x := by
   classical
@@ -163,15 +239,24 @@ theorem prod {R α : Type*} [SeminormedCommRing R] {s : Finset α} {f : α → X
     exact (hf a (Finset.mem_insert_self _ _)).mul
       (ih fun b hb => hf b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using const 1`. Consider the case `succ k ih => simpa only [pow_succ] using ih.mul hf`.
+-/
 theorem pow {R : Type*} [SeminormedRing R] {f : X → R} (hf : HasLogGrowth S w U f) (k : ℕ) :
     HasLogGrowth S w U fun x => f x ^ k := by
   induction k with
   | zero => simpa using const 1
   | succ k ih => simpa only [pow_succ] using ih.mul hf
 
+/- English proof (translation)
+The claim follows from `hf.of_norm_le fun _ _ _ => (norm_star _).le`.
+-/
 theorem star {f : X → ℂ} (hf : HasLogGrowth S w U f) : HasLogGrowth S w U fun x => star (f x) :=
   hf.of_norm_le fun _ _ _ => (norm_star _).le
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, h⟩` from `hf (π '' K) (hU.mono_left hKU).image_subset (hK.image_of_continuousOn (hπ.mono hKU))`. Conclude with `HasLogGrowth.of_le (U := K) ((const C).mul ((hw.mono hKU).pow N)) (fun x hx hx' => h _ (mem_image_of_mem π hx) (hB x (hKU hx) hx')) K Subset.rfl hK`.
+-/
 theorem comp_of_logWeight {f : X → E} (hf : HasLogGrowth S w U f) {S' : Finset κ'}
     {w' : X' → κ' → ℂ} {U' : Set X'} {π : X' → X} (hπ : ContinuousOn π U') (hU : MapsTo π U' U)
     (hB : ∀ x ∈ U', x ∉ coordDivisor S' w' → π x ∉ coordDivisor S w)
@@ -194,6 +279,9 @@ namespace IsUnitMulMonomialOn
 
 variable {S' : Finset κ'} {w' : X' → κ' → ℂ} {U' : Set X'} {v : X' → κ → ℂ}
 
+/- English proof (translation)
+Rewrite `hB`, the goal using `[notMem_coordDivisor]`. Introduce `j hj`. Take `⟨u, m, -, hu⟩` from `h j hj`. Rewrite using `[(hu x hx).2]`. Conclude with `mul_ne_zero (hu x hx).1 (Finset.prod_ne_zero_iff.2 fun i hi => pow_ne_zero _ (hB i hi))`.
+-/
 theorem notMem (h : IsUnitMulMonomialOn S v S' w' U') {x : X'} (hx : x ∈ U')
     (hB : x ∉ coordDivisor S' w') : x ∉ coordDivisor S v := by
   rw [notMem_coordDivisor] at hB ⊢
@@ -202,6 +290,11 @@ theorem notMem (h : IsUnitMulMonomialOn S v S' w' U') {x : X'} (hx : x ∈ U')
   rw [(hu x hx).2]
   exact mul_ne_zero (hu x hx).1 (Finset.prod_ne_zero_iff.2 fun i hi => pow_ne_zero _ (hB i hi))
 
+/- English proof (translation)
+Use `(HasLogGrowth.const 1).add (HasLogGrowth.sum (f := fun j x => |Real.log ‖v x j‖|) fun j hj => ?_)` and prove the remaining obligations. Take `⟨u, m, hc, hu⟩` from `h j hj`. Establish `h1 : HasLogGrowth S' w' U' fun x => Real.log ‖u x‖` using `.of_continuousOn (hc.norm.log fun x hx => norm_ne_zero_iff.2 (hu x hx).1)`. Establish `h2 : HasLogGrowth S' w' U' fun x => ∑ i ∈ S', (m i : ℝ) * Real.log ‖w' x i‖` using `.sum (f := fun i x => (m i : ℝ) * Real.log ‖w' x i‖) fun i hi => (HasLogGrowth.const _).mul (.log_norm hi)`. Use `(h1.add h2).norm.congr fun x hx hB => ?_` and prove the remaining obligations.
+
+Rewrite `hB` using `[notMem_coordDivisor]`. Establish `h3 : ∀ i ∈ S', ‖w' x i ^ m i‖ ≠ 0` using `fun i hi => norm_ne_zero_iff.2 (pow_ne_zero _ (hB i hi))`. Rewrite using `[(hu x hx).2, norm_mul, norm_prod, Real.log_mul (norm_ne_zero_iff.2 (hu x hx).1) (Finset.prod_ne_zero_iff.2 h3), Real.log_prod h3]`. Simplify using the standard rewrite rules.
+-/
 theorem hasLogGrowth_logWeight (h : IsUnitMulMonomialOn S v S' w' U') :
     HasLogGrowth S' w' U' fun x => lwP₂ S (v x) := by
   refine (HasLogGrowth.const 1).add (HasLogGrowth.sum (f := fun j x => |Real.log ‖v x j‖|)
@@ -221,6 +314,9 @@ theorem hasLogGrowth_logWeight (h : IsUnitMulMonomialOn S v S' w' U') :
 
 end IsUnitMulMonomialOn
 
+/- English proof (translation)
+The claim follows from `hf.comp_of_logWeight hπ hU (fun _ hx hB => hw.notMem hx hB) hw.hasLogGrowth_logWeight`.
+-/
 theorem HasLogGrowth.comp {f : X → E} (hf : HasLogGrowth S w U f) {S' : Finset κ'}
     {w' : X' → κ' → ℂ} {U' : Set X'} {π : X' → X} (hπ : ContinuousOn π U') (hU : MapsTo π U' U)
     (hw : IsUnitMulMonomialOn S (fun x => w (π x)) S' w' U') :
@@ -239,11 +335,23 @@ def IsLogBoundedScalar (S : Finset κ) (w : X → κ → ℂ) (U : Set X) (g : X
 
 variable {S : Finset κ} {w : X → κ → ℂ} {U : Set X} {g g' : X → ℝ}
 
+/- English proof (translation)
+Take `⟨C, N, hC, h⟩` from `hg {x} (singleton_subset_iff.2 hx) isCompact_singleton`. Conclude with `(inv_pos.2 (mul_pos hC (pow_pos (logWeight_pos _ _) _))).trans_le (h x rfl hB).1`.
+-/
 theorem IsLogBoundedScalar.pos (hg : IsLogBoundedScalar S w U g) {x : X} (hx : x ∈ U)
     (hB : x ∉ coordDivisor S w) : 0 < g x := by
   obtain ⟨C, N, hC, h⟩ := hg {x} (singleton_subset_iff.2 hx) isCompact_singleton
   exact (inv_pos.2 (mul_pos hC (pow_pos (logWeight_pos _ _) _))).trans_le (h x rfl hB).1
 
+/- English proof (translation)
+Use `⟨fun h => ⟨fun x => h.pos, fun K hKU hK => ?_, fun K hKU hK => ?_⟩, fun ⟨h0, h1, h2⟩ K hKU hK => ?_⟩` and prove the remaining obligations. Take `⟨C, N, -, h'⟩` from `h K hKU hK`. Conclude with `⟨C, N, fun x hx hB => by`. Rewrite using `[Real.norm_of_nonneg (h.pos (hKU hx) hB).le]`. Conclude with `(h' x hx hB).2⟩`.
+
+Take `⟨C, N, hC, h'⟩` from `h K hKU hK`. Conclude with `⟨C, N, fun x hx hB => by`. Rewrite using `[Real.norm_of_nonneg (inv_pos.2 (h.pos (hKU hx) hB)).le]`. Conclude with `inv_le_of_inv_le₀ (mul_pos hC (pow_pos (logWeight_pos _ _) _)) (h' x hx hB).1⟩`. Take `⟨C, N, hC, h⟩` from `(h1.norm.add h2.norm).exists_one_le hKU hK`.
+
+Use `⟨C, N, by linarith, fun x hx hB => ?_⟩` and prove the remaining obligations. Establish `hp` using `h0 x (hKU hx) hB`. Establish `hi` using `inv_pos.2 hp`. Establish `h3` using `(le_abs_self _).trans (h x hx hB)`. Rewrite `h3` using `[Real.norm_of_nonneg hp.le, Real.norm_of_nonneg hi.le]`.
+
+Conclude with `⟨inv_le_of_inv_le₀ hp (by linarith), by linarith⟩`.
+-/
 theorem isLogBoundedScalar_iff : IsLogBoundedScalar S w U g ↔
     (∀ x ∈ U, x ∉ coordDivisor S w → 0 < g x) ∧ HasLogGrowth S w U g ∧
       HasLogGrowth S w U fun x => (g x)⁻¹ := by
@@ -264,6 +372,9 @@ theorem isLogBoundedScalar_iff : IsLogBoundedScalar S w U g ↔
     rw [Real.norm_of_nonneg hp.le, Real.norm_of_nonneg hi.le] at h3
     exact ⟨inv_le_of_inv_le₀ hp (by linarith), by linarith⟩
 
+/- English proof (translation)
+The claim follows from `|Real.log (g x)| ≤ C + N * Real.log (lwP₂ S (w x)) := by refine ⟨fun h => ⟨fun x => h.pos, fun K hKU hK => ?_⟩, fun ⟨h0, h⟩ K hKU hK => ?_⟩ · obtain ⟨C, N, hC, h'⟩ := h K hKU hK refine ⟨Real.log C, N, fun x hx hB => ?_⟩ have hw := pow_pos (logWeight_pos S (w x)) N rw [← Real.log_ …`.
+-/
 theorem isLogBoundedScalar_iff_abs_log_le : IsLogBoundedScalar S w U g ↔
     (∀ x ∈ U, x ∉ coordDivisor S w → 0 < g x) ∧ ∀ K ⊆ U, IsCompact K → ∃ (C : ℝ) (N : ℕ),
       ∀ x ∈ K, x ∉ coordDivisor S w →
@@ -287,46 +398,76 @@ theorem isLogBoundedScalar_iff_abs_log_le : IsLogBoundedScalar S w U g ↔
 
 namespace IsLogBoundedScalar
 
+/- English proof (translation)
+The claim follows from `(isLogBoundedScalar_iff.1 hg).2.1`.
+-/
 theorem hasLogGrowth (hg : IsLogBoundedScalar S w U g) : HasLogGrowth S w U g :=
   (isLogBoundedScalar_iff.1 hg).2.1
 
+/- English proof (translation)
+The claim follows from `(isLogBoundedScalar_iff.1 hg).2.2`.
+-/
 theorem hasLogGrowth_inv (hg : IsLogBoundedScalar S w U g) :
     HasLogGrowth S w U fun x => (g x)⁻¹ :=
   (isLogBoundedScalar_iff.1 hg).2.2
 
+/- English proof (translation)
+Introduce `K hK` and use `hg K (hK.trans hV)`.
+-/
 theorem mono (hg : IsLogBoundedScalar S w U g) {V : Set X} (hV : V ⊆ U) :
     IsLogBoundedScalar S w V g :=
   fun K hK => hg K (hK.trans hV)
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h'⟩` from `hg K hKU hK`. Conclude with `⟨C, N, hC, fun x hx hB => h x (hKU hx) hB ▸ h' x hx hB⟩`.
+-/
 theorem congr (hg : IsLogBoundedScalar S w U g) (h : ∀ x ∈ U, x ∉ coordDivisor S w → g' x = g x) :
     IsLogBoundedScalar S w U g' := by
   intro K hKU hK
   obtain ⟨C, N, hC, h'⟩ := hg K hKU hK
   exact ⟨C, N, hC, fun x hx hB => h x (hKU hx) hB ▸ h' x hx hB⟩
 
+/- English proof (translation)
+The claim follows from `isLogBoundedScalar_iff.2 ⟨fun x hx _ => h0 x hx, .of_continuousOn hg, .of_continuousOn (hg.inv₀ fun x hx => (h0 x hx).ne')⟩`.
+-/
 theorem of_continuousOn (hg : ContinuousOn g U) (h0 : ∀ x ∈ U, 0 < g x) :
     IsLogBoundedScalar S w U g :=
   isLogBoundedScalar_iff.2 ⟨fun x hx _ => h0 x hx, .of_continuousOn hg,
     .of_continuousOn (hg.inv₀ fun x hx => (h0 x hx).ne')⟩
 
+/- English proof (translation)
+The claim follows from `of_continuousOn continuousOn_const fun _ _ => hc`.
+-/
 theorem const {c : ℝ} (hc : 0 < c) : IsLogBoundedScalar S w U fun _ => c :=
   of_continuousOn continuousOn_const fun _ _ => hc
 
+/- English proof (translation)
+Introduce `_ _ _` and use `⟨1, 1, one_pos, fun x _ _ => by have := one_le_logWeight S (w x) simpa using (inv_le_one_of_one_le₀ this).trans this⟩`.
+-/
 theorem lwP₂ : IsLogBoundedScalar S w U fun x => lwP₂ S (w x) :=
   fun _ _ _ => ⟨1, 1, one_pos, fun x _ _ => by
     have := one_le_logWeight S (w x)
     simpa using (inv_le_one_of_one_le₀ this).trans this⟩
 
+/- English proof (translation)
+The claim follows from `isLogBoundedScalar_iff.2 ⟨fun _ hx hB => mul_pos (hg.pos hx hB) (hg'.pos hx hB), hg.hasLogGrowth.mul hg'.hasLogGrowth, (hg.hasLogGrowth_inv.mul hg'.hasLogGrowth_inv).congr fun _ _ _ => mul_inv _ _⟩`.
+-/
 theorem mul (hg : IsLogBoundedScalar S w U g) (hg' : IsLogBoundedScalar S w U g') :
     IsLogBoundedScalar S w U fun x => g x * g' x :=
   isLogBoundedScalar_iff.2 ⟨fun _ hx hB => mul_pos (hg.pos hx hB) (hg'.pos hx hB),
     hg.hasLogGrowth.mul hg'.hasLogGrowth,
     (hg.hasLogGrowth_inv.mul hg'.hasLogGrowth_inv).congr fun _ _ _ => mul_inv _ _⟩
 
+/- English proof (translation)
+The claim follows from `isLogBoundedScalar_iff.2 ⟨fun _ hx hB => inv_pos.2 (hg.pos hx hB), hg.hasLogGrowth_inv, hg.hasLogGrowth.congr fun _ _ _ => inv_inv _⟩`.
+-/
 theorem inv (hg : IsLogBoundedScalar S w U g) : IsLogBoundedScalar S w U fun x => (g x)⁻¹ :=
   isLogBoundedScalar_iff.2 ⟨fun _ hx hB => inv_pos.2 (hg.pos hx hB), hg.hasLogGrowth_inv,
     hg.hasLogGrowth.congr fun _ _ _ => inv_inv _⟩
 
+/- English proof (translation)
+The claim follows from `isLogBoundedScalar_iff.2 ⟨fun _ hx hB => Finset.prod_pos fun a ha => (hf a ha).pos hx hB, .prod fun a ha => (hf a ha).hasLogGrowth, (HasLogGrowth.prod (f := fun a x => (f a x)⁻¹) fun a ha => (hf a ha).hasLogGrowth_inv).congr fun _ _ _ => (Finset.prod_inv_distrib _).symm⟩`.
+-/
 theorem prod {α : Type*} {s : Finset α} {f : α → X → ℝ}
     (hf : ∀ a ∈ s, IsLogBoundedScalar S w U (f a)) :
     IsLogBoundedScalar S w U fun x => ∏ a ∈ s, f a x :=
@@ -335,6 +476,9 @@ theorem prod {α : Type*} {s : Finset α} {f : α → X → ℝ}
     (HasLogGrowth.prod (f := fun a x => (f a x)⁻¹) fun a ha => (hf a ha).hasLogGrowth_inv).congr
       fun _ _ _ => (Finset.prod_inv_distrib _).symm⟩
 
+/- English proof (translation)
+Use `isLogBoundedScalar_iff_abs_log_le.2 ⟨fun x hx hB => Real.rpow_pos_of_pos (hg.pos hx hB) t, fun K hKU hK => ?_⟩` and prove the remaining obligations. Take `⟨C, N, h⟩` from `(isLogBoundedScalar_iff_abs_log_le.1 hg).2 K hKU hK`. Use `⟨⌈|t|⌉₊ * C, ⌈|t|⌉₊ * N, fun x hx hB => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_rpow (hg.pos (hKU hx) hB), abs_mul, Nat.cast_mul, mul_assoc, ← mul_add]`. Conclude with `mul_le_mul (Nat.le_ceil _) (h x hx hB) (abs_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem rpow (hg : IsLogBoundedScalar S w U g) (t : ℝ) :
     IsLogBoundedScalar S w U fun x => g x ^ t := by
   refine isLogBoundedScalar_iff_abs_log_le.2
@@ -344,18 +488,30 @@ theorem rpow (hg : IsLogBoundedScalar S w U g) (t : ℝ) :
   rw [Real.log_rpow (hg.pos (hKU hx) hB), abs_mul, Nat.cast_mul, mul_assoc, ← mul_add]
   exact mul_le_mul (Nat.le_ceil _) (h x hx hB) (abs_nonneg _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+The claim follows from `(hg.rpow k).congr fun _ _ _ => (Real.rpow_intCast _ _).symm`.
+-/
 theorem zpow (hg : IsLogBoundedScalar S w U g) (k : ℤ) :
     IsLogBoundedScalar S w U fun x => g x ^ k :=
   (hg.rpow k).congr fun _ _ _ => (Real.rpow_intCast _ _).symm
 
+/- English proof (translation)
+The claim follows from `(hg.rpow k).congr fun _ _ _ => (Real.rpow_natCast _ _).symm`.
+-/
 theorem pow (hg : IsLogBoundedScalar S w U g) (k : ℕ) :
     IsLogBoundedScalar S w U fun x => g x ^ k :=
   (hg.rpow k).congr fun _ _ _ => (Real.rpow_natCast _ _).symm
 
+/- English proof (translation)
+The claim follows from `(hg.rpow (k : ℝ)⁻¹).congr fun x hx hB => (Real.pow_rpow_inv_natCast (h0 x hx hB) hk).symm`.
+-/
 theorem of_pow {k : ℕ} (hk : k ≠ 0) (h0 : ∀ x ∈ U, x ∉ coordDivisor S w → 0 ≤ g x)
     (hg : IsLogBoundedScalar S w U fun x => g x ^ k) : IsLogBoundedScalar S w U g :=
   (hg.rpow (k : ℝ)⁻¹).congr fun x hx hB => (Real.pow_rpow_inv_natCast (h0 x hx hB) hk).symm
 
+/- English proof (translation)
+The claim follows from `isLogBoundedScalar_iff.2 ⟨fun _ hx hB => hg.pos (hU hx) (hw.notMem hx hB), hg.hasLogGrowth.comp hπ hU hw, hg.hasLogGrowth_inv.comp hπ hU hw⟩`.
+-/
 theorem comp (hg : IsLogBoundedScalar S w U g) {S' : Finset κ'}
     {w' : X' → κ' → ℂ} {U' : Set X'} {π : X' → X} (hπ : ContinuousOn π U') (hU : MapsTo π U' U)
     (hw : IsUnitMulMonomialOn S (fun x => w (π x)) S' w' U') :
@@ -378,31 +534,52 @@ variable {S : Finset κ} {w : X → κ → ℂ} {U : Set X}
 
 namespace HasLogGrowthEntries
 
+/- English proof (translation)
+Introduce `i j` and use `(hA i j).congr fun x hx hB => by rw [h x hx hB]`.
+-/
 theorem congr {A A' : X → Matrix m n ℂ} (hA : HasLogGrowthEntries S w U A)
     (h : ∀ x ∈ U, x ∉ coordDivisor S w → A' x = A x) : HasLogGrowthEntries S w U A' :=
   fun i j => (hA i j).congr fun x hx hB => by rw [h x hx hB]
 
+/- English proof (translation)
+Introduce `i j` and use `.of_continuousOn ((continuous_id.matrix_elem i j).comp_continuousOn hA)`.
+-/
 theorem of_continuousOn {A : X → Matrix m n ℂ} (hA : ContinuousOn A U) :
     HasLogGrowthEntries S w U A :=
   fun i j => .of_continuousOn ((continuous_id.matrix_elem i j).comp_continuousOn hA)
 
+/- English proof (translation)
+Introduce `i j` and use `.sum (f := fun k x => A x i k * A' x k j) fun k _ => (hA i k).mul (hA' k j)`.
+-/
 theorem mul [Fintype m] {A : X → Matrix l m ℂ} {A' : X → Matrix m n ℂ}
     (hA : HasLogGrowthEntries S w U A) (hA' : HasLogGrowthEntries S w U A') :
     HasLogGrowthEntries S w U fun x => A x * A' x :=
   fun i j => .sum (f := fun k x => A x i k * A' x k j) fun k _ => (hA i k).mul (hA' k j)
 
+/- English proof (translation)
+Introduce `i j` and use `(hA j i).star`.
+-/
 theorem conjTranspose {A : X → Matrix m n ℂ} (hA : HasLogGrowthEntries S w U A) :
     HasLogGrowthEntries S w U fun x => (A x)ᴴ :=
   fun i j => (hA j i).star
 
+/- English proof (translation)
+Introduce `i j` and use `hA j i`.
+-/
 theorem transpose {A : X → Matrix m n ℂ} (hA : HasLogGrowthEntries S w U A) :
     HasLogGrowthEntries S w U fun x => (A x)ᵀ :=
   fun i j => hA j i
 
+/- English proof (translation)
+Introduce `i j` and use `hA (r i) (c j)`.
+-/
 theorem submatrix {m' n' : Type*} {A : X → Matrix m n ℂ} (hA : HasLogGrowthEntries S w U A)
     (r : m' → m) (c : n' → n) : HasLogGrowthEntries S w U fun x => (A x).submatrix r c :=
   fun i j => hA (r i) (c j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `.sum (f := fun (σ : Equiv.Perm n) x => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, A x (σ i) i) fun σ _ => (HasLogGrowth.const _).mul (.prod (f := fun i x => A x (σ i) i) fun i _ => hA (σ i) i)`.
+-/
 theorem det [Fintype n] [DecidableEq n] {A : X → Matrix n n ℂ}
     (hA : HasLogGrowthEntries S w U A) : HasLogGrowth S w U fun x => (A x).det := by
   simp only [Matrix.det_apply']
@@ -410,6 +587,9 @@ theorem det [Fintype n] [DecidableEq n] {A : X → Matrix n n ℂ}
     fun σ _ => (HasLogGrowth.const _).mul
       (.prod (f := fun i x => A x (σ i) i) fun i _ => hA (σ i) i)
 
+/- English proof (translation)
+The claim follows from `.sum (f := fun i x => A x i i) fun i _ => hA i i`.
+-/
 theorem trace [Fintype n] {A : X → Matrix n n ℂ} (hA : HasLogGrowthEntries S w U A) :
     HasLogGrowth S w U fun x => (A x).trace :=
   .sum (f := fun i x => A x i i) fun i _ => hA i i
@@ -422,11 +602,17 @@ section MatrixLemmas
 
 variable {m n : Type*}
 
+/- English proof (translation)
+Rewrite using `[Matrix.le_iff, ← sub_smul]`. Conclude with `PosSemidef.one.smul (sub_nonneg.2 h)`.
+-/
 theorem real_smul_one_le_real_smul_one [DecidableEq n] {a b : ℝ} (h : a ≤ b) :
     a • (1 : Matrix n n ℂ) ≤ b • (1 : Matrix n n ℂ) := by
   rw [Matrix.le_iff, ← sub_smul]
   exact PosSemidef.one.smul (sub_nonneg.2 h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(real_smul_one_le_real_smul_one (inv_anti₀ ha hab)).trans h.1, h.2.trans (real_smul_one_le_real_smul_one hab)⟩`.
+-/
 theorem inv_smul_one_le_and_le_smul_one_mono [DecidableEq n] {G : Matrix n n ℂ} {a b : ℝ}
     (ha : 0 < a) (hab : a ≤ b)
     (h : a⁻¹ • (1 : Matrix n n ℂ) ≤ G ∧ G ≤ a • (1 : Matrix n n ℂ)) :
@@ -434,6 +620,11 @@ theorem inv_smul_one_le_and_le_smul_one_mono [DecidableEq n] {G : Matrix n n ℂ
   ⟨(real_smul_one_le_real_smul_one (inv_anti₀ ha hab)).trans h.1,
     h.2.trans (real_smul_one_le_real_smul_one hab)⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ k, (G k k).re ≤ a` using `fun k => by`. Use `(Complex.nonneg_iff.1 ((Matrix.le_iff.1 h).diag_nonneg (i := k))).1` as an intermediate fact. Simplify using `using this`. Establish `h0 : ∀ k, 0 ≤ (G k k).re` using `fun k => (Complex.nonneg_iff.1 (hG.diag_nonneg (i := k))).1`. Establish `h2 : ‖G i j‖ ^ 2 ≤ (G i i).re * (G j j).re` using `norm_sq_apply_le_of_posSemidef hG i j`.
+
+Establish `ha : 0 ≤ a` using `(h0 i).trans (h1 i)`. Use `abs_le_of_sq_le_sq' (h2.trans ?_) ha |>.2` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `mul_le_mul (h1 i) (h1 j) (h0 j) ha`.
+-/
 theorem norm_apply_le_of_le_smul_one [DecidableEq n] {G : Matrix n n ℂ} (hG : G.PosSemidef)
     {a : ℝ} (h : G ≤ a • (1 : Matrix n n ℂ)) (i j : n) : ‖G i j‖ ≤ a := by
   have h1 : ∀ k, (G k k).re ≤ a := fun k => by
@@ -448,6 +639,11 @@ theorem norm_apply_le_of_le_smul_one [DecidableEq n] {G : Matrix n n ℂ} (hG : 
 
 variable [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `h0 : (a⁻¹ • (1 : Matrix n n ℂ)).PosDef` using `PosDef.one.smul (inv_pos.2 ha)`. Establish `h1` using `inv_le_inv_of_posDef_of_le (posDef_of_le h0 h.1) h.2`. Establish `h2` using `inv_le_inv_of_posDef_of_le h0 h.1`. Rewrite `h1` using `[inv_real_smul_of_posDef PosDef.one ha.ne', inv_one]`. Rewrite `h2` using `[inv_real_smul_of_posDef PosDef.one (inv_pos.2 ha).ne', inv_one, inv_inv]`.
+
+Conclude with `⟨h1, h2⟩`.
+-/
 theorem inv_smul_one_le_inv_and_inv_le_smul_one {G : Matrix n n ℂ} {a : ℝ} (ha : 0 < a)
     (h : a⁻¹ • (1 : Matrix n n ℂ) ≤ G ∧ G ≤ a • (1 : Matrix n n ℂ)) :
     a⁻¹ • (1 : Matrix n n ℂ) ≤ G⁻¹ ∧ G⁻¹ ≤ a • (1 : Matrix n n ℂ) := by
@@ -460,6 +656,9 @@ theorem inv_smul_one_le_inv_and_inv_le_smul_one {G : Matrix n n ℂ} {a : ℝ} (
 
 variable [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Set `_` to `hA.isUnit.invertible`. Establish `h` using `(PosDef.fromBlocks₁₁ (0 : Matrix m n ℂ) D hA).2 (by simpa using hD.posSemidef)`. Rewrite `h` using `[conjTranspose_zero]`. Rewrite using `[h.posDef_iff_det_ne_zero, det_fromBlocks_zero₂₁]`. Conclude with `mul_ne_zero hA.det_pos.ne' hD.det_pos.ne'`.
+-/
 theorem posDef_fromBlocks_zero {A : Matrix m m ℂ} {D : Matrix n n ℂ} (hA : A.PosDef)
     (hD : D.PosDef) : (fromBlocks A 0 0 D).PosDef := by
   let _ := hA.isUnit.invertible
@@ -476,10 +675,20 @@ noncomputable def schurComplement₂₂ (G : Matrix (m ⊕ n) (m ⊕ n) ℂ) : M
 
 omit [DecidableEq m] [Fintype m] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem schurComplement₂₂_eq_swap (G : Matrix (m ⊕ n) (m ⊕ n) ℂ) :
     schurComplement₂₂ G = schurComplement₁₁ (G.submatrix Sum.swap Sum.swap) :=
   rfl
 
+/- English proof (translation)
+Establish `h11 : (G.toBlocks₁₁).PosDef` using `hG.submatrix Sum.inl_injective`. Set `_` to `h11.isUnit.invertible`. Set `_` to `hG.isUnit.invertible`. Establish `h` using `mul_inv_of_invertible G`. Rewrite `h` using `[← fromBlocks_toBlocks G⁻¹]`.
+
+Use `nth_rw 1 [← fromBlocks_toBlocks G] at h`. Rewrite `h` using `[fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Take `⟨-, h12, -, h22⟩` from `h`. Use `(inv_eq_left_inv ?_).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `schurComplement₁₁ G * G⁻¹.toBlocks₂₂ = 1`.
+
+Establish `h3 : G.toBlocks₁₂ * G⁻¹.toBlocks₂₂ = -(G.toBlocks₁₁ * G⁻¹.toBlocks₁₂)` using `eq_neg_of_add_eq_zero_right h12`. Rewrite using `[schurComplement₁₁, Matrix.sub_mul, Matrix.mul_assoc, h3, Matrix.mul_neg, Matrix.mul_assoc, ← Matrix.mul_assoc (G.toBlocks₁₁⁻¹), inv_mul_of_invertible, Matrix.one_mul, sub_neg_eq_add, add_comm, h22]`.
+-/
 theorem schurComplement₁₁_eq_inv {G : Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : G.PosDef) :
     schurComplement₁₁ G = (G⁻¹.submatrix Sum.inr Sum.inr)⁻¹ := by
   have h11 : (G.toBlocks₁₁).PosDef := hG.submatrix Sum.inl_injective
@@ -500,6 +709,15 @@ theorem schurComplement₁₁_eq_inv {G : Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : 
 
 omit [DecidableEq n] in
 
+/- English proof (translation)
+Establish `h11 : (G.toBlocks₁₁).PosDef` using `hG.submatrix Sum.inl_injective`. Set `_` to `h11.isUnit.invertible`. Establish `h21 : G.toBlocks₂₁ = (G.toBlocks₁₂)ᴴ`. Use extensionality with `i j`. Conclude with `(hG.1.apply _ _).symm`.
+
+Establish `key : ∀ u : m → ℂ, star (Sum.elim u v) ⬝ᵥ G *ᵥ Sum.elim u v = star (u + (G.toBlocks₁₁⁻¹ * G.toBlocks₁₂) *ᵥ v) ⬝ᵥ G.toBlocks₁₁ *ᵥ (u + (G.toBlocks₁₁⁻¹ * G.toBlocks₁₂) *ᵥ v) + star v ⬝ᵥ schurComplement₁₁ G *ᵥ v`. Introduce `u`. Use `schur_complement_eq₁₁ G.toBlocks₁₂ G.toBlocks₂₂ u v h11.1` as an intermediate fact. Rewrite `this` using `[← h21, fromBlocks_toBlocks]`. Simplify `this` using `only [dotProduct_mulVec, schurComplement₁₁]`.
+
+Use `⟨⟨-((G.toBlocks₁₁⁻¹ * G.toBlocks₁₂) *ᵥ v), ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [key]`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨u, rfl⟩`. Simplify using `only [key, Complex.add_re, le_add_iff_nonneg_left]`.
+
+Conclude with `(Complex.nonneg_iff.1 (h11.posSemidef.dotProduct_mulVec_nonneg _)).1`.
+-/
 theorem isLeast_schurComplement₁₁ {G : Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : G.PosDef) (v : n → ℂ) :
     IsLeast (range fun u : m → ℂ => (star (Sum.elim u v) ⬝ᵥ G *ᵥ Sum.elim u v).re)
       (star v ⬝ᵥ schurComplement₁₁ G *ᵥ v).re := by
@@ -545,17 +763,28 @@ noncomputable def compoundMatrix (k : ℕ) (A : Matrix l n ℂ) :
     Matrix (Set.powersetCard l k) (Set.powersetCard n k) ℂ :=
   Matrix.of fun I J => (A.submatrix (subsetEnum I) (subsetEnum J)).det
 
+/- English proof (translation)
+Use extensionality with `I J`. Conclude with `det_submatrix_mul_eq_sum_minors A A' _ _`.
+-/
 theorem compoundMatrix_mul [Fintype n] (k : ℕ) (A : Matrix l n ℂ) (A' : Matrix n o ℂ) :
     compoundMatrix k (A * A') = compoundMatrix k A * compoundMatrix k A' := by
   ext I J
   exact det_submatrix_mul_eq_sum_minors A A' _ _
 
+/- English proof (translation)
+Use extensionality with `I J`. Simplify using `only [compoundMatrix, of_apply, conjTranspose_apply, ← det_conjTranspose, conjTranspose_submatrix]`.
+-/
 theorem compoundMatrix_conjTranspose (k : ℕ) (A : Matrix l n ℂ) :
     compoundMatrix k Aᴴ = (compoundMatrix k A)ᴴ := by
   ext I J
   simp only [compoundMatrix, of_apply, conjTranspose_apply, ← det_conjTranspose,
     conjTranspose_submatrix]
 
+/- English proof (translation)
+Use extensionality with `I J`. Break down `eq_or_ne I J with rfl | h` into its components or cases. Rewrite using `[one_apply_eq, compoundMatrix, of_apply, submatrix_one _ (subsetEnum_injective I), det_one]`. Rewrite using `[one_apply_ne h, compoundMatrix, of_apply]`. Take `⟨x, hxI, hxJ⟩` from `(Set.powersetCard.exists_mem_notMem_iff_ne I J).mp h`.
+
+Establish `h1 : x ∈ range (subsetEnum I)` using `by rw [range_subsetEnum]; exact hxI`. Establish `h2 : x ∉ range (subsetEnum J)` using `by rw [range_subsetEnum]; exact hxJ`. Take `⟨i, rfl⟩` from `h1`. Conclude with `det_eq_zero_of_row_eq_zero i fun j => one_apply_ne fun e => h2 ⟨j, e.symm⟩`.
+-/
 theorem compoundMatrix_one (k : ℕ) : compoundMatrix k (1 : Matrix n n ℂ) = 1 := by
   ext I J
   rcases eq_or_ne I J with rfl | h
@@ -569,12 +798,20 @@ theorem compoundMatrix_one (k : ℕ) : compoundMatrix k (1 : Matrix n n ℂ) = 1
 
 variable [Fintype n]
 
+/- English proof (translation)
+Set `_` to `hA.invertible`. Use `inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← compoundMatrix_mul, inv_mul_of_invertible, compoundMatrix_one]`.
+-/
 theorem compoundMatrix_inv (k : ℕ) {A : Matrix n n ℂ} (hA : IsUnit A) :
     (compoundMatrix k A)⁻¹ = compoundMatrix k A⁻¹ := by
   let _ := hA.invertible
   refine inv_eq_left_inv ?_
   rw [← compoundMatrix_mul, inv_mul_of_invertible, compoundMatrix_one]
 
+/- English proof (translation)
+Set `_` to `hG.isUnit.invertible`. Establish `hu : IsUnit (compoundMatrix k G)` using `IsUnit.of_mul_eq_one (compoundMatrix k G⁻¹) (by`. Rewrite using `[← compoundMatrix_mul, mul_inv_of_invertible, compoundMatrix_one])`. Use `(PosSemidef.posDef_iff_isUnit ?_).2 hu` and prove the remaining obligations. Take `⟨C, hC⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hG.posSemidef.nonneg`.
+
+Rewrite using `[hC, compoundMatrix_mul, star_eq_conjTranspose, compoundMatrix_conjTranspose]`. Conclude with `posSemidef_conjTranspose_mul_self _`.
+-/
 theorem posDef_compoundMatrix (k : ℕ) {G : Matrix n n ℂ} (hG : G.PosDef) :
     (compoundMatrix k G).PosDef := by
   let _ := hG.isUnit.invertible
@@ -600,6 +837,9 @@ def IsLogBounded [DecidableEq n] (S : Finset κ) (w : X → κ → ℂ) (U : Set
 variable [DecidableEq n] [DecidableEq m] {S : Finset κ} {w : X → κ → ℂ} {U : Set X}
   {G G' : X → Matrix n n ℂ} {H : X → Matrix m m ℂ}
 
+/- English proof (translation)
+Take `⟨C, N, hC, h⟩` from `hG {x} (singleton_subset_iff.2 hx) isCompact_singleton`. Conclude with `posDef_of_le (PosDef.one.smul (inv_pos.2 (mul_pos hC (pow_pos (logWeight_pos _ _) _)))) (h x rfl hB).1`.
+-/
 theorem IsLogBounded.posDef (hG : IsLogBounded S w U G) {x : X} (hx : x ∈ U)
     (hB : x ∉ coordDivisor S w) : (G x).PosDef := by
   obtain ⟨C, N, hC, h⟩ := hG {x} (singleton_subset_iff.2 hx) isCompact_singleton
@@ -608,15 +848,24 @@ theorem IsLogBounded.posDef (hG : IsLogBounded S w U G) {x : X} (hx : x ∈ U)
 
 namespace IsLogBounded
 
+/- English proof (translation)
+Introduce `K hK` and use `hG K (hK.trans hV)`.
+-/
 theorem mono (hG : IsLogBounded S w U G) {V : Set X} (hV : V ⊆ U) : IsLogBounded S w V G :=
   fun K hK => hG K (hK.trans hV)
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h'⟩` from `hG K hKU hK`. Conclude with `⟨C, N, hC, fun x hx hB => h x (hKU hx) hB ▸ h' x hx hB⟩`.
+-/
 theorem congr (hG : IsLogBounded S w U G) (h : ∀ x ∈ U, x ∉ coordDivisor S w → G' x = G x) :
     IsLogBounded S w U G' := by
   intro K hKU hK
   obtain ⟨C, N, hC, h'⟩ := hG K hKU hK
   exact ⟨C, N, hC, fun x hx hB => h x (hKU hx) hB ▸ h' x hx hB⟩
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h'⟩` from `hg.exists_one_le hKU hK`. Conclude with `⟨C, N, by linarith, fun x hx hB => inv_smul_one_le_and_le_smul_one_mono (h x (hKU hx) hB).1 ((le_abs_self _).trans (h' x hx hB)) (h x (hKU hx) hB).2⟩`.
+-/
 theorem of_le {g : X → ℝ} (hg : HasLogGrowth S w U g)
     (h : ∀ x ∈ U, x ∉ coordDivisor S w → 0 < g x ∧
       (g x)⁻¹ • (1 : Matrix n n ℂ) ≤ G x ∧ G x ≤ g x • (1 : Matrix n n ℂ)) :
@@ -626,12 +875,18 @@ theorem of_le {g : X → ℝ} (hg : HasLogGrowth S w U g)
   exact ⟨C, N, by linarith, fun x hx hB => inv_smul_one_le_and_le_smul_one_mono
     (h x (hKU hx) hB).1 ((le_abs_self _).trans (h' x hx hB)) (h x (hKU hx) hB).2⟩
 
+/- English proof (translation)
+Introduce `i j K hKU hK`. Take `⟨C, N, -, h⟩` from `hG K hKU hK`. Conclude with `⟨C, N, fun x hx hB => norm_apply_le_of_le_smul_one (hG.posDef (hKU hx) hB).posSemidef (h x hx hB).2 i j⟩`.
+-/
 theorem hasLogGrowthEntries (hG : IsLogBounded S w U G) : HasLogGrowthEntries S w U G := by
   intro i j K hKU hK
   obtain ⟨C, N, -, h⟩ := hG K hKU hK
   exact ⟨C, N, fun x hx hB =>
     norm_apply_le_of_le_smul_one (hG.posDef (hKU hx) hB).posSemidef (h x hx hB).2 i j⟩
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h⟩` from `hG K hKU hK`. Use `⟨C, N, hC, fun x hx hB => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `using transpose_le_transpose_of_le (h x hx hB).1`. Simplify using `using transpose_le_transpose_of_le (h x hx hB).2`.
+-/
 theorem transpose (hG : IsLogBounded S w U G) : IsLogBounded S w U fun x => (G x)ᵀ := by
   intro K hKU hK
   obtain ⟨C, N, hC, h⟩ := hG K hKU hK
@@ -639,6 +894,9 @@ theorem transpose (hG : IsLogBounded S w U G) : IsLogBounded S w U fun x => (G x
   · simpa using transpose_le_transpose_of_le (h x hx hB).1
   · simpa using transpose_le_transpose_of_le (h x hx hB).2
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h⟩` from `hG K hKU hK`. Use `⟨C, N, hC, fun x hx hB => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify `(Matrix.le_iff.1 (h x hx hB).1).submatrix e` using `[Matrix.le_iff, submatrix_sub, submatrix_smul, submatrix_one e he]`. Simplify `(Matrix.le_iff.1 (h x hx hB).2).submatrix e` using `[Matrix.le_iff, submatrix_sub, submatrix_smul, submatrix_one e he]`.
+-/
 theorem submatrix (hG : IsLogBounded S w U G) {e : m → n} (he : Function.Injective e) :
     IsLogBounded S w U fun x => (G x).submatrix e e := by
   intro K hKU hK
@@ -649,30 +907,50 @@ theorem submatrix (hG : IsLogBounded S w U G) {e : m → n} (he : Function.Injec
   · simpa [Matrix.le_iff, submatrix_sub, submatrix_smul, submatrix_one e he] using
       (Matrix.le_iff.1 (h x hx hB).2).submatrix e
 
+/- English proof (translation)
+The claim follows from `hG.submatrix e.symm.injective`.
+-/
 theorem reindex (hG : IsLogBounded S w U G) (e : n ≃ m) :
     IsLogBounded S w U fun x => Matrix.reindex e e (G x) :=
   hG.submatrix e.symm.injective
 
+/- English proof (translation)
+The claim follows from `hG.submatrix Sum.inl_injective`.
+-/
 theorem toBlocks₁₁ {G : X → Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : IsLogBounded S w U G) :
     IsLogBounded S w U fun x => (G x).toBlocks₁₁ :=
   hG.submatrix Sum.inl_injective
 
+/- English proof (translation)
+The claim follows from `hG.submatrix Sum.inr_injective`.
+-/
 theorem toBlocks₂₂ {G : X → Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : IsLogBounded S w U G) :
     IsLogBounded S w U fun x => (G x).toBlocks₂₂ :=
   hG.submatrix Sum.inr_injective
 
 variable [Fintype n]
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h⟩` from `hG K hKU hK`. Conclude with `⟨C, N, hC, fun x hx hB => inv_smul_one_le_inv_and_inv_le_smul_one (mul_pos hC (pow_pos (logWeight_pos _ _) _)) (h x hx hB)⟩`.
+-/
 theorem inv (hG : IsLogBounded S w U G) : IsLogBounded S w U fun x => (G x)⁻¹ := by
   intro K hKU hK
   obtain ⟨C, N, hC, h⟩ := hG K hKU hK
   exact ⟨C, N, hC, fun x hx hB => inv_smul_one_le_inv_and_inv_le_smul_one
     (mul_pos hC (pow_pos (logWeight_pos _ _) _)) (h x hx hB)⟩
 
+/- English proof (translation)
+The claim follows from `hG.inv.hasLogGrowthEntries`.
+-/
 theorem hasLogGrowthEntries_inv (hG : IsLogBounded S w U G) :
     HasLogGrowthEntries S w U fun x => (G x)⁻¹ :=
   hG.inv.hasLogGrowthEntries
 
+/- English proof (translation)
+Use `of_le (((HasLogGrowth.const (1 : ℝ)).add h1.norm).add h2.norm) fun x hx hB => ?_` and prove the remaining obligations. Establish `hp : 0 < 1 + ‖(G x).trace‖ + ‖(G x)⁻¹.trace‖` using `by positivity`. Establish `hG` using `h0 x hx hB`. Set `_` to `hG.isUnit.invertible`. Use `⟨hp, ?_, (le_re_trace_smul_one_of_posSemidef hG.posSemidef).trans (real_smul_one_le_real_smul_one ?_)⟩` and prove the remaining obligations.
+
+Establish `h3 : (G x)⁻¹ ≤ (1 + ‖(G x).trace‖ + ‖(G x)⁻¹.trace‖) • (1 : Matrix n n ℂ)` using `(le_re_trace_smul_one_of_posSemidef hG.inv.posSemidef).trans (real_smul_one_le_real_smul_one (by`. Combine the linear relations using `[RCLike.re_le_norm (G x)⁻¹.trace, norm_nonneg (G x).trace]))`. Establish `h4` using `inv_le_inv_of_posDef_of_le hG.inv h3`. Rewrite `h4` using `[inv_real_smul_of_posDef PosDef.one hp.ne', inv_one, inv_inv_of_invertible]`. Then use the resulting hypothesis. Combine the linear relations using `[RCLike.re_le_norm (G x).trace, norm_nonneg (G x)⁻¹.trace]`.
+-/
 theorem of_trace (h0 : ∀ x ∈ U, x ∉ coordDivisor S w → (G x).PosDef)
     (h1 : HasLogGrowth S w U fun x => (G x).trace)
     (h2 : HasLogGrowth S w U fun x => (G x)⁻¹.trace) : IsLogBounded S w U G := by
@@ -694,12 +972,22 @@ end IsLogBounded
 
 variable [Fintype n]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun _ => h.posDef, h.hasLogGrowthEntries, h.hasLogGrowthEntries_inv⟩, fun ⟨h0, h1, h2⟩ => .of_trace h0 h1.trace h2.trace⟩`.
+-/
 theorem isLogBounded_iff_entries : IsLogBounded S w U G ↔
     (∀ x ∈ U, x ∉ coordDivisor S w → (G x).PosDef) ∧ HasLogGrowthEntries S w U G ∧
       HasLogGrowthEntries S w U fun x => (G x)⁻¹ :=
   ⟨fun h => ⟨fun _ => h.posDef, h.hasLogGrowthEntries, h.hasLogGrowthEntries_inv⟩,
     fun ⟨h0, h1, h2⟩ => .of_trace h0 h1.trace h2.trace⟩
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun ⟨g, hg, h⟩ => .of_le hg.hasLogGrowth fun x hx hB => ⟨hg.pos hx hB, h x hx hB⟩⟩` and prove the remaining obligations. Establish `hp : ∀ x, 1 ≤ 1 + ‖(G x).trace‖ + ‖(G x)⁻¹.trace‖` using `fun x => by`. Combine the linear relations using `[norm_nonneg (G x).trace, norm_nonneg (G x)⁻¹.trace]`. Use `⟨fun x => 1 + ‖(G x).trace‖ + ‖(G x)⁻¹.trace‖, isLogBoundedScalar_iff.2 ⟨fun x _ _ => one_pos.trans_le (hp x), ((HasLogGrowth.const (1 : ℝ)).add h.hasLogGrowthEntries.trace.norm).add h.hasLogGrowthEntries_inv.trace.norm, (HasLogGrowth.const (1 : ℝ)).of_le fun x _ _ => ?_⟩, fun x …` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (inv_nonneg.2 (zero_le_one.trans (hp x)))]`.
+
+Conclude with `inv_le_one_of_one_le₀ (hp x)`. Establish `hG` using `h.posDef hx hB`. Set `_` to `hG.isUnit.invertible`. Use `⟨?_, (le_re_trace_smul_one_of_posSemidef hG.posSemidef).trans (real_smul_one_le_real_smul_one ?_)⟩` and prove the remaining obligations. Establish `h3 : (G x)⁻¹ ≤ (1 + ‖(G x).trace‖ + ‖(G x)⁻¹.trace‖) • (1 : Matrix n n ℂ)` using `(le_re_trace_smul_one_of_posSemidef hG.inv.posSemidef).trans (real_smul_one_le_real_smul_one (by`.
+
+Combine the linear relations using `[RCLike.re_le_norm (G x)⁻¹.trace, norm_nonneg (G x).trace]))`. Establish `h4` using `inv_le_inv_of_posDef_of_le hG.inv h3`. Rewrite `h4` using `[inv_real_smul_of_posDef PosDef.one (one_pos.trans_le (hp x)).ne', inv_one, inv_inv_of_invertible]`. Then use the resulting hypothesis. Combine the linear relations using `[RCLike.re_le_norm (G x).trace, norm_nonneg (G x)⁻¹.trace]`.
+-/
 theorem isLogBounded_iff_exists_scalar : IsLogBounded S w U G ↔
     ∃ g : X → ℝ, IsLogBoundedScalar S w U g ∧ ∀ x ∈ U, x ∉ coordDivisor S w →
       (g x)⁻¹ • (1 : Matrix n n ℂ) ≤ G x ∧ G x ≤ g x • (1 : Matrix n n ℂ) := by
@@ -726,6 +1014,9 @@ theorem isLogBounded_iff_exists_scalar : IsLogBounded S w U G ↔
       inv_inv_of_invertible] at h4
   · linarith [RCLike.re_le_norm (G x).trace, norm_nonneg (G x)⁻¹.trace]
 
+/- English proof (translation)
+Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv']`. Conclude with `((continuous_id.matrix_det.comp_continuousOn hA).inv₀ fun x hx => ((isUnit_iff_isUnit_det _).1 (hu x hx)).ne_zero).smul (continuous_id.matrix_adjugate.comp_continuousOn hA)`.
+-/
 theorem continuousOn_matrix_inv {A : X → Matrix n n ℂ} (hA : ContinuousOn A U)
     (hu : ∀ x ∈ U, IsUnit (A x)) : ContinuousOn (fun x => (A x)⁻¹) U := by
   simp only [Matrix.inv_def, Ring.inverse_eq_inv']
@@ -735,11 +1026,19 @@ theorem continuousOn_matrix_inv {A : X → Matrix n n ℂ} (hA : ContinuousOn A 
 
 namespace IsLogBounded
 
+/- English proof (translation)
+The claim follows from `isLogBounded_iff_entries.2 ⟨fun x hx _ => h0 x hx, .of_continuousOn hG, .of_continuousOn (continuousOn_matrix_inv hG fun x hx => (h0 x hx).isUnit)⟩`.
+-/
 theorem of_continuousOn (hG : ContinuousOn G U) (h0 : ∀ x ∈ U, (G x).PosDef) :
     IsLogBounded S w U G :=
   isLogBounded_iff_entries.2 ⟨fun x hx _ => h0 x hx, .of_continuousOn hG,
     .of_continuousOn (continuousOn_matrix_inv hG fun x hx => (h0 x hx).isUnit)⟩
 
+/- English proof (translation)
+Take `⟨g₁, hg₁, h₁⟩` from `isLogBounded_iff_exists_scalar.1 h₁`. Take `⟨g₂, hg₂, h₂⟩` from `isLogBounded_iff_exists_scalar.1 h₂`. Use `of_le (hg₁.hasLogGrowth.add hg₂.hasLogGrowth) fun x hx hB => ?_` and prove the remaining obligations. Establish `p₁` using `hg₁.pos hx hB`. Establish `p₂` using `hg₂.pos hx hB`.
+
+Conclude with `⟨add_pos p₁ p₂, (real_smul_one_le_real_smul_one (inv_anti₀ p₁ (by linarith))).trans ((h₁ x hx hB).1.trans (h x hx hB).1), ((h x hx hB).2.trans (h₂ x hx hB).2).trans (real_smul_one_le_real_smul_one (by linarith))⟩`.
+-/
 theorem of_le_of_le {G₁ G₂ : X → Matrix n n ℂ} (h₁ : IsLogBounded S w U G₁)
     (h₂ : IsLogBounded S w U G₂) (h : ∀ x ∈ U, x ∉ coordDivisor S w → G₁ x ≤ G x ∧ G x ≤ G₂ x) :
     IsLogBounded S w U G := by
@@ -753,6 +1052,9 @@ theorem of_le_of_le {G₁ G₂ : X → Matrix n n ℂ} (h₁ : IsLogBounded S w 
       ((h₁ x hx hB).1.trans (h x hx hB).1),
     ((h x hx hB).2.trans (h₂ x hx hB).2).trans (real_smul_one_le_real_smul_one (by linarith))⟩
 
+/- English proof (translation)
+The claim follows from `isLogBounded_iff_entries.2 ⟨fun _ hx hB => (hG.posDef hx hB).smul (hg.pos hx hB), fun i j => hg.hasLogGrowth.smul (hG.hasLogGrowthEntries i j), HasLogGrowthEntries.congr (A := fun x => (g x)⁻¹ • (G x)⁻¹) (fun i j => hg.hasLogGrowth_inv.smul (hG.hasLogGrowthEntries_inv i j)) fun _ …`.
+-/
 theorem smul {g : X → ℝ} (hg : IsLogBoundedScalar S w U g) (hG : IsLogBounded S w U G) :
     IsLogBounded S w U fun x => g x • G x :=
   isLogBounded_iff_entries.2 ⟨fun _ hx hB => (hG.posDef hx hB).smul (hg.pos hx hB),
@@ -761,10 +1063,20 @@ theorem smul {g : X → ℝ} (hg : IsLogBoundedScalar S w U g) (hG : IsLogBounde
       (fun i j => hg.hasLogGrowth_inv.smul (hG.hasLogGrowthEntries_inv i j))
       fun _ hx hB => inv_real_smul_of_posDef (hG.posDef hx hB) (hg.pos hx hB).ne'⟩
 
+/- English proof (translation)
+The claim follows from `smul hg (of_continuousOn continuousOn_const fun _ _ => PosDef.one)`.
+-/
 theorem smul_one {g : X → ℝ} (hg : IsLogBoundedScalar S w U g) :
     IsLogBounded S w U fun x => g x • (1 : Matrix n n ℂ) :=
   smul hg (of_continuousOn continuousOn_const fun _ _ => PosDef.one)
 
+/- English proof (translation)
+Establish `key : ∀ {g : n → X → ℝ}, (∀ i, IsLogBoundedScalar S w U (g i)) → HasLogGrowthEntries S w U fun x => Matrix.diagonal fun i => (g i x : ℂ)`. Introduce `g hg i j`. Use `(hg i).hasLogGrowth.of_norm_le fun x _ _ => ?_` and prove the remaining obligations. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `[diagonal_apply_ne _ h]`. Use `isLogBounded_iff_entries.2 ⟨fun x hx hB => PosDef.diagonal fun i => ?_, key hg, (key fun i => (hg i).inv).congr fun x hx hB => inv_eq_left_inv ?_⟩` and prove the remaining obligations. Conclude with `(hg i).pos hx hB` after adjusting the coercions. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ ((hg i).pos hx hB).ne'` after adjusting the coercions.
+-/
 theorem diagonal {g : n → X → ℝ} (hg : ∀ i, IsLogBoundedScalar S w U (g i)) :
     IsLogBounded S w U fun x => Matrix.diagonal fun i => (g i x : ℂ) := by
   have key : ∀ {g : n → X → ℝ}, (∀ i, IsLogBoundedScalar S w U (g i)) →
@@ -784,6 +1096,11 @@ theorem diagonal {g : n → X → ℝ} (hg : ∀ i, IsLogBoundedScalar S w U (g 
 
 omit [Fintype n] in
 
+/- English proof (translation)
+Introduce `K hKU hK`. Take `⟨C, N, hC, h⟩` from `hG K hKU hK`. Use `⟨C, N, hC, fun x hx hB => ?_⟩` and prove the remaining obligations. Establish `h'` using `h x hx hB`. Generalize the expression as in `C * lwP₂ S (w x) ^ N = a at h' ⊢`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `using (Complex.nonneg_iff.1 ((Matrix.le_iff.1 h'.1).diag_nonneg (i := i))).1`. Simplify using `using (Complex.nonneg_iff.1 ((Matrix.le_iff.1 h'.2).diag_nonneg (i := i))).1`.
+-/
 theorem re_apply_self (hG : IsLogBounded S w U G) (i : n) :
     IsLogBoundedScalar S w U fun x => (G x i i).re := by
   intro K hKU hK
@@ -795,6 +1112,9 @@ theorem re_apply_self (hG : IsLogBounded S w U G) (i : n) :
   · simpa using (Complex.nonneg_iff.1 ((Matrix.le_iff.1 h'.1).diag_nonneg (i := i))).1
   · simpa using (Complex.nonneg_iff.1 ((Matrix.le_iff.1 h'.2).diag_nonneg (i := i))).1
 
+/- English proof (translation)
+Use `isLogBoundedScalar_iff.2 ⟨fun x hx hB => re_det_pos_of_posDef (hG.posDef hx hB), hG.hasLogGrowthEntries.det.of_norm_le fun x _ _ => Complex.abs_re_le_norm _, hG.hasLogGrowthEntries_inv.det.of_norm_le fun x hx hB => ?_⟩` and prove the remaining obligations. Establish `h` using `Complex.re_eq_norm.2 (hG.posDef hx hB).det_pos.le`. Rewrite using `[det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, norm_inv, h, norm_norm]`.
+-/
 theorem re_det (hG : IsLogBounded S w U G) : IsLogBoundedScalar S w U fun x => (G x).det.re := by
   refine isLogBoundedScalar_iff.2 ⟨fun x hx hB => re_det_pos_of_posDef (hG.posDef hx hB),
     hG.hasLogGrowthEntries.det.of_norm_le fun x _ _ => Complex.abs_re_le_norm _,
@@ -802,6 +1122,9 @@ theorem re_det (hG : IsLogBounded S w U G) : IsLogBoundedScalar S w U fun x => (
   have h := Complex.re_eq_norm.2 (hG.posDef hx hB).det_pos.le
   rw [det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, norm_inv, h, norm_norm]
 
+/- English proof (translation)
+The claim follows from `hG.re_det.zpow k`.
+-/
 theorem re_det_zpow (hG : IsLogBounded S w U G) (k : ℤ) :
     IsLogBoundedScalar S w U fun x => (G x).det.re ^ k :=
   hG.re_det.zpow k
@@ -810,6 +1133,9 @@ end IsLogBounded
 
 omit [Fintype n] in
 
+/- English proof (translation)
+Use `⟨fun h => by simpa using h.re_apply_self default, fun h => ?_⟩` and prove the remaining obligations. Use `(IsLogBounded.smul_one h).congr fun x _ _ => ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim i j]`. Simplify using the standard rewrite rules.
+-/
 theorem isLogBounded_of_unique_iff [Unique n] {g : X → ℝ} :
     (IsLogBounded S w U fun x => Matrix.of fun _ _ : n => (g x : ℂ)) ↔
       IsLogBoundedScalar S w U g := by
@@ -821,6 +1147,9 @@ theorem isLogBounded_of_unique_iff [Unique n] {g : X → ℝ} :
 
 namespace IsLogBounded
 
+/- English proof (translation)
+Use `(isLogBounded_of_unique_iff.2 (hG.re_det_zpow k)).congr fun x hx hB => ?_` and prove the remaining obligations. Establish `h : ((G x).det.re : ℂ) = (G x).det` using `Complex.ext rfl (Complex.pos_iff.1 (hG.posDef hx hB).det_pos).2`. Rewrite using `[Complex.ofReal_zpow, h]`.
+-/
 theorem det_zpow (hG : IsLogBounded S w U G) (k : ℤ) (p : Type*) [Unique p] [DecidableEq p] :
     IsLogBounded S w U fun x => Matrix.of fun _ _ : p => (G x).det ^ k := by
   refine (isLogBounded_of_unique_iff.2 (hG.re_det_zpow k)).congr fun x hx hB => ?_
@@ -828,10 +1157,16 @@ theorem det_zpow (hG : IsLogBounded S w U G) (k : ℤ) (p : Type*) [Unique p] [D
     Complex.ext rfl (Complex.pos_iff.1 (hG.posDef hx hB).det_pos).2
   rw [Complex.ofReal_zpow, h]
 
+/- English proof (translation)
+Simplify using `using hG.det_zpow 1 p`.
+-/
 theorem det (hG : IsLogBounded S w U G) (p : Type*) [Unique p] [DecidableEq p] :
     IsLogBounded S w U fun x => Matrix.of fun _ _ : p => (G x).det := by
   simpa using hG.det_zpow 1 p
 
+/- English proof (translation)
+The claim follows from `isLogBounded_iff_entries.2 ⟨fun _ hx hB => posDef_compoundMatrix k (hG.posDef hx hB), fun _ _ => (hG.hasLogGrowthEntries.submatrix _ _).det, HasLogGrowthEntries.congr (A := fun x => GlobalTheory.compoundMatrix k (G x)⁻¹) (fun _ _ => (hG.hasLogGrowthEntries_inv.submatrix _ _).det) …`.
+-/
 theorem compoundMatrix {n : Type*} [Fintype n] [LinearOrder n] {G : X → Matrix n n ℂ}
     (hG : IsLogBounded S w U G) (k : ℕ) :
     IsLogBounded S w U fun x => compoundMatrix k (G x) :=
@@ -841,6 +1176,9 @@ theorem compoundMatrix {n : Type*} [Fintype n] [LinearOrder n] {G : X → Matrix
       (fun _ _ => (hG.hasLogGrowthEntries_inv.submatrix _ _).det)
       fun _ hx hB => compoundMatrix_inv k (hG.posDef hx hB).isUnit⟩
 
+/- English proof (translation)
+The claim follows from `isLogBounded_iff_entries.2 ⟨fun x hx hx' => hG.posDef (hU hx) (hB x hx hx'), fun i j => (hG.hasLogGrowthEntries i j).comp_of_logWeight hπ hU hB hw, fun i j => (hG.hasLogGrowthEntries_inv i j).comp_of_logWeight hπ hU hB hw⟩`.
+-/
 theorem comp_of_logWeight (hG : IsLogBounded S w U G) {S' : Finset κ'}
     {w' : X' → κ' → ℂ} {U' : Set X'} {π : X' → X} (hπ : ContinuousOn π U') (hU : MapsTo π U' U)
     (hB : ∀ x ∈ U', x ∉ coordDivisor S' w' → π x ∉ coordDivisor S w)
@@ -850,6 +1188,9 @@ theorem comp_of_logWeight (hG : IsLogBounded S w U G) {S' : Finset κ'}
     fun i j => (hG.hasLogGrowthEntries i j).comp_of_logWeight hπ hU hB hw,
     fun i j => (hG.hasLogGrowthEntries_inv i j).comp_of_logWeight hπ hU hB hw⟩
 
+/- English proof (translation)
+The claim follows from `isLogBounded_iff_entries.2 ⟨fun _ hx hB => hG.posDef (hU hx) (hw.notMem hx hB), fun i j => (hG.hasLogGrowthEntries i j).comp hπ hU hw, fun i j => (hG.hasLogGrowthEntries_inv i j).comp hπ hU hw⟩`.
+-/
 theorem comp (hG : IsLogBounded S w U G) {S' : Finset κ'}
     {w' : X' → κ' → ℂ} {U' : Set X'} {π : X' → X} (hπ : ContinuousOn π U') (hU : MapsTo π U' U)
     (hw : IsUnitMulMonomialOn S (fun x => w (π x)) S' w' U') :
@@ -860,6 +1201,9 @@ theorem comp (hG : IsLogBounded S w U G) {S' : Finset κ'}
 
 variable [Fintype m]
 
+/- English proof (translation)
+Take `⟨g, hg, h⟩` from `isLogBounded_iff_exists_scalar.1 hG`. Use `(hA.smul hg.inv).of_le_of_le (hA.smul hg) fun x hx hB => ⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using conjTranspose_mul_mul_le_of_le (h x hx hB).1 (A x)`. Simplify using `using conjTranspose_mul_mul_le_of_le (h x hx hB).2 (A x)`.
+-/
 theorem conj_of_isLogBounded (hG : IsLogBounded S w U G) {A : X → Matrix n m ℂ}
     (hA : IsLogBounded S w U fun x => (A x)ᴴ * A x) :
     IsLogBounded S w U fun x => (A x)ᴴ * G x * A x := by
@@ -868,6 +1212,9 @@ theorem conj_of_isLogBounded (hG : IsLogBounded S w U G) {A : X → Matrix n m �
   · simpa using conjTranspose_mul_mul_le_of_le (h x hx hB).1 (A x)
   · simpa using conjTranspose_mul_mul_le_of_le (h x hx hB).2 (A x)
 
+/- English proof (translation)
+The claim follows from `hG.conj_of_isLogBounded (of_continuousOn ((continuous_id.matrix_conjTranspose.matrix_mul continuous_id).comp_continuousOn hA) fun x hx => PosDef.conjTranspose_mul_self _ (hinj x hx))`.
+-/
 theorem conj_of_injective (hG : IsLogBounded S w U G) {A : X → Matrix n m ℂ}
     (hA : ContinuousOn A U) (hinj : ∀ x ∈ U, Function.Injective (A x).mulVec) :
     IsLogBounded S w U fun x => (A x)ᴴ * G x * A x :=
@@ -877,11 +1224,19 @@ theorem conj_of_injective (hG : IsLogBounded S w U G) {A : X → Matrix n m ℂ}
 
 omit [Fintype m] [DecidableEq m] in
 
+/- English proof (translation)
+The claim follows from `hG.conj_of_injective hA fun x hx => mulVec_injective_of_isUnit (hu x hx)`.
+-/
 theorem conj (hG : IsLogBounded S w U G) {A : X → Matrix n n ℂ}
     (hA : ContinuousOn A U) (hu : ∀ x ∈ U, IsUnit (A x)) :
     IsLogBounded S w U fun x => (A x)ᴴ * G x * A x :=
   hG.conj_of_injective hA fun x hx => mulVec_injective_of_isUnit (hu x hx)
 
+/- English proof (translation)
+Establish `key : ∀ {H : X → Matrix m m ℂ} {G : X → Matrix n n ℂ}, IsLogBounded S w U H → IsLogBounded S w U G → HasLogGrowthEntries S w U fun x => Matrix.fromBlocks (H x) 0 0 (G x)`. Introduce and unpack `H G hH hG (i | i) (j | j)`. Use `exacts [hH.hasLogGrowthEntries i j, .const 0, .const 0, hG.hasLogGrowthEntries i j]`. Use `isLogBounded_iff_entries.2 ⟨fun x hx hB => posDef_fromBlocks_zero (hH.posDef hx hB) (hG.posDef hx hB), key hH hG, (key hH.inv hG.inv).congr fun x hx hB => inv_eq_left_inv ?_⟩` and prove the remaining obligations. Set `_` to `(hH.posDef hx hB).isUnit.invertible`.
+
+Set `_` to `(hG.posDef hx hB).isUnit.invertible`. Simplify using `[fromBlocks_multiply]`.
+-/
 theorem fromBlocks (hH : IsLogBounded S w U H) (hG : IsLogBounded S w U G) :
     IsLogBounded S w U fun x => Matrix.fromBlocks (H x) 0 0 (G x) := by
   have key : ∀ {H : X → Matrix m m ℂ} {G : X → Matrix n n ℂ}, IsLogBounded S w U H →
@@ -896,11 +1251,17 @@ theorem fromBlocks (hH : IsLogBounded S w U H) (hG : IsLogBounded S w U G) :
   let _ := (hG.posDef hx hB).isUnit.invertible
   simp [fromBlocks_multiply]
 
+/- English proof (translation)
+The claim follows from `(hG.inv.submatrix Sum.inr_injective).inv.congr fun _ hx hB => schurComplement₁₁_eq_inv (hG.posDef hx hB)`.
+-/
 theorem schurComplement₁₁ {G : X → Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : IsLogBounded S w U G) :
     IsLogBounded S w U fun x => schurComplement₁₁ (G x) :=
   (hG.inv.submatrix Sum.inr_injective).inv.congr fun _ hx hB =>
     schurComplement₁₁_eq_inv (hG.posDef hx hB)
 
+/- English proof (translation)
+The claim follows from `(hG.submatrix (e := Sum.swap) (Equiv.sumComm n m).injective).schurComplement₁₁`.
+-/
 theorem schurComplement₂₂ {G : X → Matrix (m ⊕ n) (m ⊕ n) ℂ} (hG : IsLogBounded S w U G) :
     IsLogBounded S w U fun x => schurComplement₂₂ (G x) :=
   (hG.submatrix (e := Sum.swap) (Equiv.sumComm n m).injective).schurComplement₁₁
@@ -911,11 +1272,19 @@ end LogBounded
 
 section Examples
 
+/- English proof (translation)
+Simplify using `only [lwP₂, Fin.sum_univ_two, cons_val_zero, cons_val_one, Complex.norm_real, Real.norm_eq_abs, Real.abs_exp, Real.log_exp]`. Evaluate the numerical expressions.
+-/
 example : lwP₂ (Finset.univ : Finset (Fin 2)) ![(Real.exp (-1) : ℝ), (Real.exp 2 : ℝ)] = 4 := by
   simp only [lwP₂, Fin.sum_univ_two, cons_val_zero, cons_val_one, Complex.norm_real,
     Real.norm_eq_abs, Real.abs_exp, Real.log_exp]
   norm_num
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[schurComplement₁₁, Matrix.mul_apply, Matrix.inv_def]`. Put the polynomial expressions in normal form.
+
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+-/
 example : schurComplement₁₁ (fromBlocks !![2] !![Complex.I] !![-Complex.I] !![1]) = !![1 / 2] := by
   ext i j
   fin_cases i; fin_cases j

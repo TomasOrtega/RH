@@ -24,6 +24,39 @@ namespace GlobalTheory.WtSplitB
 open Module GlobalTheory.WtSplit
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`. Establish `hB` using `hm.triple.base`. Establish `hg` using `hm.triple.geo`. Establish `hop : ∀ k ∈ KInf σ G.W B.emb, ∃ A : SInf F (Fin a × Fin (a + (b + 2))) →ₗ[ℂ] SInf F (Fin a × Fin (a + (b + 2))), ∀ f : SInf F (Fin a × Fin (a + (b + 2))), Acts (evI F) (om (1, k)) (⇑f) (⇑(A f))` using `fun k hk => GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om _ _ hB hg.hM hm.triple.weil k hk`. Establish `hop' : ∀ k ∈ KInf σ G.W B.emb, ∃ A : SInf F (Fin (b + 2) × Fin (a + (b + 2))) →ₗ[ℂ] SInf F (Fin (b + 2) × Fin (a + (b + 2))), ∀ f : SInf F (Fin (b + 2) × Fin (a + (b + 2))), Acts (evI F) (om' (1, k)) (⇑f) (⇑(A f))` using `fun k hk => GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V' G.W G.M' om' _ _ hB hg.hM' hm.triple.weil' k hk`.
+
+Establish `hdesc : ∀ k ∈ KInf σ G.W B.emb, ∃ T : R.Pi →ₗ[ℂ] R.Pi, ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin a × Fin (a + (b + 2))), Acts (evI F) (om (1, k)) (⇑f) (⇑f₁) → R.p f₁ = T (R.p f)`. Introduce `k hk`. Take `⟨A, hA⟩` from `hop k hk`. Take `⟨A', hA'⟩` from `hop' k hk`. Establish `onto : ∀ x, ∃ f ∈ G.M.Pol B.ψ B.emb, R.p f = x`.
+
+Introduce `x`. Establish `: x ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hm.real.quot.onto]; trivial`. Take `⟨f, hf, e⟩` from `this`. Conclude with `⟨f, hf, e⟩`. Establish `onto' : ∀ x, ∃ f ∈ G.M'.Pol B.ψ B.emb, R.p' f = x`.
+
+Introduce `x`. Establish `: x ∈ (G.M'.Pol B.ψ B.emb).map R.p'` using `by rw [hm.real.quot'.onto]; trivial`. Take `⟨f, hf, e⟩` from `this`. Conclude with `⟨f, hf, e⟩`. Establish `key : ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F _, Acts (evI F) (om (1, k)) (⇑f) (⇑f₁) → ∀ f' ∈ G.M'.Pol B.ψ B.emb, R.p f = R.p' f' → R.p f₁ = R.p' (A' f')` using `fun f hf f₁ h1 f' hf' he => hm.real.cpt k hk f hf f' hf' f₁ (A' f') h1 (hA' f') he`.
+
+Establish `wd : ∀ f' ∈ G.M'.Pol B.ψ B.emb, ∀ g' ∈ G.M'.Pol B.ψ B.emb, R.p' f' = R.p' g' → R.p' (A' f') = R.p' (A' g')`. Introduce `f' hf' g' hg' he`. Take `⟨f, hf, hfx⟩` from `onto (R.p' f')`. Rewrite using `[← key f hf (A f) (hA f) f' hf' hfx, key f hf (A f) (hA f) g' hg' (hfx.trans he)]`. Use `choose g hgP hgx using onto'`.
+
+Use `⟨{ toFun := fun x => R.p' (A' (g x)), map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[← map_add, ← map_add]`. Conclude with `wd _ (hgP _) _ (add_mem (hgP x) (hgP y)) (by rw [hgx, map_add, hgx, hgx])`. Introduce `c x`.
+
+Rewrite using `[RingHom.id_apply, ← map_smul, ← map_smul]`. Conclude with `wd _ (hgP _) _ (Submodule.smul_mem _ c (hgP x)) (by rw [hgx, map_smul, hgx])`. Introduce `f hf f₁ h1`. Conclude with `key f hf f₁ h1 _ (hgP _) (hgx _).symm`. Use `choose! A hA using hop`.
+
+Use `choose! T hT using hdesc`. Use `set j₀ := lowDegInf B G.M R.p`. Establish `hfin` using `GlobalTheory.T.fock_degree_space_finiteDimensional F E σ B _ _ G.V G.W G.M _ _ _ _ hB hg.hV hg.hW hg.hM j₀`. Establish `hstab` using `GlobalTheory.T.weil_action_fock_degree_formula F E σ B _ _ G.V G.W G.M om _ _ _ _ _ _ hB hg.hV hg.hW hg.hM hm.triple.weil`. Establish `hdiag` using `GlobalTheory.T.fock_degree_le_span_invariant_vectors F E σ B _ _ G.V G.W G.M om _ _ _ _ _ _ hB hg.hV hg.hW hg.hM hm.triple.weil`.
+
+Establish `hcommG` using `GlobalTheory.T.levi_embedding_mul_of_adapted_plane F E σ B _ _ G.W G₁.W H' a (a + b + 1) _ _ _ _ hB hg.hW hm₁.triple.geo.hW hC.hH'`. Establish `hV : lowPartInf B G.M R.p = (fockDeg G.M B.ψ B.emb j₀).map R.p` using `rfl`. Use `haveI : FiniteDimensional ℂ (lowPartInf B G.M R.p) := by rw [hV]; infer_instance`. Establish `hPol : ∀ f ∈ fockDeg G.M B.ψ B.emb j₀, f ∈ G.M.Pol B.ψ B.emb` using `fun f hf => fockDeg_le_pol _ _ _ _ hf`. Set `ι` to `{q : UA σ G.W.J × (AE F E)ˣ // q.1 ∈ KInf σ G.W B.emb ∧ IsLevi H' q.2 (1 : UA σ G₁.W.J) q.1}`.
+
+Set `lam : ι → ℂ` to `fun i => (X.β i.1.2 : ℂ) * (((absE F E i.1.2 : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)`. Establish `hTp : ∀ i : ι, ∀ f ∈ fockDeg G.M B.ψ B.emb j₀, T i.1.1 (R.p f) = R.p (A i.1.1 f)` using `fun i f hf => (hT i.1.1 i.2.1 f (hPol f hf) _ (hA i.1.1 i.2.1 f)).symm`. Establish `main` using `le_span_sup_span (lowPartInf B G.M R.p) (fun i : ι => T i.1.1) lam ?_ ?_ ?_`. Use `main.trans (sup_le_sup (Submodule.span_mono ?_) (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxe⟩`.
+
+Use `⟨hx, fun k hk t hL f hf f₁ h1 hfx => ?_⟩` and prove the remaining obligations. Rewrite using `[hT k hk f hf f₁ h1, hfx]`. Conclude with `hxe ⟨(k, t), hk, hL⟩`. Introduce and unpack `x ⟨hx, i, c, hc, hxe⟩`. Use `⟨hx, i.1.1, i.2.1, i.1.2, i.2.2, c, hc, fun f hf f₁ h1 hfx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hT i.1.1 i.2.1 f hf f₁ h1, hfx]`. Conclude with `hxe`. Introduce and unpack `i x ⟨f, hf, rfl⟩`. Rewrite using `[hTp i f hf]`. Conclude with `⟨_, hstab i.1.1 i.2.1 j₀ f hf _ (hA i.1.1 i.2.1 f), rfl⟩`.
+
+Introduce and unpack `i i' x ⟨f, hf, rfl⟩`. Establish `hf1` using `hstab i'.1.1 i'.2.1 j₀ f hf _ (hA i'.1.1 i'.2.1 f)`. Establish `hf2` using `hstab i.1.1 i.2.1 j₀ f hf _ (hA i.1.1 i.2.1 f)`. Use `show T i.1.1 (T i'.1.1 (R.p f)) = T i'.1.1 (T i.1.1 (R.p f))`. Rewrite using `[hTp i' f hf, hTp i _ hf1, hTp i f hf, hTp i' _ hf2]`.
+
+Use `congr 1`. Conclude with `acts_comm om (hcommG _ _ _ _ i.2.2 i'.2.2) (hA i'.1.1 i'.2.1 f) (hA i.1.1 i.2.1 _) (hA i.1.1 i.2.1 f) (hA i'.1.1 i'.2.1 _)`. Introduce `i`. Rewrite using `[hV]`. Use `(Submodule.map_mono (hdiag i.1.1 i.2.1 j₀)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨hf, c, hc⟩, rfl⟩`. Use `⟨⟨f, hf, rfl⟩, c, ?_⟩` and prove the remaining obligations. Use `show T i.1.1 (R.p f) = c • R.p f`.
+
+Rewrite using `[hTp i f hf, hc _ (hA i.1.1 i.2.1 f), map_smul]`.
+-/
 theorem lowPart_le_tw_sup_off_beta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

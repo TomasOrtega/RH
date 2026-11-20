@@ -7,6 +7,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff | exact GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff | (intros; apply GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_centralizer_unitary_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (δ : GL (Fin n) E) (H : Matrix (Fin n) (Fin n) E),
   (δ * thE E n δ).val.charpoly.Separable → IsUnit H.det →
   δ * thE E n δ ∈ UJ (IsCMField.complexConj E).toRingEquiv.toRingHom H →

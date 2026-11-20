@@ -14,6 +14,25 @@ section Ring
 
 variable {o E : Type*} [CommRing o] [IsLocalRing o] [CommRing E]
 
+/- English proof (translation)
+Take `⟨n0, hn0⟩` from `hN y0 hy0`. Take `⟨n1, hn1⟩` from `hN y1 hy1`. Take `⟨n2, hn2⟩` from `hN y2 hy2`. Establish `hu : ∀ a b : o, ¬ IsUnit a → IsUnit b → IsUnit (a - b)` using `fun a b ha hb => by`. Assume the negation of the conclusion as `hab`.
+
+Establish `h1 : a ∈ IsLocalRing.maximalIdeal o` using `ha`. Establish `h2 : a - b ∈ IsLocalRing.maximalIdeal o` using `hab`. Establish `h3` using `Ideal.sub_mem _ h1 h2`. Rewrite `h3` using `[sub_sub_cancel]`. Conclude with `h3 hb`.
+
+Distinguish the cases in `ha : IsUnit (n0 + n1 + n2)`. Distinguish the cases in `h0 : IsUnit (n1 + n2)`. Use `⟨1, S.one_mem, 0, S.zero_mem, 0, S.zero_mem, n1 + n2, h0, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, map_zero, map_add, ← hn1, ← hn2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Distinguish the cases in `h1 : IsUnit (n0 + n2)`. Use `⟨0, S.zero_mem, 1, S.one_mem, 0, S.zero_mem, n0 + n2, h1, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, map_zero, map_add, ← hn0, ← hn2]`. Expand and normalize the polynomial expressions, which then agree. Establish `u0 : IsUnit n0`.
+
+Use `(hu _ _ h0 ha).neg` as an intermediate fact. Rewrite `this` using `[show -(n1 + n2 - (n0 + n1 + n2)) = n0 by ring]`. Then use the resulting hypothesis. Establish `u1 : IsUnit n1`. Use `(hu _ _ h1 ha).neg` as an intermediate fact. Rewrite `this` using `[show -(n0 + n2 - (n0 + n1 + n2)) = n1 by ring]`. Then use the resulting hypothesis.
+
+Take `⟨τ, hτS, hτ⟩` from `hτ`. Take `⟨t, ht⟩` from `hN τ hτS`. Use `⟨1, S.one_mem, τ * σ y0 * y1, S.mul_mem (S.mul_mem hτS (hσS _ hy0)) hy1, 0, S.zero_mem, ((n1 + n2) + (n0 + n2) * (t * n0 * n1)) - n0 * n1, hu _ _ ?_ (u0.mul u1), ?_⟩` and prove the remaining obligations. Establish `g0 : n1 + n2 ∈ IsLocalRing.maximalIdeal o` using `h0`. Establish `g1 : n0 + n2 ∈ IsLocalRing.maximalIdeal o` using `h1`.
+
+Conclude with `Ideal.add_mem _ g0 (Ideal.mul_mem_right _ _ g1)`. Simplify using `only [map_one, map_zero, map_add, map_sub, map_mul, hσ, ← hn0, ← hn1, ← hn2, ← ht]`. Take the linear combination `(-(y0 * σ y0 * (y1 * σ y1))) * hτ`. Take `⟨m0, hm0⟩` from `hN c0 hc0`. Take `⟨m1, hm1⟩` from `hN c1 hc1`.
+
+Take `⟨m2, hm2⟩` from `hN c2 hc2`. Establish `h'` using `congrArg σ h`. Simplify using `only [map_add, map_mul, hσ, map_one] at h'`. Use `⟨c0, hc0, c1, hc1, c2, hc2, (n0 + n1 + n2) * (m0 + m1 + m2) - 1, hu _ _ (fun hh => ha (isUnit_of_mul_isUnit_left hh)) isUnit_one, ?_⟩` and prove the remaining obligations. Simplify using `only [map_one, map_add, map_sub, map_mul, ← hn0, ← hn1, ← hn2, ← hm0, ← hm1, ← hm2]`.
+
+Rewrite using `[h]`. Take the linear combination `-h'`.
+-/
 theorem exists_gram_unit (S : Subring E) (σ : E →+* E) (φ : o →+* E) (hσ : ∀ x, σ (σ x) = x)
     (hσS : ∀ x ∈ S, σ x ∈ S) (hN : ∀ x ∈ S, ∃ c, x * σ x = φ c)
     (hτ : ∃ τ ∈ S, τ + σ τ = 1) {y0 y1 y2 c0 c1 c2 : E} (hy0 : y0 ∈ S) (hy1 : y1 ∈ S)
@@ -67,6 +86,13 @@ theorem exists_gram_unit (S : Subring E) (σ : E →+* E) (φ : o →+* E) (hσ 
     rw [h]
     linear_combination -h'
 
+/- English proof (translation)
+Take `⟨d0, hd0, d1, hd1, d2, hd2, w, hw, hd⟩` from `exists_gram_unit S σ φ hσ hσS hN hτ hy0 hy1 hy2 hc0 hc1 hc2 h`. Take `⟨x, hx, hxx⟩` from `hU hw.unit⁻¹`. Establish `hw1 : φ w * φ (hw.unit⁻¹ : oˣ) = 1`. Rewrite using `[← map_mul, IsUnit.mul_val_inv, map_one]`. Use `⟨x * σ (y1 * d2 - y2 * d1), ?_, x * σ (y2 * d0 - y0 * d2), ?_, x * σ (y0 * d1 - y1 * d0), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `S.mul_mem hx (hσS _ (S.sub_mem (S.mul_mem hy1 hd2) (S.mul_mem hy2 hd1)))`. Conclude with `S.mul_mem hx (hσS _ (S.sub_mem (S.mul_mem hy2 hd0) (S.mul_mem hy0 hd2)))`. Conclude with `S.mul_mem hx (hσS _ (S.sub_mem (S.mul_mem hy0 hd1) (S.mul_mem hy1 hd0)))`. Simplify using `only [map_mul, map_sub, hσ]`. Rewrite `hw1` using `[← hd, ← hxx]`.
+
+Take the linear combination `hw1`. Simplify using `only [map_mul, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_norm_one_orth (S : Subring E) (σ : E →+* E) (φ : o →+* E) (hσ : ∀ x, σ (σ x) = x)
     (hσS : ∀ x ∈ S, σ x ∈ S) (hN : ∀ x ∈ S, ∃ c, x * σ x = φ c)
     (hτ : ∃ τ ∈ S, τ + σ τ = 1) (hU : ∀ u : oˣ, ∃ x ∈ S, x * σ x = φ u)
@@ -93,6 +119,21 @@ theorem exists_norm_one_orth (S : Subring E) (σ : E →+* E) (φ : o →+* E) (
 
 omit [IsLocalRing o] in
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `(IsPrincipalIdealRing.principal (Ideal.span {(⟨y0, hy0⟩ : S), ⟨y1, hy1⟩, ⟨y2, hy2⟩})).principal`. Establish `hm : ∀ z ∈ ({(⟨y0, hy0⟩ : S), ⟨y1, hy1⟩, ⟨y2, hy2⟩} : Set S), ∃ b : S, b * d = z` using `fun z hz => by`. Use `Ideal.subset_span hz` as an intermediate fact. Rewrite `this` using `[hd]`. Conclude with `Ideal.mem_span_singleton'.1 this`.
+
+Take `⟨b0, hb0⟩` from `hm ⟨y0, hy0⟩ (by simp)`. Take `⟨b1, hb1⟩` from `hm ⟨y1, hy1⟩ (by simp)`. Take `⟨b2, hb2⟩` from `hm ⟨y2, hy2⟩ (by simp)`. Establish `hdm : d ∈ Ideal.span {(⟨y0, hy0⟩ : S), ⟨y1, hy1⟩, ⟨y2, hy2⟩}`. Rewrite using `[hd]`.
+
+Conclude with `Submodule.mem_span_singleton_self d`. Take `⟨r0, z, hz, hz'⟩` from `Ideal.mem_span_insert.1 hdm`. Take `⟨r1, r2, rfl⟩` from `Ideal.mem_span_pair.1 hz`. Establish `e0 : (b0 : E) * d = y0` using `congrArg Subtype.val hb0`. Establish `e1 : (b1 : E) * d = y1` using `congrArg Subtype.val hb1`.
+
+Establish `e2 : (b2 : E) * d = y2` using `congrArg Subtype.val hb2`. Establish `e3 : (d : E) = r0 * y0 + (r1 * y1 + r2 * y2)` using `congrArg Subtype.val hz'`. Establish `: IsSemisimpleRing E` using `IsArtinianRing.isSemisimpleRing_of_isReduced E`. Take `⟨e, he, hI⟩` from `IsSemisimpleRing.ideal_eq_span_idempotent (Ideal.span {(d : E)})`. Establish `hee : e * e = e` using `he`.
+
+Take `⟨p, hp⟩ : ∃ p, p * (d : E) = e` from `Ideal.mem_span_singleton'.1 (hI ▸ Ideal.mem_span_singleton_self e)`. Take `⟨q, hq⟩ : ∃ q, q * e = (d : E)` from `Ideal.mem_span_singleton'.1 (hI ▸ Ideal.mem_span_singleton_self (d : E))`. Establish `hde : (d : E) * e = d` using `by rw [← hq, mul_assoc, hee]`. Establish `heS` using `hid e hee`. Establish `h1e` using `S.sub_mem S.one_mem heS`.
+
+Use `⟨d, e * b0 + (1 - e), S.add_mem (S.mul_mem heS b0.2) h1e, e * b1, S.mul_mem heS b1.2, e * b2, S.mul_mem heS b2.2, e * r0 + (1 - e), S.add_mem (S.mul_mem heS r0.2) h1e, r1, r1.2, r2, r2.2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `-e0 - (b0 - 1 : E) * hde`. Take the linear combination `-e1 - (b1 : E) * hde`. Take the linear combination `-e2 - (b2 : E) * hde`. Establish `k : e * (b0 * r0 + b1 * r1 + b2 * r2) = e`.
+
+Rewrite using `[← hp]`. Take the linear combination `p * r0 * e0 + p * r1 * e1 + p * r2 * e2 - p * e3`. Take the linear combination `k + ((b0 : E) * r0 - b0 - r0 + 1) * hee`.
+-/
 theorem exists_primitive [IsArtinianRing E] [IsReduced E] (S : Subring E) [IsPrincipalIdealRing S]
     (hid : ∀ e : E, e * e = e → e ∈ S) {y0 y1 y2 : E} (hy0 : y0 ∈ S) (hy1 : y1 ∈ S)
     (hy2 : y2 ∈ S) :
@@ -165,10 +206,18 @@ def orthTo (L : LocE F E) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E) (v : Fin n �
 
 variable (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Rewrite using `[← hf_cj L h, hx, map_zero]`.
+-/
 theorem hf_eq_zero_symm (h : IsHerm L Hm) {x v : Fin n → E} (hx : hf L Hm x v = 0) :
     hf L Hm v x = 0 := by
   rw [← hf_cj L h, hx, map_zero]
 
+/- English proof (translation)
+Introduce `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j`. Simplify using `using hv`. Simplify `hf_eq_zero_symm L h (hev j)` using `[(Fin.succ_ne_zero j).symm]`. Simplify using `using hev i`.
+
+Simplify using `using he i j`.
+-/
 theorem isON_cons (h : IsHerm L Hm) {k : ℕ} {v : Fin n → E} {e : Fin k → Fin n → E}
     (hv : hf L Hm v v = 1) (hev : ∀ i, hf L Hm (e i) v = 0) (he : IsON L Hm e) :
     IsON L Hm (Fin.cons v e : Fin (k + 1) → Fin n → E) := by
@@ -181,6 +230,17 @@ theorem isON_cons (h : IsHerm L Hm) {k : ℕ} {v : Fin n → E} {e : Fin k → F
 
 variable [IsNonarchimedeanLocalField F] [CharZero F]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨h1, -, -, h4, -, -, -, h8⟩` from `order_facts L ϖ hϖ`. Use `L.reduced` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; omega)`. Establish `: IsArtinianRing E` using `IsArtinianRing.of_finite F E`.
+
+Establish `hden : ∀ x : E, ∃ a : 𝒪[F], a ≠ 0 ∧ algebraMap F E a * x ∈ L.O` using `fun x => by`. Take `⟨a, ha, hi⟩` from `((IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_integral_multiple`. Use `⟨a, ha, (L.O_def _).2 ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Establish `hint : ∀ a : 𝒪[F], algebraMap F E a ∈ L.O` using `fun a => (algebraMap_mem_iff L a).2 a.2`.
+
+Take `⟨a0, ha0, hy0⟩` from `hden y0`. Take `⟨a1, ha1, hy1⟩` from `hden y1`. Take `⟨a2, ha2, hy2⟩` from `hden y2`. Establish `hid : ∀ e : E, e * e = e → e ∈ L.O` using `fun e he => by`. Rewrite using `[L.O_def]`.
+
+Use `⟨Polynomial.X ^ 2 - Polynomial.X, by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `[sq, he]`. Take `⟨d, b0, hb0, b1, hb1, b2, hb2, r0, hr0, r1, hr1, r2, hr2, e0, e1, e2, e3⟩` from `exists_primitive L.O hid (L.O.mul_mem (L.O.mul_mem (hint a1) (hint a2)) hy0) (L.O.mul_mem (L.O.mul_mem (hint a0) (hint a2)) hy1) (L.O.mul_mem (L.O.mul_mem (hint a0) (hint a1)) hy2)`. Take `⟨u0, hu0, u1, hu1, u2, hu2, k1, k2⟩` from `exists_norm_one_orth L.O (L.cj : E →+* E) (algebraMap 𝒪[F] E) L.cj_cj (fun x hx => cj_mem L hx) (fun x hx => exists_norm L hx) (by simpa using h1 1) h8 (cj_mem L hb0) (cj_mem L hb1) (cj_mem L hb2) hr0 hr1 hr2 (by simpa using congrArg L.cj e3)`. Use `⟨u0, hu0, u1, hu1, u2, hu2, k1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.coe_coe, L.cj_cj] at k2`. Establish `hne : (a0 : F) * a1 * a2 ≠ 0` using `mul_ne_zero (mul_ne_zero (by simpa using ha0) (by simpa using ha1)) (by simpa using ha2)`. Use `((IsUnit.mk0 _ hne).map (algebraMap F E)).mul_right_eq_zero.1 ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Take the linear combination `u0 * e0 + u1 * e1 + u2 * e2 + d * k2`.
+-/
 theorem exists_norm_one_orth_triple (y0 y1 y2 : E) :
     ∃ u0 ∈ L.O, ∃ u1 ∈ L.O, ∃ u2 ∈ L.O, u0 * L.cj u0 + u1 * L.cj u1 + u2 * L.cj u2 = 1 ∧
       u0 * y0 + u1 * y1 + u2 * y2 = 0 := by
@@ -218,6 +278,19 @@ theorem exists_norm_one_orth_triple (y0 y1 y2 : E) :
   simp only [map_mul]
   linear_combination u0 * e0 + u1 * e1 + u2 * e2 + d * k2
 
+/- English proof (translation)
+Establish `h10` using `hf_eq_zero_symm L h h01`. Establish `h20` using `hf_eq_zero_symm L h h02`. Establish `h21` using `hf_eq_zero_symm L h h12`. Establish `hM : ∀ a ∈ L.O, ∀ b ∈ L.O, ∀ c ∈ L.O, a • e0 + b • e1 + c • e2 ∈ M` using `fun a ha b hb c hc => M.add_mem (M.add_mem (M.smul_mem ⟨a, ha⟩ m0) (M.smul_mem ⟨b, hb⟩ m1)) (M.smul_mem ⟨c, hc⟩ m2)`. Establish `hB : ∀ a b c a' b' c' : E, hf L Hm (a • e0 + b • e1 + c • e2) (a' • e0 + b' • e1 + c' • e2) = a * L.cj a' + b * L.cj b' + c * L.cj c'` using `fun a b c a' b' c' => by`.
+
+Simplify using `only [hf_add_l, hf_add_r, hf_smul_l, hf_smul_r, h00, h11, h22, h01, h02, h12, h10, h20, h21]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u0, hu0, u1, hu1, u2, hu2, k1, k2⟩` from `exists_norm_one_orth_triple L (hf L Hm e0 y) (hf L Hm e1 y) (hf L Hm e2 y)`. Take `⟨t0, ht0, t1, ht1, t2, ht2, l1, l2⟩` from `exists_norm_one_orth_triple L (L.cj u0) (L.cj u1) (L.cj u2)`. Establish `l3` using `congrArg L.cj l2`.
+
+Simplify using `only [map_add, map_mul, map_zero, L.cj_cj] at l3`. Use `⟨_, hM u0 hu0 u1 hu1 u2 hu2, _, hM t0 ht0 t1 ht1 t2 ht2, _, hM (L.cj (u1 * t2 - u2 * t1)) (cj_mem L ?_) (L.cj (u2 * t0 - u0 * t2)) (cj_mem L ?_) (L.cj (u0 * t1 - u1 * t0)) (cj_mem L ?_), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `L.O.sub_mem (L.O.mul_mem hu1 ht2) (L.O.mul_mem hu2 ht1)`. Conclude with `L.O.sub_mem (L.O.mul_mem hu2 ht0) (L.O.mul_mem hu0 ht2)`. Conclude with `L.O.sub_mem (L.O.mul_mem hu0 ht1) (L.O.mul_mem hu1 ht0)`.
+
+Rewrite using `[hB, k1]`. Rewrite using `[hB, l1]`. Rewrite using `[hB]`. Simplify using `only [map_sub, map_mul, L.cj_cj]`. Take the linear combination `(t0 * L.cj t0 + t1 * L.cj t1 + t2 * L.cj t2) * k1 + l1 - (L.cj t0 * u0 + L.cj t1 * u1 + L.cj t2 * u2) * l2`.
+
+Rewrite using `[hB, l2]`. Rewrite using `[hB]`. Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hB]`.
+
+Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf_add_l, hf_smul_l]`. Conclude with `k2`.
+-/
 theorem exists_triple (h : IsHerm L Hm) (M : Submodule L.O (Fin n → E)) {e0 e1 e2 : Fin n → E}
     (m0 : e0 ∈ M) (m1 : e1 ∈ M) (m2 : e2 ∈ M)
     (h00 : hf L Hm e0 e0 = 1) (h11 : hf L Hm e1 e1 = 1) (h22 : hf L Hm e2 e2 = 1)
@@ -264,6 +337,13 @@ theorem exists_triple (h : IsHerm L Hm) (M : Submodule L.O (Fin n → E)) {e0 e1
   · simp only [hf_add_l, hf_smul_l]
     exact k2
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact fun M e _ _ => ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ k ih`. Introduce `M e hM he`. Set `f : Fin k → Fin n → E` to `fun i => e i.succ.succ.succ`.
+
+Establish `hf' : IsON L Hm f` using `fun i j => by simpa [f] using he i.succ.succ.succ j.succ.succ.succ`. Establish `hne : ∀ i j, i ≠ j → hf L Hm (e i) (e j) = 0` using `fun i j hij => by`. Rewrite using `[he, if_neg hij]`. Establish `heq : ∀ i, hf L Hm (e i) (e i) = 1` using `fun i => by rw [he, if_pos rfl]`. Establish `hmem : ∀ i : Fin (k + 1 + 2), (∀ j : Fin k, i ≠ j.succ.succ.succ) → e i ∈ M ⊓ ⨅ j, orthTo L Hm (f j)` using `fun i hi => ⟨hM i, (Submodule.mem_iInf _).2 fun j => hne _ _ (hi j)⟩`.
+
+Take `⟨u, hu, t, ht, s, hs, uu, tt, ss, tu, su, st, uy⟩` from `exists_triple L h (M ⊓ ⨅ j, orthTo L Hm (f j)) (e0 := e 0) (e1 := e (Fin.succ 0)) (e2 := e (Fin.succ (Fin.succ 0))) (hmem _ fun j => (Fin.succ_ne_zero _).symm) (hmem _ fun j hj => (Fin.succ_ne_zero _).symm (Fin.succ_injective _ hj)) (hmem _ fun j hj => (Fin.succ_ne_zero _).symm ( …`. Establish `hfo : ∀ {v}, v ∈ M ⊓ ⨅ j, orthTo L Hm (f j) → ∀ j, hf L Hm (f j) v = 0` using `fun hv j => hf_eq_zero_symm L h ((Submodule.mem_iInf _).1 hv.2 j)`. Take `⟨w, hw, hw'⟩` from `ih (M ⊓ orthTo L Hm u) (Fin.cons t (Fin.cons s f : Fin (k + 1) → Fin n → E)) (Fin.cases ⟨ht.1, tu⟩ (Fin.cases ⟨hs.1, su⟩ fun j => ⟨hM _, hfo hu j⟩)) (isON_cons L h tt (Fin.cases st (hfo ht)) (isON_cons L h ss (hfo hs) hf'))`. Conclude with `⟨Fin.cons u w, Fin.cases ⟨hu.1, uy⟩ fun j => ⟨(hw j).1.1, (hw j).2⟩, isON_cons L h uu (fun j => (hw j).1.2) hw'⟩`.
+-/
 theorem exists_isON_orth (h : IsHerm L Hm) (y : Fin n → E) (k : ℕ) :
     ∀ (M : Submodule L.O (Fin n → E)) (e : Fin (k + 2) → Fin n → E), (∀ i, e i ∈ M) →
       IsON L Hm e → ∃ u : Fin k → Fin n → E, (∀ i, u i ∈ M ⊓ orthTo L Hm y) ∧ IsON L Hm u := by
@@ -298,6 +378,11 @@ theorem exists_isON_orth (h : IsHerm L Hm) (y : Fin n → E) (k : ℕ) :
     exact ⟨Fin.cons u w, Fin.cases ⟨hu.1, uy⟩ fun j => ⟨(hw j).1.1, (hw j).2⟩,
       isON_cons L h uu (fun j => (hw j).1.2) hw'⟩
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact fun y M e hM he => ⟨e, fun i => ⟨hM i, fun j => j.elim0⟩, he⟩`. Consider the case `succ m ih`. Introduce `y M e hM he`. Take `⟨v, hv, hv'⟩` from `exists_isON_orth L h (y 0) (k + 2 * m) M e hM he`.
+
+Take `⟨u, hu, hu'⟩` from `ih (fun j => y j.succ) _ v hv hv'`. Conclude with `⟨u, fun i => ⟨(hu i).1.1, Fin.cases (hu i).1.2 (hu i).2⟩, hu'⟩`.
+-/
 theorem exists_isON_orth_family (h : IsHerm L Hm) (k m : ℕ) :
     ∀ (y : Fin m → Fin n → E) (M : Submodule L.O (Fin n → E)) (e : Fin (k + 2 * m) → Fin n → E),
       (∀ i, e i ∈ M) → IsON L Hm e →
@@ -312,6 +397,13 @@ theorem exists_isON_orth_family (h : IsHerm L Hm) (k m : ℕ) :
 
 end Space
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L n Hm hH Λ hΛ m y _`. Distinguish the cases in `hn : 2 * m ≤ n`. Take `⟨b, hb, hΛb⟩` from `(GlobalTheory.HL.SelfDual.orthonormal_basis_and_one_orbit L Hm hH).1 Λ hΛ`. Establish `hk : n - 2 * m + 2 * m = n` using `Nat.sub_add_cancel hn`. Take `⟨u, hu, hu'⟩` from `exists_isON_orth_family L hH.1 (n - 2 * m) m y Λ (fun i => b (Fin.cast hk i)) (fun i => hΛb ▸ Submodule.subset_span ⟨_, rfl⟩) (fun i j => by simpa using hb (Fin.cast hk i) (Fin.cast hk j))`.
+
+Use `⟨u, fun i => ⟨(hu i).1, fun z hz => ?_⟩, hu'⟩` and prove the remaining obligations. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨j, rfl⟩ := hx`. Conclude with `(hu i).2 j`. Consider the case `zero => simp [hf]`.
+
+Consider the case `add a b _ _ ha hb => rw [Eichler.hf_add_r, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [Eichler.hf_smul_r, ha, mul_zero]`. Establish `h0 : ∀ i : Fin (n - 2 * m), False` using `fun i => by have := i.2; omega`. Conclude with `⟨fun _ => 0, fun i => (h0 i).elim, fun i => (h0 i).elim⟩`.
+-/
 theorem exists_orthonormal_perp : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ Λ, IsSD L Hm Λ → ∀ (m : ℕ) (y : Fin m → Fin n → E), LinearIndependent E y → ∃ u : Fin (n - 2 * m) → Fin n → E, (∀ i, u i ∈ Λ ∧ u i ∈ perp L Hm (Submodule.span E (Set.range y))) ∧ ∀ i j, hf L Hm (u i) (u j) = if i = j then 1 else 0 := by
   intro F _ _ _ _ _ E _ _ _ L n Hm hH Λ hΛ m y _
   by_cases hn : 2 * m ≤ n

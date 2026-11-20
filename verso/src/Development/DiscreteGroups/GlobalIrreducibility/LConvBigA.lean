@@ -16,15 +16,29 @@ def tv {n : ℕ} (i j : Fin n) (h : i ≠ j) (c : k) : GL (Fin n) k :=
     by rw [Matrix.transvection_mul_transvection_same _ _ h, add_neg_cancel, Matrix.transvection_zero],
     by rw [Matrix.transvection_mul_transvection_same _ _ h, neg_add_cancel, Matrix.transvection_zero]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_tv {n : ℕ} (i j : Fin n) (h : i ≠ j) (c : k) :
     ((tv i j h c : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.transvection i j c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_tv_inv {n : ℕ} (i j : Fin n) (h : i ≠ j) (c : k) :
     (((tv i j h c)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.transvection i j (-c) := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [val_tv, Matrix.transvection_zero, Units.val_one])`.
+-/
 theorem tv_zero {n : ℕ} (i j : Fin n) (h : i ≠ j) : tv i j h (0 : k) = 1 :=
   Units.ext (by rw [val_tv, Matrix.transvection_zero, Units.val_one])
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun c : k => Matrix.transvection i j c`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+
+Use `show Continuous fun c : k => Matrix.transvection i j (-c)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem continuous_tv [TopologicalSpace k] [IsTopologicalAddGroup k] {n : ℕ} (i j : Fin n) (h : i ≠ j) :
     Continuous fun c : k => tv i j h c := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -37,22 +51,37 @@ theorem continuous_tv [TopologicalSpace k] [IsTopologicalAddGroup k] {n : ℕ} (
     simp only [Matrix.transvection, Matrix.add_apply, Matrix.single_apply]
     split_ifs <;> fun_prop
 
+/- English proof (translation)
+Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `Fin.ext (by simp)`.
+-/
 theorem stdSum_symm_castSucc (i : Fin m) : (stdSum (rfl : m + 1 = m + 1)).symm i.castSucc = Sum.inl i := by
   rw [Equiv.symm_apply_eq]
   exact Fin.ext (by simp)
 
+/- English proof (translation)
+Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `Fin.ext (by simp)`.
+-/
 theorem stdSum_symm_last : (stdSum (rfl : m + 1 = m + 1)).symm (Fin.last m) = Sum.inr 0 := by
   rw [Equiv.symm_apply_eq]
   exact Fin.ext (by simp)
 
+/- English proof (translation)
+Simplify using `[corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_castSucc]`.
+-/
 theorem corner_cs_cs (g : GL (Fin m) k) (i j : Fin m) :
     (corner g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i.castSucc j.castSucc = (g : Matrix (Fin m) (Fin m) k) i j := by
   simp [corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_castSucc]
 
+/- English proof (translation)
+Simplify using `[corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_castSucc, stdSum_symm_last]`.
+-/
 theorem corner_cs_last (g : GL (Fin m) k) (i : Fin m) :
     (corner g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i.castSucc (Fin.last m) = 0 := by
   simp [corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_castSucc, stdSum_symm_last]
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_last]`. Simplify using `[corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_castSucc, stdSum_symm_last, (Fin.castSucc_lt_last j).ne']`.
+-/
 theorem corner_last (g : GL (Fin m) k) (j : Fin (m + 1)) :
     (corner g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j =
       (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j := by
@@ -61,11 +90,20 @@ theorem corner_last (g : GL (Fin m) k) (j : Fin (m + 1)) :
   · simp [corner, val_emb₂, Matrix.reindex_apply, stdSum_symm_castSucc, stdSum_symm_last,
       (Fin.castSucc_lt_last j).ne']
 
+/- English proof (translation)
+The claim follows from `map_one (emb₂ k (stdSum (rfl : m + 1 = m + 1)))`.
+-/
 theorem corner_one : corner (1 : GL (Fin m) k) = 1 :=
   map_one (emb₂ k (stdSum (rfl : m + 1 = m + 1)))
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem longElt_inv (n : ℕ) : (longElt n k)⁻¹ = longElt n k := Units.ext rfl
 
+/- English proof (translation)
+Simplify using `[longElt]`.
+-/
 theorem longElt_last (j : Fin (m + 1)) :
     (longElt (m + 1) k : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j = if j = 0 then 1 else 0 := by
   simp [longElt]
@@ -76,6 +114,11 @@ section Small
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `` to `GroundTheory.LocalField.nontriviallyNormedField k`. Establish `hU' : U ∩ (fun t => a * t) ⁻¹' U ∈ 𝓝 (0 : k)` using `inter_mem hU ((continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using hU))`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hU'`. Take `⟨t, ht0, htε⟩` from `NormedField.exists_norm_lt k hε`. Establish `ht : t ∈ U ∩ (fun t => a * t) ⁻¹' U` using `hball (by simpa using htε)`.
+
+Conclude with `⟨t, norm_pos_iff.1 ht0, ht.1, ht.2⟩`.
+-/
 theorem exists_small {U : Set k} (hU : U ∈ 𝓝 (0 : k)) (a : k) : ∃ t : k, t ≠ 0 ∧ t ∈ U ∧ a * t ∈ U := by
   let := GroundTheory.LocalField.nontriviallyNormedField k
   have hU' : U ∩ (fun t => a * t) ⁻¹' U ∈ 𝓝 (0 : k) :=

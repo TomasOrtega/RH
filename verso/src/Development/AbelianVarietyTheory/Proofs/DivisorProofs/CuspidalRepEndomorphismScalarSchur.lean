@@ -29,6 +29,13 @@ def imgPart (π : CuspSub E a) (L : Subgroup (GL (Fin a) (Af E))) {W : Type} [Ad
     rintro c x ⟨h1, T, h2, rfl⟩
     exact ⟨fun k hk => by rw [map_smul, h1 k hk], c • T, fun k v => by simp [h2], rfl⟩
 
+/- English proof (translation)
+Establish `hc : ∀ τ u, ∃ c : ℂ, ∀ φ ∈ π.V, cap τ u φ = c • φ` using `fun τ u => π.exists_scalar (z := cap τ u) (Algebra.subset_adjoin ⟨τ, u, rfl⟩) fun o => by`. Consider the cases of `o with`. Consider the case `fin k => exact commute_cap_finRep τ u k`. Consider the case `cpt k => exact GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u _`. Consider the case `lie X => exact commute_cap_lie τ u X`.
+
+Use `choose c hc using hc`. Use `GlobalTheory.automorphicFormsFiniteGL E a L hL W ρ hρ c` as an intermediate fact. Use `FiniteDimensional.of_injective ((π.V.subtype ∘ₗ (imgPart π L ρ w).subtype).codRestrict (Submodule.span ℂ (AutFinGL.forms L ρ c)) fun v => Submodule.subset_span ⟨(π.cusp _ v.1.2).1, fun k hk => congrArg Subtype.val (v.2.1 k hk), fun g => ?_, fun τ u => hc τ u _ v.1.2⟩) fun v v' e …` and prove the remaining obligations. Take `⟨T, hT, e⟩` from `v.2.2`. Establish `h` using `AutFinGL.type_of_map ρ (π.V.subtype ∘ₗ T) (fun k w => congrArg Subtype.val (hT k w)) w g`.
+
+Rewrite `h` using `[LinearMap.comp_apply, e]`. Conclude with `h`.
+-/
 theorem finiteDimensional_imgPart (π : CuspSub E a) {L : Subgroup (GL (Fin a) (Af E))}
     (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     {ρ : Representation ℂ (Kinf E a) W} (hρ : AutFin.IsContRep ρ) (w : W) :
@@ -51,6 +58,19 @@ theorem finiteDimensional_imgPart (π : CuspSub E a) {L : Subgroup (GL (Fin a) (
   rw [LinearMap.comp_apply, e] at h
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ a π f hf`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Establish `hL : IsOpen (LocEx.stab π.finPart ⟨φ, hφ⟩ : Set (GL (Fin a) (Af E)))` using `π.isSmooth_finPart _`. Establish `: FiniteDimensional ℂ (LocEx.orbSpan φ)` using `(π.cusp φ hφ).1.kfin`. Establish `hSV : LocEx.orbSpan φ ≤ π.V` using `Submodule.span_le.2 (by`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `π.stable (.cpt k) φ hφ)`. Set `w : LocEx.orbSpan φ` to `⟨φ, Submodule.subset_span ⟨1, by simp⟩⟩`. Set `U` to `imgPart π (LocEx.stab π.finPart ⟨φ, hφ⟩) (sub (cptRep E a) _ (LocEx.orbSpan_stable φ)) w`. Establish `: FiniteDimensional ℂ U` using `finiteDimensional_imgPart π hL (LocEx.isContRep_sub _ _) w`.
+
+Establish `hφU : (⟨φ, hφ⟩ : π.V) ∈ U` using `⟨fun k hk => hk, Submodule.inclusion hSV, fun _ _ => rfl, rfl⟩`. Establish `hfU : ∀ v ∈ U, f v ∈ U`. Introduce and unpack `_ ⟨h1, T, h2, rfl⟩`. Conclude with `⟨fun k hk => by rw [← hf, h1 k hk], f ∘ₗ T, fun k v => by simp [h2, hf], rfl⟩`. Establish `: Nontrivial U` using `⟨⟨⟨_, hφU⟩, 0, fun e => h0 (congrArg (fun z : U => z.1.1) e)⟩⟩`.
+
+Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (f.restrict hfU)`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Establish `hv1 : f v.1 = c • v.1` using `congrArg Subtype.val hv.apply_eq_smul`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `π.irred ((Module.End.eigenspace f c).map π.V.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases.
+
+Introduce and unpack `o _ ⟨y, hy, rfl⟩`. Use `⟨π.op o y, Module.End.mem_eigenspace_iff.2 ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hf, Module.End.mem_eigenspace_iff.1 hy, map_smul]) with h1 | h1`. Establish `h2 : v.1.1 ∈ (Module.End.eigenspace f c).map π.V.subtype` using `⟨v.1, Module.End.mem_eigenspace_iff.2 hv1, rfl⟩`. Rewrite `h2` using `[h1]`.
+
+Conclude with `absurd (Subtype.ext (Subtype.ext ((Submodule.mem_bot ℂ).1 h2))) hv.2`. Introduce `ψ`. Take `⟨y, hy, e⟩ : ψ.1 ∈ (Module.End.eigenspace f c).map π.V.subtype` from `h1.symm ▸ ψ.2`. Take `rfl : y = ψ` from `Subtype.ext e`. Conclude with `Module.End.mem_eigenspace_iff.1 hy`.
+-/
 theorem schur : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (x : CuspSub E a)
     (f : x.V →ₗ[ℂ] x.V), (∀ o φ, f (x.op o φ) = x.op o (f φ)) → ∃ c : ℂ, ∀ φ, f φ = c • φ := by
   intro E _ _ _ a π f hf

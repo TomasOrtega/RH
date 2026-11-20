@@ -19,6 +19,9 @@ section L2
 
 variable {X E : Type} [MeasurableSpace X] {ν : Measure X} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
+/- English proof (translation)
+Rewrite using `[L2.inner_def]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem inner_toLp {f g : X → E} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
     ⟪hf.toLp f, hg.toLp g⟫_ℂ = ∫ x, ⟪f x, g x⟫_ℂ ∂ν := by
   rw [L2.inner_def]
@@ -26,17 +29,26 @@ theorem inner_toLp {f g : X → E} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
   filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2
   rw [h1, h2]
 
+/- English proof (translation)
+Use `(L2.integrable_inner (𝕜 := ℂ) (hf.toLp f) (hg.toLp g)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem integrable_inner {f g : X → E} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
     Integrable (fun x => ⟪f x, g x⟫_ℂ) ν := by
   refine (L2.integrable_inner (𝕜 := ℂ) (hf.toLp f) (hg.toLp g)).congr ?_
   filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2
   rw [h1, h2]
 
+/- English proof (translation)
+Rewrite `h` using `[← inner_toLp hf hf]`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, h]`.
+-/
 theorem norm_toLp_eq {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {f : X → E} (hf : MemLp f 2 ν)
     {a : H} (h : ∫ x, ⟪f x, f x⟫_ℂ ∂ν = ⟪a, a⟫_ℂ) : ‖hf.toLp f‖ = ‖a‖ := by
   rw [← inner_toLp hf hf] at h
   rw [@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ, h]
 
+/- English proof (translation)
+Rewrite using `[← inner_toLp hf hg, ← norm_toLp_eq hf h, ← norm_toLp_eq hg h']`. Conclude with `norm_inner_le_norm _ _`.
+-/
 theorem norm_integral_inner_le {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] {f g : X → E} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν)
     {a : H} {b : H'} (h : ∫ x, ⟪f x, f x⟫_ℂ ∂ν = ⟪a, a⟫_ℂ) (h' : ∫ x, ⟪g x, g x⟫_ℂ ∂ν = ⟪b, b⟫_ℂ) :
@@ -52,6 +64,33 @@ namespace GlobalTheory
 
 open BesselOrth Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `hH k r ε mu mu' R R' Wp _ _ _ _ z π u μW μN μG νq Bm Bm' hR hR' hne hS hB hB'`. Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `hP : Poulsen` using `hH.2.2.2.2.2.1`. Take `⟨hL, hI⟩` from `GlobalTheory.T.isometric_bessel_memLp_and_integral_inner_eq hK k r ε mu R Wp z π u μW μN μG νq Bm hR hS hB`. Take `⟨hL', hI'⟩` from `GlobalTheory.T.isometric_bessel_memLp_and_integral_inner_eq hK k r ε mu' R' Wp z π u μW μN μG νq Bm' hR' hS hB'`.
+
+Establish `hq` using `GlobalTheory.T.quotientMeasure_integral_rmul_besselGroup k r Wp z π u μW μN μG νq`. Take `⟨⟨ha, hs, he, hc⟩, -⟩` from `hB`. Take `⟨⟨ha', hs', he', hc'⟩, -⟩` from `hB'`. Establish `hco` using `GlobalTheory.T.frechetContinuous_continuousOn_orbit_hasDerivAt hK k r ε mu R hR Wp Bm ha hs hc`. Establish `hco'` using `GlobalTheory.T.frechetContinuous_continuousOn_orbit_hasDerivAt hK k r ε mu' R' hR' Wp Bm' ha' hs' hc'`.
+
+Establish `hae : ∀ᵐ x ∂νq, Matrix.of x ∈ GG k r`. Take `⟨-, -, -, -, hW, hN, hG, hQ⟩` from `hS`. Conclude with `DDSmoothness.ae_UH_of_quot hG.2.2.1 (DDSmoothness.muSof_facts hW hN).1 (DDSmoothness.muSof_facts hW hN).2 hQ`. Establish `ht : ∀ w ∈ R.sm, ∀ g ∈ GG k r, R.σ g w ∈ R.sm` using `fun w hw g hg => TranslationBesselVanishing.smooth_translate hR.2 hw hg`. Establish `ht' : ∀ w ∈ R'.sm, ∀ g ∈ GG k r, R'.σ g w ∈ R'.sm` using `fun w hw g hg => TranslationBesselVanishing.smooth_translate hR'.2 hw hg`.
+
+Establish `hm : ∀ a ∈ GG k r, ∀ b ∈ GG k r, ∀ v, R.σ (a * b) v = R.σ a (R.σ b v)` using `fun a ha b hb v => by`. Rewrite using `[TranslationBesselVanishing.sigma_mul hR.2 ha hb]`. Both sides reduce to the same expression. Establish `hm' : ∀ a ∈ GG k r, ∀ b ∈ GG k r, ∀ v, R'.σ (a * b) v = R'.σ a (R'.σ b v)` using `fun a ha b hb v => by`. Rewrite using `[TranslationBesselVanishing.sigma_mul hR'.2 ha hb]`.
+
+Both sides reduce to the same expression. Establish `hform : IsInvForm R R' (fun w y => ∫ x, ⟪Bm' (R'.σ (Matrix.of x) y), Bm (R.σ (Matrix.of x) w)⟫_ℂ ∂νq)`. Use `⟨?_, ?_, ?_, ?_, ?_, 1, [[]], [[]], by simp, ?_⟩` and prove the remaining obligations. Introduce `w hw w' hw' y hy beta_reduce`. Rewrite using `[← integral_add (integrable_inner (hL' y hy) (hL w hw)) (integrable_inner (hL' y hy) (hL w' hw'))]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[map_add, ha _ (ht w hw _ hx) _ (ht w' hw' _ hx), inner_add_right]`. Introduce `a w hw y hy beta_reduce`. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[map_smul, hs a _ (ht w hw _ hx), inner_smul_right]`. Introduce `w hw y hy y' hy' beta_reduce`. Rewrite using `[← integral_add (integrable_inner (hL' y hy) (hL w hw)) (integrable_inner (hL' y' hy') (hL w hw))]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[map_add, ha' _ (ht' y hy _ hx) _ (ht' y' hy' _ hx), inner_add_left]`. Introduce `a w hw y hy beta_reduce`. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[map_smul, hs' a _ (ht' y hy _ hx), inner_smul_left]`. Both sides reduce to the same expression. Introduce `g hg w hw y hy beta_reduce`.
+
+Establish `key` using `hq (fun x => ⟪Bm' (R'.σ x y), Bm (R.σ x w)⟫_ℂ) hS (ContinuousOn.inner (𝕜 := ℂ) (hco' y hy).1 (hco w hw).1) ?_ (integrable_inner (hL' y hy) (hL w hw)) g hg`. Rewrite using `[← key]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[hm _ hx _ hg, hm' _ hx _ hg]`.
+
+Introduce and unpack `s ⟨h, hh, m, hmN, rfl⟩ x hx`. Take `⟨-, hT, ⟨u₀, hπ⟩, -⟩` from `hS`. Establish `hsG : h * m ∈ GG k r` using `DDSmoothness.uh_mul hh.1 hmN.1`. Establish `hiso : ∀ a b, ⟪π h a, π h b⟫_ℂ = ⟪a, b⟫_ℂ` using `(LinearMap.norm_map_iff_inner_map_map ((π h : Wp →L[ℂ] Wp) : Wp →ₗ[ℂ] Wp)).1 (MatrixMultiplicationContinuity.piW_unitary hT hπ h hh)`. Establish `hψ` using `MatrixMultiplicationContinuity.psi_norm z Formalism.QuantumDeterminants.cStd m`.
+
+Use `beta_reduce`. Rewrite using `[hm _ hsG _ hx, hm' _ hsG _ hx, he h hh m hmN _ (ht w hw _ hx), he' h hh m hmN _ (ht' y hy _ hx), inner_smul_left, inner_smul_right, hiso, ← mul_assoc, Complex.conj_mul', hψ]`. Simplify using the standard rewrite rules. Introduce `w hw y hy`. Use `norm_integral_inner_le (hL' y hy) (hL w hw) (hI' y hy y hy) (hI w hw w hw)` as an intermediate fact.
+
+Simplify `this` using `[PI.UpqRep.dsigW, mul_comm]`. Break down `(hP k r ε mu mu' R R' hR hR').2 _ hform with h | ⟨U, hU⟩` into its components or cases. Conclude with `h`. Conclude with `absurd (GlobalTheory.DSInequiv.param_eq_of_equiv hH k r ε mu mu' R R' hR hR' U hU) hne`.
+-/
 theorem bessel_orth_of_param_ne : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (mu' : Fin (2 * r + k + 1) → ℝ) (R R' : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (Bm : R.H → Wp) (Bm' : R'.H → Wp), R.IsDS ε mu → R'.IsDS ε mu' → mu ≠ mu' → SideG k r z π u μW μN μG νq → IsIsoB R z π νq Bm → IsIsoB R' z π νq Bm' → ∀ w ∈ R.sm, ∀ y ∈ R'.sm, ∫ x, ⟪Bm' (R'.σ (Matrix.of x) y), Bm (R.σ (Matrix.of x) w)⟫_ℂ ∂νq = 0 := by
   intro hH k r ε mu mu' R R' Wp _ _ _ _ z π u μW μN μG νq Bm Bm' hR hR' hne hS hB hB'
   have hK : PI.KFinSmooth := hH.1.2.2.1

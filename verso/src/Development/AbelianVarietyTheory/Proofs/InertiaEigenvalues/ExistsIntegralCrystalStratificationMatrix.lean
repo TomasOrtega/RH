@@ -16,6 +16,13 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.CrysStrat
 
+/- English proof (translation)
+Use `mem_tot.2 fun τ => mem_vecs.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : τ = σ`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Distinguish the cases in `h' : i = j`.
+
+Substitute `h'` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h']`. Conclude with `zero_mem _`.
+
+Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+-/
 theorem single_mem_M {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     {l e a : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (σ : ZMod a) (j : ι) :
     (Pi.single σ (Pi.single j (1 : K⟦X⟧)) : Vec K a ι) ∈ P.M := by
@@ -27,10 +34,38 @@ theorem single_mem_M {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDis
     · rw [Pi.single_eq_of_ne h']; exact zero_mem _
   · rw [Pi.single_eq_of_ne h]; exact zero_mem _
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem mulVec_single_one' {R ι : Type} [CommRing R] [Fintype ι] [DecidableEq ι] (M : Matrix ι ι R) (j i : ι) :
     (M *ᵥ Pi.single j 1) i = M i j := by
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `hBS l _ a e _ _ ϖ LL _ _ hl ι _ _ P T I hBK sh φ₂ hsh hφC hφsh`. Take `⟨EE, c, hinj, hcM, hsurj, hsemi, hO, hfr⟩` from `GlobalTheory.T.breuilKisinPrism_crystal_coordinates l a e _ _ (thetaW a LL) ϖ ι P _ _ hBS hBK`. Take `⟨PP, S₀, p₀, p₁, δ, j, j₀, hI, hδ, hj₀, hjp, hjφ, hS, hS', -⟩` from `GlobalTheory.T.exists_crystalline_prisms l a e (↥(OL LL)) (↥LL.1) (thetaW a LL) ϖ hl sh φ₂ hsh hφC hφsh`. Take `⟨lam₀, hl₀, hv₀⟩` from `GlobalTheory.T.exists_crystal_coordinates_over_breuilKisin l a e _ _ (thetaW a LL) ϖ ι EE c hsemi PP p₀ j PowerSeries.C (fun τ w => (hjp τ w).1)`. Take `⟨lam₁, hl₁, hv₁⟩` from `GlobalTheory.T.exists_crystal_coordinates_over_breuilKisin l a e _ _ (thetaW a LL) ϖ ι EE c hsemi PP p₁ j sh (fun τ w => (hjp τ w).2)`.
+
+Take `⟨ε, hε⟩` from `GlobalTheory.T.crystalline_phi_module_map_exists l a e _ _ (thetaW a LL) ϖ ι P EE c hinj hcM hsurj hsemi hO sh hsh PP p₀ p₁ j hjp lam₀ lam₁ hl₀ hl₁ hv₀ hv₁`. Establish `hsh0 : ∀ f, PowerSeries.constantCoeff (sh f) = f` using `fun f => by`. Simplify using `using hsh f 0`. Establish `hcol : ∀ (τ : ZMod a) (jj : ι), ∃ x, c x = Pi.single (τ - 1) (Pi.single jj 1)` using `fun τ jj => hsurj _ (single_mem_M P _ jj)`. Establish `hv1 : ∀ (τ : ZMod a) (jj : ι) (x : EE.M (ϖ.prism a)), c x = Pi.single (τ - 1) (Pi.single jj 1) → lam₁ (EE.tr p₁ x) τ = Pi.single jj 1` using `fun τ jj x hx => funext fun i => by`.
+
+Rewrite using `[hv₁, hx, Pi.single_eq_same]`. Distinguish the cases in `h : i = jj`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Establish `hv0 : ∀ (τ : ZMod a) (jj : ι) (x : EE.M (ϖ.prism a)), c x = Pi.single (τ - 1) (Pi.single jj 1) → ∀ i, lam₀ (EE.tr p₁ x) τ i = ε τ i jj` using `fun τ jj x hx i => by`. Rewrite using `[hε, hv1 τ jj x hx, mulVec_single_one']`. Establish `hlK : (l : ↥LL.1) ≠ 0`. Establish `h` using `(map_ne_zero (algebraMap ℚ_[l] ↥LL.1)).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero : (l : ℚ_[l]) ≠ 0)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `hl0 : ((l : ℕ) : (↥LL.1)⟦X⟧⟦X⟧) ≠ 0` using `fun h => hlK (by`. Use `congrArg (fun f => PowerSeries.constantCoeff (PowerSeries.constantCoeff f)) h` as an intermediate fact. Simplify using `using this)`. Use `⟨ε, fun τ => ?_, fun τ => ?_, fun τ i jj k => ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i jj => ?_` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hcol τ jj`. Rewrite using `[Matrix.map_apply, ← hv0 τ jj x hx i, GlobalTheory.T.crystal_coordinates_constantCoeff_eq l a e _ _ (thetaW a LL) ϖ ι EE c hsemi sh hsh PP S₀ p₀ p₁ δ j j₀ hδ hj₀ hjp lam₀ lam₁ hl₀ hl₁ hv₀ hv₁, hv1 τ jj x hx, Matrix.one_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `Matrix.ext fun i jj => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hcol (τ - 1) jj`.
+
+Establish `hlI : ((l : ℕ) : PP.A) ∈ PP.I` using `by rw [hI]; exact Ideal.mem_span_singleton_self _`. Take `⟨n, k, hn⟩` from `exists_isFrac ((l : ℕ) : PP.A) (EE.Φ PP ⟨_, hlI⟩ (EE.tr p₁ x))`. Establish `G₀` using `GlobalTheory.T.crystal_frobenius_breuilKisin_coordinates l a e _ _ (thetaW a LL) ϖ ι P EE c hsemi hfr PP hlI p₀ j PowerSeries.C φ₂ (fun τ w => (hjp τ w).1) hjφ hφC (PowerSeries.C_injective) lam₀ hl₀ hv₀ _ n k hn τ i`. Establish `G₁` using `GlobalTheory.T.crystal_frobenius_breuilKisin_coordinates l a e _ _ (thetaW a LL) ϖ ι P EE c hsemi hfr PP hlI p₁ j sh φ₂ (fun τ w => (hjp τ w).2) hjφ hφsh (fun f g h => by rw [← hsh0 f, ← hsh0 g, h]) lam₁ hl₁ hv₁ _ n k hn`. Establish `hy1` using `hv1 (τ - 1) jj x hx`.
+
+Establish `hy0 : ∀ m, lam₀ (EE.tr p₁ x) (τ - 1) m = ε (τ - 1) m jj` using `hv0 (τ - 1) jj x hx`. Establish `hE` using `congrFun (hε n τ) i`. Rewrite `hE` using `[G₀]`. Simplify using `only [Matrix.mulVec, dotProduct, G₁, hy1, hy0] at hE`. Establish `key : ((l : ℕ) : (↥LL.1)⟦X⟧⟦X⟧) ^ k * (((P.mx (τ - 1)).map (frob (↥LL.1) l)).map PowerSeries.C * (ε (τ - 1)).map φ₂) i jj = ((l : ℕ) : (↥LL.1)⟦X⟧⟦X⟧) ^ k * (ε τ * ((P.mx (τ - 1)).map (frob (↥LL.1) l)).map sh) i jj`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Establish `h1 : ∀ q, φ₂ ((Pi.single jj (1 : (↥LL.1)⟦X⟧⟦X⟧) : ι → (↥LL.1)⟦X⟧⟦X⟧) q) = (Pi.single jj 1 : ι → (↥LL.1)⟦X⟧⟦X⟧) q` using `fun q => by`. Distinguish the cases in `h : q = jj`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Simplify using `only [h1] at hE`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at hE`. Simplify using `only [Matrix.map_apply] at hE ⊢`. Rewrite using `[hE, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_left_cancel₀ (pow_ne_zero k hl0) key).symm`. Take `⟨x, hx⟩` from `hcol τ jj`. Rewrite using `[← hv0 τ jj x hx i]`.
+
+Conclude with `GlobalTheory.T.factorial_mul_crystalCoord_coeff_mem l a e _ _ (thetaW a LL) ϖ ι P EE c hcM PP p₀ j hS' lam₀ hl₀ hv₀ _ τ i k`.
+-/
 theorem exists_stratification : GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T), IsBK (T := resF T (ϖ.field a)) (I.res (inclG (ϖ.field a)) (continuous_subtype_val.subtype_mk _)) → ∀ (sh : (↥LL.1)⟦X⟧ →+* (↥LL.1)⟦X⟧⟦X⟧) (φ₂ : (↥LL.1)⟦X⟧⟦X⟧ →+* (↥LL.1)⟦X⟧⟦X⟧), (∀ (f : (↥LL.1)⟦X⟧) (i : ℕ), (i.factorial : (↥LL.1)⟦X⟧) * coeff i (sh f) = (PowerSeries.derivative (↥LL.1))^[i] f) → (∀ f : (↥LL.1)⟦X⟧, φ₂ (PowerSeries.C f) = PowerSeries.C (frob (↥LL.1) l f)) → (∀ f : (↥LL.1)⟦X⟧, φ₂ (sh f) = sh (frob (↥LL.1) l f)) → ∃ ε : ZMod a → Matrix ι ι (↥LL.1)⟦X⟧⟦X⟧, (∀ τ, (ε τ).map PowerSeries.constantCoeff = 1) ∧ (∀ τ, ε τ * ((P.mx (τ - 1)).map (frob (↥LL.1) l)).map sh = ((P.mx (τ - 1)).map (frob (↥LL.1) l)).map PowerSeries.C * (ε (τ - 1)).map φ₂) ∧ ∀ (τ : ZMod a) (i j : ι) (k : ℕ), (k.factorial : (↥LL.1)⟦X⟧) * coeff k (ε τ i j) ∈ S (↥(OL LL)) (↥LL.1) e := by
   intro hBS l _ a e _ _ ϖ LL _ _ hl ι _ _ P T I hBK sh φ₂ hsh hφC hφsh
   obtain ⟨EE, c, hinj, hcM, hsurj, hsemi, hO, hfr⟩ := GlobalTheory.T.breuilKisinPrism_crystal_coordinates l a e _ _ (thetaW a LL) ϖ ι P _ _ hBS hBK

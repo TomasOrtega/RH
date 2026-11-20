@@ -20,6 +20,9 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show ((g * h)⁻¹ : GL (Fin 3) F).valᵀ = (g⁻¹ : GL (Fin 3) F).valᵀ * (h⁻¹ : GL (Fin 3) F).valᵀ`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+-/
 theorem tinv_mul (g h : GL (Fin 3) F) : GL2LocalData.tinv (g * h) = GL2LocalData.tinv g * GL2LocalData.tinv h := by
   apply Units.ext
   show ((g * h)⁻¹ : GL (Fin 3) F).valᵀ = (g⁻¹ : GL (Fin 3) F).valᵀ * (h⁻¹ : GL (Fin 3) F).valᵀ
@@ -27,6 +30,11 @@ theorem tinv_mul (g h : GL (Fin 3) F) : GL2LocalData.tinv (g * h) = GL2LocalData
 
 def tinvHom : GL (Fin 3) F →* GL (Fin 3) F := MonoidHom.mk' GL2LocalData.tinv tinv_mul
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e : ((dg x y z : GL (Fin 3) F)⁻¹ : GL (Fin 3) F).val = (dg x y z : GL (Fin 3) F).inv` using `rfl`. Use `show (GL2LocalData.w3 : GL (Fin 3) F).val * ((dg x y z : GL (Fin 3) F)⁻¹ : GL (Fin 3) F).valᵀ = _`. Rewrite using `[e]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg, GL2LocalData.w3, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 theorem weyl_transposeInv_diag_GL3 (x y z : Fˣ) :
     (GL2LocalData.w3 : GL (Fin 3) F) * GL2LocalData.tinv (dg x y z) = dg z⁻¹ y⁻¹ x⁻¹ * GL2LocalData.w3 := by
   apply Units.ext
@@ -36,6 +44,9 @@ theorem weyl_transposeInv_diag_GL3 (x y z : Fˣ) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg, GL2LocalData.w3, Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Use `(GLnLocal.mem_integralGL_iff F 3).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GL2LocalData.w3, zero_mem, one_mem]`. Establish `e : ((GL2LocalData.w3 : GL (Fin 3) F)⁻¹ : GL (Fin 3) F).val = (GL2LocalData.w3 : GL (Fin 3) F).inv` using `rfl show ((GL2LocalData.w3 : GL (Fin 3) F)⁻¹ : GL (Fin 3) F).val i j ∈ _`. Rewrite using `[e]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GL2LocalData.w3, zero_mem, one_mem]`.
+-/
 theorem weyl_GL3_mem_integralGL : (GL2LocalData.w3 : GL (Fin 3) F) ∈ integralGL F 3 := by
   refine (GLnLocal.mem_integralGL_iff F 3).2 ⟨fun i j => ?_, fun i j => ?_⟩
   · fin_cases i <;> fin_cases j <;> simp [GL2LocalData.w3, zero_mem, one_mem]

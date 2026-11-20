@@ -9,6 +9,9 @@ namespace Formalism.HermitianLatticeCounting.P
 open Formalism.HermitianLatticeCounting.S7
 open Formalism.NuclearRankWeightBounds.D (lead hs q0)
 
+/- English proof (translation)
+Simplify using `only [trace, Matrix.diag, mul_apply, conjTranspose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[show star (Y b a) = (starRingEnd ℂ) (Y b a) from rfl, Complex.conj_mul']`.
+-/
 lemma hs_sq_trace_b {N : ℕ} (Y : Matrix (Fin N) (Fin N) ℂ) :
     ((∑ a, ∑ b, ‖Y a b‖ ^ 2 : ℝ) : ℂ) = (Yᴴ * Y).trace := by
   simp only [trace, Matrix.diag, mul_apply, conjTranspose_apply]
@@ -17,6 +20,11 @@ lemma hs_sq_trace_b {N : ℕ} (Y : Matrix (Fin N) (Fin N) ℂ) :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   rw [show star (Y b a) = (starRingEnd ℂ) (Y b a) from rfl, Complex.conj_mul']
 
+/- English proof (translation)
+Unfold `hs`. Use `congr 1`. Establish `: ((∑ a, ∑ b, ‖(k * X * kᴴ) a b‖ ^ 2 : ℝ) : ℂ) = ((∑ a, ∑ b, ‖X a b‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[hs_sq_trace_b, hs_sq_trace_b]`. Establish `e : (k * X * kᴴ)ᴴ * (k * X * kᴴ) = k * (Xᴴ * X) * kᴴ`.
+
+Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc kᴴ k, hk, Matrix.one_mul]`. Rewrite using `[e, trace_mul_cycle, hk, Matrix.one_mul]`. Conclude with `this` after adjusting the coercions.
+-/
 lemma hs_unitary_conj_b {N : ℕ} (k X : Matrix (Fin N) (Fin N) ℂ) (hk : kᴴ * k = 1) :
     hs (k * X * kᴴ) = hs X := by
   unfold hs
@@ -29,9 +37,15 @@ lemma hs_unitary_conj_b {N : ℕ} (k X : Matrix (Fin N) (Fin N) ℂ) (hk : kᴴ 
     rw [e, trace_mul_cycle, hk, Matrix.one_mul]
   exact_mod_cast this
 
+/- English proof (translation)
+Simplify using `[hs]`.
+-/
 lemma hs_neg_b {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) : hs (-X) = hs X := by
   simp [hs]
 
+/- English proof (translation)
+Unfold `hs`. Rewrite using `[← Formalism.NuclearRankWeightBounds.P.sum_sq_eigenvalues X hX]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Conclude with `Finset.single_le_sum (f := fun j => hX.eigenvalues j ^ 2) (fun j _ => sq_nonneg _) (mem_univ i)`.
+-/
 lemma eigenvalue_le_hs_b {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (hX : X.IsHermitian) (i : Fin N) :
     hX.eigenvalues i ≤ hs X := by
   unfold hs
@@ -39,6 +53,25 @@ lemma eigenvalue_le_hs_b {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (hX : X.IsHe
   apply Real.le_sqrt_of_sq_le
   exact Finset.single_le_sum (f := fun j => hX.eigenvalues j ^ 2) (fun j _ => sq_nonneg _) (mem_univ i)
 
+/- English proof (translation)
+Use `set U : Matrix (Fin N) (Fin N) ℂ := (hX.eigenvectorUnitary : Matrix (Fin N) (Fin N) ℂ) with hUdef`. Use `set D : Fin N → ℂ := RCLike.ofReal ∘ hX.eigenvalues with hDdef`. Establish `hUU : U * Uᴴ = 1`. Simplify `Unitary.coe_mul_star_self hX.eigenvectorUnitary` using `[U, star_eq_conjTranspose]`. Establish `hUU' : Uᴴ * U = 1`.
+
+Simplify `Unitary.coe_star_mul_self hX.eigenvectorUnitary` using `[U, star_eq_conjTranspose]`. Establish `hspec : X = U * diagonal D * Uᴴ` using `by conv_lhs => rw [hX.spectral_theorem]`. Simplify using `[U, D, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose]`. Establish `hinv : U⁻¹ = Uᴴ` using `Matrix.inv_eq_right_inv hUU`. Establish `hunit : IsUnit U` using `⟨⟨U, Uᴴ, hUU, hUU'⟩, rfl⟩`.
+
+Establish `hexp : NormedSpace.exp X = U * diagonal (fun i => ((Real.exp (hX.eigenvalues i) : ℝ) : ℂ)) * Uᴴ` using `by conv_lhs => rw [hspec, ← hinv, Matrix.exp_conj U _ hunit, Matrix.exp_diagonal]`. Establish `hD : NormedSpace.exp D = fun i => ((Real.exp (hX.eigenvalues i) : ℝ) : ℂ)`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp, ← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp]`. Both sides reduce to the same expression.
+
+Rewrite using `[hD, hinv]`. Establish `e : ((Real.exp (hs X) ^ 2 : ℝ) • (1 : Matrix (Fin N) (Fin N) ℂ) - NormedSpace.exp X * NormedSpace.exp X) = U * diagonal (fun i => ((Real.exp (hs X) ^ 2 - Real.exp (hX.eigenvalues i) ^ 2 : ℝ) : ℂ)) * Uᴴ`. Rewrite using `[hexp]`. Establish `e1 : U * diagonal (fun i => ((Real.exp (hX.eigenvalues i) : ℝ) : ℂ)) * Uᴴ * (U * diagonal (fun i => ((Real.exp (hX.eigenvalues i) : ℝ) : ℂ)) * Uᴴ) = U * diagonal (fun i => ((Real.exp (hX.eigenvalues i) ^ 2 : ℝ) : ℂ)) * Uᴴ`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Uᴴ U, hUU', Matrix.one_mul, ← Matrix.mul_assoc (diagonal _) (diagonal _), diagonal_mul_diagonal]`. Use `congr 3`. Use extensionality with `i`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : ((Real.exp (hs X) ^ 2 : ℝ) • (1 : Matrix (Fin N) (Fin N) ℂ)) = U * diagonal (fun _ => ((Real.exp (hs X) ^ 2 : ℝ) : ℂ)) * Uᴴ`. Establish `: diagonal (fun _ : Fin N => ((Real.exp (hs X) ^ 2 : ℝ) : ℂ)) = ((Real.exp (hs X) ^ 2 : ℝ) : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)`. Use extensionality with `a b`. Simplify using `[diagonal_apply, one_apply]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hUU]`.
+
+Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, ← Matrix.sub_mul, ← Matrix.mul_sub, diagonal_sub]`. Use `congr 3`. Use extensionality with `i`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Apply `Matrix.PosSemidef.mul_mul_conjTranspose_same` to reduce the goal to its premises. Apply `Matrix.PosSemidef.diagonal` to reduce the goal to its premises.
+
+Introduce `i`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[Complex.zero_le_real, sub_nonneg]`. Use `gcongr`. Conclude with `eigenvalue_le_hs_b X hX i`.
+-/
 lemma exp_sq_psd_b {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (hX : X.IsHermitian) :
     ((Real.exp (hs X) ^ 2 : ℝ) • (1 : Matrix (Fin N) (Fin N) ℂ)
         - NormedSpace.exp X * NormedSpace.exp X).PosSemidef := by
@@ -93,6 +126,17 @@ lemma exp_sq_psd_b {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (hX : X.IsHermitia
   gcongr
   exact eigenvalue_le_hs_b X hX i
 
+/- English proof (translation)
+Introduce `N k X hk hX`. Establish `hk1 : k * kᴴ = 1`. Simplify `(Matrix.mem_unitaryGroup_iff.1 hk)` using `[star_eq_conjTranspose]`. Establish `hk2 : kᴴ * k = 1`. Simplify `(Matrix.mem_unitaryGroup_iff'.1 hk)` using `[star_eq_conjTranspose]`.
+
+Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_right_inv hk1`. Establish `hunit : IsUnit k` using `⟨⟨k, kᴴ, hk1, hk2⟩, rfl⟩`. Establish `hexp : NormedSpace.exp (-(k * X * kᴴ)) = k * (NormedSpace.exp X)⁻¹ * kᴴ`. Establish `: -(k * X * kᴴ) = k * (-X) * k⁻¹` using `by rw [hinv]; simp`. Rewrite using `[this, Matrix.exp_conj k _ hunit, Matrix.exp_neg, hinv]`.
+
+Establish `hdet : IsUnit (NormedSpace.exp X).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp X)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[hexp]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hk2, Matrix.one_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one, hk1]`. Conclude with `(Matrix.isHermitian_mul_mul_conjTranspose k hX).neg`. Rewrite using `[hs_neg_b, hs_unitary_conj_b k X hk2]`. Establish `e : (k * NormedSpace.exp X)ᴴ * (k * NormedSpace.exp X) = NormedSpace.exp X * NormedSpace.exp X`.
+
+Rewrite using `[conjTranspose_mul, (hX.exp).eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `exp_sq_psd_b X hX`.
+-/
 theorem polar_decomposition_inverse : PolarInv := by
   intro N k X hk hX
   have hk1 : k * kᴴ = 1 := by
@@ -124,6 +168,29 @@ theorem polar_decomposition_inverse : PolarInv := by
 
 open Classical in
 
+/- English proof (translation)
+Establish `hlev' : ∀ t : ℝ, ∃ i, 0 ≤ t → (t ≤ u i ∧ F t ≤ w i)`. Introduce `t`. Distinguish the cases in `ht : 0 ≤ t`. Take `⟨i, hi⟩` from `hlev t ht`. Conclude with `⟨i, fun _ => hi⟩`.
+
+Conclude with `⟨0, fun h => absurd h ht⟩`. Use `choose lev hl using hlev'`. Use `set L : Γ → ι → ℕ := fun γ v => lev (d γ v) with hL`. Use `set M : ℕ := (S.sup fun γ => univ.sup (L γ)) + 1 with hM`. Use `set T : Finset (ι → ℕ) := Fintype.piFinset fun _ => range M with hT`.
+
+Establish `hmaps : ∀ γ ∈ S, L γ ∈ T`. Introduce `γ hγ`. Rewrite using `[hT, Fintype.mem_piFinset]`. Introduce `v`. Rewrite using `[mem_range, hM, Nat.lt_succ_iff]`.
+
+Conclude with `le_trans (Finset.le_sup (f := L γ) (mem_univ v)) (Finset.le_sup (f := fun γ => univ.sup (L γ)) hγ)`. Establish `h1 : ∑ γ ∈ S, ∏ v, F (d γ v) ≤ ∑ γ ∈ S, ∏ v, w (L γ v)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `γ hγ`. Apply `Finset.prod_le_prod` to reduce the goal to its premises.
+
+Introduce `v _`. Conclude with `hF _`. Introduce `v _`. Conclude with `(hl _ (hd γ hγ v)).2`. Establish `h2 : ∑ γ ∈ S, ∏ v, w (L γ v) = ∑ I ∈ T, ∑ γ ∈ S with L γ = I, ∏ v, w (L γ v)` using `(Finset.sum_fiberwise_of_maps_to hmaps _).symm`.
+
+Establish `h3 : ∀ I ∈ T, ∑ γ ∈ S with L γ = I, ∏ v, w (L γ v) ≤ A * ∏ v, (w (I v) * Real.exp (B * u (I v)))`. Introduce `I _`. Establish `e1 : ∑ γ ∈ S with L γ = I, ∏ v, w (L γ v) = ((S.filter fun γ => L γ = I).card : ℝ) * ∏ v, w (I v)`. Rewrite using `[← nsmul_eq_mul, ← Finset.sum_const]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `γ hγ`. Rewrite using `[(Finset.mem_filter.1 hγ).2]`. Rewrite using `[e1]`. Establish `hsub : (S.filter fun γ => L γ = I) ⊆ (S.filter fun γ => ∀ v, d γ v ≤ u (I v))`. Introduce `γ hγ`.
+
+Rewrite `hγ`, the goal using `[Finset.mem_filter]`. Use `⟨hγ.1, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hγ.2]`. Conclude with `(hl _ (hd γ hγ.1 v)).1`. Establish `hc : ((S.filter fun γ => L γ = I).card : ℝ) ≤ A * Real.exp (B * ∑ v, u (I v))` using `le_trans (by exact_mod_cast Finset.card_le_card hsub) (hcount _ fun v => hu _)`.
+
+Establish `hp : 0 ≤ ∏ v, w (I v)` using `Finset.prod_nonneg fun v _ => hw _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.mul_sum, Real.exp_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ∑ I ∈ T, A * ∏ v, (w (I v) * Real.exp (B * u (I v))) = A * (∑ i ∈ range M, w i * Real.exp (B * u i)) ^ Fintype.card ι`.
+
+Use `Finset.prod_univ_sum (fun _ : ι => range M) (fun _ i => w i * Real.exp (B * u i))` as an intermediate fact. Rewrite using `[← Finset.mul_sum, hT, ← this, Finset.prod_const, Finset.card_univ]`. Establish `h5 : 0 ≤ ∑ i ∈ range M, w i * Real.exp (B * u i)` using `Finset.sum_nonneg fun i _ => mul_nonneg (hw i) (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hA` to reduce the goal to its premises.
+
+Conclude with `pow_le_pow_left₀ h5 (hK M) _`.
+-/
 lemma layer_sum_b (ι Γ : Type) [Fintype ι] (S : Finset Γ) (d : Γ → ι → ℝ) (A B K : ℝ)
     (F : ℝ → ℝ) (u w : ℕ → ℝ) (hA : 0 ≤ A) (hu : ∀ i, 0 ≤ u i) (hw : ∀ i, 0 ≤ w i)
     (hF : ∀ t, 0 ≤ F t) (hlev : ∀ t, 0 ≤ t → ∃ i, t ≤ u i ∧ F t ≤ w i)
@@ -192,11 +259,33 @@ lemma layer_sum_b (ι Γ : Type) [Fintype ι] (S : Finset Γ) (d : Γ → ι →
       apply mul_le_mul_of_nonneg_left _ hA
       exact pow_le_pow_left₀ h5 (hK M) _
 
+/- English proof (translation)
+Rewrite using `[one_div, ← tsum_geometric_of_lt_one hx0 hx1]`. Conclude with `(summable_geometric_of_lt_one hx0 hx1).sum_le_tsum _ (fun i _ => pow_nonneg hx0 i)`.
+-/
 lemma geom_partial_le_b (x : ℝ) (hx0 : 0 ≤ x) (hx1 : x < 1) (M : ℕ) :
     ∑ i ∈ range M, x ^ i ≤ 1 / (1 - x) := by
   rw [one_div, ← tsum_geometric_of_lt_one hx0 hx1]
   exact (summable_geometric_of_lt_one hx0 hx1).sum_le_tsum _ (fun i _ => pow_nonneg hx0 i)
 
+/- English proof (translation)
+Introduce `ι Γ _ _ S d A B h q hq hA hB hh hd hcount`. Establish `hq' : (1:ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hs1 : 1 ≤ Real.sqrt (2 * (q:ℝ))`. Rewrite using `[Real.one_le_sqrt]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hs0 : 0 < Real.sqrt (2 * (q:ℝ))` using `by linarith`. Establish `hh0 : 0 ≤ h` using `le_trans (by positivity) hh`. Establish `hx1 : Real.exp (-B) < 1` using `by rw [Real.exp_lt_one_iff]; linarith`. Use `layer_sum_b ι Γ S d A B _ (fun t => Real.exp (-(decExp h q t))) (fun i => (i:ℝ) + 1) (fun i => Real.exp (-(2 * B * i))) hA (fun i => by positivity) (fun i => (Real.exp_pos _).le) (fun t => (Real.exp_pos _).le) ?_ hd hcount ?_` and prove the remaining obligations. Introduce `t ht`.
+
+Use `⟨⌈t⌉₊ - 1, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Nat.le_ceil t`. Establish `h2 : (⌈t⌉₊ : ℝ) ≤ ((⌈t⌉₊ - 1 : ℕ) : ℝ) + 1`. Establish `: ⌈t⌉₊ ≤ (⌈t⌉₊ - 1) + 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.exp_le_exp, neg_le_neg_iff]`. Unfold `decExp`. Break down `Nat.eq_zero_or_pos (⌈t⌉₊ - 1) with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using `only [Nat.cast_zero, mul_zero]`. Establish `: 0 ≤ min (t ^ 2) (t / Real.sqrt (2 * (q:ℝ)))` using `le_min (by positivity) (by positivity)`. Check the signs of the components of the expression. Establish `hlt : ((⌈t⌉₊ - 1 : ℕ) : ℝ) < t`. Rewrite using `[← Nat.lt_ceil]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hi1 : (1:ℝ) ≤ ((⌈t⌉₊ - 1 : ℕ) : ℝ)` using `by exact_mod_cast h0`. Use `set i : ℝ := ((⌈t⌉₊ - 1 : ℕ) : ℝ) with hi`. Establish `ht1 : 1 ≤ t` using `by linarith`. Establish `hmin : i / Real.sqrt (2 * (q:ℝ)) ≤ min (t ^ 2) (t / Real.sqrt (2 * (q:ℝ)))`.
+
+Apply `le_min` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Introduce `M`.
+
+Establish `e : ∀ i : ℕ, Real.exp (-(2 * B * i)) * Real.exp (B * ((i:ℝ) + 1)) = Real.exp B * Real.exp (-B) ^ i`. Introduce `i`. Rewrite using `[← Real.exp_add, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[e]`. Rewrite using `[← Finset.mul_sum, div_eq_mul_one_div]`. Conclude with `mul_le_mul_of_nonneg_left (geom_partial_le_b _ (Real.exp_pos _).le hx1 M) (Real.exp_pos _).le`.
+-/
 theorem all_sum_rate : AllSumRate := by
   intro ι Γ _ _ S d A B h q hq hA hB hh hd hcount
   have hq' : (1:ℝ) ≤ q := by exact_mod_cast hq
@@ -244,6 +333,15 @@ theorem all_sum_rate : AllSumRate := by
     rw [← Finset.mul_sum, div_eq_mul_one_div]
     exact mul_le_mul_of_nonneg_left (geom_partial_le_b _ (Real.exp_pos _).le hx1 M) (Real.exp_pos _).le
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_filter]`. Establish `h1 : ∀ x y : Fin a, j x * j y = (if x < y then j x * j y else 0) + (if y < x then j x * j y else 0) + (if x = y then j x ^ 2 else 0)`. Introduce `x y`. Break down `lt_trichotomy x y with h | h | h` into its components or cases. Simplify using `[h, h.ne, h.not_gt]`.
+
+Substitute `h` using the available equality. Simplify using `[sq]`. Simplify using `[h, h.ne', h.not_gt]`. Establish `h2 : ∑ x, ∑ y, (if y < x then j x * j y else 0) = ∑ x, ∑ y, (if x < y then j x * j y else 0)`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, Finset.sum_ite_eq, mem_univ, if_true]`. Rewrite using `[h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sq_sum_fin_b {a : ℕ} (j : Fin a → ℕ) :
     (∑ x, j x) ^ 2 = ∑ x, j x ^ 2 + 2 * ∑ x, ∑ y ∈ univ.filter (fun y => x < y), j x * j y := by
   simp only [Finset.sum_filter]
@@ -266,6 +364,11 @@ lemma sq_sum_fin_b {a : ℕ} (j : Fin a → ℕ) :
       simp only [Finset.sum_add_distrib, Finset.sum_ite_eq, mem_univ, if_true]
       rw [h2]; ring
 
+/- English proof (translation)
+Unfold `dimN`. Establish `h1 : ∑ x, ∑ y ∈ univ.filter (fun y => x < y), 2 * j x * j y = 2 * ∑ x, ∑ y ∈ univ.filter (fun y => x < y), j x * j y`. Simplify using `only [Finset.mul_sum, mul_assoc]`. Establish `h2 : ∑ x, 2 * j x * n0 = 2 * (∑ x, j x) * n0`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma dimN_eq_b {a : ℕ} (j : Fin a → ℕ) (n0 : ℕ) :
     dimN j n0 = 4 * (∑ x, ∑ y ∈ univ.filter (fun y => x < y), j x * j y) + ∑ x, j x ^ 2
       + 2 * (∑ x, j x) * n0 := by
@@ -277,10 +380,52 @@ lemma dimN_eq_b {a : ℕ} (j : Fin a → ℕ) (n0 : ℕ) :
     simp only [Finset.mul_sum, Finset.sum_mul]
   rw [h1, h2]; ring
 
+/- English proof (translation)
+Unfold `Vsph`. Conclude with `Finset.prod_pos fun l _ => by positivity`.
+-/
 lemma vsph_pos_b (i : ℕ) : 0 < Vsph i := by
   unfold Vsph
   exact Finset.prod_pos fun l _ => by positivity
 
+/- English proof (translation)
+Take `⟨Cv, hCv, hV⟩` from `hV`. Introduce `C hC`. Establish `hC7 : 1 ≤ C ^ 7` using `one_le_pow₀ hC`. Use `⟨C ^ 7 * Cv, by nlinarith, ?_⟩` and prove the remaining obligations. Introduce `a p q n0 f j v res cIw volN volR volGL hj ha hJq hqp hn hf hv hres hN0 hN hGL hR0 hR hI0 hI`.
+
+Establish `hVr` using `hV p q a j hJq hqp`. Establish `hsq` using `sq_sum_fin_b j`. Establish `hdim` using `dimN_eq_b j n0`. Establish `haJ : a ≤ ∑ x, j x`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set J := ∑ x, j x with hJ`. Use `set dN := dimN j n0 with hdN`. Use `set Q := ∑ x, j x ^ 2 with hQ`. Use `set P := ∑ x, ∑ y ∈ univ.filter (fun y => x < y), j x * j y with hP`. Use `set JJ : ℝ := (J : ℝ) ^ ((J : ℝ) ^ 2 / 2) with hJJ`.
+
+Use `set R : ℝ := Vsph p * Vsph q / (Vsph (p - J) * Vsph (q - J) * ∏ x, Vsph (j x)) with hRdef`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hCv0 : 0 < Cv` using `by linarith`. Establish `hv0 : 0 < v` using `by linarith`. Establish `hJJ0 : 0 ≤ JJ` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+
+Establish `hR0' : 0 ≤ R`. Use `vsph_pos_b p` as an intermediate fact. Use `vsph_pos_b q` as an intermediate fact. Use `vsph_pos_b (p - J)` as an intermediate fact. Use `vsph_pos_b (q - J)` as an intermediate fact.
+
+Establish `: 0 < ∏ x, Vsph (j x)` using `Finset.prod_pos fun x _ => vsph_pos_b _`. Check the signs of the components of the expression. Establish `hJ1 : 1 ≤ J` using `le_trans ha haJ`. Establish `hexp : dN * f + dN * f + Q * f + a * f + (p + q) * f ≤ 7 * (J * (p + q) * f)`. Establish `hn1 : J ≤ p + q` using `by omega`.
+
+Establish `h1 : dN ≤ 2 * (J * (p + q))`. Rewrite using `[hdim, hn]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : Q ≤ J * (p + q)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : p + q ≤ J * (p + q)` using `Nat.le_mul_of_pos_left _ hJ1`. Establish `h4 : a ≤ J * (p + q)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hid : ((p + q : ℕ) : ℝ) ^ 2 - (n0 : ℝ) ^ 2 = 2 * (Q : ℝ) + 2 * (dN : ℝ)`.
+
+Establish `: (p + q) ^ 2 = n0 ^ 2 + 2 * Q + 2 * dN`. Rewrite using `[hdim, hn]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h' : ((p + q : ℕ) : ℝ) ^ 2 = (n0 : ℝ) ^ 2 + 2 * Q + 2 * dN` using `by exact_mod_cast this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set W : ℝ := (Cv / (p : ℝ)) ^ (J * (p - J)) * JJ with hW`. Use `set W' : ℝ := (C ^ 7 * Cv / (p : ℝ)) ^ (J * (p - J)) * JJ with hW'`. Establish `hW0 : 0 ≤ W` using `by positivity`. Establish `hWW : W ≤ W'`. Rewrite using `[hW, hW']`.
+
+Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `sA : cIw ≤ C ^ (dN * f) * (Cv ^ (J * (p + q) * f) * W ^ f)`. Use `hI.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hW, ← mul_assoc]`. Conclude with `hVr`. Use `_ = _ := by rw [mul_pow, mul_pow, ← pow_mul, ← pow_mul]`. Establish `sB : volN ≤ C ^ (dN * f) * v ^ ((f : ℝ) * dN / 2)`. Use `hN.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.mul_rpow hC0.le hv0.le]`. Use `gcongr`. Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le hC` to reduce the goal to its premises. Use `push_cast`.
+
+Establish `: (0:ℝ) ≤ (f:ℝ) * dN` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `sC : ∏ x, volGL x ≤ C ^ (Q * f) * v ^ ((Q : ℝ) * f) * res ^ a * C ^ (a * f)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.prod_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← Finset.sum_mul, mul_pow, ← pow_mul, mul_comm f a]`.
+
+Use `congr 3`. Rewrite using `[← Real.rpow_natCast, Nat.cast_mul]`. Establish `hG0 : 0 ≤ ∏ x, volGL x` using `Finset.prod_nonneg fun x _ => (hGL x).1`. Establish `hvv : v ^ ((f : ℝ) * dN / 2) * v ^ ((Q : ℝ) * f) * v ^ (-(((p + q : ℕ) : ℝ) ^ 2 - (n0 : ℝ) ^ 2) * f / 2) = v ^ (-((f : ℝ) * dN / 2))`. Rewrite using `[← Real.rpow_add hv0, ← Real.rpow_add hv0, hid]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hvp : 0 < v ^ (-((f : ℝ) * dN / 2))` using `Real.rpow_pos_of_pos hv0 _`. Establish `key : ∀ c1 k w v1 c3 v2 r c4 v3 c5 : ℝ, (c1 * (k * w)) * (c1 * v1) * (c3 * v2 * r * c4) * (v3 * c5) = (v1 * v2 * v3) * (c1 * c1 * c3 * c4 * c5 * k) * r * w` using `by intros; ring`. Establish `key2 : ∀ x c c' k r w w' : ℝ, 0 ≤ x → 0 ≤ c → 0 ≤ k → 0 ≤ r → 0 ≤ w → c ≤ c' → w ≤ w' → x * (c * k) * r * w ≤ x * (c' * k) * r * w'`.
+
+Introduce `x c c' k r w w' _ hc _ _ _ hcc _`. Establish `: 0 ≤ c'` using `hc.trans hcc`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_add, pow_add, pow_add, pow_add]`.
+
+Conclude with `key _ _ _ _ _ _ _ _ _ _`. Use `_ ≤ v ^ (-((f : ℝ) * dN / 2)) * (C ^ (7 * (J * (p + q) * f)) * Cv ^ (J * (p + q) * f)) * res ^ a * W' ^ f := by`. Rewrite using `[hvv]`. Conclude with `key2 _ _ _ _ _ _ _ hvp.le (by positivity) (by positivity) (by positivity) (pow_nonneg hW0 f) (pow_le_pow_right₀ hC hexp) (pow_le_pow_left₀ hW0 hWW f)`. Use `_ = _ := by`.
+
+Rewrite using `[pow_mul C 7, ← mul_pow]`.
+-/
 theorem kappaAssembly_of (hV : VRatio) : KappaAssembly := by
   obtain ⟨Cv, hCv, hV⟩ := hV
   intro C hC
@@ -396,6 +541,13 @@ theorem kappaAssembly_of (hV : VRatio) : KappaAssembly := by
 
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `n q f P b hq`. Prove the components needed by the constructor for the conclusion. Establish `: n^2*f ≤ P0 n q f`. Unfold `P0`. Combine the equalities or inequalities in the displayed calculation.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hP`. Unfold `b1`. Establish `h1 : (P:ℝ) ≤ 2 * (P0 n q f : ℝ)` using `by exact_mod_cast hP`. Establish `hn : (0:ℝ) ≤ n` using `Nat.cast_nonneg _`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 hn]`.
+-/
 theorem room_for_iterations : StepsRoom := by
   intro n q f P b hq
   constructor
@@ -411,6 +563,13 @@ theorem room_for_iterations : StepsRoom := by
     have hn : (0:ℝ) ≤ n := Nat.cast_nonneg _
     nlinarith [mul_le_mul_of_nonneg_right h1 hn]
 
+/- English proof (translation)
+Introduce `ι _ _ N de la laM hde hla hlaM`. Establish `hc : (0:ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `h1 : (∏ _v : ι, 3 * de) ^ ((1 : ℝ) / Fintype.card ι) = 3*de`. Rewrite using `[Finset.prod_const, Finset.card_univ, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Rewrite using `[mul_one_div_cancel hc.ne', Real.rpow_one]`.
+
+Rewrite using `[h1]`. Establish `hM : 0 < laM` using `by linarith`. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `: 2*(3*de)/laM ≤ 12*de/la`. Rewrite using `[div_le_div_iff₀ hM hla]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem layer_count : LayerCount := by
   intro ι _ _ N de la laM hde hla hlaM
   have hc : (0:ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos
@@ -424,6 +583,11 @@ theorem layer_count : LayerCount := by
     rw [div_le_div_iff₀ hM hla]; nlinarith
   linarith
 
+/- English proof (translation)
+Introduce `n q h hh`. Establish `e : Real.sqrt (2*(q:ℝ)) = Real.sqrt 2 * Real.sqrt q` using `Real.sqrt_mul (by norm_num) _`. Rewrite using `[e]`. Establish `h2 : Real.sqrt 2 ≤ 23/16` using `by rw [Real.sqrt_le_iff]; norm_num`. Establish `hq` using `Real.sqrt_nonneg (q:ℝ)`.
+
+Establish `hn : (0:ℝ) ≤ (n:ℝ)^2` using `by positivity`. Use `mul_le_mul_of_nonneg_right h2 (mul_nonneg hn hq)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem threshold_count : ThreshCount := by
   intro n q h hh
   have e : Real.sqrt (2*(q:ℝ)) = Real.sqrt 2 * Real.sqrt q := Real.sqrt_mul (by norm_num) _
@@ -434,6 +598,17 @@ theorem threshold_count : ThreshCount := by
   have := mul_le_mul_of_nonneg_right h2 (mul_nonneg hn hq)
   nlinarith
 
+/- English proof (translation)
+Introduce `a q f j C₁ Y hC hY hq hj`. Establish `hY0 : 0 < Y` using `by linarith`. Establish `hq' : (1:ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hCq : 1 ≤ C₁*q` using `by nlinarith`. Establish `hpos : 0 < Y^(-(C₁*q))` using `Real.rpow_pos_of_pos hY0 _`.
+
+Establish `hle : Y^(-(C₁*q)) ≤ 1/2`. Rewrite using `[Real.rpow_neg hY0.le, one_div]`. Apply `inv_anti₀ (by norm_num)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `⟨hpos, hle, ?_⟩` and prove the remaining obligations.
+
+Establish `hlog : Real.log (1/(2*Y^(-(C₁*q)))) = C₁*q*Real.log Y - Real.log 2`. Rewrite using `[one_div, Real.log_inv, Real.log_mul (by norm_num) hpos.ne', Real.log_rpow hY0]; ring`. Establish `hl0 : 0 ≤ Real.log (1/(2*Y^(-(C₁*q))))`. Apply `Real.log_nonneg; rw [le_div_iff₀ (by positivity)]; linarith` to reduce the goal to its premises. Establish `hl1 : Real.log (1/(2*Y^(-(C₁*q)))) ≤ C₁*q*Real.log Y`.
+
+Rewrite using `[hlog]; linarith [Real.log_pos (by norm_num : (1:ℝ)<2)]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `x _`. Check the signs of the components of the expression.
+
+Introduce `x _`. Establish `: (j x:ℝ) ≤ q` using `by exact_mod_cast hj x`. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by simp`.
+-/
 theorem log_volume_bound : LogVolumeBound := by
   intro a q f j C₁ Y hC hY hq hj
   have hY0 : 0 < Y := by linarith

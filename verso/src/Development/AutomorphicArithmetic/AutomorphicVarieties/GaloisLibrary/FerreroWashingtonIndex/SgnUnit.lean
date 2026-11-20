@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Stick UpperTheory.V.FW
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `hs : ((Real.sin θ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 h`. Take `⟨e, he⟩ : ∃ e, e = Complex.exp (θ * Complex.I)` from `⟨_, rfl⟩`. Establish `he0 : e ≠ 0` using `he ▸ Complex.exp_ne_zero _`. Establish `h1 : ((Real.sin θ : ℝ) : ℂ) = (e⁻¹ - e) * Complex.I / 2`. Rewrite using `[Complex.ofReal_sin, Complex.sin, neg_mul, Complex.exp_neg, he]`.
+
+Establish `h2 : ((Real.sin ((2 * k + 1 : ℕ) * θ) : ℝ) : ℂ) = ((e ^ (2 * k + 1))⁻¹ - e ^ (2 * k + 1)) * Complex.I / 2`. Rewrite using `[Complex.ofReal_sin, Complex.sin, neg_mul, Complex.exp_neg, he, ← Complex.exp_nat_mul]`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_natCast, mul_assoc]`. Establish `h3` using `geom_sum_mul w (2 * k + 1)`. Rewrite `hw` using `[← he]`.
+
+Substitute `hw` using the available equality. Rewrite using `[Complex.ofReal_div, eq_div_iff hs, h1, h2]`. Generalize the expression as in `∑ j ∈ Finset.range (2 * k + 1), (e ^ 2) ^ j = S at h3 ⊢`. Establish `h4 : (e ^ 2) ^ k = e ^ (2 * k)` using `by rw [← pow_mul]`. Establish `h5 : (e ^ 2) ^ (2 * k + 1) = e ^ (2 * k) * e ^ (2 * k) * e ^ 2` using `by ring`.
+
+Rewrite `h3` using `[h5]`. Rewrite using `[h4, pow_succ]`. Establish `h6 : e ^ (2 * k) ≠ 0` using `pow_ne_zero _ he0`. Generalize the expression as in `e ^ (2 * k) = a at h3 h6 ⊢`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-1 : ℂ) * h3`.
+-/
 private theorem geom_sin (k : ℕ) (θ : ℝ) (h : Real.sin θ ≠ 0) (w : ℂ) (hw : w = Complex.exp (θ * Complex.I) ^ 2) :
     (w ^ k)⁻¹ * ∑ j ∈ Finset.range (2 * k + 1), w ^ j =
       ((Real.sin ((2 * k + 1 : ℕ) * θ) / Real.sin θ : ℝ) : ℂ) := by
@@ -29,6 +40,11 @@ private theorem geom_sin (k : ℕ) (θ : ℝ) (h : Real.sin θ ≠ 0) (w : ℂ) 
   field_simp
   linear_combination (-1 : ℂ) * h3
 
+/- English proof (translation)
+Establish `h0` using `(IsCyclotomicExtension.zeta_spec M ℚ L).map_of_injective φ.injective`. Establish `h1` using `Complex.isPrimitiveRoot_exp M (NeZero.ne M)`. Take `⟨i, -, hi⟩` from `h0.eq_pow_of_pow_eq_one h1.pow_eq_one`. Establish `h2 : φ (IsCyclotomicExtension.zeta M ℚ L ^ i) = Complex.exp (2 * Real.pi * Complex.I / M)`. Rewrite using `[map_pow, hi]`.
+
+Conclude with `⟨_, IsPrimitiveRoot.of_map_of_injective (h2 ▸ h1) φ.injective, h2⟩`.
+-/
 private theorem exists_zeta (M : ℕ) [NeZero M] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {M} ℚ L]
     (φ : L →+* ℂ) : ∃ ζ : L, IsPrimitiveRoot ζ M ∧ φ ζ = Complex.exp (2 * Real.pi * Complex.I / M) := by
   have h0 := (IsCyclotomicExtension.zeta_spec M ℚ L).map_of_injective φ.injective
@@ -38,6 +54,13 @@ private theorem exists_zeta (M : ℕ) [NeZero M] (L : Type) [Field L] [NumberFie
     rw [map_pow, hi]
   exact ⟨_, IsPrimitiveRoot.of_map_of_injective (h2 ▸ h1) φ.injective, h2⟩
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨n, hn⟩` from `Real.sin_eq_zero_iff.1 h0`. Establish `hM0 : (M : ℝ) ≠ 0` using `by positivity`. Establish `h1 : (n : ℝ) * M = a`. Use `Real.pi_pos` as an intermediate fact.
+
+Clear denominators, using `at hn` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : n * (M : ℤ) = a` using `by exact_mod_cast h1`. Establish `h3 : M ∣ a` using `Int.natCast_dvd_natCast.1 ⟨n, by rw [← h2, mul_comm]⟩`. Use `Nat.Coprime.eq_one_of_dvd h.symm h3` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem sin_ne (M a : ℕ) (hM : 2 < M) (h : a.Coprime M) : Real.sin (Real.pi * ((a : ℝ) / M)) ≠ 0 := by
   intro h0
   obtain ⟨n, hn⟩ := Real.sin_eq_zero_iff.1 h0
@@ -51,6 +74,29 @@ private theorem sin_ne (M a : ℕ) (hM : 2 < M) (h : a.Coprime M) : Real.sin (Re
   have := Nat.Coprime.eq_one_of_dvd h.symm h3
   omega
 
+/- English proof (translation)
+Introduce `M c _ L _ _ _ _ hc hodd hM`. Take `⟨k, rfl⟩` from `hodd`. Take `⟨φ⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Take `⟨ζ, hζ, hφ⟩` from `exists_zeta M L φ`. Use `⟨φ, AddSubgroup.subset_closure ?_⟩` and prove the remaining obligations.
+
+Establish `hz` using `hζ.toInteger_isPrimitiveRoot`. Establish `hu : IsUnit (hζ.toInteger ^ (k * (M - 1)) * ∑ j ∈ Finset.range (2 * k + 1), hζ.toInteger ^ j)` using `((hz.isUnit (by omega)).pow _).mul (hz.geom_sum_isUnit (by omega) hc)`. Establish `hinv : ζ ^ (k * (M - 1)) = (ζ ^ k)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_add, ← Nat.mul_succ, Nat.succ_eq_add_one, Nat.sub_add_cancel (by omega), mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+
+Establish `hval : ((hu.unit : 𝓞 L) : L) = (ζ ^ k)⁻¹ * ∑ j ∈ Finset.range (2 * k + 1), ζ ^ j`. Rewrite using `[IsUnit.unit_spec, ← hinv]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 L) L _ = _`. Simplify using `only [map_mul, map_pow, map_sum]`. Both sides reduce to the same expression.
+
+Establish `hM0 : (0 : ℝ) < M` using `by positivity`. Establish `key : ∀ a : ℕ, a.Coprime M → ∀ ψ : L →+* ℂ, ψ ζ = φ ζ ^ a → ψ ((hu.unit : 𝓞 L) : L) = ((Real.sin ((2 * k + 1 : ℕ) * (Real.pi * ((a : ℝ) / M))) / Real.sin (Real.pi * ((a : ℝ) / M)) : ℝ) : ℂ)`. Introduce `a ha ψ hψ`. Rewrite using `[hval, ← geom_sin k _ (sin_ne M a hM ha) (ψ ζ)]`. Simplify using `only [map_mul, map_pow, map_sum, map_inv₀]`.
+
+Rewrite using `[hψ, hφ, ← Complex.exp_nat_mul, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hu.unit, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `φ.injective` to reduce the goal to its premises. Establish `h2 : φ (cE L ((hu.unit : 𝓞 L) : L)) = starRingEnd ℂ (φ ((hu.unit : 𝓞 L) : L))` using `IsCMField.complexEmbedding_complexConj L φ _`. Rewrite using `[h2, key 1 (Nat.coprime_one_left M) φ (pow_one _).symm, Complex.conj_ofReal]`. Use function extensionality and compare the values at `t`. Establish `ht` using `ZMod.val_coe_unit_coprime t`.
+
+Establish `htl` using `ZMod.val_lt (t : ZMod M)`. Establish `h1 : embT M L φ t ζ = φ ζ ^ (t : ZMod M).val`. Express the relevant statement in the definitionally equal form `φ (sg M L t ζ) = _`. Rewrite using `[sg_apply M L t hζ.pow_eq_one, map_pow]`. Simplify using `only [sgn]`.
+
+Rewrite using `[key _ ht _ h1, Complex.ofReal_re]`. Generalize the expression as in `(t : ZMod M).val = a at ht htl`. Establish `hlt : (a : ℝ) / M < 1` using `(div_lt_one hM0).2 (by exact_mod_cast htl)`. Establish `hpos : 0 < Real.sin (Real.pi * ((a : ℝ) / M))`. Use `lt_of_le_of_ne (Real.sin_nonneg_of_nonneg_of_le_pi (by positivity) ?_) (sin_ne M a hM ht).symm` and prove the remaining obligations.
+
+Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `he : ((2 * k + 1 : ℕ) : ℝ) * (Real.pi * ((a : ℝ) / M)) = Real.pi * ((((2 * k + 1) * a : ℕ) : ℝ) / M)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hs` using `sinSign ((((2 * k + 1) * a : ℕ) : ℝ) / M) (by positivity) (sin_ne M _ hM (Nat.Coprime.mul_left hc ht))`. Rewrite `hs` using `[Nat.floor_div_eq_div]`. Rewrite using `[he]`. Simplify using `only [div_lt_iff₀ hpos, zero_mul, hs]`. Use `split_ifs with h`.
+
+Conclude with `h.natCast_zmod_two`. Conclude with `(Nat.not_odd_iff_even.1 h).natCast_zmod_two`.
+-/
 theorem UpperTheory.V.FW.sgnUnit :
     ∀ (M c : ℕ) [NeZero M] (L : Type) [Field L] [NumberField L] [IsCyclotomicExtension {M} ℚ L] [IsCMField L], c.Coprime M → Odd c → 2 < M → ∃ φ : L →+* ℂ, (fun t : (ZMod M)ˣ => ((c * (t : ZMod M).val / M : ℕ) : ZMod 2)) ∈ sgnE (embT M L φ) := by
   intro M c _ L _ _ _ _ hc hodd hM

@@ -19,6 +19,9 @@ scoped instance padicAlgCl_valuativeRel : ValuativeRel (PadicAlgCl p) :=
 
 variable {p}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `NormedField.valuation x ≤ NormedField.valuation y ↔ _`. Conclude with `NNReal.coe_le_coe`.
+-/
 theorem vle_iff_norm_le (x y : PadicAlgCl p) : x ≤ᵥ y ↔ ‖x‖ ≤ ‖y‖ := by
   change NormedField.valuation x ≤ NormedField.valuation y ↔ _
   exact NNReal.coe_le_coe

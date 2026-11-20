@@ -24,6 +24,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {ψ : AddChar (AF F) ℂ}
 
 open Classical Filter in
+/- English proof (translation)
+Use `PositivityTheory.ThKF.tensInj F κ w hne hstd {v} 2 ![1, -1] ![g, g] ![Function.update w v a, Function.update w v b] (fun i u hu => by` as an intermediate fact. Establish `: u ≠ v` using `fun e => hu (Finset.mem_singleton.2 e)`. Apply the tactic sequence `fin_cases i <;> simp [Function.update_of_ne this]) (by simp [Fin.sum_univ_two, h])`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, g z ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push Not at hn`. Conclude with `hg (SchwartzMap.ext hn)`. Use function extensionality and compare the values at `y`. Set `y' : ∀ u : ({v} : Finset (Pl F)), κ → Fv F u` to `fun u => (Finset.mem_singleton.1 u.2).symm ▸ y`. Set `m : MultilinearMap ℂ (fun u : ({v} : Finset (Pl F)) => (κ → Fv F u) → ℂ) ℂ` to `(MultilinearMap.mkPiAlgebra ℂ _ ℂ).compLinearMap fun u => LinearMap.proj (y' u)`.
+
+Set `ez : SInf F κ →ₗ[ℂ] ℂ` to `⟨⟨fun f => f z, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Establish `h2` using `congrArg (TensorProduct.lift ((LinearMap.mul ℂ ℂ).compl₁₂ ez (PiTensorProduct.lift m))) this`. Establish `hm : ∀ c : (κ → Fv F v) → ℂ, m (fun u => Function.update w v c u) = c y` using `fun c => by`. Simplify using `only [m, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, LinearMap.proj_apply]`. Rewrite using `[Fintype.prod_eq_single (⟨v, Finset.mem_singleton_self v⟩ : ({v} : Finset (Pl F))) fun u hu => absurd (Subtype.ext (Finset.mem_singleton.1 u.2)) hu]`.
+
+Simplify using `[y']`. Simplify using `only [Fin.sum_univ_two, map_add, map_smul, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply, PiTensorProduct.lift.tprod, Matrix.cons_val_zero, Matrix.cons_val_one, map_zero, LinearMap.mul_apply', hm] at h2`. Establish `h3 : g z * (a y - b y) = 0`. Express the relevant statement in the definitionally equal form `(1 : ℂ) • (g z * a y) + (-1 : ℂ) • (g z * b y) = 0 at h2`. Simplify using `only [smul_eq_mul] at h2`.
+
+Take the linear combination `h2`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left hz)`.
+-/
 theorem pure_cancel {κ : Type} [Fintype κ] {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hne : ∀ v, w v ≠ 0)
     (hstd : ∀ᶠ v in cofinite, w v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) (v : Pl F) {g : SInf F κ}
     (hg : g ≠ 0) {a b : (κ → Fv F v) → ℂ}
@@ -55,6 +66,9 @@ theorem pure_cancel {κ : Type} [Fintype κ] {w : ∀ v : Pl F, (κ → Fv F v) 
     linear_combination h2
   exact sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left hz)
 
+/- English proof (translation)
+Establish `ex : ∃ φ₁ ∈ SB (κ → Fv F v), Acts (evFin F v) T φ φ₁` using `⟨φ₁, h₁, h⟩`. Rewrite using `[opF, dif_pos ex]`. Conclude with `action_uniqueness F κ v T φ hφ _ _ ex.choose_spec.2 h`.
+-/
 theorem opF_eq {κ : Type} [Fintype κ] {T} {φ φ₁ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (h₁ : φ₁ ∈ SB _) (h : Acts (evFin F v) T φ φ₁) :
     opF v T φ = φ₁ := by
   have ex : ∃ φ₁ ∈ SB (κ → Fv F v), Acts (evFin F v) T φ φ₁ := ⟨φ₁, h₁, h⟩
@@ -66,9 +80,15 @@ def dm {k : Type} [Field k] (Y Z : Matrix (Fin n) (Fin d) k) : k := ofM Y ⬝ᵥ
 def Hv (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F) (u : Matrix (Fin n) (Fin d) (AE F E)) (φ : Fl F v n d) : Fl F v n d :=
   schr (psiV ψ v) (locW v (M.co.e u)) φ
 
+/- English proof (translation)
+The claim follows from `adjoint_statement.Heisenberg₂ F _ ψ v _ (hu.kd_map M.co.e.toLinearMap) φ`.
+-/
 theorem acts_Hv {u} (hu : At (evFin F v) u) (φ : Fl F v n d) : Acts (evFin F v) (M.co.rho ψ u) φ (Hv M ψ v u φ) :=
   adjoint_statement.Heisenberg₂ F _ ψ v _ (hu.kd_map M.co.e.toLinearMap) φ
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.ThKH.Evl.schr_mem ((adjoint_statement.psi F ψ hψ).2 v).1 _ h`.
+-/
 theorem Hv_mem (hψ : IsStd ψ) (u) {φ : Fl F v n d} (h : φ ∈ SB _) : Hv M ψ v u φ ∈ SB _ :=
   PositivityTheory.ThKH.Evl.schr_mem ((adjoint_statement.psi F ψ hψ).2 v).1 _ h
 
@@ -81,6 +101,15 @@ structure Lin (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F)
   sur : ∀ P Q, ∃ u, At (evFin F v) u ∧ c₁ u = P ∧ c₂ u = Q
   vac : ι (M.vac v) = intInd v
 
+/- English proof (translation)
+Use `⟨hι.bij, fun u hu h0 φ hφ => funext fun Y => ?_, sur, hv⟩` and prove the remaining obligations. Take `⟨u₁, u₀, a1, a0, rfl, b1, b0, e1, e0⟩` from `dec u hu`. Establish `e : Hv M ψ v (u₁ + u₀) φ = Hv M ψ v u₁ (Hv M ψ v u₀ φ)`. Establish `f` using `congrArg (evFin F v) ((M.co.form u₁ u₀).symm.trans (hs u₁ u₀ a1 b1))`. Rewrite `f` using `[ev_sgl, e1, e0, h0, map_sub, ev_dot, ev_dot]`.
+
+Rewrite using `[Hv, Hv, Hv, KCo.schr_schr, map_add, locW_add]`. Use `erw [f]`. Simplify using the standard rewrite rules. Take `⟨x, hx, x1, -⟩` from `sur (Y + c₁ u₁) 0`. Take `⟨x₁, x₀, xa, -, -, xb, -, xe, -⟩` from `dec x hx`.
+
+Rewrite using `[e, hι.trans u₁ a1 b1 _ (Hv_mem hψ _ hφ) _ (Hv_mem hψ _ (Hv_mem hψ _ hφ)) (acts_Hv a1 _), ← x1, ← xe, hι.mult u₀ a0 b0 φ hφ _ (Hv_mem hψ _ hφ) (acts_Hv a0 _) x₁ xa xb, hs x₁ u₀ xa xb, xe, x1, e1, e0]`. Use `congr 1`. Use `show psiV ψ v _ = _`. Use `congr 1`. Rewrite using `[dm, show ofM (Y + c₁ (u₁ + u₀)) = ofM Y + ofM (c₁ (u₁ + u₀)) from rfl, add_dotProduct]`.
+
+Rewrite using `[show ofM (c₁ (u₁ + u₀)) ⬝ᵥ ofM (c₂ (u₁ + u₀)) = 0 from h0, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem lin_of (hψ : IsStd ψ) {π₁ π₀ : AE F E →+* Fv F v} {c₁ c₂ ι} (hι : M.IsLin ψ π₁ π₀ c₁ ι) (hv : ι (M.vac v) = intInd v)
     (hs : ∀ x u, At (evFin F v) x → x.map π₀ = 0 →
       symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) x u = sgl v (dm (c₁ x) (c₂ u)))
@@ -117,6 +146,13 @@ def cB (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)) (u : Matrix (Fin n) (
 
 variable {b : GL (Fin n) (Fv F v)} {c : GL (Fin d) (Fv F v)}
 
+/- English proof (translation)
+Establish `key : ∀ U N : Matrix (Fin n) (Fin d) (Fv F v), dm ((b⁻¹).1 * U * (c⁻¹).1ᵀ) (-(b.1ᵀ * N * c.1)) = -(ofM (-N) ⬝ᵥ ofM (-U))`. Introduce `U N`. Rewrite using `[dm, dotProduct_comm (ofM (-N)), dot_ofM, dot_ofM]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_neg, Matrix.neg_mul, transpose_neg, neg_neg, trace_neg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (b⁻¹).1ᵀ, ← transpose_mul, Units.mul_inv, transpose_one, Matrix.one_mul, trace_mul_comm]`.
+
+Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[symp_eq h hG hu, coord, coord, incM_map h, incM_map h]`. Use `congr 1`. Establish `e : ∀ w : Matrix (Fin n) (Fin d) (AE F E), cB σ t X W b c w = -(b.1ᵀ * (X.J.map t * w.map (piW (t.comp σ)) * (W.J.map t)ᵀ) * c.1)` using `fun w => by simp only [cB, Matrix.mul_assoc]`. Rewrite using `[e, e, cW, cW, key, key]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_c (h : IsSec σ t sec) (hG : Grams σ t (incM F X.J) (incM F W.J)) {u} (hu : At (evFin F v) u) (u') :
     symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) u u' =
       sgl v (dm (cW t b c u) (cB σ t X W b c u') - dm (cW t b c u') (cB σ t X W b c u)) := by
@@ -133,11 +169,19 @@ theorem symp_c (h : IsSec σ t sec) (hG : Grams σ t (incM F X.J) (incM F W.J)) 
   rw [e, e, cW, cW, key, key]
   ring
 
+/- English proof (translation)
+The claim follows from `h.extM (hu.kd_sub ((h.atM _ _).kd_add (h.atM _ _))) (by rw [Matrix.map_add _ (map_add _), h.fstM, h.fstM, add_zero]) (by rw [Matrix.map_add _ (map_add _), h.sndM, h.sndM, zero_add])`.
+-/
 theorem dec_c (h : IsSec σ t sec) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : At (evFin F v) u) :
     u = secM sec (u.map (piW t)) 0 + secM sec 0 (u.map (piW (t.comp σ))) :=
   h.extM (hu.kd_sub ((h.atM _ _).kd_add (h.atM _ _))) (by rw [Matrix.map_add _ (map_add _), h.fstM, h.fstM, add_zero])
     (by rw [Matrix.map_add _ (map_add _), h.sndM, h.sndM, zero_add])
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `hG.uA`. Take `⟨B, hB⟩` from `hG.uB`. Rewrite `hA`, `hB` using `[incM_map h]`. Use `⟨secM sec (b.1 * P * c.1ᵀ) (-((A⁻¹).1 * (b⁻¹).1ᵀ * Q * (c⁻¹).1 * (B⁻¹).1ᵀ)), h.atM _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cW, h.fstM, cancel_lr]`.
+
+Rewrite using `[cB, h.sndM, ← hA, ← hB]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc A.1, Units.mul_inv, Matrix.one_mul, ← Matrix.mul_assoc b.1ᵀ, ← transpose_mul, Units.inv_mul, transpose_one, Matrix.one_mul, ← Matrix.mul_assoc (B⁻¹).1ᵀ, ← transpose_mul, Units.mul_inv, transpose_one, Matrix.one_mul, Units.inv_mul, Matrix.mul_one]`.
+-/
 theorem sur_c (h : IsSec σ t sec) (hG : Grams σ t (incM F X.J) (incM F W.J)) (P Q) :
     ∃ u, At (evFin F v) u ∧ cW t b c u = P ∧ cB σ t X W b c u = Q := by
   obtain ⟨A, hA⟩ := hG.uA
@@ -151,6 +195,9 @@ theorem sur_c (h : IsSec σ t sec) (hG : Grams σ t (incM F X.J) (incM F W.J)) (
       Matrix.one_mul, ← Matrix.mul_assoc (B⁻¹).1ᵀ, ← transpose_mul, Units.mul_inv, transpose_one, Matrix.one_mul, Units.inv_mul,
       Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `lin_of hψ hι hv (fun x u hx h0 => by rw [symp_c (b := b) (c := c) h hG hx, show cB σ t X W b c x = 0 by simp [cB, h0], show dm (cW t b c u) 0 = 0 from dotProduct_zero _, sub_zero]) (fun u hu => ⟨_, _, h.atM _ _, h.atM _ _, dec_c h hu, h.sndM _ _, h.fstM _ _, by simp only [cW, h.f …`.
+-/
 theorem local_splitting_linear_skew (hψ : IsStd ψ) (h : IsSec σ t sec) (hG : Grams σ t (incM F X.J) (incM F W.J)) {ι} (hι : M.IsLinW ψ t b c ι)
     (hv : ι (M.vac v) = intInd v) : Lin M ψ v (cW t b c) (cB σ t X W b c) ι :=
   lin_of hψ hι hv (fun x u hx h0 => by
@@ -159,6 +206,9 @@ theorem local_splitting_linear_skew (hψ : IsStd ψ) (h : IsSec σ t sec) (hG : 
     (fun u hu => ⟨_, _, h.atM _ _, h.atM _ _, dec_c h hu, h.sndM _ _, h.fstM _ _, by simp only [cW, h.fstM], by simp only [cB, h.sndM]⟩)
     (sur_c h hG)
 
+/- English proof (translation)
+The claim follows from `lin_of hψ hι hv (fun x u hx h0 => by rw [symp_c (b := b) (c := c) h hG hx, show cW t b c x = 0 by simp [cW, h0]] congr 1 show (0 : Fin n × Fin d → Fv F v) ⬝ᵥ _ - _ = ofM (cB σ t X W b c x) ⬝ᵥ (-ofM (cW t b c u)) rw [zero_dotProduct, zero_sub, dotProduct_neg, dotProduct_comm]; rfl …`.
+-/
 theorem lin_Bar (hψ : IsStd ψ) (h : IsSec σ t sec) (hG : Grams σ t (incM F X.J) (incM F W.J)) {ι} (hι : M.IsLinBar ψ t b c ι)
     (hv : ι (M.vac v) = intInd v) : Lin M ψ v (cB σ t X W b c) (fun u => -cW t b c u) ι :=
   lin_of hψ hι hv (fun x u hx h0 => by
@@ -171,6 +221,17 @@ theorem lin_Bar (hψ : IsStd ψ) (h : IsSec σ t sec) (hG : Grams σ t (incM F X
     fun P Q => let ⟨u, a, b, c⟩ := sur_c h hG (-Q) P; ⟨u, a, c, by rw [b, neg_neg]⟩
 
 open Classical in
+/- English proof (translation)
+Take `⟨f, hf⟩` from `DFunLike.ne_iff.1 hl.ne`. Establish `sb : ∀ {x : Fl F v n d}, x ∈ SB _ → ∀ w, Function.update M.vac v x w ∈ SB _` using `fun {x} hx w => by`. Break down `eq_or_ne w v with rfl | h` into its components or cases. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `(g.vac w).1`. Establish `cf : ∀ x : Fl F v n d, ∀ᶠ w in Filter.cofinite, Function.update M.vac v x w = M.vac w` using `fun x => by filter_upwards [(Set.finite_singleton v).compl_mem_cofinite] with w hw using Function.update_of_ne hw _ _`. Establish `st : ∀ x : Fl F v n d, ∀ᶠ w in Filter.cofinite, Function.update M.vac v x w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `fun x => by filter_upwards [cf x, g.std] with w h1 h2 using h1.trans h2`. Establish `pe : ∀ {x : Fl F v n d}, x ∈ SB _ → e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update M.vac v x)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei f) (Function.update M₁.vac v (ev v x))` using `fun {x} hx => by`. Rewrite using `[hl.pure f _ (sb hx) (cf x)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Break down `eq_or_ne w v with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h, (hl.vac w).1]`.
+
+Establish `em : ev v φ ∈ SB _` using `(hl.vac v).2 ▸ Submodule.mem_map_of_mem hφ`. Establish `a1` using `(PositivityTheory.ThKF.pureAct F _ v (M.co.rho B.ψ u) f _ (sb hφ) (st φ)).2.2 (Hv M B.ψ v u φ) (by rw [Function.update_self]; exact acts_Hv hu φ)`. Establish `a2` using `(PositivityTheory.ThKF.pureAct F _ v (M₁.co.rho B.ψ u₁) (ei f) (Function.update M₁.vac v (ev v φ)) (fun w => by`. Break down `eq_or_ne w v with rfl | h` into its components or cases. Rewrite using `[Function.update_self]` and apply the resulting hypothesis.
+
+Rewrite using `[Function.update_of_ne h]; exact (g₁.vac w).1) (by`. Use `filter_upwards [(Set.finite_singleton v).compl_mem_cofinite, g₁.std] with w hw h2 using (Function.update_of_ne hw _ _).trans h2)).2.2 (Hv M₁ B.ψ v u₁ (ev v φ)) (by rw [Function.update_self]; exact acts_Hv hu₁ _)`. Rewrite `a1`, `a2` using `[Function.update_idem]`. Use `pure_cancel (fun w => (g₁.vac w).2.1) g₁.std v hf ?_` and prove the remaining obligations. Rewrite using `[← pe (Hv_mem hψ u hφ), ← a2, ← pe hφ, ← H _ (pure_mem_schA f _ (sb hφ) (st φ)), a1]`.
+-/
 theorem ev_loc {B : Base F E} (hψ : IsStd B.ψ) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ) {e ei ev} (hl : IsEvLoc M M₁ e ei ev)
     {u u₁} (hu : At (evFin F v) u) (hu₁ : At (evFin F v) u₁)
     (H : ∀ Φ ∈ schA F _, e (M.co.rho B.ψ u Φ) = M₁.co.rho B.ψ u₁ (e Φ)) {φ : Fl F v n d} (hφ : φ ∈ SB _) :
@@ -206,6 +267,9 @@ theorem ev_loc {B : Base F E} (hψ : IsStd B.ψ) (g : M.IsGood B.ψ) (g₁ : M�
   refine pure_cancel (fun w => (g₁.vac w).2.1) g₁.std v hf ?_
   rw [← pe (Hv_mem hψ u hφ), ← a2, ← pe hφ, ← H _ (pure_mem_schA f _ (sb hφ) (st φ)), a1]
 
+/- English proof (translation)
+Rewrite using `[Hv, map_zero, show locW v (0 : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)) = (0, 0) from Prod.ext (funext fun _ => map_zero _) (funext fun _ => map_zero _), schr_zero']`.
+-/
 theorem Hv_zero (φ : Fl F v n d) : Hv M ψ v 0 φ = φ := by
   rw [Hv, map_zero, show locW v (0 : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)) = (0, 0) from
     Prod.ext (funext fun _ => map_zero _) (funext fun _ => map_zero _), schr_zero']
@@ -218,21 +282,33 @@ def tmH {k : Type} [TopologicalSpace k] : (Fin n × Fin d → k) ≃ₜ Matrix (
   continuous_toFun := continuous_pi fun _ => continuous_pi fun _ => continuous_apply _
   continuous_invFun := continuous_pi fun _ => continuous_id.matrix_elem _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.comp_continuous e.continuous, h.2.comp_homeomorph e⟩`.
+-/
 theorem sb_comp {A B : Type} [TopologicalSpace A] [TopologicalSpace B] (e : A ≃ₜ B) {Φ : B → ℂ} (h : Φ ∈ SB B) : Φ ∘ e ∈ SB A :=
   ⟨h.1.comp_continuous e.continuous, h.2.comp_homeomorph e⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((adjoint_statement.psi F ψ hψ).2 v).1, fun _ => GlobalTheory.StdCharFromIsStd.norm_psi hψ _, fun x => by have := hu x simp only [int_iff] at this exact this⟩`.
+-/
 theorem isPsi (hψ : IsStd ψ) (hu : PsiUnr ψ v) : IsPsi (psiV ψ v) :=
   ⟨((adjoint_statement.psi F ψ hψ).2 v).1, fun _ => GlobalTheory.StdCharFromIsStd.norm_psi hψ _, fun x => by
     have := hu x
     simp only [int_iff] at this
     exact this⟩
 
+/- English proof (translation)
+Simplify using `only [intInd, one, ind, Finset.prod_ite_zero, Finset.prod_const_one, Finset.mem_univ, true_imp_iff, Set.indicator, map_one, Set.mem_setOf_eq, int_iff, Prod.forall]`. Both sides reduce to the same expression.
+-/
 theorem intInd_eq (Z : Fin n × Fin d → Fv F v) : intInd v (tmH Z) = one _ Z := by
   classical
   simp only [intInd, one, ind, Finset.prod_ite_zero, Finset.prod_const_one, Finset.mem_univ, true_imp_iff, Set.indicator, map_one,
     Set.mem_setOf_eq, int_iff, Prod.forall]
   rfl
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `only [emb, Matrix.mul_apply, single_apply, ite_and, of_apply, transpose_apply, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single j (fun x _ hx => by simp [hx.symm]) (by simp)]`. Simplify using `only [eq_comm, if_true, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem ext_single {k : Type} [Field k] (jr : Fin n₁ → Fin n) (jc : Fin d₁ → Fin d) (i j) (s : k) :
     emb k jr * single i j s * (emb k jc)ᵀ = single (jr i) (jc j) s := by
   ext p q
@@ -242,6 +318,35 @@ theorem ext_single {k : Type} [Field k] (jr : Fin n₁ → Fin n) (jc : Fin d₁
   simp only [eq_comm, if_true, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Take `⟨j, hj, hj'⟩` from `kd_exists_inv L.bij`. Establish `em : ∀ {φ : Fl F v n d}, φ ∈ SB _ → ev v φ ∈ SB _` using `fun h => (hl.vac v).2 ▸ Submodule.mem_map_of_mem h`. Set `l : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.proj 0 ∘ₗ ι₁ ∘ₗ ev v ∘ₗ j ∘ₗ LinearMap.funLeft ℂ ℂ tmH.symm`. Establish `hl1 : ∀ φ ∈ SB _, l (ι φ ∘ tmH) = ι₁ (ev v φ) 0` using `fun φ h => by show ι₁ (ev v (j (ι φ))) 0 = _`. Rewrite using `[hj' φ h]`.
+
+Establish `d0 : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), dm Y 0 = 0 ∧ dm 0 Y = 0` using `fun Y => ⟨dotProduct_zero _, zero_dotProduct _⟩`. Establish `d1 : ∀ Y : Matrix (Fin n₁) (Fin d₁) (Fv F v), dm Y 0 = 0 ∧ dm 0 Y = 0` using `fun Y => ⟨dotProduct_zero _, zero_dotProduct _⟩`. Establish `x0 : ext jr jc (0 : Matrix _ _ (Fv F v)) = 0` using `by simp [ext]`. Establish `ae : ∀ {z : Matrix (Fin n₁) (Fin d₁) (AE F E)}, At (evFin F v) z → At (evFin F v) (incM F i * z * (incM F i')ᵀ)` using `fun h => (h.kd_mul_left _).kd_mul_right _`. Establish `inv : ∀ u, At (evFin F v) u → dm (c₁ u) (c₂ u) = 0 → (∀ φ ∈ SB _, ι₁ (ev v (Hv M B.ψ v u φ)) 0 = ι₁ (ev v φ) 0) → ∀ Φ ∈ SB (Fin n × Fin d → Fv F v), l (fun Y => psiV B.ψ v (Y ⬝ᵥ ofM (c₂ u)) * Φ (Y + ofM (c₁ u))) = l Φ` using `fun u a b c Φ hΦ => by`.
+
+Take `⟨φ, h1, h2⟩` from `L.bij.2.2 (sb_comp tmH.symm hΦ)`. Establish `e1 : Φ = ι φ ∘ tmH` using `by rw [h2]; rfl`. Rewrite using `[e1, hl1 φ h1, ← c φ h1, ← hl1 _ (Hv_mem hψ u h1), L.act u a b φ h1]`. Both sides reduce to the same expression. Establish `invI : ∀ u ∈ I, At (evFin F v) u → ∀ φ ∈ SB _, ι₁ (ev v (Hv M B.ψ v u φ)) 0 = ι₁ (ev v φ) 0` using `fun u hI a φ h => by`.
+
+Rewrite using `[ev_loc hψ g g₁ hl a (u₁ := 0) (fun _ _ => smul_zero _) (fun Φ hΦ => by`. Rewrite using `[he.inv u hI Φ hΦ, Darboux.rho, map_zero]`. Conclude with `(schr_zero' _ _).symm) h, Hv_zero]`. Establish `sg : ∀ (p : Fin n × Fin d) (s : Fv F v), ofM (single p.1 p.2 s) = Pi.single p s` using `fun p s => funext fun q => by`. Simplify using `[ofM, single_apply, Pi.single_apply, Prod.ext_iff, eq_comm]`.
+
+Establish `hp` using `isPsi hψ hu`. Establish `key` using `evInt hm hp P l (fun Z hZ => ?_) (fun Z hZ => ?_) (by`. Rewrite using `[← funext intInd_eq, ← L.vac]`. Use `(hl1 _ (g.vac v).1).trans ?_` and prove the remaining obligations. Rewrite using `[(hl.vac v).1, L₁.vac]`.
+
+Simplify using `[intInd, Set.indicator, zero_mem])`. Take `⟨z, a, b, c⟩` from `L₁.sur y 0`. Establish `e1` using `congrFun (L₁.act z a (by rw [c, (d1 _).1]) _ (em hφ)) 0`. Rewrite `e1` using `[c, (d1 _).1, b, zero_add, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[← e1, ← ev_loc hψ g g₁ hl (ae a) a (he.Heisenberg₂ z) hφ, ← hl1 _ (Hv_mem hψ _ hφ), key _ (sb_comp tmH (L.bij.1 (Hv_mem hψ _ hφ))), L.act _ (ae a) (by rw [(hE z).2, c, x0, (d0 _).1]) φ hφ, (hE z).1, (hE z).2, b, c, x0]`.
+
+Simplify using `only [Function.comp, (d0 _).1, AddChar.map_zero_eq_one, one_mul]`. Both sides reduce to the same expression. Set `S : AddSubmonoid (Fin n × Fin d → Fv F v)` to `{ carrier := {Z | ∀ Φ ∈ SB (Fin n × Fin d → Fv F v), l (fun Y => Φ (Y + Z)) = l Φ} zero_mem' := fun Φ _ => by simp add_mem' := fun {a b} ha hb Φ hΦ => by`. Rewrite using `[← hb Φ hΦ, ← ha (fun Y => Φ (Y + b)) (sb_comp (Homeomorph.addRight b) hΦ)]`. Simplify using `[add_assoc] }`.
+
+Use `show Z ∈ S`. Rewrite using `[← Finset.univ_sum_single Z]`. Use `S.sum_mem fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hP : p ∈ P`. Take `⟨u, hI, a, b, c⟩` from `hT p hP (Z p)`.
+
+Introduce `Φ hΦ`. Use `inv u a (by rw [c, (d0 _).1]) (invI u hI a) Φ hΦ` as an intermediate fact. Rewrite `this` using `[b, c, sg, show ofM (0 : Matrix (Fin n) (Fin d) (Fv F v)) = 0 from rfl]`. Simplify using `using this`. Rewrite using `[hZ p hP, Pi.single_zero]`.
+
+Conclude with `S.zero_mem`. Set `S : AddSubmonoid (Fin n × Fin d → Fv F v)` to `{ carrier := {Z | ∀ Φ ∈ SB (Fin n × Fin d → Fv F v), l (fun Y => psiV B.ψ v (Y ⬝ᵥ Z) * Φ Y) = l Φ} zero_mem' := fun Φ _ => by simp add_mem' := fun {a b} ha hb Φ hΦ => by`. Use `PositivityTheory.ThKH.Evl.schr_mem hp.cont (0, b) hΦ` as an intermediate fact. Rewrite `this` using `[show schr (psiV B.ψ v) (0, b) Φ = fun Y => psiV B.ψ v (Y ⬝ᵥ b) * Φ Y from funext fun _ => by simp [schr]]`. Rewrite using `[← hb Φ hΦ, ← ha _ this]`.
+
+Simplify using `[AddChar.map_add_eq_mul, mul_assoc] }`. Use `show Z ∈ S`. Rewrite using `[← Finset.univ_sum_single Z]`. Use `S.sum_mem fun p _ => ?_` and prove the remaining obligations. Distinguish the cases in `hP : p ∈ P`.
+
+Rewrite using `[hZ p hP, Pi.single_zero]`. Conclude with `S.zero_mem`. Introduce `Φ hΦ`. Establish `o0 : ofM (0 : Matrix (Fin n) (Fin d) (Fv F v)) = 0` using `rfl`. Break down `hM p hP with ⟨a, b, rfl⟩ | h` into its components or cases.
+
+Take `⟨z, x1, x2, x3⟩` from `L₁.sur 0 (single a b (Z (jr a, jc b)))`. Use `inv _ (ae x1) (by rw [(hE z).1, x2, x0, (d0 _).2]) (fun φ h => by` as an intermediate fact. Rewrite using `[ev_loc hψ g g₁ hl (ae x1) x1 (he.Heisenberg₂ z) h, L₁.act z x1 (by rw [x2, (d1 _).2]) _ (em h), x2]`. Simplify using `[(d1 _).2]) Φ hΦ`. Rewrite `this` using `[(hE z).1, (hE z).2, x2, x3, x0, ext, ext_single, sg (jr a, jc b), o0]`.
+
+Simplify using `using this`. Take `⟨u, hI, a, b, c⟩` from `h (Z p)`. Use `inv u a (by rw [b, (d0 _).2]) (invI u hI a) Φ hΦ` as an intermediate fact. Rewrite `this` using `[b, c, sg, o0]`. Simplify using `using this`.
+-/
 theorem ev_model [SecondCountableTopology (Fv F v)] [MeasurableSpace (Fv F v)] [BorelSpace (Fv F v)] {m : Measure (Fv F v)}
     (hm : IsVol m) {B : Base F E} (hψ : IsStd B.ψ) (hu : PsiUnr B.ψ v) (g : M.IsGood B.ψ) (g₁ : M₁.IsGood B.ψ) {i i' I e ei ev}
     (he : IsEv B M M₁ i i' I e) (hl : IsEvLoc M M₁ e ei ev) {c₁ c₂ ι c₁' c₂' ι₁} (L : Lin M B.ψ v c₁ c₂ ι)

@@ -12,10 +12,18 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV F
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => one_dvd r, fun _ P hP => absurd hP (Finset.notMem_empty P)⟩ cop := isCoprime_one_left`.
+-/
 theorem hp_basePi_one (E : Type) [Field E] [NumberField E] [StarRing E] : BasePi (∅ : Finset (Pl E)) (1 : 𝓞 E) where
   dvd r := ⟨fun _ => one_dvd r, fun _ P hP => absurd hP (Finset.notMem_empty P)⟩
   cop := isCoprime_one_left
 
+/- English proof (translation)
+Use `le_antisymm (rll_baseLb_le n ∅) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[rll_baseLb_eq n (hp_basePi_one E), rll_mem_dLat]`. Rewrite `hx` using `[mem_stdLat]`. Use `⟨fun i _ => hx i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, inv_one, one_mul]`.
+
+Conclude with `hx _`.
+-/
 theorem hp_baseLb_empty (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) [NeZero n] :
     baseLb E n (∅ : Finset (Pl E)) = stdLat E n := by
   refine le_antisymm (rll_baseLb_le n ∅) fun x hx => ?_
@@ -94,6 +102,11 @@ def levPackP (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, 
   obtain rfl : lat = fun c => (s c).1.N := funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)
   exact levPackP₁ hc hPr σ₀ Λ s hS hs
 
+/- English proof (translation)
+Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Take `⟨n', hn, J, rfl, l0, hl0, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : l0 = baseLb X.E n' (∅ : Finset (Pl X.E))` from `hl0.trans (Formalism.L2.Forms.reL_rfl _)`. Take `rfl : lat = fun c => (s c).1.N` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`.
+
+Conclude with `th_sameCar_refl _ _ _ _ _`.
+-/
 theorem levelPacking_sameCarrier (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, decoCls n ∅ Pr.vGs Λ.grp (s c) = c)
     (H : HCrdP X n fun c => (s c).1.N) (Q : StepCrd Pr σ₀ n fun c => (s c).1.N) :
     Formalism.L2.Forms.SameCar H.hn H.l0 (clsPG hc σ₀ Λ s hS hs Q).lev.Lb
@@ -109,6 +122,9 @@ theorem levelPacking_sameCarrier (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) P
   obtain rfl : lat = fun c => (s c).1.N := funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)
   exact th_sameCar_refl _ _ _ _ _
 
+/- English proof (translation)
+Take `⟨n', hn, J, rfl, l0, hl0, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : l0 = baseLb X.E n' (∅ : Finset (Pl X.E))` from `hl0.trans (Formalism.L2.Forms.reL_rfl _)`. Take `rfl : lat = fun c => (s c).1.N` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Conclude with `Formalism.L2.Forms.reGL_rfl _ _`.
+-/
 theorem levelPacking_stabilizer (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, decoCls n ∅ Pr.vGs Λ.grp (s c) = c)
     (H : HCrdP X n fun c => (s c).1.N) (c : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp)
     (t : MulAction.stabilizer (UF X.E n × Λ.grp) (s c)) :

@@ -14,6 +14,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult.GlueTwo
 
+/- English proof (translation)
+Use `existsUnique_of_exists_of_unique ?_ ?_` and prove the remaining obligations. Take `⟨n, c, hc⟩` from `IsLocalization.Away.surj a x₁`. Take `⟨m, d, hd⟩` from `IsLocalization.Away.surj b x₂`. Establish `e1 : f₁ x₁ * algebraMap R W a ^ n = algebraMap R W c`. Use `congrArg f₁ hc` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_pow, ← RingHom.comp_apply f₁, ← RingHom.comp_apply f₁, hf₁]`. Then use the resulting hypothesis. Establish `e2 : f₂ x₂ * algebraMap R W b ^ m = algebraMap R W d`. Use `congrArg f₂ hd` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, ← RingHom.comp_apply f₂, ← RingHom.comp_apply f₂, hf₂]`. Then use the resulting hypothesis. Establish `key : algebraMap R W (c * b ^ m) = algebraMap R W (d * a ^ n)`.
+
+Rewrite using `[map_mul, map_mul, ← e1, ← e2, h, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨l, hl⟩` from `IsLocalization.Away.exists_of_eq (a * b) key`. Take `⟨u, v, huv⟩` from `hab.pow (m := n + l) (n := m + l)`. Establish `hl' : (c * a ^ l) * b ^ (m + l) = (d * b ^ l) * a ^ (n + l)`.
+
+Take the linear combination `hl`. Establish `hx₁ : (u * (c * a ^ l) + v * (d * b ^ l)) * a ^ (n + l) = c * a ^ l`. Take the linear combination `(c * a ^ l) * huv - v * hl'`. Establish `hx₂ : (u * (c * a ^ l) + v * (d * b ^ l)) * b ^ (m + l) = d * b ^ l`. Take the linear combination `(d * b ^ l) * huv + u * hl'`.
+
+Use `⟨u * (c * a ^ l) + v * (d * b ^ l), ?_, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap R (Localization.Away a) (a ^ (n + l)))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit a).pow _`. Rewrite using `[← hu.mul_left_inj, ← map_mul, hx₁, pow_add, map_mul, map_mul, map_pow, map_pow, ← _root_.mul_assoc, hc]`.
+
+Establish `hu : IsUnit (algebraMap R (Localization.Away b) (b ^ (m + l)))`. Rewrite using `[map_pow]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit b).pow _`. Rewrite using `[← hu.mul_left_inj, ← map_mul, hx₂, pow_add, map_mul, map_mul, map_pow, map_pow, ← _root_.mul_assoc, hd]`. Introduce and unpack `x y ⟨hx₁, hx₂⟩ ⟨hy₁, hy₂⟩`.
+
+Take `⟨n, hn⟩` from `IsLocalization.Away.exists_of_eq a (hx₁.trans hy₁.symm)`. Take `⟨m, hm⟩` from `IsLocalization.Away.exists_of_eq b (hx₂.trans hy₂.symm)`. Take `⟨u, v, huv⟩` from `hab.pow (m := n) (n := m)`. Take the linear combination `u * hn + v * hm - (x - y) * huv`.
+-/
 theorem existsUnique_of_coprime {R W : Type} [CommRing R] [CommRing W] [Algebra R W] (a b : R) (hab : IsCoprime a b)
     [IsLocalization.Away (a * b) W] (f₁ : Localization.Away a →+* W) (f₂ : Localization.Away b →+* W)
     (hf₁ : f₁.comp (algebraMap R _) = algebraMap R W) (hf₂ : f₂.comp (algebraMap R _) = algebraMap R W)
@@ -52,12 +67,21 @@ theorem existsUnique_of_coprime {R W : Type} [CommRing R] [CommRing W] [Algebra 
     obtain ⟨u, v, huv⟩ := hab.pow (m := n) (n := m)
     linear_combination u * hn + v * hm - (x - y) * huv
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_two {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id_two (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := Spec.map_id _
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [Chart.dualMapR]`.
+-/
 theorem dualMapR_comp_two {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     Chart.dualMapR (g.comp f) = (Chart.dualMapR g).comp (Chart.dualMapR f) := by
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [Chart.dualMapR]
@@ -68,6 +92,9 @@ namespace GlobalTheory.RealMult.GlueTwo
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Rewrite using `[spMap_comp_two]`. Conclude with `h'.comp h`.
+-/
 theorem isPullBy_comp_two {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (σ : R →+* R')
     (τ : R' →+* R'') (ρ : R →+* R'') (hρ : τ.comp σ = ρ) {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {X'' : Obj F 𝔠 (Sp R'')} {φ : X'.A.left ⟶ X.A.left} {ψ : X''.A.left ⟶ X'.A.left}
@@ -76,6 +103,15 @@ theorem isPullBy_comp_two {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing
   rw [spMap_comp_two]
   exact h'.comp h
 
+/- English proof (translation)
+Establish `hc` using `isPullBy_comp_two σ τ ρ hρ h h'`. Substitute `hρ` using the available equality. Introduce `v v'' hv`. Use `letI : Algebra R R' := σ.toAlgebra`. Take `⟨e, he, -⟩` from `Obj.exists_lieEquiv (R := R) (R' := R') h`.
+
+Use `letI : Algebra R' R'' := τ.toAlgebra`. Take `⟨e', he', -⟩` from `Obj.exists_lieEquiv (R := R') (R' := R'') h'`. Use `letI : Algebra R R'' := (τ.comp σ).toAlgebra`. Take `⟨e'', he'', -⟩` from `Obj.exists_lieEquiv (R := R) (R' := R'') hc`. Establish `h1 : ∀ i, Obj.LieCorr σ φ (v i) (e (1 ⊗ₜ v i))` using `fun i => (he _ _).2 rfl`.
+
+Establish `h2 : ∀ i, Obj.LieCorr τ ψ (e (1 ⊗ₜ v i)) (e' (1 ⊗ₜ e (1 ⊗ₜ v i)))` using `fun i => (he' _ _).2 rfl`. Establish `h3 : ∀ i, Obj.LieCorr (τ.comp σ) (ψ ≫ φ) (v i) (e' (1 ⊗ₜ e (1 ⊗ₜ v i)))`. Introduce `i`. Unfold `Obj.LieCorr at h1 h2 ⊢`. Rewrite using `[← Category.assoc, h2 i, Category.assoc, h1 i, dualMapR_comp_two, spMap_comp_two, Category.assoc]`.
+
+Establish `h4 : v'' = fun i => e' (1 ⊗ₜ e (1 ⊗ₜ v i))`. Use function extensionality and compare the values at `fun i => ((he'' _ _).1 (hv i)).trans ((he'' _ _).1 (h3 i)).symm`. Rewrite using `[h4, hd' _ _ h2, hd v _ h1]`. Both sides reduce to the same expression.
+-/
 theorem detCorr_comp_two {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (σ : R →+* R')
     (τ : R' →+* R'') (ρ : R →+* R'') (hρ : τ.comp σ = ρ) {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {X'' : Obj F 𝔠 (Sp R'')} {φ : X'.A.left ⟶ X.A.left} {ψ : X''.A.left ⟶ X'.A.left}
@@ -102,6 +138,11 @@ theorem detCorr_comp_two {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing 
   rw [h4, hd' _ _ h2, hd v _ h1]
   rfl
 
+/- English proof (translation)
+Establish `h₂' : Y₂.IsPullBy X (spMap (RingHom.id R') ≫ spMap ρ) φ₂`. Rewrite using `[spMap_id_two, Category.id_comp]` and apply the resulting hypothesis. Take `⟨ψ, hψ, hψφ⟩` from `Obj.IsPullBy.cancel h₂' h₁`. Take `⟨δ', hδ', -⟩` from `hψ.existsUnique_detGen (RingHom.id R') δ₁`. Establish `hc` using `detCorr_comp_two ρ (RingHom.id R') ρ (RingHom.id_comp ρ) h₁ hψ hd₁ hδ'`.
+
+Rewrite `hc` using `[hψφ]`. Take `rfl : δ' = δ₂` from `(h₂.existsUnique_detGen ρ δ).unique hc hd₂`. Conclude with `(u.baseChange R' R' (AlgHom.id R₀ R') Y₁ hQ₁ Y₂ hQ₂ ψ δ₁ δ' hψ hδ').symm`.
+-/
 theorem val_eq_of_isPullBy_two {Q : ObjClass 𝔠} {R₀ : Type} [CommRing R₀] {k : ℕ} (u : Rule Q R₀ k)
     {R R' : Type} [CommRing R] [CommRing R'] [Algebra R₀ R'] (ρ : R →+* R') {X : Obj F 𝔠 (Sp R)} {δ : X.DetGen}
     {Y₁ Y₂ : Obj F 𝔠 (Sp R')} (hQ₁ : Q R' Y₁) (hQ₂ : Q R' Y₂) {φ₁ : Y₁.A.left ⟶ X.A.left}
@@ -117,10 +158,16 @@ theorem val_eq_of_isPullBy_two {Q : ObjClass 𝔠} {R₀ : Type} [CommRing R₀]
   obtain rfl : δ' = δ₂ := (h₂.existsUnique_detGen ρ δ).unique hc hd₂
   exact (u.baseChange R' R' (AlgHom.id R₀ R') Y₁ hQ₁ Y₂ hQ₂ ψ δ₁ δ' hψ hδ').symm
 
+/- English proof (translation)
+Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := Localization.Away ((n : ℕ) : R)) ((n : ℕ) : R)`.
+-/
 theorem isUnit_natCast_away_two (R : Type) [CommRing R] (n : ℕ) :
     IsUnit ((n : ℕ) : Localization.Away ((n : ℕ) : R)) := by
   simpa using IsLocalization.Away.algebraMap_isUnit (S := Localization.Away ((n : ℕ) : R)) ((n : ℕ) : R)
 
+/- English proof (translation)
+Take `⟨Z', χ, hZ'⟩` from `Obj.exists_isPullBy Y₀ (spMap (g : Localization.Away ((n : ℕ) : R) →+* W'))`. Take `⟨δZ', hdZ', -⟩` from `hZ'.existsUnique_detGen _ δ₀`. Rewrite using `[← u.baseChange _ W' g Y₀ (isUnit_natCast_away_two R n) Z' hu χ δ₀ δZ' hZ' hdZ']`. Conclude with `val_eq_of_isPullBy_two u ρ hu hu (isPullBy_comp_two _ _ ρ hρ h₀ hZ') hZ (detCorr_comp_two _ _ ρ hρ h₀ hZ' hd₀ hdZ') hdZ`.
+-/
 theorem map_val_two {R₀ : Type} [CommRing R₀] {k n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R W' : Type} [CommRing R]
     [Algebra R₀ R] [CommRing W'] [Algebra R₀ W'] (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen)
     (Y₀ : Obj F 𝔠 (Sp (Localization.Away ((n : ℕ) : R)))) (φ₀ : Y₀.A.left ⟶ X.A.left)
@@ -148,6 +195,9 @@ def GoodAt {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R : Type} [CommRing R] 
     Y.IsPullBy X (spMap (algebraMap R _)) φ → ∀ δY : Y.DetGen, Obj.DetCorr (algebraMap R _) φ δ.1 δY.1 →
       algebraMap R _ x = u.val _ Y (isUnit_natCast_away_two R n) δY
 
+/- English proof (translation)
+Take `⟨Y, φ, h⟩` from `Obj.exists_isPullBy X (spMap ρ)`. Take `⟨δY, hd, -⟩` from `h.existsUnique_detGen ρ δ`. Conclude with `⟨Y, φ, h, δY, hd⟩`.
+-/
 theorem exists_pull_two {R S : Type} [CommRing R] [CommRing S] (ρ : R →+* S) (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen) :
     ∃ (Y : Obj F 𝔠 (Sp S)) (φ : Y.A.left ⟶ X.A.left) (_ : Y.IsPullBy X (spMap ρ) φ) (δY : Y.DetGen),
       Obj.DetCorr ρ φ δ.1 δY.1 := by
@@ -155,6 +205,9 @@ theorem exists_pull_two {R S : Type} [CommRing R] [CommRing S] (ρ : R →+* S) 
   obtain ⟨δY, hd, -⟩ := h.existsUnique_detGen ρ δ
   exact ⟨Y, φ, h, δY, hd⟩
 
+/- English proof (translation)
+Introduce `Y φ h δY hd`. Rewrite using `[hx]`. Conclude with `map_val_two u X δ Y₀ φ₀ h₀ δ₀ hd₀ (AlgHom.id R₀ _) (algebraMap R _) rfl Y φ h δY hd _`.
+-/
 theorem goodAt_of_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R : Type} [CommRing R] [Algebra R₀ R]
     (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen) (Y₀ : Obj F 𝔠 (Sp (Localization.Away ((n : ℕ) : R))))
     (φ₀ : Y₀.A.left ⟶ X.A.left) (h₀ : Y₀.IsPullBy X (spMap (algebraMap R _)) φ₀) (δ₀ : Y₀.DetGen)
@@ -164,12 +217,22 @@ theorem goodAt_of_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R : Type} [C
   rw [hx]
   exact map_val_two u X δ Y₀ φ₀ h₀ δ₀ hd₀ (AlgHom.id R₀ _) (algebraMap R _) rfl Y φ h δY hd _
 
+/- English proof (translation)
+Take `⟨Y, φ, h, δY, hd⟩` from `exists_pull_two (algebraMap R (Localization.Away ((n : ℕ) : R))) X δ`. Rewrite using `[hx Y φ h δY hd, hy Y φ h δY hd]`.
+-/
 theorem algebraMap_eq_of_goodAt_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R : Type} [CommRing R] [Algebra R₀ R]
     (X : Obj F 𝔠 (Sp R)) (δ : X.DetGen) {x y : R} (hx : GoodAt u X δ x) (hy : GoodAt u X δ y) :
     algebraMap R (Localization.Away ((n : ℕ) : R)) x = algebraMap R _ y := by
   obtain ⟨Y, φ, h, δY, hd⟩ := exists_pull_two (algebraMap R (Localization.Away ((n : ℕ) : R))) X δ
   rw [hx Y φ h δY hd, hy Y φ h δY hd]
 
+/- English proof (translation)
+Use `haveI := Obj.invertible_detOmega X`. Establish `hmem : δ.1 ∈ Submodule.span R {δ'.1}` using `by rw [δ'.2]; trivial`. Take `⟨d, hd⟩` from `Submodule.mem_span_singleton.1 hmem`. Establish `hsurj : Function.Surjective (LinearMap.toSpanSingleton R X.DetOmega δ.1)`. Introduce `m`.
+
+Establish `hm : m ∈ Submodule.span R {δ.1}` using `by rw [δ.2]; trivial`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hm`. Conclude with `⟨a, ha⟩`. Establish `hinj` using `(Module.Invertible.bijective_of_surjective hsurj).1`. Establish `h1 : d * c = 1` using `hinj (by`.
+
+Simplify using `only [LinearMap.toSpanSingleton_apply, mul_smul, ← hc, hd, one_smul])`. Conclude with `⟨⟨c, d, by rw [mul_comm]; exact h1, h1⟩, rfl⟩`.
+-/
 theorem isUnit_of_detGen_two {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) (δ δ' : X.DetGen) (c : R)
     (hc : δ'.1 = c • δ.1) : IsUnit c := by
   haveI := Obj.invertible_detOmega X
@@ -185,6 +248,13 @@ theorem isUnit_of_detGen_two {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R)) (δ
     simp only [LinearMap.toSpanSingleton_apply, mul_smul, ← hc, hd, one_smul])
   exact ⟨⟨c, d, by rw [mul_comm]; exact h1, h1⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `Y φ h δY hd`. Establish `hcu` using `isUnit_of_detGen_two X δ δ' c hc`. Take `⟨δY', hdY', -⟩` from `h.existsUnique_detGen _ δ'`. Establish `e : δY'.1 = algebraMap R (Localization.Away ((n : ℕ) : R)) c • δY.1`. Set `g₁ : Y.DetGen` to `Subtype.mk (algebraMap R (Localization.Away ((n : ℕ) : R)) c • δY.1) (by`.
+
+Rewrite using `[Submodule.span_singleton_smul_eq (hcu.map _)]`. Conclude with `δY.2)`. Establish `hγ : Obj.DetCorr (algebraMap R _) φ δ'.1 g₁.1`. Introduce `v v' hv`. Simplify using `[g₁, hd v v' hv, hc]`.
+
+Conclude with `congrArg Subtype.val ((h.existsUnique_detGen _ δ').unique hdY' hγ)`. Rewrite using `[map_mul, map_pow, hx Y φ h δY' hdY']`. Conclude with `u.homog _ Y _ δY δY' _ e`.
+-/
 theorem goodAt_homog_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R : Type} [CommRing R] [Algebra R₀ R]
     (X : Obj F 𝔠 (Sp R)) (δ δ' : X.DetGen) (c : R) (hc : δ'.1 = c • δ.1) {x : R} (hx : GoodAt u X δ' x) :
     GoodAt u X δ (c ^ k * x) := by
@@ -207,6 +277,11 @@ namespace GlobalTheory.RealMult.GlueTwo
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R₀ : Type} [CommRing R₀] {k : ℕ}
 
+/- English proof (translation)
+Introduce `Y ψ h δY hd`. Take `⟨Y₀, φ₀, h₀, δ₀, hd₀⟩` from `exists_pull_two (algebraMap R (Localization.Away ((n : ℕ) : R))) X δ`. Establish `hunit : IsUnit (((IsScalarTower.toAlgHom R₀ R' (Localization.Away ((n : ℕ) : R'))).comp σ) ((n : ℕ) : R))`. Simplify using `using isUnit_natCast_away_two R' n`. Set `g : Localization.Away ((n : ℕ) : R) →ₐ[R₀] Localization.Away ((n : ℕ) : R')` to `IsLocalization.Away.liftAlgHom ((n : ℕ) : R) hunit`.
+
+Establish `hg : (g : Localization.Away ((n : ℕ) : R) →+* Localization.Away ((n : ℕ) : R')).comp (algebraMap R _) = (algebraMap R' (Localization.Away ((n : ℕ) : R'))).comp (σ : R →+* R')` using `RingHom.ext fun a => by simp [g]`. Establish `key` using `map_val_two u X δ Y₀ φ₀ h₀ δ₀ hd₀ g _ hg Y (ψ ≫ φ') (isPullBy_comp_two _ _ _ rfl h' h) δY (detCorr_comp_two _ _ _ rfl h' h hd' hd) (isUnit_natCast_away_two R' n)`. Rewrite using `[← key, ← hx Y₀ φ₀ h₀ δ₀ hd₀]`. Simplify using `[g]`.
+-/
 theorem goodAt_baseChange_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R R' : Type} [CommRing R] [Algebra R₀ R]
     [CommRing R'] [Algebra R₀ R'] (σ : R →ₐ[R₀] R') (X : Obj F 𝔠 (Sp R)) (X' : Obj F 𝔠 (Sp R'))
     (φ' : X'.A.left ⟶ X.A.left) (h' : X'.IsPullBy X (spMap (σ : R →+* R')) φ') (δ : X.DetGen) (δ' : X'.DetGen)
@@ -225,6 +300,9 @@ theorem goodAt_baseChange_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) {R R'
   rw [← key, ← hx Y₀ φ₀ h₀ δ₀ hd₀]
   simp [g]
 
+/- English proof (translation)
+Introduce `Y φ h δY hd`. Rewrite using `[H _ Y _ (h.isRapoport _ hX) δY]`. Conclude with `(r₀.baseChange R _ (IsScalarTower.toAlgHom R₀ R _) X hX Y _ φ δ δY h hd).symm`.
+-/
 theorem goodAt_rap_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) (r₀ : Rule (rapObj 𝔠) R₀ k)
     (H : ∀ (R : Type) [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R)) (hn : IsUnit ((n : ℕ) : R))
       (hX : X.IsRapoport) (δ : X.DetGen), u.val R X hn δ = r₀.val R X hX δ)
@@ -234,9 +312,25 @@ theorem goodAt_rap_two {n : ℕ} (u : Rule (unitObj 𝔠 n) R₀ k) (r₀ : Rule
   rw [H _ Y _ (h.isRapoport _ hX) δY]
   exact (r₀.baseChange R _ (IsScalarTower.toAlgHom R₀ R _) X hX Y _ φ δ δY h hd).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, -1, by push_cast; ring⟩`.
+-/
 theorem isCoprime_three_two (R : Type) [CommRing R] : IsCoprime ((3 : ℕ) : R) ((2 : ℕ) : R) :=
   ⟨1, -1, by push_cast; ring⟩
 
+/- English proof (translation)
+Use `existsUnique_of_exists_of_unique ?_ ?_` and prove the remaining obligations. Take `⟨Y₃, φ₃, h₃, δ₃, hd₃⟩` from `exists_pull_two (algebraMap R (Localization.Away ((3 : ℕ) : R))) X δ`. Take `⟨Y₂, φ₂, h₂, δ₂, hd₂⟩` from `exists_pull_two (algebraMap R (Localization.Away ((2 : ℕ) : R))) X δ`. Set `W` to `Localization.Away (((3 : ℕ) : R) * ((2 : ℕ) : R))`. Establish `u6 : IsUnit (algebraMap R W (((3 : ℕ) : R) * ((2 : ℕ) : R)))` using `IsLocalization.Away.algebraMap_isUnit _`.
+
+Rewrite `u6` using `[map_mul]`. Establish `u3 : IsUnit ((IsScalarTower.toAlgHom R₀ R W) ((3 : ℕ) : R))` using `isUnit_of_mul_isUnit_left u6`. Establish `u2 : IsUnit ((IsScalarTower.toAlgHom R₀ R W) ((2 : ℕ) : R))` using `isUnit_of_mul_isUnit_right u6`. Set `f₃ : Localization.Away ((3 : ℕ) : R) →ₐ[R₀] W` to `IsLocalization.Away.liftAlgHom ((3 : ℕ) : R) u3`. Set `f₂ : Localization.Away ((2 : ℕ) : R) →ₐ[R₀] W` to `IsLocalization.Away.liftAlgHom ((2 : ℕ) : R) u2`.
+
+Establish `hf₃ : (f₃ : Localization.Away ((3 : ℕ) : R) →+* W).comp (algebraMap R _) = algebraMap R W` using `RingHom.ext fun a => by simp [f₃]`. Establish `hf₂ : (f₂ : Localization.Away ((2 : ℕ) : R) →+* W).comp (algebraMap R _) = algebraMap R W` using `RingHom.ext fun a => by simp [f₂]`. Take `⟨Z, ψ, hZ, δZ, hdZ⟩` from `exists_pull_two (algebraMap R W) X δ`. Establish `w3 : IsUnit ((3 : ℕ) : W)` using `by rw [← map_natCast (algebraMap R W) 3]; exact u3`. Establish `w2 : IsUnit ((2 : ℕ) : W)` using `by rw [← map_natCast (algebraMap R W) 2]; exact u2`.
+
+Establish `e3` using `map_val_two s X δ Y₃ φ₃ h₃ δ₃ hd₃ f₃ _ hf₃ Z ψ hZ δZ hdZ w3`. Establish `e2` using `map_val_two t X δ Y₂ φ₂ h₂ δ₂ hd₂ f₂ _ hf₂ Z ψ hZ δZ hdZ w2`. Take `⟨x, ⟨hx₃, hx₂⟩, -⟩` from `existsUnique_of_coprime (W := W) _ _ (isCoprime_three_two R) (f₃ : Localization.Away ((3 : ℕ) : R) →+* W) (f₂ : Localization.Away ((2 : ℕ) : R) →+* W) hf₃ hf₂ _ _ (show f₃ _ = f₂ _ from e3.trans ((H W Z w3 w2 δZ).trans e2.symm))`. Conclude with `⟨x, goodAt_of_two s X δ Y₃ φ₃ h₃ δ₃ hd₃ x hx₃, goodAt_of_two t X δ Y₂ φ₂ h₂ δ₂ hd₂ x hx₂⟩`. Introduce and unpack `x y ⟨hx₃, hx₂⟩ ⟨hy₃, hy₂⟩`.
+
+Set `W` to `Localization.Away (((3 : ℕ) : R) * ((2 : ℕ) : R))`. Establish `u6 : IsUnit (algebraMap R W (((3 : ℕ) : R) * ((2 : ℕ) : R)))` using `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `u6` using `[map_mul]`. Set `f₃ : Localization.Away ((3 : ℕ) : R) →+* W` to `IsLocalization.Away.lift ((3 : ℕ) : R) (isUnit_of_mul_isUnit_left u6)`. Set `f₂ : Localization.Away ((2 : ℕ) : R) →+* W` to `IsLocalization.Away.lift ((2 : ℕ) : R) (isUnit_of_mul_isUnit_right u6)`.
+
+Take `⟨z, -, hz⟩` from `existsUnique_of_coprime (W := W) _ _ (isCoprime_three_two R) f₃ f₂ (IsLocalization.Away.lift_comp _ _) (IsLocalization.Away.lift_comp _ _) (algebraMap R _ x) (algebraMap R _ x) (by simp [f₃, f₂])`. Conclude with `(hz x ⟨rfl, rfl⟩).trans (hz y ⟨(algebraMap_eq_of_goodAt_two s X δ hx₃ hy₃).symm, (algebraMap_eq_of_goodAt_two t X δ hx₂ hy₂).symm⟩).symm`.
+-/
 theorem existsUnique_glued (s : Rule (unitObj 𝔠 3) R₀ k) (t : Rule (unitObj 𝔠 2) R₀ k)
     (H : ∀ (R : Type) [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R)) (h₃ : IsUnit ((3 : ℕ) : R))
       (h₂ : IsUnit ((2 : ℕ) : R)) (δ : X.DetGen), s.val R X h₃ δ = t.val R X h₂ δ)
@@ -303,6 +397,9 @@ end GlobalTheory.RealMult.GlueTwo
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 R₀ _ k r₀ s t H H₃ H₂`. Use `⟨GlueTwo.glueRule s t H, fun R _ _ X hX δ => ?_⟩` and prove the remaining obligations. Conclude with `(GlueTwo.existsUnique_glued s t H R X δ).unique (GlueTwo.existsUnique_glued s t H R X δ).exists.choose_spec ⟨GlueTwo.goodAt_rap_two s r₀ H₃ X hX δ, GlueTwo.goodAt_rap_two t r₀ H₂ X hX δ⟩`.
+-/
 theorem exists_rule_allObj_of_three_two :
     ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
       (r₀ : Rule (rapObj 𝔠) R₀ k) (s : Rule (unitObj 𝔠 3) R₀ k) (t : Rule (unitObj 𝔠 2) R₀ k),

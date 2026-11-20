@@ -19,6 +19,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.DefLiftHecke
 
+/- English proof (translation)
+Establish `hmul : ∀ h a g b m, om (h * a, g * b) m = om (h, g) (om (a, b) m)` using `fun h a g b m => by`. Rewrite using `[show ((h * a, g * b) : H × G) = (h, g) * (a, b) from rfl, map_mul, Module.End.mul_apply]`. Establish `hm1 : ∀ h a m, om (h, g) (om (a, 1) m) = om (h * a, g) m` using `fun h a m => by rw [← hmul, mul_one]`. Establish `hm2 : ∀ h b m, om (h, g) (om (1, b) m) = om (h, g * b) m` using `fun h a m => by rw [← hmul, mul_one]`. Establish `hu : ∀ x, ∀ γ ∈ Γ, ∀ h, (fun h => ℓ (om (h, g) (L (F (h * x))))) (γ * h) = (fun h => ℓ (om (h, g) (L (F (h * x))))) h` using `fun x γ hγ h => by`.
+
+Simplify using `only [hl _ γ hγ, mul_assoc, hFl γ hγ]`. Establish `key : ∀ x (u : H → ℂ), (∃ y, u = fun h => (fun h => ℓ (om (h, g) (L (F (h * x))))) (h * y)) → IntegrableOn u 𝓕 μ ∧ ∫ h in 𝓕, u h ∂μ = ∫ h in 𝓕, ℓ (om (h, g) (L (F (h * x)))) ∂μ`. Introduce and unpack `x _ ⟨y, rfl⟩`. Conclude with `⟨integrableOn_fundamentalDomain_mul_right h𝓕 y _ (hu x) (hint g x), setIntegral_fundamentalDomain_mul_right h𝓕 y _ (hu x)⟩`. Establish `step : ∀ d, IntegrableOn (fun h => ℓ (om (h, g) (∑ a ∈ A' d, om (a, 1) (L (F h))))) 𝓕 μ ∧ ∑ a ∈ A d, ∫ h in 𝓕, ℓ (om (h, g) (L (F (h * a)))) ∂μ = ∫ h in 𝓕, ℓ (om (h, g) (∑ a ∈ A' d, om (a, 1) (L (F h)))) ∂μ` using `fun d => by`.
+
+Take `⟨α, R', h1, h2, h3, h4⟩` from `hd d`. Establish `e1 : ∀ a ∈ A d, ∫ h in 𝓕, ℓ (om (h, g) (L (F (h * a)))) ∂μ = ∫ h in 𝓕, ℓ (om (h, g) (L (F (h * α)))) ∂μ` using `fun a ha => by`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `h2 a ha`. Use `(key α _ ⟨k₁, funext fun h => ?_⟩).2` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[← hm1 h k₁, hfix _ k₁ hk₁, ← mul_assoc, hFr k₂ hk₂, ← mul_assoc]`. Establish `e2 : ∀ a ∈ R', ∃ y, (fun h => ℓ (om (h * a, g) (L (F h)))) = fun h => (fun h => ℓ (om (h, g) (L (F (h * α))))) (h * y)` using `fun a ha => by`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `h3 a ha`. Use `⟨k₁ * α⁻¹, funext fun h => ?_⟩` and prove the remaining obligations. Establish `: h * (k₁ * α⁻¹) * α = h * k₁` using `by group`.
+
+Simplify using `only [this]`. Rewrite using `[hFr k₁ hk₁, ← mul_assoc, ← hm1 _ k₂, hfix _ k₂ hk₂]`. Simplify using `only [← h4, map_sum, hm1]`. Use `⟨integrable_finsetSum _ fun a ha => (key α _ (e2 a ha)).1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun a ha => (key α _ (e2 a ha)).1, Finset.sum_congr rfl e1, Finset.sum_congr rfl fun a ha => (key α _ (e2 a ha)).2, Finset.sum_const, Finset.sum_const, h1]`.
+
+Establish `hi1 : ∀ g, IntegrableOn (fun h => ℓ (om (h, g) (L (F h)))) 𝓕 μ` using `fun g => by`. Simplify `hint g 1` using `only [mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Use `_ = ∫ h in 𝓕, ∑ d ∈ s, c d * ℓ (om (h, g) (∑ a ∈ A' d, om (a, 1) (L (F h)))) ∂μ := by`.
+
+Rewrite using `[integral_finsetSum _ fun d _ => (integrable_finsetSum _ fun a _ => hint g a).const_mul _, integral_finsetSum _ fun d _ => (step d).1.const_mul _]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, integral_finsetSum _ fun a _ => hint g a, (step d).2]`. Use `_ = ∫ h in 𝓕, ∑ d ∈ s', c' d * ∑ b ∈ B d, ℓ (om (h, g * b) (L (F h))) ∂μ := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `h`. Use `congrArg (fun m => ℓ (om (h, g) m)) (hM (F h))` as an intermediate fact. Simplify using `only [map_sum (om (h, g)), map_sum ℓ, map_smul, smul_eq_mul, hm2] at this ⊢`. Conclude with `this`. Use `_ = _ := by`.
+
+Rewrite using `[integral_finsetSum _ fun d _ => (integrable_finsetSum _ fun a _ => hi1 (g * a)).const_mul _]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_finsetSum _ fun a _ => hi1 (g * a)]`.
+-/
 theorem integral_comb {G H X M ι κ : Type} [Group G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [MeasurableSpace H] [BorelSpace H] {μ : Measure H} [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]
     {Γ : Subgroup H} [Countable Γ] {𝓕 : Set H} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (K : Set H)
@@ -90,6 +109,11 @@ theorem integral_comb {G H X M ι κ : Type} [Group G] [Group H] [TopologicalSpa
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨e, f', hef⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents S).2.1 P`. Use `⟨⟨one_mem _, fun y => ?_, by simp⟩, e, f', hef, fun i j => ?_⟩` and prove the remaining obligations. Establish `: finMat D.sp.cm.sig S.gram (1 : GA D S) = 1`. Unfold `finMat`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Rewrite using `[this, Matrix.one_mulVec]`. Establish `: Formalism.L2.Theta.mt S (1 : GA D S) = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this, sub_self, Matrix.zero_apply, mul_zero]`.
+-/
 theorem one_mem_hyp (S : HSp D) (P : Pl D.host.E) : (1 : GA D S) ∈ hyp S P := by
   obtain ⟨e, f', hef⟩ := (GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents S).2.1 P
   refine ⟨⟨one_mem _, fun y => ?_, by simp⟩, e, f', hef, fun i j => ?_⟩
@@ -100,6 +124,15 @@ theorem one_mem_hyp (S : HSp D) (P : Pl D.host.E) : (1 : GA D S) ∈ hyp S P := 
   · have : Formalism.L2.Theta.mt S (1 : GA D S) = 1 := by simp [Formalism.L2.Theta.mt]
     rw [this, sub_self, Matrix.zero_apply, mul_zero]
 
+/- English proof (translation)
+Establish `: IsTopologicalGroup (GA D S)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `: BorelSpace (GA D S)` using `⟨rfl⟩`. Establish `: Countable (GQ S)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig S.gram`. Establish `: ν.IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D S ν hν`. Establish `hfS : ∀ w, ∀ k ∈ hyp S P, om (k, 1) (L w) = L w` using `fun w k hk => hfix _ (hL w) k hk 1 (one_mem_hyp T P)`.
+
+Rewrite using `[ThetaIntHecke.hk_apply]`. Use `integral_comb h𝓕 (hyp S P) om (LinearMap.proj (R := ℂ) (φ := fun _ : WO S T => ℂ) 0) L F cS.support cS (Hk3.rep S P) (fun d => Hk3.rep S P (dualLab d)) cT.support cT (Hk3.rep T P) (fun w γ hγ h g => ?_) hfS hFl hFr (fun g y => ?_) (fun d => ?_) (fun w => ?_) g` and prove the remaining obligations. Use `(GlobalTheory.thetaKO_rat_left_and_eigen_right ψ S T χS χT om hW _ (hL w).1).1 γ hγ 1 (one_mem _) h g` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.WeilParts.integrableOn_theta_definite D ψ hW.std S T χS χT om hW hpos X L (fun w => (hL w).1) (fun h => F (h * y)) (hc.comp (continuous_mul_right y)) (fun γ hγ h => by rw [mul_assoc, hFl γ hγ]) ν 𝓕 hν h𝓕 g`.
+
+Take `⟨α, -, R', h1, h2, h3, h4⟩` from `ThetaIntHecke.exists_dual_rep S P d`. Conclude with `⟨α, R', h1, h2, h3, fun w => h4 _ (om.comp (MonoidHom.inl _ _)) (L w) (hfS w)⟩`. Establish `h7` using `hM _ (hL w)`. Rewrite `h7` using `[ThetaIntHecke.opOf_dualC]`. Simplify using `only [opOf, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply] at h7`.
+
+Conclude with `h7`.
+-/
 theorem theta_comb {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {P : Pl D.host.E} (hW : IsWeilDatumO ψ S T χS χT om)
     (hpos : ∀ τ, (gramAt D S τ).PosDef) {ν : Measure (GA D S)} {𝓕 : Set (GA D S)} (hν : ν.IsHaarMeasure)
@@ -129,20 +162,32 @@ theorem theta_comb {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE
     simp only [opOf, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply] at h7
     exact h7
 
+/- English proof (translation)
+Break down `GlobalTheory.LevOp.rep_cases (V := V) (P := P) d with h | ⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩` into its components or cases. Simplify using `[h]`. Conclude with `fun a ha => (hc.1 a ha).1`.
+-/
 theorem rep_mem_GfC (V : HSp D) (P : Pl D.host.E) (d : List ℤ) : ∀ a ∈ Hk3.rep V P d, a ∈ GfC V := by
   rcases GlobalTheory.LevOp.rep_cases (V := V) (P := P) d with h | ⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩
   · simp [h]
   · exact fun a ha => (hc.1 a ha).1
 
+/- English proof (translation)
+Rewrite using `[map_mul p, _root_.mul_inv_rev, map_mul ρ, hκ, one_mul]`.
+-/
 theorem shift_abs {H Gf W : Type} [Group H] [Group Gf] [AddCommGroup W] [Module ℂ W]
     (p : H →* Gf) (ρ : H →* Module.End ℂ W) (κ : H) (hκ : ρ κ⁻¹ = 1) (f : Gf → W) (h : H) :
     ρ (h * κ)⁻¹ (f (p (h * κ))) = ρ h⁻¹ (f (p h * p κ)) := by
   rw [map_mul p, _root_.mul_inv_rev, map_mul ρ, hκ, one_mul]
 
+/- English proof (translation)
+The claim follows from `shift_abs (finHom V).rangeRestrict c.ρ a (hc.1 _ ((GfC V).inv_mem ha)) f h`.
+-/
 theorem ext_mul {V : HSp D} (c : CoefA V) (hc : c.Is) (f : Bridge.Gf V → c.W) {a : GA D V} (ha : a ∈ GfC V) (h : GA D V) :
     c.ext f (h * a) = c.ρ h⁻¹ (f ((finHom V).rangeRestrict h * (finHom V).rangeRestrict a)) :=
   shift_abs (finHom V).rangeRestrict c.ρ a (hc.1 _ ((GfC V).inv_mem ha)) f h
 
+/- English proof (translation)
+Establish `e : c.ext (hkF V P z f) h = c.ρ h⁻¹ (∑ d ∈ z.support, z d • ∑ a ∈ Hk3.rep V P d, f ((finHom V).rangeRestrict h * (finHom V).rangeRestrict a))` using `rfl`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl fun a ha => ext_mul c hc f (rep_mem_GfC V P d a ha) h]`.
+-/
 theorem ext_hkF {V : HSp D} (c : CoefA V) (hc : c.Is) (P : Pl D.host.E) (z : List ℤ →₀ ℂ) (f : Bridge.Gf V → c.W)
     (h : GA D V) :
     c.ext (hkF V P z f) h = ∑ d ∈ z.support, z d • ∑ a ∈ Hk3.rep V P d, c.ext f (h * a) := by
@@ -152,10 +197,16 @@ theorem ext_hkF {V : HSp D} (c : CoefA V) (hc : c.Is) (P : Pl D.host.E) (z : Lis
   refine Finset.sum_congr rfl fun d _ => ?_
   rw [map_smul, map_sum, Finset.sum_congr rfl fun a ha => ext_mul c hc f (rep_mem_GfC V P d a ha) h]
 
+/- English proof (translation)
+Rewrite using `[one_pow, Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`.
+-/
 theorem one_pow_notMem (P : Pl D.host.E) (n : ℕ) : ((1 ^ n : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
   rw [one_pow, Nat.cast_one]
   exact (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top
 
+/- English proof (translation)
+Establish `h3` using `hf 1 h ⟨k, hk⟩`. Rewrite `h3` using `[h1, map_one, map_one, one_mul, one_smul]`. Conclude with `h3`.
+-/
 theorem level_abs {Γ Gf W : Type} [Group Γ] [Group Gf] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {ι : Γ →* Gf}
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup Gf} {χ : J →* ℂˣ} {f : Gf → W} (hf : f ∈ Bridge.AdForms ι ρ J χ)
     {k : Gf} (hk : k ∈ J) (h1 : ((χ ⟨k, hk⟩ : ℂˣ) : ℂ) = 1) (h : Gf) : f (h * k) = f h := by
@@ -163,6 +214,9 @@ theorem level_abs {Γ Gf W : Type} [Group Γ] [Group Gf] [NormedAddCommGroup W] 
   rw [h1, map_one, map_one, one_mul, one_smul] at h3
   exact h3
 
+/- English proof (translation)
+Establish `hJ : (finHom V).rangeRestrict k ∈ (levEnv V β L).J` using `hk.2`. Establish `h2 : (((levEnv V β L).χ ⟨_, hJ⟩ : ℂˣ) : ℂ) = 1` using `h1`. Conclude with `(ext_mul c hc f hk.1 h).trans (congrArg (c.ρ h⁻¹) (level_abs hf hJ h2 _))`.
+-/
 theorem ext_level {V : HSp D} (c : CoefA V) (hc : c.Is) {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
     {f : Bridge.Gf V → c.W}
     (hf : f ∈ Bridge.AdForms (W := c.W) (Bridge.ratF V) (c.ρ.comp (GQ V).subtype) (levEnv V β L).J (levEnv V β L).χ)
@@ -172,6 +226,11 @@ theorem ext_level {V : HSp D} (c : CoefA V) (hc : c.Is) {β : GL (Fin V.rank) (L
   have h2 : (((levEnv V β L).χ ⟨_, hJ⟩ : ℂˣ) : ℂ) = 1 := h1
   exact (ext_mul c hc f hk.1 h).trans (congrArg (c.ρ h⁻¹) (level_abs hf hJ h2 _))
 
+/- English proof (translation)
+Establish `h0` using `GlobalTheory.multT_eq_zero_of_apply_eq_zero θ M J χ μ 𝓕 hθ hμ h𝓕 hS (PiTensorProduct.lift (U - U')) ⟨U - U', sub_mem hU hU', rfl⟩ (PiTensorProduct.tprod ℂ v) (fun e => ?_) (by`. Rewrite using `[PiTensorProduct.lift.tprod, MultilinearMap.sub_apply, h, sub_self])`. Conclude with `sub_eq_zero.1 (PiTensorProduct.lift.injective (h0.trans (map_zero _).symm))`. Establish `h1` using `GlobalTheory.tprodInnerFun_tprod v v`. Rewrite `h1` using `[e, map_zero, Finset.prod_eq_one fun τ _ => ?_]`.
+
+Conclude with `zero_ne_one h1`. Rewrite using `[Submodule.coe_inner, inner_self_eq_norm_sq_to_K, hv τ]`. Simplify using the standard rewrite rules.
+-/
 theorem mult_eq_of_unit {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)}
     {χ : GA D V → ℂ} {μ : Measure (GA D V)} {𝓕 : Set (GA D V)} (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) (hS : SchurMult θ M J χ μ 𝓕) {U U' : MMap M} (hU : U ∈ Mult θ M J χ)
@@ -186,6 +245,9 @@ theorem mult_eq_of_unit {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D}
     · rw [Submodule.coe_inner, inner_self_eq_norm_sq_to_K, hv τ]
       simp
 
+/- English proof (translation)
+Unfold `gaL`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, map_smul]`. Conclude with `congrArg (z g • ·) (h _)`.
+-/
 theorem gaL_hk {G : Type} [Group G] [Fintype G] {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {L : LevDat D.host.E ℂ V.rank} (eG : G ≃* G0 L.Pg L.r) (z : G → ℂ) {P : Pl D.host.E} {c : List ℤ →₀ ℂ}
     {Φ : GA D V → ℂ} (h : ∀ g0, actG0 V β L g0 (hk V P c Φ) = hk V P c (actG0 V β L g0 Φ)) :
@@ -196,6 +258,13 @@ theorem gaL_hk {G : Type} [Group G] [Fintype G] {V : HSp D} {β : GL (Fin V.rank
   rw [LinearMap.smul_apply, LinearMap.smul_apply, map_smul]
   exact congrArg (z g • ·) (h _)
 
+/- English proof (translation)
+Establish `hpos : ∀ τ, (gramAt D S τ).PosDef` using `fun τ => by`. Use `hs (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Take `⟨n, hB⟩` from `hβ`.
+
+Establish `hlev` using `(GlobalTheory.LevOp.level_operators S β Λ _ (flag1L L) hB P (one_pow_notMem P n) hP).1`. Use function extensionality and compare the values at `g`. Establish `key` using `theta_comb hW hpos hν.1.1 hν.2 hfix hM (pt ∘ₗ io) (fun w => hpt _) (c.ext f) (GlobalTheory.ThetaIntegrand.ext_continuous c hc β L hf) (GlobalTheory.ThetaIntegrand.ext_invariant c hf) (fun k hk h => ext_level c hc hf (hlev k hk).1 (hlev k hk).2 h) g`. Rewrite using `[hu', funext hu, hf']`. Simplify using `only [ext_hkF c hc]`.
+
+Conclude with `key`.
+-/
 theorem theta_form {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {P : Pl D.host.E} (hW : IsWeilDatumO ψ S T χS χT om)
     (hs : S.SigOK) (hp : S.IsPosDef) {Kf : Subgroup (GL (Fin S.rank) (Lev.EAf D))} {ν : Measure (GA D S)}
@@ -222,6 +291,11 @@ theorem theta_form {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE
   simp only [ext_hkF c hc]
   exact key
 
+/- English proof (translation)
+Take `⟨n, hB⟩` from `hβ`. Take `⟨h1, -, -, h4, h5⟩` from `GlobalTheory.LevOp.level_operators V β Λ _ L hB P (one_pow_notMem P n) hP`. Use `⟨h5 S θ M c hθ U hU, MultilinearMap.ext fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [postOn_apply]`. Use `gaL_hk eG z fun g0 => h4 c g0 _ fun k hk h => ?_` and prove the remaining obligations.
+
+Use `(GlobalTheory.mult_value_left_cont_level θ M _ _ U hU u).2.2 k (h1 k hk).1 h` as an intermediate fact. Rewrite `this` using `[(h1 k hk).2, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mult_laws {G : Type} [Group G] [Fintype G] {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} (hθ : IsInfFam θ)
     (M : DSModel V S) {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsSDFrame V β Λ 1) {L : LevDat D.host.E ℂ V.rank} {P : Pl D.host.E}
@@ -240,6 +314,9 @@ theorem mult_laws {G : Type} [Group G] [Fintype G] {V : HSp D} {S : D.what₂.Ta
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+The claim follows from `(hP.thF i t).elim fun _ h => (congrFun (h.2 x v) g).trans (h.1.eq ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ v) g)`.
+-/
 theorem thF_eq_integral (hP : R.IsThP) (i : Fin D.R.m) (t : T) (x : (R.HV i t).H)
     (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) :
     R.thF i t x (fun ρ => v ρ) g = ∫ h in R.fdV i t, thetaKO (R.ωP i t) h g
@@ -247,6 +324,9 @@ theorem thF_eq_integral (hP : R.IsThP) (i : Fin D.R.m) (t : T) (x : (R.HV i t).H
   (hP.thF i t).elim fun _ h => (congrFun (h.2 x v) g).trans
     (h.1.eq ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ v) g)
 
+/- English proof (translation)
+The claim follows from `theta_form (hC.thP.ωP i t) (D.sp.V_sig _) (hC.models.vpos i) (hC.models.νV i t) hfix hM (R.cV i) (hC.models.cV i) (hC.lev.βV i) (L := R.datVt i t) hP ((hC.models.HV i t).2.1.le (LinearMap.mem_range_self _ y)) hy (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (s …`.
+-/
 theorem thF_low (hC : Core R F) (i : Fin D.R.m) (t : T) {P : Pl D.host.E} (hP : Good R t P)
     (hfix : VacFix R.ψ (R.ωP i t) P) {cV cW : List ℤ →₀ ℂ} (hM : Match R.ψ (R.ωP i t) P (dualC cV) cW)
     {y y' : (R.HV i t).H} (hy : (R.HV i t).e y' = hkF (Vc D i) P cV ((R.HV i t).e y))
@@ -258,6 +338,9 @@ theorem thF_low (hC : Core R F) (i : Fin D.R.m) (t : T) {P : Pl D.host.E} (hP : 
       (R.vP i t)) ((GlobalTheory.T.fockVectors_chain_isVacuum_off_thetaLevels R F hC t P hP).2.2 i) (R.ioP i (PiTensorProduct.tprod ℂ v))
     (thF_eq_integral hC.thP i t y v) (thF_eq_integral hC.thP i t y' v)
 
+/- English proof (translation)
+The claim follows from `mult_laws hC.models.inf (R.MW i (sg0 D A)) (hC.lev.βW i) (L := R.datWp i R.triv) (fun PP h => hP PP (h.imp_right fun h => absurd h (Finset.notMem_empty _))) R.eG _ c hU`.
+-/
 theorem wall_laws (hC : Core R F) (i : Fin D.R.m) (t : T) {P : Pl D.host.E} (hP : Good R t P) (c : List ℤ →₀ ℂ)
     {U : MMap (R.MW i (sg0 D A))} (hU : U ∈ R.Wall i (sg0 D A)) :
     postOn _ (hk (Wc D i) P c) U ∈ R.Wall i (sg0 D A) ∧
@@ -266,6 +349,9 @@ theorem wall_laws (hC : Core R F) (i : Fin D.R.m) (t : T) {P : Pl D.host.E} (hP 
   mult_laws hC.models.inf (R.MW i (sg0 D A)) (hC.lev.βW i) (L := R.datWp i R.triv)
     (fun PP h => hP PP (h.imp_right fun h => absurd h (Finset.notMem_empty _))) R.eG _ c hU
 
+/- English proof (translation)
+The claim follows from `(hC.thP.ioP i t).2.2.elim fun v hv => hv.elim fun _ hw => mult_eq_of_unit hC.models.inf (hC.models.νW i).1.1 (hC.models.νW i).2 (hS.2.2 i) (hC.thP.thF_mem i t y') (wall_laws hC i t hP cW (hC.thP.thF_mem i t y)).1 (fun ρ => v ρ) hw.1 (thF_low hC i t hP hfix hM hy v)`.
+-/
 theorem thF_match (hC : Core R F) (hS : SchurAll R) (i : Fin D.R.m) (t : T) {P : Pl D.host.E} (hP : Good R t P)
     (hfix : VacFix R.ψ (R.ωP i t) P) {cV cW : List ℤ →₀ ℂ} (hM : Match R.ψ (R.ωP i t) P (dualC cV) cW)
     {y y' : (R.HV i t).H} (hy : (R.HV i t).e y' = hkF (Vc D i) P cV ((R.HV i t).e y)) :
@@ -274,6 +360,9 @@ theorem thF_match (hC : Core R F) (hS : SchurAll R) (i : Fin D.R.m) (t : T) {P :
     mult_eq_of_unit hC.models.inf (hC.models.νW i).1.1 (hC.models.νW i).2 (hS.2.2 i) (hC.thP.thF_mem i t y')
       (wall_laws hC i t hP cW (hC.thP.thF_mem i t y)).1 (fun ρ => v ρ) hw.1 (thF_low hC i t hP hfix hM hy v)
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC hS i t P hP hfix cV cW hM y y' hy`. Conclude with `(hC.thP.thG i t y').trans ((congrArg (postOn _ (R.eWf i (sg0 D A))) (thF_match hC hS i t hP hfix hM hy)).trans ((wall_laws hC i t hP cW (hC.thP.thF_mem i t y)).2.trans (congrArg (postOn _ (hk (Wc D i) P cW)) (hC.thP.thG i t y).symm)))`.
+-/
 theorem matchW_of_match : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Core R F → SchurAll R → ∀ i t P, Good R t P → VacFix R.ψ (R.ωP i t) P → ∀ cV cW, Match R.ψ (R.ωP i t) P (dualC cV) cW → MatchW R i t P cV cW := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC hS i t P hP hfix cV cW hM y y' hy
   exact (hC.thP.thG i t y').trans ((congrArg (postOn _ (R.eWf i (sg0 D A))) (thF_match hC hS i t hP hfix hM hy)).trans

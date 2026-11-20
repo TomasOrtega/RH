@@ -6,6 +6,11 @@ open MeasureTheory Formalism.MainNotions.S
 
 namespace Formalism.L2.SG.PoincareInHH.Cut
 
+/- English proof (translation)
+Take `⟨hmeas, hcov, hdisj⟩` from `h`. Use `IsFundamentalDomain.mk'' hmeas.nullMeasurableSet ?_ ?_ ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun y => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hy⟩` from `hcov y`. Conclude with `⟨⟨γ, hγ⟩, hy⟩`.
+
+Introduce `g hg`. Establish `hg' : (g : I.GA) ≠ 1` using `fun h1 => hg (Subtype.ext h1)`. Conclude with `hdisj (g : I.GA) g.2 hg'`. Introduce `g`. Conclude with `(measurePreserving_mul_left μ (g : I.GA)).quasiMeasurePreserving`.
+-/
 theorem isFundamentalDomain_of_isFundDom (I : AutInst) (μ : Measure I.GA) [μ.IsMulLeftInvariant]
     (fund : Set I.GA) (h : I.IsFundDom μ fund) :
     IsFundamentalDomain (Formalism.MainNotions.LeviCoordinates.rr_GF I) fund μ := by

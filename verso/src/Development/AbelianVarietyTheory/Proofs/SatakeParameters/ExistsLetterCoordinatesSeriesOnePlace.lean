@@ -24,6 +24,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formal
 
 namespace GlobalTheory.OnePlace
 
+/- English proof (translation)
+Introduce `p _ h5 n' _ hev B be hbe`. Take `⟨σ, hσ, hσw⟩` from `GlobalTheory.TwU.exists_isFrob_wToC p`. Establish `hb0` using `GlobalTheory.BeRead.isBe0_map p σ hσ hσw be hbe`. Establish `hb00 : MvPowerSeries.constantCoeff (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) be) = 0`. Assume the negation of the conclusion as `h`.
+
+Rewrite `h` using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `(hb0.axes 0 h).1 rfl`. Establish `hD` using `GlobalTheory.TwU.dualOm_wToC p σ hσw n' hev B`. Take `⟨bv, t, x, ⟨h1, h2, h3, h4⟩, hcc, hsim, ht, hx, htla, hxt⟩` from `Unr.exists_coords_and_series h5 hσ hb0 n' hev _ _ hD`. Use `⟨bv, h1, h2, h3, h4, fun r0 r1 U hU => ?_⟩` and prove the remaining obligations.
+
+Take `⟨V, hV, hVeq⟩` from `GlobalTheory.OrbitPair.expS_neg_sum_bivariate_pair_integral σ _ _ _ bv t x hb00 hcc ht hx htla hxt hsim`. Take `⟨U2, hU2, hU2eq⟩` from `GlobalTheory.OnePlacePairs.pairs_all _ bv x V hb00 hcc (fun r => (hx r).2) hV hVeq r0 r1`. Take `⟨hξ0, hξint⟩` from `GlobalTheory.OnePlace.xiE_integral (r0 := r0) (r1 := r1) x hx`. Take `⟨hJ0, hJ⟩` from `GlobalTheory.OnePlace.Letters.subst_inLetters_jetLogG (p := p) (r0 := r0) (r1 := r1) (thOne B be U)`. Use `⟨U2 * MvPowerSeries.subst (xiE x) (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (inParam p U)), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `m`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `(IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hU2 _) (norm_nonneg _) (hξint _ hU _)`.
+
+Rewrite using `[hJ, GlobalTheory.OnePlaceRead.read_thOne B be hbe U _ (xiE x) hJ0 hξ0 (GlobalTheory.OnePlace.Ident.coordZ_jetZ σ hσw hev B hD t x ht (fun r => (hx r).2) htla hxt r0 r1), hU2eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_letterCoordinates_series_onePlace : ∀ (p : ℕ) [Fact p.Prime], 5 ≤ p → ∀ (n' : ℕ) [NeZero n'], Even n' → ∀ (B : OmBasis p n') (be : MvPowerSeries (Fin 2) (FormalGroupSystem.K0 p)), BeProp p be → ∃ bv : MvPowerSeries (ZMod n') ℂ_[p], product_zeroth_first_parts.B1 p n' bv ∧ product_zeroth_first_parts.B2 p n' bv ∧ product_zeroth_first_parts.B3 p n' bv ∧ product_zeroth_first_parts.B4 p n' bv ∧ ∀ (r0 r1 : ℕ) (U : MvPowerSeries (Eidx n' r0 r1 ⊕ Eidx n' r0 r1) (FormalGroupSystem.K0 p)), IntS p (inParam p U) → ∃ U' : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p], (∀ m, ‖MvPowerSeries.coeff m U'‖ ≤ 1) ∧ MvPowerSeries.subst (fun v : ZMod n' × Fin r0 × Fin r1 => MvPowerSeries.C (1 : ℂ_[p]) * jetLogG p n' v) (MvPowerSeries.map (Formalism.L2.G.Pend.k0ToC p) (inLetters (thOne B be U))) = U' * MvPowerSeries.subst (jetLogG p n' (β := Fin r0 × Fin r1)) (product_zeroth_first_parts.expS ℂ_[p] ((-1 : ℂ_[p]) • ∑ a : Fin r0, ∑ b : Fin r1, MvPowerSeries.subst (fun s : ZMod n' => (MvPowerSeries.X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) bv)) := by
   intro p _ h5 n' _ hev B be hbe
   obtain ⟨σ, hσ, hσw⟩ := GlobalTheory.TwU.exists_isFrob_wToC p

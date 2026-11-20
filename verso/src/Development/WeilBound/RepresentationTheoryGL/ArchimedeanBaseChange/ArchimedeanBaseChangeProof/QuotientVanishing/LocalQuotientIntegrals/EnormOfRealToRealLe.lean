@@ -9,10 +9,16 @@ namespace PositivityTheory.Rg.BcB.CV
 
 namespace QuotientIntegral
 
+/- English proof (translation)
+Rewrite using `[← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]`. Conclude with `ENNReal.ofReal_toReal_le`.
+-/
 theorem enorm_ofReal_toReal_le' (r : ℝ≥0∞) : ‖((r.toReal : ℝ) : ℂ)‖ₑ ≤ r := by
   rw [← ofReal_norm, Complex.norm_real, Real.norm_of_nonneg ENNReal.toReal_nonneg]
   exact ENNReal.ofReal_toReal_le
 
+/- English proof (translation)
+Use `⟨(hF.mul (Complex.measurable_ofReal.comp hρ.ennreal_toReal)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) h.lt_top` and prove the remaining obligations. Rewrite using `[enorm_mul]`. Use `gcongr`. Conclude with `enorm_ofReal_toReal_le' _`.
+-/
 theorem integrable_mul {G : Type*} [MeasurableSpace G] {μ : Measure G} {F : G → ℂ}
     {ρ : G → ℝ≥0∞} (hF : Measurable F) (hρ : Measurable ρ) (h : ∫⁻ g, ‖F g‖ₑ * ρ g ∂μ ≠ ⊤) :
     Integrable (fun g => F g * ((ρ g).toReal : ℂ)) μ := by
@@ -24,6 +30,13 @@ theorem integrable_mul {G : Type*} [MeasurableSpace G] {μ : Measure G} {F : G �
 
 end QuotientIntegral
 
+/- English proof (translation)
+Introduce `G _ _ μ T ν`. Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser T ν ρ`. Establish `hL : ∀ F : G → ℂ, quotLIntegral μ T ν (fun x => ‖F x‖ₑ) = ∫⁻ g, ‖F g‖ₑ * hex.choose g ∂μ` using `fun F => by rw [quotLIntegral, dif_pos hex]`. Establish `hI : ∀ F : G → ℂ, quotIntegral μ T ν F = ∫ g, F g * ((hex.choose g).toReal : ℂ) ∂μ` using `fun F => by rw [quotIntegral, dif_pos hex]`. Establish `hint : ∀ F : G → ℂ, Measurable F → quotLIntegral μ T ν (fun x => ‖F x‖ₑ) ≠ ⊤ → Integrable (fun g => F g * ((hex.choose g).toReal : ℂ)) μ` using `fun F hF h => QuotientIntegral.integrable_mul hF hex.choose_spec.1 (by rwa [hL] at h)`.
+
+Use `⟨fun ι s F hF => ?_, fun F F' hF hF' h h' => ?_, fun c F => ?_⟩` and prove the remaining obligations. Simplify using `only [hI, Finset.sum_mul]`. Conclude with `integral_finsetSum s fun i hi => hint _ (hF i hi).1 (hF i hi).2`. Simplify using `only [hI, sub_mul]`. Conclude with `integral_sub (hint _ hF h) (hint _ hF' h')`.
+
+Simplify using `only [hI, mul_assoc]`. Conclude with `integral_const_mul c _`. Apply the tactic sequence `refine ⟨fun _ _ _ _ => ?_, fun _ _ _ _ _ _ => ?_, fun _ _ => ?_⟩ <;>`. Simplify using `[quotIntegral, hex]`.
+-/
 theorem pf_QAdd : QAdd := by
   intro G _ _ μ T ν
   classical

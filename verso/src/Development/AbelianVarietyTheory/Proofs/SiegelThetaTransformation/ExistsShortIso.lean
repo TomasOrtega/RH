@@ -10,6 +10,9 @@ namespace GlobalTheory.SW.MinkowskiProductBounds
 
 open Module Submodule
 
+/- English proof (translation)
+The claim follows from `|LinearMap.det T| ≤ Δ → (∀ x ∈ span ℤ (Set.range b), x ≠ 0 → ε ≤ ‖e (T x)‖) → ∃ v : Basis (Fin (finrank ℝ V)) ℝ W, ∀ i, v i ∈ span ℤ (Set.range b) ∧ ‖e (T (v i))‖ ≤ C := by classical borelize V have : FiniteDimensional ℝ W := Module.Finite.of_basis b let b0 := b.map e let c0 := M …`.
+-/
 theorem mink {W V ι : Type} [AddCommGroup W] [Module ℝ W] [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [Fintype ι] (b : Basis ι ℝ W) (e : W ≃ₗ[ℝ] V)
     (Δ ε : ℝ) (hε : 0 < ε) : ∃ C : ℝ, ∀ T : W →ₗ[ℝ] W, LinearMap.det T ≠ 0 →
@@ -58,6 +61,15 @@ theorem mink {W V ι : Type} [AddCommGroup W] [Module ℝ W] [NormedAddCommGroup
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)}
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_coe_sort Ψ f, Finset.prod_coe_sort Ψ fun τ => f (ComplexEmbedding.conjugate τ), ← Finset.prod_mul_prod_compl Ψ f]`. Use `congr 1`. Use `symm`. Use `Finset.prod_bij' (fun τ _ => ComplexEmbedding.conjugate τ) (fun τ _ => ComplexEmbedding.conjugate τ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`.
+
+Simplify using `using (h a).1 ha`. Introduce `a ha`. Use `h a` as an intermediate fact. Simplify using `only [Finset.mem_compl] at ha`. The claim follows by propositional logic.
+
+Introduce `a _`. Conclude with `star_star a`. Introduce `a _`. Conclude with `star_star a`. Introduce `a _`.
+
+Both sides reduce to the same expression.
+-/
 theorem prod_type {M : Type} [CommMonoid M] (h : IsType Ψ) (f : (E →+* ℂ) → M) :
     ∏ σ, f σ = ∏ τ : Ψ, (f τ.1 * f (ComplexEmbedding.conjugate τ.1)) := by
   classical
@@ -77,6 +89,13 @@ theorem prod_type {M : Type} [CommMonoid M] (h : IsType Ψ) (f : (E →+* ℂ) �
   · intro a _; exact star_star a
   · intro a _; rfl
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) ≤ ∏ σ : E →+* ℂ, ‖σ a‖`. Establish `h2` using `Algebra.norm_eq_prod_embeddings ℚ ℂ a`. Establish `h3 : ∏ σ : E →+* ℂ, σ a = ∏ σ : E →ₐ[ℚ] ℂ, σ a` using `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) _ _ fun _ => rfl`. Rewrite using `[← norm_prod, h3, ← h2]`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (Algebra.isIntegral_norm ℚ ha)`.
+
+Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0 (by simpa using hz.symm)`. Rewrite using `[← hz]`. Simplify using `only [eq_intCast, map_intCast, Complex.norm_intCast]`.
+
+Conclude with `Int.one_le_abs hz0` after adjusting the coercions. Rewrite `h1` using `[prod_type h]`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj, Finset.prod_mul_distrib] at h1`. Establish `: 0 ≤ ∏ τ : Ψ, ‖τ.1 a‖` using `Finset.prod_nonneg fun _ _ => norm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_prod (h : IsType Ψ) {a : E} (ha : IsIntegral ℤ a) (h0 : a ≠ 0) :
     1 ≤ ∏ τ : Ψ, ‖τ.1 a‖ := by
   have h1 : (1 : ℝ) ≤ ∏ σ : E →+* ℂ, ‖σ a‖ := by
@@ -96,12 +115,30 @@ theorem one_le_prod (h : IsType Ψ) {a : E} (ha : IsIntegral ℤ a) (h0 : a ≠ 
   have : 0 ≤ ∏ τ : Ψ, ‖τ.1 a‖ := Finset.prod_nonneg fun _ _ => norm_nonneg _
   nlinarith
 
+/- English proof (translation)
+Use `prod_type (M := Multiplicative ℕ) h fun _ => Multiplicative.ofAdd 1` as an intermediate fact. Rewrite using `[← Embeddings.card E ℂ]`. Establish `h2` using `congrArg Multiplicative.toAdd this`. Simplify using `using h2`.
+-/
 theorem card_type (h : IsType Ψ) : finrank ℚ E = Ψ.card * 2 := by
   have := prod_type (M := Multiplicative ℕ) h fun _ => Multiplicative.ofAdd 1
   rw [← Embeddings.card E ℂ]
   have h2 := congrArg Multiplicative.toAdd this
   simpa using h2
 
+/- English proof (translation)
+Set `u : Free.ChooseBasisIndex ℤ (𝓞 E) → Ψ → ℂ` to `fun j τ => τ.1 (integralBasis E j)`. Establish `hli : LinearIndependent ℝ u`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Establish `h1` using `Fintype.linearIndependent_iff.1 (canonicalEmbedding.latticeBasis E).linearIndependent (fun j => (c j : ℂ)) ?_ j`.
+
+Conclude with `h1` after adjusting the coercions. Establish `key : ∀ τ ∈ Ψ, ∑ j, (c j : ℂ) * τ (integralBasis E j) = 0` using `fun τ hτ => by`. Simplify `congrFun hc ⟨τ, hτ⟩` using `[u]`. Use extensionality with `σ`. Simplify using `only [canonicalEmbedding.latticeBasis_apply, Finset.sum_apply, Pi.smul_apply, canonicalEmbedding.apply_at, smul_eq_mul, Pi.zero_apply]`.
+
+Distinguish the cases in `hσ : σ ∈ Ψ`. Conclude with `key σ hσ`. Establish `h2 : ComplexEmbedding.conjugate σ ∈ Ψ`. Use `h σ` as an intermediate fact. The claim follows by propositional logic.
+
+Use `congrArg conj (key _ h2)` as an intermediate fact. Simplify using `using this`. Establish `hcard : Fintype.card (Free.ChooseBasisIndex ℤ (𝓞 E)) = finrank ℝ (Ψ → ℂ)`. Rewrite using `[← finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, card_type h, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+
+Use `⟨basisOfLinearIndependentOfCardEqFinrank' u hli hcard, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basisOfLinearIndependentOfCardEqFinrank']`. Set `φ : E →ₗ[ℤ] (Ψ → ℂ)` to `(AddMonoidHom.pi fun τ : Ψ => τ.1.toAddMonoidHom).toIntLinearMap`. Establish `: Set.range u = φ '' Set.range (integralBasis E)`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, span_image, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨z, rfl⟩` from `(mem_span_integralBasis E).1 ha`.
+
+Conclude with `⟨_, z.2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, (mem_span_integralBasis E).2 ⟨⟨a, ha⟩, rfl⟩, rfl⟩`.
+-/
 theorem basis_one (h : IsType Ψ) : ∃ b : Basis (Free.ChooseBasisIndex ℤ (𝓞 E)) ℝ (Ψ → ℂ),
     ∀ x, x ∈ span ℤ (Set.range b) ↔ ∃ a : E, IsIntegral ℤ a ∧ x = fun τ => τ.1 a := by
   classical
@@ -140,6 +177,13 @@ theorem basis_one (h : IsType Ψ) : ∃ b : Basis (Free.ChooseBasisIndex ℤ (�
   · rintro ⟨a, ha, rfl⟩
     exact ⟨a, (mem_span_integralBasis E).2 ⟨⟨a, ha⟩, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `basis_one h`. Set `e : (Fin m → Ψ → ℂ) ≃ₗ[ℝ] (Ψ → Fin m → ℂ)` to `{ toFun := fun x τ a => x a τ, invFun := fun x a τ => x τ a, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Use `⟨(Pi.basis fun _ => b).map e, fun x => ?_⟩` and prove the remaining obligations. Establish `: x ∈ span ℤ (Set.range ((Pi.basis fun _ : Fin m => b).map e)) ↔ ∀ a, (fun τ => x τ a) ∈ span ℤ (Set.range b)`. Simplify using `only [Basis.mem_span_iff_repr_mem, Sigma.forall]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `only [hb]`. Prove the components needed by the constructor for the conclusion. Introduce `hx choose v hv hx using hx`.
+
+Conclude with `⟨v, hv, by ext τ a; exact congrFun (hx a) τ⟩`. Introduce and unpack `⟨v, hv, rfl⟩ a`. Conclude with `⟨v a, hv a, rfl⟩`.
+-/
 theorem basis_many (h : IsType Ψ) (m : ℕ) :
     ∃ b : Basis (Σ _ : Fin m, Free.ChooseBasisIndex ℤ (𝓞 E)) ℝ (Ψ → Fin m → ℂ),
     ∀ x, x ∈ span ℤ (Set.range b) ↔
@@ -162,6 +206,11 @@ theorem basis_many (h : IsType Ψ) (m : ℕ) :
   · rintro ⟨v, hv, rfl⟩ a
     exact ⟨v a, hv a, rfl⟩
 
+/- English proof (translation)
+Use `open MatrixOrder in`. Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hH.posSemidef.nonneg`. Establish `h1 : H = Bᴴ * Bᴴᴴ` using `by simpa [star_eq_conjTranspose] using hB`. Establish `h2 : ∀ x y : Fin m → ℂ, x ⬝ᵥ H *ᵥ star y = inner ℂ (WithLp.toLp 2 (y ᵥ* Bᴴ)) (WithLp.toLp 2 (x ᵥ* Bᴴ))`. Introduce `x y`.
+
+Rewrite using `[EuclideanSpace.inner_toLp_toLp, h1, ← mulVec_mulVec, dotProduct_mulVec, star_vecMul]`. Use `⟨Bᴴ, h1, h2, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← inner_self_eq_norm_sq (𝕜 := ℂ)]`. Both sides reduce to the same expression.
+-/
 theorem fac {m : ℕ} {H : Matrix (Fin m) (Fin m) ℂ} (hH : H.PosDef) :
     ∃ B : Matrix (Fin m) (Fin m) ℂ, H = B * Bᴴ ∧ (∀ x y : Fin m → ℂ, x ⬝ᵥ H *ᵥ star y =
       inner ℂ (WithLp.toLp 2 (y ᵥ* B)) (WithLp.toLp 2 (x ᵥ* B))) ∧
@@ -177,9 +226,33 @@ theorem fac {m : ℕ} {H : Matrix (Fin m) (Fin m) ℂ} (hH : H.PosDef) :
   rw [h2, ← inner_self_eq_norm_sq (𝕜 := ℂ)]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hval_eq {m : ℕ} (H : CM Ψ m m) (τ : Ψ) (v : Fin m → E) :
     hval Ψ H τ v = ((fun a => τ.1 (v a)) ⬝ᵥ H τ *ᵥ star fun a => τ.1 (v a)).re := rfl
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `basis_many h m`. Set `e : (Ψ → Fin m → ℂ) ≃ₗ[ℝ] PiLp 2 (fun _ : Ψ => EuclideanSpace ℂ (Fin m))` to `(LinearEquiv.piCongrRight fun _ => (WithLp.linearEquiv 2 ℝ (Fin m → ℂ)).symm).trans (WithLp.linearEquiv 2 ℝ _).symm`. Establish `he : ∀ x, ‖e x‖ ^ 2 = ∑ τ, ‖WithLp.toLp 2 (x τ)‖ ^ 2` using `fun x => PiLp.norm_sq_eq_of_L2 _ _`. Take `⟨C, hC⟩` from `mink b e Δ (√ε) (Real.sqrt_pos.2 hε)`. Use `⟨finrank ℝ (PiLp 2 fun _ : Ψ => EuclideanSpace ℂ (Fin m)), C ^ 2, fun H hH hΔ hmin => ?_⟩` and prove the remaining obligations.
+
+Use `choose B hB1 hB2 hB3 using fun τ => fac (hH τ)`. Set `T : (Ψ → Fin m → ℂ) →ₗ[ℝ] (Ψ → Fin m → ℂ)` to `LinearMap.pi fun τ => ((Matrix.toLin' (B τ)ᵀ).restrictScalars ℝ).comp (LinearMap.proj τ)`. Establish `hT : ∀ x τ, T x τ = x τ ᵥ* B τ` using `fun x τ => by simp [T, mulVec_transpose]`. Establish `hdet : LinearMap.det T = ∏ τ, ‖(H τ).det‖`. Rewrite using `[LinearMap.det_pi]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_restrictScalars, Algebra.norm_complex_apply, LinearMap.det_toLin', det_transpose, hB1 τ, det_mul, det_conjTranspose, norm_mul, norm_star, Complex.normSq_eq_norm_sq, sq]`. Establish `hq : ∀ v : Fin m → E, ‖e (T fun τ a => τ.1 (v a))‖ ^ 2 = ∑ τ, hval Ψ H τ v`. Introduce `v`. Rewrite using `[he]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ => by rw [hT, hval_eq, hB3]`. Take `⟨v, hv⟩` from `hC T (by rw [hdet]; exact Finset.prod_ne_zero_iff.2 fun τ _ => norm_ne_zero_iff.2 (hH τ).det_pos.ne') (by rwa [hdet, abs_of_nonneg (Finset.prod_nonneg fun _ _ => norm_nonneg _)]) (by`. Introduce `x hx h0`. Take `⟨w, hw, rfl⟩` from `(hb x).1 hx`. Rewrite using `[Real.sqrt_le_left (norm_nonneg _), hq]`.
+
+Conclude with `hmin w (by rintro rfl; exact h0 (by ext; simp)) hw)`. Use `choose w hw hvw using fun i => (hb _).1 (hv i).1`. Use `⟨Matrix.of w, fun i a => hw i a, ?_, fun i τ => ?_⟩` and prove the remaining obligations. Establish `hinj : LinearMap.ker (Matrix.toLin' (Matrix.of w)) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce `c hc`. Take `⟨σ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty Ψ := by`. Distinguish the cases in `hσ : σ ∈ Ψ`. Conclude with `⟨⟨σ, hσ⟩⟩`.
+
+Conclude with `⟨⟨ComplexEmbedding.conjugate σ, by have := h σ; tauto⟩⟩`. Set `l : (Ψ → Fin m → ℂ) →ₗ[ℝ] ℂ` to `{ toFun := fun x => ∑ a, x τ a * τ.1 (c a) map_add' := fun x y => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun r x => by simp [Finset.mul_sum, mul_assoc] }`. Establish `hl : l = 0` using `v.ext fun i => by`. Use `congrArg τ.1 (congrFun hc i)` as an intermediate fact. Rewrite using `[hvw i]`.
+
+Simplify `this` using `[l, mulVec, dotProduct]`. Use extensionality with `a`. Use `LinearMap.congr_fun hl fun _ => Pi.single a 1` as an intermediate fact. Simplify `this` using `[l, Pi.single_apply]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hinj`.
+
+Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis. Establish `h1` using `(hv i).2`. Rewrite `h1` using `[hvw i]`.
+
+Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Rewrite `h2` using `[hq]`. Use `le_trans ?_ h2` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun τ => hval Ψ H τ (w i)) (fun τ _ => by rw [hval_eq, hB3]; positivity) (Finset.mem_univ τ)`.
+-/
 theorem short (h : IsType Ψ) (m : ℕ) (Δ ε : ℝ) (hε : 0 < ε) : ∃ (n : ℕ) (C : ℝ),
     ∀ H : CM Ψ m m, (∀ τ, (H τ).PosDef) → ∏ τ, ‖(H τ).det‖ ≤ Δ →
     (∀ v : Fin m → E, v ≠ 0 → (∀ a, IsIntegral ℤ (v a)) → ε ≤ ∑ τ, hval Ψ H τ v) →
@@ -250,6 +323,13 @@ theorem short (h : IsType Ψ) (m : ℕ) (Δ ε : ℝ) (hε : 0 < ε) : ∃ (n : 
     exact Finset.single_le_sum (f := fun τ => hval Ψ H τ (w i))
       (fun τ _ => by rw [hval_eq, hB3]; positivity) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Take `⟨B, -, h2, h3⟩` from `fac hH`. Establish `hG' : (G⁻¹)ᴴ = G⁻¹` using `by rw [conjTranspose_nonsing_inv, hG]`. Establish `h4' : ∀ y, x ⬝ᵥ G *ᵥ y = (x ᵥ* (H * G⁻¹)) ⬝ᵥ H *ᵥ y` using `fun y => by`. Rewrite using `[← dotProduct_mulVec, mulVec_mulVec, hm]`. Establish `h5 : (x ᵥ* (H * G⁻¹)) ⬝ᵥ H *ᵥ star (x ᵥ* (H * G⁻¹)) = x ⬝ᵥ H *ᵥ star x`.
+
+Rewrite using `[← h4', star_vecMul, mulVec_mulVec, conjTranspose_mul, hG', hH.1.eq, mul_nonsing_inv_cancel_left _ _ h0.isUnit]`. Rewrite `hx` using `[← h5, h3]`. Rewrite `hy` using `[h3]`. Rewrite using `[h4', h2]`. Use `(norm_inner_le_norm _ _).trans ?_` and prove the remaining obligations.
+
+Use polynomial arithmetic with `[sq_nonneg (‖WithLp.toLp 2 (y ᵥ* B)‖ - ‖WithLp.toLp 2 ((x ᵥ* (H * G⁻¹)) ᵥ* B)‖)]`.
+-/
 theorem gram_le {m : ℕ} {H G : Matrix (Fin m) (Fin m) ℂ} (hH : H.PosDef) (hG : Gᴴ = G)
     (h0 : G.det ≠ 0) (hm : H * G⁻¹ * H = G) (x y : Fin m → ℂ) {C : ℝ}
     (hx : (x ⬝ᵥ H *ᵥ star x).re ≤ C) (hy : (y ⬝ᵥ H *ᵥ star y).re ≤ C) :
@@ -267,6 +347,13 @@ theorem gram_le {m : ℕ} {H G : Matrix (Fin m) (Fin m) ℂ} (hH : H.PosDef) (hG
   refine (norm_inner_le_norm _ _).trans ?_
   nlinarith [sq_nonneg (‖WithLp.toLp 2 (y ᵥ* B)‖ - ‖WithLp.toLp 2 ((x ᵥ* (H * G⁻¹)) ᵥ* B)‖)]
 
+/- English proof (translation)
+Take `⟨B, -, -, h3⟩` from `fac hH`. Rewrite using `[h3]`. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ 2` and prove the remaining obligations. Establish `: WithLp.toLp 2 ((∑ j, t j • x j) ᵥ* B) = ∑ j, t j • WithLp.toLp 2 (x j ᵥ* B)`. Simplify using `[sum_vecMul, smul_vecMul]`.
+
+Rewrite using `[this]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ (M * √C) fun j _ => ?_).trans (by simp))` and prove the remaining obligations. Rewrite using `[norm_smul]`. Establish `h4` using `hx j`. Rewrite `h4` using `[h3]`.
+
+Conclude with `mul_le_mul (ht j) (Real.le_sqrt_of_sq_le h4) (norm_nonneg _) ((norm_nonneg _).trans (ht j))`.
+-/
 theorem comb_le {m n : ℕ} {H : Matrix (Fin m) (Fin m) ℂ} (hH : H.PosDef)
     (x : Fin n → Fin m → ℂ) (t : Fin n → ℂ) {C M : ℝ}
     (hx : ∀ j, (x j ⬝ᵥ H *ᵥ star (x j)).re ≤ C) (ht : ∀ j, ‖t j‖ ≤ M) :
@@ -284,37 +371,67 @@ theorem comb_le {m n : ℕ} {H : Matrix (Fin m) (Fin m) ℂ} (hH : H.PosDef)
   rw [h3] at h4
   exact mul_le_mul (ht j) (Real.le_sqrt_of_sq_le h4) (norm_nonneg _) ((norm_nonneg _).trans (ht j))
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ccT, cc, Matrix.mul_apply, mul_comm]`.
+-/
 theorem ccT_mul {α β γ : Type} [Fintype β] (A : Matrix α β E) (B : Matrix β γ E) :
     ccT (A * B) = ccT B * ccT A := by
   ext i j
   simp [ccT, cc, Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ccT, cc]`.
+-/
 theorem ccT_smul {α β : Type} (k : ℤ) (A : Matrix α β E) :
     ccT ((k : E) • A) = (k : E) • ccT A := by
   ext i j
   simp [ccT, cc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ccT, cc, Matrix.one_apply, apply_ite, eq_comm]`.
+-/
 theorem ccT_one {α : Type} [DecidableEq α] : ccT (1 : Matrix α α E) = 1 := by
   ext i j
   simp [ccT, cc, Matrix.one_apply, apply_ite, eq_comm]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact IsIntegral.sum _ fun k _ => (hA i k).mul (hB k j)`.
+-/
 theorem intM_mul {α β γ : Type} [Fintype β] {A : Matrix α β E} {B : Matrix β γ E} (hA : IntM A)
     (hB : IntM B) : IntM (A * B) := fun i j => by
   rw [Matrix.mul_apply]
   exact IsIntegral.sum _ fun k _ => (hA i k).mul (hB k j)
 
+/- English proof (translation)
+Introduce `i j` and use `(hA j i).map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom`.
+-/
 theorem intM_ccT {α β : Type} {A : Matrix α β E} (hA : IntM A) : IntM (ccT A) := fun i j =>
   (hA j i).map (IsCMField.complexConj E).toRingEquiv.toRingHom.toIntAlgHom
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+The claim follows from `LinearIndependent.of_comp (Matrix.vecMulLinear R) h`.
+-/
 theorem li_of_mul {k a b : ℕ} {A : Matrix (Fin k) (Fin a) E} {R : Matrix (Fin a) (Fin b) E}
     (h : LinearIndependent E fun i => (A * R) i) : LinearIndependent E fun i => A i :=
   LinearIndependent.of_comp (Matrix.vecMulLinear R) h
 
+/- English proof (translation)
+Establish `ha : IsIntegral ℤ ((D : E) • G⁻¹).det` using `IsIntegral.det hG`. Establish `hd : ((D : E) • G⁻¹).det = (D : E) ^ m * (G.det)⁻¹` using `by simp`. Establish `hD' : (D : E) ≠ 0` using `by exact_mod_cast hD.ne'`. Establish `h1` using `one_le_prod h ha (by rw [hd]; exact mul_ne_zero (pow_ne_zero _ hD') (inv_ne_zero h0))`. Use `(le_mul_of_one_le_right (Finset.prod_nonneg fun _ _ => norm_nonneg _) h1).trans_eq ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun A => ‖Matrix.det A‖) (hH τ).2`. Establish `h3 : (G.map τ.1).det = τ.1 G.det` using `(RingHom.map_det _ _).symm`. Establish `h4 : 0 < ‖τ.1 G.det‖` using `by simpa using h0`.
+
+Simplify using `only [det_mul, det_nonsing_inv, Ring.inverse_eq_inv', h3, norm_mul, norm_inv] at h2`. Establish `h5 : ‖(H τ).det‖ = ‖τ.1 G.det‖`. Rewrite using `[← sq_eq_sq₀ (norm_nonneg _) h4.le]`. Clear denominators, using `at h2` for the nonvanishing conditions. Conclude with `h2`.
+
+Rewrite using `[hd, h5]`. Simplify using `only [map_mul, map_pow, map_natCast, map_inv₀, norm_mul, norm_pow, norm_inv, Complex.norm_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem det_le (h : IsType Ψ) {m D : ℕ} (hD : 0 < D) {G : Matrix (Fin m) (Fin m) E}
     {H : CM Ψ m m} (h0 : G.det ≠ 0) (hG : Den D G⁻¹) (hH : IsMaj Ψ G H) :
     ∏ τ, ‖(H τ).det‖ ≤ ∏ _τ : Ψ, (D : ℝ) ^ m := by
@@ -341,6 +458,15 @@ theorem det_le (h : IsType Ψ) {m D : ℕ} (hD : 0 < D) {G : Matrix (Fin m) (Fin
 def IsoRows' {k n : ℕ} (Γ : Matrix (Fin n) (Fin n) E) (T : Matrix (Fin k) (Fin n) E) : Prop :=
   LinearIndependent E (fun i => (T * Γ) i) ∧ T * Γ * ccT T = 0
 
+/- English proof (translation)
+Take `⟨k, hk, hint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image fun p : Fin N × Fin n => (W * S) p.1 p.2)`. Establish `hD' : (D : E) ≠ 0` using `by exact_mod_cast hD.ne'`. Establish `hk' : (k : E) ≠ 0` using `by exact_mod_cast hk`. Establish `h1 : ((k : E) • (W * S)) * V = (k : E) • W`. Rewrite using `[Matrix.smul_mul, Matrix.mul_assoc, hS, Matrix.mul_one]`.
+
+Establish `h2 : ccT V * ccT S = 1` using `by rw [← ccT_mul, hS, ccT_one]`. Use `⟨(k : E) • (W * S), fun i j => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hint _ (Finset.mem_image_of_mem _ (Finset.mem_univ (i, j)))`. Use `li_of_mul (R := ((k : E)⁻¹ * (D : E)⁻¹) • (ccT S * G⁻¹)) ?_` and prove the remaining obligations. Establish `: (k : E) • (W * S) * (V * ((D : E) • G) * ccT V) * ((k : E)⁻¹ * (D : E)⁻¹) • (ccT S * G⁻¹) = W`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.mul_smul, Matrix.mul_assoc, ← Matrix.mul_assoc (ccT V), h2]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.one_mul, mul_nonsing_inv_cancel_right _ _ h0.isUnit]`. Rewrite using `[show (k : E)⁻¹ * (D : E)⁻¹ * (D * k) = 1 by field_simp, one_smul]`. Rewrite using `[this]`. Conclude with `hW.1`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ (ccT V), ← ccT_mul, h1, ccT_smul]`. Simplify using `[hW.2]`.
+-/
 theorem exists_int_rows {N m n D : ℕ} (hD : 0 < D) {G : Matrix (Fin m) (Fin m) E} (h0 : G.det ≠ 0)
     {W : Matrix (Fin N) (Fin m) E} (hW : IsoRows G W) {V : Matrix (Fin n) (Fin m) E}
     {S : Matrix (Fin m) (Fin n) E} (hS : S * V = 1) :
@@ -372,6 +498,27 @@ end GlobalTheory.SW.MinkowskiProductBounds
 
 open GlobalTheory.SW.MinkowskiProductBounds in
 
+/- English proof (translation)
+Introduce `E _ _ _ Ψ h N D ε hD hε`. Take `⟨n, C, hC⟩` from `short h (2 * N) (∏ _τ : Ψ, (D : ℝ) ^ (2 * N)) ε hε`. Set `F : Set (Matrix (Fin n) (Fin n) E)` to `{Γ | ∀ i j, Γ i j ∈ {x : E | IsIntegral ℤ x ∧ ∀ σ : E →+* ℂ, ‖σ x‖ ≤ D * C}}`. Establish `hF : F.Finite` using `Set.Finite.pi' fun _ => Set.Finite.pi' fun _ => Embeddings.finite_of_norm_le E ℂ _`. Establish `hex : ∀ Γ : Matrix (Fin n) (Fin n) E, ∃ T : Matrix (Fin N) (Fin n) E, (∃ T : Matrix (Fin N) (Fin n) E, IntM T ∧ IsoRows' Γ T) → IntM T ∧ IsoRows' Γ T`.
+
+Introduce `Γ`. Distinguish the cases in `hΓ : ∃ T : Matrix (Fin N) (Fin n) E, IntM T ∧ IsoRows' Γ T`. Conclude with `⟨hΓ.choose, fun _ => hΓ.choose_spec⟩`. Conclude with `⟨0, fun h => absurd h hΓ⟩`. Use `choose T hT using hex`.
+
+Take `⟨M, hM⟩` from `((hF.prod (Set.finite_univ (α := Ψ × Fin N × Fin n))).image fun p => ‖p.2.1.1 (T p.1 p.2.2.1 p.2.2.2)‖).bddAbove`. Use `⟨(n * (M * √C)) ^ 2, fun G H hG h0 hD1 hD2 ⟨W, hW⟩ hH hmin => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, ⟨S, hS⟩, hVC⟩` from `hC H (fun τ => (hH τ).1) (det_le h hD h0 hD2 hH) hmin`. Use `set Γ := V * ((D : E) • G) * ccT V with hΓ`. Establish `hΓF : Γ ∈ F`.
+
+Introduce `i j`. Use `⟨intM_mul (intM_mul hV hD1) (intM_ccT hV) i j, ?_⟩` and prove the remaining obligations. Establish `key : ∀ τ : Ψ, ‖τ.1 (Γ i j)‖ ≤ D * C`. Introduce `τ`. Establish `h1 : (G.map τ.1)ᴴ = G.map τ.1`.
+
+Use extensionality with `a b`. Use `congrArg τ.1 (congrFun (congrFun hG a) b)` as an intermediate fact. Simplify `this` using `[ccT, emb_cc]`. Establish `h2 : (G.map τ.1).det ≠ 0`. Rewrite using `[show (G.map τ.1).det = τ.1 G.det from (RingHom.map_det _ _).symm]`.
+
+Simplify using `using h0`. Establish `h3` using `gram_le (hH τ).1 h1 h2 (hH τ).2 _ _ (hVC i τ) (hVC j τ)`. Establish `h4 : τ.1 (Γ i j) = D * ((fun a => τ.1 (V i a)) ⬝ᵥ G.map τ.1 *ᵥ star fun a => τ.1 (V j a))`. Rewrite using `[hΓ, Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply, ccT, emb_cc, dotProduct, mulVec, Finset.mul_sum, mul_assoc, mul_left_comm]`.
+
+Rewrite using `[h4, norm_mul, Complex.norm_natCast]`. Use `gcongr`. Introduce `σ`. Distinguish the cases in `hσ : σ ∈ Ψ`. Conclude with `key ⟨σ, hσ⟩`.
+
+Simplify using `using key ⟨ComplexEmbedding.conjugate σ, by have := h σ; tauto⟩`. Take `⟨hT1, hT2, hT3⟩` from `hT Γ (exists_int_rows hD h0 hW hS)`. Use `⟨T Γ * V, intM_mul hT1 hV, ⟨?_, ?_⟩, fun i τ => ?_⟩` and prove the remaining obligations. Use `li_of_mul (R := ((D : E) • G) * ccT V) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc V]` and apply the resulting hypothesis.
+
+Establish `hD' : (D : E) ≠ 0` using `by exact_mod_cast hD.ne'`. Use `(smul_eq_zero_iff_right hD').1 ?_` and prove the remaining obligations. Rewrite using `[← hT3, ccT_mul]`. Simplify using `only [hΓ, Matrix.mul_assoc, Matrix.mul_smul, Matrix.smul_mul]`. Establish `h1 : (fun a => τ.1 ((T Γ * V) i a)) = ∑ j, τ.1 (T Γ i j) • fun a => τ.1 (V j a)`.
+
+Use extensionality with `a`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[hval_eq, h1]`. Conclude with `comb_le (hH τ).1 _ _ (fun j => hVC j τ) fun j => hM ⟨(Γ, τ, i, j), ⟨hΓF, trivial⟩, rfl⟩`.
+-/
 theorem GlobalTheory.SW.exists_shortIso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (N D : ℕ) (ε : ℝ), 0 < D → 0 < ε →
     ∃ C : ℝ, ShortIso Ψ N D ε C := by

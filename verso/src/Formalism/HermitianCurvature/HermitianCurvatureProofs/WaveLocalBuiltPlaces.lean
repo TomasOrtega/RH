@@ -19,12 +19,23 @@ def Xw (S : C.HidaSetting E Wp Wq) (i : ℕ) (v : Fin S.f) : ℝ :=
   (2 * Real.pi / S.G.g) ^ (-(S6.nuBlock S.G.r i 0)) * Real.exp 1 * (28 * S.G.N / S.G.lenI) ^ (2 * (i - 1) + 0) *
     J.supA S.G S.de S.de' S.T S.T' S.l (decide (i = 1 ∧ 0 + 1 = 1)) (S.pl v)
 
+/- English proof (translation)
+Unfold `C.HidaSetting.g Sz.Glob.g`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem g_cast (S : C.HidaSetting E Wp Wq) : ((S.g : ℕ) : ℝ) = S.G.g := by
   unfold C.HidaSetting.g Sz.Glob.g; push_cast; rfl
 
+/- English proof (translation)
+Simplify using `only [C.HidaSetting.cutHi, C.HidaSetting.cutLo, Sz.Glob.lenI, Sz.Glob.place]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem len_eq (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : S.cutHi v - S.cutLo v = S.G.lenI := by
   simp only [C.HidaSetting.cutHi, C.HidaSetting.cutLo, Sz.Glob.lenI, Sz.Glob.place]; ring
 
+/- English proof (translation)
+Unfold `lamS`. Rewrite using `[g_cast]`. Establish `hx : 0 < S.G.g / (2 * Real.pi)` using `by positivity`. Establish `e1 : 2 * Real.pi / S.G.g = (S.G.g / (2 * Real.pi))⁻¹` using `by rw [inv_div]`. Establish `key : ∀ n0 n1 : ℤ, n0 = n1 + 1 → S.G.g * (S.G.g / (2 * Real.pi)) ^ n1 / (2 * Real.pi) = (2 * Real.pi / S.G.g) ^ (-n0)`.
+
+Introduce `n0 n1 h`. Rewrite using `[h, e1, inv_zpow, zpow_neg, inv_inv, zpow_add_one₀ hx.ne']`. Clear the denominators using the available nonvanishing facts. Conclude with `key _ _ (by unfold S6.nuBlock; push_cast; ring)`.
+-/
 theorem T_eq (S : C.HidaSetting E Wp Wq) (hg : 0 < S.G.g) (j : ℕ) :
     ((S.g : ℝ) * lamS S j) / (2 * Real.pi) = (2 * Real.pi / S.G.g) ^ (-(S6.nuBlock S.G.r (j + 1) 0)) := by
   unfold lamS
@@ -48,10 +59,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Use `⟨by unfold Sz.Glob.g; exact_mod_cast Nat.mul_pos hB.1 hB.2.1, ?_⟩` and prove the remaining obligations. Unfold `Sz.Glob.ka`. Rewrite using `[S.hv]`. Use `PBD.rd_pos' E` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem glob_pos (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) : 0 < S.G.g ∧ 0 < S.G.ka := by
   refine ⟨by unfold Sz.Glob.g; exact_mod_cast Nat.mul_pos hB.1 hB.2.1, ?_⟩
   unfold Sz.Glob.ka; rw [S.hv]; have := PBD.rd_pos' E; positivity
 
+/- English proof (translation)
+Establish `hGo` using `hB.2.2.2.2.2.2.2.2.2.2.1`. Establish `h` using `(hGo v).1`. Rewrite `h` using `[len_eq]`. Establish `: (0 : ℝ) < 6 * (S.Ntop : ℝ) ^ 3 + 6 * S.Ntop` using `by have := PBD.ntop_ge S; positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lenI_pos (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) : 0 < S.G.lenI := by
   have hGo := hB.2.2.2.2.2.2.2.2.2.2.1
   have h := (hGo v).1
@@ -59,6 +76,11 @@ theorem lenI_pos (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f
   have : (0 : ℝ) < 6 * (S.Ntop : ℝ) ^ 3 + 6 * S.Ntop := by have := PBD.ntop_ge S; positivity
   linarith
 
+/- English proof (translation)
+Take `⟨hg, hk⟩` from `glob_pos hB`. Establish `hl` using `lenI_pos hB v`. Establish `hN : (0 : ℝ) ≤ S.G.N` using `by unfold Sz.Glob.N; positivity`. Establish `hA` using `supA_nonneg S hg hk v (decide (i = 1 ∧ 0 + 1 = 1))`. Unfold `Xw`.
+
+Establish `: 0 < 2 * Real.pi / S.G.g` using `by positivity`. Check the signs of the components of the expression.
+-/
 theorem xw_nonneg (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (i : ℕ) (v : Fin S.f) : 0 ≤ Xw S i v := by
   obtain ⟨hg, hk⟩ := glob_pos hB
   have hl := lenI_pos hB v
@@ -68,6 +90,13 @@ theorem xw_nonneg (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (i : ℕ) (
   have : 0 < 2 * Real.pi / S.G.g := by positivity
   positivity
 
+/- English proof (translation)
+Introduce `i hi1 _ v`. Take `⟨hg, hk⟩` from `glob_pos hB`. Establish `hl` using `lenI_pos hB v`. Establish `hCA : Cc ≤ S.CA` using `hB.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hN : (0:ℝ) ≤ S.G.N` using `by unfold Sz.Glob.N; positivity`.
+
+Establish `hcg : (0:ℝ) ≤ (28 * S.G.N / S.G.lenI) ^ (2 * (i - 1) + 0)` using `by positivity`. Establish `h` using `(Formalism.FourierDecayAlt.P.frame_threshold_bound_holds (InfinitePlace E) S.G S.CA S.de S.de' S.T S.T' S.l (S.pl v) hg hl (hCc.trans hCA) (fun one => supA_nonneg S hg hk v one)).1 i 0 (Real.exp 1) ((28 * S.G.N / S.G.lenI) ^ (2 * (i - 1) + 0)) hi1 (Real.exp_pos 1).le le_rfl hcg l …`. Use `⟨xw_nonneg hB i v, ?_⟩` and prove the remaining obligations. Use `show Xw S i v ≤ J.thrS S.G S.CA S.de S.de' S.T S.T' S.l i 1 (S.pl v)`. Unfold `Xw`.
+
+Conclude with `h` after adjusting the coercions.
+-/
 theorem thr_wave (hCc : 28 * Real.exp 1 ≤ Cc) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) :
     JC.HidaCurvatureBarriers S (fun i v => Xw S i v) := by
   intro i hi1 _ v
@@ -94,6 +123,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Take `⟨hg, hk⟩` from `glob_pos hB`. Establish `hl` using `lenI_pos hB v`. Rewrite using `[T_eq S hg j]`. Establish `hdec : decide (j + 1 = 1 ∧ 0 + 1 = 1) = decide (j = 0)`. Apply the tactic sequence `by_cases h : j = 0 <;> simp [h]`.
+
+Establish `hexp : 2 * (j + 1 - 1) + 0 = 2 * j` using `by omega`. Unfold `Xw`. Rewrite using `[hdec, hexp]`. Rewrite `hl1` using `[ntop_eq_N', len_eq]`. Use `set cg := (28 * S.G.N / S.G.lenI) ^ (2 * j) with hcg`.
+
+Use `set Tf := (2 * Real.pi / S.G.g) ^ (-(S6.nuBlock S.G.r (j + 1) 0)) with hTf`. Use `set A := J.supA S.G S.de S.de' S.T S.T' S.l (decide (j = 0)) (S.pl v) with hA`. Establish `hA0 : 0 ≤ A` using `supA_nonneg S hg hk v _`. Establish `hgg : 0 < 2 * Real.pi / S.G.g` using `by positivity`. Establish `hTf0 : 0 ≤ Tf` using `by positivity`.
+
+Establish `hprod : (∏ b, ∑ i, |F7.lagCo (grid b) i|) ≤ cg ^ K`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 0 ≤ Tf ^ K * (Real.exp 1 * A) ^ K` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem xw_K (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (j K : ℕ) (grid : Fin K → Fin (2 * j + 1) → ℝ)
     (hl1 : ∀ b, ∑ i, |F7.lagCo (grid b) i| ≤ (28 * (S.Ntop : ℝ) / (S.cutHi v - S.cutLo v)) ^ (2 * j)) :
     (∏ b, ∑ i, |F7.lagCo (grid b) i|) * (((S.g : ℝ) * lamS S j) / (2 * Real.pi)) ^ K *

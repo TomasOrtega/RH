@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.ThK.LiftContA
 
+/- English proof (translation)
+Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (h i).1, φ i, (h i).2.1, ?_, rfl⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hT`. Conclude with `hv ((h i).2.2 v hT)`.
+-/
 theorem sum_pure_mem_polData {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (T : Finset (Pl F)) {m : ℕ}
     (f : Fin m → SInf F (Fin n × Fin d)) (φ : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
@@ -27,6 +30,31 @@ theorem sum_pure_mem_polData {F E : Type} [Field F] [NumberField F] [Field E] [N
   by_contra hT
   exact hv ((h i).2.2 v hT)
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH c hsplit Φ Φ' hΦ' hPM hct hdec Φ₁ Φ₁' hΦ₁' hPM₁ μ 𝓕 hμ h𝓕`. Establish `hT` using `hM.triple`. Take `⟨P, P'⟩` from `GlobalTheory.ThK.Check.isPair_of_isTriple hT`. Establish `hW` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ P (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`. Establish `hW'` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ P' (Or.inr (by rw [hq]; exact Nat.zero_min _))`.
+
+Establish `hfc : Continuous (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h)`. Take `⟨T, -, m, m', u, φ, u', φ', hu, hu', rfl, rfl, -⟩` from `hPM`. Establish `hS : ∑ i, pure (u i) (φ i) ∈ schA F (Fin a × Fin (a + a'))` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM (sum_pure_mem_polData G.M T u φ hu)`. Establish `hS' : ∑ j, pure (u' j) (φ' j) ∈ schA F (Fin a' × Fin (a + a'))` using `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM' (sum_pure_mem_polData G.M' T u' φ' hu')`. Establish `hc : Continuous (G.M.I om (∑ i, pure (u i) (φ i)))` using `GlobalTheory.ThK.SqIntCont.continuous_I G.M om hT.weil.2.2 (IsUWeilPair.isUSplitting hT.weil).pres (fun Ψ hΨ => (hW.1 Ψ hΨ).1) hW.2 hS`.
+
+Establish `hc' : Continuous (G.M'.I om' (∑ j, pure (u' j) (φ' j)))` using `GlobalTheory.ThK.SqIntCont.continuous_I G.M' om' hT.weil'.2.2 (IsUWeilPair.isUSplitting hT.weil').pres (fun Ψ hΨ => (hW'.1 Ψ hΨ).1) hW'.2 hS'`. Conclude with `hc.sub (continuous_const.mul hc')`. Establish `hS₁ : Φ₁' ∈ schA F (Fin a' × Fin (a + a'))`. Take `⟨T, -, m, m', u, φ, u', φ', -, hu', -, rfl, -⟩` from `hPM₁`. Conclude with `GlobalTheory.ThK.SqIntCont.polData_le_schA hT.geo.hM' (sum_pure_mem_polData G.M' T u' φ' hu')`.
+
+Take `⟨hjc, hinv, C, k, hCk⟩` from `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ P').1 Φ₁' hS₁`. Establish `hq' : ∀ g h, ‖theta om' Φ₁' g h‖ ≤ |C| * (ht g : ℝ) ^ k * (qht h : ℝ) ^ k`. Introduce `g h`. Establish `hb : ∀ h, ‖theta om' Φ₁' g h‖ ≤ (|C| * (ht g : ℝ) ^ k) * (ht h : ℝ) ^ k` using `fun h => by`. Use `(hCk g h).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity)) (by positivity)`. Establish `hi : ∀ γ ∈ ratU σ G.W.J, ∀ x, theta om' Φ₁' g (γ * x) = theta om' Φ₁' g x` using `fun γ hγ x => by`. Simplify using `using hinv 1 (one_mem _) γ hγ g x`. Use `GlobalTheory.ThKOrthVInt.norm_le_qht_of_le_ht (g := fun h => theta om' Φ₁' g h) hi hb h` as an intermediate fact.
+
+Rewrite `this` using `[max_eq_left (by positivity)]`. Then use the resulting hypothesis. Take `⟨Cf, hCf⟩` from `hdec k`. Establish `hcm` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hd` using `GlobalTheory.ThK.DescB.Nondeg.det_ne_zero_of_cartan B G.W hT.geo.hW.cartan`.
+
+Take `⟨c₀, hc₀, hcs⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Establish `hJ` using `GlobalTheory.ThKOrthVInt.isHermND_smul_of_skew hσ hT.geo.hW.skew hd hc₀ hcs`. Use `haveI := hμ`. Establish `hfin` using `GlobalTheory.ThKOrthVInt.measure_fundDom_lt_top_smul hKP.siegelSetUnitary hcm hc₀ hJ h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin.ne`.
+
+Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : FirstCountableTopology (UA σ G.V'.J) := by`. Establish `heq : UG (cA σ) (incM F G.V'.J) = HR (AF F) σ ((1 : E) • G.V'.J.map σ)` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := G.V'.J) hσ one_ne_zero`. Set `e : UA σ G.V'.J ≃* GAd σ ((1 : E) • G.V'.J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`.
+
+Establish `hind : Topology.IsInducing e` using `Topology.IsInducing.of_comp he continuous_subtype_val Topology.IsInducing.subtypeVal`. Establish `h2 : SecondCountableTopology (UA σ G.V'.J)` using `hind.secondCountableTopology`. Conclude with `@TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ h2`. Establish `hht : Continuous fun g : UA σ G.V'.J => (ht g : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce `g₀`. Establish `hnear : ∀ᶠ g in 𝓝 g₀, (ht g : ℝ) ≤ (ht g₀ : ℝ) + 1` using `(hht.continuousAt.eventually (gt_mem_nhds (lt_add_one (ht g₀ : ℝ)))).mono fun g hg => hg.le`. Use `continuousAt_of_dominated (bound := fun _ => |C| * ((ht g₀ : ℝ) + 1) ^ k * Cf) ?_ ?_ (integrable_const _) ?_` and prove the remaining obligations. Conclude with `Eventually.of_forall fun g => (hfc.mul (Complex.continuous_conj.comp (hjc.comp (continuous_const.prodMk continuous_id)))).aestronglyMeasurable`. Use `hnear.mono fun g hg => Eventually.of_forall fun h => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, Complex.norm_conj]`. Establish `hk : (ht g : ℝ) ^ k ≤ ((ht g₀ : ℝ) + 1) ^ k` using `pow_le_pow_left₀ (by positivity) hg k`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ((hq' g h).trans ?_) (norm_nonneg _)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hk (abs_nonneg C)) (by positivity)`.
+
+Use `_ = |C| * ((ht g₀ : ℝ) + 1) ^ k * (‖G.M.I om Φ h - c * G.M'.I om' Φ' h‖ * (qht h : ℝ) ^ k) := by ring`. Use `_ ≤ |C| * ((ht g₀ : ℝ) + 1) ^ k * Cf := mul_le_mul_of_nonneg_left (hCf h) (by positivity)`. Conclude with `Eventually.of_forall fun h => (continuous_const.mul (Complex.continuous_conj.comp (hjc.comp (continuous_id.prodMk continuous_const)))).continuousAt`.
+-/
 theorem continuous_thLift_diff : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ c : ℂ,

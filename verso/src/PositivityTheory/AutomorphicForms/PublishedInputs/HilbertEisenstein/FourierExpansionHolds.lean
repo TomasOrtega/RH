@@ -18,6 +18,9 @@ namespace UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Take `⟨n, hn, hpow⟩` from `(isOfFinOrder_iff_pow_eq_one).1 hfin`. Establish `h : ((ω.1 τ : ℂˣ) : ℂ) ^ n = 1`. Establish `h1 : (ω ^ n).1 τ = 1` using `by rw [hpow]; rfl`. Rewrite using `[← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, ← Subgroup.coe_pow, h1, Units.val_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h, norm_one])`.
+-/
 theorem norm_omega {ω : HChar F} (hfin : IsOfFinOrder ω) (τ : IdeleGroup F) :
     ‖((ω.1 τ : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, hn, hpow⟩ := (isOfFinOrder_iff_pow_eq_one).1 hfin
@@ -26,17 +29,28 @@ theorem norm_omega {ω : HChar F} (hfin : IsOfFinOrder ω) (τ : IdeleGroup F) :
     rw [← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, ← Subgroup.coe_pow, h1, Units.val_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h, norm_one])
 
+/- English proof (translation)
+Establish `: 2 * Real.pi * Complex.I * ∑ v, (reAt v ξ : ℂ) * (x v : ℂ) = ((2 * Real.pi * ∑ v, reAt v ξ * x v : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[ex, this, Complex.norm_exp_ofReal_mul_I]`.
+-/
 theorem norm_ex (ξ : F) (x : UpperTheory.V.TR.Rinf F) : ‖ex ξ x‖ = 1 := by
   have : 2 * Real.pi * Complex.I * ∑ v, (reAt v ξ : ℂ) * (x v : ℂ) =
       ((2 * Real.pi * ∑ v, reAt v ξ * x v : ℝ) : ℂ) * Complex.I := by
     push_cast; ring
   rw [ex, this, Complex.norm_exp_ofReal_mul_I]
 
+/- English proof (translation)
+Rewrite using `[wt, norm_mul, norm_inv, norm_omega hfin, inv_one, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos t.2]`.
+-/
 theorem norm_wt {ω : HChar F} (hfin : IsOfFinOrder ω) (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :
     ‖wt ω t u‖ = (t : ℝ) := by
   rw [wt, norm_mul, norm_inv, norm_omega hfin, inv_one, one_mul, Complex.norm_real, Real.norm_eq_abs,
     abs_of_pos t.2]
 
+/- English proof (translation)
+Establish `hω : Continuous ω.1` using `ω.2.1`. Establish `ht : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => tau p.1 p.2` using `((continuous_moduleSection (w0 F)).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`. Establish `h1 : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ((ω.1 (tau p.1 p.2) : ℂˣ) : ℂ)⁻¹`. Establish `: Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => (((ω.1 (tau p.1 p.2))⁻¹ : ℂˣ) : ℂ)` using `Units.continuous_val.comp ((hω.comp ht).inv)`. Simplify using `using this`.
+
+Conclude with `h1.mul (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst))`.
+-/
 theorem continuous_wt (ω : HChar F) : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => wt ω p.1 p.2 := by
   have hω : Continuous ω.1 := ω.2.1
   have ht : Continuous fun p : {r : ℝ // 0 < r} × normOneSubgroup F => tau p.1 p.2 :=
@@ -47,6 +61,9 @@ theorem continuous_wt (ω : HChar F) : Continuous fun p : {r : ℝ // 0 < r} × 
     simpa using this
   exact h1.mul (Complex.continuous_ofReal.comp (continuous_subtype_val.comp continuous_fst))
 
+/- English proof (translation)
+Establish `hv` using `IsTotallyReal.isReal w`. Establish `h` using `(InfinitePlace.Completion.isometryEquivRealOfIsReal hv).symm.dist_eq (r w) 0`. Establish `h0 : (InfinitePlace.Completion.isometryEquivRealOfIsReal hv).symm 0 = 0` using `map_zero (InfinitePlace.Completion.ringEquivRealOfIsReal hv).symm`. Rewrite `h` using `[h0, dist_zero_right, dist_zero_right, Real.norm_eq_abs]`. Conclude with `h`.
+-/
 theorem norm_infEq (r : UpperTheory.V.TR.Rinf F) (w : InfinitePlace F) : ‖UpperTheory.V.TR.infEq F r w‖ = |r w| := by
   have hv := IsTotallyReal.isReal w
   have h := (InfinitePlace.Completion.isometryEquivRealOfIsReal hv).symm.dist_eq (r w) 0
@@ -55,6 +72,11 @@ theorem norm_infEq (r : UpperTheory.V.TR.Rinf F) (w : InfinitePlace F) : ‖Uppe
   rw [h0, dist_zero_right, dist_zero_right, Real.norm_eq_abs] at h
   exact h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `1 - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val = _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F y.val = _`. Rewrite using `[map_one, sub_self, zero_add]`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`.
+
+Rewrite using `[sub_zero, add_zero]`.
+-/
 theorem infId_val (y : (UpperTheory.V.TR.Rinf F)ˣ) :
     ((UpperTheory.V.TR.infId F y : (Ad F)ˣ) : Ad F) = (UpperTheory.V.TR.infEq F y.val, 1) := by
   change 1 - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F y.val = _
@@ -64,6 +86,11 @@ theorem infId_val (y : (UpperTheory.V.TR.Rinf F)ˣ) :
   · change (1 : Af F) - 0 + 0 = 1
     rw [sub_zero, add_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `1 - sFin F 1 + sFin F yf.val = _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) - 0 + 0 = 1`. Rewrite using `[sub_zero, add_zero]`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 1 + (yf : Af F) = _`.
+
+Rewrite using `[sub_self, zero_add]`.
+-/
 theorem finId_val (yf : (Af F)ˣ) : ((finId F yf : (Ad F)ˣ) : Ad F) = (1, (yf : Af F)) := by
   change 1 - sFin F 1 + sFin F yf.val = _
   refine Prod.ext ?_ ?_
@@ -72,6 +99,15 @@ theorem finId_val (yf : (Af F)ˣ) : ((finId F yf : (Ad F)ˣ) : Ad F) = (1, (yf :
   · change (1 : Af F) - 1 + (yf : Af F) = _
     rw [sub_self, zero_add]
 
+/- English proof (translation)
+Establish `hdet1 : Matrix.GeneralLinearGroup.det (aff y x) = y` using `by ext1`. Simplify using `[aff, Matrix.det_fin_two_of]`. Establish `hdet2 : Matrix.GeneralLinearGroup.det (aff yf (0 : Af F)) = yf` using `by ext1`. Simplify using `[aff, Matrix.det_fin_two_of]`. Unfold `absD gPt`.
+
+Rewrite using `[map_mul, UpperTheory.V.TR.det_infGL, UpperTheory.V.TR.det_finGL, hdet1, hdet2, map_mul]`. Express the relevant statement in the definitionally equal form `(IdeleGroup.ideleModule F _ : ℝ) * (IdeleGroup.ideleModule F _ : ℝ) = _`. Rewrite using `[ideleModule_eq, ideleModule_eq]`. Simplify using `only [infId_val, finId_val]`. Establish `h1 : ∏ w : InfinitePlace F, ‖UpperTheory.V.TR.infEq F y.val w‖ ^ w.mult = ∏ v, y.val v`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(IsTotallyReal.isReal w).mult_eq_one, pow_one, norm_infEq, abs_of_pos (hy w)]`. Establish `h2 : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(1 : Af F) v‖ = 1` using `finprod_eq_one_of_forall_eq_one fun v => by simp`. Establish `h3 : ∏ w : InfinitePlace F, ‖(1 : InfiniteAdeleRing F) w‖ ^ w.mult = 1` using `Finset.prod_eq_one fun w _ => (by rw [norm_one, one_pow] : ‖(1 : w.Completion)‖ ^ w.mult = 1)`. Rewrite using `[h1, h2, h3, mul_one, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem absD_gPt (x : UpperTheory.V.TR.Rinf F) (y : (UpperTheory.V.TR.Rinf F)ˣ) (hy : ∀ v, 0 < y.val v) (yf : (Af F)ˣ) :
     absD (gPt x y yf) = (∏ v, y.val v) * absF yf := by
   have hdet1 : Matrix.GeneralLinearGroup.det (aff y x) = y := by
@@ -95,19 +131,77 @@ theorem absD_gPt (x : UpperTheory.V.TR.Rinf F) (y : (UpperTheory.V.TR.Rinf F)ˣ)
   rw [h1, h2, h3, mul_one, one_mul]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gPt_eq (x : UpperTheory.V.TR.Rinf F) (y : (UpperTheory.V.TR.Rinf F)ˣ) (yf : (Af F)ˣ) :
     UpperTheory.V.TR.infGL F 2 (aff y x) * finGL F 2 (aff yf 0) = gPt x y yf := rfl
 
+/- English proof (translation)
+Unfold `coefAt`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coefAt_const_mul (a : ℂ) (d : Ideal (𝓞 F) → ℂ) (z : Af F) :
     coefAt (fun 𝔪 => a * d 𝔪) z = a * coefAt d z := by
   unfold coefAt
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Simplify `h v` using `[reAt]`.
+-/
 theorem ne_zero_of_pos {ξ : F} (h : ∀ v, 0 < reAt v ξ) : ξ ≠ 0 := by
   rintro rfl
   obtain ⟨v⟩ : Nonempty (InfinitePlace F) := inferInstance
   simpa [reAt] using h v
 
+/- English proof (translation)
+Introduce `hI F _ _ _ ω c H`. Take `⟨C₀, hC₀, hloc⟩` from `hL F ω c H`. Use `⟨C₀, ∫ p, zeroRow c (tau p.1 p.2) * wt ω p.1 p.2 ∂(muE F), hC₀, ?_⟩` and prove the remaining obligations. Introduce `x y hy yf`. Use `set Y := yAd y yf`.
+
+Use `set g := gPt x y yf`. Use `set D : ℂ := ((absD g ^ ((1 : ℝ) / 2) : ℝ) : ℂ) with hDdef`. Use `set A0 : {r : ℝ // 0 < r} × normOneSubgroup F → ℂ := fun p => zeroRow c (tau p.1 p.2) * wt ω p.1 p.2`. Use `set N : {r : ℝ // 0 < r} × normOneSubgroup F → ℂ := fun p => coefK c Y (tau p.1 p.2) 0 * wt ω p.1 p.2`. Use `set Sf : Fˣ → {r : ℝ // 0 < r} × normOneSubgroup F → ℂ := fun ξ p => ex (ξ : F) x * coefK c Y (tau p.1 p.2) ξ * wt ω p.1 p.2`.
+
+Use `set S : {r : ℝ // 0 < r} × normOneSubgroup F → ℂ := fun p => ∑' ξ : Fˣ, Sf ξ p`. Take `⟨hmeas, hsum, hint⟩` from `hA F ω c H y hy yf`. Establish `hfin` using `H.fin`. Establish `hpt : ∀ p : {r : ℝ // 0 < r} × normOneSubgroup F, eisInt ω (Phi c) g p.1 p.2 = (A0 p + N p + S p) * D`. Introduce `p`.
+
+Establish `h` using `hPt F ω c H x y hy yf (tau p.1 p.2)`. Simplify using `only [eisInt, A0, N, S, Sf]`. Express the relevant statement in the definitionally equal form `thetaS (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) (tau p.1 p.2) * g) * _ * _ * _ = _`. Rewrite using `[h, tsum_mul_right]`. Simplify using `only [wt, tau, hDdef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hDpos : 0 < absD g` using `(IdeleGroup.ideleModule F _).2`. Establish `hD0 : D ≠ 0`. Rewrite using `[hDdef, Complex.ofReal_ne_zero]`. Conclude with `(Real.rpow_pos_of_pos hDpos _).ne'`.
+
+Establish `hT : Integrable (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => eisInt ω (Phi c) g p.1 p.2) (muE F)` using `hI F ω c H g`. Establish `hA0 : Integrable A0 (muE F)` using `hZ F ω c H`. Establish `hSfm : ∀ ξ : Fˣ, AEStronglyMeasurable (Sf ξ) (muE F)` using `fun ξ => (aestronglyMeasurable_const.mul (hmeas ξ)).mul (continuous_wt ω).aestronglyMeasurable`. Establish `hSfb : ∀ ξ : Fˣ, ∀ p, ‖Sf ξ p‖ = ‖coefK c Y (tau p.1 p.2) ξ‖ * (p.1 : ℝ)`. Introduce `ξ p`.
+
+Simplify using `only [Sf, norm_mul, norm_ex, norm_wt hfin, one_mul]`. Establish `hSsum : ∀ p, HasSum (fun ξ : Fˣ => Sf ξ p) (S p)`. Introduce `p`. Use `Summable.hasSum (Summable.of_norm ?_)` and prove the remaining obligations. Simplify using `only [hSfb]`.
+
+Conclude with `(hsum p).mul_right _`. Establish `hbound : Integrable (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ∑' ξ : Fˣ, ‖coefK c Y (tau p.1 p.2) ξ‖ * (p.1 : ℝ)) (muE F)`. Simplify using `only [tsum_mul_right]`. Conclude with `hint`. Establish `hSint : HasSum (fun ξ : Fˣ => ∫ p, Sf ξ p ∂(muE F)) (∫ p, S p ∂(muE F))` using `hasSum_integral_of_dominated_convergence (fun ξ p => ‖coefK c Y (tau p.1 p.2) ξ‖ * (p.1 : ℝ)) hSfm (fun ξ => Eventually.of_forall fun p => (hSfb ξ p).le) (Eventually.of_forall fun p => (hsum p).mul_right _) hbound (Eventually.of_forall hSsum)`.
+
+Establish `hSm : AEStronglyMeasurable S (muE F)`. Use `aestronglyMeasurable_of_tendsto_ae (u := atTop) (f := fun s p => ∑ ξ ∈ s, Sf ξ p) (fun s => by` and prove the remaining obligations. Establish `h` using `Finset.aestronglyMeasurable_sum (μ := muE F) s fun ξ _ => hSfm ξ`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`.
+
+Simplify using `[Finset.sum_apply]) (Eventually.of_forall fun p => (hSsum p))`. Establish `hS : Integrable S (muE F)`. Use `hbound.mono' hSm (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Rewrite using `[← (hSsum p).tsum_eq]`. Use `(norm_tsum_le_tsum_norm ?_).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Simplify using `only [hSfb]`. Conclude with `(hsum p).mul_right _`. Simplify using `only [hSfb]`. Establish `hN : Integrable N (muE F)`. Establish `h1 : Integrable (fun p => eisInt ω (Phi c) g p.1 p.2 / D - A0 p - S p) (muE F)` using `((hT.div_const D).sub hA0).sub hS`.
+
+Use `h1.congr (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [hpt p]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hN0 : ∫ p, N p ∂(muE F) = 0`.
+
+Rewrite using `[integral_prod N hN]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [hN.prod_right_ae] with t ht`. Establish `h2 : IntegrableOn (fun u => coefK c Y (tau t u) 0 * ((ω.1 (tau t u) : ℂˣ) : ℂ)⁻¹) (normOneFundamentalDomain F) (normOneMeasure F)`. Establish `h3` using `ht.mul_const (((t : ℝ) : ℂ)⁻¹)`.
+
+Use `h3.congr (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `ht0 : ((t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 t.2.ne'`. Simplify using `only [N, wt]`. Clear the denominators using the available nonvanishing facts. Establish `h4` using `hNl F ω c H y yf t h2`.
+
+Simplify using `only [Pi.zero_apply, N, wt]`. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[integral_mul_const, h4, zero_mul]`. Establish `hcoef : ∀ ξ : Fˣ, ∫ p, Sf ξ p ∂(muE F) = ex (ξ : F) x * (C₀ * if ∀ v, 0 < reAt v (ξ : F) then coefAt (divS ω c) (algebraMap F (Af F) (ξ : F) * (yf : Af F)) * Complex.exp (-(2 * Real.pi : ℂ) * ∑ v, (reAt v (ξ : F) : ℂ) * (y.val v : ℂ)) else 0)`. Introduce `ξ`.
+
+Take `⟨hi, he⟩` from `hloc y hy yf ξ`. Simplify using `only [Sf, mul_assoc]`. Rewrite using `[integral_const_mul, hU F ω c H Y ξ hi, he]`. Establish `htot : Eis ω (Phi c) g = (∫ p, A0 p ∂(muE F) + ∫ p, S p ∂(muE F)) * D`. Establish `h1 : Eis ω (Phi c) g = ∫ p, eisInt ω (Phi c) g p.1 p.2 ∂(muE F)`.
+
+Rewrite using `[Eis, integral_prod _ hT]`. Rewrite using `[h1]`. Simplify using `only [hpt]`. Rewrite using `[integral_mul_const, integral_add (f := fun a => A0 a + N a) (hA0.add hN) hS, integral_add hA0 hN, hN0, add_zero]`. Establish `hDeq : D = ((((∏ v, y.val v) * absF yf) ^ (((1 : ℕ) : ℝ) / 2) : ℝ) : ℂ)`.
+
+Rewrite using `[hDdef, absD_gPt x y hy yf]`. Evaluate the numerical expressions. Establish `hval : Eis ω (Phi c) (UpperTheory.V.TR.infGL F 2 (aff y x) * finGL F 2 (aff yf 0)) / ((((∏ v, y.val v) * absF yf) ^ (((1 : ℕ) : ℝ) / 2) : ℝ) : ℂ) - ∫ p, A0 p ∂(muE F) = ∫ p, S p ∂(muE F)`. Rewrite using `[gPt_eq, ← hDeq, htot]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`. Set `e : {ξ : F // ∀ v, 0 < reAt v ξ} → Fˣ` to `fun ξ => Units.mk0 ξ.1 (ne_zero_of_pos ξ.2)`. Establish `he : Function.Injective e` using `fun a b h => Subtype.ext (congrArg Units.val h)`. Establish `hout : ∀ ξ ∉ Set.range e, (fun ξ : Fˣ => ∫ p, Sf ξ p ∂(muE F)) ξ = 0`.
+
+Introduce `ξ hξ`. Simplify using `only [hcoef]`. Rewrite using `[if_neg, mul_zero, mul_zero]`. Introduce `hpos`. Conclude with `hξ ⟨⟨ξ, hpos⟩, Units.ext rfl⟩`.
+
+Establish `h2` using `(he.hasSum_iff hout).2 hSint`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ξ`. Simplify using `only [Function.comp_apply, hcoef, e, Units.val_mk0]`. Establish `hξ2` using `ξ.2`.
+
+Simplify using `only [hξ2, implies_true, ↓reduceIte]`. Use `show coefAt (fun 𝔪 => C₀ * divS ω c 𝔪) _ * _ = _`. Rewrite using `[coefAt_const_mul, ex]`. Establish `hs : ∑ v, (reAt v ξ.1 : ℂ) * ((x v : ℂ) + Complex.I * (y.val v : ℂ)) = ∑ v, (reAt v ξ.1 : ℂ) * (x v : ℂ) + Complex.I * ∑ v, (reAt v ξ.1 : ℂ) * (y.val v : ℂ)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v ξ.1 : ℂ) * ((x v : ℂ) + Complex.I * (y.val v : ℂ))) = Complex.exp (2 * Real.pi * Complex.I * ∑ v, (reAt v ξ.1 : ℂ) * (x v : ℂ)) * Complex.exp (-(2 * Real.pi : ℂ) * ∑ v, (reAt v ξ.1 : ℂ) * (y.val v : ℂ))`. Rewrite using `[← Complex.exp_add, hs]`. Use `congr 1`.
+
+Take the linear combination `(2 * (Real.pi : ℂ) * ∑ v, (reAt v ξ.1 : ℂ) * (y.val v : ℂ)) * Complex.I_sq`. Rewrite using `[hexp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sExp_assembly (hPt : SPoint) (hZ : SZero) (hNl : SNull) (hA : SAbs) (hU : SUnfold) (hL : SLocal) :
     SInt → SExp := by
   intro hI F _ _ _ ω c H
@@ -255,6 +349,9 @@ end UpperTheory.HilbertEisensteinWeightOne.FourierExpansionEisenstein
 
 namespace UpperTheory.HilbertEisensteinWeightOne
 
+/- English proof (translation)
+Introduce `hP hI _` and use `FourierExpansionEisenstein.sExp_assembly (FourierExpansionEisenstein.pointwise_theta_expansion hP FourierExpansionEisenstein.finite_expansion_holds FourierExpansionEisenstein.kernel_expansion_holds) FourierExpansionEisenstein.zero_term_holds (FourierExpansionEisenstein.null_term_ …`.
+-/
 theorem fourier_expansion_holds : SPois → SInt → SSmooth → SExp := fun hP hI _ =>
   FourierExpansionEisenstein.sExp_assembly (FourierExpansionEisenstein.pointwise_theta_expansion hP FourierExpansionEisenstein.finite_expansion_holds FourierExpansionEisenstein.kernel_expansion_holds) FourierExpansionEisenstein.zero_term_holds
     (FourierExpansionEisenstein.null_term_holds FourierExpansionEisenstein.finite_expansion_holds FourierExpansionEisenstein.kernel_expansion_holds) (FourierExpansionEisenstein.absolute_convergence_holds FourierExpansionEisenstein.finite_expansion_holds FourierExpansionEisenstein.kernel_expansion_holds) FourierExpansionEisenstein.sUnfold_statement (FourierExpansionEisenstein.local_expansion_holds FourierExpansionEisenstein.finite_expansion_holds FourierExpansionEisenstein.kernel_expansion_holds) hI

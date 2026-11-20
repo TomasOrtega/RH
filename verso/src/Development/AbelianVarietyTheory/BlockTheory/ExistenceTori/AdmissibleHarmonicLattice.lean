@@ -27,10 +27,18 @@ structure Lat (E : Type) [Field E] (n : ℕ) where
   span_top : Submodule.span E (L : Set (Fin n → E)) = ⊤
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `only [stdMod, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`.
+-/
 theorem mem_stdMod {x : Fin n → E} : x ∈ stdMod E n ↔ ∀ j, ∃ a : 𝓞 E, (a : E) = x j := by
   simp only [stdMod, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[mem_stdMod]`. Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`.
+
+Conclude with `⟨0, by simp [h]⟩`.
+-/
 theorem single_mem_stdMod (j : Fin n) : (Pi.single j 1 : Fin n → E) ∈ stdMod E n := by
   rw [mem_stdMod]
   intro i
@@ -159,6 +167,15 @@ def ClassesFinite {H : Host E} (l : Level H) : Prop :=
         ∃ t ∈ T, ∃ γ : (Fin n → E) ≃ₗ[E] (Fin n → E), IsUnitary γ ∧ (Λ.map γ).L = t.1.L ∧
           ∀ (x : Λ.L) (y : t.1.L), γ x = y → φ x = t.2 y
 
+/- English proof (translation)
+Introduce `x`. Express the relevant statement in the definitionally equal form `x ∈ stdMod E n ↔ ∀ y ∈ stdMod E n, _`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hx`, `hy` using `[mem_stdMod]`.
+
+Use `choose a ha using hx`. Use `choose b hb using hy`. Use `⟨∑ j, a j * IsCMField.ringOfIntegersComplexConj E (b j), ?_⟩` and prove the remaining obligations. Simplify using `[stdForm, ← ha, ← hb]`. Introduce `h`.
+
+Rewrite using `[mem_stdMod]`. Introduce `j`. Take `⟨a, ha⟩` from `h _ (single_mem_stdMod j)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`.
+
+Simplify using `[stdForm, Pi.single_apply, apply_ite]`.
+-/
 theorem std_selfDual : (Lat.std E n).SelfDual := by
   intro x
   change x ∈ stdMod E n ↔ ∀ y ∈ stdMod E n, _
@@ -178,11 +195,19 @@ theorem std_selfDual : (Lat.std E n).SelfDual := by
     simp [stdForm, Pi.single_apply, apply_ite]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Introduce `p hp _`. Establish `h1 : ¬ p ∣ 1` using `fun h => hp.one_lt.ne' (Nat.dvd_one.1 h)`. Conclude with `⟨fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩, fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩⟩`.
+-/
 theorem std_stdAt (s : ℕ) : (Lat.std E n).StdAt s := by
   intro p hp _
   have h1 : ¬ p ∣ 1 := fun h => hp.one_lt.ne' (Nat.dvd_one.1 h)
   exact ⟨fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩, fun x hx => ⟨1, h1, by rw [one_smul]; exact hx⟩⟩
 
+/- English proof (translation)
+Use `⟨l.odd, dvd_rfl, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ stdMod E n ⊓ stdMod E n`. Rewrite using `[inf_idem]`. Rewrite `hx` using `[mulStd, Submodule.mem_smul_pointwise_iff_exists]`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `(stdMod E n).smul_mem _ hy`.
+-/
 theorem std_admissible {H : Host E} (l : Level H) : (Lat.std E n).Admissible l.M l.M := by
   refine ⟨l.odd, dvd_rfl, ?_⟩
   intro x hx

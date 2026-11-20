@@ -6,6 +6,41 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ A _ _ _`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `⟨AlgHom.id k A, fun a => ⟨1, Subsingleton.elim _ _⟩, fun a => ⟨a, Subsingleton.elim _ _⟩⟩`. Use `haveI : CharP A p := charP_of_injective_algebraMap (algebraMap k A).injective p`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`.
+
+Take `⟨n, hn⟩` from `IsNoetherianRing.isNilpotent_nilradical A`. Use `set N := nilradical A with hNdef`. Use `set q := p ^ (n + 1) with hqdef`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `hq : ∀ x : A, x ∈ N → x ^ q = 0`.
+
+Introduce `x hx`. Establish `h1 : x ^ n ∈ N ^ n` using `Ideal.pow_mem_pow hx n`. Rewrite `h1` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Establish `hle : n ≤ q`. Use `Nat.lt_pow_self (n := n + 1) hp1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, h1, mul_zero]`. Use `haveI : Module.Finite k (A ⧸ N) := Module.Finite.trans A (A ⧸ N)`. Use `haveI : IsReduced (A ⧸ N) := (Ideal.isRadical_iff_quotient_reduced N).mp (Ideal.radical_isRadical _)`. Establish `hroot : ∀ m : ℕ, ∀ a : A ⧸ N, ∃ b, a = b ^ p ^ m`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro a; exact ⟨a, by simp⟩`. Consider the case `succ m ih`. Introduce `a`.
+
+Take `⟨b, hb⟩` from `ih a`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_pow_char_eq_of_isReduced_finite' p k (A ⧸ N) b`. Conclude with `⟨c, by rw [hb, hc, ← pow_mul, ← pow_succ']⟩`. Establish `hlift : ∀ a : A, ∃ b : A, a - b ^ q ∈ N`. Introduce `a`.
+
+Take `⟨c, hc⟩` from `hroot (n + 1) (Ideal.Quotient.mk N a)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_pow]`. Conclude with `hc`.
+
+Establish `hu : ∀ a b c : A, a - b ^ q ∈ N → a - c ^ q ∈ N → b ^ q = c ^ q`. Introduce `a b c hb hc`. Establish `h1 : (b - c) ^ q ∈ N`. Rewrite using `[hqdef, sub_pow_char_pow]`. Establish `: b ^ p ^ (n + 1) - c ^ p ^ (n + 1) = (a - c ^ q) - (a - b ^ q)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `N.sub_mem hc hb`. Establish `h2 : b - c ∈ N` using `mem_nilradical.mpr (IsNilpotent.of_pow (mem_nilradical.mp h1))`. Establish `h3` using `hq _ h2`. Rewrite `h3` using `[hqdef, sub_pow_char_pow, sub_eq_zero]`.
+
+Conclude with `h3`. Use `choose β hβ using hlift`. Establish `hf : ∀ a c : A, a - c ^ q ∈ N → β a ^ q = c ^ q` using `fun a c hc => hu a _ _ (hβ a) hc`. Set `π : A →ₐ[k] A` to `{ toFun := fun a => β a ^ q map_one' := by`. Rewrite using `[hf 1 1 (by simp), one_pow]`.
+
+Use the proof step `map_mul' := fun x y => by`. Rewrite using `[hf (x * y) (β x * β y) ?_, mul_pow]`. Establish `: x * y - (β x * β y) ^ q = x * (y - β y ^ q) + (x - β x ^ q) * β y ^ q` using `by ring`. Rewrite using `[this]`. Conclude with `N.add_mem (N.mul_mem_left _ (hβ y)) (N.mul_mem_right _ (hβ x))`.
+
+Use the proof step `map_zero' := by`. Rewrite using `[hf 0 0 (by rw [zero_pow (by positivity), sub_zero]; exact N.zero_mem), zero_pow (by positivity)]`. Use the proof step `map_add' := fun x y => by`. Rewrite using `[hf (x + y) (β x + β y) ?_, hqdef, add_pow_char_pow]`. Rewrite using `[hqdef, add_pow_char_pow]`.
+
+Establish `: x + y - (β x ^ p ^ (n + 1) + β y ^ p ^ (n + 1)) = (x - β x ^ q) + (y - β y ^ q)` using `by rw [hqdef]; ring`. Rewrite using `[this]`. Conclude with `N.add_mem (hβ x) (hβ y)`. Use the proof step `commutes' := fun c => by set d := (iterateFrobeniusEquiv k p (n + 1)).symm c with hd`. Establish `hdc : d ^ q = c`.
+
+Establish `h0` using `RingEquiv.apply_symm_apply (iterateFrobeniusEquiv k p (n + 1)) c`. Rewrite `h0` using `[iterateFrobeniusEquiv_apply, iterateFrobenius_def]`. Rewrite using `[hqdef, hd]`. Conclude with `h0`. Rewrite using `[hf _ (algebraMap k A d) ?_, ← map_pow, hdc]`.
+
+Rewrite using `[← map_pow, hdc, sub_self]`. Conclude with `N.zero_mem }`. Establish `hπ : ∀ a, π a = β a ^ q` using `fun a => rfl`. Use `⟨π, fun a => ?_, fun a => ⟨β a ^ p ^ n, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hπ]`.
+
+Conclude with `mem_nilradical.mp (hβ a)`. Rewrite using `[map_pow, ← pow_mul, ← pow_succ, hπ a]`. Establish `h2 : β a - π (β a) ∈ N` using `mem_nilradical.mpr (by rw [hπ]; exact mem_nilradical.mp (hβ _))`. Establish `h3` using `hq _ h2`. Rewrite `h3` using `[hqdef, sub_pow_char_pow, sub_eq_zero]`.
+
+Conclude with `h3`.
+-/
 theorem exists_perfectPart_algHom : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (A : Type) [CommRing A] [Algebra k A] [Module.Finite k A],
     ∃ π : A →ₐ[k] A, ((∀ a : A, IsNilpotent (a - π a)) ∧ ∀ a : A, ∃ b : A, π a = π b ^ p) := by

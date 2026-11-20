@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.DblWeilSecond
 
+/- English proof (translation)
+Establish `hi : i (1, h') = i (h'⁻¹, 1) * i (h', h')`. Apply the tactic sequence `rw [← map_mul]; congr 1; ext <;> simp`. Establish `h1 : ((1 : UA σ Xs.J), i (1, h')) = (1, i (h'⁻¹, 1)) * (1, i (h', h'))`. Apply the tactic sequence `rw [hi]; ext <;> simp`. Establish `h2 : om (1, h'⁻¹) (om (1, h') Φ₁) = Φ₁`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, inv_mul_cancel, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[h1, map_mul, Module.End.mul_apply, hdiag h' Φ₁ hΦ₁ Φ₂ hΦ₂, map_smul, hfirst h'⁻¹ _ (hpres h' Φ₁ hΦ₁) _ (hpres h' Φ₂ hΦ₂), h2]`.
+-/
 theorem assemble {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Xs : Spc F E n} {W : Spc F E d} {W₂ : Spc F E (d + d)} {χX : Chr F E}
     (om : Rep σ Xs W) (om₂ : Rep σ Xs W₂) (i : UA σ W.J × UA σ W.J →* UA σ W₂.J)
@@ -39,6 +44,9 @@ theorem assemble {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   rw [h1, map_mul, Module.End.mul_apply, hdiag h' Φ₁ hΦ₁ Φ₂ hΦ₂, map_smul,
     hfirst h'⁻¹ _ (hpres h' Φ₁ hΦ₁) _ (hpres h' Φ₂ hΦ₂), h2]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ hL hθ i hi co hrat hΔ hN om₂ hom₂ e he1 he2 he3 h' Φ₁ hΦ₁ Φ₂ hΦ₂`. Conclude with `assemble om om₂ i e (fun h Φ hΦ => hP.weil.isUSplitting.pres (1, h) Φ hΦ) (fun h Ψ₁ hΨ₁ Ψ₂ hΨ₂ => diag_box σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hJ i hi co hrat hΔ hN om₂ hom₂ e he1 he2 he3 h Ψ₁ hΨ₁ Ψ₂ hΨ₂) (fun h Ψ₁ hΨ₁ Ψ₂ hΨ₂ => GlobalTheory.DblWeilBox.om₂_left_boxC F E σ B …`.
+-/
 theorem om₂_right_boxC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →

@@ -10,6 +10,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RealGal
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ A O _ _ _ Bw hD x`. Establish `hfix : ∀ σ ∈ (Bw.Kw.1).fixingSubgroup, σ (Bw.j (algebraMap K Ω x)) = Bw.j (algebraMap K Ω x)`. Introduce `σ hσ`. Take `⟨g, hg⟩` from `Bw.e.surjective ⟨σ, hσ⟩`. Establish `h1` using `Bw.e_comm g (algebraMap K Ω x)`.
+
+Rewrite `h1` using `[hg]`. Take `⟨h, hh⟩` from `hD g.2`. Establish `h2 : (g : Ω ≃ₐ[F] Ω) (algebraMap K Ω x) = algebraMap K Ω x`. Rewrite using `[← hh]`. Conclude with `h.commutes x`.
+
+Simplify `h1` using `[h2]`. Use `haveI : IsGalois ℚ_[l] (Om l) := inferInstance`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup Bw.Kw.1]`. Conclude with `fun σ => hfix σ.1 σ.2`.
+-/
 theorem bridge_j_mem_Kw_of_dec_le : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O), Dec (F := F) A ≤ (res F Ω K).range → ∀ x : K, Bw.j (algebraMap K Ω x) ∈ Bw.Kw.1 := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ A O _ _ _ Bw hD x
   have hfix : ∀ σ ∈ (Bw.Kw.1).fixingSubgroup, σ (Bw.j (algebraMap K Ω x)) = Bw.j (algebraMap K Ω x) := by

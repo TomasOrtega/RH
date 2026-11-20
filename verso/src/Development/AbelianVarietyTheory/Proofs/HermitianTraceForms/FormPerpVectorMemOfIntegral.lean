@@ -16,9 +16,17 @@ def perpVector (ε : ι → Module.Dual R M) (e' : ι → M) (g : M) : M :=
     - ∑ a, ∑ a', ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a'
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pairingMatrix_apply (ε : ι → Module.Dual R M) (e' : ι → M) (a' a : ι) :
     pairingMatrix ε e' a' a = ε a (e' a') := rfl
 
+/- English proof (translation)
+Establish `key : ∀ a, ∑ a', (pairingMatrix ε e').adjugate a a' * ε a g * ε c (e' a') = ε a g * ((pairingMatrix ε e').det * if a = c then 1 else 0)`. Introduce `a`. Establish `h` using `congrFun (congrFun (Matrix.adjugate_mul (pairingMatrix ε e')) a) c`. Rewrite `h` using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[← h, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[pairingMatrix_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [perpVector, map_sub, map_sum, map_smul, smul_eq_mul, key]`. Simplify using `[mul_comm]`.
+-/
 theorem apply_perpVector (ε : ι → Module.Dual R M) (e' : ι → M) (g : M) (c : ι) :
     ε c (perpVector ε e' g) = 0 := by
   have key : ∀ a, ∑ a', (pairingMatrix ε e').adjugate a a' * ε a g * ε c (e' a')
@@ -32,10 +40,16 @@ theorem apply_perpVector (ε : ι → Module.Dual R M) (e' : ι → M) (g : M) (
   simp only [perpVector, map_sub, map_sum, map_smul, smul_eq_mul, key]
   simp [mul_comm]
 
+/- English proof (translation)
+Simplify using `[perpVector, hg]`.
+-/
 theorem perpVector_of_apply_eq_zero (ε : ι → Module.Dual R M) (e' : ι → M) {g : M}
     (hg : ∀ a, ε a g = 0) : perpVector ε e' g = (pairingMatrix ε e').det • g := by
   simp [perpVector, hg]
 
+/- English proof (translation)
+Establish `hm : pairingMatrix η (fun a => ψ (e' a)) = ρ.mapMatrix (pairingMatrix ε e')`. Use extensionality with `a' a`. Simplify using `[he]`. Simplify using `only [perpVector, map_sub, map_sum, LinearMap.map_smulₛₗ, hm, ← RingHom.map_det, ← RingHom.map_adjugate, hg, map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem map_perpVector {S N : Type*} [CommRing S] [AddCommGroup N] [Module S N] {ρ : R →+* S}
     (ψ : M →ₛₗ[ρ] N) (ε : ι → Module.Dual R M) (η : ι → Module.Dual S N) (e' : ι → M) (g : M)
     (he : ∀ a a', η a (ψ (e' a')) = ρ (ε a (e' a'))) (hg : ∀ a, η a (ψ g) = ρ (ε a g)) :
@@ -50,6 +64,9 @@ section Integral
 
 variable {A : Type*} [CommRing A] [Algebra A R]
 
+/- English proof (translation)
+Use `choose x hx using he`. Establish `hm : pairingMatrix ε e' = (algebraMap A R).mapMatrix (Matrix.of fun a' a => x a a')`. Use extensionality with `a' a`. Simplify using `[hx]`. Conclude with `⟨(Matrix.of fun a' a => x a a').det, by rw [hm, RingHom.map_det]⟩`.
+-/
 theorem det_pairingMatrix_mem_range (ε : ι → Module.Dual R M) (e' : ι → M)
     (he : ∀ a a', ε a (e' a') ∈ (algebraMap A R).range) :
     (pairingMatrix ε e').det ∈ (algebraMap A R).range := by
@@ -58,6 +75,13 @@ theorem det_pairingMatrix_mem_range (ε : ι → Module.Dual R M) (e' : ι → M
     ext a' a; simp [hx]
   exact ⟨(Matrix.of fun a' a => x a a').det, by rw [hm, RingHom.map_det]⟩
 
+/- English proof (translation)
+Use `choose x hx using he`. Use `choose y hy using hg`. Establish `hm : pairingMatrix ε e' = (algebraMap A R).mapMatrix (Matrix.of fun a' a => x a a')`. Use extensionality with `a' a`. Simplify using `[hx]`.
+
+Rewrite using `[perpVector, hm, ← RingHom.map_det, ← RingHom.map_adjugate]`. Use `L.sub_mem ?_ (L.sum_mem fun a _ => L.sum_mem fun a' _ => ?_)` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `L.smul_mem _ hgL`. Rewrite using `[← hy, RingHom.mapMatrix_apply, Matrix.map_apply, ← map_mul, algebraMap_smul]`.
+
+Conclude with `L.smul_mem _ (he' a')`.
+-/
 theorem perpVector_mem [Module A M] [IsScalarTower A R M] (L : Submodule A M)
     (ε : ι → Module.Dual R M) {e' : ι → M} {g : M} (he' : ∀ a, e' a ∈ L) (hgL : g ∈ L)
     (he : ∀ a a', ε a (e' a') ∈ (algebraMap A R).range)
@@ -80,6 +104,11 @@ section Size
 
 variable {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.sum_insert hk, Finset.card_insert_of_notMem hk]`. Establish `h1` using `map_add_le_add ν (x k) (∑ k ∈ s, x k)`.
+
+Establish `h2` using `hx k (Finset.mem_insert_self _ _)`. Establish `h3` using `ih fun j hj => hx j (Finset.mem_insert_of_mem hj)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem seminorm_sum_le {G κ : Type*} [AddCommGroup G] (ν : AddGroupSeminorm G)
     (s : Finset κ) (x : κ → G) {C : ℝ} (hx : ∀ k ∈ s, ν (x k) ≤ C) :
     ν (∑ k ∈ s, x k) ≤ s.card * C := by
@@ -94,6 +123,11 @@ private theorem seminorm_sum_le {G κ : Type*} [AddCommGroup G] (ν : AddGroupSe
     push_cast
     linarith
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h1`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.card_insert_of_notMem hk, pow_succ']`. Establish `h2` using `hx k (Finset.mem_insert_self _ _)`.
+
+Establish `h3` using `ih fun j hj => hx j (Finset.mem_insert_of_mem hj)`. Conclude with `(map_mul_le_mul ν _ _).trans (mul_le_mul h2 h3 (apply_nonneg ν _) ((apply_nonneg ν _).trans h2))`.
+-/
 private theorem ringSeminorm_prod_le {κ : Type*} (ν : RingSeminorm R) (h1 : ν 1 ≤ 1)
     (s : Finset κ) (x : κ → R) {C : ℝ} (hx : ∀ k ∈ s, ν (x k) ≤ C) :
     ν (∏ k ∈ s, x k) ≤ C ^ s.card := by
@@ -107,6 +141,13 @@ private theorem ringSeminorm_prod_le {κ : Type*} (ν : RingSeminorm R) (h1 : ν
     exact (map_mul_le_mul ν _ _).trans
       (mul_le_mul h2 h3 (apply_nonneg ν _) ((apply_nonneg ν _).trans h2))
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `seminorm_sum_le ν.toAddGroupSeminorm Finset.univ (fun σ : Equiv.Perm ι => Equiv.Perm.sign σ • ∏ i, H (σ i) i) (C := C ^ Fintype.card ι) (by` as an intermediate fact. Introduce `σ _`. Establish `h` using `ringSeminorm_prod_le ν h1 Finset.univ (fun i => H (σ i) i) fun i _ => hH _ _`. Rewrite `h` using `[Finset.card_univ]`.
+
+Express the relevant statement in the definitionally equal form `ν _ ≤ _`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `h`. Rewrite using `[hs, Units.neg_smul, one_smul, map_neg_eq_map]`.
+
+Conclude with `h)`. Rewrite `this` using `[Finset.card_univ, Fintype.card_perm]`. Then use the resulting hypothesis.
+-/
 theorem ringSeminorm_det_le {ι : Type*} [Fintype ι] [DecidableEq ι] (ν : RingSeminorm R)
     (h1 : ν 1 ≤ 1) (H : Matrix ι ι R) {C : ℝ} (hH : ∀ i j, ν (H i j) ≤ C) :
     ν H.det ≤ (Fintype.card ι)! * C ^ Fintype.card ι := by
@@ -122,6 +163,11 @@ theorem ringSeminorm_det_le {ι : Type*} [Fintype ι] [DecidableEq ι] (ν : Rin
       · rw [hs, Units.neg_smul, one_smul, map_neg_eq_map]; exact h)
   rwa [Finset.card_univ, Fintype.card_perm] at this
 
+/- English proof (translation)
+Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix]`. Establish `h` using `ringSeminorm_det_le ν h1 (H.submatrix j.succAbove i.succAbove) (C := C) fun _ _ => hH _ _`. Rewrite `h` using `[Fintype.card_fin]`. Break down `neg_one_pow_eq_or R ((j : ℕ) + i) with hs | hs` into its components or cases. Rewrite using `[hs, one_mul]`.
+
+Conclude with `h`. Rewrite using `[hs, neg_one_mul, map_neg_eq_map]`. Conclude with `h`.
+-/
 theorem ringSeminorm_adjugate_le {n : ℕ} (ν : RingSeminorm R) (h1 : ν 1 ≤ 1)
     (H : Matrix (Fin (n + 1)) (Fin (n + 1)) R) {C : ℝ} (hH : ∀ i j, ν (H i j) ≤ C)
     (i j : Fin (n + 1)) : ν (H.adjugate i j) ≤ n ! * C ^ n := by
@@ -133,6 +179,17 @@ theorem ringSeminorm_adjugate_le {n : ℕ} (ν : RingSeminorm R) (h1 : ν 1 ≤ 
   · rw [hs, one_mul]; exact h
   · rw [hs, neg_one_mul, map_neg_eq_map]; exact h
 
+/- English proof (translation)
+Establish `hdet` using `ringSeminorm_det_le ν h1 (pairingMatrix ε e') (C := C) fun i j => he j i`. Rewrite `hdet` using `[Fintype.card_fin]`. Establish `hA : μ ((pairingMatrix ε e').det • g) ≤ p ! * C ^ p * r` using `(hsmul _ _).trans (mul_le_mul hdet hgr (apply_nonneg μ _) ((apply_nonneg ν _).trans hdet))`. Establish `hB : μ (∑ a, ∑ a', ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a') ≤ p * (p ! * C ^ p * r)`. Consider the cases of `p with`.
+
+Consider the case `zero => simp`. Consider the case `succ n`. Establish `h` using `seminorm_sum_le μ Finset.univ (fun a => ∑ a', ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a') (C := ((n + 1 : ℕ) : ℝ) * (n ! * C ^ n * C * r)) (by`. Introduce `a _`. Establish `h'` using `seminorm_sum_le μ Finset.univ (fun a' => ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a') (C := n ! * C ^ n * C * r) (by`.
+
+Introduce `a' _`. Establish `hadj` using `ringSeminorm_adjugate_le ν h1 (pairingMatrix ε e') (C := C) (fun i j => he j i) a a'`. Establish `hm : ν ((pairingMatrix ε e').adjugate a a' * ε a g) ≤ n ! * C ^ n * C` using `(map_mul_le_mul ν _ _).trans (mul_le_mul hadj (hg a) (apply_nonneg ν _) ((apply_nonneg ν _).trans hadj))`. Conclude with `(hsmul _ _).trans (mul_le_mul hm (he' a') (apply_nonneg μ _) ((apply_nonneg ν _).trans hm)))`. Rewrite using `[Finset.card_univ, Fintype.card_fin] at h')` and apply the resulting hypothesis.
+
+Rewrite `h` using `[Finset.card_univ, Fintype.card_fin]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsub` using `map_sub_le_add μ ((pairingMatrix ε e').det • g) (∑ a, ∑ a', ((pairingMatrix ε e').adjugate a a' * ε a g) • e' a')`. Rewrite using `[perpVector, Nat.factorial_succ]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem seminorm_perpVector_le {p : ℕ} (ν : RingSeminorm R) (h1 : ν 1 ≤ 1)
     (μ : AddGroupSeminorm M) (hsmul : ∀ (x : R) (v : M), μ (x • v) ≤ ν x * μ v)
     (ε : Fin p → Module.Dual R M) (e' : Fin p → M) (g : M) {C r : ℝ}
@@ -181,6 +238,11 @@ open MvPolynomial
 
 variable {S τ : Type*} [CommRing S]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `totalDegree_finsetSum_le fun σ _ => ?_` and prove the remaining obligations. Establish `h : (∏ i, H (σ i) i).totalDegree ≤ Fintype.card ι * d` using `(totalDegree_finsetProd _ _).trans <| by`. Simplify using `using Finset.sum_le_card_nsmul Finset.univ (fun i => (H (σ i) i).totalDegree) d fun i _ => hH _ _`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases.
+
+Rewrite using `[hs, one_smul]`. Conclude with `h`. Rewrite using `[hs, Units.neg_smul, one_smul, totalDegree_neg]`. Conclude with `h`.
+-/
 theorem totalDegree_det_le {ι : Type*} [Fintype ι] [DecidableEq ι]
     (H : Matrix ι ι (MvPolynomial τ S)) {d : ℕ} (hH : ∀ i j, (H i j).totalDegree ≤ d) :
     H.det.totalDegree ≤ Fintype.card ι * d := by
@@ -194,6 +256,17 @@ theorem totalDegree_det_le {ι : Type*} [Fintype ι] [DecidableEq ι]
   · rw [hs, one_smul]; exact h
   · rw [hs, Units.neg_smul, one_smul, totalDegree_neg]; exact h
 
+/- English proof (translation)
+Establish `hdet` using `totalDegree_det_le (pairingMatrix ε e') (d := d) fun i j => he j i`. Rewrite `hdet` using `[Fintype.card_fin]`. Simplify using `only [perpVector, Pi.sub_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Use `(totalDegree_sub _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `(totalDegree_mul _ _).trans (add_le_add hdet (hgm k))`.
+
+Use `totalDegree_finsetSum_le fun a _ => totalDegree_finsetSum_le fun a' _ => ?_` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans (add_le_add ?_ (he' a' k))` and prove the remaining obligations. Consider the cases of `p with`. Consider the case `zero => exact a.elim0`. Consider the case `succ n`.
+
+Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.succ_mul]`. Use `add_le_add ?_ (hg a)` and prove the remaining obligations. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix]`. Establish `h` using `totalDegree_det_le ((pairingMatrix ε e').submatrix a'.succAbove a.succAbove) (d := d) fun _ _ => he _ _`.
+
+Rewrite `h` using `[Fintype.card_fin]`. Break down `neg_one_pow_eq_or (MvPolynomial τ S) ((a' : ℕ) + a) with hs | hs` into its components or cases. Rewrite using `[hs, one_mul]`. Conclude with `h`. Rewrite using `[hs, neg_one_mul, totalDegree_neg]`.
+
+Conclude with `h`.
+-/
 theorem totalDegree_perpVector_le {p : ℕ} {κ : Type*}
     (ε : Fin p → Module.Dual (MvPolynomial τ S) (κ → MvPolynomial τ S))
     (e' : Fin p → κ → MvPolynomial τ S) (g : κ → MvPolynomial τ S) {d m : ℕ}
@@ -235,21 +308,36 @@ def formPerpVector (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (g : M)
   perpVector (fun a => h.flip (e a)) e' g
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem formPairMatrix_apply (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (a' a : ι) :
     formPairMatrix h e e' a' a = h (e' a') (e a) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formPerpVector_eq (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (g : M) :
     formPerpVector h e e' g = (formPairMatrix h e e').det • g
       - ∑ a, ∑ a', ((formPairMatrix h e e').adjugate a a' * h g (e a)) • e' a' := rfl
 
+/- English proof (translation)
+The claim follows from `apply_perpVector (fun a => h.flip (e a)) e' g c`.
+-/
 theorem form_formPerpVector (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) (g : M) (c : ι) :
     h (formPerpVector h e e' g) (e c) = 0 :=
   apply_perpVector (fun a => h.flip (e a)) e' g c
 
+/- English proof (translation)
+The claim follows from `perpVector_of_apply_eq_zero (fun a => h.flip (e a)) e' hg`.
+-/
 theorem formPerpVector_of_perp (h : M →ₗ[R] M →ₛₗ[σ] R) (e e' : ι → M) {g : M}
     (hg : ∀ a, h g (e a) = 0) : formPerpVector h e e' g = (formPairMatrix h e e').det • g :=
   perpVector_of_apply_eq_zero (fun a => h.flip (e a)) e' hg
 
+/- English proof (translation)
+The claim follows from `perpVector_mem L (fun a => h.flip (e a)) he' hgL he hg`.
+-/
 theorem formPerpVector_mem {A : Type*} [CommRing A] [Algebra A R] [Module A M]
     [IsScalarTower A R M] (L : Submodule A M) (h : M →ₗ[R] M →ₛₗ[σ] R) (e : ι → M) {e' : ι → M}
     {g : M} (he' : ∀ a, e' a ∈ L) (hgL : g ∈ L)
@@ -257,6 +345,9 @@ theorem formPerpVector_mem {A : Type*} [CommRing A] [Algebra A R] [Module A M]
     (hg : ∀ a, h g (e a) ∈ (algebraMap A R).range) : formPerpVector h e e' g ∈ L :=
   perpVector_mem L (fun a => h.flip (e a)) he' hgL he hg
 
+/- English proof (translation)
+The claim follows from `formPerpVector_mem L h e he' hg (fun a a' => hL _ (he' a') _ (he a)) fun a => hL _ hg _ (he a)`.
+-/
 theorem formPerpVector_mem_of_integral {A : Type*} [CommRing A] [Algebra A R] [Module A M]
     [IsScalarTower A R M] (L : Submodule A M) (h : M →ₗ[R] M →ₛₗ[σ] R)
     (hL : ∀ u ∈ L, ∀ v ∈ L, h u v ∈ (algebraMap A R).range) {e e' : ι → M} {g : M}
@@ -264,12 +355,18 @@ theorem formPerpVector_mem_of_integral {A : Type*} [CommRing A] [Algebra A R] [M
   formPerpVector_mem L h e he' hg (fun a a' => hL _ (he' a') _ (he a))
     fun a => hL _ hg _ (he a)
 
+/- English proof (translation)
+The claim follows from `formPerpVector_mem L h e he' hgL (fun a a' => ⟨⟨_, he a a'⟩, rfl⟩) fun a => ⟨⟨_, hg a⟩, rfl⟩`.
+-/
 theorem formPerpVector_mem_subring (A : Subring R) (L : Submodule A M)
     (h : M →ₗ[R] M →ₛₗ[σ] R) (e : ι → M) {e' : ι → M} {g : M} (he' : ∀ a, e' a ∈ L) (hgL : g ∈ L)
     (he : ∀ a a', h (e' a') (e a) ∈ A) (hg : ∀ a, h g (e a) ∈ A) :
     formPerpVector h e e' g ∈ L :=
   formPerpVector_mem L h e he' hgL (fun a a' => ⟨⟨_, he a a'⟩, rfl⟩) fun a => ⟨⟨_, hg a⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hr : 0 ≤ r` using `(apply_nonneg μ g).trans hg`. Establish `key : ∀ u v, μ u ≤ r → μ v ≤ r → ν (h u v) ≤ r ^ 2` using `fun u v hu hv => (hcs u v).trans (by rw [sq]; exact mul_le_mul hu hv (apply_nonneg μ _) hr)`. Use `seminorm_perpVector_le ν h1 μ hsmul (fun a => h.flip (e a)) e' g (C := r ^ 2) (fun a a' => key _ _ (he' a') (he a)) (fun a => key _ _ hg (he a)) he' hg` as an intermediate fact. Rewrite `this` using `[← pow_mul, mul_assoc, ← pow_succ]`. Then use the resulting hypothesis.
+-/
 theorem seminorm_formPerpVector_le {p : ℕ} (ν : RingSeminorm R) (h1 : ν 1 ≤ 1)
     (μ : AddGroupSeminorm M) (hsmul : ∀ (x : R) (v : M), μ (x • v) ≤ ν x * μ v)
     (h : M →ₗ[R] M →ₛₗ[σ] R) (hcs : ∀ u v, ν (h u v) ≤ μ u * μ v)
@@ -283,6 +380,9 @@ theorem seminorm_formPerpVector_le {p : ℕ} (ν : RingSeminorm R) (h1 : ν 1 �
     (fun a a' => key _ _ (he' a') (he a)) (fun a => key _ _ hg (he a)) he' hg
   rwa [← pow_mul, mul_assoc, ← pow_succ] at this
 
+/- English proof (translation)
+Use `ringSeminorm_det_le ν h1 (formPairMatrix h e e') (C := r ^ 2) fun i j => (hcs _ _).trans (by` as an intermediate fact. Rewrite using `[sq]`. Conclude with `mul_le_mul (he' i) (he j) (apply_nonneg μ _) ((apply_nonneg μ _).trans (he' i)))`. Rewrite `this` using `[Fintype.card_fin, ← pow_mul]`. Then use the resulting hypothesis.
+-/
 theorem seminorm_det_formPairMatrix_le {p : ℕ} (ν : RingSeminorm R) (h1 : ν 1 ≤ 1)
     (μ : AddGroupSeminorm M) (h : M →ₗ[R] M →ₛₗ[σ] R) (hcs : ∀ u v, ν (h u v) ≤ μ u * μ v)
     (e e' : Fin p → M) {r : ℝ} (he : ∀ a, μ (e a) ≤ r) (he' : ∀ a, μ (e' a) ≤ r) :
@@ -295,6 +395,9 @@ theorem seminorm_det_formPairMatrix_le {p : ℕ} (ν : RingSeminorm R) (h1 : ν 
 
 end Form
 
+/- English proof (translation)
+Use `gcongr`.
+-/
 theorem factorial_mul_pow_mono {p N : ℕ} (hp : p ≤ N) {r : ℝ} (hr : 1 ≤ r) :
     ((p + 1)! : ℝ) * r ^ (2 * p + 1) ≤ (N + 1)! * r ^ (2 * N + 1) := by
   gcongr
@@ -307,17 +410,29 @@ noncomputable def innerFormLeft (V : Type*) [SeminormedAddCommGroup V] [InnerPro
     V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ :=
   (innerₛₗ ℂ).flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem innerFormLeft_apply (u v : V) : innerFormLeft V u v = inner ℂ v u := rfl
 
+/- English proof (translation)
+Rewrite using `[innerFormLeft_apply, mul_comm]`. Conclude with `norm_inner_le_norm v u`.
+-/
 theorem norm_innerFormLeft_le (u v : V) : ‖innerFormLeft V u v‖ ≤ ‖u‖ * ‖v‖ := by
   rw [innerFormLeft_apply, mul_comm]; exact norm_inner_le_norm v u
 
+/- English proof (translation)
+The claim follows from `seminorm_det_formPairMatrix_le (normRingSeminorm ℂ) (norm_one (α := ℂ)).le (normAddGroupSeminorm V) (innerFormLeft V) norm_innerFormLeft_le e e' he he'`.
+-/
 theorem norm_det_formPairMatrix_le {p : ℕ} (e e' : Fin p → V) {r : ℝ} (he : ∀ a, ‖e a‖ ≤ r)
     (he' : ∀ a, ‖e' a‖ ≤ r) :
     ‖(formPairMatrix (innerFormLeft V) e e').det‖ ≤ p ! * r ^ (2 * p) :=
   seminorm_det_formPairMatrix_le (normRingSeminorm ℂ) (norm_one (α := ℂ)).le
     (normAddGroupSeminorm V) (innerFormLeft V) norm_innerFormLeft_le e e' he he'
 
+/- English proof (translation)
+The claim follows from `seminorm_formPerpVector_le (normRingSeminorm ℂ) (norm_one (α := ℂ)).le (normAddGroupSeminorm V) (fun x v => norm_smul_le x v) (innerFormLeft V) norm_innerFormLeft_le e e' g he he' hg`.
+-/
 theorem norm_formPerpVector_le {p : ℕ} (e e' : Fin p → V) (g : V) {r : ℝ} (he : ∀ a, ‖e a‖ ≤ r)
     (he' : ∀ a, ‖e' a‖ ≤ r) (hg : ‖g‖ ≤ r) :
     ‖formPerpVector (innerFormLeft V) e e' g‖ ≤ (p + 1)! * r ^ (2 * p + 1) :=
@@ -331,6 +446,23 @@ section Places
 
 variable {R M T : Type*} [CommRing R] [StarRing R] [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Establish `him : ∀ w, (τ (h w w)).im = 0` using `fun w => by`. Use `congrArg Complex.im (hτ (h w w))` as an intermediate fact. Rewrite `this` using `[← hh, Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvu : τ (h v u) = starRingEnd ℂ (τ (h u v))` using `by rw [hh v u, hτ]`.
+
+Establish `expand : ∀ x y : R, τ (h (x • u + y • v) (x • u + y • v)) = τ x * starRingEnd ℂ (τ x) * τ (h u u) + τ x * starRingEnd ℂ (τ y) * τ (h u v) + τ y * starRingEnd ℂ (τ x) * starRingEnd ℂ (τ (h u v)) + τ y * starRingEnd ℂ (τ y) * τ (h v v)`. Introduce `x y`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, map_mul, starRingEnd_apply, hτ, hvu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`.
+
+Use `set a := (τ (h u u)).re with ha`. Use `set c := (τ (h v v)).re with hc`. Use `set b₁ := (τ (h u v)).re with hb₁`. Use `set b₂ := (τ (h u v)).im with hb₂`. Establish `ha0 : 0 ≤ a` using `hpos u`.
+
+Establish `hc0 : 0 ≤ c` using `hpos v`. Break down `hc0.eq_or_lt with hc1 | hc1` into its components or cases. Establish `hn : ∀ n : ℕ, 2 * n * (b₁ * b₁ + b₂ * b₂) ≤ a`. Introduce `n`. Use `hpos ((1 : R) • u + (-((n : R) * h u v)) • v)` as an intermediate fact.
+
+Rewrite `this` using `[expand]`. Simplify using `only [map_one, map_neg, map_mul, map_natCast, Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, Complex.conj_re, Complex.conj_im, Complex.one_re, Complex.one_im, him, ← ha, ← hc, ← hb₁, ← hb₂, ← hc1] at this`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← hc1, mul_zero]`. Assume the negation of the conclusion as `hlt`.
+
+Use `push Not at hlt`. Take `⟨n, hn'⟩` from `exists_nat_gt (a / (b₁ * b₁ + b₂ * b₂))`. Rewrite `hn'` using `[div_lt_iff₀ hlt]`. Use `hn n` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `hpos (h v v • u + (-(h u v)) • v)` as an intermediate fact. Rewrite `this` using `[expand]`. Simplify using `only [map_neg, Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.conj_re, Complex.conj_im, him, ← ha, ← hc, ← hb₁, ← hb₂] at this`. Establish `h2 : 0 ≤ c * (a * c - (b₁ * b₁ + b₂ * b₂))` using `by nlinarith`. Establish `h3` using `(mul_nonneg_iff_of_pos_left hc1).1 h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem normSq_place_form_le (h : M →ₗ[R] M →ₗ⋆[R] R) (hh : ∀ u v, h u v = star (h v u))
     (τ : R →+* ℂ) (hτ : ∀ x, τ (star x) = starRingEnd ℂ (τ x))
     (hpos : ∀ v, 0 ≤ (τ (h v v)).re) (u v : M) :
@@ -381,6 +513,23 @@ theorem normSq_place_form_le (h : M →ₗ[R] M →ₗ⋆[R] R) (hh : ∀ u v, h
     have h3 := (mul_nonneg_iff_of_pos_left hc1).1 h2
     linarith
 
+/- English proof (translation)
+Establish `hsum : ∀ v, 0 ≤ ∑ t, (τ t (h v v)).re` using `fun v => Finset.sum_nonneg fun t _ => hpos t v`. Establish `hcs1 : ∀ t u v, ‖τ t (h u v)‖ ≤ √(τ t (h u u)).re * √(τ t (h v v)).re`. Introduce `t u v`. Rewrite using `[← Real.sqrt_mul (hpos t u)]`. Conclude with `Real.le_sqrt_of_sq_le (normSq_place_form_le h hh (τ t) (hτ t) (hpos t) u v)`.
+
+Establish `hsm : ∀ t (x : R) v, (τ t (h (x • v) (x • v))).re = ‖τ t x‖ ^ 2 * (τ t (h v v)).re`. Introduce `t x v`. Simplify using `only [map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, map_mul, starRingEnd_apply, hτ]`. Rewrite using `[← mul_assoc, ← starRingEnd_apply, Complex.conj_mul', ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Set `π : R →+* (T → ℂ)` to `RingHom.pi τ`.
+
+Set `ν : RingSeminorm R` to `{ toFun := fun x => ‖π x‖ map_zero' := by simp add_le' := fun x y => by rw [map_add]; exact norm_add_le _ _ neg' := fun x => by rw [map_neg, norm_neg] mul_le' := fun x y => by rw [map_mul]; exact norm_mul_le _ _ }`. Establish `hν : ∀ t x, ‖τ t x‖ ≤ ν x` using `fun t x => norm_le_pi_norm (π x) t`. Establish `hν1 : ν 1 ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun t => by simp [π]`. Set `μ : AddGroupSeminorm M` to `{ toFun := fun v => √(∑ t, (τ t (h v v)).re) map_zero' := by simp add_le' := fun u v => by`. Use `Real.sqrt_le_iff.2 ⟨by positivity, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∑ t, √(τ t (h u u)).re * √(τ t (h v v)).re ≤ √(∑ t, (τ t (h u u)).re) * √(∑ t, (τ t (h v v)).re)` using `Real.sum_sqrt_mul_sqrt_le _ (fun t => hpos t u) fun t => hpos t v`. Establish `h2 : ∑ t, (τ t (h (u + v) (u + v))).re ≤ ∑ t, ((τ t (h u u)).re + 2 * (√(τ t (h u u)).re * √(τ t (h v v)).re) + (τ t (h v v)).re)`. Use `Finset.sum_le_sum fun t _ => ?_` and prove the remaining obligations. Establish `a1` using `(Complex.re_le_norm _).trans (hcs1 t u v)`. Establish `a2` using `(Complex.re_le_norm _).trans (hcs1 t v u)`.
+
+Simplify using `only [map_add, LinearMap.add_apply, Complex.add_re]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h2` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum]`. Rewrite using `[add_sq, Real.sq_sqrt (hsum u), Real.sq_sqrt (hsum v)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use the proof step `neg' := fun v => by simp }`. Establish `hμ : ∀ t v, √(τ t (h v v)).re ≤ μ v` using `fun t v => Real.sqrt_le_sqrt (Finset.single_le_sum (fun s _ => hpos s v) (Finset.mem_univ t))`. Establish `hcs : ∀ u v, ν (h u v) ≤ μ u * μ v` using `fun u v => (pi_norm_le_iff_of_nonneg (mul_nonneg (apply_nonneg μ u) (apply_nonneg μ v))).2 fun t => (hcs1 t u v).trans (mul_le_mul (hμ t u) (hμ t v) (Real.sqrt_nonneg _) (apply_nonneg μ u))`. Establish `hsmul : ∀ (x : R) (v : M), μ (x • v) ≤ ν x * μ v`. Introduce `x v`.
+
+Use `Real.sqrt_le_iff.2 ⟨mul_nonneg (apply_nonneg ν x) (apply_nonneg μ v), ?_⟩` and prove the remaining obligations. Establish `: μ v ^ 2 = ∑ t, (τ t (h v v)).re` using `Real.sq_sqrt (hsum v)`. Rewrite using `[mul_pow, this, Finset.mul_sum]`. Use `Finset.sum_le_sum fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hsm]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (norm_nonneg _) (hν t x) 2) (hpos t v)`. Conclude with `⟨fun t => (hν t _).trans (seminorm_det_formPairMatrix_le ν hν1 μ h hcs e e' he he'), seminorm_formPerpVector_le ν hν1 μ hsmul h hcs e e' g he he' hg⟩`.
+-/
 theorem places_formPerpVector_le [Fintype T] {p : ℕ} (h : M →ₗ[R] M →ₗ⋆[R] R)
     (hh : ∀ u v, h u v = star (h v u)) (τ : T → R →+* ℂ)
     (hτ : ∀ t x, τ t (star x) = starRingEnd ℂ (τ t x)) (hpos : ∀ t v, 0 ≤ (τ t (h v v)).re)
@@ -450,6 +599,9 @@ theorem places_formPerpVector_le [Fintype T] {p : ℕ} (h : M →ₗ[R] M →ₗ
 
 end Places
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h e e' g => ⟨fun b c => form_formPerpVector h e e' (g b) c, fun A L he' hg he hv b => formPerpVector_mem_subring A L h e he' (hg b) he (hv b), fun _ hb => formPerpVector_of_perp h e e' hb⟩, fun e e' g _ he he' hg => ⟨norm_det_formPairMatrix_le e e' he he', fun b => norm_form …`.
+-/
 theorem perpendicular_pairs {p q : ℕ} :
     (∀ {R M : Type*} [CommRing R] [StarRing R] [AddCommGroup M] [Module R M]
       (h : M →ₗ[R] M →ₗ⋆[R] R) (e e' : Fin p → M) (g : Fin q → M),

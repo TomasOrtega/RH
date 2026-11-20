@@ -17,6 +17,47 @@ set_option backward.isDefEq.respectTransparency false
 namespace GlobalTheory.GlobalVerticalUnit
 open GlobalTheory.VerticalUnit
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ X Y φ p M c hsm hqc hgc H hM hc`. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ X.hom hsm hgc` as an intermediate fact. Establish `: IsIntegral X.left` using `GeometricallyIntegral.isIntegral_of_isLocallyNoetherian X.hom`. Establish `: IsIntegral Y` using `DvrModel.isIntegral_of_geometricallyIntegral H`. Use `isNormalScheme_of_smooth X.hom` as an intermediate fact.
+
+Use `LocallyOfFiniteType.isLocallyNoetherian X.hom` as an intermediate fact. Establish `: CompactSpace X.left` using `QuasiCompact.compactSpace_of_compactSpace X.hom`. Establish `: AlgebraicGeometry.IsNoetherian X.left` using `{}`. Establish `hinj` using `IsFractionRing.injective R K`. Establish `: Module.Flat R K` using `IsLocalization.flat K (nonZeroDivisors R)`.
+
+Establish `: Flat φ` using `MorphismProperty.of_isPullback (P := @Flat) H.flip (Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance))`. Establish `: IsPreimmersion φ` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) H.flip (IsPreimmersion.of_isLocalization (nonZeroDivisors R))`. Use `isIso_stalkMap_of_flat_of_surjectiveOnStalks φ` as an intermediate fact. Establish `lift : ∀ x : X.left, (X.hom x).asIdeal = ⊥ → ∃ y, φ y = x` using `fun x hx => by`. Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback H x (⊥ : PrimeSpectrum K) (PrimeSpectrum.ext (hx.trans (Ideal.comap_bot_of_injective _ hinj).symm))`.
+
+Conclude with `⟨y, hy⟩`. Establish `hφ : φ (genericPoint Y) ⤳ genericPoint X.left`. Take `⟨y, hy⟩` from `(Flat.generalizingMap φ).stableUnderGeneralization_range (genericPoint_specializes (φ (genericPoint Y))) ⟨_, rfl⟩`. Conclude with `hy ▸ (genericPoint_specializes y).map φ.continuous`. Establish `hne : ∀ (V : X.left.Opens) [Nonempty V], Nonempty (φ ⁻¹ᵁ V)` using `fun V _ => ⟨⟨_, hφ.mem_open V.isOpen (genericPoint_mem_opens V)⟩⟩`.
+
+Establish `hne' : ∀ i [Nonempty (M.U i)], Nonempty ((M.pull φ).U fun _ => i)` using `fun i _ => by`. Rewrite using `[DvrModel.pull_U]`. Conclude with `hne _`. Establish `: Nonempty (⊤ : Y.Opens)` using `⟨⟨genericPoint Y, trivial⟩⟩`. Establish `: Nonempty (⊤ : X.left.Opens)` using `⟨⟨genericPoint X.left, trivial⟩⟩`.
+
+Establish `hb` using `ffMap_bijective φ hφ`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : M.ι → X.left.functionField, ∀ i [Nonempty ((M.pull φ).U fun _ => i)], ffMap φ hφ (r i) = Y.germToFunctionField _ (c.s fun _ => i).val := by`. Establish `: ∀ i, ∃ t : X.left.functionField, ∀ [Nonempty ((M.pull φ).U fun _ => i)], ffMap φ hφ t = Y.germToFunctionField _ (c.s fun _ => i).val` using `fun i => by`. Distinguish the cases in `h : Nonempty ((M.pull φ).U fun _ => i)`. Conclude with `(hb.2 (Y.germToFunctionField _ (c.s fun _ => i).val)).imp fun _ h => h`.
+
+Conclude with `⟨0, @fun h' => (h h').elim⟩`. Conclude with `⟨fun i => (this i).choose, fun i => (this i).choose_spec⟩`. Set `k : K →+* Γ(Y, ⊤)` to `(p.appLE ⊤ ⊤ le_top).hom.comp (Scheme.ΓSpecIso (.of K)).inv.hom`. Set `κ : K →+* X.left.functionField` to `(RingEquiv.ofBijective (ffMap φ hφ).hom hb).symm.toRingHom.comp ((Y.germToFunctionField ⊤).hom.comp k)`. Establish `hκ : ∀ a, ffMap φ hφ (κ a) = Y.germToFunctionField ⊤ (constFn p ⊤ a)` using `fun a => (RingEquiv.ofBijective (ffMap φ hφ).hom hb).apply_symm_apply _`.
+
+Establish `hr0 : ∀ i x, x ∈ M.U i → r i ≠ 0` using `fun i x hx h => by`. Establish `: Nonempty (M.U i)` using `⟨⟨x, hx⟩⟩`. Use `hne' i` as an intermediate fact. Establish `e` using `hr i`. Rewrite `e` using `[h, map_zero]`.
+
+Conclude with `((Units.isUnit _).map _).ne_zero e.symm`. Establish `hg : ∀ i j (x : X.left) (hi : x ∈ M.U i) (hj : x ∈ M.U j), haveI : Nonempty (M.U i ⊓ M.U j : X.left.Opens)` using `⟨⟨x, hi, hj⟩⟩ r i = X.left.germToFunctionField (M.U i ⊓ M.U j) (M.g i j).val * r j := by`. Introduce `i j x hi hj`. Establish `: Nonempty (M.U i)` using `⟨⟨x, hi⟩⟩`. Establish `: Nonempty (M.U j)` using `⟨⟨x, hj⟩⟩`.
+
+Establish `: Nonempty (M.U i ⊓ M.U j : X.left.Opens)` using `⟨⟨x, hi, hj⟩⟩`. Use `hne' i` as an intermediate fact. Use `hne' j` as an intermediate fact. Use `nonempty_inf_of_isIntegral ((M.pull φ).U fun _ => i) ((M.pull φ).U fun _ => j)` as an intermediate fact. Use `hb.1 ?_` and prove the remaining obligations.
+
+Establish `e` using `congrArg (Y.germToFunctionField _) (congrArg Units.val (hc (fun _ => i) fun _ => j))`. Rewrite `e` using `[Units.val_mul, map_mul, DvrModel.coe_pull_g, ← ffMap_germ φ hφ]`. Rewrite using `[map_mul, hr, hr]`. Conclude with `(germToFunctionField_res _ _).symm.trans (e.trans (congrArg _ (germToFunctionField_res _ _)))`. Establish `htr : ∀ i j x t, x ∈ M.U i → x ∈ M.U j → UnitAt x (t * r j) → UnitAt x (t * r i)`.
+
+Introduce `i j x t hi hj h`. Rewrite using `[hg i j x hi hj, mul_left_comm]`. Conclude with `UnitAt.mul ⟨Units.map (X.left.presheaf.germ (M.U i ⊓ M.U j) x ⟨hi, hj⟩).hom (M.g i j), X.left.presheaf.germ_stalkSpecializes_apply _ _ _⟩ h`. Establish `hκR : ∀ b : R, κ (algebraMap R K b) = X.left.presheaf.germ ⊤ (genericPoint X.left) trivial (constFn X.hom ⊤ b)` using `fun b => hb.1 (by`. Rewrite using `[hκ, ← app_constFn H.w, ← φ.appLE_eq_app]`.
+
+Conclude with `(ffMap_germ φ hφ ⊤ ⊤ le_top _).symm)`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_const_mul_unitAt_codimOne_of_factorialBase R K X.left X.hom κ hκR M.ι M.U r (LB.mem_of_cover hM) (fun i x hx => hr0 i x hx) htr (fun x hx => by`. Take `⟨y, rfl⟩` from `lift x hx`. Take `⟨i, hi⟩` from `LB.mem_of_cover hM (φ y)`. Establish `: Nonempty (M.U i)` using `⟨⟨_, hi⟩⟩`.
+
+Use `hne' i` as an intermediate fact. Conclude with `⟨i, hi, unitAt_of_isUnit φ hφ (Units.isUnit _) ((DvrModel.pull_U M φ _).ge hi) (hr i)⟩)`. Establish `hu : ∀ i, ∃ v : Γ(X.left, M.U i)ˣ, ∀ [Nonempty (M.U i)], X.left.germToFunctionField (M.U i) v.val = κ a * r i` using `fun i => by`. Distinguish the cases in `h : Nonempty (M.U i)`. Take `⟨v, hv⟩` from `exists_unit_eq (M.U i) (κ a * r i) (mul_ne_zero ((map_ne_zero κ).2 a.ne_zero) (hr0 i _ h.some.2)) (ha i)`.
+
+Conclude with `⟨v, @fun _ => hv⟩`. Conclude with `⟨1, @fun h' => (h h').elim⟩`. Use `choose u hu using hu`. Use `⟨a, ⟨u⟩, fun i j => ?_, fun i Z rr z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : Nonempty (M.U i ⊓ M.U j : X.left.Opens)`.
+
+Take `⟨⟨x, hi, hj⟩⟩` from `h`. Establish `: Nonempty (M.U i)` using `⟨⟨x, hi⟩⟩`. Establish `: Nonempty (M.U j)` using `⟨⟨x, hj⟩⟩`. Establish `: Nonempty (M.U i ⊓ M.U j : X.left.Opens)` using `⟨⟨x, hi, hj⟩⟩`. Use `Units.ext (X.left.germToFunctionField_injective (M.U i ⊓ M.U j) ?_)` and prove the remaining obligations.
+
+Use `show X.left.germToFunctionField _ (X.left.presheaf.map (homOfLE _).op (u i).val) = X.left.germToFunctionField _ ((M.g i j).val * X.left.presheaf.map (homOfLE _).op (u j).val)`. Rewrite using `[map_mul, germToFunctionField_res, germToFunctionField_res, hu, hu, hg i j x hi hj]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `unit_ext fun x hx => (h ⟨⟨x, hx⟩⟩).elim`. Establish `hm : rr z ∈ (M.pull φ).U fun _ => i` using `mem_pull.2 hz`.
+
+Establish `h₂ : ((M.pull φ).U fun _ => i) ≤ φ ⁻¹ᵁ M.U i` using `fun y hy => mem_pull.1 hy`. Establish `: Nonempty ((M.pull φ).U fun _ => i)` using `⟨⟨_, hm⟩⟩`. Establish `: Nonempty (M.U i)` using `⟨⟨_, hz⟩⟩`. Establish `hW : (φ.appLE (M.U i) _ h₂).hom (u i).val = constFn p _ (a : K) * (c.s fun _ => i).val`. Use `Y.germToFunctionField_injective _ ((ffMap_germ φ hφ _ _ h₂ _).symm.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hu, map_mul, map_mul, hκ, hr]`. Use `congrArg₂ (· * ·) ?_ rfl` and prove the remaining obligations. Conclude with `(germToFunctionField_res (le_top : ((M.pull φ).U fun _ => i) ≤ ⊤) _).symm.trans (congrArg _ (res_appLE_apply p _ _ _))`. Use `show (gm (rr ≫ φ) z (M.U i) (u i)).val = _`. Rewrite using `[← gs_unit (rr ≫ φ) z _ hz, ← gs_unit rr z _ hm, ← GlobalTheory.OpenPartUnit.gs_appLE rr φ z _ _ h₂ hm, hW, gs_mul rr z _ hm]`.
+
+Use `congrArg (· * _) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.OpenPartUnit.gs_appLE rr p z ⊤ _ _ hm _`.
+-/
 theorem exists_const_mul_eq_gen : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [UniqueFactorizationMonoid R] [Field K] [Algebra R K] [IsFractionRing R K] (X : Over (Sp R)) (Y : Scheme.{0}) (φ : Y ⟶ X.left) (p : Y ⟶ Sp K) (M : LB X.left) (c : LB.Gen (M.pull φ)), Smooth X.hom → QuasiCompact X.hom → GeometricallyConnected X.hom → IsPullback φ p X.hom (spMap (algebraMap R K)) → M.IsLB → c.IsGen → ∃ (a : Kˣ) (u : LB.Gen M), u.IsGen ∧ ∀ (i : M.ι) (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z), φ (r z) ∈ M.U i → (gm (r ≫ φ) z (M.U i) (u.s i)).val = gs (r ≫ p) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (a : K)) * (gm r z ((M.pull φ).U fun _ => i) (c.s fun _ => i)).val := by
   intro R K _ _ _ _ _ _ _ X Y φ p M c hsm hqc hgc H hM hc
   have := forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ X.hom hsm hgc

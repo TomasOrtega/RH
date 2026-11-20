@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KFinStruct.kFin_structure | exact GlobalTheory.KFinStruct.kFin_structure | (intros; apply GlobalTheory.KFinStruct.kFin_structure <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.discrete_series_model_K_finite : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (V : HSp D) (S : D.what₂.Tau → SPar)
     (M : Formalism.IndefR.Mult.DSModel V S) (τ : D.what₂.Tau),
     (∃ p : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ), p ≠ 0) ∧

@@ -18,6 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealVacScalar.compress_real | exact GlobalTheory.RealVacScalar.compress_real | (intros; apply GlobalTheory.RealVacScalar.compress_real <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heisenberg_realPoint_fockVacuum_pairing_scalar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) →
     IsInfFam θ → ∀ (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ),

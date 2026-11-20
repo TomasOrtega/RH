@@ -9,6 +9,15 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.LocM
 
+/- English proof (translation)
+Introduce `D A N j S κ p ct P Z s`. Establish `hid : ∀ Z : ct.Mdl, ∃ f, IsMap Z Z f` using `fun Z => ⟨𝟙 _, MapComp.corr_refl Z, fun k _ w hw => by simpa using GlobalTheory.ProjBlowup.natImg_refl Z w hw⟩`. Use `ct.isFlagCl_flagCl Z s.1 (hid Z) (fun h => ?_) (GlobalTheory.T.exists_flag_closure _ _ _ _ _ _ ct.hp ct.hW _ _ Z _ fun t ht => ?_)` and prove the remaining obligations. Take `⟨f, hf⟩` from `h.2.2.1`. Establish `hty (σ) : Z.ty σ ∪ stepTy (allSteps (Lat.top Z)) σ = Finset.range (S.Dw.mult σ + 1)`.
+
+Rewrite using `[stepTy_allSteps, Finset.union_eq_right, ← h.2.1.1 σ]`. Conclude with `hf.1.2.2 σ`. Use `⟨h.1, fun σ => (h.2.1.1 σ).trans (hty σ).symm, ⟨f, hf⟩, GlobalTheory.T.allSteps_hold_of_hasDR _ _ _ _ _ _ ct.hp ct.hW _ _ Z _ h.2.1 ⟨f, hf⟩, fun Z'' hg hs => ?_⟩` and prove the remaining obligations. Take `⟨Z₀, h₀⟩` from `GlobalTheory.T.exists_flag_closure _ _ _ _ _ _ ct.hp ct.hW _ _ Z (allSteps (Lat.top Z)) fun t ht => by`. Take `⟨σ, r, hr, rfl⟩` from `mem_allSteps.1 ht`.
+
+Conclude with `hid Z`. Take `⟨a, ha⟩` from `h₀.2.2.2.2 Z'' hg hs`. Take `⟨b, hb⟩` from `h.2.2.2 Z₀ (GlobalTheory.T.hasDR_of_allSteps_hold _ _ _ _ _ _ ct.hp ct.hW _ _ Z Z₀ (fun σ => (h₀.2.1 σ).trans (hty σ)) h₀.2.2.2.1) h₀.2.2.1`. Conclude with `⟨a ≫ b, MapComp.isMap_comp ha hb⟩`. Break down `(s.2 t ht).1 with h | h` into its components or cases.
+
+Conclude with `h ▸ hid t.B`. Conclude with `h`.
+-/
 theorem flgOf_flagCl_spec : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p) (P : ∀ B : ct.Mdl, Lat B → Prop) (Z : ct.Mdl) (s : (flgOf ct P).FlagData Z), IsFlagCl Z s.1 ((flgOf ct P).flagCl Z s) := by
   intro D A N j S κ p ct P Z s
   have hid : ∀ Z : ct.Mdl, ∃ f, IsMap Z Z f := fun Z =>

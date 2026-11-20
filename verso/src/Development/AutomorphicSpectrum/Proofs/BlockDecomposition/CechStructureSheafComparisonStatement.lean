@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CechStructureSh
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CubeResApply
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.CompanionTheory.Hodge.Nerve
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Hodge.Nerve.cech_OSys_homology_equiv | exact GlobalTheory.CompanionTheory.Hodge.Nerve.cech_OSys_homology_equiv | (intros; apply GlobalTheory.CompanionTheory.Hodge.Nerve.cech_OSys_homology_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cech_structure_sheaf_comparison : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Spec (CommRingCat.of R)) (P : Type) [SemilatticeInf P]
     (S : MainStatements.Hodge.Sys X P) {κ : Type} [LinearOrder κ] (e : κ → P) (n : ℕ),
     letI := GlobalTheory.algebraΓOfHom s

@@ -15,6 +15,9 @@ section Comb
 
 variable {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {r : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem comb_mul (b : Fin r → M) (P P' : Matrix (Fin r) (Fin r) R) (j : Fin r) :
     ∑ i, (P * P') i j • b i = ∑ k, P' k j • ∑ i, P i k • b i := by
   simp only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]
@@ -22,14 +25,23 @@ theorem comb_mul (b : Fin r → M) (P P' : Matrix (Fin r) (Fin r) R) (j : Fin r)
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]`.
+-/
 theorem comb_smul (b : Fin r → M) (c : R) (P : Matrix (Fin r) (Fin r) R) (j : Fin r) :
     ∑ i, (c • P) i j • b i = c • ∑ i, P i j • b i := by
   simp only [Matrix.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem comb_one (b : Fin r → M) (j : Fin r) :
     ∑ i, (1 : Matrix (Fin r) (Fin r) R) i j • b i = b j := by
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h0 : ∑ k, (P k j - P' k j) • b k = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h j, sub_self]`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hb _ h0 i)`.
+-/
 theorem matrix_eq_of_comb {b : Fin r → M} (hb : LinearIndependent R b) {P P' : Matrix (Fin r) (Fin r) R}
     (h : ∀ j, ∑ i, P i j • b i = ∑ i, P' i j • b i) : P = P' := by
   ext i j
@@ -37,6 +49,9 @@ theorem matrix_eq_of_comb {b : Fin r → M} (hb : LinearIndependent R b) {P P' :
     simp only [sub_smul, Finset.sum_sub_distrib, h j, sub_self]
   exact sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hb _ h0 i)
 
+/- English proof (translation)
+Use `choose e he using h`. Use `⟨∑ k, e k, fun k => ?_⟩` and prove the remaining obligations. Establish `hk : e k ≤ ∑ k, e k` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Rewrite using `[← Nat.sub_add_cancel hk, pow_add, mul_smul]`. Conclude with `S.smul_mem _ (he k)`.
+-/
 theorem exists_pow_uniform {S : Submodule R M} (q : R) (w : Fin r → M) (h : ∀ k, ∃ e : ℕ, q ^ e • w k ∈ S) :
     ∃ e : ℕ, ∀ k, q ^ e • w k ∈ S := by
   choose e he using h
@@ -45,6 +60,9 @@ theorem exists_pow_uniform {S : Submodule R M} (q : R) (w : Fin r → M) (h : �
   rw [← Nat.sub_add_cancel hk, pow_add, mul_smul]
   exact S.smul_mem _ (he k)
 
+/- English proof (translation)
+Use `⟨bS.repr ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (bS.sum_repr ⟨x, hx⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h`. Conclude with `h.symm`.
+-/
 theorem coords {S : Submodule R M} (bS : Module.Basis (Fin r) R ↥S) {x : M} (hx : x ∈ S) :
     ∃ c : Fin r → R, x = ∑ i, c i • (bS i : M) := by
   refine ⟨bS.repr ⟨x, hx⟩, ?_⟩
@@ -68,20 +86,38 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Establish `h` using `W.φD_smul T (algebraMap (LetA O n) W.EE a) x`. Rewrite `h` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Conclude with `h`.
+-/
 theorem φD_smulA (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   have h := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
   rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `W.γD_smul T W.gam (algebraMap (LetA O n) W.EE a) x`. Rewrite `h` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `h`.
+-/
 theorem γ_smulA (a : LetA O n) (x : W.DD T) : W.γ T (a • x) = W.γA W.gam a • W.γ T x := by
   have h := W.γD_smul T W.gam (algebraMap (LetA O n) W.EE a) x
   rw [algebraMap_smul, W.γE_ext, algebraMap_smul] at h
   exact h
 
+/- English proof (translation)
+Rewrite `h` using `[← algebraMap_smul W.EE (W.X ^ a) x, ← algebraMap_smul W.EE (W.X ^ a) y, map_pow]`. Conclude with `((GlobalTheory.NL.IoXQ.isUnit_X W).pow a).smul_left_cancel.1 h`.
+-/
 theorem X_pow_smul_cancel (a : ℕ) {x y : W.DD T} (h : W.X ^ a • x = W.X ^ a • y) : x = y := by
   rw [← algebraMap_smul W.EE (W.X ^ a) x, ← algebraMap_smul W.EE (W.X ^ a) y, map_pow] at h
   exact ((GlobalTheory.NL.IoXQ.isUnit_X W).pow a).smul_left_cancel.1 h
 
+/- English proof (translation)
+Take `⟨r, b, hb, hu⟩` from `hS`. Set `w : Fin r → ↥S` to `fun j => ⟨b j, hb j⟩`. Establish `li : LinearIndependent (LetA O n) w`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations. Establish `hg' : (0 : W.DD T) = ∑ j, g j • b j`.
+
+Use `congrArg Subtype.val hg` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify `this.symm` using `[w]`. Establish `h0 : (0 : W.DD T) = ∑ j, (0 : Fin r → LetA O n) j • b j` using `by simp`. Use `(hu 0 S.zero_mem).unique hg' h0` as an intermediate fact.
+
+Conclude with `congrFun this i`. Establish `sp : ⊤ ≤ Submodule.span (LetA O n) (Set.range w)`. Introduce and unpack `⟨x, hx⟩ -`. Take `⟨c, hc, -⟩` from `hu x hx`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+
+Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Simplify using `[w, hc]`. Conclude with `⟨r, ⟨Module.Basis.mk li sp⟩⟩`.
+-/
 theorem basis_of_freeA {S : Submodule (LetA O n) (W.DD T)} (hS : FreeA W T S) :
     ∃ r : ℕ, Nonempty (Module.Basis (Fin r) (LetA O n) ↥S) := by
   obtain ⟨r, b, hb, hu⟩ := hS
@@ -119,6 +155,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Use `choose y hy hyeq using fun k => h _ (bS k).2`. Use `choose c hc using fun k => coords bS (hy k)`. Use `⟨1 + (letπ : LetA O n) • Matrix.of (fun i k => c k i), fun i j => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mem_span_singleton.2 (dvd_mul_right _ _)`.
+
+Simplify using `only [Matrix.add_apply, add_smul, Finset.sum_add_distrib]`. Rewrite using `[comb_one, comb_smul]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[← hc k, ← hyeq k, add_sub_cancel]`.
+-/
 theorem gam_matrix {r : ℕ} {S : Submodule (LetA O n) (W.DD T)} (bS : Module.Basis (Fin r) (LetA O n) ↥S)
     (h : ∀ x ∈ S, ∃ y ∈ S, W.γ T x - x = (letπ : LetA O n) • y) :
     ∃ Gm : Matrix (Fin r) (Fin r) (LetA O n), (∀ i j, (Gm - 1) i j ∈ Ideal.span {(letπ : LetA O n)}) ∧
@@ -133,6 +174,9 @@ theorem gam_matrix {r : ℕ} {S : Submodule (LetA O n) (W.DD T)} (bS : Module.Ba
     simp only [Matrix.of_apply]
     rw [← hc k, ← hyeq k, add_sub_cancel]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_pow_uniform W.Q (fun k => W.φD T (bS k)) (fun k => h _ (bS k).2)`. Use `choose c hc using fun k => coords bS (he k)`. Conclude with `⟨e, Matrix.of fun i k => c k i, hc⟩`.
+-/
 theorem phi_matrix {r : ℕ} {S : Submodule (LetA O n) (W.DD T)} (bS : Module.Basis (Fin r) (LetA O n) ↥S)
     (h : ∀ x ∈ S, ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ S) :
     ∃ (e : ℕ) (F : Matrix (Fin r) (Fin r) (LetA O n)),
@@ -141,6 +185,13 @@ theorem phi_matrix {r : ℕ} {S : Submodule (LetA O n) (W.DD T)} (bS : Module.Ba
   choose c hc using fun k => coords bS (he k)
   exact ⟨e, Matrix.of fun i k => c k i, hc⟩
 
+/- English proof (translation)
+Establish `hspan : φspan W T S ≤ Submodule.span (LetA O n) (Set.range fun i => W.φD T (bS i))`. Rewrite using `[φspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨c, rfl⟩` from `coords bS hx`. Rewrite using `[map_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[φD_smulA]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨e, he⟩` from `exists_pow_uniform W.Q (fun k => (bS k : W.DD T)) (S := Submodule.span (LetA O n) (Set.range fun i => W.φD T (bS i))) (fun k => let ⟨e, he⟩ := h _ (bS k).2; ⟨e, hspan he⟩)`. Use `choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun (LetA O n)).1 (he k)`.
+
+Conclude with `⟨e, Matrix.of fun i k => c k i, hc⟩`.
+-/
 theorem phiinv_matrix {r : ℕ} {S : Submodule (LetA O n) (W.DD T)} (bS : Module.Basis (Fin r) (LetA O n) ↥S)
     (h : ∀ y ∈ S, ∃ k : ℕ, W.Q ^ k • y ∈ φspan W T S) :
     ∃ (e : ℕ) (P : Matrix (Fin r) (Fin r) (LetA O n)),
@@ -159,6 +210,33 @@ theorem phiinv_matrix {r : ℕ} {S : Submodule (LetA O n) (W.DD T)} (bS : Module
   choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun (LetA O n)).1 (he k)
   exact ⟨e, Matrix.of fun i k => c k i, hc⟩
 
+/- English proof (translation)
+Use `set b : Fin r → W.DD T := fun i => (bM i : W.DD T) with hbdef`. Use `set b₁ : Fin r → W.DD T := fun i => (bM₁ i : W.DD T) with hb₁def`. Establish `hbM : ∀ i, b i ∈ M` using `fun i => (bM i).2`. Establish `hb₁M : ∀ i, b₁ i ∈ M₁` using `fun i => (bM₁ i).2`. Establish `li : LinearIndependent (LetA O n) b` using `bM.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`.
+
+Establish `li₁ : LinearIndependent (LetA O n) b₁` using `bM₁.linearIndependent.map' M₁.subtype (Submodule.ker_subtype M₁)`. Use `choose Bt hBt using fun j => coords bM (ha _ (hb₁M j))`. Use `set Bm : Matrix (Fin r) (Fin r) (LetA O n) := Matrix.of fun i j => Bt j i with hBm`. Establish `hB : ∀ j, W.X ^ a • b₁ j = ∑ i, Bm i j • b i` using `fun j => hBt j`. Take `⟨Gm, hG1, hG⟩` from `gam_matrix W T bM hγ`.
+
+Take `⟨Gm₁, hG₁1, hG₁⟩` from `gam_matrix W T bM₁ hγ₁`. Take `⟨hM, F, hF⟩` from `phi_matrix W T bM hφ`. Take `⟨h₁, F₁, hF₁⟩` from `phi_matrix W T bM₁ hφ₁`. Take `⟨e, P', hP'⟩` from `phiinv_matrix W T bM₁ hφinv₁`. Establish `R1 : (W.X ^ a) • (Gm * Bm.map (W.γA W.gam)) = (W.γA W.gam W.X ^ a) • (Bm * Gm₁)`.
+
+Use `matrix_eq_of_comb li fun j => ?_` and prove the remaining obligations. Rewrite using `[comb_smul, comb_mul, comb_smul, comb_mul]`. Establish `e1 : ∑ k, Bm.map (W.γA W.gam) k j • ∑ i, Gm i k • b i = W.γ T (W.X ^ a • b₁ j)`. Rewrite using `[hB j, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[γ_smulA, ← hG k, Matrix.map_apply]`. Establish `e2 : ∑ k, Gm₁ k j • ∑ i, Bm i k • b i = W.X ^ a • W.γ T (b₁ j)`. Rewrite using `[hG₁ j, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hB k, smul_comm]`.
+
+Rewrite using `[e1, e2, γ_smulA, map_pow]`. Conclude with `smul_comm _ _ _`. Establish `R2 : F₁ * P' = (W.Q ^ (h₁ + e)) • (1 : Matrix (Fin r) (Fin r) (LetA O n))`. Use `matrix_eq_of_comb li₁ fun j => ?_` and prove the remaining obligations. Rewrite using `[comb_mul, comb_smul, comb_one]`.
+
+Establish `e1 : ∑ k, P' k j • ∑ i, F₁ i k • b₁ i = W.Q ^ h₁ • ∑ k, P' k j • W.φD T (b₁ k)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hF₁ k, smul_comm]`. Rewrite using `[e1, hP' j, smul_smul, ← pow_add]`.
+
+Establish `R3 : (W.Q ^ h₁ • F) * Bm.map W.φA = (W.Q ^ (a + hM)) • (Bm * F₁)`. Use `matrix_eq_of_comb li fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, comb_smul, comb_mul, comb_smul, comb_mul]`. Establish `e1 : ∑ k, Bm.map W.φA k j • ∑ i, F i k • b i = W.Q ^ hM • W.φD T (W.X ^ a • b₁ j)`. Rewrite using `[hB j, map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[φD_smulA, ← hF k, Matrix.map_apply, smul_comm]`. Establish `e2 : ∑ k, F₁ k j • ∑ i, Bm i k • b i = W.X ^ a • W.Q ^ h₁ • W.φD T (b₁ j)`. Rewrite using `[hF₁ j, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hB k, smul_comm]`. Rewrite using `[e1, e2, φD_smulA, map_pow, W.φA_X]`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hdiv` using `hmat r a (a + hM) (h₁ + e) Bm Gm Gm₁ (W.Q ^ h₁ • F) F₁ P' hG1 hG₁1 R1 R2 R3`. Use `choose d hd using hdiv`. Establish `hb₁ : ∀ j, b₁ j ∈ M`. Introduce `j`. Establish `h' : W.X ^ a • b₁ j = W.X ^ a • ∑ i, d i j • b i`.
+
+Rewrite using `[hB j, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hd i j, mul_smul]`. Rewrite using `[X_pow_smul_cancel W T a h']`. Conclude with `M.sum_mem fun i _ => M.smul_mem _ (hbM i)`.
+
+Introduce `x hx`. Take `⟨c, rfl⟩` from `coords bM₁ hx`. Conclude with `M.sum_mem fun j _ => M.smul_mem _ (hb₁ j)`.
+-/
 theorem le_of_X_pow_smul_le
     (hmat : ∀ (r a m m' : ℕ) (B G G₁ Pm P₁ P₁' : Matrix (Fin r) (Fin r) (LetA O n)),
       (∀ i j, (G - 1) i j ∈ Ideal.span {(letπ : LetA O n)}) →
@@ -244,6 +322,15 @@ end Key
 open Formalism.MainNotions.DeltaInvariantLattices in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h T hT N₁ hfree hbc hγN₁ hγπ hφ hφinv`. Take `⟨a, h1, h2⟩` from `GlobalTheory.T.wachFreeLattice_eq_wachLattice_invert_X D HW F l K s LL h T hT N₁ hfree hbc hφ hφinv`. Take `⟨nb⟩` from `GlobalTheory.NL.N_basis D HW F l K s LL h T hT`. Take `⟨r₁, ⟨b₁⟩⟩` from `basis_of_freeA _ T hfree`. Use `haveI : Nontrivial ((HW l).W K s LL h).EE := ((HW l).W K s LL h).EE_inj.nontrivial`.
+
+Establish `hr : r₁ = Module.finrank ↥(OL LL) ↥T.L.T`. Establish `e` using `(hbc.basis b₁).indexEquiv ((((HW l).W K s LL h).N_base T hT).basis nb)`. Simplify using `using Fintype.card_congr e`. Substitute `hr` using the available equality. Apply the tactic sequence `have hmat := fun r a m m' B G G₁ Pm P₁ P₁' => GlobalTheory.NL.WachMat.X_pow_dvd_entry D HW l K s LL h r a m m' B G G₁ Pm P₁ P₁'`.
+
+Establish `hγ₁ : ∀ x ∈ N₁, ∃ y ∈ N₁, ((HW l).W K s LL h).γ T x - x = (letπ : AA K LL) • y`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `hγπ x hx`. Conclude with `⟨y, hy, e.symm⟩`. Establish `hγN : ∀ x ∈ ((HW l).W K s LL h).N T, ∃ y ∈ ((HW l).W K s LL h).N T, ((HW l).W K s LL h).γ T x - x = (letπ : AA K LL) • y` using `fun x hx => ((HW l).W K s LL h).N_π T _ x hx`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_of_X_pow_smul_le _ T hmat nb b₁ hγN (((HW l).W K s LL h).N_φ T) hγ₁ hφ hφinv a h1`. Conclude with `le_of_X_pow_smul_le _ T hmat b₁ nb hγ₁ hφ hγN (((HW l).W K s LL h).N_φ T) (((HW l).W K s LL h).N_φinv T) a h2`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), WachCharacterisation D HW F := by
   intro D HW F l _ K s LL h T hT N₁ hfree hbc hγN₁ hγπ hφ hφinv
   obtain ⟨a, h1, h2⟩ := GlobalTheory.T.wachFreeLattice_eq_wachLattice_invert_X D HW F l K s LL h T hT N₁ hfree hbc hφ hφinv

@@ -8,6 +8,13 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `isChar_psi_rootSum_of_regular F θ hθ m k hm hk`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hip` using `ipGL_eq_finsum_GL (F := F) (d := m) (psi (rootSum θ k) (Fin m → F)) (psi (rootSum θ k) (Fin m → F))`. Rewrite `hip` using `[h2]`. Establish `hsq : ((-1 : ℂ) ^ (m - 1)) * star ((-1 : ℂ) ^ (m - 1)) = 1`.
+
+Rewrite using `[star_pow, star_neg, star_one, ← mul_pow]`. Evaluate the numerical expressions. Establish `hterm : ∀ x : GL (Fin m) F, cusp θ m k x * star (cusp θ m k x) = psi (rootSum θ k) (Fin m → F) (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F)) * star (psi (rootSum θ k) (Fin m → F) (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F)))`. Introduce `x`. Simplify using `only [cusp, psiG, star_mul']`.
+
+Take the linear combination `(psi (rootSum θ k) (Fin m → F) (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F)) * star (psi (rootSum θ k) (Fin m → F) (Matrix.toLin' (x : Matrix (Fin m) (Fin m) F)))) * hsq`. Rewrite using `[finsum_congr hterm, ← hip]`. Both sides reduce to the same expression.
+-/
 theorem isChar_cusp_and_norm_of_reg (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ)
     (hθ : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) (m k : ℕ) (hm : 0 < m)
     (hk : Reg (Nat.card F) m k) :

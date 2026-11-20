@@ -15,6 +15,11 @@ noncomputable section
 open GlobalTheory.Size
 namespace GlobalTheory.Core.Rk.ThetaGrowthBoth
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hω f hf`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨A, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D S.rank T.rank`. Take `⟨U, hU, hl⟩` from `isTheta_iff_level.1 hf`. Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne S T`.
+
+Take `⟨C, -, hC⟩` from `(H S T rfl rfl).real ψ hθ hU`. Conclude with `⟨C * (sobO ψ θ μ 𝓕 d f).toReal, A, fun g h => (hC χS χT om hω μ 𝓕 hμ f hl).2 g h⟩`.
+-/
 theorem thetaKO_modGrowth₂ : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → GlobalTheory.Grow.ModGrowth₂ S T fun g h => thetaKO om g h f := by
   intro D ψ S T χS χT om hω f hf
   obtain ⟨θ, hθ⟩ := GlobalTheory.AdelicU.exists_isInfFam D

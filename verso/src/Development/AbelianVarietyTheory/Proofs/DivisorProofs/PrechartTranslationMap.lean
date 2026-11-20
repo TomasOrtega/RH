@@ -12,6 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Establish `hle : Submonoid.powers r ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hr`. Set `L` to `Localization.Away r`. Set `w : L →ₐ[R] K` to `ψ₀.comp (IsScalarTower.toAlgHom R L C)`. Use `letI : Algebra L K := (w : L →+* K).toAlgebra`. Use `haveI : IsScalarTower R L K := IsScalarTower.of_algebraMap_eq fun x => (w.commutes x).symm`.
+
+Use `haveI : IsDomain L := IsLocalization.isDomain_localization hle`. Use `haveI : IsIntegrallyClosed L := isIntegrallyClosed_of_isLocalization L (Submonoid.powers r) hle`. Use `haveI : IsFractionRing L K := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers r) L K`. Set `ψ₁ : C →ₐ[L] K` to `{ (ψ₀ : C →+* K) with commutes' := fun x => rfl }`. Establish `hmem : ∀ x : C, ψ₀ x ∈ w.range` using `fun x => by`.
+
+Establish `h : IsIntegral L (ψ₁ x)` using `(Algebra.IsIntegral.isIntegral x).map ψ₁`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Conclude with `⟨y, hy⟩`. Establish `hinj : Function.Injective w` using `IsFractionRing.injective L K`. Use `⟨((AlgEquiv.ofInjective w hinj).symm : w.range →ₐ[R] L).comp (ψ₀.codRestrict w.range hmem), w, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Use `AlgEquiv.ofInjective_apply w hinj ((AlgEquiv.ofInjective w hinj).symm ⟨ψ₀ x, hmem x⟩)` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+-/
 theorem exists_algHom_away_comp {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K]
     [IsFractionRing R K] (r : R) (hr : r ≠ 0) (C : Type) [CommRing C] [Algebra R C] [Algebra (Localization.Away r) C]
     [IsScalarTower R (Localization.Away r) C] [Module.Finite (Localization.Away r) C] (ψ₀ : C →ₐ[R] K) :
@@ -36,6 +45,13 @@ theorem exists_algHom_away_comp {R K : Type} [CommRing R] [IsDomain R] [IsIntegr
   rw [AlgEquiv.apply_symm_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Establish `hr : c.r ≠ 0` using `fun h => c.hr (h ▸ q.asIdeal.zero_mem)`. Take `⟨e, w, he⟩` from `exists_algHom_away_comp c.r hr c.C ψ₀`. Set `u : Localization.Away c.r →ₐ[R] c.C` to `IsScalarTower.toAlgHom R _ c.C`. Take `⟨T, hT⟩` from `hc.2 c.C (u.comp e) (AlgHom.id R c.C)`. Use `⟨T, fun ψ => ?_⟩` and prove the remaining obligations.
+
+Establish `hcomp : ∀ φ : c.C →ₐ[R] c.C, torsMap (ψ.comp φ) c.j = torsMap ψ (torsMap φ c.j)` using `fun φ => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [torsMap_val, ← spOver_comp, Category.assoc]`. Establish `hmul : ∀ x y : Tors G N c.C, torsMap ψ (x * y) = torsMap ψ x * torsMap ψ y` using `fun x y => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [torsMap_val, tors_mul_val, MonObj.comp_mul]`. Establish `hu : ψ.comp u = w` using `IsLocalization.algHom_ext (Submonoid.powers c.r) (Subsingleton.elim _ _)`. Rewrite using `[hcomp, hT, hmul, ← hcomp, ← hcomp, ← AlgHom.comp_assoc, hu, he, AlgHom.comp_id]`.
+-/
 theorem PreChart.exists_translation (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K]
     [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (hc : c.IsGrp) (ψ₀ : c.C →ₐ[R] K) :

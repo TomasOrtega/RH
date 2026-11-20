@@ -8,6 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `ht`. Set `S` to `integralClosure ℤ_[l] (PadicAlgCl l)`. Set `g : A →+* S` to `(x.comp (algebraMap A B)).codRestrict S.toSubring (fun a => by show IsIntegral ℤ_[l] (x (algebraMap A B a))`. Conclude with `(UpperTheory.V.Hi.Up.intIff _).2 (h a))`. Establish `hint : IsIntegral S (x t)`.
+
+Use `⟨p.map g, hm.map g, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hc : (algebraMap S (PadicAlgCl l)).comp g = x.comp (algebraMap A B)`. Use extensionality with `a`. Both sides reduce to the same expression.
+
+Rewrite using `[hc, ← Polynomial.hom_eval₂, hp, map_zero]`. Conclude with `(UpperTheory.V.Hi.Up.intIff _).1 (isIntegral_trans (R := ℤ_[l]) _ hint)`.
+-/
 private theorem norm_le_of_isIntegral {l : ℕ} [Fact l.Prime] {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
     (x : B →+* PadicAlgCl l) (h : ∀ a, ‖x (algebraMap A B a)‖ ≤ 1) {t : B} (ht : IsIntegral A t) : ‖x t‖ ≤ 1 := by
   obtain ⟨p, hm, hp⟩ := ht
@@ -24,6 +31,9 @@ private theorem norm_le_of_isIntegral {l : ℕ} [Fact l.Prime] {A B : Type} [Com
     rw [hc, ← Polynomial.hom_eval₂, hp, map_zero]
   exact (UpperTheory.V.Hi.Up.intIff _).1 (isIntegral_trans (R := ℤ_[l]) _ hint)
 
+/- English proof (translation)
+Establish `h : IsIntegral A (t : Module.End A Y)`. Take `⟨p, hp, he⟩` from `LinearMap.exists_monic_and_aeval_eq_zero A (t : Module.End A Y)`. Conclude with `⟨p, hp, by rwa [← Polynomial.aeval_def]⟩`. Conclude with `(isIntegral_algHom_iff T.val Subtype.val_injective).1 h`.
+-/
 private theorem isIntegral_of_subalgebra {A Y : Type} [CommRing A] [AddCommGroup Y] [Module A Y] [Module.Finite A Y]
     (T : Subalgebra A (Module.End A Y)) (t : T) : IsIntegral A t := by
   have h : IsIntegral A (t : Module.End A Y) := by
@@ -31,6 +41,9 @@ private theorem isIntegral_of_subalgebra {A Y : Type} [CommRing A] [AddCommGroup
     exact ⟨p, hp, by rwa [← Polynomial.aeval_def]⟩
   exact (isIntegral_algHom_iff T.val Subtype.val_injective).1 h
 
+/- English proof (translation)
+Establish `e : ‖x u‖ * ‖x (u⁻¹ : Bˣ)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Use `le_antisymm (h _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem norm_unit {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] (x : B →+* PadicAlgCl l) (u : Bˣ)
     (h : ∀ t, ‖x t‖ ≤ 1) : ‖x u‖ = 1 := by
   have e : ‖x u‖ * ‖x (u⁻¹ : Bˣ)‖ = 1 := by
@@ -40,6 +53,17 @@ private theorem norm_unit {l : ℕ} [Fact l.Prime] {B : Type} [CommRing B] (x : 
     _ ≤ ‖x u‖ * 1 := mul_le_mul_of_nonneg_left (h _) (norm_nonneg _)
     _ = ‖x u‖ := mul_one _
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ _ ι K a _ _ I D ψ hU z v j`. Take `⟨s, hs⟩` from `GlobalTheory.LocLanglands.IsLocalArtin.surj (hAx.art_spec v) (UpperTheory.V.Hi.unif (IsDedekindDomain.HeightOneSpectrum.adicCompletion L (H.Sl v)))`. Set `g : Dec (H.pl v)` to `⟨s, GlobalTheory.WeilDeligne.Weil_le_Dec (H.ovr v) s.2⟩`. Rewrite using `[← hU.ψ_unif v j s g rfl hs]`. Apply `norm_unit z.toRingHom` to reduce the goal to its premises.
+
+Introduce `t`. Use `norm_le_of_isIntegral (A := A) z.toRingHom ?_ (isIntegral_of_subalgebra _ t)` and prove the remaining obligations. Introduce `a0`. Set `y : A →ₐ[c.O] PadicAlgCl l` to `z.comp (IsScalarTower.toAlgHom c.O A (H.TK θ a K))`. Use `show ‖y a0‖ ≤ 1`.
+
+Take `⟨b, hb⟩` from `UpperTheory.V.Alg.IsCO.res_surj (O := c.O) a0`. Establish `hm` using `UpperTheory.V.Hi.Up.normLt (l := l) (O := c.O) y _ hb`. Establish `hi1 : IsIntegral ℤ_[l] (y (a0 - algebraMap c.O A b))` using `(UpperTheory.V.Hi.Up.intIff _).2 hm.le`. Establish `hbi : IsIntegral ℤ_[l] b` using `by haveI := c.fin`. Conclude with `IsIntegral.of_finite ℤ_[l] b`.
+
+Establish `hi2 : IsIntegral ℤ_[l] (y (algebraMap c.O A b))`. Rewrite using `[AlgHom.commutes]`. Conclude with `(isIntegral_algHom_iff c.O.val Subtype.val_injective).2 hbi`. Use `hi1.add hi2` as an intermediate fact. Rewrite `this` using `[← map_add, sub_add_cancel]`.
+
+Conclude with `(UpperTheory.V.Hi.Up.intIff _).1 this`.
+-/
 theorem UpperTheory.V.Z.J.D.unitEv :
     UnitEv := by
   intro L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ _ ι K a _ _ I D ψ hU z v j

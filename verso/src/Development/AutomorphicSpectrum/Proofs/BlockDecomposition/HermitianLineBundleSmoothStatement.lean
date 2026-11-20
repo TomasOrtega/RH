@@ -12,5 +12,8 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep | exact GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep | (intros; apply GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_line_bundle_smooth : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (M : HermLB (mpStr ℤ m n)) (A : Geo.HermLine (Bk n)), IsHermRep M A → Geo.IsSmoothHerm A := by
   first | exact @GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep | exact GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep | (intros; apply GlobalTheory.CompanionTheory.MPSmooth.smooth_of_isHermRep <;> assumption)

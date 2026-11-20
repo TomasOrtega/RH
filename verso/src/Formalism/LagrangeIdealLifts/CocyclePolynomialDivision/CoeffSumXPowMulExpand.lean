@@ -20,6 +20,9 @@ def polyBase (ℓ : ℕ) [Fact ℓ.Prime] (u : ℤ_[ℓ]ˣ) : Base ℓ (Polynomi
     rw [aeval_X, mul_zero, add_zero, Polynomial.algebraMap_eq, mul_comm]⟩
   γQ := ⟨0, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[X_dvd_iff, coeff_sub, coeff_zero_eq_eval_zero, coeff_zero_eq_eval_zero, ← comp_eq_aeval, eval_comp]`. Simplify using the standard rewrite rules.
+-/
 lemma X_dvd_aeval_sub (ℓ : ℕ) [Fact ℓ.Prime] (c : ℤ_[ℓ]) (p : Polynomial ℤ_[ℓ]) :
     X ∣ aeval (C c * X) p - p := by
   rw [X_dvd_iff, coeff_sub, coeff_zero_eq_eval_zero, coeff_zero_eq_eval_zero,
@@ -48,6 +51,9 @@ def polyWD (ℓ : ℕ) [Fact ℓ.Prime] (u : ℤ_[ℓ]ˣ) : WD (polyBase ℓ u) 
     exact ⟨c, Submodule.mem_top, by
       simp only [AlgHom.toLinearMap_apply, smul_eq_mul]; exact hc⟩
 
+/- English proof (translation)
+Introduce `ℓ _ u`. Use `⟨polyBase ℓ u, polyWD ℓ u, rfl, ?_, ?_⟩` and prove the remaining obligations. Conclude with `top_ne_bot`. Conclude with `not_isUnit_X`.
+-/
 theorem wDNonempty_proof : WDNonempty := by
   intro ℓ _ u
   refine ⟨polyBase ℓ u, polyWD ℓ u, rfl, ?_, ?_⟩

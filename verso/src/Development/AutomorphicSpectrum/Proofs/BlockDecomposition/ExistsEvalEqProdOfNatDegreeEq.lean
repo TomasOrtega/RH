@@ -4,6 +4,19 @@ namespace GlobalTheory.CompanionTheory.AicSplit
 
 open Polynomial
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `P hP hd`. Use `⟨fun j => j.elim0, fun a => ?_⟩` and prove the remaining obligations. Establish `hc : P.coeff 0 = 1`.
+
+Rewrite using `[← hd]`. Conclude with `hP`. Rewrite using `[eq_C_of_natDegree_eq_zero hd, hc, C_1, eval_one, Fin.prod_univ_zero]`. Consider the case `succ d ih`. Introduce `P hP hd`.
+
+Break down `subsingleton_or_nontrivial B with hs | hs` into its components or cases. It suffices to derive a contradiction. Establish `h0 : P = 0` using `Polynomial.ext fun n => Subsingleton.elim _ _`. Rewrite `hd` using `[h0, natDegree_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨a0, ha0⟩` from `hB P hP (by rw [hd]; exact Nat.succ_pos d)`. Establish `hroot : (X - C a0) * (P /ₘ (X - C a0)) = P` using `mul_divByMonic_eq_iff_isRoot.mpr ha0`. Establish `hQ : (P /ₘ (X - C a0)).Monic` using `Monic.of_mul_monic_left (monic_X_sub_C a0) (by rw [hroot]; exact hP)`. Establish `hQd : (P /ₘ (X - C a0)).natDegree = d`. Establish `h` using `(monic_X_sub_C a0).natDegree_mul hQ`.
+
+Rewrite `h` using `[hroot, hd, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Take `⟨b', hb'⟩` from `ih _ hQ hQd`. Use `⟨(Fin.cons a0 b' : Fin (d + 1) → B), fun a => ?_⟩` and prove the remaining obligations. Establish `hev : P.eval a = (a - a0) * (P /ₘ (X - C a0)).eval a` using `by conv_lhs => rw [← hroot]`.
+
+Rewrite using `[eval_mul, eval_sub, eval_X, eval_C]`. Rewrite using `[hev, hb' a, Fin.prod_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+-/
 theorem exists_eval_eq_prod_of_natDegree_eq {B : Type} [CommRing B]
     (hB : ∀ p : Polynomial B, p.Monic → 0 < p.natDegree → ∃ a, p.eval a = 0) (d : ℕ) :
     ∀ P : Polynomial B, P.Monic → P.natDegree = d →
@@ -40,6 +53,9 @@ theorem exists_eval_eq_prod_of_natDegree_eq {B : Type} [CommRing B]
       rw [hev, hb' a, Fin.prod_univ_succ]
       simp only [Fin.cons_zero, Fin.cons_succ]
 
+/- English proof (translation)
+The claim follows from `exists_eval_eq_prod_of_natDegree_eq hB P.natDegree P hP rfl`.
+-/
 theorem exists_eval_eq_prod (B : Type) [CommRing B]
     (hB : ∀ p : Polynomial B, p.Monic → 0 < p.natDegree → ∃ a, p.eval a = 0)
     (P : Polynomial B) (hP : P.Monic) :

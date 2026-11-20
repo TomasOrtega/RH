@@ -10,6 +10,19 @@ section hyp
 
 variable {m : ℕ}
 
+/- English proof (translation)
+Use `set A := ‖a (Fin.last m)‖ with hA`. Use `set Bn := ‖b (Fin.last m)‖ with hBn`. Use `set P := ∑ i : Fin m, ‖a i.castSucc‖ * ‖b i.castSucc‖ with hPdef`. Establish `hP0 : 0 ≤ P` using `Finset.sum_nonneg fun i _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)`. Establish `hCS : P ^ 2 ≤ (∑ i : Fin m, ‖a i.castSucc‖ ^ 2) * (∑ i : Fin m, ‖b i.castSucc‖ ^ 2)` using `Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+
+Establish `hsb : 0 ≤ ∑ i : Fin m, ‖b i.castSucc‖ ^ 2` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `hA0 : 0 ≤ A` using `norm_nonneg _`. Establish `hB0 : 0 ≤ Bn` using `norm_nonneg _`. Establish `hBt : t ≤ Bn ^ 2` using `by linarith`. Establish `hP2 : P ^ 2 ≤ A ^ 2 * (Bn ^ 2 - t)` using `hCS.trans (mul_le_mul ha hb hsb (sq_nonneg _))`.
+
+Establish `key : 2 * Bn * P ≤ A * (2 * Bn ^ 2 - t)`. Establish `hR : 0 ≤ A * (2 * Bn ^ 2 - t)` using `mul_nonneg hA0 (by linarith)`. Establish `hL : 0 ≤ 2 * Bn * P` using `by positivity`. Establish `hsq : (2 * Bn * P) ^ 2 ≤ (A * (2 * Bn ^ 2 - t)) ^ 2`. Establish `e1 : (2 * Bn * P) ^ 2 = 4 * Bn ^ 2 * P ^ 2` using `by ring`.
+
+Establish `e2 : (A * (2 * Bn ^ 2 - t)) ^ 2 = 4 * Bn ^ 2 * (A ^ 2 * (Bn ^ 2 - t)) + A ^ 2 * t ^ 2` using `by ring`. Rewrite using `[e1, e2]`. Establish `h4 : 4 * Bn ^ 2 * P ^ 2 ≤ 4 * Bn ^ 2 * (A ^ 2 * (Bn ^ 2 - t))` using `mul_le_mul_of_nonneg_left hP2 (by positivity)`. Use polynomial arithmetic with `[sq_nonneg (A * t)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h1 : A * Bn ≤ ‖a (Fin.last m) * b (Fin.last m) + c‖ + ‖c‖`. Rewrite using `[hA, hBn, ← norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_sub_cancel_right]`. Use `_ ≤ _ := norm_sub_le _ _`.
+
+Establish `h2 : A * Bn - P ≤ ‖a (Fin.last m) * b (Fin.last m) + c‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rev_cs (a b : Fin (m + 1) → ℂ) (c : ℂ) (t : ℝ) (ht : 0 < t)
     (ha : ∑ i : Fin m, ‖a i.castSucc‖ ^ 2 ≤ ‖a (Fin.last m)‖ ^ 2)
     (hb : ∑ i : Fin m, ‖b i.castSucc‖ ^ 2 ≤ ‖b (Fin.last m)‖ ^ 2 - t)
@@ -50,14 +63,28 @@ theorem rev_cs (a b : Fin (m + 1) → ℂ) (c : ℂ) (t : ℝ) (ht : 0 < t)
 
 def dS (m : ℕ) : Fin (m + 1) → ℂ := fun i => if i = Fin.last m then -1 else 1
 
+/- English proof (translation)
+Simplify using `[dS, Fin.castSucc_ne_last]`.
+-/
 theorem dS_cs (i : Fin m) : dS m i.castSucc = 1 := by simp [dS, Fin.castSucc_ne_last]
 
+/- English proof (translation)
+Simplify using `[dS]`.
+-/
 theorem dS_last : dS m (Fin.last m) = -1 := by simp [dS]
 
+/- English proof (translation)
+Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Apply the tactic sequence `congr 1; funext i; unfold dS; split_ifs <;> norm_num`.
+-/
 theorem dS_sq : diagonal (dS m) * diagonal (dS m) = 1 := by
   rw [diagonal_mul_diagonal, ← diagonal_one]
   congr 1; funext i; unfold dS; split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_castSucc, dS_last]`. Simplify using `only [dS_cs, mul_one, Complex.ofReal_sub, Complex.ofReal_sum, Complex.ofReal_pow]`. Establish `e : ∀ w : ℂ, star w * w = ((‖w‖ : ℝ) : ℂ) ^ 2` using `fun w => by`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Rewrite using `[sub_eq_add_neg]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => e _`. Rewrite using `[mul_neg_one, neg_mul, e]`.
+-/
 theorem sum_dS (v : Fin (m + 1) → ℂ) :
     ∑ i, star (v i) * dS m i * v i =
       ((∑ i : Fin m, ‖v i.castSucc‖ ^ 2 - ‖v (Fin.last m)‖ ^ 2 : ℝ) : ℂ) := by
@@ -70,15 +97,26 @@ theorem sum_dS (v : Fin (m + 1) → ℂ) :
   · exact Finset.sum_congr rfl fun i _ => e _
   · rw [mul_neg_one, neg_mul, e]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply, mul_assoc]`.
+-/
 theorem quad_eq (v w : Fin (m + 1) → ℂ) :
     star w ⬝ᵥ (diagonal (dS m) *ᵥ v) = ∑ i, star (w i) * dS m i * v i := by
   simp only [dotProduct, mulVec_diagonal, Pi.star_apply, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hμ]`.
+-/
 theorem quad_unitary (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hμ : μᴴ * diagonal (dS m) * μ = diagonal (dS m)) (v : Fin (m + 1) → ℂ) :
     star (μ *ᵥ v) ⬝ᵥ (diagonal (dS m) *ᵥ (μ *ᵥ v)) = star v ⬝ᵥ (diagonal (dS m) *ᵥ v) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hμ]
 
+/- English proof (translation)
+Establish `h1 : (diagonal (dS m) * μᴴ * diagonal (dS m)) * μ = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hμ, dS_sq]`. Establish `h2 : μ * (diagonal (dS m) * μᴴ * diagonal (dS m)) = 1` using `mul_eq_one_comm.mp h1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, dS_sq, Matrix.mul_one]`. Use `_ = diagonal (dS m) := by rw [h2, Matrix.one_mul]`.
+-/
 theorem row_unitary (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hμ : μᴴ * diagonal (dS m) * μ = diagonal (dS m)) :
     μ * diagonal (dS m) * μᴴ = diagonal (dS m) := by
@@ -91,6 +129,9 @@ theorem row_unitary (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
         simp only [Matrix.mul_assoc, dS_sq, Matrix.mul_one]
     _ = diagonal (dS m) := by rw [h2, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e` using `congrFun (congrFun hμ j) j`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at e`. Rewrite using `[← sum_dS (fun i => μ i j), ← e]`.
+-/
 theorem col_id (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hμ : μᴴ * diagonal (dS m) * μ = diagonal (dS m)) (j : Fin (m + 1)) :
     ((∑ i : Fin m, ‖μ i.castSucc j‖ ^ 2 - ‖μ (Fin.last m) j‖ ^ 2 : ℝ) : ℂ) = dS m j := by
@@ -99,6 +140,11 @@ theorem col_id (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
   simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at e
   rw [← sum_dS (fun i => μ i j), ← e]
 
+/- English proof (translation)
+Establish `e` using `congrFun (congrFun (row_unitary μ hμ) i) i`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at e`. Rewrite using `[← sum_dS (fun j => μ i j), ← e]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem row_id (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hμ : μᴴ * diagonal (dS m) * μ = diagonal (dS m)) (i : Fin (m + 1)) :
     ((∑ j : Fin m, ‖μ i j.castSucc‖ ^ 2 - ‖μ i (Fin.last m)‖ ^ 2 : ℝ) : ℂ) = dS m i := by
@@ -109,10 +155,25 @@ theorem row_id (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
   refine Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Conclude with `h` after adjusting the coercions.
+-/
 theorem real_of_cs {x : ℝ} (h : (x : ℂ) = 1) : x = 1 := by exact_mod_cast h
 
+/- English proof (translation)
+Conclude with `h` after adjusting the coercions.
+-/
 theorem real_of_last {x : ℝ} (h : (x : ℂ) = -1) : x = -1 := by exact_mod_cast h
 
+/- English proof (translation)
+Establish `hrow` using `real_of_last (by rw [row_id μ hμ (Fin.last m), dS_last])`. Establish `hsq : ‖μ i j‖ ^ 2 ≤ ‖μ (Fin.last m) (Fin.last m)‖ ^ 2`. Establish `hrow' : ∀ j0 : Fin m, ‖μ (Fin.last m) j0.castSucc‖ ^ 2 ≤ ‖μ (Fin.last m) (Fin.last m)‖ ^ 2 - 1`. Introduce `j0`. Establish `: ‖μ (Fin.last m) j0.castSucc‖ ^ 2 ≤ ∑ j : Fin m, ‖μ (Fin.last m) j.castSucc‖ ^ 2` using `Finset.single_le_sum (f := fun j : Fin m => ‖μ (Fin.last m) j.castSucc‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ j0)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Break down `Fin.eq_castSucc_or_eq_last j with ⟨j0, rfl⟩ | rfl` into its components or cases. Establish `hcol` using `real_of_cs (by rw [col_id μ hμ j0.castSucc, dS_cs])`. Break down `Fin.eq_castSucc_or_eq_last i with ⟨i0, rfl⟩ | rfl` into its components or cases. Establish `: ‖μ i0.castSucc j0.castSucc‖ ^ 2 ≤ ∑ i : Fin m, ‖μ i.castSucc j0.castSucc‖ ^ 2` using `Finset.single_le_sum (f := fun i : Fin m => ‖μ i.castSucc j0.castSucc‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ i0)`.
+
+Combine the linear relations using `[hrow' j0]`. Combine the linear relations using `[hrow' j0]`. Establish `hcol` using `real_of_last (by rw [col_id μ hμ (Fin.last m), dS_last])`. Break down `Fin.eq_castSucc_or_eq_last i with ⟨i0, rfl⟩ | rfl` into its components or cases. Establish `: ‖μ i0.castSucc (Fin.last m)‖ ^ 2 ≤ ∑ i : Fin m, ‖μ i.castSucc (Fin.last m)‖ ^ 2` using `Finset.single_le_sum (f := fun i : Fin m => ‖μ i.castSucc (Fin.last m)‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ i0)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_rfl`. Conclude with `pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero |>.mp hsq`.
+-/
 theorem entry_le_last (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hμ : μᴴ * diagonal (dS m) * μ = diagonal (dS m)) (i j : Fin (m + 1)) :
     ‖μ i j‖ ≤ ‖μ (Fin.last m) (Fin.last m)‖ := by
@@ -141,6 +202,25 @@ theorem entry_le_last (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
       · exact le_rfl
   exact pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero |>.mp hsq
 
+/- English proof (translation)
+Use `set y := μ *ᵥ z' with hy`. Establish `hyq : ∑ i : Fin m, ‖y i.castSucc‖ ^ 2 ≤ ‖y (Fin.last m)‖ ^ 2`. Establish `e` using `quad_unitary μ hμ z'`. Rewrite `e` using `[quad_eq, quad_eq, sum_dS, sum_dS]`. Establish `e' : ∑ i : Fin m, ‖y i.castSucc‖ ^ 2 - ‖y (Fin.last m)‖ ^ 2 = ∑ i : Fin m, ‖z' i.castSucc‖ ^ 2 - ‖z' (Fin.last m)‖ ^ 2` using `by exact_mod_cast e`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖y (Fin.last m)‖ * T ≤ 2 * ‖z (Fin.last m)‖ * ‖star z ⬝ᵥ (diagonal (dS m) *ᵥ y)‖`. Establish `hb : ∑ i : Fin m, ‖(fun i => -star (z i)) i.castSucc‖ ^ 2 ≤ ‖(fun i => -star (z i)) (Fin.last m)‖ ^ 2 - T`. Simplify using `only [norm_neg, norm_star]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `rev_cs y (fun i => -star (z i)) (∑ i : Fin m, star (z i.castSucc) * y i.castSucc) T hT hyq hb (by` as an intermediate fact. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [norm_mul, norm_neg, norm_star, mul_comm])`. Simplify using `only [norm_neg, norm_star] at this`.
+
+Establish `hζ : star z ⬝ᵥ (diagonal (dS m) *ᵥ y) = y (Fin.last m) * -star (z (Fin.last m)) + ∑ i : Fin m, star (z i.castSucc) * y i.castSucc`. Rewrite using `[quad_eq, Fin.sum_univ_castSucc, dS_last]`. Simplify using `only [dS_cs, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hζ]`.
+
+Conclude with `this`. Establish `h2 : ‖μ (Fin.last m) (Fin.last m)‖ * T' ≤ 2 * ‖z' (Fin.last m)‖ * ‖y (Fin.last m)‖`. Establish `hrow` using `real_of_last (by rw [row_id μ hμ (Fin.last m), dS_last])`. Establish `ha : ∑ j : Fin m, ‖(fun j => μ (Fin.last m) j) j.castSucc‖ ^ 2 ≤ ‖(fun j => μ (Fin.last m) j) (Fin.last m)‖ ^ 2` using `by simp only; linarith`. Establish `hb : ∑ i : Fin m, ‖z' i.castSucc‖ ^ 2 ≤ ‖z' (Fin.last m)‖ ^ 2 - T'` using `le_of_eq hz'`.
+
+Use `rev_cs (fun j => μ (Fin.last m) j) z' (∑ j : Fin m, μ (Fin.last m) j.castSucc * z' j.castSucc) T' hT' ha hb (by` as an intermediate fact. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [norm_mul])`. Establish `hyL : y (Fin.last m) = μ (Fin.last m) (Fin.last m) * z' (Fin.last m) + ∑ j : Fin m, μ (Fin.last m) j.castSucc * z' j.castSucc`.
+
+Rewrite using `[hy, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hyL]`. Conclude with `this`. Establish `h3` using `entry_le_last μ hμ i j`.
+
+Establish `hzL : 0 ≤ ‖z (Fin.last m)‖` using `norm_nonneg _`. Establish `hz'L : 0 ≤ ‖z' (Fin.last m)‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm T T', ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h3 hT'.le) hT.le`.
+
+Use `_ ≤ 2 * ‖z' (Fin.last m)‖ * ‖y (Fin.last m)‖ * T := mul_le_mul_of_nonneg_right h2 hT.le`. Use `_ = 2 * ‖z' (Fin.last m)‖ * (‖y (Fin.last m)‖ * T) := by ring`. Use `_ ≤ 2 * ‖z' (Fin.last m)‖ * (2 * ‖z (Fin.last m)‖ * ‖star z ⬝ᵥ (diagonal (dS m) *ᵥ y)‖) := mul_le_mul_of_nonneg_left h1 (by positivity)`. Use `_ = _ := by ring`.
+-/
 theorem entry_bound (μ : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ)
     (hμ : μᴴ * diagonal (dS m) * μ = diagonal (dS m)) (z z' : Fin (m + 1) → ℂ) (T T' : ℝ) (hT : 0 < T)
     (hT' : 0 < T') (hz : ∑ i : Fin m, ‖z i.castSucc‖ ^ 2 = ‖z (Fin.last m)‖ ^ 2 - T)

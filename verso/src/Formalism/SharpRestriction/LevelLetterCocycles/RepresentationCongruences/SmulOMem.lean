@@ -18,6 +18,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Establish `hc : (((r + padicValNat PD.p r.factorial : ℕ) : ℚ)) ≤ a` using `(hH4 r).trans ha`. Apply `hOv` to reduce the goal to its premises. Rewrite using `[AddValuation.map_mul, Formalism.MainNotions.LiftingTheory.tr_v_pow W a]`. Unfold `Formalism.MainNotions.LiftingTheory.Bd at hs`. Distinguish the cases in `htop : v s = ⊤`.
+
+Rewrite using `[htop, WithTop.add_top]`. Conclude with `le_top`. Take `⟨q, hq⟩` from `WithTop.ne_top_iff_exists.mp htop`. Rewrite `hs`, the goal using `[← hq]`. Establish `hq' : -((r + padicValNat PD.p r.factorial : ℕ) : ℚ) ≤ q` using `WithTop.coe_le_coe.mp hs`.
+
+Rewrite using `[← WithTop.coe_add, ← WithTop.coe_zero]`. Conclude with `WithTop.coe_le_coe.mpr (by linarith)`.
+-/
 theorem int_of_bd (W : LocWach PD LL O v n)
     (hH4 : ∀ r : ℕ, ((r + padicValNat PD.p r.factorial : ℕ) : ℚ) ≤ r * PD.p / ((PD.p : ℚ) - 1))
     (hOv : ∀ x : LL, 0 ≤ v x → ∃ y : O, algebraMap O LL y = x)
@@ -36,19 +43,87 @@ theorem int_of_bd (W : LocWach PD LL O v n)
     rw [← WithTop.coe_add, ← WithTop.coe_zero]
     exact WithTop.coe_le_coe.mpr (by linarith)
 
+/- English proof (translation)
+Conclude with `⟨Formalism.MainNotions.LiftingTheory.invariant_smul_mem_invariants' W T a ha x hx.1, (W.Nl T i).smul_mem a hx.2⟩`.
+-/
 theorem smulA_mem (W : LocWach PD LL O v n) {T : LocLat G Qp LL O} {i : ZMod n} {a : LetA O n}
     (ha : a ∈ W.AΔ) {x : W.DD T} (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (a • x) := by
   exact ⟨Formalism.MainNotions.LiftingTheory.invariant_smul_mem_invariants' W T a ha x hx.1, (W.Nl T i).smul_mem a hx.2⟩
 
+/- English proof (translation)
+Conclude with `⟨(W.NΔ T).smul_mem a hx.1, ((W.Nl T i).restrictScalars O).smul_mem a hx.2⟩`.
+-/
 theorem smulO_mem (W : LocWach PD LL O v n) {T : LocLat G Qp LL O} {i : ZMod n} (a : O)
     {x : W.DD T} (hx : Formalism.MainNotions.LiftingTheory.InNΔi W T i x) : Formalism.MainNotions.LiftingTheory.InNΔi W T i (a • x) := by
   exact ⟨(W.NΔ T).smul_mem a hx.1, ((W.Nl T i).restrictScalars O).smul_mem a hx.2⟩
 
+/- English proof (translation)
+Conclude with `⟨(W.NΔ T).sum_mem fun j hj => (hf j hj).1, (W.Nl T i).sum_mem fun j hj => (hf j hj).2⟩`.
+-/
 theorem sum_mem' (W : LocWach PD LL O v n) {T : LocLat G Qp LL O} {i : ZMod n} {ι : Type*} (s : Finset ι)
     (f : ι → W.DD T) (hf : ∀ j ∈ s, Formalism.MainNotions.LiftingTheory.InNΔi W T i (f j)) :
     Formalism.MainNotions.LiftingTheory.InNΔi W T i (∑ j ∈ s, f j) := by
   exact ⟨(W.NΔ T).sum_mem fun j hj => (hf j hj).1, (W.Nl T i).sum_mem fun j hj => (hf j hj).2⟩
 
+/- English proof (translation)
+Take `⟨c₀, z₁, hz₁, hn₁eq⟩` from `Formalism.MainNotions.N.FrobeniusPowerSeries.DYAa.coord_mod hR hb₁.1 hn₁`. Take `⟨-, -, -, hH4, hH5⟩` from `hH hcase T hT i`. Establish `hBd : ∀ k r m, Formalism.MainNotions.LiftingTheory.Bd W r (sol₁ k r m)` using `(hH5 d b₁ hb₁.1 sol₁ hb₁.2).1`. Establish `hp5 : (5 : ℝ) ≤ PD.p` using `by exact_mod_cast hl5`. Establish `hp5q : (5 : ℚ) ≤ PD.p` using `by exact_mod_cast hl5`.
+
+Take `⟨R₀, hR₀⟩ : ∃ R₀ : ℕ, R₀ = ⌈(Bq : ℝ) / ((PD.p : ℝ) - 1)⌉₊` from `⟨_, rfl⟩`. Establish `hR₀le : (Bq : ℝ) / ((PD.p : ℝ) - 1) ≤ R₀` using `hR₀ ▸ Nat.le_ceil _`. Establish `hR₀lt : (R₀ : ℝ) < (Bq : ℝ) / ((PD.p : ℝ) - 1) + 1` using `hR₀ ▸ Nat.ceil_lt_add_one (div_nonneg (Nat.cast_nonneg _) (by linarith))`. Establish `hBqR : (1 : ℝ) ≤ Bq` using `by exact_mod_cast hBq`. Establish `hBR' : (Bq : ℝ) ≤ ((PD.p : ℝ) - 1) * R₀`.
+
+Rewrite using `[div_le_iff₀ (by linarith)] at hR₀le; linarith`. Establish `hBR : Bq ≤ (PD.p - 1) * R₀`. Establish `h2 : ((PD.p - 1 : ℕ) : ℝ) = (PD.p : ℝ) - 1` using `by rw [Nat.cast_sub (by omega)]; simp`. Establish `: (Bq : ℝ) ≤ ((PD.p - 1 : ℕ) : ℝ) * (R₀ : ℝ)` using `by rw [h2]; exact hBR'`. Conclude with `this` after adjusting the coercions.
+
+Establish `hR1 : 1 ≤ R₀`. Break down `Nat.eq_zero_or_pos R₀ with h0 | h0` into its components or cases. Rewrite `hBR'` using `[h0]`. Simplify using `at hBR'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h0`. Establish `hys : ∀ k r m, r < R₀ → ∃ o : O, algebraMap O LL o = (PD.p : LL) ^ (2 * R₀) * sol₁ k r m`. Introduce `k r m hr`. Apply `int_of_bd W hH4 hOv (hBd k r m)` to reduce the goal to its premises. Establish `hr' : (r : ℚ) + 1 ≤ R₀` using `by exact_mod_cast hr`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]`. Use `push_cast`. Establish `h1 : (r : ℚ) * PD.p ≤ R₀ * PD.p` using `mul_le_mul_of_nonneg_right (by linarith) (by linarith)`. Establish `h2 : (0 : ℚ) ≤ R₀ * (PD.p - 2)` using `mul_nonneg (by positivity) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `choose! ys hys' using hys`. Use `set yy : ℕ → Fin d → O := fun r m => ∑ k, c₀ k * ys k r m with hyydef`. Establish `hyy : ∀ r < R₀, ∀ m, algebraMap O LL (yy r m) = (PD.p : LL) ^ (2 * R₀) * ∑ k, algebraMap O LL (c₀ k) * sol₁ k r m`. Introduce `r hr m`. Simplify using `only [hyydef, map_sum, map_mul, hys' _ _ _ hr, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hyy0 : ∀ m, yy 0 m = (PD.p : O) ^ (2 * R₀) * c₀ m`. Introduce `m`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hyy 0 (by omega) m, map_mul, map_pow, map_natCast]`.
+
+Use `congr 1`. Simplify using `[(hb₁.2 _).2, Pi.single_apply]`. Establish `hX : ∀ k, ∃ x, Formalism.MainNotions.LiftingTheory.InNΔi W T i x ∧ W.γ T (∑ r ∈ Finset.range R₀, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b₁ (ys k r)) - (∑ r ∈ Finset.range R₀, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b₁ (ys k r)) = W.π₀ ^ R₀ • x`. Introduce `k`. Take `⟨x, hx, hxe⟩` from `(hb₁.2 k).1 R₀ (2 * R₀) (ys k) (fun r hr m => hys' k r m hr)`.
+
+Conclude with `⟨x, hx, by rw [← hxe, smul_zero, sub_zero]⟩`. Use `choose xk hxk hxke using hX`. Establish `hvec : ∀ y, Formalism.MainNotions.LiftingTheory.InNΔi W T i (Formalism.MainNotions.LiftingTheory.vecB W T b₁ y)` using `fun y => sum_mem' W _ _ fun m _ => smulO_mem W _ (hb₁.1.1 m)`. Establish `hπ₀` using `Formalism.MainNotions.N.FrobeniusPowerSeries.GS.π₀_mem W`. Establish `hq` using `Formalism.MainNotions.N.FrobeniusPowerSeries.GS.qA_mem W`.
+
+Establish `hXeq : ∑ r ∈ Finset.range R₀, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b₁ (yy r) = ∑ k, c₀ k • ∑ r ∈ Finset.range R₀, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b₁ (ys k r)`. Simplify using `only [Formalism.MainNotions.LiftingTheory.vecB, hyydef, Finset.smul_sum, Finset.sum_smul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `smul_comm _ _ _`. Take `⟨wv, hwA, -, hw⟩` from `Formalism.MainNotions.N.FrobeniusPowerSeries.DYAa.w_mem hR`.
+
+Establish `hLA : lA W ∈ W.AΔ` using `by show ((PD.p : ℕ) : LetA O n) ∈ W.AΔ`. Conclude with `Subalgebra.natCast_mem _ _`. Establish `hLc : ∀ j : ℕ, algebraMap O (LetA O n) ((PD.p : O) ^ j) = lA W ^ j`. Introduce `j`. Rewrite using `[map_pow, map_natCast]`.
+
+Both sides reduce to the same expression. Establish `hos : ∀ r' k m, r' + 1 < R₀ → k ≤ r' → k + (PD.p - 1) * (r' + 1) < Bq → ∃ o : O, o * (PD.p : O) ^ (2 * R₀) = (PD.p : O) ^ (R₀ + (r' - k)) * yy (r' + 1) m`. Introduce `r' k m hr hk hkB`. Establish `hint : ∀ k', ∃ o' : O, algebraMap O LL o' = (PD.p : LL) ^ (R₀ + (r' - k)) * sol₁ k' (r' + 1) m`. Introduce `k'`.
+
+Apply `int_of_bd W hH4 hOv (hBd k' (r' + 1) m)` to reduce the goal to its premises. Establish `he : ((PD.p - 1 : ℕ) : ℚ) = (PD.p : ℚ) - 1` using `by rw [Nat.cast_sub (by omega)]; simp`. Establish `hkB' : (k : ℚ) + ((PD.p : ℚ) - 1) * (r' + 1) + 1 ≤ Bq`. Establish `: (k + (PD.p - 1) * (r' + 1) + 1 : ℕ) ≤ Bq` using `hkB`. Use `(Nat.cast_le (α := ℚ)).2 this` as an intermediate fact.
+
+Move the coercions through the operations in `[he] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBRq : (Bq : ℚ) ≤ ((PD.p : ℚ) - 1) * R₀` using `by exact_mod_cast hBR'`. Establish `hkr : (k : ℚ) ≤ r'` using `by exact_mod_cast hk`. Establish `hsub : (((r' - k : ℕ)) : ℚ) = r' - k` using `by rw [Nat.cast_sub hk]`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]`. Move the coercions through the operations in `[hsub]`. Use polynomial arithmetic with `[mul_nonneg (show (0:ℚ) ≤ (PD.p : ℚ) - 2 by linarith) (show (0:ℚ) ≤ r' - k by linarith)]`. Use `choose o' ho' using hint`. Use `⟨∑ k', c₀ k' * o' k', hinj ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_pow, map_natCast, map_sum, ho', hyydef, hys' _ _ _ hr, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k' _ => by ring`. Use `choose! o ho using hos`. Use `set e := PD.p - 1 with he`. Use `set L := lA W with hL`.
+
+Use `set cO := algebraMap O (LetA O n) with hcO`. Take `⟨Y, hYdef⟩ : ∃ Y : Fin d → LetA O n, Y = fun m => cO ((PD.p : O) ^ R₀ * c₀ m) + ∑ r' ∈ Finset.range (R₀ - 1), wv ^ (r' + 1) * ∑ k ∈ (Finset.range (r' + 1)).filter (fun k => k + e * (r' + 1) < Bq), (-1 : LetA O n) ^ (r' - k) * (r'.choose k : LetA O n) * W.π₀ * qA W ^ (k + e * (r' …` from `⟨_, rfl⟩`. Take `⟨Zc, hZdef⟩ : ∃ Zc : Fin d → LetA O n, Zc = fun m => ∑ r' ∈ Finset.range (R₀ - 1), wv ^ (r' + 1) * cO ((PD.p : O) ^ R₀ * yy (r' + 1) m) * ∑ k ∈ (Finset.range (r' + 1)).filter (fun k => ¬ k + e * (r' + 1) < Bq), (-1 : LetA O n) ^ (r' - k) * (r'.choose k : LetA O n) * L ^ (r' - k) …` from `⟨_, rfl⟩`. Establish `hY : ∀ m, Y m ∈ W.AΔ`. Introduce `m`.
+
+Rewrite using `[hYdef]`. Use `add_mem (Subalgebra.algebraMap_mem _ _) (sum_mem fun r' _ => mul_mem (pow_mem hwA _) (sum_mem fun k _ => mul_mem (mul_mem (mul_mem (mul_mem (pow_mem (neg_mem (one_mem _)) _) (Subalgebra.natCast_mem _ _)) hπ₀) (pow_mem hq _)) (Subalgebra.algebraMap_mem _ _)))` and prove the remaining obligations. Establish `hZ : ∀ m, Zc m ∈ W.AΔ`. Introduce `m`. Rewrite using `[hZdef]`.
+
+Use `sum_mem fun r' _ => mul_mem (mul_mem (pow_mem hwA _) (Subalgebra.algebraMap_mem _ _)) (sum_mem fun k _ => mul_mem (mul_mem (mul_mem (pow_mem (neg_mem (one_mem _)) _) (Subalgebra.natCast_mem _ _)) (pow_mem hLA _)) (pow_mem hq _))` and prove the remaining obligations. Establish `hterm : ∀ r' ∈ Finset.range (R₀ - 1), ∀ m, L ^ R₀ * ((W.φA W.π₀) ^ (r' + 1) * cO (yy (r' + 1) m)) = L ^ (2 * R₀) * (wv ^ (r' + 1) * ∑ k ∈ (Finset.range (r' + 1)).filter (fun k => k + e * (r' + 1) < Bq), (-1 : LetA O n) ^ (r' - k) * (r'.choose k : LetA O n) * W.π₀ * qA W ^ (k + e …`. Introduce `r' hr' m`. Establish `hr'' : r' + 1 < R₀` using `by simp only [Finset.mem_range] at hr'; omega`. Establish `e1 : (wv * W.π₀ * qA W ^ e) ^ (r' + 1) = wv ^ (r' + 1) * (W.π₀ ^ (r' + 1) * qA W ^ (e * (r' + 1)))`.
+
+Rewrite using `[mul_pow, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit` using `Formalism.MainNotions.N.FrobeniusPowerSeries.DYAb.split W.π₀ (qA W) L rfl e Bq r'`. Establish `hlow : L ^ R₀ * wv ^ (r' + 1) * cO (yy (r' + 1) m) * (∑ k ∈ (Finset.range (r' + 1)).filter (fun k => k + e * (r' + 1) < Bq), (-1 : LetA O n) ^ (r' - k) * (r'.choose k : LetA O n) * L ^ (r' - k) * W.π₀ * qA W ^ (k + e * (r' + 1))) = L ^ (2 * R₀) * (wv ^ (r' + 1) * ∑ k ∈ (Finset.ra …`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hk`. Establish `hoL` using `congrArg cO (ho r' k m hr'' (by omega) hk.2)`. Simplify using `only [map_mul, map_pow, map_natCast] at hoL`. Establish `hLp : ((PD.p : ℕ) : LetA O n) = L` using `rfl`.
+
+Rewrite `hoL` using `[hLp]`. Take the linear combination `(-(wv ^ (r' + 1) * (-1 : LetA O n) ^ (r' - k) * (r'.choose k : LetA O n) * W.π₀ * qA W ^ (k + e * (r' + 1)))) * hoL`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw, e1, hsplit]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by`. Rewrite using `[hlow, map_mul, hLc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hid : ∀ m, L ^ (2 * R₀) * Y m + (W.π₀ * qA W ^ Bq) * Zc m = L ^ R₀ * ∑ r ∈ Finset.range R₀, (W.φA W.π₀) ^ r * cO (yy r m)`. Introduce `m`.
+
+Rewrite using `[show Finset.range R₀ = Finset.range ((R₀ - 1) + 1) by rw [Nat.sub_add_cancel hR1], Finset.sum_range_succ', pow_zero, one_mul, hyy0, mul_add, Finset.mul_sum, Finset.sum_congr rfl fun r' hr' => hterm r' hr' m, Finset.sum_add_distrib, hYdef, hZdef]`. Simplify using `only [mul_add, Finset.mul_sum, map_mul, hLc]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨c₀, z₁, R₀, R₀, 2 * R₀, yy, ∑ r ∈ Finset.range R₀, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b₁ (yy r), ∑ k, c₀ k • xk k, ∑ m, Y m • W.φD T (b₁ m), ∑ m, Zc m • W.φD T (b₁ m), hz₁, hn₁eq, hBR, hR1, hR₀lt.le, hyy, rfl, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sum_mem' W _ _ fun r _ => smulA_mem W (pow_mem hπ₀ r) (hvec _)`.
+
+Conclude with `sum_mem' W _ _ fun k _ => smulO_mem W _ (hxk k)`. Rewrite using `[hXeq, map_sum, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub, hxke k]`. Conclude with `smul_comm _ _ _`.
+
+Use `⟨_, AddSubgroup.sum_mem _ fun m _ => AddSubgroup.subset_closure ⟨Y m, hY m, b₁ m, hb₁.1.1 m, by rw [pow_one]⟩, by rw [one_smul]⟩` and prove the remaining obligations. Use `⟨_, AddSubgroup.sum_mem _ fun m _ => AddSubgroup.subset_closure ⟨Zc m, hZ m, b₁ m, hb₁.1.1 m, by rw [pow_one]⟩, by rw [one_smul]⟩` and prove the remaining obligations. Establish `hφX : W.φD T (∑ r ∈ Finset.range R₀, W.π₀ ^ r • Formalism.MainNotions.LiftingTheory.vecB W T b₁ (yy r)) = ∑ m, (∑ r ∈ Finset.range R₀, (W.φA W.π₀) ^ r * cO (yy r m)) • W.φD T (b₁ m)`. Simplify using `only [map_sum, Formalism.MainNotions.N.FrobeniusPowerSeries.DYAa.phi_smul, Formalism.MainNotions.LiftingTheory.vecB, map_pow, map_smul, Finset.smul_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (LetA O n) (yy r m), smul_smul]`. Rewrite using `[hφX, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, smul_smul, ← add_smul, hid m]`.
+-/
 theorem build [IsDomain O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hR : Formalism.MainNotions.N.FrobeniusPowerSeries.GS.RD W) (hH : Formalism.MainNotions.LiftingTheory.coreH W)
     (hOv : ∀ x : LL, 0 ≤ v x → ∃ y : O, algebraMap O LL y = x)

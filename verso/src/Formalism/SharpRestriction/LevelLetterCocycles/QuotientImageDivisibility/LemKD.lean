@@ -13,6 +13,13 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `l _ K LL hA' h5`. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Use `haveI := Formalism.MainNotions.UnusedSlot80.neZero_finrank_max_unramified K`. Establish `h1` using `hA.1 l K 1 LL hA'.2.2`. Establish `h11` using `hA.2.2.2.2.2.2.2.2.2.2.1 l K LL`.
+
+Establish `hs` using `(HW l).W_s K 1 LL hA'.2.2`. Establish `hp : ((D.loc l).PD K).p ≠ 2` using `by rw [(D.loc l).PD_p]; exact hA'.2.1`. Establish `hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F` using `fun l _ K s LL h => (hA.1 l K s LL h).2.2.2.2.2.2.2.2.1`. Establish `hring : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP ((HW l).W K 1 LL hA'.2.2)` using `(((h1.2.2.2.2.2.2.2.2.1 _ (Formalism.MainNotions.LiftingTheory.gen_one_crys ((HW l).W K 1 LL hA'.2.2))) hs hp).2.2 (Formalism.MainNotions.UnusedSlot80.finrank_K0_eq_one_of_le_Kur hA'.1)).1`. Establish `tie` using `((Cm l).C K 1 LL hA'.2.2).tie`.
+
+Take `⟨hN, hAg⟩` from `gam_of_tie _ hs tie`. Conclude with `lemK_of _ inferInstance (Formalism.MainNotions.UnusedSlot80.BCF.isFrac_OL LL) h1.1 h1.2.2.1 (hL l K LL hA' h5) h1.2.2.2.2.1 h11.2.2 hring hN hAg (gamΔ_of_tie _ tie) (ptTrans_rec D HW F hP9 l K LL hA' h5)`.
+-/
 theorem lemK_D (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK : ℝ) (hA : Formalism.MainNotions.RamifiedCoefficientChains.admitted D HW F Cm CR CA CB CK)
     (hL : Formalism.MainNotions.UnusedSlot80.LevCoeff D HW F) :

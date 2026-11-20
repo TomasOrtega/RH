@@ -48,15 +48,27 @@ variable {R S : Type} [CommRing R] [CommRing S]
 
 abbrev mapGL (e : R ≃+* S) (n : ℕ) : GL (Fin n) R →* GL (Fin n) S := GeneralLinearGroup.map e.toRingHom
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[mapGL]`.
+-/
 theorem mapGL_symm_mapGL (e : R ≃+* S) (n : ℕ) (g : GL (Fin n) R) : mapGL e.symm n (mapGL e n g) = g := by
   ext a b; simp [mapGL]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[mapGL]`.
+-/
 theorem mapGL_mapGL_symm (e : R ≃+* S) (n : ℕ) (g : GL (Fin n) S) : mapGL e n (mapGL e.symm n g) = g := by
   ext a b; simp [mapGL]
 
+/- English proof (translation)
+Introduce `g` and use `⟨_, mapGL_mapGL_symm e n g⟩`.
+-/
 theorem mapGL_surjective (e : R ≃+* S) (n : ℕ) : Function.Surjective (mapGL e n) :=
   fun g => ⟨_, mapGL_mapGL_symm e n g⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_map (continuous_id.matrix_map he)`.
+-/
 theorem continuous_mapGL [TopologicalSpace R] [TopologicalSpace S] (e : R ≃+* S) (he : Continuous e) (n : ℕ) :
     Continuous (mapGL e n) :=
   Units.continuous_map (continuous_id.matrix_map he)
@@ -73,6 +85,9 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
 def transportFun (i : k ≃+* k') (hi' : Continuous i.symm) (x : IrrGL k) : IrrGL k' :=
   ⟨x.1, (pullRep (mapGL i.symm x.1) (continuous_mapGL i.symm hi' x.1) (mapGL_surjective i.symm x.1) x.2.rep).cl⟩
 
+/- English proof (translation)
+Use `congrArg (Sigma.mk x.1) ((IrrRep.cl_eq_iff.2 ?_).trans x.2.cl_rep)` and prove the remaining obligations. Take `⟨ψ⟩` from `IrrRep.nonempty_equiv_rep (pullRep (mapGL i.symm x.1) (continuous_mapGL i.symm hi' x.1) (mapGL_surjective i.symm x.1) x.2.rep)`. Conclude with `⟨(compEquiv ψ (mapGL i.symm.symm x.1)).trans (compCompEquiv x.2.rep.ρ (mapGL i.symm x.1) (mapGL i.symm.symm x.1) fun g => mapGL_symm_mapGL i x.1 g)⟩`.
+-/
 theorem transportFun_left (i : k ≃+* k') (hi : Continuous i) (hi' : Continuous i.symm) (x : IrrGL k) :
     transportFun i.symm (by simpa using hi) (transportFun i hi' x) = x := by
   refine congrArg (Sigma.mk x.1) ((IrrRep.cl_eq_iff.2 ?_).trans x.2.cl_rep)
@@ -81,6 +96,13 @@ theorem transportFun_left (i : k ≃+* k') (hi : Continuous i) (hi' : Continuous
   exact ⟨(compEquiv ψ (mapGL i.symm.symm x.1)).trans
     (compCompEquiv x.2.rep.ρ (mapGL i.symm x.1) (mapGL i.symm.symm x.1) fun g => mapGL_symm_mapGL i x.1 g)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, π, π', e, rfl, rfl, he⟩`. Use `congrArg (Sigma.mk n) (IrrRep.cl_eq_iff.2 ?_)` and prove the remaining obligations. Take `⟨ψ⟩` from `IrrRep.nonempty_equiv_rep π`. Use `⟨(compEquiv ψ (mapGL i.symm n)).trans (.mk e fun g => LinearMap.ext fun v => ?_)⟩` and prove the remaining obligations.
+
+Use `he (mapGL i.symm n g) v` as an intermediate fact. Rewrite `this` using `[show GeneralLinearGroup.map i.toRingHom (mapGL i.symm n g) = g from mapGL_mapGL_symm i n g]`. Simplify using `using this`. Introduce and unpack `rfl`. Use `⟨x.1, x.2.rep, pullRep (mapGL i.symm x.1) (continuous_mapGL i.symm hi' x.1) (mapGL_surjective i.symm x.1) x.2.rep, LinearEquiv.refl ℂ _, congrArg (Sigma.mk x.1) x.2.cl_rep.symm, rfl, fun g v => ?_⟩` and prove the remaining obligations.
+
+Use `show x.2.rep.ρ g v = x.2.rep.ρ (mapGL i.symm x.1 (mapGL i x.1 g)) v`. Rewrite using `[mapGL_symm_mapGL]`.
+-/
 theorem repRel_iff (i : k ≃+* k') (hi' : Continuous i.symm) (x : IrrGL k) (x' : IrrGL k') :
     RepRel i x x' ↔ transportFun i hi' x = x' := by
   constructor
@@ -98,6 +120,9 @@ theorem repRel_iff (i : k ≃+* k') (hi' : Continuous i.symm) (x : IrrGL k) (x' 
     show x.2.rep.ρ g v = x.2.rep.ρ (mapGL i.symm x.1 (mapGL i x.1 g)) v
     rw [mapGL_symm_mapGL]
 
+/- English proof (translation)
+Establish `hi2 : Continuous i.symm.symm` using `by simpa using hi`. Use `⟨⟨transportFun i hi', transportFun i.symm hi2, fun x => transportFun_left i hi hi' x, fun y => ?_⟩, repRel_iff i hi', fun x => rfl⟩` and prove the remaining obligations. Use `transportFun_left i.symm hi' hi2 y` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_transport (i : k ≃+* k') (hi : Continuous i) (hi' : Continuous i.symm) :
     ∃ T : IrrGL k ≃ IrrGL k', (∀ x x', RepRel i x x' ↔ T x = x') ∧ ∀ x, (T x).1 = x.1 := by
   have hi2 : Continuous i.symm.symm := by simpa using hi
@@ -111,6 +136,9 @@ end GlobalTheory.FieldTransport
 
 open GlobalTheory.FieldTransport in
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi`. Conclude with `exists_transport i hi (GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi).1`.
+-/
 theorem GlobalTheory.transport_irrGL_bijective : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → ∃ T : IrrGL k ≃ IrrGL k', (∀ x x', RepRel i x x' ↔ T x = x') ∧ ∀ x, (T x).1 = x.1 := by
   intro k k' _ _ _ _ _ _ _ _ _ _ i hi
   exact exists_transport i hi (GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation k k' i hi).1

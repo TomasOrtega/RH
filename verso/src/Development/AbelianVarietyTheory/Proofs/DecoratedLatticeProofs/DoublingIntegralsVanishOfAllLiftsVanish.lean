@@ -26,6 +26,15 @@ namespace GlobalTheory.Core.Rk.Kill
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hu.continuousOn`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hg`. Use `push_neg at hg`. Establish `hopen : IsOpen {x | C < ‖u x‖}` using `isOpen_lt continuous_const hu.norm`.
+
+Establish `hpos : 0 < m {x | C < ‖u x‖}` using `hopen.measure_pos m ⟨g, hg⟩`. Establish `hnull : m {x | C < ‖u x‖} = 0`. Establish `hcov` using `hX.ae_covers`. Rewrite `hcov` using `[ae_iff]`. Use `measure_mono_null (fun x hx => ?_) hcov` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_setOf_eq, not_exists]`. Introduce `γ hγ`. Establish `h1` using `hC _ (hXK hγ)`. Rewrite `h1` using `[Subgroup.smul_def, smul_eq_mul, hi _ γ.2]`. Conclude with `absurd h1 (not_le.2 hx)`.
+
+Conclude with `hpos.ne' hnull`.
+-/
 theorem exists_bound_of_fundamentalDomain {A : HSp D} {m : Measure (GA D A)} [m.IsHaarMeasure] {X K : Set (GA D A)}
     (hX : IsFundamentalDomain (GQ A) X m) (hK : IsCompact K) (hXK : X ⊆ K) {u : GA D A → ℂ} (hu : Continuous u)
     (hi : ∀ γ ∈ GQ A, ∀ g, u (γ * g) = u g) : ∃ C : ℝ, ∀ g, ‖u g‖ ≤ C := by
@@ -46,6 +55,9 @@ theorem exists_bound_of_fundamentalDomain {A : HSp D} {m : Measure (GA D A)} [m.
     exact absurd h1 (not_le.2 hx)
   exact hpos.ne' hnull
 
+/- English proof (translation)
+Introduce `γ hγ g` and use `by have e : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h) := by simp simp only [thetaKO] rw [e, map_mul, Module.End.mul_apply] exact hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ f hf)`.
+-/
 theorem thetaKO_rat {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (h : GA D T) :
     ∀ γ ∈ GQ S, ∀ g, thetaKO om (γ * g) h f = thetaKO om g h f := fun γ hγ g => by
@@ -54,11 +66,45 @@ theorem thetaKO_rat {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (A
   rw [e, map_mul, Module.End.mul_apply]
   exact hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ f hf)
 
+/- English proof (translation)
+The claim follows from `(hom.om_cont f hf 0).comp (continuous_id.prodMk continuous_const)`.
+-/
 theorem continuous_thetaKO {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (h : GA D T) :
     Continuous fun g => thetaKO om g h f :=
   (hom.om_cont f hf 0).comp (continuous_id.prodMk continuous_const)
 
+/- English proof (translation)
+Introduce `D ψ A W χA χW om omh hsig hpos hom homh m hm u hu hui hno φ hφ h`. Use `haveI := hm`. Take `⟨-, X, K, hXm, hX, hK, hXK⟩` from `GlobalTheory.T.definite_unitary_quotient_compact_fundamentalDomain D A hsig hpos m hm`. Establish `hTC` using `GlobalTheory.T.doublingMap_thetaIdentity_any_weilData D ψ A W χA χW om omh hom homh`. Take `⟨C, hC⟩` from `exists_bound_of_fundamentalDomain hX hK hXK hu hui`.
+
+Establish `hχ : IsHeckeChar D χW` using `hom.hecT`. Establish `hχi : IsHeckeChar D χW⁻¹` using `⟨continuous_inv.comp hχ.1, fun x => by rw [MonoidHom.inv_apply, hχ.2 x, inv_one]⟩`. Establish `hEc : Continuous fun g => thetaKO omh g h φ` using `continuous_thetaKO homh hφ h`. Establish `hEi : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (dblSp A)) fun g => thetaKO omh g h φ` using `thetaKO_rat homh hφ h`. Establish `hcu : Continuous fun g => conj (u g)` using `Complex.continuous_conj.comp hu`.
+
+Establish `hcui : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ A) fun g => conj (u g)` using `fun γ hγ g => by`. Simplify using `only [hui γ hγ g]`. Establish `hFc` using `Eis.continuous_dblIntegrand (V := A) hχi hEc hcu hcu`. Establish `hFi` using `Eis.leftInv_dblIntegrand (V := A) hχi hEi hcui hcui`. Establish `hFint : IntegrableOn (Eis.dblIntegrand A χW⁻¹ (fun g => thetaKO omh g h φ) (fun g => conj (u g)) (fun g => conj (u g))) (X ×ˢ X) (m.prod m)` using `(hFc.continuousOn.integrableOn_compact (hK.prod hK)).mono_set (Set.prod_mono hXK hXK)`.
+
+Establish `hconv` using `(Eis.dblConv_iff hFi hFc.measurable hX).2 hFint`. Use `show Eis.dblInt A χW⁻¹ m (fun g => thetaKO omh g h φ) (fun g => conj (u g)) (fun g => conj (u g)) = 0`. Rewrite using `[(hconv.dblInt_eq hX).2, ← Measure.prod_restrict]`. Use `haveI : IsFiniteMeasure (m.restrict X) := ⟨by rw [Measure.restrict_apply_univ]; exact (measure_mono hXK).trans_lt hK.measure_lt_top⟩`. Use `set μ : Measure (GA D A × GA D A) := (m.restrict X).prod (m.restrict X) with hμ`.
+
+Use `set c : GA D A × GA D A → ℂ := fun g => u g.1 * conj (u g.2) * (χW (detA A g.2) : ℂ) with hc`. Use `set p : GA D A × GA D A → GA D (dblSp A) × GA D W := fun g => (io A g, h) with hp`. Establish `hint : ∀ G : GA D A × GA D A → ℂ, Continuous G → Integrable G μ` using `fun G hG => by`. Rewrite using `[hμ, Measure.prod_restrict]`. Conclude with `(hG.continuousOn.integrableOn_compact (hK.prod hK)).mono_set (Set.prod_mono hXK hXK)`.
+
+Establish `hFeq : ∀ g, Eis.dblIntegrand A χW⁻¹ (fun g => thetaKO omh g h φ) (fun g => conj (u g)) (fun g => conj (u g)) g = c g * omh (p g) φ 0` using `fun g => by`. Simplify using `only [Eis.dblIntegrand, hc, hp, thetaKO, MonoidHom.inv_apply, Circle.coe_inv, inv_inv, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hFeq]`. Establish `hcc : Continuous c` using `((hu.comp continuous_fst).mul (Complex.continuous_conj.comp (hu.comp continuous_snd))).mul (continuous_subtype_val.comp (hχ.1.comp (Eis.continuous_detA.comp continuous_snd)))`.
+
+Establish `hcb : ∀ g, ‖c g‖ ≤ C * C` using `fun g => by`. Simplify using `only [hc, norm_mul, Complex.norm_conj, Circle.norm_coe, mul_one]`. Conclude with `mul_le_mul (hC _) (hC _) (norm_nonneg _) ((norm_nonneg _).trans (hC g.1))`. Establish `hpc : Continuous p` using `(continuous_io A).prodMk continuous_const`. Establish `hK' : IsCompact (p '' (K ×ˢ K))` using `(hK.prod hK).image hpc`.
+
+Establish `hae : ∀ᵐ x ∂μ, p x ∈ p '' (K ×ˢ K)`. Rewrite using `[hμ, Measure.prod_restrict]`. Use `filter_upwards [ae_restrict_mem (hXm.prod hXm)] with x hx`. Conclude with `⟨x, Set.prod_mono hXK hXK hx, rfl⟩`. Use `set M : Submodule ℂ (WO (dblSp A) W → ℂ) := Submodule.span ℂ {φ | ∃ f₁ f₂, IsThetaFunO ψ A W f₁ ∧ IsThetaFunO ψ A W f₂ ∧ φ = delta A W f₁ f₂} with hM`.
+
+Establish `h83 : (∀ g ∈ M, IsThetaFunO ψ (dblSp A) W g) ∧ (∀ g ∈ M, ∀ w, heisO ψ (dblSp A) W w g ∈ M) ∧ ∀ f, IsThetaFunO ψ (dblSp A) W f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit M f` using `GlobalTheory.T.doublingMap_span_dense_heisenbergStable D ψ A W hom.std`. Take `⟨hMθ, hMh, hMlim⟩` from `h83`. Establish `hintθ : ∀ g, IsThetaFunO ψ (dblSp A) W g → Integrable (fun x => c x * omh (p x) g 0) μ` using `fun g hg => hint _ (hcc.mul ((homh.om_cont g hg 0).comp hpc))`. Establish `hup : ∀ f, IsThetaFunO ψ A W f → ∫ g, thetaKO om g h f * u g ∂(m.restrict X) = 0` using `fun f hf => by`. Establish `hinv : ∀ γ ∈ GQ A, ∀ g, thetaKO om (γ * g) h f * u (γ * g) = thetaKO om g h f * u g` using `fun γ hγ g => by`.
+
+Rewrite using `[thetaKO_rat hom hf h γ hγ g, hui γ hγ g]`. Rewrite using `[← GlobalTheory.ChainOnto.integral_autMeasure_eq_setIntegral D A m X hm hX (fun g => thetaKO om g h f * u g) hinv ((continuous_thetaKO hom hf h).mul hu).aestronglyMeasurable]`. Conclude with `hno f hf h`. Establish `hkill : ∀ g ∈ M, ∫ x, c x * omh (p x) g 0 ∂μ = 0`. Introduce `g hg`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f₁, f₂, h₁, h₂, rfl⟩` from `hx`. Establish `e : ∀ x : GA D A × GA D A, c x * omh (p x) (delta A W f₁ f₂) 0 = (thetaKO om x.1 h f₁ * u x.1) * conj (thetaKO om x.2 h f₂ * u x.2)`. Introduce and unpack `⟨x₁, x₂⟩`.
+
+Establish `t` using `((hTC f₁ f₂ h₁ h₂).2 x₁ x₂ h).2`. Establish `hz : (χW (detA A x₂) : ℂ) ≠ 0` using `Circle.coe_ne_zero _`. Express the relevant statement in the definitionally equal form `c (x₁, x₂) * thetaKO omh (io A (x₁, x₂)) h (delta A W f₁ f₂) = _`. Rewrite using `[t, Circle.coe_inv, hc]`. Simplify using `only [map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[e]`. Rewrite using `[hμ, integral_prod_mul (fun g => thetaKO om g h f₁ * u g) (fun g => conj (thetaKO om g h f₂ * u g)), hup f₁ h₁, zero_mul]`. Consider the case `zero => simp`. Consider the case `add x y hx hy ihx ihy`.
+
+Simplify using `only [map_add, Pi.add_apply, mul_add]`. Rewrite using `[integral_add (hintθ x (hMθ x hx)) (hintθ y (hMθ y hy)), ihx, ihy, add_zero]`. Consider the case `smul a x hx ih`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[mul_left_comm _ a]`.
+
+Rewrite using `[integral_const_mul, ih, mul_zero]`. Conclude with `GlobalTheory.T.weilRep_average_kills_theta_of_dense_family D ψ (dblSp A) W 1 χW omh homh (GA D A × GA D A) μ p c (p '' (K ×ˢ K)) hpc hcc ⟨C * C, hcb⟩ hK' hae M hMθ hMh hkill φ hφ (hMlim φ hφ)`.
+-/
 theorem kills_of_noLift : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A W : HSp D) (χA χW : (AE D)ˣ →* Circle)
     (om : WRep A W) (omh : WRep (dblSp A) W), HSpace.SigOK A → HSpace.IsPosDef A → IsWeilDatumO ψ A W χA χW om →
     IsWeilDatumO ψ (dblSp A) W 1 χW omh → ∀ m : Measure (GA D A), m.IsHaarMeasure → ∀ u : GA D A → ℂ, Continuous u →

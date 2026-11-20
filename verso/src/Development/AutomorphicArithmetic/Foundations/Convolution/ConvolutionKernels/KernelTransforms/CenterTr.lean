@@ -21,10 +21,18 @@ private def UpperTheory.ConvolutionTheory.Tf.Crv (A : ℝ → U) (D : U) : Prop 
   ∃ (ι : Type) (_ : Fintype ι) (c : ι → ℝ → ℝ) (c' : ι → ℝ) (v : ι → U),
     (∀ i, HasDerivAt (c i) (c' i) 0) ∧ (∀ t, A t = ∑ i, c i t • v i) ∧ D = ∑ i, c' i • v i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ _ => 1, fun _ => 0, fun _ => u, fun _ => hasDerivAt_const _ _, by simp, by simp⟩`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.Crv.const (u : U) : UpperTheory.ConvolutionTheory.Tf.Crv (fun _ => u) (0 : U) :=
   ⟨Unit, inferInstance, fun _ _ => 1, fun _ => 0, fun _ => u, fun _ => hasDerivAt_const _ _,
     by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨ι, _, c, c', v, hc, hA', rfl⟩` from `hA`. Take `⟨κ, _, d, d', w, hd, hB', rfl⟩` from `hB`. Use `⟨ι ⊕ κ, inferInstance, Sum.elim c d, Sum.elim c' d', Sum.elim v w, ?_, fun t => ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | j)`. Conclude with `hc i`.
+
+Conclude with `hd j`. Simplify using `[Fintype.sum_sum_type, hA', hB']`. Simplify using `[Fintype.sum_sum_type]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.Crv.add {A B : ℝ → U} {D E : U} (hA : UpperTheory.ConvolutionTheory.Tf.Crv A D)
     (hB : UpperTheory.ConvolutionTheory.Tf.Crv B E) : UpperTheory.ConvolutionTheory.Tf.Crv (fun t => A t + B t) (D + E) := by
   obtain ⟨ι, _, c, c', v, hc, hA', rfl⟩ := hA
@@ -36,6 +44,13 @@ private theorem UpperTheory.ConvolutionTheory.Tf.Crv.add {A B : ℝ → U} {D E 
   · simp [Fintype.sum_sum_type, hA', hB']
   · simp [Fintype.sum_sum_type]
 
+/- English proof (translation)
+Take `⟨ι, _, c, c', v, hc, hA', rfl⟩` from `hA`. Take `⟨κ, _, d, d', w, hd, hB', rfl⟩` from `hB`. Use `⟨ι × κ, inferInstance, fun p t => c p.1 t * d p.2 t, fun p => c' p.1 * d p.2 0 + c p.1 0 * d' p.2, fun p => v p.1 * w p.2, fun p => (hc p.1).mul (hd p.2), fun t => ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hA', hB', Finset.sum_mul_sum, Fintype.sum_prod_type]`.
+
+Simplify using `only [smul_mul_smul_comm]`. Rewrite using `[hA' 0, hB' 0, Finset.sum_mul_sum, Finset.sum_mul_sum, Fintype.sum_prod_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[add_smul, smul_mul_smul_comm, smul_mul_smul_comm]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.Crv.mul {A B : ℝ → U} {D E : U} (hA : UpperTheory.ConvolutionTheory.Tf.Crv A D)
     (hB : UpperTheory.ConvolutionTheory.Tf.Crv B E) :
     UpperTheory.ConvolutionTheory.Tf.Crv (fun t => A t * B t) (D * B 0 + A 0 * E) := by
@@ -54,6 +69,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.Crv.mul {A B : ℝ → U} {D E 
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [add_smul, smul_mul_smul_comm, smul_mul_smul_comm]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ M`. Establish `hsum : ∀ m : M, L m = ∑ i, b.coord i m • L (b i)` using `fun m => by`. Combine the equalities or inequalities in the displayed calculation. Use `⟨_, inferInstance, fun i t => b.coord i (φ t), fun i => b.coord i φ', fun i => L (b i), fun i => ?_, fun t => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.toContinuousLinearMap (b.coord i)).hasFDerivAt.comp_hasDerivAt 0 hφ`.
+
+Conclude with `hsum _`. Conclude with `hsum _`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.Crv.lin {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M]
     [FiniteDimensional ℝ M] (L : M →ₗ[ℝ] U) {φ : ℝ → M} {φ' : M} (hφ : HasDerivAt φ φ' 0) :
     UpperTheory.ConvolutionTheory.Tf.Crv (fun t => L (φ t)) (L φ') := by
@@ -67,6 +87,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.Crv.lin {M : Type*} [NormedAddC
   · exact hsum _
   · exact hsum _
 
+/- English proof (translation)
+Take `⟨ι, _, c, c', v, hc, hA', rfl⟩` from `hA`. Establish `e : (fun t => l (A t)) = fun t => ∑ i, c i t * l (v i)`. Use function extensionality and compare the values at `t`. Simplify using `[hA', map_sum]`. Rewrite using `[e]`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Conclude with `HasDerivAt.fun_sum fun i _ => (hc i).mul_const _`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.Crv.deriv {A : ℝ → U} {D : U} (hA : UpperTheory.ConvolutionTheory.Tf.Crv A D)
     (l : U →ₗ[ℝ] ℝ) : HasDerivAt (fun t => l (A t)) (l D) 0 := by
   obtain ⟨ι, _, c, c', v, hc, hA', rfl⟩ := hA
@@ -95,6 +120,19 @@ private noncomputable def UpperTheory.ConvolutionTheory.Tf.iotaL :
     show UniversalEnvelopingAlgebra.ι ℝ (r • h.toLie X) = _
     exact map_smul _ _ _
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction with`. Consider the case `algebraMap r`. Simplify using `only [AlgHom.commutes, Algebra.commutes, sub_self]`. Conclude with `UpperTheory.ConvolutionTheory.Tf.Crv.const _`.
+
+Consider the case `ι x`. Establish `e : UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra (TensorAlgebra.ι ℝ x) = UniversalEnvelopingAlgebra.ι ℝ x` using `rfl`. Rewrite using `[e]`. Simplify using `only [IsExpLieAlgebra.AdU_ι]`. Establish `key` using `UpperTheory.ConvolutionTheory.Tf.Crv.lin (UpperTheory.ConvolutionTheory.Tf.iotaL h) (h.hasDerivAt_Ad_expG X (h.ofLie x))`.
+
+Establish `e2 : UpperTheory.ConvolutionTheory.Tf.iotaL h (h.bracket X (h.ofLie x)) = UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) * UniversalEnvelopingAlgebra.ι ℝ x - UniversalEnvelopingAlgebra.ι ℝ x * UniversalEnvelopingAlgebra.ι ℝ (h.toLie X)` using `by show UniversalEnvelopingAlgebra.ι ℝ ⁅h.toLie X, x⁆ = _`. Rewrite using `[LieHom.map_lie, Ring.lie_def]`. Rewrite `key` using `[e2]`. Conclude with `key`. Consider the case `mul a b ha hb`.
+
+Establish `key` using `ha.mul hb`. Simplify using `only [map_mul]`. Establish `e0 : ∀ w, h.AdU (h.expG ((0 : ℝ) • X)) w = w`. Introduce `w`. Rewrite using `[zero_smul, h.expG_zero, h.AdU_one, AlgHom.id_apply]`.
+
+Simplify using `only [e0] at key`. Use `key using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`. Consider the case `add a b ha hb`. Establish `key` using `ha.add hb`.
+
+Simplify using `only [map_add]`. Use `key using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.crv_AdU (X : 𝔤) (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) :
     UpperTheory.ConvolutionTheory.Tf.Crv (fun t : ℝ => h.AdU (h.expG (t • X)) u)
       (UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) * u -
@@ -133,6 +171,17 @@ private theorem UpperTheory.ConvolutionTheory.Tf.crv_AdU (X : 𝔤) (u : Univers
     convert key using 1
     noncomm_ring
 
+/- English proof (translation)
+Establish `hc : UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) * z - z * UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) = 0` using `sub_eq_zero.2 (Subalgebra.mem_center_iff.1 hz _)`. Establish `hcrv` using `UpperTheory.ConvolutionTheory.Tf.crv_AdU h X z`. Rewrite `hcrv` using `[hc]`. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℝ _).1 fun l => ?_` and prove the remaining obligations.
+
+Use `set c : ℝ → ℝ := fun t => l (h.AdU (h.expG (t • X)) z) with hcdef`. Establish `hderiv : ∀ t, HasDerivAt c 0 t`. Introduce `t`. Establish `h1` using `hcrv.deriv (l ∘ₗ (h.AdU (h.expG (t • X))).toLinearMap)`. Simplify using `only [map_zero] at h1`.
+
+Establish `h2 : HasDerivAt (fun s : ℝ => l ((h.AdU (h.expG (t • X))).toLinearMap (h.AdU (h.expG ((s - t) • X)) z))) 0 t`. Establish `h1' : HasDerivAt (fun s : ℝ => l ((h.AdU (h.expG (t • X))).toLinearMap (h.AdU (h.expG (s • X)) z))) 0 (t - t)`. Rewrite using `[sub_self]`. Conclude with `h1`. Conclude with `h1'.comp_sub_const t t`.
+
+Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show l (h.AdU (h.expG (s • X)) z) = l (h.AdU (h.expG (t • X)) (h.AdU (h.expG ((s - t) • X)) z))`. Rewrite using `[← AlgHom.comp_apply, ← h.AdU_mul, ← h.expG_add_smul, add_sub_cancel]`. Establish `hconst : c 1 = c 0` using `is_const_of_deriv_eq_zero (fun t => (hderiv t).differentiableAt) (fun t => (hderiv t).deriv) 1 0`. Simplify using `only [hcdef, one_smul, zero_smul, h.expG_zero, h.AdU_one, AlgHom.id_apply] at hconst`.
+
+Rewrite using `[map_sub, hconst, sub_self]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.AdU_expG {z : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra}
     (hz : z ∈ h.centerU) (X : 𝔤) : h.AdU (h.expG X) z = z := by
   have hc : UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) * z -
@@ -161,6 +210,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.AdU_expG {z : UniversalEnvelopi
   simp only [hcdef, one_smul, zero_smul, h.expG_zero, h.AdU_one, AlgHom.id_apply] at hconst
   rw [map_sub, hconst, sub_self]
 
+/- English proof (translation)
+Proceed by induction on `hk using Subgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨X, rfl⟩` from `hx`. Conclude with `UpperTheory.ConvolutionTheory.Tf.AdU_expG h hz X`. Consider the case `one => rw [h.AdU_one, AlgHom.id_apply]`.
+
+Consider the case `mul x y _ _ hx hy => rw [h.AdU_mul, AlgHom.comp_apply, hy, hx]`. Consider the case `inv x _ hx`. Use `h.AdU_inv_apply x z` as an intermediate fact. Rewrite `this` using `[hx]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.AdU_closure {z : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra}
     (hz : z ∈ h.centerU) {k : G} (hk : k ∈ Subgroup.closure (Set.range h.expG)) :
     h.AdU k z = z := by
@@ -176,6 +230,11 @@ private theorem UpperTheory.ConvolutionTheory.Tf.AdU_closure {z : UniversalEnvel
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ n z hz k hk f hf`. Use `⟨(isExpLieAlgebra K n).isSmoothFun_rightTranslate hf k, fun g => ?_⟩` and prove the remaining obligations. Establish `hinv : (isExpLieAlgebra K n).AdU k⁻¹ z = z` using `UpperTheory.ConvolutionTheory.Tf.AdU_closure _ hz (Subgroup.inv_mem _ hk)`. Establish `e` using `LinearMap.congr_fun ((isExpLieAlgebra K n).rightUAction_comp_rightTranslate (F := ℂ) k z) ⟨f, hf⟩`. Rewrite `e` using `[hinv]`.
+
+Conclude with `congrFun (congrArg Subtype.val e) g`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.centerTr :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (z : UEnv K n), z ∈ (isExpLieAlgebra K n).centerU → ∀ k ∈ Subgroup.closure (Set.range (isExpLieAlgebra K n).expG),
       ∀ (f : archGroup K n → ℂ) (hf : f ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ)), ∃ hk : (fun g => f (g * k)) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ), ∀ g,

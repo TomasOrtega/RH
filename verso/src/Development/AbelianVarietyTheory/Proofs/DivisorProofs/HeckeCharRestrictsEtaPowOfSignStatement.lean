@@ -13,6 +13,9 @@ open GlobalTheory.NormExact
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeckeSignEta.resEta_of_sign | exact GlobalTheory.HeckeSignEta.resEta_of_sign | (intros; apply GlobalTheory.HeckeSignEta.resEta_of_sign <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeChar_restricts_eta_pow_of_sign : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (N : ℕ), IsHeckeChar D χ →
     (∀ x y : (AE D)ˣ, (y : AE D) = x * cA D x → χ y = 1) →
     ∀ θ : InfFam D, IsInfFam θ →

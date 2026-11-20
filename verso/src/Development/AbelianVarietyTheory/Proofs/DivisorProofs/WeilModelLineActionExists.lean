@@ -26,11 +26,19 @@ open GlobalTheory.RealLift GlobalTheory.RealLift.LieFirstPf
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem incM_map_piInf' {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
   ext i j
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
+/- English proof (translation)
+Use `⟨hΦ.1.comp (swapT (InfinitePlace F) P Q R S).injective, fun u hu c hc T => ?_⟩` and prove the remaining obligations. Establish `hu' : At (evI F) uᵀ` using `fun x hx => by rw [← Matrix.transpose_smul, hu x hx, Matrix.transpose_zero]`. Establish `hc' : ∀ w, uᵀ.map (piInf (τ w)) = A w * (c w)ᵀ * (C w)ᵀ` using `fun w => by`. Rewrite using `[Matrix.transpose_map, hc w]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Establish `key` using `hΦ.2 uᵀ hu' (fun w => (c w)ᵀ) hc' (swapT (InfinitePlace F) P Q R S T)`. Establish `hr : ∀ t : ℝ, d'.rho ψ (realAd F t • u) = d.rho ψ (realAd F t • uᵀ)` using `fun t => by show schr ψ (d'.e _) = schr ψ (d.e _)`. Rewrite using `[← hdd, Matrix.transpose_smul, Matrix.transpose_transpose]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hr]`. Rewrite using `[swapT_sumPl (fun w => heisOp (c w)) (fun w => heisOp (c w)ᵀ) (fun w f => swapE_heisOp (c w) f)]` and apply the resulting hypothesis.
+-/
 theorem fockMap_swap {σ : E →ₐ[F] E} {α β κ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ]
     {P Q R S : ℕ} {ψ : AddChar (AF F) ℂ} {τ : ∀ w : InfinitePlace F, EmbOver E w} {JA : Matrix α α (AE F E)}
     {JB : Matrix β β (AE F E)} {d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ}
@@ -49,6 +57,19 @@ theorem fockMap_swap {σ : E →ₐ[F] E} {α β κ : Type} [Fintype α] [Decida
   simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, hr]
   rwa [swapT_sumPl (fun w => heisOp (c w)) (fun w => heisOp (c w)ᵀ) (fun w f => swapE_heisOp (c w) f)]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil γ hγ f hf`. Use `choose A hA hAθ using fun w => frameEx_holds _ _ _ _ _ (hX.sig w) (hX.cartan w)`. Use `choose C hC hCθ using fun w => frameEx_holds _ _ _ _ _ (hW.sig w) (hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F X.J).map (piInf (B.emb w))) (A w)` using `fun w => by`. Rewrite using `[incM_map_piInf', one_smul]`.
+
+Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf']`. Conclude with `hC w`. Establish `fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`.
+
+Establish `fr' : Framed B.emb (incM F W.J) (incM F X.J) Complex.I 1 C A` using `⟨mul_one _, hC1, hA1⟩`. Establish `hvl` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives GlobalTheory.T.archHeisenbergDerivatives_exist`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives GlobalTheory.T.archHeisenbergDerivatives_exist F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ M.co 1 Complex.I A C hB.cm hB.std fr`. Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws actsLaws GlobalTheory.T.archHeisenbergDerivatives_exist hvl F E σ _ _ _ _ _ _ X W M B.ψ B.emb A C Φ hB.cm hB.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F X.J) (incM F W.J) M.co χX χW om` using `hWeil`.
+
+Take `⟨d', hdd, hB1'⟩` from `hwp.2.1`. Establish `hΦ'` using `fockMap_swap hΦ hdd`. Take `⟨c, hact⟩` from `GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hKP.base GlobalTheory.T.archHeisenbergDerivatives_exist hvl F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ d' Complex.I 1 C A _ (om.comp (MonoidHom.inl _ _)) hB.cm hB.std fr' hΦ' hB1'.1`. Take `⟨Y, -, hY⟩` from `GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin n) r s B.emb (incM F X.J) 1 A hB.cm hA1 γ hγ`. Rewrite `hf` using `[← hr]`.
+
+Take `⟨T, rfl⟩` from `hf`. Establish `hT : Φ T = (Φ ∘ₗ (swapT (InfinitePlace F) r s r' s').toLinearMap) ((swapT (InfinitePlace F) r s r' s').symm T)`. Simplify using the standard rewrite rules. Establish `key` using `hact γ hγ Y hY ((swapT (InfinitePlace F) r s r' s').symm T)`. Rewrite `key` using `[← hT]`.
+
+Conclude with `⟨_, key⟩`.
+-/
 theorem sd_exists : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → M.IsGood B.ψ → M.IsWeil B.ψ χX χW om →

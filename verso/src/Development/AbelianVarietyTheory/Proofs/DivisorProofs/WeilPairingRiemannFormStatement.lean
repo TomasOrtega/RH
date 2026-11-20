@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AHWeilAny.weilIs_exp_riemannForm | exact GlobalTheory.AHWeilAny.weilIs_exp_riemannForm | (intros; apply GlobalTheory.AHWeilAny.weilIs_exp_riemannForm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weil_pairing_torsion_points : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB →
     ∀ (n : ℕ) (u : HolUnif A L n) (Hm : Matrix (Fin n) (Fin n) ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ →
       ∀ (k : ℕ) (a b : Fin n → ℂ) (c : ℂˣ), 0 < k → a ∈ u.Λ → b ∈ u.Λ →

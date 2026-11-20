@@ -7,6 +7,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul m n => simp [dualDistrib_apply]`.
+-/
 private theorem dualDistrib_eq_mul'_map {O M N : Type} [CommRing O] [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (φ : Module.Dual O M) (ψ : Module.Dual O N) (t : M ⊗[O] N) :
     dualDistrib O M N (φ ⊗ₜ ψ) t = LinearMap.mul' O O (TensorProduct.map φ ψ t) := by
@@ -15,6 +18,13 @@ private theorem dualDistrib_eq_mul'_map {O M N : Type} [CommRing O] [AddCommGrou
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul m n => simp [dualDistrib_apply]
 
+/- English proof (translation)
+Introduce `O A _ _ _ _ _ _ a u`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_point_dual_quotient_form_eq_eval O A (Ideal.span {a}) (u ∘ₗ AugCot.d (Bialgebra.counitAlgHom O (CartierDual O A)) ∘ₗ (CartierDual.toDual O A).symm.toLinearMap)`. Establish `hb' : ∀ φ : CartierDual O A, u (dUnit O φ) = Ideal.Quotient.mk _ (φ b)` using `fun φ => hb φ.ofConv`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_eq_smul_of_dvd_dualDistrib O A A a (cobOne O A b) (fun φ ψ => by`. Establish `hm` using `hb' (WithConv.toConv φ * WithConv.toConv ψ)`.
+
+Rewrite `hm` using `[dUnit, AugCot.d_mul, map_add, map_smul, map_smul, ← dUnit, ← dUnit, hb', hb']`. Simplify using `only [Bialgebra.counitAlgHom_apply, CartierDual.counit_apply] at hm`. Establish `hc : (WithConv.toConv φ * WithConv.toConv ψ).ofConv b = LinearMap.mul' O O (TensorProduct.map φ ψ (CoalgebraStruct.comul b))` using `rfl`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, dualDistrib_eq_mul'_map, cobOne_apply]`. Simplify using `only [map_sub, TensorProduct.map_tmul, LinearMap.mul'_apply]`.
+
+Rewrite using `[← hc, ← hm]`. Simplify using `only [Algebra.smul_def, Ideal.Quotient.algebraMap_eq, map_mul]`. Use the proof step `ring)`. Conclude with `⟨b, y, hy, hb'⟩`.
+-/
 theorem cartierDual_tangent_mod :
     ∀ (O A : Type) [CommRing O] [CommRing A] [Bialgebra O A] [Module.Finite O A] [Module.Projective O A] [Coalgebra.IsCocomm O A] (a : O) (u : Cot O (CartierDual O A) →ₗ[O] O ⧸ Ideal.span {a}), ∃ (b : A) (z : A ⊗[O] A), cobOne O A b = a • z ∧ ∀ φ : CartierDual O A, u (dUnit O φ) = Ideal.Quotient.mk _ (φ b) := by
   intro O A _ _ _ _ _ _ a u

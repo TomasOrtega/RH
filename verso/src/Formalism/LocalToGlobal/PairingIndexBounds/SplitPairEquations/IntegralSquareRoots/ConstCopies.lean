@@ -17,6 +17,17 @@ variable [AddCommGroup V] [Module ℂ V] [AddCommGroup V₁] [Module ℂ V₁]
   {e : V ≃ₗ[ℂ] (ι → V₁)} {H : Sesq V} {H₁ : Sesq V₁} {α : V → ℂ} {α₁ : V₁ → ℂ}
   {Λ : AddSubgroup V} {Λ₁ : AddSubgroup V₁} {δ Ae : V ≃ₗ[ℂ] V} {δ₁ Ae₁ : V₁ ≃ₗ[ℂ] V₁}
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `(repsExist V _ _ h).1`. Set `f : S → Λ₁ ⧸ (latA Λ₁ δ₁ Ae₁).addSubgroupOf Λ₁` to `fun x => QuotientAddGroup.mk ⟨e x.1 i₀, (c.lat x.1).1 (hS.1 x.1 x.2) i₀⟩`. Establish `hf : Function.Surjective f`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`.
+
+Consider the case `H y`. Establish `hY : e.symm (Pi.single i₀ (y : V₁)) ∈ Λ`. Use `(c.lat _).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hi : i = i₀`.
+
+Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `y.2`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `Λ₁.zero_mem`.
+
+Take `⟨x, hx, hxy⟩` from `hS.2.2 _ hY`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `(c.mem_latA _).1 hxy i₀`. Rewrite `h2` using `[map_sub, LinearEquiv.apply_symm_apply, Pi.sub_apply, Pi.single_eq_same]`. Use `show (QuotientAddGroup.mk _ : Λ₁ ⧸ (latA Λ₁ δ₁ Ae₁).addSubgroupOf Λ₁) = QuotientAddGroup.mk y`.
+
+Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `show -(e x i₀) + (y : V₁) ∈ _`. Rewrite using `[neg_add_eq_sub]` and apply the resulting hypothesis. Use `haveI : Finite (Λ₁ ⧸ (latA Λ₁ δ₁ Ae₁).addSubgroupOf Λ₁) := Finite.of_surjective f hf`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 theorem Copies.idx (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i₀ : ι) (h : relIdx (latA Λ δ Ae) Λ ≠ 0) :
     relIdx (latA Λ₁ δ₁ Ae₁) Λ₁ ≠ 0 := by
   obtain ⟨S, hS⟩ := (repsExist V _ _ h).1
@@ -45,6 +56,11 @@ theorem Copies.idx (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (i�
 
 end Idx
 
+/- English proof (translation)
+Establish `h : ((‖a‖ : ℂ)) ^ 2 = a * conj a`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[div_pow, h]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem unit_sq (a : ℂ) (ha : a ≠ 0) : ((‖a‖ : ℂ) / a) ^ 2 = conj a / a := by
   have h : ((‖a‖ : ℂ)) ^ 2 = a * conj a := by
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; rfl
@@ -56,6 +72,17 @@ variable [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] [A
   {e : V ≃ₗ[ℂ] (ι → V₁)} {H : Sesq V} {H₁ : Sesq V₁} {α : V → ℂ} {α₁ : V₁ → ℂ}
   {Λ : AddSubgroup V} {Λ₁ : AddSubgroup V₁} {δ Ae : V ≃ₗ[ℂ] V} {δ₁ Ae₁ : V₁ ≃ₗ[ℂ] V₁}
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty ι with hι | ⟨⟨i₀⟩⟩` into its components or cases. Use `haveI : Subsingleton V := e.injective.subsingleton`. Establish `h1 : imgLat (δ : V →ₗ[ℂ] V) Λ = Λ`. Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`.
+
+Conclude with `⟨fun _ => Λ.zero_mem, fun _ => AddSubgroup.zero_mem _⟩`. Rewrite using `[h1, Formalism.L2.Ker.inter_self H hU.herm Λ α hU.semi hθ.2, Fintype.card_eq_zero, Nat.zero_div, pow_zero, one_smul]`. Use function extensionality and compare the values at `z`. Use `show θ (δ.symm z) = θ z`. Rewrite using `[Subsingleton.elim (δ.symm z) z]`.
+
+Take `⟨S₁, hS₁⟩` from `(repsExist V₁ _ _ (c.idx i₀ (UC.latA_idx_ne hLat hU))).1`. Establish `hc` using `unitaryConstant V H Λ α δ Ae hLat hU hLine (prodReps e S₁) (c.reps hS₁) θ hθ`. Rewrite using `[hc]`. Use `congr 1`. Take `⟨k, hk⟩` from `hn`.
+
+Establish `hk2 : Fintype.card ι / 2 = k` using `by omega`. Establish `hk' : Fintype.card ι = 2 * k` using `by omega`. Establish `ha : LinearMap.det (Ae₁ : V₁ →ₗ[ℂ] V₁) ≠ 0` using `(LinearEquiv.isUnit_det' Ae₁).ne_zero`. Establish `hd` using `detCayley V₁ H₁ hH₁ hP₁ δ₁ Ae₁ hI₁ hA₁`. Rewrite `hd` using `[hr.neg_one_pow, one_mul]`.
+
+Rewrite using `[c.gauss hS₁.1, det_copies e (Ae : V →ₗ[ℂ] V) (Ae₁ : V₁ →ₗ[ℂ] V₁) c.cay, hk2, hk', pow_mul (gaussC _ _ _ _), hG S₁ hS₁, one_pow, mul_one, norm_pow, Complex.ofReal_pow, ← div_pow, pow_mul, unit_sq _ ha, hd, mul_div_assoc, div_self ha, mul_one]`.
+-/
 theorem const_copies (hLat : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) (hLine : AtMostLine H α Λ)
     (c : Copies e H H₁ α α₁ Λ Λ₁ δ Ae δ₁ Ae₁) (hH₁ : IsHerm H₁) (hP₁ : IsPosDef H₁)
     (hI₁ : IsIsom H₁ H₁ (δ₁ : V₁ →ₗ[ℂ] V₁)) (hA₁ : ∀ x, Ae₁ x = x - δ₁.symm x)

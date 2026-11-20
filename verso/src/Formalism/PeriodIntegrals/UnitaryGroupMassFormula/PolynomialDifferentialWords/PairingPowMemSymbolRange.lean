@@ -12,15 +12,28 @@ variable (K : Type) [Field K] [CharZero K] (k d : ℕ)
 def Sc (c : ℕ) : Submodule K (Pol K k) :=
   ((Wc K k d c).map (kappa K k d)).comap (LinearMap.mulLeft K (tt K k ^ (d - c)))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Sc (c : ℕ) (g : Pol K k) :
     g ∈ Sc K k d c ↔ tt K k ^ (d - c) * g ∈ (Wc K k d c).map (kappa K k d) := Iff.rfl
 
+/- English proof (translation)
+Unfold `Wc`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `Bx ⟨l, hl, rfl⟩`. Conclude with `⟨l, le_trans hl h, rfl⟩`.
+-/
 theorem Wc_mono {c c' : ℕ} (h : c ≤ c') : Wc K k d c ≤ Wc K k d c' := by
   unfold Wc
   apply Submodule.span_mono
   rintro Bx ⟨l, hl, rfl⟩
   exact ⟨l, le_trans hl h, rfl⟩
 
+/- English proof (translation)
+Unfold `Wc at hB ⊢`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Conclude with `⟨(a, b) :: l, by simpa using hl, by simp [Formalism.MainNotions.TestSideCounting.EdWord]⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul r x _ hx`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem Ed_mul_Wc (c : ℕ) (a b : Fin k) {B : Module.End K ↥(homogeneousSubmodule (Fin k) K d)}
     (hB : B ∈ Wc K k d c) : Formalism.MainNotions.TestSideCounting.Ed K k d a b * B ∈ Wc K k d (c + 1) := by
   unfold Wc at hB ⊢
@@ -37,12 +50,27 @@ theorem Ed_mul_Wc (c : ℕ) (a b : Fin k) {B : Module.End K ↥(homogeneousSubmo
     rw [mul_smul_comm]
     exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, wx, Fintype.sum_sum_type]`.
+-/
 theorem wtXSum (m : Fin k ⊕ Fin k →₀ ℕ) : weight (wx k) m = ∑ i, m (Sum.inl i) := by
   simp [Finsupp.weight_apply, Finsupp.sum_fintype, wx, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype, wxi, Fintype.sum_sum_type]`.
+-/
 theorem wtXiSum (m : Fin k ⊕ Fin k →₀ ℕ) : weight (wxi k) m = ∑ i, m (Sum.inr i) := by
   simp [Finsupp.weight_apply, Finsupp.sum_fintype, wxi, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Establish `hg' : g ∈ weightedHomogeneousSubmodule K (wx k) 0 ⊓ weightedHomogeneousSubmodule K (wxi k) 0` using `hg`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 hg'`. Rewrite `h1`, `h2` using `[mem_weightedHomogeneousSubmodule]`. Use `⟨coeff 0 g, ?_⟩` and prove the remaining obligations. Use extensionality with `m`.
+
+Rewrite using `[coeff_C]`. Use `split_ifs with hm`. Rewrite using `[← hm]`. Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises.
+
+Establish `e1` using `h1 hne`. Establish `e2` using `h2 hne`. Rewrite `e1` using `[wtXSum]`. Rewrite `e2` using `[wtXiSum]`. Use extensionality with `v`.
+
+Break down `v with i | i` into its components or cases. Establish `h3` using `(Finset.sum_eq_zero_iff.1 e1) i (Finset.mem_univ i)`. Simplify using `[h3]`. Establish `h3` using `(Finset.sum_eq_zero_iff.1 e2) i (Finset.mem_univ i)`. Simplify using `[h3]`.
+-/
 theorem bihom_zero_const (g : Pol K k) (hg : g ∈ Bihom K k 0) : ∃ r : K, g = C r := by
   have hg' : g ∈ weightedHomogeneousSubmodule K (wx k) 0 ⊓ weightedHomogeneousSubmodule K (wxi k) 0 := hg
   obtain ⟨h1, h2⟩ := Submodule.mem_inf.1 hg'
@@ -65,6 +93,9 @@ theorem bihom_zero_const (g : Pol K k) (hg : g ∈ Bihom K k 0) : ∃ r : K, g =
     · have h3 := (Finset.sum_eq_zero_iff.1 e2) i (Finset.mem_univ i)
       simp [h3]
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by intro g hg obtain ⟨r, rfl⟩ := bihom_zero_const K k g hg rw [mem_Sc] refine ⟨(r * (d.factorial : K)) • 1, Submodule.smul_mem _ _ (Submodule.subset_span ⟨[], by simp, by simp [Formalism.MainNotions.TestSideCounting.EdWord]⟩), ?_⟩ rw [map_smul, symbolMapOne, smul_smul, …`.
+-/
 theorem bihom_le_Sc : ∀ c, c ≤ d → Bihom K k c ≤ Sc K k d c
   | 0, _ => by
     intro g hg
@@ -153,6 +184,9 @@ theorem bihom_le_Sc : ∀ c, c ≤ d → Bihom K k c ≤ Sc K k d c
         inv_mul_cancel₀ (Nat.cast_ne_zero.2 (Nat.succ_ne_zero n)), map_one]
     linear_combination (tt K k ^ n * (X (Sum.inl a) * X (Sum.inr b) * monomial m' (1 : K))) * hC
 
+/- English proof (translation)
+Introduce `K _ _ k d c hc g hg`. Conclude with `(mem_Sc K k d c g).1 (bihom_le_Sc K k d c hc hg)`.
+-/
 theorem pairingPowMemSymbolRange : Surj := by
   intro K _ _ k d c hc g hg
   exact (mem_Sc K k d c g).1 (bihom_le_Sc K k d c hc hg)

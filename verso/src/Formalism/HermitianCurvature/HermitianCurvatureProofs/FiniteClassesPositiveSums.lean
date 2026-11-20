@@ -11,6 +11,9 @@ section gen
 
 variable {α : Type}
 
+/- English proof (translation)
+Introduce `a`. Establish `: ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * k' x y = ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * k x y` using `sum_congr rfl fun x hx => sum_congr rfl fun y hy => by rw [e x hx y hy]`. Rewrite using `[this]`. Conclude with `h a`.
+-/
 theorem psd_congr {F : Finset α} {k k' : α → α → ℂ} (h : IsPSD F k)
     (e : ∀ x ∈ F, ∀ y ∈ F, k x y = k' x y) : IsPSD F k' := by
   intro a
@@ -18,9 +21,15 @@ theorem psd_congr {F : Finset α} {k k' : α → α → ℂ} (h : IsPSD F k)
     sum_congr rfl fun x hx => sum_congr rfl fun y hy => by rw [e x hx y hy]
   rw [this]; exact h a
 
+/- English proof (translation)
+Introduce `a`. Simplify using the standard rewrite rules.
+-/
 theorem psd_zero (F : Finset α) : IsPSD F (fun _ _ => (0 : ℂ)) := by
   intro a; simp
 
+/- English proof (translation)
+Introduce `a`. Establish `: ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * (k x y + k' x y) = ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * k x y + ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * k' x y`. Simplify using `only [mul_add, sum_add_distrib]`. Rewrite using `[this, Complex.add_im, Complex.add_re, (h a).1, (h' a).1]`. Conclude with `⟨by simp, add_nonneg (h a).2 (h' a).2⟩`.
+-/
 theorem psd_add {F : Finset α} {k k' : α → α → ℂ} (h : IsPSD F k) (h' : IsPSD F k') :
     IsPSD F (fun x y => k x y + k' x y) := by
   intro a
@@ -30,6 +39,9 @@ theorem psd_add {F : Finset α} {k k' : α → α → ℂ} (h : IsPSD F k) (h' :
   rw [this, Complex.add_im, Complex.add_re, (h a).1, (h' a).1]
   exact ⟨by simp, add_nonneg (h a).2 (h' a).2⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using psd_zero F`. Consider the case `insert i s hi ih`. Use `psd_add (h i (mem_insert_self i s)) (ih fun j hj => h j (mem_insert_of_mem hj))` as an intermediate fact. Conclude with `psd_congr this fun x _ y _ => by rw [sum_insert hi]`.
+-/
 theorem psd_sum {ι : Type} {F : Finset α} (s : Finset ι) (k : ι → α → α → ℂ)
     (h : ∀ i ∈ s, IsPSD F (k i)) : IsPSD F (fun x y => ∑ i ∈ s, k i x y) := by
   classical
@@ -45,16 +57,25 @@ section classes
 
 variable {K : Type} [CommRing K] (R : Subring K)
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `QuotientAddGroup.mk_out_eq_add R.toAddSubgroup x`. Conclude with `⟨r.1, r.2, hr⟩`.
+-/
 theorem out_mk (x : K) :
     ∃ r ∈ R, (Quotient.out ((x : K) : K ⧸ R.toAddSubgroup) : K) = x + r := by
   obtain ⟨r, hr⟩ := QuotientAddGroup.mk_out_eq_add R.toAddSubgroup x
   exact ⟨r.1, r.2, hr⟩
 
+/- English proof (translation)
+Take `⟨r, hr, e⟩` from `out_mk R x`. Rewrite using `[e, h1 x r hr]`.
+-/
 theorem periodic_out {β : Type} (f : K → β) (h1 : ∀ x, ∀ r ∈ R, f (x + r) = f x) (x : K) :
     f (Quotient.out ((x : K) : K ⧸ R.toAddSubgroup)) = f x := by
   obtain ⟨r, hr, e⟩ := out_mk R x
   rw [e, h1 x r hr]
 
+/- English proof (translation)
+Establish `: DiscreteTopology (K ⧸ R.toAddSubgroup)` using `QuotientAddGroup.discreteTopology hR`. Establish `h` using `(hLc.image (QuotientAddGroup.continuous_mk (N := R.toAddSubgroup))).finite_of_discrete`. Use `h.subset ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `⟨Quotient.out y, hy, Quotient.out_eq' y⟩`.
+-/
 theorem finite_classes [TopologicalSpace K] [IsTopologicalRing K] (hR : IsOpen (R : Set K))
     (Lc : Set K) (hLc : IsCompact Lc) :
     {y : K ⧸ R.toAddSubgroup | (Quotient.out y : K) ∈ Lc}.Finite := by
@@ -66,6 +87,9 @@ theorem finite_classes [TopologicalSpace K] [IsTopologicalRing K] (hR : IsOpen (
 
 variable {R} {F : Finset (Point K)} {Lc : Set K} {S : Finset (K ⧸ R.toAddSubgroup)}
 
+/- English proof (translation)
+Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `y hy`. Assume the negation of the conclusion as `hyS`. Conclude with `hy (h3 _ (fun hc => hyS (hS y hc)) h hh h' hh')`.
+-/
 theorem finsum_classes (hS : ∀ y : K ⧸ R.toAddSubgroup, (Quotient.out y : K) ∈ Lc → y ∈ S)
     {Θ : K → Point K → Point K → ℂ}
     (h3 : ∀ x, x ∉ Lc → ∀ h ∈ F, ∀ h' ∈ F, Θ x h h' = 0) {h h' : Point K} (hh : h ∈ F)
@@ -76,6 +100,13 @@ theorem finsum_classes (hS : ∀ y : K ⧸ R.toAddSubgroup, (Quotient.out y : K)
   by_contra hyS
   exact hy (h3 _ (fun hc => hyS (hS y hc)) h hh h' hh')
 
+/- English proof (translation)
+Establish `key` using `psd_add h5 (psd_sum (S.erase ((x : K) : K ⧸ R.toAddSubgroup)) (fun y => Θ (Quotient.out y)) (fun y _ => h2 _))`. Use `psd_congr key ?_` and prove the remaining obligations. Introduce `h hh h' hh'`. Establish `e1` using `finsum_classes hS h3 hh hh'`. Establish `e2 : Θ (Quotient.out ((x : K) : K ⧸ R.toAddSubgroup)) = Θ x` using `periodic_out R Θ h1 x`.
+
+Simplify using `only [e1]`. Distinguish the cases in `hx : ((x : K) : K ⧸ R.toAddSubgroup) ∈ S`. Rewrite using `[← add_sum_erase S (fun y => Θ (Quotient.out y) h h') hx, e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[erase_eq_of_notMem hx]`.
+
+Establish `: Θ x h h' = 0`. Rewrite using `[← e2]`. Conclude with `h3 _ (fun hc => hx (hS _ hc)) h hh h' hh'`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psd_single (hS : ∀ y : K ⧸ R.toAddSubgroup, (Quotient.out y : K) ∈ Lc → y ∈ S)
     {M : Point K → Point K → ℂ} {Θ : K → Point K → Point K → ℂ}
     (h1 : ∀ x, ∀ r ∈ R, Θ (x + r) = Θ x) (h2 : ∀ x, IsPSD F (Θ x))
@@ -99,6 +130,23 @@ theorem psd_single (hS : ∀ y : K ⧸ R.toAddSubgroup, (Quotient.out y : K) ∈
       exact h3 _ (fun hc => hx (hS _ hc)) h hh h' hh'
     rw [this]; ring
 
+/- English proof (translation)
+Set `T : Finset ((K ⧸ R.toAddSubgroup) × Point K × Point K)` to `S ×ˢ F ×ˢ F`. Set `θ : ℕ → T → ℂ` to `fun j i => Th j (Quotient.out i.1.1) i.1.2.1 i.1.2.2`. Set `B : ℝ` to `∑ h ∈ F, |(M h h).re|`. Establish `hB0 : 0 ≤ B` using `sum_nonneg fun _ _ => abs_nonneg _`. Establish `hBh : ∀ h ∈ F, |(M h h).re| ≤ B` using `fun h hh => single_le_sum (f := fun h => |(M h h).re|) (fun _ _ => abs_nonneg _) hh`.
+
+Establish `hb : ∀ j i, ‖θ j i‖ ≤ B`. Introduce and unpack `j ⟨⟨y, h, h'⟩, hi⟩`. Simplify using `only [T, mem_product] at hi`. Apply the tactic sequence `have hE := hEntry _ F (Th j (Quotient.out y)) M (h2 j _) (psd_single hS (h1 j) (h2 j) (h3 j) (h5 j) _) h hi.2.1 h' hi.2.2`. Establish `hle : (M h h).re * (M h' h').re ≤ B ^ 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) hB0 two_ne_zero).1 (hE.trans hle)`. Take `⟨φ, l, hφ, hl⟩` from `hSubseq T θ B hb`. Use `⟨φ, fun x h h' => if hx : (((x : K) : K ⧸ R.toAddSubgroup), h, h') ∈ T then l ⟨_, hx⟩ else 0, hφ, ?_, ?_⟩` and prove the remaining obligations. Introduce `x r hr`.
+
+Establish `e : (((x + r : K)) : K ⧸ R.toAddSubgroup) = ((x : K) : K ⧸ R.toAddSubgroup)`. Rewrite using `[QuotientAddGroup.eq]`. Establish `: -(x + r) + x = -r` using `by ring`. Rewrite using `[this]`. Conclude with `neg_mem hr`.
+
+Use function extensionality and compare the values at `h h'`. Simplify using `only [e]`. Introduce `x h hh h' hh'`. Establish `e2 : ∀ j, Th j (Quotient.out ((x : K) : K ⧸ R.toAddSubgroup)) = Th j x` using `fun j => periodic_out R (Th j) (h1 j) x`. Distinguish the cases in `hx : (((x : K) : K ⧸ R.toAddSubgroup), h, h') ∈ T`.
+
+Simplify using `only [dif_pos hx]`. Use `hl ⟨_, hx⟩` as an intermediate fact. Simplify using `only [θ, e2] at this`. Conclude with `this`. Simplify using `only [dif_neg hx]`.
+
+Establish `hxS : ((x : K) : K ⧸ R.toAddSubgroup) ∉ S`. Introduce `hc`. Conclude with `hx (by simp only [T, mem_product]; exact ⟨hc, hh, hh'⟩)`. Establish `: ∀ j, Th (φ j) x h h' = 0`. Introduce `j`.
+
+Rewrite using `[← e2]`. Conclude with `h3 _ _ (fun hc => hxS (hS _ hc)) h hh h' hh'`. Simplify using `only [this]`. Conclude with `tendsto_const_nhds`.
+-/
 theorem limit_core (hEntry : PSDEntryBound) (hSubseq : BoundedSubseq)
     (hS : ∀ y : K ⧸ R.toAddSubgroup, (Quotient.out y : K) ∈ Lc → y ∈ S)
     (M : Point K → Point K → ℂ) (Th : ℕ → K → Point K → Point K → ℂ)
@@ -165,6 +213,27 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt.P.FiniteClassesPositiveSums
 
+/- English proof (translation)
+Apply the tactic sequence `intro hThOm hSupp hNsS hCOne hExh _hLF hEntry hClosed hSubseq hA2 hN1 K _ _ _ R ψ hD hch s hs hAt n₀ F hF`. Take `⟨Lc, hcut, hGL⟩` from `hSupp hNsS K R ψ hD (s + 1) F (by omega)`. Take `⟨Om, hOm, hmono, hex⟩` from `hExh K R ψ hD hch (s + 1) (by omega)`. Use `choose Th hTh using fun j => hThOm hA2 hN1 K R ψ hD hch s hs hAt n₀ F Lc (Om j) hF hcut (hOm j)`. Take `⟨hLo, hLk, -, -⟩` from `hcut`.
+
+Establish `hfin` using `finite_classes R hD.isOpen (Lc : Set K) hLk`. Establish `hS : ∀ y : K ⧸ R.toAddSubgroup, (Quotient.out y : K) ∈ (Lc : Set K) → y ∈ hfin.toFinset` using `fun y hy => hfin.mem_toFinset.2 hy`. Set `M : Point K → Point K → ℂ` to `fun h h' => ((cSize R h ^ (s + 1) * cSize R h' ^ (s + 1) : ℝ) : ℂ) * N0 R ψ h h'`. Apply the tactic sequence `obtain ⟨φ, Θ, hφ, h1, hlim⟩ := limit_core hEntry hSubseq hS M Th (fun j => (hTh j).1) (fun j => (hTh j).2.1) (fun j => (hTh j).2.2.1) (fun j => (hTh j).2.2.2.2.1)`. Establish `h2 : ∀ x, IsPSD F (Θ x)` using `fun x => hClosed _ F (fun j => Th (φ j) x) (Θ x) (fun j => (hTh _).2.1 x) (hlim x)`.
+
+Establish `h3 : ∀ x, x ∉ (Lc : Set K) → ∀ h ∈ F, ∀ h' ∈ F, Θ x h h' = 0`. Introduce `x hx h hh h' hh'`. Use `hlim x h hh h' hh'` as an intermediate fact. Simplify using `only [(hTh _).2.2.1 x hx h hh h' hh'] at this`. Conclude with `tendsto_nhds_unique tendsto_const_nhds this |>.symm`.
+
+Establish `h4 : ∀ t : Kˣ, IsPSD F (fun h h' => Θ (t : K) h h' - Ns R ψ (s + 1) h h' t t)`. Introduce `t`. Take `⟨j0, hj0⟩` from `hex t`. Establish `hmono' : ∀ j, j0 ≤ j → (t : K) ∈ Om j`. Introduce `j hj`.
+
+Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => exact hj0`. Consider the case `succ j _ ih => exact hmono j ih`. Use `hClosed _ F (fun j h h' => Th (φ (j + j0)) (t : K) h h' - Ns R ψ (s + 1) h h' t t) _ (fun j => (hTh _).2.2.2.1 t (hmono' _ ((Nat.le_add_left _ _).trans hφ.le_apply))) ?_` and prove the remaining obligations. Introduce `h hh h' hh'`.
+
+Conclude with `((hlim (t : K) h hh h' hh').comp (tendsto_add_atTop_nat j0)).sub tendsto_const_nhds`. Establish `h5 : IsPSD F (fun h h' => M h h' - ∑ᶠ y : K ⧸ R.toAddSubgroup, Θ (Quotient.out y) h h')`. Use `hClosed _ F (fun j h h' => M h h' - ∑ᶠ y : K ⧸ R.toAddSubgroup, Th (φ j) (Quotient.out y) h h') _ (fun j => (hTh _).2.2.2.2.1) ?_` and prove the remaining obligations. Introduce `h hh h' hh'`. Simplify using `only [finsum_classes hS h3 hh hh', finsum_classes hS ((hTh _).2.2.1) hh hh']`.
+
+Conclude with `tendsto_const_nhds.sub (tendsto_finsetSum _ fun y _ => hlim _ h hh h' hh')`. Establish `h6 : ∀ x, ∀ h ∈ F, ∀ h' ∈ F, modK R (pt h.1 h.2).det ≠ modK R (pt h'.1 h'.2).det → Θ x h h' = 0`. Introduce `x h hh h' hh' hne`. Use `hlim x h hh h' hh'` as an intermediate fact. Simplify using `only [(hTh _).2.2.2.2.2 x h hh h' hh' hne] at this`.
+
+Conclude with `tendsto_nhds_unique tendsto_const_nhds this |>.symm`. Use `⟨Θ, h1, h2, ⟨Lc, hLo, hLk, h3⟩, h4, h5, h6, ?_⟩` and prove the remaining obligations. Introduce `hG x`. Distinguish the cases in `hx : x ∈ R`. Simplify using `only [if_pos hx]`.
+
+Use `psd_congr (psd_single hS h1 h2 h3 h5 x) ?_` and prove the remaining obligations. Introduce `h hh h' hh'`. Simplify using `only [M, hCOne K R ψ hD h (hG h hh), hCOne K R ψ hD h' (hG h' hh')]`. Simplify using the standard rewrite rules. Simplify using `only [if_neg hx]`.
+
+Use `psd_congr (psd_zero F) ?_` and prove the remaining obligations. Introduce `h hh h' hh'`. Rewrite using `[h3 x (fun hc => hx ((hGL hG x).1 hc)) h hh h' hh']`. Simplify using the standard rewrite rules.
+-/
 theorem thetaExistsStepOfSteps : Formalism.FourierDecayAlt.A6.ThetaExistenceInductive := by
   intro hThOm hSupp hNsS hCOne hExh _hLF hEntry hClosed hSubseq hA2 hN1 K _ _ _ R ψ hD hch s hs hAt
     n₀ F hF

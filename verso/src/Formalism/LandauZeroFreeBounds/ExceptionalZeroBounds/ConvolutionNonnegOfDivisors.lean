@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Rewrite using `[mul_apply]`. Use `Finset.sum_nonneg fun x hx => ?_` and prove the remaining obligations. Establish `h` using `(Nat.mem_divisorsAntidiagonal.1 hx).1`. Conclude with `mul_nonneg (hf _ (Dvd.intro _ h)) (hg _ (Dvd.intro_left _ h))`.
+-/
 lemma convolution_nonneg_of_divisors (f g : ArithmeticFunction ℂ) (n : ℕ)
     (hf : ∀ d, d ∣ n → 0 ≤ f d) (hg : ∀ d, d ∣ n → 0 ≤ g d) : 0 ≤ (f * g) n := by
   rw [mul_apply]
@@ -14,6 +17,13 @@ lemma convolution_nonneg_of_divisors (f g : ArithmeticFunction ℂ) (n : ℕ)
   have h := (Nat.mem_divisorsAntidiagonal.1 hx).1
   exact mul_nonneg (hf _ (Dvd.intro _ h)) (hg _ (Dvd.intro_left _ h))
 
+/- English proof (translation)
+Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[mul_apply, Nat.sum_divisorsAntidiagonal' (fun a b => toArithmeticFunction (fun m : ℕ => χ' (m : ZMod N')) a * toArithmeticFunction (fun m : ℕ => ψ (m : ZMod M)) b), DirichletCharacter.zetaMul, coe_zeta_mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hdvd : i ∣ n` using `Nat.dvd_of_mem_divisors hi`.
+
+Establish `hi0 : i ≠ 0` using `(Nat.pos_of_mem_divisors hi).ne'`. Establish `hni : n / i ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hdvd) (Nat.pos_of_ne_zero hi0)).ne'`. Simplify using `only [toArithmeticFunction, coe_mk, hi0, hni, if_false]`. Rewrite using `[hψ i]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← map_mul, ← Nat.cast_mul, Nat.div_mul_cancel hdvd]`.
+-/
 lemma character_convolution_eq {N N' M : ℕ} (χ : DirichletCharacter ℂ N) (χ' : DirichletCharacter ℂ N')
     (ψ : DirichletCharacter ℂ M) (hψ : ∀ n : ℕ, ψ (n : ZMod M) = χ (n : ZMod N) * χ' (n : ZMod N'))
     (n : ℕ) :
@@ -38,6 +48,17 @@ lemma character_convolution_eq {N N' M : ℕ} (χ : DirichletCharacter ℂ N) (�
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Establish `hζ : ∀ j, DirichletCharacter.zetaMul χ (p ^ j) = ∑ i ∈ Finset.range (j + 1), χ (p : ZMod N) ^ i`. Introduce `j`. Rewrite using `[DirichletCharacter.zetaMul, coe_zeta_mul_apply, Nat.sum_divisors_prime_pow hp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[toArithmeticFunction, hp.ne_zero]`.
+
+Apply `convolution_nonneg_of_divisors` to reduce the goal to its premises. Introduce `d _`. Conclude with `DirichletCharacter.zetaMul_nonneg hχ d`. Introduce `d hd`. Take `⟨j, -, rfl⟩` from `(Nat.dvd_prime_pow hp).1 hd`.
+
+Rewrite using `[character_convolution_eq χ χ' ψ hψ, Nat.cast_pow, map_pow]`. Break down `hc with h | h | ⟨h, h'⟩` into its components or cases. Conclude with `mul_nonneg (by rw [h]; exact pow_nonneg le_rfl j) (DirichletCharacter.zetaMul_nonneg hχ _)`. Conclude with `mul_nonneg (by rw [h]; exact pow_nonneg zero_le_one j) (DirichletCharacter.zetaMul_nonneg hχ _)`. Rewrite using `[h, hζ, h', neg_one_geom_sum] split_ifs with he`.
+
+Simplify using the standard rewrite rules. Establish `hj : Even j`. Break down `Nat.even_or_odd j with hj | hj` into its components or cases. Conclude with `hj`. Conclude with `absurd hj.add_one he`.
+
+Rewrite using `[hj.neg_one_pow]`. Evaluate the numerical expressions.
+-/
 lemma prime_power_coefficient_nonneg {N N' M : ℕ} {χ : DirichletCharacter ℂ N} {χ' : DirichletCharacter ℂ N'}
     {ψ : DirichletCharacter ℂ M} (hχ : χ ^ 2 = 1) (hψ : ∀ n : ℕ, ψ (n : ZMod M) = χ (n : ZMod N) * χ' (n : ZMod N'))
     {p : ℕ} (hp : p.Prime)

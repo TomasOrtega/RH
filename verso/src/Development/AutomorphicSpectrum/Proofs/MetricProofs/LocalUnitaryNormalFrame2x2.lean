@@ -5,6 +5,27 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ExistsHolomorphicNorm
 open MeasureTheory Filter Topology Matrix GlobalTheory.CompanionTheory.Ar.PB
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `d G y hpd hC`. Set `Gh : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ` to `fun y' => (1 / 2 : ℂ) • (G y' + (G y')ᴴ)`. Establish `hent : ∀ y' p q, Gh y' p q = (1 / 2 : ℂ) * (G y' p q + (starRingEnd ℂ) (G y' q p))`. Introduce `y' p q`. Simplify using `[Gh, Matrix.smul_apply, Matrix.add_apply, Matrix.conjTranspose_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hherm : ∀ y', (Gh y').IsHermitian`. Introduce `y'`. Use extensionality with `p q`. Rewrite using `[Matrix.conjTranspose_apply, hent, hent]`.
+
+Establish `hhalf : (starRingEnd ℂ) (1 / 2 : ℂ) = 1 / 2`. Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [RCLike.star_def, map_mul, map_add, Complex.conj_conj, hhalf]`. Expand and normalize the polynomial expressions, which then agree. Establish `hEq : ∀ᶠ y' in 𝓝 y, Gh y' = G y'` using `by filter_upwards [hpd] with y' h`.
+
+Establish `e : (G y')ᴴ = G y'` using `h.isHermitian.eq`. Use extensionality with `p q`. Simplify using `only [Gh, e, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy : Gh y = G y` using `hEq.self_of_nhds`.
+
+Establish `hpdy : (Gh y).PosDef`. Rewrite using `[hy]`. Conclude with `hpd.self_of_nhds`. Establish `hCh : ∀ p q, ContDiffAt ℝ 2 (fun y' => Gh y' p q) y`. Introduce `p q`.
+
+Establish `h1` using `hC p q`. Establish `h2 : ContDiffAt ℝ 2 (fun y' => (starRingEnd ℂ) (G y' q p)) y` using `Complex.conjCLE.contDiff.contDiffAt.comp y (hC q p)`. Establish `e : (fun y' => Gh y' p q) = fun y' => (1 / 2 : ℂ) * (G y' p q + (starRingEnd ℂ) (G y' q p))`. Use function extensionality and compare the values at `fun y' => hent y' p q`. Rewrite using `[e]`.
+
+Conclude with `contDiffAt_const.mul (h1.add h2)`. Take `⟨g, hg, hu, h1, hd⟩` from `GlobalTheory.T.exists_holomorphic_normal_frame d Gh y hpdy hherm hCh`. Apply the tactic sequence `refine ⟨g, hg, hu, ?_, GlobalTheory.CompanionTheory.Ar.PB.FibPt.contDiffAt_frame_entry G g y hC hg, ?_, ?_⟩`. Establish `hc : ∀ p q, ContinuousAt (fun y' => g y' p q) y` using `fun p q => (hg p q).continuous.continuousAt`. Establish `hdetc : ContinuousAt (fun y' => (g y').det) y`.
+
+Simplify using `only [Matrix.det_fin_two]`. Conclude with `((hc 0 0).mul (hc 1 1)).sub ((hc 0 1).mul (hc 1 0))`. Establish `hne : ∀ᶠ y' in 𝓝 y, (g y').det ≠ 0` using `hdetc.eventually_ne hu.ne_zero`. Use `filter_upwards [hpd, hne] with y' ha hb`. Conclude with `(GlobalTheory.T.log_sine_mobius_transform (G y') (g y') ha (isUnit_iff_ne_zero.mpr hb)).1`.
+
+Rewrite using `[← hy]`. Conclude with `h1`. Introduce `p q`. Establish `hev : (fun y' => ((g y')ᴴ * G y' * g y') p q) =ᶠ[𝓝 y] fun y' => ((g y')ᴴ * Gh y' * g y') p q` using `by filter_upwards [hEq] with y' h`. Rewrite using `[h]`.
+
+Rewrite using `[hev.fderiv_eq]`. Conclude with `hd p q`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.PB.FibPt.exists_frame_normal_near :
     ∀ (d : ℕ) (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (y : Fin d → ℂ), (∀ᶠ y' in 𝓝 y, (G y').PosDef) →
       (∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) →

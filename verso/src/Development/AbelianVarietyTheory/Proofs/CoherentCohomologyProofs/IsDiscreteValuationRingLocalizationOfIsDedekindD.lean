@@ -11,9 +11,15 @@ section Det
 variable {R M : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
   [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M]
 
+/- English proof (translation)
+The claim follows from `Ring.ord_eq_addVal a`.
+-/
 lemma length_quot_span_singleton (a : R) :
     Module.length R (R ⧸ Ideal.span {a}) = addVal R a := Ring.ord_eq_addVal a
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, addVal_mul, ih]`.
+-/
 lemma addVal_prod {ι : Type*} (s : Finset ι) (a : ι → R) :
     addVal R (∏ i ∈ s, a i) = ∑ i ∈ s, addVal R (a i) := by
   classical
@@ -21,6 +27,19 @@ lemma addVal_prod {ι : Type*} (s : Finset ι) (a : ι → R) :
   | empty => simp
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, addVal_mul, ih]
 
+/- English proof (translation)
+Set `N` to `LinearMap.range f`. Set `e : M ≃ₗ[R] N` to `LinearEquiv.ofInjective f hf`. Set `b` to `Module.Free.chooseBasis R M`. Establish `h : Module.finrank R N = Module.finrank R M` using `e.symm.finrank_eq`. Set `a` to `Submodule.smithNormalFormCoeffs b h`.
+
+Set `b'` to `Submodule.smithNormalFormTopBasis b h`. Set `ab` to `Submodule.smithNormalFormBotBasis b h`. Establish `ab_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Set `e' : M ≃ₗ[R] N` to `b'.equiv ab (Equiv.refl _)`. Set `g : M →ₗ[R] M` to `N.subtype.comp (e' : M →ₗ[R] N)`.
+
+Establish `hfe : f = N.subtype.comp (e : M →ₗ[R] N)` using `by ext x; rfl`. Establish `hass : Associated (LinearMap.det f) (LinearMap.det g)`. Rewrite using `[hfe]`. Conclude with `LinearMap.associated_det_comp_equiv _ _ _`. Establish `ha : ∀ i, g (b' i) = a i • b' i`.
+
+Introduce `i`. Express the relevant statement in the definitionally equal form `((b'.equiv ab (Equiv.refl _) (b' i) : N) : M) = _`. Rewrite using `[b'.equiv_apply, Equiv.refl_apply]`. Conclude with `ab_eq i`. Establish `hg : LinearMap.toMatrix b' b' g = Matrix.diagonal a`.
+
+Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ha, map_smul, Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one]`. Distinguish the cases in `h : i = j`. Rewrite using `[h, Matrix.diagonal_apply_eq, Finsupp.single_eq_same]`. Rewrite using `[Matrix.diagonal_apply_ne _ h, Finsupp.single_eq_of_ne h]`.
+
+Rewrite using `[(addVal_eq_iff_associated _ _).2 hass, ← LinearMap.det_toMatrix b', hg, Matrix.det_diagonal, addVal_prod, (N.quotientEquivPiSpan b h).length_eq, Module.length_pi_of_fintype]`. Conclude with `Finset.sum_congr rfl fun i _ => (length_quot_span_singleton _).symm`.
+-/
 lemma addVal_det_of_injective (f : M →ₗ[R] M) (hf : Function.Injective f) :
     addVal R (LinearMap.det f) = Module.length R (M ⧸ LinearMap.range f) := by
   classical
@@ -53,6 +72,17 @@ lemma addVal_det_of_injective (f : M →ₗ[R] M) (hf : Function.Injective f) :
     addVal_prod, (N.quotientEquivPiSpan b h).length_eq, Module.length_pi_of_fintype]
   exact Finset.sum_congr rfl fun i _ => (length_quot_span_singleton _).symm
 
+/- English proof (translation)
+Establish `h1` using `Submodule.finrank_quotient_add_finrank (LinearMap.ker f)`. Rewrite `h1` using `[f.quotKerEquivRange.finrank_eq]`. Establish `h2` using `Submodule.finrank_quotient_add_finrank (LinearMap.range f)`. Establish `h3 : 0 < Module.finrank R (LinearMap.ker f)`. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero, LinearMap.ker_eq_bot]`.
+
+Conclude with `hf`. Establish `h4 : 0 < Module.finrank R (M ⧸ LinearMap.range f)` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : M ⧸ LinearMap.range f, ∀ a : R, a • v = 0 → a = 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Establish `: Module.finrank R (M ⧸ LinearMap.range f) = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`. Introduce `v`. Take `⟨a, ha, ha0⟩` from `hcon v`. Conclude with `⟨a, ha0, ha⟩`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (LinearMap.toSpanSingleton R _ v)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Conclude with `hv a ha`.
+
+Establish `h5` using `Module.length_le_of_injective _ hinj`. Establish `h6 : Module.length R R = ⊤`. Rewrite using `[← Ring.ord_zero, Ring.ord_eq_addVal, addVal_zero]`. Rewrite `h5` using `[h6, top_le_iff]`. Then use the resulting hypothesis.
+-/
 lemma length_quot_range_of_not_injective (f : M →ₗ[R] M) (hf : ¬ Function.Injective f) :
     Module.length R (M ⧸ LinearMap.range f) = ⊤ := by
   have h1 := Submodule.finrank_quotient_add_finrank (LinearMap.ker f)
@@ -80,6 +110,9 @@ lemma length_quot_range_of_not_injective (f : M →ₗ[R] M) (hf : ¬ Function.I
     rw [← Ring.ord_zero, Ring.ord_eq_addVal, addVal_zero]
   rwa [h6, top_le_iff] at h5
 
+/- English proof (translation)
+Distinguish the cases in `hf : Function.Injective f`. Conclude with `addVal_det_of_injective f hf`. Rewrite using `[length_quot_range_of_not_injective f hf, addVal_eq_top_iff, LinearMap.det_eq_zero_iff_ker_ne_bot, Ne, LinearMap.ker_eq_bot]`. Conclude with `hf`.
+-/
 lemma addVal_det (f : M →ₗ[R] M) :
     addVal R (LinearMap.det f) = Module.length R (M ⧸ LinearMap.range f) := by
   by_cases hf : Function.Injective f
@@ -95,9 +128,17 @@ section Semilocal
 variable (R : Type*) {S : Type*} [CommRing R] [IsLocalRing R] [CommRing S] [Algebra R S]
   [Module.Finite R S]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n)).symm⟩`.
+-/
 lemma liesOver_maximalIdeal (n : Ideal S) [n.IsMaximal] : n.LiesOver (maximalIdeal R) :=
   ⟨(eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n)).symm⟩
 
+/- English proof (translation)
+Use `liesOver_maximalIdeal R n` as an intermediate fact. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (maximalIdeal R) n]`. Set `: Field (R ⧸ maximalIdeal R)` to `Ideal.Quotient.field _`. Establish `: Module.Finite (R ⧸ maximalIdeal R) (S ⧸ n)` using `Module.Finite.of_restrictScalars_finite R _ _`. Rewrite using `[← Module.length_eq_finrank]`.
+
+Conclude with `Module.length_eq_of_surjective Ideal.Quotient.mk_surjective`.
+-/
 lemma length_quot_maximal (n : Ideal S) [n.IsMaximal] :
     Module.length R (S ⧸ n) = n.inertiaDeg R := by
   have := liesOver_maximalIdeal R n
@@ -107,6 +148,9 @@ lemma length_quot_maximal (n : Ideal S) [n.IsMaximal] :
   rw [← Module.length_eq_finrank]
   exact Module.length_eq_of_surjective Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Use `liesOver_maximalIdeal R n` as an intermediate fact. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[IsScalarTower.algebraMap_apply R S B, IsLocalization.AtPrime.isUnit_to_map_iff B n]`. Assume the negation of the conclusion as `hu`. Conclude with `ha ((Ideal.mem_of_liesOver n (maximalIdeal R) a).1 hu)`.
+-/
 lemma isLocalHom_algebraMap (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B] [IsLocalRing B]
     [Algebra S B] [IsLocalization.AtPrime B n] [Algebra R B] [IsScalarTower R S B] :
     IsLocalHom (algebraMap R B) := by
@@ -116,6 +160,11 @@ lemma isLocalHom_algebraMap (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B]
   by_contra hu
   exact ha ((Ideal.mem_of_liesOver n (maximalIdeal R) a).1 hu)
 
+/- English proof (translation)
+Use `liesOver_maximalIdeal R n` as an intermediate fact. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (maximalIdeal R) n]`. Use `Algebra.finrank_eq_of_equiv_equiv (RingEquiv.refl _) (IsLocalization.AtPrime.equivQuotMaximalIdeal n B) ?_` and prove the remaining obligations. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `residue B (algebraMap R B a) = IsLocalization.AtPrime.equivQuotMaximalIdeal n B (Ideal.Quotient.mk n (algebraMap R S a))`.
+
+Rewrite using `[IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 lemma inertiaDeg_eq_finrank_residueField (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B]
     [IsLocalRing B] [Algebra S B] [IsLocalization.AtPrime B n] [Algebra R B]
     [IsScalarTower R S B] [IsLocalHom (algebraMap R B)] :
@@ -130,6 +179,9 @@ lemma inertiaDeg_eq_finrank_residueField (n : Ideal S) [n.IsMaximal] (B : Type*)
   rw [IsLocalization.AtPrime.equivQuotMaximalIdeal_apply_mk, ← IsScalarTower.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `Module.finite_of_finrank_pos <| by rw [← inertiaDeg_eq_finrank_residueField R n B] exact Ideal.inertiaDeg_pos n R`.
+-/
 lemma finite_residueField (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B]
     [IsLocalRing B] [Algebra S B] [IsLocalization.AtPrime B n] [Algebra R B]
     [IsScalarTower R S B] [IsLocalHom (algebraMap R B)] :
@@ -140,6 +192,9 @@ lemma finite_residueField (n : Ideal S) [n.IsMaximal] (B : Type*) [CommRing B]
 
 include R in
 
+/- English proof (translation)
+Use `Algebra.QuasiFinite.finite_primesOver (R := R) (S := S) (maximalIdeal R)` as an intermediate fact. Use `this.to_subtype` as an intermediate fact. Use `Finite.of_injective (fun n : MaximalSpectrum S => (⟨n.asIdeal, n.isMaximal.isPrime, liesOver_maximalIdeal R n.asIdeal⟩ : (maximalIdeal R).primesOver S)) ?_` and prove the remaining obligations. Introduce `a b h`. Conclude with `MaximalSpectrum.ext (congrArg Subtype.val h)`.
+-/
 lemma finite_maximalSpectrum : Finite (MaximalSpectrum S) := by
   have := Algebra.QuasiFinite.finite_primesOver (R := R) (S := S) (maximalIdeal R)
   have := this.to_subtype
@@ -149,6 +204,11 @@ lemma finite_maximalSpectrum : Finite (MaximalSpectrum S) := by
   intro a b h
   exact MaximalSpectrum.ext (congrArg Subtype.val h)
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Use `IsLocalization.AtPrime.isLocalRing B n.asIdeal` as an intermediate fact. Rewrite using `[IsLocalization.AtPrime.map_eq_maximalIdeal n.asIdeal B, Module.length_eq_one_iff, isSimpleModule_iff_isCoatom]`. Conclude with `Ideal.isMaximal_def.1 inferInstance`.
+
+Rewrite using `[Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff]`. Establish `: ¬ m.asIdeal ≤ n.asIdeal` using `fun hle => h (MaximalSpectrum.ext (m.isMaximal.eq_of_le n.isMaximal.ne_top hle).symm)`. Take `⟨y, hy, hyn⟩` from `Set.not_subset.1 this`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hy) (IsLocalization.map_units _ (⟨y, hyn⟩ : n.asIdeal.primeCompl))`.
+-/
 lemma length_localization_quot_maximal (m n : MaximalSpectrum S) [Decidable (n = m)]
     (B : Type*) [CommRing B] [Algebra S B] [IsLocalization.AtPrime B n.asIdeal] :
     Module.length B (B ⧸ m.asIdeal.map (algebraMap S B)) = if n = m then 1 else 0 := by
@@ -168,6 +228,15 @@ lemma length_localization_quot_maximal (m n : MaximalSpectrum S) [Decidable (n =
 variable [Fintype (MaximalSpectrum S)] (A : MaximalSpectrum S → Type*) [∀ n, CommRing (A n)]
   [∀ n, Algebra S (A n)] [∀ n, IsLocalization.AtPrime (A n) n.asIdeal]
 
+/- English proof (translation)
+Proceed by induction on `hX with`. Consider the case `of_subsingleton => intro _ _`. Simplify using the standard rewrite rules. Consider the case `@of_simple_quotient X _ _ N hs _ ih`. Introduce `_ _`.
+
+Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hs`. Set `f : N →ₗ[S] X` to `N.subtype`. Set `g : X →ₗ[S] S ⧸ m` to `e.toLinearMap.comp N.mkQ`. Establish `hf : Function.Injective f` using `N.subtype_injective`. Establish `hg : Function.Surjective g` using `e.surjective.comp N.mkQ_surjective`.
+
+Establish `hfg : Function.Exact f g` using `LinearMap.exact_iff.mpr (by simp [f, g])`. Rewrite using `[length_eq_add_of_exact (f.restrictScalars R) (g.restrictScalars R) hf hg hfg, ih, length_quot_maximal]`. Establish `key : ∀ n : MaximalSpectrum S, Module.length (A n) (A n ⊗[S] X) = Module.length (A n) (A n ⊗[S] N) + if n = ⟨m, hm⟩ then 1 else 0`. Introduce `n`. Establish `: Module.Flat S (A n)` using `IsLocalization.flat (A n) n.asIdeal.primeCompl`.
+
+Rewrite using `[length_eq_add_of_exact (AlgebraTensorModule.lTensor (A n) (A n) f) (AlgebraTensorModule.lTensor (A n) (A n) g) (Module.Flat.lTensor_preserves_injective_linearMap f hf) (LinearMap.lTensor_surjective (A n) hg) (Module.Flat.lTensor_exact (A n) hfg), ← (Algebra.TensorProduct.quotIde …`. Repeatedly rewrite using `[key, add_mul, Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+-/
 lemma length_eq_sum_tensor {X : Type*} [AddCommGroup X] [Module S X] (hX : IsFiniteLength S X) :
     ∀ [Module R X] [IsScalarTower R S X], Module.length R X =
       ∑ n : MaximalSpectrum S, Module.length (A n) (A n ⊗[S] X) * n.asIdeal.inertiaDeg R := by
@@ -198,6 +267,11 @@ lemma length_eq_sum_tensor {X : Type*} [AddCommGroup X] [Module S X] (hX : IsFin
     simp_rw [key, add_mul, Finset.sum_add_distrib]
     simp
 
+/- English proof (translation)
+Establish `h : IsFiniteLength S (S ⧸ I)`. Rewrite `hI` using `[Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Rewrite using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `hI.imp (isNoetherian_of_tower R) (isArtinian_of_tower R)`. Rewrite using `[length_eq_sum_tensor R A h]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[(Algebra.TensorProduct.quotIdealMapEquivTensorQuot (A n) I).toLinearEquiv.length_eq]`.
+-/
 lemma length_quot_eq_sum (I : Ideal S) (hI : Module.length R (S ⧸ I) ≠ ⊤) :
     Module.length R (S ⧸ I) = ∑ n : MaximalSpectrum S,
       Module.length (A n) (A n ⧸ I.map (algebraMap S (A n))) * n.asIdeal.inertiaDeg R := by
@@ -218,6 +292,9 @@ open NormVal
 variable (R : Type*) {S : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
   [CommRing S] [Algebra R S] [Module.Free R S] [Module.Finite R S]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_apply, addVal_det]`. Establish `h : LinearMap.range (Algebra.lmul R S x) = (Ideal.span {x}).restrictScalars R`. Use extensionality with `y`. Simplify using `[Ideal.mem_span_singleton', mul_comm]`. Rewrite using `[(Submodule.quotEquivOfEq _ _ h).length_eq, (Submodule.Quotient.restrictScalarsEquiv R (Ideal.span {x})).length_eq]`.
+-/
 theorem addVal_norm_eq_length (x : S) :
     addVal R (Algebra.norm R x) = Module.length R (S ⧸ Ideal.span {x}) := by
   rw [Algebra.norm_apply, addVal_det]
@@ -227,12 +304,18 @@ theorem addVal_norm_eq_length (x : S) :
   rw [(Submodule.quotEquivOfEq _ _ h).length_eq,
     (Submodule.Quotient.restrictScalarsEquiv R (Ideal.span {x})).length_eq]
 
+/- English proof (translation)
+Rewrite using `[Ne, addVal_eq_top_iff, Algebra.norm_apply, LinearMap.det_eq_zero_iff_ker_ne_bot, not_not, LinearMap.ker_eq_bot', mem_nonZeroDivisors_iff_left]`. Simplify using the standard rewrite rules.
+-/
 theorem addVal_norm_ne_top_iff (x : S) :
     addVal R (Algebra.norm R x) ≠ ⊤ ↔ x ∈ nonZeroDivisors S := by
   rw [Ne, addVal_eq_top_iff, Algebra.norm_apply, LinearMap.det_eq_zero_iff_ker_ne_bot, not_not,
     LinearMap.ker_eq_bot', mem_nonZeroDivisors_iff_left]
   simp
 
+/- English proof (translation)
+Rewrite using `[← addVal_norm_eq_length, addVal_norm_ne_top_iff]`.
+-/
 theorem length_quot_span_ne_top_iff (x : S) :
     Module.length R (S ⧸ Ideal.span {x}) ≠ ⊤ ↔ x ∈ nonZeroDivisors S := by
   rw [← addVal_norm_eq_length, addVal_norm_ne_top_iff]
@@ -242,6 +325,9 @@ section Local
 variable [Fintype (MaximalSpectrum S)] (A : MaximalSpectrum S → Type*) [∀ n, CommRing (A n)]
   [∀ n, Algebra S (A n)] [∀ n, IsLocalization.AtPrime (A n) n.asIdeal]
 
+/- English proof (translation)
+Rewrite using `[addVal_norm_eq_length, length_quot_eq_sum R A _ ((length_quot_span_ne_top_iff R x).2 hx)]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+-/
 theorem addVal_norm_eq_sum_length {x : S} (hx : x ∈ nonZeroDivisors S) :
     addVal R (Algebra.norm R x) = ∑ n : MaximalSpectrum S,
       Module.length (A n) (A n ⧸ Ideal.span {algebraMap S (A n) x}) * n.asIdeal.inertiaDeg R := by
@@ -251,6 +337,19 @@ theorem addVal_norm_eq_sum_length {x : S} (hx : x ∈ nonZeroDivisors S) :
 
 variable [∀ n, IsDomain (A n)] [∀ n, IsDiscreteValuationRing (A n)]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ nonZeroDivisors S`. Rewrite using `[addVal_norm_eq_sum_length R A hx]`. Conclude with `Finset.sum_congr rfl fun n _ => by rw [length_quot_span_singleton]`. Establish `h1 : addVal R (Algebra.norm R x) = ⊤`. Rewrite `hx` using `[← addVal_norm_ne_top_iff R, not_not]`. Then use the resulting hypothesis.
+
+Rewrite `hx` using `[mem_nonZeroDivisors_iff_left]`. Use `push Not at hx`. Take `⟨y, hxy, hy⟩` from `hx`. Establish `hne : LinearMap.ker (LinearMap.toSpanSingleton S S y) ≠ ⊤`. Introduce `h`.
+
+Establish `: (1 : S) ∈ LinearMap.ker (LinearMap.toSpanSingleton S S y)` using `h ▸ Submodule.mem_top`. Conclude with `hy (by simpa using this)`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `n : MaximalSpectrum S` to `⟨m, hm⟩`. Establish `hy' : algebraMap S (A n) y ≠ 0`.
+
+Introduce `h`. Take `⟨s, hs⟩` from `(IsLocalization.map_eq_zero_iff n.asIdeal.primeCompl (A n) y).1 h`. Conclude with `s.2 (hle (by simpa using hs))`. Establish `hx' : algebraMap S (A n) x = 0`. Use `congrArg (algebraMap S (A n)) hxy` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_right hy'`. Rewrite using `[h1, eq_comm, ENat.sum_eq_top]`. Use `⟨n, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hx', addVal_zero, ENat.top_mul]`.
+
+Conclude with `(Ideal.inertiaDeg_pos n.asIdeal R).ne'` after adjusting the coercions.
+-/
 theorem addVal_norm_eq_sum (x : S) :
     addVal R (Algebra.norm R x) = ∑ n : MaximalSpectrum S,
       addVal (A n) (algebraMap S (A n) x) * n.asIdeal.inertiaDeg R := by
@@ -283,6 +382,11 @@ theorem addVal_norm_eq_sum (x : S) :
 
 include R in
 
+/- English proof (translation)
+Introduce `h`. Use `(addVal_norm_ne_top_iff R x).2 hx ?_` and prove the remaining obligations. Rewrite using `[addVal_norm_eq_sum R A, ENat.sum_eq_top]`. Use `⟨n, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[h, ENat.top_mul]`.
+
+Conclude with `(Ideal.inertiaDeg_pos n.asIdeal R).ne'` after adjusting the coercions.
+-/
 theorem addVal_localization_ne_top {x : S} (hx : x ∈ nonZeroDivisors S) (n : MaximalSpectrum S) :
     addVal (A n) (algebraMap S (A n) x) ≠ ⊤ := by
   intro h
@@ -299,6 +403,9 @@ end Local
 
 include R in
 
+/- English proof (translation)
+Use `liesOver_maximalIdeal R n.asIdeal` as an intermediate fact. Conclude with `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain S (Ideal.ne_bot_of_liesOver_of_ne_bot (IsDiscreteValuationRing.not_a_field R) n.asIdeal) _`.
+-/
 theorem isDiscreteValuationRing_localization_of_isDedekindDomain [IsDedekindDomain S]
     (n : MaximalSpectrum S) : IsDiscreteValuationRing (Localization.AtPrime n.asIdeal) := by
   have := liesOver_maximalIdeal R n.asIdeal

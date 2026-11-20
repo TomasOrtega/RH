@@ -18,6 +18,11 @@ namespace UpperTheory.TNZ.Grp.P_spSupp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ} (G : Grp k n)
 
+/- English proof (translation)
+Establish `hcount : ∀ {M : ℕ} (f : Fin M → β) (c : β), Fintype.card {a // f a = c} = Multiset.count c (Finset.univ.val.map f)`. Introduce `M f c`. Rewrite using `[Multiset.count_map, Fintype.card_subtype]`. Simplify using `only [Finset.card, Finset.filter_val]`. Use `congr 1`.
+
+Conclude with `Multiset.filter_congr fun a _ => eq_comm`. Establish `hcard : ∀ c, Fintype.card {a // x a = c} = Fintype.card {b // F b = c}` using `fun c => by`. Rewrite using `[hcount, hcount, hx]`. Conclude with `⟨Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hcard c), fun a => (Equiv.ofFiberEquiv_map _ a).symm⟩`.
+-/
 theorem exists_equiv_of_map_eq {β : Type*} {h N : ℕ} (x : Fin h → β) (F : Fin N → β)
     (hx : (Finset.univ.val.map x : Multiset β) = Finset.univ.val.map F) :
     ∃ σ : Fin h ≃ Fin N, ∀ a, x a = F (σ a) := by
@@ -33,6 +38,11 @@ theorem exists_equiv_of_map_eq {β : Type*} {h N : ℕ} (x : Fin h → β) (F : 
   exact ⟨Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hcard c),
     fun a => (Equiv.ofFiberEquiv_map _ a).symm⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ {ι : Type} [Fintype ι] (g : ι → β), (Finset.univ.val.map g : Multiset β) = ∑ i, ({g i} : Multiset β)`. Introduce `ι _ g`. Rewrite using `[← Multiset.sum_map_singleton (Finset.univ.val.map g), Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[h1 F, ← Equiv.sum_comp e, Fintype.sum_sigma]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hF]`.
+-/
 theorem sum_map_univ {β : Type*} {s N : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin N)
     (f : ∀ a, Fin (d a) → β) (F : Fin N → β) (hF : ∀ a j, F (e ⟨a, j⟩) = f a j) :
     (∑ a, (Finset.univ.val.map (f a) : Multiset β)) = Finset.univ.val.map F := by
@@ -46,6 +56,9 @@ theorem sum_map_univ {β : Type*} {s N : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fi
   rw [h1]
   exact Finset.sum_congr rfl fun j _ => by rw [hF]
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.inv_apply, deltaHalf_apply, ← Finset.prod_inv_distrib, Units.coe_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[absPow_neg]`. Both sides reduce to the same expression.
+-/
 theorem deltaHalf_inv_apply (g : Levi k fun a : Fin G.s => Fin (G.d a)) :
     ((((deltaHalf k fun a : Fin G.s => Fin (G.d a))⁻¹ g : ℂˣ)) : ℂ) =
       ∏ a, ((absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2))
@@ -55,6 +68,9 @@ theorem deltaHalf_inv_apply (g : Levi k fun a : Fin G.s => Fin (G.d a)) :
   rw [absPow_neg]
   rfl
 
+/- English proof (translation)
+Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use `MultilinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, piTensor_tprod, twist_apply, Grp.twD, detChar_apply]`. Rewrite using `[MultilinearMap.map_smul_univ, deltaHalf_inv_apply]`.
+-/
 theorem piTensor_twD_eq {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
     (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)) :
     piTensor (G.twD τ) = twist (piTensor τ) (deltaHalf k fun a : Fin G.s => Fin (G.d a))⁻¹ := by
@@ -64,6 +80,9 @@ theorem piTensor_twD_eq {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ 
   simp only [LinearMap.compMultilinearMap_apply, piTensor_tprod, twist_apply, Grp.twD, detChar_apply]
   rw [MultilinearMap.map_smul_univ, deltaHalf_inv_apply]
 
+/- English proof (translation)
+Use `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ hi fun a => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.SchurAdm.schur_admissible _ (KO k (Fin (G.d a))) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO _ _ (hi a) ((hBZ k).1 (Fin (G.d a)) _ _ (hs a) (hi a))`.
+-/
 theorem isIrreducible_piTensor_twD (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) {Y : Fin G.s → Type}
     [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)] (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a))
     (hs : ∀ a, IsSmooth (G.twD τ a)) (hi : ∀ a, (G.twD τ a).IsIrreducible) :
@@ -72,6 +91,11 @@ theorem isIrreducible_piTensor_twD (hBZ : GlobalTheory.Published.BernsteinZelevi
   exact GlobalTheory.SchurAdm.schur_admissible _ (KO k (Fin (G.d a))) GlobalTheory.SplitFlip.isOpen_KO
     GlobalTheory.SplitFlip.isCompact_KO _ _ (hi a) ((hBZ k).1 (Fin (G.d a)) _ _ (hs a) (hi a))
 
+/- English proof (translation)
+Establish `hψ : IsSmoothChar (absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2)))` using `isSmoothChar_absPow _`. Establish `h2` using `(hasSupport_of_isCuspSupport (hc a)).tw _ hψ`. Rewrite `h2` using `[Multiset.map_map]`. Establish `key : (Finset.univ.val.map fun j => IrrGL.ofChar _ (hsm j)) = Finset.univ.val.map ((fun y : IrrGL k => y.tw _ hψ) ∘ fun j => IrrGL.of (detRep (Fin 1) (ν a j)) ((hc a).2.1 j).2.2.1 ((hc a).2.1 j).2.1)` using `Multiset.map_congr rfl fun j _ => (IrrGL.tw_ofChar (ν a j) _ (hν a j) hψ).symm`. Rewrite using `[key]`.
+
+Conclude with `h2`.
+-/
 theorem hasSupport_twD {Y : Fin G.s → Type} [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)]
     (τ : ∀ a, Representation ℂ (GL (Fin (G.d a)) k) (Y a)) (ν : ∀ a, Fin (G.d a) → kˣ →* ℂˣ)
     (hν : ∀ a j, IsSmoothChar (ν a j))
@@ -96,6 +120,25 @@ open P_spSupp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ}
 
+/- English proof (translation)
+Introduce `hOrd hLit V _ _ π hπs hπi Y _ _ τ hτs hτi ν hν hcs hjac`. Establish `hG` using `hLit.loc.geo`. Establish `hZ` using `hLit.loc.zel`. Establish `hBZ` using `hLit.loc.bz`. Establish `hs' : ∀ a, IsSmooth (G.twD τ a)` using `fun a => isSmooth_twist (hτs a) (isSmoothChar_absPow _).detChar`.
+
+Establish `hi' : ∀ a, (G.twD τ a).IsIrreducible` using `fun a => GlobalTheory.LocGL.isIrreducible_twist (hτi a) _`. Establish `hτJ : (piTensor (G.twD τ)).IsIrreducible` using `isIrreducible_piTensor_twD G hBZ τ hs' hi'`. Establish `hJs : IsSubquotient (piTensor (G.twD τ)) (jac G.e π)`. Rewrite using `[piTensor_twD_eq]`. Conclude with `GlobalTheory.LocGL.isSubquotient_twist hjac _`.
+
+Take `⟨s, hsπ⟩` from `GlobalTheory.LocGL.SupportRing.exists_hasSupport hZ (IrrGL.of π hπs hπi)`. Establish `hsπ' : HasSupport π s` using `hsπ.of_equiv (IrrGL.equivOf π hπs hπi).symm`. Establish `hy : ∀ j, ∃ y : IrrRep (GL (Fin (G.d j)) k), IsSubquotient y.ρ ((piTensor (G.twD τ)).comp (MonoidHom.mulSingle (fun j => GL (Fin (G.d j)) k) j) : Representation ℂ (GL (Fin (G.d j)) k) _) ∧ Nonempty ((G.twD τ j).Equiv y.ρ)`. Introduce `j`. Take `⟨X, _, _, υ, hυ, hυs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ ((piTensor (G.twD τ)).comp (MonoidHom.mulSingle (fun j => GL (Fin (G.d j)) k) j)) (GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτJ)`.
+
+Establish `h1 : IsSubquotient υ (G.twD τ j)` using `GlobalTheory.LocGL.SupportUnique.isSubquotient_factor (G.twD τ) j hυ hυs`. Conclude with `⟨⟨X, υ, h1.isSmooth (hs' j), hυ⟩, hυs, GlobalTheory.LocGL.SupportUnique.nonempty_equiv_of_isSubquotient hυ (hi' j) h1⟩`. Use `choose y hy hyE using hy`. Take `⟨t, ht, hst⟩` from `GlobalTheory.LocGL.SupportUnique.exists_sum_of_jac hG hZ hsπ' G.e hτJ hJs y hy`. Establish `hsm : ∀ a j, IsSmoothChar (ν a j * absPow k (-((modExp (fun b : Fin G.s => Fin (G.d b)) a : ℂ) / 2)))` using `fun a j => (hν a j).mul (isSmoothChar_absPow _)`.
+
+Establish `htj : ∀ j, t j = Finset.univ.val.map fun i => IrrGL.ofChar _ (hsm j i)`. Introduce `j`. Take `⟨φ⟩` from `hyE j`. Use `GlobalTheory.LocGL.SupportUnique.eq_of_hasSupport hG hZ (G.d j) (IrrGL.of (G.twD τ j) (hs' j) (hi' j)) rfl _ _ ?_ ?_` and prove the remaining obligations. Conclude with `((ht j).of_equiv φ.symm).of_equiv (IrrGL.equivOf _ _ _)`.
+
+Conclude with `(hasSupport_twD G τ ν hν hcs j (hsm j)).of_equiv (IrrGL.equivOf _ _ _)`. Establish `hc : ∀ i, IsSmoothChar (G.cOf ν i)` using `fun i => (hν _ _).mul (isSmoothChar_absPow _)`. Establish `hsF : s = Finset.univ.val.map fun i => IrrGL.ofChar (G.cOf ν i) (hc i)`. Rewrite using `[hst, Finset.sum_congr rfl fun j _ => htj j]`. Conclude with `sum_map_univ G.e _ _ fun a j => IrrGL.ofChar_inj.2 (by`.
+
+Unfold `Grp.cOf`. Rewrite using `[Equiv.symm_apply_apply])`. Take `⟨h, x, hx, -, -, e, he⟩` from `hsπ'`. Rewrite `hx` using `[hsF]`. Take `⟨σ, hσ⟩` from `exists_equiv_of_map_eq x _ hx`.
+
+Take `rfl : x = fun a => IrrGL.ofChar (G.cOf ν (σ a)) (hc (σ a))` from `funext hσ`. Take `rfl : h = n` from `by simpa using Fintype.card_congr σ`. Set `φ` to `multiProdEquiv e fun a => (GlobalTheory.LocGL.equivRep (IrrRep.det (Fin 1) (G.cOf ν (σ a)) (hc (σ a)))).symm`. Establish `h1 : IsSubquotient π (multiProd e fun a => detRep (Fin 1) (G.cOf ν (σ a)))` using `he.trans (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`. Establish `h2` using `h1.trans (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries e fun a => G.cOf ν (σ a))`.
+
+Conclude with `hOrd hLit V π hπs hπi (G.cOf ν) hc σ h2`.
+-/
 theorem step_spSupp (G : Grp k n) : G.SpecialSupportProp := by
   intro hOrd hLit V _ _ π hπs hπi Y _ _ τ hτs hτi ν hν hcs hjac
   have hG := hLit.loc.geo

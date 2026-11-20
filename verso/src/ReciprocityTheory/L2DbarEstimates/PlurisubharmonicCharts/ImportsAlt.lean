@@ -12,6 +12,41 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `A L N w w0 s De m Nsec hconn hD hF hDe hwC hN hNC hvan`. Take `⟨C2, hC2⟩` from `hwC`. Take `⟨C1, hC1⟩` from `hNC`. Use `set MS := A.Mset w0 s De with hMS`. Establish `hw0 : A.IsSec L w0` using `hD.isSection_denom`.
+
+Establish `hs` using `hD.sec_s`. Set `Uf : Y → ℂ` to `fun y => Nsec (A.pick y) y / w0 (A.pick y) y ^ m`. Establish `hHolo : Holo n (flatStein A hD hF).z (fun y : MS => Uf y)`. Use `(holo_flat_iff A hD hF Uf).2 (fun i => ?_)` and prove the remaining obligations. Establish `hNd` using `hN.1 i`.
+
+Establish `hwd` using `hw0.1 i`. Simplify using `only [Set.preimage_univ, Set.inter_univ] at hNd hwd`. Establish `hne : ∀ v ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' MS, ((w0 i ∘ (A.chart i).symm) v) ^ m ≠ 0` using `fun v hv => pow_ne_zero _ (ne_zero_of_overlap_ne_zero A L w0 hw0 i (A.pick _) _ ((A.chart i).map_target hv.1) (A.mem_pick _) hv.2.1)`. Use `((hNd.mono Set.inter_subset_left).mul (((hwd.mono Set.inter_subset_left).pow m).inv hne)).congr (fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Uf]`.
+
+Rewrite using `[ratio_pow_chart_independent A L m Nsec w0 hN hw0 (A.pick _) i _ (A.mem_pick _) ((A.chart i).map_target hv.1), div_eq_mul_inv]`. Both sides reduce to the same expression. Set `U : Set (V n)` to `{v : V n | MvPolynomial.eval (fun i => v i) De ≠ 0}`. Establish `hUo : IsOpen U` using `isOpen_ne_fun ((MvPolynomial.continuous_eval (p := De)).comp (by fun_prop)) continuous_const`. Establish `key : ∀ x0 : MS, Uf x0 = 0`.
+
+Introduce `x0`. Establish `hM'o : IsOpen (connectedComponent x0)`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Take `⟨e, hxe, -⟩` from `hF.localHomeo x`.
+
+Establish `hTo : IsOpen (connectedComponentIn e.target (e x))` using `e.open_target.connectedComponentIn`. Establish `hxT : e x ∈ connectedComponentIn e.target (e x)` using `mem_connectedComponentIn (e.map_source hxe)`. Establish `hTs : connectedComponentIn e.target (e x) ⊆ e.target` using `connectedComponentIn_subset _ _`. Establish `hW : IsOpen (e.symm '' connectedComponentIn e.target (e x))`. Rewrite using `[e.symm_image_eq_source_inter_preimage hTs]`.
+
+Conclude with `e.isOpen_inter_preimage hTo`. Establish `hWc : IsPreconnected (e.symm '' connectedComponentIn e.target (e x))` using `isPreconnected_connectedComponentIn.image _ (e.continuousOn_symm.mono hTs)`. Establish `hxW : x ∈ e.symm '' connectedComponentIn e.target (e x)` using `⟨e x, hxT, e.left_inv hxe⟩`. Establish `hsub : e.symm '' connectedComponentIn e.target (e x) ⊆ connectedComponent x0`. Rewrite using `[connectedComponent_eq hx]`.
+
+Conclude with `hWc.subset_connectedComponent hxW`. Conclude with `Filter.mem_of_superset (hW.mem_nhds hxW) hsub`. Establish `: Nonempty (connectedComponent x0)` using `⟨⟨x0, mem_connectedComponent⟩⟩`. Establish `: ConnectedSpace (connectedComponent x0)` using `Subtype.connectedSpace isConnected_connectedComponent`. Set `z' : connectedComponent x0 → V n` to `fun x => A.zmap w0 s (x : MS)`.
+
+Establish `hzU : ∀ x, z' x ∈ U` using `fun x => (x : MS).2.2`. Establish `hloc : IsLocalHomeomorph z'` using `hF.localHomeo.comp hM'o.isOpenEmbedding_subtypeVal.isLocalHomeomorph`. Establish `hprop : ∀ K : Set (V n), IsCompact K → K ⊆ U → IsCompact (z' ⁻¹' K)`. Introduce `K hK hKU`. Establish `h1` using `hF.proper K hK (fun v hv => hKU hv)`.
+
+Establish `h2 : IsCompact (Subtype.val ⁻¹' (A.zmap w0 s ⁻¹' K) : Set MS)`. Rewrite using `[Subtype.isCompact_iff, Subtype.image_preimage_coe]`. Conclude with `h1`. Establish `h3 : IsCompact (Subtype.val ⁻¹' (Subtype.val ⁻¹' (A.zmap w0 s ⁻¹' K) : Set MS) : Set (connectedComponent x0))`. Rewrite using `[Subtype.isCompact_iff, Subtype.image_preimage_coe, Set.inter_comm]`.
+
+Conclude with `h2.inter_right isClosed_connectedComponent`. Conclude with `h3`. Take `⟨hcov, hfin⟩` from `isCoveringMapOn_of_proper z' U hUo hzU hloc hprop`. Establish `hH'` using `holo_restrict_open _ _ hHolo (connectedComponent x0) hM'o`. Establish `hbd : ∀ x : connectedComponent x0, ‖Uf ((x : MS) : Y)‖ ≤ Real.sqrt (max C1 0 * |C2| ^ m) * (1 + ‖z' x‖ ^ 2) ^ ((m : ℝ) / 2)` using `fun x => norm_section_ratio_le A L m w w0 s Nsec C1 C2 hC1 hC2 _ (x : MS).2.1`.
+
+Establish `hv' : ∀ x : connectedComponent x0, z' x = 0 → VanishesBeyond n z' (fun x : connectedComponent x0 => Uf ((x : MS) : Y)) x m`. Introduce `x hx e he hxe k hk`. Establish `hyS : ((x : MS) : Y) ∈ A.zeroSet s`. Introduce `k'`. Establish `h` using `congrArg (fun v : V n => v k') hx`.
+
+Simplify using `only [z', zmap, PiLp.toLp_apply, PiLp.zero_apply] at h`. Conclude with `(div_eq_zero_iff.1 h).resolve_right (x : MS).2.1`. Take `⟨C, hC⟩` from `vanishing_order_transfer A L m w0 s Nsec hw0 hs hN ((x : MS) : Y) (x : MS).2.1 (hF.deriv_ne _ (x : MS).2) (hvan _ hyS) (fun t : connectedComponent x0 => ((t : MS) : Y)) (continuous_subtype_val.comp continuous_subtype_val) e he x hxe rfl`. Establish `hex : z' x = e x` using `he hxe`. Rewrite using `[hex]`.
+
+Conclude with `iteratedFDeriv_eq_zero_of_bound _ e.target (e x) e.open_target (e.map_source hxe) (hH' e he) m ⟨C, hC⟩ k hk`. Establish `hzero` using `hNORM (connectedComponent x0) z' De (fun x : connectedComponent x0 => Uf ((x : MS) : Y)) (Real.sqrt (max C1 0 * |C2| ^ m)) m hDe hcov hzU hfin ‹_› hH' hbd hv'`. Conclude with `congrFun hzero ⟨x0, mem_connectedComponent⟩`. Introduce `i y hy`. Establish `hzM : ∀ y' ∈ (A.chart i).source ∩ MS, Nsec i y' = 0`.
+
+Introduce `y' hy'`. Establish `h` using `key ⟨y', hy'.2⟩`. Simplify using `only [Uf] at h`. Establish `h0 : Nsec (A.pick y') y' = 0` using `(div_eq_zero_iff.1 h).resolve_right (pow_ne_zero _ hy'.2.1)`. Rewrite using `[hN.2 i (A.pick y') y' (Set.mem_univ _) hy'.1 (A.mem_pick y'), h0, mul_zero]`.
+
+Establish `hcont : ContinuousOn (Nsec i) (A.chart i).source`. Establish `hNd` using `hN.1 i`. Simplify using `only [Set.preimage_univ, Set.inter_univ] at hNd`. Use `(hNd.continuousOn.comp (A.chart i).continuousOn (fun y hy => (A.chart i).map_source hy)).congr (fun y hy => ?_)` and prove the remaining obligations. Simplify using `[(A.chart i).left_inv hy]`.
+
+Establish `hEq` using `Set.EqOn.of_subset_closure (f := Nsec i) (g := fun _ => (0 : ℂ)) hzM hcont continuousOn_const Set.inter_subset_left ((dense_Mset A hD hF).open_subset_closure_inter (A.chart i).open_source)`. Conclude with `hEq hy`.
+-/
 theorem zero (n : ℕ) (Y : Type u) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι : Type*) (La : Type*) [AddCommGroup La] (hNORM : NORMAll.{u} n) : ZEROStatement n Y ι La := by
   intro A L N w w0 s De m Nsec hconn hD hF hDe hwC hN hNC hvan
   obtain ⟨C2, hC2⟩ := hwC

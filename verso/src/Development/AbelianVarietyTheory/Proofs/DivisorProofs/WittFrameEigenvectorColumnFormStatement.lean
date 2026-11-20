@@ -8,6 +8,9 @@ open GlobalTheory.Doubling (absE conjUnit)
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorusCentRow.row_scalar | exact GlobalTheory.TorusCentRow.row_scalar | (intros; apply GlobalTheory.TorusCentRow.row_scalar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.witt_frame_eigenvector_column_form : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ {g : GAd σ J} {k : Fin r} (γ : AF F ⊗[F] E),
     (matHom _ σ J g⁻¹).1 *ᵥ (fun i => adMat F Y i k) = γ • (fun i => adMat F Y i k) → ∀ i,

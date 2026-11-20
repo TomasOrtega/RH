@@ -4,12 +4,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `N`. Establish `hN : I ^ N ≤ (J ^ N).comap φ` using `(Ideal.pow_right_mono hφ N).trans (Ideal.le_comap_pow φ N)`. Conclude with `(hf N).comp (Ideal.quotientMap (J ^ N) φ hN)`.
+-/
 private theorem ac_map {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] [CommRing S] {I : Ideal R} {J : Ideal S}
     (φ : R →+* S) (hφ : I ≤ J.comap φ) {f : Γ → R} (hf : AdicCont I f) : AdicCont J fun g => φ (f g) := by
   intro N
   have hN : I ^ N ≤ (J ^ N).comap φ := (Ideal.pow_right_mono hφ N).trans (Ideal.le_comap_pow φ N)
   exact (hf N).comp (Ideal.quotientMap (J ^ N) φ hN)
 
+/- English proof (translation)
+Introduce `N`. Establish `h` using `IsLocallyConstant.comp₂ (hf N) (hg N) (· * ·)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[map_mul]`.
+-/
 private theorem ac_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ideal R} {f g : Γ → R}
     (hf : AdicCont I f) (hg : AdicCont I g) : AdicCont I fun x => f x * g x := by
   intro N
@@ -18,10 +24,28 @@ private theorem ac_mul {Γ R : Type} [TopologicalSpace Γ] [CommRing R] {I : Ide
   funext x
   simp [map_mul]
 
+/- English proof (translation)
+Introduce `N` and use `(hf N).comp_continuous hu`.
+-/
 private theorem ac_comp {Γ Γ' R : Type} [TopologicalSpace Γ] [TopologicalSpace Γ'] [CommRing R] {I : Ideal R} {f : Γ → R}
     (hf : AdicCont I f) {u : Γ' → Γ} (hu : Continuous u) : AdicCont I fun x => f (u x) :=
   fun N => (hf N).comp_continuous hu
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T c' h K k _ _ _ _ Q hQ ψ hψ`. Take `⟨-, -, hcont, -, hres, hdec⟩` from `P1.towerGal D T`. Establish `hc : ∀ a : c'.O, PowerSeries.constantCoeff (algebraMap c'.O (PowerSeries k) a) = algebraMap c'.O k a`. Introduce `a`. Use `first`.
+
+Consider the case `rfl`. Consider the case `simp`. Prove the components needed by the constructor for the conclusion. Introduce `v i`. Use extensionality with `g`.
+
+Simplify using `only [W.pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[hψ v i g, map_mul, K.psib v i g, K.chib i]`. Take `⟨g, hg0⟩` from `(show ↥(Dec (K.s.A ↑(show W.Vl l T.L from v))) from g)`. Establish `hg : (resLe T.F_le) g ∈ Dec (T.pl (K.e v))`. Rewrite using `[← K.hA v]`.
+
+Conclude with `(hdec _ _).1.2 hg0`. Rewrite using `[hQ.psi _ _ _ hg, (hres g).1, hc, map_mul (residue _), map_mul, ← IsLocalRing.ResidueField.algebraMap_eq, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Introduce `v i`. Establish `hφ : maximalIdeal c'.O ≤ (maximalIdeal (PowerSeries k)).comap (algebraMap c'.O (PowerSeries k))`. Introduce `a ha`.
+
+Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff, hc, hQ.loc a ha]`. Conclude with `not_isUnit_zero`. Establish `h1 : AdicCont (maximalIdeal (PowerSeries k)) (fun g : Dec (K.s.A ↑(show W.Vl l T.L from v)) => algebraMap c'.O (PowerSeries k) ↑(K.κ g.1))` using `ac_comp (ac_map _ hφ K.κ_cont) continuous_subtype_val`. Establish `h2 : AdicCont (maximalIdeal (PowerSeries k)) (fun g : Dec (K.s.A ↑(show W.Vl l T.L from v)) => Q.ψ (K.e v) i (resLe T.F_le g.1))`. Use `(sxAdicMat _ _ hQ.cont).2 (adj (Q.n (K.e v))) (Q.n (K.e v)) i i` as an intermediate fact.
+
+Conclude with `ac_comp this (hcont.comp continuous_subtype_val)`. Establish `key` using `ac_mul h1 h2`. Establish `e : (fun g : Dec (K.s.A ↑(show W.Vl l T.L from v)) => ((ψ v i g : (PowerSeries k)ˣ) : PowerSeries k)) = fun g => algebraMap c'.O (PowerSeries k) ↑(K.κ g.1) * Q.ψ (K.e v) i (resLe T.F_le g.1)`. Use function extensionality and compare the values at `fun g => hψ v i g`. Use `show AdicCont _ (fun g : Dec (K.s.A ↑(show W.Vl l T.L from v)) => ((ψ v i g : (PowerSeries k)ˣ) : PowerSeries k))`.
+
+Rewrite using `[e]`. Conclude with `key`.
+-/
 theorem UpperTheory.V.Ws.P1.redPsi :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D) (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (k : Type) [Field k] [Algebra (ResidueField c'.O) k] [Algebra c'.O k] [IsScalarTower c'.O (ResidueField c'.O) k] (Q : PD T.ι (G T.F Ω) (PowerSeries k)), T.PsPair h k Q → ∀ ψ : ∀ v : K.V.frame.Vl, Fin 4 → K.V.frame.Gv v →* (PowerSeries k)ˣ, K.IsPsi ψ Q →
           (∀ v i, W.pushCh (PowerSeries.constantCoeff : PowerSeries k →+* k) (ψ v i) = W.pushCh (algebraMap (ResidueField c'.O) k) (K.r.psib v i)) ∧

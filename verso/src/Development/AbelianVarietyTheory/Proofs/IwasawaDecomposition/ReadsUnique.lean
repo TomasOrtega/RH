@@ -13,6 +13,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.uni, e ▸ h.lat, e ▸ h.f, e ▸ h.be, fun P => (Finset.eq_empty_iff_forall_notMem.1 hQ P.1 P.2).elim⟩`.
+-/
 theorem pt_of_deco {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q Q' : Finset (HeightOneSpectrum (𝓞 E))} (hQ : Q' = ∅)
     {g : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {p' : DecoF E n ST SG Q'} (e : p'.deco = p.deco)
@@ -23,6 +26,17 @@ variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨c, -⟩` from `hR.onto ()`. Take `⟨p0, hp0, -⟩` from `hR.k_std ()`. Establish `hk : k () ∈ UAd B.sp.cm (B.R.N i)` using `hp0.uni`. Establish `hQ : QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅` using `ColIn.twistPrimes_reference_tuple_eq_empty I`. Use `haveI : NeZero (B.R.N i) := ⟨(B.R.N_pos i).ne'⟩`.
+
+Establish `h1 : PtOf (y c * k ()) ((I.stp u I.mu0 i).rep c).1.1` using `pt_of_deco hQ (extTo_deco _ _).symm (hR.pt c)`. Establish `h2 : PtOf (y c * k' ()) ((I.stp u I.mu0 i).rep c).1.1` using `pt_of_deco hQ (extTo_deco _ _).symm (hR'.pt c)`. Establish `hyk : y c * k () ∈ UAd B.sp.cm (B.R.N i)` using `h1.uni`. Establish `hg : y c * x.1 * k () ∈ UAd B.sp.cm (B.R.N i)`. Establish `e : y c * x.1 * k () = (y c * k ()) * ((k ())⁻¹ * x.1 * k ())` using `by group`.
+
+Rewrite using `[e]`. Conclude with `mul_mem hyk (mul_mem (mul_mem (inv_mem hk) hx) hk)`. Take `⟨q, hq⟩` from `ChiFinTop.exists_isPtOf_of_mem (ST := (B.primes X).vT u) (SG := (B.primes X).vGs) (Q := QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K)) B.sp.cm hQ hg`. Establish `hq' : PtOf (y c * x.1 * k' ()) q`. Establish `e : y c * x.1 * k' () = y c * x.1 * k () * ((y c * k ())⁻¹ * (y c * k' ()))` using `by group`.
+
+Rewrite using `[e]`. Conclude with `PtStab.isPtOf_mul_stab _ _ _ _ _ _ _ _ _ _ _ _ h1 h2 hq`. Take `⟨κ, hgam, hκq, hcos⟩` from `(hR.lev c x.1 q hq).1 x.2`. Establish `hm : x.1 ∈ U'` using `(hR'.lev c x.1 q hq').2 ⟨κ, hgam, hκq, hcos⟩`. Use `⟨hm, Units.ext ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hR'.chr c ⟨x.1, hm⟩ κ hgam (by rw [hκq]; exact hq')).trans (hR.chr c x κ hgam (by rw [hκq]; exact hq)).symm`.
+-/
 theorem reads_mem (u : B.Word) (i : ℕ) {Lb Lb' : Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)}
     {U U' : Subgroup (GA B (B.R.N i))} {chi : U →* ℂˣ} {chi' : U' →* ℂˣ} {y : (I.stp u I.mu0 i).Cl → GA B (B.R.N i)}
     {st st' : ∀ c, (I.stp u I.mu0 i).Stab c → GL (Fin (B.R.N i)) B.host.E} {k k' : Unit → GA B (B.R.N i)}
@@ -54,6 +68,11 @@ theorem reads_mem (u : B.Word) (i : ℕ) {Lb Lb' : Submodule (𝓞 B.host.E) (Fi
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨k, hR⟩` from `hR`. Take `⟨k', hR'⟩` from `hR'`. Substitute `hy` using the available equality. Establish `e : U' = U` using `le_antisymm (fun x hx => (reads_mem I u i hR' hR ⟨x, hx⟩ (hU' hx)).1) fun x hx => (reads_mem I u i hR hR' ⟨x, hx⟩ (hU hx)).1`. Substitute `e` using the available equality.
+
+Use `⟨Submodule.ext fun x => (hR'.lb () x).trans (hR.lb () x).symm, rfl, heq_of_eq (MonoidHom.ext fun x => ?_)⟩` and prove the remaining obligations. Conclude with `(reads_mem I u i hR hR' x (hU x.2)).2`.
+-/
 theorem reads_unique (u : B.Word) (i : ℕ) {Lb Lb' : Submodule (𝓞 B.host.E) (Fin (B.R.N i) → B.host.E)}
     {U U' : Subgroup (GA B (B.R.N i))} {chi : U →* ℂˣ} {chi' : U' →* ℂˣ} {y y' : (I.stp u I.mu0 i).Cl → GA B (B.R.N i)}
     {st st' : ∀ c, (I.stp u I.mu0 i).Stab c → GL (Fin (B.R.N i)) B.host.E}
@@ -73,6 +92,9 @@ variable (l : I.Laws)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hg1 : gramN (I.rec7 l Z) i hi = 1` using `((spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1`. Establish `eU : UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = UAd B.sp.cm (B.R.N i)` using `by rw [hg1]; rfl`. Conclude with `fun x hx => eU ▸ ((K.lev.U_eq x).1 hx).1`.
+-/
 theorem lev_le (hI : I.Ok) (hP : TC.Pins B X) (Z : TC.Later B (I.cols l)) (u : B.Word) (i : ℕ) (hi : i ≤ B.R.m)
     (K : ClsTied (D := I.rec7 l Z) u i hi) : (show Subgroup (GA B (B.R.N i)) from K.lev.U) ≤ UAd B.sp.cm (B.R.N i) := by
   have hg1 : gramN (I.rec7 l Z) i hi = 1 := ((spaces_in_coordinates I hI hP l Z).2.2.2 i hi).1
@@ -82,6 +104,9 @@ theorem lev_le (hI : I.Ok) (hP : TC.Pins B X) (Z : TC.Later B (I.cols l)) (u : B
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hy : ∀ c : (I.stp u I.mu0 0).Cl, (F'.to0.cls0.y c).1 = (F.to0.cls0.y c).1` using `fun c => (hF'.yE 0 (Nat.zero_le _) (Or.inl rfl) c).trans (hF.yE 0 (Nat.zero_le _) (Or.inl rfl) c).symm`. Establish `h` using `reads_unique I u 0 (hF.ends 0 (Nat.zero_le _) (Or.inl rfl)) (hF'.ends 0 (Nat.zero_le _) (Or.inl rfl)) (funext hy) (lev_le I l hI hP Z u 0 _ _) (lev_le I l hI hP Z' u 0 _ _)`. Use `⟨h.1, h.2.1, h.2.2, funext fun c => Subtype.ext (hy c), Equiv.ext fun z => Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `(hF'.eY 0 (Nat.zero_le _) (Or.inl rfl) z).trans (hF.eY 0 (Nat.zero_le _) (Or.inl rfl) z).symm`.
+-/
 theorem std_pair (hI : I.Ok) (hP : TC.Pins B X) (Z Z' : TC.Later B (I.cols l)) (u : B.Word) {Ch Ch' : ℕ → Type}
     {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} {chOf' : ∀ i, ((I.rec7 l Z').mem u).C.cls i → Ch' i}
     (F : FormsTiedSym (I.rec7 l Z) u Ch chOf) (F' : FormsTiedSym (I.rec7 l Z') u Ch' chOf')
@@ -97,6 +122,9 @@ theorem std_pair (hI : I.Ok) (hP : TC.Pins B X) (Z Z' : TC.Later B (I.cols l)) (
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨rfl, rfl, rfl⟩` from `h`. Conclude with `h'`.
+-/
 theorem car_of_same {D : D7} {u : D.what₂.Word} {F₁ F' : Forms0 D u}
     {lev : StepLevel D.host.F D.host.E (sigD D) (gramN D 0 (Nat.zero_le _)) (D.mem u).A.T D.R.f (badG D)}
     {y : (D.mem u).C.cls 0 → UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)}
@@ -110,6 +138,9 @@ theorem car_of_same {D : D7} {u : D.what₂.Word} {F₁ F' : Forms0 D u}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B f T w Z Zn col col' F₁ h u`. Establish `h1` using `std_pair w.I w.l w.ok w.pins Z (reL Z Zn) u (col.C.forms u) (col'.C.forms u) (col.std u) (col'.std u)`. Conclude with `car_of_same (F₁ := F₁ u) (F' := (col'.C.forms u).to0) (lev := (by with_unfolding_all exact ((col.C.forms u).to0.cls0.lev :))) (y := (by with_unfolding_all exact ((col.C.forms u).to0.cls0.y :))) (eY := (by with_unfolding_all exact ((col.C.forms u).to0.val0.eY :))) ((by with_unfold …`.
+-/
 theorem sameStd : SameStd := by
   intro B f T w Z Zn col col' F₁ h u
   have h1 := std_pair w.I w.l w.ok w.pins Z (reL Z Zn) u (col.C.forms u) (col'.C.forms u) (col.std u) (col'.std u)

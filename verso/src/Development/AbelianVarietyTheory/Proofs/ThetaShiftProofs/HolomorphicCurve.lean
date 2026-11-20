@@ -12,6 +12,21 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory.HalfPoint
 
+/- English proof (translation)
+Introduce `Z T yT yw hyw`. Establish `hc : ∀ w, T < w.im → yw w = Conv.halfCurve yT w` using `fun w hw => (hyw w hw).trans (Conv.halfCurve_eq yT hw).symm`. Use `⟨fun U f => ?_, fun U hU => ?_⟩` and prove the remaining obligations. Establish `e : {b ∈ {w : ℂ | T < w.im} | ⊤ ≤ yw b ⁻¹ᵁ U} = {b ∈ {w : ℂ | T < w.im} | ⊤ ≤ Conv.halfCurve yT b ⁻¹ᵁ U}`. Use extensionality with `b`.
+
+Conclude with `and_congr_right fun hb => by rw [hc b hb]`. Rewrite using `[e]`. Take `⟨h1, h2⟩` from `Conv.isHolTo_halfCurve yT U f`. Conclude with `⟨h1, h2.congr fun b hb => by rw [hc b hb.1]⟩`. Establish `hfac : spMap (Conv.halfRing T).val.toRingHom ≫ yT = spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) ≫ (spMap (Conv.halfIncl T : Conv.halfRing T →+* Conv.convLaurent) ≫ yT)`.
+
+Rewrite using `[← Category.assoc, ← spMap_comp]`. Both sides reduce to the same expression. Establish `hU' : ⊤ ≤ (spMap (Conv.halfIncl T : Conv.halfRing T →+* Conv.convLaurent) ≫ yT) ⁻¹ᵁ U`. Introduce `p _`. Rewrite `hU` using `[hfac]`.
+
+Take `rfl : p = spMap (algebraMap Conv.convLaurent ℂ⸨X⸩) (default : PrimeSpectrum ℂ⸨X⸩)` from `Subsingleton.elim (α := PrimeSpectrum Conv.convLaurent) _ _`. Conclude with `hU (x := (default : PrimeSpectrum ℂ⸨X⸩)) trivial`. Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Take `⟨T', h, hT'⟩` from `Conv.exists_le_preimage_inclusion yT hU'`. Use `⟨T', h, fun T'' i hle hi => ?_⟩` and prove the remaining obligations.
+
+Establish `hi' : i = (Subalgebra.inclusion (Conv.halfRing_mono hle) : Conv.halfRing T' →+* Conv.halfRing T'').comp (Subalgebra.inclusion (Conv.halfRing_mono h) : Conv.halfRing T →+* Conv.halfRing T')` using `RingHom.ext fun r => Subtype.ext (hi r)`. Rewrite using `[hi', spMap_comp, Category.assoc]`. Conclude with `fun p _ => hT' (x := spMap _ p) trivial`. Take `⟨T', h, h1, h2⟩` from `Conv.exists_valAt'_halfCurve rfl hU'`. Take `⟨hf, hv⟩` from `h2 f`.
+
+Establish `e : valR (spMap (Conv.halfRing T).val.toRingHom ≫ yT) U f = ((valR (spMap (Conv.halfIncl T : Conv.halfRing T →+* Conv.convLaurent) ≫ yT) U f : Conv.convLaurent) : ℂ⸨X⸩)`. Rewrite using `[hfac, HolHom.valR_spMap _ _ U hU']`. Both sides reduce to the same expression. Use `⟨T', h, e ▸ hf, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hc w (h.trans_lt hw)]`.
+
+Conclude with `⟨h1 w hw, (hv w hw).trans (Conv.ev_congr hw hw e.symm)⟩`.
+-/
 theorem holomorphic_curve : ∀ (Z : Scheme.{0}) (T : ℝ) (yT : Sp (Conv.halfRing T) ⟶ Z) (yw : ℂ → (Sp ℂ ⟶ Z)), (∀ w (hw : T < w.im), yw w = spMap (Conv.ev T w hw).toRingHom ≫ yT) → IsHolTo {w : ℂ | T < w.im} yw ∧ ∀ (U : Z.Opens), ⊤ ≤ (spMap (Conv.halfRing T).val.toRingHom ≫ yT) ⁻¹ᵁ U → (∃ T' ≥ T, ∀ (T'' : ℝ) (i : Conv.halfRing T →+* Conv.halfRing T''), T' ≤ T'' → (∀ r, (i r : ℂ⸨X⸩) = r) → ⊤ ≤ (spMap i ≫ yT) ⁻¹ᵁ U) ∧ ∀ f : Γ(Z, U), ∃ T' ≥ T, ∃ h : valR (spMap (Conv.halfRing T).val.toRingHom ≫ yT) U f ∈ Conv.halfRing T', ∀ w (hw : T' < w.im), ⊤ ≤ yw w ⁻¹ᵁ U ∧ valAt' (yw w) U f = Conv.ev T' w hw ⟨_, h⟩ := by
   intro Z T yT yw hyw
   have hc : ∀ w, T < w.im → yw w = Conv.halfCurve yT w := fun w hw =>

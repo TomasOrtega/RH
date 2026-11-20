@@ -22,6 +22,11 @@ open scoped Matrix
 
 namespace GlobalTheory.DatExtForms
 
+/- English proof (translation)
+Substitute `hQ hQ'` using the available equality. Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at h X X' hx ⊢`. Substitute `h` using the available equality.
+
+Consider the cases of `hx`. Both sides reduce to the same expression.
+-/
 theorem decoSet_eq (B B' : Base) (h : B'.toPre = B.toPre) (X : PreX B.toPre) (X' : PreX B'.toPre) (hx : HEq X' X)
     (Q : Finset (HeightOneSpectrum (𝓞 B.fields.E))) (Q' : Finset (HeightOneSpectrum (𝓞 B'.fields.E))) (hQ : Q = ∅) (hQ' : Q' = ∅) :
     Formalism.L2.Col.DecoSet B'.fields.E B'.R.nV ∅ (Formalism.L2.Col.uSG (B'.primes X').vGs Q') =
@@ -36,6 +41,13 @@ theorem decoSet_eq (B B' : Base) (h : B'.toPre = B.toPre) (X : PreX B.toPre) (X'
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ => ?_` and prove the remaining obligations. Introduce `B f T w hE hf hP hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ _ j j' hj φ hφ L hL b hb f0`. Establish `hD : (Formalism.L2.Col.mtKGSD (Pr` using `B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))).1 ((j' : ℕ) + 1)).D = (Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((j : ℕ) …`. Establish `key : ∀ (ψ : (Formalism.L2.Col.mtKGSD (Pr` using `B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((j : ℕ) + 1)).EqFun) (x : (Formalism.L2.Col.mtKGSD (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}))).1 ( …`.
+
+Introduce `ψ x hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `d'`. Establish `hdd : HEq d' (cast hD d')` using `(cast_heq hD d').symm`. Establish `h3` using `eq_of_heq ((hx _ _ hdd).trans (hb ψ _ _ hdd).symm)`.
+
+Conclude with `Subtype.ext (MvPolynomial.map_injective _ (RingHom.injective _) h3)`. Conclude with `key _ _ (hL f0)`.
+-/
 theorem forms_lift_eq_of_values : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

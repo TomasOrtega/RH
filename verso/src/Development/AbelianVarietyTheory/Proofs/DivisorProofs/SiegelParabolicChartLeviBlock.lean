@@ -19,6 +19,9 @@ namespace GlobalTheory.SWLink.Sieg
 def blkC {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R) : Matrix (Fin n) (Fin n) R :=
   (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁
 
+/- English proof (translation)
+Use `⟨(M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂, ?_⟩` and prove the remaining obligations. Unfold `StdUnn.blk4`. Rewrite using `[Matrix.fromBlocks_toBlocks]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_blockMatrixTwoByTwoFin_eq {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R) :
     ∃ a b c d, M = StdUnn.blk4 a b c d := by
   refine ⟨(M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂,
@@ -27,10 +30,18 @@ theorem exists_blockMatrixTwoByTwoFin_eq {R : Type} {n : ℕ} (M : Matrix (Fin (
   rw [Matrix.fromBlocks_toBlocks]
   simp
 
+/- English proof (translation)
+Simplify using `[StdUnn.blk4]`.
+-/
 theorem submatrix_sum_equiv_fromBlocks {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) :
     (StdUnn.blk4 a b c d).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks a b c d := by
   simp [StdUnn.blk4]
 
+/- English proof (translation)
+Take `⟨a, b, c, d, rfl⟩` from `exists_blockMatrixTwoByTwoFin_eq N`. Take `⟨p, q, r, s, rfl⟩` from `exists_blockMatrixTwoByTwoFin_eq M`. Rewrite `h` using `[StdUnn.Model.submatrix_fromBlocks_mul, StdUnn.Model.submatrix_fromBlocks_mul]`. Take `⟨h1, -, h3, -⟩` from `StdUnn.Model.blockMatrixTwoByTwoFin_injective h`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.neg_mul] at h1 h3`.
+
+Simplify using `only [KeepsDiag, leviMat, blkC, StdUnn.blkA, submatrix_sum_equiv_fromBlocks, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, h1, h3]`. Use `⟨⟨fun h4 => ?_, fun h4 => by simp [h4]⟩, fun h4 => by simp [h4]⟩` and prove the remaining obligations. Establish `h5 : Z * c = 0` using `h2 _ (neg_eq_iff_add_eq_zero.1 (add_left_cancel h4))`. Rewrite using `[← Matrix.one_mul c, ← hZ, Matrix.mul_assoc, h5, Matrix.mul_zero]`.
+-/
 theorem key {R : Type} [CommRing R] {n : ℕ} (M N : Matrix (Fin (n + n)) (Fin (n + n)) R) (Z Z' : Matrix (Fin n) (Fin n) R)
     (hZ : Z' * Z = 1) (h2 : ∀ z : Matrix (Fin n) (Fin n) R, z + z = 0 → z = 0)
     (h : M * StdUnn.blk4 1 Z 1 (-Z) = StdUnn.blk4 1 Z 1 (-Z) * N) :
@@ -46,6 +57,9 @@ theorem key {R : Type} [CommRing R] {n : ℕ} (M N : Matrix (Fin (n + n)) (Fin (
   have h5 : Z * c = 0 := h2 _ (neg_eq_iff_add_eq_zero.1 (add_left_cancel h4))
   rw [← Matrix.one_mul c, ← hZ, Matrix.mul_assoc, h5, Matrix.mul_zero]
 
+/- English proof (translation)
+Establish `h : ∀ j : Fin n, N (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n)) (finSumFinEquiv (Sum.inl j : Fin n ⊕ Fin n)) = 0` using `fun j => congrFun (congrFun hN i) j`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [h, hx, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`.
+-/
 theorem mulVec_upper {R : Type} [CommRing R] {n : ℕ} {N : Matrix (Fin (n + n)) (Fin (n + n)) R} (hN : blkC N = 0)
     (x : Fin (n + n) → R) (hx : ∀ i : Fin n, x (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n)) = 0) (i : Fin n) :
     (N *ᵥ x) (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n)) = 0 := by
@@ -57,10 +71,16 @@ theorem mulVec_upper {R : Type} [CommRing R] {n : ℕ} {N : Matrix (Fin (n + n))
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `funext_iff`.
+-/
 theorem mem_upperHalf {x : Fin (n + n) → AE D} :
     x ∈ StdUnn.upperHalf D n ↔ ∀ i : Fin n, x (finSumFinEquiv (Sum.inr i : Fin n ⊕ Fin n)) = 0 :=
   funext_iff
 
+/- English proof (translation)
+Use `fun x => ⟨fun hx => mem_upperHalf.2 (mulVec_upper h x (mem_upperHalf.1 hx)), fun hx => ?_⟩` and prove the remaining obligations. Establish `: (StdUnn.mat g⁻¹).mulVec ((StdUnn.mat g).mulVec x) ∈ StdUnn.upperHalf D n` using `mem_upperHalf.2 (mulVec_upper h' _ (mem_upperHalf.1 hx))`. Rewrite `this` using `[Matrix.mulVec_mulVec, show StdUnn.mat g⁻¹ * StdUnn.mat g = StdUnn.mat (g⁻¹ * g) from rfl, inv_mul_cancel, show StdUnn.mat (1 : StdUnn.G D n) = 1 from rfl, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mem_siegelParabolic_of {g : StdUnn.G D n} (h : blkC (StdUnn.mat g) = 0) (h' : blkC (StdUnn.mat g⁻¹) = 0) :
     g ∈ StdUnn.P D n := by
   refine fun x => ⟨fun hx => mem_upperHalf.2 (mulVec_upper h x (mem_upperHalf.1 hx)), fun hx => ?_⟩
@@ -69,10 +89,20 @@ theorem mem_siegelParabolic_of {g : StdUnn.G D n} (h : blkC (StdUnn.mat g) = 0) 
   rwa [Matrix.mulVec_mulVec, show StdUnn.mat g⁻¹ * StdUnn.mat g = StdUnn.mat (g⁻¹ * g) from rfl, inv_mul_cancel,
     show StdUnn.mat (1 : StdUnn.G D n) = 1 from rfl, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Conclude with `StdUnn.Model.lower_eq_zero h i j`.
+-/
 theorem blkC_of_mem_P {g : StdUnn.G D n} (h : g ∈ StdUnn.P D n) : blkC (StdUnn.mat g) = 0 := by
   funext i j
   exact StdUnn.Model.lower_eq_zero h i j
 
+/- English proof (translation)
+Introduce `D n J₂ T κ hκ J hT`. Take `⟨Z, hZ, hT⟩` from `hT`. Rewrite `hZ` using `[one_smul, ← Matrix.smul_mul]`. Establish `h1 : (rat ((2 : D.host.E) • J) : Mx D n n) * cj (rat Z) = 1` using `by rw [cj_rat, ← rat_mul, hZ, rat_one]`. Establish `h2 : (cj (rat ((2 : D.host.E) • J)) : Mx D n n) * rat Z = 1`.
+
+Use `congrArg cj h1` as an intermediate fact. Rewrite `this` using `[cj_mul, cj_cj, cj_one]`. Then use the resulting hypothesis. Establish `hm : (rat T.1 : Mx D (n + n) (n + n)) = StdUnn.blk4 1 (rat Z) 1 (-rat Z)`. Rewrite using `[hT, blk_eq, rat_fromBlocks_map, rat_one, rat_neg]`. Establish `hk : ∀ g : UD D J₂, (KeepsDiag finSumFinEquiv (umat g) ↔ blkC (StdUnn.mat (κ g)) = 0) ∧ (blkC (StdUnn.mat (κ g)) = 0 → StdUnn.blkA (StdUnn.mat (κ g)) = leviMat finSumFinEquiv (umat g))` using `fun g => key _ _ _ _ h2 (fun _ => eq_zero_of_add_self) (by rw [← hm]; exact hκ.mul_eq g)`.
+
+Establish `hs : ∀ g : UD D J₂, g ∈ siegelOf finSumFinEquiv (uinc D J₂) ↔ blkC (StdUnn.mat (κ g)) = 0` using `fun g => mem_siegelOf.trans (hk g).1`. Use `⟨fun g => ⟨fun hg => mem_siegelParabolic_of ((hs g).1 hg) ?_, fun hg => (hs g).2 (blkC_of_mem_P hg)⟩, fun p => (hk p).2 ((hs p).1 p.2)⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `(hs _).1 (inv_mem hg)`.
+-/
 theorem siegel_chart : ∀ (D : D7) (n : ℕ) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E) (κ : UD D J₂ ≃* GlobalTheory.StdUnn.G D n), IsChartW T κ → ∀ J : Matrix (Fin n) (Fin n) D.host.E, IsWittBasis D.sp.cm.sig J 1 T → (∀ g : UD D J₂, g ∈ siegelOf finSumFinEquiv (uinc D J₂) ↔ κ g ∈ GlobalTheory.StdUnn.P D n) ∧ ∀ p : siegelOf finSumFinEquiv (uinc D J₂), GlobalTheory.StdUnn.blkA (GlobalTheory.StdUnn.mat (κ p)) = (leviOf finSumFinEquiv (uinc D J₂) p).1 := by
   intro D n J₂ T κ hκ J hT
   obtain ⟨Z, hZ, hT⟩ := hT

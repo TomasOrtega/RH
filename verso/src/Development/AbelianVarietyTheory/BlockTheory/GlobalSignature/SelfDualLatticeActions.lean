@@ -57,6 +57,9 @@ open NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) in
 variable {E} (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) in
+/- English proof (translation)
+Establish `h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J 1 = 1` using `rfl`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, h, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act_one (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Wv E v M) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act v σ J 1 y = y := by
   have h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J 1 = 1 := rfl
@@ -67,6 +70,9 @@ open NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] (E : Type) [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) in
 variable {E} (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) in
+/- English proof (translation)
+Establish `h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J (g * g') = _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (_root_.Formalism.MainNotions.GlobalTheoryT …` using `rfl`. Rewrite using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act, h, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act_mul (g g' : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ J)
     (y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Wv E v M) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.act v σ J (g * g') y =
@@ -169,6 +175,9 @@ section Basic₂
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (a : v.adicCompletionIntegers F) :
     algebraMap (v.adicCompletionIntegers F) (Ev E v) a = (a : Fv F v) ⊗ₜ[F] (1 : E) := rfl
 
@@ -177,6 +186,9 @@ open NumberField IsDedekindDomain in
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) in
 
+/- English proof (translation)
+Set `φ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Ev E v →ₐ[_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v] _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Ev E v` to `Algebra.TensorProduct.map (AlgHom.id (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v)) σ`. Establish `h` using `(hz : IsIntegral (v.adicCompletionIntegers F) z).map (φ.restrictScalars (v.adicCompletionIntegers F))`. Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.sigR_mem {z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.Ev E v}
     (hz : z ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.OEv E v) :
     _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv F v) σ z ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.SelfDualLatticeActions.OEv E v := by

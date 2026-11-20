@@ -17,6 +17,9 @@ namespace UpperTheory.Host
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.FrobeniusOrbits GlobalTheory.EX NumberField
 
+/- English proof (translation)
+Establish `h : ∀ φ : Formalism.HC.Frame, ∀ e, φ = Formalism.HC.cyclicFrame e → Function.Injective φ.h ∧ φ.o = 1 ∧ φ.ord = 2 ^ e`. Introduce and unpack `_ e rfl`. Conclude with `⟨Formalism.HC.frameCyc_h_injective e 1, Formalism.HC.cyclicFrame_index e, rfl⟩`. Conclude with `h _ _ hφ`.
+-/
 theorem cyclic_two_power_frame_facts {R : Ranks} (hφ : R.toFrame = Formalism.HC.cyclicFrame R.e) :
     Function.Injective R.h ∧ R.o = 1 ∧ R.n = 2 ^ R.e := by
   have h : ∀ φ : Formalism.HC.Frame, ∀ e, φ = Formalism.HC.cyclicFrame e → Function.Injective φ.h ∧ φ.o = 1 ∧ φ.ord = 2 ^ e := by
@@ -50,6 +53,17 @@ def relevel {R : Ranks} (D : Host R) (g : Fin 2 → ℕ) (hg : ∀ i, (g i).Prim
     second_set_no_relation := fun s₁ h₁ s₂ h₂ _ _ h12 =>
       absurd ((Finset.mem_singleton.1 h₁).trans (Finset.mem_singleton.1 h₂).symm) h12 }
 
+/- English proof (translation)
+Take `⟨hinj, ho, -⟩` from `cyclic_two_power_frame_facts hφ`. Take `⟨H0, eq, ed, hQS, h2G, h15, hMu, hPS, hEx, hs⟩` from `Formalism.HC.exists_hostAx R.toFrame hinj he hyp`. Establish `hF : HostParam.Seam.FieldRows H0.toHostRaw B` using `⟨hPS, hs, hEx, by rw [hQS]; exact Formalism.HC.D7.qs_le R.toFrame hinj he, by rw [ho, one_pow]; exact Nat.one_le_two_pow, eq ▸ h3, ed ▸ hsp, fun l hl h2 hd => by`. Rewrite `hd` using `[hQS]`. Conclude with `absurd ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow hd)) h2⟩`.
+
+Take `⟨c⟩` from `HostParam.Seam.nonempty_choices H0.toHostRaw`. Take `⟨D, hD, hB, -⟩` from `UpperTheory.Top.admissible_ranks_of_CMDatum R H0 B c hF (by rw [eq, ed]; exact hbig)`. Establish `hS : ∀ p ∈ ({g 0, g 1, 31, 61, T} : Finset ℕ), Nat.Coprime p D.QS` using `fun p hp => by`. Establish `hq : D.QS = 2 ^ (R.e + 2)` using `by show D.toHostAx.QS = _`. Rewrite using `[hD, hQS]`.
+
+Establish `hgo : ∀ i, Odd (g i)` using `fun i => (hg i).odd_of_ne_two (by have := h61 i; omega)`. Rewrite using `[hq]`. Apply `Nat.Coprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.coprime_two_right]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp`.
+
+Break down `hp with rfl | rfl | rfl | rfl | rfl` into its components or cases. Use `exacts [hgo 0, hgo 1, by decide, by decide, hT]`. Use `⟨relevel D g hg hne h61 T Lw hL hS, ?_, ?_, ?_, hB, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Use `show D.toHostAx.q = q`. Rewrite using `[hD, eq]`.
+
+Use `show D.toHostAx.d = d`. Rewrite using `[hD, ed]`. Use `show D.toHostAx.QS = _`. Rewrite using `[hD, hQS]`.
+-/
 theorem exists_host_with_primes_cyclic_two_power (R : Ranks) (hφ : R.toFrame = Formalism.HC.cyclicFrame R.e) (he : 2 ≤ R.e) {q d : ℕ}
     (hyp : HostHyp q d) (hbig : 4 * R.t * R.r + 1 < q ∧ 4 * R.t * R.r + 1 < d) (h3 : q ≠ 3) (B : ℕ)
     (hsp : ∀ p : ℕ, p.Prime → p ≠ 2 → p ≤ B → jacobiSym (-(d : ℤ)) p = 1) (g : Fin 2 → ℕ) (hg : ∀ i, (g i).Prime)
@@ -84,6 +98,47 @@ theorem exists_host_with_primes_cyclic_two_power (R : Ranks) (hφ : R.toFrame = 
   · show D.toHostAx.QS = _
     rw [hD, hQS]
 
+/- English proof (translation)
+Establish `hS : UpperTheory.T3.ShortNorm` using `GlobalTheory.T.normPrimesImagQuad_short_interval_lower_bound`. Take `⟨x1, hb⟩` from `rank_basic_bounds eps h0 h1`. Take `⟨x2, hP⟩` from `QH.pairEx 1 one_pos eps 1 h0 h1 le_rfl`. Take `⟨x3, hQ⟩` from `UpperTheory.T3.qdBig eps 1 h0 h1`. Take `⟨x4, hG⟩` from `UpperTheory.T3.typePrimesN hS eps h0`.
+
+Take `⟨x5, hT⟩` from `UpperTheory.T3.levelPrimeN hS eps h0 h1 c 9 (by linarith) (by norm_num)`. Take `⟨x6, hl⟩` from `Filter.eventually_atTop.1 (((isLittleO_log_rpow_atTop h0).bound (c := 1 / 41) (by norm_num)).and (Real.tendsto_log_atTop.eventually_ge_atTop 4))`. Use `⟨max (max x1 x2) (max (max x3 x4) (max x5 (max x6 8))), fun s R hs hx hR he hφ => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hx1, hx2⟩, ⟨hx3, hx4⟩, hx5, hx6, hx8⟩` from `hx`.
+
+Substitute `hs` using the available equality. Take `⟨bf, -, br, kr, -, -, scaledRowVectorOperator, -, -, -, -, -, -, -, -, ml, -⟩` from `hb s R rfl hx1 hR`. Take `⟨l1, l4⟩` from `hl s.x hx6`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `mono : ∀ {a b : ℝ}, a ≤ b → s.x ^ a ≤ s.x ^ b` using `fun h => Real.rpow_le_rpow_of_exponent_le (by linarith) h`.
+
+Rewrite `l1` using `[Real.norm_of_nonneg (by linarith), Real.norm_of_nonneg (by positivity)]`. Take `⟨q, d, hqd, -⟩` from `hP s.x hx2`. Take `⟨hyp, hsp, -⟩` from `UpperTheory.Top.pairHyp _ _ _ _ hqd`. Take `⟨hbig, d100⟩` from `hQ { s with J := 1, one_le_J := le_rfl } R s.x q d rfl hx3 hR le_rfl (pairWin_self _) hqd`. Take `⟨-, -, hn⟩` from `cyclic_two_power_frame_facts hφ`.
+
+Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hyp.1.pos`. Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast hyp.2.1.pos`. Establish `hz : 1 ≤ s.x ^ (s.eps / 5)` using `Real.one_le_rpow (by linarith) (by linarith)`.
+
+Establish `hlog : Real.log (((2 ^ (R.e + 2) : ℕ) : ℝ) * q * d) ≤ 3 * s.x ^ (s.eps / 5) * Real.log s.x ^ 2`. Establish `a1 : ((2 ^ (R.e + 2) : ℕ) : ℝ) ≤ s.x ^ (4 : ℝ)`. Establish `b1 : ((2 ^ (R.e + 2) : ℕ) : ℝ) = 2 * R.f`. Rewrite using `[show R.f = 2 * R.n from rfl, hn]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[b1, show (4 : ℝ) = 1 + 3 by norm_num, Real.rpow_add hx0, Real.rpow_one]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a2` using `Real.log_le_log (by positivity) a1`.
+
+Rewrite `a2` using `[Real.log_rpow hx0]`. Rewrite using `[Real.log_mul (by positivity) hd0.ne', Real.log_mul (by positivity) hq0.ne']`. Establish `a3 : 4 * Real.log s.x ≤ Real.log s.x ^ 2` using `by nlinarith`. Establish `a4 : Real.log s.x ^ 2 ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2` using `le_mul_of_one_le_left (by positivity) hz`. Establish `a5 : s.x ^ (s.eps / 5) ≤ s.x ^ (s.eps / 5) * Real.log s.x ^ 2` using `le_mul_of_one_le_right (by positivity) (by linarith)`.
+
+Combine the linear relations using `[hqd.q_up, hqd.d_up]`. Establish `hd16` using `hqd.d_mod`. Establish `hN0 : 0 < 2 ^ (R.e + 2) * q * d` using `by have := hyp.1.pos; positivity`. Establish `hM : UpperTheory.T3.ModAt s.x s.eps (2 ^ (R.e + 2) * q * d) d` using `⟨hyp.2.1, by omega, d100, hN0, Dvd.intro_left _ rfl, by simpa using hlog⟩`. Take `⟨g, hg, hne, hdis⟩` from `hG s.x hx4 _ d R.k R.r hM (by omega) (by omega) br`.
+
+Establish `hbb : Real.exp (s.x ^ s.eps) = s.b` using `rfl`. Rewrite `hg` using `[hbb]`. Establish `hb2 : 2 ≤ s.b` using `by have := Real.add_one_le_exp s.L; unfold Scale.b; linarith`. Establish `hb0 : 0 < s.b` using `by linarith`. Establish `bk : (R.k : ℝ) ≤ s.x ^ (5 : ℝ)` using `le_trans (by exact_mod_cast kr) br`.
+
+Establish `k1 : (1 : ℝ) ≤ R.k` using `by exact_mod_cast (by omega : 1 ≤ R.k)`. Establish `g9 : ∀ i, (g i : ℝ) ≤ s.b ^ 9` using `fun i => by`. Establish `a1 : (R.k : ℝ) ^ 8 ≤ s.x ^ ((5 : ℝ) * (8 : ℕ))` using `by rw [Real.rpow_mul_natCast hx0.le]; gcongr`. Establish `a2 : 2 * s.x ^ ((5 : ℝ) * (8 : ℕ)) ≤ s.x ^ (41 : ℝ)`. Rewrite using `[show (41 : ℝ) = 1 + 5 * (8 : ℕ) by norm_num, Real.rpow_add hx0, Real.rpow_one]`.
+
+Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a3 : s.x ^ (41 : ℝ) ≤ s.b`. Rewrite using `[Real.rpow_def_of_pos hx0, ← hbb]; exact Real.exp_le_exp.2 (by linarith)`. Establish `a5 : 2 * (R.k : ℝ) ^ 8 ≤ s.b` using `by linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h61 : ∀ i, 61 < g i` using `fun i => by`. Establish `a1 : (1 * 2 : ℝ) ^ 8 ≤ ((R.k : ℝ) * s.b) ^ 8` using `by gcongr`. Establish `a2 : (61 : ℝ) < g i` using `by linarith [(hg i).2.1]`. Conclude with `a2` after adjusting the coercions.
+
+Establish `lg : ∀ i, Real.log (g i) ≤ 9 * s.x ^ s.eps` using `fun i => by`. Use `(Real.log_le_log (by exact_mod_cast (hg i).1.pos) (g9 i)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_pow, ← hbb, Real.log_exp]`. Evaluate the numerical expressions. Establish `f1 : (1 : ℝ) ≤ R.f`.
+
+Establish `: 1 ≤ R.f` using `by rw [show R.f = 2 * R.n from rfl, hn]; have := Nat.two_pow_pos R.e; omega`. Conclude with `this` after adjusting the coercions. Establish `hV : (1 : ℝ) ≤ (R.f : ℝ) * R.k` using `one_le_mul_of_one_le_of_one_le f1 k1`. Take `⟨T, Tp, T1, T2, Tn⟩` from `hT s.x hx5 _ d (g 0) (g 1) R.m hM (hg 0).1.one_le (hg 1).1.one_le (lg 0) (lg 1) ((mono (by linarith)).trans ml) 1 (s.b ^ (c * (R.m : ℝ))) le_rfl (Real.one_le_rpow (by linarith) (by norm_num)) (by positivity) (by rw [Real.log_rpow hb0, ← hbb, Real.log_exp])`. Establish `m2 : (2 : ℝ) ≤ R.m` using `by exact_mod_cast hm`.
+
+Establish `hbT : s.b ≤ s.b ^ (c * (R.m : ℝ))` using `by conv_lhs => rw [← Real.rpow_one s.b]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by nlinarith)`. Establish `T61 : 61 < T`. Establish `a1` using `Real.add_one_le_exp (s.x ^ s.eps)`. Establish `a2 : (61 : ℝ) < T` using `by linarith`.
+
+Conclude with `a2` after adjusting the coercions. Establish `h3 : q ≠ 3`. Establish `h2` using `R.rank_add_five_le`. Establish `: 1 * 1 ≤ R.t * R.r` using `Nat.mul_le_mul (by omega) (by omega)`. Use `hbig.1` as an intermediate fact.
+
+Rewrite `this` using `[mul_assoc]`. Use linear arithmetic over natural numbers and integers. Take `⟨H, rfl, rfl, e3, e4, rfl, e6, e7, e8, e9, e10, e11, e12⟩` from `exists_host_with_primes_cyclic_two_power R hφ he hyp hbig h3 ⌊s.x ^ (s.eps / 5)⌋₊ (fun p hp h2 hle => hsp p hp h2 ((Nat.le_floor_iff (by positivity)).1 hle)) g (fun i => (hg i).1) hne h61 T (Lwv s) (by unfold Lwv; omega) (Tp.odd_of_ne_two (by omega))`. Rewrite `hlog`, `hg`, `Tn`, `hN0` using `[← e3]`. Take `⟨π, pK, pn, pc⟩` from `(GlobalTheory.Mem.An.normOne_iff_host R H _ T).1 Tn`.
+
+Use `⟨H, T, π, Tp, by rw [e8]; simp, ⟨by omega, by omega⟩, pK, pn, pc, fun i => ?_, hdis, e10, e11, e9, e12, e4, e3, hqd, hlog, fun i => ⟨(hg i).2.1, (hg i).2.2.1, g9 i⟩, T1.le, ?_⟩` and prove the remaining obligations. Establish `a` using `(GlobalTheory.Mem.An.normOne_modEq_one_and_of_dvd H.d _ _ (by omega) (hg i).2.2.2).1`. Conclude with `(show _ % _ = 1 % _ from a).trans (Nat.mod_eq_of_lt (lt_of_lt_of_le (by omega : 1 < H.d) (Nat.le_of_dvd hN0 (Dvd.intro_left _ rfl))))`. Rewrite using `[show 2 * c * (R.m : ℝ) = c * R.m + c * R.m by ring, Real.rpow_add hb0]`. Use `T2.trans ?_` and prove the remaining obligations.
+
+Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_host_with_level_prime (eps c : ℝ) (h0 : 0 < eps) (h1 : eps < 1 / 52) (hc : 1 / 2 ≤ c) :
     ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks), s.eps = eps → x0 ≤ s.x → RankVal s R → 2 ≤ R.e →
       R.toFrame = Formalism.HC.cyclicFrame R.e →

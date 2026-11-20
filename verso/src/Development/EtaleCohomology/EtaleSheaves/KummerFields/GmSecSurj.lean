@@ -19,11 +19,17 @@ def homUnits (A : CommRingCat.{0}) : (LR ⟶ A) ≃ Aˣ :=
       right_inv := fun _ => rfl } : (LR ⟶ A) ≃ (AddMonoidAlgebra ℤ ℤ →+* A)).trans <|
     (RingHom.equivIntAlgHom _ _).trans <| (AddMonoidAlgebra.lift ℤ A ℤ).symm.trans (unitsEquivHom A)
 
+/- English proof (translation)
+Simplify using `[homUnits, unitsEquivHom]`. Both sides reduce to the same expression.
+-/
 theorem homUnits_val (A : CommRingCat.{0}) (ψ : LR ⟶ A) :
     ((homUnits A ψ : Aˣ) : A) = ψ.hom (AddMonoidAlgebra.of ℤ ℤ (Multiplicative.ofAdd 1)) := by
   simp [homUnits, unitsEquivHom]
   rfl
 
+/- English proof (translation)
+Use `ext`. Simplify using `[homUnits_val]`.
+-/
 theorem homUnits_nat {A B : CommRingCat.{0}} (ψ : LR ⟶ A) (h : A ⟶ B) :
     homUnits B (ψ ≫ h) = Units.map h.hom.toMonoidHom (homUnits A ψ) := by
   ext
@@ -41,16 +47,27 @@ def repr : P.RepresentableBy (Spec LR) where
     rw [Adjunction.homEquiv_naturality_left_symm]
     exact congrArg (fun u => ULift.up (Additive.ofMul u)) (homUnits_nat _ (Scheme.Γ.map f.op))
 
+/- English proof (translation)
+Establish `: Scheme.etaleTopology.{0}.Subcanonical` using `GrothendieckTopology.Subcanonical.of_le Scheme.etaleTopology_le_proetaleTopology`. Establish `: P.IsRepresentable` using `repr.isRepresentable`. Conclude with `GrothendieckTopology.Subcanonical.isSheaf_of_isRepresentable P`.
+-/
 theorem isSheaf_P : Presieve.IsSheaf Scheme.etaleTopology.{0} P := by
   have : Scheme.etaleTopology.{0}.Subcanonical :=
     GrothendieckTopology.Subcanonical.of_le Scheme.etaleTopology_le_proetaleTopology
   have : P.IsRepresentable := repr.isRepresentable
   exact GrothendieckTopology.Subcanonical.isSheaf_of_isRepresentable P
 
+/- English proof (translation)
+The claim follows from `(Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).mpr ((isSheaf_iff_isSheaf_of_type _ _).mpr isSheaf_P)`.
+-/
 theorem isSheaf_units : Presheaf.IsSheaf Scheme.etaleTopology.{0} (Scheme.Γ ⋙ unitsF) :=
   (Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).mpr
     ((isSheaf_iff_isSheaf_of_type _ _).mpr isSheaf_P)
 
+/- English proof (translation)
+Introduce `B _ y`. Use `isIso_toSheafify Scheme.etaleTopology.{0} isSheaf_units` as an intermediate fact. Set `g` to `(toSheafify Scheme.etaleTopology.{0} (Scheme.Γ ⋙ unitsF)).app (op (Spec (CommRingCat.of B)))`. Use `⟨((inv g).hom y).down, ?_⟩` and prove the remaining obligations. Use `show g.hom ((inv g).hom y) = y`.
+
+Express the relevant statement in the definitionally equal form `(inv g ≫ g).hom y = y`. Rewrite using `[IsIso.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 theorem LeafGmSecSurj_of : LateralTheory.E.H2CurveOrder.KummerH0Surjection.LeafGmSecSurj := by
   intro B _ y
   have := isIso_toSheafify Scheme.etaleTopology.{0} isSheaf_units

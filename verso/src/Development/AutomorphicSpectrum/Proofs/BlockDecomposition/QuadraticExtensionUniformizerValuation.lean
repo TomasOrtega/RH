@@ -20,6 +20,9 @@ open GlobalTheory.CompanionTheory.NormGauss
 
 section Schur
 
+/- English proof (translation)
+Rewrite using `[Spherical.monomial, Spherical.evalAt_single, one_mul, Spherical.monomialChar_apply, Finset.prod_eq_single a]`. Simplify using `[Units.val_zpow_eq_zpow_val]`. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+-/
 theorem evalAt_monomial_single (w : Fin 2 → ℂˣ) (a : Fin 2) (p : ℤ) :
     Spherical.evalAt w (Spherical.monomial (Pi.single a p)) = (w a : ℂ) ^ p := by
   rw [Spherical.monomial, Spherical.evalAt_single, one_mul, Spherical.monomialChar_apply,
@@ -29,6 +32,9 @@ theorem evalAt_monomial_single (w : Fin 2 → ℂˣ) (a : Fin 2) (p : ℤ) :
     simp [Pi.single_apply, hj]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Spherical.alternant_eq_det, Matrix.det_fin_two]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`. Rewrite using `[map_sub, map_mul, map_mul]`. Simplify using `only [evalAt_monomial_single]`.
+-/
 theorem evalAt_alternant_two (w : Fin 2 → ℂˣ) (p r : ℤ) :
     Spherical.evalAt w (Spherical.alternant ![p, r]) =
       (w 0 : ℂ) ^ p * (w 1 : ℂ) ^ r - (w 0 : ℂ) ^ r * (w 1 : ℂ) ^ p := by
@@ -37,10 +43,28 @@ theorem evalAt_alternant_two (w : Fin 2 → ℂˣ) (p r : ℤ) :
   rw [map_sub, map_mul, map_mul]
   simp only [evalAt_monomial_single]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [Spherical.staircase]`.
+-/
 theorem staircase_two_eq : Spherical.staircase 2 = ![1, 0] := by
   funext i
   fin_cases i <;> simp [Spherical.staircase]
 
+/- English proof (translation)
+Establish `hb : (b : ℂ) ≠ 0` using `b.ne_zero`. Establish `h` using `congrArg (Spherical.evalAt ![b, -b]) (Spherical.alternant_mul_schur ![A, D])`. Establish `e : (![A, D] + Spherical.staircase 2 : Fin 2 → ℤ) = ![A + 1, D]`. Rewrite using `[staircase_two_eq]`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp`. Rewrite `h` using `[e, map_mul, staircase_two_eq, evalAt_alternant_two, evalAt_alternant_two]`. Establish `hneg : ∀ k : ℤ, (-(b : ℂ)) ^ k = (-1 : ℂ) ^ k * (b : ℂ) ^ k` using `fun k => by`. Rewrite using `[← mul_zpow, neg_one_mul]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Units.val_neg, hneg] at h`.
+
+Simplify using `only [zpow_one, zpow_zero, mul_one, one_mul] at h`. Establish `hpar : (-1 : ℂ) ^ A = if Even (A + D) then (-1 : ℂ) ^ D else -(-1 : ℂ) ^ D`. Apply the tactic sequence `rcases Int.even_or_odd A with a | a <;> rcases Int.even_or_odd D with d | d`. Rewrite using `[if_pos (a.add d), a.neg_one_zpow, d.neg_one_zpow]`. Rewrite using `[if_neg (by rw [Int.not_even_iff_odd]; exact a.add_odd d), a.neg_one_zpow, d.neg_one_zpow, neg_neg]`.
+
+Rewrite using `[if_neg (by rw [Int.not_even_iff_odd]; exact a.add_even d), a.neg_one_zpow, d.neg_one_zpow]`. Rewrite using `[if_pos (a.add_odd d), a.neg_one_zpow, d.neg_one_zpow]`. Establish `h2 : (-1 : ℂ) ^ (A + 1) = -(-1 : ℂ) ^ A`. Rewrite using `[zpow_add₀ (by norm_num), zpow_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hb1 : (b : ℂ) ^ (A + 1) * (b : ℂ) ^ D = (b : ℂ) ^ (A + D) * b`. Rewrite using `[← zpow_add₀ hb, show A + 1 + D = A + D + 1 by ring, zpow_add₀ hb, zpow_one]`. Rewrite `h` using `[h2]`. Establish `key : (2 * (b : ℂ)) * Spherical.evalAt ![b, -b] (Spherical.schur ![A, D]) = (b : ℂ) ^ (A + D) * b * ((-1 : ℂ) ^ D + (-1 : ℂ) ^ A)`. Rewrite using `[← hb1]`.
+
+Take the linear combination `h`. Establish `h2b : (2 * (b : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero hb`. Use `mul_left_cancel₀ h2b ?_` and prove the remaining obligations. Rewrite using `[key, hpar]`. Use `split_ifs with he`.
+
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalAt_schur_pm (b : ℂˣ) (A D : ℤ) :
     Spherical.evalAt ![b, -b] (Spherical.schur ![A, D]) =
       if Even (A + D) then (-1 : ℂ) ^ D * (b : ℂ) ^ (A + D) else 0 := by
@@ -86,12 +110,21 @@ section Unif
 
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+The claim follows from `(Iwasawa.uniformizerUnit K).ne_zero`.
+-/
 theorem unif_ne_zero : (GLnLocal.uniformizer K : K) ≠ 0 :=
   (Iwasawa.uniformizerUnit K).ne_zero
 
+/- English proof (translation)
+Rewrite using `[ord_zpow unif_ne_zero, ord_uniformizer (GLnLocal.irreducible_uniformizer K), mul_one]`.
+-/
 theorem ord_unif_zpow (k : ℤ) : ord ((GLnLocal.uniformizer K : K) ^ k) = k := by
   rw [ord_zpow unif_ne_zero, ord_uniformizer (GLnLocal.irreducible_uniformizer K), mul_one]
 
+/- English proof (translation)
+Rewrite using `[modulus_of_ne_zero (zpow_ne_zero _ unif_ne_zero), ord_unif_zpow, ← NNReal.coe_zpow, ← NNReal.coe_pow, ← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul, zpow_natCast, NNReal.sq_sqrt]`.
+-/
 theorem modulus_unif_zpow (k : ℤ) :
     ((modulus ((GLnLocal.uniformizer K : K) ^ k) : NNReal) : ℝ) =
       (((NNReal.sqrt (residueCard K : NNReal) : NNReal) : ℝ) ^ (-k)) ^ 2 := by
@@ -100,6 +133,9 @@ theorem modulus_unif_zpow (k : ℤ) :
 
 end Unif
 
+/- English proof (translation)
+Establish `h` using `Complex.ofReal_cpow (sq_nonneg y) (1 / 2 : ℝ)`. Rewrite `h` using `[← Real.sqrt_eq_rpow, Real.sqrt_sq hy]`. Rewrite using `[h]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem cpow_half_sq {y : ℝ} (hy : 0 ≤ y) : (((y ^ 2 : ℝ) : ℝ) : ℂ) ^ (1 / 2 : ℂ) = y := by
   have h := Complex.ofReal_cpow (sq_nonneg y) (1 / 2 : ℝ)
   rw [← Real.sqrt_eq_rpow, Real.sqrt_sq hy] at h
@@ -111,15 +147,26 @@ section Torus
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+The claim follows from `Iwasawa.coe_torusPow F 2 l`.
+-/
 theorem torus_val (l : Fin 2 → ℤ) : (Iwasawa.torusPow F 2 l).val =
     Matrix.diagonal fun i => (GLnLocal.uniformizer F : F) ^ l i :=
   Iwasawa.coe_torusPow F 2 l
 
+/- English proof (translation)
+Rewrite using `[torus_val, Matrix.det_fin_two, zpow_add₀ unif_ne_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem torus_det (l : Fin 2 → ℤ) : ((Iwasawa.torusPow F 2 l).val).det =
     (GLnLocal.uniformizer F : F) ^ (l 0 + l 1) := by
   rw [torus_val, Matrix.det_fin_two, zpow_add₀ unif_ne_zero]
   simp
 
+/- English proof (translation)
+Establish `h : modulus (0 : F) < modulus ((GLnLocal.uniformizer F : F) ^ l 1)`. Rewrite using `[modulus_zero]`. Conclude with `modulus_pos (zpow_ne_zero _ unif_ne_zero)`. Establish `hz : (Iwasawa.torusPow F 2 l).val 1 0 = 0` using `by simp [torus_val]`. Establish `hd : (Iwasawa.torusPow F 2 l).val 1 1 = (GLnLocal.uniformizer F : F) ^ l 1`.
+
+Simplify using `[torus_val]`. Unfold `mRow`. Rewrite using `[hz, hd, if_pos h]`.
+-/
 theorem mRow_torus (l : Fin 2 → ℤ) : mRow (Iwasawa.torusPow F 2 l) =
     (GLnLocal.uniformizer F : F) ^ l 1 := by
   have h : modulus (0 : F) < modulus ((GLnLocal.uniformizer F : F) ^ l 1) := by
@@ -131,6 +178,11 @@ theorem mRow_torus (l : Fin 2 → ℤ) : mRow (Iwasawa.torusPow F 2 l) =
   unfold mRow
   rw [hz, hd, if_pos h]
 
+/- English proof (translation)
+Establish `h : modulus (0 : F) < modulus ((GLnLocal.uniformizer F : F) ^ l 1)`. Rewrite using `[modulus_zero]`. Conclude with `modulus_pos (zpow_ne_zero _ unif_ne_zero)`. Establish `hz : (Iwasawa.torusPow F 2 l).val 1 0 = 0` using `by simp [torus_val]`. Establish `hd : (Iwasawa.torusPow F 2 l).val 1 1 = (GLnLocal.uniformizer F : F) ^ l 1`.
+
+Simplify using `[torus_val]`. Establish `ho : (Iwasawa.torusPow F 2 l).val 0 1 = 0` using `by simp [torus_val]`. Unfold `xRow`. Rewrite using `[hz, hd, if_pos h, ho, zero_div]`.
+-/
 theorem xRow_torus (l : Fin 2 → ℤ) : xRow (Iwasawa.torusPow F 2 l) = 0 := by
   have h : modulus (0 : F) < modulus ((GLnLocal.uniformizer F : F) ^ l 1) := by
     rw [modulus_zero]
@@ -142,10 +194,16 @@ theorem xRow_torus (l : Fin 2 → ℤ) : xRow (Iwasawa.torusPow F 2 l) = 0 := by
   unfold xRow
   rw [hz, hd, if_pos h, ho, zero_div]
 
+/- English proof (translation)
+Simplify using `[Spherical.rhoPair, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rhoPair_two (l : Fin 2 → ℤ) : Spherical.rhoPair l = l 0 - l 1 := by
   simp [Spherical.rhoPair, Fin.sum_univ_two]
   ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (Fin.zero_le 1)`. Apply the tactic sequence `intro h i j hij fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 theorem antitone_iff (l : Fin 2 → ℤ) : Antitone l ↔ l 1 ≤ l 0 := by
   constructor
   · intro h
@@ -161,6 +219,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]
   [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E]
 
+/- English proof (translation)
+Introduce and unpack `⟨t, ht⟩`. Establish `h` using `ord_normE hd h1 (t : E)`. Rewrite `h` using `[ht, ord_unif_zpow]`. Conclude with `hk ⟨ord (t : E), by omega⟩`.
+-/
 theorem not_norm_of_odd (hd : Module.finrank F E = 2)
     (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {k : ℤ} (hk : ¬ Even k) :
     ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = (GLnLocal.uniformizer F : F) ^ k := by
@@ -169,6 +230,11 @@ theorem not_norm_of_odd (hd : Module.finrank F E = 2)
   rw [ht, ord_unif_zpow] at h
   exact hk ⟨ord (t : E), by omega⟩
 
+/- English proof (translation)
+Establish `hu : ((η (Iwasawa.uniformizerUnit F) : ℂˣ) : ℂ) = -1`. Rewrite using `[hη, GL2LocalData.nsg, if_neg]`. Use `not_norm_of_odd hd h1 (k := 1) (by decide)` as an intermediate fact. Simplify using `using this`. Establish `h` using `hη (Iwasawa.uniformizerUnit F ^ D)`.
+
+Rewrite `h` using `[map_zpow, Units.val_zpow_eq_zpow_val, hu, Units.val_zpow_eq_zpow_val, Iwasawa.coe_uniformizerUnit]`. Conclude with `h.symm`.
+-/
 theorem nsg_unif_zpow (hd : Module.finrank F E = 2)
     (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) {η : Fˣ →* ℂˣ}
     (hη : ∀ a, ((η a : ℂˣ) : ℂ) = GL2LocalData.nsg E (a : F)) (D : ℤ) :
@@ -186,14 +252,27 @@ def unifE (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
     (E : Type) [Field E] [Algebra F E] (m : ℤ) : Eˣ :=
   Units.map (algebraMap F E).toMonoidHom (Iwasawa.uniformizerUnit F ^ m)
 
+/- English proof (translation)
+Simplify using `[unifE, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem coe_unifE (m : ℤ) :
     ((unifE F E m : Eˣ) : E) = algebraMap F E ((GLnLocal.uniformizer F : F) ^ m) := by
   simp [unifE, Units.val_zpow_eq_zpow_val]
 
+/- English proof (translation)
+Rewrite using `[coe_unifE, Algebra.norm_algebraMap, hd, zpow_add₀ unif_ne_zero, pow_two]`.
+-/
 theorem norm_unifE (hd : Module.finrank F E = 2) (m : ℤ) :
     Algebra.norm F ((unifE F E m : Eˣ) : E) = (GLnLocal.uniformizer F : F) ^ (m + m) := by
   rw [coe_unifE, Algebra.norm_algebraMap, hd, zpow_add₀ unif_ne_zero, pow_two]
 
+/- English proof (translation)
+Establish `h0 : c (Units.map (algebraMap F E).toMonoidHom (Iwasawa.uniformizerUnit F)) = b ^ 2`. Rewrite using `[hb]`. Use `InertAsm.char_congr c hc ?_` and prove the remaining obligations. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[FiltrationCocycleLiftCriterion.WeilRep.modulus_algebraMap (K := F), FiltrationCocycleLiftCriterion.WeilRep.modulus_algebraMap (K := F)]`.
+
+Use `congr 1`. Rewrite using `[Iwasawa.coe_uniformizerUnit, modulus_of_ne_zero unif_ne_zero, modulus_of_ne_zero (Units.ne_zero _), ord_uniformizer (GLnLocal.irreducible_uniformizer F), ord_unif]`. Rewrite using `[unifE, map_zpow, map_zpow, h0, zpow_add₀ (by exact b.ne_zero)]`. Simplify using `[Units.val_zpow_eq_zpow_val]`. Establish `hb0 : (b : ℂ) ≠ 0` using `b.ne_zero`.
+
+Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, ← zpow_add₀ hb0]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem char_unifE [MeasurableSpace F] [BorelSpace F] [MeasurableSpace E] [BorelSpace E]
     [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)]
     {c : Eˣ →* ℂˣ} (hc : IsUnramifiedChar c) {b : ℂˣ}
@@ -216,6 +295,11 @@ theorem char_unifE [MeasurableSpace F] [BorelSpace F] [MeasurableSpace E] [Borel
   push_cast
   ring
 
+/- English proof (translation)
+Establish `he : ((unifE F E m : Eˣ) : E) * algebraMap F E ((GLnLocal.uniformizer F : F) ^ D)⁻¹ = algebraMap F E ((GLnLocal.uniformizer F : F) ^ (m - D))`. Rewrite using `[coe_unifE, ← map_mul, zpow_sub₀ unif_ne_zero, div_eq_mul_inv]`. Establish `hne : algebraMap F E ((GLnLocal.uniformizer F : F) ^ (m - D)) ≠ 0`. Conclude with `(map_ne_zero _).2 (zpow_ne_zero _ unif_ne_zero)`. Rewrite using `[he]`.
+
+Establish `hiff` using `mem_int_iff_ord hne`. Rewrite `hiff` using `[ord_map h1, ord_unif_zpow]`. Use `split_ifs with h`. Conclude with `intInd_of_mem (hiff.2 (by omega))`. Conclude with `intInd_of_not_mem (fun hm => h (by have := hiff.1 hm; omega))`.
+-/
 theorem intInd_unifE (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) (m D : ℤ) :
     (intInd (((unifE F E m : Eˣ) : E) * algebraMap F E ((GLnLocal.uniformizer F : F) ^ D)⁻¹) : ℂ) =
       if D ≤ m then 1 else 0 := by
@@ -233,6 +317,9 @@ theorem intInd_unifE (h1 : ord (algebraMap F E (unifUnit F : F)) = 1) (m D : ℤ
 
 end Main
 
+/- English proof (translation)
+Rewrite using `[modulus_unif_zpow, cpow_half_sq (zpow_nonneg (NNReal.coe_nonneg _) _), Complex.ofReal_zpow]`. Both sides reduce to the same expression.
+-/
 theorem sqrtQ_cpow (k : ℤ) {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] :
     (((modulus ((GLnLocal.uniformizer F : F) ^ k) : ℝ) : ℂ)) ^ (1 / 2 : ℂ) =
@@ -241,6 +328,11 @@ theorem sqrtQ_cpow (k : ℤ) {F : Type} [Field F] [ValuativeRel F] [TopologicalS
     Complex.ofReal_zpow]
   rfl
 
+/- English proof (translation)
+Establish `h0 : Spherical.sqrtQ F ≠ 0` using `Spherical.sqrtQ_ne_zero`. Rewrite using `[modulus_unif_zpow, Complex.ofReal_inv, Complex.ofReal_pow, Complex.ofReal_zpow]`. Express the relevant statement in the definitionally equal form `((Spherical.sqrtQ F ^ (-k)) ^ 2)⁻¹ = _`. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_neg]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqrtQ_inv (k : ℤ) {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] :
     (((modulus ((GLnLocal.uniformizer F : F) ^ k) : ℝ)⁻¹ : ℝ) : ℂ) =
@@ -253,6 +345,19 @@ theorem sqrtQ_inv (k : ℤ) {F : Type} [Field F] [ValuativeRel F] [TopologicalSp
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 _ h1 χ η σ c hχ hc hη hform b hb l`. Take `⟨hη1, -, -, -⟩` from `hη`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨h2⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
+
+Establish `hl : l = ![l 0, l 1]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Establish `hs : Spherical.evalAt ![b, -b] (Spherical.schur l) = if Even (l 0 + l 1) then (-1 : ℂ) ^ (l 1) * (b : ℂ) ^ (l 0 + l 1) else 0`. Establish `h` using `evalAt_schur_pm b (l 0) (l 1)`.
+
+Rewrite `h` using `[← hl]`. Then use the resulting hypothesis. Establish `hs0 : Spherical.sqrtQ F ≠ 0` using `Spherical.sqrtQ_ne_zero`. Distinguish the cases in `he : Even (l 0 + l 1)`. Take `⟨m, hm⟩` from `id he`. Establish `hN : Algebra.norm F ((unifE F E m : Eˣ) : E) = ((Iwasawa.torusPow F 2 l).val).det`.
+
+Rewrite using `[norm_unifE h2, torus_det, hm]`. Rewrite using `[InertAsm.Wc_eq hc hform _ _ hN, InertAsm.val, mRow_torus, xRow_torus, torus_det, hs, if_pos he, char_unifE hc hb, nsg_unif_zpow h2 h1 hη1, intInd_unifE h1, sqrtQ_cpow, sqrtQ_inv, AddChar.map_zero_eq_one, Circle.coe_one, Spherical.halfModulus_eq, rhoPair_two, ← hm]`. Distinguish the cases in `ha : l 1 ≤ l 0`. Rewrite using `[if_pos (by omega), if_pos ((antitone_iff l).2 ha), show -(l 0 - l 1) = -(l 0 + l 1) + 2 * l 1 by ring, zpow_add₀ hs0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[if_neg (by omega), if_neg (fun h => ha ((antitone_iff l).1 h))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = ((Iwasawa.torusPow F 2 l).val).det`. Rewrite using `[torus_det]`. Conclude with `not_norm_of_odd h2 h1 he`.
+
+Rewrite using `[GL2LocalData.Wc, dif_neg hn, hs, if_neg he]`. Simplify using the standard rewrite rules.
+-/
 theorem Wc_torusPow : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 → ∀ (χ : AddChar F Circle) (η : Fˣ →* ℂˣ) (σ : E ≃ₐ[F] E) (c : Eˣ →* ℂˣ), Ad3.IsStd χ → IsUnramifiedChar c → ((∀ a, ((η a : ℂˣ) : ℂ) = GL2LocalData.nsg E (a : F)) ∧ IsUnramifiedChar η ∧ η * η = 1 ∧ GL2LocalData.nsg E (-1 : F) = 1) → (∀ (g : GL (Fin 2) F) (t : Eˣ), Algebra.norm F (t : E) = (g.val).det → GL2LocalData.rW χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => intInd (x * (t : E))) 1 = (((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * GL2LocalData.nsg E (mRow g) * (χ (xRow g) : ℂ) * intInd ((t : E) * algebraMap F E (mRow g)⁻¹)) → ∀ b : ℂˣ, b ^ 2 = c (Units.map (algebraMap F E).toMonoidHom (unifUnit F)) → ∀ l : Fin 2 → ℤ, GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd (Iwasawa.torusPow F 2 l) = if Antitone l then Spherical.halfModulus F l * Spherical.evalAt ![b, -b] (Spherical.schur l) else 0 := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 _ h1 χ η σ c hχ hc hη hform b hb l
   obtain ⟨hη1, -, -, -⟩ := hη

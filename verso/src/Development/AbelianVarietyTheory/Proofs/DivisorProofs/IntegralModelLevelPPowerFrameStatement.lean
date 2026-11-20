@@ -14,6 +14,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.htAt_dualFam_frame | exact GlobalTheory.FlatModel.htAt_dualFam_frame | (intros; apply GlobalTheory.FlatModel.htAt_dualFam_frame <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_model_level_p_power_frame : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.HodgeTateKernelAtPoint → TateSt → ValueSt →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (τ : Psi H) (p : ℕ) [Fact p.Prime]
     [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ n : ℕ,

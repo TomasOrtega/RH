@@ -11,10 +11,16 @@ namespace GlobalTheory.CplTwoInt
 
 open GlobalTheory.GO.ChRoot (mem_stdAt' intAt_natCast intAt_one' intAt_zero' psi_root)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (IntOff S) (fun _ _ ha hb => ha.mul hb) IntOff.one h`.
+-/
 theorem intOff_prod {S : Finset ℕ} {ι : Type} (s : Finset ι) (f : ι → ℂ) (h : ∀ i ∈ s, IntOff S (f i)) :
     IntOff S (∏ i ∈ s, f i) :=
   Finset.prod_induction f (IntOff S) (fun _ _ ha hb => ha.mul hb) IntOff.one h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pow_pos h.1 k, fun q hq hd => h.2 q hq (hq.dvd_of_dvd_pow hd)⟩`.
+-/
 theorem sNum_pow {S : Finset ℕ} {a : ℕ} (h : SNum S a) (k : ℕ) : SNum S (a ^ k) :=
   ⟨pow_pos h.1 k, fun q hq hd => h.2 q hq (hq.dvd_of_dvd_pow hd)⟩
 
@@ -22,6 +28,13 @@ section Lin
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Establish `hy'` using `mem_stdAt'.1 hy`. Establish `e : η y = ∑ i, y i * η (Pi.single i 1)` using `by conv_lhs => rw [← Finset.univ_sum_single y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (Pi.single i (y i) : Sp E n) = y i • Pi.single i (1 : E) by`.
+
+Apply the tactic sequence `ext j; by_cases h : j = i <;> simp [h, Pi.single_apply], map_smul, smul_eq_mul]`. Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_induction _ (IntAt P) (fun _ _ ha hb => ha.add hb) intAt_zero' fun i _ => ?_` and prove the remaining obligations. Use `(hy' i).mul (hη i)` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intAt_eval {n : ℕ} (η : Sp E n →ₗ[E] E) (c a : E) (y : Sp E n)
     (hη : ∀ i, IntAt P (c * η (Pi.single i 1))) (hy : a • y ∈ stdAt E n P) : IntAt P (a * c * η y) := by
   have hy' := mem_stdAt'.1 hy
@@ -38,6 +51,9 @@ theorem intAt_eval {n : ℕ} (η : Sp E n →ₗ[E] E) (c a : E) (y : Sp E n)
   convert this using 1
   ring
 
+/- English proof (translation)
+Rewrite using `[← hf, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `hz`.
+-/
 theorem smul_symm_mem {n : ℕ} {N : Submodule (𝓞 E) (Sp E n)} {f : Sp E n ≃ₗ[E] Sp E n}
     (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ stdAt E n P) (a : E) {z : Sp E n} (hz : a • z ∈ localization₂ P.asIdeal N) :
     a • f.symm z ∈ stdAt E n P := by
@@ -51,6 +67,17 @@ section Yb
 variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hY`. Establish `hq : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (GlobalTheory.GO.ChRoot.qOf_pos P.1).ne'`. Establish `hs : ∀ (k : ℕ) v, v ∈ localization₂ P.1.asIdeal N → ((qOf P.1 : X.E) ^ k) • v ∈ localization₂ P.1.asIdeal N`. Introduce `k v hv`. Use `Submodule.smul_mem _ ((qOf P.1 : 𝓞 X.E) ^ k) hv` as an intermediate fact.
+
+Rewrite `this` using `[← algebraMap_smul X.E, map_pow, map_natCast]`. Then use the resulting hypothesis. Establish `key : ∀ z, z - y ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ)) → ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 1 else cst.M)) • z ∈ localization₂ P.1.asIdeal N`. Introduce `z hz`. Rewrite `hy`, `hz` using `[mem_locLat]`. Establish `h1` using `hy P`.
+
+Establish `h2` using `hz P`. Rewrite using `[show z = y + (z - y) by abel, smul_add]`. Use `split_ifs at h1 h2 ⊢ with hP`. Use `add_mem ?_ ?_` and prove the remaining obligations. Simplify using `using h1`.
+
+Conclude with `hs 1 _ (by simpa using h2)`. Use `add_mem ?_ ?_` and prove the remaining obligations. Simplify `h1` using `[zpow_neg]`. Establish `e : ((qOf P.1 : X.E) ^ cst.M) • (z - y) = ((qOf P.1 : X.E) ^ (cst.M + cst.M)) • (((qOf P.1 : X.E) ^ (cst.M : ℤ))⁻¹ • (z - y))`. Rewrite using `[smul_smul, zpow_natCast, pow_add, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq), mul_one]`.
+
+Rewrite using `[e]`. Conclude with `hs _ _ h2`. Conclude with `key _ (Classical.epsilon_spec (p := fun z => z - y ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))) ⟨y, by simp⟩)`.
+-/
 theorem repY_mem {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Yb : Set (Sp X.E n)} (hY : Yb ∈ ybSet sel mu cst N)
     (P : rowSG Pr sel mu) :
     ((qOf P.1 : X.E) ^ (if P.1 ∈ Pr.vGs then 1 else cst.M)) • repY Yb ∈ localization₂ P.1.asIdeal N := by
@@ -94,6 +121,17 @@ section Ft
 variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+Establish `he : IntAt P.1 ((epsSg : ℤ) : X.E)` using `by simpa [epsSg] using IntAt.coe P.1 (-1 : 𝓞 X.E)`. Establish `hpos : 0 < qOf P.1 ^ cst.D P` using `pow_pos (GlobalTheory.GO.ChRoot.qOf_pos P.1) _`. Unfold `ftY`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Rewrite `hy`, the goal, `split_ifs`, `with`, `hη` using `[if_pos hP]`.
+
+Use `IntOff.of_pow hpos ?_` and prove the remaining obligations. Rewrite using `[← map_pow, psi_root hc P _ ?_, map_one]`. Rewrite using `[hG hP, pow_one]`. Establish `h1` using `intAt_eval η 1 _ y (fun i => by simpa using hη i) hy`. Use `he.mul h1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `using (IntOff.zero : IntOff B 0)`. Rewrite `hy`, the goal, `split_ifs`, `with`, `hη` using `[if_neg hP]`. Rewrite using `[map_mul, map_inv₀, map_pow, map_natCast]`. Use `IntOff.mul ?_ (IntOff.of_pow hpos ?_)` and prove the remaining obligations.
+
+Simplify `IntOff.inv_nat (sNum_pow hB (cst.M * n))` using `[Nat.cast_pow]`. Rewrite using `[← map_pow, psi_root hc P _ ?_, map_one]`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le (hQ hP)`. Establish `h1` using `intAt_eval η _ _ y hη hy`. Establish `hk' : IntAt P.1 ((qOf P.1 : X.E) ^ k)` using `by simpa using intAt_natCast (P := P.1) (qOf P.1 ^ k)`.
+
+Rewrite using `[hk]`. Use `(he.mul hk').mul h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Simplify using `using (IntOff.zero : IntOff B 0)`.
+-/
 theorem ftY_intOff (hc : cst.Ok) (P : rowSG Pr sel mu) (hG : P.1 ∈ Pr.vGs → cst.D P = 1)
     (hQ : P.1 ∉ Pr.vGs → 2 * cst.M ≤ cst.D P) (σ : X.K →+* ℂ) {B : Finset ℕ} (hB : SNum B (qOf P.1)) {n : ℕ}
     (η : Sp X.E n →ₗ[X.E] X.E) {y : Sp X.E n}
@@ -128,6 +166,13 @@ theorem ftY_intOff (hc : cst.Ok) (P : rowSG Pr sel mu) (hG : P.1 ∈ Pr.vGs → 
 
 end Ft
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t u μ p Yb d x hY`. Establish `hok` using `t.idx_ok μ`. Unfold `XiCpl2`. Rewrite using `[map_mul, map_prod]`. Use `IntOff.mul ?_ (intOff_prod _ _ fun P _ => ?_)` and prove the remaining obligations.
+
+Unfold `phiT split_ifs`. Simplify using `using (IntOff.one : IntOff (t.O u μ).S 1)`. Simplify using `using (IntOff.zero : IntOff (t.O u μ).S 0)`. Rewrite using `[map_mul]`. Use `IntOff.mul (hPhi D L hT Gi Gl K Y cX ex t u μ P.1 _) ?_` and prove the remaining obligations.
+
+Conclude with `ftY_intOff t.sel (t.tup μ) (t.cst μ) hok.cst_ok P (hok.depthG P) (hok.depthQ P) _ (GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P) _ (smul_symm_mem (GlobalTheory.ColPeriod.isFrames_frsF p P) _ (repY_mem t.sel (t.tup μ) (t.cst μ) hY P))`.
+-/
 theorem xiCpl2_intOff (hPhi : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D)
       (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), ∀ u μ
       (P : HeightOneSpectrum (𝓞 t.X.E)) x,
@@ -148,6 +193,9 @@ theorem xiCpl2_intOff (hPhi : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) 
       (GlobalTheory.KerTie.sNum_qOf_rowSG D L hT Gi Gl K Y cX ex t u μ P) _
       (smul_symm_mem (GlobalTheory.ColPeriod.isFrames_frsF p P) _ (repY_mem t.sel (t.tup μ) (t.cst μ) hY P))
 
+/- English proof (translation)
+The claim follows from `xiCpl2_intOff fun D L hT Gi Gl K Y cX ex t u μ P x => (GlobalTheory.T.chain_local_data_integral_off_levels D L hT Gi Gl K Y cX ex t u μ P).2 x`.
+-/
 theorem xiCpl2_intOff_tied : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), ∀ u μ p Yb d x, Yb ∈ ybSet t.sel (t.tup μ) (t.cst μ) p.deco.1.N → IntOff (t.O u μ).S (t.seam.σ₀ (XiCpl2 (R := D.R) (u := t.word u) t.Ch t.sel (t.tup μ) (t.cst μ) t.m2 p Yb d x)) :=
   xiCpl2_intOff fun D L hT Gi Gl K Y cX ex t u μ P x => (GlobalTheory.T.chain_local_data_integral_off_levels D L hT Gi Gl K Y cX ex t u μ P).2 x
 

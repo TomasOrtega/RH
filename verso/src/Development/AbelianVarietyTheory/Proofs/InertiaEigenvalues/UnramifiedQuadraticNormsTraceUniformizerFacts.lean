@@ -11,6 +11,9 @@ variable (K : UQ)
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective K.O K.E`.
+-/
 theorem _root_.GlobalTheory.UnitLemma.UnramNorm.alg_inj :
     Function.Injective (algebraMap K.O K.E) :=
   IsFractionRing.injective K.O K.E
@@ -19,6 +22,9 @@ def cOf (x : K.O) : K.O := Classical.choose (K.c_int x)
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (K.c_int x)).symm`.
+-/
 theorem _root_.GlobalTheory.UnitLemma.UnramNorm.cOf_spec (x : K.O) :
     algebraMap K.O K.E (_root_.GlobalTheory.UnitLemma.UnramNorm.cOf K x) = K.c (algebraMap K.O K.E x) :=
   (Classical.choose_spec (K.c_int x)).symm
@@ -33,12 +39,22 @@ def cO : K.O ≃+* K.O where
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.UnitLemma.UnramNorm.cOf_spec K x`.
+-/
 theorem _root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec (x : K.O) :
     algebraMap K.O K.E (_root_.GlobalTheory.UnitLemma.UnramNorm.cO K x) = K.c (algebraMap K.O K.E x) :=
   _root_.GlobalTheory.UnitLemma.UnramNorm.cOf_spec K x
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hu`. Use `set v := IsDedekindDomain.HeightOneSpectrum.valuation K.E (IsDiscreteValuationRing.maximalIdeal K.O)`. Establish `h1` using `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_le_one (K := K.E) (w : K.O)`. Establish `h2` using `(IsDiscreteValuationRing.maximalIdeal K.O).valuation_le_one (K := K.E) ((w⁻¹ : K.Oˣ) : K.O)`. Establish `h3 : v (algebraMap K.O K.E w) * v (algebraMap K.O K.E ((w⁻¹ : K.Oˣ) : K.O)) = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Conclude with `le_antisymm h1 (by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `mul_lt_one_of_lt_of_le h h2` as an intermediate fact.
+
+Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this)`.
+-/
 private theorem valuation_algebraMap_isUnit_eq_one (u : K.O) (hu : IsUnit u) :
     IsDedekindDomain.HeightOneSpectrum.valuation K.E (IsDiscreteValuationRing.maximalIdeal K.O)
       (algebraMap K.O K.E u) = 1 := by
@@ -57,6 +73,9 @@ private theorem valuation_algebraMap_isUnit_eq_one (u : K.O) (hu : IsUnit u) :
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+Take `⟨w, hw⟩` from `IsDiscreteValuationRing.associated_of_irreducible K.O hp hp'`. Rewrite using `[← hw, map_mul, map_mul, valuation_algebraMap_isUnit_eq_one K _ w.isUnit, mul_one]`.
+-/
 private theorem valuation_algebraMap_irreducible_eq {p p' : K.O} (hp : Irreducible p)
     (hp' : Irreducible p') :
     IsDedekindDomain.HeightOneSpectrum.valuation K.E (IsDiscreteValuationRing.maximalIdeal K.O)
@@ -68,6 +87,11 @@ private theorem valuation_algebraMap_irreducible_eq {p p' : K.O} (hp : Irreducib
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `hcϖ : Irreducible (_root_.GlobalTheory.UnitLemma.UnramNorm.cO K ϖ)` using `(MulEquiv.irreducible_iff (_root_.GlobalTheory.UnitLemma.UnramNorm.cO K).toMulEquiv).mpr hϖ`.
+
+Simplify using `only [map_mul, map_pow]`. Rewrite using `[valuation_algebraMap_isUnit_eq_one K _ (u.isUnit.map (_root_.GlobalTheory.UnitLemma.UnramNorm.cO K)), valuation_algebraMap_isUnit_eq_one K _ u.isUnit, valuation_algebraMap_irreducible_eq K hϖ hcϖ]`.
+-/
 private theorem valuation_algebraMap_cO (a : K.O) :
     IsDedekindDomain.HeightOneSpectrum.valuation K.E (IsDiscreteValuationRing.maximalIdeal K.O)
       (algebraMap K.O K.E (_root_.GlobalTheory.UnitLemma.UnramNorm.cO K a)) =
@@ -86,6 +110,9 @@ private theorem valuation_algebraMap_cO (a : K.O) :
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.UnitLemma.val`. Use `congr 2`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := K.O) x`. Rewrite using `[map_div₀, ← _root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec, ← _root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec, map_div₀, map_div₀, valuation_algebraMap_cO, valuation_algebraMap_cO]`.
+-/
 theorem _root_.GlobalTheory.UnitLemma.UnramNorm.val_c (x : K.E) :
     _root_.GlobalTheory.UnitLemma.val K.O (K.c x) = _root_.GlobalTheory.UnitLemma.val K.O x := by
   unfold _root_.GlobalTheory.UnitLemma.val
@@ -96,6 +123,9 @@ theorem _root_.GlobalTheory.UnitLemma.UnramNorm.val_c (x : K.E) :
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.UnitLemma.UnramNorm.alg_inj K (by rw [_root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec, _root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec, K.c_c])`.
+-/
 private theorem cO_cO' (x : K.O) :
     _root_.GlobalTheory.UnitLemma.UnramNorm.cO K (_root_.GlobalTheory.UnitLemma.UnramNorm.cO K x) = x :=
   _root_.GlobalTheory.UnitLemma.UnramNorm.alg_inj K (by
@@ -103,11 +133,31 @@ private theorem cO_cO' (x : K.O) :
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`.
+-/
 private theorem isUnit_iff_notMem_maximalIdeal {x : K.O} : IsUnit x ↔ x ∉ maximalIdeal K.O := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+Use `haveI : Fact (ringChar F).Prime := ⟨CharP.char_is_prime F (ringChar F)⟩`. Use `letI : Algebra (ZMod (ringChar F)) F := ZMod.algebra F (ringChar F)`. Establish `hcomm : ∀ r : ZMod (ringChar F), σ (algebraMap (ZMod (ringChar F)) F r) = algebraMap (ZMod (ringChar F)) F r` using `fun r => congrArg (· r) (RingHom.ext_zmod ((σ : F →+* F).comp (algebraMap _ _)) (algebraMap _ _))`. Set `τ : F ≃ₐ[ZMod (ringChar F)] F` to `AlgEquiv.ofRingEquiv (f := σ) hcomm`. Establish `hτ : τ ≠ 1`.
+
+Take `⟨x, hx⟩` from `hne`. Introduce `h`. Conclude with `hx (by simpa [τ] using congrArg (fun g : F ≃ₐ[ZMod (ringChar F)] F => g x) h)`. Establish `hτ2 : τ ^ 2 = 1`. Use extensionality with `x`.
+
+Simplify using `[τ, pow_two, hσ]`. Establish `hord : orderOf τ = 2` using `orderOf_eq_prime hτ2 hτ`. Set `k0` to `IntermediateField.fixedField (Subgroup.zpowers τ)`. Use `haveI : FiniteDimensional (ZMod (ringChar F)) F := Module.Finite.of_finite`. Establish `hrank : Module.finrank k0 F = 2`.
+
+Rewrite using `[IntermediateField.finrank_fixedField_eq_card, Nat.card_zpowers, hord]`. Establish `hmem : ∀ x : F, σ x = x → x ∈ k0`. Introduce `x hx`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `g hg`.
+
+Establish `: Subgroup.zpowers τ ≤ MulAction.stabilizer (F ≃ₐ[ZMod (ringChar F)] F) x` using `Subgroup.zpowers_le.mpr (by simpa [MulAction.mem_stabilizer_iff, τ] using hx)`. Conclude with `this hg`. Set `τ0 : F ≃ₐ[k0] F` to `AlgEquiv.ofRingEquiv (f := σ) (fun x => by`. Use `(IntermediateField.mem_fixedField_iff _ _).mp x.2 τ (Subgroup.mem_zpowers τ)` as an intermediate fact. Simplify `this)` using `[τ]`.
+
+Establish `hτ0 : (1 : F ≃ₐ[k0] F) ≠ τ0`. Take `⟨x, hx⟩` from `hne`. Introduce `h`. Conclude with `hx (by simpa [τ0] using (congrArg (fun g : F ≃ₐ[k0] F => g x) h).symm)`. Establish `huniv : (Finset.univ : Finset (F ≃ₐ[k0] F)) = {1, τ0}`.
+
+Use `symm`. Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_univ, Finset.card_pair hτ0, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, hrank]`. Take `⟨z, hz⟩` from `FiniteField.norm_surjective (K := k0) (K' := F) ⟨u, hmem u hfix⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Use `Algebra.norm_eq_prod_automorphisms k0 z` as an intermediate fact. Rewrite `this` using `[huniv, Finset.prod_pair hτ0, hz]`. Simplify `this.symm` using `[τ0]`.
+-/
 private theorem exists_mul_apply_eq_of_fixed_involution {F : Type} [Field F] [Finite F] (σ : F ≃+* F)
     (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) (u : F) (hu : u ≠ 0) (hfix : σ u = u) :
     ∃ z, z * σ z = u := by
@@ -157,6 +207,13 @@ private theorem exists_mul_apply_eq_of_fixed_involution {F : Type} [Field F] [Fi
 
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨x, y, hxy, hm⟩` from `K.c_res`. Establish `hy : _root_.GlobalTheory.UnitLemma.UnramNorm.cO K x = y` using `_root_.GlobalTheory.UnitLemma.UnramNorm.alg_inj K (by rw [_root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec, hxy])`. Establish `h1` using `h 1`.
+
+Establish `hx` using `h x`. Rewrite `h1` using `[map_one, mul_one]`. Rewrite `hx` using `[hy]`. Apply `hm` to reduce the goal to its premises. Establish `: x - y = (x + e * y) - (1 + e) * y` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ hx (Ideal.mul_mem_right _ _ h1)`.
+-/
 private theorem exists_add_mul_cO_notMem_maximalIdeal (e : K.O) :
     ∃ t : K.O, t + e * _root_.GlobalTheory.UnitLemma.UnramNorm.cO K t ∉ maximalIdeal K.O := by
   by_contra h
@@ -176,6 +233,57 @@ private theorem exists_add_mul_cO_notMem_maximalIdeal (e : K.O) :
 open IsLocalRing Polynomial in
 variable (K : _root_.GlobalTheory.UnitLemma.UQ) in
 
+/- English proof (translation)
+Introduce `K`. Use `set σ := _root_.GlobalTheory.UnitLemma.UnramNorm.cO K`. Establish `hσσ : ∀ x, σ (σ x) = x` using `cO_cO' K`. Establish `hspec : ∀ x, K.c (algebraMap K.O K.E x) = algebraMap K.O K.E (σ x)` using `fun x => (_root_.GlobalTheory.UnitLemma.UnramNorm.cO_spec K x).symm`. Establish `hσm : ∀ x, x ∈ maximalIdeal K.O → σ x ∈ maximalIdeal K.O`.
+
+Introduce `x hx`. Rewrite using `[← not_not (a := σ x ∈ _), ← isUnit_iff_notMem_maximalIdeal, isUnit_map_iff σ, isUnit_iff_notMem_maximalIdeal, not_not]`. Conclude with `hx`. Use `⟨?_, ?_, ?_, _root_.GlobalTheory.UnitLemma.UnramNorm.val_c K⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Establish `hσu : σ u = u` using `_root_.GlobalTheory.UnitLemma.UnramNorm.alg_inj K (by rw [← hspec, hu])`. Establish `hres : ∀ x, ResidueField.mapEquiv σ (residue K.O x) = residue K.O (σ x)` using `fun x => rfl`. Establish `hσb : ∀ x, ResidueField.mapEquiv σ (ResidueField.mapEquiv σ x) = x`. Introduce `x`. Take `⟨y, rfl⟩` from `residue_surjective x`.
+
+Rewrite using `[hres, hres, hσσ]`. Establish `hne : ∃ x, ResidueField.mapEquiv σ x ≠ x`. Take `⟨x, y, hxy, hm⟩` from `K.c_res`. Establish `hy : σ x = y` using `_root_.GlobalTheory.UnitLemma.UnramNorm.alg_inj K (by rw [← hspec, hxy])`. Use `⟨residue K.O x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hres, hy]`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← residue_eq_zero_iff, map_sub, h, sub_self]`. Establish `hu0 : residue K.O (u : K.O) ≠ 0`.
+
+Rewrite `*` using `[ne_eq, residue_eq_zero_iff, ← isUnit_iff_notMem_maximalIdeal K]`. Simplify using `[u.isUnit]`. Take `⟨zb, hzb⟩` from `exists_mul_apply_eq_of_fixed_involution (ResidueField.mapEquiv σ) hσb hne _ hu0 (by rw [hres, hσu])`. Take `⟨z0, rfl⟩` from `residue_surjective zb`. Rewrite `hzb` using `[hres, ← map_mul]`.
+
+Establish `hN : z0 * σ z0 - u ∈ maximalIdeal K.O`. Rewrite using `[← residue_eq_zero_iff, map_sub, hzb, sub_self]`. Establish `hz0 : IsUnit z0`. Rewrite using `[isUnit_iff_notMem_maximalIdeal K, ← residue_eq_zero_iff]`. Introduce `h`.
+
+Rewrite `hzb` using `[map_mul, h, zero_mul]`. Conclude with `hu0 hzb.symm`. Take `⟨t, ht⟩` from `exists_add_mul_cO_notMem_maximalIdeal K 1`. Rewrite `ht` using `[one_mul]`. Establish `ha1` using `(isUnit_iff_notMem_maximalIdeal K).mpr ht`.
+
+Establish `htu : IsUnit t`. Rewrite using `[isUnit_iff_notMem_maximalIdeal K]`. Introduce `h`. Conclude with `ht (Ideal.add_mem _ h (hσm t h))`. Take `⟨w0, hw0⟩ : ∃ w, z0 * w = 1` from `⟨↑hz0.unit⁻¹, hz0.mul_val_inv⟩`.
+
+Use `set e0 := σ t * σ w0 with he0`. Establish `hz0e0 : z0 * σ e0 = t`. Rewrite using `[he0, map_mul, hσσ, hσσ, mul_left_comm, hw0, mul_one]`. Establish `he0z0 : e0 * σ z0 = σ t`. Rewrite using `[he0, mul_assoc, ← map_mul, mul_comm w0, hw0, map_one, mul_one]`.
+
+Establish `he0u : IsUnit e0`. Rewrite using `[he0]`. Use `(htu.map σ).mul (IsUnit.map σ (⟨⟨w0, z0, by rw [mul_comm]; exact hw0, hw0⟩, rfl⟩ : IsUnit w0))` and prove the remaining obligations. Establish `ha2 : IsUnit (e0 * σ e0)` using `he0u.mul (he0u.map σ)`. Take `⟨i2, hi2⟩ : ∃ i, e0 * σ e0 * i = 1` from `⟨↑ha2.unit⁻¹, ha2.mul_val_inv⟩`.
+
+Establish `hi2u : IsUnit i2` using `⟨⟨i2, e0 * σ e0, by rw [mul_comm]; exact hi2, hi2⟩, rfl⟩`. Use `set f : K.O[X] := X ^ 2 + C ((t + σ t) * i2) * X + C ((z0 * σ z0 - u) * i2) with hf`. Establish `hfm : f.Monic` using `by rw [hf]; monicity!`. Take `⟨X0, hroot, hX0⟩` from `HenselianRing.is_henselian (I := maximalIdeal K.O) f hfm 0 (by simpa [hf] using Ideal.mul_mem_right _ _ hN) (by`. Establish `hd : (derivative f).eval 0 = (t + σ t) * i2`.
+
+Rewrite using `[hf]`. Simplify using the standard rewrite rules. Apply the tactic sequence `first | done | rfl | ring`. Rewrite using `[hd]`. Conclude with `(ha1.mul hi2u).map _)`.
+
+Rewrite `hX0` using `[sub_zero]`. Establish `hE : e0 * σ e0 * X0 ^ 2 + (t + σ t) * X0 + (z0 * σ z0 - u) = 0`. Establish `h` using `hroot`. Simplify using `only [IsRoot, hf, eval_add, eval_mul, eval_C, eval_X, eval_pow] at h`. Take the linear combination `e0 * σ e0 * h - ((t + σ t) * X0 + (z0 * σ z0 - u)) * hi2`.
+
+Establish `hE' : e0 * σ e0 * σ X0 ^ 2 + (t + σ t) * σ X0 + (z0 * σ z0 - u) = 0`. Establish `h` using `congrArg σ hE`. Simplify using `only [map_add, map_mul, map_pow, map_zero, map_sub, hσσ, hσu] at h`. Take the linear combination `h`. Establish `hfix : σ X0 = X0`.
+
+Establish `hprod : (X0 - σ X0) * (e0 * σ e0 * (X0 + σ X0) + (t + σ t)) = 0`. Take the linear combination `hE - hE'`. Establish `hunit : IsUnit (e0 * σ e0 * (X0 + σ X0) + (t + σ t))`. Rewrite using `[isUnit_iff_notMem_maximalIdeal K]`. Introduce `h`.
+
+Apply `ht` to reduce the goal to its premises. Establish `: t + σ t = (e0 * σ e0 * (X0 + σ X0) + (t + σ t)) - e0 * σ e0 * (X0 + σ X0)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ h (Ideal.mul_mem_left _ _ (Ideal.add_mem _ hX0 (hσm _ hX0)))`. Use `(mul_eq_zero.mp hprod).resolve_right hunit.ne_zero` as an intermediate fact.
+
+Conclude with `(sub_eq_zero.mp this).symm`. Establish `hnorm : (z0 + X0 * e0) * σ (z0 + X0 * e0) = u`. Rewrite using `[map_add, map_mul, hfix]`. Take the linear combination `hE + X0 * hz0e0 + X0 * he0z0`. Establish `hzu : IsUnit (z0 + X0 * e0)` using `isUnit_of_mul_isUnit_left (hnorm ▸ u.isUnit)`.
+
+Use `⟨hzu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hspec, ← map_mul, hnorm]`. Take `⟨t, ht⟩` from `exists_add_mul_cO_notMem_maximalIdeal K 1`. Rewrite `ht` using `[one_mul]`. Establish `hs` using `(isUnit_iff_notMem_maximalIdeal K).mpr ht`.
+
+Use `set s := t + σ t`. Establish `hσs : σ s = s` using `by simp only [s, map_add, hσσ, add_comm]`. Take `⟨w, hws⟩ : ∃ w, w * s = 1` from `⟨↑hs.unit⁻¹, hs.val_inv_mul⟩`. Use `⟨t * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hspec, ← map_add, ← map_one (algebraMap K.O K.E)]`.
+
+Use `congr 1`. Establish `hz : t * w * s = t` using `by rw [mul_assoc, hws, mul_one]`. Establish `hz' : σ (t * w) * s = σ t`. Rewrite using `[← hσs, ← map_mul, hz]`. Establish `: (t * w + σ (t * w)) * s = 1 * s`.
+
+Rewrite using `[add_mul, hz, hz', one_mul]`. Conclude with `hs.mul_left_injective this`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Establish `hcϖ : Irreducible (σ ϖ)` using `(MulEquiv.irreducible_iff σ.toMulEquiv).mpr hϖ`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.associated_of_irreducible K.O hϖ hcϖ`.
+
+Take `⟨t, ht⟩` from `exists_add_mul_cO_notMem_maximalIdeal K (e : K.O)`. Establish `hw` using `(isUnit_iff_notMem_maximalIdeal K).mpr ht`. Use `⟨ϖ * t + σ (ϖ * t), ?_, ?_⟩` and prove the remaining obligations. Establish `: ϖ * t + σ (ϖ * t) = ϖ * (t + ↑e * σ t)`. Rewrite using `[map_mul, ← he]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(irreducible_mul_isUnit hw).mpr hϖ`. Rewrite using `[hspec]`. Use `congr 1`.
+
+Rewrite using `[map_add, hσσ, add_comm]`.
+-/
 theorem _root_.GlobalTheory.UnitLemma.UnramNorm.unram_quadratic_facts :
     ∀ (K : _root_.GlobalTheory.UnitLemma.UQ), (∀ u : K.Oˣ, K.c (algebraMap K.O K.E u) = algebraMap K.O K.E u →
     ∃ z : K.Oˣ, algebraMap K.O K.E u = algebraMap K.O K.E z * K.c (algebraMap K.O K.E z)) ∧

@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV
 
+/- English proof (translation)
+Introduce `K _ A`. Take `⟨B, hg, P, hB, hdim, h1, h2⟩` from `GlobalTheory.dualAbelianScheme (Sp K) A.X A.ab`. Conclude with `⟨{ X := B, grp := hg, ab := hB, dim := A.dim, smooth := hdim A.dim A.smooth }, P, ⟨h1, h2⟩, rfl⟩`.
+-/
 theorem exists_dualPair : ∀ (K : Type) [Field K] (A : AbVar K),
     ∃ (B : AbVar K) (P : LB (A.X ⊗ B.X).left), IsDualPair A B P ∧ B.dim = A.dim := by
   intro K _ A

@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TorsionFreeOver
 open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.KeyOriginNoeth.exists_common_multiple_mem_closure) | (exact GlobalTheory.KeyOriginNoeth.exists_common_multiple_mem_closure) | (intros; apply GlobalTheory.KeyOriginNoeth.exists_common_multiple_mem_closure <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_mul_mem_integralClosureOverGenericFibre : ∀ (A R : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
     (D : Type) [CommRing D] [Algebra (GlobalTheory.LocAcyc.GenFib A R) D]
     [Module.Finite (GlobalTheory.LocAcyc.GenFib A R) D] (s : Finset D),

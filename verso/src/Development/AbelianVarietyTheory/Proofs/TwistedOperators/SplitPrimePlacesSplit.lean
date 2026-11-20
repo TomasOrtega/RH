@@ -9,6 +9,33 @@ open Formalism.MainNotions.SchurIrreducible (IsSplit)
 
 namespace GlobalTheory.SplitPlace
 
+/- English proof (translation)
+Use `haveI hfin : Module.Finite (𝓞 F) (𝓞 E) := by first`. Consider the case `infer_instance`. Consider the case `exact Module.Finite.of_restrictScalars_finite ℤ (𝓞 F) (𝓞 E)`. Use `haveI hint : Algebra.IsIntegral (𝓞 F) (𝓞 E) := by first`. Consider the case `infer_instance`.
+
+Consider the case `exact Algebra.IsIntegral.of_finite (𝓞 F) (𝓞 E)`. Establish `hdeg : Module.finrank (𝓞 F) (𝓞 E) = 2`. Rewrite using `[← IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E]`. Conclude with `h2`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)`.
+
+Rewrite `hsum` using `[hdeg]`. Establish `hover : ∀ Q : Ideal (𝓞 E), Q.LiesOver v.asIdeal → (p : 𝓞 E) ∈ Q`. Introduce `Q hQo`. Establish `hmem : (p : 𝓞 F) ∈ Q.under (𝓞 F)`. Rewrite using `[← hQo.over]`.
+
+Conclude with `hv`. Establish `hmem' : algebraMap (𝓞 F) (𝓞 E) (p : 𝓞 F) ∈ Q` using `hmem`. Simplify using `using hmem'`. Establish `hf : ∀ q : v.asIdeal.primesOver (𝓞 E), q.1.inertiaDeg (𝓞 F) = 1`. Introduce and unpack `⟨Q, hQp, hQo⟩`.
+
+Use `haveI := hQp`. Use `haveI := hQo`. Establish `hQ0 : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Establish `hN : Ideal.absNorm Q = p` using `(h ⟨Q, hQp, hQ0⟩ (hover Q hQo)).1`. Establish `key : Ideal.absNorm v.asIdeal ^ Q.inertiaDeg (𝓞 F) = p`.
+
+Rewrite using `[Ideal.absNorm_pow_inertiaDeg v.asIdeal Q]`. Conclude with `hN`. Conclude with `Nat.Prime.eq_one_of_pow (by rw [key]; exact hp)`. Establish `he : ∀ q : v.asIdeal.primesOver (𝓞 E), q.1.ramificationIdx (𝓞 F) = 1`. Introduce and unpack `⟨Q, hQp, hQo⟩`.
+
+Use `haveI := hQp`. Use `haveI := hQo`. Establish `hQ0 : Q ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q`. Establish `hsq : (p : 𝓞 E) ∉ Q ^ 2` using `(h ⟨Q, hQp, hQ0⟩ (hover Q hQo)).2`. Establish `hle : Q.ramificationIdx (𝓞 F) ≤ 1`.
+
+Rewrite using `[← Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal Q v.ne_bot]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hmap : v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) ≤ Q ^ 2` using `Ideal.le_pow_of_le_ramificationIdx' hlt`. Apply `hsq` to reduce the goal to its premises.
+
+Establish `hin` using `hmap (Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hv)`. Simplify using `using hin`. Establish `hpos : 0 < Q.ramificationIdx (𝓞 F)` using `Ideal.ramificationIdx_pos Q (𝓞 F)`. Use `show Q.ramificationIdx (𝓞 F) = 1`. Use linear arithmetic over natural numbers and integers.
+
+Assume the negation of the conclusion as `hns`. Take `⟨Q0, hQ0p, hQ0o⟩ : ∃ Q0 : Ideal (𝓞 E), Q0.IsPrime ∧ Q0.LiesOver v.asIdeal` from `by first`. Consider the case `obtain ⟨Q0, hQ0m, hQ0o⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Conclude with `⟨Q0, hQ0m.isPrime, hQ0o⟩`. Consider the case `obtain ⟨Q0, hQ0⟩ := Set.nonempty_of_ncard_ne_zero (IsDedekindDomain.primesOver_ncard_ne_zero v.asIdeal (𝓞 E))`.
+
+Conclude with `⟨Q0, hQ0.1, hQ0.2⟩`. Set `q0 : v.asIdeal.primesOver (𝓞 E)` to `⟨Q0, hQ0p, hQ0o⟩`. Establish `honly : ∀ q : v.asIdeal.primesOver (𝓞 E), q = q0`. Introduce and unpack `⟨Q, hQp, hQo⟩`. Assume the negation of the conclusion as `hne`.
+
+Apply `hns` to reduce the goal to its premises. Use `haveI := hQo`. Use `haveI := hQ0o`. Use `⟨⟨Q, hQp, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, ⟨Q0, hQ0p, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q0⟩, ?_, hQo.over.symm, hQ0o.over.symm⟩` and prove the remaining obligations. Introduce `hPQ`.
+
+Conclude with `hne (Subtype.ext (congrArg HeightOneSpectrum.asIdeal hPQ))`. Rewrite `hsum` using `[Finset.sum_eq_single q0 (fun b _ hb => absurd (honly b) hb) (fun h0 => absurd (Finset.mem_univ q0) h0), he q0, hf q0]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isSplit_of_norm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) {p : ℕ} (hp : p.Prime)
     (h : ∀ w : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ w.asIdeal →
@@ -92,6 +119,13 @@ theorem isSplit_of_norm {F E : Type} [Field F] [NumberField F] [Field E] [Number
     (fun h0 => absurd (Finset.mem_univ q0) h0), he q0, hf q0] at hsum
   omega
 
+/- English proof (translation)
+Introduce `D p hp v hv`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `by first`. Consider the case `haveI : IsCMField D.host.E := Formalism.HC.HostAx.isCMField_hostE D.host.toHostAx`. Conclude with `IsQuadraticExtension.finrank_eq_two _ _`. Consider the case `have hE := Formalism.HC.HostAx.finrank_cmField D.host.toHostAx`.
+
+Establish `hF` using `Formalism.HC.HostAx.finrank_hostF D.host.toHostAx`. Establish `hm` using `Module.finrank_mul_finrank ℚ D.host.F D.host.E`. Establish `hpos : 0 < Module.finrank ℚ D.host.F` using `Module.finrank_pos`. Rewrite `hm` using `[hE, hF]`. Rewrite `hpos` using `[hF]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_left hpos (by linarith)`. Conclude with `isSplit_of_norm h2 hp.1 hp.2 v hv`.
+-/
 theorem isSplit_of_splitsCompletely : ∀ (D : D7) (p : ℕ), SplitsCompletely D p → ∀ v : HeightOneSpectrum (𝓞 D.host.F), (p : 𝓞 D.host.F) ∈ v.asIdeal → IsSplit (E := D.host.E) v := by
   intro D p hp v hv
   have h2 : Module.finrank D.host.F D.host.E = 2 := by

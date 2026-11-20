@@ -14,6 +14,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FlagBaseChange
 
+/- English proof (translation)
+Introduce `B Y B' π g ι E r fl H` and use `GlobalTheory.CovTest.BCFlag.isFlagBundle_baseChange B Y B' π g ι E r fl H`.
+-/
 theorem isFlagBundle_pullFlag : ∀ (B Y B' : Scheme.{0}) (π : Y ⟶ B) (g : B' ⟶ B) (ι : Type) (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → IsFlagBundle (Limits.pullback.snd π g) (fun a => (Scheme.Modules.pullback g).obj (E a)) r (fun a => GlobalTheory.FlagBaseChange.pullFlag π g (fl a)) :=
   fun B Y B' π g ι E r fl H => GlobalTheory.CovTest.BCFlag.isFlagBundle_baseChange B Y B' π g ι E r fl H
 

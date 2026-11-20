@@ -12,6 +12,63 @@ noncomputable section
 open FlagBundleSectionForms (chartPow chartMono liftNat) in
 open FlagBundleChartSection in
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ _ ι y N E _ _ B w b hfl M a φ hφ Φ _ _ t ht i c hsc`. Establish `hY : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.1 hsc) k (Finset.mem_univ _)`. Establish `hcpb : chartPow y c (b i) ≠ 0` using `chartPow_ne_zero hY _`. Take `⟨dl, β, f, hfh, hdeg, hfv⟩` from `exists_section_form (M := M) y B w b hfl a φ hφ t i c hsc`. Choose the witnesses or unpack the hypotheses as in `⟨vi, hviL, hviT, hviD⟩ : ∃ v ∈ B.lat c, (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = chartPow y c (b i) := by`.
+
+Establish `h` using `hfl.graded c hsc i`. Rewrite `h` using `[Set.ext_iff]`. Conclude with `(h (chartPow y c (b i))).2 ⟨1, one_mem _, (one_mul _).symm⟩`. Establish `hr : ∀ l, ∃ r ∈ chartRing F (segreVec y) c, φ l vi = r * chartPow y c a` using `fun l => hφ.sections c hsc l vi hviL`. Use `choose r hrA hrv using hr`.
+
+Take `⟨n₂, R, hRh, hRe⟩` from `chartRing_forms_fin (M := M) y w φ (truncCoord t ((i : ℕ) + 1)) c hsc hrA`. Set `γ₁ : K → ℕ` to `fun k => (b i k - a k).toNat`. Set `γ₂ : K → ℕ` to `fun k => (a k - b i k).toNat`. Set `δ : K → ℕ` to `β + fun k => n₂ + γ₁ k`. Set `u : MRing (bundleIdx ι M) F` to `chartMono M c δ`.
+
+Set `Y : Fin M → MRing (bundleIdx ι M) F` to `fun l => u * X ⟨none, l⟩ - R l * chartMono M c γ₂ * f`. Set `g : (Σ o, bundleIdx ι M o) → MRing (bundleIdx ι M) F` to `fun v => match v with`. Consider the case `⟨none, l⟩ => Y l`. Consider the case `⟨some k, p⟩ => X ⟨some k, p⟩`. Set `e : Option K → ℕ` to `fun o => liftNat δ o + Option.elim o 1 (fun _ => 0)`.
+
+Establish `hYh : ∀ l, IsMultiHomog (Y l) e`. Introduce `l`. Use `isMultiHomog_sub ?_ ?_` and prove the remaining obligations. Establish `h` using `(chartMono_homog (F := F) M c δ).mul (isWeightedHomogeneous_X F (blockWeight (bundleIdx ι M)) ⟨none, l⟩)`. Establish `he : e = liftNat δ + blockWeight (bundleIdx ι M) ⟨none, l⟩`.
+
+Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> simp [e, liftNat, blockWeight]`. Rewrite using `[he]`. Conclude with `h`. Establish `h` using `((hRh l).mul (chartMono_homog (F := F) M c γ₂)).mul hfh`.
+
+Establish `he : e = (liftNat fun _ => n₂) + liftNat γ₂ + dl`. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none`. Establish `h0` using `congrFun hdeg none`.
+
+Simplify using `[liftNat, zetaDeg, liftDeg] at h0`. Simplify using `[e, liftNat]`. Use linear arithmetic over natural numbers and integers. Consider the case `some k`. Establish `h0` using `congrFun hdeg (some k)`.
+
+Simplify using `[liftNat, zetaDeg, liftDeg] at h0`. Simplify using `[e, liftNat, δ, γ₁, γ₂]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[he]`. Conclude with `h`.
+
+Establish `hid : (∏ k, y ⟨k, c k⟩ ^ δ k) * chartPow y c a = (∏ k, y ⟨k, c k⟩ ^ β k) * segreVec y c ^ n₂ * (∏ k, y ⟨k, c k⟩ ^ γ₂ k) * chartPow y c (b i)`. Rewrite using `[segreVec_pow, ← chartPow_natCast, ← chartPow_natCast, ← chartPow_natCast]`. Simplify using `only [← chartPow_add hY]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Pi.add_apply, δ, γ₁, γ₂]`. Use linear arithmetic over natural numbers and integers. Establish `hevY : ∀ l, eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord t ((i : ℕ) + 1))) (Y l) = algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ δ k) * projCoord y w φ (truncCoord t ((i : ℕ) + 1)) ⟨none, l⟩ - algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ δ k) * (t i * algebraMap Ω Φ (char …`. Introduce `l`. Establish `hΩ : r l * segreVec y c ^ n₂ * (∏ k, y ⟨k, c k⟩ ^ γ₂ k) * (∏ k, y ⟨k, c k⟩ ^ β k) = (∏ k, y ⟨k, c k⟩ ^ δ k) * (chartPow y c (b i))⁻¹ * (r l * chartPow y c a)`.
+
+Rewrite using `[show (∏ k, y ⟨k, c k⟩ ^ δ k) * (chartPow y c (b i))⁻¹ * (r l * chartPow y c a) = r l * ((∏ k, y ⟨k, c k⟩ ^ δ k) * chartPow y c a) * (chartPow y c (b i))⁻¹ by ring, hid]`. Clear the denominators using the available nonvanishing facts. Establish `h2` using `congrArg (algebraMap Ω Φ) hΩ`. Simplify using `only [Y, u, eval₂_sub, eval₂_mul, eval₂_X, hRe, eval_chartMono, hfv, hrv]`. Simplify using `only [map_mul, map_inv₀] at h2 ⊢`.
+
+Take the linear combination `(-(t i)) * h2`. Establish `hgev : (fun v => eval₂ ((algebraMap Ω Φ).comp (algebraMap F Ω)) (projCoord y w φ (truncCoord t ((i : ℕ) + 1))) (g v)) = projCoord y w φ (truncCoord (fun j => algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ δ k) * (t j - t i * algebraMap Ω Φ (chartPow y c (b i))⁻¹ * algebraMap Ω Φ (w.repr vi j) …`. Use function extensionality and compare the values at `v`. Break down `v with ⟨_ | k, p⟩` into its components or cases. Use `show eval₂ _ _ (Y p) = _`.
+
+Establish `hφv : algebraMap Ω Φ (φ p vi) = ∑ j, algebraMap Ω Φ (w.repr vi j) * algebraMap Ω Φ (φ p (w j))` using `by conv_lhs => rw [← w.sum_repr vi]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, map_mul]`. Rewrite using `[hevY p, hφv]`. Simplify using `only [projCoord]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [truncCoord]`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Establish `h1 : (j : ℕ) < i` using `h`. Establish `h2 : (j : ℕ) < (i : ℕ) + 1` using `by omega`.
+
+Simplify using `only [h1, h2, if_true]`. Expand and normalize the polynomial expressions, which then agree. Substitute `h` using the available equality. Establish `h1 : ¬ (j : ℕ) < j` using `lt_irrefl _`. Establish `h2 : (j : ℕ) < (j : ℕ) + 1` using `Nat.lt_succ_self _`.
+
+Establish `hσ : t j * algebraMap Ω Φ (chartPow y c (b j))⁻¹ * algebraMap Ω Φ (chartPow y c (b j)) = t j`. Rewrite using `[mul_assoc, ← map_mul, inv_mul_cancel₀ hcpb, map_one, mul_one]`. Simplify using `only [h1, h2, if_true, if_false, hviD]`. Take the linear combination `(-(algebraMap Ω Φ (∏ k, y ⟨k, c k⟩ ^ δ k) * algebraMap Ω Φ (φ p (w j)))) * hσ`. Establish `h1 : ¬ (j : ℕ) < i`.
+
+Establish `: (i : ℕ) < j` using `h`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ¬ (j : ℕ) < (i : ℕ) + 1`. Establish `: (i : ℕ) < j` using `h`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [h1, h2, if_false, hviT j h, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eval₂_X]`. Both sides reduce to the same expression. Establish `hform : ∀ (d : Option K → ℕ) (q : MRing (bundleIdx ι M) F), IsMultiHomog q d → q ∈ projIdeal F y w φ (truncCoord t i) → u ^ d none * q ∈ projIdeal F y w φ (truncCoord t ((i : ℕ) + 1)) ⊔ Ideal.span {f}`.
+
+Introduce `d q hq hqI`. Establish `h1 : bind₁ g q ∈ projIdeal F y w φ (truncCoord t ((i : ℕ) + 1))`. Rewrite using `[ProjIdealFormValue.proof F Ω K ι y N E w M φ Φ _ _ _ (bind₁_isMultiHomog g e (fun _ _ => rfl) hYh hq)]`. Rewrite using `[← coe_eval₂Hom, eval₂Hom_bind₁, coe_eval₂Hom]`. Simplify using `only [coe_eval₂Hom]`.
+
+Rewrite using `[hgev]`. Conclude with `eval_trunc_eq_zero y w φ ht i hqI _`. Establish `h2 : u ^ d none * q - bind₁ g q ∈ Ideal.span {f}`. Rewrite using `[← bind₁_scale u hq]`. Use `bind₁_sub_mem _ g _ (fun v => ?_) q` and prove the remaining obligations.
+
+Break down `v with ⟨_ | k, p⟩` into its components or cases. Establish `h3 : u ^ blockWeight (bundleIdx ι M) ⟨none, p⟩ none * X ⟨none, p⟩ - g ⟨none, p⟩ = R p * chartMono M c γ₂ * f`. Simplify using `[g, Y, blockWeight]`. Rewrite using `[h3]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self f)`.
+
+Establish `h3 : u ^ blockWeight (bundleIdx ι M) ⟨some k, p⟩ none * X ⟨some k, p⟩ - g ⟨some k, p⟩ = 0`. Simplify using `[g, blockWeight]`. Rewrite using `[h3]`. Conclude with `zero_mem _`. Establish `h3 : bind₁ g q + (u ^ d none * q - bind₁ g q) ∈ projIdeal F y w φ (truncCoord t ((i : ℕ) + 1)) ⊔ Ideal.span {f}` using `Ideal.add_mem _ (Ideal.mem_sup_left h1) (Ideal.mem_sup_right h2)`.
+
+Rewrite `h3` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `⟨dl, liftNat β, f, chartMono M c β, β, rfl, hfh, chartMono_homog M c β, hdeg, hfv, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Establish `hsat : ∀ d, ∃ n : ℕ, (∏ k, (X ⟨some k, c k⟩ : MRing (bundleIdx ι M) F)) ^ n * weightedHomogeneousComponent (blockWeight (bundleIdx ι M)) d q ∈ projIdeal F y w φ (truncCoord t ((i : ℕ) + 1)) ⊔ Ideal.span {f}`. Introduce `d`.
+
+Establish `hqd` using `hform d _ (weightedHomogeneousComponent_isWeightedHomogeneous _ _) (component_mem_projIdeal y w φ _ hq d)`. Take `⟨r', hr'⟩` from `chartMono_pow_dvd (F := F) (M := M) c δ (d none)`. Use `⟨d none * ∑ k, δ k, ?_⟩` and prove the remaining obligations. Rewrite using `[hr', mul_comm (chartMono M c δ ^ d none) r', mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ hqd`.
+
+Use `choose nn hnn using hsat`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S : Finset (Option K → ℕ), q = ∑ d ∈ S, weightedHomogeneousComponent (blockWeight (bundleIdx ι M)) d q := by`. Establish `hfin` using `weightedHomogeneousComponent_finsupp (w := blockWeight (bundleIdx ι M)) q`. Use `⟨hfin.toFinset, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← sum_weightedHomogeneousComponent (blockWeight (bundleIdx ι M)) q]`.
+
+Conclude with `finsum_eq_sum _ hfin`. Use `⟨∑ d ∈ S, nn d, ?_⟩` and prove the remaining obligations. Rewrite using `[hS, Finset.mul_sum]`. Use `Ideal.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[← Nat.sub_add_cancel (Finset.single_le_sum (f := nn) (fun _ _ => Nat.zero_le _) hd), pow_add, mul_assoc]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (hnn d)`.
+-/
 theorem FlagBundleChartSection.proof : FlagBundleChartSection.Statement := by
   intro F _ Ω _ _ K _ _ ι y N E _ _ B w b hfl M a φ hφ Φ _ _ t ht i c hsc
   classical

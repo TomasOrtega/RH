@@ -14,6 +14,15 @@ open MvPowerSeries in
 set_option autoImplicit false in
 variable {R : Type} [CommRing R] {d : ℕ} in
 
+/- English proof (translation)
+Introduce `R _ d μ hμ u`. Establish `hμs : HasSubst μ` using `hasSubst_of_constantCoeff_nilpotent fun i ↦ by simp [hμ i]`. Apply the tactic sequence `have hzero : HasSubst (Sum.elim (fun i : Fin d ↦ (X i : MvPowerSeries (Fin d) R)) fun _ : Fin d ↦ (0 : MvPowerSeries (Fin d) R)) := hasSubst_of_constantCoeff_nilpotent fun s ↦ by cases s <;> simp`. Use `⟨fun F G ↦ ?_, fun a F ↦ ?_, fun a ↦ ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.LawDer.invDer _root_.GlobalTheory.LawDer.atZero`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[subst_add hμs, map_add, subst_add hzero, smul_add]`. Unfold `_root_.GlobalTheory.LawDer.invDer _root_.GlobalTheory.LawDer.atZero`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[subst_smul hμs, Derivation.map_smul_of_tower, subst_smul hzero, smul_comm]`. Unfold `_root_.GlobalTheory.LawDer.invDer _root_.GlobalTheory.LawDer.atZero`. Use `Finset.sum_eq_zero fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[subst_C, pderiv_C]`.
+
+Simplify using `using congrArg (u i • ·) (subst_C (a := Sum.elim (fun j : Fin d ↦ (X j : MvPowerSeries (Fin d) R)) fun _ : Fin d ↦ (0 : MvPowerSeries (Fin d) R)) (0 : R))`.
+-/
 theorem _root_.GlobalTheory.LawDer.Linear.invDer_linear : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), (∀ i, constantCoeff (μ i) = 0) → ∀ u : Fin d → R, (∀ F G : MvPowerSeries (Fin d) R, _root_.GlobalTheory.LawDer.invDer μ u (F + G) = _root_.GlobalTheory.LawDer.invDer μ u F + _root_.GlobalTheory.LawDer.invDer μ u G) ∧ (∀ (a : R) (F : MvPowerSeries (Fin d) R), _root_.GlobalTheory.LawDer.invDer μ u (a • F) = a • _root_.GlobalTheory.LawDer.invDer μ u F) ∧ ∀ a : R, _root_.GlobalTheory.LawDer.invDer μ u (C a) = 0 := by
   intro R _ d μ hμ u
   have hμs : HasSubst μ := hasSubst_of_constantCoeff_nilpotent fun i ↦ by simp [hμ i]

@@ -14,6 +14,15 @@ open GlobalTheory.Models GlobalTheory.ModelSum
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨k, _, _, hfin, hsep, S, hGt⟩` from `h y`. Set `ε : Z.residueField (f y) ≃+* Y.residueField y` to `(asIso (f.residueFieldMap y)).commRingCatIsoToRingEquiv`. Set `A : Algebra (Z.residueField (f y)) k` to `((algebraMap (Y.residueField y) k).comp (f.residueFieldMap y).hom).toAlgebra`. Establish `hc : (algebraMap (Z.residueField (f y)) k).comp (ε.symm : Y.residueField y →+* Z.residueField (f y)) = ((RingEquiv.refl k : k ≃+* k) : k →+* k).comp (algebraMap (Y.residueField y) k)`. Use extensionality with `a`.
+
+Conclude with `congrArg (algebraMap (Y.residueField y) k) (ε.apply_symm_apply a)`. Use `⟨k, inferInstance, A, Module.Finite.of_equiv_equiv ε.symm (RingEquiv.refl k) hc, Algebra.IsSeparable.of_equiv_equiv ε.symm (RingEquiv.refl k) hc, S, ?_⟩` and prove the remaining obligations. Establish `key : (Spec.map (CommRingCat.ofHom (algebraMap (Y.residueField y) k)) ≫ Y.fromSpecResidueField y) ≫ f = Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField (f y)) k)) ≫ Z.fromSpecResidueField (f y)`. Establish `a₁ : Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField (f y)) k)) = Spec.map (CommRingCat.ofHom (algebraMap (Y.residueField y) k)) ≫ Spec.map (f.residueFieldMap y)`. Rewrite using `[← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[a₁, Category.assoc, Category.assoc, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`. Rewrite using `[← key]`. Take `⟨e, he, -⟩` from `grpPullback_iso hφ (isGrpPullback_pullback G f)`. Establish `: IsMonHom ((Over.pullback (Spec.map (CommRingCat.ofHom (algebraMap (Y.residueField y) k)) ≫ Y.fromSpecResidueField y)).mapIso e).hom`.
+
+Rewrite using `[Functor.mapIso_hom]`. Use `infer_instance`. Establish `h₀` using `isGt_of_iso ((Over.pullback _).mapIso e) hGt`. Establish `: IsMonHom (pullCompIso (Spec.map (CommRingCat.ofHom (algebraMap (Y.residueField y) k)) ≫ Y.fromSpecResidueField y) f G).symm.hom` using `by show IsMonHom (pullCompIso _ _ _).inv infer_instance`. Conclude with `isGt_of_iso (pullCompIso _ f G).symm h₀`.
+-/
 theorem splitFibre_of_isOpenImmersion {Y Z : Scheme.{0}} (f : Y ⟶ Z) [IsOpenImmersion f] (G : Over Z) [GrpObj G]
     (G' : Over Y) [GrpObj G'] (φ : G'.left ⟶ G.left) (hφ : IsGrpPullback G' G f φ) (h : SplitFib G') (y : Y) :
     ∃ (k : Type) (_ : Field k) (_ : Algebra (Z.residueField (f y)) k), FiniteDimensional (Z.residueField (f y)) k ∧
@@ -50,6 +59,9 @@ theorem splitFibre_of_isOpenImmersion {Y Z : Scheme.{0}} (f : Y ⟶ Z) [IsOpenIm
     infer_instance
   exact isGt_of_iso (pullCompIso _ f G).symm h₀
 
+/- English proof (translation)
+Introduce `E _ _ _ H Z t I Y f u m ho hc hs z`. Take `⟨i, y, rfl⟩` from `hc z`. Use `ho i` as an intermediate fact. Conclude with `splitFibre_of_isOpenImmersion (f i) t.G (u i).G _ (m i).cart (hs i) y`.
+-/
 theorem splitFib_of_openCover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Z : Scheme.{0}) (t : SAB H Z) (I : Type) (Y : I → Scheme.{0}) (f : ∀ i, Y i ⟶ Z) (u : ∀ i, SAB H (Y i)) (_ : ∀ i, SABMap (u i) t (f i)), (∀ i, IsOpenImmersion (f i)) → (∀ z : Z, ∃ i, z ∈ Set.range (f i)) → (∀ i, SplitFib (u i).G) → SplitFib t.G := by
   intro E _ _ _ H Z t I Y f u m ho hc hs z
   obtain ⟨i, y, rfl⟩ := hc z

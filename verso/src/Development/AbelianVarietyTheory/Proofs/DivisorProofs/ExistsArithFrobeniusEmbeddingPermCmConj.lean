@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain GlobalTheory.ExpFrame Formalism.CohomologicalD
 
 namespace GlobalTheory.FrobEmb
 
+/- English proof (translation)
+Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {C : Type*} [NormedField C] [IsUltrametricDist C] {x : C}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h : x ∈ (NormedField.valuation (K := C)).integer :=
@@ -20,6 +23,11 @@ def compPerm {E C : Type} [Field E] [Field C] (f : C ≃+* C) : Equiv.Perm (E �
   left_inv τ := by ext x; simp
   right_inv τ := by ext x; simp
 
+/- English proof (translation)
+Introduce `E _ _ _ l _ _`. Take `⟨Fr, hFr⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.exists_isFrob (p := l) (K := ReciprocityTheory.DiscreteGroups.LocalClassField.Q0 l) ReciprocityTheory.DiscreteGroups.LocalClassField.finiteDimensional_base_field`. Use `⟨compPerm Fr.toRingEquiv, ?_, fun τ => rfl⟩` and prove the remaining obligations. Introduce `τ x`. Establish `hx : ‖τ (x : E)‖ ≤ 1` using `norm_le_one_of_isIntegral (map_isIntegral_int τ x.isIntegral_coe)`.
+
+Establish `h` using `hFr (τ (x : E)) hx`. Rewrite `h` using `[ReciprocityTheory.DiscreteGroups.LocalClassField.residue_cardinality_base_field]`. Conclude with `h`.
+-/
 theorem exists_frobPerm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ) [Fact l.Prime], ¬ (l : ℤ) ∣ NumberField.discr E →
     ∃ σ : Equiv.Perm (E →+* PadicAlgCl l), IsFrobPerm σ ∧ ∀ τ, σ (cj τ) = cj (σ τ) := by
   intro E _ _ _ l _ _

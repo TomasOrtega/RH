@@ -6,14 +6,25 @@ open scoped MatrixGroups
 
 namespace GlobalTheory.KZ.FreeAct
 
+/- English proof (translation)
+Simplify using `[ent, ofSL]`.
+-/
 theorem ent_ofSL (γ : SL(2, ℤ)) (i j : Fin 2) :
     ent (ofSL γ) i j = ((γ : Matrix (Fin 2) (Fin 2) ℤ) i j : ℚ) := by
   simp [ent, ofSL]
 
+/- English proof (translation)
+Take the linear combination `(-4 * c) * h2 + 4 * hdet + (a - d - 2 * c * x) * h1`.
+-/
 theorem key (a b c d x y : ℝ) (h1 : a - d = 2 * c * x) (h2 : c * (x ^ 2 - y ^ 2) + (d - a) * x - b = 0)
     (hdet : a * d - b * c = 1) : 4 * c ^ 2 * y ^ 2 = 4 - (a + d) ^ 2 := by
   linear_combination (-4 * c) * h2 + 4 * hdet + (a - d - 2 * c * x) * h1
 
+/- English proof (translation)
+Establish `h1 : -1 ≤ t` using `by nlinarith`. Establish `h2 : t ≤ 1` using `by nlinarith`. Establish `hN' : (4 : ℤ) ≤ N` using `by exact_mod_cast hN`. Break down `lt_trichotomy k 0 with hk0 | hk0 | hk0` into its components or cases. Use the polynomial consequences of the given equalities and inequalities.
+
+Substitute `hk0` using the available equality. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem no_small (N : ℕ) (hN : 4 ≤ N) (t k : ℤ) (hk : t - 2 = (N : ℤ) * k) (ht : t ^ 2 < 4) : False := by
   have h1 : -1 ≤ t := by nlinarith
   have h2 : t ≤ 1 := by nlinarith
@@ -29,6 +40,33 @@ namespace GlobalTheory.KZ
 
 open FreeAct in
 
+/- English proof (translation)
+Introduce `N l hN γ hγ z hz hfix`. Establish `hγ1 : γ ∈ CongruenceSubgroup.Gamma1 N` using `hγ.1`. Rewrite `hγ1` using `[CongruenceSubgroup.Gamma1_mem]`. Take `⟨ha1, hd1, -⟩` from `hγ1`. Use `set A := (γ : Matrix (Fin 2) (Fin 2) ℤ) with hA`.
+
+Establish `hdet : A 0 0 * A 1 1 - A 0 1 * A 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Establish `hden` using `GlobalTheory.KZ.MobLaws.den_ne (ofSL γ) hz`.
+
+Simplify using `only [ent_ofSL] at hden`. Unfold `mob at hfix`. Simplify using `only [ent_ofSL] at hfix`. Rewrite `hfix` using `[div_eq_iff hden]`. Establish `hy : 0 < z.im` using `hz`.
+
+Establish `hre` using `congrArg Complex.re hfix`. Establish `him` using `congrArg Complex.im hfix`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, Complex.ratCast_re, Complex.ratCast_im] at hre him`. Move the coercions through the operations in `at hre him`. Simplify using `at hre him`.
+
+Take `⟨k, hk⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub 1 (A 0 0) N).1 (by simpa using ha1.symm)`. Take `⟨m, hm⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub 1 (A 1 1) N).1 (by simpa using hd1.symm)`. Establish `hN' : (4 : ℤ) ≤ N` using `by exact_mod_cast hN`. Simplify using `only [← hA] at hre him`. Generalize the expression as in `e00 : A 0 0 = a at *`.
+
+Generalize the expression as in `e01 : A 0 1 = b at *`. Generalize the expression as in `e10 : A 1 0 = c at *`. Generalize the expression as in `e11 : A 1 1 = d at *`. Establish `h1 : (a : ℝ) - d = 2 * c * z.re`. Establish `: ((a : ℝ) - d - 2 * c * z.re) * z.im = 0` using `by linarith`.
+
+Break down `mul_eq_zero.1 this with h | h` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (c : ℝ) * (z.re ^ 2 - z.im ^ 2) + (d - a) * z.re - b = 0` using `by linarith`. Establish `hdetR : (a : ℝ) * d - b * c = 1` using `by exact_mod_cast hdet`.
+
+Establish `hk4` using `key a b c d z.re z.im h1 h2 hdetR`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `had : a = d`. Establish `: (a : ℝ) = d` using `by simp at h1; linarith`.
+
+Conclude with `this` after adjusting the coercions. Substitute `had` using the available equality. Establish `hb : b = 0`. Establish `: (b : ℝ) = 0` using `by simpa using h2`. Conclude with `this` after adjusting the coercions.
+
+Substitute `hb` using the available equality. Establish `haa : a * a = 1` using `by simpa using hdet`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one' haa with ⟨ha, -⟩ | ⟨ha, -⟩` into its components or cases. Substitute `ha` using the available equality. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [← hA, e00, e01, e10, e11]`. It suffices to derive a contradiction. Substitute `ha` using the available equality. Break down `lt_trichotomy k 0 with hk0 | hk0 | hk0` into its components or cases. Use the polynomial consequences of the given equalities and inequalities.
+
+Substitute `hk0` using the available equality. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities. It suffices to derive a contradiction. Establish `hcR : (c : ℝ) ≠ 0` using `by exact_mod_cast hc`.
+
+Establish `hpos : 0 < 4 * (c : ℝ) ^ 2 * z.im ^ 2` using `by positivity`. Establish `ht : (a + d) ^ 2 < 4`. Establish `: ((a : ℝ) + d) ^ 2 < 4` using `by linarith`. Conclude with `this` after adjusting the coercions. Conclude with `no_small N hN (a + d) (k + m) (by linear_combination hk + hm) ht`.
+-/
 theorem gam_free : ∀ (N l : ℕ), 4 ≤ N → ∀ γ ∈ Gam N l, ∀ z ∈ Hs, mob (ofSL γ) z = z → γ = 1 := by
   intro N l hN γ hγ z hz hfix
   have hγ1 : γ ∈ CongruenceSubgroup.Gamma1 N := hγ.1

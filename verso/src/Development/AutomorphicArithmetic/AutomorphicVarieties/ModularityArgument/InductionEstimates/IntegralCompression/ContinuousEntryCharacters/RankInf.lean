@@ -17,11 +17,21 @@ variable {A : Type*} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [Comp
   [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+The claim follows from `(hl k).integral_comp (MeasurableEquiv.mulLeft k).measurableEmbedding F`.
+-/
 private theorem int_left {κ : Measure A} (hl : ∀ k, MeasurePreserving (k * ·) κ κ)
     {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] (k : A) (F : A → X) :
     ∫ x, F (k * x) ∂κ = ∫ x, F x ∂κ :=
   (hl k).integral_comp (MeasurableEquiv.mulLeft k).measurableEmbedding F
 
+/- English proof (translation)
+Establish `hc : Continuous (Function.uncurry fun k h : A => F (k⁻¹ * h))` using `hF.comp ((continuous_fst.inv).mul continuous_snd)`. Establish `hi : Integrable (Function.uncurry fun k h : A => F (k⁻¹ * h)) (κ.prod κ)` using `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `h1 : ∫ k, ∫ h, F (k⁻¹ * h) ∂κ ∂κ = ∫ x, F x ∂κ`. Repeatedly rewrite using `[int_left hl _ F]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : ∫ h, ∫ k, F (k⁻¹ * h) ∂κ ∂κ = ∫ x, F x⁻¹ ∂κ`. Establish `: ∀ h, ∫ k, F (k⁻¹ * h) ∂κ = ∫ x, F x⁻¹ ∂κ` using `fun h => by`. Rewrite using `[← int_left hl h (fun k => F (k⁻¹ * h))]`. Simplify using `[_root_.mul_inv_rev, mul_assoc]`. Simplify using `[this]`.
+
+Rewrite using `[← h2, ← h1, integral_integral_swap hi]`.
+-/
 private theorem int_inv {κ : Measure A} [IsProbabilityMeasure κ]
     (hl : ∀ k, MeasurePreserving (k * ·) κ κ) {F : A → ℂ} (hF : Continuous F) :
     ∫ x, F x⁻¹ ∂κ = ∫ x, F x ∂κ := by
@@ -44,9 +54,19 @@ private noncomputable def avg (κ : Measure A) (π : UnitaryRep A H) (e : A → 
 
 variable {κ : Measure A} [IsProbabilityMeasure κ] {π : UnitaryRep A H} {e : A → ℂ}
 
+/- English proof (translation)
+The claim follows from `(he.smul (π.continuous_orbit v)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 private theorem avg_int (he : Continuous e) (v : H) : Integrable (fun k => e k • π k v) κ :=
   (he.smul (π.continuous_orbit v)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
+/- English proof (translation)
+Establish `h1 : ⟪u, avg κ π e v⟫_ℂ = ∫ k, e k * ⟪u, π k v⟫_ℂ ∂κ`. Unfold `avg`. Rewrite using `[← integral_inner (avg_int he v)]`. Simplify using `only [inner_smul_right]`. Establish `h2 : ⟪avg κ π e u, v⟫_ℂ = ∫ k, e k⁻¹ * ⟪u, π k⁻¹ v⟫_ℂ ∂κ`.
+
+Rewrite using `[← inner_conj_symm]`. Unfold `avg`. Rewrite using `[← integral_inner (avg_int he u), ← integral_conj]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [inner_smul_right, map_mul, inner_conj_symm, hs, UnitaryRep.inner_map_left]`.
+
+Rewrite using `[h1, h2]`. Use `(int_inv hl (F := fun k => e k * ⟪u, π k v⟫_ℂ) ?_).symm` and prove the remaining obligations. Conclude with `he.mul (continuous_const.inner (π.continuous_orbit v))`.
+-/
 private theorem avg_inner (hl : ∀ k, MeasurePreserving (k * ·) κ κ) (he : Continuous e)
     (hs : ∀ k, e k⁻¹ = conj (e k)) (u v : H) :
     ⟪u, avg κ π e v⟫_ℂ = ⟪avg κ π e u, v⟫_ℂ := by
@@ -64,6 +84,15 @@ private theorem avg_inner (hl : ∀ k, MeasurePreserving (k * ·) κ κ) (he : C
   refine (int_inv hl (F := fun k => e k * ⟪u, π k v⟫_ℂ) ?_).symm
   exact he.mul (continuous_const.inner (π.continuous_orbit v))
 
+/- English proof (translation)
+Establish `step : ∀ h, e h • π h (avg κ π e v) = ∫ k, (e h * e (h⁻¹ * k)) • π k v ∂κ`. Introduce `h`. Establish `e1 : π h (avg κ π e v) = ∫ k, e k • π h (π k v) ∂κ`. Unfold `avg`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (avg_int he v)]`.
+
+Simplify using `only [map_smul]`. Rewrite using `[e1, ← integral_smul, ← int_left hl h⁻¹ (fun k => e h • e k • π h (π k v))]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [smul_smul, ← UnitaryRep.map_mul_apply, mul_inv_cancel_left]`. Establish `hc : Continuous (Function.uncurry fun h k : A => (e h * e (h⁻¹ * k)) • π k v)`.
+
+Use `Continuous.smul ((he.comp continuous_fst).mul (he.comp ((continuous_fst.inv).mul continuous_snd))) ?_` and prove the remaining obligations. Conclude with `(π.continuous_orbit v).comp continuous_snd`. Establish `hI : Integrable (Function.uncurry fun h k : A => (e h * e (h⁻¹ * k)) • π k v) (κ.prod κ)` using `hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Use `show ∫ h, e h • π h (avg κ π e v) ∂κ = ∫ k, e k • π k v ∂κ`. Repeatedly rewrite using `[step]`.
+
+Rewrite using `[integral_integral_swap hI]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show ∫ h, (e h * e (h⁻¹ * k)) • π k v ∂κ = e k • π k v`. Rewrite using `[integral_smul_const, hi]`.
+-/
 private theorem avg_avg (hl : ∀ k, MeasurePreserving (k * ·) κ κ) (he : Continuous e)
     (hi : ∀ k, ∫ h, e h * e (h⁻¹ * k) ∂κ = e k) (v : H) :
     avg κ π e (avg κ π e v) = avg κ π e v := by
@@ -95,6 +124,43 @@ section Window
 variable {G : Type*} [Group G] [TopologicalSpace G]
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `hsym : ∀ x y, ⟪P x, y⟫_ℂ = ⟪x, P y⟫_ℂ` using `ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 hPs`. Establish `hP2 : ∀ y, P (P y) = P y` using `fun y => DFunLike.congr_fun hPP y`. Use `set D : Submodule ℂ H := τ ⊓ LinearMap.ker (((1 : H →L[ℂ] H) - P : H →L[ℂ] H) : H →ₗ[ℂ] H) with hD`. Establish `memD : ∀ {x}, x ∈ D ↔ x ∈ τ ∧ P x = x`. Introduce `x`.
+
+Simplify using `only [hD, Submodule.mem_inf, LinearMap.mem_ker, ContinuousLinearMap.coe_coe, ContinuousLinearMap.sub_apply, ContinuousLinearMap.one_apply, sub_eq_zero]`. Conclude with `and_congr_right fun _ => eq_comm`. Establish `hDcl : IsClosed (D : Set H)`. Establish `: (D : Set H) = (τ : Set H) ∩ {x | P x = x}`. Use extensionality with `x`.
+
+Conclude with `memD`. Rewrite using `[this]`. Conclude with `hcl.inter (isClosed_eq P.continuous continuous_id)`. Establish `: CompleteSpace D` using `hDcl.completeSpace_coe`. Distinguish the cases in `hbot : D = ⊥`.
+
+Use `⟨0, fun v hv hPv => ?_⟩` and prove the remaining obligations. Establish `: v ∈ D` using `memD.2 ⟨hv, hPv⟩`. Rewrite `this` using `[hbot, Submodule.mem_bot]`. Simplify using `[this]`. Establish `hnt : Nontrivial D`.
+
+Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff D).1 hbot`. Conclude with `⟨⟨⟨x, hx⟩, 0, fun h => hx0 (congrArg Subtype.val h)⟩⟩`. Establish `hmem : ∀ g (x : D), (P ∘L (R g ∘L D.subtypeL)) x ∈ D` using `fun g x => memD.2 ⟨hPτ _ (hinv g _ (memD.1 x.2).1), hP2 _⟩`. Set `cp : G → (D →L[ℂ] D)` to `fun g => (P ∘L (R g ∘L D.subtypeL)).codRestrict D (hmem g)`. Establish `cp_coe : ∀ g (x : D), ((cp g x : D) : H) = P (R g x)` using `fun _ _ => rfl`.
+
+Establish `cp_inner : ∀ g (x y : D), ⟪(y : H), P (R g x)⟫_ℂ = ⟪(y : H), R g x⟫_ℂ`. Introduce `g x y`. Rewrite using `[← hsym, (memD.1 y.2).2]`. Establish `cp_star : ∀ g, star (cp g) = cp g⁻¹`. Introduce `g`.
+
+Rewrite using `[ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, cp_coe, cp_coe, hsym, (memD.1 y.2).2, cp_inner, R.inner_map_left, inv_inv]`. Establish `cp_comm : ∀ b g, Commute (P ∘L R b ∘L P) (P ∘L R g ∘L P) → Commute (cp b) (cp g)`. Introduce `b g h`.
+
+Use `ext1 x`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx` using `(memD.1 x.2).2`. Use `DFunLike.congr_fun h.eq (x : H)` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, hx, hP2] at this`.
+
+Conclude with `this`. Establish `hirrD : ∀ U : Submodule ℂ D, IsClosed (U : Set D) → (∀ s ∈ Set.range cp, ∀ v ∈ U, s v ∈ U) → U = ⊥ ∨ U = ⊤`. Introduce `U hU hUinv`. Distinguish the cases in `hU0 : U = ⊥`. Conclude with `Or.inl hU0`.
+
+Use `right`. Take `⟨x', hx'U, hx'0⟩` from `(Submodule.ne_bot_iff U).1 hU0`. Establish `: CompleteSpace U` using `hU.completeSpace_coe`. Rewrite using `[← Submodule.orthogonal_eq_bot_iff, eq_bot_iff]`. Introduce `y hy`.
+
+Rewrite using `[Submodule.mem_bot]`. Set `ρ : Submodule ℂ H` to `{ carrier := {z | z ∈ τ ∧ ∀ g, ⟪R g (y : H), z⟫_ℂ = 0} add_mem' := fun {a b} ha hb => ⟨τ.add_mem ha.1 hb.1, fun g => by`. Rewrite using `[inner_add_right, ha.2 g, hb.2 g, add_zero]⟩`. Use the proof step `zero_mem' := ⟨τ.zero_mem, fun g => inner_zero_right _⟩`. Use the proof step `smul_mem' := fun c z hz => ⟨τ.smul_mem c hz.1, fun g => by`.
+
+Rewrite using `[inner_smul_right, hz.2 g, mul_zero]⟩ }`. Establish `hρcl : IsClosed (ρ : Set H)`. Establish `: (ρ : Set H) = (τ : Set H) ∩ ⋂ g, {z | ⟪R g (y : H), z⟫_ℂ = 0}`. Use extensionality with `z`. Simplify using `[ρ]`.
+
+Rewrite using `[this]`. Conclude with `hcl.inter (isClosed_iInter fun g => isClosed_eq (continuous_const.inner continuous_id) continuous_const)`. Establish `hρinv : ∀ g, ∀ v ∈ ρ, R g v ∈ ρ`. Introduce `g v hv`. Use `⟨hinv g v hv.1, fun h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[R.inner_map_right, ← UnitaryRep.map_mul_apply]`. Conclude with `hv.2 _`. Establish `hx'ρ : ((x' : D) : H) ∈ ρ`. Use `⟨(memD.1 (x' : D).2).1, fun g => ?_⟩` and prove the remaining obligations. Establish `h0 : ⟪(cp g⁻¹ (x' : D) : D), y⟫_ℂ = 0` using `(Submodule.mem_orthogonal U y).1 hy _ (hUinv _ ⟨g⁻¹, rfl⟩ _ hx'U)`.
+
+Rewrite `h0` using `[Submodule.coe_inner, cp_coe, hsym, (memD.1 y.2).2, R.inner_map_left, inv_inv]`. Rewrite using `[← inner_conj_symm, h0, map_zero]`. Break down `hirr ρ (fun z hz => hz.1) hρcl hρinv with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hx'0` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `: ((x' : D) : H) ∈ (⊥ : Submodule ℂ H)` using `h ▸ hx'ρ`. Simplify using `using this`. Establish `hy' : (y : H) ∈ ρ` using `h ▸ (memD.1 y.2).1`. Use `hy'.2 1` as an intermediate fact.
+
+Rewrite `this` using `[UnitaryRep.map_one_apply, inner_self_eq_zero]`. Conclude with `Subtype.ext this`. Take `⟨c, hcs⟩` from `GL2ProductCompleteness.eq_smul_one_of_commute_of_star (S := Set.range cp) hirrD (T := cp a) (by rintro _ ⟨g, rfl⟩; exact cp_comm _ _ (hc g)) (by rintro _ ⟨g, rfl⟩; rw [cp_star]; exact cp_comm _ _ (hc' g))`. Use `⟨c, fun v hv hPv => ?_⟩` and prove the remaining obligations. Use `congrArg (fun T : D →L[ℂ] D => ((T ⟨v, memD.2 ⟨hv, hPv⟩⟩ : D) : H)) hcs` as an intermediate fact.
+
+Establish `h2 : ((cp a ⟨v, memD.2 ⟨hv, hPv⟩⟩ : D) : H) = c • v` using `by simpa using this`. Conclude with `h2`.
+-/
 private theorem compress_scalar (R : UnitaryRep G H) (τ : Submodule ℂ H) (hcl : IsClosed (τ : Set H))
     (hinv : ∀ g, ∀ v ∈ τ, R g v ∈ τ)
     (hirr : ∀ ρ : Submodule ℂ H, ρ ≤ τ → IsClosed (ρ : Set H) → (∀ g, ∀ v ∈ ρ, R g v ∈ ρ) → ρ = ⊥ ∨ ρ = τ)
@@ -201,6 +267,35 @@ private theorem compress_scalar (R : UnitaryRep G H) (τ : Submodule ℂ H) (hcl
   have h2 : ((cp a ⟨v, memD.2 ⟨hv, hPv⟩⟩ : D) : H) = c • v := by simpa using this
   exact h2
 
+/- English proof (translation)
+Introduce `hall`. Establish `key : ∀ i a g, Commute (Q i ∘L R (gl i a) ∘L Q i) (Q i ∘L R g ∘L Q i)`. Introduce `i a g`. Take `⟨b, h, rfl, hh⟩` from `hdec i g`. Establish `hq : Commute (Q i) (R h)` using `hPh i h hh`.
+
+Establish `hra : Commute (R h) (R (gl i a))` using `by show R h * R (gl i a) = R (gl i a) * R h`. Rewrite using `[← UnitaryRep.map_mul, ← UnitaryRep.map_mul, (hh a).eq]`. Establish `e : Q i ∘L R (gl i b * h) ∘L Q i = (Q i ∘L R (gl i b) ∘L Q i) * R h` using `by ext1 v`. Use `DFunLike.congr_fun hq.eq v` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`.
+
+Simplify using `only [ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, UnitaryRep.map_mul_apply, this]`. Rewrite using `[e]`. Use `Commute.mul_right (hPc i a b) ?_` and prove the remaining obligations. Use `show Commute (Q i * (R (gl i a) * Q i)) (R h)`. Conclude with `hq.mul_left (hra.symm.mul_left hq)`.
+
+Establish `hinvg : ∀ i a, (gl i a)⁻¹ = gl i a⁻¹` using `fun i a => ((MonoidHom.mk' (gl i) (hmul i)).map_inv a).symm`. Establish `one : ∀ i a, ∃ c : ℂ, ∀ v ∈ τ, Q i v = v → Q i (R (gl i a) v) = c • v`. Introduce `i a`. Use `compress_scalar R τ hcl hinv hirr (Q i) (hPs i) (hPP i) (hPτ i) (gl i a) (key i a) fun g => ?_` and prove the remaining obligations. Rewrite using `[hinvg]`.
+
+Conclude with `key i a⁻¹ g`. Establish `hsym : ∀ i x y, ⟪Q i x, y⟫_ℂ = ⟪x, Q i y⟫_ℂ` using `fun i => ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 (hPs i)`. Use `choose c hc using one`. Establish `hlist : ∀ l : List ι, l.Nodup → ∃ d : ℂ, ∀ y ∈ τ, (∀ i ∈ l, Q i y = y) → ∀ u, (∀ i, Q i u = u) → ⟪u, R (l.map fun i => gl i (a i)).prod y⟫_ℂ = d * ⟪u, y⟫_ℂ`. Introduce `l`.
+
+Proceed by induction on `l with`. Consider the case `nil => intro _; exact ⟨1, fun y _ _ u _ => by simp⟩`. Consider the case `cons i l ih`. Introduce `hnd`. Take `⟨hi, hnd'⟩` from `List.nodup_cons.1 hnd`.
+
+Take `⟨d, hd⟩` from `ih hnd'`. Use `⟨c i (a i) * d, fun y hy hyl u hu => ?_⟩` and prove the remaining obligations. Establish `hpc : ∀ b, Commute (l.map fun i => gl i (a i)).prod (gl i b)`. Introduce `b`. Apply `Commute.list_prod_left` to reduce the goal to its premises.
+
+Introduce `x hx`. Take `⟨j, hj, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hcomm j i (fun h => hi (h ▸ hj)) _ _`. Establish `hq : Commute (Q i) (R (l.map fun i => gl i (a i)).prod)` using `hPh i _ hpc`. Establish `hy' : Q i (R (l.map fun i => gl i (a i)).prod y) = R (l.map fun i => gl i (a i)).prod y`.
+
+Use `DFunLike.congr_fun hq.eq y` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[this, hyl i List.mem_cons_self]`. Establish `hyτ : R (l.map fun i => gl i (a i)).prod y ∈ τ` using `hinv _ _ hy`. Rewrite using `[List.map_cons, List.prod_cons, UnitaryRep.map_mul_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc i (a i) _ hyτ hy', inner_smul_right]`. Use `_ = c i (a i) * (d * ⟪u, y⟫_ℂ) := by`. Rewrite using `[hd y hy (fun j hj => hyl j (List.mem_cons_of_mem _ hj)) u hu]`. Use `_ = c i (a i) * d * ⟪u, y⟫_ℂ := by ring`.
+
+Take `⟨d, hd⟩` from `hlist L hL`. Use `⟨d, fun v hv hvf => ?_⟩` and prove the remaining obligations. Establish `hvQ` using `(hEQ v).1 hvf`. Generalize the expression as in `hw0 : R (L.map fun i => gl i (a i)).prod v = w0`. Establish `hd' : ∀ u, (∀ i, Q i u = u) → ⟪u, w0⟫_ℂ = d * ⟪u, v⟫_ℂ` using `fun u hu => by`.
+
+Rewrite using `[← hw0]`. Conclude with `hd v hv (fun i _ => hvQ i) u hu`. Establish `hw : ∀ i, Q i (E w0) = E w0` using `(hEQ _).1 (Eidem w0)`. Establish `hx : ∀ i, Q i (E w0 - d • v) = E w0 - d • v` using `fun i => by`. Rewrite using `[map_sub, map_smul, hw, hvQ]`.
+
+Establish `hxE` using `(hEQ _).2 hx`. Establish `h1 : ⟪E w0 - d • v, E w0⟫_ℂ = ⟪E w0 - d • v, w0⟫_ℂ` using `by rw [Einner, hxE]`. Establish `h2` using `hd' _ hx`. Establish `h3 : ⟪E w0 - d • v, E w0 - d • v⟫_ℂ = 0` using `by conv_lhs => rw [inner_sub_right (𝕜 := ℂ) (E w0 - d • v) (E w0) (d • v)]`. Rewrite using `[h1, h2, inner_smul_right, sub_self]`.
+
+Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h3)`.
+-/
 private theorem places {X ι : Type*} [Group X] (R : UnitaryRep G H) (τ : Submodule ℂ H)
     (hcl : IsClosed (τ : Set H)) (hinv : ∀ g, ∀ v ∈ τ, R g v ∈ τ)
     (hirr : ∀ ρ : Submodule ℂ H, ρ ≤ τ → IsClosed (ρ : Set H) → (∀ g, ∀ v ∈ ρ, R g v ∈ ρ) → ρ = ⊥ ∨ ρ = τ)
@@ -295,6 +390,19 @@ end Window
 
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.RI
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C μ _ τ hτ n q hocc`. Take `⟨hP, hfix, hid, -⟩` from `piLaws K ι C μ`. Take `⟨-, -, -, -, hmul, hcomm, -, hdec, hprod, -⟩` from `coLaws K ι C`. Use `set R := rightRegularRep (Gam K 2) μ with hR`. Use `choose P hPv hPs hPP hPc hPh hPτ using hP`.
+
+Use `set Q : ι → (LL μ →L[ℂ] LL μ) := fun i => P i (n i) (q i) with hQ`. Establish `hfix' : ∀ v, pOp μ C.κ₂ (C.p n q) v = v ↔ ∀ i, Q i v = v` using `fun v => by`. Rewrite using `[hfix n q v]`. Conclude with `forall_congr' fun i => by rw [hPv]`. Establish `hex : ∃ v ∈ τ, v ≠ 0 ∧ pOp μ C.κ₂ (C.p n q) v = v`.
+
+Take `⟨v, hv, hv0, hvf⟩` from `occ K ι C μ τ hτ τ Finset.univ n q le_rfl hτ.ne (fun i a v hv => hτ.inv _ v hv) (fun i n q v hv => by rw [← hPv]; exact hPτ i n q τ hτ v hv) hocc`. Conclude with `⟨v, hv, hv0, (hfix n q v).2 fun i => hvf i (Finset.mem_univ i)⟩`. Use `⟨hid n q, hex, fun g => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hprod g`. Set `π : UnitaryRep (archCompact K 2) (LL μ)` to `R.compHom ((archP K 2).comp (archCompact K 2).subtype) (continuous_archP.comp continuous_subtype_val)`.
+
+Establish `hE : ∀ v, pOp μ C.κ₂ (C.p n q) v = RI.avg C.κ₂ π (C.p n q) v` using `fun _ => rfl`. Establish `hk` using `(hid n q).haar`. Use `haveI := hk.prob`. Establish `Einner : ∀ u v, ⟪u, pOp μ C.κ₂ (C.p n q) v⟫_ℂ = ⟪pOp μ C.κ₂ (C.p n q) u, v⟫_ℂ` using `fun u v => by`. Rewrite using `[hE, hE]`.
+
+Conclude with `RI.avg_inner hk.left (hid n q).cont (hid n q).star u v`. Establish `Eidem : ∀ v, pOp μ C.κ₂ (C.p n q) (pOp μ C.κ₂ (C.p n q) v) = pOp μ C.κ₂ (C.p n q) v` using `fun v => by`. Rewrite using `[hE, hE]`. Conclude with `RI.avg_avg hk.left (hid n q).cont (hid n q).idem v`. Establish `hall : ∀ i, i ∈ (Finset.univ : Finset ι).toList` using `fun i => Finset.mem_toList.2 (Finset.mem_univ i)`.
+
+Take `⟨d, hd⟩` from `RI.places R τ hτ.closed hτ.inv hτ.irr C.gl hmul hcomm hdec Q (fun i => hPs i _ _) (fun i => hPP i _ _) (fun i a b => hPc i _ _ a b) (fun i h hh => hPh i _ _ h hh) (fun i => hPτ i _ _ τ hτ) (pOp μ C.κ₂ (C.p n q)) Einner Eidem hfix' a (Finset.univ : Finset ι).toList (Finset.nodup_t …`. Use `⟨d, fun v hv hvf => ?_⟩` and prove the remaining obligations. Rewrite using `[ha _ (Finset.nodup_toList _) hall]`. Conclude with `hd v hv hvf`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.rankInf :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ : Measure (G1 K 2)) [μ.IsHaarMeasure] (τ : Submodule ℂ (LL μ)), CuspIrr μ τ → ∀ (n : ι → ℕ) (q : ι → ℤ), (∀ i, ∃ v ∈ τ, C.Pi μ i (n i) (q i) v ≠ 0) → RankInf μ τ C.κ₂ (C.p n q) := by
   intro K _ _ _ ι _ C μ _ τ hτ n q hocc

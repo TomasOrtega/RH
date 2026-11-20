@@ -16,6 +16,9 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.HalfInvariance
 
+/- English proof (translation)
+Repeatedly rewrite using `[add_comm _ a]`. Conclude with `integral_add_left_eq_self (μ := ν) F a`.
+-/
 theorem integral_translate {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [ν.IsAddHaarMeasure] (F : G → ℂ) (a : G) :
     ∫ x, F (x + a) ∂ν = ∫ x, F x ∂ν := by
@@ -24,6 +27,25 @@ theorem integral_translate {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsT
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he ℓ₀ hℓ₀ H hH _ _ ν _ u hu f hf`. Establish `hee : cA D (cA D e) * cA D e = 0` using `by rw [GlobalTheory.DualPairCheck.cA_cA]; exact he.2.1`. Establish `horth : ∀ {x y : WO S T}, IsHalf (cA D e) x → IsHalf (cA D e) y → symplO S T x y = 0` using `fun hx hy => GlobalTheory.SplitScalar.symplO_eq_zero S T hee hx hy`. Establish `hhalfR : ∀ {m n k : ℕ} {t : Mx D m n} (M : Matrix (Fin n) (Fin k) (AE D)), IsHalf (cA D e) t → IsHalf (cA D e) (HMul.hMul t M : Mx D m k)` using `fun M ht i j => by`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum, ← mul_assoc, ht i _]`.
+
+Use `set a : Mx D T.rank ρ := (d.coordS T u).1 with ha_def`. Use `set w : WO S₀ T := (d.coordS T u).2.1 with hw_def`. Use `set b : Mx D T.rank ρ := (d.coordS T u).2.2 with hb_def`. Establish `hu_eq : u = d.extX T a + d.ext0 T w + d.extY T b` using `((d.coordS T).symm_apply_apply u).symm`. Establish `ha : IsHalf (cA D e) a` using `hhalfR _ hu`.
+
+Establish `hw : IsHalf (cA D e) w` using `hhalfR _ hu`. Establish `hb : IsHalf (cA D e) b` using `hhalfR _ hu`. Establish `hXa : IsHalf (cA D e) (d.extX T a)` using `hhalfR _ ha`. Establish `hYb : IsHalf (cA D e) (d.extY T b)` using `hhalfR _ hb`. Establish `h0w : IsHalf (cA D e) (d.ext0 T w)` using `hhalfR _ hw`.
+
+Establish `hth : ∀ {g : WO S T → ℂ}, IsThetaFunO ψ S T g → ∀ v, IsThetaFunO ψ S T (heisO ψ S T v g)` using `fun hg v => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hg v`. Use `set g₂ := heisO ψ S T (d.extY T b) f with hg₂`. Use `set g₁ := heisO ψ S T (d.ext0 T w) g₂ with hg₁`. Establish `hg₂t : IsThetaFunO ψ S T g₂` using `hth hf _`. Establish `hg₁t : IsThetaFunO ψ S T g₁` using `hth hg₂t _`.
+
+Establish `hsplit : heisO ψ S T u f = heisO ψ S T (d.extX T a) g₁`. Establish `hsum : IsHalf (cA D e) (d.ext0 T w + d.extY T b)` using `fun i j => by`. Simplify using `only [Matrix.add_apply, mul_add, h0w i j, hYb i j]`. Rewrite using `[hu_eq, add_assoc, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (horth hXa hsum), GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (horth h0w hYb)]`. Set `v : VolM D T.rank ρ` to `⟨μ, 𝓕, hμ⟩`.
+
+Establish `key : ∀ x : H, ℓ₀ (d.mixS T ψ μ 𝓕 (heisO ψ S T u f) x.1) = ℓ₀ (d.mixS T ψ μ 𝓕 f (x + ⟨a, (hH a).2 ha⟩).1)`. Introduce `x`. Establish `hx : IsHalf (cA D e) x.1` using `(hH x.1).1 x.2`. Establish `hxa : IsHalf (cA D e) (x.1 + a)` using `fun i j => by`. Simplify using `only [Matrix.add_apply, mul_add, hx i j, ha i j]`.
+
+Take `⟨c1, -, -, -, -⟩` from `GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v g₁ hg₁t`. Take `⟨-, -, c3, -, -⟩` from `GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v g₂ hg₂t`. Take `⟨-, c2, -, -, -⟩` from `GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf`. Establish `e1 : d.mixS T ψ μ 𝓕 (heisO ψ S T u f) x.1 = d.mixS T ψ μ 𝓕 g₁ (x.1 + a)`. Rewrite using `[hsplit]`.
+
+Conclude with `c1 x.1 a`. Establish `e2 : d.mixS T ψ μ 𝓕 g₁ (x.1 + a) = heisO ψ S₀ T w (d.mixS T ψ μ 𝓕 g₂ (x.1 + a))` using `c3 (x.1 + a) w`. Establish `e3 : d.mixS T ψ μ 𝓕 g₂ (x.1 + a) = d.mixS T ψ μ 𝓕 f (x.1 + a)`. Rewrite using `[hg₂, c2 (x.1 + a) b, horth (show IsHalf (cA D e) (d.extX T (x.1 + a)) from hhalfR _ hxa) hYb, AddChar.map_zero_eq_one, one_smul]`. Establish `hmt : IsThetaFunO ψ S₀ T (d.mixS T ψ μ 𝓕 g₂ (x.1 + a))` using `GlobalTheory.MixValues.mixS_theta D ψ hψ S S₀ T ρ d μ 𝓕 hμ g₂ hg₂t (x.1 + a)`.
+
+Rewrite using `[e1, e2, hℓ₀ w hw _ hmt, e3]`. Both sides reduce to the same expression. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key)]`. Conclude with `integral_translate ν (fun x : H => ℓ₀ (d.mixS T ψ μ 𝓕 f x.1)) _`.
+-/
 theorem half_avg_heis_inv : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)), IsCovolOne (ratMx D T.rank ρ) μ 𝓕 → ∀ e, IsSplitIdem D e → ∀ ℓ₀ : (WO S₀ T → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO S₀ T, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ S₀ T f → ℓ₀ (heisO ψ S₀ T u f) = ℓ₀ f) → ∀ H : AddSubgroup (Mx D T.rank ρ), (∀ x, x ∈ H ↔ ∀ i j, cA D e * x i j = x i j) → ∀ [MeasurableSpace H] [BorelSpace H] (ν : Measure H) [ν.IsAddHaarMeasure], ∀ u : WO S T, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ S T f → ∫ x : H, ℓ₀ (d.mixS T ψ μ 𝓕 (heisO ψ S T u f) x.1) ∂ν = ∫ x : H, ℓ₀ (d.mixS T ψ μ 𝓕 f x.1) ∂ν := by
   intro D ψ hψ S S₀ T ρ d μ 𝓕 hμ e he ℓ₀ hℓ₀ H hH _ _ ν _ u hu f hf
   have hee : cA D (cA D e) * cA D e = 0 := by rw [GlobalTheory.DualPairCheck.cA_cA]; exact he.2.1

@@ -10,6 +10,9 @@ namespace GlobalTheory.HodgeCurvPoint
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Simplify using `only [form_eq_sum, dotProduct, mulVec, Finset.mul_sum, re_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.map_apply, mul_re, mul_im, conj_re, conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_form_map (M : Matrix (Fin g) (Fin g) ℝ) (v : Fin g → ℂ) :
     (form (M.map ofReal) v v).re = (fun j => (v j).re) ⬝ᵥ M *ᵥ (fun j => (v j).re) +
       (fun j => (v j).im) ⬝ᵥ M *ᵥ (fun j => (v j).im) := by
@@ -17,10 +20,16 @@ theorem re_form_map (M : Matrix (Fin g) (Fin g) ℝ) (v : Fin g → ℂ) :
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   simp [Matrix.map_apply, mul_re, mul_im, conj_re, conj_im]; ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjTranspose_apply, hM.apply]`.
+-/
 theorem isHermitian_map {M : Matrix (Fin g) (Fin g) ℝ} (hM : M.IsSymm) :
     (M.map ofReal).IsHermitian := by
   ext i j; simp [conjTranspose_apply, hM.apply]
 
+/- English proof (translation)
+Apply `Complex.ext` to reduce the goal to its premises. Rewrite using `[re_form_map, ofReal_re]`. Rewrite using `[ofReal_im]`. Conclude with `Complex.conj_eq_iff_im.mp (conj_form (isHermitian_map hM) v v)`.
+-/
 theorem form_map_self {M : Matrix (Fin g) (Fin g) ℝ} (hM : M.IsSymm) (v : Fin g → ℂ) :
     form (M.map ofReal) v v = (((fun j => (v j).re) ⬝ᵥ M *ᵥ (fun j => (v j).re) +
       (fun j => (v j).im) ⬝ᵥ M *ᵥ (fun j => (v j).im) : ℝ) : ℂ) := by
@@ -29,6 +38,11 @@ theorem form_map_self {M : Matrix (Fin g) (Fin g) ℝ} (hM : M.IsSymm) (v : Fin 
   · rw [ofReal_im]
     exact Complex.conj_eq_iff_im.mp (conj_form (isHermitian_map hM) v v)
 
+/- English proof (translation)
+Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨isHermitian_map hM, fun x => ?_⟩` and prove the remaining obligations. Establish `e : star x ⬝ᵥ (M.map ofReal) *ᵥ x = form (M.map ofReal) (star x) (star x)`. Simplify using `[form]`. Rewrite using `[e, form_map_self hM]`.
+
+Conclude with `add_nonneg (h _) (h _)` after adjusting the coercions.
+-/
 theorem posSemidef_map {M : Matrix (Fin g) (Fin g) ℝ} (hM : M.IsSymm)
     (h : ∀ x, 0 ≤ x ⬝ᵥ M *ᵥ x) : (M.map ofReal).PosSemidef := by
   rw [posSemidef_iff_dotProduct_mulVec]
@@ -38,10 +52,16 @@ theorem posSemidef_map {M : Matrix (Fin g) (Fin g) ℝ} (hM : M.IsSymm)
   rw [e, form_map_self hM]
   exact_mod_cast add_nonneg (h _) (h _)
 
+/- English proof (translation)
+Simplify using `only [dotProduct, ← Finset.sum_add_distrib, Complex.sq_norm, Complex.normSq_apply]`.
+-/
 theorem sum_norm_sq (v : Fin g → ℂ) : ∑ j, ‖v j‖ ^ 2 =
     (fun j => (v j).re) ⬝ᵥ (fun j => (v j).re) + (fun j => (v j).im) ⬝ᵥ (fun j => (v j).im) := by
   simp only [dotProduct, ← Finset.sum_add_distrib, Complex.sq_norm, Complex.normSq_apply]
 
+/- English proof (translation)
+Establish `e1 : (fun j => (star u j).re) = fun j => (u j).re` using `by ext j; simp`. Establish `e2 : (fun j => (star u j).im) = -fun j => (u j).im` using `by ext j; simp`. Rewrite using `[gnorm, gnorm, re_form_map, re_form_map, e1, e2, mulVec_neg, neg_dotProduct, dotProduct_neg, neg_neg]`.
+-/
 theorem gnorm_map_star (M : Matrix (Fin g) (Fin g) ℝ) (u : Fin g → ℂ) :
     gnorm (M.map ofReal) (star u) = gnorm (M.map ofReal) u := by
   have e1 : (fun j => (star u j).re) = fun j => (u j).re := by ext j; simp
@@ -49,15 +69,56 @@ theorem gnorm_map_star (M : Matrix (Fin g) (Fin g) ℝ) (u : Fin g → ℂ) :
   rw [gnorm, gnorm, re_form_map, re_form_map, e1, e2, mulVec_neg, neg_dotProduct, dotProduct_neg,
     neg_neg]
 
+/- English proof (translation)
+Rewrite using `[form, star_star, dotProduct_mulVec, ← mulVec_transpose, hM.eq, dotProduct_comm]`.
+-/
 theorem dotProduct_mulVec_eq_form {M : Matrix (Fin g) (Fin g) ℂ} (hM : M.IsSymm)
     (u v : Fin g → ℂ) : u ⬝ᵥ M *ᵥ v = form M v (star u) := by
   rw [form, star_star, dotProduct_mulVec, ← mulVec_transpose, hM.eq, dotProduct_comm]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem dotProduct_finsetSum {a : ℕ} (u : Fin g → ℂ) (w : Fin a → Fin g → ℂ) :
     u ⬝ᵥ ∑ i, w i = ∑ i, u ⬝ᵥ w i := by
   simp only [dotProduct, Finset.sum_apply, Finset.mul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `g a Y Bs Dm s t c K hc hK hY hcY hB ht hBt hD`. Establish `hBs : ∀ i, (Bs i).IsSymm` using `fun i => IsSymm.ext fun j k => by simpa using (hB i).isHermitian.apply j k`. Establish `hYpos : ∀ v : Fin g → ℂ, c * ∑ j, ‖v j‖ ^ 2 ≤ (form (Y.map ofReal) v v).re` using `fun v => by`. Rewrite using `[re_form_map, sum_norm_sq, mul_add]`. Conclude with `add_le_add (hcY _) (hcY _)`.
+
+Establish `hPD : (Y.map ofReal).PosDef`. Use `posDef_iff.2 ⟨isHermitian_map hY, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `Function.ne_iff.1 hv`. Establish `hS : 0 < ∑ j, ‖v j‖ ^ 2` using `Finset.sum_pos' (fun _ _ => sq_nonneg _) ⟨j, Finset.mem_univ _, pow_pos (norm_pos_iff.2 hj) 2⟩`. Establish `h1` using `hYpos v`.
+
+Rewrite `h1`, the goal using `[form_map_self hY]`. Rewrite `h1` using `[ofReal_re]`. Rewrite using `[Complex.zero_lt_real]`. Combine the linear relations using `[mul_pos hc hS]`. Establish `hYpsd` using `hPD.posSemidef`.
+
+Establish `hBpsd : ∀ i, ((Bs i).map ofReal).PosSemidef` using `fun i => posSemidef_map (hBs i) fun x => by simpa using (hB i).dotProduct_mulVec_nonneg x`. Establish `hgB : ∀ i w, t i * gnorm ((Bs i).map ofReal) w ^ 2 ≤ gnorm (Y.map ofReal) w ^ 2` using `fun i w => by`. Rewrite using `[gnorm_sq (hBpsd i), gnorm_sq hYpsd, re_form_map, re_form_map, mul_add]`. Conclude with `add_le_add (hBt i _) (hBt i _)`. Establish `hgY : ∀ w : Fin g → ℂ, c * ∑ j, ‖w j‖ ^ 2 ≤ gnorm (Y.map ofReal) w ^ 2` using `fun w => by`.
+
+Rewrite using `[gnorm_sq hYpsd]`. Conclude with `hYpos w`. Establish `hgc : 0 ≤ (g : ℝ) / c` using `div_nonneg (Nat.cast_nonneg _) hc.le`. Establish `hDb : ∀ u v : Fin g → ℂ, ‖u ⬝ᵥ Dm *ᵥ v‖ ≤ g * K / c * gnorm (Y.map ofReal) u * gnorm (Y.map ofReal) v`. Introduce `u v`.
+
+Establish `h1 : ‖u ⬝ᵥ Dm *ᵥ v‖ ≤ K * ((∑ j, ‖u j‖) * ∑ k, ‖v k‖)`. Simplify using `only [dotProduct, mulVec]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Use `mul_le_mul_of_nonneg_left ((norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hD j k) (norm_nonneg _)`. Use `_ = _ := by rw [← Finset.mul_sum, ← Finset.sum_mul]; ring`. Establish `hs : ∀ w : Fin g → ℂ, (∑ j, ‖w j‖) ^ 2 ≤ g / c * gnorm (Y.map ofReal) w ^ 2` using `fun w => by`.
+
+Use `sq_sum_le_card_mul_sum_sq.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_fin, div_mul_eq_mul_div, le_div_iff₀ hc]`. Use polynomial arithmetic with `[hgY w, (Nat.cast_nonneg g : (0 : ℝ) ≤ g)]`. Establish `hab : (∑ j, ‖u j‖) * (∑ k, ‖v k‖) ≤ g / c * gnorm (Y.map ofReal) u * gnorm (Y.map ofReal) v`. Rewrite using `[← pow_le_pow_iff_left₀ (by positivity) (mul_nonneg (mul_nonneg hgc (gnorm_nonneg _ _)) (gnorm_nonneg _ _)) two_ne_zero]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hBb : ∀ i (u v : Fin g → ℂ), ‖u ⬝ᵥ (Bs i).map ofReal *ᵥ v‖ ≤ gnorm (Y.map ofReal) u * gnorm (Y.map ofReal) v / t i`. Introduce `i u v`. Rewrite using `[dotProduct_mulVec_eq_form ((hBs i).map _)]`.
+
+Use `(norm_form_le (hBpsd i) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[gnorm_map_star]`. Rewrite using `[← pow_le_pow_iff_left₀ (mul_nonneg (gnorm_nonneg _ _) (gnorm_nonneg _ _)) (div_nonneg (mul_nonneg (gnorm_nonneg _ _) (gnorm_nonneg _ _)) (ht i).le) two_ne_zero]`. Establish `a1 : ∀ w, gnorm ((Bs i).map ofReal) w ^ 2 ≤ gnorm (Y.map ofReal) w ^ 2 / t i` using `fun w => by`. Rewrite using `[le_div_iff₀ (ht i), mul_comm]`.
+
+Conclude with `hgB i w`. Combine the equalities or inequalities in the displayed calculation. Establish `hPb : ∀ u v : Fin g → ℂ, ‖u ⬝ᵥ (Dm + ∑ i, s i • (Bs i).map ofReal) *ᵥ v‖ ≤ (g * K / c + ∑ i, ‖s i‖ / t i) * gnorm (Y.map ofReal) u * gnorm (Y.map ofReal) v`. Introduce `u v`. Rewrite using `[add_mulVec, sum_mulVec, dotProduct_add, dotProduct_finsetSum]`.
+
+Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Establish `h2 : ‖∑ i, u ⬝ᵥ (s i • (Bs i).map ofReal) *ᵥ v‖ ≤ ∑ i, ‖s i‖ / t i * gnorm (Y.map ofReal) u * gnorm (Y.map ofReal) v`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[smul_mulVec, dotProduct_smul, smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨hPD, fun v => ?_⟩` and prove the remaining obligations. Establish `hdet : IsUnit (Y.map ofReal).det` using `(isUnit_iff_isUnit_det _).1 hPD.isUnit`. Use `set x := (Dm + ∑ i, s i • (Bs i).map ofReal) *ᵥ v with hx`. Use `set q := (Y.map ofReal)⁻¹ *ᵥ star x with hq`.
+
+Establish `hF : form (Y.map ofReal)⁻¹ x x = q ⬝ᵥ (Dm + ∑ i, s i • (Bs i).map ofReal) *ᵥ v`. Rewrite using `[form]`. Conclude with `dotProduct_comm _ _`. Establish `hsq : star q = (Y.map ofReal)⁻¹ *ᵥ x`. Rewrite using `[hq, star_mulVec, star_star, (isHermitian_map hY).inv.eq, ← mulVec_transpose, transpose_nonsing_inv, (hY.map _).eq]`.
+
+Establish `hq2 : gnorm (Y.map ofReal) q ^ 2 = (form (Y.map ofReal)⁻¹ x x).re`. Rewrite using `[gnorm_sq hYpsd]`. Simplify using `only [form]`. Rewrite using `[hsq, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec, dotProduct_comm]`. Establish `hb` using `hPb q v`.
+
+Rewrite `hb` using `[← hF]`. Establish `hre : gnorm (Y.map ofReal) q ^ 2 ≤ ‖form (Y.map ofReal)⁻¹ x x‖` using `hq2 ▸ re_le_norm _`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) hb 2`. Break down `(norm_nonneg (form (Y.map ofReal)⁻¹ x x)).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`.
+
+Check the signs of the components of the expression. Use `le_of_mul_le_mul_right ?_ h0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dual_bound : ∀ (g a : ℕ) (Y : Matrix (Fin g) (Fin g) ℝ) (Bs : Fin a → Matrix (Fin g) (Fin g) ℝ)
     (Dm : Matrix (Fin g) (Fin g) ℂ) (s : Fin a → ℂ) (t : Fin a → ℝ) (c K : ℝ), 0 < c → 0 ≤ K →
     Y.IsSymm → (∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y *ᵥ x) → (∀ i, (Bs i).PosSemidef) → (∀ i, 0 < t i) →

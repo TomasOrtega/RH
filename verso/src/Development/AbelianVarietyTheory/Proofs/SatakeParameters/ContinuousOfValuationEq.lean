@@ -4,6 +4,13 @@ open IsDedekindDomain Topology
 
 namespace GlobalTheory.ValuationExtensionContinuous
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero g ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero A Γ).tendsto_iff (Valued.hasBasis_nhds_zero B Γ)]`. Introduce `γ _`. Take `⟨k, hk⟩` from `hs (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)`. Establish `hk0 : (Valued.v k : Γ) ≠ 0`.
+
+Rewrite using `[hk]`. Conclude with `(map_ne_zero _).mpr γ.ne_zero`. Establish `hk1 : (Valued.v : Valuation A Γ).restrict k ≠ 0` using `by simpa using hk0`. Use `⟨Units.mk0 _ hk1, trivial, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0, Valuation.restrict_lt_iff] at hx`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hg, ← hk]`. Conclude with `hx`.
+-/
 theorem continuous_of_valuation_eq {A B Γ : Type} [Ring A] [Ring B]
     [LinearOrderedCommGroupWithZero Γ] [Valued A Γ] [Valued B Γ]
     (hs : Function.Surjective (Valued.v : A → Γ)) (g : A →+* B)
@@ -23,6 +30,17 @@ theorem continuous_of_valuation_eq {A B Γ : Type} [Ring A] [Ring B]
   rw [Valuation.restrict_lt_iff_lt_embedding, hg, ← hk]
   exact hx
 
+/- English proof (translation)
+Set `g : WithVal (w.valuation K) →+* u.adicCompletion L` to `f.comp (WithVal.equiv (w.valuation K)).toRingHom`. Establish `hg : Continuous g`. Use `continuous_of_valuation_eq (fun c => ?_) g (fun a => hf _)` and prove the remaining obligations. Take `⟨k, hk⟩` from `w.valuation_surjective K c`. Conclude with `⟨WithVal.toVal _ k, hk⟩`.
+
+Set `ψ` to `UniformSpace.Completion.extensionHom g hg`. Set `φ : w.adicCompletion K →+* u.adicCompletion L` to `ψ.comp (HeightOneSpectrum.adicCompletion.equiv K w).toRingHom`. Establish `hψ : Continuous ψ` using `UniformSpace.Completion.continuous_extension`. Establish `hφ : Continuous φ` using `hψ.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion K w)`. Establish `hφa : ∀ a : WithVal (w.valuation K), φ (HeightOneSpectrum.adicCompletion.ofCompletion (a : (w.valuation K).Completion)) = f a.ofVal` using `fun a => UniformSpace.Completion.extensionHom_coe g hg a`.
+
+Use `⟨φ, hφ, fun x => hφa (WithVal.toVal _ x), fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[map_zero, map_zero, map_zero]`. Establish `h1 : (Valued.v y : WithZero (Multiplicative ℤ)) ≠ 0` using `by simpa using hy`.
+
+Establish `h2 : (Valued.v (φ y) : WithZero (Multiplicative ℤ)) ≠ 0` using `by simpa using hy`. Establish `hU` using `Filter.inter_mem (Valued.locally_const h1) (hφ.continuousAt.preimage_mem_nhds (Valued.locally_const h2))`. Establish `hV` using `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion K w).continuousAt (x := y.toCompletion) |>.preimage_mem_nhds hU`. Take `⟨a, ha1, ha2⟩` from `UniformSpace.Completion.denseRange_coe.mem_nhds hV`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at ha1 ha2`.
+
+Rewrite using `[← ha1, ← ha2, hφa, hf]`. Conclude with `(HeightOneSpectrum.adicCompletion.valued_coe K w a.ofVal).symm`.
+-/
 theorem exists_extension {K : Type} [Field K] [NumberField K] {R L : Type} [CommRing R]
     [IsDedekindDomain R] [Field L] [Algebra R L] [IsFractionRing R L]
     (w : HeightOneSpectrum (NumberField.RingOfIntegers K)) (u : HeightOneSpectrum R)

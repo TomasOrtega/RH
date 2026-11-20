@@ -13,12 +13,20 @@ noncomputable section
 
 namespace GlobalTheory.SqGlue
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)) :
     (X.presheaf.map (homOfLE h₂).op).hom ((X.presheaf.map (homOfLE h₁).op).hom s) =
       (X.presheaf.map (homOfLE (h₂.trans h₁)).op).hom s := by
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `e : W = ⊥`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hx => h ⟨⟨x, hx⟩⟩`. Substitute `e` using the available equality.
+
+Use `infer_instance`.
+-/
 theorem subsingleton_of_not_nonempty {X : Scheme.{0}} {W : X.Opens} (h : ¬ Nonempty W) : Subsingleton Γ(X, W) := by
   have e : W = ⊥ := by
     ext x
@@ -27,6 +35,9 @@ theorem subsingleton_of_not_nonempty {X : Scheme.{0}} {W : X.Opens} (h : ¬ None
   subst e
   infer_instance
 
+/- English proof (translation)
+Distinguish the cases in `hn : Nonempty W`. Use `mul_right_cancel₀ (fun h0 => ha ?_) h` and prove the remaining obligations. Apply `map_injective_of_isIntegral X (homOfLE hW)` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Conclude with `(subsingleton_of_not_nonempty hn).elim _ _`.
+-/
 theorem res_cancel {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} (hW : W ≤ V) {a : Γ(X, V)} (ha : a ≠ 0)
     {b c : Γ(X, W)} (h : b * (X.presheaf.map (homOfLE hW).op).hom a = c * (X.presheaf.map (homOfLE hW).op).hom a) :
     b = c := by
@@ -36,6 +47,17 @@ theorem res_cancel {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} (hW : W ≤ V
     rw [h0, map_zero]
   · exact (subsingleton_of_not_nonempty hn).elim _ _
 
+/- English proof (translation)
+Use `choose O hO hx u hu using fun x : W => h x.1 x.2`. Establish `hcov : W ≤ iSup O` using `fun x hxW => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hxW⟩, hx _⟩`. Establish `hcomp : TopCat.Presheaf.IsCompatible X.presheaf O (fun x => (u x : Γ(X, O x)))`. Introduce `x y`. Use `res_cancel (W := O x ⊓ O y) (inf_le_left.trans ((hO x).trans hW)) ht ?_` and prove the remaining obligations.
+
+Establish `e₁` using `congrArg (X.presheaf.map (homOfLE (inf_le_left : O x ⊓ O y ≤ O x)).op).hom (hu x)`. Establish `e₂` using `congrArg (X.presheaf.map (homOfLE (inf_le_right : O x ⊓ O y ≤ O y)).op).hom (hu y)`. Rewrite `e₁`, `e₂` using `[map_mul, res_res, res_res]`. Conclude with `e₁.symm.trans e₂`. Take `⟨c, hc, -⟩` from `X.sheaf.existsUnique_gluing' O W (fun x => homOfLE (hO x)) hcov (fun x => (u x : Γ(X, O x))) hcomp`.
+
+Establish `hc' : ∀ x, (X.presheaf.map (homOfLE (hO x)).op).hom c = (u x : Γ(X, O x))` using `hc`. Establish `hunit : IsUnit (c : Γ(X, W))`. Use `X.toRingedSpace.isUnit_of_isUnit_germ W c fun x hxW => ?_` and prove the remaining obligations. Establish `e` using `X.presheaf.germ_res_apply (homOfLE (hO ⟨x, hxW⟩)) x (hx ⟨x, hxW⟩) c`. Establish `e'` using `(u ⟨x, hxW⟩).isUnit.map (X.presheaf.germ (O ⟨x, hxW⟩) x (hx ⟨x, hxW⟩)).hom`.
+
+Rewrite `e'` using `[← hc']`. Conclude with `e ▸ e'`. Use `⟨hunit.unit, ?_⟩` and prove the remaining obligations. Use `X.sheaf.eq_of_locally_eq' O W (fun x => homOfLE (hO x)) hcov _ _ fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE (hO x)).op).hom s = (X.presheaf.map (homOfLE (hO x)).op).hom _`.
+
+Rewrite using `[map_mul, res_res, IsUnit.unit_spec, hc', hu x]`.
+-/
 theorem exists_unit_of_locally {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} (hW : W ≤ V) (s : Γ(X, W))
     {t : Γ(X, V)} (ht : t ≠ 0)
     (h : ∀ x ∈ W, ∃ (O : X.Opens) (hO : O ≤ W), x ∈ O ∧ ∃ u : Γ(X, O)ˣ,
@@ -64,6 +86,9 @@ theorem exists_unit_of_locally {X : Scheme.{0}} [IsIntegral X] {V W : X.Opens} (
   change (X.presheaf.map (homOfLE (hO x)).op).hom s = (X.presheaf.map (homOfLE (hO x)).op).hom _
   rw [map_mul, res_res, IsUnit.unit_spec, hc', hu x]
 
+/- English proof (translation)
+Rewrite using `[← res_res (f.preimage_mono hU) hO]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+-/
 theorem app_res {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {O : X.Opens} (hU : U' ≤ U) (hO : O ≤ f ⁻¹ᵁ U')
     (s : Γ(Y, U)) :
     (X.presheaf.map (homOfLE (hO.trans (f.preimage_mono hU))).op).hom ((f.app U).hom s) =
@@ -76,9 +101,15 @@ theorem app_res {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {O : X.Opens} 
 def resU {X : Scheme.{0}} {A B : X.Opens} (h : B ≤ A) (u : Γ(X, A)ˣ) : Γ(X, B)ˣ :=
   Units.map (X.presheaf.map (homOfLE h).op).hom.toMonoidHom u
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_resU {X : Scheme.{0}} {A B : X.Opens} (h : B ≤ A) (u : Γ(X, A)ˣ) :
     (resU h u : Γ(X, B)) = (X.presheaf.map (homOfLE h).op).hom u := rfl
 
+/- English proof (translation)
+Distinguish the cases in `hn : Nonempty V`. Conclude with `pow_ne_zero n ha`. Conclude with `(ha ((subsingleton_of_not_nonempty hn).elim _ _)).elim`.
+-/
 theorem pow_ne_zero' {X : Scheme.{0}} [IsIntegral X] {V : X.Opens} {a : Γ(X, V)} (ha : a ≠ 0) (n : ℕ) : a ^ n ≠ 0 := by
   by_cases hn : Nonempty V
   · exact pow_ne_zero n ha
@@ -88,6 +119,23 @@ end GlobalTheory.SqGlue
 
 open GlobalTheory.SqGlue in
 
+/- English proof (translation)
+Introduce `R' _ _ _ _ G₁ _ _ hsemi L2 hL h Lθ θ hθ Ix V a hne hu`. Use `haveI : Smooth G₁.hom := hsemi.smooth`. Use `haveI : GeometricallyConnected G₁.hom := hsemi.geomConnected`. Use `haveI : IsIntegral G₁.left := GlobalTheory.isIntegral_left_of_isSemiAbelian G₁`. Use `haveI : IsIntegral (pullback G₁.hom (jK R')) := GlobalTheory.isIntegral_pullback_of_smooth G₁.hom (jK R')`.
+
+Establish `hcov : ∀ x : G₁.left, ∃ j, x ∈ L2.U j` using `fun x => by`. Establish `: x ∈ (⊤ : G₁.left.Opens)` using `trivial`. Rewrite `this` using `[← hL.cover]`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Use `set f := pullback.fst G₁.hom (jK R') with hf`.
+
+Use `⟨fun k l => ?_, fun k i => ?_⟩` and prove the remaining obligations. Use `(exists_unit_of_locally inf_le_right ((G₁.left.presheaf.map (homOfLE (inf_le_left : V k ⊓ V l ≤ V k)).op).hom (a k) ^ 2) (pow_ne_zero' (hne l) 2) fun x hx => ?_).imp fun c hc => by rwa [map_pow] at hc` and prove the remaining obligations. Take `⟨j, hj⟩` from `hcov x`. Take `⟨uk, huk⟩` from `hu k j`. Take `⟨ul, hul⟩` from `hu l j`.
+
+Establish `hk : V k ⊓ V l ⊓ L2.U j ≤ V k ⊓ L2.U j` using `inf_le_inf_right _ inf_le_left`. Establish `hl : V k ⊓ V l ⊓ L2.U j ≤ V l ⊓ L2.U j` using `inf_le_inf_right _ inf_le_right`. Establish `e1` using `congrArg (G₁.left.presheaf.map (homOfLE hk).op).hom huk`. Establish `e2` using `congrArg (G₁.left.presheaf.map (homOfLE hl).op).hom hul`. Rewrite `e1`, `e2` using `[map_mul, map_pow, res_res, res_res]`.
+
+Establish `e : (resU hk uk : Γ(G₁.left, V k ⊓ V l ⊓ L2.U j)) * (G₁.left.presheaf.map (homOfLE (hk.trans inf_le_left)).op).hom (a k) ^ 2 = (resU hl ul : Γ(G₁.left, V k ⊓ V l ⊓ L2.U j)) * (G₁.left.presheaf.map (homOfLE (hl.trans inf_le_left)).op).hom (a l) ^ 2`. Rewrite using `[coe_resU, coe_resU, ← e1, ← e2]`. Use `⟨V k ⊓ V l ⊓ L2.U j, inf_le_left, ⟨hx, hj⟩, (resU hk uk)⁻¹ * resU hl ul, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, res_res, map_pow, Units.val_mul, _root_.mul_assoc, ← e, ← _root_.mul_assoc, Units.inv_mul, _root_.one_mul]`. Establish `ht : (f.app (V k)).hom (a k) ≠ 0` using `fun h0 => hne k (GlobalTheory.ExpInt.generic_app_injective G₁ (V k) (h0.trans (map_zero _).symm))`.
+
+Use `(exists_unit_of_locally inf_le_left ((((pullback G₁.hom (jK R')).presheaf.map (homOfLE (inf_le_right : f ⁻¹ᵁ V k ⊓ Lθ.U i ≤ Lθ.U i)).op).hom (θ.f i)) ^ 2) (pow_ne_zero' ht 2) fun y hy => ?_).imp fun c hc => by rwa [map_pow] at hc` and prove the remaining obligations. Take `⟨j, hj⟩` from `hcov (f.base y)`. Take `⟨uk, huk⟩` from `hu k j`. Take `⟨w, hw⟩` from `hθ j i`. Establish `hO₁ : f ⁻¹ᵁ (V k ⊓ L2.U j) ⊓ Lθ.U i ≤ f ⁻¹ᵁ L2.U j ⊓ Lθ.U i` using `inf_le_inf_right _ (f.preimage_mono inf_le_right)`.
+
+Establish `hO₂ : f ⁻¹ᵁ (V k ⊓ L2.U j) ⊓ Lθ.U i ≤ f ⁻¹ᵁ (V k ⊓ L2.U j)` using `inf_le_left`. Establish `hO₃ : f ⁻¹ᵁ (V k ⊓ L2.U j) ⊓ Lθ.U i ≤ f ⁻¹ᵁ V k ⊓ Lθ.U i` using `inf_le_inf_right _ (f.preimage_mono inf_le_left)`. Establish `e1` using `congrArg ((pullback G₁.hom (jK R')).presheaf.map (homOfLE hO₁).op).hom hw`. Rewrite `e1` using `[map_mul, map_pow, res_res, res_res]`. Rewrite `e1` using `[app_res f (inf_le_right : V k ⊓ L2.U j ≤ L2.U j) hO₂, huk, map_mul, map_mul, map_pow, map_pow, ← app_res f (inf_le_left : V k ⊓ L2.U j ≤ V k) hO₂]`.
+
+Use `⟨_, hO₃, ⟨⟨hy.1, hj⟩, hy.2⟩, resU hO₁ w * resU hO₂ (Units.map (f.app (V k ⊓ L2.U j)).hom.toMonoidHom uk), ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, res_res, map_pow, e1, Units.val_mul, coe_resU, coe_resU, Units.coe_map, _root_.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.SqGlue.main : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'], AdmBase R' (maximalIdeal R') → ∀ (G₁ : Over (Sp R')) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (L2 : LB G₁.left), L2.IsLB → ∀ (h : L2.Sec) (Lθ : LB (pullback G₁.hom (jK R'))) (θ : Lθ.Sec), (∀ j i, ∃ w : Γ(pullback G₁.hom (jK R'), pullback.fst G₁.hom (jK R') ⁻¹ᵁ L2.U j ⊓ Lθ.U i)ˣ, ((pullback G₁.hom (jK R')).presheaf.map (homOfLE inf_le_right).op).hom (θ.f i) ^ 2 = (w : Γ(pullback G₁.hom (jK R'), pullback.fst G₁.hom (jK R') ⁻¹ᵁ L2.U j ⊓ Lθ.U i)) * ((pullback G₁.hom (jK R')).presheaf.map (homOfLE inf_le_left).op).hom (((pullback.fst G₁.hom (jK R')).app (L2.U j)).hom (h.f j))) → ∀ (Ix : Type) (V : Ix → G₁.left.Opens) (a : ∀ k, Γ(G₁.left, V k)), (∀ k, a k ≠ 0) → (∀ k j, ∃ u : Γ(G₁.left, V k ⊓ L2.U j)ˣ, (G₁.left.presheaf.map (homOfLE inf_le_right).op).hom (h.f j) = (u : Γ(G₁.left, V k ⊓ L2.U j)) * (G₁.left.presheaf.map (homOfLE inf_le_left).op).hom (a k) ^ 2) → (∀ k l, ∃ c : Γ(G₁.left, V k ⊓ V l)ˣ, (G₁.left.presheaf.map (homOfLE inf_le_left).op).hom (a k) ^ 2 = (c : Γ(G₁.left, V k ⊓ V l)) * (G₁.left.presheaf.map (homOfLE inf_le_right).op).hom (a l) ^ 2) ∧ (∀ k i, ∃ w : Γ(pullback G₁.hom (jK R'), pullback.fst G₁.hom (jK R') ⁻¹ᵁ V k ⊓ Lθ.U i)ˣ, ((pullback G₁.hom (jK R')).presheaf.map (homOfLE inf_le_right).op).hom (θ.f i) ^ 2 = (w : Γ(pullback G₁.hom (jK R'), pullback.fst G₁.hom (jK R') ⁻¹ᵁ V k ⊓ Lθ.U i)) * ((pullback G₁.hom (jK R')).presheaf.map (homOfLE inf_le_left).op).hom (((pullback.fst G₁.hom (jK R')).app (V k)).hom (a k)) ^ 2) := by
   intro R' _ _ _ _ G₁ _ _ hsemi L2 hL h Lθ θ hθ Ix V a hne hu
   haveI : Smooth G₁.hom := hsemi.smooth

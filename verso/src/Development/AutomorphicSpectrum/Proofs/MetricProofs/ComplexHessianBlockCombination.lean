@@ -23,16 +23,29 @@ noncomputable section
 def tailCL (d : ℕ) : (Fin (d + 1) → ℂ) →L[ℂ] (Fin d → ℂ) :=
   ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj i.succ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z i`. Both sides reduce to the same expression.
+-/
 theorem tailCL_coe (d : ℕ) : (⇑(tailCL d) : (Fin (d + 1) → ℂ) → (Fin d → ℂ)) = Fin.tail := by
   funext z i
   rfl
 
+/- English proof (translation)
+Establish `h` using `ContinuousLinearMap.fderiv (𝕜 := ℂ) (x := z) (tailCL d)`. Simplify using `only [jacC, h]`. Simplify using `[tailCL, Pi.single_apply, eq_comm]`.
+-/
 theorem jacC_tailCL (d : ℕ) (z : Fin (d + 1) → ℂ) (a : Fin d) (k : Fin (d + 1)) :
     jacC (⇑(tailCL d)) z a k = if a.succ = k then 1 else 0 := by
   have h := ContinuousLinearMap.fderiv (𝕜 := ℂ) (x := z) (tailCL d)
   simp only [jacC, h]
   simp [tailCL, Pi.single_apply, eq_comm]
 
+/- English proof (translation)
+Establish `ht : (tailCL d) (Fin.cons p y : Fin (d + 1) → ℂ) = y`. Rewrite using `[tailCL_coe]`. Conclude with `Fin.tail_cons _ _`. Establish `h` using `hessC_comp α (⇑(tailCL d)) (Fin.cons p y : Fin (d + 1) → ℂ) ((tailCL d).analyticAt _) (by rw [ht]; exact hα)`. Establish `hfun : α ∘ ⇑(tailCL d) = fun z : Fin (d + 1) → ℂ => α (Fin.tail z)`.
+
+Rewrite using `[tailCL_coe]`. Both sides reduce to the same expression. Rewrite `h` using `[hfun, ht]`. Rewrite using `[h]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j`. Use `all_goals`. Simplify using `[Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, jacC_tailCL, blk, Fin.succ_ne_zero, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem hessC_comp_tail (d : ℕ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ) (p : ℂ)
     (hα : ContDiffAt ℝ 2 α y) :
     hessC (fun z : Fin (d + 1) → ℂ => α (Fin.tail z)) (Fin.cons p y) = blk 0 (hessC α y) := by
@@ -56,6 +69,15 @@ end GlobalTheory.CompanionTheory.Ar.PB.FibN
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibN
 
+/- English proof (translation)
+Introduce `d f α y p e B s v hf hα hB`. Establish `ht : (Fin.tail (Fin.cons p y : Fin (d + 1) → ℂ) : Fin d → ℂ) = y` using `Fin.tail_cons _ _`. Establish `htail : ContDiffAt ℝ 2 (fun z : Fin (d + 1) → ℂ => α (Fin.tail z)) (Fin.cons p y : Fin (d + 1) → ℂ)`. Establish `hα' : ContDiffAt ℝ 2 α ((tailCL d) (Fin.cons p y : Fin (d + 1) → ℂ))`. Rewrite using `[tailCL_coe, ht]`.
+
+Conclude with `hα`. Establish `hl : ContDiffAt ℝ 2 (⇑((tailCL d).restrictScalars ℝ)) (Fin.cons p y : Fin (d + 1) → ℂ)` using `((tailCL d).restrictScalars ℝ).contDiff.contDiffAt`. Use `ContDiffAt.comp (g := α) (f := ⇑((tailCL d).restrictScalars ℝ)) (Fin.cons p y : Fin (d + 1) → ℂ) hα' hl` as an intermediate fact. Establish `hfun : α ∘ ⇑((tailCL d).restrictScalars ℝ) = fun z : Fin (d + 1) → ℂ => α (Fin.tail z)`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [Function.comp, ContinuousLinearMap.coe_restrictScalars']`. Rewrite using `[tailCL_coe]`. Rewrite `this` using `[hfun]`. Then use the resulting hypothesis. Rewrite using `[ReciprocityTheory.AnForm.M.hessC_add' (fun z => s * f z) (fun z => v * α (Fin.tail z)) _ (contDiffAt_const.mul hf) (contDiffAt_const.mul htail), ReciprocityTheory.AnForm.M.hessC_const_mul' s f, ReciprocityTheory.AnForm.M.hessC_const_mul' v (fun z => α (Fin.tail z)), hB, hessC_co …`. Use extensionality with `i j`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j <;>`. Simplify using `[blk]`.
+-/
 theorem hessC_row_fibre : ∀ (d : ℕ) (f : (Fin (d + 1) → ℂ) → ℝ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ) (p e : ℂ)
     (B : Matrix (Fin d) (Fin d) ℂ) (s v : ℝ),
     ContDiffAt ℝ 2 f (Fin.cons p y) → ContDiffAt ℝ 2 α y → hessC f (Fin.cons p y) = blk e B →

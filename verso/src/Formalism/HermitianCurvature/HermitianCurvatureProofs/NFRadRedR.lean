@@ -53,6 +53,25 @@ def dOpL {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [FiniteDimensi
     rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
     exact h
 
+/- English proof (translation)
+Use `set A := dOp π X with hA`. Use `set f : ℝ → (Wp →L[ℂ] Wp) := fun s => π (NormedSpace.exp ((s : ℂ) • X)) with hf`. Establish `hmul : ∀ s u : ℝ, f (s + u) = f s * f u`. Introduce `s u`. Simplify using `only [hf]`.
+
+Rewrite using `[show ((s + u : ℝ) : ℂ) • X = (s : ℂ) • X + (u : ℂ) • X by push_cast; rw [add_smul], Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _), hπ.2 _ (exp_uw hX s) _ (exp_uw hX u), ContinuousLinearMap.mul_def]`. Establish `h0 : HasDerivAt f A 0` using `dOp_hasDeriv hπ hc hX`. Establish `hd : ∀ s, HasDerivAt f (f s * A) s`. Introduce `s`. Establish `h2 : HasDerivAt (fun u => f s * f u) (f s * A) (s - s)`.
+
+Rewrite using `[sub_self]`. Conclude with `h0.const_mul (f s)`. Establish `h1 : HasDerivAt (fun u => f s * f (u - s)) (f s * A) s` using `HasDerivAt.comp_sub_const s s h2`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show f u = f s * f (u - s)`.
+
+Rewrite using `[← hmul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hg : ∀ s, HasDerivAt (fun u => f u * NormedSpace.exp (u • -A)) 0 s`. Introduce `s`.
+
+Use `(hd s).mul (hasDerivAt_exp_smul_const (-A) s)` as an intermediate fact. Establish `hcomm : Commute A (NormedSpace.exp (s • -A))` using `((Commute.refl A).neg_right.smul_right s).exp_right`. Establish `h0' : f s * A * NormedSpace.exp (s • -A) + f s * (NormedSpace.exp (s • -A) * -A) = 0`. Rewrite using `[mul_assoc, hcomm.eq, mul_neg, mul_neg, add_neg_cancel]`. Conclude with `this.congr_deriv h0'`.
+
+Establish `hconst : ∀ s, f s * NormedSpace.exp (s • -A) = 1`. Introduce `s`. Establish `hdiff : Differentiable ℝ (fun u => f u * NormedSpace.exp (u • -A))` using `fun u => (hg u).differentiableAt`. Use `is_const_of_deriv_eq_zero hdiff (fun u => (hg u).deriv) s 0` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using `only [hf, zero_smul, Complex.ofReal_zero, NormedSpace.exp_zero, mul_one, hπ.1]`. Establish `hk : ∀ s, HasDerivAt (fun u : ℝ => NormedSpace.exp (u • -A) * NormedSpace.exp (u • A)) 0 s`. Introduce `s`. Use `(hasDerivAt_exp_smul_const (-A) s).mul (hasDerivAt_exp_smul_const A s)` as an intermediate fact. Establish `hcomm2 : Commute A (NormedSpace.exp (s • A))` using `((Commute.refl A).smul_right s).exp_right`.
+
+Establish `h0' : NormedSpace.exp (s • -A) * -A * NormedSpace.exp (s • A) + NormedSpace.exp (s • -A) * (NormedSpace.exp (s • A) * A) = 0`. Rewrite using `[mul_assoc, neg_mul, hcomm2.eq, mul_neg, neg_add_cancel]`. Conclude with `this.congr_deriv h0'`. Establish `hinv : NormedSpace.exp (t • -A) * NormedSpace.exp (t • A) = 1`. Establish `hdiff : Differentiable ℝ (fun u : ℝ => NormedSpace.exp (u • -A) * NormedSpace.exp (u • A))` using `fun u => (hk u).differentiableAt`.
+
+Use `is_const_of_deriv_eq_zero hdiff (fun u => (hk u).deriv) t 0` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [zero_smul, NormedSpace.exp_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma rep_exp_smul_eq_exp_dOp {Wp : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)} (hπ : IsCRepOn (UWset k r z) π)
     (hc : ContinuousOn π (UWset k r z)) {X : Q.Mx k r} (hX : InLieW k r z X) (t : ℝ) :
@@ -108,6 +127,11 @@ private lemma rep_exp_smul_eq_exp_dOp {Wp : Type} [NormedAddCommGroup Wp] [Norme
   calc f t = f t * (NormedSpace.exp (t • -A) * NormedSpace.exp (t • A)) := by rw [hinv, mul_one]
     _ = NormedSpace.exp (t • A) := by rw [← mul_assoc, hconst t, one_mul]
 
+/- English proof (translation)
+Use `contDiff_iff_contDiffAt.mpr fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ EMetric.ball (0 : A) (NormedSpace.expSeries ℝ A).radius`. Rewrite using `[NormedSpace.expSeries_radius_eq_top]`. Conclude with `EMetric.mem_ball.mpr (edist_lt_top _ _)`. Use `first`.
+
+Consider the case `exact (NormedSpace.analyticAt_exp_of_mem_ball x hx).contDiffAt`. Consider the case `exact (analyticAt_exp_of_mem_ball (𝕂 := ℝ) x hx).contDiffAt`. Consider the case `(have hps := (NormedSpace.expSeries ℝ A).hasFPowerSeriesOnBall (by rw [NormedSpace.expSeries_radius_eq_top]; exact ENNReal.zero_lt_top)`. Rewrite `hps` using `[NormedSpace.expSeries_sum_eq]`. Conclude with `(hps.analyticAt_of_mem hx).contDiffAt)`.
+-/
 private lemma contDiff_exp_hermitian_curvature {A : Type} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A] :
     ContDiff ℝ ∞ (NormedSpace.exp : A → A) := by
   refine contDiff_iff_contDiffAt.mpr fun x => ?_
@@ -122,6 +146,23 @@ private lemma contDiff_exp_hermitian_curvature {A : Type} [NormedRing A] [Normed
      rw [NormedSpace.expSeries_sum_eq] at hps
      exact (hps.analyticAt_of_mem hx).contDiffAt)
 
+/- English proof (translation)
+Unfold `NFRadRedS.RepSmooth`. Introduce `Wp _ _ _ k r z π hz hTz hπ hc h₀ hh₀`. Take `⟨O, hO, h1O, Λ, hΛ, hΛe⟩` from `hLL k r z hz hTz`. Establish `hrep : Qr.IsRepW k r z π` using `⟨hπ, hc⟩`. Establish `hdetH : IsUnit (Hpk k r).det`.
+
+Establish `h` using `congrArg Matrix.det (Formalism.QuantumDeterminants.GBasic.Hpk_sq k r)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, h⟩`. Establish `hdet0 : IsUnit h₀.det` using `((Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) hdetH).2.2 h₀ hh₀.1).1`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl (lieW k r z)`.
+
+Set `T : Q.Mx k r →ₗ[ℝ] (Wp →L[ℂ] Wp)` to `(dOpL z π hrep).comp (Submodule.linearProjOfIsCompl _ q hq)`. Establish `hT1 : ∀ Y, InLieW k r z Y → T Y = dOp π Y`. Introduce `Y hY`. Establish `hp` using `Submodule.linearProjOfIsCompl_apply_left hq ⟨Y, hY⟩`. Use `show dOpL z π hrep (Submodule.linearProjOfIsCompl _ q hq Y) = dOp π Y`.
+
+Rewrite using `[show Submodule.linearProjOfIsCompl _ q hq Y = ⟨Y, hY⟩ from hp]`. Both sides reduce to the same expression. Set `Tc` to `LinearMap.toContinuousLinearMap T`. Set `Lm : Q.Mx k r →ₗ[ℝ] Q.Mx k r` to `{ toFun := fun h => h₀⁻¹ * h map_add' := fun a b => Matrix.mul_add _ _ _ map_smul' := fun c a => by simp [Matrix.mul_smul] }`. Set `Lc` to `LinearMap.toContinuousLinearMap Lm`.
+
+Establish `hV : IsOpen {h : Q.Mx k r | h₀⁻¹ * h ∈ O}` using `hO.preimage Lc.continuous`. Use `⟨{h : Q.Mx k r | h₀⁻¹ * h ∈ O}, hV, ?_, fun h => π h₀ * NormedSpace.exp (Tc (Λ (h₀⁻¹ * h))), ?_, ?_⟩` and prove the remaining obligations. Use `show h₀⁻¹ * h₀ ∈ O`. Rewrite using `[Matrix.nonsing_inv_mul h₀ hdet0]`. Conclude with `h1O`.
+
+Establish `h1 : ContDiffOn ℝ ∞ (fun h => Λ (Lc h)) {h : Q.Mx k r | h₀⁻¹ * h ∈ O}` using `hΛ.comp Lc.contDiff.contDiffOn (fun h hh => hh)`. Conclude with `contDiffOn_const.mul (contDiff_exp_hermitian_curvature.comp_contDiffOn (Tc.contDiff.comp_contDiffOn h1))`. Introduce `h hV' hU`. Establish `hg : h₀⁻¹ * h ∈ UWset k r z` using `Formalism.QuantumDeterminants.WeylGroupFacts.uw_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh₀) hU`. Take `⟨hlie, hexp⟩` from `hΛe _ hV' hg`.
+
+Establish `hpi` using `rep_exp_smul_eq_exp_dOp hπ hc hlie 1`. Simplify using `only [Complex.ofReal_one, one_smul] at hpi`. Rewrite `hpi` using `[hexp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv h₀ hdet0, Matrix.one_mul]`.
+
+Use `_ = (π h₀).comp (π (h₀⁻¹ * h)) := hπ.2 _ hh₀ _ hg`. Use `_ = π h₀ * NormedSpace.exp (Tc (Λ (h₀⁻¹ * h))) := by`. Rewrite using `[ContinuousLinearMap.mul_def, hpi, show Tc (Λ (h₀⁻¹ * h)) = dOp π (Λ (h₀⁻¹ * h)) from hT1 _ hlie]`.
+-/
 theorem repSmooth_of (hLL : LocLog) : NFRadRedS.RepSmooth := by
   unfold NFRadRedS.RepSmooth
   intro Wp _ _ _ k r z π hz hTz hπ hc h₀ hh₀
@@ -171,6 +212,9 @@ end Formalism.FourierDecayAlt.P.NFRadRedR
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `h` and use `NFRadRedR.repSmooth_of h`.
+-/
 theorem representation_smooth_of_log : NFRadRedR.LocLog → NFRadRedS.RepSmooth := fun h => NFRadRedR.repSmooth_of h
 
 end Formalism.FourierDecayAlt.P

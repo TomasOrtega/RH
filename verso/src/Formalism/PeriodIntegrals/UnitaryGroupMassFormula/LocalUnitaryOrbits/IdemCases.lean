@@ -18,6 +18,11 @@ def QProd : Prop :=
     ∃ e : QE (E := E) v ≃+* (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal),
       ∀ c, e (algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v) c) = (c, c)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hs : Ideal.Quotient.mk (IE (E` using `E) v) (sigO σ y) = Ideal.Quotient.mk _ y := by`. Rewrite using `[← sigQ_mk]`. Conclude with `hx`. Establish `hss : sigO σ (sigO σ y) = y` using `RingOfIntegers.ext (by simp only [sigO_coe]; exact sig_sig σ h _)`.
+
+Take `⟨b, hb⟩` from `fix_int σ h (y * sigO σ y) (by rw [map_mul, hss, mul_comm])`. Use `⟨Ideal.Quotient.mk _ b, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.algebraMap_quotient_map_quotient, hb, map_mul, hs]`.
+-/
 theorem sq_mem (h : IsCMExt F E σ) (x : QE (E := E) v) (hx : sigQ σ v x = x) :
     ∃ c, algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v) c = x * x := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -28,12 +33,34 @@ theorem sq_mem (h : IsCMExt F E σ) (x : QE (E := E) v) (hx : sigQ σ v x = x) :
   refine ⟨Ideal.Quotient.mk _ b, ?_⟩
   rw [Ideal.Quotient.algebraMap_quotient_map_quotient, hb, map_mul, hs]
 
+/- English proof (translation)
+Establish `: a * (a - 1) = 0` using `by rw [mul_sub, ha, mul_one, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`.
+-/
 theorem idem_cases {k : Type} [Field k] {a : k} (ha : a * a = a) : a = 0 ∨ a = 1 := by
   have : a * (a - 1) = 0 := by rw [mul_sub, ha, mul_one, sub_self]
   rcases mul_eq_zero.1 this with h | h
   · exact Or.inl h
   · exact Or.inr (sub_eq_zero.1 h)
 
+/- English proof (translation)
+Introduce `hstd hun hp`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field v.asIdeal`. Take `⟨e, he⟩` from `hP hstd hun hp`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+
+Use `set z : QE (E := E) v := e.symm (1, 0) with hz`. Establish `hez : e z = (1, 0)` using `by rw [hz, RingEquiv.apply_symm_apply]`. Establish `hinv : ∀ x, sigQ σ v (sigQ σ v x) = x` using `sigQ_sigQ σ v hstd.1`. Establish `hw : e (sigQ σ v z) = (0, 1)`. Establish `hzz : z * z = z` using `e.injective (by rw [map_mul, hez]; simp)`.
+
+Establish `hid : e (sigQ σ v z) * e (sigQ σ v z) = e (sigQ σ v z)` using `by rw [← map_mul, ← map_mul, hzz]`. Establish `h1` using `idem_cases ((Prod.fst_mul _ _).symm.trans (congrArg Prod.fst hid))`. Establish `h2` using `idem_cases ((Prod.snd_mul _ _).symm.trans (congrArg Prod.snd hid))`. Establish `h10 : ((1, 0) : (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal)).1 ≠ ((1, 0) : (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal)).2` using `one_ne_zero`. Apply the tactic sequence `rcases h1 with h1 | h1 <;> rcases h2 with h2 | h2`.
+
+It suffices to derive a contradiction. Establish `h0 : sigQ σ v z = 0` using `(map_eq_zero_iff e e.injective).1 (Prod.ext h1 h2)`. Establish `: e z = 0` using `by rw [← hinv z, h0, map_zero, map_zero]`. Rewrite `this` using `[hez]`. Conclude with `one_ne_zero (congrArg Prod.fst this)`.
+
+Conclude with `Prod.ext h1 h2`. It suffices to derive a contradiction. Establish `hf : sigQ σ v z = z` using `e.injective (by rw [hez]; exact Prod.ext h1 h2)`. Take `⟨c, hc⟩` from `sq_mem σ v hstd.1 z hf`. Rewrite `hc` using `[hzz]`.
+
+Use `he c` as an intermediate fact. Rewrite `this` using `[hc, hez]`. Apply `h10` to reduce the goal to its premises. Rewrite using `[this]`. It suffices to derive a contradiction.
+
+Establish `h0 : sigQ σ v z = 1` using `e.injective (by rw [map_one]; exact Prod.ext h1 h2)`. Establish `: e z = 1` using `by rw [← hinv z, h0, map_one, map_one]`. Rewrite `this` using `[hez]`. Conclude with `zero_ne_one (congrArg Prod.snd this)`. Introduce `x`.
+
+Establish `hx : x = algebraMap _ (QE (E` using `E) v) (e x).1 * z + algebraMap _ (QE (E := E) v) (e x).2 * (1 - z) := by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, map_mul, he, he, map_sub, map_one, hez]`. Apply the tactic sequence `ext <;> simp`. Establish `key : e (sigQ σ v x) = ((e x).2, (e x).1)` using `by conv_lhs => rw [hx]`.
+
+Rewrite using `[map_add, map_mul, map_mul, sigQ_alg, sigQ_alg, map_sub, map_one, map_add, map_mul, map_mul, he, he, map_sub, map_one, hw]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[key]`. Both sides reduce to the same expression.
+-/
 theorem qSplit_of (hP : QProd σ J ψ v) : QSplit σ J ψ v := by
   intro hstd hun hp
   haveI : v.asIdeal.IsMaximal := v.isMaximal

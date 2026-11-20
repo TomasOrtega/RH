@@ -12,12 +12,24 @@ namespace GlobalTheory.AdjMem
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `: x v = LinearMap.toMatrix' x *ᵥ v` using `(LinearMap.toMatrix'_mulVec x v).symm`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `star v ⬝ᵥ ((LinearMap.toMatrix' x)ᴴ *ᵥ y) = star (LinearMap.toMatrix' x *ᵥ v) ⬝ᵥ y`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec]`.
+-/
 theorem hStd_adj (x : HomE E a b) (v : Sp E a) (y : Sp E b) : hStd E a v (adj x y) = hStd E b (x v) y := by
   have : x v = LinearMap.toMatrix' x *ᵥ v := (LinearMap.toMatrix'_mulVec x v).symm
   rw [this]
   change star v ⬝ᵥ ((LinearMap.toMatrix' x)ᴴ *ᵥ y) = star (LinearMap.toMatrix' x *ᵥ v) ⬝ᵥ y
   rw [Matrix.star_mulVec, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, hr, x', hx', rfl⟩` from `hz`. Take `⟨s, hs, hsv⟩` from `(mem_locP _ _ _).1 hv`. Take `⟨t, ht, htr⟩` from `(mem_locP _ _ _).1 (hA ▸ le_locP Q AA hr)`.
+
+Take `⟨c, hc⟩` from `Submodule.mem_one.1 htr`. Use `(mem_locP _ _ _).2 ⟨t * s, fun hm => (Q.isPrime.mem_or_mem hm).elim ht hs, ?_⟩` and prove the remaining obligations. Establish `h1` using `N'.smul_mem c (hx' _ hsv)`. Establish `e : (t * s) • (r • x') v = c • x' (s • v)`. Rewrite using `[← algebraMap_smul E c, hc, ← algebraMap_smul E s v, map_smul, LinearMap.smul_apply, ← algebraMap_smul E (t * s), smul_smul, smul_smul, map_mul, Algebra.smul_def t r]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h1`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x x' _ _ h h' => exact add_mem h h'`. Consider the case `smul c x _ h => exact Submodule.smul_mem _ c h`.
+-/
 theorem apply_mem_locP {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     {Q : HeightOneSpectrum (𝓞 E)} (hA : localization₂ Q.asIdeal AA = localization₂ Q.asIdeal (1 : Submodule (𝓞 E) E))
     {x : HomE E a b} (hx : x ∈ perO AA N N') {v : Sp E a} (hv : v ∈ localization₂ Q.asIdeal N) : x v ∈ localization₂ Q.asIdeal N' := by
@@ -40,6 +52,11 @@ theorem apply_mem_locP {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E
   | add x x' _ _ h h' => exact add_mem h h'
   | smul c x _ h => exact Submodule.smul_mem _ c h
 
+/- English proof (translation)
+Take `⟨Q, rfl⟩ : ∃ Q, P = conjPrime₂ Q` from `⟨conjPrime₂ P, (GlobalTheory.CharValCompare.conjP_conjP P).symm⟩`. Rewrite `hA` using `[GlobalTheory.CharValCompare.conjP_conjP]`. Rewrite `hy` using `[GlobalTheory.Survey.StandardDeterminantUnits.mem_at_conj hN'.1.fg hN'.2]`. Rewrite using `[GlobalTheory.Survey.StandardDeterminantUnits.mem_at_conj hN.1.fg hN.2]`. Introduce `v hv`.
+
+Rewrite using `[hStd_adj]`. Conclude with `hy _ (apply_mem_locP hA hx hv)`.
+-/
 theorem adj_mem_locP {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     {P : HeightOneSpectrum (𝓞 E)} (hN : IsSdLat N) (hN' : IsSdLat N')
     (hA : localization₂ (conjPrime₂ P).asIdeal AA = localization₂ (conjPrime₂ P).asIdeal (1 : Submodule (𝓞 E) E))
@@ -52,6 +69,9 @@ theorem adj_mem_locP {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a
   rw [hStd_adj]
   exact hy _ (apply_mem_locP hA hx hv)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ hN hN' hA _ hx _ hy` and use `adj_mem_locP hN hN' hA hx hy`.
+-/
 theorem adj_per_mem : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a))
     (N'' : Submodule (𝓞 X.E) (Sp X.E b)) (P : HeightOneSpectrum (𝓞 X.E)), IsSdLat N → IsSdLat N'' →
     localization₂ (conjPrime₂ P).asIdeal A.AA = localization₂ (conjPrime₂ P).asIdeal (1 : Submodule (𝓞 X.E) X.E) →

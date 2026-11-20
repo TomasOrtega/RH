@@ -24,32 +24,54 @@ def liftAlg (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ → C)
       rw [← nsmul_eq_mul, LinearMap.map_smul_of_tower, Module.Basis.constr_basis, nsmul_eq_mul, hm]
     exact congrArg (fun g ↦ g x y) key)
 
+/- English proof (translation)
+The claim follows from `Q.e.constr_basis B c n`.
+-/
 theorem liftAlg_e (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ → C) (h0 : c 0 = 1)
     (hm : ∀ m n, c m * c n = ((m + n).choose m : C) * c (m + n)) (n : ℕ) :
     liftAlg Q c h0 hm (Q.e n) = c n :=
   Q.e.constr_basis B c n
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Conclude with `⟨(liftAlg Q c h0 hm).toRingHom, fun b ↦ (liftAlg Q c h0 hm).commutes b, fun n ↦ liftAlg_e Q c h0 hm n⟩`.
+-/
 theorem exists_lift (Q : PDPoly B) (C : Type) [CommRing C] (f : B →+* C) (c : ℕ → C) (h0 : c 0 = 1)
     (hm : ∀ m n, c m * c n = ((m + n).choose m : C) * c (m + n)) :
     ∃ F : Q.P →+* C, (∀ b, F (algebraMap B Q.P b) = f b) ∧ ∀ n, F (Q.e n) = c n := by
   letI := f.toAlgebra
   exact ⟨(liftAlg Q c h0 hm).toRingHom, fun b ↦ (liftAlg Q c h0 hm).commutes b, fun n ↦ liftAlg_e Q c h0 hm n⟩
 
+/- English proof (translation)
+Use `⟨ExpBij.dpFil_le δ hN, fun n hn j hj ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `ExpBij.dpow_mem_dpFil_mul δ hN hj n`. Conclude with `ExpBij.dpFil_anti δ (Nat.le_mul_of_pos_left N (Nat.pos_of_ne_zero hn)) h`.
+-/
 theorem fil_isSubDPIdeal {J : Ideal B} (δ : DividedPowers J) (N : ℕ) (hN : 1 ≤ N) :
     δ.IsSubDPIdeal (fil δ N) := by
   refine ⟨ExpBij.dpFil_le δ hN, fun n hn j hj ↦ ?_⟩
   have h := ExpBij.dpow_mem_dpFil_mul δ hN hj n
   exact ExpBij.dpFil_anti δ (Nat.le_mul_of_pos_left N (Nat.pos_of_ne_zero hn)) h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨n, fun l h1 h2 ↦ by have : _ ∈ fil δ n := Ideal.subset_span ⟨l, h1, h2, rfl⟩ rwa [show fil δ n = ⊥ from h, Ideal.mem_bot] at this⟩`.
+-/
 theorem nil_of_lev {J : Ideal B} {δ : DividedPowers J} {n : ℕ} (h : IsLev δ n) : IsNilDP δ :=
   ⟨n, fun l h1 h2 ↦ by
     have : _ ∈ fil δ n := Ideal.subset_span ⟨l, h1, h2, rfl⟩
     rwa [show fil δ n = ⊥ from h, Ideal.mem_bot] at this⟩
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `ExpBij.exists_dpFil_eq_bot h`. Conclude with `⟨N + 1, Nat.le_add_left _ _, le_bot_iff.1 ((ExpBij.dpFil_anti δ N.le_succ).trans hN.le)⟩`.
+-/
 theorem exists_lev {J : Ideal B} {δ : DividedPowers J} (h : IsNilDP δ) : ∃ n, 1 ≤ n ∧ IsLev δ n := by
   obtain ⟨N, hN⟩ := ExpBij.exists_dpFil_eq_bot h
   exact ⟨N + 1, Nat.le_add_left _ _, le_bot_iff.1 ((ExpBij.dpFil_anti δ N.le_succ).trans hN.le)⟩
 
+/- English proof (translation)
+Establish `hinf : δ.IsSubDPIdeal (𝔟 ⊓ J)`. Rewrite using `[inf_eq_left.mpr h𝔟.isSubideal]`. Conclude with `h𝔟`. Use `⟨Quotient.dividedPowers δ hinf, Quotient.isDPMorphism δ hinf, ?_⟩` and prove the remaining obligations. Introduce `C _ J'' δ'' g hg`.
+
+Use `⟨?_, fun {n} y hy ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_map]`. Conclude with `hg.1`. Take `⟨a, ha, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp hy`. Rewrite using `[Quotient.dpow_apply δ hinf ha]`.
+
+Conclude with `hg.2 a ha`.
+-/
 theorem exists_quot {J : Ideal B} (δ : DividedPowers J) (𝔟 : Ideal B) (h𝔟 : δ.IsSubDPIdeal 𝔟) :
     ∃ δ' : DividedPowers (J.map (Ideal.Quotient.mk 𝔟)), IsDPMorphism δ δ' (Ideal.Quotient.mk 𝔟) ∧
       ∀ (C : Type) [CommRing C] (J'' : Ideal C) (δ'' : DividedPowers J'') (g : B ⧸ 𝔟 →+* C),
@@ -66,6 +88,13 @@ theorem exists_quot {J : Ideal B} (δ : DividedPowers J) (𝔟 : Ideal B) (h𝔟
 
 omit [CommRing B] in
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap, fil, Ideal.span_le]`. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Establish `hJ : ∀ p ∈ l, f p.2 ∈ J'` using `fun p hp ↦ hf.ideal_comp (Ideal.mem_map_of_mem f (h1 p hp))`. Use `Ideal.subset_span ⟨l.map fun p ↦ (p.1, f p.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+
+Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hq`. Conclude with `hJ p hp`. Simplify `h2` using `[List.map_map, Function.comp_def]`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congrArg List.prod (List.map_congr_left fun p hp ↦ ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Conclude with `(hf.dpow_comp (n := p.1) p.2 (h1 p hp)).symm`.
+-/
 theorem map_fil_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {C : Type} [CommRing C]
     {J' : Ideal C} (δ' : DividedPowers J') (f : B →+* C) (hf : IsDPMorphism δ δ' f) (N : ℕ) :
     (fil δ N).map f ≤ fil δ' N := by
@@ -84,6 +113,27 @@ theorem map_fil_le {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) 
 
 omit [CommRing B] in
 
+/- English proof (translation)
+Introduce `B _ J δ C _ J' δ' f hf hJ N`. Substitute `hJ` using the available equality. Establish `hmul : ∀ {m n : ℕ} {a b : C}, a ∈ (fil δ m).map f → b ∈ (fil δ n).map f → a * b ∈ (fil δ (m + n)).map f`. Introduce `m n a b ha hb`. Establish `: (fil δ m).map f * (fil δ n).map f ≤ (fil δ (m + n)).map f`.
+
+Rewrite using `[← Ideal.map_mul]`. Conclude with `Ideal.map_mono (Ideal.mul_le.2 fun x hx y hy ↦ ExpBij.mul_mem_dpFil δ hx hy)`. Conclude with `this (Ideal.mul_mem_mul ha hb)`. Establish `hzero : ∀ c : C, c ∈ (fil δ 0).map f`. Introduce `c`.
+
+Rewrite using `[show fil δ 0 = ⊤ from eq_top_iff.2 fun a _ ↦ ExpBij.mem_dpFil_zero δ a, Ideal.map_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `hdp : ∀ y ∈ J.map f, ∀ n, δ'.dpow n y ∈ (fil δ n).map f`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `y ∈ Ideal.span (f '' (J : Set B)) at hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Introduce `n`. Rewrite using `[hf.dpow_comp a ha]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (ExpBij.dpow_mem_dpFil δ ha n)`. Consider the case `zero`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `hzero _`.
+
+Rewrite using `[δ'.dpow_eval_zero hn.ne']`. Conclude with `Ideal.zero_mem _`. Consider the case `add x y hx hy ihx ihy`. Introduce `n`. Rewrite using `[δ'.dpow_add hx hy]`.
+
+Use `Ideal.sum_mem _ fun k hk ↦ ?_` and prove the remaining obligations. Establish `hk' : k.1 + k.2 = n` using `by simpa using hk`. Rewrite using `[← hk']`. Conclude with `hmul (ihx k.1) (ihy k.2)`. Consider the case `smul c x hx ih`.
+
+Introduce `n`. Rewrite using `[smul_eq_mul, δ'.dpow_mul hx]`. Conclude with `Ideal.mul_mem_left _ _ (ih n)`. Establish `hprod : ∀ l : List (ℕ × C), (∀ p ∈ l, p.2 ∈ J.map f) → (l.map fun p ↦ δ'.dpow p.1 p.2).prod ∈ (fil δ (l.map Prod.fst).sum).map f`. Introduce `l hl`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact hzero _`. Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `hmul (hdp p.2 (hl p (by simp)) p.1) (ih fun q hq ↦ hl q (by simp [hq]))`.
+
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Conclude with `Ideal.map_mono (ExpBij.dpFil_anti δ h2) (hprod l h1)`.
+-/
 theorem fil_le_map_fil : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (C : Type) [CommRing C]
     (J' : Ideal C) (δ' : DividedPowers J') (f : B →+* C), IsDPMorphism δ δ' f → J' = J.map f →
     ∀ N, fil δ' N ≤ (fil δ N).map f := by

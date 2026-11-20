@@ -7,6 +7,19 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.CodiffValPrimeW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB w hw c hc`. Establish `hF : ¬ differentIdeal ℤ (𝓞 F) ≤ (w.under (𝓞 F)).asIdeal` using `GlobalTheory.DiffCoprimeP.not_le_differentIdeal_of_psiUnr hB.std _ (hB.psiP _ hw)`. Establish `hu : Algebra.FormallyUnramified (𝓞 F) (𝓞 E)` using `by haveI := hB.unram infer_instance`. Establish `hE : ¬ differentIdeal ℤ (𝓞 E) ≤ w.asIdeal`. Rewrite using `[GlobalTheory.SnMass.SkewVol.differentIdeal_eq_map_of_unramified hu]`.
+
+Introduce `h`. Conclude with `hF (Ideal.map_le_iff_le_comap.1 h)`. Take `⟨d, hdD, hdw⟩` from `Set.not_subset.1 hE`. Establish `hcd : c ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))]`.
+
+Introduce `a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hc o)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hn, Algebra.traceForm_apply, mul_comm]`.
+
+Establish `h1 : c * (d : E) ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)`. Establish `hne : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (𝓞 E)⁰ E))`. Establish `hmul` using `FractionalIdeal.mul_mem_mul hcd ((FractionalIdeal.mem_coeIdeal _).2 ⟨d, hdD, rfl⟩ : (d : E) ∈ ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E))`. Rewrite `hmul` using `[coeIdeal_differentIdeal ℤ ℚ E (𝓞 E), mul_inv_cancel₀ hne]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`.
+
+Establish `hvx : w.valuation E (c * (d : E)) ≤ 1`. Rewrite using `[← hx]`. Conclude with `w.valuation_le_one x`. Establish `hvd : w.valuation E (d : E) = 1` using `le_antisymm (w.valuation_le_one d) (not_lt.1 fun h => hdw ((w.valuation_lt_one_iff_mem d).1 h))`. Rewrite `hvx` using `[map_mul, hvd, mul_one]`.
+
+Conclude with `hvx`.
+-/
 theorem valuation_le_one_of_mem_codiff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ B.P →
     ∀ c : E, (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * c))) → w.valuation E c ≤ 1 := by

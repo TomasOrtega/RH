@@ -8,6 +8,25 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Use `h.2.1` as an intermediate fact. Establish `hloc : ∀ w : InfinitePlace F, ∃ (α : E) (a b : w.Completion), InfinitePlace.Completion.extensionEmbedding w a + InfinitePlace.Completion.extensionEmbedding w b * (τ w).1 α = c w`. Introduce `w`. Establish `hα : ∃ α : E, ((τ w).1 α).im ≠ 0`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk (τ w).1))) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)))` and prove the remaining obligations. Conclude with `Complex.conj_eq_iff_im.2 (hn x)`. Take `⟨α, hα⟩` from `hα`.
+
+Establish `hs` using `InfinitePlace.Completion.surjective_extensionEmbeddingOfIsReal (IsTotallyReal.isReal w)`. Take `⟨a, ha⟩` from `hs ((c w).re - (c w).im / ((τ w).1 α).im * ((τ w).1 α).re)`. Take `⟨b, hb⟩` from `hs ((c w).im / ((τ w).1 α).im)`. Use `⟨α, a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w), ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w), ha, hb]`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose α a b hab using hloc`. Set `δ : ∀ w : InfinitePlace F, w.Completion → AF F` to `fun w x => ((Pi.single w x : ∀ v : InfinitePlace F, v.Completion), 0)`. Establish `hδ : ∀ (u : AF F), evI F u = 0 → ∀ w x, u * δ w x = 0`. Introduce `u hu w x`.
+
+Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`.
+
+Rewrite using `[mul_zero]`. Establish `hp : ∀ w v x (e : E), piInf (τ w) (δ v x ⊗ₜ[F] e) = InfinitePlace.Completion.extensionEmbedding w ((Pi.single v x : ∀ v : InfinitePlace F, v.Completion) w) * (τ w).1 e` using `fun _ _ _ _ => rfl`. Use `⟨∑ w, (δ w (a w) ⊗ₜ[F] (1 : E) + δ w (b w) ⊗ₜ[F] α w), fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_add, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, hδ u hu, hδ u hu, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`. Rewrite using `[map_sum, Finset.sum_eq_single w]`. Rewrite using `[map_add, hp, hp, Pi.single_eq_same, Pi.single_eq_same, map_one, mul_one, hab]`. Introduce `v _ hv`. Rewrite using `[map_add, hp, hp, Pi.single_eq_of_ne hv.symm, Pi.single_eq_of_ne hv.symm, map_zero, zero_mul, zero_mul, add_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_at_evI_piInf_eq (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : InfinitePlace F → ℂ) :
     ∃ z : AE F E, At (evI F) z ∧ ∀ w, piInf (τ w) z = c w := by

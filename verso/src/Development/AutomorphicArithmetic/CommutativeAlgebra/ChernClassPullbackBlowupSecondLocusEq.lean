@@ -32,15 +32,24 @@ namespace UpperTheory.LineUnitTrivialization
 private def arr {a : Act} {E : Spc} {U : Scheme.{0}} (x : Sx (Sp E a) 1 U) : a.G.obj Γ(U, ⊤) :=
   (show ComposableArrows (Ob a Γ(U, ⊤)) 1 from x.2).hom.1
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 private theorem det_scalar {A : Type} [CommRing A] (u : Aˣ) :
     Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) u) = u := by
   ext
   simp
 
+/- English proof (translation)
+The claim follows from `det_scalar _`.
+-/
 private theorem lineUnit_line {a : Act} {E : Spc} (χ : a.G ⟶ gmF) {U : Scheme.{0}} (x : Sx (Sp E a) 1 U) :
     lineUnit (Sp.line E χ) x = (show (Γ(U, ⊤))ˣ from χ.app Γ(U, ⊤) (arr x)) :=
   det_scalar _
 
+/- English proof (translation)
+The claim follows from `det_scalar _`.
+-/
 private theorem lineUnit_map {a b : Act} {E : Spc} (φ : Act.Hom a b) (χ : b.G ⟶ gmF) {U : Scheme.{0}} (x : Sx (Sp E a) 1 U) :
     lineUnit (Sp.map E φ ≫ Sp.line E χ) x = (show (Γ(U, ⊤))ˣ from χ.app Γ(U, ⊤) (φ.g.app Γ(U, ⊤) (arr x))) :=
   det_scalar _
@@ -51,6 +60,11 @@ private def chiM (N : ℕ) (Q : Pred (BC N)) : ((BC N).sub Q).G ⟶ gmF where
     ext x
     exact (map_div (Units.map (f.hom : A →* B)) x.2 x.1).symm
 
+/- English proof (translation)
+Establish `h' : Ideal.span ((Um.join x).1 '' Set.range Fin.castSucc) ≤ Ideal.span {x.2.1 0}`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Simplify using `only [Um.join, Fin.snoc_castSucc]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_singleton _))`.
+
+Rewrite `h'` using `[h, top_le_iff, Ideal.span_singleton_eq_top]`. Conclude with `h'`.
+-/
 private theorem isUnit_um_join_of_span_castSucc_eq_whole {N : ℕ} {A : Type} [CommRing A] (x : Um N A × Um 2 A)
     (h : Ideal.span ((Um.join x).1 '' Set.range Fin.castSucc) = ⊤) : IsUnit (x.2.1 0) := by
   have h' : Ideal.span ((Um.join x).1 '' Set.range Fin.castSucc) ≤ Ideal.span {x.2.1 0} := by
@@ -67,6 +81,13 @@ private def sU {N : ℕ} {A : CommRingCat.{0}} (y : ((BC N).sub ((Q2 N).comap (�
 private def wS (N : ℕ) (E : Spc) (T : Scheme.{0}) (y : Sx (Sp E ((BC N).sub ((Q2 N).comap (βC N)))) 0 T) : (Γ(T, ⊤))ˣ :=
   sU (show ComposableArrows (Ob ((BC N).sub ((Q2 N).comap (βC N))) Γ(T, ⊤)) 0 from y.2).left.pt
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `T' T g x`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [wS, sU, IsUnit.unit_spec, Units.coe_map]`. Both sides reduce to the same expression.
+
+Introduce `T x`. Rewrite using `[lineUnit_line]`. Apply `Units.ext` to reduce the goal to its premises. Establish `key` using `(show ComposableArrows (Ob ((BC N).sub ((Q2 N).comap (βC N))) Γ(T, ⊤)) 1 from x.2).hom.2`. Establish `k2` using `congrArg (fun y => (y.1.2.1 0 : Γ(T, ⊤))) key`.
+
+Simplify using `only [wS, sU, IsUnit.unit_spec]`. Conclude with `k2.symm`.
+-/
 private theorem triv (N : ℕ) (E : Spc) :
     IsTrivBy (Sp.line E (chiM N ((Q2 N).comap (βC N)))) (wS N E) := by
   refine ⟨?_, ?_⟩
@@ -87,6 +108,13 @@ end UpperTheory.LineUnitTrivialization
 end
 
 open UpperTheory.LineUnitTrivialization in
+/- English proof (translation)
+Introduce `q _ N E hE`. Establish `hI : Inv q (Sp E ((BC N).sub ((Q2 N).comap (βC N))))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Establish `hI' : Inv q (Sp E (BC N))` using `fun U ⟨x⟩ => hE U ⟨x.1⟩`. Take `⟨-, hpull, hadd⟩` from `GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q`. Rewrite using `[hpull _ _ hI', hpull _ _ hI']`.
+
+Establish `h0 : c1 q (Sp.line E (chiM N ((Q2 N).comap (βC N)))) = 0` using `UpperTheory.firstChernClass_eq_zero_of_isTrivialized q _ _ hI (triv N E)`. Establish `hsum` using `hadd (Sp.map E (incl ((Q2 N).comap (βC N))) ≫ Sp.line E (chiH N)) (Sp.line E (chiM N ((Q2 N).comap (βC N)))) (Sp.map E (incl ((Q2 N).comap (βC N))) ≫ Sp.line E (chiB N)) hI (by`. Introduce `U x`. Rewrite using `[lineUnit_map, lineUnit_map, lineUnit_line]`. Use `first`.
+
+Consider the case `exact (mul_div_cancel _ _).symm`. Consider the case `exact (mul_div_cancel_left _ _).symm`. Consider the case `exact (mul_div_cancel'_right _ _).symm)`. Rewrite using `[hsum, h0, add_zero]`.
+-/
 theorem UpperTheory.chernClass_pullback_blowupSecondLocus_eq :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc), Inv q E →
         pull _ (Sp.map E (incl ((Q2 N).comap (βC N)))) _ _ (c1 q (Sp.line E (chiB N))) =

@@ -14,6 +14,9 @@ section Val
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
   {x : (Σ k, ι k) → Ω} {w : (Σ k, ι k) → ℂ}
 
+/- English proof (translation)
+Establish `hs : s ≠ 0` using `fun h0 => hv (isValueAt_zero hw (h0 ▸ h))`. Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify using `using isValueAt_pow h m`. Simplify using `using isValueAt_pow (isValueAt_inv h hs hv) m`.
+-/
 theorem isValueAt_zpow (hw : w ∈ mcPts (mCoordIdeal x)) {s : Ω} {v : ℂ} (h : IsValueAt x s w v) (hv : v ≠ 0)
     (n : ℤ) : IsValueAt x (s ^ n) w (v ^ n) := by
   have hs : s ≠ 0 := fun h0 => hv (isValueAt_zero hw (h0 ▸ h))
@@ -21,6 +24,9 @@ theorem isValueAt_zpow (hw : w ∈ mcPts (mCoordIdeal x)) {s : Ω} {v : ℂ} (h 
   · simpa using isValueAt_pow h m
   · simpa using isValueAt_pow (isValueAt_inv h hs hv) m
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using isValueAt_one_self x w`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `isValueAt_mul (h a (Finset.mem_insert_self a S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem isValueAt_prod {α : Type} (S : Finset α) (f : α → Ω) (v : α → ℂ)
     (h : ∀ i ∈ S, IsValueAt x (f i) w (v i)) : IsValueAt x (∏ i ∈ S, f i) w (∏ i ∈ S, v i) := by
   induction S using Finset.induction_on with
@@ -29,6 +35,9 @@ theorem isValueAt_prod {α : Type} (S : Finset α) (f : α → Ω) (v : α → �
     rw [Finset.prod_insert ha, Finset.prod_insert ha]
     exact isValueAt_mul (h a (Finset.mem_insert_self a S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_div_distrib]`. Use `isValueAt_prod _ _ _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← div_zpow]`. Conclude with `isValueAt_zpow hw (isValueAt_ratio (coord_ne hw (hc' k)) (hc' k)) (div_ne_zero (hc k) (hc' k)) _`.
+-/
 theorem isValueAt_mon (hw : w ∈ mcPts (mCoordIdeal x)) {c c' : ∀ k, ι k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
     (hc' : ∀ k, w ⟨k, c' k⟩ ≠ 0) (b : K → ℤ) :
     IsValueAt x ((∏ k, x ⟨k, c k⟩ ^ b k) / ∏ k, x ⟨k, c' k⟩ ^ b k) w (∏ k, (w ⟨k, c k⟩ / w ⟨k, c' k⟩) ^ b k) := by
@@ -37,6 +46,9 @@ theorem isValueAt_mon (hw : w ∈ mcPts (mCoordIdeal x)) {c c' : ∀ k, ι k} (h
   rw [← div_zpow]
   exact isValueAt_zpow hw (isValueAt_ratio (coord_ne hw (hc' k)) (hc' k)) (div_ne_zero (hc k) (hc' k)) _
 
+/- English proof (translation)
+Rewrite using `[norm_prod, Real.log_prod fun k _ => norm_ne_zero_iff.2 (zpow_ne_zero _ (div_ne_zero (hc k) (hc' k))), ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, Real.log_zpow, norm_div, Real.log_div (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (hc' k))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_mon {c c' : ∀ k, ι k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (hc' : ∀ k, w ⟨k, c' k⟩ ≠ 0) (b : K → ℤ) :
     Real.log ‖∏ k, (w ⟨k, c k⟩ / w ⟨k, c' k⟩) ^ b k‖ =
       ∑ k, (b k : ℝ) * Real.log ‖w ⟨k, c k⟩‖ - ∑ k, (b k : ℝ) * Real.log ‖w ⟨k, c' k⟩‖ := by
@@ -46,21 +58,33 @@ theorem log_mon {c c' : ∀ k, ι k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (hc' : �
   rw [norm_zpow, Real.log_zpow, norm_div, Real.log_div (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (hc' k))]
   ring
 
+/- English proof (translation)
+Introduce `h0` and use `h (by show mConeMap w (X q) = 0 rw [mConeMap, aeval_X, h0, map_zero, zero_mul])`.
+-/
 theorem ne_of_notMem {q : Σ k, ι k} (h : (X q : MRing ι) ∉ mCoordIdeal w) : w q ≠ 0 := fun h0 => h (by
   show mConeMap w (X q) = 0
   rw [mConeMap, aeval_X, h0, map_zero, zero_mul])
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval_map, eval₂_comp_left]`. Conclude with `congrArg (fun g => MvPolynomial.eval₂ g _ f) (RingHom.ext_int _ _)`.
+-/
 theorem eval_conj (z : (Σ k, ι k) → ℂ) (f : MRing ι) :
     eval (conjVec z) (map (Int.castRingHom ℂ) f) = starRingEnd ℂ (eval z (map (Int.castRingHom ℂ) f)) := by
   rw [eval_map, eval_map, eval₂_comp_left]
   exact congrArg (fun g => MvPolynomial.eval₂ g _ f) (RingHom.ext_int _ _)
 
+/- English proof (translation)
+Take `⟨d, g, f, hg, hf, hy, heq, hz0, rfl⟩` from `h`. Use `⟨d, g, f, hg, hf, hy, heq, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_conj]`. Conclude with `(map_ne_zero _).2 hz0`. Rewrite using `[eval_conj, eval_conj, map_div₀]`.
+-/
 theorem isValueAt_conj {s : Ω} {v : ℂ} (h : IsValueAt x s w v) : IsValueAt x s (conjVec w) (starRingEnd ℂ v) := by
   obtain ⟨d, g, f, hg, hf, hy, heq, hz0, rfl⟩ := h
   refine ⟨d, g, f, hg, hf, hy, heq, ?_, ?_⟩
   · rw [eval_conj]; exact (map_ne_zero _).2 hz0
   · rw [eval_conj, eval_conj, map_div₀]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_isValueAt hw hs`. Rewrite using `[valAt_eq hw hv, valAt_eq hw' (isValueAt_conj hv)]`.
+-/
 theorem valAt_conj (hw : w ∈ mcPts (mCoordIdeal x)) (hw' : conjVec w ∈ mcPts (mCoordIdeal x)) {s : Ω}
     (hs : RegAt x (mCoordIdeal w) s) : valAt x s (conjVec w) = starRingEnd ℂ (valAt x s w) := by
   obtain ⟨v, hv⟩ := exists_isValueAt hw hs
@@ -71,6 +95,13 @@ end Val
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} {N j : ℕ} (M : FlagModel y Ψ N j)
 
+/- English proof (translation)
+Take `⟨h, bh, hh⟩` from `exists_selector M.Ω M.j_le p.2 hI`. Establish `hu : IsUnit (F.T p.1).det` using `(hF.1 p.1).2.isUnit`. Use `set R := (F.T p.1)⁻¹ * F'.T p.1 with hR`. Establish `bR : IsBlockDiag j R` using `((hF.1 p.1).1.inv hu).mul (hF'.1 p.1).1`. Establish `eT : F'.T p.1 = F.T p.1 * R` using `by rw [hR, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`.
+
+Establish `e1` using `hF.2.1 p k hp m (R * h) (bR.mul bh)`. Establish `e2` using `hF'.2.1 p k hp m h bh`. Establish `e3 : ∀ I, minorIJ (R * h) I (stepCols N j p.2) = minorIJ R I I'` using `fun I => by`. Rewrite using `[minorIJ_mul]`. Simplify using `[hh]`.
+
+Simplify using `only [e3] at e1`. Rewrite `e2` using `[eT, detFac_mul _ bR, Matrix.mul_assoc]`. Simplify using `only [hh, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e2`. Take the linear combination `e2 - detFac j p.2 R * e1`.
+-/
 theorem change_gen {F F' : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) (hF' : M.IsFrame F') {p : Ψ × Fin N} {k : K}
     (hp : M.blk p = some k) (m : ι k) {I' : Finset (Fin N)} (hI : IsStepRows N j p.2 I') :
     detFac j p.2 ((F.T p.1)⁻¹ * F'.T p.1) * (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') *
@@ -90,6 +121,11 @@ theorem change_gen {F F' : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) (hF'
   simp only [hh, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e2
   linear_combination e2 - detFac j p.2 R * e1
 
+/- English proof (translation)
+Establish `hu : IsUnit (F.T p.1).det` using `(hF.1 p.1).2.isUnit`. Use `set R := (F.T p.1)⁻¹ * F'.T p.1 with hR`. Establish `bR : IsBlockDiag j R` using `((hF.1 p.1).1.inv hu).mul (hF'.1 p.1).1`. Establish `eT : F'.T p.1 = F.T p.1 * R` using `by rw [hR, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`. Establish `e1` using `hF.2.2.2 p hp`.
+
+Establish `e2` using `hF'.2.2.2 p hp`. Rewrite `e2` using `[eT, detFac_mul _ bR]`. Take the linear combination `e2 - detFac j p.2 R * e1`.
+-/
 theorem change_base {F F' : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) (hF' : M.IsFrame F') {p : Ψ × Fin N}
     (hp : M.blk p = none) :
     detFac j p.2 ((F.T p.1)⁻¹ * F'.T p.1) * (∏ k', M.x ⟨k', F.c k'⟩ ^ M.b p k') * F.υ p =
@@ -103,6 +139,17 @@ theorem change_base {F F' : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) (hF
   rw [eT, detFac_mul _ bR] at e2
   linear_combination e2 - detFac j p.2 R * e1
 
+/- English proof (translation)
+Set `uA : (Σ k, ι k) → Finset (Fin N) → regRing M.x w` to `fun q I => ⟨F.u q I, exists_isValueAt hw (hG.2.1 q I).1⟩`. Set `vA : Finset (Fin N) → (Σ k, ι k) → regRing M.x w` to `fun I q => ⟨F.u' I q, exists_isValueAt hw (hG.2.1 q I).2⟩`. Establish `rel : ∀ I', IsStepRows N j p.2 I' → ∑ m : ι k, valAt M.x (F.u' I ⟨k, m⟩) w * valAt M.x (F.u ⟨k, m⟩ I') w = if I = I' then 1 else 0` using `fun I' hI' => by`. Establish `e : ∑ m : ι k, vA I ⟨k, m⟩ * uA ⟨k, m⟩ I' = if I = I' then 1 else 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `hF.2.2.1 p k hp I I' hI hI'` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [uA, vA] using this`. Establish `e'` using `congrArg (regVal hw) e`. Rewrite `e'` using `[map_sum]`. Simplify using `only [map_mul] at e'`.
+
+Use `e'.trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_eq_single I]`. Rewrite using `[rel I hI, if_pos rfl, one_mul]`. Introduce `I' _ hne`. Distinguish the cases in `h : IsStepRows N j p.2 I'`. Rewrite using `[rel I' h, if_neg hne.symm, zero_mul]`.
+
+Rewrite using `[minor_stepCols_eq_zero M.j_le f I' bf h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem left_inv_val {F : FrameData ι Ψ N M.Ω M.blk} (hF : M.IsFrame F) {w : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hw : w ∈ mcPts (mCoordIdeal M.x)) (hG : M.GoodAt F (mCoordIdeal w)) {p : Ψ × Fin N} {k : K}
     (hp : M.blk p = some k) {f : Matrix (Fin N) (Fin N) ℂ} (bf : IsBlockDiag j f) {I : Finset (Fin N)}
@@ -144,6 +191,43 @@ def Rel (Gr : FrameData ι Ψ N M.Ω M.blk → Ψ → ((Σ k, baseIdx ι M.blk k
 variable {M}
 variable {Gr : FrameData ι Ψ N M.Ω M.blk → Ψ → ((Σ k, baseIdx ι M.blk k) → ℂ) → Matrix (Fin N) (Fin N) ℂ → Prop}
 
+/- English proof (translation)
+Take `⟨F, G, hG, h, bh, dh, t, ht, rfl⟩` from `h1`. Take `⟨F', G', hG', h', bh', dh', t', ht', rfl⟩` from `h2`. Take `⟨Rz, hRz, dR, rfl⟩` from `hcomp _ _ _ _ _ _ hG hG'`. Take `⟨hF, hw, gd, bG, pG⟩` from `hgood _ _ _ _ hG`. Take `⟨hF', -, gd', -, -⟩` from `hgood _ _ _ _ hG'`.
+
+Generalize the expression as in `basePart M.blk z = w at *`. Establish `hc : ∀ k, w ⟨k, F.c k⟩ ≠ 0` using `fun k => ne_of_notMem (gd.1 k)`. Establish `hc' : ∀ k, w ⟨k, F'.c k⟩ ≠ 0` using `fun k => ne_of_notMem (gd'.1 k)`. Establish `hμ` using `isValueAt_mon hw hc hc' (M.b p)`. Establish `lμ` using `log_mon hc hc' (M.b p)`.
+
+Establish `μ0 : (∏ k, (w ⟨k, F.c k⟩ / w ⟨k, F'.c k⟩) ^ M.b p k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (div_ne_zero (hc k) (hc' k))`. Establish `m0 : (∏ k, M.x ⟨k, F'.c k⟩ ^ M.b p k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (coord_ne hw (hc' k))`. Generalize the expression as in `(∏ k, (w ⟨k, F.c k⟩ / w ⟨k, F'.c k⟩) ^ M.b p k) = μ at *`. Set `RA : Matrix (Fin N) (Fin N) (regRing M.x w)` to `Matrix.of fun a b => ⟨_, _, hRz a b⟩`. Set `μA : regRing M.x w` to `⟨_, _, hμ⟩`.
+
+Establish `eμ : regVal hw μA = μ` using `valAt_eq hw hμ`. Establish `e1 : RA.map (regRing M.x w).subtype = (F.T p.1)⁻¹ * F'.T p.1` using `by ext a b; rfl`. Establish `e2 : RA.map (regVal hw) = Rz` using `by ext a b; exact valAt_eq hw (hRz a b)`. Establish `bR : IsBlockDiag j Rz`. Establish `: IsBlockDiag j RA` using `fun a b hab => Subtype.ext ((((hF.1 p.1).1.inv (hF.1 p.1).2.isUnit).mul (hF'.1 p.1).1) a b hab)`.
+
+Conclude with `e2 ▸ this.map _`. Apply the tactic sequence `rcases ht with ⟨k, a, hk, ha, hz, rfl⟩ | ⟨hk, rfl⟩ <;> rcases ht' with ⟨k', a', hk', ha', hz', rfl⟩ | ⟨hk', rfl⟩`. Take `rfl : k = k'` from `Option.some.inj (hk.symm.trans hk')`. Establish `hi : IsProperStep N j p.2`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hk` using `[(M.blk_none p).2 hn]`. Consider the cases of `hk`. Establish `ch : ∀ m I', IsStepRows N j p.2 I' → detFac j p.2 Rz * μ * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) w * minorIJ Rz I I' = valAt M.x (F'.u ⟨k, m⟩ I') w`. Introduce `m I' hI'`. Set `uA : Finset (Fin N) → regRing M.x w` to `fun I => ⟨F.u ⟨k, m⟩ I, exists_isValueAt hw (gd.2.1 _ I).1⟩`.
+
+Set `vA : regRing M.x w` to `⟨F'.u ⟨k, m⟩ I', exists_isValueAt hw (gd'.2.1 _ I').1⟩`. Establish `e : detFac j p.2 RA * μA * ∑ I, uA I * minorIJ RA I I' = vA`. Apply `(regRing M.x w).subtype_injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_sum, ← detFac_map, ← minorIJ_map, e1]`. Use `change_gen M hF hF' hk m hI'` as an intermediate fact.
+
+Use `show _ * (_ / _) * ∑ I, F.u ⟨k, m⟩ I * _ = F'.u ⟨k, m⟩ I'`. Rewrite using `[← mul_div_assoc, div_mul_eq_mul_div, this, mul_div_cancel_left₀ _ m0]`. Establish `e'` using `congrArg (regVal hw) e`. Simplify using `only [map_mul, map_sum, ← detFac_map, ← minorIJ_map, e2, eμ] at e'`. Conclude with `e'`.
+
+Establish `ch2 : ∀ m, ∑ I, valAt M.x (F'.u ⟨k, m⟩ I) w * minorIJ h' I (stepCols N j p.2) = detFac j p.2 Rz * μ * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) w * minorIJ (Rz * h') I (stepCols N j p.2)`. Introduce `m`. Simplify using `only [minorIJ_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hs : IsStepRows N j p.2 I'`. Rewrite using `[← ch m I' hs, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun I _ => by ring`. Simplify using `[minor_stepCols_eq_zero M.j_le h' I' bh' hs]`. Establish `fin : ∀ I, a * minorIJ h I (stepCols N j p.2) = a' * detFac j p.2 Rz * μ * minorIJ (Rz * h') I (stepCols N j p.2)`.
+
+Introduce `I`. Distinguish the cases in `hs : IsStepRows N j p.2 I`. Rewrite using `[← left_inv_val M hF hw gd hk bh hs, ← left_inv_val M hF hw gd hk (bR.mul bh') hs, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `(hz m).symm.trans (hz' m)` as an intermediate fact.
+
+Rewrite `this` using `[ch2]`. Take the linear combination `(valAt M.x (F.u' I ⟨k, m⟩) w) * this`. Rewrite using `[minor_stepCols_eq_zero M.j_le h I bh hs, minor_stepCols_eq_zero M.j_le _ I (bR.mul bh') hs]`. Simplify using the standard rewrite rules. Use `pot_step M.j_le p.2 hi pG bG bR dR dh dh' ha ha' μ0 fin` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hk'` using `[hk]`. Consider the cases of `hk'`. Rewrite `hk'` using `[hk]`. Consider the cases of `hk'`.
+
+Establish `hi` using `(M.blk_none p).1 hk`. Take `⟨v, hv⟩` from `exists_isValueAt hw (gd.2.2 p hk).2.1`. Take `⟨v', hv'⟩` from `exists_isValueAt hw (gd.2.2 p hk).2.2`. Establish `v0 : v ≠ 0`. Use `isValueAt_mul hv hv'` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel₀ (gd.2.2 p hk).1]`. Establish `e` using `(valAt_eq hw this).symm.trans (valAt_eq hw (isValueAt_one_self M.x w))`. Conclude with `left_ne_zero_of_mul_eq_one e`. Set `uA : regRing M.x w` to `⟨F.υ p, v, hv⟩`. Set `vA : regRing M.x w` to `⟨F'.υ p, exists_isValueAt hw (gd'.2.2 p hk).2.1⟩`.
+
+Establish `e : detFac j p.2 RA * μA * uA = vA`. Apply `(regRing M.x w).subtype_injective` to reduce the goal to its premises. Simplify using `only [map_mul, ← detFac_map, e1]`. Use `change_base M hF hF' hk` as an intermediate fact. Use `show _ * (_ / _) * F.υ p = F'.υ p`.
+
+Rewrite using `[← mul_div_assoc, div_mul_eq_mul_div, this, mul_div_cancel_left₀ _ m0]`. Establish `e'` using `congrArg (regVal hw) e`. Simplify using `only [map_mul, ← detFac_map, e2, eμ] at e'`. Establish `e'' : detFac j p.2 Rz * μ * v = valAt M.x (F'.υ p) w`. Rewrite using `[← valAt_eq hw hv]`.
+
+Conclude with `e'`. Establish `d0` using `detFac_ne_zero M.j_le p.2 bR dR`. Rewrite using `[pot_base M.j_le p.2 hi h h' pG bG bR dR, ← e'', valAt_eq hw hv, norm_mul, norm_mul, Real.log_mul (mul_ne_zero (norm_ne_zero_iff.2 d0) (norm_ne_zero_iff.2 μ0)) (norm_ne_zero_iff.2 v0), Real.log_mul (norm_ne_zero_iff.2 d0) (norm_ne_zero_iff.2 μ0)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Rel.unique
     (hgood : ∀ F τ w G, Gr F τ w G → M.IsFrame F ∧ w ∈ mcPts (mCoordIdeal M.x) ∧ M.GoodAt F (mCoordIdeal w) ∧
       IsBlockDiag j G ∧ G.PosDef)

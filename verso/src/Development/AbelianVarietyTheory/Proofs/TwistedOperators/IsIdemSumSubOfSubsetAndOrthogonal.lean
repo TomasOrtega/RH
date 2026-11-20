@@ -10,6 +10,11 @@ namespace GlobalTheory.IdemSubDiff
 
 variable {D : D7} [DecidableEq (Pl D.host.E)]
 
+/- English proof (translation)
+Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FunObj.Comparison₂.hom_sum]`. Conclude with `Finset.sum_eq_zero fun Q hQ => (GlobalTheory.IdemSupport.delta_of_isIdemAt (comp_toAd D) (h Q hQ)).1`. Rewrite using `[GlobalTheory.FunObj.Comparison₂.hom_sum, GlobalTheory.FunObj.Comparison₂.hom_sum] split_ifs with hw`. Rewrite using `[Finset.sum_eq_single_of_mem w hw fun Q hQ hne => (cpt_of_isIdemAt (h Q hQ)).2 w hne.symm]`.
+
+Conclude with `(cpt_of_isIdemAt (h w hw)).1`. Conclude with `Finset.sum_eq_zero fun Q hQ => (cpt_of_isIdemAt (h Q hQ)).2 w fun h' => hw (h' ▸ hQ)`.
+-/
 theorem comp_sum {es : Pl D.host.E → AE D} {S : Finset (Pl D.host.E)}
     (h : ∀ PP ∈ S, Formalism.L2.NTheta.IsIdemAt (es PP) PP) :
     infPart D (∑ PP ∈ S, es PP) = 0 ∧
@@ -23,6 +28,21 @@ theorem comp_sum {es : Pl D.host.E → AE D} {S : Finset (Pl D.host.E)}
       exact (cpt_of_isIdemAt (h w hw)).1
     · exact Finset.sum_eq_zero fun Q hQ => (cpt_of_isIdemAt (h Q hQ)).2 w fun h' => hw (h' ▸ hQ)
 
+/- English proof (translation)
+Introduce `D _ e e₀ P P₀ h h0 hsub`. Take `⟨⟨es, hes, he⟩, hc⟩` from `h`. Take `⟨i0, c1, c0⟩` from `GlobalTheory.FunObj.Comparison₂.cpt_idemSum h0`. Take `⟨j0, d⟩` from `comp_sum hes`. Rewrite `j0`, `d` using `[← he]`.
+
+Establish `hes0 : ∀ PP ∈ P₀, Formalism.L2.NTheta.IsIdemAt (es PP) PP` using `fun PP hPP => hes PP (hsub hPP)`. Take `⟨k0, k⟩` from `comp_sum hes0`. Establish `he0 : e₀ = ∑ PP ∈ P₀, es PP`. Use `GlobalTheory.FunObj.ae_ext (by rw [i0, k0]) fun w => ?_` and prove the remaining obligations. Rewrite using `[k w]`.
+
+Use `split_ifs with hw`. Conclude with `c1 w hw`. Conclude with `c0 w hw`. Establish `hdiff : e - e₀ = ∑ PP ∈ P \ P₀, es PP`. Rewrite using `[he, he0, ← Finset.sum_sdiff hsub, add_sub_cancel_right]`.
+
+Establish `hmul : e * (e - e₀) = e - e₀`. Use `GlobalTheory.FunObj.ae_ext (by simp only [RingHom.map_mul, RingHom.map_sub, j0, i0, sub_zero, mul_zero]) fun w => ?_` and prove the remaining obligations. Simplify using `only [RingHom.map_mul, RingHom.map_sub, d w]`. Distinguish the cases in `hw : w ∈ P`. Rewrite using `[if_pos hw, one_mul]`.
+
+Establish `hw0 : w ∉ P₀` using `fun h' => hw (hsub h')`. Rewrite using `[if_neg hw, c0 w hw0, zero_mul, sub_zero]`. Establish `horth : e₀ * (e - e₀) = 0`. Use `GlobalTheory.FunObj.ae_ext (by simp only [RingHom.map_mul, RingHom.map_sub, j0, i0, sub_zero, mul_zero, RingHom.map_zero]) fun w => ?_` and prove the remaining obligations. Simplify using `only [RingHom.map_mul, RingHom.map_sub, RingHom.map_zero, d w]`.
+
+Distinguish the cases in `hw0 : w ∈ P₀`. Rewrite using `[c1 w hw0, if_pos (hsub hw0), sub_self, mul_zero]`. Rewrite using `[c0 w hw0, zero_mul]`. Use `⟨⟨⟨es, fun PP hPP => hes PP (Finset.mem_sdiff.1 hPP).1, hdiff⟩, ?_⟩, horth⟩` and prove the remaining obligations. Establish `h1 : (e - e₀) * cA D (e - e₀) = ((e - e₀) * cA D (e - e₀)) * (e * cA D e)` using `by conv_lhs => rw [← hmul]`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hc, mul_zero]`.
+-/
 theorem isIdemSum_sdiff : ∀ {D : D7} [DecidableEq (Pl D.host.E)] {e e₀ : AE D} {P P₀ : Finset (Pl D.host.E)},
     IsIdemSum e P → IsIdemSum e₀ P₀ → P₀ ⊆ P → IsIdemSum (e - e₀) (P \ P₀) ∧ e₀ * (e - e₀) = 0 := by
   intro D _ e e₀ P P₀ h h0 hsub

@@ -18,6 +18,13 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.CuspCentre
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ Z := Module.Finite.iff_fg.2 hZ`. Use `haveI : IsAddTorsionFree V := IsAddTorsionFree.of_module_rat V`. Use `haveI : Module.Free ℤ Z := inferInstance`. Set `b` to `Module.finBasis ℤ Z`. Establish `hli : LinearIndependent ℤ (Z.subtype ∘ b)` using `b.linearIndependent.map' Z.subtype Z.ker_subtype`.
+
+Establish `hsp : Submodule.span ℤ (Set.range (Z.subtype ∘ b)) = Z`. Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hq : LinearIndependent ℚ (Z.subtype ∘ b)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hli`. Establish `h1` using `finrank_span_eq_card hq`. Establish `h2 : Submodule.span ℚ (Set.range (Z.subtype ∘ b)) = Submodule.span ℚ (Z : Set V)` using `by conv_rhs => rw [← hsp]`.
+
+Rewrite using `[Submodule.span_span_of_tower]`. Rewrite `h1` using `[h2, hn, Fintype.card_fin]`. Substitute `h1` using the available equality. Conclude with `⟨_, hli, hsp⟩`.
+-/
 theorem exists_int_basis_of_fg {V : Type} [AddCommGroup V] [Module ℚ V] (Z : Submodule ℤ V)
     (hZ : Z.FG) {n : ℕ} (hn : Module.finrank ℚ (Submodule.span ℚ (Z : Set V)) = n) :
     ∃ bs : Fin n → V, LinearIndependent ℤ bs ∧ Submodule.span ℤ (Set.range bs) = Z := by
@@ -38,6 +45,19 @@ theorem exists_int_basis_of_fg {V : Type} [AddCommGroup V] [Module ℚ V] (Z : S
   subst h1
   exact ⟨_, hli, hsp⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ r ρ Comp X cu`. Take `⟨c, cu⟩` from `cu`. Establish `hZ : (Submodule.span ℤ (FJ.zGam (X c) cu) : Set (Matrix (Fin ρ) (Fin ρ) E)) = FJ.zGam (X c) cu`. Use `Submodule.span_eq (AddSubgroup.toIntSubmodule (zGamSub (X c) cu))` as an intermediate fact. Conclude with `congrArg (fun S : Submodule ℤ (Matrix (Fin ρ) (Fin ρ) E) => (S : Set (Matrix (Fin ρ) (Fin ρ) E))) this`.
+
+Establish `hdim` using `GlobalTheory.T.finrank_rat_skewHermitian_matrices_cmField E ρ (X c).Ψ (X c).cmType (Submodule.span ℚ (Submodule.span ℤ (FJ.zGam (X c) cu) : Set (Matrix (Fin ρ) (Fin ρ) E))) (by`. Rewrite using `[hZ]`. Introduce `β`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.1`. Consider the case `zero => intro a b`. Simplify using `[cc_zero']`. Consider the case `add x y _ _ hx hy`.
+
+Introduce `a b`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, cc_add', hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul q x _ hx`. Introduce `a b`.
+
+Establish `hq : cc (q : E) = q` using `by simp [cc]`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, Rat.smul_def, Rat.smul_def, cc_mul', hq, hx]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Take `⟨n, hn, hm⟩` from `GlobalTheory.T.skew_matrix_multiple_in_lattice E r ρ (X c) cu β h`.
+
+Establish `h1` using `Submodule.smul_mem (Submodule.span ℚ (FJ.zGam (X c) cu)) ((n : ℚ)⁻¹) (Submodule.subset_span hm)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn.ne'), one_smul] at h1)` and apply the resulting hypothesis. Take `⟨bs, h1, h2⟩` from `exists_int_basis_of_fg _ (GlobalTheory.T.span_cuspCentre_arithmeticGroup_fg E r ρ (X c) cu) hdim`. Use `⟨bs, h1, fun β => ?_⟩` and prove the remaining obligations. Conclude with `((Set.ext_iff.1 hZ β).symm).trans (SetLike.ext_iff.1 h2 β).symm`.
+-/
 theorem latZ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (Comp : Type) (X : Comp → Data E r), FJ.LatZ X ρ := by
   intro E _ _ _ r ρ Comp X cu
   obtain ⟨c, cu⟩ := cu

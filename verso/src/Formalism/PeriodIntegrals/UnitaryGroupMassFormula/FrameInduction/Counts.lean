@@ -12,15 +12,24 @@ def extZ {n : Type*} (p : n → Prop) [DecidablePred p] : ({i // p i} → ℂ) �
   map_add' y y' := by funext i; by_cases h : p i <;> simp [h]
   map_smul' c y := by funext i; by_cases h : p i <;> simp [h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma extZ_apply {n : Type*} (p : n → Prop) [DecidablePred p] (y : {i // p i} → ℂ) (i : n) :
     extZ p y i = if h : p i then y ⟨i, h⟩ else 0 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `⟨i, h⟩`. Establish `h1` using `congrFun hy i`. Simplify `h1` using `[extZ_apply, h]`.
+-/
 lemma extZ_eq_zero {n : Type*} (p : n → Prop) [DecidablePred p] (y : {i // p i} → ℂ)
     (hy : extZ p y = 0) : y = 0 := by
   funext ⟨i, h⟩
   have h1 := congrFun hy i
   simpa [extZ_apply, h] using h1
 
+/- English proof (translation)
+Establish `h` using `hA.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`. Simplify `h` using `[Matrix.star_eq_conjTranspose, Function.comp_def]`.
+-/
 lemma diag_eq {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian) :
     (hA.eigenvectorUnitary : Matrix n n ℂ)ᴴ * A * (hA.eigenvectorUnitary : Matrix n n ℂ) =
       diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) := by
@@ -28,6 +37,11 @@ lemma diag_eq {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA :
   rw [Unitary.conjStarAlgAut_apply] at h
   simpa [Matrix.star_eq_conjTranspose, Function.comp_def] using h
 
+/- English proof (translation)
+Establish `hu : star (hA.eigenvectorUnitary : Matrix n n ℂ) * (hA.eigenvectorUnitary : Matrix n n ℂ) = 1` using `Matrix.mem_unitaryGroup_iff'.1 hA.eigenvectorUnitary.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, Matrix.one_mulVec]`. Use `_ = star (hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ ((hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ w) := by`. Rewrite using `[Matrix.mulVec_mulVec]`.
+
+Use `_ = 0 := by rw [hw, Matrix.mulVec_zero]`.
+-/
 lemma U_eq_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian)
     (w : n → ℂ) (hw : (hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ w = 0) : w = 0 := by
   have hu : star (hA.eigenvectorUnitary : Matrix n n ℂ) * (hA.eigenvectorUnitary : Matrix n n ℂ) = 1 :=
@@ -38,6 +52,9 @@ lemma U_eq_zero {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA
         rw [Matrix.mulVec_mulVec]
     _ = 0 := by rw [hw, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Rewrite using `[herm_mulVec_mulVec, diag_eq, herm, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `[mulVec_diagonal, Complex.normSq_apply, Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma re_diag {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA : A.IsHermitian)
     (w : n → ℂ) :
     (herm A ((hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ w) ((hA.eigenvectorUnitary : Matrix n n ℂ) *ᵥ w)).re =
@@ -47,6 +64,11 @@ lemma re_diag {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ} (hA :
   simp [mulVec_diagonal, Complex.normSq_apply, Complex.mul_re, Complex.mul_im]
   ring
 
+/- English proof (translation)
+Establish `hb : ∀ a b, gramM k r z z' γ (Sum.inl a) (Sum.inl b) = (herm (Hpk k r) z z • ggLastU r) a b` using `fun a b => ggBlockA k r z hz a b`. Simplify using `only [herm, dotProduct, mulVec, Fintype.sum_sum_type, hc, star_zero, zero_mul, mul_zero, Finset.sum_const_zero, add_zero, hb, Matrix.smul_apply, smul_eq_mul, Pi.star_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last r) (fun a _ ha => by simp [ggLastU, ha]) (by simp)]`. Rewrite using `[Finset.sum_eq_single (Fin.last r) (fun b _ hb => by simp [ggLastU, hb]) (by simp)]`. Simplify using `[ggLastU, Complex.normSq_apply, Complex.mul_re, Complex.mul_im]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma blockA_re (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) (hz : inWb k r z)
     (c : Fin (r + 1) ⊕ Fin (r + 1) → ℂ) (hc : ∀ b, c (Sum.inr b) = 0) :
     (herm (gramM k r z z' γ) c c).re =
@@ -60,6 +82,21 @@ lemma blockA_re (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r
   simp [ggLastU, Complex.normSq_apply, Complex.mul_re, Complex.mul_im]
   ring
 
+/- English proof (translation)
+Introduce `k r z z' γ hs hp hdet`. Use `set hA := isHerm k r z z' γ with hhA`. Set `p : Fin (r + 1) ⊕ Fin (r + 1) → Prop` to `fun i => 0 < hA.eigenvalues i`. Set `ψ : ({i // p i} → ℂ) →ₗ[ℂ] (Fin (r + 1) → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Sum.inr : Fin (r + 1) → Fin (r + 1) ⊕ Fin (r + 1))).comp ((Matrix.mulVecLin (hA.eigenvectorUnitary : Matrix _ _ ℂ)).comp (extZ p))`. Establish `hinj : Function.Injective ψ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `hinr : ∀ b, ((hA.eigenvectorUnitary : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ) *ᵥ extZ p y) (Sum.inr b) = 0`. Introduce `b`. Use `congrFun hy b` as an intermediate fact.
+
+Simplify `this` using `[ψ, LinearMap.funLeft_apply]`. Establish `h1` using `re_diag hA (extZ p y)`. Rewrite `h1` using `[blockA_re k r z z' γ hs.2.1.1 _ hinr]`. Establish `hT : (herm (Hpk k r) z z).re < 0`. Use `hs.2.1.2` as an intermediate fact.
+
+Simplify using `only [Tz] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : (herm (Hpk k r) z z).re * Complex.normSq (((hA.eigenvectorUnitary : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ) *ᵥ extZ p y) (Sum.inl (Fin.last r))) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hT.le (Complex.normSq_nonneg _)`. Establish `hnn : ∀ i ∈ (Finset.univ : Finset (Fin (r + 1) ⊕ Fin (r + 1))), 0 ≤ hA.eigenvalues i * Complex.normSq (extZ p y i)`. Introduce `i _`.
+
+Rewrite using `[extZ_apply]`. Use `split_ifs with h`. Conclude with `mul_nonneg h.le (Complex.normSq_nonneg _)`. Simplify using the standard rewrite rules. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 (le_antisymm (h1 ▸ hl) (Finset.sum_nonneg hnn))`.
+
+Use function extensionality and compare the values at `t`. Use `hz t.1 (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[extZ_apply, dif_pos t.2]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd h (ne_of_gt t.2)`.
+
+Simplify `h` using `[Complex.normSq_eq_zero]`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact. Simplify `this` using `[Module.finrank_fintype_fun_eq_card]`.
+-/
 theorem positive_count : PosCount := by
   intro k r z z' γ hs hp hdet
   set hA := isHerm k r z z' γ with hhA
@@ -101,6 +138,17 @@ theorem positive_count : PosCount := by
   have := LinearMap.finrank_le_finrank_of_injective hinj
   simpa [Module.finrank_fintype_fun_eq_card] using this
 
+/- English proof (translation)
+Introduce `k r z z' γ hs hp hdet`. Use `set hA := isHerm k r z z' γ with hhA`. Set `q : Fin (r + 1) ⊕ Fin (r + 1) → Prop` to `fun i => ¬ 0 < hA.eigenvalues i`. Set `Φ : ({i // q i} → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `(Matrix.mulVecLin (Vc k r z z' γ)).comp ((Matrix.mulVecLin (hA.eigenvectorUnitary : Matrix _ _ ℂ)).comp (extZ q))`. Establish `hΦ : ∀ y, Φ y = Vc k r z z' γ *ᵥ ((hA.eigenvectorUnitary : Matrix _ _ ℂ) *ᵥ extZ q y)` using `fun y => rfl`.
+
+Establish `hre : ∀ y, (herm (Hpk k r) (Φ y) (Φ y)).re ≤ 0`. Introduce `y`. Rewrite using `[hΦ, herm_Vc, re_diag]`. Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `i _`.
+
+Rewrite using `[extZ_apply]`. Use `split_ifs with h`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.1 h) (Complex.normSq_nonneg _)`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective Φ`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Rewrite `hy` using `[hΦ]`. Conclude with `extZ_eq_zero q y (U_eq_zero hA _ (Vc_inj k r z z' γ hdet _ hy))`. Establish `h1` using `hN k r (LinearMap.range Φ) (by rintro x ⟨y, rfl⟩; exact hre y)`.
+
+Rewrite `h1` using `[LinearMap.finrank_range_of_inj hinj, Module.finrank_fintype_fun_eq_card]`. Conclude with `h1`.
+-/
 theorem nonposCount_of (hN : NegBound) : NonposCount := by
   intro k r z z' γ hs hp hdet
   set hA := isHerm k r z z' γ with hhA

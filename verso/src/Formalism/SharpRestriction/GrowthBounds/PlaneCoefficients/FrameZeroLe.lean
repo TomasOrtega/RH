@@ -15,6 +15,11 @@ namespace G2
 
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ}
 
+/- English proof (translation)
+Take `⟨_, _, hinc, _⟩` from `hV`. Establish `key : ∀ i, i ≤ r - 1 → Fr.fr j 0 ≤ Fr.fr j i`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`.
+
+Conclude with `le_rfl`. Consider the case `succ i ih => intro hi; exact (ih (by omega)).trans (hinc j i (by omega)).le`. Conclude with `key (r - 1) le_rfl`.
+-/
 theorem frame_zero_le (hV : Fr.Valid L₁ N₁) (j : ℤ) : Fr.fr j 0 ≤ Fr.fr j (r - 1) := by
   obtain ⟨_, _, hinc, _⟩ := hV
   have key : ∀ i, i ≤ r - 1 → Fr.fr j 0 ≤ Fr.fr j i := by
@@ -24,13 +29,24 @@ theorem frame_zero_le (hV : Fr.Valid L₁ N₁) (j : ℤ) : Fr.fr j 0 ≤ Fr.fr 
     | succ i ih => intro hi; exact (ih (by omega)).trans (hinc j i (by omega)).le
   exact key (r - 1) le_rfl
 
+/- English proof (translation)
+The claim follows from `(hV.2.2.2.1 a).trans_le (frame_zero_le hV (a + 1))`.
+-/
 theorem zstep (hV : Fr.Valid L₁ N₁) (a : ℤ) : Fr.fr a (r - 1) < Fr.fr (a + 1) (r - 1) := (hV.2.2.2.1 a).trans_le (frame_zero_le hV (a + 1))
 
+/- English proof (translation)
+Proceed by induction on `b, hab using Int.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ b _ ih => exact ih.trans (zstep hV b).le`.
+-/
 theorem zmono (hV : Fr.Valid L₁ N₁) (a b : ℤ) (hab : a ≤ b) : Fr.fr a (r - 1) ≤ Fr.fr b (r - 1) := by
   induction b, hab using Int.le_induction with
   | base => exact le_rfl
   | succ b _ ih => exact ih.trans (zstep hV b).le
 
+/- English proof (translation)
+Take `⟨j, l | m⟩` from `x`. Establish `h` using `(mem_LLset Fr _ _).1 (llPos_mem Fr (segZ j) l.val (by rw [← hnL]; exact l.isLt))`. Conclude with `⟨h.1.1, le_trans (le_of_lt h.1.2) (frame_zero_le hV (segZ j))⟩`. Establish `hr : 1 ≤ r` using `by have := m.isLt; omega`. Establish `h` using `posTL_seg Fr hV hr hnL (⟨j, Sum.inr m⟩ : TL J nL r)`.
+
+Conclude with `⟨h.1, h.2.1⟩`.
+-/
 theorem seg' (hV : Fr.Valid L₁ N₁) {J : ℕ} [NeZero J] {nL : ZMod J → ℕ}
     (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (x : TL J nL r) :
     Fr.fr (segZ x.1 - 1) (r - 1) < posTL Fr x ∧ posTL Fr x ≤ Fr.fr (segZ x.1) (r - 1) := by
@@ -43,6 +59,25 @@ theorem seg' (hV : Fr.Valid L₁ N₁) {J : ℕ} [NeZero J] {nL : ZMod J → ℕ
 
 end G2
 
+/- English proof (translation)
+Introduce `n' r _ Fr L₁ N₁ hV p J _ nL hJ hnL j hj y hy x' hpos`. Unfold `lowP`. Apply `pow_dvd_pow` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `G2.seg' hV hnL x'`. Establish `s0` using `segZ_nonneg x'.1`.
+
+Establish `s1` using `segZ_lt x'.1`. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hy`. Take `⟨⟨y1, y2⟩, -⟩` from `hy`. Establish `hper` using `hV.2.1`. Establish `hJ' : (J : ℤ) = (Fr.J : ℤ)` using `by exact_mod_cast hJ`.
+
+Establish `hjJ : (j : ℤ) < (Fr.J : ℤ)` using `by exact_mod_cast hj`. Establish `hj0 : (0 : ℤ) ≤ (j : ℤ)` using `by positivity`. Establish `hlast : Fr.fr ((Fr.J : ℤ) - 1) (r - 1) = Fr.fr (-1) (r - 1) + n'`. Use `hper (-1) (r - 1)` as an intermediate fact. Rewrite using `[← this]`.
+
+Use `congr 1`. Establish `w1` using `G2.zmono hV (-1) (segZ x'.1 - 1) (by omega)`. Establish `w2` using `G2.zmono hV (segZ x'.1) ((Fr.J : ℤ) - 1) (by omega)`. Establish `w3` using `G2.zmono hV (j : ℤ) ((Fr.J : ℤ) - 1) (by omega)`. Establish `hwin : Fr.fr (-1) (r - 1) + 1 ≤ posTL Fr x' ∧ posTL Fr x' < Fr.fr (-1) (r - 1) + 1 + n'`.
+
+Apply the tactic sequence `constructor <;> omega`. Unfold `Frames.dist`. Apply `Int.toNat_le_toNat` to reduce the goal to its premises. Distinguish the cases in `hc : Fr.fr (-1) (r - 1) + 1 ≤ y`. Establish `hy' : posTL Fr x' = y` using `residue_position_injective_window n' _ _ _ hwin ⟨hc, by omega⟩ hpos`.
+
+Establish `hs : segZ x'.1 ≤ (j : ℤ)`. Assume the negation of the conclusion as `hlt`. Use `G2.zmono hV (j : ℤ) (segZ x'.1 - 1) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `G2.zmono hV (segZ x'.1) (j : ℤ) hs` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `a1 : Fr.fr ((j : ℤ) - 1 + Fr.J) 0 = Fr.fr ((j : ℤ) - 1) 0 + n'` using `hper _ _`. Establish `a2` using `hV.2.2.2.1 ((j : ℤ) - 2 + Fr.J)`. Establish `a3 : (j : ℤ) - 2 + Fr.J + 1 = (j : ℤ) - 1 + Fr.J` using `by ring`. Rewrite `a2` using `[a3]`.
+
+Establish `hJ1 : (1 : ℤ) ≤ (Fr.J : ℤ)` using `by omega`. Establish `a4` using `G2.zmono hV (-1) ((j : ℤ) - 2 + Fr.J) (by omega)`. Establish `hy' : posTL Fr x' = y + n'` using `residue_position_injective_window n' _ _ _ hwin ⟨by omega, by omega⟩ (by rw [DdG.posOf_add_n]; exact hpos)`. Establish `a5 : Fr.fr ((j : ℤ) + Fr.J) (r - 1) = Fr.fr (j : ℤ) (r - 1) + n'` using `hper _ _`. Establish `a6` using `G2.zmono hV (segZ x'.1) ((j : ℤ) + Fr.J) (by omega)`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem restGeo : RestGeo := by
   intro n' r _ Fr L₁ N₁ hV p J _ nL hJ hnL j hj y hy x' hpos
   unfold lowP

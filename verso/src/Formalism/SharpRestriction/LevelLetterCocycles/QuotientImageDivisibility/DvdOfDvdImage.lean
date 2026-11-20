@@ -13,6 +13,11 @@ variable {O LL : Type} [CommRing O] [IsDomain O] [Field LL] [Algebra O LL]
   (u : PowerSeries LL) (hu : IsUnit u) (hψ : ψ (PowerSeries.X + PowerSeries.C l) = PowerSeries.X * u)
 include hinj hψC hu hψ
 
+/- English proof (translation)
+Establish `dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u) (h : g ∣ u * f) : g ∣ f`. Take `⟨v, rfl⟩` from `hu`. Establish `e : f = ↑v⁻¹ * (↑v * f)` using `by rw [← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_right h _`.
+
+Conclude with `dvd_of_dvd_isUnit_mul_lemma hu h`.
+-/
 theorem dvd_cancel_unit {k : ℕ} {f : PowerSeries LL} (h : PowerSeries.X ^ k ∣ u * f) :
     PowerSeries.X ^ k ∣ f := by
   have dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u)
@@ -25,6 +30,11 @@ theorem dvd_cancel_unit {k : ℕ} {f : PowerSeries LL} (h : PowerSeries.X ^ k �
        dvd_of_dvd_isUnit_mul_lemma hu h
 
 omit hinj hψC hψ in
+/- English proof (translation)
+Establish `dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u) (h : g ∣ u * f) : g ∣ f`. Take `⟨v, rfl⟩` from `hu`. Establish `e : f = ↑v⁻¹ * (↑v * f)` using `by rw [← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_right h _`.
+
+Conclude with `dvd_of_dvd_isUnit_mul_lemma hu h`.
+-/
 theorem dvd_cancel_unit' {k : ℕ} {f : PowerSeries LL} (h : PowerSeries.X ^ k ∣ u * f) :
     PowerSeries.X ^ k ∣ f := by
   have dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u)
@@ -36,6 +46,37 @@ theorem dvd_cancel_unit' {k : ℕ} {f : PowerSeries LL} (h : PowerSeries.X ^ k �
   exact
        dvd_of_dvd_isUnit_mul_lemma hu h
 
+/- English proof (translation)
+Establish `dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u) (h : g ∣ u * f) : g ∣ f`. Take `⟨v, rfl⟩` from `hu`. Establish `e : f = ↑v⁻¹ * (↑v * f)` using `by rw [← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e]`. Conclude with `dvd_mul_of_dvd_right h _`.
+
+Establish `hψX : ψ PowerSeries.X = PowerSeries.X * u - PowerSeries.C (algebraMap O LL l)`. Establish `h` using `hψ`. Rewrite `h` using `[map_add, hψC]`. Conclude with `eq_sub_of_add_eq h`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `r hr _`. Assume the negation of the conclusion as `hr0`. Rewrite `hr` using `[Polynomial.degree_eq_natDegree hr0]`.
+
+Establish `h0 : r.natDegree < 0` using `by exact_mod_cast hr`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `r hr hdvd`. Establish `hmon : (Polynomial.X + Polynomial.C l : Polynomial O).Monic` using `Polynomial.monic_X_add_C l`.
+
+Establish `hrem : Polynomial.modByMonic r (Polynomial.X + Polynomial.C l) = Polynomial.C (r.eval (-l))`. Establish `hg : (Polynomial.X + Polynomial.C l : Polynomial O) = Polynomial.X - Polynomial.C (-l)`. Rewrite using `[map_neg, sub_neg_eq_add]`. Rewrite using `[hg]`. Conclude with `Polynomial.modByMonic_X_sub_C_eq_C_eval r (-l)`.
+
+Establish `hsplit : r = Polynomial.C (r.eval (-l)) + (Polynomial.X + Polynomial.C l) * Polynomial.divByMonic r (Polynomial.X + Polynomial.C l)`. Establish `h1 : Polynomial.modByMonic r (Polynomial.X + Polynomial.C l) + (Polynomial.X + Polynomial.C l) * Polynomial.divByMonic r (Polynomial.X + Polynomial.C l) = r` using `by first`. Consider the case `exact Polynomial.modByMonic_add_div r (Polynomial.X + Polynomial.C l)`. Consider the case `exact Polynomial.modByMonic_add_div r _ hmon`. Consider the case `exact Polynomial.modByMonic_add_div r hmon`.
+
+Rewrite `h1` using `[hrem]`. Conclude with `h1.symm`. Establish `hqdeg : (Polynomial.divByMonic r (Polynomial.X + Polynomial.C l)).degree < k`. Distinguish the cases in `hq0 : Polynomial.divByMonic r (Polynomial.X + Polynomial.C l) = 0`. Rewrite using `[hq0, Polynomial.degree_zero] first`.
+
+Consider the case `exact WithBot.bot_lt_coe _`. Consider the case `simp`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hq0 (Polynomial.zero_divByMonic _)`.
+
+Establish `hpos : 0 < (Polynomial.X + Polynomial.C l : Polynomial O).degree` using `by first`. Consider the case `(rw [Polynomial.degree_X_add_C]; exact zero_lt_one)`. Consider the case `simp`. Establish `h1 : (Polynomial.divByMonic r (Polynomial.X + Polynomial.C l)).degree < r.degree` using `by first`. Consider the case `exact Polynomial.degree_divByMonic_lt r (Polynomial.X + Polynomial.C l) hr0 hpos`.
+
+Consider the case `exact Polynomial.degree_divByMonic_lt r _ hmon hr0 hpos`. Consider the case `exact Polynomial.degree_divByMonic_lt r hmon hr0 hpos`. Rewrite `h1` using `[Polynomial.degree_eq_natDegree hq0, Polynomial.degree_eq_natDegree hr0]`. Rewrite `hr` using `[Polynomial.degree_eq_natDegree hr0]`. Rewrite using `[Polynomial.degree_eq_natDegree hq0]`.
+
+Establish `a1 : (Polynomial.divByMonic r (Polynomial.X + Polynomial.C l)).natDegree < r.natDegree`. Conclude with `h1` after adjusting the coercions. Establish `a2 : r.natDegree < k + 1` using `by exact_mod_cast hr`. Establish `a3 : (Polynomial.divByMonic r (Polynomial.X + Polynomial.C l)).natDegree < k` using `by omega`. Conclude with `a3` after adjusting the coercions.
+
+Take `⟨c, q, hrq, hq⟩ : ∃ (c : O) (q : Polynomial O), r = Polynomial.C c + (Polynomial.X + Polynomial.C l) * q ∧ q.degree < k` from `⟨_, _, hsplit, hqdeg⟩`. Establish `hψr : ψ (r : PowerSeries O) = PowerSeries.C (algebraMap O LL c) + PowerSeries.X * (u * ψ (q : PowerSeries O))`. Rewrite using `[hrq]`. Use `first`. Consider the case `(simp only [Polynomial.coe_add, Polynomial.coe_mul, Polynomial.coe_C, Polynomial.coe_X, map_add, map_mul, hψC, hψX]; ring)`.
+
+Consider the case `(simp [hψC, hψX]; ring)`. Establish `hX : PowerSeries.X ∣ ψ (r : PowerSeries O)` using `(dvd_pow_self _ (Nat.succ_ne_zero k)).trans hdvd`. Rewrite `hX` using `[hψr, PowerSeries.X_dvd_iff]`. Use `first`. Consider the case `simp only [map_add, map_mul, PowerSeries.constantCoeff_C, PowerSeries.constantCoeff_X, zero_mul, add_zero] at hX`.
+
+Consider the case `simp at hX`. Establish `hc0 : c = 0` using `hinj (hX.trans (map_zero _).symm)`. Simplify using `only [hc0, map_zero, zero_add] at hψr`. Rewrite `hdvd` using `[hψr, pow_succ']`. Establish `h2 : PowerSeries.X ^ k ∣ u * ψ (q : PowerSeries O)` using `(mul_dvd_mul_iff_left PowerSeries.X_ne_zero).mp hdvd`.
+
+Establish `hq0 : q = 0` using `ih q hq (dvd_of_dvd_isUnit_mul_lemma hu h2)`. Rewrite using `[hrq, hc0, hq0]`. Simplify using the standard rewrite rules.
+-/
 theorem poly_eq_zero : ∀ (k : ℕ) (r : Polynomial O), r.degree < k →
     PowerSeries.X ^ k ∣ ψ (r : PowerSeries O) → r = 0 := by
   have dvd_of_dvd_isUnit_mul_lemma {R : Type _} [CommRing R] {u f g : R} (hu : IsUnit u)
@@ -126,6 +167,19 @@ theorem poly_eq_zero : ∀ (k : ℕ) (r : Polynomial O), r.degree < k →
     rw [hrq, hc0, hq0]
     simp
 
+/- English proof (translation)
+Establish `hres : PowerSeries.map (IsLocalRing.residue O) ((PowerSeries.X + PowerSeries.C l) ^ k) = PowerSeries.X ^ k`. Rewrite using `[map_pow, map_add, PowerSeries.map_X, PowerSeries.map_C, (IsLocalRing.residue_eq_zero_iff l).mpr hlm, map_zero, add_zero]`. Establish `hg : PowerSeries.map (IsLocalRing.residue O) ((PowerSeries.X + PowerSeries.C l) ^ k) ≠ 0`. Rewrite using `[hres]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`.
+
+Take `⟨q, r, hdiv⟩` from `PowerSeries.exists_isWeierstrassDivision (f := a) hg`. Establish `hdeg : r.degree < k`. Establish `h` using `hdiv.degree_lt`. Establish `hz : Ideal.Quotient.mk (IsLocalRing.maximalIdeal O) l = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hlm`. Use `first`.
+
+Consider the case `simpa [hz, PowerSeries.order_X_pow] using h`. Consider the case `simpa [hz] using h`. Consider the case `(rw [hres, PowerSeries.order_X_pow, ENat.toNat_coe] at h; exact h)`. Consider the case `(simp only [hres, PowerSeries.order_X_pow, ENat.toNat_coe] at h; exact h)`. Consider the case `simpa [hres] using h`.
+
+Establish `hψa : ψ a = (PowerSeries.X * u) ^ k * ψ q + ψ (r : PowerSeries O)`. Rewrite using `[hdiv.eq_mul_add, map_add, map_mul, map_pow, hψ]`. Establish `h1 : PowerSeries.X ^ k ∣ (PowerSeries.X * u) ^ k * ψ q` using `dvd_mul_of_dvd_left (pow_dvd_pow_of_dvd (dvd_mul_right _ _) k) _`. Establish `h2 : PowerSeries.X ^ k ∣ ψ (r : PowerSeries O)`. Rewrite `ha` using `[hψa]`.
+
+Use `first`. Consider the case `exact (dvd_add_right h1).mp ha`. Consider the case `simpa using dvd_sub ha h1`. Establish `hr0 : r = 0` using `poly_eq_zero hinj l ψ hψC u hu hψ k r hdeg h2`. Rewrite using `[hdiv.eq_mul_add, hr0, Polynomial.coe_zero, add_zero]`.
+
+Conclude with `dvd_mul_right _ _`.
+-/
 theorem dvd_of_dvd_image [IsLocalRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hlm : l ∈ IsLocalRing.maximalIdeal O) (k : ℕ) (a : PowerSeries O)
     (ha : PowerSeries.X ^ k ∣ ψ a) : (PowerSeries.X + PowerSeries.C l) ^ k ∣ a := by

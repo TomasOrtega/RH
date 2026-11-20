@@ -27,11 +27,29 @@ def DecompPhaseC : Prop :=
           (X.psiInfU u g * conj (X.psiInfU u' g')) =
           Formalism.L2.SG.PairVal.phaseAt s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)
 
+/- English proof (translation)
+Introduce `R ρ s hrel`. Take `⟨hpt, g, hg, g', hg', hdec⟩` from `h3 R ρ s hrel`. Conclude with `⟨hpt, g, hg, g', hg', hdec, h6 R ρ s hrel g hg g' hg' hdec⟩`.
+-/
 theorem decompPhaseC_of (h3 : LiftDecompC X Y u u' κ) (h6 : PhaseTieC X Y u u' κ) : DecompPhaseC X Y u u' κ := by
   intro R ρ s hrel
   obtain ⟨hpt, g, hg, g', hg', hdec⟩ := h3 R ρ s hrel
   exact ⟨hpt, g, hg, g', hg', hdec, h6 R ρ s hrel g hg g' hg' hdec⟩
 
+/- English proof (translation)
+Introduce `R ρ s hrel`. Take `⟨hpt, g, hg, g', hg', hdec, hph⟩` from `h3 R ρ s hrel`. Establish `hDF : ∃ p : X.B.I.Ginf × X.B.I.Ginf, Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)) p.1 p.2`. Take `⟨h, h', hh⟩` from `h4 one_pos _ hpt (h4' R ρ s hrel)`. Conclude with `⟨(h, h'), hh⟩`.
+
+Establish `hcS : hDF.choose.1 ∈ X.SinfU u` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hDF.choose_spec.1`. Establish `hcS' : hDF.choose.2 ∈ X.SinfU u'` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hDF.choose_spec.2.1`. Establish `hcSi : hDF.choose.1⁻¹ ∈ X.SinfU u` using `Formalism.L2.SG.RealObj.InfCut.sinfU_inv X u hcS`. Use `⟨(Formalism.L2.SG.RealObj.InfCut.piIso X u hDF.choose.1 hcS).trans (Formalism.L2.SG.RealObj.InfCut.piIso X u g hg), (Formalism.L2.SG.RealObj.InfCut.piIso X u' hDF.choose.2 hcS').trans (Formalism.L2.SG.RealObj.InfCut.piIso X u' g' hg'), ?_⟩` and prove the remaining obligations. Establish `hat : s.1.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)`.
+
+Take `⟨w0, hw0⟩` from `h1 R ρ s hrel`. Conclude with `Formalism.L2.SG.PairVal.ptOf_spec _ ⟨w0, hw0, hrel⟩`. Establish `hcT : Formalism.L2.SG.PairVal.cTerm vR s.1.toTerm = Formalism.L2.SG.PairVal.phaseAt s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) * (vR s.1.toTerm : ℂ)` using `Formalism.L2.SG.PairVal.cTerm_of_atPt vR _ hat (fun w' hw' => h2 _ w' _ hw' hat)`. Establish `hV : Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) = (X.piU u hDF.choose.1⁻¹).comp ((haveI` using `FiniteDimensional.complete ℂ (X.Vpi u) Formalism.L2.SG.TermOp.OO (νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))).comp (X.piU u' hDF.ch …`. Unfold `Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative Formalism.L2.SG.RealObj.unscaledFrameConjugatedOperator`.
+
+Rewrite using `[if_pos hpt, dif_pos hDF]`. Establish `hO : Formalism.L2.SG.TermOp.OOt s.1 = (((vR s.1.toTerm : ℝ) : ℂ) * (X.psiInfU u g * conj (X.psiInfU u' g'))) • (((Formalism.L2.SG.RealObj.InfCut.piIso X u g hg).toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u).comp ((haveI` using `FiniteDimensional.complete ℂ (X.Vpi u) Formalism.L2.SG.TermOp.OO (νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))) Set.univ (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))).comp ((Formalism.L2.S …`. Rewrite using `[h5 R ρ s hrel g hg g' hg' hdec, ← smul_smul]`. Use `congr 1`. Rewrite using `[hdec]`.
+
+Conclude with `ClassFrameNormal.oo_map_mulLeft _ _ _ _ g g' _ _ _ _ (fun x => (X.Wu_spec u).1 g hg x) (fun x => (X.Wu_spec u').1 g' hg' x)`. Establish `e1 : ∀ z, X.piU u hDF.choose.1 (X.piU u hDF.choose.1⁻¹ z) = z` using `fun z => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← (X.piU_rep u).2.1 _ hcS _ hcSi, mul_inv_cancel, (X.piU_rep u).1, ContinuousLinearMap.one_apply]`. Establish `e2 : ∀ y, X.piU u' hDF.choose.2 ((Formalism.L2.SG.RealObj.InfCut.piIso X u' hDF.choose.2 hcS').symm y) = y` using `fun y => (Formalism.L2.SG.RealObj.InfCut.piIso X u' hDF.choose.2 hcS').apply_symm_apply y`. Unfold `chiOO frameVal`.
+
+Rewrite using `[hO, hcT, hV, smul_smul, ← hph]`. Establish `hsc : ∀ a c r : ℂ, a * (r * c) = a * c * r` using `fun a c r => by ring`. Rewrite using `[hsc]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.trans_apply, LinearIsometryEquiv.symm_trans, Formalism.L2.SG.RealObj.InfCut.piIso_apply, e1, e2]`.
+-/
 theorem normalFormC_of' (h1 : LiftAtSomeC X Y u u' κ)
     (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
     (h3 : DecompPhaseC X Y u u' κ) (h4 : DFrameAtS X u u' i0 i0' 1) (h4' : LiftGPosC X Y u u' κ)

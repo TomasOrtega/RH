@@ -8,6 +8,13 @@ universe u
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `: IsRegularLocalRing A` using `isRegularLocalRing_of_isLocalization_etale k m S q A`. Establish `hJ : ∀ i ∈ ({j} : Finset (Fin m)), etaleChartCoord k m S i ∈ q`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality.
+
+Conclude with `hj`. Establish `hJA : ∀ i ∈ ({j} : Finset (Fin m)), algebraMap S A (etaleChartCoord k m S i) ∈ IsLocalRing.maximalIdeal A`. Introduce `i hi`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff A q _).mpr (hJ i hi)`. Establish `hli` using `linearIndependent_toCotangent_etaleChartCoord k m S q A {j} hJ hJA`.
+
+Conclude with `IsRegularLocalRing.isPrime_span_singleton (fun i : { x : Fin m // x ∈ ({j} : Finset (Fin m)) } => algebraMap S A (etaleChartCoord k m S (i : Fin m))) (fun i => hJA (i : Fin m) i.2) hli ⟨j, Finset.mem_singleton_self j⟩`.
+-/
 theorem isPrime_span_singleton_algebraMap_etaleChartCoord (k : Type u) [Field k] (m : ℕ)
     (S : Type u) [CommRing S] [Algebra (CoordPolynomialRing k m) S]
     [Algebra.Etale (CoordPolynomialRing k m) S] (q : Ideal S) [q.IsPrime] (A : Type u) [CommRing A]

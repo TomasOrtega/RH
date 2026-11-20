@@ -14,10 +14,16 @@ def SWXS : Prop := ∀ {D : D7} (X : HidaSetting D),
   Formalism.MainNotions.UnusedSlot34.SWa1 X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J ∧
     Formalism.L2.SG.Pf.NcWeil.StabilizerFirstChernCompatibility X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J
 
+/- English proof (translation)
+Introduce `X` and use `PI.VolStabS.Assembly.volStabFromSW_holds _ _ _ (stepCM X) _ _ (stepHerm X) (hSW X).1 (hSW X).2`.
+-/
 theorem volStabXS_of (hSW : SWXS) : ∀ {D : D7} (X : HidaSetting D),
     Formalism.L2.SG.Pf.NcWeil.VolStabW X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J := fun X =>
   PI.VolStabS.Assembly.volStabFromSW_holds _ _ _ (stepCM X) _ _ (stepHerm X) (hSW X).1 (hSW X).2
 
+/- English proof (translation)
+The claim follows from `inVolumesAt_of_w (volStabXS_of hSW) (stepGramH_of MassDataLevelSSteps.frameStd_holds)`.
+-/
 theorem inVolumesAt_of_SWS (hSW : SWXS) :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
       (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)

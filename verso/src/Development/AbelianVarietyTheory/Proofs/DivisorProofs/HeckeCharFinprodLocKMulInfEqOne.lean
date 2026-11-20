@@ -13,6 +13,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.HCharUnit
 
+/- English proof (translation)
+Apply `hu` to reduce the goal to its premises. Use `show Valued.v (((k : E) : v.adicCompletion E)) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `h0 : v.valuation E (k : E) ≠ 0` using `by simp`. Establish `hl : WithZero.log (v.valuation E (k : E)) = 0`.
+
+Unfold `ordF at ho`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← WithZero.exp_log h0, hl, WithZero.exp_zero]`.
+-/
 theorem locK_eq_one {E : Type} [Field E] [NumberField E] (χ : HChar E) (k : Eˣ) (v : HeightOneSpectrum (𝓞 E))
     (hu : χ.UnrAt v) (ho : ordF v k = 0) : χ.locK v k = 1 := by
   apply hu
@@ -23,6 +28,19 @@ theorem locK_eq_one {E : Type} [Field E] [NumberField E] (χ : HChar E) (k : Eˣ
     unfold ordF at ho; omega
   rw [← WithZero.exp_log h0, hl, WithZero.exp_zero]
 
+/- English proof (translation)
+Introduce `E _ _ χ k`. Establish `hT : ({v | ¬ χ.UnrAt v} ∪ {v : HeightOneSpectrum (𝓞 E) | ordF v k ≠ 0}).Finite` using `Set.Finite.union (Filter.eventually_cofinite.mp (Formalism.L2.Fam.IdTrans.unrAe χ)) (GlobalTheory.HeckeProduct.finite_ordF k)`. Use `set S := hT.toFinset with hSdef`. Establish `hsub : (Function.mulSupport fun w : Pl E => χ.locK w k) ⊆ (S : Set (HeightOneSpectrum (𝓞 E)))`. Introduce `v hv`.
+
+Rewrite using `[hSdef, Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at h`. Conclude with `hv (locK_eq_one χ k v h.1 h.2)`. Use `⟨S.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations.
+
+Establish `hS : ∀ v, v ∉ S → χ.UnrAt v`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (by rw [hSdef, Set.Finite.mem_toFinset]; exact Or.inl h)`. Establish `hpr` using `Formalism.L2.Host.HChar.productRule χ S hS k`.
+
+Establish `hrest : (∏ᶠ (v : HeightOneSpectrum (𝓞 E)) (_ : v ∉ S), χ.val v ^ ordF v k) = 1`. Apply `finprod_eq_one_of_forall_eq_one` to reduce the goal to its premises. Introduce `v`. Rewrite using `[finprod_eq_if]`. Use `split_ifs with hv`.
+
+Both sides reduce to the same expression. Establish `: ordF v k = 0`. Assume the negation of the conclusion as `h`. Conclude with `hv (by rw [hSdef, Set.Finite.mem_toFinset]; exact Or.inr h)`. Rewrite using `[this, zpow_zero]`.
+
+Rewrite `hpr` using `[hrest, mul_one]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, mul_comm]`. Conclude with `hpr`.
+-/
 theorem finprod_locK_mul_inf : ∀ (E : Type) [Field E] [NumberField E] (χ : HChar E) (k : Eˣ),
     (Function.mulSupport fun w : Pl E => χ.locK w k).Finite ∧ (∏ᶠ w : Pl E, χ.locK w k) * χ.inf k = 1 := by
   intro E _ _ χ k

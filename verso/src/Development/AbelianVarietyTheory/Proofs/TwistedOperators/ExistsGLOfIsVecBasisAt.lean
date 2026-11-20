@@ -25,6 +25,15 @@ open Formalism.UG
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Use `set f := 1 - e - σ e with hf`. Establish `v1 : (mixGL he M (mixGL he' M' β)).val = e • M.val + σ e • M'.val + f • β.val`. Express the relevant statement in the definitionally equal form `e • M.val + (1 - e) • (σ e • M'.val + (1 - σ e) • β.val) = _`. Rewrite using `[smul_add, smul_smul, smul_smul, show (1 - e) * σ e = σ e by linear_combination -h0, show (1 - e) * (1 - σ e) = f by rw [hf]; linear_combination h0, add_assoc]`. Establish `v2 : cT σ (e • M.val + σ e • M'.val + f • β.val) = σ e • cT σ M.val + e • cT σ M'.val + f • cT σ β.val`.
+
+Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hσ, hf, map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `a1 : σ e * e = 0` using `by linear_combination h0`. Establish `a2 : e * f = 0` using `by rw [hf]; linear_combination -he - h0`.
+
+Establish `a3 : σ e * f = 0` using `by rw [hf]; linear_combination -he' - h0`. Establish `a4 : f * e = 0` using `by linear_combination a2`. Establish `a5 : f * σ e = 0` using `by linear_combination a3`. Establish `a6 : f * f = f` using `by rw [hf]; linear_combination he + he' + 2 * h0`. Rewrite using `[v1, v2]`.
+
+Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, he', h0, a1, a2, a3, a4, a5, a6, zero_smul, add_zero, zero_add, h1, h2, h3, smul_add]`. Rewrite using `[← add_smul, ← add_smul, show e + σ e + f = 1 by rw [hf]; ring, one_smul]`.
+-/
 theorem gram_mix (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) A)
     {e : A} (he : e * e = e) (he' : σ e * σ e = σ e) (h0 : e * σ e = 0) (M M' β : GL (Fin n) A)
     (h1 : cT σ M.val * J * M'.val = 1) (h2 : cT σ M'.val * J * M.val = 1) (h3 : cT σ β.val * J * β.val = 1) :
@@ -50,16 +59,25 @@ theorem gram_mix (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Ma
     zero_smul, add_zero, zero_add, h1, h2, h3, smul_add]
   rw [← add_smul, ← add_smul, show e + σ e + f = 1 by rw [hf]; ring, one_smul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `δ • (e • a.val + (1 - e) • b.val) = _`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_sub, h, mul_one, sub_self, zero_smul, add_zero]`.
+-/
 theorem smul_mix_one {n : ℕ} {e δ : A} (he : e * e = e) (a b : GL (Fin n) A) (h : δ * e = δ) :
     δ • (mixGL he a b).val = δ • a.val := by
   change δ • (e • a.val + (1 - e) • b.val) = _
   rw [smul_add, smul_smul, smul_smul, mul_sub, h, mul_one, sub_self, zero_smul, add_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `δ • (e • a.val + (1 - e) • b.val) = _`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_sub, h, mul_one, sub_zero, zero_smul, zero_add]`.
+-/
 theorem smul_mix_zero {n : ℕ} {e δ : A} (he : e * e = e) (a b : GL (Fin n) A) (h : δ * e = 0) :
     δ • (mixGL he a b).val = δ • b.val := by
   change δ • (e • a.val + (1 - e) • b.val) = _
   rw [smul_add, smul_smul, smul_smul, mul_sub, h, mul_one, sub_zero, zero_smul, zero_add]
 
+/- English proof (translation)
+Establish `: δ • (a⁻¹).val = δ • (b⁻¹).val`. Establish `h1` using `congrArg (fun m => (a⁻¹).val * m * (b⁻¹).val) h`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] at h1`. Conclude with `h1.symm`. Rewrite using `[mulVec_smul, mulVec_smul, ← smul_mulVec, ← smul_mulVec, this]`.
+-/
 theorem inv_mulVec_smul {n : ℕ} {δ : A} {a b : GL (Fin n) A} (h : δ • a.val = δ • b.val) (y : Fin n → A) :
     (a⁻¹).val *ᵥ (δ • y) = (b⁻¹).val *ᵥ (δ • y) := by
   have : δ • (a⁻¹).val = δ • (b⁻¹).val := by
@@ -69,6 +87,9 @@ theorem inv_mulVec_smul {n : ℕ} {δ : A} {a b : GL (Fin n) A} (h : δ • a.va
     exact h1.symm
   rw [mulVec_smul, mulVec_smul, ← smul_mulVec, ← smul_mulVec, this]
 
+/- English proof (translation)
+Establish `h1 : (e • B + (1 - e) • (1 : Matrix (Fin n) (Fin n) A)) * (e • C + (1 - e) • 1) = 1`. Rewrite using `[GlobalTheory.IdemSupport.mix_mul he, h, smul_smul, he, one_mul, GlobalTheory.IdemSupport.mix_self]`. Use `⟨⟨_, _, h1, mul_eq_one_comm.1 h1⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e • (e • B + (1 - e) • (1 : Matrix (Fin n) (Fin n) A)) = B`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_sub, he, mul_one, sub_self, zero_smul, add_zero, hB]`.
+-/
 theorem exists_GL_smul {n : ℕ} {e : A} (he : e * e = e) {B C : Matrix (Fin n) (Fin n) A} (hB : e • B = B)
     (h : B * C = e • (1 : Matrix (Fin n) (Fin n) A)) : ∃ M : GL (Fin n) A, e • M.val = B := by
   have h1 : (e • B + (1 - e) • (1 : Matrix (Fin n) (Fin n) A)) * (e • C + (1 - e) • 1) = 1 := by
@@ -77,6 +98,11 @@ theorem exists_GL_smul {n : ℕ} {e : A} (he : e * e = e) {B C : Matrix (Fin n) 
   change e • (e • B + (1 - e) • (1 : Matrix (Fin n) (Fin n) A)) = B
   rw [smul_add, smul_smul, smul_smul, mul_sub, he, mul_one, sub_self, zero_smul, add_zero, hB]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i => ⟨_, h1 i⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y = (e • β.val) *ᵥ ((β⁻¹).val *ᵥ y)`. Rewrite using `[smul_mulVec, mulVec_mulVec, Units.mul_inv, one_mulVec, h2]`.
+
+Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun i => ?_, by rw [← smul_mulVec, smul_smul, he]⟩` and prove the remaining obligations. Rewrite using `[smul_mulVec, mulVec_smul, mulVec_mulVec, Units.inv_mul, one_mulVec]`. Conclude with `mul_mem heS (c i).2`.
+-/
 theorem basis_gen (S : Subring A) {n : ℕ} {e : A} (he : e * e = e) (heS : e ∈ S) (β : GL (Fin n) A) (y : Fin n → A) :
     ((∀ i, ((β⁻¹).val *ᵥ y) i ∈ S) ∧ e • y = y) ↔ ∃ c : Fin n → S, y = (e • β.val) *ᵥ fun i => (c i : A) := by
   constructor
@@ -89,6 +115,11 @@ theorem basis_gen (S : Subring A) {n : ℕ} {e : A} (he : e * e = e) (heS : e �
     rw [smul_mulVec, mulVec_smul, mulVec_mulVec, Units.inv_mul, one_mulVec]
     exact mul_mem heS (c i).2
 
+/- English proof (translation)
+Use `choose c hc using fun j => h _ ((basis_gen S he heS β _).2 ⟨fun i => ⟨(1 : Matrix (Fin n) (Fin n) A) i j, one_entry_mem S i j⟩, rfl⟩)`. Use `⟨(Matrix.of fun i j => (c j i : A)) * (β⁻¹).val, ?_⟩` and prove the remaining obligations. Establish `: B * (Matrix.of fun i j => (c j i : A)) = e • β.val * 1`. Use extensionality with `i j`. Conclude with `(congrFun (hc j) i).symm`.
+
+Rewrite using `[← Matrix.mul_assoc, this, Matrix.mul_one, Matrix.smul_mul, Units.mul_inv]`.
+-/
 theorem vecBasis_gen (S : Subring A) {n : ℕ} {e : A} (he : e * e = e) (heS : e ∈ S) (β : GL (Fin n) A)
     (B : Matrix (Fin n) (Fin n) A)
     (h : ∀ y, ((∀ i, ((β⁻¹).val *ᵥ y) i ∈ S) ∧ e • y = y) → ∃ c : Fin n → S, y = B *ᵥ fun i => (c i : A)) :
@@ -101,6 +132,11 @@ theorem vecBasis_gen (S : Subring A) {n : ℕ} {e : A} (he : e * e = e) (heS : e
     exact (congrFun (hc j) i).symm
   rw [← Matrix.mul_assoc, this, Matrix.mul_one, Matrix.smul_mul, Units.mul_inv]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `key : ∀ (J : Matrix (Fin m) (Fin m) A) (β : GL (Fin m) A), cT σ β.val * J * β.val = 1 → ∀ a b, hform σ J b a = hform σ 1 ((β⁻¹).val *ᵥ b) ((β⁻¹).val *ᵥ a)`. Introduce `J β h a b`. Rewrite using `[← h, ← Formalism.UG.P.hform_mulVec, mulVec_mulVec, mulVec_mulVec, Units.mul_inv, one_mulVec, one_mulVec]`. Establish `e : ∀ a, (β'⁻¹).val *ᵥ ((β' * β⁻¹).val *ᵥ a) = (β⁻¹).val *ᵥ a` using `fun a => by`.
+
+Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]`. Use `⟨(β' * β⁻¹).val, ⟨Matrix.mulVec_injective_of_isUnit (Units.isUnit _), Matrix.mulVec_surjective_iff_isUnit.2 (Units.isUnit _)⟩, fun a b => ?_, fun a => by rw [e], ?_⟩` and prove the remaining obligations. Rewrite using `[key J' β' h2, key J β h1, e, e]`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel_right]`.
+-/
 theorem transport_gen (S : Subring A) (σ : A →+* A) {m k : ℕ} (h : m = k) (n : ℕ) (J : Matrix (Fin m) (Fin m) A)
     (J' : Matrix (Fin k) (Fin k) A) (β : GL (Fin m) A) (β' : GL (Fin k) A) (h1 : cT σ β.val * J * β.val = 1)
     (h2 : cT σ β'.val * J' * β'.val = 1) :
@@ -120,6 +156,9 @@ theorem transport_gen (S : Subring A) (σ : A →+* A) {m k : ℕ} (h : m = k) (
   · rw [key J' β' h2, key J β h1, e, e]
   · rw [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel_right]
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_smul x e y`.
+-/
 theorem mul_smul_gen {a b c : ℕ} (x : Matrix (Fin a) (Fin b) A) (e : A) (y : Matrix (Fin b) (Fin c) A) :
     x * (e • y) = e • (x * y) := Matrix.mul_smul x e y
 
@@ -128,10 +167,16 @@ end Ring
 def SameAt (Q : Pl D.host.E) {n : ℕ} (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Prop :=
   ∀ y : Fin n → EAf D, idem Q • y ∈ hat Λ ↔ idem Q • y ∈ hat Λ'
 
+/- English proof (translation)
+Introduce `y` and use `by rw [mem_hat_lat, mem_hat_lat, inv_mulVec_smul h]`.
+-/
 theorem sameAt_of_smul_eq {Q : Pl D.host.E} {n : ℕ} {β β' : GL (Fin n) (EAf D)} (h : idem Q • β.val = idem Q • β'.val) :
     SameAt Q (lat β) (lat β') := fun y => by
   rw [mem_hat_lat, mem_hat_lat, inv_mulVec_smul h]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[← inc_mem_hat_iff h, ← inc_mem_hat_iff h']`. Conclude with `⟨fun hx => mem_hat_of_idem h'.fg fun w => (H w _).1 (smul_mem_hat (idem_mem w) hx), fun hx => mem_hat_of_idem h.fg fun w => (H w _).2 (smul_mem_hat (idem_mem w) hx)⟩`.
+-/
 theorem eq_of_sameAt {n : ℕ} {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Submodule.IsLattice D.host.E Λ)
     (h' : Submodule.IsLattice D.host.E Λ') (H : ∀ Q, SameAt Q Λ Λ') : Λ = Λ' := by
   ext x
@@ -139,9 +184,17 @@ theorem eq_of_sameAt {n : ℕ} {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.
   exact ⟨fun hx => mem_hat_of_idem h'.fg fun w => (H w _).1 (smul_mem_hat (idem_mem w) hx),
     fun hx => mem_hat_of_idem h.fg fun w => (H w _).2 (smul_mem_hat (idem_mem w) hx)⟩
 
+/- English proof (translation)
+Introduce `y` and use `(h y).symm`.
+-/
 theorem SameAt.symm {Q : Pl D.host.E} {n : ℕ} {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : SameAt Q Λ Λ') :
     SameAt Q Λ' Λ := fun y => (h y).symm
 
+/- English proof (translation)
+Establish `key : ∀ {Λ Λ' : Lat V}, IsSelfDualC V Λ → IsSelfDualC V Λ' → SameAt (cP Q) Λ Λ' → ∀ y, idem Q • y ∈ hat Λ → idem Q • y ∈ hat Λ'`. Introduce `Λ Λ' h h' H y hy`. Rewrite using `[mem_hat_iff_of_selfDual h']`. Introduce `x hx`. Use `(mem_hat_iff_of_selfDual h _).1 hy _ ((H x).2 (smul_mem_hat (idem_mem _) hx))` as an intermediate fact.
+
+Rewrite `this` using `[hA_smul_left, hA_smul_right, cjA_idem, ← mul_assoc, idem_mul_self]`. Rewrite using `[hA_smul_right, cjA_idem]` and apply the resulting hypothesis. Conclude with `fun y => ⟨key h h' H y, key h' h H.symm y⟩`.
+-/
 theorem SameAt.conj {V : HSp D} {Q : Pl D.host.E} {Λ Λ' : Lat V} (h : IsSelfDualC V Λ) (h' : IsSelfDualC V Λ')
     (H : SameAt (cP Q) Λ Λ') : SameAt Q Λ Λ' := by
   have key : ∀ {Λ Λ' : Lat V}, IsSelfDualC V Λ → IsSelfDualC V Λ' → SameAt (cP Q) Λ Λ' → ∀ y,
@@ -154,6 +207,11 @@ theorem SameAt.conj {V : HSp D} {Q : Pl D.host.E} {Λ Λ' : Lat V} (h : IsSelfDu
     rwa [hA_smul_right, cjA_idem]
   exact fun y => ⟨key h h' H y, key h' h H.symm y⟩
 
+/- English proof (translation)
+Take `⟨-, e, he, -, h⟩` from `h`. Take `⟨-, e', he', -, h'⟩` from `h'`. Take `rfl` from `eq_idem he`. Take `rfl` from `eq_idem he'`. Introduce `y`.
+
+Establish `h1 : idem w • idem w • y = idem w • y` using `by rw [smul_smul, idem_mul_self]`. Use `(h (idem w • y)).trans (h' _).symm` as an intermediate fact. Conclude with `⟨fun hy => (this.1 ⟨hy, h1⟩).1, fun hy => (this.2 ⟨hy, h1⟩).1⟩`.
+-/
 theorem sameAt_of_isBasisAt {V : HSp D} {w : Pl D.host.E} {Λ Λ' : Lat V} {n : ℕ}
     {B : Matrix (Fin V.rank) (Fin n) (EAf D)} (h : IsBasisAt V w Λ B) (h' : IsBasisAt V w Λ' B) : SameAt w Λ Λ' := by
   obtain ⟨-, e, he, -, h⟩ := h
@@ -165,17 +223,30 @@ theorem sameAt_of_isBasisAt {V : HSp D} {w : Pl D.host.E} {Λ Λ' : Lat V} {n : 
   have := (h (idem w • y)).trans (h' _).symm
   exact ⟨fun hy => (this.1 ⟨hy, h1⟩).1, fun hy => (this.2 ⟨hy, h1⟩).1⟩
 
+/- English proof (translation)
+Use `⟨rfl, idem w, isPlIdem_idem w, by rw [smul_smul, idem_mul_self], fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← basis_gen (OA D) (idem_mul_self w) (idem_mem w) β y, InCmp, mem_hat_lat]`.
+-/
 theorem isBasisAt_lat {V : HSp D} (w : Pl D.host.E) (β : GL (Fin V.rank) (EAf D)) :
     IsBasisAt V w (lat β) (idem w • β.val) := by
   refine ⟨rfl, idem w, isPlIdem_idem w, by rw [smul_smul, idem_mul_self], fun y => ?_⟩
   rw [← basis_gen (OA D) (idem_mul_self w) (idem_mem w) β y, InCmp, mem_hat_lat]
 
+/- English proof (translation)
+Take `⟨β, rfl⟩` from `exists_eq_lat hΛ`. Take `⟨-, e, he, h1, h2⟩` from `h`. Conclude with `⟨e, he, h1, vecBasis_gen (OA D) he.2.1 he.1 β B fun y hy => (h2 y).1 ⟨(mem_hat_lat β y).2 hy.1, hy.2⟩⟩`.
+-/
 theorem isVecBasisAt_of_isBasisAt {V : HSp D} {w : Pl D.host.E} {Λ : Lat V} (hΛ : Submodule.IsLattice D.host.E Λ)
     {B : Matrix (Fin V.rank) (Fin V.rank) (EAf D)} (h : IsBasisAt V w Λ B) : IsVecBasisAt V w B := by
   obtain ⟨β, rfl⟩ := exists_eq_lat hΛ
   obtain ⟨-, e, he, h1, h2⟩ := h
   exact ⟨e, he, h1, vecBasis_gen (OA D) he.2.1 he.1 β B fun y hy => (h2 y).1 ⟨(mem_hat_lat β y).2 hy.1, hy.2⟩⟩
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, fun w hw => absurd hw (Finset.notMem_empty w)⟩`. Consider the case `insert w S hw ih`. Take `⟨M, hM⟩` from `ih fun w' hw' => h w' (Finset.mem_insert_of_mem hw')`. Take `⟨e, he, h1, C, h2⟩` from `h w (Finset.mem_insert_self w S)`.
+
+Take `rfl` from `eq_idem he`. Take `⟨M', hM'⟩` from `exists_GL_smul (idem_mul_self w) h1 h2`. Use `⟨mixGL (idem_mul_self w) M' M, fun w' hw' => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hw' with rfl | hw'` into its components or cases. Rewrite using `[smul_mix_one _ _ _ (idem_mul_self _), hM']`.
+
+Rewrite using `[smul_mix_zero _ _ _ (idem_mul_ne (w := w') (w' := w) fun e => hw (by rwa [e] at hw')), hM w' hw']`.
+-/
 theorem exists_GL_of_isVecBasisAt {V : HSp D} (S : Finset (Pl D.host.E))
     (B : Pl D.host.E → Matrix (Fin V.rank) (Fin V.rank) (EAf D)) (h : ∀ w ∈ S, IsVecBasisAt V w (B w)) :
     ∃ M : GL (Fin V.rank) (EAf D), ∀ w ∈ S, idem w • M.val = B w := by
@@ -192,9 +263,19 @@ theorem exists_GL_of_isVecBasisAt {V : HSp D} (S : Finset (Pl D.host.E))
     · rw [smul_mix_one _ _ _ (idem_mul_self _), hM']
     · rw [smul_mix_zero _ _ _ (idem_mul_ne (w := w') (w' := w) fun e => hw (by rwa [e] at hw')), hM w' hw']
 
+/- English proof (translation)
+Introduce `h` and use `hS w hw _ h ((GlobalTheory.IdemSupport.isConjPl_iff _ _).2 rfl)`.
+-/
 theorem conjPrime_notMem {S : Finset (Pl D.host.E)} (hS : IndefiniteRowSideFullHecke.FlatSpaceComponents.IsSplitSet S) {w : Pl D.host.E} (hw : w ∈ S) : cP w ∉ S :=
   fun h => hS w hw _ h ((GlobalTheory.IdemSupport.isConjPl_iff _ _).2 rfl)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_GL_of_isVecBasisAt S B h`. Take `⟨e, he, -, he1, he0⟩` from `exists_idem (S : Set (Pl D.host.E))`. Establish `he' : sg D e * sg D e = sg D e` using `by rw [← RingHom.map_mul, he]`. Establish `h0 : e * sg D e = 0` using `cpt_ext fun Q => by`. Rewrite using `[RingHom.map_mul, RingHom.map_zero]`.
+
+Distinguish the cases in `hQ : Q ∈ S`. Rewrite using `[cpt_sg_eq_zero (he0 _ (conjPrime_notMem hS hQ)), mul_zero]`. Rewrite using `[he0 Q hQ, zero_mul]`. Take `⟨M', h1, h2⟩` from `exists_dual_frame V M`. Establish `z : ∀ (Q : Pl D.host.E) (a : EAf D), cpt Q a = 0 → idem Q * a = 0` using `fun Q a ha => by`.
+
+Rewrite using `[← mul_zero (idem Q), idem_mul_eq_iff, ha, RingHom.map_zero]`. Use `⟨mixGL he M (mixGL he' M' β₀), gram_mix (sg D) sg_sg _ he he' h0 M M' β₀ h1 h2 h₀, fun w hw => ?_, fun Q hQ hQ' => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_mix_one, hM w hw] conv_rhs => rw [← mul_one (idem w)]`. Rewrite using `[idem_mul_eq_iff, he1 w hw, RingHom.map_one]`. Rewrite using `[smul_mix_zero _ _ _ (z Q e (he0 Q hQ)), smul_mix_zero _ _ _ (z Q _ (cpt_sg_eq_zero (he0 _ hQ')))]`.
+-/
 theorem exists_orth_mix {V : HSp D} (β₀ : GL (Fin V.rank) (EAf D)) (h₀ : gramOf V β₀ = 1) {S : Finset (Pl D.host.E)}
     (hS : IndefiniteRowSideFullHecke.FlatSpaceComponents.IsSplitSet S) (B : Pl D.host.E → Matrix (Fin V.rank) (Fin V.rank) (EAf D))
     (h : ∀ w ∈ S, IsVecBasisAt V w (B w)) :
@@ -218,9 +299,17 @@ theorem exists_orth_mix {V : HSp D} (β₀ : GL (Fin V.rank) (EAf D)) (h₀ : gr
     rw [idem_mul_eq_iff, he1 w hw, RingHom.map_one]
   · rw [smul_mix_zero _ _ _ (z Q e (he0 Q hQ)), smul_mix_zero _ _ _ (z Q _ (cpt_sg_eq_zero (he0 _ hQ')))]
 
+/- English proof (translation)
+The claim follows from `isSelfDualC_lat (h ▸ unimod_one)`.
+-/
 theorem isSelfDualC_of_orth {V : HSp D} {β : GL (Fin V.rank) (EAf D)} (h : gramOf V β = 1) : IsSelfDualC V (lat β) :=
   isSelfDualC_lat (h ▸ unimod_one)
 
+/- English proof (translation)
+Take `⟨β₀, rfl, h₀⟩` from `exists_orth hΛ`. Take `⟨β, h1, h2, h3⟩` from `exists_orth_mix β₀ h₀ hS B fun w hw => isVecBasisAt_of_isBasisAt hΛ.1 (h w hw)`. Establish `hβ` using `isSelfDualC_of_orth h1`. Establish `hs : ∀ w ∈ S, SameAt w (lat β₀) (lat β)` using `fun w hw => sameAt_of_isBasisAt (h w hw) (h2 w hw ▸ isBasisAt_lat w β)`. Use `⟨β, eq_of_sameAt hΛ.1 hβ.1 fun Q => ?_, h1, h2⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hQ : Q ∈ S`. Conclude with `hs Q hQ`. Distinguish the cases in `hQ' : cP Q ∈ S`. Conclude with `SameAt.conj hΛ hβ (hs _ hQ')`. Conclude with `sameAt_of_smul_eq (h3 Q hQ hQ').symm`.
+-/
 theorem exists_orth_basis {V : HSp D} {Λ : Lat V} (hΛ : IsSelfDualC V Λ) {S : Finset (Pl D.host.E)}
     (hS : IndefiniteRowSideFullHecke.FlatSpaceComponents.IsSplitSet S) (B : Pl D.host.E → Matrix (Fin V.rank) (Fin V.rank) (EAf D))
     (h : ∀ w ∈ S, IsBasisAt V w Λ (B w)) :
@@ -237,6 +326,9 @@ theorem exists_orth_basis {V : HSp D} {Λ : Lat V} (hΛ : IsSelfDualC V Λ) {S :
   · exact SameAt.conj hΛ hβ (hs _ hQ')
   · exact sameAt_of_smul_eq (h3 Q hQ hQ').symm
 
+/- English proof (translation)
+Distinguish the cases in `hn : n = V.rank`. Substitute `hn` using the available equality. Simplify `exists_orth_basis hΛ hS B h` using `only [idM_self, Matrix.mul_one]`. Take `⟨β, h1, h2⟩` from `exists_orth hΛ`. Conclude with `⟨β, h1, h2, fun w hw => absurd (h w hw).1 hn⟩`.
+-/
 theorem exists_orth_basis' {V : HSp D} {Λ : Lat V} (hΛ : IsSelfDualC V Λ) {S : Finset (Pl D.host.E)}
     (hS : IndefiniteRowSideFullHecke.FlatSpaceComponents.IsSplitSet S) {n : ℕ} (B : Pl D.host.E → Matrix (Fin V.rank) (Fin n) (EAf D))
     (h : ∀ w ∈ S, IsBasisAt V w Λ (B w)) :
@@ -248,6 +340,9 @@ theorem exists_orth_basis' {V : HSp D} {Λ : Lat V} (hΛ : IsSelfDualC V Λ) {S 
   · obtain ⟨β, h1, h2⟩ := exists_orth hΛ
     exact ⟨β, h1, h2, fun w hw => absurd (h w hw).1 hn⟩
 
+/- English proof (translation)
+Take `⟨β, rfl, h1, h2⟩` from `exists_orth_basis' hL hS be h`. Take `⟨β', rfl, h1', h2'⟩` from `exists_orth_basis' hΛ hS be' h'`. Take `⟨x, a1, a2, a3, a4⟩` from `transport_gen (OA D) (cjA D) hr n _ _ β β' h1 h1'`. Use `⟨x, ⟨a1, a2⟩, fun a => by rw [mem_hat_lat, mem_hat_lat, a3], fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 w hw, ← h2' w hw, mul_smul_gen, a4]`.
+-/
 theorem exists_transport (W Y : HSp D) (hr : W.rank = Y.rank) (L : Lat W) (Λ : Lat Y) (hL : IsSelfDualC W L)
     (hΛ : IsSelfDualC Y Λ) (S : Finset (Pl D.host.E)) (hS : IndefiniteRowSideFullHecke.FlatSpaceComponents.IsSplitSet S) (n : ℕ)
     (be : Pl D.host.E → Matrix (Fin W.rank) (Fin n) (EAf D)) (be' : Pl D.host.E → Matrix (Fin Y.rank) (Fin n) (EAf D))
@@ -259,6 +354,11 @@ theorem exists_transport (W Y : HSp D) (hr : W.rank = Y.rank) (L : Lat W) (Λ : 
   refine ⟨x, ⟨a1, a2⟩, fun a => by rw [mem_hat_lat, mem_hat_lat, a3], fun w hw => ?_⟩
   rw [← h2 w hw, ← h2' w hw, mul_smul_gen, a4]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `V N`. Take `⟨β, hβ⟩` from `exists_base V`. Take `⟨c, hc⟩` from `isSD_one hβ`. Rewrite `hc` using `[one_pow]`.
+
+Conclude with `⟨β, _, 0, by rw [pow_zero]; exact hc⟩`. Introduce `V Λ N c hΛ hN h1 h2 S hS be h`. Take `⟨β, e, -, h3⟩` from `exists_orth_basis hΛ hS be h`. Use `⟨β, ⟨c, e ▸ isFrame_lat β, dualL_eq hΛ, pow_pos hN c, h1, h2⟩, fun w hw e he => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_idem he, h3 w hw]`.
+-/
 theorem frameSt (D : D7) : FrameSt D := by
   constructor
   · intro V N
@@ -271,6 +371,15 @@ theorem frameSt (D : D7) : FrameSt D := by
     refine ⟨β, ⟨c, e ▸ isFrame_lat β, dualL_eq hΛ, pow_pos hN c, h1, h2⟩, fun w hw e he => ?_⟩
     rw [eq_idem he, h3 w hw]
 
+/- English proof (translation)
+Introduce `V Λ₀ h₀ S hS B hB`. Take `⟨β₀, rfl, g₀⟩` from `exists_orth h₀`. Take `⟨β, h1, h2, h3⟩` from `exists_orth_mix β₀ g₀ hS B hB`. Establish `hβ` using `isSelfDualC_of_orth h1`. Establish `hb : ∀ w ∈ S, IsBasisAt V w (lat β) (B w)` using `fun w hw => h2 w hw ▸ isBasisAt_lat w β`.
+
+Use `⟨lat β, ⟨hβ, hb, fun v hv => (hloc _ _ _ hβ.1.fg h₀.1.fg v).2 fun Q hQ => sameAt_of_smul_eq (h3 Q (fun h => hv Q h hQ) fun h => hv _ h ((GlobalTheory.IdemSupport.under_cP Q).trans hQ))⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Λ ⟨a1, a2, a3⟩`. Use `eq_of_sameAt a1.1 hβ.1 fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q ∈ S`. Conclude with `sameAt_of_isBasisAt (a2 Q hQ) (hb Q hQ)`.
+
+Distinguish the cases in `hQ' : cP Q ∈ S`. Conclude with `SameAt.conj a1 hβ (sameAt_of_isBasisAt (a2 _ hQ') (hb _ hQ'))`. Use `(hloc _ _ _ a1.1.fg h₀.1.fg _).1 (a3 (Q.under (𝓞 D.host.F)) fun w hw e => by` as an intermediate fact. Break down `GlobalTheory.IdemSupport.eq_or_eq_cP e with rfl | rfl` into its components or cases. Conclude with `hQ hw`.
+
+Conclude with `hQ' hw) Q rfl`. Conclude with `fun y => (this y).trans (sameAt_of_smul_eq (h3 Q hQ hQ') y).symm`.
+-/
 theorem splitGlueSt_of (D : D7) (hloc : ∀ (n : ℕ) (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), Λ.FG → Λ'.FG →
     ∀ v : HeightOneSpectrum (𝓞 D.host.F), Formalism.L2.Herm.locL v Λ = Formalism.L2.Herm.locL v Λ' ↔
       ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → SameAt Q Λ Λ') : SplitGlueSt D := by

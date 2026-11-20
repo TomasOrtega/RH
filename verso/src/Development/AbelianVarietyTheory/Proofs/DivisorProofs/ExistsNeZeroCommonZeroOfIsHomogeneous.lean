@@ -4,6 +4,27 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ n r f hf hrn`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `set I : Ideal (MvPolynomial (Fin n) k) := Ideal.span (Set.range f) with hIdef`. Use `set M : Ideal (MvPolynomial (Fin n) k) := MvPolynomial.vanishingIdeal k ({(0 : Fin n → k)} : Set (Fin n → k)) with hMdef`.
+
+Establish `hMmax : M.IsMaximal` using `inferInstance`. Establish `hf0 : ∀ i, MvPolynomial.eval (0 : Fin n → k) (f i) = 0`. Introduce `i`. Take `⟨d, hd, hh⟩` from `hf i`. Rewrite using `[MvPolynomial.eval_zero]`.
+
+Rewrite using `[MvPolynomial.constantCoeff_eq]`. Apply `hh.coeff_eq_zero` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `hIM : I ≤ M`.
+
+Rewrite using `[hIdef, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, hMdef, MvPolynomial.mem_vanishingIdeal_singleton_iff]`. Conclude with `hf0 i`. Establish `hZ : MvPolynomial.zeroLocus k I ⊆ ({(0 : Fin n → k)} : Set (Fin n → k))`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Take `⟨i, hi⟩` from `hcon x hx0`. Apply `hi` to reduce the goal to its premises. Use `hx (f i) (Ideal.subset_span ⟨i, rfl⟩)` as an intermediate fact.
+
+Conclude with `this`. Establish `hMrad : M ≤ I.radical`. Rewrite using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := k) I]`. Conclude with `MvPolynomial.vanishingIdeal_anti_mono hZ`. Establish `hXM : Ideal.span (Set.range (fun i : Fin n => (MvPolynomial.X i : MvPolynomial (Fin n) k))) ≤ M`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, hMdef, MvPolynomial.mem_vanishingIdeal_singleton_iff]`. Simplify using the standard rewrite rules. Establish `hItop : I ≠ ⊤` using `fun h => hMmax.ne_top (top_le_iff.mp (h ▸ hIM))`.
+
+Establish `hrad : I.radical.height = I.height`. Rewrite using `[Ideal.height_eq_inf_minimalPrimes, Ideal.height_eq_inf_minimalPrimes, Ideal.radical_minimalPrimes]`. Establish `hfin : (I.spanFinrank : ℕ∞) ≤ r`. Establish `h1` using `Submodule.spanFinrank_span_le_ncard_of_finite (R := MvPolynomial (Fin n) k) (Set.finite_range f)`. Establish `h2 : (Set.range f).ncard ≤ r`.
+
+Rewrite using `[← Set.image_univ]`. Use `(Set.ncard_image_le Set.finite_univ).trans ?_` and prove the remaining obligations. Simplify using `[Set.ncard_univ]`. Conclude with `h1.trans h2` after adjusting the coercions. Establish `key : (n : ℕ∞) ≤ r` using `(GlobalTheory.le_height_span_range_X_mvPolynomial k n).trans <| (Ideal.height_mono hXM).trans <| (Ideal.height_mono hMrad).trans <| hrad.le.trans <| (Ideal.height_le_spanFinrank I hItop).trans hfin`.
+
+Establish `: n ≤ r` using `by exact_mod_cast key`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ne_zero_common_zero_of_isHomogeneous :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (n r : ℕ) (f : Fin r → MvPolynomial (Fin n) k),
       (∀ i, ∃ d, 0 < d ∧ (f i).IsHomogeneous d) → r < n →

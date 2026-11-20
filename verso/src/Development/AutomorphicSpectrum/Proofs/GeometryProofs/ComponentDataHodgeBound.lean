@@ -22,6 +22,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.ChartFree
 
+/- English proof (translation)
+Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `k`. Distinguish the cases in `hk : k.val < a`. Establish `hre` using `hw.1 ⟨k.val, hk⟩`.
+
+Establish `hcast : Fin.castLE h ⟨k.val, hk⟩ = k` using `Fin.ext rfl`. Rewrite `hre` using `[hcast]`. Simplify using `only [GroundTheory.Heights₂.Heights.Regular.expCover, if_pos hk]`. Rewrite using `[Complex.norm_exp, ← Real.exp_zero]`. Conclude with `Real.exp_lt_exp.2 hre`.
+
+Simplify using `only [GroundTheory.Heights₂.Heights.Regular.expCover, if_neg hk]`. Conclude with `hw.2 k (not_lt.mp hk)`. Simplify using `only [GroundTheory.Heights₂.Heights.Regular.expCover, if_pos hi]`. Conclude with `Complex.exp_ne_zero _`.
+-/
 theorem expCover_mem_punct {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ GroundTheory.Heights₂.Heights.Regular.logCover h) :
     GroundTheory.Heights₂.Heights.Regular.expCover a w ∈ Flat.punct n a 1 := by
   refine ⟨?_, fun i hi => ?_⟩
@@ -39,6 +46,51 @@ theorem expCover_mem_punct {n a : ℕ} (h : a ≤ n) {w : Fin n → ℂ} (hw : w
   · simp only [GroundTheory.Heights₂.Heights.Regular.expCover, if_pos hi]
     exact Complex.exp_ne_zero _
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or a t₀ ht₀`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hpq : 1 ≤ D.p + D.q`. Establish `h1` using `Or.N_eq`. Establish `h2` using `Dc.two_le_N`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨z₀, -, hz₀⟩` from `(GlobalTheory.T.complex_points_iff_centres Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y Or.𝔐.tie ((Dc.chart a).γ t₀)).1 ((Dc.chart a).mem t₀ ht₀)`. Take `⟨⟨d⟩, hd⟩` from `GlobalTheory.T.component_data_intersection_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or z₀ _ hz₀`. Take `⟨⟨s, hsm⟩, hsall⟩` from `hd d`. Establish `hfr` using `(hsall s hsm).1`.
+
+Establish `hval0 : ∀ i : CMType H × Fin (Dc.N - Dc.j), ∃ v : epsAt z₀ ⟶ Or.𝔐.t.G, Or.𝔐.M.ValAt z₀ (s i.1 i.2) v` using `fun i => GlobalTheory.T.hodge_component_label_frame E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 z₀ (Or.sm i.1) _ (s i.1) (Or.𝔐.all _) (hfr i.1 _) i.2`. Take `⟨a₀, π, ρ₁, σ₀, C, jj, m, sc, hρ₁, hA⟩` from `GlobalTheory.T.snc_chart_hodge_component_local hG E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 _ Dc.Bd (Dc.chart a) t₀ d.c d.f (CMType H × Fin (Dc.N - Dc.j)) (fun i => s i.1 i.2) z₀ Or.bd ht₀ hz₀ d.inDom hval0`. Take `⟨ρ₂, Λ, _, L₀, e, hρ₂, hρ₂1, hper, hRiem⟩` from `GlobalTheory.T.boundary_chart_log_period_family E H D l (Xo l) σ₀ _ a₀ C hpq`. Take `⟨Bf, hBd, hBe⟩` from `GlobalTheory.T.holomorphic_endomorphism_family E H C.R C.t C.g _ C.M ρ₂ C.ψ e hρ₂`. Establish `hnorm : ∀ u : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ, ‖(ρ₂ : ℂ) • u‖ = ρ₂ * ‖u‖` using `fun u => by`.
+
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ₂.le]`. Establish `hsmρ : ∀ u ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1, (ρ₂ : ℂ) • u ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) ρ₂` using `fun u hu => by`. Rewrite `hu`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[hnorm]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hsm1 : ∀ u ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1, (ρ₂ : ℂ) • u ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1` using `fun u hu => Metric.ball_subset_ball hρ₂1 (hsmρ u hu)`. Establish `hsmd : DifferentiableOn ℂ (fun u : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ => (ρ₂ : ℂ) • u) (Metric.ball 0 1)` using `(differentiable_id.fun_const_smul _).differentiableOn`. Establish `hBhol : ∀ c x, DifferentiableOn ℂ (fun z => Bf ((ρ₂ : ℂ) • z) c x) (Metric.ball 0 1)` using `fun c x => (hBd c x).comp hsmd hsmρ`. Establish `hpb : ∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L₀.a_le, GroundTheory.Heights₂.Heights.Regular.expCover a₀ w ∈ Flat.punct _ a₀ 1` using `fun w hw => expCover_mem_punct L₀.a_le hw`. Establish `hclosed : ∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L₀.a_le, ∀ c x, ∃ y, L₀.P w y = Bf ((ρ₂ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a₀ w) c (L₀.P w x)`.
+
+Introduce `w hw c x`. Establish `hb` using `hsmρ _ (hpb w hw).1`. Establish `h1 : e.ex _ (L₀.P w x) = 1` using `((hper w hw _).2 ⟨x, rfl⟩ : _)`. Use `(hper w hw _).1 ?_` and prove the remaining obligations. Use `show e.ex _ _ = 1`.
+
+Rewrite using `[hBe _ hb, h1]`. Use `haveI := C.t.act.hom c`. Simplify using the standard rewrite rules. Take `⟨instM, hact⟩` from `GlobalTheory.T.log_periods_module_structure E _ a₀ C.g Λ L₀ (fun z => Bf ((ρ₂ : ℂ) • z)) hBhol hclosed`. Establish `hInt : ∀ u ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1, (Or.𝔐.Interior (spMap (C.ψ ((ρ₂ : ℂ) • u)) ≫ jj) ↔ u ∈ Flat.punct _ a₀ 1)`.
+
+Introduce `u hu`. Take `⟨-, -, h3, h4, -⟩` from `hA _ (hsm1 u hu)`. Establish `h5` using `Or.bd _ _ h3`. Establish `h6 : Or.𝔐.Interior (spMap (C.ψ ((ρ₂ : ℂ) • u)) ≫ jj) ↔ (ρ₂ : ℂ) • u ∈ Flat.punct _ a₀ 1`. Rewrite using `[← h4, h5, not_not]`.
+
+Rewrite using `[h6]`. Establish `hne : (ρ₂ : ℂ) ≠ 0` using `by exact_mod_cast hρ₂.ne'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `⟨hu, fun i hi h0 => h i hi (by simp [h0])⟩`.
+
+Introduce and unpack `⟨-, h⟩`. Conclude with `⟨hsm1 u hu, fun i hi => by simpa [hne] using h i hi⟩`. Establish `hF : ∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L₀.a_le, _` using `fun w hw => GlobalTheory.T.boundary_chart_hodge_map hG E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 σ₀ _ a₀ C jj m (Metric.ball 0 ρ₂) e ((ρ₂ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a₀ w) (Bf ((ρ₂ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a₀ w)) (L₀.H (GroundThe …`. Establish `hinj : ∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L₀.a_le, Function.Injective (L₀.P w)`. Introduce `w hw`.
+
+Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Use `L₀.unimod.1 ?_` and prove the remaining obligations. Use extensionality with `y`. Establish `h` using `L₀.im w hw x y`. Rewrite `h` using `[hx]`.
+
+Simplify using `using h.symm`. Establish `hw₀ : ∃ w₀, w₀ ∈ GroundTheory.Heights₂.Heights.Regular.logCover L₀.a_le`. Use `⟨fun k => if (k : ℕ) < a₀ then -1 else 0, fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[not_lt.2 hk]`.
+
+Take `⟨w₀, hw₀⟩` from `hw₀`. Establish `hadj : ∀ c c' : 𝓞 E, (c' : E) = IsCMField.complexConj E (c : E) → ∀ x y, L₀.E (c • x) y = L₀.E x (c' • y)`. Introduce `c c' hc x y`. Take `⟨A, _, φ, u, χ', -, -, -, -, -, h⟩` from `hF w₀ hw₀`. Establish `h1` using `L₀.im w₀ hw₀ (c • x) y`.
+
+Establish `h2` using `L₀.im w₀ hw₀ x (c' • y)`. Rewrite `h1` using `[hact w₀ hw₀]`. Rewrite `h2` using `[hact w₀ hw₀]`. Establish `h3` using `h c c' hc (L₀.P w₀ x) (L₀.P w₀ y)`. Establish `h4 : ((L₀.E (c • x) y : ℤ) : ℝ) = ((L₀.E x (c' • y) : ℤ) : ℝ)`.
+
+Rewrite using `[← h1, ← h2]`. Conclude with `congrArg Complex.im h3`. Conclude with `h4` after adjusting the coercions. Set `L : ActPeriods E _ a₀ C.g Λ` to `{ toLogPeriods := L₀ adj := hadj B := fun z => Bf ((ρ₂ : ℂ) • z) B_hol := hBhol act := hact }`. Take `⟨σa, hσ, hinl, hinr⟩` from `GlobalTheory.T.holomorphic_points_of_component E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 C.R jj _ C.ψ C.hol`.
+
+Establish `hcm : IsCMFam (fun τ => σa (Or.sm τ))`. Apply the tactic sequence `rcases Or.side with ⟨-, h, -⟩ | ⟨-, h, -⟩ <;> rw [h]`. Conclude with `hinr`. Conclude with `hinl`. Establish `hdiffb : ∀ (r : C.R), DifferentiableOn ℂ (fun u => C.ψ ((ρ₂ : ℂ) • u) r) (Metric.ball 0 1)` using `fun r => (C.hol.2 r).comp hsmd hsm1`.
+
+Establish `hframe : ∀ u ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1, ∀ τ (h : genPt Or.𝔐.ξ ⤳ centre (spMap (C.ψ ((ρ₂ : ℂ) • u)) ≫ jj)), (Or.𝔐.V (Or.sm τ)).IsFrameAt (s τ) ⟨centre (spMap (C.ψ ((ρ₂ : ℂ) • u)) ≫ jj), h⟩`. Introduce `u hu τ h`. Take `⟨-, h2, h3, -, -⟩` from `hA _ (hsm1 u hu)`. Establish `h4` using `(GlobalTheory.T.component_data_intersection_bound hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or _ _ h3).2 { d with inDom := h2 }`. Conclude with `(h4.2 s hsm).1 τ h`.
+
+Use `⟨a₀, C.g, Λ, inferInstance, instM, L, π, ρ₁ * ρ₂, fun τ => σa (Or.sm τ), fun u => spMap (C.ψ ((ρ₂ : ℂ) • u)) ≫ jj, d, s, fun τ k u i => C.ψ ((ρ₂ : ℂ) • u) (sc (τ, k) i), mul_pos hρ₁ hρ₂, hcm, hsm, ⟨fun τ k => differentiableOn_pi.2 fun i => hdiffb _, fun t ht τ => ?_⟩, fun u hu => …` and prove the remaining obligations. Conclude with `GlobalTheory.T.abelian_family_hodge_lattice E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 C.R C.t jj m C.g _ C.M (Metric.ball 0 ρ₂) C.ψ e ((ρ₂ : ℂ) • t) (Bf ((ρ₂ : ℂ) • t)) (Or.sm τ) _ (s τ) (fun k => sc (τ, k)) σa (hsmρ t ht) (hBe _ (hsmρ t ht)) (hσ _ (hsm1 t ht)) (hframe t ht τ) (fun k …`. Establish `heq : t₀ + (((ρ₁ * ρ₂ : ℝ)) : ℂ) • (u ∘ π) = t₀ + (ρ₁ : ℂ) • (((ρ₂ : ℂ) • u) ∘ π)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Take `⟨h1, h2, h3, -, -⟩` from `hA _ (hsm1 u hu)`. Conclude with `⟨h1, h2, h3, fun i a' => hσ _ (hsm1 u hu) (Or.sm i) a', hInt u hu⟩`.
+
+Take `⟨A, instA, φ, u, χ', hgp, hAH, hex, hlat, hdv, -⟩` from `hF w hw`. Establish `hbρ` using `hsmρ _ (hpb w hw).1`. Use `choose v hv1 hv2 using (hA _ (hsm1 _ (hpb w hw).1)).2.2.2.2`. Use `⟨v, fun i => hv1 i, ?_⟩` and prove the remaining obligations. Use `⟨A, instA, φ, u, χ', hgp, hAH, fun a' p => ?_, hinj w hw, fun p => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `show (u.ex (Bf _ a' p)).left ≫ φ = _`. Establish `e1 : (u.ex p).left ≫ φ ≫ (Or.𝔐.t.act.act a').left = ((e.ex ((ρ₂ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a₀ w) p).left ≫ m.φ) ≫ (Or.𝔐.t.act.act a').left`. Rewrite using `[← hex p, Category.assoc]`. Rewrite using `[hex, e1, hBe _ hbρ, Over.comp_left, Category.assoc, Category.assoc, m.act]`. Rewrite using `[hlat p]`.
+
+Conclude with `hper w hw p`. Take `⟨v', h1, h2⟩` from `hdv _ _ (Flat.FrameDeriv.isDerivAt0_pt e hbρ (sc i))`. Conclude with `⟨v', by rw [h1, hv2 i, Category.assoc], h2⟩`.
+-/
 theorem exists_actPeriods_chart : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (a : Fin Dc.nCharts), ∀ t₀ ∈ (Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1), ∃ (a₀ g : ℕ) (Λ : Type) (_ : AddCommGroup Λ) (_ : Module (𝓞 E) Λ) (L : ActPeriods E (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) a₀ g Λ) (π : Equiv.Perm (Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)))) (ρ : ℝ) (σ : CMType H → (𝓞 E →+* ℂ)) (pt : (Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) → (Sp ℂ ⟶ Or.𝔐.X)) (d : MuFrameAt Hd ((Dc.chart a).γ t₀)) (s : CMType H → Fin (Dc.N - Dc.j) → Or.𝔐.Li) (b : CMType H → Fin (Dc.N - Dc.j) → (Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) → Fin g → ℂ), 0 < ρ ∧ IsCMFam σ ∧ Or.IsSmallPart d s ∧ IsEigFrames (Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1) L.B σ b ∧ (∀ u ∈ (Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1), t₀ + (ρ : ℂ) • (u ∘ π) ∈ (Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1) ∧ InFrameDomain Dc.y d.c d.f ((Dc.chart a).γ (t₀ + (ρ : ℂ) • (u ∘ π))) ∧ CoordsAt Or.𝔐.ξ Dc.y (pt u) ((Dc.chart a).γ (t₀ + (ρ : ℂ) • (u ∘ π))) ∧ Or.𝔐.LabVal (pt u) Or.sm σ ∧ (Or.𝔐.Interior (pt u) ↔ u ∈ Flat.punct _ a₀ 1)) ∧ (∀ w (hw : w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le), ∃ v : CMType H × Fin (Dc.N - Dc.j) → (epsAt (pt (GroundTheory.Heights₂.Heights.Regular.expCover a₀ w)) ⟶ Or.𝔐.t.G), (∀ i, Or.𝔐.M.ValAt _ (s i.1 i.2) (v i)) ∧ FibreLatVec Or.𝔐.t _ (L.riem w hw) (fun i => b i.1 i.2 (GroundTheory.Heights₂.Heights.Regular.expCover a₀ w)) v) := by
   intro hG E _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or a t₀ ht₀
   haveI : CharZero Ω := algebraRat.charZero Ω

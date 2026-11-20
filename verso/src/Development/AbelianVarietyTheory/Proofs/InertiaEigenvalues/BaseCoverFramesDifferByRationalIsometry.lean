@@ -12,6 +12,21 @@ namespace GlobalTheory.CoverFrameMove
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Establish `hgr : Matrix.reindex (finCongr (rfl : V.rank = V.rank)) (finCongr rfl) V.gram = V.gram`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hre : ∀ m : Matrix (Fin V.rank) (Fin V.rank) ℂ, Matrix.reindex (finCongr (rfl : V.rank = V.rank)) (finCongr rfl) m = m` using `fun m => by`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `hG₁`, `hG₂` using `[hgr]`. Take `⟨δ, hδu, hδf, hδa⟩` from `GlobalTheory.MarkCoset.rational_matrix V _ (mul_mem hγ₁ (inv_mem hγ₂))`. Establish `hprod : γ₁ * γ₂⁻¹ * (γ₂ * h) * 1 = γ₁ * h` using `by group`.
+
+Take `⟨ht1, -⟩` from `GlobalTheory.ShortMoveIso.transport (finHom V) (latGHat V) (fun g => (GlobalTheory.MarkCoset.latG_spec D V g).2) 1 (γ₁ * γ₂⁻¹) (γ₂ * h) 1 rfl`. Rewrite `ht1` using `[hprod]`. Establish `hmem : ∀ (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (g : GA D V), (L : Set (Fin V.rank → D.host.E)) = (fun v : Fin V.rank → D.host.E => v ∘ Fin.cast (rfl : V.rank = V.rank).symm) '' (latG V g : Set _) → ∀ v, v ∈ L ↔ finVec V v ∈ latGHat V g` using `fun L g hL v => by`. Rewrite using `[← (GlobalTheory.MarkCoset.latG_spec D V _).1, ← SetLike.mem_coe, hL]`. Conclude with `Set.ext_iff.1 (Set.image_id _) v`.
+
+Establish `hlat : ∀ v, v ∈ L₂ ↔ δ.1 *ᵥ v ∈ L₁` using `fun v => by`. Rewrite using `[hmem _ _ hL₂, hmem _ _ hL₁, ht1, hδf]`. Use `⟨δ, ?_, fun u v => ?_, fun τ θ hθ x => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Establish `hri : δ.1 *ᵥ ((δ⁻¹).1 *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `⟨(δ⁻¹).1 *ᵥ v, (hlat _).2 (by rw [hri]; exact hv), hri⟩`. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `(hlat u).1 hu`. Rewrite using `[hG₁, hG₂]`. Conclude with `hδu u v`. Establish `hmul : ∀ a b : GA D V, archM V θ (a * b) = archM V θ a * archM V θ b`. Introduce `a b`.
+
+Rewrite using `[archM, archM, archM, map_mul, Units.val_mul, Matrix.map_mul]`. Establish `e : γ₁ * h = γ₁ * γ₂⁻¹ * (γ₂ * h)` using `by group`. Rewrite using `[hre, hre, e, hmul, hδa _ _ hθ, Matrix.mul_assoc]`.
+-/
 theorem move {D : D7} (V : HSp D) {r : ℕ} (hr : V.rank = r) (h γ₁ γ₂ : GA D V) (hγ₁ : γ₁ ∈ GQ V) (hγ₂ : γ₂ ∈ GQ V)
     (L₁ L₂ : Submodule (𝓞 D.host.E) (Fin r → D.host.E)) (G₁ G₂ : Matrix (Fin r) (Fin r) D.host.E)
     (hG₁ : G₁ = -(Matrix.reindex (finCongr hr) (finCongr hr) V.gram).transpose)
@@ -70,6 +85,13 @@ theorem move {D : D7} (V : HSp D) {r : ℕ} (hr : V.rank = r) (h γ₁ γ₂ : G
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T hT j hj σ hσ C hC h`. Take `⟨hr₁, g₁, e₁, F₁, ik₁, φ₁, th₁, -, -, hth₁, -, hd₁⟩` from `hT.adPin j hj σ hσ`. Take `⟨-, -, -, -, -, hr₂, g₂, e₂, F₂, ik₂, φ₂, th₂, hW₂, hth₂, -, hd₂⟩` from `hC`. Take `⟨hr₀, hW₁⟩` from `hT.modelW j hj σ hσ`. Take `⟨γ₁, hγ₁, hL₁, -, hf₁⟩` from `hd₁ h`.
+
+Take `⟨γ₂, hγ₂, hL₂, -, hf₂⟩` from `hd₂ h`. Take `⟨γ, hl, hi, hf⟩` from `move (T.V j σ) hr₁ h γ₁ γ₂ hγ₁ hγ₂ _ _ _ _ (hW₁ _).1 (hW₂ _).1 hL₁ hL₂`. Use `⟨γ, hl, hi, fun τ t₂ t₁ => ?_⟩` and prove the remaining obligations. Establish `e₂'` using `hf₂ ⟨τ, t₂⟩`. Establish `e₁'` using `hf₁ ⟨τ, t₁⟩`.
+
+Rewrite `e₂'` using `[GlobalTheory.LettersCheck.isInfEmb_unique τ _ _ (hth₂ _ ⟨τ, t₂⟩) (hth₁ _ ⟨τ, t₁⟩)]`. Rewrite using `[e₁', e₂']`. Conclude with `hf τ _ (hth₁ _ ⟨τ, t₁⟩) _`.
+-/
 theorem frames_differ : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ h : GA D (T.V j σ), ∃ γ : GL (Fin D.R.r) D.host.E, (((T.U j σ).X (T.dict j σ h).1).Λ : Set (Fin D.R.r → D.host.E)) = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec '' ((C.U₂.X (C.dict₂ h).1).Λ : Set _) ∧ (∀ v w, herm ((T.U j σ).X (T.dict j σ h).1).Gm ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm (C.U₂.X (C.dict₂ h).1).Gm v w) ∧ (∀ (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X (C.dict₂ h).1).Ψ) (h₁ : τ ∈ ((T.U j σ).X (T.dict j σ h).1).Ψ), mat (T.dict j σ h).2 ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat (C.dict₂ h).2 ⟨τ, h₂⟩) := by
   intro D T hT j hj σ hσ C hC h
   obtain ⟨hr₁, g₁, e₁, F₁, ik₁, φ₁, th₁, -, -, hth₁, -, hd₁⟩ := hT.adPin j hj σ hσ

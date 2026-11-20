@@ -7,11 +7,17 @@ namespace GlobalTheory.SymplecticLevelLift
 
 open Matrix Module
 
+/- English proof (translation)
+Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[omegaStd, Matrix.J, Pi.single_apply, Matrix.one_apply, eq_comm]`.
+-/
 theorem omegaStd_single {h : ℕ} (i j : Fin h ⊕ Fin h) :
     omegaStd (Pi.single i 1) (Pi.single j 1) = (-Matrix.J (Fin h) ℤ) i j := by
   rcases i with i | i <;> rcases j with j | j <;>
     simp [omegaStd, Matrix.J, Pi.single_apply, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[of_apply, hb.apply_eq_sum hE]`. Simplify using `[Matrix.mul_apply, Matrix.J, Fintype.sum_sum_type, Basis.toMatrix_apply, Matrix.one_apply, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_eq {h : ℕ} {M : Type} [AddCommGroup M] {Ef : LinearMap.BilinForm ℤ M}
     {b : Basis (Fin h ⊕ Fin h) ℤ M} (hb : IsSymplecticBasis Ef b) (hE : Ef.IsAlt)
     (v : Fin h ⊕ Fin h → M) :
@@ -23,6 +29,25 @@ theorem gram_eq {h : ℕ} {M : Type} [AddCommGroup M] {Ef : LinearMap.BilinForm 
     Finset.sum_sub_distrib]
   ring
 
+/- English proof (translation)
+Introduce `h k M _ _ _ Ef l _ hrk halt hbij hl`. Establish `hE : Ef.IsAlt` using `halt`. Take `⟨b, hb⟩` from `exists_isSymplecticBasis_of_finrank hE hbij hrk`. Use `set v : Fin h ⊕ Fin h → M := fun j => l (Pi.single j 1) with hv`. Establish `hmem : (b.toMatrix v).map (Int.castRingHom (ZMod k)) ∈ Matrix.symplecticGroup (Fin h) (ZMod k)`.
+
+Rewrite using `[SymplecticGroup.mem_iff']`. Establish `h1 : (Matrix.of fun i j => Ef (v i) (v j)).map (Int.castRingHom (ZMod k)) = (-Matrix.J (Fin h) ℤ).map (Int.castRingHom (ZMod k))`. Use extensionality with `i j`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ k).2 (hl (Pi.single i 1) (Pi.single j 1))` as an intermediate fact. Rewrite `this` using `[omegaStd_single, Int.cast_sub, sub_eq_zero]`.
+
+Simplify `this` using `[hv]`. Rewrite `h1` using `[gram_eq hb hE, Matrix.map_mul, Matrix.map_mul, Matrix.map_neg _ (map_neg _), map_J, transpose_map]`. Simplify using `using h1`. Take `⟨N, hN, hNT⟩` from `symplectic_zmod_lift h k _ hmem`. Establish `hw : b.toMatrix (fun j => ∑ i, N i j • b i) = N`.
+
+Use extensionality with `i j`. Rewrite using `[Basis.toMatrix_apply, b.repr_sum_self]`. Take `⟨c, hc, hcv⟩` from `hb.exists_basis_of_toMatrix_mem hE (hw.symm ▸ hN)`. Establish `hcong : ∀ j, ∃ m : M, v j - c j = (k : ℤ) • m`. Introduce `j`.
+
+Establish `hd : ∀ i, ∃ t : ℤ, b.toMatrix v i j - N i j = k * t` using `fun i => by`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ k).1 ?_` and prove the remaining obligations. Use `congrFun (congrFun hNT i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, eq_intCast] at this`. Rewrite using `[Int.cast_sub, this, sub_self]`.
+
+Use `choose t ht using hd`. Use `⟨∑ i, t i • b i, ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_toMatrix_smul_self v j, hcv, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← sub_smul, ht, mul_smul]`. Use `choose m hm using hcong`.
+
+Use `⟨c.equivFun.symm, fun x y => ?_, fun a => ⟨∑ j, a j • m j, ?_⟩⟩` and prove the remaining obligations. Establish `hr : ∀ (z : Fin h ⊕ Fin h → ℤ) i, c.repr (c.equivFun.symm z) i = z i` using `fun z i => by`. Rewrite using `[← c.equivFun_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[hc.apply_eq_sum hE]`. Simplify using `only [hr, omegaStd]`.
+
+Establish `hla : l a = ∑ j, a j • v j` using `by conv_lhs => rw [← Finset.univ_sum_single a]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hv, ← map_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[hla, c.equivFun_symm_apply, ← Finset.sum_sub_distrib, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [← smul_sub, hm, smul_comm]`.
+-/
 theorem exists_symplectic_equiv_congr : ∀ (h k : ℕ) (M : Type) [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M] (Ef : LinearMap.BilinForm ℤ M) (l : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] M), 0 < k → Module.finrank ℤ M = 2 * h → (∀ x, Ef x x = 0) → Function.Bijective Ef → (∀ a b, (k : ℤ) ∣ Ef (l a) (l b) - omegaStd a b) → ∃ B : (Fin h ⊕ Fin h → ℤ) ≃ₗ[ℤ] M, (∀ a b, Ef (B a) (B b) = omegaStd a b) ∧ ∀ a, ∃ m : M, l a - B a = (k : ℤ) • m := by
   intro h k M _ _ _ Ef l _ hrk halt hbij hl
   have hE : Ef.IsAlt := halt

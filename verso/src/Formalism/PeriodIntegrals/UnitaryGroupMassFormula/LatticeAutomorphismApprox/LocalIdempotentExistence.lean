@@ -16,6 +16,15 @@ def smulLin (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (c : RV I v) :
     simp only [RingHom.id_apply]
     rw [PI.FinKW.LocTo.ov_smul_vec, PI.FinKW.LocTo.ov_smul_vec, smul_comm]
 
+/- English proof (translation)
+Establish `hfg : ((Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))).map (smulLin I v c)).FG` using `(latLoc_fg I v).map _`. Establish `hle : (Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))).map (smulLin I v c) ≤ Ideal.span {(g : OV I v)} • (Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))).map (smulLin I v c)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨w, hw, hcw⟩` from `hc x hx`. Establish `e : (smulLin I v c) x = (g : OV I v) • (smulLin I v c w)` using `by show c • x = (g : OV I v) • (c • w)`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (RV I v), smul_comm, ← hcw, smul_smul, hcc]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.subset_span (Set.mem_singleton _)) (Submodule.mem_map_of_mem hw)`. Establish `hjac : Ideal.span {(g : OV I v)} ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top, Ideal.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `natCast_mem_max I.F v g hg`. Establish `hbot` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg hle hjac`. Introduce `x hx`. Establish `hm : (smulLin I v c) x ∈ (Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E))).map (smulLin I v c)` using `Submodule.mem_map_of_mem hx`. Rewrite `hm` using `[hbot, Submodule.mem_bot]`.
+
+Conclude with `hm`.
+-/
 theorem idem_kill (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (g : ℕ) (hg : (g : 𝓞 I.F) ∈ v.asIdeal)
     (c : RV I v) (hcc : c * c = c)
     (hc : ∀ x ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)),
@@ -42,6 +51,17 @@ theorem idem_kill (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (g : ℕ) (hg
   rw [hbot, Submodule.mem_bot] at hm
   exact hm
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ Submodule.span I.E (I.L : Set (Fin I.n → I.E)), c • Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) x = 0 := by`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact h _ (Submodule.subset_span ⟨y, hy, rfl⟩)`. Consider the case `zero => rw [PI.FinKW.ratV_zero', smul_zero]`.
+
+Consider the case `add y z _ _ hy hz => rw [PI.FinKW.ratV_add', smul_add, hy, hz, add_zero]`. Consider the case `smul a y _ hy`. Establish `e : Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (a • y) = (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) a) • Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism …`. Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.L2.SG.Sub.ratV, Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Rewrite using `[e, smul_comm, hy, smul_zero]`. Establish `h0` using `key (Pi.single ⟨0, hn⟩ 1) (by rw [I.L_span]; exact Submodule.mem_top)`. Establish `e1 : Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (Pi.single ⟨0, hn⟩ (1 : I.E)) = Pi.single ⟨0, hn⟩ 1 := by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = ⟨0, hn⟩`.
+
+Substitute `hi` using the available equality. Simplify using `[Formalism.L2.SG.Sub.ratV]`. Simplify using `[Formalism.L2.SG.Sub.ratV, hi]`. Rewrite `h0` using `[e1]`. Establish `h1` using `congrFun h0 ⟨0, hn⟩`.
+
+Simplify using `using h1`.
+-/
 theorem kill_zero (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (hn : 0 < I.n) (c : RV I v)
     (h : ∀ x ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)), c • x = 0) : c = 0 := by
   have key : ∀ x ∈ Submodule.span I.E (I.L : Set (Fin I.n → I.E)),
@@ -70,6 +90,11 @@ theorem kill_zero (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (hn : 0 < I.n
   have h1 := congrFun h0 ⟨0, hn⟩
   simpa using h1
 
+/- English proof (translation)
+Introduce `I g r k e f Rf hg hn v hv`. Establish `hb : PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew) * PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew) = PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew)`. Rewrite using `[← map_mul, eps_idem Rf v]`. Establish `hcc : (1 - PI.FinKW.psiV I v Rf.ew - PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew)) * (1 - PI.FinKW.psiV I v Rf.ew - PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew)) = 1 - PI.FinKW.psiV I v Rf.ew - PI.UnitaryGroupMassFormula.AdInd …`. Take the linear combination `eps_idem Rf v + hb + 2 * eps_orth Rf v`.
+
+Establish `hkill` using `idem_kill I v g hv _ hcc (fun x hx => full_loc Rf v x hx)`. Establish `hz` using `kill_zero I v (by omega) _ hkill`. Take the linear combination `-hz`.
+-/
 theorem local_idempotent_existence : LocIdem := by
   intro I g r k e f Rf hg hn v hv
   have hb : PI.UnitaryGroupMassFormula.AdIndexEq.sigV I v (PI.FinKW.psiV I v Rf.ew) *

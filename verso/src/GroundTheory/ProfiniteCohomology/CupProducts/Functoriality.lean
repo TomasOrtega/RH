@@ -12,6 +12,9 @@ universe u
 
 variable {k G H : Type u} [CommRing k] [Group G] [Group H]
 
+/- English proof (translation)
+Proceed by induction on `j using Fin.induction with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[Fin.partialProd_succ, Fin.partialProd_succ, ih, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem partialProd_comp_monoidHom {M N : Type*} [Monoid M] [Monoid N] {m : ℕ} (φ : M →* N)
     (x : Fin m → M) (j : Fin (m + 1)) :
     Fin.partialProd (⇑φ ∘ x) j = φ (Fin.partialProd x j) := by
@@ -30,6 +33,9 @@ def resTensorHom {A B : Rep.{u} k G} {A' B' : Rep.{u} k H} (f : Rep.res φ A ⟶
   (f ⊗ₘ g : Rep.res φ A ⊗ Rep.res φ B ⟶ A' ⊗ B')
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resTensorHom_tmul {A B : Rep.{u} k G} {A' B' : Rep.{u} k H} (f : Rep.res φ A ⟶ A')
     (g : Rep.res φ B ⟶ B') (a : A) (b : B) :
     (resTensorHom φ f g).hom (a ⊗ₜ[k] b : (A ⊗ B : Rep k G)) = f.hom a ⊗ₜ[k] g.hom b :=
@@ -39,6 +45,9 @@ def resTensorIso (A B : Rep.{u} k G) : Rep.res φ (A ⊗ B) ≅ Rep.res φ A ⊗
   Iso.refl (Rep.res φ A ⊗ Rep.res φ B)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resTensorIso_hom_tmul (A B : Rep.{u} k G) (a : A) (b : B) :
     (resTensorIso φ A B).hom.hom (a ⊗ₜ[k] b : (A ⊗ B : Rep k G)) =
       (a ⊗ₜ[k] b : (Rep.res φ A ⊗ Rep.res φ B : Rep k H)) :=
@@ -55,6 +64,11 @@ variable {A A' B B' : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep A'] [IsDiscr
 
 omit [TopologicalSpace H] [IsTopologicalGroup H] in
 
+/- English proof (translation)
+Proceed by induction on `x using cohomology_induction_on with | h x => ?_`. Proceed by induction on `y using cohomology_induction_on with | h y => ?_`. Rewrite using `[cup_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cup_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+
+Rewrite using `[cochainOf_cocycleι_cyclesMap, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cyclesMap]`. Use function extensionality and compare the values at `s`. Conclude with `tensorHom_cupCochain f g h _ _ s`.
+-/
 theorem cohomologyMap_tensorHom_cup (f : A ⟶ A') (g : B ⟶ B') (h : p + q = n)
     (x : cohomology A p) (y : cohomology B q) :
     cohomologyMap (f ⊗ₘ g) n (cup h x y) = cup h (cohomologyMap f p x) (cohomologyMap g q y) := by
@@ -72,6 +86,9 @@ theorem cohomologyMap_tensorHom_cup (f : A ⟶ A') (g : B ⟶ B') (h : p + q = n
 
 omit [TopologicalSpace H] [IsTopologicalGroup H] in
 
+/- English proof (translation)
+Use `cohomologyMap_tensorHom_cup f (𝟙 B) h x y` as an intermediate fact. Rewrite `this` using `[cohomologyMap_id, tensorHom_id]`. Then use the resulting hypothesis.
+-/
 theorem cohomologyMap_whiskerRight_cup (f : A ⟶ A') (h : p + q = n) (x : cohomology A p)
     (y : cohomology B q) :
     cohomologyMap (f ▷ B) n (cup h x y) = cup h (cohomologyMap f p x) y := by
@@ -85,6 +102,11 @@ section MapAlong
 variable (φ : H →* G) (hφ : Continuous φ) {A B : Rep.{u} k G} {A' B' : Rep.{u} k H}
   [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep A'] [IsDiscreteRep B'] {p q n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `x using cohomology_induction_on with | h x => ?_`. Proceed by induction on `y using cohomology_induction_on with | h y => ?_`. Rewrite using `[cup_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ, cup_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+
+Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `s`. Rewrite using `[cupCochain_apply, cupCochain_apply, resTensorHom_tmul, partialProd_comp_monoidHom]`. Conclude with `congrArg (TensorProduct.tmul k _) (Rep.hom_comm_apply g _ _)`.
+-/
 theorem cohomologyMapAlong_resTensorHom_cup (f : Rep.res φ A ⟶ A') (g : Rep.res φ B ⟶ B')
     (h : p + q = n) (x : cohomology A p) (y : cohomology B q) :
     cohomologyMapAlong φ hφ (resTensorHom φ f g) n (cup h x y) =
@@ -108,6 +130,11 @@ section Restriction
 
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] {p q n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `x using cohomology_induction_on with | h x => ?_`. Proceed by induction on `y using cohomology_induction_on with | h y => ?_`. Rewrite using `[cohomologyRes_eq, cohomologyRes_eq, cohomologyRes_eq, cup_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyMapAlong_cohomologyπ, cohomologyMapAlong_cohomologyπ, cup_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises.
+
+Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesMapAlong, cocycleι_cupCocycles, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong]`. Use function extensionality and compare the values at `s`. Simplify using `only [cupCochain_apply]`. Rewrite using `[partialProd_comp_monoidHom]`. Both sides reduce to the same expression.
+-/
 theorem cohomologyMap_resTensorIso_cohomologyRes_cup (S : Subgroup G) (h : p + q = n)
     (x : cohomology A p) (y : cohomology B q) :
     cohomologyMap (resTensorIso S.subtype A B).hom n (cohomologyRes (A ⊗ B) S n (cup h x y)) =
@@ -148,6 +175,9 @@ def invariantsTensorLinearMap :
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_invariantsTensorLinearMap_tmul (a : A.quotientToInvariants N)
     (b : B.quotientToInvariants N) :
     (invariantsTensorLinearMap A B N (a ⊗ₜ[k] b) : (A ⊗ B : Rep k G)) =
@@ -164,6 +194,9 @@ def invariantsTensorHom :
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invariantsTensorHom_tmul (a : A.quotientToInvariants N) (b : B.quotientToInvariants N) :
     ((invariantsTensorHom A B N).hom (a ⊗ₜ[k] b) : (A ⊗ B : Rep k G)) =
       ((a : A) ⊗ₜ[k] (b : B) : (A ⊗ B : Rep k G)) :=

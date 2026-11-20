@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
+/- English proof (translation)
+Introduce `R _ n M a b hab`. Conclude with `⟨⟨Finset.univ.image (pivotCols a b), card_image_pivotCols a b hab⟩, pivotMinor_eq_flagMinor M a b hab⟩`.
+-/
 theorem PivotMinorFlag.full : PivotMinorFlag.Statement := by
   intro R _ n M a b hab
   exact ⟨⟨Finset.univ.image (pivotCols a b), card_image_pivotCols a b hab⟩, pivotMinor_eq_flagMinor M a b hab⟩

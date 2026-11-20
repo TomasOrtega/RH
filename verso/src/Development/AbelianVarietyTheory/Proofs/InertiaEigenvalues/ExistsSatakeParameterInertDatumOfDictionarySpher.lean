@@ -24,6 +24,31 @@ noncomputable section
 
 namespace GlobalTheory.SatExist
 
+/- English proof (translation)
+Introduce `L _ _ _ n F π U₀ _ v w _ hsph Dv`. Take `⟨f₀, hf₀S, hf₀0, hf₀K⟩` from `hsph`. Take `⟨-, N, hN, hf₀N⟩` from `π.irrS.1.le hf₀S`. Take `⟨U, hCU, hU, hdec⟩` from `GlobalTheory.T.exists_level_full_at_inert_place_principal_elsewhere L n v N hN`. Establish `hdec' : ∀ κ ∈ U, ∃ a b : GAf L n, κ = a * b ∧ a ∈ Umax L n ∧ TrivOutside {v} a ∧ b ∈ U ∧ ∀ x : GAf L n, TrivOutside {v} x → b * x = x * b` using `fun κ hκ => by`.
+
+Take `⟨a, b, e, ha, hta, hb, hc⟩` from `hdec κ hκ`. Conclude with `⟨a, b, e, ha, hta, hCU b hb, hc⟩`. Establish `hf₀U : ∀ κ ∈ U, NG.rt L n κ f₀ = f₀` using `fun κ hκ => by`. Take `⟨a, b, rfl, ha, hta, hb, -⟩` from `hdec κ hκ`. Use function extensionality and compare the values at `g`.
+
+Use `show f₀ (g * (a * b)) = f₀ g`. Rewrite using `[← mul_assoc, hf₀N b hb]`. Conclude with `congrFun (hf₀K a ha hta) g`. Set `V : Submodule ℂ (GAf L n → π.W)` to `{ carrier := {f | f ∈ π.S ∧ ∀ κ ∈ U, NG.rt L n κ f = f} add_mem' := fun {f f'} hf hf' => ⟨π.S.add_mem hf.1 hf'.1, fun κ hκ => by`. Rewrite using `[map_add, hf.2 κ hκ, hf'.2 κ hκ]⟩`.
+
+Use the proof step `zero_mem' := ⟨π.S.zero_mem, fun κ _ => map_zero _⟩`. Use the proof step `smul_mem' := fun c f hf => ⟨π.S.smul_mem c hf.1, fun κ hκ => by rw [map_smul, hf.2 κ hκ]⟩ }`. Use `haveI : FiniteDimensional ℂ π.W := π.alg.1`. Use `haveI := GlobalTheory.AlgFormsFin.fixedForms_finite L n π.ρ (GlobalTheory.T.finite_doubleCosets_definiteUnitary_maximalLevel L n) hN`. Use `haveI hVfin : FiniteDimensional ℂ V := Submodule.finiteDimensional_of_le (S₂ := GlobalTheory.AlgFormsFin.fixedForms L n π.ρ N) fun f hf => ⟨(π.irrS.1.le hf.1).1, fun κ hκ g => congrFun (hf.2 κ (hCU κ hκ)) g⟩`.
+
+Establish `hfin` using `fun h hh => GlobalTheory.SatInd.CosetFin.finite_inert_support L n v w Dv (GlobalTheory.SatInd.DCoset.finite_dcoset Dv.ϖ Dv.σw _ n Dv.unram) (GlobalTheory.InertUmax.mem_Umax_of_trivOutside_of_loc_integral L n v w Dv) U hU h hh`. Establish `hmemV : ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n), ∀ f ∈ V, heckeFunI L n U Dv h f ∈ V`. Introduce `h hh f hf`. Use `⟨?_, GlobalTheory.T.inertHeckeOperator_preserves_productLevel_invariance L n v w Dv U hU hdec' π.W h hh f hf.2⟩` and prove the remaining obligations. Take `⟨C, a, x, hC⟩` from `GlobalTheory.SatIso.heckeFunI_eq_sum Dv U h (hfin h hh)`.
+
+Rewrite using `[hC]`. Conclude with `π.S.sum_mem fun c _ => π.S.smul_mem _ (π.irrS.1.stable _ _ hf.1)`. Set `T : (Formalism.UG.GU Dv.σw n → ℂ) → Module.End ℂ V` to `fun h => if hh : h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n) then { toFun := fun f => ⟨heckeFunI L n U Dv h f, hmemV h hh f f.2⟩ map_add' := fun f f' => Subtype.ext (by`. Take `⟨C, a, x, hC⟩` from `GlobalTheory.SatIso.heckeFunI_eq_sum Dv U h (hfin h hh)`. Simplify using `only [Submodule.coe_add, hC, map_add, smul_add, Finset.sum_add_distrib])`.
+
+Use the proof step `map_smul' := fun c f => Subtype.ext (by`. Take `⟨C, a, x, hC⟩` from `GlobalTheory.SatIso.heckeFunI_eq_sum Dv U h (hfin h hh)`. Simplify using `only [Submodule.coe_smul, hC, map_smul, RingHom.id_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun c' _ => smul_comm _ _ _) }`. Use `else 0`.
+
+Establish `hT : ∀ h (hh : h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n)) (f : V), ((T h f : V) : GAf L n → π.W) = heckeFunI L n U Dv h f` using `fun h hh f => by`. Simplify using `only [T, dif_pos hh]`. Both sides reduce to the same expression. Establish `hK` using `Formalism.UG.P.isCommensurated_integral_unitary_of_unramified Dv.unram n`. Take `⟨α, x, hx0, hx⟩` from `GlobalTheory.T.exists_satU_eigenvector_alt Dv.ϖ Dv.σw _ n Dv.unram V T (fun h₁ hh₁ h₂ hh₂ => LinearMap.ext fun f => Subtype.ext (by`.
+
+Rewrite using `[LinearMap.add_apply, Submodule.coe_add, hT (h₁ + h₂) (add_mem hh₁ hh₂) f, hT h₁ hh₁ f, hT h₂ hh₂ f]`. Conclude with `(GlobalTheory.T.heckeFunI_add_and_smul L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ 0 f).1))`. Use the proof step `(fun c h hh => LinearMap.ext fun f => Subtype.ext (by`. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, hT (c • h) (Submodule.smul_mem _ c hh) f, hT h hh f]`. Conclude with `(GlobalTheory.T.heckeFunI_add_and_smul L n v w Dv U hU π.W h h hh hh c f).2))`.
+
+Use the proof step `(LinearMap.ext fun f => Subtype.ext (by`. Rewrite using `[hT _ (Formalism.UG.Final.DosetIndMem _ _ ℂ 1) f]`. Conclude with `GlobalTheory.T.inertHeckeOperator_maximalCompact_indicator_eq_id L n v w Dv U hU π.W f f.2.2))`. Use the proof step `(fun h₁ hh₁ h₂ hh₂ => LinearMap.ext fun f => Subtype.ext (by`. Rewrite using `[Module.End.mul_apply, hT _ (Formalism.UG.Final.HeckeConvMem _ _ ℂ hK _ hh₁ _ hh₂) f, hT h₁ hh₁ (T h₂ f), hT h₂ hh₂ f]`.
+
+Conclude with `GlobalTheory.T.inertHeckeOperator_convolution_eq_comp L n v w Dv U hU π.W h₁ h₂ hh₁ hh₂ f f.2.2))`. Use the proof step `⟨f₀, hf₀S, hf₀U⟩ (fun h => hf₀0 (congrArg Subtype.val h))`. Use `⟨α, x, x.2.1, fun h => hx0 (Subtype.ext h), U, x.2.2, hU, fun h hh => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (hx h hh)`. Rewrite `e` using `[hT h hh]`.
+
+Conclude with `e`.
+-/
 theorem exists_satAt : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (π : NG.AutRep L n) (U : Submodule ℂ (UA L n → ℂ)), Dict F π U → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → π.SphAt v → ∀ Dv : InertDatum L n v w, ∃ α, NG.SatAt π Dv α := by
   classical
   intro L _ _ _ n F π U₀ _ v w _ hsph Dv

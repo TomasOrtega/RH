@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.CupPullbacks.ConstCompSingle
 
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC UpperTheory.Pbf
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop]`. Use `erw [Scheme.ΓSpecIso_naturality]`. Conclude with `Iso.inv_hom_id_assoc _ _`.
+-/
 private theorem comp_gamma {T : Scheme.{0}} (φ : Polynomial ℤ →+* Γ(T, ⊤)) :
     (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫
       (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop = CommRingCat.ofHom φ := by
@@ -9,6 +12,15 @@ private theorem comp_gamma {T : Scheme.{0}} (φ : Polynomial ℤ →+* Γ(T, ⊤
   erw [Scheme.ΓSpecIso_naturality]
   exact Iso.inv_hom_id_assoc _ _
 
+/- English proof (translation)
+Introduce `T a`. Establish `key : ∀ s : T ⟶ A1, s = T.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫ s.appTop)`. Introduce `s`. Rewrite using `[Spec.map_comp, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`. Set `φ : Polynomial ℤ →+* Γ(T, ⊤)` to `Polynomial.eval₂RingHom (Int.castRingHom _) a`.
+
+Use `⟨T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, ?_⟩` and prove the remaining obligations. Establish `h : ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫ (T.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ)).appTop).hom Polynomial.X = a`. Rewrite using `[comp_gamma]`. Simplify using `[φ]`. Rewrite `h` using `[CommRingCat.hom_comp, RingHom.comp_apply]`.
+
+Conclude with `h`. Introduce `s hs`. It suffices to establish `e : (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv ≫ s.appTop = CommRingCat.ofHom φ by`. Rewrite using `[key s, e]`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Apply `Polynomial.ringHom_ext'` to reduce the goal to its premises. Conclude with `RingHom.ext_int _ _`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply, hs]`. Simplify using `[φ]`.
+-/
 theorem UpperTheory.affineLine_hom_existsUnique_of_globalSection :
     ∀ (T : Scheme.{0}) (a : Γ(T, ⊤)), ∃! s : T ⟶ A1, s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).inv.hom Polynomial.X) = a := by
   intro T a

@@ -48,6 +48,19 @@ def AlgebraPart (D : D7) : Prop :=
     (∀ x ∈ MM, ∃ u ∈ MM, ∃ z ∈ MM, u ∈ LinearMap.range e ∧
       z ∈ LinearMap.range (LinearMap.id - e) ∧ c • x = u + z))
 
+/- English proof (translation)
+Introduce `hf`. Use `haveI : IsNoetherianRing (integralClosure ℤ ℂ) := isNoetherian_of_tower ℤ inferInstance`. Establish `h2 : (2 : integralClosure ℤ ℂ) ≠ 0` using `two_ne_zero`. Establish `hu : ¬ IsUnit (2 : integralClosure ℤ ℂ)`. Introduce `hu`.
+
+Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `hb' : (2 : ℂ) * (b : ℂ) = 1` using `congrArg (Subtype.val) hb`. Establish `hbq : (b : ℂ) = algebraMap ℚ ℂ (1 / 2)`. Simplify using `only [one_div, map_inv₀, map_ofNat]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `hb'`. Establish `hi : IsIntegral ℤ (algebraMap ℚ ℂ (1 / 2))` using `hbq ▸ b.2`. Rewrite `hi` using `[isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective]`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Establish `hz' : (2 * z : ℚ) = 1` using `by simp at hz; rw [hz]; norm_num`.
+
+Establish `: (2 * z : ℤ) = 1` using `by exact_mod_cast hz'`. Use linear arithmetic over natural numbers and integers. Take `⟨p, hp, -⟩` from `WfDvdMonoid.exists_irreducible_factor hu h2`. Take `⟨s, hs⟩` from `IsAlgClosed.exists_eq_mul_self (p : ℂ)`. Use `replace hs := hs.symm`.
+
+Establish `hsi : IsIntegral ℤ s`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[pow_two, hs]`. Conclude with `p.2`. Establish `hp' : p = (⟨s, hsi⟩ : integralClosure ℤ ℂ) * ⟨s, hsi⟩` using `Subtype.ext hs.symm`.
+
+Establish `: IsUnit (⟨s, hsi⟩ : integralClosure ℤ ℂ)`. Apply the tactic sequence `rcases hp.isUnit_or_isUnit hp' with h | h <;> exact h`. Conclude with `hp.not_isUnit (hp' ▸ this.mul this)`.
+-/
 theorem not_finite_integralClosure : ¬ Module.Finite ℤ (integralClosure ℤ ℂ) := by
   intro hf
   haveI : IsNoetherianRing (integralClosure ℤ ℂ) := isNoetherian_of_tower ℤ inferInstance
@@ -75,6 +88,11 @@ theorem not_finite_integralClosure : ¬ Module.Finite ℤ (integralClosure ℤ �
     rcases hp.isUnit_or_isUnit hp' with h | h <;> exact h
   exact hp.not_isUnit (hp' ▸ this.mul this)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨⟨x, hx⟩, hx0⟩` from `(AddSubgroup.ne_bot_iff_exists_ne_zero).1 hne`. Establish `hx0' : x ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Set `f : integralClosure ℤ ℂ →+ MM` to `{ toFun := fun a => ⟨(a : ℂ) • x, hs a a.2 x hx⟩ map_zero' := Subtype.ext (by simp) map_add' := fun a b => Subtype.ext (by simp [add_smul]) }`. Establish `hinj : Function.Injective f.toIntLinearMap`.
+
+Introduce `a b hab`. Establish `: (a : ℂ) • x = (b : ℂ) • x` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (smul_left_injective ℂ hx0' this)`. Conclude with `not_finite_integralClosure (Module.Finite.of_injective _ hinj)`.
+-/
 theorem lattice_eq_bot {V : Type} [AddCommGroup V] [Module ℂ V] (MM : AddSubgroup V)
     (hs : ∀ a : ℂ, IsIntegral ℤ a → ∀ x ∈ MM, a • x ∈ MM) (hfg : Module.Finite ℤ MM) : MM = ⊥ := by
   by_contra hne

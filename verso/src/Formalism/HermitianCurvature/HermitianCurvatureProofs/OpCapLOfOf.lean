@@ -30,6 +30,13 @@ def CkLevOn : Prop :=
   ∀ (k r m : ℕ) (Dm : Set (B.Mat k r)) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (f : B.Mat k r → E),
     Q.CkLev k r 0 m Dm f → B.CkOn (m : ℕ∞) (B.GV k r ∩ Dm) f
 
+/- English proof (translation)
+Introduce `t ht`. Rewrite `ht` using `[wfam, List.mem_append]`. Break down `ht with ht | ht` into its components or cases. Take `⟨t0, ht0, rfl⟩` from `List.mem_map.1 ht`. Use `⟨by simpa using hL t0 ht0, ?_⟩` and prove the remaining obligations.
+
+Introduce `V hV`. Take `⟨X, -, rfl⟩` from `List.mem_map.1 hV`. Conclude with `hF X`. Simplify using `only [List.mem_singleton] at ht`. Substitute `ht` using the available equality.
+
+Conclude with `⟨by simp, by simp⟩`.
+-/
 theorem wfam_ok {d : ℕ} {α : Type} {O : Set (Fin d → ℝ)} (L : List (ℂ × List α))
     (F : α → (Fin d → ℝ) → (Fin d → ℝ)) (c : ℂ) (j : ℕ) (hL : ∀ t ∈ L, t.2.length ≤ j)
     (hF : ∀ X, ContDiffOn ℝ ∞ (F X) O) : FamOK O (wfam L F c) j := by
@@ -45,6 +52,17 @@ theorem wfam_ok {d : ℕ} {α : Type} {O : Set (Fin d → ℝ)} (L : List (ℂ �
     subst ht
     exact ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Introduce `hRw hCW k r z z' d O U κ Φ u hC hOm hCk hev j hj1 hjn`. Take `⟨_, hfld, hw⟩` from `hRw k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨Ys, lam, L, cj, hcj, hL, hid, hsym⟩` from `hCW k r j hj1 hjn`. Use `choose c hc using hev`. Use `⟨wfam L (VR κ Φ) (-(∑ i, lam i * c (Ys i))), cj, hcj, wfam_ok L _ _ j (fun t ht => (hL t ht).1) (fun X => (hfld X).1), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite using `[hA]`. Establish `hgG : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Establish `hgO : κ x ∈ JF.Om k r z z'` using `⟨hgG, hOm x hx⟩`. Establish `e1` using `hid ℂ (B.GV k r ∩ Q.OmPlus k r z z') u (hK k r _ _ ℂ u hCk) (κ x) ⟨hgG, hOm x hx⟩ hgG`.
+
+Establish `e2 : (L.map fun t => t.1 * vfW (t.2.map (VR κ Φ)) (fun y => u (κ y)) x) = (L.map fun t => t.1 • B.Rw t.2 u (κ x))`. Use `List.map_congr_left (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[(hw t.2 (hL t ht).2 ((hL t ht).1.trans hjn) x hx).1, smul_eq_mul]`. Rewrite using `[e2, ← e1]`. Simplify using `only [hc _ _ hgO, smul_eq_mul]`.
+
+Rewrite using `[neg_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc, add_neg_cancel]`. Introduce `x hx ξ Ξ₀ hΞ₀ hcov`. Rewrite using `[hS d _ L (VR κ Φ) _ j x ξ (fun X => Matrix.trace (Ξ₀ * X)) hj1 (fun t ht X hX => by`. Rewrite using `[hcov X ((hL t ht).2 X hX), hT k r Ξ₀ X hΞ₀ ((hL t ht).2 X hX)])]`.
+
+Conclude with `hsym Ξ₀ hΞ₀`.
+-/
 theorem opCVOf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn) : OpCVOf := by
   intro hRw hCW k r z z' d O U κ Φ u hC hOm hCk hev j hj1 hjn
   obtain ⟨_, hfld, hw⟩ := hRw k r z z' d O U κ Φ u hC hOm hCk
@@ -70,6 +88,17 @@ theorem opCVOf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn)
       rw [hcov X ((hL t ht).2 X hX), hT k r Ξ₀ X hΞ₀ ((hL t ht).2 X hX)])]
     exact hsym Ξ₀ hΞ₀
 
+/- English proof (translation)
+Introduce `hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk`. Take `⟨_, hfld, hw⟩` from `hRw k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨ws, lam, L, cj, hcj, hL, hid, hsym⟩` from `hCW k r z' Bs hBs j hj1 hjk`. Use `choose c hc using hev`. Establish `hjn : j ≤ 2 * r + k + 1` using `by omega`.
+
+Use `⟨wfam L (VR κ Φ) (-(∑ i, lam i * c (ws i))), cj, hcj, wfam_ok L _ _ j (fun t ht => (hL t ht).1) (fun X => (hfld X).1), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hA]`. Establish `hgG : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Establish `hgO : κ x ∈ JF.Om k r z z'` using `⟨hgG, hOm x hx⟩`.
+
+Establish `e1` using `hid ℂ (B.GV k r ∩ Q.OmPlus k r z z') u (hK k r _ _ ℂ u hCk) (κ x) ⟨hgG, hOm x hx⟩ hgG`. Establish `e2 : (L.map fun t => t.1 * vfW (t.2.map (VR κ Φ)) (fun y => u (κ y)) x) = (L.map fun t => t.1 • B.Rw t.2 u (κ x))`. Use `List.map_congr_left (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[(hw t.2 (hL t ht).2 ((hL t ht).1.trans hjn) x hx).1, smul_eq_mul]`. Rewrite using `[e2, ← e1]`.
+
+Simplify using `only [hc _ _ hgO, smul_eq_mul]`. Rewrite using `[neg_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc, add_neg_cancel]`. Introduce `x hx ξ Ξ₀ hΞ₀ hcov`. Rewrite using `[hS d _ L (VR κ Φ) _ j x ξ (fun X => Matrix.trace (Ξ₀ * X)) hj1 (fun t ht X hX => by`.
+
+Rewrite using `[hcov X ((hL t ht).2 X hX), hT k r Ξ₀ X hΞ₀ ((hL t ht).2 X hX)])]`. Conclude with `hsym Ξ₀ hΞ₀`.
+-/
 theorem opCapROf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn) : OpCapROf := by
   intro hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk
   obtain ⟨_, hfld, hw⟩ := hRw k r z z' d O U κ Φ u hC hOm hCk
@@ -96,6 +125,17 @@ theorem opCapROf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevO
       rw [hcov X ((hL t ht).2 X hX), hT k r Ξ₀ X hΞ₀ ((hL t ht).2 X hX)])]
     exact hsym Ξ₀ hΞ₀
 
+/- English proof (translation)
+Introduce `hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk`. Take `⟨_, hfld, hw⟩` from `hRw k r z z' d O U κ Φ u hC hOm hCk`. Take `⟨ws, lam, L, cj, hcj, hL, hid, hsym⟩` from `hCW k r z Bs hBs j hj1 hjk`. Use `choose c hc using hev`. Establish `hjn : j ≤ 2 * r + k + 1` using `by omega`.
+
+Use `⟨wfam L (VL κ Φ) (-(∑ i, lam i * c (ws i))), cj, hcj, wfam_ok L _ _ j (fun t ht => (hL t ht).1) (fun X => (hfld X).2), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hA]`. Establish `hgG : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Establish `hgO : κ x ∈ JF.Om k r z z'` using `⟨hgG, hOm x hx⟩`.
+
+Establish `e1` using `hid ℂ (B.GV k r ∩ Q.OmPlus k r z z') u (hK k r _ _ ℂ u hCk) (κ x) ⟨hgG, hOm x hx⟩ hgG`. Establish `e2 : (L.map fun t => t.1 * vfW (t.2.map (VL κ Φ)) (fun y => u (κ y)) x) = (L.map fun t => t.1 • t.2.foldr Q.LdV u (κ x))`. Use `List.map_congr_left (fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[(hw t.2 (hL t ht).2 ((hL t ht).1.trans hjn) x hx).2, smul_eq_mul]`. Rewrite using `[e2, ← e1]`.
+
+Simplify using `only [hc _ _ hgO, smul_eq_mul]`. Rewrite using `[neg_mul, Finset.sum_mul]`. Simplify using `only [mul_assoc, add_neg_cancel]`. Introduce `x hx ξ Ξ hΞ hcov`. Rewrite using `[hS d _ L (VL κ Φ) _ j x ξ (fun X => Matrix.trace (Ξ * X)) hj1 (fun t ht X hX => by`.
+
+Rewrite using `[hcov X ((hL t ht).2 X hX), hT k r Ξ X hΞ ((hL t ht).2 X hX)])]`. Conclude with `hsym Ξ hΞ`.
+-/
 theorem opCapLOf_of (hA : WFamApp) (hS : WFamSymb) (hT : TrRealLie) (hK : CkLevOn) : OpCapLOf := by
   intro hRw hCW k r z z' d O U κ Φ u Bs hC hOm hCk hBs hev j hj1 hjk
   obtain ⟨_, hfld, hw⟩ := hRw k r z z' d O U κ Φ u hC hOm hCk

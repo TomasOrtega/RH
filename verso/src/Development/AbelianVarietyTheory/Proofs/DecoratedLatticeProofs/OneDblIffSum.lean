@@ -16,6 +16,9 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A : Type} [AddCommGroup A] [Module ℂ A] in
+/- English proof (translation)
+Establish `hpos` using `ENNReal.toReal_pos_iff.mp (_root_.GlobalTheory.StepData.volN_stabLat ν b)`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale`. Conclude with `Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.mpr hpos.2.ne) (ENNReal.inv_ne_top.mpr hpos.1.ne')`.
+-/
 private lemma isHaarMeasure_framePositiveSum_rescale (ν : Measure k)
     [ν.IsAddHaarMeasure] (b : GL (n ⊕ Fin c) k) (m : Measure (GL n k)) [m.IsHaarMeasure] :
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b m).IsHaarMeasure := by
@@ -28,6 +31,13 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A : Type} [AddCommGroup A] [Module ℂ A] in
+/- English proof (translation)
+Establish `hdown : ∀ p, _root_.GlobalTheory.RootEx.exDown ν p σ (fun _ => (0 : ℂ)) = fun _ => 0`. Introduce `p`. Use function extensionality and compare the values at `v`. Simplify using `[_root_.GlobalTheory.RootEx.exDown]`. Establish `key : ∀ m : ℕ, _root_.GlobalTheory.PosOne.toOne ν σ (m + 1) (fun _ => 0) = fun _ => 0`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[show m + 1 + 1 = m + 2 from rfl, _root_.GlobalTheory.PosOne.toOne_succ, hdown, ih]`.
+
+Consider the cases of `P with`. Consider the case `zero => rfl`. Consider the case `succ m => exact key m`.
+-/
 private lemma posOne_toOne_zero (ν : Measure k)
     (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (P : ℕ) :
     _root_.GlobalTheory.PosOne.toOne ν σ P (fun _ => 0) = fun _ => 0 := by
@@ -49,6 +59,9 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A : Type} [AddCommGroup A] [Module ℂ A] in
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ _root_.GlobalTheory.SplitWeil.SB X`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app, dif_pos hx]`. Conclude with `hB _ _`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app, dif_neg hx, LinearMap.zero_apply]`. Rewrite using `[posOne_toOne_zero]`.
+-/
 private lemma fourierJacobiAverage_app_toOne_comm {X : Type} [TopologicalSpace X]
     (ν : Measure k) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (P : ℕ)
     (B B₁ : _root_.GlobalTheory.SplitWeil.SB X →ₗ[ℂ] A →ₗ[ℂ] ℂ)
@@ -65,6 +78,9 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A : Type} [AddCommGroup A] [Module ℂ A] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app, dif_pos hx]`.
+-/
 private lemma fourierJacobiAverage_app_of_mem_SB {X V : Type} [TopologicalSpace X]
     [AddCommGroup V] [Module ℂ V] (B : _root_.GlobalTheory.SplitWeil.SB X →ₗ[ℂ] V) {x : X → ℂ}
     (hx : x ∈ _root_.GlobalTheory.SplitWeil.SB X) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app B x = B ⟨x, hx⟩ := by
@@ -74,6 +90,9 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A : Type} [AddCommGroup A] [Module ℂ A] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app, dif_neg hx]`.
+-/
 private lemma fourierJacobiAverage_app_of_not_mem_SB {X V : Type} [TopologicalSpace X]
     [AddCommGroup V] [Module ℂ V] (B : _root_.GlobalTheory.SplitWeil.SB X →ₗ[ℂ] V) {x : X → ℂ}
     (hx : x ∉ _root_.GlobalTheory.SplitWeil.SB X) : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app B x = 0 := by
@@ -83,6 +102,9 @@ open MeasureTheory ValuativeRel Matrix in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
   {A : Type} [AddCommGroup A] [Module ℂ A] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private lemma fourierJacobiAverage_app_zero_map {X V : Type} [TopologicalSpace X]
     [AddCommGroup V] [Module ℂ V] (x : X → ℂ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app (0 : _root_.GlobalTheory.SplitWeil.SB X →ₗ[ℂ] V) x = 0 := by
@@ -91,6 +113,37 @@ private lemma fourierJacobiAverage_app_zero_map {X V : Type} [TopologicalSpace X
 
 open MeasureTheory ValuativeRel Matrix in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hcρ ψ hψ hcond ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ _ G₁ _ m₂ _ G₂ _ L₁ L₂ hL₁ hL₂ hG₁ hG₂ b₁ b₂ A _ _ σ hσ T hT F hF Φ₁ Φ₂ hΦ₁ hΦ₂ α T₁ T₂ hT₁ hT₂ z`. Use `haveI : ν.IsAddHaarMeasure := hν.1`. Establish `hψ1 : ψ ≠ 1` using `hcond.ne_one`. Establish `hsd : _root_.GlobalTheory.SplitWeil.IsSelfDual ψ ν` using `_root_.GlobalTheory.SplitWeil.isSelfDual_of_isUnitVol ν hcond hν`. Establish `hρ1 : 1 ≤ ρ` using `by omega`.
+
+Establish `hρc : ρ ≤ c` using `by omega`. Use `haveI : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₁ m₁).IsHaarMeasure := isHaarMeasure_framePositiveSum_rescale ν b₁ m₁`. Use `haveI : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₂ m₂).IsHaarMeasure := isHaarMeasure_framePositiveSum_rescale ν b₂ m₂`. Take `⟨ρ₁, hρ₁⟩` from `(_root_.GlobalTheory.PosOne.isSrc_exists_isSmoothRep k (n₁ ⊕ Fin (c + 1)) (n₂ ⊕ Fin c) μ₂ hμ₂).1`. Establish `hρ₁s` using `(_root_.GlobalTheory.PosOne.isSrc_exists_isSmoothRep k (n₁ ⊕ Fin (c + 1)) (n₂ ⊕ Fin c) μ₂ hμ₂).2 ρ₁ hρ₁`.
+
+Take `⟨b, hb, -, hbone⟩` from `_root_.GlobalTheory.PosOne.MidVertex.exists_bilPos_mid k n₀ n₁ n₂ c ρ hcρ ψ hψ hψ1 ν hsd μ₁ μ₂ hμ₁ hμ₂ m₁ G₁ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₂ m₂) G₂ A σ hσ T hT F ρ₁ hρ₁`. Take `⟨B', hB'eq, hB'⟩` from `(_root_.GlobalTheory.PosOne.toOne_isPosOne k n₁ n₀ (c + 1) ρ hρ1 (by omega) ψ hψ hψ1 ν _ ρ₁ hρ₁s).2 μ₁ hμ₁ b hb`. Establish `hin : ∀ Ψ, ∃ B₁ : _root_.GlobalTheory.SplitWeil.SB (Matrix n₂ n₁ k) →ₗ[ℂ] A →ₗ[ℂ] ℂ, (∀ Ψ' v, B₁ Ψ' v = _root_.GlobalTheory.PosOne.toOne ν σ ρ (T Ψ Ψ') v) ∧ _root_.GlobalTheory.PosOne.BilPos ψ μ₂ 1 σ B₁` using `fun Ψ => (_root_.GlobalTheory.PosOne.toOne_isPosOne k n₂ n₁ c ρ hρ1 hρc ψ hψ hψ1 ν A σ hσ).2 μ₂ hμ₂ (T Ψ) (hT.1 Ψ)`. Use `choose B₁ hB₁eq hB₁ using hin`. Establish `uniq₁` using `fun f => (_root_.GlobalTheory.QuotInt.quotInt_unique_exists k n₁ (c + 1) 1 le_rfl (by omega) ν (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₁ m₁) G₁ f).1`.
+
+Establish `uniq₂` using `fun f => (_root_.GlobalTheory.QuotInt.quotInt_unique_exists k n₂ c 1 le_rfl (by omega) ν (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₂ m₂) G₂ f).1`. Establish `hinteg : ∀ Ψ Φb, _root_.GlobalTheory.PosOne.tIntOne ψ ν μ₂ ρ σ (T Ψ) F Φb = _root_.GlobalTheory.PosOne.tInt ψ ν μ₂ 1 σ (B₁ Ψ) F Φb`. Introduce `Ψ Φb`. Use function extensionality and compare the values at `h`. Simplify using `only [_root_.GlobalTheory.PosOne.tIntOne, _root_.GlobalTheory.PosOne.tInt]`.
+
+Conclude with `(fourierJacobiAverage_app_toOne_comm ν σ ρ (T Ψ) (B₁ Ψ) (hB₁eq Ψ) _ _).symm`. Establish `hinner : ∀ h Ψ, _root_.GlobalTheory.RootEx.IsQuotInt ν (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₂ m₂) G₂ 1 (_root_.GlobalTheory.PosOne.tInt ψ ν μ₂ 1 σ (B₁ Ψ) F (_root_.GlobalTheory.SplitWeil.om μ₂ h 1 Φ₂.1)) (B' Ψ (ρ₁ h Φ₂))`. Introduce `h Ψ`. Use `hbone Ψ (ρ₁ h Φ₂)` as an intermediate fact. Rewrite `this` using `[hρ₁ h Φ₂, ← hB'eq Ψ, hinteg Ψ]`. Then use the resulting hypothesis.
+
+Establish `hF' : ∀ j : L₁.J, ρ₁ (j : GL (n₁ ⊕ Fin (c + 1)) k) Φ₂ = (L₁.lam j : ℂ) • Φ₂`. Introduce `j`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hρ₁, Submodule.coe_smul]`. Conclude with `hΦ₂.1 j`.
+
+Establish `houter` using `_root_.GlobalTheory.PosOneCell.quotInt_posOne k n₁ n₀ (c + 1) (by omega) ψ hψ hcond ν hν μ₁ hμ₁ m₁ G₁ L₁ hL₁ hG₁ b₁ _ ρ₁ hρ₁s B' hB' Φ₂ hF' Φ₁ hΦ₁ α T₁ hT₁`. Establish `hinner_sum : ∀ γ ∈ T₁, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app B' (_root_.GlobalTheory.StepData.xi ψ ν μ₁ Φ₁.1 L₁.J b₁ α γ) (ρ₁ γ Φ₂) = ∑ β ∈ T₂, (((m₂ (_root_.GlobalTheory.StepData.prX (_root_.GlobalTheory.StepData.Cgrp L₂.J β))).toReal⁻¹ : ℝ) : ℂ …`. Introduce `γ hγ`. Distinguish the cases in `hx : _root_.GlobalTheory.StepData.xi ψ ν μ₁ Φ₁.1 L₁.J b₁ α γ ∈ _root_.GlobalTheory.SplitWeil.SB _`. Rewrite using `[fourierJacobiAverage_app_of_mem_SB B' hx, fourierJacobiAverage_app_of_mem_SB T hx]`.
+
+Establish `hi` using `_root_.GlobalTheory.PosOneCell.quotInt_posOne k n₂ n₁ c (by omega) ψ hψ hcond ν hν μ₂ hμ₂ m₂ G₂ L₂ hL₂ hG₂ b₂ A σ hσ (B₁ ⟨_, hx⟩) (hB₁ _) F hF Φ₂ hΦ₂.2 γ T₂ (hT₂ γ hγ)`. Rewrite using `[uniq₂ _ _ _ (hinner γ ⟨_, hx⟩) hi]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[fourierJacobiAverage_app_toOne_comm ν σ ρ (T ⟨_, hx⟩) (B₁ ⟨_, hx⟩) (hB₁eq _)]`. Simplify using `only [fourierJacobiAverage_app_of_not_mem_SB B' hx, fourierJacobiAverage_app_of_not_mem_SB T hx, fourierJacobiAverage_app_zero_map, LinearMap.zero_apply, posOne_toOne_zero, mul_zero, Finset.sum_const_zero]`.
+
+Establish `hsum : ∀ S, _root_.GlobalTheory.RootEx.IsQuotInt ν (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₁ m₁) G₁ 1 (_root_.GlobalTheory.PosOne.tInt ψ ν μ₁ 1 ρ₁ B' Φ₂ (_root_.GlobalTheory.SplitWeil.om μ₁ α 1 Φ₁.1)) S → S = ∑ γ ∈ T₁, ∑ β ∈ T₂, (((m₁ (_root_.G …`. Introduce `S hS`. Rewrite using `[uniq₁ _ _ _ hS houter]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[hinner_sum γ hγ, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : ∀ w : GL (n₁ ⊕ Fin (c + 1)) k → _root_.GlobalTheory.SplitWeil.SB (Matrix n₁ n₀ k) →ₗ[ℂ] ℂ, (∀ h Ψ, w h Ψ = B' Ψ (ρ₁ h Φ₂)) → (fun h => _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app (w h) (_root_.GlobalTheory.RootEx.opE ψ ν 1 (_root_.GlobalTheory.Spl …`. Introduce `w hw`.
+
+Use function extensionality and compare the values at `h`. Simplify using `only [_root_.GlobalTheory.PosOne.tInt, _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app]`. Use `split_ifs`. Conclude with `hw _ _`. Both sides reduce to the same expression.
+
+Unfold `_root_.GlobalTheory.PosOne.OneDbl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hz⟩`. Establish `hwv : ∀ h Ψ, w h Ψ = B' Ψ (ρ₁ h Φ₂)`. Introduce `h Ψ`.
+
+Establish `hwh` using `hw h Ψ`. Rewrite `hwh` using `[hinteg]`. Conclude with `uniq₂ _ _ _ hwh (hinner h Ψ)`. Rewrite `hz` using `[hf w hwv]`. Conclude with `hsum z hz`.
+
+Introduce `hz`. Use `⟨fun h => B'.flip (ρ₁ h Φ₂), fun h Ψ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hinteg]`. Conclude with `hinner h Ψ`. Rewrite using `[hf _ (fun h Ψ => rfl), hz, ← hsum _ houter]`.
+
+Conclude with `houter`.
+-/
 theorem _root_.GlobalTheory.PosOne.oneDbl_iff_sum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ) (_ : c + 1 = 2 * ρ) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : _root_.GlobalTheory.SplitWeil.HasConductor ψ 1) (ν : Measure k) (_ : _root_.GlobalTheory.SplitWeil.IsUnitVol ν) (μ₁ μ₂ : kˣ →* ℂˣ) (_ : IsOpen (μ₁.ker : Set kˣ)) (_ : IsOpen (μ₂.ker : Set kˣ)) (m₁ : Measure (GL n₁ k)) [m₁.IsHaarMeasure] (G₁ : Measure (GL (n₁ ⊕ Fin (c + 1)) k)) [G₁.IsHaarMeasure] (m₂ : Measure (GL n₂ k)) [m₂.IsHaarMeasure] (G₂ : Measure (GL (n₂ ⊕ Fin c) k)) [G₂.IsHaarMeasure] (L₁ : _root_.GlobalTheory.StepData.Level (GL (n₁ ⊕ Fin (c + 1)) k)) (L₂ : _root_.GlobalTheory.StepData.Level (GL (n₂ ⊕ Fin c) k)) (_ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsCO L₁.J) (_ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsCO L₂.J) (_ : G₁ L₁.J = 1) (_ : G₂ L₂.J = 1) (b₁ : GL (n₁ ⊕ Fin (c + 1)) k) (b₂ : GL (n₂ ⊕ Fin c) k) (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n₂ ⊕ Fin c) k) A) (_ : _root_.GlobalTheory.SplitWeil.IsSmoothRep σ) (T : _root_.GlobalTheory.SplitWeil.SB (Matrix n₁ n₀ k) →ₗ[ℂ] _root_.GlobalTheory.SplitWeil.SB (Matrix n₂ n₁ k) →ₗ[ℂ] A →ₗ[ℂ] ℂ) (_ : _root_.GlobalTheory.PosOne.TriPos ψ μ₁ μ₂ ρ σ T) (F : A) (_ : ∀ j : L₂.J, σ (j : GL (n₂ ⊕ Fin c) k) F = (L₂.lam j : ℂ) • F) (Φ₁ : _root_.GlobalTheory.SplitWeil.SB (Matrix (n₁ ⊕ Fin (c + 1)) (n₀ ⊕ Fin (c + 1 + 1)) k)) (Φ₂ : _root_.GlobalTheory.SplitWeil.SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)) (_ : ∀ j : L₁.J, _root_.GlobalTheory.SplitWeil.om μ₁ 1 (j : GL (n₁ ⊕ Fin (c + 1)) k) Φ₁.1 = (((L₁.lam j)⁻¹ : ℂˣ) : ℂ) • Φ₁.1) (_ : _root_.GlobalTheory.StepData.HasTypes μ₂ L₁ L₂ Φ₂.1) (α : GL (n₀ ⊕ Fin (c + 1 + 1)) k) (T₁ : Finset (GL (n₁ ⊕ Fin (c + 1)) k)) (T₂ : Finset (GL (n₂ ⊕ Fin c) k)) (_ : _root_.GlobalTheory.PosOne.Covers 1 L₁.J T₁ fun h => _root_.GlobalTheory.StepData.flat ψ ν μ₁ Φ₁.1 α h) (_ : ∀ γ ∈ T₁, _root_.GlobalTheory.PosOne.Covers 1 L₂.J T₂ fun h => _root_.GlobalTheory.StepData.flat ψ ν μ₂ Φ₂.1 γ h) (z : ℂ), _root_.GlobalTheory.PosOne.OneDbl ψ ν (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₁ m₁) G₁ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.rescale ν b₂ m₂) G₂ μ₁ μ₂ ρ σ T F (_root_.GlobalTheory.SplitWeil.om μ₁ α 1 Φ₁.1) Φ₂.1 z ↔ z = ∑ γ ∈ T₁, ∑ β ∈ T₂, (((m₁ (_root_.GlobalTheory.StepData.prX (_root_.GlobalTheory.StepData.Cgrp L₁.J γ))).toReal⁻¹ * (m₂ (_root_.GlobalTheory.StepData.prX (_root_.GlobalTheory.StepData.Cgrp L₂.J β))).toReal⁻¹ : ℝ) : ℂ) * _root_.GlobalTheory.PosOne.toOne ν σ ρ (fun v => _root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app (_root_.GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app T (_root_.GlobalTheory.StepData.xi ψ ν μ₁ Φ₁.1 L₁.J b₁ α γ)) (_root_.GlobalTheory.StepData.xi ψ ν μ₂ Φ₂.1 L₂.J b₂ γ β) v) (σ β F) := by
   intro k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hcρ ψ hψ hcond ν hν μ₁ μ₂ hμ₁ hμ₂ m₁ _ G₁ _ m₂ _ G₂ _
     L₁ L₂ hL₁ hL₂ hG₁ hG₂ b₁ b₂ A _ _ σ hσ T hT F hF Φ₁ Φ₂ hΦ₁ hΦ₂ α T₁ T₂ hT₁ hT₂ z

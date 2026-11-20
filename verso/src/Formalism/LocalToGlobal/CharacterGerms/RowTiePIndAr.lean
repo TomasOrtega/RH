@@ -15,31 +15,54 @@ variable {C : Type} [Field C] {V : VF C}
 
 def Cg (V : VF C) (δ : ℝ) (x y : C) : Prop := V.Ge δ (x - y)
 
+/- English proof (translation)
+The claim follows from `le_trans (le_min ha hb) (V.v.map_add a b)`.
+-/
 private theorem ge_add_lemma {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w b) : V.Ge w (a + b) :=
   le_trans (le_min ha hb) (V.v.map_add a b)
 
+/- English proof (translation)
+Unfold `VF.Ge at *`. Rewrite using `[AddValuation.map_mul, WithTop.coe_add]`. Conclude with `add_le_add ha hb`.
+-/
 private theorem ge_mul_lemma_2 {w w' : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w' b) : V.Ge (w + w') (a * b) := by
   unfold VF.Ge at *
   rw [AddValuation.map_mul, WithTop.coe_add]
   exact add_le_add ha hb
 
+/- English proof (translation)
+The claim follows from `le_trans (WithTop.coe_le_coe.2 h) ha`.
+-/
 private theorem ge_mono_lemma_3 {w w' : ℝ} {a : C} (ha : V.Ge w a) (h : w' ≤ w) : V.Ge w' a :=
   le_trans (WithTop.coe_le_coe.2 h) ha
 
+/- English proof (translation)
+Unfold `VF.Ge at *`. Rewrite using `[AddValuation.map_neg]` and apply the resulting hypothesis.
+-/
 private theorem ge_neg_lemma_4 {w : ℝ} {a : C} (ha : V.Ge w a) : V.Ge w (-a) := by
   unfold VF.Ge at *
   rwa [AddValuation.map_neg]
 
+/- English proof (translation)
+Unfold `VF.Ge`. Rewrite using `[AddValuation.map_one]`. Simplify using the standard rewrite rules.
+-/
 private theorem ge_one_lemma_5 : V.Ge 0 (1 : C) := by
   unfold VF.Ge
   rw [AddValuation.map_one]
   simp
 
+/- English proof (translation)
+Unfold `VF.Ge`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+-/
 private theorem ge_zero_lemma_6 (w : ℝ) : V.Ge w (0 : C) := by
   unfold VF.Ge
   rw [AddValuation.map_zero]
   exact le_top
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.sum_empty]`. Conclude with `ge_zero_lemma_6 w`.
+
+Introduce `a s ha ih h`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `ge_add_lemma (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 private theorem ge_sum_lemma_7 {ι : Type} (s : Finset ι) {f : ι → C} {w : ℝ} (h : ∀ i ∈ s, V.Ge w (f i)) :
     V.Ge w (∑ i ∈ s, f i) := by
   revert h
@@ -51,6 +74,11 @@ private theorem ge_sum_lemma_7 {ι : Type} (s : Finset ι) {f : ι → C} {w : �
     rw [Finset.sum_insert ha]
     exact ge_add_lemma (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `ge_one_lemma_5`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Establish `h` using `ge_mul_lemma_2 ih ha`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 private theorem ge0_pow_lemma_8 {a : C} (ha : V.Ge 0 a) (n : ℕ) : V.Ge 0 (a ^ n) := by
   induction n with
   | zero =>
@@ -61,33 +89,54 @@ private theorem ge0_pow_lemma_8 {a : C} (ha : V.Ge 0 a) (n : ℕ) : V.Ge 0 (a ^ 
     have h := ge_mul_lemma_2 ih ha
     rwa [add_zero] at h
 
+/- English proof (translation)
+Unfold `VF.Ge`. Rewrite using `[V.v_l]`. Simplify using the standard rewrite rules.
+-/
 private theorem ge_l_lemma_9 : V.Ge 1 (V.l : C) := by
   unfold VF.Ge
   rw [V.v_l]
   simp
 
+/- English proof (translation)
+Unfold `Cg`. Rewrite using `[sub_self]`. Conclude with `ge_zero_lemma_6 δ`.
+-/
 theorem Cg.refl (δ : ℝ) (x : C) : Cg V δ x x := by
   unfold Cg
   rw [sub_self]
   exact ge_zero_lemma_6 δ
 
+/- English proof (translation)
+Unfold `Cg at *`. Rewrite using `[← neg_sub]`. Conclude with `ge_neg_lemma_4 h`.
+-/
 theorem Cg.symm {δ : ℝ} {x y : C} (h : Cg V δ x y) : Cg V δ y x := by
   unfold Cg at *
   rw [← neg_sub]
   exact ge_neg_lemma_4 h
 
+/- English proof (translation)
+Unfold `Cg at *`. Rewrite using `[← sub_add_sub_cancel x y z]`. Conclude with `ge_add_lemma h1 h2`.
+-/
 theorem Cg.trans {δ : ℝ} {x y z : C} (h1 : Cg V δ x y) (h2 : Cg V δ y z) : Cg V δ x z := by
   unfold Cg at *
   rw [← sub_add_sub_cancel x y z]
   exact ge_add_lemma h1 h2
 
+/- English proof (translation)
+Conclude with `ge_mono_lemma_3 h hd`.
+-/
 theorem Cg.mono {δ δ' : ℝ} {x y : C} (h : Cg V δ x y) (hd : δ' ≤ δ) : Cg V δ' x y := by
   exact ge_mono_lemma_3 h hd
 
+/- English proof (translation)
+Establish `h` using `ge_mul_lemma_2 ha hb`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem valuation_ge_mul_of_nonneg {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge 0 b) : V.Ge w (a * b) := by
   have h := ge_mul_lemma_2 ha hb
   rwa [add_zero] at h
 
+/- English proof (translation)
+Unfold `Cg at *`. Establish `e : x * y - x' * y' = (y - y') * x + (x - x') * y'` using `by ring`. Rewrite using `[e]`. Conclude with `ge_add_lemma (valuation_ge_mul_of_nonneg h2 hx) (valuation_ge_mul_of_nonneg h1 hy')`.
+-/
 theorem Cg.mul {δ : ℝ} {x x' y y' : C} (hx : V.Ge 0 x) (hy' : V.Ge 0 y') (h1 : Cg V δ x x') (h2 : Cg V δ y y') :
     Cg V δ (x * y) (x' * y') := by
   unfold Cg at *
@@ -95,6 +144,11 @@ theorem Cg.mul {δ : ℝ} {x x' y y' : C} (hx : V.Ge 0 x) (hy' : V.Ge 0 y') (h1 
   rw [e]
   exact ge_add_lemma (valuation_ge_mul_of_nonneg h2 hx) (valuation_ge_mul_of_nonneg h1 hy')
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [pow_zero]`. Conclude with `Cg.refl δ 1`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ, pow_succ]`. Conclude with `Cg.mul (ge0_pow_lemma_8 hx n) hx' ih h`.
+-/
 theorem Cg.pow {δ : ℝ} {x x' : C} (hx : V.Ge 0 x) (hx' : V.Ge 0 x') (h : Cg V δ x x') (n : ℕ) :
     Cg V δ (x ^ n) (x' ^ n) := by
   induction n with
@@ -105,12 +159,20 @@ theorem Cg.pow {δ : ℝ} {x x' : C} (hx : V.Ge 0 x) (hx' : V.Ge 0 x') (h : Cg V
     rw [pow_succ, pow_succ]
     exact Cg.mul (ge0_pow_lemma_8 hx n) hx' ih h
 
+/- English proof (translation)
+Unfold `Cg`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `ge_sum_lemma_7 s h`.
+-/
 theorem Cg.sum {ι : Type} (s : Finset ι) {f g : ι → C} {δ : ℝ} (h : ∀ i ∈ s, Cg V δ (f i) (g i)) :
     Cg V δ (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
   unfold Cg
   rw [← Finset.sum_sub_distrib]
   exact ge_sum_lemma_7 s h
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty]`. Conclude with `ge_one_lemma_5`.
+
+Introduce `a s ha ih h`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `valuation_ge_mul_of_nonneg (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem ge_prod {ι : Type} (s : Finset ι) {f : ι → C} (h : ∀ i ∈ s, V.Ge 0 (f i)) : V.Ge 0 (∏ i ∈ s, f i) := by
   revert h
   refine Finset.induction_on s ?_ ?_
@@ -121,6 +183,11 @@ theorem ge_prod {ι : Type} (s : Finset ι) {f : ι → C} (h : ∀ i ∈ s, V.G
     rw [Finset.prod_insert ha]
     exact valuation_ge_mul_of_nonneg (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Use `revert hf hg h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ _ _`. Rewrite using `[Finset.prod_empty, Finset.prod_empty]`. Conclude with `Cg.refl δ 1`.
+
+Introduce `a s ha ih hf hg h`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `Cg.mul (hf a (Finset.mem_insert_self a s)) (ge_prod s fun i hi => hg i (Finset.mem_insert_of_mem hi)) (h a (Finset.mem_insert_self a s)) (ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) (fun i hi => hg i (Finset.mem_insert_of_mem hi)) (fun i hi => h i (Finset.mem_insert_of_me …`.
+-/
 theorem Cg.prod {ι : Type} (s : Finset ι) {f g : ι → C} (hf : ∀ i ∈ s, V.Ge 0 (f i)) (hg : ∀ i ∈ s, V.Ge 0 (g i))
     {δ : ℝ} (h : ∀ i ∈ s, Cg V δ (f i) (g i)) : Cg V δ (∏ i ∈ s, f i) (∏ i ∈ s, g i) := by
   revert hf hg h
@@ -135,34 +202,60 @@ theorem Cg.prod {ι : Type} (s : Finset ι) {f g : ι → C} (hf : ∀ i ∈ s, 
       (ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) (fun i hi => hg i (Finset.mem_insert_of_mem hi))
         (fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Introduce `h`. Rewrite `hx` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_zero hx`.
+-/
 theorem ne_zero_of_v {x : C} (hx : V.v x = 0) : x ≠ 0 := by
   intro h
   rw [h, AddValuation.map_zero] at hx
   exact WithTop.top_ne_zero hx
 
+/- English proof (translation)
+Unfold `VF.Ge`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+-/
 theorem valuation_nonneg_of_zero {x : C} (hx : V.v x = 0) : V.Ge 0 x := by
   unfold VF.Ge
   rw [hx]
   simp
 
+/- English proof (translation)
+Establish `h1 : V.v (x * x⁻¹) = 0` using `by rw [mul_inv_cancel₀ (ne_zero_of_v hx), AddValuation.map_one]`. Rewrite `h1` using `[AddValuation.map_mul, hx, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem v_inv {x : C} (hx : V.v x = 0) : V.v x⁻¹ = 0 := by
   have h1 : V.v (x * x⁻¹) = 0 := by rw [mul_inv_cancel₀ (ne_zero_of_v hx), AddValuation.map_one]
   rwa [AddValuation.map_mul, hx, zero_add] at h1
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_mul, hx, hy, add_zero]`.
+-/
 theorem v_mul {x y : C} (hx : V.v x = 0) (hy : V.v y = 0) : V.v (x * y) = 0 := by
   rw [AddValuation.map_mul, hx, hy, add_zero]
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_pow, hx, smul_zero]`.
+-/
 theorem v_pow {x : C} (hx : V.v x = 0) (n : ℕ) : V.v (x ^ n) = 0 := by
   rw [AddValuation.map_pow, hx, smul_zero]
 
+/- English proof (translation)
+Unfold `VF.Ge at *`. Rewrite `h` using `[AddValuation.map_mul, hu, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem ge_of_unit_mul {δ : ℝ} {u y : C} (hu : V.v u = 0) (h : V.Ge δ (u * y)) : V.Ge δ y := by
   unfold VF.Ge at *
   rwa [AddValuation.map_mul, hu, zero_add] at h
 
+/- English proof (translation)
+Unfold `VF.Ge at *`. Rewrite `h` using `[AddValuation.map_mul, hu, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem ge_of_mul_unit {δ : ℝ} {u y : C} (hu : V.v u = 0) (h : V.Ge δ (y * u)) : V.Ge δ y := by
   unfold VF.Ge at *
   rwa [AddValuation.map_mul, hu, add_zero] at h
 
+/- English proof (translation)
+Establish `hne` using `ne_zero_of_v hx`. Establish `hne'` using `ne_zero_of_v hx'`. Apply the tactic sequence `have e : x⁻¹ - x'⁻¹ = (x' - x) * (x⁻¹ * x'⁻¹) := by field_simp <;> ring`. Unfold `Cg`. Rewrite using `[e]`.
+
+Conclude with `valuation_ge_mul_of_nonneg (Cg.symm h) (valuation_nonneg_of_zero (v_mul (v_inv hx) (v_inv hx')))`.
+-/
 theorem Cg.inv {δ : ℝ} {x x' : C} (hx : V.v x = 0) (hx' : V.v x' = 0) (h : Cg V δ x x') : Cg V δ x⁻¹ x'⁻¹ := by
   have hne := ne_zero_of_v hx
   have hne' := ne_zero_of_v hx'
@@ -171,6 +264,13 @@ theorem Cg.inv {δ : ℝ} {x x' : C} (hx : V.v x = 0) (hx' : V.v x' = 0) (h : Cg
   rw [e]
   exact valuation_ge_mul_of_nonneg (Cg.symm h) (valuation_nonneg_of_zero (v_mul (v_inv hx) (v_inv hx')))
 
+/- English proof (translation)
+Distinguish the cases in `ht : V.v x = ⊤`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`. Rewrite using `[ht]`. Conclude with `le_top`.
+
+Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.1 ht`. Unfold `VF.MM at h`. Rewrite `h` using `[← hr]`. Use `⟨r, by exact_mod_cast h, ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`.
+
+Rewrite using `[← hr]`.
+-/
 theorem exists_ge_of_mm {x : C} (h : V.MM x) : ∃ δ : ℝ, 0 < δ ∧ V.Ge δ x := by
   by_cases ht : V.v x = ⊤
   · refine ⟨1, one_pos, ?_⟩
@@ -184,6 +284,9 @@ theorem exists_ge_of_mm {x : C} (h : V.MM x) : ∃ δ : ℝ, 0 < δ ∧ V.Ge δ 
     unfold VF.Ge
     rw [← hr]
 
+/- English proof (translation)
+Use `choose δs hpos hge using fun i => exists_ge_of_mm (h i)`. Use `⟨Finset.univ.fold min 1 δs, ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(Finset.lt_fold_min _).2 ⟨one_pos, fun i _ => hpos i⟩`. Conclude with `((Finset.le_fold_min _).1 le_rfl).1`. Conclude with `ge_mono_lemma_3 (hge i) (((Finset.le_fold_min _).1 le_rfl).2 i (Finset.mem_univ i))`.
+-/
 theorem exists_ge_of_mm_fin {ι : Type} [Fintype ι] (f : ι → C) (h : ∀ i, V.MM (f i)) :
     ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ ∀ i, V.Ge δ (f i) := by
   choose δs hpos hge using fun i => exists_ge_of_mm (h i)
@@ -192,6 +295,11 @@ theorem exists_ge_of_mm_fin {ι : Type} [Fintype ι] (f : ι → C) (h : ∀ i, 
   · exact ((Finset.le_fold_min _).1 le_rfl).1
   · exact ge_mono_lemma_3 (hge i) (((Finset.le_fold_min _).1 le_rfl).2 i (Finset.mem_univ i))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [Nat.cast_zero, zero_mul, pow_zero]`. Conclude with `ge_one_lemma_5`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ]`. Apply `ge_mono_lemma_3 (ge_mul_lemma_2 ih h)` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ge_pow_mul {δ : ℝ} {e : C} (h : V.Ge δ e) (n : ℕ) : V.Ge (n * δ) (e ^ n) := by
   induction n with
   | zero =>
@@ -203,6 +311,11 @@ theorem ge_pow_mul {δ : ℝ} {e : C} (h : V.Ge δ e) (n : ℕ) : V.Ge (n * δ) 
     push_cast
     linarith
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero]`. Conclude with `ge_zero_lemma_6 0`. Consider the case `succ n ih`.
+
+Rewrite using `[Nat.cast_succ]`. Conclude with `ge_add_lemma ih ge_one_lemma_5`.
+-/
 theorem ge_natCast' (n : ℕ) : V.Ge 0 (n : C) := by
   induction n with
   | zero =>
@@ -212,6 +325,19 @@ theorem ge_natCast' (n : ℕ) : V.Ge 0 (n : C) := by
     rw [Nat.cast_succ]
     exact ge_add_lemma ih ge_one_lemma_5
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, e = t + 1` from `⟨e - 1, by ring⟩`. Unfold `Cg at *`. Rewrite `h` using `[add_sub_cancel_right]`. Rewrite using `[add_pow, Finset.sum_range_succ']`. Simplify using `only [pow_zero, one_pow, mul_one, Nat.choose_zero_right, Nat.cast_one, add_sub_cancel_right]`.
+
+Apply `ge_sum_lemma_7` to reduce the goal to its premises. Introduce `m hm`. Establish `hm' : m < V.l` using `Finset.mem_range.1 hm`. Distinguish the cases in `hml : m + 1 < V.l`. Take `⟨q, hq⟩` from `V.l_prime.dvd_choose_self (Nat.succ_ne_zero m) hml`.
+
+Rewrite using `[hq, Nat.cast_mul]`. Establish `h1 : V.Ge ((m + 1 : ℕ) * δ) (t ^ (m + 1))` using `ge_pow_mul h _`. Establish `h2 : V.Ge 1 ((V.l : C) * (q : C))`. Establish `h3` using `ge_mul_lemma_2 ge_l_lemma_9 (ge_natCast' (V := V) q)`. Rewrite `h3` using `[add_zero]`. Then use the resulting hypothesis.
+
+Apply `ge_mono_lemma_3 (ge_mul_lemma_2 h1 h2)` to reduce the goal to its premises. Establish `h4 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.succ_pos m`. Establish `h5 : min δ 1 ≤ 1` using `min_le_right _ _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hml' : m + 1 = V.l` using `by omega`.
+
+Rewrite using `[hml', Nat.choose_self, Nat.cast_one, mul_one]`. Establish `h1 : V.Ge (V.l * δ) (t ^ V.l)` using `ge_pow_mul h _`. Apply `ge_mono_lemma_3 h1` to reduce the goal to its premises. Establish `h4 : (2 : ℝ) ≤ V.l` using `by exact_mod_cast V.l_prime.two_le`. Establish `h5 : min δ 1 ≤ δ` using `min_le_left _ _`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem cg_one_pow_l {δ : ℝ} (hδ : 0 < δ) {e : C} (h : Cg V δ e 1) :
     Cg V (δ + min δ 1) (e ^ V.l) 1 := by
   obtain ⟨t, rfl⟩ : ∃ t, e = t + 1 := ⟨e - 1, by ring⟩
@@ -241,6 +367,13 @@ theorem cg_one_pow_l {δ : ℝ} (hδ : 0 < δ) {e : C} (h : Cg V δ e 1) :
     have h5 : min δ 1 ≤ δ := min_le_left _ _
     nlinarith
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Establish `hm : 0 < min δ 1` using `lt_min hδ one_pos`. Establish `hk : 0 < δ + k * min δ 1` using `by positivity`.
+
+Establish `h2` using `cg_one_pow_l hk ih`. Rewrite using `[pow_succ, pow_mul]`. Apply `Cg.mono h2` to reduce the goal to its premises. Establish `h3 : min δ 1 ≤ min (δ + k * min δ 1) 1`. Apply `min_le_min _ le_rfl` to reduce the goal to its premises.
+
+Establish `: (0 : ℝ) ≤ k * min δ 1` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cg_one_pow_lk {δ : ℝ} (hδ : 0 < δ) {e : C} (h : Cg V δ e 1) (k : ℕ) :
     Cg V (δ + k * min δ 1) (e ^ (V.l ^ k)) 1 := by
   induction k with
@@ -258,6 +391,21 @@ theorem cg_one_pow_lk {δ : ℝ} (hδ : 0 < δ) {e : C} (h : Cg V δ e 1) (k : �
     push_cast
     linarith
 
+/- English proof (translation)
+Establish `hlt : ∀ k : ℕ, k < V.l ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ]`. Use `V.l_prime.two_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce `K`. Break down `hε with rfl | rfl` into its components or cases.
+
+Establish `he : V.Ge δ e`. Establish `h'` using `h`. Unfold `Cg at h'`. Rewrite `h'` using `[sub_zero]`. Then use the resulting hypothesis. Take `⟨k0, hk0⟩` from `exists_nat_gt (K / δ)`.
+
+Use `⟨k0, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_sub]`. Apply `ge_neg_lemma_4` to reduce the goal to its premises. Apply `ge_mono_lemma_3 (ge_pow_mul he (V.l ^ k))` to reduce the goal to its premises. Establish `h1 : (k : ℝ) < ((V.l ^ k : ℕ) : ℝ)` using `by exact_mod_cast hlt k`.
+
+Establish `h2 : K / δ < ((V.l ^ k : ℕ) : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[div_lt_iff₀ hδ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `cg_one_pow_lk hδ h`.
+
+Establish `hm : 0 < min δ 1` using `lt_min hδ one_pos`. Take `⟨k0, hk0⟩` from `exists_nat_gt (K / min δ 1)`. Use `⟨k0, fun k hk => ?_⟩` and prove the remaining obligations. Apply `ge_mono_lemma_3 (Cg.symm (h1 k))` to reduce the goal to its premises. Establish `h2 : K / min δ 1 < k` using `lt_of_lt_of_le hk0 (by exact_mod_cast hk)`.
+
+Rewrite `h2` using `[div_lt_iff₀ hm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tendsto_pow_lk {δ : ℝ} (hδ : 0 < δ) {e ε : C} (_he : V.Ge 0 e) (hε : ε = 0 ∨ ε = 1) (h : Cg V δ e ε) :
     ∀ K : ℝ, ∃ k0 : ℕ, ∀ k ≥ k0, V.Ge K (ε - e ^ (V.l ^ k)) := by
   have hlt : ∀ k : ℕ, k < V.l ^ k := by
@@ -301,10 +449,16 @@ namespace IndAr
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)`.
+-/
 theorem mm_add' {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at *
   exact lt_of_lt_of_le (lt_min ha hb) (V.v.map_add a b)
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Unfold `VF.Ge at hb`. Rewrite using `[AddValuation.map_mul]`. Establish `hb' : (0 : WithTop ℝ) ≤ V.v b` using `by simpa using hb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mm_mul_int {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   unfold VF.MM at *
   unfold VF.Ge at hb
@@ -314,11 +468,19 @@ theorem mm_mul_int {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
     _ = V.v a + 0 := (add_zero _).symm
     _ ≤ V.v a + V.v b := add_le_add le_rfl hb'
 
+/- English proof (translation)
+Unfold `VF.MM`. Unfold `VF.Ge at h`. Conclude with `lt_of_lt_of_le (by exact_mod_cast hδ) h`.
+-/
 theorem mm_of_ge {δ : ℝ} (hδ : 0 < δ) {a : C} (h : V.Ge δ a) : V.MM a := by
   unfold VF.MM
   unfold VF.Ge at h
   exact lt_of_lt_of_le (by exact_mod_cast hδ) h
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Proceed by induction on `m with`. Consider the case `zero => simpa using ha`. Consider the case `succ m ih`. Rewrite using `[pow_succ]`.
+
+Conclude with `mm_mul_int (ih (Nat.succ_ne_zero _)) hi`.
+-/
 theorem mm_pow {a : C} (ha : V.MM a) (hi : V.Ge 0 a) {n : ℕ} (hn : n ≠ 0) : V.MM (a ^ n) := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
   induction m with
@@ -329,6 +491,11 @@ theorem mm_pow {a : C} (ha : V.MM a) (hi : V.Ge 0 a) {n : ℕ} (hn : n ≠ 0) : 
 
 variable {O : Type} [CommRing O] {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero`. Simplify using `only [pow_zero, pow_one, Nat.cast_zero, add_zero]`. Conclude with `Cg.refl δ _`. Consider the case `succ s ih`.
+
+Establish `h1 : Cg V δ ((em b x ^ (V.l ^ s)) ^ V.l) (em (b + s) x ^ V.l)` using `Cg.pow (ge0_pow_lemma_8 (hint b x) _) (hint _ x) ih V.l`. Establish `h2 : Cg V δ (em (b + s) x ^ V.l) (em (b + s + 1) x)` using `Cg.symm (hδ (b + s))`. Rewrite using `[pow_succ, pow_mul, Nat.cast_succ, ← add_assoc]`. Conclude with `h1.trans h2`.
+-/
 theorem frob_cg (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x)) (x : O) {δ : ℝ}
     (hδ : ∀ b : ZMod d, V.Ge δ (em (b + 1) x - em b x ^ V.l)) (b : ZMod d) (s : ℕ) :
     Cg V δ (em b x ^ (V.l ^ s)) (em (b + s) x) := by
@@ -343,6 +510,19 @@ theorem frob_cg (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x)) (x
     rw [pow_succ, pow_mul, Nat.cast_succ, ← add_assoc]
     exact h1.trans h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h0 : V.Ge 0 (em b x)` using `hint b x`. Establish `hpos : V.MM (em b x)`. Unfold `VF.MM`. Unfold `VF.Ge at h0`.
+
+Conclude with `lt_of_le_of_ne (by simpa using h0) (Ne.symm hne)`. Establish `hall : ∀ s : ℕ, V.MM (em (b + s) x)`. Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => simpa using hpos`.
+
+Consider the case `succ s ih`. Establish `e : em (b + ((s + 1 : ℕ) : ZMod d)) x = (em (b + s + 1) x - em (b + s) x ^ V.l) + em (b + s) x ^ V.l`. Rewrite using `[Nat.cast_succ, ← add_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `mm_add' (mm_of_ge hδ0 (hδ (b + s))) (mm_pow ih (hint _ x) V.l_prime.ne_zero)`. Establish `hany : ∀ c : ZMod d, V.MM (em c x)`. Introduce `c`. Establish `h1` using `hall (c - b).val`. Rewrite `h1` using `[ZMod.natCast_zmod_val]`.
+
+Simplify using `using h1`. Establish `hdiff : V.MM (em b1 x - em b2 x)`. Rewrite using `[sub_eq_add_neg]`. Use `mm_add' (hany b1) ?_` and prove the remaining obligations. Unfold `VF.MM`.
+
+Rewrite using `[AddValuation.map_neg]`. Conclude with `hany b2`. Unfold `VF.MM at hdiff`. Rewrite `hdiff` using `[h12]`. Conclude with `lt_irrefl _ hdiff`.
+-/
 theorem units_of_sep (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x)) (x : O) {δ : ℝ} (hδ0 : 0 < δ)
     (hδ : ∀ b : ZMod d, V.Ge δ (em (b + 1) x - em b x ^ V.l)) (b1 b2 : ZMod d)
     (h12 : V.v (em b1 x - em b2 x) = 0) (b : ZMod d) : V.v (em b x) = 0 := by
@@ -384,6 +564,9 @@ namespace IndAr
 
 variable {C : Type} [Field C] {V : VF C} {O : Type} [CommRing O] {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Unfold `Cg at *`. Rewrite using `[show -x - -y = -(x - y) by ring]`. Conclude with `ge_neg_lemma_4 h`.
+-/
 theorem Cg.neg {δ : ℝ} {x y : C} (h : Cg V δ x y) : Cg V δ (-x) (-y) := by
   unfold Cg at *
   rw [show -x - -y = -(x - y) by ring]
@@ -394,15 +577,56 @@ def TT (d : ℕ) [NeZero d] : Finset (ZMod d × ZMod d) := Finset.univ.filter fu
 def fac (V : VF C) (em : ZMod d → O →+* C) (xs : ZMod d × ZMod d → O) (a b : ZMod d) (s : ℕ) (t : ZMod d × ZMod d) : C :=
   -(∑ j ∈ Finset.range (V.l ^ d - 1), (em b (xs t) * (em a (xs t))⁻¹ ^ (V.l ^ s)) ^ j)
 
+/- English proof (translation)
+Establish `h` using `ge_pow_mul (ge_l_lemma_9 (V := V)) d`. Apply `ge_mono_lemma_3 h` to reduce the goal to its premises. Establish `: (1 : ℝ) ≤ d` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne d)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ge_l_pow_d : V.Ge 1 ((V.l : C) ^ d) := by
   have h := ge_pow_mul (ge_l_lemma_9 (V := V)) d
   apply ge_mono_lemma_3 h
   have : (1 : ℝ) ≤ d := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne d)
   linarith
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ V.l_prime.pos), Nat.cast_pow, Nat.cast_one]`.
+-/
 theorem cast_q : ((V.l ^ d - 1 : ℕ) : C) = (V.l : C) ^ d - 1 := by
   rw [Nat.cast_sub (Nat.one_le_pow _ _ V.l_prime.pos), Nat.cast_pow, Nat.cast_one]
 
+/- English proof (translation)
+Establish `hunit : ∀ t ∈ TT d, ∀ c : ZMod d, V.v (em c (xs t)) = 0`. Introduce `t ht c`. Establish `ht' : t.1 ≠ t.2` using `(Finset.mem_filter.1 ht).2`. Conclude with `units_of_sep em hint (xs t) hδ0 (hfrob t) t.1 t.2 (hsep t ht') c`. Establish `hK : ∀ t ∈ TT d, Cg V δ (em b (xs t) * (em a (xs t))⁻¹ ^ (V.l ^ s)) (em b (xs t) * (em (a + (s : ZMod d)) (xs t))⁻¹)`.
+
+Introduce `t ht`. Establish `hu` using `hunit t ht`. Establish `h1 : Cg V δ ((em a (xs t)) ^ (V.l ^ s)) (em (a + (s : ZMod d)) (xs t))` using `frob_cg em hint (xs t) (hfrob t) a s`. Establish `h2 : Cg V δ ((em a (xs t)) ^ (V.l ^ s))⁻¹ (em (a + (s : ZMod d)) (xs t))⁻¹` using `Cg.inv (v_pow (hu a) _) (hu _) h1`. Rewrite using `[inv_pow]`.
+
+Conclude with `Cg.mul (hint b (xs t)) (valuation_nonneg_of_zero (v_inv (hu _))) (Cg.refl δ _) h2`. Establish `hKint : ∀ t ∈ TT d, V.Ge 0 (em b (xs t) * (em a (xs t))⁻¹ ^ (V.l ^ s))` using `fun t ht => valuation_ge_mul_of_nonneg (hint b (xs t)) (ge0_pow_lemma_8 (valuation_nonneg_of_zero (v_inv (hunit t ht a))) _)`. Establish `hfac_int : ∀ t ∈ TT d, V.Ge 0 (fac V em xs a b s t)`. Introduce `t ht`. Unfold `fac`.
+
+Apply `ge_neg_lemma_4` to reduce the goal to its premises. Apply `ge_sum_lemma_7` to reduce the goal to its premises. Introduce `j _`. Conclude with `ge0_pow_lemma_8 (hKint t ht) j`. Use `⟨ge_prod _ hfac_int, ?_⟩` and prove the remaining obligations.
+
+Use `split_ifs with hb`. Establish `hone : ∀ t ∈ TT d, Cg V δ (fac V em xs a b s t) 1`. Introduce `t ht`. Establish `hu` using `hunit t ht`. Establish `hr : em b (xs t) * (em (a + (s : ZMod d)) (xs t))⁻¹ = 1`.
+
+Rewrite using `[hb]`. Conclude with `mul_inv_cancel₀ (ne_zero_of_v (hu _))`. Establish `hK1` using `hK t ht`. Rewrite `hK1` using `[hr]`. Establish `hs : Cg V δ (∑ j ∈ Finset.range (V.l ^ d - 1), (em b (xs t) * (em a (xs t))⁻¹ ^ (V.l ^ s)) ^ j) (∑ j ∈ Finset.range (V.l ^ d - 1), (1 : C) ^ j)` using `Cg.sum _ fun j _ => Cg.pow (hKint t ht) ge_one_lemma_5 hK1 j`.
+
+Simplify using `only [one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] at hs`. Rewrite `hs` using `[cast_q]`. Establish `h2 : Cg V δ (-((V.l : C) ^ d - 1)) 1`. Unfold `Cg`. Rewrite using `[show -((V.l : C) ^ d - 1) - 1 = -((V.l : C) ^ d) by ring]`.
+
+Conclude with `ge_neg_lemma_4 (ge_mono_lemma_3 ge_l_pow_d hδ1)`. Conclude with `(Cg.neg hs).trans h2`. Establish `h3` using `Cg.prod (TT d) (fun t ht => hfac_int t ht) (fun _ _ => ge_one_lemma_5) hone`. Rewrite `h3` using `[Finset.prod_const_one]`. Then use the resulting hypothesis. Use `set t0 : ZMod d × ZMod d := (b, a + (s : ZMod d)) with ht0def`.
+
+Establish `ht0 : t0 ∈ TT d` using `by simp [TT, t0, hb]`. Establish `hu` using `hunit t0 ht0`. Establish `hq : ∀ c, Cg V δ ((em c (xs t0)) ^ (V.l ^ d - 1)) 1`. Introduce `c`. Establish `h1` using `frob_cg em hint (xs t0) (hfrob t0) c d`.
+
+Rewrite `h1` using `[ZMod.natCast_self, add_zero]`. Establish `hpos : 1 ≤ V.l ^ d` using `Nat.one_le_pow _ _ V.l_prime.pos`. Establish `e : (em c (xs t0)) ^ (V.l ^ d) - em c (xs t0) = em c (xs t0) * ((em c (xs t0)) ^ (V.l ^ d - 1) - 1)` using `by conv_lhs => rw [show V.l ^ d = (V.l ^ d - 1) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Cg at h1 ⊢`.
+
+Rewrite `h1` using `[e]`. Conclude with `ge_of_unit_mul (hu c) h1`. Take `⟨r, hr⟩ : ∃ r : C, em b (xs t0) * (em (a + (s : ZMod d)) (xs t0))⁻¹ = r` from `⟨_, rfl⟩`. Establish `hKt : Cg V δ (em b (xs t0) * (em a (xs t0))⁻¹ ^ (V.l ^ s)) r`. Rewrite using `[← hr]`.
+
+Conclude with `hK t0 ht0`. Establish `hrn : Cg V δ (r ^ (V.l ^ d - 1)) 1`. Rewrite using `[← hr, mul_pow, inv_pow]`. Establish `h2 : Cg V δ ((em (a + (s : ZMod d)) (xs t0)) ^ (V.l ^ d - 1))⁻¹ (1 : C)⁻¹` using `Cg.inv (v_pow (hu _) _) (by rw [AddValuation.map_one]) (hq (a + s))`. Rewrite `h2` using `[inv_one]`.
+
+Establish `h3` using `Cg.mul (ge0_pow_lemma_8 (hint _ _) _) ge_one_lemma_5 (hq b) h2`. Rewrite `h3` using `[mul_one]`. Then use the resulting hypothesis. Establish `hne` using `ne_zero_of_v (hu (a + (s : ZMod d)))`. Establish `hr1 : V.v (r - 1) = 0`. Establish `e : r - 1 = (em b (xs t0) - em (a + (s : ZMod d)) (xs t0)) * (em (a + (s : ZMod d)) (xs t0))⁻¹`.
+
+Rewrite using `[← hr, sub_mul, mul_inv_cancel₀ hne]`. Rewrite using `[e, AddValuation.map_mul, hsep t0 hb, v_inv (hu _), add_zero]`. Establish `hrint : V.Ge 0 r` using `valuation_nonneg_of_zero (by rw [← hr, AddValuation.map_mul, hu b, v_inv (hu _), add_zero])`. Establish `hgs : V.Ge δ (∑ j ∈ Finset.range (V.l ^ d - 1), r ^ j)`. Establish `h1 : V.Ge δ ((∑ j ∈ Finset.range (V.l ^ d - 1), r ^ j) * (r - 1))`.
+
+Rewrite using `[geom_sum_mul]`. Conclude with `hrn`. Conclude with `ge_of_mul_unit hr1 h1`. Establish `hsum` using `Cg.sum (Finset.range (V.l ^ d - 1)) fun j _ => Cg.pow (hKint t0 ht0) hrint hKt j`. Establish `hfac0 : V.Ge δ (fac V em xs a b s t0)`.
+
+Establish `h3` using `ge_add_lemma hsum hgs`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `ge_neg_lemma_4 h3`. Unfold `Cg`. Rewrite using `[sub_zero, ← Finset.mul_prod_erase (TT d) (fun t => fac V em xs a b s t) ht0]`.
+
+Conclude with `valuation_ge_mul_of_nonneg hfac0 (ge_prod _ fun t ht => hfac_int t (Finset.mem_of_mem_erase ht))`.
+-/
 theorem entry_cg (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x)) (xs : ZMod d × ZMod d → O) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1)
     (hfrob : ∀ t b, V.Ge δ (em (b + 1) (xs t) - em b (xs t) ^ V.l))
     (hsep : ∀ t : ZMod d × ZMod d, t.1 ≠ t.2 → V.v (em t.1 (xs t) - em t.2 (xs t)) = 0)
@@ -506,6 +730,35 @@ namespace IndAr
 
 variable {C : Type} [Field C] {V : VF C} {O : Type} [CommRing O] {d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Establish `hsp' : ∀ t : ZMod d × ZMod d, ∃ x : O, t.1 ≠ t.2 → V.v (em t.1 x - em t.2 x) = 0`. Introduce `t`. Distinguish the cases in `h : t.1 = t.2`. Conclude with `⟨0, fun h' => absurd h h'⟩`. Take `⟨x, hx⟩` from `hsp t.1 t.2 h`.
+
+Conclude with `⟨x, fun _ => hx⟩`. Use `choose xs hxs using hsp'`. Take `⟨δ, hδ0, hδ1, hδ⟩` from `exists_ge_of_mm_fin (fun q : (ZMod d × ZMod d) × ZMod d => em (q.2 + 1) (xs q.1) - em q.2 (xs q.1) ^ V.l) (fun q => hfr _ _)`. Establish `hfrob : ∀ t b, V.Ge δ (em (b + 1) (xs t) - em b (xs t) ^ V.l)` using `fun t b => hδ (t, b)`. Establish `h0 : (0 : ℕ → N → C) ∈ M`.
+
+Establish `h2` using `hadd 1 (-1) h1 (hneg 1 h1)`. Rewrite `h2` using `[add_neg_cancel]`. Then use the resulting hypothesis. Establish `hpowM : ∀ m, m ∈ M → ∀ j : ℕ, m ^ j ∈ M`. Introduce `m hm j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `h1`. Consider the case `succ j ih`. Rewrite using `[pow_succ]`.
+
+Conclude with `hmul _ _ ih hm`. Establish `hsumM : ∀ (s : Finset ℕ) (f : ℕ → ℕ → N → C), (∀ j ∈ s, f j ∈ M) → (∑ j ∈ s, f j) ∈ M`. Introduce `s f`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`.
+
+Rewrite using `[Finset.sum_empty]`. Conclude with `h0`. Introduce `j s hj ih hf`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `hadd _ _ (hf j (Finset.mem_insert_self j s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+
+Establish `hprodM : ∀ (s : Finset (ZMod d × ZMod d)) (f : ZMod d × ZMod d → ℕ → N → C), (∀ i ∈ s, f i ∈ M) → (∏ i ∈ s, f i) ∈ M`. Introduce `s f`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Rewrite using `[Finset.prod_empty]`.
+
+Conclude with `h1`. Introduce `j s hj ih hf`. Rewrite using `[Finset.prod_insert hj]`. Conclude with `hmul _ _ (hf j (Finset.mem_insert_self j s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`. Set `mfac : ZMod d × ZMod d → ℕ → N → C` to `fun t s n => fac V em xs a (ty n) s t`.
+
+Establish `hmfac : ∀ t ∈ TT d, mfac t ∈ M`. Introduce `t ht`. Establish `ht' : t.1 ≠ t.2` using `(Finset.mem_filter.1 ht).2`. Establish `hu : V.v (em a (xs t)) = 0` using `units_of_sep em hint (xs t) hδ0 (hfrob t) t.1 t.2 (hxs t ht') a`. Establish `e : mfac t = -(∑ j ∈ Finset.range (V.l ^ d - 1), ((fun (_ : ℕ) (n : N) => em (ty n) (xs t)) * (fun (s : ℕ) (_ : N) => ((em a (xs t))⁻¹) ^ (V.l ^ s))) ^ j)`.
+
+Use function extensionality and compare the values at `s n`. Simplify using `only [mfac, fac, Pi.neg_apply, Finset.sum_apply, Pi.pow_apply, Pi.mul_apply]`. Rewrite using `[e]`. Apply `hneg` to reduce the goal to its premises. Apply `hsumM` to reduce the goal to its premises.
+
+Introduce `j _`. Apply `hpowM` to reduce the goal to its premises. Conclude with `hmul _ _ (hact _) (hteich _ (valuation_nonneg_of_zero (v_inv hu)))`. Set `P : ℕ → N → C` to `∏ t ∈ TT d, mfac t`. Establish `hP : P ∈ M` using `hprodM (TT d) mfac hmfac`.
+
+Establish `hPsn : ∀ s n, P s n = ∏ t ∈ TT d, fac V em xs a (ty n) s t`. Introduce `s n`. Simplify using `only [P, mfac, Finset.prod_apply]`. Use `hlim (fun k => P ^ (V.l ^ k)) _ (fun k => hpowM P hP _) ?_` and prove the remaining obligations. Introduce `K s n`.
+
+Take `⟨hint0, hcg⟩` from `entry_cg em hint xs hδ0 hδ1 hfrob hxs a (ty n) s`. Apply the tactic sequence `have hε : (if ty n = a + (s : ZMod d) then (1 : C) else 0) = 0 ∨ (if ty n = a + (s : ZMod d) then (1 : C) else 0) = 1 := by split_ifs <;> simp`. Take `⟨k0, hk0⟩` from `tendsto_pow_lk hδ0 hint0 hε hcg K`. Use `⟨k0, fun k hk => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.pow_apply]`.
+
+Rewrite using `[hPsn]`. Conclude with `hk0 k hk`.
+-/
 theorem ind_gen (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
     (hfr : ∀ a x, V.MM (em (a + 1) x - em a x ^ V.l))
     (hsp : ∀ a a' : ZMod d, a ≠ a' → ∃ x, V.v (em a x - em a' x) = 0)
@@ -593,11 +846,17 @@ theorem ind_gen (em : ZMod d → O →+* C) (hint : ∀ a x, V.Ge 0 (em a x))
 
 end IndAr
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I _ p g N ty M h1 hadd hneg hmul hteich hact hlim a`. Conclude with `IndAr.ind_gen (p.em g) (p.em_int g) (p.em_frob g) (fun b b' h => p.em_sep (g, b) (g, b') (by simp [h])) N ty M h1 hadd hneg hmul hteich hact hlim a`.
+-/
 theorem indSt_holds : IndSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g N ty M h1 hadd hneg hmul hteich hact hlim a
   exact IndAr.ind_gen (p.em g) (p.em_int g) (p.em_frob g)
     (fun b b' h => p.em_sep (g, b) (g, b') (by simp [h])) N ty M h1 hadd hneg hmul hteich hact hlim a
 
+/- English proof (translation)
+Conclude with `ptAvg_of hAct hLim indSt_holds`.
+-/
 theorem typical_averaging_of_limits (hAct : OActTySt) (hLim : LimTySt) : PTAvgFBSt := by
   exact ptAvg_of hAct hLim indSt_holds
 

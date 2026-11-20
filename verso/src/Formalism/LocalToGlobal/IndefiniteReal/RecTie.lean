@@ -23,6 +23,9 @@ def HilbTie (C : Submodule ℂ N) (ip : N → N → ℂ) (j : X ≃ₗ[ℂ] C) :
 def ProjTie {Y : Type*} (C : Submodule ℂ N) (ip : N → N → ℂ) (j : X ≃ₗ[ℂ] C) (f : Y → X) (g : Y → N) : Prop :=
   ∀ x y, ⟪x, f y⟫_ℂ = ip (j x) (g y)
 
+/- English proof (translation)
+Establish `h1 : f y = j.symm ⟨g y, hy⟩`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[hP x y, hH x (j.symm ⟨g y, hy⟩), LinearEquiv.apply_symm_apply]`. Rewrite using `[h1, LinearEquiv.apply_symm_apply]`.
+-/
 theorem ProjTie.eq_of_mem {Y : Type*} {C : Submodule ℂ N} {ip : N → N → ℂ} {j : X ≃ₗ[ℂ] C} {f : Y → X} {g : Y → N}
     (hH : HilbTie C ip j) (hP : ProjTie C ip j f g) (y : Y) (hy : g y ∈ C) : ((j (f y) : C) : N) = g y := by
   have h1 : f y = j.symm ⟨g y, hy⟩ := by
@@ -30,6 +33,9 @@ theorem ProjTie.eq_of_mem {Y : Type*} {C : Submodule ℂ N} {ip : N → N → �
     rw [hP x y, hH x (j.symm ⟨g y, hy⟩), LinearEquiv.apply_symm_apply]
   rw [h1, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem hilbTie_top : HilbTie (⊤ : Submodule ℂ X) (fun a b => ⟪a, b⟫_ℂ) (Submodule.topEquiv.symm) :=
   fun _ _ => rfl
 

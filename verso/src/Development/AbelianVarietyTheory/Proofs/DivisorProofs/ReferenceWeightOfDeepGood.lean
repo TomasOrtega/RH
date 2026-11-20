@@ -12,6 +12,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.RefSum
 
+/- English proof (translation)
+Introduce `hP _ hS hF` and use `GlobalTheory.T.reference_weight_of_theta hP hS hF (GlobalTheory.T.reference_theta_of_core hS (GlobalTheory.T.reference_core_of_sum_point hS (GlobalTheory.T.sum_point_of_size hS)))`.
+-/
 theorem refW_of_size : Hypotheses2 → DeepGood → Size → FlatDeg → RefW :=
   fun hP _ hS hF => GlobalTheory.T.reference_weight_of_theta hP hS hF (GlobalTheory.T.reference_theta_of_core hS (GlobalTheory.T.reference_core_of_sum_point hS (GlobalTheory.T.sum_point_of_size hS)))
 

@@ -14,6 +14,21 @@ noncomputable section
 
 open GlobalTheory.OppLagr in
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v t b c ι hι g hg h hh φ hφ φ₁ hφ₁ hA`. Establish `hcm : IsCMExt F E σ` using `hP.base.cm`. Establish `hJX : (X.J.map t).det ≠ 0` using `det_map_ne_zero (det_ne_zero_herm hP.herm) t`. Establish `hJW : (W.J.map t).det ≠ 0` using `det_map_ne_zero (det_ne_zero_skew hP.skew) t`. Establish `hb : b.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp b.isUnit).ne_zero`.
+
+Establish `hc : c.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp c.isUnit).ne_zero`. Set `P : GL (Fin n) (Fv F v)` to `Matrix.nonsingInvUnit (-(b.1ᵀ * X.J.map t)) (isUnit_iff_ne_zero.mpr (by`. Rewrite using `[Matrix.det_neg, Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (mul_ne_zero hb hJX)))`. Set `Q : GL (Fin d) (Fv F v)` to `Matrix.nonsingInvUnit (c.1ᵀ * W.J.map t) (isUnit_iff_ne_zero.mpr (by`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_transpose]`. Conclude with `mul_ne_zero hc hJW))`. Establish `hPv : P.1 = -(b.1ᵀ * X.J.map t)` using `rfl`. Establish `hQv : Q.1 = c.1ᵀ * W.J.map t` using `rfl`. Establish `hW2 : M.IsLinW B.ψ (t.comp σ) P⁻¹ Q⁻¹ ι`.
+
+Unfold `Model.IsLinW`. Unfold `Model.IsLinBar at hι`. Rewrite using `[comp_comp hcm]`. Use `hι using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+
+Simplify using `only [inv_inv, hPv, hQv, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `key` using `GlobalTheory.T.linear_witt_model_unitary_action hPr F E σ B n d X W M χX χW om r s r' s' hP v (t.comp σ) P⁻¹ Q⁻¹ ι hW2 g hg h hh φ hφ φ₁ hφ₁ hA`. Establish `eg : locMat (t.comp σ) P⁻¹ g = GlobalTheory.SplitFlip.invT (locMat t b g)`. Express the relevant statement in the definitionally equal form `P⁻¹⁻¹ * _ * P⁻¹ = GlobalTheory.SplitFlip.invT (b⁻¹ * _ * b)`. Rewrite using `[inv_inv]`.
+
+Conclude with `conj_eq_invT b P _ _ (X.J.map t) (-1) (GlobalTheory.Div.CoordOpp.unit_map σ g t) (by rw [hPv, neg_one_smul])`. Establish `eh : locMat (t.comp σ) Q⁻¹ h = GlobalTheory.SplitFlip.invT (locMat t c h)`. Express the relevant statement in the definitionally equal form `Q⁻¹⁻¹ * _ * Q⁻¹ = GlobalTheory.SplitFlip.invT (c⁻¹ * _ * c)`. Rewrite using `[inv_inv]`. Conclude with `conj_eq_invT c Q _ _ (W.J.map t) 1 (GlobalTheory.Div.CoordOpp.unit_map σ h t) (by rw [hQv, one_smul])`.
+
+Rewrite using `[key, eg, eh, chrW_comp hcm χW hP.resW, chrW_comp hcm χX hP.resX, inv_inv, omA_invT]`.
+-/
 theorem GlobalTheory.OppLagr.act_linBar : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)), ∀ ι, M.IsLinBar B.ψ t b c ι →

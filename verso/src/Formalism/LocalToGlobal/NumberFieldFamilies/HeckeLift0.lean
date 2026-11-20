@@ -37,6 +37,9 @@ def hLC (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k 
     Module.End what₂.LL (what₂.MtL (what₂.muTw w) j) :=
   if h : (1 ≤ j ∧ j ≤ R.m) ∧ GenAt0 H (what₂.places.resChar w) (Qw w) v k then (hR j w v k h.1.1 h.1.2 h.2).choose else 0
 
+/- English proof (translation)
+Establish `h : (1 ≤ j ∧ j ≤ R.m) ∧ GenAt0 H (what₂.places.resChar w) (Qw w) v k` using `⟨⟨h1, h2⟩, hg⟩`. Unfold `hLC`. Rewrite using `[dif_pos h]`. Conclude with `(hR j w v k h.1.1 h.1.2 h.2).choose_spec s ϖ hc hu x`.
+-/
 theorem hLC_spec (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ R.m)
     (hg : GenAt0 H (what₂.places.resChar w) (Qw w) v k) (s : SplitPlace H.E)
     (ϖ : HeightOneSpectrum.adicCompletion (↥(maximalRealSubfield H.E)) s.v) (hc : IsConjPl H v s.w) (hu : IsUnif H.E s.v ϖ)
@@ -54,6 +57,9 @@ def hKC (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k 
     Module.End (FractionRing (OcC X j w)) (VC X j w) :=
   (hLC M Qw hR j w v k).baseChange (FractionRing (OcC X j w))
 
+/- English proof (translation)
+The claim follows from `LinearMap.baseChange_tmul _ _ _`.
+-/
 theorem hKC_def (j : ℕ) (w : what₂.places.Pl) (v : HeightOneSpectrum (𝓞 H.E)) (k : ℕ) (x : what₂.MtL (what₂.muTw w) j) :
     hKC M Qw hR X j w v k (iVC X j w x) = iVC X j w (hLC M Qw hR j w v k x) :=
   LinearMap.baseChange_tmul _ _ _
@@ -76,8 +82,17 @@ def baseC (hS : SplitK M Qw hR X) : LocBase0 H what₂ where
   hK_def := hKC_def M Qw hR X
   split := hS
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseC_Oc (hS : SplitK M Qw hR X) : (baseC M Qw hR X hS).Oc = OcC X := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseC_hL (hS : SplitK M Qw hR X) : (baseC M Qw hR X hS).hL = hLC M Qw hR := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseC_iV (hS : SplitK M Qw hR X) : (baseC M Qw hR X hS).iV = iVC X := rfl
 
 end Formalism.L2.Fam.NPC.BaseC

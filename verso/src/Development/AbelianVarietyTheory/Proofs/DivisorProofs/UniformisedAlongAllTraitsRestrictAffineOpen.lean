@@ -23,6 +23,13 @@ namespace GlobalTheory.KeyVals
 
 open GlobalTheory.TorsionFormCompare GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM GlobalTheory.SiegelTor GlobalTheory.TorRef GlobalTheory.PolDeg GlobalTheory.TChart GlobalTheory.Mum in
 
+/- English proof (translation)
+Take `⟨D, A₀, U₀, hL⟩` from `h`. Establish `hR : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV⟩`. Establish `he : eSec G ≫ ε.hom.left = 𝟙 _ ≫ eSec G₀`. Use `Eq.trans ?_ (Category.id_comp _).symm` and prove the remaining obligations. Conclude with `congrArg (fun f => f.left) (IsMonHom.one_hom ε.hom)`.
+
+Set `L' : RigLB G` to `⟨U₀.LG.L.pull ε.hom.left, rigPullOf ε.hom.left (𝟙 _) he U₀.LG.L U₀.LG.rig, LB.isLB_pull U₀.LG.isLB _, GlobalTheory.CubePullLawChecks.rigPullIsGen ε.hom.left (𝟙 _) he U₀.LG.L U₀.LG.rig U₀.LG.isLB U₀.LG.rigGen⟩`. Set `w : LB.Iso L'.L (U₀.LG.L.pull ε.hom.left)` to `idIso L'.L`. Establish `hw : RigAlong ε.hom U₀.LG L' w` using `⟨idIso_isGen L'.isLB, (maps_iff w _ (fun _ => eSec G₀) _ L'.rig U₀.LG.rig (𝟙 _) _ (rigPull_le _ _ he U₀.LG.L) (fun _ => rfl)).1 (idIso_maps L')⟩`. Take `⟨W, hW, hψ⟩` from `psiOnExists V (IsLocalRing.maximalIdeal V) hR D`. Take `⟨hD, -⟩` from `exists_isIdPull V D.toPre W hW hψ`.
+
+Take `⟨bc, U, -, -, hLG, -, -⟩` from `exists_unif_move V (IsLocalRing.maximalIdeal V) D A₀ G₀ G ε hR hsa hε U₀ L' w hw hD`. Use `⟨D, A₀, U, ?_⟩` and prove the remaining obligations. Rewrite using `[hLG]`. Conclude with `LBIso.chartPull (GlobalTheory.chartPullPull _ _) (GlobalTheory.chartPullPull _ _) hL`.
+-/
 theorem hasUnif_of_iso {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (hV : IsAdicComplete (IsLocalRing.maximalIdeal V) V) (G G₀ : Over (Sp V)) [GrpObj G] [IsCommMonObj G] [GrpObj G₀]
     [IsCommMonObj G₀] (ε : G ≅ G₀) (hε : IsMonHom ε.hom) (hsa : IsSemiAbelian G₀) (L₀ : LB G₀.left)
@@ -47,6 +54,11 @@ theorem hasUnif_of_iso {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuation
   rw [hLG]
   exact LBIso.chartPull (GlobalTheory.chartPullPull _ _) (GlobalTheory.chartPullPull _ _) hL
 
+/- English proof (translation)
+Introduce `V _ _ _ _ hV hf ξ hξ _`. Establish `hξ' : ((ξ ≫ f) ⁻¹' abLocus G).Nonempty`. Take `⟨p, hp⟩` from `hξ`. Use `⟨p, ?_⟩` and prove the remaining obligations. Use `(abLocus_pullback (G' := bG G f) abLocusOne hG (isGrpPullback_pullback G f).1 (ξ p)).2 hp` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨ε, hε, hφ⟩` from `grpPullback_iso ((isGrpPullback_pullback (bG G f) ξ).comp (isGrpPullback_pullback G f)) (isGrpPullback_pullback G (ξ ≫ f))`. Take `⟨D, A, U, hU⟩` from `hasUnif_of_iso hV _ _ ε hε (IsSemiAbelian.pullback (ξ ≫ f) G hG) _ (h V hV hf (ξ ≫ f) hξ')`. Use `⟨D, A, U, LBIso.trans U.LG.isLB (LB.isLB_pull (LB.isLB_pull L.isLB _) _) (LB.isLB_pull (bL L f).isLB _) hU ?_⟩` and prove the remaining obligations. Conclude with `LBIso.chartPull (h := ε.hom.left) (chartPullLinComb L.L _ (fun _ : PUnit => ε.hom.left) (fun _ => pullback.fst G.hom (ξ ≫ f)) (fun _ => 1) _ fun _ => rfl) (chartPullLinComb L.L _ (fun _ : PUnit => pullback.fst (bG G f).hom ξ) (fun _ => pullback.fst G.hom (ξ ≫ f)) (fun _ => 1) _ f …`.
+-/
 theorem unifAlong_bG {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) {R : Type} [CommRing R]
     (f : Sp R ⟶ S) (hG : IsSemiAbelian G) (h : UnifAlong G L.L) : UnifAlong (bG G f) (bL L f).L := by
   intro V _ _ _ _ hV hf ξ hξ _
@@ -66,6 +78,9 @@ theorem unifAlong_bG {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (
       (fun _ => 1) _ fun _ => hφ.symm)
     (PolBaseChange.lbIso_refl (LB.isLB_pull L.isLB _))
 
+/- English proof (translation)
+Introduce `_ G _ _ L _ hW hG h` and use `unifAlong_bG G L hW.fromSpec hG h`.
+-/
 theorem unifAlong_affineOpen : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (W : S.Opens) (hW : IsAffineOpen W),
     IsSemiAbelian G → UnifAlong G L.L → UnifAlong (KeyVals.bG G hW.fromSpec) (KeyVals.bL L hW.fromSpec).L :=
   fun _ G _ _ L _ hW hG h => unifAlong_bG G L hW.fromSpec hG h

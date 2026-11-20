@@ -6,6 +6,11 @@ open scoped LaurentSeries PowerSeries
 
 namespace GlobalTheory.Models
 
+/- English proof (translation)
+Rewrite using `[LinearMap.exact_iff]`. Establish `hle : LinearMap.range f ≤ LinearMap.ker p`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker, ← LinearMap.comp_apply, h0, LinearMap.zero_apply]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker p`.
+
+Rewrite `hrn` using `[LinearMap.range_eq_top.mpr hp, finrank_top]`. Establish `hrf` using `LinearMap.finrank_range_of_inj hf`. Conclude with `(Submodule.eq_of_le_of_finrank_eq hle (by omega)).symm`.
+-/
 theorem exact_of_finrank_add {K U V W : Type*} [Field K] [AddCommGroup U] [Module K U] [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module K W] [Module.Finite K V] (f : U →ₗ[K] V) (p : V →ₗ[K] W)
     (hf : Function.Injective f) (hp : Function.Surjective p) (h0 : p ∘ₗ f = 0)
@@ -19,6 +24,9 @@ theorem exact_of_finrank_add {K U V W : Type*} [Field K] [AddCommGroup U] [Modul
   have hrf := LinearMap.finrank_range_of_inj hf
   exact (Submodule.eq_of_le_of_finrank_eq hle (by omega)).symm
 
+/- English proof (translation)
+Rewrite `he` using `[LinearMap.exact_iff]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker p`. Rewrite `hrn` using `[he, LinearMap.range_eq_top.mpr hp, finrank_top, LinearMap.finrank_range_of_inj hf]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_add_of_exact {K U V W : Type*} [Field K] [AddCommGroup U] [Module K U] [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module K W] [Module.Finite K V] (f : U →ₗ[K] V) (p : V →ₗ[K] W)
     (hf : Function.Injective f) (hp : Function.Surjective p) (he : Function.Exact f p) :
@@ -28,6 +36,13 @@ theorem finrank_add_of_exact {K U V W : Type*} [Field K] [AddCommGroup U] [Modul
   rw [he, LinearMap.range_eq_top.mpr hp, finrank_top, LinearMap.finrank_range_of_inj hf] at hrn
   omega
 
+/- English proof (translation)
+Establish `hA : F.Obj A` using `F.obj_sub A B f hf hi hB`. Establish `hC : F.Obj C` using `F.obj_quot B C p hp hs hB`. Establish `hd` using `finrank_add_of_exact f p hi hs he`. Simplify using `only [Module.finrank_fin_fun] at hd`. Establish `hpf : p ∘ₗ f = 0` using `LinearMap.ext fun x => he.apply_apply_eq_zero x`.
+
+Establish `h0hom : IsHom A C (0 : (Fin A.m → k) →ₗ[k] (Fin C.m → k))` using `fun g x => by simp`. Establish `hcomp : F.map B C p i ∘ₗ F.map A B f i = 0`. Rewrite using `[← F.map_comp A B C f p hA hB hC hf hp i, hpf]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h` using `F.map_smul A C 0 0 hA hC h0hom i x`.
+
+Simplify using `using h`. Use `exact_of_finrank_add (F.map A B f i) (F.map B C p i) (F.map_inj A B f hA hB hf hi i) (F.map_surj B C p hB hC hp hs i) hcomp ?_` and prove the remaining obligations. Simplify using `only [Vc, Module.finrank_fin_fun]`. Conclude with `hd`.
+-/
 theorem DFun.map_exact_middle {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n]
     {R : RingPG k l} (F : DFun R n G) (A B C : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k))
     (p : (Fin B.m → k) →ₗ[k] (Fin C.m → k)) (hB : F.Obj B) (hf : IsHom A B f) (hp : IsHom B C p)

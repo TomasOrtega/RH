@@ -33,6 +33,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights
 
+/- English proof (translation)
+The claim follows from `GaussianSum.proof (GaussPoissonDual.proof GaussSqrt.proof (GaussPoissonBound.proof GaussLatticeIsLattice.proof (GaussLatticeCovolume.proof GaussLatticeIsLattice.proof) GaussLatticeCoords.proof GaussFourierSelf.proof) GaussDualMin.proof GaussDetFactor.proof) (GaussShellSum.proof ( …`.
+-/
 theorem GaussianSum.full : GaussianSum.Statement :=
   GaussianSum.proof
     (GaussPoissonDual.proof GaussSqrt.proof
@@ -43,23 +46,41 @@ theorem GaussianSum.full : GaussianSum.Statement :=
     (GaussShellSum.proof (GaussShell.proof GaussPacking.proof GaussTermBound.proof))
     GaussConstant.proof
 
+/- English proof (translation)
+The claim follows from `ThetaMean.proof (ThetaInnerMean.proof ThetaSummandNorm.proof (ThetaCubeParseval.proof ThetaCharIntegral.proof))`.
+-/
 theorem ThetaMean.full : ThetaMean.Statement :=
   ThetaMean.proof
     (ThetaInnerMean.proof ThetaSummandNorm.proof
       (ThetaCubeParseval.proof ThetaCharIntegral.proof))
 
+/- English proof (translation)
+The claim follows from `ThetaBound.proof GaussianSum.full ThetaMean.full (ThetaNormMajorant.proof ThetaSummandNorm.proof) ThetaFirstCoordSplit.proof ThetaConstants.proof`.
+-/
 theorem ThetaBound.full : ThetaBound.Statement :=
   ThetaBound.proof GaussianSum.full ThetaMean.full
     (ThetaNormMajorant.proof ThetaSummandNorm.proof) ThetaFirstCoordSplit.proof ThetaConstants.proof
 
+/- English proof (translation)
+The claim follows from `PlueckerNormSq.proof CauchyBinet.proof`.
+-/
 theorem PlueckerNormSq.full : PlueckerNormSq.Statement := PlueckerNormSq.proof CauchyBinet.proof
 
+/- English proof (translation)
+The claim follows from `PlueckerUnitBound.proof HadamardPSD.proof`.
+-/
 theorem PlueckerUnitBound.full : PlueckerUnitBound.Statement :=
   PlueckerUnitBound.proof HadamardPSD.proof
 
+/- English proof (translation)
+The claim follows from `PlueckerKernel.proof PlueckerNormSq.full PlueckerUnitBound.full`.
+-/
 theorem PlueckerKernel.full : PlueckerKernel.Statement :=
   PlueckerKernel.proof PlueckerNormSq.full PlueckerUnitBound.full
 
+/- English proof (translation)
+The claim follows from `RootsOfUnityDense.proof`.
+-/
 theorem RootsOfUnityDense.full : RootsOfUnityDense.Statement := RootsOfUnityDense.proof
 
 end GroundTheory.Heights₂.Heights

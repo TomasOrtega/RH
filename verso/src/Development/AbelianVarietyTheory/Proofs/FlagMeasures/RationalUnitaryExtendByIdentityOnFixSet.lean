@@ -11,12 +11,34 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.St
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+-/
 theorem col_mul_eq_mulVec {A : Type} [CommRing A] {n ι κ : Type} [Fintype n] [Fintype ι]
     (M : Matrix n ι A) (B : Matrix ι κ A) (c : κ) :
     M *ᵥ (fun i => B i c) = fun i => (M * B) i c := by
   funext i
   simp [Matrix.mulVec, dotProduct, Matrix.mul_apply]
 
+/- English proof (translation)
+Introduce `D X u wt hw y₀ hy`. Take `⟨Q, Qi, G', hQQi, hQiQ, hq, he, hf, hz, hG', hblk⟩` from `GlobalTheory.T.columnWittFrame_basis_blockGram D X u wt hw`. Establish `hU` using `(GlobalTheory.unitary_stabiliser_orthogonal_summand X.B.I.E (starRingEnd X.B.I.E) _ _ _ X.B.I.J ((Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm) G' Q Qi hQQi hQiQ hblk hG').1 y₀ hy`. Use `set M := Q * Matrix.fromBlocks y₀ 0 0 (1 : Matrix (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) X.B.I.E) * Qi with hM`. Establish `hJu : IsUnit X.B.I.J.det` using `isUnit_iff_ne_zero.2 X.B.I.J_det`.
+
+Establish `hdet : IsUnit M.det`. Use `Matrix.isUnit_det_of_left_inverse (B := X.B.I.J⁻¹ * ((M.map (starRingEnd X.B.I.E))ᵀ * X.B.I.J)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hU, Matrix.nonsing_inv_mul _ hJu]`. Establish `hMu : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).2 hdet`. Establish `hMQ : M * Q = Q * Matrix.fromBlocks y₀ 0 0 1`.
+
+Rewrite using `[hM, Matrix.mul_assoc, hQiQ, Matrix.mul_one]`. Both sides reduce to the same expression. Use `⟨hMu.unit, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.cT (starRingEnd X.B.I.E) (hMu.unit : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * X.B.I.J * (hMu.unit : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = X.B.I.J`. Rewrite using `[IsUnit.unit_spec]`.
+
+Conclude with `hU`. Introduce `x hx`. Rewrite using `[IsUnit.unit_spec]`. Establish `key : ∀ b, M *ᵥ (fun i => Q i (Sum.inr b)) = fun i => Q i (Sum.inr b)`. Introduce `b`.
+
+Rewrite using `[col_mul_eq_mulVec, hMQ]`. Use function extensionality and compare the values at `i`. Use `erw [Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, Matrix.one_apply, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hz'` into its components or cases.
+
+Use `key (Sum.inl a)` as an intermediate fact. Establish `e : (fun i => Q i (Sum.inr (Sum.inl a))) = X.eR a` using `funext fun i => he a i`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `key (Sum.inr (Sum.inl a))` as an intermediate fact. Establish `e : (fun i => Q i (Sum.inr (Sum.inr (Sum.inl a)))) = X.fR a` using `funext fun i => hf a i`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite `hz'` using `[Set.mem_singleton_iff]`. Substitute `hz'` using the available equality. Use `key (Sum.inr (Sum.inr ()))` as an intermediate fact. Establish `e : (fun i => Q i (Sum.inr (Sum.inr (Sum.inr ())))) = X.zR u` using `funext fun i => hz i`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `j`. Rewrite using `[IsUnit.unit_spec]`. Establish `e : ∀ j, X.crd (qFr wt j) = fun i => Q i (Sum.inl j)` using `fun j => funext fun i => (hq j i).symm`. Rewrite using `[e j, col_mul_eq_mulVec, hMQ]`.
+
+Use function extensionality and compare the values at `r`. Simplify using `only [e, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero]`. Use `erw [Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem rational_unitary_extend_by_identity : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∀ y₀ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) X.B.I.E, (y₀.map (starRingEnd X.B.I.E))ᵀ * (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm * y₀ = (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm → ∃ γ₀ : GL (Fin X.B.I.n) X.B.I.E, γ₀ ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J ∧ (∀ x ∈ fixSet X u, (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ x = x) ∧ ∀ j, (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd (qFr wt j) = ∑ i, y₀ i j • X.crd (qFr wt i) := by
   intro D X u wt hw y₀ hy
   obtain ⟨Q, Qi, G', hQQi, hQiQ, hq, he, hf, hz, hG', hblk⟩ := GlobalTheory.T.columnWittFrame_basis_blockGram D X u wt hw

@@ -71,6 +71,9 @@ def IsCoc (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (c : MvPowerSeries 
 set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R : Type} [CommRing R] {d e : ℕ} {τ : Type} in
+/- English proof (translation)
+Establish `hμ : HasSubst μ` using `hasSubst_of_constantCoeff_zero h`. Establish `hL : HasSubst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Establish `hR : HasSubst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Simplify using `only [_root_.GlobalTheory.Katz.cob1, _root_.GlobalTheory.Katz.inL, _root_.GlobalTheory.Katz.inR, subst_add hμ, subst_add hL, subst_add hR]`. Normalize the expressions using the abelian group laws.
+-/
 theorem _root_.GlobalTheory.Katz.formalCoboundary_add {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
     (f g : MvPowerSeries (Fin d) R) :
     _root_.GlobalTheory.Katz.cob1 μ (f + g) =
@@ -87,6 +90,9 @@ theorem _root_.GlobalTheory.Katz.formalCoboundary_add {μ : Fin d → MvPowerSer
 set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {R : Type} [CommRing R] {d e : ℕ} {τ : Type} in
+/- English proof (translation)
+Establish `hμ : HasSubst μ` using `hasSubst_of_constantCoeff_zero h`. Establish `hL : HasSubst (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Establish `hR : HasSubst (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R))` using `hasSubst_of_constantCoeff_zero fun i => by simp`. Simplify using `only [_root_.GlobalTheory.Katz.cob1, _root_.GlobalTheory.Katz.inL, _root_.GlobalTheory.Katz.inR, subst_smul hμ, subst_smul hL, subst_smul hR, smul_sub]`.
+-/
 theorem _root_.GlobalTheory.Katz.formalCoboundary_smul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (h : ∀ i, constantCoeff (μ i) = 0)
     (r : R) (f : MvPowerSeries (Fin d) R) :
     _root_.GlobalTheory.Katz.cob1 μ (r • f) = r • _root_.GlobalTheory.Katz.cob1 μ f := by
@@ -111,12 +117,18 @@ abbrev Fr : Type := FractionRing (WittVector p k)
 def lift (f : MvPowerSeries σ k) : MvPowerSeries σ (Fr p k) :=
   fun α => algebraMap (WittVector p k) (Fr p k) (WittVector.teichmuller p (coeff α f))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_lift (f : MvPowerSeries σ k) (α : σ →₀ ℕ) : coeff α (lift p f) =
     algebraMap (WittVector p k) (Fr p k) (WittVector.teichmuller p (coeff α f)) := rfl
 
 set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable (p : ℕ) [Fact p.Prime] {k : Type} [Field k] [CharP k p] {σ : Type} {d : ℕ} in
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, _root_.GlobalTheory.Katz.coeff_lift, coeff_zero_eq_constantCoeff_apply, h, WittVector.teichmuller_zero, map_zero]`.
+-/
 theorem _root_.GlobalTheory.Katz.constantCoeff_lift {f : MvPowerSeries σ k}
     (h : constantCoeff f = 0) :
     constantCoeff (_root_.GlobalTheory.Katz.lift p f) = 0 := by
@@ -224,6 +236,11 @@ set_option autoImplicit false in
 open MvPowerSeries TensorProduct in
 variable {k : Type} [CommRing k] {σ : Type} [Finite σ] in
 variable {p d e : ℕ} {G H : _root_.GlobalTheory.PDivGroup p k} (c : _root_.GlobalTheory.Katz.Chart G d) in
+/- English proof (translation)
+Break down `i with i | i` into its components or cases. Take `⟨m, hm⟩` from `c.nil n i`. Conclude with `⟨m, by`. Simplify using `only [_root_.GlobalTheory.Katz.Chart.x₂, Sum.elim_inl]`. Rewrite using `[Algebra.TensorProduct.tmul_pow, hm, one_pow, TensorProduct.zero_tmul]⟩`.
+
+Take `⟨m, hm⟩` from `c.nil n i`. Conclude with `⟨m, by`. Simplify using `only [_root_.GlobalTheory.Katz.Chart.x₂, Sum.elim_inr]`. Rewrite using `[Algebra.TensorProduct.tmul_pow, hm, one_pow, TensorProduct.tmul_zero]⟩`.
+-/
 theorem _root_.GlobalTheory.Katz.Chart.nil₂ (n : ℕ) (i : Fin d ⊕ Fin d) :
     IsNilpotent (c.x₂ n i) := by
   rcases i with i | i

@@ -11,6 +11,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.TanSec
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z r x hx`. Establish `hfr` using `GlobalTheory.T.tangent_sections_form_frame E H Dw Xo p W Y i₀ Z r x hx`. Use `(Y Z.i).t.semi` as an intermediate fact. Use `(Y Z.i).t.semi.smooth` as an intermediate fact. Introduce `y`.
+
+Take `⟨U, n, s, hyU, hs⟩` from `GlobalTheory.LieVB.exists_isFrame_omega (Y Z.i).t.G (Z.π y)`. Establish `hs'` using `hs.pullback Z.π`. Establish `hyU' : y ∈ Z.π ⁻¹ᵁ U` using `hyU`. Take `⟨z, hzU, hzo⟩` from `Z.dense.inter_open_nonempty _ (Z.π ⁻¹ᵁ U).isOpen ⟨y, hyU'⟩`. Rewrite `hzo` using `[← Z.cover]`.
+
+Take `⟨a, hza⟩` from `Set.mem_iUnion.1 hzo`. Establish `hn : n = r`. Establish `b₁` using `hs'.dual.stalkBasis z hzU`. Establish `b₂` using `(hfr a).stalkBasis z hza`. Simplify using `using Fintype.card_congr (b₁.indexEquiv b₂)`.
+
+Substitute `hn` using the available equality. Conclude with `⟨_, _, hyU', hs'⟩`.
+-/
 theorem isVB_om : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p)
     (Z : GlobalTheory.LocM.Mdl Y i₀) (r : ℕ) (x : Fin r → Letter Dw), Function.Bijective x → GlobalTheory.VB.IsVB (GlobalTheory.TanSec.om Z) r := by

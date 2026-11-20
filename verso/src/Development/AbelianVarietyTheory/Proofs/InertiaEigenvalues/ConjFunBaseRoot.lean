@@ -25,6 +25,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
   (O : OMDat T.toCore R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (τ : ℂ ≃+* ℂ)
 
+/- English proof (translation)
+Establish `h0 : Expands O κ (fun _ => 0) (Fin.append a (fun k => -b k)) (Fin.append f g)`. Introduce `y`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[← ha y, ← hb y, add_neg_cancel]`.
+
+Establish `h1` using `hZ.2 _ _ _ h0 x`. Rewrite `h1` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, map_neg, one_mul, neg_mul, Finset.sum_neg_distrib] at h1`. Take the linear combination `(-1 : ℂ) * h1`.
+-/
 theorem conj_sum_eq (hZ : ConjFun O κ τ 1 (fun _ => 0) (fun _ => 0)) {Φ : GA D (Wc D i) → ℂ} {n m : ℕ} {a : Fin n → ℂ}
     {b : Fin m → ℂ} {f : Fin n → T.toCore.cuspA ((i : ℕ) + 1) (wtA κ) κ.n} {g : Fin m → T.toCore.cuspA ((i : ℕ) + 1) (wtA κ) κ.n}
     (ha : Expands O κ Φ a f) (hb : Expands O κ Φ b g) (x : GA D (Wc D i)) :
@@ -42,6 +47,13 @@ theorem conj_sum_eq (hZ : ConjFun O κ τ 1 (fun _ => 0) (fun _ => 0)) {Φ : GA 
   simp only [Fin.append_left, Fin.append_right, map_neg, one_mul, neg_mul, Finset.sum_neg_distrib] at h1
   linear_combination (-1 : ℂ) * h1
 
+/- English proof (translation)
+Take `⟨n, a, f, ha⟩` from `h1.1`. Take `⟨m, b, g, hb⟩` from `h2.1`. Establish `hs : Expands O κ (fun x => c * Φ x + d * Ψ x) (Fin.append (fun k => c * a k) (fun k => d * b k)) (Fin.append f g)`. Introduce `x`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[ha x, hb x, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [mul_assoc]`. Use `⟨⟨_, _, _, hs⟩, fun N e h he x => ?_⟩` and prove the remaining obligations. Simplify using `only [one_mul]`.
+
+Rewrite using `[conj_sum_eq O κ τ hZ he hs x, Fin.sum_univ_add, h1.2 _ _ _ ha x, h2.2 _ _ _ hb x]`. Simplify using `only [Fin.append_left, Fin.append_right, one_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem conjFun_lin (hZ : ConjFun O κ τ 1 (fun _ => 0) (fun _ => 0)) {Φ Φ' Ψ Ψ' : GA D (Wc D i) → ℂ}
     (h1 : ConjFun O κ τ 1 Φ Φ') (h2 : ConjFun O κ τ 1 Ψ Ψ') (c d : ℂ) :
     ConjFun O κ τ 1 (fun x => c * Φ x + d * Ψ x) (fun x => τ c * Φ' x + τ d * Ψ' x) := by
@@ -58,6 +70,11 @@ theorem conjFun_lin (hZ : ConjFun O κ τ 1 (fun _ => 0) (fun _ => 0)) {Φ Φ' �
   rw [conj_sum_eq O κ τ hZ he hs x, Fin.sum_univ_add, h1.2 _ _ _ ha x, h2.2 _ _ _ hb x]
   simp only [Fin.append_left, Fin.append_right, one_mul, map_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro α Φ Φ' _`. Simplify using `using hZ`. Consider the case `succ n ih`.
+
+Introduce `α Φ Φ' hk`. Establish `h` using `conjFun_lin O κ τ hZ (hk 0) (ih (fun k => α k.succ) (fun k => Φ k.succ) (fun k => Φ' k.succ) (fun k => hk k.succ)) (α 0) 1`. Simplify using `only [map_one, one_mul] at h`. Simplify `h` using `only [Fin.sum_univ_succ]`.
+-/
 theorem conjFun_sum (hZ : ConjFun O κ τ 1 (fun _ => 0) (fun _ => 0)) : ∀ (n : ℕ) (α : Fin n → ℂ)
     (Φ Φ' : Fin n → GA D (Wc D i) → ℂ), (∀ k, ConjFun O κ τ 1 (Φ k) (Φ' k)) →
     ConjFun O κ τ 1 (fun g => ∑ k, α k * Φ k g) (fun g => ∑ k, τ (α k) * Φ' k g) := by
@@ -75,6 +92,19 @@ end IdempotentCombination
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hC D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hnV hcore hfin hfw hio hQ i hpins hphase c hc`. Establish `h2` using `GlobalTheory.T.exists_normalisedData_normalCoefficientField D G Pl0 T0 A T R F κ v₀ O hcore hfin hfw hQ i hpins`. Take `⟨M, hMp, hMl, hMe, hMn, hMc, hMx, hMs⟩` from `h2`. Establish `h3` using `GlobalTheory.T.exists_rootOfUnity_coverFunction_reference_tuple hC D G Pl0 T0 A T R F κ v₀ O ph hnV hcore hfin hfw hio hQ i hpins hphase M hMp hMl hMe hMn hMc hMx hMs`. Establish `h4` using `GlobalTheory.T.referenceTuple_lifts_equivariant_rootOfUnity hC D G Pl0 T0 A T R F κ v₀ O ph hnV hcore hfin hfw hio hQ i hpins hphase M hMp hMl hMe hMn hMc hMx hMs h3.choose h3.choose_spec.1 h3.choose_spec.2`.
+
+Use `⟨h4.choose, h4.choose_spec.1, fun τ hB y y' hyy => ?_⟩` and prove the remaining obligations. Establish `hP` using `h4.choose_spec.2`. Set `τa : ℂ ≃ₐ[ℚ] ℂ` to `AlgEquiv.ofRingEquiv (f := τ) (fun q => by simp)`. Use `haveI := hMn`. Set `ta : M.c'.F ≃+* M.c'.F` to `(τa.restrictNormal M.c'.F).toRingEquiv`.
+
+Establish `hta : ∀ a : M.c'.F, ((ta a : M.c'.F) : ℂ) = τ (a : ℂ)` using `fun a => AlgEquiv.restrictNormal_commutes τa M.c'.F a`. Establish `hct : ConjTup R τ A.μ0 A.μ0`. Use `⟨rfl, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hcore.lev.xi A.μ0`. Rewrite `h1` using `[hcore.lev.xi_base]`.
+
+Rewrite using `[GlobalTheory.ChrEqUnique.eq_one_of_chrEq h1 x]`. Simplify using the standard rewrite rules. Establish `h5` using `GlobalTheory.T.conjugate_definiteForms_descend_numberField D G Pl0 T0 A T R F κ v₀ hcore hfw i T0 id M hMp τ ta hta hB c ((hMe c).1 hc) hMx A.μ0 A.μ0 hct y y' hyy`. Take `⟨n, α, ys, ys', hy, hy', hk⟩` from `h5`. Establish `hZ : ConjFun (O i) (κ i) τ 1 (fun _ => 0) (fun _ => 0)`.
+
+Use `hP τ ta hta hB 0 0 (fun h => ⟨0, 0, by simp, by rw [map_zero, map_zero]; rfl, by rw [map_zero, map_zero]; rfl⟩)` as an intermediate fact. Simplify using `using this`. Establish `hL` using `conjFun_sum (O i) (κ i) τ hZ n α (fun k g => h4.choose * ph i * R.thF i A.μ0 (ys k) (v₀ i (sg0 D A)) g) (fun k g => h4.choose * ph i * R.thF i A.μ0 (ys' k) (v₀ i (sg0 D A)) g) (fun k => hP τ ta hta hB (ys k) (ys' k) (hk k))`. Substitute `hy hy'` using the available equality. Use `hL using 2 with g g` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [map_sum, map_smul, MultilinearMap.sum_apply, MultilinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, MultilinearMap.sum_apply, MultilinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+-/
 theorem conjFun_base_root : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Finite T0 → Nonempty (FWTie T R κ v₀) → IoExt R → QGuard R → ∀ i : Fin D.R.m, OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC (O i).c') (O i).c0' c → ∃ ζ₁ : ℂ, IsRoot1 ζ₁ ∧ ∀ τ : ℂ ≃+* ℂ, FixBase T R i τ → ∀ y y' : (R.HV i A.μ0).H, ConjForm R i τ c A.μ0 A.μ0 y y' → ConjFun (O i) (κ i) τ 1 (fun g => ζ₁ * ph i * R.thF i A.μ0 y (v₀ i (sg0 D A)) g) (fun g => ζ₁ * ph i * R.thF i A.μ0 y' (v₀ i (sg0 D A)) g) := by
   intro hC D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hnV hcore hfin hfw hio hQ i hpins hphase c hc
   have h2 := GlobalTheory.T.exists_normalisedData_normalCoefficientField D G Pl0 T0 A T R F κ v₀ O hcore hfin hfw hQ i hpins

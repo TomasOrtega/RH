@@ -20,6 +20,9 @@ noncomputable def cochainsMapLinear (f : A ⟶ B) (n : ℕ) :
 
 omit [IsTopologicalGroup G] [IsDiscreteRep A] [IsDiscreteRep B] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainsMapLinear_apply (f : A ⟶ B) (n : ℕ) (c : locallyConstantCochains A n)
     (x : Fin n → G) : (cochainsMapLinear f n c : (Fin n → G) → B) x = f.hom ((c : _ → A) x) :=
   rfl
@@ -35,21 +38,33 @@ noncomputable def cochainsMap (f : A ⟶ B) : cochainsComplex A ⟶ cochainsComp
       f.hom ((inhomogeneousCochains.d A n).hom c.1 g)
     simp [inhomogeneousCochains.d_hom_apply, Rep.hom_comm_apply, map_add, map_sum, map_smul]
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem cochainsMap_f_hom_apply (f : A ⟶ B) (n : ℕ) (c : locallyConstantCochains A n) :
     ((cochainsMap f).f n).hom c = cochainsMapLinear f n c :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `n c : 3`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 theorem cochainsMap_id : cochainsMap (𝟙 A) = 𝟙 (cochainsComplex A) := by
   ext n c : 3
   rfl
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `n c : 3`. Both sides reduce to the same expression.
+-/
 theorem cochainsMap_comp (f : A ⟶ B) (g : B ⟶ C) :
     cochainsMap (f ≫ g) = cochainsMap f ≫ cochainsMap g := by
   ext n c : 3
   rfl
 
+/- English proof (translation)
+Use extensionality with `n c : 3`. Both sides reduce to the same expression.
+-/
 theorem cochainsMap_comp_cochainsComplexι (f : A ⟶ B) :
     cochainsMap f ≫ cochainsComplexι B =
       cochainsComplexι A ≫ groupCohomology.cochainsMap (MonoidHom.id G) f := by
@@ -77,14 +92,23 @@ noncomputable def cohomologyMap (f : A ⟶ B) (n : ℕ) : cohomology A n ⟶ coh
   HomologicalComplex.homologyMap (cochainsMap f) n
 
 @[simp]
+/- English proof (translation)
+Simplify using `[cohomologyMap, cohomology]`.
+-/
 theorem cohomologyMap_id (n : ℕ) : cohomologyMap (𝟙 A) n = 𝟙 (cohomology A n) := by
   simp [cohomologyMap, cohomology]
 
+/- English proof (translation)
+Rewrite using `[cohomologyMap, cochainsMap_comp]`. Conclude with `HomologicalComplex.homologyMap_comp _ _ _`.
+-/
 theorem cohomologyMap_comp (f : A ⟶ B) (g : B ⟶ C) (n : ℕ) :
     cohomologyMap (f ≫ g) n = cohomologyMap f n ≫ cohomologyMap g n := by
   rw [cohomologyMap, cochainsMap_comp]
   exact HomologicalComplex.homologyMap_comp _ _ _
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.homologyπ_naturality _ _`.
+-/
 theorem cohomologyπ_comp_cohomologyMap (f : A ⟶ B) (n : ℕ) :
     cohomologyπ A n ≫ cohomologyMap f n =
       HomologicalComplex.cyclesMap (cochainsMap f) n ≫ cohomologyπ B n :=
@@ -106,10 +130,16 @@ noncomputable def cochainsFunctor : DiscreteRep.{u} k G ⥤ CochainComplex (Modu
 noncomputable def cohomologyFunctor (n : ℕ) : DiscreteRep.{u} k G ⥤ ModuleCat k :=
   cochainsFunctor k G ⋙ HomologicalComplex.homologyFunctor _ _ n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyFunctor_obj (n : ℕ) (A : DiscreteRep.{u} k G) :
     (cohomologyFunctor k G n).obj A = cohomology A.obj n :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyFunctor_map (n : ℕ) {A B : DiscreteRep.{u} k G} (f : A ⟶ B) :
     (cohomologyFunctor k G n).map f = cohomologyMap f.hom n :=
   rfl
@@ -130,6 +160,9 @@ variable (A : Rep.{u} k G) [IsDiscreteRep A]
 noncomputable def cohomologyToGroupCohomology (n : ℕ) : cohomology A n ⟶ groupCohomology A n :=
   HomologicalComplex.homologyMap (cochainsComplexι A) n
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap (cochainsMap f) n ≫ HomologicalComplex.homologyMap (cochainsComplexι B) n = HomologicalComplex.homologyMap (cochainsComplexι A) n ≫ HomologicalComplex.homologyMap (groupCohomology.cochainsMap (MonoidHom.id G) f) n`. Rewrite using `[← HomologicalComplex.homologyMap_comp, ← HomologicalComplex.homologyMap_comp, cochainsMap_comp_cochainsComplexι]`.
+-/
 theorem cohomologyMap_comp_cohomologyToGroupCohomology {B : Rep.{u} k G} [IsDiscreteRep B]
     (f : A ⟶ B) (n : ℕ) :
     cohomologyMap f n ≫ cohomologyToGroupCohomology B n =
@@ -151,6 +184,9 @@ noncomputable def cohomologyIsoGroupCohomology [DiscreteTopology G] (n : ℕ) :
     cohomology A n ≅ groupCohomology A n :=
   HomologicalComplex.homologyMapIso (asIso (cochainsComplexι A)) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyIsoGroupCohomology_hom [DiscreteTopology G] (n : ℕ) :
     (cohomologyIsoGroupCohomology A n).hom = cohomologyToGroupCohomology A n :=
   rfl
@@ -181,6 +217,13 @@ instance : Mono (shortComplexH0 A).f := by
   apply Subtype.ext
   exact congrFun (congrArg Subtype.val h) Fin.elim0
 
+/- English proof (translation)
+Rewrite using `[ShortComplex.moduleCat_exact_iff]`. Introduce `c₀ hc`. Set `c : locallyConstantCochains A 0` to `c₀`. Establish `hc' : ∀ g : Fin 1 → G, (inhomogeneousCochains.d A 0).hom c.1 g = 0` using `fun g => congrArg (fun x : locallyConstantCochains A (0 + 1) => x.1 g) hc`. Use `⟨⟨c.1 Fin.elim0, fun g => ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hc' fun _ => g`. Establish `hfe : ∀ x : Fin 0 → G, c.1 x = c.1 Fin.elim0` using `fun x => by`. Rewrite using `[Subsingleton.elim x Fin.elim0]`. Simplify using `only [inhomogeneousCochains.d_hom_apply, hfe] at h`. Conclude with `add_neg_eq_zero.1 (by simpa using h)`.
+
+Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `c.1 Fin.elim0 = c.1 x`. Rewrite using `[Subsingleton.elim x Fin.elim0]`.
+-/
 theorem shortComplexH0_exact : (shortComplexH0 A).Exact := by
   rw [ShortComplex.moduleCat_exact_iff]
   intro c₀ hc
@@ -197,6 +240,9 @@ theorem shortComplexH0_exact : (shortComplexH0 A).Exact := by
     change c.1 Fin.elim0 = c.1 x
     rw [Subsingleton.elim x Fin.elim0]
 
+/- English proof (translation)
+The claim follows from `cochainsComplex_d A 0`.
+-/
 theorem cochainsComplex_d_zero_one :
     (cochainsComplex A).d 0 1 = dLocallyConstant A 0 :=
   cochainsComplex_d A 0

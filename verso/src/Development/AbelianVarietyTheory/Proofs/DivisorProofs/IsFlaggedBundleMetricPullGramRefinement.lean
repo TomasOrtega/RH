@@ -16,6 +16,17 @@ open GlobalTheory.GoodMetric.RepBundle
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `F _ σ X Y ι _ m E E' φ f hf hR H hH`. Establish `key` using `GlobalTheory.T.pulled_back_gram_matrices_independent_of_frame F σ X Y ι m E E' φ f hf hR H hH`. Use `⟨fun y B hB τ => ?_, fun y B hB τ i j => ?_, fun y B hB B' hB' τ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `exists_ratVal_hom (X := Y) (σ := σ) y`. Take `⟨A, hA⟩` from `E.nonempty (f (under y))`.
+
+Establish `hT` using `((hR.sub _ B hB A hA).map_of (ratVal · y) ψ hψ).det_ne τ`. Rewrite using `[(key y).2 A hA B hB τ]`. Conclude with `(hH.posDef _ mem_ptsIn_top A ((key y).1 ▸ hA) τ).mul_mul_conjTranspose_same (Matrix.vecMul_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hT.isUnit))`. Take `⟨A, hA⟩` from `E.nonempty (f (under y))`. Establish `hA' : A ∈ E.S (under (ptMap σ f hf y))` using `(key y).1 ▸ hA`.
+
+Establish `hC` using `hR.sub _ B hB A hA`. Establish `hc : Continuous (ptMap σ f hf)` using `GlobalTheory.Points.PtsOver.continuous_map f hf _`. Establish `hev : ∀ᶠ z in 𝓝 y, pullGram E H φ f hf B z τ = (B * (A.map φ)⁻¹).map (ratVal · z) τ * H A (ptMap σ f hf z) τ * ((B * (A.map φ)⁻¹).map (ratVal · z) τ)ᴴ` using `by filter_upwards [hc.continuousAt.eventually (GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m 0 E _ A hA'), GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ Y ι m m E' y B hB] with z hAz hBz`. Conclude with `(key z).2 A ((key z).1 ▸ hAz) B hBz τ`. Establish `hT : ∀ k l, CS (fun z => (B * (A.map φ)⁻¹).map (ratVal · z) τ k l) y` using `fun k l => cs_ratVal (mem_O_ratOf.1 ((hC τ).1 k l))`.
+
+Establish `hS : ∀ k l, CS (fun z => H A (ptMap σ f hf z) τ k l) y` using `fun k l => ⟨CInfAt.pull f hf (hH.smooth _ mem_ptsIn_top A hA' τ k l).1, CInfAt.pull f hf (hH.smooth _ mem_ptsIn_top A hA' τ k l).2⟩`. Apply the tactic sequence `exact CS.congr (v := fun z => pullGram E H φ f hf B z τ i j) (cs_conj_entry hT hS i j) (hev.mono fun z hz => by simp only [hz])`. Take `⟨ψ, hψ⟩` from `exists_ratVal_hom (X := Y) (σ := σ) y`. Take `⟨A, hA⟩` from `E.nonempty (f (under y))`. Establish `e` using `Par.map_mul_of ((Fr.mem_iff hB).1 hB') (hR.sub _ B hB A hA) (ratVal · y) ψ hψ`.
+
+Rewrite `e` using `[mul_assoc, ← mul_assoc B⁻¹, Mat.inv_mul (Fr.det_ne hB), one_mul]`. Rewrite using `[(key y).2 A hA B hB τ, (key y).2 A hA B' hB' τ, e, Pi.mul_apply, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem isMetricFr_pullGram : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Finite ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → ∀ H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ, IsMetricOn E ⊤ H → IsMetricFr E' (pullGram E H φ f hf) := by
   intro F _ σ X Y ι _ m E E' φ f hf hR H hH
   have key := GlobalTheory.T.pulled_back_gram_matrices_independent_of_frame F σ X Y ι m E E' φ f hf hR H hH

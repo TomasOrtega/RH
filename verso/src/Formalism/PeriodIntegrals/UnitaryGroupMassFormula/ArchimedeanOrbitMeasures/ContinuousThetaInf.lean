@@ -10,6 +10,13 @@ open MeasureTheory Topology Filter Metric NumberField Formalism.BasicNotions For
   Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal Formalism.MainNotions.S Formalism.L2.SG.AdBridge
 open scoped TensorProduct Matrix
 
+/- English proof (translation)
+Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Set `Lc : EuclideanSpace ℝ ι →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap L`. Set `H : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] (Fin n → ℂ)` to `{ toFun := fun M => (A * M * B) *ᵥ y map_add' := fun M M' => by simp [Matrix.mul_add, Matrix.add_mul, Matrix.add_mulVec] map_smul' := fun c M => by`.
+
+Simplify using `only [RingHom.id_apply]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, Pi.smul_apply, Finset.smul_sum, smul_mul_assoc] }`. Set `Hc : Matrix (Fin n) (Fin n) ℂ →L[ℝ] (Fin n → ℂ)` to `LinearMap.toContinuousLinearMap H`.
+
+Establish `he : ContDiff ℝ 1 (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)` using `contDiff_iff_contDiffAt.2 fun M => (NormedSpace.exp_analytic (𝕂 := ℝ) M).contDiffAt`. Conclude with `Hc.contDiff.comp (he.comp Lc.contDiff)`.
+-/
 theorem contDiff_conj_exp {ι : Type} [Fintype ι] {n : ℕ}
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ) (A B : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℂ) :
     ContDiff ℝ 1 (fun x => (A * NormedSpace.exp (L x) * B) *ᵥ y) := by
@@ -30,6 +37,13 @@ theorem contDiff_conj_exp {ι : Type} [Fintype ι] {n : ℕ}
     contDiff_iff_contDiffAt.2 fun M => (NormedSpace.exp_analytic (𝕂 := ℝ) M).contDiffAt
   exact Hc.contDiff.comp (he.comp Lc.contDiff)
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Use `set Mm : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) := ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (X.toInf hb s) : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) with hMm`. Establish `hmap : Mm.map (PI.AprimeInfU.thetaInf X v) = X.B.I.P v * uMat (s v) * (X.B.I.P v)⁻¹`. Rewrite using `[uMat_toInf X hb s v, ← hMm]`.
+
+Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one]`. Rewrite using `[← hmap]`. Use `show PI.AprimeInfU.thetaInf X v ((Mm *ᵥ Y0 X u' b) i) = _`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show Y0 X u' b j = inclR (Ainf X.B.I.F) (tupH (frameOf X u') b j) from rfl, thetaInf_inclR]`.
+-/
 theorem theta_act {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (hb : AdBridgeIso X.B.I) (s : X.B.I.Ginf)
     (v : InfinitePlace X.B.I.F) (b : Fin (D.R.rS + 1 + D.R.rS)) (i : Fin X.B.I.n) :
     PI.AprimeInfU.thetaInf X v ((X.toInf hb s • Y0 X u') b i) =
@@ -49,6 +63,11 @@ theorem theta_act {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (hb : AdBri
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [show Y0 X u' b j = inclR (Ainf X.B.I.F) (tupH (frameOf X u') b j) from rfl, thetaInf_inclR]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Set `σ : Ainf X.B.I.F →+* ℂ` to `PI.AprimeInfU.evInf X v`. Establish `hσ : Continuous σ` using `(InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)`. Set `φl : (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) →ₛₗ[σ] ℂ` to `{ toFun := PI.AprimeInfU.thetaInf X v map_add' := map_add _ map_smul' := fun a y => by`. Rewrite using `[Algebra.smul_def, map_mul, smul_eq_mul]`.
+
+Use `congr 1`. Use `show PI.AprimeInfU.thetaInf X v (a ⊗ₜ[X.B.I.F] (1 : X.B.I.E)) = _`. Rewrite using `[thetaInf_tmul, map_one, mul_one] }`. Conclude with `IsModuleTopology.continuous_of_linearMapₛₗ hσ φl`.
+-/
 theorem continuous_thetaInf {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) :
     Continuous (PI.AprimeInfU.thetaInf X v) := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
@@ -65,6 +84,33 @@ theorem continuous_thetaInf {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.
         rw [thetaInf_tmul, map_one, mul_one] }
   exact IsModuleTopology.continuous_of_linearMapₛₗ hσ φl
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : IsTotallyReal X.B.I.F := X.B.I.cm.totReal`. Set `Φ : TupI X →+ (InfinitePlace X.B.I.F → Fin (D.R.rS + 1 + D.R.rS) → Fin X.B.I.n → ℂ)` to `{ toFun := fun Y v b i => PI.AprimeInfU.thetaInf X v (Y b i) map_zero' := by funext v b i; exact map_zero _ map_add' := by intro Y Z; funext v b i; exact map_add _ _ _ }`. Establish `hsa : ∀ z z', (tupCoord X).symm (z + z') = (tupCoord X).symm z + (tupCoord X).symm z'`.
+
+Introduce `z z'`. Apply `(tupCoord X).injective` to reduce the goal to its premises. Rewrite using `[tupCoord_add]`. Simplify using the standard rewrite rules. Set `T0 : EuclideanSpace ℝ (KapI X) →+ TupI X` to `{ toFun := (tupCoord X).symm map_zero' := by`.
+
+Establish `h` using `hsa 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`. Use the proof step `map_add' := hsa }`. Set `Ψ0` to `Φ.comp T0`.
+
+Establish `hc0 : Continuous Ψ0`. Use `continuous_pi fun v => continuous_pi fun b => continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `(continuous_thetaInf X v).comp ((continuous_apply i).comp ((continuous_apply b).comp (tupCoord X).symm.continuous))`. Set `Ψ` to `Ψ0.toRealLinearMap hc0`. Establish `hΨ : ∀ z v b i, Ψ z v b i = PI.AprimeInfU.thetaInf X v ((tupCoord X).symm z b i)` using `fun _ _ _ _ => rfl`.
+
+Establish `hinj : Function.Injective Ψ`. Introduce `z z' h`. Apply `(tupCoord X).symm.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `b i`. Establish `key : ∀ v, PI.AprimeInfU.thetaInf X v ((tupCoord X).symm z b i) = PI.AprimeInfU.thetaInf X v ((tupCoord X).symm z' b i)`.
+
+Introduce `v`. Rewrite using `[← hΨ, ← hΨ, h]`. Conclude with `sub_eq_zero.1 (thetaInf_inj X _ fun v => by rw [map_sub, key v, sub_self])`. Establish `hcbi : Fintype.card (Module.Free.ChooseBasisIndex (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) = 2`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (Ainf X.B.I.F) (Module.finBasisOfFinrankEq X.B.I.F X.B.I.E X.B.I.cm.deg2)), Fintype.card_fin]`.
+
+Establish `hdim : Module.finrank ℝ (EuclideanSpace ℝ (KapI X)) = Module.finrank ℝ (InfinitePlace X.B.I.F → Fin (D.R.rS + 1 + D.R.rS) → Fin X.B.I.n → ℂ)`. Simplify using `only [finrank_euclideanSpace, Fintype.card_prod, hcbi, Module.finrank_pi_fintype, Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Set `Ψe` to `LinearMap.linearEquivOfInjective (Ψ : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] _) hinj hdim`. Establish `hΨe : ∀ Z : TupI X, tupCoord X Z = Ψe.symm (Φ Z)`.
+
+Introduce `Z`. Apply `Ψe.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, LinearMap.linearEquivOfInjective_apply]`. Use `show Φ (T0 (tupCoord X Z)) = Φ Z`. Simplify using `[T0]`.
+
+Establish `hG : ∀ x v b, (fun i => Φ (kap0 X hb c L x • Y0 X u') v b i) = ((X.B.I.P v * uMat (c v)) * NormedSpace.exp (L x v) * (uMat (c v)⁻¹ * (X.B.I.P v)⁻¹)) *ᵥ fun j => X.B.I.φ v (tupH (frameOf X u') b j)`. Introduce `x v b`. Use function extensionality and compare the values at `i`. Use `show PI.AprimeInfU.thetaInf X v ((X.toInf hb (c * (fun w => expU (X.B.I.ε w) (L x w)) * c⁻¹) • Y0 X u') b i) = _`. Rewrite using `[theta_act]`.
+
+Establish `hu : uMat ((c * (fun w => expU (X.B.I.ε w) (L x w)) * c⁻¹) v) = uMat (c v) * NormedSpace.exp (L x v) * uMat (c v)⁻¹`. Establish `e` using `expU_val (X.B.I.ε v) (L x v) (hL.1 x v).1`. Simplify using `only [uMat, Pi.mul_apply, Pi.inv_apply, Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul] at e ⊢`. Rewrite using `[e]`. Rewrite using `[hu]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hGc : ContDiff ℝ 1 (fun x => Φ (kap0 X hb c L x • Y0 X u'))`. Use `contDiff_pi.2 fun v => contDiff_pi.2 fun b => ?_` and prove the remaining obligations. Establish `e : (fun x => Φ (kap0 X hb c L x • Y0 X u') v b) = fun x => ((X.B.I.P v * uMat (c v)) * NormedSpace.exp (((LinearMap.proj v : (InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) →ₗ[ℝ] _) ∘ₗ L) x) * (uMat (c v)⁻¹ * (X.B.I.P v)⁻¹)) *ᵥ fun j => X.B.I.φ v (tupH (frameOf X …`. Use function extensionality and compare the values at `x`.
+
+Conclude with `hG x v b`. Rewrite using `[e]`. Conclude with `contDiff_conj_exp _ _ _ _`. Establish `hK : KapOrb X u' (kap0 X hb c L) = fun x => Ψe.symm (Φ (kap0 X hb c L x • Y0 X u'))`. Use function extensionality and compare the values at `x`.
+
+Conclude with `hΨe _`. Rewrite using `[hK]`. Establish `h1 : ContDiff ℝ 1 (fun y => Ψe.symm y)` using `Ψe.toContinuousLinearEquiv.symm.contDiff`. Conclude with `(h1.comp hGc).contDiffAt`.
+-/
 theorem kapSm_holds : KapSm := by
   intro D X u' ψ hT μinf νinf fibInf hP hb c S ι _ L hc hL
   classical

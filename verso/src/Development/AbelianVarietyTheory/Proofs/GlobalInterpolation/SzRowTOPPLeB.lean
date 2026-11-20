@@ -7,6 +7,25 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Establish `hx1 : 1 ≤ s.x` using `by linarith`. Establish `hx0 : 0 ≤ s.x` using `by linarith`. Establish `he0` using `s.eps_pos`. Establish `he1` using `s.eps_lt`. Take `⟨⟨-, hn⟩, ⟨-, hm⟩, ⟨-, hk⟩, -⟩` from `hR`.
+
+Establish `hpow : ∀ (a : ℝ) (n : ℕ), a ≤ n → s.x ^ a ≤ s.x ^ n` using `fun a n h => by`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hx1 h`. Establish `hf : (R.f : ℝ) ≤ 4 * s.x ^ 3`. Establish `h3` using `hpow (2 + 8 * s.eps) 3 (by push_cast; linarith)`.
+
+Establish `h2 : (R.f : ℝ) = 2 * (R.n : ℝ)` using `by simp [Ranks.f]`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk5 : (R.k : ℝ) ≤ 2 * s.x ^ 5`. Establish `h5` using `hpow (9 / 2 + 10 * s.eps) 5 (by push_cast; linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm1 : (R.m : ℝ) ≤ 2 * s.x`. Establish `hd : s.delta1 ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hx1 (by linarith)`. Establish `hsq : Real.sqrt (s.x * s.delta1) ≤ s.x`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hd hx0]`. Use `_ = s.x := Real.sqrt_sq hx0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx5 : s.x ≤ s.x ^ 5`.
+
+Establish `h4 : 1 ≤ s.x ^ 4` using `one_le_pow₀ hx1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hr : (R.r : ℝ) ≤ 4 * s.x ^ 5`. Establish `h1 : R.r ≤ R.k + R.m` using `Nat.sub_le _ _`. Establish `h2 : (R.r : ℝ) ≤ R.k + R.m` using `by exact_mod_cast h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : s.L ≤ s.x`. Combine the equalities or inequalities in the displayed calculation. Establish `hL0 : 0 ≤ s.L` using `Real.rpow_nonneg hx0 _`. Establish `h16 : (16 : ℝ) ≤ s.x ^ 5`.
+
+Establish `h1 : (2 : ℝ) ^ 5 ≤ s.x ^ 5` using `pow_le_pow_left₀ (by norm_num) hx 5`. Evaluate the numerical expressions using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx3` using `pow_nonneg hx0 3`. Establish `hx5'` using `pow_nonneg hx0 5`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem f_mul_r_mul_L_le_pow_fourteen (s : Scale) (R : Ranks) (hx : 2 ≤ s.x) (hR : RankVal s R) :
     (R.f : ℝ) * (R.r : ℝ) * s.L ≤ s.x ^ 14 := by
   have hx1 : 1 ≤ s.x := by linarith
@@ -57,6 +76,41 @@ theorem f_mul_r_mul_L_le_pow_fourteen (s : Scale) (R : Ranks) (hx : 2 ≤ s.x) (
     _ ≤ s.x ^ 5 * s.x ^ 9 := mul_le_mul_of_nonneg_right h16 (pow_nonneg hx0 9)
     _ = s.x ^ 14 := by ring
 
+/- English proof (translation)
+Introduce `eps heps heps' C hC`. Take `⟨-, -, -, -, -, -, -, -, heP, -, -, -, -, hCP, -, hLast⟩` from `hC`. Establish `hCb : 1 ≤ C.T.Cb` using `hLast C.T.Cb (by simp [FC.cLast])`. Take `⟨x1, hx1⟩` from `GlobalTheory.scale_poly_comparison eps (1259 + C.T.Cb) (1 / 2) heps (by norm_num)`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨max (max x1 2) (4 * C.T.CP ^ 3), fun D L hLe hx hV => ?_⟩⟩⟩` and prove the remaining obligations.
+
+Establish `hxK : 4 * C.T.CP ^ 3 ≤ L.sc.x` using `le_trans (le_max_right _ _) hx`. Establish `hx2 : 2 ≤ L.sc.x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hxx1 : x1 ≤ L.sc.x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hx1' : 1 ≤ L.sc.x` using `by linarith`. Establish `hx0 : 0 ≤ L.sc.x` using `by linarith`.
+
+Establish `hxpos : 0 < L.sc.x` using `by linarith`. Establish `hCP0 : 0 ≤ C.T.CP` using `by linarith`. Establish `hXb` using `(hx1 L.sc hLe hxx1).2.2.1`. Establish `hX' : 1 ≤ L.sc.X'` using `Real.one_le_exp (Real.rpow_nonneg hx0 _)`. Establish `hb1 : 1 ≤ L.sc.b` using `Real.one_le_exp (Real.rpow_nonneg hx0 _)`.
+
+Establish `hxc : L.sc.x ^ (1259 + C.T.Cb) ≤ L.sc.b ^ (1 / 2 : ℝ)` using `le_trans (le_mul_of_one_le_right (Real.rpow_nonneg hx0 _) hX') hXb`. Establish `hbh : L.sc.b ^ (1 / 2 : ℝ) ≤ L.sc.b`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : zBase L ≤ L.sc.x ^ 14` using `f_mul_r_mul_L_le_pow_fourteen L.sc D.R hx2 hV.ranks`. Take `⟨⟨hn1, -⟩, -, -, -⟩` from `hV.ranks`.
+
+Establish `hn : 1 ≤ (D.R.n : ℝ)` using `le_trans (Real.one_le_rpow hx1' (by linarith [L.sc.eps_pos])) hn1`. Establish `hf1 : 1 ≤ (D.R.f : ℝ)`. Establish `h2 : (D.R.f : ℝ) = 2 * (D.R.n : ℝ)` using `by simp [Ranks.f]`. Rewrite using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hr1 : 1 ≤ (D.R.r : ℝ)`. Establish `h2` using `D.R.two_le_m`. Establish `h3 : 1 ≤ D.R.r`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h3` after adjusting the coercions. Establish `hL1 : 1 ≤ L.sc.L` using `Real.one_le_rpow hx1' (le_of_lt L.sc.eps_pos)`. Establish `hz1 : 1 ≤ zBase L` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf1 hr1) hL1`. Establish `hz0 : 0 ≤ zBase L` using `by linarith`. Establish `hz12 : zBase L ^ (12 : ℝ) = zBase L ^ (12 : ℕ)`.
+
+Rewrite using `[show (12 : ℝ) = ((12 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `hP1 : 1 ≤ C.T.CP * zBase L ^ (12 : ℝ)`. Rewrite using `[hz12]`. Conclude with `one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow₀ hz1)`. Establish `hP2 : C.T.CP * zBase L ^ (12 : ℝ) ≤ C.T.CP * L.sc.x ^ 168`.
+
+Rewrite using `[hz12]`. Apply `mul_le_mul_of_nonneg_left _ hCP0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hT1 : (1 : ℝ) ≤ ((TOv L.sc : ℕ) : ℝ)`. Establish `h1 : 0 < TOv L.sc` using `Nat.ceil_pos.mpr (Real.rpow_pos_of_pos hxpos _)`.
+
+Conclude with `h1` after adjusting the coercions. Establish `hT2 : ((TOv L.sc : ℕ) : ℝ) ≤ 2 * L.sc.x ^ 377`. Establish `h1 : ((TOv L.sc : ℕ) : ℝ) < L.sc.x ^ (377 : ℝ) + 1` using `Nat.ceil_lt_add_one (Real.rpow_nonneg hx0 _)`. Establish `h2 : L.sc.x ^ (377 : ℝ) = L.sc.x ^ (377 : ℕ)`. Rewrite using `[show (377 : ℝ) = ((377 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+
+Establish `h3 : 1 ≤ L.sc.x ^ (377 : ℕ)` using `one_le_pow₀ hx1'`. Rewrite `h1` using `[h2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hCb1 : 1 ≤ L.sc.x ^ C.T.Cb` using `Real.one_le_rpow hx1' (by linarith)`. Establish `hW : (C.T.CP * zBase L ^ (12 : ℝ)) ^ 3 * ((TOv L.sc : ℕ) : ℝ) ^ 2 * L.sc.x ^ C.T.Cb ≤ L.sc.x ^ (1259 + C.T.Cb)`.
+
+Establish `h1 : (C.T.CP * zBase L ^ (12 : ℝ)) ^ 3 ≤ (C.T.CP * L.sc.x ^ 168) ^ 3` using `pow_le_pow_left₀ (by linarith) hP2 3`. Establish `h2 : ((TOv L.sc : ℕ) : ℝ) ^ 2 ≤ (2 * L.sc.x ^ 377) ^ 2` using `pow_le_pow_left₀ (by linarith) hT2 2`. Establish `h3` using `mul_le_mul h1 h2 (by positivity) (pow_nonneg (mul_nonneg hCP0 (pow_nonneg hx0 _)) _)`. Establish `h4 : (C.T.CP * L.sc.x ^ 168) ^ 3 * (2 * L.sc.x ^ 377) ^ 2 = 4 * C.T.CP ^ 3 * L.sc.x ^ 1258` using `by ring`. Establish `h5 : 4 * C.T.CP ^ 3 * L.sc.x ^ 1258 ≤ L.sc.x ^ 1259`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h6 : L.sc.x ^ (1259 : ℕ) * L.sc.x ^ C.T.Cb = L.sc.x ^ (1259 + C.T.Cb)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hxpos]`. Evaluate the numerical expressions. Rewrite using `[← h6]`.
+
+Apply `mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hx0 _)` to reduce the goal to its premises. Rewrite `h5` using `[← h4]`. Conclude with `le_trans h3 h5`. Use `beta_reduce`. Rewrite using `[heP]`.
+
+Generalize the expression as in `((TOv L.sc : ℕ) : ℝ) = T at hT1 hW ⊢`. Generalize the expression as in `C.T.CP * zBase L ^ (12 : ℝ) = P at hP1 hW ⊢`. Establish `hTP : T * P ≤ P ^ 3 * T ^ 2`. Establish `hP3 : P ≤ P ^ 3` using `by nlinarith [one_le_pow₀ (n := 2) hP1]`. Establish `hT' : T ≤ T ^ 2` using `by nlinarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hW' : P ^ 3 * T ^ 2 ≤ L.sc.b ^ (1 / 2 : ℝ)`. Establish `h1 : P ^ 3 * T ^ 2 ≤ P ^ 3 * T ^ 2 * L.sc.x ^ C.T.Cb` using `le_mul_of_one_le_right (mul_nonneg (pow_nonneg (by linarith) 3) (sq_nonneg T)) hCb1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTPx : T * P * L.sc.x ^ C.T.Cb ≤ P ^ 3 * T ^ 2 * L.sc.x ^ C.T.Cb` using `mul_le_mul_of_nonneg_right hTP (Real.rpow_nonneg hx0 _)`.
+
+Use `⟨?_, ?_, ?_, hW'⟩` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem szRow_TO_PP_le_b : SzRow (fun C D L => (((TOv L.sc : ℕ) : ℝ) * (C.T.CP * zBase L ^ C.T.eP) * L.sc.x ^ C.T.Cb ≤ L.sc.b) ∧ (((TOv L.sc : ℕ) : ℝ) * (C.T.CP * zBase L ^ C.T.eP) ≤ L.sc.b ^ (1 / 2 : ℝ)) ∧ ((C.T.CP * zBase L ^ C.T.eP) ^ 3 * ((TOv L.sc : ℕ) : ℝ) ^ 2 * L.sc.x ^ C.T.Cb ≤ L.sc.b) ∧ ((C.T.CP * zBase L ^ C.T.eP) ^ 3 * ((TOv L.sc : ℕ) : ℝ) ^ 2 ≤ L.sc.b ^ (1 / 2 : ℝ))) := by
   intro eps heps heps' C hC
   obtain ⟨-, -, -, -, -, -, -, -, heP, -, -, -, -, hCP, -, hLast⟩ := hC

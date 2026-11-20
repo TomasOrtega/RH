@@ -7,6 +7,11 @@ open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.
 
 namespace GlobalTheory.CovTop
 
+/- English proof (translation)
+Introduce `_ D Tu C t0 _ i P μ 𝓕 hF h0`. Use `haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D (Wc D i)) := ⟨rfl⟩`. Use `haveI : Countable (GQ (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig (Wc D i).gram`. Use `haveI : μ.IsHaarMeasure := hF.1.1`.
+
+Establish `h1 : μ Set.univ = 0`. Rewrite using `[hF.2.measure_eq_tsum Set.univ]`. Use `ENNReal.tsum_eq_zero.2 fun g => ?_` and prove the remaining obligations. Rewrite using `[Set.smul_set_univ, Set.univ_inter, h0]`. Conclude with `(isOpen_univ.measure_pos μ Set.univ_nonempty).ne' h1`.
+-/
 theorem meas_fd_ne_zero : ∀ (hP : Hypotheses2) (D : D7) (Tu : Type) (C : LevCh D Tu) (t0 : Tu) (hC : C.Is t0) (i : Fin D.R.m) (P : LevelP C.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (GA D (Wc D i))) (𝓕 : Set (GA D (Wc D i))) (hF : IsMeasFD (Wc D i) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW C i P) μ 𝓕), μ 𝓕 ≠ 0 := by
   intro _ D Tu C t0 _ i P μ 𝓕 hF h0
   haveI : IsTopologicalGroup (GA D (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _

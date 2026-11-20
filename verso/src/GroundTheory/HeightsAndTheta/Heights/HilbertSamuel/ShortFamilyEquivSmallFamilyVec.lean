@@ -11,6 +11,9 @@ noncomputable section
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fibreNorm_one_tmul (E : HermitianBundle.{0} K) (σ : K →+* ℂ) (v : E.carrier) :
     fibreNorm E σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] v) = ‖fibreVec E.metric σ v‖ :=
   rfl

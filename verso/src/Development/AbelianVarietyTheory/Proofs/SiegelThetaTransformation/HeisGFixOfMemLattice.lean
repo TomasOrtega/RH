@@ -12,6 +12,9 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 
 namespace GlobalTheory.Ker
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, (bas m : Fin r → E) = v` from `⟨bas.symm ⟨v, hv⟩, by simp⟩`. Rewrite using `[← vecQ_intCast X bas m, crd_vecQ hs]`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := ℚ) (x := m j)`.
+-/
 private lemma isIntegral_crd_of_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ}
     {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (hs : IsSympl X bas) {v : Fin r → E}
     (hv : v ∈ X.Λ) (j : Fin g ⊕ Fin g) : IsIntegral ℤ (crd X bas v j) := by
@@ -20,6 +23,11 @@ private lemma isIntegral_crd_of_mem {E : Type} [Field E] [NumberField E] [IsCMFi
   rw [← vecQ_intCast X bas m, crd_vecQ hs]
   simpa using isIntegral_algebraMap (R := ℤ) (A := ℚ) (x := m j)
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n hs hn φ hφ`. Take `⟨R, hR, hlev⟩` from `hφ`. Use `⟨2 * R, by omega, fun y hy j => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ k, (j • y) k ∈ X.Λ` using `fun k => nsmul_mem (hy k) j`. Establish `hsc : (((j * (2 * R) : ℕ) : E) • y) = (2 * R) • (j • y)`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsc, GlobalTheory.SW.TensVac.heisG_eq hs, map_nsmul, Prod.smul_fst, Prod.smul_snd, ← Nat.cast_smul_eq_nsmul ℚ (2 * R) (GlobalTheory.SW.TensVac.crdHom hs (j • y)).1, ← Nat.cast_smul_eq_nsmul ℚ (2 * R) (GlobalTheory.SW.TensVac.crdHom hs (j • y)).2]`. Conclude with `GlobalTheory.SW.TensVac.heisS_fix hlev (fun k i => isIntegral_crd_of_mem hs (hmem k) (Sum.inl i)) (fun k i => isIntegral_crd_of_mem hs (hmem k) (Sum.inr i))`.
+-/
 theorem heisG_fix_of_mem_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ φ : TF n g, IsSB φ → ∃ N : ℕ, 0 < N ∧ ∀ y : Matrix (Fin n) (Fin r) E, (∀ k, y k ∈ X.Λ) → ∀ j : ℕ, heisG X bas (((j * N : ℕ) : E) • y) φ = φ := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn φ hφ
   obtain ⟨R, hR, hlev⟩ := hφ

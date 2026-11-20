@@ -10,6 +10,33 @@ open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 namespace GlobalTheory.ComplexSpaceIntegral
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `m a ha`. Rewrite using `[lintegral_unique]`.
+
+Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero, zero_add, pow_zero, one_mul]`. Establish `: (volume : Measure (Fin 0 → ℂ)) univ = 1`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_univ]`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_one]`.
+
+Use `congr 1`. Establish `hf : (m.factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Consider the case `succ n ih`. Introduce `m a ha`.
+
+Establish `e` using `MeasureTheory.volume_preserving_piFinSuccAbove (fun _ : Fin (n+1) => ℂ) 0`. Rewrite using `[← (e.symm).lintegral_comp_emb (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℂ) 0).symm.measurableEmbedding]`. Rewrite using `[MeasureTheory.Measure.volume_eq_prod]`. Rewrite using `[lintegral_prod]`. Use `swap`.
+
+Apply `Measurable.aemeasurable` to reduce the goal to its premises. Apply `ENNReal.measurable_ofReal.comp` to reduce the goal to its premises. Apply `Measurable.inv` to reduce the goal to its premises. Apply `Measurable.pow_const` to reduce the goal to its premises. Apply `Measurable.add measurable_const` to reduce the goal to its premises.
+
+Apply `Finset.measurable_sum` to reduce the goal to its premises. Introduce `i _`. Apply `Measurable.pow_const` to reduce the goal to its premises. Apply `Measurable.norm` to reduce the goal to its premises. Conclude with `(measurable_pi_apply i).comp (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℂ) 0).symm.measurable`.
+
+Establish `inner : ∀ z : ℂ, ∫⁻ w : Fin n → ℂ, ENNReal.ofReal (((a + ∑ i, ‖(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℂ) 0).symm (z, w) i‖ ^ 2) ^ (n + 1 + m + 1))⁻¹) = ENNReal.ofReal (Real.pi ^ n * (m+1).factorial / (n + (m+1)).factorial) * ENNReal.ofReal (((a + ‖z‖ ^ 2) ^ (m + 2) …`. Introduce `z`. Establish `hz : 0 < a + ‖z‖ ^ 2` using `by positivity`. Establish `key` using `ih (m+1) (a + ‖z‖ ^ 2) hz`. Establish `hsum : ∀ w : Fin n → ℂ, a + ∑ i, ‖(MeasurableEquiv.piFinSuccAbove (fun _ : Fin (n+1) => ℂ) 0).symm (z, w) i‖ ^ 2 = a + ‖z‖ ^ 2 + ∑ i, ‖w i‖ ^ 2`.
+
+Introduce `w`. Rewrite using `[MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.sum_univ_succ]`. Simplify using `[Fin.insertNthEquiv, add_assoc]`. Repeatedly rewrite using `[hsum]`. Establish `hexp : n + 1 + m + 1 = n + (m + 1) + 1` using `by ring`.
+
+Rewrite using `[hexp, key, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[show m + 1 + 1 = m + 2 by ring]`. Establish `hf : ((n + (m+1)).factorial : ℝ) ≠ 0` using `by positivity`. Establish `hp : (a + ‖z‖ ^ 2) ^ (m + 2) ≠ 0` using `by positivity`.
+
+Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_const_mul _ (by`. Apply `ENNReal.measurable_ofReal.comp` to reduce the goal to its premises. Apply `Measurable.inv` to reduce the goal to its premises.
+
+Apply `Measurable.pow_const` to reduce the goal to its premises. Conclude with `measurable_const.add (measurable_norm.pow_const 2))]`. Rewrite using `[GlobalTheory.T.lintegral_complex_inv_pow_add_norm_sq m a ha, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Establish `h1 : ((n + (m+1)).factorial : ℝ) ≠ 0` using `by positivity`.
+
+Establish `h2 : ((n + 1 + m).factorial : ℝ) ≠ 0` using `by positivity`. Establish `h3 : (n + (m+1)) = n + 1 + m` using `by ring`. Rewrite using `[h3, Nat.factorial_succ m]`. Use `push_cast`. Establish `ha' : a ^ (m+1) ≠ 0` using `by positivity`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lintegral_inv_pow_add_sum_norm_sq :
     ∀ (n m : ℕ) (a : ℝ), 0 < a → ∫⁻ v : Fin n → ℂ, ENNReal.ofReal (((a + ∑ i, ‖v i‖ ^ 2) ^ (n + m + 1))⁻¹)
       = ENNReal.ofReal (Real.pi ^ n * m.factorial / ((n + m).factorial * a ^ (m + 1))) := by

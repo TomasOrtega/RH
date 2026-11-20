@@ -20,6 +20,9 @@ section PartA
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 
+/- English proof (translation)
+Take `⟨φ₁, a, b, c⟩` from `h φ hφ`. Rewrite using `[← c, h2 φ₁ a]`. Conclude with `⟨a, b⟩`.
+-/
 theorem acts_of_reads {v : Pl F} {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} {S R}
     (h : Reads v ι S R) {j : (Matrix (Fin n) (Fin d) (Fv F v) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ)}
     (h2 : ∀ φ ∈ SB _, j (ι φ) = φ) {φ} (hφ : φ ∈ SB _) : j (R (ι φ)) ∈ SB _ ∧ Acts (evFin F v) S φ (j (R (ι φ))) := by
@@ -31,10 +34,16 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `funext fun Y => by simp [omB, gdet]`.
+-/
 theorem omB_right (ν α : kˣ →* ℂˣ) (h : GL (Fin d) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ) :
     omB ν α 1 h Φ = ((α (gdet h) : ℂ) * apow (gdet h) ((n : ℂ) / 2)) • fun Y => Φ (Y * h.1) := funext fun Y => by
   simp [omB, gdet]
 
+/- English proof (translation)
+The claim follows from `funext fun Y => by simp [omB, gdet]`.
+-/
 theorem omB_left (ν α : kˣ →* ℂˣ) (g : GL (Fin n) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ) :
     omB ν α g 1 Φ = ((ν (gdet g) : ℂ) * apow (gdet g) ((d : ℂ) / 2)) • fun Y => Φ (g.1ᵀ * Y) := funext fun Y => by
   simp [omB, gdet]
@@ -47,6 +56,9 @@ def rH (h : GL (Fin d) k) : Matrix (Fin n) (Fin d) k ≃ₜ Matrix (Fin n) (Fin 
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous (rH h).continuous, hf.2.comp_homeomorph (rH h)⟩`.
+-/
 theorem sb_right {f : Matrix (Fin n) (Fin d) k → ℂ} (hf : f ∈ SB _) (h : GL (Fin d) k) :
     (fun y : Matrix (Fin n) (Fin d) k => f (y * h.1)) ∈ SB _ :=
   ⟨hf.1.comp_continuous (rH h).continuous, hf.2.comp_homeomorph (rH h)⟩
@@ -59,6 +71,9 @@ def lH (g : GL (Fin n) k) : Matrix (Fin n) (Fin d) k ≃ₜ Matrix (Fin n) (Fin 
   continuous_toFun := by fun_prop
   continuous_invFun := by fun_prop
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous (lH g).continuous, hf.2.comp_homeomorph (lH g)⟩`.
+-/
 theorem sb_left {f : Matrix (Fin n) (Fin d) k → ℂ} (hf : f ∈ SB _) (g : GL (Fin n) k) :
     (fun y : Matrix (Fin n) (Fin d) k => f (g.1 * y)) ∈ SB _ :=
   ⟨hf.1.comp_continuous (lH g).continuous, hf.2.comp_homeomorph (lH g)⟩
@@ -76,10 +91,20 @@ def insertLocal (v : Pl F) (Φ : (κ → AF F) → ℂ) : ((κ → Fv F v) → �
   map_add' _ _ := funext fun _ => add_mul _ _ _
   map_smul' _ _ := funext fun _ => mul_assoc _ _ _
 
+/- English proof (translation)
+The claim follows from `a _ ⟨fun x z hz => by simp only [smul_add, kd_at_iff.1 hz, add_sub_add_right_eq_sub], h⟩`.
+-/
 theorem insertLocal_acts {v : Pl F} {Φ : (κ → AF F) → ℂ} {S φ φ₁} (h : insertLocal v Φ φ ∈ schA F κ) (a : Acts (evFin F v) S φ φ₁) :
     S (insertLocal v Φ φ) = insertLocal v Φ φ₁ :=
   a _ ⟨fun x z hz => by simp only [smul_add, kd_at_iff.1 hz, add_sub_add_right_eq_sub], h⟩
 
+/- English proof (translation)
+Take `⟨r, hr, hr'⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ h2`. Establish `e : pure f φ = tens (evFin F v) (φ v) r` using `by rw [hr', Function.update_eq_self]`. Establish `e2 : (fun x => pure f φ (x - sgl v 1 • x)) = r` using `funext fun x => by`. Establish `h0 : (fun i => evFin F v ((x - sgl v 1 • x) i)) = 0` using `funext fun i => by`. Simplify using `[ev_sgl]`.
+
+Establish `h1` using `hr (x - sgl v 1 • x) (sgl v 1 • x) (at_sgl_smul _ _)`. Rewrite `h1` using `[sub_add_cancel]`. Rewrite using `[e, tens, h0, hv, Set.indicator_of_mem (by exact fun i => zero_mem _), Pi.one_apply, one_mul, h1]`. Express the relevant statement in the definitionally equal form `tens _ _ _ = _`. Rewrite using `[e2]`.
+
+Conclude with `hr' ψ`.
+-/
 theorem insertLocal_pure {v : Pl F} (f : SInf F κ) {φ : ∀ u : Pl F, (κ → Fv F u) → ℂ}
     (h2 : ∀ᶠ u in cofinite, φ u = Set.indicator {x | ∀ i, x i ∈ u.adicCompletionIntegers F} 1)
     (hv : φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) (ψ) :
@@ -114,6 +139,9 @@ def slots (w : ∀ v : Pl F, (κ → Fv F v) → ℂ) (C : Submodule ℂ ((κ �
     have : ∀ φ, insertLocal v (c • a) φ = c • insertLocal v a φ := fun φ => funext fun _ => mul_left_comm _ _ _
     exact ⟨by rw [this, h.1], fun φ hφ => (this φ).symm ▸ C.smul_mem c (h.2 φ hφ)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_placewise {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} {C : Submodule ℂ ((κ → AF F) → ℂ)} {Φ} :
     Φ ∈ slots w C ↔ ∀ᶠ v in cofinite, insertLocal v Φ (w v) = Φ ∧ ∀ φ ∈ SB (κ → Fv F v), insertLocal v Φ φ ∈ C := Iff.rfl
 
@@ -121,16 +149,27 @@ end Slot
 
 variable {B : Base F E} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hu]`. Conclude with `h1 u`.
+-/
 theorem upd_sb {φ : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ} (h1 : ∀ u, φ u ∈ SB _) {v : Pl F} {ψ}
     (hψ : ψ ∈ SB (Fin n × Fin d → Fv F v)) (u) : Function.update φ v ψ u ∈ SB _ := by
   by_cases hu : u = v
   · subst hu; rwa [Function.update_self]
   · rw [Function.update_of_ne hu]; exact h1 u
 
+/- English proof (translation)
+Use `filter_upwards [h, eventually_cofinite_ne v] with u h hu using (Function.update_of_ne hu _ _).trans h`.
+-/
 theorem upd_ev {φ w : ∀ u : Pl F, (Fin n × Fin d → Fv F u) → ℂ} (h : ∀ᶠ u in cofinite, φ u = w u) (v : Pl F)
     (ψ) : ∀ᶠ u in cofinite, Function.update φ v ψ u = w u := by
   filter_upwards [h, eventually_cofinite_ne v] with u h hu using (Function.update_of_ne hu _ _).trans h
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, φ, h1, h2, rfl⟩`. Establish `h3` using `(h2.and hM.std).mono fun _ h => h.1.trans h.2`. Use `filter_upwards [h2, h3] with v a b`. Use `⟨by rw [insertLocal_pure f h3 b, ← a, Function.update_eq_self], fun ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.subset_span ⟨f, hf, _, upd_sb h1 hψ, upd_ev h2 v ψ, insertLocal_pure f h3 b ψ⟩`.
+-/
 theorem polData_le_placewise (hM : M.IsGood B.ψ) : PolData B M ≤ slots M.vac (PolData B M) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, hf, φ, h1, h2, rfl⟩
@@ -139,6 +178,11 @@ theorem polData_le_placewise (hM : M.IsGood B.ψ) : PolData B M ≤ slots M.vac 
   refine ⟨by rw [insertLocal_pure f h3 b, ← a, Function.update_eq_self], fun ψ hψ => ?_⟩
   exact Submodule.subset_span ⟨f, hf, _, upd_sb h1 hψ, upd_ev h2 v ψ, insertLocal_pure f h3 b ψ⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, h4, rfl⟩`. Establish `h3` using `(h2.and hM.std).mono fun _ h => h.1.trans h.2`. Use `filter_upwards [h2, h3, eventually_cofinite_ne B.v₁] with v a b c`. Use `⟨by rw [insertLocal_pure f h3 b, ← a, Function.update_eq_self], fun ψ hψ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.subset_span ⟨f, _, upd_sb h1 hψ, upd_ev h2 v ψ, by rwa [Function.update_of_ne c.symm], insertLocal_pure f h3 b ψ⟩`.
+-/
 theorem so_positions (hM : M.IsGood B.ψ) : M.So B.ψ B.τ₁ ≤ slots M.vac (M.So B.ψ B.τ₁) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, φ, h1, h2, h4, rfl⟩
@@ -147,6 +191,9 @@ theorem so_positions (hM : M.IsGood B.ψ) : M.So B.ψ B.τ₁ ≤ slots M.vac (M
   refine ⟨by rw [insertLocal_pure f h3 b, ← a, Function.update_eq_self], fun ψ hψ => ?_⟩
   exact Submodule.subset_span ⟨f, _, upd_sb h1 hψ, upd_ev h2 v ψ, by rwa [Function.update_of_ne c.symm], insertLocal_pure f h3 b ψ⟩
 
+/- English proof (translation)
+Introduce `_ h` and use `mem_placewise.2 (((mem_placewise.1 (polData_le_placewise hM h.1)).and (mem_placewise.1 (so_positions hM h.2))).mono fun _ k => ⟨k.1.1, fun φ hφ => ⟨k.1.2 φ hφ, k.2.2 φ hφ⟩⟩)`.
+-/
 theorem polData_inf_so_le_placewise (hM : M.IsGood B.ψ) :
     PolData B M ⊓ M.So B.ψ B.τ₁ ≤ slots M.vac (PolData B M ⊓ M.So B.ψ B.τ₁) := fun _ h =>
   mem_placewise.2 (((mem_placewise.1 (polData_le_placewise hM h.1)).and (mem_placewise.1 (so_positions hM h.2))).mono
@@ -164,6 +211,19 @@ structure IsLoc {v : Pl F} (t : E →ₐ[F] Fv F v) (ξ α : (Fv F v)ˣ →* ℂ
   right : ∀ φ ∈ SB _, ∀ h ∈ UAt σ W (evFin F v), ∀ h₀ : GL (Fin d) (Fv F v), (mat h).map (piW t) = h₀ →
     (fun x => S φ (x * h)) = (α (Matrix.GeneralLinearGroup.det h₀) : ℂ) • S fun Y => φ (Y * h₀.1)
 
+/- English proof (translation)
+Use `(mem_placewise.1 hΦ).mono fun v ⟨h0, hC⟩ t => ?_` and prove the remaining obligations. Take `⟨⟨ι, hι⟩, s1, -, k⟩` from `dictionary_extended F E σ n d B X W M om χX χW hp.base ⟨_, _, hp.herm⟩ ⟨_, _, hp.skew⟩ hp.weil v t`. Take `⟨k1, k2⟩` from `k ι hι`. Take `⟨j, j1, j2⟩` from `kd_exists_inv hι.bij`. Establish `hv : M.vac v ∈ SB _` using `(hp.good.vac v).1`.
+
+Use `⟨ι, fun φ => M.I om (insertLocal v Φ (j φ)), hι, hι.bij.1 hv, ⟨fun φ hφ => ha _ (hC _ (j1 φ hφ).1), fun φ hφ φ' hφ' => ?_, fun c φ => by simp only [map_smul, I_smul], fun φ hφ γ => ?_, fun φ hφ h hh h₀ e => ?_⟩, by simp only [j2 _ hv, h0]⟩` and prove the remaining obligations. Establish `a` using `hC _ (j1 φ hφ).1`. Establish `b` using `hC _ (j1 φ' hφ').1`. Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om (insertLocal v Φ (j φ) + insertLocal v Φ (j φ')) g h = theta om (insertLocal v Φ (j φ)) g h + theta om (insertLocal v Φ (j φ')) g h` using `fun g => by`.
+
+Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hp.weil.isUSplitting.pres _ _ (hs a)) (hp.weil.isUSplitting.pres _ _ (hs b))`. Simplify using `only [map_add, Model.I, e, Pi.add_apply]`. Conclude with `integral_add (hc _ a h) (hc _ b h)`. Set `g₀` to `Matrix.GeneralLinearGroup.mkOfDetNeZero γ.1ᵀ (by rw [Matrix.det_transpose]; exact γ.det_ne_zero)`.
+
+Take `⟨g, hg, e⟩` from `s1 g₀`. Establish `a` using `hs (hC _ (j1 φ hφ).1)`. Establish `b` using `insertLocal_acts a (acts_of_reads (k1 g hg g₀ e) j2 (j1 φ hφ).1).2`. Establish `c` using `PositivityTheory.ThKF.I_left PositivityTheory.ThKF.unimodularity_holds hT hp a g`. Rewrite `c` using `[b, (j1 φ hφ).2, omB_left, map_smul, map_smul, I_smul, show gdet g₀ = Matrix.GeneralLinearGroup.det γ from Units.ext (Matrix.det_transpose _)]`.
+
+Rewrite using `[← c, smul_smul]`. Establish `: ((((chrW χW t * apowH ((d : ℂ) / 2))⁻¹ : (Fv F v)ˣ →* ℂˣ) (Matrix.GeneralLinearGroup.det γ) : ℂˣ) : ℂ) * ((chrW χW t (Matrix.GeneralLinearGroup.det γ) : ℂ) * apow (Matrix.GeneralLinearGroup.det γ) ((d : ℂ) / 2)) = 1` using `Units.inv_mul ((chrW χW t * apowH ((d : ℂ) / 2) : (Fv F v)ˣ →* ℂˣ) (Matrix.GeneralLinearGroup.det γ))`. Rewrite using `[this, one_smul]`. Both sides reduce to the same expression. Establish `a` using `hs (hC _ (j1 φ hφ).1)`.
+
+Establish `b` using `insertLocal_acts a (acts_of_reads (k2 h hh h₀ e) j2 (j1 φ hφ).1).2`. Rewrite using `[← I_trans, b, (j1 φ hφ).2, omB_right, map_smul, map_smul, I_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_loc (hT : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') {C : Submodule ℂ (Fn F n d)} (hs : C ≤ schA F _)
     (hc : ∀ Φ ∈ C, M.Conv om Φ) (ha : ∀ Φ ∈ C, IsAut (W := W) (M.I om Φ)) {Φ} (hΦ : Φ ∈ slots M.vac C) :
     ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv F v, ∃ ι S, M.IsLinBar B.ψ t 1 1 ι ∧ ι (M.vac v) ∈ SB _ ∧
@@ -213,13 +273,27 @@ variable (t) in
 
 def cp : UA σ W.J →* GL (Fin d) (Fv F v) := (Matrix.GeneralLinearGroup.map (piW t)).comp (Subgroup.subtype _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cp_val (g : UA σ W.J) : (cp t g).1 = (mat g).map (piW t) := rfl
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [← mul_smul_comm, h u hu, mul_zero]`.
+-/
 theorem at_mul_l {z : AE F E} (h : At (evFin F v) z) (w : AE F E) : At (evFin F v) (w * z) :=
   fun u hu => by rw [← mul_smul_comm, h u hu, mul_zero]
 
+/- English proof (translation)
+The claim follows from `mul_comm w z ▸ at_mul_l h w`.
+-/
 theorem at_mul_r {z : AE F E} (h : At (evFin F v) z) (w : AE F E) : At (evFin F v) (z * w) := mul_comm w z ▸ at_mul_l h w
 
+/- English proof (translation)
+Establish `: mat (g * k) - 1 = mat g * (mat k - 1) + (mat g - 1)`. Express the relevant statement in the definitionally equal form `mat g * mat k - 1 = _`. Use `noncomm_ring`. Express the relevant statement in the definitionally equal form `At _ _`. Rewrite using `[this]`.
+
+Conclude with `(At.kd_mul_left hk _).kd_add hg`.
+-/
 theorem uAt_mul {g k : UA σ W.J} (hg : g ∈ UAt σ W (evFin F v)) (hk : k ∈ UAt σ W (evFin F v)) : g * k ∈ UAt σ W (evFin F v) := by
   have : mat (g * k) - 1 = mat g * (mat k - 1) + (mat g - 1) := by
     change mat g * mat k - 1 = _
@@ -228,6 +302,9 @@ theorem uAt_mul {g k : UA σ W.J} (hg : g ∈ UAt σ W (evFin F v)) (hk : k ∈ 
   rw [this]
   exact (At.kd_mul_left hk _).kd_add hg
 
+/- English proof (translation)
+Introduce `u _` and use `by change u • ((1 : Matrix (Fin d) (Fin d) (AE F E)) - 1) = 0 rw [sub_self, smul_zero]`.
+-/
 theorem uAt_one : (1 : UA σ W.J) ∈ UAt σ W (evFin F v) := fun u _ => by
   change u • ((1 : Matrix (Fin d) (Fin d) (AE F E)) - 1) = 0
   rw [sub_self, smul_zero]
@@ -236,22 +313,37 @@ variable (v sec) in
 
 def sA : Fv F v →+ AE F E := AddMonoidHom.mk' (fun x => sgl v x • sec (1, 0)) fun x y => by rw [map_add, add_smul]
 
+/- English proof (translation)
+The claim follows from `at_sgl_smul _ _`.
+-/
 theorem sA_at (x : Fv F v) : At (evFin F v) (sA v sec x) := at_sgl_smul _ _
 
+/- English proof (translation)
+The claim follows from `(show Continuous (sgl v) from continuous_const.prodMk (continuous_singleFin v)).smul continuous_const`.
+-/
 theorem sA_cont : Continuous (sA v sec) :=
   (show Continuous (sgl v) from continuous_const.prodMk (continuous_singleFin v)).smul continuous_const
 
 variable (h : IsSec σ t sec)
 include h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `piW t (sgl v x • sec (1, 0)) = _`. Rewrite using `[(h.smul _ _).1, ev_sgl, h.fst, mul_one]`.
+-/
 theorem sA_fst (x : Fv F v) : piW t (sA v sec x) = x := by
   change piW t (sgl v x • sec (1, 0)) = _
   rw [(h.smul _ _).1, ev_sgl, h.fst, mul_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `piW (t.comp σ) (sgl v x • sec (1, 0)) = _`. Rewrite using `[(h.smul _ _).2, h.snd, mul_zero]`.
+-/
 theorem sA_snd (x : Fv F v) : piW (t.comp σ) (sA v sec x) = 0 := by
   change piW (t.comp σ) (sgl v x • sec (1, 0)) = _
   rw [(h.smul _ _).2, h.snd, mul_zero]
 
+/- English proof (translation)
+Introduce `e` and use `by obtain ⟨z, h1, h2, h3⟩ := hχ.2 v t have : z = sA v sec (piW t z) := sub_eq_zero.1 (h.ext _ (h1.kd_sub (sA_at _)) (by rw [map_sub, sA_fst h, sub_self]) (by rw [map_sub, sA_snd h, h2, sub_self])) exact h3 (this ▸ DFunLike.congr_fun e (piW t z))`.
+-/
 theorem psi_ne {χ : AddChar (AE F E) ℂ} (hχ : IsChar σ χ) : χ.compAddMonoidHom (sA v sec) ≠ 1 := fun e => by
   obtain ⟨z, h1, h2, h3⟩ := hχ.2 v t
   have : z = sA v sec (piW t z) := sub_eq_zero.1 (h.ext _ (h1.kd_sub (sA_at _)) (by rw [map_sub, sA_fst h, sub_self])
@@ -261,10 +353,18 @@ theorem psi_ne {χ : AddChar (AE F E) ℂ} (hχ : IsChar σ χ) : χ.compAddMono
 variable (hd : W.J.det ≠ 0)
 include hd
 
+/- English proof (translation)
+Rewrite using `[incM_map h]`. Conclude with `((Matrix.isUnit_iff_isUnit_det W.J).2 hd.isUnit).map (t : E →+* Fv F v).mapMatrix`.
+-/
 theorem uJ : IsUnit ((incM F W.J).map (piW t)) := by
   rw [incM_map h]
   exact ((Matrix.isUnit_iff_isUnit_det W.J).2 hd.isUnit).map (t : E →+* Fv F v).mapMatrix
 
+/- English proof (translation)
+Establish `a` using `h.unit_rel g`. Establish `b : IsUnit ((cp t g).1ᵀ * W.J.map t)` using `((Matrix.isUnit_transpose _).2 (cp t g).isUnit).mul (incM_map h W.J ▸ uJ h hd)`. Rewrite `a` using `[incM_map h]`. Use `Matrix.mulVec_injective_iff_isUnit.2 b ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hz]`.
+
+Conclude with `congrArg (· *ᵥ z) a`.
+-/
 theorem snd_fix (g : UA σ W.J) (z : Fin d → Fv F v) (hz : ((cp t g).1ᵀ * W.J.map t) *ᵥ z = W.J.map t *ᵥ z) :
     (mat g).map (piW (t.comp σ)) *ᵥ z = z := by
   have a := h.unit_rel g
@@ -277,11 +377,21 @@ theorem snd_fix (g : UA σ W.J) (z : Fin d → Fv F v) (hz : ((cp t g).1ᵀ * W.
 variable (hJ : ∀ a b, σ (W.J b a) = -W.J a b)
 include hJ
 
+/- English proof (translation)
+Take `⟨g, h1, h2⟩` from `h.exists_ug (J := incM F W.J) (ε := -1) (Matrix.ext fun a b => by`. Rewrite using `[incM_map' h, incM_map h, neg_smul, one_smul, hJ, map_neg]`. Use the proof step `rfl) (uJ h hd) g₀`. Conclude with `⟨g, h1, Units.ext h2⟩`.
+-/
 theorem ex_at (g₀ : GL (Fin d) (Fv F v)) : ∃ g ∈ UAt σ W (evFin F v), cp t g = g₀ := by
   obtain ⟨g, h1, h2⟩ := h.exists_ug (J := incM F W.J) (ε := -1) (Matrix.ext fun a b => by
     rw [incM_map' h, incM_map h, neg_smul, one_smul, hJ, map_neg]; rfl) (uJ h hd) g₀
   exact ⟨g, h1, Units.ext h2⟩
 
+/- English proof (translation)
+Take `⟨gv, h1, h2⟩` from `ex_at h hd hJ (cp t g)`. Use `⟨g * gv⁻¹, gv, h1, h2, by group, fun k hk => ?_⟩` and prove the remaining obligations. Establish `a : cp t (g * gv⁻¹) = 1` using `by rw [map_mul, map_inv, h2, mul_inv_cancel]`. Generalize the expression as in `g * gv⁻¹ = r at a`. Establish `a1 : (mat r).map (piW t) = 1` using `congrArg Units.val a`.
+
+Establish `a2 : (mat r).map (piW (t.comp σ)) = 1` using `Matrix.ext_of_mulVec_single fun i => by rw [snd_fix h hd r _ (by rw [a]; simp), Matrix.one_mulVec]`. Use `Subtype.ext (Units.ext (h.extM (z := mat r * mat k) (z' := mat k * mat r) ?_ ?_ ?_))` and prove the remaining obligations. Rewrite using `[show mat r * mat k - mat k * mat r = mat r * (mat k - 1) - (mat k - 1) * mat r by noncomm_ring]`. Conclude with `(At.kd_mul_left hk _).kd_sub (At.kd_mul_right hk _)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, a1, one_mul, mul_one]`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, a2, one_mul, mul_one]`.
+-/
 theorem ex_split (g : UA σ W.J) : ∃ r, ∃ gv ∈ UAt σ W (evFin F v), cp t gv = cp t g ∧ g = r * gv ∧
     ∀ k ∈ UAt σ W (evFin F v), r * k = k * r := by
   obtain ⟨gv, h1, h2⟩ := ex_at h hd hJ (cp t g)
@@ -298,6 +408,15 @@ theorem ex_split (g : UA σ W.J) : ∃ r, ∃ gv ∈ UAt σ W (evFin F v), cp t 
   · rw [Matrix.map_mul, Matrix.map_mul, a2, one_mul, mul_one]
 
 omit hJ in
+/- English proof (translation)
+Establish `k : ∀ (π : AE F E →+* Fv F v) a, π ((mat g *ᵥ incV F z) a) = ((mat g).map π *ᵥ fun b => π (incV F z b)) a` using `fun π a => RingHom.map_mulVec π _ _ a`. Use function extensionality and compare the values at `a`. Use `sub_eq_zero.1 (h.ext _ ?_ ?_ ?_)` and prove the remaining obligations. Establish `: (mat g *ᵥ incV F z) a - (incV F z + sA v sec (w ⬝ᵥ fun a => t (z a)) • incV F x) a = ((mat g - 1) *ᵥ incV F z) a - sA v sec (w ⬝ᵥ fun a => t (z a)) * incV F x a`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Use `At.kd_sub (fun u hu => ?_) (at_mul_r (sA_at _) _)` and prove the remaining obligations. Rewrite using `[← Pi.smul_apply, ← Matrix.smul_mulVec, hg u hu, Matrix.zero_mulVec, Pi.zero_apply]`. Rewrite using `[map_sub, k, ← cp_val, e]`.
+
+Simplify using `only [incV, (h.inc _).1, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, sA_fst h, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.vecMulVec_mulVec, op_smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, k, snd_fix h hd g]`. Simplify using `only [incV, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, sA_snd h, zero_mul, add_zero, sub_self]`. Establish `: (fun a => t (x a)) ⬝ᵥ W.J.map t *ᵥ (fun b => piW (t.comp σ) (incV F z b)) = 0`.
+
+Use `congrArg t hz` as an intermediate fact. Simplify `this` using `[form, dotProduct, Matrix.mulVec, incV, (h.inc _).2]`. Rewrite using `[e, ← Matrix.mulVec_mulVec, Matrix.transpose_add, Matrix.transpose_one, Matrix.transpose_vecMulVec, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.vecMulVec_mulVec, this]`. Simplify using the standard rewrite rules.
+-/
 theorem transv {g : UA σ W.J} (hg : g ∈ UAt σ W (evFin F v)) {x : Fin d → E} {w : Fin d → Fv F v}
     (e : (cp t g).1 = 1 + Matrix.vecMulVec (fun a => t (x a)) w) {z : Fin d → E} (hz : form σ W.J x z = 0) :
     mat g *ᵥ incV F z = incV F z + sA v sec (w ⬝ᵥ fun a => t (z a)) • incV F x := by
@@ -325,6 +444,11 @@ theorem transv {g : UA σ W.J} (hg : g ∈ UAt σ W (evFin F v)) {x : Fin d → 
       simp
 
 omit h hd in
+/- English proof (translation)
+Establish `a` using `congrArg σ e`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, map_zero, Finset.mul_sum] at a ⊢`. Rewrite `a` using `[Finset.sum_comm]`. Rewrite using `[← neg_eq_zero, ← a, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem form_swap (hσ : ∀ x, σ (σ x) = x) {x z : Fin d → E} (e : form σ W.J z x = 0) : form σ W.J x z = 0 := by
   have a := congrArg σ e
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, map_zero, Finset.mul_sum] at a ⊢
@@ -336,6 +460,21 @@ theorem form_swap (hσ : ∀ x, σ (σ x) = x) {x z : Fin d → E} (e : form σ 
 
 variable {u : Matrix (Fin d) (Fin j) E} {χ : AddChar (AE F E) ℂ} {Λ : (UA σ W.J → ℂ) → ℂ}
 
+/- English proof (translation)
+Establish `k` using `hΛ.law f hf g (1 + Matrix.of fun a b => if a = i then sA v sec (w ⬝ᵥ fun a => t (u a b)) else 0) ?_ ?_ ?_ ?_`. Rewrite using `[k, Finset.sum_eq_single (i, i')]`. Establish `: i ≠ i'` using `fun e => by rw [e] at hi; omega`. Simplify using `[this]`. Introduce and unpack `⟨a, b⟩ hab hne`.
+
+Establish `h1 : (b : ℕ) = a + 1` using `by simpa using hab`. Establish `h2 : a ≠ b` using `fun e => by rw [e] at h1; omega`. Establish `h3 : a ≠ i` using `fun e => hne (Prod.ext e (Fin.ext (show (b : ℕ) = i' by rw [e] at h1; omega)))`. Simplify using `[h2, h3]`. Introduce `hn`.
+
+Conclude with `absurd (by simpa using hi) hn`. Use extensionality with `a b`. Use `congrFun (transv h hd hg (x := fun a => u a i) e (z := fun a => u a b) (by` as an intermediate fact. Use `congrFun (congrFun uu i) b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc]`.
+
+Conclude with `this)) a`. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, Matrix.mul_one]`. Simplify using `[Matrix.mul_apply, incV, incM, mul_comm]`. Introduce `a b hb`.
+
+Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using `[hw b hb.le, hb.ne']`. Simplify using `[ha, hb.ne']`. Introduce `a`.
+
+Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using `[hw a le_rfl]`. Simplify using `[ha]`. Introduce `z hz`.
+
+Establish `m : (fun a => u a i) ∈ colSp u` using `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[transv h hd hg e (form_swap hJ hσ (hz _ m)), add_sub_cancel_left]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, m, rfl⟩)`.
+-/
 theorem wh_transv (hσ : ∀ x, σ (σ x) = x) (uu : uᵀ * W.J * u.map σ = 0) (hΛ : IsWh (σ := σ) W u χ Λ) {g : UA σ W.J}
     (hg : g ∈ UAt σ W (evFin F v)) {i i' : Fin j} (hi : (i' : ℕ) = i + 1) {w : Fin d → Fv F v}
     (e : (cp t g).1 = 1 + Matrix.vecMulVec (fun a => t (u a i)) w) (hw : ∀ b ≤ i, (w ⬝ᵥ fun a => t (u a b)) = 0)
@@ -373,9 +512,33 @@ theorem wh_transv (hσ : ∀ x, σ (σ x) = x) (uu : uᵀ * W.J * u.map σ = 0) 
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, m, rfl⟩)
 
 omit h hd hJ in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp (continuous_mul_const r), fun γ hγ x => by simp only [mul_assoc, hf.2 γ hγ]⟩`.
+-/
 theorem aut_right {f : UA σ W.J → ℂ} (hf : IsAut (W := W) f) (r : UA σ W.J) : IsAut (W := W) fun x => f (x * r) :=
   ⟨hf.1.comp (continuous_mul_const r), fun γ hγ x => by simp only [mul_assoc, hf.2 γ hγ]⟩
 
+/- English proof (translation)
+Take `⟨r, gv, hv, e1, e2, hr⟩` from `ex_split h hd hJ g`. Set `L : SB (Matrix (Fin n) (Fin d) (Fv F v)) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => Λ fun x => S (fun Y => φ.1 (Y * c.1)) (x * r) map_add' := fun φ φ' => by`. Rewrite using `[← hΛ.add _ _ (aut_right (hS.aut _ (sb_right φ.2 c)) r) (aut_right (hS.aut _ (sb_right φ'.2 c)) r)]`. Conclude with `congrArg (fun f : UA σ W.J → ℂ => Λ fun x => f (x * r)) (hS.add _ (sb_right φ.2 c) _ (sb_right φ'.2 c))`. Use the proof step `map_smul' := fun a φ => (congrArg (fun f : UA σ W.J → ℂ => Λ fun x => f (x * r)) (hS.smul a fun Y => φ.1 (Y * c.1))).trans (hΛ.smul a _) }`.
+
+Take `⟨l, hl⟩` from `LinearMap.exists_extend L`. Establish `hl' : ∀ φ ∈ SB _, l φ = Λ fun x => S (fun Y => φ (Y * c.1)) (x * r)` using `fun φ hφ => LinearMap.congr_fun hl ⟨φ, hφ⟩`. Use `⟨l, fun φ hφ γ => ?_, fun i i' hi T hT φ hφ ρ hρ => ?_, fun k hk φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hl' _ (sb_left hφ γ), hl' _ hφ, ← hΛ.smul]`. Use `hS.left _ (sb_right hφ c) γ` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_assoc] at this`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `d1 : (1 + Matrix.vecMulVec (Pi.single (e i) 1) ρ).det = 1`. Rewrite using `[Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow]`.
+
+Simplify using `[hρ _ (hT i le_rfl)]`. Set `N` to `Matrix.GeneralLinearGroup.mkOfDetNeZero _ (d1.trans_ne one_ne_zero)`. Establish `hN : ∀ Y : Matrix (Fin n) (Fin d) (Fv F v), colOp (e i) ρ Y = Y * N.1` using `fun Y => by`. Express the relevant statement in the definitionally equal form `_ = Y * (1 + _)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_vecMulVec, Matrix.mulVec_single_one]`.
+
+Both sides reduce to the same expression. Take `⟨k, hk, ek⟩` from `ex_at h hd hJ (c * N * c⁻¹)`. Establish `cu : ∀ b, (fun a => t (u a b)) = c.1 *ᵥ Pi.single (e b) 1` using `fun b => by`. Rewrite using `[Matrix.mulVec_single_one]`. Conclude with `funext fun a => (hc a b).symm`.
+
+Establish `hw : ∀ b, ((ρ ᵥ* (c⁻¹).1) ⬝ᵥ fun a => t (u a b)) = ρ (e b)` using `fun b => by`. Rewrite using `[cu, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, dotProduct_single, mul_one]`. Establish `a` using `wh_transv h hd hJ hσ uu hΛ hk hi (w := ρ ᵥ* (c⁻¹).1) (by`. Rewrite using `[ek, cu]`. Express the relevant statement in the definitionally equal form `c.1 * (1 + _) * (c⁻¹).1 = _`.
+
+Rewrite using `[mul_add, add_mul, mul_one, Units.mul_inv, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul])`. Use the proof step `(fun b hb => by rw [hw, hρ _ (hT b hb)]) (aut_right (hS.aut _ (sb_right hφ c)) r)`. Establish `b` using `hS.right _ (sb_right hφ c) k hk _ (congrArg Units.val ek)`. Rewrite using `[show Matrix.GeneralLinearGroup.det (c * N * c⁻¹) = 1 by`. Rewrite using `[map_mul, map_mul, map_inv, show Matrix.GeneralLinearGroup.det N = 1 from Units.ext d1, mul_one, mul_inv_cancel],`.
+
+Use the proof step `map_one, Units.val_one, one_smul] at b`. Simplify using `only [hN]`. Rewrite using `[hl' _ (sb_right hφ N), hl' _ hφ, AddChar.compAddMonoidHom_apply, ← hw, ← a]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[mul_assoc, ← hr k hk, ← mul_assoc, congrFun b]`. Simplify using `[Matrix.mul_assoc]`. Rewrite using `[hl' _ (sb_right hφ _), ← hΛ.smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Establish `b` using `congrFun (hS.right _ hφ _ (uAt_mul hk hv) (cp t k * cp t g) (by rw [← e1, ← map_mul]; rfl)) (x * r)`. Rewrite using `[show x * (k * g) = x * r * (k * gv) by rw [e2, ← mul_assoc k, ← hr k hk, mul_assoc, mul_assoc], b]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem exists_l (hσ : ∀ x, σ (σ x) = x) (uu : uᵀ * W.J * u.map σ = 0) (hΛ : IsWh (σ := σ) W u χ Λ) {ξ α S}
     (hS : IsLoc (n := n) (σ := σ) (W := W) t ξ α S) {e : Fin j → Fin d} {c : GL (Fin d) (Fv F v)} (hc : ∀ a i, c.1 a (e i) = t (u a i))
     (g : UA σ W.J) : ∃ l : (Matrix (Fin n) (Fin d) (Fv F v) → ℂ) →ₗ[ℂ] ℂ, LeftLaw ξ l ∧
@@ -441,6 +604,9 @@ section PartC
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d j : ℕ}
   {W : Spc F E d} {v : Pl F} {t : E →ₐ[F] Fv F v} {sec : Fv F v × Fv F v → AE F E}
 
+/- English proof (translation)
+Establish `a : IsAut (W` using `W) (f - f') := by simpa using isAut_sub hf hf' 1`. Rewrite using `[eq_sub_iff_add_eq, ← hΛ.add _ _ (aut_right a g) (aut_right hf' g)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem wh_sub {u : Matrix (Fin d) (Fin j) E} {χ Λ} (hΛ : IsWh (σ := σ) W u χ Λ) {f f' : UA σ W.J → ℂ} (hf : IsAut (W := W) f)
     (hf' : IsAut (W := W) f') (g : UA σ W.J) :
     Λ (fun x => (f - f') (x * g)) = Λ (fun x => f (x * g)) - Λ fun x => f' (x * g) := by
@@ -450,6 +616,9 @@ theorem wh_sub {u : Matrix (Fin d) (Fin j) E} {χ Λ} (hΛ : IsWh (σ := σ) W u
   funext x
   simp
 
+/- English proof (translation)
+The claim follows from `exists_compl u _ (by rw [← Matrix.transpose_transpose u, ← Matrix.transpose_mul, ← Matrix.mul_assoc, hu.uv, Matrix.transpose_one])`.
+-/
 theorem frame_compl {u u' : Matrix (Fin d) (Fin j) E} (hu : IsFrame σ W u u') :
     ∃ (e : Fin j → Fin d) (c : GL (Fin d) E), Function.Injective e ∧ (∀ a i, c.1 a (e i) = u a i) ∧
       (W.J * u'.map σ)ᵀ * c.1 = (1 : Matrix (Fin d) (Fin d) E).submatrix e id :=
@@ -460,6 +629,9 @@ section Triple
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 open PositivityTheory.ThKG in
+/- English proof (translation)
+The claim follows from `exists_loc hB (pairV hT) (polData_le hT.geo.hM) (fun Φ h => (hK F E σ B a a' G X om om' hT).1 Φ (polData_le hT.geo.hM h)) (hA F E σ B a a' G X om om' hT).1 (polData_le_placewise hT.geo.hM hΦ)`.
+-/
 theorem locV (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hT : IsTriple B G X om om') {Φ} (hΦ : Φ ∈ PolData B G.M) :
     ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv F v, ∃ ι S, G.M.IsLinBar B.ψ t 1 1 ι ∧ ι (G.M.vac v) ∈ SB _ ∧
       IsLoc (W := G.W) t (chrW (X.β / X.α) t * apowH (((a + a' : ℕ) : ℂ) / 2))⁻¹ (chrW X.β t * apowH ((a : ℂ) / 2)) S ∧
@@ -468,6 +640,9 @@ theorem locV (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hT : IsTriple B G X om
     (hA F E σ B a a' G X om om' hT).1 (polData_le_placewise hT.geo.hM hΦ)
 
 open PositivityTheory.ThKG in
+/- English proof (translation)
+The claim follows from `exists_loc hB (pairV' hT) (inf_le_left.trans (polData_le hT.geo.hM')) (fun Φ h => ((hK F E σ B a a' G X om om' hT).2 Φ h.2).2.1) (hA F E σ B a a' G X om om' hT).2 (polData_inf_so_le_placewise hT.geo.hM' hΦ)`.
+-/
 theorem locV' (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hT : IsTriple B G X om om') {Φ}
     (hΦ : Φ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) :
     ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv F v, ∃ ι S, G.M'.IsLinBar B.ψ t 1 1 ι ∧ ι (G.M'.vac v) ∈ SB _ ∧
@@ -478,6 +653,11 @@ theorem locV' (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hT : IsTriple B G X o
 
 end Triple
 
+/- English proof (translation)
+Take `⟨e, c, he, hc, -⟩` from `frame_compl hu`. Take `⟨l, l1, l2, l3⟩` from `exists_l h hd hJ hσ hu.uu hΛ hS (e := e) (c := Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) c) (fun a i => congrArg t (hc a i)) g`. Use `l3 1 uAt_one φ hφ` as an intermediate fact. Rewrite `this` using `[one_mul, hL _ n d _ (psi_ne h hχ) (e ⟨0, by omega⟩) (e ⟨1, by omega⟩) (e ⟨2, by omega⟩) (he.ne (by simp)) (he.ne (by simp)) (he.ne (by simp)) ξ l l1 (l2 _ _ rfl _ fun b hb => ?_) (l2 _ _ rfl _ fun b hb => ?_) _ (sb_right hφ _), mul_zero]`. Conclude with `this`.
+
+Conclude with `congrArg e (Fin.ext (Nat.le_zero.1 hb))`. Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 (show (b : ℕ) ≤ 1 from hb) with hb | hb exacts [Or.inl (congrArg e (Fin.ext hb)), Or.inr (congrArg e (Fin.ext hb))]` into its components or cases.
+-/
 theorem three (hL : LocThree) (h : IsSec σ t sec) (hd : W.J.det ≠ 0) (hJ : ∀ a b, σ (W.J b a) = -W.J a b) (hσ : ∀ x, σ (σ x) = x)
     {u u' : Matrix (Fin d) (Fin (j + 3)) E} (hu : IsFrame σ W u u') {χ Λ} (hχ : IsChar σ χ) (hΛ : IsWh (σ := σ) W u χ Λ) {ξ α S}
     (hS : IsLoc (n := n) (σ := σ) (W := W) t ξ α S) {φ} (hφ : φ ∈ SB _) (g : UA σ W.J) : Λ (fun x => S φ (x * g)) = 0 := by
@@ -492,6 +672,11 @@ theorem three (hL : LocThree) (h : IsSec σ t sec) (hd : W.J.det ≠ 0) (hJ : �
   · rcases Nat.le_one_iff_eq_zero_or_eq_one.1 (show (b : ℕ) ≤ 1 from hb) with hb | hb
     exacts [Or.inl (congrArg e (Fin.ext hb)), Or.inr (congrArg e (Fin.ext hb))]
 
+/- English proof (translation)
+Introduce and unpack `F E _ _ _ _ _ σ B a a' G X om om' hT j u u' hu χ Λ hχ hΛ _ ⟨Φ, hΦ, Φ', hΦ', rfl⟩ g`. Take `⟨v, ⟨t⟩, h1, h2⟩` from `((frequently_cofinite_iff_infinite.2 (hP F E σ hT.base.cm).2.2.2).and_eventually ((locV hB hK hA hT hΦ).and (locV' hB hK hA hT hΦ'))).exists`. Take `⟨ι, S, -, a1, a2, a3⟩` from `h1 t`. Take `⟨ι', S', -, b1, b2, b3⟩` from `h2 t`. Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hT.base.cm v t`.
+
+Establish `hd` using `PositivityTheory.ThKF.detW (PositivityTheory.ThKG.pairV hT)`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Rewrite using `[← a3, ← b3, wh_sub hΛ (a2.aut _ a1) (b2.aut _ b1), three hL h hd hT.geo.hW.skew hσ hu hχ hΛ a2 a1, three hL h hd hT.geo.hW.skew hσ hu hχ hΛ b2 b1, sub_self]`.
+-/
 theorem keyThree_of_locThree (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hL : LocThree) (hP : Places) : KeyThree := by
   rintro F E _ _ _ _ _ σ B a a' G X om om' hT j u u' hu χ Λ hχ hΛ _ ⟨Φ, hΦ, Φ', hΦ', rfl⟩ g
   obtain ⟨v, ⟨t⟩, h1, h2⟩ := ((frequently_cofinite_iff_infinite.2 (hP F E σ hT.base.cm).2.2.2).and_eventually
@@ -504,6 +689,11 @@ theorem keyThree_of_locThree (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hL : L
   rw [← a3, ← b3, wh_sub hΛ (a2.aut _ a1) (b2.aut _ b1), three hL h hd hT.geo.hW.skew hσ hu hχ hΛ a2 a1,
     three hL h hd hT.geo.hW.skew hσ hu hχ hΛ b2 b1, sub_self]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_diagonal, Finset.prod_congr rfl (g := fun i => (if i = i₀ then x else 1) * if i = i₁ then x⁻¹ else 1) fun i _ => ?_, Finset.prod_mul_distrib]`. Simplify using `[hx]`. Distinguish the cases in `h0 : i = i₀`. Substitute `h0` using the available equality. Simplify using `[hi]`.
+
+Simplify using `[h0]`.
+-/
 theorem det_torus {k : Type} [Field k] {i₀ i₁ : Fin d} (hi : i₀ ≠ i₁) {x : k} (hx : x ≠ 0) :
     (Matrix.diagonal fun i => if i = i₀ then x else if i = i₁ then x⁻¹ else 1).det = 1 := by
   rw [Matrix.det_diagonal, Finset.prod_congr rfl (g := fun i => (if i = i₀ then x else 1) * if i = i₁ then x⁻¹ else 1) fun i _ => ?_,
@@ -517,6 +707,13 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [torus, Matrix.diagonal_apply, Matrix.add_apply, Matrix.mul_apply, Fin.sum_univ_two, Matrix.submatrix_apply, Matrix.sub_apply, Matrix.one_apply, id]`. Distinguish the cases in `a0 : a = e 0`. Substitute `a0` using the available equality. Distinguish the cases in `b0 : e 0 = b`.
+
+Substitute `b0` using the available equality. Simplify using `[h01, h01.symm]`. Simplify using `[b0, h01]`. Distinguish the cases in `a1 : a = e 1`. Substitute `a1` using the available equality.
+
+Distinguish the cases in `b0 : e 1 = b`. Substitute `b0` using the available equality. Simplify using `[h01, h01.symm]`. Simplify using `[b0, a0]`. Simplify using `[a0, a1]`.
+-/
 theorem torus_eq {e : Fin 2 → Fin d} (h01 : e 0 ≠ e 1) (x : k) : torus (e 0) (e 1) x =
     1 + (1 : Matrix (Fin d) (Fin d) k).submatrix id e * (!![x, 0; 0, x⁻¹] - 1) * (1 : Matrix (Fin d) (Fin d) k).submatrix e id := by
   ext a b
@@ -534,6 +731,9 @@ theorem torus_eq {e : Fin 2 → Fin d} (h01 : e 0 ≠ e 1) (x : k) : torus (e 0)
     · simp [b0, a0]
   · simp [a0, a1]
 
+/- English proof (translation)
+Rewrite using `[show c⁻¹ * (x * g) = c⁻¹ * x * c * (c⁻¹ * g) by group, Units.val_mul _ (c⁻¹ * g), a, ← Matrix.mul_assoc]`. Use `oneO_mul (ci'.mul gi) ?_ _` and prove the remaining obligations. Rewrite using `[mul_inv_rev, inv_inv]`. Conclude with `gi'.mul ci`.
+-/
 theorem oneO_tor {c x g : GL (Fin d) k} {T : Matrix (Fin d) (Fin d) k} (a : (c⁻¹ * x * c).1 = T) (ci : IntM c.1) (ci' : IntM (c⁻¹).1)
     (gi : IntM g.1) (gi' : IntM (g⁻¹).1) (Y : Matrix (Fin n) (Fin d) k) :
     oneO k n d (Y * (c⁻¹ * (x * g)).1) = oneO k n d (Y * T) := by
@@ -544,6 +744,25 @@ theorem oneO_tor {c x g : GL (Fin d) k} {T : Matrix (Fin d) (Fin d) k} (a : (c�
 
 end Loc
 
+/- English proof (translation)
+Take `⟨b, b0, b1, b2⟩` from `h.exists_gl (Matrix.GeneralLinearGroup.mkOfDetNeZero !![(x : Fv F v), 0; 0, (x : Fv F v)⁻¹] (by simp)) 1`. Use `replace b1 : b.1.map (piW t) = !![(x : Fv F v), 0; 0, (x : Fv F v)⁻¹] := b1`. Use `replace b2 : b.1.map (piW (t.comp σ)) = 1 := b2`. Establish `i0 : At (evFin F v) ((b⁻¹).1 - 1)`. Establish `: (b⁻¹).1 - 1 = -(b⁻¹).1 * (b.1 - 1)` using `by rw [neg_mul, mul_sub, Units.inv_mul, mul_one, neg_sub]`.
+
+Rewrite using `[this]`. Conclude with `At.kd_mul_left b0 _`. Establish `i2 : (b⁻¹).1.map (piW (t.comp σ)) = 1`. Use `congrArg (fun z : Matrix (Fin 2) (Fin 2) (AE F E) => z.map (piW (t.comp σ))) b.inv_mul` as an intermediate fact. Simplify using `only [Matrix.map_mul, b2, mul_one] at this`.
+
+Conclude with `this.trans (Matrix.map_one _ (map_zero _) (map_one _))`. Use `⟨b, fun hx => Units.ext (h.extM b0 ?_ ?_), Units.ext (sub_eq_zero.1 (h.ext _ ?_ ?_ ?_)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[b1, hx, Units.val_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), inv_one, Matrix.one_fin_two]`. Rewrite using `[b2, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `k` using `kd_at_matrix.1 b0`.
+
+Establish `: ((Matrix.GeneralLinearGroup.det b : (AE F E)ˣ) : AE F E) - (1 : (AE F E)ˣ) = (b.1 - 1) 0 0 * b.1 1 1 + (b.1 - 1) 1 1 - (b.1 - 1) 0 1 * b.1 1 0`. Express the relevant statement in the definitionally equal form `b.1.det - 1 = _`. Simplify using `[Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `((at_mul_r (k 0 0) _).kd_add (k 1 1)).kd_sub (at_mul_r (k 0 1) _)`. Express the relevant statement in the definitionally equal form `piW t (b.1.det - 1) = 0`. Rewrite using `[map_sub, RingHom.map_det, RingHom.mapMatrix_apply, b1]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `piW (t.comp σ) (b.1.det - 1) = 0`.
+
+Rewrite using `[map_sub, RingHom.map_det, RingHom.mapMatrix_apply, b2]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `At _ _`. Rewrite using `[hm.2, levM, add_sub_assoc, add_sub_cancel_left]`. Use `((At.kd_mul_left b0 _).kd_mul_right _).kd_sub ((At.kd_mul_left ?_ _).kd_mul_right _)` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.transpose_one, ← Matrix.transpose_sub, ← Matrix.map_one (cA σ) (map_zero _) (map_one _), ← Matrix.map_sub _ (map_sub _)]`. Conclude with `At.kd_transpose (kd_at_matrix.2 fun i j => h.atConj _ (kd_at_matrix.1 i0 i j))`. Establish `hp' : ((W.J * u'.map σ)ᵀ).map t * c.1.map t = (1 : Matrix (Fin d) (Fin d) (Fv F v)).submatrix e id`. Rewrite using `[← Matrix.map_mul, hp]`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.one_apply, apply_ite t]`. Establish `hu : u.map t = c.1.map t * (1 : Matrix (Fin d) (Fin d) (Fv F v)).submatrix id e`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, hc]`. Establish `z : (((b⁻¹).1.map (cA σ))ᵀ).map (piW t) = 1` using `by rw [Matrix.transpose_map, h.conj1, i2, Matrix.transpose_one]`.
+
+Rewrite using `[cp_val, hm.2, levM, Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_sub _ (map_sub _), Matrix.map_sub _ (map_sub _), z, b1, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zer …`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem exists_torus (h : IsSec σ t sec) {u u' : Matrix (Fin d) (Fin 2) E} {m} (hm : IsLev (σ := σ) (W := W) u u' m)
     {e : Fin 2 → Fin d} {c : GL (Fin d) E} (he : Function.Injective e) (hc : ∀ a i, c.1 a (e i) = u a i)
     (hp : (W.J * u'.map σ)ᵀ * c.1 = (1 : Matrix (Fin d) (Fin d) E).submatrix e id) (x : (Fv F v)ˣ) :
@@ -594,6 +813,13 @@ theorem exists_torus (h : IsSec σ t sec) {u u' : Matrix (Fin d) (Fin 2) E} {m} 
       torus_eq (he.ne (by simp)), add_mul, mul_add, one_mul, mul_one, Matrix.mul_assoc _ _ (c.1.map t), hp', hu]
     simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨l, l1, l2, l3⟩` from `exists_l h hd hJ hσ hu.uu hΛ hS hc g`. Establish `h01 : e 0 ≠ e 1` using `he.ne (by simp)`. Take `⟨x, hx⟩` from `hL _ n d ϖ hϖ _ c₀ c1 c2 _ _ h01 ξ hξ l l1 (l2 0 1 rfl _ fun b hb => congrArg e (Fin.ext (Nat.le_zero.1 hb))) _ rfl`. Use `⟨α (Matrix.GeneralLinearGroup.det (cp t g)) * κ * x, fun i => ?_⟩` and prove the remaining obligations. Establish `a : (c⁻¹ * cp t (k i) * c).1 = torus (e 0) (e 1) ((ϖ : Fv F v) ^ i)`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, mul_assoc, hk', Units.inv_mul_cancel_left]`. Establish `b : Matrix.GeneralLinearGroup.det (cp t (k i)) = 1`. Establish `: Matrix.GeneralLinearGroup.det (c⁻¹ * cp t (k i) * c) = 1` using `Units.ext ((congrArg Matrix.det a).trans (det_torus h01 (pow_ne_zero _ ϖ.ne_zero)))`. Rewrite `this` using `[map_mul, map_mul, map_inv, inv_mul_cancel_comm]`. Then use the resulting hypothesis. Establish `o : (fun Y : Matrix (Fin n) (Fin d) (Fv F v) => φ (Y * (c⁻¹ * (cp t (k i) * cp t g)).1)) = κ • fun Y : Matrix (Fin n) (Fin d) (Fv F v) => oneO (Fv F v) n d (Y * torus (e 0) (e 1) ((ϖ : Fv F v) ^ i))` using `funext fun Y => by`.
+
+Rewrite using `[e0, Pi.smul_apply, Pi.smul_apply, oneO_tor a ci ci' gi (by rwa [← map_inv])]`. Rewrite using `[l3 _ (hk i) φ hφ, o, map_smul, hx, map_mul, b, one_mul, yy, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem two (hL : LocTwo) (h : IsSec σ t sec) (hd : W.J.det ≠ 0) (hJ : ∀ a b, σ (W.J b a) = -W.J a b) (hσ : ∀ x, σ (σ x) = x)
     {u u' : Matrix (Fin d) (Fin 2) E} (hu : IsFrame σ W u u') {χ Λ} (hΛ : IsWh (σ := σ) W u χ Λ) {ξ α S}
     (hS : IsLoc (n := n) (σ := σ) (W := W) t ξ α S) {φ} (hφ : φ ∈ SB _) {κ : ℂ} (e0 : φ = κ • oneO (Fv F v) n d)
@@ -624,8 +850,34 @@ theorem two (hL : LocTwo) (h : IsSec σ t sec) (hd : W.J.det ≠ 0) (hJ : ∀ a 
   rw [l3 _ (hk i) φ hφ, o, map_smul, hx, map_mul, b, one_mul, yy, smul_eq_mul]
   ring
 
+/- English proof (translation)
+The claim follows from `map_div Circle.toUnits _ _`.
+-/
 theorem chrW_div (χ χ' : Chr F E) (x : (Fv F v)ˣ) : chrW (χ / χ') t x = chrW χ t x / chrW χ' t x := map_div Circle.toUnits _ _
 
+/- English proof (translation)
+Introduce and unpack `F E _ _ _ _ _ σ B a a' G X om om' hT u u' hu m hm χ Λ hχ hΛ _ ⟨Φ, hΦ, Φ', hΦ', rfl⟩ h₀`. Take `⟨p1, p2, p3, p4⟩` from `hP F E σ hT.base.cm`. Take `⟨e, c, he, hc, hp⟩` from `frame_compl hu`. Establish `im : ∀ z : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E), ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv F v, IntM (z.map (piW t))` using `fun z => (eventually_all.2 fun i => eventually_all.2 fun j => p2 (z i j)).mono fun v h t i j => h i j t`. Take `⟨v, ⟨t⟩, ⟨h1, h2⟩, ⟨v1, v2⟩, ⟨i1, i2⟩, ⟨i3, i4⟩, hv⟩` from `((frequently_cofinite_iff_infinite.2 p4).and_eventually (((locV hB hK hA hT hΦ).and (locV' hB hK hA hT hΦ')).and (((hV F E σ B _ _ _ _ G.M _ _ _ _ hT.base hT.geo.hV hT.geo.hW hT.geo.hM).and (hV F E σ B _ _ _ _ G.M' _ _ _ _ hT.base hT.geo.hV' hT.geo.hW hT.geo.hM')).and (((im (mat …`.
+
+Take `⟨ι, S, a0, a1, a2, a3⟩` from `h1 t`. Take `⟨ι', S', b0, b1, b2, b3⟩` from `h2 t`. Take `⟨κ, hκ⟩` from `v1 t ι a0`. Take `⟨κ', hκ'⟩` from `v2 t ι' b0`. Take `⟨⟨sec, h⟩, us⟩` from `section_statement F E σ hT.base.cm v t`.
+
+Establish `hd` using `PositivityTheory.ThKF.detW (PositivityTheory.ThKG.pairV hT)`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Take `⟨ϖ, hϖ⟩` from `exists_isUnif (k := Fv F v)`. Take `⟨c₀, c1, c2⟩` from `exists_cond hϖ (ψ := χ.compAddMonoidHom (sA v sec)) (hχ.1.comp sA_cont) (psi_ne h hχ)`. Use `choose b bz bd bU bT using fun i : ℕ => exists_torus h hm he hc hp (ϖ ^ i)`.
+
+Establish `uα` using `p3 X.α _ hT.chars.unrα v hv t`. Establish `uβ` using `p3 X.β _ hT.chars.unrβ v hv t`. Take `⟨D, hD⟩` from `hT.geo.even`. Establish `hE` using `hT.geo.eBig`. Take `⟨ε, rfl⟩ : ∃ ε, D = a' + ε` from `⟨D - a', by omega⟩`.
+
+Take `rfl : a = a' + 2 * ε` from `by omega`. Use `set q : ℕ := GlobalTheory.SplitWeil.resCard (Fv F v) with hq`. Establish `q1 : 1 < q` using `Finite.one_lt_card`. Establish `q0 : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `ap : ((apowH (((a' + 2 * ε + a' : ℕ) : ℂ) / 2) ϖ : ℂˣ) : ℂ) = ((q : ℂ) ^ (a' + ε))⁻¹`.
+
+Rewrite using `[show a' + 2 * ε + a' = 2 * (a' + ε) by omega]`. Conclude with `apow_unif hϖ _`. Use `set r : ℂ := chrW X.α t ϖ / chrW X.β t ϖ * (q : ℂ) ^ ε with hr`. Establish `r1 : ((((chrW (X.β / X.α) t * apowH (((a' + 2 * ε + a' : ℕ) : ℂ) / 2))⁻¹ : (Fv F v)ˣ →* ℂˣ) ϖ : ℂˣ) : ℂ) * (q : ℂ) ^ (((a' + 2 * ε : ℕ) : ℤ) - (a' + 2 * ε + a' : ℕ)) = r`. Rewrite using `[show ((a' + 2 * ε : ℕ) : ℤ) - (a' + 2 * ε + a' : ℕ) = -(a' : ℤ) by push_cast; ring, MonoidHom.inv_apply, MonoidHom.mul_apply, Units.val_inv_eq_inv_val, Units.val_mul, ap, chrW_div, Units.val_div_eq_div_val, hr, zpow_neg, zpow_natCast, pow_add]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `r2 : ((((chrW (X.α / X.β) t * apowH (((a' + 2 * ε + a' : ℕ) : ℂ) / 2))⁻¹ : (Fv F v)ˣ →* ℂˣ) ϖ : ℂˣ) : ℂ) * (q : ℂ) ^ (((a' : ℕ) : ℤ) - (a' + 2 * ε + a' : ℕ)) = r⁻¹`. Rewrite using `[show ((a' : ℕ) : ℤ) - (a' + 2 * ε + a' : ℕ) = -((a' + ε + ε : ℕ) : ℤ) by push_cast; ring, MonoidHom.inv_apply, MonoidHom.mul_apply, Units.val_inv_eq_inv_val, Units.val_mul, ap, chrW_div, Units.val_div_eq_div_val, hr, zpow_neg, zpow_natCast, pow_add _ (a' + ε)]`. Clear the denominators using the available nonvanishing facts. Establish `rn : (q : ℝ) < ‖r‖`.
+
+Rewrite using `[hr, norm_mul, norm_div, (us _ hT.chars.heckeα).1, (us _ hT.chars.heckeβ).1, div_one, one_mul, norm_pow, Complex.norm_natCast]`. Conclude with `lt_self_pow₀ q1 (by omega)` after adjusting the coercions. Establish `r0 : r ≠ 0` using `norm_pos_iff.1 ((Nat.cast_nonneg q).trans_lt rn)`. Establish `un : ∀ χ χ' : Chr F E, (∀ x : (Fv F v)ˣ, ValuativeRel.valuation _ (x : Fv F v) = 1 → chrW χ t x = 1) → (∀ x : (Fv F v)ˣ, ValuativeRel.valuation _ (x : Fv F v) = 1 → chrW χ' t x = 1) → ∀ z, ∀ x : (Fv F v)ˣ, ValuativeRel.valuation _ (x : Fv F v) = 1 → ((chrW (χ / χ') t * apowH z)⁻¹ …` using `fun χ χ' k k' z x hx => by`. Rewrite using `[MonoidHom.inv_apply, MonoidHom.mul_apply, chrW_div, k x hx, k' x hx, show apowH z x = 1 from Units.ext (apow_of_valuation_eq_one hx z)]`.
+
+Simplify using the standard rewrite rules. Use `⟨{g | IntM (cp t g).1 ∧ IntM (cp t g⁻¹).1}, ?_, b, yy q r c₀, bz 0 (pow_zero _), bd, yy_tendsto (by exact_mod_cast q1) rn c₀, fun g hg => ?_⟩` and prove the remaining obligations. Establish `o : ∀ g₀ : UA σ G.W.J, IntM (cp t g₀).1 → ∀ᶠ g in 𝓝 g₀, IntM (cp t g).1` using `fun g₀ hg => eventually_all.2 fun i => eventually_all.2 fun j => (isOpen_int.preimage ((p1 v t).comp ((Units.continuous_val.comp continuous_subtype_val).matrix_elem i j))).mem_nhds (hg i j)`. Conclude with `(o h₀ (i1 t)).and ((continuous_inv.tendsto h₀).eventually (o h₀⁻¹ (i2 t)))`. Establish `ci` using `i3 t`.
+
+Establish `ci'` using `i4 t`. Rewrite `ci`, `ci'` using `[incM_map h]`. Take `⟨x, hx⟩` from `two hL h hd hT.geo.hW.skew hσ hu hΛ a2 a1 hκ (un _ _ uβ uα _) hϖ c1 c2 he (c := Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) c) (fun a i => congrArg t (hc a i)) ci ci' bU (fun i => Units.val_pow_eq_pow_val ϖ i ▸ bT i) hg.1 hg.2`. Take `⟨x', hx'⟩` from `two hL h hd hT.geo.hW.skew hσ hu hΛ b2 b1 hκ' (un _ _ uα uβ _) hϖ c1 c2 he (c := Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) c) (fun a i => congrArg t (hc a i)) ci ci' bU (fun i => Units.val_pow_eq_pow_val ϖ i ▸ bT i) hg.1 hg.2`. Use `⟨x - x' * r ^ c₀, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← a3, ← b3, wh_sub hΛ (a2.aut _ a1) (b2.aut _ b1), hx, hx', r1, r2, yy_inv _ r0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem keyTwo_of_locTwo_vacBar (hB : ThetaBasic) (hK : KDecay) (hA : IAut) (hL : LocTwo) (hV : VacBar) (hP : Places) : KeyTwo := by
   rintro F E _ _ _ _ _ σ B a a' G X om om' hT u u' hu m hm χ Λ hχ hΛ _ ⟨Φ, hΦ, Φ', hΦ', rfl⟩ h₀
   obtain ⟨p1, p2, p3, p4⟩ := hP F E σ hT.base.cm

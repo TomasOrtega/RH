@@ -24,6 +24,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `G1`. Conclude with `LevelStatements.Link.linkRing LevelStatements.Lv.rhoUnique LevelStatements.Lv.splitCompl LevelStatements.Lv.cycloSimple LevelStatements.Lv.psCoprime LevelStatements.Lv.rhoUnit LevelStatements.Lv.descendDvd LevelStatements.Lv.piSeries ϖ hϖ (lvData Hy f' kind b η) (hℓ := ⟨PD.hp⟩) h …`. Express the relevant statement in the definitionally equal form `f (powR LL PD.p s _ ζ) = f ζ'`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[h]`. Use the proof step `rfl)`. Use the proof step `(fun j => (j.1 : ℤ_[PD.p]))`. Use the proof step `(fun j => (by simpa using congrArg (fun x : ℤ_[PD.p]ˣ => (x : ℤ_[PD.p])) j.2 : ((j.1 : ℤ_[PD.p])) ^ (PD.p - 1) = 1))`. Use the proof step `hom'`.
+
+Use the proof step `(fun s _ j f ζ ζ' h => by`. Express the relevant statement in the definitionally equal form `f (powR LL PD.p s _ ζ) = f ζ'`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h]`.
+
+Use the proof step `rfl)`.
+-/
 theorem ringSteps_of [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
     {T : LocLat G Qp LL O} {C : Coord W (baseIdOf hR) T} {c : ZMod n} {ell : ℕ}

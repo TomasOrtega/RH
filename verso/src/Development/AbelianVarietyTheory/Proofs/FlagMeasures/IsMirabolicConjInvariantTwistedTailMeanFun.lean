@@ -13,41 +13,70 @@ variable {g : ℕ} [Fact g.Prime] {m k : ℕ}
 def dM (k : ℕ) (A : Mt g m) : Mt g (m + k) :=
   (Matrix.fromBlocks A 0 0 (1 : Mt g k)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
 
+/- English proof (translation)
+Simplify using `[dM, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem dM_mul (A B : Mt g m) : dM k A * dM k B = dM k (A * B) := by
   simp [dM, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `[dM, Matrix.fromBlocks_one]`.
+-/
 theorem dM_one : dM k (1 : Mt g m) = 1 := by
   simp [dM, Matrix.fromBlocks_one]
 
 def dG (k : ℕ) (p : Gn g m) : Gn g (m + k) :=
   ⟨dM k p.val, dM k p.inv, by rw [dM_mul, p.val_inv, dM_one], by rw [dM_mul, p.inv_val, dM_one]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conj_val (p : Gn g m) (x : Gn g (m + k)) :
     ((dG k p * x * (dG k p)⁻¹ : Gn g (m + k)) : Mt g (m + k)) =
       dM k (p : Mt g m) * (x : Mt g (m + k)) * dM k ((p⁻¹ : Gn g m) : Mt g m) := rfl
 
+/- English proof (translation)
+Establish `h : (i : ℕ) < m + k ∧ (j : ℕ) < m + k` using `⟨by omega, by omega⟩`. Rewrite using `[tl, entN, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem tl_apply (X : Mt g (m + k)) (i j : Fin m) : tl m X i j = X (Fin.castAdd k i) (Fin.castAdd k j) := by
   have h : (i : ℕ) < m + k ∧ (j : ℕ) < m + k := ⟨by omega, by omega⟩
   rw [tl, entN, dif_pos h]; rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[tl_apply, dM, Matrix.mul_apply, Fin.sum_univ_add]`.
+-/
 theorem upperLeftBlock_blockDiagExtendByIdentity_conj (A B : Mt g m) (X : Mt g (m + k)) : tl m (dM k A * X * dM k B) = A * tl m X * B := by
   ext i j
   simp [tl_apply, dM, Matrix.mul_apply, Fin.sum_univ_add]
 
+/- English proof (translation)
+Simplify using `[dM, Matrix.mul_apply, Fin.sum_univ_add, Matrix.one_apply]`.
+-/
 theorem blockDiagExtendByIdentity_conj_upperRight_apply (A B : Mt g m) (X : Mt g (m + k)) (i : Fin m) (j : Fin k) :
     (dM k A * X * dM k B) (Fin.castAdd k i) (Fin.natAdd m j) =
       ∑ l, A i l * X (Fin.castAdd k l) (Fin.natAdd m j) := by
   simp [dM, Matrix.mul_apply, Fin.sum_univ_add, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[dM, Matrix.mul_apply, Fin.sum_univ_add, Matrix.one_apply]`.
+-/
 theorem blockDiagExtendByIdentity_conj_lowerLeft_apply (A B : Mt g m) (X : Mt g (m + k)) (i : Fin k) (j : Fin m) :
     (dM k A * X * dM k B) (Fin.natAdd m i) (Fin.castAdd k j) =
       ∑ l, X (Fin.natAdd m i) (Fin.castAdd k l) * B l j := by
   simp [dM, Matrix.mul_apply, Fin.sum_univ_add, Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[dM, Matrix.mul_apply, Fin.sum_univ_add, Matrix.one_apply]`.
+-/
 theorem blockDiagExtendByIdentity_conj_lowerRight_apply (A B : Mt g m) (X : Mt g (m + k)) (i j : Fin k) :
     (dM k A * X * dM k B) (Fin.natAdd m i) (Fin.natAdd m j) = X (Fin.natAdd m i) (Fin.natAdd m j) := by
   simp [dM, Matrix.mul_apply, Fin.sum_univ_add, Matrix.one_apply]
 
+/- English proof (translation)
+Unfold `entN`. Use `split_ifs with h`. Establish `e1 : (⟨i, h.1⟩ : Fin (m + k)) = Fin.natAdd m ⟨i - m, by omega⟩` using `by ext; simp; omega`. Establish `e2 : (⟨j, h.2⟩ : Fin (m + k)) = Fin.natAdd m ⟨j - m, by omega⟩` using `by ext; simp; omega`. Rewrite using `[e1, e2, blockDiagExtendByIdentity_conj_lowerRight_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem entN_blockDiagExtendByIdentity_conj_lowerRight (A B : Mt g m) (X : Mt g (m + k)) (i j : ℕ) (hi : m ≤ i) (hj : m ≤ j) :
     entN (dM k A * X * dM k B) i j = entN X i j := by
   unfold entN
@@ -57,6 +86,13 @@ theorem entN_blockDiagExtendByIdentity_conj_lowerRight (A B : Mt g m) (X : Mt g 
     rw [e1, e2, blockDiagExtendByIdentity_conj_lowerRight_apply]
   · rfl
 
+/- English proof (translation)
+Use `⟨fun i j hj hi => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : i = Fin.natAdd m ⟨i - m, by omega⟩` using `by ext; simp; omega`. Establish `e2 : j = Fin.castAdd k ⟨j, hj⟩` using `by ext; simp`. Rewrite using `[e1, e2, blockDiagExtendByIdentity_conj_lowerLeft_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h.1 _ _ (by simp) (by simp), zero_mul]`. Establish `: br m (m + k - m) (dM k A * X * dM k B) = br m (m + k - m) X`. Use extensionality with `i j`. Conclude with `entN_blockDiagExtendByIdentity_conj_lowerRight A B X _ _ (by omega) (by omega)`. Rewrite using `[this]`.
+
+Conclude with `h.2`.
+-/
 theorem inR_conj (A B : Mt g m) (X : Mt g (m + k)) (h : InR m X) : InR m (dM k A * X * dM k B) := by
   refine ⟨fun i j hj hi => ?_, ?_⟩
   · have e1 : i = Fin.natAdd m ⟨i - m, by omega⟩ := by ext; simp; omega
@@ -69,6 +105,11 @@ theorem inR_conj (A B : Mt g m) (X : Mt g (m + k)) (h : InR m X) : InR m (dM k A
       exact entN_blockDiagExtendByIdentity_conj_lowerRight A B X _ _ (by omega) (by omega)
     rw [this]; exact h.2
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_Ico]`. Distinguish the cases in `h : m ≤ j`. Conclude with `entN_blockDiagExtendByIdentity_conj_lowerRight A B X _ _ h (by omega)`. Establish `h' : j < m + k ∧ j + 1 < m + k` using `⟨by omega, by omega⟩`.
+
+Establish `e1 : (⟨j, h'.1⟩ : Fin (m + k)) = Fin.castAdd k ⟨j, by omega⟩` using `by ext; simp`. Establish `e2 : (⟨j + 1, h'.2⟩ : Fin (m + k)) = Fin.natAdd m ⟨0, by omega⟩` using `by ext; simp; omega`. Rewrite using `[entN, entN, dif_pos h', dif_pos h', e1, e2, blockDiagExtendByIdentity_conj_upperRight_apply]`. Establish `: ∀ l, A ⟨j, by omega⟩ l = (1 : Mt g m) ⟨j, by omega⟩ l` using `fun l => hA _ _ (by simp; omega)`. Simplify using `[this, Matrix.one_apply]`.
+-/
 theorem supFrom_conj (hm : 1 ≤ m) (A B : Mt g m) (hA : InMir A) (X : Mt g (m + k)) :
     supFrom (m - 1) (dM k A * X * dM k B) = supFrom (m - 1) X := by
   refine Finset.sum_congr rfl fun j hj => ?_
@@ -82,6 +123,19 @@ theorem supFrom_conj (hm : 1 ≤ m) (A B : Mt g m) (hA : InMir A) (X : Mt g (m +
     have : ∀ l, A ⟨j, by omega⟩ l = (1 : Mt g m) ⟨j, by omega⟩ l := fun l => hA _ _ (by simp; omega)
     simp [this, Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `i j hi`. Distinguish the cases in `him : (i : ℕ) < m`. Establish `hj : (j : ℕ) < m` using `by omega`. Establish `e1 : i = Fin.castAdd k ⟨i, him⟩` using `by ext; simp`. Establish `e2 : j = Fin.castAdd k ⟨j, hj⟩` using `by ext; simp`.
+
+Use `h0 ⟨i, him⟩ ⟨j, hj⟩ (by simp; omega)` as an intermediate fact. Rewrite `this` using `[tl_apply, ← e1, ← e2]`. Rewrite using `[this]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Distinguish the cases in `hj : (j : ℕ) < m`.
+
+Rewrite using `[h.1 i j hj (by omega), Matrix.one_apply_ne]`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `h2` using `h.2 ⟨i - m, by omega⟩ ⟨j - m, by omega⟩`.
+
+Establish `h' : m + (i - m) < m + k ∧ m + (j - m) < m + k` using `⟨by omega, by omega⟩`. Establish `e1 : (⟨m + (i - m), h'.1⟩ : Fin (m + k)) = i` using `by ext; simp; omega`. Establish `e2 : (⟨m + (j - m), h'.2⟩ : Fin (m + k)) = j` using `by ext; simp; omega`. Simplify using `only [br, entN, dif_pos h', e1, e2] at h2`. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Rewrite using `[h2.2 rfl, Matrix.one_apply_eq]`. Rewrite using `[Matrix.one_apply_ne e]`. Use `h2.1 ?_` and prove the remaining obligations. Establish `: (i : ℕ) ≠ j` using `fun h => e (Fin.ext h)`.
+
+Rewrite using `[Fin.lt_def]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem inMir_of (X : Mt g (m + k)) (h : InR m X) (h0 : InMir (tl m X)) : InMir X := by
   intro i j hi
   by_cases him : (i : ℕ) < m
@@ -110,6 +164,13 @@ theorem inMir_of (X : Mt g (m + k)) (h : InR m X) (h0 : InMir (tl m X)) : InMir 
         simp only
         omega
 
+/- English proof (translation)
+Establish `e : dM k A = dM k A * 1 * dM k 1` using `by rw [dM_one, mul_one, mul_one]`. Establish `h1 : InR m (1 : Mt g (m + k))`. Use `⟨fun i j hj hi => Matrix.one_apply_ne (by intro e; subst e; omega), fun a b => ?_⟩` and prove the remaining obligations. Establish `h' : m + a < m + k ∧ m + b < m + k` using `⟨by omega, by omega⟩`. Simplify using `only [br, entN, dif_pos h', Matrix.one_apply, Fin.ext_iff, Fin.lt_def]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h; rw [if_neg (by omega)]`. Introduce `h; rw [if_pos (by omega)]`. Establish `h2 : tl m (1 : Mt g (m + k)) = 1`. Use extensionality with `i j`.
+
+Simplify using `[tl_apply, Matrix.one_apply, Fin.ext_iff]`. Use `inMir_of _ (e ▸ inR_conj _ _ _ h1) ?_` and prove the remaining obligations. Rewrite using `[e, upperLeftBlock_blockDiagExtendByIdentity_conj, h2, mul_one, mul_one]`. Conclude with `hA`.
+-/
 theorem inMir_dM (A : Mt g m) (hA : InMir A) : InMir (dM k A) := by
   have e : dM k A = dM k A * 1 * dM k 1 := by rw [dM_one, mul_one, mul_one]
   have h1 : InR m (1 : Mt g (m + k)) := by
@@ -126,6 +187,15 @@ theorem inMir_dM (A : Mt g m) (hA : InMir A) : InMir (dM k A) := by
   rw [e, upperLeftBlock_blockDiagExtendByIdentity_conj, h2, mul_one, mul_one]
   exact hA
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Introduce `p x₀ hp hx₀`. Unfold `tail`. Use `congr 1`. Use `symm`.
+
+Use `Fintype.sum_equiv (MulAut.conj (dG k p)).toEquiv _ _ fun x => ?_` and prove the remaining obligations. Establish `e : (MulAut.conj (dG k p)).toEquiv x = dG k p * x * (dG k p)⁻¹` using `rfl`. Rewrite using `[e]`. Establish `hiff : (InR m (x : Mt g (m + k)) ∧ tl m (x : Mt g (m + k)) = (x₀ : Mt g m)) ↔ (InR m ((dG k p * x * (dG k p)⁻¹ : Gn g (m + k)) : Mt g (m + k)) ∧ tl m ((dG k p * x * (dG k p)⁻¹ : Gn g (m + k)) : Mt g (m + k)) = ((p * x₀ * p⁻¹ : Gn g m) : Mt g m))`. Rewrite using `[conj_val, upperLeftBlock_blockDiagExtendByIdentity_conj, Units.val_mul, Units.val_mul, Units.mul_left_inj, Units.mul_right_inj]`.
+
+Use `and_congr_left fun _ => ⟨inR_conj _ _ _, fun h => ?_⟩` and prove the remaining obligations. Use `inR_conj ((p⁻¹ : Gn g m) : Mt g m) (p : Mt g m) _ h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← mul_assoc, mul_assoc _ (dM k _) (dM k _), dM_mul, Units.inv_mul, dM_one, one_mul, mul_one]`. Then use the resulting hypothesis. Distinguish the cases in `h : InR m (x : Mt g (m + k)) ∧ tl m (x : Mt g (m + k)) = (x₀ : Mt g m)`. Rewrite using `[if_pos h, if_pos (hiff.1 h), hF _ _ (inMir_dM _ hp) (inMir_of _ h.1 (h.2 ▸ hx₀)), conj_val, supFrom_conj hm _ _ hp]`.
+
+Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.2 h'))]`.
+-/
 theorem isMirClass_tail (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (m n : ℕ) (F : Gn g n → ℂ)
     (hm : 1 ≤ m) (hmn : m ≤ n) (hF : IsMirClass F) : IsMirClass (tail ψ m F) := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hmn

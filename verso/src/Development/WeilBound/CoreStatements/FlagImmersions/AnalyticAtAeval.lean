@@ -10,6 +10,9 @@ open AlgebraicGeometry CategoryTheory NumberField Filter Topology MvPolynomial
 open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB Bh
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p q hp hq => simpa using hp.fun_add hq`. Consider the case `mul_X p i hp => simpa using hp.fun_mul (h i)`.
+-/
 theorem Bh.analyticAt_aeval {σ : Type} {n : ℕ} {f : σ → (Fin n → ℂ) → ℂ} {t : Fin n → ℂ} (h : ∀ q, AnalyticAt ℂ (f q) t)
     (p : MvPolynomial σ ℤ) : AnalyticAt ℂ (fun u => aeval (fun q => f q u) p) t := by
   induction p using MvPolynomial.induction_on with
@@ -17,6 +20,43 @@ theorem Bh.analyticAt_aeval {σ : Type} {n : ℕ} {f : σ → (Fin n → ℂ) �
   | add p q hp hq => simpa using hp.fun_add hq
   | mul_X p i hp => simpa using hp.fun_mul (h i)
 
+/- English proof (translation)
+Introduce `hD E _ _ _ H D l Xo c Y S RM Sys Fx Or hJ hdeg hamp`. Take `⟨m, n, s, hs, hamp⟩` from `hamp`. Establish `hd : IsDegreeOff Sys.A Or.Re.R.A Or.Re.π 1 Or.Re.br`. Use `Or.Re.degree` as an intermediate fact. Rewrite `this` using `[Or.Re_deg, hdeg]`. Then use the resulting hypothesis.
+
+Establish `hsurj` using `surj_of_degree Or.Re.holo.1 hd`. Use `set R := Or.Re.R with hR`. Use `set π := Or.Re.π with hπ`. Set `k₀` to `Or.k₀`. Establish `hmem : ∀ w, ∀ w' ∈ R.U w, R.lift w w' ∈ mcPts (mCoordIdeal RM.y)` using `R.mem`.
+
+Use `choose z hz using fun w => SheetDecomposition.exists_pt Or.𝔐 (hmem w w (R.mem_U w))`. Establish `hz' : ∀ w, ∀ w' ∈ R.U w, CoordsAt Or.𝔐.ξ RM.y (z w') (R.lift w w')` using `fun w w' h => by`. Take `⟨a, ha, e⟩` from `R.compat w w' w' ⟨h, R.mem_U w'⟩`. Conclude with `SheetDecomposition.coords_of_sat Or.𝔐 (hz w') ⟨_, rfl, a, ha, e⟩`. Establish `hpoly : ∀ i (cc : (k : RM.K) → RM.ι k), (∀ k, RM.y ⟨k, cc k⟩ ≠ 0) → ∃ p : MRing RM.ι, aeval (fun q : Σ k, RM.ι k => RM.y q / RM.y ⟨q.1, cc q.1⟩) p = s i * ∏ k, RM.y ⟨k, cc k⟩ ^ (-((m : ℤ) * RM.A.a k - 1)) ∧ aeval (fun q : Σ k, RM.ι k => RM.y q / RM.y ⟨q.1, cc q.1⟩) p = fn RM.y (s …` using `fun i cc hc => by`.
+
+Establish `h1` using `hs i cc hc`. Simplify using `only [Nat.cast_one, one_mul] at h1`. Take `⟨p, hp⟩` from `exists_poly Or.𝔐.tie Or.𝔐.normal cc hc h1`. Conclude with `⟨p, hp, hp.trans (fn_eq Or.A_deg cc hc)⟩`. Establish `hchart : ∀ w, ∃ cc : (k : RM.K) → RM.ι k, (∀ k, R.lift w w ⟨k, cc k⟩ ≠ 0) ∧ ∀ k, RM.y ⟨k, cc k⟩ ≠ 0` using `fun w => by choose cc hc using (hmem w w (R.mem_U w)).1`.
+
+Conclude with `⟨cc, hc, fun k => ((hz w).2 k (cc k) (IsUnit.mk0 _ (hc k))).1⟩`. Set `f : Fin n → RM.ι k₀ → ((k : RM.K) → RM.ι k) → R.X → ℂ` to `fun i i₀ cc w => if h : ∃ r, ValAt Or.𝔐.ξ (z w) (fn RM.y (s i) m k₀ i₀ cc) r then h.choose else 0`. Establish `hf : ∀ i i₀ cc w r, ValAt Or.𝔐.ξ (z w) (fn RM.y (s i) m k₀ i₀ cc) r → f i i₀ cc w = r` using `fun i i₀ cc w r h => by`. Establish `h' : ∃ r, ValAt Or.𝔐.ξ (z w) (fn RM.y (s i) m k₀ i₀ cc) r` using `⟨r, h⟩`. Simplify using `only [f, dif_pos h']`.
+
+Conclude with `CxVal.unique h'.choose_spec h`. Set `U : RM.ι k₀ → Set Sys.X` to `fun i₀ => {x | Fx.pt x (Or.ix.symm i₀) ≠ 0}`. Establish `hU : ∀ i₀ w, π w ∈ U i₀ ↔ R.lift w w ⟨k₀, i₀⟩ ≠ 0` using `fun i₀ w => by`. Take `⟨a, ha⟩` from `Or.π_pt w`. Establish `h1 : R.lift w w ⟨k₀, i₀⟩ = a * Fx.pt (π w) (Or.ix.symm i₀)`.
+
+Use `congrFun ha (Or.ix.symm i₀)` as an intermediate fact. Simplify using `using this`. Establish `h2 : a ≠ 0`. Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `(hmem w w (R.mem_U w)).1 k₀`.
+
+Use `congrFun ha (Or.ix.symm i)` as an intermediate fact. Conclude with `hi (by simpa using this)`. Rewrite using `[h1]`. Simplify using `[U, h2]`. Establish `hUo : ∀ i₀, IsOpen (U i₀)` using `fun i₀ => by`.
+
+Establish `e : (U i₀)ᶜ = π '' {w | R.lift w w ⟨k₀, i₀⟩ ≠ 0}ᶜ`. Use extensionality with `x`. Take `⟨w, rfl⟩` from `hsurj x`. Conclude with `⟨fun h => ⟨w, fun h' => h ((hU _ _).2 h'), rfl⟩, fun ⟨w', h, e⟩ h' => h ((hU _ _).1 (e ▸ h'))⟩`. Rewrite using `[← isClosed_compl_iff, e]`.
+
+Conclude with `Or.Re.holo.1.isClosedMap _ (isOpen_lift_ne R _).isClosed_compl`. Establish `hhol : ∀ i i₀ cc, R.A.HoloOn (π ⁻¹' U i₀) (f i i₀ cc)` using `fun i i₀ cc j t ht => by`. Take `⟨c', hc', hy'⟩` from `hchart ((R.A.chart j).symm t)`. Take `⟨p, -, hp⟩` from `hpoly i c' hy'`. Establish `h0` using `(hU _ _).1 ht.2`.
+
+Use `set w₁ := (R.A.chart j).symm t with hw₁`. Establish `ha : ∀ q, AnalyticAt ℂ (fun u => R.lift w₁ ((R.A.chart j).symm u) q) t` using `fun q => R.holo w₁ q j t ⟨ht.1, R.mem_U w₁⟩`. Establish `hA : AnalyticAt ℂ (fun u => aeval (fun q : Σ k, RM.ι k => R.lift w₁ ((R.A.chart j).symm u) q / R.lift w₁ ((R.A.chart j).symm u) ⟨q.1, c' q.1⟩) p * (∏ k, R.lift w₁ ((R.A.chart j).symm u) ⟨k, cc k⟩ / R.lift w₁ ((R.A.chart j).symm u) ⟨k, c' k⟩) * (R.lift w₁ ((R.A.chart j).symm u) ⟨k …` using `((Bh.analyticAt_aeval (fun q => (ha q).fun_div (ha _) (hc' _)) p).fun_mul (Finset.analyticAt_fun_prod _ fun k _ => (ha _).fun_div (ha _) (hc' _))).fun_mul (((ha _).fun_div (ha _) h0).fun_pow m)`. Use `hA.congr ?_` and prove the remaining obligations. Establish `e1 : ∀ᶠ u in 𝓝 t, (R.A.chart j).symm u ∈ R.U w₁` using `((R.A.chart j).continuousAt_symm ht.1).eventually_mem ((R.isOpen_U w₁).mem_nhds (R.mem_U w₁))`.
+
+Establish `e2 : ∀ᶠ u in 𝓝 t, ∀ k, R.lift w₁ ((R.A.chart j).symm u) ⟨k, c' k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => (ha _).continuousAt.eventually_ne (hc' k)`. Use `filter_upwards [e1, e2, (ha _).continuousAt.eventually_ne h0] with u h1 h2 h3`. Conclude with `(hf _ _ _ _ _ (val_fn (Or.𝔐.all _) (hz' w₁ _ h1) i₀ cc c' h2 h3 hp)).symm`. Use `choose F hF hFf using fun i i₀ cc => hD _ Sys.X R.X Sys.A R.A π Or.Re.br (U i₀) (f i i₀ cc) Or.Re.holo hd (hUo i₀) (hhol i i₀ cc)`. Use `exists_inverse R hJ Sys.A π hsurj fun w₁ => ?_` and prove the remaining obligations.
+
+Take `⟨c', hc', hy'⟩` from `hchart w₁`. Take `⟨i, v, hv, hval⟩` from `hamp ℂ (R.lift w₁ w₁) ⟨(hmem w₁ w₁ (R.mem_U w₁)).1, fun g hg => by`. Use `(hmem w₁ w₁ (R.mem_U w₁)).2 g hg` as an intermediate fact. Rewrite using `[MvPolynomial.eval_map] at this⟩` and apply the resulting hypothesis. Take `⟨p, hp1, hp2⟩` from `hpoly i c' hy'`.
+
+Establish `hu` using `ne_zero_of_hasVal (Or.𝔐.all _) (hz w₁) c' hc' hp1 hv hval`. Establish `hin : π w₁ ∈ U (c' k₀)` using `(hU _ _).2 (hc' k₀)`. Use `⟨{x ∈ U (c' k₀) | F i (c' k₀) c' x ≠ 0}, fun x q => F i (c' k₀) (Function.update c' q.1 q.2) x, ?_, ⟨hin, ?_⟩, fun q j => (hF _ _ _ j).mono fun t ht => ⟨ht.1, ht.2.1⟩, fun w hw => ?_⟩` and prove the remaining obligations. Use `isOpen_iff_mem_nhds.2 fun x hx => ?_ filter_upwards [(hUo _).mem_nhds hx.1, (contAt_of_holoOn (hF i _ c') hx.1).eventually_ne hx.2] with x' h1 h2` and prove the remaining obligations. Conclude with `⟨h1, h2⟩`.
+
+Rewrite using `[hFf _ _ _ _ hin, hf _ _ _ _ _ (val_fn (Or.𝔐.all _) (hz w₁) (c' k₀) c' c' hc' (hc' k₀) hp2)]`. Conclude with `mul_ne_zero (mul_ne_zero hu (Finset.prod_ne_zero_iff.2 fun k _ => div_ne_zero (hc' k) (hc' k))) (pow_ne_zero _ (div_ne_zero (hc' _) (hc' _)))`. Take `⟨c₂, hc₂, hy₂⟩` from `hchart w`. Take `⟨p₂, -, hp₂⟩` from `hpoly i c₂ hy₂`. Establish `h0` using `(hU _ _).1 hw.1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨κ, hκ⟩ : ∃ κ : ℂ, ∀ cc, F i (c' k₀) cc (π w) = κ * ∏ k, R.lift w w ⟨k, cc k⟩ := by`. Use `⟨aeval (fun q : Σ k, RM.ι k => R.lift w w q / R.lift w w ⟨q.1, c₂ q.1⟩) p₂ * (R.lift w w ⟨k₀, c₂ k₀⟩ / R.lift w w ⟨k₀, c' k₀⟩) ^ m / ∏ k, R.lift w w ⟨k, c₂ k⟩, fun cc => ?_⟩` and prove the remaining obligations. Rewrite using `[hFf _ _ _ _ hw.1, hf _ _ _ _ _ (val_fn (Or.𝔐.all _) (hz w) (c' k₀) cc c₂ hc₂ h0 hp₂), Finset.prod_div_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hw.2`.
+
+Rewrite `h1` using `[hκ]`. Establish `h2` using `left_ne_zero_of_mul h1`. Establish `h3` using `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul h1)`. Use `SO_symm ⟨fun k => κ * ∏ k' ∈ Finset.univ.erase k, R.lift w w ⟨k', c' k'⟩, fun k => mul_ne_zero h2 (Finset.prod_ne_zero_iff.2 fun k' _ => h3 k' (Finset.mem_univ _)), funext fun q => ?_⟩` and prove the remaining obligations. Take `⟨k, j⟩` from `q`.
+
+Use `show F i (c' k₀) (Function.update c' k j) (π w) = _`. Rewrite using `[hκ, ← Finset.prod_erase_mul _ _ (Finset.mem_univ k), Function.update_self, mul_assoc]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun k' hk' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hk')]`.
+-/
 theorem biholo_of : Descend → Biholo := by
   intro hD E _ _ _ H D l Xo c Y S RM Sys Fx Or hJ hdeg hamp
   classical

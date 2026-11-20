@@ -7,6 +7,11 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC.Coord
 
+/- English proof (translation)
+Take `⟨q0, hq0⟩ : ∃ q0 : LowIdx Ψ N j, q0.1 = (τ, cb, ca)` from `⟨⟨(τ, cb, ca), hab, hblk⟩, rfl⟩`. Establish `e : FC.CIdx Ψ N j τ ca cb ≃ {q : LowIdx Ψ N j // q ≠ q0}` using `Equiv.subtypeEquivRight (fun q => by show q.1 ≠ (τ, cb, ca) ↔ q ≠ q0`. Rewrite using `[← hq0]`. Conclude with `not_congr Subtype.ext_iff.symm)`. Establish `h1 : Nat.card (Option {q : LowIdx Ψ N j // q ≠ q0}) = Nat.card (LowIdx Ψ N j)` using `Nat.card_congr (Equiv.optionSubtypeNe q0)`.
+
+Rewrite `h1` using `[Nat.card_eq_fintype_card, Fintype.card_option]`. Rewrite using `[Nat.card_congr e, Nat.card_eq_fintype_card, h1, Nat.card_eq_fintype_card]`. Use `GlobalTheory.CompanionTheory.Ar.PB.WMan.ChartCount.card_lowIdx Ψ N j hj` and compare the differences between its conclusion and the goal.
+-/
 theorem nat_card_cIdx (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (τ : Ψ) (ca cb : Fin N) (hj : j ≤ N)
     (hab : ca < cb) (hblk : (cb : ℕ) < N - j ↔ (ca : ℕ) < N - j) :
     Nat.card (FC.CIdx Ψ N j τ ca cb) + 1 = Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) := by
@@ -23,6 +28,9 @@ theorem nat_card_cIdx (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (τ 
   rw [Nat.card_congr e, Nat.card_eq_fintype_card, h1, Nat.card_eq_fintype_card]
   convert GlobalTheory.CompanionTheory.Ar.PB.WMan.ChartCount.card_lowIdx Ψ N j hj
 
+/- English proof (translation)
+Introduce `Ψ _ _ N j n d τ ca cb hj hab hblk hd`. Establish `h` using `nat_card_cIdx Ψ N j τ ca cb hj hab hblk`. Apply `Finite.card_eq.1` to reduce the goal to its premises. Rewrite using `[Nat.card_sum, Nat.card_eq_fintype_card (α := Fin d), Fintype.card_fin, Nat.card_eq_fintype_card (α := Fin n), Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nonempty_equiv_cIdx : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j n d : ℕ) (τ : Ψ) (ca cb : Fin N), j ≤ N →
     ca < cb → ((cb : ℕ) < N - j ↔ (ca : ℕ) < N - j) →
     d + 1 = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) →

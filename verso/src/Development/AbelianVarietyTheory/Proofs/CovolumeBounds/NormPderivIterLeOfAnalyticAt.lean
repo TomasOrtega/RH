@@ -19,15 +19,27 @@ noncomputable def pderivIter (α : ι →₀ ℕ) (F : (ι → 𝕜) → V) : (�
 noncomputable def polyDeriv (P : MvPolynomial ι 𝕜) (F : (ι → 𝕜) → V) (a : ι → 𝕜) : V :=
   ∑ α ∈ P.support, P.coeff α • pderivIter α F a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pderivList_nil (F : (ι → 𝕜) → V) : pderivList [] F = F := rfl
 
+/- English proof (translation)
+Simplify using `only [pderivList, List.map_append, lineDerivList_append]`.
+-/
 theorem pderivList_append (l₁ l₂ : List ι) (F : (ι → 𝕜) → V) :
     pderivList (l₁ ++ l₂) F = pderivList l₁ (pderivList l₂ F) := by
   simp only [pderivList, List.map_append, lineDerivList_append]
 
+/- English proof (translation)
+Simplify using `[pderivIter]`.
+-/
 @[simp] theorem pderivIter_zero (F : (ι → 𝕜) → V) : pderivIter 0 F = F := by
   simp [pderivIter]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem update_eq_add_smul_single (z : ι → 𝕜) (k : ι) (t : 𝕜) :
     Function.update z k t = z + (t - z k) • (Pi.single k 1 : ι → 𝕜) := by
   funext j
@@ -35,6 +47,11 @@ theorem update_eq_add_smul_single (z : ι → 𝕜) (k : ι) (t : 𝕜) :
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Establish `h` using `lineDerivList_replicate n (Pi.single k (1 : 𝕜) : ι → 𝕜) F z (0 : 𝕜)`. Rewrite `h` using `[zero_smul, add_zero]`. Rewrite using `[pderivList, List.map_replicate, h]`. Simplify using `only [update_eq_add_smul_single]`. Rewrite using `[iteratedDeriv_comp_sub_const (f := fun s : 𝕜 => F (z + s • (Pi.single k 1 : ι → 𝕜)))]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pderivList_replicate (k : ι) (n : ℕ) (F : (ι → 𝕜) → V) (z : ι → 𝕜) :
     pderivList (List.replicate n k) F z
       = iteratedDeriv n (fun t => F (Function.update z k t)) (z k) := by
@@ -45,6 +62,9 @@ theorem pderivList_replicate (k : ι) (n : ℕ) (F : (ι → 𝕜) → V) (z : �
   rw [iteratedDeriv_comp_sub_const (f := fun s : 𝕜 => F (z + s • (Pi.single k 1 : ι → 𝕜)))]
   simp
 
+/- English proof (translation)
+Rewrite using `[← pderivList_replicate, pderivIter, Finsupp.toMultiset_single]`. Use `congr 1`. Rewrite using `[← List.perm_replicate, ← Multiset.coe_eq_coe, Multiset.coe_toList, Multiset.nsmul_singleton, Multiset.coe_replicate]`.
+-/
 theorem pderivIter_single (k : ι) (n : ℕ) (F : (ι → 𝕜) → V) (z : ι → 𝕜) :
     pderivIter (Finsupp.single k n) F z
       = iteratedDeriv n (fun t => F (Function.update z k t)) (z k) := by
@@ -53,10 +73,16 @@ theorem pderivIter_single (k : ι) (n : ℕ) (F : (ι → 𝕜) → V) (z : ι �
   rw [← List.perm_replicate, ← Multiset.coe_eq_coe, Multiset.coe_toList,
     Multiset.nsmul_singleton, Multiset.coe_replicate]
 
+/- English proof (translation)
+The claim follows from `lineDerivList_zero _`.
+-/
 @[simp] theorem pderivIter_zero_fun (α : ι →₀ ℕ) :
     pderivIter α (fun _ : ι → 𝕜 => (0 : V)) = fun _ => 0 :=
   lineDerivList_zero _
 
+/- English proof (translation)
+Use `Finset.sum_subset hs fun α _ hα => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.1 hα, zero_smul]`.
+-/
 theorem polyDeriv_eq_sum_of_subset (P : MvPolynomial ι 𝕜) {s : Finset (ι →₀ ℕ)}
     (hs : P.support ⊆ s) (F : (ι → 𝕜) → V) (a : ι → 𝕜) :
     polyDeriv P F a = ∑ α ∈ s, P.coeff α • pderivIter α F a := by
@@ -77,25 +103,43 @@ noncomputable def polyDerivLinear (F : (ι → 𝕜) → V) (a : ι → 𝕜) : 
       polyDeriv, Finset.smul_sum]
     simp only [MvPolynomial.coeff_smul, smul_eq_mul, mul_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem polyDerivLinear_apply (F : (ι → 𝕜) → V) (a : ι → 𝕜) (P : MvPolynomial ι 𝕜) :
     polyDerivLinear F a P = polyDeriv P F a := rfl
 
+/- English proof (translation)
+The claim follows from `(polyDerivLinear F a).map_zero`.
+-/
 @[simp] theorem polyDeriv_zero (F : (ι → 𝕜) → V) (a : ι → 𝕜) :
     polyDeriv (0 : MvPolynomial ι 𝕜) F a = 0 := (polyDerivLinear F a).map_zero
 
+/- English proof (translation)
+Rewrite using `[polyDeriv_eq_sum_of_subset _ (s := {α}) MvPolynomial.support_monomial_subset]`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem polyDeriv_monomial (α : ι →₀ ℕ) (c : 𝕜) (F : (ι → 𝕜) → V) (a : ι → 𝕜) :
     polyDeriv (MvPolynomial.monomial α c) F a = c • pderivIter α F a := by
   rw [polyDeriv_eq_sum_of_subset _ (s := {α}) MvPolynomial.support_monomial_subset]
   simp
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.monomial_zero', polyDeriv_monomial, pderivIter_zero]`.
+-/
 @[simp] theorem polyDeriv_C (c : 𝕜) (F : (ι → 𝕜) → V) (a : ι → 𝕜) :
     polyDeriv (MvPolynomial.C c) F a = c • F a := by
   rw [← MvPolynomial.monomial_zero', polyDeriv_monomial, pderivIter_zero]
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.C_1, polyDeriv_C, one_smul]`.
+-/
 @[simp] theorem polyDeriv_one (F : (ι → 𝕜) → V) (a : ι → 𝕜) :
     polyDeriv (1 : MvPolynomial ι 𝕜) F a = F a := by
   rw [← MvPolynomial.C_1, polyDeriv_C, one_smul]
 
+/- English proof (translation)
+Simplify using `[polyDeriv]`.
+-/
 @[simp] theorem polyDeriv_zero_fun (P : MvPolynomial ι 𝕜) (a : ι → 𝕜) :
     polyDeriv P (fun _ => (0 : V)) a = 0 := by
   simp [polyDeriv]
@@ -109,14 +153,23 @@ variable {𝕜 : Type*} [NontriviallyNormedField 𝕜] {ι : Type*} [DecidableEq
 
 variable [CompleteSpace V]
 
+/- English proof (translation)
+The claim follows from `analyticAt_lineDerivList h _`.
+-/
 theorem analyticAt_pderivIter {F : (ι → 𝕜) → V} {a : ι → 𝕜} (h : AnalyticAt 𝕜 F a)
     (α : ι →₀ ℕ) : AnalyticAt 𝕜 (pderivIter α F) a :=
   analyticAt_lineDerivList h _
 
+/- English proof (translation)
+The claim follows from `lineDerivList_perm h (hl.map _)`.
+-/
 theorem pderivList_perm {F : (ι → 𝕜) → V} {a : ι → 𝕜} (h : AnalyticAt 𝕜 F a) {l₁ l₂ : List ι}
     (hl : l₁.Perm l₂) : pderivList l₁ F a = pderivList l₂ F a :=
   lineDerivList_perm h (hl.map _)
 
+/- English proof (translation)
+Rewrite using `[pderivIter, pderivIter, pderivIter, ← pderivList_append]`. Use `pderivList_perm h ?_` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add]`. Simplify using `only [Multiset.coe_toList, map_add]`.
+-/
 theorem pderivIter_add_index {F : (ι → 𝕜) → V} {a : ι → 𝕜} (h : AnalyticAt 𝕜 F a)
     (α β : ι →₀ ℕ) : pderivIter (α + β) F a = pderivIter α (pderivIter β F) a := by
   rw [pderivIter, pderivIter, pderivIter, ← pderivList_append]
@@ -130,6 +183,15 @@ section Polynomial
 
 variable {𝕜 : Type*} [NontriviallyNormedField 𝕜] {ι : Type*} [DecidableEq ι]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => simpa using hasDerivAt_const (0 : 𝕜) c`. Consider the case `add P Q hP hQ => simpa using hP.fun_add hQ`. Consider the case `mul_X P j hP`. Establish `hj : HasDerivAt (fun t : 𝕜 => z j + t * (Pi.single k 1 : ι → 𝕜) j) ((Pi.single k 1 : ι → 𝕜) j) 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : 𝕜)).mul_const ((Pi.single k 1 : ι → 𝕜) j)).const_add (z j)`. Use `hP.fun_mul hj` as an intermediate fact. Establish `e : (fun t : 𝕜 => MvPolynomial.eval (z + t • (Pi.single k 1 : ι → 𝕜)) (P * MvPolynomial.X j)) = fun t : 𝕜 => MvPolynomial.eval (z + t • (Pi.single k 1 : ι → 𝕜)) P * (z j + t * (Pi.single k 1 : ι → 𝕜) j)`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Use `this.congr_deriv ?_` and prove the remaining obligations. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using `[add_comm, mul_comm]`.
+
+Simplify using `[h, mul_comm]`.
+-/
 theorem hasDerivAt_eval_line (Q : MvPolynomial ι 𝕜) (z : ι → 𝕜) (k : ι) :
     HasDerivAt (fun t : 𝕜 => MvPolynomial.eval (z + t • (Pi.single k 1 : ι → 𝕜)) Q)
       (MvPolynomial.eval z (MvPolynomial.pderiv k Q)) 0 := by
@@ -159,6 +221,23 @@ section Cauchy
 variable {ι : Type*} [DecidableEq ι] [Fintype ι]
   {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro z _ hz; simpa using hM z fun k => hz k (by simp)`. Consider the case `insert j s hj ih`. Introduce `z hz hz'`. Establish `hzj : z j = a j` using `hz j (Finset.mem_insert_self _ _)`.
+
+Establish `hup : ∀ t : ℂ, ‖t - a j‖ ≤ r j → AnalyticAt ℂ F (Function.update z j t)`. Introduce `t ht`. Use `hF _ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using `using ht`. Rewrite using `[Function.update_of_ne hk]`. Distinguish the cases in `hks : k ∈ s`. Simplify `hr k` using `[hz k (Finset.mem_insert_of_mem hks)]`. Conclude with `(hz' k (by simp [hk, hks])).le`.
+
+Establish `hb : ∀ t : ℂ, ‖t - a j‖ = r j → ‖pderivIter (∑ k ∈ s, Finsupp.single k (α k)) F (Function.update z j t)‖ ≤ (∏ k ∈ s, ((α k).factorial : ℝ)) * M / ∏ k ∈ s, r k ^ α k`. Introduce `t ht`. Use `ih _ (fun k hk => ?_) (fun k hk => ?_)` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (ne_of_mem_of_not_mem hk hj)]`. Conclude with `hz k (Finset.mem_insert_of_mem hk)`.
+
+Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Simplify using `using ht`. Rewrite using `[Function.update_of_ne hkj]`. Conclude with `hz' k (by simp [hkj, hk])`.
+
+Establish `hza : AnalyticAt ℂ F z`. Use `hup (z j) (by simpa [hzj] using hr j)` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Rewrite using `[Finset.sum_insert hj, pderivIter_add_index hza, pderivIter_single, Finset.prod_insert hj, Finset.prod_insert hj, hzj]`. Break down `(hr j).eq_or_lt with h0 | hpos` into its components or cases.
+
+Establish `hαj : α j = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(hα j hne).ne h0`. Simplify `hb (a j) (by simpa using h0)` using `[hαj]`. Establish `hd : DiffContOnCl ℂ (fun t => pderivIter (∑ k ∈ s, Finsupp.single k (α k)) F (Function.update z j t)) (Metric.ball (a j) (r j))`.
+
+Use `DifferentiableOn.diffContOnCl fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[closure_ball _ hpos.ne', mem_closedBall_iff_norm]`. Conclude with `((analyticAt_pderivIter (hup t ht) _).differentiableAt.comp t (hasDerivAt_update z j t).differentiableAt).differentiableWithinAt`. Use `(Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le (α j) hpos hd fun t ht => hb t (mem_sphere_iff_norm.1 ht)).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cauchy_estimate_iterated_pderiv {F : (ι → ℂ) → V} {a : ι → ℂ} {r : ι → ℝ} {M : ℝ} (α : ι →₀ ℕ)
     (hr : ∀ k, 0 ≤ r k) (hα : ∀ k, α k ≠ 0 → 0 < r k)
     (hF : ∀ z : ι → ℂ, (∀ k, ‖z k - a k‖ ≤ r k) → AnalyticAt ℂ F z)
@@ -211,6 +290,9 @@ private theorem cauchy_estimate_iterated_pderiv {F : (ι → ℂ) → V} {a : ι
         fun t ht => hb t (mem_sphere_iff_norm.1 ht)).trans_eq ?_
       ring
 
+/- English proof (translation)
+Establish `h` using `cauchy_estimate_iterated_pderiv α hr hα hF hM Finset.univ a (fun _ _ => rfl) (by simp)`. Rewrite `h` using `[Finsupp.univ_sum_single]`. Then use the resulting hypothesis.
+-/
 theorem norm_pderivIter_le_of_analyticAt {F : (ι → ℂ) → V} {a : ι → ℂ} {r : ι → ℝ} {M : ℝ}
     (α : ι →₀ ℕ) (hr : ∀ k, 0 ≤ r k) (hα : ∀ k, α k ≠ 0 → 0 < r k)
     (hF : ∀ z : ι → ℂ, (∀ k, ‖z k - a k‖ ≤ r k) → AnalyticAt ℂ F z)

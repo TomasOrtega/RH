@@ -11,6 +11,9 @@ open scoped TensorProduct Matrix GlobalTheory.VacAny
 
 namespace GlobalTheory.KFinLoc
 
+/- English proof (translation)
+Establish `ht : ∀ e : E, Algebra.trace (AF F) (AF F ⊗[F] E) (inclR (F` using `F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := fun e => by show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`. Establish `hc : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := fun e => rfl`. Rewrite using `[← ht, GlobalTheory.WeilM.symp]`. Simplify using `only [GlobalTheory.WeilM.hTens, incM, Matrix.map_apply, hc, map_mul, map_sum]`.
+-/
 theorem symp_incM_mat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n d : ℕ} (JA : Matrix (Fin n) (Fin n) E) (JB : Matrix (Fin d) (Fin d) E)
     (θ : E) (x y : Matrix (Fin n) (Fin d) E) :
@@ -25,6 +28,11 @@ theorem symp_incM_mat {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rw [← ht, GlobalTheory.WeilM.symp]
   simp only [GlobalTheory.WeilM.hTens, incM, Matrix.map_apply, hc, map_mul, map_sum]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ ψ n d X Y v hψ X₀ h x hx y hy`. Use `(hψ _).1 fun t ht => ?_` and prove the remaining obligations. Establish `hat : At (evFin F v) (GlobalTheory.EmbChart.atPlace v t)` using `fun u hu => by`. Rewrite using `[smul_eq_mul, mul_comm, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]`. Establish `hmem : GlobalTheory.EmbChart.atPlace v t • incM F (Matrix.vecMulVec x y) ∈ latAtV X Y v` using `AddSubgroup.subset_closure ⟨GlobalTheory.EmbChart.atPlace v t, hat, by rw [GlobalTheory.EmbChart.evFin_atPlace]; exact ht, x, hx, y, hy, rfl⟩`.
+
+Establish `h1` using `h _ hmem`. Establish `hm : (-1 : AE F E) = inclR (F` using `F) (AF F) (-1 : E) := by rw [map_neg, map_one]`. Rewrite `h1` using `[GlobalTheory.LatVac.symp_smul_smul, hm, symp_incM_mat, GlobalTheory.EmbChart.atPlace_mul_right, GlobalTheory.EmbChart.atPlace_mul_right, GlobalTheory.EmbChart.evFin_atPlace, one_mul, AlgHom.commutes, neg_one_mul, mul_comm]`. Conclude with `h1`.
+-/
 theorem trace_hTens_integral_of_char : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (ψ : AddChar (AF F) ℂ) {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F), PsiUnr ψ v →
     ∀ X₀ : Matrix (Fin n) (Fin d) E, (∀ γ ∈ latAtV X Y v,

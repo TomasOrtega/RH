@@ -18,6 +18,13 @@ open Classical in
 def coords (Λ : PeriodPair) (Ω : ℂ) (z : ℂ) : Fin 3 → ℂ :=
   if z ∈ Λ.lattice then ![0, 1, 0] else ![Λ.weierstrassP z / Ω ^ 2, Λ.derivWeierstrassP z / (2 * Ω ^ 3), 1]
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.map_id]`. Unfold `coords`. Use `split_ifs with hz`. Conclude with `GlobalTheory.WeierstrassCurve.isUnimodularSol_zero _`. Use `GlobalTheory.WeierstrassCurve.isUnimodularSol_some ?_` and prove the remaining obligations.
+
+Rewrite using `[WeierstrassCurve.Affine.equation_iff]`. Establish `h` using `Λ.derivWeierstrassP_sq z hz`. Simplify using `only [curve]`. Distinguish the cases in `hΩ : Ω = 0`. Substitute `hΩ` using the available equality.
+
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take the linear combination `4 * h`.
+-/
 theorem isUnimodularSol_coords (Λ : PeriodPair) (Ω z : ℂ) :
     IsUnimodularSol ((curve Λ Ω).map (RingHom.id ℂ)) (coords Λ Ω z) := by
   rw [WeierstrassCurve.map_id]
@@ -36,6 +43,9 @@ theorem isUnimodularSol_coords (Λ : PeriodPair) (Ω z : ℂ) :
 def pt (Λ : PeriodPair) (Ω : ℂ) (z : ℂ) : Sp ℂ ⟶ scheme (curve Λ Ω) :=
   ptHom (curve Λ Ω) (RingHom.id ℂ) (coords Λ Ω z) (isUnimodularSol_coords Λ Ω z)
 
+/- English proof (translation)
+Use `GlobalTheory.WeierstrassCurve.isUnimodularSol_origin ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.WeierstrassCurve.equation_origin_iff]`. Establish `: (c • DualNumber.eps : DualNumber ℂ) ^ 3 = 0`. Rewrite using `[pow_succ, pow_two, smul_mul_smul_comm, DualNumber.eps_mul_eps, smul_zero, zero_mul]`. Simplify using `[this]`.
+-/
 theorem isUnimodularSol_tan (W : WeierstrassCurve ℂ) (c : ℂ) :
     IsUnimodularSol (W.map (algebraMap ℂ (DualNumber ℂ))) ![c • DualNumber.eps, -1, 0] := by
   refine GlobalTheory.WeierstrassCurve.isUnimodularSol_origin ?_
@@ -47,6 +57,9 @@ theorem isUnimodularSol_tan (W : WeierstrassCurve ℂ) (c : ℂ) :
 def tan (W : WeierstrassCurve ℂ) (c : ℂ) : Sp (DualNumber ℂ) ⟶ scheme W :=
   ptHom W (algebraMap ℂ (DualNumber ℂ)) ![c • DualNumber.eps, -1, 0] (isUnimodularSol_tan W c)
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [curve, h₂, h₃, map_neg, map_div₀, map_ofNat]`.
+-/
 theorem curve_map {Λ₀ Λ₁ : PeriodPair} {Ω₀ Ω₁ : ℂ} (g : ℂ →+* ℂ) (h₂ : g (Λ₀.g₂ / Ω₀ ^ 4) = Λ₁.g₂ / Ω₁ ^ 4)
     (h₃ : g (Λ₀.g₃ / Ω₀ ^ 6) = Λ₁.g₃ / Ω₁ ^ 6) : (curve Λ₀ Ω₀).map g = curve Λ₁ Ω₁ := by
   ext <;> simp [curve, h₂, h₃, map_neg, map_div₀, map_ofNat]

@@ -21,6 +21,21 @@ namespace GlobalTheory.FibThetaMove
 
 open GlobalTheory.Ex.OneGen GlobalTheory.ThetaPtMove GlobalTheory.ThetaPtUp GlobalTheory.UMin.ThMove
 
+/- English proof (translation)
+Introduce `V₁ _ _ D K _ _ ev o _ g m J b s t ψ hψ hLB v H`. Take `⟨w, hw⟩` from `hLB`. Use `t.ab.comm` as an intermediate fact. Use `D.P.isAb.comm` as an intermediate fact. Set `F` to `(Over.pullback (spMap ev)).obj D.P.A`.
+
+Establish `: IsCommMonObj F` using `Functor.isCommMonObj_obj`. Set `φF` to `pullback.fst D.P.A.hom (spMap ev)`. Establish `hpD : IsGrpPullback F D.P.A (spMap ev) φF` using `isGrpPullback_pullback D.P.A (spMap ev)`. Establish `hLD : D.P.L.IsLB` using `D.P.isLB`. Establish `hLF : (D.P.L.pull φF).IsLB` using `pull_isLB hLD φF`.
+
+Establish `hLt : t.L.IsLB` using `t.isLB`. Establish `hw₁ : (idIso (D.P.L.pull φF)).IsGen` using `idIso_isGen hLF`. Take `⟨ρF, hρF, hrF⟩` from `exists_rigidificationPullbackCompatibleIso (w := idIso (D.P.L.pull φF)) (ρ₀ := D.rig) hpD hw₁ hLD hLF D.rig_gen`. Establish `hE : eSec F ≫ ψ = 𝟙 _ ≫ eSec t.A`. Use `over_one hψ (T := baseOver _) (T₀ := baseOver _) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm)` as an intermediate fact.
+
+Conclude with `((Category.id_comp _).symm.trans (Category.assoc _ _ _).symm).trans (this.symm.trans (congrArg (𝟙 _ ≫ ·) (Category.id_comp _)))`. Take `⟨ρt, hρt, hrt'⟩` from `exists_gen_up_iso (K := PUnit) (φ' := fun _ => eSec F) (φ := fun _ => eSec t.A) (ε := fun _ => 1) (h := 𝟙 _) (χ := 𝟙 _) hw hLt hLF (Category.id_comp _) (Category.id_comp _) (fun _ => hE) ρF hρF`. Establish `hrt : IsRigidificationPullbackCompatibleIso w (𝟙 _) ρF ρt` using `fun Z r z J J' hJ hJ' => (hrt' Z r z J J' hJ hJ').trans (by rw [Fintype.prod_unique, zpow_one])`. Set `x : Ix g (m ^ 2) → (baseOver (Sp K) ⟶ t.pol.A)` to `fun a => (Over.homMk (𝟙 (Sp K)) (by simp) : Over.mk (𝟙 (Sp K)) ⟶ baseOver (Sp K)) ≫ t.lab a`. Establish `hx : ∀ a, x a ^ (m ^ 2) = 1` using `fun a => by show ((Over.homMk (𝟙 (Sp K)) (by simp) : Over.mk (𝟙 (Sp K)) ⟶ baseOver (Sp K)) ≫ t.lab a) ^ (m ^ 2) = 1`.
+
+Rewrite using `[← MonObj.comp_pow, lab_pow, MonObj.comp_one]`. Take `⟨tht, hgt, hTt⟩` from `exists_gen_thG_of_isThetaPt K t.pol ρt hρt m (Ix g (m ^ 2)) x v hx H`. Establish `hτ₁ : 𝟙 (Sp K) ≫ (baseOver (Sp K)).hom = (baseOver (Sp K)).hom ≫ 𝟙 (Sp K)` using `by simp`. Use `choose xF hxF hnF using fun a => torsion_down hψ (T := baseOver (Sp K)) (T₀ := baseOver (Sp K)) (𝟙 _) hτ₁ (x a) (hx a)`. Take `⟨thF, hsF⟩` from `exists_secRel hψ (T := baseOver (Sp K)) (T₀ := baseOver (Sp K)) (𝟙 _) hτ₁ hw hLt hLF tht`.
+
+Establish `hgF` using `isGenSec_down hψ (𝟙 _) hτ₁ hw hLt hLF hsF hgt`. Establish `hTF` using `fun a => ThG.move hψ (𝟙 _) hτ₁ hw hLt hLF hrt (hxF a) (hnF a) hsF (hTt a)`. Establish `hτ₂ : 𝟙 (Sp K) ≫ (Over.mk (spMap ev)).hom = (baseOver (Sp K)).hom ≫ spMap ev` using `by simp`. Use `choose x₀ hx₀ hn₀ using fun a => torsion_up hpD (T := baseOver (Sp K)) (T₀ := Over.mk (spMap ev)) (𝟙 _) hτ₂ (xF a) (hnF a)`. Take `⟨th₀, hs₀⟩` from `exists_secRel_up hpD (T := baseOver (Sp K)) (T₀ := Over.mk (spMap ev)) (𝟙 _) hτ₂ hw₁ hLD hLF thF`.
+
+Establish `hg₀ : IsGenSec D.P.A D.P.L ((1 : ℕ) : ℤ) th₀` using `isGenSec_up hpD (T := baseOver (Sp K)) (T₀ := Over.mk (spMap ev)) (𝟙 _) hτ₂ hw₁ hLD hLF hs₀ hgF`. Use `⟨th₀, 1, hg₀, one_ne_zero, fun a => ⟨x₀ a, ?_⟩⟩` and prove the remaining obligations. Establish `q` using `ThG.up hpD (T := baseOver (Sp K)) (T₀ := Over.mk (spMap ev)) (𝟙 _) hτ₂ hw₁ hLD hLF hrF (hx₀ a) (hn₀ a) hs₀ (hTF a)`. Simplify using `using q`.
+-/
 theorem exists_gen_thG_fibre : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] (D : DegPre V₁) (K : Type) [Field K] [IsAlgClosed K] (ev : V₁ →+* K)
   (o : Type) [CommRing o] (g m : ℕ) (J : Type) (b : TBase o (m ^ 2)) (s : Sp K ⟶ Sp o) (t : TObj g (m ^ 2) J b s)
   (ψ : ((Over.pullback (spMap ev)).obj D.P.A).left ⟶ t.A.left),

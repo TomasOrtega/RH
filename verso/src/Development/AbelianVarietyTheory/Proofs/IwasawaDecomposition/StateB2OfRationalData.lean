@@ -28,6 +28,11 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {G : Type} [Gro
   {F : Face3 D A3} {X0 : BaseLevelRowSide D} {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {cG : G0 R.Pg D.R.r ≃* G0g D.nd} {cf : CharFrame D}
   {g : GlobalTheory.RealGeo.GeoHalf C R.toRealDat fun _ => 1}
 
+/- English proof (translation)
+Consider the cases of `eq_of_heq hrow`. Consider the cases of `eq_of_heq hS`. Consider the cases of `eq_of_heq hhL`. Consider the cases of `eq_of_heq heig`. Consider the cases of `eq_of_heq hθ`.
+
+Consider the cases of `eq_of_heq hSb`. Consider the cases of `hPV`. Consider the cases of `eq_of_heq hPq`. Conclude with `⟨⟨⟨⟨Bs, Sb_le, rootsOfUnityRing_le_wittIntegers, lam⟩, YS, eF, fi, ser, tau⟩, geo⟩⟩`.
+-/
 theorem state_b2_of_rational_data {a : StA hL D cf (repOf Y)} {n : InRat Y cG} {PV : ∀ i : Fin D.R.m, principalLevelFrame.RowPsi (Vc D i) D.R.nV}
     {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host}
     (row : RowSide D) (S : RatDat D.ntw) (hLS : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
@@ -76,6 +81,9 @@ def bsTw {D : D7} {cf : CharFrame D} {Rw : RowSide D} {low : Finset ℕ}
 
 def lamTw {D : D7} (N : TwNew D) (Z : GlobalTheory.LamTie.LamDat D) : GlobalTheory.LamTie.LamDat N.toD7 := ⟨N.cf Z.C, Z.q0, Z.w0, Z.c, Z.chi⟩
 
+/- English proof (translation)
+Take `⟨Z, h1, h2, h3, h4, h5⟩` from `h`. Conclude with `⟨lamTw (thTw D th) Z, ⟨h1.places, h1.aux, h1.big⟩, h2, congrArg (TwNew.cf (thTw D th)) h3, h4, h5⟩`.
+-/
 theorem lam_thTw {D : D7} (th : NTh D.R D.host D.what₂ D.LL0 D.nd D.ntw D.nexp) {cf : CharFrame D}
     (h : ∃ Z : GlobalTheory.LamTie.LamDat D, Z.Ok ∧ Z.Teich ∧ Z.C = cf ∧ Z.q0 = AbsolutelyIrreducibleSpan.q0 D ∧ GlobalTheory.LamTie.IsLamTieFull D.ntw Z) :
     ∃ Z : GlobalTheory.LamTie.LamDat (thTw D th).toD7, Z.Ok ∧ Z.Teich ∧ Z.C = (thTw D th).cf cf ∧ Z.q0 = AbsolutelyIrreducibleSpan.q0 (thTw D th).toD7 ∧
@@ -87,6 +95,11 @@ end Gen2
 section MtCopy
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
+/- English proof (translation)
+Break down `m with ⟨z⟩` into its components or cases. Simplify using `only at hm`. Substitute `hm` using the available equality. Use `⟨{ M := (by with_unfolding_all exact (((thTw (Dof x) th).mt l.mt.M) :)) ad := { PV := fun i => (by with_unfolding_all exact ((rowPsi (a := x.o.Z) (oTw x (thTw (Dof x) th)).Z (l.mt.ad.PV ((i)))) : _)) std := (by with_unfolding_all exact (l.mt.ad.std :)) eW := (by with_unfolding_al …` and prove the remaining obligations. Establish `e` using `congrFun (eq_of_heq (hj μ h i y)) ((l.mt.ad.PV i).ψ g)`.
+
+Conclude with `Eq.trans ((by with_unfolding_all exact ((l.mt.ad.read μ h i y g) :))) e.symm`. Use `rat := (by with_unfolding_all exact (l.mt.ad.rat :))`. Use `wt := (by with_unfolding_all exact (l.mt.ad.wt :))`. Use `id := (by with_unfolding_all exact (l.mt.ad.id :)) }`. Use `mt := (by with_unfolding_all exact (((twist_settings_unread (Dof x) (cfOf x) l.a.jE l.a.A (thTw (Dof x) th)).2.1 _ _ _ l.mt.mt) :)) }, rfl⟩`.
+-/
 theorem mt_thTw (x : St P) (l : LI hL x) (th : NTh (Dof x).R (Dof x).host (Dof x).what₂ (Dof x).LL0 (Dof x).nd (Dof x).ntw (Dof x).nexp)
     (m : Moved (oTw x (thTw (Dof x) th))) (hm : m.z = datTw x (thTw (Dof x) th)) (hc : m.Copy) (hh : m.Coh)
     (r : ReadPk m (sideTw x (thTw (Dof x) th))) (hp : r.Pin)

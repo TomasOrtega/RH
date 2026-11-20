@@ -13,5 +13,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ZetaGL.kerGL_mul_right_KGL | exact GlobalTheory.ZetaGL.kerGL_mul_right_KGL | (intros; apply GlobalTheory.ZetaGL.kerGL_mul_right_KGL <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sphericalZetaKernelGL_right_invariant_integral : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (r N : ℕ) (z : ℂˣ) (φ : GL (Fin r) (w.adicCompletion E) → ℂ), KerGL w N z φ → ∀ g k : GL (Fin r) (w.adicCompletion E), k ∈ KGL w r → φ (g * k) = φ g := by
   first | exact @GlobalTheory.ZetaGL.kerGL_mul_right_KGL | exact GlobalTheory.ZetaGL.kerGL_mul_right_KGL | (intros; apply GlobalTheory.ZetaGL.kerGL_mul_right_KGL <;> assumption)

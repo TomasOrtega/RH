@@ -12,31 +12,56 @@ section House
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `norm_le_pi_norm (canonicalEmbedding E a) φ`.
+-/
 theorem norm_le_house (φ : E →+* ℂ) (a : E) : ‖φ a‖ ≤ house a :=
   norm_le_pi_norm (canonicalEmbedding E a) φ
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg hT).2 h`.
+-/
 theorem house_le {a : E} {T : ℝ} (hT : 0 ≤ T) (h : ∀ φ : E →+* ℂ, ‖φ a‖ ≤ T) : house a ≤ T :=
   (pi_norm_le_iff_of_nonneg hT).2 h
 
+/- English proof (translation)
+Rewrite using `[house, house, map_neg, norm_neg]`.
+-/
 theorem house_neg (a : E) : house (-a) = house a := by
   rw [house, house, map_neg, norm_neg]
 
+/- English proof (translation)
+Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ a`. Rewrite `h` using `[← Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) (fun φ : E →+* ℂ => φ a) _ (fun _ => rfl)]`. Rewrite using `[← norm_prod, ← h]`. Simplify using the standard rewrite rules.
+-/
 theorem abs_norm_eq (a : E) : ((|Algebra.norm ℚ a| : ℚ) : ℝ) = ∏ φ : E →+* ℂ, ‖φ a‖ := by
   have h := Algebra.norm_eq_prod_embeddings ℚ ℂ a
   rw [← Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ) (fun φ : E →+* ℂ => φ a) _ (fun _ => rfl)] at h
   rw [← norm_prod, ← h]
   simp
 
+/- English proof (translation)
+Rewrite using `[← abs_norm_eq, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]`. Simplify using the standard rewrite rules.
+-/
 theorem absNorm_eq (a : 𝓞 E) :
     (Ideal.absNorm (Ideal.span {a}) : ℝ) = ∏ φ : E →+* ℂ, ‖φ (algebraMap (𝓞 E) E a)‖ := by
   rw [← abs_norm_eq, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]
   simp
 
+/- English proof (translation)
+Rewrite using `[absNorm_eq, ← Embeddings.card E ℂ, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun φ _ => norm_le_house φ _`.
+-/
 theorem absNorm_le (a : 𝓞 E) :
     (Ideal.absNorm (Ideal.span {a}) : ℝ) ≤ house (algebraMap (𝓞 E) E a) ^ finrank ℚ E := by
   rw [absNorm_eq, ← Embeddings.card E ℂ, ← Finset.card_univ, ← Finset.prod_const]
   exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun φ _ => norm_le_house φ _
 
+/- English proof (translation)
+Use `house_le (by positivity) fun φ => ?_` and prove the remaining obligations. Set `a' : 𝓞 E` to `⟨a, ha⟩`. Establish `h1 : (1 : ℝ) ≤ Ideal.absNorm (Ideal.span {a'})`. Establish `: Ideal.absNorm (Ideal.span {a'}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `fun h => h0 (congrArg Subtype.val h)`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Rewrite `h1` using `[absNorm_eq, ← Finset.mul_prod_erase _ _ (Finset.mem_univ φ)]`. Establish `h2 : ∏ ψ ∈ Finset.univ.erase φ, ‖ψ (algebraMap (𝓞 E) E a')‖ ≤ T ^ finrank ℚ E`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_const, ← Embeddings.card E ℂ]`. Conclude with `pow_le_pow_right₀ hT (Finset.card_le_univ _)`. Establish `h3 : 0 < ‖φ a‖` using `norm_pos_iff.2 ((map_ne_zero φ).2 h0)`. Rewrite using `[map_inv₀, norm_inv, inv_le_iff_one_le_mul₀' h3]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left h2 h3.le)`.
+-/
 theorem house_inv_le {a : E} (ha : IsIntegral ℤ a) (h0 : a ≠ 0) {T : ℝ} (hT : 1 ≤ T)
     (h : house a ≤ T) : house a⁻¹ ≤ T ^ finrank ℚ E := by
   classical
@@ -60,6 +85,13 @@ theorem house_inv_le {a : E} (ha : IsIntegral ℤ a) (h0 : a ≠ 0) {T : ℝ} (h
 
 variable (E)
 
+/- English proof (translation)
+Set `b` to `integralBasis E`. Use `⟨∑ i, house (b i), fun c => ⟨∑ i, (⌊b.repr c i⌋ : E) * b i, ?_, ?_⟩⟩` and prove the remaining obligations. Use `IsIntegral.sum _ fun i _ => (isIntegral_intCast _).mul ?_` and prove the remaining obligations. Rewrite using `[integralBasis_apply]`. Conclude with `(RingOfIntegers.basis E i).isIntegral_coe`.
+
+Establish `h1 : c - ∑ i, (⌊b.repr c i⌋ : E) * b i = ∑ i, (Int.fract (b.repr c i) : ℚ) • b i` using `by conv_lhs => rw [← b.sum_repr c]`. Simplify using `only [b.repr_sum_self, Int.fract, sub_smul, Finset.sum_sub_distrib, Int.cast_smul_eq_zsmul, zsmul_eq_mul, b.sum_repr]`. Rewrite using `[h1]`. Use `(house_sum_le_sum_house _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Use `house_le (house_nonneg _) fun φ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_rat_smul, ← Rat.cast_smul_eq_qsmul ℝ, norm_smul]`. Use `(mul_le_of_le_one_left (norm_nonneg _) ?_).trans (norm_le_house φ _)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by exact_mod_cast Int.fract_nonneg _)]`. Conclude with `(Int.fract_lt_one _).le` after adjusting the coercions.
+-/
 theorem exists_near_integer : ∃ C : ℝ, ∀ c : E, ∃ t : E, IsIntegral ℤ t ∧ house (c - t) ≤ C := by
   classical
   let b := integralBasis E
@@ -78,6 +110,27 @@ theorem exists_near_integer : ∃ C : ℝ, ∀ c : E, ∃ t : E, IsIntegral ℤ 
     rw [Real.norm_eq_abs, abs_of_nonneg (by exact_mod_cast Int.fract_nonneg _)]
     exact_mod_cast (Int.fract_lt_one _).le
 
+/- English proof (translation)
+Use `set D : ℝ := √|(discr E : ℝ)| with hD`. Establish `hD1 : 1 ≤ D`. Rewrite using `[hD, Real.one_le_sqrt]`. Conclude with `Int.one_le_abs (discr_ne_zero E)` after adjusting the coercions. Use `⟨(⌈D⌉₊).factorial, D, by exact_mod_cast Nat.factorial_ne_zero _, fun J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `hf` using `IsTotallyComplex.finrank E`. Use `set f := InfinitePlace.nrComplexPlaces E`. Establish `hf0 : f ≠ 0`. Establish `: 0 < finrank ℚ E` using `finrank_pos`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨a, ha, ha0, hle⟩` from `exists_ne_zero_mem_fractionalIdeal_norm_sq_le hf (J : FractionalIdeal (𝓞 E)⁰ E) (by simpa using hJ)`. Take `⟨j, hj, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`. Rewrite `hle` using `[FractionalIdeal.coeIdeal_absNorm, ← hD]`. Establish `hN : Ideal.absNorm J ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Establish `hN1 : (1 : ℝ) ≤ Ideal.absNorm J` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hN`.
+
+Use `set X : ℝ := Ideal.absNorm J * D with hX`. Establish `hX1 : 1 ≤ X` using `one_le_mul_of_one_le_of_one_le hN1 hD1`. Establish `h1 : house (algebraMap (𝓞 E) E j) ^ finrank ℚ E ≤ X`. Establish `h2 : house (algebraMap (𝓞 E) E j) ≤ √(X ^ ((f : ℝ)⁻¹))`. Use `house_le (Real.sqrt_nonneg _) fun φ => Real.le_sqrt_of_sq_le ((hle φ).trans ?_)` and prove the remaining obligations.
+
+Establish `: 2 / Real.pi ≤ 1`. Rewrite using `[div_le_one Real.pi_pos]`. Conclude with `Real.two_le_pi`. Simplify `mul_le_of_le_one_left (b := X ^ ((f : ℝ)⁻¹)) (by positivity) this` using `[hX]`. Use `(pow_le_pow_left₀ (house_nonneg _) h2 _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hf, pow_mul, Real.sq_sqrt (by positivity), Real.rpow_inv_natCast_pow (by positivity) hf0]`. Establish `hj0 : j ≠ 0` using `by rintro rfl; simp at ha0`. Use `⟨j, hj, hj0, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Use `le_self_pow₀ (hX1.trans hc.le) (finrank_pos (R := ℚ) (M := E)).ne'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨I, hI⟩ : J ∣ Ideal.span {j}` from `Ideal.dvd_span_singleton.2 hj`. Establish `h3` using `(absNorm_le j).trans h1`.
+
+Rewrite `h3` using `[hI, map_mul, Nat.cast_mul, hX]`. Establish `h4 : (Ideal.absNorm I : ℝ) ≤ D` using `le_of_mul_le_mul_left h3 (by positivity)`. Establish `h5 : Ideal.absNorm I ≤ ⌈D⌉₊` using `by exact_mod_cast h4.trans (Nat.le_ceil D)`. Establish `h6 : Ideal.absNorm I ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Introduce and unpack `rfl`. Conclude with `hj0 (by simpa using hI)`. Take `⟨m, hm⟩` from `Nat.dvd_factorial (Nat.pos_of_ne_zero h6) h5`. Rewrite using `[← Ideal.mem_span_singleton, hI, mul_comm J]`. Use `Ideal.mul_mem_mul ?_ ha` and prove the remaining obligations.
+
+Rewrite using `[hm]`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`.
+-/
 theorem exists_small_generator [IsTotallyComplex E] :
     ∃ (M : ℤ) (C : ℝ), M ≠ 0 ∧ ∀ J : Ideal (𝓞 E), J ≠ ⊥ →
       ∃ j ∈ J, j ≠ 0 ∧ house (algebraMap (𝓞 E) E j) ≤ C * Ideal.absNorm J ∧
@@ -132,11 +185,17 @@ theorem exists_small_generator [IsTotallyComplex E] :
 
 end House
 
+/- English proof (translation)
+Rewrite using `[pow_add]`. Conclude with `mul_le_mul hx hy h0 (by positivity)`.
+-/
 theorem mul_le_pow {U x y : ℝ} {a b : ℕ} (hU : 2 ≤ U) (hx : x ≤ U ^ a) (hy : y ≤ U ^ b)
     (h0 : 0 ≤ y) : x * y ≤ U ^ (a + b) := by
   rw [pow_add]
   exact mul_le_mul hx hy h0 (by positivity)
 
+/- English proof (translation)
+Establish `h1` using `hx.trans (pow_le_pow_right₀ (by linarith) (le_max_left a b))`. Establish `h2` using `hy.trans (pow_le_pow_right₀ (by linarith) (le_max_right a b))`. Establish `h3 : 0 ≤ U ^ max a b` using `by positivity`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem add_le_pow {U x y : ℝ} {a b : ℕ} (hU : 2 ≤ U) (hx : x ≤ U ^ a) (hy : y ≤ U ^ b) :
     x + y ≤ U ^ (max a b + 1) := by
   have h1 := hx.trans (pow_le_pow_right₀ (by linarith) (le_max_left a b))
@@ -150,6 +209,11 @@ section Lattice
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {V : Type} [AddCommGroup V] [Module E V]
   {h : V →ₗ[E] V →ₗ⋆[E] E} {Λ : Submodule ℤ V} {N : ℤ} {ν : V → ℝ} {B : ℝ}
 
+/- English proof (translation)
+Establish `h1` using `H.smul_le (-1) y`. Establish `h2` using `house_intCast (K := E) (-1)`. Simplify using `only [Int.reduceNeg, Int.cast_neg, Int.cast_one, abs_neg, abs_one] at h2`. Rewrite `h1` using `[h2, neg_smul, one_smul, one_mul]`. Rewrite using `[sub_eq_add_neg]`.
+
+Combine the linear relations using `[H.add_le x (-y)]`.
+-/
 theorem size_sub_le (H : Sized h Λ N ν B) (x y : V) : ν (x - y) ≤ ν x + ν y := by
   have h1 := H.smul_le (-1) y
   have h2 := house_intCast (K := E) (-1)
@@ -158,6 +222,9 @@ theorem size_sub_le (H : Sized h Λ N ν B) (x y : V) : ν (x - y) ≤ ν x + ν
   rw [sub_eq_add_neg]
   linarith [H.add_le x (-y)]
 
+/- English proof (translation)
+Use `Finset.le_sum_of_subadditive ν ?_ H.add_le s x` and prove the remaining obligations. Establish `h1` using `H.smul_le 0 0`. Establish `h2` using `house_intCast (K := E) 0`. Simplify using `only [Int.cast_zero, abs_zero] at h2`. Rewrite `h1` using `[h2, zero_smul, zero_mul]`. Then use the resulting hypothesis.
+-/
 theorem size_sum_le (H : Sized h Λ N ν B) {ι : Type} (s : Finset ι) (x : ι → V) :
     ν (∑ i ∈ s, x i) ≤ ∑ i ∈ s, ν (x i) := by
   refine Finset.le_sum_of_subadditive ν ?_ H.add_le s x
@@ -166,25 +233,50 @@ theorem size_sum_le (H : Sized h Λ N ν B) {ι : Type} (s : Finset ι) (x : ι 
   simp only [Int.cast_zero, abs_zero] at h2
   rwa [h2, zero_smul, zero_mul] at h1
 
+/- English proof (translation)
+The claim follows from `(H.smul_le c x).trans (mul_le_pow hU hc hx (H.nonneg x))`.
+-/
 theorem size_smul_le (H : Sized h Λ N ν B) {U : ℝ} (hU : 2 ≤ U) {a b : ℕ} {c : E} {x : V}
     (hc : house c ≤ U ^ a) (hx : ν x ≤ U ^ b) : ν (c • x) ≤ U ^ (a + b) :=
   (H.smul_le c x).trans (mul_le_pow hU hc hx (H.nonneg x))
 
+/- English proof (translation)
+The claim follows from `(H.form_le x y).trans (mul_le_pow hU hx hy (H.nonneg y))`.
+-/
 theorem house_form_le (H : Sized h Λ N ν B) {U : ℝ} (hU : 2 ≤ U) {a b : ℕ} {x y : V}
     (hx : ν x ≤ U ^ a) (hy : ν y ≤ U ^ b) : house (h x y) ≤ U ^ (a + b) :=
   (H.form_le x y).trans (mul_le_pow hU hx hy (H.nonneg y))
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `(house_mul_le x y).trans (mul_le_pow hU hx hy (house_nonneg y))`.
+-/
 theorem house_mul_le_pow {U : ℝ} (hU : 2 ≤ U) {a b : ℕ} {x y : E}
     (hx : house x ≤ U ^ a) (hy : house y ≤ U ^ b) : house (x * y) ≤ U ^ (a + b) :=
   (house_mul_le x y).trans (mul_le_pow hU hx hy (house_nonneg y))
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `(house_add_le _ _).trans (add_le_pow hU hx (by rwa [house_neg]))`.
+-/
 theorem house_sub_le_pow {U : ℝ} (hU : 2 ≤ U) {a b : ℕ} {x y : E}
     (hx : house x ≤ U ^ a) (hy : house y ≤ U ^ b) : house (x - y) ≤ U ^ (max a b + 1) := by
   rw [sub_eq_add_neg]
   exact (house_add_le _ _).trans (add_le_pow hU hx (by rwa [house_neg]))
 
+/- English proof (translation)
+Take `⟨x, hx, hsp, -⟩` from `Submodule.exists_fun_fin_finrank_span_eq E {x | x ∈ Λ ∧ ν x ≤ B}`. Establish `hn' : (Fintype.card (Fin (finrank E (span E {x | x ∈ Λ ∧ ν x ≤ B}))) : ℝ) ≤ U ^ 1`. Rewrite using `[Fintype.card_fin, H.span, finrank_top]`. Conclude with `hn`. Use `replace hsp := hsp.trans H.span`.
+
+Use `set a := h x₀ v with had`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 (show w ∈ span E (Set.range x) from hsp.ge mem_top)`. Set `p` to `fun i => a • x i - h (x i) v • x₀`. Establish `hpΛ : ∀ i, p i ∈ Λ` using `fun i => sub_mem (H.stable _ (H.int _ hx₀ _ hv) _ (hx i).1) (H.stable _ (H.int _ (hx i).1 _ hv) _ hx₀)`. Establish `hpv : ∀ i, h (p i) v = 0` using `fun i => by simp [p, ← had, mul_comm]`.
+
+Establish `hpU : ∀ i, ν (p i) ≤ U ^ 4` using `fun i => (size_sub_le H _ _).trans (add_le_pow hU (size_smul_le H hU (house_form_le H hU hx₀U hvU) ((hx i).2.trans hB)) (size_smul_le H hU (house_form_le H hU ((hx i).2.trans hB) hvU) hx₀U))`. Establish `hsum : w = (h w v * a⁻¹) • x₀ + ∑ i, (c i * a⁻¹) • p i`. Establish `h1 : h w v = ∑ i, c i * h (x i) v` using `by rw [← hc]; simp`. Establish `h2 : ∀ i, (c i * a⁻¹) • p i = c i • x i - (c i * h (x i) v * a⁻¹) • x₀` using `fun i => by`. Simplify using `only [p, smul_sub, smul_smul]`.
+
+Rewrite using `[mul_assoc, inv_mul_cancel₀ ha, mul_one, mul_right_comm]`. Simplify using `only [h2, Finset.sum_sub_distrib, hc, ← Finset.sum_smul, ← Finset.sum_mul, ← h1]`. Normalize the expressions using the abelian group laws. Use `choose t ht htC using fun i => hC (c i * a⁻¹)`. Use `⟨w - ∑ i, t i • p i, sub_mem hw (sum_mem fun i _ => H.stable _ (ht i) _ (hpΛ i)), by simp [hpv], ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : w - ∑ i, t i • p i = (h w v * a⁻¹) • x₀ + ∑ i, (c i * a⁻¹ - t i) • p i`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← add_sub_assoc, ← hsum]`. Rewrite using `[h3]`. Establish `h4 : ν (∑ i, (c i * a⁻¹ - t i) • p i) ≤ U ^ 6`. Use `(size_sum_le H _ _).trans ((Finset.sum_le_sum fun i _ => size_smul_le H hU ((htC i).trans hCU) (hpU i)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul, Finset.card_univ]`. Conclude with `mul_le_pow hU hn' le_rfl (by positivity)`. Conclude with `(H.add_le _ _).trans (add_le_pow hU (size_smul_le H hU (house_mul_le_pow hU hwU haU) hx₀U) h4)`.
+-/
 theorem exists_small_lift [FiniteDimensional E V] (H : Sized h Λ N ν B) {C U : ℝ}
     (hC : ∀ c : E, ∃ t : E, IsIntegral ℤ t ∧ house (c - t) ≤ C) (hU : 2 ≤ U) (hB : B ≤ U ^ 1)
     (hn : (finrank E V : ℝ) ≤ U ^ 1) (hCU : C ≤ U ^ 1) {v x₀ w : V} (hv : v ∈ Λ) (hx₀ : x₀ ∈ Λ)
@@ -228,6 +320,61 @@ theorem exists_small_lift [FiniteDimensional E V] (H : Sized h Λ N ν B) {C U :
 
 end Lattice
 
+/- English proof (translation)
+Introduce `n hn N hN`. Take `⟨C, k, hC⟩` from `hS n hn N hN`. Take `⟨M, C₁, hM, hMJ⟩` from `exists_small_generator E`. Take `⟨C₂, hC₂⟩` from `exists_near_integer E`. Set `L : Submodule ℤ E` to `Subalgebra.toSubmodule (integralClosure ℤ E) ⊓ LinearMap.ker ((starRingEnd E).toIntAlgHom.toLinearMap - LinearMap.id)`.
+
+Establish `hL : ∀ x, x ∈ L ↔ IsIntegral ℤ x ∧ star x = x` using `fun x => by`. Simplify using `[L, sub_eq_zero, mem_integralClosure_iff, starRingEnd_apply]`. Establish `hLfg : L.FG` using `(HermClass.fg_integers E).of_le inf_le_left`. Establish `hK : 2 * (N * M) ≠ 0` using `by positivity`. Establish `hK' : ((2 * (N * M) : ℤ) : E) ≠ 0` using `by exact_mod_cast hK`.
+
+Take `⟨R, hR, -, hRL⟩` from `HermClass.exists_finite_residues L hLfg hK`. Take `⟨K, hK⟩` from `((hR.image house).union (Set.toFinite {C₁, C₂, (n : ℝ), house (N : E), house (M : E), house (1 : E), house ((2 * (N * M) : ℤ) : E)⁻¹})).bddAbove`. Take `⟨k₀, hk₀⟩` from `pow_unbounded_of_one_lt K (one_lt_two (α := ℝ))`. Use `set d := finrank ℚ E with hd`. Use `⟨({x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ C} ∪ R ∪ {((2 * (N * M) : ℤ) : E)}) \ {0}, (k₀ + k + 1) * ((2 * d + 1) * (d + 1)) * 22, (((Embeddings.finite_of_norm_le E ℂ C).union hR).union (Set.finite_singleton _)).subset Set.diff_subset, by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `V _ _ _ h Λ ν B hV H`. Take `⟨v, hv, hv0, hvC, hvB⟩` from `hC V h Λ ν B hV H`. Establish `hs` using `H.symm`. Establish `hO` using `H.stable`. Establish `hint` using `H.int`.
+
+Establish `hB` using `H.two_le`. Establish `hB1 : 1 ≤ B` using `by linarith`. Rewrite using `[pow_mul, pow_mul]`. Use `set T := B ^ (k₀ + k + 1) with hT`. Establish `hBT : B ≤ T` using `le_self_pow₀ hB1 (by omega)`.
+
+Establish `hT2 : 2 ≤ T` using `hB.trans hBT`. Establish `hT1 : 1 ≤ T` using `by linarith`. Establish `hvT : ν v ≤ T` using `hvB.trans (pow_le_pow_right₀ hB1 (by omega))`. Establish `hKT : K ≤ T` using `hk₀.le.trans ((pow_le_pow_left₀ zero_le_two hB _).trans (pow_le_pow_right₀ hB1 (by omega)))`. Use `set U := T ^ ((2 * d + 1) * (d + 1)) with hU`.
+
+Establish `hTU : T ≤ U ^ 1` using `by rw [pow_one]; exact le_self_pow₀ hT1 (by positivity)`. Establish `hU2 : 2 ≤ U` using `by simpa using hT2.trans hTU`. Establish `hU1 : 1 ≤ U` using `by linarith`. Establish `hvU` using `hvT.trans hTU`. Establish `hKU` using `hKT.trans hTU`.
+
+Distinguish the cases in `hvv : h v v = 0`. Use `swap`. Conclude with `⟨v, hv, ⟨Or.inl (Or.inl ⟨hint v hv v hv, fun φ => (norm_le_house φ _).trans hvC⟩), hvv⟩, hvU.trans (pow_le_pow_right₀ hU1 (by norm_num))⟩`. Set `J : Ideal (𝓞 E)` to `{ carrier := {a | ∃ x ∈ Λ, h x v = algebraMap (𝓞 E) E a} add_mem' := by`. Introduce and unpack `a b ⟨x, hx, ha⟩ ⟨y, hy, hb⟩`.
+
+Conclude with `⟨x + y, add_mem hx hy, by simp [ha, hb]⟩`. Use the proof step `zero_mem' := ⟨0, zero_mem _, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨x, hx, ha⟩`. Conclude with `⟨algebraMap (𝓞 E) E c • x, hO _ c.isIntegral_coe x hx, by`.
+
+Rewrite using `[map_smul, LinearMap.smul_apply, ha, smul_eq_mul, smul_eq_mul, map_mul]⟩ }`. Establish `hJ : ∀ x ∈ Λ, ∃ a ∈ J, algebraMap (𝓞 E) E a = h x v` using `fun x hx => ⟨⟨h x v, hint x hx v hv⟩, ⟨x, hx, rfl⟩, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀, hx₀B, hx₀v⟩ : ∃ x₀ ∈ Λ, ν x₀ ≤ B ∧ h x₀ v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Use `hv0 (H.nondeg v fun x => ?_)` and prove the remaining obligations. Establish `h1 : span E {x | x ∈ Λ ∧ ν x ≤ B} ≤ LinearMap.ker (h.flip v)` using `span_le.2 fun y hy => hc y hy.1 hy.2`. Establish `h2 : h x v = 0` using `h1 (H.span ▸ mem_top)`. Rewrite using `[hs, h2, star_zero]`. Take `⟨a, haJ, ha⟩` from `hJ x₀ hx₀`.
+
+Establish `ha0 : a ≠ 0` using `by rintro rfl; exact hx₀v (by simpa using ha.symm)`. Establish `hJ0 : J ≠ ⊥` using `fun h0 => ha0 (by rwa [h0, Ideal.mem_bot] at haJ)`. Establish `haT : house (h x₀ v) ≤ T ^ 2` using `house_form_le H hT2 (a := 1) (b := 1) (by simpa using hx₀B.trans hBT) (by simpa using hvT)`. Establish `haU : house (h x₀ v)⁻¹ ≤ U ^ 1`. Use `(house_inv_le (hint _ hx₀ _ hv) hx₀v (one_le_pow₀ hT1) haT).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← pow_mul, pow_one]`. Conclude with `pow_le_pow_right₀ hT1 (by rw [← hd]; nlinarith)`. Establish `hNJ : (Ideal.absNorm J : ℝ) ≤ T ^ (2 * d)`. Establish `h1 : Ideal.absNorm J ≤ Ideal.absNorm (Ideal.span {a})` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (by`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]))` and apply the resulting hypothesis.
+
+Use the proof step `(map_dvd _ (Ideal.dvd_span_singleton.2 haJ))`. Use `le_trans (by exact_mod_cast h1) ((absNorm_le a).trans ?_)` and prove the remaining obligations. Rewrite using `[ha, pow_mul]`. Conclude with `pow_le_pow_left₀ (house_nonneg _) haT _`. Take `⟨j, ⟨w₀, hw₀, hw₀j⟩, hj0, hjC, hj⟩` from `hMJ J hJ0`.
+
+Establish `hj0' : algebraMap (𝓞 E) E j ≠ 0` using `fun h0 => hj0 (RingOfIntegers.ext h0)`. Establish `hjT : house (algebraMap (𝓞 E) E j) ≤ T ^ (1 + 2 * d)` using `hjC.trans (mul_le_pow hT2 (by simpa using (hK (by simp)).trans hKT) hNJ (Nat.cast_nonneg _))`. Establish `hjU : house (algebraMap (𝓞 E) E j) ≤ U ^ 1`. Use `hjT.trans ?_` and prove the remaining obligations. Rewrite using `[pow_one]`.
+
+Conclude with `pow_le_pow_right₀ hT1 (by nlinarith)`. Establish `hjU' : house (algebraMap (𝓞 E) E j)⁻¹ ≤ U ^ 1`. Use `(house_inv_le j.isIntegral_coe hj0' (one_le_pow₀ hT1) hjT).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, pow_one]`. Conclude with `pow_le_pow_right₀ hT1 (by rw [← hd]; nlinarith)`.
+
+Take `⟨w, hw, hwj, hwU⟩` from `exists_small_lift H hC₂ hU2 (hBT.trans hTU) (by rw [hV]; exact (hK (by simp)).trans hKU) ((hK (by simp)).trans hKU) hv hx₀ hw₀ hvU (hx₀B.trans (hBT.trans hTU)) hx₀v haU (by rwa [hw₀j])`. Rewrite `hwj` using `[hw₀j]`. Use `set v' : V := (N : E) • star ((M : E) / algebraMap (𝓞 E) E j) • v with hv'`. Establish `hv'Λ : v' ∈ Λ` using `H.dual _ fun x hx => by`. Take `⟨a, ha, hax⟩` from `hJ x hx`.
+
+Take `⟨c, hc⟩` from `hj _ ha`. Establish `hc'` using `congrArg (algebraMap (𝓞 E) E) hc`. Rewrite `hc'` using `[map_mul, map_mul, map_intCast, hax]`. Establish `: (M : E) / algebraMap (𝓞 E) E j * h x v = algebraMap (𝓞 E) E c` using `by field_simp; exact hc'`. Rewrite using `[map_smul, LinearMap.smul_apply, smul_eq_mul, hs x v, ← star_mul', this]`.
+
+Conclude with `HermClass.isIntegral_star c.isIntegral_coe`. Establish `hv'U : ν v' ≤ U ^ 4`. Establish `h1 : house (star ((M : E) / algebraMap (𝓞 E) E j)) ≤ U ^ 2`. Rewrite using `[house_star, div_eq_mul_inv]`. Conclude with `house_mul_le_pow hU2 ((hK (by simp)).trans hKU) hjU'`.
+
+Establish `h2 : house (N : E) ≤ U ^ 1` using `(hK (by simp)).trans hKU`. Conclude with `size_smul_le H hU2 h2 (size_smul_le H hU2 h1 hvU)`. Establish `h1 : h w v' = N * M`. Simplify using `only [hv', map_smulₛₗ, starRingEnd_apply, star_star, smul_eq_mul, hwj, star_intCast]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h2 : h v' w = N * M` using `by rw [hs, h1]; simp`. Establish `h3 : h v' v' = 0` using `by simp [hv', hvv]`. Establish `h4 : ∀ s : E, star s = s → h (w - s • v') (w - s • v') = h w w - 2 * (N * M) * s`. Introduce `s hs'`. Simplify using `only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, map_smulₛₗ, starRingEnd_apply, hs', smul_eq_mul, h1, h2, h3, RingHom.id_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨ρ, hρ, y, hy, hwρ⟩` from `hRL (h w w) ((hL _).2 ⟨hint w hw w hw, (hs w w).symm⟩)`. Take `⟨hyi, hys⟩` from `(hL y).1 hy`. Establish `hyU : house y ≤ U ^ 16`. Establish `h5 : y = ((2 * (N * M) : ℤ) : E)⁻¹ * (h w w - ρ)`.
+
+Rewrite using `[hwρ, zsmul_eq_mul, add_sub_cancel_left, inv_mul_cancel_left₀ hK']`. Establish `h6 : house ((2 * (N * M) : ℤ) : E)⁻¹ ≤ U ^ 1` using `(hK (Or.inr (by simp only [Set.mem_insert_iff, Set.mem_singleton_iff, or_true]))).trans hKU`. Establish `h7 : house ρ ≤ U ^ 1` using `(hK (Or.inl ⟨ρ, hρ, rfl⟩)).trans hKU`. Rewrite using `[h5]`. Conclude with `house_mul_le_pow hU2 h6 (house_sub_le_pow hU2 (house_form_le H hU2 hwU hwU) h7)`.
+
+Establish `hfin : ∀ s : E, house s ≤ U ^ 17 → ν (w - s • v') ≤ U ^ 22` using `fun s hs => (size_sub_le H _ _).trans (add_le_pow hU2 hwU (size_smul_le H hU2 hs hv'U))`. Distinguish the cases in `hρ0 : ρ = 0`. Use `⟨w - (y - 1) • v', sub_mem hw (hO _ (hyi.sub isIntegral_one) _ hv'Λ), ?_, hfin _ ?_⟩` and prove the remaining obligations. Establish `: h (w - (y - 1) • v') (w - (y - 1) • v') = ((2 * (N * M) : ℤ) : E)`. Rewrite using `[h4 _ (by rw [star_sub, hys, star_one]), hwρ, hρ0, zsmul_eq_mul]; push_cast; ring`.
+
+Rewrite using `[this]`. Conclude with `⟨Or.inr rfl, hK'⟩`. Establish `h6 : house (1 : E) ≤ U ^ 1` using `(hK (by simp)).trans hKU`. Conclude with `house_sub_le_pow hU2 hyU h6`. Use `⟨w - y • v', sub_mem hw (hO _ hyi _ hv'Λ), ?_, hfin _ (hyU.trans (pow_le_pow_right₀ hU1 (by norm_num)))⟩` and prove the remaining obligations.
+
+Establish `: h (w - y • v') (w - y • v') = ρ`. Rewrite using `[h4 _ hys, hwρ, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `⟨Or.inl (Or.inr hρ), hρ0⟩`.
+-/
 theorem anisoSmall_of_shortSmall (E : Type) [Field E] [NumberField E] [IsCMField E]
     (hS : ShortSmall E) : AnisoSmall E := by
   classical

@@ -31,6 +31,11 @@ variable {J : Type} {S S' S'' : Scheme.{0}} {A : Over S} [GrpObj A] {P : LB (A �
   {lev' : J → (𝟙_ (Over S') ⟶ A')} {A'' : Over S''} [GrpObj A''] {P'' : LB (A'' ⊗ A'').left}
   {lev'' : J → (𝟙_ (Over S'') ⟶ A'')} {f : S' ⟶ S} {f' : S'' ⟶ S'}
 
+/- English proof (translation)
+Take `⟨φ, φ₂, hφ, hs, hw, hl⟩` from `m`. Take `⟨ψ, ψ₂, hψ, hs', hw', hl'⟩` from `m'`. Use `⟨ψ ≫ φ, ψ₂ ≫ φ₂, hψ.comp hφ, ⟨?_, ?_⟩, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, hs'.1, Category.assoc]`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, hs'.2, Category.assoc]`.
+
+Conclude with `(hw'.trans hP'' (pull_isLB hP' _) (pull_isLB (pull_isLB hP _) _) (iso_pull ψ₂ hw)).trans hP'' (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (iso_pull_pull hP φ₂ ψ₂)`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) (hl' a)).trans ((Category.assoc _ _ _).trans ((congrArg (f' ≫ ·) (hl a)).trans (Category.assoc _ _ _).symm)))`.
+-/
 theorem TriplePB.comp (hP : P.IsLB) (hP' : P'.IsLB) (hP'' : P''.IsLB) (m : TriplePB A' P' lev' A P lev f)
     (m' : TriplePB A'' P'' lev'' A' P' lev' f') : TriplePB A'' P'' lev'' A P lev (f' ≫ f) := by
   obtain ⟨φ, φ₂, hφ, hs, hw, hl⟩ := m
@@ -43,6 +48,17 @@ theorem TriplePB.comp (hP : P.IsLB) (hP' : P'.IsLB) (hP'' : P''.IsLB) (m : Tripl
   · exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) (hl' a)).trans ((Category.assoc _ _ _).trans
       ((congrArg (f' ≫ ·) (hl a)).trans (Category.assoc _ _ _).symm)))
 
+/- English proof (translation)
+Take `⟨φ, φ₂, hφ, hs, hw, hl⟩` from `m`. Take `⟨χ, χ₂, hχ, hs', hw', hl'⟩` from `n`. Establish `hp` using `hφ.1`. Set `F : A''.left ⟶ A'.left` to `hp.lift χ (A''.hom ≫ f') (by rw [hχ.1.w, Category.assoc])`. Establish `hF : F ≫ φ = χ` using `hp.lift_fst _ _ _`.
+
+Establish `hFw : F ≫ A'.hom = A''.hom ≫ f'` using `hp.lift_snd _ _ _`. Set `U : Over.mk ((A'' ⊗ A'').hom ≫ f') ⟶ A' ⊗ A'` to `lift (pushPt hFw (fst A'' A'')) (pushPt hFw (snd A'' A''))`. Set `F₂ : (A'' ⊗ A'').left ⟶ (A' ⊗ A').left` to `U.left`. Establish `h₁ : F₂ ≫ (fst A' A').left = (fst A'' A'').left ≫ F` using `congrArg (fun q => q.left) (lift_fst (pushPt hFw (fst A'' A'')) (pushPt hFw (snd A'' A'')))`. Establish `h₂ : F₂ ≫ (snd A' A').left = (snd A'' A'').left ≫ F` using `congrArg (fun q => q.left) (lift_snd (pushPt hFw (fst A'' A'')) (pushPt hFw (snd A'' A'')))`.
+
+Establish `h₃ : F₂ ≫ φ₂ = χ₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst A A).left = _ ≫ (fst A A).left`. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, h₁, Category.assoc, hF, hs'.1]`. Use `show (_ ≫ _) ≫ (snd A A).left = _ ≫ (snd A A).left`.
+
+Rewrite using `[Category.assoc, hs.2, ← Category.assoc, h₂, Category.assoc, hF, hs'.2]`. Use `⟨F, F₂, hφ.cancel (by rw [hF]; exact hχ) hFw, ⟨h₁, h₂⟩, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite `hw'` using `[← h₃]`. Conclude with `(hw'.trans hP'' (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) (iso_pull_pull hP φ₂ F₂).symm).trans hP'' (pull_isLB (pull_isLB hP _) _) (pull_isLB hP' _) (iso_pull F₂ hw).symm`. Apply `hp.hom_ext` to reduce the goal to its premises.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hF).trans ((hl' a).trans ((Category.assoc _ _ _).trans ((congrArg (f' ≫ ·) (hl a).symm).trans (Category.assoc _ _ _).symm))))`. Establish `a₁ : (lev'' a).left ≫ A''.hom = 𝟙 S''` using `Over.w (lev'' a)`. Establish `a₂ : (lev' a).left ≫ A'.hom = 𝟙 S'` using `Over.w (lev' a)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hFw).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f') a₁).trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans ((congrArg (f' ≫ ·) a₂.symm).trans (Category.assoc _ _ _).symm))))))`.
+-/
 theorem TriplePB.cancel (hP : P.IsLB) (hP' : P'.IsLB) (hP'' : P''.IsLB) (m : TriplePB A' P' lev' A P lev f)
     (n : TriplePB A'' P'' lev'' A P lev (f' ≫ f)) : TriplePB A'' P'' lev'' A' P' lev' f' := by
   obtain ⟨φ, φ₂, hφ, hs, hw, hl⟩ := m
@@ -78,6 +94,13 @@ theorem TriplePB.cancel (hP : P.IsLB) (hP' : P'.IsLB) (hP'' : P''.IsLB) (m : Tri
         ((congrArg (· ≫ f') a₁).trans ((Category.id_comp _).trans ((Category.comp_id _).symm.trans
           ((congrArg (f' ≫ ·) a₂.symm).trans (Category.assoc _ _ _).symm))))))
 
+/- English proof (translation)
+Introduce `hL hU h k K _ ζ σ F _ _ _ _ τ p q hp hq ⟨P, lev, φ, hper, ⟨hφ, _, φ₂, hs, hw⟩, hl⟩ ⟨P', lev', φ', hper', ⟨hφ', _, φ₂', hs', hw'⟩, hl'⟩`. Take `⟨c, hc⟩` from `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h k K K ζ ζ (RingHom.id K) _ _ F.s (p ≫ F.s) p rfl (by rw [show spMap (RingHom.id K) = 𝟙 (Sp K) from Spec.map_id _, Category.comp_id])).1 F.univ`. Take `⟨e, he, ⟨e₂, hes, hew⟩, hel⟩` from `GlobalTheory.T.exists_iso_of_same_periodMatrix_level hL hU h k τ P' P lev' lev hper' hper`. Establish `l : (abelian₂ P.A P.L).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `l' : (abelian₂ P'.A P'.L).IsLB` using `LB.isLB_linComb P'.isLB _ _`.
+
+Establish `m : TriplePB P.A (abelian₂ P.A P.L) lev F.univ.A F.univ.P F.univ.lev p` using `⟨φ, φ₂, hφ, hs, hw, hl⟩`. Establish `m' : TriplePB P'.A (abelian₂ P'.A P'.L) lev' F.univ.A F.univ.P F.univ.lev q` using `⟨φ', φ₂', hφ', hs', hw', hl'⟩`. Establish `n : TriplePB c.A c.P c.lev F.univ.A F.univ.P F.univ.lev (𝟙 _ ≫ p)`. Rewrite using `[Category.id_comp]`. Conclude with `hc`.
+
+Establish `i : TriplePB P.A (abelian₂ P.A P.L) lev P'.A (abelian₂ P'.A P'.L) lev' (𝟙 _)` using `⟨e.hom.left, e₂, Geo.Tor.isGrpPullback_of_iso e, hes, hew, fun a => (congrArg (fun t => t.left) (hel a)).trans (Category.id_comp _).symm⟩`. Establish `r` using `m'.comp F.univ.isLB l' c.isLB (i.comp l' l c.isLB (m.cancel F.univ.isLB l c.isLB n))`. Rewrite `r` using `[Category.id_comp, Category.id_comp]`. Conclude with `F.inj ℂ p q _ c (hp.trans hq.symm) hc r`.
+-/
 theorem eq_of_ptAt : Out.Laws → ThetaUnifAV → ∀ (h k : ℕ) (K : Type) [Field K] (ζ : K) (σ : K →+* ℂ) (F : SFam h k ζ), 1 ≤ h → 3 ≤ k → Odd k → σ ζ = Complex.exp (-(2 * Real.pi * Complex.I) / k) → ∀ (τ : Matrix (Fin h) (Fin h) ℂ) (p q : Sp ℂ ⟶ F.X), p ≫ F.s = spMap σ → q ≫ F.s = spMap σ → PtAt F.univ p τ → PtAt F.univ q τ → p = q := by
   intro hL hU h k K _ ζ σ F _ _ _ _ τ p q hp hq ⟨P, lev, φ, hper, ⟨hφ, _, φ₂, hs, hw⟩, hl⟩
     ⟨P', lev', φ', hper', ⟨hφ', _, φ₂', hs', hw'⟩, hl'⟩

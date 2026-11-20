@@ -16,6 +16,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Establish `h1 : ∀ g ∈ Submodule.span O (Set.range w), φ g = 0`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `hw i`.
+
+Consider the case `zero => exact map_zero φ`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [← algebraMap_smul K a x, map_smulₛₗ, hx, smul_zero]`. Establish `h2` using `h1 _ hf`. Rewrite `h2` using `[← algebraMap_smul K s f, map_smulₛₗ, smul_eq_mul]`.
+
+Conclude with `(mul_eq_zero.1 h2).resolve_left ((map_ne_zero σ).2 hs)`.
+-/
 theorem semilinear_eq_zero_of_span_smul {O K L M ι : Type} [CommRing O] [Field K] [Field L] [Algebra O K]
     [AddCommGroup M] [Module K M] [Module O M] [IsScalarTower O K M] (σ : K →+* L) (φ : M →ₛₗ[σ] L)
     (w : ι → M) (hw : ∀ i, φ (w i) = 0) (s : O) (hs : algebraMap O K s ≠ 0) (f : M)
@@ -31,6 +38,9 @@ theorem semilinear_eq_zero_of_span_smul {O K L M ι : Type} [CommRing O] [Field 
   rw [← algebraMap_smul K s f, map_smulₛₗ, smul_eq_mul] at h2
   exact (mul_eq_zero.1 h2).resolve_left ((map_ne_zero σ).2 hs)
 
+/- English proof (translation)
+Establish `hW : s • F ∈ X.WWc s w` using `⟨F, hF, rfl⟩`. Rewrite `hW` using `[← hg]`. Conclude with `semilinear_eq_zero_of_span_smul σ ⟨⟨φ, hadd⟩, hsmul⟩ g h0 s (fun h' => hs (RingOfIntegers.coe_eq_zero_iff.1 h')) F hW`.
+-/
 theorem eq_zero_of_span_eq_WWc {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : PJ D B P j) (w : WeightFamilies.Wt D j)
     {ι : Type} (g : ι → B.Cusp j w) (s : 𝓞 B.KO) (hs : s ≠ 0)
     (hg : Submodule.span (𝓞 B.KO) (Set.range g) = X.WWc s w) (σ : B.KO →+* ℂ) (φ : B.Cusp j w → ℂ)
@@ -43,6 +53,17 @@ theorem eq_zero_of_span_eq_WWc {D : D7} {B : WeightFamilies.Prov D} {P : ModuliI
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hC D T h EX j hj S large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 Gc Prw hP hs G hG`. Take `⟨hDF, -, hr, hl⟩` from `(GlobalTheory.RunWeights.weights_below D _ _ j (recPJ h j hj) large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hj.1 hP).1 wL (Set.mem_insert _ _)`. Establish `hlp` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj wL hl`. Establish `hg : ∀ i, 2 * WeightAlgebra.DF ka + 2 < D.host.g i` using `hP.2.2.2.1.2.2.2.2.2`. Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `h.pins.2.1.1`.
+
+Establish `hdeg : 4 * WeightAlgebra.DF wL + 4 ≤ T.Q.l.M`. Establish `h1 : (2 * WeightAlgebra.DF ka + 3) * 3 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_le_mul (hg 0) (by have := hg 1; omega)`. Use linear arithmetic over natural numbers and integers. Use `GlobalTheory.FrameZero.noCommonZero_of_readings D T h j hj (wtA wL) wL.n G.N _ (fun i => cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) _ _ (cutR_le T.C j wL (G.w i).2)) fun k x hx => ?_` and prove the remaining obligations. Take `⟨f, hf, hf0⟩` from `GlobalTheory.noCommonZero_of_chartIndep hC D T h j hj wL hr hlp hdeg (half_level_generator_norm D T h EX) T.σ₀ T.good_σ₀ k x hx`.
+
+Establish `hc : f ∈ cutR T.C j wL`. Rewrite using `[cutR_eq T.C hj]`. Conclude with `h.thCusp j hj _ _ (dom_wtA wL) hlp f hf`. Establish `hF : (⟨f, hc⟩ : (recB h.toLawsCore).Cusp j wL) ∈ (recPJ h j hj).thAll wL` using `Submodule.subset_span hf`. Assume the negation of the conclusion as `hno`.
+
+Establish `hno' : ∀ i, rdU (T.U j T.σ₀) (G.w i).1 k x = 0` using `fun i => by`. Assume the negation of the conclusion as `h'`. Conclude with `hno ⟨i, h'⟩`. Establish `hadd : ∀ F F' : T.R j, rdU (T.U j T.σ₀) (F + F') k x = rdU (T.U j T.σ₀) F k x + rdU (T.U j T.σ₀) F' k x` using `fun F F' => by rw [map_add]; rfl`. Establish `hsmul : ∀ (a : T.Q.c.F) (F : T.R j), rdU (T.U j T.σ₀) (a • F) k x = T.σ₀ a * rdU (T.U j T.σ₀) F k x` using `fun a F => by rw [map_smulₛₗ]; rfl`.
+
+Conclude with `hf0 (eq_zero_of_span_eq_WWc (recPJ h j hj) wL G.w S.sW hs hG.1 T.σ₀ (fun F => rdU (T.U j T.σ₀) F.1 k x) (fun F F' => hadd F.1 F'.1) (fun a F => hsmul a F.1) hno' ⟨f, hc⟩ hF)`.
+-/
 theorem noCommonZero_of_tiedW : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T) (_EX : ErrX D) (j : ℕ) (hj : InR D j) (S : Scal (recB h.toLawsCore)) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (Gc Prw : ℝ), FamilyHypotheses.HypPage large₂ (recPJ h j hj) H C2 A2 CR CT ka wL wF Tn nP nW h0 → S.sW ≠ 0 → ∀ G : EtaleWeightGaps.GlobalFamilyData (recPJ h j hj) ka wL wF, G.TiedW S Gc Prw → NoCommonZero (T.Q.Xo j) T.Q.c (fun i => (G.w i).1) := by
   intro hC D T h EX j hj S large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 Gc Prw hP hs G hG
   obtain ⟨hDF, -, hr, hl⟩ := (GlobalTheory.RunWeights.weights_below D _ _ j (recPJ h j hj) large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0

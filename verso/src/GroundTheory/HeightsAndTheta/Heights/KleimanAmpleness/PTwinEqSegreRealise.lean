@@ -12,6 +12,13 @@ namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (secOver mIdealOver)
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ Ω _ _ y d μs hy hd`. Establish `: ∀ a, Nonempty (ι a)` using `fun a => ⟨(hy a).choose⟩`. Establish `hcard : 0 < Fintype.card (∀ a, ι a)` using `Fintype.card_pos`. Set `N` to `Fintype.card (∀ a, ι a) - 1`. Set `eqv : (∀ a, ι a) ≃ Fin (N + 1)` to `Fintype.equivFinOfCardEq (by omega)`.
+
+Establish `hbase : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase F (segreJoin y) (Sum.inl ())` using `(hB F K ι Ω y hy).1`. Use `choose Ms hMs using fun j => hBd F (Unit ⊕ K) _ Ω (segreJoin y) (Sum.inl ()) N eqv hbase (IndefiniteRowSideFullHecke.Kleiman2.pullDeg (μs j))`. Establish `hsub : Kleiman.IsSubvar (IndefiniteRowSideFullHecke.Kleiman2.blockVec (segreJoin y) (Sum.inl ()) ∘ eqv.symm) (Kleiman.primeOf (S` using `F) (IndefiniteRowSideFullHecke.Kleiman2.blockVec (segreJoin y) (Sum.inl ()) ∘ eqv.symm)) d := (hMD F _ _ Ω (segreJoin y) (Sum.inl ()) N eqv hbase d).2 (by rw [hD F K ι Ω y hy]; exact hd)`. Use `⟨N, eqv, IndefiniteRowSideFullHecke.Kleiman2.blockVec (segreJoin y) (Sum.inl ()) ∘ eqv.symm, Ms, fun i => ?_, hsub, fun j c => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show ∏ a, y ⟨a, eqv.symm (eqv i) a⟩ = ∏ a, y ⟨a, i a⟩`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `(hMs j c).trans (hT F K ι Ω y hy (μs j) c)`. Conclude with `(hMN F _ _ Ω (segreJoin y) (Sum.inl ()) N eqv hbase _ (Ms j) (hMs j)).trans (hNf F K ι Ω y hy (μs j))`. Conclude with `(hMNum F _ _ Ω (segreJoin y) (Sum.inl ()) N eqv hbase d (fun j => IndefiniteRowSideFullHecke.Kleiman2.pullDeg (μs j)) Ms hMs hsub).trans (hNm F K ι Ω y hy d μs)`.
+-/
 theorem SegreRealise.proof (hB : SegreBase.Statement) (hT : SegreTwist.Statement) (hD : SegreDim.Statement)
     (hNf : SegreNef.Statement) (hNm : SegreNum.Statement) (hBd : BundleOfDeg.Statement)
     (hMD : ModelDimEq.Statement) (hMN : ModelNefEq.Statement) (hMNum : ModelNumEq.Statement) :

@@ -9,9 +9,15 @@ namespace PositivityTheory.Rg.Sw.Glob.Vac
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjTranspose_apply]`.
+-/
 theorem map_star_eq (U : Matrix (Fin n) (Fin n) ℂ) : U.map star = (Uᴴ)ᵀ := by
   ext i j; simp [conjTranspose_apply]
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (mem_unitaryGroup_iff'.mp hU)`. Rewrite `h` using `[det_mul, det_one, star_eq_conjTranspose, det_conjTranspose]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Simplify using `using h`.
+-/
 theorem normSq_det_unitary {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ unitaryGroup (Fin n) ℂ) :
     Complex.normSq U.det = 1 := by
   have h := congrArg Matrix.det (mem_unitaryGroup_iff'.mp hU)
@@ -20,6 +26,11 @@ theorem normSq_det_unitary {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ unitaryG
   rw [Complex.normSq_eq_conj_mul_self]
   simpa using h
 
+/- English proof (translation)
+Use `set L : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) := (Matrix.toLin' (U.map star)).restrictScalars ℝ with hLdef`. Establish `hdet : LinearMap.det L = 1`. Rewrite using `[hLdef, LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, map_star_eq, det_transpose, det_conjTranspose]`. Use `show Complex.normSq (star U.det) = 1`. Rewrite using `[Complex.star_def, Complex.normSq_conj, normSq_det_unitary hU]`.
+
+Establish `hmeas : Measurable (fun w : Fin n → ℂ => (U.map star) *ᵥ w)` using `(Continuous.matrix_mulVec continuous_const continuous_id).measurable`. Use `⟨hmeas, ?_⟩` and prove the remaining obligations. Establish `h` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin n → ℂ))) (f := L) (by rw [hdet]; exact one_ne_zero)`. Rewrite `h` using `[hdet, inv_one, abs_one, ENNReal.ofReal_one, one_smul]`. Conclude with `h`.
+-/
 theorem mp_cU {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ unitaryGroup (Fin n) ℂ) :
     MeasurePreserving (fun w : Fin n → ℂ => (U.map star) *ᵥ w) volume volume := by
   set L : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) := (Matrix.toLin' (U.map star)).restrictScalars ℝ with hLdef
@@ -39,18 +50,37 @@ theorem mp_cU {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ unitaryGroup (Fin n) 
 def rowF (c κ : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) : ℂ :=
   Complex.exp (-(c * ∑ i, ‖v i‖ ^ 2 : ℝ)) * Complex.exp (Complex.I * κ * ∑ i, ∑ j, b i j * star (v j) * v i)
 
+/- English proof (translation)
+Use `push_cast`. Simplify using `only [dotProduct, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+-/
 theorem sumsq_eq (v : Fin n → ℂ) : (((∑ i, ‖v i‖ ^ 2 : ℝ)) : ℂ) = star v ⬝ᵥ v := by
   push_cast
   simp only [dotProduct, Pi.star_apply]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [Complex.star_def, Complex.conj_mul']
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_eq (b : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     ∑ i, ∑ j, b i j * star (v j) * v i = v ⬝ᵥ (b *ᵥ star v) := by
   simp only [dotProduct, mulVec, Pi.star_apply, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Use `set U : Matrix (Fin n) (Fin n) ℂ := (hb.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hUdef`. Establish `hUU : Uᴴ * U = 1`. Rewrite using `[← star_eq_conjTranspose]`. Conclude with `Unitary.star_mul_self_of_mem hb.eigenvectorUnitary.2`. Establish `hT : Uᵀ * U.map star = 1`.
+
+Rewrite using `[map_star_eq, ← transpose_mul, hUU, transpose_one]`. Establish `key : ∀ x : Fin n → ℂ, (U *ᵥ x) ⬝ᵥ (U.map star *ᵥ w) = x ⬝ᵥ w`. Introduce `x`. Rewrite using `[dotProduct_mulVec, ← vecMul_transpose, vecMul_vecMul, hT, vecMul_one]`. Establish `hstar : star (U.map star *ᵥ w) = U *ᵥ star w`.
+
+Use extensionality with `i`. Simplify using `[mulVec, dotProduct, star_sum, mul_comm]`. Establish `hbU : b * U = U * diagonal (RCLike.ofReal ∘ hb.eigenvalues)` using `by conv_lhs => rw [hb.spectral_theorem, Unitary.conjStarAlgAut_apply]`. Rewrite using `[Matrix.mul_assoc, star_eq_conjTranspose, hUU, Matrix.mul_one]`. Establish `hS : ∑ i, ‖(U.map star *ᵥ w) i‖ ^ 2 = ∑ k, ‖w k‖ ^ 2`.
+
+Establish `h` using `sumsq_eq (U.map star *ᵥ w)`. Rewrite `h` using `[hstar, key, ← sumsq_eq]`. Conclude with `h` after adjusting the coercions. Establish `hQ : ∑ i, ∑ j, b i j * star ((U.map star *ᵥ w) j) * (U.map star *ᵥ w) i = ∑ k, (hb.eigenvalues k : ℂ) * (‖w k‖ : ℂ) ^ 2`. Rewrite using `[quad_eq, dotProduct_comm, hstar, mulVec_mulVec, hbU, ← mulVec_mulVec, key]`.
+
+Simplify using `only [dotProduct, mulVec_diagonal, Function.comp_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Complex.star_def, Complex.conj_mul']`. Both sides reduce to the same expression. Rewrite using `[rowF, hS, hQ, ← Complex.exp_add, ← Complex.exp_sum]`.
+
+Use `congr 1`. Use `push_cast`. Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rowF_comp (c κ : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) (w : Fin n → ℂ) :
     rowF c κ b ((hb.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ).map star *ᵥ w) =
       ∏ k, Complex.exp (-((c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ)) * (‖w k‖ : ℂ) ^ 2) := by
@@ -87,6 +117,13 @@ theorem rowF_comp (c κ : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermit
   refine Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hX : (c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) - (Complex.I * κ) • diagonal (RCLike.ofReal ∘ hb.eigenvalues) = diagonal (fun k => (c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ))`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[one_apply, h]`. Establish `hD : (c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) - (Complex.I * κ) • b = Unitary.conjStarAlgAut ℂ _ hb.eigenvectorUnitary ((c : ℂ) • 1 - (Complex.I * κ) • diagonal (RCLike.ofReal ∘ hb.eigenvalues))` using `by conv_lhs => rw [hb.spectral_theorem]`. Rewrite using `[map_sub, map_smul, map_smul, map_one]`. Establish `hu : (hb.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ).det * (star (hb.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)).det = 1`. Rewrite using `[← det_mul, Unitary.mul_star_self_of_mem hb.eigenvectorUnitary.2, det_one]`.
+
+Rewrite using `[hD, Unitary.conjStarAlgAut_apply, hX, det_mul, det_mul, det_diagonal, mul_right_comm, hu, one_mul]`.
+-/
 theorem det_shift (c κ : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) :
     ((c : ℂ) • 1 - (Complex.I * κ) • b).det = ∏ k, ((c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ)) := by
   have hX : (c : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) - (Complex.I * κ) • diagonal (RCLike.ofReal ∘ hb.eigenvalues) =
@@ -106,6 +143,13 @@ theorem det_shift (c κ : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermit
     rw [← det_mul, Unitary.mul_star_self_of_mem hb.eigenvectorUnitary.2, det_one]
   rw [hD, Unitary.conjStarAlgAut_apply, hX, det_mul, det_mul, det_diagonal, mul_right_comm, hu, one_mul]
 
+/- English proof (translation)
+Establish `mp` using `mp_cU hb.eigenvectorUnitary.2`. Establish `hcont : Continuous (rowF c κ b)`. Unfold `rowF`. Use `fun_prop`. Establish `hg : ∀ k, ∫ z : ℂ, Complex.exp (-((c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ)) * (‖z‖ : ℂ) ^ 2) = (Real.pi : ℂ) / ((c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ))`.
+
+Introduce `k`. Establish `ha : 0 < ((c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ)).re` using `by simp [hc]`. Establish `h` using `GaussianFourier.integral_cexp_neg_mul_sq_norm (V := ℂ) ha`. Rewrite `h` using `[Complex.finrank_real_complex]`. Simplify using `using h`.
+
+Rewrite using `[← mp.map_eq, integral_map mp.measurable.aemeasurable hcont.aestronglyMeasurable]`. Repeatedly rewrite using `[rowF_comp c κ b hb]`. Establish `hprod` using `integral_fintype_prod_eq_prod (f := fun k (z : ℂ) => Complex.exp (-((c : ℂ) - Complex.I * κ * (hb.eigenvalues k : ℂ)) * (‖z‖ : ℂ) ^ 2)) (μ := fun _ : Fin n => (volume : Measure ℂ))`. Rewrite `hprod` using `[← volume_pi]`. Rewrite using `[hprod, Finset.prod_congr rfl (fun k _ => hg k), Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, det_shift c κ b hb]`.
+-/
 theorem row_int (c κ : ℝ) (hc : 0 < c) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) :
     ∫ v : Fin n → ℂ, rowF c κ b v = (Real.pi : ℂ) ^ n / ((c : ℂ) • 1 - (Complex.I * κ) • b).det := by
   have mp := mp_cU hb.eigenvectorUnitary.2

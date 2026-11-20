@@ -12,6 +12,9 @@ section Analytic
 
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
+/- English proof (translation)
+Take `⟨Ψ, hΨ⟩` from `recon (ι := Fin (k + 1)) (Module.finBasis ℝ (HS L N))`. Use `⟨‖Ψ‖ ^ 2, sq_nonneg _, fun A => ?_⟩` and prove the remaining obligations. Establish `h1` using `Ψ.le_opNorm (fun v => A fun i => Module.finBasis ℝ (HS L N) (v i))`. Rewrite `h1` using `[hΨ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lem_nrm (k : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ A : HS L N [⋀^Fin (k + 1)]→L[ℝ] ℝ,
     ‖A‖ ^ 2 ≤ K * ∑ v : Fin (k + 1) → Fin (Module.finrank ℝ (HS L N)),
       (A fun i => Module.finBasis ℝ (HS L N) (v i)) ^ 2 := by
@@ -25,6 +28,9 @@ theorem lem_nrm (k : ℕ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ A : HS L N [⋀^Fin (k 
           A fun i => Module.finBasis ℝ (HS L N) (v i)‖ ^ 2 := mul_pow _ _ _
     _ ≤ _ := mul_le_mul_of_nonneg_left (norm_sq_le_sum _) (sq_nonneg _)
 
+/- English proof (translation)
+Take `⟨Ψ, hΨ⟩` from `recon (ι := Fin (k + 1)) (Module.finBasis ℝ (HS L N))`. Establish `hc : Continuous fun x => fun v : Fin (k + 1) → Fin (Module.finrank ℝ (HS L N)) => fr ω₁ (ofS L N x) fun i => Module.finBasis ℝ (HS L N) (v i)` using `continuous_pi fun v => (fr_comp_cont h1 _).comp ofS_cont`. Use `Ψ.continuous.comp_aestronglyMeasurable (hc.aestronglyMeasurable (μ := d.μ.restrict d.D))` as an intermediate fact. Simplify `this` using `only [hΨ]`.
+-/
 theorem lem_meas {k : ℕ} (d : Dom L N) {ω₁ : Form (HS L N) (k + 1)} (h1 : ContinuousOn ω₁ (Pos L N)) :
     AEStronglyMeasurable (fun x => fr ω₁ (ofS L N x)) (d.μ.restrict d.D) := by
   obtain ⟨Ψ, hΨ⟩ := recon (ι := Fin (k + 1)) (Module.finBasis ℝ (HS L N))
@@ -34,6 +40,11 @@ theorem lem_meas {k : ℕ} (d : Dom L N) {ω₁ : Form (HS L N) (k + 1)} (h1 : C
   have := Ψ.continuous.comp_aestronglyMeasurable (hc.aestronglyMeasurable (μ := d.μ.restrict d.D))
   simpa only [hΨ] using this
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => exact ⟨hf, by simp⟩`. Consider the case `succ r ih`. Take `⟨h1, h2⟩` from `hGap L hC π hπ hπ25 N h3N d _ ih.1`. Rewrite using `[Function.iterate_succ_apply']`.
+
+Use `⟨h1, h2.trans ((mul_le_mul_of_nonneg_left ih.2 (by norm_num)).trans (le_of_eq ?_))⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lem_gap (hGap : SGap) (hC : IsTotallyComplex L) (π : 𝓞 L) (hπ : Prime π)
     (hπ25 : 25 ≤ Ideal.absNorm (Ideal.span {π})) (h3N : 3 ≤ N) (d : Dom L N) (f : Gp L N → ℝ) (hf : Lz d f)
     (r : ℕ) : Lz d ((hecke (toK L N) (toP L N) (qel L N π hπ.ne_zero))^[r] f) ∧
@@ -49,6 +60,17 @@ theorem lem_gap (hGap : SGap) (hC : IsTotallyComplex L) (π : 𝓞 L) (hπ : Pri
 
 end Analytic
 
+/- English proof (translation)
+Take `⟨K, hK0, hK⟩` from `lem_nrm (L := L) (N := N) k`. Take `⟨Cz, hCz⟩` from `hLoc L N k (by omega) d z hz`. Take `⟨S0, hS0⟩ : ∃ S0, S0 = ∑ v : Fin (k + 1) → Fin (Module.finrank ℝ (HS L N)), ∫ x in d.D, fr ω₀ (ofS L N x) (fun i => Module.finBasis ℝ (HS L N) (v i)) ^ 2 ∂d.μ` from `⟨_, rfl⟩`. Use `⟨|Cz| * √(K * S0), fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_toK _ _ (hecke_iter (qel L N π hπ.ne_zero) hω₀G.1 r) z]`.
+
+Take `⟨ωr, hωr⟩ : ∃ ωr, ωr = (Hk (qel L N π hπ.ne_zero))^[r] ω₀` from `⟨_, rfl⟩`. Rewrite using `[← hωr]`. Take `⟨hrG, hrγ, hrs⟩` from `Hk_iter_props (qel L N π hπ.ne_zero) hω₀G hω₀γ hω₀s r`. Rewrite `hrG`, `hrγ`, `hrs` using `[← hωr]`. Establish `hLzr : ∀ v : Fin (k + 1) → Fin (Module.finrank ℝ (HS L N)), Lz d (fun x => fr ωr x fun i => Module.finBasis ℝ (HS L N) (v i)) ∧ ∫ x in d.D, fr ωr (ofS L N x) (fun i => Module.finBasis ℝ (HS L N) (v i)) ^ 2 ∂d.μ ≤ ((3 / 5 : ℝ) ^ 2) ^ r * ∫ x in d.D, fr ω₀ (ofS L N x) (fun i => Mod …` using `fun v => by`.
+
+Use `lem_gap hGap hC π hπ hπ25 h3N d _ (hLz0 (fun i => Module.finBasis ℝ (HS L N) (v i))) r` as an intermediate fact. Rewrite `this` using `[← comp_Hk_iter, ← hωr]`. Conclude with `this`. Establish `hsumint : Integrable (fun x => K * ∑ v : Fin (k + 1) → Fin (Module.finrank ℝ (HS L N)), fr ωr (ofS L N x) (fun i => Module.finBasis ℝ (HS L N) (v i)) ^ 2) (d.μ.restrict d.D)` using `(integrable_finsetSum _ fun v _ => (hLzr v).1.2.2.2.1).const_mul _`. Establish `hint_r : IntegrableOn (fun x => ‖fr ωr (ofS L N x)‖ ^ 2) d.D d.μ` using `Integrable.mono' hsumint ((lem_meas d hrG.1).norm.pow 2) (Filter.Eventually.of_forall fun x => by show ‖‖fr ωr (ofS L N x)‖ ^ 2‖ ≤ _`.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Conclude with `hK _)`. Establish `hIr : ∫ x in d.D, ‖fr ωr (ofS L N x)‖ ^ 2 ∂d.μ ≤ ((3 / 5 : ℝ) ^ 2) ^ r * (K * S0)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_finsetSum _ fun v _ => (hLzr v).1.2.2.2.1]`.
+
+Use `_ ≤ K * ∑ v : Fin (k + 1) → Fin (Module.finrank ℝ (HS L N)), ((3 / 5 : ℝ) ^ 2) ^ r * ∫ x in d.D, fr ω₀ (ofS L N x) (fun i => Module.finBasis ℝ (HS L N) (v i)) ^ 2 ∂d.μ := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun v _ => (hLzr v).2) hK0`. Use `_ = ((3 / 5 : ℝ) ^ 2) ^ r * (K * S0) := by rw [hS0, ← Finset.mul_sum]; ring`. Establish `hsq : √(((3 / 5 : ℝ) ^ 2) ^ r * (K * S0)) = (3 / 5 : ℝ) ^ r * √(K * S0)`. Rewrite using `[← pow_mul, mul_comm 2 r, pow_mul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lem_bound (hGap : SGap) (hLoc : SLoc) (L : Type) [Field L] [NumberField L] (hC : IsTotallyComplex L)
     (π : 𝓞 L) (hπ : Prime π) (hπ25 : 25 ≤ Ideal.absNorm (Ideal.span {π})) (N k : ℕ) (h3N : 3 ≤ N)
     (d : Dom L N) (ω₀ : Form (HS L N) (k + 1)) (hω₀G : Good ω₀) (hω₀γ : ∀ γ, FInv ω₀ (emb L N γ))

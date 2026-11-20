@@ -22,6 +22,9 @@ def IotaEl (Λ : Submodule (𝓞 D.host.E) (VS D).V) (f g1 g2 : Fin (D.R.rS + 1)
       (fun a => sF Z p a • baseChange₂ D p (f a)) (fun b => sF' Z p b • baseChange₂ D p (g1 b))
       (fun b => sF' Z p b • baseChange₂ D p (g2 b)) (betaP p β)
 
+/- English proof (translation)
+Rewrite using `[map_sub, baseChange_smul₂, baseChange_smul₂, smul_sub, smul_smul, smul_smul, smul_smul, smul_smul]`. Apply the tactic sequence `congr 2 <;> ring`.
+-/
 theorem omp_combine (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (P K : (D.s.atP p).Ep) :
     (P * (D.s.atP p).ιE (GDl f g2 (D.R.rS + 1))) • (K • baseChange₂ D p (Gom' f g1)) -
       (P * (D.s.atP p).ιE (GDl f g1 (D.R.rS + 1))) • (K • baseChange₂ D p (Gom' f g2)) =
@@ -29,6 +32,9 @@ theorem omp_combine (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (P K : (D.s.atP p)
   rw [map_sub, baseChange_smul₂, baseChange_smul₂, smul_sub, smul_smul, smul_smul, smul_smul, smul_smul]
   congr 2 <;> ring
 
+/- English proof (translation)
+Rewrite using `[map_sub, baseChange_smul₂, baseChange_smul₂, smul_sub, smul_smul, smul_smul, smul_smul, smul_smul, map_mul, map_mul, cj_iota (Z.hcj p), cj_iota (Z.hcj p)]`. Apply the tactic sequence `congr 2 <;> ring`.
+-/
 theorem om_combine (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (β : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (P K : (D.s.atP p).Ep) :
     (Z.M p).L.cj (P * (D.s.atP p).ιE (GDl f g2 (D.R.rS + 1))) • (K • baseChange₂ D p (β (Gom f g1))) -
@@ -39,6 +45,17 @@ theorem om_combine (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V) (β : (VS D).V ≃�
     cj_iota (Z.hcj p), cj_iota (Z.hcj p)]
   congr 2 <;> ring
 
+/- English proof (translation)
+Establish `hiso : ∀ v w, (locH Z p).h (betaP p β v) (betaP p β w) = (locH Z p).h v w` using `betaP_iso Z p β hG.iso`. Use `scalarPair_generic (locH Z p) (lattice₂ D Z.M p Λ) (fun a => sF Z p a • baseChange₂ D p (f a)) (fun b => sF' Z p b • baseChange₂ D p (g1 b)) (fun b => sF' Z p b • baseChange₂ D p (g2 b)) _ _ (betaP p β) hiso (fun x hx => betaP_mem_X Z p β g1 g2 (sF' Z p) (isUnit_sF' Z p) hG.xmap …` and prove the remaining obligations. Apply `iso_span` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[h_bcP, brS, hG.fiso j i, map_zero, mul_zero]`.
+
+Apply `iso_span` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[h_bcP, brS, hG.g2iso j i, map_zero, mul_zero]`. Rewrite using `[om'_loc, om'_loc, dl_loc Z p f g2 (sF Z p) (sF' Z p) _ le_rfl, dl_loc Z p f g1 (sF Z p) (sF' Z p) _ le_rfl]`. Rewrite using `[omp_combine]`.
+
+Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p f (sF Z p) (isUnit_sF Z p) hG.omp)`. Rewrite using `[om_loc, om_loc, dl_loc Z p f g2 (sF Z p) (sF' Z p) _ le_rfl, dl_loc Z p f g1 (sF Z p) (sF' Z p) _ le_rfl, map_smul, betaP_bc]`. Rewrite using `[om_combine]`. Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p g2 (sF' Z p) (isUnit_sF' Z p) hG.om)`. Rewrite using `[dl_loc Z p f g1 (sF Z p) (sF' Z p) _ (Nat.le_succ _), dl_loc Z p f g2 (sF Z p) (sF' Z p) _ le_rfl, dl_loc Z p f g2 (sF Z p) (sF' Z p) _ (Nat.le_succ _), dl_loc Z p f g1 (sF Z p) (sF' Z p) _ le_rfl]`.
+
+Establish `h` using `congrArg (D.s.atP p).ιE hG.ratio`. Rewrite `h` using `[map_mul, map_mul]`. Take the linear combination `((∏ i : Fin D.R.rS, (Z.M p).L.cj (sF Z p (Fin.castLE (Nat.le_succ _) i))) * (∏ i : Fin D.R.rS, sF' Z p (Fin.castLE (Nat.le_succ _) i)) * ((∏ i : Fin (D.R.rS + 1), (Z.M p).L.cj (sF Z p (Fin.castLE le_rfl i))) * (∏ i : Fin (D.R.rS + 1), sF' Z p (Fin.castLE le_rfl i)))) * h`. Use `show betaP p β (sF' Z p (Fin.last _) • baseChange₂ D p (g1 (Fin.last _))) - sF' Z p (Fin.last _) • baseChange₂ D p (g2 (Fin.last _)) ∈ _`. Rewrite using `[map_smul, betaP_bc, ← smul_sub, ← map_sub]`.
+
+Conclude with `Submodule.smul_mem _ _ (bcP_mem_X Z p g2 (sF' Z p) (isUnit_sF' Z p) hG.zmap)`.
+-/
 theorem isScalarPair_lt (Λ : Submodule (𝓞 D.host.E) (VS D).V) (f g1 g2 : Fin (D.R.rS + 1) → (VS D).V)
     (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Tn T'n : ℕ) (hG : GFacts Λ f g1 g2 β)
     (hI : IotaEl Z p Λ f g1 g2 β) :

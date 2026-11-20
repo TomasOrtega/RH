@@ -8,6 +8,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Re
 
 namespace FinKey
 
+/- English proof (translation)
+Apply the tactic sequence `induction p using MvPolynomial.induction_on <;> simp_all`.
+-/
 theorem eval_bind₁' {σ τ R : Type} [CommRing R] (Y : τ → R) (g : σ → MvPolynomial τ R)
     (p : MvPolynomial σ R) : eval Y (bind₁ g p) = eval (fun x => eval Y (g x)) p := by
   induction p using MvPolynomial.induction_on <;> simp_all
@@ -18,11 +21,17 @@ def frameLin {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mu
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (x : ArcLt Dw) : MvPolynomial (ArcLt Dw) K :=
   ∑ l : Fin (Dw.mult x.1), X ⟨x.1, x.2.1, l⟩ * C (Bm x.1 l x.2.2 * (lam x.1 x.2.2)⁻¹)
 
+/- English proof (translation)
+Simplify using `only [frameLin, frameSub, map_sum, map_mul, eval_X, eval_C, Finset.sum_mul, mul_assoc]`.
+-/
 theorem eval_frameLin {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (Y : ArcLt Dw → K) (x : ArcLt Dw) :
     eval Y (frameLin Bm lam x) = frameSub Bm lam Y x := by
   simp only [frameLin, frameSub, map_sum, map_mul, eval_X, eval_C, Finset.sum_mul, mul_assoc]
 
+/- English proof (translation)
+Unfold `frameLin`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun l _ => ?_` and prove the remaining obligations. Establish `h` using `(isHomogeneous_X K (⟨x.1, x.2.1, l⟩ : ArcLt Dw)).mul (isHomogeneous_C (ArcLt Dw) (Bm x.1 l x.2.2 * (lam x.1 x.2.2)⁻¹))`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem frameLin_homog {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (x : ArcLt Dw) : (frameLin Bm lam x).IsHomogeneous 1 := by
   unfold frameLin
@@ -31,11 +40,23 @@ theorem frameLin_homog {K : Type} [Field K] (Bm : ∀ τ : E →+* ℂ, Matrix (
     (isHomogeneous_C (ArcLt Dw) (Bm x.1 l x.2.2 * (lam x.1 x.2.2)⁻¹))
   rwa [add_zero] at h
 
+/- English proof (translation)
+The claim follows from `subA_sum A ⟨τ, i, l⟩`.
+-/
 theorem subA_sum' {K : Type} [Field K] (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (τ : E →+* ℂ) (i l : Fin (Dw.mult τ)) :
     (∑ z : ArcLt Dw, C (subA A ⟨τ, i, l⟩ z) * (X z : MvPolynomial (ArcLt Dw) K)) =
       ∑ k : Fin (Dw.mult τ), C (A τ k l) * X ⟨τ, i, k⟩ := subA_sum A ⟨τ, i, l⟩
 
+/- English proof (translation)
+Take `⟨τ, i, j⟩` from `x`. Establish `key : ∀ k : Fin (Dw.mult τ), ∑ l, A τ k l * Bm τ l j = if k = j then 1 else 0`. Introduce `k`. Establish `h` using `congrFun (congrFun (hAB τ) k) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis.
+
+Simplify using `only [frameLin, map_sum, map_mul, bind₁_X_right, bind₁_C_right, subA_sum, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, map_sum, map_mul]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = C (lam τ j)⁻¹ * X ⟨τ, i, j⟩ := by`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[key]`.
+
+Introduce `k _ hkj`. Simplify using `[key, hkj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 theorem bind_subA_frameLin {K : Type} [Field K]
     (A Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K) (hAB : ∀ τ, A τ * Bm τ = 1)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (x : ArcLt Dw) :
@@ -64,6 +85,11 @@ theorem bind_subA_frameLin {K : Type} [Field K]
         · intro h
           exact absurd (Finset.mem_univ j) h
 
+/- English proof (translation)
+Rewrite using `[detZ, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `RingHom.map_det ((eval x).comp (map (Int.castRingHom K))) (Matrix.of fun i l : Fin (D.mult τ) => (X (⟨τ, i, l⟩ : ArcLt D) : MvPolynomial (ArcLt D) ℤ))`. Rewrite `h` using `[RingHom.comp_apply]`. Rewrite using `[h]`.
+
+Use `congr 1`. Use extensionality with `i l`. Simplify using the standard rewrite rules.
+-/
 private theorem eval_map_detZ_lemma {K : Type} [CommRing K] (D : Datum H) (x : ArcLt D → K) :
     eval x (map (Int.castRingHom K) (detZ D)) =
       ∏ τ : E →+* ℂ, (Matrix.of fun i l : Fin (D.mult τ) => x ⟨τ, i, l⟩).det := by
@@ -77,6 +103,17 @@ private theorem eval_map_detZ_lemma {K : Type} [CommRing K] (D : Datum H) (x : A
   ext i l
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hlt : ∀ ν, ‖coeff ν (map (Int.castRingHom K) (detZ Dw))‖ < 1` using `fun ν => lt_of_le_of_ne (by rw [coeff_map]; exact IsUltrametricDist.norm_intCast_le_one K _) (hne ν)`. Establish `hev : eval (fun x : ArcLt Dw => if x.2.1 = x.2.2 then (1 : K) else 0) (map (Int.castRingHom K) (detZ Dw)) = 1`. Rewrite using `[eval_map_detZ_lemma]`.
+
+Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Use `(congrArg Matrix.det ?_).trans (Matrix.det_one : Matrix.det (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K) = 1)` and prove the remaining obligations. Use extensionality with `i l`. Simplify using `[Matrix.one_apply]`. Rewrite `hev` using `[MvPolynomial.eval_eq]`.
+
+Take `⟨ν, -, hν⟩` from `IsUltrametricDist.exists_norm_finsetSum_le (map (Int.castRingHom K) (detZ Dw)).support (fun d => coeff d (map (Int.castRingHom K) (detZ Dw)) * ∏ i ∈ d.support, (if i.2.1 = i.2.2 then (1 : K) else 0) ^ d i)`. Use `beta_reduce at hν`. Rewrite `hν` using `[hev, norm_one, norm_mul]`. Establish `hpow : ∀ (y : K), ‖y‖ ≤ 1 → ∀ k : ℕ, ‖y ^ k‖ ≤ 1`. Introduce `y hy k`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (y ^ k), norm_nonneg y]`.
+
+Establish `hp : ‖∏ i ∈ ν.support, (if i.2.1 = i.2.2 then (1 : K) else 0) ^ ν i‖ ≤ 1`. Rewrite using `[norm_prod]`. Use `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hpow _ ?_ _` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Combine the linear relations using `[hlt ν, mul_le_of_le_one_right (norm_nonneg (coeff ν (map (Int.castRingHom K) (detZ Dw)))) hp]`.
+-/
 theorem exists_coeff_norm_one {K : Type} [NormedField K] [IsUltrametricDist K] (Dw : Datum H) :
     ∃ ν, ‖coeff ν (map (Int.castRingHom K) (detZ Dw))‖ = 1 := by
   by_contra hne
@@ -112,6 +149,11 @@ theorem exists_coeff_norm_one {K : Type} [NormedField K] [IsUltrametricDist K] (
   linarith [hlt ν, mul_le_of_le_one_right
     (norm_nonneg (coeff ν (map (Int.castRingHom K) (detZ Dw)))) hp]
 
+/- English proof (translation)
+Rewrite using `[lcoeffPoly, MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite `h` using `[MvPolynomial.mem_support_iff, not_not]`.
+
+Simplify using `[h]`.
+-/
 private theorem coeff_lcoeffPoly_lemma_2 {σ K₁ : Type} [Field K₁] (P : MvPolynomial σ (LaurentSeries K₁))
     (k : ℤ) (ν : σ →₀ ℕ) : coeff ν (lcoeffPoly P k) = (P.coeff ν).coeff k := by
   classical
@@ -122,6 +164,13 @@ private theorem coeff_lcoeffPoly_lemma_2 {σ K₁ : Type} [Field K₁] (P : MvPo
   · rw [MvPolynomial.mem_support_iff, not_not] at h
     simp [h]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on'`. Use `next u a =>`. Rewrite using `[MvPolynomial.bind₁_monomial]`. Establish `hprod : (∏ i ∈ u.support, (C (s i) * X i) ^ u i : MvPolynomial σ K) = monomial u (∏ i ∈ u.support, s i ^ u i)`. Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod]`. Rewrite using `[hprod, MvPolynomial.C_mul_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finsupp.prod, mul_comm]`.
+
+Rewrite using `[mul_zero]`. Use `next p q hp hq =>`. Rewrite using `[map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, mul_add]`.
+-/
 private theorem coeff_bind_scale_lemma_3 {σ K : Type} [NormedField K] (s : σ → K) (Q : MvPolynomial σ K)
     (ν : σ →₀ ℕ) :
     coeff ν (bind₁ (fun x => C (s x) * X x) Q) = (ν.prod fun x e => s x ^ e) * coeff ν Q := by
@@ -141,6 +190,11 @@ private theorem coeff_bind_scale_lemma_3 {σ K : Type} [NormedField K] (s : σ �
   next p q hp hq =>
     rw [map_add, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hp, hq, mul_add]
 
+/- English proof (translation)
+Take `⟨σ, i, l⟩` from `y`. Take `⟨σ', i', l'⟩` from `z`. Simplify using `only [subA]`. Distinguish the cases in `hσ : σ' = σ`. Substitute `hσ` using the available equality.
+
+Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Simplify using `using hA σ' l' l`. Simplify using `[hi, hC0]`. Simplify using `[hσ, hC0]`.
+-/
 private theorem norm_subA_le_lemma_4 {K : Type} [NormedField K]
     (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K) (Cb : ℝ) (hC0 : 0 ≤ Cb)
     (hA : ∀ τ k l, ‖A τ k l‖ ≤ Cb) (y z : ArcLt Dw) : ‖subA A y z‖ ≤ Cb := by
@@ -155,6 +209,11 @@ private theorem norm_subA_le_lemma_4 {K : Type} [NormedField K]
     · simp [hi, hC0]
   · simp [hσ, hC0]
 
+/- English proof (translation)
+Use `⟨∑ μ' ∈ P.support, (-(P.coeff μ').order).toNat, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[lcoeffPoly]`. Use `Finset.sum_eq_zero fun μ' hμ' => ?_` and prove the remaining obligations. Establish `hle : (-(P.coeff μ').order).toNat ≤ ∑ μ' ∈ P.support, (-(P.coeff μ').order).toNat` using `Finset.single_le_sum (f := fun μ' => (-(P.coeff μ').order).toNat) (fun _ _ => Nat.zero_le _) hμ'`. Establish `h1` using `Int.self_le_toNat (-(P.coeff μ').order)`.
+
+Establish `hc : (P.coeff μ').coeff k = 0`. Apply `HahnSeries.coeff_eq_zero_of_lt_order` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc, map_zero]`.
+-/
 private theorem exists_lcoeffPoly_eq_zero_lemma_5 {σ K₁ : Type} [Field K₁]
     (P : MvPolynomial σ (LaurentSeries K₁)) :
     ∃ b : ℕ, ∀ k : ℤ, k < -(b : ℤ) → lcoeffPoly P k = 0 := by
@@ -169,6 +228,13 @@ private theorem exists_lcoeffPoly_eq_zero_lemma_5 {σ K₁ : Type} [Field K₁]
     omega
   rw [hc, map_zero]
 
+/- English proof (translation)
+Establish `hQh : (map ι (lcoeffPoly P k)).IsHomogeneous d`. Introduce `ν hν`. Apply `hP` to reduce the goal to its premises. Introduce `h0`. Apply `hν` to reduce the goal to its premises.
+
+Rewrite using `[MvPolynomial.coeff_map, coeff_lcoeffPoly_lemma_2, h0]`. Apply the tactic sequence `all_goals simp`. Establish `hb : (bind₁ (frameLin Bm lam) (map ι (lcoeffPoly P k))).IsHomogeneous d`. Establish `h` using `hQh.eval₂ C (frameLin Bm lam) (fun r => isHomogeneous_C (ArcLt Dw) r) (fun x => frameLin_homog Bm lam x)`. Rewrite `h` using `[one_mul]`.
+
+Conclude with `h`. Establish `h` using `(isHomogeneous_C (ArcLt Dw) c).mul hb`. Rewrite `h` using `[zero_add]`. Conclude with `h`.
+-/
 private theorem isHomogeneous_frame_lemma_6 {K₁ : Type} [Field K₁] {K : Type} [NormedField K] (ι : K₁ →+* K)
     (P : MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (d : ℕ) (hP : P.IsHomogeneous d)
     (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
@@ -190,6 +256,9 @@ private theorem isHomogeneous_frame_lemma_6 {K₁ : Type} [Field K₁] {K : Type
   rw [zero_add] at h
   exact h
 
+/- English proof (translation)
+Establish `hfs : ∀ y, eval x (frameLin Bm lam y) = frameSub Bm lam x y` using `fun y => by`. Simplify using `only [frameLin, frameSub, map_sum, map_mul, eval_X, eval_C, Finset.sum_mul, mul_assoc]`. Rewrite using `[map_mul, eval_C]`. Use `congr 1`. Apply the tactic sequence `induction Q using MvPolynomial.induction_on <;> simp_all`.
+-/
 private theorem eval_frame_lemma_7 {K : Type} [NormedField K]
     (Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (c : K) (Q : MvPolynomial (ArcLt Dw) K)
@@ -201,6 +270,17 @@ private theorem eval_frame_lemma_7 {K : Type} [NormedField K]
   congr 1
   induction Q using MvPolynomial.induction_on <;> simp_all
 
+/- English proof (translation)
+Establish `hfun : (fun y => bind₁ (fun i => ∑ k : ArcLt Dw, C (subA A i k) * (X k : MvPolynomial (ArcLt Dw) K)) (frameLin Bm lam y)) = fun x => C (lam x.1 x.2.2)⁻¹ * X x`. Use function extensionality and compare the values at `fun x => by`. Take `⟨τ, i, j⟩` from `x`. Establish `key : ∀ k : Fin (Dw.mult τ), ∑ l, A τ k l * Bm τ l j = if k = j then 1 else 0`. Introduce `k`.
+
+Establish `h` using `congrFun (congrFun (hAB τ) k) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Then use the resulting hypothesis. Simplify using `only [frameLin, map_sum, map_mul, bind₁_X_right, bind₁_C_right, subA_sum, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = C (lam τ j)⁻¹ * X ⟨τ, i, j⟩ := by`.
+
+Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[key]`. Introduce `k _ hkj`. Simplify using `[key, hkj]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ j) h`. Rewrite using `[map_mul, MvPolynomial.bind₁_C_right, MvPolynomial.bind₁_bind₁, hfun, MvPolynomial.coeff_C_mul, coeff_bind_scale_lemma_3]`.
+-/
 private theorem coeff_subst_lemma_8 {K : Type} [NormedField K]
     (A Bm : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K) (hAB : ∀ τ, A τ * Bm τ = 1)
     (lam : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K) (c : K) (Q : MvPolynomial (ArcLt Dw) K)
@@ -238,6 +318,25 @@ private theorem coeff_subst_lemma_8 {K : Type} [NormedField K]
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨R, hRdef⟩ : ∃ R : ℤ → MvPolynomial (ArcLt Dw) K, ∀ k, R k = C (γ ^ n)⁻¹ * bind₁ (frameLin Bm lam) (map ι (lcoeffPoly P k))` from `⟨_, fun _ => rfl⟩`. Establish `hC0 : (0 : ℝ) ≤ Cb` using `by linarith`. Establish `hRh : ∀ k, (R k).IsHomogeneous d` using `fun k => by`. Rewrite using `[hRdef]`. Conclude with `isHomogeneous_frame_lemma_6 ι P d hP Bm lam _ k`.
+
+Establish `hevR : ∀ (k : ℤ) (x : ArcLt Dw → K), eval x (R k) = (γ ^ n)⁻¹ * eval (frameSub Bm lam x) (map ι (lcoeffPoly P k))` using `fun k x => by`. Rewrite using `[hRdef]`. Conclude with `eval_frame_lemma_7 Bm lam _ _ x`. Establish `hδ1 : ∀ ν, ‖coeff ν (map (Int.castRingHom K) (detZ Dw))‖ ≤ 1` using `fun ν => by`. Rewrite using `[MvPolynomial.coeff_map]`.
+
+Conclude with `IsUltrametricDist.norm_intCast_le_one K _`. Establish `hframe : ∀ t ∈ S, ∀ x : ArcLt Dw → K, (∀ i, x i ∈ K₀ ∧ ‖x i‖ ≤ 1) → ‖eval x (map (Int.castRingHom K) (detZ Dw))‖ = 1 → Filter.Tendsto (fun k => ‖eval x (R k) * t ^ k‖) Filter.cofinite (nhds 0) ∧ ‖∑' k, eval x (R k) * t ^ k‖ ≤ 1`. Introduce `t ht x hx hdet`. Rewrite `hdet` using `[eval_map_detZ_lemma]`. Take `⟨h1, h2⟩` from `hbd t ht x hx hdet`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h3` using `h1.const_mul ‖(γ ^ n)⁻¹‖`. Rewrite `h3` using `[mul_zero]`. Use `h3.congr fun k => ?_` and prove the remaining obligations. Simplify using `only [hevR, norm_mul, mul_assoc]`.
+
+Simplify using `only [hevR, mul_assoc]`. Rewrite using `[tsum_mul_left]`. Conclude with `h2`. Take `⟨b, hbR'⟩` from `exists_lcoeffPoly_eq_zero_lemma_5 P`. Establish `hbR : ∀ k : ℤ, k < -(b : ℤ) → R k = 0` using `fun k hk => by`.
+
+Rewrite using `[hRdef, hbR' k hk, map_zero, map_zero, mul_zero]`. Take `⟨L, hLdef⟩ : ∃ L : ℝ, L = μ.prod fun x e => ‖lam x.1 x.2.2‖ ^ e` from `⟨_, rfl⟩`. Establish `hG : ‖μ.prod fun x e => (lam x.1 x.2.2)⁻¹ ^ e‖ = L⁻¹`. Rewrite using `[hLdef]`. Simplify using `only [Finsupp.prod, norm_prod, norm_pow, norm_inv, inv_pow, Finset.prod_inv_distrib]`.
+
+Establish `hL : 0 < L`. Rewrite using `[hLdef, Finsupp.prod]`. Conclude with `Finset.prod_pos fun x _ => pow_pos (norm_pos_iff.mpr (hlam _ _)) _`. Establish `hγn : 0 < ‖γ‖ ^ n` using `pow_pos (norm_pos_iff.mpr hγ) n`. Take `⟨hcoef, -⟩` from `hFC K K₀ hres S hS1 hS2 hS3 (ArcLt Dw) (map (Int.castRingHom K) (detZ Dw)) hδ1 (exists_coeff_norm_one Dw) R b hbR hframe m`.
+
+Establish `hB` using `hBC K (ArcLt Dw) (R m) d (hRh m) hcoef (subA A) Cb hC (fun y z => norm_subA_le_lemma_4 A Cb hC0 hA y z) μ`. Rewrite `hB` using `[hRdef, coeff_subst_lemma_8 A Bm hAB lam, MvPolynomial.coeff_map, coeff_lcoeffPoly_lemma_2, norm_mul, norm_mul, norm_inv, norm_pow, hG]`. Rewrite using `[← hLdef]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left₀ hγn.ne', mul_inv_cancel_left₀ hL.ne']`.
+
+Use `_ ≤ L * (‖γ‖ ^ n * Cb ^ d) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hB hγn.le) hL.le`. Use `_ = ‖γ‖ ^ n * L * Cb ^ d := by ring`.
+-/
 theorem coeff_bound (hFC : FinCoreStatement) (hBC : BasisChangeStatement)
     {K₁ : Type} [Field K₁] {K : Type} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (ι : K₁ →+* K) (K₀ : Subfield K) (hres : ReciprocityTheory.MultiplicativeHeights.ResidueFieldInfiniteOn (K₀ : Set K)) (S : Set K)

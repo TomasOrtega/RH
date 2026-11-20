@@ -7,6 +7,11 @@ import ReciprocityTheory.AnalyticForms.RegularLocalRings.IntToRat
 
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
+/- English proof (translation)
+Introduce `K _ ι _ n`. Use `⟨fun V hK hV => ?_, fun P hP => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.NefAmpleGeneric.isArithVar_comap_of_isProjVarF hV`. Conclude with `GroundTheory.Heights₂.Heights.HilbertSamuel.isProjVarF_map_of_isArithVar hP`. Use `haveI : P.IsPrime := hP.2.1.1`.
+
+Apply `ReciprocityTheory.AnForm.R.IntegerToRational.comap_map_eq` to reduce the goal to its premises. Introduce `m hm`. Establish `h2 : m ∈ Ideal.comap (C : ℤ →+* MRing ι) P` using `hm`. Rewrite `h2` using `[hP.2.2.1]`. Simplify using `using h2`.
+-/
 theorem PositivityTheory.Xgp.t_contract : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (n : ℕ), (∀ V : Ideal (MRingOver ℚ ι), Nonempty K → IsProjVarF V n → IsArithVar (V.comap (MvPolynomial.map (Int.castRingHom ℚ))) (n + 1) ∧ (V.comap (MvPolynomial.map (Int.castRingHom ℚ))).map (MvPolynomial.map (Int.castRingHom ℚ)) = V) ∧ ∀ P : Ideal (MRing ι), IsArithVar P (n + 1) → IsProjVarF (P.map (MvPolynomial.map (Int.castRingHom ℚ))) n ∧ (P.map (MvPolynomial.map (Int.castRingHom ℚ))).comap (MvPolynomial.map (Int.castRingHom ℚ)) = P := by
   intro K _ ι _ n
   refine ⟨fun V hK hV => ?_, fun P hP => ⟨?_, ?_⟩⟩

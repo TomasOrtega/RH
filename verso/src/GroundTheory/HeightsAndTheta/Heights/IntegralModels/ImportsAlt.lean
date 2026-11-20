@@ -5,6 +5,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂⟩ R K L _ _ _ _ _ _ _ _ _ _ _ hR`. Conclude with `⟨h₁ R hR K L, h₂ R hR K⟩`. Introduce `h`. Use `⟨fun R _ _ _ hR K _ _ _ L _ _ _ _ _ S => (h R K L hR).1 S, ?_⟩` and prove the remaining obligations.
+
+Introduce `R _ _ _ hR K _ _ _`. Conclude with `(h R K K hR).2`.
+-/
 theorem KrullAkizuki.equiv :
     GroundTheory.Heights₂.Heights.Model.KrullAkizuki.Statement ↔
       GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Model.KrullAkizuki.Statement := by

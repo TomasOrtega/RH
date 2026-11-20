@@ -12,6 +12,19 @@ open GlobalTheory.AdForm
 
 namespace GlobalTheory.PairKeep
 
+/- English proof (translation)
+Establish `hq` using `q.ne_zero`. Establish `hvq : valuation k ((q.1 : 𝒪[k]) : k) ≠ 0` using `by simpa using hq`. Establish `hτ0 : τ ≠ 0`. Introduce `h`. Rewrite `hτ` using `[h, map_zero]`.
+
+Conclude with `hvq hτ.symm`. Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, map_zero]`. Conclude with `zero_ne_one hc`.
+
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, q.mem_max_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Establish `h1 : ((q.1 : 𝒪[k]) : k) / (c * τ) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀, map_mul, hc, hτ, one_mul, div_self hvq]`.
+
+Use `⟨_, mul_mem h1 t.2, ?_⟩` and prove the remaining obligations. Establish `h2 : c * x = ((q.1 : 𝒪[k]) : k) * (t : k)` using `by rw [← hs, ht]; rfl`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h2`. Introduce and unpack `⟨t, ht, rfl⟩`.
+
+Establish `h1 : (c * τ) / ((q.1 : 𝒪[k]) : k) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀, map_mul, hc, hτ, one_mul, div_self hvq]`. Use `⟨⟨_, mul_mem h1 ht⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Express the relevant statement in the definitionally equal form `_ = ((q.1 : 𝒪[k]) : k) * (c * τ / ((q.1 : 𝒪[k]) : k) * t)`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem res_zero_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (c τ : k) (q : Unif k) (hτ : valuation k τ = valuation k ((q.1 : 𝒪[k]) : k)) (hc : valuation k c = 1)
     (x : k) (s : 𝒪[k]) (hs : (s : k) = c * x) :
@@ -39,6 +52,27 @@ theorem res_zero_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     change _ = ((q.1 : 𝒪[k]) : k) * (c * τ / ((q.1 : 𝒪[k]) : k) * t)
     field_simp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ m' m hm b b' hbb hb'b P hP c τ q hτ hc hval g hg`. Substitute `hm` using the available equality. Simplify using `only [finCongr_refl, Matrix.reindex_refl_refl]`. Establish `hmul : ∀ g₁ g₂ : GL (Fin m') k, g₁ * g₂ = 1 → (b * g₁.val * b') * (b * g₂.val * b') = 1`. Introduce `g₁ g₂ h`.
+
+Establish `h' : g₁.val * g₂.val = 1` using `by rw [← Units.val_mul, h, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hb'b, Matrix.mul_one, h', Matrix.mul_one, hbb]`. Establish `hb' : ∀ (g : GL (Fin m') k) (u : Fin m' → k), b' *ᵥ ((b * g.val * b') *ᵥ u) = g • (b' *ᵥ u)`.
+
+Introduce `g u`. Express the relevant statement in the definitionally equal form `_ = g.val *ᵥ (b' *ᵥ u)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hb'b, Matrix.one_mul]`. Establish `hlat : ∀ u : Fin m' → k, b' *ᵥ u ∈ P.lat ↔ ∀ r, u r ∈ 𝒪[k]`. Introduce `u`.
+
+Rewrite using `[hP, Matrix.mulVec_mulVec, hbb, Matrix.one_mulVec]`. Establish `hint : ∀ g : GL (Fin m') k, g • P = P → ∀ u : Fin m' → k, (∀ r, u r ∈ 𝒪[k]) → ∀ r, ((b * g.val * b') *ᵥ u) r ∈ 𝒪[k]`. Introduce `g hg u hu`. Rewrite using `[← hlat, hb']`. Use `((P.hasVal_fn ⟨_, (hlat u).2 hu⟩).gl_smul g)` as an intermediate fact.
+
+Rewrite `this` using `[hg]`. Conclude with `this.mem`. Establish `hlast : ∀ g : GL (Fin m') k, g • P = P → ∀ u : Fin m' → k, ((∀ r, u r ∈ 𝒪[k]) ∧ ∀ r0 : Fin m', r0.1 + 1 = m' → ∃ s ∈ 𝒪[k], u r0 = τ * s) → ((∀ r, ((b * g.val * b') *ᵥ u) r ∈ 𝒪[k]) ∧ ∀ r0 : Fin m', r0.1 + 1 = m' → ∃ s ∈ 𝒪[k], ((b * g.val * b') *ᵥ u) r0 = τ * s)`. Introduce `g hg u ⟨hu, hu'⟩`. Use `⟨hint g hg u hu, fun r0 hr0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, hv⟩` from `hval u hu r0 hr0`. Take `⟨s', hs', hv'⟩` from `hval _ (hint g hg u hu) r0 hr0`. Establish `h1` using `hv.gl_smul g`. Rewrite `h1` using `[hg, ← hb']`. Rewrite using `[← res_zero_iff c τ q hτ hc _ s' hs', hv'.unique h1, res_zero_iff c τ q hτ hc _ s hs]`.
+
+Conclude with `hu' r0 hr0`. Establish `htr : ∀ g : GL (Fin m') k, g • P = P → ∀ u : Fin m' → k, (∀ r, u r ∈ 𝒪[k]) → ∀ r, ((b * g.val * b')ᵀ *ᵥ u) r ∈ 𝒪[k]`. Introduce `g hg u hu r`. Establish `h1` using `hint g hg (Pi.single r 1) (fun j => by`. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Express the relevant statement in the definitionally equal form `∑ j, (b * g.val * b')ᵀ r j * u j ∈ 𝒪[k]`. Conclude with `sum_mem fun j _ => mul_mem (h1 j) (hu j)`.
+
+Establish `hg' : g⁻¹ • P = P` using `by rw [inv_smul_eq_iff, hg]`. Use `⟨hmul _ _ (mul_inv_cancel g), fun u => ⟨hlast g hg u, fun h => ?_⟩, fun u => ⟨htr _ hg' u, fun h => ?_⟩⟩` and prove the remaining obligations. Use `hlast _ hg' _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, hmul _ _ (inv_mul_cancel g), Matrix.one_mulVec]`. Then use the resulting hypothesis. Use `htr _ hg _ h` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, hmul _ _ (inv_mul_cancel g), Matrix.transpose_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem keep : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m' m : ℕ) (hm : m' = m) (b b' : Matrix (Fin m') (Fin m') k), b * b' = 1 → b' * b = 1 →
     ∀ P : Pair k (Fin m'), (∀ x, x ∈ P.lat ↔ ∀ r, (b *ᵥ x) r ∈ 𝒪[k]) →

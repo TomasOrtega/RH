@@ -14,6 +14,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.
 import Development.AutomorphicArithmetic.Foundations.Convolution.IntegrableConvolution.EigBasic
 
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T in
+/- English proof (translation)
+The claim follows from `coreDesc_of absLast pullBack unitTrace oneTerm sideSum pickS pickInf tyEx termE goodEx places C.occursBasics L1.eigBasic`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.coreDesc :
     UpperTheory.ConvolutionTheory.CI → UpperTheory.ConvolutionTheory.GM.GM → UpperTheory.ConvolutionTheory.T.CoreDesc :=
   coreDesc_of absLast pullBack unitTrace oneTerm sideSum pickS pickInf tyEx termE goodEx places C.occursBasics L1.eigBasic

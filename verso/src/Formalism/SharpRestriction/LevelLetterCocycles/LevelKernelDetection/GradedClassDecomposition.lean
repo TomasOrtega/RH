@@ -23,6 +23,15 @@ def singleCoeffElement (F : ℤ → Submodule LL D) (k : ℤ) (w : D) (hw : w �
 def singleCoeffClass (F : ℤ → Submodule LL D) (k : ℤ) (w : D) (hw : w ∈ F (-k)) : GrQ F :=
   Submodule.Quotient.mk (singleCoeffElement F k w hw)
 
+/- English proof (translation)
+Establish `e : ∑ j ∈ Finset.Ico a b, singleCoeffClass F j ((g : ℤ → D) j) (Submodule.mem_pi.1 g.2 j (Set.mem_univ j)) = Submodule.mkQ _ (∑ j ∈ Finset.Ico a b, singleCoeffElement F j ((g : ℤ → D) j) (Submodule.mem_pi.1 g.2 j (Set.mem_univ j)))`. Rewrite using `[map_sum]`. Both sides reduce to the same expression. Rewrite using `[e, Submodule.mkQ_apply, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.mem_pi]`. Introduce `i _`.
+
+Establish `e2 : ((Submodule.pi Set.univ fun k : ℤ => F (-k)).subtype (g - ∑ j ∈ Finset.Ico a b, singleCoeffElement F j ((g : ℤ → D) j) (Submodule.mem_pi.1 g.2 j (Set.mem_univ j)))) i = (g : ℤ → D) i - ∑ j ∈ Finset.Ico a b, (Pi.single j ((g : ℤ → D) j) : ℤ → D) i`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_sum, Pi.sub_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e2, Finset.sum_pi_single]`. Distinguish the cases in `hi : i ∈ Finset.Ico a b`.
+
+Rewrite using `[if_pos hi, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[if_neg hi, sub_zero]`. Rewrite `hi` using `[Finset.mem_Ico, not_and_or, not_le, not_lt]`. Break down `hi with hi | hi` into its components or cases.
+
+Conclude with `ha i hi`. Conclude with `hb i hi`.
+-/
 theorem graded_class_decomposition (F : ℤ → Submodule LL D)
     (g : ↥(Submodule.pi Set.univ fun k : ℤ => F (-k))) (a b : ℤ)
     (ha : ∀ j < a, (g : ℤ → D) j ∈ F (1 - j)) (hb : ∀ j ≥ b, (g : ℤ → D) j ∈ F (1 - j)) :
@@ -84,6 +93,39 @@ def classAtRoot (c : ZMod n) (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys P
     apply Subtype.ext
     simp
 
+/- English proof (translation)
+Use `set F := FilD W T c s with hFdef`. Use `set U := Submodule.span LL (Set.range (classAtRoot c hP4 hcrys hLb s ζ)) with hU`. Take `⟨hanti, ⟨lo, hlo⟩, ⟨hi, hhi⟩⟩` from `hfilt`. Establish `hprim : IsPrimitiveRoot (ζ : LL) (PD.p ^ (s + 1))` using `(mem_primitiveRoots (pow_pos PD.hp.pos _)).1 ζ.2`. Establish `htop : ∀ j : ℤ, 1 - lo ≤ j → F (1 - j) = ⊤`.
+
+Introduce `j hj`. Conclude with `eq_top_iff.2 (hlo ▸ hanti (by omega))`. Establish `hbot : ∀ j : ℤ, j < -hi → F (-j) = ⊥`. Introduce `j hj`. Conclude with `eq_bot_iff.2 (hhi ▸ hanti (by omega))`.
+
+Establish `hsingle : ∀ (m : ℕ) (k : ℤ), (1 - lo - k).toNat = m → ∀ (w : Dc W T c) (hw : w ∈ F (-k)), singleCoeffClass F k w hw ∈ U`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `k hk w hw`.
+
+Distinguish the cases in `hK : 1 - lo ≤ k`. Establish `h0 : singleCoeffClass F k w hw = 0`. Unfold `singleCoeffClass`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_pi]`. Introduce `j _`.
+
+Use `show (Pi.single k w : ℤ → Dc W T c) j ∈ F (1 - j)`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Rewrite using `[htop j hK]`. Conclude with `Submodule.mem_top`.
+
+Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `zero_mem _`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Rewrite `hK` using `[not_le]`.
+
+Take `⟨x, a, ha0, hlow, hk0⟩` from `(hP4 T hcrys c s ζ hprim).2 k (ιV PD (LL := LL) (V := T.V) (w : T.V ⊗[Qp] B)) hw`. Set `gx : ↥(Submodule.pi Set.univ fun k : ℤ => F (-k))` to `⟨fun k => (⟨Lb.levB T c ζ x k, Lb.mem T c ζ x k⟩ : Dc W T c), fun k _ => levB_mem_fil hP4 hcrys hLb s ζ x k⟩`. Set `h` to `a • gx - singleCoeffElement F k w hw`. Establish `hcls : (Submodule.Quotient.mk h : GrQ F) = a • classAtRoot c hP4 hcrys hLb s ζ x - singleCoeffClass F k w hw`. Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`.
+
+Both sides reduce to the same expression. Establish `hval : ∀ j, ((h : ℤ → Dc W T c) j : T.V ⊗[Qp] B) = a • Lb.levB T c ζ x j - ((Pi.single k w : ℤ → Dc W T c) j : T.V ⊗[Qp] B)`. Introduce `j`. Both sides reduce to the same expression. Establish `hlowh : ∀ j < k + 1, (h : ℤ → Dc W T c) j ∈ F (1 - j)`.
+
+Introduce `j hj`. Use `show ιV PD (LL := LL) (V := T.V) (((h : ℤ → Dc W T c) j : T.V ⊗[Qp] B)) ∈ FilLev W T c s (1 - j)`. Rewrite using `[hval, map_sub, map_smul, ← hLb]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, ← neg_add_eq_sub]`. Conclude with `hk0`. Rewrite using `[Pi.single_eq_of_ne hjk, ZeroMemClass.coe_zero, map_zero, sub_zero, ← neg_add_eq_sub]`. Conclude with `hlow j (by omega)`. Establish `hhigh : ∀ j ≥ 1 - lo, (h : ℤ → Dc W T c) j ∈ F (1 - j)`.
+
+Introduce `j hj`. Rewrite using `[htop j hj]`. Conclude with `Submodule.mem_top`. Establish `hdec` using `graded_class_decomposition F h (k + 1) (1 - lo) hlowh hhigh`. Establish `hsk : singleCoeffClass F k w hw = a • classAtRoot c hP4 hcrys hLb s ζ x - Submodule.Quotient.mk h`.
+
+Rewrite using `[hcls]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsk]`. Use `sub_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)) ?_` and prove the remaining obligations. Rewrite using `[hdec]`.
+
+Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_Ico]`. Conclude with `ih (1 - lo - j).toNat (by omega) j rfl _ _`. Rewrite using `[eq_top_iff]`. Introduce `q _`.
+
+Take `⟨g, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hlow' : ∀ j < -hi, (g : ℤ → Dc W T c) j ∈ F (1 - j)`. Introduce `j hj`. Establish `h0 : (g : ℤ → Dc W T c) j ∈ F (-j)` using `Submodule.mem_pi.1 g.2 j (Set.mem_univ j)`. Rewrite `h0` using `[hbot j hj, Submodule.mem_bot]`.
+
+Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `hhigh' : ∀ j ≥ 1 - lo, (g : ℤ → Dc W T c) j ∈ F (1 - j)`. Introduce `j hj`. Rewrite using `[htop j hj]`.
+
+Conclude with `Submodule.mem_top`. Rewrite using `[graded_class_decomposition F g (-hi) (1 - lo) hlow' hhigh']`. Conclude with `Submodule.sum_mem _ fun j _ => hsingle _ j rfl _ _`.
+-/
 theorem classes_span_top (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))
@@ -177,6 +219,15 @@ theorem classes_span_top (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.
   rw [graded_class_decomposition F g (-hi) (1 - lo) hlow' hhigh']
   exact Submodule.sum_mem _ fun j _ => hsingle _ j rfl _ _
 
+/- English proof (translation)
+Use `show Submodule.Quotient.mk _ = _ • Submodule.Quotient.mk _`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.mem_pi]`. Introduce `k _`. Use `show ιV PD (LL := LL) (V := T.V) (Lb.levB T c ζ (a • x) k - PowerSeries.constantCoeff (W.lev c ζ a) • Lb.levB T c ζ x k) ∈ FilLev W T c s (1 - k)`. Rewrite using `[map_sub, LinearMap.map_smul (ιV PD (LL := LL) (V := T.V)), ← hLb, ← hLb, W.levN_smul]`.
+
+Take `⟨m, hm⟩` from `W.levN_supp T c ζ x`. Establish `hsupp : Function.support (fun j : ℕ => PowerSeries.coeff j (W.lev c ζ a) • W.levN T c ζ x (k - j)) ⊆ ↑(Finset.range ((k - m).toNat + 1))`. Introduce `j hj`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`.
+
+Apply `hj` to reduce the goal to its premises. Use `show PowerSeries.coeff j (W.lev c ζ a) • W.levN T c ζ x (k - j) = 0`. Rewrite using `[hm (k - j) (by omega), smul_zero]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_range_succ', PowerSeries.coeff_zero_eq_constantCoeff_apply, Nat.cast_zero, sub_zero, add_sub_cancel_right]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hLb]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h1` using `levB_mem_fil (c := c) hP4 hcrys hLb s ζ x (k - ((j + 1 : ℕ) : ℤ))`. Conclude with `hfilt.1 (show 1 - k ≤ -(k - ((j + 1 : ℕ) : ℤ)) by push_cast; omega) h1`.
+-/
 theorem classAtRoot_smul (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))
@@ -206,11 +257,17 @@ theorem classAtRoot_smul (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.
   have h1 := levB_mem_fil (c := c) hP4 hcrys hLb s ζ x (k - ((j + 1 : ℕ) : ℤ))
   exact hfilt.1 (show 1 - k ≤ -(k - ((j + 1 : ℕ) : ℤ)) by push_cast; omega) h1
 
+/- English proof (translation)
+Establish `h` using `W.lev_letter c ζ (1 - letE c) (by simp [letE])`. Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem level_idempotent_eq_one (ζ : LL) : W.lev c ζ (letE c : LetA O n) = 1 := by
   have h := W.lev_letter c ζ (1 - letE c) (by simp [letE])
   rw [map_sub, map_one, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [Coord.t_zero]`. Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, C.t_add, ih]`.
+-/
 theorem coord_t_finset_sum {κ' : Type} (t : Finset κ') (f : κ' → C.V) :
     C.t c (∑ i ∈ t, f i) = ∑ i ∈ t, C.t c (f i) := by
   classical
@@ -218,6 +275,25 @@ theorem coord_t_finset_sum {κ' : Type} (t : Finset κ') (f : κ' → C.V) :
   | empty => simp [Coord.t_zero]
   | insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, C.t_add, ih]
 
+/- English proof (translation)
+Use `set cls := classAtRoot c hP4 hcrys hLb s ζ with hcls`. Establish `hfun : (fun j => (Submodule.Quotient.mk ⟨fun k => (⟨Lb.levB T c ζ ⟨C.t c (e j), he j⟩ k, Lb.mem T c ζ ⟨C.t c (e j), he j⟩ k⟩ : Dc W T c), fun k _ => levB_mem_fil hP4 hcrys hLb s ζ _ k⟩ : GrQ (FilD W T c s))) = fun j => cls ⟨C.t c (e j), he j⟩` using `rfl`. Rewrite using `[hfun, eq_top_iff, ← classes_span_top hP4 hcrys hLb s hfilt ζ, Submodule.span_le]`. Use `set U := Submodule.span LL (Set.range fun j => cls ⟨C.t c (e j), he j⟩) with hU`. Establish `hsm : ∀ (a : LetA O n) (x : ↥(W.N T)), cls (a • x) = PowerSeries.constantCoeff (W.lev c ζ a) • cls x` using `fun a x => classAtRoot_smul hP4 hcrys hLb s hfilt ζ a x`.
+
+Take `⟨⟨r', b, hbΔ, huniq, -⟩, -⟩` from `hmod`. Establish `hb : ∀ j, ∃ y : ↥(W.N T), (y : W.DD T) = (letE c : LetA O n) • b j ∧ cls y ∈ U`. Introduce `j`. Establish `hN : (letE c : LetA O n) • b j ∈ W.N T` using `(W.N T).smul_mem _ (hbΔ j).1`. Take `⟨e', he'⟩` from `C.t_surj c ((letE c : LetA O n) • b j) (by rw [smul_smul, letE_mul_self]) (fun δ hδ => by rw [γD_smulA, γA_letE, (hbΔ j).2 δ hδ])`.
+
+Establish `he'N : e' ∈ (latOf C).N c` using `by show C.t c e' ∈ W.N T`. Rewrite using `[he']`. Conclude with `hN`. Rewrite `he'N` using `[← hspan]`. Take `⟨β, hβ⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he'N`.
+
+Establish `hy : (⟨(letE c : LetA O n) • b j, hN⟩ : ↥(W.N T)) = ∑ i, (baseIdOf hR).d (β i) • (⟨C.t c (e i), he i⟩ : ↥(W.N T))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[← he', ← hβ, coord_t_finset_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => C.t_smul c (β i) (e i)`. Use `⟨⟨_, hN⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsm]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `choose y hy hyU using hb`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨α, hα⟩` from `(huniq x x.2).exists`. Establish `hx : (letE c : LetA O n) • x = ∑ j, α j • y j`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[hα, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hy j, smul_comm]`.
+
+Establish `hx1 : cls x = cls ((letE c : LetA O n) • x)`. Rewrite using `[hsm, level_idempotent_eq_one, map_one, one_smul]`. Use `show cls x ∈ U`. Rewrite using `[hx1, hx, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsm]`. Conclude with `Submodule.smul_mem _ _ (hyU j)`.
+-/
 theorem span_classes (hP4 : LevelMapHodgeFiltration W) (hcrys : IsCrys PD T.ρ)
     (hLb : ∀ (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))

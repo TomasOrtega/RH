@@ -17,6 +17,19 @@ section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Polynomial ValuativeRel IsLocalRing GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL GlobalTheory.GalOfCusp GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V UpperTheory.V.Hi
 open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `hL L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι P hP _ _ _ a K _ _ D ψ hU`. Use `⟨hU, _root_.UpperTheory.V.Hi.eq_zero_of_vanish_at_good_points_dense_weight hL L Ω l n c H hA A θ hθ ι P hP a K, fun lam hlam y hy => ?_⟩` and prove the remaining obligations. Set `x : A →ₐ[c.O] Qbar l` to `y.comp (IsScalarTower.toAlgHom c.O A (H.TK θ a K))`. Establish `hx : y.toRingHom.comp (algebraMap A _) = x.toRingHom` using `rfl`. Rewrite `hy`, the goal using `[hx]`.
+
+Take `⟨d, ξ, c0, sp, hsp⟩` from `UpperTheory.V.Hi.spec L Ω l n c H hA A θ hθ ι x lam hy`. Take `⟨-, -, -, -, -, hpt, -⟩` from `_root_.UpperTheory.V.Hi.partAct0_alt hL L Ω l n c H hA A θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K _ rfl`. Take `⟨Y, F, e, hY, he, hF0, hF, hop⟩` from `hpt y hx`. Take `⟨hD, hch⟩` from `_root_.UpperTheory.V.Hi.core_eigen_of_weight_char_hecke_level hL L Ω l n c H hA A θ hθ ι a K D ψ hU y lam d ξ Y F hF.1 hF0 fun w j => hop _`. Use `⟨Y.r, Y.cont, Y.ss, hY, hD, fun hg v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨ω, hsm, hPS, hinv, hU'⟩` from `_root_.UpperTheory.V.Hi.goodScalB_alt hL L Ω l n c H hA A θ hθ ι x lam d ξ c0 sp hsp hg Y K e he fun h0 => hF0 ((Submodule.mem_bot ℂ).1 (h0 ▸ hF))`. Establish `hO` using `hch v (ω v) (hsm v) (hinv v) fun j => smul_left_injective ℂ hF0 ((hop (.inr (v, j))).symm.trans ((hU' v j).2 F hF))`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt hL (H.ovr v)`. Take `⟨φ⟩` from `hPS v`. Establish `hpol` using `(_root_.UpperTheory.V.Z.Win.T2.psRec_alt hL L Ω n (H.Sl v) (H.pl v) (H.ovr v) (H.art v) (hA.art_spec v) rc hrc (Y.σl v) (ω v) (hsm v)).1 (.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective)`.
+
+Establish `hdist : ∀ i j, i ≠ j → ∃ u : Uo ((H.Sl v).adicCompletion L), ω v i u ≠ ω v j u` using `fun i j hij => by`. Take `⟨u, hu⟩` from `hg.2.2 v i j hij`. Use `⟨u, fun h0 => hu (ι.injective (mul_left_cancel₀ (ω v j u).ne_zero ?_))⟩` and prove the remaining obligations. Rewrite using `[hinv v j u, ← h0, hinv v i u]`. Establish `hdr` using `_root_.UpperTheory.V.Z.Ord.useAtL' (Y.atL v) (ω v) (hsm v) hdist ⟨φ⟩ rc hrc ((UpperTheory.V.Lev.ssCalc L Ω _ _ (H.ovr v)).1 n _ (fun j => (ω v j).comp (H.art v)) hpol)`.
+
+Rewrite `hdr` using `[funext hpol]`. Use `_root_.UpperTheory.V.Loc.ordFlag_alt hL L Ω l hA.odd ι n (H.Sl v) (hA.Sl_over v) (H.pl v) (H.ovr v) (H.art v) (hA.art_spec v) _ (Y.cont.comp (hA.prj_cont.comp continuous_subtype_val)) (htW lam) (fun τ i j hij => ?_) (ω v) _ hO (fun i j hij => ?_) hdr` and prove the remaining obligations. Establish `h1` using `(lam τ).anti (Fin.rev_le_rev.2 hij.le)`. Establish `h2 : (i : ℕ) < j` using `hij`. Simplify using `only [htW, lowW]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨u, hu⟩` from `hg.2.2 v i j hij`. Use `⟨u, fun h0 => hu (ι.injective (mul_left_cancel₀ (ω v j u).ne_zero ?_))⟩` and prove the remaining obligations. Rewrite using `[hinv v j u, ← h0, hinv v i u]`.
+-/
 theorem UpperTheory.V.Z.Ord.core_hecke_of_automorphic_hecke_dense_weight :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

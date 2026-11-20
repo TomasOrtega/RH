@@ -62,11 +62,20 @@ def cls {n : ℕ} (x : C.X n) (hx : C.d n x = 0) : C.H n := Submodule.Quotient.m
 
 variable {C}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_bot R`.
+-/
 @[simp] theorem mem_B_zero {x : C.X 0} : x ∈ C.B 0 ↔ x = 0 := Submodule.mem_bot R
 
+/- English proof (translation)
+The claim follows from `LinearMap.mem_range`.
+-/
 theorem mem_B_succ {n : ℕ} {x : C.X (n + 1)} : x ∈ C.B (n + 1) ↔ ∃ y, C.d n y = x :=
   LinearMap.mem_range
 
+/- English proof (translation)
+The claim follows from `mem_B_succ.2 ⟨y, rfl⟩ @[ext]`.
+-/
 theorem d_mem_B (n : ℕ) (y : C.X n) : C.d n y ∈ C.B (n + 1) := mem_B_succ.2 ⟨y, rfl⟩
 
 @[ext]
@@ -98,9 +107,17 @@ def comp [RingHomCompTriple σ₁₂ σ₂₃ σ₁₃] (F : Hom C₁ C₂ σ₁
 
 variable (F : Hom C₁ C₂ σ₁₂)
 
+/- English proof (translation)
+Rewrite using `[F.comm, hx, map_zero]`.
+-/
 theorem d_f_eq_zero {n : ℕ} {x : C₁.X n} (hx : C₁.d n x = 0) : C₂.d n (F.f n x) = 0 := by
   rw [F.comm, hx, map_zero]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => rw [mem_B_zero.1 hx, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ n`. Take `⟨y, rfl⟩` from `mem_B_succ.1 hx`.
+
+Conclude with `mem_B_succ.2 ⟨F.f n y, F.comm n y⟩`.
+-/
 theorem map_mem_B {n : ℕ} {x : C₁.X n} (hx : x ∈ C₁.B n) : F.f n x ∈ C₂.B n := by
   cases n with
   | zero => rw [mem_B_zero.1 hx, map_zero]; exact Submodule.zero_mem _
@@ -113,6 +130,9 @@ def mapZ (n : ℕ) : C₁.Z n →ₛₗ[σ₁₂] C₂.Z n where
   map_add' _ _ := Subtype.ext (map_add _ _ _)
   map_smul' _ _ := Subtype.ext (map_smulₛₗ _ _ _)
 
+/- English proof (translation)
+Introduce `_ hz` and use `F.map_mem_B hz`.
+-/
 theorem mapZ_le (n : ℕ) :
     (C₁.B n).comap (C₁.Z n).subtype ≤ ((C₂.B n).comap (C₂.Z n).subtype).comap (F.mapZ n) :=
   fun _ hz => F.map_mem_B hz
@@ -147,16 +167,30 @@ def term {p n : ℕ} (s : ComposableArrows C n) (f : Cn F p) (g : Fin (p + 1) �
     (hg : Monotone g) : F.obj (s.obj (Fin.last n)) :=
   (F.map (s.map (homOfLE (Fin.le_last (g (Fin.last p)))))).hom (f (hg.functor ⋙ s))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem term_congr {p n : ℕ} (s : ComposableArrows C n) (f : Cn F p) {g g' : Fin (p + 1) → Fin (n + 1)}
     (hg : Monotone g) (hg' : Monotone g') (h : g = g') : term F s f g hg = term F s f g' hg' := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem term_add {p n : ℕ} (s : ComposableArrows C n) (f f' : Cn F p) (g : Fin (p + 1) → Fin (n + 1))
     (hg : Monotone g) : term F s (f + f') g hg = term F s f g hg + term F s f' g hg := map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `map_smul _ _ _`.
+-/
 theorem term_smul {p n : ℕ} (s : ComposableArrows C n) (r : R) (f : Cn F p) (g : Fin (p + 1) → Fin (n + 1))
     (hg : Monotone g) : term F s (r • f) g hg = r • term F s f g hg := map_smul _ _ _
 
+/- English proof (translation)
+Establish `e : (face j s).map (homOfLE (Fin.le_last (g (Fin.last p)))) ≫ toLast j s = s.map (homOfLE (Fin.le_last (j.succAbove (g (Fin.last p)))))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Unfold `term`.
+
+Rewrite using `[← ModuleCat.comp_apply, ← F.map_comp, e]`. Both sides reduce to the same expression.
+-/
 theorem term_face {p n : ℕ} (s : ComposableArrows C (n + 1)) (f : Cn F p) (j : Fin (n + 2)) (g : Fin (p + 1) → Fin (n + 1))
     (hg : Monotone g) : (F.map (toLast j s)).hom (term F (face j s) f g hg) =
       term F s f (j.succAbove ∘ g) ((Fin.strictMono_succAbove j).monotone.comp hg) := by
@@ -168,6 +202,13 @@ theorem term_face {p n : ℕ} (s : ComposableArrows C (n + 1)) (f : Cn F p) (j :
   rw [← ModuleCat.comp_apply, ← F.map_comp, e]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ j : Fin (n + 3), (-1 : ℤ) ^ (j : ℕ) • (F.map (toLast j s)).hom (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • term F (face j s) f i.succAbove (Fin.strictMono_succAbove i).monotone) = 0`. Simplify using `only [map_sum, map_zsmul, Finset.smul_sum, smul_smul, term_face]`. Rewrite using `[← Fintype.sum_prod_type']`. Use `Finset.sum_involution (fun p _ => (p.1.succAbove p.2, p.2.predAbove p.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨j, i⟩ _ dsimp only`. Establish `e : ((j.succAbove i).succAbove ∘ (i.predAbove j).succAbove) = j.succAbove ∘ i.succAbove`. Use function extensionality and compare the values at `fun t => Fin.succAbove_succAbove_succAbove_predAbove j i t`. Rewrite using `[term_congr F s f _ ((Fin.strictMono_succAbove j).monotone.comp (Fin.strictMono_succAbove i).monotone) e, GlobalTheory.CatH.DSq.sign_swap, neg_smul, add_neg_cancel]`. Introduce and unpack `⟨j, i⟩ _ _ h`.
+
+Conclude with `Fin.succAbove_ne j i (congrArg Prod.fst h)`. Introduce `_ _`. Conclude with `Finset.mem_univ _`. Introduce and unpack `⟨j, i⟩ _`. Simplify using `only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove]`.
+-/
 theorem d_d (n : ℕ) (f : Cn F n) : d F (n + 1) (d F n f) = 0 := by
   funext s
   change ∑ j : Fin (n + 3), (-1 : ℤ) ^ (j : ℕ) • (F.map (toLast j s)).hom
@@ -238,6 +279,9 @@ def pullC (n : ℕ) : Cn F n →ₛₗ[σ] Cn F' n where
   map_add' f g := funext fun s => map_add (m.τ _) _ _
   map_smul' r f := funext fun s => LinearMap.map_smulₛₗ (m.τ _) _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F'.map (toLast i s)).hom (m.τ _ (f (face i s ⋙ m.G))) = m.τ _ (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (m.G.map (toLast i s))).hom (f (face i s ⋙ m.G)))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_zsmul, m.nat]`.
+-/
 theorem d_pullC (n : ℕ) (f : Cn F n) : d F' n (m.pullC n f) = m.pullC (n + 1) (d F n f) := by
   funext s
   change ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F'.map (toLast i s)).hom (m.τ _ (f (face i s ⋙ m.G))) =
@@ -253,8 +297,14 @@ end Mor
 
 def Mor.ofBlk {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R'} (m : GlobalTheory.CatH.Mor F F' σ) : Mor F F' σ := ⟨m.G, m.τ, m.nat⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem H_eq_blk (F : C ⥤ ModuleCat.{0} R) (n : ℕ) : H F n = GlobalTheory.CatH.H F n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_ofBlk {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R'} (m : GlobalTheory.CatH.Mor F F' σ) (n : ℕ)
     (x : GlobalTheory.CatH.H F n) : (Mor.ofBlk m).pull n x = m.pull n x := rfl
 
@@ -295,8 +345,14 @@ def front {p q n : ℕ} (h : p + q = n) (i : Fin (p + 1)) : Fin (n + 1) := ⟨i,
 
 def back {p q n : ℕ} (h : p + q = n) (i : Fin (q + 1)) : Fin (n + 1) := ⟨p + i, by omega⟩
 
+/- English proof (translation)
+Introduce `_ _ hab` and use `hab`.
+-/
 theorem front_mono {p q n : ℕ} (h : p + q = n) : Monotone (front h) := fun _ _ hab => hab
 
+/- English proof (translation)
+Introduce `_ _ hab` and use `Nat.add_le_add_left hab p`.
+-/
 theorem back_mono {p q n : ℕ} (h : p + q = n) : Monotone (back h) := fun _ _ hab => Nat.add_le_add_left hab p
 
 namespace Pairing

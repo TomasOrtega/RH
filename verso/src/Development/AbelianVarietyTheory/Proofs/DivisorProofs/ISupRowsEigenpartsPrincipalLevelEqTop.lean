@@ -17,6 +17,13 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.SpanParts
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW hEx hS hC`. Take `⟨hCore, hSF, hE, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Take `⟨h, -, -, hTop, -⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 hCore hS R.SF hSF`. Rewrite using `[eq_top_iff, ← hTop]`. Use `iSup_le fun c => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : R.EEc c = ⊥`. Rewrite using `[← hE c, h0]`. Conclude with `bot_le`. Take `⟨p, hp⟩` from `hC c h0`. Rewrite using `[← hE c]`.
+
+Use `le_trans ?_ (le_iSup _ p)` and prove the remaining obligations. Conclude with `le_iSup₂_of_le c hp le_rfl`.
+-/
 theorem iSup_rows_eigenparts_principal_level_eq_top : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ c, R.EEc c ≠ ⊥ → ∃ p, R.Carries p c) → (⨆ p, R.EEp3 p) = ⊤ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW hEx hS hC
   obtain ⟨hCore, hSF, hE, -⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx

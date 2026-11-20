@@ -8,6 +8,11 @@ namespace GlobalTheory.WeylCell.U21TorusFactor
 
 open Formalism.UG
 
+/- English proof (translation)
+Break down `eq_or_ne i a with rfl | h1` into its components or cases. Simplify using `[Equiv.swap_apply_left, Equiv.swap_apply_right]`. Break down `eq_or_ne i a.rev with rfl | h2` into its components or cases. Simplify using `[Equiv.swap_apply_left, Equiv.swap_apply_right]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2, Equiv.swap_apply_of_ne_of_ne]`.
+
+Conclude with `fun h => h2 (by rw [← h, Fin.rev_rev])`. Conclude with `fun h => h1 (Fin.rev_injective h)`.
+-/
 theorem swap_rev_comm {n : ℕ} (a i : Fin n) :
     Equiv.swap a a.rev i.rev = (Equiv.swap a a.rev i).rev := by
   rcases eq_or_ne i a with rfl | h1
@@ -18,6 +23,17 @@ theorem swap_rev_comm {n : ℕ} (a i : Fin n) :
   · exact fun h => h2 (by rw [← h, Fin.rev_rev])
   · exact fun h => h1 (Fin.rev_injective h)
 
+/- English proof (translation)
+Establish `e1 : (Yi * T * Y) i j = Yi i (s j) * T (s j) (s j) * Y (s j) j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s j)]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s j)]`. Introduce `p _ hp`. Rewrite using `[hT p (s j) hp, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `r _ hr`. Rewrite using `[hY r j hr, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[e1]`. Use `split_ifs with hij`. Substitute `hij` using the available equality. Establish `e2 : (Yi * Y) i i = Yi i (s i) * Y (s i) i`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (s i)]`. Introduce `p _ hp`. Rewrite using `[hY p i hp, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite `e2` using `[hinv, Matrix.one_apply_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hYi i (s j) (fun h => hij (s.injective h).symm), zero_mul, zero_mul]`.
+-/
 theorem conj_diag_apply {R : Type} [CommRing R] {n : ℕ} (s : Equiv.Perm (Fin n))
     (Y Yi T : Matrix (Fin n) (Fin n) R) (hinv : Yi * Y = 1)
     (hY : ∀ i j, i ≠ s j → Y i j = 0) (hYi : ∀ i j, j ≠ s i → Yi i j = 0)
@@ -44,6 +60,9 @@ theorem conj_diag_apply {R : Type} [CommRing R] {n : ℕ} (s : Equiv.Perm (Fin n
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using `[ordL]`. Establish `h1` using `GlobalTheory.BorelUMod.v_eq_exp (inv_ne_zero hz)`. Rewrite `h1` using `[map_inv₀, GlobalTheory.BorelUMod.v_eq_exp hz, ← WithZero.exp_neg, WithZero.exp_inj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ordL_inv (z : L) : ordL z⁻¹ = -ordL z := by
   rcases eq_or_ne z 0 with rfl | hz
   · simp [ordL]
@@ -51,6 +70,11 @@ theorem ordL_inv (z : L) : ordL z⁻¹ = -ordL z := by
   rw [map_inv₀, GlobalTheory.BorelUMod.v_eq_exp hz, ← WithZero.exp_neg, WithZero.exp_inj] at h1
   linarith
 
+/- English proof (translation)
+Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using the standard rewrite rules. Establish `hz' : σ z ≠ 0` using `(map_ne_zero σ).2 hz`. Establish `h1` using `hσ z`. Rewrite `h1` using `[GlobalTheory.BorelUMod.v_eq_exp hz, GlobalTheory.BorelUMod.v_eq_exp hz', WithZero.exp_inj]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ordL_map {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (z : L) : ordL (σ z) = ordL z := by
   rcases eq_or_ne z 0 with rfl | hz
   · simp
@@ -65,6 +89,51 @@ namespace GlobalTheory.WeylCell.U21TorusFactor
 
 open Formalism.UG
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q hU n k hk hn y hy hw α φ hφ t ht w x`. Establish `hσv : ∀ z, Valued.v (σ z) = Valued.v z` using `hU.2.1`. Establish `hq : (q : ℂ) ≠ 0`. Use `hU.2.2.2.2.2.1` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions.
+
+Establish `hs : simpleU k = Equiv.swap (lo k) (lo k).rev`. Rewrite using `[simpleU, if_neg hk]`. Use `set a : Fin n := lo k with ha`. Establish `hkv : k.val = n / 2 - 1` using `by have := k.2; omega`. Establish `hodd : n % 2 = 1`.
+
+Break down `Nat.even_or_odd n with h | h` into its components or cases. Conclude with `absurd h hn`. Conclude with `Nat.odd_iff.1 h`. Establish `hav : a.val = k.val` using `rfl`. Establish `hrv : (a.rev).val = n - 1 - k.val` using `by rw [Fin.val_rev, hav]; omega`.
+
+Use `set Y : Matrix (Fin n) (Fin n) L := (((y : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hYd`. Use `set Yi : Matrix (Fin n) (Fin n) L := ((((y : GU σ n) : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hYid`. Use `set T : Matrix (Fin n) (Fin n) L := (((t : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hTd`. Establish `hinv : Yi * Y = 1`. Rewrite using `[hYid, hYd, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+
+Establish `hYw : ∀ i j, i ≠ Equiv.swap a a.rev j → Y i j = 0`. Introduce `i j h`. Rewrite `h` using `[← hs]`. Conclude with `hw i j h`. Establish `hYi : ∀ i j, j ≠ Equiv.swap a a.rev i → Yi i j = 0`.
+
+Introduce `i j h`. Establish `hm` using `(GlobalTheory.LGrp.mem_GU_iff σ n _).1 (y : GU σ n).2 i j`. Rewrite using `[hYid, hm]`. Establish `: j.rev ≠ Equiv.swap a a.rev i.rev`. Rewrite using `[swap_rev_comm]`.
+
+Conclude with `fun h' => h (Fin.rev_injective h')`. Conclude with `(congrArg σ (hYw _ _ this)).trans (map_zero σ)`. Use `set b : GU σ n := y⁻¹ * t * y with hbd`. Establish `hb : ∀ i j, (((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = if i = j then T (Equiv.swap a a.rev i) (Equiv.swap a a.rev i) else 0`. Introduce `i j`.
+
+Establish `: (((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Yi * T * Y`. Simplify using `[hbd, hYid, hYd, hTd, Units.val_mul]`. Rewrite using `[this]`. Conclude with `conj_diag_apply _ Y Yi T hinv hYw hYi ht i j`. Establish `hB : IsBorelU b`.
+
+Introduce `i j hij`. Rewrite using `[hb, if_neg (ne_of_gt hij)]`. Establish `hsph` using `hφ b (y⁻¹ * w * x) 1 hB (one_mem _)`. Establish `hprod : y⁻¹ * t * w * x = b * (y⁻¹ * w * x) * 1`. Rewrite using `[hbd]`.
+
+Use `group`. Establish `hTa : T a a ≠ 0 ∧ ordL (T a.rev a.rev) = -ordL (T a a)` using `by set Ti : Matrix (Fin n) (Fin n) L := ((((t : GU σ n) : GL (Fin n) L)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hTid`. Establish `h1 : T * Ti = 1`. Rewrite using `[hTid, hTd, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : (T * Ti) a a = T a a * Ti a a`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Introduce `p _ hp`. Rewrite using `[ht a p (Ne.symm hp), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Rewrite `h2` using `[h1, Matrix.one_apply_eq]`. Establish `hne : T a a ≠ 0` using `by intro h0; rw [h0, zero_mul] at h2; exact one_ne_zero h2`. Establish `hTi : Ti a a = (T a a)⁻¹`. Conclude with `eq_inv_of_mul_eq_one_right h2.symm`. Establish `hm` using `(GlobalTheory.LGrp.mem_GU_iff σ n _).1 (t : GU σ n).2 a a`.
+
+Rewrite `hm` using `[← hTid, hTi]`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[← ordL_map hσv (T a.rev a.rev)]`. Conclude with `(congrArg ordL hm.symm).trans (ordL_inv _)`. Establish `e : ∀ (β : Fin (n / 2) → ℂ) (g : GU σ n), chiDeltaU q β g = ∏ i : Fin (n / 2), β i ^ ordL ((((g : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo i) (lo i)) * (q : ℂ) ^ (-(ordL ((((g : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo i) (lo i))) * ((n : ℤ) - 1 - 2 …`.
+
+Introduce `β g`. Unfold `chiDeltaU`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (by have := i.2; omega)]`. Both sides reduce to the same expression.
+
+Establish `hact : ∀ i, (actU k α i : ℂ) = if i = k then (α k : ℂ)⁻¹ else α i`. Introduce `i`. Unfold `actU`. Rewrite using `[dif_neg hk]`. Distinguish the cases in `hi : i = k`.
+
+Substitute `hi` using the available equality. Simplify using `[Function.update_self, Units.val_inv_eq_inv_val]`. Simplify using `[Function.update_of_ne hi, hi]`. Establish `key : chiDeltaU q (fun i => (α i : ℂ)) b * (q : ℂ) ^ (-4 * ordL (T (lo k) (lo k))) = chiDeltaU q (fun i => (actU k α i : ℂ)) t`. Rewrite using `[e, e, Fintype.prod_eq_mul_prod_compl k, Fintype.prod_eq_mul_prod_compl k]`.
+
+Establish `hrest : ∏ i ∈ ({k}ᶜ : Finset (Fin (n / 2))), (α i : ℂ) ^ ordL ((((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo i) (lo i)) * (q : ℂ) ^ (-(ordL ((((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo i) (lo i))) * ((n : ℤ) - 1 - 2 * (i.val : ℤ))) = ∏ i ∈ ({k} …`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hik : i ≠ k` using `by simpa using hi`. Establish `hfix : Equiv.swap a a.rev (lo i) = lo i`. Apply `Equiv.swap_apply_of_ne_of_ne` to reduce the goal to its premises.
+
+Introduce `h`. Apply `hik` to reduce the goal to its premises. Use `ext`. Use `congrArg Fin.val h` as an intermediate fact. Simplify `this` using `[ha]`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Rewrite `this` using `[hrv]`. Establish `h3 : (lo i : Fin n).val = i.val` using `rfl`. Use `i.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hb, if_pos rfl, hfix, hact, if_neg hik]`. Rewrite using `[hrest, hb, if_pos rfl, ← ha, Equiv.swap_apply_left, hTa.2, hact, if_pos rfl]`. Establish `hE : ((n : ℤ) - 1 - 2 * (k.val : ℤ)) = 2` using `by omega`. Rewrite using `[hE]`.
+
+Use `set o := ordL (T a a)`. Use `set R := ∏ i ∈ ({k}ᶜ : Finset (Fin (n / 2))), (actU k α i : ℂ) ^ ordL ((((t : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo i) (lo i)) * (q : ℂ) ^ (-(ordL ((((t : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo i) (lo i))) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))`. Establish `hqq : (q : ℂ) ^ (-(-o) * 2) * (q : ℂ) ^ (-4 * o) = (q : ℂ) ^ (-o * 2)`. Rewrite using `[← zpow_add₀ hq]`. Put the polynomial expressions in normal form.
+
+Establish `hα : (α k : ℂ) ^ (-o) = ((α k : ℂ)⁻¹) ^ o` using `by rw [zpow_neg, inv_zpow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hprod, hsph]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem torus_factor : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →
     ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 → ¬ Even n →

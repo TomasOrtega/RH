@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UCanon.Rigid
 
+/- English proof (translation)
+Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hm : r ∈ maximalIdeal R` using `(mem_maximalIdeal r).mpr hn`. Rewrite `hr` using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, h r hm]`. Conclude with `not_isUnit_zero hr`.
+-/
 theorem isLocalHom_of_fst {R : Type} [CommRing R] [IsLocalRing R] {k : Type} [Field k] (θ : R →+* DualNumber k)
     (h : ∀ r ∈ maximalIdeal R, (θ r).fst = 0) : IsLocalHom θ := by
   refine ⟨fun r hr => ?_⟩
@@ -21,6 +24,17 @@ theorem isLocalHom_of_fst {R : Type} [CommRing R] [IsLocalRing R] {k : Type} [Fi
 
 end GlobalTheory.UCanon.Rigid
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ hB C Cn k _ ρ a hmax hs hc`. Establish `hbase` using `GlobalTheory.T.base_rigidity_tangent_vector_constant Xo c φ R hB C Cn k ρ a hc`. Establish `htor` using `GlobalTheory.T.torus_rigidity_snd_eq_zero_canonicalChart Xo c φ R hB C Cn k ρ a hc hbase`. Establish `h₁ : IsLocalHom ρ` using `GlobalTheory.UCanon.Rigid.isLocalHom_of_fst ρ hmax`. Establish `h₂ : IsLocalHom (GlobalTheory.RigChart.constHom ρ)`.
+
+Use `GlobalTheory.UCanon.Rigid.isLocalHom_of_fst _ fun r hr => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.RigChart.constHom, hmax r hr]`. Establish `hψ : ρ.comp Cn.ψ = (GlobalTheory.RigChart.constHom ρ).comp Cn.ψ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`.
+
+Use `congrArg (fun f => f x) hbase` as an intermediate fact. Simplify `this` using `[GlobalTheory.RigChart.constHom]`. Introduce and unpack `(i | j)`. Simplify using `[GlobalTheory.RigChart.constHom, Cn.bd, hs]`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises.
+
+Simplify using `[GlobalTheory.RigChart.constHom, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify `htor j` using `[GlobalTheory.RigChart.constHom, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `heq` using `GlobalTheory.TChart.cuniq _ R (DualNumber k) Cn.ψ Cn.compl ρ (GlobalTheory.RigChart.constHom ρ) h₁ h₂ hψ`. Introduce `r`. Rewrite using `[heq]`.
+
+Simplify using `[GlobalTheory.RigChart.constHom, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem GlobalTheory.UCanon.isRigid_canon : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), GlobalTheory.RigChart.IsRigid C.P.D.toPre C.s (fun i => (l.M' : ℤ) • C.δ i) := by
   intro E _ _ _ H Dw l Xo c φ R _ _ _ hB C Cn k _ ρ a hmax hs hc
   have hbase := GlobalTheory.T.base_rigidity_tangent_vector_constant Xo c φ R hB C Cn k ρ a hc

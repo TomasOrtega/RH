@@ -7,6 +7,13 @@ noncomputable section
 
 namespace Formalism.REAL
 
+/- English proof (translation)
+Introduce `V _ _ n ε F μ ν x y hU hx hy hne`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, μ a ≠ ν a := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (funext h)`.
+
+Establish `h1` using `hU a a rfl x y`. Rewrite `h1` using `[hx a, hy a, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `h2 : ((μ a : ℂ) - (ν a : ℂ)) * ⟪x, y⟫_ℂ = 0`. Rewrite using `[sub_mul, h1, sub_self]`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+
+Conclude with `absurd (by exact_mod_cast sub_eq_zero.mp h) ha`. Conclude with `h`.
+-/
 theorem compact_weight_orthogonal : KWtOrth := by
   intro V _ _ n ε F μ ν x y hU hx hy hne
   obtain ⟨a, ha⟩ : ∃ a, μ a ≠ ν a := by
@@ -23,16 +30,28 @@ section basics
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} {ε : Fin n → Bool}
   {F : Fin n → Fin n → Module.End ℂ V}
 
+/- English proof (translation)
+Unfold `kSpan`. Rewrite using `[Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.1`.
+-/
 theorem mem_compact_span_self (x : V) : x ∈ kSpan ε F x := by
   unfold kSpan; rw [Submodule.mem_sInf]; intro S hS; exact hS.1
 
+/- English proof (translation)
+Introduce `a b hab y hy`. Unfold `kSpan at *`. Rewrite `*` using `[Submodule.mem_sInf]`. Introduce `S hS`. Conclude with `hS.2 a b hab y (hy S hS)`.
+-/
 theorem compact_span_stable (x : V) : KStable ε F (kSpan ε F x) := by
   intro a b hab y hy
   unfold kSpan at *; rw [Submodule.mem_sInf] at *; intro S hS; exact hS.2 a b hab y (hy S hS)
 
+/- English proof (translation)
+The claim follows from `sInf_le ⟨hx, hS⟩`.
+-/
 theorem compact_span_le_stable {x : V} {S : Submodule ℂ V} (hx : x ∈ S) (hS : KStable ε F S) :
     kSpan ε F x ≤ S := sInf_le ⟨hx, hS⟩
 
+/- English proof (translation)
+Use `LinearMap.congr_fun (h a b c d hab hcd) y` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`.
+-/
 theorem compact_lie_commutator (h : KRel ε F) {a b c d : Fin n} (hab : ε a = ε b) (hcd : ε c = ε d) (y : V) :
     F a b (F c d y) - F c d (F a b y) =
       (if b = c then F a d y else 0) - (if d = a then F c b y else 0) := by
@@ -40,11 +59,26 @@ theorem compact_lie_commutator (h : KRel ε F) {a b c d : Fin n} (hab : ε a = �
   simp only [LinearMap.sub_apply, Module.End.mul_apply] at this
   split_ifs at this ⊢ <;> simpa using this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem word_action_nil (x : V) : ew F [] x = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem word_action_cons (p : Fin n × Fin n) (w : List (Fin n × Fin n)) (x : V) :
     ew F (p :: w) x = F p.1 p.2 (ew F w x) := rfl
 
+/- English proof (translation)
+Introduce `a`. Use `compact_lie_commutator h (a := a) (b := a) rfl hcd y` as an intermediate fact. Rewrite `this` using `[hy a, map_smul, sub_eq_iff_eq_add]`. Rewrite using `[this]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `rcases eq_or_ne a c with h1 | h1 <;> rcases eq_or_ne d a with h2 | h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality.
+
+Simplify using `[h2, Ne.symm h2, add_smul]`. Normalize the expressions using the abelian group laws. Substitute `h2` using the available equality. Simplify using `[h1, sub_smul]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `[h1, h2, Ne.symm h2]`.
+-/
 theorem compact_weight_shift (h : KRel ε F) {ν : Fin n → ℝ} {y : V} (hy : IsWeight F ν y) {c d : Fin n}
     (hcd : ε c = ε d) : IsWeight F (ν + Pi.single c 1 - Pi.single d 1) (F c d y) := by
   intro a
@@ -69,13 +103,26 @@ def wordWeightShift {m : ℕ} : List (Fin m × Fin m) → Fin m → ℝ
 
 def heightFunctional {m : ℕ} (v : Fin m → ℝ) : ℝ := ∑ a : Fin m, ((a : ℕ) : ℝ) * v a
 
+/- English proof (translation)
+Simplify using `[heightFunctional, mul_add, sum_add_distrib]`.
+-/
 theorem height_functional_add {m : ℕ} (u v : Fin m → ℝ) : heightFunctional (u + v) = heightFunctional u + heightFunctional v := by
   simp [heightFunctional, mul_add, sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[heightFunctional, Pi.single_apply, mul_sub, sum_sub_distrib]`.
+-/
 theorem height_functional_root {m : ℕ} (c d : Fin m) :
     heightFunctional (Pi.single c (1 : ℝ) - Pi.single d 1) = (c : ℝ) - d := by
   simp [heightFunctional, Pi.single_apply, mul_sub, sum_sub_distrib]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp [wordWeightShift, heightFunctional]`. Consider the case `cons p w ih`. Establish `h1` using `ih (fun q hq => hw q (List.mem_cons_of_mem _ hq))`. Establish `h2 : ((p.2 : ℕ) : ℝ) < ((p.1 : ℕ) : ℝ)`.
+
+Conclude with `(hw p List.mem_cons_self)` after adjusting the coercions. Simplify using `only [wordWeightShift, height_functional_add, height_functional_root]`. Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[h1.1]`. Introduce `_`.
+
+Combine the linear relations using `[h1.1]`.
+-/
 theorem height_word_shift_nonneg {m : ℕ} (w : List (Fin m × Fin m)) (hw : ∀ p ∈ w, p.2 < p.1) :
     0 ≤ heightFunctional (wordWeightShift w) ∧ (w ≠ [] → 0 < heightFunctional (wordWeightShift w)) := by
   induction w with
@@ -89,6 +136,11 @@ theorem height_word_shift_nonneg {m : ℕ} (w : List (Fin m × Fin m)) (hw : ∀
     · linarith [h1.1]
     · intro _; linarith [h1.1]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp only [wordWeightShift, add_zero]`. Conclude with `hx`. Consider the case `cons p w ih`. Use `compact_weight_shift h (ih (fun q hq => hw q (List.mem_cons_of_mem _ hq))) (hw p List.mem_cons_self)` as an intermediate fact.
+
+Establish `e : μ + wordWeightShift (p :: w) = μ + wordWeightShift w + Pi.single p.1 1 - Pi.single p.2 1`. Simplify using `only [wordWeightShift]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem word_action_weight (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : IsWeight F μ x)
     (w : List (Fin n × Fin n)) (hw : ∀ p ∈ w, ε p.1 = ε p.2) :
     IsWeight F (μ + wordWeightShift w) (ew F w x) := by
@@ -104,6 +156,9 @@ theorem word_action_weight (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : Is
 def heightOperator (F : Fin n → Fin n → Module.End ℂ V) : Module.End ℂ V :=
   ∑ a : Fin n, ((a : ℕ) : ℂ) • F a a
 
+/- English proof (translation)
+Rewrite using `[heightOperator, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, show ∀ a, F a a y = ((ν a : ℝ) : ℂ) • y from hy, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Simplify using `[heightFunctional]`.
+-/
 theorem height_operator_weight {ν : Fin n → ℝ} {y : V} (hy : IsWeight F ν y) :
     heightOperator F y = ((heightFunctional ν : ℝ) : ℂ) • y := by
   rw [heightOperator, LinearMap.sum_apply]
@@ -112,11 +167,22 @@ theorem height_operator_weight {ν : Fin n → ℝ} {y : V} (hy : IsWeight F ν 
   congr 1
   simp [heightFunctional]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨w, hw, rfl⟩`.
+-/
 theorem lowering_word_mem_span (x : V) (w : List (Fin n × Fin n)) (hw : ∀ p ∈ w, ε p.1 = ε p.2 ∧ p.2 < p.1) :
     ew F w x ∈ lowSpan ε F x := Submodule.subset_span ⟨w, hw, rfl⟩
 
+/- English proof (translation)
+The claim follows from `lowering_word_mem_span x [] (by simp)`.
+-/
 theorem self_mem_lowering_span (x : V) : x ∈ lowSpan ε F x := lowering_word_mem_span x [] (by simp)
 
+/- English proof (translation)
+Establish `: lowSpan ε F x ≤ (lowSpan ε F x).comap (F c d)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y ⟨w, hw, rfl⟩`. Use `show F c d (ew F w x) ∈ lowSpan ε F x`. Use `lowering_word_mem_span x ((c, d) :: w) ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Break down `List.mem_cons.mp hp with rfl | hp` into its components or cases. Conclude with `⟨hcd, hdc⟩`. Conclude with `hw p hp`. Conclude with `this hz`.
+-/
 theorem lowering_operator_mem_span {x : V} {c d : Fin n} (hcd : ε c = ε d) (hdc : d < c) {z : V}
     (hz : z ∈ lowSpan ε F x) : F c d z ∈ lowSpan ε F x := by
   have : lowSpan ε F x ≤ (lowSpan ε F x).comap (F c d) := by
@@ -130,6 +196,23 @@ theorem lowering_operator_mem_span {x : V} {c d : Fin n} (hcd : ε c = ε d) (hd
     · exact hw p hp
   exact this hz
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil`. Introduce `a b hab`. Break down `lt_trichotomy a b with hlt | heq | hgt` into its components or cases. Rewrite using `[word_action_nil, hx.2 a b hlt hab]`.
+
+Conclude with `zero_mem _`. Substitute `heq` using the available equality. Rewrite using `[word_action_nil, hx.1 a]`. Conclude with `Submodule.smul_mem _ _ (self_mem_lowering_span x)`. Use `lowering_word_mem_span x [(a, b)] ?_` and prove the remaining obligations.
+
+Simplify using `[hab, hgt]`. Consider the case `cons p w ih`. Establish `hw' : ∀ q ∈ w, ε q.1 = ε q.2 ∧ q.2 < q.1` using `fun q hq => hw q (List.mem_cons_of_mem _ hq)`. Establish `hp` using `hw p List.mem_cons_self`. Introduce `a b hab`.
+
+Break down `lt_trichotomy a b with hlt | heq | hgt` into its components or cases. Rewrite using `[word_action_cons]`. Establish `hc` using `compact_lie_commutator h hab hp.1 (ew F w x)`. Rewrite `hc` using `[sub_eq_iff_eq_add]`. Rewrite using `[hc]`.
+
+Use `add_mem (sub_mem ?_ ?_) (lowering_operator_mem_span hp.1 hp.2 (ih hw' a b hab))` and prove the remaining obligations. Use `split_ifs with h1`. Conclude with `ih hw' a p.2 (by rw [hab, h1, hp.1])`. Conclude with `zero_mem _`. Use `split_ifs with h1`.
+
+Conclude with `ih hw' p.1 b (by rw [hp.1, h1, hab])`. Conclude with `zero_mem _`. Substitute `heq` using the available equality. Establish `hwt` using `word_action_weight h hx.1 (p :: w) (fun q hq => (hw q hq).1)`. Rewrite using `[hwt a]`.
+
+Conclude with `Submodule.smul_mem _ _ (lowering_word_mem_span x _ hw)`. Use `lowering_word_mem_span x ((a, b) :: p :: w) ?_` and prove the remaining obligations. Introduce `q hq`. Break down `List.mem_cons.mp hq with rfl | hq` into its components or cases. Conclude with `⟨hab, hgt⟩`.
+
+Conclude with `hw q hq`.
+-/
 theorem lowering_word_raises_in_span (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε F μ x)
     (w : List (Fin n × Fin n)) (hw : ∀ p ∈ w, ε p.1 = ε p.2 ∧ p.2 < p.1) :
     ∀ a b, ε a = ε b → F a b (ew F w x) ∈ lowSpan ε F x := by
@@ -166,6 +249,11 @@ theorem lowering_word_raises_in_span (h : KRel ε F) {μ : Fin n → ℝ} {x : V
       · exact ⟨hab, hgt⟩
       · exact hw q hq
 
+/- English proof (translation)
+Introduce `a b hab z hz`. Establish `: lowSpan ε F x ≤ (lowSpan ε F x).comap (F a b)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y ⟨w, hw, rfl⟩`. Conclude with `lowering_word_raises_in_span h hx w hw a b hab`.
+
+Conclude with `this hz`.
+-/
 theorem lowering_span_stable (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε F μ x) :
     KStable ε F (lowSpan ε F x) := by
   intro a b hab z hz
@@ -175,6 +263,11 @@ theorem lowering_span_stable (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : 
     exact lowering_word_raises_in_span h hx w hw a b hab
   exact this hz
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `compact_span_le_stable (self_mem_lowering_span x) (lowering_span_stable h hx)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `y ⟨w, hw, rfl⟩`. Proceed by induction on `w with`.
+
+Consider the case `nil => exact mem_compact_span_self x`. Consider the case `cons p w ih`. Conclude with `compact_span_stable x p.1 p.2 (hw p List.mem_cons_self).1 _ (ih (fun q hq => hw q (List.mem_cons_of_mem _ hq)))`.
+-/
 theorem compact_span_eq_lowering (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε F μ x) :
     kSpan ε F x = lowSpan ε F x := by
   apply le_antisymm
@@ -187,6 +280,21 @@ theorem compact_span_eq_lowering (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (h
       exact compact_span_stable x p.1 p.2 (hw p List.mem_cons_self).1 _
         (ih (fun q hq => hw q (List.mem_cons_of_mem _ hq)))
 
+/- English proof (translation)
+Use `set T := heightOperator F with hT`. Use `set φ0 : ℂ := ((heightFunctional μ : ℝ) : ℂ) with hφ0`. Establish `hle : lowSpan ε F x ≤ (ℂ ∙ x) ⊔ ⨆ l ∈ {l : ℂ | l ≠ φ0}, T.eigenspace l`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨w, hw, rfl⟩`.
+
+Break down `w with _ | ⟨p, w⟩` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.mem_span_singleton_self x)`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Establish `hwt` using `word_action_weight h hx.1 (p :: w) (fun q hq => (hw q hq).1)`. Establish `hpos` using `(height_word_shift_nonneg (p :: w) (fun q hq => (hw q hq).2)).2 (List.cons_ne_nil _ _)`.
+
+Establish `hmem : ew F (p :: w) x ∈ T.eigenspace ((heightFunctional (μ + wordWeightShift (p :: w)) : ℝ) : ℂ)`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `height_operator_weight hwt`. Use `Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem ?_ hmem)` and prove the remaining obligations. Use `show _ ≠ _`.
+
+Rewrite using `[height_functional_add, hφ0]`. Introduce `heq`. Use `Complex.ofReal_injective heq` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.mp (hle hy)`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy1`. Establish `hy2e : y2 ∈ T.eigenspace φ0`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `e1` using `height_operator_weight hyw`. Establish `e2` using `height_operator_weight hx.1`.
+
+Rewrite `e1`, `e2` using `[← hT, ← hφ0]`. Rewrite `e1` using `[map_add, map_smul, e2, smul_add, smul_comm c φ0 x]`. Conclude with `add_left_cancel e1`. Establish `hdis` using `(Module.End.eigenspaces_iSupIndep T).disjoint_biSup (y := {l : ℂ | l ≠ φ0}) (x := φ0) (by simp)`. Establish `: y2 = 0` using `(Submodule.disjoint_def.mp hdis) y2 hy2e hy2`.
+
+Conclude with `⟨c, by rw [this, add_zero]⟩`.
+-/
 theorem lowering_span_weight_scalar (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε F μ x) {y : V}
     (hy : y ∈ lowSpan ε F x) (hyw : IsWeight F μ y) : ∃ c : ℂ, y = c • x := by
   set T := heightOperator F with hT
@@ -223,10 +331,28 @@ theorem lowering_span_weight_scalar (h : KRel ε F) {μ : Fin n → ℝ} {x : V}
 
 end low
 
+/- English proof (translation)
+Introduce `V _ _ n ε F μ x h hx`. Conclude with `⟨compact_span_eq_lowering h hx, fun y hy hyw => lowering_span_weight_scalar h hx hy hyw⟩`.
+-/
 theorem compact_lowering_holds : KLow := by
   intro V _ _ n ε F μ x h hx
   exact ⟨compact_span_eq_lowering h hx, fun y hy hyw => lowering_span_weight_scalar h hx hy hyw⟩
 
+/- English proof (translation)
+Introduce `V _ _ n ε F μ ν x y h hU hx hy hne x' hx' y' hy'`. Establish `base : ∀ z ∈ kSpan ε F y, ⟪x, z⟫_ℂ = 0`. Rewrite using `[(hl V n ε F ν y h hy).1]`. Introduce `z hz`. Establish `: lowSpan ε F y ≤ (ℂ ∙ x)ᗮ`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `u ⟨w, hw', rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right]`. Consider the cases of `w with`. Consider the case `nil => exact hw V n ε F μ ν x y hU hx.1 hy.1 hne`.
+
+Consider the case `cons p w`. Establish `hp` using `hw' p List.mem_cons_self`. Use `show ⟪x, F p.1 p.2 (ew F w y)⟫_ℂ = 0`. Rewrite using `[← hU p.2 p.1 hp.1.symm, hx.2 p.2 p.1 hp.2 hp.1.symm, inner_zero_left]`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (this hz)`.
+
+Rewrite `hx'` using `[(hl V n ε F μ x h hx).1]`. Establish `: lowSpan ε F x ≤ (kSpan ε F y)ᗮ`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `u ⟨w, hw', rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal']`.
+
+Proceed by induction on `w with`. Consider the case `nil => exact base`. Consider the case `cons p w ih`. Introduce `z hz`. Establish `hp` using `hw' p List.mem_cons_self`.
+
+Use `show ⟪F p.1 p.2 (ew F w x), z⟫_ℂ = 0`. Rewrite using `[hU p.1 p.2 hp.1]`. Conclude with `ih (fun q hq => hw' q (List.mem_cons_of_mem _ hq)) _ (compact_span_stable y p.2 p.1 hp.1.symm z hz)`. Establish `h2` using `this hx'`. Rewrite `h2` using `[Submodule.mem_orthogonal']`.
+
+Conclude with `h2 y' hy'`.
+-/
 theorem kOrth_of (hl : KLow) (hw : KWtOrth) : KOrth := by
   intro V _ _ n ε F μ ν x y h hU hx hy hne x' hx' y' hy'
   have base : ∀ z ∈ kSpan ε F y, ⟪x, z⟫_ℂ = 0 := by
@@ -261,6 +387,15 @@ theorem kOrth_of (hl : KLow) (hw : KWtOrth) : KOrth := by
   rw [Submodule.mem_orthogonal'] at h2
   exact h2 y' hy'
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Establish `key : ∀ c d, F a b * (if ε c = ε d then F c d * F d c else 0) - (if ε c = ε d then F c d * F d c else 0) * F a b = (if b = c then (if ε c = ε d then F a d * F d c else 0) else 0) - (if d = a then (if ε c = ε d then F c b * F d c else 0) else 0) + (if b = d then (if ε c = ε d then …`. Introduce `c d`. Distinguish the cases in `hcd : ε c = ε d`. Simplify using `only [if_pos hcd]`.
+
+Establish `e1` using `h a b c d hab hcd`. Establish `e2` using `h a b d c hab hcd.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`. Simplify using `only [sub_mul, mul_sub, ite_mul, mul_ite, zero_mul, mul_zero]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[hcd]`. Unfold `CasK`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, key]`.
+
+Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm (f := fun c d => if b = c then (if ε c = ε d then F a d * F d c else 0) else 0), Finset.sum_comm (f := fun c d => if c = a then (if ε c = ε d then F c d * F d b else 0) else 0)]`. Simplify using `only [Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, hab]`. Normalize the expressions using the abelian group laws.
+-/
 theorem compact_lie_commute_casimir {A : Type*} [Ring A] {n : ℕ} {ε : Fin n → Bool} {F : Fin n → Fin n → A}
     (h : KRel ε F) {a b : Fin n} (hab : ε a = ε b) : F a b * CasK ε F = CasK ε F * F a b := by
   rw [← sub_eq_zero]
@@ -296,6 +431,11 @@ section cas
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} {ε : Fin n → Bool}
   {F : Fin n → Fin n → Module.End ℂ V}
 
+/- English proof (translation)
+Unfold `CasK`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem compact_casimir_apply (y : V) :
     CasK ε F y = ∑ a, ∑ b, if ε a = ε b then F a b (F b a y) else 0 := by
   unfold CasK
@@ -305,6 +445,13 @@ theorem compact_casimir_apply (y : V) :
   refine Finset.sum_congr rfl (fun b _ => ?_)
   split_ifs <;> rfl
 
+/- English proof (translation)
+Break down `lt_trichotomy a b with hlt | rfl | hgt` into its components or cases. Use `compact_lie_commutator h hab hab.symm x` as an intermediate fact. Rewrite `this` using `[hx.2 a b hlt hab, map_zero, sub_zero, if_pos rfl, if_pos rfl, hx.1 a, hx.1 b]`. Rewrite using `[this, if_neg hlt.ne, if_pos hlt]`. Use `push_cast`.
+
+Rewrite using `[sub_smul]`. Rewrite using `[hx.1 a, map_smul, hx.1 a, smul_smul, if_pos rfl]`. Use `push_cast`. Rewrite using `[sq]`. Rewrite using `[hx.2 b a hgt hab.symm, map_zero, if_neg hgt.ne', if_neg (not_lt.mpr hgt.le)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem compact_casimir_term_highest (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε F μ x) {a b : Fin n}
     (hab : ε a = ε b) :
     F a b (F b a x) = ((if a = b then μ a ^ 2 else if a < b then μ a - μ b else 0 : ℝ) : ℂ) • x := by
@@ -320,6 +467,17 @@ theorem compact_casimir_term_highest (h : KRel ε F) {μ : Fin n → ℝ} {x : V
   · rw [hx.2 b a hgt hab.symm, map_zero, if_neg hgt.ne', if_neg (not_lt.mpr hgt.le)]
     simp
 
+/- English proof (translation)
+Establish `hr : ∀ a, rhoC ε a = (∑ b, ((if a < b ∧ ε b = ε a then (1 : ℝ) else 0) - (if b < a ∧ ε b = ε a then (1 : ℝ) else 0))) / 2`. Introduce `a`. Simplify using `only [rhoC, Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero, Finset.sum_sub_distrib]`. Establish `hR : ckv ε μ = ∑ a, μ a ^ 2 + ∑ a, ∑ b, (if a < b ∧ ε b = ε a then μ a else 0) - ∑ a, ∑ b, (if b < a ∧ ε b = ε a then μ a else 0)`. Unfold `ckv nsq dot`.
+
+Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.add_apply, hr a]`. Establish `: (∑ b, (if a < b ∧ ε b = ε a then μ a else 0)) - ∑ b, (if b < a ∧ ε b = ε a then μ a else 0) = μ a * ∑ b, ((if a < b ∧ ε b = ε a then (1 : ℝ) else 0) - (if b < a ∧ ε b = ε a then (1 : ℝ) else 0))`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[add_sub_assoc, this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR, Finset.sum_comm (f := fun a b => if b < a ∧ ε b = ε a then μ a else 0)]`.
+
+Establish `hL : ∀ a b, (if ε a = ε b then (if a = b then μ a ^ 2 else if a < b then μ a - μ b else 0) else 0 : ℝ) = (if a = b then μ a ^ 2 else 0) + (if a < b ∧ ε b = ε a then μ a else 0) - (if a < b ∧ ε a = ε b then μ b else 0)`. Introduce `a b`. Break down `lt_trichotomy a b with h2 | rfl | h2` into its components or cases. Distinguish the cases in `h1 : ε a = ε b`. Simplify using `[h1, h2, h2.ne]`.
+
+Establish `h1' : ¬ ε b = ε a` using `fun h => h1 h.symm`. Simplify using `[h1, h1', h2.ne]`. Simplify using the standard rewrite rules. Simplify using `[h2.ne', not_lt.mpr h2.le]`. Simplify using `only [hL, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem compact_casimir_value_eq (μ : Fin n → ℝ) :
     (∑ a, ∑ b, (if ε a = ε b then (if a = b then μ a ^ 2 else if a < b then μ a - μ b else 0)
       else 0 : ℝ)) = ckv ε μ := by
@@ -356,6 +514,11 @@ theorem compact_casimir_value_eq (μ : Fin n → ℝ) :
   simp only [hL, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq,
     Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[compact_casimir_apply, ← compact_casimir_value_eq μ]`. Establish `: ∀ a b, (if ε a = ε b then F a b (F b a x) else 0) = (((if ε a = ε b then (if a = b then μ a ^ 2 else if a < b then μ a - μ b else 0) else 0 : ℝ)) : ℂ) • x`. Introduce `a b`. Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[if_pos hab, if_pos hab, compact_casimir_term_highest h hx hab]`.
+
+Simplify using `[hab]`. Repeatedly rewrite using `[this, ← Finset.sum_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem compact_casimir_highest_weight (h : KRel ε F) {μ : Fin n → ℝ} {x : V} (hx : KHighest ε F μ x) :
     CasK ε F x = ((ckv ε μ : ℝ) : ℂ) • x := by
   rw [compact_casimir_apply, ← compact_casimir_value_eq μ]
@@ -371,6 +534,13 @@ theorem compact_casimir_highest_weight (h : KRel ε F) {μ : Fin n → ℝ} {x :
   rfl
 end cas
 
+/- English proof (translation)
+Introduce `V _ _ n ε F μ x h hx y hy`. Establish `hS : kSpan ε F x ≤ (CasK ε F).eigenspace ((ckv ε μ : ℝ) : ℂ)`. Apply `compact_span_le_stable` to reduce the goal to its premises. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `compact_casimir_highest_weight h hx`.
+
+Introduce `a b hab z hz`. Rewrite `hz`, the goal using `[Module.End.mem_eigenspace_iff]`. Use `LinearMap.congr_fun (compact_lie_commute_casimir h hab) z` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hz, map_smul]`.
+
+Conclude with `Module.End.mem_eigenspace_iff.mp (hS hy)`.
+-/
 theorem compact_casimir_span_holds : KCasSpan := by
   intro V _ _ n ε F μ x h hx y hy
   have hS : kSpan ε F x ≤ (CasK ε F).eigenspace ((ckv ε μ : ℝ) : ℂ) := by

@@ -21,6 +21,11 @@ section Gen
 open Formalism.L2.Forms
 variable {ι : Type} [Fintype ι] {N n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, lastAll, lastGL_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+-/
 theorem lastAll_transpose (a : ι → ℂˣ) (τ : ι) :
     (((lastAll N a τ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ))ᵀ = ((lastAll N a τ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) := by
   ext i j
@@ -29,6 +34,11 @@ theorem lastAll_transpose (a : ι → ℂˣ) (τ : ι) :
   · subst h; rfl
   · rw [if_neg h, if_neg (Ne.symm h)]
 
+/- English proof (translation)
+Establish `h` using `fnOf_mul G (shiftOf lam) (fun τ => ((lastAll N a τ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)) 1 P`. Simplify using `only [Pi.one_apply, mul_one] at h`. Rewrite using `[h]`. Use `congrArg (fnOf G (shiftOf lam) 1) ?_` and prove the remaining obligations. Establish `e : trAct (lastAll N a) = Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => ((lastAll N a τ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ))`.
+
+Unfold `trAct`. Simplify using `only [lastAll_transpose]`. Simplify using `only [actP, detTwK, detPow, shiftOf, LinearMap.smul_apply, AlgHom.toLinearMap_apply, e]`. Use `congrArg (· • _) (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem fnOf_lastAll (G : ι → Matrix (Fin N) (Fin N) ℂ) (lam : ι → DomWeight N) (a : ι → ℂˣ) (P : Pol ℂ ι N) :
     fnOf G (shiftOf lam) (fun τ => ((lastAll N a τ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)) P =
       fnOf G (shiftOf lam) 1 (actP lam (lastAll N a) P) := by
@@ -43,6 +53,15 @@ theorem fnOf_lastAll (G : ι → Matrix (Fin N) (Fin N) ℂ) (lam : ι → DomWe
   refine congrArg (· • _) (Finset.prod_congr rfl fun τ _ => ?_)
   rw [Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `ha : (a : ℂ) ≠ 0` using `a.ne_zero`. Establish `e : ∏ s, (a : ℂ) ^ (Br.bBr rfl lam sg s).toNat = (a : ℂ) ^ (∑ s, Br.bBr rfl lam sg s)`. Establish `: ∀ s, (a : ℂ) ^ (Br.bBr rfl lam sg s).toNat = (a : ℂ) ^ (Br.bBr rfl lam sg s)` using `fun s => by`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg (h s)]`.
+
+Simplify using `only [this]`. Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons x s hx ih => rw [Finset.prod_cons, Finset.sum_cons, zpow_add₀ ha, ih]`. Establish `e2 : Br.nBr lam sg = lam.detShift + ∑ s, Br.bBr rfl lam sg s`.
+
+Simplify using `only [Br.nBr, Br.bBr, DomWeight.detShift, Finset.sum_sub_distrib, Fin.sum_univ_castSucc]`. Simplify using `[Br.iC]`. Express the relevant statement in the definitionally equal form `∑ i : Fin n, lam.w i.castSucc + lam.w (Fin.last n) - ∑ i, sg.w i = lam.w (Fin.last n) + (∑ x : Fin n, lam.w x.castSucc - ∑ i, sg.w i)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← zpow_add₀ ha, ← zpow_add₀ ha, e2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem scalar_last (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (h : ∀ i, 0 ≤ Br.bBr hN lam sg i) (a : ℂˣ) :
     (a : ℂ) ^ (-Br.nBr lam sg) * ((a : ℂ) ^ lam.detShift * ∏ s, (a : ℂ) ^ (Br.bBr hN lam sg s).toNat) = 1 := by
   subst hN
@@ -62,6 +81,11 @@ theorem scalar_last (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) (h :
   rw [e, ← zpow_add₀ ha, ← zpow_add₀ ha, e2]
   simp
 
+/- English proof (translation)
+Rewrite using `[branchingProjection_last, smul_smul]`. Establish `e : (∏ τ, (a τ : ℂ) ^ (-Br.nBr (lam τ) (sg τ))) * (detTwK lam (lastAll N a) * ∏ τ, ∏ s, (a τ : ℂ) ^ Br.bExp hN lam sg τ s) = 1`. Establish `h2 : detTwK lam (lastAll N a) = ∏ τ, (a τ : ℂ) ^ (lam τ).detShift`. Simplify using `only [detTwK, detPow, lastAll, det_lastGL' hN, Units.val_zpow_eq_zpow_val]`. Rewrite using `[h2, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Conclude with `scalar_last hN (lam τ) (sg τ) (h τ) (a τ)`. Rewrite using `[e, one_smul]`.
+-/
 theorem branchingProjection_act_last (hN : N = n + 1) (lam : ι → DomWeight N) (sg : ι → DomWeight n)
     (h : ∀ τ i, 0 ≤ Br.bBr hN (lam τ) (sg τ) i) (a : ι → ℂˣ) (P : Pol ℂ ι N) :
     (∏ τ, (a τ : ℂ) ^ (-Br.nBr (lam τ) (sg τ))) • (Br.brStdP hN lam sg (actP lam (lastAll N a) P) : Pol ℂ ι n) =
@@ -82,6 +106,9 @@ namespace GlobalTheory.Mem.Col2.LowerTie
 section Rec
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `y`. Use `show B.host.φ₀ _ = _`. Rewrite using `[← B.embE_φ₀]`. Both sides reduce to the same expression.
+-/
 theorem embT_eq : Formalism.L2.Forms.embT (I.rec7 l Z) = embAt B.embLL B.fields.emb := by
   funext τ
   ext y
@@ -90,14 +117,33 @@ theorem embT_eq : Formalism.L2.Forms.embT (I.rec7 l Z) = embAt B.embLL B.fields.
   rfl
 
 include l in
+/- English proof (translation)
+Establish `h` using `congrArg (fun z : 𝓞 B.fields.E => (z : B.fields.E)) (l.pr.piT_norm u)`. Simplify using `only [map_mul, map_natCast] at h`. Conclude with `h`.
+-/
 theorem pi_mul_star : ((X.piT u : 𝓞 B.host.E) : B.host.E) * star ((X.piT u : 𝓞 B.host.E) : B.host.E) = (B.T u : B.host.E) := by
   have h := congrArg (fun z : 𝓞 B.fields.E => (z : B.fields.E)) (l.pr.piT_norm u)
   simp only [map_mul, map_natCast] at h
   exact h
 
 include l in
+/- English proof (translation)
+The claim follows from `(l.per u I.mu0).tz_ne`.
+-/
 theorem star_pi_ne : star ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 0 := (l.per u I.mu0).tz_ne
 
+/- English proof (translation)
+Establish `hc` using `(spaces_in_coordinates I hO hP l Z).2.2.1`. Establish `hπ` using `pi_mul_star I l u`. Establish `h0` using `star_pi_ne I l u`. Establish `hp0 : ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 0` using `fun h => h0 (by rw [h, star_zero])`. Use `Matrix.ext fun (a b : Fin (B.R.N B.R.m)) => ?_` and prove the remaining obligations.
+
+Establish `ha` using `a.2`. Establish `hb` using `b.2`. Rewrite using `[Matrix.diagonal_apply]`. Distinguish the cases in `h : b.1 < B.R.N B.R.m - 1`. Establish `e : bZ (D` using `I.rec7 l Z) u z0 a b = iXc (I.rec7 l Z) (Pi.single ⟨b.1, h⟩ 1) a := by`.
+
+Conclude with `(dif_pos h).trans (LinearMap.toMatrix'_apply _ _ _)`. Use `(e.trans (hc _ a)).trans ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[dif_pos h, if_pos rfl, if_neg (by omega)]`.
+
+Conclude with `Pi.single_eq_same (M := fun _ : Fin (B.R.N B.R.m - 1) => B.host.E) _ _`. Rewrite using `[if_neg hab] split_ifs with h2`. Conclude with `Pi.single_eq_of_ne (M := fun _ : Fin (B.R.N B.R.m - 1) => B.host.E) (fun h3 => hab (Fin.ext (Fin.mk.inj_iff.1 h3))) _`. Both sides reduce to the same expression. Establish `e : bZ (D` using `I.rec7 l Z) u z0 a b = z0 a / (B.T u : B.host.E) := by`.
+
+Conclude with `dif_neg h`. Rewrite using `[e, hz, ← hπ]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, if_pos (by omega), if_pos (by omega)]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg hab, if_neg (fun h3 => hab (Fin.ext (by omega))), zero_div]`.
+-/
 theorem bZ_std (hO : I.Ok) (hP : TC.Pins B X) (z0 : Fin (B.R.N B.R.m) → B.host.E)
     (hz : ∀ j, z0 j = if j.1 + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0) :
     bZ (D := I.rec7 l Z) u z0 =
@@ -134,6 +180,15 @@ theorem bZ_std (hO : I.Ok) (hP : TC.Pins B X) (z0 : Fin (B.R.N B.R.m) → B.host
 def aT (τ : Tau B.R) : ℂˣ :=
   Units.mk0 (embAt B.embLL B.fields.emb τ (star ((X.piT u : 𝓞 B.host.E) : B.host.E))) ((map_ne_zero _).2 (star_pi_ne I l u))
 
+/- English proof (translation)
+Establish `h0` using `star_pi_ne I l u`. Establish `e : (bZ (D` using `I.rec7 l Z) u z0)⁻¹ = Matrix.diagonal fun i : Fin (B.R.N B.R.m) => if i.1 + 1 = B.R.N B.R.m then star ((X.piT u : 𝓞 B.host.E) : B.host.E) else 1 := by`. Rewrite using `[bZ_std I l Z u hO hP z0 hz]`. Use `Matrix.inv_eq_left_inv (A := Matrix.diagonal fun i : Fin (B.R.N B.R.m) => if i.1 + 1 = B.R.N B.R.m then (star ((X.piT u : 𝓞 B.host.E) : B.host.E))⁻¹ else 1) ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `split_ifs`. Conclude with `mul_inv_cancel₀ h0`. Conclude with `mul_one 1`.
+
+Use function extensionality and compare the values at `τ`. Use `Matrix.ext fun (a b : Fin (B.R.N B.R.m)) => ?_` and prove the remaining obligations. Establish `e2 : mZ (D` using `I.rec7 l Z) u z0 τ a b = embAt B.embLL B.fields.emb τ ((Matrix.diagonal fun i : Fin (B.R.N B.R.m) => if i.1 + 1 = B.R.N B.R.m then star ((X.piT u : 𝓞 B.host.E) : B.host.E) else 1) a b) := by`. Unfold `mZ`. Rewrite using `[e, embT_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2]`. Simplify using `only [lastAll, lastGL_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp [aT]`.
+-/
 theorem mZ_std (hO : I.Ok) (hP : TC.Pins B X) (z0 : Fin (B.R.N B.R.m) → B.host.E)
     (hz : ∀ j, z0 j = if j.1 + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0) :
     mZ (D := I.rec7 l Z) u z0 =
@@ -166,6 +221,21 @@ end GlobalTheory.Mem.Col2.LowerTie
 
 namespace GlobalTheory.Mem.Col2.LowerTie
 
+/- English proof (translation)
+Introduce `B X I hO hP l Z u Ch chOf F hS ψ c P hψ`. Establish `hl : Formalism.MainNotions.product_first_zeroth_parts.lamTr (I.rec7 l Z) u = B.wts.lamTrue u B.R.m` using `funext (trueWeight_lastStep_trueColumns I l Z u)`. Establish `hs : Formalism.MainNotions.product_first_zeroth_parts.sgTr (I.rec7 l Z) u = B.wts.sgTrue` using `funext (trueRowWeight_trueColumns I l Z u)`. Establish `hl' : Formalism.L2.Forms.lamT (D` using `I.rec7 l Z) u (I.rec7 l Z).R.m = B.wts.lamTrue u B.R.m := hl`. Establish `hs' : Formalism.L2.Forms.sgT (D` using `I.rec7 l Z) u = B.wts.sgTrue := hs`.
+
+Establish `hI : ∀ τ i, 0 ≤ Br.bBr (N_m_succ B.R) (B.wts.lamTrue u B.R.m τ) (B.wts.sgTrue τ) i`. Introduce `τ i`. Establish `h` using `(Formalism.MainNotions.product_first_zeroth_parts.interlaceTr (I.rec7 l Z) u (sg_interlace F.valP) τ i).1`. Rewrite `h` using `[hl, hs]`. Conclude with `sub_nonneg.2 h`.
+
+Establish `h1 : ψ c = fnOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) 1 (actP (B.wts.lamTrue u B.R.m) (lastAll (B.R.N B.R.m) (aT I l u)) P)`. Use `Eq.trans ?_ (fnOf_lastAll (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (B.wts.lamTrue u B.R.m) (aT I l u) P)` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h` using `hψ s`. Rewrite `h` using `[hS.eWz, hl', mZ_std I l Z u hO hP _ hS.z0]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Establish `h2` using `hS.eY B.R.m le_rfl (Or.inr rfl) s`. Conclude with `congrArg (fnOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) _ P) (Subtype.ext h2)`. Establish `h3 : polOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) (Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m)) (ψ c) = actP (B.wts.lamTrue u B.R.m) (lastAll (B.R.N B.R.m) (aT I l u)) P`. Establish `e : (fun τ => ((Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m)).1 τ)⁻¹) = 1` using `funext fun τ => inv_one`.
+
+Establish `h` using `polOf_fnOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) (Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m)) (actP (B.wts.lamTrue u B.R.m) (lastAll (B.R.N B.R.m) (aT I l u)) P)`. Rewrite `h` using `[e]`. Rewrite using `[h1]`. Conclude with `h`. Establish `h4 : Formalism.L2.Ker.brTen (I.rec7 l Z) u P = (Br.brStdP (N_m_succ B.R) (B.wts.lamTrue u B.R.m) B.wts.sgTrue P : Pol ℂ (Tau B.R) (B.R.N B.R.m - 1))`.
+
+Establish `h` using `blk_brOne (ι := Tau B.R) (N_m_succ B.R) (B.wts.lamTrue u B.R.m) B.wts.sgTrue P`. Use `Eq.trans ?_ h` and prove the remaining obligations. Unfold `Formalism.L2.Ker.brTen`. Rewrite using `[hl, hs]`. Both sides reduce to the same expression.
+
+Establish `h5` using `branchingProjection_act_last (N_m_succ B.R) (B.wts.lamTrue u B.R.m) B.wts.sgTrue hI (aT I l u) P`. Use function extensionality and compare the values at `s`. Rewrite using `[hS.eW _ c s ⟨s.1, s.2⟩ rfl, hs', h4, ← h5, ← h3]`. Both sides reduce to the same expression.
+-/
 theorem lowerMap_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
     ∀ (u : B.Word) (Ch : ℕ → Type) (chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i) (F : FormsTiedSym (I.rec7 l Z) u Ch chOf),
     I.StdF l Z u F → ∀ (ψ : ((I.rec7 l Z).mem u).P.Wz) (c : ((I.rec7 l Z).fm u).clsP)
@@ -212,6 +282,9 @@ theorem lowerMap_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → 
   rw [hS.eW _ c s ⟨s.1, s.2⟩ rfl, hs', h4, ← h5, ← h3]
   rfl
 
+/- English proof (translation)
+Introduce `{B} {_} I hO hP l Z u _ _ F hS` and use `ChiFinTop.chi_top_root_rat I hO hP l Z u (F.cls B.R.m le_rfl (Or.inr rfl)) (hS.ends B.R.m le_rfl (Or.inr rfl))`.
+-/
 theorem chi_top_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)),
     ∀ (u : B.Word) (Ch : ℕ → Type) (chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i) (F : FormsTiedSym (I.rec7 l Z) u Ch chOf),
     I.StdF l Z u F → ∃ n : ℕ, 0 < n ∧ ∀ x : (F.cls (I.rec7 l Z).R.m le_rfl (Or.inr rfl)).lev.U,

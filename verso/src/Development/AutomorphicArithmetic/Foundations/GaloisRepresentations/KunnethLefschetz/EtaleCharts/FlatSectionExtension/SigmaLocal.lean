@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
+/- English proof (translation)
+Introduce `σ X V a x`. Take `⟨⟨p, z⟩, hz⟩` from `(sigmaMk X).surjective (a x)`. Rewrite `hz` using `[sigmaMk_mk]`. Establish `hr : Set.range ((a ⁻¹ᵁ (Sigma.ι X p).opensRange).ι ≫ a) ⊆ Set.range (Sigma.ι X p)`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `y.2`. Use `⟨a ⁻¹ᵁ (Sigma.ι X p).opensRange, p, IsOpenImmersion.lift (Sigma.ι X p) ((a ⁻¹ᵁ (Sigma.ι X p).opensRange).ι ≫ a) hr, ?_, ?_⟩` and prove the remaining obligations. Use `show a x ∈ (Sigma.ι X p).opensRange`. Conclude with `⟨z, hz⟩`. Conclude with `(IsOpenImmersion.lift_fac _ _ _).symm`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.sigmaLocal :
     ∀ {σ : Type} (X : σ → Scheme.{0}) {V : Scheme.{0}} (a : V ⟶ ∐ X) (x : V), ∃ (U : V.Opens) (p : σ) (a₁ : (U : Scheme.{0}) ⟶ X p), x ∈ U ∧ U.ι ≫ a = a₁ ≫ Sigma.ι X p := by
   intro σ X V a x

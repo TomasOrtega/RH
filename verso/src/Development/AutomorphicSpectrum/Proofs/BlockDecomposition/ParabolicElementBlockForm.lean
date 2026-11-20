@@ -8,6 +8,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.ParabBlock
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h w p`. Take `⟨m, hm⟩ : ∃ m, m = (leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm (leviProj (w.adicCompletion E) (two (stdSum h)) p)` from `⟨_, rfl⟩`. Establish `h1 : ∀ i j, (m.1 : Matrix _ _ (w.adicCompletion E)) i j = ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inl i)) (stdSum h (Sum.inl j))`. Introduce `i j`. Rewrite using `[hm]`.
+
+Both sides reduce to the same expression. Establish `h2 : ∀ i j, (m.2 : Matrix _ _ (w.adicCompletion E)) i j = ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inr i)) (stdSum h (Sum.inr j))`. Introduce `i j`. Rewrite using `[hm]`. Both sides reduce to the same expression.
+
+Establish `h0 : ∀ (i : Fin b) (j : Fin a), ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inr i)) (stdSum h (Sum.inl j)) = 0`. Introduce `i j`. Conclude with `mem_parab_iff.1 p.2 true false i j (by decide)`. Rewrite using `[← hm]`. Set `B : Matrix (Fin a) (Fin b) (w.adicCompletion E)` to `fun i j => ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inl i)) (stdSum h (Sum.inr j))`.
+
+Use `⟨(m.1⁻¹).val * B, ?_⟩` and prove the remaining obligations. Establish `hM : Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * ((m.1⁻¹).val * B)) 0 m.2.val) = ((p : GLw n w) : Matrix _ _ (w.adicCompletion E))`. Establish `hc : m.1.val * ((m.1⁻¹).val * B) = B`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[hc]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(stdSum h).surjective i`. Take `⟨j, rfl⟩` from `(stdSum h).surjective j`. Establish `hs : finSumFinEquiv.trans (finCongr h) = stdSum h` using `rfl`. Rewrite using `[hs]`.
+
+Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `h1 i j`. Both sides reduce to the same expression. Conclude with `(h0 i j).symm`.
+
+Conclude with `h2 i j`. Establish `hU : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * ((m.1⁻¹).val * B)) 0 m.2.val))`. Rewrite using `[hM]`. Conclude with `(p : GLw n w).isUnit`. Unfold `GlobalTheory.BCT.blk`.
+
+Simplify using `only`. Rewrite using `[dif_pos hU]`. Conclude with `Units.ext (by rw [IsUnit.unit_spec, hM])`.
+-/
 theorem parab_eq_blk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (p : parab (w.adicCompletion E) (two (stdSum h))), ∃ X, (p : GLw n w) = GlobalTheory.BCT.blk h w ((leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm (leviProj (w.adicCompletion E) (two (stdSum h)) p)) X := by
   intro E _ _ _ n a b h w p
   obtain ⟨m, hm⟩ : ∃ m, m = (leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm

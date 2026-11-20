@@ -11,6 +11,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Unfold `GT.l2`. Rewrite using `[MeasureTheory.setAverage_eq]`. Use `smul_nonneg (inv_nonneg.2 ENNReal.toReal_nonneg) (MeasureTheory.integral_nonneg fun v => ?_)` and prove the remaining obligations. Unfold `GT.ptN2`. Conclude with `mul_nonneg (sq_nonneg _) (Real.exp_pos _).le`.
+-/
 theorem l2_nonneg_GT {ι : Type} [Fintype ι] (Y : GT ι) (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
     0 ≤ Y.l2 q F := by
   unfold GT.l2
@@ -19,6 +22,9 @@ theorem l2_nonneg_GT {ι : Type} [Fintype ι] (Y : GT ι) (q : ℕ) (F : Euclide
   unfold GT.ptN2
   exact mul_nonneg (sq_nonneg _) (Real.exp_pos _).le
 
+/- English proof (translation)
+The claim follows from `|(Col.ob (IR I)).toBasis.det a| * (2 : ℝ) ^ (-(Module.finrank ℝ (IR I) : ℝ) / 2) * (Col.YB hI hP 1).l2 1 β ≤ X.l2 1 s := ⟨ZM.zmB hI s, zm_mem hI hP hs, fun w T M hT hM => zm_pt hI hP hs w T M hT hM, ZM.Ib hI, ZM.Ib_mem hI, ZM.Ib_det_ne hI, zm_norm hI hP hs⟩`.
+-/
 theorem zeroMode [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) (hP : Ext.PackingCount) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) :
     ∃ β ∈ (Col.YB hI hP 1).Sec 1,
@@ -33,6 +39,35 @@ theorem zeroMode [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodu
   ⟨ZM.zmB hI s, zm_mem hI hP hs, fun w T M hT hM => zm_pt hI hP hs w T M hT hM, ZM.Ib hI,
     ZM.Ib_mem hI, ZM.Ib_det_ne hI, zm_norm hI hP hs⟩
 
+/- English proof (translation)
+Use `set Y := Col.YB hI hP 1 with hY`. Establish `key` using `hS (Fin (Col.gB (IR I))) Y 1 le_rfl β hβ t`. Rewrite `key` using `[Fintype.card_fin]`. Use `set g : ℕ := X.gA with hg`. Establish `hgbg : (Col.gB (IR I)) ≤ g`.
+
+Establish `h1` using `Submodule.finrank_le (Col.V2 (IR I))`. Rewrite `h1` using `[finrank_euclideanSpace, X.card_idx]`. Conclude with `h1`. Establish `hg2 : 2 ≤ g` using `P.hfr`. Establish `hgpos : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`.
+
+Establish `hq : (0 : ℝ) < P.q` using `by exact_mod_cast P.hq`. Establish `hqth` using `one_le_sqrt_q_th P`. Establish `hth` using `Col.th_pos P`. Use `set y : ℝ := 1 + 6 * Real.sqrt (g * P.q) with hy`. Establish `hy1 : 1 ≤ y` using `by have := Real.sqrt_nonneg (g * P.q); linarith`.
+
+Establish `hl0` using `l2_nonneg_GT Y 1 β`. Establish `hbase : 1 + 4 * Real.sqrt (2 * (Col.gB (IR I))) / (Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * Y.la1) ≤ y`. Break down `Nat.eq_zero_or_pos (Col.gB (IR I)) with h0 | hpos` into its components or cases. Establish `h00 : Real.sqrt (2 * ((Col.gB (IR I)) : ℝ)) = 0` using `by rw [h0]; simp`. Rewrite using `[h00]`.
+
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hla : P.th ≤ Y.la1`. Apply `le_csInf` to reduce the goal to its premises. Use `⟨‖Y.b ⟨0, by rw [Fintype.card_fin]; omega⟩‖, Y.b ⟨0, by rw [Fintype.card_fin]; omega⟩, Submodule.subset_span ⟨_, rfl⟩, Y.b.ne_zero _, rfl⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, hne, rfl⟩`. Conclude with `Col.GB_norm hI ((Col.YB_lat hI hP 1).1 hx) hne`. Establish `hla0 : 0 < Y.la1` using `lt_of_lt_of_le hth hla`. Establish `hpi : 1 ≤ Real.sqrt (((1 : ℕ) : ℝ) * Real.pi)`. Rewrite using `[Nat.cast_one, one_mul, Real.one_le_sqrt]`.
+
+Combine the linear relations using `[Real.pi_gt_three]`. Establish `hden : 0 < Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * Y.la1` using `by positivity`. Establish `hA : 4 * Real.sqrt (2 * (Col.gB (IR I))) / (Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * Y.la1) ≤ 6 * Real.sqrt (g * P.q)`. Rewrite using `[div_le_iff₀ hden]`. Establish `hgb' : Real.sqrt (2 * ((Col.gB (IR I)) : ℝ)) ≤ Real.sqrt (2 * g)`.
+
+Apply `Real.sqrt_le_sqrt; have : ((Col.gB (IR I)) : ℝ) ≤ g := by exact_mod_cast hgbg` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `*` using `[Real.sqrt_mul (by norm_num) (g : ℝ), Real.sqrt_mul hgpos.le]`. Establish `hs2 : Real.sqrt 2 ≤ 1.5`. Rewrite using `[Real.sqrt_le_left (by norm_num)]; norm_num`.
+
+Establish `hsg` using `Real.sqrt_pos.2 hgpos`. Establish `hsq` using `Real.sqrt_nonneg (P.q : ℝ)`. Establish `h1 : 1 ≤ Real.sqrt P.q * Y.la1` using `le_trans hqth (mul_le_mul_of_nonneg_left hla hsq)`. Establish `h2 : 1 ≤ Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * (Real.sqrt P.q * Y.la1)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hy]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 2 * ((1 : ℕ) : ℝ) ^ (Col.gB (IR I)) * (1 + 4 * Real.sqrt (2 * (Col.gB (IR I))) / (Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * Y.la1)) ^ (2 * (Col.gB (IR I))) ≤ Real.exp P.p1 ^ 2`. Establish `hp : Real.exp P.p1 ^ 2 = Real.exp 2 * y ^ (2 * g)`.
+
+Rewrite using `[← Real.exp_nat_mul, Par.p1, ← hg, ← hy]`. Rewrite using `[show ((2 : ℕ) : ℝ) * (1 + g * Real.log y) = 2 + ((2 * g : ℕ) : ℝ) * Real.log y by push_cast; ring]`. Rewrite using `[Real.exp_add, Real.exp_nat_mul, Real.exp_log (by linarith)]`. Rewrite using `[hp]`. Establish `h2e : (2 : ℝ) ≤ Real.exp 2`.
+
+Use `Real.add_one_le_exp (2 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : 0 ≤ 4 * Real.sqrt (2 * (Col.gB (IR I))) / (Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * Y.la1)`. Apply `div_nonneg (by positivity)` to reduce the goal to its premises. Apply `mul_nonneg (Real.sqrt_nonneg _)` to reduce the goal to its premises.
+
+Rewrite using `[GT.la1]`. Apply `Real.sInf_nonneg` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, -, -, rfl⟩`. Conclude with `norm_nonneg _`. Establish `hb : (1 + 4 * Real.sqrt (2 * (Col.gB (IR I))) / (Real.sqrt (((1 : ℕ) : ℝ) * Real.pi) * Y.la1)) ^ (2 * (Col.gB (IR I))) ≤ y ^ (2 * g)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul (by rw [Nat.cast_one, one_pow, mul_one]; exact h2e) hb (pow_nonneg (by linarith) _) (by positivity)`. Conclude with `le_trans key (mul_le_mul_of_nonneg_right hB hl0)`.
+-/
 theorem tof_yb_sup [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) (hP : Ext.PackingCount) (hS : GSupStatement) {β : EuclideanSpace ℂ
     (Fin (Col.gB (IR I))) → ℂ} (hβ : β ∈ (Col.YB hI hP 1).Sec 1) (t : EuclideanSpace ℂ (Fin (Col.gB (IR I)))) :
@@ -106,6 +141,29 @@ theorem tof_yb_sup [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submo
       (pow_nonneg (by linarith) _) (by positivity)
   exact le_trans key (mul_le_mul_of_nonneg_right hB hl0)
 
+/- English proof (translation)
+Establish `hP : Ext.PackingCount` using `hx.1`. Establish `hG : Ext.GHadamard` using `hx.2.2.2.1`. Take `⟨β, hβ, hpt, a, haI, hdet, hl2⟩` from `zeroMode hI hP hs`. Use `set Y := Col.YB hI hP 1 with hY`. Establish `hLS` using `tof_yb_sup hI hP hS hβ`.
+
+Establish `hl0` using `l2_nonneg_GT Y 1 β`. Introduce `w`. Take `⟨y0, hy0, hsum⟩` from `tof_gauss_min_sum P hI hP (uMap I w) (isU_uMap I w).1`. Use `⟨y0, hy0, ?_⟩` and prove the remaining obligations. Use `set d := dstar (E := E) P.m with hd`.
+
+Use `set Eg := Real.exp (-(Real.pi / 2) * ‖uMap I w - uMap I y0‖ ^ 2) with hEg`. Use `set T := 2 * (3 * (d : ℝ)) ^ d * Eg with hT`. Establish `hpw` using `hpt w T (Real.exp P.p1 ^ 2 * Y.l2 1 β) hsum hLS`. Establish `hp2 : Real.exp P.p2 = 2 * (3 * (d : ℝ)) ^ d`. Rewrite using `[Par.p2, Real.exp_log]`.
+
+Establish `h` using `tof_two_le_dstar P`. Establish `: (2 : ℝ) ≤ d` using `by exact_mod_cast h`. Conclude with `mul_pos two_pos (pow_pos (by linarith) _)`. Establish `hRHS : 0 ≤ Real.exp (P.p1 + P.p2 + d) * (P.ka0 * P.ph) ^ ((d : ℝ) / 4) * Eg` using `mul_nonneg (mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg (mul_nonneg (Par_ka0_nonneg P) hph.le) _)) (Real.exp_pos _).le`. Break down `hl0.lt_or_eq with hlpos | hleq` into its components or cases.
+
+Use `set c := |(Col.ob (IR I)).toBasis.det a| with hc`. Establish `hcpos : 0 < c` using `abs_pos.2 hdet`. Establish `h2pos : 0 < (2 : ℝ) ^ (-(Module.finrank ℝ (IR I) : ℝ) / 2)` using `Real.rpow_pos_of_pos (by norm_num) _`. Establish `hcl : 0 < c * (2 : ℝ) ^ (-(Module.finrank ℝ (IR I) : ℝ) / 2)` using `mul_pos hcpos h2pos`. Establish `hsl : 0 < X.l2 1 s` using `lt_of_lt_of_le (by positivity) hl2`.
+
+Establish `hcov` using `tof_covol_lb P hI hG (Col.ob (IR I)) a haI hdet`. Establish `hinv` using `tof_inv_sqrt_le P hph (Module.finrank ℝ (IR I)) (tof_finrank_IR_le P hI) c hcpos hcov`. Establish `hden : Real.sqrt (c * (2 : ℝ) ^ (-(Module.finrank ℝ (IR I) : ℝ) / 2)) * Real.sqrt (Y.l2 1 β) ≤ Real.sqrt (X.l2 1 s)`. Rewrite using `[← Real.sqrt_mul hcl.le]`. Conclude with `Real.sqrt_le_sqrt hl2`.
+
+Establish `hnum : Real.sqrt (X.ptN2 1 s fun _ => w) ≤ Real.exp P.p1 * Real.sqrt (Y.l2 1 β) * T`. Rewrite `hpw` using `[Real.sqrt_mul (by positivity), Real.sqrt_sq (Real.exp_pos _).le]`. Conclude with `hpw`. Establish `hsc` using `Real.sqrt_pos.2 hcl`. Establish `hsb` using `Real.sqrt_pos.2 hlpos`.
+
+Rewrite using `[div_le_iff₀ (Real.sqrt_pos.2 hsl)]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ Real.exp P.p1 * T * (Real.exp d * (P.ka0 * P.ph) ^ ((d : ℝ) / 4)) * Real.sqrt (X.l2 1 s) := by`. Establish `hTn : 0 ≤ T`.
+
+Rewrite using `[hT]`. Establish `h` using `tof_two_le_dstar P`. Establish `: (2 : ℝ) ≤ d` using `by exact_mod_cast h`. Conclude with `mul_nonneg (mul_nonneg (by norm_num) (pow_nonneg (by linarith) _)) (Real.exp_pos _).le`. Establish `hA : 0 ≤ Real.exp P.p1 * T` using `mul_nonneg (Real.exp_pos _).le hTn`.
+
+Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left hinv hA) hden (by positivity) (mul_nonneg hA (mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg (mul_nonneg (Par_ka0_nonneg P) hph.le) _)))`. Use `_ = Real.exp (P.p1 + P.p2 + d) * (P.ka0 * P.ph) ^ ((d : ℝ) / 4) * Eg * Real.sqrt (X.l2 1 s) := by`. Rewrite using `[hT, ← hp2, Real.exp_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hpw` using `[← hleq, mul_zero, Real.sqrt_zero, zero_mul]`.
+
+Establish `: Real.sqrt (X.ptN2 1 s fun _ => w) = 0` using `le_antisymm hpw (Real.sqrt_nonneg _)`. Rewrite using `[this, zero_div]`. Conclude with `hRHS`.
+-/
 theorem perFactor_of [IsCMField E] (hx : Ext.All) (hS : GSupStatement) {X : PT E} {DF : ℕ}
     (P : Par X DF) {I : Submodule ℤ (Vsp X.dim)}
     (hI : IsSplit P I) (hph : 0 < P.ph) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1) :

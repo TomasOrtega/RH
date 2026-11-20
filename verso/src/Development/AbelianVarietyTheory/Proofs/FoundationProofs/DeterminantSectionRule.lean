@@ -13,12 +13,21 @@ open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM Global
 
 namespace GlobalTheory.DetExtendZero
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
 
+/- English proof (translation)
+Rewrite using `[← spMap_comp]`. Use `congr 1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap (Chart.dualMapR (g.comp f)) = spMap (Chart.dualMapR g) ≫ spMap (Chart.dualMapR f) := by
   rw [← spMap_comp]
@@ -26,6 +35,9 @@ theorem dual_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f
   refine RingHom.ext fun x => ?_
   ext <;> simp [Chart.dualMapR]
 
+/- English proof (translation)
+Rewrite using `[← spMap_id]`. Use `congr 1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem dual_id (R : Type) [CommRing R] : spMap (Chart.dualMapR (RingHom.id R)) = 𝟙 _ := by
   rw [← spMap_id]
   congr 1
@@ -41,6 +53,11 @@ def epsMap (g : R →+* R') (x : Sp R ⟶ S) : FramedFlatCoordinates.epsAt (spMa
     have := LieCombBaseChange.dualMap_over g
     exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) this).trans (Category.assoc _ _ _)))
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨u, hu, rfl⟩` from `h`. Set `F : (FramedFlatCoordinates.epsAt x ⟶ G) →* (FramedFlatCoordinates.epsAt (spMap g ≫ x) ⟶ G)` to `⟨⟨fun u => epsMap g x ≫ u, MonObj.comp_one _⟩, fun a b => MonObj.comp_mul _ _ _⟩`. Use `⟨fun i => F (u i), fun i => ?_, ?_⟩` and prove the remaining obligations. Use `(congrArg (spMap (Chart.dualMapR g) ≫ ·) (hu i)).trans ?_` and prove the remaining obligations.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ v i) (LieCombBaseChange.dualMap_epsScale g (c i))).trans (Category.assoc _ _ _))`. Establish `: w' = F (List.ofFn u).prod` using `Over.OverMorphism.ext hw`. Rewrite using `[this, map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem comb_map (g : R →+* R') {x : Sp R ⟶ S} {x' : Sp R' ⟶ S} (hx : x' = spMap g ≫ x) {n : ℕ} {c : Fin n → R}
     {v : Fin n → (Sp (DualNumber R) ⟶ G.left)} {w : FramedFlatCoordinates.epsAt x ⟶ G} (h : FramedFlatCoordinates.IsCombination x c v w)
     {w' : FramedFlatCoordinates.epsAt x' ⟶ G} (hw : w'.left = spMap (Chart.dualMapR g) ≫ w.left) :
@@ -56,6 +73,15 @@ theorem comb_map (g : R →+* R') {x : Sp R ⟶ S} {x' : Sp R' ⟶ S} (hx : x' =
   · have : w' = F (List.ofFn u).prod := Over.OverMorphism.ext hw
     rw [this, map_list_prod, List.map_ofFn]; rfl
 
+/- English proof (translation)
+Use `⟨fun k => if k = i then v i else 1, fun k => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Establish `: epsScaleR (1 : R) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [epsScaleR]`. Simplify using `only [if_true, Matrix.one_apply_eq, this, spMap_id]`. Conclude with `(Category.id_comp _).symm`. Establish `: epsScaleR (0 : R) = (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `only [if_neg hk, Matrix.one_apply_ne (Ne.symm hk), this, spMap_comp]`. Use `Eq.trans ?_ (Category.assoc _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (spMap (algebraMap R (DualNumber R)) ≫ ·) (hv k)).symm` and prove the remaining obligations. Set `D : FramedFlatCoordinates.epsAt x ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap R (DualNumber R))) rfl`.
+
+Conclude with `(congrArg CommaMorphism.left (MonObj.comp_one D)).symm`. Rewrite using `[List.ofFn_eq_map, List.prod_map_eq_pow_single i _ (fun a h _ => if_neg h)]`. Simplify using the standard rewrite rules.
+-/
 theorem comb_one {x : Sp R ⟶ S} {n : ℕ} {v : Fin n → (FramedFlatCoordinates.epsAt x ⟶ G)}
     (hv : ∀ i, spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (v i).left = (1 : Over.mk x ⟶ G).left) (i : Fin n) :
     FramedFlatCoordinates.IsCombination x ((1 : Matrix (Fin n) (Fin n) R) i) (fun k => (v k).left) (v i) := by
@@ -83,6 +109,9 @@ end Tangent
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `⟨fun i => epsMap g x ≫ v i, hT R R' g j x τ m v _ hv fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem exists_basis {S : Scheme.{0}} {T : SAB H S} {c : Coeff l} (hT : EigStable T c) {R R' : Type} [CommRing R]
     [CommRing R'] (g : R →+* R') {j : c.F →+* R} {x : Sp R ⟶ S} {x' : Sp R' ⟶ S} (hx : x' = spMap g ≫ x)
     {τ : E →+* ℂ} {m : ℕ} {v : Fin m → (FramedFlatCoordinates.epsAt x ⟶ T.G)}
@@ -97,10 +126,19 @@ variable {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {U :
 def toGen (Y : Model Xo c (RingHom.id c.F)) : Y.X ⟶ FramedFlatCoordinates.genFibre Y :=
   pullback.lift (𝟙 _) Y.s (by rw [spMap_id, Category.id_comp, Category.comp_id])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem toGen_fst : toGen Y ≫ pullback.fst _ _ = 𝟙 _ := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem toGen_snd : toGen Y ≫ pullback.snd _ _ = Y.s := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toGen_fst, Category.id_comp, Category.comp_id]`. Rewrite using `[Category.assoc, toGen_snd, Category.id_comp, pullback.condition]`. Conclude with `(congrArg (_ ≫ ·) (spMap_id _)).trans (Category.comp_id _)`.
+-/
 theorem fst_toGen : pullback.fst _ _ ≫ toGen Y = 𝟙 _ := by
   apply pullback.hom_ext
   · rw [Category.assoc, toGen_fst, Category.id_comp, Category.comp_id]
@@ -117,6 +155,11 @@ def IsAbove (g : R →+* R') (φ : c.F →+* R) (x : Sp R ⟶ Y.X) (v : Fin Dw.p
 def Misses (U : (Xo.XF c).Opens) (g : R →+* R') (x : Sp R ⟶ Y.X) : Prop :=
   ∀ z, (x ≫ toGen Y) (spMap g z) ∉ FramedFlatCoordinates.compactification Y U
 
+/- English proof (translation)
+Establish `hx : (spMap g ≫ x ≫ toGen Y) ≫ pullback.fst _ _ = spMap g ≫ x`. Rewrite using `[Category.assoc, Category.assoc, toGen_fst, Category.comp_id]`. Take `⟨v', hv', ev⟩` from `exists_basis hT g (j := φ) (τ := τ) hx h.2.1`. Take `⟨w', hw', ew⟩` from `exists_basis hT g (j := φ) (τ := conjEmb τ) hx h.2.2`. Use `⟨⟨spMap g ≫ x ≫ toGen Y, ?_, ?_, v', w', hv', hw'⟩, rfl, rfl, ev, ew⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, toGen_snd, h.1, spMap_comp φ g, RingHom.comp_id]`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hg z`.
+-/
 theorem exists_above (hT : EigStable Y.t c) (g : R →+* R') {φ : c.F →+* R} {x : Sp R ⟶ Y.X}
     {v : Fin Dw.p → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {w : Fin Dw.q → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)}
     (h : RamifiedPlacesSplitEigen.IsFrame Y τ φ x v w) (hg : ∀ z, (x ≫ toGen Y) (spMap g z) ∈ FramedFlatCoordinates.compactification Y U) :
@@ -131,6 +174,9 @@ theorem exists_above (hT : EigStable Y.t c) (g : R →+* R') {φ : c.F →+* R} 
     rw [Scheme.Hom.comp_apply]
     exact hg z
 
+/- English proof (translation)
+Establish `hc : IsClopen (FramedFlatCoordinates.compactification Y U)` using `⟨isClosed_closure, hU⟩`. Take `⟨e, he, h⟩` from `PrimeSpectrum.isClopen_iff.1 (hc.preimage (x ≫ toGen Y).continuous)`. Conclude with `⟨e, he, fun z => Set.ext_iff.1 h z⟩`.
+-/
 theorem exists_idem (hU : IsOpen (FramedFlatCoordinates.compactification Y U)) (x : Sp R ⟶ Y.X) :
     ∃ e : R, IsIdempotentElem e ∧
       ∀ z : PrimeSpectrum R, (x ≫ toGen Y) z ∈ FramedFlatCoordinates.compactification Y U ↔ e ∉ z.asIdeal := by
@@ -138,12 +184,22 @@ theorem exists_idem (hU : IsOpen (FramedFlatCoordinates.compactification Y U)) (
   obtain ⟨e, he, h⟩ := PrimeSpectrum.isClopen_iff.1 (hc.preimage (x ≫ toGen Y).continuous)
   exact ⟨e, he, fun z => Set.ext_iff.1 h z⟩
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : g e ∈ PrimeSpectrum.asIdeal (R := R') z := h rw [map_sub, map_one, sub_eq_zero] at hg exact (PrimeSpectrum.isPrime (R := R') z).ne_top ((Ideal.eq_top_iff_one _).2 (hg ▸ h1))`.
+-/
 theorem mem_of_one_sub {e : R} {g : R →+* R'} (hg : g (1 - e) = 0) (z : Sp R') :
     e ∉ PrimeSpectrum.asIdeal (R := R) (spMap g z) := fun h => by
   have h1 : g e ∈ PrimeSpectrum.asIdeal (R := R') z := h
   rw [map_sub, map_one, sub_eq_zero] at hg
   exact (PrimeSpectrum.isPrime (R := R') z).ne_top ((Ideal.eq_top_iff_one _).2 (hg ▸ h1))
 
+/- English proof (translation)
+Take `⟨e, he, hz⟩` from `exists_idem hU x`. Take `⟨a, ha⟩` from `exists_above (U := U) hT (Ideal.Quotient.mk (Ideal.span {1 - e})) h fun z => (hz _).2 (mem_of_one_sub (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)) z)`. Establish `e₁` using `h₁ _ _ a ha`. Establish `e₂` using `h₂ _ (Ideal.Quotient.mk (Ideal.span {e})) fun z hm => (hz _).1 hm (by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (Ideal.span {e}) e ∈ PrimeSpectrum.asIdeal (R := R ⧸ Ideal.span {e}) z`.
+
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)]`. Conclude with `zero_mem _)`. Rewrite `e₁`, `e₂` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `e₁`. Take `⟨b', hb'⟩` from `e₂`.
+
+Establish `he' : e * e = e` using `he`. Take the linear combination `(-e) * hb - (1 - e) * hb' - (b + b') * he'`.
+-/
 theorem separate (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordinates.compactification Y U)) {φ : c.F →+* R} {x : Sp R ⟶ Y.X}
     {v : Fin Dw.p → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {w : Fin Dw.q → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)}
     (h : RamifiedPlacesSplitEigen.IsFrame Y τ φ x v w) {s t : R}
@@ -170,6 +226,21 @@ def IsExtValue (sig : FramedFlatCoordinates.Rule Y U τ) (φ : c.F →+* R) (x :
     IsAbove g φ x v w a → g r = sig R' j a) ∧
   ∀ (R' : Type) [CommRing R'] (g : R →+* R'), Misses U g x → g r = 0
 
+/- English proof (translation)
+Take `⟨e, he, hz⟩` from `exists_idem hU x`. Take `⟨a, ha⟩` from `exists_above (U := U) hT (Ideal.Quotient.mk (Ideal.span {1 - e})) h fun z => (hz _).2 (mem_of_one_sub (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)) z)`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (sig _ _ a)`. Use `⟨e * r, fun R' _ g j a' ha' => ?_, fun R' _ g hg => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (g e)`.
+
+Assume the negation of the conclusion as `hn`. Take `⟨m, hm, hem⟩` from `exists_max_ideal_of_mem_nonunits (a := g e) hn`. Set `z : Sp R'` to `(⟨m, hm.isPrime⟩ : PrimeSpectrum R')`. Use `a'.x_mem ⟨z, rfl⟩` as an intermediate fact. Rewrite `this` using `[ha'.2.1, Scheme.Hom.comp_apply]`.
+
+Conclude with `(hz _).1 this hem`. Establish `h1 : g e = 1` using `(IsIdempotentElem.iff_eq_one_of_isUnit hu).1 (he.map g)`. Set `g' : R ⧸ Ideal.span {1 - e} →+* R'` to `Ideal.Quotient.lift _ g fun b hb => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Simplify using `[h1]`.
+
+Establish `hg : g = g'.comp (Ideal.Quotient.mk _)` using `rfl`. Establish `hc : FramedFlatCoordinates.IsChange a a' g' 1 1`. Use `⟨ha'.1, ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[ha'.2.1, ha.2.1, hg, spMap_comp, Category.assoc]`. Use `comb_one (fun k => (a'.v_basis.1 k).1) i` as an intermediate fact.
+
+Use `this using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[ha'.2.2.1, ha.2.2.1, hg, dual_comp, Category.assoc]`. Use `comb_one (fun k => (a'.w_basis.1 k).1) i` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[ha'.2.2.2, ha.2.2.2, hg, dual_comp, Category.assoc]`.
+
+Use `hs _ _ _ _ a a' g' 1 1 hc` as an intermediate fact. Simplify using `only [Matrix.det_one, _root_.mul_one] at this`. Rewrite using `[this, ← hr, map_mul, h1, _root_.one_mul]`. Both sides reduce to the same expression. Establish `hn : IsNilpotent (g e)`.
+
+Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `J hJ`. Assume the negation of the conclusion as `hm`. Conclude with `hg (⟨J, hJ⟩ : PrimeSpectrum R') ((hz _).2 hm)`. Rewrite using `[map_mul, (he.map g).eq_zero_of_isNilpotent hn, zero_mul]`.
+-/
 theorem exists_extValue (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordinates.compactification Y U))
     {sig : FramedFlatCoordinates.Rule Y U τ} (hs : sig ∈ FramedFlatCoordinates.sections Y U τ) {φ : c.F →+* R} {x : Sp R ⟶ Y.X}
     {v : Fin Dw.p → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {w : Fin Dw.q → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)}
@@ -211,6 +282,9 @@ theorem exists_extValue (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordinat
       exact hg (⟨J, hJ⟩ : PrimeSpectrum R') ((hz _).2 hm)
     rw [map_mul, (he.map g).eq_zero_of_isNilpotent hn, zero_mul]
 
+/- English proof (translation)
+The claim follows from `separate hT hU h (fun _ _ g a ha => (hr.1 _ g _ a ha).trans (hr'.1 _ g _ a ha).symm) fun _ _ g hg => (hr.2 _ g hg).trans (hr'.2 _ g hg).symm`.
+-/
 theorem extValue_unique (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordinates.compactification Y U))
     {sig : FramedFlatCoordinates.Rule Y U τ} {φ : c.F →+* R} {x : Sp R ⟶ Y.X}
     {v : Fin Dw.p → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {w : Fin Dw.q → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)}
@@ -219,6 +293,11 @@ theorem extValue_unique (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordinat
   separate hT hU h (fun _ _ g a ha => (hr.1 _ g _ a ha).trans (hr'.1 _ g _ a ha).symm)
     fun _ _ g hg => (hr.2 _ g hg).trans (hr'.2 _ g hg).symm
 
+/- English proof (translation)
+Use `⟨fun R'' _ g' j a ha => hr.1 _ (g'.comp g) j a ⟨ha.1, ?_, fun i => ?_, fun i => ?_⟩, fun R'' _ g' hg => hr.2 _ (g'.comp g) fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[ha.2.1, spMap_comp, Category.assoc, Category.assoc]`. Rewrite using `[ha.2.2.1, hv, dual_comp, Category.assoc]`. Rewrite using `[ha.2.2.2, hw, dual_comp, Category.assoc]`. Use `hg z` as an intermediate fact.
+
+Rewrite `this` using `[Category.assoc, Scheme.Hom.comp_apply (spMap g)]`. Rewrite using `[spMap_comp, Scheme.Hom.comp_apply (spMap g')]` and apply the resulting hypothesis.
+-/
 theorem IsExtValue.map {sig : FramedFlatCoordinates.Rule Y U τ} {φ : c.F →+* R} {x : Sp R ⟶ Y.X}
     {v : Fin Dw.p → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {w : Fin Dw.q → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {r : R}
     (hr : IsExtValue sig φ x v w r) (g : R →+* R') {v' : Fin Dw.p → (FramedFlatCoordinates.epsAt (spMap g ≫ x) ⟶ Y.t.G)}
@@ -235,6 +314,17 @@ theorem IsExtValue.map {sig : FramedFlatCoordinates.Rule Y U τ} {φ : c.F →+*
     rw [Category.assoc, Scheme.Hom.comp_apply (spMap g)] at this
     rwa [spMap_comp, Scheme.Hom.comp_apply (spMap g')]
 
+/- English proof (translation)
+Use `separate hT hU h (fun R' _ g a ha => ?_) fun R' _ g hg => by` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hr.2 _ g hg, hr'.2 _ g hg, zero_mul, zero_mul]`. Take `⟨a', ha'⟩` from `exists_above (U := U) hT g h' fun z => by`. Use `a.x_mem ⟨z, rfl⟩` as an intermediate fact. Rewrite `this` using `[ha.2.1, Scheme.Hom.comp_apply]`. Then use the resulting hypothesis.
+
+Establish `hx : a'.x ≫ pullback.fst _ _ = spMap g ≫ x`. Rewrite using `[ha'.2.1, Category.assoc, Category.assoc, toGen_fst, Category.comp_id]`. Establish `hc : FramedFlatCoordinates.IsChange a a' (RingHom.id _) (g.mapMatrix M) (g.mapMatrix N)`. Use `⟨rfl, ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[ha'.2.1, ha.2.1, spMap_id, Category.id_comp]`.
+
+Use `comb_map g hx (v := fun k => (v k).left) (hM i) (ha'.2.2.1 i)` as an intermediate fact. Use `this using 2 with k k` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[dual_id, ha.2.2.1]`. Conclude with `Category.id_comp _`.
+
+Use `comb_map g hx (v := fun k => (w k).left) (hN i) (ha'.2.2.2 i)` as an intermediate fact. Use `this using 2 with k k` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[dual_id, ha.2.2.2]`. Conclude with `Category.id_comp _`.
+
+Use `hs _ _ _ _ a a' _ _ _ hc` as an intermediate fact. Rewrite using `[map_mul, map_mul, hr.1 _ g _ a ha, hr'.1 _ g _ a' ha', RingHom.map_det, RingHom.map_det]`. Conclude with `this.symm`.
+-/
 theorem IsExtValue.change (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordinates.compactification Y U))
     {sig : FramedFlatCoordinates.Rule Y U τ} (hs : sig ∈ FramedFlatCoordinates.sections Y U τ) {φ : c.F →+* R} {x : Sp R ⟶ Y.X}
     {v v' : Fin Dw.p → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)} {w w' : Fin Dw.q → (FramedFlatCoordinates.epsAt x ⟶ Y.t.G)}
@@ -264,6 +354,13 @@ theorem IsExtValue.change (hT : EigStable Y.t c) (hU : IsOpen (FramedFlatCoordin
   rw [map_mul, map_mul, hr.1 _ g _ a ha, hr'.1 _ g _ a' ha', RingHom.map_det, RingHom.map_det]
   exact this.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y U τ hT hU sig hs`. Set `f : RamifiedPlacesSplitEigen.Rule Y` to `fun R _ φ x v w => @Classical.epsilon R ⟨0⟩ (IsExtValue sig φ x v w)`. Establish `hf : ∀ (R : Type) [CommRing R] (φ : c.F →+* R) (x : Sp R ⟶ Y.X) v w, RamifiedPlacesSplitEigen.IsFrame Y τ φ x v w → IsExtValue sig φ x v w (f R φ x v w)` using `fun R _ φ x v w h => Classical.epsilon_spec_aux ⟨0⟩ _ (exists_extValue hT hU hs h)`. Use `⟨f, ⟨fun R _ φ x v v' w w' M N h h' hM hN => ?_, fun R R' _ _ g φ x v w v' w' h h' hv hw => ?_⟩, fun R _ j a => ?_⟩` and prove the remaining obligations. Conclude with `IsExtValue.change hT hU hs h h' hM hN (hf _ _ _ _ _ h) (hf _ _ _ _ _ h')`.
+
+Conclude with `extValue_unique hT hU h' (hf _ _ _ _ _ h') ((hf _ _ _ _ _ h).map g hv hw)`. Establish `h : RamifiedPlacesSplitEigen.IsFrame Y τ j (a.x ≫ pullback.fst _ _) a.v a.w`. Use `⟨?_, a.v_basis, a.w_basis⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, a.x_over, spMap_comp]`. Use `(hf _ _ _ _ _ h).1 R (RingHom.id R) j a ⟨rfl, ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[spMap_id R, Category.id_comp, Category.assoc, fst_toGen, Category.comp_id]`. Rewrite using `[dual_id]`. Conclude with `(Category.id_comp _).symm`. Rewrite using `[dual_id]`. Conclude with `(Category.id_comp _).symm`.
+-/
 theorem exists_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : (Xo.XF c).Opens) (τ : E →+* ℂ), EigStable Y.t c → IsOpen (FramedFlatCoordinates.compactification Y U) → ∀ sig ∈ FramedFlatCoordinates.sections Y U τ, ∃ f : RamifiedPlacesSplitEigen.Rule Y, RamifiedPlacesSplitEigen.IsDetSection Y τ f ∧ ∀ (R : Type) [CommRing R] (j : c.F →+* R) (a : FramedFlatCoordinates.Framed Y U τ R j), f R j (a.x ≫ pullback.fst _ _) a.v a.w = sig R j a := by
   intro E _ _ _ H Dw l Xo c Y U τ hT hU sig hs
   let f : RamifiedPlacesSplitEigen.Rule Y := fun R _ φ x v w => @Classical.epsilon R ⟨0⟩ (IsExtValue sig φ x v w)

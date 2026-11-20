@@ -24,6 +24,11 @@ variable {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar}
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨LinearMap.mulLeft ℂ (∏ σ ∈ Finset.univ.erase τ, (MvPolynomial.rename (fun s => (σ, s)) (P σ) : PolF D b a)) ∘ₗ (MvPolynomial.rename (fun s : Fin b × Fin a => (τ, s)) : LPol b a →ₐ[ℂ] PolF D b a).toLinearMap, fun Q => ?_⟩` and prove the remaining obligations. Unfold `glue`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ)]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply, Function.update_apply]`. Rewrite using `[mul_comm]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun σ hσ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (Finset.ne_of_mem_erase hσ)]`.
+-/
 theorem exists_ins {a b : ℕ} (P : D.what₂.Tau → LPol b a) (τ : D.what₂.Tau) :
     ∃ j : LPol b a →ₗ[ℂ] PolF D b a, ∀ Q, j Q = glue (Function.update P τ Q) := by
   refine ⟨LinearMap.mulLeft ℂ
@@ -41,6 +46,19 @@ theorem exists_ins {a b : ℕ} (P : D.what₂.Tau → LPol b a) (τ : D.what₂.
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨hKs, hKt⟩` from `GlobalTheory.T.realIntertwinerContraction_values_kFinite D V W S S' M M' τ aS aT A h`. Establish `hG` using `(GlobalTheory.T.gluing_law_holds D V.rank W.rank).2`. Establish `upd : ∀ Q Q' : LPol W.rank V.rank, Function.update (Function.update P τ Q) τ Q' = Function.update P τ Q'` using `fun Q Q' => Function.update_idem _ _ _`. Establish `hS : ∀ Z Q, fockS τ (M.ε τ) (M'.ε τ) Z (j Q) = j (locS (M.ε τ) (M'.ε τ) Z Q)`. Introduce `Z Q`.
+
+Rewrite using `[hj, hj, (hG τ (M.ε τ) (M'.ε τ) (Function.update P τ Q)).1 Z, upd]`. Simplify using the standard rewrite rules. Establish `hT : ∀ Z Q, fockT τ (M.ε τ) (M'.ε τ) Z (j Q) = j (locT (M.ε τ) (M'.ε τ) Z Q)`. Introduce `Z Q`. Rewrite using `[hj, hj, (hG τ (M.ε τ) (M'.ε τ) (Function.update P τ Q)).2 Z, upd]`.
+
+Simplify using the standard rewrite rules. Use `⟨fun Q y => hKs (j Q) y, fun Q u => hKt (j Q) u, ?_, ?_⟩` and prove the remaining obligations. Introduce `X hX Q y u`. Establish `e : srcOp M M' τ aT X (j Q) = j (locS (M.ε τ) (M'.ε τ) ((M.fr τ * X * (M.fr τ)⁻¹).map (starRingEnd ℂ)) Q - ((aT : ℂ) * X.trace) • Q)`. Rewrite using `[map_sub, map_smul, ← hS]`.
+
+Simplify using `[srcOp, sub_eq_add_neg]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← e]`. Conclude with `h.src X hX (j Q) y u`. Introduce `Y hY Q y y' hy`.
+
+Establish `e : tgtOp M M' τ aS Y (j Q) = j (locT (M.ε τ) (M'.ε τ) (M'.fr τ * Y * (M'.fr τ)⁻¹) Q + ((aS : ℂ) * Y.trace) • Q)`. Rewrite using `[map_add, map_smul, ← hT]`. Simplify using `[tgtOp]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← e]`.
+
+Conclude with `h.tgt Y hY (j Q) y y' hy`.
+-/
 theorem locW_of_semiW {M : DSModel V S} {M' : DSModel W S'} {τ : D.what₂.Tau} {aS aT : ℚ}
     {A : PolF D W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ} (h : SemiW M M' τ aS aT A)
     {P : D.what₂.Tau → LPol W.rank V.rank} {j : LPol W.rank V.rank →ₗ[ℂ] PolF D W.rank V.rank}
@@ -76,6 +94,27 @@ theorem locW_of_semiW {M : DSModel V S} {M' : DSModel W S'} {τ : D.what₂.Tau}
     rw [← e]
     exact h.tgt Y hY (j Q) y y' hy
 
+/- English proof (translation)
+Establish `key : ∀ A, LocW M M' τ aS aT A → ∃ c : ℂ, ∀ P (x : R₂.HK.V) (y : M'.sm τ), U' (y : M'.H τ) = R₂.ι x → U (A P y) = c • R₁.ι (B₀ (κ P) x)`. Introduce `A hA`. Take `⟨B, hB, hBA⟩` from `GlobalTheory.T.exists_cover_kFinite_pairing_of_realIntertwiner D V W S S' M M' τ p q r s T₁ T₂ R₁ R₂ e e' m m' aS aT U U' κ A hm hm' hU hU' hκ hA`. Take `⟨c, hc⟩` from `hB₀ B hB`. Use `⟨c, fun P x y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hBA P x y hy, hc, map_smul]`. Establish `uniq : ∀ (A A' : LPol W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ) (c : ℂ), LocW M M' τ aS aT A → LocW M M' τ aS aT A' → (∀ P (y : M'.sm τ), U' (y : M'.H τ) ∈ Set.range R₂.ι → A P y = c • A' P y) → A = c • A'`. Introduce `A A' c hA hA' hK`. Use `LinearMap.ext fun P => LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply]`.
+
+Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Take `⟨b, hb, hbA⟩` from `hA.kT P u`. Take `⟨b', hb', hbA'⟩` from `hA'.kT P u`. Take `⟨x₁, hx₁⟩` from `(hU'.kfin b).1 hb`. Take `⟨x₂, hx₂⟩` from `(hU'.kfin b').1 hb'`.
+
+Establish `hdK : U' (b - (starRingEnd ℂ c) • b') ∈ Set.range R₂.ι` using `⟨x₁ - c • x₂, by rw [map_sub, map_smul, hx₁, hx₂, map_sub, map_smulₛₗ]; simp⟩`. Establish `hsm : b - (starRingEnd ℂ c) • b' ∈ M'.sm τ` using `Submodule.subset_span (hU'.smooth _ hdK)`. Establish `h0 : b - (starRingEnd ℂ c) • b' = 0`. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`. Establish `e₁` using `hbA ⟨_, hsm⟩`.
+
+Establish `e₂` using `hbA' ⟨_, hsm⟩`. Establish `e₃` using `hK P ⟨_, hsm⟩ hdK`. Rewrite `e₁` using `[e₃, inner_smul_right]`. Rewrite using `[inner_sub_left, inner_smul_left, ← e₁, ← e₂]`. Simplify using the standard rewrite rules.
+
+Rewrite `h0` using `[sub_eq_zero]`. Rewrite using `[inner_smul_right, hbA, hbA', h0, inner_smul_left]`. Simplify using the standard rewrite rules. Distinguish the cases in `h0 : ∃ A₁, LocW M M' τ aS aT A₁ ∧ A₁ ≠ 0`. Take `⟨A₁, hA₁, hne⟩` from `h0`.
+
+Take `⟨c₁, hc₁⟩` from `key A₁ hA₁`. Establish `hc₁0 : c₁ ≠ 0`. Introduce and unpack `rfl`. Use `hne ?_` and prove the remaining obligations. Establish `h` using `uniq A₁ A₁ 0 hA₁ hA₁ fun P y hy => by`.
+
+Take `⟨x, hx⟩` from `hy`. Establish `h` using `hc₁ P x y hx.symm`. Rewrite `h` using `[zero_smul]`. Rewrite using `[zero_smul]`. Conclude with `U.map_eq_zero_iff.mp h`.
+
+Rewrite `h` using `[zero_smul]`. Then use the resulting hypothesis. Use `⟨A₁, fun A hA => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `key A hA`. Use `⟨c / c₁, uniq A A₁ (c / c₁) hA hA₁ fun P y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hy`.
+
+Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hc P x y hx.symm, map_smul, hc₁ P x y hx.symm, smul_smul, div_mul_cancel₀ _ hc₁0]`. Use `push_neg at h0`. Conclude with `⟨0, fun A hA => ⟨0, by rw [smul_zero]; exact h0 A hA⟩⟩`.
+-/
 theorem loc_line_of_matches {M : DSModel V S} {M' : DSModel W S'} {τ : D.what₂.Tau} {p q r s : ℕ} {T₁ : GrpData p q}
     {T₂ : GrpData r s} {R₁ : DSRep T₁} {R₂ : DSRep T₂} {e : Ix p q ≃ Fin V.rank} {e' : Ix r s ≃ Fin W.rank}
     {m m' : ℤ} {aS aT : ℚ} {U : M.H τ ≃ₗᵢ[ℂ] R₁.U.H} {U' : M'.H τ ≃ₗᵢ⋆[ℂ] R₂.U.H}
@@ -141,6 +180,19 @@ theorem loc_line_of_matches {M : DSModel V S} {M' : DSModel W S'} {τ : D.what�
   · push_neg at h0
     exact ⟨0, fun A hA => ⟨0, by rw [smul_zero]; exact h0 A hA⟩⟩
 
+/- English proof (translation)
+Take `⟨hSB, hTB⟩` from `hB`. Establish `hA` using `hd.1`. Establish `hI` using `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hA`. Establish `hlen : (block t).length = t` using `by simp [block]`. Establish `hsetS : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.HidaSetting X (al.length + be.length) (ga.length + de.length) (al ++ be) (ga ++ de) aT S τ`.
+
+Use `⟨?_, List.length_append, List.length_append, hI.2.1, hX _ _ _ hI.2.1, hS⟩` and prove the remaining obligations. Use `hA.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨⟨e, he⟩, m, hm, hU⟩` from `hSB X V S M τ _ _ (al ++ be) (ga ++ de) aT hsetS`. Take `⟨U, hUm⟩` from `hU e he`.
+
+Establish `hsetT : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.HidaSetting X (al.length + de.length + t) (ga.length + be.length) (al ++ block t ++ de) (ga ++ be) aS S' τ`. Use `⟨?_, ?_, List.length_append, hI.2.2.1, hX _ _ _ hI.2.2.1, hS'⟩` and prove the remaining obligations. Use `hA.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [List.length_append, hlen]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨⟨e', he'⟩, m', hm', hU'⟩` from `hTB X W S' M' τ _ _ (al ++ block t ++ de) (ga ++ be) aS hsetT`. Take `⟨U', hUm'⟩` from `hU' e' he'`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_fockPolynomialIso_unitaryPair _ _ _ _ V.rank W.rank (M.ε τ) (M'.ε τ) e e' he he'`. Establish `hpq : 1 ≤ al.length + be.length + (ga.length + de.length)`.
+
+Use `hA.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set R₁ := X.ds (al.length + be.length) (ga.length + de.length) (ofBlocks (al ++ be) (ga ++ de)) with hR₁`. Establish `hadm : Formalism.MainNotions.SchurIrreducible.AdmGK R₁.HK` using `(((GlobalTheory.Published.HarishChandraModules.admQ5_of_harishChandraModules hH X) _ _ hpq).1 R₁.U ⟨R₁.nontriv, R₁.irred⟩).2.2 R₁.HK R₁.ι ⟨R₁.ι_inj, R₁.ι_range, R₁.der⟩ |>.1`. Take `⟨B₀, hB₀⟩` from `GlobalTheory.T.covariant_pairing_unique_up_to_scalar X _ _ _ _ _ _ hadm (h3.1 t al be ga de hd).2.2`.
+
+Conclude with `loc_line_of_matches hm hm' hUm hUm' hκ hB₀`.
+-/
 theorem loc_line {X : ProvA} (hX : ChosenSeries X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X)
     (hH : GlobalTheory.Published.HarishChandraModules) (hB : ModelsAreCoverSeries D) (M : DSModel V S) (M' : DSModel W S')
     (τ : D.what₂.Tau) {t : ℕ} {al be ga de : List ℚ} (hd : Formalism.MainNotions.SchurIrreducible.DataAR t al be ga de) {aS aT : ℚ}
@@ -181,6 +233,27 @@ theorem loc_line {X : ProvA} (hX : ChosenSeries X) (h3 : Formalism.MainNotions.S
   obtain ⟨B₀, hB₀⟩ := GlobalTheory.T.covariant_pairing_unique_up_to_scalar X _ _ _ _ _ _ hadm (h3.1 t al be ga de hd).2.2
   exact loc_line_of_matches hm hm' hUm hUm' hκ hB₀
 
+/- English proof (translation)
+Introduce `k V W M M' θ ψ hθ hk ω f hω hf It It' hIt hIt'`. Take `⟨χS, χT, hW, hexp⟩` from `hω`. Establish `loc : ∀ τ, ∃ A₀ : LPol W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ, ∀ A, LocW M M' τ (expS D k τ) (expT D k τ) A → ∃ c : ℂ, A = c • A₀`. Introduce `τ`. Take `⟨al, be, ga, de, hd, -, h1, h2⟩` from `hk τ`.
+
+Use `loc_line hX h3 hH hB M M' τ hd ?_ ?_` and prove the remaining obligations. Unfold `parB`. Unfold `parA at h1`. Rewrite using `[h1]`. Unfold `parB`.
+
+Unfold `parA at h2`. Rewrite using `[h2]`. Use `choose A₀ hA₀ using loc`. Establish `E : ∀ I₁ I₂ : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, (∀ (P : D.what₂.Tau → LPol W.rank V.rank) (v : M'.Vec) (w : ∀ ρ, M.H ρ), ellT M w (inclT M (I₁ (glue P) (PiTensorProduct.tprod ℂ v))) = ellT M w (inclT M (I₂ (glue P) (PiTensorProduct.tprod ℂ v)))) → I₁ = I₂`. Introduce `I₁ I₂ h`.
+
+Establish `hTL` using `tensorLaw D V _ M`. Use `LinearMap.ext_on_range (GlobalTheory.T.gluing_law_holds D V.rank W.rank).1 fun P => ?_` and prove the remaining obligations. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply]`. Use `hTL.inj (sub_eq_zero.mp (hTL.sep _ fun w => ?_))` and prove the remaining obligations.
+
+Rewrite using `[map_sub, h P v w, sub_self]`. Establish `prod : ∀ I : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, IsItW θ M M' ω (ptOf ψ θ M M' f) I → ∃ c : ℂ, ∀ (P : D.what₂.Tau → LPol W.rank V.rank) (v : M'.Vec) (w : ∀ ρ, M.H ρ), ellT M w (inclT M (I (glue P) (PiTensorProduct.tprod ℂ v))) = c * ∏ ρ, ⟪w ρ, A₀ ρ (P ρ) (v ρ)⟫_ℂ`. Introduce `I hI`. Establish `hloc : ∀ (τ : D.what₂.Tau) (a : ∀ ρ, LPol W.rank V.rank × M'.sm ρ × M.H ρ), ∃ c : ℂ, ∀ z, ellT M (fun ρ => (Function.update a τ z ρ).2.2) (inclT M (I (glue fun ρ => (Function.update a τ z ρ).1) (PiTensorProduct.tprod ℂ fun ρ => (Function.update a τ z ρ).2.1))) = c * ⟪z.2.2, A₀ τ …`. Introduce `τ a`.
+
+Establish `hVτ` using `hV V W _ _ M M' θ ψ χS χT ω f τ (expS D k τ) (expT D k τ) hθ hW (hexp τ).1 (hexp τ).2 hf`. Take `⟨A, hSemi, hA⟩` from `GlobalTheory.T.exists_realIntertwiner_contraction_one_place D V W _ _ M M' θ ψ ω f τ (expS D k τ) (expT D k τ) I hθ hVτ.2.1 hVτ.2.2 hI (fun ρ => (a ρ).2.1) (fun ρ => (a ρ).2.2)`. Take `⟨j, hj⟩` from `exists_ins (fun ρ => (a ρ).1) τ`. Take `⟨c, hc⟩` from `hA₀ τ (A ∘ₗ j) (locW_of_semiW hSemi hj)`. Use `⟨c, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `e₁ : (fun ρ => (Function.update a τ z ρ).1) = Function.update (fun ρ => (a ρ).1) τ z.1`. Use function extensionality and compare the values at `fun ρ => Function.apply_update (fun ρ (x : LPol W.rank V.rank × M'.sm ρ × M.H ρ) => x.1) a τ z ρ`. Establish `e₂ : (fun ρ => (Function.update a τ z ρ).2.1) = Function.update (fun ρ => (a ρ).2.1) τ z.2.1`. Use function extensionality and compare the values at `fun ρ => Function.apply_update (fun ρ (x : LPol W.rank V.rank × M'.sm ρ × M.H ρ) => x.2.1) a τ z ρ`. Establish `e₃ : (fun ρ => (Function.update a τ z ρ).2.2) = Function.update (fun ρ => (a ρ).2.2) τ z.2.2`.
+
+Use function extensionality and compare the values at `fun ρ => Function.apply_update (fun ρ (x : LPol W.rank V.rank × M'.sm ρ × M.H ρ) => x.2.2) a τ z ρ`. Rewrite using `[e₁, e₂, e₃, ← hj, ← hA]`. Express the relevant statement in the definitionally equal form `⟪z.2.2, (A ∘ₗ j) z.1 z.2.1⟫_ℂ = _`. Rewrite using `[hc, LinearMap.smul_apply, LinearMap.smul_apply, inner_smul_right]`. Take `⟨c, hc⟩` from `eq_mul_prod_of_partial (A := fun ρ => LPol W.rank V.rank × M'.sm ρ × M.H ρ) (fun ρ z => ⟪z.2.2, A₀ ρ z.1 z.2.1⟫_ℂ) (fun a => ellT M (fun ρ => (a ρ).2.2) (inclT M (I (glue fun ρ => (a ρ).1) (PiTensorProduct.tprod ℂ fun ρ => (a ρ).2.1)))) hloc`.
+
+Conclude with `⟨c, fun P v w => hc fun ρ => (P ρ, v ρ, w ρ)⟩`. Take `⟨c, hc⟩` from `prod It hIt`. Take `⟨c', hc'⟩` from `prod It' hIt'`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Use `hIt.ne (E _ _ fun P v w => ?_)` and prove the remaining obligations. Rewrite using `[hc, zero_mul]`. Simplify using the standard rewrite rules. Use `⟨c' / c, E _ _ fun P v w => ?_⟩` and prove the remaining obligations. Rewrite using `[hc', LinearMap.smul_apply, LinearMap.smul_apply, map_smul, map_smul, hc, smul_eq_mul, ← mul_assoc, div_mul_cancel₀ _ hc0]`.
+-/
 theorem itLine (D : D7) (X : ProvA) (hX : ChosenSeries X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (hV : VacChar D)
     (hB : ModelsAreCoverSeries D) (hH : GlobalTheory.Published.HarishChandraModules) : ItLine D := by
   classical

@@ -4,6 +4,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LeviBlockCharacter
 
+/- English proof (translation)
+Set `: Fintype F` to `Fintype.ofFinite F`. Establish `hinj : Function.Injective ψ.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive (AddChar.IsPrimitive.of_ne_one hψ)`. Establish `hbij : Function.Bijective ψ.mulShift` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, (AddChar.card_eq).symm⟩`. Take `⟨a, ha⟩` from `hbij.2 χ`. Conclude with `⟨a, fun x => by rw [← ha, AddChar.mulShift_apply]⟩`.
+-/
 theorem exists_shift {F : Type} [Field F] [Finite F] (ψ : AddChar F ℂ) (hψ : ψ ≠ 1)
     (χ : AddChar F ℂ) : ∃ a : F, ∀ x, χ x = ψ (a * x) := by
   classical
@@ -15,6 +18,39 @@ theorem exists_shift {F : Type} [Field F] [Finite F] (ψ : AddChar F ℂ) (hψ :
   obtain ⟨a, ha⟩ := hbij.2 χ
   exact ⟨a, fun x => by rw [← ha, AddChar.mulShift_apply]⟩
 
+/- English proof (translation)
+Establish `h0 : χ 0 = 1` using `hker 0 (fun i _ => ⟨map_zero _, map_zero _⟩)`. Establish `hdep : ∀ s t, (∀ i ∈ Pg, p i s = p i t ∧ p' i s = p' i t) → χ s = χ t`. Introduce `s t h`. Establish `h1 : χ (s - t) = 1` using `hker _ (fun i hi => by`. Rewrite using `[map_sub, map_sub, (h i hi).1, (h i hi).2, sub_self, sub_self]`.
+
+Conclude with `⟨rfl, rfl⟩)`. Establish `h2` using `hadd t (s - t)`. Rewrite `h2` using `[h1, mul_one, add_sub_cancel]`. Conclude with `h2`. Use `choose σ hσ using hsurj`.
+
+Establish `hsum : ∀ (A : Finset ι) (f : ι → S), χ (∑ i ∈ A, f i) = ∏ i ∈ A, χ (f i)`. Introduce `A f`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a A ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, hadd, ih]`.
+
+Set `c₁ : ∀ i, AddChar (k i) ℂ` to `fun i => { toFun := fun x => χ (σ (Pi.single i x) 0) map_zero_eq_one' := hker _ (fun j hj => by`. Rewrite using `[(hσ _ _ j hj).1, (hσ _ _ j hj).2]`. Use the proof step `simp)`. Use the proof step `map_add_eq_mul' := fun x y => by`. Rewrite using `[← hadd]`.
+
+Use `hdep _ _ (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_add, (hσ _ _ j hj).1, (hσ _ _ j hj).2, (hσ _ _ j hj).1, (hσ _ _ j hj).2, (hσ _ _ j hj).1, (hσ _ _ j hj).2, Pi.single_add]`. Simplify using `}`. Set `c₂ : ∀ i, AddChar (k i) ℂ` to `fun i => { toFun := fun x => χ (σ 0 (Pi.single i x)) map_zero_eq_one' := hker _ (fun j hj => by`. Rewrite using `[(hσ _ _ j hj).1, (hσ _ _ j hj).2]`.
+
+Use the proof step `simp)`. Use the proof step `map_add_eq_mul' := fun x y => by`. Rewrite using `[← hadd]`. Use `hdep _ _ (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_add, (hσ _ _ j hj).1, (hσ _ _ j hj).2, (hσ _ _ j hj).1, (hσ _ _ j hj).2, (hσ _ _ j hj).1, (hσ _ _ j hj).2, Pi.single_add]`.
+
+Simplify using `}`. Establish `hc₁ : ∀ i x, c₁ i x = χ (σ (Pi.single i x) 0)` using `fun _ _ => rfl`. Establish `hc₂ : ∀ i x, c₂ i x = χ (σ 0 (Pi.single i x))` using `fun _ _ => rfl`. Establish `e₁ : ∀ i, ∃ a : k i, i ∈ Pg → ∀ x, c₁ i x = ψ i (a * x)` using `fun i => by`. Distinguish the cases in `hi : i ∈ Pg`.
+
+Take `⟨a, ha⟩` from `hψ i hi (c₁ i)`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Establish `e₂ : ∀ i, ∃ a : k i, i ∈ Pg → ∀ x, c₂ i x = ψ i (a * x)` using `fun i => by`. Distinguish the cases in `hi : i ∈ Pg`.
+
+Take `⟨a, ha⟩` from `hψ i hi (c₂ i)`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose a₁ ha₁ using e₁`. Use `choose a₂ ha₂ using e₂`.
+
+Use `⟨a₁, a₂, fun i hi => ⟨fun h => ?_, fun h => ?_⟩, fun s => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hne⟩` from `(hposition i hi).1`. Apply `hne` to reduce the goal to its premises. Establish `h1` using `ha₁ i hi (p i s)`. Rewrite `h1` using `[h, zero_mul, AddChar.map_zero_eq_one, hc₁]`.
+
+Rewrite using `[← h1]`. Use `hdep _ _ (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[(hσ _ _ j hj).1, (hσ _ _ j hj).2]`. Use `⟨?_, (hs j hj).2⟩` and prove the remaining obligations. Distinguish the cases in `hji : j = i`.
+
+Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[(hs j hj).1 hji, Pi.single_eq_of_ne hji]`. Take `⟨s, hs, hne⟩` from `(hposition i hi).2`. Apply `hne` to reduce the goal to its premises.
+
+Establish `h1` using `ha₂ i hi (p' i s)`. Rewrite `h1` using `[h, zero_mul, AddChar.map_zero_eq_one, hc₂]`. Rewrite using `[← h1]`. Use `hdep _ _ (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[(hσ _ _ j hj).1, (hσ _ _ j hj).2]`.
+
+Use `⟨(hs j hj).1, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[(hs j hj).2 hji, Pi.single_eq_of_ne hji]`.
+
+Establish `h1 : χ s = χ (∑ i ∈ Pg, (σ (Pi.single i (p i s)) 0 + σ 0 (Pi.single i (p' i s))))`. Use `hdep _ _ (fun j hj => ?_)` and prove the remaining obligations. Simplify using `only [map_sum, map_add, (hσ _ _ j hj).1, (hσ _ _ j hj).2, Pi.zero_apply, add_zero, zero_add]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => Pi.single_eq_of_ne (Ne.symm hb) _) (fun h => absurd hj h), Pi.single_eq_same]`.
+
+Rewrite using `[Finset.sum_eq_single j (fun b _ hb => Pi.single_eq_of_ne (Ne.symm hb) _) (fun h => absurd hj h), Pi.single_eq_same]`. Rewrite using `[h1, hsum]`. Use `Finset.prod_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[hadd, ← hc₁, ← hc₂, ha₁ i hi, ha₂ i hi, AddChar.map_add_eq_mul]`.
+-/
 theorem prod_shift {ι : Type} (k : ι → Type) [∀ i, CommRing (k i)] {S : Type} [CommRing S]
     (Pg : Finset ι) (p p' : ∀ i, S →+* k i) (χ : S → ℂ) (ψ : ∀ i, AddChar (k i) ℂ)
     (hψ : ∀ i ∈ Pg, ∀ χ' : AddChar (k i) ℂ, ∃ a, ∀ x, χ' x = ψ i (a * x))
@@ -108,6 +144,9 @@ theorem prod_shift {ι : Type} (k : ι → Type) [∀ i, CommRing (k i)] {S : Ty
     refine Finset.prod_congr rfl (fun i hi => ?_)
     rw [hadd, ← hc₁, ← hc₂, ha₁ i hi, ha₂ i hi, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Introduce `E _ _ S _ Pg p p' χ ψ0 hψ hadd hker hsurj hposition`. Use `prod_shift (fun PP : Pl E => kP PP) Pg p p' χ ψ0 (fun PP hPP χ' => ?_) hadd hker hsurj hposition` and prove the remaining obligations. Establish `: PP.asIdeal.IsMaximal` using `PP.isMaximal`. Set `: Field (kP PP)` to `Ideal.Quotient.field PP.asIdeal`. Conclude with `exists_shift (F := kP PP) (ψ0 PP) (hψ PP hPP) χ'`.
+-/
 theorem char_eq_prod_shift : ∀ (E : Type) [Field E] [NumberField E] (S : Type) [CommRing S] (Pg : Finset (Pl E)) (p p' : ∀ PP : Pl E, S →+* kP PP) (χ : S → ℂ) (ψ0 : ∀ PP : Pl E, AddChar (kP PP) ℂ), IsGenericPsi Pg ψ0 → (∀ s t, χ (s + t) = χ s * χ t) → (∀ s, (∀ PP ∈ Pg, p PP s = 0 ∧ p' PP s = 0) → χ s = 1) → (∀ u u' : ∀ PP : Pl E, kP PP, ∃ s, ∀ PP ∈ Pg, p PP s = u PP ∧ p' PP s = u' PP) → (∀ PP ∈ Pg, (∃ s, (∀ PP' ∈ Pg, (PP' ≠ PP → p PP' s = 0) ∧ p' PP' s = 0) ∧ χ s ≠ 1) ∧ ∃ s, (∀ PP' ∈ Pg, p PP' s = 0 ∧ (PP' ≠ PP → p' PP' s = 0)) ∧ χ s ≠ 1) → ∃ a₁ a₂ : ∀ PP : Pl E, kP PP, (∀ PP ∈ Pg, a₁ PP ≠ 0 ∧ a₂ PP ≠ 0) ∧ ∀ s, χ s = ∏ PP ∈ Pg, ψ0 PP (a₁ PP * p PP s + a₂ PP * p' PP s) := by
   intro E _ _ S _ Pg p p' χ ψ0 hψ hadd hker hsurj hposition
   refine prod_shift (fun PP : Pl E => kP PP) Pg p p' χ ψ0 (fun PP hPP χ' => ?_) hadd hker hsurj hposition

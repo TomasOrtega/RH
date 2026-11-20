@@ -8,6 +8,19 @@ namespace Formalism.MainNotions.ColumnSystems.Pf.GenusGluing
 
 open Formalism.MainNotions.G MvPolynomial Formalism.MainNotions.LemmaBAlt Formalism.MainNotions.ColumnSystems.Pf.Col
 
+/- English proof (translation)
+Establish `hD : (∑ i : Fin s, if (i : ℕ) < L0 then ((coarseA p S b i : ℤ) - (oEff S b i : ℤ)) else 0) = (∑ l : Fin s, (if 2 * (l : ℕ) + 2 ≤ 2 * L0 + 1 then ((coarseA p S b l - (if (l : ℕ) < S.sigma then b.w l else b.o l) : ℕ) : ℤ) else 0)) - ∑ l : Fin s, (if (l : ℕ) < S.sigma then (b.sg l : …`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Unfold `oEff`. Distinguish the cases in `h1 : (l : ℕ) < S.sigma`.
+
+Establish `h2` using `hL l h1`. Establish `h3 : 2 * (l : ℕ) + 2 ≤ 2 * L0 + 1` using `by omega`. Simplify using `only [if_pos h1, if_pos h2, if_pos h3]`. Rewrite using `[Nat.cast_sub (hw l h1)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : (l : ℕ) < L0`. Establish `h3 : 2 * (l : ℕ) + 2 ≤ 2 * L0 + 1` using `by omega`. Simplify using `only [if_neg h1, if_pos h2, if_pos h3]`. Rewrite using `[Nat.cast_sub (ho l (not_lt.1 h1))]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ¬ 2 * (l : ℕ) + 2 ≤ 2 * L0 + 1` using `by omega`. Simplify using `only [if_neg h1, if_neg h2, if_neg h3]`. Expand and normalize the polynomial expressions, which then agree. Unfold `cap`.
+
+Rewrite using `[hD]`. Generalize the expression as in `(∑ l : Fin s, (if 2 * (l : ℕ) + 2 ≤ 2 * L0 + 1 then ((coarseA p S b l - (if (l : ℕ) < S.sigma then b.w l else b.o l) : ℕ) : ℤ) else 0)) = P`. Generalize the expression as in `(∑ l : Fin s, (if (l : ℕ) < S.sigma then (b.sg l : ℤ) else 0)) = Q`. Establish `e : (((S.A0 p + (P - Q) : ℤ)) : ℝ) - mu = (((S.A0 p : ℤ) : ℝ) - mu) + ((P - Q : ℤ) : ℝ)` using `by push_cast; ring`. Rewrite using `[e, Int.floor_add_intCast]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem floor_cap {s r : ℕ} (p : ℕ) (S : SegData s) (b : SegBlock s r) (mu : ℝ) (L0 : ℕ)
     (hL : ∀ l : Fin s, (l : ℕ) < S.sigma → (l : ℕ) < L0)
     (hw : ∀ l : Fin s, (l : ℕ) < S.sigma → b.w l ≤ coarseA p S b l)
@@ -46,6 +59,21 @@ theorem floor_cap {s r : ℕ} (p : ℕ) (S : SegData s) (b : SegBlock s r) (mu :
     push_cast; ring
   rw [e, Int.floor_add_intCast]; ring
 
+/- English proof (translation)
+Proceed by induction on `t using Fin.induction with`. Consider the case `zero => rw [P.zero]`. Simplify using the standard rewrite rules. Consider the case `succ i ih`. Establish `hs` using `P.step i`.
+
+Establish `hsplit : (∑ a : Fin N, if a.val < i.succ.val ∧ Lt.vec a = true then (B a : ℤ) else 0) = (∑ a : Fin N, if a.val < i.castSucc.val ∧ Lt.vec a = true then (B a : ℤ) else 0) + (if Lt.vec i = true then (B i : ℤ) else 0)`. Establish `e : (if Lt.vec i = true then (B i : ℤ) else 0) = ∑ a : Fin N, if a = i then (if Lt.vec a = true then (B a : ℤ) else 0) else 0`. Rewrite using `[Finset.sum_ite_eq' Finset.univ i]`. Simplify using the standard rewrite rules. Rewrite using `[e, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `hne : a.val ≠ i.val` using `fun h => ha (Fin.ext h)`.
+
+Establish `hiff : a.val < i.succ.val ↔ a.val < i.castSucc.val`. Simplify using `only [Fin.val_succ, Fin.val_castSucc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg ha, add_zero]`. Simplify using `only [hiff]`.
+
+Rewrite using `[hsplit]`. Distinguish the cases in `hv : Lt.vec i = true`. Rewrite `hs` using `[if_pos hv]`. Rewrite using `[if_pos hv]`. Take `⟨h1, -, h3⟩` from `hs`.
+
+Establish `h4 : P.mu i.succ 0 - P.mu i.castSucc 0 ≤ ∑ a, (P.mu i.succ a - P.mu i.castSucc a)` using `Finset.single_le_sum (f := fun a => P.mu i.succ a - P.mu i.castSucc a) (fun a _ => sub_nonneg.2 (h1 a)) (Finset.mem_univ 0)`. Rewrite `h4` using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hs` using `[if_neg hv]`. Rewrite using `[if_neg hv, add_zero]`.
+
+Conclude with `(hs.1 0).trans ih`.
+-/
 theorem first_row_le {n N : ℕ} [NeZero n] {Lt : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N Lt B)
     (t : Fin (N + 1)) :
     P.mu t 0 ≤ ∑ a : Fin N, if a.val < t.val ∧ Lt.vec a = true then (B a : ℤ) else 0 := by
@@ -83,6 +111,11 @@ theorem first_row_le {n N : ℕ} [NeZero n] {Lt : Letters (Fin N)} {B : Fin N �
       rw [if_neg hv, add_zero]
       exact (hs.1 0).trans ih
 
+/- English proof (translation)
+Use `(Nat.sub_le _ _).trans ((Nat.sub_le _ _).trans ?_)` and prove the remaining obligations. Use `show (segChain p S aTop b).deg ⟨2 * l.val, by have := l.2; omega⟩ ≤ b.w l`. Establish `hne : ((⟨2 * l.val, by have` using `l.2; omega⟩ : Fin (2 * s + 1)) : ℕ) ≠ 2 * s := by`. Use `l.2` as an intermediate fact. Use `show 2 * l.val ≠ 2 * s`.
+
+Use linear arithmetic over natural numbers and integers. Establish `ht : topOf ⟨2 * l.val, by have` using `l.2; omega⟩ hne = l := Fin.ext (by show 2 * l.val / 2 = l.val; omega)`. Unfold `segChain`. Simplify using `only`. Rewrite using `[dif_neg hne, if_pos (by omega), ht, if_pos hl]`.
+-/
 theorem deg_even_le {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (lv : Fin (blockData p S aTop aPlus m b).T.t → ℕ) (jp : ℕ) (l : Fin s) (hl : (l : ℕ) < S.sigma) :
     ((blockData p S aTop aPlus m b).lettersAt lv jp).deg ⟨2 * l.val, by have := l.2; omega⟩ ≤ b.w l := by
@@ -97,6 +130,15 @@ theorem deg_even_le {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ)
   simp only
   rw [dif_neg hne, if_pos (by omega), ht, if_pos hl]
 
+/- English proof (translation)
+Establish `hvec : ∀ a, ((blockData p S aTop aPlus m b).lettersAt lv jp).vec a = decide ((a : ℕ) % 2 = 0)` using `fun _ => rfl`. Rewrite using `[sum_fin_odd]`. Establish `hlast : ¬ (2 * s < 2 * l.val + 1 ∧ ((blockData p S aTop aPlus m b).lettersAt lv jp).vec ⟨2 * s, by omega⟩ = true)`. Use `l.2` as an intermediate fact. Introduce `h`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hlast, add_zero]`. Use `Finset.sum_le_sum fun l' _ => ?_` and prove the remaining obligations. Establish `hodd : ¬ (2 * l'.val + 1 < 2 * l.val + 1 ∧ ((blockData p S aTop aPlus m b).lettersAt lv jp).vec ⟨2 * l'.val + 1, by have` using `l'.2; omega⟩ = true) := by`. Introduce and unpack `⟨-, h⟩`.
+
+Rewrite `h` using `[hvec]`. Simplify using `only [decide_eq_true_eq] at h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hodd, add_zero]`. Distinguish the cases in `h : (l' : ℕ) ≤ (l : ℕ)`.
+
+Rewrite using `[if_pos h] split_ifs`. Conclude with `deg_even_le p S aTop aPlus m b lv jp l' (by omega)` after adjusting the coercions. Check the signs of the components of the expression. Rewrite using `[if_neg h, if_neg (by rintro ⟨h1, -⟩; simp only at h1; omega)]`.
+-/
 theorem sum_deg_le {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (lv : Fin (blockData p S aTop aPlus m b).T.t → ℕ) (jp : ℕ) (l : Fin s) (hl : (l : ℕ) < S.sigma) :
     (∑ a : Fin (2 * s + 1), if a.val < 2 * l.val + 1 ∧
@@ -125,10 +167,16 @@ theorem sum_deg_le {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) 
     · positivity
   · rw [if_neg h, if_neg (by rintro ⟨h1, -⟩; simp only at h1; omega)]
 
+/- English proof (translation)
+The claim follows from `dif_neg (lt_irrefl _)`.
+-/
 theorem bd_J_last {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r) :
     (blockData p S aTop aPlus m b).T.J (Fin.last S.t) = 2 * s + 1 :=
   dif_neg (lt_irrefl _)
 
+/- English proof (translation)
+Use `show WithTop.map _ (segmentCapacities p S b (Fin.last S.t)) = _`. Unfold `segmentCapacities`. Rewrite using `[dif_neg (show ¬ ((Fin.last S.t : Fin (S.t + 1)) : ℕ) < S.t from lt_irrefl _)]`. Both sides reduce to the same expression.
+-/
 theorem bd_thr_last {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r) :
     (blockData p S aTop aPlus m b).T.thr (Fin.last S.t) = ((⌊((cap p S b s : ℤ) : ℝ) - m⌋ : ℤ) : WithTop ℤ) := by
   show WithTop.map _ (segmentCapacities p S b (Fin.last S.t)) = _
@@ -136,11 +184,17 @@ theorem bd_thr_last {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ)
   rw [dif_neg (show ¬ ((Fin.last S.t : Fin (S.t + 1)) : ℕ) < S.t from lt_irrefl _)]
   rfl
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem bd_J_lt {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (q : ℕ) (h : q < S.t) :
     (blockData p S aTop aPlus m b).T.J (⟨q, Nat.lt_succ_of_lt h⟩ : Fin (S.t + 1)) = 2 * (S.sigma + q) + 1 :=
   dif_pos h
 
+/- English proof (translation)
+Use `show WithTop.map _ (segmentCapacities p S b ⟨q, Nat.lt_succ_of_lt h⟩) = _`. Unfold `segmentCapacities`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem bd_thr_lt {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r)
     (q : ℕ) (h : q < S.t) :
     (blockData p S aTop aPlus m b).T.thr (⟨q, Nat.lt_succ_of_lt h⟩ : Fin (S.t + 1)) =
@@ -150,6 +204,41 @@ theorem bd_thr_lt {s r : ℕ} (p : ℕ) (S : SegData s) (aTop : Fin s → ℕ) (
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Establish `hvec : ∀ a, (L.LL j).vec a = decide ((a : ℕ) % 2 = 0)` using `fun _ => rfl`. Establish `hw : ∀ l : Fin (segS X.TT j), (l : ℕ) < (X.seg C0 CE1 CE2 j).sigma → (β j).w l ≤ coarseA X.p (X.seg C0 CE1 CE2 j) (β j) l` using `fun l h => (hB.2.2.1 l h).2.1`. Establish `ho : ∀ l : Fin (segS X.TT j), (X.seg C0 CE1 CE2 j).sigma ≤ (l : ℕ) → (β j).o l ≤ coarseA X.p (X.seg C0 CE1 CE2 j) (β j) l` using `fun l h => (hB.2.1 l h).1`. Establish `ha0 : 0 ≤ a0Z C0 CE1 CE2 mu X β j` using `sub_nonneg.2 hnum1`. Establish `hnu : ∀ T, T ≠ 0 → nuS C0 CE1 CE2 mu X β j T = a0Z C0 CE1 CE2 mu X β j + ∑ l : Fin (segS X.TT j), (if 2 * (l : ℕ) + 2 ≤ T then (zxS C0 CE1 CE2 X β j l : ℤ) else 0)`.
+
+Introduce `T h`. Unfold `nuS`. Rewrite using `[if_neg h]`. Establish `hge : ∀ T, T ≠ 0 → a0Z C0 CE1 CE2 mu X β j ≤ nuS C0 CE1 CE2 mu X β j T`. Introduce `T h`.
+
+Rewrite using `[hnu T h]`. Use `le_add_of_nonneg_right (Finset.sum_nonneg fun l _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+
+Establish `hfl : ∀ L0 : ℕ, (∀ l : Fin (segS X.TT j), (l : ℕ) < (X.seg C0 CE1 CE2 j).sigma → (l : ℕ) < L0) → ⌊((cap X.p (X.seg C0 CE1 CE2 j) (β j) L0 : ℤ) : ℝ) - mu⌋ = nuS C0 CE1 CE2 mu X β j (2 * L0 + 1)`. Introduce `L0 hL`. Rewrite using `[floor_cap X.p _ (β j) mu L0 hL hw ho, hnu _ (by omega)]`. Both sides reduce to the same expression. Establish `h0 : nuS C0 CE1 CE2 mu X β j 0 = 0`.
+
+Unfold `nuS`. Rewrite using `[if_pos rfl]`. Use `⟨y.1.1.zero, y.1.1.dom, y.1.1.step, h0, ?_, ?_, ?_, hm⟩` and prove the remaining obligations. Introduce `t`. Distinguish the cases in `ht : t = 0`.
+
+Substitute `ht` using the available equality. Rewrite using `[h0]`. Conclude with `ha0.trans (hge _ (by omega))`. Rewrite using `[hnu t ht, hnu (t + 1) (by omega)]`. Use `add_le_add_right (Finset.sum_le_sum fun l _ => ?_) _` and prove the remaining obligations.
+
+Distinguish the cases in `h : 2 * (l : ℕ) + 2 ≤ t`. Rewrite using `[if_pos h, if_pos (by omega)]`. Rewrite using `[if_neg h] split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+
+Introduce `i hi`. Rewrite `hi` using `[hvec]`. Simplify using `only [decide_eq_false_iff_not] at hi`. Rewrite using `[hnu _ (by omega), hnu _ (by omega)]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Conclude with `if_congr (by omega) rfl rfl`. Introduce `i hi b`. Rewrite `hi` using `[hvec]`. Simplify using `only [decide_eq_true_eq] at hi`.
+
+Use `(y.1.1.dom i.succ (Fin.zero_le b)).trans ?_` and prove the remaining obligations. Establish `hi2` using `i.2`. Distinguish the cases in `h1 : i.val = 2 * segS X.TT j`. Establish `hk` using `hy (Fin.last (X.seg C0 CE1 CE2 j).t)`. Express the relevant statement in the definitionally equal form `((y.1.1.mu (finPos _ ((BDk C0 CE1 CE2 mu X β j).T.J (Fin.last (X.seg C0 CE1 CE2 j).t))) 0 : ℤ) : WithTop ℤ) ≤ (BDk C0 CE1 CE2 mu X β j).T.thr (Fin.last (X.seg C0 CE1 CE2 j).t) at hk`.
+
+Rewrite `hk` using `[bd_J_last, bd_thr_last, WithTop.coe_le_coe, hfl _ (fun l _ => l.2)]`. Establish `e : finPos (2 * segS X.TT j + 1) (2 * segS X.TT j + 1) = i.succ` using `Fin.ext (by simp only [finPos, Fin.val_succ]; omega)`. Rewrite `hk` using `[e]`. Rewrite using `[h1]`. Conclude with `hk`.
+
+Take `⟨l, hl⟩ : ∃ l, i.val = 2 * l` from `⟨i.val / 2, by omega⟩`. Establish `hls : l < segS X.TT j` using `by omega`. Distinguish the cases in `h2 : l < (X.seg C0 CE1 CE2 j).sigma`. Establish `hf` using `first_row_le y.1.1 i.succ`. Establish `e : (i.succ : Fin (2 * segS X.TT j + 1 + 1)).val = 2 * (⟨l, hls⟩ : Fin (segS X.TT j)).val + 1`.
+
+Simplify using `only [Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Rewrite `hf` using `[e]`. Establish `hs` using `sum_deg_le X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) mu (β j) (L.lv j) (L.jp j) ⟨l, hls⟩ h2`. Establish `hn` using `hnum2 ⟨l, hls⟩ h2`.
+
+Establish `hg` using `hge (i.val + 1) (by omega)`. Establish `ha : (∑ l' : Fin (segS X.TT j), (if (l' : ℕ) ≤ ((⟨l, hls⟩ : Fin (segS X.TT j)) : ℕ) then ((β j).w l' : ℤ) else 0)) ≤ a0Z C0 CE1 CE2 mu X β j`. Unfold `a0Z`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hf.trans (hs.trans (ha.trans hg))`.
+
+Establish `hq : l - (X.seg C0 CE1 CE2 j).sigma < (X.seg C0 CE1 CE2 j).t`. Unfold `SegData.t`. Use linear arithmetic over natural numbers and integers. Establish `hk` using `hy (⟨l - (X.seg C0 CE1 CE2 j).sigma, Nat.lt_succ_of_lt hq⟩ : Fin ((X.seg C0 CE1 CE2 j).t + 1))`. Express the relevant statement in the definitionally equal form `((y.1.1.mu (finPos _ ((BDk C0 CE1 CE2 mu X β j).T.J (⟨l - (X.seg C0 CE1 CE2 j).sigma, Nat.lt_succ_of_lt hq⟩ : Fin ((X.seg C0 CE1 CE2 j).t + 1)))) 0 : ℤ) : WithTop ℤ) ≤ (BDk C0 CE1 CE2 mu X β j).T.thr (⟨l - (X.seg C0 CE1 CE2 j).sigma, Nat.lt_succ_of_lt hq⟩ : Fin ((X.seg C0 CE1 CE2 …`.
+
+Rewrite `hk` using `[bd_J_lt _ _ _ _ _ _ _ hq, bd_thr_lt _ _ _ _ _ _ _ hq, WithTop.coe_le_coe]`. Establish `el : (X.seg C0 CE1 CE2 j).sigma + (l - (X.seg C0 CE1 CE2 j).sigma) = l` using `by omega`. Rewrite `hk` using `[el, hfl l (fun l' h' => by omega)]`. Establish `e : finPos (2 * segS X.TT j + 1) (2 * l + 1) = i.succ` using `Fin.ext (by simp only [finPos, Fin.val_succ]; omega)`. Rewrite `hk` using `[e]`.
+
+Rewrite using `[hl]`. Conclude with `hk`.
+-/
 theorem ph_seg {C0 Cde CE1 CE2 mu E : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTheory X} (L : LvDat C0 CE1 CE2 mu X β)
     (j : Fin (numSeg X.TT)) (y : Tx X.m (L.LL j))
     (hy : y ∈ sAll (L.LL j) (BDk C0 CE1 CE2 mu X β j).T.J (BDk C0 CE1 CE2 mu X β j).T.thr)

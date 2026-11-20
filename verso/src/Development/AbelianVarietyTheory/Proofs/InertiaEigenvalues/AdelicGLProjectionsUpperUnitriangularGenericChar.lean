@@ -10,12 +10,18 @@ namespace GlobalTheory.SchurExt
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_cornerGL_idemHom_apply {R : Type} [CommRing R] {a : ℕ} (e : R) (he : IsIdempotentElem e)
     (g : GL (Fin a) R) (i j : Fin a) :
     ((cornerGL a (idemHom e he) g : GL (Fin a) R) : Matrix (Fin a) (Fin a) R) i j =
       (1 : Matrix (Fin a) (Fin a) R) i j - e * (1 : Matrix (Fin a) (Fin a) R) i j + e * (g : Matrix (Fin a) (Fin a) R) i j :=
   rfl
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_cornerGL_idemHom_apply, hu.1 i j hij, Matrix.one_apply_ne (ne_of_lt hij).symm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[coe_cornerGL_idemHom_apply, hu.2 i, Matrix.one_apply_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cornerGL_idemHom_mem_NA {a : ℕ} (e : Ad E) (he : IsIdempotentElem e) {u : GA E a}
     (hu : u ∈ GlobalTheory.JSW.NA E a) : cornerGL a (idemHom e he) u ∈ GlobalTheory.JSW.NA E a := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -24,6 +30,9 @@ theorem cornerGL_idemHom_mem_NA {a : ℕ} (e : Ad E) (he : IsIdempotentElem e) {
   · rw [coe_cornerGL_idemHom_apply, hu.2 i, Matrix.one_apply_eq]
     ring
 
+/- English proof (translation)
+Rewrite using `[coe_cornerGL_idemHom_apply, coe_cornerGL_idemHom_apply, Matrix.one_apply_ne hij]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cornerGL_idemHom_add_apply {R : Type} [CommRing R] {a : ℕ} (e : R) (he : IsIdempotentElem e)
     (g : GL (Fin a) R) {i j : Fin a} (hij : i ≠ j) :
     ((cornerGL a (idemHom e he) g : GL (Fin a) R) : Matrix (Fin a) (Fin a) R) i j +
@@ -32,6 +41,11 @@ theorem cornerGL_idemHom_add_apply {R : Type} [CommRing R] {a : ℕ} (e : R) (he
   rw [coe_cornerGL_idemHom_apply, coe_cornerGL_idemHom_apply, Matrix.one_apply_ne hij]
   ring
 
+/- English proof (translation)
+Unfold `GlobalTheory.Whittaker.superDiag`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hj' : j.val = i.val + 1` using `(Finset.mem_filter.1 hj).2`. Establish `hij : i ≠ j` using `fun h => by rw [h] at hj'; omega`. Conclude with `cornerGL_idemHom_add_apply e he g hij`.
+-/
 theorem superDiag_cornerGL_idemHom_add {R : Type} [CommRing R] {a : ℕ} (e : R) (he : IsIdempotentElem e)
     (g : GL (Fin a) R) :
     GlobalTheory.Whittaker.superDiag (cornerGL a (idemHom e he) g) +
@@ -45,6 +59,9 @@ theorem superDiag_cornerGL_idemHom_add {R : Type} [CommRing R] {a : ℕ} (e : R)
   have hij : i ≠ j := fun h => by rw [h] at hj'; omega
   exact cornerGL_idemHom_add_apply e he g hij
 
+/- English proof (translation)
+Introduce `E _ _ _ a S u hu`. Use `⟨cornerGL_idemHom_mem_NA _ _ hu, cornerGL_idemHom_mem_NA _ _ hu, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.JSW.psiN`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Conclude with `congrArg (fun x => ((GroundTheory.Global.adelicChar E x : Circle) : ℂ)) (superDiag_cornerGL_idemHom_add (idemS S) (isIdempotentElem_idemS S) u)`.
+-/
 theorem prS_prO_NA_psiN :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
       ∀ u ∈ GlobalTheory.JSW.NA E a, prS S a u ∈ GlobalTheory.JSW.NA E a ∧ prO S a u ∈ GlobalTheory.JSW.NA E a ∧

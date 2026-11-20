@@ -21,6 +21,9 @@ namespace GlobalTheory.GenusTranslate
 
 open GlobalTheory.AdLat GlobalTheory.UnRep
 
+/- English proof (translation)
+Use `⟨GlobalTheory.PrincInLevel.swap_symm_mem_hat L z, fun h => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.PrincInLevel.swap_mem_hatL L _ h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem hatL_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (z : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     z ∈ Formalism.L2.Herm.hatL L ↔
@@ -31,6 +34,31 @@ theorem hatL_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D V fr Λ hfr hΛ`. Establish `hU` using `GlobalTheory.T.selfDual_comap_orthonormalFrame_unimodular D V fr Λ hfr hΛ`. Establish `hT : (Formalism.L2.Pj.GenLat.mk (Λ.comap ((Matrix.mulVecLin fr.1).restrictScalars (𝓞 D.host.E)))).TrivAt 1` using `⟨0, Nat.coprime_zero_left 1 |>.2 rfl, by simp, by simp⟩`. Establish `hgen : ∃ g : GL (Fin V.rank) (GlobalTheory.AdLat.RA D.host.F D.host.E), GlobalTheory.UnRep.IsUnA (GlobalTheory.Member.cF D) 1 g.1 ∧ ∀ z, z ∈ GlobalTheory.AdLat.hat D.host.F ((Λ.comap ((Matrix.mulVecLin fr.1).restrictScalars (𝓞 D.host.E)) : Submodule (𝓞 D.host.E) (Fin V.rank → D.h …`. Take `⟨g, hgU, hgL, -⟩` from `GlobalTheory.AdelTranslate.exists_adelic_translate D.host.E (Formalism.L2.Pj.hostOfRecord D) V.rank 1 _ one_pos hU hT`.
+
+Establish `hstd` using `GlobalTheory.UnRep.StdInhab.main D.host.E (Formalism.L2.Pj.hostOfRecord D) V.rank`. Establish `hfg` using `hstd.2.2.1`. Establish `hsp` using `hstd.2.2.2.1`. Establish `hL` using `GlobalTheory.AdLat.exists_lattice_latOf (maximalRealSubfield D.host.E) D.host.E V.rank (Formalism.L2.Pj.stdLat D.host.E V.rank) g hfg hsp`. Take `⟨Λ'', hL''⟩` from `hL`.
+
+Establish `h1` using `hL''.1`. Establish `h4` using `hL''.2.2.2`. Establish `e : Λ'' = Λ.comap ((Matrix.mulVecLin fr.1).restrictScalars (𝓞 D.host.E))` using `SetLike.coe_injective (h1.trans hgL.symm)`. Use `⟨g, by` and prove the remaining obligations. Establish `hc : GlobalTheory.Member.cF D = IsCMField.complexConj D.host.E` using `AlgEquiv.ext fun _ => rfl`.
+
+Rewrite using `[hc]`. Conclude with `hgU, fun z => ?_⟩`. Rewrite using `[← e, ← SetLike.mem_coe, h4]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hz`. Conclude with `⟨_, hz, by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`. Take `⟨g, hgU, hg'⟩` from `hgen`. Establish `hfm1 : GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 * GlobalTheory.UnRep.fm D.host.F fr.1 = 1`.
+
+Rewrite using `[← GlobalTheory.UnRep.FullReps.fm_mul, Units.inv_mul, GlobalTheory.UnRep.FullReps.fm_one]`. Establish `hfm2 : GlobalTheory.UnRep.fm D.host.F fr.1 * GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 = 1`. Rewrite using `[← GlobalTheory.UnRep.FullReps.fm_mul, Units.mul_inv, GlobalTheory.UnRep.FullReps.fm_one]`. Take `⟨U, hU1, hU2⟩ : ∃ U : GL (Fin V.rank) (GlobalTheory.AdLat.RA D.host.F D.host.E), U.1 = GlobalTheory.UnRep.fm D.host.F fr.1 ∧ (U⁻¹).1 = GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1` from `⟨⟨GlobalTheory.UnRep.fm D.host.F fr.1, GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1, hfm2, hfm1⟩, rfl, rfl⟩`. Establish `hX` using `GlobalTheory.T.isUnitaryAdelicMatrix_conj_orthonormalFrame D V fr g.1 hfr hgU`.
+
+Rewrite `hX` using `[← hU1, ← hU2, ← Units.val_mul, ← Units.val_mul]`. Take `⟨X, hXe⟩ : ∃ X : GL (Fin V.rank) (GlobalTheory.AdLat.RA D.host.F D.host.E), X = U * g * U⁻¹` from `⟨_, rfl⟩`. Rewrite `hX` using `[← hXe]`. Establish `hlift` using `(GlobalTheory.UnitarySplit.real_finite_split D V).2.2.2.1 X hX`. Take `⟨x, hx, hxX⟩` from `hlift`.
+
+Establish `key : ∀ w : Fin V.rank → GlobalTheory.AdLat.RA D.host.F D.host.E, w ∈ GlobalTheory.AdLat.hat D.host.F (colLat fr : Set (Fin V.rank → D.host.E)) ↔ X.1 *ᵥ w ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))`. Introduce `w`. Establish `ew : GlobalTheory.UnRep.fm D.host.F fr.1 *ᵥ (GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, ← GlobalTheory.UnRep.FullReps.fm_mul, Units.mul_inv, GlobalTheory.UnRep.FullReps.fm_one, Matrix.one_mulVec]`. Establish `h1` using `GlobalTheory.T.adelicCompletion_comap_rational_matrix D.host.F D.host.E V.rank fr (colLat fr) (GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 *ᵥ w)`.
+
+Rewrite `h1` using `[ew, GlobalTheory.T.columnLattice_comap_eq_standardLattice]`. Establish `h2` using `GlobalTheory.T.adelicCompletion_comap_rational_matrix D.host.F D.host.E V.rank fr Λ (g.1 *ᵥ (GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 *ᵥ w))`. Establish `hgg : (g⁻¹).1 *ᵥ (g.1 *ᵥ (GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 *ᵥ w)) = GlobalTheory.UnRep.fm D.host.F (fr⁻¹).1 *ᵥ w`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite `h2` using `[hg', hgg]`.
+
+Rewrite using `[h1, hXe, Units.val_mul, Units.val_mul, hU1, hU2, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h2]`. Use `⟨x, hx, fun v => ?_⟩` and prove the remaining obligations. Establish `hfin : (fun i => (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm (((Formalism.IndefR.Lev.finE V x).1 *ᵥ v) i)) = X.1 *ᵥ fun i => (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm (v i)`. Establish `hfe : Formalism.IndefR.Lev.finE V x = Formalism.UG.bc (Formalism.IndefR.Lev.swapAE D) X` using `by rw [← hxX]; rfl`. Rewrite using `[hfe]`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Establish `hv : ⇑(Formalism.IndefR.Lev.swapAE D) ∘ (fun j => (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm (v j)) = v`. Use function extensionality and compare the values at `fun j => (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).apply_symm_apply (v j)`. Establish `hm` using `RingHom.map_mulVec (Formalism.IndefR.Lev.swapAE D) X.1 (fun j => (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm (v j)) i`.
+
+Rewrite `hm` using `[hv]`. Conclude with `hm.symm`. Rewrite using `[hatL_iff, hatL_iff, hfin]`. Conclude with `key _`.
+-/
 theorem exists_move_colLat : ∀ (D : D7) (V : HSp D) (fr : GL (Fin V.rank) D.host.E) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr.1 * V.gram * fr.1 = 1 → IsSelfDualC V Λ →
     ∃ x : GA D V, x ∈ GfC V ∧ ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (colLat fr) ↔

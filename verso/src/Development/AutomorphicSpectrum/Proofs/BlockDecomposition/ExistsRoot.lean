@@ -15,28 +15,46 @@ variable {l : ℕ} [Fact l.Prime]
 def tu (A : PAlg l) : A.A →* Γ(SU A, ⊤) :=
   ((toΓ A.Ug).toMonoidHom.comp (algebraMap A.U A.Ug).toMonoidHom).comp A.sharp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tu_apply (A : PAlg l) (a : A.A) : tu A a = toΓ A.Ug (algebraMap A.U A.Ug (A.sharp a)) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `PAlg.mapU f (A.th (WittVector.teichmuller l a)) = B.th (WittVector.teichmuller l (PAlg.Hom.f f a))`. Rewrite using `[PAlg.mapU_th]`. Conclude with `congrArg B.th (WittVector.map_teichmuller _ _ _)`.
+-/
 theorem sharp_nat {A B : PAlg l} (f : A ⟶ B) (a : A.A) :
     PAlg.mapU f (A.sharp a) = B.sharp (PAlg.Hom.f f a) := by
   change PAlg.mapU f (A.th (WittVector.teichmuller l a)) = B.th (WittVector.teichmuller l (PAlg.Hom.f f a))
   rw [PAlg.mapU_th]
   exact congrArg B.th (WittVector.map_teichmuller _ _ _)
 
+/- English proof (translation)
+Rewrite using `[tu_apply, toΓ_nat, PAlg.mapUg_algebraMap, sharp_nat]`. Both sides reduce to the same expression.
+-/
 theorem tu_nat {A B : PAlg l} (f : A ⟶ B) (a : A.A) :
     (Spec.map (CommRingCat.ofHom (PAlg.mapUg f))).appTop.hom (tu A a) = tu B (PAlg.Hom.f f a) := by
   rw [tu_apply, toΓ_nat, PAlg.mapUg_algebraMap, sharp_nat]; rfl
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+-/
 theorem u_congr {X : Scheme.{0}} (D : LineData X) {V : Scheme.{0}} {a a' b b' : V ⟶ D.Y} (ha : a = a') (hb : b = b')
     (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) : D.u a b h = D.u a' b' h' := by
   subst ha hb; rfl
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.congr_hom (Scheme.ΓSpecIso (CommRingCat.of B)).hom_inv_id x`.
+-/
 theorem toΓ_hom (B : Type) [CommRing B] (x : Γ(Spec (CommRingCat.of B), ⊤)) :
     toΓ B ((Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom x) = x :=
   ConcreteCategory.congr_hom (Scheme.ΓSpecIso (CommRingCat.of B)).hom_inv_id x
 
 abbrev gU (B : PAlg l) : SU B ⟶ Spec (CommRingCat.of B.U) := Spec.map (CommRingCat.ofHom (algebraMap B.U B.Ug))
 
+/- English proof (translation)
+Rewrite using `[D.nat (gU B) a b h, tu_apply, hw, ← toΓ_nat, toΓ_hom]`. Both sides reduce to the same expression.
+-/
 theorem tu_of_sharp {X : Scheme.{0}} (D : LineData X) (B : PAlg l) (a b : Spec (CommRingCat.of B.U) ⟶ D.Y)
     (h : a ≫ D.f = b ≫ D.f) (w : B.A)
     (hw : B.sharp w = (Scheme.ΓSpecIso (CommRingCat.of B.U)).hom.hom (D.u a b h).val)
@@ -45,6 +63,13 @@ theorem tu_of_sharp {X : Scheme.{0}} (D : LineData X) (B : PAlg l) (a b : Spec (
   rw [D.nat (gU B) a b h, tu_apply, hw, ← toΓ_nat, toΓ_hom]
   rfl
 
+/- English proof (translation)
+Establish `hs : ∀ (n : ℕ) (x : A.A), ∃ y : A.A, y ^ l ^ n = x`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun x => ⟨x, by simp⟩`. Consider the case `succ n ih`.
+
+Introduce `x`. Take `⟨y, hy⟩` from `(PerfectRing.bijective_frobenius (R := A.A) (p := l)).2 x`. Take `⟨z, hz⟩` from `ih y`. Conclude with `⟨z, by rw [pow_succ, pow_mul, hz]; exact hy⟩`. Take `⟨y, hy⟩` from `hs n w`.
+
+Establish `hu : IsUnit y` using `(isUnit_pow_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)).1 (hy ▸ w.isUnit)`. Take `⟨ω, rfl⟩` from `hu`. Conclude with `⟨ω, Units.ext (by simpa using hy)⟩`.
+-/
 theorem exists_root (A : PAlg l) (n : ℕ) (w : (A.A)ˣ) : ∃ ω : (A.A)ˣ, ω ^ l ^ n = w := by
   have hs : ∀ (n : ℕ) (x : A.A), ∃ y : A.A, y ^ l ^ n = x := by
     intro n
@@ -74,22 +99,38 @@ abbrev sgU (G : C ⥤ El M.P) {c c' : C} (φ : c ⟶ c') :
     Spec (CommRingCat.of (Ao G c').U) ⟶ Spec (CommRingCat.of (Ao G c).U) :=
   Spec.map (CommRingCat.ofHom (PAlg.mapU (mp G φ)))
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun x => PAlg.mapUg_algebraMap _ x`.
+-/
 theorem sg_gU (G : C ⥤ El M.P) {c c' : C} (φ : c ⟶ c') : sg G φ ≫ gU (Ao G c) = gU (Ao G c') ≫ sgU G φ := by
   rw [← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]
   congr 2
   exact RingHom.ext fun x => PAlg.mapUg_algebraMap _ x
 
+/- English proof (translation)
+Establish `e : mp G (φ ≫ ψ) = mp G φ ≫ mp G ψ` using `congrArg (fun t => t.1.hom) (G.map_comp φ ψ)`. Rewrite using `[sg, e]`. Conclude with `(congrArg Spec.map ((UgR l).map_comp _ _)).trans (Spec.map_comp _ _)`.
+-/
 theorem sg_comp (G : C ⥤ El M.P) {c c' c'' : C} (φ : c ⟶ c') (ψ : c' ⟶ c'') :
     sg G (φ ≫ ψ) = sg G ψ ≫ sg G φ := by
   have e : mp G (φ ≫ ψ) = mp G φ ≫ mp G ψ := congrArg (fun t => t.1.hom) (G.map_comp φ ψ)
   rw [sg, e]
   exact (congrArg Spec.map ((UgR l).map_comp _ _)).trans (Spec.map_comp _ _)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (G.map φ).2`.
+-/
 theorem sgU_pt (G : C ⥤ El M.P) {c c' : C} (φ : c ⟶ c') : sgU G φ ≫ (G.obj c).2.1 = (G.obj c').2.1 :=
   congrArg Subtype.val (G.map φ).2
 
 variable {D : LineData M.X} {D' : LineData (gb M)} {π : D'.Y ⟶ D.Y} {G : C ⥤ El M.P}
 
+/- English proof (translation)
+Establish `h0 : (sgU G φ ≫ Λ.p c) ≫ D.f = Λ.p c' ≫ D.f`. Rewrite using `[Category.assoc, Λ.hp, Λ.hp, sgU_pt]`. Establish `h1 : (gU (Ao G c') ≫ sgU G φ ≫ Λ.p c) ≫ D.f = (gU (Ao G c') ≫ Λ.p c') ≫ D.f`. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc (sgU G φ), h0, Category.assoc]`. Establish `h2 : ((sg G φ ≫ p' c) ≫ π) ≫ D.f = (p' c' ≫ π) ≫ D.f`.
+
+Establish `key : ∀ {V : Scheme.{0}} (t : V ⟶ D'.Y), (t ≫ π) ≫ D.f = (t ≫ D'.f) ≫ (pullback.fst _ _ ≫ pullback.fst _ _ : gb M ⟶ M.X)` using `fun t => by`. Rewrite using `[Category.assoc, hBC.1, Category.assoc]`. Rewrite using `[key, key, h]`. Rewrite using `[tu_of_sharp D _ _ _ h0 _ (Λ.hw φ h0) h1, hBC.2.2 _ _ _ h h2]`. Use `congrArg Units.val (u_congr D ?_ (hπ c').symm _ _)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hπ, ← Category.assoc, ← sg_gU, Category.assoc]`.
+-/
 theorem hr_eq (hBC : D.IsBC (pullback.fst _ _ ≫ pullback.fst _ _ : gb M ⟶ M.X) D' π) (Λ : Lift G D)
     (p' : ∀ c, SU (Ao G c) ⟶ D'.Y) (hπ : ∀ c, p' c ≫ π = gU (Ao G c) ≫ Λ.p c) {c c' : C} (φ : c ⟶ c')
     (h : (sg G φ ≫ p' c) ≫ D'.f = p' c' ≫ D'.f) :
@@ -112,16 +153,25 @@ abbrev tuU (A : PAlg l) : (A.A)ˣ →* (Γ(SU A, ⊤))ˣ := Units.map (tu A)
 abbrev chU {c₁ c₂ : C} (G : C ⥤ El M.P) (ψ : c₁ ⟶ c₂) (a : ((Ao G c₁).A)ˣ) (b c : ((Ao G c₂).A)ˣ) : ((Ao G c₂).A)ˣ :=
   Units.map (PAlg.Hom.f (mp G ψ)).toMonoidHom a * b * c⁻¹
 
+/- English proof (translation)
+The claim follows from `Units.ext (tu_nat (mp G ψ) a.val)`.
+-/
 theorem map_tuU {c₁ c₂ : C} (G : C ⥤ El M.P) (ψ : c₁ ⟶ c₂) (a : ((Ao G c₁).A)ˣ) :
     Units.map (sg G ψ).appTop.hom.toMonoidHom (tuU (Ao G c₁) a) =
       tuU (Ao G c₂) (Units.map (PAlg.Hom.f (mp G ψ)).toMonoidHom a) :=
   Units.ext (tu_nat (mp G ψ) a.val)
 
+/- English proof (translation)
+Rewrite using `[map_tuU, chU, map_mul, map_mul, map_inv]`.
+-/
 theorem chain_val {c₁ c₂ : C} (G : C ⥤ El M.P) (ψ : c₁ ⟶ c₂) (a : ((Ao G c₁).A)ˣ) (b c : ((Ao G c₂).A)ˣ) :
     Units.map (sg G ψ).appTop.hom.toMonoidHom (tuU (Ao G c₁) a) * tuU (Ao G c₂) b * (tuU (Ao G c₂) c)⁻¹ =
       tuU (Ao G c₂) (chU G ψ a b c) := by
   rw [map_tuU, chU, map_mul, map_mul, map_inv]
 
+/- English proof (translation)
+Establish `h₄ : (sg G ψ ≫ sg G φ ≫ p' c₀) ≫ D'.f = (sg G ψ ≫ p' c₁) ≫ D'.f`. Rewrite using `[Category.assoc, h₁, Category.assoc]`. Rewrite using `[mul_pow, mul_pow, inv_pow, ← map_pow, ha, hb, hc, ← D'.nat (sg G ψ) _ _ h₁, D'.coc _ _ _ h₄ h₂]`. Rewrite using `[u_congr D' (a' := sg G χ ≫ p' c₀) (b' := p' c₂) _ rfl _ h₃, mul_inv_cancel]`. Rewrite using `[← hχ, sg_comp, Category.assoc]`.
+-/
 theorem chain_pow {c₀ c₁ c₂ : C} (p' : ∀ c, SU (Ao G c) ⟶ D'.Y) (φ : c₀ ⟶ c₁) (ψ : c₁ ⟶ c₂) (χ : c₀ ⟶ c₂)
     (hχ : φ ≫ ψ = χ) (q : ℕ) (a : (Γ(SU (Ao G c₁), ⊤))ˣ) (b c : (Γ(SU (Ao G c₂), ⊤))ˣ)
     (h₁ : (sg G φ ≫ p' c₀) ≫ D'.f = p' c₁ ≫ D'.f) (h₂ : (sg G ψ ≫ p' c₁) ≫ D'.f = p' c₂ ≫ D'.f)
@@ -138,17 +188,26 @@ theorem chain_pow {c₀ c₁ c₂ : C} (p' : ∀ c, SU (Ao G c) ⟶ D'.Y) (φ : 
 abbrev tuP (H : RIn l) (r : Roots l) (G : C ⥤ El M.P) (n : ℕ) (c : C) :
     ((Ao G c).A)ˣ →* (Γ((probe H r (G ⋙ CategoryOfElements.π _) n).U c, ⊤))ˣ := tuU (Ao G c)
 
+/- English proof (translation)
+The claim follows from `chain_val G ψ a b c`.
+-/
 theorem chain_valP (H : RIn l) (r : Roots l) (G : C ⥤ El M.P) (n : ℕ) {c₁ c₂ : C} (ψ : c₁ ⟶ c₂)
     (a : ((Ao G c₁).A)ˣ) (b c : ((Ao G c₂).A)ˣ) :
     Units.map ((probe H r (G ⋙ CategoryOfElements.π _) n).S.map ψ).unop.appTop.hom.toMonoidHom (tuP H r G n c₁ a) *
       tuP H r G n c₂ b * (tuP H r G n c₂ c)⁻¹ = tuP H r G n c₂ (chU G ψ a b c) :=
   chain_val G ψ a b c
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem pow_field (H : RIn l) (r : Roots l) (G : C ⥤ El M.P) (n : ℕ) (c : C)
     (f : LocallyConstant (SU (Ao G c)) (ZMod (l ^ n))) (u : ((Ao G c).A)ˣ)
     (h : IsPow (r.zeta (Ao G c) n) f (tu (Ao G c) u.val)) :
     IsPow ((probe H r (G ⋙ CategoryOfElements.π _) n).ζ c) f (tuP H r G n c u).val := h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ p := p' hp := hf r := fun {c c'} φ => tuP H r G n c' (ω c c' φ) hr := fun φ => hr φ hz := fun s => by rw [chain_valP] exact hz s }⟩`.
+-/
 theorem kum_of (H : RIn l) (r : Roots l) (G : C ⥤ El M.P) (n : ℕ)
     (z : Cn (probe H r (G ⋙ CategoryOfElements.π _) n).L 2) (p' : ∀ c, SU (Ao G c) ⟶ D'.Y)
     (hf : ∀ c, p' c ≫ D'.f = geomPt M (Ao G c) (G.obj c).2) (ω : ∀ (c c' : C), (c ⟶ c') → ((Ao G c').A)ˣ)
@@ -165,12 +224,18 @@ theorem kum_of (H : RIn l) (r : Roots l) (G : C ⥤ El M.P) (n : ℕ)
        rw [chain_valP]
        exact hz s }⟩
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem log_of (hN : LcNat) (H : RIn l) (r : Roots l) {D : LineData M.X} (G : C ⥤ El M.P) (n : ℕ) (Λ : Lift G D)
     (z : Cn (probe H r (G ⋙ CategoryOfElements.π _) n).L 2)
     (h : ∀ s : ComposableArrows C 2, IsLog (Ao G (s.obj (Fin.last 2))) n (tei (Ao G (s.obj (Fin.last 2))) (Λ.r s))
       ((ACris.periodT (untilt_epsilon (p := l)) : Acris l) • lcA (Ao G (s.obj (Fin.last 2))) n (z s))) :
     Λ.IsCoc n (tCo G n 2 (lcCo hN H r G n 2 z)) := h
 
+/- English proof (translation)
+Rewrite using `[chU, mul_pow, mul_pow, inv_pow, ← map_pow, hω, hω, hω]`. Both sides reduce to the same expression.
+-/
 theorem r_eq {D : LineData M.X} (Λ : Lift G D) (n : ℕ) (ω : ∀ (c c' : C), (c ⟶ c') → ((Ao G c').A)ˣ)
     (hω : ∀ (c c' : C) (φ : c ⟶ c'), ω c c' φ ^ l ^ n = Λ.w φ) (s : ComposableArrows C 2) :
     Λ.r s = (chU G (s.map' 1 2) (ω _ _ (s.map' 0 1)) (ω _ _ (s.map' 1 2)) (ω _ _ (s.map' 0 2))) ^ l ^ n := by
@@ -179,6 +244,17 @@ theorem r_eq {D : LineData M.X} (Λ : Lift G D) (n : ℕ) (ω : ∀ (c c' : C), 
 
 end Main
 
+/- English proof (translation)
+Introduce `hN l _ H r K M D D' π hBC C _ G Λ n`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hb : ∀ c, ∃ b : SU (Ao G c) ⟶ D'.Y, b ≫ π = gU (Ao G c) ≫ Λ.p c ∧ b ≫ D'.f = geomPt M (Ao G c) (G.obj c).2` using `fun c => hBC.2.1 _ _ _ (by rw [Category.assoc, Λ.hp, geomPt_fst])`. Use `choose p' hπ hf using hb`. Establish `hω : ∀ (c c' : C) (φ : c ⟶ c'), ∃ ω : ((Ao G c').A)ˣ, ω ^ l ^ n = Λ.w φ` using `fun c c' φ => exists_root _ n _`.
+
+Use `choose ω hω using hω`. Establish `hfh : ∀ {c c' : C} (φ : c ⟶ c'), (sg G φ ≫ p' c) ≫ D'.f = p' c' ≫ D'.f`. Introduce `c c' φ`. Rewrite using `[Category.assoc, hf, hf]`. Conclude with `(pts H r M G n).nat φ`.
+
+Establish `hr : ∀ {c c' : C} (φ : c ⟶ c'), tuU (Ao G c') (ω c c' φ) ^ l ^ n = D'.u (sg G φ ≫ p' c) (p' c') (hfh φ)`. Introduce `c c' φ`. Rewrite using `[← map_pow, hω c c' φ]`. Conclude with `Units.ext (hr_eq hBC Λ p' hπ φ _)`. Establish `hz : ∀ s : ComposableArrows C 2, ∃ f : LocallyConstant (SU (Ao G (s.obj (Fin.last 2)))) (ZMod (l ^ n)), IsPow (r.zeta (Ao G (s.obj (Fin.last 2))) n) f (tu (Ao G (s.obj (Fin.last 2))) (chU G (s.map' 1 2) (ω _ _ (s.map' 0 1)) (ω _ _ (s.map' 1 2)) (ω _ _ (s.map' 0 2))).val)`.
+
+Introduce `s`. Use `(hR (l ^ n) _ _).1 _ ?_` and prove the remaining obligations. Establish `h` using `chain_pow p' (s.map' 0 1) (s.map' 1 2) (s.map' 0 2) (by rw [← s.map_comp]; rfl) (l ^ n) (tuU _ (ω _ _ (s.map' 0 1))) (tuU _ (ω _ _ (s.map' 1 2))) (tuU _ (ω _ _ (s.map' 0 2))) (hfh _) (hfh _) (hfh _) (hr _) (hr _) (hr _)`. Rewrite `h` using `[chain_val]`. Conclude with `congrArg Units.val h`.
+
+Use `choose z hz using hz`. Use `⟨z, kum_of H r G n z p' hf ω hfh hr fun s => pow_field H r G n _ _ _ (hz s), log_of hN H r G n Λ z fun s => ?_⟩` and prove the remaining obligations. Establish `h` using `hL l H r (Ao G (s.obj (Fin.last 2))) (G.obj (s.obj (Fin.last 2))).1.property n _ (z s) (hz s)`. Rewrite `h` using `[← Units.val_pow_eq_pow_val, ← r_eq Λ n ω hω s]`. Conclude with `h`.
+-/
 theorem fKum (hR : RootPow) (hL : LcLog) : FKum := by
   intro hN l _ H r K M D D' π hBC C _ G Λ n
   haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩

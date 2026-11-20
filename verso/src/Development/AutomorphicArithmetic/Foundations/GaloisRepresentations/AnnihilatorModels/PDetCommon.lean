@@ -8,6 +8,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProduct Module
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw a r c hr hc`. Take `⟨T⟩` from `hT`. Take `⟨L₁, r₁, hm₁, hc₁⟩` from `hr`. Take `⟨L₂, c₂, hm₂, hp₂⟩` from `hc`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`.
+
+Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Use `haveI := L₁.2`. Use `haveI := (supExt L₁ L₂).2`. Establish `hs₁ : IsSst P (Bw.repE L₁ r₁)` using `GlobalTheory.CrysSst.isSst_of_isCrys P AI T (Bw.repE L₁ r₁) hc₁`. Establish `hs` using `GlobalTheory.AboveL.RepConj.isSst_enlarge P Bw l₁ r₁ hs₁`.
+
+Use `⟨supExt L₁ L₂, mapRep (IntermediateField.inclusion l₁).toRingHom r₁, mapRep (IntermediateField.inclusion l₂).toRingHom c₂, hm₁.enlarge l₁, hm₂.enlarge l₂, hs, ?_, GlobalTheory.PstExt.isPst_enlarge P Bw l₂ c₂ hp₂⟩` and prove the remaining obligations. Use `haveI : FiniteDimensional ℚ_[l] (Fin a → ↥(supExt L₁ L₂).1) := Module.Finite.trans ↥(supExt L₁ L₂).1 _`. Conclude with `GlobalTheory.GalCut.IwaTwist.isPst_of_isSst P AI T _ hs`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.detCommon_of :
     CommonModel := by
   intro l _ P AI hT E Ω _ _ _ Gw O _ _ _ Bw a r c hr hc

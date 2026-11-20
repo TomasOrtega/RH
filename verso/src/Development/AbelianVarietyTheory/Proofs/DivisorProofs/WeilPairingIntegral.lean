@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.WeilIntegral.Local
 
+/- English proof (translation)
+Establish `hs : Function.Surjective ψ.toRingHom` using `fun a => ⟨algebraMap O B a, ψ.commutes a⟩`. Use `haveI : IsLocalHom ψ.toRingHom := IsLocalHom.of_surjective _ hs`. Unfold `InOpen at h ⊢`. Rewrite `h` using `[Over.comp_left, Scheme.Hom.comp_preimage]`. Use `(IsLocalRing.closedPoint_mem_iff (R := B) _).1 ?_` and prove the remaining obligations.
+
+Establish `h1 : IsLocalRing.closedPoint O ∈ (ptMap ψ).left ⁻¹ᵁ (w.left ⁻¹ᵁ U)`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2 : (ptMap ψ).left (IsLocalRing.closedPoint O) = IsLocalRing.closedPoint B` using `IsLocalRing.comap_closedPoint ψ.toRingHom`. Rewrite using `[← h2]`.
+
+Conclude with `h1`.
+-/
 theorem inOpen_of_section {O : Type} [CommRing O] [IsLocalRing O] {B : Type} [CommRing B] [Algebra O B]
     [IsLocalRing B] (ψ : B →ₐ[O] O) {X : Over (Sp O)} {U : X.left.Opens} {w : specO O B ⟶ X}
     (h : InOpen U (ptMap ψ ≫ w)) : InOpen U w := by
@@ -30,6 +37,9 @@ theorem inOpen_of_section {O : Type} [CommRing O] [IsLocalRing O] {B : Type} [Co
   rw [← h2]
   exact h1
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [ptMap, Over.comp_left, Over.homMk_left, Over.id_left, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: ψ.toRingHom.comp (Algebra.ofId O B).toRingHom = RingHom.id O` using `RingHom.ext fun a => ψ.commutes a`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+-/
 theorem section_comp {O : Type} [CommRing O] {B : Type} [CommRing B] [Algebra O B] (ψ : B →ₐ[O] O) :
     ptMap ψ ≫ ptMap (Algebra.ofId O B) = 𝟙 _ := by
   ext1
@@ -41,6 +51,11 @@ theorem section_comp {O : Type} [CommRing O] {B : Type} [CommRing B] [Algebra O 
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O]
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
+/- English proof (translation)
+Unfold `InOpen at h ⊢`. Unfold `IsGeneric at hz`. Rewrite using `[← Scheme.Hom.comp_preimage]`. Use `erw [hz]`. Rewrite using `[Scheme.Hom.comp_preimage]`.
+
+Use `erw [h]`. Both sides reduce to the same expression.
+-/
 theorem inOpen_generic {U : P.G.left.Opens} {z : specO O O ⟶ P.G} {z' : Pts P.A.A} (hz : IsGeneric P z z')
     (h : InOpen U z) : InOpen (P.gen ⁻¹ᵁ U) z' := by
   unfold InOpen at h ⊢
@@ -53,6 +68,13 @@ theorem inOpen_generic {U : P.G.left.Opens} {z : specO O O ⟶ P.G} {z' : Pts P.
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Establish `hp₀ : ¬ IsUnit (p : O)` using `Fact.out`. Establish `hp : ¬ IsUnit (p : B)` using `fun h => hp₀ (by simpa using h.map ψ₀)`. Establish `hc : IsAdicComplete (Ideal.span {(p : B)}) B`. Use `GlobalTheory.FlatComplete.isAdicComplete_of_finite_flat O (Ideal.span {(p : O)}) inferInstance B` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Take `⟨x', hx', -⟩` from `existsUnique_right (P := P) hp hc x`. Establish `hpow : ∀ n : ℕ, Corr P (x ^ n) (x' ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`.
+
+Conclude with `Corr.one`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul hx'`. Use `⟨x', (existsUnique_right (P := P) hp hc 1).unique (hx ▸ hpow N) Corr.one, fun ψ => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_right (P := P) hp₀ inferInstance _).unique (hx'.comp ψ) fun m => P.red_toG _ m`.
+-/
 theorem exists_lift {B : Type} [CommRing B] [Algebra O B] [IsLocalRing B] [Module.Finite O B] [Module.Flat O B]
     (ψ₀ : B →ₐ[O] O) {N : ℕ} {x : specO O B ⟶ P.Gt} (hx : x ^ N = 1) :
     ∃ x' : specO O B ⟶ P.G, x' ^ N = 1 ∧ ∀ ψ : B →ₐ[O] O, ptMap ψ ≫ x' = P.toG (ptMap ψ ≫ x) := by
@@ -72,6 +94,21 @@ theorem exists_lift {B : Type} [CommRing B] [Algebra O B] [IsLocalRing B] [Modul
 
 variable [IsAlgClosed C] [CharZero C]
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Take `⟨x', hx', hxψ⟩` from `exists_lift P ψ₀ hx`. Take `⟨y', hy', hyψ⟩` from `exists_lift P ψ₀ hy`. Take `⟨U, hUs, hg⟩` from `hU`. Take `⟨Θ, hnat, hweil⟩` from `hΘ (P.gen ⁻¹ᵁ U) hg`.
+
+Take `⟨z₀, hz₀⟩` from `hT U hUs (Fin N × Fin N) fun ij => ptMap ψ₀ ≫ (x' ^ (ij.1 : ℕ) * y' ^ (ij.2 : ℕ))`. Take `⟨z, hz⟩ : ∃ z : specO O B ⟶ P.G, ptMap ψ₀ ≫ z = z₀` from `⟨ptMap (Algebra.ofId O B) ≫ z₀, by rw [← Category.assoc, section_comp, Category.id_comp]⟩`. Establish `hin : ∀ i j : ℕ, InOpen U (z * x' ^ i * y' ^ j)` using `fun i j => by`. Use `inOpen_of_section ψ₀ ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, MonObj.comp_mul, hz, pow_eq_pow_mod i hx', pow_eq_pow_mod j hy']`.
+
+Conclude with `hz₀ (⟨_, Nat.mod_lt _ hN⟩, ⟨_, Nat.mod_lt _ hN⟩)`. Establish `c₁ : ∀ i : ℕ, CubeIn U z (y' ^ i) y' x'` using `fun i a b c _ _ _ => by`. Use `hin c (i * a + b)` as an intermediate fact. Rewrite `this` using `[mul_right_comm, pow_add, pow_mul, ← _root_.mul_assoc]`. Then use the resulting hypothesis. Establish `c₂ : ∀ i : ℕ, CubeIn U z (x' ^ i) x' y'` using `fun i a b c _ _ _ => by`.
+
+Use `hin (i * a + b) c` as an intermediate fact. Rewrite `this` using `[pow_add, pow_mul, ← _root_.mul_assoc]`. Then use the resulting hypothesis. Use `choose d₁ u₁ h₁ using fun i => hV U Θ hnat B ⟨ψ₀⟩ _ _ _ _ (c₁ i)`. Use `choose d₂ u₂ h₂ using fun i => hV U Θ hnat B ⟨ψ₀⟩ _ _ _ _ (c₂ i)`. Use `⟨(∏ i ∈ Finset.range N, d₁ i) / ∏ i ∈ Finset.range N, d₂ i, (∏ i ∈ Finset.range N, u₁ i) / ∏ i ∈ Finset.range N, u₂ i, fun ψ => ?_⟩` and prove the remaining obligations.
+
+Set `j : (specO O O ⟶ P.G) →* Pts P.A.A` to `P.exists_generic.choose`. Set `F : (specO O B ⟶ P.G) →* Pts P.A.A` to `j.comp (MonoidHom.mk' (fun w => ptMap ψ ≫ w) fun a b => MonObj.comp_mul _ _ _)`. Establish `hF : ∀ w, IsGeneric P (ptMap ψ ≫ w) (F w)` using `fun w => (P.exists_generic.choose_spec.2 _ _).2 rfl`. Establish `ex : P.toA (ptMap ψ ≫ x) = F x'` using `congrArg j (hxψ ψ).symm`. Establish `ey : P.toA (ptMap ψ ≫ y) = F y'` using `congrArg j (hyψ ψ).symm`.
+
+Set `m : Bˣ →* Cˣ` to `Units.map ((algebraMap O C).comp ψ.toRingHom).toMonoidHom`. Establish `e₁ : ∀ i, Θ C (𝟙 _) (F z) (F y' ^ i) (F y') (F x') = d₁ i * m (u₁ i)` using `fun i => Units.ext (h₁ i ψ _ _ _ _ (hF _) (by rw [← map_pow]; exact hF _) (hF _) (hF _))`. Establish `e₂ : ∀ i, Θ C (𝟙 _) (F z) (F x' ^ i) (F x') (F y') = d₂ i * m (u₂ i)` using `fun i => Units.ext (h₂ i ψ _ _ _ _ (hF _) (by rw [← map_pow]; exact hF _) (hF _) (hF _))`. Establish `hw` using `hweil N hN (F x') (F y') (F z) (by rw [← map_pow, hx', map_one]) (by rw [← map_pow, hy', map_one]) fun a b => by`. Rewrite using `[← map_pow, ← map_pow, ← map_mul, ← map_mul]`.
+
+Conclude with `inOpen_generic P (hF _) ((hin a b).comp _)`. Rewrite `hw` using `[Finset.prod_congr rfl fun i _ => e₁ i, Finset.prod_congr rfl fun i _ => e₂ i, Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← map_prod, ← map_prod, mul_div_mul_comm, ← map_div]`. Rewrite using `[ex, ey, hw]`. Both sides reduce to the same expression.
+-/
 theorem exists_const_mul_unit (hΘ : HasCubeFn P.A) (hU : HasTrivialisingOpen P) (hT : TranslatesInto P)
     (hV : CubeValuesIntegral P) {B : Type} [CommRing B] [Algebra O B] [IsLocalRing B] [Module.Finite O B]
     [Module.Flat O B] (ψ₀ : B →ₐ[O] O) {N : ℕ} (hN : 1 ≤ N) {x y : specO O B ⟶ P.Gt} (hx : x ^ N = 1)
@@ -119,6 +156,15 @@ theorem exists_const_mul_unit (hΘ : HasCubeFn P.A) (hU : HasTrivialisingOpen P)
   rw [ex, ey, hw]
   rfl
 
+/- English proof (translation)
+Introduce `B _ _ _ _ _ N hN x y hx hy`. Break down `isEmpty_or_nonempty (B →ₐ[O] O) with h0 | ⟨⟨ψ₀⟩⟩` into its components or cases. Conclude with `⟨0, fun ψ => h0.elim ψ⟩`. Take `⟨d, u, h⟩` from `exists_const_mul_unit P hΘ hU hT hV ψ₀ hN hx hy`. Establish `tx : P.toA (ptMap ψ₀ ≫ x) ^ N = 1`.
+
+Rewrite using `[← map_pow, ← MonObj.comp_pow, hx, MonObj.comp_one, map_one]`. Establish `ty : P.toA (ptMap ψ₀ ≫ y) ^ N = 1`. Rewrite using `[← map_pow, ← MonObj.comp_pow, hy, MonObj.comp_one, map_one]`. Establish `hw : weil P.A N (P.toA (ptMap ψ₀ ≫ x)) (P.toA (ptMap ψ₀ ≫ y)) ^ N = 1`. Rewrite using `[← weil_pow_left hN tx ty, tx]`.
+
+Simplify using `using weil_pow_left hN tx ty 0`. Establish `hv : v (weil P.A N (P.toA (ptMap ψ₀ ≫ x)) (P.toA (ptMap ψ₀ ≫ y)) : C) = 1`. Use `congrArg (fun w : Cˣ => v (w : C)) hw` as an intermediate fact. Simplify using `only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at this`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le (by omega)).1 this`.
+
+Rewrite `hv` using `[h, map_mul, P.integers.one_of_isUnit (u.isUnit.map ψ₀), _root_.mul_one]`. Take `⟨d₀, hd₀⟩` from `P.integers.exists_of_le_one hv.le`. Use `⟨algebraMap O B d₀ * u, fun ψ => ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_mul, map_mul, ψ.commutes, ← hd₀]`. Both sides reduce to the same expression.
+-/
 theorem weilIntegralLocal (hΘ : HasCubeFn P.A) (hU : HasTrivialisingOpen P) (hT : TranslatesInto P)
     (hV : CubeValuesIntegral P) : WeilIntegralLocal P := by
   intro B _ _ _ _ _ N hN x y hx hy
@@ -142,6 +188,9 @@ theorem weilIntegralLocal (hΘ : HasCubeFn P.A) (hU : HasTrivialisingOpen P) (hT
   rw [h, map_mul, map_mul, ψ.commutes, ← hd₀]
   rfl
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ P` and use `weilIntegralLocal P`.
+-/
 theorem weilIntegralLocal_of_cubes : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]

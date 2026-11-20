@@ -7,6 +7,9 @@ open scoped Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨N, j, _, hj⟩ := hq have := isProper_str k N have : IsProper q := hj ▸ inferInstance have : IsFinite (spMap (Int.castRingHom k)) := (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hfin) let t := q ≫ spMap (Int.castRingHom k) have : Flat t := (flat_int_iff_charZe …`.
+-/
 theorem dim_ne_zero_of_isProjOver {k : Type} [CommRing k] {Z : Scheme.{0}} (q : Z ⟶ Sp k)
     [IsIntegral Z] (hq : IsProjOver q) (hfin : Module.Finite ℤ k) (hc : CharZero Γ(Z, ⊤)) :
     topologicalKrullDim Z ≠ 0 := fun h0 => by
@@ -34,6 +37,21 @@ theorem dim_ne_zero_of_isProjOver {k : Type} [CommRing k] {Z : Scheme.{0}} (q : 
   have e := congrArg PrimeSpectrum.asIdeal (hb.symm.trans (((hu b).trans (hu a).symm) ▸ ha))
   exact two_ne_zero (Ideal.span_singleton_eq_bot.1 e)
 
+/- English proof (translation)
+Introduce `k _ Y Y₁ p q₁ ρ D hρ hX hI hP _ hd`. Establish `hcY : CharZero Γ(Y, ⊤)` using `hX.charZero`. Establish `hc : CharZero Γ(Y₁, ⊤)` using `(ρ.appTop).hom.charZero`. Establish `hdim : topologicalKrullDim Y₁ = (D : ℕ)`. Rewrite `hd` using `[hX.dim_eq]`.
+
+Generalize the expression as in `topologicalKrullDim Y₁ = a at hd ⊢`. Proceed by induction on `a with`. Consider the case `bot => exact absurd hd (by simp)`. Consider the case `coe a`. Proceed by induction on `a with`.
+
+Consider the case `top`. It suffices to derive a contradiction. Establish `e1 : ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, top_add]`. Rewrite `hd` using `[e1]`.
+
+Use `first`. Consider the case `exact ENat.coe_ne_top _ (WithBot.coe_inj.1 hd)`. Consider the case `exact ENat.coe_ne_top (D + 1) (WithBot.coe_inj.1 hd)`. Consider the case `(simp at hd; exact WithBot.natCast_ne_top D hd)`. Consider the case `(simp at hd; exact absurd hd (by simp [WithBot.none_eq_bot]))`.
+
+Consider the case `coe a`. Use `congr 2`. Use `hd` as an intermediate fact. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hD : D ≠ 0`. Introduce and unpack `rfl`. Conclude with `dim_ne_zero_of_isProjOver q₁ hP hX.finite hc (by simpa using hdim)`. Use `⟨D - 1, by omega, hX.isDomain, hX.finite, hI, hP, (flat_int_iff_charZero _).2 hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hdim]`.
+
+Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isArithVar_of_surjective_dim_succ : ∀ (k : Type) [CommRing k] (Y Y₁ : Scheme.{0}) (p : Y ⟶ Sp k) (q₁ : Y₁ ⟶ Sp k) (ρ : Y ⟶ Y₁) (D : ℕ),
     ρ ≫ q₁ = p → IsArithVar p D → IsIntegral Y₁ → IsProjOver q₁ → Surjective ρ →
     topologicalKrullDim Y = topologicalKrullDim Y₁ + 1 → ∃ d₁ : ℕ, D = d₁ + 1 ∧ IsArithVar q₁ d₁ := by

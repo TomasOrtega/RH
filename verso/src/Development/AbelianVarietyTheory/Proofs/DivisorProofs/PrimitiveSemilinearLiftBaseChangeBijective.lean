@@ -17,6 +17,11 @@ section PrimBaseChange
 variable {R A : Type} (R' : Type) [CommRing R] [CommRing A] [Bialgebra R A] [Module.Finite R A]
   [Module.Projective R A] [IsCocomm R A] [CommRing R'] [Algebra R R']
 
+/- English proof (translation)
+Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul r φ`.
+
+Simplify using `[Algebra.TensorProduct.one_def, Algebra.smul_def, mul_comm]`.
+-/
 theorem counit_comp_cartierBaseChange :
     (counitAlgHom R' (CartierDual R' (R' ⊗[R] A))).comp
         ((CartierDual.baseChange R R' A).toAlgEquiv : R' ⊗[R] CartierDual R A →ₐ[R'] _) =
@@ -34,6 +39,9 @@ def cotBaseChange :
     (AugCot.congr (CartierDual.baseChange R R' A).toAlgEquiv
       (counit_comp_cartierBaseChange R'))).symm
 
+/- English proof (translation)
+Rewrite using `[cotBaseChange, LinearEquiv.symm_apply_eq, LinearEquiv.trans_apply, AugCot.baseChangeEquiv_tmul_d, one_smul, AugCot.congr_d]`. Both sides reduce to the same expression.
+-/
 theorem cotBaseChange_d (φ : CartierDual R A) :
     cotBaseChange R' (dUnit R' (CartierDual.baseChange R R' A ((1 : R') ⊗ₜ φ))) =
       (1 : R') ⊗ₜ dUnit R φ := by
@@ -41,6 +49,11 @@ theorem cotBaseChange_d (φ : CartierDual R A) :
     AugCot.baseChangeEquiv_tmul_d, one_smul, AugCot.congr_d]
   rfl
 
+/- English proof (translation)
+Use `AugCot.hom_ext fun ψ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `EquivLike.surjective (CartierDual.baseChange R R' A) ψ`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul r φ`. Establish `e : r ⊗ₜ[R] φ = r • ((1 : R') ⊗ₜ[R] φ)` using `by simp [smul_tmul']`. Rewrite using `[e, map_smul, map_smul, map_smul, map_smul]`. Conclude with `congrArg (r • ·) (h φ)`.
+-/
 theorem cotBaseChange_hom_ext {N : Type} [AddCommGroup N] [Module R' N]
     {f g : Cot R' (CartierDual R' (R' ⊗[R] A)) →ₗ[R'] N}
     (h : ∀ φ : CartierDual R A, f (dUnit R' (CartierDual.baseChange R R' A ((1 : R') ⊗ₜ φ))) =
@@ -57,6 +70,15 @@ theorem cotBaseChange_hom_ext {N : Type} [AddCommGroup N] [Module R' N]
 
 end PrimBaseChange
 
+/- English proof (translation)
+Set `u` to `(CartierDual.toDual R (Cot R (CartierDual R A))).symm.toLinearMap ∘ₗ primTangent R A`. Establish `hu : Function.Bijective u` using `(CartierDual.toDual R _).symm.bijective.comp (GlobalTheory.T.additiveFunctionCartierDualTangent_bijective (R := R) (A := A))`. Establish `key : ⇑(primTangent R' (R' ⊗[R] A)) ∘ ⇑(liftSemi (toBaseChange R R' A).prim) = ⇑(CartierDual.toDual R' _) ∘ ⇑(CartierDual.transpose (cotBaseChange (R` using `R) (A := A) R').toLinearMap) ∘ ⇑(CartierDual.baseChangeLinear R R' (Cot R (CartierDual R A))) ∘ ⇑(LinearMap.lTensor R' u) := by`. Use function extensionality and compare the values at `x`. Proceed by induction on `x with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Consider the case `tmul r b`. Use `cotBaseChange_hom_ext R' fun φ => ?_` and prove the remaining obligations.
+
+Establish `h1 : primTangent R' (R' ⊗[R] A) (liftSemi (toBaseChange R R' A).prim (r ⊗ₜ b)) (dUnit R' (CartierDual.baseChange R R' A ((1 : R') ⊗ₜ φ))) = φ b.1 • r`. Rewrite using `[liftSemi_tmul, map_smul, LinearMap.smul_apply, primTangent_d, SemiBialgHom.prim_val, toBaseChange_apply, CartierDual.baseChange_tmul_tmul, smul_comm, mul_one, smul_eq_mul, mul_one]`. Use `h1.trans (Eq.symm ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CartierDual.baseChangeLinear R R' (Cot R (CartierDual R A)) (r ⊗ₜ u b) (cotBaseChange R' (dUnit R' (CartierDual.baseChange R R' A ((1 : R') ⊗ₜ φ)))) = _`. Rewrite using `[cotBaseChange_d, CartierDual.baseChangeLinear_tmul_tmul, mul_one]`.
+
+Conclude with `congrArg (· • r) (primTangent_d b φ)`. Use `(Function.Bijective.of_comp_iff' (GlobalTheory.T.additiveFunctionCartierDualTangent_bijective (R := R') (A := R' ⊗[R] A)) _).1 ?_` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `(CartierDual.toDual R' _).bijective.comp <| (CartierDual.transpose_bijective (cotBaseChange R').bijective).comp <| (CartierDual.baseChangeLinear_bijective R').comp (LinearEquiv.lTensor R' (LinearEquiv.ofBijective u hu)).bijective`.
+-/
 theorem liftSemi_prim_toBaseChange_bijective {R A : Type} (R' : Type) [CommRing R] [CommRing A]
     [Bialgebra R A] [Module.Finite R A] [Module.Projective R A] [IsCocomm R A] [CommRing R']
     [Algebra R R'] (hC : Module.Projective R (Cot R (CartierDual R A))) :

@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.ShFam.SigDim
 
+/- English proof (translation)
+Introduce `D A N j S`. Rewrite using `[GlobalTheory.FlagDimSum.dim_add_sum_choose, S.rank_eq, Formalism.DegreeFormula.dimFl, GlobalTheory.ShFam.CmDim.card_tau]`.
+-/
 theorem dim_add_sum_choose_eq_dimFl : ∀ {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j),
     S.Dw.dim + ∑ τ, (S.Dw.mult τ).choose 2 = Formalism.DegreeFormula.dimFl D.what₂.Tau N := by
   intro D A N j S

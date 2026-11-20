@@ -32,6 +32,25 @@ open UpperTheory.V.Z UpperTheory.V.Z.Ord UpperTheory.Gal.projectedFormsSystemPar
 open private au_isTeich au_open from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.AuTeichEx
 open private absPt ss_comp iso_of_det ss_of_irr irr_of_comp irr_iso from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IrrOfComp
 
+/- English proof (translation)
+Introduce `lam _ d ξ hξ F hF hK hI`. Take `⟨e, he⟩` from `hξ`. Take `⟨t, ht⟩` from `au_isTeich c r`. Establish `hop : IsOpen (τ₀.ker : Set (KT n (wt s)))` using `au_open _ (ι.injective.comp Subtype.val_injective) τ₀ (hτ t ht).1`. Establish `h1` using `decompU l L Ω s n hn V Q c m τ₀ ι hop lam d e ξ he F hF hK hI`.
+
+Use `SetLike.le_def.1 (iSup_le fun σ => ?_) h1` and prove the remaining obligations. Distinguish the cases in `h0 : YOf Q ι τ₀ e ξ σ.1 = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨Y, hY, hP⟩` from `hL l L Ω s n hn V Q c r ι m τ₀ hτ lam d e ξ he σ.1 σ.2 h0`.
+
+Rewrite using `[← hY]`. Use `le_iSup (fun Y : {Y : (hset Q τ₀).Part ι lam ξ // Af.IsIrr (Y.r.comp V.pr) → AwayOk s ι (Y.r.comp V.pr)} => Y.1.Y) ⟨Y, fun hi => ?_⟩` and prove the remaining obligations. Take `⟨π, p1, p2, p3, p4, p5⟩` from `hP hi`. Use `⟨π, p1, p2, p3, fun w hw hw0 => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwS : w.under (𝓞 (Lp L)) ∈ V.S'`.
+
+Use `swap`. Take `⟨B, hB⟩` from `p4 w (partUR2Unr l L Ω s n hn V Q c ι m τ₀ lam d e ξ he σ.1 σ.2 h0 w hwS)`. Conclude with `ImaginaryQuadraticEtaCharacter.sphUnl L n hn π w B hB`. Take `⟨hwv, hsp⟩` from `UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s`. Rewrite `hwS` using `[hS]`.
+
+Establish `hu : w.under (𝓞 (Lp L)) ∈ s.St`. Break down `hwS with h | h | h` into its components or cases. Use `absurd ?_ hw` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (𝓞 (Lp L)) (𝓞 L))]`. Conclude with `h`.
+
+Conclude with `h`. Conclude with `absurd h hw0`. Use `hC L n hn π p2 (s.w (w.under (𝓞 (Lp L)))) w (hwv _).symm ?_` and prove the remaining obligations. Use `(ImaginaryQuadraticEtaCharacter.plainIff L n hn π _).1 fun τ hτ' => ?_` and prove the remaining obligations. Establish `hs : ∀ u : s.St, IsSplitAt (s.w u)` using `fun u => hsp _ (by`.
+
+Rewrite using `[hwv]`. Conclude with `s.split _ (Or.inr (Or.inl u.2)))`. Use `choose loc hloc using fun u : s.St => (Af.locCompC PH.toClassicalTheorems L n π (s.w u)).1`. Take `⟨rc, hrc⟩` from `PH.toClassicalTheorems.exists_rec (s.hw (w.under (𝓞 (Lp L))))`. Establish `k` using `partUR2Type l L Ω s n hn V Q c ι m τ₀ lam d e ξ he σ.1 σ.2 h0 _ (hτ t ht) (Function.update loc ⟨_, hu⟩ τ) (fun u' => p5 _ (hs u') _ (by`.
+
+Distinguish the cases in `e : u' = ⟨_, hu⟩`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `hloc _)) ⟨_, hu⟩ rc hrc`.
+
+Rewrite `k` using `[Function.update_self]`. Conclude with `typePlain L Ω n hn π _ _ (s.hw _) τ hτ' rc (Z.Desc.W.toT PH.toClassicalTheorems hrc) (fun i => W.pushCh (ι.toRingHom.comp (algebraMap c.O (Qbar l))) ((t i).comp V.pr)) k`.
+-/
 theorem UpperTheory.Gal.projectedFormsSystemPart.autAway (PH : Af.HypothesesH) (hL : PartLink) (hC : ConjTor) {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L]
     [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) {n : ℕ} (hn : 1 ≤ n) (V : s.Lev)
     (Q : QData V) (c : Coef l) (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)
@@ -84,6 +103,13 @@ theorem UpperTheory.Gal.projectedFormsSystemPart.autAway (PH : Af.HypothesesH) (
   exact typePlain L Ω n hn π _ _ (s.hw _) τ hτ' rc (Z.Desc.W.toT PH.toClassicalTheorems hrc)
     (fun i => W.pushCh (ι.toRingHom.comp (algebraMap c.O (Qbar l))) ((t i).comp V.pr)) k
 
+/- English proof (translation)
+Break down `hJ with ⟨_, rfl⟩ | ⟨i1, i2, f, -, hmap, hsurj, hlam, rfl⟩` into its components or cases. Conclude with `absurd (hx (Submodule.mem_top (x := 1))) (by simp)`. Take `⟨⟨lam, hl⟩, hb⟩` from `wtBridge H.litN l L Ω s n hn V Q c R.m R.τ₀ r B Λ R.θ R.theta h ha.1`. Establish `har` using `(hb lam hl x).1.1 ha`. Establish `out` using `coreH H.litN L Ω l n c (hset Q R.τ₀) (axU H.litN l L Ω s n hn V Q c R.m R.τ₀) Λ.Λ R.θ R.isWt ι _ (autAway H hL hC s hn V Q c r ι R.m R.τ₀ R.type hS) lam (Set.mem_univ _) ((denseU H.litN l L Ω s n hn V Q c R.m R.τ₀ r Λ R.θ R.theta).2 lam) R.a K _ _ hmap`.
+
+Take `⟨ρ, hc, hs, hP, e3⟩` from `absPt (hset Q R.τ₀) R.θ R.a K B.u.D (Λ.toPair B.u) f hsurj hlam out x hx lam (Set.mem_univ _) har`. Use `⟨ρ, hc, hs, hP, ?_⟩` and prove the remaining obligations. Use `replace e3 : x.D = W.GDet.ofRep (W.mat ρ) := e3`. Express the relevant statement in the definitionally equal form `x.D.comap V.pr = _`. Rewrite using `[e3]`.
+
+Conclude with `(AlgebraTools.Det.repApi (W.mat ρ)).2.2.2.2.2.2.1 V.pr`.
+-/
 private theorem coreA (H : Af.HypothesesH) (hL : PartLink) (hC : ConjTor) {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L]
     [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (hn : 1 ≤ n) {V : s.Lev} {Q : QData V}
     {c : Coef l} {r : Resid V.frame c.O n} {ι : Qbar l ≃+* ℂ} {B : UniversalOrdinaryDeterminantRing r} {Λ : LamObj r} {R : HD Q ι Λ} {K : (hset Q R.τ₀).Lev}
@@ -104,6 +130,11 @@ private theorem coreA (H : Af.HypothesesH) (hL : PartLink) (hC : ConjTor) {l : �
   rw [e3]
   exact (AlgebraTools.Det.repApi (W.mat ρ)).2.2.2.2.2.2.1 V.pr
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ImaginaryQuadraticEtaCharacter.winOf F n hn π`. Establish `ev : ∀ᶠ v : Plc F in Filter.cofinite, ∃ B, (CG.mk π).HasSat v B ∧ (CG.mk π').HasSat v B` using `by filter_upwards [h.2, h'.2] with v ⟨B, hB, hE⟩ ⟨B', hB', hE'⟩`. Conclude with `⟨B, hB, (UpperTheory.hecke_eigenvalue_basic_properties F Ω l ι v).2.2 n ρ B B' hE hE' ▸ hB'⟩`. Establish `k' : ImaginaryQuadraticEtaCharacter.WinAt π' t w`. Break down `hn.eq_or_lt with rfl | h2` into its components or cases.
+
+Conclude with `ImaginaryQuadraticEtaCharacter.suppSmo1 F π π' ev t w (ht w k.1 k.2)`. Conclude with `ImaginaryQuadraticEtaCharacter.suppSmo F n h2 π π' ev t w (ht w k.1 k.2)`. Conclude with `⟨k'.1, ImaginaryQuadraticEtaCharacter.winUnl F n π' t w k'⟩`.
+-/
 theorem UpperTheory.Gal.projectedFormsSystemPart.tu_same {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {n : ℕ} (hn : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {ρ : G F Ω →* GL (Fin n) (Qbar l)} {π π' : CuspSub F n}
     (h : Af.AttC ι ρ π) (h' : Af.AttC ι ρ π') {w : Plc F} (k : TU π w) : TU π' w := by

@@ -14,11 +14,17 @@ section Trace
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ ι)]`. Simplify using `[Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Pi.single_apply]`.
+-/
 private theorem trace_pi_real_eq_sum' {ι : Type} [Fintype ι] (f : ι → ℝ) :
     Algebra.trace ℝ (ι → ℝ) f = ∑ i, f i := by
   rw [Algebra.trace_eq_matrix_trace (Pi.basisFun ℝ ι)]
   simp [Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis fun _ : ι => Complex.basisOneI)]`. Simplify using `[Matrix.trace, Algebra.leftMulMatrix_eq_repr_mul, Fintype.sum_sigma, Pi.single_apply, Fin.sum_univ_two, Complex.coe_basisOneI, Complex.coe_basisOneI_repr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem trace_pi_complex_eq_sum_two_mul_re {ι : Type} [Fintype ι] (f : ι → ℂ) :
     Algebra.trace ℝ (ι → ℂ) f = ∑ i, 2 * (f i).re := by
   rw [Algebra.trace_eq_matrix_trace (Pi.basis fun _ : ι => Complex.basisOneI)]
@@ -27,6 +33,13 @@ private theorem trace_pi_complex_eq_sum_two_mul_re {ι : Type} [Fintype ι] (f :
   refine Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Use `Prod.ext (funext fun w => ?_) (funext fun w => ?_)` and prove the remaining obligations. Establish `h1` using `h (Pi.single w 1, 0)`. Rewrite `h1` using `[Algebra.trace_prod_apply, trace_pi_real_eq_sum', trace_pi_complex_eq_sum_two_mul_re]`. Simplify `h1` using `[Pi.single_apply]`. Establish `h1` using `h (0, Pi.single w (star (x.2 w)))`.
+
+Rewrite `h1` using `[Algebra.trace_prod_apply, trace_pi_real_eq_sum', trace_pi_complex_eq_sum_two_mul_re]`. Establish `h2 : (x.2 w).re * (x.2 w).re + (x.2 w).im * (x.2 w).im = 0`. Simplify `h1` using `[Pi.single_apply, apply_ite Complex.re, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq', Complex.star_def, Complex.mul_conj]`. Establish `hre : (x.2 w).re = 0` using `by nlinarith [mul_self_nonneg (x.2 w).re, mul_self_nonneg (x.2 w).im]`. Establish `him : (x.2 w).im = 0` using `by nlinarith [mul_self_nonneg (x.2 w).re, mul_self_nonneg (x.2 w).im]`.
+
+Use `show x.2 w = 0`. Conclude with `Complex.ext hre him`.
+-/
 theorem eq_zero_of_trace (x : mixedEmbedding.mixedSpace F)
     (h : ∀ b, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * b) = 0) : x = 0 := by
   refine Prod.ext (funext fun w => ?_) (funext fun w => ?_)
@@ -43,6 +56,17 @@ theorem eq_zero_of_trace (x : mixedEmbedding.mixedSpace F)
     show x.2 w = 0
     exact Complex.ext hre him
 
+/- English proof (translation)
+Simplify using `only [trP, Pi.add_apply, add_mul, Finset.sum_add_distrib, map_add]`. Use `addR := by`. Use `intros`. Simplify using `only [trP, Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add]`. Use `smulL := by`.
+
+Use `intros`. Simplify using `only [trP, Pi.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul, smul_eq_mul]`. Use `smulR := by`. Use `intros`. Simplify using `only [trP, Pi.smul_apply, mul_smul_comm, ← Finset.smul_sum, map_smul, smul_eq_mul]`.
+
+Use `nondegL := by`. Introduce `x hx`. Use function extensionality and compare the values at `i`. Apply `eq_zero_of_trace` to reduce the goal to its premises. Introduce `b`.
+
+Establish `h` using `hx (Pi.single i b)`. Simplify `h` using `[trP, Pi.single_apply, mul_ite, Finset.sum_ite_eq']`. Use `nondegR := by`. Introduce `y hy`. Use function extensionality and compare the values at `i`.
+
+Apply `eq_zero_of_trace` to reduce the goal to its premises. Introduce `b`. Establish `h` using `hy (Pi.single i b)`. Simplify `h` using `[trP, Pi.single_apply, ite_mul, Finset.sum_ite_eq', mul_comm]`.
+-/
 theorem isPairing_trP (κ : Type) [Fintype κ] : IsPairing (trP F κ) where
   addL x x' y := by
     simp only [trP, Pi.add_apply, add_mul, Finset.sum_add_distrib, map_add]
@@ -70,6 +94,15 @@ theorem isPairing_trP (κ : Type) [Fintype κ] : IsPairing (trP F κ) where
     have h := hy (Pi.single i b)
     simpa [trP, Pi.single_apply, ite_mul, Finset.sum_ite_eq', mul_comm] using h
 
+/- English proof (translation)
+Establish `h0L : ∀ y, P 0 y = 0` using `fun y => by`. Establish `h3` using `h.addL 0 0 y`. Simplify using `only [add_zero] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0R : ∀ x, P x 0 = 0` using `fun x => by`.
+
+Establish `h3` using `h.addR x 0 0`. Simplify using `only [add_zero] at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : v.1 = 0` using `h.nondegL _ fun y => by`. Establish `h3 : P v.1 y - P 0 v.2 = 0` using `hv (0, y)`.
+
+Rewrite `h3` using `[h0L, sub_zero]`. Conclude with `h3`. Establish `h2 : v.2 = 0` using `h.nondegR _ fun x => by`. Establish `h3 : P v.1 0 - P x v.2 = 0` using `hv (x, 0)`. Rewrite `h3` using `[h0R, zero_sub, neg_eq_zero]`.
+
+Conclude with `h3`. Conclude with `Prod.ext h1 h2`.
+-/
 theorem omega_nondeg {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {P : V → V → ℝ} (h : IsPairing P)
     (v : V × V) (hv : ∀ w, omega P v w = 0) : v = 0 := by
   have h0L : ∀ y, P 0 y = 0 := fun y => by
@@ -95,8 +128,14 @@ variable (F) in
 def evH : AF F →+* mixedEmbedding.mixedSpace F :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evI_eq (a : AF F) : evI F a = evH F a := rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [evI, realAd]`. Consider the case `(unfold evI realAd; simp)`.
+-/
 theorem evI_realAd (c : ℝ) : evI F (realAd F c) = algebraMap ℝ _ c := by
   first
     | simp [evI, realAd]
@@ -104,21 +143,33 @@ theorem evI_realAd (c : ℝ) : evI F (realAd F c) = algebraMap ℝ _ c := by
 
 variable {κ : Type}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `first`. Consider the case `simp [locV, liftV, evI]`. Consider the case `simp [locV, liftV]`.
+-/
 theorem loc_lift (y : κ → mixedEmbedding.mixedSpace F) : locV (liftV y) = y := by
   funext i
   first
     | simp [locV, liftV, evI]
     | simp [locV, liftV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [locV, Pi.add_apply, evI_eq, map_add]`.
+-/
 theorem loc_add (x y : κ → AF F) : locV (x + y) = locV x + locV y := by
   funext i
   simp only [locV, Pi.add_apply, evI_eq, map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [locV, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[evI_eq, map_mul, ← evI_eq, ← evI_eq, evI_realAd, Algebra.smul_def]`.
+-/
 theorem loc_smul (c : ℝ) (x : κ → AF F) : locV (realAd F c • x) = c • locV x := by
   funext i
   simp only [locV, Pi.smul_apply, smul_eq_mul]
   rw [evI_eq, map_mul, ← evI_eq, ← evI_eq, evI_realAd, Algebra.smul_def]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [liftV, Pi.add_apply, map_add]`. Use `first`. Consider the case `exact Prod.ext rfl (add_zero 0).symm`. Consider the case `exact Prod.ext (by simp) (by simp)`.
+-/
 theorem lift_add (x y : κ → mixedEmbedding.mixedSpace F) : liftV (x + y) = liftV x + liftV y := by
   funext i
   simp only [liftV, Pi.add_apply, map_add]
@@ -126,6 +177,11 @@ theorem lift_add (x y : κ → mixedEmbedding.mixedSpace F) : liftV (x + y) = li
     | exact Prod.ext rfl (add_zero 0).symm
     | exact Prod.ext (by simp) (by simp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Simplify using `only [liftV, realAd, LinearMap.inl_apply, Pi.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `first`.
+
+Consider the case `exact Prod.ext rfl (mul_zero 0).symm`. Consider the case `exact Prod.ext (by simp) (by simp)`.
+-/
 theorem lift_smul (c : ℝ) (x : κ → mixedEmbedding.mixedSpace F) : liftV (c • x) = realAd F c • liftV x := by
   funext i
   rw [Pi.smul_apply, smul_eq_mul]
@@ -135,12 +191,20 @@ theorem lift_smul (c : ℝ) (x : κ → mixedEmbedding.mixedSpace F) : liftV (c 
     | exact Prod.ext rfl (mul_zero 0).symm
     | exact Prod.ext (by simp) (by simp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Simplify using `only [liftV, locV, evI, RingEquiv.symm_apply_apply, realAd, LinearMap.inl_apply, map_one]`. Conclude with `Prod.ext (one_mul _).symm (zero_mul _).symm`.
+-/
 theorem lift_loc (x : κ → AF F) : liftV (locV x) = realAd F 1 • x := by
   funext i
   rw [Pi.smul_apply, smul_eq_mul]
   simp only [liftV, locV, evI, RingEquiv.symm_apply_apply, realAd, LinearMap.inl_apply, map_one]
   exact Prod.ext (one_mul _).symm (zero_mul _).symm
 
+/- English proof (translation)
+Establish `h1 : a.1 = 0`. Establish `h2` using `congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ha`. Simplify using `only [evI, RingEquiv.symm_apply_apply, map_zero] at h2`. Conclude with `h2`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show a.1 * (realAd F 1).1 = 0`. Rewrite using `[h1, zero_mul]`. Use `show a.2 * (realAd F 1).2 = 0`. Simplify using `only [realAd, LinearMap.inl_apply, mul_zero]`.
+-/
 theorem mul_realAd_eq_zero (a : AF F) (ha : evI F a = 0) : a * realAd F 1 = 0 := by
   have h1 : a.1 = 0 := by
     have h2 := congrArg (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm ha
@@ -159,6 +223,11 @@ section Gram
 variable {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
 variable {α β p q : Type} [Fintype α] [Fintype β] [Fintype p] [Fintype q]
 
+/- English proof (translation)
+Unfold `hTens`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
     hTens c JA JB x y = ∑ i, ∑ k, JA i k * (x * JB * (y.map c)ᵀ) i k := by
   unfold hTens
@@ -171,6 +240,9 @@ theorem hTens_eq (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β
   refine Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[hTens_eq]`. Establish `hm : (b * Qᵀ).map c = b.map c * Qᵀ.map c` using `Matrix.map_mul (f := (c : E →+* E))`. Rewrite using `[hm, Matrix.transpose_mul, Matrix.transpose_map, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hTens_mul (JA : Matrix α α E) (JB : Matrix β β E) (P : Matrix β p E) (Q : Matrix β q E)
     (a : Matrix α p E) (b : Matrix α q E) :
     hTens c JA JB (a * Pᵀ) (b * Qᵀ) = ∑ i, ∑ k, JA i k * (a * (Pᵀ * JB * Q.map c) * (b.map c)ᵀ) i k := by
@@ -186,6 +258,11 @@ section Model
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
+/- English proof (translation)
+Establish `hinc : ∀ {p q r : Type} [Fintype q] (A : Matrix p q E) (B : Matrix q r E), incM F (A * B) = incM F A * incM F B` using `fun A B => Matrix.map_mul`. Establish `hincT : ∀ {p q : Type} (A : Matrix p q E), incM F Aᵀ = (incM F A)ᵀ` using `fun A => (Matrix.transpose_map).symm`. Establish `hQ : (incM F Q).map (cA σ) = incM F (Q.map σ)`. Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply]`.
+
+Use `first`. Consider the case `simp [cA, inclR]`. Consider the case `rfl`. Consider the case `simp [cA]`. Rewrite using `[hQ, hinc, hinc, hincT]`.
+-/
 theorem incM_gram {p q k : Type} [Fintype k] (P : Matrix k p E) (J : Matrix k k E) (Q : Matrix k q E) :
     (incM F P)ᵀ * incM F J * (incM F Q).map (cA σ) = incM F (Pᵀ * J * Q.map σ) := by
   have hinc : ∀ {p q r : Type} [Fintype q] (A : Matrix p q E) (B : Matrix q r E),
@@ -200,6 +277,9 @@ theorem incM_gram {p q k : Type} [Fintype k] (P : Matrix k p E) (J : Matrix k k 
       | simp [cA]
   rw [hQ, hinc, hinc, hincT]
 
+/- English proof (translation)
+Simplify using `only [form, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_apply {p q : Type} {m : ℕ} (P : Matrix (Fin m) p E) (J : Matrix (Fin m) (Fin m) E)
     (Q : Matrix (Fin m) q E) (i : p) (j : q) :
     (Pᵀ * J * Q.map σ) i j = form σ J (fun a => P a i) (fun b => Q b j) := by
@@ -213,26 +293,41 @@ def coordI (u : Matrix (Fin n) (Fin d) (AE F E)) :
     (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F) :=
   (locV (M.co.e u).1, locV (M.co.e u).2)
 
+/- English proof (translation)
+Use `first`. Consider the case `simp only [coordI, map_add, Prod.fst_add, Prod.snd_add, loc_add, Prod.mk_add_mk]`. Consider the case `simp [coordI, loc_add]`.
+-/
 theorem coordI_add (u u' : Matrix (Fin n) (Fin d) (AE F E)) : coordI M (u + u') = coordI M u + coordI M u' := by
   first
     | simp only [coordI, map_add, Prod.fst_add, Prod.snd_add, loc_add, Prod.mk_add_mk]
     | simp [coordI, loc_add]
 
+/- English proof (translation)
+Use `first`. Consider the case `simp only [coordI, map_smul, Prod.smul_fst, Prod.smul_snd, loc_smul, Prod.smul_mk]`. Consider the case `simp [coordI, loc_smul]`.
+-/
 theorem coordI_smul (c : ℝ) (u : Matrix (Fin n) (Fin d) (AE F E)) :
     coordI M (realAd F c • u) = c • coordI M u := by
   first
     | simp only [coordI, map_smul, Prod.smul_fst, Prod.smul_snd, loc_smul, Prod.smul_mk]
     | simp [coordI, loc_smul]
 
+/- English proof (translation)
+Rewrite using `[coordI_smul, one_smul]`.
+-/
 theorem coordI_one (u : Matrix (Fin n) (Fin d) (AE F E)) : coordI M (realAd F 1 • u) = coordI M u := by
   rw [coordI_smul, one_smul]
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [coordI, loc_lift]`. Consider the case `simp only [coordI, LinearEquiv.apply_symm_apply, loc_lift, Prod.mk.eta]`.
+-/
 theorem coordI_lift (v : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) :
     coordI M (M.co.e.symm (liftV v.1, liftV v.2)) = v := by
   first
     | simp [coordI, loc_lift]
     | simp only [coordI, LinearEquiv.apply_symm_apply, loc_lift, Prod.mk.eta]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [coordI, lift_loc, lift_loc, ← Prod.smul_mk, Prod.mk.eta, ← map_smul, LinearEquiv.symm_apply_apply])`. Consider the case `simp [coordI, lift_loc, ← map_smul]`.
+-/
 theorem lift_coordI (u : Matrix (Fin n) (Fin d) (AE F E)) :
     M.co.e.symm (liftV (coordI M u).1, liftV (coordI M u).2) = realAd F 1 • u := by
   first
@@ -241,18 +336,27 @@ theorem lift_coordI (u : Matrix (Fin n) (Fin d) (AE F E)) :
 
 abbrev sympM (X : Spc F E n) (W : Spc F E d) := symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F W.J)
 
+/- English proof (translation)
+Rewrite using `[show sympM (σ := σ) X W u u' = _ from M.co.form u u']`. Simplify using `only [omega, trP, coordI, locV, dotProduct, map_sub, map_sum, map_mul, evI_eq]`.
+-/
 theorem omega_coordI (u u' : Matrix (Fin n) (Fin d) (AE F E)) :
     omega (trP F (Fin n × Fin d)) (coordI M u) (coordI M u') =
       Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evH F (sympM (σ := σ) X W u u')) := by
   rw [show sympM (σ := σ) X W u u' = _ from M.co.form u u']
   simp only [omega, trP, coordI, locV, dotProduct, map_sub, map_sum, map_mul, evI_eq]
 
+/- English proof (translation)
+Simplify using `only [sympM]`. Unfold `symp hTens`. Simplify using `only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem sympM_add_right (M : Model σ X W) (u v v' : Matrix (Fin n) (Fin d) (AE F E)) :
     sympM (σ := σ) X W u (v + v') = sympM (σ := σ) X W u v + sympM (σ := σ) X W u v' := by
   simp only [sympM]
   unfold symp hTens
   simp only [Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `h1` using `M.co.form u v`. Establish `h2` using `M.co.form v u`. Simplify using `only [sympM]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sympM_anti (M : Model σ X W) (u v : Matrix (Fin n) (Fin d) (AE F E)) :
     sympM (σ := σ) X W u v = -sympM (σ := σ) X W v u := by
   have h1 := M.co.form u v
@@ -261,6 +365,9 @@ theorem sympM_anti (M : Model σ X W) (u v : Matrix (Fin n) (Fin d) (AE F E)) :
   rw [h1, h2]
   ring
 
+/- English proof (translation)
+Simplify using `only [sympM]`. Unfold `symp`. Rewrite using `[hTens_mul, incM_gram, h]`. Simplify using `[incM, Matrix.map_zero]`.
+-/
 theorem sympM_eq_zero {p q : Type} [Fintype p] [Fintype q] (P : Matrix (Fin d) p E) (Q : Matrix (Fin d) q E)
     (h : Pᵀ * W.J * Q.map σ = 0) (a : Matrix (Fin n) p (AE F E)) (b : Matrix (Fin n) q (AE F E)) :
     sympM (σ := σ) X W (a * (incM F P)ᵀ) (b * (incM F Q)ᵀ) = 0 := by
@@ -276,11 +383,17 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Matrix.map_one _ (map_zero _) (map_one _)`. Consider the case `(ext i j; simp [incM, Matrix.one_apply]; split_ifs <;> simp)`.
+-/
 theorem incM_one' : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := by
   first
     | exact Matrix.map_one _ (map_zero _) (map_one _)
     | (ext i j; simp [incM, Matrix.one_apply]; split_ifs <;> simp)
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `first`. Consider the case `simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM, incV]`. Consider the case `simp [Matrix.vecMulVec_apply, Matrix.mul_apply, incM]`.
+-/
 theorem vecMulVec_eq_mul (y : Fin n → AE F E) (x : Fin d → E) :
     Matrix.vecMulVec y (incV F x) = Matrix.replicateCol Unit y * (incM F (Matrix.replicateCol Unit x))ᵀ := by
   ext i j
@@ -290,18 +403,27 @@ theorem vecMulVec_eq_mul (y : Fin n → AE F E) (x : Fin d → E) :
 
 variable {B : Base F E} {r' s' i₀ i₁ : ℕ} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Conclude with `hA.xx`.
+-/
 theorem gram_xx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     (Matrix.replicateCol Unit H'.x)ᵀ * W.J * (Matrix.replicateCol Unit H'.x).map σ = 0 := by
   ext i j
   rw [gram_apply, Matrix.zero_apply]
   exact hA.xx
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Conclude with `hA.yy`.
+-/
 theorem gram_yy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     (Matrix.replicateCol Unit H'.y)ᵀ * W.J * (Matrix.replicateCol Unit H'.y).map σ = 0 := by
   ext i j
   rw [gram_apply, Matrix.zero_apply]
   exact hA.yy
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Establish `h` using `(hA.orth (Pi.single i 1)).1`. Rewrite `h` using `[Matrix.mulVec_single_one]`. Conclude with `h`.
+-/
 theorem gram_ιx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     H'.ιᵀ * W.J * (Matrix.replicateCol Unit H'.x).map σ = 0 := by
   ext i j
@@ -310,6 +432,9 @@ theorem gram_ιx (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
   rw [Matrix.mulVec_single_one] at h
   exact h
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Establish `h` using `(hA.orth (Pi.single i 1)).2`. Rewrite `h` using `[Matrix.mulVec_single_one]`. Conclude with `h`.
+-/
 theorem gram_ιy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     H'.ιᵀ * W.J * (Matrix.replicateCol Unit H'.y).map σ = 0 := by
   ext i j
@@ -318,6 +443,15 @@ theorem gram_ιy (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
   rw [Matrix.mulVec_single_one] at h
   exact h
 
+/- English proof (translation)
+Establish `htop : Submodule.span E (W.L : Set (Fin d → E)) = ⊤` using `hS.lat.span_eq_top`. Establish `hz : z ∈ Submodule.span E (W.L : Set (Fin d → E))`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem w hw`. Take `⟨s, t, u, -, -, -, h⟩` from `hA.split w hw`. Conclude with `⟨s, t, u, h⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨s, t, u, rfl⟩` from `ha`. Take `⟨s', t', u', rfl⟩` from `hb`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add, add_smul, add_smul]; abel⟩`. Consider the case `smul c a _ ha`. Take `⟨s, t, u, rfl⟩` from `ha`.
+
+Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, smul_smul, smul_smul]⟩`.
+-/
 theorem span_plane (hS : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁) (z : Fin d → E) :
     ∃ (s t : E) (u : Fin d₁ → E), z = s • H'.x + H'.ι *ᵥ u + t • H'.y := by
   have htop : Submodule.span E (W.L : Set (Fin d → E)) = ⊤ := hS.lat.span_eq_top
@@ -345,6 +479,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 variable {B : Base F E} {r' s' i₀ i₁ : ℕ} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Use `choose s t u hsu using fun i : Fin d => span_plane hS hA (Pi.single i 1)`. Establish `hone : (1 : Matrix (Fin d) (Fin d) E) = Matrix.of (fun i (_ : Unit) => s i) * (Matrix.replicateCol Unit H'.x)ᵀ + Matrix.of (fun i k => u i k) * H'.ιᵀ + Matrix.of (fun i (_ : Unit) => t i) * (Matrix.replicateCol Unit H'.y)ᵀ`. Use extensionality with `i j`. Establish `h` using `congrFun (hsu i) j`. Simplify using `only [Pi.single_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct] at h`.
+
+Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.replicateCol_apply, Finset.univ_unique, Finset.sum_singleton, Matrix.one_apply]`. Establish `e1 : (if i = j then (1 : E) else 0) = if j = i then 1 else 0`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, eq_comm]`. Rewrite using `[e1, h]`. Use `first`.
+
+Consider the case `(congr 2; exact Finset.sum_congr rfl fun k _ => mul_comm _ _)`. Consider the case `simp only [mul_comm]`. Consider the case `ring`. Use `⟨Matrix.of (fun i (_ : Unit) => s i), Matrix.of (fun i k => u i k), Matrix.of (fun i (_ : Unit) => t i), fun w => ?_⟩` and prove the remaining obligations. Establish `hinc : ∀ {p q r : Type} [Fintype q] (A : Matrix p q E) (B : Matrix q r E), incM F (A * B) = incM F A * incM F B` using `fun A B => Matrix.map_mul`.
+
+Establish `hincT : ∀ {p q : Type} (A : Matrix p q E), incM F Aᵀ = (incM F A)ᵀ` using `fun A => (Matrix.transpose_map).symm`. Establish `hincA : ∀ {p q : Type} (A B : Matrix p q E), incM F (A + B) = incM F A + incM F B` using `fun A B => Matrix.map_add _ (map_add _) A B`. Simplify using `only [Matrix.mul_assoc, ← hincT, ← hinc, ← Matrix.mul_add, ← hincA, ← hone, incM_one', Matrix.mul_one]`.
+-/
 theorem decomp (hS : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁) :
     ∃ (Sc : Matrix (Fin d) Unit E) (Uc : Matrix (Fin d) (Fin d₁) E) (Tc : Matrix (Fin d) Unit E),
       ∀ u : Matrix (Fin n) (Fin d) (AE F E), u = u * incM F Sc * (incM F (Matrix.replicateCol Unit H'.x))ᵀ +

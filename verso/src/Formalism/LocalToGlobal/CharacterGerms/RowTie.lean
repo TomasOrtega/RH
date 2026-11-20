@@ -14,17 +14,28 @@ namespace RawChart
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ]
   (X : RawChart C d I κ) {V : VF C}
 
+/- English proof (translation)
+Unfold `pairK`. Use `split_ifs`. Conclude with `(VF.ge_natCast X.k).neg`. Conclude with `VF.Ge.zero 0`.
+-/
 theorem pairK_int (g : Fin 2) (q : JJ I g) (c : I (1 - g)) : V.Ge 0 (X.pairK g q c) := by
   unfold pairK
   split_ifs
   · exact (VF.ge_natCast X.k).neg
   · exact VF.Ge.zero 0
 
+/- English proof (translation)
+Introduce `h`. Rewrite `hk` using `[h, V.v.map_zero]`. Conclude with `WithTop.top_ne_zero hk`.
+-/
 theorem k_ne_zero (hk : V.v (X.k : C) = 0) : (X.k : C) ≠ 0 := by
   intro h
   rw [h, V.v.map_zero] at hk
   exact WithTop.top_ne_zero hk
 
+/- English proof (translation)
+Establish `h1 : V.v ((X.k : C) * (X.k : C)⁻¹) = 0`. Rewrite using `[mul_inv_cancel₀ (X.k_ne_zero hk), V.v.map_one]`. Rewrite `h1` using `[V.v.map_mul, hk, zero_add]`. Unfold `VF.Ge`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem k_inv_int (hk : V.v (X.k : C) = 0) : V.Ge 0 ((X.k : C)⁻¹) := by
   have h1 : V.v ((X.k : C) * (X.k : C)⁻¹) = 0 := by
     rw [mul_inv_cancel₀ (X.k_ne_zero hk), V.v.map_one]
@@ -33,6 +44,11 @@ theorem k_inv_int (hk : V.v (X.k : C) = 0) : V.Ge 0 ((X.k : C)⁻¹) := by
   rw [h1]
   rfl
 
+/- English proof (translation)
+Use `⟨fun c q => if c = q then -(X.k : C)⁻¹ else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `c q dsimp only split_ifs`. Conclude with `(X.k_inv_int hk).neg`. Conclude with `VF.Ge.zero 0`. Introduce `q q'`.
+
+Establish `hk0` using `X.k_ne_zero hk`. Simplify using `only [pairK, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem pairK_onto (hk : V.v (X.k : C) = 0) (g : Fin 2) :
     ∃ s : I (1 - g) → JJ I g → C, (∀ c q, V.Ge 0 (s c q)) ∧
       ∀ q q' : JJ I g, ∑ c, X.pairK g q c * s c q' = if q = q' then 1 else 0 := by
@@ -49,6 +65,11 @@ theorem pairK_onto (hk : V.v (X.k : C) = 0) (g : Fin 2) :
     · field_simp
     · simp
 
+/- English proof (translation)
+Distinguish the cases in `hb : X.big g a`. Establish `h1 : ¬ X.big (1 - g) a` using `fun h => (H.big_compl g a).1 h hb`. Rewrite using `[H.rk_big g a hb, H.rk_small (1 - g) a h1]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : X.big (1 - g) a` using `(H.big_compl g a).2 hb`.
+
+Rewrite using `[H.rk_small g a hb, H.rk_big (1 - g) a h1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rk_fil (H : X.RankHyp) (g : Fin 2) (a : ZMod d) :
     (Finset.univ.filter fun q : I (1 - g) => X.ty (1 - g) q = a).card + 0 +
       (Finset.univ.filter fun c : I g => X.ty g c = a).card = X.n + X.j + X.j' := by
@@ -60,6 +81,11 @@ theorem rk_fil (H : X.RankHyp) (g : Fin 2) (a : ZMod d) :
     rw [H.rk_small g a hb, H.rk_big (1 - g) a h1]
     omega
 
+/- English proof (translation)
+Establish `h2 : (∀ w ∈ μ.support, w.1 = 0) ∨ (∀ w ∈ μ.support, w.1 = 1)` using `by fin_cases g`. Conclude with `h`. Conclude with `h.symm`. Use `show (if ∀ w ∈ μ.support, X.OnLf g a a' w then MvPowerSeries.coeff μ X.hRow else 0) = 0`. Rewrite using `[H μ h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hLf_axes (H : X.AxesSt) (g : Fin 2) (a a' : ZMod d) (μ : WV I →₀ ℕ)
     (h : (∀ w ∈ μ.support, w.1 = g) ∨ (∀ w ∈ μ.support, w.1 = 1 - g)) :
     MvPowerSeries.coeff μ (X.hLf g a a') = 0 := by

@@ -18,6 +18,9 @@ def EvLgEx (p : Ctx → ∀ B : Base, Fr B.toPre → FieldDat B.toPre → TwDat 
 
 def qb (ι : Qb →+* ℂ) (M : IntermediateField ℚ ℂ) : Fld := M.comap ι.toRatAlgHom
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_qb {ι : Qb →+* ℂ} {M : IntermediateField ℚ ℂ} {x : Qb} : x ∈ qb ι M ↔ ι x ∈ M := Iff.rfl
 
 abbrev KC (d : ℕ) : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ {GlobalTheory.Published.sqrtNegNat d}
@@ -35,12 +38,18 @@ structure TupPins {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C
     ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal ^ 2 ∧ ∀ k, ¬ OverP D.host (D.host.g k) v
   atl : ∀ w v, OverP D.host (D.what₂.places.resChar w) v → (Tp.xi (D.what₂.muAt w)).UnrAt v
 
+/- English proof (translation)
+Unfold `ExFld at h`. Substitute `h` using the available equality. Conclude with `⟨le_rfl, hO⟩`.
+-/
 theorem ExFld.recFld {B : Pre} {f : Fr B} {δ : FieldDat B} {F : IntermediateField ℚ ℂ} (h : ExFld B f δ F)
     (hO : listField δ f ≤ δ.Om) : RecFld B f δ F := by
   unfold ExFld at h
   subst h
   exact ⟨le_rfl, hO⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (B : Base) (f : Fr B.toPre) (δ : FieldDat B.toPre) : ExFld B.toPre f δ B.KsC ↔ B.KsExact δ f := Iff.rfl
 
 end GlobalTheory.Mem.HD

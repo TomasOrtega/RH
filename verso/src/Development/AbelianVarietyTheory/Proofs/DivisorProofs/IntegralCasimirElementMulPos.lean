@@ -6,6 +6,25 @@ namespace GlobalTheory.CasimirOrder
 
 open Matrix
 
+/- English proof (translation)
+Introduce `u hu`. Use `set A := (gram (⇑x) s φ).adjugate with hA`. Use `set y : Fin r → O := fun i => x i * u with hy`. Use `set H : Matrix (Fin r) (Fin r) ℝ := Matrix.of fun i j => ((form s φ (y i) (y j) : ℤ) : ℝ) with hHdef`. Establish `key : φ (s (casimir (⇑x) s φ * u) * u) = ∑ i, ∑ j, A i j * form s φ (y j) (y i)`.
+
+Rewrite using `[hs]`. Unfold `casimir`. Simplify using `only [map_sum, map_zsmul, hs, hss, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, form_apply, hy, smul_eq_mul, hA]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+
+Establish `hnn : ∀ w, 0 ≤ form s φ w w`. Introduce `w`. Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`. Conclude with `(hp w hw).le`.
+
+Establish `hHpsd : H.PosSemidef` using `GlobalTheory.gram_posSemidef_of_int_form (form s φ) (form_symm hs hss hφs) hnn y`. Establish `hP : (A.map (Int.cast : ℤ → ℝ)).PosDef`. Establish `h1` using `posDef_gram x (form s φ) (form_symm hs hss hφs) (fun w hw => by simpa using hp w hw)`. Establish `e : A.map (Int.cast : ℤ → ℝ) = ((Matrix.of fun i j : Fin r => form s φ (x i) (x j)).map (Int.cast : ℤ → ℝ)).adjugate`. Rewrite using `[hA, gram_eq]`.
+
+Conclude with `(RingHom.map_adjugate (Int.castRingHom ℝ) (Matrix.of fun i j : Fin r => form s φ (x i) (x j)))`. Rewrite using `[e]`. Conclude with `adjugate_posDef h1`. Establish `hy0 : ∃ i, y i ≠ 0`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Apply `hu` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hH0 : H ≠ 0`. Take `⟨i, hi⟩` from `hy0`.
+
+Introduce `h`. Establish `h3` using `hp _ hi`. Establish `h2` using `congrFun (congrFun h i) i`. Rewrite `h2` using `[hHdef]`. Simplify using `only [of_apply, form_apply, Matrix.zero_apply, Int.cast_eq_zero] at h2`.
+
+Use linear arithmetic over natural numbers and integers. Establish `ht` using `trace_mul_pos_real hP hHpsd hH0`. Establish `e : (A.map (Int.cast : ℤ → ℝ) * H).trace = ((∑ i, ∑ j, A i j * form s φ (y j) (y i) : ℤ) : ℝ)`. Simplify using `[Matrix.trace, Matrix.mul_apply, hHdef]`. Rewrite `ht` using `[e]`.
+
+Rewrite using `[key]`. Conclude with `ht` after adjusting the coercions.
+-/
 theorem casimir_mul_pos {O : Type} [Ring O] {r : ℕ} (x : Module.Basis (Fin r) ℤ O) (s : O →+ O)
     (φ : O →+ ℤ) (hs : ∀ a b, s (a * b) = s b * s a) (hss : ∀ a, s (s a) = a)
     (_hφc : ∀ a b, φ (a * b) = φ (b * a)) (hφs : ∀ a, φ (s a) = φ a)

@@ -20,26 +20,55 @@ section Maps
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem translPt_eq (x : T ⟶ A) : translPt A x = (fst T A ≫ x) * snd T A := rfl
 
+/- English proof (translation)
+Unfold `translT`. Rewrite using `[lift_snd, translPt_eq]`.
+-/
 theorem translT_snd (x : T ⟶ A) : translT A x ≫ snd T A = (fst T A ≫ x) * snd T A := by unfold translT; rw [lift_snd, translPt_eq]
 
+/- English proof (translation)
+Unfold `translT`. Conclude with `lift_fst _ _`.
+-/
 theorem translT_fst (x : T ⟶ A) : translT A x ≫ fst T A = fst T A := by unfold translT; exact lift_fst _ _
 
+/- English proof (translation)
+Unfold `negT`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem negT_snd : negT A T ≫ snd T A = (snd T A)⁻¹ := by unfold negT; rw [lift_snd]; rfl
 
+/- English proof (translation)
+Unfold `negT`. Conclude with `lift_fst _ _`.
+-/
 theorem negT_fst : negT A T ≫ fst T A = fst T A := by unfold negT; exact lift_fst _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem snd_inv : snd T A ≫ (GrpObj.inv : A ⟶ A) = (snd T A)⁻¹ := rfl
 
+/- English proof (translation)
+Rewrite using `[translPt_eq, comp_mul, ← Category.assoc, translT_fst, translT_snd, GrpObj.comp_inv, mul_inv_cancel_left]`.
+-/
 theorem translT_inv_translPt (x : T ⟶ A) : translT A x⁻¹ ≫ translPt A x = snd T A := by rw [translPt_eq, comp_mul, ← Category.assoc, translT_fst, translT_snd, GrpObj.comp_inv, mul_inv_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[translPt_eq, comp_mul, ← Category.assoc, negT_fst, negT_snd, ← Category.assoc, translT_snd, ← Hom.inv_def, mul_inv_rev, GrpObj.comp_inv, inv_inv]`. Conclude with `mul_comm _ _`.
+-/
 theorem negT_translPt [IsCommMonObj A] (x : T ⟶ A) :
     negT A T ≫ translPt A x = translT A x⁻¹ ≫ (snd T A ≫ (GrpObj.inv : A ⟶ A)) := by
   rw [translPt_eq, comp_mul, ← Category.assoc, negT_fst, negT_snd, ← Category.assoc, translT_snd, ← Hom.inv_def,
     mul_inv_rev, GrpObj.comp_inv, inv_inv]
   exact mul_comm _ _
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, translT_fst]`. Unfold `ptSecT`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, translT_snd, comp_mul, ← Category.assoc]`.
+
+Unfold `ptSecT`. Simplify using the standard rewrite rules.
+-/
 theorem ptSecT_translT (a x : T ⟶ A) : ptSecT A a ≫ translT A x = ptSecT A (x * a) := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [Category.assoc, translT_fst]
@@ -49,6 +78,11 @@ theorem ptSecT_translT (a x : T ⟶ A) : ptSecT A a ≫ translT A x = ptSecT A (
     unfold ptSecT
     simp
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, negT_fst]`. Unfold `ptSecT`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, negT_snd, GrpObj.comp_inv]`.
+
+Unfold `ptSecT`. Simplify using the standard rewrite rules.
+-/
 theorem ptSecT_negT (a : T ⟶ A) : ptSecT A a ≫ negT A T = ptSecT A a⁻¹ := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [Category.assoc, negT_fst]
@@ -64,16 +98,29 @@ section Frame
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ} (Φ : AnFr A L x0 g)
 
+/- English proof (translation)
+Establish `h` using `Φ.e_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := Φ.e 0) (by rw [_root_.mul_one]; exact h.symm)`.
+-/
 theorem e_zero : Φ.e 0 = 1 := by
   have h := Φ.e_add 0 0
   rw [add_zero] at h
   exact mul_left_cancel (a := Φ.e 0) (by rw [_root_.mul_one]; exact h.symm)
 
+/- English proof (translation)
+Establish `h` using `Φ.e_add (-z) z`. Rewrite `h` using `[neg_add_cancel, GlobalTheory.AnValSym.e_zero Φ]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+-/
 theorem e_neg (z : Fin g → ℂ) : Φ.e (-z) = (Φ.e z)⁻¹ := by
   have h := Φ.e_add (-z) z
   rw [neg_add_cancel, GlobalTheory.AnValSym.e_zero Φ] at h
   exact eq_inv_of_mul_eq_one_left h.symm
 
+/- English proof (translation)
+Introduce `U f`. Take `⟨ho, hd⟩` from `he (h ⁻¹ᵁ U) (h.app U f)`. Establish `hv : ∀ z, valAt' (e z ≫ h) U f = valAt' (e z) (h ⁻¹ᵁ U) (h.app U f)`. Introduce `z`. Unfold `valAt'`.
+
+Distinguish the cases in `hz : ⊤ ≤ e z ⁻¹ᵁ (h ⁻¹ᵁ U)`. Rewrite using `[dif_pos hz, dif_pos (by exact hz)]`. Unfold `valAt`. Both sides reduce to the same expression. Rewrite using `[dif_neg hz, dif_neg (by exact hz)]`.
+
+Use `⟨ho, ?_⟩` and prove the remaining obligations. Simplify using `only [hv]`. Conclude with `hd`.
+-/
 private theorem isHolFam_comp' {Y Y' : Scheme.{0}} {n : ℕ} {e : (Fin n → ℂ) → (Sp ℂ ⟶ Y)} (he : IsHolFam e)
     (h : Y ⟶ Y') : IsHolFam (fun z => e z ≫ h) := by
   intro U f
@@ -90,6 +137,17 @@ private theorem isHolFam_comp' {Y Y' : Scheme.{0}} {n : ℕ} {e : (Fin n → ℂ
   simp only [hv]
   exact hd
 
+/- English proof (translation)
+Establish `hA : ∀ z, (Φ.e z).left ≫ A.hom = x0` using `fun z => Over.w (Φ.e z)`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolFam_vtfLift A.hom x0 (fun z => (Φ.e z).left) hA Φ.hol`. Apply the tactic sequence `have h2 := isHolFam_comp' h1 (pullbackSymmetry A.hom x0).hom`. Apply the tactic sequence `have key : (fun z => ((ptSecT A (Φ.e z)).left : Sp ℂ ⟶ (Over.mk x0 ⊗ A).left)) = fun z => ReciprocityTheory.ChartRestriction.G.PullbackSections.vtfLift A.hom x0 (fun z => (Φ.e z).left) hA z ≫ (pullbackSymmetry A.hom x0).hom := by`. Use function extensionality and compare the values at `z`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h` using `congrArg Over.Hom.left (show ptSecT A (Φ.e z) ≫ fst (Over.mk x0) A = 𝟙 _ by`. Unfold `ptSecT`. Conclude with `lift_fst _ _)`. Rewrite `h` using `[Over.comp_left]`.
+
+Simplify using `only [Over.mk_hom, Category.assoc, pullbackSymmetry_hom_comp_fst]`. Unfold `ReciprocityTheory.ChartRestriction.G.PullbackSections.vtfLift`. Rewrite using `[pullback.lift_snd]`. Conclude with `h`. Establish `h` using `congrArg Over.Hom.left (show ptSecT A (Φ.e z) ≫ snd (Over.mk x0) A = Φ.e z by`.
+
+Unfold `ptSecT`. Conclude with `lift_snd _ _)`. Rewrite `h` using `[Over.comp_left]`. Simplify using `only [Over.mk_hom, Category.assoc, pullbackSymmetry_hom_comp_snd]`. Unfold `ReciprocityTheory.ChartRestriction.G.PullbackSections.vtfLift`.
+
+Rewrite using `[pullback.lift_fst]`. Conclude with `h`. Rewrite using `[key]`. Conclude with `h2`.
+-/
 theorem hol_ptSecT : IsHolFam (fun z => ((ptSecT A (Φ.e z)).left : Sp ℂ ⟶ (Over.mk x0 ⊗ A).left)) := by
   have hA : ∀ z, (Φ.e z).left ≫ A.hom = x0 := fun z => Over.w (Φ.e z)
   have h1 := ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolFam_vtfLift A.hom x0 (fun z => (Φ.e z).left) hA Φ.hol
@@ -117,6 +175,9 @@ theorem hol_ptSecT : IsHolFam (fun z => ((ptSecT A (Φ.e z)).left : Sp ℂ ⟶ (
   rw [key]
   exact h2
 
+/- English proof (translation)
+Use `⟨fun k => k.elim, fun j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, _root_.mul_one]`. Unfold `LB.oneGen`. Conclude with `ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_one q _ hj`.
+-/
 theorem genRd_one {Z : Scheme.{0}} (q : Sp ℂ ⟶ Z) :
     Φ.GenRd (K := PEmpty) PEmpty.elim PEmpty.elim (LB.oneGen L.L) q PEmpty.elim 1 := by
   refine ⟨fun k => k.elim, fun j hj => ?_⟩
@@ -124,6 +185,19 @@ theorem genRd_one {Z : Scheme.{0}} (q : Sp ℂ ⟶ Z) :
   unfold LB.oneGen
   exact ReciprocityTheory.ChartRestriction.G.TB.ValAt.valAt'_one q _ hj
 
+/- English proof (translation)
+Establish `hq : ∀ z, (ptSecT A (Φ.e z)).left ≫ (snd (Over.mk x0) A).left = (Φ.e z).left` using `fun z => by`. Rewrite using `[← Over.comp_left]`. Unfold `ptSecT`. Rewrite using `[lift_snd]`. Establish `hq' : ∀ z, (ptSecT A (Φ.e z)).left ≫ (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left = (Φ.e (-z)).left` using `fun z => by`.
+
+Rewrite using `[← Over.comp_left, ← Category.assoc]`. Unfold `ptSecT`. Rewrite using `[lift_snd, ← Hom.inv_def, e_neg Φ z]`. Establish `hmap : ∀ (z : Fin g → ℂ) (i : Fin 2), (ptSecT A (Φ.e z)).left ≫ (![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left] : Fin 2 → _) i = (Φ.e ((![LinearMap.id, -LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) i z)).left`. Introduce `z i`.
+
+Use `fin_cases i`. Simplify using `using hq z`. Simplify using `using hq' z`. Establish `hper : ∀ gm ∈ Φ.lat, (∀ z, (ptSecT A (Φ.e (z + gm))).left = (ptSecT A (Φ.e z)).left) ∧ ∀ i, (![LinearMap.id, -LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) i gm ∈ Φ.lat`. Introduce `gm hgm`.
+
+Use `⟨fun z => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Φ.e_add, (Φ.e_ker gm).2 hgm, _root_.mul_one]`. Use `fin_cases i`. Simplify using `using hgm`. Simplify using `using Φ.lat.neg_mem hgm`.
+
+Establish `hherm : ∀ z w, ∑ i, ((![k, -k] : Fin 2 → ℤ) i : ℂ) * hermForm Φ.Hm ((![LinearMap.id, -LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) i z) ((![LinearMap.id, -LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) i w) = 0`. Introduce `z w`. Simplify using `[Fin.sum_univ_two, hermForm, Matrix.mulVec_neg]`. Take `⟨⟨v, hv, hR⟩, -⟩` from `GlobalTheory.AnVal.genRd_const S A L x0 g Φ _ (Fin 2) ![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left] ![k, -k] nu hnu g (fun z => (ptSecT A (Φ.e z)).left) ![LinearMap.id, -LinearMap.id] Φ.lat (hol_ptSecT Φ) hmap Φ.span hper hherm`. Use `⟨v, hv, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `e2 : (fun i => (![LinearMap.id, -LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) i z) = ![z, -z]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Establish `h2` using `hR z`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis.
+-/
 theorem neg_const [IsCommMonObj A] (k : ℤ) (nu : LB.Gen (negLB A L.L k (Over.mk x0))) (hnu : nu.IsGen) :
     ∃ v : ℂ, v ≠ 0 ∧ ∀ z, Φ.GenRd (K := Fin 2)
       ![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left] ![k, -k] nu
@@ -169,6 +243,37 @@ theorem neg_const [IsCommMonObj A] (k : ℤ) (nu : LB.Gen (negLB A L.L k (Over.m
 
 end Frame
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ k U x c hT hc`. Take `⟨nu, hnu, hcorr⟩` from `hc`. Unfold `symGen at hcorr`. Take `⟨hpt, hU⟩` from `hT`. Take `⟨v, hv, hnuR⟩` from `neg_const Φ k nu hnu`.
+
+Establish `e0 : Φ.e 0 = 1` using `e_zero Φ`. Establish `hx' : Φ.e (-x) = U.pt⁻¹` using `by rw [e_neg, hpt]`. Establish `hp1 : (ptSecT A (Φ.e 0)).left ≫ (translT A U.pt⁻¹).left = (ptSecT A (Φ.e (-x))).left`. Rewrite using `[← Over.comp_left, ptSecT_translT, e0, _root_.mul_one, hx']`. Establish `hp3 : (ptSecT A (Φ.e 0)).left ≫ (negT A (Over.mk x0)).left = (ptSecT A (Φ.e 0)).left`.
+
+Rewrite using `[← Over.comp_left, ptSecT_negT, e0, inv_one]`. Establish `R1` using `(GlobalTheory.AnVal.AnFr.genRd_pullGen_iff Φ ![(snd (Over.mk x0) A).left, (translPt A U.pt).left] ![k, -k] U.φ (translT A U.pt⁻¹).left (ptSecT A (Φ.e 0)).left ![-x, x + -x] (c * fock Φ.Hm k x (fun _ => 1) (-x))).2 (by rw [hp1]; exact hU (-x))`. Establish `R2` using `hnuR 0`. Establish `R3` using `(GlobalTheory.AnVal.AnFr.genRd_pullGen_iff Φ ![(snd (Over.mk x0) A).left, (translPt A U.pt).left] ![k, -k] U.φ (negT A (Over.mk x0)).left (ptSecT A (Φ.e 0)).left ![0, x + 0] (c * fock Φ.Hm k x (fun _ => 1) 0)).2 (by rw [hp3]; exact hU 0)`. Establish `R4a` using `(GlobalTheory.AnVal.AnFr.genRd_pullGen_iff Φ ![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left] ![k, -k] nu (translT A U.pt⁻¹).left (ptSecT A (Φ.e 0)).left ![-x, -(-x)] v).2 (by rw [hp1]; exact hnuR (-x))`.
+
+Establish `G` using `GlobalTheory.AnValGenCorr.genRd_corr_mul_inv S A L x0 g Φ`. Establish `R4` using `(G _ _ _ _ _ _ _ _ _ _ _ _ _ _ R4a R4a).2.2.2`. Establish `M1` using `(G _ _ _ _ _ _ _ _ _ _ _ _ _ _ R1 R2).2.2.1`. Establish `M2` using `(G _ _ _ _ _ _ _ _ _ _ _ _ _ _ R3 R4).2.2.1`. Establish `MT` using `(G _ _ _ _ _ _ _ _ _ _ _ _ _ _ M1 M2).2.2.1`.
+
+Establish `O` using `genRd_one Φ (ptSecT A (Φ.e 0)).left`. Take `⟨J, hJc, hJ⟩` from `(G _ _ _ _ _ _ _ _ _ _ _ _ _ _ MT O).1 hcorr`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Finset.univ_eq_empty, Finset.prod_empty, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, _root_.mul_one] at hJ`. Establish `m2 : (translT A U.pt⁻¹).left ≫ (translPt A U.pt).left = (snd (Over.mk x0) A).left`. Rewrite using `[← Over.comp_left, translT_inv_translPt]`.
+
+Establish `m5 : (negT A (Over.mk x0)).left ≫ (snd (Over.mk x0) A).left = (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left`. Rewrite using `[← Over.comp_left, negT_snd, snd_inv]`. Establish `m6 : (negT A (Over.mk x0)).left ≫ (translPt A U.pt).left = (translT A U.pt⁻¹).left ≫ (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left`. Rewrite using `[← Over.comp_left, negT_translPt, Over.comp_left]`. Simplify using `only [m2, m5, m6, add_neg_cancel, neg_zero, add_zero, neg_neg] at hJ`.
+
+Establish `pt1 : (ptSecT A (Φ.e 0)).left ≫ ((translT A U.pt⁻¹).left ≫ (snd (Over.mk x0) A).left) = (Φ.e (-x)).left`. Rewrite using `[← Category.assoc, hp1, ← Over.comp_left]`. Unfold `ptSecT`. Rewrite using `[lift_snd]`. Establish `pt2 : (ptSecT A (Φ.e 0)).left ≫ (snd (Over.mk x0) A).left = (Φ.e 0).left`.
+
+Rewrite using `[← Over.comp_left]`. Unfold `ptSecT`. Rewrite using `[lift_snd]`. Establish `pt3 : (ptSecT A (Φ.e 0)).left ≫ (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left = (Φ.e 0).left`. Rewrite using `[← Over.comp_left, ← Category.assoc]`.
+
+Unfold `ptSecT`. Rewrite using `[lift_snd, ← Hom.inv_def, e0, inv_one]`. Establish `pt4 : (ptSecT A (Φ.e 0)).left ≫ ((translT A U.pt⁻¹).left ≫ (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left) = (Φ.e x).left`. Rewrite using `[← Category.assoc, hp1, ← Over.comp_left, ← Category.assoc]`. Unfold `ptSecT`.
+
+Rewrite using `[lift_snd, ← Hom.inv_def, ← e_neg Φ, neg_neg]`. Establish `hF : ∀ ψ p, (ptSecT A (Φ.e 0)).left ≫ ψ = (Φ.e p).left → Φ.fr (J ψ) p ^ k ≠ 0` using `fun ψ p h => zpow_ne_zero _ (Φ.fr_ne _ _ (by rw [← h]; exact hJc ψ))`. Establish `n1` using `hF _ (-x) pt1`. Establish `n2` using `hF _ 0 pt2`. Establish `n3` using `hF _ 0 pt3`.
+
+Establish `n4` using `hF _ x pt4`. Simplify using `only [zpow_neg] at hJ`. Generalize the expression as in `Φ.fr (J ((translT A U.pt⁻¹).left ≫ (snd (Over.mk x0) A).left)) (-x) ^ k = a1 at hJ n1`. Generalize the expression as in `Φ.fr (J (snd (Over.mk x0) A).left) 0 ^ k = a2 at hJ n2`. Generalize the expression as in `Φ.fr (J (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left) 0 ^ k = a3 at hJ n3`.
+
+Generalize the expression as in `Φ.fr (J ((translT A U.pt⁻¹).left ≫ (snd (Over.mk x0) A ≫ (GrpObj.inv : A ⟶ A)).left)) x ^ k = a4 at hJ n4`. Establish `hf : fock Φ.Hm k x (fun _ => 1) (-x) * fock Φ.Hm k x (fun _ => 1) 0 = 1`. Simplify using `only [fock, _root_.mul_one]`. Rewrite using `[← Complex.exp_add]`. Establish `hH1 : hermForm Φ.Hm (-x) x = -hermForm Φ.Hm x x` using `by simp [hermForm]`.
+
+Establish `hH0 : hermForm Φ.Hm 0 x = 0` using `by simp [hermForm]`. Rewrite using `[hH1, hH0, ← Complex.exp_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hP : a1 * a2⁻¹ * (a2 * a3⁻¹) * (a3 * a4⁻¹ * (a1⁻¹ * a4)) = 1`.
+
+Rewrite using `[show a1 * a2⁻¹ * (a2 * a3⁻¹) * (a3 * a4⁻¹ * (a1⁻¹ * a4)) = (a1 * a1⁻¹) * (a2 * a2⁻¹) * (a3 * a3⁻¹) * (a4 * a4⁻¹) by ring]`. Rewrite using `[mul_inv_cancel₀ n1, mul_inv_cancel₀ n2, mul_inv_cancel₀ n3, mul_inv_cancel₀ n4]`. Evaluate the numerical expressions. Rewrite `hJ` using `[hP, _root_.mul_one]`. Rewrite `hJ` using `[show c * fock Φ.Hm k x (fun _ => 1) (-x) * v * (c * fock Φ.Hm k x (fun _ => 1) 0 * v⁻¹) = c ^ 2 * (fock Φ.Hm k x (fun _ => 1) (-x) * fock Φ.Hm k x (fun _ => 1) 0) * (v * v⁻¹) by ring, mul_inv_cancel₀ hv, hf, _root_.mul_one, _root_.mul_one]`.
+
+Conclude with `hJ`.
+-/
 theorem sq_const_eq_one : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (k : ℤ) (U : ThetaGrp A L.L k (Over.mk x0)) (x : Fin g → ℂ) (c : ℂ), Φ.ThConst k U x c → (∃ nu : LB.Gen (negLB A L.L k (Over.mk x0)), nu.IsGen ∧ LB.Gen.Corr L.L _ _ _ _ (symGen A L.L k U nu) (LB.oneGen L.L)) → c ^ 2 = 1 := by
   intro S A _ _ L x0 g Φ k U x c hT hc
   obtain ⟨nu, hnu, hcorr⟩ := hc

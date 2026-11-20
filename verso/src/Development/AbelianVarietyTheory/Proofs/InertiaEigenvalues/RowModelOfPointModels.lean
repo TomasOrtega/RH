@@ -23,6 +23,9 @@ def twistRep (ψ : Γ →* Oˣ) (ρ : Γ →* GL (Fin n) O) : Γ →* GL (Fin n)
       map_one' := by simp
       map_mul' := fun g h => by simp [smul_smul, mul_comm] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_twistRep (ψ : Γ →* Oˣ) (ρ : Γ →* GL (Fin n) O) (g : Γ) :
     ((twistRep ψ ρ g : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) =
       ((ψ g : Oˣ) : O) • ((ρ g : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) := rfl
@@ -39,6 +42,11 @@ section Eig
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N) (i : N.Loc)
 
+/- English proof (translation)
+Unfold `spehLoc`. Simplify using `only`. Proceed by induction on `List.range t with`. Consider the case `nil => exact ⟨A.lpZero_unr w, by simp [A.frobEig_zero]⟩`. Consider the case `cons k l ih`.
+
+Establish `h1` using `(A.unr_tw _ (((t : ℝ) - 1) / 2 - k)).2 hu`. Use `⟨(A.unr_sum _ _).2 ⟨h1, ih.1⟩, ?_⟩` and prove the remaining obligations. Use `(A.frobEig_sum _ _ h1 ih.1).trans ?_` and prove the remaining obligations. Rewrite using `[ih.2, A.frobEig_tw _ _ hu, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem frobEig_block (θ : A.CG 1) (t : ℕ) (w : PlE H) (b : ℂ) (hu : A.unr (A.locG θ w))
     (hb : A.frobEig (A.locG θ w) = {b}) :
     A.unr (spehLoc N A ⟨1, θ, t⟩ w) ∧ A.frobEig (spehLoc N A ⟨1, θ, t⟩ w) =

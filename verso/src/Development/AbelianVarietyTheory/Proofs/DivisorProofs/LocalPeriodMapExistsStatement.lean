@@ -14,6 +14,9 @@ open scoped ContDiff Real CategoryTheory.Obj
 open GlobalTheory GlobalTheory.TorsionForm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NormPeriods.exists_normalised_periods | exact GlobalTheory.NormPeriods.exists_normalised_periods | (intros; apply GlobalTheory.NormPeriods.exists_normalised_periods <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_period_map_exists : ∀ (S : Scheme.{0}) (P : PPAS S) (B : Set (V 1)) (y : V 1 → (Sp ℂ ⟶ S)) (v₀ : V 1),
     IsOpen B → v₀ ∈ B → IsHolTo B y → (∀ v ∈ B, Nonempty (P.RiemannData (y v))) →
     ∃ r : ℝ, 0 < r ∧ Metric.ball v₀ r ⊆ B ∧ ∃ (τ : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ)

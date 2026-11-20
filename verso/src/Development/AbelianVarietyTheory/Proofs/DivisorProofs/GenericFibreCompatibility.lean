@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClosureFiniteEtale
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PointAtZero
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.GenFibBaseChange.exists_genFib_maps) | (exact GlobalTheory.GenFibBaseChange.exists_genFib_maps) | (intros; apply GlobalTheory.GenFibBaseChange.exists_genFib_maps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_fibre_compatibility : ∀ (T O A A₁ R R₁ : Type) [CommRing T] [IsDomain T] [CommRing O] [Algebra T O]
     [CommRing A] [IsDomain A] [CommRing A₁] [IsDomain A₁] [CommRing R] [Algebra A R] [CommRing R₁] [Algebra A₁ R₁]
     (j : A →+* A₁) (i₁ : A₁ →+* T), Function.Injective j → Function.Injective i₁ →

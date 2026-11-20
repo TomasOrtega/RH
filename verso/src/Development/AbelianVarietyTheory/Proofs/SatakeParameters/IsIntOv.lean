@@ -32,8 +32,14 @@ def Reps {n : ℕ} {ι : Type} (x : GL (Fin n) K) (R : Finset ι) (ρ : ι → G
 
 variable {O}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isInt_iff {x : K} : IsInt O x ↔ x ∈ (algebraMap O K).range := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h choose A hA using h`. Conclude with `⟨Matrix.of A, by ext i j; simp [hA]⟩`. Introduce and unpack `⟨A, rfl⟩ i j`. Conclude with `⟨A i j, rfl⟩`.
+-/
 theorem intM_iff {m n : ℕ} {x : Matrix (Fin m) (Fin n) K} :
     IntM O x ↔ ∃ A : Matrix (Fin m) (Fin n) O, A.map (algebraMap O K) = x := by
   constructor
@@ -43,6 +49,9 @@ theorem intM_iff {m n : ℕ} {x : Matrix (Fin m) (Fin n) K} :
   · rintro ⟨A, rfl⟩ i j
     exact ⟨A i j, rfl⟩
 
+/- English proof (translation)
+Rewrite `hx`, `hy`, the goal using `[intM_iff]`. Take `⟨A, rfl⟩` from `hx`. Take `⟨B, rfl⟩` from `hy`. Conclude with `⟨A * B, Matrix.map_mul⟩`.
+-/
 theorem IntM.mul {l m n : ℕ} {x : Matrix (Fin l) (Fin m) K} {y : Matrix (Fin m) (Fin n) K} (hx : IntM O x)
     (hy : IntM O y) : IntM O (x * y) := by
   rw [intM_iff] at hx hy ⊢
@@ -50,28 +59,49 @@ theorem IntM.mul {l m n : ℕ} {x : Matrix (Fin l) (Fin m) K} {y : Matrix (Fin m
   obtain ⟨B, rfl⟩ := hy
   exact ⟨A * B, Matrix.map_mul⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨a, ha⟩ := hx i j obtain ⟨b, hb⟩ := hy i j exact ⟨a + b, by simp [ha, hb]⟩`.
+-/
 theorem IntM.add {m n : ℕ} {x y : Matrix (Fin m) (Fin n) K} (hx : IntM O x) (hy : IntM O y) : IntM O (x + y) := fun i j => by
   obtain ⟨a, ha⟩ := hx i j
   obtain ⟨b, hb⟩ := hy i j
   exact ⟨a + b, by simp [ha, hb]⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨a, ha⟩ := hx i j obtain ⟨b, hb⟩ := hy i j exact ⟨a - b, by simp [ha, hb]⟩`.
+-/
 theorem IntM.sub {m n : ℕ} {x y : Matrix (Fin m) (Fin n) K} (hx : IntM O x) (hy : IntM O y) : IntM O (x - y) := fun i j => by
   obtain ⟨a, ha⟩ := hx i j
   obtain ⟨b, hb⟩ := hy i j
   exact ⟨a - b, by simp [ha, hb]⟩
 
+/- English proof (translation)
+Introduce `i j` and use `hx j i`.
+-/
 theorem IntM.transpose {m n : ℕ} {x : Matrix (Fin m) (Fin n) K} (hx : IntM O x) : IntM O xᵀ := fun i j => hx j i
 
+/- English proof (translation)
+Introduce `i j` and use `by by_cases h : i = j · subst h exact ⟨1, by simp⟩ · exact ⟨0, by simp [Matrix.one_apply_ne h]⟩`.
+-/
 theorem intM_one {n : ℕ} : IntM O (1 : Matrix (Fin n) (Fin n) K) := fun i j => by
   by_cases h : i = j
   · subst h
     exact ⟨1, by simp⟩
   · exact ⟨0, by simp [Matrix.one_apply_ne h]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨intM_one, by rw [inv_one]; exact intM_one⟩`.
+-/
 theorem gInt_one {n : ℕ} : GInt O (1 : GL (Fin n) K) := ⟨intM_one, by rw [inv_one]; exact intM_one⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IntM.mul hx.1 hy.1, by rw [_root_.mul_inv_rev]; exact IntM.mul hy.2 hx.2⟩`.
+-/
 theorem GInt.mul {n : ℕ} {x y : GL (Fin n) K} (hx : GInt O x) (hy : GInt O y) : GInt O (x * y) := ⟨IntM.mul hx.1 hy.1, by rw [_root_.mul_inv_rev]; exact IntM.mul hy.2 hx.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx.2, by rw [inv_inv]; exact hx.1⟩`.
+-/
 theorem GInt.inv {n : ℕ} {x : GL (Fin n) K} (hx : GInt O x) : GInt O x⁻¹ := ⟨hx.2, by rw [inv_inv]; exact hx.1⟩
 
 end Pure
@@ -80,6 +110,9 @@ variable {D : D7}
 
 abbrev Ov (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : Type := v.adicCompletionIntegers D.host.F
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨o, h⟩ => h ▸ o.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem isInt_Ov {v : HeightOneSpectrum (𝓞 D.host.F)} {x : Fv D.host.F v} :
     IsInt (Ov D v) x ↔ x ∈ v.adicCompletionIntegers D.host.F := ⟨fun ⟨o, h⟩ => h ▸ o.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
@@ -97,6 +130,9 @@ def rho (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (π : AE D →+* Fv 
     (β : GL (Fin V.rank) (Fv D.host.F v)) : GA D V →* GL (Fin V.rank) (Fv D.host.F v) :=
   (MulAut.conj β⁻¹).toMonoidHom.comp ((Matrix.GeneralLinearGroup.map π).comp (matHom V))
 
+/- English proof (translation)
+Simplify using `only [rho, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv, Units.val_mul]`. Both sides reduce to the same expression.
+-/
 theorem rho_val (V : HSp D) {v : HeightOneSpectrum (𝓞 D.host.F)} (π : AE D →+* Fv D.host.F v)
     (β : GL (Fin V.rank) (Fv D.host.F v)) (g : GA D V) :
     (rho V π β g).1 = (β⁻¹).1 * (mt V g).map π * β.1 := by

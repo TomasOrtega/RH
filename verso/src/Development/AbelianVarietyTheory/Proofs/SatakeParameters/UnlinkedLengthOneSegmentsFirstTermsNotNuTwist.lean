@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.UnlinkedFirst
 
+/- English proof (translation)
+Substitute `he` using the available equality. Use `⟨⟨Segment.ofFirst ρ hρ 2 two_pos, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Segment.carrier_single, Segment.carrier_single]`. Use extensionality with `z`. Rewrite using `[Segment.mem_carrier]`.
+
+Simplify using `only [Segment.first_ofFirst, Segment.len_ofFirst, Set.mem_union, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩ interval_cases i`. Use `left`. Simplify using the standard rewrite rules.
+
+Use `right`. Simplify using the standard rewrite rules. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, by norm_num, by simp⟩`. Conclude with `⟨1, by norm_num, by simp⟩`.
+
+Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]`. Conclude with `hne`. Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]`. Conclude with `fun e => hne e.symm`.
+-/
 theorem single_linked_single_nu {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ρ ρ' : IrrGL k} (hρ : ρ.IsCusp) (hρ' : ρ'.IsCusp) (hne : ρ ≠ ρ.nu 1) (he : ρ' = ρ.nu 1) :
     (Segment.single ρ hρ).Linked (Segment.single ρ' hρ') := by
@@ -38,6 +47,15 @@ theorem single_linked_single_nu {k : Type} [Field k] [ValuativeRel k] [Topologic
   · rw [Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_iff, Set.mem_singleton_iff]
     exact fun e => hne e.symm
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h rc hrc c Δ hlen hun`. Take `⟨a, ha, L⟩` from `hrc`. Introduce `y hy z hz hyz`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hz`.
+
+Establish `hne : (Δ j).first ≠ (Δ j).first.nu 1`. Introduce `e0`. Use `GlobalTheory.UnlinkedMono.lpTw_one_ne (rc (Δ j).first) (by rw [L.dim]; exact (Δ j).isCusp_first.1) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `eΔ : ∀ k, Δ k = Segment.single (Δ k).first (Δ k).isCusp_first` using `fun k => Segment.ext_first (by simp [Segment.single]) (by simp [Segment.single, hlen k])`.
+
+Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Conclude with `hne hyz`. Conclude with `hun j i hij (by`. Rewrite using `[eΔ j, eΔ i]`.
+
+Conclude with `single_linked_single_nu (Δ j).isCusp_first (Δ i).isCusp_first hne hyz)`.
+-/
 theorem unlinked_first_of_len_one : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     (rc : IrrGL (w.adicCompletion E) → WD h), UpperTheory.Zero.LLC.IsRecT h rc →

@@ -21,29 +21,54 @@ def skewPart (x : Mx D ρ ρ) : Mx D ρ ρ := half D • (x - adj x)
 
 variable {D ρ}
 
+/- English proof (translation)
+Rewrite using `[mem_skewA, skewPart, adj_smul, cA_half, adj_sub, adj_adj, ← smul_neg, neg_sub]`.
+-/
 theorem skewPart_mem (x : Mx D ρ ρ) : skewPart D ρ x ∈ skewA D ρ := by
   rw [mem_skewA, skewPart, adj_smul, cA_half, adj_sub, adj_adj, ← smul_neg, neg_sub]
 
+/- English proof (translation)
+Rewrite using `[skewPart, (mem_skewA).1 hc, sub_neg_eq_add, smul_add, half_smul_add]`.
+-/
 theorem skewPart_of_mem {c : Mx D ρ ρ} (hc : c ∈ skewA D ρ) : skewPart D ρ c = c := by
   rw [skewPart, (mem_skewA).1 hc, sub_neg_eq_add, smul_add, half_smul_add]
 
+/- English proof (translation)
+Rewrite using `[skewPart, skewPart, skewPart, adj_add, add_sub_add_comm, smul_add]`.
+-/
 theorem skewPart_add (x y : Mx D ρ ρ) : skewPart D ρ (x + y) = skewPart D ρ x + skewPart D ρ y := by
   rw [skewPart, skewPart, skewPart, adj_add, add_sub_add_comm, smul_add]
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `(mem_ratMx).1 hx`. Use `(mem_ratMx).2 ⟨(1 / 2 : D.host.E) • (γ - γᴴ), ?_⟩` and prove the remaining obligations. Rewrite using `[rat_smul, rat_sub, rat_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem skewPart_rat {x : Mx D ρ ρ} (hx : x ∈ ratMx D ρ ρ) : skewPart D ρ x ∈ ratMx D ρ ρ := by
   obtain ⟨γ, rfl⟩ := (mem_ratMx).1 hx
   refine (mem_ratMx).2 ⟨(1 / 2 : D.host.E) • (γ - γᴴ), ?_⟩
   rw [rat_smul, rat_sub, rat_conjTranspose]; rfl
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+The claim follows from `haveI : IsTopologicalAddGroup (Mx D ρ ρ) := (lattice_Mx D ρ ρ).1 show Continuous fun x => half D • (x - adj x) from (continuous_id.sub continuous_adj).const_smul (half D)`.
+-/
 theorem continuous_skewPart : Continuous (skewPart D ρ) :=
   haveI : IsTopologicalAddGroup (Mx D ρ ρ) := (lattice_Mx D ρ ρ).1
   show Continuous fun x => half D • (x - adj x) from (continuous_id.sub continuous_adj).const_smul (half D)
 
+/- English proof (translation)
+The claim follows from `haveI : T2Space (Mx D ρ ρ) := (lattice_Mx D ρ ρ).2.2.2.1 isClosed_eq continuous_adj continuous_neg`.
+-/
 theorem isClosed_skewA : IsClosed (skewA D ρ : Set (Mx D ρ ρ)) :=
   haveI : T2Space (Mx D ρ ρ) := (lattice_Mx D ρ ρ).2.2.2.1
   isClosed_eq continuous_adj continuous_neg
 
+/- English proof (translation)
+Take `⟨-, -, -, -, i5, K, hK, hKc⟩` from `lattice_Mx D ρ ρ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `φ : (ratMx D ρ ρ).addSubgroupOf (skewA D ρ) → ratMx D ρ ρ` to `fun q => ⟨q.1.1, q.2⟩`. Establish `hinj : Function.Injective φ` using `fun a b h => Subtype.ext (Subtype.ext (by simpa [φ] using congrArg Subtype.val h))`. Establish `hcont : Continuous φ` using `((continuous_subtype_val.comp continuous_subtype_val)).subtype_mk _`.
+
+Conclude with `DiscreteTopology.of_continuous_injective hcont hinj`. Set `P : Mx D ρ ρ → skewA D ρ` to `fun x => ⟨skewPart D ρ x, skewPart_mem x⟩`. Establish `hP : Continuous P` using `continuous_skewPart.subtype_mk _`. Use `⟨P '' K, hK.image hP, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hx⟩` from `hKc x.1`.
+
+Use `⟨P γ, AddSubgroup.mem_addSubgroupOf.2 (skewPart_rat hγ), γ + x.1, hx, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `skewPart D ρ (γ + x.1) = skewPart D ρ γ + x.1`. Rewrite using `[skewPart_add, skewPart_of_mem x.2]`.
+-/
 theorem isCoLat_skew :
     GlobalTheory.CuspGeneric.IsCoLat ((ratMx D ρ ρ).addSubgroupOf (skewA D ρ)) := by
   obtain ⟨-, -, -, -, i5, K, hK, hKc⟩ := lattice_Mx D ρ ρ
@@ -63,6 +88,13 @@ theorem isCoLat_skew :
     change skewPart D ρ (γ + x.1) = skewPart D ρ γ + x.1
     rw [skewPart_add, skewPart_of_mem x.2]
 
+/- English proof (translation)
+Introduce `D ρ`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D ρ ρ`. Use `haveI : IsTopologicalAddGroup (Mx D ρ ρ) := i1`. Use `haveI : LocallyCompactSpace (Mx D ρ ρ) := i2`. Use `haveI : SecondCountableTopology (Mx D ρ ρ) := i3`.
+
+Use `haveI : T2Space (Mx D ρ ρ) := i4`. Use `haveI : SecondCountableTopology (skewA D ρ) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (skewA D ρ) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (skewA D ρ) := (isClosed_skewA (D := D) (ρ := ρ)).locallyCompactSpace`.
+
+Take `⟨μ, 𝓕, hμ, hF, h1⟩` from `GlobalTheory.CuspGeneric.exists_fundamentalDomain_mass_one (skewA D ρ) _ isCoLat_skew`. Conclude with `⟨μ, 𝓕, hμ, inferInstance, hF, h1⟩`.
+-/
 theorem exists_haar_covol_one : ∀ (D : D7) (ρ : ℕ), ∃ (lC : Measure (skewA D ρ)) (𝓒 : Set (skewA D ρ)), lC.IsAddHaarMeasure ∧ SFinite lC ∧ IsAddFundamentalDomain ((ratMx D ρ ρ).addSubgroupOf (skewA D ρ)) 𝓒 lC ∧ lC 𝓒 = 1 := by
   intro D ρ
   obtain ⟨i1, i2, i3, i4, -, -⟩ := lattice_Mx D ρ ρ

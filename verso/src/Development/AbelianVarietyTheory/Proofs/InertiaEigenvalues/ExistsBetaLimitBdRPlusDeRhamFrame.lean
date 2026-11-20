@@ -13,6 +13,25 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKLim
 
+/- English proof (translation)
+Introduce `l _ K bk N d ρ F hF`. Use `choose k β hβ using hF`. Establish `mono : ∀ {m n : ℕ}, m ≤ n → ∀ {k' : ℕ} {β' : Matrix (Fin d) (Fin d) bk.S}, F.IsBeta n k' β' → F.IsBeta m k' β'` using `fun h _ _ hb => ⟨hb.1, fun g i j => (pow_dvd_pow _ h).trans (hb.2 g i j)⟩`. Take `⟨ζ, e, h0, -, h1, hr⟩` from `GlobalTheory.MemLoc.exists_zeta_eps l`. Establish `he : e.untilt = 1` using `Subtype.ext (by`.
+
+Use `hr 0` as an intermediate fact. Rewrite `this` using `[h0, map_one]`. Conclude with `this)`. Establish `hE : GlobalTheory.MemLoc.IsEps e` using `⟨he, fun hh => h1 (by`. Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises.
+
+Rewrite using `[← hr 1, map_one]`. Conclude with `congrArg Subtype.val hh)⟩`. Take `⟨hfil, -, hcomp, -⟩` from `GlobalTheory.MemLoc.filtration_eq_xi_pow l e hE`. Take `⟨v, hv⟩` from `(isUnit_l_BdRp l).exists_left_inv`. Establish `hvk : ∀ a : ℕ, v ^ a * (l : Per.BdRp l) ^ a = 1` using `fun a => by rw [← mul_pow, hv, one_pow]`.
+
+Use `set X : ℕ → Fin d → Fin d → Per.BdRp l := fun n i j => aDp l (bk.ev (β n i j)) with hX`. Use `set x : ℕ → Fin d → Fin d → Per.BdRp l := fun n i j => v ^ k n * X n i j with hx`. Establish `cauchy : ∀ m n, m ≤ n → ∀ i j, x n i j - x m i j ∈ Per.FilP l m`. Introduce `m n hmn i j`. Establish `h` using `GlobalTheory.T.breuilKisin_beta_unique_mod_E_pow l K bk m N d ρ F (k m) (k n) (β m) (β n) (hβ m) (mono hmn (hβ n)) i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul] at h`. Establish `h2 : bk.ev bk.E ^ m ∣ bk.ev ((l : bk.S) ^ k n * β m i j - (l : bk.S) ^ k m * β n i j)`. Rewrite using `[← map_pow]`. Conclude with `map_dvd bk.ev h`. Establish `h3` using `((GlobalTheory.T.eisensteinImage_pow_ideal_ainf_properties l K bk m).2.2.1 _).2 h2`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at h3`. Establish `h4` using `Ideal.mul_mem_left (Per.FilP l m) (-(v ^ k n * v ^ k m)) h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hx, hX]`. Take the linear combination `(v ^ k m * aDp l (bk.ev (β m i j))) * hvk (k n) - (v ^ k n * aDp l (bk.ev (β n i j))) * hvk (k m)`.
+
+Establish `hmem : ∀ (n : ℕ) (y : Per.BdRp l), y ∈ (Ideal.span {aDp l (xi e)} ^ n • ⊤ : Submodule (Per.BdRp l) (Per.BdRp l)) ↔ y ∈ Per.FilP l n`. Introduce `n y`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hfil]`. Establish `lim : ∀ i j, ∃ L : Per.BdRp l, ∀ n, x n i j - L ∈ Per.FilP l n`. Introduce `i j`.
+
+Take `⟨L, hL⟩` from `hcomp.toIsPrecomplete.prec (f := fun n => x n i j) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, hmem, ← neg_sub]`. Conclude with `(Per.FilP l m).neg_mem (cauchy m n hmn i j))`. Conclude with `⟨L, fun n => (hmem n _).1 (SModEq.sub_mem.1 (hL n))⟩`. Use `choose B hB using lim`.
+
+Use `⟨Matrix.of B, fun m => ⟨k m, β m, hβ m, fun i j => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `Ideal.mul_mem_left (Per.FilP l m) ((l : Per.BdRp l) ^ k m) (hB i j m)`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.of_apply, hx, hX]`. Take the linear combination `(-(aDp l (bk.ev (β m i j)))) * hvk (k m)`.
+-/
 theorem exists_beta_limit : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (F : Frame bk N d ρ), F.IsDR → ∃ B : Matrix (Fin d) (Fin d) (Per.BdRp l), ∀ m : ℕ, ∃ (k : ℕ) (β : Matrix (Fin d) (Fin d) bk.S), F.IsBeta m k β ∧ ∀ i j, aDp l (bk.ev (β i j)) - (l : Per.BdRp l) ^ k * B i j ∈ Per.FilP l m := by
   intro l _ K bk N d ρ F hF
   choose k β hβ using hF

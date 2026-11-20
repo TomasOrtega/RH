@@ -18,6 +18,9 @@ def MatInt {F : Type} [Field F] [NumberField F] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)) : Prop :=
   ∀ i j, M i j ∈ Ohat F
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(Ohat F).one_mem`. Conclude with `(Ohat F).zero_mem`.
+-/
 theorem matInt_one (F : Type) [Field F] [NumberField F] (n : ℕ) :
     MatInt (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)) := by
   intro i j
@@ -26,6 +29,9 @@ theorem matInt_one (F : Type) [Field F] [NumberField F] (n : ℕ) :
   · exact (Ohat F).one_mem
   · exact (Ohat F).zero_mem
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `(Ohat F).sum_mem fun k _ => (Ohat F).mul_mem (hM i k) (hN k j)`.
+-/
 theorem matInt_mul {F : Type} [Field F] [NumberField F] {n : ℕ}
     {M N : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 F) F)} (hM : MatInt M) (hN : MatInt N) :
     MatInt (M * N) := by

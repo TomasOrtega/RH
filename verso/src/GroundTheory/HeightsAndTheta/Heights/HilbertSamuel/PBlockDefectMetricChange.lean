@@ -31,6 +31,11 @@ def quotLine (C A : HermLine ι) (ha : A.a = C.a) : HermLine ι where
     rw [mul_div_mul_left _ _ hne]
     simp
 
+/- English proof (translation)
+Apply `tele_herm_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Simplify using `[HermLine.tensor, quotLine, ha]`. Use function extensionality and compare the values at `z show C.h z * (A.h z / C.h z) = A.h z`. Distinguish the cases in `h0 : C.h z = 0`.
+
+Rewrite using `[h0, hv z h0, zero_mul]`. Conclude with `mul_div_cancel₀ _ h0`.
+-/
 theorem tensor_quotLine (C A : HermLine ι) (ha : A.a = C.a) (hv : ∀ z, C.h z = 0 → A.h z = 0) :
     C.tensor (quotLine C A ha) = A := by
   apply tele_herm_ext
@@ -42,10 +47,18 @@ theorem tensor_quotLine (C A : HermLine ι) (ha : A.a = C.a) (hv : ∀ z, C.h z 
     · rw [h0, hv z h0, zero_mul]
     · exact mul_div_cancel₀ _ h0
 
+/- English proof (translation)
+The claim follows from `hA.div hC fun z hz => (C.pos z hz).ne'`.
+-/
 theorem isSmoothHerm_quotLine {C A : HermLine ι} (ha : A.a = C.a) (hC : IsSmoothHerm C) (hA : IsSmoothHerm A) :
     IsSmoothHerm (quotLine C A ha) :=
   hA.div hC fun z hz => (C.pos z hz).ne'
 
+/- English proof (translation)
+Establish `hR` using `(hI K ι).2.2 P n L B 1 0 hP hL hB (fun k => by simp [hB0]) tele_one_homog (fun h1 => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h1))`. Rewrite using `[hR]`. Unfold `recR`. Rewrite using `[tele_divSupp_one, finsum_mem_empty, zero_sub]`. Unfold `arInt`.
+
+Establish `hl : logNorm B 1 = fun z => - Real.log (B.h z)`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, Real.log_inv]`. Rewrite using `[hl, tele_ptsIntegral_neg, neg_neg]`. Both sides reduce to the same expression.
+-/
 theorem fam_degZero_block (I : AllFam) (hI : I.IsFamily) {P : Ideal (MRing ι)} {n : ℕ}
     (hP : IsArithVar P (n + 1)) (L : Fin n → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j))
     (B : HermLine ι) (hB : IsSmoothHerm B) (hB0 : B.a = 0) :
@@ -63,6 +76,17 @@ theorem fam_degZero_block (I : AllFam) (hI : I.IsFamily) {P : Ideal (MRing ι)} 
   rw [hl, tele_ptsIntegral_neg, neg_neg]
   rfl
 
+/- English proof (translation)
+Establish `hl : ∀ B : HermLine ι, (fun z => Real.log (B.h z)) = fun z => - logNorm B 1 z`. Introduce `B`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, Real.log_inv]`. Establish `hP1 : (1 : MRing ι) ∉ P` using `fun h1 => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).mpr h1)`.
+
+Establish `hsec : ∀ B : HermLine ι, B.a = 0 → IsSectionOn P B 1` using `fun B hB => ⟨0, fun k => by simp [hB], tele_one_homog, hP1⟩`. Rewrite using `[hl B₁, hl B₀, tele_ptsIntegral_neg, tele_ptsIntegral_neg]`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Establish `hΨg : IsGoodProj P hΨ.choose` using `hΨ.choose_spec`.
+
+Unfold `ptsIntegralAt`. Rewrite using `[neg_sub_neg, ← integral_sub (hInt K ι P e _ L B₀ 1 hP hΨg hL h₀ (hsec B₀ h₀a)) (hInt K ι P e _ L B₁ 1 hP hΨg hL h₁ (hsec B₁ h₁a))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← finsum_mem_sub_distrib _ _ (fibreFinite K ι P e _ hP hΨg y)]`.
+
+Use `finsum_mem_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hz : hγ.choose y ∈ mcPts P` using `hγ.choose_spec.2.self_of_nhds.2.1`. Rewrite using `[hg _ hz]`.
+
+Simplify using `only [logNorm, map_one, norm_one, one_div, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem ptsIntegral_log_sub (hInt : PtsIntegrableStatement) {P : Ideal (MRing ι)} {e : ℕ}
     (hP : IsArithVar P (e + 1)) (L : Fin e → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j))
     (B₀ B₁ : HermLine ι) (h₀ : IsSmoothHerm B₀) (h₁ : IsSmoothHerm B₁) (h₀a : B₀.a = 0) (h₁a : B₁.a = 0)
@@ -100,6 +124,13 @@ theorem ptsIntegral_log_sub (hInt : PtsIntegrableStatement) {P : Ideal (MRing ι
 def blockTeleFam (A A' : HermLine ι) (N i : ℕ) : Fin N → HermLine ι :=
   fun j => if j.val < i then A' else A
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, blockTeleFam]`. Distinguish the cases in `h : j.val < i`. Establish `h' : Fin.castSucc j < (⟨i, hi⟩ : Fin (D + 1))`. Rewrite using `[Fin.lt_def]`.
+
+Conclude with `h`. Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ h', if_pos (show (Fin.castSucc j).val < k by show j.val < k omega), if_pos h]`. Establish `h' : (⟨i, hi⟩ : Fin (D + 1)) ≤ Fin.castSucc j`. Rewrite using `[Fin.le_def]`. Use `show i ≤ j.val`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ h', if_neg (show ¬ (Fin.succ j).val < k by show ¬ j.val + 1 < k omega), if_neg h]`.
+-/
 theorem blockTeleFam_succAbove (A A' : HermLine ι) (D i : ℕ) (hi : i < D + 1) (k : ℕ) (hk : k = i ∨ k = i + 1) :
     blockTeleFam A A' (D + 1) k ∘ (⟨i, hi⟩ : Fin (D + 1)).succAbove = blockTeleFam A A' D i := by
   funext j
@@ -119,6 +150,9 @@ theorem blockTeleFam_succAbove (A A' : HermLine ι) (D i : ℕ) (hi : i < D + 1)
       show ¬ j.val + 1 < k
       omega), if_neg h]
 
+/- English proof (translation)
+Unfold `blockTeleFam`. Use `split_ifs`. Conclude with `hA'`. Conclude with `hA`.
+-/
 theorem blockTeleFam_smooth {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : IsSmoothHerm A') (N i : ℕ)
     (j : Fin N) : IsSmoothHerm (blockTeleFam A A' N i j) := by
   unfold blockTeleFam
@@ -126,6 +160,27 @@ theorem blockTeleFam_smooth {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : Is
   · exact hA'
   · exact hA
 
+/- English proof (translation)
+Establish `hsymm` using `(hI K ι).1`. Establish `hadd` using `(hI K ι).2.1`. Establish `hB₀` using `isSmoothHerm_quotLine ha hC hA`. Establish `hB₁` using `isSmoothHerm_quotLine ha' hC hA'`. Establish `htel` using `Finset.sum_range_sub (fun i => I K ι P (D + 1) (blockTeleFam A A' (D + 1) i)) (D + 1)`.
+
+Establish `hT0 : blockTeleFam A A' (D + 1) 0 = fun _ => A`. Use function extensionality and compare the values at `j`. Simplify using `[blockTeleFam]`. Establish `hT1 : blockTeleFam A A' (D + 1) (D + 1) = fun _ => A'`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[blockTeleFam, j.isLt]`. Simplify using `only [hT0, hT1] at htel`. Rewrite using `[← htel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`.
+
+Establish `hLs` using `blockTeleFam_smooth hA hA' D i`. Establish `e1 : I K ι P (D + 1) (blockTeleFam A A' (D + 1) (i + 1)) = I K ι P (D + 1) (Fin.snoc (blockTeleFam A A' D i) A')`. Establish `h` using `hsymm _ _ (blockTeleFam A A' (D + 1) (i + 1)) (tele_perm ⟨i, hi⟩) hP (blockTeleFam_smooth hA hA' _ _)`. Establish `hv1 : blockTeleFam A A' (D + 1) (i + 1) ⟨i, hi⟩ = A'`. Simplify using `[blockTeleFam]`.
+
+Rewrite `h` using `[tele_comp_perm, blockTeleFam_succAbove A A' D i hi (i + 1) (Or.inr rfl), hv1]`. Conclude with `h.symm`. Establish `e0 : I K ι P (D + 1) (blockTeleFam A A' (D + 1) i) = I K ι P (D + 1) (Fin.snoc (blockTeleFam A A' D i) A)`. Establish `h` using `hsymm _ _ (blockTeleFam A A' (D + 1) i) (tele_perm ⟨i, hi⟩) hP (blockTeleFam_smooth hA hA' _ _)`. Establish `hv0 : blockTeleFam A A' (D + 1) i ⟨i, hi⟩ = A`.
+
+Simplify using `[blockTeleFam]`. Rewrite `h` using `[tele_comp_perm, blockTeleFam_succAbove A A' D i hi i (Or.inl rfl), hv0]`. Conclude with `h.symm`. Establish `hpot : pot (blockTeleFam A A' D i) = blockMixPot A A' D i`. Use function extensionality and compare the values at `j z`.
+
+Simplify using `only [pot, blockMixPot, blockTeleFam]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[e1, e0]`. Establish `q1 : (Fin.snoc (α` using `fun _ => HermLine ι) (blockTeleFam A A' D i) A') = Fin.snoc (α := fun _ => HermLine ι) (blockTeleFam A A' D i) (C.tensor (quotLine C A' ha')) := by`. Rewrite using `[tensor_quotLine C A' ha' hv']`.
+
+Establish `q0 : (Fin.snoc (α` using `fun _ => HermLine ι) (blockTeleFam A A' D i) A) = Fin.snoc (α := fun _ => HermLine ι) (blockTeleFam A A' D i) (C.tensor (quotLine C A ha)) := by`. Rewrite using `[tensor_quotLine C A ha hv]`. Rewrite using `[q1, q0]`. Rewrite using `[hadd _ _ _ _ _ hP hLs hC hB₁, hadd _ _ _ _ _ hP hLs hC hB₀, add_sub_add_left_eq_sub, fam_degZero_block I hI hP _ hLs _ hB₁ rfl, fam_degZero_block I hI hP _ hLs _ hB₀ rfl, ptsIntegral_log_sub hInt hP _ hLs _ _ hB₀ hB₁ rfl rfl (fun z => Real.log (A'.h z / A.h z)) ?_, hpot]`. Introduce `z hz`.
+
+Establish `hA0` using `A.pos z hz.1`. Establish `hA'0` using `A'.pos z hz.1`. Establish `hC0` using `C.pos z hz.1`. Use `show Real.log (A'.h z / A.h z) = Real.log (A'.h z / C.h z) - Real.log (A.h z / C.h z)`. Rewrite using `[Real.log_div hA'0.ne' hA0.ne', Real.log_div hA'0.ne' hC0.ne', Real.log_div hA0.ne' hC0.ne']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem top_sub_top_blockMixPot (hInt : PtsIntegrableStatement) (I : AllFam) (hI : I.IsFamily)
     {P : Ideal (MRing ι)} {D : ℕ} (hP : IsArithVar P (D + 1)) {A A' C : HermLine ι} (hA : IsSmoothHerm A)
     (hA' : IsSmoothHerm A') (hC : IsSmoothHerm C) (ha : A.a = C.a) (ha' : A'.a = C.a)
@@ -194,6 +249,19 @@ section Pivot
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.mp hz`. Establish `hk0 : k = k₀`. Assume the negation of the conclusion as `hne`. Simplify using `[unitDeg, hne] at hk`. Substitute `hk0` using the available equality.
+
+Establish `hρ : (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩) = 0`. Simplify `hk` using `[unitDeg]`. Establish `hzk : (fun i => z ⟨k, i⟩) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `((fsMetric (ι k)).pos _ hne).ne' hρ`.
+
+Use `set c : K → ℂ := fun k' => if k' = k then 2 else 1 with hc`. Establish `hc0 : ∀ k', c k' ≠ 0` using `fun k' => by`. Simplify using `only [hc]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hfix : (fun p : (Σ k, ι k) => c p.1 * z p) = z`.
+
+Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : p.1 = k`. Take `⟨k', i⟩` from `p`. Simplify using `only at hp`. Substitute `hp` using the available equality.
+
+Establish `: z ⟨k', i⟩ = 0` using `congrFun hzk i`. Simplify using `[this]`. Simplify using `[hc, hp]`. Establish `hs` using `A.smul c z hc0`. Rewrite `hs` using `[hfix, hA]`.
+
+Establish `hprod : (∏ k', ‖c k'‖ ^ unitDeg k k') = 2`. Rewrite using `[Finset.prod_eq_single k (fun k' _ hk' => by simp [unitDeg, hk']) (fun h => absurd (Finset.mem_univ k) h)]`. Simplify using `[hc, unitDeg]`. Rewrite `hs` using `[hprod]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem h_eq_zero_of_fs (k₀ : K) (A : HermLine ι) (hA : A.a = unitDeg k₀) (z : (Σ k, ι k) → ℂ)
     (hz : (HermLine.ofMetrics (fun k => fsMetric (ι k)) (unitDeg k₀)).h z = 0) : A.h z = 0 := by
   obtain ⟨k, -, hk⟩ := Finset.prod_eq_zero_iff.mp hz
@@ -229,6 +297,13 @@ theorem h_eq_zero_of_fs (k₀ : K) (A : HermLine ι) (hA : A.a = unitDeg k₀) (
 
 end Pivot
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ I d A' P0' hdeg hc hle hp hI`. Establish `h₁` using `hR D K ι Ω (d.withMetric A' P0' hdeg hc hle hp)`. Establish `h₀` using `hR D K ι Ω d`. Establish `hc₁` using `hC D K ι Ω d A' P0' hdeg hc hle hp`. Establish `hFS` using `GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs (ι := ι) (unitDeg d.k₀)`.
+
+Establish `htop : I K ι (mCoordIdeal d.y) (D + 1) (fun _ => A') = I K ι (mCoordIdeal d.y) (D + 1) (fun _ => d.A) + ((D : ℝ) + 1) * blockMetricInt d A'`. Rewrite using `[← hM D K ι Ω d A' hdeg hp.1, ← top_sub_top_blockMixPot hInt I hI d.arith d.semipos.1 hp.1 hFS (d.deg.trans rfl) (hdeg.trans rfl) (h_eq_zero_of_fs d.k₀ d.A d.deg) (h_eq_zero_of_fs d.k₀ A' hdeg)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlog` using `isLittleO_pow_mul_log D`. Use `(((h₁.trans_isLittleO hlog).sub (h₀.trans_isLittleO hlog)).add hc₁).congr_left fun n => ?_` and prove the remaining obligations.
+
+Simplify using `only [hsDefect, htop, Nat.factorial_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem BlockDefectMetricChange.proof (hR : BlockRealGramComparison.Statement)
     (hC : BlockComplexGramMetricChange.Statement) (hM : BlockResolutionMixedIntegral.Statement)
     (hInt : PtsIntegrableStatement) : BlockDefectMetricChange.Statement := by

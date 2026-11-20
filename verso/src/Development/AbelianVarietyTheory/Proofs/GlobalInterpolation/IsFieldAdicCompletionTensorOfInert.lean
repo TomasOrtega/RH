@@ -6,6 +6,25 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial
 
 namespace GlobalTheory.InertField
 
+/- English proof (translation)
+Establish `hli : LinearIndependent F ![(1 : E), a]`. Rewrite using `[LinearIndependent.pair_iff' one_ne_zero]`. Introduce `x hx`. Conclude with `ha x (by rw [Algebra.algebraMap_eq_smul_one, hx])`. Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2])`.
+
+Establish `hB : ⇑B = ![(1 : E), a]` using `coe_basisOfLinearIndependentOfCardEqFinrank _ _`. Set `B'` to `Algebra.TensorProduct.basis K B`. Use `set α : K ⊗[F] E := (1 : K) ⊗ₜ[F] a with hα`. Set `ι` to `algebraMap K (K ⊗[F] E)`. Establish `hιF : ∀ x : F, ι (algebraMap F K x) = (1 : K) ⊗ₜ[F] algebraMap F E x` using `fun x => by`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`. Establish `hq' : α ^ 2 + ι (algebraMap F K b) * α + ι (algebraMap F K c) = 0`. Use `congrArg (Algebra.TensorProduct.includeRight : E →ₐ[F] K ⊗[F] E) hq` as an intermediate fact. Rewrite `this` using `[map_add, map_add, map_mul, map_pow, map_zero]`. Rewrite using `[hιF, hιF]`.
+
+Conclude with `this`. Use `⟨exists_pair_ne _, mul_comm, fun {z} hz => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨x, y, rfl⟩ : ∃ x y : K, z = ι x + ι y * α := by`. Use `⟨B'.repr z 0, B'.repr z 1, ?_⟩` and prove the remaining obligations. Establish `h` using `B'.sum_repr z`.
+
+Rewrite `h` using `[Fin.sum_univ_two]`. Establish `h0 : B' 0 = 1` using `by simp [B', hB, Algebra.TensorProduct.one_def]`. Establish `h1 : B' 1 = α` using `by simp [B', hB, hα]`. Rewrite `h` using `[h0, h1, Algebra.smul_def, Algebra.smul_def, mul_one]`. Conclude with `h.symm`.
+
+Establish `hN : x ^ 2 - algebraMap F K b * x * y + algebraMap F K c * y ^ 2 ≠ 0`. Introduce `hN`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `: x = 0` using `by simpa using hN`.
+
+Substitute `this` using the available equality. Simplify using `at hz`. Apply `hK (-x / y)` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Take the linear combination `hN`.
+
+Use `⟨ι (x ^ 2 - algebraMap F K b * x * y + algebraMap F K c * y ^ 2)⁻¹ * (ι x - ι (algebraMap F K b) * ι y - ι y * α), ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg ι (mul_inv_cancel₀ hN)`. Rewrite `h1` using `[map_mul, map_one]`. Use `set N := ι (x ^ 2 - algebraMap F K b * x * y + algebraMap F K c * y ^ 2)⁻¹`. Simplify using `only [map_add, map_sub, map_mul, map_pow] at h1`.
+
+Take the linear combination `h1 - N * ι y ^ 2 * hq'`.
+-/
 theorem isField_tensor_of_no_root {F K E : Type} [Field F] [Field K] [Field E] [Algebra F K] [Algebra F E]
     (h2 : Module.finrank F E = 2) (a : E) (ha : ∀ x : F, algebraMap F E x ≠ a) (b c : F)
     (hq : a ^ 2 + algebraMap F E b * a + algebraMap F E c = 0)
@@ -56,6 +75,13 @@ theorem isField_tensor_of_no_root {F K E : Type} [Field F] [Field K] [Field E] [
 open scoped TensorProduct in
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Establish `hrank` using `Ideal.finrank_quotient_map v.asIdeal F E (S := 𝓞 E)`. Rewrite `hrank` using `[h2]`.
+
+Establish `hle : Module.finrank (𝓞 F ⧸ v.asIdeal) (𝓞 E ⧸ v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))) ≤ 1`. Apply `finrank_le_one 1` to reduce the goal to its premises. Introduce `w`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Take `⟨r, hr⟩` from `hcon a`.
+
+Use `⟨Ideal.Quotient.mk _ r, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_quotient_map_quotient, Ideal.Quotient.eq]`. Rewrite using `[← neg_mem_iff, neg_sub]`. Conclude with `hr`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.InertField.exists_not_congr {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ a : 𝓞 E, ∀ r : 𝓞 F, a - algebraMap (𝓞 F) (𝓞 E) r ∉ v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) := by
@@ -79,6 +105,33 @@ theorem _root_.GlobalTheory.InertField.exists_not_congr {F E : Type} [Field F] [
 
 open scoped TensorProduct in
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial in
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) s`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hdF : algebraMap (𝓞 F) F d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 F) F)).mpr hd0`. Establish `hne` using `v.intValuation_ne_zero _ hd0`. Establish `hex : ∃ m : ℕ, ¬ v.intValuation d ≤ WithZero.exp (-((m : ℕ) : ℤ))`.
+
+Use `⟨(-(v.intValuation d).log).toNat + 1, fun h => ?_⟩` and prove the remaining obligations. Use `nth_rewrite 1 [← WithZero.exp_log hne] at h`. Rewrite `h` using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hm0 : Nat.find hex ≠ 0`.
+
+Introduce `h0`. Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this (by simpa using v.intValuation_le_one d)`. Take `⟨c, hc⟩ : ∃ c, Nat.find hex = c + 1` from `Nat.exists_eq_succ_of_ne_zero hm0`.
+
+Establish `hdc : v.intValuation d ≤ WithZero.exp (-((c : ℕ) : ℤ))`. Use `Nat.find_min hex (show c < Nat.find hex by omega)` as an intermediate fact. Simplify using `using this`. Establish `hdc1 : ¬ v.intValuation d ≤ WithZero.exp (-((c + 1 : ℕ) : ℤ))`. Rewrite using `[← hc]`.
+
+Conclude with `Nat.find_spec hex`. Establish `hmemc : d ∈ v.asIdeal ^ c`. Rewrite using `[← Ideal.dvd_span_singleton, ← intValuation_le_pow_iff_dvd]`. Conclude with `hdc`. Establish `hnmem : d ∉ v.asIdeal ^ (c + 1)`.
+
+Rewrite using `[← Ideal.dvd_span_singleton, ← intValuation_le_pow_iff_dvd]`. Conclude with `hdc1`. Establish `hsup : Ideal.span {d} ⊔ v.asIdeal ^ (c + 1) = v.asIdeal ^ c`. Establish `hle : Ideal.span {d} ⊔ v.asIdeal ^ (c + 1) ≤ v.asIdeal ^ c` using `sup_le ((Ideal.span_singleton_le_iff_mem _).mpr hmemc) (Ideal.pow_le_pow_right (by omega))`. Take `⟨L, hL⟩` from `Ideal.dvd_iff_le.mpr hle`.
+
+Establish `hdvd : v.asIdeal ^ c * L ∣ v.asIdeal ^ c * v.asIdeal`. Rewrite using `[← hL, ← pow_succ]`. Conclude with `Ideal.dvd_iff_le.mpr le_sup_right`. Establish `hLv : L ∣ v.asIdeal` using `(mul_dvd_mul_iff_left (pow_ne_zero _ v.ne_bot)).mp hdvd`. Establish `hvL : v.asIdeal ≤ L` using `Ideal.le_of_dvd hLv`.
+
+Distinguish the cases in `htop : L = ⊤`. Rewrite using `[hL, htop, Ideal.mul_top]`. Establish `hEq : v.asIdeal = L` using `v.isMaximal.eq_of_le htop hvL`. It suffices to derive a contradiction. Apply `hnmem` to reduce the goal to its premises.
+
+Establish `hdL : d ∈ v.asIdeal ^ c * L`. Rewrite using `[← hL]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self d)`. Rewrite `hdL` using `[← hEq, ← pow_succ]`. Then use the resulting hypothesis. Establish `hnval : v.intValuation n ≤ v.intValuation d`.
+
+Rewrite `hs` using `[map_div₀, valuation_of_algebraMap, valuation_of_algebraMap]`. Establish `hpos : 0 < v.intValuation d` using `zero_lt_iff.mpr hne`. Rewrite `hs` using `[div_le_one₀ hpos]`. Then use the resulting hypothesis. Establish `hn : n ∈ Ideal.span {d} ⊔ v.asIdeal ^ (c + 1)`. Rewrite using `[hsup, ← Ideal.dvd_span_singleton, ← intValuation_le_pow_iff_dvd]`.
+
+Conclude with `hnval.trans hdc`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hn`. Take `⟨e, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `heq : algebraMap (𝓞 F) F n / algebraMap (𝓞 F) F d - algebraMap (𝓞 F) F e = algebraMap (𝓞 F) F z / algebraMap (𝓞 F) F d`.
+
+Rewrite using `[← hyz, map_add, map_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, div_lt_one₀ (zero_lt_iff.mpr hne)]`. Establish `hz' : v.intValuation z ≤ WithZero.exp (-((c + 1 : ℕ) : ℤ))`.
+
+Rewrite using `[intValuation_le_pow_iff_dvd, Ideal.dvd_span_singleton]`. Conclude with `hz`. Conclude with `lt_of_le_of_lt hz' (not_le.mp hdc1)`.
+-/
 private lemma exists_integer_valuation_sub_lt_one {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (s : F) (hs : v.valuation F s ≤ 1) :
     ∃ r : 𝓞 F, v.valuation F (s - algebraMap (𝓞 F) F r) < 1 := by
@@ -147,6 +200,31 @@ private lemma exists_integer_valuation_sub_lt_one {F : Type} [Field F] [NumberFi
 
 open scoped TensorProduct in
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial in
+/- English proof (translation)
+Establish `hvF : ∀ x : F, Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x` using `fun x => valuedAdicCompletion_eq_valuation' v x`. Establish `hint : ∀ x : 𝓞 F, Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F x)) ≤ 1`. Introduce `x`. Rewrite using `[hvF, valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one x`.
+
+Use `set B := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F b) with hB`. Use `set C := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F c) with hC`. Establish `hB1 : Valued.v B ≤ 1` using `hint b`. Establish `hC1 : Valued.v C ≤ 1` using `hint c`. Establish `hβ1 : Valued.v β ≤ 1`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h0 : 0 < Valued.v β` using `lt_trans zero_lt_one h`. Establish `hsq : β ^ 2 = -(B * β + C)` using `by linear_combination hβ`. Establish `hle : Valued.v (B * β + C) ≤ Valued.v β`.
+
+Apply `Valuation.map_add_le` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hC1.trans h.le`. Establish `hlt : Valued.v β < Valued.v (β ^ 2)`.
+
+Rewrite using `[map_pow, pow_two]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[hsq, Valuation.map_neg]`. Conclude with `absurd hle (not_le.mpr hlt)`. Establish `hU : {x : v.adicCompletion F | Valued.v (β - x) < 1} ∈ nhds β`.
+
+Rewrite using `[Valued.mem_nhds]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `at hy ⊢`. Rewrite using `[← Valuation.map_neg, neg_sub]`. Conclude with `hy`.
+
+Take `⟨s, hs⟩` from `(denseRange_algebraMap F v).mem_nhds hU`. Establish `hs' : Valued.v (β - algebraMap F (v.adicCompletion F) s) < 1` using `hs`. Establish `hs1 : v.valuation F s ≤ 1`. Rewrite using `[← hvF]`. Establish `heq : algebraMap F (v.adicCompletion F) s = β - (β - algebraMap F (v.adicCompletion F) s)` using `by ring`.
+
+Rewrite using `[heq]`. Conclude with `Valuation.map_sub_le _ hβ1 hs'.le`. Take `⟨r, hr⟩` from `exists_integer_valuation_sub_lt_one v s hs1`. Use `⟨r, ?_⟩` and prove the remaining obligations. Use `set R := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F r) with hR`.
+
+Establish `hδ : Valued.v (R - β) < 1`. Establish `heq : R - β = -(β - algebraMap F (v.adicCompletion F) s) - algebraMap F (v.adicCompletion F) (s - algebraMap (𝓞 F) F r)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`.
+
+Apply `Valuation.map_sub_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_neg]`. Conclude with `hs'`. Rewrite using `[hvF]` and apply the resulting hypothesis. Establish `hR1 : Valued.v R ≤ 1` using `hint r`.
+
+Establish `hval : Valued.v (R ^ 2 + B * R + C) < 1`. Establish `heq : R ^ 2 + B * R + C = (R - β) * (R + β + B)` using `by linear_combination hβ`. Rewrite using `[heq, map_mul]`. Establish `h2 : Valued.v (R + β + B) ≤ 1` using `Valuation.map_add_le _ (Valuation.map_add_le _ hR1 hβ1) hB1`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `heq : R ^ 2 + B * R + C = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F (r ^ 2 + b * r + c))`. Simplify using `only [hR, hB, hC, map_add, map_mul, map_pow]`. Rewrite `hval` using `[heq, hvF, valuation_of_algebraMap]`. Conclude with `(intValuation_lt_one_iff_mem v _).mp hval`.
+-/
 private lemma exists_quadratic_root_mod_of_adic_root {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (b c : 𝓞 F) (β : v.adicCompletion F)
     (hβ : β ^ 2 + algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F b) * β
@@ -223,6 +301,57 @@ private lemma exists_quadratic_root_mod_of_adic_root {F : Type} [Field F] [Numbe
 open scoped TensorProduct in
 open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Polynomial in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ h2 v hP`. Take `⟨a, ha⟩` from `_root_.GlobalTheory.InertField.exists_not_congr h2 v`. Use `set P := v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) with hPdef`. Establish `hai : IsIntegral (𝓞 F) a` using `Algebra.IsIntegral.isIntegral a`. Use `set g := minpoly (𝓞 F) a with hg`.
+
+Establish `hgm : g.Monic` using `minpoly.monic hai`. Establish `hgE : minpoly (𝓞 F) (a : E) = g` using `minpoly.algebraMap_eq (IsFractionRing.injective (𝓞 E) E) a`. Establish `haiE : IsIntegral (𝓞 F) (a : E)` using `hai.map (IsScalarTower.toAlgHom (𝓞 F) (𝓞 E) E)`. Establish `hgF : minpoly F (a : E) = g.map (algebraMap (𝓞 F) F)`. Rewrite using `[← hgE]`.
+
+Conclude with `minpoly.isIntegrallyClosed_eq_field_fractions' F haiE`. Establish `hdegF : (minpoly F (a : E)).natDegree = g.natDegree`. Rewrite using `[hgF]`. Conclude with `hgm.natDegree_map _`. Establish `hle2 : g.natDegree ≤ 2`.
+
+Rewrite using `[← hdegF, ← h2]`. Conclude with `minpoly.natDegree_le (a : E)`. Establish `hpos : 0 < g.natDegree` using `minpoly.natDegree_pos hai`. Establish `hne1 : g.natDegree ≠ 1`. Introduce `h1`.
+
+Establish `hX : g = Polynomial.X + Polynomial.C (g.coeff 0)`. Rewrite using `[hgm.as_sum, h1]`. Simplify using the standard rewrite rules. Establish `h0 : Polynomial.aeval a g = 0` using `minpoly.aeval _ _`. Rewrite `h0` using `[hX]`.
+
+Simplify using `at h0`. Apply `ha (-(g.coeff 0))` to reduce the goal to its premises. Rewrite using `[map_neg, sub_neg_eq_add, h0]`. Conclude with `P.zero_mem`. Establish `hdeg : g.natDegree = 2` using `by omega`.
+
+Use `set b := g.coeff 1 with hb`. Use `set c := g.coeff 0 with hc`. Establish `hrel : a ^ 2 + algebraMap (𝓞 F) (𝓞 E) b * a + algebraMap (𝓞 F) (𝓞 E) c = 0`. Establish `h0 : Polynomial.aeval a g = 0` using `minpoly.aeval _ _`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range, hdeg]`.
+
+Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one] at h0`. Establish `hlc : g.coeff 2 = 1` using `by rw [← hdeg]; exact hgm.coeff_natDegree`. Rewrite `h0` using `[hlc, one_smul, Algebra.smul_def, Algebra.smul_def]`. Take the linear combination `h0`. Establish `hnoroot : ∀ r : 𝓞 F, r ^ 2 + b * r + c ∉ v.asIdeal`.
+
+Introduce `r hr`. Establish `hmem` using `Ideal.mem_map_of_mem (algebraMap (𝓞 F) (𝓞 E)) hr`. Establish `hfac : algebraMap (𝓞 F) (𝓞 E) (r ^ 2 + b * r + c) = (algebraMap (𝓞 F) (𝓞 E) r - a) * (algebraMap (𝓞 F) (𝓞 E) r + algebraMap (𝓞 F) (𝓞 E) b + a)`. Simplify using `only [map_add, map_mul, map_pow]`. Take the linear combination `hrel`.
+
+Rewrite `hmem` using `[hfac]`. Break down `hP.mem_or_mem hmem with h | h` into its components or cases. Apply `ha r` to reduce the goal to its premises. Rewrite using `[← neg_sub]`. Conclude with `P.neg_mem h`.
+
+Apply `ha (-(r + b))` to reduce the goal to its premises. Rewrite using `[map_neg, map_add, sub_neg_eq_add]`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hnotF : ∀ s : F, (a : E) ≠ algebraMap F E s`.
+
+Introduce `s hs`. Establish `h1` using `minpoly.eq_X_sub_C E s`. Rewrite `h1` using `[← hs]`. Rewrite `hdegF` using `[h1, Polynomial.natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hli : LinearIndependent F ![(1 : E), (a : E)]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `x y hxy`. Rewrite `hxy` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Distinguish the cases in `hy : y = 0`.
+
+Substitute `hy` using the available equality. Simplify using `at hxy`. Conclude with `⟨hxy, rfl⟩`. It suffices to derive a contradiction. Apply `hnotF (-x / y)` to reduce the goal to its premises.
+
+Establish `hy' : algebraMap F E y ≠ 0` using `(_root_.map_ne_zero _).mpr hy`. Rewrite using `[map_div₀, map_neg]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hxy`. Use `set Bs := basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2]) with hBs`.
+
+Use `set TB := Algebra.TensorProduct.basis (v.adicCompletion F) Bs with hTB`. Use `set α : v.adicCompletion F ⊗[F] E := (1 : v.adicCompletion F) ⊗ₜ[F] (a : E) with hαdef`. Use `set B := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F b) with hB`. Use `set C := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F c) with hC`. Establish `hrelE : (a : E) ^ 2 + algebraMap F E (algebraMap (𝓞 F) F b) * (a : E) + algebraMap F E (algebraMap (𝓞 F) F c) = 0`.
+
+Establish `h` using `congrArg (algebraMap (𝓞 E) E) hrel`. Rewrite `h` using `[map_add, map_add, map_mul, map_pow, map_zero, ← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, ← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, IsScalarTower.algebraMap_apply (𝓞 F) F E, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Conclude with `h`. Establish `hα : α ^ 2 + algebraMap (v.adicCompletion F) _ B * α + algebraMap (v.adicCompletion F) _ C = 0`. Establish `h` using `congrArg (Algebra.TensorProduct.includeRight (R := F) (A := v.adicCompletion F) (B := E)) hrelE`.
+
+Rewrite `h` using `[map_add, map_add, map_mul, map_pow, map_zero, AlgHom.commutes, AlgHom.commutes, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[hB, hC, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `h`. Establish `hdecomp : ∀ z : v.adicCompletion F ⊗[F] E, z = algebraMap (v.adicCompletion F) _ (TB.repr z 0) + algebraMap (v.adicCompletion F) _ (TB.repr z 1) * α`. Introduce `z`.
+
+Use `conv_lhs => rw [← TB.sum_repr z]`. Rewrite using `[Fin.sum_univ_two, hTB, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_apply, hBs, coe_basisOfLinearIndependentOfCardEqFinrank]`. Simplify using `[Algebra.smul_def, hαdef, ← Algebra.TensorProduct.one_def]`. Use `⟨⟨0, 1, ?_⟩, fun x y => mul_comm x y, ?_⟩` and prove the remaining obligations. Introduce `h01`.
+
+Establish `h1 : TB 0 = 1`. Rewrite using `[hTB, Algebra.TensorProduct.basis_apply, hBs, coe_basisOfLinearIndependentOfCardEqFinrank]`. Simplify using `[Algebra.TensorProduct.one_def]`. Conclude with `TB.ne_zero 0 (h1.trans h01.symm)`. Introduce `z hz`.
+
+Establish `hz'` using `hdecomp z`. Use `set x := TB.repr z 0 with hx`. Use `set y := TB.repr z 1 with hy`. Use `set N := x ^ 2 - B * x * y + C * y ^ 2 with hN`. Establish `hN0 : N ≠ 0`.
+
+Introduce `hN0`. Rewrite `hN0` using `[hN]`. Distinguish the cases in `hy0 : y = 0`. Apply `hz` to reduce the goal to its premises. Rewrite `hN0` using `[hy0]`.
+
+Establish `hx0 : x = 0` using `by simpa using hN0`. Rewrite using `[hz', hx0, hy0]`. Simplify using the standard rewrite rules. Take `⟨r, hr⟩` from `exists_quadratic_root_mod_of_adic_root v b c (-x / y) (by`. Rewrite using `[← hB, ← hC]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `hN0)`. Conclude with `hnoroot r hr`. Use `⟨(algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) x - algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) B * algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) y - algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) y * α) * algebraMap (v.adi …` and prove the remaining obligations. Establish `hzN : z * (algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) x - algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) B * algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) y - algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) y * α) = algebraM …`.
+
+Rewrite using `[hz', hN]`. Simplify using `only [map_add, map_sub, map_mul, map_pow]`. Take the linear combination `(-(algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) y) ^ 2) * hα`. Rewrite using `[← mul_assoc, hzN, ← map_mul, mul_inv_cancel₀ hN0, map_one]`.
+-/
 theorem _root_.GlobalTheory.InertField.isField_of_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], Module.finrank F E = 2 → ∀ v : HeightOneSpectrum (𝓞 F), (v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))).IsPrime → IsField (v.adicCompletion F ⊗[F] E) := by
   intro F E _ _ _ _ _ h2 v hP
   classical

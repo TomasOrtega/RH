@@ -15,8 +15,14 @@ open GlobalTheory.DefLift GlobalTheory.DefiniteMult Formalism.IndefR.Mult
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+The claim follows from `(M.ds τ).2.2.1.1.1`.
+-/
 theorem sigma_one (M : DSModel V S) (τ : D.what₂.Tau) : M.σ τ 1 = 1 := (M.ds τ).2.2.1.1.1
 
+/- English proof (translation)
+Establish `hm : ∀ x : Matrix.unitaryGroup (Fin V.rank) ℂ, (x : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᴴ * Formalism.REAL.Jm (M.ε τ) * x = Formalism.REAL.Jm (M.ε τ)` using `fun x => by`. Rewrite using `[hp.jm τ, Matrix.mul_one]`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 x.2`. Conclude with `(M.ds τ).2.2.1.1.2 _ (hm a) _ (hm b)`.
+-/
 theorem sigma_mul (hp : AllPlus M) (τ : D.what₂.Tau) (a b : Matrix.unitaryGroup (Fin V.rank) ℂ) :
     M.σ τ ((a : Matrix (Fin V.rank) (Fin V.rank) ℂ) * b) = (M.σ τ a).comp (M.σ τ b) := by
   have hm : ∀ x : Matrix.unitaryGroup (Fin V.rank) ℂ,
@@ -25,6 +31,9 @@ theorem sigma_mul (hp : AllPlus M) (τ : D.what₂.Tau) (a b : Matrix.unitaryGro
     exact Matrix.mem_unitaryGroup_iff'.1 x.2
   exact (M.ds τ).2.2.1.1.2 _ (hm a) _ (hm b)
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show M.σ τ v (M.σ τ (v⁻¹ : Matrix.unitaryGroup (Fin V.rank) ℂ) x) = x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← sigma_mul hp, ← Submonoid.coe_mul, mul_inv_cancel, OneMemClass.coe_one, sigma_one]`. Both sides reduce to the same expression.
+-/
 theorem sigma_comp_inv (hp : AllPlus M) (τ : D.what₂.Tau) (v : Matrix.unitaryGroup (Fin V.rank) ℂ) :
     ((M.σ τ v : M.H τ →L[ℂ] M.H τ) : M.H τ →ₗ[ℂ] M.H τ) ∘ₗ
       ((M.σ τ (v⁻¹ : Matrix.unitaryGroup (Fin V.rank) ℂ) : M.H τ →L[ℂ] M.H τ) : M.H τ →ₗ[ℂ] M.H τ) = LinearMap.id := by
@@ -34,10 +43,48 @@ theorem sigma_comp_inv (hp : AllPlus M) (τ : D.what₂.Tau) (v : Matrix.unitary
     sigma_one]
   rfl
 
+/- English proof (translation)
+Unfold `unfr`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ (fr_det M τ)]`.
+-/
 theorem unfr_one (M : DSModel V S) (τ : D.what₂.Tau) : unfr M τ 1 = 1 := by
   unfold unfr
   rw [Matrix.mul_one, Matrix.nonsing_inv_mul _ (fr_det M τ)]
 
+/- English proof (translation)
+Introduce `D V S M θ c pr hθ hp hc hpr`. Establish `m` using `AllPlus.finite_smooth_irreducible D V S M hp`. Take `⟨-, inj, π, hπ, -⟩` from `tensor_irreducible D V S M m hp`. Establish `key` using `pair_tens hp (fun τ => (m τ).2.1) inj hπ hpr`. Establish `hb` using `pair_bijective hθ hp hc hpr`.
+
+Set `e : SmT M ≃ₗ[ℂ] ⨂[ℂ] τ, M.H τ` to `PiTensorProduct.congr fun τ => LinearEquiv.ofTop (M.sm τ) (m τ).2.1`. Establish `he : ∀ x, e x = inclT M x` using `fun x => rfl`. Set `E : c.W ≃ₗ[ℂ] Module.Dual ℂ (⨂[ℂ] τ, M.H τ)` to `(LinearEquiv.ofBijective pr hb).trans e.symm.dualMap`. Establish `hE : ∀ w y, E w y = pr w (e.symm y)` using `fun w y => rfl`. Set `F : ∀ τ, Matrix.unitaryGroup (Fin V.rank) ℂ → (M.H τ →ₗ[ℂ] M.H τ)` to `fun τ v => ((M.σ τ v : M.H τ →L[ℂ] M.H τ) : M.H τ →ₗ[ℂ] M.H τ)`.
+
+Establish `hact : ∀ τ (v : Matrix.unitaryGroup (Fin V.rank) ℂ), actT M τ (unfr M τ v) = PiTensorProduct.map (Function.update (fun ρ => (LinearMap.id : M.H ρ →ₗ[ℂ] M.H ρ)) τ (F τ v))`. Introduce `τ v`. Unfold `actT`. Rewrite using `[rep_unfr]`. Establish `hπe : ∀ τ v x, π τ v x = e.symm (actT M τ (unfr M τ v) (e x))` using `fun τ v x => by`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, he, he, hπ]`. Establish `hinv : ∀ τ (v : Matrix.unitaryGroup (Fin V.rank) ℂ) x, π τ v (π τ v⁻¹ x) = x`. Introduce `τ v x`. Rewrite using `[hπe, hπe, LinearEquiv.apply_symm_apply, hact, hact, ← LinearMap.comp_apply (PiTensorProduct.map _), ← PiTensorProduct.map_comp]`.
+
+Establish `: (fun ρ => Function.update (fun ρ => (LinearMap.id : M.H ρ →ₗ[ℂ] M.H ρ)) τ (F τ v) ρ ∘ₗ Function.update (fun ρ => (LinearMap.id : M.H ρ →ₗ[ℂ] M.H ρ)) τ (F τ v⁻¹) ρ) = fun ρ => LinearMap.id`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`.
+
+Conclude with `GlobalTheory.CoefPairTens.sigma_comp_inv hp ρ v`. Simplify using `only [Function.update_of_ne h, LinearMap.id_comp]`. Rewrite using `[this, PiTensorProduct.map_id, LinearMap.id_apply, LinearEquiv.symm_apply_apply]`. Establish `one : ∀ τ (v : Matrix.unitaryGroup (Fin V.rank) ℂ) w, E (c.ρ (atTau θ V τ (unfr M τ v)) w) = E w ∘ₗ PiTensorProduct.map (Function.update (fun ρ => (LinearMap.id : M.H ρ →ₗ[ℂ] M.H ρ)) τ (F τ v⁻¹))`. Introduce `τ v w`.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[LinearMap.comp_apply, hE, hE, ← hact, ← hπe, LinearEquiv.symm_apply_apply]`. Establish `h1` using `key τ v (c.ρ (atTau θ V τ (unfr M τ v)) w) (π τ v⁻¹ x)`. Rewrite `h1` using `[hinv, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Conclude with `h1`. Use `⟨E, fun u w => ?_⟩` and prove the remaining obligations. Set `us : Finset D.what₂.Tau → UG D.what₂.Tau V.rank` to `fun s ρ => if ρ ∈ s then u ρ else 1`. Establish `hM : ∀ (s : Finset D.what₂.Tau) ρ, unfr M ρ (us s ρ) ∈ Formalism.QuantumDeterminants.UH (gramAt D V ρ)` using `fun s ρ => hp.unfr_mem ρ _`. Establish `ind : ∀ s : Finset D.what₂.Tau, ∀ w, E (c.ρ (realAll θ V (fun ρ => unfr M ρ (us s ρ))) w) = E w ∘ₗ PiTensorProduct.map (fun ρ => F ρ (us s ρ)⁻¹)`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `w`. Establish `h0 : (fun ρ => unfr M ρ (us ∅ ρ)) = 1`.
+
+Use function extensionality and compare the values at `ρ`. Establish `: us ∅ ρ = 1` using `if_neg (Finset.notMem_empty ρ)`. Rewrite using `[this, OneMemClass.coe_one, Pi.one_apply]`. Conclude with `GlobalTheory.CoefPairTens.unfr_one M ρ`. Establish `h1 : (fun ρ => F ρ (us ∅ ρ)⁻¹) = fun ρ => LinearMap.id`.
+
+Use function extensionality and compare the values at `ρ`. Establish `: us ∅ ρ = 1` using `if_neg (Finset.notMem_empty ρ)`. Use `show ((M.σ ρ ((us ∅ ρ)⁻¹ : Matrix.unitaryGroup (Fin V.rank) ℂ) : M.H ρ →L[ℂ] M.H ρ) : M.H ρ →ₗ[ℂ] M.H ρ) = _`. Rewrite using `[this, inv_one, OneMemClass.coe_one, GlobalTheory.CoefPairTens.sigma_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[h0, realAll_one hθ, map_one, Module.End.one_apply, h1, PiTensorProduct.map_id, LinearMap.comp_id]`. Consider the case `insert τ s hτ ih`. Introduce `w`. Establish `hs : us s τ = 1` using `if_neg hτ`. Establish `h3 : us (insert τ s) τ = u τ` using `if_pos (Finset.mem_insert_self τ s)`.
+
+Establish `h4 : ∀ ρ, ρ ≠ τ → us (insert τ s) ρ = us s ρ` using `fun ρ h => by`. Simplify using `only [us, Finset.mem_insert, h, false_or]`. Rewrite using `[realAll_eq_atTau_mul hθ (hM (insert τ s)) τ]`. Establish `h2 : Function.update (fun ρ => unfr M ρ (us (insert τ s) ρ)) τ 1 = fun ρ => unfr M ρ (us s ρ)`. Use function extensionality and compare the values at `ρ`.
+
+Distinguish the cases in `h : ρ = τ`. Rewrite using `[h, Function.update_self, hs, OneMemClass.coe_one, GlobalTheory.CoefPairTens.unfr_one]`. Rewrite using `[Function.update_of_ne h, h4 ρ h]`. Rewrite using `[h2, map_mul, Module.End.mul_apply, h3, one, ih, LinearMap.comp_assoc, ← PiTensorProduct.map_comp]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, hs, h3]`. Use `show ((M.σ ρ ((1 : Matrix.unitaryGroup (Fin V.rank) ℂ)⁻¹ : Matrix.unitaryGroup (Fin V.rank) ℂ) : M.H ρ →L[ℂ] M.H ρ) : M.H ρ →ₗ[ℂ] M.H ρ) ∘ₗ F ρ (u ρ)⁻¹ = F ρ (u ρ)⁻¹`.
+
+Rewrite using `[inv_one, OneMemClass.coe_one, GlobalTheory.CoefPairTens.sigma_one]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne h, h4 ρ h, LinearMap.comp_id]`. Establish `huniv : us Finset.univ = u` using `funext fun ρ => if_pos (Finset.mem_univ ρ)`. Use `ind Finset.univ w` as an intermediate fact.
+
+Rewrite `this` using `[huniv]`. Conclude with `this`.
+-/
 theorem pairEquiv_realAll : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S) (θ : InfFam D) (c : CoefA V) (pr : c.W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ), IsInfFam θ → GlobalTheory.DefLift.AllPlus M → c.Is → IsDualPair θ M c pr → ∃ E : c.W ≃ₗ[ℂ] Module.Dual ℂ (⨂[ℂ] τ, M.H τ), ∀ (u : UG D.what₂.Tau V.rank) (w : c.W), E (c.ρ (realAll θ V (fun τ => GlobalTheory.DefLift.unfr M τ (u τ))) w) = E w ∘ₗ PiTensorProduct.map (fun τ => ((M.σ τ ((u τ)⁻¹ : Matrix.unitaryGroup (Fin V.rank) ℂ) : M.H τ →L[ℂ] M.H τ) : M.H τ →ₗ[ℂ] M.H τ)) := by
   intro D V S M θ c pr hθ hp hc hpr
   classical

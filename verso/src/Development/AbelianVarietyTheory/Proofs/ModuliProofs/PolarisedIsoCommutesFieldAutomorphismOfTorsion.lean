@@ -15,6 +15,13 @@ open GlobalTheory GlobalTheory.Ex
 noncomputable section
 namespace GlobalTheory.SerreTwist
 
+/- English proof (translation)
+Establish `hη : η[Q.A] ≫ (a ≪≫ b.symm).hom = η[Q.A]`. Rewrite using `[Iso.trans_hom, Iso.symm_hom, ← Category.assoc, ha, ← hb, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `hmon : IsMonHom (a ≪≫ b.symm).hom` using `hL.rigidity _ Q.A Q.A Q.isAb Q.isAb _ hη`. Establish `hpb : LBIso (Q.L.pull (a ≪≫ b.symm).hom.left) (Q'.L.pull a.hom.left)` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso lb _ (by rw [← Over.comp_left, Iso.trans_hom, Iso.symm_hom, Category.assoc, Iso.inv_hom_id, Category.comp_id])`. Take `⟨w, hw⟩ : LBIso Q.L (Q.L.pull (a ≪≫ b.symm).hom.left)` from `LBIso.trans Q.isLB (pull_isLB Q'.isLB _) (pull_isLB Q.isLB _) la (LBIso.symm hpb)`.
+
+Establish `hfix : ∀ x : Over.mk (𝟙 (Sp C)) ⟶ Q.A, x ^ k = 1 → x ≫ (a ≪≫ b.symm).hom = x`. Introduce `x hx`. Rewrite using `[Iso.trans_hom, Iso.symm_hom, ← Category.assoc, h x hx, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `key` using `GlobalTheory.MatchRigid.aut_eq_id hL Q (𝟙 (Sp C)) hk hkC (a ≪≫ b.symm) w hw hfix`. Use `congrArg (· ≫ b.hom) key` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem iso_eq_of_torsion (hL : Laws) {C : Type} [Field C] [IsAlgClosed C] (Q Q' : PolAV (Sp C))
     (a b : Q.A ≅ Q'.A) (ha : η[Q.A] ≫ a.hom = η[Q'.A]) (hb : η[Q.A] ≫ b.hom = η[Q'.A])
     (la : LBIso Q.L (Q'.L.pull a.hom.left)) (lb : LBIso Q.L (Q'.L.pull b.hom.left))
@@ -36,6 +43,15 @@ theorem iso_eq_of_torsion (hL : Laws) {C : Type} [Field C] [IsAlgClosed C] (Q Q'
   have := congrArg (· ≫ b.hom) key
   simpa using this
 
+/- English proof (translation)
+Take `⟨Q, g, hg, -, hmul, w, hw⟩` from `hB S S' t P`. Establish `hpb : IsPullback Q.A.hom g t P.A.hom` using `hg.flip`. Set `c : Over.mk t ⟶ Over.mk ((𝟙_ (Over S')).hom ≫ t)` to `Over.homMk (𝟙 S') (by simp)`. Establish `hsnd : hpb.isoPullback.hom ≫ (snd (Over.mk t) P.A).left = g`. Rewrite using `[Over.snd_left]`.
+
+Conclude with `hpb.isoPullback_hom_snd`. Use `⟨Q, hpb.isoPullback, ?_, ?_, MonoidHom.mk' (fun x => c ≫ toBase hg.w x) (fun x y => by simp only [hmul, MonObj.comp_mul]), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Over.fst_left]`. Conclude with `hpb.isoPullback_hom_fst`. Rewrite using `[hsnd]`.
+
+Conclude with `LBIso.symm ⟨w, hw⟩`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[c]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `hs : hpb.isoPullback.hom ≫ pullback.snd (Over.mk t).hom P.A.hom = g` using `hpb.isoPullback_hom_snd`.
+
+Rewrite using `[Category.assoc, hs, Over.lift_left]`. Use `erw [pullback.lift_snd]`. Simplify using `[c, toBase]`.
+-/
 theorem exists_fibre (hB : PolBaseChangeSt) {S S' : Scheme.{0}} (P : PolAV S) (t : S' ⟶ S) :
     ∃ (Q : PolAV S') (e : Q.A.left ≅ (Over.mk t ⊗ P.A).left),
       e.hom ≫ (fst (Over.mk t) P.A).left = Q.A.hom ∧
@@ -59,6 +75,25 @@ theorem exists_fibre (hB : PolBaseChangeSt) {S S' : Scheme.{0}} (P : PolAV S) (t
       erw [pullback.lift_snd]
       simp [c, toBase]
 
+/- English proof (translation)
+Take `⟨Q, e, he1, he2, F, hF⟩` from `exists_fibre hL.polBaseChange P t`. Take `⟨Q', e', he1', he2', F', hF'⟩` from `exists_fibre hL.polBaseChange P' t`. Establish `hlift : ∀ i (z : Over.mk t ⟶ P.A), lift (𝟙 (Over.mk t)) z ≫ (φ i).hom = lift (𝟙 (Over.mk t)) (lift (𝟙 (Over.mk t)) z ≫ (φ i).hom ≫ snd _ _)`. Introduce `i z`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Simplify using `[h1 i]`. Simplify using the standard rewrite rules. Establish `h1' : ∀ i, (φ i).hom.left ≫ (fst (Over.mk t) P'.A).left = (fst (Over.mk t) P.A).left`. Introduce `i`. Rewrite using `[← Over.comp_left, h1 i]`.
+
+Set `θ : Fin 2 → (Q.A.left ≅ Q'.A.left)` to `fun i => e ≪≫ (Over.forget S).mapIso (φ i) ≪≫ e'.symm`. Establish `hθ : ∀ i, (θ i).hom = e.hom ≫ (φ i).hom.left ≫ e'.inv` using `fun i => rfl`. Establish `hw : ∀ i, (θ i).hom ≫ Q'.A.hom = Q.A.hom`. Introduce `i`. Rewrite using `[hθ, ← he1', ← he1, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc, h1']`.
+
+Set `a : Fin 2 → (Q.A ≅ Q'.A)` to `fun i => Over.isoMk (θ i) (hw i)`. Establish `ha_left : ∀ i, (a i).hom.left = e.hom ≫ (φ i).hom.left ≫ e'.inv` using `fun i => rfl`. Establish `hcomp : ∀ i (x : 𝟙_ (Over (Sp C)) ⟶ Q.A), x.left ≫ (a i).hom.left = (lift (𝟙 (Over.mk t)) (lift (𝟙 (Over.mk t)) (F x) ≫ (φ i).hom ≫ snd _ _)).left ≫ e'.inv`. Introduce `i x`. Rewrite using `[ha_left, ← Category.assoc, hF, ← Category.assoc, ← Over.comp_left, hlift]`.
+
+Establish `hone : ∀ (R : PolAV (Sp C)), (1 : 𝟙_ (Over (Sp C)) ⟶ R.A) = η[R.A]`. Introduce `R`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `ha : ∀ i, η[Q.A] ≫ (a i).hom = η[Q'.A]`. Introduce `i`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, ← hone Q, hcomp, map_one, h2 i, ← map_one F', ← hF', hone Q', Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `la : ∀ i, LBIso Q.L (Q'.L.pull (a i).hom.left)`. Introduce `i`. Establish `h3e : LBIso (P.L.pull (e.hom ≫ (snd (Over.mk t) P.A).left)) (P'.L.pull ((a i).hom.left ≫ e'.hom ≫ (snd (Over.mk t) P'.A).left))` using `GlobalTheory.GenSpread.lbIso_pull_comp e.hom rfl (by rw [ha_left, Over.comp_left]; simp only [Category.assoc, Iso.inv_hom_id_assoc]) (h3 i)`.
+
+Establish `hQ'` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso he2' (a i).hom.left rfl`. Conclude with `LBIso.trans Q.isLB (pull_isLB P'.isLB _) (pull_isLB Q'.isLB _) (LBIso.trans Q.isLB (pull_isLB P.isLB _) (pull_isLB P'.isLB _) he2 h3e) (LBIso.symm hQ')`. Establish `htor : ∀ x : 𝟙_ (Over (Sp C)) ⟶ Q.A, x ^ k = 1 → x ≫ (a 0).hom = x ≫ (a 1).hom`. Introduce `x hx`. Establish `hFx : F x ^ k = 1` using `by rw [← map_pow, hx, map_one]`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, hcomp, hcomp, h4 (F x) hFx]`. Establish `key` using `congrArg Over.Hom.left (iso_eq_of_torsion hL Q Q' (a 0) (a 1) (ha 0) (ha 1) (la 0) (la 1) hk hkC htor)`. Rewrite `key` using `[ha_left, ha_left]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Simplify using `using key`.
+-/
 theorem prod_iso_eq (hL : Laws) {S : Scheme.{0}} (P P' : PolAV S) {C : Type} [Field C] [IsAlgClosed C]
     (t : Sp C ⟶ S) {k : ℕ} (hk : 3 ≤ k) (hkC : (k : C) ≠ 0) (φ : Fin 2 → (Over.mk t ⊗ P.A ≅ Over.mk t ⊗ P'.A))
     (h1 : ∀ i, (φ i).hom ≫ fst _ _ = fst _ _)
@@ -123,6 +158,17 @@ theorem prod_iso_eq (hL : Laws) {S : Scheme.{0}} (P P' : PolAV S) {C : Type} [Fi
 
 end GlobalTheory.SerreTwist
 
+/- English proof (translation)
+Introduce `hL S P P' C inst1 inst2 t φ h1 h2 h3 k hk hkC s hs`. Set `ψ : Over.mk t ⊗ P.A ≅ Over.mk t ⊗ P'.A` to `whiskerRightIso s P.A ≪≫ φ ≪≫ whiskerRightIso s.symm P'.A`. Establish `hψ : ψ.hom = s.hom ▷ P.A ≫ φ.hom ≫ s.inv ▷ P'.A` using `rfl`. Establish `hψs : ψ.hom ≫ snd _ _ = s.hom ▷ P.A ≫ φ.hom ≫ snd _ _`. Rewrite using `[hψ]`.
+
+Simplify using the standard rewrite rules. Establish `hsw : ∀ z : Over.mk t ⟶ P.A, lift (𝟙 (Over.mk t)) z ≫ s.hom ▷ P.A = s.hom ≫ lift (𝟙 (Over.mk t)) (s.inv ≫ z)`. Introduce `z`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `ψ1 : ψ.hom ≫ fst _ _ = fst _ _`.
+
+Rewrite using `[hψ]`. Simplify using `[reassoc_of% h1]`. Establish `ψ2 : lift (𝟙 (Over.mk t)) (1 : Over.mk t ⟶ P.A) ≫ ψ.hom ≫ snd _ _ = 1`. Rewrite using `[hψs, ← Category.assoc, hsw, MonObj.comp_one, Category.assoc, h2, MonObj.comp_one]`. Establish `ψ3 : LBIso (P.L.pull (snd (Over.mk t) P.A).left) (P'.L.pull (ψ.hom ≫ snd (Over.mk t) P'.A).left)`.
+
+Rewrite using `[hψs]`. Conclude with `GlobalTheory.GenSpread.lbIso_pull_comp (s.hom ▷ P.A).left (by rw [← Over.comp_left, whiskerRight_snd]) (by rw [Over.comp_left]) h3`. Establish `ψ4 : ∀ x : Over.mk t ⟶ P.A, x ^ k = 1 → lift (𝟙 (Over.mk t)) x ≫ φ.hom ≫ snd _ _ = lift (𝟙 (Over.mk t)) x ≫ ψ.hom ≫ snd _ _`. Introduce `x hx`. Establish `hx' : (s.inv ≫ x) ^ k = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`.
+
+Use `conv_rhs => rw [hψs, ← Category.assoc, hsw, Category.assoc]`. Rewrite using `[← hs _ hx', Iso.hom_inv_id_assoc]`. Establish `key : φ.hom = ψ.hom` using `GlobalTheory.SerreTwist.prod_iso_eq hL P P' t hk hkC ![φ, ψ] (Fin.forall_fin_two.2 ⟨h1, ψ1⟩) (Fin.forall_fin_two.2 ⟨h2, ψ2⟩) (Fin.forall_fin_two.2 ⟨h3, ψ3⟩) ψ4`. Rewrite using `[← hψs, ← key]`.
+-/
 theorem GlobalTheory.SerreTwist.whisker_comp_eq : Laws → ∀ (S : Scheme.{0}) (P P' : PolAV S) (C : Type) [Field C] [IsAlgClosed C] (t : Sp C ⟶ S) (φ : Over.mk t ⊗ P.A ≅ Over.mk t ⊗ P'.A), φ.hom ≫ fst _ _ = fst _ _ → lift (𝟙 (Over.mk t)) (1 : Over.mk t ⟶ P.A) ≫ φ.hom ≫ snd _ _ = 1 → LBIso (P.L.pull (snd (Over.mk t) P.A).left) (P'.L.pull (φ.hom ≫ snd (Over.mk t) P'.A).left) → ∀ k : ℕ, 3 ≤ k → (k : C) ≠ 0 → ∀ s : Over.mk t ≅ Over.mk t, (∀ x : Over.mk t ⟶ P.A, x ^ k = 1 → lift (𝟙 (Over.mk t)) (s.hom ≫ x) ≫ φ.hom ≫ snd _ _ = s.hom ≫ lift (𝟙 (Over.mk t)) x ≫ φ.hom ≫ snd _ _) → s.hom ▷ P.A ≫ φ.hom ≫ snd _ _ = φ.hom ≫ snd _ _ := by
   intro hL S P P' C inst1 inst2 t φ h1 h2 h3 k hk hkC s hs
   let ψ : Over.mk t ⊗ P.A ≅ Over.mk t ⊗ P'.A := whiskerRightIso s P.A ≪≫ φ ≪≫ whiskerRightIso s.symm P'.A

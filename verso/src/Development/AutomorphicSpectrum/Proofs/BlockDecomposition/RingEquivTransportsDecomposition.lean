@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.PTIso
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `hp : 0 < A.valuation y` using `(Valuation.pos_iff _).2 hy`. Rewrite using `[← A.valuation_le_one_iff, Valuation.map_inv, inv_le_one₀ hp, not_le]`.
+
+Simplify using `[hy]`.
+-/
 private theorem valuation_lt_one_iff_mem_and_inv_not_mem {K : Type*} [Field K] (A : ValuationSubring K) (y : K) :
     A.valuation y < 1 ↔ y = 0 ∨ y⁻¹ ∉ A := by
   by_cases hy : y = 0
@@ -15,6 +20,13 @@ private theorem valuation_lt_one_iff_mem_and_inv_not_mem {K : Type*} [Field K] (
     rw [← A.valuation_le_one_iff, Valuation.map_inv, inv_le_one₀ hp, not_le]
     simp [hy]
 
+/- English proof (translation)
+Introduce `F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE eO eV hO hv A A' hA v`. Establish `hlt : ∀ y : Ω, A'.valuation (E y) < 1 ↔ A.valuation y < 1`. Introduce `y`. Rewrite using `[valuation_lt_one_iff_mem_and_inv_not_mem, valuation_lt_one_iff_mem_and_inv_not_mem, ← map_inv₀, hA, map_eq_zero_iff E E.injective]`. Establish `hx : ∀ x : 𝓞 F, (A'.valuation (algebraMap F' Ω' ((eO x : 𝓞 F') : F')) < 1 ↔ eO x ∈ (eV v).asIdeal) ↔ (A.valuation (algebraMap F Ω (x : F)) < 1 ↔ x ∈ v.asIdeal)`.
+
+Introduce `x`. Rewrite using `[hO x, ← hE, hlt, ← hv]`. Unfold `Formalism.ConjugateSelfDual.IsPlaceOver`. Prove the components needed by the constructor for the conclusion. Introduce `h x'`.
+
+Take `⟨x, rfl⟩` from `eO.surjective x'`. Conclude with `(hx x).2 (h x)`. Introduce `h x`. Conclude with `(hx x).1 (h (eO x))`.
+-/
 theorem isPlaceOver_transfer_fieldIso :
     ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (e : F ≃+* F') (E : Ω ≃+* Ω'), (∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) → ∀ (eO : 𝓞 F ≃+* 𝓞 F') (eV : HeightOneSpectrum (𝓞 F) ≃ HeightOneSpectrum (𝓞 F')), (∀ x : 𝓞 F, ((eO x : 𝓞 F') : F') = e (x : F)) → (∀ (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F), x ∈ v.asIdeal ↔ eO x ∈ (eV v).asIdeal) → ∀ (A : ValuationSubring Ω) (A' : ValuationSubring Ω'), (∀ x, E x ∈ A' ↔ x ∈ A) → ∀ v : HeightOneSpectrum (𝓞 F), IsPlaceOver A v ↔ IsPlaceOver A' (eV v) := by
   intro F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE eO eV hO hv A A' hA v

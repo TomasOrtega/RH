@@ -7,6 +7,19 @@ namespace GlobalTheory.EisBL.Borel
 open Topology MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl
 
+/- English proof (translation)
+Establish `hce` using `Units.isClosedEmbedding_embedProduct (α := M)`. Use `haveI : LocallyCompactSpace Mˣ := hce.locallyCompactSpace`. Use `haveI : SecondCountableTopology Mᵐᵒᵖ := (MulOpposite.opHomeomorph (M := M)).symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology Mˣ := hce.isEmbedding.secondCountableTopology`. Use `⟨le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+
+Use `show MeasurableSpace.comap Units.val ‹MeasurableSpace M› ≤ borel Mˣ`. Rewrite using `[BorelSpace.measurable_eq (α := M)]`. Rewrite using `[← @borel_comap Mˣ M Units.val _]`. Conclude with `borel_anti (continuous_iff_le_induced.mp Units.continuous_val)`. Rewrite using `[borel_eq_generateFrom_isClosed]`.
+
+Use `MeasurableSpace.generateFrom_le fun C hC => ?_` and prove the remaining obligations. Establish `key : C = Units.val ⁻¹' (⋃ n, Units.val '' (C ∩ compactCovering Mˣ n))`. Use extensionality with `u`. Simplify using `only [Set.mem_preimage, Set.mem_iUnion, Set.mem_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hu`. Establish `hmem : u ∈ ⋃ n, compactCovering Mˣ n`. Rewrite using `[iUnion_compactCovering]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨n, hn⟩` from `Set.mem_iUnion.mp hmem`.
+
+Conclude with `⟨n, u, ⟨hu, hn⟩, rfl⟩`. Introduce and unpack `⟨n, v, ⟨hv, _⟩, hvu⟩`. Rewrite using `[← Units.ext hvu]` and apply the resulting hypothesis. Rewrite using `[key]`. Use `⟨_, MeasurableSet.iUnion fun n => ?_, rfl⟩` and prove the remaining obligations.
+
+Conclude with `(((isCompact_compactCovering Mˣ n).inter_left hC).image Units.continuous_val).isClosed.measurableSet`.
+-/
 theorem units_borelSpace (M : Type*) [Monoid M] [TopologicalSpace M] [T2Space M] [ContinuousMul M]
     [LocallyCompactSpace M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] :
     BorelSpace Mˣ := by

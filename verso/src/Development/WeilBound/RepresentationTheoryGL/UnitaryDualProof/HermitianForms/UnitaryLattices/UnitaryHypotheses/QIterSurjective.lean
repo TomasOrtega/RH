@@ -26,11 +26,17 @@ def emb (n : ℕ) : (j : ℕ) → Mir k n →* Mir k (n + j)
   | 0 => MonoidHom.id _
   | j + 1 => ((levi k (n + j + 1)).comp (Mir k (n + j)).subtype).comp (emb n j)
 
+/- English proof (translation)
+The claim follows from `| 0, _ => Function.surjective_id | j + 1, τ => (qIter_surjective ψ j (MRep.phiM k ψ τ)).comp (Submodule.mkQ_surjective _)`.
+-/
 theorem qIter_surjective (ψ : AddChar k Circle) {n : ℕ} :
     ∀ (j : ℕ) (τ : MRep k (n + j)), Function.Surjective (qIter k ψ j τ)
   | 0, _ => Function.surjective_id
   | j + 1, τ => (qIter_surjective ψ j (MRep.phiM k ψ τ)).comp (Submodule.mkQ_surjective _)
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => rfl | j + 1, τ, p, v => by have ih := qIter_equiv ψ j (MRep.phiM k ψ τ) p ((twKer τ.ρ (MirUin k (n + j + 1)) (mirChar k ψ (n + j))).mkQ v) exact ih`.
+-/
 theorem qIter_equiv (ψ : AddChar k Circle) {n : ℕ} :
     ∀ (j : ℕ) (τ : MRep k (n + j)) (p : Mir k n) (v : τ.V),
       qIter k ψ j τ (τ.ρ (emb k n j p) v) = (iterPhi k ψ j τ).ρ p (qIter k ψ j τ v)
@@ -40,6 +46,9 @@ theorem qIter_equiv (ψ : AddChar k Circle) {n : ℕ} :
       ((twKer τ.ρ (MirUin k (n + j + 1)) (mirChar k ψ (n + j))).mkQ v)
     exact ih
 
+/- English proof (translation)
+The claim follows from `| 0, τ => by exact (Submodule.ker_mkQ _).trans (GlobalTheory.T.mirabolic_twisted_kernel_derivative_zero k ψ n τ.V τ.ρ) | j + 1, τ => by obtain ⟨e, hle⟩ := GlobalTheory.CompanionTheory.BZMirStep.twKer_twAct_eq_map τ.ρ (MirUin k (n + j + 1)) (mirChar k ψ (n + j)) _ (levi_stab ψ (n …`.
+-/
 theorem ker_qIter (ψ : AddChar k Circle) {n : ℕ} :
     ∀ (j : ℕ) (τ : MRep k (n + j)),
       LinearMap.ker ((twKer (iterPhi k ψ j τ).ρ (MirUin k n) 1).mkQ ∘ₗ qIter k ψ j τ) =
@@ -63,6 +72,11 @@ theorem ker_qIter (ψ : AddChar k Circle) {n : ℕ} :
     exact (Submodule.comap_map_mkQ _ _).trans (sup_eq_right.2 hle)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [glEmbMat]`. Consider the case `cast b => simp [glEmbMat, (Fin.castSucc_ne_last b).symm]`.
+
+Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [glEmbMat]`. Consider the case `cast b => simp [glEmbMat]`.
+-/
 theorem glEmbMat_apply' (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (a b : Fin (n + 1)) :
     glEmbMat k n A a b =
       if ha : (a : ℕ) < n then (if hb : (b : ℕ) < n then A ⟨a, ha⟩ ⟨b, hb⟩ else 0)
@@ -77,6 +91,9 @@ theorem glEmbMat_apply' (n : ℕ) (A : Matrix (Fin n) (Fin n) k) (a b : Fin (n +
     | last => simp [glEmbMat]
     | cast b => simp [glEmbMat]
 
+/- English proof (translation)
+The claim follows from `| 0, a, b => by rw [dif_pos a.isLt, dif_pos b.isLt] rfl | j + 1, a, b => by have ih := emb_val n p j show glEmbMat k (n + j + 1) (((emb k n j p : Mir k (n + j)) : GL (Fin (n + j + 1)) k) : Matrix (Fin (n + j + 1)) (Fin (n + j + 1)) k) a b = _ rw [glEmbMat_apply'] by_cases ha : (a …`.
+-/
 theorem emb_val (n : ℕ) (p : Mir k n) :
     ∀ (j : ℕ) (a b : Fin (n + j + 1)),
       (((emb k n j p : Mir k (n + j)) : GL (Fin (n + j + 1)) k) : Matrix (Fin (n + j + 1)) (Fin (n + j + 1)) k) a b =
@@ -111,6 +128,17 @@ theorem emb_val (n : ℕ) (p : Mir k n) :
       have ha' : ¬ (a : ℕ) < n + 1 := by omega
       rw [dif_neg ha']
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[emb_val, blkAt_apply]`. Establish `hl : ∀ (a' b' : Fin (n + 1)), (((levi k n g : Mir k n) : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) a' b' = glEmbMat k n (g : Matrix (Fin n) (Fin n) k) a' b'` using `fun _ _ => rfl`. Distinguish the cases in `ha : (a : ℕ) < n`. Establish `ha' : (a : ℕ) < n + 1` using `by omega`.
+
+Rewrite using `[dif_pos ha', dif_pos ha]`. Distinguish the cases in `hb : (b : ℕ) < n`. Establish `hb' : (b : ℕ) < n + 1` using `by omega`. Rewrite using `[dif_pos hb', dif_pos hb, hl, glEmbMat_apply']`. Simplify using `only [ha, hb, dif_pos]`.
+
+Rewrite using `[dif_neg hb]`. Distinguish the cases in `hb' : (b : ℕ) < n + 1`. Rewrite using `[dif_pos hb', hl, glEmbMat_apply']`. Simplify using `only [ha, hb, dif_pos, dif_neg, not_false_eq_true]`. Rewrite using `[dif_neg hb']`.
+
+Rewrite using `[dif_neg ha]`. Distinguish the cases in `ha' : (a : ℕ) < n + 1`. Rewrite using `[dif_pos ha']`. Distinguish the cases in `hb' : (b : ℕ) < n + 1`. Rewrite using `[dif_pos hb', hl, glEmbMat_apply']`.
+
+Simplify using `only [ha, dif_neg, not_false_eq_true]`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `rw [dif_neg hb'] split_ifs with h <;> first | rfl | (simp only [Fin.ext_iff] at h; omega)`. Rewrite using `[dif_neg ha']`.
+-/
 theorem emb_levi (n j : ℕ) (g : GL (Fin n) k) :
     ((emb k n j (levi k n g) : Mir k (n + j)) : GL (Fin (n + j + 1)) k) = blkAt k n (n + j + 1) (by omega) g := by
   ext a b
@@ -140,6 +168,11 @@ theorem emb_levi (n j : ℕ) (g : GL (Fin n) k) :
         split_ifs with h <;> first | rfl | (simp only [Fin.ext_iff] at h; omega)
     · rw [dif_neg ha']
 
+/- English proof (translation)
+Use `⟨(twKer (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1).mkQ ∘ₗ qIter k ψ j (resM k π), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mkQ_surjective _).comp (qIter_surjective ψ j _)`. Conclude with `(ker_qIter ψ j (resM k π)).trans (GlobalTheory.T.restriction_mirabolic_twisted_kernel k ψ (n + j) n V π)`. Introduce `g v`. Rewrite using `[← emb_levi n j g]`.
+
+Use `show (twKer (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1).mkQ (qIter k ψ j (resM k π) ((resM k π).ρ (emb k n j (levi k n g)) v)) = (twKer (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1).mkQ ((iterPhi k ψ j (resM k π)).ρ (levi k n g) (qIter k ψ j (resM k π) v))`. Conclude with `congrArg _ (qIter_equiv ψ j (resM k π) (levi k n g) v)`.
+-/
 theorem derDict (ψ : AddChar k Circle) (n j : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (n + j + 1)) k) V) :
     ∃ q : V →ₗ[ℂ] TwJacquet (iterPhi k ψ j (resM k π)).ρ (MirUin k n) 1, Function.Surjective q ∧

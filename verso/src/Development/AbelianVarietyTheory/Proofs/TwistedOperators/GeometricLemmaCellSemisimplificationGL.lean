@@ -33,6 +33,9 @@ def relIndEquiv {α β : Type} [Fintype α] [Fintype β] [LinearOrder β] {m : �
         fun F => Subtype.ext (Subtype.ext (funext fun x => φ.symm_apply_apply (F.1.1 x))),
         fun F => Subtype.ext (Subtype.ext (funext fun x => φ.apply_symm_apply (F.1.1 x)))⟩)
 
+/- English proof (translation)
+Use `haveI : Subsingleton (smoothPart (ind (relParab k f) ((twist ρ (relDeltaHalf k c)).comp (relProj k f)))) := ⟨fun a b => Subtype.ext (Subtype.ext (funext fun _ => Subsingleton.elim _ _))⟩`. Conclude with `jhMult_of_subsingleton hτ _`.
+-/
 theorem jhMult_relInd_of_subsingleton {α β : Type} [Fintype α] [Fintype β] [LinearOrder β]
     {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {c : α → β → Type}
     [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)] (f : ∀ i, (Σ j, c i j) ≃ m i) {V : Type}
@@ -43,6 +46,11 @@ theorem jhMult_relInd_of_subsingleton {α β : Type} [Fintype α] [Fintype β] [
     ⟨fun a b => Subtype.ext (Subtype.ext (funext fun _ => Subsingleton.elim _ _))⟩
   exact jhMult_of_subsingleton hτ _
 
+/- English proof (translation)
+Establish `h : ∀ z : ⨂[ℂ] a, X a, z = 0` using `fun z => by`. Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[(PiTensorProduct.tprod ℂ).map_coord_zero i (Subsingleton.elim _ _), smul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+
+Conclude with `⟨fun x y => (h x).trans (h y).symm⟩`.
+-/
 theorem subsingleton_piTensor {α : Type} [Fintype α] [DecidableEq α] {X : α → Type}
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (i : α) [Subsingleton (X i)] :
     Subsingleton (⨂[ℂ] a, X a) := by
@@ -56,6 +64,25 @@ theorem subsingleton_piTensor {α : Type} [Fintype α] [DecidableEq α] {X : α 
 end GlobalTheory.SmGL.CellSemis
 
 open GlobalTheory.SmGL.CellSemis in
+/- English proof (translation)
+Introduce `hBZ k _ _ _ _ α β _ _ _ _ m _ _ m' _ _ c _ _ f g X _ _ ρ hρ hl`. Set `A : ∀ i, SmRep (Levi k (c i))` to `fun i => ⟨_, jac (f i) (ρ i), isSmooth_jac (f i) (hρ i)⟩`. Establish `hA : ∀ i, HasFiniteLength (A i).ρ` using `fun i => (hBZ k).2.1 β (m i) (c i) (f i) (X i) (ρ i) (hρ i) (hl i)`. Set `Φ : IrrRep (Levi k m') → (∀ i, SmRep (Levi k (c i))) → ℕ∞` to `fun τ B => jhMult τ.ρ (relInd (c := fun j i => c i j) g ((piTensor fun i => (B i).ρ).comp (swapBlocks k c)))`. Establish `hswap : Continuous (swapBlocks k c)` using `by show Continuous fun g : (∀ j, Levi k fun i => c i j) => fun i j => g j i`.
+
+Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_apply i).comp (continuous_apply j)`. Establish `hzero : ∀ τ (B : ∀ i, SmRep (Levi k (c i))) (i : α), Subsingleton (B i).V → Φ τ B = 0`. Introduce `τ B i hi`. Use `haveI := subsingleton_piTensor (X := fun a => (B a).V) i`. Conclude with `jhMult_relInd_of_subsingleton _ _ τ.irr`.
+
+Establish `hexact : ∀ τ (B : ∀ i, SmRep (Levi k (c i))) (i : α) (C C₁ C₂ : SmRep (Levi k (c i))) (ι : C₁.ρ.IntertwiningMap C.ρ) (p : C.ρ.IntertwiningMap C₂.ρ), Function.Injective ι → Function.Surjective p → (∀ u, p (ι u) = 0) → (∀ v, p v = 0 → ∃ u, ι u = v) → Φ τ (Function.update B i C) = Φ …`. Introduce `τ B i C C₁ C₂ ι p h1 h2 h3 h4`. Take `⟨ι', p', h1', h2', h3', h4'⟩` from `GlobalTheory.T.piTensor_smooth_reps_exact_each_factor α (fun i => Levi k (c i)) B i C C₁ C₂ ι p h1 h2 h3 h4`. Conclude with `GlobalTheory.T.jordanHolder_mult_normalised_induction_exact k β α m' (fun j i => c i j) g _ _ _ _ _ _ (compMap ι' _) (compMap p' _) h1' h2' h3' h4' (isSmooth_comp (isSmooth_piTensor fun a => (Function.update B i C a).smooth) _ hswap) _ τ.ρ τ.irr`. Set `T' : Finset (∀ i, IrrCl (Levi k (c i)))` to `Fintype.piFinset fun i => (finite_constituents (hA i)).toFinset`.
+
+Establish `hT' : ∀ t ∉ T', ∃ i, jhMult (t i).rep.ρ (A i).ρ = 0`. Introduce `t ht`. Rewrite `ht` using `[Fintype.mem_piFinset]`. Use `push_neg at ht`. Take `⟨i, hi⟩` from `ht`.
+
+Conclude with `⟨i, by simpa using hi⟩`. Set `P : ∀ i, (∀ j, IrrCl (GL (c i j) k)) → IrrRep (Levi k (c i))` to `fun i s => ⟨_, piTensor fun j => (s j).rep.ρ, isSmooth_piTensor fun j => (s j).rep.smooth, GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k β (c i) fun j => (s j).rep⟩`. Set `Θ : (∀ i j, IrrCl (GL (c i j) k)) → ∀ i, IrrCl (Levi k (c i))` to `fun s i => (P i (s i)).cl`. Establish `hΘi : Function.Injective Θ`. Introduce `s s' h`.
+
+Use function extensionality and compare the values at `i j`. Establish `h2` using `GlobalTheory.T.tensor_product_determines_factor_classes β (fun j => GL (c i j) k) (fun j => (s i j).rep) (fun j => (s' i j).rep) (IrrRep.cl_eq_iff.1 (congrFun h i)) j`. Rewrite `h2` using `[IrrCl.cl_rep, IrrCl.cl_rep]`. Then use the resulting hypothesis. Establish `hΘs : Function.Surjective Θ`. Introduce `t`.
+
+Use `choose s hs using fun i => GlobalTheory.T.exists_equiv_piExteriorTensor_blockLevi hBZ k β (c i) (t i).rep`. Use `⟨fun i j => (s i j).cl, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← (t i).cl_rep]`. Conclude with `IrrRep.cl_eq_iff.2 ⟨(GlobalTheory.LocGL.piTensorEquiv fun j => (s i j).nonempty_equiv_rep.some).trans (hs i).some.symm⟩`. Use `⟨T'.preimage Θ hΘi.injOn, fun s hs => ?_, fun τ => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hs` using `[Finset.mem_preimage]`. Take `⟨i, hi⟩` from `hT' _ hs`. Conclude with `⟨i, (jhMult_congr_left (P i (s i)).nonempty_equiv_rep.some.symm _).trans hi⟩`. Establish `hLHS : jhMult τ.ρ (cellFunctor f g (piTensor ρ)) = Φ τ A` using `jhMult_congr_right _ (relIndEquiv g (GlobalTheory.LocGL.compEquiv (GlobalTheory.T.relative_jacquet_functor_piTensor_equiv k α β m c f X ρ).some (swapBlocks k c)))`. Rewrite using `[hLHS, GlobalTheory.T.additive_family_function_determined_constituents α (fun i => Levi k (c i)) (Φ τ) (hzero τ) (hexact τ) A hA T' hT', ← Finset.sum_preimage Θ T' hΘi.injOn _ (fun t _ ht => absurd (hΘs t) ht)]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun i _ => jhMult_congr_left (P i (s i)).nonempty_equiv_rep.some _) (jhMult_congr_right _ ?_)` and prove the remaining obligations. Conclude with `(relIndEquiv g ((GlobalTheory.LocGL.compEquiv (GlobalTheory.LocGL.piTensorEquiv fun i => (P i (s i)).nonempty_equiv_rep.some) (swapBlocks k c)).trans (GlobalTheory.T.piTensor_doubly_indexed_swap_blocks_equiv k α β c (fun i j => (s i j).rep.V) (fun i j => (s i j).rep.ρ)).some)).tr …`.
+-/
 theorem GlobalTheory.SmGL.CellSemis.cellSemisimplification : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.CellSemisimplification k := by
   intro hBZ k _ _ _ _ α β _ _ _ _ m _ _ m' _ _ c _ _ f g X _ _ ρ hρ hl
   classical

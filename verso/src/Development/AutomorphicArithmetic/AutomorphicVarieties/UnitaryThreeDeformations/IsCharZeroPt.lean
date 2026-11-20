@@ -38,8 +38,14 @@ variable (O) in
 
 def Sring : Subalgebra O R := gradedSub (wpart O u)
 
+/- English proof (translation)
+The claim follows from `le_iSup (wpart O u) j hx`.
+-/
 theorem mem_Sring {j : ℤ} {x : R} (hx : x ∈ wpart O u j) : x ∈ Sring O u := le_iSup (wpart O u) j hx
 
+/- English proof (translation)
+Introduce `R' _ _ _ f f' t h` and use `by have e := congrArg (fun r : Γ →* GG 3 R' => (r g).mat a b) h simp only [(conjBy_tor (push f u) t).1] at e exact e`.
+-/
 theorem entry_mem (g : Γ) (a b : Fin 3) : (u g).mat a b ∈ wpart O u (wt a b) := fun R' _ _ _ f f' t h => by
   have e := congrArg (fun r : Γ →* GG 3 R' => (r g).mat a b) h
   simp only [(conjBy_tor (push f u) t).1] at e

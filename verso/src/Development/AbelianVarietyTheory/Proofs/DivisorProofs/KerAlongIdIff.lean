@@ -25,6 +25,9 @@ def powLB {S : Scheme.{0}} (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) : LB 
 def KerAlong {S : Scheme.{0}} (A : Over S) [GrpObj A] (P : LB (A ⊗ A).left) {S' : Scheme.{0}} (g : S' ⟶ S) : Prop :=
   ∀ (T : Over S) (a : T.left ⟶ S'), a ≫ g = T.hom → ∀ x : T ⟶ A, IsTrivial (slice A P x) → x = 1
 
+/- English proof (translation)
+Introduce `T a ha` and use `h T (a ≫ f) ((Category.assoc _ _ _).trans ha)`.
+-/
 theorem KerAlong.comp {S S' S'' : Scheme.{0}} {A : Over S} [GrpObj A] {P : LB (A ⊗ A).left} {g : S' ⟶ S}
     (h : KerAlong A P g) (f : S'' ⟶ S') : KerAlong A P (f ≫ g) :=
   fun T a ha => h T (a ≫ f) ((Category.assoc _ _ _).trans ha)

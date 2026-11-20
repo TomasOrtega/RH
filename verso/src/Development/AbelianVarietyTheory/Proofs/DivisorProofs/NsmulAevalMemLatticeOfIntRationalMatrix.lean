@@ -3,6 +3,25 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `φ : Module.End ℂ (Fin g → ℂ) →ₐ[ℚ] Matrix (Fin n) (Fin n) ℝ` to `{ toFun := fun f => LinearMap.toMatrix e e (f.restrictScalars ℝ) map_one' := by`. Rewrite using `[show ((1 : Module.End ℂ (Fin g → ℂ)).restrictScalars ℝ) = 1 from rfl]`. Conclude with `LinearMap.toMatrix_one e`. Use the proof step `map_mul' := fun f h => by`. Rewrite using `[show ((f * h).restrictScalars ℝ) = (f.restrictScalars ℝ) * (h.restrictScalars ℝ) from rfl]`.
+
+Conclude with `LinearMap.toMatrix_mul e _ _`. Use the proof step `map_zero' := by`. Rewrite using `[show ((0 : Module.End ℂ (Fin g → ℂ)).restrictScalars ℝ) = 0 from rfl]`. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun f h => by`.
+
+Rewrite using `[show ((f + h).restrictScalars ℝ) = (f.restrictScalars ℝ) + (h.restrictScalars ℝ) from rfl]`. Simplify using the standard rewrite rules. Use the proof step `commutes' := fun r => by`. Establish `: ((algebraMap ℚ (Module.End ℂ (Fin g → ℂ)) r).restrictScalars ℝ) = algebraMap ℝ (Module.End ℝ (Fin g → ℂ)) (r : ℝ)`. Use `LinearMap.ext fun x => funext fun i => ?_` and prove the remaining obligations.
+
+Simplify using `[Module.algebraMap_end_apply, Rat.smul_def]`. Rewrite using `[this, LinearMap.toMatrix_algebraMap]`. Use extensionality with `i j`. Simplify using `[Matrix.algebraMap_eq_diagonal, Matrix.diagonal_apply]`. Use the proof step `}`.
+
+Set `ψ : Matrix (Fin n) (Fin n) ℚ →ₐ[ℚ] Matrix (Fin n) (Fin n) ℝ` to `(Algebra.ofId ℚ ℝ).mapMatrix`. Establish `hψ : ∀ M : Matrix (Fin n) (Fin n) ℚ, ψ M = M.map (Rat.cast : ℚ → ℝ)`. Introduce `M`. Use extensionality with `i j`. Simplify using `[ψ]`.
+
+Establish `hφ : ∀ f : Module.End ℂ (Fin g → ℂ), φ f = LinearMap.toMatrix e e (f.restrictScalars ℝ)` using `fun f => rfl`. Establish `key : LinearMap.toMatrix e e ((Polynomial.aeval γ p).restrictScalars ℝ) = (Polynomial.aeval Tq p).map (Rat.cast : ℚ → ℝ)`. Rewrite using `[← hφ, ← hψ, ← Polynomial.aeval_algHom_apply, ← Polynomial.aeval_algHom_apply, hφ, hψ, hT]`. Introduce `x hx`. Use `choose m hm using (hΛ x).mp hx`.
+
+Use `choose z hz using hD`. Rewrite using `[hΛ]`. Introduce `k`. Use `⟨∑ l, z k l * m l, ?_⟩` and prove the remaining obligations. Establish `hv : ⇑(e.repr ((Polynomial.aeval γ p) x)) = (Polynomial.aeval Tq p).map (Rat.cast : ℚ → ℝ) *ᵥ ⇑(e.repr x)`.
+
+Rewrite using `[← key, LinearMap.toMatrix_mulVec_repr]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.smul_apply, map_nsmul, Finsupp.smul_apply, hv]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, hm, nsmul_eq_mul, Finset.mul_sum]`. Use `push_cast`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congrArg (Rat.cast : ℚ → ℝ) (hz k l)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nsmul_aeval_mem_lattice_of_intMatrix_basis (g n : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (e : Module.Basis (Fin n) ℝ (Fin g → ℂ))
     (hΛ : ∀ x, x ∈ Λ ↔ ∀ k, ∃ m : ℤ, e.repr x k = m)
     (γ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Tq : Matrix (Fin n) (Fin n) ℚ)
@@ -60,6 +79,9 @@ theorem nsmul_aeval_mem_lattice_of_intMatrix_basis (g n : ℕ) (Λ : Submodule �
   rw [← this]
   ring
 
+/- English proof (translation)
+Introduce `g n Λ e hΛ γ Tq hT p D hD` and use `nsmul_aeval_mem_lattice_of_intMatrix_basis g n Λ e hΛ γ Tq hT p D hD`.
+-/
 theorem nsmul_aeval_mem_lattice_of_intMatrix : ∀ (g n : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (e : Module.Basis (Fin n) ℝ (Fin g → ℂ)),
     (∀ x, x ∈ Λ ↔ ∀ k, ∃ m : ℤ, e.repr x k = m) →
     ∀ (γ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Tq : Matrix (Fin n) (Fin n) ℚ),

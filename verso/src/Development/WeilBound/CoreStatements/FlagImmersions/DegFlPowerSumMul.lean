@@ -5,12 +5,46 @@ open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 
 namespace RootFieldNumerics
 
+/- English proof (translation)
+Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul', one_mul]`. Simplify using `only [Finsupp.single_le_iff]`.
+-/
 private theorem coeff_X_pow_mul_flag_immersions {σ : Type*} [DecidableEq σ] (m : σ →₀ ℕ) (x : σ) (k : ℕ)
     (p : MvPolynomial σ ℝ) :
     (X x ^ k * p).coeff m = if k ≤ m x then p.coeff (m - Finsupp.single x k) else 0 := by
   rw [X_pow_eq_monomial, coeff_monomial_mul', one_mul]
   simp only [Finsupp.single_le_iff]
 
+/- English proof (translation)
+Introduce `Ψ _ _ N τ k G hk`. Establish `hval : ∀ (σ : Ψ → Equiv.Perm (Fin N)) (x : Ψ × Fin N), permExp σ x = N - 1 - ((σ x.1 x.2 : Fin N) : ℕ)` using `fun σ x => rfl`. Establish `key : ∀ j : Fin N, ∑ σ : Ψ → Equiv.Perm (Fin N), (∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (X (τ, (σ τ).symm j) ^ k * G).coeff (permExp σ) = 0`. Introduce `j`. Establish `hjN` using `j.isLt`.
+
+Distinguish the cases in `hj : (j : ℕ) + k < N`. Set `j' : Fin N` to `⟨j + k, hj⟩`. Establish `hj'v : (j' : ℕ) = j + k` using `rfl`. Establish `hne : j ≠ j'` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Rewrite `this` using `[hj'v]`. Use linear arithmetic over natural numbers and integers. Set `ρ : Ψ → Equiv.Perm (Fin N)` to `Pi.mulSingle τ (Equiv.swap j j')`. Establish `hρτ : ρ τ = Equiv.swap j j'` using `Pi.mulSingle_eq_same _ _`. Establish `hρt : ∀ t, t ≠ τ → ρ t = 1` using `fun t ht => Pi.mulSingle_eq_of_ne ht _`.
+
+Set `F : (Ψ → Equiv.Perm (Fin N)) → ℝ` to `fun σ => (∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (X (τ, (σ τ).symm j) ^ k * G).coeff (permExp σ)`. Establish `hanti : ∀ σ, F (ρ * σ) = -F σ`. Introduce `σ`. Establish `hsign : (∏ t, ((Equiv.Perm.sign ((ρ * σ) t) : ℤ) : ℝ)) = -∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)`. Establish `h1 : ∀ t, ((Equiv.Perm.sign ((ρ * σ) t) : ℤ) : ℝ) = ((Equiv.Perm.sign (ρ t) : ℤ) : ℝ) * ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)`.
+
+Introduce `t`. Rewrite using `[Pi.mul_apply, Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul]`. Rewrite using `[Finset.prod_congr rfl fun t _ => h1 t, Finset.prod_mul_distrib, Finset.prod_eq_single τ (fun t _ ht => by rw [hρt t ht, Equiv.Perm.sign_one]; simp) (fun h => absurd (Finset.mem_univ τ) h), hρτ, Equiv.Perm.sign_swap hne]`. Simplify using the standard rewrite rules. Establish `hsymm : ((ρ * σ) τ).symm j = (σ τ).symm j'`.
+
+Rewrite using `[Equiv.symm_apply_eq, Pi.mul_apply, hρτ, Equiv.Perm.mul_apply, Equiv.apply_symm_apply, Equiv.swap_apply_right]`. Establish `hat : (σ τ) ((σ τ).symm j) = j` using `Equiv.apply_symm_apply _ _`. Establish `hbt : (σ τ) ((σ τ).symm j') = j'` using `Equiv.apply_symm_apply _ _`. Establish `hab : (σ τ).symm j ≠ (σ τ).symm j'` using `fun h => hne ((σ τ).symm.injective h)`. Establish `hexp : permExp (ρ * σ) - Finsupp.single (τ, (σ τ).symm j') k = permExp σ - Finsupp.single (τ, (σ τ).symm j) k`.
+
+Use extensionality with `⟨t, i⟩`. Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, hval, Finsupp.single_apply, Prod.mk.injEq]`. Distinguish the cases in `ht : t = τ`. Rewrite using `[ht, Pi.mul_apply, hρτ, Equiv.Perm.mul_apply]`. Distinguish the cases in `hia : (σ τ).symm j = i`.
+
+Rewrite using `[← hia, hat, Equiv.swap_apply_left]`. Simplify using `only [hab.symm, true_and, and_false, if_true, if_false]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hib : (σ τ).symm j' = i`. Rewrite using `[← hib, hbt, Equiv.swap_apply_right]`.
+
+Simplify using `only [hab, true_and, and_false, if_true, if_false]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (σ τ) i ≠ j` using `fun h => hia (by rw [← h, Equiv.symm_apply_apply])`. Establish `h2 : (σ τ) i ≠ j'` using `fun h => hib (by rw [← h, Equiv.symm_apply_apply])`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h1 h2]`.
+
+Simplify using `only [hia, hib, and_false, if_false]`. Rewrite using `[Pi.mul_apply, hρt t ht, one_mul]`. Simplify using `only [Ne.symm ht, false_and, if_false]`. Establish `hcond : ∀ σ' : Ψ → Equiv.Perm (Fin N), ∀ a : Fin N, σ' τ a = j → (k ≤ permExp σ' (τ, a))`. Introduce `σ' a ha`.
+
+Rewrite using `[hval]`. Simplify using `only [ha]`. Use linear arithmetic over natural numbers and integers. Establish `hL : (ρ * σ) τ ((σ τ).symm j') = j`. Rewrite using `[Pi.mul_apply, hρτ, Equiv.Perm.mul_apply, hbt, Equiv.swap_apply_right]`.
+
+Use `show (∏ t, ((Equiv.Perm.sign ((ρ * σ) t) : ℤ) : ℝ)) * (X (τ, ((ρ * σ) τ).symm j) ^ k * G).coeff (permExp (ρ * σ)) = -((∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (X (τ, (σ τ).symm j) ^ k * G).coeff (permExp σ))`. Rewrite using `[hsign, hsymm, coeff_X_pow_mul_flag_immersions, coeff_X_pow_mul_flag_immersions, if_pos (hcond _ _ hL), if_pos (hcond _ _ hat), hexp, neg_mul]`. Establish `h2 : ∑ σ, F (ρ * σ) = ∑ σ, F σ` using `Equiv.sum_comp (Equiv.mulLeft ρ) F`. Rewrite `h2` using `[Finset.sum_congr rfl fun σ _ => hanti σ, Finset.sum_neg_distrib]`. Express the relevant statement in the definitionally equal form `∑ σ, F σ = 0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `Finset.sum_eq_zero fun σ _ => ?_` and prove the remaining obligations. Establish `hlt : ¬ k ≤ permExp σ (τ, (σ τ).symm j)`. Rewrite using `[hval]`. Simplify using `only [Equiv.apply_symm_apply]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_X_pow_mul_flag_immersions, if_neg hlt, mul_zero]`. Establish `hsplit : degFl (pk τ k * G) = (-1) ^ dimFl Ψ N * ∑ j : Fin N, ∑ σ : Ψ → Equiv.Perm (Fin N), (∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (X (τ, (σ τ).symm j) ^ k * G).coeff (permExp σ)`. Unfold `degFl`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[pk, Finset.sum_mul, coeff_sum, Finset.mul_sum]`. Conclude with `(Equiv.sum_comp (σ τ).symm fun i => (∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (X (τ, i) ^ k * G).coeff (permExp σ)).symm`. Rewrite using `[hsplit, Finset.sum_eq_zero fun j _ => key j, mul_zero]`.
+-/
 theorem degFl_power_sum_mul : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (τ : Ψ) (k : ℕ) (G : RP Ψ N), 1 ≤ k → degFl (pk τ k * G) = 0 := by
   intro Ψ _ _ N τ k G hk
   have hval : ∀ (σ : Ψ → Equiv.Perm (Fin N)) (x : Ψ × Fin N),

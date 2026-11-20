@@ -14,6 +14,9 @@ variable {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpa
   [SecondCountableTopology X] {ν : Measure X} [IsFiniteMeasureOnCompacts ν]
   {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
+/- English proof (translation)
+Establish `e : (fun p : X × E => F p.1 p.2) = fun p => ContinuousMultilinearMap.apply ℝ (fun _ : Fin 0 => E) W (fun _ => 0) (iteratedFDeriv ℝ 0 (F p.1) p.2)`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(ContinuousLinearMap.continuous _).comp_continuousOn h`.
+-/
 theorem continuousOn_of_iteratedFDeriv_zero {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     {U : Set E} {F : X → E → W}
     (h : ContinuousOn (fun p : X × E => iteratedFDeriv ℝ 0 (F p.1) p.2) (univ ×ˢ U)) :
@@ -25,6 +28,9 @@ theorem continuousOn_of_iteratedFDeriv_zero {W : Type} [NormedAddCommGroup W] [N
   rw [e]
   exact (ContinuousLinearMap.continuous _).comp_continuousOn h
 
+/- English proof (translation)
+Establish `e : (fun p : X × E => iteratedFDeriv ℝ m (fderiv ℝ (F p.1)) p.2) = fun p : X × E => continuousMultilinearCurryRightEquiv' ℝ m E W (iteratedFDeriv ℝ (m + 1) (F p.1) p.2)`. Use function extensionality and compare the values at `p`. Rewrite using `[iteratedFDeriv_succ_eq_comp_right, Function.comp_apply, LinearIsometryEquiv.apply_symm_apply]`. Rewrite using `[e]`. Conclude with `(LinearIsometryEquiv.continuous _).comp_continuousOn h`.
+-/
 theorem continuousOn_iteratedFDeriv_fderiv {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     {U : Set E} {F : X → E → W} (m : ℕ)
     (h : ContinuousOn (fun p : X × E => iteratedFDeriv ℝ (m + 1) (F p.1) p.2) (univ ×ˢ U)) :
@@ -38,6 +44,9 @@ theorem continuousOn_iteratedFDeriv_fderiv {W : Type} [NormedAddCommGroup W] [No
   rw [e]
   exact (LinearIsometryEquiv.continuous _).comp_continuousOn h
 
+/- English proof (translation)
+Rewrite using `[integrable_indicator_iff (measurableSet_toMeasurable ν K)]`. Use `integrableOn_const ?_` and prove the remaining obligations. Rewrite using `[measure_toMeasurable]`. Conclude with `hK.measure_lt_top.ne`.
+-/
 theorem integrable_bound {K : Set X} (hK : IsCompact K) (C : ℝ) :
     Integrable ((toMeasurable ν K).indicator fun _ => C) ν := by
   rw [integrable_indicator_iff (measurableSet_toMeasurable ν K)]
@@ -45,6 +54,9 @@ theorem integrable_bound {K : Set X} (hK : IsCompact K) (C : ℝ) :
   rw [measure_toMeasurable]
   exact hK.measure_lt_top.ne
 
+/- English proof (translation)
+Distinguish the cases in `ht : t ∈ K`. Rewrite using `[indicator_of_mem (subset_toMeasurable ν K ht)]`. Conclude with `(h1 ht).trans (le_max_left _ _)`. Rewrite using `[h2 ht, norm_zero]`. Conclude with `indicator_nonneg (fun _ _ => le_max_right _ _) _`.
+-/
 theorem le_bound {W : Type} [NormedAddCommGroup W] {K : Set X} {C : ℝ} {t : X} {w : W}
     (h1 : t ∈ K → ‖w‖ ≤ C) (h2 : t ∉ K → w = 0) :
     ‖w‖ ≤ (toMeasurable ν K).indicator (fun _ => max C 0) t := by
@@ -54,6 +66,19 @@ theorem le_bound {W : Type} [NormedAddCommGroup W] {K : Set X} {C : ℝ} {t : X}
   · rw [h2 ht, norm_zero]
     exact indicator_nonneg (fun _ _ => le_max_right _ _) _
 
+/- English proof (translation)
+Take `⟨U', hU', K, hK, hz⟩` from `h3 x₀ hx`. Establish `hN : U ∩ interior U' ∈ 𝓝 x₀` using `inter_mem (hU.mem_nhds hx) (interior_mem_nhds.2 hU')`. Take `⟨r, hr, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 hN`. Establish `hBc : IsCompact (Metric.closedBall x₀ r)` using `isCompact_closedBall x₀ r`. Establish `hKB` using `hK.prod hBc`.
+
+Establish `hsub : K ×ˢ Metric.closedBall x₀ r ⊆ univ ×ˢ U` using `fun p hp => ⟨mem_univ _, (hball hp.2).1⟩`. Take `⟨C, hC⟩` from `hKB.exists_bound_of_continuousOn (hd.mono hsub)`. Take `⟨C₀, hC₀⟩` from `hKB.exists_bound_of_continuousOn (h0.mono hsub)`. Establish `hx₀B : x₀ ∈ Metric.closedBall x₀ r` using `Metric.mem_closedBall_self hr.le`. Establish `hdz : ∀ t ∉ K, ∀ x ∈ Metric.closedBall x₀ r, fderiv ℝ (F t) x = 0`.
+
+Introduce `t ht x hxB`. Establish `: F t =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [isOpen_interior.mem_nhds (hball hxB).2] with y hy`. Conclude with `hz t ht y (interior_subset hy)`. Rewrite using `[this.fderiv_eq]`. Simplify using the standard rewrite rules.
+
+Establish `hct : ∀ x ∈ U, Continuous fun t => F t x` using `fun x hxU => h0.comp_continuous (continuous_id.prodMk continuous_const) fun t => ⟨mem_univ _, hxU⟩`. Establish `hcd : ∀ x ∈ U, Continuous fun t => fderiv ℝ (F t) x` using `fun x hxU => hd.comp_continuous (continuous_id.prodMk continuous_const) fun t => ⟨mem_univ _, hxU⟩`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun x t => F t x) (F' := fun x t => fderiv ℝ (F t) x) (s := Metric.closedBall x₀ r) (bound := (toMeasurable ν K).indicator fun _ => max C 0) (Metric.closedBall_mem_nhds x₀ hr) ?_ ?_ ?_ ?_ (integrable_bound hK _) ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hx] with x hxU`. Conclude with `(hct x hxU).aestronglyMeasurable`.
+
+Use `Integrable.mono' (integrable_bound (ν := ν) hK (max C₀ 0)) (hct x₀ hx).aestronglyMeasurable (ae_of_all _ fun t => ?_)` and prove the remaining obligations. Conclude with `le_bound (fun ht => hC₀ (t, x₀) ⟨ht, hx₀B⟩) (fun ht => hz t ht x₀ (interior_subset (hball hx₀B).2))`. Conclude with `(hcd x₀ hx).aestronglyMeasurable`. Use `ae_of_all _ fun t x hxB => ?_` and prove the remaining obligations. Conclude with `le_bound (fun ht => hC (t, x) ⟨ht, hxB⟩) (fun ht => hdz t ht x hxB)`.
+
+Use `ae_of_all _ fun t x hxB => ?_` and prove the remaining obligations. Conclude with `(((h1 t).contDiffAt (hU.mem_nhds (hball hxB).1)).differentiableAt (by simp)).hasFDerivAt`.
+-/
 theorem hasFDerivAt_integral {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     {U : Set E} (hU : IsOpen U) {F : X → E → V}
     (h1 : ∀ t, ContDiffOn ℝ ∞ (F t) U)
@@ -98,6 +123,19 @@ theorem hasFDerivAt_integral {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ 
   · refine ae_of_all _ fun t x hxB => ?_
     exact (((h1 t).contDiffAt (hU.mem_nhds (hball hxB).1)).differentiableAt (by simp)).hasFDerivAt
 
+/- English proof (translation)
+Establish `key : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V] (F : X → E → V), (∀ t, ContDiffOn ℝ ∞ (F t) U) → (∀ k : ℕ, ContinuousOn (fun p : X × E => iteratedFDeriv ℝ k (F p.1) p.2) (univ ×ˢ U)) → (∀ x₀ ∈ U, ∃ U' ∈ 𝓝 x₀, ∃ K : Set X, IsCompact K ∧ ∀ t ∉ K, ∀ x ∈ …`. Introduce `V _ _ _ F h1 h2 h3 x₀ hx`. Conclude with `hasFDerivAt_integral hU h1 (continuousOn_of_iteratedFDeriv_zero (h2 0)) (continuousOn_of_iteratedFDeriv_zero (F := fun t => fderiv ℝ (F t)) (continuousOn_iteratedFDeriv_fderiv 0 (h2 1))) h3 hx`. Proceed by induction on `m with`. Consider the case `zero`.
+
+Introduce `V _ _ _ F h1 h2 h3`. Establish `: ContinuousOn (fun x => ∫ t, F t x ∂ν) U` using `fun x hx => (key V F h1 h2 h3 x hx).continuousAt.continuousWithinAt`. Establish `h : ContDiffOn ℝ 0 (fun x => ∫ t, F t x ∂ν) U` using `contDiffOn_zero.2 this`. Simplify using `using h`. Consider the case `succ m ih`.
+
+Introduce `V _ _ _ F h1 h2 h3`. Establish `hG1 : ∀ t, ContDiffOn ℝ ∞ (fderiv ℝ (F t)) U` using `fun t => (h1 t).fderiv_of_isOpen hU (by simp)`. Establish `hG2 : ∀ k : ℕ, ContinuousOn (fun p : X × E => iteratedFDeriv ℝ k (fderiv ℝ (F p.1)) p.2) (univ ×ˢ U)` using `fun k => continuousOn_iteratedFDeriv_fderiv k (h2 (k + 1))`. Establish `hG3 : ∀ x₀ ∈ U, ∃ U' ∈ 𝓝 x₀, ∃ K : Set X, IsCompact K ∧ ∀ t ∉ K, ∀ x ∈ U', fderiv ℝ (F t) x = 0`. Introduce `x₀ hx`.
+
+Take `⟨U', hU', K, hK, hz⟩` from `h3 x₀ hx`. Use `⟨interior U', interior_mem_nhds.2 hU', K, hK, fun t ht x hxU => ?_⟩` and prove the remaining obligations. Establish `: F t =ᶠ[𝓝 x] fun _ => 0` using `by filter_upwards [isOpen_interior.mem_nhds hxU] with y hy`. Conclude with `hz t ht y (interior_subset hy)`. Rewrite using `[this.fderiv_eq]`.
+
+Simplify using the standard rewrite rules. Establish `hI` using `ih (E →L[ℝ] V) (fun t => fderiv ℝ (F t)) hG1 hG2 hG3`. Establish `hcast : ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1` using `by norm_cast`. Rewrite using `[hcast, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Use `⟨fun x hx => (key V F h1 h2 h3 x hx).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations.
+
+Conclude with `hI.congr fun x hx => (key V F h1 h2 h3 x hx).fderiv`.
+-/
 theorem contDiffOn_integral_nat {U : Set E} (hU : IsOpen U) (m : ℕ) :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V] (F : X → E → V),
       (∀ t, ContDiffOn ℝ ∞ (F t) U) →
@@ -144,6 +182,9 @@ theorem contDiffOn_integral_nat {U : Set E} (hU : IsOpen U) (m : ℕ) :
       fun h => absurd h (by simp), ?_⟩
     exact hI.congr fun x hx => (key V F h1 h2 h3 x hx).fderiv
 
+/- English proof (translation)
+The claim follows from `contDiffOn_infty.2 fun m => contDiffOn_integral_nat hU m V F h1 h2 h3`.
+-/
 theorem contDiffOn_integral {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [CompleteSpace V]
     {U : Set E} (hU : IsOpen U) (F : X → E → V)
     (h1 : ∀ t, ContDiffOn ℝ ∞ (F t) U)
@@ -152,6 +193,11 @@ theorem contDiffOn_integral {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
     ContDiffOn ℝ ∞ (fun x => ∫ t, F t x ∂ν) U :=
   contDiffOn_infty.2 fun m => contDiffOn_integral_nat hU m V F h1 h2 h3
 
+/- English proof (translation)
+Introduce `n X _ _ _ _ ν _ V _ _ _ F h1 h2 h3`. Use `haveI : CompleteSpace V := FiniteDimensional.complete ℂ V`. Establish `hU : IsOpen (PositivityTheory.RgBcC.GLs n)`. Establish `h : Continuous fun g : PositivityTheory.RgTw.Mat n => g.det` using `Continuous.matrix_det continuous_id`. Conclude with `isOpen_ne_fun h continuous_const`.
+
+Conclude with `contDiffOn_integral hU F h1 h2 h3`.
+-/
 theorem intSmooth : PositivityTheory.RgBcC.VC.IntSmooth := by
   intro n X _ _ _ _ ν _ V _ _ _ F h1 h2 h3
   haveI : CompleteSpace V := FiniteDimensional.complete ℂ V

@@ -9,10 +9,16 @@ open scoped Matrix
 
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Simplify using `[padMat, Fin.coe_castLE, i.2, j.2]`.
+-/
 theorem padMat_castLE {m n : ℕ} (h : m ≤ n) (A : Matrix (Fin m) (Fin m) R) (i j : Fin m) :
     (padMat R A : Matrix (Fin n) (Fin n) R) (Fin.castLE h i) (Fin.castLE h j) = A i j := by
   simp [padMat, Fin.coe_castLE, i.2, j.2]
 
+/- English proof (translation)
+Introduce `g g' e`. Use extensionality with `i j`. Use `congrArg (fun x : GL (Fin n) R => (x : Matrix (Fin n) (Fin n) R) (Fin.castLE h i) (Fin.castLE h j)) e` as an intermediate fact. Simplify `this` using `[stab, padHom, padMat_castLE]`.
+-/
 theorem stab_injective {m n : ℕ} (h : m ≤ n) : Function.Injective (stab R m n h) := by
   intro g g' e
   ext i j
@@ -22,6 +28,13 @@ theorem stab_injective {m n : ℕ} (h : m ≤ n) : Function.Injective (stab R m 
 def IsPad (m : ℕ) {n : ℕ} (g : Matrix (Fin n) (Fin n) R) : Prop :=
   ∀ i k : Fin n, m ≤ (k : ℕ) → g i k = (if i = k then 1 else 0) ∧ g k i = (if k = i then 1 else 0)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [padMat, Matrix.of_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Substitute `h2` using the available equality.
+
+Establish `: m ≤ (i : ℕ)` using `by omega`. Simplify using `using ((hg i i this).1).symm`. Distinguish the cases in `hj : m ≤ (j : ℕ)`. Rewrite using `[(hg i j hj).1, if_neg h2]`. Establish `hi : m ≤ (i : ℕ)` using `by omega`.
+
+Rewrite using `[(hg j i hi).2, if_neg h2]`.
+-/
 theorem padMat_of_isPad {m n : ℕ} (h : m ≤ n) (g : Matrix (Fin n) (Fin n) R) (hg : IsPad R m g) :
     padMat R (Matrix.of fun i j : Fin m => g (Fin.castLE h i) (Fin.castLE h j)) = g := by
   ext i j
@@ -36,6 +49,13 @@ theorem padMat_of_isPad {m n : ℕ} (h : m ≤ n) (g : Matrix (Fin n) (Fin n) R)
     · have hi : m ≤ (i : ℕ) := by omega
       rw [(hg j i hi).2, if_neg h2]
 
+/- English proof (translation)
+Use `set A : Matrix (Fin m) (Fin m) R := Matrix.of fun i j => (g : Matrix (Fin n) (Fin n) R) (Fin.castLE h i) (Fin.castLE h j)`. Use `set B : Matrix (Fin m) (Fin m) R := Matrix.of fun i j => ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) (Fin.castLE h i) (Fin.castLE h j)`. Establish `hA : padHom R h A = g` using `padMat_of_isPad R h _ hg`. Establish `hB : padHom R h B = ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)` using `padMat_of_isPad R h _ hg'`. Establish `inj : ∀ X Y : Matrix (Fin m) (Fin m) R, padHom R h X = padHom R h Y → X = Y`.
+
+Introduce `X Y e`. Use extensionality with `i j`. Use `congrArg (fun x : Matrix (Fin n) (Fin n) R => x (Fin.castLE h i) (Fin.castLE h j)) e` as an intermediate fact. Simplify `this` using `[padHom, padMat_castLE]`. Establish `hAB : A * B = 1` using `inj _ _ (by rw [map_mul, hA, hB, map_one, ← Units.val_mul, mul_inv_cancel, Units.val_one])`.
+
+Establish `hBA : B * A = 1` using `inj _ _ (by rw [map_mul, hA, hB, map_one, ← Units.val_mul, inv_mul_cancel, Units.val_one])`. Use `⟨⟨A, B, hAB, hBA⟩, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `hA`.
+-/
 theorem mem_range_of_isPad {m n : ℕ} (h : m ≤ n) (g : GL (Fin n) R)
     (hg : IsPad R m (g : Matrix (Fin n) (Fin n) R)) (hg' : IsPad R m ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)) :
     g ∈ (stab R m n h).range := by
@@ -54,6 +74,9 @@ theorem mem_range_of_isPad {m n : ℕ} (h : m ≤ n) (g : GL (Fin n) R)
   refine ⟨⟨A, B, hAB, hBA⟩, Units.ext ?_⟩
   exact hA
 
+/- English proof (translation)
+Introduce `i k hk`. Establish `: ¬ (k : ℕ) < m` using `by omega`. Prove the components needed by the constructor for the conclusion. Rewrite using `[stab_apply, dif_neg (by tauto)]`. Rewrite using `[stab_apply, dif_neg (by tauto)]`.
+-/
 theorem isPad_stab {m n : ℕ} (h : m ≤ n) (A : GL (Fin m) R) :
     IsPad R m (stab R m n h A : Matrix (Fin n) (Fin n) R) := by
   intro i k hk
@@ -62,6 +85,11 @@ theorem isPad_stab {m n : ℕ} (h : m ≤ n) (A : GL (Fin m) R) :
   · rw [stab_apply, dif_neg (by tauto)]
   · rw [stab_apply, dif_neg (by tauto)]
 
+/- English proof (translation)
+Establish `e : ∀ j : Fin p, (fun k : Fin n => if (k : ℕ) = n - p + j then (1 : R) else 0) = Pi.single (⟨n - p + j, by omega⟩ : Fin n) 1`. Introduce `j`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply, Fin.ext_iff]`. Establish `key : g • stdSeq R n p h = stdSeq R n p h ↔ (g • stdSeq R n p h).1 = (stdSeq R n p h).1` using `⟨fun e => congrArg Subtype.val e, fun e => Subtype.ext e⟩`.
+
+Rewrite using `[MulAction.mem_stabilizer_iff, key, smul_val]`. Simplify using `only [stdSeq, stdList, List.map_ofFn, List.ofFn_inj, funext_iff, Function.comp_apply, pairAct, Prod.ext_iff, e]`.
+-/
 theorem stdSeq_fixed_iff (n p : ℕ) (h : p ≤ n) (g : GL (Fin n) R) :
     g ∈ MulAction.stabilizer (GL (Fin n) R) (stdSeq R n p h) ↔
       ∀ j : Fin p, (g : Matrix (Fin n) (Fin n) R) *ᵥ Pi.single (⟨n - p + j, by omega⟩ : Fin n) 1 =
@@ -77,6 +105,13 @@ theorem stdSeq_fixed_iff (n p : ℕ) (h : p ≤ n) (g : GL (Fin n) R) :
   simp only [stdSeq, stdList, List.map_ofFn, List.ofFn_inj, funext_iff, Function.comp_apply, pairAct,
     Prod.ext_iff, e]
 
+/- English proof (translation)
+Introduce `i k hk`. Establish `hf` using `(stdSeq_fixed_iff R n p h g).1 hg ⟨(k : ℕ) - (n - p), by omega⟩`. Establish `hk' : (⟨n - p + ((k : ℕ) - (n - p)), by omega⟩ : Fin n) = k` using `Fin.ext (by simp; omega)`. Simplify using `only [hk'] at hf`. Take `⟨h1, h2⟩` from `hf`.
+
+Establish `h3 : Pi.single k 1 ᵥ* (g : Matrix (Fin n) (Fin n) R) = Pi.single k 1` using `by conv_lhs => rw [← h2]`. Rewrite using `[Matrix.vecMul_vecMul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.vecMul_one]`. Prove the components needed by the constructor for the conclusion. Use `congrFun h1 i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single]`.
+
+Simplify `this` using `[Pi.single_apply]`. Use `congrFun h3 i` as an intermediate fact. Rewrite `this` using `[Matrix.single_vecMul]`. Simplify `this` using `[Pi.single_apply, eq_comm]`.
+-/
 theorem isPad_of_mem (n p : ℕ) (h : p ≤ n) (g : GL (Fin n) R)
     (hg : g ∈ MulAction.stabilizer (GL (Fin n) R) (stdSeq R n p h)) :
     IsPad R (n - p) (g : Matrix (Fin n) (Fin n) R) := by
@@ -96,6 +131,15 @@ theorem isPad_of_mem (n p : ℕ) (h : p ≤ n) (g : GL (Fin n) R)
     rw [Matrix.single_vecMul] at this
     simpa [Pi.single_apply, eq_comm] using this
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, rfl⟩`. Rewrite using `[stdSeq_fixed_iff]`. Introduce `j`.
+
+Establish `hk : n - p ≤ ((⟨n - p + j, by omega⟩ : Fin n) : ℕ)` using `by simp`. Establish `P` using `isPad_stab R (Nat.sub_le n p) A`. Establish `Q` using `isPad_stab R (Nat.sub_le n p) A⁻¹`. Rewrite `Q` using `[map_inv]`. Prove the components needed by the constructor for the conclusion.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_single]`. Simplify using `[(P i _ hk).1, Pi.single_apply]`. Rewrite using `[Matrix.single_vecMul]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, one_mul, Matrix.row_apply]`. Rewrite using `[(Q i _ hk).2]`. Simplify using `[Pi.single_apply, eq_comm]`. Introduce `hg`. Conclude with `mem_range_of_isPad R _ g (isPad_of_mem R n p h g hg) (isPad_of_mem R n p h g⁻¹ (inv_mem hg))`.
+-/
 theorem range_eq (n p : ℕ) (h : p ≤ n) :
     (stab R (n - p) n (Nat.sub_le n p)).range = MulAction.stabilizer (GL (Fin n) R) (stdSeq R n p h) := by
   ext g
@@ -124,11 +168,19 @@ end GlobalTheory.StabSeq
 
 namespace GlobalTheory.StabSeq
 
+/- English proof (translation)
+Introduce `R _ n p h` and use `⟨stab_injective R _, range_eq R n p h⟩`.
+-/
 theorem stab_injective_range_eq : ∀ (R : Type) [CommRing R] (n p : ℕ) (h : p ≤ n), Function.Injective (stab R (n - p) n (Nat.sub_le n p)) ∧ (stab R (n - p) n (Nat.sub_le n p)).range = MulAction.stabilizer (GL (Fin n) R) (stdSeq R n p h) :=
   fun R _ n p h => ⟨stab_injective R _, range_eq R n p h⟩
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab GlobalTheory.SeqCx UpperTheory.V.KL
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.StabSeq.stab_injective_range_eq`. Consider the case `exact @GlobalTheory.StabSeq.range_eq`. Consider the case `exact @GlobalTheory.StabSeq.isPad_of_mem`. Consider the case `exact @GlobalTheory.StabSeq.stdSeq_fixed_iff`.
+
+Consider the case `exact @GlobalTheory.StabSeq.isPad_stab`. Consider the case `exact @GlobalTheory.StabSeq.mem_range_of_isPad`. Consider the case `exact @GlobalTheory.StabSeq.padMat_of_isPad`. Consider the case `exact @GlobalTheory.StabSeq.stab_injective`. Consider the case `exact @GlobalTheory.StabSeq.padMat_castLE`.
+-/
 theorem _root_.GlobalTheory.T.stabilizer_stdSeq_iso_GL_of_complement : ∀ (R : Type) [CommRing R] (n p : ℕ) (h : p ≤ n), Function.Injective (stab R (n - p) n (Nat.sub_le n p)) ∧ (stab R (n - p) n (Nat.sub_le n p)).range = MulAction.stabilizer (GL (Fin n) R) (stdSeq R n p h) := by
   first
   | exact @GlobalTheory.StabSeq.stab_injective_range_eq

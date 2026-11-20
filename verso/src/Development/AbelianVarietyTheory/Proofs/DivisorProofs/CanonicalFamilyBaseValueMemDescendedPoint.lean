@@ -16,6 +16,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UCanon.BaseDescent
 
+/- English proof (translation)
+Introduce `K _ k₀ hk₀ F hF g x`. Use `haveI : CharZero K := (RingHom.charZero_iff g.injective).mp inferInstance`. Use `haveI : CharZero k₀ := (RingHom.charZero_iff k₀.subtype.injective).mpr inferInstance`. Establish `h1 : IsAlgebraic ℚ x` using `Algebra.IsAlgebraic.isAlgebraic x`. Establish `h2 : IsAlgebraic ℚ (g x)`.
+
+Use `h1.algHom g.toRatAlgHom` as an intermediate fact. Simplify using `using this`. Establish `h3 : IsIntegral k₀ (g x)` using `(h2.extendScalars (algebraMap ℚ k₀).injective).isIntegral`. Establish `hdeg` using `IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible h3)`. Take `⟨y, hy⟩` from `minpoly.mem_range_of_degree_eq_one k₀ (g x) hdeg`.
+
+Rewrite using `[← hy]`. Conclude with `y.2`.
+-/
 theorem ratHom_mem_of_isAlgClosed : ∀ (K : Type) [Field K] (k₀ : Subfield K), IsAlgClosed k₀ → ∀ (F : IntermediateField ℚ ℂ), FiniteDimensional ℚ F → ∀ (g : F →+* K) (x : F), g x ∈ k₀ := by
   intro K _ k₀ hk₀ F hF g x
   haveI : CharZero K := (RingHom.charZero_iff g.injective).mp inferInstance
@@ -30,6 +37,11 @@ theorem ratHom_mem_of_isAlgClosed : ∀ (K : Type) [Field K] (k₀ : Subfield K)
   rw [← hy]
   exact y.2
 
+/- English proof (translation)
+Introduce `E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hDiv K _ _ _ ev k₀ hk₀ o' m₁ hB`. Take `⟨B₀, _, _, M₀, c₀, B', _, π₁, π₀, w, c', hab, hM, h1, h0, hw, hc⟩` from `hB`. Take `⟨θ, hθ, hLθ, hrel⟩` from `GlobalTheory.T.pulledLowerObject_group_identification L Q oQ iw s ε e hDiv K ev o' m₁ B' π₁ h1`. Take `⟨hpb, hL, hpts⟩` from `GlobalTheory.T.pulledLowerObject_descends_with_points_subfield L Q oQ iw s ε e hDiv K ev k₀ hk₀ o' m₁ B₀ M₀ c₀ B' π₁ π₀ w c' θ hab hM h1 h0 hw hc hθ hLθ hrel`. Conclude with `⟨B₀, inferInstance, inferInstance, M₀, θ ≫ π₀, hab, hM, hpb, hL, fun y => by`.
+
+Take `⟨x, hx1, hx2, x₀, hx₀⟩` from `hpts y`. Conclude with `⟨x, hx1, hx2, x₀, by rw [← Category.assoc] at hx₀ ⊢; simpa using hx₀⟩⟩`.
+-/
 theorem pulledObj_descends : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) [Module (𝓞 E) Q.X] (oQ : letI := H.starRing; Q.OAct (𝓞 E)) (iw : L.W →+* V) {I : Type} [Fintype I] (s : I → V) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : Q.X ≃ₗ[𝓞 E] L.D.X), DivFrom L Q oQ iw s ε e → ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (ev : V →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → ∀ (o' : LowObj D' c ((ev.comp iw).comp L.b)) (m₁ : ObjMap o' L.o (spMap (ev.comp iw))), (∃ (B₀ : Over (Sp k₀)) (_ : GrpObj B₀) (_ : IsCommMonObj B₀) (M₀ : LB B₀.left) (c₀ : Q.X → (Sp k₀ ⟶ B₀.left)) (B' : Over (Sp K)) (_ : GrpObj B') (π₁ : B'.left ⟶ Q.P.A.left) (π₀ : B'.left ⟶ B₀.left) (w : LB.Iso (Q.P.L.pull π₁) (M₀.pull π₀)) (c' : Q.X → (Sp K ⟶ B'.left)), IsAbelianScheme B₀ ∧ M₀.IsLB ∧ IsGrpPullback B' Q.P.A (spMap ev) π₁ ∧ IsGrpPullback B' B₀ (spMap k₀.subtype) π₀ ∧ w.IsGen ∧ ∀ a, c' a ≫ B'.hom = 𝟙 _ ∧ c' a ≫ π₁ = spMap ev ≫ (Q.c a).left ∧ c' a ≫ π₀ = spMap k₀.subtype ≫ c₀ a) → ∃ (B₀ : Over (Sp k₀)) (_ : GrpObj B₀) (_ : IsCommMonObj B₀) (M₀ : LB B₀.left) (π : o'.t.G.left ⟶ B₀.left), IsAbelianScheme B₀ ∧ M₀.IsLB ∧ IsGrpPullback o'.t.G B₀ (spMap k₀.subtype) π ∧ LBIso o'.t.PP.L (M₀.pull π) ∧ ∀ y : L.D.X, ∃ x : Sp K ⟶ o'.t.G.left, x ≫ o'.t.G.hom = 𝟙 _ ∧ x ≫ m₁.toSABMap.φ ≫ L.φB = spMap (ev.comp iw) ≫ (L.D.c y).left ∧ ∃ x₀ : Sp k₀ ⟶ B₀.left, x ≫ π = spMap k₀.subtype ≫ x₀ := by
   intro E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hDiv K _ _ _ ev k₀ hk₀ o' m₁ hB
   obtain ⟨B₀, _, _, M₀, c₀, B', _, π₁, π₀, w, c', hab, hM, h1, h0, hw, hc⟩ := hB
@@ -41,6 +53,15 @@ theorem pulledObj_descends : ∀ {E : Type} [Field E] [NumberField E] [IsCMField
 
 end GlobalTheory.UCanon.BaseDescent
 
+/- English proof (translation)
+Introduce `E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hDiv K _ _ ev k₀ hk₀ hB a`. Set `f : L.W →+* K` to `ev.comp iw`. Establish `hF : ∀ x : c.F, (f.comp L.b) x ∈ k₀` using `GlobalTheory.UCanon.BaseDescent.ratHom_mem_of_isAlgClosed K k₀ hk₀ c.F c.fin (f.comp L.b)`. Use `haveI : CharZero K := (RingHom.charZero_iff (f.comp L.b).injective).mp inferInstance`. Take `⟨o', ⟨m₁⟩⟩` from `(GlobalTheory.T.shimuraObject_pullback_comp_cancel (D := D') (l := GlobalTheory.LowDat.lowLevel l)).1 (lowMap c L.b) L.o (spMap f) (lowMap c (f.comp L.b)) (by simp only [lowMap, spMap, ← Spec.map_comp]; rfl)`.
+
+Take `⟨B₀, _, _, M₀, π, hab, hM, hpb, hL, hpts⟩` from `GlobalTheory.UCanon.BaseDescent.pulledObj_descends L Q oQ iw s ε e hDiv K ev k₀ hk₀ o' m₁ hB`. Use `choose x hx1 hx2 hx3 using hpts`. Apply `GlobalTheory.T.mem_subfield_of_forall_ringEquiv_fixed_of_isAlgClosed' K k₀ hk₀` to reduce the goal to its premises. Introduce `σ hσ`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_objMap_fixing_descended_points_subfield K k₀ hk₀ o' B₀ M₀ π hab hM hpb hL σ hσ`.
+
+Establish `hcomp : ∀ g' : Sp K ⟶ Sp L.W, g' = spMap (σ : K →+* K) ≫ spMap f → ∃ k : ObjMap o' L.o g', k.toSABMap.φ = n.toSABMap.φ ≫ m₁.toSABMap.φ`. Introduce and unpack `g' rfl`. Conclude with `((GlobalTheory.T.shimuraObject_pullback_comp_cancel (D := D') (l := GlobalTheory.LowDat.lowLevel l)).2 _ _ _ L.o o' o' (spMap f) (spMap (σ : K →+* K)) m₁).1 n`. Take `⟨m₂, hm₂⟩` from `hcomp (spMap ((σ : K →+* K).comp f)) (by simp only [spMap, ← Spec.map_comp]; rfl)`. Establish `key` using `L.fineRed K f ((σ : K →+* K).comp f) (by ext y; simp only [RingHom.comp_apply]; exact (hσ _ (hF y)).symm) o' m₁ m₂ x hx2 (fun y => by`.
+
+Rewrite using `[hm₂, Category.assoc, ← Category.assoc (x y), hn (x y) (hx1 y) (hx3 y), Category.assoc, hx2 y]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, f]) hx1`. Use `congrArg (fun g : L.W →+* K => g a) key` as an intermediate fact. Simplify `this.symm` using `[f]`.
+-/
 theorem GlobalTheory.UCanon.base_value_mem_of_descended_point : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) {V : Type} [CommRing V] [IsDomain V] (Q : DegPre V) [Module (𝓞 E) Q.X] (oQ : letI := H.starRing; Q.OAct (𝓞 E)) (iw : L.W →+* V) {I : Type} [Fintype I] (s : I → V) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : Q.X ≃ₗ[𝓞 E] L.D.X), DivFrom L Q oQ iw s ε e → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → (∃ (B₀ : Over (Sp k₀)) (_ : GrpObj B₀) (_ : IsCommMonObj B₀) (M₀ : LB B₀.left) (c₀ : Q.X → (Sp k₀ ⟶ B₀.left)) (B' : Over (Sp K)) (_ : GrpObj B') (π₁ : B'.left ⟶ Q.P.A.left) (π₀ : B'.left ⟶ B₀.left) (w : LB.Iso (Q.P.L.pull π₁) (M₀.pull π₀)) (c' : Q.X → (Sp K ⟶ B'.left)), IsAbelianScheme B₀ ∧ M₀.IsLB ∧ IsGrpPullback B' Q.P.A (spMap ev) π₁ ∧ IsGrpPullback B' B₀ (spMap k₀.subtype) π₀ ∧ w.IsGen ∧ ∀ a, c' a ≫ B'.hom = 𝟙 _ ∧ c' a ≫ π₁ = spMap ev ≫ (Q.c a).left ∧ c' a ≫ π₀ = spMap k₀.subtype ≫ c₀ a) → ∀ a, ev (iw a) ∈ k₀ := by
   intro E _ _ _ H D' l c L V _ _ Q _ oQ iw I _ s ε e hDiv K _ _ ev k₀ hk₀ hB a
   let f : L.W →+* K := ev.comp iw

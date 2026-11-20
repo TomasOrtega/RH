@@ -9,12 +9,18 @@ noncomputable section
 
 namespace GlobalTheory.IntOfFinExt
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff]`. Use `show ‖x‖₊ ≤ 1 ↔ ‖x‖ ≤ 1`. Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]`.
+-/
 theorem mem_integer_iff_norm_le_one (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) :
     x ∈ (PadicAlgCl.valued l).v.integer ↔ ‖x‖ ≤ 1 := by
   rw [Valuation.mem_integer_iff]
   show ‖x‖₊ ≤ 1 ↔ ‖x‖ ≤ 1
   rw [← NNReal.coe_le_coe, coe_nnnorm, NNReal.coe_one]
 
+/- English proof (translation)
+Unfold `intOf`. Rewrite using `[Subring.mem_inf, mem_integer_iff_norm_le_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_intOf_iff (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l))
     (x : PadicAlgCl l) : x ∈ intOf l K ↔ x ∈ K ∧ ‖x‖ ≤ 1 := by
   unfold intOf
@@ -26,6 +32,11 @@ def toIntOf (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) : ↥(Loc.OL K) →+* �
     (fun y => (mem_intOf_iff l K.1 _).2
       ⟨((y : ↥K.1)).2, (GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l K (y : ↥K.1)).1 y.2⟩)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Establish `h' : (((a : ↥K.1) : PadicAlgCl l)) = ((b : ↥K.1) : PadicAlgCl l)` using `congrArg (fun w : ↥(intOf l K.1) => (w : PadicAlgCl l)) h`. Conclude with `Subtype.ext (Subtype.ext h')`. Introduce `z`.
+
+Take `⟨hK, hn⟩` from `(mem_intOf_iff l K.1 z).1 z.2`. Use `⟨⟨⟨(z : PadicAlgCl l), hK⟩, (GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l K ⟨(z : PadicAlgCl l), hK⟩).2 hn⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext rfl`.
+-/
 theorem toIntOf_bijective (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) :
     Function.Bijective (toIntOf l K) := by
   constructor
@@ -39,6 +50,9 @@ theorem toIntOf_bijective (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) :
       (GlobalTheory.IntNormFinExt.mem_OL_iff_norm_le_one l K ⟨(z : PadicAlgCl l), hK⟩).2 hn⟩, ?_⟩
     exact Subtype.ext rfl
 
+/- English proof (translation)
+Introduce `l _ K` and use `⟨RingEquiv.ofBijective (toIntOf l K) (toIntOf_bijective l K), fun _ => rfl⟩`.
+-/
 theorem exists_ringEquiv_intOf : ∀ (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l),
     ∃ e : ↥(Loc.OL K) ≃+* ↥(intOf l K.1), ∀ y, (e y : PadicAlgCl l) = ((y : ↥K.1) : PadicAlgCl l) :=
   fun l _ K => ⟨RingEquiv.ofBijective (toIntOf l K) (toIntOf_bijective l K), fun _ => rfl⟩

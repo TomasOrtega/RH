@@ -11,6 +11,17 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Establish `nu_nonneg : ∀ (a e : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField), 0 ≤ P.nu a e σ y f` using `fun a e σ y f => mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`. Take `⟨htH, htn⟩` from `hG.t_mem`. Take `⟨hsH, hsn⟩` from `hG.s_mem`. Take `⟨hpH, hpn⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P (-1) b t htH N`. Take `⟨hqH, hqn⟩` from `GlobalTheory.T.hermPair_pow_section_mem_and_norm_pow k X p P 0 1 s hsH c`.
+
+Establish `e1 : (N : ℤ) + N * -1 + c * 0 = 0` using `by ring`. Establish `e2 : -(c : ℤ) + N * b + c * 1 = N * b` using `by ring`. Establish `hmaps : ∀ f ∈ P.Bl N (-c) R, f * t ^ N * s ^ c ∈ P.Bl 0 ((N : ℤ) * b) R`. Introduce and unpack `f ⟨hfH, hfn⟩`. Take `⟨hH1, hn1⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P N (-c) (N * -1) (N * b) f (t ^ N) hfH hpH`.
+
+Take `⟨hH, hn⟩` from `GlobalTheory.T.hermLineBundlePair_sections_mul_mem_norm_mul k X p P (N + N * -1) (-c + N * b) (c * 0) (c * 1) (f * t ^ N) (s ^ c) hH1 hqH`. Rewrite `hH`, `hn` using `[e1, e2]`. Use `⟨hH, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[hn σ y, hn1 σ y, hpn σ y, hqn σ y]`. Establish `h1 : P.nu (-1) b σ y t ^ N ≤ 1` using `pow_le_one₀ (nu_nonneg _ _ _ _ _) (htn σ y)`.
+
+Establish `h2 : P.nu 0 1 σ y s ^ c ≤ 1` using `pow_le_one₀ (nu_nonneg _ _ _ _ _) (hsn σ y)`. Establish `h3 : P.nu N (-c) σ y f * P.nu (-1) b σ y t ^ N ≤ R` using `(mul_le_of_le_one_right (nu_nonneg _ _ _ _ _) h1).trans (hfn σ y)`. Conclude with `(mul_le_of_le_one_right (mul_nonneg (nu_nonneg _ _ _ _ _) (pow_nonneg (nu_nonneg _ _ _ _ _) _)) h2).trans h3`. Establish `hinj : Set.InjOn (fun f => f * t ^ N * s ^ c) (P.Bl N (-c) R)` using `fun x _ y _ h => mul_right_cancel₀ (pow_ne_zero N hG.t_ne) (mul_right_cancel₀ (pow_ne_zero c hG.s_ne) h)`. Establish `hcard` using `Set.ncard_le_ncard_of_injOn _ hmaps hinj hfin`.
+
+Unfold `Pair.lc`. Break down `Nat.eq_zero_or_pos (P.Bl N (-c) R).ncard with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hcard)`.
+-/
 theorem lc_twist_le_of_good {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p)
     {D b : ℕ} {s t : X.functionField} (hG : P.Good D b s t) (N c : ℕ) (R : ℝ)
     (hfin : (P.Bl 0 ((N : ℤ) * b) R).Finite) :
@@ -44,6 +55,13 @@ theorem lc_twist_le_of_good {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral
     exact Real.log_natCast_nonneg _
   · exact Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hcard)
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P b s t hG c hR`. Take `⟨α, β, hαβ⟩` from `hR`. Establish `hb : (0 : ℝ) < b` using `by exact_mod_cast hG.pos`. Establish `hlim` using `hαβ (3 / b) (by positivity)`. Establish `hsub : Tendsto (fun N : ℕ => b * N) atTop atTop` using `tendsto_id.const_mul_atTop' hG.pos`.
+
+Take `⟨C, hev⟩ : ∃ C : ℝ, ∀ᶠ N : ℕ in atTop, P.lc 0 ((b * N : ℕ) : ℤ) (Real.exp (3 / b * ((b * N : ℕ) : ℝ))) / ((b * N : ℕ) : ℝ) ^ (D + 1) < C` from `⟨_, (hlim.comp hsub).eventually (gt_mem_nhds (lt_add_one _))⟩`. Use `⟨C * (b : ℝ) ^ (D + 1), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev, eventually_ge_atTop 1] with N hN hN1`. Establish `hN1' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN1`. Establish `e1 : 3 / (b : ℝ) * ((b * N : ℕ) : ℝ) = 3 * N` using `by push_cast; field_simp`.
+
+Establish `e2 : ((b * N : ℕ) : ℤ) = (N : ℤ) * b` using `by push_cast; ring`. Establish `hpos : (0 : ℝ) < ((b * N : ℕ) : ℝ) ^ (D + 1)` using `by push_cast; positivity`. Rewrite `hN` using `[e1, e2, div_lt_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem crude_upper_lc_twist : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (b : ℕ) (s t : X.functionField), P.Good D b s t → ∀ c : ℕ, Regime P D → ∃ C : ℝ, ∀ᶠ N : ℕ in atTop, P.lc N (-c) (Real.exp (3 * N)) ≤ C * (N : ℝ) ^ (D + 1) := by
   intro k _ X _ p D hX P b s t hG c hR
   obtain ⟨α, β, hαβ⟩ := hR

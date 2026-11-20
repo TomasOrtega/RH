@@ -12,10 +12,18 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
 
+/- English proof (translation)
+The claim follows from `hG.contDiffAt.iteratedFDeriv_comp_perm u π`.
+-/
 theorem isymm (G : F → ℂ) (x : F) (hG : AnalyticAt ℂ G x) (n : ℕ) (u : Fin n → F) (π : Equiv.Perm (Fin n)) :
     iteratedFDeriv ℂ n G x (u ∘ π) = iteratedFDeriv ℂ n G x u :=
   hG.contDiffAt.iteratedFDeriv_comp_perm u π
 
+/- English proof (translation)
+Establish `hfd : ContDiffAt ℂ n (fderiv ℂ G) x` using `(hG.contDiffAt (n := ω)).fderiv_right le_top`. Establish `happ` using `(ContinuousLinearMap.apply ℂ ℂ (u 0)).iteratedFDeriv_comp_left hfd (i := n) le_rfl`. Establish `hfun : (fun y => fderiv ℂ G y (u 0)) = (ContinuousLinearMap.apply ℂ ℂ (u 0)) ∘ fderiv ℂ G` using `rfl`. Rewrite using `[← isymm G x hG (n + 1) u (finRotate (n + 1)), iteratedFDeriv_succ_apply_right, hfun, happ]`. Simplify using `only [ContinuousLinearMap.compContinuousMultilinearMap_coe, Function.comp_apply, ContinuousLinearMap.apply_apply, finRotate_last]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `[Fin.init, finRotate_succ_apply, Fin.coeSucc_eq_succ]`.
+-/
 theorem ipeel0 (G : F → ℂ) (x : F) (hG : AnalyticAt ℂ G x) (n : ℕ) (u : Fin (n + 1) → F) :
     iteratedFDeriv ℂ (n + 1) G x u = iteratedFDeriv ℂ n (fun y => fderiv ℂ G y (u 0)) x (fun k => u k.succ) := by
   have hfd : ContDiffAt ℂ n (fderiv ℂ G) x := (hG.contDiffAt (n := ω)).fderiv_right le_top
@@ -28,11 +36,19 @@ theorem ipeel0 (G : F → ℂ) (x : F) (hG : AnalyticAt ℂ G x) (n : ℕ) (u : 
   funext k
   simp [Fin.init, finRotate_succ_apply, Fin.coeSucc_eq_succ]
 
+/- English proof (translation)
+Rewrite using `[← isymm G x hG (n + 1) u i0.cycleRange.symm, ipeel0 G x hG n]`. Simplify using `[Fin.cycleRange_symm_zero, Fin.cycleRange_symm_succ]`.
+-/
 theorem ipeel (G : F → ℂ) (x : F) (hG : AnalyticAt ℂ G x) (n : ℕ) (u : Fin (n + 1) → F) (i0 : Fin (n + 1)) :
     iteratedFDeriv ℂ (n + 1) G x u = iteratedFDeriv ℂ n (fun y => fderiv ℂ G y (u i0)) x (fun k => u (i0.succAbove k)) := by
   rw [← isymm G x hG (n + 1) u i0.cycleRange.symm, ipeel0 G x hG n]
   simp [Fin.cycleRange_symm_zero, Fin.cycleRange_symm_succ]
 
+/- English proof (translation)
+Establish `hgen : ∀ (m : ℕ) (h : m = N) (e : Fin m ≃ Fin N) (σ : Equiv.Perm (Fin N)), iteratedFDeriv ℂ m G 0 (fun i => Matrix.single (e i) (σ (e i)) (1 : ℂ)) = iteratedFDeriv ℂ N G 0 (fun k => Matrix.single k (σ k) 1)`. Introduce `m h e σ`. Substitute `h` using the available equality. Conclude with `isymm G 0 hG m (fun k => Matrix.single k (σ k) 1) e`. Unfold `detD`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hgen _ (Fintype.card_fin N) _ σ]`.
+-/
 theorem detD_fin (N : ℕ) (G : Matrix (Fin N) (Fin N) ℂ → ℂ) (hG : AnalyticAt ℂ G 0) :
     detD G = ∑ σ : Equiv.Perm (Fin N), (Equiv.Perm.sign σ : ℂ) *
       iteratedFDeriv ℂ N G 0 (fun k => Matrix.single k (σ k) 1) := by

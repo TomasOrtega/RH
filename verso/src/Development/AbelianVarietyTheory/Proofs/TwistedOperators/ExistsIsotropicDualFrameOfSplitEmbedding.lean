@@ -8,10 +8,18 @@ namespace GlobalTheory.TwistDual
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Both sides reduce to the same expression.
+-/
 theorem adj_eq {m n : ℕ} (A : Matrix (Fin m) (Fin n) D.host.E) : adj D A = Aᴴ := by
   funext i j
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, HSpace.gram]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.id_apply, starRingEnd_apply, mul_comm]`.
+-/
 theorem hT_coord (V : HSp D) (x y : V.V) :
     V.hT x y = ∑ i, ∑ j, star (V.frame.repr x i) * V.gram i j * V.frame.repr y j := by
   conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]
@@ -22,6 +30,13 @@ theorem hT_coord (V : HSp D) (x y : V.V) :
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [RingHom.id_apply, starRingEnd_apply, mul_comm]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `: V.frame.equivFun.symm v = 0`. Apply `V.nondeg.2` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[hT_coord]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ∑ j, V.gram i j * v j = 0` using `congr_fun h0 i`. Establish `h2 : ∀ j, V.frame.repr (V.frame.equivFun.symm v) j = v j` using `fun j => congr_fun (V.frame.equivFun.apply_symm_apply v) j`.
+
+Simplify using `only [h2, mul_assoc, ← Finset.mul_sum, h1, mul_zero]`. Conclude with `V.frame.equivFun.symm.map_eq_zero_iff.1 this`.
+-/
 theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
   intro h
   obtain ⟨v, hv, h0⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
@@ -37,10 +52,18 @@ theorem gram_det_ne (V : HSp D) : V.gram.det ≠ 0 := by
     simp only [h2, mul_assoc, ← Finset.mul_sum, h1, mul_zero]
   exact V.frame.equivFun.symm.map_eq_zero_iff.1 this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Conclude with `V.herm.eq (V.frame j) (V.frame i)`.
+-/
 theorem gram_ct (V : HSp D) : V.gramᴴ = V.gram := by
   funext i j
   exact V.herm.eq (V.frame j) (V.frame i)
 
+/- English proof (translation)
+Introduce `D V V' r C B hs`. Simplify using `only [adj_eq]`. Establish `hCC : Cᴴ * V.gram * C = 0` using `by rw [← adj_eq]; exact hs.frame.2.2`. Establish `hBB : (Bᴴ * V.gram * B).det ≠ 0` using `by rw [← adj_eq, hs.isom]; exact gram_det_ne V'`. Establish `hCB : Cᴴ * V.gram * B = 0` using `by rw [← adj_eq]; exact hs.orth`.
+
+Conclude with `exists_dual (gram_ct V) (gram_det_ne V) hs.frame.2.1 hCC hBB hCB`.
+-/
 theorem exists_isotropic_dual : ∀ (D : D7) (V V' : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B →
     ∃ C' : Matrix (Fin V.rank) (Fin r) D.host.E,

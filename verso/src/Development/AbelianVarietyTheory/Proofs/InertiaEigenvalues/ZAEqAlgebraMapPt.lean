@@ -14,6 +14,9 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.BKGal.JumpDR
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (Ideal.span {(l : WittVector l (PreTilt (OC l) l))}) (WittVector l (PreTilt (OC l) l)) := WittVector.isAdicCompleteIdealSpanP`. Establish `h` using `padicInt_ringHom_ext_of_isHausdorff l (WittVector l (PreTilt (OC l) l)) (Per.zA l) (algebraMap ℤ_[l] (Ainf l))`. Conclude with `RingHom.congr_fun h z`.
+-/
 theorem zA_eq_algebraMap_pt (l : ℕ) [Fact l.Prime] (z : ℤ_[l]) :
     Per.zA l z = algebraMap ℤ_[l] (Ainf l) z := by
   haveI : IsAdicComplete (Ideal.span {(l : WittVector l (PreTilt (OC l) l))}) (WittVector l (PreTilt (OC l) l)) :=
@@ -28,6 +31,11 @@ variable {l : ℕ} [Fact l.Prime] {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : Lo
 def cB : Per.Bcris l →+* Pl.R.BdR :=
   (Pl.ιB : Pl.R.B →+* Pl.R.BdR).comp (Td.eB.symm : Per.Bcris l →+* Pl.R.B)
 
+/- English proof (translation)
+Establish `h : Td.eB.symm (Per.zB l z) = algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])`. Rewrite using `[← Td.zB z, RingEquiv.symm_apply_apply]`. Establish `hz : Per.zB l z = algebraMap ℤ_[l] (Per.Bcris l) z` using `(GlobalTheory.RingIface.zB_eq_aB_zA l z).trans (congrArg (Per.aB l) (zA_eq_algebraMap_pt l z))`. Rewrite using `[← hz]`. Express the relevant statement in the definitionally equal form `Pl.ιB (Td.eB.symm (Per.zB l z)) = _`.
+
+Rewrite using `[h, AlgHom.commutes]`.
+-/
 theorem cB_algebraMap (z : ℤ_[l]) :
     cB Td (algebraMap ℤ_[l] (Per.Bcris l) z) = algebraMap ℚ_[l] Pl.R.BdR (z : ℚ_[l]) := by
   have h : Td.eB.symm (Per.zB l z) = algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l]) := by
@@ -41,6 +49,9 @@ theorem cB_algebraMap (z : ℤ_[l]) :
 def cD : Per.BdRp l →+* Pl.R.BdR :=
   (Td.eD.symm : Per.BdR l →+* Pl.R.BdR).comp (algebraMap (Per.BdRp l) (Per.BdR l))
 
+/- English proof (translation)
+Establish `h : Td.eD.symm (Per.zD l z) = algebraMap ℚ_[l] Pl.R.BdR (z : ℚ_[l])`. Rewrite using `[← Td.zD z, RingEquiv.symm_apply_apply]`. Establish `hz : Per.zD l z = algebraMap (Per.BdRp l) (Per.BdR l) (algebraMap ℤ_[l] (Per.BdRp l) z)` using `(GlobalTheory.RingIface.zD_eq_alg l z).trans (congrArg (fun x => algebraMap (Per.BdRp l) (Per.BdR l) (GlobalTheory.MemLoc.aDp l x)) (zA_eq_algebraMap_pt l z))`. Rewrite `h` using `[hz]`. Conclude with `h`.
+-/
 theorem cD_algebraMap (z : ℤ_[l]) :
     cD Td (algebraMap ℤ_[l] (Per.BdRp l) z) = algebraMap ℚ_[l] Pl.R.BdR (z : ℚ_[l]) := by
   have h : Td.eD.symm (Per.zD l z) = algebraMap ℚ_[l] Pl.R.BdR (z : ℚ_[l]) := by

@@ -15,6 +15,15 @@ section Generic
 
 variable {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] {K : Subgroup G}
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `Final.HeckeBasis G K ℂ`. It suffices to establish `∀ a, p (e.symm a) by simpa using this (e ⟨f, hf⟩)`. Introduce `a`. Proceed by induction on `a using Finsupp.induction_linear with`. Consider the case `zero => simpa using h0`.
+
+Consider the case `add a b ha hb => rw [map_add]`. Conclude with `hadd _ (e.symm a).2 _ (e.symm b).2 ha hb`. Consider the case `single c r`. Take `⟨g, rfl⟩ : ∃ g, DoubleCoset.mk K K g = c` from `Quotient.exists_rep c`. Use `hind r g` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[← he, e.apply_symm_apply, Finsupp.single_apply, Pi.smul_apply, dosetInd, Set.indicator_apply]`. Establish `: DoubleCoset.mk K K g = DoubleCoset.mk K K x ↔ x ∈ DoubleCoset.doubleCoset g (K : Set G) K`. Rewrite using `[DoubleCoset.eq, DoubleCoset.mem_doubleCoset]`. Both sides reduce to the same expression.
+
+Distinguish the cases in `hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) K`. Simplify using `[hx, this.2 hx]`. Simplify using `[hx, mt this.1 hx]`.
+-/
 theorem hecke_induction {p : (G → ℂ) → Prop} (h0 : p 0)
     (hadd : ∀ f ∈ Hecke ℂ K, ∀ f' ∈ Hecke ℂ K, p f → p f' → p (f + f'))
     (hind : ∀ (r : ℂ) (g : G), p (r • dosetInd ℂ K g)) {f : G → ℂ} (hf : f ∈ Hecke ℂ K) : p f := by
@@ -36,16 +45,29 @@ theorem hecke_induction {p : (G → ℂ) → Prop} (h0 : p 0)
     · simp [hx, this.2 hx]
     · simp [hx, mt this.1 hx]
 
+/- English proof (translation)
+Simplify using `only [heckeVec, Pi.add_apply, add_smul]`. Conclude with `finsum_add_distrib (finite_heckeVec hK hf ρ x) (finite_heckeVec hK hf' ρ x)`.
+-/
 theorem heckeVec_add (hK : IsCommensurated K) (ρ : Representation ℂ G V) {f f' : G → ℂ} (hf : f ∈ Hecke ℂ K)
     (hf' : f' ∈ Hecke ℂ K) (x : V) : heckeVec ρ K (f + f') x = heckeVec ρ K f x + heckeVec ρ K f' x := by
   simp only [heckeVec, Pi.add_apply, add_smul]
   exact finsum_add_distrib (finite_heckeVec hK hf ρ x) (finite_heckeVec hK hf' ρ x)
 
+/- English proof (translation)
+Simplify using `only [heckeVec, Pi.smul_apply, smul_eq_mul, mul_smul]`. Conclude with `(smul_finsum' r (finite_heckeVec hK hf ρ x)).symm`.
+-/
 theorem heckeVec_smul (hK : IsCommensurated K) (ρ : Representation ℂ G V) (r : ℂ) {f : G → ℂ} (hf : f ∈ Hecke ℂ K)
     (x : V) : heckeVec ρ K (r • f) x = r • heckeVec ρ K f x := by
   simp only [heckeVec, Pi.smul_apply, smul_eq_mul, mul_smul]
   exact (smul_finsum' r (finite_heckeVec hK hf ρ x)).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `: e g ∈ DoubleCoset.doubleCoset t (K' : Set H) K' ↔ g ∈ DoubleCoset.doubleCoset (e.symm t) (K : Set G) K`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`.
+
+Conclude with `⟨e.symm a, (hK _).2 (by simpa using ha), e.symm b, (hK _).2 (by simpa using hb), e.injective (by simpa using h)⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨e a, (hK _).1 ha, e b, (hK _).1 hb, by simp⟩`. Distinguish the cases in `hg : g ∈ DoubleCoset.doubleCoset (e.symm t) (K : Set G) K`. Simplify using `[dosetInd, hg, this.2 hg]`.
+
+Simplify using `[dosetInd, hg, mt this.1 hg]`.
+-/
 theorem dosetInd_comp (e : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ e g ∈ K') (t : H) :
     dosetInd ℂ K' t ∘ e = dosetInd ℂ K (e.symm t) := by
   funext g
@@ -60,6 +82,9 @@ theorem dosetInd_comp (e : G ≃* H) {K' : Subgroup H} (hK : ∀ g, g ∈ K ↔ 
   · simp [dosetInd, hg, this.2 hg]
   · simp [dosetInd, hg, mt this.1 hg]
 
+/- English proof (translation)
+Rewrite using `[dosetInd, dosetInd, DoubleCoset.doubleCoset_eq_of_mem (DoubleCoset.mem_doubleCoset.2 ⟨a, ha, b, hb, rfl⟩)]`.
+-/
 theorem dosetInd_mul {a b : G} (ha : a ∈ K) (hb : b ∈ K) (t : G) : dosetInd ℂ K (a * t * b) = dosetInd ℂ K t := by
   rw [dosetInd, dosetInd, DoubleCoset.doubleCoset_eq_of_mem (DoubleCoset.mem_doubleCoset.2 ⟨a, ha, b, hb, rfl⟩)]
 
@@ -73,6 +98,13 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
 
 open GlobalTheory.InertThetaCompare in
 
+/- English proof (translation)
+Establish `hϖ : IsUnifV E w ϖ` using `hU.2.2.2.1`. Take `⟨d, hd, k₁, h₁, k₂, h₂, e⟩` from `Final.CartanDecomp E w n ϖ (mem_Ov_of_isUnifV hϖ) hϖ g.1`. Take `⟨h, hh, eh⟩` from `exists_antiJ_frame hU n`. Establish `hh' : h ∈ GLint (Fin n) (Ov E w)` using `hh`. Establish `hd' : ∀ i : Fin n, (List.ofFn d).getD i.1 0 = d i` using `fun i => by simp [List.getD_eq_getElem?_getD]`.
+
+Establish `hG : Good n (List.ofFn d)` using `good_of_unitary hU (π := ϖ) hϖ (by simp) (List.pairwise_ofFn.2 fun i j hij => hd hij.le) (GlobalTheory.InertDoubleCoset.conj_mem_UJ σ (GlobalTheory.InertDoubleCoset.inv_frame σ eh) g.2) ⟨h * k₁, mul_mem hh' h₁, k₂ * h⁻¹, mul_mem h₂ (inv_mem hh'), by`. Simplify using `only [Units.val_mul, e, hd', inv_inv, Matrix.mul_assoc]`. Use the proof step `rfl⟩`. Take `⟨t, ht⟩` from `exists_diag hU hG`. Simplify using `only [hd'] at ht`.
+
+Conclude with `⟨d, t, hd, ht, dc_GU hU (a := k₁) (b := k₂) h₁ h₂ (Units.ext (by simp only [Units.val_mul, ht]; exact e))⟩`.
+-/
 theorem cartanU (hU : IsUnramInv ϖ σ q) (g : GU σ n) : ∃ (d : Fin n → ℤ) (t : GU σ n), Antitone d ∧
     t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) ∧ ∃ k₁ ∈ KU σ n, ∃ k₂ ∈ KU σ n, g = k₁ * t * k₂ := by
   have hϖ : IsUnifV E w ϖ := hU.2.2.2.1
@@ -89,6 +121,15 @@ theorem cartanU (hU : IsUnramInv ϖ σ q) (g : GU σ n) : ∃ (d : Fin n → ℤ
   simp only [hd'] at ht
   exact ⟨d, t, hd, ht, dc_GU hU (a := k₁) (b := k₂) h₁ h₂ (Units.ext (by simp only [Units.val_mul, ht]; exact e))⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `(hasSatU_psFunU hU α).exists_vec`. Establish `hK` using `P.isCommensurated_integral_unitary_of_unramified hU n`. Establish `hm` using `Final.DosetIndMem _ (KU σ n) ℂ`. Use `⟨h0, hx, fun f hf => ?_⟩` and prove the remaining obligations. Use `hecke_induction (K := KU σ n) (p := fun f => heckeVec ρ (KU σ n) f x = SatU ϖ q f (fun i => (α i : ℂ)) • x) ?_ ?_ ?_ hf` and prove the remaining obligations.
+
+Simplify using `[heckeVec, SatU]`. Introduce `f hf f' hf' h1 h2`. Use `hy.2.2 _ (add_mem hf hf')` as an intermediate fact. Rewrite `this` using `[heckeVec_add hK _ hf hf', hy.2.2 _ hf, hy.2.2 _ hf', ← add_smul]`. Rewrite using `[heckeVec_add hK _ hf hf', h1, h2, ← add_smul, smul_left_injective ℂ hy.1 this]`.
+
+Introduce `r g`. Take `⟨d, t, hd, ht, k₁, h₁, k₂, h₂, rfl⟩` from `cartanU hU g`. Rewrite using `[dosetInd_mul h₁ h₂]`. Use `hy.2.2 _ (Submodule.smul_mem _ r (hm t))` as an intermediate fact. Rewrite `this` using `[heckeVec_smul hK _ r (hm t), hy.2.2 _ (hm t), smul_smul]`.
+
+Rewrite using `[heckeVec_smul hK _ r (hm t), h d t hd ht, smul_smul, smul_left_injective ℂ hy.1 this]`.
+-/
 theorem isSatVecU_of_diag (hU : IsUnramInv ϖ σ q) {ρ : Representation ℂ (GU σ n) V} {x : V} {α : Fin (n / 2) → ℂˣ}
     (h0 : x ≠ 0) (hx : x ∈ fixed ρ (KU σ n))
     (h : ∀ (d : Fin n → ℤ) (t : GU σ n), Antitone d → t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) →
@@ -129,6 +170,15 @@ def IsEigenSys (h : w.under (𝓞 F) = v) (ρ : Representation ℂ (GLoc σ J v)
 variable {σ J L} {h : w.under (𝓞 F) = v} {ρ : Representation ℂ (GLoc σ J v) V} {x : V} {c : List ℤ → ℂ}
   {B : Multiset ℂˣ}
 
+/- English proof (translation)
+Establish `h0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Set `t : GL (Fin n) (w.adicCompletion E)` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (diagJ n ϖ j) (by`. Rewrite using `[diagJ, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun i _ => by split_ifs <;> simp [h0])`. Establish `ht : Tj ℂ n (Ov E w) ϖ j = dosetInd ℂ (KGL w n) t`.
+
+Rewrite using `[Tj, dosetInd]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[DoubleCoset.mem_doubleCoset]`. Conclude with `⟨fun ⟨a, ha, b, hb, e⟩ => ⟨a, ha, b, hb, Units.ext e⟩, fun ⟨a, ha, b, hb, e⟩ => ⟨a, ha, b, hb, congrArg Units.val e⟩⟩`.
+
+Take `⟨⟨a, ha, e1⟩, e2⟩` from `he`. Rewrite using `[heckeVec_comp_symm e e2 (Tj_mem_hecke hϖ j).1 hx, ht, dosetInd_comp e e2, hc a (e.symm t) (fun i => if i.1 < j then 1 else 0) (fun i => if i.1 < j then ϖ else 1) ha (fun i k hik => ?_) (fun i => ?_) (by rw [← e1, e.apply_symm_apply]; rfl)]`. Use `congr 2`. Use `List.ext_getElem (by simp; omega) fun i h1 h2 => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i < j <;> simp [hi, List.getElem_append]`.
+
+Apply the tactic sequence `have : i.1 ≤ k.1 := hik dsimp only split_ifs <;> omega`. Use `split_ifs`. Conclude with `hϖ`. Simplify using the standard rewrite rules.
+-/
 theorem IsEigenSys.split (hc : IsEigenSys σ J L h ρ x c) (hx : x ∈ fixed ρ (stabLoc σ J L v))
     {e : GLoc σ J v ≃* GL (Fin n) (w.adicCompletion E)} (he : IsSplitChart σ J L h e) {ϖ : w.adicCompletion E}
     (hϖ : IsUnifV E w ϖ) {j : ℕ} (hj : j ≤ n) :
@@ -159,6 +209,9 @@ theorem IsEigenSys.split (hc : IsEigenSys σ J L h ρ x c) (hx : x ∈ fixed ρ 
     · exact hϖ
     · simp
 
+/- English proof (translation)
+Take `⟨-, ⟨a, ha, -, e1⟩, e2⟩` from `he`. Rewrite using `[heckeVec_comp_symm e e2 (Final.DosetIndMem _ _ ℂ t).1 hx, dosetInd_comp e e2, hc a (e.symm t) d _ ha hd (fun i => ?_) (by rw [← e1, e.apply_symm_apply, ht])]`. Rewrite using `[map_zpow₀, show Valued.v ϖ = WithZero.exp (-1 : ℤ) from hϖ, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem IsEigenSys.inert (hc : IsEigenSys σ J L h ρ x c) (hx : x ∈ fixed ρ (stabLoc σ J L v))
     {τ : w.adicCompletion E →+* w.adicCompletion E} {e : GLoc σ J v ≃* GU τ n} (he : IsInertChart σ J L h τ e)
     {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {d : Fin n → ℤ} {t : GU τ n} (hd : Antitone d)
@@ -170,6 +223,9 @@ theorem IsEigenSys.inert (hc : IsEigenSys σ J L h ρ x c) (hx : x ∈ fixed ρ 
   rw [map_zpow₀, show Valued.v ϖ = WithZero.exp (-1 : ℤ) from hϖ, ← WithZero.exp_zsmul]
   simp
 
+/- English proof (translation)
+Establish `hx` using `hB.mem_fixed`. Break down `hB with ⟨hv, e, he, hB⟩ | ⟨hw, τ, ϖ, e, α, hU, he, hB, rfl⟩` into its components or cases. Take `⟨ϖ, hϖ⟩` from `exists_isUnifV w`. Conclude with `Or.inl ⟨hv, hB.2.2.1, fun j hj => smul_left_injective ℂ hB.1 ((hc.split hx he hϖ hj).symm.trans (hB.2.2.2 ϖ hϖ j hj))⟩`. Conclude with `Or.inr ⟨hw, τ, ϖ, α, hU, he.1, rfl, fun d t hd ht => smul_left_injective ℂ hB.1 ((hc.inert hx he hU.2.2.2.1 hd ht).symm.trans (hB.2.2 _ (Final.DosetIndMem _ _ ℂ t)))⟩`.
+-/
 theorem IsEigenSys.isSysParam (hc : IsEigenSys σ J L h ρ x c) (hB : IsParamVec σ J L h ρ x B) :
     IsSysParam σ n h c B := by
   have hx := hB.mem_fixed
@@ -180,6 +236,11 @@ theorem IsEigenSys.isSysParam (hc : IsEigenSys σ J L h ρ x c) (hB : IsParamVec
   · exact Or.inr ⟨hw, τ, ϖ, α, hU, he.1, rfl, fun d t hd ht => smul_left_injective ℂ hB.1
       ((hc.inert hx he hU.2.2.2.1 hd ht).symm.trans (hB.2.2 _ (Final.DosetIndMem _ _ ℂ t)))⟩
 
+/- English proof (translation)
+Break down `hB with ⟨hv, h1, h2⟩ | ⟨hw, τ, ϖ, α, hU, hτ, rfl, h2⟩` into its components or cases. Take `⟨e, he⟩` from `hs hv`. Conclude with `Or.inl ⟨hv, e, he, h0, (mem_fixed_comp_symm e he.2).2 hx, h1, fun ϖ hϖ j hj => by`. Rewrite using `[hc.split hx he hϖ hj, h2 j hj]⟩`. Take `⟨e, he⟩` from `hi hw τ hτ`.
+
+Conclude with `Or.inr ⟨hw, τ, ϖ, e, α, hU, he, isSatVecU_of_diag hU h0 ((mem_fixed_comp_symm e he.2.2).2 hx) fun d t hd ht => by rw [hc.inert hx he hU.2.2.2.1 hd ht, h2 d t hd ht], rfl⟩`.
+-/
 theorem IsEigenSys.isParamVec (hc : IsEigenSys σ J L h ρ x c) (h0 : x ≠ 0) (hx : x ∈ fixed ρ (stabLoc σ J L v))
     (hs : IsSplit (E := E) v → ∃ e, IsSplitChart σ J L h e)
     (hi : IsInertAt F E v w → ∀ τ, IsConjAt σ h τ → ∃ e, IsInertChart σ J L h τ e)

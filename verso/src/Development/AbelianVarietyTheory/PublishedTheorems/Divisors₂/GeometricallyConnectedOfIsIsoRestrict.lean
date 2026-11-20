@@ -20,6 +20,9 @@ inductive IsSmoothBlowupSeq {S Y : Scheme.{0}} (f : Y ⟶ S) (B : Set Y) : ∀ {
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `id => exact .id`. Consider the case `step J π _ hsm hsupp hbl ih`. Conclude with `.step J π ih hsm (hsupp.trans (Set.preimage_mono hB)) hbl`.
+-/
 theorem _root_.GlobalTheory.IsSmoothBlowupSeq.mono {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {B B' : Set Y} {s : Y' ⟶ Y}
     (h : _root_.GlobalTheory.IsSmoothBlowupSeq f B s) (hB : B ⊆ B') : _root_.GlobalTheory.IsSmoothBlowupSeq f B' s := by
   induction h with
@@ -27,6 +30,9 @@ theorem _root_.GlobalTheory.IsSmoothBlowupSeq.mono {S Y Y' : Scheme.{0}} {f : Y 
   | step J π _ hsm hsupp hbl ih =>
     exact .step J π ih hsm (hsupp.trans (Set.preimage_mono hB)) hbl
 
+/- English proof (translation)
+Simplify `h₁) (by simpa using h₂) h₃` using `using IsSmoothBlowupSeq.step (f := f) (B := B) J π .id (by simpa`.
+-/
 theorem IsSmoothBlowupSeq.single {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {B : Set Y} (J : Y.IdealSheafData) (π : Y' ⟶ Y)
     (h₁ : Smooth (J.subschemeι ≫ f)) (h₂ : (J.support : Set Y) ⊆ B) (h₃ : FinalTheorems.Blowup π J) :
     IsSmoothBlowupSeq f B π := by
@@ -34,12 +40,20 @@ theorem IsSmoothBlowupSeq.single {S Y Y' : Scheme.{0}} {f : Y ⟶ S} {B : Set Y}
 
 namespace Principalise
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨_, ⟨U, hU, rfl⟩, hx, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ exact ⟨⟨U, hU⟩, 1, hx, one_mem _, by simp⟩`.
+-/
 theorem effCartier_top (X : Scheme.{0}) : FinalTheorems.EffCartier (⊤ : X.IdealSheafData) := fun x => by
   obtain ⟨_, ⟨U, hU, rfl⟩, hx, -⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ
   exact ⟨⟨U, hU⟩, 1, hx, one_mem _, by simp⟩
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 
+/- English proof (translation)
+Establish `htop : J.comap g = ⊤`. Rewrite using `[← Scheme.IdealSheafData.support_eq_bot_iff, Scheme.IdealSheafData.support_comap]`. Use extensionality with `w`. Simplify using `using h w`. Introduce `w`.
+
+Take `⟨_, ⟨V, hV, rfl⟩, hwV, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ w) isOpen_univ`. Use `⟨⟨V, hV⟩, 1, hwV, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[htop, Ideal.span_singleton_one]`. Simplify using `[Scheme.IdealSheafData.ideal_top]`.
+-/
 theorem _root_.GlobalTheory.Principalise.effCartier_comap_of_disjoint {W X : Scheme.{0}} (g : W ⟶ X) (J : X.IdealSheafData)
     (h : ∀ w, g w ∉ J.support) : _root_.ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap g) := by
   have htop : J.comap g = ⊤ := by
@@ -53,11 +67,23 @@ theorem _root_.GlobalTheory.Principalise.effCartier_comap_of_disjoint {W X : Sch
   rw [htop, Ideal.span_singleton_one]
   simp [Scheme.IdealSheafData.ideal_top]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rwa [Scheme.IdealSheafData.comap_id], fun _ g _ => ⟨g, Category.comp_id g, fun _ e => by simpa using e⟩⟩`.
+-/
 theorem blowup_id {X : Scheme.{0}} {J : X.IdealSheafData} (h : FinalTheorems.EffCartier J) : FinalTheorems.Blowup (𝟙 X) J :=
   ⟨by rwa [Scheme.IdealSheafData.comap_id], fun _ g _ => ⟨g, Category.comp_id g, fun _ e => by simpa using e⟩⟩
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 
+/- English proof (translation)
+Establish `hcart : ∀ (W : Scheme.{0}) (k : W ⟶ U.toScheme), _root_.ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap (k ≫ U.ι))`. Introduce `W k`. Use `_root_.GlobalTheory.Principalise.effCartier_comap_of_disjoint _ J fun w => hU _ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply]`. Establish `hmem : U.ι (k w) ∈ Set.range U.ι` using `⟨_, rfl⟩`.
+
+Rewrite `hmem` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Establish `hσ'` using `hcart U.toScheme (𝟙 _)`. Rewrite `hσ'` using `[Category.id_comp]`. Take `⟨σ, hσ, -⟩` from `h.2 U.toScheme U.ι hσ'`. Establish `hsnd : IsIso (pullback.snd π U.ι)`.
+
+Use `⟨⟨pullback.lift σ (𝟙 _) (by rw [hσ, Category.id_comp]), ?_, pullback.lift_snd _ _ _⟩⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst, Category.id_comp]`. Establish `hg` using `hcart _ (pullback.snd π U.ι)`. Rewrite `hg` using `[← pullback.condition]`.
+
+Conclude with `(h.2 _ _ hg).unique (by rw [Category.assoc, hσ, pullback.condition]) rfl`. Simplify using `only [Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]`. Rewrite using `[morphismRestrict]`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.Principalise.isIso_restrict_of_blowup {X X' : Scheme.{0}} {π : X' ⟶ X}
     {J : X.IdealSheafData} (h : _root_.ReciprocityTheory.AnForm.R.FinalTheorems.Blowup π J)
     (U : X.Opens) (hU : ∀ x ∈ U, x ∉ J.support) : IsIso (π ∣_ U) := by
@@ -86,6 +112,11 @@ end Principalise
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `id => infer_instance`. Consider the case `@step Y₁ Y₂ s J π hs hsm hsupp hbl ih`. Rewrite using `[morphismRestrict_comp]`. Establish `: IsIso (π ∣_ s ⁻¹ᵁ U)` using `_root_.GlobalTheory.Principalise.isIso_restrict_of_blowup hbl _ fun x hx hxJ => hU _ hx (hsupp hxJ)`.
+
+Conclude with `@IsIso.comp_isIso _ _ _ _ _ _ _ this ih`.
+-/
 theorem _root_.GlobalTheory.IsSmoothBlowupSeq.isIso_restrict {S Y Y' : Scheme.{0}} {f : Y ⟶ S}
     {B : Set Y} {s : Y' ⟶ Y}
     (h : _root_.GlobalTheory.IsSmoothBlowupSeq f B s) (U : Y.Opens) (hU : ∀ y ∈ U, y ∉ B) : IsIso (s ∣_ U) := by
@@ -101,6 +132,11 @@ namespace Principalise
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hI` to reduce the goal to its premises. Rewrite using `[← Scheme.IdealSheafData.support_eq_top_iff]`. Use extensionality with `x`. Simplify using `only [Set.not_nonempty_iff_eq_empty] at hne`.
+
+Establish `: x ∉ (I.support.compl : Set Y)` using `by simp [hne]`. Simplify using `using this`.
+-/
 theorem _root_.GlobalTheory.Principalise.nonempty_compl_support {Y : Scheme.{0}} [IsIntegral Y] {I : Y.IdealSheafData} (hI : I ≠ ⊥) :
     (I.support.compl : Set Y).Nonempty := by
   by_contra hne

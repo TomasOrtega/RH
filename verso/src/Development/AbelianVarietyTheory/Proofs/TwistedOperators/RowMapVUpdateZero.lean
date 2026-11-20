@@ -23,6 +23,9 @@ def rowShift0 (S : GridChoice W U) (k : FinPt G (.grid 0 D.R.m)) :
   W.om (.chi (firstIx D) D.R.m) (G.toPair (.chi (firstIx D) D.R.m)
     ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m)).1 1)
 
+/- English proof (translation)
+The claim follows from `(W.om_is _ (inRange_chi (firstIx D))).om_pres _ _ h`.
+-/
 theorem rowShift0_theta (S : GridChoice W U) (k : FinPt G (.grid 0 D.R.m))
     {f : WO (G.pS (.chi (firstIx D) D.R.m : Pair T)) (G.pT (.chi (firstIx D) D.R.m : Pair T)) → ℂ}
     (h : IsThetaFunO W.ψ _ _ f) : IsThetaFunO W.ψ _ _ (rowShift0 S k f) :=
@@ -33,6 +36,17 @@ def movedRow (S : GridChoice W U) (k : FinPt G (.grid 0 D.R.m))
     ∀ i : Fin D.R.m, WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ :=
   Function.update gs (firstIx D) (rowShift0 S k (gs (firstIx D)))
 
+/- English proof (translation)
+Unfold `rowMapV movedRow`. Use `congrArg (fun F => LinearMap.comp (chainTo (V := fun i => VV ℂ (wt G (.grid i D.R.m))) F D.R.m) _) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i < D.R.m`. Simplify using `only [dif_pos hi]`.
+
+Break down `Nat.eq_zero_or_pos i with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using `only [Function.update_self, Function.update_of_ne (show (0 + 1 : ℕ) ≠ 0 by omega)]`. Establish `hu : Function.update gs (firstIx D) (rowShift0 S k (gs (firstIx D))) ⟨0, hi⟩ = rowShift0 S k (gs (firstIx D))` using `Function.update_self _ _ _`. Establish `hm : y 0 * k * S.N.u (.grid 0 D.R.m) = (y 0 * S.N.u (.grid 0 D.R.m)) * ((S.N.u (.grid 0 D.R.m))⁻¹ * k * S.N.u (.grid 0 D.R.m))` using `by group`.
+
+Rewrite using `[hu, hm]`. Conclude with `congrArg _ (GlobalTheory.KerTrans.fockComp_mul_fin W S.N.frC (inRange_chi (firstIx D)) _ hg _ _ _)`. Establish `h2 : (⟨i, hi⟩ : Fin D.R.m) ≠ firstIx D`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `[firstIx] at this`. Use linear arithmetic over natural numbers and integers. Establish `hu : Function.update gs (firstIx D) (rowShift0 S k (gs (firstIx D))) ⟨i, hi⟩ = gs ⟨i, hi⟩` using `Function.update_of_ne h2 _ _`. Establish `hy1 : Function.update y 0 (y 0 * k) i = y i` using `Function.update_of_ne (by omega) _ _`. Establish `hy2 : Function.update y 0 (y 0 * k) (i + 1) = y (i + 1)` using `Function.update_of_ne (by omega) _ _`.
+
+Rewrite using `[hu, hy1, hy2]`. Simplify using `only [dif_neg hi]`.
+-/
 theorem rowMapV_update_zero (S : GridChoice W U)
     (gs : ∀ i : Fin D.R.m, WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ)
     (y : ∀ i, FinPt G (.grid i D.R.m)) (k : FinPt G (.grid 0 D.R.m))
@@ -61,6 +75,9 @@ theorem rowMapV_update_zero (S : GridChoice W U)
       rw [hu, hy1, hy2]
   · simp only [dif_neg hi]
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i₀), ← Finset.mul_prod_erase _ _ (Finset.mem_univ i₀)]`. Simplify using `only [Function.update_self, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Use `congr 2`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi), Function.update_of_ne (Finset.ne_of_mem_erase hi)]`.
+-/
 theorem prod_update_smul {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type} (F : ∀ i, X i → ℂ) (i₀ : ι) (h : X i₀ → ℂ)
     (c : ℂ) (ys : ∀ i, X i) :
     ∏ i, Function.update F i₀ (c • h) i (ys i) = c * ∏ i, Function.update F i₀ h i (ys i) := by

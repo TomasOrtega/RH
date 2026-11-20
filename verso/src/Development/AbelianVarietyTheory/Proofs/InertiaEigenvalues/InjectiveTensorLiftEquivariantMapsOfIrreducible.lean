@@ -9,6 +9,33 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Top
 namespace GlobalTheory.SmGL.EvalInj
 
 open ValuativeRel Topology in
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro φ _ _ y _`. Conclude with `Subsingleton.elim _ _`. Consider the case `succ m ih`.
+
+Introduce `φ hli hφ y hy`. Set `Φ : (Fin (m + 1) → Y) →ₗ[ℂ] X` to `∑ i, (φ i).comp (LinearMap.proj i)`. Establish `hΦ : ∀ w, Φ w = ∑ i, φ i (w i)` using `fun w => by simp [Φ]`. Set `S` to `LinearMap.ker Φ`. Establish `hSinv : ∀ g, ∀ w ∈ S, (fun i => ρ g (w i)) ∈ S`.
+
+Introduce `g w hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker, hΦ]`. Repeatedly rewrite using `[hφ]`. Rewrite using `[← map_sum, hw, map_zero]`. Set `p : S →ₗ[ℂ] Y` to `(LinearMap.proj (Fin.last m)).comp S.subtype`.
+
+Establish `hp : Function.Injective p`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Establish `hw0 : (w : Fin (m + 1) → Y) (Fin.last m) = 0` using `hw`. Establish `hsum : ∑ i : Fin m, φ (Fin.castSucc i) ((w : Fin (m + 1) → Y) (Fin.castSucc i)) = 0`.
+
+Establish `hw'` using `w.2`. Rewrite `hw'` using `[LinearMap.mem_ker, hΦ, Fin.sum_univ_castSucc, hw0, map_zero, add_zero]`. Conclude with `hw'`. Establish `hzero` using `ih (fun i => φ (Fin.castSucc i)) (hli.comp _ (Fin.castSucc_injective m)) (fun i => hφ _) _ hsum`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hw0`. Conclude with `congrFun hzero j`. Set `R : Subrepresentation ρ` to `⟨LinearMap.range p, by`.
+
+Introduce and unpack `g _ ⟨w, rfl⟩`. Conclude with `⟨⟨fun i => ρ g ((w : Fin (m + 1) → Y) i), hSinv g w w.2⟩, rfl⟩⟩`. Establish `hyS : y ∈ S` using `by rw [LinearMap.mem_ker, hΦ]; exact hy`. Use `haveI := hρ`. Break down `IsSimpleOrder.eq_bot_or_eq_top R with hR | hR` into its components or cases.
+
+Establish `hrange : LinearMap.range p = ⊥` using `congrArg Subrepresentation.toSubmodule hR`. Establish `hpy : p ⟨y, hyS⟩ = 0`. Rewrite `hrange` using `[LinearMap.range_eq_bot]`. Rewrite using `[hrange]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg Subtype.val (hp (hpy.trans (map_zero p).symm))`. It suffices to derive a contradiction. Establish `hrange : LinearMap.range p = ⊤` using `congrArg Subrepresentation.toSubmodule hR`. Set `e` to `LinearEquiv.ofBijective p ⟨hp, LinearMap.range_eq_top.mp hrange⟩`. Establish `hlast : ∀ v, (e.symm v : Fin (m + 1) → Y) (Fin.last m) = v` using `fun v => e.apply_symm_apply v`.
+
+Establish `he : ∀ g v, e.symm (ρ g v) = ⟨fun i => ρ g ((e.symm v : Fin (m + 1) → Y) i), hSinv g _ (e.symm v).2⟩`. Introduce `g v`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use `show ρ g v = ρ g ((e.symm v : Fin (m + 1) → Y) (Fin.last m))`.
+
+Rewrite using `[hlast]`. Set `T : Fin m → ρ.IntertwiningMap ρ` to `fun j => ⟨(LinearMap.proj (Fin.castSucc j)).comp (S.subtype.comp e.symm.toLinearMap), by`. Introduce `g`. Use extensionality with `v`. Simplify using `[he]⟩`.
+
+Use `choose c hc using fun j => hschur (T j)`. Establish `hT : ∀ j v, (e.symm v : Fin (m + 1) → Y) (Fin.castSucc j) = c j • v` using `fun j v => hc j v`. Establish `hzero : ∑ i, (Fin.snoc (α` using `fun _ => ℂ) c 1 i) • φ i = 0 := by`. Use extensionality with `v`. Establish `hv` using `(e.symm v).2`.
+
+Rewrite `hv` using `[LinearMap.mem_ker, hΦ, Fin.sum_univ_castSucc]`. Simplify using `only [hT, hlast, map_smul] at hv`. Simplify `hv` using `[Fin.sum_univ_castSucc]`. Establish `h1` using `(Fintype.linearIndependent_iff.mp hli) _ hzero (Fin.last m)`. Simplify using `at h1`.
+-/
 private theorem eq_zero_of_sum_intertwining_apply_eq_zero {H X Y : Type} [Group H] [AddCommGroup X]
     [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] (τ : Representation ℂ H X)
     (ρ : Representation ℂ H Y) (hρ : ρ.IsIrreducible)
@@ -86,6 +113,15 @@ private theorem eq_zero_of_sum_intertwining_apply_eq_zero {H X Y : Type} [Group 
 
 open ValuativeRel Topology in
 
+/- English proof (translation)
+Introduce `H X Y _ _ _ _ _ τ ρ hρ hschur M hM`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨M', hfin, hsub⟩` from `TensorProduct.exists_finite_submodule_left_of_setFinite {t} (Set.finite_singleton t)`. Take `⟨t₀, rfl⟩` from `hsub (Set.mem_singleton t)`.
+
+Use `haveI := hfin`. Set `b` to `Module.finBasis ℂ M'`. Use `set y : Fin (Module.finrank ℂ M') → Y := fun i => TensorProduct.equivFinsuppOfBasisLeft b t₀ i with hy`. Establish `ht₀ : t₀ = ∑ i, b i ⊗ₜ[ℂ] y i` using `by conv_lhs => rw [← (TensorProduct.equivFinsuppOfBasisLeft b).symm_apply_apply t₀]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum_fintype]`.
+
+Introduce `i`. Conclude with `TensorProduct.tmul_zero _ _`. Set `φ : Fin (Module.finrank ℂ M') → (Y →ₗ[ℂ] X)` to `fun i => ((b i : M) : Y →ₗ[ℂ] X)`. Establish `hli : LinearIndependent ℂ φ` using `(b.linearIndependent.map' M'.subtype (Submodule.ker_subtype _)).map' M.subtype (Submodule.ker_subtype _)`. Establish `hsum : ∑ i, φ i (y i) = 0`.
+
+Rewrite `ht` using `[ht₀]`. Simplify `ht` using `[map_sum, φ]`. Establish `hy0` using `eq_zero_of_sum_intertwining_apply_eq_zero τ ρ hρ hschur _ φ hli (fun i g v => hM _ (b i : M).2 g v) y hsum`. Rewrite using `[ht₀, hy0]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.SmGL.EvalInj.lift_subtype_injective :
     ∀ (H X Y : Type) [Group H] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
       (τ : Representation ℂ H X) (ρ : Representation ℂ H Y), ρ.IsIrreducible →

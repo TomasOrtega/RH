@@ -11,12 +11,18 @@ section Fam
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ι → ℕ} [∀ i, NeZero (N i)]
   (χ : (i : ι) → DirichletCharacter ℂ (N i)) (w : ι → ℝ)
 
+/- English proof (translation)
+Introduce `h'`. Use `congrArg Complex.re h'` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma ofReal_ne_ofReal_of_lt {a b : ℝ} (h : a < b) : (b : ℂ) ≠ (a : ℂ) := by
   intro h'
   have := congrArg Complex.re h'
   simp at this
   linarith
 
+/- English proof (translation)
+Introduce `h'`. Rewrite `h` using `[h']`. Simplify using `at h`.
+-/
 lemma ne_ofReal_of_lt_re {s : ℂ} {a : ℝ} (h : a < s.re) : s ≠ (a : ℂ) := by
   intro h'
   rw [h'] at h

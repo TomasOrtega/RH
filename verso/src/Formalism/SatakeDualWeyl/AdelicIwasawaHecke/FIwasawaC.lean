@@ -17,9 +17,19 @@ def fIwasawaTri (r : ℕ) (M : Matrix (Fin n) (Fin n) L) : Prop :=
 
 def fIwasawaKm (M : Matrix (Fin n) (Fin n) L) : Prop := fIwasawaUn σ M ∧ fIwasawaInt M
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem antiJ_apply_adelic_iwasawa_hecke (i j : Fin n) :
     antiJ L n i j = if (i : ℕ) + j + 1 = n then 1 else 0 := rfl
 
+/- English proof (translation)
+Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev j)]`. Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_pos (by rw [Fin.val_rev]; omega), mul_one]`. Introduce `k _ hk`. Establish `hk'` using `k.isLt`.
+
+Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_neg, mul_zero]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem mul_antiJ_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (N * antiJ L n) i j = N i (Fin.rev j) := by
   have hj := j.isLt
@@ -36,6 +46,13 @@ private theorem mul_antiJ_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_pos (by rw [Fin.val_rev]; omega), one_mul]`. Introduce `k _ hk`. Establish `hk'` using `k.isLt`.
+
+Rewrite using `[antiJ_apply_adelic_iwasawa_hecke, if_neg, zero_mul]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem antiJ_mul_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     (antiJ L n * N) i j = N (Fin.rev i) j := by
   have hi := i.isLt
@@ -52,14 +69,25 @@ private theorem antiJ_mul_apply' (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cT_apply_eq_sigma_transpose (N : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     cT σ N i j = σ (N j i) := rfl
 
+/- English proof (translation)
+Unfold `cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem cT_mul_reverse (A B : Matrix (Fin n) (Fin n) L) :
     cT σ (A * B) = cT σ B * cT σ A := by
   unfold cT
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[cT_apply_eq_sigma_transpose]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h), map_zero]`.
+-/
 private theorem cT_one_eq_one : cT σ (1 : Matrix (Fin n) (Fin n) L) = 1 := by
   ext i j
   rw [cT_apply_eq_sigma_transpose]
@@ -68,6 +96,13 @@ private theorem cT_one_eq_one : cT σ (1 : Matrix (Fin n) (Fin n) L) = 1 := by
     simp
   · rw [Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h), map_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[antiJ_mul_apply', antiJ_apply_adelic_iwasawa_hecke, Matrix.one_apply]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `h : i = j`.
+
+Rewrite using `[if_pos h, if_pos (by rw [Fin.val_rev, ← h]; omega)]`. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Use `ext`.
+
+Rewrite `h'` using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem antiJ_mul_antiJ : antiJ L n * antiJ L n = 1 := by
   ext i j
   rw [antiJ_mul_apply', antiJ_apply_adelic_iwasawa_hecke, Matrix.one_apply]
@@ -82,6 +117,13 @@ private theorem antiJ_mul_antiJ : antiJ L n * antiJ L n = 1 := by
     rw [Fin.val_rev] at h'
     omega
 
+/- English proof (translation)
+Unfold `fIwasawaKm fIwasawaUn fIwasawaInt at *`. Take `⟨hAu, hAi⟩` from `hA`. Take `⟨hBu, hBi⟩` from `hB`. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[cT_mul_reverse]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = antiJ L n := by rw [hAu, hBu]`. Rewrite using `[Matrix.mul_apply]`. Apply `Valuation.map_sum_le` to reduce the goal to its premises.
+
+Introduce `k _`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hAi i k) (hBi k j)`.
+-/
 theorem fIwasawa_Km_mul {A B : Matrix (Fin n) (Fin n) L} (hA : fIwasawaKm σ A) (hB : fIwasawaKm σ B) :
     fIwasawaKm σ (A * B) := by
   unfold fIwasawaKm fIwasawaUn fIwasawaInt at *
@@ -98,6 +140,11 @@ theorem fIwasawa_Km_mul {A B : Matrix (Fin n) (Fin n) L} (hA : fIwasawaKm σ A) 
     rw [map_mul]
     exact mul_le_one' (hAi i k) (hBi k j)
 
+/- English proof (translation)
+Unfold `fIwasawaKm fIwasawaUn fIwasawaInt`. Use `⟨by rw [cT_one_eq_one, Matrix.one_mul, Matrix.mul_one], fun i j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.one_apply_ne h, map_zero]`. Conclude with `zero_le'`.
+-/
 theorem fIwasawa_Km_one : fIwasawaKm σ (1 : Matrix (Fin n) (Fin n) L) := by
   unfold fIwasawaKm fIwasawaUn fIwasawaInt
   refine ⟨by rw [cT_one_eq_one, Matrix.one_mul, Matrix.mul_one], fun i j => ?_⟩
@@ -107,6 +154,17 @@ theorem fIwasawa_Km_one : fIwasawaKm σ (1 : Matrix (Fin n) (Fin n) L) := by
   · rw [Matrix.one_apply_ne h, map_zero]
     exact zero_le'
 
+/- English proof (translation)
+Unfold `fIwasawaKm at hA ⊢`. Take `⟨hAu, hAi⟩` from `hA`. Establish `hu` using `hAu`. Unfold `fIwasawaUn at hu`. Establish `hBA : fIwasawaInv σ A * A = 1`.
+
+Unfold `fIwasawaInv`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu, antiJ_mul_antiJ]`. Establish `hAB : A * fIwasawaInv σ A = 1` using `mul_eq_one_comm.mp hBA`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `fIwasawaUn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul_reverse]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = antiJ L n := by rw [hAB, cT_one_eq_one, Matrix.one_mul, Matrix.mul_one]`. Unfold `fIwasawaInt at hAi ⊢`. Introduce `i j`. Unfold `fIwasawaInv`. Rewrite using `[mul_antiJ_apply', antiJ_mul_apply', cT_apply_eq_sigma_transpose, hσv]`.
+
+Conclude with `hAi _ _`.
+-/
 theorem fIwasawa_Km_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {A : Matrix (Fin n) (Fin n) L}
     (hA : fIwasawaKm σ A) : fIwasawaKm σ (fIwasawaInv σ A) := by
   unfold fIwasawaKm at hA ⊢
@@ -133,6 +191,15 @@ theorem fIwasawa_Km_inv (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {A : Matrix
     rw [mul_antiJ_apply', antiJ_mul_apply', cT_apply_eq_sigma_transpose, hσv]
     exact hAi _ _
 
+/- English proof (translation)
+Unfold `fIwasawaUn at hM`. Establish `h` using `congrFun (congrFun hM a) b`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [mul_antiJ_apply', cT_apply_eq_sigma_transpose, antiJ_apply_adelic_iwasawa_hecke] at h`. Rewrite using `[h]`.
+
+Establish `ha` using `a.isLt`. Establish `hb` using `b.isLt`. Distinguish the cases in `hab : b = Fin.rev a`. Rewrite using `[if_pos, if_pos hab]`. Rewrite using `[hab, Fin.val_rev]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg, if_neg hab]`. Introduce `h'`. Apply `hab` to reduce the goal to its premises. Use `ext`.
+
+Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fIwasawa_gram_un (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (a b : Fin n) :
     ∑ j, σ (M (Fin.rev j) a) * M j b = if b = Fin.rev a then 1 else 0 := by
   unfold fIwasawaUn at hM
@@ -153,6 +220,21 @@ theorem fIwasawa_gram_un (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (
     rw [Fin.val_rev]
     omega
 
+/- English proof (translation)
+Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `s hsm hs`. Establish `key : ∀ b : Fin n, b ≤ Fin.rev s → σ (M s s) * M (Fin.rev s) b = if b = Fin.rev s then 1 else 0`. Introduce `b hb`.
+
+Rewrite using `[← fIwasawa_gram_un σ M hM s b, Finset.sum_eq_single (Fin.rev s)]`. Rewrite using `[Fin.rev_rev]`. Introduce `j _ hj`. Establish `hne : Fin.rev j ≠ s` using `fun h => hj (by rw [← h, Fin.rev_rev])`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Establish `hjs : (Fin.rev j).val < m`. Rewrite using `[← hsm]`. Conclude with `h`. Establish `hjr : (Fin.rev j).val < r` using `by omega`. Establish `hjb : b < Fin.rev (Fin.rev j)`.
+
+Use `b.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Use `s.isLt` as an intermediate fact. Rewrite using `[Fin.rev_rev]`. Rewrite `hb` using `[Fin.le_def, Fin.val_rev]`.
+
+Rewrite `h` using `[Fin.lt_def, Fin.val_rev]`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `(ih _ hjs (Fin.rev j) rfl hjr).2 b hjb`. Rewrite `h0` using `[Fin.rev_rev]`.
+
+Rewrite using `[h0, mul_zero]`. Rewrite using `[hT (Fin.rev j) s hs h, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h1` using `key (Fin.rev s) le_rfl`.
+
+Rewrite `h1` using `[if_pos rfl]`. Use `⟨h1, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h2` using `key b hb.le`. Rewrite `h2` using `[if_neg (ne_of_lt hb)]`. Conclude with `(mul_eq_zero.mp h2).resolve_left (left_ne_zero_of_mul_eq_one h1)`.
+-/
 private theorem sigma_diag_mul_rev_diag_and_rev_entries_zero (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r : ℕ)
     (hT : fIwasawaTri r M) (m : ℕ) : ∀ s : Fin n, s.val = m → s.val < r →
       σ (M s s) * M (Fin.rev s) (Fin.rev s) = 1 ∧
@@ -194,12 +276,20 @@ private theorem sigma_diag_mul_rev_diag_and_rev_entries_zero (M : Matrix (Fin n)
     rw [if_neg (ne_of_lt hb)] at h2
     exact (mul_eq_zero.mp h2).resolve_left (left_ne_zero_of_mul_eq_one h1)
 
+/- English proof (translation)
+Conclude with `sigma_diag_mul_rev_diag_and_rev_entries_zero σ M hM r hT s.val s rfl hs`.
+-/
 theorem fIwasawa_rows (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r : ℕ)
     (hT : fIwasawaTri r M) (s : Fin n) (hs : s.val < r) :
     σ (M s s) * M (Fin.rev s) (Fin.rev s) = 1 ∧
       ∀ b : Fin n, b < Fin.rev s → M (Fin.rev s) b = 0 := by
   exact sigma_diag_mul_rev_diag_and_rev_entries_zero σ M hM r hT s.val s rfl hs
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hi'` using `i.isLt`. Establish `hρ'` using `ρ.isLt`. Establish `hs : (Fin.rev i).val < r`. Rewrite using `[Fin.val_rev, ← hρr]`.
+
+Rewrite `hi` using `[Fin.lt_def, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `(fIwasawa_rows σ M hM r hT (Fin.rev i) hs).2 ρ (by rw [Fin.rev_rev]; exact lt_trans hρ hi)`. Rewrite `h` using `[Fin.rev_rev]`. Then use the resulting hypothesis.
+-/
 theorem fIwasawa_col_zero (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (r : ℕ)
     (hT : fIwasawaTri r M) (ρ : Fin n) (hρr : ρ.val = r) (hρ : ρ < Fin.rev ρ) :
     ∀ i, Fin.rev ρ < i → M i ρ = 0 := by
@@ -213,10 +303,22 @@ theorem fIwasawa_col_zero (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) 
   have h := (fIwasawa_rows σ M hM r hT (Fin.rev i) hs).2 ρ (by rw [Fin.rev_rev]; exact lt_trans hρ hi)
   rwa [Fin.rev_rev] at h
 
+/- English proof (translation)
+Rewrite using `[fIwasawa_gram_un σ M hM ρ ρ, if_neg (ne_of_lt hρ)]`.
+-/
 theorem fIwasawa_iso (M : Matrix (Fin n) (Fin n) L) (hM : fIwasawaUn σ M) (ρ : Fin n)
     (hρ : ρ < Fin.rev ρ) : ∑ j, σ (M (Fin.rev j) ρ) * M j ρ = 0 := by
   rw [fIwasawa_gram_un σ M hM ρ ρ, if_neg (ne_of_lt hρ)]
 
+/- English proof (translation)
+Establish `hρn` using `ρ.isLt`. Establish `han` using `a.isLt`. Distinguish the cases in `haρ : a = Fin.rev ρ`. Substitute `haρ` using the available equality. Use `⟨Equiv.swap ρ (Fin.rev ρ), Equiv.swap_apply_left _ _, fun i => ?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Establish `hin` using `i.isLt`. Simplify using `only [Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> fIwasawa_omega`. Establish `hin` using `i.isLt`. Simplify using `only [Equiv.swap_apply_def]`.
+
+Apply the tactic sequence `split_ifs <;> fIwasawa_omega`. Use `⟨Equiv.swap ρ a * Equiv.swap (Fin.rev ρ) (Fin.rev a), ?_, fun i => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [Equiv.Perm.mul_apply, Equiv.swap_apply_def] split_ifs <;> fIwasawa_omega`. Establish `hin` using `i.isLt`. Simplify using `only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]`.
+
+Apply the tactic sequence `split_ifs <;> fIwasawa_omega`. Establish `hin` using `i.isLt`. Simplify using `only [Equiv.Perm.mul_apply, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> fIwasawa_omega`.
+-/
 theorem fIwasawa_perm (ρ a : Fin n) (hρ : ρ < Fin.rev ρ) (ha1 : ρ ≤ a) (ha2 : a ≤ Fin.rev ρ)
     (haa : a ≠ Fin.rev a) :
     ∃ π : Equiv.Perm (Fin n), π ρ = a ∧ (∀ i, π (Fin.rev i) = Fin.rev (π i)) ∧

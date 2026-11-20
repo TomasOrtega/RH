@@ -22,6 +22,9 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `P` and use `UpperTheory.V.Lev.compatPSOf P P.ss`.
+-/
 theorem UpperTheory.V.Br.compatP :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Lev.CompatPS := fun P => UpperTheory.V.Lev.compatPSOf P P.ss
 

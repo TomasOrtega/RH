@@ -12,6 +12,11 @@ namespace GroundTheory.BlockD
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hS.exists_bound_of_continuousOn hf.continuousOn`. Take `⟨C', hC'⟩` from `hS.exists_bound_of_continuousOn (hf.inv₀ fun x => (hpos x).ne').continuousOn`. Use `⟨(max C' 1)⁻¹, max C 1, inv_pos.2 (lt_of_lt_of_le one_pos (le_max_right _ _)), lt_of_lt_of_le one_pos (le_max_right _ _), fun x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Apply `inv_le_of_inv_le₀ (hpos x)` to reduce the goal to its premises. Establish `h` using `hC' x hx`.
+
+Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `((le_abs_self _).trans h).trans (le_max_left _ _)`. Establish `h` using `hC x hx`. Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `((le_abs_self _).trans h).trans (le_max_left _ _)`.
+-/
 theorem exists_pos_bounds_of_isCompact {X : Type*} [TopologicalSpace X] {S : Set X} (hS : IsCompact S)
     {f : X → ℝ} (hf : Continuous f) (hpos : ∀ x, 0 < f x) :
     ∃ lo hi : ℝ, 0 < lo ∧ 0 < hi ∧ ∀ x ∈ S, lo ≤ f x ∧ f x ≤ hi := by
@@ -28,6 +33,9 @@ theorem exists_pos_bounds_of_isCompact {X : Type*} [TopologicalSpace X] {S : Set
     rw [Real.norm_eq_abs] at h
     exact ((le_abs_self _).trans h).trans (le_max_left _ _)
 
+/- English proof (translation)
+Break down `le_or_gt 1 x with h | h` into its components or cases. Conclude with `⟨(min_le_left _ _).trans h, ((le_self_pow₀ h hd).trans hB).trans (le_max_right _ _)⟩`. Conclude with `⟨(min_le_right _ _).trans (hA.trans (pow_le_of_le_one hx.le h.le hd)), h.le.trans (le_max_left _ _)⟩`.
+-/
 theorem mem_bounds_of_pow {x A B : ℝ} {d : ℕ} (hd : d ≠ 0) (hx : 0 < x) (hA : A ≤ x ^ d)
     (hB : x ^ d ≤ B) : min 1 A ≤ x ∧ x ≤ max 1 B := by
   rcases le_or_gt 1 x with h | h
@@ -37,6 +45,11 @@ theorem mem_bounds_of_pow {x A B : ℝ} {d : ℕ} (hd : d ≠ 0) (hx : 0 < x) (h
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[← coe_infiniteProj, infiniteProj_posIdele]`. Use `show InfinitePlace.Completion.extensionEmbedding w (posRealElem w (ρ ^ w.mult)) = _`. Unfold `posRealElem`. Use `split_ifs with hw`. Establish `hm : w.mult = 1` using `by simp [InfinitePlace.mult, hw]`.
+
+Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw, hm, pow_one, ← InfinitePlace.Completion.ringEquivRealOfIsReal_apply, RingEquiv.apply_symm_apply]`. Establish `hm : w.mult = 2` using `by simp [InfinitePlace.mult, hw]`. Rewrite using `[← InfinitePlace.Completion.ringEquivComplexOfIsComplex_apply (InfinitePlace.not_isReal_iff_isComplex.1 hw), RingEquiv.apply_symm_apply, hm, Real.sqrt_sq hρ.le]`.
+-/
 theorem extensionEmbedding_posIdele (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace K) :
     InfinitePlace.Completion.extensionEmbedding w (((posIdele ρ hρ : IdeleGroup K) : 𝔸[K]).1 w) =
       (ρ : ℂ) := by
@@ -52,6 +65,9 @@ theorem extensionEmbedding_posIdele (ρ : ℝ) (hρ : 0 < ρ) (w : InfinitePlace
       (InfinitePlace.not_isReal_iff_isComplex.1 hw), RingEquiv.apply_symm_apply, hm,
       Real.sqrt_sq hρ.le]
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[AdelicGLn.coe_det, IdeleGroup.coe_diagonal, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_diagonal_eq {n : ℕ} (γ : GL (Fin n) K) :
     AdelicGLn.det K n (AdelicGLn.diagonal K n γ) =
       IdeleGroup.diagonal K (Matrix.GeneralLinearGroup.det γ) := by
@@ -60,22 +76,34 @@ theorem det_diagonal_eq {n : ℕ} (γ : GL (Fin n) K) :
     RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[AdelicGLn.coe_det]`. Conclude with `g.2`.
+-/
 theorem det_toGL (g : Matrix.SpecialLinearGroup (Fin 2) 𝔸[K]) :
     AdelicGLn.det K 2 (Matrix.SpecialLinearGroup.toGL g) = 1 := by
   ext
   rw [AdelicGLn.coe_det]
   exact g.2
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[AdelicGLn.coe_det, coe_diagUnits, det_diagonal, Fin.prod_univ_two, Units.val_mul]`.
+-/
 theorem det_diagUnits_two (f : Fin 2 → IdeleGroup K) :
     AdelicGLn.det K 2 (diagUnits 2 f) = f 0 * f 1 := by
   ext
   rw [AdelicGLn.coe_det, coe_diagUnits, det_diagonal, Fin.prod_univ_two, Units.val_mul]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem posIdele_congr {ρ ρ' : ℝ} (hρ : 0 < ρ) (hρ' : 0 < ρ') (h : ρ = ρ') :
     (posIdele ρ hρ : IdeleGroup K) = posIdele ρ' hρ' := by
   subst h
   rfl
 
+/- English proof (translation)
+Establish `h` using `map_mul (posIdeleHom K) ⟨ρ, hρ⟩ ⟨ρ', hρ'⟩`. Rewrite `h` using `[posIdeleHom_apply, posIdeleHom_apply, posIdeleHom_apply]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem posIdele_mul {ρ ρ' : ℝ} (hρ : 0 < ρ) (hρ' : 0 < ρ') :
     (posIdele ρ hρ : IdeleGroup K) * posIdele ρ' hρ' = posIdele (ρ * ρ') (mul_pos hρ hρ') := by
   have h := map_mul (posIdeleHom K) ⟨ρ, hρ⟩ ⟨ρ', hρ'⟩
@@ -83,11 +111,17 @@ theorem posIdele_mul {ρ ρ' : ℝ} (hρ : 0 < ρ) (hρ' : 0 < ρ') :
   rw [← h]
   rfl
 
+/- English proof (translation)
+Establish `h` using `map_one (posIdeleHom K)`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem posIdele_one : (posIdele 1 one_pos : IdeleGroup K) = 1 := by
   have h := map_one (posIdeleHom K)
   rw [← h]
   rfl
 
+/- English proof (translation)
+Use `Prod.ext rfl ?_` and prove the remaining obligations. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `(posIdele_finite ρ hρ v).symm`.
+-/
 theorem adeleOfParts_posIdele {F : Type} [Field F] [NumberField F] (ρ : ℝ) (hρ : 0 < ρ) :
     Formalism.D.adeleOfParts F (((posIdele ρ hρ : IdeleGroup F) : 𝔸[F]).1) 1 =
       ((posIdele ρ hρ : IdeleGroup F) : 𝔸[F]) := by
@@ -96,6 +130,77 @@ theorem adeleOfParts_posIdele {F : Type} [Field F] [NumberField F] (ρ : ℝ) (h
   intro v
   exact (posIdele_finite ρ hρ v).symm
 
+/- English proof (translation)
+Introduce `F _ _`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := F) 2`. Use `set d : ℕ := Module.finrank ℚ F with hd_def`. Establish `hd : d ≠ 0` using `Module.finrank_pos.ne'`. Set `fdet : AdelicGLn.AdelicGL F 2 → ℝ` to `fun h => (ideleModule F (AdelicGLn.det F 2 h) : ℝ)`.
+
+Establish `hfdet : Continuous fdet` using `continuous_subtype_val.comp ((continuous_ideleModule (K := F)).comp (AdelicGLn.continuous_det F 2))`. Establish `hfpos : ∀ h, 0 < fdet h` using `fun h => (ideleModule F (AdelicGLn.det F 2 h)).2`. Take `⟨lb, ub, hlb, hub, hbnd⟩` from `exists_pos_bounds_of_isCompact hω hfdet hfpos`. Take `⟨lk, uk, hlk, huk, hknd⟩` from `exists_pos_bounds_of_isCompact (isCompact_maxCompact (K := F) (n := 2)) hfdet hfpos`. Use `set L : ℝ := √(min 1 (ub * uk)⁻¹) with hL`.
+
+Use `set U : ℝ := √(max 1 (lb * lk)⁻¹) with hU`. Set `SZ : Set {r : ℝ // 0 < r}` to `{s | L ≤ s.1 ∧ s.1 ≤ U}`. Establish `hLpos : 0 < L` using `Real.sqrt_pos.2 (lt_min one_pos (inv_pos.2 (mul_pos hub huk)))`. Establish `hSZ : IsCompact SZ`. Rewrite using `[Topology.IsEmbedding.subtypeVal.isCompact_iff]`.
+
+Use `(isCompact_Icc : IsCompact (Set.Icc L U)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `hs`.
+
+Introduce `hx`. Conclude with `⟨⟨x, hLpos.trans_le hx.1⟩, hx, rfl⟩`. Set `zA : {r : ℝ // 0 < r} → 𝔸[F]` to `fun s => ((posIdeleHom F s : IdeleGroup F) : 𝔸[F])`. Set `zAi : {r : ℝ // 0 < r} → 𝔸[F]` to `fun s => (((posIdeleHom F s)⁻¹ : IdeleGroup F) : 𝔸[F])`. Set `kap : AdelicGLn.AdelicGL F 2 → 𝔸[F]` to `fun k => ((AdelicGLn.det F 2 k : IdeleGroup F) : 𝔸[F])`.
+
+Set `kapi : AdelicGLn.AdelicGL F 2 → 𝔸[F]` to `fun k => (((AdelicGLn.det F 2 k)⁻¹ : IdeleGroup F) : 𝔸[F])`. Establish `hzA : Continuous zA` using `Units.continuous_val.comp continuous_posIdeleHom`. Establish `hzAi : Continuous zAi` using `Units.continuous_coe_inv.comp continuous_posIdeleHom`. Establish `hkap : Continuous kap` using `Units.continuous_val.comp (AdelicGLn.continuous_det F 2)`. Establish `hkapi : Continuous kapi` using `Units.continuous_coe_inv.comp (AdelicGLn.continuous_det F 2)`.
+
+Set `Φ : AdelicGLn.AdelicGL F 2 × {r : ℝ // 0 < r} × AdelicGLn.AdelicGL F 2 → Matrix (Fin 2) (Fin 2) 𝔸[F]` to `fun q => !![(q.1 : Matrix (Fin 2) (Fin 2) 𝔸[F]) 0 0 * zA q.2.1, (q.1 : Matrix (Fin 2) (Fin 2) 𝔸[F]) 0 1 * zA q.2.1 * kap q.2.2; 0, ((q.1⁻¹ : AdelicGLn.AdelicGL F 2) : Matrix (Fin 2) (Fin 2) 𝔸[F]) 0 0 * zAi q.2.1]`. Set `Ψ : AdelicGLn.AdelicGL F 2 → Matrix (Fin 2) (Fin 2) 𝔸[F]` to `fun k => !![1, 0; 0, kapi k] * (k : Matrix (Fin 2) (Fin 2) 𝔸[F])`. Establish `hB : ∀ i j, Continuous fun h : AdelicGLn.AdelicGL F 2 => (h : Matrix (Fin 2) (Fin 2) 𝔸[F]) i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `hBi : ∀ i j, Continuous fun h : AdelicGLn.AdelicGL F 2 => ((h⁻¹ : AdelicGLn.AdelicGL F 2) : Matrix (Fin 2) (Fin 2) 𝔸[F]) i j` using `fun i j => Units.continuous_coe_inv.matrix_elem i j`. Establish `hΦ : Continuous Φ`.
+
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `((hB 0 0).comp continuous_fst).mul (hzA.comp (continuous_fst.comp continuous_snd))`. Conclude with `(((hB 0 1).comp continuous_fst).mul (hzA.comp (continuous_fst.comp continuous_snd))).mul (hkap.comp (continuous_snd.comp continuous_snd))`. Conclude with `continuous_const`.
+
+Conclude with `((hBi 0 0).comp continuous_fst).mul (hzAi.comp (continuous_fst.comp continuous_snd))`. Establish `hΨ : Continuous Ψ`. Use `Continuous.matrix_mul ?_ Units.continuous_val` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `hkapi`. Use `⟨Subtype.val ⁻¹' (Φ '' (ω ×ˢ SZ ×ˢ ((maxCompact (K := F) (n := 2) : Subgroup _) : Set (AdelicGLn.AdelicGL F 2)))), Subtype.val ⁻¹' (Ψ '' ((maxCompact (K := F) (n := 2) : Subgroup _) : Set (AdelicGLn.AdelicGL F 2))), √t, ?_, ?_, ?_, Real.sqrt_pos.2 ht, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Matrix.SpecialLinearGroup.isClosedEmbedding_val.isCompact_preimage ((hω.prod (hSZ.prod isCompact_maxCompact)).image hΦ)`. Introduce and unpack `p ⟨q, -, hq⟩`. Rewrite using `[← hq]`. Simplify using `[Φ]`. Conclude with `Matrix.SpecialLinearGroup.isClosedEmbedding_val.isCompact_preimage (isCompact_maxCompact.image hΨ)`.
+
+Introduce `g`. Take `⟨γ, b, hbω, a, ⟨r, hr, hrt, rfl⟩, k, hkK, heq⟩` from `hsieg (Matrix.SpecialLinearGroup.toGL g)`. Establish `hrt' : t * r 1 ≤ r 0` using `hrt 0 1 rfl`. Establish `hdetGL` using `congrArg (AdelicGLn.det F 2) heq`. Rewrite `hdetGL` using `[map_mul, map_mul, map_mul, det_diagonal_eq, det_toGL, mul_one, det_diagUnits_two]`.
+
+Establish `hmod` using `congrArg (fun x : IdeleGroup F => (ideleModule F x : ℝ)) hdetGL`. Simplify using `only [map_mul, Positive.val_mul, ideleModule_diagonal, ideleModule_posIdele, Positive.val_one] at hmod`. Establish `hb'` using `hbnd b hbω`. Establish `hk'` using `hknd k hkK`. Simplify using `only [fdet] at hb' hk'`.
+
+Use `set mb : ℝ := ((ideleModule F (AdelicGLn.det F 2 b) : {r : ℝ // 0 < r}) : ℝ) with hmb`. Use `set mk : ℝ := ((ideleModule F (AdelicGLn.det F 2 k) : {r : ℝ // 0 < r}) : ℝ) with hmk`. Establish `hmbpos : 0 < mb` using `(ideleModule F (AdelicGLn.det F 2 b)).2`. Establish `hmkpos : 0 < mk` using `(ideleModule F (AdelicGLn.det F 2 k)).2`. Establish `hxpos : 0 < r 0 * r 1` using `mul_pos (hr 0) (hr 1)`.
+
+Rewrite `hmod` using `[← hd_def]`. Establish `hxd : (r 0 * r 1) ^ d = (mb * mk)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Take the linear combination `-hmod`.
+
+Establish `hxb` using `mem_bounds_of_pow hd hxpos (hxd ▸ inv_anti₀ (mul_pos hmbpos hmkpos) (mul_le_mul hb'.2 hk'.2 hmkpos.le hub.le)) (hxd ▸ inv_anti₀ (mul_pos hlb hlk) (mul_le_mul hb'.1 hk'.1 hlk.le hmbpos.le))`. Use `set ρ : ℝ := √(r 0 * r 1) with hρdef`. Establish `hρ : 0 < ρ` using `Real.sqrt_pos.2 hxpos`. Establish `hLρ : L ≤ ρ` using `Real.sqrt_le_sqrt hxb.1`. Establish `hρU : ρ ≤ U` using `Real.sqrt_le_sqrt hxb.2`.
+
+Use `set s : ℝ := √(r 0 / r 1) with hsdef`. Establish `hs : 0 < s` using `Real.sqrt_pos.2 (div_pos (hr 0) (hr 1))`. Establish `hs' : 0 < s⁻¹` using `inv_pos.2 hs`. Establish `hts : √t ≤ s` using `Real.sqrt_le_sqrt ((le_div_iff₀ (hr 1)).2 hrt')`. Establish `hρs : ρ * s = r 0`.
+
+Rewrite using `[hρdef, hsdef, ← Real.sqrt_mul hxpos.le, show r 0 * r 1 * (r 0 / r 1) = r 0 ^ 2 by`. Clear denominators, using `[(hr 1).ne']]` for the nonvanishing conditions. Conclude with `Real.sqrt_sq (hr 0).le`. Establish `hρs' : ρ * s⁻¹ = r 1`. Rewrite using `[hρdef, hsdef, ← Real.sqrt_inv, ← Real.sqrt_mul hxpos.le, show r 0 * r 1 * (r 0 / r 1)⁻¹ = r 1 ^ 2 by`.
+
+Clear denominators, using `[(hr 1).ne', (hr 0).ne']]` for the nonvanishing conditions. Conclude with `Real.sqrt_sq (hr 1).le`. Establish `e0 : (posIdele (r 0) (hr 0) : IdeleGroup F) = posIdele ρ hρ * posIdele s hs`. Rewrite using `[posIdele_mul]`. Conclude with `posIdele_congr _ _ hρs.symm`.
+
+Establish `e1 : (posIdele (r 1) (hr 1) : IdeleGroup F) = posIdele ρ hρ * posIdele s⁻¹ hs'`. Rewrite using `[posIdele_mul]`. Conclude with `posIdele_congr _ _ hρs'.symm`. Establish `e2 : (posIdele s hs : IdeleGroup F) * posIdele s⁻¹ hs' = 1`. Rewrite using `[posIdele_mul, ← posIdele_one]`.
+
+Conclude with `posIdele_congr _ _ (mul_inv_cancel₀ hs.ne')`. Use `set B : Matrix (Fin 2) (Fin 2) 𝔸[F] := (b : Matrix (Fin 2) (Fin 2) 𝔸[F]) with hBdef`. Use `set Bi : Matrix (Fin 2) (Fin 2) 𝔸[F] := ((b⁻¹ : AdelicGLn.AdelicGL F 2) : Matrix (Fin 2) (Fin 2) 𝔸[F]) with hBidef`. Establish `hb10 : B 1 0 = 0` using `(hωB hbω : (b : Matrix (Fin 2) (Fin 2) 𝔸[F]).IsUpperTriangular) (show (0 : Fin 2) < 1 by decide)`. Establish `hbinv : Bi 0 0 * B 0 0 = 1`.
+
+Establish `h` using `congrArg (fun h : AdelicGLn.AdelicGL F 2 => (h : Matrix (Fin 2) (Fin 2) 𝔸[F]) 0 0) (inv_mul_cancel b)`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two, Units.val_one, Matrix.one_apply_eq] at h`. Rewrite `h` using `[← hBdef, ← hBidef, hb10, mul_zero, add_zero]`. Conclude with `h`. Use `set z : 𝔸[F] := ((posIdele ρ hρ : IdeleGroup F) : 𝔸[F]) with hzdef`.
+
+Use `set zi : 𝔸[F] := (((posIdele ρ hρ)⁻¹ : IdeleGroup F) : 𝔸[F]) with hzidef`. Establish `hz : z * zi = 1` using `Units.mul_inv _`. Use `set σ : 𝔸[F] := ((posIdele s hs : IdeleGroup F) : 𝔸[F]) with hσdef`. Use `set σ' : 𝔸[F] := ((posIdele s⁻¹ hs' : IdeleGroup F) : 𝔸[F]) with hσ'def`. Establish `hσ : σ * σ' = 1` using `by rw [hσdef, hσ'def, ← Units.val_mul, e2, Units.val_one]`.
+
+Use `set κ : 𝔸[F] := ((AdelicGLn.det F 2 k : IdeleGroup F) : 𝔸[F]) with hκdef`. Use `set κi : 𝔸[F] := (((AdelicGLn.det F 2 k)⁻¹ : IdeleGroup F) : 𝔸[F]) with hκidef`. Establish `hκ : κ * κi = 1` using `Units.mul_inv _`. Use `set δ : F := (γ : Matrix (Fin 2) (Fin 2) F).det with hδdef`. Establish `hδ : δ ≠ 0`.
+
+Rewrite using `[hδdef, ← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.ne_zero _`. Establish `hdetA : algebraMap F 𝔸[F] δ = B 0 0 * B 1 1 * (z * σ * (z * σ')) * κ`. Establish `h` using `congrArg Units.val hdetGL`. Rewrite `h` using `[e0, e1, Units.val_mul, Units.val_mul, Units.val_mul, Units.val_mul, Units.val_mul, IdeleGroup.coe_diagonal, AdelicGLn.coe_det, Matrix.det_fin_two, Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Rewrite `h` using `[← hBdef, hb10, mul_zero, sub_zero]`. Conclude with `h`. Establish `heqM : (γ : Matrix (Fin 2) (Fin 2) F).map (algebraMap F 𝔸[F]) * (g : Matrix (Fin 2) (Fin 2) 𝔸[F]) = B * Matrix.diagonal ![z * σ, z * σ'] * (k : Matrix (Fin 2) (Fin 2) 𝔸[F])`. Establish `h` using `congrArg (fun h : AdelicGLn.AdelicGL F 2 => (h : Matrix (Fin 2) (Fin 2) 𝔸[F])) heq`. Simplify using `only [Units.val_mul, coe_diagUnits] at h`.
+
+Establish `hd2 : (fun i => ((posIdele (r i) (hr i) : IdeleGroup F) : 𝔸[F])) = ![z * σ, z * σ']`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `[e0, hzdef, hσdef]`. Simplify using `[e1, hzdef, hσ'def]`.
+
+Rewrite `h` using `[hd2]`. Conclude with `h`. Establish `he : algebraMap F 𝔸[F] δ⁻¹ * algebraMap F 𝔸[F] δ = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hδ, map_one]`. Establish `hX : Matrix.diagonal ![1, algebraMap F 𝔸[F] δ⁻¹] * (B * Matrix.diagonal ![z * σ, z * σ']) = !![B 0 0 * z, B 0 1 * z * κ; 0, Bi 0 0 * zi] * !![σ, 0; 0, σ'] * !![1, 0; 0, κi]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Take the linear combination `(-(B 0 1 * z * σ')) * hκ`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hb10]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `h1 : algebraMap F 𝔸[F] δ⁻¹ * B 1 1 * z * σ' * (B 0 0 * z * σ * κ) = 1`. Take the linear combination `(-(algebraMap F 𝔸[F] δ⁻¹)) * hdetA + he`.
+
+Establish `h2 : Bi 0 0 * zi * σ' * κi * (B 0 0 * z * σ * κ) = 1`. Take the linear combination `(z * zi * (σ * σ') * (κ * κi)) * hbinv + (σ * σ' * (κ * κi)) * hz + (κ * κi) * hσ + hκ`. Take the linear combination `(Bi 0 0 * zi * σ' * κi) * h1 - (algebraMap F 𝔸[F] δ⁻¹ * B 1 1 * z * σ') * h2`. Set `γ' : Matrix.SpecialLinearGroup (Fin 2) F` to `⟨Matrix.diagonal ![1, δ⁻¹] * (γ : Matrix (Fin 2) (Fin 2) F), by`. Rewrite using `[Matrix.det_mul, Matrix.det_diagonal, Fin.prod_univ_two, ← hδdef]`.
+
+Simplify using `[hδ]⟩`. Establish `hdetP : (Φ (b, ⟨ρ, hρ⟩, k)).det = 1` using `by show (!![B 0 0 * z, B 0 1 * z * κ; 0, Bi 0 0 * zi] : Matrix (Fin 2) (Fin 2) 𝔸[F]).det = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `(z * zi) * hbinv + hz`. Establish `hdetK : (Ψ k).det = 1` using `by show (!![1, 0; 0, κi] * (k : Matrix (Fin 2) (Fin 2) 𝔸[F])).det = 1`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_fin_two_of, ← AdelicGLn.coe_det]`. Take the linear combination `hκ`. Use `⟨Matrix.SpecialLinearGroup.map (algebraMap F 𝔸[F]) γ', ⟨γ', rfl⟩, ⟨Φ (b, ⟨ρ, hρ⟩, k), hdetP⟩, ⟨(b, ⟨ρ, hρ⟩, k), ⟨hbω, ⟨hLρ, hρU⟩, hkK⟩, rfl⟩, s, hts, ((posIdele s hs : IdeleGroup F) : 𝔸[F]).1, ((posIdele s⁻¹ hs' : IdeleGroup F) : 𝔸[F]).1, fun w => ⟨congrArg (fun x : 𝔸[F] => x.1 w …` and prove the remaining obligations. Rewrite using `[adeleOfParts_posIdele, adeleOfParts_posIdele, ← hσdef, ← hσ'def, Matrix.SpecialLinearGroup.coe_mul]`. Use `show ((Matrix.diagonal ![1, δ⁻¹] * (γ : Matrix (Fin 2) (Fin 2) F)).map (algebraMap F 𝔸[F])) * (g : Matrix (Fin 2) (Fin 2) 𝔸[F]) = !![B 0 0 * z, B 0 1 * z * κ; 0, Bi 0 0 * zi] * !![σ, 0; 0, σ'] * (!![1, 0; 0, κi] * (k : Matrix (Fin 2) (Fin 2) 𝔸[F]))`.
+
+Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, heqM, Matrix.diagonal_map (map_zero _), ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Establish `hdiag : (Matrix.diagonal fun m => algebraMap F 𝔸[F] (![1, δ⁻¹] m)) = Matrix.diagonal ![1, algebraMap F 𝔸[F] δ⁻¹]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Apply the tactic sequence `fin_cases m <;> simp`.
+
+Rewrite using `[hdiag, Matrix.mul_assoc (Matrix.diagonal ![1, algebraMap F 𝔸[F] δ⁻¹]) B, hX]`.
+-/
 theorem siegelSetsSL2Adelic_holds : Formalism.D.siegelSetsSL2Adelic := by
   intro F _ _
   classical

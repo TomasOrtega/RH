@@ -13,15 +13,27 @@ section Dual
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases b with b | b <;> simp [epsB, sameBlock]`.
+-/
 theorem epsB_mul (a c b : Ix p q) : epsB a c * epsB c b = epsB a b := by
   rcases a with a | a <;> rcases c with c | c <;> rcases b with b | b <;> simp [epsB, sameBlock]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [epsB, sameBlock]`.
+-/
 theorem epsB_symm (a b : Ix p q) : epsB a b = epsB b a := by
   rcases a with a | a <;> rcases b with b | b <;> simp [epsB, sameBlock]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> simp [epsB, sameBlock]`.
+-/
 theorem epsB_self (a : Ix p q) : epsB a a = 1 := by
   rcases a with a | a <;> simp [epsB, sameBlock]
 
+/- English proof (translation)
+Unfold `epsB`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem epsB_conj (a b : Ix p q) : (starRingEnd ℂ) (epsB a b) = epsB a b := by
   unfold epsB
   split_ifs <;> simp
@@ -35,6 +47,9 @@ def thetaM (p q : ℕ) : Mat p q →ₗ[ℂ] Mat p q where
     ext a b
     simp [mul_left_comm]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [thetaM, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← epsB_mul a c b]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaM_mul (Z W : Mat p q) : thetaM p q (Z * W) = thetaM p q W * thetaM p q Z := by
   ext a b
   simp only [thetaM, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Matrix.mul_apply, Finset.mul_sum]
@@ -42,6 +57,11 @@ theorem thetaM_mul (Z W : Mat p q) : thetaM p q (Z * W) = thetaM p q W * thetaM 
   rw [← epsB_mul a c b]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [thetaM, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Eab, Matrix.single_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `by_cases h1 : a = j <;> by_cases h2 : b = i`. Substitute `h1 h2` using the available equality. Simplify using `[epsB_symm a b]`.
+
+Apply the tactic sequence `all_goals simp [h1, h2]`.
+-/
 theorem thetaM_Eab (a b : Ix p q) : thetaM p q (Eab a b) = epsB a b • Eab b a := by
   ext i j
   simp only [thetaM, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply, Eab, Matrix.single_apply, Matrix.smul_apply, smul_eq_mul]
@@ -50,6 +70,11 @@ theorem thetaM_Eab (a b : Ix p q) : thetaM p q (Eab a b) = epsB a b • Eab b a 
     simp [epsB_symm a b]
   all_goals simp [h1, h2]
 
+/- English proof (translation)
+Simplify using `[Eab, Matrix.trace, Matrix.single_apply, Matrix.diag]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Finset.filter_eq]`. Rewrite using `[Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+
+Introduce and unpack `x - ⟨h1, h2⟩`. Conclude with `h (h1.trans h2.symm)`.
+-/
 theorem trace_Eab (a b : Ix p q) : (Eab a b).trace = if a = b then 1 else 0 := by
   simp [Eab, Matrix.trace, Matrix.single_apply, Matrix.diag]
   split_ifs with h
@@ -63,16 +88,25 @@ def dualAct {B : Type} [AddCommGroup B] [Module ℂ B] (ρ : Mat p q →ₗ[ℂ]
     Mat p q →ₗ[ℂ] Module.End ℂ B :=
   (c • Matrix.traceLinearMap (Ix p q) ℂ ℂ).smulRight 1 - ρ ∘ₗ thetaM p q
 
+/- English proof (translation)
+Simplify using `[dualAct]`.
+-/
 theorem dualAct_eq {B : Type} [AddCommGroup B] [Module ℂ B] (ρ : Mat p q →ₗ[ℂ] Module.End ℂ B) (c : ℂ)
     (Z : Mat p q) : dualAct ρ c Z = (c * Z.trace) • (1 : Module.End ℂ B) - ρ (thetaM p q Z) := by
   simp [dualAct]
 
+/- English proof (translation)
+Rewrite using `[dualAct_eq, trace_Eab, thetaM_Eab]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem dualAct_Eab {B : Type} [AddCommGroup B] [Module ℂ B] (ρ : Mat p q →ₗ[ℂ] Module.End ℂ B) (c : ℂ)
     (a b : Ix p q) (v : B) :
     dualAct ρ c (Eab a b) v = (if a = b then c else 0) • v - epsB a b • ρ (Eab b a) v := by
   rw [dualAct_eq, trace_Eab, thetaM_Eab]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `X Y`. Rewrite using `[dualAct_eq, dualAct_eq, dualAct_eq, map_sub, thetaM_mul, thetaM_mul, Matrix.trace_sub, Matrix.trace_mul_comm X Y, sub_self, mul_zero, zero_smul, zero_sub, map_sub, neg_sub, ← map_sub, ← h (thetaM p q X) (thetaM p q Y)]`. Simplify using `only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul, smul_sub]`. Rewrite using `[mul_comm (c * Y.trace) (c * X.trace)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dualAct_lie {B : Type} [AddCommGroup B] [Module ℂ B] {ρ : Mat p q →ₗ[ℂ] Module.End ℂ B}
     (h : IsLie ρ) (c : ℂ) : IsLie (dualAct ρ c) := by
   intro X Y
@@ -81,6 +115,11 @@ theorem dualAct_lie {B : Type} [AddCommGroup B] [Module ℂ B] {ρ : Mat p q →
   rw [mul_comm (c * Y.trace) (c * X.trace)]
   abel
 
+/- English proof (translation)
+Introduce `a b u v`. Rewrite using `[dualAct_Eab, dualAct_Eab, inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_left, inner_smul_right, inner_smul_right, h, epsB_conj, mul_sub, ← mul_assoc, ← mul_assoc, epsB_mul, epsB_self, one_mul]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[epsB_self]`.
+
+Simplify using `[hab, Ne.symm hab]`.
+-/
 theorem dualAct_adj {B : Type} [NormedAddCommGroup B] [InnerProductSpace ℂ B]
     {ρ : Mat p q →ₗ[ℂ] Module.End ℂ B} (h : AdjG ρ) (c0 : ℚ) : AdjG (dualAct ρ (c0 : ℂ)) := by
   intro a b u v
@@ -98,21 +137,41 @@ variable {p q r s : ℕ}
 
 def cjP (P : Pol p q r s) : Pol p q r s := MvPolynomial.map (starRingEnd ℂ) P
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem cjP_add (P Q : Pol p q r s) : cjP (P + Q) = cjP P + cjP Q := map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 theorem cjP_sub (P Q : Pol p q r s) : cjP (P - Q) = cjP P - cjP Q := map_sub _ _ _
 
+/- English proof (translation)
+Simplify using `[cjP, MvPolynomial.smul_eq_C_mul]`.
+-/
 theorem cjP_smul (t : ℂ) (P : Pol p q r s) : cjP (t • P) = (starRingEnd ℂ) t • cjP P := by
   simp [cjP, MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Unfold `lowB`. Apply the tactic sequence `split_ifs <;> simp [cjP, MvPolynomial.pderiv_map]`.
+-/
 theorem cjP_lowB (l : Ln p q r s) (P : Pol p q r s) : cjP (lowB l P) = lowB l (cjP P) := by
   unfold lowB
   split_ifs <;> simp [cjP, MvPolynomial.pderiv_map]
 
+/- English proof (translation)
+Unfold `raiB`. Apply the tactic sequence `split_ifs <;> simp [cjP, MvPolynomial.pderiv_map]`.
+-/
 theorem cjP_raiB (l : Ln p q r s) (P : Pol p q r s) : cjP (raiB l P) = raiB l (cjP P) := by
   unfold raiB
   split_ifs <;> simp [cjP, MvPolynomial.pderiv_map]
 
+/- English proof (translation)
+Unfold `omE`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, cjP_add, cjP_raiB, cjP_lowB]`. Use `split_ifs`. Simplify using `only [LinearMap.smul_apply, cjP_smul, Module.End.one_apply]`. Use `congr 2`.
+
+Rewrite using `[map_div₀, map_one, Complex.conj_ofNat]`. Simplify using `[cjP]`.
+-/
 theorem cjP_omE (l l' : Ln p q r s) (P : Pol p q r s) : cjP (omE l l' P) = omE l l' (cjP P) := by
   unfold omE
   simp only [LinearMap.add_apply, Module.End.mul_apply, cjP_add, cjP_raiB, cjP_lowB]
@@ -122,6 +181,13 @@ theorem cjP_omE (l l' : Ln p q r s) (P : Pol p q r s) : cjP (omE l l' P) = omE l
     rw [map_div₀, map_one, Complex.conj_ofNat]
   · simp [cjP]
 
+/- English proof (translation)
+Rewrite using `[PI.FHS.fockAct1_eq, PI.FHS.omAct_apply, PI.FHS.omAct_apply]`. Use `show MvPolynomial.map _ _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cjP _ = _`. Rewrite using `[cjP_smul, cjP_omE]`. Use `congr 1`. Simplify using `only [Matrix.kroneckerMap_apply, Eab, Matrix.single_apply, Matrix.one_apply, map_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem conj_first_action_comm (a b : Ix p q) (P : Pol p q r s) :
     cjP (fockAct1 p q r s (Eab a b) P) = fockAct1 p q r s (Eab a b) (cjP P) := by
   rw [PI.FHS.fockAct1_eq, PI.FHS.omAct_apply, PI.FHS.omAct_apply]
@@ -136,12 +202,20 @@ theorem conj_first_action_comm (a b : Ix p q) (P : Pol p q r s) :
   simp only [Matrix.kroneckerMap_apply, Eab, Matrix.single_apply, Matrix.one_apply, map_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, PI.FHS.fockInner_add_left, PI.FHS.fockInner_neg_left, sub_eq_add_neg]`.
+-/
 theorem fockInner_sub_left' (P P' Q : Pol p q r s) :
     fockInner (P - P') Q = fockInner P Q - fockInner P' Q := by
   rw [sub_eq_add_neg, PI.FHS.fockInner_add_left, PI.FHS.fockInner_neg_left, sub_eq_add_neg]
 
 end Conj
 
+/- English proof (translation)
+Proceed by induction on `Z using Matrix.induction_on' with`. Consider the case `h_zero`. Simplify using `[cjP, PI.FHS.fockInner_zero_left, PI.FHS.fockInner_zero_right]`. Consider the case `h_add A B hA hB`. Rewrite using `[map_add, map_add, LinearMap.add_apply, cjP_add, PI.FHS.fockInner_add_left, hA, hB, map_add, LinearMap.add_apply, PI.FHS.fockInner_add_right]`.
+
+Consider the case `h_std_basis i j t`. Establish `hE : Matrix.single i j t = t • Eab i j`. Simplify using `[Eab, Matrix.smul_single]`. Simplify using `only [hE, map_smul, LinearMap.smul_apply, cjP_smul, PI.FHS.fockInner_smul_left, PI.FHS.fockInner_smul_right, Complex.conj_conj, thetaM_Eab, conj_first_action_comm, epsB_conj, fock_inner_adjoint_first]`. Rewrite using `[← mul_assoc (epsB i j), epsB_mul, epsB_self, one_mul]`.
+-/
 private theorem fockInner_cjP_fockAct1_thetaM_adjoint {p q r s : ℕ} (Z : Mat p q) (w v : Pol p q r s) :
     fockInner (cjP (fockAct1 p q r s (thetaM p q Z) w)) v = fockInner (cjP w) (fockAct1 p q r s Z v) := by
   induction Z using Matrix.induction_on' with
@@ -157,6 +231,33 @@ private theorem fockInner_cjP_fockAct1_thetaM_adjoint {p q r s : ℕ} (Z : Mat p
       PI.FHS.fockInner_smul_right, Complex.conj_conj, thetaM_Eab, conj_first_action_comm, epsB_conj, fock_inner_adjoint_first]
     rw [← mul_assoc (epsB i j), epsB_mul, epsB_self, one_mul]
 
+/- English proof (translation)
+Take `⟨lam, x, y, dx, hx0, hy0, hxh, hxw, hxl, hyw, hyl⟩` from `h`. Substitute `hc` using the available equality. Establish `hsb : ∀ a : Ix p q, sameBlock a a`. Introduce `a`. Apply the tactic sequence `rcases a with a | a <;> simp [sameBlock]`.
+
+Establish `hsym : ∀ a b : Ix p q, sameBlock a b → sameBlock b a`. Introduce `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [sameBlock]`. Establish `hlam : ∀ a, (starRingEnd ℂ) (lam a) = lam a`. Introduce `a`.
+
+Establish `h1` using `fock_inner_adjoint_first a a x x`. Rewrite `h1` using `[hxw a a (hsb a), if_pos rfl, epsB_self, one_mul, PI.FHS.fockInner_smul_left, PI.FHS.fockInner_smul_right]`. Establish `hne : fockInner x x ≠ 0` using `fun h0 => hx0 (PI.FHS.fockInner_self_eq_zero h0)`. Conclude with `mul_right_cancel₀ hne h1`. Use `set ρB := dualAct (fvAct1 p q 0 s) (c0 : ℂ) with hρB`.
+
+Establish `hyw' : ∀ a b, sameBlock a b → ρB (Eab a b) (cjP y : FV p q 0 s) = (if a = b then lam a else 0) • (cjP y : FV p q 0 s)`. Introduce `a b hab`. Rewrite using `[hρB]`. Use `(dualAct_Eab (fvAct1 p q 0 s) (c0 : ℂ) a b (cjP y)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if a = b then (c0 : ℂ) else 0) • cjP y - epsB a b • fockAct1 p q 0 s (Eab b a) (cjP y) = (if a = b then lam a else 0) • cjP y`.
+
+Rewrite using `[← conj_first_action_comm, hyw b a (hsym a b hab)]`. Distinguish the cases in `hab' : a = b`. Substitute `hab'` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, if_pos rfl, cjP_smul, epsB_self, one_smul, map_sub, hlam, map_ratCast, sub_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[if_neg hab', if_neg hab', if_neg (Ne.symm hab'), zero_smul, zero_smul]`. Simplify using `[cjP]`. Establish `hyl' : ∀ (i : Fin p) (j : Fin q), ρB (Eab (Sum.inr j) (Sum.inl i)) (cjP y : FV p q 0 s) = 0`. Introduce `i j`. Rewrite using `[hρB]`.
+
+Use `(dualAct_Eab (fvAct1 p q 0 s) (c0 : ℂ) _ _ (cjP y)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if (Sum.inr j : Ix p q) = Sum.inl i then (c0 : ℂ) else 0) • cjP y - epsB (Sum.inr j) (Sum.inl i) • fockAct1 p q 0 s (Eab (Sum.inl i) (Sum.inr j)) (cjP y) = 0`. Rewrite using `[← conj_first_action_comm, hyl i j, if_neg (by simp)]`. Simplify using `[cjP]`. Take `⟨Φ, hΦ, hΦx⟩` from `graph_map (fvAct1 p q r 0) ρB (lie1 p q r 0) (dualAct_lie (lie1 p q 0 s) _) (adj1 p q r 0) (dualAct_adj (adj1 p q 0 s) c0) lam x (cjP y) hx0 hxw hyw' hxl hyl' (proj_gen x dx hxh)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Ψ, hΨ1, hΨ2⟩ : ∃ Ψ : Pol p q r 0 →ₗ[ℂ] Pol p q 0 s, (∀ Z u, Ψ (fockAct1 p q r 0 Z u) = ((c0 : ℂ) * Z.trace) • Ψ u - fockAct1 p q 0 s (thetaM p q Z) (Ψ u)) ∧ Ψ x = cjP y := by`. Use `⟨Φ, fun Z u => ?_, hΦx⟩` and prove the remaining obligations. Establish `h1` using `hΦ Z u`. Rewrite `h1` using `[hρB, dualAct_eq, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `h1`.
+
+Set `b : Pol p q r 0 →ₗ[ℂ] Pol p q 0 s →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun u v => fockInner (cjP (Ψ u)) v) (by`. Introduce `u u' v`. Rewrite using `[map_add, cjP_add, PI.FHS.fockInner_add_left])`. Use the proof step `(by`. Introduce `t u v`.
+
+Rewrite using `[map_smul, cjP_smul, PI.FHS.fockInner_smul_left, Complex.conj_conj]`. Use the proof step `rfl)`. Use the proof step `(by`. Introduce `u v v'`. Conclude with `PI.FHS.fockInner_add_right _ _ _)`.
+
+Use the proof step `(by`. Introduce `t u v`. Rewrite using `[PI.FHS.fockInner_smul_right]`. Use the proof step `rfl)`. Use `nontrivial_of_form (c0 : ℂ) b ?_ x y ?_` and prove the remaining obligations.
+
+Introduce `Z u v`. Express the relevant statement in the definitionally equal form `fockInner (cjP (Ψ (fockAct1 p q r 0 Z u))) v + fockInner (cjP (Ψ u)) (fockAct1 p q 0 s Z v) = (c0 : ℂ) * Z.trace * fockInner (cjP (Ψ u)) v`. Rewrite using `[hΨ1, cjP_sub, cjP_smul, fockInner_sub_left', PI.FHS.fockInner_smul_left, Complex.conj_conj, fockInner_cjP_fockAct1_thetaM_adjoint]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `fockInner (cjP (Ψ x)) y ≠ 0`.
+
+Rewrite using `[hΨ2]`. Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Apply `PI.FHS.fockInner_self_eq_zero` to reduce the goal to its premises. Simplify `h0` using `[cjP, MvPolynomial.map_map, MvPolynomial.map_id]`.
+-/
 theorem nontrivial_of_pair {p q r s : ℕ} (c : ℂ) (c0 : ℚ) (hc : c = c0) (h : PairData p q r s c) :
     Nontrivial (ThC p q r s c) := by
   obtain ⟨lam, x, y, dx, hx0, hy0, hxh, hxw, hxl, hyw, hyl⟩ := h

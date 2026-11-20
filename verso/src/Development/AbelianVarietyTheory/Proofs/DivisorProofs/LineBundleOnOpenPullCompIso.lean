@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PicGlue
 
+/- English proof (translation)
+Introduce `X Z Z' W L r s hL hr`. Establish `h : (L.pull (s ≫ r)).IsLB` using `GlobalTheory.T.isLineBundle_pull_of_isLineBundleOnOpen X Z' W L (s ≫ r) hL fun z ↦ by`. Simplify using `using hr (s z)`. Conclude with `iso_of_chart h (chartPullLinComb L r (fun _ : PUnit => s) (fun _ => s ≫ r) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm)`.
+-/
 theorem isOn_pull_comp : ∀ (X Z Z' : Scheme.{0}) (W : X.Opens) (L : LB X) (r : Z ⟶ X) (s : Z' ⟶ Z),
     IsOn W L → (∀ z, r z ∈ W) → LBIso ((L.pull r).pull s) (L.pull (s ≫ r)) := by
   intro X Z Z' W L r s hL hr

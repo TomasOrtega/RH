@@ -21,6 +21,9 @@ def HermNorm.pointOfₗ (h : HermNorm n) :
   map_add' v w := by rw [HermNorm.pointOf_add']; rfl
   map_smul' c v := by rw [HermNorm.pointOf_smul']; rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Apply `h.pointOf_eq_zero` to reduce the goal to its premises. Use `congrArg WithLp.ofLp hy` as an intermediate fact. Simplify `this` using `[HermNorm.pointOfₗ]`.
+-/
 theorem HermNorm.pointOfₗ_injective (h : HermNorm n) : Function.Injective h.pointOfₗ := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
   intro y hy
@@ -31,10 +34,18 @@ theorem HermNorm.pointOfₗ_injective (h : HermNorm n) : Function.Injective h.po
 def HermNorm.pointOfL (h : HermNorm n) : EuclideanSpace ℂ (Fin n) ≃L[ℂ] EuclideanSpace ℂ (Fin n) :=
   (LinearEquiv.ofInjectiveEndo h.pointOfₗ h.pointOfₗ_injective).toContinuousLinearEquiv
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_coneSet_iff_pointOfL (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (y : EuclideanSpace ℂ (Fin n)) : y ∈ coneSet h J ↔ h.pointOfL y ∈ zeroSetEuc J :=
   Iff.rfl
 
+/- English proof (translation)
+Use `set e := h.pointOfL`. Establish `hsub : coneSet h J ∩ Metric.ball 0 R ⊆ e.symm '' (zeroSetEuc J ∩ Metric.ball 0 (‖(e : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))‖ * R + 1))`. Introduce and unpack `y ⟨hy, hyR⟩`. Use `⟨e y, ⟨(mem_coneSet_iff_pointOfL h J y).1 hy, ?_⟩, e.symm_apply_apply y⟩` and prove the remaining obligations. Rewrite `hyR`, the goal using `[mem_ball_zero_iff]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hausdorffMeasure_coneSet_ball_le (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (d : ℕ) (R : ℝ) :
     Measure.hausdorffMeasure ((2 * d : ℕ) : ℝ) (coneSet h J ∩ Metric.ball 0 R) ≤
@@ -59,6 +70,11 @@ theorem hausdorffMeasure_coneSet_ball_le (h : HermNorm n) (J : Ideal (MvPolynomi
         measure_mono hsub
     _ ≤ _ := e.symm.lipschitz.hausdorffMeasure_image_le (by positivity) _
 
+/- English proof (translation)
+Introduce `n m h J hJ hm hmn hfib R`. Establish `hle` using `hDim n m h J hJ hm hmn hfib`. Use `lt_of_le_of_lt (hausdorffMeasure_coneSet_ball_le h J m R) ?_` and prove the remaining obligations. Use `ENNReal.mul_lt_top (ENNReal.rpow_lt_top_of_nonneg (by positivity) ENNReal.coe_ne_top) ?_` and prove the remaining obligations. Break down `hle.lt_or_eq with hlt | heq` into its components or cases.
+
+Rewrite using `[measure_mono_null Set.inter_subset_left (hNull n m J hlt)]`. Conclude with `ENNReal.zero_lt_top`. Conclude with `hMass n m J hJ.isPrime heq _`.
+-/
 theorem ConeLocalMass.proof (hDim : ConeFiniteFibreDim.Statement) (hMass : MassFinite.Statement)
     (hNull : NullSmaller.Statement) : ConeLocalMass.Statement := by
   intro n m h J hJ hm hmn hfib R

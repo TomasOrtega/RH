@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `H _ _ _ V _ U h1 h2`. Use extensionality with `x`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Use `symm`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises.
+
+Conclude with `h1 _ (V.starProjection_apply_mem x)`. Introduce `w hw`. Rewrite using `[← map_sub, ← ContinuousLinearMap.adjoint_inner_right]`. Conclude with `Submodule.starProjection_inner_eq_zero x _ (h2 w hw)`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.commProj :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (V : Submodule ℂ H) [V.HasOrthogonalProjection]
       (U : H →L[ℂ] H), (∀ v ∈ V, U v ∈ V) → (∀ v ∈ V, ContinuousLinearMap.adjoint U v ∈ V) →

@@ -30,6 +30,11 @@ def eigenLattice (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing O] (act : O
   add_mem' {c c'} hc hc' a := by rw [map_add, hc a, hc' a, smul_add]
   smul_mem' r c hc a := by rw [map_smul, hc a, smul_comm]
 
+/- English proof (translation)
+Use `forall_congr' fun a => ?_` and prove the remaining obligations. Use `act.hom a` as an intermediate fact. Rewrite using `[← Chart.tvec_tmap hx, ← Chart.tvec_smul hx]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `congrArg _ h`. Introduce `h`. Conclude with `(Chart.tcoord_tvec hx _).symm.trans ((Chart.tcoord_congr hx h _ (Chart.isTan_tvec hx _)).trans (Chart.tcoord_tvec hx _))`.
+-/
 theorem mem_eigenLattice_iff (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* R)
     (c : Fin n → R) :
     c ∈ eigenLattice hx act τ ↔ ∀ a, Chart.tvec (x := x) c ≫ act.act a =
@@ -44,6 +49,9 @@ theorem mem_eigenLattice_iff (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing
     exact (Chart.tcoord_tvec hx _).symm.trans
       ((Chart.tcoord_congr hx h _ (Chart.isTan_tvec hx _)).trans (Chart.tcoord_tvec hx _))
 
+/- English proof (translation)
+Introduce `a`. Use `h a` as an intermediate fact. Rewrite `this` using `[map_smul, smul_comm]`. Conclude with `smul_right_injective _ hr this`.
+-/
 example [IsDomain R] (hx : Chart.IsUnivChart G n x) {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* R)
     (r : R) (hr : r ≠ 0) (c : Fin n → R) (h : r • c ∈ eigenLattice hx act τ) : c ∈ eigenLattice hx act τ := by
   intro a
@@ -78,10 +86,16 @@ def extendLin (S : Type) [CommRing S] [Algebra R S] {n : ℕ} (T : (Fin n → R)
     (Fin n → S) →ₗ[S] (Fin n → S) :=
   Matrix.toLin' ((LinearMap.toMatrix' T).map (algebraMap R S))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {G : Over (Spec (CommRingCat.of R))} {n : ℕ}
     (x : ∀ m : ℕ, Chart.sp (R₀ := R) (Chart.JetR R (Fin n) m) ⟶ G) (c : Fin n → R) :
     tvecOver x c = Chart.tvec (x := x) c := rfl
 
+/- English proof (translation)
+Simplify using `[extendLin]`.
+-/
 example {n : ℕ} (T : (Fin n → R) →ₗ[R] (Fin n → R)) : extendLin R T = T := by
   simp [extendLin]
 

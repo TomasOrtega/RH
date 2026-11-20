@@ -21,6 +21,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `hf : Star.star (TensO.binv s) = TensO.binv s` using `by show ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) = ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ)`. Rewrite using `[TensO.inv_transpose, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `hEE : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ 1 = Matrix.single i₀ i₀ 1` using `by simp`. Establish `hET : (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ).transpose = Matrix.single i₀ i₀ 1` using `by simp`. Establish `hmain : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) * ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ (1 : ℤ) = …`.
+
+Rewrite using `[hET, Matrix.mul_assoc _ (s.1 : Matrix (Fin r) (Fin r) ℤ), Units.mul_inv, Matrix.mul_one, Matrix.mul_assoc, hEE]`. Establish `hefe : Star.star (TensO.idem s i₀) * TensO.binv s * TensO.idem s i₀ = TensO.binv s * TensO.idem s i₀` using `hmain`. Use `⟨⟨((s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀).toNat, by omega, ?_⟩, by rw [hf], TensO.ofMat s s.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hefe]`. Establish `h : ((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * (Matrix.single i₀ i₀ (1 : ℤ) : Matrix (Fin r) (Fin r) ℤ).transpose * (s.1 : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ (1 : ℤ) = ((s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀).toNat • (((s.1⁻¹ : (Matrix (Fin …`.
+
+Rewrite using `[hET, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.single i₀ i₀ (1 : ℤ)), Matrix.single_mul_mul_single, ← Matrix.mul_smul]`. Use `congr 1`. Rewrite using `[Matrix.smul_single, nsmul_eq_mul, Int.toNat_of_nonneg hp.le]`. Simplify using the standard rewrite rules. Conclude with `h`.
+
+Rewrite using `[hefe]`. Establish `h : (s.1 : Matrix (Fin r) (Fin r) ℤ) * (((s.1⁻¹ : (Matrix (Fin r) (Fin r) ℤ)ˣ) : Matrix (Fin r) (Fin r) ℤ) * Matrix.single i₀ i₀ (1 : ℤ)) = Matrix.single i₀ i₀ (1 : ℤ)`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Conclude with `h`.
+-/
 theorem TensO.idem_binv_alg {r : ℕ} (s : SymUnit r) (i₀ : Fin r)
     (hp : 0 < (s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀) :
     (∃ b : ℕ, 0 < b ∧ Star.star (TensO.idem s i₀) * TensO.idem s i₀ =
@@ -61,6 +70,13 @@ theorem TensO.idem_binv_alg {r : ℕ} (s : SymUnit r) (i₀ : Fin r)
       rw [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
     exact h
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D D' r W hpos hdet T hr`. Set `s` to `symUnitOf W hdet`. Set `i₀ : Fin r` to `⟨0, hr⟩`. Use `letI := T.mod s`. Take `⟨hhom, h1, hmul, hadd⟩` from `GlobalTheory.T.mumfordTensorData_matrixAction_ringHom_properties R D.toPre D'.toPre W T`.
+
+Take `⟨hinc, hip, hpi, hcx⟩` from `GlobalTheory.T.mumfordTensorData_factorInclusion_projection_props R D.toPre D'.toPre W T i₀`. Take `⟨hxx, hxe, hinj, honto⟩` from `GlobalTheory.T.mumfordTensorData_latticeFactor_props R D.toPre D'.toPre W T s i₀`. Take `⟨w, hw, htau⟩` from `GlobalTheory.T.mumfordTensorPairing_factorInclusion_periods R hR D D' W hdet hpos T i₀`. Establish `hp : 0 < (s.1 : Matrix (Fin r) (Fin r) ℤ) i₀ i₀`. Establish `h` using `hpos.diag_pos (i := i₀)`.
+
+Establish `h' : (0 : ℝ) < (((W + W.transpose) i₀ i₀ : ℤ) : ℝ)` using `h`. Conclude with `h'` after adjusting the coercions. Conclude with `⟨{ O := TensO s mod := T.mod s o := { onB := { act := fun a => T.act (TensO.mat s a) hom := fun a => hhom _ map_one := h1 map_mul := fun a b => hmul _ _ map_add := fun a b => hadd _ _ rosati := GlobalTheory.T.rosatiAdj_mumfordTensorPower_of_posDef R hR D D' W hdet hpos T } c_lin …`.
+-/
 theorem Tens.nonempty_factor : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ),
       ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det →

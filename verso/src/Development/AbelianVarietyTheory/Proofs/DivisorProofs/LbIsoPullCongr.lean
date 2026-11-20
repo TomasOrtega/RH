@@ -18,11 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.MBDesc
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (RigidBundleGlue.chartPullComp L f g _ rfl) (chartPullId _) ⟨idIso _, idIso_isGen (pull_isLB (pull_isLB hL f) g)⟩`.
+-/
 theorem lbIso_pullComp {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (g : Z ⟶ Y) :
     LBIso (L.pull (g ≫ f)) ((L.pull f).pull g) :=
   LBIso.chartPull (RigidBundleGlue.chartPullComp L f g _ rfl) (chartPullId _)
     ⟨idIso _, idIso_isGen (pull_isLB (pull_isLB hL f) g)⟩
 
+/- English proof (translation)
+The claim follows from `h ▸ ⟨idIso _, idIso_isGen (pull_isLB hL f)⟩`.
+-/
 theorem lbIso_pull_congr {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {f g : Y ⟶ X} (h : f = g) :
     LBIso (L.pull f) (L.pull g) := h ▸ ⟨idIso _, idIso_isGen (pull_isLB hL f)⟩
 

@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SummableSchwartzSeries
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchwartzSum.hasSum_of_summable_seminorms | exact GlobalTheory.SchwartzSum.hasSum_of_summable_seminorms | (intros; apply GlobalTheory.SchwartzSum.hasSum_of_summable_seminorms <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.summable_schwartz_series : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] {ι : Type}
     (u : ι → SchwartzMap V ℂ), (∀ k n : ℕ, Summable (fun i => SchwartzMap.seminorm ℂ k n (u i))) →
     ∃ F : SchwartzMap V ℂ, (∀ x, HasSum (fun i => u i x) (F x)) ∧

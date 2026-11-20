@@ -11,6 +11,21 @@ open scoped InnerProductSpace
 
 namespace ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Use `haveI : CompleteSpace H := hDS.1`. Take `⟨hcont, hle⟩` from `coef_continuousOn_le_one hDS hw`. Use `haveI hH : Measure.IsHaarMeasure (μ : Measure (S7.UJ ε)) := by first`. Consider the case `assumption`. Consider the case `exact ‹_›`.
+
+Consider the case `exact inferInstanceAs (Measure.IsHaarMeasure (μ : Measure (Formalism.REAL.UJ ε)))`. Consider the case `(unfold S7.UJ; assumption)`. Establish `hI : Integrable (fun g : S7.UJ ε => ‖⟪w, σ (S7.toM g) w⟫_ℂ‖ * ‖Matrix.toEuclideanCLM (𝕜` using `ℂ) (S7.toM g)‖ ^ N) μ := by`. Break down `Nat.eq_zero_or_pos (S7.q0 ε) with hq | hq` into its components or cases. Use `first`.
+
+Consider the case `exact @integrable_opPow_of_compact _ _ hq _ hcont hle _ hN μ hH`. Consider the case `exact @integrable_opPow_of_compact _ _ hq _ hcont hle _ hN μ (by first | exact ‹_› | infer_instance)`. Consider the case `exact @integrable_opPow_of_compact _ _ hq _ hcont hle _ hN μ (by unfold S7.UJ at *; exact ‹_›)`. Establish `hq1 : 1 ≤ S7.q0 ε` using `hq`. Take `⟨hstd, h8'⟩` from `hthr hq1`.
+
+Establish `hq1r : (1 : ℝ) ≤ S7.q0 ε` using `by exact_mod_cast hq1`. Establish `hs1 : 1 ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 from Real.sqrt_one.symm]`. Conclude with `Real.sqrt_le_sqrt (by linarith)`. Establish `hn0 : (0 : ℝ) ≤ n` using `by positivity`.
+
+Establish `hq0 : (0 : ℝ) ≤ S7.q0 ε` using `by positivity`. Establish `hP0 : 0 ≤ N + 2 * (n : ℝ) * S7.q0 ε` using `by positivity`. Establish `hP : N + 2 * (n : ℝ) * S7.q0 ε ≤ Real.sqrt (2 * (S7.q0 ε : ℝ)) * (N + 2 * (n : ℝ) * S7.q0 ε)` using `le_mul_of_one_le_left hP0 hs1`. Establish `h8 : 8 * (n : ℝ) * S7.q0 ε < h`. Use polynomial arithmetic with `[mul_nonneg hn0 hq0]`.
+
+Use `first`. Consider the case `exact @integrable_opPow_of_dec _ _ _ hcont hle _ hq1 (fun k X hX => coef_dec_of_isDS hDS hlam hgap hq1 h8 hstd hw k hX) _ hN h8' μ hH`. Consider the case `exact @integrable_opPow_of_dec _ _ _ hcont hle _ hq1 (fun k X hX => coef_dec_of_isDS hDS hlam hgap hq1 h8 hstd hw k hX) _ hN h8' μ (by exact ‹_›)`. Use `lt_of_le_of_lt (le_of_eq ?_) hI.hasFiniteIntegral` and prove the remaining obligations. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+
+Establish `hpos : 0 ≤ ‖Matrix.toEuclideanCLM (𝕜` using `ℂ) (Formalism.MainNotions.S.uMat g)‖ ^ N := Real.rpow_nonneg (norm_nonneg _) N`. Use `show _ = ‖‖⟪w, σ (Formalism.MainNotions.S.uMat g) w⟫_ℂ‖ * ‖Matrix.toEuclideanCLM (𝕜 := ℂ) (Formalism.MainNotions.S.uMat g)‖ ^ N‖ₑ`. Rewrite using `[Real.enorm_eq_ofReal (mul_nonneg (norm_nonneg _) hpos), ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm_eq_enorm]`.
+-/
 theorem coefWeightedN {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ) {H : Type*} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hlam : Formalism.QuantumDeterminants.IsHCParam lam)
     (hDS : Formalism.MainNotions.S.IsDS ε lam σ) (w : H) (hw : Formalism.MainNotions.S.IsLowUnit ε lam σ w) (h : ℝ)

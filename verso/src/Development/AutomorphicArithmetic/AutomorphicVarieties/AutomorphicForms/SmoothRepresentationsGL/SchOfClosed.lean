@@ -8,6 +8,39 @@ open UpperTheory.V UpperTheory.V.Af.Smo
 open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspSub)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
+/- English proof (translation)
+Introduce `X _ _ _ A hA`. Establish `b : Module.Basis (Fin (Module.finrank ℝ X)) ℝ X` using `Module.finBasis ℝ X`. Take `⟨c, hc⟩ : ∃ c : Fin (Module.finrank ℝ X) → (X →L[ℝ] ℝ), ∀ i x, c i x = b.repr x i` from `⟨fun i => LinearMap.toContinuousLinearMap (b.coord i), fun i x => rfl⟩`. Take `⟨L, hL⟩ : ∃ L : Fin (Module.finrank ℝ X) → (ℂ →L[ℝ] (X →L[ℝ] ℂ)), ∀ i z v, L i z v = c i v • z` from `⟨fun i => ContinuousLinearMap.smulRightL ℝ X ℂ (c i), fun i z v => rfl⟩`. Establish `hsm : ∀ n : ℕ, ∀ f ∈ A, ContDiff ℝ n f`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro f hf`. Conclude with `contDiff_zero.2 (hA f hf).2.1.continuous`. Consider the case `succ n ih`.
+
+Introduce `f hf`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv]`. Use `⟨(hA f hf).2.1, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_clm_apply_iff]`. Introduce `v`.
+
+Conclude with `ih _ ((hA f hf).2.2.1 v)`. Establish `hinf : ∀ f ∈ A, ContDiff ℝ ∞ f` using `fun f hf => contDiff_infty.2 fun n => hsm n f hf`. Establish `hx : ∀ x : X, ‖x‖ ≤ ∑ i, ‖b i‖ * ‖c i x‖`. Introduce `x`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, hc, mul_comm]`. Establish `h0 : ∀ k : ℕ, ∀ f ∈ A, ∃ C, ∀ x, ‖x‖ ^ k * ‖f x‖ ≤ C`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Introduce `f hf`. Take `⟨C, hC⟩` from `(hA f hf).1`. Conclude with `⟨C, fun x => by simpa using hC x⟩`. Consider the case `succ k ih`.
+
+Introduce `f hf`. Use `choose C hC using fun i => ih _ ((hA f hf).2.2.2 (c i))`. Use `⟨∑ i, ‖b i‖ * C i, fun x => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ i, ‖b i‖ * C i := by gcongr with i`. Conclude with `hC i x`.
+
+Establish `hd : ∀ n k : ℕ, ∀ f ∈ A, ∃ C, ∀ x, ‖x‖ ^ k * ‖iteratedFDeriv ℝ n f x‖ ≤ C`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `k f hf`.
+
+Take `⟨C, hC⟩` from `h0 k f hf`. Conclude with `⟨C, fun x => by rw [norm_iteratedFDeriv_zero]; exact hC x⟩`. Consider the case `succ n ih`. Introduce `k f hf`. Take `⟨g, hg⟩ : ∃ g : Fin (Module.finrank ℝ X) → X → ℂ, ∀ i x, g i x = fderiv ℝ f x (b i)` from `⟨fun i x => fderiv ℝ f x (b i), fun _ _ => rfl⟩`.
+
+Establish `hgA : ∀ i, g i ∈ A`. Introduce `i`. Establish `: g i = fun x => fderiv ℝ f x (b i)` using `funext (hg i)`. Rewrite using `[this]`. Conclude with `(hA f hf).2.2.1 (b i)`.
+
+Establish `hfd : fderiv ℝ f = fun x => ∑ i, L i (g i x)`. Use function extensionality and compare the values at `x`. Use extensionality with `v`. Rewrite using `[ContinuousLinearMap.sum_apply]`. Simplify using `only [hL, hg, hc]`.
+
+Use `conv_lhs => rw [← b.sum_repr v]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Establish `hsum : iteratedFDeriv ℝ n (fun x => ∑ i, L i (g i x)) = ∑ i, iteratedFDeriv ℝ n (fun y => L i (g i y))` using `iteratedFDeriv_sum (f := fun i y => L i (g i y)) (u := Finset.univ) (fun i _ => (L i).contDiff.comp (hsm n _ (hgA i)))`. Use `choose C hC using fun i => ih k (g i) (hgA i)`.
+
+Use `⟨∑ i, ‖L i‖ * C i, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_iteratedFDeriv_fderiv, hfd, hsum, Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_sum_le _ _`. Use `_ ≤ ‖x‖ ^ k * ∑ i, ‖L i‖ * ‖iteratedFDeriv ℝ n (g i) x‖ := by gcongr with i`.
+
+Conclude with `(L i).norm_iteratedFDeriv_comp_left (hsm n _ (hgA i)).contDiffAt le_rfl`. Use `_ = ∑ i, ‖L i‖ * (‖x‖ ^ k * ‖iteratedFDeriv ℝ n (g i) x‖) := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ∑ i, ‖L i‖ * C i := by gcongr with i`. Conclude with `hC i x`. Introduce `f hf`. Conclude with `⟨⟨f, hinf f hf, fun k n => hd n k f hf⟩, rfl⟩`.
+-/
 theorem UpperTheory.V.Af.Smo.schOfClosed :
     UpperTheory.V.Af.Smo.SchOfClosed := by
   intro X _ _ _ A hA

@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.AdelicUnitrian
 open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.JSW GroundTheory.Global.IdeleGroup Formalism.L2.Host
 open scoped ENNReal nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RSThetaSelf.lintegral_ne_top | exact GlobalTheory.RSThetaSelf.lintegral_ne_top | (intros; apply GlobalTheory.RSThetaSelf.lintegral_ne_top <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lintegral_theta_self_cusp_rapid_span_ne_top : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a) (π : CuspSub E a) (ω : HChar E),
     ω.IsUnitary → π.HasCentChar ω → ∀ F : GA E a → ℂ, F ∈ GlobalTheory.JSW.mspanR π →
     ∀ (Φ : (Fin a → Cinf E) → ℂ), ContDiff ℝ (⊤ : ℕ∞) Φ → HasCompactSupport Φ → tsupport Φ ⊆ GlobalTheory.RSTheta.rowSet E ℓ →

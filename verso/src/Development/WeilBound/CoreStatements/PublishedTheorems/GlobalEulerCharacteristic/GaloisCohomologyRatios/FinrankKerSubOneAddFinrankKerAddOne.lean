@@ -7,6 +7,13 @@ namespace PositivityTheory.Lit1.GEN.X.RealC
 
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
+/- English proof (translation)
+Establish `hr : LinearMap.range (σ + 1) = LinearMap.ker (σ - 1)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.add_apply, Module.End.one_apply, map_add, hσ]`. Normalize the expressions using the abelian group laws.
+
+Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Use `⟨(2 : k)⁻¹ • x, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, Module.End.one_apply, map_smul, hx, ← smul_add, ← two_smul k x, smul_smul, inv_mul_cancel₀ h2, one_smul]`. Rewrite using `[← hr]`.
+
+Conclude with `LinearMap.finrank_range_add_finrank_ker (σ + 1)`.
+-/
 theorem finrank_ker_sub_one_add_finrank_ker_add_one {k V : Type*} [Field k] [AddCommGroup V] [Module k V]
     [FiniteDimensional k V] (h2 : (2 : k) ≠ 0) (σ : V →ₗ[k] V) (hσ : ∀ x, σ (σ x) = x) :
     Module.finrank k (LinearMap.ker (σ - 1)) + Module.finrank k (LinearMap.ker (σ + 1)) =
@@ -26,6 +33,15 @@ theorem finrank_ker_sub_one_add_finrank_ker_add_one {k V : Type*} [Field k] [Add
 
 variable {K : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 K.1))} {ℓ : ℕ}
 
+/- English proof (translation)
+Take `⟨ζ, rfl⟩ : ∃ ζ : rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S), Additive.ofMul ζ = t` from `⟨Additive.toMul t, rfl⟩`. Express the relevant statement in the definitionally equal form `Additive.ofMul (galRootsOfUnityHom K.1 _ ℓ (gsRealFamily S ιr v (realConj v.1 v.2)) ζ) = Additive.ofMul ζ⁻¹`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[coe_galRootsOfUnityHom_apply]`. Use `set f : maxUnramifiedOutside K.1 ℚ̄ S →ₐ[K.1] AlgebraicClosure v.1.Completion := (ιr v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val`. Establish `hf : Function.Injective f` using `f.injective`. Apply `hf` to reduce the goal to its premises. Use `set u : (AlgebraicClosure v.1.Completion)ˣ := Units.map (f : maxUnramifiedOutside K.1 ℚ̄ S →* AlgebraicClosure v.1.Completion) (ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)`.
+
+Establish `hu : u ^ ℓ = 1`. Rewrite using `[← map_pow]`. Establish `: (ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) ^ ℓ = 1` using `(mem_rootsOfUnity _ _).1 ζ.2`. Rewrite using `[this, map_one]`. Establish `key` using `realConj_apply_of_pow_eq_one v.1 v.2 u hℓ hu`.
+
+Establish `h1 : f ((gsRealFamily S ιr v (realConj v.1 v.2)) ((ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S)) = realConj v.1 v.2 (f ((ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : maxUnramifiedOutside K.1 ℚ̄ S))` using `gsRealFamily_apply S ιr v _ _`. Rewrite using `[h1]`. Conclude with `key`.
+-/
 theorem gsRoots_realConj (hℓ : 0 < ℓ)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (v : {v : InfinitePlace K.1 // v.IsReal}) (t : gsRoots S ℓ) :
@@ -57,6 +73,15 @@ theorem gsRoots_realConj (hℓ : 0 < ℓ)
 section TConj
 variable [Fact ℓ.Prime]
 
+/- English proof (translation)
+Establish `hℓ : 0 < ℓ` using `(Fact.out : ℓ.Prime).pos`. Take `⟨ζ, rfl⟩ : ∃ ζ : rootsOfUnity ℓ (maxUnramifiedOutside K.1 ℚ̄ S), Additive.ofMul ζ = t` from `⟨t.toMul, rfl⟩`. Use `show Additive.ofMul (galRootsOfUnityHom _ _ ℓ (gsRealFamily S ιr v (realConj v.1 v.2)) ζ) = Additive.ofMul ζ⁻¹`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_galRootsOfUnityHom_apply]`. Apply `Subtype.val_injective` to reduce the goal to its premises. Apply `(ιr v).injective` to reduce the goal to its premises. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`.
+
+Rewrite using `[gsRealFamily_apply]`. Use `set f : (maxUnramifiedOutside K.1 ℚ̄ S) →ₐ[K.1] AlgebraicClosure v.1.Completion := (ιr v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val`. Establish `hu : (Units.map f.toMonoidHom (ζ : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) ^ ℓ = 1`. Rewrite using `[← map_pow, (mem_rootsOfUnity ℓ _).1 ζ.2, map_one]`. Use `realConj_apply_of_pow_eq_one v.1 v.2 _ hℓ hu` as an intermediate fact.
+
+Rewrite `this` using `[← map_inv]`. Conclude with `this`.
+-/
 theorem gsRootsZMod_rho_realConj_eq_neg (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (v : {v : InfinitePlace K.1 // v.IsReal}) (t : gsRootsZMod S ℓ) :
     (gsRootsZMod S ℓ).ρ (gsRealFamily S ιr v (realConj v.1 v.2)) t = -t := by
@@ -79,6 +104,9 @@ theorem gsRootsZMod_rho_realConj_eq_neg (ιr : ∀ v : {v : InfinitePlace K.1 //
   rw [← map_inv] at this
   exact this
 
+/- English proof (translation)
+Substitute `hg hσ` using the available equality. Conclude with `gsRootsZMod_rho_realConj_eq_neg ιr v t`.
+-/
 theorem T_conj_gen (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (v : {v : InfinitePlace K.1 // v.IsReal}) (g : Gal(AlgebraicClosure v.1.Completion / v.1.Completion))
     (hg : g = realConj v.1 v.2) (σ : galUnramifiedOutside K.1 ℚ̄ S) (hσ : σ = gsRealFamily S ιr v g)
@@ -92,6 +120,11 @@ section Generic
 
 variable {k V : Type*} [Field k] [AddCommGroup V] [Module k V]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[Representation.mem_invariants, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Use `⟨fun h => h c, fun h g => ?_⟩` and prove the remaining obligations. Break down `hG g with hg | hg` into its components or cases. Rewrite using `[hg, map_one, Module.End.one_apply]`.
+
+Rewrite using `[hg]`. Conclude with `h`.
+-/
 theorem invariants_eq_ker_of_two {H : Type*} [Group H] (ρ : Representation k H V) (c : H)
     (hG : ∀ g, g = 1 ∨ g = c) : ρ.invariants = LinearMap.ker (ρ c - 1) := by
   ext m
@@ -103,6 +136,11 @@ theorem invariants_eq_ker_of_two {H : Type*} [Group H] (ρ : Representation k H 
   · rw [hg]
     exact h
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[Representation.mem_invariants, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Use `⟨fun h => h ⟨ψ0 c, (hD _).2 ⟨c, rfl⟩⟩, fun h τ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `(hD τ.1).1 τ.2`. Express the relevant statement in the definitionally equal form `ρ τ.1 m = m`.
+
+Rewrite using `[← hg]`. Break down `hG g with rfl | rfl` into its components or cases. Rewrite using `[h1, map_one, Module.End.one_apply]`. Conclude with `h`.
+-/
 theorem invariants_comp_subtype_eq_ker {H Γ : Type*} [Group H] [Group Γ] (ρ : Representation k Γ V)
     (D : Subgroup Γ) (ψ0 : H → Γ) (hD : ∀ τ, τ ∈ D ↔ ∃ h, ψ0 h = τ) (h1 : ψ0 1 = 1) (c : H)
     (hG : ∀ g, g = 1 ∨ g = c) :
@@ -118,6 +156,9 @@ theorem invariants_comp_subtype_eq_ker {H Γ : Type*} [Group H] [Group Γ] (ρ :
   · rw [h1, map_one, Module.End.one_apply]
   · exact h
 
+/- English proof (translation)
+Rewrite using `[invariants_comp_subtype_eq_ker ρ D ψ0 hD h1 c hG, hB]`.
+-/
 theorem finrank_invariants_comp_subtype_eq {H Γ : Type*} [Group H] [Group Γ] (ρ : Representation k Γ V)
     (D : Subgroup Γ) (ψ0 : H → Γ) (hD : ∀ τ, τ ∈ D ↔ ∃ h, ψ0 h = τ) (h1 : ψ0 1 = 1) (c : H)
     (hG : ∀ g, g = 1 ∨ g = c) (B : V →ₗ[k] V) (hB : ρ (ψ0 c) = B) :
@@ -125,6 +166,19 @@ theorem finrank_invariants_comp_subtype_eq {H Γ : Type*} [Group H] [Group Γ] (
       Module.finrank k (LinearMap.ker (B - 1)) := by
   rw [invariants_comp_subtype_eq_ker ρ D ψ0 hD h1 c hG, hB]
 
+/- English proof (translation)
+Use `haveI : Module.Finite k T := Module.finite_of_finrank_eq_succ hT`. Set `b0` to `Module.finBasisOfFinrankEq k T hT`. Establish `hspan : ∀ t : T, b0.repr t 0 • b0 0 = t` using `fun t => by`. Use `b0.sum_repr t` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Then use the resulting hypothesis.
+
+Set `ev : (T →ₗ[k] M) →ₗ[k] M` to `LinearMap.applyₗ (b0 0)`. Establish `hev : ∀ f, ev f = f (b0 0)` using `fun _ => rfl`. Establish `hinj : Function.Injective ev`. Introduce `f g hfg`. Rewrite `hfg` using `[hev, hev]`.
+
+Conclude with `b0.ext fun i => by rw [Subsingleton.elim i 0]; exact hfg`. Establish `hsurj : Function.Surjective ev` using `fun m => ⟨b0.constr k (fun _ => m), by rw [hev, b0.constr_basis]⟩`. Set `e` to `LinearEquiv.ofBijective ev ⟨hinj, hsurj⟩`. Establish `hc : LinearMap.ker (Ψ - 1) = (LinearMap.ker (b + 1)).comap (e : (T →ₗ[k] M) →ₗ[k] M)`. Use extensionality with `f`.
+
+Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker, LinearMap.mem_ker, LinearMap.add_apply, Module.End.one_apply]`. Express the relevant statement in the definitionally equal form `_ ↔ b (f (b0 0)) + f (b0 0) = 0`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `LinearMap.congr_fun h (b0 0)` as an intermediate fact. Rewrite `this` using `[hΨ]`. Establish `h' : b (f (b0 0)) + f (b0 0) = b (f (b0 0)) + -b (f (b0 0))` using `by rw [this]`. Rewrite using `[h', add_neg_cancel]`. Introduce `h`.
+
+Use `LinearMap.ext fun t => ?_` and prove the remaining obligations. Establish `hb : -b (f (b0 0)) = f (b0 0)` using `by rw [eq_neg_of_add_eq_zero_left h, neg_neg]`. Rewrite using `[hΨ, ← hspan t, map_smul, map_smul, ← smul_neg, hb]`. Rewrite using `[hc, Submodule.comap_equiv_eq_map_symm, LinearEquiv.finrank_map_eq]`.
+-/
 theorem finrank_ker_sub_one_of_neg {T M : Type*} [AddCommGroup T] [Module k T] [AddCommGroup M]
     [Module k M] [FiniteDimensional k M] (hT : Module.finrank k T = 1) (b : M →ₗ[k] M)
     (Ψ : (T →ₗ[k] M) →ₗ[k] (T →ₗ[k] M)) (hΨ : ∀ f t, Ψ f t = -b (f t)) :
@@ -170,12 +224,18 @@ variable {L : FiniteSubfield} [Fact (K ≤ L)] [Fact ℓ.Prime]
   (M : Rep.{0} (ZMod ℓ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Module.Finite (ZMod ℓ) M]
   (hM : ∀ (g : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) (m : M), M.ρ g m = m)
 
+/- English proof (translation)
+The claim follows from `(gsQuotientGalEquiv hL).symm_apply_eq.2 (gsQuotientGalEquiv_mk hL σ).symm`.
+-/
 theorem symm_gsRestrictGal (σ : galUnramifiedOutside K.1 ℚ̄ S) :
     (gsQuotientGalEquiv hL).symm (gsRestrictGal hL σ) = QuotientGroup.mk σ :=
   (gsQuotientGalEquiv hL).symm_apply_eq.2 (gsQuotientGalEquiv_mk hL σ).symm
 
 omit [Module.Finite (ZMod ℓ) M] in
 
+/- English proof (translation)
+The claim follows from `(congrArg (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M) (homRep_ρ_of_mem (gsOpenSubgroup S hL) (gsRootsZMod S ℓ) M (roots_trivial hL hζ) hM)) (symm_gsRestrictGal hL σ)).trans (QuotientGroup.lift_mk _ _ _)`.
+-/
 theorem nRep_gsRestrictGal (σ : galUnramifiedOutside K.1 ℚ̄ S) :
     nRep hL hζ M hM (gsRestrictGal hL σ) = (homRep (gsRootsZMod S ℓ) M).ρ σ :=
   (congrArg (quotientRep (PP hL) (homRep (gsRootsZMod S ℓ) M)
@@ -184,6 +244,27 @@ theorem nRep_gsRestrictGal (σ : galUnramifiedOutside K.1 ℚ̄ S) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hp : ℓ.Prime` using `Fact.out`. Distinguish the cases in `h2 : ℓ = 2`. It suffices to derive a contradiction. Substitute `h2` using the available equality. Establish `hTC : IsTotallyComplex L.1` using `hK.resolve_left fun h => h rfl`.
+
+Use `haveI : IsGalois K.1 L.1 := ⟨⟩`. Establish `hcomap : (infPlaceOfEmbedding (ιr v) L : InfinitePlace L.1).comap (algebraMap K.1 L.1) = v.1`. Use `(infPlaceOfEmbedding (ιr v) L).2` as an intermediate fact. Conclude with `NumberField.InfinitePlace.LiesOver.comap_eq _ _`. Establish `hram : ¬ NumberField.InfinitePlace.IsUnramified K.1 (infPlaceOfEmbedding (ιr v) L : InfinitePlace L.1)`.
+
+Rewrite using `[NumberField.InfinitePlace.isUnramified_iff, hcomap]`. Conclude with `not_or.2 ⟨NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (hTC.isComplex _), NumberField.InfinitePlace.not_isComplex_iff_isReal.2 v.2⟩`. Establish `hcard` using `NumberField.InfinitePlace.not_isUnramified_iff_card_stabilizer_eq_two.1 hram`. Establish `hdvd` using `Subgroup.card_subgroup_dvd_card (MulAction.stabilizer (L.1 ≃ₐ[K.1] L.1) (infPlaceOfEmbedding (ιr v) L : InfinitePlace L.1))`. Rewrite `hdvd` using `[hcard]`.
+
+Establish `hidx : Nat.card (L.1 ≃ₐ[K.1] L.1) = (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index` using `(Nat.card_congr (gsQuotientGalEquiv hL).toEquiv).symm`. Rewrite `hdvd` using `[hidx]`. Conclude with `absurd (Nat.Coprime.coprime_dvd_left hdvd hcop) (by norm_num)`. Establish `h2k : (2 : ZMod ℓ) ≠ 0`. Introduce `h`.
+
+Establish `h' : ((2 : ℕ) : ZMod ℓ) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h')`. Set `c` to `realConj v.1 v.2`. Establish `hc_def : c = realConj v.1 v.2` using `rfl`.
+
+Establish `hG : ∀ g, g = 1 ∨ g = c` using `eq_one_or_eq_realConj v.1 v.2`. Establish `hcinv : c⁻¹ = c`. Break down `hG c⁻¹ with h | h` into its components or cases. Conclude with `absurd (inv_eq_one.1 h) (realConj_ne_one v.1 v.2)`. Conclude with `h`.
+
+Establish `hcc : c * c = 1`. Combine the equalities or inequalities in the displayed calculation. Set `σ` to `gsRealFamily S ιr v c`. Establish `hσ_def : σ = gsRealFamily S ιr v c` using `rfl`. Establish `hσinv : σ⁻¹ = σ` using `by rw [hσ_def, ← map_inv, hcinv]`.
+
+Establish `hσ1 : σ * σ = 1` using `by rw [hσ_def, ← map_mul, hcc, map_one]`. Establish `hσσ : ∀ x : M, M.ρ σ (M.ρ σ x) = x` using `fun x => by`. Establish `h2 : M.ρ σ (M.ρ σ x) = M.ρ (σ * σ) x` using `(congrArg (fun A => A x) (map_mul M.ρ σ σ)).symm`. Rewrite using `[h2, hσ1, map_one]`. Both sides reduce to the same expression.
+
+Establish `e1 : Module.finrank (ZMod ℓ) (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) 0) = Module.finrank (ZMod ℓ) (LinearMap.ker (M.ρ σ - 1))` using `((H0Iso (Rep.res (gsRealFamily S ιr v).toMonoidHom M)).toLinearEquiv.finrank_eq).trans (LinearEquiv.ofEq _ _ (invariants_eq_ker_of_two (M.ρ.comp (gsRealFamily S ιr v).toMonoidHom) c hG)).finrank_eq`. Establish `e2 : Module.finrank (ZMod ℓ) (Representation.invariants ((nRep hL hζ M hM).comp (gsRealDecompGroup S ιr hL v).subtype)) = Module.finrank (ZMod ℓ) (LinearMap.ker ((homRep (gsRootsZMod S ℓ) M).ρ σ - 1))`. Conclude with `finrank_invariants_comp_subtype_eq (nRep hL hζ M hM) (gsRealDecompGroup S ιr hL v) (fun g => gsRestrictGal hL (gsRealFamily S ιr v g)) (fun τ => Iff.rfl) (by rw [map_one, map_one]) c hG _ (nRep_gsRestrictGal hL hζ M hM σ)`. Establish `hTr : Module.finrank (ZMod ℓ) (gsRootsZMod S ℓ) = 1` using `finrank_gsRootsZMod ℓ hℓS`. Establish `hTneg` using `fun t : gsRootsZMod S ℓ => T_conj_gen (ℓ := ℓ) ιr v c hc_def σ⁻¹ (by rw [hσinv]) t`.
+
+Establish `e3 : Module.finrank (ZMod ℓ) (LinearMap.ker ((homRep (gsRootsZMod S ℓ) M).ρ σ - 1)) = Module.finrank (ZMod ℓ) (LinearMap.ker (M.ρ σ + 1))` using `finrank_ker_sub_one_of_neg hTr (M.ρ σ) ((homRep (gsRootsZMod S ℓ) M).ρ σ) fun f t => (LinearMap.congr_fun (homRep_ρ_apply (gsRootsZMod S ℓ) M σ f) t).trans (by`. Express the relevant statement in the definitionally equal form `M.ρ σ (f ((gsRootsZMod S ℓ).ρ σ⁻¹ t)) = _`. Conclude with `(congrArg (fun x => M.ρ σ (f x)) (hTneg t)).trans (by rw [map_neg, map_neg]))`. Establish `e4` using `finrank_ker_sub_one_add_finrank_ker_add_one h2k (M.ρ σ) hσσ`. Conclude with `(congrArg₂ (· + ·) e1 (e2.trans e3)).trans e4` after adjusting the coercions.
+-/
 theorem real_place_H0_finrank_b (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)
@@ -281,6 +362,9 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hM : ∀ (g : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) (m : M), M.ρ g m = m)
   (hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ)
 
+/- English proof (translation)
+The claim follows from `RealC.real_place_H0_finrank_b hL hζ M hM ιr hℓS hcop hK v`.
+-/
 theorem real_place_H0_finrank (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
     (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hcop : Nat.Coprime (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ℓ)

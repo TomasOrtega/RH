@@ -7,11 +7,17 @@ namespace Formalism.HC
 
 open Formalism.FrobeniusOrbits
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[ZMod.unitsMap_val, ZMod.coe_unitOfCoprime, ZMod.coe_unitOfCoprime, ZMod.cast_natCast h]`.
+-/
 theorem unitsMap_unitOfCoprime {M N : ℕ} (h : M ∣ N) (a : ℕ) (ha : Nat.Coprime a N) :
     ZMod.unitsMap h (ZMod.unitOfCoprime a ha) = ZMod.unitOfCoprime a (ha.coprime_dvd_right h) := by
   ext
   rw [ZMod.unitsMap_val, ZMod.coe_unitOfCoprime, ZMod.coe_unitOfCoprime, ZMod.cast_natCast h]
 
+/- English proof (translation)
+Establish `h1` using `(H.isPrimOf_prim θ).2 _ (ZMod.val_coe_unit_coprime u)`. Establish `h2` using `((H.isPrimOf_iff θ' _).mpr h).2 _ (ZMod.val_coe_unit_coprime u)`. Establish `h3` using `h1.symm.trans h2`. Rewrite `h3` using `[HostRaw.dirAt, HostRaw.dirAt, ZMod.natCast_zmod_val, H.dir_unit, H.dir_unit]`. Conclude with `Units.ext h3`.
+-/
 theorem HostRaw.art_eq_of_prim_eq {φ : Frame} (H : HostRaw φ) {θ θ' : φ.Char} (h : H.prim θ = H.prim θ')
     (u : (ZMod H.condN)ˣ) : θ (H.art u) = θ' (H.art u) := by
   have h1 := (H.isPrimOf_prim θ).2 _ (ZMod.val_coe_unit_coprime u)
@@ -26,9 +32,17 @@ variable {M : ℕ} [NeZero M] (Ξ : Subgroup (DirichletCharacter ℂ M)) (e : �
 
 def ann : Subgroup (ZMod M)ˣ := (MulChar.subgroupOrderIsoSubgroupMulChar (ZMod M) ℂ).symm (OrderDual.toDual Ξ)
 
+/- English proof (translation)
+Simplify using `[ann]`.
+-/
 theorem mem_ann (u : (ZMod M)ˣ) : u ∈ ann Ξ ↔ ∀ χ ∈ Ξ, χ u = 1 := by
   simp [ann]
 
+/- English proof (translation)
+Establish `h1` using `(MulChar.subgroupOrderIsoSubgroupMulChar (ZMod M) ℂ).apply_symm_apply (OrderDual.toDual Ξ)`. Establish `h2 : χ ∈ Ξ ↔ χ ∈ OrderDual.ofDual ((MulChar.subgroupOrderIsoSubgroupMulChar (ZMod M) ℂ) (ann Ξ))`. Simplify using `only [ann, h1, OrderDual.ofDual_toDual]`. Rewrite using `[h2]`. Generalize the expression as in `ann Ξ = S`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mem_iff (χ : DirichletCharacter ℂ M) : χ ∈ Ξ ↔ ∀ u ∈ ann Ξ, χ u = 1 := by
   have h1 := (MulChar.subgroupOrderIsoSubgroupMulChar (ZMod M) ℂ).apply_symm_apply (OrderDual.toDual Ξ)
   have h2 : χ ∈ Ξ ↔ χ ∈ OrderDual.ofDual ((MulChar.subgroupOrderIsoSubgroupMulChar (ZMod M) ℂ) (ann Ξ)) := by
@@ -39,6 +53,9 @@ theorem mem_iff (χ : DirichletCharacter ℂ M) : χ ∈ Ξ ↔ ∀ u ∈ ann Ξ
 
 abbrev B : Type := (ZMod M)ˣ ⧸ ann Ξ
 
+/- English proof (translation)
+Rewrite using `[← MulChar.card_subgroupOrderIsoSubgroupMulChar (R := ℂ), ann, OrderIso.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem card_B : Nat.card (B Ξ) = Nat.card Ξ := by
   rw [← MulChar.card_subgroupOrderIsoSubgroupMulChar (R := ℂ), ann, OrderIso.apply_symm_apply]
   rfl
@@ -47,6 +64,9 @@ instance neZero_lcm : NeZero (Nat.lcm (2 ^ (e + 2)) M) := ⟨Nat.lcm_ne_zero (by
 
 def xiW : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ →* B Ξ := (QuotientGroup.mk' _).comp (ZMod.unitsMap (Nat.dvd_lcm_right _ _))
 
+/- English proof (translation)
+Introduce `b`. Take `⟨a, rfl⟩` from `QuotientGroup.mk'_surjective (ann Ξ) b`. Take `⟨c, rfl⟩` from `ZMod.unitsMap_surjective (Nat.dvd_lcm_right (2 ^ (e + 2)) M) a`. Conclude with `⟨c, rfl⟩`.
+-/
 theorem xiW_surj : Function.Surjective (xiW Ξ e) := by
   intro b
   obtain ⟨a, rfl⟩ := QuotientGroup.mk'_surjective (ann Ξ) b
@@ -56,6 +76,9 @@ theorem xiW_surj : Function.Surjective (xiW Ξ e) := by
 def Good (m : ℕ) : Prop := m ∣ Nat.lcm (2 ^ (e + 2)) M ∧ 2 ^ (e + 2) ∣ m ∧
   ∀ u : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ, (u : ZMod (Nat.lcm (2 ^ (e + 2)) M)).val ≡ 1 [MOD m] → xiW Ξ e u = 1
 
+/- English proof (translation)
+Use `⟨Nat.lcm (2 ^ (e + 2)) M, dvd_rfl, Nat.dvd_lcm_left _ _, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1 : ((u : ZMod (Nat.lcm (2 ^ (e + 2)) M)).val : ZMod (Nat.lcm (2 ^ (e + 2)) M)) = ((1 : ℕ) : ZMod (Nat.lcm (2 ^ (e + 2)) M))` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hu`. Rewrite `h1` using `[ZMod.natCast_zmod_val, Nat.cast_one]`. Establish `h2 : u = 1` using `Units.ext (by rw [h1, Units.val_one])`. Rewrite using `[h2, map_one]`.
+-/
 theorem exists_good : ∃ m, Good Ξ e m := by
   refine ⟨Nat.lcm (2 ^ (e + 2)) M, dvd_rfl, Nat.dvd_lcm_left _ _, fun u hu => ?_⟩
   have h1 : ((u : ZMod (Nat.lcm (2 ^ (e + 2)) M)).val : ZMod (Nat.lcm (2 ^ (e + 2)) M)) =
@@ -69,16 +92,31 @@ open Classical in
 def QS : ℕ := Nat.find (exists_good Ξ e)
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Nat.find_spec (exists_good Ξ e)`.
+-/
 theorem good_QS : Good Ξ e (QS Ξ e) := Nat.find_spec (exists_good Ξ e)
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Nat.find_min (exists_good Ξ e) h`.
+-/
 theorem not_good {m : ℕ} (h : m < QS Ξ e) : ¬ Good Ξ e m := Nat.find_min (exists_good Ξ e) h
 
+/- English proof (translation)
+The claim follows from `(good_QS Ξ e).1`.
+-/
 theorem QS_dvd : QS Ξ e ∣ Nat.lcm (2 ^ (e + 2)) M := (good_QS Ξ e).1
 
+/- English proof (translation)
+The claim follows from `(QS_dvd Ξ e).trans (Nat.lcm_dvd (Nat.dvd_mul_right _ _) (Nat.dvd_mul_left _ _))`.
+-/
 theorem QS_dvd_mul : QS Ξ e ∣ 2 ^ (e + 2) * M :=
   (QS_dvd Ξ e).trans (Nat.lcm_dvd (Nat.dvd_mul_right _ _) (Nat.dvd_mul_left _ _))
 
+/- English proof (translation)
+Use `Nat.pos_of_ne_zero fun h => ?_` and prove the remaining obligations. Establish `h1` using `QS_dvd Ξ e`. Rewrite `h1` using `[h, zero_dvd_iff]`. Conclude with `(NeZero.ne _) h1`.
+-/
 theorem QS_pos : 0 < QS Ξ e := by
   refine Nat.pos_of_ne_zero fun h => ?_
   have h1 := QS_dvd Ξ e
@@ -91,9 +129,15 @@ def xi : (ZMod (QS Ξ e))ˣ →* B Ξ :=
   (ZMod.unitsMap (QS_dvd Ξ e)).liftOfSurjective (ZMod.unitsMap_surjective _)
     ⟨xiW Ξ e, fun u hu => (good_QS Ξ e).2.2 u ((unitsMap_eq_one_iff _ u).mp hu)⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ _`.
+-/
 theorem xi_unitsMap (u : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ) : xi Ξ e (ZMod.unitsMap (QS_dvd Ξ e) u) = xiW Ξ e u :=
   MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ _
 
+/- English proof (translation)
+Introduce `b`. Take `⟨u, rfl⟩` from `xiW_surj Ξ e b`. Conclude with `⟨_, xi_unitsMap Ξ e u⟩`.
+-/
 theorem xi_surj : Function.Surjective (xi Ξ e) := by
   intro b
   obtain ⟨u, rfl⟩ := xiW_surj Ξ e b
@@ -116,8 +160,14 @@ def data : EvenData where
 
 def frame : Frame := (data Ξ e hev).frame
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frame_e : (frame Ξ e hev).e = e := rfl
 
+/- English proof (translation)
+Rewrite using `[← card_B Ξ]`. Use `((data Ξ e hev).o_eq).trans ?_` and prove the remaining obligations. Use `show Nat.card (xi Ξ e).range = Nat.card (B Ξ)`. Rewrite using `[MonoidHom.range_eq_top.mpr (xi_surj Ξ e)]`. Conclude with `Nat.card_congr Subgroup.topEquiv.toEquiv`.
+-/
 theorem o_eq : (frame Ξ e hev).o = Nat.card Ξ := by
   rw [← card_B Ξ]
   refine ((data Ξ e hev).o_eq).trans ?_
@@ -125,6 +175,13 @@ theorem o_eq : (frame Ξ e hev).o = Nat.card Ξ := by
   rw [MonoidHom.range_eq_top.mpr (xi_surj Ξ e)]
   exact Nat.card_congr Subgroup.topEquiv.toEquiv
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h`. Establish `hU : Nat.card (ZMod (2 ^ (e + 2)))ˣ = 2 ^ (e + 1)`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow Nat.prime_two (by omega), show e + 2 - 1 = e + 1 by omega]`. Evaluate the numerical expressions. Establish `h2 : Nat.card (HGrp e) ∣ 2 ^ (e + 1)`.
+
+Establish `h0` using `Subgroup.card_quotient_dvd_card (Subgroup.zpowers (-1 : (ZMod (2 ^ (e + 2)))ˣ))`. Rewrite `h0` using `[hU]`. Then use the resulting hypothesis. Establish `hB : Nat.card (B Ξ) = 2 ^ j` using `(card_B Ξ).trans hj`. Establish `h3 : Nat.card (data Ξ e hev).R ∣ 2 ^ (e + 1 + j)`. Establish `h1 : Nat.card (data Ξ e hev).R ∣ Nat.card (HGrp e × B Ξ)` using `Subgroup.card_subgroup_dvd_card _`.
+
+Rewrite `h1` using `[Nat.card_prod, hB]`. Rewrite using `[pow_add]`. Conclude with `h1.trans (mul_dvd_mul_right h2 _)`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow Nat.prime_two).mp h3`. Conclude with `⟨k, ((data Ξ e hev).ord_eq).trans hk⟩`.
+-/
 theorem twoGroup (h : ∃ j : ℕ, Nat.card Ξ = 2 ^ j) : (frame Ξ e hev).TwoGroup := by
   obtain ⟨j, hj⟩ := h
   have hU : Nat.card (ZMod (2 ^ (e + 2)))ˣ = 2 ^ (e + 1) := by
@@ -143,6 +200,9 @@ theorem twoGroup (h : ∃ j : ℕ, Nat.card Ξ = 2 ^ j) : (frame Ξ e hev).TwoGr
   obtain ⟨k, -, hk⟩ := (Nat.dvd_prime_pow Nat.prime_two).mp h3
   exact ⟨k, ((data Ξ e hev).ord_eq).trans hk⟩
 
+/- English proof (translation)
+Establish `h1` using `Nat.le_of_dvd (Nat.mul_pos (by positivity) (Nat.pos_of_ne_zero (NeZero.ne M))) (QS_dvd_mul Ξ e)`. Establish `h2 : 2 ^ e ≤ (frame Ξ e hev).ord` using `(frame Ξ e hev).two_pow_le_ord`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem QS_le (h : 4 * M ≤ 2 ^ e) : QS Ξ e ≤ (frame Ξ e hev).ord ^ 2 := by
   have h1 := Nat.le_of_dvd (Nat.mul_pos (by positivity) (Nat.pos_of_ne_zero (NeZero.ne M))) (QS_dvd_mul Ξ e)
   have h2 : 2 ^ e ≤ (frame Ξ e hev).ord := (frame Ξ e hev).two_pow_le_ord
@@ -150,11 +210,33 @@ theorem QS_le (h : 4 * M ≤ 2 ^ e) : QS Ξ e ≤ (frame Ξ e hev).ord ^ 2 := by
     _ ≤ 2 ^ e * 2 ^ e := Nat.mul_le_mul_left _ h
     _ ≤ _ := by rw [sq]; exact Nat.mul_le_mul h2 h2
 
+/- English proof (translation)
+Break down `(Nat.Prime.dvd_mul hl).mp (h.trans (QS_dvd_mul Ξ e)) with h1 | h1` into its components or cases. Conclude with `absurd ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).mp (hl.dvd_of_dvd_pow h1)) h2`. Conclude with `h1`.
+-/
 theorem dvd_of_dvd_QS {l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (h : l ∣ QS Ξ e) : l ∣ M := by
   rcases (Nat.Prime.dvd_mul hl).mp (h.trans (QS_dvd_mul Ξ e)) with h1 | h1
   · exact absurd ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).mp (hl.dvd_of_dvd_pow h1)) h2
   · exact h1
 
+/- English proof (translation)
+Establish `hlt : QS Ξ e / l < QS Ξ e` using `Nat.div_lt_self (QS_pos Ξ e) hl.one_lt`. Establish `hdv : QS Ξ e / l ∣ QS Ξ e` using `Nat.div_dvd_of_dvd hd`. Distinguish the cases in `h2 : 2 ^ (e + 2) ∣ QS Ξ e / l`. Assume the negation of the conclusion as `hn`. Use `not_good Ξ e hlt ⟨hdv.trans (QS_dvd Ξ e), h2, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h3`. Use `hn ⟨ZMod.unitsMap (QS_dvd Ξ e) u, ((unitsMap_val_modEq (QS_dvd Ξ e) u).of_dvd hdv).symm.trans hu, fun h4 => h3 ?_⟩` and prove the remaining obligations. Rewrite using `[← xi_unitsMap]`. Conclude with `congrArg Prod.snd h4`. Take `⟨c, hc⟩` from `(good_QS Ξ e).2.1`.
+
+Establish `hl2 : l = 2`. Assume the negation of the conclusion as `h3`. Establish `h4 : Nat.Coprime (2 ^ (e + 2)) l` using `Nat.Coprime.pow_left _ ((Nat.coprime_primes Nat.prime_two hl).mpr (Ne.symm h3))`. Conclude with `h2 (h4.dvd_of_dvd_mul_right (by rw [Nat.div_mul_cancel hd]; exact (good_QS Ξ e).2.1))`. Substitute `hl2` using the available equality.
+
+Take `⟨k, rfl⟩ : ∃ k, e = k + 1` from `⟨e - 1, by omega⟩`. Establish `hdiv : QS Ξ (k + 1) / 2 = 2 ^ (k + 2) * c`. Rewrite using `[hc, show 2 ^ (k + 1 + 2) * c = 2 * (2 ^ (k + 2) * c) by ring, Nat.mul_div_cancel_left _ (by norm_num)]`. Establish `hQ : QS Ξ (k + 1) = 2 * (2 ^ (k + 2) * c)` using `by rw [hc]; ring`. Establish `hcop : Nat.Coprime (2 ^ (k + 2) * c + 1) (QS Ξ (k + 1))`.
+
+Rewrite using `[hQ]`. Use `Nat.Coprime.mul_right ?_ (by simp)` and prove the remaining obligations. Rewrite using `[Nat.coprime_two_right]`. Conclude with `⟨2 ^ (k + 1) * c, by ring⟩`. Establish `hval : ((ZMod.unitOfCoprime _ hcop : (ZMod (QS Ξ (k + 1)))ˣ) : ZMod (QS Ξ (k + 1))).val ≡ 2 ^ (k + 2) * c + 1 [MOD QS Ξ (k + 1)]`.
+
+Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Conclude with `Nat.mod_modEq _ _`. Use `⟨ZMod.unitOfCoprime _ hcop, (hval.of_dvd hdv).trans ?_, fun h4 => ?_⟩` and prove the remaining obligations. Rewrite using `[hdiv]`. Simplify using `[Nat.ModEq]`.
+
+Establish `h5 : hcl (k + 1) (ZMod.unitsMap (good_QS Ξ (k + 1)).2.1 (ZMod.unitOfCoprime _ hcop)) = hcl (k + 1) 1` using `congrArg Prod.fst h4`. Rewrite `h5` using `[unitsMap_unitOfCoprime, hcl_eq_hcl_iff, Units.ext_iff, Units.ext_iff, ZMod.coe_unitOfCoprime, Units.val_neg, Units.val_one, Nat.cast_add, Nat.cast_one]`. Break down `h5 with h5 | h5` into its components or cases. Use `h2 ?_` and prove the remaining obligations. Rewrite using `[hdiv, ← ZMod.natCast_eq_zero_iff]`.
+
+Take the linear combination `h5`. Establish `h6 : 2 ^ (k + 1 + 2) ∣ 2 ^ (k + 2) * c + 2`. Rewrite using `[← ZMod.natCast_eq_zero_iff, Nat.cast_add, Nat.cast_ofNat]`. Take the linear combination `h5`. Establish `h7 : 4 ∣ 2 ^ (k + 2) * c + 2` using `Dvd.dvd.trans ⟨2 ^ (k + 1), by ring⟩ h6`.
+
+Establish `h8 : 4 ∣ 2 ^ (k + 2) * c` using `⟨2 ^ k * c, by ring⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exact_data (he : 1 ≤ e) (l : ℕ) (hl : l.Prime) (hd : l ∣ QS Ξ e) :
     ∃ v : (ZMod (QS Ξ e))ˣ, (v : ZMod (QS Ξ e)).val ≡ 1 [MOD QS Ξ e / l] ∧ (data Ξ e hev).eta v ≠ 1 := by
   have hlt : QS Ξ e / l < QS Ξ e := Nat.div_lt_self (QS_pos Ξ e) hl.one_lt
@@ -211,6 +293,13 @@ def theta (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) : (frame Ξ e hev).C
   (thetaB Ξ χ hχ).comp
     ((data Ξ e hev).xiA.comp (MonoidHom.snd G0 (data Ξ e hev).frame.MA))
 
+/- English proof (translation)
+Simplify using `only [Frame.Chat, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Frame.TrivialOnFirstFactor`. Introduce `s hs`. Establish `h1` using `((data Ξ e hev).mem_cusp_forms_iff_automorphic_compact s).mp hs`.
+
+Use `show thetaB Ξ χ hχ ((data Ξ e hev).xiA ((data Ξ e hev).frame.iota s)) = 1`. Rewrite using `[h1]`. Conclude with `map_one (thetaB Ξ χ hχ)`. Use `show thetaB Ξ χ hχ ((data Ξ e hev).xiA 1) = 1`. Rewrite using `[map_one]`.
+
+Conclude with `map_one (thetaB Ξ χ hχ)`. Use `show thetaB Ξ χ hχ ((data Ξ e hev).xiA 1) = 1`. Rewrite using `[map_one]`. Conclude with `map_one (thetaB Ξ χ hχ)`.
+-/
 theorem theta_mem (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) : theta Ξ e hev χ hχ ∈ (frame Ξ e hev).Chat := by
   simp only [Frame.Chat, Set.mem_setOf_eq]
   refine ⟨?_, ?_, ?_⟩
@@ -227,6 +316,9 @@ theorem theta_mem (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) : theta Ξ e
     rw [map_one]
     exact map_one (thetaB Ξ χ hχ)
 
+/- English proof (translation)
+Use `show thetaB Ξ χ hχ ((data Ξ e hev).xiA ((data Ξ e hev).toA (ZMod.unitsMap (QS_dvd Ξ e) u))) = _`. Establish `h1 : (data Ξ e hev).xiA ((data Ξ e hev).toA (ZMod.unitsMap (QS_dvd Ξ e) u)) = xiW Ξ e u` using `((data Ξ e hev).xiA_toA (ZMod.unitsMap (QS_dvd Ξ e) u)).trans (xi_unitsMap Ξ e u)`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem theta_toA (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) (s : G0) (u : (ZMod (Nat.lcm (2 ^ (e + 2)) M))ˣ) :
     theta Ξ e hev χ hχ (s, (data Ξ e hev).toA (ZMod.unitsMap (QS_dvd Ξ e) u)) =
       χ.toUnitHom (ZMod.unitsMap (Nat.dvd_lcm_right _ _) u) := by
@@ -236,6 +328,19 @@ theorem theta_toA (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) (s : G0) (u 
   rw [h1]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hθ`. Use `set D := data Ξ e hev with hD`. Establish `hsurj : Function.Surjective D.xiA` using `fun b => by`. Take `⟨u, rfl⟩` from `xi_surj Ξ e b`. Conclude with `⟨D.toA u, D.xiA_toA u⟩`.
+
+Set `θA : D.frame.MA →* ℂˣ` to `θ.comp (MonoidHom.inr G0 D.frame.MA)`. Set `θB : B Ξ →* ℂˣ` to `D.xiA.liftOfSurjective hsurj ⟨θA, fun a ha => h1 a.toAdd ((D.mem_cusp_forms_iff_automorphic_compact a.toAdd).mpr ha)⟩`. Establish `hB : ∀ a, θB (D.xiA a) = θA a` using `fun a => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ a`. Establish `hχ : MulChar.ofUnitHom (θB.comp (QuotientGroup.mk' _)) ∈ Ξ`. Use `(mem_iff Ξ _).mpr fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite using `[MulChar.ofUnitHom_coe, MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff u).mpr hu, map_one, Units.val_one]`. Establish `h0 : ∀ s : G0, θ (s, 1) = 1`. Introduce and unpack `⟨s, t⟩`. Establish `h4 : θ (frame Ξ e hev).sg = 1` using `by rw [← Frame.cc_mul_iod, map_mul, h2, h3, one_mul]`. Apply the tactic sequence `rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl`.
+
+Conclude with `map_one θ`. Conclude with `h2`. Conclude with `h4`. Conclude with `h3`. Use `⟨_, hχ, MonoidHom.ext fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, a⟩` from `g`. Take `⟨v, rfl⟩` from `D.toA_surj a`. Take `⟨u, rfl⟩` from `ZMod.unitsMap_surjective (QS_dvd Ξ e) v`. Use `(theta_toA Ξ e hev _ hχ s u).trans (Units.ext ?_)` and prove the remaining obligations. Establish `h5 : θ (s, D.toA (ZMod.unitsMap (QS_dvd Ξ e) u)) = θA (D.toA (ZMod.unitsMap (QS_dvd Ξ e) u))`.
+
+Establish `h6 : ((s, D.toA (ZMod.unitsMap (QS_dvd Ξ e) u)) : (frame Ξ e hev).GG) = (s, 1) * (1, D.toA (ZMod.unitsMap (QS_dvd Ξ e) u))` using `Prod.ext (mul_one _).symm (one_mul _).symm`. Conclude with `(congrArg θ h6).trans ((map_mul θ _ _).trans ((congrArg (· * _) (h0 s)).trans (one_mul _)))`. Rewrite using `[MulChar.coe_toUnitHom, MulChar.ofUnitHom_coe]`. Use `congrArg Units.val (Eq.trans ?_ h5.symm)` and prove the remaining obligations. Conclude with `(congrArg θB ((D.xiA_toA _).trans (xi_unitsMap Ξ e u))).symm.trans (hB _)`.
+-/
 theorem exists_theta (θ : (frame Ξ e hev).Char) (hθ : θ ∈ (frame Ξ e hev).Chat) : ∃ χ hχ, theta Ξ e hev χ hχ = θ := by
   obtain ⟨h1, h2, h3⟩ := hθ
   set D := data Ξ e hev with hD
@@ -276,6 +381,11 @@ variable {q d : ℕ} (hH : HostHyp q d) (hc : Nat.Coprime M (q * d)) (he : 2 ≤
   (hs : ∀ l : ℕ, l.Prime → l ≠ 2 → l ∣ M → jacobiSym (-(d : ℤ)) l = 1)
 
 include hH hc in
+/- English proof (translation)
+Take `⟨hq, hd, hq8, hd16, -⟩` from `hH`. Establish `h2 : Nat.Coprime 2 (q * d)`. Rewrite using `[Nat.coprime_mul_iff_right]`. Prove the components needed by the constructor for the conclusion. Conclude with `(Nat.coprime_primes Nat.prime_two hq).mpr (by omega)`.
+
+Conclude with `(Nat.coprime_primes Nat.prime_two hd).mpr (by omega)`. Conclude with `Nat.Coprime.coprime_dvd_left (QS_dvd_mul Ξ e) (Nat.Coprime.mul (Nat.Coprime.pow_left _ h2) hc)`.
+-/
 theorem coprime_QS : Nat.Coprime (QS Ξ e) (q * d) := by
   obtain ⟨hq, hd, hq8, hd16, -⟩ := hH
   have h2 : Nat.Coprime 2 (q * d) := by
@@ -288,31 +398,62 @@ theorem coprime_QS : Nat.Coprime (QS Ξ e) (q * d) := by
 def host : HostRaw (frame Ξ e hev) :=
   (data Ξ e hev).host hH (coprime_QS Ξ e hH hc) he fun l hl h2 h => hs l hl h2 (dvd_of_dvd_QS Ξ e hl h2 h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_q : (host Ξ e hev hH hc he hs).q = q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_d : (host Ξ e hev hH hc he hs).d = d := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem host_QS : (host Ξ e hev hH hc he hs).QS = QS Ξ e := rfl
 
+/- English proof (translation)
+Apply `(data Ξ e hev).psQ` to reduce the goal to its premises.
+-/
 theorem psQ : (host Ξ e hev hH hc he hs).PsQ := by
   apply (data Ξ e hev).psQ
 
+/- English proof (translation)
+Apply `(data Ξ e hev).exact` to reduce the goal to its premises. Introduce `l hl hd`. Conclude with `exact_data Ξ e hev (by omega) l hl hd`.
+-/
 theorem exact : (host Ξ e hev hH hc he hs).Exact := by
   apply (data Ξ e hev).exact
   intro l hl hd
   exact exact_data Ξ e hev (by omega) l hl hd
 
+/- English proof (translation)
+Apply `(data Ξ e hev).muPM` to reduce the goal to its premises. Conclude with `hq`.
+-/
 theorem muPM (hq : q ≠ 3) : (host Ξ e hev hH hc he hs).MuPM := by
   apply (data Ξ e hev).muPM
   exact hq
 
+/- English proof (translation)
+Use `show Nat.Coprime (QS Ξ e) 15`. Conclude with `Nat.Coprime.coprime_dvd_left (QS_dvd_mul Ξ e) (Nat.Coprime.mul (Nat.Coprime.pow_left _ (by decide)) h)`.
+-/
 theorem coprimeFifteen_of_coprime (h : Nat.Coprime M 15) : (host Ξ e hev hH hc he hs).CoprimeFifteen := by
   show Nat.Coprime (QS Ξ e) 15
   exact Nat.Coprime.coprime_dvd_left (QS_dvd_mul Ξ e) (Nat.Coprime.mul (Nat.Coprime.pow_left _ (by decide)) h)
 
+/- English proof (translation)
+Apply `(data Ξ e hev).exists_sqq` to reduce the goal to its premises.
+-/
 theorem exists_sqq : ∃ s : (host Ξ e hev hH hc he hs).E, s ^ 2 = -((host Ξ e hev hH hc he hs).q : (host Ξ e hev hH hc he hs).E) ∧
     ∀ σ : (host Ξ e hev hH hc he hs).E ≃ₐ[ℚ] (host Ξ e hev hH hc he hs).E,
       σ s = (((((host Ξ e hev hH hc he hs).gal σ).1.1 : ℤˣ) : ℤ) : (host Ξ e hev hH hc he hs).E) * s := by
   apply (data Ξ e hev).exists_sqq
 
+/- English proof (translation)
+Use `set H := host Ξ e hev hH hc he hs with hHdef`. Use `An.Induces.unique (f := fun a => χ (a : ZMod M)) (M := H.condN * M) (mul_ne_zero H.condN_pos.ne' (NeZero.ne M)) ⟨(PChar.of χ).prim, fun a ha => (An.induces_of χ).2 a ha.coprime_mul_left_right⟩ ⟨(H.prim _).prim, fun a ha => ?_⟩` and prove the remaining obligations. Establish `haN : a.Coprime H.condN` using `ha.coprime_mul_right_right`. Establish `haM : a.Coprime M` using `ha.coprime_mul_left_right`. Establish `haW : a.Coprime (Nat.lcm (2 ^ (e + 2)) M)` using `(Nat.Coprime.mul_right (haN.coprime_dvd_right ((H.tower_dvd.mul_right _).mul_right _)) haM).coprime_dvd_right (Nat.lcm_dvd_mul _ _)`.
+
+Use `((H.isPrimOf_prim _).2 a haN).trans ?_` and prove the remaining obligations. Use `show _ = χ (a : ZMod M)`. Rewrite using `[HostRaw.dirAt, ← ZMod.coe_unitOfCoprime a haN, H.dir_unit, ← ZMod.coe_unitOfCoprime a haM, ← MulChar.coe_toUnitHom]`. Use `congrArg Units.val ?_` and prove the remaining obligations. Establish `h1` using `theta_toA Ξ e hev χ hχ (H.art (ZMod.unitOfCoprime a haN)).1 (ZMod.unitOfCoprime a haW)`.
+
+Rewrite `h1` using `[unitsMap_unitOfCoprime, unitsMap_unitOfCoprime]`. Establish `h2 : (H.art (ZMod.unitOfCoprime a haN)).2 = (data Ξ e hev).toA (ZMod.unitOfCoprime a (haW.coprime_dvd_right (QS_dvd Ξ e)))` using `congrArg (data Ξ e hev).toA (unitsMap_unitOfCoprime ((data Ξ e hev).m_dvd q d) a haN)`. Establish `h3 : H.art (ZMod.unitOfCoprime a haN) = ((H.art (ZMod.unitOfCoprime a haN)).1, (data Ξ e hev).toA (ZMod.unitOfCoprime a (haW.coprime_dvd_right (QS_dvd Ξ e))))` using `Prod.ext rfl h2`. Conclude with `(congrArg (theta Ξ e hev χ hχ) h3).trans h1`.
+-/
 theorem prim_theta (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) :
     PChar.of χ = (host Ξ e hev hH hc he hs).prim (theta Ξ e hev χ hχ) := by
   set H := host Ξ e hev hH hc he hs with hHdef
@@ -336,6 +477,11 @@ theorem prim_theta (χ : DirichletCharacter ℂ M) (hχ : χ ∈ Ξ) :
       (data Ξ e hev).toA (ZMod.unitOfCoprime a (haW.coprime_dvd_right (QS_dvd Ξ e)))) := Prod.ext rfl h2
   exact (congrArg (theta Ξ e hev χ hχ) h3).trans h1
 
+/- English proof (translation)
+Unfold `HostRaw.KeptEqChat HostRaw.Kept`. Use `⟨fun ψ hψ => ?_, fun θ hθ => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχ, rfl⟩` from `(Level.mem_ofSub Ξ ψ).mp hψ`. Conclude with `⟨theta Ξ e hev χ hχ, theta_mem Ξ e hev χ hχ, ((host Ξ e hev hH hc he hs).isPrimOf_iff _ _).mpr (prim_theta Ξ e hev hH hc he hs χ hχ)⟩`. Take `⟨χ, hχ, rfl⟩` from `exists_theta Ξ e hev θ hθ`.
+
+Conclude with `⟨PChar.of χ, (Level.mem_ofSub Ξ _).mpr ⟨χ, hχ, rfl⟩, ((host Ξ e hev hH hc he hs).isPrimOf_iff _ _).mpr (prim_theta Ξ e hev hH hc he hs χ hχ)⟩`.
+-/
 theorem keptEqChat : (host Ξ e hev hH hc he hs).KeptEqChat (Level.ofSub Ξ).KEPT := by
   unfold HostRaw.KeptEqChat HostRaw.Kept
   refine ⟨fun ψ hψ => ?_, fun θ hθ => ?_⟩
@@ -346,6 +492,11 @@ theorem keptEqChat : (host Ξ e hev hH hc he hs).KeptEqChat (Level.ofSub Ξ).KEP
     exact ⟨PChar.of χ, (Level.mem_ofSub Ξ _).mpr ⟨χ, hχ, rfl⟩,
       ((host Ξ e hev hH hc he hs).isPrimOf_iff _ _).mpr (prim_theta Ξ e hev hH hc he hs χ hχ)⟩
 
+/- English proof (translation)
+Establish `hk` using `keptEqChat Ξ e hev hH hc he hs`. Unfold `HostRaw.KeptEqChat at hk`. Unfold `HostRaw.KeptInXp`. Introduce `ψ hψ`. Take `⟨θ, hθ, h⟩` from `hk.1 ψ hψ`.
+
+Use `⟨θ, ?_, h⟩` and prove the remaining obligations. Simplify using `only [Frame.Chat, Frame.Xp, Set.mem_setOf_eq] at hθ ⊢`. Conclude with `⟨hθ.1, hθ.2.1⟩`.
+-/
 theorem keptInXp : (host Ξ e hev hH hc he hs).KeptInXp (Level.ofSub Ξ).KEPT := by
   have hk := keptEqChat Ξ e hev hH hc he hs
   unfold HostRaw.KeptEqChat at hk
@@ -356,6 +507,11 @@ theorem keptInXp : (host Ξ e hev hH hc he hs).KeptInXp (Level.ofSub Ξ).KEPT :=
   simp only [Frame.Chat, Frame.Xp, Set.mem_setOf_eq] at hθ ⊢
   exact ⟨hθ.1, hθ.2.1⟩
 
+/- English proof (translation)
+Use `⟨fun ψ h => (by cases h), fun _ h => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχ, h1⟩` from `(Level.mem_ofSub Ξ _).mp ((HostRaw.kept_iff _ _ _).mp h)`. Rewrite `h1` using `[prim_theta Ξ e hev hH hc he hs χ hχ]`. Establish `h2` using `HostRaw.art_eq_of_prim_eq _ h1 (-1)`. Rewrite `h2` using `[HostRaw.art_neg_one, (theta_mem Ξ e hev χ hχ).2.2]`.
+
+Establish `h3 : (1 : ℂ) = ((-1 : ℤ) : ℂ)` using `congrArg Units.val h2`. Evaluate the numerical expressions using `at h3`.
+-/
 theorem exceptional_character_condition : (host Ξ e hev hH hc he hs).ExceptionalCharacterKept (Level.ofSub Ξ).KEPT (Level.ofSub Ξ).psK := by
   refine ⟨fun ψ h => (by cases h), fun _ h => ?_⟩
   obtain ⟨χ, hχ, h1⟩ := (Level.mem_ofSub Ξ _).mp ((HostRaw.kept_iff _ _ _).mp h)
@@ -365,6 +521,9 @@ theorem exceptional_character_condition : (host Ξ e hev hH hc he hs).Exceptiona
   have h3 : (1 : ℂ) = ((-1 : ℤ) : ℂ) := congrArg Units.val h2
   norm_num at h3
 
+/- English proof (translation)
+The claim follows from `o_eq Ξ e hev`.
+-/
 theorem o_eq_level : (frame Ξ e hev).o = (Level.ofSub Ξ).o := o_eq Ξ e hev
 
 end Host

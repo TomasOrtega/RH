@@ -50,6 +50,9 @@ structure IsWeak (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
     IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ p f, IsThetaFunO ψ S T f →
       ∫⁻ w in 𝓕, ‖om p f w‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.om_pres, h.om_heis, h.om_aut, h.om_unit⟩`.
+-/
 theorem isWeak_of_datum {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (h : IsWeilDatumO ψ S T χS χT om) : IsWeak ψ S T om :=
   ⟨h.om_pres, h.om_heis, h.om_aut, h.om_unit⟩

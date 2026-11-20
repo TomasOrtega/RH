@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.PPAS
 
+/- English proof (translation)
+Introduce `S T T' P P' f φ g hP ⟨Q, ψ, ⟨hQ, hQc⟩, hθ⟩`. Take `⟨hP, hPc⟩` from `hP`. Establish `w : ψ ≫ P.A.hom = (Q.A.hom ≫ g) ≫ f`. Rewrite using `[hQ.1.w, Category.assoc]`. Set `ψ' : Q.A.left ⟶ P'.A.left` to `hP.1.lift ψ (Q.A.hom ≫ g) w`.
+
+Establish `h₁ : ψ' ≫ φ = ψ` using `hP.1.lift_fst _ _ _`. Establish `h₂ : ψ' ≫ P'.A.hom = Q.A.hom ≫ g` using `hP.1.lift_snd _ _ _`. Establish `n : IsGrpPullback Q.A P.A (g ≫ f) (ψ' ≫ φ)` using `hQ.congr rfl h₁.symm`. Establish `hc : IsGrpPullback Q.A P'.A g ψ'` using `IsGrpPullback.cancel hP n h₂`. Use `⟨Q, ψ', ⟨hc, ?_⟩, hθ⟩` and prove the remaining obligations.
+
+Establish `e : sqMap hc.1.w ≫ sqMap hP.1.w = sqMap hQ.1.w`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [sqMap, Limits.pullback.map, Category.assoc, Limits.pullback.lift_fst, Limits.pullback.lift_fst_assoc]`. Rewrite using `[h₁]`. Simplify using `only [sqMap, Limits.pullback.map, Category.assoc, Limits.pullback.lift_snd, Limits.pullback.lift_snd_assoc]`.
+
+Rewrite using `[h₁]`. Rewrite using `[hQc, hPc, ← CechPic.pull_comp, e]`.
+-/
 theorem hasTheta_pull_cancel : ∀ (S T T' : Scheme.{0}) (P : PPAS S) (P' : PPAS T) (f : T ⟶ S)
     (φ : P'.A.left ⟶ P.A.left) (g : T' ⟶ T), P'.IsPull P f φ →
     (∃ (Q : PPAS T') (ψ : Q.A.left ⟶ P.A.left), Q.IsPull P (g ≫ f) ψ ∧ Q.HasTheta) →

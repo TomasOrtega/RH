@@ -14,6 +14,23 @@ namespace GlobalTheory.CovTop.VolUp.RatStab
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V Λ L g δ hhat hδ`. Establish `: IsTotallyReal D.host.F` using `D.sp.cm.totReal`. Take `⟨γ₀, hQ, hfin, harch⟩` from `GlobalTheory.RepConv.exists_rat V δ hδ.1`. Use `⟨γ₀, hQ, fun τ θ hθ => harch τ θ hθ, ?_⟩` and prove the remaining obligations. Establish `hLδ : ∀ x ∈ L, ∃ y ∈ L, (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).mulVec x - x = (1 : ℕ) • y` using `fun x hx => ⟨_, sub_mem ((hδ.2 x).1 hx) hx, by simp⟩`.
+
+Establish `hLδi : ∀ x ∈ L, ∃ y ∈ L, ((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).mulVec x - x = (1 : ℕ) • y`. Introduce `x hx`. Establish `hx' : ((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).mulVec x ∈ L`. Rewrite using `[hδ.2]`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Conclude with `hx`. Conclude with `⟨_, sub_mem hx' hx, by simp⟩`. Establish `hf : (finHom V (g⁻¹ * γ₀ * g)).1 = ((finHom V g)⁻¹).1 * (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Af D.host.F)) * (finHom V g).1`. Rewrite using `[← hfin]`. Simplify using `only [map_mul, map_inv, Units.val_mul]`.
+
+Establish `hfi : (finHom V (g⁻¹ * γ₀⁻¹ * g)).1 = ((finHom V g)⁻¹).1 * ((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Af D.host.F)) * (finHom V g).1`. Establish `hfin' : ((finHom V γ₀)⁻¹).1 = ((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Af D.host.F))`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hfin, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Rewrite using `[← hfin']`. Simplify using `only [map_mul, map_inv, Units.val_mul]`. Establish `c1` using `GlobalTheory.RepConv.hat_cong_conj (F := D.host.F) (Λ : Set (Fin V.rank → D.host.E)) (L : Set (Fin V.rank → D.host.E)) (finHom V g) hhat δ.1 1 hLδ`. Establish `c2` using `GlobalTheory.RepConv.hat_cong_conj (F := D.host.F) (Λ : Set (Fin V.rank → D.host.E)) (L : Set (Fin V.rank → D.host.E)) (finHom V g) hhat (δ⁻¹ : GL (Fin V.rank) D.host.E).1 1 hLδi`. Use `⟨GlobalTheory.FinUA.isUA_finHom D V _, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite using `[hf]`. Conclude with `c1 x hx`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `c2 x hx`.
+
+Use `⟨(finHom V (g⁻¹ * γ₀⁻¹ * g)).1 *ᵥ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfi]`. Establish `: (((finHom V g)⁻¹).1 * ((δ⁻¹ : GL (Fin V.rank) D.host.E) : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Af D.host.F)) * (finHom V g).1) *ᵥ x = x + (1 : ℕ) • y`. Rewrite using `[← e]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this]; exact add_mem hx (by simpa using hy)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Establish `: g⁻¹ * γ₀ * g * (g⁻¹ * γ₀⁻¹ * g) = 1` using `by group`. Rewrite using `[this, map_one, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem main : ∀ (D : D7) (V : HSp D) (Λ L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (g : GA D V) (δ : GL (Fin V.rank) D.host.E), (hat (maximalRealSubfield D.host.E) (L : Set (Fin V.rank → D.host.E)) : Set (Fin V.rank → RA (maximalRealSubfield D.host.E) D.host.E)) = ((finHom V g).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)).mulVec '' (hat (maximalRealSubfield D.host.E) (Λ : Set (Fin V.rank → D.host.E)) : Set (Fin V.rank → RA (maximalRealSubfield D.host.E) D.host.E)) → IsUStab (-(V.gram)ᵀ) L δ → ∃ γ ∈ GQ V, (∀ τ θ, IsInfEmb τ θ → infMat D.sp.cm.sig V.gram θ γ = (δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map τ) ∧ IsKM (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) (Λ : Set (Fin V.rank → D.host.E)) 1 ((finHom V (g⁻¹ * γ * g)).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) := by
   intro D V Λ L g δ hhat hδ
   have : IsTotallyReal D.host.F := D.sp.cm.totReal

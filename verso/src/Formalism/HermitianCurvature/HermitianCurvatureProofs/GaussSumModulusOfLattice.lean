@@ -9,6 +9,13 @@ open scoped ComplexConjugate
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `K _ m hm D' x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k0⟩ : Nonempty (Fin m)` from `⟨⟨0, hm⟩⟩`. Establish `hx : ∀ k, x k = x k0`.
+
+Introduce `k`. Use `(h k).trans (h k0).symm` as an intermediate fact. Conclude with `mul_right_cancel this`. Use `⟨x k0, hx, ?_⟩` and prove the remaining obligations. Use `h k0` as an intermediate fact.
+
+Rewrite `this` using `[Finset.prod_congr rfl (fun j _ => hx j)]`. Simplify `this` using `[pow_succ, mul_comm]`. Introduce and unpack `⟨z, hz, hD⟩ k`. Rewrite using `[Finset.prod_congr rfl (fun j _ => hz j), hz k]`. Simplify `hD` using `[pow_succ, mul_comm]`.
+-/
 theorem phase_critical_points : Formalism.FourierDecayAlt.A6.CritPoints := by
   intro K _ m hm D' x
   constructor
@@ -26,6 +33,11 @@ theorem phase_critical_points : Formalism.FourierDecayAlt.A6.CritPoints := by
     rw [Finset.prod_congr rfl (fun j _ => hz j), hz k]
     simpa [pow_succ, mul_comm] using hD
 
+/- English proof (translation)
+Introduce `K _ m z`. Unfold `g0`. Simplify using `only [Finset.sum_const, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `: Ring.inverse ((z : K) ^ m) = ((z⁻¹ : Kˣ) : K) ^ m`. Rewrite using `[← Units.val_pow_eq_pow_val, Ring.inverse_unit, ← Units.val_pow_eq_pow_val, inv_pow]`.
+
+Rewrite using `[this, pow_succ, mul_assoc, mul_comm (z : K), ← mul_assoc, ← mul_pow]`. Simplify using `[add_mul]`.
+-/
 theorem phase_critical_value : Formalism.FourierDecayAlt.A6.CritValue := by
   intro K _ m z
   unfold g0
@@ -35,6 +47,11 @@ theorem phase_critical_value : Formalism.FourierDecayAlt.A6.CritValue := by
   rw [this, pow_succ, mul_assoc, mul_comm (z : K), ← mul_assoc, ← mul_pow]
   simp [add_mul]
 
+/- English proof (translation)
+Introduce `K _ m a`. Unfold `hessM`. Rewrite using `[Matrix.det_smul, Fintype.card_fin]`. Establish `: (1 + Matrix.of fun _ _ => (1 : K) : Matrix (Fin m) (Fin m) K) = 1 + Matrix.replicateCol Unit (fun _ => (1:K)) * Matrix.replicateRow Unit (fun _ => (1:K))`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Simplify using `[dotProduct, mul_comm, add_comm]`.
+-/
 theorem phase_hessian_determinant : Formalism.FourierDecayAlt.A6.HessDet := by
   intro K _ m a
   unfold hessM
@@ -53,21 +70,38 @@ open MvPolynomial
 
 variable {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨k, rfl⟩`.
+-/
 theorem X_mem (k : Fin m) : (X k : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ :=
   Ideal.subset_span ⟨k, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Ideal.sum_mem _ fun k _ => X_mem k`.
+-/
 theorem e_mem (s : Finset (Fin m)) :
     (∑ k ∈ s, X k : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ :=
   Ideal.sum_mem _ fun k _ => X_mem k
 
+/- English proof (translation)
+The claim follows from `Ideal.sum_mem _ fun k _ => Ideal.pow_mem_pow (X_mem k) 2`.
+-/
 theorem p_mem (s : Finset (Fin m)) :
     (∑ k ∈ s, X k ^ 2 : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ ^ 2 :=
   Ideal.sum_mem _ fun k _ => Ideal.pow_mem_pow (X_mem k) 2
 
+/- English proof (translation)
+Establish `: (2 : MvPolynomial (Fin m) ℚ) = C 2` using `(map_ofNat C 2).symm`. Rewrite using `[this, ← C_mul]`. Evaluate the numerical expressions.
+-/
 theorem two_half : (2 : MvPolynomial (Fin m) ℚ) * C (1 / 2 : ℚ) = 1 := by
   have : (2 : MvPolynomial (Fin m) ℚ) = C 2 := (map_ofNat C 2).symm
   rw [this, ← C_mul]; norm_num
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `h1 : (X a * (C (1 / 2 : ℚ) * ((∑ k ∈ s, X k) ^ 2 - ∑ k ∈ s, X k ^ 2)) : MvPolynomial (Fin m) ℚ) ∈ idealOfVars (Fin m) ℚ ^ 3`.
+
+Rewrite using `[pow_succ' _ 2]`. Conclude with `Ideal.mul_mem_mul (X_mem a) (Ideal.mul_mem_left _ _ (Ideal.sub_mem _ (Ideal.pow_mem_pow (e_mem s) 2) (p_mem s)))`. Establish `h2` using `Ideal.add_mem _ (Ideal.mul_mem_left _ (1 + X a) ih) h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-((∑ k ∈ s, X k) * X a)) * (two_half (m := m))`.
+-/
 theorem prod_jet (s : Finset (Fin m)) :
     (∏ k ∈ s, (1 + X k) - (1 + ∑ k ∈ s, X k + C (1 / 2 : ℚ) *
       ((∑ k ∈ s, X k) ^ 2 - ∑ k ∈ s, X k ^ 2)) : MvPolynomial (Fin m) ℚ) ∈
@@ -92,6 +126,19 @@ open Formalism.FourierDecayAlt.P.A5x5
 
 section Abs
 
+/- English proof (translation)
+Establish `hχ : ∀ w, ∑ z, B z w = if ∀ y, B y w = 1 then (Fintype.card H : ℂ) else 0`. Introduce `w`. Set `χ : AddChar H ℂ` to `⟨fun y => B y w, hB0 w, hB w⟩`. Establish `h` using `AddChar.sum_eq_ite χ`. Establish `e : χ = 0 ↔ ∀ y, B y w = 1`.
+
+Rewrite using `[DFunLike.ext_iff]`. Both sides reduce to the same expression. Simplify using `only [e] at h`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_sum, Finset.sum_mul_sum, Finset.sum_comm]`. Use `_ = ∑ z, ∑ w, F (z + w) * conj (F z) := by`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Conclude with `(Fintype.sum_equiv (Equiv.addLeft z) _ _ fun w => rfl).symm`. Use `_ = ∑ z, ∑ w, F w * B z w := by`.
+
+Use `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hF]`. Take the linear combination `(F w * B z w) * hn z`. Use `_ = ∑ w, F w * ∑ z, B z w := by`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[Finset.mul_sum]`. Use `_ = ∑ w, if ∀ y, B y w = 1 then (Fintype.card H : ℂ) else 0 := by`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hχ]`. Use `split_ifs with h`.
+
+Rewrite using `[h1 w h, one_mul]`. Simplify using the standard rewrite rules. Use `_ = _ := by`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Fintype.card_subtype, mul_comm]`.
+-/
 theorem gauss_abs {H : Type} [AddCommGroup H] [Fintype H] (F : H → ℂ) (B : H → H → ℂ)
     (hF : ∀ y w, F (y + w) = F y * F w * B y w)
     (hn : ∀ y, F y * conj (F y) = 1)
@@ -137,15 +184,24 @@ variable {K : Type} [CommRing K] {m : ℕ}
 def PL (L : AddSubgroup K) (m : ℕ) : AddSubgroup (Fin m → K) :=
   AddSubgroup.pi Set.univ (fun _ => L)
 
+/- English proof (translation)
+Simplify using `[PL, AddSubgroup.mem_pi]`.
+-/
 theorem mem_PL {L : AddSubgroup K} {v : Fin m → K} : v ∈ PL L m ↔ ∀ i, v i ∈ L := by
   simp [PL, AddSubgroup.mem_pi]
 
 def prj (Λ : AddSubgroup K) (m : ℕ) : (Fin m → K) →+ (Fin m → K ⧸ Λ) :=
   (QuotientAddGroup.mk' Λ).compLeft (Fin m)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prj_apply (Λ : AddSubgroup K) (x : Fin m → K) (i : Fin m) :
     prj Λ m x i = (x i : K ⧸ Λ) := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, mem_PL, funext_iff]`. Conclude with `forall_congr' fun i => by`. Rewrite using `[prj_apply, Pi.zero_apply, QuotientAddGroup.eq_zero_iff]`.
+-/
 theorem ker_prj (Λ : AddSubgroup K) : (prj Λ m).ker = PL Λ m := by
   ext x
   rw [AddMonoidHom.mem_ker, mem_PL, funext_iff]
@@ -154,13 +210,26 @@ theorem ker_prj (Λ : AddSubgroup K) : (prj Λ m).ker = PL Λ m := by
 
 def sec (Λ : AddSubgroup K) (y : Fin m → K ⧸ Λ) : Fin m → K := fun i => Quotient.out (y i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `Quotient.out_eq' (y i)`.
+-/
 theorem prj_sec (Λ : AddSubgroup K) (y : Fin m → K ⧸ Λ) : prj Λ m (sec Λ y) = y := by
   funext i
   exact Quotient.out_eq' (y i)
 
+/- English proof (translation)
+Rewrite using `[← ker_prj, AddMonoidHom.mem_ker, map_sub, prj_sec, sub_self]`.
+-/
 theorem sec_prj_sub (Λ : AddSubgroup K) (x : Fin m → K) : sec Λ (prj Λ m x) - x ∈ PL Λ m := by
   rw [← ker_prj, AddMonoidHom.mem_ker, map_sub, prj_sec, sub_self]
 
+/- English proof (translation)
+Establish `e : ∀ y : Fin m → K ⧸ Λ, y ∈ (PL L m).map (prj Λ m) ↔ ∀ i, y i ∈ L.map (QuotientAddGroup.mk' Λ)`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i`. Conclude with `⟨x i, mem_PL.1 hx i, rfl⟩`.
+
+Introduce `h choose x hx hxy using h`. Conclude with `⟨x, mem_PL.2 hx, funext hxy⟩`. Rewrite using `[← ker_prj, AddSubgroup.relIndex_ker]`. Establish `h2 : Λ.relIndex L = Nat.card (L.map (QuotientAddGroup.mk' Λ))` using `by conv_lhs => rw [← QuotientAddGroup.ker_mk' Λ]`. Conclude with `AddSubgroup.relIndex_ker _ _`.
+
+Rewrite using `[h2]`. Use `Nat.card_congr ((Equiv.subtypeEquivRight e).trans (Equiv.subtypePiEquivPi (p := fun (_ : Fin m) (b : K ⧸ Λ) => b ∈ L.map (QuotientAddGroup.mk' Λ))))` as an intermediate fact. Rewrite `this` using `[Nat.card_fun, Nat.card_eq_fintype_card (α := Fin m), Fintype.card_fin]`. Conclude with `this`.
+-/
 theorem relIndex_PL (Λ L : AddSubgroup K) :
     (PL Λ m).relIndex (PL L m) = Λ.relIndex L ^ m := by
   have e : ∀ y : Fin m → K ⧸ Λ, y ∈ (PL L m).map (prj Λ m) ↔
@@ -182,11 +251,17 @@ theorem relIndex_PL (Λ L : AddSubgroup K) :
   rw [Nat.card_fun, Nat.card_eq_fintype_card (α := Fin m), Fintype.card_fin] at this
   exact this
 
+/- English proof (translation)
+Establish `h` using `AddSubgroup.relIndex_ker (K := N) (prj Λ m)`. Rewrite `h` using `[ker_prj]`. Then use the resulting hypothesis.
+-/
 theorem relIndex_eq_card (Λ : AddSubgroup K) (N : AddSubgroup (Fin m → K)) :
     (PL Λ m).relIndex N = Nat.card (N.map (prj Λ m)) := by
   have h := AddSubgroup.relIndex_ker (K := N) (prj Λ m)
   rwa [ker_prj] at h
 
+/- English proof (translation)
+Unfold `gi`. Rewrite using `[relIndex_PL, relIndex_PL, div_pow]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem gi_PL (A B : AddSubgroup K) : gi (PL A m) (PL B m) = gi A B ^ m := by
   unfold gi
   rw [relIndex_PL, relIndex_PL, div_pow]
@@ -195,6 +270,11 @@ theorem gi_PL (A B : AddSubgroup K) : gi (PL A m) (PL B m) = gi A B ^ m := by
 
 variable [TopologicalSpace K] [IsTopologicalRing K]
 
+/- English proof (translation)
+Establish `e : ((PL L m : AddSubgroup (Fin m → K)) : Set (Fin m → K)) = Set.pi Set.univ (fun _ => (L : Set K))`. Use extensionality with `v`. Simplify using `[mem_PL]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e]`.
+
+Conclude with `isOpen_set_pi Set.finite_univ (fun _ _ => hL.1)`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi (fun _ => hL.2)`.
+-/
 theorem lat_PL {L : AddSubgroup K} (hL : IsLat L) : Lat (PL L m) := by
   have e : ((PL L m : AddSubgroup (Fin m → K)) : Set (Fin m → K)) =
       Set.pi Set.univ (fun _ => (L : Set K)) := by
@@ -209,12 +289,18 @@ section Main
 
 variable {K : Type} [CommRing K] {m : ℕ} (ψ : AddChar K ℂ)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `AddChar.map_add_eq_mul ψ x (-x)`. Rewrite `h1` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero h1`.
+-/
 theorem psi_ne_zero (x : K) : ψ x ≠ 0 := by
   intro h
   have h1 := AddChar.map_add_eq_mul ψ x (-x)
   rw [add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Unfold `dotProduct`. Use `Finset.sum_induction _ (fun a => ψ a = 1) (fun a b ha hb => by rw [AddChar.map_add_eq_mul, ha, hb, one_mul]) (AddChar.map_zero_eq_one ψ) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `mem_PL.1 hu i _ (mem_PL.1 hx i)`.
+-/
 theorem dot_perp {L : AddSubgroup K} {x u : Fin m → K} (hx : x ∈ PL L m)
     (hu : u ∈ PL (perp ψ L) m) : ψ (x ⬝ᵥ u) = 1 := by
   unfold dotProduct
@@ -224,6 +310,11 @@ theorem dot_perp {L : AddSubgroup K} {x u : Fin m → K} (hx : x ∈ PL L m)
   rw [mul_comm]
   exact mem_PL.1 hu i _ (mem_PL.1 hx i)
 
+/- English proof (translation)
+Rewrite using `[mem_PL]`. Introduce `i l hl`. Establish `h1` using `h (Pi.single i l) (mem_PL.2 fun j => by`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `using hl`. Simplify using `[hj])`. Rewrite `h1` using `[single_dotProduct, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem mem_perp_of_dot {L : AddSubgroup K} {v : Fin m → K}
     (h : ∀ x ∈ PL L m, ψ (x ⬝ᵥ v) = 1) : v ∈ PL (perp ψ L) m := by
   classical
@@ -237,14 +328,23 @@ theorem mem_perp_of_dot {L : AddSubgroup K} {v : Fin m → K}
 
 variable {M : Matrix (Fin m) (Fin m) K}
 
+/- English proof (translation)
+Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hM.eq, dotProduct_comm]`.
+-/
 theorem symm_dot (hM : M.IsSymm) (x y : Fin m → K) : y ⬝ᵥ M *ᵥ x = x ⬝ᵥ M *ᵥ y := by
   rw [dotProduct_mulVec, ← mulVec_transpose, hM.eq, dotProduct_comm]
 
+/- English proof (translation)
+Rewrite using `[mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, symm_dot hM x y]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem q_add (hM : M.IsSymm) (x y : Fin m → K) :
     (x + y) ⬝ᵥ M *ᵥ (x + y) = x ⬝ᵥ M *ᵥ x + y ⬝ᵥ M *ᵥ y + 2 * (x ⬝ᵥ M *ᵥ y) := by
   rw [mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, symm_dot hM x y]
   ring
 
+/- English proof (translation)
+Establish `h` using `Ring.inverse_mul_cancel 2 h2`. Establish `e : Ring.inverse 2 * ((x + y) ⬝ᵥ M *ᵥ (x + y)) = Ring.inverse 2 * (x ⬝ᵥ M *ᵥ x) + Ring.inverse 2 * (y ⬝ᵥ M *ᵥ y) + x ⬝ᵥ M *ᵥ y`. Rewrite using `[q_add hM]`. Take the linear combination `(x ⬝ᵥ M *ᵥ y) * h`. Rewrite using `[e, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`.
+-/
 theorem psi_q_add (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (x y : Fin m → K) :
     ψ (Ring.inverse 2 * ((x + y) ⬝ᵥ M *ᵥ (x + y))) =
       ψ (Ring.inverse 2 * (x ⬝ᵥ M *ᵥ x)) * ψ (Ring.inverse 2 * (y ⬝ᵥ M *ᵥ y)) *
@@ -257,15 +357,24 @@ theorem psi_q_add (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (x y : Fin m → K) :
 
 variable {L Λ : AddSubgroup K}
 
+/- English proof (translation)
+Unfold `gaussF`. Rewrite using `[if_pos (mem_PL.1 hx)]`.
+-/
 theorem gaussF_of_mem {x : Fin m → K} (hx : x ∈ PL L m) :
     gaussF ψ L M x = ψ (Ring.inverse 2 * (x ⬝ᵥ M *ᵥ x)) := by
   unfold gaussF; rw [if_pos (mem_PL.1 hx)]
 
+/- English proof (translation)
+Unfold `gaussF`. Rewrite using `[if_neg (fun h => hx (mem_PL.2 h))]`.
+-/
 theorem gaussF_of_not_mem {x : Fin m → K} (hx : x ∉ PL L m) : gaussF ψ L M x = 0 := by
   unfold gaussF; rw [if_neg (fun h => hx (mem_PL.2 h))]
 
 variable {ψ}
 
+/- English proof (translation)
+Introduce `l hl`. Assume the negation of the conclusion as `h`. Establish `h1` using `hInv 0 l (mem_PL.1 hl)`. Rewrite `h1` using `[zero_add, gaussF_of_not_mem ψ h, gaussF_of_mem ψ (PL L m).zero_mem]`. Conclude with `psi_ne_zero ψ _ h1.symm`.
+-/
 theorem PL_le (hInv : LatInvN Λ (gaussF ψ L M)) : PL Λ m ≤ PL L m := by
   intro l hl
   by_contra h
@@ -273,12 +382,20 @@ theorem PL_le (hInv : LatInvN Λ (gaussF ψ L M)) : PL Λ m ≤ PL L m := by
   rw [zero_add, gaussF_of_not_mem ψ h, gaussF_of_mem ψ (PL L m).zero_mem] at h1
   exact psi_ne_zero ψ _ h1.symm
 
+/- English proof (translation)
+Establish `h1` using `hInv x l (mem_PL.1 hl)`. Rewrite `h1` using `[gaussF_of_mem ψ hx, gaussF_of_mem ψ ((PL L m).add_mem hx (PL_le hInv hl))]`. Then use the resulting hypothesis.
+-/
 theorem q_inv (hInv : LatInvN Λ (gaussF ψ L M)) {x l : Fin m → K} (hx : x ∈ PL L m)
     (hl : l ∈ PL Λ m) :
     ψ (Ring.inverse 2 * ((x + l) ⬝ᵥ M *ᵥ (x + l))) = ψ (Ring.inverse 2 * (x ⬝ᵥ M *ᵥ x)) := by
   have h1 := hInv x l (mem_PL.1 hl)
   rwa [gaussF_of_mem ψ hx, gaussF_of_mem ψ ((PL L m).add_mem hx (PL_le hInv hl))] at h1
 
+/- English proof (translation)
+Establish `h1` using `q_inv hInv hx hl`. Establish `h0` using `q_inv hInv (PL L m).zero_mem hl`. Rewrite `h0` using `[zero_add]`. Rewrite `h1` using `[psi_q_add ψ h2 hM, h0]`. Simplify using `only [mulVec_zero, dotProduct_zero, mul_zero, AddChar.map_zero_eq_one, mul_one] at h1`.
+
+Conclude with `mul_left_cancel₀ (psi_ne_zero ψ _) (h1.trans (mul_one _).symm)`.
+-/
 theorem b_one (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hInv : LatInvN Λ (gaussF ψ L M))
     {x l : Fin m → K} (hx : x ∈ PL L m) (hl : l ∈ PL Λ m) : ψ (x ⬝ᵥ M *ᵥ l) = 1 := by
   have h1 := q_inv hInv hx hl
@@ -288,35 +405,58 @@ theorem b_one (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hInv : LatInvN Λ (gaussF �
   simp only [mulVec_zero, dotProduct_zero, mul_zero, AddChar.map_zero_eq_one, mul_one] at h1
   exact mul_left_cancel₀ (psi_ne_zero ψ _) (h1.trans (mul_one _).symm)
 
+/- English proof (translation)
+Use `q_inv hInv hx hl` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem cq (hInv : LatInvN Λ (gaussF ψ L M)) {x x' : Fin m → K} (hx : x' ∈ PL L m)
     (hl : x - x' ∈ PL Λ m) :
     ψ (Ring.inverse 2 * (x ⬝ᵥ M *ᵥ x)) = ψ (Ring.inverse 2 * (x' ⬝ᵥ M *ᵥ x')) := by
   have := q_inv hInv hx hl
   rwa [add_sub_cancel] at this
 
+/- English proof (translation)
+Establish `e : x = x' + (x - x')` using `by abel`. Rewrite using `[e, mulVec_add, dotProduct_add, AddChar.map_add_eq_mul, b_one h2 hM hInv hu hl, mul_one]`.
+-/
 theorem cb2 (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hInv : LatInvN Λ (gaussF ψ L M))
     {x x' u : Fin m → K} (hu : u ∈ PL L m) (hl : x - x' ∈ PL Λ m) :
     ψ (u ⬝ᵥ M *ᵥ x) = ψ (u ⬝ᵥ M *ᵥ x') := by
   have e : x = x' + (x - x') := by abel
   rw [e, mulVec_add, dotProduct_add, AddChar.map_add_eq_mul, b_one h2 hM hInv hu hl, mul_one]
 
+/- English proof (translation)
+Rewrite using `[symm_dot hM u x, symm_dot hM u x', cb2 h2 hM hInv hu hl]`.
+-/
 theorem cb1 (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hInv : LatInvN Λ (gaussF ψ L M))
     {x x' u : Fin m → K} (hu : u ∈ PL L m) (hl : x - x' ∈ PL Λ m) :
     ψ (x ⬝ᵥ M *ᵥ u) = ψ (x' ⬝ᵥ M *ᵥ u) := by
   rw [symm_dot hM u x, symm_dot hM u x', cb2 h2 hM hInv hu hl]
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `hy`. Use `(PL L m).add_mem (hle (sec_prj_sub Λ x)) hx` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem sec_mem (hle : PL Λ m ≤ PL L m) {y : Fin m → K ⧸ Λ} (hy : y ∈ (PL L m).map (prj Λ m)) :
     sec Λ y ∈ PL L m := by
   obtain ⟨x, hx, rfl⟩ := hy
   have := (PL L m).add_mem (hle (sec_prj_sub Λ x)) hx
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Rewrite using `[← ker_prj, AddMonoidHom.mem_ker, map_sub, map_add, prj_sec, prj_sec, prj_sec, sub_self]`.
+-/
 theorem sec_add (y w : Fin m → K ⧸ Λ) : sec Λ (y + w) - (sec Λ y + sec Λ w) ∈ PL Λ m := by
   rw [← ker_prj, AddMonoidHom.mem_ker, map_sub, map_add, prj_sec, prj_sec, prj_sec, sub_self]
 
+/- English proof (translation)
+Rewrite using `[← ker_prj, AddMonoidHom.mem_ker, prj_sec]`.
+-/
 theorem sec_zero : sec Λ (0 : Fin m → K ⧸ Λ) ∈ PL Λ m := by
   rw [← ker_prj, AddMonoidHom.mem_ker, prj_sec]
 
+/- English proof (translation)
+Apply `mem_perp_of_dot` to reduce the goal to its premises. Introduce `x hx`. Establish `hMi : (M⁻¹).IsSymm` using `hM.inv`. Establish `h1` using `hAdm (x + u) (mem_PL.1 ((PL _ m).add_mem hx hu))`. Rewrite `h1` using `[psi_q_add ψ h2 hMi, hAdm x (mem_PL.1 hx), hAdm u (mem_PL.1 hu), one_mul, one_mul]`.
+
+Conclude with `h1`.
+-/
 theorem inv_mem (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hAdm : GaussAdm ψ L M) {u : Fin m → K}
     (hu : u ∈ PL (perp ψ L) m) : M⁻¹ *ᵥ u ∈ PL (perp ψ (perp ψ L)) m := by
   apply mem_perp_of_dot
@@ -326,6 +466,31 @@ theorem inv_mem (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hAdm : GaussAdm ψ L M) {
   rw [psi_q_add ψ h2 hMi, hAdm x (mem_PL.1 hx), hAdm u (mem_PL.1 hu), one_mul, one_mul] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hle` using `PL_le hInv`. Establish `hcard : Nat.card ((PL L m).map (prj Λ m)) = (PL Λ m).relIndex (PL L m)` using `(relIndex_eq_card _ _).symm`. Establish `: Finite ((PL L m).map (prj Λ m))` using `Nat.finite_of_card_ne_zero (hcard ▸ hfin)`. Establish `: Fintype ((PL L m).map (prj Λ m))` using `Fintype.ofFinite _`. Set `F : (PL L m).map (prj Λ m) → ℂ` to `fun y => ψ (Ring.inverse 2 * (sec Λ y.1 ⬝ᵥ M *ᵥ sec Λ y.1))`.
+
+Set `B : (PL L m).map (prj Λ m) → (PL L m).map (prj Λ m) → ℂ` to `fun y w => ψ (sec Λ y.1 ⬝ᵥ M *ᵥ sec Λ w.1)`. Establish `hS : ∑ᶠ y : Fin m → K ⧸ Λ, gaussF ψ L M (sec Λ y) = ∑ y, F y`. Rewrite using `[finsum_eq_sum_of_support_subset (s := (Finset.univ : Finset ((PL L m).map (prj Λ m))).map ⟨Subtype.val, Subtype.val_injective⟩)]`. Rewrite using `[Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun y _ => gaussF_of_mem ψ (sec_mem hle y.2)`.
+
+Introduce `y hy`. Assume the negation of the conclusion as `h`. Apply `hy` to reduce the goal to its premises. Apply `gaussF_of_not_mem` to reduce the goal to its premises. Introduce `hs`.
+
+Apply `h` to reduce the goal to its premises. Simplify using `only [Finset.coe_map, Function.Embedding.coeFn_mk, Finset.coe_univ, Set.image_univ, Subtype.range_coe_subtype]`. Conclude with `⟨_, hs, prj_sec _ _⟩`. Establish `hrad : ∀ w : (PL L m).map (prj Λ m), (∀ y, B y w = 1) → M *ᵥ sec Λ w.1 ∈ PL (perp ψ L) m`. Introduce `w hw`.
+
+Apply `mem_perp_of_dot` to reduce the goal to its premises. Introduce `x hx`. Use `hw ⟨prj Λ m x, x, hx, rfl⟩` as an intermediate fact. Rewrite using `[← this]`. Conclude with `(cb1 h2 hM hInv (sec_mem hle w.2) (sec_prj_sub Λ x)).symm`.
+
+Rewrite using `[hS, gauss_abs F B, hcard]`. Use `congr 2`. Rewrite using `[relIndex_eq_card]`. Use `Nat.card_congr ((Equiv.subtypeSubtypeEquivSubtypeExists _ _).trans (Equiv.subtypeEquivRight fun y => ?_))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hy, hw⟩`. Use `⟨sec Λ y, ⟨M *ᵥ sec Λ y, hrad ⟨y, hy⟩ hw, ?_⟩, prj_sec _ _⟩` and prove the remaining obligations. Simplify using `[mulVec_mulVec, nonsing_inv_mul _ hdet]`. Introduce and unpack `⟨_, ⟨u, hu', rfl⟩, rfl⟩`. Establish `hx : M⁻¹ *ᵥ u ∈ PL L m`.
+
+Use `inv_mem h2 hM hAdm hu'` as an intermediate fact. Rewrite `this` using `[hPP]`. Then use the resulting hypothesis. Use `⟨⟨_, hx, rfl⟩, fun y' => ?_⟩` and prove the remaining obligations. Use `show ψ (sec Λ y'.1 ⬝ᵥ M *ᵥ sec Λ (prj Λ m (mv M⁻¹ u))) = 1`. Rewrite using `[cb2 h2 hM hInv (sec_mem hle y'.2) (sec_prj_sub Λ _), mv_apply, mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`.
+
+Conclude with `dot_perp ψ (sec_mem hle y'.2) hu'`. Introduce `y w show ψ _ = ψ _ * ψ _ * ψ _`. Rewrite using `[← psi_q_add ψ h2 hM]`. Conclude with `cq hInv ((PL L m).add_mem (sec_mem hle y.2) (sec_mem hle w.2)) (sec_add _ _)`. Introduce `y show ψ _ * conj (ψ _) = 1`.
+
+Rewrite using `[hu, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Introduce `w y y' show ψ _ = ψ _ * ψ _`. Rewrite using `[← AddChar.map_add_eq_mul, ← add_dotProduct]`. Conclude with `cb1 h2 hM hInv (sec_mem hle w.2) (sec_add _ _)`. Introduce `w show ψ _ = 1`.
+
+Rewrite using `[symm_dot hM]`. Conclude with `b_one h2 hM hInv (sec_mem hle w.2) sec_zero`. Introduce `w hw`. Establish `h1` using `hAdm _ (mem_PL.1 (hrad w hw))`. Rewrite `h1` using `[mulVec_mulVec, nonsing_inv_mul _ hdet, one_mulVec, dotProduct_comm]`.
+
+Conclude with `h1`.
+-/
 theorem normSq_sum (h2 : IsUnit (2 : K)) (hM : M.IsSymm) (hInv : LatInvN Λ (gaussF ψ L M))
     (hu : ∀ x : K, conj (ψ x) = ψ (-x)) (hdet : IsUnit M.det)
     (hAdm : GaussAdm ψ L M) (hPP : perp ψ (perp ψ L) = L)
@@ -408,10 +573,18 @@ end Main
 
 section Final
 
+/- English proof (translation)
+Rewrite using `[gi, AddSubgroup.relIndex_eq_one.2 h]`. Simplify using the standard rewrite rules.
+-/
 theorem gi_of_ge {V : Type} [AddCommGroup V] {A B : AddSubgroup V} (h : B ≤ A) :
     gi A B = (B.relIndex A : ℝ) := by
   rw [gi, AddSubgroup.relIndex_eq_one.2 h]; simp
 
+/- English proof (translation)
+Establish `h1 : (x ^ (-(1 : ℝ) / 2)) ^ 2 = x⁻¹`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx.le]`. Evaluate the numerical expressions. Conclude with `Real.rpow_neg_one x`. Establish `h2 : X ^ 2 = (x ^ (-(1 : ℝ) / 2)) ^ 2`.
+
+Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts. Conclude with `h`. Conclude with `(pow_left_inj₀ hX (Real.rpow_nonneg hx.le _) (by norm_num)).1 h2`.
+-/
 theorem rpow_of_sq {x X : ℝ} (hx : 0 < x) (hX : 0 ≤ X) (h : X ^ 2 * x = 1) :
     X = x ^ (-(1 : ℝ) / 2) := by
   have h1 : (x ^ (-(1 : ℝ) / 2)) ^ 2 = x⁻¹ := by
@@ -422,6 +595,25 @@ theorem rpow_of_sq {x X : ℝ} (hx : 0 < x) (hX : 0 ≤ X) (h : X ^ 2 * x = 1) :
     rw [h1]; field_simp; exact h
   exact (pow_left_inj₀ hX (Real.rpow_nonneg hx.le _) (by norm_num)).1 h2
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hd hn m M hM hdet L Λ hL hΛ hAdm hInv`. Take `⟨hP, hPP, hvol⟩` from `hPL K R ψ hd hn L hL`. Establish `h2 : IsUnit (2 : K)` using `by simpa using hn 2 (by norm_num)`. Establish `lΛ : Lat (PL Λ m)` using `lat_PL hΛ`. Establish `lL : Lat (PL L m)` using `lat_PL hL`.
+
+Establish `lP : Lat (PL (perp ψ L) m)` using `lat_PL hP`. Establish `lR : Lat (LL R (Fin m))` using `lat_LL hd.isOpen hd.isCompact`. Establish `hdi : IsUnit (M⁻¹).det` using `Matrix.isUnit_nonsing_inv_det M hdet`. Establish `lN : Lat ((PL (perp ψ L) m).map (mv M⁻¹))` using `lat_map hdi lP`. Establish `hfin` using `relIndex_ne_zero lΛ.op lL.cp`.
+
+Establish `hS` using `normSq_sum h2 hM hInv hd.unitary hdet hAdm hPP hfin`. Establish `hle` using `PL_le hInv`. Establish `hleN : PL Λ m ≤ (PL (perp ψ L) m).map (mv M⁻¹)`. Introduce `l hl`. Use `⟨M *ᵥ l, mem_perp_of_dot ψ fun x hx => b_one h2 hM hInv hx hl, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[mulVec_mulVec, nonsing_inv_mul _ hdet]`. Rewrite `hS` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hS' : ‖∑ᶠ y : Fin m → K ⧸ Λ, gaussF ψ L M (sec Λ y)‖ ^ 2 = gi (PL L m) (PL Λ m) * gi ((PL (perp ψ L) m).map (mv M⁻¹)) (PL Λ m)`. Rewrite using `[gi_of_ge hle, gi_of_ge hleN]`. Conclude with `hS` after adjusting the coercions.
+
+Establish `hv : volL R Λ ^ m = gi (PL Λ m) (LL R (Fin m))` using `(gi_PL Λ R.toAddSubgroup).symm`. Establish `hv0 : 0 ≤ volL R Λ` using `by unfold volL; positivity`. Establish `e1 : gi (PL L m) (PL Λ m) * volL R Λ ^ m = volL R L ^ m`. Rewrite using `[hv, gi_trans lL lΛ lR]`. Conclude with `gi_PL L R.toAddSubgroup`.
+
+Establish `e2 : gi ((PL (perp ψ L) m).map (mv M⁻¹)) (PL Λ m) * volL R Λ ^ m = volL R (perp ψ L) ^ m * modK R (M⁻¹).det`. Rewrite using `[hv, gi_trans lN lΛ lR, ← gi_trans lN (lat_map hdi lR) lR, gi_map (mv_injective hdi)]`. Use `congr 1`. Conclude with `gi_PL (perp ψ L) R.toAddSubgroup`. Conclude with `good_fin hd m M⁻¹ hdi`.
+
+Establish `e3 : modK R (M⁻¹).det * modK R M.det = 1`. Rewrite using `[← modK_mul' hd hdi hdet, ← det_mul, nonsing_inv_mul _ hdet, det_one, modK_one]`. Establish `hpos : 0 < modK R M.det`. Use `modK_pos hd.isOpen hd.isCompact hdet.unit` as an intermediate fact. Simplify using `using this`.
+
+Apply `rpow_of_sq hpos (norm_nonneg _)` to reduce the goal to its premises. Use `show ‖(volL R Λ : ℂ) ^ m * ∑ᶠ y : Fin m → K ⧸ Λ, gaussF ψ L M (sec Λ y)‖ ^ 2 * _ = 1`. Rewrite using `[norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hv0, mul_pow, hS']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hvol, e3]; simp`.
+-/
 theorem gaussModulus_of (hPL : PerpLat) : GaussModulus := by
   intro K _ _ _ R ψ hd hn m M hM hdet L Λ hL hΛ hAdm hInv
   obtain ⟨hP, hPP, hvol⟩ := hPL K R ψ hd hn L hL
@@ -473,6 +665,15 @@ end Final
 
 end A6x6
 
+/- English proof (translation)
+Introduce `m d hd`. Establish `key : ((∏ k : Fin m, (1 + MvPolynomial.X k)) * (1 - ∑ k : Fin m, MvPolynomial.X k + MvPolynomial.C (1 / 2 : ℚ) * (∑ k : Fin m, MvPolynomial.X k ^ 2 + (∑ k : Fin m, MvPolynomial.X k) ^ 2)) - 1 : MvPolynomial (Fin m) ℚ) ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 3`. Establish `hD` using `A6x6.prod_jet (m := m) Finset.univ`. Establish `he` using `A6x6.e_mem (m := m) Finset.univ`. Establish `hp` using `A6x6.p_mem (m := m) Finset.univ`.
+
+Establish `he2` using `Ideal.pow_mem_pow he 2`. Establish `h1 : ((∑ k : Fin m, MvPolynomial.X k) * ∑ k : Fin m, MvPolynomial.X k ^ 2 : MvPolynomial (Fin m) ℚ) ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 3`. Rewrite using `[pow_succ' _ 2]`. Conclude with `Ideal.mul_mem_mul he hp`. Establish `h2 : (((∑ k : Fin m, MvPolynomial.X k) ^ 2 - ∑ k : Fin m, MvPolynomial.X k ^ 2) * ((∑ k : Fin m, MvPolynomial.X k) ^ 2 + ∑ k : Fin m, MvPolynomial.X k ^ 2) : MvPolynomial (Fin m) ℚ) ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 3`.
+
+Establish `: _ ∈ MvPolynomial.idealOfVars (Fin m) ℚ ^ 2 * MvPolynomial.idealOfVars (Fin m) ℚ ^ 2` using `Ideal.mul_mem_mul (Ideal.sub_mem _ he2 hp) (Ideal.add_mem _ he2 hp)`. Rewrite `this` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by norm_num) this`. Establish `h3` using `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_right (1 - ∑ k : Fin m, MvPolynomial.X k + MvPolynomial.C (1 / 2 : ℚ) * (∑ k : Fin m, MvPolynomial.X k ^ 2 + (∑ k : Fin m, MvPolynomial.X k) ^ 2)) _ hD) h1) (Ideal.mul_mem_left _ (MvPolynomial.C (1 / 2 : ℚ) ^ 2) h2)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Take the linear combination `((∑ k : Fin m, MvPolynomial.X k) ^ 2 + (∑ k : Fin m, MvPolynomial.X k) * ∑ k : Fin m, MvPolynomial.X k ^ 2) * (A6x6.two_half (m := m))`. Conclude with `(MvPolynomial.mem_pow_idealOfVars_iff 3 _).1 key d hd`.
+-/
 theorem hessian_jet_formula : Formalism.FourierDecayAlt.A6.HessianJet := by
   intro m d hd
   have key : ((∏ k : Fin m, (1 + MvPolynomial.X k)) *
@@ -503,6 +704,9 @@ theorem hessian_jet_formula : Formalism.FourierDecayAlt.A6.HessianJet := by
       (A6x6.two_half (m := m))
   exact (MvPolynomial.mem_pow_idealOfVars_iff 3 _).1 key d hd
 
+/- English proof (translation)
+The claim follows from `A6x6.gaussModulus_of orthogonal_lattice_properties`.
+-/
 theorem gauss_sum_modulus_of_lattice : Formalism.FourierDecayAlt.A6.GaussModulus :=
   A6x6.gaussModulus_of orthogonal_lattice_properties
 

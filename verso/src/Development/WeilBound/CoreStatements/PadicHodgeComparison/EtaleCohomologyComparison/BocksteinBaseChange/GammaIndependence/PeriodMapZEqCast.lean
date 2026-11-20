@@ -18,9 +18,15 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 def iP (C : PerC R) (k : ℕ) : R.A →+* C.C := C.c.comp (R.φ ^ k)
 
+/- English proof (translation)
+Rewrite using `[iP, RingHom.comp_apply, RingHom.coe_pow]`.
+-/
 theorem iP_apply (C : PerC R) (k : ℕ) (c : R.A) : iP C k c = C.c (R.φ^[k] c) := by
   rw [iP, RingHom.comp_apply, RingHom.coe_pow]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_pow, map_mul, map_pow, map_natCast, hF.frobenius_period]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phiA_iterate_tA_of_prime (hF : R.Facts) (m n : ℕ) : R.φ^[m] (R.t ^ n) = ((l : R.A) ^ m * R.t) ^ n := by
   induction m with
   | zero => simp
@@ -28,10 +34,16 @@ theorem phiA_iterate_tA_of_prime (hF : R.Facts) (m n : ℕ) : R.φ^[m] (R.t ^ n)
     rw [Function.iterate_succ_apply', ih, map_pow, map_mul, map_pow, map_natCast, hF.frobenius_period]
     ring
 
+/- English proof (translation)
+Rewrite using `[← map_natCast C.q]`. Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)).map C.q`.
+-/
 theorem l_unit (C : PerC R) : IsUnit ((l : C.C)) := by
   rw [← map_natCast C.q]
   exact (IsUnit.mk0 _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)).map C.q
 
+/- English proof (translation)
+Rewrite using `[phiA_iterate_tA_of_prime hF, map_pow, map_mul, map_pow, map_natCast]`. Conclude with `(((l_unit C).pow m).mul hC.t_unit).pow n`.
+-/
 theorem c_unit (hF : R.Facts) (hC : C.Facts) (m n : ℕ) : IsUnit (C.c (R.φ^[m] (R.t ^ n))) := by
   rw [phiA_iterate_tA_of_prime hF, map_pow, map_mul, map_pow, map_natCast]
   exact (((l_unit C).pow m).mul hC.t_unit).pow n
@@ -41,11 +53,17 @@ def dN (β : BMap G D) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) : ℕ :
 def dX (β : BMap G D) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) (y : (D.A a).N j) : (D.H' a).N j :=
   ((β.surj' a hM j).choose_spec y).choose
 
+/- English proof (translation)
+The claim follows from `((β.surj' a hM j).choose_spec y).choose_spec`.
+-/
 theorem dX_spec (β : BMap G D) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) (y : (D.A a).N j) :
     β.β' a j (dX β a hM j y) = R.t ^ dN β a hM j • y := ((β.surj' a hM j).choose_spec y).choose_spec
 
 variable {β : BMap G D} {β₁ : BPhi β}
 
+/- English proof (translation)
+Rewrite using `[Fm.lin a hM, iP_apply]`.
+-/
 theorem psi_lin (Fm : FMap G C I D β₁.pull) {M : Model l K} (a : D.Ch M) (hM : G M) (j : ℕ) (c : R.A)
     (x : (D.H' a).N j) (f : Module.Dual C.K₀ (I.D M j)) : Fm.ψ a j (c • x) f = iP C Fm.k c * Fm.ψ a j x f := by
   rw [Fm.lin a hM, iP_apply]
@@ -59,9 +77,15 @@ def delta (hF : R.Facts) (hC : C.Facts) (Fm : FMap G C I D β₁.pull) {M : Mode
       (dN β a hM j) (dX β a hM j) (dX_spec β a hM j)
   else 0
 
+/- English proof (translation)
+Rewrite using `[iP_apply]`. Conclude with `c_unit hF hC m n`.
+-/
 theorem iP_unit (hF : R.Facts) (hC : C.Facts) (m n : ℕ) : IsUnit (iP C m (R.t ^ n)) := by
   rw [iP_apply]; exact c_unit hF hC m n
 
+/- English proof (translation)
+Rewrite using `[iP_apply, Function.iterate_fixed (hC.frobenius_fixes_z r)]`. Apply `hC.ι_inj` to reduce the goal to its premises. Rewrite using `[hC.ι_c, hC.ι_q, hF.thetaSetup_structureMap_comp, PadicInt.algebraMap_apply]`.
+-/
 theorem periodMap_z_eq_cast (hF : R.Facts) (hC : C.Facts) (k : ℕ) (r : ℤ_[l]) : iP C k (R.z r) = C.q (algebraMap ℤ_[l] ℚ_[l] r) := by
   rw [iP_apply, Function.iterate_fixed (hC.frobenius_fixes_z r)]
   apply hC.ι_inj
@@ -69,16 +93,25 @@ theorem periodMap_z_eq_cast (hF : R.Facts) (hC : C.Facts) (k : ℕ) (r : ℤ_[l]
 
 variable (hF : R.Facts) (hC : C.Facts) (Fm : FMap G C I D β₁.pull)
 
+/- English proof (translation)
+Rewrite using `[delta, dif_pos hM]`. Conclude with `GamU.hom_key _ _ _ _ _ _ h f`.
+-/
 theorem delta_key {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} {c : R.A} {x : (D.H' a).N j} {y : (D.A a).N j}
     (h : β.β' a j x = c • y) (f : Module.Dual C.K₀ (I.D M j)) :
     Fm.ψ a j x f = iP C Fm.k c * delta hF hC Fm a j y f := by
   rw [delta, dif_pos hM]
   exact GamU.hom_key _ _ _ _ _ _ h f
 
+/- English proof (translation)
+The claim follows from `delta_key hF hC Fm hM (dX_spec β a hM j y) f`.
+-/
 theorem delta_key' {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a).N j) (f : Module.Dual C.K₀ (I.D M j)) :
     Fm.ψ a j (dX β a hM j y) f = iP C Fm.k (R.t ^ dN β a hM j) * delta hF hC Fm a j y f :=
   delta_key hF hC Fm hM (dX_spec β a hM j y) f
 
+/- English proof (translation)
+Establish `h1` using `delta_key hF hC Fm hM (x := c • dX β a hM j y) (c := R.t ^ dN β a hM j) (y := c • y) (by rw [map_smul, dX_spec, smul_comm]) f`. Rewrite `h1` using `[psi_lin Fm a hM, delta_key' hF hC Fm hM]`. Apply `(iP_unit hF hC Fm.k (dN β a hM j)).mul_left_cancel` to reduce the goal to its premises. Take the linear combination `-h1`.
+-/
 theorem delta_smul {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (c : R.A) (y : (D.A a).N j)
     (f : Module.Dual C.K₀ (I.D M j)) : delta hF hC Fm a j (c • y) f = iP C Fm.k c * delta hF hC Fm a j y f := by
   have h1 := delta_key hF hC Fm hM (x := c • dX β a hM j y) (c := R.t ^ dN β a hM j) (y := c • y)
@@ -87,6 +120,9 @@ theorem delta_smul {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (c : R.A) (
   apply (iP_unit hF hC Fm.k (dN β a hM j)).mul_left_cancel
   linear_combination -h1
 
+/- English proof (translation)
+Establish `h1` using `delta_key' hF hC Fm hM y (k • f)`. Rewrite `h1` using `[Fm.lin' a hM, delta_key' hF hC Fm hM]`. Apply `(iP_unit hF hC Fm.k (dN β a hM j)).mul_left_cancel` to reduce the goal to its premises. Take the linear combination `-h1`.
+-/
 theorem delta_lin' {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a).N j) (k : C.K₀)
     (f : Module.Dual C.K₀ (I.D M j)) : delta hF hC Fm a j y (k • f) = C.k k * delta hF hC Fm a j y f := by
   have h1 := delta_key' hF hC Fm hM y (k • f)
@@ -94,6 +130,11 @@ theorem delta_lin' {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a
   apply (iP_unit hF hC Fm.k (dN β a hM j)).mul_left_cancel
   linear_combination -h1
 
+/- English proof (translation)
+Establish `h1` using `delta_key hF hC Fm hM (x := (D.H' a).act j σ (dX β a hM j y)) (c := R.σA σ (R.t ^ dN β a hM j)) (y := (D.A a).act j σ y) (by rw [β.act' a hM, dX_spec, hL.act_smul]) f`. Rewrite `h1` using `[Fm.act a hM, delta_key' hF hC Fm hM, map_mul]`. Establish `e : iP C Fm.k (R.σA σ (R.t ^ dN β a hM j)) = C.σ σ (iP C Fm.k (R.t ^ dN β a hM j))`. Rewrite using `[iP_apply, iP_apply, hC.σ_c, Function.Commute.iterate_left (hC.φ_σ σ) Fm.k]`. Rewrite `h1` using `[e]`.
+
+Conclude with `((iP_unit hF hC Fm.k (dN β a hM j)).map (C.σ σ)).mul_left_cancel h1.symm`.
+-/
 theorem delta_act (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (σ : K.fixingSubgroup)
     (y : (D.A a).N j) (f : Module.Dual C.K₀ (I.D M j)) :
     delta hF hC Fm a j ((D.A a).act j σ y) f = C.σ σ (delta hF hC Fm a j y f) := by
@@ -105,6 +146,9 @@ theorem delta_act (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {j : �
   rw [e] at h1
   exact ((iP_unit hF hC Fm.k (dN β a hM j)).map (C.σ σ)).mul_left_cancel h1.symm
 
+/- English proof (translation)
+Establish `h1` using `delta_key hF hC Fm hM (x := β₁.pull m j (dX β b hN j y)) (c := R.t ^ dN β b hN j) (y := D.pullA m j y) (by rw [β₁.nat m hM hN, dX_spec, map_smul]) f`. Rewrite `h1` using `[Fm.nat m hM hN, delta_key' hF hC Fm hN]`. Conclude with `((iP_unit hF hC Fm.k _).mul_left_cancel h1).symm`.
+-/
 theorem delta_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : D.Ch M} {b : D.Ch N}
     (m : D.Mo u hu a b) (hM : G M) (hN : G N) (j : ℕ) (y : (D.A b).N j) (f : Module.Dual C.K₀ (I.D M j)) :
     delta hF hC Fm a j (D.pullA m j y) f = delta hF hC Fm b j y (f ∘ₗ I.pull u hu j) := by
@@ -113,6 +157,13 @@ theorem delta_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a 
   rw [Fm.nat m hM hN, delta_key' hF hC Fm hN] at h1
   exact ((iP_unit hF hC Fm.k _).mul_left_cancel h1).symm
 
+/- English proof (translation)
+Establish `h1` using `delta_key hF hC Fm hM (x := D.phi' a j (dX β a hM j y)) (c := R.φ (R.t ^ dN β a hM j)) (y := y) (by rw [β.phi' a hM, dX_spec, hL.phi_smul, hy]) f`. Rewrite `h1` using `[Fm.phi a hM j b]`. Simplify using `only [delta_key' hF hC Fm hM, map_mul] at h1`. Establish `e : C.φ (iP C Fm.k (R.t ^ dN β a hM j)) = iP C Fm.k (R.φ (R.t ^ dN β a hM j))`. Rewrite using `[iP_apply, iP_apply, hC.φ_c, Function.Commute.self_iterate R.φ Fm.k]`.
+
+Establish `hu : IsUnit (iP C Fm.k (R.φ (R.t ^ dN β a hM j)))`. Rewrite using `[iP_apply, ← Function.iterate_succ_apply]`. Conclude with `c_unit hF hC _ _`. Simplify using `only [e] at h1`. Apply `hu.mul_left_cancel` to reduce the goal to its premises.
+
+Rewrite using `[← h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`.
+-/
 theorem delta_phi (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {j : ℕ} (y : (D.A a).N j)
     (hy : D.phiA a j y = y) {m : ℕ} (b : Module.Basis (Fin m) C.K₀ (I.D M j)) (f : Module.Dual C.K₀ (I.D M j)) :
     delta hF hC Fm a j y f = ∑ s, C.φ (delta hF hC Fm a j y (b.coord s)) * C.k (f (I.φ M j (b s))) := by
@@ -131,11 +182,17 @@ theorem delta_phi (hL : D.Laws G) {M : Model l K} {a : D.Ch M} (hM : G M) {j : �
 
 variable (hL : D.Laws G) (E : EMap G D)
 
+/- English proof (translation)
+Rewrite using `[E.nat m hM hN, delta_nat hF hC Fm m hM hN]`.
+-/
 theorem deltaE_nat {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : D.Ch M} {b : D.Ch N}
     (m : D.Mo u hu a b) (hM : G M) (hN : G N) (n : ℕ) (w : N.T n) (f : Module.Dual C.K₀ (I.D M n)) :
     delta hF hC Fm a n (E.e a n (Model.pullT u hu n w)) f = delta hF hC Fm b n (E.e b n w) (f ∘ₗ I.pull u hu n) := by
   rw [E.nat m hM hN, delta_nat hF hC Fm m hM hN]
 
+/- English proof (translation)
+Use `deltaE_nat hF hC Fm E m hM hM n u f` as an intermediate fact. Rewrite `this` using `[pullT_id, LinearMap.id_apply]`. Rewrite using `[this]`. Conclude with `congrArg _ (LinearMap.ext fun x => by rw [LinearMap.comp_apply, Fm.pull_id M hM n x])`.
+-/
 theorem deltaE_id {M : Model l K} {a a' : D.Ch M} (m : D.Mo (𝟙 M.X) (Category.id_comp _) a' a) (hM : G M) (n : ℕ)
     (u : M.T n) (f : Module.Dual C.K₀ (I.D M n)) :
     delta hF hC Fm a' n (E.e a' n u) f = delta hF hC Fm a n (E.e a n u) f := by
@@ -146,6 +203,9 @@ theorem deltaE_id {M : Model l K} {a a' : D.Ch M} (m : D.Mo (𝟙 M.X) (Category
 
 include hL in
 
+/- English proof (translation)
+Take `⟨b, ⟨m₁⟩, ⟨m₂⟩⟩` from `hL.refine M M (𝟙 M.X) (Category.id_comp _) hM hM a a'`. Rewrite using `[← deltaE_id hF hC Fm E m₁ hM, deltaE_id hF hC Fm E m₂ hM]`.
+-/
 theorem deltaE_indep {M : Model l K} (hM : G M) (a a' : D.Ch M) (n : ℕ) (u : M.T n) (f : Module.Dual C.K₀ (I.D M n)) :
     delta hF hC Fm a n (E.e a n u) f = delta hF hC Fm a' n (E.e a' n u) f := by
   obtain ⟨b, ⟨m₁⟩, ⟨m₂⟩⟩ := hL.refine M M (𝟙 M.X) (Category.id_comp _) hM hM a a'
@@ -157,6 +217,9 @@ def cD {M : Model l K} (hM : G M) (a : D.Ch M) (n : ℕ) : M.V n →+ (Module.Du
       rw [AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, E.lin a hM n r u, delta_smul hF hC Fm hM, periodMap_z_eq_cast hF hC]) :
     ℚ_[l] ⊗[ℤ_[l]] M.T n →+ (Module.Dual C.K₀ (I.D M n) →+ C.C))
 
+/- English proof (translation)
+Unfold `cD tmV`. Conclude with `ExtV.ext_tmul _ z u f`.
+-/
 theorem cD_tmV {M : Model l K} (hM : G M) (a : D.Ch M) (n : ℕ) (z : ℚ_[l]) (u : M.T n)
     (f : Module.Dual C.K₀ (I.D M n)) : cD hF hC Fm E hM a n (tmV M n z u) f = C.q z * delta hF hC Fm a n (E.e a n u) f := by
   unfold cD tmV
@@ -167,14 +230,23 @@ open Classical in
 def cC (M : Model l K) (n : ℕ) : M.V n →+ (Module.Dual C.K₀ (I.D M n) →+ C.C) :=
   if hM : G M then cD hF hC Fm E hM (a0 hL M hM) n else 0
 
+/- English proof (translation)
+Rewrite using `[cC, dif_pos hM, cD_tmV]`.
+-/
 theorem cC_tmV {M : Model l K} (hM : G M) (n : ℕ) (z : ℚ_[l]) (u : M.T n) (f : Module.Dual C.K₀ (I.D M n)) :
     cC hF hC Fm hL E M n (tmV M n z u) f = C.q z * delta hF hC Fm (a0 hL M hM) n (E.e _ n u) f := by
   rw [cC, dif_pos hM, cD_tmV]
 
+/- English proof (translation)
+Rewrite using `[toV_eq, cC_tmV hF hC Fm hL E hM, map_one, one_mul, deltaE_indep hF hC Fm hL E hM]`.
+-/
 theorem cC_toV {M : Model l K} (hM : G M) (a : D.Ch M) (n : ℕ) (u : M.T n) (f : Module.Dual C.K₀ (I.D M n)) :
     cC hF hC Fm hL E M n (M.toV n u) f = delta hF hC Fm a n (E.e a n u) f := by
   rw [toV_eq, cC_tmV hF hC Fm hL E hM, map_one, one_mul, deltaE_indep hF hC Fm hL E hM]
 
+/- English proof (translation)
+Rewrite using `[cC, dif_neg hM]`. Both sides reduce to the same expression.
+-/
 theorem cC_not {M : Model l K} (hM : ¬ G M) (n : ℕ) (v : M.V n) (f : Module.Dual C.K₀ (I.D M n)) :
     cC hF hC Fm hL E M n v f = 0 := by
   rw [cC, dif_neg hM]; rfl
@@ -234,6 +306,27 @@ def crys (hE : EtSide G) (hinj : ∀ (M : Model l K) (n : ℕ), G M → ∀ {a :
     · intro x y hx hy
       simp only [map_add, AddMonoidHom.add_apply, hx, hy]
 
+/- English proof (translation)
+Use `Fm.fin M hM n` as an intermediate fact. Take `⟨w, hw, hfac⟩` from `Fm.fac (a0 hL M hM) hM n (Module.finBasis C.K₀ (I.D M n))`. Set `f : Module.Dual K (HdR M.q n) → ((D.H' (a0 hL M hM)).N n →+ R.B)` to `fun φ => (AddMonoidHom.eval φ).comp ((gamma hF β κ (a0 hL M hM) n).comp (β.β' (a0 hL M hM) n).toAddMonoidHom)`. Establish `hf : ∀ φ y, f φ y = gamma hF β κ (a0 hL M hM) n (β.β' (a0 hL M hM) n y) φ` using `fun _ _ => rfl`. Establish `hFn : ∀ φ, GMod.Fn R (D.H' (a0 hL M hM)) n (f φ)` using `fun φ => ⟨fun c y => by rw [hf, hf, map_smul, gamma_smul hF β κ hM], fun σ y => by rw [hf, hf, β.act' _ hM, gamma_act hF β κ hL hM]⟩`.
+
+Establish `hc : ∀ (j n' : ℕ) (x : (D.H' (a0 hL M hM)).N n) (u : M.T n), β.β' (a0 hL M hM) n x = R.t ^ n' • E.e (a0 hL M hM) n u → β.β' (a0 hL M hM) n ((D.phi' (a0 hL M hM) n)^[j] x) = R.φ^[j] (R.t ^ n') • E.e (a0 hL M hM) n u`. Introduce `j n' x u h`. Proceed by induction on `j with`. Consider the case `zero => simpa using h`. Consider the case `succ j ih`.
+
+Rewrite using `[Function.iterate_succ_apply', β.phi' _ hM, ih, hL.phi_smul, E.phi _ hM, Function.iterate_succ_apply']`. Establish `relT : ∀ (u : M.T n) (φ : Module.Dual K (HdR M.q n)), P.c M n (M.toV n u) φ = ∑ s, C.ι (cC hF hC Fm hL E M n (M.toV n u) ((Module.finBasis C.K₀ (I.D M n)).coord s)) * w s (f φ)`. Introduce `u φ`. Take `⟨n', hn'⟩` from `β.surj' (a0 hL M hM) hM n`. Take `⟨x, hx⟩` from `hn' (E.e (a0 hL M hM) n u)`.
+
+Establish `h1` using `hfac x (f φ) (hFn φ)`. Rewrite `h1` using `[hf, hc Fm.k n' x u hx, gamma_smul hF β κ hM, ← hP M hM (a0 hL M hM)]`. Simplify using `only [delta_key hF hC Fm hM hx, cC_toV hF hC Fm hL E hM (a0 hL M hM), map_mul, hC.ι_c, iP_apply] at h1 ⊢`. Establish `hne : R.i (R.φ^[Fm.k] (R.t ^ n')) ≠ 0`. Rewrite using `[← hC.ι_c]`.
+
+Conclude with `((c_unit hF hC _ _).map C.ι).ne_zero`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Establish `relV : ∀ (v : M.V n) (φ : Module.Dual K (HdR M.q n)), P.c M n v φ = ∑ s, C.ι (cC hF hC Fm hL E M n v ((Module.finBasis C.K₀ (I.D M n)).coord s)) * w s (f φ)`.
+
+Introduce `v φ`. Use `V_induction (p := fun v => P.c M n v φ = ∑ s, C.ι (cC hF hC Fm hL E M n v ((Module.finBasis C.K₀ (I.D M n)).coord s)) * w s (f φ)) v ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `z u`. Establish `e1 : tmV M n z u = z • M.toV n u` using `by rw [toV_eq, smul_tmV, mul_one]`.
+
+Rewrite using `[e1, P.lin, relT u φ, Finset.mul_sum, ← e1]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[cC_tmV hF hC Fm hL E hM, cC_toV hF hC Fm hL E hM (a0 hL M hM), map_mul, hC.ι_q]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y hx hy`.
+
+Rewrite using `[map_add, AddMonoidHom.add_apply, hx, hy, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [map_add, AddMonoidHom.add_apply, map_add, add_mul]`. Establish `hz'` using `(hInj l K R G P hF hE M hM n).1 b (fun i => C.ι (z i)) (fun φ => by`. Simplify using `only [relV, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Establish `h` using `hz ((Module.finBasis C.K₀ (I.D M n)).coord s)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_mul]; ring`.
+
+Use `_ = 0 := by rw [h, map_zero, zero_mul])`. Use function extensionality and compare the values at `i`. Establish `h` using `congrFun hz' i`. Conclude with `hC.ι_inj (by simpa using h)`.
+-/
 theorem cC_inj (hE : EtSide G) (κ : PMap G D) (hInj : ComparisonInjectiveStrict) (P : Pre G R)
     (hP : ∀ M, G M → ∀ (a : D.Ch M) (n : ℕ) (v : M.T n) (φ : Module.Dual K (HdR M.q n)),
       P.c M n (M.toV n v) φ = gamma hF β κ a n (E.e a n v) φ)
@@ -297,6 +390,9 @@ theorem cC_inj (hE : EtSide G) (κ : PMap G D) (hInj : ComparisonInjectiveStrict
   have h := congrFun hz' i
   exact hC.ι_inj (by simpa using h)
 
+/- English proof (translation)
+Introduce `l _ K R G C I D hF hC hE hL E β β₁ κ Fm`. Take `⟨P, -, hP⟩` from `pre' l K R G D hF hE hL E β κ`. Conclude with `⟨crys hF hC Fm hL E hE (fun M n hM => cC_inj hF hC Fm hL E hE κ hInj P hP M n hM)⟩`.
+-/
 theorem phi_of (hInj : ComparisonInjectiveStrict) : FrobeniusComparison := by
   intro l _ K R G C I D hF hC hE hL E β β₁ κ Fm
   obtain ⟨P, -, hP⟩ := pre' l K R G D hF hE hL E β κ

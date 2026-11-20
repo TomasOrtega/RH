@@ -21,6 +21,9 @@ local notation "CZ" => Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))
 end OnMt
 section Record
 variable {D : D7}
+/- English proof (translation)
+Take `⟨Pa, hPa⟩` from `hBC i PI`. Establish `hp` using `_root_.UpperTheory.GalS.bcPerm_alt D hT0 hG h5 i x P0 PI Pa0 Pa h0 hx hB0 hPa`. Conclude with `isBCV_perm hPa hp.symm`.
+-/
 theorem isBCV_of_isBCV_of_same_ptV (hT0 : SumRepresentations.tie0 D) (hG : _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D) (h5 : SumRepresentations.adm5 D) (hBC : SumRepresentations.adm1 D) {i : D.nd.Loc}
     {x : D.nd.X i} {P0 PI : D.naut.AV i} (h0 : D.naut.ptV i P0 = some x) (hx : D.naut.ptV i PI = some x)
     {Pa0 : List (Part D.naut.CG)} (hB0 : IsBCV D.nd D.naut i P0 Pa0) : IsBCV D.nd D.naut i PI Pa0 := by
@@ -34,6 +37,49 @@ local notation "CZ" => Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))
 end Series
 section Main
 end Main
+/- English proof (translation)
+Introduce `D P hSer hBC hLGC hT0 h5 hEig hCE i k hl π hπ`. Take `⟨hπZN, Sig, hSig, hgood⟩` from `(D.Zgood_tie i π).1 hπ`. Take `⟨σ', hσ'⟩` from `P.Par_surj i π Sig hSig`. Take `⟨P0, hP0, hB0⟩` from `hSig`. Set `s : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (ZMod (D.host.g kv.1))[X]` to `fun kv => D.ntypes.labPar kv.1 σ' kv.2`.
+
+Take `⟨z, L, hLnd, hLall, hz⟩` from `hCE i s`. Establish `hz' : ∀ F, D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd))) F = (D.what₂.restRowsFiniteGroupCard : ℂ) • D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (∏ kv, ef s kv) F`. Introduce `F`. Rewrite using `[hz, list_prod_eq s L hLnd hLall]`. Rewrite using `[show (D.what₂.restRowsFiniteGroupCard : ℂ) • ((∏ kv, ef s kv : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G0g D.nd)) = (((D.what₂.restRowsFiniteGroupCard : ℂ) • ∏ kv, ef s kv : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G …`.
+
+Both sides reduce to the same expression. Establish `hfixπ : ∀ PI : D.naut.AV i, D.naut.ptV i PI = some π → ∀ F ∈ D.naut.typeV i PI, D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (∏ kv, ef s kv) F = F`. Introduce `PI hPI F hF`. Establish `hB` using `_root_.GlobalTheory.CutAtGood.isBCV_of_isBCV_of_same_ptV hT0 hLGC h5 hBC hP0 hPI hB0`. Establish `hF'` using `typeV_le_mtPar hσ' hB hF`.
+
+Use `cen_prod_fix _ _ _ F fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[← onMt_coe]`. Conclude with `series_fix hSer i σ' F hF' kv.1 kv.2`. Establish `hιb : iotaO D.nd D.naut i (D.what₂.restRowsFiniteGroupCard : D.nd.O i) = (D.what₂.restRowsFiniteGroupCard : ℂ)` using `map_natCast _ _`. Establish `hscal : ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) π, (P.zO i z).baseChange (FractionRing (D.nd.O i)) u = (D.what₂.restRowsFiniteGroupCard : D.nd.O i) • u` using `hEig i z π _ fun PI hPI F hF => by rw [hz', hfixπ PI hPI F hF, hιb]`.
+
+Set `Xs : Set (D.nd.X i)` to `{x | ∃ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x, (P.zO i z).baseChange (FractionRing (D.nd.O i)) u ≠ 0}`. Establish `hwit : ∀ x ∈ Xs, ∃ PI : D.naut.AV i, D.naut.ptV i PI = some x ∧ ∃ F ∈ D.naut.typeV i PI, ∀ kv, D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (ef s kv) F ≠ 0`. Introduce and unpack `x ⟨u, hu, hne⟩`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply `hne` to reduce the goal to its premises. Establish `h0` using `hEig i z x 0 (fun PI hPI F hF => ?_) u hu`. Rewrite using `[h0, zero_smul]`. Take `⟨kv, hkv⟩` from `hcon PI hPI F hF`. Rewrite using `[hz', map_zero, zero_smul]`.
+
+Assume the negation of the conclusion as `hc`. Establish `hc' : D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (∏ kv, ef s kv) F ≠ 0` using `fun h => hc (by rw [h, smul_zero])`. Conclude with `cen_prod_ne _ _ _ F hc' kv (Finset.mem_univ kv) hkv`. Establish `hcard : D.what₂.restRowsFiniteGroupCard ≠ 0`. Rewrite using `[D.nd.restN_card_levelGroup_eq]`.
+
+Use `Finset.prod_ne_zero_iff.2 fun k' _ => ?_` and prove the remaining obligations. Establish `: NeZero (D.host.g k')` using `⟨(D.host.g_prime k').ne_zero⟩`. Conclude with `pow_ne_zero _ Nat.card_pos.ne'`. Establish `hb0 : (D.what₂.restRowsFiniteGroupCard : D.nd.O i) ≠ 0`. Introduce `h`.
+
+Use `congrArg (iotaO D.nd D.naut i) h` as an intermediate fact. Rewrite `this` using `[hιb, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 hcard) this`. Establish `hπX : π ∈ Xs`. Establish `hpos : 0 < Module.finrank ℂ ↥(⨆ P ∈ {P | D.naut.ptV i P = some π}, D.naut.typeV i P)`.
+
+Take `⟨P2, hP2⟩` from `D.naut.pt_surj i π`. Use `Nat.pos_of_ne_zero fun h0 => D.naut.typeV_ne i P2 ?_` and prove the remaining obligations. Establish `hbot` using `Submodule.finrank_eq_zero.1 h0`. Conclude with `le_bot_iff.1 (hbot ▸ le_iSup₂_of_le (f := fun P _ => D.naut.typeV i P) P2 hP2 le_rfl)`. Rewrite `hpos` using `[← D.naut.eig_dim i π]`.
+
+Establish `hne : heckeEig (D.nd.T i) (D.nd.act i) π ≠ ⊥`. Introduce `h`. Establish `e : D.nd.mult i π = Module.finrank (FractionRing (D.nd.O i)) ↥(heckeEig (D.nd.T i) (D.nd.act i) π)` using `rfl`. Rewrite `hpos` using `[e, h, finrank_bot]`. Conclude with `lt_irrefl 0 hpos`.
+
+Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hscal u hu, ← algebraMap_smul (FractionRing (D.nd.O i))]`. Use `smul_ne_zero ?_ hu0` and prove the remaining obligations. Rewrite using `[Ne, ← map_zero (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))]`.
+
+Conclude with `(IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))).ne hb0`. Use `⟨Xs, P.zO i z, (D.what₂.restRowsFiniteGroupCard : D.nd.O i), ⟨hπX, (D.Z_tie i π).2 hπZN, ?_, fun f => P.zO_comm i z f, hb0, hscal, fun x hx u hu => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx hxZ`. Take `⟨PI, hPI, F, hF, hne⟩` from `hwit x hx`. Take `⟨Sig1, hS1⟩` from `hasParamX_of_Z hT0 h5 hxZ`.
+
+Take `⟨σ1, hσ1⟩` from `P.Par_surj i x Sig1 hS1`. Take `⟨P1, hP1, hB1⟩` from `hS1`. Establish `hF1` using `typeV_le_mtPar hσ1 (_root_.GlobalTheory.CutAtGood.isBCV_of_isBCV_of_same_ptV hT0 hLGC h5 hBC hP1 hPI hB1) hF`. Establish `hlab : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), s kv = D.ntypes.labPar kv.1 σ1 kv.2` using `fun kv => hSer i σ1 kv.1 kv.2 (s kv) F hF1 (by rw [show Formalism.MainNotions.ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (s kv)) = ((ef s kv : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G0g D.nd)) from rfl, onMt_coe]; exact hne kv)`. Establish `hg1 : goodSig D.nd D.naut Sig1` using `goodSig_of_labels (fun k' v => by`.
+
+Rewrite using `[← labPar_eq hσ' k' v, ← labPar_eq hσ1 k' v]`. Conclude with `hlab ⟨k', v⟩) hgood`. Conclude with `(D.Zgood_tie i x).2 ⟨(D.Z_tie i x).1 hxZ, Sig1, ⟨P1, hP1, hB1⟩, hg1⟩`. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨u, hu, h⟩`.
+
+Rewrite using `[← hl]`. Conclude with `lenUnit_natCast_le i _ hcard`. Use `⟨fun v => s ⟨k, v⟩, fun v => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show Squarefree (D.ntypes.labPar k σ' v) ∧ ∀ u : (ZMod (D.host.g k))ˣ, u = PairedCharacterCondition.chiJ D i k v ∨ u = (PairedCharacterCondition.chiJ D i k v)⁻¹ → ¬ (D.ntypes.labPar k σ' v).IsRoot (u : ZMod (D.host.g k))`. Rewrite using `[labPar_eq hσ' k v]`.
+
+Conclude with `good_labels hgood i k v`. Take `⟨PI, hPI, F, hF, hne⟩` from `hwit x hx`. Use `⟨PI, hPI, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `hne ⟨k, v⟩`. Rewrite `h1` using `[← onMt_coe]`.
+
+Express the relevant statement in the definitionally equal form `D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k (s ⟨k, v⟩))) F ≠ 0 at h1`. Establish `hc : ∀ τ ∈ (Finset.univ : Finset ((P.lz k).Irr D.R.r)), Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (if (P.lz k).lab τ = s ⟨k, v⟩ then (P.lz k).idem τ else 0) ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))`. Introduce `τ _`. Use `split_ifs`. Conclude with `atPlace_mem_center D k v _ fun b => (P.lz k).idem_central τ b`.
+
+Rewrite using `[atPlace_zero]`. Conclude with `Subalgebra.zero_mem _`. Rewrite `h1` using `[P.eSer_eq k, atPlace_sum, onMt_sum D _ _ _ _ hc, LinearMap.sum_apply]`. Take `⟨τ, -, hτ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`. Distinguish the cases in `hlab : (P.lz k).lab τ = s ⟨k, v⟩`.
+
+Rewrite `hτ` using `[if_pos hlab]`. Conclude with `⟨τ, (P.kty_spec i PI k v τ).2 ⟨F, hF, hτ⟩, hlab⟩`. It suffices to derive a contradiction. Apply `hτ` to reduce the goal to its premises. Rewrite using `[if_neg hlab, atPlace_zero]`.
+
+Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.zero_mem _)]`. Establish `e0 : (⟨0, Subalgebra.zero_mem _⟩ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) = 0` using `rfl`. Rewrite using `[e0, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem main_alt_alt : ∀ (D : D7) (P : Pend D), GlobalTheory.TypeLeaf.SerLoc D → admBC (D := D) → _root_.Formalism.MainNotions.PairedCharacterCondition.LocalGlobalCompatibility' (D := D) → SumRepresentations.tie0 D → SumRepresentations.adm5 D → EigSpan P → CentralElt D → ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∀ π ∈ D.nd.Zgood i, ∃ (Xs : Set (D.nd.X i)) (β : Module.End (D.nd.O i) (D.nd.Mt i)) (b : D.nd.O i), CutAt i k π Xs β b ∧ TypeLocus P i k Xs := by
   intro D P hSer hBC hLGC hT0 h5 hEig hCE i k hl π hπ
   classical

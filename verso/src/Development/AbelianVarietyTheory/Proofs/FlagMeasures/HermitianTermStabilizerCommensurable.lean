@@ -15,6 +15,25 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.LocComm
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r k P hk hrel d τ hτ`. Use `haveI := hM.loc`. Use `haveI := hM.char0`. Take `⟨S, ⟨c⟩⟩` from `GlobalTheory.HL.CoordExist.exists_coord M hM H r k P hk hrel`. Take `⟨hUW, -, -, -, hAut, -⟩` from `GlobalTheory.T.framePairCoordinates_transport_unitary_mass M hM H r k P S c`.
+
+Take `⟨-, -, -, hStab, -⟩` from `GlobalTheory.T.hermitianFramePairCoordinates_transport_innerData M hM H r k P S c`. Take `⟨hTC, -, -⟩` from `GlobalTheory.T.isTerm_and_om_eq_of_coord_isTermOver M hM H r k P S c`. Establish `key : ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ → S.IsTerm (c.dat d) (c.lat τ.abelian₂)` using `fun d τ h => (hTC d τ h).1`. Establish `eA : ∀ Λ, P.UW0 ⊓ LocNG.Aut Λ = (S.H0 ⊓ MulAction.stabilizer S.GLV (c.lat Λ)).comap c.grp.toMonoidHom`. Introduce `Λ`.
+
+Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom]`. Rewrite using `[hUW, hAut]`. Establish `eS : ∀ d : LocNG.Datum P, LocNG.Datum.Stab d = (S.H0 ⊓ MulAction.stabilizer S.GLV (c.dat d)).comap c.grp.toMonoidHom`. Introduce `d`.
+
+Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, hStab]`. Both sides reduce to the same expression. Establish `rel : ∀ A B : Subgroup S.GLV, (A.comap c.grp.toMonoidHom).relIndex (B.comap c.grp.toMonoidHom) = A.relIndex B`. Introduce `A B`.
+
+Rewrite using `[Subgroup.relIndex_comap, Subgroup.map_comap_eq_self_of_surjective c.grp.surjective]`. Establish `fixd : ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ → S.H0 ⊓ MulAction.stabilizer S.GLV (c.lat τ.abelian₂) ≤ S.H0 ⊓ MulAction.stabilizer S.GLV (c.dat d)`. Introduce `d τ h x hx`. Take `⟨hx0, hxs⟩` from `Subgroup.mem_inf.mp hx`. Establish `ht` using `key d τ h`.
+
+Establish `h1` using `(GlobalTheory.T.hermitianFrames_complementUnitary_acts_on_terms M.L r k S _ _ ht x hx0).1`. Rewrite `h1` using `[MulAction.mem_stabilizer_iff.mp hxs]`. Establish `h2` using `(GlobalTheory.T.hermitian_double_coset_term_basic_facts M.L r k S _ _ ht).2.2.2.2.2.2.2 _ h1`. Conclude with `Subgroup.mem_inf.mpr ⟨hx0, MulAction.mem_stabilizer_iff.mpr h2⟩`. Establish `volH` using `GlobalTheory.T.stabilizer_commensurable_invVolume_smul_complement M.L r k S`.
+
+Establish `cLam : ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ → S.complementReferenceCompactSubgroup.Commensurable (S.H0 ⊓ MulAction.stabilizer S.GLV (c.lat τ.abelian₂))`. Introduce `d τ h`. Use `volH.1 _ (GlobalTheory.T.hermitian_double_coset_term_basic_facts M.L r k S _ _ (key d τ h)).1.1` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Establish `cDat : ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ → S.complementReferenceCompactSubgroup.Commensurable (S.H0 ⊓ MulAction.stabilizer S.GLV (c.dat d))`.
+
+Introduce `d τ h`. Conclude with `volH.2 _ _ (key d τ h)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eA, eS]`. Conclude with `Subgroup.comap_mono (fixd d τ hτ)`.
+
+Rewrite using `[eA, eS, rel]`. Conclude with `((cLam d τ hτ).symm.trans (cDat d τ hτ)).1`. Introduce `d' τ' hτ'`. Rewrite using `[eS, eS, rel]`. Conclude with `((cDat d τ hτ).symm.trans (cDat d' τ' hτ')).1`.
+-/
 theorem stab_commensurable : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r k : ℕ) (P : LocNG.FPair H r), Module.finrank E V = k + 2 * r + 1 → P.RelG (LocNG.theta M) → ∀ (d : LocNG.Datum P) (τ : Term V M r), LocNG.IsTermOver P d τ → P.UW0 ⊓ LocNG.Aut τ.abelian₂ ≤ LocNG.Datum.Stab d ∧ (P.UW0 ⊓ LocNG.Aut τ.abelian₂).relIndex (LocNG.Datum.Stab d) ≠ 0 ∧ ∀ (d' : LocNG.Datum P) (τ' : Term V M r), LocNG.IsTermOver P d' τ' → (LocNG.Datum.Stab d).relIndex (LocNG.Datum.Stab d') ≠ 0 := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r k P hk hrel d τ hτ
   haveI := hM.loc

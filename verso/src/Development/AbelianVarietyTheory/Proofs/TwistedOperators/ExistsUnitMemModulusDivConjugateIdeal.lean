@@ -11,6 +11,15 @@ open GlobalTheory.AscFin
 
 namespace GlobalTheory.ShiftUnit
 
+/- English proof (translation)
+Introduce `D T L sc G v hv`. Take `⟨c, hcv, hc, hcb⟩` from `GlobalTheory.BigLoc.exists_c G.pl sc hv`. Establish `hne : G.pl.modulBar sc ≠ ⊥` using `fun h => by`. Rewrite `hcb` using `[h, Ideal.mem_bot]`. Apply `GlobalTheory.IdeleAA.coe_ne_zero v c hcv` to reduce the goal to its premises.
+
+Rewrite using `[← GlobalTheory.BigLoc.coe_alg, hcb, map_zero]`. Establish `h0 : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis. Use `⟨c, hcv, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `shiftId`.
+
+Rewrite using `[← mul_one ((c : D.host.F) : D.host.E)]`. Conclude with `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).2 ⟨_, hc, GlobalTheory.BigLoc.coe_alg c⟩) (FractionalIdeal.one_mem_inv_coe_ideal hne)`. Establish `hm : ((c : D.host.F) : D.host.E) * x ∈ ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Use `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).2 ⟨_, hcb, GlobalTheory.BigLoc.coe_alg c⟩) hx` as an intermediate fact. Rewrite `this` using `[shiftId, mul_left_comm, mul_inv_cancel₀ h0, mul_one]`. Then use the resulting hypothesis.
+
+Take `⟨o, -, ho⟩` from `(FractionalIdeal.mem_coeIdeal (𝓞 D.host.E)⁰).1 hm`. Conclude with `⟨o, ho⟩`.
+-/
 theorem exists_d : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (v : GlobalTheory.FinPl.Pl D), v ∉ G.pl.S0 → ∃ d : 𝓞 D.host.F, d ∉ v.asIdeal ∧ ((d : D.host.F) : D.host.E) ∈ shiftId G ∧ ∀ x ∈ shiftId G, ∃ y : 𝓞 D.host.E, (y : D.host.E) = ((d : D.host.F) : D.host.E) * x := by
   intro D T L sc G v hv
   obtain ⟨c, hcv, hc, hcb⟩ := GlobalTheory.BigLoc.exists_c G.pl sc hv

@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.expandsAt_cancel_local | exact GlobalTheory.expandsAt_cancel_local | (intros; apply GlobalTheory.expandsAt_cancel_local <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.expansion_scaled_section_divisibility : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
     (U : UnifPre (maximalIdeal R) D A G) (k : ℕ) (σ σ' : H0 U.LG.L k) (f f' : ∀ α, D.toPre.SecB k α) (r : R), r ≠ 0 →

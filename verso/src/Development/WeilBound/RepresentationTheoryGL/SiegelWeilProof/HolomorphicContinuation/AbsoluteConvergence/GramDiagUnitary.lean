@@ -6,6 +6,27 @@ namespace PositivityTheory.Rg.Sw.KAKA
 
 open Matrix
 
+/- English proof (translation)
+Set `c : Fin n → EuclideanSpace ℂ (Fin n)` to `fun j => WithLp.toLp 2 (fun i => M i j)`. Establish `hin : ∀ j k, inner ℂ (c j) (c k) = (Mᴴ * M) j k`. Introduce `j k`. Rewrite using `[EuclideanSpace.inner_toLp_toLp, dotProduct]`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply, mul_comm]`.
+
+Set `v : Fin n → EuclideanSpace ℂ (Fin n)` to `fun j => ((s j : ℂ)⁻¹) • c j`. Set `S : Set (Fin n)` to `{j | s j ≠ 0}`. Establish `hv : Orthonormal ℂ (S.restrict v)`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨j, hj⟩ ⟨k, hk⟩`.
+
+Express the relevant statement in the definitionally equal form `inner ℂ (v j) (v k) = _`. Simplify using `only [v, inner_smul_left, inner_smul_right, hin, hM, Matrix.diagonal_apply]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Establish `hj' : (s j : ℂ) ≠ 0` using `by exact_mod_cast hj`.
+
+Simplify using `only [if_true]`. Rewrite using `[Complex.ofReal_pow, map_inv₀, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Establish `: (⟨j, hj⟩ : S) ≠ ⟨k, hk⟩` using `fun h => hjk (congrArg Subtype.val h)`. Simplify using `[hjk]`.
+
+Take `⟨b, hb⟩` from `hv.exists_orthonormalBasis_extension_of_card_eq (by simp)`. Establish `hU` using `(EuclideanSpace.basisFun (Fin n) ℂ).toMatrix_orthonormalBasis_mem_unitary b`. Use `set U := (EuclideanSpace.basisFun (Fin n) ℂ).toBasis.toMatrix b with hUd`. Use `⟨U, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff'.mp hU` as an intermediate fact.
+
+Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `hUe : ∀ i j, U i j = (b j).ofLp i`. Introduce `i j`. Simplify using `[hUd, Module.Basis.toMatrix_apply]`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_diagonal, hUe]`. Distinguish the cases in `hj : s j = 0`. Establish `hc : c j = 0`. Establish `h1` using `hin j j`. Rewrite `h1` using `[hM, Matrix.diagonal_apply_eq, hj]`.
+
+Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_zero] at h1`. Conclude with `inner_self_eq_zero.mp h1`. Establish `: M i j = 0`. Use `congrArg (fun x : EuclideanSpace ℂ (Fin n) => x.ofLp i) hc` as an intermediate fact. Simplify `this` using `[c]`.
+
+Rewrite using `[this, hj]`. Simplify using the standard rewrite rules. Establish `hbj : b j = v j` using `hb j hj`. Rewrite using `[hbj]`. Establish `hj' : (s j : ℂ) ≠ 0` using `by exact_mod_cast hj`.
+
+Simplify using `only [v, c, WithLp.ofLp_smul, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gram_diag_unitary {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (s : Fin n → ℝ)
     (hM : Mᴴ * M = diagonal (fun j => ((s j ^ 2 : ℝ) : ℂ))) :
     ∃ U : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 ∧ M = U * diagonal (fun j => (s j : ℂ)) := by
@@ -57,6 +78,11 @@ theorem gram_diag_unitary {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (s : Fin n 
       simp only [v, c, WithLp.ofLp_smul, Pi.smul_apply, smul_eq_mul]
       field_simp
 
+/- English proof (translation)
+Establish `hG : (Aᴴ * A).IsHermitian` using `Matrix.isHermitian_conjTranspose_mul_self A`. Establish `hdiag` using `hG.conjStarAlgAut_star_eigenvectorUnitary`. Rewrite `hdiag` using `[Unitary.conjStarAlgAut_star_apply]`. Use `⟨(hG.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ), hG.eigenvalues, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_unitaryGroup_iff'.mp hG.eigenvectorUnitary.2` as an intermediate fact.
+
+Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Use `Matrix.mem_unitaryGroup_iff.mp hG.eigenvectorUnitary.2` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Aᴴ, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, hdiag]`. Both sides reduce to the same expression.
+-/
 theorem gram_eigen {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) :
     ∃ (W : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℝ), Wᴴ * W = 1 ∧ W * Wᴴ = 1 ∧
       (A * W)ᴴ * (A * W) = diagonal (fun j => (l j : ℂ)) := by

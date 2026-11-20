@@ -24,6 +24,9 @@ namespace GlobalTheory.HSRep
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a.degree = d` using `by rw [Finsupp.degree_eq_weight_one]; exact hP (mem_support_iff.1 ha)`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm]`.
+-/
 theorem aeval_smul_of_hom {σ K : Type} [CommRing K] {d : ℕ} {P : MvPolynomial σ ℤ} (hP : P.IsHomogeneous d)
     (c : K) (y : σ → K) : aeval (c • y) P = c ^ d * aeval y P := by
   rw [aeval_def, aeval_def, eval₂_eq, eval₂_eq, Finset.mul_sum]
@@ -32,6 +35,15 @@ theorem aeval_smul_of_hom {σ K : Type} [CommRing K] {d : ℕ} {P : MvPolynomial
   simp only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]
   rw [← this, Finsupp.degree_apply, mul_left_comm]
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin (Module.finrank (ratF x) K)) := ⟨⟨0, Module.finrank_pos⟩⟩`. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hg (by simp)`. Establish `hB : (Algebra.traceForm (ratF x) K).Nondegenerate` using `traceForm_nondegenerate _ _`. Use `⟨fun i => (Algebra.traceForm (ratF x) K).dualBasis hB b i, ?_⟩` and prove the remaining obligations. Introduce `N f T hT htr`.
+
+Establish `key` using `((Algebra.traceForm (ratF x) K).dualBasis hB b).sum_repr (f / x 0 ^ N)`. Rewrite `key` using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`. Establish `hxN : x 0 ^ N ≠ 0` using `pow_ne_zero _ hx0`. Establish `hf : f = (f / x 0 ^ N) * x 0 ^ N` using `by field_simp`. Rewrite using `[hf, ← key, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hbi : b i = g i` using `by simp [b]`. Establish `hx : x = x 0 • fun l => x l / x 0`. Use function extensionality and compare the values at `l`. Simplify using `[smul_eq_mul, mul_div_cancel₀ _ hx0]`.
+
+Rewrite using `[Algebra.smul_def, hbi, div_mul_eq_mul_div, show (algebraMap (ratF x) K) (Algebra.trace (ratF x) K (f * g i / x 0 ^ N)) = _ from htr i]`. Establish `hT' : aeval x (T i) = x 0 ^ N * aeval (fun l => x l / x 0) (T i)` using `by conv_lhs => rw [hx]`. Conclude with `aeval_smul_of_hom (hT i) _ _`. Rewrite using `[hT']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rep_of_trace {K : Type} [Field K] [CharZero K] {D : ℕ} (x : Fin (D + 1) → K) (hx0 : x 0 ≠ 0)
     [FiniteDimensional (ratF x) K] (g : Fin (Module.finrank (ratF x) K) → K) (hg : LinearIndependent (ratF x) g) :
     ∃ w : Fin (Module.finrank (ratF x) K) → K, ∀ (N : ℕ) (f : K)
@@ -62,9 +74,41 @@ theorem rep_of_trace {K : Type} [Field K] [CharZero K] {D : ℕ} (x : Fin (D + 1
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Rewrite using `[← norm_val]`. Conclude with `norm_nonneg _`.
+-/
 theorem nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) : 0 ≤ P.nu a b σ y f := by
   rw [← norm_val]; exact norm_nonneg _
 
+/- English proof (translation)
+Introduce `k _ X _ p D hV P hA e x hG a b`. Take `⟨hx0s, hai, hfd⟩` from `GlobalTheory.T.sectionQuotients_transcendenceBasis_basepointFree k X p D hV P hA e x hG`. Use `haveI := hfd`. Take `⟨hch, -⟩` from `GlobalTheory.T.projArith_functionField_charZero_trdeg k X p D hV`. Use `haveI := hch`.
+
+Use `set n' := Module.finrank (ratF x) X.functionField with hn'`. Take `⟨c0, g0, hg0, hli0⟩` from `GlobalTheory.T.exists_functionField_basis_of_sections k X p D hV P hA e x hG (-a) (-b)`. Establish `hli : LinearIndependent (ratF x) (fun i => g0 i * x 0)`. Establish `hk : LinearMap.ker (LinearMap.mulRight (ratF x) (x 0)) = ⊥` using `LinearMap.ker_eq_bot.2 (mul_left_injective₀ (hx0s 0))`. Use `hli0.map' (LinearMap.mulRight (ratF x) (x 0)) hk` as an intermediate fact.
+
+Conclude with `this`. Establish `hgH : ∀ i, (fun j => g0 j * x 0) i ∈ P.H (e * c0 + -a + e) (-b + 0)` using `fun i => (NuMul.mul_mem_H_and_nu_mul k X p P _ _ _ _ _ _ (hg0 i) (hG.mem 0)).1`. Generalize the expression as in `hgdef : (fun j => g0 j * x 0) = g at hli hgH`. Take `⟨w, hw⟩` from `rep_of_trace x (hx0s 0) g hli`. Establish `hbd : ∀ i, ∃ Ci : ℝ, ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (e * c0 + -a + e) (-b + 0) σ y (g i) ≤ Ci` using `fun i => ((GlobalTheory.T.continuous_hermSectionValue_mul_conj_and_norm_bounded k X p D hV P _ _).2 _ (hgH i)).2`.
+
+Use `choose Ci hCi using hbd`. Use `set Cg : ℝ := ∑ i, |Ci i| + 1 with hCg`. Establish `hCg1 : 1 ≤ Cg`. Establish `: 0 ≤ ∑ i, |Ci i|` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hCgi : ∀ i σ y, P.nu (e * c0 + -a + e) (-b + 0) σ y (g i) ≤ Cg` using `fun i σ y => by`. Establish `h1 : Ci i ≤ |Ci i|` using `le_abs_self _`. Establish `h2 : |Ci i| ≤ ∑ j, |Ci j|` using `Finset.single_le_sum (f := fun j => |Ci j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i)`. Combine the linear relations using `[hCi i σ y]`. Establish `hn'pos : (0 : ℝ) < n'` using `by exact_mod_cast Module.finrank_pos`.
+
+Use `⟨c0 + 1, w, n' * Cg, by positivity, ?_⟩` and prove the remaining obligations. Introduce `q f hf`. Use `set N := q + (c0 + 1) with hNdef`. Establish `hN1 : 1 ≤ N` using `by omega`. Establish `hidx : ((e : ℤ) * q + a) + (e * c0 + -a + e) = (N : ℤ) * e` using `by rw [hNdef]; push_cast; ring`.
+
+Establish `hidx2 : b + (-b + 0) = (N : ℤ) * 0` using `by ring`. Establish `hu : ∀ i, f * g i ∈ P.H ((N : ℤ) * e) ((N : ℤ) * 0) ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu ((N : ℤ) * e) ((N : ℤ) * 0) σ y (f * g i) = P.nu (e * q + a) b σ y f * P.nu (e * c0 + -a + e) (-b + 0) σ y (g i)` using `fun i => by`. Use `NuMul.mul_mem_H_and_nu_mul k X p P _ _ _ _ f (g i) hf (hgH i)` as an intermediate fact. Rewrite `this` using `[hidx, hidx2]`. Conclude with `this`.
+
+Establish `hxpow : ∀ l, x l ^ N ∈ P.H ((N : ℤ) * e) ((N : ℤ) * 0) ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu ((N : ℤ) * e) ((N : ℤ) * 0) σ y (x l ^ N) = P.nu e 0 σ y (x l) ^ N` using `fun l => NuPow.pow_mem_H_and_nu_pow k X p P _ _ (x l) (hG.mem l) N`. Establish `hnv : ∀ l, NV P ((N : ℤ) * e) ((N : ℤ) * 0) (x l ^ N) = NV P e 0 (x l)` using `fun l => (GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x l) (hG.mem l)).2.2.1 N hN1`. Establish `hreg : ∀ i l, ∀ z ∈ NV P e 0 (x l), RegAt z (f * g i / x l ^ N)` using `fun i l z hz => ((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P _ _ (x l ^ N) (hxpow l).1).2.2.2.1 _ (hu i).1 z (by rw [hnv l]; exact hz)).1`. Establish `hintg : ∀ i l, IsIntegral (ratR x l) (f * g i / x l ^ N)` using `fun i l => GlobalTheory.T.isIntegral_quotientRing_sectionTuple_locus k X p D hV P e x hG l _ (hx0s l) (hreg i l)`. Establish `hTex : ∀ i, ∃ T : MvPolynomial (Fin (D + 1)) ℤ, T.IsHomogeneous N ∧ (Algebra.trace (ratF x) X.functionField (f * g i / x 0 ^ N) : X.functionField) = aeval (fun l => x l / x 0) T` using `fun i => GlobalTheory.T.exists_homogeneous_int_trace_sectionTuple X.functionField D x hx0s hai hfd N (f * g i) (hintg i)`.
+
+Use `choose T hT htr using hTex`. Use `⟨T, hT, hw N f T hT htr, ?_⟩` and prove the remaining obligations. Introduce `R κ hκ hcov hR i α`. Take `⟨U, hgen, hU, -, hregU, -, -, hpts⟩` from `GlobalTheory.T.nonvanishingLocus_ample_section_isAffine_model k X p D hV P hA e (x 0) hG.pos (hG.mem 0) (hx0s 0)`. Establish `hB : ∀ l, x l / x 0 ∈ (fnOf U hgen).range` using `fun l => (hregU _).1 fun z hz => ((GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x 0) (hG.mem 0)).2.2.2.1 _ (hG.mem l) z (by rw [← hU]; exact hz)).1`.
+
+Establish `hBint : ∀ b' ∈ (fnOf U hgen).range, IsIntegral (ratR x 0) b'` using `fun b' hb => GlobalTheory.T.isIntegral_quotientRing_sectionTuple_locus k X p D hV P e x hG 0 b' (hx0s 0) fun z hz => (hregU b').2 hb z (show z ∈ (U : Set X) by rw [hU]; exact hz)`. Establish `hwB : f * g i / x 0 ^ N ∈ (fnOf U hgen).range` using `(hregU _).1 fun z hz => hreg i 0 z (by rw [← hU]; exact hz)`. Establish `key` using `GlobalTheory.T.norm_aeval_traceForm_le_fibreValues X.functionField D x hx0s hai hfd (fnOf U hgen).range hB hBint ⟨_, hwB⟩ (T i) (htr i)`. Establish `hcoef` using `GlobalTheory.T.abs_coeff_le_of_homogeneous_torus_bound D N (T i) (n' * (R * Cg / κ ^ N)) (hT i) ?_ α`. Conclude with `le_of_le_of_eq hcoef (by ring)`.
+
+Introduce `z hz0 hz1`. Use `key z _ hz0 fun φ hφ => ?_` and prove the remaining obligations. Take `⟨σ, y, hyU, hval⟩` from `hpts φ`. Establish `hyNV : under y ∈ NV P e 0 (x 0)` using `by rw [← hU]; exact hyU`. Take `⟨l, hl⟩` from `hcov σ y`.
+
+Establish `h5` using `(GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e 0 (x 0) (hG.mem 0)).2.2.2.2 (x l) (hG.mem l) σ y hyNV`. Establish `hzl : ‖ratVal (x l / x 0) y‖ = 1`. Use `hval ⟨_, hB l⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, hφ l, hz1 l]`.
+
+Establish `hx0κ : κ ≤ P.nu e 0 σ y (x 0)` using `by rw [h5.1, hzl, one_mul] at hl; exact hl`. Establish `hyN : under y ∈ NV P ((N : ℤ) * e) ((N : ℤ) * 0) (x 0 ^ N)` using `by rw [hnv 0]; exact hyNV`. Establish `h6` using `(GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P _ _ (x 0 ^ N) (hxpow 0).1).2.2.2.2 (f * g i) (hu i).1 σ y hyN`. Rewrite `h6` using `[(hu i).2, (hxpow 0).2]`. Establish `hv` using `hval ⟨_, hwB⟩`.
+
+Simplify using `only at hv`. Rewrite using `[← hv, le_div_iff₀ (pow_pos hκ N)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sections_eq_sum_aeval_bounded : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ a b : ℤ, ∃ (c : ℕ) (w : Fin (Module.finrank (ratF x) X.functionField) → X.functionField) (C : ℝ), 0 < C ∧ ∀ (q : ℕ), ∀ f ∈ P.H (e * q + a) b, ∃ T : Fin (Module.finrank (ratF x) X.functionField) → MvPolynomial (Fin (D + 1)) ℤ, (∀ i, (T i).IsHomogeneous (q + c)) ∧ f = ∑ i, MvPolynomial.aeval x (T i) * w i ∧ ∀ R κ : ℝ, 0 < κ → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ l, κ ≤ P.nu e 0 σ y (x l)) → (∀ (σ : k →+* ℂ) (y : CxPts p σ), P.nu (e * q + a) b σ y f ≤ R) → ∀ i α, |((MvPolynomial.coeff α (T i) : ℤ) : ℝ)| ≤ C * R / κ ^ (q + c) := by
   intro k _ X _ p D hV P hA e x hG a b
   classical

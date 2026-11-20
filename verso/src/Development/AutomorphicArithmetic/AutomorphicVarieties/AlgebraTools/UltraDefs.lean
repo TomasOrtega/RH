@@ -19,6 +19,9 @@ def uNull : Submodule R (∀ i, M i) where
   smul_mem' c _ h j := (h j).mono fun _ h => Submodule.smul_mem _ c h
 
 variable {F I M} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_uNull {p : ∀ i, M i} :
     p ∈ uNull F I M ↔ ∀ j, ∀ᶠ i in F, p i ∈ (I j • ⊤ : Submodule R (M i)) := Iff.rfl
 
@@ -26,9 +29,15 @@ abbrev ULim : Type := (∀ i, M i) ⧸ uNull F I M
 
 def ULim.mk : (∀ i, M i) →ₗ[R] ULim F I M := (uNull F I M).mkQ
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem ULim.mk_surjective : Function.Surjective (ULim.mk F I M) := Submodule.mkQ_surjective _
 
 variable {F I M} in
+/- English proof (translation)
+Use `show (uNull F I M).mkQ p = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem ULim.mk_eq_zero {p : ∀ i, M i} :
     ULim.mk F I M p = 0 ↔ ∀ j, ∀ᶠ i in F, p i ∈ (I j • ⊤ : Submodule R (M i)) := by
   show (uNull F I M).mkQ p = 0 ↔ _
@@ -46,6 +55,9 @@ def ULim.map {I' : ℕ → Ideal R} {M' : ι → Type} [∀ i, AddCommGroup (M' 
       exact Submodule.smul_mono (h j) le_top h1
 
 variable {I M} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ULim.map_mk {I' : ℕ → Ideal R} {M' : ι → Type} [∀ i, AddCommGroup (M' i)] [∀ i, Module R (M' i)]
     (h : ∀ j, I j ≤ I' j) (f : ∀ i, M i →ₗ[R] M' i) (p : ∀ i, M i) :
     ULim.map F h f (ULim.mk F I M p) = ULim.mk F I' M' fun i => f i (p i) := rfl
@@ -53,6 +65,9 @@ theorem ULim.map_mk {I' : ℕ → Ideal R} {M' : ι → Type} [∀ i, AddCommGro
 def ULim.scal (r : ι → R) : ULim F I M →ₗ[R] ULim F I M :=
   ULim.map F (fun _ => le_rfl) fun i => r i • LinearMap.id
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `ULim.mk_surjective F I M x`. Both sides reduce to the same expression.
+-/
 theorem ULim.scal_const (r : R) (x : ULim F I M) : ULim.scal F I M (fun _ => r) x = r • x := by
   obtain ⟨p, rfl⟩ := ULim.mk_surjective F I M x
   rfl
@@ -62,11 +77,19 @@ variable (R) in
 abbrev UProd : Type := ULim F (fun _ => (⊥ : Ideal R)) M
 
 variable {F M} in
+/- English proof (translation)
+Rewrite using `[ULim.mk_eq_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem UProd.mk_eq_zero {p : ∀ i, M i} :
     ULim.mk F (fun _ => (⊥ : Ideal R)) M p = 0 ↔ ∀ᶠ i in F, p i = 0 := by
   rw [ULim.mk_eq_zero]
   simp
 
+/- English proof (translation)
+Use `⟨Submodule.liftQ _ (LinearMap.proj i₀) fun p hp => ?_, ⟨?_, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Simplify using `using hp 0`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨p, rfl⟩` from `ULim.mk_surjective _ _ M x`.
+
+Conclude with `UProd.mk_eq_zero.2 hx`. Introduce `m`. Conclude with `⟨ULim.mk _ _ M (Pi.single i₀ m), by show (Pi.single i₀ m : ∀ i, M i) i₀ = m simp⟩`.
+-/
 theorem UProd.pure_bijective (i₀ : ι) :
     ∃ e : UProd R (pure i₀) M →ₗ[R] M i₀, Function.Bijective e ∧ ∀ p, e (ULim.mk _ _ M p) = p i₀ := by
   refine ⟨Submodule.liftQ _ (LinearMap.proj i₀) fun p hp => ?_, ⟨?_, ?_⟩, fun _ => rfl⟩
@@ -92,11 +115,17 @@ def QRegAt (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) (J : Ideal R)
     ∑ α, GlobalTheory.monoVal y α.1 • c α ∈ ((Ideal.span (Set.range y) ^ (a + 1) ⊔ J) • ⊤ : Submodule R M) →
       ∀ α, c α ∈ ((Ideal.span (Set.range y) ⊔ J) • ⊤ : Submodule R M)
 
+/- English proof (translation)
+Unfold `GlobalTheory.IsQuasiRegularSeq QRegAt`. Simplify using `only [sup_bot_eq]`.
+-/
 theorem isQuasiRegularSeq_iff_qRegAt (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) :
     GlobalTheory.IsQuasiRegularSeq M y ↔ ∀ a, QRegAt M y ⊥ a := by
   unfold GlobalTheory.IsQuasiRegularSeq QRegAt
   simp only [sup_bot_eq]
 
+/- English proof (translation)
+Introduce `_ _ _` and use `by simp`.
+-/
 theorem qRegAt_top (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) (a : ℕ) : QRegAt M y ⊤ a :=
   fun _ _ _ => by simp
 

@@ -3,6 +3,15 @@ import Mathlib
 open Matrix
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `α S k hS`. Use `set T := hS.toFinset with hT`. Set `F : Finset (Finset α)` to `(Finset.range (k + 1)).biUnion fun j => T.powersetCard j`. Establish `hsub : {M : Finset α | (↑M : Set α) ⊆ S ∧ M.card ≤ k} ⊆ (↑F : Set (Finset α))`. Introduce and unpack `M ⟨hM, hk⟩`.
+
+Rewrite using `[Finset.mem_coe, Finset.mem_biUnion]`. Use `⟨M.card, Finset.mem_range.2 (by omega), Finset.mem_powersetCard.2 ⟨?_, rfl⟩⟩` and prove the remaining obligations. Introduce `x hx`. Simplify `hM hx` using `[T]`. Establish `hfin` using `F.finite_toSet.subset hsub`.
+
+Use `⟨hfin, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j hj`. Establish `h1 : T.card.choose j ≤ T.card ^ j` using `Nat.choose_le_pow _ _`.
+
+Establish `h2 : 1 ≤ k.choose j` using `Nat.choose_pos (by simp at hj; omega)`. Rewrite using `[one_pow, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (T.card + 1) ^ k := (add_pow _ _ _).symm`. Use `_ = (S.ncard + 1) ^ k := by rw [Set.ncard_eq_toFinset_card S hS]`.
+-/
 theorem UpperTheory.V.KT.cardsub :
     ∀ (α : Type) (S : Set α) (k : ℕ), S.Finite →
     {M : Finset α | (↑M : Set α) ⊆ S ∧ M.card ≤ k}.Finite ∧

@@ -19,13 +19,30 @@ section Folner
 
 variable {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G]
 
+/- English proof (translation)
+Apply `div_le_one_of_le₀ _ ENNReal.toReal_nonneg` to reduce the goal to its premises. Conclude with `ENNReal.toReal_mono hfin.ne (measure_mono hA)`.
+-/
 theorem ratio_le_one {μS : Measure G} {Ω A : Set G} (hA : A ⊆ Ω) (hfin : μS Ω < ⊤) :
     (μS A).toReal / (μS Ω).toReal ≤ 1 := by
   apply div_le_one_of_le₀ _ ENNReal.toReal_nonneg
   exact ENNReal.toReal_mono hfin.ne (measure_mono hA)
 
+/- English proof (translation)
+The claim follows from `div_nonneg ENNReal.toReal_nonneg ENNReal.toReal_nonneg`.
+-/
 theorem ratio_nonneg {μS : Measure G} {Ω A : Set G} : 0 ≤ (μS A).toReal / (μS Ω).toReal := div_nonneg ENNReal.toReal_nonneg ENNReal.toReal_nonneg
 
+/- English proof (translation)
+Set `Kx` to `CompactExhaustion.choice G`. Establish `hε : ∀ n : ℕ, (0 : ℝ≥0∞) < ENNReal.ofReal (1 / ((n : ℝ) + 1))` using `fun n => ENNReal.ofReal_pos.mpr (by positivity)`. Use `choose Ω hΩm hΩS hpos hfin hle using fun n : ℕ => hF (Kx n ∩ S) ((Kx.isCompact n).inter_right hS.1) Set.inter_subset_right _ (hε n)`. Use `⟨Ω, fun n => ⟨hΩm n, hΩS n, hpos n, hfin n⟩, ?_⟩` and prove the remaining obligations. Introduce `K hK hKS`.
+
+Take `⟨N, hN⟩` from `Kx.exists_superset_of_isCompact hK`. Establish `hlow : Tendsto (fun n : ℕ => 1 / (1 + 1 / ((n : ℝ) + 1))) atTop (𝓝 1)`. Establish `h1` using `tendsto_one_div_add_atTop_nhds_zero_nat.const_add (1 : ℝ)`. Establish `h2 : Tendsto (fun n : ℕ => (1 : ℝ) / (1 + 1 / ((n : ℝ) + 1))) atTop (𝓝 (1 / (1 + 0)))` using `tendsto_const_nhds.div h1 (by norm_num)`. Rewrite `h2` using `[add_zero, div_one]`. Then use the resulting hypothesis.
+
+Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' hlow tendsto_const_nhds ?_ ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop N] with n hn`. Establish `hsub : {t | t ∈ Ω n ∧ ∀ k ∈ Kx n ∩ S, k * t ∈ Ω n} ⊆ {t | t ∈ Ω n ∧ ∀ k ∈ K, k * t ∈ Ω n}` using `fun t ht => ⟨ht.1, fun k hk => ht.2 k ⟨Kx.subset hn (hN hk), hKS hk⟩⟩`. Establish `hAB` using `measure_mono (μ := μS) hsub`. Establish `hBΩ : μS {t | t ∈ Ω n ∧ ∀ k ∈ K, k * t ∈ Ω n} ≤ μS (Ω n)` using `measure_mono (fun t ht => ht.1)`.
+
+Establish `hBfin` using `(hBΩ.trans_lt (hfin n)).ne`. Establish `hAfin` using `((hAB.trans hBΩ).trans_lt (hfin n)).ne`. Establish `hΩpos : 0 < (μS (Ω n)).toReal` using `ENNReal.toReal_pos (hpos n).ne' (hfin n).ne`. Establish `hkey` using `ENNReal.toReal_mono (ENNReal.mul_ne_top (by simp) hAfin) (hle n)`. Rewrite `hkey` using `[ENNReal.toReal_mul, ENNReal.toReal_add (by simp) (by simp), ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_one]`.
+
+Establish `hAB'` using `ENNReal.toReal_mono hBfin hAB`. Establish `hc : 0 < 1 + 1 / ((n : ℝ) + 1)` using `by positivity`. Rewrite using `[div_le_div_iff₀ hc hΩpos]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hAB' hc.le]`. Conclude with `Filter.Eventually.of_forall fun n => ratio_le_one (fun t ht => ht.1) (hfin n)`.
+-/
 theorem folner_seq [LocallyCompactSpace G] [SecondCountableTopology G] {S : Set G} {μS : Measure G}
     (hS : IsHaarSub S μS) (hF : IsFolner S μS) :
     ∃ Ω : ℕ → Set G, (∀ n, MeasurableSet (Ω n) ∧ Ω n ⊆ S ∧ 0 < μS (Ω n) ∧ μS (Ω n) < ⊤) ∧
@@ -73,6 +90,17 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDime
 
 def rat (μS : Measure G) (Ω : Set G) (q : G) : ℝ := (cnt μS Ω q).toReal / (μS Ω).toReal
 
+/- English proof (translation)
+Establish `: SigmaFinite μS` using `hS.2.2.2.2.1`. Distinguish the cases in `hm : (μS Ω).toReal = 0`. Simplify using `[rat, hm]`. Establish `hI` using `‹Integrable (fun x : G × G × G => rat μS Ω x.2.2 • Fk σ w W x.1 x.2.1 x.2.2) (ν.prod (ν.prod μS))›`. Establish `hfI : Integrable (fun x : G × G × G => (cnt μS Ω x.2.2).toReal • Fk σ w W x.1 x.2.1 x.2.2) (ν.prod (ν.prod μS))`.
+
+Use `(hI.smul (μS Ω).toReal).congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, rat, smul_smul]`. Use `congr 1`. Use `first`. Consider the case `rw [mul_div_assoc', mul_div_cancel_left₀ _ hm]`.
+
+Consider the case `field_simp`. Establish `hprod : ∫ x, (cnt μS Ω x.2.2).toReal • Fk σ w W x.1 x.2.1 x.2.2 ∂(ν.prod (ν.prod μS)) = ∫ z, ∫ z', ∫ q, (cnt μS Ω q).toReal • Fk σ w W z z' q ∂μS ∂ν ∂ν`. Rewrite using `[integral_prod _ hfI]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hfI.prod_right_ae] with z hz`.
+
+Conclude with `integral_prod _ hz`. Establish `hrhs : ∫ x, rat μS Ω x.2.2 • Fk σ w W x.1 x.2.1 x.2.2 ∂(ν.prod (ν.prod μS)) = ∫ x, ((μS Ω).toReal⁻¹ : ℝ) • ((cnt μS Ω x.2.2).toReal • Fk σ w W x.1 x.2.1 x.2.2) ∂(ν.prod (ν.prod μS))`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [rat, smul_smul, div_eq_inv_mul]`. Rewrite using `[hrhs, integral_smul, hprod, ← sumsq_eq hσ hw hS hWeq hτu hWc hW1 hΩm hΩS hfin, Complex.real_smul]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumsq_div_eq {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH} (hw : ‖w‖ = 1) {S : Set G}
     {μS ν : Measure G} (hS : IsHaarSub S μS) [SFinite ν] {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hWeq : ∀ s ∈ S, ∀ x, W (s * x) = τ s (W x)) (hτu : ∀ s ∈ S, ∀ a b, ⟪τ s a, τ s b⟫_ℂ = ⟪a, b⟫_ℂ)
@@ -110,6 +138,23 @@ theorem sumsq_div_eq {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) {w : HH
     push_cast
     ring
 
+/- English proof (translation)
+Establish `: SFinite ν` using `hν`. Establish `: SigmaFinite μS` using `hS.2.2.2.2.1`. Establish `hd : 0 < d` using `hSch.1`. Establish `hWeq` using `hW.2.2.2.1`. Establish `hτu` using `hW.2.2.1`.
+
+Establish `hWc` using `hW.2.2.2.2.1`. Establish `hW1` using `hW.2.2.2.2.2.2.1`. Establish `hS0 : μS Sᶜ = 0` using `hS.2.2.2.2.2.2.1`. Establish `hΦ` using `Fk_integrable hσ w hS0 hWeq hτu hWc hconv`. Establish `hmeas : ∀ n, Measurable (fun x : G × G × G => rat μS (Ω n) x.2.2)` using `fun n => (((cnt_measurable (μS := μS) (hΩ n).1).ennreal_toReal).div_const _).comp measurable_snd.snd`.
+
+Establish `hr : ∀ n q, 0 ≤ rat μS (Ω n) q ∧ rat μS (Ω n) q ≤ 1`. Introduce `n q`. Unfold `rat cnt`. Conclude with `⟨ratio_nonneg, ratio_le_one (fun t ht => ht.1) (hΩ n).2.2.2⟩`. Establish `hbound : ∀ n (x : G × G × G), ‖rat μS (Ω n) x.2.2 • Fk σ w W x.1 x.2.1 x.2.2‖ ≤ ‖Fk σ w W x.1 x.2.1 x.2.2‖`.
+
+Introduce `n x`. Rewrite using `[norm_smul, Real.norm_of_nonneg (hr n x.2.2).1]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hr n x.2.2).2`. Establish `hint_r : ∀ n, Integrable (fun x : G × G × G => rat μS (Ω n) x.2.2 • Fk σ w W x.1 x.2.1 x.2.2) (ν.prod (ν.prod μS))` using `fun n => hΦ.mono ((hmeas n).aestronglyMeasurable.smul hΦ.aestronglyMeasurable) (ae_of_all _ (hbound n))`. Establish `hS_ae : ∀ᵐ x ∂(ν.prod (ν.prod μS)), x.2.2 ∈ S`.
+
+Rewrite using `[ae_iff]`. Establish `hset : {x : G × G × G | ¬ x.2.2 ∈ S} = Set.univ ×ˢ (Set.univ ×ˢ Sᶜ)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hset, Measure.prod_prod, Measure.prod_prod, hS0, mul_zero, mul_zero]`.
+
+Establish `hlim : Tendsto (fun n => ∫ x, rat μS (Ω n) x.2.2 • Fk σ w W x.1 x.2.1 x.2.2 ∂(ν.prod (ν.prod μS))) atTop (𝓝 (∫ x, Fk σ w W x.1 x.2.1 x.2.2 ∂(ν.prod (ν.prod μS))))`. Use `tendsto_integral_of_dominated_convergence (fun x => ‖Fk σ w W x.1 x.2.1 x.2.2‖) (fun n => (hint_r n).aestronglyMeasurable) hΦ.norm (fun n => ae_of_all _ (hbound n)) ?_` and prove the remaining obligations. Use `filter_upwards [hS_ae] with x hx`. Establish `h1 : Tendsto (fun n => rat μS (Ω n) x.2.2) atTop (𝓝 1)`. Establish `h0` using `hF {x.2.2} isCompact_singleton (Set.singleton_subset_iff.mpr hx)`.
+
+Simplify `h0` using `[rat, cnt]`. Establish `h2` using `h1.smul_const (Fk σ w W x.1 x.2.1 x.2.2)`. Rewrite `h2` using `[one_smul]`. Then use the resulting hypothesis. Rewrite `hlim` using `[Fk_value hσ hd hq hW hΦ]`. Establish `hlim' : Tendsto (fun n => (((∑ i, ‖yv μS ν σ w W (Ω n) (stdOrthonormalBasis ℂ V i)‖ ^ 2) / (μS (Ω n)).toReal : ℝ) : ℂ)) atTop (𝓝 ((1 / d : ℝ) : ℂ))` using `hlim.congr fun n => (sumsq_div_eq hσ hw hS hWeq hτu hWc hW1 (hΩ n).1 (hΩ n).2.1 (hΩ n).2.2.2 (hint_r n)).symm`.
+
+Establish `h3` using `(Complex.continuous_re.tendsto _).comp hlim'`. Simplify `h3` using `only [Function.comp_def, Complex.ofReal_re]`.
+-/
 theorem folner_limit {μ : Measure G} [μ.IsHaarMeasure] {σ : G → (HH →L[ℂ] HH)} {d : ℝ} {w : HH}
     {S : Set G} {μS ν : Measure G} {τ : G → (V →L[ℂ] V)} {W : G → V}
     (hσ : IsUnitRep σ) (hSch : IsSchur μ σ d) (hw : ‖w‖ = 1) (hS : IsHaarSub S μS) (hν : SFinite ν)

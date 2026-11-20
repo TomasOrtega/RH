@@ -10,10 +10,22 @@ section Quot
 variable {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
   {η : Γ →* ℤˣ} {Ψ : Γ →* Oˣ}
 
+/- English proof (translation)
+The claim follows from `GLift.ext rfl`.
+-/
 private theorem glift_map_map {R R' R'' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R']
     [IsCO O R'] [CommRing R''] [Algebra O R''] [IsCO O R''] (r : GLift O η Ψ R) (f : R →ₐ[O] R')
     (f' : R' →ₐ[O] R'') : (r.map f).map f' = r.map (f'.comp f) := GLift.ext rfl
 
+/- English proof (translation)
+Take `⟨f₀, hf₀, -⟩` from `(V.rep R₀).2 r₀ (hQP _ _ h₀)`. Establish `hle : J ≤ RingHom.ker f₀` using `(hJ R₀ f₀).1 (hf₀ ▸ h₀)`. Establish `hne : J ≠ ⊤` using `fun h => RingHom.ker_ne_top f₀ (top_le_iff.1 (h ▸ hle))`. Use `haveI : Nontrivial (V.R ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsCO O (V.R ⧸ J) := co_quot O V.R (V.R ⧸ J) (Ideal.Quotient.mkₐ O J) (Ideal.Quotient.mkₐ_surjective O J)`.
+
+Use `⟨⟨V.R ⧸ J, V.r.map (Ideal.Quotient.mkₐ O J), fun R' _ _ _ => ⟨fun f => ?_, fun r' hr' => ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[glift_map_map, hJ]`. Introduce `y hy`. Use `show f (Ideal.Quotient.mk J y) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hy, map_zero]`.
+
+Take `⟨f, hf, hu⟩` from `(V.rep R').2 r' (hQP _ _ hr')`. Establish `hk : J ≤ RingHom.ker f` using `(hJ R' f).1 (hf ▸ hr')`. Establish `hc : (Ideal.Quotient.liftₐ J f hk).comp (Ideal.Quotient.mkₐ O J) = f` using `AlgHom.ext fun _ => rfl`. Use `⟨Ideal.Quotient.liftₐ J f hk, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `show (V.r.map _).map _ = r'`.
+
+Rewrite using `[glift_map_map, hc, hf]`. Establish `hg' : g.comp (Ideal.Quotient.mkₐ O J) = f` using `hu _ ((glift_map_map V.r _ g).symm.trans hg)`. Conclude with `Ideal.Quotient.algHom_ext O (hg'.trans hc.symm)`.
+-/
 private theorem univ_quot {P Q : GCond O η Ψ} (V : Univ P) (J : Ideal V.R)
     (hQP : ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (r : GLift O η Ψ R), Q R r → P R r)
     (hJ : ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (f : V.R →ₐ[O] R),
@@ -40,6 +52,17 @@ private theorem univ_quot {P Q : GCond O η Ψ} (V : Univ P) (J : Ideal V.R)
     · have hg' : g.comp (Ideal.Quotient.mkₐ O J) = f := hu _ ((glift_map_map V.r _ g).symm.trans hg)
       exact Ideal.Quotient.algHom_ext O (hg'.trans hc.symm)
 
+/- English proof (translation)
+Use `univ_quot V (Ideal.span ({x | ∃ a b, x = ((V.r.hom c).mat - 1) a b} ∪ {zmat c g₁ V.r.hom 0 1, zmat c g₁ V.r.hom 1 0})) (fun _ _ _ _ _ h => h.2) (fun R _ _ _ f => ?_) r₀ h₀` and prove the remaining obligations. Establish `hz : ∀ a b, zmat c g₁ (V.r.map f).hom a b = f (zmat c g₁ V.r.hom a b)` using `fun a b => by`. Simplify using `only [zmat, Matrix.sub_apply, map_sub]`. Both sides reduce to the same expression. Establish `hc : ∀ a b, (((V.r.map f).hom c).mat - 1) a b = f (((V.r.hom c).mat - 1) a b)` using `fun a b => by`.
+
+Simplify using `only [Matrix.sub_apply, map_sub, Matrix.one_apply, apply_ite f, map_one, map_zero]`. Both sides reduce to the same expression. Rewrite using `[Ideal.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hn, -⟩ x hx show f x = 0`.
+
+Break down `hx with ⟨a, b, rfl⟩ | rfl | rfl` into its components or cases. Rewrite using `[← hc, hn.atc, sub_self, Matrix.zero_apply]`. Rewrite using `[← hz, hn.z12]`. Rewrite using `[← hz, hn.z21]`. Introduce `h`.
+
+Use `⟨⟨?_, ?_, ?_⟩, (V.rep R).1 f⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use extensionality with `a b`. Rewrite using `[hc]`. Conclude with `h (Or.inl ⟨a, b, rfl⟩)`.
+
+Rewrite using `[hz]`. Conclude with `h (Or.inr (Or.inl rfl))`. Rewrite using `[hz]`. Conclude with `h (Or.inr (Or.inr rfl))`.
+-/
 private theorem univ_norm {P : GCond O η Ψ} (V : Univ P) (c g₁ : Γ)
     {R₀ : Type} [CommRing R₀] [Algebra O R₀] [IsCO O R₀] (r₀ : GLift O η Ψ R₀) (h₀ : NormCond c g₁ P R₀ r₀) :
     Nonempty (Univ (NormCond c g₁ P)) := by
@@ -70,6 +93,13 @@ private theorem univ_norm {P : GCond O η Ψ} (V : Univ P) (c g₁ : Γ)
     · rw [hz]
       exact h (Or.inr (Or.inr rfl))
 
+/- English proof (translation)
+Take `⟨φ, hφ, -⟩` from `(U.rep V.R).2 (V.r.comap ι hι) trivial`. Use `univ_quot V (I.map φ) (fun _ _ _ _ _ h => h.1) (fun R _ _ _ f => ?_) r₀ h₀` and prove the remaining obligations. Establish `hf : U.r.map (f.comp φ) = (V.r.map f).comap ι hι`. Rewrite using `[← glift_map_map, hφ]`. Conclude with `GLift.ext rfl`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, f', hf', hI⟩`. Take `⟨g, -, hu⟩` from `(U.rep R).2 ((V.r.map f).comap ι hι) trivial`. Establish `e : f' = f.comp φ` using `(hu f' hf').trans (hu _ hf).symm`.
+
+Substitute `e` using the available equality. Conclude with `fun y hy => hI hy`. Conclude with `fun h => ⟨(V.rep R).1 f, f.comp φ, hf, fun y hy => h hy⟩`.
+-/
 private theorem univ_box {H : Type} [Group H] [TopologicalSpace H] {N : Set Γ} {ι : H →* Γ} (hι : Continuous ι)
     (U : Univ (GCond.noCondition O (η.comp ι) (Ψ.comp ι))) (I : Ideal U.R)
     (V : Univ (Kills (O := O) (η := η) (Ψ := Ψ) N))
@@ -93,6 +123,13 @@ end Quot
 
 end UpperTheory.V.U3
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ hM hL hΨ hN ⟨V⟩`. Take `⟨x, τ, _, w, φ, hx, hφ, -⟩` from `hL.chart`. Establish `h₀ : BoxCond N ι hι U I O (baseLift O η Ψ hΨ)`. Use `⟨hN, x, GLift.ext hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : φ y = 0`.
+
+Rewrite `hy` using `[← hφ.ker]`. Conclude with `hy`. Establish `h2` using `hφ.const y`. Rewrite `h2` using `[h1, map_zero]`. Conclude with `IsFractionRing.injective O (FractionRing O) (h2.symm.trans (map_zero _).symm)`.
+
+Take `⟨B⟩` from `univ_box hι U I V _ h₀`. Conclude with `⟨⟨B⟩, univ_norm B cc g₁ (baseLift O η Ψ hΨ) ⟨baseRepGL3_normalised_of_psi_eq_one η Ψ g₁ hM.Ψc, h₀⟩⟩`.
+-/
 theorem UpperTheory.V.U3.exists_sRing :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)]
       {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]

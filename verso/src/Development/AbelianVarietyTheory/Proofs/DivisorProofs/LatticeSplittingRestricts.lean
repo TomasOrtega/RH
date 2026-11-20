@@ -11,6 +11,19 @@ noncomputable section
 
 namespace GlobalTheory.BplusDescent
 
+/- English proof (translation)
+Introduce `X _ U V hle h n L L' g S hL' hS`. Take `⟨hg, hGS, hSL⟩` from `hS`. Use `⟨fun k => ?_, fun i i' => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hL']`. Conclude with `Submodule.subset_span ⟨g k, hg k, rfl⟩`.
+
+Conclude with `hGS i i'`. Rewrite `hv` using `[hL']`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`.
+
+Introduce `k`. Take `⟨r, hr⟩` from `hSL w hw k`. Conclude with `⟨AffOp.res hle r, hr⟩`. Consider the case `zero`. Introduce `k`.
+
+Conclude with `⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `k`. Take `⟨a, ha⟩` from `hx k`. Take `⟨b, hb⟩` from `hy k`.
+
+Use `⟨a + b, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, AddMemClass.coe_add, mul_add, Finset.sum_add_distrib, ha, hb]`. Consider the case `smul c x _ hx`. Introduce `k`. Take `⟨a, ha⟩` from `hx k`.
+
+Use `⟨c * a, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, MulMemClass.coe_mul, ha, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splits_restrict : ∀ (X : Scheme.{0}) [IsIntegral X] (U V : AffOp X) (hle : V.1 ≤ U.1) (h n : ℕ) (L : Submodule U.Bp (Fin h → U.Bp)) (L' : Submodule V.Bp (Fin h → V.Bp)) (g : Fin n → Fin h → U.Bp) (S : Fin n → Fin h → Kbar X), L' = Submodule.span V.Bp (piMap (AffOp.res hle) (Fin h) '' (L : Set (Fin h → U.Bp))) → Splits U L g S → Splits V L' (fun k => piMap (AffOp.res hle) (Fin h) (g k)) S := by
   intro X _ U V hle h n L L' g S hL' hS
   obtain ⟨hg, hGS, hSL⟩ := hS

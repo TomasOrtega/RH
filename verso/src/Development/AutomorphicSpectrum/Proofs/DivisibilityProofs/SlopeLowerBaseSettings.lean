@@ -13,6 +13,25 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Use `set a : ℝ := -(Ch * D.f * D.j' * X.La B) with ha`. Establish `hyp : StokesLimit.Hyp X B a`. Introduce `p q hp hpq`. Establish `hq0 : 0 < q` using `by omega`. Establish `hq : (0 : ℝ) < q` using `Nat.cast_pos.2 hq0`.
+
+Take `⟨t₁, ht₁, hpos'⟩` from `hpos B p q hB1 hp hpq`. Take `⟨t₂, ht₂, hconj'⟩` from `hconj B p q hB1 hp hpq`. Take `⟨t₃, ht₃, hint'⟩` from `hint B p q hB2 hp hpq`. Take `⟨t₄, ht₄, hbd'⟩` from `hbd B p q hB2 hp hpq`. Use `⟨min (min t₁ t₂) (min t₃ t₄), lt_min (lt_min ht₁ ht₂) (lt_min ht₃ ht₄), fun t' ht0 ht1 => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : t' ≤ t₁` using `ht1.trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `h2 : t' ≤ t₂` using `ht1.trans ((min_le_left _ _).trans (min_le_right _ _))`. Establish `h3 : t' ≤ t₃` using `ht1.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `h4 : t' ≤ t₄` using `ht1.trans ((min_le_right _ _).trans (min_le_right _ _))`. Take `⟨hsemi, hnef, -⟩` from `hpos' t' ht0 h1`.
+
+Establish `hz` using `hZ K ι (mCoordIdeal D.y) (mCoordIdeal D.y) D.n (X.MUq B p q t') ((q : ℝ) * (a - (p : ℝ) / q * D.KA)) II hII D.arith le_rfl hsemi hnef (hconj' t' ht0 h2) (fun W hW hXW => by`. Establish `hh : a - (p : ℝ) / q * D.KA ≤ htMUc X.H X.S' B p q t' W`. Distinguish the cases in `hoff : OffBoundary D.Bd W`. Conclude with `hint' t' ht0 h3 W hW hXW hoff`. Conclude with `hbd' t' ht0 h4 W hW hXW hoff`.
+
+Establish `hd : (0 : ℝ) < degC W` using `Nat.cast_pos.2 (degC_pos_of_isArithVar_one hW)`. Establish `e : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet.height (II K ι) (X.MUq B p q t') W = (q : ℝ) * htMUc X.H X.S' B p q t' W`. Simplify using `only [GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.HeightsSet.height, htMUc, ComponentSetting.MUq]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hh hq.le)`. Simplify using `only [topMUc, geomDegMUc]`. Rewrite using `[le_div_iff₀ (pow_pos hq _)]`. Establish `e : ((D.n + 1 : ℕ) : ℝ) * (a - (p : ℝ) / q * D.KA) * (geomDeg (mCoordIdeal D.y) (MUc X.H X.S' B p q t') D.n / (q : ℝ) ^ D.n) * (q : ℝ) ^ (D.n + 1) = ((D.n + 1 : ℕ) : ℝ) * ((q : ℝ) * (a - (p : ℝ) / q * D.KA)) * geomDeg (mCoordIdeal D.y) (MUc X.H X.S' B p q t') D.n`. Rewrite using `[pow_succ]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `hz`. Establish `h6` using `hS a hyp`. Establish `hj' : 1 ≤ D.j'`.
+
+Use `D.j_le` as an intermediate fact. Use `D.two_le_N` as an intermediate fact. Simplify using `only [ComponentData.j']`. Use linear arithmetic over natural numbers and integers. Establish `hm` using `hmean hj' hN B hB2`.
+
+Establish `hn : (0 : ℝ) < ((D.n + 1 : ℕ) : ℝ) * degMu X.H` using `mul_pos (by positivity) hdeg`. Rewrite using `[slX, le_div_iff₀ hn]`. Establish `hm'` using `mul_le_mul_of_nonneg_left hm hn.le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem slX_lower_of_stokesAt (hZ : ZhangLowerX.Statement) {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ]
     [DecidableEq Ψ] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)] {D : ComponentData II Ψ K ι Ω E}
@@ -73,6 +92,17 @@ theorem slX_lower_of_stokesAt (hZ : ZhangLowerX.Statement) {II : IntersectionSys
   have hm' := mul_le_mul_of_nonneg_left hm hn.le
   nlinarith
 
+/- English proof (translation)
+Take `⟨K, _, ι, _, Ω, _, _, E, _, _, D, O, Lt, _, _, _, X, hDN, hDj, hrd, hL, h1, h2, h3, h4, h5, h6, -, h7, h8⟩` from `h`. Establish `hJ : 0 < testDeg Ψ N T.j` using `(GlobalTheory.T.test_polynomial_shift_total Ψ N T.j T.j_pos T.j_lt).2.1`. Establish `hf : D.f = Fintype.card Ψ` using `rfl`. Establish `hj' : D.j' = N - T.j` using `by simp only [ComponentData.j', hDN, hDj]`. Establish `hmin : min T.j (N - T.j) = N - T.j`.
+
+Use `T.j_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hcard : 1 ≤ Fintype.card Ψ` using `Fintype.card_pos`. Establish `hN2 : 2 ≤ N`. Use `T.j_pos` as an intermediate fact.
+
+Use `T.j_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsq : 4 * Fintype.card Ψ * 4 ≤ 4 * Fintype.card Ψ * N ^ 2` using `Nat.mul_le_mul_left _ (by nlinarith)`. Establish `hB1 : 4 * D.f + 2 ≤ B`. Rewrite using `[hf]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hB2 : 4 * D.f * D.N ^ 2 ≤ B` using `by rwa [hf, hDN]`. Establish `hN' : 3 * D.j' + 1 ≤ D.N` using `by rwa [hj', hDN]`. Establish `hl` using `slX_lower_of_stokesAt hZ X Ch Cu hII h1 h2 h3 h4 h5 h6 hN' B hB1 hB2 h7`. Establish `hLa : X.La B = bigLam B rd Lval`.
+
+Simplify using `only [ComponentSetting.La, abelian₂, bigLam, hrd, hL]`. Rewrite `hl` using `[hLa, hf, hj']`. Rewrite using `[h8, hmin]`. Establish `hw : (0 : ℝ) < ((dimX Ψ N T.j : ℝ) + 1) * (T.vol c * testDeg Ψ N T.j)` using `mul_pos (by positivity) (mul_pos (hvol c) hJ)`. Conclude with `mul_le_mul_of_nonneg_right hl hw.le`.
+-/
 theorem ppc_lower_of_setting (hZ : ZhangLowerX.Statement) {II : IntersectionSystem} (hII : IsIntersectionSystem II)
     {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} [Nonempty Ψ] (T : RootTower Ψ N) {Ch Cu rd Lval : ℝ}
     (hvol : ∀ c, 0 < T.vol c) (hN : 3 * (N - T.j) + 1 ≤ N) {B : ℕ} (hB : 4 * Fintype.card Ψ * N ^ 2 ≤ B)
@@ -107,6 +137,9 @@ theorem ppc_lower_of_setting (hZ : ZhangLowerX.Statement) {II : IntersectionSyst
     mul_pos (by positivity) (mul_pos (hvol c) hJ)
   exact mul_le_mul_of_nonneg_right hl hw.le
 
+/- English proof (translation)
+Introduce `hZ II hII Ψ _ _ N _ T Ch Cu rd Lval hP hN hset B hB1 hB2 hB3`. Rewrite using `[RootTower.PPt, RootTower.volT, Finset.sum_mul, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun c _ => ppc_lower_of_setting hZ hII T hP.1 hN hB2 (hset B hB1 hB2 hB3 c)`.
+-/
 theorem slope_lower_of_base_settings : ZhangLowerX.Statement → ∀ II : IntersectionSystem, IsIntersectionSystem II →
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) [Nonempty Ψ] (T : RootTower Ψ N) (Ch Cu rd Lval : ℝ),
     T.Proportional → 3 * (N - T.j) + 1 ≤ N →

@@ -14,6 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `R _ A B _ _ P hP v hv j hj w hch hw κ hκ`. Take `⟨i, hi, U, ℓ, hU, hℓ, hcl⟩` from `hch`. Rewrite `hcl` using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`. Take `⟨n, hn⟩` from `hcl`. Use `⟨cocOf P.U n, isCoc_cocOf P.U n ?_, GlobalTheory.T.chernCocycle_tangentContraction_cohomologous_torsor R A B P hP v hv j hj w hw i hi U ℓ hU hℓ n hn κ hκ⟩` and prove the remaining obligations.
+
+Introduce `T T' T'' a b h h' h''`. Establish `e` using `congrFun (congrFun (congrFun (congrFun (congrFun hn T) T') T'') a) b`. Rewrite using `[e]`. Establish `h0 : ℓ.1 T T' T'' a b = 0`. Use `(hℓ T T' T'' a b).1` as an intermediate fact.
+
+Rewrite `this` using `[h'']`. Conclude with `(Ideal.mem_bot).1 this`. Express the relevant statement in the definitionally equal form `w.1 _ _ _ _ _ - ℓ.1 T T' T'' a b = 0`. Rewrite using `[h0, sub_zero]`. Conclude with `hw _ _ _ _ _ h h' h''`.
+-/
 theorem contr_chern_eq_tanCoc : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), P.IsLB → ∀ v : epsR R ⟶ B, IsTangent v → ∀ (j : ∀ (D : Type) [CommRing D] [Algebra R D], Pt A D → P.ι), IsChoice P j → ∀ w : Z2 (O (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)), IsChern (dp0 R) _ P (CatCoh.H2.mk _ w) → (∀ (T T' T'' : Thick (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _)) (a : T ⟶ T') (b : T' ⟶ T''), T.J = ⊥ → T'.J = ⊥ → T''.J = ⊥ → w.1 T T' T'' a b = 0) → ∀ κ : Fn1 A, IsContr w.1 v κ → ∃ u : Fn1 (A ⊗ B), IsCoc P.U u ∧ Cohom (chartsA P) κ ((tanCoc P j v).add (sndPull u v)) := by
   intro R _ A B _ _ P hP v hv j hj w hch hw κ hκ
   obtain ⟨i, hi, U, ℓ, hU, hℓ, hcl⟩ := hch

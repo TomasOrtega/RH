@@ -103,6 +103,9 @@ def FrobeniusComparison : Prop := ∀ (l : ℕ) [Fact l.Prime] (K : Intermediate
   (C : PerC R) (I : Iso l K C.K₀) (D : Dat R), R.Facts → C.Facts → EtSide G → D.Laws G → EMap G D →
     ∀ (β : BMap G D) (β₁ : BPhi β), PMap G D → FMap G C I D β₁.pull → Nonempty (CrysCmp G C I)
 
+/- English proof (translation)
+Introduce `l _ K R G C I D β β₁ F M hM a j`. Use `F.fin M hM j` as an intermediate fact. Take `⟨w, hw, h⟩` from `F.fac a hM j (Module.finBasis _ _)`. Conclude with `⟨F.k, _, w, hw, fun x => ⟨_, fun s => ⟨_, rfl⟩, h x⟩⟩`.
+-/
 theorem fac : FactorisationSpanProperty := by
   intro l _ K R G C I D β β₁ F M hM a j
   have := F.fin M hM j

@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.TwV
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD`. Conclude with `GlobalTheory.T.kernelSite_away_of_positive_pair S hD ⟨J.alg0, J.alg⟩ J.kin (GlobalTheory.T.site_place_induces_position_embeddings S) (GlobalTheory.T.kernelSite_latticeTuplePairs_admissible S hD)`.
+-/
 theorem away_of_dict : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     J.Dict std → S.Away) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD

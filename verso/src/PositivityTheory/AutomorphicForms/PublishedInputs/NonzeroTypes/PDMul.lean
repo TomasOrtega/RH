@@ -8,6 +8,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace UpperTheory.TNZ.Grp.P_DMul
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq, RingHom.map_mul, RingHom.map_det, RingHom.map_det, RingHom.map_det, ← det_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.submatrix_apply, Matrix.mul_apply, map_sum, map_mul]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype p]`.
+
+Establish `h0 : ∑ l : {x // ¬ p x}, (Ideal.Quotient.mk Q) (A i l) * (Ideal.Quotient.mk Q) (B l j) = 0`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr (hB l j l.2 j.2), mul_zero]`. Rewrite using `[h0, add_zero]`.
+-/
 theorem minor_mul_sub_mem {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι] (p : ι → Prop) [DecidablePred p]
     (Q : Ideal R) (A B : Matrix ι ι R) (hB : ∀ i j, ¬ p i → p j → B i j ∈ Q) :
     ((A * B).submatrix (Subtype.val : {i // p i} → ι) Subtype.val).det -
@@ -23,6 +28,11 @@ theorem minor_mul_sub_mem {R : Type} [CommRing R] {ι : Type} [Fintype ι] [Deci
     rw [Ideal.Quotient.eq_zero_iff_mem.mpr (hB l j l.2 j.2), mul_zero]
   rw [h0, add_zero]
 
+/- English proof (translation)
+Establish `ht` using `twoBlockTriangular_det ((IsLocalRing.residue R).mapMatrix M) p (fun i hi j hj => (IsLocalRing.residue_eq_zero_iff _).mpr (hl i j hi hj))`. Rewrite `ht` using `[← RingHom.map_det]`. Establish `hu : IsUnit ((IsLocalRing.residue R) M.det)` using `hM.map _`. Rewrite `hu` using `[ht]`. Establish `h1` using `isUnit_of_mul_isUnit_left hu`.
+
+Use `IsUnit.of_map (IsLocalRing.residue R) _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Conclude with `h1`.
+-/
 theorem minor_isUnit {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} [Fintype ι] [DecidableEq ι] (p : ι → Prop) [DecidablePred p]
     (M : Matrix ι ι R) (hM : IsUnit M.det) (hl : ∀ i j, ¬ p i → p j → M i j ∈ IsLocalRing.maximalIdeal R) :
     IsUnit (M.submatrix (Subtype.val : {i // p i} → ι) Subtype.val).det := by
@@ -36,6 +46,15 @@ theorem minor_isUnit {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} [Fintyp
   rw [RingHom.map_det]
   exact h1
 
+/- English proof (translation)
+Take `⟨W, hW⟩ : IsUnit (y * z)` from `hy.mul hz`. Establish `hsub : x * ((W⁻¹ : Rˣ) : R) - 1 ∈ Q`. Establish `e : x * ((W⁻¹ : Rˣ) : R) - 1 = (x - y * z) * ((W⁻¹ : Rˣ) : R)`. Rewrite using `[sub_mul, ← hW, Units.mul_inv]`. Rewrite using `[e]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hxyz`. Establish `hunit : IsUnit (x * ((W⁻¹ : Rˣ) : R))`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal]`. Introduce `hm`. Establish `h1 : (1 : R) ∈ IsLocalRing.maximalIdeal R`.
+
+Use `Ideal.sub_mem _ hm (hQ hsub)` as an intermediate fact. Simplify using `using this`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Use `⟨hunit.unit, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec]`.
+
+Conclude with `hsub`. Rewrite using `[IsUnit.unit_spec, ← hW, mul_left_comm, Units.mul_inv, mul_one]`.
+-/
 theorem unit_factor {R : Type} [CommRing R] [IsLocalRing R] (Q : Ideal R) (hQ : Q ≤ IsLocalRing.maximalIdeal R)
     (x y z : R) (hy : IsUnit y) (hz : IsUnit z) (hxyz : x - y * z ∈ Q) :
     ∃ u : Rˣ, (u : R) - 1 ∈ Q ∧ x = y * z * u := by
@@ -58,6 +77,11 @@ theorem unit_factor {R : Type} [CommRing R] [IsLocalRing R] (Q : Ideal R) (hQ : 
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hlt : G.bl j < G.bl i` using `lt_of_le_of_lt hj (not_le.mp hi)`. Take `⟨y, hy, hyx⟩` from `hx.2 i j hlt`. Establish `hyX : y = (X : Matrix (Fin n) (Fin n) 𝒪[k]) i j`. Apply `FaithfulSMul.algebraMap_injective 𝒪[k] k` to reduce the goal to its premises. Rewrite using `[hyx, ← hX]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hyX]`. Establish `hia : (a : ℕ) < (G.bl i : ℕ)` using `not_le.mp hi`. Establish `hle : cc G.μ a ⟨a + 1, h1⟩ ≤ cc G.μ (G.bl j) (G.bl i)` using `G.ball (G.bl j) a ⟨a + 1, h1⟩ (G.bl i) hj (Fin.lt_def.mpr (Nat.lt_succ_self _)) (Fin.le_def.mpr hia)`. Conclude with `Ideal.pow_le_pow_right hle hy`.
+-/
 theorem low {n : ℕ} (G : Grp k n) (a : Fin G.s) (h1 : (a : ℕ) + 1 < G.s) (X : GL (Fin n) 𝒪[k])
     (x : GL (Fin n) k) (hX : Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) X = x) (hx : x ∈ G.JSet)
     (i j : Fin n) (hi : ¬ (G.bl i ≤ a)) (hj : G.bl j ≤ a) :
@@ -74,6 +98,9 @@ theorem low {n : ℕ} (G : Grp k n) (a : Fin G.s) (h1 : (a : ℕ) + 1 < G.s) (X 
     G.ball (G.bl j) a ⟨a + 1, h1⟩ (G.bl i) hj (Fin.lt_def.mpr (Nat.lt_succ_self _)) (Fin.le_def.mpr hia)
   exact Ideal.pow_le_pow_right hle hy
 
+/- English proof (translation)
+Unfold `Grp.Δ`. Rewrite using `[hx, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]`.
+-/
 theorem delta_eq {n : ℕ} (G : Grp k n) (a : Fin G.s) (X : Matrix (Fin n) (Fin n) 𝒪[k]) (x : GL (Fin n) k)
     (hx : (x : Matrix (Fin n) (Fin n) k) = X.map (algebraMap 𝒪[k] k)) :
     G.Δ a x = algebraMap 𝒪[k] k (X.submatrix (Subtype.val : {i : Fin n // G.bl i ≤ a} → Fin n) Subtype.val).det := by
@@ -81,6 +108,9 @@ theorem delta_eq {n : ℕ} (G : Grp k n) (a : Fin G.s) (X : Matrix (Fin n) (Fin 
   rw [hx, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.submatrix_map]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[← hX]`. Both sides reduce to the same expression.
+-/
 theorem coe_map_eq {n : ℕ} (X : GL (Fin n) 𝒪[k]) (x : GL (Fin n) k)
     (hX : Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) X = x) :
     (x : Matrix (Fin n) (Fin n) k) = (X : Matrix (Fin n) (Fin n) 𝒪[k]).map (algebraMap 𝒪[k] k) := by
@@ -92,6 +122,17 @@ namespace UpperTheory.TNZ.Grp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `_ hB g hg h hh a h1`. Establish `hab : a ≠ ⟨a + 1, h1⟩` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Establish `hc1 : 1 ≤ cc G.μ a ⟨a + 1, h1⟩` using `hB.1 a _ hab`.
+
+Establish `hQ : IsLocalRing.maximalIdeal 𝒪[k] ^ cc G.μ a ⟨a + 1, h1⟩ ≤ IsLocalRing.maximalIdeal 𝒪[k]`. Use `Ideal.pow_le_pow_right (I := IsLocalRing.maximalIdeal 𝒪[k]) hc1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨G', hG'⟩` from `hg.1`. Take `⟨H', hH'⟩` from `hh.1`.
+
+Establish `uG` using `P_DMul.minor_isUnit (fun i => G.bl i ≤ a) _ ((Matrix.isUnit_iff_isUnit_det _).mp G'.isUnit) (fun i j hi hj => hQ (P_DMul.low G a h1 G' g hG' hg i j hi hj))`. Establish `uH` using `P_DMul.minor_isUnit (fun i => G.bl i ≤ a) _ ((Matrix.isUnit_iff_isUnit_det _).mp H'.isUnit) (fun i j hi hj => hQ (P_DMul.low G a h1 H' h hH' hh i j hi hj))`. Establish `key` using `P_DMul.minor_mul_sub_mem (fun i => G.bl i ≤ a) _ (G' : Matrix (Fin n) (Fin n) 𝒪[k]) _ (P_DMul.low G a h1 H' h hH' hh)`. Take `⟨u, hu1, hu2⟩` from `P_DMul.unit_factor _ hQ _ _ _ uG uH key`. Use `⟨u, hu1, ?_⟩` and prove the remaining obligations.
+
+Establish `hgm` using `P_DMul.coe_map_eq G' g hG'`. Establish `hhm` using `P_DMul.coe_map_eq H' h hH'`. Establish `hghm : ((g * h : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = ((G' : Matrix (Fin n) (Fin n) 𝒪[k]) * (H' : Matrix (Fin n) (Fin n) 𝒪[k])).map (algebraMap 𝒪[k] k)`. Rewrite using `[Units.val_mul, hgm, hhm, Matrix.map_mul]`. Rewrite using `[P_DMul.delta_eq G a _ _ hghm, P_DMul.delta_eq G a _ _ hgm, P_DMul.delta_eq G a _ _ hhm, ← map_mul, ← map_mul]`.
+
+Conclude with `congrArg _ hu2`.
+-/
 theorem step_DMul {n : ℕ} (G : Grp k n) : ModulusMultiplicativeProp G := by
   intro _ hB g hg h hh a h1
   have hab : a ≠ ⟨a + 1, h1⟩ := fun e => by

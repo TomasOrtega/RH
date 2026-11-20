@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.PushTwistChi
 
+/- English proof (translation)
+Introduce `k _ T T' _ _ hT hT' ρ hρ L hL H hH`. Establish `hPT` using `(isProper_and_exists_isAmpleLB_of_isProjOver hT.isProjOver).1`. Establish `hPT'` using `(isProper_and_exists_isAmpleLB_of_isProjOver hT'.isProjOver).1`. Establish `: IsProper (ρ ≫ strHom k T)` using `hρ ▸ hPT'`. Establish `: IsProper ρ` using `.of_comp ρ (strHom k T)`.
+
+Establish `: IsLocallyNoetherian T` using `LocallyOfFiniteType.isLocallyNoetherian (strHom k T)`. Establish `: CompactSpace T` using `QuasiCompact.compactSpace_of_compactSpace (strHom k T)`. Use `isAffineHom_diagonal_of_isSeparated (strHom k T)` as an intermediate fact. Establish `hπ : ∀ r : k, ρ.appTop (algebraMap k Γ(T, ⊤) r) = algebraMap k Γ(T', ⊤) r` using `fun r => by`. Rewrite using `[algebraMap_eq_strHom k T, algebraMap_eq_strHom k T', ← hρ, Scheme.Hom.comp_appTop]`.
+
+Both sides reduce to the same expression. Take `⟨m, D, hD, hc⟩` from `exists_fin_affine_cover (X := T) (V := ⊤) isCompact_univ`. Establish `hD'` using `isAffineOpen_finset_biInf hD`. Establish `hV : ∀ᶠ n : ℕ in atTop, ∀ I : Finset (Fin m), I.Nonempty → ∀ q, 0 < q → Subsingleton (cohOn (twist H (lbPow L n)) (ρ ⁻¹ᵁ (⨅ i ∈ I, D i)) q)` using `eventually_all.2 fun I => eventually_all.2 fun hI => GlobalTheory.ProperFinite.eventually_subsingleton_cohOn ρ hL H (hD' I hI)`. Use `filter_upwards [hV] with n hn`.
+
+Use `GlobalTheory.Twist.isFiniteQC_twist (F := H) (isLB_lbPow hL.isLB n)` as an intermediate fact. Establish `hF` using `GlobalTheory.ProperFinite.isFiniteQC_pushforward ρ hL (twist H (lbPow L n))`. Use `⟨hF, chi_eq_of_linearEquiv k fun p => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ProperFinite.nonempty_coh_pushforward_equiv k ρ hπ _ hc hD' hn p).some`.
+-/
 theorem eventually_isFiniteQC_and_chi_pushforward_twist : ∀ (k : Type) [Field k] (T T' : Scheme.{0}) [Algebra k Γ(T, ⊤)] [Algebra k Γ(T', ⊤)], IsProjSurface k T → IsProjSurface k T' → ∀ (ρ : T' ⟶ T), ρ ≫ strHom k T = strHom k T' → ∀ (L : LB T'), IsAmpleLB L → ∀ (H : T'.Modules), QCoh.IsFiniteQC H → ∀ᶠ n in atTop, QCoh.IsFiniteQC ((Scheme.Modules.pushforward ρ).obj (twist H (lbPow L n))) ∧ chi k ((Scheme.Modules.pushforward ρ).obj (twist H (lbPow L n))) = chi k (twist H (lbPow L n)) := by
   intro k _ T T' _ _ hT hT' ρ hρ L hL H hH
   have hPT := (isProper_and_exists_isAmpleLB_of_isProjOver hT.isProjOver).1

@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Proje
 open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefU Formalism.BasicNotions UpperTheory.Gal.CertificateRingHomMap
 open scoped Classical
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Simplify using `[← hσ y]`. Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Establish `h1 : ComplexEmbedding.conjugate τ₀ y = τ₀ (IsCMField.complexConj E y)`.
+
+Rewrite using `[ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj]`. Establish `h2 : ComplexEmbedding.conjugate τ y = τ (IsCMField.complexConj E y)`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[h2]`. Simplify using `[h1, ← hσ]`.
+-/
 private theorem symm_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {σ : ℂ ≃+* ℂ} {τ τ₀ : E →+* ℂ}
     (hσ : ∀ y, σ (τ y) = τ₀ y) :
     (σ.symm : ℂ →+* ℂ).comp τ₀ = τ ∧
@@ -18,6 +23,13 @@ private theorem symm_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {σ
     rw [h2]
     simp [h1, ← hσ]
 
+/- English proof (translation)
+Take `⟨e1, e2⟩` from `symm_comp hσ`. Establish `hA : ∀ φ : E →+* ℂ, (σ : ℂ →+* ℂ).comp ((σ.symm : ℂ →+* ℂ).comp φ) = φ` using `fun φ => RingHom.ext fun y => by simp`. Establish `hB : ∀ φ : E →+* ℂ, (σ.symm : ℂ →+* ℂ).comp ((σ : ℂ →+* ℂ).comp φ) = φ` using `fun φ => RingHom.ext fun y => by simp`. Use `Finset.sum_nbij' (fun φ => (σ.symm : ℂ →+* ℂ).comp φ) (fun φ => (σ : ℂ →+* ℂ).comp φ) ?_ ?_ (fun φ _ => hA φ) (fun φ _ => hB φ) ?_` and prove the remaining obligations. Introduce `φ hφ`.
+
+Simplify using `only [Finset.mem_erase, Finset.mem_univ, and_true] at hφ ⊢`. Conclude with `⟨fun h => hφ.1 ((hA φ).symm.trans (by rw [h, ← e2, hA])), fun h => hφ.2 ((hA φ).symm.trans (by rw [h, ← e1, hA]))⟩`. Introduce `φ hφ`. Simplify using `only [Finset.mem_erase, Finset.mem_univ, and_true] at hφ ⊢`. Conclude with `⟨fun h => hφ.1 ((hB φ).symm.trans (by rw [h, e2])), fun h => hφ.2 ((hB φ).symm.trans (by rw [h, e1]))⟩`.
+
+Introduce `φ _`. Establish `h` using `hε ((σ.symm : ℂ →+* ℂ).comp φ)`. Rewrite `h` using `[hA]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 private theorem sum_reindex {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {σ : ℂ ≃+* ℂ} {τ τ₀ : E →+* ℂ} {x : E}
     (lam : (E →+* ℂ) → Fin n → ℕ) (hσ : ∀ y, σ (τ y) = τ₀ y) {ε : (E →+* ℂ) → ℕ}
     (hε : ∀ φ : E →+* ℂ, ε ((σ : ℂ →+* ℂ).comp φ) = if φ x = -τ x then 1 else 0) :
@@ -44,6 +56,35 @@ private theorem sum_reindex {E : Type} [Field E] [NumberField E] [IsCMField E] {
     rw [h]
     rfl
 
+/- English proof (translation)
+Introduce `hS E _ _ _ n d x hd hx W m hm`. Use `⟨fun τ a b hab => ?_, fun τ τ₀ σ hσ ε hε k => ?_⟩` and prove the remaining obligations. Unfold `lamOf split_ifs`. Conclude with `le_rfl`. Conclude with `Int.toNat_le_toNat (add_le_add_left ((W _).anti hab) _)`.
+
+Take `⟨e1, e2⟩` from `symm_comp hσ`. Establish `hs` using `hS E n d x hd hx W m hm τ`. Rewrite `hs` using `[← sum_reindex (lamOf W m) hσ hε]`. Establish `c1 : ∀ i, UpperTheory.Gal.LocalSmoothExtension.conjWt σ (lamOf W m) τ₀ i = lamOf W m τ i` using `fun i => by show lamOf W m ((σ.symm : ℂ →+* ℂ).comp τ₀) i = _`. Rewrite using `[e1]`.
+
+Establish `c2 : ∀ i, UpperTheory.Gal.LocalSmoothExtension.conjWt σ (lamOf W m) (ComplexEmbedding.conjugate τ₀) i = lamOf W m (ComplexEmbedding.conjugate τ) i` using `fun i => by show lamOf W m ((σ.symm : ℂ →+* ℂ).comp (ComplexEmbedding.conjugate τ₀)) i = _`. Rewrite using `[e2]`. Generalize the expression as in `hR : (∑ φ ∈ (Finset.univ.erase τ₀).erase (ComplexEmbedding.conjugate τ₀), ε φ * ∑ j, UpperTheory.Gal.LocalSmoothExtension.conjWt σ (lamOf W m) φ j) = R at hs`. Establish `hk : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) k.isLt`. Break down `InfinitePlace.embedding_mk_eq τ with hv | hv` into its components or cases.
+
+Establish `hc : ComplexEmbedding.conjugate τ ≠ (InfinitePlace.mk (ComplexEmbedding.conjugate τ)).embedding`. Rewrite using `[InfinitePlace.mk_conjugate_eq, hv]`. Conclude with `conjugate_ne τ`. Establish `l1 : ∀ i, lamOf W m τ i = m (InfinitePlace.mk τ)` using `fun i => if_pos hv.symm`. Establish `l2 : ∀ i, ((lamOf W m (ComplexEmbedding.conjugate τ) i : ℕ) : ℤ) = (W (InfinitePlace.mk τ)).w i + m (InfinitePlace.mk τ)` using `fun i => by`.
+
+Establish `h : lamOf W m (ComplexEmbedding.conjugate τ) i = ((W (InfinitePlace.mk (ComplexEmbedding.conjugate τ))).w i + m (InfinitePlace.mk (ComplexEmbedding.conjugate τ))).toNat` using `if_neg hc`. Rewrite using `[h, InfinitePlace.mk_conjugate_eq]`. Conclude with `Int.toNat_of_nonneg (hm _ _)`. Establish `hw : W.at τ = W (InfinitePlace.mk τ)`. Establish `h` using `W.at_embedding (InfinitePlace.mk τ)`.
+
+Rewrite `h` using `[hv]`. Then use the resulting hypothesis. Use `⟨fun i => (m (InfinitePlace.mk τ) + R) + (∑ j ∈ Finset.univ.erase i, lamOf W m (ComplexEmbedding.conjugate τ) j + (i : ℕ)), k, Or.inr ⟨m (InfinitePlace.mk τ), fun i => by rw [c1, l1], fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [c2, hR]`. Establish `hsum : ((∑ j ∈ Finset.univ.erase k, lamOf W m (ComplexEmbedding.conjugate τ) j : ℕ) : ℤ) = ∑ j ∈ Finset.univ.erase k, ((W (InfinitePlace.mk τ)).w j + (m (InfinitePlace.mk τ) : ℤ))`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => l2 j`. Establish `h3` using `Finset.add_sum_erase Finset.univ (fun j => (W (InfinitePlace.mk τ)).w j + (m (InfinitePlace.mk τ) : ℤ)) (Finset.mem_univ k)`. Establish `h4 : ∑ j, ((W (InfinitePlace.mk τ)).w j + (m (InfinitePlace.mk τ) : ℤ)) = ∑ j, (W (InfinitePlace.mk τ)).w j + (n : ℤ) * m (InfinitePlace.mk τ)`. Rewrite using `[Finset.sum_add_distrib]`. Simplify using the standard rewrite rules.
+
+Rewrite `hs` using `[if_pos hv.symm]`. Rewrite using `[hw, ← hs]`. Move the coercions through the operations in `at hsum ⊢`. Rewrite using `[hsum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hn : τ ≠ (InfinitePlace.mk τ).embedding`. Rewrite using `[hv]`. Conclude with `(conjugate_ne τ).symm`. Establish `l1 : ∀ i, ((lamOf W m τ i : ℕ) : ℤ) = (W (InfinitePlace.mk τ)).w i + m (InfinitePlace.mk τ)` using `fun i => by`. Establish `h : lamOf W m τ i = ((W (InfinitePlace.mk τ)).w i + m (InfinitePlace.mk τ)).toNat` using `if_neg hn`.
+
+Rewrite using `[h]`. Conclude with `Int.toNat_of_nonneg (hm _ _)`. Establish `l2 : ∀ i, lamOf W m (ComplexEmbedding.conjugate τ) i = m (InfinitePlace.mk τ)` using `fun i => by`. Establish `h : lamOf W m (ComplexEmbedding.conjugate τ) i = m (InfinitePlace.mk (ComplexEmbedding.conjugate τ))` using `if_pos (by rw [InfinitePlace.mk_conjugate_eq, hv])`. Rewrite using `[h, InfinitePlace.mk_conjugate_eq]`.
+
+Establish `hw : W.at τ = (W (InfinitePlace.mk τ)).dual` using `if_neg fun h => hn h.symm`. Use `⟨fun i => ((n - 1) * m (InfinitePlace.mk τ) + R) + (lamOf W m τ i + (n - 1 - (i : ℕ))), Fin.rev k, Or.inl ⟨m (InfinitePlace.mk τ), fun i => by rw [c2, l2], fun i => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [c1, hR]`. Establish `e3 : n - 1 - ((Fin.rev k : Fin n) : ℕ) = k`. Use `k.isLt` as an intermediate fact.
+
+Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `e4 : (((n - 1 : ℕ) : ℤ)) = (n : ℤ) - 1`. Rewrite using `[Nat.cast_sub hk]`. Simplify using the standard rewrite rules.
+
+Rewrite `hs` using `[if_neg hn]`. Rewrite using `[hw, ← hs]`. Simplify using `only [e3, DomWeight.dual]`. Use `push_cast`. Rewrite using `[l1, e4]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pExpCore_of :
     UpperTheory.Gal.CertificateRingHomMap.ExpSum → UpperTheory.Gal.CertificateRingHomMap.ExpCore := by
   intro hS E _ _ _ n d x hd hx W m hm

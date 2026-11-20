@@ -7,6 +7,9 @@ namespace DedekindCodim
 variable {k A : Type} [Field k] [IsAlgClosed k] [CommRing A] [IsDedekindDomain A] [Algebra k A]
   [Algebra.FiniteType k A]
 
+/- English proof (translation)
+Use `letI : Field (A ⧸ P) := Ideal.Quotient.field P`. Use `haveI : Algebra.FiniteType k (A ⧸ P) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k P) (Ideal.Quotient.mkₐ_surjective k P)`. Use `haveI : Module.Finite k (A ⧸ P) := finite_of_finite_type_of_isJacobsonRing k (A ⧸ P)`. Use `haveI : Algebra.IsIntegral k (A ⧸ P) := Algebra.IsIntegral.of_finite k (A ⧸ P)`. Conclude with `IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+-/
 theorem algebraMap_quot_bijective (P : Ideal A) [P.IsMaximal] :
     Function.Bijective (algebraMap k (A ⧸ P)) := by
   letI : Field (A ⧸ P) := Ideal.Quotient.field P
@@ -17,6 +20,11 @@ theorem algebraMap_quot_bijective (P : Ideal A) [P.IsMaximal] :
   haveI : Algebra.IsIntegral k (A ⧸ P) := Algebra.IsIntegral.of_finite k (A ⧸ P)
   exact IsAlgClosed.algebraMap_bijective_of_isIntegral
 
+/- English proof (translation)
+Establish `hb` using `algebraMap_quot_bijective (k := k) P`. Set `e : k ≃ₐ[k] (A ⧸ P)` to `AlgEquiv.ofBijective (Algebra.ofId k (A ⧸ P)) hb`. Use `⟨?_, ⟨(e.symm : (A ⧸ P) →ₐ[k] k).comp (Ideal.Quotient.mkₐ k P), fun u => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← e.toLinearEquiv.finrank_eq, Module.finrank_self]`. Express the relevant statement in the definitionally equal form `u ∈ P ↔ e.symm (Ideal.Quotient.mkₐ k P u) = 0`.
+
+Rewrite using `[map_eq_zero_iff _ e.symm.injective, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem maximal_part (P : Ideal A) (hP : P.IsMaximal) :
     Module.finrank k (A ⧸ P) = 1 ∧ ∃ φ : A →ₐ[k] k, ∀ u, u ∈ P ↔ φ u = 0 := by
   have hb := algebraMap_quot_bijective (k := k) P
@@ -27,6 +35,9 @@ theorem maximal_part (P : Ideal A) (hP : P.IsMaximal) :
     rw [map_eq_zero_iff _ e.symm.injective, Ideal.Quotient.mkₐ_eq_mk,
       Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(algebraMap_quot_bijective (k := k) P).2 (Ideal.Quotient.mk P a)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq]`. Rewrite using `[← P.neg_mem_iff, neg_sub]`. Conclude with `hc`.
+-/
 theorem exists_sub_mem (P : Ideal A) [P.IsMaximal] (a : A) :
     ∃ c : k, a - algebraMap k A c ∈ P := by
   obtain ⟨c, hc⟩ := (algebraMap_quot_bijective (k := k) P).2 (Ideal.Quotient.mk P a)
@@ -35,6 +46,11 @@ theorem exists_sub_mem (P : Ideal A) [P.IsMaximal] (a : A) :
   rw [← P.neg_mem_iff, neg_sub]
   exact hc
 
+/- English proof (translation)
+Establish `hKI : Ideal.span {x} ⊔ I * P ≤ I` using `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hx) Ideal.mul_le_left`. Take `⟨L, hL⟩` from `Ideal.dvd_iff_le.2 hKI`. Establish `hPL : I * P ≤ I * L` using `hL ▸ le_sup_right`. Establish `hLP : P ≤ L` using `Ideal.dvd_iff_le.1 ((mul_dvd_mul_iff_left (show I ≠ 0 from hI)).1 (Ideal.dvd_iff_le.2 hPL))`. Distinguish the cases in `hLt : L = ⊤`.
+
+Rewrite using `[hL, hLt, Ideal.mul_top]`. Use `hP.eq_of_le hLt hLP` as an intermediate fact. Substitute `this` using the available equality. Conclude with `absurd (hL ▸ (le_sup_left : Ideal.span {x} ≤ _) (Ideal.mem_span_singleton_self x)) hxP`.
+-/
 theorem span_sup_mul_eq (I P : Ideal A) (hI : I ≠ ⊥) (hP : P.IsMaximal) (x : A) (hx : x ∈ I)
     (hxP : x ∉ I * P) : Ideal.span {x} ⊔ I * P = I := by
   have hKI : Ideal.span {x} ⊔ I * P ≤ I :=
@@ -49,6 +65,27 @@ theorem span_sup_mul_eq (I P : Ideal A) (hI : I ≠ ⊥) (hP : P.IsMaximal) (x :
     subst this
     exact absurd (hL ▸ (le_sup_left : Ideal.span {x} ≤ _) (Ideal.mem_span_singleton_self x)) hxP
 
+/- English proof (translation)
+Use `haveI := hP`. Establish `hne : I * P ≠ I`. Introduce `h`. Establish `h2 : I * P = I * ⊤` using `by rw [h, Ideal.mul_top]`. Conclude with `hP.ne_top (mul_left_cancel₀ (show I ≠ 0 from hI) h2)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hxP⟩ : ∃ x ∈ I, x ∉ I * P := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (le_antisymm Ideal.mul_le_left h)`. Set `f : (A ⧸ (I * P)) →ₗ[k] (A ⧸ I)` to `(Ideal.Quotient.factorₐ k (Ideal.mul_le_left : I * P ≤ I)).toLinearMap`.
+
+Establish `hf : Function.Surjective f`. Introduce `y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Ideal.Quotient.mk _ a, rfl⟩`. Use `set v : A ⧸ (I * P) := Ideal.Quotient.mk _ x with hvdef`.
+
+Establish `hv0 : v ≠ 0` using `fun h => hxP (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Establish `hker : LinearMap.ker f = k ∙ v`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`.
+
+Establish `hy : y ∈ I`. Establish `h0 : f (Ideal.Quotient.mk _ y) = 0` using `hz`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `hyK : y ∈ Ideal.span {x} ⊔ I * P`. Rewrite using `[span_sup_mul_eq I P hI hP x hx hxP]`.
+
+Conclude with `hy`. Take `⟨a', ha', z', hz', hsum⟩` from `Submodule.mem_sup.1 hyK`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 ha'`. Take `⟨c, hc⟩` from `exists_sub_mem (k := k) P a`. Rewrite using `[Submodule.mem_span_singleton]`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum, hvdef, Algebra.smul_def, ← Ideal.Quotient.mk_algebraMap, ← map_mul, Ideal.Quotient.eq]`. Establish `h3 : algebraMap k A c * x - (a * x + z') = -((a - algebraMap k A c) * x) - z'`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
+
+Use `Ideal.sub_mem _ ((I * P).neg_mem ?_) hz'` and prove the remaining obligations. Rewrite using `[mul_comm I P]`. Conclude with `Ideal.mul_mem_mul hc hx`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff] show f v = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hx`.
+
+Establish `h1` using `LinearMap.rank_range_add_rank_ker f`. Rewrite `h1` using `[LinearMap.range_eq_top.2 hf, rank_top, hker]`. Establish `hv1 : Module.rank k (k ∙ v) = 1`. Rewrite using `[← Module.finrank_eq_rank, finrank_span_singleton hv0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← h1, hv1]`.
+-/
 theorem rank_quot_mul_maximal (I P : Ideal A) (hI : I ≠ ⊥) (hP : P.IsMaximal) :
     Module.rank k (A ⧸ (I * P)) = Module.rank k (A ⧸ I) + 1 := by
   haveI := hP
@@ -108,14 +145,25 @@ namespace DedekindCodim
 variable {k A : Type} [Field k] [IsAlgClosed k] [CommRing A] [IsDedekindDomain A] [Algebra k A]
   [Algebra.FiniteType k A]
 
+/- English proof (translation)
+Use `haveI : Subsingleton (A ⧸ (⊤ : Ideal A)) := Ideal.Quotient.subsingleton_iff.2 rfl`. Conclude with `rank_subsingleton' k _`.
+-/
 theorem rank_quot_top : Module.rank k (A ⧸ (⊤ : Ideal A)) = 0 := by
   haveI : Subsingleton (A ⧸ (⊤ : Ideal A)) := Ideal.Quotient.subsingleton_iff.2 rfl
   exact rank_subsingleton' k _
 
+/- English proof (translation)
+Establish `hne : p ≠ ⊥` using `hp.ne_zero`. Conclude with `⟨hne, ((Ideal.prime_iff_isPrime hne).1 hp).isMaximal hne⟩`.
+-/
 theorem maximal_of_prime {p : Ideal A} (hp : Prime p) : p ≠ ⊥ ∧ p.IsMaximal := by
   have hne : p ≠ ⊥ := hp.ne_zero
   exact ⟨hne, ((Ideal.prime_iff_isPrime hne).1 hp).isMaximal hne⟩
 
+/- English proof (translation)
+Proceed by induction on `J using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hJ`. Consider the case `h₂ x hx`. Rewrite using `[Ideal.isUnit_iff.1 hx, rank_quot_top]`. Conclude with `Cardinal.aleph0_pos`.
+
+Consider the case `h₃ a p ha hp ih`. Take `⟨_, hpm⟩` from `maximal_of_prime hp`. Rewrite using `[mul_comm, rank_quot_mul_maximal a p ha hpm]`. Conclude with `Cardinal.add_lt_aleph0 (ih ha) Cardinal.one_lt_aleph0`.
+-/
 theorem rank_quot_lt (J : Ideal A) (hJ : J ≠ ⊥) : Module.rank k (A ⧸ J) < Cardinal.aleph0 := by
   induction J using UniqueFactorizationMonoid.induction_on_prime with
   | h₁ => exact absurd rfl hJ
@@ -126,6 +174,11 @@ theorem rank_quot_lt (J : Ideal A) (hJ : J ≠ ⊥) : Module.rank k (A ⧸ J) < 
     rw [mul_comm, rank_quot_mul_maximal a p ha hpm]
     exact Cardinal.add_lt_aleph0 (ih ha) Cardinal.one_lt_aleph0
 
+/- English proof (translation)
+Proceed by induction on `J using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hJ`. Consider the case `h₂ x hx`. Introduce `I _`. Rewrite using `[Ideal.isUnit_iff.1 hx, rank_quot_top, Ideal.mul_top, add_zero]`.
+
+Consider the case `h₃ a p ha hp ih`. Introduce `I hI`. Take `⟨_, hpm⟩` from `maximal_of_prime hp`. Establish `hIa : I * a ≠ ⊥` using `mul_ne_zero (show I ≠ 0 from hI) ha`. Rewrite using `[show I * (p * a) = (I * a) * p by ring, rank_quot_mul_maximal _ p hIa hpm, ih ha I hI, mul_comm p a, rank_quot_mul_maximal a p ha hpm, add_assoc]`.
+-/
 theorem rank_quot_mul (J : Ideal A) (hJ : J ≠ ⊥) : ∀ I : Ideal A, I ≠ ⊥ →
     Module.rank k (A ⧸ (I * J)) = Module.rank k (A ⧸ I) + Module.rank k (A ⧸ J) := by
   induction J using UniqueFactorizationMonoid.induction_on_prime with
@@ -140,9 +193,17 @@ theorem rank_quot_mul (J : Ideal A) (hJ : J ≠ ⊥) : ∀ I : Ideal A, I ≠ �
     rw [show I * (p * a) = (I * a) * p by ring, rank_quot_mul_maximal _ p hIa hpm, ih ha I hI,
       mul_comm p a, rank_quot_mul_maximal a p ha hpm, add_assoc]
 
+/- English proof (translation)
+The claim follows from `Module.rank_lt_aleph0_iff.1 (rank_quot_lt I hI)`.
+-/
 theorem finite_quot (I : Ideal A) (hI : I ≠ ⊥) : Module.Finite k (A ⧸ I) :=
   Module.rank_lt_aleph0_iff.1 (rank_quot_lt I hI)
 
+/- English proof (translation)
+Use `haveI := finite_quot (k := k) I hI`. Use `haveI := finite_quot (k := k) J hJ`. Use `haveI := finite_quot (k := k) (I * J) (mul_ne_zero (show I ≠ 0 from hI) (show J ≠ 0 from hJ))`. Establish `h` using `rank_quot_mul (k := k) J hJ I hI`. Rewrite `h` using `[← Module.finrank_eq_rank, ← Module.finrank_eq_rank, ← Module.finrank_eq_rank]`.
+
+Conclude with `h` after adjusting the coercions.
+-/
 theorem finrank_quot_mul (I J : Ideal A) (hI : I ≠ ⊥) (hJ : J ≠ ⊥) :
     Module.finrank k (A ⧸ (I * J)) = Module.finrank k (A ⧸ I) + Module.finrank k (A ⧸ J) := by
   haveI := finite_quot (k := k) I hI
@@ -152,6 +213,11 @@ theorem finrank_quot_mul (I J : Ideal A) (hI : I ≠ ⊥) (hJ : J ≠ ⊥) :
   rw [← Module.finrank_eq_rank, ← Module.finrank_eq_rank, ← Module.finrank_eq_rank] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Take `⟨L, rfl⟩` from `Ideal.dvd_iff_le.2 hIJ`. Establish `hJ : J ≠ ⊥` using `fun h => hI (by rw [h]; exact (zero_mul L : (0 : Ideal A) * L = 0))`. Establish `hL : L ≠ ⊥` using `fun h => hI (by rw [h]; exact (mul_zero J : J * (0 : Ideal A) = 0))`. Rewrite `hr` using `[finrank_quot_mul J L hJ hL]`. Establish `h0 : Module.finrank k (A ⧸ L) = 0` using `by omega`.
+
+Use `haveI := finite_quot (k := k) L hL`. Establish `hs : Subsingleton (A ⧸ L)` using `Module.finrank_zero_iff.1 h0`. Rewrite using `[Ideal.Quotient.subsingleton_iff.1 hs, Ideal.mul_top]`.
+-/
 theorem eq_of_le_of_finrank_le (I J : Ideal A) (hI : I ≠ ⊥) (hIJ : I ≤ J)
     (hr : Module.finrank k (A ⧸ I) ≤ Module.finrank k (A ⧸ J)) : I = J := by
   obtain ⟨L, rfl⟩ := Ideal.dvd_iff_le.2 hIJ
@@ -163,6 +229,9 @@ theorem eq_of_le_of_finrank_le (I J : Ideal A) (hI : I ≠ ⊥) (hIJ : I ≤ J)
   have hs : Subsingleton (A ⧸ L) := Module.finrank_zero_iff.1 h0
   rw [Ideal.Quotient.subsingleton_iff.1 hs, Ideal.mul_top]
 
+/- English proof (translation)
+Introduce `k A _ _ _ _ _ _ _`. Conclude with `⟨fun I hI => finite_quot I hI, fun P hP => maximal_part P hP, fun I J hI hJ => finrank_quot_mul I J hI hJ, fun I J hI hIJ hr => eq_of_le_of_finrank_le I J hI hIJ hr⟩`.
+-/
 theorem dedekind_finiteType_codim : ∀ (k A : Type) [Field k] [IsAlgClosed k] [CharZero k]
     [CommRing A] [IsDedekindDomain A] [Algebra k A] [Algebra.FiniteType k A],
     (∀ I : Ideal A, I ≠ ⊥ → Module.Finite k (A ⧸ I)) ∧

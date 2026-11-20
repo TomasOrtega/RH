@@ -19,6 +19,11 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hF : I.comap (ι ≫ F) = (I.comap F).comap ι`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Establish `hG : J.comap (ι ≫ G) = (J.comap G).comap ι`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Rewrite using `[hF, hG]`.
+
+Conclude with `h`.
+-/
 private theorem comap_comp_eq_of_comap_comap_eq {A B C : Scheme.{u}} (ι : A ⟶ B) (F G : B ⟶ C)
     (I J : C.IdealSheafData) (h : (I.comap F).comap ι = (J.comap G).comap ι) :
     I.comap (ι ≫ F) = J.comap (ι ≫ G) := by
@@ -29,11 +34,17 @@ private theorem comap_comp_eq_of_comap_comap_eq {A B C : Scheme.{u}} (ι : A ⟶
   rw [hF, hG]
   exact h
 
+/- English proof (translation)
+Use `show J.comap (g ≫ U.ι) = (J.comap U.ι).comap g`. Simplify using `[Scheme.IdealSheafData.comap_comp]`.
+-/
 private theorem comap_comp_ι_eq_comap_restrictIdeal {Y Z : Scheme.{u}} (J : Y.IdealSheafData)
     (U : Y.Opens) (g : Z ⟶ U.toScheme) : J.comap (g ≫ U.ι) = (restrictIdeal J U).comap g := by
   show J.comap (g ≫ U.ι) = (J.comap U.ι).comap g
   simp [Scheme.IdealSheafData.comap_comp]
 
+/- English proof (translation)
+Establish `h2 : Scheme.Hom.ker I.subschemeι ≤ Scheme.Hom.ker ((I.comap f).subschemeι ≫ f)`. Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι, Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `Scheme.IdealSheafData.le_map_comap I f`. Conclude with `⟨AlgebraicGeometry.IsClosedImmersion.lift I.subschemeι _ h2, AlgebraicGeometry.IsClosedImmersion.lift_fac I.subschemeι _ h2⟩`.
+-/
 private theorem exists_subscheme_comap_lift {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSheafData) :
     ∃ θ : (I.comap f).subscheme ⟶ I.subscheme,
       θ ≫ I.subschemeι = (I.comap f).subschemeι ≫ f := by
@@ -45,6 +56,11 @@ private theorem exists_subscheme_comap_lift {A B : Scheme.{u}} (f : A ⟶ B) (I 
   exact ⟨AlgebraicGeometry.IsClosedImmersion.lift I.subschemeι _ h2,
     AlgebraicGeometry.IsClosedImmersion.lift_fac I.subschemeι _ h2⟩
 
+/- English proof (translation)
+Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `z ⟨y, rfl⟩`. Use `show σ.base (θ.base y) ∈ Wop`. Establish `hb : (θ ≫ σ).base y = (tι ≫ ιZ).base y` using `by rw [hθ]`. Establish `hb2 : σ.base (θ.base y) = ιZ.base (tι.base y)` using `hb`.
+
+Rewrite using `[hb2]`. Conclude with `hsub ⟨tι.base y, rfl⟩`.
+-/
 private theorem range_base_subset_range_preimage_ι {T W Z S : Scheme.{u}} (tι : T ⟶ W) (ιZ : W ⟶ Z)
     (θ : T ⟶ S) (σ : S ⟶ Z) (hθ : θ ≫ σ = tι ≫ ιZ) (Wop : Z.Opens)
     (hsub : Set.range ⇑ιZ.base ⊆ (Wop : Set ↥Z)) :
@@ -57,6 +73,11 @@ private theorem range_base_subset_range_preimage_ι {T W Z S : Scheme.{u}} (tι 
   rw [hb2]
   exact hsub ⟨tι.base y, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : tι ≫ ιZ ≫ F = δ ≫ j ≫ σ ≫ F`. Rewrite using `[← Category.assoc tι ιZ F, ← hθ, ← hδ]`. Simplify using `only [Category.assoc]`. Establish `h2 : tι ≫ ιZ ≫ G = δ ≫ j ≫ σ ≫ G`. Rewrite using `[← Category.assoc tι ιZ G, ← hθ, ← hδ]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[h1, h2, heq]`.
+-/
 private theorem comp_eq_of_lift_comp_eq {T W Z S S' Q : Scheme.{u}}
     (tι : T ⟶ W) (ιZ : W ⟶ Z) (σ : S ⟶ Z) (j : S' ⟶ S) (θ : T ⟶ S) (δ : T ⟶ S')
     (F G : Z ⟶ Q) (hθ : θ ≫ σ = tι ≫ ιZ) (hδ : δ ≫ j = θ)
@@ -70,6 +91,33 @@ private theorem comp_eq_of_lift_comp_eq {T W Z S S' Q : Scheme.{u}}
     simp only [Category.assoc]
   rw [h1, h2, heq]
 
+/- English proof (translation)
+Take `⟨V, hVaff, hptV, n, c₁, c₂, γ, j₀, hH₁, hH₂, hmc₁, hmc₂, hgm₁, hgm₂, hco, hNγ, _, hγne⟩` from `exists_common_charts_of_isMaxContactHypersurface A hμ N H₁ H₂ hsnc₁ hsnc₂ hadm₁ hadm₂ pt hpt`. Establish `hlftF : LocallyOfFiniteType (chartPullbackFst c₁ c₂ ≫ p)` using `inferInstance`. Establish `hln1 : IsLocallyNoetherian (chartPullback c₁ c₂)` using `LocallyOfFiniteType.isLocallyNoetherian (f := chartPullbackFst c₁ c₂ ≫ p)`. Establish `hln2 : IsLocallyNoetherian ((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).subscheme`. Establish `: LocallyOfFiniteType (((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).subschemeι ≫ (chartPullbackFst c₁ c₂ ≫ p))` using `inferInstance`.
+
+Conclude with `LocallyOfFiniteType.isLocallyNoetherian (f := ((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).subschemeι ≫ (chartPullbackFst c₁ c₂ ≫ p))`. Take `⟨hagree, Wop, hptW, hstalk, _, heqmor, hHcomap, hcoordS⟩` from `exists_opens_chartPullback_eq_of_mem_maxContactIdeal k p A hμ hinv hVaff c₁ c₂ j₀ (fun i hi => (hco i hi).symm) pt hptV ((isMaxContactCoord_iff_coord_mem k p A μ hVaff c₁ j₀).mp hmc₁) ((isMaxContactCoord_iff_coord_mem k p A μ hVaff c₂ j₀).mp hmc₂) hgm₁ hgm₂ (mem_support_maxContac …`. Choose the witnesses or unpack the hypotheses as in `⟨U0, hU0⟩ : ∃ U0 : (chartPullback c₁ c₂).affineOpens, chartPullbackPoint c₁ c₂ pt hptV hagree ∈ U0.1 := by`. Establish `hx : chartPullbackPoint c₁ c₂ pt hptV hagree ∈ (⨆ U : (chartPullback c₁ c₂).affineOpens, (U : (chartPullback c₁ c₂).Opens))`. Rewrite using `[AlgebraicGeometry.iSup_affineOpens_eq_top (chartPullback c₁ c₂)]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `⟨U, hU⟩`. Take `⟨g, hgle, hw0W'⟩` from `U0.2.exists_basicOpen_le (⟨chartPullbackPoint c₁ c₂ pt hptV hagree, hptW⟩ : Wop) hU0`. Establish `hW'aff : IsAffineOpen ((chartPullback c₁ c₂).basicOpen g)` using `((chartPullback c₁ c₂).affineBasicOpen g).2`.
+
+Establish `hetale1 : AlgebraicGeometry.Etale (((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂)` using `inferInstance`. Establish `hetale2 : AlgebraicGeometry.Etale (((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackSnd c₁ c₂)` using `inferInstance`. Establish `hsmooth1 : AlgebraicGeometry.Smooth (((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂)` using `inferInstance`. Establish `hlft1 : LocallyOfFiniteType ((((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂) ≫ p)` using `inferInstance`. Establish `e1 : H₁.comap (chartPullbackFst c₁ c₂) = (c₁.coordIdeal {j₀}).comap (Limits.pullback.fst c₁.map c₂.map)` using `(comap_comp_ι_eq_comap_restrictIdeal H₁ V (Limits.pullback.fst c₁.map c₂.map)).trans (congrArg (fun K : V.toScheme.IdealSheafData => K.comap (Limits.pullback.fst c₁.map c₂.map)) hH₁)`.
+
+Establish `e2 : H₂.comap (chartPullbackSnd c₁ c₂) = (c₂.coordIdeal {j₀}).comap (Limits.pullback.snd c₁.map c₂.map)` using `(comap_comp_ι_eq_comap_restrictIdeal H₂ V (Limits.pullback.snd c₁.map c₂.map)).trans (congrArg (fun K : V.toScheme.IdealSheafData => K.comap (Limits.pullback.snd c₁.map c₂.map)) hH₂)`. Establish `e3 : H₁.comap (chartPullbackFst c₁ c₂) = H₂.comap (chartPullbackSnd c₁ c₂)` using `e1.trans (hHcomap.trans e2.symm)`. Use `⟨{ W := ((chartPullback c₁ c₂).basicOpen g).toScheme , f₁ := ((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂ , f₂ := ((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackSnd c₁ c₂ , w := ⟨chartPullbackPoint c₁ c₂ pt hptV hagree, hw0W'⟩ , isAffine := hW'aff , etale_ …` and prove the remaining obligations. Conclude with `chartPullbackFst_base_chartPullbackPoint c₁ c₂ pt hptV hagree`. Conclude with `chartPullbackSnd_base_chartPullbackPoint c₁ c₂ pt hptV hagree`.
+
+Use `comap_comp_eq_of_comap_comap_eq ((chartPullback c₁ c₂).basicOpen g).ι (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂) A A ?_` and prove the remaining obligations. Conclude with `restrictIdeal_eq_of_stalkIdeal_eq _ _ ((chartPullback c₁ c₂).basicOpen g) (fun y hy => hstalk y (hgle hy))`. Use `comap_comp_eq_of_comap_comap_eq ((chartPullback c₁ c₂).basicOpen g).ι (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂) H₁ H₂ ?_` and prove the remaining obligations. Conclude with `congrArg (fun J : (chartPullback c₁ c₂).IdealSheafData => J.comap ((chartPullback c₁ c₂).basicOpen g).ι) e3`. Introduce `J hJ`.
+
+Take `⟨i, hi, rfl⟩` from `List.mem_iff_getElem.mp hJ`. Establish `key : (N[i]'hi).comap (chartPullbackFst c₁ c₂) = (N[i]'hi).comap (chartPullbackSnd c₁ c₂)`. Take `⟨hnone, hsome⟩` from `hNγ i hi`. Establish `h0F : (N[i]'hi).comap (chartPullbackFst c₁ c₂) = (restrictIdeal (N[i]'hi) V).comap (Limits.pullback.fst c₁.map c₂.map)` using `comap_comp_ι_eq_comap_restrictIdeal _ V _`. Establish `h0G : (N[i]'hi).comap (chartPullbackSnd c₁ c₂) = (restrictIdeal (N[i]'hi) V).comap (Limits.pullback.snd c₁.map c₂.map)` using `comap_comp_ι_eq_comap_restrictIdeal _ V _`.
+
+Rewrite using `[h0F, h0G]`. Consider the cases of `hγ : γ i with`. Consider the case `none`. Rewrite using `[hnone hγ, Scheme.IdealSheafData.comap_top, Scheme.IdealSheafData.comap_top]`. Consider the case `some jj`.
+
+Establish `hjj : jj ≠ j₀`. Introduce `h`. Conclude with `hγne i (by rw [hγ, h])`. Establish `hnotmem : j₀ ∉ ({jj} : Finset (Fin n))`. Simplify using `only [Finset.mem_singleton]`.
+
+Conclude with `fun h => hjj h.symm`. Rewrite using `[hsome jj hγ, chartPullback_comap_coordIdeal_eq c₁ c₂ {jj}, hcoordS {jj} hnotmem]`. Use `comap_comp_eq_of_comap_comap_eq ((chartPullback c₁ c₂).basicOpen g).ι (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂) (N[i]'hi) (N[i]'hi) ?_` and prove the remaining obligations. Conclude with `congrArg (fun J : (chartPullback c₁ c₂).IdealSheafData => J.comap ((chartPullback c₁ c₂).basicOpen g).ι) key`. Establish `hcs` using `chartPullbackFst_comp_eq_chartPullbackSnd_comp c₁ c₂`.
+
+Simplify using `only [Category.assoc] at hcs ⊢`. Rewrite using `[hcs]`. Establish `hNeq : maxContactIdeal k ((((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂) ≫ p) (A.comap (((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂)) μ = ((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).comap ((chartPullback c₁ c₂).basicOpen g).ι`. Simplify using `only [maxContactIdeal_eq_derivIdealSheafIterate]`. Rewrite using `[derivIdealSheafIterate_comap k p (((chartPullback c₁ c₂).basicOpen g).ι ≫ chartPullbackFst c₁ c₂) (μ - 1) A]`.
+
+Simplify using `[Scheme.IdealSheafData.comap_comp]`. Rewrite using `[hNeq]`. Take `⟨θ, hθ⟩` from `exists_subscheme_comap_lift ((chartPullback c₁ c₂).basicOpen g).ι ((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂))`. Establish `hsub : Set.range ⇑(((chartPullback c₁ c₂).basicOpen g).ι).base ⊆ (Wop : Set ↥(chartPullback c₁ c₂))`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce `z hz`. Conclude with `hgle hz`. Establish `hrange` using `range_base_subset_range_preimage_ι ((((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).comap ((chartPullback c₁ c₂).basicOpen g).ι).subschemeι) ((chartPullback c₁ c₂).basicOpen g).ι θ (((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).subschemeι) hθ Wop hsub`. Conclude with `comp_eq_of_lift_comp_eq _ _ _ ((((maxContactIdeal k p A μ).comap (chartPullbackFst c₁ c₂)).subschemeι ⁻¹ᵁ Wop).ι) θ (IsOpenImmersion.lift _ θ hrange) (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂) hθ (IsOpenImmersion.lift_fac _ θ hrange) heqmor`.
+-/
 theorem nonempty_etaleMaxContactComparison (k : Type u) [Field k] [CharZero k] {P : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
     (A : P.IdealSheafData) {μ : ℕ} (hμ : 1 ≤ μ) (hinv : IsMaxContactInvariant k p A μ)
@@ -213,6 +261,9 @@ theorem nonempty_etaleMaxContactComparison (k : Type u) [Field k] [CharZero k] {
       θ (IsOpenImmersion.lift _ θ hrange) (chartPullbackFst c₁ c₂) (chartPullbackSnd c₁ c₂)
       hθ (IsOpenImmersion.lift_fac _ θ hrange) heqmor
 
+/- English proof (translation)
+The claim follows from `exists_etale_maxContactIdeal_comparison k p A μ N H₁ H₂ (fun pt hpt => nonempty_etaleMaxContactComparison k p A hμ hinv N H₁ H₂ hsnc₁ hsnc₂ hadm₁ hadm₂ pt hpt)`.
+-/
 theorem exists_etale_equalizing_isMaxContactHypersurface (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     [LocallyOfFiniteType p] [QuasiCompact p]

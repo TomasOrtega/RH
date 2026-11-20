@@ -9,6 +9,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `X Ω _ ξ G _ Li _ _ M L n g O _ ρ σ q hVB hOm`. Establish `hbi` using `(Lat.isVBOn_dual_and_bidual X Ω ξ Li M.lat {q} g hVB).2 q rfl`. Establish `hD : M.htDual L n ρ σ q = M.eigLat ρ σ q`. Use `le_antisymm (fun e he => ?_) (M.eigLat_le_htDual L n ρ σ q)` and prove the remaining obligations. Take `⟨he1, he2⟩` from `(M.mem_htDual_iff L n ρ σ q e).1 he`.
+
+Use `⟨(hbi e).2 fun w hw => he2 w ?_, he1⟩` and prove the remaining obligations. Rewrite using `[hOm]`. Conclude with `hw`. Use `⟨hD, fun 𝔡 hσ ⟨d, hd, hu, _, hinv⟩ => le_antisymm ?_ fun e he => ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 fun e he => ?_` and prove the remaining obligations.
+
+Establish `h1 : σ d • e ∈ M.eigLat ρ σ q` using `hD ▸ he.2 d hd`. Establish `h2 : (⟨(σ d)⁻¹, hinv⟩ : regAt ξ q) • (σ d • e) ∈ M.eigLat ρ σ q` using `Submodule.smul_mem _ _ h1`. Establish `h3 : (⟨(σ d)⁻¹, hinv⟩ : regAt ξ q) • (σ d • e) = e`. Express the relevant statement in the definitionally equal form `(σ d)⁻¹ • (σ d • e) = e`. Rewrite using `[smul_smul, inv_mul_cancel₀ hu, one_smul]`.
+
+Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Use `Submodule.subset_span ⟨he.2, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hD]`. Conclude with `Submodule.smul_mem (M.eigLat ρ σ q) (⟨σ a, hσ a⟩ : regAt ξ q) he`.
+-/
 theorem LieModel.htDual_htW_eq_eigLat_of_htOm_eq_omLat :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] (Li : Type) [AddCommGroup Li]
       [Module Ω Li] (M : LieModel G ξ Li) (L : LB G.left) (n g : ℕ) (O : Type) [CommRing O]

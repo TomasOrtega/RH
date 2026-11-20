@@ -20,6 +20,11 @@ def ball (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] where
   zero_mem' := by simp
   neg_mem' := fun {a} ha => by simpa using ha
 
+/- English proof (translation)
+Establish `h1 : ‖((2 : ℕ) : ℚ_[p])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes Fact.out Nat.prime_two).2 hp`. Establish `h2 : (2 : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((2 : ℕ) : ℚ_[p])`. Rewrite using `[map_natCast]`.
+
+Evaluate the numerical expressions. Rewrite using `[h2, norm_algebraMap', h1]`.
+-/
 theorem norm_two (hp : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have h1 : ‖((2 : ℕ) : ℚ_[p])‖ = 1 := by
     rw [Padic.norm_natCast_eq_one_iff]
@@ -28,11 +33,23 @@ theorem norm_two (hp : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
     rw [map_natCast]; norm_num
   rw [h2, norm_algebraMap', h1]
 
+/- English proof (translation)
+Establish `h' : ‖s ^ 2‖ ≤ 1` using `h`. Rewrite `h'` using `[norm_pow]`. Conclude with `(sq_le_one_iff₀ (norm_nonneg s)).1 h'`.
+-/
 theorem le_one_of_sq {s : ℂ_[p]} (h : s ^ 2 ∈ ball p) : s ∈ ball p := by
   have h' : ‖s ^ 2‖ ≤ 1 := h
   rw [norm_pow] at h'
   exact (sq_le_one_iff₀ (norm_nonneg s)).1 h'
 
+/- English proof (translation)
+Use `⟨_, _, _, rfl, rfl, rfl, ?_⟩` and prove the remaining obligations. Use `set B := s * t + (4 * ((Q - r) + 2 * (P - r)) + 12 * r) with hB`. Use `set C := h ^ 2 * (s + t) ^ 2 * ((P - r) - (Q - r)) with hC`. Establish `e1 : B * (P - Q) = 12 * P ^ 2 - g₂`. Apply `mul_right_cancel₀ hD` to reduce the goal to its premises.
+
+Establish `: (s * (P - Q)) * (t * (P - Q)) = (y - z) * (y + z)` using `by rw [hs, ht]`. Rewrite using `[hB]`. Take the linear combination `this + hy - hz`. Establish `e2 : C * (P - Q) = 4 * P ^ 3 - g₂ * P - g₃`. Establish `: (s + t) * (P - Q) = 2 * y` using `by linear_combination hs + ht`.
+
+Establish `h3 : C * (P - Q) = h ^ 2 * ((s + t) * (P - Q)) ^ 2` using `by rw [hC]; ring`. Rewrite using `[h3, this, ← hy]`. Take the linear combination `y ^ 2 * (2 * h + 1) * hh`. Establish `e3 : (P - r) - (Q - r) = P - Q` using `by ring`. Use `clear_value B C`.
+
+Rewrite using `[e3, e1, e2]`. Establish `e4 : 16 * h ^ 4 = 1`. Establish `: 16 * h ^ 4 = (2 * h) ^ 4` using `by ring`. Rewrite using `[this, hh, one_pow]`. Take the linear combination `-(g₂ ^ 3 - 27 * g₃ ^ 2) * e4 - h ^ 4 * ((12 * P) ^ 2 * (12 * P ^ 2 - g₂) - 16 * (12 * P ^ 2 - g₂) ^ 2 + 72 * (12 * P) * (4 * P ^ 3 - g₂ * P - g₃)) * e1 + h ^ 4 * (4 * (12 * P) ^ 3 + 432 * (4 * P ^ 3 - g₂ * P - g₃)) * e2`.
+-/
 theorem disc_eq {K : Type*} [Field K] (h r g₂ g₃ P Q y z s t : K) (hh : 2 * h = 1) (hD : P - Q ≠ 0)
     (hy : y ^ 2 = 4 * P ^ 3 - g₂ * P - g₃) (hz : z ^ 2 = 4 * Q ^ 3 - g₂ * Q - g₃)
     (hs : s * (P - Q) = y - z) (ht : t * (P - Q) = y + z) :
@@ -73,12 +90,18 @@ open DiffUnit
 
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+-/
 private lemma padicComplex_norm_add_le_of_norm_le {x y : ℂ_[p]} {a : ℝ} (hx : ‖x‖ ≤ a) (hy : ‖y‖ ≤ a) :
     ‖x + y‖ ≤ a :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `padicComplex_norm_add_le_of_norm_le hx (by rwa [norm_neg])`.
+-/
 private lemma padicComplex_norm_sub_le_of_norm_le {x y : ℂ_[p]} {a : ℝ} (hx : ‖x‖ ≤ a) (hy : ‖y‖ ≤ a) :
     ‖x - y‖ ≤ a := by
   rw [sub_eq_add_neg]
@@ -86,6 +109,9 @@ private lemma padicComplex_norm_sub_le_of_norm_le {x y : ℂ_[p]} {a : ℝ} (hx 
 
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hx).trans hy`.
+-/
 private lemma padicComplex_norm_mul_le_of_norm_le_one {x y : ℂ_[p]} {a : ℝ} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ a) :
     ‖x * y‖ ≤ a := by
   rw [norm_mul]
@@ -93,12 +119,38 @@ private lemma padicComplex_norm_mul_le_of_norm_le_one {x y : ℂ_[p]} {a : ℝ} 
 
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Use `IsUltrametricDist.norm_natCast_le_one ℂ_[p] (OfNat.ofNat n)` as an intermediate fact. Rewrite `this` using `[Nat.cast_ofNat]`. Then use the resulting hypothesis.
+-/
 private lemma padicComplex_norm_ofNat_le_one (n : ℕ) [n.AtLeastTwo] : ‖(OfNat.ofNat n : ℂ_[p])‖ ≤ 1 := by
   have := IsUltrametricDist.norm_natCast_le_one ℂ_[p] (OfNat.ofNat n)
   rwa [Nat.cast_ofNat] at this
 
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Establish `hc2 : ‖c / 2‖ ≤ 1` using `by rw [norm_div, hp2, div_one]; exact hc`. Use `set d := X₁ - X₂ with hd`. Use `set H := 6 * X₂ ^ 2 + b * X₂ + c / 2 with hH`. Use `set K := 12 * X₂ + b with hK`. Establish `h1 : ‖d‖ ≤ 1` using `padicComplex_norm_sub_le_of_norm_le hX₁ hX₂`.
+
+Use `le_antisymm h1 (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `hdpos : 0 < ‖d‖` using `norm_pos_iff.2 hne`. Establish `hfour : ∀ {W : ℂ_[p]}, ‖W‖ ≤ 1 → ‖4 * (W + X₁ + X₂) + b‖ ≤ 1` using `fun hW => padicComplex_norm_add_le_of_norm_le (padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_ofNat_le_one 4) (padicComplex_norm_add_le_of_norm_le (padicComplex_norm_add_le_of_norm_le hW hX₁) hX₂)) hb`. Establish `hsq : ∀ {Y W : ℂ_[p]}, Y ^ 2 = d ^ 2 * W → ‖W‖ ≤ 1 → ‖Y‖ ≤ ‖d‖` using `fun {Y W} hY hW => by`. Establish `: ‖Y‖ ^ 2 ≤ ‖d‖ ^ 2`.
+
+Rewrite using `[← norm_pow, hY, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) hW`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 this`. Establish `hm` using `hsq hA (hfour hS)`. Establish `hp` using `hsq hB (hfour hT)`.
+
+Establish `hY₂ : ‖Y₂‖ ≤ ‖d‖`. Establish `h2 : 2 * Y₂ = (Y₁ + Y₂) - (Y₁ - Y₂)` using `by ring`. Use `padicComplex_norm_sub_le_of_norm_le hp hm` as an intermediate fact. Rewrite `this` using `[← h2, norm_mul, hp2, one_mul]`. Then use the resulting hypothesis. Establish `hX₂' : ‖2 * X₂‖ ≤ 1` using `padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_ofNat_le_one 2) hX₂`.
+
+Establish `hHd : ‖H‖ ≤ ‖d‖`. Establish `heq : H * d = d ^ 2 * (S + T - 2 * X₂) - Y₂ ^ 2` using `by linear_combination -hsym`. Establish `hST : ‖S + T - 2 * X₂‖ ≤ 1` using `padicComplex_norm_sub_le_of_norm_le (padicComplex_norm_add_le_of_norm_le hS hT) hX₂'`. Establish `: ‖H‖ * ‖d‖ ≤ ‖d‖ * ‖d‖`. Rewrite using `[← norm_mul, heq]`.
+
+Use `padicComplex_norm_sub_le_of_norm_le ?_ ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Use polynomial arithmetic with `[norm_nonneg (S + T - 2 * X₂), sq_nonneg ‖d‖]`. Rewrite using `[norm_pow]`. Use polynomial arithmetic with `[norm_nonneg Y₂]`.
+
+Conclude with `le_of_mul_le_mul_right this hdpos`. Establish `hK1 : ‖K‖ ≤ 1` using `padicComplex_norm_add_le_of_norm_le (padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_ofNat_le_one 12) hX₂) hb`. Establish `hH1 : ‖H‖ ≤ 1` using `hHd.trans h1`. Establish `hα : ‖Y₂ ^ 2‖ < 1`. Rewrite using `[norm_pow]`.
+
+Use polynomial arithmetic with `[norm_nonneg Y₂]`. Establish `hH2 : ‖H ^ 2‖ < 1`. Rewrite using `[norm_pow]`. Use polynomial arithmetic with `[norm_nonneg H]`. Establish `hP : ‖36 * K * H - 108 * Y₂ ^ 2 - K ^ 3‖ ≤ 1` using `padicComplex_norm_sub_le_of_norm_le (padicComplex_norm_sub_le_of_norm_le (padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_ofNat_le_one 36) hK1) hH1) (padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_ofNat_le_one 108) h …`.
+
+Establish `hQ : ‖K ^ 2 - 32 * H‖ ≤ 1` using `padicComplex_norm_sub_le_of_norm_le (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hK1) (padicComplex_norm_mul_le_of_norm_le_one (padicComplex_norm_ofNat_le_one 32) hH1)`. Establish `hlt4 : ‖4 * D‖ < 1`. Rewrite using `[hdisc]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hP).trans_lt hα`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hQ).trans_lt hH2`. Establish `h4 : ‖4 * D‖ = 1`. Rewrite using `[norm_mul, hD, show (4 : ℂ_[p]) = 2 * 2 by norm_num, norm_mul, hp2]`.
+
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma norm_sub_eq_one_of_discriminant_relations (hp2 : ‖(2 : ℂ_[p])‖ = 1)
     {X₁ X₂ S T Y₁ Y₂ b c D : ℂ_[p]} (hX₁ : ‖X₁‖ ≤ 1) (hX₂ : ‖X₂‖ ≤ 1) (hS : ‖S‖ ≤ 1)
     (hT : ‖T‖ ≤ 1) (hb : ‖b‖ ≤ 1) (hc : ‖c‖ ≤ 1) (hD : ‖D‖ = 1) (hne : X₁ - X₂ ≠ 0)
@@ -172,6 +224,13 @@ private lemma norm_sub_eq_one_of_discriminant_relations (hp2 : ‖(2 : ℂ_[p])�
 
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
+/- English proof (translation)
+Establish `h1 : ‖algebraMap ℚ_[p] ℂ_[p] 2‖ = ‖(2 : ℚ_[p])‖` using `norm_algebraMap' _ _`. Rewrite `h1` using `[map_ofNat]`. Rewrite using `[h1]`. Establish `h2 : ‖(2 : ℚ_[p])‖ = ‖((2 : ℤ) : ℤ_[p])‖`. Rewrite using `[PadicInt.norm_def, PadicInt.coe_intCast]`.
+
+Evaluate the numerical expressions. Rewrite using `[h2]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => h ?_)` and prove the remaining obligations. Rewrite `hlt` using `[PadicInt.norm_int_lt_one_iff_dvd]`. Establish `: p ∣ 2` using `by exact_mod_cast hlt`.
+
+Conclude with `(Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this`.
+-/
 private lemma padicComplex_norm_two_eq_one_of_ne_two (h : p ≠ 2) : ‖(2 : ℂ_[p])‖ = 1 := by
   have h1 : ‖algebraMap ℚ_[p] ℂ_[p] 2‖ = ‖(2 : ℚ_[p])‖ := norm_algebraMap' _ _
   rw [map_ofNat] at h1
@@ -187,6 +246,25 @@ private lemma padicComplex_norm_two_eq_one_of_ne_two (h : p ≠ 2) : ‖(2 : ℂ
 open scoped ComplexConjugate BigOperators in
 variable {p : ℕ} [Fact p.Prime] in
 
+/- English proof (translation)
+Take `⟨hp, h12r, hc, -, hΔ⟩` from `hG`. Take `⟨hu, hXu⟩` from `hu`. Take `⟨hv, hXv⟩` from `hv`. Take `⟨hs, hS⟩` from `h₁`. Take `⟨ht, hT⟩` from `h₂`.
+
+Establish `hne : L.weierstrassP u ≠ L.weierstrassP v`. Rewrite using `[Ne, _root_.GlobalTheory.weierstrassP_eq_iff L hu hv]`. Introduce and unpack `(h | h)`. Use `exacts [ht h, hs h]`. Establish `hd : L.weierstrassP u - L.weierstrassP v ≠ 0` using `sub_ne_zero.2 hne`.
+
+Establish `hA` using `(_root_.GlobalTheory.weierstrassP_add L hu hv hne).1`. Establish `hnv : -v ∉ L.lattice` using `fun h => hv (by simpa using neg_mem h)`. Establish `hne' : L.weierstrassP u ≠ L.weierstrassP (-v)` using `by rwa [PeriodPair.weierstrassP_neg]`. Establish `hB` using `(_root_.GlobalTheory.weierstrassP_add L hu hnv hne').1`. Rewrite `hB` using `[PeriodPair.weierstrassP_neg, PeriodPair.derivWeierstrassP_neg, ← sub_eq_add_neg, sub_neg_eq_add]`.
+
+Establish `hsym` using `_root_.GlobalTheory.weierstrassP_add_add_sub L hu hv hne`. Establish `hY` using `L.derivWeierstrassP_sq v hv`. Use `set x₁ := L.weierstrassP u`. Use `set x₂ := L.weierstrassP v`. Use `set s := L.weierstrassP (u + v)`.
+
+Use `set t := L.weierstrassP (u - v)`. Use `set y₁ := L.derivWeierstrassP u`. Use `set y₂ := L.derivWeierstrassP v`. Establish `cA : (y₁ - y₂) ^ 2 = ((x₁ - r) - (x₂ - r)) ^ 2 * (4 * ((s - r) + (x₁ - r) + (x₂ - r)) + 12 * r)`. Rewrite using `[hA]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `cB : (y₁ + y₂) ^ 2 = ((x₁ - r) - (x₂ - r)) ^ 2 * (4 * ((t - r) + (x₁ - r) + (x₂ - r)) + 12 * r)`. Rewrite using `[hB]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `cS : ((x₁ - r) - (x₂ - r)) ^ 2 * ((s - r) + (t - r) - 2 * (x₂ - r)) = (6 * (x₂ - r) ^ 2 + 12 * r * (x₂ - r) + (12 * r ^ 2 - L.g₂) / 2) * ((x₁ - r) - (x₂ - r)) + y₂ ^ 2`. Establish `e : s = (6 * x₂ ^ 2 - L.g₂ / 2) / (x₁ - x₂) + y₂ ^ 2 / (x₁ - x₂) ^ 2 - t + 2 * x₂`. Take the linear combination `hsym`. Rewrite using `[e]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `cD : 4 * (L.g₂ ^ 3 - 27 * L.g₃ ^ 2) = y₂ ^ 2 * (36 * (12 * (x₂ - r) + 12 * r) * (6 * (x₂ - r) ^ 2 + 12 * r * (x₂ - r) + (12 * r ^ 2 - L.g₂) / 2) - 108 * y₂ ^ 2 - (12 * (x₂ - r) + 12 * r) ^ 3) + (6 * (x₂ - r) ^ 2 + 12 * r * (x₂ - r) + (12 * r ^ 2 - L.g₂) / 2) ^ 2 * ((12 * (x₂ - r) …`. Rewrite using `[hY]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key` using `norm_sub_eq_one_of_discriminant_relations (padicComplex_norm_two_eq_one_of_ne_two hp) hXu hXv hS hT h12r hc hΔ (Y₁ := ι y₁) (Y₂ := ι y₂) (by rw [← map_sub]; exact (map_ne_zero ι).2 (by rwa [sub_sub_sub_cancel_right])) (by simpa only [map_sub, map_mul, map_add, map_pow, map_ofNat, …`. Rewrite `key` using `[← map_sub, sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.Klein.norm_weierstrassP_sub_eq_one (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])
     (L : PeriodPair) (r : ℂ)
     (hG : _root_.GlobalTheory.Klein.Good ι L r) (u v : ℂ) (hu : _root_.GlobalTheory.Klein.Red ι L r u)

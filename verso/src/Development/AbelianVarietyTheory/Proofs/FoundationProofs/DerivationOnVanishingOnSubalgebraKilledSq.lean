@@ -5,6 +5,23 @@ open GlobalTheory.AlmostEt
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Introduce `A S M _ _ _ _ _ B C tr n a b e h D hD hB x hx`. Establish `hsum : ∀ (s : Finset (Fin n)) (f : Fin n → S), (∀ i, f i ∈ C) → D (∑ i ∈ s, f i) = ∑ i ∈ s, D (f i)`. Introduce `s f hf`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hD.alg 0`.
+
+Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hD.add _ (hf j) _ (Subalgebra.sum_mem _ (fun i _ => hf i)), ih]`. Establish `key : ∀ y ∈ C, e • D y = ∑ j, tr (b j * y) • D (a j)`. Introduce `y hy`. Establish `heC : e ∈ C` using `h.le h.e_mem`.
+
+Establish `h1 : D (e * y) = e • D y`. Rewrite using `[hD.mul e heC y hy, hB e h.e_mem, smul_zero, add_zero]`. Rewrite using `[← h1, ← h.left y hy, hsum _ _ (fun j => C.mul_mem (h.a_mem j) (h.le (h.tr_mem _ (C.mul_mem (h.b_mem j) hy))))]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Establish `ht : tr (b j * y) ∈ B` using `h.tr_mem _ (C.mul_mem (h.b_mem j) hy)`.
+
+Rewrite using `[hD.mul _ (h.a_mem j) _ (h.le ht), hB _ ht, smul_zero, zero_add]`. Establish `L : ∑ i, b i • (e • D (x * a i)) = ∑ j, (e * x * b j) • D (a j)`. Repeatedly rewrite using `[key _ (C.mul_mem hx (h.a_mem _)), Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Establish `hr` using `h.right (b j * x) (C.mul_mem (h.b_mem j) hx)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[show b j * (x * a i) = a i * (b j * x) by ring]`. Use `_ = e * (b j * x) := hr`. Use `_ = e * x * b j := by ring`. Establish `R : ∑ i, b i • (e • D (x * a i)) = ∑ j, (e * x * b j) • D (a j) + (e * e) • D x`. Repeatedly rewrite using `[hD.mul x hx _ (h.a_mem _), smul_add, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`.
+
+Rewrite using `[show e * e = e * ∑ i, a i * b i by rw [h.sum], Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `R.symm.trans L` as an intermediate fact. Simplify using `using this`.
+-/
 theorem derOn_killed_sq : ∀ (A S M : Type) [CommRing A] [CommRing S] [Algebra A S] [AddCommGroup M]
     [Module S M] (B C : Subalgebra A S) (tr : S → S) (n : ℕ) (a b : Fin n → S) (e : S),
     IsTrData B C tr a b e → ∀ D : S → M, IsDerOn C D → (∀ β ∈ B, D β = 0) →

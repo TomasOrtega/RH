@@ -12,10 +12,18 @@ section Dual
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_eq (σ : K →+* K) (J : Matrix (Fin n) (Fin n) K) (x y : Fin n → K) :
     Formalism.UG.hform σ J x y = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ y) := by
   simp only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hform_eq]`. Establish `e1 : (fun i => σ ((M *ᵥ v) i)) = M.map σ *ᵥ fun a => σ (v a)`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`. Rewrite using `[e1, dotProduct_comm, Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hform_mulVec (σ : K →+* K) (J M : Matrix (Fin n) (Fin n) K) (v y : Fin n → K) :
     Formalism.UG.hform σ J (M *ᵥ v) y = ∑ a, σ (v a) * ((Formalism.UG.cT σ M * J) *ᵥ y) a := by
   rw [hform_eq]
@@ -27,6 +35,11 @@ theorem hform_mulVec (σ : K →+* K) (J M : Matrix (Fin n) (Fin n) K) (v y : Fi
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Use `(hY _).2 ⟨1, hl.out.not_dvd_one, fun b => ?_⟩` and prove the remaining obligations. Establish `e : (((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ fun r => (Y : Matrix (Fin n) (Fin n) K) r a) b = (((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (Y : Matrix (Fin n) (Fin n) K)) b a` using `rfl`. Rewrite using `[Nat.cast_one, one_mul, e, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`.
+
+Conclude with `⟨0, map_zero _⟩`.
+-/
 theorem col_mem_of_isLocBasis {L : Set (Fin n → K)} {Y : GL (Fin n) K} (hY : Formalism.L2.Forms.IsLocBasis l L Y) (a : Fin n) :
     ∃ t : ℕ, ¬ l ∣ t ∧ (t : K) • (fun r => (Y : Matrix (Fin n) (Fin n) K) r a) ∈ L := by
   refine (hY _).2 ⟨1, hl.out.not_dvd_one, fun b => ?_⟩
@@ -37,6 +50,19 @@ theorem col_mem_of_isLocBasis {L : Set (Fin n → K)} {Y : GL (Fin n) K} (hY : F
   · exact ⟨1, map_one _⟩
   · exact ⟨0, map_zero _⟩
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hfg`. Establish `ht : ∀ g ∈ S, ∃ t : ℕ, ¬ l ∣ t ∧ ∀ a, (t : K) * ((((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ g) a) ∈ (algebraMap (𝓞 K) K).range` using `fun g hg => (hY g).1 ⟨1, hl.out.not_dvd_one, by`. Rewrite using `[Nat.cast_one, one_smul, SetLike.mem_coe, ← hS]`. Conclude with `Submodule.subset_span hg⟩`. Set `t : (Fin n → K) → ℕ` to `fun g => if h : g ∈ S then (ht g h).choose else 1`.
+
+Establish `htS : ∀ g ∈ S, ¬ l ∣ t g ∧ ∀ a, (t g : K) * ((((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ g) a) ∈ (algebraMap (𝓞 K) K).range` using `fun g hg => by`. Simplify using `only [t, dif_pos hg]`. Conclude with `(ht g hg).choose_spec`. Use `⟨∏ g ∈ S, t g, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Prime.dvd_finsetProd_iff hl.out.prime]`.
+
+Introduce and unpack `⟨g, hg, hdvd⟩`. Conclude with `(htS g hg).1 hdvd`. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`.
+
+Introduce `a`. Rewrite using `[← Finset.mul_prod_erase S t hg, Nat.cast_mul, mul_comm ((t g : ℕ) : K), mul_assoc]`. Conclude with `Subring.mul_mem _ ⟨(∏ g' ∈ S.erase g, t g' : ℕ), map_natCast _ _⟩ ((htS g hg).2 a)`. Consider the case `zero`. Introduce `a`.
+
+Rewrite using `[Matrix.mulVec_zero, Pi.zero_apply, mul_zero]`. Conclude with `Subring.zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `a`. Rewrite using `[Matrix.mulVec_add, Pi.add_apply, mul_add]`.
+
+Conclude with `Subring.add_mem _ (hx a) (hy a)`. Consider the case `smul r x _ hx`. Introduce `a`. Rewrite using `[← algebraMap_smul K r x, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `Subring.mul_mem _ ⟨r, rfl⟩ (hx a)`.
+-/
 theorem den_of_isLocBasis {L : Submodule (𝓞 K) (Fin n → K)} (hfg : L.FG) {Y : GL (Fin n) K}
     (hY : Formalism.L2.Forms.IsLocBasis l (L : Set (Fin n → K)) Y) :
     ∃ d : ℕ, ¬ l ∣ d ∧ ∀ x ∈ L, ∀ a, (d : K) * ((((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) a) ∈
@@ -74,11 +100,31 @@ theorem den_of_isLocBasis {L : Submodule (𝓞 K) (Fin n → K)} (hfg : L.FG) {Y
       rw [← algebraMap_smul K r x, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]
       exact Subring.mul_mem _ ⟨r, rfl⟩ (hx a)
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hy`. Take `⟨r', hr'⟩` from `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.sig_int σ r`. Conclude with `⟨r', hr'⟩`.
+-/
 theorem sig_range (σ : K →+* K) {y : K} (hy : y ∈ (algebraMap (𝓞 K) K).range) : σ y ∈ (algebraMap (𝓞 K) K).range := by
   obtain ⟨r, rfl⟩ := hy
   obtain ⟨r', hr'⟩ := Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.LocB.sig_int σ r
   exact ⟨r', hr'⟩
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[hB0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩ choose t ht htL using col_mem_of_isLocBasis l hY`. Use `⟨s * ∏ b, t b, ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.Prime.dvd_mul hl.out, not_or]`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Prime.dvd_finsetProd_iff hl.out.prime]`. Introduce and unpack `⟨b, -, hb⟩`. Conclude with `ht b hb`.
+
+Establish `h1` using `hx _ (htL a)`. Establish `e1 : (t a : K) • (fun r => (Y : Matrix (Fin n) (Fin n) K) r a) = (Y : Matrix (Fin n) (Fin n) K) *ᵥ ((t a : K) • Pi.single a (1 : K))`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Rewrite `h1` using `[e1, hform_mulVec, Finset.sum_eq_single a (fun b _ hb => by simp [hb]) (fun h => absurd (Finset.mem_univ a) h)]`.
+
+Simplify using `only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, map_natCast, Matrix.mulVec_smul] at h1`. Rewrite using `[← Finset.mul_prod_erase Finset.univ t (Finset.mem_univ a)]`. Establish `e2 : ((s * (t a * ∏ b ∈ Finset.univ.erase a, t b) : ℕ) : K) * ((Formalism.UG.cT σ (Y : Matrix (Fin n) (Fin n) K) * J) *ᵥ x) a = ((∏ b ∈ Finset.univ.erase a, t b : ℕ) : K) * ((t a : K) * ((s : K) * ((Formalism.UG.cT σ (Y : Matrix (Fin n) (Fin n) K) * J) *ᵥ x) a))` using `by push_cast; ring`. Rewrite using `[e2]`. Conclude with `Subring.mul_mem _ ⟨_, map_natCast _ _⟩ h1`.
+
+Introduce and unpack `⟨s', hs', h'⟩`. Take `⟨d, hd, hdL⟩` from `den_of_isLocBasis l hfg hY`. Use `⟨d * s', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.Prime.dvd_mul hl.out, not_or]`. Conclude with `⟨hd, hs'⟩`.
+
+Introduce `z hz`. Establish `hz' : z = (Y : Matrix (Fin n) (Fin n) K) *ᵥ ((((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) *ᵥ z)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[hz', hform_mulVec]`. Use `Subring.sum_mem _ fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Establish `e : σ (((((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) *ᵥ z) b) * (((d * s' : ℕ) : K) * ((Formalism.UG.cT σ (Y : Matrix (Fin n) (Fin n) K) * J) *ᵥ x) b) = σ ((d : K) * ((((Y⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) *ᵥ z) b) * ((s' : K) * ((Formalism.UG.cT σ (Y : Matrix …`. Rewrite using `[map_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Subring.mul_mem _ (sig_range σ (hdL z hz b)) (h' b)`.
+-/
 theorem isLocBasis_dual (σ : K →+* K) (J : Matrix (Fin n) (Fin n) K) {L : Submodule (𝓞 K) (Fin n → K)} (hfg : L.FG)
     {Y : GL (Fin n) K} (hY : Formalism.L2.Forms.IsLocBasis l (L : Set (Fin n → K)) Y) (B0 : GL (Fin n) K)
     (hB0 : ((B0⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = Formalism.UG.cT σ (Y : Matrix (Fin n) (Fin n) K) * J) :
@@ -134,6 +180,9 @@ section Ten
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.flipTwoThree.ten`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => (MvPolynomial.map_rename _ _ _).symm`.
+-/
 theorem ten_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : ι → MvPolynomial (Fin n × Fin n) R) :
     Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map φ (f τ)) = MvPolynomial.map φ (Formalism.MainNotions.flipTwoThree.ten f) := by
   unfold Formalism.MainNotions.flipTwoThree.ten
@@ -144,12 +193,26 @@ end Ten
 
 variable (D : Formalism.BasicNotions.D7)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, ten_map, ten_map, MvPolynomial.map_map, RingHom.ext_int (D.what₂.embLL.comp (Int.castRingHom D.what₂.LL)) (Int.castRingHom ℂ)]`.
+-/
 theorem map_gen {n : ℕ} (r : D.what₂.LL) (f : D.what₂.Tau → MvPolynomial (Fin n × Fin n) ℤ) :
     MvPolynomial.map D.what₂.embLL (r • Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map (Int.castRingHom D.what₂.LL) (f τ))) =
       D.what₂.embLL r • Formalism.MainNotions.flipTwoThree.ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)) := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, ten_map, ten_map,
     MvPolynomial.map_map, RingHom.ext_int (D.what₂.embLL.comp (Int.castRingHom D.what₂.LL)) (Int.castRingHom ℂ)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hp`. Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem q hq`. Take `⟨r, f, hr, hf, rfl⟩` from `hq`.
+
+Conclude with `AddSubgroup.subset_closure ⟨r, f, hr, hf, map_gen D r f⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `AddSubgroup.zero_mem _`. Consider the case `add q q' _ _ h1 h2 => rw [map_add]`. Conclude with `AddSubgroup.add_mem _ h1 h2`.
+
+Consider the case `neg q _ h1 => rw [map_neg]`. Conclude with `AddSubgroup.neg_mem _ h1`. Introduce `hp`. Establish `hle : Formalism.L2.Forms.IntSpan D w lam ≤ (Formalism.MainNotions.flipTwoThree.IntSpanAt D w lam).map (MvPolynomial.map D.what₂.embLL).toAddMonoidHom`. Unfold `Formalism.L2.Forms.IntSpan`.
+
+Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨r, f, hr, hf, rfl⟩`. Conclude with `⟨_, AddSubgroup.subset_closure ⟨r, f, hr, hf, rfl⟩, map_gen D r f⟩`. Take `⟨q, hq, hqe⟩` from `hle hp`. Establish `: q = p` using `MvPolynomial.map_injective _ D.what₂.embLL.injective hqe`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem mem_intSpanAt_iff_map (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → Formalism.BasicNotions.DomWeight n)
     (p : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL) :
     p ∈ Formalism.MainNotions.flipTwoThree.IntSpanAt D w lam ↔ MvPolynomial.map D.what₂.embLL p ∈ Formalism.L2.Forms.IntSpan D w lam := by
@@ -173,6 +236,9 @@ theorem mem_intSpanAt_iff_map (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what�
     have : q = p := MvPolynomial.map_injective _ D.what₂.embLL.injective hqe
     rwa [← this]
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwA_embT_eq]`. Conclude with `Subring.mem_map.2 ⟨_, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwA_val_locInt D w ((D.host.sigmaOf (D.eTau τ : D.R.GG) : D.host.E →+* D.host.E)) y s hs hy, rfl⟩`.
+-/
 theorem embT_mem_Ow (w : D.what₂.places.Pl) (τ : D.what₂.Tau) (y : D.host.E) (s : ℕ)
     (hs : ¬ D.what₂.places.resChar w ∣ s) (hy : (s : D.host.E) * y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
     Formalism.L2.Forms.embT D τ y ∈ Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwA_Ow D w := by
@@ -180,6 +246,11 @@ theorem embT_mem_Ow (w : D.what₂.places.Pl) (τ : D.what₂.Tau) (y : D.host.E
   exact Subring.mem_map.2 ⟨_, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwA_val_locInt D w
     ((D.host.sigmaOf (D.eTau τ : D.R.GG) : D.host.E →+* D.host.E)) y s hs hy, rfl⟩
 
+/- English proof (translation)
+Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨D.what₂.places.resChar_prime w⟩`. Take `⟨s, hs, hx⟩` from `col_mem_of_isLocBasis (D.what₂.places.resChar w) hB b`. Take `⟨s', hs', h⟩` from `(hB₂ _).1 ⟨s, hs, hx⟩`. Establish `e : (((B₂⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) *ᵥ fun r => (B : Matrix (Fin n) (Fin n) D.host.E) r b) a = ((B₂⁻¹ * B : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) a b`. Rewrite using `[Units.val_mul]`.
+
+Both sides reduce to the same expression. Establish `h2` using `embT_mem_Ow D w τ _ s' hs' (h a)`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 theorem change_mem (w : D.what₂.places.Pl) (τ : D.what₂.Tau) {n : ℕ} {L : Set (Fin n → D.host.E)}
     {B B₂ : GL (Fin n) D.host.E} (hB : Formalism.L2.Forms.IsLocBasis (D.what₂.places.resChar w) L B)
     (hB₂ : Formalism.L2.Forms.IsLocBasis (D.what₂.places.resChar w) L B₂) (a b : Fin n) :
@@ -196,6 +267,15 @@ theorem change_mem (w : D.what₂.places.Pl) (τ : D.what₂.Tau) {n : ℕ} {L :
   rw [e] at h2
   exact h2
 
+/- English proof (translation)
+Use `set N : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ := fun τ => Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) ((B⁻¹ * B₂ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) τ with hN`. Use `set N' : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ := fun τ => Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) ((B₂⁻¹ * B : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) τ with hN'`. Establish `hNN' : ∀ τ, N τ * N' τ = 1` using `fun τ => by`. Simplify using `only [hN, hN', Formalism.L2.Forms.atInf]`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul]`.
+
+Establish `: (B⁻¹ * B₂ * (B₂⁻¹ * B) : GL (Fin n) D.host.E) = 1` using `by group`. Rewrite using `[this, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨MvPolynomial.C (∏ τ, (N τ).det ^ s τ) * Formalism.L2.Forms.subP N Q, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_intSpan_allSubP D w _ N _ (fun τ g hg => Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.local_GL_stabilises_lattice D w _ _ _ (N τ) (N' τ) (hNN' τ) (chan …` and prove the remaining obligations. Rewrite using `[← Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.fnOf_mul]`. Establish `hM : Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) ((B⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) = fun τ => N τ * Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) ((B₂⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) τ`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `only [hN, Formalism.L2.Forms.atInf]`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul]`. Use `congr 2`. Use `group`.
+
+Rewrite using `[hM]`.
+-/
 theorem basis_change (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → Formalism.BasicNotions.DomWeight n)
     (G : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ) (s : D.what₂.Tau → ℤ) {L : Set (Fin n → D.host.E)}
     {B B₂ : GL (Fin n) D.host.E} (hB : Formalism.L2.Forms.IsLocBasis (D.what₂.places.resChar w) L B)

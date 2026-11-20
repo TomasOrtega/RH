@@ -48,27 +48,42 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.Imports
 
 namespace PositivityTheory.HtPt.Ktw
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CurveComap.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionRatio.full GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RatioDim.full`.
+-/
 theorem a0 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CurveComap.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CurveComap.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionRatio.full
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RatioDim.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealises.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenerated.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SpanSecs.proof`.
+-/
 theorem a6 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealises.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealises.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelGenerated.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SpanSecs.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealise.proof a6`.
+-/
 theorem a7 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealise.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.TensorRealise.proof a6
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.KHCombCyclic.proof GroundTheory.Heights₂.Heights.Kleiman.KHCombContract.full`.
+-/
 theorem a8 :
     GroundTheory.Heights₂.Heights.Kleiman.KHCombCyclic.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.KHCombCyclic.proof
     GroundTheory.Heights₂.Heights.Kleiman.KHCombContract.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.KHTheoremSFree.proof GroundTheory.Heights₂.Heights.Kleiman.KHFreeEmbed.full GroundTheory.Heights₂.Heights.Kleiman.KHFreeDecomp.full GroundTheory.Heights₂.Heights.Kleiman.KHFreeIndep.full GroundTheory.Heights₂.Heights.Kleiman.KHCombContract.fu …`.
+-/
 theorem a9 :
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.TheoremSFreeStatement :=
   GroundTheory.Heights₂.Heights.Kleiman.KHTheoremSFree.proof
@@ -78,28 +93,43 @@ theorem a9 :
     GroundTheory.Heights₂.Heights.Kleiman.KHCombContract.full a8
     GroundTheory.Heights₂.Heights.Kleiman.KHFreeBadFinite.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.KHCechSES.proof GroundTheory.Heights₂.Heights.Kleiman.KHCechDSq.full GroundTheory.Heights₂.Heights.Kleiman.KHCechDDeg.full`.
+-/
 theorem a10 :
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.CechSESStatement :=
   GroundTheory.Heights₂.Heights.Kleiman.KHCechSES.proof
     GroundTheory.Heights₂.Heights.Kleiman.KHCechDSq.full
     GroundTheory.Heights₂.Heights.Kleiman.KHCechDDeg.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.KHTheoremS.proof a9 a10 GroundTheory.Heights₂.Heights.Kleiman.KHPrimeFilt.full`.
+-/
 theorem a11 :
     ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.TheoremSStatement :=
   GroundTheory.Heights₂.Heights.Kleiman.KHTheoremS.proof a9 a10
     GroundTheory.Heights₂.Heights.Kleiman.KHPrimeFilt.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerPoly.proof a11 GroundTheory.Heights₂.Heights.Swarm.EulerVar.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.PolyOfDiffsExact.full`.
+-/
 theorem a12 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerPoly.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.EulerPoly.proof a11
     GroundTheory.Heights₂.Heights.Swarm.EulerVar.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.PolyOfDiffsExact.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.MultiSerre.proof a11 GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionMapInj.full`.
+-/
 theorem a13 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.MultiSerre.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.MultiSerre.proof a11
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionMapInj.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelRowExact.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowSub.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellZeroConst.proof GroundTheory.Heights₂.Heights.Kleiman. …`.
+-/
 theorem a14 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelRowExact.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelRowExact.proof
@@ -111,32 +141,50 @@ theorem a14 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowChartAct.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RowLocCover.closed
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelCechRefine.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CechContract.proof a14 GroundTheory.Heights₂.Heights.Swarm.DoubleCech.proof`.
+-/
 theorem a15 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelCechRefine.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelCechRefine.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CechContract.proof a14
     GroundTheory.Heights₂.Heights.Swarm.DoubleCech.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RayVanish.proof_of_ties GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellLocEval.proof a15`.
+-/
 theorem a16 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RayVanish.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.RayVanish.proof_of_ties
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellLocEval.proof a15
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionsPoly.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.HZeroRowPlaceData.full a12 a13 a16`.
+-/
 theorem a17 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionsPoly.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.SectionsPoly.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.HZeroRowPlaceData.full a12 a13 a16
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.NumModel.proof a7 a17 GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelDim.proof`.
+-/
 theorem a18 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.NumModel.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.NumModel.proof a7 a17
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.ModelDim.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.DegEq.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.GraphRestrict.full a5 a18`.
+-/
 theorem a19 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.DegEq.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.DegEq.proof
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.GraphRestrict.full a5 a18
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.NefEq.proof a0 GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CurveLift.full a19`.
+-/
 theorem a20 :
     GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.NefEq.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.NefEq.proof a0

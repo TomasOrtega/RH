@@ -32,17 +32,26 @@ def ChowFormBirational.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_zero, trdeg_eq_zero_iff]`. Use `infer_instance`.
+-/
 theorem GenericLinearTrdeg.hypotheses_inhabited :
     Algebra.trdeg ℚ (Algebra.adjoin ℚ (Set.range (fun _ : Fin 1 => (1 : ℚ)))) = ((0 : ℕ) : Cardinal) := by
   rw [Nat.cast_zero, trdeg_eq_zero_iff]
   infer_instance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, ringKrullDim_quot_bot ℚ 1⟩`.
+-/
 theorem IncIdealDim.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
       ringKrullDim (MvPolynomial (Fin 1) ℚ ⧸ (⊥ : Ideal (MvPolynomial (Fin 1) ℚ))) =
         ((0 + 1 : ℕ) : WithBot ℕ∞) :=
   ⟨isProjPrime_point ℚ, ringKrullDim_quot_bot ℚ 1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, isChowForm_point ℚ, IncidenceGeneric.hypotheses_inhabited.2⟩`.
+-/
 theorem ChowFormBirational.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) (0 + 1) (X (0, 0)) ∧

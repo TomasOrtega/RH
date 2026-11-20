@@ -7,6 +7,17 @@ open scoped LaurentSeries PowerSeries
 
 namespace GlobalTheory.WindowArith
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (show 0 < l by omega)`. Establish `hshift : ∀ j : ℕ, (h (i - 1 + ((j + 1 + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1 + 1) = (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1) / l`. Introduce `j`. Establish `e : i - 1 + ((j + 1 + 1 : ℕ) : ZMod n) = i + ((j + 1 : ℕ) : ZMod n)` using `by push_cast; ring`. Rewrite using `[e, pow_succ, div_div]`.
+
+Establish `e0 : i - 1 + ((0 + 1 : ℕ) : ZMod n) = i` using `by push_cast; ring`. Establish `hrec : (l : ℝ) * (∑' j : ℕ, (h (i - 1 + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)) = h i + ∑' j : ℕ, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)`. Rewrite using `[(summable_sg hl h (i - 1)).tsum_eq_zero_add, e0]`. Simplify using `only [hshift, tsum_div_const]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hS0 : 0 ≤ ∑' j : ℕ, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)` using `tsum_nonneg fun j => by positivity`. Establish `h1` using `Nat.floor_le hS0`. Establish `h2` using `Nat.lt_floor_add_one (∑' j : ℕ, (h (i - 1 + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1))`. Establish `h3` using `mul_lt_mul_of_pos_left h2 hl0`.
+
+Establish `key : (h i : ℝ) + (⌊∑' j : ℕ, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)⌋₊ : ℝ) < (l : ℝ) * ((⌊∑' j : ℕ, (h (i - 1 + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)⌋₊ : ℝ) + 1)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key' : h i + ⌊∑' j : ℕ, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)⌋₊ < l * (⌊∑' j : ℕ, (h (i - 1 + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)⌋₊ + 1)`. Conclude with `key` after adjusting the coercions. Simplify using `only [sg]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem sg_ineq (l n : ℕ) [NeZero n] (hl : 2 ≤ l) (h : ZMod n → ℕ) (i : ZMod n) :
     h i + sg l h i + 1 ≤ l * (sg l h (i - 1) + 1) := by
   have hl0 : (0 : ℝ) < l := by exact_mod_cast (show 0 < l by omega)
@@ -38,12 +49,18 @@ theorem sg_ineq (l n : ℕ) [NeZero n] (hl : 2 ≤ l) (h : ZMod n → ℕ) (i : 
   simp only [sg]
   omega
 
+/- English proof (translation)
+Establish `hd : (l : ℤ) ∣ u - y` using `((CharP.intCast_eq_intCast k l).mp h).symm.dvd`. Use `Int.eq_zero_of_abs_lt_dvd hd (abs_lt.mpr ⟨by linarith, h1⟩)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_of_cast_eq {k : Type} [Field k] {l : ℕ} [CharP k l] {u y : ℤ} (h : (u : k) = (y : k))
     (h1 : u - y < l) (h2 : y - u < l) : u = y := by
   have hd : (l : ℤ) ∣ u - y := ((CharP.intCast_eq_intCast k l).mp h).symm.dvd
   have := Int.eq_zero_of_abs_lt_dvd hd (abs_lt.mpr ⟨by linarith, h1⟩)
   linarith
 
+/- English proof (translation)
+Introduce `he`. Apply `h3 i u hu y hy1 hy2` to reduce the goal to its premises. Establish `hm : u ≡ y [ZMOD l]` using `(CharP.intCast_eq_intCast k l).mp he`. Simplify using `only [TopData.cloudRes, hG]`. Conclude with `hm`.
+-/
 private theorem cast_ne_of_mem_cloud_of_typeG {k : Type} [Field k] {l n r : ℕ} [CharP k l] {Dt : TopData n r}
     (h3 : Dt.T3 l) {i : ZMod n} (hG : Dt.ty i = LType.G) {u : ℤ} (hu : u ∈ Dt.cloud i) (y : ℤ)
     (hy1 : -2 * (Dt.sg l i : ℤ) - 2 ≤ y) (hy2 : y ≤ (Dt.η i : ℤ) + 2 * Dt.sg l i + 3) :
@@ -54,6 +71,9 @@ private theorem cast_ne_of_mem_cloud_of_typeG {k : Type} [Field k] {l n r : ℕ}
   simp only [TopData.cloudRes, hG]
   exact hm
 
+/- English proof (translation)
+Introduce `he`. Apply `h3 i u hu ((Dt.h i : ℤ) - y) hy1 hy2` to reduce the goal to its premises. Establish `hm : u ≡ y [ZMOD l]` using `(CharP.intCast_eq_intCast k l).mp he`. Simplify using `only [TopData.cloudRes, hB]`. Conclude with `Int.ModEq.sub (Int.ModEq.refl _) hm`.
+-/
 private theorem natCast_ne_of_mem_cloud_of_bd_of_mem_range {k : Type} [Field k] {l n r : ℕ} [CharP k l] {Dt : TopData n r}
     (h3 : Dt.T3 l) {i : ZMod n} (hB : Dt.ty i = LType.Bd) {u : ℤ} (hu : u ∈ Dt.cloud i) (y : ℤ)
     (hy1 : -2 * (Dt.sg l i : ℤ) - 2 ≤ (Dt.h i : ℤ) - y)
@@ -64,6 +84,33 @@ private theorem natCast_ne_of_mem_cloud_of_bd_of_mem_range {k : Type} [Field k] 
   simp only [TopData.cloudRes, hB]
   exact Int.ModEq.sub (Int.ModEq.refl _) hm
 
+/- English proof (translation)
+Introduce `k _ l n r _ _ _ Dt hT1 hT2 hT3 i`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hT1i` using `hT1 i`. Establish `ht` using `Dt.one_le_letterBlockLength`. Establish `hwB : Dt.w i ∈ Dt.lows i + block (Dt.w i) Dt.t` using `Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨le_rfl, by omega⟩))`.
+
+Establish `heB : Dt.w i + Dt.t - 1 ∈ Dt.lows i + block (Dt.w i) Dt.t` using `Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨by omega, by omega⟩))`. Establish `factsG : Dt.ty i = LType.G → (∀ u ∈ Dt.lows i, 1 ≤ u ∧ u ≤ (Dt.η i : ℤ)) ∧ 1 ≤ Dt.w i ∧ Dt.w i + Dt.t - 1 ≤ Dt.η i` using `fun hG => ⟨fun u hu => Dt.lowG i hG u (Multiset.mem_add.2 (Or.inl hu)), (Dt.lowG i hG _ hwB).1, (Dt.lowG i hG _ heB).2⟩`. Establish `factsBd : Dt.ty i = LType.Bd → (∀ u ∈ Dt.lows i, (Dt.h i : ℤ) - Dt.η i ≤ u ∧ u ≤ (Dt.h i : ℤ) - 1) ∧ (Dt.h i : ℤ) - Dt.η i ≤ Dt.w i ∧ Dt.w i + Dt.t - 1 ≤ (Dt.h i : ℤ) - 1` using `fun hB => ⟨fun u hu => Dt.lowBd i hB u (Multiset.mem_add.2 (Or.inl hu)), (Dt.lowBd i hB _ hwB).1, (Dt.lowBd i hB _ heB).2⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hsg` using `sg_ineq l n hl2 Dt.h i`.
+
+Establish `e1 : Dt.sg l i = sg l Dt.h i` using `rfl`. Establish `e2 : Dt.sg l (i - 1) = sg l Dt.h (i - 1)` using `rfl`. Rewrite using `[e1, e2]`. Use `zify at hsg`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `u hu y hy1 hy2 he`. Break down `Multiset.mem_add.1 hu with hu | hu` into its components or cases. Establish `huy : u = y`. Consider the cases of `hty : Dt.ty i`. Take `⟨hL, hw1, hw2⟩` from `factsG hty`.
+
+Use `hL u hu` as an intermediate fact. Conclude with `eq_of_cast_eq he (by omega) (by omega)`. Take `⟨hL, hw1, hw2⟩` from `factsBd hty`. Use `hL u hu` as an intermediate fact. Conclude with `eq_of_cast_eq he (by omega) (by omega)`.
+
+Establish `key : ∃ β ∈ Dt.B i, |u - β| ≤ (Dt.sg l i : ℤ) + 2`. Distinguish the cases in `hyw : y < Dt.w i`. Conclude with `⟨Dt.w i, mem_block.2 ⟨le_rfl, by omega⟩, abs_le.2 ⟨by omega, by omega⟩⟩`. Distinguish the cases in `hye : Dt.w i + Dt.t - 1 < y`. Conclude with `⟨Dt.w i + Dt.t - 1, mem_block.2 ⟨by omega, by omega⟩, abs_le.2 ⟨by omega, by omega⟩⟩`.
+
+Conclude with `⟨y, mem_block.2 ⟨by omega, by omega⟩, abs_le.2 ⟨by omega, by omega⟩⟩`. Take `⟨β, hβ, hb⟩` from `key`. Use `hT2 i u hu β hβ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the cases of `hty : Dt.ty i`.
+
+Take `⟨-, hw1, hw2⟩` from `factsG hty`. Conclude with `cast_ne_of_mem_cloud_of_typeG hT3 hty hu y (by omega) (by omega) he`. Take `⟨-, hw1, hw2⟩` from `factsBd hty`. Conclude with `natCast_ne_of_mem_cloud_of_bd_of_mem_range hT3 hty hu y (by omega) (by omega) he`. Introduce `hG`.
+
+Take `⟨hL, hw1, hw2⟩` from `factsG hG`. Use `⟨?_, ?_, hw1, hw2⟩` and prove the remaining obligations. Introduce `u hu y hy1 hy2 he`. Break down `Multiset.mem_add.1 hu with hu | hu` into its components or cases. Use `hL u hu` as an intermediate fact.
+
+Establish `huy` using `eq_of_cast_eq he (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `cast_ne_of_mem_cloud_of_typeG hT3 hG hu y (by omega) (by omega) he`. Introduce `u hu y hy1 hy2 he`. Conclude with `cast_ne_of_mem_cloud_of_typeG hT3 hG hu y (by omega) (by omega) he`.
+
+Introduce `hB`. Take `⟨hL, hw1, hw2⟩` from `factsBd hB`. Establish `ew : Dt.wst i = (Dt.h i : ℤ) - Dt.w i` using `rfl`. Use `⟨?_, ?_, by rw [ew]; omega, by rw [ew]; omega⟩` and prove the remaining obligations. Introduce `u hu y hy1 hy2 he`.
+
+Break down `Multiset.mem_add.1 hu with hu | hu` into its components or cases. Use `hL u hu` as an intermediate fact. Establish `huy` using `eq_of_cast_eq he (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `natCast_ne_of_mem_cloud_of_bd_of_mem_range hT3 hB hu y (by omega) (by omega) he`.
+
+Introduce `u hu y hy1 hy2 he`. Conclude with `natCast_ne_of_mem_cloud_of_bd_of_mem_range hT3 hB hu y (by omega) (by omega) he`.
+-/
 theorem windows : ∀ {k : Type} [Field k] {l n r : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] (Dt : TopData n r), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ i, ((Dt.sg l i : ℤ) + 1 ≤ l * (Dt.sg l (i - 1) + 1) - Dt.h i) ∧ (∀ u ∈ Dt.U i, ∀ y : ℤ, Dt.w i - Dt.sg l i - 2 ≤ y → y ≤ Dt.w i + Dt.t + 1 + Dt.sg l i → (u : k) ≠ (y : k)) ∧ (Dt.ty i = LType.G → (∀ u ∈ Dt.U i, ∀ y : ℤ, -(Dt.sg l i : ℤ) ≤ y → y ≤ 0 → (u : k) ≠ (y : k)) ∧ (∀ u ∈ Dt.cloud i, ∀ y : ℤ, 0 ≤ y → y ≤ Dt.η i → (u : k) ≠ (y : k)) ∧ 1 ≤ Dt.w i ∧ Dt.w i + Dt.t - 1 ≤ Dt.η i) ∧ (Dt.ty i = LType.Bd → (∀ u ∈ Dt.U i, ∀ y : ℤ, (Dt.h i : ℤ) ≤ y → y ≤ Dt.h i + Dt.sg l i + 1 → (u : k) ≠ (y : k)) ∧ (∀ u ∈ Dt.cloud i, ∀ y : ℤ, (Dt.h i : ℤ) - Dt.η i ≤ y → y ≤ Dt.h i → (u : k) ≠ (y : k)) ∧ (Dt.t : ℤ) ≤ Dt.wst i ∧ Dt.wst i ≤ Dt.η i) := by
   intro k _ l n r _ _ _ Dt hT1 hT2 hT3 i
   have hl2 : 2 ≤ l := (Fact.out : l.Prime).two_le

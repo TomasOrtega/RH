@@ -16,16 +16,25 @@ def polFun {K ι : Type} [CommRing K] {n : ℕ} (P : MvPolynomial (ι × Fin n �
     (ι → Matrix (Fin n) (Fin n) K) → K :=
   fun y => eval (fun k : ι × Fin n × Fin n => y k.1 k.2.1 k.2.2) P
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem polFun_apply {K ι : Type} [CommRing K] {n : ℕ} (P : MvPolynomial (ι × Fin n × Fin n) K)
     (y : ι → Matrix (Fin n) (Fin n) K) : polFun P y = eval (fun k : ι × Fin n × Fin n => y k.1 k.2.1 k.2.2) P := rfl
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[← aeval_eq_eval, ← aeval_eq_eval, aeval_bind₁]`.
+-/
 private lemma eval_bind_eq_eval_comp {K σ τ : Type} [CommRing K] (f : σ → MvPolynomial τ K)
     (x : τ → K) (P : MvPolynomial σ K) :
     eval x (bind₁ f P) = eval (fun i => eval x (f i)) P := by
   rw [← aeval_eq_eval, ← aeval_eq_eval, aeval_bind₁]
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.IntegralityCompare.twSub, map_mul, eval_C, eval_bind_eq_eval_comp]`. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mul_apply, eval_sum]`.
+-/
 theorem _root_.GlobalTheory.IntegralityCompare.eval_twSub {E ι : Type} [Field E] [Fintype ι] {n : ℕ}
     (emb : ι → E →+* ℂ) (M : GL (Fin n) E) (s : ι → ℤ)
     (P : MvPolynomial (ι × Fin n × Fin n) ℂ) (x : ι → Matrix (Fin n) (Fin n) ℂ) :

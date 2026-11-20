@@ -12,6 +12,9 @@ open GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Mi.SepPer (contLeft)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EmbAtPlace.embRel_atTau | exact GlobalTheory.EmbAtPlace.embRel_atTau | (intros; apply GlobalTheory.EmbAtPlace.embRel_atTau <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.embRel_atRealPlace_of_unitaryEmbedding : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (τ : D.what₂.Tau)
     (h : Matrix (Fin A.rank) (Fin A.rank) ℂ) (g : Matrix (Fin B.rank) (Fin B.rank) ℂ), h ∈ Formalism.QuantumDeterminants.UH (gramAt D A τ) →
     g ∈ Formalism.QuantumDeterminants.UH (gramAt D B τ) → GlobalTheory.RealBessel.IsEmb (gramAt D B τ) ((frameMat B A ι).map (tauE D τ)) g h →

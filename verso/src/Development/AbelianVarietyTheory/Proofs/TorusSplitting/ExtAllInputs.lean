@@ -11,16 +11,27 @@ open ReciprocityTheory.ChartRestriction.G.I2
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.BallVolume`. Introduce `D rr hr`. Conclude with `_root_.GlobalTheory.volume_ball_of_finrank_eq_two_mul (by simp) 0 hr`.
+-/
 private theorem ext_ballVolume : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.BallVolume := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.BallVolume
   intro D rr hr
   exact _root_.GlobalTheory.volume_ball_of_finrank_eq_two_mul (by simp) 0 hr
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.GHadamard`. Introduce `n M`. Simplify `_root_.GlobalTheory.Hadamard.norm_det_le_prod_col M` using `[Real.norm_eq_abs, sq_abs]`.
+-/
 private theorem ext_gHadamard : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.GHadamard := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.GHadamard
   intro n M
   simpa [Real.norm_eq_abs, sq_abs] using _root_.GlobalTheory.Hadamard.norm_det_le_prod_col M
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.CauchyBinetMax`. Introduce `i N r M hM hr`. Take `⟨S, hS⟩` from `_root_.GlobalTheory.exists_two_rpow_le_norm_minor M hM (r := r) (by simpa using hr)`. Use `⟨_root_.GlobalTheory.subsetEnum S, ?_, hS⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.subsetEnum`.
+
+Conclude with `(Finset.orderEmbOfFin _ _).strictMono`.
+-/
 private theorem ext_cauchyBinetMax' : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.CauchyBinetMax := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.CauchyBinetMax
   intro i N r M hM hr
@@ -29,6 +40,23 @@ private theorem ext_cauchyBinetMax' : _root_.ReciprocityTheory.ChartRestriction.
   unfold _root_.GlobalTheory.subsetEnum
   exact (Finset.orderEmbOfFin _ _).strictMono
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbation`. Introduce `𝕜 _ i κ _ w σ₀ ε Δmax hΔ`. Use `set f := (Matrix.detRowAlternating : (Fin i → 𝕜) [⋀^Fin i]→ₗ[𝕜] 𝕜).toMultilinearMap with hf`. Establish `hD : ∀ cols : Fin i → Fin i → 𝕜, (Matrix.of fun a j => cols j a).det = f cols`. Introduce `cols`.
+
+Rewrite using `[show (Matrix.of fun a j => cols j a) = (Matrix.of cols).transpose from rfl, Matrix.det_transpose]`. Both sides reduce to the same expression. Establish `hΔ0 : 0 ≤ Δmax` using `(norm_nonneg _).trans (hΔ σ₀)`. Use `set coef : Fin i → Option κ → 𝕜 := fun j o => Option.elim o 1 (ε j) with hcoef`. Use `set pick : Fin i → Option κ → κ := fun j o => Option.elim o (σ₀ j) id with hpick`.
+
+Establish `hcol : (fun j => w (σ₀ j) + ∑ k, ε j k • w k) = fun j => ∑ o, coef j o • w (pick j o)`. Use function extensionality and compare the values at `j`. Rewrite using `[Fintype.sum_option]`. Simplify using `[hcoef, hpick]`. Establish `hexp : f (fun j => w (σ₀ j) + ∑ k, ε j k • w k) = ∑ r : Fin i → Option κ, (∏ j, coef j (r j)) • f (fun j => w (pick j (r j)))`.
+
+Rewrite using `[hcol, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Conclude with `f.map_smul_univ (fun j => coef j (r j)) (fun j => w (pick j (r j)))`. Use `set r0 : Fin i → Option κ := fun _ => none with hr0`. Establish `hterm0 : (∏ j, coef j (r0 j)) • f (fun j => w (pick j (r0 j))) = f (fun j => w (σ₀ j))`.
+
+Simplify using `[hr0, hcoef, hpick]`. Rewrite using `[hD, hD, hexp, ← Finset.add_sum_erase _ _ (Finset.mem_univ r0), hterm0, add_sub_cancel_left]`. Establish `hbound : ∀ r : Fin i → Option κ, ‖(∏ j, coef j (r j)) • f (fun j => w (pick j (r j)))‖ ≤ (∏ j, ‖coef j (r j)‖) * Δmax`. Introduce `r`. Rewrite using `[norm_smul, norm_prod]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[← hD]`. Conclude with `hΔ (fun j => pick j (r j))`. Establish `hsum : ∑ r : Fin i → Option κ, ∏ j, ‖coef j (r j)‖ = ∏ j, (1 + ∑ k, ‖ε j k‖)`. Establish `hps : ∏ j, ∑ o, ‖coef j o‖ = ∑ r : Fin i → Option κ, ∏ j, ‖coef j (r j)‖`.
+
+Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Rewrite using `[← hps]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_option]`. Simplify using `[hcoef]`.
+
+Establish `hone : ∏ j, ‖coef j (r0 j)‖ = 1` using `by simp [hr0, hcoef]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul, ← hsum, ← Finset.add_sum_erase _ _ (Finset.mem_univ r0), hone]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ext_detPerturbation : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbation := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbation
   intro 𝕜 _ i κ _ w σ₀ ε Δmax hΔ
@@ -76,6 +104,15 @@ private theorem ext_detPerturbation : _root_.ReciprocityTheory.ChartRestriction.
         rw [← Finset.sum_mul, ← hsum, ← Finset.add_sum_erase _ _ (Finset.mem_univ r0), hone]
         ring
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbNumeric`. Introduce `ρ hρ`. Establish `hρ1 : (1 : ℝ) ≤ ρ` using `by exact_mod_cast hρ`. Establish `hρ0 : (0 : ℝ) < ρ` using `by linarith`. Establish `hle : (ρ : ℝ) ^ (-3 / 2 : ℝ) ≤ (ρ : ℝ) ^ (-1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hρ1 (by norm_num)`.
+
+Establish `hmul : (ρ : ℝ) * ((ρ : ℝ) ^ (-3 / 2 : ℝ) / 10) ≤ 1 / 10`. Rewrite `hle` using `[Real.rpow_neg_one]`. Establish `: (ρ : ℝ) * (ρ : ℝ)⁻¹ = 1` using `mul_inv_cancel₀ hρ0.ne'`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : (1 + (ρ : ℝ) ^ (-3 / 2 : ℝ) / 10) ^ ρ ≤ Real.exp ((ρ : ℝ) * ((ρ : ℝ) ^ (-3 / 2 : ℝ) / 10))`.
+
+Rewrite using `[Real.exp_nat_mul]`. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith [Real.add_one_le_exp ((ρ : ℝ) ^ (-3 / 2 : ℝ) / 10)]) ρ`. Establish `h2 : Real.exp ((ρ : ℝ) * ((ρ : ℝ) ^ (-3 / 2 : ℝ) / 10)) ≤ Real.exp (1 / 10)` using `Real.exp_le_exp.2 hmul`. Establish `h3 : Real.exp (1 / 10) ≤ 3 / 2`. Use `Real.abs_exp_sub_one_sub_id_le (x := 1 / 10) (by norm_num [abs_of_pos])` as an intermediate fact.
+
+Rewrite `this` using `[abs_le]`. Use polynomial arithmetic with `[this.2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem ext_detPerturbNumeric : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbNumeric := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetPerturbNumeric
   intro ρ hρ
@@ -100,6 +137,9 @@ private theorem ext_detPerturbNumeric : _root_.ReciprocityTheory.ChartRestrictio
     nlinarith [this.2]
   linarith
 
+/- English proof (translation)
+The claim follows from `| 0 => by simp | i + 1 => by have ih := two_pow_add_pow_sub_two_pow_mul_le c ε h0 h1 i have hb : (0 : ℝ) ≤ 2 ^ c := by positivity have hB1 : (1 : ℝ) ≤ 2 ^ c + 1 := by linarith have hbB : (2 : ℝ) ^ (c * i) ≤ (2 ^ c + 1) ^ (i + 1) := by rw [pow_mul] calc ((2 : ℝ) ^ c) ^ i ≤ (2 ^ c …`.
+-/
 private theorem two_pow_add_pow_sub_two_pow_mul_le (c : ℕ) (ε : ℝ) (h0 : 0 ≤ ε) (h1 : ε ≤ 1) :
     ∀ i : ℕ, ((2 : ℝ) ^ c + ε) ^ i - 2 ^ (c * i) ≤ i * ε * (2 ^ c + 1) ^ i
   | 0 => by simp
@@ -128,11 +168,17 @@ private theorem two_pow_add_pow_sub_two_pow_mul_le (c : ℕ) (ε : ℝ) (h0 : 0 
     rw [k4]
     linarith
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetProductRest`. Introduce `i c ε h0 h1`. Conclude with `two_pow_add_pow_sub_two_pow_mul_le c ε h0 h1 i`.
+-/
 private theorem ext_detProductRest : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetProductRest := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.DetProductRest
   intro i c ε h0 h1
   exact two_pow_add_pow_sub_two_pow_mul_le c ε h0 h1 i
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.All`. Conclude with `⟨_root_.GlobalTheory.packingCount, _root_.GlobalTheory.gaussTail_of_card_le, ext_ballVolume, ext_gHadamard, _root_.GlobalTheory.nearestPlane_rounding, ext_cauchyBinetMax', ext_detPerturbation, ext_detPerturbNumeric, ext_detProductRest⟩`.
+-/
 theorem _root_.GlobalTheory.ext_all_inputs : _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.All := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.I2.Ext.All
   exact ⟨_root_.GlobalTheory.packingCount, _root_.GlobalTheory.gaussTail_of_card_le, ext_ballVolume, ext_gHadamard,

@@ -4,6 +4,17 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BadShareSizeBoundsA
 
 namespace GlobalTheory.HodgeMultNum
 
+/- English proof (translation)
+Establish `hq : 4 * (r * r / 4) ≤ r * r` using `Nat.mul_div_le (r * r) 4`. Establish `hc : 2 * r.choose 2 = r * (r - 1)`. Rewrite using `[Nat.choose_two_right]`. Conclude with `Nat.mul_div_cancel' (Nat.even_mul_pred_self r).two_dvd`. Take `⟨s, rfl⟩ : ∃ s, r = s + 100` from `⟨r - 100, by omega⟩`.
+
+Establish `h1 : s + 100 - 1 = s + 99` using `by omega`. Rewrite `hc` using `[h1]`. Use `set q := (s + 100) * (s + 100) / 4`. Use `set c := (s + 100).choose 2`. Establish `key : 4 * (2 * (s + 100) + 50 * (s + 100) ^ 2 * (f * q) + 2) ≤ 4 * (11 * (f * c) ^ 2)`.
+
+Establish `e1 : 4 * (11 * (f * c) ^ 2) = 11 * f ^ 2 * ((s + 100) * (s + 99)) ^ 2` using `by rw [← hc]; ring`. Rewrite using `[e1]`. Establish `e2 : 4 * (2 * (s + 100) + 50 * (s + 100) ^ 2 * (f * q) + 2) = 8 * (s + 100) + 8 + 50 * (s+100)^2 * f * (4 * q)` using `by ring`. Rewrite using `[e2]`. Establish `h3 : 50 * (s+100)^2 * f * (4 * q) ≤ 50 * (s+100)^2 * f * ((s+100)*(s+100))` using `Nat.mul_le_mul_left _ hq`.
+
+Establish `h4 : 8 * (s + 100) + 8 + 50 * (s+100)^2 * f * ((s+100)*(s+100)) ≤ 11 * f ^ 2 * ((s + 100) * (s + 99)) ^ 2`. Take `⟨g, rfl⟩ : ∃ g, f = g + 5` from `⟨f - 5, by omega⟩`. Put the polynomial expressions in normal form. Use polynomial arithmetic with `[Nat.zero_le (s * g), Nat.zero_le (s * g ^ 2), Nat.zero_le (s ^ 2 * g), Nat.zero_le (s ^ 2 * g ^ 2), Nat.zero_le (s ^ 3 * g), Nat.zero_le (s ^ 3 * g ^ 2), Nat.zero_le (s ^ 4 * g), Nat.zero_le (s ^ 4 * g ^ 2), Nat.zero_le (s ^ 2), Nat.zero_le (s ^ 3), Nat.zero_le (s ^ 4), Nat.zero …`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem nat_bound (r f T : ℕ) (hr : 100 ≤ r) (hf : 5 ≤ f) (hT : 11 * (f * r.choose 2) ^ 2 ≤ T) :
     2 * r + 50 * r ^ 2 * (f * (r * r / 4)) + 2 ≤ T := by
   have hq : 4 * (r * r / 4) ≤ r * r := Nat.mul_div_le (r * r) 4
@@ -29,6 +40,9 @@ theorem nat_bound (r f T : ℕ) (hr : 100 ≤ r) (hf : 5 ≤ f) (hT : 11 * (f * 
     omega
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hf`. Use `push_neg at hf`. Establish `h1 : (7 / 8 : ℝ) ^ 4 ≤ (7 / 8 : ℝ) ^ f` using `pow_le_pow_of_le_one (by norm_num) (by norm_num) (by omega)`. Establish `h2 : (100 : ℝ) ≤ r` using `by exact_mod_cast hr`. Use polynomial arithmetic with `[pow_pos (show (0:ℝ) < 7/8 by norm_num) f]`.
+-/
 theorem five_le_of_pow (r f : ℕ) (hr : 100 ≤ r) (h : (r : ℝ) / 2 * (7 / 8 : ℝ) ^ f ≤ 1 / 16) : 5 ≤ f := by
   by_contra hf
   push_neg at hf
@@ -40,6 +54,17 @@ end GlobalTheory.HodgeMultNum
 
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigOn
 
+/- English proof (translation)
+Use `Closed.imp GlobalTheory.T.badShareSize_bounds_along_family fun Fm _ _ H => ?_` and prove the remaining obligations. Take `⟨x0, H⟩` from `H`. Use `⟨x0, fun x hx h0 ι => ?_⟩` and prove the remaining obligations. Take `⟨hr, -, hE, hk⟩` from `H x hx h0 ι`. Take `⟨hg, hsum⟩` from `hk 0`.
+
+Use `set D := Fm.D x ι`. Use `set g : ℝ := (D.host.g 0 : ℝ)`. Establish `hg1 : (4096 : ℝ) ≤ g` using `by simp only [g]; exact_mod_cast hg`. Establish `hlogg : 0 ≤ Real.log g` using `Real.log_nonneg (by linarith)`. Establish `hr' : (100 : ℝ) ≤ (D.R.r : ℝ)` using `by exact_mod_cast hr`.
+
+Establish `hlogr : 0 ≤ Real.log (D.R.r : ℝ)` using `Real.log_nonneg (by linarith)`. Establish `hfpos : (0 : ℝ) ≤ (D.R.f : ℝ)` using `Nat.cast_nonneg _`. Establish `hmpos : (0 : ℝ) ≤ (D.R.m : ℝ)` using `Nat.cast_nonneg _`. Establish `hA : 0 ≤ 3 * (D.R.f : ℝ) / g` using `by positivity`. Establish `hB : 0 ≤ 23 * (D.R.f : ℝ) * Real.log g / Real.sqrt g` using `by positivity`.
+
+Establish `hC : 0 ≤ 2 * (D.R.f : ℝ) * (D.R.m : ℝ) * (1 / (4 * ((min D.host.q D.host.d : ℕ) : ℝ)) + (1 + Real.log (D.R.r : ℝ)) / (g - 1))`. Establish `: 0 ≤ g - 1` using `by linarith`. Check the signs of the components of the expression. Establish `hE' : 0 ≤ Real.exp (-(D.R.f : ℝ) / (5 * Real.log (D.R.r : ℝ)))` using `(Real.exp_pos _).le`. Establish `hP : (D.R.r : ℝ) / 2 * (7 / 8 : ℝ) ^ D.R.f ≤ 1 / 16` using `by linarith`.
+
+Establish `hf` using `GlobalTheory.HodgeMultNum.five_le_of_pow _ _ hr hP`. Establish `hT` using `(Fm.parT x hx ι).TO_11D2`. Rewrite `hT` using `[(Fm.parT x hx ι).Dp_eq]`. Conclude with `GlobalTheory.HodgeMultNum.nat_bound _ _ _ hr hf hT`.
+-/
 theorem GlobalTheory.HodgeMultNum.hodgeMult_le_TO : Closed FamHyp fun Fm _ => ∃ x0 : ℝ, ∀ (x : ℝ) (hx : Fm.x1 < x), x0 ≤ x →
     ∀ ι : Fm.Ix x, 2 * (Fm.D x ι).R.r + 50 * (Fm.D x ι).R.r ^ 2 * ((Fm.D x ι).R.f * ((Fm.D x ι).R.r * (Fm.D x ι).R.r / 4)) + 2 ≤
       (Fm.parT x hx ι).TO := by

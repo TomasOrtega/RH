@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hy' : (y : ℂ) ≠ 0` using `by exact_mod_cast hy.ne'`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `key : (Ifull - R) + Lf + I * (Bt - Tp) = Ifull - 2 * (Real.pi : ℂ) * (K * (y : ℂ) + D - Sg)`. Take the linear combination `I * hrect + (-R + Lf + 2 * (Real.pi : ℂ) * (K * (y : ℂ) + D - Sg)) * I_sq`.
+
+Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exm_alg (S Ifull R Lf Bt Tp K D Sg : ℂ) (y : ℝ) (hy : 0 < y)
     (hS : S = (1 / (2 * Real.pi) : ℂ) * Ifull)
     (hrect : Bt - Tp + I * R - I * Lf = 2 * Real.pi * I * (K * y + D - Sg)) :
@@ -21,6 +26,11 @@ theorem exm_alg (S Ifull R Lf Bt Tp K D Sg : ℂ) (y : ℝ) (hy : 0 < y)
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hpos : 0 < 2 * Real.pi * y` using `mul_pos (mul_pos two_pos Real.pi_pos) hy`. Establish `hk : (1 / (2 * Real.pi * y) : ℂ) = ((1 / (2 * Real.pi * y) : ℝ) : ℂ)`. Use `norm_cast`. Rewrite using `[hk, norm_mul, Complex.norm_real, Real.norm_of_nonneg (one_div_pos.2 hpos).le]`. Apply `mul_le_mul_of_nonneg_left _ (one_div_pos.2 hpos).le` to reduce the goal to its premises.
+
+Establish `h1` using `norm_add_le (Ifull - R) Lf`. Establish `h2 : ‖I * (Bt - Tp)‖ = ‖Bt - Tp‖` using `by rw [norm_mul, Complex.norm_I, one_mul]`. Establish `h3` using `norm_sub_le Bt Tp`. Establish `h4` using `norm_add_le (Ifull - R + Lf) (I * (Bt - Tp))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exm_norm (Ifull R Lf Bt Tp : ℂ) (y a b c d : ℝ) (hy : 0 < y)
     (ha : ‖Ifull - R‖ ≤ a) (hb : ‖Lf‖ ≤ b) (hc : ‖Bt‖ ≤ c) (hd : ‖Tp‖ ≤ d) :
     ‖(1 / (2 * Real.pi * y) : ℂ) * ((Ifull - R) + Lf + I * (Bt - Tp))‖ ≤
@@ -36,6 +46,11 @@ theorem exm_norm (Ifull R Lf Bt Tp : ℂ) (y a b c d : ℝ) (hy : 0 < y)
   have h4 := norm_add_le (Ifull - R + Lf) (I * (Bt - Tp))
   linarith
 
+/- English proof (translation)
+Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hpos : 0 < M * (u + 2)` using `mul_pos (by linarith) (by linarith)`. Establish `h3 : T + 3 ≤ M * T ^ 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hM (sq_nonneg T), mul_nonneg (sub_nonneg.2 hT) (by linarith : (0:ℝ) ≤ T)]`. Establish `h4 : M * (u + 2) ≤ M * (T + 3)` using `mul_le_mul_of_nonneg_left (by linarith) hM0`.
+
+Establish `h5 : M * (T + 3) ≤ M * (M * T ^ 2)` using `mul_le_mul_of_nonneg_left h3 hM0`. Establish `h2 : M * (u + 2) ≤ (M * T) ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exm_log_le (M T u : ℝ) (hM : 3 ≤ M) (hT : 2 ≤ T) (hu0 : 0 ≤ u) (hu : u ≤ T + 1) :
     Real.log (M * (u + 2)) ≤ 2 * Real.log (M * T) := by
   have hM0 : 0 ≤ M := by linarith
@@ -49,11 +64,21 @@ theorem exm_log_le (M T u : ℝ) (hM : 3 ≤ M) (hT : 2 ≤ T) (hu0 : 0 ≤ u) (
   calc Real.log (M * (u + 2)) ≤ Real.log ((M * T) ^ 2) := Real.log_le_log hpos h2
     _ = 2 * Real.log (M * T) := by rw [Real.log_pow]; push_cast; ring
 
+/- English proof (translation)
+Establish `h6 : 6 ≤ M * T` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exm_log_ge_one (M T : ℝ) (hM : 3 ≤ M) (hT : 2 ≤ T) : 1 ≤ Real.log (M * T) := by
   have h6 : 6 ≤ M * T := by nlinarith
   calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
     _ ≤ Real.log (M * T) := Real.log_le_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_d9])
 
+/- English proof (translation)
+Establish `hL : 1 ≤ Real.log (M * T)` using `exm_log_ge_one M T hM hT`. Establish `hL' : Real.log (M * (T + 2)) ≤ 2 * Real.log (M * T)` using `exm_log_le M T T hM hT (by linarith) (by linarith)`. Establish `hL'1 : 1 ≤ Real.log (M * (T + 2))` using `exm_log_ge_one M (T + 2) hM (by linarith)`. Establish `hA : 0 < C₁ * (T + 1) * Real.log (M * (T + 2))` using `mul_pos (mul_pos hC₁ (by linarith)) (by linarith)`. Establish `hinv : 1 / δ ≤ C₁ * (T + 1) * Real.log (M * (T + 2)) / κ`.
+
+Use `one_div_le_one_div_of_le (div_pos hκ hA) hδ` as an intermediate fact. Rewrite `this` using `[one_div_div]`. Then use the resulting hypothesis. Establish `hP : 0 ≤ C₁ * C₂ * Real.log (M * T)` using `mul_nonneg (mul_nonneg hC₁.le hC₂.le) (by linarith)`. Establish `e1 : (T + 1) * Real.log (M * (T + 2)) ≤ (T + 1) * (2 * Real.log (M * T))` using `mul_le_mul_of_nonneg_left hL' (by linarith)`. Establish `e2 : (T + 1) * (2 * Real.log (M * T)) ≤ 3 * T * Real.log (M * T)`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hT (by linarith : (0:ℝ) ≤ Real.log (M * T))]`. Establish `hnum : 2 * (C₁ * C₂ * Real.log (M * T)) * ((T + 1) * Real.log (M * (T + 2))) ≤ 2 * (C₁ * C₂ * Real.log (M * T)) * (3 * T * Real.log (M * T))` using `mul_le_mul_of_nonneg_left (e1.trans e2) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exm_N_le (κ C₁ C₂ M T δ : ℝ) (hκ : 0 < κ) (hC₁ : 0 < C₁) (hC₂ : 0 < C₂) (hM : 3 ≤ M) (hT : 2 ≤ T)
     (_hδ0 : 0 < δ) (hδ : κ / (C₁ * (T + 1) * Real.log (M * (T + 2))) ≤ δ) :
     C₂ * (2 * Real.log (M * T)) / δ ≤ 6 * C₁ * C₂ / κ * (T * Real.log (M * T) ^ 2) := by
@@ -82,10 +107,24 @@ theorem exm_N_le (κ C₁ C₂ M T δ : ℝ) (hκ : 0 < κ) (hC₁ : 0 < C₁) (
         mul_le_mul_of_nonneg_right hnum (inv_nonneg.2 hκ.le)
     _ = 6 * C₁ * C₂ / κ * (T * Real.log (M * T) ^ 2) := by ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exm_log_y (y : ℝ) (hy : 2 ≤ y) : 1 / 2 ≤ Real.log y := by
   calc (1 : ℝ) / 2 ≤ Real.log 2 := by linarith [Real.log_two_gt_d9]
     _ ≤ Real.log y := Real.log_le_log (by norm_num) hy
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hT'0 : 0 < T'` using `by linarith`. Establish `hyne : y ≠ 0` using `hy0.ne'`. Establish `hT'ne : T' ≠ 0` using `hT'0.ne'`.
+
+Establish `hpine : Real.pi ≠ 0` using `Real.pi_ne_zero`. Establish `hLy : 1 / 2 ≤ Real.log y` using `exm_log_y y hy`. Establish `hepi : Real.exp 1 ≤ Real.pi` using `by linarith [Real.exp_one_lt_d9, Real.pi_gt_three]`. Establish `key : 1 / (2 * Real.pi * y) * (2 * (Real.log y + C₃) * (Real.exp 1 * y) / T') = (Real.log y + C₃) * (Real.exp 1 / (Real.pi * T'))`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hprod : Real.exp 1 * T ≤ 1 * (Real.pi * T')`. Rewrite using `[one_mul]`. Conclude with `mul_le_mul hepi hT' hT0.le Real.pi_pos.le`. Establish `h1 : Real.exp 1 / (Real.pi * T') ≤ 1 / T`. Rewrite using `[div_le_div_iff₀ (mul_pos Real.pi_pos hT'0) hT0]`.
+
+Conclude with `hprod`. Establish `hl2 : 1 ≤ l ^ 2` using `by nlinarith`. Establish `hA : 0 ≤ (1 + 2 * C₃) * Real.log y` using `mul_nonneg (by linarith) (by linarith)`. Establish `hnum : Real.log y + C₃ ≤ (1 + 2 * C₃) * Real.log y * l ^ 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl2 hA, mul_le_mul_of_nonneg_left hLy hC₃]`.
+
+Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exm_tail_num (C₃ T T' y l : ℝ) (hC₃ : 0 ≤ C₃) (hT : 2 ≤ T) (hT' : T ≤ T') (hy : 2 ≤ y) (hl : 1 ≤ l) :
     1 / (2 * Real.pi * y) * (2 * (Real.log y + C₃) * (Real.exp 1 * y) / T') ≤
       (1 + 2 * C₃) * (Real.log y * l ^ 2 / T) := by
@@ -115,6 +154,17 @@ theorem exm_tail_num (C₃ T T' y l : ℝ) (hC₃ : 0 ≤ C₃) (hT : 2 ≤ T) (
         mul_le_mul_of_nonneg_right hnum (one_div_pos.2 hT0).le
     _ = (1 + 2 * C₃) * (Real.log y * l ^ 2 / T) := by ring
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hT'0 : 0 < T'` using `by linarith`. Establish `hyne : y ≠ 0` using `hy0.ne'`. Establish `hTne : T ≠ 0` using `hT0.ne'`.
+
+Establish `hT'ne : T' ≠ 0` using `hT'0.ne'`. Establish `hpine : Real.pi ≠ 0` using `Real.pi_ne_zero`. Establish `hLy : 1 / 2 ≤ Real.log y` using `exm_log_y y hy`. Establish `key : 1 / (2 * Real.pi * y) * (3 * (N + 1) * (Real.exp 1 * y) / T' ^ 2) = 3 * (N + 1) * (Real.exp 1 / (2 * Real.pi * T' ^ 2))`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hX : 0 ≤ Real.exp 1 / (2 * Real.pi * T' ^ 2)` using `by positivity`. Establish `hl2 : 1 ≤ l ^ 2` using `by nlinarith`. Establish `hTl : 1 ≤ T * l ^ 2` using `by nlinarith`. Establish `hN1 : 3 * (N + 1) ≤ 3 * (G + 1) * (T * l ^ 2)` using `by nlinarith`. Establish `hA : Real.exp 1 ≤ 2 * Real.pi * Real.log y`.
+
+Use polynomial arithmetic with `[Real.exp_one_lt_d9, Real.pi_gt_three, mul_le_mul_of_nonneg_left hLy Real.pi_pos.le]`. Establish `hTT : T ^ 2 ≤ T' ^ 2` using `by nlinarith`. Establish `hprod : Real.exp 1 * T ^ 2 ≤ Real.log y * (2 * Real.pi * T' ^ 2)`. Use polynomial arithmetic with `[mul_le_mul hA hTT (sq_nonneg T) (by nlinarith [Real.pi_pos] : (0:ℝ) ≤ 2 * Real.pi * Real.log y)]`. Establish `h1 : Real.exp 1 / (2 * Real.pi * T' ^ 2) ≤ Real.log y / T ^ 2`.
+
+Rewrite using `[div_le_div_iff₀ (mul_pos (mul_pos two_pos Real.pi_pos) (pow_pos hT'0 2)) (pow_pos hT0 2)]`. Conclude with `hprod`. Establish `hB : 0 ≤ 3 * (G + 1) * (T * l ^ 2)` using `by nlinarith`. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exm_horiz_num (G N T T' y l : ℝ) (hG : 0 ≤ G) (hN0 : 0 ≤ N) (hN : N ≤ G * (T * l ^ 2))
     (hT : 2 ≤ T) (hT' : T ≤ T') (hy : 2 ≤ y) (hl : 1 ≤ l) :
     1 / (2 * Real.pi * y) * (3 * (N + 1) * (Real.exp 1 * y) / T' ^ 2) ≤
@@ -149,6 +199,33 @@ theorem exm_horiz_num (G N T T' y l : ℝ) (hG : 0 ≤ G) (hN0 : 0 ≤ N) (hN : 
     _ ≤ 3 * (G + 1) * (T * l ^ 2) * (Real.log y / T ^ 2) := mul_le_mul_of_nonneg_left h1 hB
     _ = 3 * (G + 1) * (Real.log y * l ^ 2 / T) := by field_simp
 
+/- English proof (translation)
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hM0 : 0 < M` using `by linarith`. Establish `hMT : 0 < M * T` using `mul_pos hM0 hT0`. Establish `hs1 : 19 / 20 ≤ σ₁` using `by linarith`.
+
+Establish `hs2 : 3 * κ / 4 ≤ 1 - σ₁` using `by linarith`. Establish `hs0 : 0 < σ₁` using `by linarith`. Establish `hs3 : 0 < 1 - σ₁` using `by linarith`. Establish `hyne : y ≠ 0` using `hy0.ne'`. Establish `hsne : σ₁ ≠ 0` using `hs0.ne'`.
+
+Establish `hs3ne : 1 - σ₁ ≠ 0` using `hs3.ne'`. Establish `hs4 : σ₁ ≠ 1` using `(by linarith : σ₁ < 1).ne`. Establish `hs5 : (1 : ℝ) ≠ σ₁` using `(by linarith : σ₁ < 1).ne'`. Establish `hκne : κ ≠ 0` using `hκ.ne'`. Establish `hpine : Real.pi ≠ 0` using `Real.pi_ne_zero`.
+
+Establish `hP : 57 * κ / 80 ≤ σ₁ * (1 - σ₁)`. Use polynomial arithmetic with `[mul_le_mul hs1 hs2 (by linarith) hs0.le]`. Establish `hD : 2 * κ ≤ Real.pi * (σ₁ * (1 - σ₁))`. Use polynomial arithmetic with `[mul_le_mul Real.pi_gt_three.le hP (by linarith) Real.pi_pos.le]`. Establish `hDpos : 0 < Real.pi * (σ₁ * (1 - σ₁))` using `by linarith`.
+
+Establish `hc0 : 0 ≤ 4 / (3 * κ)` using `div_nonneg (by norm_num) (by linarith)`. Establish `hL1 : 1 ≤ Real.log (M * T)` using `exm_log_ge_one M T hM hT`. Establish `hLle : Real.log (M * T) ≤ M * T`. Use `Real.log_le_sub_one_of_pos hMT` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hTL : 1 ≤ T * Real.log (M * T) ^ 2` using `by nlinarith`. Establish `hNc : N + 4 / (3 * κ) ≤ (G + 4 / (3 * κ)) * (T * Real.log (M * T) ^ 2)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hTL hc0]`. Establish `hT'le : T' ≤ 3 * T / 2` using `by linarith`. Establish `hnum1 : T' * (N + 4 / (3 * κ)) ≤ (3 * T / 2) * ((G + 4 / (3 * κ)) * (T * Real.log (M * T) ^ 2))` using `mul_le_mul hT'le hNc (by linarith) (by linarith)`.
+
+Establish `hGc : 0 ≤ G + 4 / (3 * κ)` using `by linarith`. Establish `hTMT : T ≤ M * T` using `by nlinarith`. Establish `hTL2 : T * Real.log (M * T) ≤ (M * T) * (M * T)` using `mul_le_mul hTMT hLle (by linarith) hMT.le`. Establish `hQ : (T * Real.log (M * T)) * (T * Real.log (M * T)) ≤ ((M * T) * (M * T)) * ((M * T) * (M * T))` using `mul_le_mul hTL2 hTL2 (mul_nonneg hT0.le (by linarith)) (mul_self_nonneg _)`. Establish `hnum2 : (3 * T / 2) * ((G + 4 / (3 * κ)) * (T * Real.log (M * T) ^ 2)) ≤ 12 * ((G + 4 / (3 * κ)) * (M * T) ^ 4)`.
+
+Establish `h1` using `mul_le_mul_of_nonneg_left hQ hGc`. Establish `h2` using `mul_nonneg hGc (pow_nonneg hMT.le 4)`. Establish `e1 : (3 * T / 2) * ((G + 4 / (3 * κ)) * (T * Real.log (M * T) ^ 2)) = 3 / 2 * ((G + 4 / (3 * κ)) * ((T * Real.log (M * T)) * (T * Real.log (M * T))))` using `by ring`. Establish `e2 : (G + 4 / (3 * κ)) * (((M * T) * (M * T)) * ((M * T) * (M * T))) = (G + 4 / (3 * κ)) * (M * T) ^ 4` using `by ring`. Rewrite using `[e1]`.
+
+Rewrite `h1` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : 0 ≤ 2 / κ` using `div_nonneg (by norm_num) hκ.le`. Establish `hB0 : 0 ≤ 3 * (G + 4 / (3 * κ)) * (2 / κ) * (M * T) ^ 4` using `mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hGc) hk0) (pow_nonneg hMT.le 4)`. Establish `hB2 : 3 * (G + 4 / (3 * κ)) * (2 / κ) * (M * T) ^ 4 * (2 * κ) = 12 * ((G + 4 / (3 * κ)) * (M * T) ^ 4)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hchain : T' * (N + 4 / (3 * κ)) ≤ 3 * (G + 4 / (3 * κ)) * (2 / κ) * (M * T) ^ 4 * (Real.pi * (σ₁ * (1 - σ₁)))`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : T' * (N + 4 / (3 * κ)) / (Real.pi * (σ₁ * (1 - σ₁))) ≤ 3 * (G + 4 / (3 * κ)) * (2 / κ) * (M * T) ^ 4`.
+
+Rewrite using `[div_le_iff₀ hDpos]`. Conclude with `hchain`. Establish `hA0 : 0 ≤ T' * (N + 4 / (3 * κ)) / (Real.pi * (σ₁ * (1 - σ₁)))` using `div_nonneg (mul_nonneg (by linarith) (by linarith)) hDpos.le`. Establish `hYle : y ^ σ₁ / y ≤ y ^ (-(κ / 2))`. Rewrite using `[← Real.rpow_sub_one hyne]`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `hY0 : 0 ≤ y ^ (-(κ / 2))` using `Real.rpow_nonneg hy0.le _`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ T' * (N + 4 / (3 * κ)) / (Real.pi * (σ₁ * (1 - σ₁))) * y ^ (-(κ / 2)) := mul_le_mul_of_nonneg_left hYle hA0`.
+
+Use `_ ≤ 3 * (G + 4 / (3 * κ)) * (2 / κ) * (M * T) ^ 4 * y ^ (-(κ / 2)) := mul_le_mul_of_nonneg_right hA hY0`. Use `_ = 3 * (G + 4 / (3 * κ)) * (2 / κ) * ((M * T) ^ 4 * y ^ (-(κ / 2))) := by ring`.
+-/
 theorem exm_left_num (κ G N M T T' σ₁ y : ℝ) (hκ : 0 < κ) (hκ' : κ ≤ 1 / 20) (hG : 0 ≤ G) (hN0 : 0 ≤ N)
     (hN : N ≤ G * (T * Real.log (M * T) ^ 2)) (hM : 3 ≤ M) (hT : 2 ≤ T) (hT0' : T ≤ T') (hT' : T' ≤ T + 1)
     (hσ : 1 - κ ≤ σ₁) (hσ' : σ₁ ≤ 1 - 3 * κ / 4) (hy : 2 ≤ y) :
@@ -235,6 +312,11 @@ theorem exm_left_num (κ G N M T T' σ₁ y : ℝ) (hκ : 0 < κ) (hκ' : κ ≤
         mul_le_mul_of_nonneg_right hA hY0
     _ = 3 * (G + 4 / (3 * κ)) * (2 / κ) * ((M * T) ^ 4 * y ^ (-(κ / 2))) := by ring
 
+/- English proof (translation)
+Establish `hX0 : 0 ≤ X` using `by linarith`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `h4 : X ^ 4 ≤ X ^ C`. Establish `h` using `Real.rpow_le_rpow_of_exponent_le hX hC4`. Establish `e : X ^ (4 : ℝ) = X ^ (4 : ℕ)` using `by exact_mod_cast Real.rpow_natCast X 4`.
+
+Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h1` using `mul_le_mul_of_nonneg_right hCL (mul_nonneg (pow_nonneg hX0 4) hY)`. Establish `h2` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h4 hY) hC0`. Establish `h3` using `mul_le_mul_of_nonneg_right hCW hW`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sum_le_mul_rpow_add (AL AW C X Y W : ℝ) (hC4 : 4 ≤ C) (hCL : AL ≤ C) (hCW : AW ≤ C) (hX : 1 ≤ X)
     (hY : 0 ≤ Y) (hW : 0 ≤ W) : AL * (X ^ 4 * Y) + AW * W ≤ C * (X ^ C * Y + W) := by
   have hX0 : 0 ≤ X := by linarith

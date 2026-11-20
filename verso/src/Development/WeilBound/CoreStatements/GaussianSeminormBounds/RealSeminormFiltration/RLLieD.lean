@@ -9,6 +9,25 @@ namespace PositivityTheory.RL.Delta
 open Complex
 open scoped Real ContDiff
 
+/- English proof (translation)
+Introduce `n f hf h0`. Establish `hD : ∀ v : Fin n → ℝ, ContDiff ℝ ∞ (fun w => fderiv ℝ f w v)` using `fun v => (hf.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const`. Establish `hmean : ∀ h : (Fin n → ℝ) → ℂ, ContDiff ℝ ∞ h → ContDiff ℝ ∞ (fun x : Fin n → ℝ => ∫ s in (0 : ℝ)..1, h (s • x))`. Introduce `h hh`. Set `b : ContDiffBump (0 : ℝ)` to `⟨1, 2, by norm_num, by norm_num⟩`.
+
+Establish `hk : IsCompact (Metric.closedBall (0 : ℝ) 2)` using `isCompact_closedBall _ _`. Establish `hloc : MeasureTheory.LocallyIntegrable ((Set.Ioc (0 : ℝ) 1).indicator (fun _ => (1 : ℝ))) MeasureTheory.volume` using `(MeasureTheory.locallyIntegrable_const (1 : ℝ)).indicator measurableSet_Ioc`. Establish `hsm : ContDiffOn ℝ ∞ (Function.uncurry fun (p : Fin n → ℝ) (t : ℝ) => b t • h ((-t) • p)) (Set.univ ×ˢ Set.univ)`. Use `ContDiff.contDiffOn ?_` and prove the remaining obligations. Conclude with `(b.contDiff.comp contDiff_snd).smul (hh.comp (contDiff_snd.neg.smul contDiff_fst))`.
+
+Establish `key` using `MeasureTheory.contDiffOn_convolution_right_with_param_comp (n := (⊤ : ℕ∞)) (μ := MeasureTheory.volume) (ContinuousLinearMap.lsmul ℝ ℝ) (s := Set.univ) (v := fun _ : Fin n → ℝ => (0 : ℝ)) contDiffOn_const (g := fun (p : Fin n → ℝ) (t : ℝ) => b t • h ((-t) • p)) isOpen_univ hk (fun …`. Establish `: b t = 0` using `image_eq_zero_of_notMem_tsupport (by rw [b.tsupport_eq]; exact ht)`. Simplify using `[this]) hloc hsm`. Rewrite `key` using `[contDiffOn_univ]`. Use `key using 2 with x` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[MeasureTheory.convolution_def, intervalIntegral.integral_of_le zero_le_one, ← MeasureTheory.integral_indicator measurableSet_Ioc]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t ∈ Set.Ioc (0 : ℝ) 1`. Establish `: b (-t) = 1` using `b.one_of_mem_closedBall (by`.
+
+Rewrite using `[mem_closedBall_zero_iff, norm_neg, Real.norm_eq_abs, abs_of_pos ht.1]`. Conclude with `ht.2)`. Simplify using `[ht, this]`. Simplify using `[ht]`. Use `⟨fun i x => ∫ s in (0 : ℝ)..1, fderiv ℝ f (s • x) (Pi.single i 1), fun i => hmean _ (hD _), fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hd : Differentiable ℝ f` using `hf.differentiable (by simp)`. Establish `hderiv : ∀ s ∈ Set.uIcc (0 : ℝ) 1, HasDerivAt (fun s : ℝ => f (s • x)) (fderiv ℝ f (s • x) x) s`. Introduce `s _`. Use `(hd (s • x)).hasFDerivAt.comp_hasDerivAt s ((hasDerivAt_id s).smul_const x)` as an intermediate fact. Rewrite `this` using `[one_smul]`.
+
+Conclude with `this`. Establish `hcv : ∀ v : Fin n → ℝ, Continuous (fun s : ℝ => fderiv ℝ f (s • x) v)` using `fun v => (hD v).continuous.comp (continuous_id.smul continuous_const)`. Establish `hftc` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv ((hcv x).intervalIntegrable 0 1)`. Simplify using `only [one_smul, zero_smul, h0, sub_zero] at hftc`. Rewrite using `[← hftc]`.
+
+Establish `hx : ∀ s : ℝ, fderiv ℝ f (s • x) x = ∑ i, (x i : ℂ) * fderiv ℝ f (s • x) (Pi.single i 1)`. Introduce `s`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hx]`. Rewrite using `[intervalIntegral.integral_finsetSum]`.
+
+Simplify using `only [intervalIntegral.integral_const_mul]`. Conclude with `fun i _ => (continuous_const.mul (hcv _)).intervalIntegrable 0 1`.
+-/
 theorem hadamard_lemma : ∀ (n : ℕ) (f : (Fin n → ℝ) → ℂ), ContDiff ℝ ∞ f → f 0 = 0 → ∃ g : Fin n → (Fin n → ℝ) → ℂ, (∀ i, ContDiff ℝ ∞ (g i)) ∧ ∀ x, f x = ∑ i, (x i : ℂ) * g i x := by
   intro n f hf h0
   have hD : ∀ v : Fin n → ℝ, ContDiff ℝ ∞ (fun w => fderiv ℝ f w v) := fun v =>
@@ -69,6 +88,39 @@ theorem hadamard_lemma : ∀ (n : ℕ) (f : (Fin n → ℝ) → ℂ), ContDiff �
   · simp only [intervalIntegral.integral_const_mul]
   · exact fun i _ => (continuous_const.mul (hcv _)).intervalIntegrable 0 1
 
+/- English proof (translation)
+Introduce `n f`. Set `b : ContDiffBump (0 : Fin n → ℝ)` to `⟨1, 2, by norm_num, by norm_num⟩`. Use `set u : (Fin n → ℝ) → ℝ := (b : (Fin n → ℝ) → ℝ) - fun _ => 1 with hu`. Establish `hus : ContDiff ℝ ∞ u` using `b.contDiff.sub contDiff_const`. Establish `hub : ∀ i : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ x, ‖iteratedFDeriv ℝ i u x‖ ≤ C`.
+
+Introduce `i`. Take `⟨C, hC⟩` from `(b.hasCompactSupport.iteratedFDeriv (𝕜 := ℝ) i).exists_bound_of_continuous ((b.contDiff (n := ⊤)).continuous_iteratedFDeriv (by exact_mod_cast le_top))`. Use `⟨C + 1, by linarith [(norm_nonneg _).trans (hC 0)], fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, iteratedFDeriv_sub b.contDiff contDiff_const]`. Use `(norm_sub_le _ _).trans (add_le_add (hC x) ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[iteratedFDeriv_const_of_ne hi]`. Simplify using the standard rewrite rules.
+
+Use `choose C hC0 hC using hub`. Set `L : ℕ → (Fin n → ℝ) →L[ℝ] (Fin n → ℝ)` to `fun R => ((R : ℝ) + 1)⁻¹ • ContinuousLinearMap.id ℝ _`. Establish `hL : ∀ R x, ‖L R x‖ = ‖x‖ / ((R : ℝ) + 1)`. Introduce `R x`. Use `show ‖((R : ℝ) + 1)⁻¹ • x‖ = _`.
+
+Rewrite using `[norm_smul, Real.norm_of_nonneg (by positivity), div_eq_inv_mul]`. Establish `hL1 : ∀ R, ‖L R‖ ≤ 1` using `fun R => ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => by`. Rewrite using `[hL, one_mul]`. Conclude with `div_le_self (norm_nonneg _) (by linarith [(Nat.cast_nonneg R : (0 : ℝ) ≤ R)])`. Establish `hsm : ∀ R, ContDiff ℝ ∞ (fun x => b (L R x) • f x)` using `fun R => (b.contDiff.comp (L R).contDiff).smul (f.smooth ⊤)`.
+
+Establish `hcs : ∀ R, HasCompactSupport (fun x => b (L R x) • f x)`. Introduce `R`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : Fin n → ℝ) (2 * ((R : ℝ) + 1))) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[mem_closedBall_zero_iff, not_le]`.
+
+Rewrite using `[b.zero_of_le_dist, zero_smul]`. Rewrite using `[dist_zero_right, hL, le_div_iff₀ (by positivity)]`. Conclude with `hx.le`. Use `mem_closure_of_tendsto (b := Filter.atTop) (f := fun R : ℕ => (hcs R).toSchwartzMap (hsm R)) ?_ (Filter.Eventually.of_forall hcs)` and prove the remaining obligations. Rewrite using `[(schwartz_withSeminorms ℂ (Fin n → ℝ) ℂ).tendsto_nhds]`.
+
+Introduce and unpack `⟨k, j⟩ ε hε`. Use `set M : ℝ := ∑ i ∈ Finset.range (j + 1), (j.choose i : ℝ) * C i * SchwartzMap.seminorm ℂ (k + 1) (j - i) f with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun i _ => mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (hC0 i)) (apply_nonneg _ _)`. Establish `hlim : Filter.Tendsto (fun R : ℕ => M * (1 / ((R : ℝ) + 1))) Filter.atTop (nhds (M * 0))` using `tendsto_one_div_add_atTop_nhds_zero_nat.const_mul M`. Rewrite `hlim` using `[mul_zero]`.
+
+Use `filter_upwards [hlim.eventually (gt_mem_nhds hε)] with R hR`. Use `lt_of_le_of_lt ?_ hR` and prove the remaining obligations. Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply]`. Use `SchwartzMap.seminorm_le_bound ℂ k j _ (by positivity) fun x => ?_` and prove the remaining obligations. Establish `e : (⇑((hcs R).toSchwartzMap (hsm R) - f) : (Fin n → ℝ) → ℂ) = fun x => (u ∘ L R) x • f x`.
+
+Use function extensionality and compare the values at `y`. Use `show b (L R y) • f y - f y = (b (L R y) - 1) • f y`. Rewrite using `[sub_smul, one_smul]`. Rewrite using `[e]`. Establish `hR0 : (0 : ℝ) < R + 1` using `by positivity`.
+
+Distinguish the cases in `hx : ‖x‖ < R + 1`. Establish `hz : (fun x => (u ∘ L R) x • f x) =ᶠ[nhds x] fun _ => 0` using `by filter_upwards [(isOpen_lt continuous_norm continuous_const).mem_nhds hx] with y hy`. Establish `: b (L R y) = 1` using `b.one_of_mem_closedBall (by`. Rewrite using `[mem_closedBall_zero_iff, hL]`. Conclude with `(div_le_one hR0).2 (le_of_lt hy))`.
+
+Use `show (b (L R y) - 1) • f y = 0`. Rewrite using `[this, sub_self, zero_smul]`. Rewrite using `[(hz.iteratedFDeriv ℝ j).self_of_nhds, iteratedFDeriv_fun_zero]`. Simplify using `only [Pi.zero_apply, norm_zero, mul_zero]`. Check the signs of the components of the expression.
+
+Rewrite `hx` using `[not_lt]`. Establish `h1` using `norm_iteratedFDeriv_smul_le (hus.comp (L R).contDiff) (f.smooth ⊤) x (n := j) (by exact_mod_cast le_top)`. Rewrite using `[mul_one_div, le_div_iff₀ hR0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ ≤ M := by`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h2 : ‖iteratedFDeriv ℝ i (u ∘ L R) x‖ ≤ C i`. Rewrite using `[(L R).iteratedFDeriv_comp_right hus x (by exact_mod_cast le_top)]`.
+
+Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Use `(mul_le_of_le_one_right (norm_nonneg _) ?_).trans (hC i _)` and prove the remaining obligations. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => hL1 R)`. Establish `h3` using `SchwartzMap.le_seminorm ℂ (k + 1) (j - i) f x`. Establish `h4` using `hC0 i`.
+
+Use `gcongr`.
+-/
 theorem dense_hasCompactSupport : ∀ (n : ℕ), Dense {f : SchwartzMap (Fin n → ℝ) ℂ | HasCompactSupport (f : (Fin n → ℝ) → ℂ)} := by
   intro n f
   let b : ContDiffBump (0 : Fin n → ℝ) := ⟨1, 2, by norm_num, by norm_num⟩
@@ -161,6 +213,21 @@ theorem dense_hasCompactSupport : ∀ (n : ℕ), Dense {f : SchwartzMap (Fin n �
           have h4 := hC0 i
           gcongr
 
+/- English proof (translation)
+Use `set E : ℂ → ℂ := fun z => cexp (2 * π * I * z) with hE`. Establish `hEd : Differentiable ℂ E` using `by rw [hE]; fun_prop`. Establish `hd : Differentiable ℂ (dslope E 0)`. Rewrite using `[← differentiableOn_univ]`. Conclude with `(Complex.differentiableOn_dslope Filter.univ_mem).2 hEd.differentiableOn`.
+
+Establish `hc : ContDiff ℝ ∞ (fun t : ℝ => dslope E 0 (t : ℂ))` using `(hd.contDiff.restrict_scalars ℝ).comp Complex.ofRealCLM.contDiff`. Establish `hmul : ∀ t : ℝ, (t : ℂ) * dslope E 0 t = cexp (2 * π * I * t) - 1`. Introduce `t`. Use `sub_smul_dslope E 0 (t : ℂ)` as an intermediate fact. Simplify `this` using `[hE]`.
+
+Establish `hne : ∀ t ∈ Metric.ball (0 : ℝ) 1, dslope E 0 (t : ℂ) ≠ 0`. Introduce `t ht h0`. Distinguish the cases in `h : t = 0`. Substitute `h` using the available equality. Establish `hD : HasDerivAt E (cexp (2 * π * I * 0) * (2 * π * I * 1)) 0` using `((hasDerivAt_id (0 : ℂ)).const_mul (2 * π * I)).cexp`.
+
+Rewrite `h0` using `[Complex.ofReal_zero, dslope_same, hD.deriv]`. Simplify using `[Real.pi_ne_zero] at h0`. Establish `h1` using `hmul t`. Rewrite `h1` using `[h0, mul_zero, eq_comm, sub_eq_zero, Complex.exp_eq_one_iff]`. Take `⟨k, hk⟩` from `h1`.
+
+Establish `h2 : (t : ℂ) = k`. Establish `h3 : (2 * π * I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Apply `mul_left_cancel₀ h3` to reduce the goal to its premises. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h4 : t = k` using `by exact_mod_cast h2`. Rewrite `ht` using `[mem_ball_zero_iff, Real.norm_eq_abs, h4]`. Establish `h5 : |k| < 1` using `by exact_mod_cast ht`. Establish `h6 : k = 0` using `Int.abs_lt_one_iff.1 h5`. Conclude with `h (by rw [h4, h6]; simp)`.
+
+Use `⟨fun t => (dslope E 0 (t : ℂ))⁻¹, hc.contDiffOn.inv hne, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmul t, mul_assoc, mul_inv_cancel₀ (hne t ht), mul_one]`.
+-/
 theorem exists_quot : ∃ q : ℝ → ℂ, ContDiffOn ℝ ∞ q (Metric.ball 0 1) ∧
     ∀ t ∈ Metric.ball (0 : ℝ) 1, (t : ℂ) = (cexp (2 * π * I * t) - 1) * q t := by
   set E : ℂ → ℂ := fun z => cexp (2 * π * I * z) with hE
@@ -197,6 +264,23 @@ theorem exists_quot : ∃ q : ℝ → ℂ, ContDiffOn ℝ ∞ q (Metric.ball 0 1
   refine ⟨fun t => (dslope E 0 (t : ℂ))⁻¹, hc.contDiffOn.inv hne, fun t ht => ?_⟩
   rw [← hmul t, mul_assoc, mul_inv_cancel₀ (hne t ht), mul_one]
 
+/- English proof (translation)
+Take `⟨q, hq, hq'⟩` from `exists_quot`. Take `⟨h, hh, hh'⟩` from `hadamard_lemma n f (f.smooth ⊤) h0`. Establish `hK : IsCompact (tsupport (f : (Fin n → ℝ) → ℂ))` using `(isCompact_closedBall (0 : Fin n → ℝ) 1).of_isClosed_subset (isClosed_tsupport _) (hf.trans Metric.ball_subset_closedBall)`. Take `⟨r, hr, hr'⟩` from `exists_lt_subset_ball (isClosed_tsupport _) hf`. Use `set r' : ℝ := max r (1 / 2) with hr'def`.
+
+Establish `hr1 : r' < 1` using `max_lt hr (by norm_num)`. Establish `hr0 : 0 < r'` using `lt_max_of_lt_right (by norm_num)`. Set `b : ContDiffBump (0 : Fin n → ℝ)` to `⟨r', (r' + 1) / 2, hr0, by linarith⟩`. Establish `hbs : tsupport (b : (Fin n → ℝ) → ℝ) ⊆ Metric.ball 0 1`. Rewrite using `[b.tsupport_eq]`.
+
+Conclude with `Metric.closedBall_subset_ball (by show (r' + 1) / 2 < 1; linarith)`. Establish `hcoord : ∀ (i : Fin n), ∀ x ∈ Metric.ball (0 : Fin n → ℝ) 1, x i ∈ Metric.ball (0 : ℝ) 1`. Introduce `i x hx`. Rewrite `hx`, the goal using `[mem_ball_zero_iff]`. Conclude with `(norm_le_pi_norm x i).trans_lt hx`.
+
+Establish `hsm : ∀ i, ContDiff ℝ ∞ (fun x : Fin n → ℝ => b x • (q (x i) * h i x))`. Introduce `i`. Rewrite using `[← contMDiff_iff_contDiff]`. Use `contMDiff_of_tsupport fun x hx => ?_` and prove the remaining obligations. Rewrite using `[contMDiffAt_iff_contDiffAt]`.
+
+Establish `hx' : x ∈ Metric.ball (0 : Fin n → ℝ) 1` using `hbs (tsupport_smul_subset_left _ _ hx)`. Use `b.contDiff.contDiffAt.smul (ContDiffAt.mul ?_ (hh i).contDiffAt)` and prove the remaining obligations. Conclude with `ContDiffAt.comp x (g := q) (f := fun x : Fin n → ℝ => x i) (hq.contDiffAt (Metric.isOpen_ball.mem_nhds (hcoord i x hx'))) (contDiffAt_apply ℝ ℝ i x)`. Establish `hcs : ∀ i, HasCompactSupport (fun x : Fin n → ℝ => b x • (q (x i) * h i x))` using `fun i => b.hasCompactSupport.smul_right`. Use `⟨fun i => (hcs i).toSchwartzMap (hsm i), hcs, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `show f x = ∑ i, (cexp (2 * π * I * x i) - 1) * (b x • (q (x i) * h i x))`. Establish `hb : f x = b x • f x`. Distinguish the cases in `hx : x ∈ tsupport (f : (Fin n → ℝ) → ℂ)`. Rewrite using `[b.one_of_mem_closedBall, one_smul]`. Conclude with `Metric.ball_subset_closedBall (Metric.ball_subset_ball (le_max_left _ _) (hr' hx))`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hx, smul_zero]`. Distinguish the cases in `hx : x ∈ Metric.ball (0 : Fin n → ℝ) 1`. Rewrite using `[hb, hh' x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, ← mul_assoc, ← hq' _ (hcoord i x hx)]`.
+
+Establish `: b x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hbs h)`. Rewrite using `[hb, this]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_div (n : ℕ) (f : SchwartzMap (Fin n → ℝ) ℂ)
     (hf : tsupport (f : (Fin n → ℝ) → ℂ) ⊆ Metric.ball 0 1) (h0 : f 0 = 0) :
     ∃ g : Fin n → SchwartzMap (Fin n → ℝ) ℂ, (∀ i, HasCompactSupport (g i : (Fin n → ℝ) → ℂ)) ∧
@@ -243,6 +327,13 @@ theorem exists_div (n : ℕ) (f : SchwartzMap (Fin n → ℝ) ℂ)
   · have : b x = 0 := image_eq_zero_of_notMem_tsupport fun h => hx (hbs h)
     rw [hb, this]; simp
 
+/- English proof (translation)
+Take `⟨g, hg, hg'⟩` from `exists_div n f hf h0`. Establish `hsm : ∀ i, ContDiff ℝ ∞ (fun x : Fin n → ℝ => cexp (2 * π * I * x i) * g i x)`. Introduce `i`. Use `ContDiff.mul ?_ ((g i).smooth ⊤)` and prove the remaining obligations. Conclude with `(contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_apply ℝ ℝ i))).cexp`.
+
+Establish `hcs : ∀ i, HasCompactSupport (fun x : Fin n → ℝ => cexp (2 * π * I * x i) * g i x)` using `fun i => (hg i).mul_left`. Establish `e : f = ∑ i, ((hcs i).toSchwartzMap (hsm i) - g i)`. Use extensionality with `x`. Rewrite using `[hg' x, _root_.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `show _ = cexp (2 * π * I * x i) * g i x - g i x`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hχ i (g i) _ (fun x => rfl), sub_self]`.
+-/
 theorem zero_of_ball (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ)
     (hχ : ∀ (i : Fin n) (f g : SchwartzMap (Fin n → ℝ) ℂ), (∀ x, g x = cexp (2 * π * I * x i) * f x) → T g = T f)
     (f : SchwartzMap (Fin n → ℝ) ℂ) (hf : tsupport (f : (Fin n → ℝ) → ℂ) ⊆ Metric.ball 0 1) (h0 : f 0 = 0) : T f = 0 := by
@@ -263,6 +354,21 @@ theorem zero_of_ball (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] �
     refine Finset.sum_eq_zero fun i _ => ?_
     rw [map_sub, hχ i (g i) _ (fun x => rfl), sub_self]
 
+/- English proof (translation)
+Establish `hA : ∀ f : SchwartzMap (Fin n → ℝ) ℂ, HasCompactSupport (f : (Fin n → ℝ) → ℂ) → f 0 = 0 → T f = 0`. Introduce `f hf h0`. Take `⟨R, hR, hs⟩` from `hf.isCompact.isBounded.subset_ball_lt 0 0`. Set `e : (Fin n → ℝ) ≃L[ℝ] (Fin n → ℝ)` to `ContinuousLinearEquiv.smulLeft (Units.mk0 R hR.ne')`. Establish `he : ∀ x, e x = R • x` using `fun _ => rfl`.
+
+Establish `he' : ∀ x, e.symm x = R⁻¹ • x` using `fun x => e.injective (by rw [e.apply_symm_apply, he, smul_inv_smul₀ hR.ne'])`. Use `zero_of_ball n (T ∘L SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e.symm) (fun i f g h => hχ R⁻¹ i _ _ fun x => by show g (e.symm x) = _ * f (e.symm x)` as an intermediate fact. Rewrite using `[h, he']; simp) (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e f) ?_ (by`. Use `show f (e 0) = 0`. Rewrite using `[map_zero, h0])`.
+
+Rewrite using `[← this]`. Conclude with `congrArg T (SchwartzMap.ext fun x => congrArg f (e.apply_symm_apply x).symm)`. Establish `hsub : Function.support (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e f) ⊆ e ⁻¹' tsupport f` using `fun x hx => subset_tsupport _ hx`. Use `(closure_minimal hsub ((isClosed_tsupport _).preimage e.continuous)).trans fun x hx => ?_` and prove the remaining obligations. Use `hs hx` as an intermediate fact.
+
+Rewrite `this` using `[mem_ball_zero_iff, he, norm_smul, Real.norm_eq_abs, abs_of_pos hR]`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `(mul_lt_iff_lt_one_right hR).1 this`. Set `b : ContDiffBump (0 : Fin n → ℝ)` to `⟨1 / 4, 1 / 2, by norm_num, by norm_num⟩`. Establish `h₁ : HasCompactSupport (Complex.ofRealCLM ∘ (b : (Fin n → ℝ) → ℝ))` using `b.hasCompactSupport.comp_left rfl`.
+
+Set `ψ : SchwartzMap (Fin n → ℝ) ℂ` to `h₁.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`. Establish `hψ : ∀ x, ψ x = (b x : ℂ)` using `fun x => rfl`. Establish `hψ0 : ψ 0 = 1`. Rewrite using `[hψ, b.one_of_mem_closedBall (Metric.mem_closedBall_self b.rIn_pos.le)]`. Simplify using the standard rewrite rules.
+
+Use `⟨T ψ, fun f => ?_⟩` and prove the remaining obligations. Set `S : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ` to `BoundedContinuousFunction.evalCLM ℂ 0 ∘L SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ _`. Establish `hcl : IsClosed {f : SchwartzMap (Fin n → ℝ) ℂ | T f = T ψ * S f}` using `isClosed_eq T.continuous (continuous_const.mul S.continuous)`. Use `closure_minimal (t := {f : SchwartzMap (Fin n → ℝ) ℂ | T f = T ψ * S f}) ?_ hcl (dense_hasCompactSupport n f)` and prove the remaining obligations. Introduce `f hf`.
+
+Use `hA (f - f 0 • ψ) (HasCompactSupport.sub hf (HasCompactSupport.smul_left (f := fun _ => f 0) h₁)) (by show f 0 - f 0 • ψ 0 = 0` as an intermediate fact. Rewrite using `[hψ0]`. Use the proof step `simp)`. Rewrite `this` using `[map_sub, map_smul, sub_eq_zero, smul_eq_mul, mul_comm]`. Conclude with `this`.
+-/
 theorem eq_delta (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ)
     (hχ : ∀ (t : ℝ) (i : Fin n) (f g : SchwartzMap (Fin n → ℝ) ℂ),
       (∀ x, g x = cexp (2 * π * I * (t * x i : ℝ)) * f x) → T g = T f) :
@@ -309,6 +415,11 @@ theorem eq_delta (n : ℕ) (T : SchwartzMap (Fin n → ℝ) ℂ →L[ℂ] ℂ)
   rw [map_sub, map_smul, sub_eq_zero, smul_eq_mul, mul_comm] at this
   exact this
 
+/- English proof (translation)
+Set `e : V ≃L[ℝ] (Fin (Module.finrank ℝ V) → ℝ)` to `(Module.finBasis ℝ V).equivFun.toContinuousLinearEquiv`. Take `⟨a, ha⟩` from `eq_delta _ (T ∘L SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e) fun t i f g h => hχ (t • (LinearMap.proj i ∘ₗ e.toLinearEquiv.toLinearMap)) _ _ fun x => h (e x)`. Use `⟨a, fun f => ?_⟩` and prove the remaining obligations. Use `ha (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e.symm f)` as an intermediate fact. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations.
+
+Conclude with `congrArg T (SchwartzMap.ext fun x => congrArg f (e.symm_apply_apply x).symm)`. Use `show a * f (e.symm 0) = _`. Rewrite using `[map_zero]`.
+-/
 theorem eq_delta' {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (T : SchwartzMap V ℂ →L[ℂ] ℂ)
     (hχ : ∀ (l : V →ₗ[ℝ] ℝ) (f g : SchwartzMap V ℂ), (∀ x, g x = cexp (2 * π * I * l x) * f x) → T g = T f) :

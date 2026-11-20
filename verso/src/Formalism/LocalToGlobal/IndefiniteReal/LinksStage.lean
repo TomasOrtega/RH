@@ -57,6 +57,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Am 
 
 def reScal (X : CxData Am) (κ : InfinitePlace K → ℝ) (lam : type_of% X.lam) : CxData Am := { X with κ := κ, lam := lam }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zs_reScal (X : CxData Am) (κ lam) : (reScal X κ lam).zs = X.zs := rfl
 
 def NonzeroIndexPlaceOfSide (cr : Crd Am fc) (X : CxData Am) (w : HeightOneSpectrum (𝓞 K)) : Prop :=
@@ -76,8 +79,14 @@ def SimX (cr : Crd Am fc) (X : CxData Am) (b : Bool) (i : Bs.J) (p : Bs.Ix) (v :
         (X.wC b i v (cpt v.embedding ((X.liftMat cr b i Bs.μ0).mulVec y))) =
       ((l : ℝ) : ℂ) * Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K _) ((lv (fc X.zs) b).XT i Bs.μ0) v x y
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem partX_reScal (cr : Crd Am fc) (X : CxData Am) (κ lam b i p v) : PartX cr (reScal X κ lam) b i p v ↔ PartX cr X b i p v := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem simX_reScal (cr : Crd Am fc) (X : CxData Am) (κ lam b i p v l) :
     SimX cr (reScal X κ lam) b i p v l ↔ SimX cr X b i p v l := Iff.rfl
 
@@ -178,6 +187,9 @@ def ThetaPExists (F : Face D A) : Prop :=
 
 variable {D A Ks}
 
+/- English proof (translation)
+Use `⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ f.codRestrict (LinearMap.range e) hf, fun x => ?_⟩` and prove the remaining obligations. Use `show e ((LinearEquiv.ofInjective e he).symm (f.codRestrict (LinearMap.range e) hf x)) = f x`. Rewrite using `[← LinearEquiv.ofInjective_apply (h := he), LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_factor {X Y Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup Z] [Module ℂ Z]
     (e : Y →ₗ[ℂ] Z) (he : Function.Injective e) (f : X →ₗ[ℂ] Z) (hf : ∀ x, f x ∈ LinearMap.range e) :
     ∃ g : X →ₗ[ℂ] Y, ∀ x, e (g x) = f x := by

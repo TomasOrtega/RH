@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BidualAbelian.isDual_swap | exact GlobalTheory.BidualAbelian.isDual_swap | (intros; apply GlobalTheory.BidualAbelian.isDual_swap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isDualAbelianSchemePoincare_swap : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (P : LB (A ⊗ B).left), IsAbelianScheme A → IsAbelianScheme B → DimLe A B → IsDual A B P → IsDual B A (swap P) := by
   first | exact @GlobalTheory.BidualAbelian.isDual_swap | exact GlobalTheory.BidualAbelian.isDual_swap | (intros; apply GlobalTheory.BidualAbelian.isDual_swap <;> assumption)

@@ -41,6 +41,11 @@ def LatAt (c : NChoice D) (w : D.what₂.places.Pl) (j : ℕ)
     (e : D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j) (t : FractionRing (c.Oe w)) : Prop :=
   Submodule.span (c.Oe w) (e '' latS w j) = Submodule.span (c.Oe w) ((fun y => t • y) '' (latT c w j : Set (Tgt c w j)))
 
+/- English proof (translation)
+Introduce `b`. Take `⟨h1, h2⟩` from `h b`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h1.units_smul (fun _ => u) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using `[LinearMap.smul_apply, Units.smul_def]`. Establish `h3 : (Set.range fun i => ((u : FractionRing (c.Oe w)) • e) (b i)) = (u : FractionRing (c.Oe w)) • Set.range fun i => e (b i)`. Rewrite using `[← Set.range_smul]`. Both sides reduce to the same expression. Rewrite using `[h3, Submodule.span_smul_eq_of_isUnit _ _ u.isUnit, h2]`.
+-/
 theorem BasisAt.smul {c : NChoice D} {w : D.what₂.places.Pl} {j : ℕ}
     {e : D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j} (h : BasisAt c w j e) (u : (FractionRing (c.Oe w))ˣ) :
     BasisAt c w j ((u : FractionRing (c.Oe w)) • e) := by
@@ -55,6 +60,13 @@ theorem BasisAt.smul {c : NChoice D} {w : D.what₂.places.Pl} {j : ℕ}
       rw [← Set.range_smul]; rfl
     rw [h3, Submodule.span_smul_eq_of_isUnit _ _ u.isUnit, h2]
 
+/- English proof (translation)
+Set `f : Tgt c w j →ₗ[c.Oe w] Tgt c w j` to `{ toFun := fun y => ((u⁻¹ : (FractionRing (c.Oe w))ˣ) : FractionRing (c.Oe w)) • y map_add' := fun _ _ => smul_add _ _ _ map_smul' := fun r y => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← algebraMap_smul (FractionRing (c.Oe w)) r y, ← algebraMap_smul (FractionRing (c.Oe w)) r, smul_smul, smul_smul, mul_comm] }`. Establish `h1 : ((((u⁻¹ : (FractionRing (c.Oe w))ˣ) : FractionRing (c.Oe w)) • e) '' latS w j) = f '' (e '' latS w j)`. Rewrite using `[Set.image_image]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, Submodule.span_image, h, ← Submodule.span_image, Set.image_image]`. Establish `h2 : (fun y => f ((u : FractionRing (c.Oe w)) • y)) = id`. Use function extensionality and compare the values at `y`. Use `show ((u⁻¹ : (FractionRing (c.Oe w))ˣ) : FractionRing (c.Oe w)) • ((u : FractionRing (c.Oe w)) • y) = y`.
+
+Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[h2, Set.image_id, Submodule.span_eq]`.
+-/
 theorem LatAt.smul_inv {c : NChoice D} {w : D.what₂.places.Pl} {j : ℕ}
     {e : D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j} (u : (FractionRing (c.Oe w))ˣ)
     (h : LatAt c w j e (u : FractionRing (c.Oe w))) :
@@ -90,6 +102,9 @@ def tupWithE {cf : CharFrame D} {c : NChoice D} (tp : TupTied D cf c) (E : ∀ w
       Submodule.span (c.Oe w) (E w j '' latS w j) = latT c w j) : TupTied D cf (withE c E hb hl) :=
   { tp with }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.nct.twOf_eq, h.nct.twSide_eq, h.nct.Q_eq, h.nct.psi_eq, h.nct.embedding_baseField_condition⟩, ⟨h.choice.twI_conj, h.choice.sd_place, h.choice.emb_side, h.choice.sd_conj, h.choice.one, h.choice.conj⟩, h.off, h.adm, h.psi, h.eMt_level⟩`.
+-/
 theorem choiceSide_withE {cf : CharFrame D} {mt : MtFam D} {exp : NExpTied D} {c : NChoice D} {tp : TupTied D cf c}
     (h : GlobalTheory.HeightCounting.ChoiceSide D cf mt exp c tp) (E : ∀ w j, D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j)
     (hb : ∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → BasisAt c w j (E w j))
@@ -109,12 +124,18 @@ def pick (c : NChoice D)
   | w, 0 => c.eMt w 0
   | w, k + 1 => if h : D.what₂.muAt w ≠ D.what₂.mu0 ∧ k < D.R.m then G w h.1 ⟨k, h.2⟩ else c.eMt w (k + 1)
 
+/- English proof (translation)
+Simplify using `only [pick, dif_pos (And.intro hw i.2)]`.
+-/
 theorem pick_eq (c : NChoice D)
     (G : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∀ i : Fin D.R.m,
       D.what₂.MtL (D.what₂.muTw w) (i.1 + 1) →ₛₗ[c.embW w] Tgt c w (i.1 + 1))
     (w : D.what₂.places.Pl) (hw : D.what₂.muAt w ≠ D.what₂.mu0) (i : Fin D.R.m) : pick c G w (i.1 + 1) = G w hw i := by
   simp only [pick, dif_pos (And.intro hw i.2)]
 
+/- English proof (translation)
+Introduce `w j hw h1 h2`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Use `h w hw ⟨k, by omega⟩` as an intermediate fact. Rewrite `this` using `[← pick_eq c G w hw ⟨k, by omega⟩]`. Then use the resulting hypothesis.
+-/
 theorem pick_prop (c : NChoice D)
     (G : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → ∀ i : Fin D.R.m,
       D.what₂.MtL (D.what₂.muTw w) (i.1 + 1) →ₛₗ[c.embW w] Tgt c w (i.1 + 1))
@@ -144,6 +165,9 @@ def ThetaAt (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (YS : NExpRealS R cG S
       t • ∑ k, c.embW w (a k) ⊗ₜ[D.ntw.O (c.twI w)]
         (YS.eF (c.twI w) (i.1 + 1) (c.sd w) (by omega) (by omega)).symm ((1 : KB S (c.twI w) (c.sd w)) ⊗ₜ[S.Ks] f k)
 
+/- English proof (translation)
+Introduce `x hx n a f hf`. Rewrite using `[one_smul, LinearMap.smul_apply, map_smul, h x hx n a f hf, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`.
+-/
 theorem ThetaAt.smul_inv {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {YS : NExpRealS R cG S} {c : NChoice D}
     {w : D.what₂.places.Pl} {i : Fin D.R.m} {e : D.what₂.MtL (D.what₂.muTw w) (i.1 + 1) →ₛₗ[c.embW w] Tgt c w (i.1 + 1)}
     (u : (FractionRing (c.Oe w))ˣ) (h : ThetaAt Y YS c w i e (u : FractionRing (c.Oe w))) :
@@ -152,6 +176,9 @@ theorem ThetaAt.smul_inv {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {YS : NEx
   rw [one_smul, LinearMap.smul_apply, map_smul, h x hx n a f hf, smul_smul, ← Units.val_mul, inv_mul_cancel,
     Units.val_one, one_smul]
 
+/- English proof (translation)
+Introduce `w i hw x hx n a f hf`. Use `h w i hw x hx n a f hf` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`.
+-/
 theorem emtTheta_withE {Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {YS : NExpRealS R cG S} {c : NChoice D}
     (E : ∀ w j, D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[c.embW w] Tgt c w j)
     (hb : ∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → BasisAt c w j (E w j))

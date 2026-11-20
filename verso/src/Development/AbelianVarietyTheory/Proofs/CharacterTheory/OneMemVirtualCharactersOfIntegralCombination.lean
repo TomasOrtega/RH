@@ -6,6 +6,27 @@ import Development.AbelianVarietyTheory.Proofs.CharacterTheory.VirtualCharacterI
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
+/- English proof (translation)
+Introduce `G _ _ S hS ι _ r s hr hs hsum`. Use `Fintype.ofFinite G` as an intermediate fact. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_int_relation_of_isIntegral_relation ι r hr`. Establish `hone : (1 : G → ℂ) ∈ Virt ℂ ℂ G` using `AddSubgroup.subset_closure (isChar_one ℂ ℂ G)`. Establish `hcomb : (∑ i, c i • s i) ∈ S` using `S.sum_mem fun i _ => S.zsmul_mem (hs i) (c i)`.
+
+Use `set f : G → ℂ := (∑ i, c i • s i) - 1 with hf`. Establish `hfV : f ∈ Virt ℂ ℂ G` using `(Virt ℂ ℂ G).sub_mem (hS hcomb) hone`. Establish `hN : (Nat.card G : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := G)).ne'`. Use `choose m hm using fun i => GlobalTheory.T.virtualCharacter_inner_eq_int_mul_card G (s i) f (hS (hs i)) hfV`. Take `⟨d, hd⟩` from `GlobalTheory.T.virtualCharacter_inner_eq_int_mul_card G 1 f hone hfV`.
+
+Simplify using `only [finsum_eq_sum_of_fintype] at hm hd`. Establish `h1 : ∑ i, r i * (m i : ℂ) = d`. Apply `mul_right_cancel₀ hN` to reduce the goal to its premises. Rewrite using `[← hd, Finset.sum_mul]`. Simplify using `only [mul_assoc, ← hm, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc, ← Finset.sum_mul, hsum g, Pi.one_apply]`. Establish `h2 : ∑ i, (c i : ℂ) * (m i : ℂ) = d` using `by exact_mod_cast hc m d h1`. Establish `hfg : ∀ g, f g = ∑ i, (c i : ℂ) * s i g - 1`.
+
+Introduce `g`. Simplify using `[hf, Finset.sum_apply]`. Establish `h3 : ∑ g, f g * star (f g) = 0`. Establish `e : ∀ g, f g * star (f g) = ∑ i, (c i : ℂ) * (s i g * star (f g)) - (1 : G → ℂ) g * star (f g)`. Introduce `g`.
+
+Use `conv_lhs => enter [1]`. Rewrite using `[hfg g]`. Simplify using `only [sub_mul, Finset.sum_mul, mul_assoc, Pi.one_apply]`. Simplify using `only [e, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm, hd, ← h2, Finset.sum_mul, sub_eq_zero]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hm, mul_assoc]`. Establish `h4 : ∑ g, Complex.normSq (f g) = 0`. Establish `: ((∑ g, Complex.normSq (f g) : ℝ) : ℂ) = 0`. Rewrite using `[← h3]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.mul_conj]`. Both sides reduce to the same expression. Conclude with `this` after adjusting the coercions.
+
+Establish `h5 : f = 0`. Use function extensionality and compare the values at `g`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun g _ => Complex.normSq_nonneg (f g))).1 h4 g (Finset.mem_univ g)` as an intermediate fact. Conclude with `Complex.normSq_eq_zero.1 this`. Establish `: (∑ i, c i • s i) = 1` using `sub_eq_zero.1 (hf.symm.trans h5)`.
+
+Conclude with `this ▸ hcomb`.
+-/
 theorem one_mem_of_integral_combination : ∀ (G : Type) [Group G] [Finite G] (S : AddSubgroup (G → ℂ)), S ≤ Virt ℂ ℂ G → ∀ (ι : Type) [Fintype ι] (r : ι → ℂ) (s : ι → G → ℂ), (∀ i, IsIntegral ℤ (r i)) → (∀ i, s i ∈ S) → (∀ g, ∑ i, r i * s i g = 1) → (1 : G → ℂ) ∈ S := by
   intro G _ _ S hS ι _ r s hr hs hsum
   classical

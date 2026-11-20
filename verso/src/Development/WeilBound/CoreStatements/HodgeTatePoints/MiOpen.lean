@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 
 namespace PositivityTheory.HtPt.Mi
 
+/- English proof (translation)
+Use `Flat.of_stalkMap f fun x => ?_` and prove the remaining obligations. Take `⟨W, g, w, rfl, _, _⟩` from `h x`. Establish `h` using `Flat.stalkMap (g ≫ f) w`. Rewrite `h` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `GlobalTheory.ringHom_flat_of_comp_faithfullyFlat (GlobalTheory.faithfullyFlat_stalkMap_of_flat g w) h`.
+-/
 theorem flat_of_forall {X Z : Scheme.{0}} (f : X ⟶ Z)
     (h : ∀ x : X, ∃ (W : Scheme.{0}) (g : W ⟶ X) (w : W), g w = x ∧ Flat g ∧ Flat (g ≫ f)) : Flat f := by
   refine Flat.of_stalkMap f fun x => ?_
@@ -13,6 +16,31 @@ theorem flat_of_forall {X Z : Scheme.{0}} (f : X ⟶ Z)
   rw [Scheme.Hom.stalkMap_comp] at h
   exact GlobalTheory.ringHom_flat_of_comp_faithfullyFlat (GlobalTheory.faithfullyFlat_stalkMap_of_flat g w) h
 
+/- English proof (translation)
+Introduce `R _ X Y j q _ H`. Establish `key : ∀ x : X, ∃ (U V : Scheme.{0}) (g : U ⟶ X) (u : U) (δ : U ⟶ V) (m : V ⟶ pullback j j), g u = x ∧ Flat g ∧ Flat (g ≫ j) ∧ IsOpenImmersion δ ∧ Flat m ∧ δ ≫ m = g ≫ pullback.diagonal j ∧ ∀ z, pullback.snd j j z = x → ∃ u', m (δ u') = z`. Introduce `x`. Take `⟨R', _, _, _, X', Y', j', q', a, b, U, hfl, hP, hb, ha, hU, hcl⟩` from `@H (q (j x)).asIdeal (q (j x)).isPrime`. Establish `hs : Flat (Spec.map (CommRingCat.ofHom (algebraMap R R')))` using `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 hfl)`.
+
+Establish `hbf : Flat b` using `MorphismProperty.of_isPullback hb.flip hs`. Establish `haf : Flat a` using `MorphismProperty.of_isPullback ha.flip hbf`. Take `⟨x', hx1, hx2⟩` from `Scheme.exists_preimage_of_isPullback (ha.paste_vert hb) x (IsLocalRing.closedPoint R') (PrimeSpectrum.ext hP.symm)`. Establish `hx2' : q' (j' x') = IsLocalRing.closedPoint R'` using `by rw [← hx2]; simp`. Set `u : U.toScheme` to `⟨x', hcl x' hx2'⟩`.
+
+Establish `hu : U.ι u = x'` using `rfl`. Establish `hw : (U.ι ≫ a) ≫ j = (U.ι ≫ j') ≫ b` using `by rw [Category.assoc, ha.w, Category.assoc]`. Set `δ : U.toScheme ⟶ pullback j' (U.ι ≫ j')` to `pullback.lift U.ι (𝟙 _) (by simp)`. Establish `hδ : δ ≫ pullback.fst _ _ = U.ι` using `pullback.lift_fst _ _ _`. Establish `hδ' : δ ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`.
+
+Establish `hV` using `(IsPullback.of_hasPullback j' (U.ι ≫ j')).paste_horiz ha`. Rewrite `hV` using `[← hw]`. Set `m : pullback j' (U.ι ≫ j') ⟶ pullback j j` to `pullback.lift (pullback.fst _ _ ≫ a) (pullback.snd _ _ ≫ U.ι ≫ a) (by rw [hV.w]; simp only [Category.assoc])`. Establish `hm1 : m ≫ pullback.fst j j = pullback.fst _ _ ≫ a` using `pullback.lift_fst _ _ _`. Establish `hm2 : m ≫ pullback.snd j j = pullback.snd _ _ ≫ U.ι ≫ a` using `pullback.lift_snd _ _ _`.
+
+Establish `hm : IsPullback m (pullback.snd j' (U.ι ≫ j')) (pullback.snd j j) (U.ι ≫ a)` using `IsPullback.of_right (by rw [hm1]; exact hV) hm2 (IsPullback.of_hasPullback j j)`. Establish `hg : Flat (U.ι ≫ a)` using `inferInstance`. Establish `hδo : IsOpenImmersion δ`. Establish `: IsOpenImmersion (δ ≫ pullback.fst j' (U.ι ≫ j'))` using `by rw [hδ]; infer_instance`. Conclude with `IsOpenImmersion.of_comp δ (pullback.fst j' (U.ι ≫ j'))`.
+
+Establish `hgu : (U.ι ≫ a) u = x` using `by rw [Scheme.Hom.comp_apply, hu]; exact hx1`. Use `⟨U, _, U.ι ≫ a, u, δ, m, hgu, hg, by rw [hw]; infer_instance, hδo, MorphismProperty.of_isPullback hm.flip hg, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hm1, reassoc_of% hδ]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Category.assoc, hm2, reassoc_of% hδ']`. Simplify using the standard rewrite rules. Take `⟨v, hv1, hv2⟩` from `Scheme.exists_preimage_of_isPullback hm z u (hz.trans hgu.symm)`. Establish `h1 : j' (pullback.fst j' (U.ι ≫ j') v) = j' x'`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`.
+
+Conclude with `congrArg (fun t => j' (U.ι t)) hv2`. Set `u' : U.toScheme` to `⟨pullback.fst j' (U.ι ≫ j') v, hcl _ (by rw [h1, hx2'])⟩`. Establish `h2 : δ u' = v`. Apply `(pullback.fst j' (U.ι ≫ j')).isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hδ]`.
+
+Both sides reduce to the same expression. Conclude with `⟨u', by rw [h2]; exact hv1⟩`. Establish `: Flat j` using `flat_of_forall j fun x => by`. Take `⟨U, V, g, u, δ, m, h1, h2, h3, -⟩` from `key x`. Conclude with `⟨U, g, u, h1, h2, h3⟩`.
+
+Establish `: Flat (pullback.diagonal j)` using `flat_of_forall _ fun x => by`. Take `⟨U, V, g, u, δ, m, h1, h2, -, h4, h5, h6, -⟩` from `key x`. Conclude with `⟨U, g, u, h1, h2, by rw [← h6]; infer_instance⟩`. Establish `: Surjective (pullback.diagonal j)` using `⟨fun z => by`. Take `⟨U, V, g, u, δ, m, -, -, -, -, -, h6, h7⟩` from `key (pullback.snd j j z)`.
+
+Take `⟨u', hu'⟩` from `h7 z rfl`. Conclude with `⟨g u', by rw [← hu', ← Scheme.Hom.comp_apply, ← h6, Scheme.Hom.comp_apply]⟩⟩`. Establish `: IsClosedImmersion (pullback.diagonal j)` using `IsClosedImmersion.of_isPreimmersion _ (by rw [(pullback.diagonal j).surjective.range_eq]; exact isClosed_univ)`. Establish `: IsIso (pullback.diagonal j)` using `Flat.isIso_of_surjective_of_mono _`. Establish `: Mono j` using `(pullback.isIso_diagonal_iff j).1 this`.
+
+Conclude with `IsOpenImmersion.of_flat_of_mono j`.
+-/
 theorem open_crit : ∀ (R : Type) [CommRing R] (X Y : Scheme.{0}) (j : X ⟶ Y) (q : Y ⟶ Spec (CommRingCat.of R)) [LocallyOfFinitePresentation j], (∀ (P : Ideal R) [P.IsPrime], ∃ (R' : Type) (_ : CommRing R') (_ : IsLocalRing R') (_ : Algebra R R') (X' Y' : Scheme.{0}) (j' : X' ⟶ Y') (q' : Y' ⟶ Spec (CommRingCat.of R')) (a : X' ⟶ X) (b : Y' ⟶ Y) (U : X'.Opens), Module.Flat R R' ∧ (IsLocalRing.maximalIdeal R').comap (algebraMap R R') = P ∧ IsPullback b q' q (Spec.map (CommRingCat.ofHom (algebraMap R R'))) ∧ IsPullback a j' j b ∧ IsOpenImmersion (U.ι ≫ j') ∧ ∀ x : X', q' (j' x) = IsLocalRing.closedPoint R' → x ∈ U) → IsOpenImmersion j := by
   intro R _ X Y j q _ H
   have key : ∀ x : X, ∃ (U V : Scheme.{0}) (g : U ⟶ X) (u : U) (δ : U ⟶ V) (m : V ⟶ pullback j j),

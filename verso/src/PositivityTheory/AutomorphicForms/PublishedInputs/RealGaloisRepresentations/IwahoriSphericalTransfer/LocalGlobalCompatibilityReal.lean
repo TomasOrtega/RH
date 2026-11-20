@@ -9,5 +9,8 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc GlobalTheory.RealGal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealGal.locCompR_of_admissibleReal | exact GlobalTheory.RealGal.locCompR_of_admissibleReal | (intros; apply GlobalTheory.RealGal.locCompR_of_admissibleReal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_global_compatibility_real : AdmissibleReal → LocCompR := by
   first | exact @GlobalTheory.RealGal.locCompR_of_admissibleReal | exact GlobalTheory.RealGal.locCompR_of_admissibleReal | (intros; apply GlobalTheory.RealGal.locCompR_of_admissibleReal <;> assumption)

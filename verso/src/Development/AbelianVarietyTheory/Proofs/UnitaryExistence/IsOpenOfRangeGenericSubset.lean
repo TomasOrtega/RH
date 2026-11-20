@@ -26,6 +26,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.UnifAfterExt
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Take `⟨k', hk, T⟩` from `exists_finite_torusExtension k (AlgebraicClosure k) G inferInstance hG.quasiCompact hG.separated (hG.fibres _ _)`. Use `hG.comm` as an intermediate fact. Conclude with `⟨k', inferInstance, inferInstance, hk, exists_splitExt_isGt_of_torusExtension _ _ T⟩`.
+-/
 theorem exists_finite_split {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (hG : IsSemiAbelian G) :
     ∃ (k' : Type) (_ : Field k') (_ : Algebra k k'), FiniteDimensional k k' ∧
       ∃ S : SplitExt (Sp k'), S.IsGt ((Over.pullback (spMap (algebraMap k k'))).obj G) := by
@@ -35,6 +38,11 @@ theorem exists_finite_split {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] (h
   have := hG.comm
   exact ⟨k', inferInstance, inferInstance, hk, exists_splitExt_isGt_of_torusExtension _ _ T⟩
 
+/- English proof (translation)
+Establish `h₀ : IsSemiAbelian ((Over.pullback (spMap (residue W))).obj G)` using `IsSemiAbelian.pullback _ G hG`. Take `⟨k', _, _, hk, E, ⟨d⟩⟩` from `exists_finite_split _ h₀`. Take `⟨W', i1, i2, i3, i4, i5, hf, hi, hl, -, e, he⟩` from `GlobalTheory.unramExt W k'`. Establish `hfk : Finite k'` using `Module.finite_of_finite (ResidueField W)`. Use `⟨W', i1, i2, i3, i4, i5, hf, hi, Finite.of_equiv _ e.symm.toEquiv, ?_⟩` and prove the remaining obligations.
+
+Establish `key : (e.symm.toRingHom.comp (algebraMap (ResidueField W) k')).comp (residue W) = (residue W').comp (algebraMap W W')` using `RingHom.ext fun v => e.symm_apply_eq.2 (he v).symm`. Take `⟨j, hj, -⟩` from `grpPullback_iso (((isGrpPullback_pullback _ (spMap e.symm.toRingHom)).comp ((isGrpPullback_pullback _ (spMap (algebraMap (ResidueField W) k'))).comp (isGrpPullback_pullback G (spMap (residue W))))).congr (f' := spMap (residue W') ≫ spMap (algebraMap W W')) (by rw [← Category.asso …`. Conclude with `⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap e.symm.toRingHom) E _ d)⟩`.
+-/
 theorem exists_split_baseChange (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [IsAdicComplete (maximalIdeal W) W] [Finite (ResidueField W)] (G : Over (Sp W)) [GrpObj G]
     (hG : IsSemiAbelian G) :
@@ -60,6 +68,11 @@ theorem exists_split_baseChange (W : Type) [CommRing W] [IsDomain W] [IsDiscrete
     ((isGrpPullback_pullback _ (spMap (residue W'))).comp (isGrpPullback_pullback G (spMap (algebraMap W W'))))
   exact ⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap e.symm.toRingHom) E _ d)⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((algebraMap W (FractionRing W)).comp f)` using `(IsFractionRing.injective W _).comp hf`. Set `g : FractionRing V →+* FractionRing W` to `IsFractionRing.lift hinj`. Establish `hg : ∀ r, g (algebraMap _ _ r) = algebraMap W _ (f r)` using `fun r => IsFractionRing.lift_algebraMap hinj r`. Use `clear_value g`. Establish `e : spMap g ≫ jK V = jK W ≫ spMap f`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext hg))`. Conclude with `⟨_, e.symm⟩`.
+-/
 theorem exists_generic_square {V W : Type} [CommRing V] [IsDomain V] [CommRing W] [IsDomain W] (f : V →+* W)
     (hf : Function.Injective f) :
     ∃ g : Sp (FractionRing W) ⟶ Sp (FractionRing V), jK W ≫ spMap f = g ≫ jK V := by
@@ -72,6 +85,15 @@ theorem exists_generic_square {V W : Type} [CommRing V] [IsDomain V] [CommRing W
     exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext hg))
   exact ⟨_, e.symm⟩
 
+/- English proof (translation)
+Establish `hgen : ∀ x : Sp V, x ≠ closedPoint V → x ∈ U` using `fun x hx => by`. Establish `h0 : x.asIdeal = ⊥`. Assume the negation of the conclusion as `hne`. Conclude with `hx (PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (x.isPrime.isMaximal hne)))`. Use `hU ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing V)), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h0]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective V (FractionRing V))`. Distinguish the cases in `hc : (closedPoint V : Sp V) ∈ U`. Establish `: U = Set.univ` using `Set.eq_univ_of_forall fun x => by`. Distinguish the cases in `hx : x = closedPoint V`.
+
+Conclude with `hx ▸ hc`. Conclude with `hgen x hx`. Rewrite using `[this]`. Conclude with `isOpen_univ`. Establish `: U = {(closedPoint V : Sp V)}ᶜ` using `Set.ext fun x => ⟨fun hx h => hc (h ▸ hx), hgen x⟩`.
+
+Rewrite using `[this]`. Conclude with `(IsLocalRing.isClosed_singleton_closedPoint V).isOpen_compl`.
+-/
 theorem isOpen_of_range_generic_subset (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (U : Set (Sp V)) (hU : Set.range (jK V) ⊆ U) : IsOpen U := by
   have hgen : ∀ x : Sp V, x ≠ closedPoint V → x ∈ U := fun x hx => by
@@ -93,6 +115,13 @@ theorem isOpen_of_range_generic_subset (V : Type) [CommRing V] [IsDomain V] [IsD
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, m₂, hm₂⟩` from `sabPull Out.CubePf.cubePull j' t'`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₂`. Establish `cancel : ∀ (t₂ : SAB H (Sp K')) (p : Sp K' ⟶ S) (_ : p = g ≫ j) (_ : SABMap t₂ t p), Nonempty (SABMap t₂ u (g ≫ x))`. Introduce `t₂ p hp n`. Substitute `hp` using the available equality.
+
+Conclude with `⟨(sabComp pullCubComp E H _ _ _ _ _ _ _ _ mx (sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mK n).choose).choose⟩`. Take `⟨m₃⟩` from `cancel _ _ h n`. Establish `h₂ : LBIso PP'.L (t'.PP.L.pull m₂.φ)` using `m₂.lin.imp fun _ h => h.1`. Rewrite `h₂` using `[hm₂]`. Establish `h₃ : LBIso PP'.L (u.PP.L.pull m₃.φ)` using `m₃.lin.imp fun _ h => h.1`.
+
+Establish `hL` using `LB.isLB_pull t'.PP.isLB (pullback.fst t'.G.hom j')`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 hp, amplePt _ _ (g ≫ x) _ _ m₃.φ m₃.cart _ _ u.PP.isLB hL (LBIso.trans hL PP'.isLB (LB.isLB_pull u.PP.isLB _) h₂.symm h₃) ha hk⟩`.
+-/
 theorem polAt_of_sabMap {S S' X : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
     {K K' : Type} [Field K] [Field K'] {tK : SAB H (Sp K)} {j : Sp K ⟶ S} (mK : SABMap tK t j)
     {u : SAB H X} {x : Sp K ⟶ X} (mx : SABMap tK u x) (hp : IsProper u.G.hom) (ha : RelAmple u.G u.PP.L)
@@ -114,6 +143,11 @@ theorem polAt_of_sabMap {S S' X : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f :
     amplePt _ _ (g ≫ x) _ _ m₃.φ m₃.cart _ _ u.PP.isLB hL
       (LBIso.trans hL PP'.isLB (LB.isLB_pull u.PP.isLB _) h₂.symm h₃) ha hk⟩
 
+/- English proof (translation)
+Take `⟨L₁, L₂, L₃, L₄, L₅⟩` from `GlobalTheory.firstFiveLaws`. Establish `hW : GlobalTheory.LN.CDvr W` using `⟨inferInstance, hc, hz⟩`. Establish `hadm : GlobalTheory.LN.admitted W (maximalIdeal W)`. Use `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, hc, hz, inferInstance, ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field (maximalIdeal W)`.
+
+Use `infer_instance`. Establish `ho` using `isOpen_of_range_generic_subset W _ (abLocusOne _ _ t.semi _ _ hp.1)`. Take `⟨A, -, gen, hg, hw, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt L₁ L₂ E H W t hp`. Take `⟨P, -, -, hP⟩` from `GlobalTheory.T.exists_pel_uniformisation_complete_dvr E H W hW t A gen hg hw hS`. Conclude with `⟨ho, P, GlobalTheory.psiUnitOn_abLocus_pel L₁ L₂ L₃ L₄ L₅ E H W _ hadm t P hP ho, hP⟩`.
+-/
 theorem isOpen_and_uniformised (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [hz : CharZero W]
     (hc : IsAdicComplete (maximalIdeal W) W) (t : SAB H (Sp W)) (hp : GlobalTheory.LN.PolAt t (jK W))
     (hS : ∃ S : SplitExt (Sp (ResidueField W)), S.IsGt ((Over.pullback (spMap (residue W))).obj t.G)) :
@@ -129,6 +163,13 @@ theorem isOpen_and_uniformised (W : Type) [CommRing W] [IsDomain W] [IsDiscreteV
   obtain ⟨P, -, -, hP⟩ := GlobalTheory.T.exists_pel_uniformisation_complete_dvr E H W hW t A gen hg hw hS
   exact ⟨ho, P, GlobalTheory.psiUnitOn_abLocus_pel L₁ L₂ L₃ L₄ L₅ E H W _ hadm t P hP ho, hP⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo T t tK mK x mx hT`. Establish `: Finite (ResidueField T.V)` using `hT`. Take `⟨W, _, _, _, hc, _, hf, hi, hr, hS⟩` from `exists_split_baseChange T.V t.G t.semi`. Establish `hz : CharZero W` using `charZero_of_injective_ringHom hi`. Choose the witnesses or unpack the hypotheses as in `⟨t', m, hS'⟩ : ∃ (t' : SAB H (Sp W)) (_ : SABMap t' t (spMap (algebraMap T.V W))), ∃ S : SplitExt (Sp (ResidueField W)), S.IsGt ((Over.pullback (spMap (residue W))).obj t'.G) := by`.
+
+Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap (algebraMap T.V W)) t`. Conclude with `⟨_, m, hS⟩`. Take `⟨gam, hsq⟩` from `exists_generic_square (algebraMap T.V W) hi`. Establish `hp` using `polAt_of_sabMap m mK mx Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK W) gam hsq`. Take `⟨ho, hN⟩` from `isOpen_and_uniformised W hc t' hp hS'`.
+
+Conclude with `⟨{ V := W }, algebraMap T.V W, t', m, hi, RingHom.finite_algebraMap.2 hf, hr, ho, hN⟩`.
+-/
 theorem exists_finite_ext_uniformised : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (T : Formalism.L2.Pj.CDVR) (t : SAB H (Sp T.V)) (tK : SAB H (Sp T.Fr)) (_ : SABMap tK t (jK T.V)) (x : Sp T.Fr ⟶ Xo.X) (_ : SABMap tK Xo.univ.t x), T.FinRes → ∃ (T' : Formalism.L2.Pj.CDVR) (φ : T.V →+* T'.V) (t' : SAB H (Sp T'.V)) (_ : SABMap t' t (spMap φ)), Function.Injective φ ∧ φ.Finite ∧ T'.FinRes ∧ IsOpen (abLocus t'.G) ∧ UniformisationConclusion t' (abLocus t'.G) := by
   intro E _ _ _ H Dw l Xo T t tK mK x mx hT
   have : Finite (ResidueField T.V) := hT

@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.closure_point_topologicalKrullDim | exact GlobalTheory.closure_point_topologicalKrullDim | (intros; apply GlobalTheory.closure_point_topologicalKrullDim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_topologicalKrullDim_closure_point_le : ∀ (X : Scheme.{0}) (n : ℕ) (z : X), topologicalKrullDim X = n → ∃ e : ℕ, e ≤ n ∧ topologicalKrullDim (closure ({z} : Set X)) = e ∧ ∀ x, z ⤳ x → x ≠ z → 1 ≤ e := by
   first | exact @GlobalTheory.closure_point_topologicalKrullDim | exact GlobalTheory.closure_point_topologicalKrullDim | (intros; apply GlobalTheory.closure_point_topologicalKrullDim <;> assumption)

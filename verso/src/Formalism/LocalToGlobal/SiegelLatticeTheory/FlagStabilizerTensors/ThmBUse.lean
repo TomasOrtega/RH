@@ -54,6 +54,9 @@ variable {D : D7} {τ Rw I H H₁ : Type} [Fintype I] [NormedAddCommGroup H] [In
   [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : PB.Terms τ Rw I H H₁)
   {Cl Nu : Type} (N : PN.NGData τ D.host.E D.R.rS Cl Nu)
 
+/- English proof (translation)
+Establish `h1 : ENNReal.ofReal (Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ * N.n γ * (N.NG γ * N.ND γ) ^ (A * (D.R.rS + 1) ^ 2)) ≤ ENNReal.ofReal Cw * ENNReal.ofReal (wPt D w * ptWeightG D (rhoReal D) T T' w.1 * normWt D T T' w ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2))`. Rewrite using `[← ENNReal.ofReal_mul hCw]`. Conclude with `ENNReal.ofReal_le_ofReal (hW γ w hγ hw hb)`. Rewrite using `[ENNReal.ofReal_mul' (hJ0 γ)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem term_le {T T' A : ℕ} {Ch Cg b Cw Cj : ℝ} (Bd : BData D Ch Cg T T' b 0) (hCw : 0 ≤ Cw)
     (hJ0 : ∀ γ, 0 ≤ N.jacobianSquareBound γ) (hW : WtTie X N T T' A Cw) (hJ : JacobianSquareDominatedAtPoints X N Bd Cj)
     (γ : PN.Pts D.host.E D.R.rS) (w : Point D.host.E (D.R.rS + 1)) (hγ : PN.IsPt X N γ)
@@ -80,6 +83,23 @@ def jointNormBoundUnrotated (D : D7) (Aw Ch Cg Cb : ℝ) : Prop :=
       ENNReal.ofReal (Real.exp (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * (Fintype.card D.what₂.Tau : ℝ) * Real.log b)) *
         jSqG D X
 
+/- English proof (translation)
+Take `⟨Bd, Cw, Cj, hCw, hCj, hgap, hP, hW, hJ, hN⟩` from `h`. Introduce `S hS`. Establish `hw : ∀ γ ∈ S, ∃ w : Point D.host.E (D.R.rS + 1), RowsConc.toPts w = γ ∧ IsRowPt D T T' w` using `fun γ hγ => hP γ (hS γ hγ)`. Use `choose wf hwf using hw`. Establish `hRB : ∀ {w : Point D.host.E (D.R.rS + 1)}, IsRowPt D T T' w → IsBPt D T T' w`.
+
+Introduce `w hw'`. Unfold `IsRowPt at hw'`. Conclude with `hw'.1`. Set `F : Point D.host.E (D.R.rS + 1) → ℝ≥0∞` to `fun w => ENNReal.ofReal (wPt D w * ptWeightG D (rhoReal D) T T' w.1 * normWt D T T' w ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) * JSq D Bd w`. Establish `hsum : ∑ γ ∈ S.attach, F (wf γ.1 γ.2) ≤ BSum D Bd (fun w => normWt D T T' w ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2))`.
+
+Set `g : S → {w // IsBPt D T T' w}` to `fun γ => ⟨wf γ.1 γ.2, hRB (hwf γ.1 γ.2).2⟩`. Establish `hg : Function.Injective g`. Introduce `a c hac`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `(hwf a.1 a.2).1`.
+
+Establish `h2` using `(hwf c.1 c.2).1`. Establish `h3 : wf a.1 a.2 = wf c.1 c.2` using `congrArg Subtype.val hac`. Rewrite using `[← h1, ← h2, h3]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image (fun a _ c _ h => hg h)]`.
+
+Use `_ ≤ ∑' x : {w // IsBPt D T T' w}, F x.1 := ENNReal.sum_le_tsum _`. Use `_ = BSum D Bd (fun w => normWt D T T' w ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) := by`. Unfold `BSum`. Both sides reduce to the same expression. Establish `key : ENNReal.ofReal (∑ γ ∈ S, Formalism.HermitianLatticeCounting.ExpansionTerms.blockMinorWeight γ * N.n γ * (N.NG γ * N.ND γ) ^ (A * (D.R.rS + 1) ^ 2) * N.jacobianSquareBound γ) ≤ ENNReal.ofReal TB`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `γ _`. Conclude with `term_le X N Bd hCw hJ0 hW hJ γ.1 (wf γ.1 γ.2) (hS γ.1 γ.2) (hwf γ.1 γ.2).1 (hwf γ.1 γ.2).2`. Use `_ = ENNReal.ofReal (Cw * Cj) * ∑ γ ∈ S.attach, F (wf γ.1 γ.2) := by`.
+
+Rewrite using `[Finset.mul_sum, ENNReal.ofReal_mul hCw]`. Use `_ ≤ ENNReal.ofReal (Cw * Cj) * BSum D Bd (fun w => normWt D T T' w ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2)) := by gcongr`. Use `_ ≤ ENNReal.ofReal (Cw * Cj) * (ENNReal.ofReal (Real.exp (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * (Fintype.card D.what₂.Tau : ℝ) * Real.log b)) * jSqG D Bd) := by`. Establish `hB` using `hB3 T T' b Bd hgap`. Use `gcongr`.
+
+Use `_ ≤ ENNReal.ofReal TB := hN`. Conclude with `(ENNReal.ofReal_le_ofReal_iff hTB).1 key`.
+-/
 theorem point_sum_of_theoremB {Ch Cg Cb : ℝ} {T T' A : ℕ} {b TB : ℝ} (hB3 : jointNormBoundUnrotated D (A : ℝ) Ch Cg Cb)
     (hJ0 : ∀ γ, 0 ≤ N.jacobianSquareBound γ) (hTB : 0 ≤ TB) (h : Ties X N Ch Cg T T' b A Cb TB) :
     PN.PointSumInput X N (A * (D.R.rS + 1) ^ 2) TB := by
@@ -149,6 +169,9 @@ open Formalism.MainNotions.S.Lat Formalism.L2.SG.HidaSetting Formalism.L2.SG.Poi
 def JointNormBoundUniform : Prop :=
   ∀ Aw Ch : ℝ, ∃ Cb Cg₀ : ℝ, ∀ Cg : ℝ, Cg₀ ≤ Cg → ∀ D : D7, jointNormBoundUnrotated D Aw Ch Cg Cb
 
+/- English proof (translation)
+Unfold `J2of`. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem J2of_nonneg' {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) (ν : X.B.I.Ginf → Measure X.B.I.Ginf)
     (γ : PN.Pts D.host.E D.R.rS) : 0 ≤ J2of Y u u' ν γ := by
   unfold J2of
@@ -169,6 +192,9 @@ def WtTieConc : Prop :=
       1 * (wPt D w * ptWeightG D (rhoReal D) T T' w.1 *
         normWt D T T' w ^ ((A : ℝ) * ((D.R.rS : ℝ) + 1) ^ 2))
 
+/- English proof (translation)
+Introduce `γ w _ hw hb`. Substitute `hw` using the available equality. Conclude with `h D _ _ A w hb`.
+-/
 theorem weight_normalized (h : WtTieConc) {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : PN.Pts D.host.E D.R.rS → ℝ) (A : ℕ) :
     WtTie (Y.tO u u') (NOf2 Y u u' νL νB ng) (Tu D u : ℕ) (Tu D u' : ℕ) A 1 := by

@@ -9,6 +9,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.CoordW
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.CoordAll
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ModOne
 
+/- English proof (translation)
+The claim follows from `PI.VolSemiDirect.W.volume_unipotent_of_modulus_one (PI.VolSemiDirect.W.Md.modOne_of PI.VolSemiDirect.W.Md.heisenberg_coordinates_holds (PI.VolSemiDirect.W.Md.wMod_of (PI.VolSemiDirect.W.Cj.unipotent_modulus_of_stable_rank_one PI.VolSemiDirect.W.SR.stable_rank_one_adeles))) PI.Vol …`.
+-/
 theorem volume_unipotent_all_cm : PI.VolSemiDirect.VolumeUnipotentAllCM :=
   PI.VolSemiDirect.W.volume_unipotent_of_modulus_one
     (PI.VolSemiDirect.W.Md.modOne_of PI.VolSemiDirect.W.Md.heisenberg_coordinates_holds

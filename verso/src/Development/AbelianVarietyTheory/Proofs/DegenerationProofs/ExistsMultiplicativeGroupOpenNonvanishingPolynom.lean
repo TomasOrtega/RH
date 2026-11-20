@@ -18,6 +18,13 @@ noncomputable section
 namespace GlobalTheory.SS.TorOpen
 open GlobalTheory.SplitTorus ReciprocityTheory.ChartRestriction.G.Semi.Rosenlicht
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.Diag.isPullback_groupRing k X`. Establish `h2` using `GlobalTheory.Diag.isPullback_torusFst (Sp k) X`. Establish `e : (univPt (A` using `CommRingCat.of k) X (𝟙 (Sp k))).left = (h1.isoIsPullback _ _ h2).hom := by`. Apply `h2.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (IsPullback.isoIsPullback_hom_fst _ _ h1 h2).symm` and prove the remaining obligations.
+
+Use `(pullback.lift_fst _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Spec.map_comp]`. Conclude with `toSpecΓ_SpecMap_ΓSpecIso_inv_assoc (torusRing (CommRingCat.of k) X) _`. Use `Eq.trans ?_ (IsPullback.isoIsPullback_hom_snd _ _ h1 h2).symm` and prove the remaining obligations. Conclude with `(Over.w _).trans (Category.comp_id _)`.
+
+Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem isIso_univPt_left (k : Type) [CommRing k] (X : Type) [AddCommGroup X] :
     IsIso (univPt (A := CommRingCat.of k) X (𝟙 (Sp k))).left := by
   have h1 := GlobalTheory.Diag.isPullback_groupRing k X
@@ -32,6 +39,19 @@ theorem isIso_univPt_left (k : Type) [CommRing k] (X : Type) [AddCommGroup X] :
       exact (Over.w _).trans (Category.comp_id _)
   rw [e]; infer_instance
 
+/- English proof (translation)
+Set `L` to `Localization.Away (Polynomial.X * q)`. Establish `hu : IsUnit (algebraMap (Polynomial k) L Polynomial.X)`. Use `IsLocalization.Away.algebraMap_isUnit (S := L) (Polynomial.X * q)` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`.
+
+Set `ψ' : LaurentPolynomial k →+* L` to `IsLocalization.Away.lift (Polynomial.X : Polynomial k) hu`. Establish `hψ : ψ'.comp (algebraMap (Polynomial k) _) = algebraMap _ _` using `IsLocalization.Away.lift_comp _ hu`. Set `e : AddMonoidAlgebra k (ULift.{0} ℤ) ≃ₐ[k] LaurentPolynomial k` to `AddMonoidAlgebra.domCongr k k AddEquiv.ulift`. Establish `h1 : IsOpenImmersion (Spec.map (CommRingCat.ofHom ψ'))`. Establish `a1 : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap (Polynomial k) (LaurentPolynomial k))))` using `IsOpenImmersion.of_isLocalization (Polynomial.X : Polynomial k)`.
+
+Establish `a2 : IsOpenImmersion (Spec.map (CommRingCat.ofHom ψ') ≫ Spec.map (CommRingCat.ofHom (algebraMap (Polynomial k) (LaurentPolynomial k))))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ]`. Conclude with `IsOpenImmersion.of_isLocalization (Polynomial.X * q)`. Conclude with `IsOpenImmersion.of_comp _ (Spec.map (CommRingCat.ofHom (algebraMap (Polynomial k) (LaurentPolynomial k))))`. Use `⟨ψ'.comp e.toRingEquiv.toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `: IsIso (CommRingCat.ofHom e.toRingEquiv.toRingHom)` using `e.toRingEquiv.toCommRingCatIso.isIso_hom`. Use `infer_instance`. Use extensionality with `c`. Establish `: e (algebraMap k _ c) = algebraMap (Polynomial k) _ (algebraMap k _ c)`.
+
+Rewrite using `[e.commutes]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `ψ' (e (algebraMap k _ c)) = _`. Rewrite using `[this, ← RingHom.comp_apply, hψ, ← IsScalarTower.algebraMap_apply]`. Establish `: e (AddMonoidAlgebra.single (ULift.up 1) 1) = algebraMap (Polynomial k) _ Polynomial.X`.
+
+Simplify using `[e]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ψ' (e _) = _`. Rewrite using `[this, ← RingHom.comp_apply, hψ]`.
+-/
 theorem exists_ringHom (k : Type) [Field k] (q : Polynomial k) :
     ∃ ψ : AddMonoidAlgebra k (ULift.{0} ℤ) →+* Localization.Away (Polynomial.X * q),
       IsOpenImmersion (Spec.map (CommRingCat.ofHom ψ)) ∧
@@ -69,6 +89,15 @@ theorem exists_ringHom (k : Type) [Field k] (q : Polynomial k) :
     change ψ' (e _) = _
     rw [this, ← RingHom.comp_apply, hψ]
 
+/- English proof (translation)
+Establish `hs : Spec.map (CommRingCat.ofHom (ψ.comp (algebraMap k _))) ≫ 𝟙 (Sp k) = spMap (algebraMap k L)`. Rewrite using `[h2]`. Conclude with `Category.comp_id _`. Set `jj : algOver k L ⟶ Gm (Sp k)` to `ptOf (A := CommRingCat.of k) (B := CommRingCat.of L) (𝟙 (Sp k)) ψ hs`. Use `⟨jj, ?_, fun x y z h => ?_⟩` and prove the remaining obligations.
+
+Use `isIso_univPt_left k (ULift.{0} ℤ)` as an intermediate fact. Conclude with `IsOpenImmersion.comp (Spec.map (CommRingCat.ofHom ψ)) (univPt (A := CommRingCat.of k) (ULift.{0} ℤ) (𝟙 (Sp k))).left`. Establish `key : ∀ w : L →ₐ[k] k, pull (B` using `CommRingCat.of k) (s := spMap (algebraMap k k)) (algOverHom w ≫ jj) (chi _ (ULift.up 1)) = w t := by`. Introduce `w`. Establish `hs' : Spec.map (CommRingCat.ofHom (((w : L →+* k).comp ψ).comp (algebraMap k _))) ≫ 𝟙 (Sp k) = spMap (algebraMap k k)`.
+
+Rewrite using `[RingHom.comp_assoc, h2, w.comp_algebraMap]`. Conclude with `Category.comp_id _`. Establish `e : algOverHom w ≫ jj = ptOf (A` using `CommRingCat.of k) (B := CommRingCat.of k) (𝟙 (Sp k)) ((w : L →+* k).comp ψ) hs' := by ext1`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (w : L →+* k)) ≫ Spec.map (CommRingCat.ofHom ψ) ≫ (univPt (A := CommRingCat.of k) (ULift.{0} ℤ) (𝟙 (Sp k))).left = Spec.map (CommRingCat.ofHom ((w : L →+* k).comp ψ)) ≫ (univPt (A := CommRingCat.of k) (ULift.{0} ℤ) (𝟙 (Sp k))).left`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, pull_ptOf, ev_chi]`. Conclude with `congrArg w h3`. Rewrite using `[← key, ← key, ← key, ← h]`. Conclude with `(pull_mul_chi (B := CommRingCat.of k) (s := spMap (algebraMap k k)) _ _ _).symm`.
+-/
 theorem exists_of_ringHom (k L : Type) [CommRing k] [CommRing L] [Algebra k L]
     (ψ : AddMonoidAlgebra k (ULift.{0} ℤ) →+* L)
     (h1 : IsOpenImmersion (Spec.map (CommRingCat.ofHom ψ))) (h2 : ψ.comp (algebraMap k _) = algebraMap k _)
@@ -105,6 +134,9 @@ theorem exists_of_ringHom (k L : Type) [CommRing k] [CommRing L] [Algebra k L]
     rw [← key, ← key, ← key, ← h]
     exact (pull_mul_chi (B := CommRingCat.of k) (s := spMap (algebraMap k k)) _ _ _).symm
 
+/- English proof (translation)
+Introduce `k _ q`. Take `⟨ψ, h1, h2, h3⟩` from `exists_ringHom k q`. Conclude with `exists_of_ringHom k _ ψ h1 h2 _ h3`.
+-/
 theorem exists_open_part : ∀ (k : Type) [Field k] (q : Polynomial k), ∃ jj : algOver k (Localization.Away (Polynomial.X * q)) ⟶ Gm (Sp k), IsOpenImmersion jj.left ∧ ∀ x y z : Localization.Away (Polynomial.X * q) →ₐ[k] k, (algOverHom x ≫ jj) * (algOverHom y ≫ jj) = algOverHom z ≫ jj → x (algebraMap (Polynomial k) _ Polynomial.X) * y (algebraMap (Polynomial k) _ Polynomial.X) = z (algebraMap (Polynomial k) _ Polynomial.X) := by
   intro k _ q
   obtain ⟨ψ, h1, h2, h3⟩ := exists_ringHom k q

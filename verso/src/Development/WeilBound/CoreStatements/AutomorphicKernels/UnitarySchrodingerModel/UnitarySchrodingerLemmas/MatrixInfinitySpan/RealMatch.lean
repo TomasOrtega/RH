@@ -19,11 +19,17 @@ def lz {m k : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (q : Fin m × Fin k × Bool
   if q.2.2 then ∑ b, MvPolynomial.C (star (fr q.1 b)) * MvPolynomial.X (b, q.2.1, true)
   else ∑ b, MvPolynomial.C (fr q.1 b) * MvPolynomial.X (b, q.2.1, false)
 
+/- English proof (translation)
+Take `⟨a, i, b⟩` from `q`. Apply the tactic sequence `cases b <;> simp [lz, PositivityTheory.Rg.Sw.evX, Matrix.mul_apply, star_sum]`.
+-/
 theorem evX_lz {m k : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (y : Matrix (Fin m) (Fin k) ℂ) (q : Fin m × Fin k × Bool) :
     PositivityTheory.Rg.Sw.evX (lz fr q) y = if q.2.2 then star ((fr * y) q.1 q.2.1) else (fr * y) q.1 q.2.1 := by
   obtain ⟨a, i, b⟩ := q
   cases b <;> simp [lz, PositivityTheory.Rg.Sw.evX, Matrix.mul_apply, star_sum]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, ← starRingEnd_apply, Complex.conj_mul']`. Use `push_cast`. Conclude with `Finset.sum_comm`.
+-/
 theorem trace_ct_mul_self {m k : ℕ} (Y : Matrix (Fin m) (Fin k) ℂ) :
     Matrix.trace (Yᴴ * Y) = ((∑ a, ∑ i, ‖Y a i‖ ^ 2 : ℝ) : ℂ) := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, ← starRingEnd_apply,
@@ -31,6 +37,9 @@ theorem trace_ct_mul_self {m k : ℕ} (Y : Matrix (Fin m) (Fin k) ℂ) :
   push_cast
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hz : Z = fr * (fri * Z)` using `by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2, Matrix.mul_one]`.
+-/
 theorem trace_frame {m k : ℕ} (fr fri G : Matrix (Fin m) (Fin m) ℂ) (Z : Matrix (Fin m) (Fin k) ℂ)
     (h1 : fr * fri = 1) (h2 : frᴴ * G * fr = 1) :
     Matrix.trace (Zᴴ * G * Z) = Matrix.trace ((fri * Z)ᴴ * (fri * Z)) := by
@@ -40,6 +49,31 @@ theorem trace_frame {m k : ℕ} (fr fri G : Matrix (Fin m) (Fin m) ℂ) (Z : Mat
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = _ := by rw [h2, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `D n V ψ θ l s hθ _hψ hs e c a`. Establish `hfr : ∀ τ, ∃ ε fr, PositivityTheory.Rg.Sw.Glob.IsTauFrame V τ s ε fr` using `fun τ => PositivityTheory.Rg.Sw.Glob.sFrame D V τ s (hs τ)`. Use `choose εG frM hfrM using hfr`. Take `⟨frG, hfrG⟩ : ∃ frG : D.what₂.Tau → GL (Fin V.rank) ℂ, ∀ τ, (frG τ).1 = frM τ` from `⟨fun τ => Matrix.nonsingInvUnit (frM τ) (hfrM τ).1, fun τ => rfl⟩`. Take `⟨τ0⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`.
+
+Take `⟨PG, hPG⟩ : ∃ PG : D.what₂.Tau → PositivityTheory.Rg.Sw.PX V.rank n, ∀ τ, PG τ = MvPolynomial.C (if τ = τ0 then c else 1) * ∏ k ∈ e.support, (if k.1 = τ then lz (frM τ) k.2 else 1) ^ (e k)` from `⟨_, fun τ => rfl⟩`. Use `⟨εG, frG, PG, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`. Rewrite using `[hfrG τ]`. Use `(hfrM τ).2.1 using 3` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i j`. Conclude with `(hθ τ).1 _`. Introduce `x`. Establish `hinv : ∀ τ, frM τ * ((frG τ)⁻¹).1 = 1` using `fun τ => by`. Rewrite using `[← hfrG τ]`.
+
+Conclude with `Units.mul_inv (frG τ)`. Establish `hY : ∀ τ, PositivityTheory.SiegelWeilFormula.Gen.crd (θ τ) (frG τ) (aTau θ a τ) (HeckeCharacterZeroLocus.SiegelWeilU.projInf (tupInv x)) = ((frG τ)⁻¹).1 * compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n)` using `fun τ => by`. Rewrite using `[GlobalTheory.VacKInf.LeviFix.compAt_mul', ← Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hZ : ∀ τ, frM τ * (((frG τ)⁻¹).1 * compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n)) = compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n)` using `fun τ => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hinv τ, Matrix.one_mul]`. Establish `hG : gauss V l s (fun τ => compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n)) = ∏ τ, PositivityTheory.Rg.Sw.gs (2 * Real.pi * |l τ|) (((frG τ)⁻¹).1 * compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n))`. Unfold `gauss PositivityTheory.Rg.Sw.gs`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[trace_frame (frM τ) ((frG τ)⁻¹).1 _ _ (hinv τ) (hfrM τ).2.2, trace_ct_mul_self]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hP : evalPoly (MvPolynomial.monomial e c) (fun τ => compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n)) = ∏ τ, PositivityTheory.Rg.Sw.evX (PG τ) (((frG τ)⁻¹).1 * compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n))` using `by set f : D.what₂.Tau × Fin V.rank × Fin n × Bool → ℂ := fun k => if k.2.2.2 then (starRingEnd ℂ) (compAt θ k.1 (HMul.hMul x a.1 : Mx D V.rank n) k.2.1 k.2.2.1) else compAt θ k.1 (HMul.hMul x a.1 : Mx D V.rank n) k.2.1 k.2.2.1 with hf`. Establish `hτ : ∀ τ, PositivityTheory.Rg.Sw.evX (PG τ) (((frG τ)⁻¹).1 * compAt θ τ (HMul.hMul x a.1 : Mx D V.rank n)) = (if τ = τ0 then c else 1) * ∏ k ∈ e.support, (if k.1 = τ then f k else 1) ^ (e k)` using `fun τ => by`. Rewrite using `[hPG τ]`. Simplify using `only [PositivityTheory.Rg.Sw.evX, map_mul, MvPolynomial.eval_C, map_prod, map_pow]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : k.1 = τ`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Use `evX_lz (frM k.1) (((frG k.1)⁻¹).1 * compAt θ k.1 (HMul.hMul x a.1 : Mx D V.rank n)) k.2` as an intermediate fact.
+
+Unfold `PositivityTheory.Rg.Sw.evX at this`. Rewrite using `[this, hZ k.1, hf]`. Simplify using `only [starRingEnd_apply]`. Rewrite using `[if_neg h, if_neg h, map_one]`. Simplify using `only [hτ]`.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq' Finset.univ τ0, if_pos (Finset.mem_univ _), Finset.prod_comm]`. Unfold `evalPoly`. Rewrite using `[MvPolynomial.eval_monomial]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [ite_pow, one_pow]`. Rewrite using `[Finset.prod_ite_eq Finset.univ k.1, if_pos (Finset.mem_univ _)]`. Simplify using `only [hf, ite_pow]`. Unfold `PositivityTheory.SiegelWeilFormula.Gen.phiInf`. Simplify using `only [hY]`.
+
+Rewrite using `[hP, hG, ← Finset.prod_mul_distrib]`.
+-/
 theorem realMatch : RealMatch := by
   classical
   intro D n V ψ θ l s hθ _hψ hs e c a

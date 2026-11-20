@@ -21,6 +21,9 @@ variable {R K O : Type} [CommRing R] [CommRing K] [CommRing O]
 
 end Lie
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(τ.comp (algebraMap (𝓞 E) E)).codRestrict (AdelicDegreeTameRamification.valRing L 𝔓) fun z => 𝔓.valuation_le_one (K := L) (RingOfIntegers.mapRingHom τ z), rfl⟩`.
+-/
 theorem exists_char {E L : Type} [Field E] [Field L] [NumberField L] (𝔓 : HeightOneSpectrum (𝓞 L)) (τ : E →+* L) :
     ∃ χ : 𝓞 E →+* AdelicDegreeTameRamification.valRing L 𝔓,
       (algebraMap (AdelicDegreeTameRamification.valRing L 𝔓) L).comp χ = τ.comp (algebraMap (𝓞 E) E) :=

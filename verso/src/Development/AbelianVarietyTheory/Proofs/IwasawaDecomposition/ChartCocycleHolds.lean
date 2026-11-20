@@ -20,6 +20,11 @@ namespace GlobalTheory.LocM.Cocycle
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `LevelCover.sab_comp ν' ν rfl`. Establish `hM₂ : 0 < l₂.M` using `by have := l₂.three_le; omega`. Establish `eM : l₃.M / l₁.M = l₃.M / l₂.M * (l₂.M / l₁.M)`. Rewrite using `[Nat.div_mul_div_comm h₂.1 h₁.1, mul_comm l₃.M, Nat.mul_div_mul_left _ _ hM₂]`. Establish `eA : l₃.A / l₁.A = l₃.A / l₂.A * (l₂.A / l₁.A)`.
+
+Rewrite using `[Nat.div_mul_div_comm h₂.2.2 h₁.2.2, mul_comm l₃.A, Nat.mul_div_mul_left _ _ l₂.A_pos]`. Use `⟨n, hn, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[eM, pow_mul, hn, ← Category.assoc, LevelCover.sec_pow ν' _ _ (hν'.1 a), Category.assoc, hν.1 a, Category.assoc]`. Rewrite using `[eA, pow_mul, hn, ← Category.assoc, LevelCover.sec_pow ν' _ _ (hν'.2 a), Category.assoc, hν.2 a, Category.assoc]`.
+-/
 theorem levComp_comp {l₁ l₂ l₃ : Level H} {B₁ B₂ B₃ : Type} [CommRing B₁] [CommRing B₂] [CommRing B₃]
     {b₁ : Base l₁ B₁} {b₂ : Base l₂ B₂} {b₃ : Base l₃ B₃} {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp B₁}
     {s₂ : S₂ ⟶ Sp B₂} {s₃ : S₃ ⟶ Sp B₃} (o₁ : Obj Dw l₁ b₁ s₁) (o₂ : Obj Dw l₂ b₂ s₂) (o₃ : Obj Dw l₃ b₃ s₃)
@@ -40,6 +45,11 @@ theorem levComp_comp {l₁ l₂ l₃ : Level H} {B₁ B₂ B₃ : Type} [CommRin
 
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W}
 
+/- English proof (translation)
+Take `⟨b, π', r, hb, h₁, h₂, -, h₃, h₄, h₅⟩` from `h`. Establish `e : τ ≫ (Y i).s = (Y i₂).s ≫ spMap b`. Rewrite using `[← h₁, ← h₂, Category.assoc, Category.assoc, pullback.condition]`. Take `⟨n, hn⟩` from `LevelCover.sab_comp (Y i₂).m mu h₃`. Take `⟨ν, hν⟩` from `LevelCover.sab_cancel (Y i).m n r rfl`.
+
+Use `⟨b, r, ν, hb, h₃, e, hν.trans hn, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `LevelCover.sec_cancel ν (Y i).m _ _ (by rw [hν, hn]; exact h₄ a)`. Conclude with `LevelCover.sec_cancel ν (Y i).m _ _ (by rw [hν, hn]; exact h₅ a)`.
+-/
 theorem exists_sab_of_isTrans {i i₂ : Idx H p} {τ : (Y i₂).X ⟶ (Y i).X} {mu : SABMap (Y i₂).t (Y i).t τ}
     (h : IsTrans i i₂ τ mu) :
     ∃ (b : i.c.V W →+* i₂.c.V W) (r : (Xo i₂.l).XF i₂.c ⟶ (Xo i.l).XF i.c) (ν : SABMap (Y i₂).oF.t (Y i).oF.t r),
@@ -54,6 +64,15 @@ theorem exists_sab_of_isTrans {i i₂ : Idx H p} {τ : (Y i₂).X ⟶ (Y i).X} {
   · exact LevelCover.sec_cancel ν (Y i).m _ _ (by rw [hν, hn]; exact h₄ a)
   · exact LevelCover.sec_cancel ν (Y i).m _ _ (by rw [hν, hn]; exact h₅ a)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₁ i₂ i₃ τ mu τ' mu' τ'' mu'' h₁₂ h₂₃ h h' h''`. Take `⟨b, r, ν, hb, hj, hs, hν, hl⟩` from `exists_sab_of_isTrans h`. Take `⟨b', r', ν', hb', hj', hs', hν', hl'⟩` from `exists_sab_of_isTrans h'`. Take `⟨b'', r'', ν'', hb'', hj'', hs'', hν'', hl''⟩` from `exists_sab_of_isTrans h''`. Take `⟨n, hn, hln⟩` from `levComp_comp _ _ _ h₁₂ h₂₃ ν ν' hl hl'`.
+
+Establish `hbb : spMap b' ≫ spMap b = spMap b''`. Establish `e : b'.comp b = b''` using `RingHom.ext fun x => Subtype.ext (Subtype.ext (((hb' (b x)).trans (hb x)).trans (hb'' x).symm))`. Rewrite using `[ModelRelProbe.spMap_comp, e]`. Establish `hr : (r' ≫ r) ≫ pullback.snd _ _ = r'' ≫ pullback.snd _ _`. Use `mono_spMap_subtype (i₁.c.V W)` as an intermediate fact.
+
+Rewrite using `[← cancel_mono (spMap (i₁.c.V W).subtype), Category.assoc, Category.assoc, Category.assoc, ← ModelRelProbe.j_over (Y i₁), ← reassoc_of% hj, ← reassoc_of% hj', ← reassoc_of% hj'', hs, hs'', reassoc_of% hs', hbb]`. Establish `hS` using `TransitionUnique.isReduced_XF (Xo i₃.l) i₃.c`. Establish `hrr : r' ≫ r = r''` using `TransitionUnique.map_unique (Y i₁) n ν'' hr (fun a => ⟨_, hln.1 a, hl''.1 a⟩) (fun a => ⟨_, hln.2 a, hl''.2 a⟩)`. Substitute `hrr` using the available equality. Establish `hd : i₁.l.Dvd i₃.l` using `⟨dvd_trans h₁₂.1 h₂₃.1, h₂₃.2.1.trans h₁₂.2.1, dvd_trans h₁₂.2.2 h₂₃.2.2⟩`.
+
+Establish `hφ : n.φ = ν''.φ` using `obj_rigid_closed abelianSchemeLaws_all.1 E H Dw i₁.l _ _ (baseKA i₁.l) (baseOfFinerLevel hd.2.2) _ _ _ _ (Y i₁).oF (ObjLower.lower (Y i₃).oF hd (baseOfFinerLevel_rho hd.2.2) (baseOfFinerLevel_zeta hd.2.2)) (r' ≫ r) (Or.inl hS) n ν'' fun a => ⟨_, hln.1 a, hl''.1 a⟩`. Rewrite using `[← hν'', ← hφ, hn, Category.assoc, hν, ← Category.assoc ν'.φ, hν', Category.assoc]`.
+-/
 theorem cocycle : CocycleSt := by
   intro E _ _ _ H Dw Xo p W Y i₁ i₂ i₃ τ mu τ' mu' τ'' mu'' h₁₂ h₂₃ h h' h''
   obtain ⟨b, r, ν, hb, hj, hs, hν, hl⟩ := exists_sab_of_isTrans h

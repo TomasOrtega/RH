@@ -21,6 +21,31 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.FlatModelOpen
 
+/- English proof (translation)
+Introduce `_ _ _ E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle r₀ U x _ Z τ s la p Xw _ hcov A _ _ _ ξ β _ hβ _ hgen g e U₁ h₁ U₂ h₂ he heig hu₁ hu₂ 𝔭 h𝔭`. Use `haveI := GlobalTheory.TriplesAlong.isOpenImmersion_j W Y`. Take `⟨yL, hyL⟩` from `GlobalTheory.T.lift_to_local_ring_open_immersion Y.j ξ 𝔭 h𝔭`. Establish `hinj : Function.Injective (algebraMap A (Localization.AtPrime 𝔭.asIdeal))` using `IsLocalization.injective _ 𝔭.asIdeal.primeCompl_le_nonZeroDivisors`. Take `⟨alg, z, w₁, w₂, hz, hc₁, hc₂, hz₁, hz₂⟩` from `GlobalTheory.T.integral_model_tangent_over_inclusion E H Dw l l' Xo Xo' c c' W Y r ν hle hcov.1 τ A ξ β hβ g e U₁ h₁ U₂ h₂ he heig hu₁ hu₂ (Localization.AtPrime 𝔭.asIdeal) (algebraMap A _) yL hyL`.
+
+Establish `hlies : LiesOn Z z`. Introduce `q`. Establish `hZc : IsClosed (Z : Set (Xo.XF c))` using `isClosed_of_mem_irreducibleComponents _ Z.2`. Establish `h1 : Y.j (yL (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal))) ∈ Xw`. Establish `e : (yL ≫ Y.j) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal)) = Y.j (yL (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal)))` using `Scheme.Hom.comp_apply _ _ _`.
+
+Rewrite using `[← e, hyL, bot_map hinj]`. Conclude with `hgen`. Establish `h0 : ptF z (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal)) ∈ (Z : Set (Xo.XF c))`. Establish `e : (yL ≫ r) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal)) = r (yL (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal)))` using `Scheme.Hom.comp_apply _ _ _`. Rewrite using `[hz, e]`.
+
+Conclude with `hcov.2.2.2.2.2.2.1 _ h1`. Establish `hs : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Localization.AtPrime 𝔭.asIdeal)) ⤳ q` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Conclude with `(hs.map (ptF z).continuous).mem_closed hZc h0`. Establish `hT : Tested z` using `GlobalTheory.FlagTan.fromTest_of_isLocalRing z`. Establish `hone : evR Xo c s.sig z * evR Xo c s.inv z = 1`.
+
+Rewrite using `[← evR_idem hlies hT, ← s.mul_inv]`. Conclude with `(Formalism.L2.Pj.evalAt_mul _ _ _ _ _).symm`. Establish `hU : IsUnit (evR Xo c s.sig z)` using `IsUnit.of_mul_eq_one _ hone`. Use `⟨hU.unit, fun k _ φ => ?_⟩` and prove the remaining obligations. Introduce `alg' yy hyy y _ hy w₁' w₂' g₁ g₂ hw₁ hw₂ hg₁ hg₂`.
+
+Establish `hyy' : yy = spMap φ ≫ yL`. Apply `(cancel_mono Y.j).1` to reduce the goal to its premises. Rewrite using `[hyy, Category.assoc, hyL, sp_sp]`. Establish `hcomp : algebraMap c.F k = φ.comp (algebraMap c.F (Localization.AtPrime 𝔭.asIdeal))`. Establish `e1 : ptF y ≫ pullback.snd _ _ = spMap (algebraMap c.F k)` using `pullback.lift_snd _ _ _`.
+
+Establish `e2 : ptF z ≫ pullback.snd _ _ = spMap (algebraMap c.F (Localization.AtPrime 𝔭.asIdeal))` using `pullback.lift_snd _ _ _`. Establish `e3 : spMap (algebraMap c.F k) = spMap (φ.comp (algebraMap c.F (Localization.AtPrime 𝔭.asIdeal)))`. Rewrite using `[← e1, hy, hyy', Category.assoc, Category.assoc, ← Category.assoc yL, ← hz, e2, spMap_spMap]`. Establish `e4` using `Spec.map_injective e3`. Conclude with `congrArg CommRingCat.Hom.hom e4`.
+
+Set `φA : Localization.AtPrime 𝔭.asIdeal →ₐ[c.F] k` to `{ φ with commutes' := fun a => (RingHom.congr_fun hcomp a).symm }`. Take `⟨zk, hzk⟩` from `GlobalTheory.FlagTan.exists_frMap φA z`. Establish `hev : evR Xo c s.sig zk = φ (evR Xo c s.sig z)` using `GlobalTheory.FlagTan.evR_frMap s.sig_mem.1 hzk`. Establish `hx : zk.x = y.x`. Establish `e1 : y.x = ptF y ≫ pullback.fst _ _` using `(pullback.lift_fst _ _ _).symm`.
+
+Establish `e2 : z.x = ptF z ≫ pullback.fst _ _` using `(pullback.lift_fst _ _ _).symm`. Rewrite using `[hzk.1, e1, e2, hy, hz, hyy']`. Simplify using `only [Category.assoc]`. Establish `hv₁ : ∀ i, zk.u τ.1 i = w₁' i ≫ ν.φ`. Introduce `i`.
+
+Establish `h2` using `hw₁ i`. Rewrite `h2` using `[hyy', Category.assoc, ← bcV_bcV]`. Establish `hw` using `GlobalTheory.T.tangent_frame_base_change Y φ yL _ _ (w₁ i) (w₁' i) (hc₁ i) h2`. Rewrite using `[hzk.2.1 τ.1 i, hz₁ i, hw, Category.assoc]`. Establish `hv₂ : ∀ i, zk.u (conjEmb τ.1) i = w₂' i ≫ ν.φ`.
+
+Introduce `i`. Establish `h2` using `hw₂ i`. Rewrite `h2` using `[hyy', Category.assoc, ← bcV_bcV]`. Establish `hw` using `GlobalTheory.T.tangent_frame_base_change Y φ yL _ _ (w₂ i) (w₂' i) (hc₂ i) h2`. Rewrite using `[hzk.2.1 (conjEmb τ.1) i, hz₂ i, hw, Category.assoc]`.
+
+Establish `key` using `GlobalTheory.T.flat_section_frame_invariance τ s.sig_mem zk y hx g₁ g₂ (fun i => by rw [hv₁ i]; exact hg₁ i) (fun i => by rw [hv₂ i]; exact hg₂ i)`. Rewrite `key` using `[hev]`. Rewrite using `[IsUnit.unit_spec]`. Conclude with `key`.
+-/
 theorem unit_loc : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne → GlobalTheory.Published.DeRhamCanonicalExtension →
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

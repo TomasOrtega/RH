@@ -8,6 +8,35 @@ open TensorProduct NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectr
 
 namespace PI.UnitaryApproxFinWork
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v π hπ s hs`. Set `O` to `v.adicCompletionIntegers F`. Set `S` to `Sv E v`. Establish `hgen2 : ∀ y : O, ((1 : E) ⊗ₜ[F] (y : v.adicCompletion F)) ∈ S`. Introduce `y`.
+
+Conclude with `Subring.subset_closure (Or.inr ⟨⟨y, y.2⟩, rfl⟩)`. Set `ψ : O →+* E ⊗[F] v.adicCompletion F` to `(Algebra.TensorProduct.includeRight : v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F).toRingHom.comp O.subtype`. Establish `hψ : ∀ y : O, ψ y = (1 : E) ⊗ₜ[F] (y : v.adicCompletion F)` using `fun y => rfl`. Set `φ : O →+* S` to `ψ.codRestrict S (fun y => by rw [hψ]; exact hgen2 y)`. Use `letI : Algebra O (E ⊗[F] v.adicCompletion F) := ψ.toAlgebra`.
+
+Use `letI : Algebra O S := φ.toAlgebra`. Set `f : S →ₐ[O] E ⊗[F] v.adicCompletion F` to `{ S.subtype with commutes' := fun r => rfl }`. Establish `hle : S ≤ (integralClosure O (E ⊗[F] v.adicCompletion F)).toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`.
+
+Take `⟨z, rfl⟩` from `RingHom.mem_range.1 hx`. Take `⟨p, hpm, hp⟩` from `NumberField.RingOfIntegers.isIntegral_coe z`. Use `⟨p.map (Int.castRingHom O), hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hcomp : (algebraMap O (E ⊗[F] v.adicCompletion F)).comp (Int.castRingHom O) = (PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F) (E := E)).comp (algebraMap ℤ E) := RingHom.ext_int _ _`.
+
+Rewrite using `[hcomp]`. Use `Polynomial.hom_eval₂ p (algebraMap ℤ E) (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (E := E)) (algebraMap (𝓞 E) E z)` as an intermediate fact. Rewrite `this` using `[hp, map_zero]`. Conclude with `this.symm`. Conclude with `isIntegral_algebraMap (x := (⟨y, hy⟩ : O))`.
+
+Establish `hIntS : Algebra.IsIntegral O S` using `⟨fun x => (isIntegral_algHom_iff f Subtype.val_injective).1 (hle x.2)⟩`. Establish `hπv : Valued.v (algebraMap F (v.adicCompletion F) (π : F)) < 1`. Rewrite using `[wa_valued_algebraMap]`. Conclude with `(valuation_lt_one_iff_mem v π).2 hπ`. Set `πO : O` to `⟨algebraMap F (v.adicCompletion F) (π : F), by`.
+
+Rewrite using `[mem_adicCompletionIntegers]`. Conclude with `hπv.le⟩`. Establish `hπmax : πO ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.1 hu`. Establish `h1 : Valued.v (w : v.adicCompletion F) ≤ 1`. Use `w.2` as an intermediate fact. Rewrite `this` using `[mem_adicCompletionIntegers]`. Then use the resulting hypothesis. Establish `h2 : algebraMap F (v.adicCompletion F) (π : F) * (w : v.adicCompletion F) = 1` using `congrArg Subtype.val hw`.
+
+Establish `h3 : Valued.v (algebraMap F (v.adicCompletion F) (π : F) * (w : v.adicCompletion F)) < 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[h2, map_one]`. Conclude with `lt_irrefl _ h3`. Establish `hd : dv E v π = (1 : E) ⊗ₜ[F] algebraMap F (v.adicCompletion F) (π : F)`.
+
+Simplify using `only [dv, PI.UnitaryApproxDefs.inclE, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.algebraMap_eq_smul_one]`. Conclude with `TensorProduct.smul_tmul _ _ _`. Establish `hxS : 1 + dv E v π * s ∈ S` using `S.add_mem S.one_mem (S.mul_mem (by rw [hd]; exact hgen2 πO) hs)`. Establish `key : IsUnit (⟨1 + dv E v π * s, hxS⟩ : S)`. Assume the negation of the conclusion as `h`.
+
+Take `⟨M, hM, hxM⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 h)`. Establish `hP : (M.comap (algebraMap O S)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Establish `hπM : algebraMap O S πO ∈ M`. Establish `: πO ∈ M.comap (algebraMap O S)`. Rewrite using `[IsLocalRing.eq_maximalIdeal hP]`.
+
+Conclude with `hπmax`. Conclude with `this`. Establish `e : (1 : S) = ⟨1 + dv E v π * s, hxS⟩ - algebraMap O S πO * ⟨s, hs⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(1 : E ⊗[F] v.adicCompletion F) = (1 + dv E v π * s) - ((1 : E) ⊗ₜ[F] algebraMap F (v.adicCompletion F) (π : F)) * s`.
+
+Rewrite using `[hd]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (1 : S) ∈ M`. Rewrite using `[e]`. Conclude with `M.sub_mem hxM (M.mul_mem_right _ hπM)`.
+
+Conclude with `hM.ne_top ((Ideal.eq_top_iff_one M).2 h1)`. Take `⟨w, hw⟩` from `isUnit_iff_exists_inv.1 key`. Conclude with `⟨w, w.2, congrArg Subtype.val hw⟩`.
+-/
 theorem unitary_scalars : UnitS := by
   intro F E _ _ _ _ _ v π hπ s hs
   classical

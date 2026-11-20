@@ -31,6 +31,25 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `a.pl.surjective ⟨w.1, (hW.lev.2.1 _).2 w.2⟩`. Establish `hP : w.1 = (a.pl n).1` using `by rw [hn]`. Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Take `rfl : j = (a.G n).s + 1` from `by omega`. Establish `hint : ∀ x : B.fields.E, TopLoc.emb a n x ∈ 𝒪[(a.G n).k] ↔ Formalism.L2.Col.IntAt w.1 x`.
+
+Establish `hR` using `(ha.tie (fun t => (TopLocFac.nonempty_rowCh (pk W) (lvP W) u a.g hTr.pinX.std t).some) fun t => (TopLocFac.nonempty_colCh _ _).some).2`. Rewrite using `[hP]`. Conclude with `(GlobalTheory.LocMod.PinEx.place_facts _ (hR.idem n).1).2.1`. Establish `hqv : HeightOneSpectrum.valuation B.fields.E w.1 (Formalism.L2.Col.qOf w.1 : B.fields.E) = WithZero.exp (-1 : ℤ)`. Take `⟨i, g1, -, -, g4, -⟩` from `GlobalTheory.SeeSaw.LevelData.type_prime w.2`.
+
+Conclude with `GlobalTheory.AtTypeExists.valuation_norm w.1 (g1 ▸ g4)`. Take `⟨e, he⟩` from `exists_xOrd B.R ((a.G n).s + 1)`. Establish `key : ∀ {t : W.P.T} {J : QJ a t} (_ : J.Reads) (α : J.Ch ((a.G n).s + 1)), ∃ z : Formalism.L2.Col.Sp B.fields.E (B.R.N ((a.G n).s + 1)), cosetIn (J.A.p0 _ (J.ι _ α)) ⟨w.1, Finset.mem_union_left _ w.2⟩ = {z' | z' - z ∈ Formalism.L2.Col.stdAt B.fields.E (B.R.N ((a.G n).s + 1)) w.1} …`. Introduce `t J hJ α`. Use `⟨_, (coset_at (J.A.p0 _ (J.ι _ α)) hj ((J.A.p0 _ (J.ι _ α)).repY_mem hj) w).1, fun c => ?_⟩` and prove the remaining obligations.
+
+Establish `hF` using `TopFrames.pen_near hW hJ ⟨w.1, Finset.mem_union_left _ w.2⟩ w.2 hj (J.ι _ α)`. Establish `hq` using `TopFrames.intAt_q_mul (A := J.A) ⟨w.1, Finset.mem_union_left _ w.2⟩ w.2 hj (J.ι _ α)`. Establish `hco` using `hJ.cosG n α e he c`. Establish `hfr : Formalism.L2.Col.frsF I.sel (I.tup (W.P.I.tup t)) (J.A.p0 _ (J.ι _ α)).1.1 ⟨w.1, Finset.mem_union_left _ w.2⟩ = (J.A.p0 _ (J.ι _ α)).1.1.deco.1.liftFr w` using `dif_pos w.2`. Rewrite `hF`, `hq` using `[hfr]`.
+
+Generalize the expression as in `(J.A.p0 _ (J.ι _ α)).1.1.deco.1.liftFr w = f at hF hq ⊢`. Generalize the expression as in `Formalism.L2.Col.repY (J.A.p0 ((a.G n).s + 1) (J.ι _ α)).1.2 = y at hq hco ⊢`. Establish `h1` using `(hint _).2 (TopFrames.intAt_sub_of_near hqv hF hq (e c))`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply, map_sub]`. Establish `h2 : TopLoc.emb a n (y (e c)) - (a.G n).S.y0 (Fin B.R.t) c ∈ 𝒪[(a.G n).k]` using `hco`.
+
+Establish `h3` using `sub_mem h2 h1`. Rewrite `h3` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Take `⟨z, hz, h1⟩` from `key hJ α`. Take `⟨z', hz', h1'⟩` from `key hJ' α'`. Establish `hd : z - z' ∈ Formalism.L2.Col.stdAt B.fields.E (B.R.N ((a.G n).s + 1)) w.1`.
+
+Use `GlobalTheory.TopStep.mem_stdAt.2 fun i => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `e.surjective i`. Establish `h` using `sub_mem (h1 r) (h1' r)`. Rewrite `h` using `[sub_sub_sub_cancel_right, ← map_sub]`. Conclude with `(hint _).1 h`.
+
+Rewrite using `[hz, hz']`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `add_mem h hd` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `h`. Use `sub_mem h hd` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem coset_level_eq_of_reads (hW : AllTrue W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 1 = B.R.m) {t t' : W.P.T} {J : QJ a t} (hJ : J.Reads)
     (α : J.Ch j) {J' : QJ a t'} (hJ' : J'.Reads) (α' : J'.Ch j) (w : (B.primes X).vGs) :
     cosetIn (J.A.p0 j (J.ι j α)) ⟨w.1, Finset.mem_union_left _ w.2⟩ =
@@ -88,6 +107,17 @@ theorem coset_level_eq_of_reads (hW : AllTrue W) (ha : a.Is) (hTr : a.True) (j :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hm : j ≤ B.R.m` using `by omega`. Take `⟨c, rfl⟩` from `(hJ.is.reads j hm).onto β`. Establish `h6` using `(TrueColsTest.kStd_spec X u (B.R.N j)).2.1 v hT`. Establish `hk : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) v) (J.A.kb j (J.A.chOf j c)) = 1 := by`. Take `⟨k₀, h, -, h1, h2, h3, -⟩` from `hJ.pen j hj (J.A.chOf j c)`.
+
+Establish `h5` using `TopFrames.finM_map_prV _ (rankN (I.rec7 l Z) j hm) h3 hv`. Use `Units.ext ?_` and prove the remaining obligations. Establish `h7` using `(hJ.is.kA j hm (J.A.chOf j c)).2.1`. Rewrite `h7` using `[h2, GlobalTheory.AdForm.Model.finM_mul, h1]`. Establish `h8 : (J.A.kb j (J.A.chOf j c)).1.map (Formalism.UG.prV (E` using `B.host.E) v) = 1 := by`.
+
+Rewrite using `[← h7]`. Use `Matrix.map_mul.trans ?_` and prove the remaining obligations. Establish `h6' : (TC.kStd X u (B.R.N j)).1.map (Formalism.UG.prV (E` using `B.host.E) v) = 1 := congrArg Units.val h6`. Conclude with `(congrArg₂ (fun x y : Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) (B.host.E ⊗[B.host.F] v.adicCompletion B.host.F) => x * y) h6' h5).trans (one_mul _)`. Conclude with `h8`.
+
+Establish `h1 : ∀ P ∈ I.Q (W.P.I.tup t), x.1.map (GlobalTheory.Mem.Col2.adAt B.host.F P) = 1` using `fun P hP => by`. Use `GlobalTheory.Mem.Col2.TopPtModel.adAt_of_prV P (hx _ fun h => hv ?_)` and prove the remaining obligations. Take `⟨i, hi⟩` from `hJ.surj P ((hW.tq.Q t P).2 hP)`. Conclude with `⟨i, (((GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hTr t J hJ).2 i).trans (congrArg _ hi)).trans h⟩`. Use `(mem_lev_iff I hW.tr.ok hW.tr.tw l.pr u _ j hj (hJ.is.reads j hm) c x hxU (commute_of_off hx hk) (commute_of_off hx h6) h1).trans ?_` and prove the remaining obligations.
+
+Establish `hb : GlobalTheory.Mem.Col2.MemChart.bar (show PtAt B.R I.sel (I.tup (W.P.I.tup t)) (I.cst (W.P.I.tup t)) u j from (I.stp u (W.P.I.tup t) j).rep c) = GlobalTheory.Mem.Col2.MemChart.bar (J.A.p0 j (J.A.chOf j c))` using `funext fun w => (cos_iff_bar hj w (GlobalTheory.Mem.Col2.MemChart.hqG l.pr w.1 w.2) _ _).1 (congrFun (hJ.is.rep j hm c).2 _)`. Conclude with `Iff.of_eq (congrArg (fun C => x ∈ Formalism.L2.Col.levU (F := B.host.F) B.sp.cm (B.R.N j) ((B.primes X).vT u) (B.primes X).vGs (GlobalTheory.Mem.Col2.MemChart.chG (X := B.fields) (Formalism.L2.Col.colLevSym I.Ch j) C)) hb)`.
+-/
 theorem mem_U_iff (hW : AllTrue W) (ha : a.Is) (hTr : a.True) (j : ℕ) (hj : j + 1 = B.R.m) [NeZero (B.R.N j)] {t : W.P.T} {J : QJ a t}
     (hJ : J.Reads) (β : J.Ch₀ j) (v : HeightOneSpectrum (𝓞 B.host.F)) (hT : ((B.T u : ℕ) : 𝓞 B.host.F) ∉ v.asIdeal)
     (hv : ¬ GlobalTheory.PenBridge.plF J v) (x : TC.GA B (B.R.N j)) (hxU : x ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N j))
@@ -127,6 +157,13 @@ end Main
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α t' J' hJ' α' v _ hTv hv hv'`. Establish `hm : j ≤ B.R.m` using `by omega`. Use `haveI : NeZero (B.R.N j) := ⟨(B.R.N_pos j).ne'⟩`. Take `⟨hPins⟩` from `hW.tr.pins`. Establish `hg1 : gramN (I.rec7 l Z) j hm = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hW.tr.ok hPins l Z).2.2.2 j hm).1`.
+
+Establish `eU : Formalism.UG.UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) j hm) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = Formalism.L2.Col.UAd B.sp.cm (B.R.N j)` using `by rw [hg1]; rfl`. Use `GlobalTheory.stepLevel_uloc_le_of_agree _ _ {w | w ≠ v} (fun x hx hxU => ?_) v (fun h => h rfl)` and prove the remaining obligations. Establish `hxA : x ∈ Formalism.L2.Col.UAd B.sp.cm (B.R.N j)` using `eU ▸ (((J.A.K j hm (J.ι j α)).lev.U_eq x).1 hxU).1`. Establish `hb : GlobalTheory.Mem.Col2.MemChart.bar (J.A.p0 j (J.ι j α)) = GlobalTheory.Mem.Col2.MemChart.bar (J'.A.p0 j (J'.ι j α'))` using `funext fun w => (cos_iff_bar hj w (GlobalTheory.Mem.Col2.MemChart.hqG l.pr w.1 w.2) _ _).1 (coset_level_eq_of_reads hW ha hTr j hj hJ α hJ' α' w)`. Establish `h1` using `(mem_U_iff hW ha hTr j hj hJ (J.ι j α) v hTv hv x hxA hx).1 hxU`.
+
+Rewrite `h1` using `[hb]`. Conclude with `(mem_U_iff hW ha hTr j hj hJ' (J'.ι j α') v hTv hv' x hxA hx).2 h1`.
+-/
 theorem uloc_le : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), v ∈ Formalism.L2.Forms.badG (I.rec7 l Z) → ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal → ¬ GlobalTheory.PenBridge.plF J v → ¬ GlobalTheory.PenBridge.plF J' v → (J.A.K j (show j ≤ B.R.m by omega) (J.ι j α)).lev.Uloc v ≤ (J'.A.K j (show j ≤ B.R.m by omega) (J'.ι j α')).lev.Uloc v := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ α t' J' hJ' α' v _ hTv hv hv'
   have hm : j ≤ B.R.m := by omega

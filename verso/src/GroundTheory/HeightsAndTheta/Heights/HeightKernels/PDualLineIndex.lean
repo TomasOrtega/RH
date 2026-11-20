@@ -13,6 +13,31 @@ noncomputable section
 
 namespace DualLineIndexAlt
 
+/- English proof (translation)
+Take `⟨⟨b, hb⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 L)) y`. Use `choose z hz using hint`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbL : (b : L) ≠ 0` using `by rwa [Ne, RingOfIntegers.coe_eq_zero_iff]`. Establish `hzy : ∀ i, ((z i : 𝓞 L) : L) = (b : L) * y i` using `fun i ↦ by`.
+
+Establish `h` using `hz i`. Simplify using `only [Algebra.smul_def] at h`. Conclude with `h`. Set `g : 𝓞 L →ₗ[𝓞 L] L` to `(LinearMap.mulLeft (𝓞 L) ((b : L)⁻¹)).comp (Algebra.linearMap (𝓞 L) L)`. Establish `hg : ∀ t, g t = (b : L)⁻¹ * t` using `fun t ↦ rfl`.
+
+Establish `hginj : Function.Injective g` using `fun s t h ↦ by`. Rewrite `h` using `[hg, hg]`. Conclude with `RingOfIntegers.ext (mul_left_cancel₀ (inv_ne_zero hbL) h)`. Use `set J : Ideal (𝓞 L) := Ideal.span (Set.range z) with hJdef`. Establish `hS : Submodule.span (𝓞 L) (Set.range y) = Submodule.map g J`.
+
+Rewrite using `[hJdef]`. Express the relevant statement in the definitionally equal form `_ = Submodule.map g (Submodule.span (𝓞 L) _)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Function.comp_apply, hg, hzy]`. Clear the denominators using the available nonvanishing facts. Establish `h1 : (1 : Submodule (𝓞 L) L) = Submodule.map g (Ideal.span {b})`. Express the relevant statement in the definitionally equal form `_ = Submodule.map g (Submodule.span (𝓞 L) _)`. Rewrite using `[Submodule.map_span, Set.image_singleton, hg, inv_mul_cancel₀ hbL, Submodule.one_eq_span]`.
+
+Establish `hmap : ∀ A : Ideal (𝓞 L), (Submodule.map g A).toAddSubgroup = A.toAddSubgroup.map g.toAddMonoidHom` using `fun _ ↦ rfl`. Establish `hz0 : z ≠ 0`. Introduce `h`. Apply `hy` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `hzy i` as an intermediate fact. Rewrite `this` using `[h, Pi.zero_apply]`. Conclude with `(mul_eq_zero.mp (by rw [← this]; rfl)).resolve_left hbL`. Establish `hJ0 : J ≠ ⊥`. Take `⟨i0, hi0⟩` from `Function.ne_iff.mp hz0`.
+
+Introduce `h`. Conclude with `hi0 ((Ideal.span_eq_bot.mp h) _ ⟨i0, rfl⟩)`. Establish `hB0 : Ideal.span {b} ≠ ⊥` using `by rw [Ne, Ideal.span_singleton_eq_bot]; exact hb0`. Rewrite using `[hS, h1, hmap, hmap, genIndex, AddSubgroup.relIndex_map_map_of_injective _ _ hginj, AddSubgroup.relIndex_map_map_of_injective _ _ hginj, ← genIndex, IdealIndexPlaces.genIndex_ideal hJ0 hB0, Ideal.absNorm_span_singleton, Nat.cast_natAbs]`. Establish `hprodz` using `absNorm_mul_finprod_finitePlace_eq_one hz0`.
+
+Establish `hsup : ∀ w : FinitePlace L, ⨆ i, w (z i : L) = w (b : L) * ⨆ i, w (y i)`. Introduce `w`. Repeatedly rewrite using `[hzy, map_mul]`. Conclude with `(Real.mul_iSup_of_nonneg (apply_nonneg w _) _).symm`. Rewrite `hprodz` using `[hsup]`.
+
+Rewrite `hprodz` using `[finprod_mul_distrib (FinitePlace.hasFiniteMulSupport hbL) (hasFiniteMulSupport_iSup_place hy), FinitePlace.prod_eq_inv_abs_norm_int hb0]`. Rewrite `hprodz` using `[← hJdef]`. Use `set P := ∏ᶠ w : FinitePlace L, ⨆ i, w (y i)`. Establish `hbn : |((Algebra.norm ℤ b : ℤ) : ℝ)| ≠ 0`. Rewrite using `[abs_ne_zero, Int.cast_ne_zero, Ne, Algebra.norm_eq_zero_iff]`.
+
+Conclude with `hb0`. Establish `hJn : (J.absNorm : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr hJ0)`. Establish `hinv` using `mul_inv_cancel₀ hbn`. Use `push_cast`. Rewrite using `[div_eq_iff hJn]`.
+
+Take the linear combination `(-|((Algebra.norm ℤ b : ℤ) : ℝ)|) * hprodz + ((J.absNorm : ℝ) * P) * hinv`.
+-/
 theorem genIndex_span_eq_finprod {L : Type*} [Field L] [NumberField L] {ι : Type*} [Fintype ι] {y : ι → L}
     (hy : y ≠ 0) :
     genIndex (Submodule.span (𝓞 L) (Set.range y)).toAddSubgroup (1 : Submodule (𝓞 L) L).toAddSubgroup =
@@ -81,6 +106,15 @@ theorem genIndex_span_eq_finprod {L : Type*} [Field L] [NumberField L] {ι : Typ
   rw [div_eq_iff hJn]
   linear_combination (-|((Algebra.norm ℤ b : ℤ) : ℝ)|) * hprodz + ((J.absNorm : ℝ) * P) * hinv
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hv`. Take `⟨D, hD, hmem⟩` from `exists_int_smul_mem_latticeDual F.lattice F.fg (Pi.single j (1 : K))`. Establish `hmem' : D • (Pi.single j (1 : K) : Fin i → K) ∈ dualLattice F` using `fun x hx ↦ by`. Take `⟨c, hc⟩` from `hmem x hx`.
+
+Conclude with `⟨c, hc⟩`. Set `Λ : dualLattice F →ₗ[ℤ] K'` to `{ toFun := fun ψ ↦ ∑ k, algebraMap K K' ((ψ : Fin i → K) k) * v k map_add' := fun ψ χ ↦ by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c ψ ↦ by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast, RingHom.id_apply, Finset.mul_sum, mul_assoc] }`.
+
+Establish `hΛ : Λ = 0` using `b.ext fun t ↦ by`. Use `congrFun h0 ⟨(), t⟩` as an intermediate fact. Simplify `this` using `[Λ, dualPointCoord]`. Use `congrArg (fun f : dualLattice F →ₗ[ℤ] K' ↦ f ⟨_, hmem'⟩) hΛ` as an intermediate fact. Simplify using `only [Λ, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.zero_apply, zsmul_eq_mul, Pi.mul_apply, Pi.intCast_apply, Pi.single_apply, mul_ite, mul_one, mul_zero, apply_ite (algebraMap K K'), map_intCast, map_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`.
+
+Break down `mul_eq_zero.mp this with h | h` into its components or cases. Apply `hD` to reduce the goal to its premises. Establish `h' : algebraMap K K' (D : K) = 0` using `by rw [map_intCast]; exact h`. Conclude with `(map_eq_zero_iff _ (algebraMap K K').injective).mp h'` after adjusting the coercions. Conclude with `hj h`.
+-/
 theorem dualPointCoord_ne_zero {K : Type} [Field K] [NumberField K] {i : ℕ} (F : HermLattice K i) {T : Type}
     (b : Module.Basis T ℤ (dualLattice F)) {K' : Type} [Field K'] [Algebra K K'] {v : Fin i → K'}
     (hv : v ≠ 0) : dualPointCoord b v ≠ 0 := by
@@ -116,6 +150,27 @@ end DualLineIndexAlt
 
 open DualLineIndexAlt in
 
+/- English proof (translation)
+Introduce `K _ _ i F T _ _ b K' _ _ _ v hv`. Establish `hi : i ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv (Subsingleton.elim _ _)`. Take `⟨r, rfl⟩ : ∃ r, i = r + 1` from `⟨i - 1, by omega⟩`.
+
+Use `set y := dualPointCoord b v with hy`. Establish `hy0 : y ≠ 0` using `dualPointCoord_ne_zero F b hv`. Establish `hT : Fintype.card T ≠ 0`. Take `⟨p, _⟩` from `Function.ne_iff.mp hy0`. Conclude with `(Fintype.card_pos_iff.mpr ⟨p.2⟩).ne'`.
+
+Take `⟨N, hN⟩ : ∃ N, Fintype.card T = N + 1` from `⟨Fintype.card T - 1, by omega⟩`. Set `e : T ≃ Fin (N + 1)` to `Fintype.equivFinOfCardEq hN`. Set `φ : Fin (N + 1) → Fin (r + 1) → K` to `fun k ↦ (b (e.symm k) : Fin (r + 1) → K)`. Establish `hφ : IsDualBasis F.lattice φ` using `{ independent := (b.linearIndependent.map' (dualLattice F).subtype (Submodule.ker_subtype _)).comp e.symm e.symm.injective span_eq := by`. Establish `hr : Set.range φ = (dualLattice F).subtype '' Set.range b`.
+
+Rewrite using `[← Set.range_comp]`. Conclude with `EquivLike.range_comp (fun t ↦ (b t : Fin (r + 1) → K)) e.symm`. Rewrite using `[hr, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Use extensionality with `ψ`. Conclude with `⟨fun h x hx ↦ by obtain ⟨c, hc⟩ := h x hx; exact ⟨c, hc⟩, fun h x hx ↦ by obtain ⟨c, hc⟩ := h x hx; exact ⟨c, hc⟩⟩ }`.
+
+Establish `hval : ∀ a : K', (∀ k, a * latticeValue φ v k ∈ Set.range (algebraMap (𝓞 K') K')) ↔ a ∈ multiplierIdeal y`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨⟨⟩, t⟩`. Use `h (e t)` as an intermediate fact.
+
+Simplify `this` using `[φ, latticeValue, hy, dualPointCoord]`. Introduce `h k`. Conclude with `h ⟨(), e.symm k⟩`. Set `f : K' →+ (Fin (r + 1) → K')` to `{ toFun := fun a ↦ a • v, map_zero' := zero_smul _ _, map_add' := fun a a' ↦ add_smul a a' v }`. Establish `hf : Function.Injective f` using `smul_left_injective K' hv`.
+
+Establish `e1 : (Submodule.span (𝓞 K') ((fun w : Fin (r + 1) → K ↦ fun j ↦ algebraMap K K' (w j)) '' F.lattice) ⊓ (Submodule.span K' (Set.range fun _ : Fin 1 ↦ v)).restrictScalars (𝓞 K')).toAddSubgroup = (multiplierIdeal y).toAddSubgroup.map f`. Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_inf, Submodule.restrictScalars_mem, Set.range_const, Submodule.mem_span_singleton, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxL, a, rfl⟩`.
+
+Conclude with `⟨a, (hval a).mp ((LineIdealDual.proof K r N F φ hφ K' v a).mp hxL), rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨(LineIdealDual.proof K r N F φ hφ K' v a).mpr ((hval a).mpr ha), a, rfl⟩`. Establish `e2 : (Submodule.span (𝓞 K') (Set.range fun _ : Fin 1 ↦ v)).toAddSubgroup = (1 : Submodule (𝓞 K') K').toAddSubgroup.map f`. Use extensionality with `x`.
+
+Simplify using `only [Submodule.mem_toAddSubgroup, Set.range_const, Submodule.mem_span_singleton, AddSubgroup.mem_map, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨algebraMap (𝓞 K') K' c, ⟨c, rfl⟩, (algebraMap_smul K' c v)⟩`. Introduce and unpack `⟨a, ⟨c, rfl⟩, rfl⟩`.
+
+Conclude with `⟨c, (algebraMap_smul K' c v).symm⟩`. Rewrite using `[e1, e2, genIndex, AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_map_map_of_injective _ _ hf, ← genIndex, genIndex_span_eq_finprod hy0]`. Conclude with `IdealIndexPlaces.proof K' _ y hy0`.
+-/
 theorem DualLineIndex.proof : DualLineIndex.Statement := by
   intro K _ _ i F T _ _ b K' _ _ _ v hv
   classical

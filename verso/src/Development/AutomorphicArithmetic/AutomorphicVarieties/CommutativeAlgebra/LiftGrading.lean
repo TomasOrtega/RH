@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ _ _ Γ ι _ _ _ _ rbar w R _ _ _ r c hc hc0 hgen hst`. Take `⟨W, u, hu, he⟩` from `UpperTheory.V.Alg.coord_grading O X R (Γ × ι × ι) (fun s => r.hom s.1 s.2.1 s.2.2 - algebraMap O R (c s.1 s.2.1 s.2.2)) (fun s => w s.2.1 - w s.2.2) (fun s => by`. Rewrite using `[← res_eq_zero_iff O, map_sub, r.red, AlgHom.commutes, ← hc, sub_eq_zero]`. Use the proof step `rfl)`. Use the proof step `(fun R' _ _ _ f f' h => hgen R' f f' (by`.
+
+Use extensionality with `g a b`. Use `h (g, a, b)` as an intermediate fact. Simplify using `only [map_sub, AlgHom.commutes, sub_left_inj] at this`. Conclude with `this))`. Use the proof step `(fun R' _ _ _ f t ht => by`.
+
+Take `⟨f', hf'⟩` from `hst R' f t ht`. Use `⟨f', fun ⟨g, a, b⟩ => ?_⟩` and prove the remaining obligations. Establish `h1 : f' (r.hom g a b) = t (Multiplicative.ofAdd (w a - w b)) * f (r.hom g a b)` using `hf' g a b`. Use `show f' (r.hom g a b - algebraMap O R (c g a b)) = t (Multiplicative.ofAdd (w a - w b)) * f (r.hom g a b - algebraMap O R (c g a b))`. Rewrite using `[map_sub f', map_sub f, AlgHom.commutes, AlgHom.commutes, h1, mul_sub]`.
+
+Distinguish the cases in `hab : w a = w b`. Simplify using `[hab]`. Simplify using `[hc0 g a b hab])`. Use `⟨W, fun g a b => ?_, fun i => ⟨(u i).1, (u i).2.1, (u i).2.2, (hu i).1, (hu i).2⟩⟩` and prove the remaining obligations. Establish `h1 : r.hom g a b - algebraMap O R (c g a b) ∈ W.part (w a - w b)` using `he (g, a, b)`.
+
+Establish `h2 : algebraMap O R (c g a b) ∈ W.part (w a - w b)`. Distinguish the cases in `hab : w a = w b`. Rewrite using `[hab, sub_self, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (SetLike.GradedOne.one_mem : (1 : R) ∈ W.part 0)`. Rewrite using `[hc0 g a b hab, map_zero]`.
+
+Conclude with `zero_mem _`. Simplify using `using add_mem h1 h2`.
+-/
 theorem UpperTheory.V.Alg.lift_grading :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (Γ ι : Type) [Group Γ] [TopologicalSpace Γ] [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField O)) (w : ι → X) (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (r : Lift O rbar R) (c : Γ → ι → ι → O),
       (∀ g a b, residue O (c g a b) = rbar g a b) → (∀ g a b, w a ≠ w b → c g a b = 0) → r.Generates → r.TStable w →

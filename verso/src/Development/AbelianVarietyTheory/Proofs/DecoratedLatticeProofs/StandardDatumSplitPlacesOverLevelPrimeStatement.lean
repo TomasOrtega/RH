@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.AdForm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdForm.stdT_levelPrime_mem_v | exact GlobalTheory.AdForm.stdT_levelPrime_mem_v | (intros; apply GlobalTheory.AdForm.stdT_levelPrime_mem_v <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.standardDatum_splitPlaces_over_levelPrime : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

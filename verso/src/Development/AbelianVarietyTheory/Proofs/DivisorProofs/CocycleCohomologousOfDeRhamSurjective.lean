@@ -19,6 +19,9 @@ def trivEquiv (T : Thick (dp0 R) (X.hom ≫ 𝟙 _)) (hT : T.J = ⊥) : T.B ≃+
       rw [hT] at h
       exact Ideal.mem_bot.1 h, T.surj⟩
 
+/- English proof (translation)
+The claim follows from `(trivEquiv T hT).symm_apply_apply b`.
+-/
 theorem trivEquiv_symm_π (T : Thick (dp0 R) (X.hom ≫ 𝟙 _)) (hT : T.J = ⊥) (b : T.B) :
     (trivEquiv T hT).symm (T.π b) = b :=
   (trivEquiv T hT).symm_apply_apply b
@@ -33,6 +36,11 @@ def trivPt (T : Thick (dp0 R) (X.hom ≫ 𝟙 _)) (hT : T.J = ⊥) : Pt X T.B :=
     ext r
     exact trivEquiv_symm_π T hT _)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap (φ.φ : T.B →+* T'.B) ≫ spMap ((trivEquiv T hT).symm.toRingHom) ≫ T.x = spMap ((trivEquiv T' hT').symm.toRingHom) ≫ T'.x`. Rewrite using `[← φ.pt, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Use `congr 2`. Use extensionality with `b`.
+
+Take `⟨b, rfl⟩` from `T.surj b`. Express the relevant statement in the definitionally equal form `φ.φ ((trivEquiv T hT).symm (T.π b)) = (trivEquiv T' hT').symm (φ.φ₀ (T.π b))`. Rewrite using `[φ.comm, trivEquiv_symm_π, trivEquiv_symm_π]`.
+-/
 theorem spOver_trivPt {T T' : Thick (dp0 R) (X.hom ≫ 𝟙 _)} (hT : T.J = ⊥) (hT' : T'.J = ⊥) (φ : T ⟶ T') :
     spOver φ.φ ≫ trivPt T hT = trivPt T' hT' := by
   apply Over.OverMorphism.ext
@@ -45,6 +53,9 @@ theorem spOver_trivPt {T T' : Thick (dp0 R) (X.hom ≫ 𝟙 _)} (hT : T.J = ⊥)
   change φ.φ ((trivEquiv T hT).symm (T.π b)) = (trivEquiv T' hT').symm (φ.φ₀ (T.π b))
   rw [φ.comm, trivEquiv_symm_π, trivEquiv_symm_π]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap ((trivEquiv (trivAt x) rfl).symm.toRingHom) ≫ x.left = x.left`. Establish `: (trivEquiv (trivAt x) rfl).symm.toRingHom = RingHom.id D` using `RingHom.ext fun b ↦ trivEquiv_symm_π (trivAt x) rfl b`. Rewrite using `[this, Cris.spMap_id, Category.id_comp]`.
+-/
 theorem trivPt_trivAt {D : Type} [CommRing D] [Algebra R D] (x : Pt X D) : trivPt (trivAt x) rfl = x := by
   apply Over.OverMorphism.ext
   change spMap ((trivEquiv (trivAt x) rfl).symm.toRingHom) ≫ x.left = x.left
@@ -62,6 +73,13 @@ end GlobalTheory.PtExt.Lift
 
 open GlobalTheory.PtExt.Lift in
 
+/- English proof (translation)
+Introduce `R _ X hs u hu`. Take `⟨c, hc⟩` from `hs (H1.mk _ (trivCoc u hu))`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Establish `hc' : H1.mk _ ((CoefMap.restrict (O (dp0 R) (X.hom ≫ 𝟙 _)) (IsTriv (X.hom ≫ 𝟙 _)).ι).pullbackOneCocycle f) = H1.mk _ (trivCoc u hu)` using `hc`. Take `⟨g, hg⟩` from `H1.mk_eq_mk.1 hc'`.
+
+Use `⟨f, fun D _ _ x ↦ -g ⟨trivAt x, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x _`. Establish `h` using `congrFun (congrFun (congrFun hg ⟨trivAt x, rfl⟩) ⟨trivAt (spOver φ ≫ x), rfl⟩) ⟨trivMap φ x⟩`. Express the relevant statement in the definitionally equal form `@id D' (g ⟨trivAt (spOver φ ≫ x), rfl⟩) - φ (@id D (g ⟨trivAt x, rfl⟩)) = ev f (trivMap φ x) - u D D' φ (trivPt (trivAt x) rfl) at h`. Rewrite `h` using `[trivPt_trivAt]`.
+
+Express the relevant statement in the definitionally equal form `u D D' φ x + -ev f (trivMap φ x) = -@id D' (g ⟨trivAt (spOver φ ≫ x), rfl⟩) - φ (-(@id D (g ⟨trivAt x, rfl⟩)))`. Rewrite using `[map_neg]`. Take the linear combination `h`.
+-/
 theorem GlobalTheory.PtExt.cohom_fv_of_toH1O_surjective : ∀ (R : Type) [CommRing R] (X : Over (Sp R)),
     Function.Surjective (toH1O (X.hom ≫ 𝟙 _)) → ∀ u : Fn1 X, IsCoc (whole X) u →
       ∃ f : Z1 (O (dp0 R) (X.hom ≫ 𝟙 _)), Cohom (whole X) u (fv f) := by

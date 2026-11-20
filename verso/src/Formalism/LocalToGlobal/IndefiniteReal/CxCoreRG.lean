@@ -51,12 +51,24 @@ structure LiftHyp : Prop where
 
   mLat : X.MLat b
 
+/- English proof (translation)
+The claim follows from `let h := rowXE_spec (Df := lv (fc X.zs) b) hR.wf _ (X.gramE_unit cr b (hR.h2) (hR.h4pos.2.2 b)) X.κ hR.h4pos.1 (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hR.h4pos.2.1 j Bs.μ0 p v) ⟨h.1, h.2.1⟩`.
+-/
 theorem XE_specR (hR : RowHyp X cr b) :
     (∀ v, IsUnit (X.XE cr b v).det) ∧ X.XE cr b Bs.v0 = frameOf (X.gramE cr b) :=
   let h := rowXE_spec (Df := lv (fc X.zs) b) hR.wf _ (X.gramE_unit cr b (hR.h2) (hR.h4pos.2.2 b)) X.κ hR.h4pos.1
     (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hR.h4pos.2.1 j Bs.μ0 p v)
   ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+Introduce `x hx y`. Establish `hx' : X.iC cr b t (cpt Bs.v0.embedding x) ∈ X.EEp p`. Establish `h : (X.rowMat cr b t).mulVec x ∈ X.Ep cr b p` using `hx`. Rewrite `h` using `[mem_Ep, key_row X cr b (hR.h2) (hR.ratMu)]`. Then use the resulting hypothesis. Distinguish the cases in `hv : v = Bs.v0`.
+
+Substitute `hv` using the available equality. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin ((lv (fc X.zs) b).dQ Bs.μ0))) (X.XE cr b) Bs.v0 ((X.rowMat cr b t).mulVec x) ((X.rowMat cr b t).mulVec y) = _`. Rewrite using `[majAt_gram_smul (X.XE cr b) Bs.v0 (fun i => X.iC cr b Bs.μ0 (Pi.single i 1)) (li_of_lin_injective (by rw [lin_basis]; exact (hR.h2).1)) _ (inv_pos.mpr (hR.h4pos.2.2 b)) (X.XE_specR cr b hR).2, lin_basis, key_row X cr b (hR.h2) (hR.ratMu), key_row X cr b (hR.h2) (hR.ratMu), (hR.h …`. Establish `hn : (X.nP b : ℂ) ≠ 0` using `by exact_mod_cast (hR.h4pos.2.2 b).ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [CxData.data]`. Expand and normalize the polynomial expressions, which then agree. Break down `htv with rfl | h` into its components or cases. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin ((lv (fc X.zs) b).dQ Bs.μ0))) (X.XE cr b) v ((X.rowMat cr b Bs.μ0).mulVec x) ((X.rowMat cr b Bs.μ0).mulVec y) = _`.
+
+Rewrite using `[X.rowMat_base cr b (hR.h2), Matrix.one_mulVec, Matrix.one_mulVec]`. Establish `hxQ : x ∈ (lv (fc X.zs) b).Qp Bs.μ0 p` using `((hR.h3) p x).2 hx'`. Conclude with `rowXE_part (lv (fc X.zs) b) hR.wf _ (X.gramE_unit cr b (hR.h2) (hR.h4pos.2.2 b)) X.κ hR.h4pos.1 (fun j p v => X.lam j Bs.μ0 p v) (fun j p v => hR.h4pos.2.1 j Bs.μ0 p v) v hv (fun p q hpq x hx y hy => (hR.partsOrth) v hv p q hpq x hx y hy) p x hxQ y`. Conclude with `absurd h hv`.
+-/
 theorem scal_rowsR (hR : RowHyp X cr b) (t : Bs.Tup) (v : InfinitePlace K)
     (htv : t = Bs.μ0 ∨ v = Bs.v0) (p : Bs.Ix) :
     IsScalarOn ((lv (fc X.zs) b).XQ t) (X.data cr b).XE v ((X.data cr b).ι t) ((X.data cr b).Qpart t p)
@@ -86,6 +98,17 @@ theorem scal_rowsR (hR : RowHyp X cr b) (t : Bs.Tup) (v : InfinitePlace K)
         (fun p q hpq x hx y hy => (hR.partsOrth) v hv p q hpq x hx y hy) p x hxQ y
     · exact absurd h hv
 
+/- English proof (translation)
+Introduce `x hx y`. Establish `hx' : X.tC cr b j t (cpt Bs.v0.embedding x) ∈ X.Wp j p`. Establish `h : (X.liftMat cr b j t).mulVec x ∈ X.WpK b j p` using `hx`. Rewrite `h` using `[mem_WpK, key_lift X cr b (hF.h5) (hF.ratTh)]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin (X.dW b j))) (X.XW b j) v ((X.liftMat cr b j t).mulVec x) ((X.liftMat cr b j t).mulVec y) = _`.
+
+Rewrite using `[majAt_gram (X.XW b j) v (X.bW b j v) ((hF.kForm) j v).1 rfl]`. Distinguish the cases in `hv : v = Bs.v0`. Substitute `hv` using the available equality. Establish `hn : ((X.nP b : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hR.h4pos.2.2 b).ne'`. Establish `he` using `(hF.ewNorm) j (X.wC b j Bs.v0 (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec x))) (X.wC b j Bs.v0 (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec y)))`.
+
+Express the relevant statement in the definitionally equal form `⟪X.w0C b j (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec x)), X.w0C b j (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec y))⟫_ℂ = _ at he`. Rewrite `he` using `[key_lift X cr b (hF.h5) (hF.ratTh), key_lift X cr b (hF.h5) (hF.ratTh), (hF.thmA) j t p x hx' y]`. Express the relevant statement in the definitionally equal form `⟪X.wC b j Bs.v0 (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec x)), X.wC b j Bs.v0 (cpt Bs.v0.embedding ((X.liftMat cr b j t).mulVec y))⟫_ℂ = _`. Apply `mul_left_cancel₀ hn` to reduce the goal to its premises. Rewrite using `[← he]`.
+
+Simplify using `only [CxData.data]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Break down `htv with rfl | h` into its components or cases. Conclude with `(hF.galD) j v hv p x hx' y`.
+
+Conclude with `absurd h hv`.
+-/
 theorem scal_liftsR (hR : RowHyp X cr b) (hF : LiftHyp X cr b) (j : Bs.J) (t : Bs.Tup) (v : InfinitePlace K)
     (htv : t = Bs.μ0 ∨ v = Bs.v0) (p : Bs.Ix) :
     IsScalarOn ((lv (fc X.zs) b).XT j t) ((X.data cr b).XW j) v ((X.data cr b).θ j t) ((X.data cr b).Zpart j t p)

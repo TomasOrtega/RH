@@ -24,6 +24,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CompHS
 
+/- English proof (translation)
+Use `haveI : NoetherianSpace (closure U) := NoetherianSpace.set _`. Use `haveI : QuasiSober (closure U) := isClosed_closure.isClosedEmbedding_subtypeVal.quasiSober`. Establish `hd : Dense (Subtype.val ⁻¹' U : Set (closure U))` using `fun z => by`. Rewrite using `[Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image, Subtype.image_preimage_coe, Set.inter_eq_self_of_subset_right subset_closure]`. Conclude with `z.2`.
+
+Establish `hC` using `irreducibleComponent_mem_irreducibleComponents (⟨y, hy⟩ : closure U)`. Establish `hg` using `(isIrreducible_irreducibleComponent (x := (⟨y, hy⟩ : closure U))).isGenericPoint_genericPoint isClosed_irreducibleComponent`. Take `⟨o, ho, hne, hle⟩` from `NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent _ hC`. Take `⟨p, hp, hpU⟩` from `hd.inter_open_nonempty o ho hne`. Establish `hU' : IsOpen (Subtype.val ⁻¹' U : Set (closure U))` using `hU.preimage continuous_subtype_val`.
+
+Conclude with `⟨_, (hg.mem_open_set_iff hU').2 ⟨p, hle hp, hpU⟩, (hg.specializes mem_irreducibleComponent).map continuous_subtype_val⟩`.
+-/
 theorem exists_generisation_of_mem_closure {T : Type} [TopologicalSpace T] [NoetherianSpace T] [QuasiSober T]
     {U : Set T} (hU : IsOpen U) {y : T} (hy : y ∈ closure U) : ∃ g ∈ U, g ⤳ y := by
   haveI : NoetherianSpace (closure U) := NoetherianSpace.set _
@@ -41,6 +48,9 @@ theorem exists_generisation_of_mem_closure {T : Type} [TopologicalSpace T] [Noet
   exact ⟨_, (hg.mem_open_set_iff hU').2 ⟨p, hle hp, hpU⟩,
     (hg.specializes mem_irreducibleComponent).map continuous_subtype_val⟩
 
+/- English proof (translation)
+Set `η : PrimeSpectrum (X.presheaf.stalk x)` to `⟨⊥, Ideal.isPrime_bot⟩`. Use `⟨X.fromSpecStalk x η, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: y ∈ Set.range (X.fromSpecStalk x)` using `by rw [Scheme.range_fromSpecStalk]; exact hy`. Take `⟨q, rfl⟩` from `this`. Conclude with `((PrimeSpectrum.le_iff_specializes η q).1 (show (⊥ : Ideal _) ≤ _ from bot_le)).map (X.fromSpecStalk x).continuous`.
+-/
 theorem exists_generic_generisation (X : Scheme.{0}) (x : X) (hd : IsDomain (X.presheaf.stalk x)) :
     ∃ ξ : X, ∀ y, y ⤳ x → ξ ⤳ y := by
   let η : PrimeSpectrum (X.presheaf.stalk x) := ⟨⊥, Ideal.isPrime_bot⟩
@@ -50,6 +60,15 @@ theorem exists_generic_generisation (X : Scheme.{0}) (x : X) (hd : IsDomain (X.p
   exact ((PrimeSpectrum.le_iff_specializes η q).1 (show (⊥ : Ideal _) ≤ _ from bot_le)).map
     (X.fromSpecStalk x).continuous
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y Z x hx b hb`. Establish `: IsProper Y.s`. Take `⟨N, i, hi, e⟩` from `Y.proj`. Use `isProper_str c.F N` as an intermediate fact. Rewrite using `[← e]`.
+
+Use `infer_instance`. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`. Establish `: CompactSpace Y.X` using `QuasiCompact.compactSpace_of_compactSpace Y.s`. Establish `: IsNoetherian Y.X` using `{}`. Introduce `hcl`.
+
+Establish `hopen` using `Y.j.isOpenEmbedding.isOpenMap`. Establish `hc` using `(TrivOrderTieCompare.isClopen_comp Z)`. Take `⟨w, hw, hwb⟩` from `exists_generisation_of_mem_closure (hopen _ hc.compl.isOpen) hcl`. Take `⟨ξ, hξ⟩` from `exists_generic_generisation Y.X b (Y.normal b).1`. Take `⟨u, hu, rfl⟩` from `(hξ w hwb).mem_open (hopen _ hc.compl.isOpen) hw`.
+
+Take `⟨v, hv, hv'⟩` from `(hξ _ hb).mem_open (hopen _ hc.isOpen) ⟨x, hx, rfl⟩`. Conclude with `hu (Y.j.isOpenEmbedding.injective hv' ▸ hv)`.
+-/
 theorem mem_barComp_of_specializes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (Z : Comp Xo c) (x : Xo.XF c), x ∈ (Z : Set (Xo.XF c)) → ∀ b : Y.X, Y.j x ⤳ b → b ∈ barComp Y Z := by
   intro E _ _ _ H Dw l Xo c Y Z x hx b hb
   have : IsProper Y.s := by

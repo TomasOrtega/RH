@@ -8,6 +8,9 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `hB l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r hr hd`. Take `⟨T⟩` from `hT`. Conclude with `hB.isPstAt T Bw r (Units.continuous_val.comp hr) hd`.
+-/
 theorem UpperTheory.Gal.TP.Sub.pstOfDR_holds :
     GlobalTheory.Published.DeRhamPotSemistable → PstOfDR := by
   intro hB l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r hr hd

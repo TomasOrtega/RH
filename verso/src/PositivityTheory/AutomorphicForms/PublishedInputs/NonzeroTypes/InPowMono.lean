@@ -15,10 +15,16 @@ namespace P_PJ
 
 variable {n : ℕ} (G : Grp k n)
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨y, Ideal.pow_le_pow_right hab hy, rfl⟩`.
+-/
 theorem inPow_mono {a b : ℕ} (hab : a ≤ b) {x : k} (hx : InPow b x) : InPow a x := by
   obtain ⟨y, hy, rfl⟩ := hx
   exact ⟨y, Ideal.pow_le_pow_right hab hy, rfl⟩
 
+/- English proof (translation)
+Introduce `_ hg` and use `⟨hg.1, fun i j => inPow_mono hab (hg.2 i j)⟩`.
+-/
 theorem KC_mono {a b : ℕ} (hab : a ≤ b) : KC k n b ⊆ KC k n a := fun _ hg =>
   ⟨hg.1, fun i j => inPow_mono hab (hg.2 i j)⟩
 
@@ -29,14 +35,53 @@ def Jsub (h1 : (1 : GL (Fin n) k) ∈ G.JSet) (hmul : ∀ g ∈ G.JSet, ∀ h �
   mul_mem' := fun ha hb => hmul _ ha _ hb
   inv_mem' := fun ha => hinv _ ha
 
+/- English proof (translation)
+The claim follows from `(Subgroup.closure_le (K := Jsub G h1 hmul hinv)).2 (fun _ hx => hx) hg`.
+-/
 theorem Jg_sub (h1 : (1 : GL (Fin n) k) ∈ G.JSet) (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JSet)
     (hinv : ∀ g ∈ G.JSet, g⁻¹ ∈ G.JSet) {g : GL (Fin n) k} (hg : g ∈ G.Jg) : g ∈ G.JSet :=
   (Subgroup.closure_le (K := Jsub G h1 hmul hinv)).2 (fun _ hx => hx) hg
 
+/- English proof (translation)
+Introduce `_ hg` and use `(Jg_sub G h1 hmul hinv hg).1`.
+-/
 theorem Jg_le_KO (h1 : (1 : GL (Fin n) k) ∈ G.JSet) (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JSet)
     (hinv : ∀ g ∈ G.JSet, g⁻¹ ∈ G.JSet) : G.Jg ≤ KO k (Fin n) := fun _ hg =>
   (Jg_sub G h1 hmul hinv hg).1
 
+/- English proof (translation)
+Take `⟨hKCeq, hKCn, hKCo, -, -⟩` from `hKC r`. Establish `hJ : ∀ {g : GL (Fin n) k}, g ∈ G.Jg → g ∈ G.JSet` using `fun hg => Jg_sub G h1 hmul hinv hg`. Establish `hJK` using `Jg_le_KO G h1 hmul hinv`. Establish `hKCmem : ∀ {u : GL (Fin n) k}, u ∈ KCg k n r → u ∈ KC k n r` using `fun hu => by`. Rewrite using `[← hKCeq]`.
+
+Conclude with `hu`. Establish `hfin : Finite (↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg)`. Establish `hc : IsCompact (KO k (Fin n) : Set (GL (Fin n) k))` using `GlobalTheory.SplitFlip.isCompact_KO`. Establish `: CompactSpace (KO k (Fin n))` using `isCompact_iff_compactSpace.1 hc`. Establish `ho : IsOpen (((KCg k n r).subgroupOf (KO k (Fin n)) : Subgroup (KO k (Fin n))) : Set (KO k (Fin n)))`.
+
+Establish `: IsOpen (KCg k n r : Set (GL (Fin n) k))` using `by rw [hKCeq]; exact hKCo`. Conclude with `this.preimage continuous_subtype_val`. Establish `: Finite (KO k (Fin n) ⧸ (KCg k n r).subgroupOf (KO k (Fin n)))` using `Subgroup.quotient_finite_of_isOpen _ ho`. Establish `h0 : (KCg k n r).relIndex (KO k (Fin n)) ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `h0' : (KCg k n r).relIndex G.Jg ≠ 0` using `fun h => h0 (Subgroup.relIndex_eq_zero_of_le_right hJK h)`.
+
+Establish `: ((KCg k n r).subgroupOf G.Jg).FiniteIndex` using `⟨h0'⟩`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`. Use `⟨hfin, fun v hv => ?_⟩` and prove the remaining obligations. Set `_ : Fintype (↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg)` to `Fintype.ofFinite _`. Establish `hN : ((KCg k n r).subgroupOf G.Jg).Normal` using `⟨fun h hh g => by`.
+
+Rewrite `hh`, the goal using `[Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `Subgroup.subset_closure (hKCn _ (hJK g.2) _ (hKCmem hh))⟩`. Take `⟨f, hfdef⟩ : ∃ f : ↥G.Jg → V, ∀ x, f x = (G.lam x)⁻¹ • π x v` from `⟨_, fun _ => rfl⟩`. Establish `hlamH : ∀ h : ↥G.Jg, h ∈ (KCg k n r).subgroupOf G.Jg → G.lam h = 1` using `fun h hh => hlB.2.2 _ (KC_mono hr (hKCmem (Subgroup.mem_subgroupOf.1 hh)))`.
+
+Establish `hπH : ∀ h : ↥G.Jg, h ∈ (KCg k n r).subgroupOf G.Jg → π h v = v` using `fun h hh => hv _ (hKCmem (Subgroup.mem_subgroupOf.1 hh))`. Establish `hf : ∀ x y : ↥G.Jg, (x : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg) = y → f x = f y`. Introduce `x y hxy`. Take `⟨h, hh, rfl⟩ : ∃ h ∈ (KCg k n r).subgroupOf G.Jg, y = x * h` from `⟨x⁻¹ * y, QuotientGroup.eq.1 hxy, by group⟩`. Rewrite using `[hfdef, hfdef, Subgroup.coe_mul, hlM _ (hJ x.2) _ (hJ h.2), hlamH h hh, mul_one, map_mul, Module.End.mul_apply, hπH h hh]`.
+
+Establish `hPJ : ∀ w : V, G.PJ π r w = ∑ c : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg, (G.lam ((Quotient.out c : ↥G.Jg) : GL (Fin n) k))⁻¹ • π ((Quotient.out c : ↥G.Jg) : GL (Fin n) k) w` using `fun w => finsum_eq_sum_of_fintype _`. Establish `hPJv : G.PJ π r v = ∑ c : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg, f (Quotient.out c)`. Rewrite using `[hPJ]`. Simplify using `only [hfdef]`. Establish `hA : ∀ g ∈ G.JSet, π g (G.PJ π r v) = G.lam g • G.PJ π r v`.
+
+Introduce `g hg`. Establish `hg0` using `hlB.2.1 g`. Establish `hterm : ∀ x : ↥G.Jg, π g (f x) = G.lam g • f (⟨g, Subgroup.subset_closure hg⟩ * x)`. Introduce `x`. Rewrite using `[hfdef, hfdef, Subgroup.coe_mul, Subgroup.coe_mk, hlM g hg _ (hJ x.2), map_smul, map_mul, Module.End.mul_apply, smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hmv : ∀ c : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg, f (⟨g, Subgroup.subset_closure hg⟩ * Quotient.out c) = f (Quotient.out ((QuotientGroup.mk ⟨g, Subgroup.subset_closure hg⟩ : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg) * c))`. Introduce `c`. Apply `hf` to reduce the goal to its premises.
+
+Rewrite using `[QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Rewrite using `[hPJv, map_sum, Finset.smul_sum]`. Repeatedly rewrite using `[hterm, hmv]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft (QuotientGroup.mk ⟨g, Subgroup.subset_closure hg⟩ : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg)) _ _ (fun c => rfl)`. Use `⟨fun g hg => hA g hg, fun j hj => ?_, fun hEv => ?_⟩` and prove the remaining obligations.
+
+Establish `hjinv` using `hinv j hj`. Establish `h1' : G.lam j⁻¹ * G.lam j = 1` using `by rw [← hlM _ hjinv _ hj, inv_mul_cancel, hlB.1]`. Establish `hterm : ∀ x : ↥G.Jg, (G.lam x)⁻¹ • π x (π j v) = π j (f ((⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg)⁻¹ * x * ⟨j, Subgroup.subset_closure hj⟩))`. Introduce `x`. Establish `hx` using `hJ x.2`.
+
+Establish `e : (((⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg)⁻¹ * x * ⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg) : GL (Fin n) k) = j⁻¹ * x * j` using `rfl`. Establish `hl : G.lam (((⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg)⁻¹ * x * ⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg) : GL (Fin n) k) = G.lam x`. Rewrite using `[e, hlM _ (hmul _ hjinv _ hx) _ hj, hlM _ hjinv _ hx]`. Take the linear combination `G.lam x * h1'`. Rewrite using `[hfdef, hl, map_smul, e, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`.
+
+Use `congr 3`. Use `group`. Establish `hmv : ∀ c : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg, f ((⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg)⁻¹ * Quotient.out c * ⟨j, Subgroup.subset_closure hj⟩) = f (Quotient.out ((QuotientGroup.mk ⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg)⁻¹ * c * QuotientGroup.mk …`. Introduce `c`. Apply `hf` to reduce the goal to its premises.
+
+Rewrite using `[QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.mk_mul, QuotientGroup.mk_inv, QuotientGroup.out_eq']`. Rewrite using `[hPJ (π j v)]`. Repeatedly rewrite using `[hterm, hmv]`. Rewrite using `[← map_sum, ← hA j hj, hPJv]`. Use `congr 1`.
+
+Conclude with `Fintype.sum_equiv ((Equiv.mulLeft (QuotientGroup.mk ⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg)⁻¹).trans (Equiv.mulRight (QuotientGroup.mk ⟨j, Subgroup.subset_closure hj⟩ : ↥G.Jg ⧸ (KCg k n r).subgroupOf G.Jg))) _ _ (fun c => rfl)`. Establish `hfv : ∀ x : ↥G.Jg, f x = v` using `fun x => by`. Rewrite using `[hfdef, hEv _ (hJ x.2), smul_smul, inv_mul_cancel₀ (hlB.2.1 _), one_smul]`. Rewrite using `[hPJv]`. Repeatedly rewrite using `[hfv]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem core (h1 : (1 : GL (Fin n) k) ∈ G.JSet) (hmul : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, g * h ∈ G.JSet)
     (hinv : ∀ g ∈ G.JSet, g⁻¹ ∈ G.JSet)
     (hlM : ∀ g ∈ G.JSet, ∀ h ∈ G.JSet, G.lam (g * h) = G.lam g * G.lam h)
@@ -145,6 +190,9 @@ theorem core (h1 : (1 : GL (Fin n) k) ∈ G.JSet) (hmul : ∀ g ∈ G.JSet, ∀ 
 
 end P_PJ
 
+/- English proof (translation)
+Introduce `hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hKC`. Conclude with `P_PJ.core G hJone.1 (hJmul hcb hccB) (hJinv hcb hccB) (hlM hcb hΔU hΔM hccB) (hlB hccB) (hKC hccB)`.
+-/
 theorem step_PJ {n : ℕ} (G : Grp k n) : ParabolicJacquetProp G := by
   intro hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hKC
   exact P_PJ.core G hJone.1 (hJmul hcb hccB) (hJinv hcb hccB) (hlM hcb hΔU hΔM hccB) (hlB hccB) (hKC hccB)

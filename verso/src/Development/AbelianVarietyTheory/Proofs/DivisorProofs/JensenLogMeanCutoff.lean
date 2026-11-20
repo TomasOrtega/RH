@@ -12,6 +12,21 @@ open AlgebraicGeometry MeasureTheory GlobalTheory.ChernReg GlobalTheory.ShFam Gl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `d q g hc hh hp hg hgi hli`. Establish `hχ : MeasureTheory.Integrable (fun ξ => GlobalTheory.ChernReg.cutoff (q ξ))` using `integrable_cutoff hc hh hp`. Establish `hm0 : 0 < ∫ ξ, GlobalTheory.ChernReg.cutoff (q ξ)` using `mass_pos hc hh hp`. Establish `hgm : (∫ ξ, GlobalTheory.ChernReg.cutoff (q ξ)) ≤ ∫ ξ, g ξ * GlobalTheory.ChernReg.cutoff (q ξ)` using `integral_mono hχ hgi (fun ξ => by`. Use `cutoff_nonneg (q ξ)` as an intermediate fact.
+
+Use `hg ξ` as an intermediate fact. Use `show GlobalTheory.ChernReg.cutoff (q ξ) ≤ g ξ * GlobalTheory.ChernReg.cutoff (q ξ)`. Use the proof step `nlinarith)`. Establish `hM0 : 0 < GlobalTheory.ChernReg.mean q g` using `div_pos (hm0.trans_le hgm) hm0`. Use `set M := GlobalTheory.ChernReg.mean q g with hM`.
+
+Establish `key : ∀ ξ, Real.log (g ξ) * GlobalTheory.ChernReg.cutoff (q ξ) ≤ Real.log M * GlobalTheory.ChernReg.cutoff (q ξ) + (g ξ * GlobalTheory.ChernReg.cutoff (q ξ) - M * GlobalTheory.ChernReg.cutoff (q ξ)) / M`. Introduce `ξ`. Establish `hgpos : 0 < g ξ` using `lt_of_lt_of_le one_pos (hg ξ)`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hgpos hM0)`. Rewrite `h1` using `[Real.log_div hgpos.ne' hM0.ne']`.
+
+Establish `hc0` using `cutoff_nonneg (q ξ)`. Apply the tactic sequence `have h2 : g ξ / M - 1 = (g ξ - M) / M := by field_simp; try ring`. Establish `h3 : Real.log (g ξ) ≤ Real.log M + (g ξ - M) / M` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hI1 : MeasureTheory.Integrable (fun ξ => Real.log M * GlobalTheory.ChernReg.cutoff (q ξ))` using `hχ.const_mul _`.
+
+Establish `hI2 : MeasureTheory.Integrable (fun ξ => M * GlobalTheory.ChernReg.cutoff (q ξ))` using `hχ.const_mul _`. Establish `hI3 : MeasureTheory.Integrable (fun ξ => (g ξ * GlobalTheory.ChernReg.cutoff (q ξ) - M * GlobalTheory.ChernReg.cutoff (q ξ)) / M)` using `(hgi.sub hI2).div_const M`. Establish `hint : (∫ ξ, Real.log (g ξ) * GlobalTheory.ChernReg.cutoff (q ξ)) ≤ ∫ ξ, (Real.log M * GlobalTheory.ChernReg.cutoff (q ξ) + (g ξ * GlobalTheory.ChernReg.cutoff (q ξ) - M * GlobalTheory.ChernReg.cutoff (q ξ)) / M)` using `integral_mono hli (hI1.add hI3) key`. Rewrite `hint` using `[integral_add hI1 hI3, integral_div, integral_sub hgi hI2, integral_const_mul, integral_const_mul]`. Establish `hMm : M * (∫ ξ, GlobalTheory.ChernReg.cutoff (q ξ)) = ∫ ξ, g ξ * GlobalTheory.ChernReg.cutoff (q ξ)`.
+
+Rewrite using `[hM, GlobalTheory.ChernReg.mean]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite `hint` using `[hMm, sub_self, zero_div, add_zero]`. Rewrite using `[GlobalTheory.ChernReg.mean, div_le_iff₀ hm0]`.
+
+Conclude with `hint`.
+-/
 theorem jensen_log_mean : ∀ {d : ℕ} (q g : (Fin d → ℂ) → ℝ), Continuous q → (∀ (t : ℝ) ξ, q (t • ξ) = t ^ 2 * q ξ) → (∀ ξ, ξ ≠ 0 → 0 < q ξ) → (∀ ξ, 1 ≤ g ξ) → MeasureTheory.Integrable (fun ξ => g ξ * GlobalTheory.ChernReg.cutoff (q ξ)) → MeasureTheory.Integrable (fun ξ => Real.log (g ξ) * GlobalTheory.ChernReg.cutoff (q ξ)) → GlobalTheory.ChernReg.mean q (fun ξ => Real.log (g ξ)) ≤ Real.log (GlobalTheory.ChernReg.mean q g) := by
   intro d q g hc hh hp hg hgi hli
   have hχ : MeasureTheory.Integrable (fun ξ => GlobalTheory.ChernReg.cutoff (q ξ)) := integrable_cutoff hc hh hp

@@ -55,6 +55,9 @@ def conjSub (S : Submodule ℂ (K → ℂ)) : Submodule ℂ (K → ℂ) where
     show (fun k => star ((c • f) k)) ∈ S
     rw [h]; exact S.smul_mem _ hf
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_conjSub {S : Submodule ℂ (K → ℂ)} {f : K → ℂ} : f ∈ conjSub S ↔ (fun k => star (f k)) ∈ S := Iff.rfl
 
 instance conjSub_finiteDimensional (S : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ S] :
@@ -76,6 +79,11 @@ instance conjSub_finiteDimensional (S : Submodule ℂ (K → ℂ)) [FiniteDimens
     FiniteDimensional.span_of_finite ℂ (Set.finite_range _)
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hf`. Establish `h : (fun k => star ((a + c) k)) = (fun k => star (c k)) + (fun k => star (a k))`. Use function extensionality and compare the values at `fun k => by simp [add_comm]`. Rewrite using `[h]`. Use `Submodule.add_mem_sup hc ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_conjSub]`. Simplify using `using ha`.
+-/
 theorem star_mem_sup {S : Submodule ℂ (K → ℂ)} {f : K → ℂ} (hf : f ∈ S ⊔ conjSub S) :
     (fun k => star (f k)) ∈ S ⊔ conjSub S := by
   obtain ⟨a, ha, c, hc, rfl⟩ := Submodule.mem_sup.1 hf
@@ -90,6 +98,15 @@ end GlobalTheory.ReproKFin
 
 namespace GlobalTheory.ReproKFin
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ W`. Set `g : Fin (Module.finrank ℂ W) × Fin (Module.finrank ℂ W) → (K → ℂ)` to `fun ij k => b.repr (ρ k (b ij.2)) ij.1`. Establish `hle : GlobalTheory.Published.AutFin.coeffSpan ρ ≤ Submodule.span ℂ (Set.range g)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f ⟨ℓ, w, rfl⟩`.
+
+Establish `: (fun k => ℓ (ρ k w)) = ∑ ij : Fin (Module.finrank ℂ W) × Fin (Module.finrank ℂ W), (b.repr w ij.2 * ℓ (b ij.1)) • g ij`. Use function extensionality and compare the values at `k`. Use `conv_lhs => rw [← b.sum_repr w]`. Rewrite using `[Finset.sum_apply, Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, Pi.smul_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr (ρ k (b j))]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, Finset.mul_sum, g]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[SetLike.mem_coe, this]`.
+
+Conclude with `Submodule.sum_mem _ fun ij _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨ij, rfl⟩)`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range g)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range g)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem coeffSpan_finDim {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ K W) : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ) := by
   let b := Module.finBasis ℂ W
@@ -119,6 +136,11 @@ namespace GlobalTheory.ReproKFin
 
 variable {K : Type} [Group K]
 
+/- English proof (translation)
+Use `⟨fun f hf => ?_, fun f hf k₀ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, c, hc', rfl⟩` from `Submodule.mem_sup.1 hf`. Establish `: Continuous c` using `by simpa using (hc _ hc').star`. Conclude with `(hc a ha).add this`. Take `⟨a, ha, c, hc', rfl⟩` from `Submodule.mem_sup.1 hf`.
+
+Conclude with `⟨Submodule.add_mem_sup (hL a ha k₀) (hL _ hc' k₀), Submodule.add_mem_sup (hR a ha k₀) (hR _ hc' k₀)⟩`.
+-/
 theorem sup_props {S : Submodule ℂ (K → ℂ)} [TopologicalSpace K] (hc : ∀ f ∈ S, Continuous f)
     (hL : ∀ f ∈ S, ∀ k₀ : K, (fun k => f (k₀ * k)) ∈ S) (hR : ∀ f ∈ S, ∀ k₀ : K, (fun k => f (k * k₀)) ∈ S) :
     (∀ f ∈ S ⊔ conjSub S, Continuous f) ∧ ∀ f ∈ S ⊔ conjSub S, ∀ k₀ : K,
@@ -130,6 +152,15 @@ theorem sup_props {S : Submodule ℂ (K → ℂ)} [TopologicalSpace K] (hc : ∀
   · obtain ⟨a, ha, c, hc', rfl⟩ := Submodule.mem_sup.1 hf
     exact ⟨Submodule.add_mem_sup (hL a ha k₀) (hL _ hc' k₀), Submodule.add_mem_sup (hR a ha k₀) (hR _ hc' k₀)⟩
 
+/- English proof (translation)
+Use `⟨fun f hf => ?_, fun f hf k₀ => ?_, fun f hf k₀ => ?_⟩` and prove the remaining obligations. Set `C : Submodule ℂ (K → ℂ)` to `{ carrier := {f | Continuous f} add_mem' := fun ha hb => ha.add hb zero_mem' := continuous_const smul_mem' := fun c _ hx => continuous_const.mul hx }`. Establish `: GlobalTheory.Published.AutFin.coeffSpan ρ ≤ C`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`.
+
+Conclude with `hρ ℓ w`. Conclude with `this hf`. Establish `: GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (LinearMap.funLeft ℂ ℂ (k₀ * ·))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨ℓ ∘ₗ ρ k₀, w, funext fun k => by simp [LinearMap.funLeft, map_mul]⟩`. Conclude with `this hf`. Establish `: GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (LinearMap.funLeft ℂ ℂ (· * k₀))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨ℓ, ρ k₀ w, funext fun k => by simp [LinearMap.funLeft, map_mul]⟩`. Conclude with `this hf`.
+-/
 theorem coeffSpan_props {W : Type} [TopologicalSpace K] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ K W)
     (hρ : GlobalTheory.Published.AutFin.IsContRep ρ) :
     (∀ f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ, Continuous f) ∧
@@ -163,6 +194,25 @@ end GlobalTheory.ReproKFin
 
 namespace GlobalTheory.ReproKFin
 
+/- English proof (translation)
+Introduce `n ε W _ _ _ ρ hρ`. Take `⟨hcS, hLS, hRS⟩` from `coeffSpan_props ρ hρ`. Use `haveI : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ) := coeffSpan_finDim ρ`. Use `set S := GlobalTheory.Published.AutFin.coeffSpan ρ with hS`. Take `⟨hcT, hTT⟩` from `sup_props hcS hLS hRS`.
+
+Use `set T := S ⊔ conjSub S with hT`. Establish `hint : ∀ f g : Formalism.REAL.KG ε → ℂ, Continuous f → Continuous g → Integrable (fun k => f k * g k) (Formalism.REAL.muK ε)` using `fun f g hf hg => (hf.mul hg).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `Φ : T →ₗ[ℂ] Module.Dual ℂ T` to `LinearMap.mk₂ ℂ (fun e h : T => ∫ k, (e : Formalism.REAL.KG ε → ℂ) k * (h : Formalism.REAL.KG ε → ℂ) k ∂(Formalism.REAL.muK ε)) (fun e e' h => by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint _ _ (hcT _ e.2) (hcT _ h.2)) (hint _ _ (hcT _ e'.2) (hcT _ h.2)))`.
+
+Use the proof step `(fun c e h => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _)`. Use the proof step `(fun e h h' => by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add]`.
+
+Conclude with `integral_add (hint _ _ (hcT _ e.2) (hcT _ h.2)) (hint _ _ (hcT _ e.2) (hcT _ h'.2)))`. Use the proof step `(fun c e h => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Conclude with `integral_const_mul c _)`. Establish `hinj : Function.Injective Φ`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `e he`. Establish `h0 : ∫ k, (e : Formalism.REAL.KG ε → ℂ) k * star ((e : Formalism.REAL.KG ε → ℂ) k) ∂(Formalism.REAL.muK ε) = 0`. Use `LinearMap.congr_fun he ⟨fun k => star ((e : Formalism.REAL.KG ε → ℂ) k), star_mem_sup e.2⟩` as an intermediate fact. Simplify `this` using `[Φ]`.
+
+Establish `h1 : ∫ k, Complex.normSq ((e : Formalism.REAL.KG ε → ℂ) k) ∂(Formalism.REAL.muK ε) = 0`. Establish `h' : (fun k => (e : Formalism.REAL.KG ε → ℂ) k * star ((e : Formalism.REAL.KG ε → ℂ) k)) = fun k => ((Complex.normSq ((e : Formalism.REAL.KG ε → ℂ) k) : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun k => by rw [Complex.star_def, Complex.mul_conj]`. Rewrite `h0` using `[h', integral_complex_ofReal]`. Conclude with `h0` after adjusting the coercions.
+
+Establish `hc : Continuous fun k => Complex.normSq ((e : Formalism.REAL.KG ε → ℂ) k)` using `Complex.continuous_normSq.comp (hcT _ e.2)`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun k => Complex.normSq_nonneg _) (hc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))).1 h1`. Establish `heq : (fun k => Complex.normSq ((e : Formalism.REAL.KG ε → ℂ) k)) = fun _ => 0` using `(Continuous.ae_eq_iff_eq (Formalism.REAL.muK ε) hc continuous_const).1 hae`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+
+Use `congrFun heq k` as an intermediate fact. Simplify `this` using `[Complex.normSq_eq_zero]`. Establish `hsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`. Set `ev1 : Module.Dual ℂ T` to `(LinearMap.proj (R := ℂ) (φ := fun _ : Formalism.REAL.KG ε => ℂ) 1).comp T.subtype`. Take `⟨e, he⟩` from `hsurj ev1`.
+
+Use `⟨e, ⟨T, inferInstance, e.2, hcT, fun φ hφ k₀ => hTT φ hφ k₀⟩, fun h hh => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun he ⟨h, Submodule.mem_sup_left hh⟩` as an intermediate fact. Simplify `this` using `[Φ, ev1]`.
+-/
 theorem reproduce_one : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Formalism.REAL.KG ε) W), GlobalTheory.Published.AutFin.IsContRep ρ → ∃ e : Formalism.REAL.KG ε → ℂ, KFinFun ε e ∧ ∀ h ∈ GlobalTheory.Published.AutFin.coeffSpan ρ, ∫ k, e k * h k ∂(Formalism.REAL.muK ε) = h 1 := by
   intro n ε W _ _ _ ρ hρ
   obtain ⟨hcS, hLS, hRS⟩ := coeffSpan_props ρ hρ

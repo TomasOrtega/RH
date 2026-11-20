@@ -13,6 +13,11 @@ def MassRatioUnderVolume (D : D7) : Prop := StandardLattice.VolTie D → Standar
 
 def GenusMassUnderVolume (D : D7) : Prop := StandardLattice.VolTie D → StandardLattice.DefiniteVolumeEqMass D
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Introduce `W P Q hS hsig hr s hs`. Take `⟨x, hx, W', ι, h1, h2, h3, h4, h5⟩` from `h W P Q hS hsig hr s hs`. Use `⟨x, hx, W', ι, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Establish `key` using `Formalism.HermitianLattices.GenusMassVolumes.global_arithmetic_identity D.R.f W.rank D.host.v (Formalism.HermitianLatticesTheory.lValEta D.host.E W.rank) (by omega) (StandardLattice.host_v_pos D) (StandardLattice.lVal_pos D _ (by omega))`.
+
+Rewrite `h5` using `[StandardLattice.mass_ratio_eq]`. Establish `e : D.vol W / D.vol W' = (((2 * Real.pi) ^ W.rank / ((W.rank - 1).factorial : ℝ)) ^ D.R.f * ((2 * D.host.v) ^ D.R.f) ^ ((1 : ℝ) / 2 - W.rank) / Formalism.HermitianLatticesTheory.lValEta D.host.E W.rank)⁻¹` using `h5.trans key.symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mass_ratio_unfolded_of_theorem_two (D : D7) (h : StandardLattice.Conclusion2 D) : StandardLattice.VolumeRatio₂ D := by
   let _ := D.host.cmStar
   intro W P Q hS hsig hr s hs
@@ -28,9 +33,21 @@ theorem mass_ratio_unfolded_of_theorem_two (D : D7) (h : StandardLattice.Conclus
   calc D.vol W' / D.vol W = (D.vol W / D.vol W')⁻¹ := (inv_div _ _).symm
     _ = _ := by rw [e, inv_inv]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨StandardLattice.volumeMass_of_unfolding D, mass_ratio_unfolded_of_theorem_two D⟩`.
+-/
 theorem mass_ratio_unfolded_iff (D : D7) : StandardLattice.VolumeRatio₂ D ↔ StandardLattice.Conclusion2 D :=
   ⟨StandardLattice.volumeMass_of_unfolding D, mass_ratio_unfolded_of_theorem_two D⟩
 
+/- English proof (translation)
+Introduce `hT`. Use `mass_ratio_unfolded_of_theorem_two D ?_` and prove the remaining obligations. Introduce `W P Q hW hs hr s hsP`. Take `⟨x, hx, W', ι, hι, hrg, hW', hs', hrat⟩` from `hV W P Q hW hs hr s hsP`. Use `⟨x, hx, W', ι, hι, hrg, hW', hs', ?_⟩` and prove the remaining obligations.
+
+Establish `hs'' : ∀ τ, W'.sig τ = ((if s then P - 1 else P), (if s then Q else Q - 1))`. Introduce `τ`. Rewrite using `[hs' τ]`. Apply the tactic sequence `cases s <;> simp`. Take `⟨⟨μ, hμ⟩, h1⟩` from `hT W P Q hW hs`.
+
+Take `⟨⟨𝓕, h𝓕⟩, h2⟩` from `h1 μ hμ`. Take `⟨⟨μ', hμ'⟩, h1'⟩` from `hT W' _ _ hW' hs''`. Take `⟨⟨𝓕', h𝓕'⟩, h2'⟩` from `h1' μ' hμ'`. Establish `e1 : μ 𝓕 = ENNReal.ofReal (D.vol W)` using `h2 𝓕 h𝓕`. Establish `e2 : μ' 𝓕' = ENNReal.ofReal (D.vol W')` using `h2' 𝓕' h𝓕'`.
+
+Establish `e` using `hrat μ 𝓕 μ' 𝓕' hμ h𝓕 hμ' h𝓕'`. Rewrite `e` using `[e1, e2, ENNReal.toReal_ofReal (D.vol_pos W).le, ENNReal.toReal_ofReal (D.vol_pos W').le]`. Conclude with `e`.
+-/
 theorem mass_ratio_of_true_volume_ratio (D : D7) (hV : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.VolRatioTrue D) : MassRatioUnderVolume D := by
   intro hT
   refine mass_ratio_unfolded_of_theorem_two D ?_
@@ -51,16 +68,28 @@ theorem mass_ratio_of_true_volume_ratio (D : D7) (hV : Formalism.L2.GlobalTheory
   rw [e1, e2, ENNReal.toReal_ofReal (D.vol_pos W).le, ENNReal.toReal_ofReal (D.vol_pos W').le] at e
   exact e
 
+/- English proof (translation)
+Introduce `hT` and use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.mass_volume_identity_of_class_decomp D hT hG hC`.
+-/
 theorem genus_mass_of_class_decomposition (D : D7) (hG : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.GenusMassStd D)
     (hC : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.DefClassDecomp D) : GenusMassUnderVolume D :=
   fun hT => Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.mass_volume_identity_of_class_decomp D hT hG hC
 
+/- English proof (translation)
+The claim follows from `StandardLattice.massRatio_of_definiteVolume D (StandardLattice.volumeMass_of_unfolding D (hU hT)) (hv hT)`.
+-/
 theorem auxb_of_massRatio_of_genusMass_of_volTie (D : D7) (hU : MassRatioUnderVolume D) (hv : GenusMassUnderVolume D) (hT : StandardLattice.VolTie D) : StandardLattice.MassRatio₂ D :=
   StandardLattice.massRatio_of_definiteVolume D (StandardLattice.volumeMass_of_unfolding D (hU hT)) (hv hT)
 
+/- English proof (translation)
+The claim follows from `StandardLattice.volumeY0EqualsMass_of_aux2v D (StandardLattice.volume_eq_mass_of_definite D (StandardLattice.volumeMass_of_unfolding D (hU hT)) (hv hT))`.
+-/
 theorem volumeY0EqualsMass_of_massRatio_of_genusMass (D : D7) (hU : MassRatioUnderVolume D) (hv : GenusMassUnderVolume D) (hT : StandardLattice.VolTie D) : StandardLattice.BaseVolumeEqualsMass D :=
   StandardLattice.volumeY0EqualsMass_of_aux2v D (StandardLattice.volume_eq_mass_of_definite D (StandardLattice.volumeMass_of_unfolding D (hU hT)) (hv hT))
 
+/- English proof (translation)
+Introduce `W P Q hW hs`. Establish `hv` using `h.vol W hW`. Simplify using `only [hs] at hv`. Conclude with `hv`.
+-/
 theorem volTie_of_realTied (D : D7) (h : Formalism.L2.Theta.RealTied D) : StandardLattice.VolTie D := by
   intro W P Q hW hs
   have hv := h.vol W hW
@@ -69,20 +98,32 @@ theorem volTie_of_realTied (D : D7) (h : Formalism.L2.Theta.RealTied D) : Standa
 
 variable {eps : ℝ}
 
+/- English proof (translation)
+Take `⟨x0, hx⟩` from `tVol`. Conclude with `⟨x0, fun x h1 h2 i => auxb_of_massRatio_of_genusMass_of_volTie _ (hU _) (hv _) (hx x h1 h2 i)⟩`.
+-/
 theorem mass_ratio_family_of_volume (Fm : FamP eps) (hU : ∀ D, MassRatioUnderVolume D) (hv : ∀ D, GenusMassUnderVolume D)
     (tVol : flipTwoThree.fam0 Fm StandardLattice.VolTie) : flipTwoThree.fam0 Fm StandardLattice.MassRatio₂ := by
   obtain ⟨x0, hx⟩ := tVol
   exact ⟨x0, fun x h1 h2 i => auxb_of_massRatio_of_genusMass_of_volTie _ (hU _) (hv _) (hx x h1 h2 i)⟩
 
+/- English proof (translation)
+Take `⟨x0, hx⟩` from `tVol`. Conclude with `⟨x0, fun x h1 h2 i => volumeY0EqualsMass_of_massRatio_of_genusMass _ (hU _) (hv _) (hx x h1 h2 i)⟩`.
+-/
 theorem volume_mass_family_of_volume (Fm : FamP eps) (hU : ∀ D, MassRatioUnderVolume D) (hv : ∀ D, GenusMassUnderVolume D)
     (tVol : flipTwoThree.fam0 Fm StandardLattice.VolTie) : flipTwoThree.fam0 Fm StandardLattice.BaseVolumeEqualsMass := by
   obtain ⟨x0, hx⟩ := tVol
   exact ⟨x0, fun x h1 h2 i => volumeY0EqualsMass_of_massRatio_of_genusMass _ (hU _) (hv _) (hx x h1 h2 i)⟩
 
+/- English proof (translation)
+Take `⟨x0, hx⟩` from `h`. Conclude with `⟨x0, fun x h1 h2 i => volTie_of_realTied _ (hx x h1 h2 i)⟩`.
+-/
 theorem tVol_of_real (Fm : FamP eps) (h : flipTwoThree.fam0 Fm Formalism.L2.Theta.RealTied) : flipTwoThree.fam0 Fm StandardLattice.VolTie := by
   obtain ⟨x0, hx⟩ := h
   exact ⟨x0, fun x h1 h2 i => volTie_of_realTied _ (hx x h1 h2 i)⟩
 
+/- English proof (translation)
+Conclude with `linkGLOBAL7_min Fm Cabs CH C0 C5 hCabs hCH hC0 (mass_ratio_family_of_volume Fm hU hv tVol) (volume_mass_family_of_volume Fm hU hv tVol) h3 hZa hZb tCV hW hμ hI hR hB`.
+-/
 theorem linkGLOBAL7_tiedV (Fm : FamP eps) (Cabs CH C0 C5 : ℝ) (hCabs : 0 ≤ Cabs) (hCH : 0 < CH) (hC0 : 3 ≤ C0)
     (hU : ∀ D, MassRatioUnderVolume D) (hv : ∀ D, GenusMassUnderVolume D) (tVol : flipTwoThree.fam0 Fm StandardLattice.VolTie)
     (h3 : flipTwoThree.fam0 Fm StandardLattice.SigmaDegreeTwoSidedBoundOfGap)

@@ -27,6 +27,9 @@ open GlobalTheory.SimilTheta
 
 namespace GlobalTheory.SimilTheta
 
+/- English proof (translation)
+Rewrite using `[natCast_zsmul]`. Proceed by induction on `m with`. Consider the case `zero => simpa using GlobalTheory.CubeValues.ex_zero u`. Consider the case `succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`.
+-/
 theorem ex_nsmul_eq_pow {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (m : ℕ)
     (z : Fin g → ℂ) : u.ex ((m : ℤ) • z) = u.ex z ^ m := by
   rw [natCast_zsmul]
@@ -34,10 +37,28 @@ theorem ex_nsmul_eq_pow {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
   | zero => simpa using GlobalTheory.CubeValues.ex_zero u
   | succ n ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[ex_nsmul_eq_pow, MonObj.comp_pow, Category.comp_id]`.
+-/
 theorem ex_comp_id_pow {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (m : ℕ)
     (z : Fin g → ℂ) : u.ex z ≫ (𝟙 A) ^ m = u.ex ((m : ℤ) • z) := by
   rw [ex_nsmul_eq_pow, MonObj.comp_pow, Category.comp_id]
 
+/- English proof (translation)
+Introduce `g m x h u τ a b al hab hW hm hal mu hmu`. Take `⟨T, hT, hT0, hTv⟩` from `GlobalTheory.T.exists_entire_ne_zero_val_eq_mul_prod_frames x.P.A x.P.L g u x.P.isLB x.P.A.left (Fin 2) ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] ![1, -(m : ℤ) ^ 2] mu hmu (Fin g → ℂ) (fun z => (u.ex z).left) ![fun z => (m : ℤ) • z, fun z => z] u.hol (Fin.forall_fin_two.2 ⟨differenti …`. Establish `hv : ∀ (z : Fin g → ℂ) (j : Fin 2 → x.P.L.ι), ⊤ ≤ (u.ex ((m : ℤ) • z)).left ⁻¹ᵁ x.P.L.U (j 0) → ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U (j 1) → valAt' (u.ex z).left (LB.wchart x.P.L ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] j) (mu.s j).val = T z * (u.fr (j 0) ((m : ℤ) • z) * u.fr (j 1) z ^ (-( …` using `fun z j h0 h1 => by`. Use `(hTv z j (Fin.forall_fin_two.2 ⟨h0, h1⟩)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`.
+
+Conclude with `congrArg (fun t => T z * (t * u.fr (j 1) z ^ (-(m : ℤ) ^ 2))) (zpow_one _)`. Establish `hper : ∀ z, ∀ l ∈ (u.Λ : Set (Fin g → ℂ)), T (z + l) = T z`. Introduce `z l hl`. Take `⟨k, n, hkn⟩` from `(hW.2.2.1 l).1 hl`. Take `rfl : l = lat τ k n` from `hkn`.
+
+Take `⟨i0, h0⟩` from `GlobalTheory.PowUnif.exists_chart x.P.isLB (u.ex ((m : ℤ) • z)).left`. Take `⟨i1, h1⟩` from `GlobalTheory.PowUnif.exists_chart x.P.isLB (u.ex z).left`. Establish `e1 : u.ex (z + lat τ k n) = u.ex z` using `GlobalTheory.CubeValues.ex_add_period u z _ hl`. Establish `e0 : u.ex ((m : ℤ) • (z + lat τ k n)) = u.ex ((m : ℤ) • z)`. Rewrite using `[ex_nsmul_eq_pow, e1, ex_nsmul_eq_pow]`.
+
+Establish `A1` using `hv z ![i0, i1] h0 h1`. Establish `A2` using `hv (z + lat τ k n) ![i0, i1] (by rw [e0]; exact h0) (by rw [e1]; exact h1)`. Rewrite `A2` using `[e1, A1]`. Establish `n0` using `u.fr_ne i0 ((m : ℤ) • (z + lat τ k n)) (by rw [e0]; exact h0)`. Establish `n1` using `u.fr_ne i1 (z + lat τ k n) (by rw [e1]; exact h1)`.
+
+Establish `f0` using `GlobalTheory.T.thetaUniformisation_frame_eq_automorphy_mul g x h u τ a b hab hW ((m : ℤ) • k) ((m : ℤ) • n) i0 _ h0`. Establish `f1` using `GlobalTheory.T.thetaUniformisation_frame_eq_automorphy_mul g x h u τ a b hab hW k n i1 _ h1`. Rewrite `f0` using `[lat_zsmul, ← smul_add, (GlobalTheory.SimilTheta.aut_similitude_and_mul g m τ a b al hab hW.1 hm hal).2]`. Express the relevant statement in the definitionally equal form `T z * (u.fr i0 _ * u.fr i1 _ ^ _) = T _ * (u.fr i0 _ * u.fr i1 _ ^ _) at A2`. Rewrite `A2` using `[f0, f1]`.
+
+Establish `na` using `aut_ne_zero τ a b k n z`. Establish `hp : (-(m : ℤ) ^ 2) = -((m ^ 2 : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite `A2` using `[hp, zpow_neg, zpow_neg, zpow_natCast, zpow_natCast, mul_pow]`. Clear denominators, using `at A2` for the nonvanishing conditions. Conclude with `A2.symm`.
+
+Use `⟨T 0, hT0 0, fun z j h0 h1 => ?_⟩` and prove the remaining obligations. Rewrite using `[hv z j h0 h1, GlobalTheory.entire_apply_eq_of_periodic_of_span_real hT u.full hper z 0]`.
+-/
 theorem generator_mul_const_in_frames : ∀ (g m : ℕ) (x : KeyIn ℂ) (h : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (al : Matrix (Fin 4) (Fin 4) ℤ), charHalf g a b → Wit x h u τ a b → 1 ≤ m → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → ∀ mu : LB.Gen (LB.LinComb x.P.L (K := Fin 2) ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] ![1, -(m : ℤ) ^ 2]), mu.IsGen → ∃ C : ℂ, C ≠ 0 ∧ ∀ (z : Fin g → ℂ) (j : Fin 2 → x.P.L.ι), ⊤ ≤ (u.ex ((m : ℤ) • z)).left ⁻¹ᵁ x.P.L.U (j 0) → ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U (j 1) → valAt' (u.ex z).left (LB.wchart x.P.L ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] j) (mu.s j).val = C * (u.fr (j 0) ((m : ℤ) • z) * u.fr (j 1) z ^ (-(m : ℤ) ^ 2)) := by
   intro g m x h u τ a b al hab hW hm hal mu hmu
   obtain ⟨T, hT, hT0, hTv⟩ := GlobalTheory.T.exists_entire_ne_zero_val_eq_mul_prod_frames x.P.A x.P.L g u x.P.isLB x.P.A.left (Fin 2)

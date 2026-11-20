@@ -10,6 +10,13 @@ namespace GlobalTheory.FieldPtGlue
 section Val
 variable {F : Type} [Field F] {X : Scheme.{0}} {x : Sp F ⟶ X}
 
+/- English proof (translation)
+Establish `e1` using `Scheme.basicOpen_appLE x ⊤ U h a`. Rewrite `e1` using `[top_inf_eq]`. Establish `e2 : (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (valF x U a) = (x.appLE U ⊤ h).hom a`. Rewrite using `[valF, dif_pos h]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of F)).hom_inv_id_apply _`.
+
+Establish `e3 : x ⁻¹ᵁ X.basicOpen a = (Sp F).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (valF x U a))`. Rewrite using `[e2]`. Conclude with `e1.symm`. Rewrite using `[e3]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hne`. Conclude with `(Scheme.basicOpen_of_isUnit _ ((Ne.isUnit hne).map _)).ge`. Introduce `hle h0`. Rewrite `hle` using `[h0, map_zero, Scheme.basicOpen_zero]`. Conclude with `hle (show (IsLocalRing.closedPoint F : Sp F) ∈ (⊤ : (Sp F).Opens) from trivial)`.
+-/
 theorem valF_ne_zero_iff {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) :
     valF x U a ≠ 0 ↔ ⊤ ≤ x ⁻¹ᵁ X.basicOpen a := by
   have e1 := Scheme.basicOpen_appLE x ⊤ U h a
@@ -28,16 +35,27 @@ theorem valF_ne_zero_iff {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U))
     rw [h0, map_zero, Scheme.basicOpen_zero] at hle
     exact hle (show (IsLocalRing.closedPoint F : Sp F) ∈ (⊤ : (Sp F).Opens) from trivial)
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ x ⁻¹ᵁ U` using `fun q hq => e (h hq)`. Rewrite using `[valF, valF, dif_pos h, dif_pos h', ← Scheme.Hom.map_appLE x h (homOfLE e).op]`. Both sides reduce to the same expression.
+-/
 theorem valF_restrict {U V : X.Opens} (e : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, U)) : valF x V ((X.presheaf.map (homOfLE e).op).hom a) = valF x U a := by
   have h' : ⊤ ≤ x ⁻¹ᵁ U := fun q hq => e (h hq)
   rw [valF, valF, dif_pos h, dif_pos h', ← Scheme.Hom.map_appLE x h (homOfLE e).op]
   rfl
 
+/- English proof (translation)
+Simplify using `only [valF, dif_pos h, map_sub]`.
+-/
 theorem valF_sub {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)) :
     valF x U (a - b) = valF x U a - valF x U b := by
   simp only [valF, dif_pos h, map_sub]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h (show (IsLocalRing.closedPoint F : Sp F) ∈ (⊤ : (Sp F).Opens) from trivial)`. Introduce `h y _`. Establish `: y = IsLocalRing.closedPoint F` using `Subsingleton.elim (α := PrimeSpectrum F) _ _`.
+
+Substitute `this` using the available equality. Conclude with `h`.
+-/
 theorem le_preimage_iff (U : X.Opens) : ⊤ ≤ x ⁻¹ᵁ U ↔ x (IsLocalRing.closedPoint F) ∈ U := by
   constructor
   · intro h
@@ -51,12 +69,20 @@ end Val
 
 noncomputable def resPt (X : Scheme.{0}) (z : X) : Sp (X.residueField z : Type) ⟶ X := X.fromSpecResidueField z
 
+/- English proof (translation)
+Rewrite using `[le_preimage_iff]`. Establish `: resPt X z (IsLocalRing.closedPoint (X.residueField z : Type)) = z` using `Scheme.fromSpecResidueField_apply z _`. Rewrite using `[this]`.
+-/
 theorem resPt_le_iff (X : Scheme.{0}) (z : X) (U : X.Opens) : ⊤ ≤ resPt X z ⁻¹ᵁ U ↔ z ∈ U := by
   rw [le_preimage_iff]
   have : resPt X z (IsLocalRing.closedPoint (X.residueField z : Type)) = z :=
     Scheme.fromSpecResidueField_apply z _
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Establish `hU : ⊤ ≤ resPt X z ⁻¹ᵁ U` using `(resPt_le_iff X z U).2 (X.basicOpen_le _ hz)`.
+
+Establish `h1` using `(valF_ne_zero_iff hU (a - b)).2 ((resPt_le_iff X z _).2 hz)`. Rewrite `h1` using `[valF_sub hU, h _ _ hU, sub_self]`. Conclude with `absurd rfl h1`.
+-/
 theorem section_ext {X : Scheme.{0}} [IsReduced X] {U : X.Opens} (a b : Γ(X, U))
     (h : ∀ (k : Type) [Field k] (w : Sp k ⟶ X), ⊤ ≤ w ⁻¹ᵁ U → valF w U a = valF w U b) : a = b := by
   rw [← sub_eq_zero]
@@ -68,6 +94,19 @@ theorem section_ext {X : Scheme.{0}} [IsReduced X] {U : X.Opens} (a b : Γ(X, U)
   rw [valF_sub hU, h _ _ hU, sub_self] at h1
   exact absurd rfl h1
 
+/- English proof (translation)
+Introduce `X _ U P huniq hne hloc`. Use `choose V s hzV hVU hP using hloc`. Set `V' : U → X.Opens` to `fun z => V z.1 z.2`. Set `s' : ∀ z : U, Γ(X, V' z)` to `fun z => s z.1 z.2`. Establish `hcov : U ≤ iSup V'` using `fun z hz => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨z, hz⟩, hzV z hz⟩`.
+
+Establish `hcomp : TopCat.Presheaf.IsCompatible X.presheaf V' s'`. Introduce `i j`. Use `section_ext (X := X) (U := V' i ⊓ V' j) _ _ fun k _ w hw => ?_` and prove the remaining obligations. Establish `hi : ⊤ ≤ w ⁻¹ᵁ V' i` using `fun q hq => (hw hq).1`. Establish `hj : ⊤ ≤ w ⁻¹ᵁ V' j` using `fun q hq => (hw hq).2`.
+
+Use `(valF_restrict inf_le_left hw (s' i)).trans (Eq.trans ?_ (valF_restrict inf_le_right hw (s' j)).symm)` and prove the remaining obligations. Conclude with `huniq k w _ _ (fun q hq => hVU i.1 i.2 (hi hq)) (hP i.1 i.2 k w hi) (hP j.1 j.2 k w hj)`. Take `⟨t, ht, -⟩` from `X.sheaf.existsUnique_gluing' V' U (fun i => homOfLE (hVU i.1 i.2)) hcov s' hcomp`. Establish `key : ∀ (k : Type) [Field k] (w : Sp k ⟶ X), ⊤ ≤ w ⁻¹ᵁ U → P k w (valF w U t)`. Introduce `k _ w hw`.
+
+Establish `hz` using `(le_preimage_iff U).1 hw`. Establish `hV : ⊤ ≤ w ⁻¹ᵁ V _ hz` using `(le_preimage_iff _).2 (hzV _ hz)`. Establish `e : valF w U t = valF w (V _ hz) (s _ hz)` using `(valF_restrict (hVU _ hz) hV t).symm.trans (congrArg (valF w (V _ hz)) (ht ⟨_, hz⟩))`. Rewrite using `[e]`. Conclude with `hP _ hz k w hV`.
+
+Establish `hu : IsUnit (M` using `Γ(X, U)) t := by`. Apply `X.toRingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises. Introduce `z hz`. Establish `hU : ⊤ ≤ resPt X z ⁻¹ᵁ U` using `(resPt_le_iff X z U).2 hz`. Establish `h0 : valF (resPt X z) U t ≠ 0` using `fun h0 => hne _ _ hU (h0 ▸ key _ _ hU)`.
+
+Establish `h1` using `(resPt_le_iff X z _).1 ((valF_ne_zero_iff hU t).1 h0)`. Conclude with `(X.mem_basicOpen t z hz).1 h1`. Conclude with `⟨hu.unit, key⟩`.
+-/
 theorem exists_unit_of_locally : ∀ (X : Scheme.{0}) [IsReduced X] (U : X.Opens) (P : ∀ (k : Type) [Field k], (Sp k ⟶ X) → k → Prop), (∀ (k : Type) [Field k] (w : Sp k ⟶ X) (a a' : k), ⊤ ≤ w ⁻¹ᵁ U → P k w a → P k w a' → a = a') → (∀ (k : Type) [Field k] (w : Sp k ⟶ X), ⊤ ≤ w ⁻¹ᵁ U → ¬ P k w 0) → (∀ z ∈ U, ∃ (V : X.Opens) (s : Γ(X, V)), z ∈ V ∧ V ≤ U ∧ ∀ (k : Type) [Field k] (w : Sp k ⟶ X), ⊤ ≤ w ⁻¹ᵁ V → P k w (valF w V s)) → ∃ s : Γ(X, U)ˣ, ∀ (k : Type) [Field k] (w : Sp k ⟶ X), ⊤ ≤ w ⁻¹ᵁ U → P k w (valF w U s.val) := by
   intro X _ U P huniq hne hloc
   choose V s hzV hVU hP using hloc

@@ -16,6 +16,9 @@ namespace GlobalTheory.DualCon.ZarGlue
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Establish `hL : (ev N (fst A Y) (snd A Y ≫ y)).IsLB` using `pull_isLB hN.isLB _`. Use `⟨hL, (isAdditive_iff hL).2 fun Z a a' t => ?_⟩` and prove the remaining obligations. Rewrite using `[evc_ev hN.isLB _ _ hL, evc_ev hN.isLB _ _ hL, evc_ev hN.isLB _ _ hL]`. Simplify using `only [lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff hN.isLB).1 hN.add Z a a' (t ≫ y)`.
+-/
 theorem fam_pull {T Y : Over S} {N : LB (A ⊗ T).left} (hN : Fam A N) (y : Y ⟶ T) :
     Fam A (ev N (fst A Y) (snd A Y ≫ y)) := by
   have hL : (ev N (fst A Y) (snd A Y ≫ y)).IsLB := pull_isLB hN.isLB _
@@ -26,6 +29,9 @@ theorem fam_pull {T Y : Over S} {N : LB (A ⊗ T).left} (hN : Fam A N) (y : Y �
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h : u.left ≫ V.ι = u'.left ≫ V.ι` using `(Over.w u).trans (Over.w u').symm`. Conclude with `(cancel_mono V.ι).1 h`.
+-/
 theorem hom_open_eq (V : S.Opens) {Y : Over S} (u u' : Y ⟶ Over.mk V.ι) : u = u' := by
   apply Over.OverMorphism.ext
   have h : u.left ≫ V.ι = u'.left ≫ V.ι := (Over.w u).trans (Over.w u').symm
@@ -33,12 +39,18 @@ theorem hom_open_eq (V : S.Opens) {Y : Over S} (u u' : Y ⟶ Over.mk V.ι) : u =
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Use `⟨Over.homMk (IsOpenImmersion.lift V.ι Y.hom ?_) (IsOpenImmersion.lift_fac _ _ _)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `h z`.
+-/
 theorem exists_hom_open (V : S.Opens) (Y : Over S) (h : ∀ z, Y.hom z ∈ V) : Nonempty (Y ⟶ Over.mk V.ι) := by
   refine ⟨Over.homMk (IsOpenImmersion.lift V.ι Y.hom ?_) (IsOpenImmersion.lift_fac _ _ _)⟩
   rintro _ ⟨z, rfl⟩
   rw [Scheme.Opens.range_ι]
   exact h z
 
+/- English proof (translation)
+The claim follows from `h.fam inj := by intro Y u u' hs have hA : (ev P (fst A Y) (snd A Y ≫ u)).IsLB := pull_isLB h.fam.isLB _ have hB : (ev P (fst A Y) (snd A Y ≫ u')).IsLB := pull_isLB h.fam.isLB _ obtain ⟨x, -, hx⟩ := h.univ Y (u ≫ b) _ (fam_pull h.fam u) rw [hx u ⟨rfl, LBIso.trans hA hB hA hs (LBIs …`.
+-/
 theorem isChart_of_rep (V : S.Opens) {B : Over S} (b : B ⟶ Over.mk V.ι) {P : LB (A ⊗ B).left} (h : Rep A b P) :
     IsChart A P where
   fam := h.fam
@@ -68,6 +80,9 @@ theorem isChart_of_rep (V : S.Opens) {B : Over S} (b : B ⟶ Over.mk V.ι) {P : 
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨MorphismProperty.RespectsIso.precomp @IsProper e f h.proper, by haveI := h.smooth have h0 : SmoothOfRelativeDimension (0 + g) (e ≫ f) := inferInstance rwa [zero_add] at h0, by haveI := h.conn have hsq : IsPullback e (e ≫ f) f (𝟙 Y) := IsPullback.of_horiz_isIso ⟨by simp⟩ exact Mo …`.
+-/
 theorem good_iso_comp {g : ℕ} {X X' Y : Scheme.{0}} (e : X' ⟶ X) [IsIso e] {f : X ⟶ Y}
     (h : GlobalTheory.DualCon.Good g f) : GlobalTheory.DualCon.Good g (e ≫ f) := ⟨MorphismProperty.RespectsIso.precomp @IsProper e f h.proper,
   by
@@ -79,6 +94,15 @@ theorem good_iso_comp {g : ℕ} {X X' Y : Scheme.{0}} (e : X' ⟶ X) [IsIso e] {
     have hsq : IsPullback e (e ≫ f) f (𝟙 Y) := IsPullback.of_horiz_isIso ⟨by simp⟩
     exact MorphismProperty.of_isPullback (P := @GeometricallyConnected) hsq h.conn⟩
 
+/- English proof (translation)
+Introduce `S A _ hA Ix V g hcov hrep`. Establish `hrep' : ∀ i, ∃ (B : Over S) (b : B ⟶ Over.mk (V i).ι) (P : LB (A ⊗ B).left), Rep A b P ∧ GlobalTheory.DualCon.Good (g i) b.left` using `hrep`. Use `choose Bi bi Pi hRi hGi using hrep'`. Take `⟨B, P, j, hR, -, -, -⟩` from `GlobalTheory.T.glue_openCharts_additiveFamilies_representing S A hA Ix Bi Pi (fun i => isChart_of_rep (V i) (bi i) (hRi i)) (by`. Introduce `K _ _ s N hN`.
+
+Take `⟨i, hi⟩` from `hcov (s (default : Sp K))`. Establish `hs : ∀ z : Sp K, s z ∈ V i` using `fun z => by`. Rewrite using `[Subsingleton.elim z default]`. Conclude with `hi`. Take `⟨t⟩` from `exists_hom_open (V i) (Over.mk s) hs`.
+
+Take `⟨x, ⟨-, hx⟩, -⟩` from `(hRi i).univ _ t N hN`. Conclude with `⟨i, x, (same_id_iff hN.isLB (hRi i).fam.isLB x).2 hx⟩)`. Use `⟨B, P, hR, fun i => ?_⟩` and prove the remaining obligations. Establish `hpb : IsPullback (fst B (Over.mk (V i).ι)) (snd B (Over.mk (V i).ι)) (toUnit B) (toUnit (Over.mk (V i).ι))` using `IsPullback.of_is_product' (CartesianMonoidalCategory.tensorProductIsBinaryProduct _ _) SemiCartesianMonoidalCategory.isTerminalTensorUnit`. Establish `hR'` using `GlobalTheory.T.rep_ev_of_isPullback S A B (𝟙_ (Over S)) (Over.mk (V i).ι) (B ⊗ Over.mk (V i).ι) (toUnit B) P (toUnit _) (fst _ _) (snd _ _) hR hpb`.
+
+Take `⟨e, he, -⟩` from `GlobalTheory.T.representsAdditiveLineBundleFamilies_unique_iso S A _ _ _ (snd B (Over.mk (V i).ι)) _ (bi i) (Pi i) hR' (hRi i)`. Use `haveI : IsIso e.hom.left := Functor.map_isIso (Over.forget _) e.hom`. Establish `h2` using `good_iso_comp e.hom.left (hGi i)`. Rewrite `h2` using `[← Over.comp_left, he]`. Conclude with `h2`.
+-/
 theorem zariski_glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (Ix : Type) (V : Ix → S.Opens) (g : Ix → ℕ), (∀ s : S, ∃ i, s ∈ V i) → (∀ i, HasRep A (g i) (Over.mk (V i).ι)) → ∃ (B : Over S) (P : LB (A ⊗ B).left), Rep A (toUnit B) P ∧ ∀ i, GlobalTheory.DualCon.Good (g i) (pullback.snd B.hom (V i).ι) := by
   intro S A _ hA Ix V g hcov hrep
   have hrep' : ∀ i, ∃ (B : Over S) (b : B ⟶ Over.mk (V i).ι) (P : LB (A ⊗ B).left),

@@ -4,5 +4,8 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.PlaneSu
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain NumberField GlobalTheory.Published Sa2
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SaGen.propGen | exact GlobalTheory.CompanionTheory.SaGen.propGen | (intros; apply GlobalTheory.CompanionTheory.SaGen.propGen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.plane_strong_approx_generator : Sa2.PropGen := by
   first | exact @GlobalTheory.CompanionTheory.SaGen.propGen | exact GlobalTheory.CompanionTheory.SaGen.propGen | (intros; apply GlobalTheory.CompanionTheory.SaGen.propGen <;> assumption)

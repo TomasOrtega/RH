@@ -9,6 +9,11 @@ open GlobalTheory.Doubling
 
 namespace GlobalTheory.DblStabSkewCpt
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n r s W hB hW W₂ hJ hL hθ K hK`. Establish `hL₂ : W₂.L.IsLattice E` using `by rw [hL]; haveI : Submodule.IsLattice E W.L := hW.lat; infer_instance`. Establish `hθ₂ : ∀ w, IsCartan (Complex.I • W₂.J.map (B.emb w).1) (W₂.θ w)`. Introduce `w`. Rewrite using `[hθ w, hJ, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _), GlobalTheory.DblUnfoldCont.smul_blkMat, smul_neg]`.
+
+Conclude with `GlobalTheory.DblUnfoldCont.isCartan_dbl _ _ (hW.cartan w)`. Conclude with `GlobalTheory.DblUnfoldCont.isCompact_of_isStab_skew hB.cm B W₂ hL₂ hθ₂ hK`.
+-/
 theorem isCompact_stab_dbl : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n r s : ℕ) (W : Spc F E n),
     B.IsGood σ → W.IsSkew σ B r s →
     ∀ W₂ : Spc F E (n + n), W₂.J = dblGram finSumFinEquiv W.J → W₂.L = sumLat finSumFinEquiv W.L W.L →

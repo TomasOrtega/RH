@@ -13,13 +13,26 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.GalTh
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem sp_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap]; rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem sp_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 (Sp R) := by
   simp only [spMap]; exact Spec.map_id _
 
+/- English proof (translation)
+Use `haveI : Nonempty (Spec (CommRingCat.of K)) := inferInstanceAs (Nonempty (PrimeSpectrum K))`. Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField F X).symm.surjective a`. Take `⟨⟨q, ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField F X).symm.surjective b`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at h ⊢`. Rewrite `h` using `[← Category.assoc, ← Category.assoc, spMap, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Take `⟨rfl, e⟩` from `GlobalTheory.SS.residue_embedding_unique _ _ h`. Establish `: φ = ψ`. Use extensionality with `c`. Use `congrArg (fun g => g.hom c) e` as an intermediate fact. Simplify using `at this`.
+
+Conclude with `i.injective this`. Rewrite using `[this]`.
+-/
 theorem sp_cancel {F K : Type} [Field F] [Field K] (i : F →+* K) {X : Scheme.{0}} (a b : Sp F ⟶ X)
     (h : spMap i ≫ a = spMap i ≫ b) : a = b := by
   haveI : Nonempty (Spec (CommRingCat.of K)) := inferInstanceAs (Nonempty (PrimeSpectrum K))
@@ -35,6 +48,9 @@ theorem sp_cancel {F K : Type} [Field F] [Field K] (i : F →+* K) {X : Scheme.{
     exact i.injective this
   rw [this]
 
+/- English proof (translation)
+Take `⟨E, h₁, h₂, -⟩` from `GlobalTheory.SS.exists_fieldOfValues X K p`. Use `(h₂ _ (algebraMap (IntermediateField.fixedField H) K)).1 fun c hc => ?_` and prove the remaining obligations. Establish `hfix : c ∈ IntermediateField.fixedField H` using `(IntermediateField.mem_fixedField_iff _ _).2 fun τ hτ => (h₁ (τ : K →+* K) (RingHom.id K)).1 (by rw [sp_id, Category.id_comp]; exact hp τ hτ) c hc`. Conclude with `⟨⟨c, hfix⟩, rfl⟩`.
+-/
 theorem exists_descend {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (H : Subgroup (K ≃ₐ[Ω] K)) {X : Scheme.{0}}
     (p : Sp K ⟶ X) (hp : ∀ τ ∈ H, spMap (τ : K →+* K) ≫ p = p) :
     ∃ q : Sp (IntermediateField.fixedField H) ⟶ X, spMap (algebraMap (IntermediateField.fixedField H) K) ≫ q = p := by
@@ -47,6 +63,9 @@ theorem exists_descend {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] (H : Su
 section
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Take `rfl : h = h'` from `Over.OverMorphism.ext hh`. Conclude with `⟨pt, fun _ => rfl, H⟩`.
+-/
 theorem thList_transport (m : ℕ) {K : Type} [Field K] {T : Over S} (θ : LB.Sec (LPow G L ((1 : ℕ) : ℤ) T))
     {y y' : Sp K ⟶ S} (hy : y = y') (h : Over.mk y ⟶ T) (h' : Over.mk y' ⟶ T) (hh : h.left = h'.left)
     {N : ℕ} (pt : Fin N → (Over.mk y ⟶ G)) (c : Fin N → K)
@@ -57,6 +76,9 @@ theorem thList_transport (m : ℕ) {K : Type} [Field K] {T : Over S} (θ : LB.Se
   obtain rfl : h = h' := Over.OverMorphism.ext hh
   exact ⟨pt, fun _ => rfl, H⟩
 
+/- English proof (translation)
+Unfold `SecAt.pull at H ⊢`. Rewrite `H` using `[GlobalTheory.ThetaRuleCompare.pullS_comp]`. Conclude with `thList_transport m θ (by rw [← hk, sp_comp, Category.assoc]) _ _ (by simp [← hk, sp_comp]) pt c H`.
+-/
 theorem thList_comp (m : ℕ) {R K₁ K₂ : Type} [CommRing R] [Field K₁] [Field K₂] (i : R →+* K₁) (j : K₁ →+* K₂)
     (k : R →+* K₂) (hk : j.comp i = k) (x : Sp R ⟶ S) (θ : SecAt G L x) {N : ℕ}
     (pt : Fin N → (Over.mk (spMap j ≫ spMap i ≫ x) ⟶ G)) (c : Fin N → K₂)
@@ -72,6 +94,9 @@ end
 section
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
 
+/- English proof (translation)
+Set `u : Over.mk (spMap (RingHom.id K) ≫ y) ⟶ Over.mk y` to `Over.homMk (spMap (RingHom.id K)) rfl`. Take `⟨a, ha⟩` from `H.2.2 K (RingHom.id K) (u ≫ p) (by rw [← MonObj.comp_pow, hp, MonObj.comp_one])`. Use `⟨a, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Simplify `ha` using `[u, sp_id]`.
+-/
 theorem thList_exh {m : ℕ} {K : Type} [Field K] [IsAlgClosed K] {y : Sp K ⟶ S} {θ : SecAt G L y} {N : ℕ}
     {pt : Fin N → (Over.mk y ⟶ G)} {c : Fin N → K} (H : ThList G L ρ m y θ pt c) (p : Over.mk y ⟶ G)
     (hp : p ^ (m ^ 2) = 1) : ∃ a, p = pt a := by

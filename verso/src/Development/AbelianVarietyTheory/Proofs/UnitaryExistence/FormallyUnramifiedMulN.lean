@@ -17,10 +17,16 @@ def affineComb {A R : Type} [CommRing A] [CommRing R] (a b c : A →+* R)
     simp only [map_mul]
     linear_combination - h s t - h t s
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma appLE_congr {T X : Scheme.{0}} {f g : T ⟶ X} (h : f = g) (V : X.Opens) (W : T.Opens)
     (hf : W ≤ f ⁻¹ᵁ V) (hg : W ≤ g ⁻¹ᵁ V) : f.appLE V W hf = g.appLE V W hg := by
   subst h; rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨x, rfl⟩` from `hi x`. Establish `: f (i x) = g (i x)` using `congr($h x)`. Simplify using `[this]`.
+-/
 lemma preimage_eq {T₀ T X : Scheme.{0}} (i : T₀ ⟶ T) (hi : Function.Surjective i) {f g : T ⟶ X}
     (h : i ≫ f = i ≫ g) (V : X.Opens) : f ⁻¹ᵁ V = g ⁻¹ᵁ V := by
   ext x
@@ -28,6 +34,9 @@ lemma preimage_eq {T₀ T X : Scheme.{0}} (i : T₀ ⟶ T) (hi : Function.Surjec
   have : f (i x) = g (i x) := congr($h x)
   simp [this]
 
+/- English proof (translation)
+Rewrite using `[map_sub, sub_eq_zero, ← CategoryTheory.comp_apply, ← CategoryTheory.comp_apply, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr h]`.
+-/
 lemma app_sub_eq_zero {T₀ T X : Scheme.{0}} (i : T₀ ⟶ T) {f g : T ⟶ X}
     (h : i ≫ f = i ≫ g) (V : X.Opens) (W : T.Opens)
     (hf : W ≤ f ⁻¹ᵁ V) (hg : W ≤ g ⁻¹ᵁ V) (s : Γ(X, V)) :
@@ -36,16 +45,31 @@ lemma app_sub_eq_zero {T₀ T X : Scheme.{0}} (i : T₀ ⟶ T) {f g : T ⟶ X}
     Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE,
     appLE_congr h]
 
+/- English proof (translation)
+Rewrite using `[← CategoryTheory.comp_apply, Scheme.Hom.appLE_comp_appLE, appLE_congr h]`.
+-/
 lemma comp_appLE_apply {T P X : Scheme.{0}} (a : T ⟶ P) (p : P ⟶ X) {x : T ⟶ X} (h : a ≫ p = x)
     (V : X.Opens) (V' : P.Opens) (W : T.Opens) (h₁ : V' ≤ p ⁻¹ᵁ V) (h₂ : W ≤ a ⁻¹ᵁ V')
     (h₃ : W ≤ x ⁻¹ᵁ V) (s : Γ(X, V)) :
     a.appLE V' W h₂ (p.appLE V V' h₁ s) = x.appLE V W h₃ s := by
   rw [← CategoryTheory.comp_apply, Scheme.Hom.appLE_comp_appLE, appLE_congr h]
 
+/- English proof (translation)
+The claim follows from `fun _ hx ↦ h₁ (h₂ hx)`.
+-/
 lemma le_preimage_of_comp {T P X : Scheme.{0}} (a : T ⟶ P) (p : P ⟶ X)
     {V : X.Opens} {V' : P.Opens} {W : T.Opens} (h₁ : V' ≤ p ⁻¹ᵁ V) (h₂ : W ≤ a ⁻¹ᵁ V') :
     W ≤ (a ≫ p) ⁻¹ᵁ V := fun _ hx ↦ h₁ (h₂ hx)
 
+/- English proof (translation)
+Set `φ : Γ(P, V') ⟶ Γ(T, W)` to `CommRingCat.ofHom (affineComb (a.appLE V' W ha).hom (b.appLE V' W hb).hom (c.appLE V' W hc).hom h)`. Establish `hφ : ∀ s, φ s = a.appLE V' W ha s + b.appLE V' W hb s - c.appLE V' W hc s` using `fun _ ↦ rfl`. Establish `key : Spec.map (d.appLE V' W hd) ≫ hV'.fromSpec = Spec.map φ ≫ hV'.fromSpec`. Apply `hpq` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← hV.SpecMap_appLE_fromSpec p hV' hp, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`.
+
+Use `congr 2`. Use extensionality with `s`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[hφ, comp_appLE_apply a p hap _ _ _ _ _ (le_preimage_of_comp d p hp hd), comp_appLE_apply d p rfl _ _ _ _ _ (le_preimage_of_comp d p hp hd), comp_appLE_apply b p hbp _ _ _ _ _ (le_preimage_of_comp c p hp hc), comp_appLE_apply c p rfl _ _ _ _ _ (le_preimage_of_comp c p hp hc)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Category.assoc, Category.assoc, ← hV.SpecMap_appLE_fromSpec q hV' hq, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Use `congr 2`. Use extensionality with `s`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[hφ, comp_appLE_apply a q haq _ _ _ _ _ (le_preimage_of_comp c q hq hc), comp_appLE_apply d q rfl _ _ _ _ _ (le_preimage_of_comp d q hq hd), comp_appLE_apply b q hbq _ _ _ _ _ (le_preimage_of_comp d q hq hd), comp_appLE_apply c q rfl _ _ _ _ _ (le_preimage_of_comp c q hq hc)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[cancel_mono, Spec.map_inj]`. Rewrite using `[key, hφ]`.
+-/
 lemma parallelogram {T P X : Scheme.{0}} (p q : P ⟶ X)
     (hpq : ∀ (Z : Scheme.{0}) (u v : Z ⟶ P), u ≫ p = v ≫ p → u ≫ q = v ≫ q → u = v)
     (a b c d : T ⟶ P) (hap : a ≫ p = d ≫ p) (hbp : b ≫ p = c ≫ p)
@@ -86,12 +110,36 @@ lemma parallelogram {T P X : Scheme.{0}} (p q : P ⟶ X)
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [mulN, Hom.one_def]`. Consider the case `succ n ih => rw [mulN, pow_succ, Hom.mul_def, ← ih, comp_lift_assoc, Category.comp_id]`.
+-/
 lemma comp_mulN (G : Over S) [GrpObj G] {T : Over S} (x : T ⟶ G) (n : ℕ) :
     x ≫ mulN G n = x ^ n := by
   induction n with
   | zero => simp [mulN, Hom.one_def]
   | succ n ih => rw [mulN, pow_succ, Hom.mul_def, ← ih, comp_lift_assoc, Category.comp_id]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.hom_ext_of_forall _ _ fun t ↦ ?_` and prove the remaining obligations. Set `e : T ⟶ G` to `1`. Establish `he : j ≫ e = 1` using `by simp [e]`. Take `⟨_, ⟨V, hV, rfl⟩, htV, -⟩` from `G.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (e.left t)) isOpen_univ`.
+
+Establish `hcp : (lift e e).left ≫ (fst G G).left = e.left` using `by rw [← Over.comp_left, lift_fst]`. Establish `hcq : (lift e e).left ≫ (snd G G).left = e.left` using `by rw [← Over.comp_left, lift_snd]`. Establish `hcm : (lift e e).left ≫ (μ[G]).left = e.left`. Rewrite using `[← Over.comp_left, ← Hom.mul_def, _root_.mul_one]`. Take `⟨_, ⟨V', hV', rfl⟩, htV', hV'V : V' ≤ _⟩` from `(G ⊗ G).left.isBasis_affineOpens.exists_subset_of_mem_open (a := (lift e e).left t) (u := ((fst G G).left ⁻¹ᵁ V ⊓ (snd G G).left ⁻¹ᵁ V ⊓ (μ[G]).left ⁻¹ᵁ V : (G ⊗ G).left.Opens)) ⟨⟨show ((lift e e).left ≫ (fst G G).left) t ∈ V by rwa [hcp], show ((lift e e).left ≫ (snd G G).left) …`.
+
+Establish `hp : V' ≤ (fst G G).left ⁻¹ᵁ V` using `hV'V.trans (inf_le_left.trans inf_le_left)`. Establish `hq : V' ≤ (snd G G).left ⁻¹ᵁ V` using `hV'V.trans (inf_le_left.trans inf_le_right)`. Establish `hm : V' ≤ (μ[G]).left ⁻¹ᵁ V` using `hV'V.trans inf_le_right`. Take `⟨_, ⟨W, hW, rfl⟩, htW, hc : W ≤ (lift e e).left ⁻¹ᵁ V'⟩` from `T.left.isBasis_affineOpens.exists_subset_of_mem_open (a := t) (u := (lift e e).left ⁻¹ᵁ V') htV' (TopologicalSpace.Opens.isOpen _)`. Use `⟨W, htW, ?_⟩` and prove the remaining obligations.
+
+Establish `heW : W ≤ e.left ⁻¹ᵁ V` using `hcp ▸ le_preimage_of_comp _ _ hp hc`. Establish `near : ∀ x : T ⟶ G, j ≫ x = 1 → j.left ≫ x.left = j.left ≫ e.left` using `fun x hx ↦ by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, hx, he]`. Establish `near₂ : ∀ x y : T ⟶ G, j ≫ x = 1 → j ≫ y = 1 → j.left ≫ (lift x y).left = j.left ≫ (lift e e).left` using `fun x y hx hy ↦ by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift, hx, hy, he]`.
+
+Establish `hW₁ : ∀ x : T ⟶ G, j ≫ x = 1 → W ≤ x.left ⁻¹ᵁ V` using `fun x hx ↦ by`. Rewrite using `[preimage_eq j.left hj (near x hx)]`. Conclude with `heW`. Establish `hW₂ : ∀ x y : T ⟶ G, j ≫ x = 1 → j ≫ y = 1 → W ≤ (lift x y).left ⁻¹ᵁ V'` using `fun x y hx hy ↦ by rw [preimage_eq j.left hj (near₂ x y hx hy)]; exact hc`. Establish `add : ∀ (x y : T ⟶ G) (hx : j ≫ x = 1) (hy : j ≫ y = 1) (hxy : j ≫ (x * y) = 1) (s : Γ(G.left, V)), (x * y).left.appLE V W (hW₁ _ hxy) s = x.left.appLE V W (hW₁ _ hx) s + y.left.appLE V W (hW₁ _ hy) s - e.left.appLE V W heW s`.
+
+Introduce `x y hx hy hxy s`. Use `parallelogram (fst G G).left (snd G G).left (fun Z u v h₁ h₂ ↦ pullback.hom_ext h₁ h₂) (lift x e).left (lift e y).left (lift e e).left (lift x y).left (by simp only [← Over.comp_left, lift_fst]) (by simp only [← Over.comp_left, lift_fst]) (by simp only [← Over.comp_left, lift_snd …` as an intermediate fact. Rewrite `this` using `[comp_appLE_apply _ _ (x := (x * y).left) (by rw [← Over.comp_left, ← Hom.mul_def]) _ _ _ _ _ (hW₁ _ hxy), comp_appLE_apply _ _ (x := x.left) (by rw [← Over.comp_left, ← Hom.mul_def, _root_.mul_one]) _ _ _ _ _ (hW₁ _ hx), comp_appLE_apply _ _ (x := y.left) (by rw [← Over.comp_lef …`. Then use the resulting hypothesis. Establish `hpow : ∀ k : ℕ, j ≫ (z ^ k) = 1` using `fun k ↦ by rw [comp_pow, hz, one_pow]`. Establish `ind : ∀ (k : ℕ) (s : Γ(G.left, V)), (z ^ k).left.appLE V W (hW₁ _ (hpow k)) s - e.left.appLE V W heW s = k * (z.left.appLE V W (hW₁ _ hz) s - e.left.appLE V W heW s)`.
+
+Introduce `k s`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[appLE_congr (g := e.left) (by rw [pow_zero]) _ _ _ heW]`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Rewrite using `[appLE_congr (g := (z ^ k * z).left) (by rw [pow_succ]) _ _ _ (hW₁ _ (by rw [← pow_succ]; exact hpow _)), add _ _ (hpow k) hz (by rw [← pow_succ]; exact hpow _)]`. Use `push_cast`. Take the linear combination `ih`. Establish `hn' : IsUnit (n : Γ(T.left, W))`.
+
+Simplify using `using hn.map (T.hom.appLE ⊤ W le_top).hom`. Establish `fin : z.left.appLE V W (hW₁ _ hz) = e.left.appLE V W heW`. Use extensionality with `s`. Use `ind n s` as an intermediate fact. Rewrite `this` using `[appLE_congr (g := e.left) (by rw [hzn]) _ _ _ heW, sub_self]`.
+
+Conclude with `sub_eq_zero.mp (hn'.mul_right_eq_zero.mp this.symm)`. Rewrite using `[← hW.isoSpec_hom_fromSpec, Category.assoc, Category.assoc, ← hV.SpecMap_appLE_fromSpec z.left hW (hW₁ _ hz), fin, hV.SpecMap_appLE_fromSpec e.left hW heW]`.
+-/
 lemma eq_one_of_pow_eq_one (G : Over S) [GrpObj G] {T₀ T : Over S} (j : T₀ ⟶ T)
     (hj : Function.Surjective j.left)
     (hsq : ∀ (W : T.left.Opens), IsAffineOpen W → ∀ s t : Γ(T.left, W),
@@ -173,6 +221,15 @@ lemma eq_one_of_pow_eq_one (G : Over S) [GrpObj G] {T₀ T : Over S} (j : T₀ �
   rw [← hW.isoSpec_hom_fromSpec, Category.assoc, Category.assoc,
     ← hV.SpecMap_appLE_fromSpec z.left hW (hW₁ _ hz), fin, hV.SpecMap_appLE_fromSpec e.left hW heW]
 
+/- English proof (translation)
+Establish `h : (Spec.map φ).ker ^ 2 = ⊥`. Apply `Scheme.IdealSheafData.ext_of_isAffine` to reduce the goal to its premises. It suffices to establish `RingHom.ker (Spec.map φ).appTop.hom ^ 2 = ⊥ by`. Simplify using `only [Scheme.IdealSheafData.ideal_pow, Pi.pow_apply, Scheme.Hom.ker_apply, Scheme.IdealSheafData.ideal_bot, Pi.bot_apply]`. Conclude with `this`.
+
+Establish `key : ∀ s ∈ RingHom.ker (Spec.map φ).appTop.hom, (Scheme.ΓSpecIso R).hom s ∈ RingHom.ker φ.hom` using `fun s hs ↦ by`. Rewrite `hs`, the goal using `[RingHom.mem_ker]`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_naturality, CommRingCat.comp_apply, hs, map_zero]`. Rewrite using `[pow_two, eq_bot_iff, Ideal.mul_le]`. Introduce `s hs t ht`.
+
+Rewrite using `[Ideal.mem_bot]`. Apply `(Scheme.ΓSpecIso R).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_zero, ← Ideal.mem_bot, ← hφ, pow_two]`. Conclude with `Ideal.mul_mem_mul (key s hs) (key t ht)`. Establish `h' : RingHom.ker ((Spec.map φ).app W).hom ^ 2 = ⊥`.
+
+Simplify using `using congr(($h).ideal ⟨W, hW⟩)`. Rewrite using `[← Ideal.mem_bot, ← h', pow_two]`. Conclude with `Ideal.mul_mem_mul hs ht`.
+-/
 lemma mul_eq_zero_of_ker_sq {R R₀ : CommRingCat.{0}} (φ : R ⟶ R₀) (hφ : RingHom.ker φ.hom ^ 2 = ⊥)
     (W : (Spec R).Opens) (hW : IsAffineOpen W) (s t : Γ(Spec R, W))
     (hs : (Spec.map φ).app W s = 0) (ht : (Spec.map φ).app W t = 0) : s * t = 0 := by
@@ -204,6 +261,17 @@ namespace GlobalTheory
 
 open MulUnramified in
 
+/- English proof (translation)
+Use `FormallyUnramified.of_hom_ext _ fun R R₀ φ hφ hsq g₁ g₂ hi hg ↦ ?_` and prove the remaining obligations. Establish `hS : g₂ ≫ G.hom = g₁ ≫ G.hom`. Rewrite using `[← Over.w (mulN G n), reassoc_of% hg]`. Set `T : Over S` to `Over.mk (g₁ ≫ G.hom)`. Set `T₀ : Over S` to `Over.mk (Spec.map φ ≫ g₁ ≫ G.hom)`.
+
+Set `j : T₀ ⟶ T` to `Over.homMk (Spec.map φ) rfl`. Set `x : T ⟶ G` to `Over.homMk g₁ rfl`. Set `y : T ⟶ G` to `Over.homMk g₂ hS`. Establish `hj : j ≫ x = j ≫ y` using `Over.OverMorphism.ext hi`. Establish `hxy : x ^ n = y ^ n`.
+
+Rewrite using `[← comp_mulN, ← comp_mulN]`. Conclude with `Over.OverMorphism.ext hg`. Establish `hsurj : Function.Surjective (Spec.map φ)`. Introduce `(p : PrimeSpectrum R)`. Express the relevant statement in the definitionally equal form `p ∈ Set.range (PrimeSpectrum.comap φ.hom)`.
+
+Rewrite using `[range_comap_of_surjective _ _ hφ, PrimeSpectrum.mem_zeroLocus]`. Introduce `a ha`. Use `p.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: a ^ 2 ∈ RingHom.ker φ.hom ^ 2` using `Ideal.pow_mem_pow ha 2`. Rewrite `this` using `[hsq, Ideal.mem_bot]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Use `eq_one_of_pow_eq_one G j hsurj (mul_eq_zero_of_ker_sq φ hsq) n hn (x / y) (by rw [GrpObj.comp_div, hj, div_self']) (by rw [div_pow, hxy, div_self'])` as an intermediate fact. Conclude with `congrArg (·.left) (div_eq_one.mp this)`.
+-/
 theorem formallyUnramified_mulN (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ)
     (hn : IsUnit (n : Γ(S, ⊤))) : FormallyUnramified (mulN G n).left := by
   refine FormallyUnramified.of_hom_ext _ fun R R₀ φ hφ hsq g₁ g₂ hi hg ↦ ?_

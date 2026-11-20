@@ -22,6 +22,11 @@ def lrfc_coeffT (d : Fin r × Fin n →₀ ℕ)
     MvPolynomial (Fin r × Fin n) R :=
   ∑ m ∈ G.support, monomial m (coeff d (coeff m G))
 
+/- English proof (translation)
+Unfold `lrfc_coeffT`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Rewrite using `[notMem_support_iff.mp h, coeff_zero]`.
+-/
 theorem lrfc_coeff_coeffT (d m : Fin r × Fin n →₀ ℕ)
     (G : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     coeff m (lrfc_coeffT d G) = coeff d (coeff m G) := by
@@ -34,23 +39,35 @@ theorem lrfc_coeff_coeffT (d m : Fin r × Fin n →₀ ℕ)
   · rfl
   · rw [notMem_support_iff.mp h, coeff_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[lrfc_coeff_coeffT]`.
+-/
 theorem lrfc_coeffT_add (d : Fin r × Fin n →₀ ℕ)
     (G H : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_coeffT d (G + H) = lrfc_coeffT d G + lrfc_coeffT d H := by
   ext m
   simp [lrfc_coeff_coeffT]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[lrfc_coeff_coeffT]`.
+-/
 theorem lrfc_coeffT_zero (d : Fin r × Fin n →₀ ℕ) :
     lrfc_coeffT (R := R) d 0 = 0 := by
   ext m
   simp [lrfc_coeff_coeffT]
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[lrfc_coeff_coeffT, coeff_sum]`.
+-/
 theorem lrfc_coeffT_sum {ι : Type*} (s : Finset ι) (d : Fin r × Fin n →₀ ℕ)
     (G : ι → MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_coeffT d (∑ i ∈ s, G i) = ∑ i ∈ s, lrfc_coeffT d (G i) := by
   ext m
   simp [lrfc_coeff_coeffT, coeff_sum]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[lrfc_coeff_coeffT, coeff_monomial, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lrfc_coeffT_monomial (d u : Fin r × Fin n →₀ ℕ) (c : MvPolynomial (Fin r × Fin n) R) :
     lrfc_coeffT d (monomial u c) = monomial u (coeff d c) := by
   classical
@@ -58,6 +75,9 @@ theorem lrfc_coeffT_monomial (d u : Fin r × Fin n →₀ ℕ) (c : MvPolynomial
   rw [lrfc_coeff_coeffT, coeff_monomial, coeff_monomial]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[lrfc_coeff_coeffT, coeff_C_mul, coeff_monomial_mul', one_mul]`. Use `split_ifs`. Rewrite using `[lrfc_coeff_coeffT]`. Simplify using the standard rewrite rules.
+-/
 theorem lrfc_coeffT_C_monomial_mul (d s : Fin r × Fin n →₀ ℕ)
     (G : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_coeffT d (C (monomial s 1) * G) = if s ≤ d then lrfc_coeffT (d - s) G else 0 := by
@@ -68,6 +88,9 @@ theorem lrfc_coeffT_C_monomial_mul (d s : Fin r × Fin n →₀ ℕ)
   · rw [lrfc_coeff_coeffT]
   · simp
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[lrfc_coeff_coeffT, lrfc_iota, coeff_map, coeff_C]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [eq_comm]`.
+-/
 theorem lrfc_coeffT_iota (d : Fin r × Fin n →₀ ℕ) (F : MvPolynomial (Fin r × Fin n) R) :
     lrfc_coeffT d (lrfc_iota F) = if d = 0 then F else 0 := by
   classical
@@ -86,6 +109,13 @@ def lrfc_tau (l : Fin r × Fin r × (Fin r × Fin n)) :
       MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R) :=
   aeval fun v => X v + if v.1 = l.2.1 then C (X l.2.2) * X (l.1, v.2) else 0
 
+/- English proof (translation)
+Establish `h : ((lrfc_tau (R` using `R) l).toRingHom.comp lrfc_iota) = (Polynomial.eval₂RingHom lrfc_iota (C (X l.2.2))).comp (rowGen R l.1 l.2.1).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[lrfc_tau, lrfc_iota, rowGen]`. Introduce `i`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]`. Simplify using `only [lrfc_tau, lrfc_iota, rowGen, aeval_X, map_X, Polynomial.coe_eval₂RingHom]`. Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `mul_comm _ _`.
+
+Simplify using the standard rewrite rules. Conclude with `congrArg (fun φ => φ F) h`.
+-/
 theorem lrfc_tau_iota (l : Fin r × Fin r × (Fin r × Fin n)) (F : MvPolynomial (Fin r × Fin n) R) :
     lrfc_tau l (lrfc_iota F) =
       Polynomial.eval₂ lrfc_iota (C (X l.2.2)) (rowGen R l.1 l.2.1 F) := by
@@ -108,13 +138,22 @@ def lrfc_Phi (L : List (Fin r × Fin r × (Fin r × Fin n))) :
       MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R) :=
   L.foldr (fun l φ => (lrfc_tau l).comp φ) (AlgHom.id _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lrfc_Phi_nil (G : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_Phi [] G = G := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lrfc_Phi_cons (l : Fin r × Fin r × (Fin r × Fin n)) (w : List (Fin r × Fin r × (Fin r × Fin n)))
     (G : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     lrfc_Phi (l :: w) G = lrfc_tau l (lrfc_Phi w G) := rfl
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => rw [List.cons_append, lrfc_Phi_cons, ih, lrfc_Phi_cons]`.
+-/
 theorem lrfc_Phi_append_single (w : List (Fin r × Fin r × (Fin r × Fin n)))
     (l : Fin r × Fin r × (Fin r × Fin n))
     (G : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
@@ -123,11 +162,19 @@ theorem lrfc_Phi_append_single (w : List (Fin r × Fin r × (Fin r × Fin n)))
   | nil => rfl
   | cons x w ih => rw [List.cons_append, lrfc_Phi_cons, ih, lrfc_Phi_cons]
 
+/- English proof (translation)
+Simplify using `[applyWord, List.foldr_append]`.
+-/
 theorem lrfc_applyWord_append_single (w : List (Fin r × Fin r × ℕ)) (x : Fin r × Fin r × ℕ)
     (F : MvPolynomial (Fin r × Fin n) R) :
     applyWord R (w ++ [x]) F = applyWord R w (rowDiv R x.1 x.2.1 x.2.2 F) := by
   simp [applyWord, List.foldr_append]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Simplify using `only [applyWord, List.foldr_cons] at ih ⊢`. Rewrite using `[ih]`.
+
+Simplify using `[rowDiv]`.
+-/
 theorem lrfc_applyWord_zero (w : List (Fin r × Fin r × ℕ)) :
     applyWord R w (0 : MvPolynomial (Fin r × Fin n) R) = 0 := by
   induction w with
@@ -137,6 +184,33 @@ theorem lrfc_applyWord_zero (w : List (Fin r × Fin r × ℕ)) :
     rw [ih]
     simp [rowDiv]
 
+/- English proof (translation)
+Proceed by induction on `L using List.reverseRecOn generalizing F d with`. Consider the case `nil`. Rewrite using `[lrfc_Phi_nil, lrfc_coeffT_iota]`. Establish `: (∀ u, u ∉ ([] : List (Fin r × Fin r × (Fin r × Fin n))).map (·.2.2) → d u = 0) ↔ d = 0`. Simplify using `[Finsupp.ext_iff]`.
+
+Simplify using `only [this]`. Both sides reduce to the same expression. Consider the case `append_singleton w l ih`. Take `⟨s, a, v⟩` from `l`. Establish `hL' : (w.map (·.2.2) ++ [v]).Nodup` using `by simpa using hL`.
+
+Establish `hw : (w.map (·.2.2)).Nodup` using `hL'.sublist (List.sublist_append_left _ _)`. Establish `hv : v ∉ w.map (·.2.2)`. Rewrite `hL'` using `[List.nodup_append]`. Introduce `h`. Conclude with `hL'.2.2 v h v (by simp) rfl`.
+
+Rewrite using `[lrfc_Phi_append_single, lrfc_tau_iota, Polynomial.eval₂_eq_sum, Polynomial.sum_def, map_sum, lrfc_coeffT_sum]`. Establish `key : ∀ (j : ℕ) (c : MvPolynomial (Fin r × Fin n) R), lrfc_coeffT d (lrfc_Phi w (lrfc_iota c * C (X (s, a, v).2.2) ^ j)) = if j ≤ d v then lrfc_coeffT (d - Finsupp.single v j) (lrfc_Phi w (lrfc_iota c)) else 0`. Introduce `j c`. Establish `e0 : (C (X (s, a, v).2.2) : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) ^ j = C (X v ^ j)` using `(map_pow C (X v) j).symm`. Rewrite using `[e0, map_mul]`.
+
+Establish `hC : lrfc_Phi w (C (X v ^ j)) = C (X v ^ j : MvPolynomial (Fin r × Fin n) R)` using `(lrfc_Phi w).commutes (X v ^ j)`. Rewrite using `[hC, mul_comm, X_pow_eq_monomial, lrfc_coeffT_C_monomial_mul]`. Simplify using `only [Finsupp.single_le_iff]`. Simplify using `only [key, ih hw]`. Rewrite using `[Finset.sum_eq_single (d v)]`.
+
+Simplify using `only [le_refl, if_true]`. Establish `hfill : w.map (fun l => (l.1, l.2.1, (d - Finsupp.single v (d v)) l.2.2)) = w.map (fun l => (l.1, l.2.1, d l.2.2))`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l hl`. Establish `hne : l.2.2 ≠ v`.
+
+Introduce `h`. Conclude with `hv (List.mem_map.mpr ⟨l, hl, h⟩)`. Simplify using `[Finsupp.single_apply, Ne.symm hne]`. Establish `hcond : (∀ u, u ∉ w.map (·.2.2) → (d - Finsupp.single v (d v)) u = 0) ↔ (∀ u, u ∉ (w ++ [(s, a, v)]).map (·.2.2) → d u = 0)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h u hu`. Simplify using `only [List.map_append, List.mem_append, List.map_cons, List.map_nil, List.mem_singleton, not_or] at hu`. Use `h u hu.1` as an intermediate fact. Simplify `this` using `[Finsupp.single_apply, Ne.symm hu.2]`. Introduce `h u hu`.
+
+Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using the standard rewrite rules. Use `h u (by simp [hu, huv])` as an intermediate fact. Simplify using `[this]`.
+
+Rewrite using `[hfill]`. Simplify using `only [hcond]`. Use `split_ifs`. Rewrite using `[List.map_append, List.map_cons, List.map_nil, lrfc_applyWord_append_single]`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Introduce `j _ hj split_ifs with h1 h2`. It suffices to derive a contradiction. Use `h2 v hv` as an intermediate fact. Simplify using `at this`.
+
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `hnot`. Rewrite using `[Polynomial.notMem_support_iff.mp hnot]`.
+
+Simplify using `[lrfc_applyWord_zero]`.
+-/
 theorem lrfc_coeffT_Phi (L : List (Fin r × Fin r × (Fin r × Fin n)))
     (hL : (L.map (·.2.2)).Nodup) (F : MvPolynomial (Fin r × Fin n) R) (d : Fin r × Fin n →₀ ℕ) :
     lrfc_coeffT d (lrfc_Phi L (lrfc_iota F)) =
@@ -223,6 +297,13 @@ def lrf_L (r n : ℕ) : List (Fin r × Fin r × (Fin r × Fin n)) :=
     (List.finRange r).filterMap fun a =>
       if h : s.val < a.val ∧ s.val < r then some ((⟨s.val, h.2⟩ : Fin r), a, (a, s)) else none
 
+/- English proof (translation)
+Rewrite using `[List.mem_filterMap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, -, ha⟩ split_ifs at ha with h`. Rewrite `ha` using `[Option.some.injEq]`. Substitute `ha` using the available equality.
+
+Conclude with `⟨rfl, h.1, rfl⟩`. Take `⟨x, a, v⟩` from `l`. Introduce and unpack `⟨h1, h2, h3⟩`. Simplify using `only at h1 h2 h3`. Use `⟨a, List.mem_finRange a, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : s.val < r` using `lt_trans h2 a.isLt`. Rewrite using `[dif_pos ⟨h2, hr⟩, h3]`. Use `congr 2`. Conclude with `Fin.ext h1.symm`.
+-/
 theorem lrf_mem_col (s : Fin n) (l : Fin r × Fin r × (Fin r × Fin n)) :
     (l ∈ (List.finRange r).filterMap fun a =>
       if h : s.val < a.val ∧ s.val < r then some ((⟨s.val, h.2⟩ : Fin r), a, (a, s)) else none) ↔
@@ -243,6 +324,13 @@ theorem lrf_mem_col (s : Fin n) (l : Fin r × Fin r × (Fin r × Fin n)) :
     congr 2
     exact Fin.ext h1.symm
 
+/- English proof (translation)
+Unfold `lrf_L`. Rewrite using `[List.mem_flatMap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, -, hs⟩`. Rewrite `hs` using `[lrf_mem_col]`.
+
+Take `⟨h1, h2, h3⟩` from `hs`. Rewrite using `[h3]`. Conclude with `⟨h1, h2, rfl⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨l.2.2.2, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lrf_mem_col]`. Conclude with `⟨h1, h2, Prod.ext h3 rfl⟩`.
+-/
 theorem lrf_mem_L (l : Fin r × Fin r × (Fin r × Fin n)) :
     l ∈ lrf_L r n ↔ l.1.val = l.2.2.2.val ∧ l.2.2.2.val < l.2.1.val ∧ l.2.2.1 = l.2.1 := by
   unfold lrf_L
@@ -258,6 +346,11 @@ theorem lrf_mem_L (l : Fin r × Fin r × (Fin r × Fin n)) :
     rw [lrf_mem_col]
     exact ⟨h1, h2, Prod.ext h3 rfl⟩
 
+/- English proof (translation)
+Rewrite using `[List.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Rewrite `hl` using `[lrf_mem_L]`. Rewrite using `[hl.2.2]`.
+
+Conclude with `hl.2.1`. Introduce `h`. Use `⟨(⟨v.2.val, lt_trans h v.1.isLt⟩, v.1, v), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[lrf_mem_L]`. Conclude with `⟨rfl, h, rfl⟩`.
+-/
 theorem lrf_mem_vars (v : Fin r × Fin n) :
     v ∈ (lrf_L r n).map (·.2.2) ↔ v.2.val < v.1.val := by
   rw [List.mem_map]
@@ -271,6 +364,19 @@ theorem lrf_mem_vars (v : Fin r × Fin n) :
     rw [lrf_mem_L]
     exact ⟨rfl, h, rfl⟩
 
+/- English proof (translation)
+Unfold `lrf_L`. Rewrite using `[List.pairwise_flatMap]`. Prove the components needed by the constructor for the conclusion. Introduce `s _`. Rewrite using `[List.pairwise_filterMap]`.
+
+Use `(List.sortedLT_finRange r).pairwise.imp ?_` and prove the remaining obligations. Introduce `a a' haa b hb b' hb'`. Use `split_ifs at hb with h`. Use `split_ifs at hb' with h'`. Rewrite `hb`, `hb'` using `[Option.some.injEq]`.
+
+Substitute `hb` using the available equality. Substitute `hb'` using the available equality. Use `⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Conclude with `(ne_of_lt haa) (congrArg Prod.fst e)`. Use `congrArg Fin.val e` as an intermediate fact.
+
+Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[List.pairwise_reverse]`. Use `(List.sortedLT_finRange n).pairwise.imp ?_` and prove the remaining obligations. Introduce `s s' hss x hx y hy`.
+
+Rewrite `hx`, `hy` using `[lrf_mem_col]`. Use `⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite `e` using `[hx.2.2, hy.2.2]`. Conclude with `(ne_of_gt hss) (congrArg Prod.snd e)`. Use `congrArg Fin.val e` as an intermediate fact.
+
+Establish `h3 : s.val < s'.val` using `hss`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lrf_pairwise :
     (lrf_L r n).Pairwise fun l l' => l.2.2 ≠ l'.2.2 ∧ l.2.1 ≠ l'.1 := by
   unfold lrf_L
@@ -301,10 +407,18 @@ theorem lrf_pairwise :
       have h3 : s.val < s'.val := hss
       omega
 
+/- English proof (translation)
+Rewrite using `[List.Nodup, List.pairwise_map]`. Conclude with `(lrf_pairwise (r := r) (n := n)).imp fun h => h.1`.
+-/
 theorem lrf_nodup : ((lrf_L r n).map (·.2.2)).Nodup := by
   rw [List.Nodup, List.pairwise_map]
   exact (lrf_pairwise (r := r) (n := n)).imp fun h => h.1
 
+/- English proof (translation)
+Unfold `lrf_L wordOf`. Rewrite using `[List.map_flatMap]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[List.map_filterMap]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Use `split_ifs with h'`. Simplify using `[h a s h'.1]`. Both sides reduce to the same expression.
+-/
 theorem lrf_wordOf (e d : Fin r × Fin n →₀ ℕ) (h : ∀ (a : Fin r) (s : Fin n), s.val < a.val → d (a, s) = e (a, s)) :
     (lrf_L r n).map (fun l => (l.1, l.2.1, d l.2.2)) = wordOf e := by
   unfold lrf_L wordOf
@@ -324,6 +438,29 @@ def lrf_idS (R : Type*) [CommRing R] (r n : ℕ) : Fin r × Fin n → MvPolynomi
 def lrf_ell (R : Type*) [CommRing R] (r n : ℕ) : Fin r × Fin n → MvPolynomial (Fin r × Fin n) R :=
   fun v => C (idFrame R r n v) + if v.2.val < v.1.val then X v else 0
 
+/- English proof (translation)
+Proceed by induction on `L using List.reverseRecOn generalizing v with`. Consider the case `nil => simp [lrfc_Phi_nil, lrf_idS]`. Consider the case `append_singleton w l ih`. Rewrite `hP` using `[List.pairwise_append]`. Take `⟨hPw, -, hPl⟩` from `hP`.
+
+Establish `hMw : ∀ l ∈ w, l.1.val = l.2.2.2.val ∧ l.2.2.1 = l.2.1` using `fun x hx => hM x (by simp [hx])`. Establish `hMl` using `hM l (by simp)`. Establish `ihw` using `ih hPw hMw`. Establish `hlw : l.2.2 ∉ w.map (·.2.2)`. Introduce `h`.
+
+Take `⟨x, hx, hxe⟩` from `List.mem_map.mp h`. Conclude with `(hPl x hx l (by simp)).1 hxe`. Establish `hmem : ∀ u : Fin r × Fin n, u ∈ (w ++ [l]).map (·.2.2) ↔ (u ∈ w.map (·.2.2) ∨ u = l.2.2)`. Introduce `u`. Simplify using the standard rewrite rules.
+
+Rewrite using `[lrfc_Phi_append_single, lrfc_tau, aeval_X]`. Distinguish the cases in `hv : v.1 = l.2.1`. Rewrite using `[if_pos hv, map_add, map_mul, map_add, map_mul, ihw v, ihw (l.1, v.2)]`. Establish `hC : lrfc_Phi w (C (X l.2.2)) = C (X l.2.2 : MvPolynomial (Fin r × Fin n) R)` using `(lrfc_Phi w).commutes (X l.2.2)`. Rewrite using `[hC, eval_C]`.
+
+Establish `hs : (l.1, v.2) ∉ w.map (·.2.2)`. Introduce `h`. Take `⟨x, hx, hxe⟩` from `List.mem_map.mp h`. Apply `(hPl x hx l (by simp)).2` to reduce the goal to its premises. Rewrite using `[← (hMw x hx).2, hxe]`.
+
+Rewrite using `[if_neg hs, add_zero]`. Distinguish the cases in `hc : l.1.val = v.2.val`. Establish `hvl : v = l.2.2`. Use `Prod.ext (by rw [hv, hMl.2]) (Fin.ext ?_)` and prove the remaining obligations. Rewrite using `[← hc, hMl.1]`.
+
+Establish `h1 : idFrame R r n (l.1, v.2) = 1` using `by simp [idFrame, hc]`. Rewrite using `[h1, if_neg (by rw [hvl]; exact hlw), if_pos ((hmem v).2 (Or.inr hvl)), ← hvl]`. Simplify using the standard rewrite rules. Establish `hvl : v ≠ l.2.2`. Introduce `h`.
+
+Apply `hc` to reduce the goal to its premises. Rewrite using `[h, hMl.1]`. Establish `h1 : idFrame R r n (l.1, v.2) = 0` using `by simp [idFrame, hc]`. Rewrite using `[h1]`. Establish `e : (v ∈ (w ++ [l]).map (·.2.2)) ↔ v ∈ w.map (·.2.2)`.
+
+Rewrite using `[hmem]`. Conclude with `or_iff_left hvl`. Simplify using `only [e]`. Simplify using the standard rewrite rules. Establish `hvl : v ≠ l.2.2`.
+
+Introduce `h`. Apply `hv` to reduce the goal to its premises. Rewrite using `[h, hMl.2]`. Establish `e : (v ∈ (w ++ [l]).map (·.2.2)) ↔ v ∈ w.map (·.2.2)`. Rewrite using `[hmem]`.
+
+Conclude with `or_iff_left hvl`. Rewrite using `[if_neg hv, add_zero, ihw v]`. Simplify using `only [e]`.
+-/
 theorem lrf_pt (L : List (Fin r × Fin r × (Fin r × Fin n)))
     (hP : L.Pairwise fun l l' => l.2.2 ≠ l'.2.2 ∧ l.2.1 ≠ l'.1)
     (hM : ∀ l ∈ L, l.1.val = l.2.2.2.val ∧ l.2.2.1 = l.2.1) (v : Fin r × Fin n) :
@@ -385,11 +522,19 @@ theorem lrf_pt (L : List (Fin r × Fin r × (Fin r × Fin n)))
       rw [if_neg hv, add_zero, ihw v]
       simp only [e]
 
+/- English proof (translation)
+Rewrite using `[lrf_pt (lrf_L r n) lrf_pairwise (fun l hl => ⟨((lrf_mem_L l).1 hl).1, ((lrf_mem_L l).1 hl).2.2⟩) v]`. Simplify using `only [lrf_mem_vars, lrf_ell]`.
+-/
 theorem lrf_pt_L (v : Fin r × Fin n) :
     eval (lrf_idS R r n) (lrfc_Phi (lrf_L r n) (X v)) = lrf_ell R r n v := by
   rw [lrf_pt (lrf_L r n) lrf_pairwise (fun l hl => ⟨((lrf_mem_L l).1 hl).1, ((lrf_mem_L l).1 hl).2.2⟩) v]
   simp only [lrf_mem_vars, lrf_ell]
 
+/- English proof (translation)
+Establish `h : ((eval (lrf_idS R r n)).comp ((lrfc_Phi (R` using `R) (lrf_L r n)).toRingHom.comp lrfc_iota)) = eval₂Hom C (lrf_ell R r n) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, lrfc_iota, map_C, coe_eval₂Hom, eval₂_C]`. Establish `hC : lrfc_Phi (lrf_L r n) (C (C c)) = C (C c : MvPolynomial (Fin r × Fin n) R)` using `(lrfc_Phi (lrf_L r n)).commutes (C c)`.
+
+Rewrite using `[hC, eval_C]`. Introduce `v`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, lrfc_iota, map_X, coe_eval₂Hom, eval₂_X]`. Conclude with `lrf_pt_L v`. Conclude with `congrArg (fun φ => φ F) h`.
+-/
 theorem lrf_eval_Phi (F : MvPolynomial (Fin r × Fin n) R) :
     eval (lrf_idS R r n) (lrfc_Phi (lrf_L r n) (lrfc_iota F)) = eval₂ C (lrf_ell R r n) F := by
   have h : ((eval (lrf_idS R r n)).comp ((lrfc_Phi (R := R) (lrf_L r n)).toRingHom.comp lrfc_iota)) =
@@ -407,6 +552,11 @@ theorem lrf_eval_Phi (F : MvPolynomial (Fin r × Fin n) R) :
       exact lrf_pt_L v
   exact congrArg (fun φ => φ F) h
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[lrfc_coeffT_monomial, eval_monomial, eval_monomial]`. Establish `h : (u.prod fun i k => lrf_idS R r n i ^ k) = C (u.prod fun i k => idFrame R r n i ^ k)`. Simplify using `only [lrf_idS, Finsupp.prod, map_prod, map_pow]`.
+
+Rewrite using `[h, mul_comm c, coeff_C_mul, mul_comm]`. Consider the case `add p q hp hq => rw [lrfc_coeffT_add, map_add, map_add, coeff_add, hp, hq]`.
+-/
 theorem lrf_eval_coeffT (d : Fin r × Fin n →₀ ℕ)
     (G : MvPolynomial (Fin r × Fin n) (MvPolynomial (Fin r × Fin n) R)) :
     eval (idFrame R r n) (lrfc_coeffT d G) = coeff d (eval (lrf_idS R r n) G) := by
@@ -420,6 +570,15 @@ theorem lrf_eval_coeffT (d : Fin r × Fin n →₀ ℕ)
 
 def lrf_off (m : Fin r × Fin n →₀ ℕ) : Fin r × Fin n →₀ ℕ := m.filter fun v => v.2.val < v.1.val
 
+/- English proof (translation)
+Rewrite using `[← Finsupp.prod_filter_mul_prod_filter_not (fun v : Fin r × Fin n => v.2.val < v.1.val)]`. Establish `h2 : ((m.filter fun v : Fin r × Fin n => ¬ v.2.val < v.1.val).prod fun v k => lrf_ell R r n v ^ k) = 1`. Use `Finset.prod_eq_one fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Finsupp.support_filter, Finset.mem_filter, Finsupp.mem_support_iff]`. Establish `h3 : ¬ v.1.val < v.2.val` using `fun h => hv.1 (hm v.1 v.2 h)`.
+
+Establish `h4 : v.1.val = v.2.val` using `by omega`. Establish `h5 : lrf_ell R r n v = 1` using `by simp [lrf_ell, idFrame, h4]`. Use `beta_reduce`. Rewrite using `[h5, one_pow]`. Establish `h1 : ((m.filter fun v : Fin r × Fin n => v.2.val < v.1.val).prod fun v k => lrf_ell R r n v ^ k) = (m.filter fun v : Fin r × Fin n => v.2.val < v.1.val).prod fun v k => (X v : MvPolynomial (Fin r × Fin n) R) ^ k`.
+
+Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Finsupp.support_filter, Finset.mem_filter]`. Establish `h4 : ¬ v.1.val = v.2.val` using `by omega`. Establish `h5 : lrf_ell R r n v = X v` using `by simp [lrf_ell, idFrame, h4, hv.2]`. Use `beta_reduce`.
+
+Rewrite using `[h5]`. Rewrite using `[h1, h2, mul_one, lrf_off, monomial_eq, C_1, one_mul]`.
+-/
 theorem lrf_prod_lower (m : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) :
     (m.prod fun v k => lrf_ell R r n v ^ k) = monomial (lrf_off m) 1 := by
   classical
@@ -442,6 +601,11 @@ theorem lrf_prod_lower (m : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) :
     rw [h5]
   rw [h1, h2, mul_one, lrf_off, monomial_eq, C_1, one_mul]
 
+/- English proof (translation)
+Unfold `LowerTri at hm`. Use `push Not at hm`. Take `⟨a, s, has, hne⟩` from `hm`. Use `Finset.prod_eq_zero (i := (a, s)) (Finsupp.mem_support_iff.mpr hne) ?_` and prove the remaining obligations. Establish `h4 : ¬ a.val = s.val` using `by omega`.
+
+Establish `h6 : ¬ s.val < a.val` using `by omega`. Establish `h5 : lrf_ell R r n (a, s) = 0` using `by simp [lrf_ell, idFrame, h4, h6]`. Use `beta_reduce`. Rewrite using `[h5, zero_pow hne]`.
+-/
 theorem lrf_prod_upper (m : Fin r × Fin n →₀ ℕ) (hm : ¬ LowerTri m) :
     (m.prod fun v k => lrf_ell R r n v ^ k) = 0 := by
   classical
@@ -455,6 +619,15 @@ theorem lrf_prod_upper (m : Fin r × Fin n →₀ ℕ) (hm : ¬ LowerTri m) :
   beta_reduce
   rw [h5, zero_pow hne]
 
+/- English proof (translation)
+Establish `hlow : ∀ (a : Fin r) (s : Fin n), s.val < a.val → m (a, s) = e (a, s)`. Introduce `a s h`. Establish `h1` using `DFunLike.congr_fun hoff (a, s)`. Simplify `h1` using `[lrf_off, Finsupp.filter_apply, h]`. Establish `hne : ∀ (a : Fin r) (s : Fin n), a.val ≠ s.val → m (a, s) = e (a, s)`.
+
+Introduce `a s h`. Break down `lt_or_gt_of_ne h with h' | h'` into its components or cases. Rewrite using `[hm a s h', he a s h']`. Conclude with `hlow a s h'`. Use extensionality with `⟨a, s⟩`.
+
+Distinguish the cases in `h : a.val = s.val`. Establish `h1` using `hcol s`. Rewrite `h1` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ (fun a => e (a, s)) (Finset.mem_univ a)]`. Establish `h2 : ∑ x ∈ Finset.univ.erase a, m (x, s) = ∑ x ∈ Finset.univ.erase a, e (x, s)`. Use `Finset.sum_congr rfl fun x hx => hne x s ?_` and prove the remaining obligations.
+
+Introduce `hxs`. Conclude with `(Finset.ne_of_mem_erase hx) (Fin.ext (by omega))`. Use linear arithmetic over natural numbers and integers. Conclude with `hne a s h`.
+-/
 theorem lrf_unique (m e : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (he : LowerTri e) (hoff : lrf_off m = lrf_off e)
     (hcol : ∀ s : Fin n, ∑ a : Fin r, m (a, s) = ∑ a : Fin r, e (a, s)) : m = e := by
   classical
@@ -478,6 +651,17 @@ theorem lrf_unique (m e : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (he : Low
     omega
   · exact hne a s h
 
+/- English proof (translation)
+Rewrite using `[eval₂_eq', coeff_sum]`. Establish `key : ∀ m ∈ F.support, coeff (lrf_off e) (C (coeff m F) * ∏ i, lrf_ell R r n i ^ m i) = if m = e then coeff m F else 0`. Introduce `m hm`. Establish `hp : (∏ i, lrf_ell R r n i ^ m i) = m.prod fun v k => lrf_ell R r n v ^ k`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`.
+
+Rewrite using `[hp, coeff_C_mul]`. Distinguish the cases in `hl : LowerTri m`. Rewrite using `[lrf_prod_lower m hl, coeff_monomial]`. Distinguish the cases in `hme : m = e`. Substitute `hme` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hme, if_neg, mul_zero]`. Introduce `hoff`. Apply `hme` to reduce the goal to its premises. Use `lrf_unique m e hl he hoff fun s => ?_` and prove the remaining obligations.
+
+Rewrite using `[hcol s, ← lccomp_weight_colW_apply, hF (mem_support_iff.mp hm)]`. Rewrite using `[lrf_prod_upper m hl, coeff_zero, mul_zero, if_neg]`. Introduce and unpack `rfl`. Conclude with `hl he`. Rewrite using `[Finset.sum_congr rfl key, Finset.sum_ite_eq']`.
+
+Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(notMem_support_iff.mp h).symm`.
+-/
 theorem lrf_coeff_ell (ν : Fin n → ℕ) (F : MvPolynomial (Fin r × Fin n) R) (e : Fin r × Fin n →₀ ℕ)
     (hF : IsWeightedHomogeneous (colW r n) F ν) (he : LowerTri e) (hcol : ∀ s : Fin n, ∑ a : Fin r, e (a, s) = ν s) :
     coeff (lrf_off e) (eval₂ C (lrf_ell R r n) F) = coeff e F := by
@@ -509,6 +693,13 @@ theorem lrf_coeff_ell (ν : Fin n → ℕ) (F : MvPolynomial (Fin r × Fin n) R)
 
 end
 
+/- English proof (translation)
+Introduce `R _ r n ν F e hF he hcol`. Establish `hd : ∀ (a : Fin r) (s : Fin n), s.val < a.val → lrf_off e (a, s) = e (a, s)`. Introduce `a s h`. Simplify using `[lrf_off, Finsupp.filter_apply, h]`. Establish `h1` using `lrfc_coeffT_Phi (lrf_L r n) lrf_nodup F (lrf_off e)`.
+
+Establish `hc : ∀ u, u ∉ (lrf_L r n).map (·.2.2) → lrf_off e u = 0`. Introduce `u hu`. Rewrite `hu` using `[lrf_mem_vars]`. Simplify using `[lrf_off, Finsupp.filter_apply, hu]`. Rewrite `h1` using `[if_pos hc, lrf_wordOf e (lrf_off e) hd]`.
+
+Rewrite using `[← h1, lrf_eval_coeffT, lrf_eval_Phi, lrf_coeff_ell ν F e hF he hcol]`.
+-/
 theorem coefficient_word : CoeffWord := by
   intro R _ r n ν F e hF he hcol
   classical

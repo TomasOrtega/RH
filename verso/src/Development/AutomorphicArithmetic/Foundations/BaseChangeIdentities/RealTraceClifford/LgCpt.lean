@@ -11,6 +11,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `n R`. Take `⟨-, -, -, -, hc, -⟩` from `GlobalTheory.T.length_function_facts_hold n`. Conclude with `hc R`.
+-/
 theorem UpperTheory.RealTr.lgCpt :
     ∀ (n : ℕ) (R : ℝ), IsCompact {y : G n | lg y.val ≤ R} := by
   intro n R

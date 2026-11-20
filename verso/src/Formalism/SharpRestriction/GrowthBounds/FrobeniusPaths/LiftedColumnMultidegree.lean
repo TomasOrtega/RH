@@ -13,10 +13,16 @@ variable {R : Type*} [CommRing R] {N k : ℕ}
 def HomD (d : Fin N → ℕ) (F : MvPolynomial (Fin N × Fin k) R) : Prop :=
   ∀ m ∈ F.support, ∀ i, multideg m i = d i
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 lemma HomD.zero (d : Fin N → ℕ) : HomD d (0 : MvPolynomial (Fin N × Fin k) R) := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm i`. Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hF m h i`. Conclude with `hG m h i`.
+-/
 lemma HomD.add {d : Fin N → ℕ} {F G : MvPolynomial (Fin N × Fin k) R} (hF : HomD d F) (hG : HomD d G) :
     HomD d (F + G) := by
   intro m hm i
@@ -24,19 +30,33 @@ lemma HomD.add {d : Fin N → ℕ} {F G : MvPolynomial (Fin N × Fin k) R} (hF :
   · exact hF m h i
   · exact hG m h i
 
+/- English proof (translation)
+Conclude with `Finset.sum_induction F (HomD d) (fun a b ha hb => ha.add hb) (HomD.zero d) h`.
+-/
 lemma HomD.sum {ι' : Type*} {d : Fin N → ℕ} (s : Finset ι') (F : ι' → MvPolynomial (Fin N × Fin k) R)
     (h : ∀ a ∈ s, HomD d (F a)) : HomD d (∑ a ∈ s, F a) := by
   exact Finset.sum_induction F (HomD d) (fun a b ha hb => ha.add hb) (HomD.zero d) h
 
+/- English proof (translation)
+Simplify using `only [multideg, Finsupp.add_apply, Finset.sum_add_distrib]`.
+-/
 lemma multideg_add (a b : Fin N × Fin k →₀ ℕ) (i : Fin N) : multideg (a + b) i = multideg a i + multideg b i := by
   simp only [multideg, Finsupp.add_apply, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Introduce `m hm i`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul F G hm)`. Rewrite using `[multideg_add, hF a ha i, hG b hb i, Pi.add_apply]`.
+-/
 lemma HomD.mul {d d' : Fin N → ℕ} {F G : MvPolynomial (Fin N × Fin k) R} (hF : HomD d F) (hG : HomD d' G) :
     HomD (d + d') (F * G) := by
   intro m hm i
   obtain ⟨a, ha, b, hb, rfl⟩ := Finset.mem_add.1 (MvPolynomial.support_mul F G hm)
   rw [multideg_add, hF a ha i, hG b hb i, Pi.add_apply]
 
+/- English proof (translation)
+Introduce `m hm i`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using `[multideg]`.
+
+Conclude with `absurd rfl hm`.
+-/
 lemma HomD.one : HomD (0 : Fin N → ℕ) (1 : MvPolynomial (Fin N × Fin k) R) := by
   intro m hm i
   rw [MvPolynomial.mem_support_iff, MvPolynomial.coeff_one] at hm
@@ -45,12 +65,20 @@ lemma HomD.one : HomD (0 : Fin N → ℕ) (1 : MvPolynomial (Fin N × Fin k) R) 
     simp [multideg]
   · exact absurd rfl hm
 
+/- English proof (translation)
+Proceed by induction on `Q with`. Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `HomD.one`. Consider the case `succ n ih => rw [pow_succ, succ_nsmul]`. Conclude with `ih.mul hF`.
+-/
 lemma HomD.pow {d : Fin N → ℕ} {F : MvPolynomial (Fin N × Fin k) R} (hF : HomD d F) (Q : ℕ) :
     HomD (Q • d) (F ^ Q) := by
   induction Q with
   | zero => rw [pow_zero, zero_smul]; exact HomD.one
   | succ n ih => rw [pow_succ, succ_nsmul]; exact ih.mul hF
 
+/- English proof (translation)
+Establish `h1 : HomD (0 : Fin N → ℕ) (-1 : MvPolynomial (Fin N × Fin k) R)`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.support_neg]`. Conclude with `HomD.one m hm`. Establish `h2` using `(h1.pow n).mul hF`.
+
+Rewrite `h2` using `[smul_zero, zero_add]`. Then use the resulting hypothesis.
+-/
 lemma HomD.sign {d : Fin N → ℕ} {F : MvPolynomial (Fin N × Fin k) R} (hF : HomD d F) (n : ℕ) :
     HomD d ((-1) ^ n * F) := by
   have h1 : HomD (0 : Fin N → ℕ) (-1 : MvPolynomial (Fin N × Fin k) R) := by
@@ -62,6 +90,11 @@ lemma HomD.sign {d : Fin N → ℕ} {F : MvPolynomial (Fin N × Fin k) R} (hF : 
 
 def eI (i : Fin N) : Fin N → ℕ := fun i' => if i' = i then 1 else 0
 
+/- English proof (translation)
+Establish `hw : HomD (eI i + d) (wedgeR x Kv J)`. Unfold `wedgeR`. Conclude with `HomD.sum _ _ fun m _ => ((hx m).sign _).mul (hK _)`. Establish `hc : HomD (eI i + d) (contrR x Kv J)`. Unfold `contrR`.
+
+Conclude with `HomD.sum _ _ fun m _ => ((hx m).sign _).mul (hK _)`. Unfold `colStep`. Use `split_ifs`. Apply the tactic sequence `all_goals first | exact hw | exact hc | exact (hne (by omega)).elim`.
+-/
 lemma colStep_HomD (c : ℤ) (hP hN : ℕ) (hne : hP ≠ hN) (i : Fin N) (d : Fin N → ℕ)
     (x : Fin k → MvPolynomial (Fin N × Fin k) R) (Kv : Finset (Fin k) → MvPolynomial (Fin N × Fin k) R)
     (hx : ∀ b, HomD (eI i) (x b)) (hK : ∀ J, HomD d (Kv J)) (J : Finset (Fin k)) :
@@ -81,12 +114,18 @@ open Classical in
 def dgS (p : ℕ) (pos : Fin N → ℤ) (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (j : ℕ) (s : ℤ) : Fin N → ℕ :=
   fun i => if i.val < j ∧ IsUsed mu c i then p ^ (s - pos i).toNat else 0
 
+/- English proof (translation)
+Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem pow_toNat_mul_pow_toNat_eq_of_le (p : ℕ) {u v w : ℤ} (h1 : u ≤ v) (h2 : v ≤ w) :
     p ^ (w - v).toNat * p ^ (v - u).toNat = p ^ (w - u).toNat := by
   rw [← pow_add]
   congr 1
   omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [dgS, Pi.zero_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `h i h1 h2`.
+-/
 private theorem dgS_eq_zero_of_none_used (p : ℕ) (pos : Fin N → ℤ) (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (j : ℕ) (s : ℤ)
     (h : ∀ i : Fin N, i.val < j → ¬ IsUsed mu c i) : dgS p pos mu c j s = 0 := by
   funext i
@@ -95,6 +134,13 @@ private theorem dgS_eq_zero_of_none_used (p : ℕ) (pos : Fin N → ℤ) (mu : F
   rintro ⟨h1, h2⟩
   exact h i h1 h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [dgS]`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. It suffices to derive a contradiction.
+
+Apply `h2` to reduce the goal to its premises. Use `⟨?_, h1.2⟩` and prove the remaining obligations. Distinguish the cases in `h : i.val < j`. Conclude with `h`. Establish `e : i = ⟨j, hj⟩` using `Fin.ext (show i.val = j by have := h1.1; omega)`.
+
+Substitute `e` using the available equality. Conclude with `absurd h1.2 hu`. It suffices to derive a contradiction. Conclude with `h1 ⟨Nat.lt_succ_of_lt h2.1, h2.2⟩`. Both sides reduce to the same expression.
+-/
 private theorem dgS_succ_eq_of_not_used (p : ℕ) (pos : Fin N → ℤ) (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (j : ℕ) (hj : j < N)
     (hu : ¬ IsUsed mu c ⟨j, hj⟩) (s : ℤ) : dgS p pos mu c (j + 1) s = dgS p pos mu c j s := by
   funext i
@@ -113,6 +159,11 @@ private theorem dgS_succ_eq_of_not_used (p : ℕ) (pos : Fin N → ℤ) (mu : Fi
     exact h1 ⟨Nat.lt_succ_of_lt h2.1, h2.2⟩
   · rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, smul_zero, Pi.zero_apply, add_zero, eI, dgS]`. Distinguish the cases in `hij : i.val = j`. Establish `e : i = ⟨j, hj⟩` using `Fin.ext hij`. Substitute `e` using the available equality.
+
+Simplify using `[hu]`. Establish `hne : i ≠ ⟨j, hj⟩` using `fun e => hij (by rw [e])`. Rewrite using `[if_neg hne, if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `h i (by omega) h2`.
+-/
 private theorem eI_eq_dgS_succ_of_first_used (p : ℕ) (pos : Fin N → ℤ) (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (j : ℕ) (hj : j < N)
     (hu : IsUsed mu c ⟨j, hj⟩) (h : ∀ i : Fin N, i.val < j → ¬ IsUsed mu c i) :
     eI ⟨j, hj⟩ + 1 • (0 : Fin N → ℕ) = dgS p pos mu c (j + 1) (pos ⟨j, hj⟩) := by
@@ -127,6 +178,15 @@ private theorem eI_eq_dgS_succ_of_first_used (p : ℕ) (pos : Fin N → ℤ) (mu
     rintro ⟨h1, h2⟩
     exact h i (by omega) h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, eI, dgS]`. Distinguish the cases in `hij : i.val = j`. Establish `e : i = ⟨j, hj⟩` using `Fin.ext hij`. Substitute `e` using the available equality.
+
+Simplify using `[hu]`. Establish `hne : i ≠ ⟨j, hj⟩` using `fun e => hij (by rw [e])`. Rewrite using `[if_neg hne, zero_add]`. Distinguish the cases in `hU : IsUsed mu c i`. Distinguish the cases in `hlt : i.val < j`.
+
+Rewrite using `[if_pos ⟨hlt, hU⟩, if_pos ⟨by omega, hU⟩]`. Conclude with `pow_toNat_mul_pow_toNat_eq_of_le p (hle i hlt hU) hsl`. Rewrite using `[if_neg (fun h => hlt h.1), if_neg (fun h => by have := h.1; omega)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hU h.2), if_neg (fun h => hU h.2)]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem eI_add_pow_smul_dgS_eq_dgS_succ_of_used (p : ℕ) (pos : Fin N → ℤ) (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (j : ℕ) (hj : j < N)
     (sl : ℤ) (hu : IsUsed mu c ⟨j, hj⟩) (hsl : sl ≤ pos ⟨j, hj⟩)
     (hle : ∀ i : Fin N, i.val < j → IsUsed mu c i → pos i ≤ sl) :
@@ -148,6 +208,9 @@ private theorem eI_add_pow_smul_dgS_eq_dgS_succ_of_used (p : ℕ) (pos : Fin N �
     · rw [if_neg (fun h => hU h.2), if_neg (fun h => hU h.2)]
       simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, dgS]`. Use `split_ifs with h`. Conclude with `pow_toNat_mul_pow_toNat_eq_of_le p (hle i h.1 h.2) hsl`. Simplify using the standard rewrite rules.
+-/
 private theorem pow_smul_dgS_eq_dgS_of_le (p : ℕ) (pos : Fin N → ℤ) (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (j : ℕ) (s sl : ℤ)
     (hsl : sl ≤ s) (hle : ∀ i : Fin N, i.val < j → IsUsed mu c i → pos i ≤ sl) :
     p ^ (s - sl).toNat • dgS p pos mu c j sl = dgS p pos mu c j s := by
@@ -157,6 +220,33 @@ private theorem pow_smul_dgS_eq_dgS_of_le (p : ℕ) (pos : Fin N → ℤ) (mu : 
   · exact pow_toNat_mul_pow_toNat_eq_of_le p (hle i h.1 h.2) hsl
   · simp
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Use `⟨fun _ => ⟨fun i hi => absurd hi (Nat.not_lt_zero _), fun J => ?_⟩, fun sl hsl => ?_⟩` and prove the remaining obligations. Simplify using `only [KKs, extOne] split_ifs`.
+
+Conclude with `HomD.one`. Conclude with `HomD.zero _`. Simplify using `[KKs] at hsl`. Consider the case `succ j ih`. Introduce `hj`.
+
+Establish `hjN : j < N` using `hj`. Take `⟨ihN, ihS⟩` from `ih (Nat.le_of_lt hjN)`. Establish `hmax : ∀ i : Fin N, i.val < j + 1 → pos i ≤ pos ⟨j, hjN⟩` using `fun i hi => hmono (Fin.le_iff_val_le_val.2 (Nat.lt_succ_iff.1 hi))`. Distinguish the cases in `heq : colH (mu ⟨j, by omega⟩) c = colH (mu ⟨j + 1, by omega⟩) c`. Establish `hu : ¬ IsUsed mu c ⟨j, hjN⟩` using `fun h => h heq`.
+
+Establish `hK : KKs p x pos mu c (j + 1) = KKs p x pos mu c j`. Simplify using `only [KKs, dif_pos hjN, if_pos heq]`. Rewrite using `[hK]`. Use `⟨fun hn => ?_, fun sl hs => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `ihN hn`.
+
+Use `⟨fun i hi hU => ?_, h2⟩` and prove the remaining obligations. Distinguish the cases in `hij : i.val = j`. Establish `e : i = ⟨j, hjN⟩` using `Fin.ext hij`. Substitute `e` using the available equality. Conclude with `hu hU`.
+
+Conclude with `h1 i (by omega) hU`. Take `⟨⟨i₀, hi₀, hU₀, he₀⟩, h2, h3⟩` from `ihS sl hs`. Use `⟨⟨i₀, by omega, hU₀, he₀⟩, fun i hi hU => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i.val = j`. Establish `e : i = ⟨j, hjN⟩` using `Fin.ext hij`.
+
+Substitute `e` using the available equality. Conclude with `absurd hU hu`. Conclude with `h2 i (by omega) hU`. Introduce `J`. Rewrite using `[dgS_succ_eq_of_not_used p pos mu c j hjN hu sl]`.
+
+Conclude with `h3 J`. Establish `hu : IsUsed mu c ⟨j, hjN⟩` using `heq`. Consider the cases of `hst : (KKs p x pos mu c j).2 with`. Consider the case `none`. Take `⟨h1, h2⟩` from `ihN hst`.
+
+Establish `hK : KKs p x pos mu c (j + 1) = (colStep c (colH (mu ⟨j, by omega⟩) c) (colH (mu ⟨j + 1, by omega⟩) c) (x ⟨j, hjN⟩) (powC 1 (KKs p x pos mu c j).1), some (pos ⟨j, hjN⟩))`. Simplify using `only [KKs, dif_pos hjN, if_neg heq, hst]`. Rewrite using `[hK]`. Use `⟨fun hn => by simp at hn, fun sl hs => ?_⟩` and prove the remaining obligations. Simplify using `at hs`.
+
+Substitute `hs` using the available equality. Use `⟨⟨⟨j, hjN⟩, by simp, hu, rfl⟩, fun i hi _ => hmax i hi, fun J => ?_⟩` and prove the remaining obligations. Rewrite using `[← eI_eq_dgS_succ_of_first_used p pos mu c j hjN hu h1]`. Conclude with `colStep_HomD c _ _ heq ⟨j, hjN⟩ _ _ _ (hx ⟨j, hjN⟩) (fun J => (h2 J).pow 1) J`. Consider the case `some sl0`.
+
+Take `⟨⟨i₀, hi₀, hU₀, he₀⟩, h2, h3⟩` from `ihS sl0 hst`. Establish `hK : KKs p x pos mu c (j + 1) = (colStep c (colH (mu ⟨j, by omega⟩) c) (colH (mu ⟨j + 1, by omega⟩) c) (x ⟨j, hjN⟩) (powC (p ^ (pos ⟨j, hjN⟩ - sl0).toNat) (KKs p x pos mu c j).1), some (pos ⟨j, hjN⟩))`. Simplify using `only [KKs, dif_pos hjN, if_neg heq, hst]`. Rewrite using `[hK]`. Use `⟨fun hn => by simp at hn, fun sl hs => ?_⟩` and prove the remaining obligations.
+
+Simplify using `at hs`. Substitute `hs` using the available equality. Establish `hsl : sl0 ≤ pos ⟨j, hjN⟩` using `by rw [← he₀]; exact hmax i₀ (by omega)`. Use `⟨⟨⟨j, hjN⟩, by simp, hu, rfl⟩, fun i hi _ => hmax i hi, fun J => ?_⟩` and prove the remaining obligations. Rewrite using `[← eI_add_pow_smul_dgS_eq_dgS_succ_of_used p pos mu c j hjN sl0 hu hsl h2]`.
+
+Conclude with `colStep_HomD c _ _ heq ⟨j, hjN⟩ _ _ _ (hx ⟨j, hjN⟩) (fun J => (h3 J).pow _) J`.
+-/
 private theorem homD_KKs_and_slot_properties (p : ℕ) (x : Fin N → Fin k → MvPolynomial (Fin N × Fin k) R) (pos : Fin N → ℤ)
     (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (hmono : Monotone pos) (hx : ∀ i b, HomD (eI i) (x i b)) (j : ℕ) :
     j ≤ N →
@@ -234,6 +324,13 @@ private theorem homD_KKs_and_slot_properties (p : ℕ) (x : Fin N → Fin k → 
         rw [← eI_add_pow_smul_dgS_eq_dgS_succ_of_used p pos mu c j hjN sl0 hu hsl h2]
         exact colStep_HomD c _ _ heq ⟨j, hjN⟩ _ _ _ (hx ⟨j, hjN⟩) (fun J => (h3 J).pow _) J
 
+/- English proof (translation)
+Introduce `s hs J`. Take `⟨hN', hS⟩` from `homD_KKs_and_slot_properties p x pos mu c hmono hx j hj`. Consider the cases of `hst : (KKs p x pos mu c j).2 with`. Consider the case `none`. Take `⟨h1, h2⟩` from `hN' hst`.
+
+Establish `hZ : ZZ p x pos mu c j s J = (KKs p x pos mu c j).1 J` using `by simp only [ZZ, hst]`. Rewrite using `[hZ, dgS_eq_zero_of_none_used p pos mu c j s h1]`. Conclude with `h2 J`. Consider the case `some sl`. Take `⟨⟨i₀, hi₀, hU₀, he₀⟩, h2, h3⟩` from `hS sl hst`.
+
+Establish `hZ : ZZ p x pos mu c j s J = powC (p ^ (s - sl).toNat) (KKs p x pos mu c j).1 J`. Simplify using `only [ZZ, hst]`. Establish `hsl : sl ≤ s` using `by rw [← he₀]; exact hs i₀ hi₀ hU₀`. Rewrite using `[hZ, ← pow_smul_dgS_eq_dgS_of_le p pos mu c j s sl hsl h2]`. Conclude with `(h3 J).pow _`.
+-/
 theorem ZZ_HomD (p : ℕ) (x : Fin N → Fin k → MvPolynomial (Fin N × Fin k) R) (pos : Fin N → ℤ)
     (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (hmono : Monotone pos) (hx : ∀ i b, HomD (eI i) (x i b))
     (j : ℕ) (hj : j ≤ N) :
@@ -261,6 +358,11 @@ section Clause2
 
 variable (p f : ℕ) [Fact p.Prime] {O : Type} [CommRing O] [IsDomain O] [Algebra (WF p f) O] {N k : ℕ}
 
+/- English proof (translation)
+Introduce `m hm i'`. Rewrite `hm` using `[mul_comm, MvPolynomial.C_mul_X_eq_monomial]`. Establish `hm'` using `Finset.mem_singleton.1 (MvPolynomial.support_monomial_subset hm)`. Substitute `hm'` using the available equality. Distinguish the cases in `h : i' = i`.
+
+Substitute `h` using the available equality. Simplify using `[multideg, eI, Finsupp.single_apply]`. Simplify using `[multideg, eI, Finsupp.single_apply, h, Ne.symm h]`.
+-/
 lemma XC_HomD (i : Fin N) (a : Fin k) (t : KK O) :
     HomD (eI i) (X (i, a) * C t : MvPolynomial (Fin N × Fin k) (KK O)) := by
   intro m hm i'
@@ -272,6 +374,9 @@ lemma XC_HomD (i : Fin N) (a : Fin k) (t : KK O) :
     simp [multideg, eI, Finsupp.single_apply]
   · simp [multideg, eI, Finsupp.single_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Unfold `letG`. Use `split_ifs`. Conclude with `HomD.sum _ _ fun a _ => by apply XC_HomD`. Conclude with `HomD.sum _ _ fun a _ => by apply XC_HomD`.
+-/
 lemma letG_HomD (LL : LiftLetters (Fin N)) (g : Matrix (Fin k) (Fin k) (WF p f)) (i : Fin N) (b : Fin k) :
     HomD (eI i) (letG p f (O := O) LL g i b) := by
   unfold letG
@@ -279,6 +384,9 @@ lemma letG_HomD (LL : LiftLetters (Fin N)) (g : Matrix (Fin k) (Fin k) (WF p f))
   · exact HomD.sum _ _ fun a _ => by apply XC_HomD
   · exact HomD.sum _ _ fun a _ => by apply XC_HomD
 
+/- English proof (translation)
+Rewrite `hm` using `[KKc_eq]`. Establish `H` using `ZZ_HomD p (letG p f (O := O) LL g) LL.pos mu c hmono (fun i b => by apply letG_HomD) N le_rfl z (fun i _ _ => hz i) J m hm i`. Rewrite using `[H]`. Simplify using `[dgS, i.isLt, hi]`.
+-/
 theorem lifted_column_multidegree (LL : LiftLetters (Fin N)) (g : Matrix (Fin k) (Fin k) (WF p f)) (z : ℤ)
     (mu : Fin (N + 1) → Fin k → ℤ) (c : ℤ) (hmono : Monotone LL.pos) (hz : ∀ i, LL.pos i ≤ z)
     (J : Finset (Fin k)) (m : Fin N × Fin k →₀ ℕ) (hm : m ∈ (KKc p f (O := O) LL g z mu c J).support) (i : Fin N)

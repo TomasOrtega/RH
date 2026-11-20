@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `x y h`. Establish `hd : IsDominant (spMap (u : T →+* K))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by show RingHom.ker (u : T →+* K) ≤ _`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (u : T →+* K)).1 hu]`. Conclude with `bot_le)⟩`. Establish `h1 : spMap (u : T →+* K) ≫ x.1.left = spMap (u : T →+* K) ≫ y.1.left` using `congrArg (fun z : Tors G N K => z.1.left) h`.
+
+Establish `hr : AlgebraicGeometry.IsReduced (Sp T)` using `inferInstance`. Use `Subtype.ext (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Conclude with `ext_of_isDominant_of_isSeparated (W := Sp K) (X := Sp T) G.hom ((Over.w x.1).trans (Over.w y.1).symm) (spMap (u : T →+* K)) h1`.
+-/
 theorem torsMap_injective_of_isSeparated {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     [IsSeparated G.hom] {N : ℕ} {T K : Type} [CommRing T] [_root_.IsReduced T] [Algebra R T] [CommRing K] [Algebra R K]
     (u : T →ₐ[R] K) (hu : Function.Injective u) :
@@ -31,6 +36,19 @@ theorem torsMap_injective_of_isSeparated {R : Type} [CommRing R] {G : Over (Sp R
   exact ext_of_isDominant_of_isSeparated (W := Sp K) (X := Sp T) G.hom ((Over.w x.1).trans (Over.w y.1).symm)
     (spMap (u : T →+* K)) h1
 
+/- English proof (translation)
+Introduce `R K _ _ _ G _ _ hsep N q c B _ _ _ hr em hem z hz`. Take `⟨ψ, -, hψ⟩` from `(c.bij K).2.2 hz`. Establish `hψ : torsMap ψ c.j = torsMap em z` using `hψ`. Use `letI : Algebra B K := (em : B →+* K).toAlgebra`. Use `haveI : IsScalarTower R B K := IsScalarTower.of_algebraMap_eq fun a => (em.commutes a).symm`.
+
+Set `l : Localization.Away c.r →+* B` to `IsLocalization.Away.lift c.r hr`. Establish `hl : (algebraMap B K).comp l = (ψ : c.C →+* K).comp (algebraMap (Localization.Away c.r) c.C)`. Use `IsLocalization.ringHom_ext (Submonoid.powers c.r) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, l, IsLocalization.Away.lift_eq]`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `(ψ.commutes a).symm`. Establish `hint : ∀ x : c.C, ψ x ∈ integralClosure B K` using `fun x => (Algebra.IsIntegral.isIntegral (R := Localization.Away c.r) x).map_of_comp_eq l (ψ : c.C →+* K) hl`. Set `T` to `integralClosure B K`. Set `u : T →ₐ[R] K` to `T.val.restrictScalars R`. Set `e : B →ₐ[R] T` to `IsScalarTower.toAlgHom R B T`.
+
+Set `ψT : c.C →ₐ[R] T` to `ψ.codRestrict (T.restrictScalars R) hint`. Establish `h1 : torsMap ψT c.j = torsMap e z`. Apply `torsMap_injective_of_isSeparated u Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[torsMap_comp, torsMap_comp]`. Conclude with `hψ`.
+
+Establish `h2 : Set.range (torsMap e z).1.left ⊆ c.W` using `h1 ▸ (c.bij T).1 (Set.mem_univ ψT)`. Use `haveI : FaithfulSMul B T := (faithfulSMul_iff_algebraMap_injective B T).2 fun a b hab => hem (congrArg Subtype.val hab)`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, hy⟩` from `Algebra.IsIntegral.comap_surjective B T x`. Use `h2 ⟨y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hy]`. Both sides reduce to the same expression.
+-/
 theorem PreChart.range_subset_of_generic : ∀ (R K : Type) [CommRing R] [Field K] [Algebra R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSeparated G.hom → ∀ (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q) (B : Type) [CommRing B] [IsDomain B] [Algebra R B], IsUnit (algebraMap R B c.r) → ∀ (em : B →ₐ[R] K), Function.Injective em → ∀ z : Tors G N B, Set.range (torsMap em z).1.left ⊆ c.W → Set.range z.1.left ⊆ c.W := by
   intro R K _ _ _ G _ _ hsep N q c B _ _ _ hr em hem z hz
   obtain ⟨ψ, -, hψ⟩ := (c.bij K).2.2 hz

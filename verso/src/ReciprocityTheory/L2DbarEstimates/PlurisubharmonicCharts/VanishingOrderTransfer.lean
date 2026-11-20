@@ -15,6 +15,27 @@ section atlas
 variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
+/- English proof (translation)
+Use `set p := A.pick y with hp`. Use `set c := A.chart p with hc`. Use `set v0 := e t0 with hv0def`. Establish `hy : y ∈ c.source` using `A.mem_pick y`. Establish `hv0 : v0 ∈ e.target` using `e.map_source ht0`.
+
+Establish `hsymm0 : e.symm v0 = t0` using `e.left_inv ht0`. Establish `hte : Tendsto (fun v => j (e.symm v)) (𝓝 v0) (𝓝 y)`. Establish `h` using `(hj.continuousAt (x := e.symm v0)).tendsto.comp (e.continuousAt_symm hv0).tendsto`. Rewrite `h` using `[hsymm0, hjt0]`. Conclude with `h`.
+
+Set `φ` to `fun v => c (j (e.symm v))`. Establish `htφ : Tendsto φ (𝓝 v0) (𝓝 (c y))` using `(c.continuousAt hy).tendsto.comp hte`. Establish `hev : ∀ᶠ v in 𝓝 v0, v ∈ e.target ∧ j (e.symm v) ∈ c.source` using `(e.open_target.eventually_mem hv0).and (hte.eventually (c.open_source.eventually_mem hy))`. Establish `hzφ : ∀ᶠ v in 𝓝 v0, A.zLoc w0 s p (φ v) = v` using `hev.mono fun v hv => by`. Rewrite using `[localCoordinates_eq_zmap A L w0 s hw hs p _ hv.2]`.
+
+Use `he (e.map_target hv.1)` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, e.right_inv hv.1]`. Establish `hUeq : ∀ᶠ v in 𝓝 v0, Nsec p (c.symm (φ v)) * (w0 p (c.symm (φ v)) ^ m)⁻¹ = (fun t => Nsec (A.pick (j t)) (j t) / w0 (A.pick (j t)) (j t) ^ m) (e.symm v)` using `hev.mono fun v hv => by`. Simplify using `only [φ, c.left_inv hv.2]`.
+
+Rewrite using `[ratio_pow_chart_independent A L m Nsec w0 hN hw (A.pick (j (e.symm v))) p _ (A.mem_pick _) hv.2, div_eq_mul_inv]`. Establish `hN' : (fun w => Nsec p (c.symm w)) =O[𝓝 (c y)] (fun w => ‖w - c y‖ ^ (m + 1))`. Take `⟨C, hC⟩` from `hvan`. Conclude with `IsBigO.of_bound C (hC.mono fun w hw => by rw [norm_pow, norm_norm]; exact hw)`. Establish `hw0c : ContinuousAt (fun w => w0 p (c.symm w)) (c y)`.
+
+Use `hw.1 p` as an intermediate fact. Simplify using `only [Set.preimage_univ, Set.inter_univ] at this`. Conclude with `(this.differentiableAt (c.open_target.mem_nhds (c.map_source hy))).continuousAt`. Establish `hinv : (fun w => (w0 p (c.symm w) ^ m)⁻¹) =O[𝓝 (c y)] (fun _ => (1 : ℝ))`. Establish `: ContinuousAt (fun w => (w0 p (c.symm w) ^ m)⁻¹) (c y)` using `(hw0c.pow m).inv₀ (by show w0 p (c.symm (c y)) ^ m ≠ 0`.
+
+Rewrite using `[c.left_inv hy]`. Conclude with `pow_ne_zero _ hy0)`. Conclude with `this.tendsto.isBigO_one ℝ`. Establish `hG` using `(hN'.mul hinv).comp_tendsto htφ`. Establish `hlow : (fun v => φ v - c y) =O[𝓝 v0] (fun v => v - v0)`.
+
+Establish `hd` using `differentiableAt_localCoordinates A L w0 s hw hs p y hy hy0`. Establish `h1` using `(sub_isBigO_of_det_ne_zero hd.hasFDerivAt hdet).comp_tendsto htφ`. Establish `hq0 : A.zLoc w0 s p (c y) = v0`. Rewrite using `[localCoordinates_eq_zmap A L w0 s hw hs p y hy, ← hjt0]`. Conclude with `he ht0`.
+
+Use `h1.congr' (Eventually.of_forall fun v => rfl) (hzφ.mono fun v hv => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hv]`. Conclude with `congrArg (v - ·) hq0`. Establish `hfin : (fun v => Nsec p (c.symm (φ v)) * (w0 p (c.symm (φ v)) ^ m)⁻¹) =O[𝓝 v0] (fun v => ‖v - v0‖ ^ (m + 1))`. Use `hG.trans ?_` and prove the remaining obligations.
+
+Use `hlow.norm_norm.pow (m + 1)` as an intermediate fact. Conclude with `this.congr_left (fun v => by simp [φ])`. Take `⟨C, hC⟩` from `isBigO_iff.1 (hfin.congr' hUeq EventuallyEq.rfl)`. Use `⟨C, hC.mono fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[norm_pow, norm_norm]`. Then use the resulting hypothesis.
+-/
 theorem vanishing_order_transfer (A : WeightedAtlas n Y ι La) (L : La) (m : ℕ) (w0 : ι → Y → ℂ)
     (s : Fin n → ι → Y → ℂ) (Nsec : ι → Y → ℂ)
     (hw : A.IsSec L w0) (hs : ∀ k, A.IsSec L (s k)) (hN : A.IsSec (m • L) Nsec)
@@ -91,6 +112,21 @@ section atlas
 variable {n : ℕ} {Y : Type*} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La]
 
+/- English proof (translation)
+Use `set p := A.pick y with hp`. Use `set E := Real.exp (-A.ph L p y) with hE`. Establish `hE0 : 0 < E` using `Real.exp_pos _`. Establish `hw0n : 0 < ‖w0 p y‖` using `norm_pos_iff.2 hy0`. Use `set a := ‖w0 p y‖ ^ 2 * E with ha`.
+
+Establish `ha0 : 0 < a` using `by positivity`. Use `set t := 1 + ‖A.zmap w0 s y‖ ^ 2 with ht`. Establish `ht0 : 0 < t` using `by positivity`. Use `set U := Nsec p y / w0 p y ^ m with hU`. Establish `hsq : A.sqn L s y = a * ‖A.zmap w0 s y‖ ^ 2`.
+
+Simplify using `only [sqn, nsq, zmap, EuclideanSpace.norm_sq_eq, ← hp, ← hE, ha, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_div]`. Clear the denominators using the available nonvanishing facts. Establish `hw0sq : A.nsq L w0 y = a` using `rfl`.
+
+Establish `hNsq : A.nsq (m • L) Nsec y = ‖U‖ ^ 2 * a ^ m`. Simplify using `only [nsq, ← hp]`. Rewrite using `[weight_nsmul_eq_mul A L m p y (A.mem_pick y), show -(↑m * A.ph L p y) = ↑m * (-A.ph L p y) by ring, Real.exp_nat_mul, ← hE, hU, ha, norm_div, norm_pow]`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+
+Establish `hsqw : 0 ≤ A.sqn L w y` using `Finset.sum_nonneg (fun k _ => by unfold nsq; positivity)`. Establish `hle : ‖U‖ ^ 2 * a ^ m ≤ (max C1 0 * |C2| ^ m * t ^ m) * a ^ m`. Rewrite using `[← hNsq]`. Establish `hb : A.sqn L w y ≤ |C2| * (a * t)`. Use `h2 y` as an intermediate fact.
+
+Rewrite `this` using `[hw0sq, hsq]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hle' : ‖U‖ ^ 2 ≤ max C1 0 * |C2| ^ m * t ^ m` using `le_of_mul_le_mul_right hle (pow_pos ha0 m)`. Establish `hK : 0 ≤ max C1 0 * |C2| ^ m` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul ht0.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_section_ratio_le {N' : ℕ} (A : WeightedAtlas n Y ι La) (L : La) (m : ℕ)
     (w : Fin N' → ι → Y → ℂ) (w0 : ι → Y → ℂ) (s : Fin n → ι → Y → ℂ) (Nsec : ι → Y → ℂ)
     (C1 C2 : ℝ) (h1 : ∀ y, A.nsq (m • L) Nsec y ≤ C1 * A.sqn L w y ^ m)

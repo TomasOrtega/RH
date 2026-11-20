@@ -18,12 +18,44 @@ namespace GlobalTheory.AscBottom
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun γ hγ g => by simp [Pi.star_apply, h1 γ hγ g], h2.star, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h3 N`. Conclude with `⟨C, fun g => by simpa [Pi.star_apply, norm_star] using hC g⟩`.
+-/
 theorem rapidDec_star {V : HSp D} {f : GA D V → ℂ} (h : RapidDec V f) : RapidDec V (star f) := by
   obtain ⟨h1, h2, h3⟩ := h
   refine ⟨fun γ hγ g => by simp [Pi.star_apply, h1 γ hγ g], h2.star, fun N => ?_⟩
   obtain ⟨C, hC⟩ := h3 N
   exact ⟨C, fun g => by simpa [Pi.star_apply, norm_star] using hC g⟩
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G W M hM v F ΓL hE hG Ψ hΨ u hu hper h`. Establish `hm : 0 < D.R.m` using `by omega`. Take `⟨hom, homC, -, hev, hdep, hdn, hpart, -, -, -⟩` from `GlobalTheory.T.gridConjugation_weilData_inverseCharacter D hq T L μ0 hL sc G W M hM 0 hm`. Take `⟨hchT, hchS⟩` from `hev ⟨0, rfl⟩`. Take `⟨hrap, hch⟩` from `hΨ`.
+
+Take `⟨f, hf, hΨ0⟩` from `hch 0 hm`. Establish `hhf` using `(hM.row 0 (Nat.zero_le _)).haar_fund`. Set `vT : GlobalTheory.Unf.Vol (Yc D 0)` to `⟨M.ν (.grid 0 0), M.fd (.grid 0 0), hhf.1, hhf.2⟩`. Set `ρ₀ : G.RealVec` to `fun _ => 0`. Set `Φ₀ : G.Datum` to `fun _ => default`.
+
+Establish `hu' : RapidDec (Yc D 0) (star u)` using `rapidDec_star (hu ρ₀ Φ₀ 0 (Nat.zero_le _))`. Establish `hφ : RapidDec (G.V (.core 1)) (star (Ψ 1))` using `rapidDec_star (hrap 1 (by omega))`. Use `set a := G.ch.chi (D.R.m - 0) with ha`. Establish `homR : IsWeilDatumO W.ψ _ _ a⁻¹ (a⁻¹ * L.eta) (omRow W 0)`. Use `hom` as an intermediate fact.
+
+Rewrite `this` using `[hchS, hchT]`. Then use the resulting hypothesis. Establish `homX : IsWeilDatumO W.ψ _ _ a⁻¹ (a⁻¹ * L.eta * L.eta⁻¹) (omCore W 0)`. Rewrite using `[mul_inv_cancel_right]`. Conclude with `homC`. Establish `hHeta : IsHeckeChar D L.eta`.
+
+Use `GlobalTheory.HeckeCharsOfSquare.isHeckeChar_mul (GlobalTheory.HeckeCharsOfSquare.isHeckeChar_inv homR.hecS) homR.hecT` as an intermediate fact. Rewrite `this` using `[inv_inv, mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `hReta : ResEta D L.eta (negSp F.Lz).rank`. Establish `h1` using `Formalism.L2.Theta.resEta_mul (Formalism.L2.Theta.resEta_inv homC.resT) homR.resT`. Rewrite `h1` using `[inv_inv, mul_inv_cancel_left]`.
+
+Use `Formalism.L2.Theta.resEta_parity h1 ?_` and prove the remaining obligations. Establish `hr : (G.V (.grid 0 0)).rank + 1 = (G.V (.core 0)).rank`. Use `F.oz.rank_add` as an intermediate fact. Rewrite `this` using `[F.rk]`. Conclude with `this`.
+
+Use `show _ = F.Lz.rank % 2`. Rewrite using `[F.rk]`. Use linear arithmetic over natural numbers and integers. Take `⟨omz, homz⟩` from `GlobalTheory.WeilDatumExistence.weilDatumExists D (G.V (.core 1)) (negSp F.Lz) W.ψ a⁻¹⁻¹ L.eta W.ψ_std (GlobalTheory.HeckeCharsOfSquare.isHeckeChar_inv homX.hecS) hHeta (Formalism.L2.Theta.resEta_inv homX.resS) hReta`. Establish `hΞ : VacG W.ψ _ _ (latCore G 0) (star f)` using `(hdep f).1 hf`.
+
+Establish `hlift : liftT (omCore W 0) (v 1).μ (v 1).𝓕 (star (Ψ 1)) (star f) = star (Ψ 0)`. Rewrite using `[hΨ0]`. Conclude with `(hdn v f (Ψ 1)).symm`. Establish `hint : (∫ x in vT.𝓕, liftT (omCore W 0) (F.jac v 0 h).v0.μ (F.jac v 0 h).v0.𝓕 (star (Ψ 1)) (star f) (F.oz.emb (x, 1)) * star u x ∂vT.μ) ≠ 0`. Establish `e : (fun x : GA D (Yc D 0) => liftT (omCore W 0) (F.jac v 0 h).v0.μ (F.jac v 0 h).v0.𝓕 (star (Ψ 1)) (star f) (F.oz.emb (x, 1)) * star u x) = fun x => (starRingEnd ℂ) (Ψ 0 (stabilizerEmbedding G.sp.dec0 x) * u x)`.
+
+Use function extensionality and compare the values at `x`. Establish `hl : liftT (omCore W 0) (F.jac v 0 h).v0.μ (F.jac v 0 h).v0.𝓕 (star (Ψ 1)) (star f) = star (Ψ 0)` using `hlift`. Rewrite using `[hl, hE.bot x, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, integral_conj]`.
+
+Introduce `h0`. Apply `hper` to reduce the goal to its premises. Use `congrArg (starRingEnd ℂ) h0` as an intermediate fact. Rewrite `this` using `[Complex.conj_conj, map_zero]`. Conclude with `this`.
+
+Take `⟨Φ', Φz, hΦ', hΦz, hne⟩` from `GlobalTheory.T.lastSeesaw_periodNonvanishing D W.ψ (F.jac v 0 h) (G.V (.core 0)) (Yc D 0) F.Lz F.oz (latRow G 0) (ΓL 0) (latCore G 0) F.rk (hG.last h) (F.ζ 0) a⁻¹ (a⁻¹ * L.eta) L.eta (omRow W 0) (omCore W 0) omz homR homX homz vT (star (Ψ 1)) (star u) hφ hu' (star f) hΞ hint`. Set `ℓ : (WO (G.V (.grid 1 0)) (G.V (.grid 0 0)) → ℂ) → ℂ` to `fun Φ => (F.jac v 0 h).per W.ψ (F.ζ 0) omz (star (Ψ 1)) (liftS (omRow W 0) vT.μ vT.𝓕 (star u) Φ) Φz`. Establish `hT : Tame W.ψ _ _ ℓ` using `(GlobalTheory.T.thetaLift_periods_isTameThetaFunctional D W.ψ (Yc D 0) vT (star u) hu').2 0 (F.jac v 0 h) a⁻¹ (a⁻¹ * L.eta) (omRow W 0) homR (negSp F.Lz) (F.ζ 0) a⁻¹⁻¹ L.eta omz homz (star (Ψ 1)) Φz hφ hΦz.1`. Establish `hK : ∃ κ P, ℓ (star (W.fock (.chi 0 0) (W.cosVec 0 κ) P)) ≠ 0`. Assume the negation of the conclusion as `hno`.
+
+Use `push_neg at hno`. Conclude with `hne (hF D hq T L μ0 hL sc G W M hM ⟨0, hm⟩ ℓ hT hno Φ' hΦ')`. Take `⟨κ, P, hκP⟩` from `hK`. Set `ρ : G.RealVec` to `Function.update ρ₀ ⟨0, hm⟩ P`. Set `Φ : G.Datum` to `Function.update Φ₀ ⟨0, hm⟩ κ`.
+
+Use `⟨a⁻¹⁻¹, omz, homz, ρ, Φ, Φz, hΦz, ?_⟩` and prove the remaining obligations. Establish `hp` using `hpart ρ Φ u`. Establish `hd : W.datum ρ Φ ⟨0, hm⟩ = W.fock (.chi 0 0) (W.cosVec 0 κ) P` using `by show W.fock (.chi 0 0) (W.cosVec 0 (Φ ⟨0, hm⟩)) (ρ ⟨0, hm⟩) = _`. Simplify using `only [ρ, Φ, Function.update_self]`. Rewrite `hp` using `[hd]`.
+
+Express the relevant statement in the definitionally equal form `ℓ _ ≠ 0 at hκP`. Use `hκP using 2` and compare the differences between its conclusion and the goal. Conclude with `hp`.
+-/
 theorem rung0 (hF : FockTot) : Rung0 := by
   intro D hq T L μ0 hL sc G W M hM v F ΓL hE hG Ψ hΨ u hu hper h
   have hm : 0 < D.R.m := by omega

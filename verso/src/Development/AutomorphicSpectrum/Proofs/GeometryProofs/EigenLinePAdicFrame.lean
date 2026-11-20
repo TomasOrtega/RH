@@ -40,10 +40,18 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E Ωf _ _ _ σ σ₂ h`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`.
+-/
 theorem inc_eq : ∀ (E Ωf : Type) [Field E] [NumberField E] [Field Ωf] (σ σ₂ : E →+* Ωf), (∀ b : 𝓞 E, σ (b : E) = σ₂ (b : E)) → σ = σ₂ := by
   intro E Ωf _ _ _ σ σ₂ h
   exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)
 
+/- English proof (translation)
+Introduce `E _ _ K W _ _ _ ρ σ σ' h`. Unfold `eigSp HT.eigSp`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[h a]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eig_eq : ∀ (E : Type) [Field E] [NumberField E] (K W : Type) [Field K] [AddCommGroup W] [Module K W] (ρ : 𝓞 E →+* Module.End K W) (σ : 𝓞 E →+* K) (σ' : E →+* K), (∀ a : 𝓞 E, σ a = σ' (a : E)) → eigSp ρ σ = HT.eigSp ρ σ' := by
   intro E _ _ K W _ _ _ ρ σ σ' h
   unfold eigSp HT.eigSp
@@ -52,6 +60,11 @@ theorem eig_eq : ∀ (E : Type) [Field E] [NumberField E] (K W : Type) [Field K]
   rw [h a]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `congrArg norm h`. Rewrite `h1` using `[norm_pow, norm_mul, hmu, _root_.mul_one, norm_zpow]`. Establish `h2` using `congrArg Real.log h1`. Rewrite `h2` using `[Real.log_pow, Real.log_zpow]`. Establish `hM' : (M : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`.
+
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_end {F : Type} [NormedField F] (M : ℕ) (a : ℤ) (x pp mu : F) (hM : 0 < M) (hx : x ≠ 0) (hp : pp ≠ 0)
     (hmu : ‖mu‖ = 1) (h : x ^ M = pp ^ a * mu) : Real.log ‖x‖ = (a / M) * Real.log ‖pp‖ := by
   have h1 := congrArg norm h
@@ -62,6 +75,9 @@ theorem log_end {F : Type} [NormedField F] (M : ℕ) (a : ℤ) (x pp mu : F) (hM
   field_simp
   linarith
 
+/- English proof (translation)
+Establish `h4` using `congrArg norm h`. Rewrite `h4` using `[norm_mul, norm_one]`. Use polynomial arithmetic with `[norm_nonneg x, norm_nonneg y]`.
+-/
 theorem norm_eq_one_of {F : Type} [NormedField F] (x y : F) (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) (h : x * y = 1) : ‖x‖ = 1 := by
   have h4 := congrArg norm h
   rw [norm_mul, norm_one] at h4
@@ -69,6 +85,95 @@ theorem norm_eq_one_of {F : Type} [NormedField F] (x y : F) (hx : ‖x‖ ≤ 1)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ _ _ β Y U Z τ ϖ p κ φ 𝓗 σ v w u α κ' M a hτ hϖ hinj hr hσ hv hvs hw hws had hM hord hκ' hrep hφ`. Use `haveI : CharZero Z.Ω := charZero_of_injective_ringHom Z.inc.injective`. Use `haveI : FiniteDimensional Z.Ω Z.V := 𝓗.finiteDimensional`. Establish `hσE : σ = Z.inc.comp (inE c τ)` using `inc_eq E Z.Ω _ _ hσ`. Take `⟨f, hf⟩ : ∃ f : (E →+* ℂ_[p]) → (E →+* ℂ), ∀ s, s = κ.comp (inE c (f s))` from `⟨fun s => (GlobalTheory.T.cp_embedding_factors_through_complex E H l c p κ s).choose, fun s => (GlobalTheory.T.cp_embedding_factors_through_complex E H l c p κ s).choose_spec⟩`.
+
+Take `⟨hI, hℓ₀, hnorm⟩` from `GlobalTheory.T.cp_integers_valuation_ring p`. Take `⟨hint, hcard⟩` from `GlobalTheory.T.number_field_embeddings_into_cp_integral E p`. Establish `hinv : ∀ a, H.bar (H.bar a) = a` using `fun a => (GlobalTheory.T.cm_conjugation_compat_complex_conj E H τ a).2`. Establish `hbarF : ∀ a : 𝓞 E, inE c (ComplexEmbedding.conjugate τ) (a : E) = inE c τ (H.bar a : 𝓞 E)` using `fun a => Subtype.ext (GlobalTheory.T.cm_conjugation_compat_complex_conj E H τ a).1`. Take `⟨gm, hgm0, hgm⟩` from `GlobalTheory.T.cm_type_valuation_embedding E (OCp p) ℂ_[p] H.bar (κ.comp (inE c τ)) (κ.comp (inE c (ComplexEmbedding.conjugate τ))) (fun s => Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (f s))))) D.p D.q (NormedField.valuation (K := ℂ_[p])) hI hℓ₀ hint hcard (fun a => by …`.
+
+Use `⟨(a / M) * Real.log ‖κ (β ϖ)‖ + Real.log ‖gm‖, ?_⟩` and prove the remaining obligations. Introduce `V K _ _ _ _ _ _ j βK y vv ww T tK m m' hj hκ hF hIv hIw`. Take `⟨z, hz⟩` from `GlobalTheory.T.dvr_point_eigen_frame_reduction E H D l Xo c O β Y p κ V K j βK y hr hj hκ hF.1`. Take `⟨h₁, h₂, ψ, hsp, hle, hval, hval', hVr, hinc⟩` from `GlobalTheory.T.dvr_point_component_eigen_reduction E H D l Xo c O β Y U Z p κ V K j βK y z hinj hr hj hκ hF.1 hF.2.1 hz`. Use `haveI : CharZero K := charZero_of_injective_ringHom βK.injective`.
+
+Take `⟨U₁, hU₁, t, ht⟩` from `𝓗.free ⟨_, h₂⟩`. Take `⟨U₂, hU₂, ℓ, hℓs, hℓ⟩` from `𝓗.vb ⟨_, h₂⟩ trivial`. Establish `hy₁ : centre (y ≫ Y.j) ∈ U₁` using `hsp.mem_open U₁.2 hU₁`. Establish `hy₂ : centre (y ≫ Y.j) ∈ U₂` using `hsp.mem_open U₂.2 hU₂`. Establish `hH : ∀ q : Cpt (Z.ξ₀ ≫ Y.j), q.1 ∈ U₁ → q.1 ∈ U₂ → HodgeAt 𝓗.ρH (𝓗.HL q) ℓ t`.
+
+Introduce `q q₁ q₂`. Establish `hfr` using `hℓ q trivial q₂`. Use `⟨ht q q₁, (congrFun 𝓗.map_fst q).trans hfr.2, fun f => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun 𝓗.comap_inr q`. Establish `: ((0 : Z.V), f) ∈ 𝓗.HL q ↔ f ∈ (Z.M.lat.dual) q`.
+
+Rewrite using `[← e]`. Conclude with `Iff.rfl`. Rewrite using `[this, ← hfr.2]`. Conclude with `Iff.rfl`. Establish `hHx` using `hH ⟨_, h₂⟩ hU₁ hU₂`.
+
+Establish `hHy` using `hH ⟨_, h₁⟩ hy₁ hy₂`. Establish `hLI : LinearIndependent Z.Ω ℓ` using `(hℓ ⟨_, h₂⟩ trivial hU₂).1`. Take `⟨htmem, hstab, hρst⟩` from `GlobalTheory.T.hodge_lattice_stable_under_action E Z.Ω Z.V Z.ρ 𝓗.ρH _ _ _ ℓ t (𝓗.HL ⟨_, h₁⟩) 𝓗.act_fst hHy`. Establish `hmemC : ∀ r : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₂⟩, (j.comp ψ) ⟨r, hle r.2⟩ ∈ (algebraMap (OCp p) ℂ_[p]).range`. Introduce `r`.
+
+Take `⟨x, hx⟩` from `hVr r (hle r.2) r.2`. Rewrite using `[hnorm, RingHom.comp_apply, ← hx]`. Conclude with `(hj _).2 ⟨x, rfl⟩`. Establish `hmemK : ∀ r : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₂⟩, ψ ⟨r, hle r.2⟩ ∈ (algebraMap V K).range` using `fun r => hVr r (hle r.2) r.2`. Take `⟨ρC, ρHC, ev, HV, hC1, hC2, hTC, hEC, hHV1, hHV2, hFC⟩` from `GlobalTheory.T.hodge_lattice_extend_scalars E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) ℂ_[p] (OCp p) (j.comp ψ) 𝓗.act_fst 𝓗.act_inr hLI hℓs hHx hHy hmemC`.
+
+Take `⟨ρK, -, -, -, -, -, hTK, -, -, -, -⟩` from `(GlobalTheory.T.hodge_lattice_extend_scalars E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ hle _ _ ℓ t (𝓗.HL ⟨_, h₂⟩) (𝓗.HL ⟨_, h₁⟩) K V ψ 𝓗.act_fst 𝓗.act_inr hLI hℓs hHx hHy hmemK)`. Use `haveI : IsLocalRing (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) := GlobalTheory.T.generic_point_component_local_ring _ _ _ Z.gen _`. Establish `hcarry : ∀ (τ₀ : E →+* ℂ) (e : E), ∃ h : Z.inc.comp (inE c τ₀) e ∈ regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩, ψ ⟨_, h⟩ = βK.comp (inE c τ₀) e` using `fun τ₀ e => hinc _`. Establish `hcarryC : ∀ (τ₀ : E →+* ℂ) (e : E), ∃ h : Z.inc.comp (inE c τ₀) e ∈ regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩, (j.comp ψ) ⟨_, h⟩ = κ.comp (inE c τ₀) e` using `fun τ₀ e => by`. Take `⟨h, e'⟩` from `hinc (inE c τ₀ e)`.
+
+Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `e'' : ψ ⟨(Z.inc.comp (inE c τ₀)) e, h⟩ = βK (inE c τ₀ e)` using `e'`. Rewrite using `[RingHom.comp_apply, e'', ← hκ]`. Both sides reduce to the same expression. Establish `hregF : ∀ (τ₀ : E →+* ℂ) (e : E), Z.inc.comp (inE c τ₀) e ∈ regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩` using `fun τ₀ e => (hcarry τ₀ e).1`.
+
+Substitute `hσE` using the available equality. Establish `hws' : Submodule.span Z.Ω (Set.range w) = HT.eigSp Z.ρ (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ)))`. Rewrite using `[hws]`. Conclude with `eig_eq E Z.Ω Z.V Z.ρ _ _ (fun a => rfl)`. Establish `hrk : Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c τ))) = D.p`.
+
+Rewrite using `[← hvs, finrank_span_eq_card hv]`. Simplify using the standard rewrite rules. Establish `hrk' : Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ)))) = D.q`. Rewrite using `[← hws', finrank_span_eq_card hw]`. Simplify using the standard rewrite rules.
+
+Take `⟨b₁, b₂, u', A', hb₁, hs₁, hb₂, hs₂, had', hu'm, hA', hfA⟩` from `GlobalTheory.T.hodge_lattice_eigen_decomposition_local E Z.Ω Z.V Z.ρ 𝓗.ρH H.bar _ _ D.p D.q ℓ t (𝓗.HL ⟨_, h₁⟩) (Z.inc.comp (inE c τ)) (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ))) 𝓗.act_fst 𝓗.act_inr (fun a => by simp only [RingHom.comp_apply, hbarF]) hinv (hregF τ) (hregF …`. Establish `hcoord : ∀ {n : ℕ} (b : Fin n → Z.V) (W' : Submodule _ Z.V), W' ≤ Submodule.span (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) (Set.range ℓ) → (∀ i, b i ∈ W') → ∃ x : Fin n → Fin _ → regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩, ∀ i, b i = comb ℓ (x i)`. Introduce `n b W' hW hb`. Use `choose x hx using fun i => (Submodule.mem_span_range_iff_exists_fun _).1 (hW (hb i))`. Conclude with `⟨x, fun i => (hx i).symm⟩`.
+
+Establish `hin₁ : ∀ i, b₁ i ∈ HT.eigSub Z.ρ (Z.inc.comp (inE c τ)) (Submodule.span (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) (Set.range ℓ))` using `fun i => hs₁ ▸ Submodule.subset_span ⟨i, rfl⟩`. Establish `hin₂ : ∀ i, b₂ i ∈ HT.eigSub Z.ρ (Z.inc.comp (inE c (ComplexEmbedding.conjugate τ))) (Submodule.span (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) (Set.range ℓ))` using `fun i => hs₂ ▸ Submodule.subset_span ⟨i, rfl⟩`. Take `⟨x₁, hx₁⟩` from `hcoord b₁ _ inf_le_left hin₁`. Take `⟨x₂, hx₂⟩` from `hcoord b₂ _ inf_le_left hin₂`. Take `⟨hK₁, hK₁s⟩` from `GlobalTheory.T.reduce_lattice_coords_to_residue E Z.Ω Z.V K Z.ρ _ _ _ ℓ ψ ρK _ (βK.comp (inE c τ)) b₁ x₁ hLI hℓs hρst hTK (hcarry τ) hx₁ hb₁ hs₁ hrk`.
+
+Take `⟨hK₂, hK₂s⟩` from `GlobalTheory.T.reduce_lattice_coords_to_residue E Z.Ω Z.V K Z.ρ _ _ _ ℓ ψ ρK _ (βK.comp (inE c (ComplexEmbedding.conjugate τ))) b₂ x₂ hLI hℓs hρst hTK (hcarry _) hx₂ hb₂ hs₂ hrk'`. Take `⟨MU, MY, hSV, hVal, hAU, hAY⟩` from `GlobalTheory.T.component_specialization_lattice_basis E H D l Xo c O β Y U Z K y h₁ ψ _ ℓ ρK hval (hℓ ⟨_, h₁⟩ trivial hy₂) hTK`. Establish `hfrK : ∀ {n : ℕ} (σ₀ : E →+* K) (σi : 𝓞 E →+* K) (bK : Fin n → Fin _ → K), (∀ a : 𝓞 E, σi a = σ₀ (a : E)) → LinearIndependent K bK → Submodule.span K (Set.range bK) = HT.eigSp ρK σ₀ → IsEigFrame Xo.univ.t.act (under y) σi (fun i => MU.pt (bK i))`. Introduce `n σ₀ σi bK hi h1 h2`. Rewrite using `[GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ _ _ _ _ MU _ _ ρK σi n bK hAU, eig_eq E K _ ρK σi σ₀ hi]`.
+
+Conclude with `(GlobalTheory.T.basis_of_submodule_iff_unique_coords K _ _ n bK).1 ⟨h1, h2⟩`. Establish `hFy : IsFramed U τ βK y (fun i => MU.pt (fun k => ψ (x₁ i k))) (fun i => MU.pt (fun k => ψ (x₂ i k)))` using `⟨hF.1, hF.2.1, hfrK (βK.comp (inE c τ)) _ _ (fun a => rfl) hK₁ hK₁s, hfrK (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ _ (fun a => rfl) hK₂ hK₂s⟩`. Use `choose vK hvK using fun i => MU.onto (vv i) (hF.2.2.1.1 i).1`. Use `choose wK hwK using fun i => MU.onto (ww i) (hF.2.2.2.1 i).1`. Take `rfl : vv = fun i => MU.pt (vK i)` from `funext fun i => (hvK i).symm`.
+
+Take `rfl : ww = fun i => MU.pt (wK i)` from `funext fun i => (hwK i).symm`. Establish `hbasK : ∀ {n : ℕ} (σ₀ : E →+* K) (σi : 𝓞 E →+* K) (bK : Fin n → Fin _ → K), (∀ a : 𝓞 E, σi a = σ₀ (a : E)) → IsEigFrame Xo.univ.t.act (under y) σi (fun i => MU.pt (bK i)) → LinearIndependent K bK ∧ Submodule.span K (Set.range bK) = HT.eigSp ρK σ₀`. Introduce `n σ₀ σi bK hi h`. Rewrite `h` using `[GlobalTheory.T.eigen_frame_iff_eigenspace_basis _ _ _ _ _ MU _ _ ρK σi n bK hAU, eig_eq E K _ ρK σi σ₀ hi]`. Conclude with `(GlobalTheory.T.basis_of_submodule_iff_unique_coords K _ _ n bK).2 h`.
+
+Take `⟨hvLI, hvsp⟩` from `hbasK (βK.comp (inE c τ)) _ vK (fun a => rfl) hF.2.2.1`. Take `⟨hwLI, hwsp⟩` from `hbasK (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ wK (fun a => rfl) hF.2.2.2`. Establish `hfr₁` using `hℓ ⟨_, h₁⟩ trivial hy₂`. Establish `hfr₂` using `hℓ ⟨_, h₂⟩ trivial hU₂`. Establish `hvV` using `GlobalTheory.T.dvr_specialization_eigen_frame E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _ (βK.comp (inE c τ)) _ vK hz hle hVr hfr₂ hfr₁ hSV hVal hAU (fun a => rfl) hIv hvLI`.
+
+Establish `hwV` using `GlobalTheory.T.dvr_specialization_eigen_frame E H D l Xo c O β Y U Z V K y z h₁ h₂ ψ _ ℓ ρK MU MY T tK m m' _ (βK.comp (inE c (ComplexEmbedding.conjugate τ))) _ wK hz hle hVr hfr₂ hfr₁ hSV hVal hAU (fun a => rfl) hIw hwLI`. Establish `hjmap` using `GlobalTheory.T.tied_action_compose_residue_map E Z.Ω Z.V K ℂ_[p] Z.ρ _ _ ℓ ψ j ρK ρC hρst hTK hTC`. Establish `hjV : ∀ a : K, a ∈ (algebraMap V K).range → j a ∈ (algebraMap (OCp p) ℂ_[p]).range` using `fun a ha => (hnorm _).2 ((hj a).2 ha)`. Take `⟨hvC, hvCs, hvCA⟩` from `GlobalTheory.T.fraction_field_eigen_basis_descends E K ℂ_[p] V (OCp p) j _ _ ρK ρC (βK.comp (inE c τ)) vK hjV hjmap hvLI hvV`. Take `⟨hwC, hwCs, hwCA⟩` from `GlobalTheory.T.fraction_field_eigen_basis_descends E K ℂ_[p] V (OCp p) j _ _ ρK ρC (βK.comp (inE c (ComplexEmbedding.conjugate τ))) wK hjV hjmap hwLI hwV`.
+
+Establish `hjσ : ∀ τ₀ : E →+* ℂ, j.comp (βK.comp (inE c τ₀)) = κ.comp (inE c τ₀)` using `fun τ₀ => by`. Rewrite using `[← RingHom.comp_assoc, hκ]`. Rewrite `hvCs`, `hvCA`, `hwCs`, `hwCA` using `[hjσ]`. Use `choose PK hPK using fun i => (Submodule.mem_span_range_iff_exists_fun K).1 (show vK i ∈ Submodule.span K (Set.range fun i k => ψ (x₁ i k)) by`. Rewrite using `[hK₁s, ← hvsp]`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩)`. Use `choose QK hQK using fun i => (Submodule.mem_span_range_iff_exists_fun K).1 (show wK i ∈ Submodule.span K (Set.range fun i k => ψ (x₂ i k)) by`. Rewrite using `[hK₂s, ← hwsp]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩)`. Establish `hchg` using `hφ.chg K βK y _ _ _ _ (Matrix.of PK) (Matrix.of QK) hFy hF (fun i => (GlobalTheory.T.is_comb_tangent_iff_linear_sum _ _ _ _ _ MU _ _ _ _).2 (hPK i).symm) (fun i => (GlobalTheory.T.is_comb_tangent_iff_linear_sum _ _ _ _ _ MU _ _ _ _).2 (hQK i).symm)`.
+
+Establish `hsp₁ : ∀ i, b₁ i ∈ Submodule.span Z.Ω (Set.range v)` using `fun i => hvs ▸ (hin₁ i).2`. Establish `hsp₂ : ∀ i, b₂ i ∈ Submodule.span Z.Ω (Set.range w)` using `fun i => hws' ▸ (hin₂ i).2`. Use `choose P hP using fun i => (Submodule.mem_span_range_iff_exists_fun Z.Ω).1 (hsp₁ i)`. Use `choose Q hQ using fun i => (Submodule.mem_span_range_iff_exists_fun Z.Ω).1 (hsp₂ i)`. Establish `hPb : b₁ = fun i => ∑ k, Matrix.of P i k • v k` using `funext fun i => (hP i).symm`.
+
+Establish `hQb : b₂ = fun i => ∑ k, Matrix.of Q i k • w k` using `funext fun i => (hQ i).symm`. Establish `hP0 : (Matrix.of P).det ≠ 0` using `HodgeDeterminantLattice.det_ne_zero (u := v) (by rw [← hPb]; exact hb₁)`. Establish `hQ0 : (Matrix.of Q).det ≠ 0` using `HodgeDeterminantLattice.det_ne_zero (u := w) (by rw [← hQb]; exact hb₂)`. Take `⟨u₀, hu₀, hu₀s⟩` from `𝓗.exists_basis_eigSp (Z.inc.comp (inE c τ))`. Establish `hdim : Module.finrank Z.Ω (HT.eigSp 𝓗.ρH (Z.inc.comp (inE c τ))) = D.p + D.q`.
+
+Rewrite using `[← hu₀s, finrank_span_eq_card hu₀]`. Simplify using the standard rewrite rules. Take `⟨huLI, huS⟩` from `GlobalTheory.T.adapted_basis_spans_eigenspace E Z.Ω Z.V 𝓗.ρH _ D.p D.q v w u had hv hdim inferInstance`. Take `⟨B, hB, hBdet⟩` from `GlobalTheory.T.adapted_bases_change_by_block_matrices E Z.Ω Z.V 𝓗.ρH _ D.p D.q v b₁ w b₂ u u' (Matrix.of P) (Matrix.of Q) had had' hv huS (fun i => (hP i).symm) (fun i => (hQ i).symm)`. Use `set A'Ω : Matrix (Fin (D.p + D.q)) (Fin (D.p + D.q)) Z.Ω := (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩).subtype.mapMatrix A' with hA'Ω`.
+
+Establish `hdetA' : A'Ω.det = ((A'.det : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) : Z.Ω)`. Rewrite using `[hA'Ω, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `hfu : (fun i => ∑ k, (A'Ω * B) i k • u k) = fun i => HT.eigProj 𝓗.ρH (Z.inc.comp (inE c τ)) (t i)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hfA i, ← HodgeDeterminantLattice.sum_smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hB k]`. Both sides reduce to the same expression. Establish `hσx : ∀ a : 𝓞 E, (Z.inc.comp (inE c τ)) (a : E) ∈ (algebraMap (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₂⟩) Z.Ω).range` using `fun a => ⟨⟨_, GlobalTheory.T.cm_integers_regular_at_component E H D l Xo c O β Y U Z τ _ hσ ⟨_, h₂⟩ a⟩, rfl⟩`.
+
+Establish `hframe : (𝓗.quot (Z.inc.comp (inE c τ))).IsFrameAt (fun i => ∑ k, (A'Ω * B) i k • u k) ⟨_, h₂⟩`. Rewrite using `[hfu]`. Conclude with `⟨HodgeDeterminantLattice.linearIndependent_eigProj _ (ht ⟨_, h₂⟩ hU₁), HodgeDeterminantLattice.eigQuot_eq_span _ (ht ⟨_, h₂⟩ hU₁) hσx⟩`. Establish `hgen` using `HodgeDeterminantLattice.detLat_of_frame huLI hframe`. Establish `hVy` using `hrep K βK y _ _ b₁ b₂ (α / (Matrix.of P).det) (κ' / (Matrix.of Q).det) hFy (by rw [hPb, GlobalTheory.T.iota_multi_linear_combination_det, smul_smul, div_mul_cancel₀ _ hP0]) (by rw [hQb, GlobalTheory.T.iota_multi_linear_combination_det, smul_smul, div_mul_cancel₀ _ hQ0]) (fun i => …`.
+
+Take `⟨hd, hd'⟩` from `hval' _ _ hVy`. Take `⟨ud, hud⟩` from `hA'`. Use `set dR : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩ := ⟨_, hd⟩ * ((ud⁻¹ : (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩)ˣ) : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) with hdR`. Establish `hud0 : ((ud : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) : Z.Ω) ≠ 0` using `fun h0 => ud.ne_zero (Subtype.ext h0)`. Establish `hdv : (α / κ') / (A'Ω * B).det = (dR : Z.Ω)`.
+
+Establish `hinvc : (((ud⁻¹ : (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩)ˣ) : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) : Z.Ω) = ((ud : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) : Z.Ω)⁻¹`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Establish `h2 : (((((ud⁻¹ : (regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩)ˣ) : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) * (ud : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩)) : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) : Z.Ω) = 1`. Rewrite using `[ud.inv_mul]`. Both sides reduce to the same expression.
+
+Conclude with `h2`. Establish `hBd : B.det = (Matrix.of P).det / (Matrix.of Q).det` using `eq_div_of_mul_eq hQ0 hBdet`. Establish `hdRc : (dR : Z.Ω) = (α / (Matrix.of P).det) / (κ' / (Matrix.of Q).det) * ((ud : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) : Z.Ω)⁻¹`. Rewrite using `[hdR, ← hinvc]`. Both sides reduce to the same expression.
+
+Rewrite using `[Matrix.det_mul, hdetA', ← hud, hBd, hdRc]`. Clear the denominators using the available nonvanishing facts. Establish `hβ0 : βK (β ϖ) ≠ 0`. Rewrite using `[Ne, map_eq_zero, map_eq_zero_iff β hinj]`. Conclude with `hϖ.ne_zero`.
+
+Take `⟨hϖr, hϖv⟩` from `hinc (β ϖ)`. Establish `hValϖ` using `hval ⟨_, hϖr⟩`. Rewrite `hValϖ` using `[hϖv]`. Establish `hValϖ'` using `hval dR`. Rewrite `hValϖ'` using `[← hdv]`.
+
+Take `⟨uV, huV⟩` from `GlobalTheory.T.order_valuation_compare Y.X Z.Ω (Z.ξ₀ ≫ Y.j) _ (α / κ') (Z.inc (β ϖ)) M a V K z h₂ (A'Ω * B).det (ψ dR) (βK (β ϖ)) Z.gen (hord _) hgen (by rw [hz]; exact hValϖ') (by rw [hz]; exact hValϖ) hβ0`. Establish `hmemu : ∀ i, u' i ∈ 𝓗.HL ⟨_, h₁⟩` using `hu'm`. Establish `hσtieC` using `hcarryC τ`. Establish `hadC` using `GlobalTheory.T.specialize_hodge_lattice_eigenbasis E Z.Ω Z.V ℂ_[p] _ _ D.p D.q ℓ (j.comp ψ) 𝓗.ρH ρHC (𝓗.HL ⟨_, h₁⟩) ev _ (κ.comp (inE c τ)) b₁ b₂ u' x₁ x₂ hu'm hEC hσtieC hstab had' hx₁ hx₂`. Establish `hep : ∀ i, HT.eigProj 𝓗.ρH (Z.inc.comp (inE c τ)) (t i) ∈ 𝓗.HL ⟨_, h₁⟩` using `fun i => by`.
+
+Rewrite using `[hfA i]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_of_tower_mem _ (A' i k) (hu'm k)`. Establish `hfC : ∀ i, HT.eigProj ρHC (κ.comp (inE c τ)) (ev ⟨t i, htmem i⟩) = ∑ k, ((j.comp ψ).mapMatrix A') i k • ev ⟨u' k, hu'm k⟩`. Introduce `i`. Rewrite using `[← GlobalTheory.T.hodge_lattice_eval_eigProj_comm E Z.Ω Z.V ℂ_[p] _ _ ℓ (j.comp ψ) 𝓗.ρH ρHC (𝓗.HL ⟨_, h₁⟩) ev _ (κ.comp (inE c τ)) ⟨t i, htmem i⟩ (hep i) hEC hσtieC hstab]`.
+
+Establish `: (⟨_, hep i⟩ : 𝓗.HL ⟨_, h₁⟩) = ∑ k, A' i k • (⟨u' k, hu'm k⟩ : 𝓗.HL ⟨_, h₁⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `hfA i`. Rewrite using `[this, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => (ev.map_smulₛₗ _ _)`. Establish `hrkC : ∀ s, Module.finrank ℂ_[p] (HT.eigSp ρC s) = Module.finrank Z.Ω (HT.eigSp Z.ρ (Z.inc.comp (inE c (f s))))`. Introduce `s`. Use `GlobalTheory.T.finrank_eigSp_eq_of_lattice_specialization E Z.Ω Z.V ℂ_[p] Z.ρ _ _ ℓ (j.comp ψ) ρC _ s hLI hℓs hρst hTC ?_` and prove the remaining obligations. Introduce `e`.
+
+Take `⟨h, e'⟩` from `hcarryC (f s) e`. Conclude with `⟨h, e'.trans (by rw [← hf s])⟩`. Take `⟨ε, hε⟩` from `GlobalTheory.T.residue_hodge_lattice_adapted_basis E ℂ_[p] (OCp p) H.bar (κ.comp (inE c τ)) (κ.comp (inE c (ComplexEmbedding.conjugate τ))) _ D.p D.q ρC ρHC HV (fun i => ev ⟨t i, htmem i⟩) (fun i k => (j.comp ψ) (x₁ i k)) (fun i k => j (vK i k)) (fun i k => (j.comp ψ) (x₂ i k)) ( …`. Use function extensionality and compare the values at `k`. Use `congrFun (hPK i) k` as an intermediate fact.
+
+Rewrite using `[← this]`. Simplify using `[Finset.sum_apply, map_sum])`. Use the proof step `(fun i => by`. Use function extensionality and compare the values at `k`. Use `congrFun (hQK i) k` as an intermediate fact.
+
+Rewrite using `[← this]`. Simplify using `[Finset.sum_apply, map_sum])`. Use the proof step `(GlobalTheory.T.reduce_lattice_coords_to_residue E Z.Ω Z.V ℂ_[p] Z.ρ _ _ _ ℓ (j.comp ψ) ρC _ (κ.comp (inE c τ)) b₁ x₁ hLI hℓs hρst hTC (hcarryC τ) hx₁ hb₁ hs₁ hrk).1 hfC`. Use the proof step `(fun v' w' u'' B' h1 h2 h3 h4 h5 h6 h7 => hgm (Fin _ → ℂ_[p]) ρC ρHC HV (stdLat (OCp p) ℂ_[p] _) (fun i => ev ⟨t i, htmem i⟩) v' w' u'' B' hC1 hC2 hHV1 hHV2 (hFC htmem) hrkC h1 h2 h3 h4 h5 h6 h7)`. Use `hvC hvCs hvCA hwC hwCs hwCA`.
+
+Establish `hPd : (Matrix.of PK).det ≠ 0` using `HodgeDeterminantLattice.det_ne_zero (u := fun i k => ψ (x₁ i k)) (by`. Establish `: (fun i => ∑ k, Matrix.of PK i k • (fun k' => ψ (x₁ k k'))) = vK` using `funext hPK`. Rewrite using `[this]`. Conclude with `hvLI)`. Establish `hφ0` using `hφ.ne K βK y _ _ hF`.
+
+Establish `hψd : ψ dR * ψ (ud : regAt (Z.ξ₀ ≫ Y.j) ⟨_, h₁⟩) = φ K y (fun i => MU.pt (fun k => ψ (x₁ i k))) (fun i => MU.pt (fun k => ψ (x₂ i k)))`. Rewrite using `[← map_mul, hdR, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`. Conclude with `hd'`. Rewrite `hε` using `[← RingHom.map_det, ← RingHom.map_det, ← RingHom.map_det, ← hud, RingHom.comp_apply]`. Establish `hjφ : j (φ K y (fun i => MU.pt (vK i)) (fun i => MU.pt (wK i))) = j (ψ dR) * (algebraMap (OCp p) ℂ_[p] ε * gm)`.
+
+Apply `mul_right_cancel₀ ((map_ne_zero j).2 hPd)` to reduce the goal to its premises. Rewrite using `[← map_mul, hchg, ← hψd, map_mul, map_mul, _root_.mul_assoc, hε]`. Expand and normalize the polynomial expressions, which then agree. Establish `hjφ0 : j (φ K y (fun i => MU.pt (vK i)) (fun i => MU.pt (wK i))) ≠ 0` using `(map_ne_zero j).2 hφ0`. Establish `hx0 : j (ψ dR) ≠ 0` using `fun h0 => hjφ0 (by rw [hjφ, h0, zero_mul])`.
+
+Establish `hκπ : j (βK (β ϖ)) = κ (β ϖ)` using `by rw [← hκ]; rfl`. Establish `hκ0 : κ (β ϖ) ≠ 0` using `by rw [← hκπ]; exact (map_ne_zero j).2 hβ0`. Establish `hmu : ‖j (algebraMap V K uV)‖ = 1` using `norm_eq_one_of _ (j (algebraMap V K (uV⁻¹ : Vˣ))) ((hj _).2 ⟨_, rfl⟩) ((hj _).2 ⟨_, rfl⟩) (by rw [← map_mul, ← map_mul, Units.mul_inv, map_one, map_one])`. Establish `hlog` using `log_end M a (j (ψ dR)) (κ (β ϖ)) (j (algebraMap V K uV)) hM hx0 hκ0 hmu (by`. Rewrite using `[← hκπ, ← map_pow, huV, map_mul, map_zpow₀])`.
+
+Establish `hε1 : ‖algebraMap (OCp p) ℂ_[p] ε‖ = 1` using `norm_eq_one_of _ (algebraMap (OCp p) ℂ_[p] (ε⁻¹ : (OCp p)ˣ)) ((hnorm _).1 ⟨_, rfl⟩) ((hnorm _).1 ⟨_, rfl⟩) (by rw [← map_mul, Units.mul_inv, map_one])`. Rewrite using `[hjφ, norm_mul, norm_mul, hε1, _root_.one_mul, Real.log_mul (norm_ne_zero_iff.2 hx0) (norm_ne_zero_iff.2 hgm0), hlog]`.
+-/
 theorem value_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (ϖ : O) (p : Nat.Primes) (κ : c.F →+* ℂ_[p]) (φ : FrameFn Xo c) (𝓗 : HodgeLat Z.M.lat Z.ρ H.bar (D.p + D.q)) (σ : E →+* Z.Ω) (v : Fin D.p → Z.V) (w : Fin D.q → Z.V) (u : Fin (D.p + D.q) → Z.V × Module.Dual Z.Ω Z.V) (α κ' : Z.Ω) (M : ℕ) (a : ℤ), τ (H.rt : E) = H.rt0 → Irreducible ϖ → Function.Injective β → (∀ x : c.F, ‖κ x‖ ≤ 1 ↔ x ∈ β.range) → (∀ b : 𝓞 E, σ (b : E) = Z.inc (tauIn c τ b)) → LinearIndependent Z.Ω v → Submodule.span Z.Ω (Set.range v) = HT.eigSp Z.ρ σ → LinearIndependent Z.Ω w → Submodule.span Z.Ω (Set.range w) = eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ))) → IsAdapted 𝓗.ρH σ v w u → 0 < M → (∀ x, OrderAt (detLat (𝓗.quot σ) u) (α / κ') (Z.inc (β ϖ)) M a x) → κ' ≠ 0 → Represents Y U τ Z.M (α • exteriorPower.ιMulti Z.Ω D.p v) (κ' • exteriorPower.ιMulti Z.Ω D.q w) φ → IsLineFn U τ φ → ∃ t : ℝ, HasFinNorm U τ φ p κ t := by
   intro E _ _ _ H D l Xo c O _ _ _ β Y U Z τ ϖ p κ φ 𝓗 σ v w u α κ' M a hτ hϖ hinj hr hσ hv hvs hw hws had hM hord hκ' hrep hφ
   haveI : CharZero Z.Ω := charZero_of_injective_ringHom Z.inc.injective

@@ -48,6 +48,9 @@ def eOf (F N k m : ℕ) (Mb Sm : ℝ) (vd : ℕ → ℝ) (M : ℕ) (S R : Finset
   else if p ∈ R then (F * N * Mb + Sm) / ((p : ℝ) - 1)
   else if m * p < k then eSmall F N m Mb Sm M p + 1 else (6 * F * m * Mb + Sm) / ((p : ℝ) - 1) + 1
 
+/- English proof (translation)
+Simplify using `[eOf]`.
+-/
 example (F N k m : ℕ) (Mb Sm : ℝ) (vd : ℕ → ℝ) (S R : Finset ℕ) : eOf F N k m Mb Sm vd 3 S R 5 = 0 := by simp [eOf]
 
 section Point

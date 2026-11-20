@@ -19,6 +19,11 @@ def homExp : (Fin (r + 1) →₀ ℕ) →+ (Unit ⊕ Fin r →₀ ℕ) where
   map_zero' := by ext o; cases o <;> simp
   map_add' a b := by ext o; cases o <;> simp [Finset.sum_add_distrib]
 
+/- English proof (translation)
+Introduce `a b h`. Establish `hs : ∀ k : Fin r, a k.succ = b k.succ` using `fun k ↦ by`. Simplify `DFunLike.congr_fun h (Sum.inr k)` using `[homExp]`. Establish `ht : ∑ i, a i = ∑ i, b i` using `by simpa [homExp] using DFunLike.congr_fun h (Sum.inl ())`. Rewrite `ht` using `[Fin.sum_univ_succ, Fin.sum_univ_succ, Finset.sum_congr rfl (fun k _ ↦ hs k)]`.
+
+Use extensionality with `i`. Use `Fin.cases ?_ (fun k ↦ hs k) i` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+-/
 theorem homExp_injective : Function.Injective (homExp r) := by
   intro a b h
   have hs : ∀ k : Fin r, a k.succ = b k.succ := fun k ↦ by
@@ -29,12 +34,18 @@ theorem homExp_injective : Function.Injective (homExp r) := by
   refine Fin.cases ?_ (fun k ↦ hs k) i
   omega
 
+/- English proof (translation)
+Use extensionality with `o`. Consider the cases of `o with`. Consider the case `inl u => cases u`. Simplify using `[homExp]`. Consider the case `inr k => simp [homExp, Finsupp.single_apply]`.
+-/
 theorem homExp_single_zero : homExp r (Finsupp.single 0 1) = Finsupp.single (Sum.inl ()) 1 := by
   ext o
   cases o with
   | inl u => cases u; simp [homExp]
   | inr k => simp [homExp, Finsupp.single_apply]
 
+/- English proof (translation)
+Use extensionality with `o`. Consider the cases of `o with`. Consider the case `inl u => cases u`. Simplify using `[homExp]`. Consider the case `inr k' => simp [homExp, Finsupp.single_apply, Fin.succ_inj, eq_comm]`.
+-/
 theorem homExp_single_succ (k : Fin r) :
     homExp r (Finsupp.single k.succ 1) =
       Finsupp.single (Sum.inl ()) 1 + Finsupp.single (Sum.inr k) 1 := by
@@ -46,9 +57,15 @@ theorem homExp_single_succ (k : Fin r) :
 def homMap : MvPolynomial (Fin (r + 1)) K →+* MvPolynomial (Unit ⊕ Fin r) K :=
   AddMonoidAlgebra.mapDomainRingHom K (homExp r)
 
+/- English proof (translation)
+The claim follows from `AddMonoidAlgebra.mapDomain_injective (homExp_injective r)`.
+-/
 theorem homMap_injective : Function.Injective (homMap K r) :=
   AddMonoidAlgebra.mapDomain_injective (homExp_injective r)
 
+/- English proof (translation)
+Rewrite using `[← single_eq_monomial, ← single_eq_monomial]`. Conclude with `AddMonoidAlgebra.mapDomain_single`.
+-/
 theorem homMap_monomial (s : Fin (r + 1) →₀ ℕ) (c : K) :
     homMap K r (monomial s c) = monomial (homExp r s) c := by
   rw [← single_eq_monomial, ← single_eq_monomial]
@@ -59,6 +76,9 @@ def fieldMap :
   (MvPolynomial.map (algebraMap (MvPolynomial (Fin r) K) _)).comp
     (sumAlgEquiv K Unit (Fin r)).toRingEquiv.toRingHom
 
+/- English proof (translation)
+The claim follows from `(MvPolynomial.map_injective _ (IsFractionRing.injective _ _)).comp (sumAlgEquiv K Unit (Fin r)).injective`.
+-/
 theorem fieldMap_injective : Function.Injective (fieldMap K r) :=
   (MvPolynomial.map_injective _ (IsFractionRing.injective _ _)).comp
     (sumAlgEquiv K Unit (Fin r)).injective
@@ -66,9 +86,15 @@ theorem fieldMap_injective : Function.Injective (fieldMap K r) :=
 def coneAff : MvPolynomial (Fin (r + 1)) K →+* MvPolynomial Unit (FractionRing (MvPolynomial (Fin r) K)) :=
   (fieldMap K r).comp (homMap K r)
 
+/- English proof (translation)
+The claim follows from `(fieldMap_injective K r).comp (homMap_injective K r)`.
+-/
 theorem coneAff_injective : Function.Injective (coneAff K r) :=
   (fieldMap_injective K r).comp (homMap_injective K r)
 
+/- English proof (translation)
+Establish `h : homMap K r (C c) = C c`. Rewrite using `[← monomial_zero', homMap_monomial, map_zero, monomial_zero']`. Simplify using `only [coneAff, RingHom.comp_apply, h, fieldMap, RingEquiv.toRingHom_eq_coe, AlgEquiv.toRingEquiv_toRingHom, RingHom.coe_coe, sumAlgEquiv_C_inl, map_C]`. Rewrite using `[IsScalarTower.algebraMap_apply K (MvPolynomial (Fin r) K), MvPolynomial.algebraMap_eq]`.
+-/
 theorem coneAff_C (c : K) : coneAff K r (C c) = C (algebraMap K _ c) := by
   have h : homMap K r (C c) = C c := by
     rw [← monomial_zero', homMap_monomial, map_zero, monomial_zero']
@@ -76,6 +102,11 @@ theorem coneAff_C (c : K) : coneAff K r (C c) = C (algebraMap K _ c) := by
     AlgEquiv.toRingEquiv_toRingHom, RingHom.coe_coe, sumAlgEquiv_C_inl, map_C]
   rw [IsScalarTower.algebraMap_apply K (MvPolynomial (Fin r) K), MvPolynomial.algebraMap_eq]
 
+/- English proof (translation)
+Establish `hX : ∀ s : Unit ⊕ Fin r, (X s : MvPolynomial (Unit ⊕ Fin r) K) = monomial (Finsupp.single s 1) 1` using `fun _ ↦ rfl`. Use `Fin.cases ?_ (fun k ↦ ?_) j` and prove the remaining obligations. Establish `h : homMap K r (X 0) = X (Sum.inl ())`. Rewrite using `[show (X 0 : MvPolynomial (Fin (r + 1)) K) = monomial (Finsupp.single 0 1) 1 from rfl, homMap_monomial, homExp_single_zero, hX]`. Simplify using `only [coneAff, RingHom.comp_apply, h, fieldMap, RingEquiv.toRingHom_eq_coe, AlgEquiv.toRingEquiv_toRingHom, RingHom.coe_coe, sumAlgEquiv_X_inl, map_X, affGen, Fin.cons_zero, map_one, one_mul]`.
+
+Establish `h : homMap K r (X k.succ) = X (Sum.inl ()) * X (Sum.inr k)`. Rewrite using `[show (X k.succ : MvPolynomial (Fin (r + 1)) K) = monomial (Finsupp.single k.succ 1) 1 from rfl, homMap_monomial, homExp_single_succ, hX, hX, monomial_mul, one_mul]`. Simplify using `only [coneAff, RingHom.comp_apply, h, fieldMap, RingEquiv.toRingHom_eq_coe, AlgEquiv.toRingEquiv_toRingHom, RingHom.coe_coe, map_mul, sumAlgEquiv_X_inl, sumAlgEquiv_X_inr, map_X, map_C, affGen, Fin.cons_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneAff_X (j : Fin (r + 1)) : coneAff K r (X j) = C (affGen K r j) * X () := by
   have hX : ∀ s : Unit ⊕ Fin r, (X s : MvPolynomial (Unit ⊕ Fin r) K) = monomial (Finsupp.single s 1) 1 :=
     fun _ ↦ rfl
@@ -110,6 +141,9 @@ variable (e r) in
 def oneBlockReindexInv : (Σ _ : Unit, Fin (e + 1) × Fin (r + 1)) → Coord (oneBlockSizes e r) :=
   fun p ↦ ⟨(), (oneBlockIndex e r).symm p.2⟩
 
+/- English proof (translation)
+Rewrite using `[rename_rename]`. Use `rename_id_apply g` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Break down `p with ⟨⟨⟩, q⟩` into its components or cases. Simplify using `[oneBlockReindex, oneBlockReindexInv]`.
+-/
 theorem rename_reindex_reindexInv (g : MvPolynomial (Σ _ : Unit, Fin (e + 1) × Fin (r + 1)) ℤ) :
     rename (oneBlockReindex e r) (rename (oneBlockReindexInv e r) g) = g := by
   rw [rename_rename]
@@ -118,6 +152,9 @@ theorem rename_reindex_reindexInv (g : MvPolynomial (Σ _ : Unit, Fin (e + 1) ×
   rcases p with ⟨⟨⟩, q⟩
   simp [oneBlockReindex, oneBlockReindexInv]
 
+/- English proof (translation)
+Rewrite using `[rename_rename]`. Use `rename_id_apply f` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Break down `v with ⟨⟨⟩, q⟩` into its components or cases. Simplify using `[oneBlockReindex, oneBlockReindexInv]`.
+-/
 theorem rename_reindexInv_reindex (f : MvPolynomial (Coord (oneBlockSizes e r)) ℤ) :
     rename (oneBlockReindexInv e r) (rename (oneBlockReindex e r) f) = f := by
   rw [rename_rename]
@@ -126,6 +163,13 @@ theorem rename_reindexInv_reindex (f : MvPolynomial (Coord (oneBlockSizes e r)) 
   rcases v with ⟨⟨⟩, q⟩
   simp [oneBlockReindex, oneBlockReindexInv]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[show (C a : MvPolynomial (Coord (oneBlockSizes e r)) ℤ) = (a : MvPolynomial _ ℤ) from eq_intCast C a]`. Simplify using `only [map_intCast]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p v hp`. Simplify using `only [map_mul]`. Rewrite using `[hp]`. Use `congr 1`. Simplify using `only [oneBlockMap, coe_eval₂Hom, eval₂_X, map_mul, coneAff_C, coneAff_X, rename_X, mConeMap, aeval_X, oneBlockReindex, oneBlockPt]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneAff_oneBlockMap (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
     (f : MvPolynomial (Coord (oneBlockSizes e r)) ℤ) :
     coneAff K r (oneBlockMap (r := r) om f) =
@@ -144,6 +188,9 @@ theorem coneAff_oneBlockMap (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
       mConeMap, aeval_X, oneBlockReindex, oneBlockPt]
     ring
 
+/- English proof (translation)
+Unfold `Heights.oneBlockIdeal mCoordIdeal`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker, ← (coneAff_injective K r).eq_iff, map_zero]`. Rewrite using `[coneAff_oneBlockMap]`.
+-/
 theorem mem_oneBlockIdeal_iff (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
     (f : MvPolynomial (Coord (oneBlockSizes e r)) ℤ) :
     f ∈ Heights.oneBlockIdeal (r := r) om ↔
@@ -152,6 +199,9 @@ theorem mem_oneBlockIdeal_iff (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
   rw [RingHom.mem_ker, RingHom.mem_ker, ← (coneAff_injective K r).eq_iff, map_zero]
   rw [coneAff_oneBlockMap]
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[Ideal.mem_comap]`. Conclude with `mem_oneBlockIdeal_iff om f`.
+-/
 theorem oneBlockIdeal_eq_comap (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) :
     Heights.oneBlockIdeal (r := r) om =
       (mCoordIdeal (oneBlockPt om r)).comap (rename (oneBlockReindex e r)) := by
@@ -159,6 +209,9 @@ theorem oneBlockIdeal_eq_comap (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) :
   rw [Ideal.mem_comap]
   exact mem_oneBlockIdeal_iff om f
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[Ideal.mem_comap, mem_oneBlockIdeal_iff, rename_reindex_reindexInv]`.
+-/
 theorem mCoordIdeal_eq_comap (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) :
     mCoordIdeal (oneBlockPt om r) =
       (Heights.oneBlockIdeal (r := r) om).comap (rename (oneBlockReindexInv e r)) := by
@@ -175,6 +228,9 @@ def coneToPairs {F : Type*} (z : Cone (oneBlockSizes e r) F) :
     (Σ _ : Unit, Fin (e + 1) × Fin (r + 1)) → F :=
   fun p ↦ z () ((oneBlockIndex e r).symm p.2)
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval₂_rename, evalCone]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Break down `v with ⟨⟨⟩, i⟩` into its components or cases. Simplify using `[coneToPairs, oneBlockReindex]`.
+-/
 theorem evalCone_eq_eval (z : Cone (oneBlockSizes e r) ℂ) (f : MvPolynomial (Coord (oneBlockSizes e r)) ℤ) :
     evalCone z f = eval (coneToPairs z) (map (Int.castRingHom ℂ) (rename (oneBlockReindex e r) f)) := by
   rw [eval_map, eval₂_rename, evalCone]
@@ -183,6 +239,15 @@ theorem evalCone_eq_eval (z : Cone (oneBlockSizes e r) ℂ) (f : MvPolynomial (C
   rcases v with ⟨⟨⟩, i⟩
   simp [coneToPairs, oneBlockReindex]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hf⟩`. Use `⟨fun _ ↦ ?_, fun g hg ↦ ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.mp (hz ())`. Conclude with `⟨oneBlockIndex e r i, by simpa [coneToPairs] using hi⟩`.
+
+Establish `hmem : rename (oneBlockReindexInv e r) g ∈ Heights.oneBlockIdeal om`. Rewrite using `[mem_oneBlockIdeal_iff, rename_reindex_reindexInv]`. Conclude with `hg`. Establish `h` using `hf _ hmem`. Rewrite `h` using `[evalCone_eq_eval, rename_reindex_reindexInv]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨hz, hf⟩`. Use `⟨fun _ h ↦ ?_, fun f hf' ↦ ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hz ()`. Conclude with `hq (by simp [coneToPairs, h])`. Rewrite using `[evalCone_eq_eval]`.
+
+Conclude with `hf _ ((mem_oneBlockIdeal_iff om f).1 hf')`.
+-/
 theorem mem_conePoints_iff (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) (z : Cone (oneBlockSizes e r) ℂ) :
     z ∈ Heights.conePoints (Heights.oneBlockIdeal om) ℂ ↔
       coneToPairs z ∈ mcPts (mCoordIdeal (oneBlockPt om r)) := by
@@ -205,6 +270,9 @@ theorem mem_conePoints_iff (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) (z : C
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[coneToPairs, oneBlockPoint]`.
+-/
 theorem coneToPairs_oneBlockPoint {F : Type*} [CommRing F] (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
     (σ : K →+* F) (w : Fin (r + 1) → F) :
     coneToPairs (oneBlockPoint om σ w) = fun p ↦ σ (om p.2.1 : K) * w p.2.2 := by
@@ -220,6 +288,9 @@ open scoped ComplexOrder
 
 variable {K : Type} [Field K] [NumberField K] {e r : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem oneBlockMetricAgrees_iff (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) (F : HermLattice K (r + 1))
     (A : HermLine (oneBlockSizes e r)) :
     OneBlockMetricAgrees om F A ↔
@@ -228,6 +299,9 @@ theorem oneBlockMetricAgrees_iff (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K)) 
           w ((oneBlockIndex e r).symm.symm t).2) = hermNorm (F.metric σ) w :=
   Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨F.posDef, F.conj, fun u ↦ by rw [hA]; rfl, hM⟩`.
+-/
 theorem pointHeightDegree_hypotheses (om : Module.Basis (Fin (e + 1)) ℤ (𝓞 K))
     (F : HermLattice K (r + 1)) (A : HermLine (oneBlockSizes e r)) (hA : A.deg = 1)
     (hM : OneBlockMetricAgrees om F A) :
@@ -257,6 +331,23 @@ abbrev stdLatticeExt : Submodule (𝓞 K') (Fin n → K') :=
   Submodule.span (𝓞 K')
     ((fun w : Fin n → K ↦ fun j ↦ algebraMap K K' (w j)) '' (HermLattice.standard K n).lattice)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`.
+
+Establish `hw' : ∀ j, IsIntegral ℤ (w j)`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨i, rfl⟩` from `hu`. Introduce `j`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using (isIntegral_one : IsIntegral ℤ (1 : K))`. Simplify `(isIntegral_zero : IsIntegral ℤ (0 : K))` using `[Pi.single_apply, h]`. Consider the case `zero => intro j`.
+
+Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : K))`. Consider the case `add a b _ _ ha hb => intro j`. Conclude with `(ha j).add (hb j)`. Consider the case `smul c a _ ha`. Introduce `j`.
+
+Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Conclude with `(RingOfIntegers.isIntegral_coe c).mul (ha j)`. Introduce `j`. Conclude with `(hw' j).algebraMap`. Consider the case `zero => intro j`.
+
+Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : K'))`. Consider the case `add a b _ _ ha hb => intro j`. Conclude with `(ha j).add (hb j)`. Consider the case `smul c a _ ha`. Introduce `j`.
+
+Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Conclude with `(RingOfIntegers.isIntegral_coe c).mul (ha j)`. Introduce `hx`. Establish `hsum : x = ∑ j, (⟨x j, hx j⟩ : 𝓞 K') • (fun k ↦ algebraMap K K' ((Pi.single j 1 : Fin n → K) k))`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k (fun j _ hj ↦ by simp [Pi.single_apply, Ne.symm hj]) (by simp)]`. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, map_one, Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨Pi.single j 1, Submodule.subset_span ⟨j, rfl⟩, rfl⟩)`.
+-/
 theorem mem_stdLatticeExt_iff (x : Fin n → K') :
     x ∈ stdLatticeExt K K' n ↔ ∀ j, IsIntegral ℤ (x j) := by
   constructor
@@ -299,6 +390,13 @@ theorem mem_stdLatticeExt_iff (x : Fin n → K') :
     exact Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _
       (Submodule.subset_span ⟨Pi.single j 1, Submodule.subset_span ⟨j, rfl⟩, rfl⟩)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Submodule.mem_inf, Submodule.restrictScalars_mem, Set.range_const, Submodule.mem_span_singleton, mem_stdLatticeExt_iff, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨c, hc⟩, rfl⟩`. Use `⟨fun j ↦ RingOfIntegers.isIntegral_coe (y j), c, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Simplify using `[intoField, hc j]`. Introduce and unpack `⟨hx, c, rfl⟩`. Use `⟨fun j ↦ ⟨c * v j, hx j⟩, ⟨c, fun j ↦ rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Both sides reduce to the same expression.
+-/
 theorem satLine_map_eq (v : Fin n → 𝓞 K') :
     (satLine v).map (intoField K' n) =
       stdLatticeExt K K' n ⊓

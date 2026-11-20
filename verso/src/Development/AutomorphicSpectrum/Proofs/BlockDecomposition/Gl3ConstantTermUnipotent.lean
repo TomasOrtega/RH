@@ -13,6 +13,15 @@ variable {K : Type} [Field K] [NumberField K]
 
 local notation "A" => algebraMap K 𝔸[K]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.1 h`. Establish `hi' : ξ i ≠ 0` using `hi`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, adelicChar K t ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `adelicChar_ne_one (K := K) (by ext t; simp [hc t])`. Establish `hpa : pair ξ (Pi.single i (A (ξ i)⁻¹ * t)) = t`. Rewrite using `[pair, Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hi', map_one, one_mul]`. Introduce `j _ hj`.
+
+Rewrite using `[Pi.single_eq_of_ne hj, mul_zero]`. Introduce `hh`. Conclude with `absurd (Finset.mem_univ i) hh`. Establish `key` using `vecCoeff_translate (K := K) (ι := ι) (f := fun _ => (1 : ℂ)) (fun _ _ _ => rfl) (Pi.single i (A (ξ i)⁻¹ * t)) ξ`. Rewrite `key` using `[hpa]`.
+
+Establish `h1 : ((adelicChar K t : Circle) : ℂ) ≠ 1` using `fun e => ht (Circle.ext (by simpa using e))`. Establish `h2 : (1 - ((adelicChar K t : Circle) : ℂ)) * vecCoeff (fun _ : ι → 𝔸[K] => (1 : ℂ)) ξ = 0`. Rewrite using `[sub_mul, one_mul, ← key, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm h1))`.
+-/
 theorem vecCoeff_one_eq_zero {ι : Type*} [Fintype ι] {ξ : ι → K} (h : ξ ≠ 0) :
     vecCoeff (fun _ : ι → 𝔸[K] => (1 : ℂ)) ξ = 0 := by
   classical
@@ -37,6 +46,9 @@ theorem vecCoeff_one_eq_zero {ι : Type*} [Fintype ι] {ξ : ι → K} (h : ξ �
     rw [sub_mul, one_mul, ← key, sub_self]
   exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm h1))
 
+/- English proof (translation)
+Establish `h' : -ξ ≠ 0` using `neg_ne_zero.2 h`. Use `vecCoeff_one_eq_zero h'` as an intermediate fact. Simplify `this` using `[vecCoeff, pair_neg_left]`.
+-/
 theorem setIntegral_char_eq_zero {ι : Type*} [Fintype ι] {ξ : ι → K} (h : ξ ≠ 0) :
     ∫ y in vecDomain K ι, (adelicChar K (pair ξ y) : ℂ) ∂vecMeasure K ι = 0 := by
   have h' : -ξ ≠ 0 := neg_ne_zero.2 h
@@ -44,18 +56,34 @@ theorem setIntegral_char_eq_zero {ι : Type*} [Fintype ι] {ξ : ι → K} (h : 
   simpa [vecCoeff, pair_neg_left] using this
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `Function.Injective.countable (f := fun (γ : GL (Fin 2) K) (i j : Fin 2) => γ.val i j) fun _ _ h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j)`.
+-/
 theorem countable_GL2' [Countable K] : Countable (GL (Fin 2) K) :=
   Function.Injective.countable (f := fun (γ : GL (Fin 2) K) (i j : Fin 2) => γ.val i j)
     fun _ _ h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j)
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ K).equivFun.injective.countable`.
+-/
 theorem countable_field : Countable K :=
   (Module.finBasis ℚ K).equivFun.injective.countable
 
+/- English proof (translation)
+The claim follows from `haveI : Countable K := countable_field haveI : Countable (GL (Fin 2) K) := countable_GL2' inferInstance`.
+-/
 theorem countable_NQ : Countable (NQ K) :=
   haveI : Countable K := countable_field
   haveI : Countable (GL (Fin 2) K) := countable_GL2'
   inferInstance
 
+/- English proof (translation)
+Use `haveI : Countable (NQ K) := countable_NQ`. Establish `hμ1 : ((vecMeasure K ι).restrict (vecDomain K ι)) Set.univ = 1`. Rewrite using `[Measure.restrict_apply_univ, vecMeasure_vecDomain]`. Use `haveI : IsFiniteMeasure ((vecMeasure K ι).restrict (vecDomain K ι)) := ⟨by rw [hμ1]; exact ENNReal.one_lt_top⟩`. Establish `hae : ∀ q, ∀ᵐ y ∂((vecMeasure K ι).restrict (vecDomain K ι)), ‖F q y‖ ≤ b q` using `fun q => (ae_restrict_iff' measurableSet_vecDomain).2 (ae_of_all _ (hbd q))`.
+
+Establish `hi : ∀ q, Integrable (F q) ((vecMeasure K ι).restrict (vecDomain K ι))` using `fun q => Integrable.mono' (integrable_const (b q)) (hc q).aestronglyMeasurable (hae q)`. Establish `hle : ∀ q, ∫ y, ‖F q y‖ ∂((vecMeasure K ι).restrict (vecDomain K ι)) ≤ b q` using `fun q => by`. Use `integral_mono_ae (hi q).norm (integrable_const (b q)) (hae q)` as an intermediate fact. Simplify `this` using `[measureReal_def, hμ1]`. Establish `hs : Summable fun q => ∫ y, ‖F q y‖ ∂((vecMeasure K ι).restrict (vecDomain K ι))` using `Summable.of_nonneg_of_le (fun q => integral_nonneg fun _ => norm_nonneg _) hle hb`.
+
+Rewrite using `[← integral_tsum_of_summable_integral_norm hi hs]`. Simplify using `[h0]`.
+-/
 theorem setIntegral_tsum_eq_zero {ι : Type*} [Fintype ι] {F : NQ K → (ι → 𝔸[K]) → ℂ}
     (hc : ∀ q, Continuous (F q)) {b : NQ K → ℝ} (hb : Summable b)
     (hbd : ∀ q y, y ∈ vecDomain K ι → ‖F q y‖ ≤ b q)
@@ -78,6 +106,9 @@ theorem setIntegral_tsum_eq_zero {ι : Type*} [Fintype ι] {F : NQ K → (ι →
   rw [← integral_tsum_of_summable_integral_norm hi hs]
   simp [h0]
 
+/- English proof (translation)
+Establish `D : ∀ a b, (diaK (e1 K γ)).val a b = A ((b1M K γ.val) a b)` using `fun _ _ => rfl`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, D]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni, b1M] <;> ring`.
+-/
 theorem diag_embed_mul_upper (γ : GL (Fin 2) K) (u v : 𝔸[K]) :
     diaK (e1 K γ) * uni 0 u v =
       uni 0 (A (γ.val 0 0) * u + A (γ.val 0 1) * v) (A (γ.val 1 0) * u + A (γ.val 1 1) * v) * diaK (e1 K γ) := by
@@ -87,6 +118,11 @@ theorem diag_embed_mul_upper (γ : GL (Fin 2) K) (u v : 𝔸[K]) :
   simp only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, D]
   fin_cases i <;> fin_cases j <;> simp [uni, b1M] <;> ring
 
+/- English proof (translation)
+Establish `D : ∀ a b, (diaK (e1 K γ)).val a b = A ((b1M K γ.val) a b)` using `fun _ _ => rfl`. Establish `ht' : A t * A (γ.val 1 0) = A (γ.val 0 1)` using `by rw [← map_mul, ht]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, D]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni, lowM, b1M, h11]`. Take the linear combination `(-c) * ht'`.
+-/
 theorem diag_embed_mul_lower (γ : GL (Fin 2) K) (h11 : γ.val 1 1 = 0) {t : K} (ht : t * γ.val 1 0 = γ.val 0 1)
     (c : 𝔸[K]) : diaK (e1 K γ) * lowM c = uni (A t * c) 0 0 * diaK (e1 K γ) := by
   have D : ∀ a b, (diaK (e1 K γ)).val a b = A ((b1M K γ.val) a b) := fun _ _ => rfl
@@ -97,12 +133,18 @@ theorem diag_embed_mul_lower (γ : GL (Fin 2) K) (h11 : γ.val 1 1 = 0) {t : K} 
   fin_cases i <;> fin_cases j <;> simp [uni, lowM, b1M, h11]
   linear_combination (-c) * ht'
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni, lowM, mul_comm]`.
+-/
 theorem lowM_mul_uni (c z : 𝔸[K]) : lowM c * uni 0 0 z = uni 0 0 z * lowM c := by
   apply Units.ext
   ext i j
   simp only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three]
   fin_cases i <;> fin_cases j <;> simp [uni, lowM, mul_comm]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_pi fun a => continuous_pi fun b => ?_, continuous_pi fun a => continuous_pi fun b => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [uni, Function.comp_def] <;> first | exact continuous_const | assumption`. Apply the tactic sequence `show Continuous fun t => (!![1, -0, 0 * z t - y t; 0, 1, -z t; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K]) _ _ fin_cases a <;> fin_cases b <;> simp <;> first | exact continuous_const | fun_prop`.
+-/
 theorem continuous_uni {X : Type*} [TopologicalSpace X] {y z : X → 𝔸[K]} (hy : Continuous y)
     (hz : Continuous z) : Continuous fun t => (uni 0 (y t) (z t) : G3K K) := by
   refine Units.continuous_iff.2 ⟨continuous_pi fun a => continuous_pi fun b => ?_,
@@ -111,6 +153,9 @@ theorem continuous_uni {X : Type*} [TopologicalSpace X] {y z : X → 𝔸[K]} (h
   · show Continuous fun t => (!![1, -0, 0 * z t - y t; 0, 1, -z t; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K]) _ _
     fin_cases a <;> fin_cases b <;> simp <;> first | exact continuous_const | fun_prop
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_pi fun a => continuous_pi fun b => ?_, continuous_pi fun a => continuous_pi fun b => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `show Continuous fun t => (!![1, 0, 0; c t, 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K]) _ _ fin_cases a <;> fin_cases b <;> simp <;> first | exact continuous_const | fun_prop`. Apply the tactic sequence `show Continuous fun t => (!![1, 0, 0; -c t, 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K]) _ _ fin_cases a <;> fin_cases b <;> simp <;> first | exact continuous_const | fun_prop`.
+-/
 theorem continuous_lowM {X : Type*} [TopologicalSpace X] {c : X → 𝔸[K]} (hc : Continuous c) :
     Continuous fun t => (lowM (c t) : G3K K) := by
   refine Units.continuous_iff.2 ⟨continuous_pi fun a => continuous_pi fun b => ?_,
@@ -121,9 +166,19 @@ theorem continuous_lowM {X : Type*} [TopologicalSpace X] {c : X → 𝔸[K]} (hc
     fin_cases a <;> fin_cases b <;> simp <;> first | exact continuous_const | fun_prop
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`.
+-/
 theorem det_ne_zero (γ : GL (Fin 2) K) : γ.val.det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero
 
+/- English proof (translation)
+Establish `hne : ![γ.val 1 0, γ.val 1 1] ≠ 0`. Introduce `h`. Establish `h0 : γ.val 1 0 = 0` using `congrFun h 0`. Establish `h1 : γ.val 1 1 = 0` using `congrFun h 1`. Conclude with `det_ne_zero γ (by rw [Matrix.det_fin_two, h0, h1]; ring)`.
+
+Establish `e : ∀ y : Fin 2 → 𝔸[K], W (diaK (e1 K γ) * (uni 0 (y 0) (y 1) * g)) = (adelicChar K (pair ![γ.val 1 0, γ.val 1 1] y) : ℂ) * W (diaK (e1 K γ) * g)`. Introduce `y`. Rewrite using `[← mul_assoc, diag_embed_mul_upper, mul_assoc, hpsi, zero_add]`. Simplify using `[pair, Fin.sum_univ_two]`. Repeatedly rewrite using `[e]`.
+
+Rewrite using `[integral_mul_const, setIntegral_char_eq_zero hne, zero_mul]`.
+-/
 theorem term_Y {W : G3K K → ℂ} (hpsi : ∀ x y z g, W (uni x y z * g) = (adelicChar K (x + z) : ℂ) * W g)
     (γ : GL (Fin 2) K) (g : G3K K) :
     ∫ y in vecDomain K (Fin 2), W (diaK (e1 K γ) * (uni 0 (y 0) (y 1) * g)) ∂vecMeasure K (Fin 2) = 0 := by
@@ -140,6 +195,9 @@ theorem term_Y {W : G3K K → ℂ} (hpsi : ∀ x y z g, W (uni x y z * g) = (ade
   simp_rw [e]
   rw [integral_mul_const, setIntegral_char_eq_zero hne, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[lowM_mul_uni, mul_assoc, ← mul_assoc (diaK _), diag_embed_mul_upper, mul_assoc, hpsi]`. Simplify using the standard rewrite rules.
+-/
 theorem W_lowM_uni {W : G3K K → ℂ}
     (hpsi : ∀ x y z g, W (uni x y z * g) = (adelicChar K (x + z) : ℂ) * W g)
     (γ : GL (Fin 2) K) (c z : 𝔸[K]) (g : G3K K) :
@@ -148,6 +206,17 @@ theorem W_lowM_uni {W : G3K K → ℂ}
   rw [lowM_mul_uni, mul_assoc, ← mul_assoc (diaK _), diag_embed_mul_upper, mul_assoc, hpsi]
   simp
 
+/- English proof (translation)
+Distinguish the cases in `h11 : γ.val 1 1 = 0`. Establish `hd` using `det_ne_zero γ`. Rewrite `hd` using `[Matrix.det_fin_two, h11, mul_zero, zero_sub]`. Establish `h10 : γ.val 1 0 ≠ 0` using `fun h => hd (by rw [h, mul_zero, neg_zero])`. Establish `h01 : γ.val 0 1 ≠ 0` using `fun h => hd (by rw [h, zero_mul, neg_zero])`.
+
+Establish `ht : (γ.val 0 1 / γ.val 1 0) * γ.val 1 0 = γ.val 0 1` using `div_mul_cancel₀ _ h10`. Establish `hne : ![γ.val 0 1 / γ.val 1 0, 0] ≠ 0` using `fun h => div_ne_zero h01 h10 (congrFun h 0)`. Establish `e : ∀ y : Fin 2 → 𝔸[K], W (diaK (e1 K γ) * (lowM (y 0) * uni 0 0 (y 1) * g)) = (adelicChar K (pair ![γ.val 0 1 / γ.val 1 0, 0] y) : ℂ) * W (diaK (e1 K γ) * g)`. Introduce `y`. Rewrite using `[W_lowM_uni hpsi, h11, ← mul_assoc (diaK _), diag_embed_mul_lower γ h11 ht, mul_assoc, hpsi]`.
+
+Simplify using `[pair, Fin.sum_univ_two]`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_mul_const, setIntegral_char_eq_zero hne, zero_mul]`. Establish `hH : Continuous fun c : 𝔸[K] => W (diaK (e1 K γ) * (lowM c * g))` using `hc.comp (continuous_const.mul ((continuous_lowM continuous_id).mul continuous_const))`. Establish `hcont : Continuous fun y : Fin 2 → 𝔸[K] => (adelicChar K (A (γ.val 1 1) * y 1) : ℂ) * W (diaK (e1 K γ) * (lowM (y 0) * g))` using `(continuous_subtype_val.comp (continuous_adelicChar.comp (continuous_const.mul (continuous_apply 1)))).mul (hH.comp (continuous_apply 0))`.
+
+Repeatedly rewrite using `[W_lowM_uni hpsi]`. Rewrite using `[setIntegral_vecDomain_sum (finSumFinEquiv (m := 1) (n := 1)).symm hcont]`. Use `(setIntegral_congr_fun measurableSet_vecDomain fun x _ => ?_).trans (integral_zero _ _)` and prove the remaining obligations. Establish `hne : ![γ.val 1 1] ≠ 0` using `fun h => h11 (congrFun h 0)`. Establish `hz` using `setIntegral_char_eq_zero hne`.
+
+Establish `hp : ∀ y : Fin 1 → 𝔸[K], pair ![γ.val 1 1] y = A (γ.val 1 1) * y 0` using `fun y => by`. Simplify using `[pair]`. Rewrite `hz` using `[hp]`. Use `show ∫ y in vecDomain K (Fin 1), (adelicChar K (A (γ.val 1 1) * y 0) : ℂ) * W (diaK (e1 K γ) * (lowM (x 0) * g)) ∂vecMeasure K (Fin 1) = 0`. Rewrite using `[integral_mul_const, hz, zero_mul]`.
+-/
 theorem term_Y' {W : G3K K → ℂ} (hc : Continuous W)
     (hpsi : ∀ x y z g, W (uni x y z * g) = (adelicChar K (x + z) : ℂ) * W g)
     (γ : GL (Fin 2) K) (g : G3K K) :
@@ -186,6 +255,13 @@ theorem term_Y' {W : G3K K → ℂ} (hc : Continuous W)
       W (diaK (e1 K γ) * (lowM (x 0) * g)) ∂vecMeasure K (Fin 1) = 0
     rw [integral_mul_const, hz, zero_mul]
 
+/- English proof (translation)
+Introduce `V hV W hW g`. Establish `hc` using `h2 V hV W hW`. Establish `hpsi` using `hV.psi W hW`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_vecDomain (K := K) (ι := Fin 2)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hcont : Continuous fun y : Fin 2 → 𝔸[K] => (uni 0 (y 0) (y 1) * g : G3K K)` using `(continuous_uni (continuous_apply 0) (continuous_apply 1)).mul continuous_const`. Take `⟨b, hb, hbd⟩` from `h V hV W hW _ (hC.image hcont)`. Conclude with `setIntegral_tsum_eq_zero (F := fun q y => W (diaK (e1 K q.out) * (uni 0 (y 0) (y 1) * g))) (fun q => hc.comp (continuous_const.mul hcont)) hb (fun q y hy => hbd q _ ⟨y, hDC hy, rfl⟩) (fun q => term_Y hpsi q.out g)`. Establish `hcont : Continuous fun y : Fin 2 → 𝔸[K] => (lowM (y 0) * uni 0 0 (y 1) * g : G3K K)` using `((continuous_lowM (continuous_apply 0)).mul (continuous_uni continuous_const (continuous_apply 1))).mul continuous_const`. Take `⟨b, hb, hbd⟩` from `h V hV W hW _ (hC.image hcont)`.
+
+Conclude with `setIntegral_tsum_eq_zero (F := fun q y => W (diaK (e1 K q.out) * (lowM (y 0) * uni 0 0 (y 1) * g))) (fun q => hc.comp (continuous_const.mul hcont)) hb (fun q y hy => hbd q _ ⟨y, hDC hy, rfl⟩) (fun q => term_Y' hc hpsi q.out g)`.
+-/
 theorem CtU_of (K : Type) [Field K] [NumberField K] (h : MajU K) (h2 : ContW K) : CtU K := by
   intro V hV W hW g
   have hc := h2 V hV W hW

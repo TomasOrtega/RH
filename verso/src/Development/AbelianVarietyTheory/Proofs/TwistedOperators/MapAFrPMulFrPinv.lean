@@ -14,9 +14,15 @@ namespace GlobalTheory.AdSpan.ReVec
 
 variable {D : D7} (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V)
 
+/- English proof (translation)
+Unfold `frPinv frP`. Conclude with `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+-/
 theorem frPinv_mul_frP : frPinv S b * frP S b = 1 := by
   unfold frPinv frP; exact Module.Basis.toMatrix_mul_toMatrix_flip _ _
 
+/- English proof (translation)
+Unfold `frPinv frP`. Conclude with `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+-/
 theorem frameMatrix_mul_frameMatrixInv : frP S b * frPinv S b = 1 := by
   unfold frPinv frP; exact Module.Basis.toMatrix_mul_toMatrix_flip _ _
 
@@ -25,38 +31,69 @@ def frPinvGL : GL (Fin S.rank) (Lev.EAf D) :=
     by rw [← Matrix.map_mul, frPinv_mul_frP]; exact Matrix.map_one _ (map_zero _) (map_one _),
     by rw [← Matrix.map_mul, frameMatrix_mul_frameMatrixInv]; exact Matrix.map_one _ (map_zero _) (map_one _)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frPinvGL_inv_val : (frPinvGL S b)⁻¹.val = (frP S b).map (eToEAf D) := rfl
 
 def reWi (x : WO S T) : WO (reS S b) T :=
   HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x ((frP S b).map (incA D))
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, frPinv_mul_frP]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem mapA_frPinv_mul_frP : (frPinv S b).map (incA D) * (frP S b).map (incA D) = 1 := by
   rw [← Matrix.map_mul, frPinv_mul_frP]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, frameMatrix_mul_frameMatrixInv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem map_frP_mul_map_frPinv : (frP S b).map (incA D) * (frPinv S b).map (incA D) = 1 := by
   rw [← Matrix.map_mul, frameMatrix_mul_frameMatrixInv]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Unfold `reW reWi`. Rewrite using `[Matrix.mul_assoc, map_frP_mul_map_frPinv, Matrix.mul_one]`.
+-/
 theorem reW_reWi (x : WO S T) : reW S T b (reWi S T b x) = x := by
   unfold reW reWi
   rw [Matrix.mul_assoc, map_frP_mul_map_frPinv, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h` using `Matrix.mul_assoc (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from x) ((frPinv S b).map (incA D)) ((frP S b).map (incA D))`. Rewrite `h` using `[mapA_frPinv_mul_frP, Matrix.mul_one]`. Conclude with `h`.
+-/
 theorem reWi_reW (x : WO (reS S b) T) : reWi S T b (reW S T b x) = x := by
   have h := Matrix.mul_assoc (show Matrix (Fin T.rank) (Fin S.rank) (AE D) from x) ((frPinv S b).map (incA D))
     ((frP S b).map (incA D))
   rw [mapA_frPinv_mul_frP, Matrix.mul_one] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `Matrix.add_mul _ _ _`.
+-/
 theorem reW_add (x y : WO (reS S b) T) : reW S T b (x + y) = reW S T b x + reW S T b y :=
   Matrix.add_mul _ _ _
 
 def reWHom : WO (reS S b) T →+ WO S T := AddMonoidHom.mk' (reW S T b) (reW_add S T b)
 
+/- English proof (translation)
+The claim follows from `map_nsmul (reWHom S T b) k x`.
+-/
 theorem reW_nsmul (k : ℕ) (x : WO (reS S b) T) : reW S T b (k • x) = k • reW S T b x :=
   map_nsmul (reWHom S T b) k x
 
+/- English proof (translation)
+The claim follows from `Function.bijective_iff_has_inverse.2 ⟨reWi S T b, reWi_reW S T b, reW_reWi S T b⟩`.
+-/
 theorem reW_bijective : Function.Bijective (reW S T b) :=
   Function.bijective_iff_has_inverse.2 ⟨reWi S T b, reWi_reW S T b, reW_reWi S T b⟩
 
+/- English proof (translation)
+Establish `key : ∀ (M : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (N : Matrix (Fin S.rank) (Fin S.rank) (AE D)), IsHalf e M → IsHalf e (HMul.hMul (α` using `Matrix (Fin T.rank) (Fin S.rank) (AE D)) M N) := by`. Introduce `M N h i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, h i l]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `key _ ((frP S b).map (incA D)) h`. Establish `: HMul.hMul (α` using `Matrix (Fin T.rank) (Fin S.rank) (AE D)) (reW S T b x) ((frP S b).map (incA D)) = x := reWi_reW S T b x`. Rewrite `h2` using `[this]`. Then use the resulting hypothesis.
+
+Introduce `h`. Conclude with `key x _ h`.
+-/
 theorem isHalf_reW_iff (e : AE D) (x : WO (reS S b) T) : IsHalf e (reW S T b x) ↔ IsHalf e x := by
   have key : ∀ (M : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (N : Matrix (Fin S.rank) (Fin S.rank) (AE D)),
       IsHalf e M → IsHalf e (HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) M N) := by
@@ -73,6 +110,9 @@ theorem isHalf_reW_iff (e : AE D) (x : WO (reS S b) T) : IsHalf e (reW S T b x) 
   · intro h
     exact key x _ h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, reF_apply, symplOH, hs, reW_add]`.
+-/
 theorem heisO_reF (ψ : AddChar (AF D.host.F) ℂ)
     (hs : ∀ x y, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y))
     (u : WO (reS S b) T) (f : WO S T → ℂ) :

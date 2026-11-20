@@ -19,6 +19,13 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum.EndThick
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc]`. Establish `h2 : ((Over.pullback (thick R I e)).map a).left ≫ pullback.fst D.P.A.hom (thick R I e) = pullback.fst D.P.A.hom (thick R I e) ≫ a.left` using `by simp; exact pullback.lift_fst _ _ _`. Rewrite using `[h2]`.
+
+Conclude with `hF.1`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc]`. Establish `w1 : g.q.left ≫ pullback.snd D.P.A.hom (thick R I e) = pullback.snd G.hom (thick R I e)` using `Over.w g.q`. Establish `w2 : ((Over.pullback (thick R I e)).map a).left ≫ pullback.snd D.P.A.hom (thick R I e) = pullback.snd D.P.A.hom (thick R I e)` using `Over.w ((Over.pullback (thick R I e)).map a)`. Establish `w3 : F.left ≫ pullback.snd G.hom (thick R I e) = pullback.snd G.hom (thick R I e)` using `Over.w F`.
+
+Rewrite using `[w2, w1]`. Conclude with `w3`.
+-/
 theorem q_comm_of_coordEnd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
     (a a' : D.P.A ⟶ D.P.A) (h' : D.X →+ D.X)
@@ -41,6 +48,11 @@ theorem q_comm_of_coordEnd {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D
     rw [w2, w1]
     exact w3
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D A G _ _ _ U a a' h h' hE`. Take `⟨ha, ha', hr, -, hc, -⟩` from `hE`. Establish `hr'` using `GlobalTheory.Mum.RosatiSymmetry.rosatiAdj_symm D.toPre.P.A D.toPre.P.L D.toPre.P.isLB a a' hr`. Take `⟨u, hu, h₀⟩` from `exists_ros GlobalTheory.globalFns_holds D.toPre.P.isAb D.toPre.P.isLB a' a hr'`. Use `choose F hF using fun e => GlobalTheory.T.exists_thickenedGroup_endomorphism_torusCoordinates (U.gt e) a a' h' hc u hu h₀`.
+
+Conclude with `⟨F, fun e => GlobalTheory.T.isMonHom_thickenedGroup_endomorphism_torusCoordinates (U.gt e) a a' h' hc u hu h₀ (F e) (hF e), fun e => GlobalTheory.T.thickenedGroup_endomorphism_transition_compat U.toUnifPre e a a' h' u (F e) (F (e + 1)) (hF e) (hF (e + 1)), fun e => q_comm_of_coor …`.
+-/
 theorem formalEnd_exists : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∃ b, FormalEnd U.toUnifPre a h' b := by
   intro R _ _ _ _ D A G _ _ _ U a a' h h' hE
   obtain ⟨ha, ha', hr, -, hc, -⟩ := hE

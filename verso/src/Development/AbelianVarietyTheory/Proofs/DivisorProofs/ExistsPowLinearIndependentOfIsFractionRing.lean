@@ -4,6 +4,23 @@ open IntermediateField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `Field.exists_primitive_element ℚ F`. Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := O) γ`. Establish `hfin : Finite (IntermediateField ℚ F)` using `Field.finite_intermediateField_of_exists_primitive_element ℚ F ⟨γ, hγ⟩`. Take `⟨t, t', htt, he⟩` from `Finite.exists_ne_map_eq_of_infinite (fun t : ℕ => ℚ⟮algebraMap O F x + (t : F) * algebraMap O F y⟯)`. Establish `h1 : algebraMap O F x + (t : F) * algebraMap O F y ∈ ℚ⟮algebraMap O F x + (t : F) * algebraMap O F y⟯` using `mem_adjoin_simple_self _ _`.
+
+Establish `h2 : algebraMap O F x + (t' : F) * algebraMap O F y ∈ ℚ⟮algebraMap O F x + (t : F) * algebraMap O F y⟯`. Rewrite using `[he]`. Conclude with `mem_adjoin_simple_self _ _`. Use `set L := ℚ⟮algebraMap O F x + (t : F) * algebraMap O F y⟯ with hL`. Establish `hyL : algebraMap O F y ∈ L`.
+
+Establish `hd : ((t : F) - t') * algebraMap O F y ∈ L`. Use `L.sub_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `htt' : ((t : F) - t') ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast htt)`.
+
+Establish `hc : ((t : F) - t') ∈ L` using `L.sub_mem (L.natCast_mem t) (L.natCast_mem t')`. Use `L.mul_mem (L.inv_mem hc) hd` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel₀ htt', one_mul]`. Then use the resulting hypothesis. Establish `hxL : algebraMap O F x ∈ L`. Use `L.sub_mem h1 (L.mul_mem (L.natCast_mem t) hyL)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hγL : γ ∈ L` using `hxy ▸ L.div_mem hxL hyL`. Establish `htop : L = ⊤`. Rewrite using `[eq_top_iff, ← hγ, adjoin_simple_le_iff]`. Conclude with `hγL`.
+
+Use `⟨x + t • y, ?_⟩` and prove the remaining obligations. Establish `ha : algebraMap O F (x + t • y) = algebraMap O F x + (t : F) * algebraMap O F y`. Rewrite using `[map_add, map_nsmul, nsmul_eq_mul]`. Establish `hint : IsIntegral ℚ (algebraMap O F (x + t • y))` using `Algebra.IsIntegral.isIntegral _`. Establish `hdeg : (minpoly ℚ (algebraMap O F (x + t • y))).natDegree = Module.finrank ℚ F`.
+
+Rewrite using `[← adjoin.finrank hint, ha, ← hL, htop, finrank_top']`. Establish `h'` using `(linearIndependent_pow (K := ℚ) (algebraMap O F (x + t • y))).comp (Fin.cast hdeg.symm) (Fin.cast_injective _)`. Establish `hf : (fun i : Fin (Module.finrank ℚ F) => algebraMap O F ((x + t • y) ^ (i : ℕ))) = (fun i : Fin (minpoly ℚ (algebraMap O F (x + t • y))).natDegree => algebraMap O F (x + t • y) ^ (i : ℕ)) ∘ Fin.cast hdeg.symm`. Use extensionality with `i`. Simplify using `[map_pow]`.
+
+Rewrite using `[hf]`. Conclude with `h'`.
+-/
 theorem exists_pow_linearIndependent_of_isFractionRing (O F : Type) [CommRing O] [Field F]
     [NumberField F] [Algebra O F] [IsFractionRing O F] :
     ∃ α : O, LinearIndependent ℚ (fun i : Fin (Module.finrank ℚ F) => algebraMap O F (α ^ (i : ℕ))) := by

@@ -21,6 +21,11 @@ variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 def boxP (e : HeightOneSpectrum (𝓞 F) → ℤ) (v : Fin 2 → Ad F) : Prop :=
   ∀ w, ∀ i, Valued.v (pLoc F w (pFin F (v i))) ≤ WithZero.exp (e w)
 
+/- English proof (translation)
+Take `⟨n, hn, hpow⟩` from `h.exists_pow_eq_one`. Establish `h1 : (ω.1 x) ^ n = 1`. Use `congrArg (fun χ : HChar F => (χ.1 x)) hpow` as an intermediate fact. Simplify using `using this`. Establish `h2 : ((ω.1 x : ℂˣ) : ℂ) ^ n = 1`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one]`. Establish `h3 : ‖((ω.1 x : ℂˣ) : ℂ)‖ ^ n = 1` using `by rw [← norm_pow, h2, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h3`.
+-/
 theorem norm_omega_eq_one {ω : HChar F} (h : IsOfFinOrder ω) (x : Ideles F) :
     ‖((ω.1 x : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨n, hn, hpow⟩ := h.exists_pow_eq_one
@@ -32,6 +37,11 @@ theorem norm_omega_eq_one {ω : HChar F} (h : IsOfFinOrder ω) (x : Ideles F) :
   have h3 : ‖((ω.1 x : ℂˣ) : ℂ)‖ ^ n = 1 := by rw [← norm_pow, h2, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h3
 
+/- English proof (translation)
+Use `set z : Ideles F := moduleSection (w0 F) t * (u : Ideles F)`. Establish `hdet : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 2) z) = z ^ 2`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.det_diagonal, Fin.prod_univ_two, sq]`. Establish `hu : IdeleGroup.ideleModule F (u : Ideles F) = 1` using `u.2`.
+
+Establish `hz : IdeleGroup.ideleModule F z = t`. Simplify using `only [z, map_mul, ideleModule_moduleSection, hu, mul_one]`. Unfold `absD`. Rewrite using `[map_mul, hdet, map_mul, map_pow, hz]`. Both sides reduce to the same expression.
+-/
 theorem absD_scalar_mul (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) (h : GA F 2) :
     absD (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * h) =
       (t : ℝ) ^ 2 * absD h := by
@@ -47,8 +57,16 @@ theorem absD_scalar_mul (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) (h : GA
   rfl
 
 omit [IsTotallyReal F] in
+/- English proof (translation)
+The claim follows from `(IdeleGroup.ideleModule F _).2`.
+-/
 theorem absD_pos (h : GA F 2) : 0 < absD h := (IdeleGroup.ideleModule F _).2
 
+/- English proof (translation)
+Establish `hv` using `IsTotallyReal.isReal w`. Use `set x := (UpperTheory.V.TR.infEq F d) w`. Establish `h1 : (NumberField.InfinitePlace.Completion.isometryEquivRealOfIsReal hv) x = d w` using `by show NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal hv ((NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (d w)) = d w`. Conclude with `RingEquiv.apply_symm_apply _ _`. Establish `h0 : (NumberField.InfinitePlace.Completion.isometryEquivRealOfIsReal hv) 0 = 0` using `map_zero (NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal hv)`.
+
+Use `(NumberField.InfinitePlace.Completion.isometryEquivRealOfIsReal hv).dist_eq x 0` as an intermediate fact. Rewrite `this` using `[h0, h1, Real.dist_0_eq_abs]`. Rewrite using `[← dist_zero_right, ← this]`.
+-/
 theorem norm_infEq_apply (d : UpperTheory.V.TR.Rinf F) (w : InfinitePlace F) :
     ‖(UpperTheory.V.TR.infEq F d) w‖ = |d w| := by
   have hv := IsTotallyReal.isReal w
@@ -63,16 +81,29 @@ theorem norm_infEq_apply (d : UpperTheory.V.TR.Rinf F) (w : InfinitePlace F) :
   rw [h0, h1, Real.dist_0_eq_abs] at this
   rw [← dist_zero_right, ← this]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F d.val = _`. Rewrite using `[map_one, sub_self, zero_add]`.
+-/
 theorem infId_fst (d : (UpperTheory.V.TR.Rinf F)ˣ) :
     ((UpperTheory.V.TR.infId F d : Ideles F) : Ad F).1 = UpperTheory.V.TR.infEq F d.val := by
   change (1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F d.val = _
   rw [map_one, sub_self, zero_add]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Rewrite using `[sub_zero, add_zero]`.
+-/
 theorem infId_snd (d : (UpperTheory.V.TR.Rinf F)ˣ) :
     ((UpperTheory.V.TR.infId F d : Ideles F) : Ad F).2 = 1 := by
   change (1 : Af F) - 0 + 0 = 1
   rw [sub_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[ideleModule_eq]`. Establish `hfin : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖((UpperTheory.V.TR.infId F d : Ideles F) : Ad F).2 v‖ = 1`. Rewrite using `[infId_snd]`. Simplify using the standard rewrite rules. Rewrite using `[hfin, mul_one]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hm : w.mult = 1`. Unfold `InfinitePlace.mult`. Rewrite using `[if_pos (IsTotallyReal.isReal w)]`. Establish `e : ((UpperTheory.V.TR.infId F d : Ideles F) : Ad F).1 w = (UpperTheory.V.TR.infEq F d.val) w`.
+
+Rewrite using `[infId_fst]`. Rewrite using `[hm, pow_one, e, norm_infEq_apply]`.
+-/
 theorem ideleModule_infId (d : (UpperTheory.V.TR.Rinf F)ˣ) :
     (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F d) : ℝ) = ∏ w, |d.val w| := by
   rw [ideleModule_eq]
@@ -88,6 +119,9 @@ theorem ideleModule_infId (d : (UpperTheory.V.TR.Rinf F)ˣ) :
     rw [infId_fst]
   rw [hm, pow_one, e, norm_infEq_apply]
 
+/- English proof (translation)
+The claim follows from `|(y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w| ≤ UpperTheory.V.TR.height y := by have h1 : |(y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w| ≤ ‖UpperTheory.V.TR.toL (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F))‖ := by rw [← Real.norm_eq_abs] …`.
+-/
 theorem abs_apply_le_height (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (i j : Fin 2) (w : InfinitePlace F) :
     |(y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w| ≤ UpperTheory.V.TR.height y := by
   have h1 : |(y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w| ≤
@@ -98,12 +132,18 @@ theorem abs_apply_le_height (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (i j : Fi
   unfold UpperTheory.V.TR.height
   linarith
 
+/- English proof (translation)
+Unfold `UpperTheory.V.TR.height`. Use `norm_nonneg (UpperTheory.V.TR.toL (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)))` as an intermediate fact. Use `norm_nonneg (UpperTheory.V.TR.toL ((y⁻¹ : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_height (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : 1 ≤ UpperTheory.V.TR.height y := by
   unfold UpperTheory.V.TR.height
   have := norm_nonneg (UpperTheory.V.TR.toL (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)))
   have := norm_nonneg (UpperTheory.V.TR.toL ((y⁻¹ : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)))
   linarith
 
+/- English proof (translation)
+The claim follows from `|((Matrix.GeneralLinearGroup.det y : (UpperTheory.V.TR.Rinf F)ˣ) : UpperTheory.V.TR.Rinf F) w| ≤ 2 * UpperTheory.V.TR.height y ^ 2 := by rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two] simp only [Pi.sub_apply, Pi.mul_apply] have h00 := abs_apply_le_height y 0 0 w …`.
+-/
 theorem abs_det_apply_le (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (w : InfinitePlace F) :
     |((Matrix.GeneralLinearGroup.det y : (UpperTheory.V.TR.Rinf F)ˣ) : UpperTheory.V.TR.Rinf F) w| ≤
       2 * UpperTheory.V.TR.height y ^ 2 := by
@@ -120,6 +160,9 @@ theorem abs_det_apply_le (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (w : Infinit
         gcongr <;> first | exact abs_nonneg _ | assumption | linarith [one_le_height y]
     _ = 2 * UpperTheory.V.TR.height y ^ 2 := by ring
 
+/- English proof (translation)
+Rewrite using `[ideleModule_infId]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ideleModule_infId_det_le (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F (Matrix.GeneralLinearGroup.det y)) : ℝ) ≤
       2 ^ Fintype.card (InfinitePlace F) * UpperTheory.V.TR.height y ^ (2 * Fintype.card (InfinitePlace F)) := by
@@ -129,6 +172,15 @@ theorem ideleModule_infId_det_le (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
         Finset.prod_le_prod (fun _ _ => abs_nonneg _) fun w _ => abs_det_apply_le y w
     _ = _ := by rw [Finset.prod_const, Finset.card_univ, mul_pow, ← pow_mul, mul_comm 2 (Fintype.card _)]
 
+/- English proof (translation)
+Use `set n := Fintype.card (InfinitePlace F)`. Establish `hsplit : ∀ y : GL (Fin 2) (UpperTheory.V.TR.Rinf F), absD (g * UpperTheory.V.TR.infGL F 2 y) = absD g * (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F (Matrix.GeneralLinearGroup.det y)) : ℝ)`. Introduce `y`. Unfold `absD`. Rewrite using `[map_mul, UpperTheory.V.TR.det_infGL, map_mul, Positive.val_mul]`.
+
+Establish `hinv : ∀ y : GL (Fin 2) (UpperTheory.V.TR.Rinf F), (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F (Matrix.GeneralLinearGroup.det y)) : ℝ)⁻¹ = (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F (Matrix.GeneralLinearGroup.det y⁻¹)) : ℝ)`. Introduce `y`. Rewrite using `[map_inv, map_inv, map_inv, Positive.coe_inv]`. Establish `hh : ∀ y : GL (Fin 2) (UpperTheory.V.TR.Rinf F), UpperTheory.V.TR.height y⁻¹ = UpperTheory.V.TR.height y`. Introduce `y`.
+
+Unfold `UpperTheory.V.TR.height`. Rewrite using `[inv_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨max (absD g) (absD g)⁻¹ * 2 ^ n, 2 * n, fun y => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsplit, mul_assoc]`.
+
+Conclude with `mul_le_mul (le_max_left _ _) (ideleModule_infId_det_le y) (IdeleGroup.ideleModule F _).2.le ((absD_pos g).le.trans (le_max_left _ _))`. Rewrite using `[hsplit, mul_inv, hinv, mul_assoc]`. Use `ideleModule_infId_det_le y⁻¹` as an intermediate fact. Rewrite `this` using `[hh]`. Conclude with `mul_le_mul (le_max_right _ _) this (IdeleGroup.ideleModule F _).2.le ((absD_pos g).le.trans (le_max_left _ _))`.
+-/
 theorem absD_mul_infGL_le (g : GA F 2) : ∃ (C : ℝ) (N : ℕ), ∀ y : GL (Fin 2) (UpperTheory.V.TR.Rinf F),
     absD (g * UpperTheory.V.TR.infGL F 2 y) ≤ C * UpperTheory.V.TR.height y ^ N ∧
       (absD (g * UpperTheory.V.TR.infGL F 2 y))⁻¹ ≤ C * UpperTheory.V.TR.height y ^ N := by
@@ -158,6 +210,23 @@ theorem absD_mul_infGL_le (g : GA F 2) : ∃ (C : ℝ) (N : ℕ), ∀ y : GL (Fi
     exact mul_le_mul (le_max_right _ _) this (IdeleGroup.ideleModule F _).2.le
       ((absD_pos g).le.trans (le_max_left _ _))
 
+/- English proof (translation)
+Take `⟨n, hn, hpow⟩` from `hyp.fin.exists_pow_eq_one`. Establish `hpow' : ω.1 ^ n = 1`. Use `congrArg Subtype.val hpow` as an intermediate fact. Simplify using `using this`. Establish `hker : IsOpen (ω.1.ker : Set (Ideles F))` using `GroundTheory.BlockD.isOpen_ker_of_pow_eq_one ω.1 ω.2.1 hn hpow'`.
+
+Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker hker`. Establish `hc0 : ∀ w ∉ S, c w = 0`. Introduce `w hw`. Establish `hmem : (0 : ℕ) ∈ {n : ℕ | ∀ x : (w.adicCompletion F)ˣ, IsUnitAt w x → Valued.v ((x : w.adicCompletion F) - 1) ≤ WithZero.exp (-(n : ℤ)) → ω.loc w x = 1}`. Introduce `x hx _`.
+
+Conclude with `MonoidHom.mem_ker.1 (key w x hx fun h => absurd h hw)`. Conclude with `Nat.le_zero.1 ((hyp.cond w).2 hmem)`. Use `set T := hS.toFinset`. Use `set 𝔠 : Ideal (𝓞 F) := ∏ w ∈ T, w.asIdeal ^ c w`. Establish `h𝔠 : 𝔠 ≠ ⊥`.
+
+Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact w.ne_bot)`. Take `⟨b, hb, hb0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔠`. Establish `hdiff : differentIdeal ℤ (𝓞 F) ≠ ⊥` using `differentIdeal_ne_bot`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hdiff`.
+
+Use `⟨a * b, mul_ne_zero ha0 hb0, fun w x hx => ?_⟩` and prove the remaining obligations. Establish `hva : w.intValuation a ≤ WithZero.exp (-(dd w))`. Use `GroundTheory.Global.intValuation_le_of_mem_ideal w hdiff ha` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.count_coe F w hdiff]`. Then use the resulting hypothesis. Establish `hvb : w.intValuation b ≤ WithZero.exp (-(c w : ℤ))`.
+
+Distinguish the cases in `hw : w ∈ S`. Establish `hle : 𝔠 ≤ w.asIdeal ^ c w`. Rewrite using `[show 𝔠 = _ from (Finset.mul_prod_erase T (fun w => w.asIdeal ^ c w) (hS.mem_toFinset.2 hw)).symm]`. Conclude with `Ideal.mul_le_left (I := w.asIdeal ^ c w) (J := ∏ x ∈ T.erase w, x.asIdeal ^ c x)`. Conclude with `(w.intValuation_le_pow_iff_mem b (c w)).2 (hle hb)`.
+
+Rewrite using `[hc0 w hw, Nat.cast_zero, neg_zero, WithZero.exp_zero]`. Conclude with `w.intValuation_le_one b`. Establish `hD : Valued.v (algebraMap F (w.adicCompletion F) ((a * b : 𝓞 F) : F)) ≤ WithZero.exp (-((c w : ℤ) + dd w))`. Establish `e1 : Valued.v (algebraMap F (w.adicCompletion F) ((a * b : 𝓞 F) : F)) = w.intValuation (a * b)`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := F)]`.
+
+Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _`. Rewrite using `[e1, map_mul, show -((c w : ℤ) + dd w) = -(dd w) + -(c w : ℤ) by ring, WithZero.exp_add]`. Conclude with `mul_le_mul' hva hvb`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_D {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hyp : Hyp ω c) :
     ∃ D : 𝓞 F, D ≠ 0 ∧ ∀ w : HeightOneSpectrum (𝓞 F), ∀ x : w.adicCompletion F,
       Valued.v x ≤ WithZero.exp ((c w : ℤ) + dd w) →
@@ -209,6 +278,15 @@ theorem exists_D {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ} (hyp : 
       ≤ WithZero.exp (-((c w : ℤ) + dd w)) * WithZero.exp ((c w : ℤ) + dd w) := mul_le_mul' hD hx
     _ = 1 := by rw [← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]
 
+/- English proof (translation)
+Establish `hmeas : Measurable fun t : {r : ℝ // 0 < r} => ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹)` using `ENNReal.measurable_ofReal.comp ((continuous_subtype_val.min (continuous_subtype_val.inv₀ fun t => t.2.ne')).measurable)`. Rewrite using `[posRealMeasure_eq_map_expPos, lintegral_map hmeas measurable_expPos]`. Establish `key : ∀ y : ℝ, 0 ≤ y → (Real.exp y)⁻¹ ≤ 2 * (1 + y ^ 2)⁻¹` using `fun y hy => by`. Establish `h1` using `Real.quadratic_le_exp_of_nonneg hy`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by positivity), inv_mul_le_iff₀ (Real.exp_pos y)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hle : ∀ x : ℝ, ENNReal.ofReal (min ((expPos x : {r : ℝ // 0 < r}) : ℝ) ((expPos x : {r : ℝ // 0 < r}) : ℝ)⁻¹) ≤ ENNReal.ofReal (2 * (1 + x ^ 2)⁻¹)`. Introduce `x`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Simplify using `only [coe_expPos]`.
+
+Break down `le_total 0 x with hx | hx` into its components or cases. Conclude with `(min_le_right _ _).trans (key x hx)`. Use `(min_le_left _ _).trans ?_` and prove the remaining obligations. Use `key (-x) (by linarith)` as an intermediate fact. Rewrite `this` using `[Real.exp_neg, inv_inv, neg_sq]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_min_lt_top :
     ∫⁻ t, ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹) ∂posRealMeasure < ⊤ := by
   have hmeas : Measurable fun t : {r : ℝ // 0 < r} => ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹) :=
@@ -232,6 +310,15 @@ theorem lintegral_min_lt_top :
   calc _ ≤ ∫⁻ x, ENNReal.ofReal (2 * (1 + x ^ 2)⁻¹) := lintegral_mono hle
     _ < ⊤ := (integrable_inv_one_add_sq.const_mul 2).lintegral_lt_top
 
+/- English proof (translation)
+Use `set mE := normOneMeasure F (normOneFundamentalDomain F)`. Use `set I := ∫⁻ t, ENNReal.ofReal (min (t : ℝ) (t : ℝ)⁻¹) ∂posRealMeasure`. Establish `hmE : mE ≠ ⊤` using `(normOneMeasure_normOneFundamentalDomain_lt_top F).ne`. Establish `hI : I ≠ ⊤` using `lintegral_min_lt_top.ne`. Establish `key : ‖Eis ω Ψ h‖ₑ ≤ ENNReal.ofReal K * mE * I`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun t => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, ← ENNReal.ofReal_mul hK, ← setLIntegral_const]`. Use `setLIntegral_mono measurable_const fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hb t u hu)`. Use `_ = ENNReal.ofReal K * mE * I := lintegral_const_mul' _ _ (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hmE)`. Establish `hfin : ENNReal.ofReal K * mE * I ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hmE) hI`. Establish `h2` using `ENNReal.toReal_mono hfin key`. Rewrite `h2` using `[← ofReal_norm, ENNReal.toReal_ofReal (norm_nonneg _), ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal hK]`.
+
+Combine the linear relations using `[h2]`.
+-/
 theorem norm_Eis_le (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (h : GA F 2) (K : ℝ) (hK : 0 ≤ K)
     (hb : ∀ t : {r : ℝ // 0 < r}, ∀ u ∈ normOneFundamentalDomain F,
       ‖eisInt ω Ψ h t u‖ ≤ K * min (t : ℝ) (t : ℝ)⁻¹) :
@@ -261,6 +348,17 @@ theorem norm_Eis_le (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (h : GA F 2) 
 
 open Classical in
 
+/- English proof (translation)
+Unfold `Phi`. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`. Simplify using the standard rewrite rules.
+
+It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Introduce `w`. Simplify using `only`. Establish `hd : (0 : ℤ) ≤ dd w` using `by unfold dd; exact Int.natCast_nonneg _`.
+
+Use `Fin.forall_fin_two.2 ⟨(h1 w).1.trans (WithZero.exp_le_exp.2 (by omega)), ?_⟩` and prove the remaining obligations. Establish `hy` using `(h1 w).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_add_cancel]`. Use `_ ≤ max (Valued.v (pLoc F w (pFin F (v 1)) - 1)) (Valued.v (1 : w.adicCompletion F)) := Valuation.map_add _ _ _`.
+
+Use `_ ≤ WithZero.exp ((c w : ℤ) + dd w) := by`. Rewrite using `[map_one]`. Use `max_le (hy.trans (WithZero.exp_le_exp.2 (by omega))) ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem norm_Phi_le (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : Fin 2 → Ad F) :
     ‖Phi c v‖ ≤ ‖arch (UpperTheory.V.TR.pInf F (v 0)) (UpperTheory.V.TR.pInf F (v 1))‖ *
       (if boxP (fun w => (c w : ℤ) + dd w) v then 1 else 0) := by
@@ -290,6 +388,11 @@ theorem norm_Phi_le (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : Fin 2 → Ad F
 
 open Classical in
 
+/- English proof (translation)
+Unfold `PhiH`. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `split_ifs with h1 h2 h2`. Conclude with `(Circle.norm_coe _).le`.
+
+Conclude with `absurd (fun w => Fin.forall_fin_two.2 ⟨(h1 w).1, (h1 w).2⟩) h2`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem norm_PhiH_le (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : Fin 2 → Ad F) :
     ‖PhiH c v‖ ≤ ‖arch (UpperTheory.V.TR.pInf F (v 0)) (UpperTheory.V.TR.pInf F (v 1))‖ *
       (if boxP (fun w => (c w : ℤ) + dd w) v then 1 else 0) := by

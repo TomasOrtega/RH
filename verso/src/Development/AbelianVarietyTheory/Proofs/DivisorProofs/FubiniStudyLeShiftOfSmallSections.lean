@@ -11,11 +11,17 @@ namespace GlobalTheory.HSNef.FsTop
 
 variable {X : Scheme.{0}} [IsIntegral X]
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `ha`. Take `⟨v, rfl⟩` from `hb`. Conclude with `⟨u * v, map_mul _ u v⟩`.
+-/
 theorem regAt_mul' {x : X} {a b : X.functionField} (ha : RegAt x a) (hb : RegAt x b) : RegAt x (a * b) := by
   obtain ⟨u, rfl⟩ := ha
   obtain ⟨v, rfl⟩ := hb
   exact ⟨u * v, map_mul _ u v⟩
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `ha`. Use `⟨(hu.unit⁻¹ : (X.presheaf.stalk x)ˣ), ?_⟩` and prove the remaining obligations. Use `(eq_inv_of_mul_eq_one_left ?_)` and prove the remaining obligations. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem regAt_inv_of_unitAt {x : X} {a : X.functionField} (ha : UnitAt x a) : RegAt x a⁻¹ := by
   obtain ⟨u, hu, rfl⟩ := ha
   refine ⟨(hu.unit⁻¹ : (X.presheaf.stalk x)ˣ), ?_⟩
@@ -27,6 +33,31 @@ end GlobalTheory.HSNef.FsTop
 
 open GlobalTheory.HSNef.FsTop in
 
+/- English proof (translation)
+Introduce `k _ X _ p M B J _ f w hM hB`. Take `⟨ρ, hρ, hreg, hφ⟩` from `hM`. Take `⟨β, hβ, hbreg, hbnorm⟩` from `hB`. Establish `key : ∀ (x : X) (c : B.B.ι) (d : M.B.ι), x ∈ B.B.U c → x ∈ M.B.U d → RegAt x ((β c : X.functionField) / (ρ d : X.functionField))`. Introduce `x c d hc hd`.
+
+Take `⟨l, hl⟩` from `(hreg x d hd).2`. Establish `hfl : f l ≠ 0` using `fun h => hl.ne_zero (by rw [h, zero_mul])`. Establish `e : (β c : X.functionField) / (ρ d) = (f l * β c) * (f l * ρ d)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `regAt_mul' (hbreg x c hc l) (regAt_inv_of_unitAt hl)`. Use `(GlobalTheory.T.hermLBLeBySmallSection_iff_localQuotients k X p _ M).2 ⟨β, ρ, hβ, hρ, fun x i j hi hj => key x i j hi hj, ?_⟩` and prove the remaining obligations. Introduce `σ y i j hi hj`. Establish `hxi : under y ∈ B.B.U i` using `mem_ptsIn.1 hi`. Establish `hxj : under y ∈ M.B.U j` using `mem_ptsIn.1 hj`.
+
+Establish `hq` using `key _ i j hxi hxj`. Take `⟨l₀, hl₀⟩` from `(hreg _ j hxj).2`. Use `set q : X.functionField := (β i : X.functionField) / (ρ j : X.functionField) with hqdef`. Establish `hval : ∀ l, ratVal (f l * (β i : X.functionField)) y = ratVal q y * ratVal (f l * (ρ j : X.functionField)) y`. Introduce `l`.
+
+Establish `e : f l * (β i : X.functionField) = q * (f l * (ρ j : X.functionField))`. Rewrite using `[hqdef]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ratVal_mul hq ((hreg _ j hxj).1 l)]`. Establish `hφj : (M.φ σ).φ j y = Real.log (∑ l, ‖ratVal (f l * (ρ j : X.functionField)) y‖ ^ 2 * Real.exp (2 * w l))` using `hφ σ y j hj`.
+
+Establish `hφi : ((B.shift (fun _ => Real.log (Fintype.card J) / 2) fun _ => rfl).φ σ).φ i y = (B.φ σ).φ i y + 2 * (Real.log (Fintype.card J) / 2)` using `rfl`. Use `set S := ∑ l, ‖ratVal (f l * (ρ j : X.functionField)) y‖ ^ 2 * Real.exp (2 * w l) with hS`. Use `set φB := (B.φ σ).φ i y`. Use `set Q := ‖ratVal q y‖`. Establish `hn : (1 : ℝ) ≤ Fintype.card J`.
+
+Conclude with `Fintype.card_pos_iff.2 ⟨l₀⟩` after adjusting the coercions. Establish `hSpos : 0 < S`. Establish `h0 : 0 < ‖ratVal (f l₀ * (ρ j : X.functionField)) y‖ ^ 2 * Real.exp (2 * w l₀)` using `mul_pos (pow_pos (norm_pos_iff.2 (ratVal_ne_zero hl₀)) 2) (Real.exp_pos _)`. Conclude with `lt_of_lt_of_le h0 (Finset.single_le_sum (f := fun l => ‖ratVal (f l * (ρ j : X.functionField)) y‖ ^ 2 * Real.exp (2 * w l)) (fun l _ => mul_nonneg (sq_nonneg _) (Real.exp_pos _).le) (Finset.mem_univ l₀))`. Establish `hterm : ∀ l, Q ^ 2 * (‖ratVal (f l * (ρ j : X.functionField)) y‖ ^ 2 * Real.exp (2 * w l)) ≤ Real.exp φB`.
+
+Introduce `l`. Establish `h1` using `hbnorm σ y i hi l`. Rewrite `h1` using `[hval l, norm_mul]`. Establish `h2 : Q * ‖ratVal (f l * (ρ j : X.functionField)) y‖ ≤ Real.exp (-w l) * Real.exp (φB / 2)`. Use `mul_le_mul_of_nonneg_right h1 (Real.exp_pos (φB / 2)).le` as an intermediate fact.
+
+Rewrite `this` using `[mul_assoc, ← Real.exp_add, show -φB / 2 + φB / 2 = 0 by ring, Real.exp_zero, mul_one]`. Then use the resulting hypothesis. Establish `h3` using `pow_le_pow_left₀ (mul_nonneg (norm_nonneg _) (norm_nonneg _)) h2 2`. Establish `e1 : (Real.exp (-w l) * Real.exp (φB / 2)) ^ 2 * Real.exp (2 * w l) = Real.exp φB`. Rewrite using `[mul_pow, ← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : Q ^ 2 * S ≤ Fintype.card J * Real.exp φB`. Rewrite using `[hS, Finset.mul_sum]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hφi, hφj]`. Establish `hE : Real.exp (-(φB + 2 * (Real.log (Fintype.card J) / 2) - Real.log S) / 2) ^ 2 = S / (Fintype.card J * Real.exp φB)`. Rewrite using `[← Real.exp_nat_mul, show ((2 : ℕ) : ℝ) * (-(φB + 2 * (Real.log (Fintype.card J) / 2) - Real.log S) / 2) = Real.log S - (Real.log (Fintype.card J) + φB) by push_cast; ring, Real.exp_sub, Real.exp_add, Real.exp_log hSpos, Real.exp_log (by linarith)]`. Establish `hpos : 0 ≤ Q * Real.exp (-(φB + 2 * (Real.log (Fintype.card J) / 2) - Real.log S) / 2)` using `mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`.
+
+Use `(pow_le_one_iff_of_nonneg hpos two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, hE, ← mul_div_assoc, div_le_one (by positivity)]`. Conclude with `hsum`.
+-/
 theorem GlobalTheory.HSNef.le_shift_of_isFS : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), ∀ (M B : HermLB p) (J : Type) [Fintype J] (f : J → X.functionField) (w : J → ℝ), IsFS M f w → SmallFam B f w → Le M (B.shift (fun _ => Real.log (Fintype.card J) / 2) fun _ => rfl) := by
   intro k _ X _ p M B J _ f w hM hB
   obtain ⟨ρ, hρ, hreg, hφ⟩ := hM

@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover | exact GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover | (intros; apply GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isQProjOver_target_galoisCover_noetherian : ∀ (K : Type) [CommRing K] [IsNoetherianRing K] (X Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp K) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)), IsGaloisCover Ga ρ π → IsSeparated sY → LocallyOfFiniteType sY → IsQProjOver (π ≫ sY) → IsQProjOver sY := by
   first | exact @GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover | exact GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover | (intros; apply GlobalTheory.GaloisQuotientRing.isQProjOver_of_isGaloisCover <;> assumption)

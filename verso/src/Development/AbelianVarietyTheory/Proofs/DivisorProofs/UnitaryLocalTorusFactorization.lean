@@ -25,6 +25,11 @@ def blkT {d₁ : ℕ} (σ : E →ₐ[F] E) (t : (AE F E)ˣ) (g : Matrix (Fin d�
     Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E) :=
   Matrix.fromBlocks g 0 0 (dg σ t)
 
+/- English proof (translation)
+Rewrite using `[dg, dg, dg, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using the standard rewrite rules.
+
+Simplify using `[← map_mul, mul_comm]`.
+-/
 lemma dg_mul (σ : E →ₐ[F] E) (t t' : (AE F E)ˣ) : dg σ t * dg σ t' = dg σ (t * t') := by
   rw [dg, dg, dg, Matrix.diagonal_mul_diagonal]
   congr 1
@@ -32,15 +37,24 @@ lemma dg_mul (σ : E →ₐ[F] E) (t t' : (AE F E)ˣ) : dg σ t * dg σ t' = dg 
   · simp
   · simp [← map_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[dg, ← Matrix.diagonal_one]`. Use `congr 1`. Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+-/
 lemma dg_one (σ : E →ₐ[F] E) : dg σ (1 : (AE F E)ˣ) = 1 := by
   rw [dg, ← Matrix.diagonal_one]
   congr 1
   funext i; fin_cases i <;> simp
 
+/- English proof (translation)
+Simplify using `[blkT, Matrix.fromBlocks_multiply, dg_mul]`.
+-/
 lemma blkT_mul {d₁ : ℕ} (σ : E →ₐ[F] E) (t t' : (AE F E)ˣ) (g g' : Matrix (Fin d₁) (Fin d₁) (AE F E)) :
     blkT σ t g * blkT σ t' g' = blkT σ (t * t') (g * g') := by
   simp [blkT, Matrix.fromBlocks_multiply, dg_mul]
 
+/- English proof (translation)
+Rewrite using `[blkT, dg_one, Matrix.fromBlocks_one]`.
+-/
 lemma blkT_one {d₁ : ℕ} (σ : E →ₐ[F] E) : blkT σ (1 : (AE F E)ˣ) (1 : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1 := by
   rw [blkT, dg_one, Matrix.fromBlocks_one]
 
@@ -51,14 +65,23 @@ def leviT {d d₁ : ℕ} (σ : E →ₐ[F] E) (hd : d = d₁ + 2) (H' : Plane E 
 section
 variable {d d₁ : ℕ} {hd : d = d₁ + 2} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Simplify using `only [leviT, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (coframe hd H')), T_S hu, Matrix.one_mul, ← Matrix.mul_assoc (blkT σ t g), blkT_mul]`.
+-/
 lemma leviT_mul (σ : E →ₐ[F] E) (hu : IsUnit (sq hd H')) (t t' : (AE F E)ˣ) (g g' : Matrix (Fin d₁) (Fin d₁) (AE F E)) :
     leviT σ hd H' t g * leviT σ hd H' t' g' = leviT σ hd H' (t * t') (g * g') := by
   simp only [leviT, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (incM F (coframe hd H')), T_S hu, Matrix.one_mul, ← Matrix.mul_assoc (blkT σ t g), blkT_mul]
 
+/- English proof (translation)
+Rewrite using `[leviT, blkT_one, Matrix.mul_one, S_T hu]`.
+-/
 lemma leviT_one (σ : E →ₐ[F] E) (hu : IsUnit (sq hd H')) : leviT σ hd H' 1 (1 : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1 := by
   rw [leviT, blkT_one, Matrix.mul_one, S_T hu]
 
+/- English proof (translation)
+Rewrite using `[leviT, Matrix.mul_assoc, T_S hu, Matrix.mul_one]`.
+-/
 lemma leviT_frame (σ : E →ₐ[F] E) (hu : IsUnit (sq hd H')) (t : (AE F E)ˣ) (g : Matrix (Fin d₁) (Fin d₁) (AE F E)) :
     leviT σ hd H' t g * incM F (frame H') = incM F (frame H') * blkT σ t g := by
   rw [leviT, Matrix.mul_assoc, T_S hu, Matrix.mul_one]
@@ -73,6 +96,9 @@ open GlobalTheory.PlaneLeviExt
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.AdelicPlaneLevi.cA_cA σ hσ`. Establish `e1 : t.1 * (t⁻¹).1 = 1` using `t.mul_inv`. Establish `e2 : cA σ (t⁻¹).1 * cA σ t.1 = 1` using `by rw [← map_mul, t.inv_mul, map_one]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[dg, hyp, incM, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, hc, e1, e2]`.
+-/
 lemma dg_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (t : (AE F E)ˣ) :
     (dg σ t)ᵀ * incM F (hyp (E := E)) * (dg σ t).map (cA σ) = incM F (hyp (E := E)) := by
   have hc := GlobalTheory.AdelicPlaneLevi.cA_cA σ hσ
@@ -83,6 +109,15 @@ lemma dg_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (t : (AE F E)
 
 variable {d d₁ : ℕ} {hd : d = d₁ + 2} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Establish `hmap : ∀ {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)), (X * Y).map (cA σ) = X.map (cA σ) * Y.map (cA σ)` using `fun X Y => Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `hG : (incM F (frame H'))ᵀ * incM F W.J * (incM F (frame H')).map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Rewrite using `[← gram_frame σ hσ B hW hA, incM_mul, incM_mul, incM_transpose, cA_incM]`. Establish `hJ : incM F W.J = (incM F (coframe hd H'))ᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * (incM F (coframe hd H')).map (cA σ)`. Establish `h1 : (incM F (frame H') * incM F (coframe hd H'))ᵀ * incM F W.J * (incM F (frame H') * incM F (coframe hd H')).map (cA σ) = incM F W.J`.
+
+Rewrite using `[S_T hu, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, hmap]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hG]`.
+
+Establish `hB : (blkT σ t g)ᵀ * incM F (Matrix.fromBlocks W₁.J 0 0 hyp) * (blkT σ t g).map (cA σ) = incM F (Matrix.fromBlocks W₁.J 0 0 hyp)`. Establish `e1 : incM F (Matrix.fromBlocks W₁.J 0 0 hyp) = Matrix.fromBlocks (incM F W₁.J) 0 0 (incM F hyp)`. Simplify using `[incM, Matrix.fromBlocks_map]`. Establish `e2 : (blkT σ t g).map (cA σ) = Matrix.fromBlocks (g.map (cA σ)) 0 0 ((dg σ t).map (cA σ))`. Rewrite using `[blkT, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`.
+
+Rewrite using `[e1, e2, blkT, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hg, dg_unitary σ hσ t]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [leviT, Matrix.transpose_mul, hmap, Matrix.mul_assoc]`. Use `_ = incM F W.J := by rw [hG, hB, ← hJ]`.
+-/
 lemma leviT_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {W : Spc F E d}
     {W₁ : Spc F E d₁} {i₀ i₁ r' s' : ℕ} (hW : W.IsSkew σ B r' s') (hA : H'.IsAdapted σ B W W₁ i₀ i₁)
     (hu : IsUnit (sq hd H')) (t : (AE F E)ˣ) (g : Matrix (Fin d₁) (Fin d₁) (AE F E))
@@ -118,6 +153,13 @@ lemma leviT_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base 
         simp only [leviT, Matrix.transpose_mul, hmap, Matrix.mul_assoc]
     _ = incM F W.J := by rw [hG, hB, ← hJ]
 
+/- English proof (translation)
+Rewrite `h` using `[incM_frame, Matrix.mul_fromCols, blkT, Matrix.fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add] at h`. Take `⟨h1, h2⟩` from `Matrix.fromCols_inj.eq_iff.mp h`. Use `⟨?_, ?_, h1⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrFun h2 i) 0` as an intermediate fact. Simplify using `only [Matrix.mul_diagonal, dg] at this`. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, twoCols, incM, incV, mul_comm]`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun h2 i) 1` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_diagonal, dg] at this`. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, twoCols, incM, incV, mul_comm]`.
+-/
 lemma leviT_cols (σ : E →ₐ[F] E) (m : Matrix (Fin d) (Fin d) (AE F E)) (t : (AE F E)ˣ) (g : Matrix (Fin d₁) (Fin d₁) (AE F E))
     (h : m * incM F (frame H') = incM F (frame H') * blkT σ t g) :
     m *ᵥ incV F H'.x = t.1 • incV F H'.x ∧ m *ᵥ incV F H'.y = cA σ (t⁻¹).1 • incV F H'.y ∧
@@ -143,12 +185,24 @@ open GlobalTheory.PlaneLeviExt
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hX u hu, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 lemma at_mul {R : Type} [Zero R] (ev : AF F → R) {a b c : Type} [Fintype b] [Fintype c]
     (S : Matrix a b (AE F E)) (X : Matrix b c (AE F E)) (T : Matrix c a (AE F E)) (hX : At ev X) :
     At ev (S * X * T) := by
   intro u hu
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, hX u hu, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h1 : u • (t.1 - 1) = 0` using `ht u hu`. Establish `h2 : u • (cA σ (t⁻¹).1 - 1) = 0`. Establish `e : cA σ (t⁻¹).1 - 1 = cA σ (-((t⁻¹).1 * (t.1 - 1)))`. Rewrite using `[map_neg, mul_sub, t.inv_mul, mul_one, map_sub, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← map_smul, smul_neg, ← mul_smul_comm, h1, mul_zero, neg_zero, map_zero]`. Establish `h3 : ∀ k l, u • (g - 1) k l = 0` using `fun k l => by`. Use `congrFun (congrFun (hg u hu) k) l` as an intermediate fact. Simplify using `using this`.
+
+Use extensionality with `(k | k) (l | l)`. Simplify `h3 k l` using `[blkT, Matrix.one_apply]`. Simplify using `[blkT, Matrix.one_apply]`. Simplify using `[blkT, Matrix.one_apply]`. Apply the tactic sequence `fin_cases k <;> fin_cases l`.
+
+Simplify `h1` using `[blkT, dg, Matrix.one_apply]`. Simplify using `[blkT, dg, Matrix.one_apply]`. Simplify using `[blkT, dg, Matrix.one_apply]`. Simplify `h2` using `[blkT, dg, Matrix.one_apply]`.
+-/
 lemma at_blkT {R : Type} [Zero R] (ev : AF F → R) (σ : E →ₐ[F] E) {d₁ : ℕ} (t : (AE F E)ˣ)
     (g : Matrix (Fin d₁) (Fin d₁) (AE F E)) (ht : At ev (t.1 - 1)) (hg : At ev (g - 1)) :
     At ev (blkT σ t g - 1) := by
@@ -171,6 +225,15 @@ lemma at_blkT {R : Type} [Zero R] (ev : AF F → R) (σ : E →ₐ[F] E) {d₁ :
     · simp [blkT, dg, Matrix.one_apply]
     · simpa [blkT, dg, Matrix.one_apply] using h2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hA v t ht h₁ hh₁`. Establish `hσ : ∀ z, σ (σ z) = z` using `GlobalTheory.AdelicPlaneLevi.sigma_invol hB.cm`. Establish `hu` using `isUnit_sq σ hσ B hW hW₁ hA`. Establish `hinv : mat h₁ * mat h₁⁻¹ = 1` using `by show ((h₁.1 * (h₁⁻¹).1 : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel]`.
+
+Both sides reduce to the same expression. Establish `hinv' : mat h₁⁻¹ * mat h₁ = 1` using `by show (((h₁⁻¹).1 * h₁.1 : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Set `mU : GL (Fin d) (AE F E)` to `⟨leviT σ hA.rank H' t (mat h₁), leviT σ hA.rank H' t⁻¹ (mat h₁⁻¹), by rw [leviT_mul σ hu, hinv, mul_inv_cancel, leviT_one σ hu], by rw [leviT_mul σ hu, hinv', inv_mul_cancel, leviT_one σ hu]⟩`.
+
+Establish `hmem : mU ∈ UG (cA σ) (incM F W.J)` using `leviT_unitary σ hσ B hW hA hu t (mat h₁) h₁.2`. Use `⟨⟨mU, hmem⟩, leviT_cols σ _ t (mat h₁) (leviT_frame σ hu t (mat h₁)), ?_⟩` and prove the remaining obligations. Use `show At (evFin F v) (leviT σ hA.rank H' t (mat h₁) - 1)`. Establish `e : leviT σ hA.rank H' t (mat h₁) - 1 = incM F (frame H') * (blkT σ t (mat h₁) - 1) * incM F (coframe hA.rank H')`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, S_T hu]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `at_mul _ _ _ _ (at_blkT _ σ t _ ht hh₁)`.
+-/
 theorem exists_isLevi_at : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ),
     B.IsGood σ → W.IsSkew σ B r s → W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ →

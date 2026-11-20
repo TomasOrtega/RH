@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.ConjCMPoint
 
+/- English proof (translation)
+Introduce `hPC hDR hDC K _ _ d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E _ _ _ _ I _ φ hcm hφ c y hc 𝔠 T`. Take `⟨X', p, hp⟩` from `(GlobalTheory.RealMult.Obj.pullback_facts (F := FR E) (𝔠 := 𝔠)).1 T.X (spMap (g : ℂ →+* ℂ))`. Take `⟨u', hlat, htan, htor⟩` from `GlobalTheory.T.torsion_transport_cm_periods hPC hDR hDC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E I φ hcm hφ c y hc 𝔠 T X' p hp`. Take `⟨u'', h', hex, ⟨χ, hah⟩, hh⟩` from `GlobalTheory.T.torsion_transport_cm_conjugation hPC hDR hDC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E I φ hcm hφ c y hc 𝔠 T X' p hp u' hlat htan htor`. Establish `htan'' : ∀ (w : Fin (Module.finrank ℚ (FR E)) → ℂ) (v : epsR ℂ ⟶ T.X.A) (v' : epsR ℂ ⟶ X'.A), v'.left ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left → T.U.u.IsDiff w v → u''.IsDiff (fun j ↦ g (Ω₀ * w j) / Ω₁) v'`.
+
+Introduce `w v v' h1 h2`. Establish `h3` using `htan w v v' h1 h2`. Unfold `HolUnif.IsDiff at h3 ⊢`. Rewrite using `[hex]`. Conclude with `h3`.
+
+Establish `hB` using `GlobalTheory.T.period_transport_galois_conjugate T.X.A X'.A (T.X.diag T.U.c) (X'.diag T.U.c) _ T.U.u u'' g p hp.grp Ω₀ Ω₁ hT.1 hT.2.1 htan''`. Set `U' : Unif (fun i ↦ (g : ℂ →+* ℂ).comp (φ i)) (lattice c (y * (upIdele K E t)⁻¹)) 0 X'` to `{ e := T.U.e, c := T.U.c, pos := T.U.pos, u := u'' lat := fun w ↦ by rw [← hlat w, ← u''.ker, ← u'.ker, hex] act := fun a w ↦ by haveI := T.X.rm.hom a haveI := X'.rm.hom a`. Conclude with `(hB (fun j ↦ φ (T.U.e j) ((a : FR E) : E)) (T.X.rm.act a) (X'.rm.act a) (hp.act a)).1 (T.U.act a) w`. Use `h := h'`. Use `ah := ⟨χ, hah⟩ }`.
+
+Use `⟨X', p, U', hp, rfl, rfl, hh, htan'', ?_⟩` and prove the remaining obligations. Introduce `a α _ α' _ hαα' H w`. Conclude with `(hB (fun j ↦ φ (T.U.e j) a) α α' hαα').2 H w`.
+-/
 theorem conj_unif : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), Ω₀ ^ 12 = latDisc Λ₀ → TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),

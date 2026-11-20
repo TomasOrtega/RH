@@ -18,6 +18,9 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
 variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (π : BanachRep G E)
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | X :: L => by rw [listOp_cons, listOp_cons, listOp_cons, listOp_add hv hw L, h.derivOp_add π (h.isSmoothVector_listOp π hv L) (h.isSmoothVector_listOp π hw L)]`.
+-/
 theorem listOp_add {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector π w) :
     ∀ L : List 𝔤, h.listOp π L (v + w) = h.listOp π L v + h.listOp π L w
   | [] => rfl
@@ -25,33 +28,54 @@ theorem listOp_add {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector
     rw [listOp_cons, listOp_cons, listOp_cons, listOp_add hv hw L,
       h.derivOp_add π (h.isSmoothVector_listOp π hv L) (h.isSmoothVector_listOp π hw L)]
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | X :: L => by rw [listOp_cons, listOp_cons, listOp_smul hv c L, h.derivOp_smul π (h.isSmoothVector_listOp π hv L)]`.
+-/
 theorem listOp_smul {v : E} (hv : h.IsSmoothVector π v) (c : ℂ) :
     ∀ L : List 𝔤, h.listOp π L (c • v) = c • h.listOp π L v
   | [] => rfl
   | X :: L => by
     rw [listOp_cons, listOp_cons, listOp_smul hv c L, h.derivOp_smul π (h.isSmoothVector_listOp π hv L)]
 
+/- English proof (translation)
+Use `h.listOp_smul π (h.isSmoothVector_zero π) 0 L` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+-/
 theorem listOp_zero (L : List 𝔤) : h.listOp π L (0 : E) = 0 := by
   have := h.listOp_smul π (h.isSmoothVector_zero π) 0 L
   rwa [zero_smul, zero_smul] at this
 
 def wordSum (L : List (ℂ × List 𝔤)) (v : E) : E := (L.map fun p => p.1 • h.listOp π p.2 v).sum
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wordSum_nil (v : E) : h.wordSum π [] v = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wordSum_cons (p : ℂ × List 𝔤) (L : List (ℂ × List 𝔤)) (v : E) :
     h.wordSum π (p :: L) v = p.1 • h.listOp π p.2 v + h.wordSum π L v := rfl
 
+/- English proof (translation)
+Simplify using `[wordSum, List.map_append, List.sum_append]`.
+-/
 theorem wordSum_append (L₁ L₂ : List (ℂ × List 𝔤)) (v : E) :
     h.wordSum π (L₁ ++ L₂) v = h.wordSum π L₁ v + h.wordSum π L₂ v := by
   simp [wordSum, List.map_append, List.sum_append]
 
+/- English proof (translation)
+The claim follows from `| [] => h.isSmoothVector_zero π | p :: L => (h.smoothVectors π).add_mem ((h.smoothVectors π).smul_mem p.1 (h.isSmoothVector_listOp π hv p.2)) (isSmoothVector_wordSum hv L)`.
+-/
 theorem isSmoothVector_wordSum {v : E} (hv : h.IsSmoothVector π v) :
     ∀ L : List (ℂ × List 𝔤), h.IsSmoothVector π (h.wordSum π L v)
   | [] => h.isSmoothVector_zero π
   | p :: L => (h.smoothVectors π).add_mem ((h.smoothVectors π).smul_mem p.1
       (h.isSmoothVector_listOp π hv p.2)) (isSmoothVector_wordSum hv L)
 
+/- English proof (translation)
+The claim follows from `| [] => h.listOp_zero π l | p :: L => by rw [wordSum_cons, h.listOp_add π ((h.smoothVectors π).smul_mem p.1 (h.isSmoothVector_listOp π hv p.2)) (h.isSmoothVector_wordSum π hv L), h.listOp_smul π (h.isSmoothVector_listOp π hv p.2), ← listOp_append, listOp_wordSum hv l L, List.map_ …`.
+-/
 theorem listOp_wordSum {v : E} (hv : h.IsSmoothVector π v) (l : List 𝔤) :
     ∀ L : List (ℂ × List 𝔤),
       h.listOp π l (h.wordSum π L v) = h.wordSum π (L.map fun p => (p.1, l ++ p.2)) v
@@ -61,6 +85,9 @@ theorem listOp_wordSum {v : E} (hv : h.IsSmoothVector π v) (l : List 𝔤) :
       (h.isSmoothVector_wordSum π hv L), h.listOp_smul π (h.isSmoothVector_listOp π hv p.2),
       ← listOp_append, listOp_wordSum hv l L, List.map_cons, wordSum_cons]
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | p :: L₁ => by rw [wordSum_cons, List.flatMap_cons, wordSum_append, wordSum_wordSum hv L₂ L₁, h.listOp_wordSum π hv p.2 L₂] congr 1 clear L₁ induction L₂ with | nil => simp | cons q L ih => rw [List.map_cons, List.map_cons, wordSum_cons, wordSum_cons, smul_add, ih, s …`.
+-/
 theorem wordSum_wordSum {v : E} (hv : h.IsSmoothVector π v) (L₂ : List (ℂ × List 𝔤)) :
     ∀ L₁ : List (ℂ × List 𝔤), h.wordSum π L₁ (h.wordSum π L₂ v) =
       h.wordSum π (L₁.flatMap fun p => L₂.map fun q => (p.1 * q.1, p.2 ++ q.2)) v
@@ -75,6 +102,17 @@ theorem wordSum_wordSum {v : E} (hv : h.IsSmoothVector π v) (L₂ : List (ℂ �
     | cons q L ih =>
       rw [List.map_cons, List.map_cons, wordSum_cons, wordSum_cons, smul_add, ih, smul_smul]
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction with`. Consider the case `algebraMap r`. Use `⟨[((r : ℂ), [])], fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply]`.
+
+Rewrite using `[wordSum_cons, wordSum_nil, add_zero, listOp_nil, Submodule.coe_smul_of_tower]`. Conclude with `(Complex.coe_smul r (v : E)).symm`. Consider the case `ι x`. Use `⟨[(1, [h.ofLie x])], fun v => ?_⟩` and prove the remaining obligations. Use `show (h.uAction π (UniversalEnvelopingAlgebra.ι ℝ x) v : E) = _`.
+
+Rewrite using `[uAction_ι, coe_derivEnd, wordSum_cons, wordSum_nil, add_zero, one_smul, listOp_cons, listOp_nil]`. Consider the case `mul a b iha ihb`. Take `⟨La, ha⟩` from `iha`. Take `⟨Lb, hb⟩` from `ihb`. Use `⟨La.flatMap fun p => Lb.map fun q => (p.1 * q.1, p.2 ++ q.2), fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, Module.End.mul_apply, ha, hb, h.wordSum_wordSum π v.2]`. Consider the case `add a b iha ihb`. Take `⟨La, ha⟩` from `iha`. Take `⟨Lb, hb⟩` from `ihb`. Use `⟨La ++ Lb, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_add, LinearMap.add_apply, Submodule.coe_add, ha, hb, wordSum_append]`.
+-/
 theorem exists_wordSum (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) :
     ∃ L : List (ℂ × List 𝔤), ∀ v : h.smoothVectors π, (h.uAction π u v : E) = h.wordSum π L v := by
   obtain ⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u :=
@@ -102,6 +140,9 @@ theorem exists_wordSum (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) :
 
 variable [CompleteSpace E]
 
+/- English proof (translation)
+The claim follows from `| [] => hasDerivAt_const _ _ | p :: L => by have h1 : HasDerivAt (fun s : ℝ => h.listOp π p.2 (π (h.expG (s • X)) w)) (h.listOp π p.2 (h.derivOp π X w)) 0 := by have e : (fun s : ℝ => h.listOp π p.2 (π (h.expG (s • X)) w)) = fun s => h.wordOp π (fun i : Fin p.2.length => p.2[i]) …`.
+-/
 theorem hasDerivAt_wordSum_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {w : E} (hw : h.IsSmoothVector π w) (X : 𝔤) :
     ∀ L : List (ℂ × List 𝔤), HasDerivAt (fun s : ℝ => h.wordSum π L (π (h.expG (s • X)) w))
       (h.wordSum π L (h.derivOp π X w)) 0
@@ -116,6 +157,19 @@ theorem hasDerivAt_wordSum_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {w : E} (hw : h.
       exact h.hasDerivAt_wordOp_expG π hπ hw X _
     exact (h1.const_smul p.1).add (hasDerivAt_wordSum_expG hπ hw X L)
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `h.exists_wordSum π z`. Establish `hX : h.derivEnd π X = h.uAction π (UniversalEnvelopingAlgebra.ι ℝ (h.toLie X))`. Rewrite using `[uAction_ι, ofLie_toLie]`. Establish `hc : UniversalEnvelopingAlgebra.ι ℝ (h.toLie X) * z = z * UniversalEnvelopingAlgebra.ι ℝ (h.toLie X)` using `Subalgebra.mem_center_iff.1 hz _`. Establish `hzero : ∀ w : h.smoothVectors π, HasDerivAt (fun s : ℝ => π (h.expG (s • (-X))) (h.wordSum π L (π (h.expG (s • X)) (w : E)))) 0 0`.
+
+Introduce `w`. Establish `h1` using `h.hasDerivAt_expG_apply π hπ (w := fun s => h.wordSum π L (π (h.expG (s • X)) (w : E))) (h.hasDerivAt_wordSum_expG π hπ w.2 X L) (by simpa using h.isSmoothVector_wordSum π w.2 L) (-X)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [zero_smul, h.expG_zero, BanachRep.map_one_apply, h.derivOp_neg_left]`. Rewrite using `[show h.derivOp π X (w : E) = ((h.derivEnd π X w : h.smoothVectors π) : E) from (coe_derivEnd _ _ _ _).symm, ← hL, ← hL, show h.derivOp π X ((h.uAction π z w : h.smoothVectors π) : E) = ((h.derivEnd π X (h.uAction π z w) : h.smoothVectors π) : E) from (coe_derivEnd _ _ _ _).symm, …`.
+
+Use `set c : ℝ → E := fun t => π (h.expG (t • (-X))) (h.wordSum π L (π (h.expG (t • X)) v)) with hcdef`. Establish `hderiv : ∀ t, HasDerivAt c 0 t`. Introduce `t`. Use `set w : h.smoothVectors π := ⟨π (h.expG (t • X)) v, h.isSmoothVector_map π hv _⟩`. Establish `h2` using `((π (h.expG (t • (-X)))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hzero w)`.
+
+Simplify using `only [map_zero] at h2`. Establish `h3 : HasDerivAt (fun s : ℝ => π (h.expG (t • (-X))) (π (h.expG ((s - t) • (-X))) (h.wordSum π L (π (h.expG ((s - t) • X)) (w : E))))) 0 t`. Establish `h2' : HasDerivAt (fun s : ℝ => π (h.expG (t • (-X))) (π (h.expG (s • (-X))) (h.wordSum π L (π (h.expG (s • X)) (w : E))))) 0 (t - t)`. Rewrite using `[sub_self]`. Conclude with `h2`.
+
+Conclude with `h2'.comp_sub_const t t`. Use `h3.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show π (h.expG (s • (-X))) (h.wordSum π L (π (h.expG (s • X)) v)) = _`. Simplify using `only [w]`. Rewrite using `[← BanachRep.map_mul_apply, ← h.expG_add_smul, add_sub_cancel, ← BanachRep.map_mul_apply, ← h.expG_add_smul, sub_add_cancel]`.
+
+Establish `hconst : c 1 = c 0` using `is_const_of_deriv_eq_zero (fun t => (hderiv t).differentiableAt) (fun t => (hderiv t).deriv) 1 0`. Simplify using `only [hcdef, one_smul, zero_smul, h.expG_zero, BanachRep.map_one_apply] at hconst`. Establish `e3` using `congrArg (π (h.expG X)) hconst`. Rewrite `e3` using `[← BanachRep.map_mul_apply, h.expG_neg, mul_inv_cancel, BanachRep.map_one_apply]`. Conclude with `(hL ⟨_, h.isSmoothVector_map π hv _⟩).trans (e3.trans (congrArg _ (hL ⟨v, hv⟩).symm))`.
+-/
 theorem uAction_map_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {z : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra}
     (hz : z ∈ h.centerU) {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
     (h.uAction π z ⟨π (h.expG X) v, h.isSmoothVector_map π hv _⟩ : E) =
@@ -169,6 +223,9 @@ theorem uAction_map_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {z : UniversalEnvelopin
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant]
   [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+The claim follows from `| [] => by simp | p :: L => by have := secondCountableTopology_subgroup_units G have hfc := hf.continuous h have hint1 : Integrable (fun g => f g • (p.1 • h.listOp π p.2 (π g w))) μ := by have hc : Continuous fun g : G => h.listOp π p.2 (π g w) := by have e : (fun g : G => h.list …`.
+-/
 theorem wordSum_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {w : E} (hw : h.IsSmoothVector π w)
     {f : G → ℂ} (hf : h.IsTestFunction f) :
     ∀ L : List (ℂ × List 𝔤),
@@ -205,6 +262,13 @@ theorem wordSum_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {w : E} (hw : h.IsSmo
       rw [smul_comm]
     · simpa only [smul_comm (f _) p.1, h.listOp_eq_wordOp π] using hint1
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `h.exists_wordSum π z`. Use `(hL ⟨_, h.isSmoothVector_integrated π μ hf w⟩).trans ?_` and prove the remaining obligations. Use `show h.wordSum π L (π.integrated μ f w) = _`. Rewrite using `[h.wordSum_integrated π μ hπ hw hf L]`. Unfold `BanachRep.integrated`.
+
+Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Distinguish the cases in `hg : f g = 0`. Simplify using `[hg]`. Take `⟨X, rfl⟩` from `hsupp g hg show f _ • h.wordSum π L (π (h.expG X) w) = f _ • π (h.expG X) _`. Use `congr 1`.
+
+Conclude with `(hL ⟨π (h.expG X) w, h.isSmoothVector_map π hw _⟩).symm.trans (h.uAction_map_expG π hπ hz hw X)`.
+-/
 theorem uAction_integrated (hπ : ∀ g, ‖π g‖ ≤ 1) {z : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra}
     (hz : z ∈ h.centerU) {f : G → ℂ} (hf : h.IsTestFunction f)
     (hsupp : ∀ g, f g ≠ 0 → ∃ X : 𝔤, g = h.expG X) {w : E} (hw : h.IsSmoothVector π w) :

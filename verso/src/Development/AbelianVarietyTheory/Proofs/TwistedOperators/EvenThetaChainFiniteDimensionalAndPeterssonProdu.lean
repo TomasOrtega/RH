@@ -32,6 +32,9 @@ namespace GlobalTheory.EvenMetric
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `hP D c hc j _ s hs`. Take `⟨U, hU, hUJ⟩` from `hs.isOpen`. Establish `: FiniteDimensional ℂ (Mult c.θ s.M (s.J : Set (GA D s.V)) 1)` using `GlobalTheory.MultFinite.hcFinite hP hc.inf ⟨U, hU, fun k hk hf => ⟨hUJ k hk hf, rfl⟩⟩`. Conclude with `Module.Finite.map _ _`.
+-/
 theorem finDim : GlobalTheory.Published.HarishChandraFinite → ∀ D : D7, FinDim D := by
   intro hP D c hc j _ s hs
   obtain ⟨U, hU, hUJ⟩ := hs.isOpen
@@ -39,6 +42,27 @@ theorem finDim : GlobalTheory.Published.HarishChandraFinite → ∀ D : D7, FinD
     GlobalTheory.MultFinite.hcFinite hP hc.inf ⟨U, hU, fun k hk hf => ⟨hUJ k hk hf, rfl⟩⟩
   exact Module.Finite.map _ _
 
+/- English proof (translation)
+Introduce `hP D c hc j _ s hs`. Take `⟨ipD, hpure, hhermD, hposD⟩` from `GlobalTheory.ChainOnto.exists_ipD_smT D s.V s.par s.M`. Use `set J : Set (GA D s.V) := (s.J : Set (GA D s.V))`. Use `set χ : GA D s.V → ℂ := 1`. Establish `hS : SchurMult c.θ s.M J χ s.ν s.fd` using `GlobalTheory.MultFinite.schurMult hP s.ν s.fd`.
+
+Take `⟨hI1, hI2⟩` from `GlobalTheory.SchurConst.ipM_posDef D c.θ s.V s.par s.M J χ s.ν s.fd hc.inf hs.haar hs.fund hS (GlobalTheory.GardingVec.sm_ne_bot D s.V s.par s.M)`. Set `T : s.CC c → MMap s.M` to `fun x => PiTensorProduct.lift.symm (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))`. Establish `hT : ∀ x : s.CC c, T x ∈ Mult c.θ s.M J χ` using `fun x => (mem_multT c.θ s.M J χ _).1 x.2`. Establish `hTadd : ∀ x y : s.CC c, T (x + y) = T x + T y` using `fun x y => by`. Simplify using `only [T, Submodule.coe_add, map_add]`.
+
+Establish `hTsmul : ∀ (a : ℂ) (x : s.CC c), T (a • x) = a • T x` using `fun a x => by`. Simplify using `only [T, Submodule.coe_smul, map_smul]`. Establish `hlin : ∀ x y y' : s.CC c, ∀ a : ℂ, ipM s.M s.ν s.fd (T x) (T y + a • T y') = ipM s.M s.ν s.fd (T x) (T y) + a * ipM s.M s.ν s.fd (T x) (T y')` using `fun x y y' a => (hI1 _ (hT x) _ (hT y) _ (hT y') a).1`. Establish `hsym : ∀ x y : s.CC c, ipM s.M s.ν s.fd (T y) (T x) = star (ipM s.M s.ν s.fd (T x) (T y))` using `fun x y => (hI1 _ (hT x) _ (hT y) _ (hT y) 0).2`. Establish `hzero : ∀ x : s.CC c, ipM s.M s.ν s.fd (T x) (T 0) = 0` using `fun x => by`.
+
+Establish `h` using `hlin x 0 0 1`. Rewrite `h` using `[one_smul, one_mul, show T 0 + T 0 = T 0 by simp [T]]`. Take the linear combination `-h`. Establish `hlin' : ∀ x y y' : s.CC c, ∀ a : ℂ, ipM s.M s.ν s.fd (T x) (T (y + a • y')) = ipM s.M s.ν s.fd (T x) (T y) + a * ipM s.M s.ν s.fd (T x) (T y')` using `fun x y y' a => by rw [hTadd, hTsmul]; exact hlin x y y' a`. Set `ip : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun x y => ipM s.M s.ν s.fd (T y) (T x)) (fun x x' y => by simpa using hlin' y x x' 1) (fun a x y => by`.
+
+Establish `h` using `hlin' y 0 x a`. Rewrite `h` using `[zero_add, hzero, zero_add]`. Simplify using `using h)`. Use the proof step `(fun x y y' => by`. Rewrite using `[hsym x (y + y'), hsym x y, hsym x y']`.
+
+Establish `h` using `hlin' x y y' 1`. Rewrite `h` using `[one_mul, one_smul]`. Rewrite using `[h, star_add])`. Use the proof step `(fun a x y => by`. Rewrite using `[hsym x (a • y), hsym x y]`.
+
+Establish `h` using `hlin' x 0 y a`. Rewrite `h` using `[zero_add, hzero, zero_add]`. Rewrite using `[h, star_mul', smul_eq_mul, starRingEnd_apply])`. Establish `hip : ∀ x y, ip x y = ipM s.M s.ν s.fd (T y) (T x)` using `fun _ _ => rfl`. Establish `hpair : ∀ x y : s.CC c, ∀ w w', IntegrableOn (fun g => PiLocalization₂.val x w g * conj (PiLocalization₂.val y w' g)) s.fd s.ν ∧ ∫ g in s.fd, PiLocalization₂.val x w g * conj (PiLocalization₂.val y w' g) ∂s.ν = ip x y * ipD w w'`.
+
+Introduce `x y`. Use `GlobalTheory.ChainMetric.integ_pair (μ := s.ν) (A := s.fd) (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) (y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ipD (ip x y) ?_` and prove the remaining obligations. Introduce `v v'`. Take `⟨hi, he⟩` from `ipM_spec s.M s.ν s.fd (T y) (T x) (hS hc.inf hs.haar hs.fund _ (hT y) _ (hT x)) v' v`. Establish `e : (fun g => (x : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) (PiTensorProduct.tprod ℂ v) g * conj ((y : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) (PiTensorProduct.tprod ℂ v') g)) = fun g => star (T y v' g) * T x v g`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[GlobalTheory.ChainMetric.val_tprod, GlobalTheory.ChainMetric.val_tprod, starRingEnd_apply, mul_comm]`. Rewrite using `[e, hip, hpure]`. Conclude with `⟨hi, he⟩`. Use `⟨ipD, ip, hpure, hhermD, hposD, fun x y => ?_, fun x hx => ?_, fun x y w w' => (hpair x y w w').1, fun x y w w' => (hpair x y w w').2⟩` and prove the remaining obligations.
+
+Rewrite using `[hip, hip, hsym, starRingEnd_apply]`. Rewrite using `[hip]`. Use `hI2 _ (hT x) fun h0 => hx ?_` and prove the remaining obligations. Conclude with `Submodule.coe_eq_zero.1 ((LinearEquiv.map_eq_zero_iff _).1 h0)`.
+-/
 theorem metEx : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetEx D := by
   intro hP D c hc j _ s hs
   obtain ⟨ipD, hpure, hhermD, hposD⟩ := GlobalTheory.ChainOnto.exists_ipD_smT D s.V s.par s.M
@@ -103,6 +127,9 @@ theorem metEx : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetEx D :=
     refine hI2 _ (hT x) fun h0 => hx ?_
     exact Submodule.coe_eq_zero.1 ((LinearEquiv.map_eq_zero_iff _).1 h0)
 
+/- English proof (translation)
+Introduce `h h' D` and use `⟨finDim h D, metEx h' D⟩`.
+-/
 theorem finDim_and_metEx : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, FinDim D ∧ MetEx D :=
   fun h h' D => ⟨finDim h D, metEx h' D⟩
 

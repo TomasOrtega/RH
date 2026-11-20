@@ -95,6 +95,9 @@ def SphericalThetaInert : Prop :=
       (Circle.toUnits (chi E a (Units.map (algebraMap F E : F →* E) ϖ))) π' Φ' →
     Φ' + str (qU F) (-((b : ℤ) - a)) = Φ + str (qU F) ((b : ℤ) - a)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `[str]`. Establish `: Multiset.range (Int.toNat 2) = {1, 0}` using `by decide`. Rewrite using `[str, this]`. Simplify using the standard rewrite rules.
+-/
 example (q : ℂˣ) : str q 1 = {1} ∧ str q 2 = {q, q⁻¹} := by
   constructor
   · simp [str]
@@ -102,6 +105,9 @@ example (q : ℂˣ) : str q 1 = {1} ∧ str q 2 = {q, q⁻¹} := by
     rw [str, this]
     simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => by simp only [Units.val_one, one_mulVec, Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_one] exact forall_congr' fun i => ⟨fun ⟨r, hr⟩ => hr ▸ r.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩, 1, map_one _, by simp [Matrix.map_one _ (map_zero c) (map_one c)]⟩`.
+-/
 example {E : Type} [Field E] [Valued E (WithZero (Multiplicative ℤ))] (c : E →+* E) (n : ℕ) :
     IsHypFrame c (antiJ E n) (Submodule.pi Set.univ fun _ => (1 : Submodule (intL E) E)) 1 :=
   ⟨fun y => by

@@ -9,6 +9,9 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _ M₀ σ u hσ hu hinv`. Take `⟨β, hβ⟩` from `M.wtEx F`. Conclude with `(M.cosetSum F M₀ σ β u hσ hβ hu hinv).symm.trans (M.wtInt F M₀ β u hβ hu hinv)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.M.unfL :
     ∀ (F : Type) [Field F] [NumberField F] (M₀ : Meas F) (σ) (u : G1 F → ℝ≥0∞), M.RowSec (F := F) σ → Measurable u → (∀ (ξ : F) g, u (nU (rt ξ) * g) = u g) → ∫⁻ g in M₀.D, ∑' r, u (ratS F (σ r) * g) ∂M₀.μ = M.J0 M₀ fun g => ∫⁻ b in fundamentalSet F, u (nU b * g) ∂(adeleMeasure F) := by
   intro F _ _ M₀ σ u hσ hu hinv

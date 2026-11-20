@@ -5,6 +5,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.PlaceOverPair
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Ideal.under_def, Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `: σ⁻¹ • algebraMap (𝓞 K) (𝓞 E) x = algebraMap (𝓞 K) (𝓞 E) x`. Rewrite using `[inv_smul_eq_iff]`. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Conclude with `(h x).symm`. Rewrite using `[this]`.
+-/
 theorem under_smul_of_fix {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra K E]
     (σ : E ≃ₐ[ℚ] E) (h : ∀ x : K, σ (algebraMap K E x) = algebraMap K E x) (I : Ideal (𝓞 E)) :
     (σ • I).under (𝓞 K) = I.under (𝓞 K) := by
@@ -16,12 +21,20 @@ theorem under_smul_of_fix {E K : Type} [Field E] [NumberField E] [Field K] [Numb
     exact (h x).symm
   rw [this]
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Conclude with `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`.
+-/
 theorem exists_over {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra K E]
     (v : HeightOneSpectrum (𝓞 K)) : ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 K) = v := by
   haveI := v.isMaximal
   obtain ⟨Q, hQ, hl⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal
   exact ⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩
 
+/- English proof (translation)
+Establish `hm : (Ideal.span {(p : ℤ)}).IsMaximal` using `Ideal.IsPrime.isMaximal ((Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).2 (Nat.prime_iff_prime_int.1 hp)) (by simpa using hp.ne_zero)`. Establish `key : ∀ (I : Ideal (𝓞 E)) [I.IsPrime], (p : 𝓞 E) ∈ I → I.LiesOver (Ideal.span {(p : ℤ)})`. Introduce `I _ hI`. Use `⟨hm.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`.
+
+Simplify using `using hI`. Use `haveI := key P hP`. Use `haveI := key Q hQ`. Conclude with `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) P Q (E ≃ₐ[ℚ] E)`.
+-/
 theorem exists_smul_eq {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] {p : ℕ} (hp : p.Prime)
     (P Q : Ideal (𝓞 E)) [P.IsPrime] [Q.IsPrime] (hP : (p : 𝓞 E) ∈ P) (hQ : (p : 𝓞 E) ∈ Q) :
     ∃ σ : E ≃ₐ[ℚ] E, σ • P = Q := by
@@ -39,8 +52,16 @@ theorem exists_smul_eq {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] {p 
 
 variable {R : Ranks} (H : Formalism.BasicNotions.Host R)
 
+/- English proof (translation)
+The claim follows from `H.sqd_sq`.
+-/
 theorem sqrt_sq : H.sqrtMinusD ^ 2 = -(H.d : H.E) := H.sqd_sq
 
+/- English proof (translation)
+Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h2` using `H.conjE_apply H.φ₀ H.sqrtMinusD`. Use `h2.trans ?_` and prove the remaining obligations. Establish `h3 : H.φ₀ H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ)` using `H.φ₀_mem`. Rewrite using `[map_neg, h3]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conj_sqrt : H.conj H.sqrtMinusD = -H.sqrtMinusD := by
   apply H.φ₀.injective
   have h2 := H.conjE_apply H.φ₀ H.sqrtMinusD
@@ -49,6 +70,11 @@ theorem conj_sqrt : H.conj H.sqrtMinusD = -H.sqrtMinusD := by
   rw [map_neg, h3]
   simp
 
+/- English proof (translation)
+Establish `: H.K ≤ IntermediateField.fixedField (Subgroup.zpowers σ)`. Apply `IntermediateField.adjoin_simple_le_iff.2` to reduce the goal to its premises. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `f hf`. Establish `: Subgroup.zpowers σ ≤ MulAction.stabilizer _ H.sqrtMinusD`.
+
+Rewrite using `[Subgroup.zpowers_le]`. Conclude with `h`. Conclude with `this hf`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 (this x.2) σ (Subgroup.mem_zpowers σ)`.
+-/
 theorem fix_of_sqrt (σ : H.E ≃ₐ[ℚ] H.E) (h : σ H.sqrtMinusD = H.sqrtMinusD) (x : H.K) :
     σ (algebraMap H.K H.E x) = algebraMap H.K H.E x := by
   have : H.K ≤ IntermediateField.fixedField (Subgroup.zpowers σ) := by
@@ -61,6 +87,19 @@ theorem fix_of_sqrt (σ : H.E ≃ₐ[ℚ] H.E) (h : σ H.sqrtMinusD = H.sqrtMinu
     exact this hf
   exact (IntermediateField.mem_fixedField_iff _ _).1 (this x.2) σ (Subgroup.mem_zpowers σ)
 
+/- English proof (translation)
+Use `haveI := H.hostE_isGalois`. Take `⟨w, rfl⟩` from `exists_over (E := H.E) v`. Take `⟨u, rfl⟩` from `exists_over (E := H.E) 𝔭`. Establish `hu : (p : 𝓞 H.E) ∈ u.asIdeal`. Establish `: algebraMap (𝓞 H.K) (𝓞 H.E) (p : 𝓞 H.K) ∈ u.asIdeal` using `h𝔭`.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hw : (p : 𝓞 H.E) ∈ w.asIdeal`. Establish `: algebraMap (𝓞 H.F) (𝓞 H.E) (p : 𝓞 H.F) ∈ w.asIdeal` using `hv`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `haveI := u.isPrime`.
+
+Use `haveI := w.isPrime`. Take `⟨σ, hσ⟩` from `exists_smul_eq hp u.asIdeal w.asIdeal hu hw`. Establish `hs : σ H.sqrtMinusD = H.sqrtMinusD ∨ σ H.sqrtMinusD = -H.sqrtMinusD`. Apply `sq_eq_sq_iff_eq_or_eq_neg.1` to reduce the goal to its premises. Rewrite using `[← map_pow, sqrt_sq, map_neg, map_natCast]`.
+
+Break down `hs with hs | hs` into its components or cases. Use `⟨w, rfl, HeightOneSpectrum.ext ?_⟩ show w.asIdeal.under _ = u.asIdeal.under _` and prove the remaining obligations. Rewrite using `[← hσ]`. Conclude with `under_smul_of_fix σ (fix_of_sqrt H σ hs) _`. Establish `hne : H.conj • w.asIdeal ≠ ⊥`.
+
+Introduce `h`. Apply `w.ne_bot` to reduce the goal to its premises. Rewrite using `[← inv_smul_smul H.conj w.asIdeal, h, Ideal.smul_bot]`. Use `⟨⟨H.conj • w.asIdeal, inferInstance, hne⟩, HeightOneSpectrum.ext ?_, HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations. Conclude with `under_smul_of_fix H.conj (fun x => (H.conjE_mem_hostF_iff _).1 x.2) _`.
+
+Use `show (H.conj • w.asIdeal).under _ = u.asIdeal.under _`. Rewrite using `[← hσ, smul_smul]`. Use `under_smul_of_fix _ (fix_of_sqrt H _ ?_) _` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hs, map_neg, conj_sqrt, neg_neg]`.
+-/
 theorem exists_over_both {p : ℕ} (hp : p.Prime) (𝔭 : HeightOneSpectrum (𝓞 H.K)) (h𝔭 : (p : 𝓞 H.K) ∈ 𝔭.asIdeal)
     (v : HeightOneSpectrum (𝓞 H.F)) (hv : (p : 𝓞 H.F) ∈ v.asIdeal) :
     ∃ w : HeightOneSpectrum (𝓞 H.E), w.under (𝓞 H.F) = v ∧ w.under (𝓞 H.K) = 𝔭 := by

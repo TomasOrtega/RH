@@ -15,6 +15,9 @@ section Gen
 variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K]
 
+/- English proof (translation)
+Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Conclude with `FractionalIdeal.count_mul K v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy)`.
+-/
 theorem idxChange_cnt_mul (v : HeightOneSpectrum R) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (x * y)) =
       FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ x) +
@@ -23,11 +26,19 @@ theorem idxChange_cnt_mul (v : HeightOneSpectrum R) {x y : K} (hx : x ≠ 0) (hy
   exact FractionalIdeal.count_mul K v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx)
     (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy)
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.spanSingleton_one]`. Conclude with `FractionalIdeal.count_one K v`.
+-/
 theorem idxChange_cnt_one (v : HeightOneSpectrum R) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (1 : K)) = 0 := by
   rw [FractionalIdeal.spanSingleton_one]
   exact FractionalIdeal.count_one K v
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.count_coe K v hJ]`. Assume the negation of the conclusion as `hne`. Establish `hne' : (Associates.mk v.asIdeal).count (Associates.mk J).factors ≠ 0`. Conclude with `hne` after adjusting the coercions. Establish `hd` using `(Associates.count_ne_zero_iff_dvd hJ v.irreducible).mp hne'`.
+
+Rewrite `hd` using `[Ideal.dvd_iff_le]`. Conclude with `h hd`.
+-/
 theorem idxChange_cnt_ideal_zero (v : HeightOneSpectrum R) (J : Ideal R) (hJ : J ≠ 0)
     (h : ¬ J ≤ v.asIdeal) : FractionalIdeal.count K v (J : FractionalIdeal R⁰ K) = 0 := by
   rw [FractionalIdeal.count_coe K v hJ]
@@ -38,6 +49,9 @@ theorem idxChange_cnt_ideal_zero (v : HeightOneSpectrum R) (J : Ideal R) (hJ : J
   rw [Ideal.dvd_iff_le] at hd
   exact h hd
 
+/- English proof (translation)
+Establish `h1` using `FractionalIdeal.count_mono K v ((FractionalIdeal.coeIdeal_ne_zero (K := K)).mpr hJ) ((FractionalIdeal.coeIdeal_le_coeIdeal K).mpr h)`. Rewrite `h1` using `[FractionalIdeal.count_self]`. Then use the resulting hypothesis.
+-/
 theorem idxChange_cnt_ideal_pos (v : HeightOneSpectrum R) (J : Ideal R) (hJ : J ≠ 0)
     (h : J ≤ v.asIdeal) : 1 ≤ FractionalIdeal.count K v (J : FractionalIdeal R⁰ K) := by
   have h1 := FractionalIdeal.count_mono K v
@@ -45,11 +59,17 @@ theorem idxChange_cnt_ideal_pos (v : HeightOneSpectrum R) (J : Ideal R) (hJ : J 
     ((FractionalIdeal.coeIdeal_le_coeIdeal K).mpr h)
   rwa [FractionalIdeal.count_self] at h1
 
+/- English proof (translation)
+The claim follows from `(FractionalIdeal.coeIdeal_span_singleton (S := R⁰) (P := K) a).symm`.
+-/
 theorem idxChange_span_alg (a : R) :
     FractionalIdeal.spanSingleton R⁰ (algebraMap R K a) =
       ((Ideal.span {a} : Ideal R) : FractionalIdeal R⁰ K) :=
   (FractionalIdeal.coeIdeal_span_singleton (S := R⁰) (P := K) a).symm
 
+/- English proof (translation)
+Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ v.asIdeal.zero_mem)`. Rewrite using `[idxChange_span_alg]`. Use `idxChange_cnt_ideal_zero v _ ?_ ?_` and prove the remaining obligations. Simplify `hs0` using `[Ideal.span_singleton_eq_bot]`. Rewrite using `[Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis.
+-/
 theorem idxChange_cnt_unit (v : HeightOneSpectrum R) {s : R} (hs : s ∉ v.asIdeal) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K s)) = 0 := by
   have hs0 : s ≠ 0 := fun h => hs (h ▸ v.asIdeal.zero_mem)
@@ -58,6 +78,9 @@ theorem idxChange_cnt_unit (v : HeightOneSpectrum R) {s : R} (hs : s ∉ v.asIde
   · simpa [Ideal.span_singleton_eq_bot] using hs0
   · rwa [Ideal.span_singleton_le_iff_mem]
 
+/- English proof (translation)
+Rewrite using `[idxChange_span_alg]`. Use `idxChange_cnt_ideal_pos v _ ?_ ?_` and prove the remaining obligations. Simplify `ha` using `[Ideal.span_singleton_eq_bot]`. Rewrite using `[Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis.
+-/
 theorem idxChange_cnt_mem (v : HeightOneSpectrum R) {a : R} (ha : a ≠ 0) (hp : a ∈ v.asIdeal) :
     1 ≤ FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K a)) := by
   rw [idxChange_span_alg]
@@ -65,11 +88,29 @@ theorem idxChange_cnt_mem (v : HeightOneSpectrum R) {a : R} (ha : a ≠ 0) (hp :
   · simpa [Ideal.span_singleton_eq_bot] using ha
   · rwa [Ideal.span_singleton_le_iff_mem]
 
+/- English proof (translation)
+Rewrite using `[idxChange_span_alg]`. Conclude with `FractionalIdeal.count_coe_nonneg K v _`.
+-/
 theorem idxChange_cnt_nonneg (v : HeightOneSpectrum R) (a : R) :
     0 ≤ FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K a)) := by
   rw [idxChange_span_alg]
   exact FractionalIdeal.count_coe_nonneg K v _
 
+/- English proof (translation)
+Establish `hp1 : v.asIdeal ≠ ⊤` using `v.isPrime.ne_top`. Take `⟨ϖ, hϖ1, hϖ2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot hp1 1`. Rewrite `hϖ1` using `[pow_one]`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hϖ2 (h ▸ Ideal.zero_mem _)`. Establish `hdvd : v.asIdeal ∣ Ideal.span {ϖ}`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hϖ1`. Take `⟨J, hJ⟩` from `hdvd`. Establish `hJp : ¬ J ≤ v.asIdeal`. Introduce `hle`.
+
+Apply `hϖ2` to reduce the goal to its premises. Establish `: Ideal.span {ϖ} ≤ v.asIdeal ^ 2`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `this (Ideal.mem_span_singleton_self ϖ)`.
+
+Establish `hspan0 : Ideal.span {ϖ} ≠ 0` using `by simpa [Ideal.span_singleton_eq_bot] using hϖ0`. Establish `hJ0 : J ≠ 0`. Introduce and unpack `rfl`. Apply `hspan0` to reduce the goal to its premises. Rewrite using `[hJ]`.
+
+Simplify using the standard rewrite rules. Take `⟨t, htJ, htp⟩` from `Set.not_subset.mp hJp`. Use `⟨ϖ, hϖ1, hϖ0, ?_, t, htp, ?_⟩` and prove the remaining obligations. Rewrite using `[idxChange_span_alg, hJ, FractionalIdeal.coeIdeal_mul, FractionalIdeal.count_mul K v ((FractionalIdeal.coeIdeal_ne_zero (K := K)).mpr v.ne_bot) ((FractionalIdeal.coeIdeal_ne_zero (K := K)).mpr hJ0), FractionalIdeal.count_self, idxChange_cnt_ideal_zero v J hJ0 hJp]`. Simplify using the standard rewrite rules.
+
+Introduce `x hx`. Establish `hmem : x * t ∈ Ideal.span {ϖ}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul hx htJ`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.mp hmem`.
+
+Conclude with `⟨u, by rw [mul_comm t x, ← hu, mul_comm]⟩`.
+-/
 theorem idxChange_unif (v : HeightOneSpectrum R) :
     ∃ ϖ : R, ϖ ∈ v.asIdeal ∧ ϖ ≠ 0 ∧
       FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K ϖ)) = 1 ∧
@@ -115,6 +156,9 @@ variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
 def idxChangeAct (e : Fin d → Fin d → K) (γ : Matrix (Fin d) (Fin d) K) : Fin d → Fin d → K :=
   fun i => ∑ k, γ k i • e k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [idxChangeAct, Matrix.mul_apply, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem idxChange_act_mul (e : Fin d → Fin d → K) (A B : Matrix (Fin d) (Fin d) K) :
     idxChangeAct (idxChangeAct e A) B = idxChangeAct e (A * B) := by
   funext i
@@ -123,15 +167,24 @@ theorem idxChange_act_mul (e : Fin d → Fin d → K) (A B : Matrix (Fin d) (Fin
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[idxChangeAct, Matrix.one_apply]`.
+-/
 theorem idxChange_act_one (e : Fin d → Fin d → K) : idxChangeAct e 1 = e := by
   funext i
   simp [idxChangeAct, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[idxChangeAct, Matrix.diagonal_apply, ite_smul]`.
+-/
 theorem idxChange_act_diagonal (e : Fin d → Fin d → K) (g : Fin d → K) :
     idxChangeAct e (Matrix.diagonal g) = fun k => g k • e k := by
   funext i
   simp [idxChangeAct, Matrix.diagonal_apply, ite_smul]
 
+/- English proof (translation)
+Simplify using `only [idxChangeAct, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem idxChange_sum_smul_act (e : Fin d → Fin d → K) (γ : Matrix (Fin d) (Fin d) K)
     (g : Fin d → K) : ∑ i, g i • idxChangeAct e γ i = ∑ k, (γ *ᵥ g) k • e k := by
   simp only [idxChangeAct, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]
@@ -139,6 +192,11 @@ theorem idxChange_sum_smul_act (e : Fin d → Fin d → K) (γ : Matrix (Fin d) 
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Rewrite `he`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[idxChange_sum_smul_act]`. Establish `h0 : γ *ᵥ g = 0` using `funext (he _ hg)`. Use `Matrix.eq_zero_of_mulVec_eq_zero hγ h0` as an intermediate fact.
+
+Introduce `i`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem idxChange_linIndep_act {e : Fin d → Fin d → K} (he : LinearIndependent K e)
     {γ : Matrix (Fin d) (Fin d) K} (hγ : γ.det ≠ 0) : LinearIndependent K (idxChangeAct e γ) := by
   rw [Fintype.linearIndependent_iff] at he ⊢
@@ -149,6 +207,11 @@ theorem idxChange_linIndep_act {e : Fin d → Fin d → K} (he : LinearIndepende
   intro i
   rw [this]; rfl
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨g, hg0, hg⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Rewrite `he` using `[Fintype.linearIndependent_iff]`. Apply `hg0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `he g ?_ i` and prove the remaining obligations. Rewrite using `[idxChange_sum_smul_act, hg]`. Simplify using the standard rewrite rules.
+-/
 theorem idxChange_det_ne_zero {e : Fin d → Fin d → K} {γ : Matrix (Fin d) (Fin d) K}
     (he : LinearIndependent K (idxChangeAct e γ)) : γ.det ≠ 0 := by
   intro h0
@@ -160,6 +223,9 @@ theorem idxChange_det_ne_zero {e : Fin d → Fin d → K} {γ : Matrix (Fin d) (
   rw [idxChange_sum_smul_act, hg]
   simp
 
+/- English proof (translation)
+Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h` using `linearIndependent_iff_card_eq_finrank_span.mp he`. Rewrite `h` using `[Set.finrank]`. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+-/
 theorem idxChange_span_top {e : Fin d → Fin d → K} (he : LinearIndependent K e) :
     Submodule.span K (Set.range e) = ⊤ := by
   apply Submodule.eq_top_of_finrank_eq
@@ -168,17 +234,26 @@ theorem idxChange_span_top {e : Fin d → Fin d → K} (he : LinearIndependent K
   rw [← h]
   simp
 
+/- English proof (translation)
+Apply `indexBasic_locS_top (K := K)` to reduce the goal to its premises. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `idxChange_span_top he`.
+-/
 theorem idxChange_locS_top {e : Fin d → Fin d → K} (he : LinearIndependent K e) :
     locS (nonZeroDivisors R) (Submodule.span R (Set.range e)) = ⊤ := by
   apply indexBasic_locS_top (K := K)
   rw [Submodule.span_span_of_tower]
   exact idxChange_span_top he
 
+/- English proof (translation)
+Unfold `locLen`. Rewrite using `[hX, hY]`.
+-/
 theorem idxChange_locLen_congr (p : Ideal R) [p.IsPrime] {X X' Y Y' : Submodule R (Fin d → K)}
     (hX : localization₂ p X = localization₂ p X') (hY : localization₂ p Y = localization₂ p Y') : locLen p X Y = locLen p X' Y' := by
   unfold locLen
   rw [hX, hY]
 
+/- English proof (translation)
+Establish `hinf : localization₂ p (A ⊓ B) = localization₂ p (A' ⊓ B')`. Unfold `localization₂ at hA hB ⊢`. Rewrite using `[locBasic_locS_inf, locBasic_locS_inf, hA, hB]`. Unfold `lidx`. Rewrite using `[idxChange_locLen_congr p hA hinf, idxChange_locLen_congr p hB hinf]`.
+-/
 theorem idxChange_lidx_congr (p : Ideal R) [p.IsPrime] {A A' B B' : Submodule R (Fin d → K)}
     (hA : localization₂ p A = localization₂ p A') (hB : localization₂ p B = localization₂ p B') : lidx p A B = lidx p A' B' := by
   have hinf : localization₂ p (A ⊓ B) = localization₂ p (A' ⊓ B') := by
@@ -187,11 +262,25 @@ theorem idxChange_lidx_congr (p : Ideal R) [p.IsPrime] {A A' B B' : Submodule R 
   unfold lidx
   rw [idxChange_locLen_congr p hA hinf, idxChange_locLen_congr p hB hinf]
 
+/- English proof (translation)
+Unfold `lidx`. Conclude with `sub_self _`.
+-/
 theorem idxChange_lidx_self (p : Ideal R) [p.IsPrime] (A : Submodule R (Fin d → K)) :
     lidx p A A = 0 := by
   unfold lidx
   exact sub_self _
 
+/- English proof (translation)
+Use `set A := Submodule.span R (Set.range e)`. Use `set B := Submodule.span R (Set.range f)`. Use `set C := Submodule.span R (Set.range g)`. Establish `hfin : ∀ X Y : Submodule R (Fin d → K), X.FG → locS (nonZeroDivisors R) Y = ⊤ → Module.length R (↥(localization₂ p X) ⧸ (localization₂ p Y).comap (localization₂ p X).subtype) ≠ ⊤`. Introduce `X Y hX hY`.
+
+Take `⟨c, hc, hcY⟩` from `indexBasic_denom (nonZeroDivisors R) X Y hX (by rw [hY]; exact le_top)`. Conclude with `Module.length_ne_top_iff.mpr (indexBasic_finLen p X Y hX hc hcY)`. Establish `hAt : locS (nonZeroDivisors R) A = ⊤` using `idxChange_locS_top he`. Establish `hBt : locS (nonZeroDivisors R) B = ⊤` using `idxChange_locS_top hf`. Establish `hCt : locS (nonZeroDivisors R) C = ⊤` using `idxChange_locS_top hg`.
+
+Establish `hAfg : A.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hBfg : B.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hCfg : C.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hDt : locS (nonZeroDivisors R) (A ⊓ B ⊓ C) = ⊤`. Rewrite using `[locBasic_locS_inf, locBasic_locS_inf, hAt, hBt, hCt]`.
+
+Simplify using the standard rewrite rules. Establish `hAD` using `hfin A _ hAfg hDt`. Establish `hBD` using `hfin B _ hBfg hDt`. Establish `hCD` using `hfin C _ hCfg hDt`. Rewrite using `[indexBasic_lidx_via p A C (A ⊓ B ⊓ C) (le_trans inf_le_left inf_le_left) inf_le_right hAD hCD, indexBasic_lidx_via p A B (A ⊓ B ⊓ C) (le_trans inf_le_left inf_le_left) (le_trans inf_le_left inf_le_right) hAD hBD, indexBasic_lidx_via p B C (A ⊓ B ⊓ C) (le_trans inf_le_left inf_le …`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idxChange_lidx_add (p : Ideal R) [p.IsPrime] {e f g : Fin d → Fin d → K}
     (he : LinearIndependent K e) (hf : LinearIndependent K f) (hg : LinearIndependent K g) :
     lidx p (Submodule.span R (Set.range e)) (Submodule.span R (Set.range g)) =
@@ -226,6 +315,11 @@ theorem idxChange_lidx_add (p : Ideal R) [p.IsPrime] {e f g : Fin d → Fin d �
       hBD hCD]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ N : Submodule R (Fin d → K), locS S N = locS S (locS T N)`. Introduce `N`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `locBasic_locS_mono S (locBasic_le_locS T N)`. Introduce `x hx`.
+
+Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`. Take `⟨t, ht, htx⟩` from `locBasic_mem_locS.mp hsx`. Conclude with `locBasic_mem_locS.mpr ⟨t * s, S.mul_mem (hTS ht) hs, by rwa [mul_smul]⟩`. Rewrite using `[key L, key M, h]`.
+-/
 theorem idxChange_locS_of_le {S T : Submonoid R} (hTS : T ≤ S) {L M : Submodule R (Fin d → K)}
     (h : locS T L = locS T M) : locS S L = locS S M := by
   have key : ∀ N : Submodule R (Fin d → K), locS S N = locS S (locS T N) := by
@@ -251,10 +345,16 @@ def IdxChangeP (v : HeightOneSpectrum R) (γ : Matrix (Fin d) (Fin d) K) : Prop 
         (Submodule.span R (Set.range (idxChangeAct e γ))) =
       FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ γ.det)
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[idxChange_act_one, idxChange_lidx_self, Matrix.det_one, idxChange_cnt_one]`.
+-/
 theorem indexChange_one (v : HeightOneSpectrum R) : IdxChangeP (d := d) v (1 : Matrix _ _ K) := by
   intro e he
   rw [idxChange_act_one, idxChange_lidx_self, Matrix.det_one, idxChange_cnt_one]
 
+/- English proof (translation)
+Introduce `e he`. Establish `heA` using `idxChange_linIndep_act he hA`. Establish `hadd` using `idxChange_lidx_add v.asIdeal he heA (idxChange_linIndep_act heA hB)`. Rewrite `hadd` using `[PA e he, PB _ heA, idxChange_act_mul]`. Rewrite using `[hadd, Matrix.det_mul, idxChange_cnt_mul v hA hB]`.
+-/
 theorem indexChange_mul (v : HeightOneSpectrum R) {A B : Matrix (Fin d) (Fin d) K}
     (hA : A.det ≠ 0) (hB : B.det ≠ 0) (PA : IdxChangeP v A) (PB : IdxChangeP v B) :
     IdxChangeP v (A * B) := by
@@ -267,10 +367,18 @@ theorem indexChange_mul (v : HeightOneSpectrum R) {A B : Matrix (Fin d) (Fin d) 
 abbrev idxChangeDg (i : Fin d) (x : K) : Matrix (Fin d) (Fin d) K :=
   Matrix.diagonal (Function.update (1 : Fin d → K) i x)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using the standard rewrite rules.
+-/
 theorem idxChange_det_Dg (i : Fin d) (x : K) : (idxChangeDg i x).det = x := by
   rw [Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hk]`.
+-/
 theorem idxChange_Dg_mul (i : Fin d) (x y : K) :
     idxChangeDg i x * idxChangeDg i y = idxChangeDg i (x * y) := by
   rw [Matrix.diagonal_mul_diagonal]
@@ -280,6 +388,11 @@ theorem idxChange_Dg_mul (i : Fin d) (x y : K) :
   · subst hk; simp
   · simp [Function.update_of_ne hk]
 
+/- English proof (translation)
+Rewrite using `[idxChange_act_diagonal]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[algebraMap_smul]`.
+
+Simplify using `[Function.update_of_ne hk]`.
+-/
 theorem idxChange_act_Dg_alg (e : Fin d → Fin d → K) (i : Fin d) (a : R) :
     idxChangeAct e (idxChangeDg i (algebraMap R K a)) = Function.update e i (a • e i) := by
   rw [idxChange_act_diagonal]
@@ -288,6 +401,11 @@ theorem idxChange_act_Dg_alg (e : Fin d → Fin d → K) (i : Fin d) (a : R) :
   · subst hk; simp [algebraMap_smul]
   · simp [Function.update_of_ne hk]
 
+/- English proof (translation)
+Introduce `e he`. Establish `hdy : (idxChangeDg i y).det ≠ 0` using `by rw [idxChange_det_Dg]; exact hy`. Establish `hdx : (idxChangeDg i x).det ≠ 0` using `by rw [idxChange_det_Dg]; exact hx`. Establish `hey` using `idxChange_linIndep_act he hdy`. Establish `hadd` using `idxChange_lidx_add v.asIdeal he hey (idxChange_linIndep_act hey hdx)`.
+
+Rewrite `hadd` using `[Px _ hey, idxChange_act_mul, idxChange_Dg_mul, mul_comm y x, Pxy e he]`. Rewrite `hadd`, the goal using `[idxChange_det_Dg]`. Rewrite `hadd` using `[idxChange_det_Dg, idxChange_cnt_mul v hx hy]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem indexChange_cancel (v : HeightOneSpectrum R) (i : Fin d) {x y : K} (hx : x ≠ 0)
     (hy : y ≠ 0) (Px : IdxChangeP v (idxChangeDg i x)) (Pxy : IdxChangeP v (idxChangeDg i (x * y))) :
     IdxChangeP v (idxChangeDg i y) := by
@@ -301,6 +419,17 @@ theorem indexChange_cancel (v : HeightOneSpectrum R) (i : Fin d) {x y : K} (hx :
   rw [idxChange_det_Dg, idxChange_cnt_mul v hx hy] at hadd
   linarith
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[idxChange_act_Dg_alg, idxChange_det_Dg, idxChange_cnt_unit v hs]`. Establish `hloc : localization₂ v.asIdeal (Submodule.span R (Set.range e)) = localization₂ v.asIdeal (Submodule.span R (Set.range (Function.update e i (s • e i))))`. Unfold `localization₂`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Establish `hsub : Submodule.span R (Set.range e) ≤ locS v.asIdeal.primeCompl (Submodule.span R (Set.range (Function.update e i (s • e i))))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+
+Conclude with `⟨s, hs, Submodule.subset_span ⟨k, by simp⟩⟩`. Conclude with `locBasic_le_locS _ _ (Submodule.subset_span ⟨k, by simp [Function.update_of_ne hk]⟩)`. Combine the equalities or inequalities in the displayed calculation. Apply `locBasic_locS_mono` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+
+Rewrite using `[Function.update_of_ne hk]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[idxChange_lidx_congr v.asIdeal hloc rfl, idxChange_lidx_self]`.
+-/
 theorem indexChange_unit (v : HeightOneSpectrum R) (i : Fin d) {s : R} (hs : s ∉ v.asIdeal) :
     IdxChangeP v (idxChangeDg i (algebraMap R K s)) := by
   intro e he
@@ -340,6 +469,51 @@ section Pi
 variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K] {d : ℕ}
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[idxChange_act_Dg_alg, idxChange_det_Dg, hcnt]`. Establish `: Nonempty (Fin d)` using `⟨i⟩`. Use `set p := v.asIdeal with hpdef`. Use `set upd := Function.update e i (ϖ • e i) with hupd`.
+
+Use `set A := Submodule.span R (Set.range e) with hAdef`. Use `set B := Submodule.span R (Set.range upd) with hBdef`. Establish `hupdi : upd i = ϖ • e i` using `by simp [upd]`. Establish `hupdk : ∀ k, k ≠ i → upd k = e k` using `fun k hk => by simp [upd, Function.update_of_ne hk]`. Establish `hBA : B ≤ A`.
+
+Rewrite using `[hBdef, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[hupdi]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[hupdk k hk]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Set `be` to `basisOfLinearIndependentOfCardEqFinrank he (by simp)`. Establish `hbe : ∀ k, be k = e k` using `fun k => by`.
+
+Simplify using `[be, coe_basisOfLinearIndependentOfCardEqFinrank]`. Set `f : (Fin d → K) →ₗ[R] K` to `(be.coord i).restrictScalars R`. Establish `hf : ∀ k, f (e k) = if k = i then 1 else 0`. Introduce `k`. Simplify using `only [f, LinearMap.restrictScalars_apply, Basis.coord_apply, ← hbe, Basis.repr_self]`.
+
+Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Establish `hcoord : ∀ x ∈ B, ∃ u : R, f x = algebraMap R K (ϖ * u)`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[hupdi, map_smul, hf, if_pos rfl, Algebra.smul_def, mul_one, mul_one]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hupdk k hk, hf, if_neg hk]`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨u', hu'⟩` from `hy`.
+
+Conclude with `⟨u + u', by rw [map_add, hu, hu', mul_add, map_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨u, hu⟩` from `hx`. Conclude with `⟨a * u, by rw [map_smul, hu, Algebra.smul_def, ← map_mul]; ring_nf⟩`. Establish `hK1 : ∀ r ∈ p, r • e i ∈ localization₂ p B`.
+
+Introduce `r hr`. Take `⟨u, hu⟩` from `ht r hr`. Use `⟨t, htp, ?_⟩` and prove the remaining obligations. Establish `: t • r • e i = u • upd i`. Rewrite using `[hupdi, smul_smul, smul_smul, hu, mul_comm]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hK2 : ∀ r : R, r • e i ∈ localization₂ p B → r ∈ p`. Introduce `r hr`. Take `⟨s, hs, hsr⟩` from `hr`.
+
+Take `⟨u, hu⟩` from `hcoord _ hsr`. Rewrite `hu` using `[smul_smul, map_smul, hf, if_pos rfl, Algebra.smul_def, mul_one]`. Establish `h2 : s * r = ϖ * u` using `IsFractionRing.injective R K hu`. Establish `hmem : s * r ∈ p`. Rewrite using `[h2]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (by`. Assume the negation of the conclusion as `hϖ`. Use `idxChange_cnt_unit (K := K) v hϖ` as an intermediate fact. Rewrite `this` using `[hcnt]`. Conclude with `one_ne_zero this)`.
+
+Break down `v.isPrime.mem_or_mem hmem with h | h` into its components or cases. Conclude with `absurd h hs`. Conclude with `h`. Establish `hei : e i ∈ localization₂ p A` using `locBasic_le_locS _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `Q` to `↥(localization₂ p A) ⧸ (localization₂ p B).comap (localization₂ p A).subtype`.
+
+Set `φ : R →ₗ[R] Q` to `LinearMap.toSpanSingleton R Q (Submodule.Quotient.mk ⟨e i, hei⟩)`. Establish `hker : LinearMap.ker φ = p`. Use extensionality with `r`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, SetLike.val_smul]`. Conclude with `⟨hK2 r, hK1 r⟩`.
+
+Establish `hsurj : Function.Surjective φ`. Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H y`. Take `⟨s, hs, hsy⟩` from `y.2`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).mp hsy`. Take `⟨t', i', hi', hti⟩` from `v.isMaximal.exists_inv hs`. Use `⟨t' * c i, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, SetLike.val_smul]`. Apply `indexBasic_smul_locP p B hs` to reduce the goal to its premises.
+
+Establish `hsc : s * (t' * c i) = c i - i' * c i` using `by linear_combination (c i) * hti`. Establish `key : s • ((t' * c i) • e i - (y : Fin d → K)) = -((i' * c i) • e i + ∑ k ∈ Finset.univ.erase i, c k • e k)`. Rewrite using `[smul_sub, ← hc, ← Finset.add_sum_erase _ _ (Finset.mem_univ i), smul_smul, hsc, sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`.
+
+Use `(localization₂ p B).neg_mem ((localization₂ p B).add_mem (hK1 _ (Ideal.mul_mem_right _ _ hi')) ?_)` and prove the remaining obligations. Use `(localization₂ p B).sum_mem fun k hk => ?_` and prove the remaining obligations. Establish `hki : k ≠ i` using `Finset.ne_of_mem_erase hk`. Use `locBasic_le_locS _ _ ?_` and prove the remaining obligations. Rewrite using `[← hupdk k hki]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `: IsSimpleModule R (R ⧸ p)` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp v.isMaximal)`. Establish `hlen : Module.length R Q = 1`. Rewrite using `[← (LinearMap.quotKerEquivOfSurjective φ hsurj).length_eq, (Submodule.quotEquivOfEq _ _ hker).length_eq]`. Conclude with `Module.length_eq_one R _`.
+
+Unfold `lidx`. Rewrite using `[inf_eq_right.mpr hBA, indexBasic_locLen_self]`. Unfold `locLen`. Rewrite using `[hlen]`. Simplify using the standard rewrite rules.
+-/
 theorem indexChange_uniformizer (v : HeightOneSpectrum R) (i : Fin d) {ϖ t : R}
     (hcnt : FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K ϖ)) = 1)
     (htp : t ∉ v.asIdeal) (ht : ∀ x ∈ v.asIdeal, ∃ u : R, t * x = ϖ * u) :
@@ -465,6 +639,25 @@ section Main
 variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K] {d : ℕ}
 
+/- English proof (translation)
+Take `⟨ϖ, _, hϖ0, hcntϖ, t, htp, ht⟩` from `idxChange_unif (K := K) v`. Establish `hinj` using `IsFractionRing.injective R K`. Establish `hne : ∀ b : R, b ≠ 0 → algebraMap R K b ≠ 0` using `fun b hb => (map_ne_zero_iff _ hinj).mpr hb`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `a ha hc`. Establish `hap : a ∉ v.asIdeal`. Introduce `h`. Use `idxChange_cnt_mem (K := K) v ha h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `indexChange_unit v i hap`. Consider the case `succ n ih`. Introduce `a ha hc`. Establish `hap : a ∈ v.asIdeal`.
+
+Assume the negation of the conclusion as `h`. Rewrite `hc` using `[idxChange_cnt_unit v h]`. Use linear arithmetic over natural numbers and integers. Take `⟨a', ha'⟩` from `ht a hap`. Establish `ht0 : t ≠ 0` using `fun h => htp (h ▸ v.asIdeal.zero_mem)`.
+
+Establish `ha'0 : a' ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha'` using `[mul_zero]`. Break down `mul_eq_zero.mp ha' with h | h` into its components or cases. Conclude with `ht0 h`.
+
+Conclude with `ha h`. Establish `hc' : FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K a')) = n`. Establish `e1` using `idxChange_cnt_mul v (hne t ht0) (hne a ha)`. Establish `e2` using `idxChange_cnt_mul v (hne ϖ hϖ0) (hne a' ha'0)`. Rewrite `e1` using `[← map_mul, ha', map_mul]`.
+
+Rewrite `e2` using `[e1, idxChange_cnt_unit v htp, hc, hcntϖ]`. Move the coercions through the operations in `at e2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `Pa'` using `ih a' ha'0 hc'`. Establish `Pϖa' : IdxChangeP v (idxChangeDg i (algebraMap R K ϖ * algebraMap R K a'))`.
+
+Rewrite using `[← idxChange_Dg_mul]`. Conclude with `indexChange_mul v (by rw [idxChange_det_Dg]; exact hne ϖ hϖ0) (by rw [idxChange_det_Dg]; exact hne a' ha'0) (indexChange_uniformizer v i hcntϖ htp ht) Pa'`. Establish `Pta : IdxChangeP v (idxChangeDg i (algebraMap R K t * algebraMap R K a))`. Rewrite using `[← map_mul, ha', map_mul]`. Conclude with `Pϖa'`.
+
+Conclude with `indexChange_cancel v i (hne t ht0) (hne a ha) (indexChange_unit v i htp) Pta`.
+-/
 theorem indexChange_integral (v : HeightOneSpectrum R) (i : Fin d) :
     ∀ n : ℕ, ∀ a : R, a ≠ 0 →
       FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ (algebraMap R K a)) = n →
@@ -512,6 +705,13 @@ theorem indexChange_integral (v : HeightOneSpectrum R) (i : Fin d) :
       rw [← map_mul, ha', map_mul]; exact Pϖa'
     exact indexChange_cancel v i (hne t ht0) (hne a ha) (indexChange_unit v i htp) Pta
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective R K`. Establish `hne : ∀ b : R, b ≠ 0 → algebraMap R K b ≠ 0` using `fun b hb => (map_ne_zero_iff _ hinj).mpr hb`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `hP : ∀ c : R, c ≠ 0 → IdxChangeP v (idxChangeDg i (algebraMap R K c))` using `fun c hc => indexChange_integral v i _ c hc (Int.toNat_of_nonneg (idxChange_cnt_nonneg v c)).symm`. Establish `Pbx : IdxChangeP v (idxChangeDg i (algebraMap R K b * (algebraMap R K a / algebraMap R K b)))`.
+
+Rewrite using `[mul_div_cancel₀ _ (hne b hb0)]`. Conclude with `hP a ha0`. Conclude with `indexChange_cancel v i (hne b hb0) hx (hP b hb0) Pbx`.
+-/
 theorem indexChange_scalar (v : HeightOneSpectrum R) (i : Fin d) {x : K} (hx : x ≠ 0) :
     IdxChangeP v (idxChangeDg i x) := by
   have hinj := IsFractionRing.injective R K
@@ -529,6 +729,15 @@ theorem indexChange_scalar (v : HeightOneSpectrum R) (i : Fin d) {x : K} (hx : x
     rw [mul_div_cancel₀ _ (hne b hb0)]; exact hP a ha0
   exact indexChange_cancel v i (hne b hb0) hx (hP b hb0) Pbx
 
+/- English proof (translation)
+It suffices to establish `h : ∀ s : Finset (Fin d), IdxChangeP v (Matrix.diagonal fun k => if k ∈ s then g k else 1) by simpa using h Finset.univ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using indexChange_one (K := K) (d := d) v`. Consider the case `insert i s hi ih`.
+
+Establish `heq : Matrix.diagonal (fun k => if k ∈ insert i s then g k else 1) = Matrix.diagonal (fun k => if k ∈ s then g k else 1) * idxChangeDg i (g i)`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Simplify using `[hi]`. Simplify using `[hk]`. Rewrite using `[heq]`. Use `indexChange_mul v ?_ (by rw [idxChange_det_Dg]; exact hg i) ih (indexChange_scalar v i (hg i))` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => by split_ifs`. Conclude with `hg k`. Conclude with `one_ne_zero`.
+-/
 theorem indexChange_diagonal (v : HeightOneSpectrum R) (g : Fin d → K) (hg : ∀ k, g k ≠ 0) :
     IdxChangeP v (Matrix.diagonal g) := by
   suffices h : ∀ s : Finset (Fin d), IdxChangeP v (Matrix.diagonal fun k => if k ∈ s then g k else 1)
@@ -553,6 +762,9 @@ theorem indexChange_diagonal (v : HeightOneSpectrum R) (g : Fin d → K) (hg : �
       · exact hg k
       · exact one_ne_zero
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `[idxChangeAct, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, add_smul, Finset.sum_add_distrib, ite_smul, add_comm]`. Simplify using `[idxChangeAct, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, ite_smul, hk, Ne.symm hk]`.
+-/
 theorem indexChangeAction_transvection (e : Fin d → Fin d → K) {i j : Fin d} (hij : i ≠ j) :
     idxChangeAct e (Matrix.transvection i j (1 : K)) = Function.update e j (e j + e i) := by
   funext k
@@ -563,6 +775,17 @@ theorem indexChangeAction_transvection (e : Fin d → Fin d → K) {i j : Fin d}
   · simp [idxChangeAct, Matrix.transvection, Matrix.add_apply, Matrix.one_apply,
       ite_smul, hk, Ne.symm hk]
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[Matrix.det_transvection_of_ne i j hij, idxChange_cnt_one, indexChangeAction_transvection e hij]`. Establish `hspan : Submodule.span R (Set.range (Function.update e j (e j + e i))) = Submodule.span R (Set.range e)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨k, rfl⟩) (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Rewrite using `[Function.update_of_ne hk]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Establish `h1 : Function.update e k (e k + e i) k ∈ Submodule.span R (Set.range (Function.update e k (e k + e i)))` using `Submodule.subset_span ⟨k, rfl⟩`. Establish `h2 : Function.update e k (e k + e i) i ∈ Submodule.span R (Set.range (Function.update e k (e k + e i)))` using `Submodule.subset_span ⟨i, rfl⟩`. Rewrite `h1` using `[Function.update_self]`. Rewrite `h2` using `[Function.update_of_ne hij]`.
+
+Use `Submodule.sub_mem _ h1 h2` as an intermediate fact. Simplify using `using this`. Establish `h1 : Function.update e j (e j + e i) k ∈ Submodule.span R (Set.range (Function.update e j (e j + e i)))` using `Submodule.subset_span ⟨k, rfl⟩`. Rewrite `h1` using `[Function.update_of_ne hk]`. Then use the resulting hypothesis. Rewrite using `[hspan, idxChange_lidx_self]`.
+-/
 theorem indexChangeLocal_transvection (v : HeightOneSpectrum R) {i j : Fin d} (hij : i ≠ j) :
     IdxChangeP v (Matrix.transvection i j (1 : K)) := by
   intro e he
@@ -598,6 +821,15 @@ theorem indexChangeLocal_transvection (v : HeightOneSpectrum R) {i j : Fin d} (h
         rwa [Function.update_of_ne hk] at h1
   rw [hspan, idxChange_lidx_self]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[Matrix.transvection, hij, Function.update_of_ne (Ne.symm hij)]`.
+
+Establish `hs : ∀ x : K, Matrix.single i j x a b = 0`. Introduce `x`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h'`. Conclude with `absurd ⟨h'.1.symm, h'.2.symm⟩ h`.
+
+Both sides reduce to the same expression. Simplify using `only [Matrix.transvection, Matrix.add_apply, hs, add_zero]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `ha : a = i`.
+
+Substitute `ha` using the available equality. Simplify using `[hc]`. Simplify using `[Function.update_of_ne ha]`. Simplify using `[hab]`.
+-/
 theorem idxChange_transvection_conj {i j : Fin d} (hij : i ≠ j) {c : K} (hc : c ≠ 0) :
     Matrix.transvection i j c =
       idxChangeDg i c * Matrix.transvection i j (1 : K) * idxChangeDg i c⁻¹ := by
@@ -620,6 +852,13 @@ theorem idxChange_transvection_conj {i j : Fin d} (hij : i ≠ j) {c : K} (hc : 
       · simp [Function.update_of_ne ha]
     · simp [hab]
 
+/- English proof (translation)
+Break down `t with ⟨i, j, hij, c⟩` into its components or cases. Rewrite using `[Matrix.TransvectionStruct.toMatrix_mk]`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Rewrite using `[Matrix.transvection_zero]`.
+
+Conclude with `indexChange_one v`. Rewrite using `[idxChange_transvection_conj hij hc]`. Establish `hd1 : (idxChangeDg i c).det ≠ 0` using `by rw [idxChange_det_Dg]; exact hc`. Establish `hd2 : (Matrix.transvection i j (1 : K)).det ≠ 0`. Rewrite using `[Matrix.det_transvection_of_ne i j hij]`.
+
+Conclude with `one_ne_zero`. Establish `hd3 : (idxChangeDg i c⁻¹).det ≠ 0` using `by rw [idxChange_det_Dg]; exact inv_ne_zero hc`. Use `indexChange_mul v (by rw [Matrix.det_mul]; exact mul_ne_zero hd1 hd2) hd3 (indexChange_mul v hd1 hd2 (indexChange_scalar v i hc) (indexChangeLocal_transvection v hij)) (indexChange_scalar v i (inv_ne_zero hc))` and prove the remaining obligations.
+-/
 theorem indexChange_transvection (v : HeightOneSpectrum R) (t : Matrix.TransvectionStruct (Fin d) K) :
     IdxChangeP v t.toMatrix := by
   rcases t with ⟨i, j, hij, c⟩
@@ -637,6 +876,9 @@ theorem indexChange_transvection (v : HeightOneSpectrum R) (t : Matrix.Transvect
     (indexChange_mul v hd1 hd2 (indexChange_scalar v i hc) (indexChangeLocal_transvection v hij))
     (indexChange_scalar v i (inv_ne_zero hc))
 
+/- English proof (translation)
+Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (IdxChangeP v) γ hγ ?_ (indexChange_transvection v) (fun A B hA hB PA PB => indexChange_mul v hA hB PA PB)` and prove the remaining obligations. Introduce `D hD`. Use `indexChange_diagonal v D fun k => ?_` and prove the remaining obligations. Rewrite `hD` using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mp hD k (Finset.mem_univ k)`.
+-/
 theorem indexChange_of_det_ne_zero (v : HeightOneSpectrum R) (γ : Matrix (Fin d) (Fin d) K) (hγ : γ.det ≠ 0) :
     IdxChangeP v γ := by
   refine Matrix.diagonal_transvection_induction_of_det_ne_zero (IdxChangeP v) γ hγ ?_
@@ -654,6 +896,13 @@ open NumberField
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Unfold `hcompl`. Rewrite using `[Submonoid.closure_le]`. Introduce and unpack `s ⟨_, hs2⟩`. Use `show s ∉ (conjPl w).asIdeal`. Introduce `hmem`.
+
+Express the relevant statement in the definitionally equal form `s ∈ w.asIdeal.map (cO K) at hmem`. Rewrite `hmem` using `[Ideal.mem_map_of_equiv]`. Take `⟨x, hx, rfl⟩` from `hmem`. Use `hs2 x ?_ hx` and prove the remaining obligations. Use `show (x : K) = star ((cO K x : 𝓞 K) : K)`.
+
+Simplify using `[cO]`.
+-/
 theorem idxChange_hcompl_le_conj (w : HeightOneSpectrum (𝓞 K)) :
     hcompl (K := K) w.asIdeal ≤ (conjPl w).asIdeal.primeCompl := by
   unfold hcompl
@@ -668,6 +917,9 @@ theorem idxChange_hcompl_le_conj (w : HeightOneSpectrum (𝓞 K)) :
   show (x : K) = star ((cO K x : 𝓞 K) : K)
   simp [cO]
 
+/- English proof (translation)
+Unfold `idx vw`. Rewrite using `[← idxChange_lidx_congr v.asIdeal rfl hloc]`. Conclude with `indexChange_of_det_ne_zero v γ hγ e he`.
+-/
 theorem idxChange_at {d : ℕ} (v : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) (Fin d → K))
     (e : Fin d → Fin d → K) (he : LinearIndependent K e) (γ : Matrix (Fin d) (Fin d) K)
     (hγ : γ.det ≠ 0)
@@ -678,6 +930,13 @@ theorem idxChange_at {d : ℕ} (v : HeightOneSpectrum (𝓞 K)) (L : Submodule (
   rw [← idxChange_lidx_congr v.asIdeal rfl hloc]
   exact indexChange_of_det_ne_zero v γ hγ e he
 
+/- English proof (translation)
+Introduce `K _ _ _ d L _ e he w γ hloc`. Take `⟨he', hl⟩` from `hloc`. Establish `hdet : γ.det ≠ 0` using `idxChange_det_ne_zero (e := e) (γ := γ) he'`. Unfold `loc at hl`. Establish `h1 : localization₂ w.asIdeal (Submodule.span (𝓞 K) (Set.range (idxChangeAct e γ))) = localization₂ w.asIdeal L`.
+
+Unfold `localization₂`. Conclude with `idxChange_locS_of_le (locBasic_hcompl_le (K := K) w.asIdeal) hl`. Establish `h2 : localization₂ (conjPl w).asIdeal (Submodule.span (𝓞 K) (Set.range (idxChangeAct e γ))) = localization₂ (conjPl w).asIdeal L`. Unfold `localization₂`. Conclude with `idxChange_locS_of_le (idxChange_hcompl_le_conj w) hl`.
+
+Conclude with `⟨idxChange_at w L e he γ hdet h1, idxChange_at (conjPl w) L e he γ hdet h2⟩`.
+-/
 theorem index_change_formula : IdxChange := by
   intro K _ _ _ d L _ e he w γ hloc
   obtain ⟨he', hl⟩ := hloc

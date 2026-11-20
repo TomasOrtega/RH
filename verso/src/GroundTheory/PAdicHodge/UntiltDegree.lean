@@ -16,6 +16,27 @@ local notation "C♭" => Tilt C NormedField.valuation (normInteger C) normIntege
 local notation "𝒪K♭" => PreTilt (normInteger K) p
 local notation "𝒪C♭" => PreTilt (normInteger C) p
 
+/- English proof (translation)
+Use `set V := Submodule.span K (Set.range fun i => tiltSharp C p (w i))`. Take `⟨a, ha, z', hz', rfl⟩` from `exists_eq_untilt_add_p_mul hy`. Use `set x : C♭ := algebraMap 𝒪C♭ C♭ a with hx`. Establish `hxN : x ∈ N` using `(mem_integerTilt N).1 ha`. Establish `hx1 : ‖x‖ ≤ 1`.
+
+Rewrite using `[hx, norm_algebraMap_preTilt]`. Conclude with `preTilt_norm_le_one a`. Take `⟨b, hb⟩` from `hspan x hxN`. Use `set g : K♭ := algebraMap 𝒪K♭ K♭ γ with hg`. Establish `hgn : ‖g‖ = ‖γ‖` using `norm_algebraMap_preTilt γ`.
+
+Establish `hcb : ∀ i, ‖g * b i‖ ≤ 1`. Introduce `i`. Establish `h1 : t * ‖b i • w i‖ ≤ ‖x‖` using `by rw [hb]; exact horth b i`. Rewrite `h1` using `[norm_smul]`. Establish `h2 : t * (‖b i‖ * r) ≤ 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, hgn]`. Combine the equalities or inequalities in the displayed calculation. Use `choose β hβ using fun i => (norm_le_one_iff_exists_algebraMap (K := K) (p := p)).1 (hcb i)`. Use `choose ω hω using fun i => (norm_le_one_iff_exists_algebraMap (K := C) (p := p)).1 (hw1 i)`.
+
+Use `set φ := preTiltMap p (algebraMap K C) (norm_algebraMap' C)`. Establish `hφ : ∀ e : 𝒪K♭, algebraMap K♭ C♭ (algebraMap 𝒪K♭ K♭ e) = algebraMap 𝒪C♭ C♭ (φ e)` using `fun e => tiltMap_algebraMap _ _ e`. Establish `hφmem : ∀ e : 𝒪K♭, φ e ∈ integerTilt K C p N` using `fun e => by`. Rewrite using `[mem_integerTilt, ← hφ]`. Conclude with `N.algebraMap_mem _`.
+
+Establish `hωmem : ∀ i, ω i ∈ integerTilt K C p N` using `fun i => by`. Rewrite using `[mem_integerTilt, hω]`. Conclude with `hwN i`. Establish `hid : φ γ * a = ∑ i, φ (β i) * ω i`. Apply `IsFractionRing.injective 𝒪C♭ C♭` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ← hφ, map_sum]`. Simplify using `only [map_mul, ← hφ, hω, hβ]`. Rewrite using `[← hx, hb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨z'', hz'', hsum⟩` from `exists_untilt_sum_eq (N := N) Finset.univ (fun i => (⟨φ (β i) * ω i, mul_mem (hφmem _) (hωmem i)⟩ : integerTilt K C p N))`. Use `⟨∑ i, ((PreTilt.untilt (β i) : normInteger K) : K) • tiltSharp C p (w i), Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), z'' + PreTilt.untilt (φ γ) * z', add_mem hz'' (mul_mem (untilt_mem_untiltInteger (hφmem γ)) hz'), ?_⟩` and prove the remaining obligations. Establish `hsum'` using `congrArg (fun q : normInteger C => (q : C)) hsum`. Simplify using `only at hsum'`.
+
+Establish `hγa : ((PreTilt.untilt (φ γ * a) : normInteger C) : C) = algebraMap K C ((PreTilt.untilt γ : normInteger K) : K) * ((PreTilt.untilt a : normInteger C) : C)`. Rewrite using `[map_mul, Subring.coe_mul, coe_untilt_preTiltMap]`. Rewrite `hγa` using `[hid]`. Establish `hterm : ∀ i, ((PreTilt.untilt (φ (β i) * ω i) : normInteger C) : C) = ((PreTilt.untilt (β i) : normInteger K) : K) • tiltSharp C p (w i)`. Introduce `i`.
+
+Rewrite using `[map_mul, Subring.coe_mul, coe_untilt_preTiltMap, Algebra.smul_def, ← hω, tiltSharp_algebraMap]`. Rewrite using `[Subring.coe_add, Subring.coe_mul, mul_add, ← hγa, hsum']`. Simplify using `only [Subring.coe_add, Subring.coe_mul, Subring.coe_natCast, AddSubmonoidClass.coe_finsetSum, hterm]`. Rewrite using `[show ((PreTilt.untilt (φ γ) : normInteger C) : C) = algebraMap K C ((PreTilt.untilt γ : normInteger K) : K) from coe_untilt_preTiltMap _ _ γ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_mul_eq_add_p_mul (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     {ι : Type*} [Fintype ι] {w : ι → C♭} (hwN : ∀ i, w i ∈ N) (hw1 : ∀ i, ‖w i‖ ≤ 1)
     (hspan : ∀ x ∈ N, ∃ b : ι → K♭, x = ∑ i, b i • w i) {t r : ℝ} (ht : 0 < t)
@@ -94,6 +115,27 @@ theorem exists_mul_eq_add_p_mul (N : IntermediateField K♭ C♭) [FiniteDimensi
     algebraMap K C ((PreTilt.untilt γ : normInteger K) : K) from coe_untilt_preTiltMap _ _ γ]
   ring
 
+/- English proof (translation)
+Use `IsPerfectoidField.completeSpace (K := K) p` as an intermediate fact. Use `set V := Submodule.span K (Set.range fun i => tiltSharp C p (w i)) with hVdef`. Establish `htr0 : 0 < t * r` using `(norm_nonneg _).trans_lt hp`. Take `⟨c, hc1, hc2⟩` from `exists_norm_mem_Ioc (K := K♭) p (lt_max_of_lt_right (half_pos htr0)) (max_lt hp (half_lt_self htr0))`. Take `⟨γ, rfl⟩` from `norm_le_one_iff_exists_algebraMap.1 (hc2.trans htr)`.
+
+Rewrite `hc1`, `hc2` using `[norm_algebraMap_preTilt]`. Establish `hpγ : ‖(p : K)‖ < ‖γ‖` using `(le_max_left _ _).trans_lt hc1`. Use `set e : K := ((PreTilt.untilt γ : normInteger K) : K) with he`. Establish `hen : ‖e‖ = ‖γ‖` using `(preTilt_norm_def γ).symm`. Establish `he0 : e ≠ 0`.
+
+Introduce `h`. Rewrite `hen` using `[h, norm_zero]`. Combine the linear relations using `[norm_nonneg (p : K)]`. Use `set πK : K := (p : K) / e`. Establish `hπ : ‖πK‖ < 1`.
+
+Rewrite using `[norm_div, hen, div_lt_one ((norm_nonneg _).trans_lt hpγ)]`. Conclude with `hpγ`. Use `set π : C := algebraMap K C πK`. Establish `step : ∀ y : normInteger C, y ∈ untiltInteger K C p N → ∃ v ∈ V, ∃ y' ∈ untiltInteger K C p N, (y : C) = v + π * y'`. Introduce `y hy`.
+
+Take `⟨v, hv, y', hy', hyv⟩` from `exists_mul_eq_add_p_mul N hwN hw1 hspan ht hwr horth hc2 hy`. Use `⟨e⁻¹ • v, V.smul_mem _ hv, y', hy', ?_⟩` and prove the remaining obligations. Establish `hae : algebraMap K C e ≠ 0` using `(map_ne_zero _).2 he0`. Rewrite using `[Algebra.smul_def, map_inv₀]`. Simplify using `only [π, πK, map_div₀, map_natCast]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite `hyv` using `[← he]`. Take the linear combination `hyv`. Establish `iter : ∀ k : ℕ, ∃ v ∈ V, ∃ y' ∈ untiltInteger K C p N, (z : C) = v + π ^ k * y'`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, V.zero_mem, z, hz, by simp⟩`. Consider the case `succ k ih`. Take `⟨v, hv, y, hy, hzv⟩` from `ih`. Take `⟨v', hv', y', hy', hyv⟩` from `step y hy`.
+
+Use `⟨v + πK ^ k • v', V.add_mem hv (V.smul_mem _ hv'), y', hy', ?_⟩` and prove the remaining obligations. Rewrite using `[hzv, hyv, Algebra.smul_def, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `choose v hv y hy hzv using iter`. Establish `hVc : IsClosed (V : Set C)`.
+
+Establish `: FiniteDimensional K V` using `FiniteDimensional.span_of_finite K (Set.finite_range _)`. Conclude with `V.closed_of_finiteDimensional`. Establish `hlim : Filter.Tendsto v Filter.atTop (nhds (z : C))`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun k => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hπ)` and prove the remaining obligations.
+
+Establish `: v k - (z : C) = -(π ^ k * y k)` using `by rw [hzv k]; ring`. Rewrite using `[this, norm_neg, norm_mul, norm_pow, norm_algebraMap']`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hVc.mem_of_tendsto hlim (Filter.Eventually.of_forall hv)`.
+-/
 theorem coe_mem_span_of_mem_untiltInteger (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N]
     {ι : Type*} [Fintype ι] {w : ι → C♭} (hwN : ∀ i, w i ∈ N) (hw1 : ∀ i, ‖w i‖ ≤ 1)
     (hspan : ∀ x ∈ N, ∃ b : ι → K♭, x = ∑ i, b i • w i) {t r : ℝ} (ht : 0 < t)
@@ -157,6 +199,15 @@ theorem coe_mem_span_of_mem_untiltInteger (N : IntermediateField K♭ C♭) [Fin
       _ = _ := mul_one _
   exact hVc.mem_of_tendsto hlim (Filter.Eventually.of_forall hv)
 
+/- English proof (translation)
+Use `set S : Set C := (↑) '' (untiltInteger K C p N : Set (normInteger C))`. Set `T : Submonoid C` to `{ carrier := S one_mem' := ⟨1, (untiltInteger K C p N).one_mem, rfl⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a * b, (untiltInteger K C p N).mul_mem ha hb, rfl⟩ }`. Establish `hA : Subalgebra.toSubmodule (Algebra.adjoin K S) ≤ V`.
+
+Rewrite using `[Algebra.adjoin_eq_span, Submodule.span_le]`. Introduce `x hx`. Establish `: x ∈ T` using `(Submonoid.closure_le (S := T)).2 le_rfl hx`. Take `⟨z, hz, rfl⟩` from `this`. Conclude with `hV z hz`.
+
+Establish `: FiniteDimensional K (Algebra.adjoin K S)` using `Submodule.finiteDimensional_of_le hA`. Establish `halg : ∀ x ∈ S, IsAlgebraic K x`. Introduce `x hx`. Establish `hint : IsIntegral K (⟨x, Algebra.subset_adjoin hx⟩ : Algebra.adjoin K S)` using `Algebra.IsIntegral.isIntegral _`. Conclude with `(hint.map (Algebra.adjoin K S).val).isAlgebraic`.
+
+Introduce `y hy`. Establish `hy' : y ∈ (IntermediateField.adjoin K S).toSubalgebra` using `hy`. Rewrite `hy'` using `[IntermediateField.adjoin_toSubalgebra_of_isAlgebraic halg]`. Conclude with `hA hy'`.
+-/
 theorem untiltField_le_of_subset (N : IntermediateField K♭ C♭) (V : Submodule K C)
     [FiniteDimensional K V] (hV : ∀ z ∈ untiltInteger K C p N, (z : C) ∈ V) :
     ∀ y ∈ untiltField K C p N, y ∈ V := by
@@ -186,6 +237,19 @@ theorem untiltField_le_of_subset (N : IntermediateField K♭ C♭) (V : Submodul
   rw [IntermediateField.adjoin_toSubalgebra_of_isAlgebraic halg] at hy'
   exact hA hy'
 
+/- English proof (translation)
+Use `set n := Module.finrank K♭ N`. Use `set B := Module.finBasis K♭ N`. Establish `hv : LinearIndependent K♭ (fun i => (B i : C♭))` using `B.linearIndependent.map' (IntermediateField.val N).toLinearMap (LinearMap.ker_eq_bot.2 Subtype.val_injective)`. Take `⟨w, t, r, ρ, ht0, ht1, hr0, hr1, hρ0, hρ1, hp, hli, hspanv, horth, hnorm, hest⟩` from `exists_tiltSharp_family (K := K) (C := C) hv`. Establish `hwN : ∀ i, w i ∈ N` using `fun i => by`.
+
+Establish `h` using `hspanv i`. Establish `hle : Submodule.span K♭ (Set.range fun i => (B i : C♭)) ≤ Subalgebra.toSubmodule N.toSubalgebra` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact (B j).2)`. Conclude with `hle h`. Set `w' : Fin n → N` to `fun i => ⟨w i, hwN i⟩`. Establish `hli' : LinearIndependent K♭ w'` using `LinearIndependent.of_comp (IntermediateField.val N).toLinearMap hli`.
+
+Establish `htop` using `hli'.span_eq_top_of_card_eq_finrank' (by simp [n])`. Establish `hspan : ∀ x ∈ N, ∃ b : Fin n → K♭, x = ∑ i, b i • w i`. Introduce `x hx`. Establish `hmem : (⟨x, hx⟩ : N) ∈ Submodule.span K♭ (Set.range w')` using `by rw [htop]; trivial`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun K♭).1 hmem`.
+
+Use `⟨b, ?_⟩` and prove the remaining obligations. Use `congrArg (fun u : N => (u : C♭)) hb` as an intermediate fact. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul, w'] at this`. Conclude with `this.symm`. Establish `hptr : ‖(p : K)‖ < t * r`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `htr : t * r ≤ 1` using `by nlinarith`. Establish `hsub : ∀ y ∈ untiltField K C p N, y ∈ Submodule.span K (Set.range fun i => tiltSharp C p (w i))`. Establish `: FiniteDimensional K (Submodule.span K (Set.range fun i => tiltSharp C p (w i)))` using `FiniteDimensional.span_of_finite K (Set.finite_range _)`. Conclude with `untiltField_le_of_subset N _ fun z hz => coe_mem_span_of_mem_untiltInteger N hwN (fun i => (hnorm i).1) hspan ht0 (fun i => (hnorm i).2) htr horth hptr hz`.
+
+Conclude with `⟨w, t, r, ρ, ht0, ht1, hr0, hr1, hρ0, hρ1, hp, hwN, hnorm, hspan, horth, hest, linearIndependent_tiltSharp horth (fun i => (hnorm i).1) (fun i => (hnorm i).2) ht0 hr0 hρ0 hρ1 hp, hsub⟩`.
+-/
 theorem exists_untiltField_basis (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] :
     ∃ (w : Fin (Module.finrank K♭ N) → C♭) (t r ρ : ℝ), 0 < t ∧ t < 1 ∧ 0 < r ∧ r < 1 ∧
       0 < ρ ∧ ρ < 1 ∧ ‖(p : K)‖ ≤ t * r * ρ ∧ (∀ i, w i ∈ N) ∧ (∀ i, ‖w i‖ ≤ 1 ∧ r < ‖w i‖) ∧
@@ -252,6 +316,11 @@ instance finiteDimensional_untiltField (N : IntermediateField K♭ C♭) [Finite
       map_smul' := fun _ _ => rfl }
   exact Module.Finite.of_injective f fun a b h => Subtype.ext (congrArg Subtype.val h :)
 
+/- English proof (translation)
+Take `⟨w, t, r, ρ, -, -, -, -, -, -, -, hwN, -, -, -, -, hli, hsub⟩` from `exists_untiltField_basis (K := K) (C := C) (p := p) N`. Use `set V := Submodule.span K (Set.range fun i => tiltSharp C p (w i))`. Establish `: FiniteDimensional K V` using `FiniteDimensional.span_of_finite K (Set.finite_range _)`. Apply `le_antisymm` to reduce the goal to its premises. Set `f : untiltField K C p N →ₗ[K] V` to `{ toFun := fun y => ⟨y, hsub y y.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Establish `hf : Function.Injective f` using `fun a b h => Subtype.ext (congrArg Subtype.val h :)`. Combine the equalities or inequalities in the displayed calculation. Set `u : Fin (Module.finrank K♭ N) → untiltField K C p N` to `fun i => ⟨tiltSharp C p (w i), tiltSharp_mem_untiltField (hwN i)⟩`. Establish `hu : LinearIndependent K u` using `LinearIndependent.of_comp (IntermediateField.val _).toLinearMap hli`. Simplify using `using hu.fintype_card_le_finrank`.
+-/
 theorem finrank_untiltField (N : IntermediateField K♭ C♭) [FiniteDimensional K♭ N] :
     Module.finrank K (untiltField K C p N) = Module.finrank K♭ N := by
   obtain ⟨w, t, r, ρ, -, -, -, -, -, -, -, hwN, -, -, -, -, hli, hsub⟩ :=

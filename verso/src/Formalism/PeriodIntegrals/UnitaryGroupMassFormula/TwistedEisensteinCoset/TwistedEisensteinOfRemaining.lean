@@ -7,8 +7,14 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TwistedEisensteinCoset.
 
 namespace PI.TwistedEisensteinNonvanishing.W
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨integer_integral_iff_dvd, integral_approximation_by_integer, element_eq_prime_power_mul_unit, valuation_exponent_unique, unit_congruent_to_integer⟩`.
+-/
 theorem ntAll : NTAll := ⟨integer_integral_iff_dvd, integral_approximation_by_integer, element_eq_prime_power_mul_unit, valuation_exponent_unique, unit_congruent_to_integer⟩
 
+/- English proof (translation)
+The claim follows from `twisted_eisenstein_of_hypotheses (stab_of ntAll) (cov_of ntAll) (omStep_of jacobian_transformation_law (muNe_of ntAll)) hPS hPP hBE translated_function_support translated_function_invariance unfolding_integrand_good character_argument_bounded unfolding_affine_space_invariant free …`.
+-/
 theorem twisted_eisenstein_of_remaining (hPS : PhiSuppP) (hPP : PhiPerP) (hBE : BddEntP) : PI.TwistedEisensteinNonvanishing.TwistedEisensteinNonvanishing :=
   twisted_eisenstein_of_hypotheses (stab_of ntAll) (cov_of ntAll) (omStep_of jacobian_transformation_law (muNe_of ntAll)) hPS hPP hBE translated_function_support
     translated_function_invariance unfolding_integrand_good character_argument_bounded unfolding_affine_space_invariant free_coordinate_affine_invertible restriction_to_affine_surjective character_argument_constant_shift

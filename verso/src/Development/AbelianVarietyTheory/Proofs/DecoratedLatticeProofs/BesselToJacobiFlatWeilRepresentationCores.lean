@@ -24,11 +24,19 @@ namespace GlobalTheory.Unf.FlatCommBF
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI := h`. Use `infer_instance`.
+-/
 theorem sFinite_of_haar {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [LocallyCompactSpace G]
     [SecondCountableTopology G] (ν : Measure G) (h : ν.IsHaarMeasure) : SFinite ν := by
   haveI := h
   infer_instance
 
+/- English proof (translation)
+Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hv : Continuous fun u : UX D ρ => u.1.1` using `Units.continuous_val.comp continuous_subtype_val`. Unfold `psiUni psiE upSum`. Use `hψ.comp (ht.comp ?_)` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp hv)`. Conclude with `continuous_const`.
+-/
 theorem continuous_psiUni (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous ψ) (ρ : ℕ) :
     Continuous fun u : UX D ρ => psiUni ψ u.1 := by
   have ht : Continuous (Algebra.trace (AF D.host.F) (AE D)) := IsModuleTopology.continuous_of_linearMap _
@@ -40,12 +48,18 @@ theorem continuous_psiUni (ψ : AddChar (AF D.host.F) ℂ) (hψ : Continuous ψ)
   · exact (continuous_apply j).comp ((continuous_apply i).comp hv)
   · exact continuous_const
 
+/- English proof (translation)
+Simplify using `only [jacT, heisO, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_const_mul, integral_const_mul]`.
+-/
 theorem jacT_integral (ψ : AddChar (AF D.host.F) ℂ) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
     (y : Mx D S.rank ρ) (n : GA D T) {U : Type} [MeasurableSpace U] (m : Measure U) (G : U → WO S T₀ → ℂ)
     (w : WO S T₀) : jacT ψ d S y n (fun w' => ∫ u, G u w' ∂m) w = ∫ u, jacT ψ d S y n (G u) w ∂m := by
   simp only [jacT, heisO, Pi.smul_apply, smul_eq_mul]
   rw [integral_const_mul, integral_const_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [jacT, heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jacT_smul (ψ : AddChar (AF D.host.F) ℂ) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D)
     (y : Mx D S.rank ρ) (n : GA D T) (c : ℂ) (f : WO S T₀ → ℂ) :
     jacT ψ d S y n (c • f) = c • jacT ψ d S y n f := by
@@ -55,6 +69,39 @@ theorem jacT_smul (ψ : AddChar (AF D.host.F) ℂ) {T T₀ : HSp D} {ρ : ℕ} (
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D ψ ρ B J s om' hom' Ψ hΨ h₀ n hn h'`. Establish `hstd : IsStdChar D ψ (-1)` using `s.weil.std`. Take `⟨hloc, hsc, -⟩` from `GlobalTheory.UnitU.topology D ρ`. Use `haveI := hloc`. Use `haveI := hsc`.
+
+Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Use `haveI : SFinite s.vU.ν := @sFinite_of_haar (UX D ρ) _ _ _ hloc hsc s.vU.ν s.vU.unit.1`. Take `⟨hbase, -, hx0, -⟩` from `GlobalTheory.Unf.base_point D J.W J.W₀ ρ J.d`. Establish `hlin : LinearIndependent D.host.E J.d.e.transpose` using `hbase.1`. Establish `hev` using `GlobalTheory.Unf.evalAt_xZero_yZero D ψ ρ B J s om' hom' Ψ hΨ`.
+
+Establish `hom1 : s.om 1 Ψ = Ψ` using `by rw [map_one]; rfl`. Establish `e3 : ∀ u : UX D ρ, evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) = s.om₀ (1, h') (evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)))`. Introduce `u`. Establish `h` using `hev.1 u 1 1 (one_mem _) h'`. Rewrite `h` using `[map_one, one_mul, ← Prod.one_eq_mk, map_one, ← Prod.one_eq_mk, map_one]`.
+
+Rewrite using `[h]`. Simplify using `only [opA, jacT_one]`. Both sides reduce to the same expression. Establish `e2 : ∀ u : UX D ρ, evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) = opA ψ J.d B.o B.ζ s.om₀ n h' (evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)))`. Introduce `u`.
+
+Establish `h` using `hev.1 u 1 n hn h'`. Rewrite `h` using `[map_one, ← Prod.one_eq_mk, map_one, ← Prod.one_eq_mk, map_one]`. Conclude with `h`. Establish `hmix` using `GlobalTheory.MixValues.mixed_values D ψ hstd`. Establish `thev : ∀ Φ, IsThetaFunO ψ B.V J.W Φ → ∀ u : UX D ρ, IsThetaFunO ψ B.V₀ J.W₀ (evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Φ (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)))` using `fun Φ hΦ u => hmix.2 B.V₀ J.W J.W₀ ρ J.d s.vT.μ s.vT.𝓕 s.vT.covol _ (hmix.1 B.V B.V₀ J.W ρ B.d s.vS.μ s.vS.𝓕 s.vS.covol Φ hΦ _) _`.
+
+Establish `thom : ∀ p, IsThetaFunO ψ B.V J.W (s.om p Ψ)` using `fun p => s.weil.om_pres p Ψ hΨ`. Establish `hFL` using `GlobalTheory.Unf.Flat.flatLaw D ψ hstd B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e hlin (yZero B.V₀ ρ (vecB B.o B.ζ))`. Establish `thflat : ∀ p, IsThetaFunO ψ B.V₀ J.W₀ (flatBF s (s.om p Ψ))` using `fun p => by`. Establish `h` using `(hFL _ (thom p)).2`. Rewrite `h` using `[← hx0]`.
+
+Conclude with `h`. Take `⟨M, hMi, hM⟩` from `GlobalTheory.Unf.flatFun_majorant D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil s.vU J.d.e hlin Ψ hΨ {1, (1, J.d.emb0 h'), (1, n * J.d.emb0 h'), (embA B.d B.o h₀, n * J.d.emb0 h')} (Set.toFinite _).isCompact`. Simplify using `only [← hx0] at hM`. Establish `bound : ∀ p ∈ ({1, (1, J.d.emb0 h'), (1, n * J.d.emb0 h'), (embA B.d B.o h₀, n * J.d.emb0 h')} : Set (GA D B.V × GA D J.W)), ∀ (u : UX D ρ) w, ‖star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om p Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w‖ ≤ M u` using `fun p hp u w => hM p hp _ w u`. Establish `hmc` using `GlobalTheory.MixCont.mixed_coords_continuous D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil Ψ hΨ`.
+
+Establish `hxu : Continuous fun u : UX D ρ => xZero J.d ⬝ u.1.1` using `continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)`. Establish `cont : ∀ p, Continuous fun q : UX D ρ × WO B.V₀ J.W₀ => star (psiUni ψ q.1.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om p Ψ) (xZero J.d ⬝ q.1.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) q.2`. Introduce `p`. Establish `h1 : Continuous fun q : UX D ρ × WO B.V₀ J.W₀ => ((p, xZero J.d ⬝ q.1.1.1, yZero B.V₀ ρ (vecB B.o B.ζ), q.2) : (GA D B.V × GA D J.W) × Mx D J.W.rank ρ × Mx D B.V₀.rank ρ × WO B.V₀ J.W₀)` using `continuous_const.prodMk ((hxu.comp continuous_fst).prodMk (continuous_const.prodMk continuous_snd))`. Establish `h2` using `hmc.2.comp h1`.
+
+Establish `h3 : Continuous fun q : UX D ρ × WO B.V₀ J.W₀ => star (psiUni ψ q.1.1)` using `((continuous_psiUni ψ hstd.1.1 ρ).comp continuous_fst).star`. Conclude with `h3.mul h2`. Establish `hci` using `GlobalTheory.CommInt.om_integral_comm D ψ B.V₀ J.W₀ s.χV s.χW s.om₀ s.weil₀ (UX D ρ) s.vU.ν`. Establish `hF : ∀ u : UX D ρ, (fun w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) = star (psiUni ψ u.1) • evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ))` using `fun u => rfl`. Establish `hG : ∀ (u : UX D ρ) w, s.om₀ (1, h') (fun w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) w = star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, J.d.emb0 h') Ψ) (xZero J.d ⬝ …`.
+
+Introduce `u w`. Rewrite using `[hF, map_smul, e3]`. Both sides reduce to the same expression. Establish `step1 : ∀ w, s.om₀ (1, h') (flatBF s Ψ) w = ∫ u, star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w ∂s.vU.ν`. Introduce `w`.
+
+Establish `h` using `hci (fun u w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) (1, h') M (fun u => by rw [hF]; exact GlobalTheory.OrientedHeis.theta_smul _ (thev Ψ hΨ u)) (by have h := cont 1; rw [hom1] at h; exact h) ( …`. Conclude with `h.trans (integral_congr_ae (Filter.Eventually.of_forall fun u => hG u w))`. Establish `hF2 : ∀ u : UX D ρ, (fun w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) = star (psiUni ψ u.1) • evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) ( …` using `fun u => rfl`. Establish `hG2 : ∀ (u : UX D ρ) w, s.om₀ (B.o.emb (h₀, 1), 1) (fun w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) w = star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT. …`. Introduce `u w`.
+
+Rewrite using `[hF2, map_smul, e2, hev.1 u h₀ n hn h']`. Both sides reduce to the same expression. Establish `step2 : ∀ w, s.om₀ (B.o.emb (h₀, 1), 1) (fun w => ∫ u, star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w ∂s.vU.ν) w = ∫ u, star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT. …`. Introduce `w`. Establish `h` using `hci (fun u w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) (B.o.emb (h₀, 1), 1) M (fun u => by rw [hF2]; exact GlobalTheory.OrientedHeis.theta_smul _ (thev _ (thom _) u)) (c …`.
+
+Conclude with `h.trans (integral_congr_ae (Filter.Eventually.of_forall fun u => hG2 u w))`. Establish `hopa : opA ψ J.d B.o B.ζ s.om₀ n h' (flatBF s Ψ) = fun w => ∫ u, star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, n * J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w ∂s.vU.ν`. Use function extensionality and compare the values at `w`. Establish `h1 : s.om₀ (1, h') (flatBF s Ψ) = fun w => ∫ u, star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w ∂s.vU.ν`. Use function extensionality and compare the values at `step1`.
+
+Use `show jacT ψ J.d B.V₀ (yZero B.V₀ ρ (vecB B.o B.ζ)) n (s.om₀ (1, h') (flatBF s Ψ)) w = _`. Rewrite using `[h1, jacT_integral]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `h2 : (fun w => star (psiUni ψ u.1) * evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (1, J.d.emb0 h') Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ ρ (vecB B.o B.ζ)) w) = star (psiUni ψ u.1) • s.om₀ (1, h') (evalAt ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (Ψ) (xZero J.d ⬝ u.1.1) (yZero B.V₀ …`. Rewrite using `[e3]`.
+
+Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[h2, jacT_smul, e2]`. Both sides reduce to the same expression. Rewrite using `[hopa]`.
+
+Use function extensionality and compare the values at `w`. Conclude with `(step2 w).symm`.
+-/
 theorem flatBF_om : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (om' : Om B.V₀ J.W), IsWeilDatumO ψ B.V₀ J.W s.χV s.χW om' → ∀ (Ψ : WO B.V J.W → ℂ), IsThetaFunO ψ B.V J.W Ψ → ∀ h₀, ∀ n ∈ radX J.d, ∀ h', flatBF s (s.om (embA B.d B.o h₀, n * J.d.emb0 h') Ψ) = s.om₀ (B.o.emb (h₀, 1), 1) (opA ψ J.d B.o B.ζ s.om₀ n h' (flatBF s Ψ)) := by
   intro D ψ ρ B J s om' hom' Ψ hΨ h₀ n hn h'
   have hstd : IsStdChar D ψ (-1) := s.weil.std

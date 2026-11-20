@@ -8,6 +8,17 @@ open GlobalTheory.ZM GlobalTheory.KeyFam
 
 namespace GlobalTheory.KeyFam
 
+/- English proof (translation)
+Introduce `h A _ L u T`. Establish `hc : Continuous T` using `T.toContinuousLinearEquiv.continuous`. Establish `hd : Differentiable ℂ T` using `T.toContinuousLinearEquiv.differentiable`. Set `Λ' : Submodule ℤ (Fin h → ℂ)` to `u.Λ.comap ((T.restrictScalars ℤ).toLinearMap)`. Establish `hmem : ∀ z, z ∈ Λ' ↔ T z ∈ u.Λ` using `fun z => Iff.rfl`.
+
+Establish `hdisc : DiscreteTopology Λ'` using `by haveI := u.discrete`. Set `f : Λ' → u.Λ` to `fun z => ⟨T z, (hmem z).1 z.2⟩`. Establish `hf : Continuous f` using `(hc.comp continuous_subtype_val).subtype_mk _`. Establish `hi : Function.Injective f` using `fun a b hab => Subtype.ext (T.injective (congrArg Subtype.val hab))`. Conclude with `DiscreteTopology.of_continuous_injective hf hi`.
+
+Establish `hfull : Submodule.span ℝ (Λ' : Set (Fin h → ℂ)) = ⊤`. Establish `h1 : (Λ' : Set (Fin h → ℂ)) = (T.symm.restrictScalars ℝ).toLinearMap '' (u.Λ : Set (Fin h → ℂ))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Conclude with `⟨T z, hz, by simp⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `(hmem _).2 ?_` and prove the remaining obligations. Simplify using `using hw`. Rewrite using `[h1, ← Submodule.map_span, u.full, Submodule.map_top, LinearMap.range_eq_top]`.
+
+Conclude with `(T.symm.restrictScalars ℝ).surjective`. Use `⟨{ ex := fun z => u.ex (T z) ex_add := fun z w => by rw [map_add, u.ex_add] ex_onto := u.ex_onto.comp T.surjective Λ := Λ' ker := fun z => u.ker (T z) discrete := hdisc full := hfull hol := fun U f => ⟨(u.hol U f).1.preimage hc, (u.hol U f).2.comp hd.differentiableOn (fun _ hz => …` and prove the remaining obligations.
+-/
 theorem holUnif_transport_linearEquiv : ∀ (h : ℕ) (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (u : HolUnif A L h) (T : (Fin h → ℂ) ≃ₗ[ℂ] (Fin h → ℂ)), ∃ u' : HolUnif A L h, (∀ z, u'.ex z = u.ex (T z)) ∧ ∀ z, z ∈ u'.Λ ↔ T z ∈ u.Λ := by
   intro h A _ L u T
   have hc : Continuous T := T.toContinuousLinearEquiv.continuous

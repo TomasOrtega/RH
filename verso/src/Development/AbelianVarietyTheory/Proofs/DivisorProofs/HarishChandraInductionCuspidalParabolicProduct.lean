@@ -16,6 +16,11 @@ open Formalism.L2.DIV GlobalTheory.BI
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {r s : ℕ}
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `hg.1`. Introduce `hg`.
+
+Conclude with `⟨hg, (blockTri (κ := K) (fun i => (b i : ℕ))).inv_mem hg⟩`.
+-/
 theorem parab_eq_blockTri (b : Fin r → Fin s) :
     parab K b = blockTri (κ := K) (fun i => (b i : ℕ)) := by
   ext g
@@ -32,11 +37,35 @@ def blockGL (b : Fin r → Fin s) (c : Fin s) :
   glEquiv K (Fintype.equivFin {i // b i = c}).symm
 
 omit [Fintype K] [DecidableEq K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockGL_apply (b : Fin r → Fin s) (c : Fin s) (g : GL (Fin (Fintype.card {i // b i = c})) K)
     (x y : {i // b i = c}) :
     ((blockGL b c g : GL {i // b i = c} K) : Matrix _ _ K) x y =
       (g : Matrix _ _ K) (Fintype.equivFin _ x) (Fintype.equivFin _ y) := rfl
 
+/- English proof (translation)
+Set `_ : Fintype (GlobalTheory.FiniteGL.unipRadical K c')` to `Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype]`. Set `ρu : Representation ℂ (GlobalTheory.FiniteGL.unipRadical K c') τ` to `τ.ρ.comp ((blockGL b c).toMonoidHom.comp (GlobalTheory.FiniteGL.unipRadical K c').subtype)`. Use `(GlobalTheory.GoodTypeGeneric.sum_character_eq_zero_iff ρu).2 ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i0, j0, h0⟩ : ∃ i0 j0, c' i0 < c' j0 := by`. Take `⟨i, j, hij⟩` from `hc'`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `⟨i, j, h⟩`. Conclude with `⟨j, i, h⟩`.
+
+Set `F` to `Fintype.equivFin {i // b i = c}`. Set `bb : {i // b i = c} → Fin 2` to `fun x => if c' (F x) ≤ c' i0 then 0 else 1`. Establish `hbb : Function.Surjective bb`. Introduce `k`. Use `fin_cases k`.
+
+Conclude with `⟨F.symm i0, by simp [bb]⟩`. Conclude with `⟨F.symm j0, by simp [bb, not_le.2 h0]⟩`. Use `hτ 2 bb hbb le_rfl v fun u hu => ?_` and prove the remaining obligations. Use `set u' := (blockGL b c).symm u with hu'def`. Establish `hu'u : blockGL b c u' = u` using `MulEquiv.apply_symm_apply _ _`.
+
+Establish `hent : ∀ k l, (u' : Matrix _ _ K) k l = (u : Matrix _ _ K) (F.symm k) (F.symm l)`. Introduce `k l`. Rewrite using `[← hu'u, blockGL_apply]`. Simplify using `[F]`. Establish `hmem : u' ∈ GlobalTheory.FiniteGL.unipRadical K c'`.
+
+Rewrite using `[GlobalTheory.FiniteGL.mem_unipRadical]`. Introduce `k l hlk`. Rewrite using `[Matrix.sub_apply, hent]`. Establish `hb : ∀ m, bb (F.symm m) = if c' m ≤ c' i0 then 0 else 1` using `fun m => by simp [bb]`. Distinguish the cases in `hkl : bb (F.symm k) = bb (F.symm l)`.
+
+Rewrite using `[hu.2 _ _ hkl]`. Distinguish the cases in `e : k = l`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => e (F.symm.injective h)), Matrix.one_apply_ne e, sub_zero]`.
+
+Establish `hk : ¬ c' k ≤ c' i0` using `fun hk => hkl (by rw [hb, hb, if_pos hk, if_pos (hlk.trans hk)])`. Establish `hl : c' l ≤ c' i0`. Assume the negation of the conclusion as `hl`. Conclude with `hkl (by rw [hb, hb, if_neg hk, if_neg hl])`. Establish `hlt : bb (F.symm l) < bb (F.symm k)`.
+
+Rewrite using `[hb, hb, if_neg hk, if_pos hl]`. Evaluate the decidable proposition. Establish `ekl : k ≠ l` using `fun e => hkl (by rw [e])`. Rewrite using `[hu.1.1 _ _ hlt, Matrix.one_apply_ne ekl, sub_zero]`. Use `hv ⟨u', hmem⟩` as an intermediate fact.
+
+Simplify `this` using `[ρu, hu'u]`.
+-/
 theorem sum_unipRadical_eq_zero (b : Fin r → Fin s) (c : Fin s) (τ : FDRep ℂ (GL {i // b i = c} K))
     (hτ : IsCuspidal K τ) (c' : Fin (Fintype.card {i // b i = c}) → ℕ) (hc' : ∃ i j, c' i ≠ c' j) :
     ∑ᶠ u : GlobalTheory.FiniteGL.unipRadical K c', LinearMap.trace ℂ τ (τ.ρ (blockGL b c u)) = 0 := by
@@ -87,6 +116,9 @@ theorem sum_unipRadical_eq_zero (b : Fin r → Fin s) (c : Fin s) (τ : FDRep �
   have := hv ⟨u', hmem⟩
   simpa [ρu, hu'u] using this
 
+/- English proof (translation)
+Establish `hi` using `GlobalTheory.FinGL.Transport.isIrreducible_comp τ.ρ (blockGL b c).toMonoidHom (blockGL b c).surjective (GlobalTheory.SerOSys.ZSum.isIrreducible_of_simple τ hτ)`. Establish `h` using `(isChar_and_isIrrChar_of_rep ℂ ℂ _ τ (τ.ρ.comp (blockGL b c).toMonoidHom)).2 hi`. Simplify `h` using `[Representation.character]`.
+-/
 theorem isIrrChar_block (b : Fin r → Fin s) (c : Fin s) (τ : FDRep ℂ (GL {i // b i = c} K)) (hτ : Simple τ) :
     IsIrrChar ℂ ℂ (fun g : GL (Fin (Fintype.card {i // b i = c})) K => LinearMap.trace ℂ τ (τ.ρ (blockGL b c g))) := by
   have hi := GlobalTheory.FinGL.Transport.isIrreducible_comp τ.ρ (blockGL b c).toMonoidHom (blockGL b c).surjective
@@ -94,6 +126,23 @@ theorem isIrrChar_block (b : Fin r → Fin s) (c : Fin s) (τ : FDRep ℂ (GL {i
   have h := (isChar_and_isIrrChar_of_rep ℂ ℂ _ τ (τ.ρ.comp (blockGL b c).toMonoidHom)).2 hi
   simpa [Representation.character] using h
 
+/- English proof (translation)
+Introduce `K _ _ _ r s b lam _ hlam hmono`. Set `b₀ : Fin r → ℕ` to `fun i => (b i : ℕ)`. Establish `hb₀ : Monotone b₀` using `fun i j h => hmono h`. Set `d : Fin s → ℕ` to `fun c => Fintype.card {i // b i = c}`. Set `e : (Σ c, Fin (d c)) ≃ Fin r` to `(Equiv.sigmaCongrRight fun c => (Fintype.equivFin {i // b i = c}).symm).trans (Equiv.sigmaFiberEquiv b)`.
+
+Establish `hbe : ∀ x, b (e x) = x.1` using `fun x => ((Fintype.equivFin {i // b i = x.1}).symm x.2).2`. Establish `he : ∀ x y, b₀ (e x) = b₀ (e y) ↔ x.1 = y.1`. Introduce `x y`. Simplify using `only [b₀, hbe, Fin.val_inj]`. Set `χ : ∀ c, GL (Fin (d c)) K → ℂ` to `fun c g => LinearMap.trace ℂ (lam c) ((lam c).ρ (blockGL b c g))`.
+
+Take `⟨n, σ, hσ, hch⟩` from `GlobalTheory.GoodTypeGeneric.exists_isCuspDatum (F := K) hb₀ e he χ (fun c => isIrrChar_block b c (lam c) (hlam c).1) (fun c c' hc' => sum_unipRadical_eq_zero b c (lam c) (hlam c).2 c' hc')`. Use `⟨n, b₀, σ, hσ, fun x => ?_⟩` and prove the remaining obligations. Establish `hPB` using `parab_eq_blockTri (K := K) b`. Set `f : blockTri (κ` to `K) b₀ →* parab K b := MonoidHom.codRestrict (blockTri (κ := K) b₀).subtype (parab K b) (fun p => by rw [hPB]; exact p.2)`. Establish `hf : Function.Surjective f` using `fun p => ⟨⟨p.1, by rw [← hPB]; exact p.2⟩, rfl⟩`.
+
+Establish `h1 : LinearMap.trace ℂ (hcSpace K b lam) (hcRep K b lam x) = (Representation.coind (parab K b).subtype (PI.SerBridgeGLW.inflRep K b lam)).character x` using `rfl`. Use `show LinearMap.trace ℂ (hcSpace K b lam) (hcRep K b lam x) = _`. Establish `h2` using `GlobalTheory.FinGL.Transport.character_coind (parab K b).subtype (blockTri (κ := K) b₀).subtype (PI.SerBridgeGLW.inflRep K b lam) (MulEquiv.refl _) f hf (fun _ => rfl) x`. Rewrite `h2` using `[MulEquiv.refl_apply]`. Rewrite using `[h1, ← h2]`.
+
+Rewrite using `[GlobalTheory.GoodTypeGeneric.character_coind_eq_ind, GlobalTheory.GoodTypeGeneric.character_coind_eq_ind]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[hch p]`. Use `show LinearMap.trace ℂ _ (PiTensorProduct.map fun c => (lam c).ρ (levi K b c (f p))) = _`.
+
+Rewrite using `[PI.SerBridgeGLW.trace_piTensorMap]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `show _ = LinearMap.trace ℂ (lam c) ((lam c).ρ (blockGL b c _))`. Use `congr 3`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `x y`. Rewrite using `[blockGL_apply, GlobalTheory.GoodTypeGeneric.blocksHom_apply]`. Establish `hx : ∀ z : {i // b i = c}, e ⟨c, Fintype.equivFin _ z⟩ = z.1` using `fun z => by`. Simplify using `[e, Equiv.sigmaFiberEquiv]`. Rewrite using `[hx, hx]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isCuspProdChar_trace_hcRep : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (r s : ℕ) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)), Function.Surjective b →
     (∀ c, Simple (lam c) ∧ IsCuspidal K (lam c)) → Monotone b →

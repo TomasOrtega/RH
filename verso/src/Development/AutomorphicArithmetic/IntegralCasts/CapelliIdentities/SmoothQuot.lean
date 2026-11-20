@@ -9,6 +9,19 @@ noncomputable def UpperTheory.Reformulated.B.Gwb5.IsSmooth :
         (ρ : Representation k G V) ↦
       ∀ (v : V), IsOpen {g : G | ((ρ : G → V →ₗ[k] V) g : V → V) v = v}
 
+/- English proof (translation)
+Introduce `G _ U _ _ _ _ ρ h T hst v`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective T v`. Set `H : Subgroup G` to `{ carrier := {g : G | ρ.quotient T hst g (Submodule.Quotient.mk u) = Submodule.Quotient.mk u} one_mem' := by show ρ.quotient T hst 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Use the proof step `mul_mem' := by`. Introduce `a b ha hb`. Establish `ha' : ρ.quotient T hst a (Submodule.Quotient.mk u) = Submodule.Quotient.mk u` using `ha`. Establish `hb' : ρ.quotient T hst b (Submodule.Quotient.mk u) = Submodule.Quotient.mk u` using `hb`. Use `show ρ.quotient T hst (a * b) _ = _`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Establish `ha' : ρ.quotient T hst a (Submodule.Quotient.mk u) = Submodule.Quotient.mk u` using `ha`. Use `show ρ.quotient T hst a⁻¹ _ = _`.
+
+Use `conv_lhs => rw [← ha']`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Use `rfl }`. Use `H.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Establish `h1 : {g : G | ρ g u = u} ∈ nhds (1 : G)` using `(h u).mem_nhds (by show ρ 1 u = u`.
+
+Rewrite using `[map_one]`. Use the proof step `rfl)`. Use `Filter.mem_of_superset h1 ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hg' : ρ g u = u` using `hg`.
+
+Use `show ρ.quotient T hst g (Submodule.Quotient.mk u) = Submodule.Quotient.mk u`. Establish `e : ρ.quotient T hst g (Submodule.Quotient.mk u) = Submodule.Quotient.mk (ρ g u)` using `rfl`. Rewrite using `[e, hg']`.
+-/
 theorem UpperTheory.Reformulated.B.Gwb5.smooth_quot :
     ∀ {G : Type} [inst : Group G] {U : Type} [inst_1 : AddCommGroup U] [inst_2 : _root_.Module ℂ U]
       [inst_3 : TopologicalSpace G] [IsTopologicalGroup G] {ρ : Representation ℂ G U},

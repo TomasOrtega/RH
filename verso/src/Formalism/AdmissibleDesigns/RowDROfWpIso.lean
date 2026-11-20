@@ -34,6 +34,9 @@ variable (hT : Dd.Top (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBl
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD`. Use `letI := modS' i r π dc g0 eB e₁ s Dd hD hc`. Use `haveI := KLat.towerT' Dd.r Dd.χ (RepresentationBoundsCohomology.blk D.R) Dd.ρk (epsU D.nd i) (Aw i dc) (hKm i) (hEps i) (hM0 i r π g0 eB e₁ s Dd hD hc)`. Establish `hπ : Function.Surjective (piS i Dd hT hrk)` using `(tensor_lattice_facts Dd (D.nd.T i) (RepresentationBoundsCohomology.one_le_letterBlockLength D.R) hT hrk (epsU D.nd i)).2.2.2.2.2.2.2.2.2.2`. Conclude with `KRow.rowTie_disp i dc _ _ (DatS i r π dc g0 eB e₁ s Dd hD hc) (rho1 i Dd) (piS i Dd hT hrk) (vDS i r π dc g0 eB e₁ s Dd hD hc) (hpDS i r π dc g0 eB e₁ s Dd hD hc hT hrk) (heDS i r π dc g0 eB e₁ s Dd hD hc hT hrk) r ρ π hπ hSub hOrb hMat hTop hFin hcob`.
+-/
 theorem rowTie_S
     (hSub : haveI := Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD
       KRow.RowSub (ρ₁ := rho1 i Dd) i dc r)

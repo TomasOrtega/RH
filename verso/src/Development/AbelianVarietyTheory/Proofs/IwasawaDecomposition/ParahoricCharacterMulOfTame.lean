@@ -16,6 +16,9 @@ section Blocks
 
 variable {S : Type*} [CommRing S] {r c : ℕ}
 
+/- English proof (translation)
+Establish `e : M.submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (M.submatrix (Fin.castAdd c) (Fin.castAdd c)) (M.submatrix (Fin.castAdd c) (Fin.natAdd r)) 0 (M.submatrix (Fin.natAdd r) (Fin.natAdd r))`. Rewrite using `[← h]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M, e, Matrix.det_fromBlocks_zero₂₁]`.
+-/
 theorem det_eq_of_lower_zero (M : Matrix (Fin (r + c)) (Fin (r + c)) S)
     (h : M.submatrix (Fin.natAdd r) (Fin.castAdd c) = 0) :
     M.det = (M.submatrix (Fin.castAdd c) (Fin.castAdd c)).det * (M.submatrix (Fin.natAdd r) (Fin.natAdd r)).det := by
@@ -26,6 +29,9 @@ theorem det_eq_of_lower_zero (M : Matrix (Fin (r + c)) (Fin (r + c)) S)
     ext (i | i) (j | j) <;> simp
   rw [← Matrix.det_submatrix_equiv_self finSumFinEquiv M, e, Matrix.det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h0 : ∀ a, M (Fin.natAdd r i) (Fin.castAdd c a) = 0` using `fun a => congrFun (congrFun h i) a`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_add, h0]`.
+-/
 theorem mul_dd_of_lower_zero (M N : Matrix (Fin (r + c)) (Fin (r + c)) S)
     (h : M.submatrix (Fin.natAdd r) (Fin.castAdd c) = 0) :
     (M * N).submatrix (Fin.natAdd r) (Fin.natAdd r) =
@@ -34,6 +40,15 @@ theorem mul_dd_of_lower_zero (M N : Matrix (Fin (r + c)) (Fin (r + c)) S)
   have h0 : ∀ a, M (Fin.natAdd r i) (Fin.castAdd c a) = 0 := fun a => congrFun (congrFun h i) a
   simp [Matrix.mul_apply, Fin.sum_univ_add, h0]
 
+/- English proof (translation)
+Establish `key : ∀ X : Matrix (Fin (r + c)) (Fin (r + c)) S, (∀ i j, X (Fin.natAdd r i) (Fin.castAdd c j) ∈ I) → ((Ideal.Quotient.mk I).mapMatrix X).submatrix (Fin.natAdd r) (Fin.castAdd c) = 0`. Introduce `X hX`. Use extensionality with `i j`. Simplify `hX i j` using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `sub : ∀ X : Matrix (Fin (r + c)) (Fin (r + c)) S, Ideal.Quotient.mk I (X.submatrix (Fin.natAdd r) (Fin.natAdd r)).det = (((Ideal.Quotient.mk I).mapMatrix X).submatrix (Fin.natAdd r) (Fin.natAdd r)).det`.
+
+Introduce `X`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `unit : ∀ X : Matrix (Fin (r + c)) (Fin (r + c)) S, (∀ i j, X (Fin.natAdd r i) (Fin.castAdd c j) ∈ I) → IsUnit X.det → IsUnit (Ideal.Quotient.mk I (X.submatrix (Fin.natAdd r) (Fin.natAdd r)).det)`. Introduce `X hX hu`.
+
+Establish `h1 : IsUnit ((Ideal.Quotient.mk I).mapMatrix X).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hu.map _`. Rewrite `h1` using `[det_eq_of_lower_zero _ (key X hX)]`. Rewrite using `[sub]`.
+
+Conclude with `isUnit_of_mul_isUnit_right h1`. Use `⟨unit K hK hu, unit K' hK' hu', ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, map_mul, sub, sub, sub, map_mul, mul_dd_of_lower_zero _ _ (key K hK), Matrix.det_mul]`.
+-/
 theorem dd_mod (I : Ideal S) (K K' : Matrix (Fin (r + c)) (Fin (r + c)) S)
     (hK : ∀ i j, K (Fin.natAdd r i) (Fin.castAdd c j) ∈ I) (hK' : ∀ i j, K' (Fin.natAdd r i) (Fin.castAdd c j) ∈ I)
     (hu : IsUnit K.det) (hu' : IsUnit K'.det) :
@@ -85,6 +100,15 @@ def redI (hO : ∀ x ∈ O, v x ≤ 1) : Ideal O where
 
 variable {v O ε}
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `h.exists_right_inv`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `h1 : a * b - 1 ∈ redI v O ε hO`. Apply `Ideal.Quotient.eq.1` to reduce the goal to its premises. Simplify using `using hb`.
+
+Establish `h2 : v ((a : F) * b - 1) ≤ ε`. Establish `h1' : v (((a * b - 1 : O)) : F) ≤ ε` using `h1`. Simplify using `using h1'`. Establish `h3 : v ((a : F) * b) = 1`. Establish `e : (a : F) * b = ((a : F) * b - 1) + 1` using `by ring`.
+
+Rewrite using `[e, Valuation.map_add_eq_of_lt_right]`. Simplify using the standard rewrite rules. Simplify using `using h2.trans_lt hε`. Rewrite `h3` using `[map_mul]`. Use `le_antisymm (hO _ a.2) ?_` and prove the remaining obligations.
+
+Rewrite using `[← h3]`. Conclude with `mul_le_of_le_one_right' (hO _ b.2)`.
+-/
 theorem val_eq_one_of_isUnit (hO : ∀ x ∈ O, v x ≤ 1) (hε : ε < 1) (a : O)
     (h : IsUnit (Ideal.Quotient.mk (redI v O ε hO) a)) : v (a : F) = 1 := by
   obtain ⟨b, hb⟩ := h.exists_right_inv
@@ -107,6 +131,11 @@ theorem val_eq_one_of_isUnit (hO : ∀ x ∈ O, v x ≤ 1) (hε : ε < 1) (a : O
 
 omit [LinearOrderedCommGroupWithZero Γ] in
 
+/- English proof (translation)
+Set `K : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(k : Matrix (Fin n) (Fin n) F) i j, hk.1 i j⟩`. Set `K' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨((k⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j, hk.2 i j⟩`. Establish `e : (k : Matrix (Fin n) (Fin n) F) = K.map O.subtype` using `by ext i j; rfl`. Establish `e' : ((k⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = K'.map O.subtype` using `by ext i j; rfl`. Use `⟨K, e, Matrix.isUnit_det_of_right_inverse (B := K') ?_⟩` and prove the remaining obligations.
+
+Apply `Matrix.map_injective (f := O.subtype) Subtype.val_injective` to reduce the goal to its premises. Use `show (K * K').map O.subtype = (1 : Matrix (Fin n) (Fin n) O).map O.subtype`. Rewrite using `[Matrix.map_mul, ← e, ← e', ← Units.val_mul, mul_inv_cancel, Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression.
+-/
 theorem exists_lift {n : ℕ} {k : GL (Fin n) F} (hk : k ∈ GLint O n) :
     ∃ K : Matrix (Fin n) (Fin n) O, (k : Matrix (Fin n) (Fin n) F) = K.map O.subtype ∧ IsUnit K.det := by
   let K : Matrix (Fin n) (Fin n) O := fun i j => ⟨(k : Matrix (Fin n) (Fin n) F) i j, hk.1 i j⟩
@@ -120,12 +149,24 @@ theorem exists_lift {n : ℕ} {k : GL (Fin n) F} (hk : k ∈ GLint O n) :
   rfl
 
 omit [LinearOrderedCommGroupWithZero Γ] in
+/- English proof (translation)
+Use `show _ = O.subtype _`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_dd_map {r c : ℕ} (K : Matrix (Fin (r + c)) (Fin (r + c)) O) :
     (bDD (K.map O.subtype)).det = (((K.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : O) : F) := by
   show _ = O.subtype _
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Take `⟨K, e, hu⟩` from `exists_lift hk`. Take `⟨K', e', hu'⟩` from `exists_lift hk'`. Establish `hK : ∀ i j, K (Fin.natAdd r i) (Fin.castAdd c j) ∈ redI v O ε hO` using `fun i j => by`. Use `hd i j` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hK' : ∀ i j, K' (Fin.natAdd r i) (Fin.castAdd c j) ∈ redI v O ε hO` using `fun i j => by`. Use `hd' i j` as an intermediate fact. Rewrite `this` using `[e']`. Conclude with `this`.
+
+Take `⟨h1, h2, h3⟩` from `dd_mod (redI v O ε hO) K K' hK hK' hu hu'`. Establish `em : ((k * k' : GL (Fin (r + c)) F) : Matrix (Fin (r + c)) (Fin (r + c)) F) = (K * K').map O.subtype`. Rewrite using `[Units.val_mul, e, e', Matrix.map_mul]`. Rewrite using `[em, e, e', det_dd_map, det_dd_map, det_dd_map]`. Use `⟨val_eq_one_of_isUnit hO hε _ h1, val_eq_one_of_isUnit hO hε _ h2, ?_⟩` and prove the remaining obligations.
+
+Establish `h3' : v (((((K * K').submatrix (Fin.natAdd r) (Fin.natAdd r)).det - (K.submatrix (Fin.natAdd r) (Fin.natAdd r)).det * (K'.submatrix (Fin.natAdd r) (Fin.natAdd r)).det : O)) : F) ≤ ε` using `h3`. Simplify using `using h3'`.
+-/
 theorem dd_val (hO : ∀ x ∈ O, v x ≤ 1) (hε : ε < 1) {r c : ℕ} {k k' : GL (Fin (r + c)) F}
     (hk : k ∈ GLint O (r + c)) (hk' : k' ∈ GLint O (r + c))
     (hd : ∀ i j, v ((k : Matrix (Fin (r + c)) (Fin (r + c)) F) (Fin.natAdd r i) (Fin.castAdd c j)) ≤ ε)
@@ -157,6 +198,21 @@ end Val
 
 section Main
 
+/- English proof (translation)
+Introduce `L _ _ P δ hδ r c k k' hk hk'`. Establish `hO : ∀ x ∈ OP P, Valued.v x ≤ 1` using `fun x hx => hx`. Establish `hε : (WithZero.exp (-1 : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions.
+
+Establish `hπ : Valued.v (piP P : P.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec P`. Establish `small : ∀ {g : GL (Fin (r + c)) (P.adicCompletion L)}, g ∈ parJ (OP P) (piP P : P.adicCompletion L) r c → ∀ i j, Valued.v ((g : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) (Fin.natAdd r i) (Fin.castAdd c j)) ≤ WithZero.exp (-1 : ℤ)`. Introduce `g hg i j`. Take `⟨o, ho, e⟩` from `hg.2 i j`. Establish `e' : (g : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L)) (Fin.natAdd r i) (Fin.castAdd c j) = (piP P : P.adicCompletion L) * o` using `e`.
+
+Rewrite using `[e', map_mul, hπ]`. Conclude with `mul_le_of_le_one_right' (hO _ ho)`. Take `⟨ha, hb, hxy⟩` from `dd_val hO hε hk.1 hk'.1 (small hk) (small hk')`. Unfold `lamJ`. Use `set a := (bDD (k : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L))).det with hadef`.
+
+Use `set b := (bDD (k' : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L))).det with hbdef`. Use `set x := (bDD ((k * k' : GL (Fin (r + c)) (P.adicCompletion L)) : Matrix (Fin (r + c)) (Fin (r + c)) (P.adicCompletion L))).det with hxdef`. Establish `ha0 : a ≠ 0` using `fun h => by simp [h] at ha`. Establish `hb0 : b ≠ 0` using `fun h => by simp [h] at hb`. Establish `hab : Valued.v (a * b) = 1` using `by rw [map_mul, ha, hb, one_mul]`.
+
+Establish `hx : Valued.v x = 1`. Establish `e : x = (x - a * b) + a * b` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right, hab]`. Rewrite using `[hab]`. Conclude with `hxy.trans_lt hε`.
+
+Establish `hx0 : x ≠ 0` using `fun h => by simp [h] at hx`. Establish `tame` using `hδ.tame (Units.mk0 x hx0 * (Units.mk0 a ha0 * Units.mk0 b hb0)⁻¹) (by show Valued.v _ = 1`. Simplify using `[hx, ha, hb]) (by`. Establish `e : x * (a * b)⁻¹ - 1 = (x - a * b) * (a * b)⁻¹` using `by field_simp`. Simplify using `only [Units.val_mul, Units.val_mk0, Units.val_inv_eq_inv_val]`.
+
+Rewrite using `[e, map_mul, map_inv₀, hab, inv_one, mul_one]`. Conclude with `hxy)`. Rewrite `tame` using `[map_mul, map_inv, mul_inv_eq_one, map_mul]`. Simplify using `only [chi0, dif_neg hx0, dif_neg ha0, dif_neg hb0, tame, Units.val_mul]`.
+-/
 theorem lamJ_mul : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (δ : (P.adicCompletion L)ˣ →* ℂˣ), IsDel P δ → ∀ (r c : ℕ) (k k' : GL (Fin (r + c)) (P.adicCompletion L)), k ∈ parJ (OP P) (piP P : P.adicCompletion L) r c → k' ∈ parJ (OP P) (piP P : P.adicCompletion L) r c → lamJ δ (k * k') = lamJ δ k * lamJ δ k' := by
   intro L _ _ P δ hδ r c k k' hk hk'
   have hO : ∀ x ∈ OP P, Valued.v x ≤ 1 := fun x hx => hx

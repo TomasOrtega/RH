@@ -3,6 +3,23 @@ open FourierTransform MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `B : LinearMap.BilinForm ℝ V` to `LinearMap.mk₂ ℝ (fun x y => (Q x y).re) (by intros; simp) (by intros; simp) (by intros; simp) (by intros; simp)`. Set `q : QuadraticForm ℝ V` to `B.toQuadraticMap`. Establish `hq : ∀ x, q x = (Q x x).re` using `fun x => rfl`. Take `⟨w, ⟨e⟩⟩` from `QuadraticForm.equivalent_weightedSumSquares q`. Establish `he : ∀ x, ∑ i, w i * (e x i * e x i) = (Q x x).re`.
+
+Introduce `x`. Use `e.map_app x` as an intermediate fact. Rewrite `this` using `[QuadraticMap.weightedSumSquares_apply]`. Simplify `this` using `[hq]`. Establish `hw : ∀ i, 0 < w i`.
+
+Introduce `i`. Establish `h1` using `he (e.symm (Pi.single i 1))`. Establish `h2 : e (e.symm (Pi.single i 1)) = Pi.single i 1` using `e.toLinearEquiv.apply_symm_apply _`. Establish `hne : e.symm (Pi.single i 1) ≠ 0`. Introduce `h`.
+
+Rewrite `h2` using `[h, map_zero]`. Use `congrFun h2 i` as an intermediate fact. Simplify using `at this`. Rewrite `h1` using `[h2, Finset.sum_eq_single i (by intro j _ hj; simp [hj]) (by simp)]`. Establish `h3` using `hQ (e.symm (Pi.single i 1))`.
+
+Establish `h4 : 0 < c * ‖e.symm (Pi.single i 1)‖ ^ 2`. Use `norm_pos_iff.mpr hne` as an intermediate fact. Check the signs of the components of the expression. Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hs : ∀ i, Real.sqrt (w i / Real.pi) ≠ 0` using `fun i => (Real.sqrt_pos.mpr (div_pos (hw i) Real.pi_pos)).ne'`. Set `D : (Fin (Module.finrank ℝ V) → ℝ) ≃ₗ[ℝ] (Fin (Module.finrank ℝ V) → ℝ)` to `LinearEquiv.piCongrRight fun i => LinearEquiv.smulOfNeZero ℝ ℝ (Real.sqrt (w i / Real.pi)) (hs i)`. Set `A : V ≃ₗ[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `(e.toLinearEquiv.trans D).trans (WithLp.linearEquiv 2 ℝ _).symm`. Establish `hA : ∀ x i, A x i = Real.sqrt (w i / Real.pi) * e x i` using `fun x i => rfl`. Use `⟨A.toContinuousLinearEquiv, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← he, EuclideanSpace.norm_sq_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (A.toContinuousLinearEquiv x) i = Real.sqrt (w i / Real.pi) * e x i` using `hA x i`. Rewrite using `[this, Real.norm_eq_abs, sq_abs, mul_pow, Real.sq_sqrt (div_pos (hw i) Real.pi_pos).le]`. Use `Real.pi_pos.ne'` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_equiv_euclidean_pi_mul_norm_sq_eq_re (V : Type) [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (Q : V →L[ℝ] V →L[ℝ] ℂ) (c : ℝ)
     (hc : 0 < c) (hQ : ∀ x, c * ‖x‖ ^ 2 ≤ (Q x x).re) :

@@ -27,6 +27,9 @@ namespace GlobalTheory.EisRestrict
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : (fun i => s ((M *ᵥ u) i)) = M.map s *ᵥ fun j => s (u j)` using `funext fun i => RingHom.map_mulVec s M u i`. Express the relevant statement in the definitionally equal form `(fun i => s ((M *ᵥ u) i)) ⬝ᵥ (M *ᵥ u) = _`. Rewrite using `[h1, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, dotProduct_comm, Matrix.dotProduct_mulVec]`. Simplify using `only [Formalism.UG.cT, Matrix.vecMul_transpose]`. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec]`.
+-/
 theorem sum_sig_mulVec {A : Type} [CommRing A] (s : A →+* A) {p q : ℕ} (M : Matrix (Fin p) (Fin q) A) (u : Fin q → A) :
     ∑ i, s ((M *ᵥ u) i) * (M *ᵥ u) i = (fun j => s (u j)) ⬝ᵥ ((Formalism.UG.cT s M * M) *ᵥ u) := by
   have h1 : (fun i => s ((M *ᵥ u) i)) = M.map s *ᵥ fun j => s (u j) := funext fun i => RingHom.map_mulVec s M u i
@@ -35,16 +38,37 @@ theorem sum_sig_mulVec {A : Type} [CommRing A] (s : A →+* A) {p q : ℕ} (M : 
   simp only [Formalism.UG.cT, Matrix.vecMul_transpose]
   rw [dotProduct_comm, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Use `show compFin F E v ((1 : AF F) ⊗ₜ[F] z i) = (1 : Fv F v) ⊗ₜ[F] z i`. Simplify using `[compFin, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem compFin_adVec' (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {k : ℕ} (z : Fin k → E) (i : Fin k) :
     compFin F E v (GlobalTheory.EisMidHt.adVec F z i) = inclR (F := F) (Fv F v) (z i) := by
   show compFin F E v ((1 : AF F) ⊗ₜ[F] z i) = (1 : Fv F v) ⊗ₜ[F] z i
   simp [compFin, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Use `show compInf F E w ((1 : AF F) ⊗ₜ[F] z i) = (1 : w.Completion) ⊗ₜ[F] z i`. Simplify using `[compInf, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem compInf_adVec' (w : InfinitePlace F) {k : ℕ} (z : Fin k → E) (i : Fin k) :
     compInf F E w (GlobalTheory.EisMidHt.adVec F z i) = inclR (F := F) w.Completion (z i) := by
   show compInf F E w ((1 : AF F) ⊗ₜ[F] z i) = (1 : w.Completion) ⊗ₜ[F] z i
   simp [compInf, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a hσ _ hJ hW hA`. Establish `hI` using `GlobalTheory.T.restricted_archimedean_gl_exists F E σ n J (r + 1) X Y hσ hJ hW L a hA`. Use `choose g hg1 hg2 hg3 using hI`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.T.archimedean_gl_adelic_approximation F E (dim σ J X Y) g`. Establish `hinv : ∀ w, Formalism.UG.bc (compInf F E w) a₀⁻¹ = (g w)⁻¹` using `fun w => by rw [map_inv, ha₀]`.
+
+Use `⟨dim σ J X Y, ι σ J X Y, J0 σ J X Y, X0 σ J X Y, Y0 σ J X Y, L0 σ J X Y L, a₀, GlobalTheory.T.witt_frame_orthogonal_dimension F E σ n J (r + 1) X Y hσ hJ hW, GlobalTheory.T.restricted_hermitian_nondegenerate F E σ n J (r + 1) X Y hσ hJ hW, GlobalTheory.T.restricted_witt_frame F E …` and prove the remaining obligations. Establish `hloc` using `GlobalTheory.T.restricted_local_lattice_membership F E σ n J (r + 1) X Y hσ hJ hW L a hA`. Establish `hfin : ∀ v, GlobalTheory.EisMidHt.normFin F (L0 σ J X Y L) v (fun i => compFin F E v (GlobalTheory.EisMidHt.adVec F u i)) = GlobalTheory.EisMidHt.normFin F L v (fun i => compFin F E v (GlobalTheory.EisMidHt.adVec F (ι σ J X Y u) i))` using `fun v => by`. Establish `e : (fun i => compFin F E v (GlobalTheory.EisMidHt.adVec F (ι σ J X Y u) i)) = (P σ J X Y).map (inclR (F` using `F) (Fv F v)) *ᵥ (fun i => compFin F E v (GlobalTheory.EisMidHt.adVec F u i)) := by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [compFin_adVec', ι_apply]`. Conclude with `RingHom.map_mulVec _ _ _ i`. Rewrite using `[e]`. Unfold `GlobalTheory.EisMidHt.normFin`. Use `congr 1`.
+
+Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, hloc, Matrix.mulVec_smul]`. Establish `hinf : ∀ w, GlobalTheory.EisMidHt.normInf a₀ w (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F u i)) = GlobalTheory.EisMidHt.normInf a w (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F (ι σ J X Y u) i))` using `fun w => by`. Establish `e : (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F (ι σ J X Y u) i)) = (P σ J X Y).map (inclR (F` using `F) w.Completion) *ᵥ (fun i => compInf F E w (GlobalTheory.EisMidHt.adVec F u i)) := by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [compInf_adVec', ι_apply]`. Conclude with `RingHom.map_mulVec _ _ _ i`. Rewrite using `[e]`. Unfold `GlobalTheory.EisMidHt.normInf`. Simplify using `only`.
+
+Rewrite using `[ha₀, ← map_inv, Matrix.mulVec_mulVec]`. Use `congr 2`. Use `GlobalTheory.T.hermitian_sum_norm_sum_equal F E σ hσ w _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[sum_sig_mulVec, sum_sig_mulVec, Formalism.UG.cT_mul, hg3 w]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Unfold `GlobalTheory.EisMidHt.ht`. Simplify using `only [hfin, hinf]`.
+-/
 theorem restrict_adapted : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1 + 1)) E)
     (L : Submodule (𝓞 E) (Fin n → E)) (a : GL (Fin n) (AF F ⊗[F] E)),

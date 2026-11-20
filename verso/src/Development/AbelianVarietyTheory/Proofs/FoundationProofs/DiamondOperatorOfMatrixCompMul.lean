@@ -6,6 +6,13 @@ open scoped MatrixGroups ModularForm Manifold
 
 namespace GlobalTheory.Hk
 
+/- English proof (translation)
+Take `⟨hσ0, hσ1⟩` from `hσ`. Take `⟨hτ0, hτ1⟩` from `hτ`. Establish `hσ0' : ((σ 1 0 : ℤ) : ZMod N) = 0`. Use `congrArg (ZMod.castHom (Dvd.intro l rfl : N ∣ N * l) (ZMod N)) hσ0` as an intermediate fact. Simplify using `using this`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[hσ0, hτ0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[hσ0', hσ1, hτ1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDia_mul {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : IsDia N l d σ) (hτ : IsDia N l e τ) :
     IsDia N l (d * e) (σ * τ) := by
   obtain ⟨hσ0, hσ1⟩ := hσ
@@ -21,6 +28,9 @@ theorem isDia_mul {N l : ℕ} {d e : ℤ} {σ τ : SL(2, ℤ)} (hσ : IsDia N l 
     push_cast
     rw [hσ0', hσ1, hτ1]; ring
 
+/- English proof (translation)
+Introduce `N l k d e σ τ ρ hN hσ hτ hρ f`. Establish `h` using `GlobalTheory.T.diamondOperatorOfMatrix_congr N l k (d * e) (σ * τ) ρ hN (isDia_mul hσ hτ) hρ f`. Rewrite using `[← h]`. Simplify using `only [dia]`. Rewrite using `[SlashAction.slash_mul]`.
+-/
 theorem dia_mul : ∀ (N l : ℕ) (k d e : ℤ) (σ τ ρ : SL(2, ℤ)), 0 < N → GlobalTheory.Hk.IsDia N l d σ →
     GlobalTheory.Hk.IsDia N l e τ → GlobalTheory.Hk.IsDia N l (d * e) ρ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k,
     GlobalTheory.Hk.dia k τ (GlobalTheory.Hk.dia k σ ⇑f) = GlobalTheory.Hk.dia k ρ ⇑f := by

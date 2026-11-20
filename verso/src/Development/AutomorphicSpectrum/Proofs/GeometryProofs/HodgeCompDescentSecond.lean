@@ -20,6 +20,11 @@ section Frames
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Establish `hni : b i ∉ GlobalTheory.CompanionTheory.Ar.flagStep Ω b i` using `hli.notMem_span_image (by simp)`. Establish `h1 : b i ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω b₀ (i+1)` using `by rw [← h]; exact Submodule.subset_span ⟨i, by simp, rfl⟩`. Rewrite `h1` using `[GlobalTheory.CompanionTheory.Ar.Flag.step_succ]`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h1`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+
+Establish `ht : t ≠ 0` using `by rintro rfl; apply hni; rw [h, ← hyz]; simpa using hy`. Conclude with `⟨t, ht, by rw [← hyz]; simpa using hy⟩`.
+-/
 theorem exists_coeff {r : ℕ} (b b₀ : Fin r → E) (h : ∀ i, GlobalTheory.CompanionTheory.Ar.flagStep Ω b i = GlobalTheory.CompanionTheory.Ar.flagStep Ω b₀ i)
     (hli : LinearIndependent Ω b) (i : Fin r) :
     ∃ t : Ω, t ≠ 0 ∧ b i - t • b₀ i ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω b₀ i := by
@@ -31,6 +36,19 @@ theorem exists_coeff {r : ℕ} (b b₀ : Fin r → E) (h : ∀ i, GlobalTheory.C
   have ht : t ≠ 0 := by rintro rfl; apply hni; rw [h, ← hyz]; simpa using hy
   exact ⟨t, ht, by rw [← hyz]; simpa using hy⟩
 
+/- English proof (translation)
+Use `⟨ht, le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)⟩` and prove the remaining obligations. Introduce and unpack `s ⟨e, he, hs⟩`. Rewrite `he` using `[hb.2]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he`. Establish `h2 : (∑ k, c k • b k) - (s / t) • b i ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω b i`.
+
+Rewrite using `[h]`. Establish `: (∑ k, c k • b k) - (s / t) • b i = ((∑ k, c k • b k) - s • b₀ i) - (s / t) • (b i - t • b₀ i)`. Rewrite using `[smul_sub, smul_smul, div_mul_cancel₀ _ ht]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Conclude with `sub_mem hs (Submodule.smul_mem _ _ hy)`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : E →ₗ[Ω] Ω, ∀ k, φ (b k) = if k = i then 1 else 0 := by`. Take `⟨g, hg⟩` from `(Fintype.linearCombination Ω b).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (by rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']; intro m hm; funext k; exact Fintype.linearIndependent_iff.1 hb.1 m (by simpa [Fintype.linearCombination_apply] using hm) k))`. Use `⟨(LinearMap.proj i).comp g, fun k => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hg (Pi.single k 1)` as an intermediate fact.
+
+Simplify using `[Fintype.linearCombination_apply_single] at this`. Simplify using `[this, Pi.single_apply, eq_comm]`. Establish `h3 : GlobalTheory.CompanionTheory.Ar.flagStep Ω b i ≤ LinearMap.ker φ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `: k ≠ i` using `by rintro rfl; simp at hk`.
+
+Simplify using `[hφ, this])`. Establish `h4` using `h3 h2`. Establish `h5 : ∀ k, φ (c k • b k) = (c k : Ω) * φ (b k)` using `fun k => φ.map_smul (c k : Ω) (b k)`. Simplify using `only [LinearMap.mem_ker, map_sub, map_sum, h5, map_smul, hφ] at h4`. Simplify using `at h4`.
+
+Use `Submodule.mem_span_singleton.2 ⟨c i, ?_⟩` and prove the remaining obligations. Use `show (c i : Ω) * t = s`. Rewrite using `[sub_eq_zero.1 h4, div_mul_cancel₀ _ ht]`. Introduce and unpack `_ rfl`. Conclude with `⟨b i, by rw [hb.2]; exact Submodule.subset_span ⟨i, rfl⟩, hy⟩`.
+-/
 theorem gr_isGen_of_frame (L : GlobalTheory.CompanionTheory.Ar.Lat ξ E) {r : ℕ} (b b₀ : Fin r → E) (p : Cpt ξ)
     (h : ∀ i, GlobalTheory.CompanionTheory.Ar.flagStep Ω b i = GlobalTheory.CompanionTheory.Ar.flagStep Ω b₀ i) (hb : L.IsFrameAt b p) (i : Fin r) {t : Ω}
     (ht : t ≠ 0) (hy : b i - t • b₀ i ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω b₀ i) : (L.gr b₀ i).IsGenAt p t := by
@@ -65,6 +83,15 @@ theorem gr_isGen_of_frame (L : GlobalTheory.CompanionTheory.Ar.Lat ξ E) {r : �
   · rintro _ rfl
     exact ⟨b i, by rw [hb.2]; exact Submodule.subset_span ⟨i, rfl⟩, hy⟩
 
+/- English proof (translation)
+Establish `a1 : s ∈ Submodule.span (regAt ξ p) {t}`. Rewrite using `[← ht.2, hs.2]`. Conclude with `Submodule.mem_span_singleton_self _`. Establish `a2 : t ∈ Submodule.span (regAt ξ p) {s}`. Rewrite using `[← hs.2, ht.2]`.
+
+Conclude with `Submodule.mem_span_singleton_self _`. Take `⟨u, hu⟩` from `Submodule.mem_span_singleton.1 a1`. Take `⟨v, hv⟩` from `Submodule.mem_span_singleton.1 a2`. Establish `hu' : (u : Ω) * t = s` using `hu`. Establish `hv' : (v : Ω) * s = t` using `hv`.
+
+Establish `e : (v : Ω) * (u : Ω) = 1`. Use `mul_right_cancel₀ ht.1 ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, hu', hv', _root_.one_mul]`. Use `⟨u, u.2, ?_, hu'.symm⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_left e]`.
+
+Conclude with `v.2`.
+-/
 theorem gen_ratio {Λ : GlobalTheory.CompanionTheory.Ar.Lat ξ Ω} {p : Cpt ξ} {s t : Ω} (hs : Λ.IsGenAt p s) (ht : Λ.IsGenAt p t) :
     ∃ u : Ω, u ∈ regAt ξ p ∧ u⁻¹ ∈ regAt ξ p ∧ s = u * t := by
   have a1 : s ∈ Submodule.span (regAt ξ p) {t} := by
@@ -82,6 +109,11 @@ theorem gen_ratio {Λ : GlobalTheory.CompanionTheory.Ar.Lat ξ Ω} {p : Cpt ξ} 
   rw [← eq_inv_of_mul_eq_one_left e]
   exact v.2
 
+/- English proof (translation)
+Use `⟨mul_ne_zero h0 h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[h.2]`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `Submodule.mem_span_singleton.2 ⟨⟨u⁻¹, hu'⟩, inv_mul_cancel_left₀ h0 _⟩`.
+
+Introduce and unpack `_ rfl`. Conclude with `Submodule.mem_span_singleton.2 ⟨⟨u, hu⟩, rfl⟩`.
+-/
 theorem gen_mul {Λ : GlobalTheory.CompanionTheory.Ar.Lat ξ Ω} {p : Cpt ξ} {t u : Ω} (h : Λ.IsGenAt p t) (h0 : u ≠ 0)
     (hu : u ∈ regAt ξ p) (hu' : u⁻¹ ∈ regAt ξ p) : Λ.IsGenAt p (u * t) := by
   refine ⟨mul_ne_zero h0 h.1, ?_⟩
@@ -99,6 +131,11 @@ section Pull
 variable {X X₀ : Scheme.{0}} {Ω Ω₀ : Type} [Field Ω] [Field Ω₀] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀} {E E₀ : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E₀] [Module Ω₀ E₀]
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.flagStep at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨k, hk, rfl⟩` from `h`. Conclude with `Submodule.subset_span ⟨k, hk, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [hj]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem mem_flagStep_pull {i : Ω₀ →+* Ω} {j : E₀ →+ E} (hj : ∀ (a : Ω₀) e, j (a • e) = i a • j e) {r : ℕ}
     {y : Fin r → E₀} {n : ℕ} {x : E₀} (hx : x ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω₀ y n) :
     j x ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω (fun k => j (y k)) n := by
@@ -111,6 +148,9 @@ theorem mem_flagStep_pull {i : Ω₀ →+* Ω} {j : E₀ →+ E} (hj : ∀ (a : 
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul a x _ hx => rw [hj]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `mem_flagStep_pull hj (h (Submodule.subset_span ⟨k, hk, rfl⟩))`.
+-/
 theorem flagStep_pull_le {i : Ω₀ →+* Ω} {j : E₀ →+ E} (hj : ∀ (a : Ω₀) e, j (a • e) = i a • j e) {r : ℕ}
     {x y : Fin r → E₀} {n : ℕ} (h : GlobalTheory.CompanionTheory.Ar.flagStep Ω₀ x n ≤ GlobalTheory.CompanionTheory.Ar.flagStep Ω₀ y n) :
     GlobalTheory.CompanionTheory.Ar.flagStep Ω (fun k => j (x k)) n ≤ GlobalTheory.CompanionTheory.Ar.flagStep Ω (fun k => j (y k)) n := by
@@ -118,6 +158,15 @@ theorem flagStep_pull_le {i : Ω₀ →+* Ω} {j : E₀ →+ E} (hj : ∀ (a : �
   rintro _ ⟨k, hk, rfl⟩
   exact mem_flagStep_pull hj (h (Submodule.subset_span ⟨k, hk, rfl⟩))
 
+/- English proof (translation)
+Use `⟨hli _ _ hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨e, he, rfl⟩`. Establish `he' : e ∈ L₀ p₀` using `he`.
+
+Rewrite `he'` using `[hb.2]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 he'`. Rewrite using `[map_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `e1 : j (c k • b k) = (⟨i (c k), hreg _ (c k).2⟩ : regAt ξ p) • j (b k)` using `hj (c k : Ω₀) (b k)`.
+
+Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨b k, ?_, rfl⟩` and prove the remaining obligations. Use `show b k ∈ L₀ p₀`.
+
+Rewrite using `[hb.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+-/
 theorem isFrameAt_pull {i : Ω₀ →+* Ω} {j : E₀ →+ E} {L₀ : GlobalTheory.CompanionTheory.Ar.Lat ξ₀ E₀} {L : GlobalTheory.CompanionTheory.Ar.Lat ξ E}
     {p₀ : Cpt ξ₀} {p : Cpt ξ} (hreg : ∀ a, a ∈ regAt ξ₀ p₀ → i a ∈ regAt ξ p)
     (hj : ∀ (a : Ω₀) e, j (a • e) = i a • j e)
@@ -142,6 +191,15 @@ theorem isFrameAt_pull {i : Ω₀ →+* Ω} {j : E₀ →+ E} {L₀ : GlobalTheo
     rw [hb.2]
     exact Submodule.subset_span ⟨k, rfl⟩
 
+/- English proof (translation)
+Take `⟨U, hU, b₁, hb, hfr⟩` from `hf p₀ trivial`. Establish `hfr'` using `hfr p₀ trivial hU`. Take `⟨t₁, ht₁, hy⟩` from `exists_coeff b₁ c₀ hb hfr'.1 a`. Establish `g₁` using `gr_isGen_of_frame L₀ b₁ c₀ p₀ hb hfr' a ht₁ hy`. Take `⟨u, hu, hu', rfl⟩` from `gen_ratio h g₁`.
+
+Establish `hc' : c = fun k => j (c₀ k)` using `funext fun a => (hc a).symm`. Substitute `hc'` using the available equality. Establish `hframe : L.IsFrameAt (fun k => j (b₁ k)) p` using `isFrameAt_pull hreg hj hli hL hfr'`. Establish `hadapt : ∀ n, GlobalTheory.CompanionTheory.Ar.flagStep Ω (fun k => j (b₁ k)) n = GlobalTheory.CompanionTheory.Ar.flagStep Ω (fun k => j (c₀ k)) n` using `fun n => le_antisymm (flagStep_pull_le hj (hb n).le) (flagStep_pull_le hj (hb n).ge)`. Establish `hy' : j (b₁ a) - i t₁ • j (c₀ a) ∈ GlobalTheory.CompanionTheory.Ar.flagStep Ω (fun k => j (c₀ k)) a`.
+
+Use `mem_flagStep_pull hj hy` as an intermediate fact. Rewrite `this` using `[map_sub, hj]`. Then use the resulting hypothesis. Establish `g` using `gr_isGen_of_frame L (fun k => j (b₁ k)) (fun k => j (c₀ k)) p hadapt hframe a ((map_ne_zero i).2 ht₁) hy'`. Establish `hu0 : u ≠ 0` using `left_ne_zero_of_mul h.1`. Rewrite using `[map_mul]`.
+
+Use `gen_mul g ((map_ne_zero i).2 hu0) (hreg _ hu) ?_` and prove the remaining obligations. Rewrite using `[← map_inv₀]`. Conclude with `hreg _ hu'`.
+-/
 theorem isGenAt_pull (i : Ω₀ →+* Ω) (j : E₀ →+ E) {L₀ : GlobalTheory.CompanionTheory.Ar.Lat ξ₀ E₀} {L : GlobalTheory.CompanionTheory.Ar.Lat ξ E}
     {p₀ : Cpt ξ₀} {p : Cpt ξ} (hreg : ∀ a, a ∈ regAt ξ₀ p₀ → i a ∈ regAt ξ p)
     (hj : ∀ (a : Ω₀) e, j (a • e) = i a • j e)
@@ -173,6 +231,9 @@ theorem isGenAt_pull (i : Ω₀ →+* Ω) (j : E₀ →+ E) {L₀ : GlobalTheory
 
 end Pull
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S₀ S Ω₀ Ω _ _ K₀ K _ _ J₀ J _ _ y₀ y 𝔐₀ 𝔐 i h hd Fl₀ Fl j hr hj hli hb hV`. Introduce `q hq s a t₀ hg`. Conclude with `isGenAt_pull i j (hr q) hj hli (hb s) (hV q hq s) (Fl₀.sub s) a hg`.
+-/
 theorem genPull_of_frames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S₀ S : Finset ℕ) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (𝔐₀ : HodgeCpt Y S₀ y₀) (𝔐 : HodgeCpt Y S y) (i : Ω₀ →+* Ω) (h : 𝔐.X ⟶ 𝔐₀.X) (hd : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ 𝔐₀.ξ h i) (Fl₀ : 𝔐₀.Flag) (Fl : 𝔐.Flag) (j : 𝔐₀.Li →+ 𝔐.Li), (∀ (p : Cpt 𝔐.ξ) (a : Ω₀), a ∈ regAt 𝔐₀.ξ (pushCpt hd p) → i a ∈ regAt 𝔐.ξ p) → (∀ (a : Ω₀) e, j (a • e) = i a • j e) → (∀ (n : ℕ) (b : Fin n → 𝔐₀.Li), LinearIndependent Ω₀ b → LinearIndependent Ω fun k => j (b k)) → (∀ s a, j (Fl₀.b s a) = Fl.b s a) → (∀ q : Cpt 𝔐.ξ, (∀ r : ℕ, r.Prime → ¬ InFibre 𝔐.ξ r q) → ∀ s, 𝔐.V s q = Submodule.span (regAt 𝔐.ξ q) (j '' (𝔐₀.V s (pushCpt hd q) : Set 𝔐₀.Li))) → GenPull Fl₀ Fl i hd := by
   intro E _ _ _ H D l Xo c O _ β Y S₀ S Ω₀ Ω _ _ K₀ K _ _ J₀ J _ _ y₀ y 𝔐₀ 𝔐 i h hd Fl₀ Fl j hr hj hli hb hV
   intro q hq s a t₀ hg

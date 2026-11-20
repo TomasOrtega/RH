@@ -24,5 +24,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Glo
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Link.nineFree_of_intersection | exact GlobalTheory.CompanionTheory.Ar.Link.nineFree_of_intersection | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.nineFree_of_intersection <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nine_free_of_intersection : ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → Prov.ZhangDimensionPushDownGrassmannianHeightBounds := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Link.nineFree_of_intersection | exact GlobalTheory.CompanionTheory.Ar.Link.nineFree_of_intersection | (intros; apply GlobalTheory.CompanionTheory.Ar.Link.nineFree_of_intersection <;> assumption)

@@ -10,6 +10,11 @@ noncomputable section
 
 namespace RootDenseAlt
 
+/- English proof (translation)
+Simplify using `only [grassPolyCoord, rootCoord]`. Rewrite using `[← AlgHom.coe_toRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [colsOf, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.submatrix_apply, id, onePipe, Matrix.of_apply]`.
+
+Generalize the expression as in `(p.2.1.orderEmbOfFin p.2.2) b = c`. Proceed by induction on `c using Fin.addCases with`. Consider the case `left c => simp [Fin.append_left, Matrix.one_apply, apply_ite]`. Consider the case `right c => simp [Fin.append_right]`.
+-/
 theorem aeval_grassPolyCoord {f j m : ℕ} (x : Fin f × Fin j × Fin m → ℂ)
     (p : Σ _ : Fin f, PlIdx j m) :
     aeval x (grassPolyCoord f j m p) = rootCoord (fun τ a b => x (τ, a, b)) p := by
@@ -24,12 +29,18 @@ theorem aeval_grassPolyCoord {f j m : ℕ} (x : Fin f × Fin j × Fin m → ℂ)
   | left c => simp [Fin.append_left, Matrix.one_apply, apply_ite]
   | right c => simp [Fin.append_right]
 
+/- English proof (translation)
+Rewrite using `[show aeval x (aeval (grassPolyCoord f j m) g) = ((aeval x).restrictScalars ℤ).comp (aeval (grassPolyCoord f j m)) g from rfl, comp_aeval]`. Conclude with `congrArg (fun y => aeval y g) (funext fun p => (aeval_grassPolyCoord x p).symm)`.
+-/
 theorem aeval_rootCoord {f j m : ℕ} (x : Fin f × Fin j × Fin m → ℂ) (g : MRing (plBlocks f j m)) :
     aeval (rootCoord (fun τ a b => x (τ, a, b))) g = aeval x (aeval (grassPolyCoord f j m) g) := by
   rw [show aeval x (aeval (grassPolyCoord f j m) g) =
       ((aeval x).restrictScalars ℤ).comp (aeval (grassPolyCoord f j m)) g from rfl, comp_aeval]
   exact congrArg (fun y => aeval y g) (funext fun p => (aeval_grassPolyCoord x p).symm)
 
+/- English proof (translation)
+Establish `: (aeval (fun i => φ (P i)) : MvPolynomial τ ℤ →ₐ[ℤ] Ω).toRingHom = φ.comp (aeval P).toRingHom` using `MvPolynomial.ringHom_ext (fun r => by simp) (fun i => by simp)`. Conclude with `congrArg (fun ψ : MvPolynomial τ ℤ →+* Ω => ψ g) this`.
+-/
 theorem aeval_comp_ringHom {σ τ Ω : Type*} [Field Ω] (φ : MvPolynomial σ ℚ →+* Ω)
     (P : τ → MvPolynomial σ ℚ) (g : MvPolynomial τ ℤ) :
     aeval (fun i => φ (P i)) g = φ (aeval P g) := by
@@ -40,6 +51,17 @@ theorem aeval_comp_ringHom {σ τ Ω : Type*} [Field Ω] (φ : MvPolynomial σ �
 
 end RootDenseAlt
 
+/- English proof (translation)
+Introduce `f j m g ⟨a, ha⟩ hg`. Establish `hQ0 : aeval (grassPolyCoord f j m) g ≠ 0`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Rewrite using `[grassIdeal, h₁ (Fin f) (plBlocks f j m) (GrassField f j m) (grassCoord f j m) g a ha]`.
+
+Conclude with `(RootDenseAlt.aeval_comp_ringHom (algebraMap (MvPolynomial (Fin f × Fin j × Fin m) ℚ) (GrassField f j m)) _ g).trans (by rw [h0, map_zero])`. Set `e` to `Fintype.equivFin (Fin f × Fin j × Fin m)`. Establish `hP : rename e (map (algebraMap ℚ ℂ) (aeval (grassPolyCoord f j m) g)) ≠ 0`. Introduce `h`. Apply `hQ0` to reduce the goal to its premises.
+
+Apply `map_injective (algebraMap ℚ ℂ) (algebraMap ℚ ℂ).injective` to reduce the goal to its premises. Apply `rename_injective e e.injective` to reduce the goal to its premises. Simplify using `using h`. Take `⟨z, hz, hzQ⟩ : ∃ z : Fin (Fintype.card (Fin f × Fin j × Fin m)) → ℂ, (∀ i, ∃ k : ℕ, 0 < k ∧ z i ^ k = 1) ∧ eval z (rename e (map (algebraMap ℚ ℂ) (aeval (grassPolyCoord f j m) g))) ≠ 0` from `by by_contra! H`. Conclude with `hP (h₂ _ _ H)`.
+
+Use `⟨rootPointIdeal (fun τ a b => (z ∘ e) (τ, a, b)), ⟨_, fun τ a b => hz _, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show g ∉ mCoordIdeal _`. Rewrite using `[h₁ (Fin f) (plBlocks f j m) ℂ _ g a ha]`. Use `fun h => hzQ ?_` and prove the remaining obligations. Rewrite using `[eval_rename, eval_map, ← aeval_def, ← RootDenseAlt.aeval_rootCoord]`.
+
+Conclude with `h`.
+-/
 theorem RootDense.proof (h₁ : MultiHomogMemCoord.Statement) (h₂ : RootsOfUnityDense.Statement) :
     RootDense.Statement := by
   intro f j m g ⟨a, ha⟩ hg

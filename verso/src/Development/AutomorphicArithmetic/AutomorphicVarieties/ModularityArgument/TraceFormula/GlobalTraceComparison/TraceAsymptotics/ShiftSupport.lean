@@ -13,6 +13,11 @@ section
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `hle : K ≤ rStab (fun z => f z * g (z⁻¹ * y))`. Introduce `k hk x`. Establish `e : (x * k)⁻¹ * y = k⁻¹ * (x⁻¹ * y)` using `by group`. Use `show f (x * k) * g ((x * k)⁻¹ * y) = f x * g (x⁻¹ * y)`. Rewrite using `[hf k hk, e, hg _ (K.inv_mem hk)]`.
+
+Simplify using `only [cv, hint]`. Rewrite using `[inf_eq_right.2 hle]`. Simplify using the standard rewrite rules.
+-/
 private theorem cv_eq (K : Subgroup G) (f g : G → ℂ) (hf : ∀ k ∈ K, ∀ x, f (x * k) = f x)
     (hg : ∀ k ∈ K, ∀ x, g (k * x) = g x) (y : G) :
     cv K f g y = ∑ᶠ q : G ⧸ K, f q.out * g (q.out⁻¹ * y) := by
@@ -25,6 +30,9 @@ private theorem cv_eq (K : Subgroup G) (f g : G → ℂ) (hf : ∀ k ∈ K, ∀ 
   rw [inf_eq_right.2 hle]
   simp
 
+/- English proof (translation)
+Use `conv_lhs => rw [← QuotientGroup.out_eq' r]`. Both sides reduce to the same expression.
+-/
 private theorem smul_mk (K : Subgroup G) (a : G) (r : G ⧸ K) :
     (a • r : G ⧸ K) = QuotientGroup.mk (a * r.out) := by
   conv_lhs => rw [← QuotientGroup.out_eq' r]
@@ -32,6 +40,11 @@ private theorem smul_mk (K : Subgroup G) (a : G) (r : G ⧸ K) :
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hinv : ∀ y, ∀ h ∈ K, (fun y => g (a⁻¹ * y) • ρ y x) (y * h) = (fun y => g (a⁻¹ * y) • ρ y x) y`. Introduce `y h hh`. Simplify using `only [map_mul, Module.End.mul_apply, hx h hh, ← mul_assoc, hg h hh]`. Use `GlobalTheory.TwTrLevel.out_eq_of_inv K (fun y => g (a⁻¹ * y) • ρ y x) hinv (a * r.out)` as an intermediate fact. Rewrite using `[smul_mk]`.
+
+Use `this.trans ?_` and prove the remaining obligations. Simplify using `[map_mul, Module.End.mul_apply]`.
+-/
 private theorem shift_eval (ρ : Representation ℂ G V) (K : Subgroup G) (g : G → ℂ)
     (hg : ∀ k ∈ K, ∀ x, g (x * k) = g x) (x : V) (hx : ∀ k ∈ K, ρ k x = x) (a : G) (r : G ⧸ K) :
     g (a⁻¹ * (a • r : G ⧸ K).out) • ρ (a • r : G ⧸ K).out x = ρ a (g r.out • ρ r.out x) := by
@@ -43,6 +56,11 @@ private theorem shift_eval (ρ : Representation ℂ G V) (K : Subgroup G) (g : G
   refine this.trans ?_
   simp [map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Use `(hs.image (fun r : G ⧸ K => (a • r : G ⧸ K))).subset ?_` and prove the remaining obligations. Introduce `p hp`. Use `⟨a⁻¹ • p, ?_, by simp⟩` and prove the remaining obligations. Introduce `h0`. Apply `hp` to reduce the goal to its premises.
+
+Use `shift_eval ρ K g hg x hx a (a⁻¹ • p)` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Simplify `this` using `[show g (a⁻¹ • p : G ⧸ K).out = 0 from h0]`.
+-/
 private theorem shift_support (ρ : Representation ℂ G V) (K : Subgroup G) (g : G → ℂ)
     (hg : ∀ k ∈ K, ∀ x, g (x * k) = g x) (hs : {q : G ⧸ K | g q.out ≠ 0}.Finite) (x : V)
     (hx : ∀ k ∈ K, ρ k x = x) (a : G) :
@@ -56,6 +74,9 @@ private theorem shift_support (ρ : Representation ℂ G V) (K : Subgroup G) (g 
   rw [smul_inv_smul] at this
   simpa [show g (a⁻¹ • p : G ⧸ K).out = 0 from h0] using this
 
+/- English proof (translation)
+Establish `hfin : (Function.support fun r : G ⧸ K => g r.out • ρ r.out x).Finite` using `hs.subset fun q hq h0 => hq (by simp [h0])`. Rewrite using `[map_finsum (ρ a) hfin, ← finsum_comp_equiv (MulAction.toPerm a : Equiv.Perm (G ⧸ K))]`. Conclude with `finsum_congr fun r => shift_eval ρ K g hg x hx a r`.
+-/
 private theorem shift_sum (ρ : Representation ℂ G V) (K : Subgroup G) (g : G → ℂ)
     (hg : ∀ k ∈ K, ∀ x, g (x * k) = g x) (hs : {q : G ⧸ K | g q.out ≠ 0}.Finite) (x : V)
     (hx : ∀ k ∈ K, ρ k x = x) (a : G) :
@@ -68,6 +89,9 @@ private theorem shift_sum (ρ : Representation ℂ G V) (K : Subgroup G) (g : G 
 
 end
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.TraceLevel.levOp_id_apply ρ K K F hfin]`. Simplify using the standard rewrite rules.
+-/
 private theorem lev_eval {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {V : Type} [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G) (F : G → ℂ)
     (hfin : (Function.support fun q : G ⧸ K => F q.out).Finite) (v : V) :
@@ -75,6 +99,27 @@ private theorem lev_eval {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   rw [GlobalTheory.TraceLevel.levOp_id_apply ρ K K F hfin]
   simp
 
+/- English proof (translation)
+Introduce `G _ _ _ K hKo hKc V _ _ ρ f g hf hg x hx`. Establish `hSf` using `GlobalTheory.TwTrLevel.finite_supp K hKo f hf.1`. Establish `hSg` using `GlobalTheory.TwTrLevel.finite_supp K hKo g hg.1`. Establish `hx'` using `(GlobalTheory.TwTrLevel.mem_fixed_iff ρ K x).1 hx`. Establish `hfr : ∀ k ∈ K, ∀ y, f (y * k) = f y` using `fun k hk y => (hf.2 k hk y).2`.
+
+Establish `hgr : ∀ k ∈ K, ∀ y, g (y * k) = g y` using `fun k hk y => (hg.2 k hk y).2`. Establish `hgl : ∀ k ∈ K, ∀ y, g (k * y) = g y` using `fun k hk y => (hg.2 k hk y).1`. Establish `hlg` using `lev_eval ρ K g hSg x`. Use `⟨?_, GlobalTheory.TraceLevel.levOp_mem_fixed ρ K K K g hg hKo le_rfl x hx, hlg⟩` and prove the remaining obligations. Use `set S := hSf.toFinset with hS`.
+
+Establish `hC : ∀ y, cv K f g y = ∑ q ∈ S, f q.out * g (q.out⁻¹ * y)`. Introduce `y`. Rewrite using `[cv_eq K f g hfr hgl y]`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Simplify using `only [hS, Set.Finite.coe_toFinset, Set.mem_setOf_eq]`.
+
+Introduce `h0`. Conclude with `hq (by simp [h0])`. Establish `hCfin : (Function.support fun p : G ⧸ K => cv K f g p.out).Finite`. Use `(S.finite_toSet.biUnion fun q _ => hSg.image (fun r : G ⧸ K => (q.out • r : G ⧸ K))).subset ?_` and prove the remaining obligations. Introduce `p hp`.
+
+Establish `hp' : ∑ q ∈ S, f q.out * g (q.out⁻¹ * p.out) ≠ 0`. Rewrite using `[← hC]`. Conclude with `hp`. Take `⟨q, hq, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hp'`. Use `Set.mem_biUnion (Finset.mem_coe.2 hq) ⟨q.out⁻¹ • p, ?_, by simp⟩` and prove the remaining obligations.
+
+Establish `e` using `GlobalTheory.TwTrLevel.out_eq_of_inv K g (fun y h hh => hgr h hh y) (q.out⁻¹ * p.out)`. Establish `e2 : (q.out⁻¹ • p : G ⧸ K) = QuotientGroup.mk (q.out⁻¹ * p.out)` using `smul_mk K _ _`. Use `show g (q.out⁻¹ • p : G ⧸ K).out ≠ 0`. Rewrite using `[e2, e]`. Conclude with `right_ne_zero_of_mul hne`.
+
+Rewrite using `[lev_eval ρ K _ hCfin x, lev_eval ρ K f hSf, hlg]`. Establish `hsupp` using `fun a => shift_support ρ K g hgr hSg x hx' a`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[hC, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun q _ => mul_smul _ _ _`. Use `_ = ∑ q ∈ S, ∑ᶠ p : G ⧸ K, f q.out • (g (q.out⁻¹ * p.out) • ρ p.out x) := by`. Use `finsum_sum_comm _ _ fun q _ => (hsupp q.out).subset fun p hp h0 => hp (by simp [h0])` and prove the remaining obligations. Use `_ = ∑ q ∈ S, f q.out • ρ q.out (∑ᶠ r : G ⧸ K, g r.out • ρ r.out x) := by`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← smul_finsum' _ (hsupp q.out), shift_sum ρ K g hgr hSg x hx' q.out]`. Use `_ = ∑ᶠ q : G ⧸ K, f q.out • ρ q.out (∑ᶠ r : G ⧸ K, g r.out • ρ r.out x) := by`. Use `symm`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Simplify using `only [hS, Set.Finite.coe_toFinset, Set.mem_setOf_eq]`.
+
+Introduce `h0`. Conclude with `hq (by simp [h0])`.
+-/
 theorem cvOp : CvOp := by
   intro G _ _ _ K hKo hKc V _ _ ρ f g hf hg x hx
   have hSf := GlobalTheory.TwTrLevel.finite_supp K hKo f hf.1

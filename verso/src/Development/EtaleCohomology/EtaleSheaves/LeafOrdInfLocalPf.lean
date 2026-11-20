@@ -20,6 +20,11 @@ def LeafClearDen : Prop := ∀ (k L : Type) [Field k] [Field L] [Algebra k L] (s
     x ^ d + ∑ i ∈ Finset.range d, (aeval s (a i) / aeval s (b i)) * x ^ i = 0 →
     ∃ h : Polynomial k, h.eval 0 ≠ 0 ∧ IsIntegral (Algebra.adjoin k {s, (aeval s h)⁻¹}) x
 
+/- English proof (translation)
+Introduce `k B _ _ _ _ _ _ g hg hf`. Take `⟨hT, hfd⟩` from `h1 k B g hg hf`. Take `⟨n, φ, hφ⟩` from `h2 k (FractionRing B) _ hT hfd`. Use `⟨n, φ.comp (Units.map (algebraMap B (FractionRing B) : B →* FractionRing B)), fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨d, a, b, hb, heq⟩` from `hφ (Units.map (algebraMap B (FractionRing B) : B →* FractionRing B) u) hu`.
+
+Conclude with `h3 k (FractionRing B) _ hT _ d a b hb heq`.
+-/
 theorem LeafOrdInfLocal_of (h1 : LeafFinInf) (h2 : LeafFinVal) (h3 : LeafClearDen) : LeafOrdInfLocal := by
   intro k B _ _ _ _ _ _ g hg hf
   obtain ⟨hT, hfd⟩ := h1 k B g hg hf
@@ -28,6 +33,23 @@ theorem LeafOrdInfLocal_of (h1 : LeafFinInf) (h2 : LeafFinVal) (h3 : LeafClearDe
   obtain ⟨d, a, b, hb, heq⟩ := hφ (Units.map (algebraMap B (FractionRing B) : B →* FractionRing B) u) hu
   exact h3 k (FractionRing B) _ hT _ d a b hb heq
 
+/- English proof (translation)
+Introduce `k L _ _ _ s hs x d a b hb heq`. Establish `hne : ∀ p : Polynomial k, p ≠ 0 → aeval s p ≠ 0` using `fun p hp h0 => hp ((transcendental_iff.mp hs) p h0)`. Establish `hb0 : ∀ i, b i ≠ 0` using `fun i h => hb i (by simp [h])`. Use `set h := ∏ i ∈ Finset.range d, b i with hh`. Establish `he : h.eval 0 ≠ 0`.
+
+Rewrite using `[hh, Polynomial.eval_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun i _ => hb i)`. Use `⟨h, he, ?_⟩` and prove the remaining obligations. Use `set A := Algebra.adjoin k {s, (aeval s h)⁻¹}`. Establish `hpol : ∀ p : Polynomial k, aeval s p ∈ A` using `fun p => Algebra.adjoin_mono (by intro y hy; rw [Set.mem_singleton_iff.mp hy]; exact Or.inl rfl) (Polynomial.aeval_mem_adjoin_singleton k s)`.
+
+Establish `hinv : (aeval s h)⁻¹ ∈ A` using `Algebra.subset_adjoin (Or.inr rfl)`. Establish `hmem : ∀ i ∈ Finset.range d, aeval s (a i) / aeval s (b i) ∈ A`. Introduce `i hi`. Establish `hsplit : h = b i * ∏ j ∈ (Finset.range d).erase i, b j` using `(Finset.mul_prod_erase _ _ hi).symm`. Establish `hr : aeval s (∏ j ∈ (Finset.range d).erase i, b j) ≠ 0` using `hne _ (Finset.prod_ne_zero_iff.mpr (fun j _ => hb0 j))`.
+
+Establish `hbi : aeval s (b i) ≠ 0` using `hne _ (hb0 i)`. Establish `: aeval s (a i) / aeval s (b i) = aeval s (a i * ∏ j ∈ (Finset.range d).erase i, b j) * (aeval s h)⁻¹`. Rewrite using `[hsplit, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `A.mul_mem (hpol _) hinv`. Set `c : ℕ → A` to `fun i => if hi : i ∈ Finset.range d then ⟨_, hmem i hi⟩ else 0`. Establish `hdeg : (∑ i ∈ Finset.range d, C (c i) * X ^ i : A[X]).degree < (d : WithBot ℕ)`. Use `lt_of_le_of_lt (degree_sum_le _ _) ?_` and prove the remaining obligations. Rewrite using `[Finset.sup_lt_iff (WithBot.bot_lt_coe _)]`.
+
+Introduce `i hi`. Conclude with `lt_of_le_of_lt (degree_C_mul_X_pow_le _ _) (by exact_mod_cast Finset.mem_range.mp hi)`. Use `⟨(X ^ d + ∑ i ∈ Finset.range d, C (c i) * X ^ i : A[X]), monic_X_pow_add hdeg, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_add, eval₂_X_pow, eval₂_finsetSum]`. Rewrite using `[← heq]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < d` using `Finset.mem_range.mp hi`. Rewrite using `[eval₂_mul, eval₂_C, eval₂_X_pow]`. Use `congr 1`.
+
+Simplify using `only [c, Finset.mem_range, hi', dif_pos]`. Both sides reduce to the same expression.
+-/
 theorem integral_after_clearing_polynomial_denominators_holds : LeafClearDen := by
   intro k L _ _ _ s hs x d a b hb heq
   have hne : ∀ p : Polynomial k, p ≠ 0 → aeval s p ≠ 0 := fun p hp h0 => hp ((transcendental_iff.mp hs) p h0)
@@ -68,6 +90,9 @@ theorem integral_after_clearing_polynomial_denominators_holds : LeafClearDen := 
   simp only [c, Finset.mem_range, hi', dif_pos]
   rfl
 
+/- English proof (translation)
+The claim follows from `LeafOrdInfLocal_of h1 h2 integral_after_clearing_polynomial_denominators_holds`.
+-/
 theorem LeafOrdInfLocal_of' (h1 : LeafFinInf) (h2 : LeafFinVal) : LeafOrdInfLocal :=
   LeafOrdInfLocal_of h1 h2 integral_after_clearing_polynomial_denominators_holds
 

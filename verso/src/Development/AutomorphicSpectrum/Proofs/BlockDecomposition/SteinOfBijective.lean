@@ -15,11 +15,19 @@ namespace GlobalTheory.CompanionTheory.Hodge
 
 variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem res_res_lemma {A B C : X.Opens} (f : B ⟶ A) (g' : C ⟶ B) (s : Γ(X, A)) :
     X.presheaf.map g'.op (X.presheaf.map f.op s) = X.presheaf.map (g' ≫ f).op s := by
   rw [op_comp, Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `TopCat.Sheaf.eq_of_locally_eq' X.sheaf (fun i : {V : X.affineOpens // V.1 ≤ W} => i.1.1) W (fun i => homOfLE i.2)` to reduce the goal to its premises. Introduce `x hx`. Take `⟨V, hV, hxV, hVW⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.Scheme.isBasis_affineOpens X) hx`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨⟨⟨V, hV⟩, hVW⟩, hxV⟩`.
+
+Introduce `i`. Conclude with `h i.1 i.2`.
+-/
 theorem eq_of_res_affine (W : X.Opens) (a b : Γ(X, W))
     (h : ∀ (V : X.affineOpens) (hV : V.1 ≤ W),
       X.presheaf.map (homOfLE hV).op a = X.presheaf.map (homOfLE hV).op b) : a = b := by
@@ -33,6 +41,13 @@ theorem eq_of_res_affine (W : X.Opens) (a b : Γ(X, W))
   · intro i
     exact h i.1 i.2
 
+/- English proof (translation)
+Establish `hcompat : TopCat.Presheaf.IsCompatible X.presheaf (fun i : X.affineOpens => i.1) g`. Introduce `i j`. Apply `eq_of_res_affine` to reduce the goal to its premises. Introduce `V hV`. Rewrite using `[res_res_lemma, res_res_lemma]`.
+
+Conclude with `(hg i V (hV.trans inf_le_left)).trans (hg j V (hV.trans inf_le_right)).symm`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' X.sheaf (fun i : X.affineOpens => i.1) ⊤ (fun i => homOfLE le_top) (by`. Introduce `x _`. Take `⟨V, hV, hxV, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp (AlgebraicGeometry.Scheme.isBasis_affineOpens X) (show x ∈ (⊤ : X.Opens) from trivial)`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+
+Conclude with `⟨⟨V, hV⟩, hxV⟩) g hcompat`. Conclude with `⟨t, ht⟩`.
+-/
 theorem exists_global (g : ∀ U : X.affineOpens, Γ(X, U.1))
     (hg : ∀ (U V : X.affineOpens) (h : V.1 ≤ U.1), X.presheaf.map (homOfLE h).op (g U) = g V) :
     ∃ t : Γ(X, ⊤), ∀ U : X.affineOpens,
@@ -53,10 +68,30 @@ theorem exists_global (g : ∀ U : X.affineOpens, Γ(X, U.1))
       exact ⟨⟨V, hV⟩, hxV⟩) g hcompat
   exact ⟨t, ht⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_sec (s : X ⟶ Sp R) (U : X.Opens) (r : R) :
     algebraMap R (Sec s U) r = X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op
       (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) := rfl
 
+/- English proof (translation)
+Establish `key : ∀ (r : R) (U : X.affineOpens), (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) (op U) = X.presheaf.map (homOfLE (le_top : U.1 ≤ ⊤)).op (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))`. Introduce `r U`. Conclude with `algebraMap_sec s U.1 r`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hg : ∀ (U V : X.affineOpens) (hUV : V.1 ≤ U.1), X.presheaf.map (homOfLE hUV).op (y (op U)) = y (op V)`. Introduce `U V hUV`. Establish `e` using `congrFun (congrFun (congrFun hy (op U)) (op V)) (homOfLE (show V ≤ U from hUV)).op`.
+
+Establish `e' : (show Γ(X, V.1) from y (op V)) - X.presheaf.map (homOfLE hUV).op (y (op U)) = 0` using `e`. Conclude with `(sub_eq_zero.mp e').symm`. Take `⟨t, ht⟩` from `exists_global (fun U => y (op U)) hg`. Take `⟨x, hx⟩` from `h.2 t`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `T`. Establish `hxinv : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x) = x` using `congrArg (fun f => CommRingCat.Hom.hom f x) (Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id`. Establish `e1` using `key ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x) T.unop`. Rewrite `e1` using `[hxinv, hx]`. Conclude with `e1.trans (ht T.unop)`.
+
+Introduce and unpack `⟨r, rfl⟩`. Use function extensionality and compare the values at `T T' φ`. Establish `hc : (GlobalTheory.CatCoh.mp (OAff s) φ) ((algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T) = (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T'` using `(GlobalTheory.CatCoh.mp (OAff s) φ).commutes r`. Use `show (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T' - (GlobalTheory.CatCoh.mp (OAff s) φ) ((algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) T) = 0`. Rewrite using `[hc, sub_self]`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `e : s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = 0`. Apply `eq_of_res_affine` to reduce the goal to its premises. Introduce `V hV`.
+
+Rewrite using `[map_zero]`. Establish `e2` using `congrFun hr (op V)`. Rewrite `e2` using `[key]`. Conclude with `e2`. Establish `e3` using `h.1 (e.trans (map_zero _).symm)`.
+
+Establish `hr2 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) = r` using `congrArg (fun f => CommRingCat.Hom.hom f r) (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id`. Rewrite `hr2` using `[e3, map_zero]`. Conclude with `hr2.symm`.
+-/
 theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom) : Stein (OAff s) := by
   have key : ∀ (r : R) (U : X.affineOpens),
       (algebraMap R (GlobalTheory.CatCoh.C0 (OAff s)) r) (op U) = X.presheaf.map (homOfLE (le_top : U.1 ≤ ⊤)).op
@@ -106,6 +141,9 @@ theorem stein_of_bijective (s : X ⟶ Sp R) (h : Function.Bijective s.appTop.hom
     rw [e3, map_zero] at hr2
     exact hr2.symm
 
+/- English proof (translation)
+Unfold `MainStatements.Hodge.SteinSt MainStatements.Hodge.AllAb`. Introduce `R _ A _ g hA _`. Conclude with `stein_of_bijective A.hom (GlobalTheory.globalFns_holds (Sp R) A hA)`.
+-/
 theorem stein_holds : SteinSt := by
   unfold MainStatements.Hodge.SteinSt MainStatements.Hodge.AllAb
   intro R _ A _ g hA _

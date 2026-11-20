@@ -30,6 +30,11 @@ namespace GlobalTheory.HTObjExt
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `⟨(Spec.preimage x).hom, by simp [spMap], ?_⟩` and prove the remaining obligations. Establish `e : spMap ((Spec.preimage x).hom.comp gm) = spMap β`. Rewrite using `[spMap_comp, ← hx]`. Use `congr 1`. Simplify using `[spMap]`.
+
+Establish `e2` using `Spec.map_injective e`. Conclude with `congrArg CommRingCat.Hom.hom e2`.
+-/
 theorem sp_point {R W R' : Type} [CommRing R] [CommRing W] [CommRing R'] (gm : R →+* W) (β : R →+* R')
     (x : Sp R' ⟶ Sp W) (hx : x ≫ spMap gm = spMap β) : ∃ β₀ : W →+* R', spMap β₀ = x ∧ β₀.comp gm = β := by
   refine ⟨(Spec.preimage x).hom, by simp [spMap], ?_⟩
@@ -38,6 +43,9 @@ theorem sp_point {R W R' : Type} [CommRing R] [CommRing W] [CommRing R'] (gm : R
   have e2 := Spec.map_injective e
   exact congrArg CommRingCat.Hom.hom e2
 
+/- English proof (translation)
+Establish `pG : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Apply `pG.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, hu, Category.assoc, ← Over.comp_left, lift_fst]`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, hv, Category.assoc, ← Over.comp_left, lift_snd]`.
+-/
 theorem lift_match₂ {S S' : Scheme.{0}} {A : Over S'} {G : Over S} {φ : A.left ⟶ G.left}
     {φ₂ : (A ⊗ A).left ⟶ (G ⊗ G).left} (hsq : IsSquare φ φ₂) (u v : A ⊗ A ⟶ A) (U V : G ⊗ G ⟶ G)
     (hu : u.left ≫ φ = φ₂ ≫ U.left) (hv : v.left ≫ φ = φ₂ ≫ V.left) :
@@ -49,6 +57,17 @@ theorem lift_match₂ {S S' : Scheme.{0}} {A : Over S'} {G : Over S} {φ : A.lef
   · rw [Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, hv, Category.assoc,
       ← Over.comp_left, lift_snd]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv h (epsPtR x) (spMap (algebraMap R' (DualNumber R')) ≫ x ≫ f) (Category.assoc _ _ _).symm`. Take `⟨e₀, he₀⟩` from `GlobalTheory.LiePull.exists_pushEquiv h (Over.mk x) (x ≫ f) rfl`. Use `⟨e, fun b c v => ?_⟩` and prove the remaining obligations. Establish `one : (1 : Over.mk (x ≫ f) ⟶ G).left = (1 : Over.mk x ⟶ A).left ≫ φ`. Rewrite using `[← he₀, map_one]`.
+
+Establish `sc : spMap (epsScaleR c) ≫ spMap (algebraMap R' (DualNumber R')) = spMap (algebraMap R' (DualNumber R'))`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `fs : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `E : e (v ≫ act.act b) = e v ≫ act'.act b` using `Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, hact, Category.assoc])`. Use `and_congr ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[one, he]`. Use `⟨fun E => by rw [← E]; exact (Category.assoc _ _ _).symm, fun E => h.1.hom_ext ((Category.assoc _ _ _).trans E) ?_⟩` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans ?_).trans (Over.w (1 : Over.mk x ⟶ A)).symm` and prove the remaining obligations. Use `(congrArg (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) fs).trans (Category.id_comp _))`.
+
+Rewrite using `[← E, he, he]`. Use `⟨fun E => by rw [E]; exact Category.assoc _ _ _, fun E => h.1.hom_ext (E.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations. Use `(Over.w (v ≫ act.act b)).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) sc)`.
+-/
 theorem isTanScal_push {O : Type} [Ring O] {S S' : Scheme.{0}} {G : Over S} {A : Over S'} [GrpObj G] [GrpObj A]
     {f : S' ⟶ S} {φ : A.left ⟶ G.left} (h : IsGrpPullback A G f φ) (act : OActN O A) (act' : OActN O G)
     (hact : ∀ c, (act.act c).left ≫ φ = φ ≫ (act'.act c).left) {R' : Type} [CommRing R'] (x : Sp R' ⟶ S') :
@@ -83,6 +102,19 @@ theorem isTanScal_push {O : Type} [Ring O] {S S' : Scheme.{0}} {G : Over S} {A :
     refine (congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans ?_
     exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ x) sc)
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `H`. Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv h (Over.mk x) (x ≫ f) rfl`. Establish `hd : (lift (𝟙 A) (𝟙 A)).left ≫ φ₂ = φ ≫ (lift (𝟙 G) (𝟙 G)).left` using `GlobalTheory.AxisTrivExt.lift_match hsq.1 hsq.2 (𝟙 A) (𝟙 A) (𝟙 G) (𝟙 G) (by simp) (by simp)`. Establish `a3 : LBIso (P.pull (lift (𝟙 A) (𝟙 A)).left) ((P'.pull φ₂).pull (lift (𝟙 A) (𝟙 A)).left)` using `GenSpread.lbIso_pullback iP _`. Establish `b1 : LBIso (P'.pull (φ ≫ (lift (𝟙 G) (𝟙 G)).left)) ((P'.pull φ₂).pull (lift (𝟙 A) (𝟙 A)).left)` using `GenSpread.lbIso_pull_pull hP' _ hd.symm`.
+
+Establish `b2 : LBIso (P'.pull (φ ≫ (lift (𝟙 G) (𝟙 G)).left)) ((P'.pull (lift (𝟙 G) (𝟙 G)).left).pull φ)` using `GenSpread.lbIso_pull_pull hP' φ rfl`. Establish `iD : LBIso (P.pull (lift (𝟙 A) (𝟙 A)).left) ((P'.pull (lift (𝟙 G) (𝟙 G)).left).pull φ)` using `LBIso.trans (pull_isLB hP _) (pull_isLB hP' _) (pull_isLB (pull_isLB hP' _) _) (LBIso.trans (pull_isLB hP _) (pull_isLB (pull_isLB hP' _) _) (pull_isLB hP' _) a3 b1.symm) b2`. Establish `W'` using `fun (n : ℤ) (g g' : Over.mk x ⟶ A) (z : kˣ) => weilIs_baseChange_of_comm S S' G A f φ h (P'.pull (lift (𝟙 G) (𝟙 G)).left) (P.pull (lift (𝟙 A) (𝟙 A)).left) (pull_isLB hP' _) (pull_isLB hP _) iD k x n g g' (e g) (e g') z (he g) (he g')`. Establish `lin : ∀ (c : D.O) (g : Over.mk x ⟶ A), e (g ≫ act.act c) = e g ≫ act'.act c` using `fun c g => Over.OverMorphism.ext (by rw [he, Over.comp_left, Over.comp_left, he, Category.assoc, hact, Category.assoc])`. Use `⟨{ ζ := I.ζ ζ_prim := I.ζ_prim ζ_pow := I.ζ_pow ev := fun n y => e (I.ev n y) add := fun n y y' => by simp only [I.add, map_mul] lin := fun n c y => by simp only [I.lin, lin] ker := fun n hn hp y => by` and prove the remaining obligations.
+
+Rewrite using `[← I.ker n hn hp y]`. Conclude with `⟨fun E => e.injective (E.trans (map_one e).symm), fun E => by rw [E, map_one]⟩`. Use `onto := fun n hn hp q => by`. Take `⟨q, rfl⟩` from `e.surjective q`. Rewrite using `[← map_pow]`.
+
+Use `Iff.trans ?_ ((I.onto n hn hp q).trans ?_)` and prove the remaining obligations. Conclude with `⟨fun E => e.injective (E.trans (map_one e).symm), fun E => by rw [E, map_one]⟩`. Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, by rw [hy]⟩, fun ⟨y, hy⟩ => ⟨y, e.injective hy⟩⟩`. Use `tower := fun n m hn hm hp y => by rw [← map_pow, I.tower n m hn hm hp y]`. Use `isom := fun n hn hp y y' => (W' n _ _ _).1 (I.isom n hn hp y y') }, fun y => ?_⟩`.
+
+Use `show toUnit _ ≫ lv' y = e (I.ev N y)`. Rewrite using `[← hI y]`. Establish `e₁ : (toUnit (Over.mk x)).left = x` using `by simpa using Over.w (toUnit (Over.mk x))`. Establish `e₂ : (toUnit (Over.mk (x ≫ f))).left = x ≫ f` using `by simpa using Over.w (toUnit (Over.mk (x ≫ f)))`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[he, Over.comp_left, Over.comp_left, Category.assoc, hlv, e₁, e₂, Category.assoc]`.
+-/
 theorem tate_push {D : Datum p} {S S' : Scheme.{0}} {G : Over S} {A : Over S'} [GrpObj G] [GrpObj A]
     [IsCommMonObj A] {f : S' ⟶ S} {φ : A.left ⟶ G.left} (h : IsGrpPullback A G f φ)
     {φ₂ : (G2 A).left ⟶ (G2 G).left} (hsq : IsSquare φ φ₂) (act : OActN D.O A) (act' : OActN D.O G)
@@ -138,6 +170,43 @@ theorem tate_push {D : Datum p} {S S' : Scheme.{0}} {G : Over S} {A : Over S'} [
   apply Over.OverMorphism.ext
   rw [he, Over.comp_left, Over.comp_left, Category.assoc, hlv, e₁, e₂, Category.assoc]
 
+/- English proof (translation)
+Introduce `p _ D R _ b N W L _ _ _ _ _ _ gm o G _ φ hG hA`. Use `haveI : IsCommMonObj G := hG.comm`. Establish `pG : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Set `φ₂ : (G2 o.A).left ⟶ (G2 G).left` to `pG.lift ((fst o.A o.A).left ≫ φ) ((snd o.A o.A).left ≫ φ) (by`. Rewrite using `[Category.assoc, Category.assoc, hA.1.w, ← Category.assoc, ← Category.assoc, Over.w (fst o.A o.A), Over.w (snd o.A o.A)])`.
+
+Establish `hsq : IsSquare φ φ₂` using `⟨pG.lift_fst _ _ _, pG.lift_snd _ _ _⟩`. Take `⟨act', ⟨h1, h2, h3, h4⟩, hact⟩` from `GlobalTheory.T.exists_ring_action_extension_compatible W L G o.A φ (isSemiAbelian_of_isAbelianScheme G hG) hA D.Oᵐᵒᵖ (fun a => o.act.act a.unop) (fun a => o.act.hom _) (by simpa using o.act.one) (fun a c => by simp [o.act.mul]) (fun a c => by simp [o.act.add])`. Set `actG : OActN D.O G` to `{ act := fun c => act' (MulOpposite.op c) hom := fun c => h1 _ one := by simpa using h2 mul := fun c d => by rw [MulOpposite.op_mul]; exact h3 _ _ add := fun c d => by rw [MulOpposite.op_add]; exact h4 _ _ }`. Establish `hactG : ∀ c, (o.act.act c).left ≫ φ = φ ≫ (actG.act c).left` using `fun c => hact (MulOpposite.op c)`. Take `⟨P', hP', r1, r2, iP⟩` from `GlobalTheory.AxisTrivExt.exists_extension_square_of_axes_trivial W L G o.A φ φ₂ hG hA hsq o.P o.isLB o.rig₁ o.rig₂`.
+
+Establish `hP` using `o.isLB`. Establish `symm' : LBIso P' (P'.pull (lift (snd G G) (fst G G)).left)`. Establish `i0 : LBIso (o.P.pull (𝟙 (G2 o.A).left)) (o.P.pull (lift (snd o.A o.A) (fst o.A o.A)).left)` using `LBIso.trans (pull_isLB hP _) hP (pull_isLB hP _) (lbIso_pull_id hP) o.symm`. Establish `i1` using `GlobalTheory.T.lineBundleIso_pullback_extend_DVR W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP (𝟙 _) (lift (snd o.A o.A) (fst o.A o.A)) (𝟙 _) (lift (snd G G) (fst G G)) (by simp) (lift_match₂ hsq _ _ _ _ hsq.2.symm hsq.1.symm) i0`. Conclude with `LBIso.trans hP' (pull_isLB hP' _) (pull_isLB hP' _) (lbIso_pull_id hP').symm i1`.
+
+Establish `rosati' : ∀ c : D.O, LBIso (P'.pull (lift (fst G G ≫ actG.act c) (snd G G)).left) (P'.pull (lift (fst G G) (snd G G ≫ actG.act (D.star c).unop)).left)` using `fun c => GlobalTheory.T.lineBundleIso_pullback_extend_DVR W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP _ _ _ _ (lift_match₂ hsq _ _ _ _ (by rw [Over.comp_left, Category.assoc, hactG, ← Category.assoc, ← hsq.1, Category.assoc, Over.comp_left]) hsq.2.symm) (lift_match₂ hsq _ _ _ _ hsq …`. Establish `ample'` using `GlobalTheory.T.relAmple_diagonal_extendedBundle_of_generic W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP o.ample`. Establish `kerP' : ∃ e : ℕ, e.Coprime p ∧ ∀ (T : Over (Sp W)) (x : T ⟶ G), (∃ t : (P'.pull (lift (snd G T ≫ x) (fst G T)).left).Gen, t.IsGen) → x ^ e = 1`. Take `⟨e, he, hk⟩` from `o.kerP`. Conclude with `⟨e, he, GlobalTheory.T.polarisation_kernel_killed_over_dvr_of_generic W L G o.A φ φ₂ hG hA hsq o.P P' hP hP' iP r1 r2 symm' ample' e hk⟩`.
+
+Take `⟨eL, heL⟩` from `GlobalTheory.T.properGroupScheme_dvr_sections_mulEquiv_generic W L G o.A φ hG.proper hA`. Establish `inj : ∀ s₁ s₂ : 𝟙_ (Over (Sp L)) ⟶ o.A, s₁.left ≫ φ = s₂.left ≫ φ → s₁ = s₂` using `fun s₁ s₂ e => Over.OverMorphism.ext (hA.1.hom_ext e (by rw [Over.w, Over.w]))`. Establish `key : ∀ s t, s.left ≫ φ = spMap (algebraMap W L) ≫ t.left → eL s = t` using `fun s t e => by`. Establish `e'` using `heL (eL.symm t)`. Rewrite `e'` using `[MulEquiv.apply_symm_apply]`.
+
+Rewrite using `[inj s (eL.symm t) (e.trans e'.symm), MulEquiv.apply_symm_apply]`. Set `eta' : D.La → (𝟙_ (Over (Sp W)) ⟶ G)` to `fun y => eL (o.eta y)`. Establish `eta_add' : ∀ x y, eta' (x + y) = eta' x * eta' y` using `fun x y => by`. Simplify using `only [eta', o.eta_add, map_mul]`. Establish `hlv : ∀ y, (o.eta y).left ≫ φ = spMap (algebraMap W L) ≫ (eta' y).left` using `fun y => heL _`.
+
+Establish `disc : IsUnit ((D.tr ^ 2 - 4 * D.nm : ℤ) : W)`. Establish `hc : (Int.natAbs (D.tr ^ 2 - 4 * D.nm)).Coprime p`. Use `Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd (Fact.out)).2 fun hd => D.disc_p ?_)` and prove the remaining obligations. Conclude with `Int.ofNat_dvd_left.2 hd`. Establish `hu` using `(b.unit _ hc).map gm`.
+
+Rewrite `hu` using `[map_natCast]`. Break down `Int.natAbs_eq (D.tr ^ 2 - 4 * D.nm) with e | e` into its components or cases. Rewrite using `[e, Int.cast_natCast]`. Conclude with `hu`. Rewrite using `[e, Int.cast_neg, Int.cast_natCast]`.
+
+Conclude with `hu.neg`. Establish `comax' : ∀ i j, i ≠ j → Ideal.span (Set.range fun x => (gm.comp (b.t i)) x - (gm.comp (b.t j)) x) = ⊤` using `fun i j hij => by`. Establish `e` using `congrArg (Ideal.map gm) (b.comax i j hij)`. Rewrite `e` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Simplify `e` using `[Function.comp_def, map_sub]`.
+
+Establish `hx : ∀ (R' : Type) [CommRing R'] (β : L →+* R'), spMap β ≫ spMap ((algebraMap W L).comp gm) = spMap (β.comp ((algebraMap W L).comp gm))` using `fun R' _ β => (spMap_comp _ _).symm`. Establish `lieGen : ∀ (R' : Type) [CommRing R'] (β : L →+* R'), ∀ v : epsPtR (spMap (β.comp (algebraMap W L))) ⟶ G, IsTanScal actG (spMap (β.comp (algebraMap W L))) (algebraMap (𝓞 D.F) D.O D.ω) (β (algebraMap W L (gm b.ρ))) v → ∃ w : Fin D.a → (epsPtR (spMap (β.comp (algebraMap W L))) ⟶ G), …`. Introduce `R' _ β`. Rewrite using `[spMap_comp]`. Introduce `v hv`.
+
+Take `⟨e, he⟩` from `isTanScal_push hA o.act actG hactG (spMap β)`. Establish `hu` using `(he _ _ (e.symm v)).2 (by rw [MulEquiv.apply_symm_apply]; exact hv)`. Take `⟨w, hw, hwv⟩` from `o.lie R' (β.comp ((algebraMap W L).comp gm)) (spMap β) (hx R' β) _ hu`. Use `⟨fun i => e (w i), fun i c => (he _ _ _).1 (hw i c), ?_⟩` and prove the remaining obligations. Rewrite using `[← e.apply_symm_apply v, hwv, map_list_prod, List.map_ofFn]`.
+
+Both sides reduce to the same expression. Establish `rankGen : ∀ (k : Type) [Field k] [IsAlgClosed k] (β : L →+* k) i, LieMult (actG.toF D) (spMap (β.comp (algebraMap W L))) ((β.comp (algebraMap W L)).comp (gm.comp (b.t i))) D.m`. Introduce `k _ _ β i`. Rewrite using `[spMap_comp]`. Conclude with `(GlobalTheory.LiePull.lieMult_pull (𝓞 D.F) (Sp W) (Sp L) G o.A (spMap (algebraMap W L)) φ (actG.toF D) (o.act.toF D) hA (fun c => hactG _) k (spMap β) _ D.m).1 (o.lieRank k (spMap β) _ (hx k β) i)`.
+
+Take `⟨lieG, rankG⟩` from `GlobalTheory.T.harrisTaylor_lie_condition_extends_abelianScheme_dvr p D W L G hG actG (gm b.ρ) (fun i => gm.comp (b.t i)) (fun i => by simp [b.t_ω]) (by simpa using congrArg gm b.ρ_root) comax' disc lieGen rankGen`. Establish `geomGen : ∀ (k : Type) [Field k] [IsAlgClosed k] (β : L →+* k), ∃ I : TateIsoO D k (Over.mk (spMap (β.comp (algebraMap W L))) ⟶ G) (fun c g => g ≫ actG.act c) (fun n g g' z => Out.WeilIs G (P'.pull (lift (𝟙 G) (𝟙 G)).left) n g g' (unitOn z)), ∀ x, toUnit _ ≫ eta' x = I.ev N x`. Introduce `k _ _ β`. Rewrite using `[spMap_comp]`. Conclude with `tate_push hA hsq o.act actG hactG o.P P' hP hP' iP N o.eta eta' hlv k (spMap β) (o.geom k (spMap β) _ (hx k β))`.
+
+Establish `geomG` using `GlobalTheory.T.tateSimilitude_geometric_points_of_generic_dvr p D R b N W L gm G hG actG P' hP' eta' eta_add' geomGen`. Establish `lie' : ∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ Sp W), x ≫ spMap gm = spMap β → ∀ v : epsPtR x ⟶ G, IsTanScal actG x (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) v → ∃ w : Fin D.a → (epsPtR x ⟶ G), (∀ i, ∀ c : 𝓞 D.F, IsTanScal actG x (algebraMap (𝓞 D.F) D.O c) (β (b.t i c) …`. Introduce `R' _ β x hx' v hv`. Take `⟨β₀, rfl, rfl⟩` from `sp_point gm β x hx'`. Conclude with `lieG R' β₀ v hv`.
+
+Establish `rank' : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp W) (β : R →+* k), x ≫ spMap gm = spMap β → ∀ i, LieMult (actG.toF D) x (β.comp (b.t i)) D.m`. Introduce `k _ _ x β hx' i`. Take `⟨β₀, rfl, rfl⟩` from `sp_point gm β x hx'`. Conclude with `rankG k β₀ i`. Establish `lin' : ∀ (c : D.O) x, eta' (c • x) = eta' x ≫ actG.act c`.
+
+Introduce `c x`. Use `show eL (o.eta (c • x)) = eL (o.eta x) ≫ actG.act c`. Rewrite using `[o.eta_lin]`. Use `key _ _ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, hactG, ← Category.assoc, hlv, Category.assoc, Over.comp_left]`.
+
+Establish `ker' : ∀ x, eta' (N • x) = 1`. Introduce `x`. Use `show eL (o.eta (N • x)) = 1`. Rewrite using `[o.eta_ker, map_one]`. Establish `geom' : ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp W) (β : R →+* k), x ≫ spMap gm = spMap β → ∃ I : TateIsoO D k (Over.mk x ⟶ G) (fun c g => g ≫ actG.act c) (fun n g g' z => Out.WeilIs G (P'.pull (lift (𝟙 G) (𝟙 G)).left) n g g' (unitOn z)), ∀ y, toUnit _ ≫ eta' y = I.e …`.
+
+Introduce `k _ _ x β hx'`. Take `⟨β₀, rfl, rfl⟩` from `sp_point gm β x hx'`. Conclude with `geomG k β₀`. Conclude with `⟨Obj.mk G hG actG P' hP' r1 r2 symm' ample' kerP' rosati' lie' rank' eta' eta_add' lin' ker' geom', ⟨ObjMap.mk φ φ₂ hA hsq hactG iP hlv⟩⟩`.
+-/
 theorem extends_obj : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (gm : R →+* W) (o : Obj b N (spMap ((algebraMap W L).comp gm))) (G : Over (Sp W)) [GrpObj G] (φ : o.A.left ⟶ G.left), IsAbelianScheme G → IsGrpPullback o.A G (spMap (algebraMap W L)) φ → ∃ o' : Obj b N (spMap gm), Nonempty (ObjMap o o' (spMap (algebraMap W L))) := by
   intro p _ D R _ b N W L _ _ _ _ _ _ gm o G _ φ hG hA
   haveI : IsCommMonObj G := hG.comm

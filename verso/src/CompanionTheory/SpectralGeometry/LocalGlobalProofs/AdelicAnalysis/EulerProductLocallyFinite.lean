@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.EulerInt
 
+/- English proof (translation)
+Use `symm`. Use `Measure.prod_eq_generateFrom (C := {s | MeasurableSet s}) (D := Set.univ.pi '' Set.univ.pi fun i => {s | MeasurableSet s}) MeasurableSpace.generateFrom_measurableSet generateFrom_pi MeasurableSpace.isPiSystem_measurableSet isPiSystem_pi ((c • μ₀).toFiniteSpanningSetsIn) (Measure. …` and prove the remaining obligations. Introduce and unpack `s hs _ ⟨B, hB, rfl⟩`. Establish `hB' : ∀ i, MeasurableSet (B i)` using `fun i => hB i (Set.mem_univ i)`. Rewrite using `[Measure.map_apply hP (hs.prod (MeasurableSet.univ_pi hB')), h s B hs hB', Measure.pi_pi]`.
+
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_assoc]`.
+-/
 theorem map_eq_prod {X Y ι : Type*} [MeasurableSpace X] [MeasurableSpace Y] [Fintype ι]
     {Z : ι → Type*} [∀ i, MeasurableSpace (Z i)]
     (I : Measure X) (μ₀ : Measure Y) (μ : ∀ i, Measure (Z i)) [SigmaFinite μ₀]
@@ -31,6 +36,11 @@ theorem map_eq_prod {X Y ι : Type*} [MeasurableSpace X] [MeasurableSpace Y] [Fi
   rw [Measure.map_apply hP (hs.prod (MeasurableSet.univ_pi hB')), h s B hs hB', Measure.pi_pi]
   rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `hmap` using `map_eq_prod I μ₀ μ c P hP h`. Use `set g : (Y × ∀ i, Z i) → ℂ := fun z => f₀ z.1 * ∏ i, f i (z.2 i) with hg`. Establish `hgi : Integrable g ((c • μ₀).prod (Measure.pi μ))` using `Integrable.mul_prod (hf₀.smul_measure_nnreal) (Integrable.fintype_prod_dep hf)`. Rewrite `hgi` using `[← hmap]`. Use `⟨(integrable_map_measure hgi.aestronglyMeasurable hP.aemeasurable).1 hgi, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ∫ x, g (P x) ∂I = ∫ z, g z ∂(I.map P)` using `(integral_map hP.aemeasurable hgi.aestronglyMeasurable).symm`. Establish `h2 : ∫ z, g z ∂((c • μ₀).prod (Measure.pi μ)) = (∫ y, f₀ y ∂(c • μ₀)) * ∫ z : (∀ i, Z i), ∏ i, f i (z i) ∂(Measure.pi μ)` using `integral_prod_mul f₀ (fun z : (∀ i, Z i) => ∏ i, f i (z i))`. Express the relevant statement in the definitionally equal form `∫ x, g (P x) ∂I = _`. Rewrite using `[h1, hmap, h2, integral_fintype_prod_eq_prod, integral_smul_nnreal_measure]`. Simplify using `[NNReal.smul_def, mul_assoc]`.
+-/
 theorem integral_box {X Y ι : Type*} [MeasurableSpace X] [MeasurableSpace Y] [Fintype ι]
     {Z : ι → Type*} [∀ i, MeasurableSpace (Z i)]
     (I : Measure X) (μ₀ : Measure Y) (μ : ∀ i, Measure (Z i)) [SigmaFinite μ₀]
@@ -58,9 +68,15 @@ theorem integral_box {X Y ι : Type*} [MeasurableSpace X] [MeasurableSpace Y] [F
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (T2Space (∀ v : InfinitePlace F, v.Completion))`.
+-/
 theorem infinite_adeles_t2Space : T2Space (Ainf F) :=
   inferInstanceAs (T2Space (∀ v : InfinitePlace F, v.Completion))
 
+/- English proof (translation)
+Establish `h' : SecondCountableTopology (Ainf F × Af F)` using `h`. Establish `he : IsEmbedding (fun x : Ainf F => ((x, 0) : Ainf F × Af F))` using `isEmbedding_prodMkLeft 0`. Conclude with `he.secondCountableTopology`.
+-/
 theorem sc_ainf (h : SecondCountableTopology (AF F)) : SecondCountableTopology (Ainf F) := by
   have h' : SecondCountableTopology (Ainf F × Af F) := h
   have he : IsEmbedding (fun x : Ainf F => ((x, 0) : Ainf F × Af F)) :=
@@ -71,6 +87,19 @@ end GlobalTheory.CompanionTheory.SW.EulerInt
 
 namespace GlobalTheory.CompanionTheory.SW.EulerInt
 
+/- English proof (translation)
+Distinguish the cases in `hX : X ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem hX]`. Use `finprod_eq_prod_of_mulSupport_subset _ ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+
+Apply `hv` to reduce the goal to its premises. Establish `hvS' : v ∉ S` using `by simpa using hvS`. Simplify using `only [hS v hvS']`. Conclude with `Set.indicator_of_mem (hX v hvS') _`. Rewrite using `[Set.indicator_of_notMem hX]`.
+
+Establish `: ∃ v, v ∉ S ∧ projV v (projFin X) ∉ latV b v`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hX hne`. Take `⟨v, hvS, hv⟩` from `this`.
+
+Use `finprod_eq_zero _ v ?_ ?_` and prove the remaining obligations. Simplify using `only [hS v hvS]`. Conclude with `Set.indicator_of_notMem hv _`. Establish `hfin : {w | projV w (projFin X) ∉ latV b w}.Finite` using `Filter.eventually_cofinite.1 (hae (projFin X))`. Use `(hfin.union S.finite_toSet).subset ?_` and prove the remaining obligations.
+
+Introduce `w hw`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not, Finset.mem_coe] at hc`. Apply `hw` to reduce the goal to its premises. Simplify using `only [hS w hc.2]`.
+
+Conclude with `Set.indicator_of_mem hc.1 _`.
+-/
 theorem finprod_eq_indicator {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d n M : ℕ}
     (b : Module.Basis (Fin d) F E)
     (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ)
@@ -111,6 +140,57 @@ theorem finprod_eq_indicator {F E : Type} [Field F] [NumberField F] [Field E] [A
 
 end GlobalTheory.CompanionTheory.SW.EulerInt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM d b n M I minf m hEu hminf hm Φ Φinf Φf Φv hc hcs hpure hprod`. Take `⟨hpi, hpf, hpv, hlat, hint, hae, -, -, -⟩` from `GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M`. Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Use `haveI := lcA`. Use `haveI := scA`.
+
+Use `haveI := t2A`. Use `haveI : T2Space (Ainf F) := GlobalTheory.CompanionTheory.SW.EulerInt.infinite_adeles_t2Space F`. Use `haveI : SecondCountableTopology (Ainf F) := GlobalTheory.CompanionTheory.SW.EulerInt.sc_ainf F scA`. Establish `KA` using `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Establish `KI` using `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Ainf F)`.
+
+Use `haveI : SecondCountableTopology (Ainf F ⊗[F] E) := KI.2.2.1`. Use `haveI : BorelSpace (Fin n → Fin M → AF F ⊗[F] E) := KA.2.2.2.2.2.2.2.1 n M`. Use `haveI : BorelSpace (Fin n → Fin M → Ainf F ⊗[F] E) := KI.2.2.2.2.2.2.2.1 n M`. Establish `KVb : ∀ v : HeightOneSpectrum (𝓞 F), SecondCountableTopology (Fv F v ⊗[F] E) ∧ BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E)`. Introduce `v`.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.T.completion_is_local_ring F v`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`. Use `haveI := h4`.
+
+Establish `K` using `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Fv F v)`. Conclude with `⟨K.2.2.1, K.2.2.2.2.2.2.2.1 n M⟩`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), SecondCountableTopology (Fv F v ⊗[F] E) := fun v => (KVb v).1`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E) := fun v => (KVb v).2`. Use `haveI : SigmaFinite minf := inferInstance`.
+
+Use `haveI : ∀ v, SigmaFinite (m v) := fun v => inferInstance`. Take `⟨-, hsum, S₀, hEP⟩` from `hEu`. Establish `hbad` using `hpure.2.1`. Set `S : Finset (HeightOneSpectrum (𝓞 F))` to `S₀ ∪ (Filter.eventually_cofinite.1 hbad).toFinset`. Establish `hS : ∀ v, v ∉ S → Φv v = (latV b v).indicator 1`.
+
+Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (by simpa using h))`. Establish `hSS : S₀ ⊆ S` using `Finset.subset_union_left`. Set `Ψ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ` to `fun Y => Φinf (projInf Y) * ∏ v ∈ S, Φv v (projV v (projFin Y))`.
+
+Establish `hΦ : Φ = (intOff b S).indicator Ψ`. Use function extensionality and compare the values at `X`. Rewrite using `[hprod X, hpure.2.2 (projFin X), GlobalTheory.CompanionTheory.SW.EulerInt.finprod_eq_indicator b Φv S hS hae X]`. Distinguish the cases in `hX : X ∈ intOff b S`. Simplify using `[Set.indicator_of_mem hX, Ψ]`.
+
+Simplify using `[Set.indicator_of_notMem hX]`. Establish `hcv : ∀ v, Continuous (Φv v)` using `fun v => (hpure.1 v).1.continuous`. Establish `hΨc : Continuous Ψ` using `(hc.comp hpi).mul (continuous_finset_prod _ fun v _ => (hcv v).comp ((hpv v).comp hpf))`. Establish `hmI : MeasurableSet (intOff b S : Set (Fin n → Fin M → AF F ⊗[F] E))` using `(hint S).measurableSet`. Set `a : HeightOneSpectrum (𝓞 F) → ℝ` to `fun v => (m v (latV b v)).toReal`.
+
+Establish `hmul : Multipliable (fun v : {v // v ∉ S} => a v.1)` using `((GlobalTheory.CompanionTheory.SW.AbsTprod.abs_tprod _ a hsum).2.1 S).1`. Establish `hT0 : 0 ≤ ∏' v : {v // v ∉ S}, a v.1` using `GlobalTheory.CompanionTheory.SW.AbsTprod.tprod_nonneg_of_nonneg hmul fun _ => ENNReal.toReal_nonneg`. Set `c : ℝ≥0` to `⟨∏' v : {v // v ∉ S}, a v.1, hT0⟩`. Set `P : (Fin n → Fin M → AF F ⊗[F] E) → (Fin n → Fin M → Ainf F ⊗[F] E) × ∀ i : S, (Fin n → Fin M → Fv F i.1 ⊗[F] E)` to `fun X => (projInf X, fun i => projV i.1 (projFin X))`. Establish `hP : Measurable P` using `hpi.measurable.prodMk (measurable_pi_lambda _ fun i => ((hpv i.1).comp hpf).measurable)`.
+
+Establish `hbox : ∀ (A : Set (Fin n → Fin M → Ainf F ⊗[F] E)) (B : ∀ i : S, Set (Fin n → Fin M → Fv F i.1 ⊗[F] E)), MeasurableSet A → (∀ i, MeasurableSet (B i)) → (I.restrict (intOff b S)) (P ⁻¹' (A ×ˢ Set.univ.pi B)) = (c : ℝ≥0∞) * (minf A * ∏ i : S, m i.1 (B i))`. Introduce `A B hA hB`. Set `φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞` to `A.indicator 1`. Set `φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℝ≥0∞` to `fun v => if h : v ∈ S then (B ⟨v, h⟩).indicator 1 else 0`. Establish `hφS : ∀ i : S, φ i.1 = (B i).indicator 1` using `fun i => by simp [φ]`.
+
+Establish `hφm : ∀ v, Measurable (φ v)`. Introduce `v`. Distinguish the cases in `h : v ∈ S`. Rewrite using `[hφS ⟨v, h⟩]`. Conclude with `measurable_one.indicator (hB _)`.
+
+Simplify using `only [φ, dif_neg h]`. Conclude with `measurable_const`. Establish `e` using `hEP S hSS φinf φ (measurable_one.indicator hA) hφm`. Establish `hPm : MeasurableSet (P ⁻¹' (A ×ˢ Set.univ.pi B))` using `hP (hA.prod (MeasurableSet.univ_pi hB))`. Establish `hl : pureL b S φinf φ = (P ⁻¹' (A ×ˢ Set.univ.pi B) ∩ intOff b S).indicator 1`.
+
+Use function extensionality and compare the values at `X`. Establish `hpr : ∏ v ∈ S, φ v (projV v (projFin X)) = ∏ i : S, (B i).indicator (1 : (Fin n → Fin M → Fv F i.1 ⊗[F] E) → ℝ≥0∞) (projV i.1 (projFin X))`. Rewrite using `[← Finset.prod_coe_sort S (fun v => φ v (projV v (projFin X)))]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hφS i]`. Unfold `pureL`.
+
+Distinguish the cases in `hX : X ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem hX, hpr]`. Distinguish the cases in `hPX : P X ∈ A ×ˢ Set.univ.pi B`. Rewrite using `[Set.indicator_of_mem (show X ∈ _ ∩ _ from ⟨hPX, hX⟩)]`. Establish `h1 : projInf X ∈ A` using `hPX.1`.
+
+Establish `h2 : ∀ i : S, projV i.1 (projFin X) ∈ B i` using `fun i => hPX.2 i (Set.mem_univ i)`. Simplify using `[φinf, h1, h2]`. Rewrite using `[Set.indicator_of_notMem (fun h => hPX h.1)]`. Distinguish the cases in `h1 : projInf X ∈ A`. Establish `h2 : ¬ ∀ i : S, projV i.1 (projFin X) ∈ B i` using `fun h2 => hPX ⟨h1, fun i _ => h2 i⟩ push Not at h2`.
+
+Take `⟨i, hi⟩` from `h2`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (Set.indicator_of_notMem hi _), mul_zero]`. Simplify using `[φinf, h1]`. Rewrite using `[Set.indicator_of_notMem hX, Set.indicator_of_notMem (fun h => hX h.2)]`. Establish `e1 : ∫⁻ X, φinf X ∂minf = minf A` using `lintegral_indicator_one hA`.
+
+Establish `e2 : ∏ v ∈ S, ∫⁻ X, φ v X ∂(m v) = ∏ i : S, m i.1 (B i)`. Rewrite using `[← Finset.prod_coe_sort S (fun v => ∫⁻ X, φ v X ∂(m v))]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hφS i]`. Conclude with `lintegral_indicator_one (hB i)`.
+
+Rewrite `e` using `[hl, lintegral_indicator_one (hPm.inter hmI), e1, e2, ENNReal.ofReal_eq_coe_nnreal hT0]`. Rewrite using `[Measure.restrict_apply hPm, e]`. Simplify using `only [ENNReal.coe_one, one_mul]`. Conclude with `mul_comm _ _`. Establish `hinf : Integrable Φinf minf` using `hc.integrable_of_hasCompactSupport hcs`.
+
+Establish `hvi : ∀ v, Integrable (Φv v) (m v)` using `fun v => (hcv v).integrable_of_hasCompactSupport (hpure.1 v).2`. Take `⟨hI, hInt⟩` from `GlobalTheory.CompanionTheory.SW.EulerInt.integral_box (Z := fun i : S => Fin n → Fin M → Fv F i.1 ⊗[F] E) (I.restrict (intOff b S)) minf (fun i : S => m i.1) c P hP hbox Φinf (fun i => Φv i.1) hinf (fun i => hvi i.1)`. Establish `hΨeq : (fun X => Φinf (P X).1 * ∏ i : S, Φv i.1 ((P X).2 i)) = Ψ`. Use function extensionality and compare the values at `X`. Conclude with `congrArg (Φinf (projInf X) * ·) (Finset.prod_coe_sort S (fun v => Φv v (projV v (projFin X))))`.
+
+Rewrite `hInt`, `hI` using `[hΨeq]`. Establish `hvS : ∀ v, v ∉ S → ∫ X, Φv v X ∂(m v) = ((a v : ℝ) : ℂ)`. Introduce `v hv`. Establish `hl : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `(hlat v).2.measurableSet`. Rewrite using `[hS v hv]`.
+
+Use `integral_indicator_const (μ := m v) (1 : ℂ) hl` as an intermediate fact. Express the relevant statement in the definitionally equal form `∫ X, (latV b v).indicator (fun _ => (1 : ℂ)) X ∂(m v) = _`. Simplify `this` using `[Measure.real, a]`. Establish `hHP : HasProd (fun v => ∫ X, Φv v X ∂(m v)) ((∏ v ∈ S, ∫ X, Φv v X ∂(m v)) * ((∏' v : {v // v ∉ S}, a v.1 : ℝ) : ℂ))`. Use `HasProd.mul_isCompl (s := (S : Set (HeightOneSpectrum (𝓞 F)))) (t := (S : Set _)ᶜ) isCompl_compl (S.hasProd _) ?_` and prove the remaining obligations.
+
+Establish `h` using `hmul.hasProd.map Complex.ofRealHom Complex.continuous_ofReal`. Establish `hfun : ((fun v => ∫ X, Φv v X ∂(m v)) ∘ Subtype.val : ↥((S : Set (HeightOneSpectrum (𝓞 F)))ᶜ) → ℂ) = (Complex.ofRealHom ∘ fun v : {v // v ∉ S} => a v.1)`. Use function extensionality and compare the values at `v`. Conclude with `hvS v.1 v.2`. Rewrite using `[hfun]`.
+
+Conclude with `h`. Use `⟨?_, ?_, hHP.multipliable, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`. Conclude with `hΨc.measurable.indicator hmI`. Rewrite using `[hΦ]`.
+
+Conclude with `(integrable_indicator_iff hmI).2 hI`. Rewrite using `[hHP.tprod_eq, hΦ, integral_indicator hmI, hInt, Finset.prod_coe_sort S (fun v => ∫ X, Φv v X ∂(m v))]`. Establish `hcc : ((c : ℝ) : ℂ) = ((∏' v : {v // v ∉ S}, a v.1 : ℝ) : ℂ)` using `rfl`. Rewrite using `[hcc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.CompanionTheory.SW.EulerInt.euler_int : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), IsEulerProd b I 1 minf m → IsLocallyFiniteMeasure minf → (∀ v, IsLocallyFiniteMeasure (m v)) → ∀ (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ) (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ), Continuous Φinf → HasCompactSupport Φinf → IsPureFin b Φf Φv → IsProdInfFin Φ Φinf Φf → Measurable Φ ∧ Integrable Φ I ∧ Multipliable (fun v => ∫ X, Φv v X ∂(m v)) ∧ ∫ X, Φ X ∂I = (∫ X, Φinf X ∂minf) * ∏' v, ∫ X, Φv v X ∂(m v) := by
   intro F E _ _ _ _ _ σ hCM d b n M I minf m hEu hminf hm Φ Φinf Φf Φv hc hcs hpure hprod
   classical

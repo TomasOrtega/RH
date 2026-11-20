@@ -12,6 +12,11 @@ noncomputable section
 
 def Acc (k r : ℕ) : ℝ := ((64 * (2 * r + k + 1) ^ 3 : ℕ) : ℝ)
 
+/- English proof (translation)
+Unfold `B.AB Acc`. Use `push_cast`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `h1 : (1 : ℝ) ≤ 2 * r + k + 1` using `by linarith`.
+
+Use polynomial arithmetic with `[mul_nonneg hk hr, mul_nonneg (mul_nonneg hk hr) hr, mul_nonneg hk hk, mul_nonneg hr hr, mul_nonneg (mul_nonneg hk hk) hk, mul_nonneg (mul_nonneg hr hr) hr, mul_nonneg (mul_nonneg hk hk) hr, mul_nonneg (mul_nonneg hk hr) hr]`.
+-/
 theorem AB_le_Acc (k r : ℕ) : B.AB k r ≤ Acc k r := by
   unfold B.AB Acc
   push_cast
@@ -54,6 +59,11 @@ def BetaInfCoef : Prop :=
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.beta Formalism.QuantumDeterminants.betaBig`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem beta_eq_integral (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) :
     B.beta D F F = ∫ q, (((Formalism.QuantumDeterminants.bcWeight P.k P.r (Formalism.QuantumDeterminants.Tz P.k P.r D.z) (Formalism.QuantumDeterminants.Tz P.k P.r D.z') q *
       ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2 : ℝ)) : ℂ) := by
@@ -64,6 +74,13 @@ theorem beta_eq_integral (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r 
   push_cast
   rfl
 
+/- English proof (translation)
+Use `set g : (Fin P.r → ℂ) × ℂ → ℝ := fun q => Formalism.QuantumDeterminants.bcWeight P.k P.r (Formalism.QuantumDeterminants.Tz P.k P.r D.z) (Formalism.QuantumDeterminants.Tz P.k P.r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2 with hg`. Establish `hβ'` using `beta_eq_integral D F`. Rewrite `hβ'` using `[hβ]`. Establish `hint : Integrable (fun q => ((g q : ℝ) : ℂ))`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hβ'` using `[integral_undef hn]`. Conclude with `hx (by exact_mod_cast hβ')`. Establish `hgi : Integrable g`. Use `hint.re` as an intermediate fact. Simplify using `using this`.
+
+Establish `hx' : x = ∫ q, g q`. Rewrite `hβ'` using `[integral_complex_ofReal]`. Conclude with `hβ'` after adjusting the coercions. Unfold `B.normSq Formalism.QuantumDeterminants.jNormSq`. Rewrite using `[hx', ofReal_integral_eq_lintegral_ofReal hgi (Filter.Eventually.of_forall fun q => mul_nonneg (CutBP.bcWeight_nonneg0 _ _ _ _ _) (sq_nonneg _))]`.
+-/
 theorem normSq_of_beta (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (x : ℝ) (hx : x ≠ 0)
     (hβ : B.beta D F F = (x : ℂ)) : B.normSq D F = ENNReal.ofReal x := by
   set g : (Fin P.r → ℂ) × ℂ → ℝ := fun q => Formalism.QuantumDeterminants.bcWeight P.k P.r (Formalism.QuantumDeterminants.Tz P.k P.r D.z)
@@ -84,6 +101,13 @@ theorem normSq_of_beta (D : B.RealPlaceData P.k P.r Wp Wq) (F : B.Mat P.k P.r �
   rw [hx', ofReal_integral_eq_lintegral_ofReal hgi
     (Filter.Eventually.of_forall fun q => mul_nonneg (CutBP.bcWeight_nonneg0 _ _ _ _ _) (sq_nonneg _))]
 
+/- English proof (translation)
+Introduce `F lam0 q0 hF`. Take `⟨c, hc, -, -, hβ, -, -⟩` from `hL P.k P.r Wp Wq p.T.base (Acc P.k P.r) (AB_le_Acc _ _)`. Use `⟨(c : ℝ), by exact_mod_cast hc, fun μ hμ hP => ?_⟩` and prove the remaining obligations. Establish `hG` using `hF μ hμ hP.1`. Establish `hcc` using `hC hK P.k P.r Wp Wq p.T.base _ _ _ _ _ _ _ (F.A μ) hG`.
+
+Take `⟨hI, hE⟩` from `hB hSch P.k P.r Wp Wq p.T.base _ _ _ _ _ _ _ (F.A μ) hG hP.2.1 hP.2.2`. Establish `hinf` using `hA P.k P.r Wp Wq p.T.base (Acc P.k P.r) _ (AB_le_Acc _ _) hcc hI`. Establish `hdeg : 0 < (F.A μ).deg p.T.base.μG` using `degPos_of hSch p F lam0 q0 hF μ hμ hP`. Establish `hbeta : B.beta p.T.base (F.J p.T.base μ) (F.J p.T.base μ) = (((c : ℝ) * (F.A μ).deg p.T.base.μG : ℝ) : ℂ)`. Rewrite using `[JFam.J_of_hc _ F _ hP.1, hβ _ _ hcc hcc, hinf, hE]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hJ P Wp Wq p, normSq_of_beta p.T.base _ _ (mul_pos (by exact_mod_cast hc) hdeg).ne' hbeta]`.
+-/
 theorem normDegG_of_leaves [CompleteSpace Wp] [CompleteSpace Wq] (hJ : NormSquareTransferIdentity) (hC : CoefCC) (hA : BetaInfAbs)
     (hB : BetaInfCoef) (hL : B2.LemmaBAny) (hSch : SchurH) (hK : PI.KFinSmooth) (p : KB.Pl P Wp Wq) :
     NormDegG p := by

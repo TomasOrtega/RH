@@ -32,6 +32,11 @@ def ellFam : Fam (Fin 1) 1 (ℤ × ℤ) where
     exact (analyticAt_const.mul ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 ↦ ℂ) 0).analyticAt z)).add
       analyticAt_const
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : ℝ) < Complex.I.im`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Simplify using `[ellFam]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[ellFam]`.
+-/
 theorem ellFam_nontrivial : (fun _ ↦ Complex.I) ∈ ellFam.V ∧
     ellFam.τ (1, 0) (fun _ ↦ Complex.I) = (fun _ ↦ Complex.I) ∧ ellFam.τ (0, 1) (fun _ ↦ Complex.I) = fun _ ↦ 1 := by
   refine ⟨?_, ?_, ?_⟩
@@ -42,6 +47,13 @@ theorem ellFam_nontrivial : (fun _ ↦ Complex.I) ∈ ellFam.V ∧
   · funext i
     simp [ellFam]
 
+/- English proof (translation)
+Establish `hz' : 0 < (z 0).im` using `hz`. Establish `h0 : ((l.1 : ℂ) * z 0 + l.2) = 0`. Use `congrFun h 0` as an intermediate fact. Simplify `this` using `[ellFam]`. Establish `him : (l.1 : ℝ) * (z 0).im = 0`.
+
+Use `congrArg Complex.im h0` as an intermediate fact. Simplify using `using this`. Establish `h1 : l.1 = 0`. Establish `: (l.1 : ℝ) = 0` using `(mul_eq_zero.1 him).resolve_right hz'.ne'`. Conclude with `this` after adjusting the coercions.
+
+Establish `h2 : l.2 = 0`. Rewrite `h0` using `[h1]`. Simplify using `using h0`. Conclude with `Prod.ext h1 h2`.
+-/
 theorem ellFam_free (l : ℤ × ℤ) (z : Fin 1 → ℂ) (hz : z ∈ ellFam.V) (h : ellFam.τ l z = 0) : l = 0 := by
   have hz' : 0 < (z 0).im := hz
   have h0 : ((l.1 : ℂ) * z 0 + l.2) = 0 := by
@@ -62,13 +74,22 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
 
 def Fam.shift (F : Fam I g Λ) (l : Λ) (p : Tot I g) : Tot I g := (p.1, p.2 + F.τ l p.1)
 
+/- English proof (translation)
+Simplify using `[Fam.shift]`.
+-/
 theorem Fam.shift_zero (F : Fam I g Λ) (p : Tot I g) : F.shift 0 p = p := by
   simp [Fam.shift]
 
+/- English proof (translation)
+Simplify using `only [Fam.shift, map_add, Pi.add_apply, Prod.mk.injEq, true_and]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Fam.shift_add (F : Fam I g Λ) (l m : Λ) (p : Tot I g) : F.shift (l + m) p = F.shift l (F.shift m p) := by
   simp only [Fam.shift, map_add, Pi.add_apply, Prod.mk.injEq, true_and]
   abel
 
+/- English proof (translation)
+Introduce `p hp`. Conclude with `analyticAt_fst.prod (analyticAt_snd.add ((F.hol l p.1 (h p hp)).comp analyticAt_fst))`.
+-/
 theorem Fam.shift_analytic (F : Fam I g Λ) (l : Λ) {W : Set (Tot I g)} (h : ∀ p ∈ W, p.1 ∈ F.V) :
     AnalyticOnNhd ℂ (F.shift l) W := by
   intro p hp
@@ -82,6 +103,11 @@ def Step {W : Opens (Tot I g)} {C : Type} [CommRing C] (J : Ideal C) (ρ₁ ρ�
 def Close {W : Opens (Tot I g)} {C : Type} [CommRing C] (J : Ideal C) (ρ₁ ρ₂ : Hol W →+* C) : Prop :=
   Relation.ReflTransGen (Step J) ρ₁ ρ₂
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `tail _ hs ih`. Take `⟨n, hn, hnn, hρ⟩` from `hs`. Use `ih.tail ⟨fun a ↦ φ (n a), fun a ↦ hφ _ (hn a), fun a b ↦ by rw [← map_mul, hnn, map_zero], fun f ↦ ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, hρ, map_add, map_sum, map_mul]`.
+-/
 theorem Close.map {W : Opens (Tot I g)} {C C' : Type} [CommRing C] [CommRing C'] {J : Ideal C} {J' : Ideal C'}
     {ρ₁ ρ₂ : Hol W →+* C} (h : Close J ρ₁ ρ₂) (φ : C →+* C') (hφ : ∀ c ∈ J, φ c ∈ J') :
     Close J' (φ.comp ρ₁) (φ.comp ρ₂) := by
@@ -92,6 +118,9 @@ theorem Close.map {W : Opens (Tot I g)} {C C' : Type} [CommRing C] [CommRing C']
     refine ih.tail ⟨fun a ↦ φ (n a), fun a ↦ hφ _ (hn a), fun a b ↦ by rw [← map_mul, hnn, map_zero], fun f ↦ ?_⟩
     simp only [RingHom.comp_apply, hρ, map_add, map_sum, map_mul]
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => exact Relation.ReflTransGen.refl`. Consider the case `tail _ hs ih`. Take `⟨n, hn, hnn, hρ⟩` from `hs`. Conclude with `ih.tail ⟨n, hn, hnn, fun f ↦ by simp only [RingHom.comp_apply, hρ, hψ]⟩`.
+-/
 theorem Close.comap {W W' : Opens (Tot I g)} {C : Type} [CommRing C] {J : Ideal C}
     {ρ₁ ρ₂ : Hol W' →+* C} (h : Close J ρ₁ ρ₂) (ψ : Hol W →+* Hol W') (hψ : ∀ a f, dw a (ψ f) = ψ (dw a f)) :
     Close J (ρ₁.comp ψ) (ρ₂.comp ψ) := by
@@ -101,6 +130,11 @@ theorem Close.comap {W W' : Opens (Tot I g)} {C : Type} [CommRing C] {J : Ideal 
     obtain ⟨n, hn, hnn, hρ⟩ := hs
     exact ih.tail ⟨n, hn, hnn, fun f ↦ by simp only [RingHom.comp_apply, hρ, hψ]⟩
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `refl => simp`. Consider the case `@tail b c _ hs ih`. Take `⟨n, hn, -, hρ⟩` from `hs`. Establish `e : c f - ρ₁ f = (b f - ρ₁ f) + ∑ a, b (dw a f) * n a`.
+
+Rewrite using `[hρ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `J.add_mem ih (J.sum_mem fun a _ ↦ J.mul_mem_left _ (hn a))`.
+-/
 theorem Close.sub_mem {W : Opens (Tot I g)} {C : Type} [CommRing C] {J : Ideal C} {ρ₁ ρ₂ : Hol W →+* C}
     (h : Close J ρ₁ ρ₂) (f : Hol W) : ρ₂ f - ρ₁ f ∈ J := by
   induction h with
@@ -156,29 +190,51 @@ variable {K} in
 def sh {l : Λ} {k k' : K.K} (h : K.le l k' k) : Hol (K.W k) →+* Hol (K.W k') :=
   (Hol.comap (F.shift l) (F.shift_analytic l (K.base k')) (K.maps h)).toRingHom
 
+/- English proof (translation)
+Conclude with `Hol.fn_comap _ _ _ f hp`.
+-/
 theorem fn_cst (k : K.K) (f : Hol F.V) {p : Tot I g} (hp : p ∈ K.W k) : (K.cst k f).fn p = f.fn p.1 := by
   exact Hol.fn_comap _ _ _ f hp
 
 variable {K}
 
+/- English proof (translation)
+Conclude with `Hol.fn_comap _ _ _ f hp`.
+-/
 theorem fn_sh {l : Λ} {k k' : K.K} (h : K.le l k' k) (f : Hol (K.W k)) {p : Tot I g} (hp : p ∈ K.W k') :
     (sh h f).fn p = f.fn (F.shift l p) := by
   exact Hol.fn_comap _ _ _ f hp
 
+/- English proof (translation)
+Use `Hol.ext_fn fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[fn_sh h f hp, F.shift_zero]`.
+-/
 theorem sh_refl {k : K.K} (h : K.le 0 k k) (f : Hol (K.W k)) : sh h f = f := by
   refine Hol.ext_fn fun p hp ↦ ?_
   rw [fn_sh h f hp, F.shift_zero]
 
+/- English proof (translation)
+Use `Hol.ext_fn fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[fn_sh h' _ hp, fn_sh h f (K.maps h' p hp), fn_sh h'' f hp, F.shift_add]`.
+-/
 theorem sh_sh {l m : Λ} {k k' k'' : K.K} (h : K.le l k' k) (h' : K.le m k'' k') (h'' : K.le (l + m) k'' k)
     (f : Hol (K.W k)) : sh h' (sh h f) = sh h'' f := by
   refine Hol.ext_fn fun p hp ↦ ?_
   rw [fn_sh h' _ hp, fn_sh h f (K.maps h' p hp), fn_sh h'' f hp, F.shift_add]
 
+/- English proof (translation)
+Use `Hol.ext_fn fun p hp ↦ ?_` and prove the remaining obligations. Rewrite using `[fn_sh h _ hp, K.fn_cst k f (K.maps h p hp), K.fn_cst k' f hp]`. Both sides reduce to the same expression.
+-/
 theorem sh_cst {l : Λ} {k k' : K.K} (h : K.le l k' k) (f : Hol F.V) : sh h (K.cst k f) = K.cst k' f := by
   refine Hol.ext_fn fun p hp ↦ ?_
   rw [fn_sh h _ hp, K.fn_cst k f (K.maps h p hp), K.fn_cst k' f hp]
   rfl
 
+/- English proof (translation)
+Use `Hol.ext_fn fun p hp ↦ ?_` and prove the remaining obligations. Establish `hb : p.1 ∈ F.V` using `K.base k' p hp`. Establish `hD : HasFDerivAt (F.τ l) (fderiv ℂ (F.τ l) p.1) p.1` using `(F.hol l p.1 hb).differentiableAt.hasFDerivAt`. Establish `hΦ : HasFDerivAt (F.shift l) ((ContinuousLinearMap.fst ℂ (I → ℂ) (Fin g → ℂ)).prod (ContinuousLinearMap.snd ℂ (I → ℂ) (Fin g → ℂ) + (fderiv ℂ (F.τ l) p.1).comp (ContinuousLinearMap.fst ℂ (I → ℂ) (Fin g → ℂ)))) p` using `hasFDerivAt_fst.prodMk (hasFDerivAt_snd.add (hD.comp p hasFDerivAt_fst))`. Establish `hder : fderiv ℂ (F.shift l) p ((0, Pi.single a 1) : Tot I g) = (0, Pi.single a 1)`.
+
+Rewrite using `[hΦ.fderiv]`. Simplify using the standard rewrite rules. Establish `e1` using `Hol.fn_der_comap (F.shift l) (F.shift_analytic l (K.base k')) (K.maps h) ((0, Pi.single a 1) : Tot I g) f hp`. Establish `e2` using `Hol.fn_comap (F.shift l) (F.shift_analytic l (K.base k')) (K.maps h) (Hol.der ((0, Pi.single a 1) : Tot I g) f) hp`. Establish `e3` using `Hol.fn_der ((0, Pi.single a 1) : Tot I g) f (K.maps h p hp)`.
+
+Rewrite `e1` using `[hder]`. Conclude with `e1.trans (e2.trans e3).symm`.
+-/
 theorem dw_sh {l : Λ} {k k' : K.K} (h : K.le l k' k) (a : Fin g) (f : Hol (K.W k)) : dw a (sh h f) = sh h (dw a f) := by
   refine Hol.ext_fn fun p hp ↦ ?_
   have hb : p.1 ∈ F.V := K.base k' p hp
@@ -199,6 +255,11 @@ theorem dw_sh {l : Λ} {k k' : K.K} (h : K.le l k' k) (a : Fin g) (f : Hol (K.W 
   rw [hder] at e1
   exact e1.trans (e2.trans e3).symm
 
+/- English proof (translation)
+Use `Hol.ext_fn fun p hp ↦ ?_` and prove the remaining obligations. Establish `e1` using `Hol.fn_der_comap Prod.fst (fun _ _ ↦ analyticAt_fst) (K.base k) ((0, Pi.single a 1) : Tot I g) f hp`. Rewrite `e1` using `[fderiv_fst]`. Simplify using `only [ContinuousLinearMap.coe_fst', map_zero] at e1`. Rewrite using `[Hol.fn_of_mem (0 : Hol (K.W k)) hp]`.
+
+Conclude with `e1.trans rfl`.
+-/
 theorem dw_cst (k : K.K) (a : Fin g) (f : Hol F.V) : dw a (K.cst k f) = 0 := by
   refine Hol.ext_fn fun p hp ↦ ?_
   have e1 := Hol.fn_der_comap Prod.fst (fun _ _ ↦ analyticAt_fst) (K.base k)
@@ -235,6 +296,9 @@ structure Hom (T T' : K.Obj) where
   mem : ∀ c ∈ T.J, φ c ∈ T'.J
   close : Close T'.J (T'.ρ.comp (sh le)) ((φ : T.C →+* T'.C).comp T.ρ)
 
+/- English proof (translation)
+Take `⟨φ, d, le, mem, cl⟩` from `f`. Take `⟨φ', d', le', mem', cl'⟩` from `f'`. Take `rfl : φ = φ'` from `AlgHom.ext h`. Take `rfl : d = d'` from `h'`. Both sides reduce to the same expression.
+-/
 theorem Hom.ext' {T T' : K.Obj} {f f' : Hom T T'} (h : ∀ c, f.φ c = f'.φ c) (h' : f.deg = f'.deg) : f = f' := by
   obtain ⟨φ, d, le, mem, cl⟩ := f
   obtain ⟨φ', d', le', mem', cl'⟩ := f'
@@ -255,6 +319,9 @@ instance : Category K.Obj where
   comp_id f := Hom.ext' (fun _ ↦ rfl) (add_zero _)
   assoc f f' f'' := Hom.ext' (fun _ ↦ rfl) (add_assoc _ _ _)
 
+/- English proof (translation)
+Take `⟨φ, d, le, mem, cl⟩` from `f`. Take `⟨φ', d', le', mem', cl'⟩` from `f'`. Take `rfl : φ = φ'` from `AlgHom.ext h`. Take `rfl : d = d'` from `h'`. Both sides reduce to the same expression.
+-/
 theorem hom_ext {T T' : K.Obj} {f f' : T ⟶ T'} (h : ∀ c, f.φ c = f'.φ c) (h' : f.deg = f'.deg) : f = f' := by
   obtain ⟨φ, d, le, mem, cl⟩ := f
   obtain ⟨φ', d', le', mem', cl'⟩ := f'
@@ -262,10 +329,19 @@ theorem hom_ext {T T' : K.Obj} {f f' : T ⟶ T'} (h : ∀ c, f.φ c = f'.φ c) (
   obtain rfl : d = d' := h'
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_φ {T T' T'' : K.Obj} (f : T ⟶ T') (f' : T' ⟶ T'') (c : T.C) : (f ≫ f').φ c = f'.φ (f.φ c) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem comp_deg {T T' T'' : K.Obj} (f : T ⟶ T') (f' : T' ⟶ T'') : (f ≫ f').deg = f.deg + f'.deg := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem id_deg (T : K.Obj) : Hom.deg (𝟙 T) = 0 := rfl
 
 variable (K) in
@@ -274,6 +350,9 @@ variable (K) in
   obj T := CommAlgCat.of _ T.C
   map f := CommAlgCat.ofHom f.φ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mp_Oc {T T' : K.Obj} (f : T ⟶ T') : mp K.Oc f = f.φ := rfl
 
 variable (K) in
@@ -311,9 +390,15 @@ def ptHom {l : Λ} {k : K.K} (T : K.Obj) (h : K.le l T.k k) : K.triv k ⟶ T :=
 
 end Charts
 
+/- English proof (translation)
+Conclude with `⟨F.totChart, fun z hz ↦ hz⟩`.
+-/
 theorem Fam.allCharts_based (F : Fam I g Λ) : F.allCharts.Based := by
   exact ⟨F.totChart, fun z hz ↦ hz⟩
 
+/- English proof (translation)
+Use `⟨fun p hp ↦ ⟨F.totChart, hp⟩, fun l k₁ k₂ p h₁ h₂ ↦ ?_⟩` and prove the remaining obligations. Establish `hopen : IsOpen ((k₁.1 : Set (Tot I g)) ∩ F.shift l ⁻¹' (k₂.1 : Set (Tot I g)))` using `(F.shift_analytic l k₁.2).continuousOn.isOpen_inter_preimage k₁.1.isOpen k₂.1.isOpen`. Use `⟨⟨⟨_, hopen⟩, fun q hq ↦ k₁.2 q hq.1⟩, ⟨h₁, h₂⟩, fun q hq ↦ ?_, fun q hq ↦ hq.2⟩` and prove the remaining obligations. Rewrite using `[F.shift_zero]`. Conclude with `hq.1`.
+-/
 theorem Fam.allCharts_rich (F : Fam I g Λ) : F.allCharts.Rich := by
   refine ⟨fun p hp ↦ ⟨F.totChart, hp⟩, fun l k₁ k₂ p h₁ h₂ ↦ ?_⟩
   have hopen : IsOpen ((k₁.1 : Set (Tot I g)) ∩ F.shift l ⁻¹' (k₂.1 : Set (Tot I g))) :=
@@ -325,6 +410,9 @@ theorem Fam.allCharts_rich (F : Fam I g Λ) : F.allCharts.Rich := by
 def Fam.transl (F : Fam I g Λ) (l : Λ) : F.allCharts.triv F.totChart ⟶ F.allCharts.triv F.totChart :=
   Charts.ptHom (l := l) (F.allCharts.triv F.totChart) (fun _ h ↦ h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Fam.transl_deg (F : Fam I g Λ) (l : Λ) : (F.transl l).deg = l := rfl
 
 def Charts.dualAt {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : Tot I g) (hp : p ∈ K.W k) : K.Obj where
@@ -336,6 +424,9 @@ def Charts.dualAt {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : Tot I g) (hp : 
   ρ := (algebraMap ℂ (DualNumber ℂ)).comp (Hol.ev p hp).toRingHom
   ρ_cst _ := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.span {DualNumber.eps} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Introduce `h`. Use `congrArg TrivSqZeroExt.snd h` as an intermediate fact. Simplify using `at this`.
+-/
 theorem Charts.dualAt_J_ne_bot {F : Fam I g Λ} (K : Charts F) (k : K.K) (p : Tot I g) (hp : p ∈ K.W k) :
     (K.dualAt k p hp).J ≠ ⊥ := by
   change Ideal.span {DualNumber.eps} ≠ ⊥
@@ -355,6 +446,11 @@ def tangentAt {W : Opens (Tot I g)} (a : Fin g) (p : Tot I g) (hp : p ∈ W) : H
   map_add' x y := by
     refine TrivSqZeroExt.ext ?_ ?_ <;> simp
 
+/- English proof (translation)
+Use `⟨Pi.single a DualNumber.eps, fun b ↦ ?_, fun b c ↦ ?_, fun h ↦ ?_⟩` and prove the remaining obligations. Break down `eq_or_ne b a with rfl | hb` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hb]`. Apply the tactic sequence `simp only [Pi.single_apply] split_ifs <;> simp`.
+
+Simplify using `[tangentAt, Pi.single_apply]`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem step_tangentAt {W : Opens (Tot I g)} (a : Fin g) (p : Tot I g) (hp : p ∈ W) :
     Step (Ideal.span {DualNumber.eps}) ((algebraMap ℂ (DualNumber ℂ)).comp (Hol.ev p hp).toRingHom)
       (tangentAt a p hp) := by
@@ -380,11 +476,17 @@ def Charts.tangentHom {F : Fam I g Λ} (K : Charts F) (k : K.K) (a : Fin g) (p :
         RingHom.ext fun f ↦ congrArg (K.dualAt k p hp).ρ (Charts.sh_refl _ f)]
       exact Relation.ReflTransGen.single (step_tangentAt a p hp))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, ellFam.transl (0, 1) ≫ ellFam.allCharts.tangentHom ellFam.totChart 0 (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1, Charts.dualAt_J_ne_bot _ _ _ _, add_zero _⟩`.
+-/
 example : ∃ (T T' : ellFam.allCharts.Obj) (f : T ⟶ T'), T'.J ≠ ⊥ ∧ f.deg = (0, 1) :=
   ⟨_, _, ellFam.transl (0, 1) ≫
       ellFam.allCharts.tangentHom ellFam.totChart 0 (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1,
     Charts.dualAt_J_ne_bot _ _ _ _, add_zero _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (F : Fam I g Λ) (per : Λ →+ Hol F.V) (l : Λ) :
     (F.allCharts.perZ per).1 _ _ (F.transl l) = F.allCharts.cst F.totChart (per l) := rfl
 

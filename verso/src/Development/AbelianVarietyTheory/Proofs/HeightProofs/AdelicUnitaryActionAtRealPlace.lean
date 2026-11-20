@@ -15,20 +15,32 @@ section Generic
 
 variable {A B : Type} [CommRing A] [CommRing B] {m n : Type} [Fintype m] [Fintype n]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem map_triple (φ : A →+* B) (g : Matrix m m A) (x : Matrix m n A) (h : Matrix n n A) :
     (g * x * hᵀ).map φ = g.map φ * x.map φ * (h.map φ)ᵀ := by
   rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
 
+/- English proof (translation)
+Rewrite using `[map_triple, hx, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem map_triple_zero (φ : A →+* B) (g : Matrix m m A) (x : Matrix m n A) (h : Matrix n n A)
     (hx : x.map φ = 0) : (g * x * hᵀ).map φ = 0 := by
   rw [map_triple, hx, Matrix.mul_zero, Matrix.zero_mul]
 
 omit [Fintype m] in
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `h _`.
+-/
 theorem map_conj (s : A →+* A) (φ : A →+* ℂ) (h : ∀ z, φ (s z) = starRingEnd ℂ (φ z)) (g : Matrix m m A) :
     (g.map s).map φ = (g.map φ).map (starRingEnd ℂ) := by
   ext a b
   exact h _
 
+/- English proof (translation)
+Establish `e : (g.map φ)ᴴ = ((g.map s)ᵀ).map φ`. Use extensionality with `a b`. Conclude with `(h _).symm`. Rewrite using `[e, ← Matrix.map_mul, ← Matrix.map_mul, hg]`.
+-/
 theorem unitary_map (s : A →+* A) (φ : A →+* ℂ) (h : ∀ z, φ (s z) = starRingEnd ℂ (φ z)) (g J : Matrix m m A)
     (hg : (g.map s)ᵀ * J * g = J) : (g.map φ)ᴴ * J.map φ * g.map φ = J.map φ := by
   have e : (g.map φ)ᴴ = ((g.map s)ᵀ).map φ := by
@@ -40,22 +52,39 @@ end Generic
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infMat_eq (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) (k : GA D V) :
     infMat D.sp.cm.sig V.gram θ k = (mt V k).map (θ.comp (infPart D)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wAt_eq (θ : InfFam D) (V W : HSp D) (τ : D.what₂.Tau) (x : WA V W) :
     wAt θ V W τ x = x.map ((θ τ).comp (infPart D)) := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `(comp_incA hθ τ _).symm`.
+-/
 theorem gramAt_eq {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) :
     gramAt D V τ = (V.gram.map (incA D)).map ((θ τ).comp (infPart D)) := by
   ext a b
   exact (comp_incA hθ τ _).symm
 
+/- English proof (translation)
+Rewrite using `[infMat_eq, gramAt_eq hθ]`. Conclude with `unitary_map (cA D) ((θ τ).comp (infPart D)) (comp_cA hθ τ) _ _ (mt_rel V k)`.
+-/
 theorem infMat_mem_UH {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (k : GA D V) (τ : D.what₂.Tau) :
     infMat D.sp.cm.sig V.gram (θ τ) k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
   rw [infMat_eq, gramAt_eq hθ]
   exact unitary_map (cA D) ((θ τ).comp (infPart D)) (comp_cA hθ τ) _ _ (mt_rel V k)
 
+/- English proof (translation)
+Rewrite using `[infMat_eq, infMat_eq, wAt_eq, wAt_eq]`. Unfold `actHom actC cM`. Use `split_ifs`. Rewrite using `[← map_conj (cA D) ((θ τ).comp (infPart D)) (comp_cA hθ τ)]`. Conclude with `map_triple _ _ _ _`.
+
+Rewrite using `[← map_conj (cA D) ((θ τ).comp (infPart D)) (comp_cA hθ τ)]`. Conclude with `map_triple _ _ _ _`.
+-/
 theorem wAt_actHom {θ : InfFam D} (hθ : IsInfFam θ) (V W : HSp D) (k : GA D V) (k' : GA D W) (x : WA V W)
     (τ : D.what₂.Tau) : wAt θ V W τ (actHom V W k k' x) =
       actC V W (infMat D.sp.cm.sig V.gram (θ τ) k) (infMat D.sp.cm.sig W.gram (θ τ) k') (wAt θ V W τ x) := by
@@ -67,6 +96,9 @@ theorem wAt_actHom {θ : InfFam D} (hθ : IsInfFam θ) (V W : HSp D) (k : GA D V
   · rw [← map_conj (cA D) ((θ τ).comp (infPart D)) (comp_cA hθ τ)]
     exact map_triple _ _ _ _
 
+/- English proof (translation)
+Unfold `IsRealW actHom`. Use `split_ifs`. Conclude with `map_triple_zero (finPart D) _ _ _ hx`. Conclude with `map_triple_zero (finPart D) _ _ _ hx`.
+-/
 theorem isRealW_actHom (V W : HSp D) (k : GA D V) (k' : GA D W) (x : WA V W) (hx : IsRealW V W x) :
     IsRealW V W (actHom V W k k' x) := by
   unfold IsRealW actHom
@@ -74,6 +106,9 @@ theorem isRealW_actHom (V W : HSp D) (k : GA D V) (k' : GA D W) (x : WA V W) (hx
   · exact map_triple_zero (finPart D) _ _ _ hx
   · exact map_triple_zero (finPart D) _ _ _ hx
 
+/- English proof (translation)
+Introduce `_ _ hθ` and use `⟨fun V k τ => infMat_mem_UH hθ V k τ, fun V W k k' x => ⟨fun τ => wAt_actHom hθ V W k k' x τ, isRealW_actHom V W k k' x⟩⟩`.
+-/
 theorem real_action : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → (∀ (V : HSp D) (k : GA D V) (τ : D.what₂.Tau), infMat D.sp.cm.sig V.gram (θ τ) k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) ∧ ∀ (V W : HSp D) (k : GA D V) (k' : GA D W) (x : WA V W), (∀ τ, wAt θ V W τ (actHom V W k k' x) = actC V W (infMat D.sp.cm.sig V.gram (θ τ) k) (infMat D.sp.cm.sig W.gram (θ τ) k') (wAt θ V W τ x)) ∧ (IsRealW V W x → IsRealW V W (actHom V W k k' x)) :=
   fun _ _ hθ => ⟨fun V k τ => infMat_mem_UH hθ V k τ, fun V W k k' x =>
     ⟨fun τ => wAt_actHom hθ V W k k' x τ, isRealW_actHom V W k k' x⟩⟩

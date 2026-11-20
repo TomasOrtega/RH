@@ -24,6 +24,9 @@ def theta (G : PDivGroup p k) : T.M G →+ G.omega :=
   (LinearEquiv.ofInjective G.rigOfOmega (GlobalTheory.T.dieudonne_hodgeFiltration_perfectField p T k G).2.2.2).symm.toLinearMap.toAddMonoidHom.comp
     (T.redVToRange G)
 
+/- English proof (translation)
+Establish `inj` using `(GlobalTheory.T.dieudonne_hodgeFiltration_perfectField p T k G).2.2.2`. Use `show G.rigOfOmega ((LinearEquiv.ofInjective G.rigOfOmega inj).symm (T.redVToRange G m)) = _`. Establish `h` using `congrArg Subtype.val ((LinearEquiv.ofInjective G.rigOfOmega inj).apply_symm_apply (T.redVToRange G m))`. Rewrite `h` using `[LinearEquiv.ofInjective_apply]`. Conclude with `h`.
+-/
 theorem rigOfOmega_theta (G : PDivGroup p k) (m : T.M G) :
     G.rigOfOmega (T.theta G m) = T.red G (T.V G m) := by
   have inj := (GlobalTheory.T.dieudonne_hodgeFiltration_perfectField p T k G).2.2.2
@@ -33,6 +36,13 @@ theorem rigOfOmega_theta (G : PDivGroup p k) (m : T.M G) :
   rw [LinearEquiv.ofInjective_apply] at h
   exact h
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.T.dieudonne_hodgeFiltration_perfectField p T k G`. Establish `inj` using `hG.2.2.2`. Use `⟨T.rigOfOmega_theta G, fun w => ?_, fun m => ?_, fun a m => ?_, fun H f m => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(hG.1 (G.rigOfOmega w)).2 ⟨w, rfl⟩`. Conclude with `⟨m, inj (by rw [T.rigOfOmega_theta, hm])⟩`.
+
+Rewrite using `[← hG.2.1 m, ← T.rigOfOmega_theta G m]`. Conclude with `⟨fun h => by rw [h, map_zero], fun h => inj (by rw [h, map_zero])⟩`. Apply `inj` to reduce the goal to its premises. Rewrite using `[T.rigOfOmega_theta, G.rigOfOmega.map_smul, T.rigOfOmega_theta, (T.V G).map_smulₛₗ, ← WittVector.frobeniusEquiv_apply, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply, (T.red G).map_smulₛₗ]`. Apply `inj` to reduce the goal to its premises.
+
+Establish `hV` using `(GlobalTheory.T.dieudonneTheory_V_eq_verschiebung_injective p T k G).2.2.2.2 H f m`. Establish `hF` using `(GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G H H trivial trivial trivial).2.2.2.2.2.1 f (T.V H m)`. Rewrite using `[T.rigOfOmega_theta, ← hV]`. Rewrite using `[show T.red G (T.map f (T.V H m)) = rigExtMap f (T.red H (T.V H m)) from hF, ← T.rigOfOmega_theta H m, rigExtMap_rigOfOmega]`.
+-/
 theorem theta_spec (G : PDivGroup p k) :
     (∀ m, G.rigOfOmega (T.theta G m) = T.red G (T.V G m)) ∧ Function.Surjective (T.theta G) ∧
       (∀ m, T.theta G m = 0 ↔ ∃ n, m = T.F G n) ∧
@@ -61,5 +71,8 @@ theorem theta_spec (G : PDivGroup p k) :
 
 end GlobalTheory.Dieu.Theory
 
+/- English proof (translation)
+Introduce `_ _ T _ _ _ _` and use `⟨fun G => T.theta G, fun G => T.theta_spec G⟩`.
+-/
 theorem GlobalTheory.Dieu.theta_exists : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p], ∃ θ : ∀ G : PDivGroup p k, T.M G →+ G.omega, ∀ G : PDivGroup p k, (∀ m, G.rigOfOmega (θ G m) = T.red G (T.V G m)) ∧ Function.Surjective (θ G) ∧ (∀ m, θ G m = 0 ↔ ∃ n, m = T.F G n) ∧ (∀ (a : (WittVector p k)) m, θ G (WittVector.frobenius a • m) = WittVector.constantCoeff a • θ G m) ∧ ∀ (H : PDivGroup p k) (f : G ⟶ H) (m : T.M H), θ G (T.map f m) = omegaMap G H f (θ H m) :=
   fun _ _ T _ _ _ _ => ⟨fun G => T.theta G, fun G => T.theta_spec G⟩

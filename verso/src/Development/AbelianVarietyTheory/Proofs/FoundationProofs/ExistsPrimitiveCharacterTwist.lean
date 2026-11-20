@@ -9,19 +9,33 @@ namespace GlobalTheory.KZ.Cmp.PrimChar
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `: x - z = (x - y) + (y - z)` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h1 h2)`.
+-/
 theorem norm_sub_lt_one_trans {x y z : Qbar l} (h1 : ‖x - y‖ < 1) (h2 : ‖y - z‖ < 1) : ‖x - z‖ < 1 := by
   have : x - z = (x - y) + (y - z) := by ring
   rw [this]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h1 h2)
 
+/- English proof (translation)
+Establish `: ‖x‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this`.
+-/
 theorem norm_eq_one_of_pow {x : Qbar l} {n : ℕ} (hn : n ≠ 0) (h : x ^ n = 1) : ‖x‖ = 1 := by
   have : ‖x‖ ^ n = 1 := by rw [← norm_pow, h, norm_one]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).1 this
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.PowerDifferenceNorm.norm_pow_sub_pow_lt_one hx hy h n`.
+-/
 theorem norm_pow_sub_pow_lt_one {x y : Qbar l} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) (h : ‖x - y‖ < 1) (n : ℕ) :
     ‖x ^ n - y ^ n‖ < 1 :=
   _root_.GlobalTheory.PowerDifferenceNorm.norm_pow_sub_pow_lt_one hx hy h n
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `((ZMod.natCast_eq_natCast_iff a b l).1 h).symm.dvd`. Establish `h2 : (a : Qbar l) - b = (l : Qbar l) * (m : Qbar l)`. Use `congrArg (Int.cast : ℤ → Qbar l) hm` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Rewrite using `[h2, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ m)).trans_lt (GlobalTheory.KZ.norm_prime_lt_one_qbar l)`.
+-/
 theorem norm_natCast_sub_lt_one {a b : ℕ} (h : (a : ZMod l) = (b : ZMod l)) : ‖(a : Qbar l) - b‖ < 1 := by
   obtain ⟨m, hm⟩ := ((ZMod.natCast_eq_natCast_iff a b l).1 h).symm.dvd
   have h2 : (a : Qbar l) - b = (l : Qbar l) * (m : Qbar l) := by
@@ -32,6 +46,13 @@ theorem norm_natCast_sub_lt_one {a b : ℕ} (h : (a : ZMod l) = (b : ZMod l)) : 
   exact (mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ m)).trans_lt
     (GlobalTheory.KZ.norm_prime_lt_one_qbar l)
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn⟩`. Use `haveI : NeZero (n : Qbar l) := ⟨Nat.cast_ne_zero.2 hn⟩`. Take `⟨μ, hμ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Qbar l) n`. Establish `h1` using `congrArg (Polynomial.eval x) (Polynomial.X_pow_sub_one_eq_prod (Nat.pos_of_ne_zero hn) hμ)`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_one, Polynomial.eval_prod, Polynomial.eval_C] at h1`.
+
+Rewrite `h` using `[h1, norm_prod]`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `absurd h (not_lt.2 (Finset.one_le_prod fun w hw => ?_))` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`.
+
+Conclude with `hc w ((Polynomial.mem_nthRootsFinset (Nat.pos_of_ne_zero hn) 1).1 hw)`.
+-/
 theorem exists_root_close {x : Qbar l} {n : ℕ} (hn : n ≠ 0) (h : ‖x ^ n - 1‖ < 1) :
     ∃ w : Qbar l, w ^ n = 1 ∧ ‖w - x‖ < 1 := by
   haveI : NeZero n := ⟨hn⟩
@@ -47,6 +68,19 @@ theorem exists_root_close {x : Qbar l} {n : ℕ} (hn : n ≠ 0) (h : ‖x ^ n - 
   rw [norm_sub_rev]
   exact hc w ((Polynomial.mem_nthRootsFinset (Nat.pos_of_ne_zero hn) 1).1 hw)
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : l - 1 ≠ 0` using `by have := hl.two_le; omega`. Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := (ZMod l)ˣ)`. Establish `hord : orderOf g = l - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, ZMod.card_units]`.
+
+Establish `h0 : ‖(((g : ZMod l).val : ℕ) : Qbar l) ^ (l - 1) - 1‖ < 1`. Use `norm_natCast_sub_lt_one (l := l) (a := (g : ZMod l).val ^ (l - 1)) (b := 1) (by` as an intermediate fact. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, ← Units.val_pow_eq_pow_val, ZMod.units_pow_card_sub_one_eq_one, Units.val_one])`. Conclude with `this` after adjusting the coercions.
+
+Take `⟨w, hw, hwg⟩` from `exists_root_close hl1 h0`. Set `w' : (Qbar l)ˣ` to `Units.ofPowEqOne w (l - 1) hw hl1`. Establish `hw' : (w' : Qbar l) = w` using `rfl`. Establish `hdvd : orderOf w' ∣ orderOf g`. Rewrite using `[hord]`.
+
+Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, hw', hw, Units.val_one]`. Use `⟨monoidHomOfForallMemZpowers hg hdvd, fun x => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `(mem_powers_iff_mem_zpowers.2 (hg x))`.
+
+Rewrite using `[map_pow, monoidHomOfForallMemZpowers_apply_gen, Units.val_pow_eq_pow_val, hw']`. Use `norm_sub_lt_one_trans (norm_pow_sub_pow_lt_one (norm_eq_one_of_pow hl1 hw).le (IsUltrametricDist.norm_natCast_le_one _ _) hwg j) ?_` and prove the remaining obligations. Use `norm_natCast_sub_lt_one (l := l) (a := (g : ZMod l).val ^ j) (b := ((g ^ j : (ZMod l)ˣ) : ZMod l).val) (by` as an intermediate fact. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val])`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem exists_teichmuller : ∃ ω : (ZMod l)ˣ →* (Qbar l)ˣ,
     ∀ x : (ZMod l)ˣ, ‖(ω x : Qbar l) - ((x : ZMod l).val : Qbar l)‖ < 1 := by
   have hl : l.Prime := Fact.out
@@ -77,6 +111,27 @@ theorem exists_teichmuller : ∃ ω : (ZMod l)ˣ →* (Qbar l)ˣ,
     rw [ZMod.natCast_zmod_val, ZMod.natCast_zmod_val])
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hl2` using `hl.two_le`. Establish `hlk : l ^ k ≠ 0` using `pow_ne_zero _ hl.ne_zero`. Use `haveI : NeZero (l ^ k) := ⟨hlk⟩`. Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`.
+
+Take `⟨g, hg⟩` from `(ZMod.isCyclic_units_of_prime_pow l hl h2 (k + 1)).exists_generator`. Establish `hord : orderOf g = l ^ k * (l - 1)`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hg, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hl]`. Establish `hou : orderOf u = l ^ k`. Rewrite using `[← orderOf_units, hu, ZMod.orderOf_one_add_prime hl h2]`.
+
+Take `⟨a, ha⟩` from `(mem_powers_iff_mem_zpowers.2 (hg u))`. Simplify using `only at ha`. Establish `hcop : Nat.Coprime l (l - 1)`. Rewrite using `[Nat.Prime.coprime_iff_not_dvd hl]`. Introduce `h`.
+
+Use `Nat.le_of_dvd (by omega) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hla : Nat.Coprime a (l ^ k)`. Apply `Nat.Coprime.pow_right` to reduce the goal to its premises. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl]`.
+
+Introduce and unpack `⟨c, rfl⟩`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `h1 : u ^ (l ^ j * (l - 1)) = 1`. Rewrite using `[← ha, ← pow_mul, show l * c * (l ^ j * (l - 1)) = (l ^ (j + 1) * (l - 1)) * c by ring, ← hord, pow_mul, pow_orderOf_eq_one, one_pow]`. Establish `h3` using `orderOf_dvd_of_pow_eq_one h1`.
+
+Rewrite `h3` using `[hou, pow_succ]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl).1 hcop (Nat.dvd_of_mul_dvd_mul_left (pow_pos hl.pos j) h3)`. Take `⟨i, -, hi⟩` from `(hζ.pow_of_coprime a hla).eq_pow_of_pow_eq_one hζ.pow_eq_one`. Establish `hc : (ζ ^ i) ^ (l ^ k) = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Set `c : (Qbar l)ˣ` to `Units.ofPowEqOne (ζ ^ i) (l ^ k) hc hlk`.
+
+Establish `hc' : (c : Qbar l) = ζ ^ i` using `rfl`. Establish `hc1 : c ^ (l ^ k) = 1`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, hc', hc, Units.val_one]`. Establish `hdvd : orderOf c ∣ orderOf g`.
+
+Rewrite using `[hord]`. Conclude with `(orderOf_dvd_of_pow_eq_one hc1).mul_right _`. Use `⟨monoidHomOfForallMemZpowers hg hdvd, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, map_pow, monoidHomOfForallMemZpowers_apply_gen, Units.val_pow_eq_pow_val, hc', ← pow_mul, mul_comm, pow_mul, hi]`. Establish `e1 : (monoidHomOfForallMemZpowers hg hdvd b) ^ (l - 1) = 1` using `by rw [← map_pow, hb, map_one]`.
+
+Establish `e2 : (monoidHomOfForallMemZpowers hg hdvd b) ^ (l ^ k) = 1`. Take `⟨j, rfl⟩` from `(mem_powers_iff_mem_zpowers.2 (hg b))`. Simplify using `only`. Rewrite using `[map_pow, monoidHomOfForallMemZpowers_apply_gen, ← pow_mul, mul_comm, pow_mul, hc1, one_pow]`. Rewrite using `[← orderOf_eq_one_iff]`.
+
+Conclude with `Nat.eq_one_of_dvd_coprimes (hcop.pow_left k) (orderOf_dvd_of_pow_eq_one e2) (orderOf_dvd_of_pow_eq_one e1)`.
+-/
 theorem exists_wild (k : ℕ) (ζ : Qbar l) (h2 : l ≠ 2) (hk : 1 ≤ k) (hζ : IsPrimitiveRoot ζ (l ^ k))
     (u : (ZMod (l ^ (k + 1)))ˣ) (hu : (u : ZMod (l ^ (k + 1))) = 1 + l) :
     ∃ χ : (ZMod (l ^ (k + 1)))ˣ →* (Qbar l)ˣ, (χ u : Qbar l) = ζ ∧ ∀ b, b ^ (l - 1) = 1 → χ b = 1 := by
@@ -130,6 +185,19 @@ theorem exists_wild (k : ℕ) (ζ : Qbar l) (h2 : l ≠ 2) (hk : 1 ≤ k) (hζ :
     rw [← orderOf_eq_one_iff]
     exact Nat.eq_one_of_dvd_coprimes (hcop.pow_left k) (orderOf_dvd_of_pow_eq_one e2) (orderOf_dvd_of_pow_eq_one e1)
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[DirichletCharacter.isPrimitive_def]`. Assume the negation of the conclusion as `hne`.
+
+Establish `hd` using `χ.conductor_dvd_level`. Take `⟨i, hi, hc⟩` from `(Nat.dvd_prime_pow hl).1 hd`. Establish `hi' : i ≤ j + 1`. Break down `Nat.lt_or_eq_of_le hi with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `absurd (by rw [hc, h]) hne`. Establish `hd2 : χ.conductor ∣ l ^ (j + 1)` using `by rw [hc]; exact pow_dvd_pow _ hi'`. Establish `hker` using `(DirichletCharacter.factorsThrough_iff_ker_unitsMap hd).1 χ.factorsThrough_conductor`. Establish `h1 : (1 + (l : ZMod (l ^ (j + 1)))) ^ (l ^ j) = 1`. Rewrite using `[← ZMod.orderOf_one_add_prime hl h2 j]`.
+
+Conclude with `pow_orderOf_eq_one _`. Establish `hmem : u ^ (l ^ j) ∈ (ZMod.unitsMap hd).ker`. Rewrite using `[MonoidHom.mem_ker]`. Use `ext`. Use `congrArg (ZMod.castHom hd2 (ZMod χ.conductor)) h1` as an intermediate fact.
+
+Rewrite `this` using `[map_pow, map_add, map_one, map_natCast]`. Rewrite using `[ZMod.unitsMap_def, Units.coe_map, Units.val_pow_eq_pow_val, hu, Units.val_one]`. Use `show ZMod.castHom hd (ZMod χ.conductor) _ = 1`. Rewrite using `[map_pow, map_add, map_one, map_natCast]`. Conclude with `this`.
+
+Establish `h3` using `hker hmem`. Rewrite `h3` using `[MonoidHom.mem_ker]`. Establish `h4` using `congrArg Units.val h3`. Rewrite `h4` using `[MulChar.coe_toUnitHom, Units.val_pow_eq_pow_val, hu, map_pow, hχ, Units.val_one]`. Conclude with `hζ.pow_ne_one_of_pos_of_lt (pow_ne_zero _ hl.ne_zero) (Nat.pow_lt_pow_right hl.one_lt (Nat.lt_succ_self j)) h4`.
+-/
 theorem isPrimitive_of_value (k : ℕ) (ζ : Qbar l) (h2 : l ≠ 2) (hk : 1 ≤ k) (hζ : IsPrimitiveRoot ζ (l ^ k))
     (χ : DirichletCharacter (Qbar l) (l ^ (k + 1))) (hχ : χ (1 + (l : ZMod (l ^ (k + 1)))) = ζ)
     (u : (ZMod (l ^ (k + 1)))ˣ) (hu : (u : ZMod (l ^ (k + 1))) = 1 + l) : χ.IsPrimitive := by
@@ -164,6 +232,25 @@ theorem isPrimitive_of_value (k : ℕ) (ζ : Qbar l) (h2 : l ≠ 2) (hk : 1 ≤ 
   exact hζ.pow_ne_one_of_pos_of_lt (pow_ne_zero _ hl.ne_zero)
     (Nat.pow_lt_pow_right hl.one_lt (Nat.lt_succ_self j)) h4
 
+/- English proof (translation)
+Introduce `l _ φ e k ζ h2 hk hζ`. Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : l - 1 ≠ 0` using `by have := hl.two_le; omega`. Use `haveI : NeZero (l ^ (k + 1)) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `hcop : Nat.Coprime (1 + l) (l ^ (k + 1))` using `Nat.Coprime.pow_right _ (by simp)`.
+
+Set `u : (ZMod (l ^ (k + 1)))ˣ` to `ZMod.unitOfCoprime (1 + l) hcop`. Establish `hu : (u : ZMod (l ^ (k + 1))) = 1 + l`. Rewrite using `[ZMod.coe_unitOfCoprime]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Take `⟨ω, hω⟩` from `exists_teichmuller (l := l)`. Take `⟨χ₂, hχu, hχT⟩` from `exists_wild k ζ h2 hk hζ u hu`. Establish `hd : l ∣ l ^ (k + 1)` using `dvd_pow_self l (Nat.succ_ne_zero k)`. Establish `hred : ∀ b : (ZMod (l ^ (k + 1)))ˣ, ((ZMod.unitsMap hd b : (ZMod l)ˣ) : ZMod l) = ZMod.castHom hd (ZMod l) (b : ZMod (l ^ (k + 1)))` using `fun b => rfl`. Establish `hu1 : ZMod.unitsMap hd u = 1`.
+
+Use `ext`. Rewrite using `[hred, hu, map_add, map_one, map_natCast, ZMod.natCast_self, add_zero, Units.val_one]`. Set `f : (ZMod (l ^ (k + 1)))ˣ →* (Qbar l)ˣ` to `((ω ^ e * MulChar.toUnitHom φ).comp (ZMod.unitsMap hd)) * χ₂`. Establish `hf : ∀ b, (f b : Qbar l) = (ω (ZMod.unitsMap hd b) : Qbar l) ^ e * φ ((ZMod.unitsMap hd b : (ZMod l)ˣ) : ZMod l) * χ₂ b` using `fun b => by`. Simplify using `only [f, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom]`.
+
+Set `χ : DirichletCharacter (Qbar l) (l ^ (k + 1))` to `MulChar.ofUnitHom f`. Establish `hχ : ∀ b : (ZMod (l ^ (k + 1)))ˣ, χ b = f b` using `fun b => MulChar.ofUnitHom_coe f b`. Establish `hval : χ (1 + (l : ZMod (l ^ (k + 1)))) = ζ`. Rewrite using `[← hu, hχ, hf, hu1, hχu]`. Simplify using the standard rewrite rules.
+
+Use `⟨χ⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `isPrimitive_of_value k ζ h2 hk hζ χ hval u hu` as an intermediate fact. Rewrite `this`, the goal using `[DirichletCharacter.isPrimitive_def]`. Rewrite using `[DirichletCharacter.conductor_inv, this]`. Introduce `b hb`.
+
+Establish `hb' : (((b : ZMod (l ^ (k + 1))).val : ℕ) : ZMod l) = ((ZMod.unitsMap hd b : (ZMod l)ˣ) : ZMod l)`. Rewrite using `[hred, ZMod.castHom_apply, ZMod.natCast_val]`. Rewrite using `[inv_inv, hχ, hf, hχT b hb, Units.val_one, mul_one, hb', ← sub_mul, norm_mul]`. Use `set x := ZMod.unitsMap hd b with hx`. Establish `hx1 : x ^ (l - 1) = 1` using `ZMod.units_pow_card_sub_one_eq_one l x`.
+
+Establish `n1 : ‖φ (x : ZMod l)‖ = 1` using `norm_eq_one_of_pow hl1 (by`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hx1, Units.val_one, map_one])`. Establish `n2 : ‖(ω x : Qbar l)‖ = 1` using `norm_eq_one_of_pow hl1 (by`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, hx1, map_one, Units.val_one])`. Rewrite using `[n1, mul_one]`.
+
+Use `norm_pow_sub_pow_lt_one n2.le (IsUltrametricDist.norm_natCast_le_one _ _) ?_ e` and prove the remaining obligations. Use `norm_sub_lt_one_trans (hω x) (norm_natCast_sub_lt_one ?_)` and prove the remaining obligations. Rewrite using `[hb', ZMod.natCast_zmod_val]`. Rewrite using `[inv_inv, hval]`.
+-/
 theorem exists_primitive_inComp : ∀ (l : ℕ) [Fact l.Prime] (φ : DirichletCharacter (Qbar l) l) (e k : ℕ) (ζ : Qbar l),
     l ≠ 2 → 1 ≤ k → IsPrimitiveRoot ζ (l ^ k) → ∃ ψ : DirichletCharacter (Qbar l) (l ^ (k + 1)),
       ψ.IsPrimitive ∧ InComp φ e ψ ∧ ψ⁻¹ (1 + (l : ZMod (l ^ (k + 1)))) = ζ := by

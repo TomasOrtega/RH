@@ -5,6 +5,21 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ (x : ℤ_[l]) (n : ℕ), ‖x‖ ≤ ‖((l : ℕ) : ℤ_[l])‖ ^ n ↔ ((l : ℕ) : ℤ_[l]) ^ n ∣ x`. Introduce `x n`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow, PadicInt.norm_p, zpow_neg, zpow_natCast, inv_pow]`. Establish `hl0 : ‖((l : ℕ) : ℤ_[l])‖ ^ m ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[norm_ne_zero_iff]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Take `⟨a, ha⟩` from `(key _ _).1 hu.le`. Take `⟨b, hb⟩` from `(key _ _).1 hv`. Establish `ha1 : ‖a‖ = 1`.
+
+Rewrite `hu` using `[ha, norm_mul, norm_pow]`. Conclude with `mul_left_cancel₀ hl0 (by rw [hu, mul_one])`. Take `⟨a', ha'⟩` from `(PadicInt.isUnit_iff.2 ha1).exists_right_inv`. Use `⟨(a' * b).appr 1, (key _ _).2 ?_⟩` and prove the remaining obligations. Use `set i := (a' * b).appr 1 with hi`.
+
+Establish `hc` using `PadicInt.appr_spec 1 (a' * b)`. Rewrite `hc` using `[Ideal.mem_span_singleton, pow_one, ← hi]`. Take `⟨c, hc⟩` from `hc`. Establish `hu' : u = 1 + ((l : ℕ) : ℤ_[l]) ^ m * a` using `by rw [← ha]; ring`. Establish `hv' : v = 1 + ((l : ℕ) : ℤ_[l]) ^ m * b` using `by rw [← hb]; ring`.
+
+Establish `hpow : ∀ (x : ℤ_[l]) (n : ℕ), ∃ d, (1 + x) ^ n = 1 + n * x + x ^ 2 * d`. Introduce `x n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`.
+
+Take `⟨d, hd⟩` from `ih`. Conclude with `⟨d + n + x * d, by rw [pow_succ, hd]; push_cast; ring⟩`. Take `⟨d, hd⟩` from `hpow (((l : ℕ) : ℤ_[l]) ^ m * a) i`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Use `⟨-(a * c) + ((l : ℕ) : ℤ_[l]) ^ k * a ^ 2 * d, ?_⟩` and prove the remaining obligations.
+
+Establish `hi' : (i : ℤ_[l]) = a' * b - ((l : ℕ) : ℤ_[l]) * c` using `by rw [← hc]; ring`. Rewrite using `[hu', hd, hv', hi']`. Take the linear combination `(((l : ℕ) : ℤ_[l]) ^ (1 + k) * b) * ha'`.
+-/
 theorem padicInt_exists_pow_sub_norm_le_of_exact_level (l : ℕ) [Fact l.Prime] (u v : ℤ_[l]) (m : ℕ)
     (hm : 1 ≤ m) (hu : ‖u - 1‖ = ‖((l : ℕ) : ℤ_[l])‖ ^ m)
     (hv : ‖v - 1‖ ≤ ‖((l : ℕ) : ℤ_[l])‖ ^ m) :

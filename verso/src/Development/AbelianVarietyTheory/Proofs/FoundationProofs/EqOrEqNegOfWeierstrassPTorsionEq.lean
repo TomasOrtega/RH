@@ -11,6 +11,13 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN.WpSep
 
+/- English proof (translation)
+Introduce `N _ τ x y hx hy h1`. Take `⟨hsub, hadd, hmem, -, -⟩` from `GlobalTheory.WpFam.TorsMem.main N τ`. Establish `hc : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `hz : tors N τ x ∉ (tauPair τ).lattice` using `fun h => hx ((hmem x).1 h)`. Establish `hw : tors N τ y ∉ (tauPair τ).lattice` using `fun h => hy ((hmem y).1 h)`.
+
+Rewrite `h1` using `[wp, wp, div_left_inj' (pow_ne_zero _ hc)]`. Break down `(Formalism.L2.Th1.F.pInjective (tauPair τ) _ _ hz hw).1 h1 with h | h` into its components or cases. Conclude with `Or.inl ((hsub x y).1 h)`. Use `right`. Establish `h2` using `(tauPair τ).lattice.add_mem (hadd x y) h`.
+
+Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `(hmem (x + y)).1 h2`. Conclude with `eq_neg_of_add_eq_zero_left h3`.
+-/
 theorem main : ∀ (N : ℕ) [NeZero N] (τ : ℍ) (x y : Fin 2 → ZMod N), x ≠ 0 → y ≠ 0 →
     wp N x τ = wp N y τ → x = y ∨ x = -y := by
   intro N _ τ x y hx hy h1

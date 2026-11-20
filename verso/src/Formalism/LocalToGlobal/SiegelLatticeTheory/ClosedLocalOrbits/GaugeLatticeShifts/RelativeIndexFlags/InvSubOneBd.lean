@@ -7,9 +7,17 @@ variable {n : ℕ} {K : Type*} [Field K]
 def Bd (m : ℕ) (A : Matrix (Fin n) (Fin n) K) : Prop :=
   ∀ i j : Fin n, (i : ℕ) < j + m → A i j = 0
 
+/- English proof (translation)
+Introduce `i j hij` and use `hA i j (by omega)`.
+-/
 theorem Bd.mono {m m' : ℕ} {A : Matrix (Fin n) (Fin n) K} (h : m' ≤ m) (hA : Bd m A) : Bd m' A :=
   fun i j hij => hA i j (by omega)
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : (i : ℕ) < l + m`. Rewrite using `[hA i l hl, zero_mul]`.
+
+Rewrite using `[hB l j (by omega), mul_zero]`.
+-/
 theorem Bd.mul {m m' m'' : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : Bd m A) (hB : Bd m' B)
     (h : m'' ≤ m + m') : Bd m'' (A * B) := by
   intro i j hij
@@ -19,18 +27,33 @@ theorem Bd.mul {m m' m'' : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : Bd m A) (
   · rw [hA i l hl, zero_mul]
   · rw [hB l j (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.add_apply, hA i j h, hB i j h, add_zero]`.
+-/
 theorem Bd.add {m : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : Bd m A) (hB : Bd m B) : Bd m (A + B) :=
   fun i j h => by rw [Matrix.add_apply, hA i j h, hB i j h, add_zero]
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.sub_apply, hA i j h, hB i j h, sub_zero]`.
+-/
 theorem Bd.sub {m : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : Bd m A) (hB : Bd m B) : Bd m (A - B) :=
   fun i j h => by rw [Matrix.sub_apply, hA i j h, hB i j h, sub_zero]
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [Matrix.neg_apply, hA i j h, neg_zero]`.
+-/
 theorem Bd.neg {m : ℕ} {A : Matrix (Fin n) (Fin n) K} (hA : Bd m A) : Bd m (-A) :=
   fun i j h => by rw [Matrix.neg_apply, hA i j h, neg_zero]
 
+/- English proof (translation)
+Introduce `i j _` and use `by rw [Matrix.zero_apply]`.
+-/
 theorem Bd_zero (m : ℕ) : Bd m (0 : Matrix (Fin n) (Fin n) K) :=
   fun i j _ => by rw [Matrix.zero_apply]
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`. Rewrite `h` using `[e]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Bd_one : Bd 0 (1 : Matrix (Fin n) (Fin n) K) := by
   intro i j h
   rw [Matrix.one_apply_ne]
@@ -38,22 +61,40 @@ theorem Bd_one : Bd 0 (1 : Matrix (Fin n) (Fin n) K) := by
   rw [e] at h
   omega
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `Bd_one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul hA le_rfl`.
+-/
 theorem Bd.pow {A : Matrix (Fin n) (Fin n) K} (hA : Bd 1 A) (k : ℕ) : Bd k (A ^ k) := by
   induction k with
   | zero => rw [pow_zero]; exact Bd_one
   | succ k ih => rw [pow_succ]; exact ih.mul hA le_rfl
 
+/- English proof (translation)
+Introduce `i j hij` and use `by rw [Matrix.sum_apply] exact Finset.sum_eq_zero fun l hl => h l hl i j hij`.
+-/
 theorem Bd.sum {ι : Type*} {m : ℕ} {s : Finset ι} {f : ι → Matrix (Fin n) (Fin n) K}
     (h : ∀ i ∈ s, Bd m (f i)) : Bd m (∑ i ∈ s, f i) :=
   fun i j hij => by
     rw [Matrix.sum_apply]
     exact Finset.sum_eq_zero fun l hl => h l hl i j hij
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `i.2` as an intermediate fact. Conclude with `h i j (by omega)`.
+-/
 theorem Bd.eq_zero {A : Matrix (Fin n) (Fin n) K} (h : Bd n A) : A = 0 := by
   ext i j
   have := i.2
   exact h i j (by omega)
 
+/- English proof (translation)
+Establish `hN1 : Bd 1 (-((a : Matrix (Fin n) (Fin n) K) - 1))` using `(h.mono (by omega)).neg`. Establish `hpow : (-((a : Matrix (Fin n) (Fin n) K) - 1)) ^ n = 0` using `(hN1.pow n).eq_zero`. Establish `hba : (∑ i ∈ Finset.range n, (-((a : Matrix (Fin n) (Fin n) K) - 1)) ^ i) * (a : Matrix (Fin n) (Fin n) K) = 1`. Establish `e` using `geom_sum_mul_neg (-((a : Matrix (Fin n) (Fin n) K) - 1)) n`. Rewrite `e` using `[hpow, sub_zero, sub_neg_eq_add, add_sub_cancel]`.
+
+Conclude with `e`. Establish `hinv : ((a⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) = ∑ i ∈ Finset.range n, (-((a : Matrix (Fin n) (Fin n) K) - 1)) ^ i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hba, one_mul]`. Use `_ = _ := by rw [mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`.
+
+Establish `hb0 : Bd 0 (∑ i ∈ Finset.range n, (-((a : Matrix (Fin n) (Fin n) K) - 1)) ^ i)` using `Bd.sum fun i _ => (hN1.pow i).mono (Nat.zero_le _)`. Establish `e2 : (∑ i ∈ Finset.range n, (-((a : Matrix (Fin n) (Fin n) K) - 1)) ^ i) - 1 = -((∑ i ∈ Finset.range n, (-((a : Matrix (Fin n) (Fin n) K) - 1)) ^ i) * ((a : Matrix (Fin n) (Fin n) K) - 1))`. Rewrite using `[mul_sub, hba, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[hinv, e2]`.
+
+Conclude with `(hb0.mul h (by omega)).neg`.
+-/
 theorem inv_sub_one_bd (a : Matrix.GeneralLinearGroup (Fin n) K) (k : ℕ)
     (h : Bd (k + 1) ((a : Matrix (Fin n) (Fin n) K) - 1)) :
     Bd (k + 1) (((a⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) - 1) := by
@@ -96,17 +137,37 @@ def FG (n : ℕ) (K : Type*) [Field K] (k : ℕ) : Subgroup (Matrix.GeneralLinea
     rw [e]; exact ((Bd.mul ha hb (by omega)).add ha).add hb
   inv_mem' := fun {a} ha => inv_sub_one_bd a k ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_FG {k : ℕ} {a : Matrix.GeneralLinearGroup (Fin n) K} :
     a ∈ FG n K k ↔ Bd (k + 1) ((a : Matrix (Fin n) (Fin n) K) - 1) := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ ha` and use `Bd.mono (by omega) ha`.
+-/
 theorem FG_mono (k : ℕ) : FG n K (k + 1) ≤ FG n K k := fun _ ha => Bd.mono (by omega) ha
 
+/- English proof (translation)
+Establish `h0` using `(Bd.mono (by omega) ha : Bd n _).eq_zero`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`. Conclude with `sub_eq_zero.mp h0`.
+-/
 theorem FG_eq_one {a : Matrix.GeneralLinearGroup (Fin n) K} (ha : a ∈ FG n K n) : a = 1 := by
   have h0 := (Bd.mono (by omega) ha : Bd n _).eq_zero
   apply Units.ext
   rw [Units.val_one]
   exact sub_eq_zero.mp h0
 
+/- English proof (translation)
+Rewrite `hg`, `ha`, the goal using `[mem_FG]`. Establish `hgi` using `inv_sub_one_bd g 0 hg`. Establish `hai` using `inv_sub_one_bd a k ha`. Establish `h1 : Bd 0 ((g⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use `(hgi.mono (Nat.zero_le _)).add Bd_one` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h2 : Bd 0 ((a⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use `(hai.mono (Nat.zero_le _)).add Bd_one` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hC : Bd (k + 1 + 1) (((g : Matrix (Fin n) (Fin n) K) - 1) * ((a : Matrix (Fin n) (Fin n) K) - 1) - ((a : Matrix (Fin n) (Fin n) K) - 1) * ((g : Matrix (Fin n) (Fin n) K) - 1))` using `(Bd.mul hg ha (by omega)).sub (Bd.mul ha hg (by omega))`.
+
+Establish `hg1 : (g : Matrix (Fin n) (Fin n) K) * ((g⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `ha1 : (a : Matrix (Fin n) (Fin n) K) * ((a⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `e : ((g * a * g⁻¹ * a⁻¹ : Matrix.GeneralLinearGroup (Fin n) K) : Matrix (Fin n) (Fin n) K) - 1 = (((g : Matrix (Fin n) (Fin n) K) - 1) * ((a : Matrix (Fin n) (Fin n) K) - 1) - ((a : Matrix (Fin n) (Fin n) K) - 1) * ((g : Matrix (Fin n) (Fin n) K) - 1)) * (((g⁻¹ : Matrix.GeneralLi …`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg1, mul_one, ha1]`. Use `_ = _ := by noncomm_ring`. Rewrite using `[e]`.
+
+Conclude with `hC.mul (h1.mul h2 le_rfl) (by omega)`.
+-/
 theorem FG_comm (k : ℕ) (g a : Matrix.GeneralLinearGroup (Fin n) K) (hg : g ∈ FG n K 0)
     (ha : a ∈ FG n K k) : g * a * g⁻¹ * a⁻¹ ∈ FG n K (k + 1) := by
   rw [mem_FG] at hg ha ⊢
@@ -144,6 +205,11 @@ theorem FG_comm (k : ℕ) (g a : Matrix.GeneralLinearGroup (Fin n) K) (hg : g �
   rw [e]
   exact hC.mul (h1.mul h2 le_rfl) (by omega)
 
+/- English proof (translation)
+Rewrite using `[Subgroup.closure_le]`. Introduce `a ha i j hij`. Rewrite using `[Matrix.sub_apply]`. Establish `hle : (i : ℕ) ≤ j` using `by omega`. Break down `Nat.lt_or_eq_of_le hle with h | h` into its components or cases.
+
+Establish `hij' : i < j` using `Fin.lt_def.mpr h`. Rewrite using `[(ha i j).1 hij', Matrix.one_apply_ne (ne_of_lt hij'), sub_zero]`. Establish `e : i = j` using `Fin.ext h`. Substitute `e` using the available equality. Rewrite using `[(ha i i).2 rfl, Matrix.one_apply_eq, sub_self]`.
+-/
 theorem closure_le_FG :
     Subgroup.closure {a : Matrix.GeneralLinearGroup (Fin n) K |
       ∀ i j, (i < j → (a : Matrix (Fin n) (Fin n) K) i j = 0) ∧

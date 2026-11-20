@@ -11,6 +11,27 @@ open GlobalTheory.HkFam
 
 namespace GlobalTheory.HkFam
 
+/- English proof (translation)
+Introduce `S S' f G G' _ _ φ N n σ K hG h hN hfin het hsurj hL`. Take `⟨hpow, hK, -⟩` from `hL`. Take `⟨-, hWf, hWe⟩` from `GrpTangent.finiteEtale_mulN_torsion G hN`. Use `hG.proper` as an intermediate fact. Set `T : Over S` to `Over.mk ((𝟙_ (Over S')).hom ≫ f)`.
+
+Establish `hTf : IsFinite T.hom`. Express the relevant statement in the definitionally equal form `IsFinite (𝟙 S' ≫ f)`. Use `infer_instance`. Establish `hTe : Etale T.hom`. Express the relevant statement in the definitionally equal form `Etale (𝟙 S' ≫ f)`.
+
+Use `infer_instance`. Set `ρ : (𝟙_ (Over S') ⟶ G') →* (T ⟶ G)` to `MonoidHom.mk' (fun x => Over.homMk (x.left ≫ φ) (by`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x]`. Use the proof step `rfl))`. Use `fun x y => Over.OverMorphism.ext (h.2 _ x y _ _ rfl rfl).symm`.
+
+Establish `hρ : ∀ j, ρ (σ j) ^ N = 1` using `fun j => by rw [← map_pow, hpow, map_one]`. Use `choose τ hτ using fun j => (LatticeTorsion.existsUnique_torsion G N (ρ (σ j)) (hρ j)).exists`. Establish `hτl : ∀ j, (τ j).left ≫ (torsion.ι G N).left = (σ j).left ≫ φ` using `fun j => congrArg (fun z => z.left) (hτ j)`. Establish `hτf : ∀ j, IsFinite (τ j).left` using `fun j => by`. Establish `: IsFinite ((τ j).left ≫ (torsion G N).hom)` using `by rw [Over.w]; exact hTf`.
+
+Conclude with `IsFinite.of_comp _ (torsion G N).hom`. Establish `hτe : ∀ j, Etale (τ j).left` using `fun j => by`. Establish `: Etale ((τ j).left ≫ (torsion G N).hom)` using `by rw [Over.w]; exact hTe`. Conclude with `Etale.of_comp _ (torsion G N).hom`. Establish `hop : IsOpen (⋃ j, Set.range (τ j).left)` using `isOpen_iUnion fun j => (τ j).left.isOpenMap.isOpen_range`.
+
+Establish `hcl : IsClosed (⋃ j, Set.range (τ j).left)` using `isClosed_iUnion_of_finite fun j => (τ j).left.isClosedMap.isClosed_range`. Set `U : (torsion G N).left.Opens` to `⟨_, hop⟩`. Establish `hU : IsClosedImmersion U.ι` using `IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hcl)`. Establish `hη : IsClosedImmersion η[G].left`. Establish `: IsClosedImmersion (η[G].left ≫ G.hom)`.
+
+Rewrite using `[Over.w]`. Conclude with `inferInstanceAs (IsClosedImmersion (𝟙 S))`. Conclude with `IsClosedImmersion.of_comp _ G.hom`. Establish `hι : IsClosedImmersion (torsion.ι G N).left` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (GrpTangent.isPullback_torsion G N).flip hη`. Establish `hφ : Surjective φ` using `MorphismProperty.of_isPullback (P := @Surjective) h.1.flip hsurj`.
+
+Use `⟨Over.mk (U.ι ≫ (torsion G N).hom), Over.homMk (U.ι ≫ (torsion.ι G N).left) (by simp), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsFinite (U.ι ≫ _)`. Use `infer_instance`. Express the relevant statement in the definitionally equal form `Etale (U.ι ≫ _)`. Use `infer_instance`.
+
+Express the relevant statement in the definitionally equal form `IsClosedImmersion (U.ι ≫ _)`. Use `infer_instance`. Express the relevant statement in the definitionally equal form `Set.range (U.ι ≫ (torsion.ι G N).left) = K`. Rewrite using `[← Set.image_preimage_eq K φ.surjective, hK, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `_ '' (⋃ j, Set.range (τ j).left) = _`.
+
+Rewrite using `[Set.image_iUnion, Set.image_iUnion]`. Use `Set.iUnion_congr fun j => ?_` and prove the remaining obligations. Rewrite using `[← Set.range_comp, ← Set.range_comp, ← TopCat.coe_comp, ← TopCat.coe_comp, ← Scheme.Hom.comp_base, ← Scheme.Hom.comp_base, hτl]`.
+-/
 theorem etSet_of_lists : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (φ : G'.left ⟶ G.left) (N n : ℕ) (σ : Fin n → (𝟙_ (Over S') ⟶ G')) (K : Set G.left), IsAbelianScheme G → IsGrpPullback G' G f φ → IsUnit (N : Γ(S, ⊤)) → IsFinite f → Etale f → Surjective f → Lists N σ (φ ⁻¹' K) → EtSet G K := by
   intro S S' f G G' _ _ φ N n σ K hG h hN hfin het hsurj hL
   obtain ⟨hpow, hK, -⟩ := hL

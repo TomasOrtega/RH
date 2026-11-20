@@ -2,6 +2,11 @@ import Mathlib
 
 open MvPolynomial Filter Topology
 
+/- English proof (translation)
+Establish `e : T P = ∑ α ∈ P.support, P.coeff α • T (monomial α 1)` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, Finset.sum_mul]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (h α hα) (norm_nonneg _)`.
+-/
 private theorem UpperTheory.ConvolutionTheory.FX.opb_lin {Z V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (T : MvPolynomial Z ℂ →ₗ[ℂ] V) (P : MvPolynomial Z ℂ) (B : ℝ)
     (h : ∀ m ∈ P.support, ‖T (monomial m 1)‖ ≤ B) :
@@ -16,11 +21,21 @@ private theorem UpperTheory.ConvolutionTheory.FX.opb_lin {Z V : Type} [NormedAdd
   rw [norm_smul]
   exact mul_le_mul_of_nonneg_left (h α hα) (norm_nonneg _)
 
+/- English proof (translation)
+Use `le_totalDegree hm` as an intermediate fact. Simplify `this` using `[Finsupp.degree_apply, Finsupp.sum]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.FX.opb_deg {Z : Type} (P : MvPolynomial Z ℂ) (m : Z →₀ ℕ)
     (hm : m ∈ P.support) : m.degree ≤ P.totalDegree := by
   have := le_totalDegree hm
   simpa [Finsupp.degree_apply, Finsupp.sum] using this
 
+/- English proof (translation)
+Establish `h1 : ∑ k ∈ Finset.Ioc d e, x ^ k / (k.factorial : ℝ) ≤ ∑ k ∈ Finset.Ico d (e + 1), x ^ k / (k.factorial : ℝ)`. Use `Finset.sum_le_sum_of_subset_of_nonneg (fun k hk => ?_) (fun k _ _ => by positivity)` and prove the remaining obligations. Simplify using `only [Finset.mem_Ioc, Finset.mem_Ico] at hk ⊢`. Use linear arithmetic over natural numbers and integers. Use `h1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left (Real.sum_le_exp_of_nonneg hx (e + 1 - d)) (by positivity))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[div_mul_div_comm, pow_add]`.
+
+Use `div_le_div_of_nonneg_left (by positivity) (by positivity) ?_` and prove the remaining obligations. Use `Nat.le_of_dvd (Nat.factorial_pos _) (Nat.factorial_mul_factorial_dvd_factorial_add d j)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 private theorem UpperTheory.ConvolutionTheory.FX.opb_tail (x : ℝ) (hx : 0 ≤ x) (d e : ℕ) :
     ∑ k ∈ Finset.Ioc d e, x ^ k / k.factorial ≤ x ^ d / d.factorial * Real.exp x := by
   have h1 : ∑ k ∈ Finset.Ioc d e, x ^ k / (k.factorial : ℝ)
@@ -38,6 +53,27 @@ private theorem UpperTheory.ConvolutionTheory.FX.opb_tail (x : ℝ) (hx : 0 ≤ 
   have := Nat.le_of_dvd (Nat.factorial_pos _) (Nat.factorial_mul_factorial_dvd_factorial_add d j)
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `Z Q K₀ D hD hdeg hl`. Establish `hK₀ : 0 ≤ K₀`. Establish `h` using `hl 0`. Establish `h0 : 0 ≤ ∑ α ∈ (Q 0).support, ‖(Q 0).coeff α‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Simplify using `only [zero_add, pow_one, Nat.factorial_zero, Nat.cast_one, div_one] at h`.
+
+Conclude with `h0.trans h`. Use `set x : ℝ := K₀ * (D + 1) with hxdef`. Establish `hx : 0 ≤ x` using `by positivity`. Establish `hKx : K₀ ≤ x` using `by nlinarith [mul_nonneg hK₀ hD]`. Establish `hE : 0 ≤ K₀ * Real.exp x` using `by positivity`.
+
+Use `set C : ℝ := 1 + x + D + K₀ * Real.exp x with hC`. Establish `hC1 : 1 ≤ C` using `by linarith`. Establish `hCx : x ≤ C` using `by linarith`. Establish `hCD : D ≤ C` using `by linarith`. Establish `hCE : K₀ * Real.exp x ≤ C` using `by linarith`.
+
+Use `⟨C, hC1, fun V _ _ T K hK => ⟨fun hT => ?_, fun d hT => ?_⟩⟩` and prove the remaining obligations. Establish `hb : ∀ k, ‖T (Q k)‖ ≤ K * K₀ * (x ^ k / k.factorial)`. Introduce `k`. Establish `h1` using `UpperTheory.ConvolutionTheory.FX.opb_lin T (Q k) (K * (D + 1) ^ k) (fun m hm => by`. Use `(hT m).trans (mul_le_mul_of_nonneg_left ?_ hK)` and prove the remaining obligations.
+
+Conclude with `(pow_le_pow_left₀ hD (by linarith) _).trans (pow_le_pow_right₀ (by linarith) ((UpperTheory.ConvolutionTheory.FX.opb_deg _ m hm).trans (hdeg k))))`. Use `h1.trans ((mul_le_mul_of_nonneg_right (hl k) (by positivity)).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[hxdef, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hb ((Real.summable_pow_div_factorial x).mul_left _), fun d e => ?_⟩` and prove the remaining obligations.
+
+Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun k _ => hb k).trans ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `(mul_le_mul_of_nonneg_left (UpperTheory.ConvolutionTheory.FX.opb_tail x hx d e) (by positivity)).trans ?_` and prove the remaining obligations. Establish `h2 : x ^ d * (K₀ * Real.exp x) ≤ C ^ (d + 1)`. Rewrite using `[pow_succ]`.
+
+Conclude with `mul_le_mul (pow_le_pow_left₀ hx hCx d) hCE hE (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hb : ∀ k ∈ Finset.range (d + 1), ‖T (Q k)‖ ≤ K * D ^ d * K₀ * (K₀ ^ k / k.factorial)`. Introduce `k hk`. Establish `hkd : k ≤ d` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`.
+
+Establish `h1` using `UpperTheory.ConvolutionTheory.FX.opb_lin T (Q k) (K * D ^ d) (fun m hm => hT m (((UpperTheory.ConvolutionTheory.FX.opb_deg _ m hm).trans (hdeg k)).trans hkd))`. Use `h1.trans ((mul_le_mul_of_nonneg_right (hl k) (by positivity)).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum hb).trans ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`.
+
+Use `(mul_le_mul_of_nonneg_left (Real.sum_le_exp_of_nonneg hK₀ (d + 1)) (by positivity)).trans ?_` and prove the remaining obligations. Establish `h3 : K₀ * Real.exp K₀ ≤ C` using `(mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr hKx) hK₀).trans hCE`. Establish `h2 : D ^ d * (K₀ * Real.exp K₀) ≤ C ^ (d + 1)`. Rewrite using `[pow_succ]`. Conclude with `mul_le_mul (pow_le_pow_left₀ hD hCD d) h3 (by positivity) (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.op_bound :
     ∀ (Z : Type) (Q : ℕ → MvPolynomial Z ℂ) (K₀ D : ℝ), 0 ≤ D → (∀ k, (Q k).totalDegree ≤ k) → (∀ k, (∑ α ∈ (Q k).support, ‖(Q k).coeff α‖) ≤ K₀ ^ (k + 1) / k.factorial) → ∃ C' : ℝ, 1 ≤ C' ∧
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (T : MvPolynomial Z ℂ →ₗ[ℂ] V) (K : ℝ), 0 ≤ K →

@@ -14,9 +14,15 @@ section CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] IsCMField.starRing
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexEmbedding_complexConj E τ a`.
+-/
 theorem embedding_star (τ : E →+* ℂ) (a : E) : τ (star a) = star (τ a) :=
   IsCMField.complexEmbedding_complexConj E τ a
 
+/- English proof (translation)
+Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, starRingEnd_apply, dotProduct, mulVec, HSpace.gram, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+-/
 theorem form_eq {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) (x y : Fin S.rank → E) :
     S.hT (S.frame.equivFun.symm x) (S.frame.equivFun.symm y) = star x ⬝ᵥ (S.gram *ᵥ y) := by
   simp only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply,
@@ -24,6 +30,17 @@ theorem form_eq {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Set `b` to `Module.finBasis E U`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective U.subtype U.ker_subtype`. Set `M` to `LinearMap.toMatrix b S.frame U.subtype`. Set `L` to `LinearMap.toMatrix S.frame b g`. Establish `hL : L * M = 1`.
+
+Rewrite using `[← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id]`. Establish `hb : ∀ i, (b i : S.V) = ∑ a, M a i • S.frame a`. Introduce `i`. Simplify using `only [M, LinearMap.toMatrix_apply, Submodule.subtype_apply]`. Conclude with `(S.frame.sum_repr _).symm`.
+
+Establish `h : Mᴴ * S.gram * M = 0`. Use extensionality with `i j`. Establish `h0` using `hU _ (b i).2 _ (b j).2`. Rewrite `h0` using `[hb i, hb j]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, starRingEnd_apply] at h0`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, HSpace.gram, Matrix.zero_apply]`. Rewrite using `[← h0]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Use `(GlobalTheory.WittSignature.le_of_isotropic_signature _ hs (M.map τ) (L.map τ) ?_ ?_).2` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hL, Matrix.map_one _ (map_zero τ) (map_one τ)]`.
+
+Establish `: (M.map τ)ᴴ = (Mᴴ).map τ`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, embedding_star]`. Rewrite using `[this, ← Matrix.map_mul, ← Matrix.map_mul, h, Matrix.map_zero _ (map_zero τ)]`.
+-/
 theorem finrank_le (S : HSpace E) {p q : ℕ} (τ : E →+* ℂ) (hs : Formalism.UG.HasSignature (S.gram.map τ) p q)
     (U : Submodule E S.V) (hU : ∀ x ∈ U, ∀ y ∈ U, S.hT x y = 0) : Module.finrank E U ≤ q := by
   let b := Module.finBasis E U

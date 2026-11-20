@@ -14,6 +14,13 @@ open ReciprocityTheory.ChartRestriction.G.Chart (JetR tvec tmap eigLat IsUnivCha
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `h1 : ∀ X : Over (Spec (CommRingCat.of R)), (1 : X ⟶ G₁) ≫ e.hom = 1`. Introduce `X`. Rewrite using `[Hom.one_def, Hom.one_def, Category.assoc, IsMonHom.one_hom]`. Use `⟨fun m => ?_, fun m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hx.1 m]`.
+
+Rewrite using `[← Category.assoc, hx.2.1 m, h1]`. Introduce `A _ _ aug m hker y hy`. Establish `hy' : ReciprocityTheory.ChartRestriction.G.Chart.spMap aug ≫ (y ≫ e.inv) = 1`. Rewrite using `[← Category.assoc, hy, ← h1, Category.assoc, e.hom_inv_id, Category.comp_id]`. Take `⟨ψ, hψ, huniq⟩` from `hx.2.2 A aug m hker (y ≫ e.inv) hy'`.
+
+Use `⟨ψ, ⟨hψ.1, ?_⟩, fun ψ' hψ' => huniq ψ' ⟨hψ'.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Iso.comp_inv_eq, hψ.2]`. Rewrite using `[Iso.comp_inv_eq, hψ'.2, Category.assoc]`.
+-/
 theorem gfp_chart_iso {R : Type} [CommRing R] {G₁ G₂ : Over (Spec (CommRingCat.of R))} [GrpObj G₁] [GrpObj G₂]
     (e : G₁ ≅ G₂) [IsMonHom e.hom] {n : ℕ}
     {xc : ∀ m : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) (JetR R (Fin n) m) ⟶ G₁} (hx : IsUnivChart G₁ n xc) :
@@ -42,6 +49,13 @@ section BC
 variable {L : Type} [Field L] {x : Sp L ⟶ Xo.X} {n : ℕ}
   {xc : ∀ m : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := L) (JetR L (Fin n) m) ⟶ (Over.pullback x).obj Xo.univ.t.G}
 
+/- English proof (translation)
+Establish `ht : tvec (x` using `xc) (tmap hx ((Over.pullback x).map (Xo.univ.t.act.act a)) cc) = tvec (x := xc) cc ≫ (Over.pullback x).map (Xo.univ.t.act.act a) := by first`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.Chart.tvec_tmap hx _ cc`. Consider the case `exact (ReciprocityTheory.ChartRestriction.G.Chart.tvec_tmap hx _ cc).symm`. Consider the case `exact (ReciprocityTheory.ChartRestriction.G.Chart.tcoord_spec hx (tvec (x := xc) cc ≫ (Over.pullback x).map (Xo.univ.t.act.act a)) _).symm`. Establish `e1 : ((Over.pullback x).map (Xo.univ.t.act.act a)).left ≫ pullback.fst Xo.univ.t.G.hom x = pullback.fst Xo.univ.t.G.hom x ≫ (Xo.univ.t.act.act a).left`.
+
+Simplify using the standard rewrite rules. Use `first`. Consider the case `exact pullback.lift_fst _ _ _`. Consider the case `erw [pullback.lift_fst]`. Consider the case `(rw [limit.lift_π]; rfl)`.
+
+Simplify using `only [gfpVec, ht, Over.comp_left, Category.assoc, e1]`.
+-/
 theorem gfpVec_tmap (hx : IsUnivChart _ n xc) (a : 𝓞 E) (cc : Fin n → L) :
     gfpVec x xc (tmap hx ((Over.pullback x).map (Xo.univ.t.act.act a)) cc) =
       gfpVec x xc cc ≫ (Xo.univ.t.act.act a).left := by
@@ -61,6 +75,13 @@ theorem gfpVec_tmap (hx : IsUnivChart _ n xc) (a : 𝓞 E) (cc : Fin n → L) :
     | (rw [limit.lift_π]; rfl)
   simp only [gfpVec, ht, Over.comp_left, Category.assoc, e1]
 
+/- English proof (translation)
+Take `⟨x₁, hx₁, hcomp⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.tanBC_alg (R := L) (R' := L') _ n xc hx`. Establish `h₁` using `IsGrpPullback.comp (isGrpPullback_pullback ((Over.pullback x).obj Xo.univ.t.G) (ReciprocityTheory.ChartRestriction.G.Chart.fB L L')) (isGrpPullback_pullback Xo.univ.t.G x)`. Take `⟨e, he, hφ⟩` from `grpPullback_iso h₁ (isGrpPullback_pullback Xo.univ.t.G (ReciprocityTheory.ChartRestriction.G.Chart.fB L L' ≫ x))`. Establish `hv : ∀ cc : Fin n → L, gfpVec (spMap (algebraMap L L') ≫ x) (fun m => x₁ m ≫ e.hom) (algebraMap L L' ∘ cc) = spMap (dualMap (algebraMap L L')) ≫ gfpVec x xc cc`. Introduce `cc`.
+
+Establish `key : (tvec (x` using `fun m => x₁ m ≫ e.hom) (algebraMap L L' ∘ cc)).left = (tvec (x := x₁) (algebraMap L L' ∘ cc)).left ≫ e.hom.left := by show (_ ≫ x₁ 1 ≫ e.hom).left = (_ ≫ x₁ 1).left ≫ e.hom.left`. Rewrite using `[Over.comp_left, Over.comp_left, Over.comp_left, Category.assoc]`. Use `show (tvec (x := fun m => x₁ m ≫ e.hom) (algebraMap L L' ∘ cc)).left ≫ pullback.fst _ _ = _`. Rewrite using `[key, Category.assoc, hφ, ← Category.assoc, hcomp cc, Category.assoc]`. Both sides reduce to the same expression.
+
+Establish `hx'` using `gfp_chart_iso e hx₁`. Use `⟨fun m => x₁ m ≫ e.hom, hx', hv, fun a cc => gfp_inj hx' ?_⟩` and prove the remaining obligations. Rewrite using `[gfpVec_tmap hx', hv, hv, gfpVec_tmap hx, Category.assoc]`.
+-/
 theorem gfp_bc {L' : Type} [Field L'] [Algebra L L'] (hx : IsUnivChart _ n xc) :
     ∃ (xc' : ∀ m : ℕ, ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := L') (JetR L' (Fin n) m) ⟶
         (Over.pullback (spMap (algebraMap L L') ≫ x)).obj Xo.univ.t.G) (hx' : IsUnivChart _ n xc'),
@@ -91,6 +112,17 @@ theorem gfp_bc {L' : Type} [Field L'] [Algebra L L'] (hx : IsUnivChart _ n xc) :
 
 variable [Algebra c.F L]
 
+/- English proof (translation)
+Take `⟨xc', hx', -, htm⟩` from `gfp_bc (L' := AlgebraicClosure L) hx`. Establish `hrank` using `ReciprocityTheory.ChartRestriction.G.Chart.finrank_eig_bc (V := L) (k := AlgebraicClosure L) (fun a => tmap hx ((Over.pullback x).map (Xo.univ.t.act.act a))) (fun a => tmap hx' ((Over.pullback (spMap (algebraMap L (AlgebraicClosure L)) ≫ x)).map (Xo.univ.t.act.act a))) htm (fun a …`. Set `β : KA l →+* AlgebraicClosure L` to `(algebraMap L (AlgebraicClosure L)).comp ((algebraMap c.F L).comp (IntermediateField.inclusion c.le).toRingHom)`. Establish `hβ : (spMap (algebraMap L (AlgebraicClosure L)) ≫ x) ≫ Xo.s = spMap β`. Rewrite using `[Category.assoc, hx0]`.
+
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hd` using `(Xo.univ.geom (AlgebraicClosure L) _ β hβ).1`. Set `τ' : 𝓞 E →+* AlgebraicClosure L` to `(algebraMap L (AlgebraicClosure L)).comp ((algebraMap c.F L).comp (embK c τ))`. Establish `key : ∀ N, LieMult Xo.univ.t.act (spMap (algebraMap L (AlgebraicClosure L)) ≫ x) τ' N → Module.finrank (AlgebraicClosure L) (eigLat hx' (fun a => (Over.pullback (spMap (algebraMap L (AlgebraicClosure L)) ≫ x)).map (Xo.univ.t.act.act a)) (fun a => τ' a)) = N` using `fun N h => ReciprocityTheory.ChartRestriction.G.Chart.finrank_of_lieMult gfp_hcId (Category.comp_id _) hx' Xo.univ.t.act Xo.univ.t.act.act (fun a => by rw [Category.comp_id, Category.id_comp]) _ (fun a => rfl) τ' h`.
+
+Establish `hinj : Function.Injective ((algebraMap L (AlgebraicClosure L)).comp (algebraMap c.F L))` using `RingHom.injective _`. Establish `e0 : τ' H.rt = β (baseKA l).ρ ↔ τ (H.rt : E) = H.rt0`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `@hinj (embK c τ H.rt) (IntermediateField.inclusion c.le (baseKA l).ρ) h`.
+
+Conclude with `congrArg (fun z : c.F => (z : ℂ)) h'`. Introduce `h`. Establish `h' : embK c τ H.rt = IntermediateField.inclusion c.le (baseKA l).ρ` using `Subtype.ext h`. Conclude with `congrArg ((algebraMap L (AlgebraicClosure L)).comp (algebraMap c.F L)) h'`. Use `hrank.trans ?_` and prove the remaining obligations.
+
+Unfold `Datum.mult`. Use `split_ifs with h`. Conclude with `key _ ((hd τ').1 (e0.2 h))`. Conclude with `key _ ((hd τ').2 (fun h' => h (e0.1 h')))`.
+-/
 theorem gfp_finrank (hx0 : x ≫ Xo.s = sOf c L) (hx : IsUnivChart _ n xc) (τ : E →+* ℂ) :
     Module.finrank L (gfpEig (c := c) hx τ) = Dw.mult τ := by
   classical
@@ -128,6 +160,17 @@ theorem gfp_finrank (hx0 : x ≫ Xo.s = sOf c L) (hx : IsUnivChart _ n xc) (τ :
   · exact key _ ((hd τ').1 (e0.2 h))
   · exact key _ ((hd τ').2 (fun h' => h (e0.1 h')))
 
+/- English proof (translation)
+Take `⟨cc, rfl⟩` from `gfp_exists hx w hw`. Establish `hcc : cc ∈ gfpEig (c` using `c) hx τ := (gfp_eig_iff hx τ cc).1 he`. Establish `hle : Submodule.span L (Set.range d) ≤ gfpEig (c` using `c) hx τ := by`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `hdW i`. Establish `hfr : Module.finrank L (Submodule.span L (Set.range d)) = Module.finrank L (gfpEig (c` using `c) hx τ) := by`. Rewrite using `[finrank_span_eq_card hd, Fintype.card_fin, gfp_finrank hx0 hx τ]`. Establish `heq : Submodule.span L (Set.range d) = gfpEig (c` using `c) hx τ := Submodule.eq_of_le_of_finrank_eq hle hfr`. Establish `hspan : cc ∈ Submodule.span L (Set.range d)` using `heq ▸ hcc`.
+
+Take `⟨a, ha⟩ : ∃ a : Fin (Dw.mult τ) → L, ∑ i, a i • d i = cc` from `by first`. Consider the case `exact (Submodule.mem_span_range_iff_exists_fun L).1 hspan`. Consider the case `exact Submodule.mem_span_range_iff_exists_fun.1 hspan`. Use `⟨a, (gfp_comb_iff hx d a cc).2 ha.symm, ?_⟩` and prove the remaining obligations. Introduce `a' ha'`.
+
+Establish `h2 : cc = ∑ j, a' j • d j` using `(gfp_comb_iff hx d a' cc).1 ha'`. Establish `h3 : ∑ j, a' j • d j = ∑ j, a j • d j` using `h2.symm.trans ha.symm`. Use function extensionality and compare the values at `i`. Establish `h4` using `Fintype.linearIndependent_iff.1 hd (a' - a) (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h3, sub_self]) i`.
+
+Simplify `h4` using `[sub_eq_zero]`.
+-/
 theorem gfp_basis (hx0 : x ≫ Xo.s = sOf c L) (hx : IsUnivChart _ n xc) (τ : E →+* ℂ)
     (d : Fin (Dw.mult τ) → Fin n → L) (hd : LinearIndependent L d) (hdW : ∀ i, d i ∈ gfpEig (c := c) hx τ)
     (w : Sp (DualNumber L) ⟶ Xo.univ.t.G.left) (hw : IsTanAt x w) (he : IsEigAt c τ w) :

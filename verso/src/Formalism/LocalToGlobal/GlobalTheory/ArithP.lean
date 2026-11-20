@@ -30,6 +30,9 @@ section Rfl
 
 variable {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (K : G.Consts) (a b : G.HH D → ℤ) (p j : ℕ) (t0 : G.HH D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rho_eq : G.rho D K L.sc = (baseOf D L).rho K := rfl
 
 end Rfl
@@ -81,20 +84,36 @@ section Joint
 
 variable {D : D7} {L : SizeData₂ D} (Del h0 : ℕ)
 
+/- English proof (translation)
+Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`.
+-/
 theorem eTau_tauPl (z : Bool × G.HH D) : ((D.eTau (tauPl D z) : D.R.Psi) : D.R.GG) = G.plGG D z := by
   unfold tauPl
   rw [Equiv.apply_symm_apply]
 
 variable {Del h0} {X : G.Inst D L} {K : G.Consts} {Ce : ℝ}
 
+/- English proof (translation)
+Rewrite using `[L.Sc_eq, hT.del]`. Unfold `NumDatum.Sc`. Simplify using the standard rewrite rules.
+-/
 theorem Sc_datumOf (hT : InstanceCompatible X K Ce Del h0) : (datumOf D L Del h0).Sc = L.Sc := by
   rw [L.Sc_eq, hT.del]
   unfold NumDatum.Sc
   simp
 
+/- English proof (translation)
+Rewrite using `[hT.eta]`. Both sides reduce to the same expression.
+-/
 theorem eta_datumOf (hT : InstanceCompatible X K Ce Del h0) : (datumOf D L Del h0).eta = L.etaSz := by
   rw [hT.eta]; rfl
 
+/- English proof (translation)
+Establish `h1 : (bsH : G.HH D → G.HH D → G.HH D) = X.bs` using `funext fun h => funext fun t => (hT.bs h t).symm`. Establish `h2 : (fun p n' TT a b => sInf (Loc.kapISet (baseOf D L) K p n' TT a b)) = X.kapI`. Use function extensionality and compare the values at `p n' TT a b`. Conclude with `(hT.kap p n' TT a b).symm`. Establish `h3 : (fun p : ℕ => ⌈Ce * ((baseOf D L).R.f : ℝ) * ((baseOf D L).R.k : ℝ) ^ 2 * Real.logb p (baseOf D L).sc.a⌉₊) = X.ep`.
+
+Use function extensionality and compare the values at `p`. Conclude with `(hT.ep p).symm`. Unfold `ins`. Rewrite using `[h2, h3]`. Use `show Ins.mk bsH _ _ = _`.
+
+Rewrite using `[h1]`.
+-/
 theorem ins_eq (hT : InstanceCompatible X K Ce Del h0) : ins (baseOf D L) K Ce = insOf X := by
   have h1 : (bsH : G.HH D → G.HH D → G.HH D) = X.bs := funext fun h => funext fun t => (hT.bs h t).symm
   have h2 : (fun p n' TT a b => sInf (Loc.kapISet (baseOf D L) K p n' TT a b)) = X.kapI := by
@@ -117,6 +136,9 @@ variable {D : D7} {L : SizeData₂ D} {Del h0 : ℕ} {X : G.Inst D L} {C : Cst}
 abbrev mkB (D : D7) (L : SizeData₂ D) (S η : ℝ) : Base :=
   { R := D.R, sc := L.sc, q := D.host.q, d := D.host.d, cls := D.host.cls, TT := D.host.TT, Sc := S, eta := η }
 
+/- English proof (translation)
+Establish `key : ∀ S η, S = L.Sc → η = L.etaSz → Φ S η (ins _ C.K C.Ce) = Φ L.Sc L.etaSz (ins _ C.K C.Ce)`. Introduce and unpack `_ _ rfl rfl`. Both sides reduce to the same expression. Rewrite using `[key _ _ (Sc_datumOf hT) (eta_datumOf hT)]`. Conclude with `congrArg _ (ins_eq hT)`.
+-/
 theorem transport {α : Sort*} (hT : InstanceCompatible X C.K C.Ce Del h0) (Φ : ∀ S η : ℝ, Ins (mkB D L S η) → α) :
     Φ (datumOf D L Del h0).Sc (datumOf D L Del h0).eta (ins _ C.K C.Ce) = Φ L.Sc L.etaSz (insOf X) := by
   have key : ∀ S η, S = L.Sc → η = L.etaSz →
@@ -135,6 +157,9 @@ section JointEstimate
 
 variable {D : D7} {L : SizeData₂ D} {Del h0 : ℕ} {X : G.Inst D L} {C : Cst}
 
+/- English proof (translation)
+Introduce `j hj z` and use `hF.1 j hj (tauPl D z) z (eTau_tauPl z)`.
+-/
 theorem fill_eq_wPl₂ {K : G.Consts} (w : D.what₂.places.Pl) (hF : G.ParametersFill X K w) :
     ∀ j ∈ SizeData₂.lifts D, ∀ z, G.fill X (G.bL L) j z = wPl D j z :=
   fun j hj z => hF.1 j hj (tauPl D z) z (eTau_tauPl z)
@@ -149,11 +174,24 @@ section DGamma
 
 variable (N : NumDatum)
 
+/- English proof (translation)
+The claim follows from `minkM_pos _`.
+-/
 theorem DGamM_pos : 0 < DGamM N := minkM_pos _
 
+/- English proof (translation)
+The claim follows from `prime_le_of_dvd_minkM hp h`.
+-/
 theorem prime_le_of_dvd_DGamM {p : ℕ} (hp : p.Prime) (h : p ∣ DGamM N) : p ≤ 2 * N.R.f * N.Nm + 1 :=
   prime_le_of_dvd_minkM hp h
 
+/- English proof (translation)
+Establish `hy : (2 : ℝ) ≤ (N.R.f : ℝ) * N.Nm` using `by exact_mod_cast N.R.two_le_fN`. Establish `h1` using `log_minkM_le_two (2 * N.R.f * N.Nm)`. Establish `e : ((2 * N.R.f * N.Nm : ℕ) : ℝ) = 2 * ((N.R.f : ℝ) * N.Nm)` using `by push_cast; ring`. Rewrite `h1` using `[e]`. Establish `e2 : (2 : ℝ) * (2 * ((N.R.f : ℝ) * N.Nm)) = 2 * 2 * ((N.R.f : ℝ) * N.Nm)` using `by ring`.
+
+Establish `h2 : Real.log (2 * (2 * ((N.R.f : ℝ) * N.Nm))) = Real.log 2 + Real.log 2 + Real.log ((N.R.f : ℝ) * N.Nm)`. Rewrite using `[e2, Real.log_mul (by norm_num) (by linarith), Real.log_mul (by norm_num) (by norm_num)]`. Establish `h3 : Real.log 2 ≤ Real.log ((N.R.f : ℝ) * N.Nm)` using `Real.log_le_log (by norm_num) hy`. Rewrite `h1` using `[h2]`. Establish `h4 : 2 * (2 * ((N.R.f : ℝ) * N.Nm)) * (Real.log 2 + Real.log 2 + Real.log ((N.R.f : ℝ) * N.Nm)) ≤ 2 * (2 * ((N.R.f : ℝ) * N.Nm)) * (3 * Real.log ((N.R.f : ℝ) * N.Nm))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_DGamM_le : Real.log (DGamM N : ℝ) ≤ 12 * N.R.f * N.Nm * Real.log ((N.R.f : ℝ) * N.Nm) := by
   have hy : (2 : ℝ) ≤ (N.R.f : ℝ) * N.Nm := by exact_mod_cast N.R.two_le_fN
   have h1 := log_minkM_le_two (2 * N.R.f * N.Nm)
@@ -179,14 +217,23 @@ section Admissible
 
 variable {N : NumDatum} {Lv : Lev N}
 
+/- English proof (translation)
+Establish `hpos : 0 < Lv.DGam` using `Nat.pos_of_dvd_of_pos h (DGamM_pos N)`. Use `⟨hpos, fun p hp hd => prime_le_of_dvd_DGamM N hp (hd.trans h), le_trans ?_ (log_DGamM_le N)⟩` and prove the remaining obligations. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast Nat.le_of_dvd (DGamM_pos N) h)`.
+-/
 theorem Lev.dgamOk_of_dvd (h : Lv.DGam ∣ DGamM N) : Lev.DGamOk N Lv := by
   have hpos : 0 < Lv.DGam := Nat.pos_of_dvd_of_pos h (DGamM_pos N)
   refine ⟨hpos, fun p hp hd => prime_le_of_dvd_DGamM N hp (hd.trans h), le_trans ?_ (log_DGamM_le N)⟩
   exact Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast Nat.le_of_dvd (DGamM_pos N) h)
 
+/- English proof (translation)
+The claim follows from `Nat.dvd_antisymm (h.2 _ h'.1) (h'.2 _ h.1)`.
+-/
 theorem Lev.DGamLcm.unique {Lv' : Lev N} {ord : Set ℕ} (h : Lev.DGamLcm N Lv ord) (h' : Lev.DGamLcm N Lv' ord) :
     Lv.DGam = Lv'.DGam := Nat.dvd_antisymm (h.2 _ h'.1) (h'.2 _ h.1)
 
+/- English proof (translation)
+The claim follows from `Lev.dgamOk_of_dvd (h.2 _ hM)`.
+-/
 theorem Lev.DGamLcm.ok {ord : Set ℕ} (h : Lev.DGamLcm N Lv ord) (hM : ∀ a ∈ ord, a ∣ DGamM N) : Lev.DGamOk N Lv :=
   Lev.dgamOk_of_dvd (h.2 _ hM)
 
@@ -223,6 +270,9 @@ section Places
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+-/
 theorem pOf_mem (w : HeightOneSpectrum (𝓞 K)) : ((pOf w : ℕ) : 𝓞 K) ∈ w.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact ringChar.Nat.cast_ringChar
@@ -250,10 +300,18 @@ section Support
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `: Finite (𝓞 K ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Conclude with `CharP.char_ne_zero_of_finite (𝓞 K ⧸ w.asIdeal) (ringChar (𝓞 K ⧸ w.asIdeal))`.
+-/
 theorem pOf_ne_zero (w : HeightOneSpectrum (𝓞 K)) : pOf w ≠ 0 := by
   have : Finite (𝓞 K ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot
   exact CharP.char_ne_zero_of_finite (𝓞 K ⧸ w.asIdeal) (ringChar (𝓞 K ⧸ w.asIdeal))
 
+/- English proof (translation)
+Establish `h1 : ∀ p ∈ (S.filter (· ≠ 0) : Finset ℕ), {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ Ideal.span {((p : ℕ) : 𝓞 K)}}.Finite`. Introduce `p hp`. Use `Ideal.finite_factors ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 (Finset.mem_filter.1 hp).2`.
+
+Use `(Set.Finite.biUnion (Finset.finite_toSet (S.filter (· ≠ 0))) h1).subset ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[Set.mem_iUnion₂]`. Conclude with `⟨pOf w, Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hw, pOf_ne_zero w⟩), Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 (pOf_mem w))⟩`.
+-/
 theorem finite_over (S : Finset ℕ) : {w : HeightOneSpectrum (𝓞 K) | pOf w ∈ S}.Finite := by
   have h1 : ∀ p ∈ (S.filter (· ≠ 0) : Finset ℕ),
       {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ Ideal.span {((p : ℕ) : 𝓞 K)}}.Finite := by
@@ -267,6 +325,9 @@ theorem finite_over (S : Finset ℕ) : {w : HeightOneSpectrum (𝓞 K) | pOf w �
   exact ⟨pOf w, Finset.mem_coe.2 (Finset.mem_filter.2 ⟨hw, pOf_ne_zero w⟩),
     Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 (pOf_mem w))⟩
 
+/- English proof (translation)
+Unfold `supp`. Rewrite using `[dif_pos (finite_over _), Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+-/
 theorem mem_supp (N : NumDatum) (Lv : Lev N) (w : HeightOneSpectrum (𝓞 K)) :
     w ∈ supp N Lv K ↔ pOf w ∈ suppP N Lv := by
   unfold supp
@@ -320,6 +381,11 @@ open Formalism.LFunctionChainParameters Formalism.LFunctionChainParameters.LHost
 
 variable (N : NumDatum)
 
+/- English proof (translation)
+Use `(UpperTheory.GL.isInert_iff N.H p).trans (and_congr_right fun hp => ?_)` and prove the remaining obligations. Unfold `NumDatum.cls`. Rewrite using `[primeClass_eq_inert_iff_symbols hp, primeClass_eq_signal_iff' hp]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Break down `N.H.toHostRaw.psAt_eq_one_or (hp.coprime_iff_not_dvd.2 h1) with h3 | h3` into its components or cases. Conclude with `Or.inr ⟨h1, h2, h3⟩`. Conclude with `Or.inl ⟨h1, h2, h3⟩`. Apply the tactic sequence `rintro (h | h) <;> exact ⟨h.1, h.2.1⟩`.
+-/
 theorem isInert_iff (p : ℕ) :
     IsInert (host N) p ↔ p.Prime ∧ (N.cls p = PrimeClass.inertClass ∨ N.cls p = PrimeClass.signal) := by
   refine (UpperTheory.GL.isInert_iff N.H p).trans (and_congr_right fun hp => ?_)
@@ -332,6 +398,13 @@ theorem isInert_iff (p : ℕ) :
     · exact Or.inl ⟨h1, h2, h3⟩
   · rintro (h | h) <;> exact ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => F (j + 1)) m]`. Use `Finset.sum_bij (fun j _ => j + 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Use `Finset.mem_range.1 hj` as an intermediate fact. Conclude with `Finset.mem_Icc.2 ⟨by omega, by omega⟩`.
+
+Introduce `a _ b _ h`. Use linear arithmetic over natural numbers and integers. Introduce `b hb`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hb`. Conclude with `⟨b - 1, Finset.mem_range.2 (by omega), by omega⟩`.
+
+Introduce `_ _`. Both sides reduce to the same expression.
+-/
 theorem sum_lifts (m : ℕ) (F : ℕ → ℝ) : ∑ j : Fin m, F (j.1 + 1) = ∑ j ∈ Finset.Icc 1 m, F j := by
   rw [Fin.sum_univ_eq_sum_range (fun j => F (j + 1)) m]
   refine Finset.sum_bij (fun j _ => j + 1) ?_ ?_ ?_ ?_

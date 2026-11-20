@@ -13,6 +13,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.ThetaDictR
 open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Establish `: IsTotallyReal F` using `hB.cm.1`. Use `⟨fun w => GlobalTheory.Mem.VolExists.infEmb_continuous (thW_infEmb B w), GlobalTheory.Mem.VolExists.infEmb_bijective hB.cm (isCMFam_conj B hB.cm) (fun w => thW_infEmb B w), fun w z => GlobalTheory.Mem.VolExists.infEmb_sigR hB.cm (thW_infEmb B w) z, fun _ => by norm_num, fun x => …` and prove the remaining obligations. Establish `hs` using `(_root_.GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood_k F E σ B hB).2.2 (archimedeanEmbeddingTensor B) (archimedean_embedding_family B) x`. Establish `hs' : B.ψ ((x, 0) : AF F) = _` using `hs`. Express the relevant statement in the definitionally equal form `B.ψ ((x, 0) : AF F) = _`.
+
+Rewrite using `[hs']`. Use `congr 1`. Establish `hr : ∀ w, starRingEnd ℂ (archimedeanEmbeddingTensor B w (x ⊗ₜ[F] (1 : E))) = archimedeanEmbeddingTensor B w (x ⊗ₜ[F] (1 : E))` using `fun w => by`. Rewrite using `[archimedean_embedding_tmul, map_one, mul_one, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w), Complex.conj_ofReal]`. Simplify using `only [thW_eq, hr]`.
+
+Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isPlaces_thW'_k (B : Base F E) (hB : _root_.UpperTheory.TP.W.GoodK σ B) : Gen.IsPlaces σ B.ψ (thW B) (fun _ => -1) := by
   have : IsTotallyReal F := hB.cm.1
   refine ⟨fun w => GlobalTheory.Mem.VolExists.infEmb_continuous (thW_infEmb B w),

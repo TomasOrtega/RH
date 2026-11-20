@@ -14,6 +14,11 @@ namespace GlobalTheory.LiftMatK
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Establish `h1 : IsAlgebraic ℚ_[l] a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `h2 : IsAlgebraic ℤ_[l] a` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥K.1).2 h1`. Take `⟨y, hy, hi⟩` from `h2.exists_integral_multiple`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy (PadicInt.irreducible_p (p := l))`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h3` using `hi.smul ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite `h3` using `[smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast]`. Conclude with `h3`.
+-/
 theorem pow_mul_mem_integers (K : FinExt l) (a : ↥K.1) : ∃ k : ℕ, (l : ↥K.1) ^ k * a ∈ OL K := by
   haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2
   have h1 : IsAlgebraic ℚ_[l] a := Algebra.IsAlgebraic.isAlgebraic a
@@ -26,6 +31,11 @@ theorem pow_mul_mem_integers (K : FinExt l) (a : ↥K.1) : ∃ k : ℕ, (l : ↥
   rw [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast] at h3
   exact h3
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `pow_mul_mem_integers K ⟨x, hx⟩`. Take `⟨k, s, hs, -⟩` from `GlobalTheory.BSP.RingHomLiftCongruence.exists_lift l K bk C n ⟨_, ha⟩`. Use `⟨k + a, s, ?_⟩` and prove the remaining obligations. Establish `e : ((((⟨_, ha⟩ : ↥(OL K)) : ↥K.1)) : Om l) = (l : Om l) ^ a * x`. Simplify using the standard rewrite rules.
+
+Rewrite `hs` using `[e, map_mul, map_pow, map_natCast, ← mul_assoc, ← pow_add]`. Conclude with `hs`.
+-/
 theorem lift_one (K : FinExt l) (bk : BK K) (C : Core l) (x : Om l) (hx : x ∈ K.1) (n : ℕ) :
     ∃ (m : ℕ) (s : bk.S), aDp l (bk.ev s) - (l : Per.BdRp l) ^ m * C.o x ∈ Per.FilP l n := by
   obtain ⟨a, ha⟩ := pow_mul_mem_integers K ⟨x, hx⟩
@@ -36,6 +46,11 @@ theorem lift_one (K : FinExt l) (bk : BK K) (C : Core l) (x : Om l) (hx : x ∈ 
   rw [e, map_mul, map_pow, map_natCast, ← mul_assoc, ← pow_add] at hs
   exact hs
 
+/- English proof (translation)
+Introduce `l _ K bk C d c hc n`. Use `choose m s hs using fun i j => lift_one K bk C (c i j) (hc i j) n`. Set `M` to `Finset.univ.sup (fun p : Fin d × Fin d => m p.1 p.2)`. Use `⟨M, fun i j => (l : bk.S) ^ (M - m i j) * s i j, fun i j => ?_⟩` and prove the remaining obligations. Establish `hle : m i j ≤ M` using `Finset.le_sup (f := fun p : Fin d × Fin d => m p.1 p.2) (Finset.mem_univ (i, j))`.
+
+Establish `h` using `Ideal.mul_mem_left _ ((l : Per.BdRp l) ^ (M - m i j)) (hs i j)`. Simplify using `only [map_mul, map_pow, map_natCast]`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_sub, ← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`.
+-/
 theorem lift_matrix : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (d : ℕ) (c : Matrix (Fin d) (Fin d) (Om l)), (∀ i j, c i j ∈ K.1) → ∀ n : ℕ, ∃ (k : ℕ) (s : Matrix (Fin d) (Fin d) bk.S), ∀ i j, aDp l (bk.ev (s i j)) - (l : Per.BdRp l) ^ k * C.o (c i j) ∈ Per.FilP l n := by
   intro l _ K bk C d c hc n
   choose m s hs using fun i j => lift_one K bk C (c i j) (hc i j) n

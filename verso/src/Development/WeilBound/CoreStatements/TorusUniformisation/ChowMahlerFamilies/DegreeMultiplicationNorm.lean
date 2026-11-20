@@ -21,6 +21,11 @@ section Algebra
 
 open NumberField
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.twoStepInduction with`. Consider the case `zero => simpa using h0`. Consider the case `one => simp`. Consider the case `more n h1 h2`. Establish `e` using `hq ((n + 1) • x) x`.
+
+Rewrite `e` using `[← succ_nsmul, show (n + 1) • x - x = n • x by rw [succ_nsmul, add_sub_cancel_right], h1, h2]`. Rewrite using `[eq_sub_of_add_eq e]`. Use `module`.
+-/
 theorem quad_nat {A P : Type*} [AddCommGroup A] [AddCommGroup P] (q : A → P) (h0 : q 0 = 0)
     (hq : ∀ a b, q (a + b) + q (a - b) = 2 • q a + 2 • q b) (x : A) (n : ℕ) : q (n • x) = n ^ 2 • q x := by
   induction n using Nat.twoStepInduction with
@@ -32,6 +37,11 @@ theorem quad_nat {A P : Type*} [AddCommGroup A] [AddCommGroup P] (q : A → P) (
     rw [eq_sub_of_add_eq e]
     module
 
+/- English proof (translation)
+Establish `hneg : ∀ y, q (-y) = q y` using `fun y => by`. Establish `e` using `hq 0 y`. Rewrite `e` using `[zero_add, zero_sub, h0, smul_zero, zero_add, two_nsmul]`. Conclude with `add_left_cancel e`. Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`.
+
+Rewrite using `[natCast_zsmul, Int.natAbs_natCast, quad_nat q h0 hq]`. Rewrite using `[neg_smul, hneg, natCast_zsmul, Int.natAbs_neg, Int.natAbs_natCast, quad_nat q h0 hq]`.
+-/
 theorem quad_int {A P : Type*} [AddCommGroup A] [AddCommGroup P] (q : A → P) (h0 : q 0 = 0)
     (hq : ∀ a b, q (a + b) + q (a - b) = 2 • q a + 2 • q b) (x : A) (n : ℤ) :
     q (n • x) = n.natAbs ^ 2 • q x := by
@@ -43,6 +53,13 @@ theorem quad_int {A P : Type*} [AddCommGroup A] [AddCommGroup P] (q : A → P) (
   · rw [natCast_zsmul, Int.natAbs_natCast, quad_nat q h0 hq]
   · rw [neg_smul, hneg, natCast_zsmul, Int.natAbs_neg, Int.natAbs_natCast, quad_nat q h0 hq]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, le_rfl, fun T c _ => by rw [Finset.sum_empty, h0, sub_zero]; exact S.nsmul_mem hh _⟩`. Consider the case `insert i s hi ih`. Take `⟨C, hC, ih⟩` from `ih`. Take `⟨N, hN⟩` from `hN (ω i)`.
+
+Use `⟨2 * N + 2 * C, by omega, fun T c hc => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Nat.exists_eq_add_of_le (Nat.pow_le_pow_left (hc i) 2)`. Rewrite using `[Finset.sum_insert hi, eq_sub_of_add_eq (hq _ _), quad_int q h0 hq]`. Establish `e` using `S.add_mem (S.add_mem (S.nsmul_mem (S.add_mem (S.nsmul_mem hN ((c i).natAbs ^ 2)) (S.nsmul_mem hh (N * r))) 2) (S.nsmul_mem (ih T c hc) 2)) (hS (c i • ω i - ∑ j ∈ s, c j • ω j))`. Rewrite `e`, the goal using `[hr]`.
+
+Use `e using 1` and compare the differences between its conclusion and the goal. Use `module`.
+-/
 theorem quad_bound {A P ι : Type*} [AddCommGroup A] [AddCommGroup P] (q : A → P) (h0 : q 0 = 0)
     (hq : ∀ a b, q (a + b) + q (a - b) = 2 • q a + 2 • q b) (S : AddSubmonoid P) (h : P) (hh : h ∈ S)
     (hS : ∀ a, q a ∈ S) (hN : ∀ a, ∃ N : ℕ, N • h - q a ∈ S) (ω : ι → A) (s : Finset ι) :
@@ -62,6 +79,11 @@ theorem quad_bound {A P ι : Type*} [AddCommGroup A] [AddCommGroup P] (q : A →
     convert e using 1
     module
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Establish `hB' : (0 : ℝ) < B` using `by exact_mod_cast hB`. Establish `h1 : (1 : ℝ) < A / B` using `(one_lt_div hB').2 (by exact_mod_cast not_le.1 hlt)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (K : ℝ) h1`. Rewrite `hk` using `[div_pow, lt_div_iff₀ (pow_pos hB' k)]`.
+
+Conclude with `absurd (h k) (not_le.2 (by exact_mod_cast hk))`.
+-/
 theorem le_of_pow_le {A B K : ℕ} (hB : 1 ≤ B) (h : ∀ k, A ^ k ≤ K * B ^ k) : A ≤ B := by
   by_contra hlt
   have hB' : (0 : ℝ) < B := by exact_mod_cast hB
@@ -70,6 +92,29 @@ theorem le_of_pow_le {A B K : ℕ} (hB : 1 ≤ B) (h : ∀ k, A ^ k ≤ K * B ^ 
   rw [div_pow, lt_div_iff₀ (pow_pos hB' k)] at hk
   exact absurd (h k) (not_le.2 (by exact_mod_cast hk))
 
+/- English proof (translation)
+Use `set m := Module.finrank ℚ E with hm`. Establish `hm0 : m ≠ 0` using `Module.finrank_pos.ne'`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) = m`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Establish `hN : ∀ a : 𝓞 E, a ≠ 0 → (Algebra.norm ℤ a).natAbs ≠ 0` using `fun a ha => Int.natAbs_ne_zero.2 (Algebra.norm_ne_zero_iff.2 ha)`.
+
+Establish `hpow : ∀ a : 𝓞 E, a ≠ 0 → ∀ k, deg (a ^ k) = deg a ^ k` using `fun a ha k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using hnat 1 one_ne_zero`. Consider the case `succ k ih => rw [pow_succ, hmul _ _ (pow_ne_zero _ ha) ha, ih, pow_succ]`. Establish `upper : ∀ a : 𝓞 E, a ≠ 0 → deg a ^ m ≤ (Algebra.norm ℤ a).natAbs ^ e`.
+
+Introduce `a ha`. Use `le_of_pow_le (K := C ^ m) (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ (hN a ha))) fun k => ?_` and prove the remaining obligations. Use `set N := (Algebra.norm ℤ a).natAbs ^ k with hNk`. Establish `hex : ∃ T : ℕ, N < (T + 1) ^ m` using `⟨N, (Nat.lt_succ_self N).trans_le (Nat.le_self_pow hm0 _)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨T, hT, hT'⟩ : ∃ T : ℕ, N < (T + 1) ^ m ∧ T ^ m ≤ N := by`.
+
+Use `⟨Nat.find hex, Nat.find_spec hex, ?_⟩` and prove the remaining obligations. Break down `h : Nat.find hex with _ | T` into its components or cases. Rewrite using `[zero_pow hm0]`. Conclude with `Nat.zero_le _`. Conclude with `not_lt.1 (Nat.find_min hex (by omega : T < Nat.find hex))`.
+
+Set `I : Ideal (𝓞 E)` to `Ideal.span {a ^ k}`. Establish `hI : Nat.card (𝓞 E ⧸ I) = N`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_singleton, map_pow, Int.natAbs_pow]`. Use `haveI : Finite (𝓞 E ⧸ I) := Nat.finite_of_card_ne_zero (hI ▸ pow_ne_zero _ (hN a ha))`. Use `haveI := Fintype.ofFinite (𝓞 E ⧸ I)`.
+
+Take `⟨u, v, huv, he⟩` from `Fintype.exists_ne_map_eq_of_card_lt (fun u : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → Fin (T + 1) => Ideal.Quotient.mk I (∑ i, ((u i : ℕ) : ℤ) • RingOfIntegers.basis E i)) (by`. Rewrite using `[← Nat.card_eq_fintype_card, hI, Fintype.card_fun, hcard, Fintype.card_fin]`. Conclude with `hT)`. Establish `hmem` using `Ideal.Quotient.eq.1 he`. Simplify using `only [← Finset.sum_sub_distrib, ← sub_smul] at hmem`.
+
+Establish `hx : ∑ i, (((u i : ℕ) : ℤ) - ((v i : ℕ) : ℤ)) • RingOfIntegers.basis E i ≠ 0` using `fun h0 => huv (by`. Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 (RingOfIntegers.basis E).linearIndependent _ h0 i` as an intermediate fact. Conclude with `Fin.ext (by omega))`. Establish `hle` using `hb T _ (fun i => by have := (u i).2; have := (v i).2; omega) hx`.
+
+Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `hy0 : y ≠ 0` using `by rintro rfl; exact hx (by rw [← hy, zero_mul])`. Rewrite `hle` using `[← hy, hmul _ _ hy0 (pow_ne_zero _ ha), hpow a ha]`. Establish `h2 : deg a ^ k ≤ C * T ^ e` using `(Nat.le_mul_of_pos_left _ (hpos y hy0)).trans hle`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨b, hb'⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Rewrite `hb'` using `[Ideal.absNorm_span_singleton]`. Use `set N := (Algebra.norm ℤ a).natAbs with hNa`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hb'` using `[zero_mul]`. Conclude with `hN a ha (Nat.cast_eq_zero.1 hb'.symm)`. Establish `e1 : deg b * deg a = N ^ e` using `by rw [← hmul _ _ hb0 ha, hb', hnat _ (hN a ha)]`. Establish `e2 : (Algebra.norm ℤ b).natAbs * N = N ^ m`. Rewrite using `[hNa, ← Int.natAbs_mul, ← map_mul, hb', ← hNa, ← map_natCast (algebraMap ℤ (𝓞 E)), Algebra.norm_algebraMap, RingOfIntegers.rank, Int.natAbs_pow, Int.natAbs_natCast]`.
+
+Establish `e3 : deg b ^ m * deg a ^ m = (Algebra.norm ℤ b).natAbs ^ e * N ^ e`. Rewrite using `[← mul_pow, ← mul_pow, e1, e2, ← pow_mul, ← pow_mul, mul_comm]`. Use `le_antisymm (upper a ha) (Nat.le_of_mul_le_mul_left ?_ (Nat.pos_of_ne_zero (pow_ne_zero e (hN b hb0))))` and prove the remaining obligations. Rewrite using `[← e3]`. Conclude with `Nat.mul_le_mul_right _ (upper b hb0)`.
+-/
 theorem pow_eq_norm {E : Type} [Field E] [NumberField E] (deg : 𝓞 E → ℕ) (e C : ℕ)
     (hmul : ∀ a b, a ≠ 0 → b ≠ 0 → deg (a * b) = deg a * deg b) (hpos : ∀ a, a ≠ 0 → 1 ≤ deg a)
     (hnat : ∀ n : ℕ, n ≠ 0 → deg n = n ^ e)
@@ -150,6 +195,29 @@ open GlobalTheory.FiniteCover GlobalTheory.CechPic
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `K _ X X' _ _ f φ _ _ _ H n s hH hs d hd hV hW`. Establish `hd1 : 1 ≤ d` using `hd (genericPoint X) ▸ φ.one_le_finrank_iff_surjective.2 inferInstance _`. Use `letI : Algebra X.functionField X'.functionField := (functionFieldMap φ).toAlgebra`. Use `letI : Algebra K X.functionField := ((toField generic_top).comp (cst f ⊤)).toAlgebra`. Use `letI : Algebra K X'.functionField := ((toField generic_top).comp (cst (φ ≫ f) ⊤)).toAlgebra`.
+
+Use `haveI : IsScalarTower K X.functionField X'.functionField := IsScalarTower.of_algebraMap_eq fun r => by`. Establish `w : φ ≫ f = (φ ≫ f) ≫ Spec.map (CommRingCat.ofHom (RingHom.id K))` using `by simp`. Establish `e` using `toField_appLE φ (U := ⊤) (V := ⊤) le_top generic_top generic_top (cst f ⊤ r)`. Conclude with `(congrArg (toField generic_top) (appLE_cst w (V := ⊤) (V' := ⊤) le_top r)).symm.trans e`. Take `⟨hcov, hs⟩` from `hs`.
+
+Use `choose haff r hr _ using hs`. Set `I` to `{i // genericPoint X ∈ nonzeroLocus (s i)}`. Use `haveI : Fintype I := Fintype.ofFinite I`. Set `D : I → X.Opens` to `fun i => nonzeroLocus (s i.1)`. Establish `hη : ∀ i, genericPoint X ∈ D i` using `fun i => i.2`.
+
+Establish `hc : ⊤ ≤ ⨆ i, D i` using `fun x hx => by`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hcov.ge hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, generic_mem hi⟩, hi⟩`. Establish `hc' : ⊤ ≤ ⨆ i, φ ⁻¹ᵁ D i` using `fun x _ => by`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc (trivial : φ x ∈ ⊤))`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Take `⟨i₀, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc generic_top)`. Take `⟨k₀, h₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hH.cover.ge generic_top)`. Take `⟨x, hx⟩` from `(chart_data φ (fun _ => rfl) (haff i₀.1) (hη i₀)).1`. Rewrite `hx` using `[hd]`.
+
+Use `haveI : Module.Finite X.functionField X'.functionField := Module.finite_of_finrank_pos (by omega)`. Set `e` to `Module.finBasisOfFinrankEq _ _ hx`. Use `choose c hcm hc0 hc₁ hc₂ using fun i : I => (chart_data φ (fun _ => rfl) (haff i.1) (hη i)).2 e`. Set `ρ : I → X.functionField` to `fun i => toField h₀ ((s i.1).f k₀)`. Establish `hu : ∀ (i : I) k, IsUnit (rs X (inf_le_right : D i ⊓ H.U k ≤ H.U k) ((s i.1).f k))` using `fun i k => SecOn.isUnit_rs_of_le_nonzeroLocus _ k _ inf_le_left`.
+
+Establish `hρ : ∀ i, ρ i ≠ 0` using `fun i => by`. Use `((hu i k₀).map (toField (generic_inf (hη i) h₀))).ne_zero` as an intermediate fact. Rewrite `this` using `[toField_rs]`. Then use the resulting hypothesis. Establish `hρr : ∀ i k : I, ρ i / ρ k = toField (hη k) (r k.1 i.1)` using `fun i k => by`. Use `congrArg (toField (generic_inf (hη k) h₀)) (hr k.1 i.1 k₀)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, toField_rs, toField_rs, toField_rs]`. Conclude with `(div_eq_iff (hρ k)).2 this`. Set `τ : ∀ (t : ℕ) (i : I), SecOn (pw H t) (D i)` to `fun t i => GlobalTheory.LB.ofSec (powSec (s i.1) t) (D i)`. Establish `hτc : ∀ (t : ℕ) (i : I) (k : H.ι), GlobalTheory.LB.coord (τ t i) k = rs X (inf_le_right : D i ⊓ H.U k ≤ H.U k) ((s i.1).f k) ^ t` using `fun t i k => (GlobalTheory.LB.coord_ofSec _ _ _).trans (map_pow (rs X (inf_le_right : D i ⊓ H.U k ≤ H.U k)) _ _)`. Establish `hτ : ∀ (t : ℕ) (i : I) (k : H.ι), IsUnit (GlobalTheory.LB.coord (τ t i) k)` using `fun t i k => (hτc t i k).symm ▸ (hu i k).pow t`.
+
+Establish `hτv : ∀ (t : ℕ) (i : I), secVal (M` using `pw H t) (k₀ := k₀) h₀ (hη i) (τ t i) = ρ i ^ t := fun t i => (congrArg (toField (generic_inf (hη i) h₀)) (hτc t i k₀)).trans (by`. Rewrite using `[map_pow, toField_rs])`. Establish `h₀' : ∀ t : ℕ, genericPoint X' ∈ ((pw H t).pull φ).U fun _ => k₀` using `fun t => le_pull (pw H t) φ (i := k₀) le_rfl (generic_mem_preimage φ h₀)`. Use `finrank_sandwich e (fun i => (toField (hη i)).range) (fun i => (toField (generic_mem_preimage φ (hη i))).range) ρ c hρ hc0 (fun i k => ⟨_, (hρr i k).symm⟩) (fun i k => ?_) ?_ hc₁ hc₂ (fun t => SecOnR f (pw H t) ⊤) (fun t => SecOnR (φ ≫ f) ((pw H t).pull φ) ⊤) hV hW (fun t => secV …` and prove the remaining obligations. Take `⟨a, ha⟩` from `hcm i`.
+
+Rewrite using `[← ha, hρr]`. Conclude with `exists_mul_pow_mem (haff k.1) (hη k) (hη i) _ (hρr i k ▸ div_ne_zero (hρ i) (hρ k)) (basicOpen_le_nonzeroLocus _ _ _ (hr k.1 i.1)) a`. Introduce and unpack `i _ ⟨a, rfl⟩`. Conclude with `⟨_, toField_appLE φ le_rfl (hη i) _ a⟩`. Use `(exists_secVal_eq_iff (M := pw H t) (k₀ := k₀) h₀ (isLB_pw hH t) D hc hη (τ t) (hτ t) x).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [hτv]`. Use `(exists_secVal_eq_iff (h₀' t) (LB.isLB_pull (isLB_pw hH t) φ) (fun i => φ ⁻¹ᵁ D i) hc' (fun i => generic_mem_preimage φ (hη i)) (fun i => SecOn.pull (pw H t) φ (D i) (τ t i)) (fun i k => (hτ t i (k PUnit.unit)).map _) y).trans ?_` and prove the remaining obligations. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[secVal_pull (M := pw H t) (k₀ := k₀) h₀ φ (hη i), hτv]`. Both sides reduce to the same expression.
+-/
 theorem sandwich : ∀ (K : Type) [Field K] (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (f : X ⟶ Spec (CommRingCat.of K)) (φ : X' ⟶ X) [IsFinite φ] [Flat φ] [Surjective φ] (H : LB X) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ d : ℕ, (∀ x : X, φ.finrank x = d) → (∀ t : ℕ, Module.Finite K (SecOnR f (pw H t) ⊤)) → (∀ t : ℕ, Module.Finite K (SecOnR (φ ≫ f) ((pw H t).pull φ) ⊤)) → ∃ a : ℕ, ∀ t : ℕ, d * Module.finrank K (SecOnR (f) (pw H t) ⊤) ≤ Module.finrank K (SecOnR (φ ≫ f) ((pw H (t + a : ℕ)).pull φ) ⊤) ∧ Module.finrank K (SecOnR (φ ≫ f) ((pw H t).pull φ) ⊤) ≤ d * Module.finrank K (SecOnR (f) (pw H (t + a : ℕ)) ⊤) := by
   intro K _ X X' _ _ f φ _ _ _ H n s hH hs d hd hV hW
   have hd1 : 1 ≤ d := hd (genericPoint X) ▸ φ.one_le_finrank_iff_surjective.2 inferInstance _
@@ -230,6 +298,11 @@ theorem sandwich : ∀ (K : Type) [Field K] (X X' : Scheme.{0}) [IsIntegral X] [
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h` using `LB.isLB_linComb hL (fun _ : PUnit => 𝟙 X) (fun _ => d)`. Establish `e` using `cls_linComb hL _ _ h`. Rewrite `e` using `[Fintype.sum_unique, pull_id]`. Rewrite using `[← e]`. Use `(cls_eq_iff _ h).2 (iso_of_chart h ⟨fun i _ => i, fun _ _ hy => Set.mem_iInter.2 fun _ => hy, ?_⟩)` and prove the remaining obligations.
+
+Introduce `y i j hi hj`. Use `Eq.trans (map_zpow _ _ _) (Eq.symm ((gm_linComb L (fun _ : PUnit => 𝟙 X) (fun _ => d) (𝟙 X) y (fun _ => i) (fun _ => j) (Set.mem_iInter.2 fun _ => hi) (Set.mem_iInter.2 fun _ => hj)).trans ?_))` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, Category.id_comp]`. Both sides reduce to the same expression.
+-/
 theorem cls_pw {L : LB X} (hL : L.IsLB) (d : ℤ) : cls (AbLaw.pw L d) (isLB_pw hL d) = d • cls L hL := by
   have h := LB.isLB_linComb hL (fun _ : PUnit => 𝟙 X) (fun _ => d)
   have e := cls_linComb hL _ _ h
@@ -242,6 +315,9 @@ theorem cls_pw {L : LB X} (hL : L.IsLB) (d : ℤ) : cls (AbLaw.pw L d) (isLB_pw 
   rw [Fintype.prod_unique, Category.id_comp]
   rfl
 
+/- English proof (translation)
+Establish `e` using `cls_div hM (isLB_pw hH (-t)) (isLB_tw hM hH t)`. Rewrite `e` using `[cls_pw hH, neg_smul, sub_neg_eq_add]`. Conclude with `e`.
+-/
 theorem cls_tw {M H : LB X} (hM : M.IsLB) (hH : H.IsLB) (t : ℤ) :
     cls (tw M H t) (isLB_tw hM hH t) = cls M hM + t • cls H hH := by
   have e := cls_div hM (isLB_pw hH (-t)) (isLB_tw hM hH t)
@@ -250,6 +326,15 @@ theorem cls_tw {M H : LB X} (hM : M.IsLB) (hH : H.IsLB) (t : ℤ) :
 
 def Eff (c : Pic X) : Prop := ∃ (L : LB X) (hL : L.IsLB), cls L hL = c ∧ ∃ σ : SecOn L ⊤, σ ≠ 0
 
+/- English proof (translation)
+Take `⟨N, hN, hc, σ, hσ⟩` from `h`. Establish `e : cls (tw A N (0 + 1)) (isLB_tw hA hN _) = cls B hB`. Rewrite using `[cls_tw hA hN, hc]`. Simplify using the standard rewrite rules. Take `⟨w, hw⟩` from `(cls_eq_iff _ _).1 e`.
+
+Take `⟨p, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hA.cover.ge generic_top)`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hN.cover.ge generic_top)`. Establish `h0 : secVal hk generic_top σ ≠ 0` using `fun h0 => hσ (secVal_injective hk generic_top (h0.trans (map_zero (toField (U := ⊤ ⊓ N.U k) (generic_inf generic_top hk))).symm))`. Establish `hinj : Function.Injective (SecOn.mulSec A 0 (SecOn.topEquiv N σ) ⊤)`. Introduce `x y hxy`.
+
+Establish `hpk : genericPoint X ∈ (tw A N 0).U (p, k)` using `⟨hp, hk⟩`. Apply `secVal_injective hpk generic_top` to reduce the goal to its premises. Establish `e₁` using `congrArg (fun z => toField (U := ⊤ ⊓ (A.U p ⊓ N.U k)) (generic_inf generic_top hpk) (SecOn.twCoord z p k)) hxy`. Simplify using `only [SecOn.twCoord_mulSec, map_mul, toField_rs, SecOn.topEquiv_f] at e₁`. Conclude with `mul_left_cancel₀ h0 e₁`.
+
+Conclude with `⟨(SecOn.congr (isLB_tw hA hN _) hB w hw ⊤).toLinearMap ∘ₗ SecOn.mulSec A 0 (SecOn.topEquiv N σ) ⊤ ∘ₗ (SecOn.twZeroEquiv hA hN ⊤).toLinearMap, (SecOn.congr (isLB_tw hA hN _) hB w hw ⊤).injective.comp (hinj.comp (SecOn.twZeroEquiv hA hN ⊤).injective)⟩`.
+-/
 theorem exists_injective [IsIntegral X] {A B : LB X} (hA : A.IsLB) (hB : B.IsLB)
     (h : Eff (cls B hB - cls A hA)) : ∃ φ : SecOn A ⊤ →ₗ[Γ(X, ⊤)] SecOn B ⊤, Function.Injective φ := by
   obtain ⟨N, hN, hc, σ, hσ⟩ := h
@@ -272,29 +357,48 @@ theorem exists_injective [IsIntegral X] {A B : LB X} (hA : A.IsLB) (hB : B.IsLB)
     (SecOn.twZeroEquiv hA hN ⊤).toLinearMap,
     (SecOn.congr (isLB_tw hA hN _) hB w hw ⊤).injective.comp (hinj.comp (SecOn.twZeroEquiv hA hN ⊤).injective)⟩
 
+/- English proof (translation)
+Take `⟨A, hA, rfl, σ, hσ⟩` from `ha`. Take `⟨B, hB, e⟩` from `cls_surj (cls A hA + b)`. Take `⟨φ, hφ⟩` from `exists_injective hA hB (by rw [e, add_sub_cancel_left]; exact hb)`. Conclude with `⟨B, hB, e, φ σ, fun h => hσ (hφ (h.trans (map_zero φ).symm))⟩`.
+-/
 theorem Eff.add [IsIntegral X] {a b : Pic X} (ha : Eff a) (hb : Eff b) : Eff (a + b) := by
   obtain ⟨A, hA, rfl, σ, hσ⟩ := ha
   obtain ⟨B, hB, e⟩ := cls_surj (cls A hA + b)
   obtain ⟨φ, hφ⟩ := exists_injective hA hB (by rw [e, add_sub_cancel_left]; exact hb)
   exact ⟨B, hB, e, φ σ, fun h => hσ (hφ (h.trans (map_zero φ).symm))⟩
 
+/- English proof (translation)
+Use `⟨L, hL, rfl, (SecOn.topEquiv L).symm σ, fun h0 => h ?_⟩` and prove the remaining obligations. Establish `: σ = SecOn.topEquiv L 0` using `by rw [← h0, LinearEquiv.apply_symm_apply]`. Rewrite using `[this, SecOn.topEquiv_f]`. Conclude with `map_zero _`.
+-/
 theorem eff_of_sec {L : LB X} (hL : L.IsLB) (σ : LB.Sec L) (i : L.ι) (h : σ.f i ≠ 0) : Eff (cls L hL) := by
   refine ⟨L, hL, rfl, (SecOn.topEquiv L).symm σ, fun h0 => h ?_⟩
   have : σ = SecOn.topEquiv L 0 := by rw [← h0, LinearEquiv.apply_symm_apply]
   rw [this, SecOn.topEquiv_f]
   exact map_zero _
 
+/- English proof (translation)
+Establish `e : cls _ (Inh.trivLB_isLB X) = 0` using `(cls_eq_zero_iff _).2 (triv_trivLB X)`. Rewrite using `[← e]`. Use `eff_of_sec _ (oneSec X) PUnit.unit ?_` and prove the remaining obligations. Conclude with `one_ne_zero (α := Γ(X, ⊤))`.
+-/
 theorem eff_zero [IsIntegral X] : Eff (0 : Pic X) := by
   have e : cls _ (Inh.trivLB_isLB X) = 0 := (cls_eq_zero_iff _).2 (triv_trivLB X)
   rw [← e]
   refine eff_of_sec _ (oneSec X) PUnit.unit ?_
   exact one_ne_zero (α := Γ(X, ⊤))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul]`. Conclude with `eff_zero`. Consider the case `succ n ih => rw [succ_nsmul]`. Conclude with `ih.add ha`.
+-/
 theorem Eff.nsmul [IsIntegral X] {a : Pic X} (ha : Eff a) (n : ℕ) : Eff (n • a) := by
   induction n with
   | zero => rw [zero_nsmul]; exact eff_zero
   | succ n ih => rw [succ_nsmul]; exact ih.add ha
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hs.ge (trivial : φ (genericPoint Y) ∈ ⊤))`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Use `⟨H.pull φ, pull_isLB hH φ, rfl, SecOn.pullLE H φ ⊤ ⊤ le_top ((SecOn.topEquiv H).symm (s i)), fun h0 => ?_⟩` and prove the remaining obligations. Establish `e` using `SecOn.coord_pullLE (M := H) φ (V := ⊤) (V' := ⊤) le_top ((SecOn.topEquiv H).symm (s i)) (fun _ => k)`. Rewrite `e` using `[h0, SecOn.topEquiv_symm_apply, GlobalTheory.LB.coord_ofSec]`.
+
+Establish `e₂` using `congrArg Y.basicOpen e`. Rewrite `e₂` using `[Scheme.basicOpen_appLE]`. Use `erw [Scheme.basicOpen_zero, Scheme.basicOpen_res] at e₂`. Establish `hk'` using `X.basicOpen_le _ hk`. Establish `hm : genericPoint Y ∈ (⊥ : Y.Opens)`.
+
+Rewrite using `[e₂]`. Conclude with `⟨⟨trivial, mem_pull.2 hk'⟩, ⟨trivial, hk'⟩, hk⟩`. Conclude with `hm`.
+-/
 theorem eff_pull {Y : Scheme.{0}} [IsIntegral Y] (φ : Y ⟶ X) {H : LB X} (hH : H.IsLB) {I : Type} (s : I → LB.Sec H)
     (hs : ⨆ i, nonzeroLocus (s i) = ⊤) : Eff (pull φ (cls H hH)) := by
   obtain ⟨i, hi⟩ := TopologicalSpace.Opens.mem_iSup.1 (hs.ge (trivial : φ (genericPoint Y) ∈ ⊤))
@@ -311,6 +415,11 @@ theorem eff_pull {Y : Scheme.{0}} [IsIntegral Y] (φ : Y ⟶ X) {H : LB X} (hH :
     exact ⟨⟨trivial, mem_pull.2 hk'⟩, ⟨trivial, hk'⟩, hk⟩
   exact hm
 
+/- English proof (translation)
+Take `⟨M, hM, e⟩` from `cls_surj (-c)`. Take `⟨t₀, ht⟩` from `GlobalTheory.T.exists_high_twist_section_ne_zero R X f H m s M hH hM hs`. Take `⟨σ, i, hσ⟩` from `ht (t₀.toNat : ℕ) (Int.self_le_toNat t₀)`. Use `eff_of_sec (isLB_tw hM hH _) σ i hσ` as an intermediate fact. Rewrite `this` using `[cls_tw hM hH, e, natCast_zsmul]`.
+
+Conclude with `⟨t₀.toNat, by rwa [sub_eq_neg_add]⟩`.
+-/
 theorem exists_eff_sub [IsIntegral X] {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) {H : LB X}
     (hH : H.IsLB) {m : ℕ} {s : Fin (m + 1) → LB.Sec H} (hs : VeryAmpleBy f H s) (c : Pic X) :
     ∃ N : ℕ, Eff (N • cls H hH - c) := by
@@ -321,6 +430,17 @@ theorem exists_eff_sub [IsIntegral X] {R : Type} [CommRing R] (f : X ⟶ Spec (C
   rw [cls_tw hM hH, e, natCast_zsmul] at this
   exact ⟨t₀.toNat, by rwa [sub_eq_neg_add]⟩
 
+/- English proof (translation)
+Use `letI : Algebra X.functionField X'.functionField := (functionFieldMap φ).toAlgebra`. Use `letI : Algebra X'.functionField X''.functionField := (functionFieldMap ψ).toAlgebra`. Use `letI : Algebra X.functionField X''.functionField := (functionFieldMap (ψ ≫ φ)).toAlgebra`. Establish `aff : ∀ (Z : Scheme.{0}) [IsIntegral Z], ∃ D : Z.Opens, IsAffineOpen D ∧ genericPoint Z ∈ D`. Introduce `Z _`.
+
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint Z)) isOpen_univ`. Conclude with `⟨U, hU, hxU⟩`. Take `⟨D, hD, h⟩` from `aff X`. Take `⟨D', hD', h'⟩` from `aff X'`. Use `haveI : IsScalarTower X.functionField X'.functionField X''.functionField := IsScalarTower.of_algebraMap_eq' (by haveI : Nonempty D := ⟨⟨_, h⟩⟩ haveI := functionField_isFractionRing_of_isAffineOpen X D hD`.
+
+Use `IsLocalization.ringHom_ext (nonZeroDivisors Γ(X, D)) (RingHom.ext fun r => ?_)` and prove the remaining obligations. Establish `h1` using `generic_mem_preimage φ h`. Establish `h2` using `generic_mem_preimage ψ h1`. Establish `e1` using `toField_appLE φ le_rfl h h1 r`. Establish `e2` using `toField_appLE ψ le_rfl h1 h2 ((φ.appLE D _ le_rfl).hom r)`.
+
+Establish `e3` using `toField_appLE (ψ ≫ φ) (V := ψ ⁻¹ᵁ φ ⁻¹ᵁ D) le_rfl h h2 r`. Rewrite `e3` using `[← Scheme.Hom.appLE_comp_appLE ψ φ D (φ ⁻¹ᵁ D) _ le_rfl le_rfl]`. Conclude with `e3.symm.trans (e2.trans (congrArg _ e1)))`. Take `⟨x, hx⟩` from `(chart_data φ (fun _ => rfl) hD h).1`. Take `⟨y, hy⟩` from `(chart_data ψ (fun _ => rfl) hD' h').1`.
+
+Take `⟨z, hz⟩` from `(chart_data (ψ ≫ φ) (fun _ => rfl) hD h).1`. Rewrite using `[← hc z, ← hz, ← ha x, ← hx, ← hb y, ← hy, mul_comm, Module.finrank_mul_finrank]`.
+-/
 theorem finrank_comp {X X' X'' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] [IsIntegral X'']
     (ψ : X'' ⟶ X') (φ : X' ⟶ X) [IsFinite φ] [Flat φ] [Surjective φ] [IsFinite ψ] [Flat ψ] [Surjective ψ]
     {a b c : ℕ} (ha : ∀ x, φ.finrank x = a) (hb : ∀ x, ψ.finrank x = b) (hc : ∀ x, (ψ ≫ φ).finrank x = c) :
@@ -352,6 +472,17 @@ theorem finrank_comp {X X' X'' : Scheme.{0}} [IsIntegral X] [IsIntegral X'] [IsI
   obtain ⟨z, hz⟩ := (chart_data (ψ ≫ φ) (fun _ => rfl) hD h).1
   rw [← hc z, ← hz, ← ha x, ← hx, ← hb y, ← hy, mul_comm, Module.finrank_mul_finrank]
 
+/- English proof (translation)
+Take `⟨hfin, -, c, C, -, hgrow⟩` from `GlobalTheory.VeryAmpleGrowth.finite_monotone_growth K X f g hg H m s hH hs`. Use `⟨c * C * 2 ^ g, fun φ _ _ _ hφ d hd M hM he => ?_⟩` and prove the remaining obligations. Establish `inj : ∀ t : ℕ, ∃ F : SecOnR (φ ≫ f) ((AbLaw.pw H t).pull φ) ⊤ →ₗ[K] SecOnR f (AbLaw.pw H ((M * t : ℕ) : ℤ)) ⊤, Function.Injective F`. Introduce `t`. Take `⟨F, hF⟩` from `exists_injective (pull_isLB (isLB_pw hH t) φ) (isLB_pw hH ((M * t : ℕ) : ℤ)) (by`.
+
+Rewrite using `[cls_pull (isLB_pw hH t), cls_pw hH, cls_pw hH, natCast_zsmul, natCast_zsmul, map_nsmul, mul_comm, mul_smul, ← smul_sub]`. Conclude with `he.nsmul t)`. Rewrite using `[hφ]`. Conclude with `⟨SecOnR.lin f F, hF⟩`. Take `⟨a, ha⟩` from `sandwich K X X f φ H m s hH hs d hd hfin fun t => by`.
+
+Take `⟨F, hF⟩` from `inj t`. Use `haveI := hfin (M * t)`. Conclude with `Module.Finite.of_injective F hF`. Take `⟨F, hF⟩` from `inj (a + 1 + a)`. Use `haveI := hfin (M * (a + 1 + a))`.
+
+Establish `h1` using `(ha (a + 1)).1.trans (LinearMap.finrank_le_finrank_of_injective hF)`. Establish `h2` using `(hgrow (a + 1) (by omega)).1`. Establish `h3` using `(hgrow (M * (a + 1 + a)) (Nat.mul_pos hM (by omega))).2`. Establish `h4 : (M * (a + 1 + a)) ^ g ≤ (M * (2 * (a + 1))) ^ g` using `Nat.pow_le_pow_left (Nat.mul_le_mul_left _ (by omega)) _`. Use `Nat.le_of_mul_le_mul_right ?_ (pow_pos (show 0 < a + 1 by omega) g)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finrank_le {K : Type} [Field K] [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) {g : ℕ}
     (hg : SmoothOfRelativeDimension g f) {H : LB X} (hH : H.IsLB) {m : ℕ} {s : Fin (m + 1) → LB.Sec H}
     (hs : VeryAmpleBy f H s) : ∃ C : ℕ, ∀ (φ : X ⟶ X) [IsFinite φ] [Flat φ] [Surjective φ], φ ≫ f = f →
@@ -391,6 +522,9 @@ section Abelian
 variable {k : Type} [Field k] [IsAlgClosed k] (B : Over (Spec (CommRingCat.of k))) [GrpObj B] [IsCommMonObj B]
 
 omit [IsAlgClosed k] in
+/- English proof (translation)
+Establish `e : pull (η[B]).left c = 0`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Conclude with `(cls_eq_zero_iff (pull_isLB hL _)).2 (GlobalTheory.SS.HtForm.gen_field (k := k) _ (pull_isLB hL _))`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp, e, map_zero]`.
+-/
 theorem pull_one (c : Pic B.left) (T : Over (Spec (CommRingCat.of k))) : pull (1 : T ⟶ B).left c = 0 := by
   have e : pull (η[B]).left c = 0 := by
     obtain ⟨L, hL, rfl⟩ := cls_surj c
@@ -398,6 +532,23 @@ theorem pull_one (c : Pic B.left) (T : Over (Spec (CommRingCat.of k))) : pull (1
   rw [Hom.one_def, Over.comp_left, pull_comp, e, map_zero]
 
 omit [IsAlgClosed k] in
+/- English proof (translation)
+Establish `hs` using `(cls_eq_zero_iff (LB.isLB_linComb hH _ _)).2 hsym`. Rewrite `hs` using `[cls_linComb hH, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pull_id, one_zsmul, neg_one_zsmul] at hs`. Establish `hinv : pull (y⁻¹).left (cls H hH) = pull y.left (cls H hH)`. Rewrite using `[Hom.inv_def, Over.comp_left, pull_comp, eq_of_sub_eq_zero ((sub_eq_add_neg _ _).trans hs)]`.
+
+Establish `ht` using `(cls_eq_zero_iff (LB.isLB_linComb hH _ _)).2 hΘ`. Rewrite `ht` using `[cls_linComb hH]`. Establish `this` using `congrArg (pull (lift x (lift y y⁻¹)).left) ht`. Rewrite `this` using `[map_zero, map_sum]`. Simplify using `only [map_zsmul, ← pull_comp, ← Over.comp_left] at this`.
+
+Establish `hsum : ∀ F : Finset (Fin 3) → Pic T.left, ∑ I : ULift.{0} (Finset (Fin 3)), F I.down = F ∅ + F {0} + F {1} + F {2} + F {0, 1} + F {0, 2} + F {1, 2} + F {0, 1, 2}` using `fun F => by`. Use `(Equiv.ulift.sum_comp F).trans ?_` and prove the remaining obligations. Establish `: (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}`. Evaluate the decidable proposition. Rewrite using `[this]`.
+
+Repeat the step `rw [Finset.sum_insert (by decide)]` while it applies. Rewrite using `[Finset.sum_singleton]`. Normalize the expressions using the abelian group laws. Rewrite `this` using `[hsum fun I => ((-1 : ℤ) ^ (3 - I.card)) • pull (lift x (lift y y⁻¹) ≫ psum B (x3 B) I).left (cls H hH)]`. Establish `e0 : lift x (lift y y⁻¹) ≫ x3 B 0 = x` using `by simp [x3]`.
+
+Establish `e1 : lift x (lift y y⁻¹) ≫ x3 B 1 = y` using `by simp [x3]`. Establish `e2 : lift x (lift y y⁻¹) ≫ x3 B 2 = y⁻¹` using `by simp [x3]`. Establish `l0 : (List.finRange 3).filter (· ∈ (∅ : Finset (Fin 3))) = []` using `by decide`. Establish `l1 : (List.finRange 3).filter (· ∈ ({0} : Finset (Fin 3))) = [0]` using `by decide`. Establish `l2 : (List.finRange 3).filter (· ∈ ({1} : Finset (Fin 3))) = [1]` using `by decide`.
+
+Establish `l3 : (List.finRange 3).filter (· ∈ ({2} : Finset (Fin 3))) = [2]` using `by decide`. Establish `l4 : (List.finRange 3).filter (· ∈ ({0, 1} : Finset (Fin 3))) = [0, 1]` using `by decide`. Establish `l5 : (List.finRange 3).filter (· ∈ ({0, 2} : Finset (Fin 3))) = [0, 2]` using `by decide`. Establish `l6 : (List.finRange 3).filter (· ∈ ({1, 2} : Finset (Fin 3))) = [1, 2]` using `by decide`. Establish `l7 : (List.finRange 3).filter (· ∈ ({0, 1, 2} : Finset (Fin 3))) = [0, 1, 2]` using `by decide`.
+
+Establish `c4 : ({0, 1} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c5 : ({0, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c6 : ({1, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `c7 : ({0, 1, 2} : Finset (Fin 3)).card = 3` using `by decide`. Simplify using `only [GlobalTheory.SS.HtForm.comp_psum] at this`.
+
+Rewrite `this` using `[l0, l1, l2, l3, l4, l5, l6, l7, c4, c5, c6, c7]`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, e0, e1, e2, _root_.mul_one, mul_inv_cancel, pull_one, hinv, Finset.card_singleton, Finset.card_empty] at this`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← this]`. Evaluate the numerical expressions. Normalize the expressions using the abelian group laws.
+-/
 theorem pull_par {H : LB B.left} (hH : H.IsLB) (hΘ : ∃ t : LB.Gen (Theta B H), t.IsGen)
     (hsym : Triv (LB.LinComb H (K := Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1]))
     {T : Over (Spec (CommRingCat.of k))} (x y : T ⟶ B) :
@@ -446,6 +597,9 @@ theorem pull_par {H : LB B.left} (hH : H.IsLB) (hΘ : ∃ t : LB.Gen (Theta B H)
   norm_num
   abel
 
+/- English proof (translation)
+Use `hB.geomConnected` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Establish `: ConnectedSpace B.left` using `GeometricallyConnected.connectedSpace_of_subsingleton B.hom`. Establish `: IsLocallyNoetherian B.left` using `LocallyOfFiniteType.isLocallyNoetherian B.hom`. Conclude with `(Scheme.Hom.isLocallyConstant_finrank φ.left).apply_eq_of_preconnectedSpace x y`.
+-/
 theorem finrank_const (hB : IsAbelianScheme B) (φ : B ⟶ B) [IsFinite φ.left] [Flat φ.left] (x y : B.left) :
     φ.left.finrank x = φ.left.finrank y := by
   have := hB.geomConnected
@@ -455,6 +609,39 @@ theorem finrank_const (hB : IsAbelianScheme B) (φ : B ⟶ B) [IsFinite φ.left]
   exact (Scheme.Hom.isLocallyConstant_finrank φ.left).apply_eq_of_preconnectedSpace x y
 
 open NumberField in
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.globalFns_holds`. Use `haveI := hB.smooth`. Use `haveI := hB.proper`. Use `haveI : GeometricallyIntegral B.hom := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected`. Use `haveI : IsIntegral B.left := GeometricallyIntegral.isIntegral_of_subsingleton B.hom`.
+
+Establish `hproj` using `GlobalTheory.T.isProjectiveOverRingByCharts_abelian_variety k B hB`. Take `⟨H, m, s, hH, hs, hsym⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmpleBy k B hB hproj`. Establish `hΘ` using `GlobalTheory.AbLaw.CubeProj.exists_gen_theta_abelianVariety hG k B hB hproj H hH`. Set `q : 𝓞 E → Pic B.left` to `fun a => pull (ρ.act a).left (cls H hH)`. Establish `a0 : ρ.act 0 = 1`.
+
+Use `ρ.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Establish `h0 : q 0 = 0` using `by simp only [q, a0, pull_one]`. Establish `h1 : q 1 = cls H hH` using `by simp only [q, ρ.one, Over.id_left, pull_id]`.
+
+Establish `hq : ∀ a b, q (a + b) + q (a - b) = 2 • q a + 2 • q b` using `fun a b => by`. Establish `e : ρ.act (a - b) = ρ.act a * (ρ.act b)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, ← ρ.add, sub_add_cancel]`. Simplify using `only [q, ρ.add, e]`. Conclude with `pull_par B hH hΘ hsym _ _`.
+
+Establish `hw : ∀ a, (ρ.act a).left ≫ B.hom = B.hom` using `fun a => Over.w _`. Establish `hiso : ∀ n : ℕ, LBIso (AbLaw.pw H ((n ^ 2 : ℕ) : ℤ)) (H.pull (ρ.act n).left)` using `fun n => by`. Use `(cls_eq_iff (isLB_pw hH _) (pull_isLB hH _)).1 ?_` and prove the remaining obligations. Establish `e` using `quad_nat q h0 hq 1 n`. Rewrite `e` using `[nsmul_one, h1]`.
+
+Rewrite using `[cls_pw hH, natCast_zsmul, ← e]`. Both sides reduce to the same expression. Establish `hfin : ∀ a, a ≠ 0 → IsFinite (ρ.act a).left` using `fun a ha => by`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {a}))`. Establish `hN : Ideal.absNorm (Ideal.span {a}) ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Establish `h` using `GlobalTheory.T.isFinite_of_pull_veryAmple_iso_pow k _ _ B.hom _ H H m s _ hH hH inferInstance (by rw [hw]; exact hs) (Nat.one_le_iff_ne_zero.2 (pow_ne_zero 2 hN)) (hiso _)`. Rewrite `h` using `[← hb, mul_comm, ρ.mul, Over.comp_left]`. Use `haveI : IsSeparated ((ρ.act b).left ≫ B.hom) := by rw [hw]; infer_instance`.
+
+Use `haveI : IsSeparated (ρ.act b).left := IsSeparated.of_comp _ B.hom`. Conclude with `IsFinite.of_comp _ (ρ.act b).left`. Establish `hfs : ∀ a, a ≠ 0 → Flat (ρ.act a).left ∧ Surjective (ρ.act a).left` using `fun a ha => haveI := hfin a ha haveI := ρ.hom a GlobalTheory.flat_and_surjective_of_isFinite_grpEnd k B _`. Set `deg : 𝓞 E → ℕ` to `fun a => (ρ.act a).left.finrank (genericPoint B.left)`. Establish `hd : ∀ a, a ≠ 0 → ∀ x, (ρ.act a).left.finrank x = deg a` using `fun a ha x => haveI := hfin a ha haveI := (hfs a ha).1 finrank_const B hB _ _ _`.
+
+Take `⟨C₁, hC₁⟩` from `finrank_le B.hom hg hH hs`. Set `S : AddSubmonoid (Pic B.left)` to `⟨⟨{c | Eff c}, Eff.add⟩, eff_zero⟩`. Establish `hS : ∀ a, q a ∈ S` using `fun a => eff_pull _ hH s hs.1`. Take `⟨C₂, hC₂, hb⟩` from `quad_bound q h0 hq S _ (h1 ▸ hS 1) hS (fun a => exists_eff_sub B.hom hH hs _) (RingOfIntegers.basis E) Finset.univ`. Use `⟨hfin a ha, (hfs a ha).1, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hd a ha]`. Use `pow_eq_norm deg (2 * g) (C₁ * C₂ ^ g) (fun a b ha hb => ?_) (fun a ha => ?_) (fun n hn => ?_) (fun T c hc hx => ?_) a ha` and prove the remaining obligations. Use `haveI := hfin a ha haveI := hfin b hb`. Take `⟨_, _⟩` from `hfs a ha`. Take `⟨_, _⟩` from `hfs b hb`.
+
+Use `finrank_comp (ρ.act a).left (ρ.act b).left (hd b hb) (hd a ha) fun x => ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← ρ.mul]`. Conclude with `hd _ (mul_ne_zero ha hb) x`. Use `haveI := hfin a ha`. Take `⟨_, _⟩` from `hfs a ha`.
+
+Conclude with `(ρ.act a).left.one_le_finrank_iff_surjective.2 inferInstance _`. Establish `hn' : (n : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hn haveI := hfin _ hn'`. Take `⟨_, _⟩` from `hfs _ hn'`. Take `⟨hfin, hmono, c, C, hc1, hgrow⟩` from `GlobalTheory.VeryAmpleGrowth.finite_monotone_growth k B.left B.hom g hg H m s hH hs`. Establish `e` using `TorsionCount.nonempty_secEquiv B.hom _ (hw n) hH (n ^ 2) (hiso n)`.
+
+Take `⟨a, ha⟩` from `sandwich k B.left B.left B.hom (ρ.act n).left H m s hH hs _ (hd _ hn') hfin fun t => by`. Take `⟨e⟩` from `e t`. Use `haveI := hfin (n ^ 2 * t)`. Conclude with `Module.Finite.equiv e`. Rewrite using `[pow_mul]`.
+
+Use `GlobalTheory.UU.degree_eq_pow_of_growth (fun t : ℕ => Module.finrank k (SecOnR B.hom (AbLaw.pw H t) ⊤)) g c C a _ (n ^ 2) hc1 (Nat.one_le_iff_ne_zero.2 (pow_ne_zero 2 hn)) hmono hgrow fun t => ?_` and prove the remaining obligations. Take `⟨e₁⟩` from `e (t + a)`. Take `⟨e₂⟩` from `e t`. Conclude with `⟨(ha t).1.trans e₁.finrank_eq.ge, e₂.finrank_eq.le.trans (ha t).2⟩`. Use `haveI := hfin _ hx`.
+
+Take `⟨_, _⟩` from `hfs _ hx`. Establish `hT : 1 ≤ T`. Assume the negation of the conclusion as `hT`. Use `hx (Finset.sum_eq_zero fun i _ => ?_)` and prove the remaining obligations. Use `hc i` as an intermediate fact.
+
+Rewrite using `[show c i = 0 by omega, zero_smul]`. Use `hC₁ _ (hw _) _ (hd _ hx) (C₂ * T ^ 2) (Nat.mul_pos hC₂ (pow_pos hT 2)) (hb T c hc)` as an intermediate fact. Rewrite `this` using `[mul_pow, ← pow_mul, ← _root_.mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem finrank_act {E : Type} [Field E] [NumberField E] (hB : IsAbelianScheme B) {g : ℕ}
     (hg : SmoothOfRelativeDimension g B.hom) (ρ : OAct (𝓞 E) B) (a : 𝓞 E) (ha : a ≠ 0) :
     ∃ (_ : IsFinite (ρ.act a).left) (_ : Flat (ρ.act a).left), ∀ x,
@@ -553,6 +740,11 @@ theorem finrank_act {E : Type} [Field E] [NumberField E] (hB : IsAbelianScheme B
 
 end Abelian
 
+/- English proof (translation)
+Use `choose U hU using fun i => (hv.2 _ (hu.1 i)).exists`. Establish `key` using `ReciprocityTheory.ChartRestriction.G.Chart.coords_basis hv hu U hU`. Set `l : (Fin n → W) →ₗ[W] (Fin d → W)` to `Matrix.vecMulLinear (Matrix.of U)`. Establish `hl : ∀ a j, l a j = ∑ i, a i * U i j` using `fun a j => rfl`. Establish `hb : Function.Bijective l`.
+
+Use `⟨fun a a' e => ?_, fun z => ?_⟩` and prove the remaining obligations. Conclude with `(key (l a)).unique (fun j => (hl a j).symm) (fun j => ((hl a' j).symm.trans (congrFun e.symm j)))`. Take `⟨a, ha, -⟩` from `key z`. Conclude with `⟨a, funext fun j => (hl a j).trans (ha j)⟩`. Simplify using `using (LinearEquiv.ofBijective l hb).finrank_eq`.
+-/
 theorem card_eq_of_isLieBasis {W : Type} [CommRing W] [IsLocalRing W] {G : Over (Sp W)} [GrpObj G] [Smooth G.hom]
     {n d : ℕ} {u : Fin n → (epsR W ⟶ G)} {v : Fin d → (epsR W ⟶ G)} (hu : IsLieBasis u) (hv : IsLieBasis v) :
     n = d := by
@@ -567,6 +759,9 @@ theorem card_eq_of_isLieBasis {W : Type} [CommRing W] [IsLocalRing W] {G : Over 
       exact ⟨a, funext fun j => (hl a j).trans (ha j)⟩
   simpa using (LinearEquiv.ofBijective l hb).finrank_eq
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[show u = u' from funext fun i => Over.OverMorphism.ext (hu i)]`.
+-/
 theorem prod_left_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b) {n : ℕ}
     (u : Fin n → (Over.mk a ⟶ G)) (u' : Fin n → (Over.mk b ⟶ G)) (hu : ∀ i, (u i).left = (u' i).left) :
     (List.ofFn u).prod.left = (List.ofFn u').prod.left := by
@@ -579,12 +774,20 @@ open NumberField Formalism.L2.Pj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Type} [CommRing S] (t : SAB H (Sp S))
 
+/- English proof (translation)
+Establish `e : (1 : Over.mk (𝟙 (Sp S)) ⟶ t.G).left = η[t.G].left`. Rewrite using `[Hom.one_def, show toUnit (Over.mk (𝟙 (Sp S))) = 𝟙 (𝟙_ (Over (Sp S))) from toUnit_unique _ _]`. Conclude with `congrArg (·.left) (Category.id_comp η[t.G])`. Conclude with `⟨fun h => h.2.trans e, fun h => ⟨(Over.w v).trans (Category.comp_id _).symm, Eq.trans h e.symm⟩⟩`.
+-/
 theorem isTanAtG_id (v : epsR S ⟶ t.G) : IsTanAtG t (𝟙 _) v.left ↔ IsTangent v := by
   have e : (1 : Over.mk (𝟙 (Sp S)) ⟶ t.G).left = η[t.G].left := by
     rw [Hom.one_def, show toUnit (Over.mk (𝟙 (Sp S))) = 𝟙 (𝟙_ (Over (Sp S))) from toUnit_unique _ _]
     exact congrArg (·.left) (Category.id_comp η[t.G])
   exact ⟨fun h => h.2.trans e, fun h => ⟨(Over.w v).trans (Category.comp_id _).symm, Eq.trans h e.symm⟩⟩
 
+/- English proof (translation)
+Establish `e` using `Category.comp_id (spMap (algebraMap S (DualNumber S)))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`. Use `⟨fun i => Over.homMk (u i).left ((Over.w (u i)).trans e), hu, Over.OverMorphism.ext (h.symm.trans ?_)⟩` and prove the remaining obligations. Conclude with `prod_left_congr e _ _ fun _ => rfl`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun i => Over.homMk (u i).left ((Over.w (u i)).trans e.symm), hu, ?_⟩` and prove the remaining obligations. Conclude with `prod_left_congr e _ _ fun _ => rfl`.
+-/
 theorem isCombAtG_id {n : ℕ} (v : Fin n → (epsR S ⟶ t.G)) (cf : Fin n → S) (w : epsR S ⟶ t.G) :
     IsCombAtG t (𝟙 _) (fun i => (v i).left) cf w.left ↔ IsLieComb cf v w := by
   have e := Category.comp_id (spMap (algebraMap S (DualNumber S)))
@@ -596,6 +799,9 @@ theorem isCombAtG_id {n : ℕ} (v : Fin n → (epsR S ⟶ t.G)) (cf : Fin n → 
     refine ⟨fun i => Over.homMk (u i).left ((Over.w (u i)).trans e.symm), hu, ?_⟩
     exact prod_left_congr e _ _ fun _ => rfl
 
+/- English proof (translation)
+Use `haveI := t.semi.smooth`. Take `⟨u, hu⟩` from `GlobalTheory.KeyPow.exists_isLieBasis t.G hg`. Set `v : Fin d → (epsR S ⟶ t.G)` to `fun l => Over.homMk (gm₀.tg l) ((gm₀.tan l).1.trans (Category.comp_id _))`. Use `card_eq_of_isLieBasis hu (v := v) ⟨fun l => (isTanAtG_id t (v l)).1 (gm₀.tan l), fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `(existsUnique_congr fun cf => isCombAtG_id t v cf w).1 (gm₀.basis _ ((isTanAtG_id t w).2 hw))`.
+-/
 theorem dim_eq [IsLocalRing S] [StarRing (𝓞 E)] {d g : ℕ} (gm₀ : GlobalTheory.CompanionTheory.Ar.Conj.GermAt t (𝟙 (Sp S)) d)
     (hg : SmoothOfRelativeDimension g t.G.hom) : g = d := by
   haveI := t.semi.smooth
@@ -606,6 +812,13 @@ theorem dim_eq [IsLocalRing S] [StarRing (𝓞 E)] {d g : ℕ} (gm₀ : GlobalTh
 
 end Bridge
 
+/- English proof (translation)
+Use `haveI : IsAffine (pullback f y) := isAffine_of_isAffineHom (pullback.snd f y)`. Set `P` to `pullback f y`. Set `g' : Spec Γ(P, ⊤) ⟶ Sp k` to `P.isoSpec.inv ≫ pullback.snd f y`. Use `haveI : IsFinite g' := inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective g'`.
+
+Establish `hφf : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`. Use `infer_instance`. Use `letI : Algebra k Γ(P, ⊤) := φ.hom.toAlgebra`. Use `⟨Γ(P, ⊤), inferInstance, inferInstance, hφf, P.isoSpec.inv ≫ pullback.fst f y, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(IsPullback.of_hasPullback f y).of_iso P.isoSpec (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by`. Express the relevant statement in the definitionally equal form `pullback.snd f y ≫ 𝟙 _ = P.isoSpec.hom ≫ Spec.map φ`. Rewrite using `[hφ]; simp [g']) (by simp) (by simp)`.
+-/
 theorem exists_fibre {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (k : Type) [Field k] (y : Sp k ⟶ Y) :
     ∃ (A : Type) (_ : CommRing A) (_ : Algebra k A) (_ : Module.Finite k A) (i : Sp A ⟶ X),
       IsPullback i (spMap (algebraMap k A)) f y := by
@@ -624,6 +837,9 @@ theorem exists_fibre {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (k : Type) [F
       change pullback.snd f y ≫ 𝟙 _ = P.isoSpec.hom ≫ Spec.map φ
       rw [hφ]; simp [g']) (by simp) (by simp)
 
+/- English proof (translation)
+Use `⟨y (⊥ : PrimeSpectrum k), ?_⟩` and prove the remaining obligations. Rewrite using `[← rankAtStalk_bot]`. Conclude with `(Scheme.Hom.finrank_SpecMap_algebraMap k A _).symm.trans (Scheme.Hom.finrank_of_isPullback _ _ _ _ h _)`.
+-/
 theorem finrank_fibre {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Flat f] (k : Type) [Field k] (y : Sp k ⟶ Y)
     (A : Type) [CommRing A] [Algebra k A] [Module.Finite k A] (i : Sp A ⟶ X)
     (h : IsPullback i (spMap (algebraMap k A)) f y) : ∃ x, Module.finrank k A = f.finrank x := by
@@ -642,6 +858,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ _ k _ _ t hp d gm₀ a ha`. Establish `hB : IsAbelianScheme t.G` using `⟨t.comm, t.semi.smooth, hp, t.semi.geomConnected⟩`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim k t.G hB`. Take `rfl` from `PositivityTheory.Xgn.DegreeMultiplicationNorm.dim_eq t gm₀ hg`. Take `⟨_, _, h⟩` from `PositivityTheory.Xgn.DegreeMultiplicationNorm.finrank_act t.G hB hg t.act a ha`.
+
+Use `⟨PositivityTheory.Xgn.DegreeMultiplicationNorm.exists_fibre _ k _, fun A _ _ _ i hi => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `PositivityTheory.Xgn.DegreeMultiplicationNorm.finrank_fibre _ k _ A i hi`. Rewrite using `[hx]`. Conclude with `h x`.
+-/
 theorem PositivityTheory.Xgn.degree_multiplication_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : SAB H (Sp k)), IsProper t.G.hom → ∀ (d : ℕ) (_ : GermAt t (𝟙 (Sp k)) d) (a : 𝓞 E), a ≠ 0 → (∃ (A : Type) (_ : CommRing A) (_ : Algebra k A) (_ : Module.Finite k A) (i : Sp A ⟶ t.G.left), IsPullback i (spMap (algebraMap k A)) (t.act.act a).left (η[t.G]).left) ∧ ∀ (A : Type) [CommRing A] [Algebra k A] [Module.Finite k A] (i : Sp A ⟶ t.G.left), IsPullback i (spMap (algebraMap k A)) (t.act.act a).left (η[t.G]).left → Module.finrank k A ^ Module.finrank ℚ E = (Algebra.norm ℤ a).natAbs ^ (2 * d) := by
   intro E _ _ _ H _ _ k _ _ t hp d gm₀ a ha
   have hB : IsAbelianScheme t.G := ⟨t.comm, t.semi.smooth, hp, t.semi.geomConnected⟩

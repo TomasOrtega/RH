@@ -6,6 +6,15 @@ open private isLocPt_toBar map_reducible_three_dim coboundary_of_mem_B1 isPush_p
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.GalOfCusp Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
+/- English proof (translation)
+Introduce `hC hK hRI hRII Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ hM S _ ι hB hW x₀ hx`. Establish `h0 : push (toBar x₀) S.r.hom = r0 D.η D.ΨQ`. Establish `e1 : push (toBar x₀) S.r.hom = (GG.map (algebraMap c.O (PadicAlgCl l))).comp (push x₀ S.r.hom)` using `rfl`. Rewrite using `[e1, show push x₀ S.r.hom = r0 D.η D.Ψ from hx, map_reducible_three_dim]`. Both sides reduce to the same expression.
+
+Use `⟨fun f hf hU hL => ?_, fun j hj F hF hw => ?_, fun f hf F hF => ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `pt_fixed hC D hM (isPt_push D hM S f hf) hU hL`. Establish `h1` using `tanCoc_isBK hC D hM S F (hF ▸ isLocPt_toBar x₀)`. Rewrite `h1` using `[hF, h0]`.
+
+Rewrite using `[h0]`. Conclude with `coboundary_of_mem_B1 _ _ (bloch_kato_nonpositive_weight hC D j hj _ h1.1 hw h1.2)`. Establish `h1` using `tanCoc_isBK hC D hM S F (hF ▸ hf.1)`. Rewrite `h1` using `[hF]`. Establish `hp` using `isPt_push D hM S f hf.1`.
+
+Establish `hz : Af.BlochKatoSelmerVanishes l (adRep (push f S.r.hom))`. Break down `(twoPt_shape S D.gd.l_odd hM f hf).1 with h | h` into its components or cases. Conclude with `hRI D hM S f hf.1 hp.mult ι h (hB U S _ _ hp.mult (isPush_push f _) h)`. Conclude with `Z.J.typeII_of_blochKato_localPoint hC hK hRII D hM S f hf.1 ι h (hW U S _ _ (isPush_push f _) h (typeII_facts hC D hM hp h).1)`. Conclude with `coboundary_of_mem_B1 _ _ (hz _ h1.1 h1.2)`.
+-/
 theorem UpperTheory.V.Z.J.ptHyp_ofU :
     U3.CohInp → Z.Kato.KatoTwo → Th.RigI → Th.RigII → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]
       {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N} (D : Dat Ω K c e ψ) {U : D.ULoc} {g₁ : G ℚ Ω}, D.Marked g₁ → ∀ (S : D.Ring U g₁), ∀ [IsCMField K] (ι : Qbar l ≃+* ℂ), Aut.AutB D ι g₁ → Aut.LemW D ι g₁ →

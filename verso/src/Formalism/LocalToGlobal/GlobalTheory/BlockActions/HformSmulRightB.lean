@@ -11,6 +11,11 @@ section Gen
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Unfold `hform`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Function.comp_apply]`. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_comp]`.
+
+Simplify using `only [Equiv.symm_apply_apply]`.
+-/
 theorem hform_reindexB {m n : Type} [Fintype m] [Fintype n] (σ : A →+* A) (e : m ≃ n) (J : Matrix m m A) (x y : m → A) :
     hform σ (J.reindex e e) (x ∘ e.symm) (y ∘ e.symm) = hform σ J x y := by
   unfold hform
@@ -20,6 +25,9 @@ theorem hform_reindexB {m n : Type} [Fintype m] [Fintype n] (σ : A →+* A) (e 
   rw [← e.sum_comp]
   simp only [Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Unfold `hform`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_leftB {n : Type} [Fintype n] (σ : A →+* A) (J : Matrix n n A) (s : A) (x y : n → A) :
     hform σ J (s • x) y = σ s * hform σ J x y := by
   unfold hform
@@ -27,6 +35,9 @@ theorem hform_smul_leftB {n : Type} [Fintype n] (σ : A →+* A) (J : Matrix n n
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `hform`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_rightB {n : Type} [Fintype n] (σ : A →+* A) (J : Matrix n n A) (s : A) (x y : n → A) :
     hform σ J x (s • y) = s * hform σ J x y := by
   unfold hform
@@ -34,6 +45,9 @@ theorem hform_smul_rightB {n : Type} [Fintype n] (σ : A →+* A) (J : Matrix n 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hform, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gramOf_apply {m n : Type} [Fintype m] [Fintype n] (σ : A →+* A) (M : Matrix m n A) (J : Matrix m m A) (a b : n) :
     ((M.map σ)ᵀ * J * M) a b = hform σ J (fun k => M k a) (fun k => M k b) := by
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hform, Finset.sum_mul]
@@ -52,6 +66,11 @@ abbrev crdP : D.sp.X'.V ≃ₗ[D.host.E] (Fin (D.R.N D.R.m - 1) → D.host.E) :=
   letI := D.host.cmStar
   D.sp.X'.frame.equivFun.trans (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankP D)).symm)
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.TraceIntegrality.hT_expand]`. Unfold `hform`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.equivFun_apply, Module.Basis.equivFun_apply, mul_assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hform_frame (S : @HSpace D.host.E _ _ D.host.cmStar) (v w : S.V) :
     hform (sigD D : D.host.E →+* D.host.E) S.gram (S.frame.equivFun v) (S.frame.equivFun w) = S.hT v w := by
   letI := D.host.cmStar
@@ -61,6 +80,9 @@ theorem hform_frame (S : @HSpace D.host.E _ _ D.host.cmStar) (v w : S.V) :
   rw [Module.Basis.equivFun_apply, Module.Basis.equivFun_apply, mul_assoc]
   rfl
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Establish `e : ∀ x, crdM D x = (D.sp.X D.R.m).frame.equivFun x ∘ (finCongr (rankN D D.R.m le_rfl)).symm` using `fun x => rfl`. Rewrite using `[e, e]`. Unfold `gramN`. Rewrite using `[hform_reindexB, hform_frame]`.
+-/
 theorem hform_crdM (v w : (D.sp.X D.R.m).V) :
     hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (crdM D v) (crdM D w) = (D.sp.X D.R.m).hT v w := by
   letI := D.host.cmStar
@@ -69,6 +91,9 @@ theorem hform_crdM (v w : (D.sp.X D.R.m).V) :
   unfold gramN
   rw [hform_reindexB, hform_frame]
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Establish `e : ∀ x, crdP D x = D.sp.X'.frame.equivFun x ∘ (finCongr (rankP D)).symm` using `fun x => rfl`. Rewrite using `[e, e]`. Unfold `gramP`. Rewrite using `[hform_reindexB, hform_frame]`.
+-/
 theorem hform_crdP (v w : D.sp.X'.V) :
     hform (sigD D : D.host.E →+* D.host.E) (gramP D) (crdP D v) (crdP D w) = D.sp.X'.hT v w := by
   letI := D.host.cmStar
@@ -77,22 +102,37 @@ theorem hform_crdP (v w : D.sp.X'.V) :
   unfold gramP
   rw [hform_reindexB, hform_frame]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iXc_eq (x : Fin (D.R.N D.R.m - 1) → D.host.E) : iXc D x = crdM D (D.sp.iX' ((crdP D).symm x)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zc_eq : zc D = crdM D D.sp.z := rfl
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Rewrite using `[iXc_eq, iXc_eq, hform_crdM, D.sp.iX'_isom, ← hform_crdP, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem hform_iXc (x y : Fin (D.R.N D.R.m - 1) → D.host.E) :
     hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (iXc D x) (iXc D y) =
       hform (sigD D : D.host.E →+* D.host.E) (gramP D) x y := by
   letI := D.host.cmStar
   rw [iXc_eq, iXc_eq, hform_crdM, D.sp.iX'_isom, ← hform_crdP, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Rewrite using `[iXc_eq, zc_eq, hform_crdM]`. Conclude with `D.sp.z_orth _`.
+-/
 theorem hform_iXc_zc (x : Fin (D.R.N D.R.m - 1) → D.host.E) :
     hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (iXc D x) (zc D) = 0 := by
   letI := D.host.cmStar
   rw [iXc_eq, zc_eq, hform_crdM]
   exact D.sp.z_orth _
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Rewrite using `[iXc_eq, zc_eq, hform_crdM, ← (D.sp.X D.R.m).herm.eq (D.sp.iX' _) D.sp.z, D.sp.z_orth, map_zero]`.
+-/
 theorem hform_zc_iXc (x : Fin (D.R.N D.R.m - 1) → D.host.E) :
     hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (zc D) (iXc D x) = 0 := by
   letI := D.host.cmStar
@@ -100,6 +140,21 @@ theorem hform_zc_iXc (x : Fin (D.R.N D.R.m - 1) → D.host.E) :
 
 variable {D}
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hz`. Establish `hT : ((D.mem u).A.T : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero`. Establish `hcol1 : ∀ i : Fin (D.R.N D.R.m - 1), (fun k => bZ u (a • zc D) k ((finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Sum.inl i))) = iXc D (Pi.single i 1)`. Introduce `i`. Use function extensionality and compare the values at `k`.
+
+Establish `hi : (((finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Sum.inl i) : Fin (D.R.N D.R.m)) : ℕ) < D.R.N D.R.m - 1`. Simplify using the standard rewrite rules. Establish `hi' : (⟨_, hi⟩ : Fin (D.R.N D.R.m - 1)) = i` using `Fin.ext (by simp)`. Simplify using `only [bZ, dif_pos hi, hi', iXm, LinearMap.toMatrix'_apply]`. Establish `hcol2 : ∀ j : Fin 1, (fun k => bZ u (a • zc D) k ((finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Sum.inr j))) = (a / ((D.mem u).A.T : D.host.E)) • zc D`.
+
+Introduce `j`. Use function extensionality and compare the values at `k`. Establish `hj : ¬ (((finSumFinEquiv.trans (finCongr (Nm_succ D.R))) (Sum.inr j) : Fin (D.R.N D.R.m)) : ℕ) < D.R.N D.R.m - 1`. Simplify using the standard rewrite rules. Simplify using `only [bZ, dif_neg hj, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use extensionality with `x y`. Take `⟨p, rfl⟩` from `(finSumFinEquiv.trans (finCongr (Nm_succ D.R))).surjective x`. Take `⟨q, rfl⟩` from `(finSumFinEquiv.trans (finCongr (Nm_succ D.R))).surjective y`. Rewrite using `[gramOf_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `rcases p with i | i <;> rcases q with j | j`. Rewrite using `[hcol1, hcol1, hform_iXc, Matrix.fromBlocks_apply₁₁]`. Simplify using `[hform, Pi.single_apply]`. Rewrite using `[hcol1, hcol2, hform_smul_rightB, hform_iXc_zc, mul_zero, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply]`. Rewrite using `[hcol2, hcol1, hform_smul_leftB, hform_zc_iXc, mul_zero, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`.
+
+Establish `ha : hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (a • zc D) (a • zc D) = (sigD D : D.host.E →+* D.host.E) a * (a * hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (zc D) (zc D))`. Rewrite using `[hform_smul_leftB, hform_smul_rightB]`. Rewrite using `[hcol2, hcol2, hform_smul_leftB, hform_smul_rightB, Matrix.fromBlocks_apply₂₂, Matrix.of_apply, map_div₀, map_natCast]`. Rewrite `hn` using `[ha]`. Rewrite using `[show (sigD D : D.host.E →+* D.host.E) a / ((D.mem u).A.T : D.host.E) * (a / ((D.mem u).A.T : D.host.E) * hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) (zc D) (zc D)) = ((sigD D : D.host.E →+* D.host.E) a * (a * hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R. …`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem gram_bZ {u : D.what₂.Word} (z0 : Fin (D.R.N D.R.m) → D.host.E) (hz : ∃ a : D.host.E, z0 = a • zc D)
     (hn : hform (sigD D : D.host.E →+* D.host.E) (gramN D D.R.m le_rfl) z0 z0 = ((D.mem u).A.T : D.host.E)) :
     ((bZ u z0).map (sigD D : D.host.E →+* D.host.E))ᵀ * gramN D D.R.m le_rfl * bZ u z0 =

@@ -23,6 +23,9 @@ def sympGroup (ω : LinearMap.BilinForm R W) : Subgroup (W ≃ₗ[R] W) where
     conv_rhs => rw [← a.apply_symm_apply w, ← a.apply_symm_apply w']
     rw [ha]
 
+/- English proof (translation)
+The claim follows from `Iff.rfl @[ext]`.
+-/
 theorem mem_sympGroup {ω : LinearMap.BilinForm R W} {g : W ≃ₗ[R] W} :
     g ∈ sympGroup ω ↔ ∀ w w', ω (g w) (g w') = ω w w' := Iff.rfl
 
@@ -43,11 +46,29 @@ instance : One (Heis ω) := ⟨⟨0, 0⟩⟩
 
 instance : Inv (Heis ω) := ⟨fun h => ⟨-h.w, -h.t + ⅟2 * ω h.w h.w⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_w (h h' : Heis ω) : (h * h').w = h.w + h'.w := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem product_torus_component (h h' : Heis ω) : (h * h').t = h.t + h'.t + ⅟2 * ω h.w h'.w := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_w : (1 : Heis ω).w = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem indicator_eq_one_of_true : (1 : Heis ω).t = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem inv_w (h : Heis ω) : h⁻¹.w = -h.w := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem exists_inverse_fontaineElement_mem_fil_neg_one (h : Heis ω) : h⁻¹.t = -h.t + ⅟2 * ω h.w h.w := rfl
 
 instance : Group (Heis ω) where
@@ -97,6 +118,15 @@ def schr [Invertible (2 : R)] (P : SympPolarization ω X Y) (ψ : AddChar R Circ
 def Stab (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) : Prop :=
   (∀ x : X, (P.e (g (P.e.symm (x, 0)))).2 = 0) ∧ ∀ y : Y, (P.e (g (P.e.symm (0, y)))).1 = 0
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `h1 : b (P.e.symm (x, 0)) = P.e.symm ((P.e (b (P.e.symm (x, 0)))).1, 0)`. Apply `P.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `Prod.ext rfl (hb.1 x)`. Express the relevant statement in the definitionally equal form `(P.e (a (b (P.e.symm (x, 0))))).2 = 0`. Rewrite using `[h1]`. Conclude with `ha.1 _`. Introduce `y`.
+
+Establish `h1 : b (P.e.symm (0, y)) = P.e.symm (0, (P.e (b (P.e.symm (0, y)))).2)`. Apply `P.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext (hb.2 y) rfl`. Express the relevant statement in the definitionally equal form `(P.e (a (b (P.e.symm (0, y))))).1 = 0`.
+
+Rewrite using `[h1]`. Conclude with `ha.2 _`.
+-/
 theorem stab_mul (P : SympPolarization ω X Y) {a b : W ≃ₗ[R] W} (ha : P.Stab a)
     (hb : P.Stab b) : P.Stab (a * b) := by
   constructor
@@ -130,9 +160,17 @@ def leviX (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) : X →ₗ[R] X :=
   LinearMap.fst R X Y ∘ₗ P.e.toLinearMap ∘ₗ g.toLinearMap ∘ₗ P.e.symm.toLinearMap ∘ₗ
     LinearMap.inl R X Y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviX_apply (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) (x : X) :
     P.leviX g x = (P.e (g (P.e.symm (x, 0)))).1 := rfl
 
+/- English proof (translation)
+Rewrite using `[leviX_apply, leviX_apply, leviX_apply]`. Establish `h1 : b (P.e.symm (x, 0)) = P.e.symm ((P.e (b (P.e.symm (x, 0)))).1, 0)`. Apply `P.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext rfl (hb.1 x)`.
+
+Express the relevant statement in the definitionally equal form `(P.e (a (b (P.e.symm (x, 0))))).1 = _`. Use `conv_lhs => rw [h1]`.
+-/
 theorem leviX_mul (P : SympPolarization ω X Y) {a b : W ≃ₗ[R] W} (hb : P.Stab b) (x : X) :
     P.leviX (a * b) x = P.leviX a (P.leviX b x) := by
   rw [leviX_apply, leviX_apply, leviX_apply]
@@ -143,6 +181,9 @@ theorem leviX_mul (P : SympPolarization ω X Y) {a b : W ≃ₗ[R] W} (hb : P.St
   change (P.e (a (b (P.e.symm (x, 0))))).1 = _
   conv_lhs => rw [h1]
 
+/- English proof (translation)
+Simplify using `[leviX_apply]`.
+-/
 theorem leviX_one (P : SympPolarization ω X Y) (x : X) : P.leviX 1 x = x := by
   simp [leviX_apply]
 
@@ -262,6 +303,9 @@ def stdForm {d : ℕ} (M : Matrix (Fin d) (Fin d) R) :
       simp only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, mulVec_smul, dotProduct_smul,
         smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdForm_apply {d : ℕ} (M : Matrix (Fin d) (Fin d) R) (u v : (Fin d → R) × (Fin d → R)) :
     stdForm R M u v = u.1 ⬝ᵥ (M *ᵥ v.2) - v.1 ⬝ᵥ (M *ᵥ u.2) := rfl
 

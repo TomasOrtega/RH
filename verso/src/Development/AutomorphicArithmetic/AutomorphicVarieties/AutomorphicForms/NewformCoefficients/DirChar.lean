@@ -5,10 +5,20 @@ open NumberField IsDedekindDomain Topology Neutral.B1 Formalism.L2.Host GlobalTh
 
 namespace UpperTheory.V.Af.Nf
 
+/- English proof (translation)
+Establish `hM' : (M : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Rewrite using `[← map_natCast (algebraMap ℚ (Af ℚ)), ← map_mul, inv_mul_cancel₀ hM', map_one]`.
+-/
 private theorem dc_inv {M : ℕ} (hM : 1 ≤ M) : algebraMap ℚ (Af ℚ) (M : ℚ)⁻¹ * M = 1 := by
   have hM' : (M : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)
   rw [← map_natCast (algebraMap ℚ (Af ℚ)), ← map_mul, inv_mul_cancel₀ hM', map_one]
 
+/- English proof (translation)
+Take `⟨y, hy, hd⟩` from `hd`. Take `⟨z, hz, he⟩` from `he`. Establish `hM' : (M : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `h1 : algebraMap ℚ (Af ℚ) ((M : ℚ)⁻¹ * ((e : ℚ) - d)) = y - z`. Rewrite using `[map_mul, map_sub, map_intCast, map_intCast]`.
+
+Take the linear combination `algebraMap ℚ (Af ℚ) (M : ℚ)⁻¹ * (hd - he) + (y - z) * dc_inv hM`. Take `⟨n, hn⟩` from `ratAd.2.2 _ (h1 ▸ sub_mem hy hz)`. Rewrite using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[inv_mul_eq_iff_eq_mul₀ hM']`.
+
+Conclude with `hn` after adjusting the coercions.
+-/
 private theorem dc_uniq {M : ℕ} (hM : 1 ≤ M) {x : Af ℚ} {d e : ℤ} (hd : ∃ y ∈ Ohat ℚ, x - d = M * y)
     (he : ∃ y ∈ Ohat ℚ, x - e = M * y) : (d : ZMod M) = e := by
   obtain ⟨y, hy, hd⟩ := hd
@@ -23,6 +33,11 @@ private theorem dc_uniq {M : ℕ} (hM : 1 ≤ M) {x : Af ℚ} {d e : ℤ} (hd : 
   rw [inv_mul_eq_iff_eq_mul₀ hM'] at hn
   exact_mod_cast hn
 
+/- English proof (translation)
+Use `choose f hf using fun x : ↥(Ohat ℚ) => ratAd.2.1 M hM x x.2`. Use `⟨⟨⟨fun x => f x, ?_⟩, fun a b => ?_⟩, fun x d h => dc_uniq hM (hf x) h⟩` and prove the remaining obligations. Use `dc_uniq hM (e := 1) (hf 1) ⟨0, zero_mem _, by simp⟩` as an intermediate fact. Simplify using `using this`. Take `⟨y, hy, h1⟩` from `hf a`.
+
+Take `⟨z, hz, h2⟩` from `hf b`. Use `dc_uniq hM (e := f a * f b) (hf (a * b)) ⟨a * z + f b * y, add_mem (mul_mem a.2 hz) (mul_mem (intCast_mem _ _) hy), by` as an intermediate fact. Rewrite using `[Subring.coe_mul, Int.cast_mul]`. Take the linear combination `(a : Af ℚ) * h2 + (f b : Af ℚ) * h1⟩`. Simplify using `using this`.
+-/
 private theorem dc_red {M : ℕ} (hM : 1 ≤ M) : ∃ ρ : ↥(Ohat ℚ) →* ZMod M,
     ∀ (x : ↥(Ohat ℚ)) (d : ℤ), (∃ y ∈ Ohat ℚ, (x : Af ℚ) - d = M * y) → ρ x = d := by
   choose f hf using fun x : ↥(Ohat ℚ) => ratAd.2.1 M hM x x.2
@@ -43,34 +58,58 @@ private noncomputable abbrev pR : Ideles ℚ →* ℝˣ := Units.map (ev.comp (T
 
 private noncomputable abbrev dg : ℚˣ →* Ideles ℚ := Units.map (algebraMap ℚ (Ad ℚ)).toMonoidHom
 
+/- English proof (translation)
+The claim follows from `eq_ratCast ((ev.comp (TR.pInf ℚ)).comp (algebraMap ℚ (Ad ℚ))) (r : ℚ)`.
+-/
 private theorem pR_dg (r : ℚˣ) : (pR (dg r) : ℝ) = ((r : ℚ) : ℝ) :=
   eq_ratCast ((ev.comp (TR.pInf ℚ)).comp (algebraMap ℚ (Ad ℚ))) (r : ℚ)
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 private theorem pF_dg (r : ℚˣ) : pF (dg r) = Units.map (algebraMap ℚ (Af ℚ)).toMonoidHom r := Units.ext rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Af ℚ) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+-/
 private theorem pF_inf (t : (TR.Rinf ℚ)ˣ) : pF (TR.infId ℚ t) = 1 := by
   refine Units.ext ?_
   change (1 : Af ℚ) - 0 + 0 = 1
   simp
 
+/- English proof (translation)
+Establish `h : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x` using `fun x => (TR.infEq ℚ).symm_apply_apply x`. Express the relevant statement in the definitionally equal form `ev (TR.pInf ℚ (1 - TR.sInf ℚ 1 + TR.sInf ℚ t.val)) = ev t.val`. Simplify using `[h]`.
+-/
 private theorem pR_inf (t : (TR.Rinf ℚ)ˣ) : (pR (TR.infId ℚ t) : ℝ) = t.val Rat.infinitePlace := by
   have h : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x := fun x => (TR.infEq ℚ).symm_apply_apply x
   change ev (TR.pInf ℚ (1 - TR.sInf ℚ 1 + TR.sInf ℚ t.val)) = ev t.val
   simp [h]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Af ℚ) - 1 + u = u`. Simplify using the standard rewrite rules.
+-/
 private theorem pF_fin (u : (Af ℚ)ˣ) : pF (finId ℚ u) = u := by
   refine Units.ext ?_
   change (1 : Af ℚ) - 1 + u = u
   simp
 
+/- English proof (translation)
+Establish `h : ∀ x, TR.pInf ℚ (sFin ℚ x) = 0` using `fun x => map_zero (TR.infEq ℚ).symm`. Express the relevant statement in the definitionally equal form `ev (TR.pInf ℚ (1 - sFin ℚ 1 + sFin ℚ u.val)) = 1`. Simplify using `[h]`.
+-/
 private theorem pR_fin (u : (Af ℚ)ˣ) : (pR (finId ℚ u) : ℝ) = 1 := by
   have h : ∀ x, TR.pInf ℚ (sFin ℚ x) = 0 := fun x => map_zero (TR.infEq ℚ).symm
   change ev (TR.pInf ℚ (1 - sFin ℚ 1 + sFin ℚ u.val)) = 1
   simp [h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_mem hu.1 hv.1, by rw [mul_inv]; exact mul_mem hu.2 hv.2⟩`.
+-/
 private theorem zu_mul {u v : (Af ℚ)ˣ} (hu : IsZU u) (hv : IsZU v) : IsZU (u * v) :=
   ⟨mul_mem hu.1 hv.1, by rw [mul_inv]; exact mul_mem hu.2 hv.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem _, one_mem _⟩`.
+-/
 private theorem zu_one : IsZU 1 := ⟨one_mem _, one_mem _⟩
 
 private noncomputable def PU : Subgroup (Ideles ℚ) where
@@ -80,6 +119,13 @@ private noncomputable def PU : Subgroup (Ideles ℚ) where
   inv_mem' := fun {a} ha => ⟨by rw [map_inv, Units.val_inv_eq_inv_val]; exact inv_pos.2 ha.1,
     by rw [map_inv]; exact ⟨ha.2.2, ha.2.1⟩⟩
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `h`. Rewrite `h0` using `[pR_dg, Rat.cast_pos]`. Take `⟨n, hn⟩` from `ratAd.2.2 r h1`. Take `⟨m, hm⟩` from `ratAd.2.2 (r⁻¹ : ℚˣ) h2`. Establish `e : n * m = 1`.
+
+Use `r.mul_inv` as an intermediate fact. Rewrite `this` using `[hn, hm]`. Conclude with `this` after adjusting the coercions. Rewrite `h0` using `[hn]`. Use `Int.eq_one_of_mul_eq_one_right (by exact_mod_cast h0.le) e` as an intermediate fact.
+
+Conclude with `Units.ext (by rw [hn, this]; rfl)`.
+-/
 private theorem dc_ker (r : ℚˣ) (h : dg r ∈ PU) : r = 1 := by
   obtain ⟨h0, h1, h2⟩ := h
   rw [pR_dg, Rat.cast_pos] at h0
@@ -93,6 +139,15 @@ private theorem dc_ker (r : ℚˣ) (h : dg r ∈ PU) : r = 1 := by
   have := Int.eq_one_of_mul_eq_one_right (by exact_mod_cast h0.le) e
   exact Units.ext (by rw [hn, this]; rfl)
 
+/- English proof (translation)
+Introduce `a`. Take `⟨r, u, hr, hu, e⟩` from `ratAd.1 (pF a)`. Establish `key : ∀ s : ℚˣ, s * s = 1 → IsZU (pF (dg s)) → 0 < ((s : ℚ) : ℝ) * pR a → ∃ p, PU.subtype.coprod dg p = a` using `fun s hs hz hp => by`. Use `⟨(⟨a * dg (s * r⁻¹), ?_, ?_⟩, s * r), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, pR_dg, Units.val_mul, Rat.cast_mul, ← mul_assoc, mul_comm _ (((s : ℚ) : ℝ))]`.
+
+Use `mul_pos hp ?_` and prove the remaining obligations. Rewrite using `[Units.val_inv_eq_inv_val, Rat.cast_pos]`. Conclude with `inv_pos.2 hr`. Establish `: pF (a * dg (s * r⁻¹)) = u * pF (dg s)`. Rewrite using `[map_mul, e, ← pF_dg, map_mul, map_mul, map_inv, map_inv, mul_comm _ u, mul_comm (pF (dg s)), mul_assoc, mul_inv_cancel_left]`.
+
+Rewrite using `[this]`. Conclude with `zu_mul hu hz`. Express the relevant statement in the definitionally equal form `a * dg (s * r⁻¹) * dg (s * r) = a`. Rewrite using `[mul_assoc, ← map_mul, mul_mul_mul_comm, hs, inv_mul_cancel, mul_one, map_one, mul_one]`. Break down `lt_or_gt_of_ne (pR a).ne_zero with h | h` into its components or cases.
+
+Use `key (-1) (by simp) ?_ (by simpa using h)` and prove the remaining obligations. Establish `: algebraMap ℚ (Af ℚ) (-1) ∈ Ohat ℚ` using `by rw [map_neg, map_one]; exact neg_mem (one_mem _)`. Conclude with `⟨this, this⟩`. Conclude with `key 1 (by simp) (by rw [map_one, map_one]; exact zu_one) (by simpa using h)`.
+-/
 private theorem dc_surj : Function.Surjective (PU.subtype.coprod dg) := by
   intro a
   obtain ⟨r, u, hr, hu, e⟩ := ratAd.1 (pF a)
@@ -116,6 +171,13 @@ private theorem dc_surj : Function.Surjective (PU.subtype.coprod dg) := by
     exact ⟨this, this⟩
   · exact key 1 (by simp) (by rw [map_one, map_one]; exact zu_one) (by simpa using h)
 
+/- English proof (translation)
+Establish `c1 : Continuous pF` using `Continuous.units_map _ continuous_snd`. Establish `c2 : Continuous fun a => (pR a : ℝ)` using `((InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal Rat.infinitePlace)).continuous.comp ((continuous_apply Rat.infinitePlace).comp continuous_fst)).comp Units.continuous_val`. Establish `c3 : Continuous fun a => (pF a : Af ℚ)` using `Units.continuous_val.comp c1`. Establish `c4 : Continuous fun a => (((pF a)⁻¹ : (Af ℚ)ˣ) : Af ℚ)` using `Units.continuous_coe_inv.comp c1`. Establish `c5 : Continuous fun a => algebraMap ℚ (Af ℚ) (M : ℚ)⁻¹ * ((pF a : Af ℚ) - (1 : ℤ))` using `continuous_const.mul (c3.sub continuous_const)`.
+
+Establish `h2 : ∀ᶠ a : Ideles ℚ in 𝓝 1, 0 < (pR a : ℝ)` using `(isOpen_lt continuous_const c2).mem_nhds PU.one_mem.1`. Establish `h3` using `(isOpen_Ohat.preimage c3).mem_nhds (x := 1) PU.one_mem.2.1`. Establish `h4` using `(isOpen_Ohat.preimage c4).mem_nhds (x := 1) PU.one_mem.2.2`. Establish `h5` using `(isOpen_Ohat.preimage c5).mem_nhds (x := 1) (by`. Rewrite using `[Set.mem_preimage, map_one, Units.val_one, Int.cast_one, sub_self, mul_zero]`.
+
+Conclude with `zero_mem (Ohat ℚ))`. Use `filter_upwards [h2, h3, h4, h5] with a a2 a3 a4 a5`. Conclude with `⟨⟨a2, a3, a4⟩, a5⟩`.
+-/
 private theorem dc_nhds {M : ℕ} : ∀ᶠ a : Ideles ℚ in 𝓝 1, a ∈ PU ∧
     algebraMap ℚ (Af ℚ) (M : ℚ)⁻¹ * ((pF a : Af ℚ) - (1 : ℤ)) ∈ Ohat ℚ := by
   have c1 : Continuous pF := Continuous.units_map _ continuous_snd
@@ -136,6 +198,21 @@ private theorem dc_nhds {M : ℕ} : ∀ᶠ a : Ideles ℚ in 𝓝 1, a ∈ PU �
 
 end UpperTheory.V.Af.Nf
 
+/- English proof (translation)
+Introduce `M hM χ`. Take `⟨ρ, hρ⟩` from `dc_red hM`. Set `j : ↥PU →* ↥(Ohat ℚ)` to `{ toFun := fun p => ⟨pF p, p.2.2.1⟩ map_one' := Subtype.ext (congrArg Units.val (map_one pF)) map_mul' := fun a b => Subtype.ext (congrArg Units.val (map_mul pF a.1 b.1)) }`. Set `ψ : ↥PU →* ℂˣ` to `(χ.toMonoidHom.comp (ρ.comp j)).toHomUnits`. Set `φ : ↥PU × ℚˣ →* ℂˣ` to `ψ⁻¹.comp (MonoidHom.fst _ _)`.
+
+Establish `hker : (PU.subtype.coprod dg).ker ≤ φ.ker` using `fun p hp => by`. Establish `h1 : (p.1 : Ideles ℚ) * dg p.2 = 1` using `hp`. Establish `h2` using `dc_ker p.2 (by rw [eq_inv_of_mul_eq_one_right h1]; exact PU.inv_mem p.1.2)`. Rewrite `h1` using `[h2, map_one, mul_one]`. Express the relevant statement in the definitionally equal form `ψ⁻¹ p.1 = 1`.
+
+Rewrite using `[show p.1 = 1 from Subtype.ext h1, map_one]`. Set `ω : Ideles ℚ →* ℂˣ` to `MonoidHom.liftOfSurjective _ dc_surj ⟨φ, hker⟩`. Establish `hω : ∀ p, ω (PU.subtype.coprod dg p) = φ p` using `fun p => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ p`. Establish `hv : ∀ a (ha : a ∈ PU) (d : ℤ), (∃ y ∈ Ohat ℚ, (pF a : Af ℚ) - d = M * y) → (ω a : ℂ) * χ (d : ZMod M) = 1`. Introduce `a ha d hd`.
+
+Establish `h1 : ω (a * dg 1) = (ψ ⟨a, ha⟩)⁻¹` using `hω (⟨a, ha⟩, 1)`. Rewrite `h1` using `[map_one, mul_one]`. Rewrite using `[h1, ← hρ (j ⟨a, ha⟩) d hd]`. Conclude with `(ψ ⟨a, ha⟩).inv_mul`. Establish `hone : ∀ a (ha : a ∈ PU), (∃ y ∈ Ohat ℚ, (pF a : Af ℚ) - (1 : ℤ) = M * y) → ω a = 1` using `fun a ha h => by`.
+
+Use `hv a ha 1 h` as an intermediate fact. Rewrite `this` using `[Int.cast_one, map_one, mul_one]`. Conclude with `Units.ext this`. Use `⟨⟨ω, continuous_of_continuousAt_one ω ?_, fun k => ?_⟩, fun t ht => ?_, fun u hu d hd => ?_⟩` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : ℂˣ))).congr ?_ filter_upwards [dc_nhds (M := M)] with a ha` and prove the remaining obligations.
+
+Conclude with `(hone a ha.1 ⟨_, ha.2, by rw [← mul_assoc, mul_comm (M : Af ℚ), dc_inv hM, one_mul]⟩).symm`. Establish `h1 : ω (1 * dg k) = ψ⁻¹ 1` using `hω (1, k)`. Rewrite `h1` using `[map_one, one_mul]`. Conclude with `h1`. Conclude with `hone _ ⟨by rw [pR_inf]; exact ht _, by rw [pF_inf]; exact zu_one⟩ ⟨0, zero_mem _, by rw [pF_inf]; simp⟩`.
+
+Conclude with `hv _ ⟨by rw [pR_fin]; exact one_pos, by rw [pF_fin]; exact hu⟩ d (by rw [pF_fin]; exact hd)`.
+-/
 theorem UpperTheory.V.Af.Nf.dirChar :
     UpperTheory.V.Af.Nf.DirChar := by
   intro M hM χ

@@ -14,15 +14,32 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.PowKernel
 
+/- English proof (translation)
+The claim follows from `Fan.IsLimit.hom_ext p.lim x y h`.
+-/
 theorem pow_ext {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] {j : ℕ} (p : IsPowGrp G' G j)
     {X : Over S} {x y : X ⟶ G'} (h : ∀ l, x ≫ p.pr l = y ≫ p.pr l) : x = y :=
   Fan.IsLimit.hom_ext p.lim x y h
 
+/- English proof (translation)
+Use `haveI := p.hom l`. Conclude with `IsMonHom.one_hom (p.pr l)`.
+-/
 theorem one_pr {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] {j : ℕ} (p : IsPowGrp G' G j)
     (l : Fin j) : η[G'] ≫ p.pr l = η[G] := by
   haveI := p.hom l
   exact IsMonHom.one_hom (p.pr l)
 
+/- English proof (translation)
+Introduce `S T' T G' G B' B _ _ _ _ _ _ j pT p pB i q i' q' hi hq h`. Establish `w : i' ≫ q' = toUnit T' ≫ η[B']`. Apply `pow_ext pB` to reduce the goal to its premises. Introduce `l`. Rewrite using `[Category.assoc, Category.assoc, hq l, one_pr pB l, ← Category.assoc, hi l, Category.assoc, h.w, ← Category.assoc, toUnit_unique (pT.pr l ≫ toUnit T) (toUnit T')]`.
+
+Establish `key : ∀ (s : PullbackCone q' η[B']) (l : Fin j), (s.fst ≫ p.pr l) ≫ q = s.snd ≫ η[B]`. Introduce `s l`. Rewrite using `[Category.assoc, ← hq l, ← Category.assoc, s.condition, Category.assoc, one_pr pB l]`. Establish `fac : ∀ (s : PullbackCone q' η[B']) (l : Fin j), Fan.IsLimit.lift pT.lim (fun l => h.lift (s.fst ≫ p.pr l) s.snd (key s l)) ≫ pT.pr l = h.lift (s.fst ≫ p.pr l) s.snd (key s l)` using `fun s l => Fan.IsLimit.fac pT.lim _ l`. Use `IsPullback.of_isLimit (c := PullbackCone.mk i' (toUnit T') w) (PullbackCone.IsLimit.mk w (fun s => Fan.IsLimit.lift pT.lim (fun l => h.lift (s.fst ≫ p.pr l) s.snd (key s l))) ?_ ?_ ?_)` and prove the remaining obligations.
+
+Introduce `s`. Apply `pow_ext p` to reduce the goal to its premises. Introduce `l`. Rewrite using `[Category.assoc, hi l, ← Category.assoc, fac s l, h.lift_fst]`. Introduce `s`.
+
+Conclude with `toUnit_unique _ _`. Introduce `s m hm _`. Apply `pow_ext pT` to reduce the goal to its premises. Introduce `l`. Rewrite using `[fac s l]`.
+
+Apply `h.hom_ext` to reduce the goal to its premises. Rewrite using `[h.lift_fst, Category.assoc, ← hi l, ← Category.assoc, hm]`. Rewrite using `[h.lift_snd]`. Conclude with `toUnit_unique _ _`.
+-/
 theorem main : ∀ (S : Scheme.{0}) (T' T G' G B' B : Over S) [GrpObj T'] [GrpObj T] [GrpObj G'] [GrpObj G] [GrpObj B'] [GrpObj B] (j : ℕ) (pT : IsPowGrp T' T j) (p : IsPowGrp G' G j) (pB : IsPowGrp B' B j) (i : T ⟶ G) (q : G ⟶ B) (i' : T' ⟶ G') (q' : G' ⟶ B'), (∀ l, i' ≫ p.pr l = pT.pr l ≫ i) → (∀ l, q' ≫ pB.pr l = p.pr l ≫ q) → IsPullback i (toUnit T) q η[B] → IsPullback i' (toUnit T') q' η[B'] := by
   intro S T' T G' G B' B _ _ _ _ _ _ j pT p pB i q i' q' hi hq h
 

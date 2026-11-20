@@ -8,6 +8,9 @@ namespace PI.EtaInfGenW
 
 variable {L : Type} [Field L] [NumberField L] {F : Type} [Field F] [NumberField F] [Algebra F L]
 
+/- English proof (translation)
+Rewrite `h` using `[InfinitePlace.comap_mk]`. Establish `hr : ComplexEmbedding.IsReal (φ.comp (algebraMap F L))`. Rewrite using `[← InfinitePlace.isReal_mk_iff, h]`. Conclude with `hw`. Rewrite using `[← h, InfinitePlace.embedding_mk_eq_of_isReal hr]`.
+-/
 theorem comp_eq_embedding (φ : L →+* ℂ) (w : InfinitePlace F) (hw : w.IsReal)
     (h : (InfinitePlace.mk φ).comap (algebraMap F L) = w) :
     φ.comp (algebraMap F L) = w.embedding := by
@@ -16,6 +19,9 @@ theorem comp_eq_embedding (φ : L →+* ℂ) (w : InfinitePlace F) (hw : w.IsRea
     rw [← InfinitePlace.isReal_mk_iff, h]; exact hw
   rw [← h, InfinitePlace.embedding_mk_eq_of_isReal hr]
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]`. Use `split_ifs with h`. Rewrite using `[abs_of_neg h, Complex.ofReal_neg, div_neg, div_self (Complex.ofReal_ne_zero.mpr hr)]`. Rewrite using `[abs_of_nonneg (not_lt.mp h), div_self (Complex.ofReal_ne_zero.mpr hr)]`.
+-/
 theorem div_norm_real (r : ℝ) (hr : r ≠ 0) :
     ((r : ℂ) / ((‖(r : ℂ)‖ : ℝ) : ℂ)) = if (r : ℂ).re < 0 then -1 else 1 := by
   rw [Complex.norm_real, Real.norm_eq_abs, Complex.ofReal_re]
@@ -23,6 +29,11 @@ theorem div_norm_real (r : ℝ) (hr : r ≠ 0) :
   · rw [abs_of_neg h, Complex.ofReal_neg, div_neg, div_self (Complex.ofReal_ne_zero.mpr hr)]
   · rw [abs_of_nonneg (not_lt.mp h), div_self (Complex.ofReal_ne_zero.mpr hr)]
 
+/- English proof (translation)
+Establish `hφ : φ ((upF F k : Lˣ) : L) = ((InfinitePlace.embedding_of_isReal hw (k : F) : ℝ) : ℂ)`. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, ← comp_eq_embedding φ w hw h]`. Both sides reduce to the same expression. Establish `hne : (InfinitePlace.embedding_of_isReal hw (k : F) : ℝ) ≠ 0` using `(map_ne_zero _).mpr k.ne_zero`. Rewrite using `[hφ, div_norm_real _ hne, etaInf, InfinitePlace.embedding_of_isReal_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem single (φ : L →+* ℂ) (w : InfinitePlace F) (hw : w.IsReal)
     (h : (InfinitePlace.mk φ).comap (algebraMap F L) = w) (k : Fˣ) :
     φ ((upF F k : Lˣ) : L) / ((‖φ ((upF F k : Lˣ) : L)‖ : ℝ) : ℂ) = ((etaInf F w k : ℂˣ) : ℂ) := by

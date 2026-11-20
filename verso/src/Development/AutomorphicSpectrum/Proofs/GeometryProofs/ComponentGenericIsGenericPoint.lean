@@ -12,6 +12,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.GenPtModel
 
+/- English proof (translation)
+Use `show closure {x} ∈ irreducibleComponents X`. Rewrite using `[irreducibleComponents_eq_maximals_closed]`. Use `⟨⟨isClosed_closure, isIrreducible_singleton.closure⟩, fun T hT hxT => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `QuasiSober.sober hT.2 hT.1`. Establish `hpx : p = x` using `h p ((hp.specializes_iff_mem).2 (hxT (subset_closure (Set.mem_singleton x))))`.
+
+Introduce `y hy`. Rewrite using `[← hpx]`. Conclude with `specializes_iff_mem_closure.1 ((hp.specializes_iff_mem).2 hy)`.
+-/
 theorem mem_genericPoints_of_eq {X : Scheme.{0}} {x : X}
     (h : ∀ p : X, p ⤳ x → p = x) : x ∈ genericPoints X := by
   show closure {x} ∈ irreducibleComponents X
@@ -23,6 +28,15 @@ theorem mem_genericPoints_of_eq {X : Scheme.{0}} {x : X}
   rw [← hpx]
   exact specializes_iff_mem_closure.1 ((hp.specializes_iff_mem).2 hy)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y Ω₀ _ ξ₀ hξ`. Apply `mem_genericPoints_of_eq` to reduce the goal to its premises. Introduce `p hp`. Establish `hp' : p ∈ Set.range (Y.X.fromSpecStalk (GlobalTheory.CompanionTheory.Ar.genPt ξ₀))`. Rewrite using `[Scheme.range_fromSpecStalk]`.
+
+Conclude with `hp`. Take `⟨q, rfl⟩` from `hp'`. Establish `hfield : IsField (Y.X.presheaf.stalk (GlobalTheory.CompanionTheory.Ar.genPt ξ₀))` using `MulEquiv.isField (Field.toIsField Ω₀) (RingEquiv.ofBijective (CommRingCat.Hom.hom (Scheme.stalkClosedPointTo ξ₀)) hξ.bij).toMulEquiv`. Establish `hq : q = IsLocalRing.closedPoint _`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `IsLocalRing.le_maximalIdeal q.isPrime.ne_top`. Introduce `a ha`. Distinguish the cases in `h0 : a = 0`. Rewrite using `[h0]`.
+
+Conclude with `q.asIdeal.zero_mem`. Take `⟨b, hb⟩` from `hfield.mul_inv_cancel h0`. Conclude with `absurd ⟨⟨a, b, hb, by rw [mul_comm]; exact hb⟩, rfl⟩ ((IsLocalRing.mem_maximalIdeal a).1 ha)`. Rewrite using `[hq, Scheme.fromSpecStalk_closedPoint]`.
+-/
 theorem genPt_mem_genericPoints : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω₀ : Type) [Field Ω₀] (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ Y.X), IsCptGen ξ₀ → GlobalTheory.CompanionTheory.Ar.genPt ξ₀ ∈ genericPoints Y.X := by
   intro E _ _ _ H D l Xo c Y Ω₀ _ ξ₀ hξ
   apply mem_genericPoints_of_eq

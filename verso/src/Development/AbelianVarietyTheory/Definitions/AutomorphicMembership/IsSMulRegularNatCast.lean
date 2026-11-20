@@ -13,6 +13,9 @@ namespace GlobalTheory.LocM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
+/- English proof (translation)
+Set `` to `φ.toAlgebra`. Establish `: Module.Flat R T` using `hφ`. Establish `hr` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (R := R) (M := T) (r := (c : R)) (mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.2 hc))`. Use `hr (a₁ := a) (a₂ := 0) ?_` and prove the remaining obligations. Simplify using `only [Nat.cast_smul_eq_nsmul, smul_zero, nsmul_eq_mul, h]`.
+-/
 theorem eq_zero_of_flat {R T : Type} [CommRing R] [IsDomain R] [CharZero R] [CommRing T] (φ : R →+* T) (hφ : φ.Flat)
     {c : ℕ} (hc : c ≠ 0) {a : T} (h : (c : T) * a = 0) : a = 0 := by
   let := φ.toAlgebra
@@ -26,6 +29,9 @@ def Lat.mulIncl {B : Mdl Y i₀} (L : Lat B) (c : ℕ) : L.N.toMod ⟶ B.om :=
   LB.homOfLinear (fun V => c • QCoh.appLinear L.N.incl V) fun h s =>
     (congrArg (c • ·) (Twist.app_resM L.N.incl h s)).trans (map_nsmul (Twist.resM B.om h) c _).symm
 
+/- English proof (translation)
+Use `B.flat` as an intermediate fact. Establish `hf` using `Flat.flat_appLE B.s (isAffineOpen_top _) hU le_top`. Set `φ : B.i.c.V W →+* Γ(B.X, U)` to `(B.s.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (.of (B.i.c.V W))).inv.hom`. Establish `hφ : φ.Flat` using `(RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of (B.i.c.V W))).inv)).comp hf`. Conclude with `eq_zero_of_flat φ hφ hc h`.
+-/
 theorem Mdl.isSMulRegular_natCast (B : Mdl Y i₀) {U : B.X.Opens} (hU : IsAffineOpen U) {c : ℕ} (hc : c ≠ 0)
     {a : Γ(B.X, U)} (h : (c : Γ(B.X, U)) * a = 0) : a = 0 := by
   have := B.flat

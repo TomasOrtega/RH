@@ -50,6 +50,9 @@ noncomputable def UpperTheory.Reformulated.B.CovariantDegrees.jE :
         (@Algebra.algebraMap E Ω (@Semifield.toCommSemiring E (@Field.toSemifield E inst))
           (@DivisionSemiring.toSemiring Ω (@Semifield.toDivisionSemiring Ω (@Field.toSemifield Ω inst_1))) inst_2)
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.aux2 :
     ∀ {E : Type} [inst : Field E] [inst_1 : @NumberField E inst],
       @Module.Free Rat E (@CommSemiring.toSemiring Rat (@CommRing.toCommSemiring Rat Rat.commRing))
@@ -234,6 +237,9 @@ noncomputable def UpperTheory.Reformulated.B.CovariantDegrees.Dec.{u_1, u_2} :
         (A : @ValuationSubring Ω inst_1) ↦
       @ValuationSubring.decompositionSubgroup F Ω inst inst_1 inst_2 A
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.aux6 :
     ∀ {E Ω : Type} [inst : Field E] [inst_1 : Field Ω]
       [inst_2 :
@@ -246,6 +252,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.aux6 :
           (@DivisionSemiring.toSemiring Ω (@Semifield.toDivisionSemiring Ω (@Field.toSemifield Ω inst_1))) inst_2) := by
   intros; infer_instance
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.aux7 :
     ∀ {Ω : Type} [inst : Field Ω]
       [inst_1 :
@@ -286,6 +295,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.aux7 :
           (@Algebra.id (@Padic l inst)
             (@Semifield.toCommSemiring (@Padic l inst) (@Field.toSemifield (@Padic l inst) (@instFieldPadic l inst)))))
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.laurent_T_neg_one_mul_T_one :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)],
       @IsScalarTower Rat (@Padic l hl) (@UpperTheory.Reformulated.B.CovariantDegrees.Om l hl)
@@ -404,6 +416,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.laurent_T_neg_one_mul_T_one 
                     (@PadicAlgCl.charZero l hl))))))) := by
   intros; infer_instance
 
+/- English proof (translation)
+Introduce `l hl Ω _ _ j`. Use `letI : Algebra Ω (PadicAlgCl l) := j.toAlgebra`. Conclude with `IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.aux11 :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {Ω : Type} [inst : Field Ω]
       [inst_1 :
@@ -442,6 +457,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.aux11 :
   letI : Algebra Ω (PadicAlgCl l) := j.toAlgebra
   exact IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.aux12 :
     ∀ {Ω : Type} [inst : Field Ω]
       [inst_1 :
@@ -613,6 +631,9 @@ noncomputable def UpperTheory.Reformulated.B.CovariantDegrees.resQ :
         (@UpperTheory.Reformulated.B.CovariantDegrees.aux11 l hl Ω inst inst_1 j) (@UpperTheory.Reformulated.B.CovariantDegrees.aux11 l hl Ω inst inst_1 j)
         (@UpperTheory.Reformulated.B.CovariantDegrees.aux12 Ω inst inst_1 inst_2)
 
+/- English proof (translation)
+Use `letI : Algebra Ω (PadicAlgCl l) := j.toAlgebra`. Use `haveI := UpperTheory.Reformulated.B.CovariantDegrees.aux11 j`. Use `haveI : Normal ℚ Ω := UpperTheory.Reformulated.B.CovariantDegrees.aux12`. Conclude with `AlgHom.restrictNormal_commutes (σ.restrictScalars ℚ).toAlgHom Ω x`.
+-/
 private theorem UpperTheory.Reformulated.B.CovariantDegrees.j_resQ {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [CharZero Ω]
     [IsAlgClosure ℚ Ω] (j : Ω →+* PadicAlgCl l) (σ : UpperTheory.Reformulated.B.CovariantDegrees.GQ l) (x : Ω) :
     j (UpperTheory.Reformulated.B.CovariantDegrees.resQ j σ x) = σ (j x) := by
@@ -621,6 +642,9 @@ private theorem UpperTheory.Reformulated.B.CovariantDegrees.j_resQ {l : ℕ} [Fa
   haveI : Normal ℚ Ω := UpperTheory.Reformulated.B.CovariantDegrees.aux12
   exact AlgHom.restrictNormal_commutes (σ.restrictScalars ℚ).toAlgHom Ω x
 
+/- English proof (translation)
+Rewrite using `[← (Module.finBasis ℚ E).sum_repr x, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `mul_mem (SubfieldClass.ratCast_mem _ _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`.
+-/
 private theorem UpperTheory.Reformulated.B.CovariantDegrees.jE_mem {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] (j : Ω →+* PadicAlgCl l) (x : E) :
     UpperTheory.Reformulated.B.CovariantDegrees.jE j x ∈ UpperTheory.Reformulated.B.CovariantDegrees.KwF (E := E) j := by
@@ -629,6 +653,9 @@ private theorem UpperTheory.Reformulated.B.CovariantDegrees.jE_mem {l : ℕ} [Fa
   rw [Rat.smul_def, map_mul, map_ratCast]
   exact mul_mem (SubfieldClass.ratCast_mem _ _) (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ j σ hσ x`. Apply `j.injective` to reduce the goal to its premises. Use `(UpperTheory.Reformulated.B.CovariantDegrees.j_resQ j σ _).trans ?_` and prove the remaining obligations. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ _ (UpperTheory.Reformulated.B.CovariantDegrees.jE_mem j x)`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.zero_contDiffOn_supported :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -1229,6 +1256,9 @@ noncomputable def UpperTheory.Reformulated.B.CovariantDegrees.resE :
           (@UpperTheory.Reformulated.B.CovariantDegrees.resQ l hl Ω inst_2 inst_4 inst_5 j σ))
         (@UpperTheory.Reformulated.B.CovariantDegrees.zero_contDiffOn_supported l hl E Ω inst inst_1 inst_2 inst_3 inst_4 inst_5 j σ hσ)
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Reformulated.B.CovariantDegrees.j_resQ j σ x`.
+-/
 private theorem UpperTheory.Reformulated.B.CovariantDegrees.j_resE {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (j : Ω →+* PadicAlgCl l)
     (σ : UpperTheory.Reformulated.B.CovariantDegrees.GQ l) (hσ : σ ∈ (UpperTheory.Reformulated.B.CovariantDegrees.KwF (E := E) j).fixingSubgroup) (x : Ω) :
@@ -1236,6 +1266,11 @@ private theorem UpperTheory.Reformulated.B.CovariantDegrees.j_resE {l : ℕ} [Fa
   UpperTheory.Reformulated.B.CovariantDegrees.j_resQ j σ x
 
 open Pointwise in
+/- English proof (translation)
+Establish `hn : ∀ x, ‖j (UpperTheory.Reformulated.B.CovariantDegrees.resE j σ hσ x)‖ = ‖j x‖` using `fun x => by`. Rewrite using `[UpperTheory.Reformulated.B.CovariantDegrees.j_resE]`. Conclude with `(spectralNorm_eq_of_equiv σ (j x)).symm`. Use `MulAction.mem_stabilizer_iff.2 (SetLike.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, hj, hj, ← hn]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.Reformulated.B.CovariantDegrees.resE_mem {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [NumberField E]
     [Field Ω] [Algebra E Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {j : Ω →+* PadicAlgCl l}
     {A : ValuationSubring Ω} (hj : ∀ x : Ω, x ∈ A ↔ ‖j x‖ ≤ 1)
@@ -1248,6 +1283,9 @@ private theorem UpperTheory.Reformulated.B.CovariantDegrees.resE_mem {l : ℕ} [
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, hj, hj, ← hn]
   simp
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ j σ`. Conclude with `σ.2`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.column_matrix_mul_inverse :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -1577,6 +1615,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.column_matrix_mul_inverse :
   intro l hl E Ω _ _ _ _ j σ
   exact σ.2
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ _ j A hj σ`. Conclude with `UpperTheory.Reformulated.B.CovariantDegrees.resE_mem hj _ _`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.complex_normed_instance_compat :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -1859,6 +1900,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.complex_normed_instance_comp
   intro l hl E Ω _ _ _ _ _ _ _ j A hj σ
   exact UpperTheory.Reformulated.B.CovariantDegrees.resE_mem hj _ _
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ j`. Conclude with `Subgroup.one_mem _`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.padic_embedding_algebra_compat :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -2290,6 +2334,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.padic_embedding_algebra_comp
   intro l hl E Ω _ _ _ _ j
   exact Subgroup.one_mem _
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ _ j A hj`. Conclude with `UpperTheory.Reformulated.B.CovariantDegrees.resE_mem hj _ _`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.blockM_one_partner_eq_one :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -2666,6 +2713,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.blockM_one_partner_eq_one :
   intro l hl E Ω _ _ _ _ _ _ _ j A hj
   exact UpperTheory.Reformulated.B.CovariantDegrees.resE_mem hj _ _
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ _ j A hj`. Use `Subtype.ext (AlgEquiv.ext fun x => j.injective ?_)` and prove the remaining obligations. Conclude with `UpperTheory.Reformulated.B.CovariantDegrees.j_resE (E := E) j 1 (Subgroup.one_mem _) x`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.blockM_mul_alt :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -3062,6 +3112,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.blockM_mul_alt :
   refine Subtype.ext (AlgEquiv.ext fun x => j.injective ?_)
   exact UpperTheory.Reformulated.B.CovariantDegrees.j_resE (E := E) j 1 (Subgroup.one_mem _) x
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ j σ τ`. Conclude with `(σ * τ).2`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.conj_invariant_character_mem :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -3515,6 +3568,9 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.conj_invariant_character_mem
   intro l hl E Ω _ _ _ _ j σ τ
   exact (σ * τ).2
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ _ j A hj σ τ`. Conclude with `UpperTheory.Reformulated.B.CovariantDegrees.resE_mem hj _ _`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.rootGL_mem_unitary :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -3928,6 +3984,11 @@ theorem UpperTheory.Reformulated.B.CovariantDegrees.rootGL_mem_unitary :
   intro l hl E Ω _ _ _ _ _ _ _ j A hj σ τ
   exact UpperTheory.Reformulated.B.CovariantDegrees.resE_mem hj _ _
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ _ j A hj σ τ`. Use `Subtype.ext (AlgEquiv.ext fun x => j.injective ?_)` and prove the remaining obligations. Use `(UpperTheory.Reformulated.B.CovariantDegrees.j_resE j (σ * τ).1 (σ * τ).2 x).trans ?_` and prove the remaining obligations. Use `Eq.symm ((UpperTheory.Reformulated.B.CovariantDegrees.j_resE j σ.1 σ.2 (UpperTheory.Reformulated.B.CovariantDegrees.resE j τ.1 τ.2 x)).trans ?_)` and prove the remaining obligations. Rewrite using `[UpperTheory.Reformulated.B.CovariantDegrees.j_resE]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.conj_invariant_character_transport :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :
@@ -5584,6 +5645,15 @@ noncomputable def UpperTheory.Reformulated.B.CovariantDegrees.rHom :
           (@UpperTheory.Reformulated.B.CovariantDegrees.blockM_mul_alt l hl E Ω inst inst_1 inst_2 inst_3 inst_4 inst_5 inst_6 j A hj))
         (@UpperTheory.Reformulated.B.CovariantDegrees.conj_invariant_character_transport l hl E Ω inst inst_1 inst_2 inst_3 inst_4 inst_5 inst_6 j A hj)
 
+/- English proof (translation)
+Introduce `l hl E Ω _ _ _ _ _ _ _ j A hj`. Establish `h : Continuous ((UpperTheory.Reformulated.B.CovariantDegrees.Dec A).subtype.comp (UpperTheory.Reformulated.B.CovariantDegrees.rHom (E` using `E) hj)) := by`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`.
+
+Take `⟨L, hL, hLs⟩` from `(krullTopology_mem_nhds_one_iff E Ω s).1 hs`. Set `b` to `Module.finBasis E L`. Establish `hU : ∀ᶠ σ : (UpperTheory.Reformulated.B.CovariantDegrees.KwF (E` using `E) j).fixingSubgroup in nhds 1, ∀ i, σ.1 (j (b i)) = j (b i) := by`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Establish `ho` using `(stabilizer_isOpen_of_isIntegral (K := ℚ_[l]) (j (b i))).preimage (continuous_subtype_val (p := fun σ => σ ∈ (UpperTheory.Reformulated.B.CovariantDegrees.KwF (E := E) j).fixingSubgroup))`.
+
+Conclude with `ho.mem_nhds (Subgroup.one_mem (MulAction.stabilizer _ _))`. Use `hU.mono fun σ hσ => hLs ?_` and prove the remaining obligations. Use `(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun x hx => ?_` and prove the remaining obligations. Establish `key : (UpperTheory.Reformulated.B.CovariantDegrees.resE j σ.1 σ.2).toLinearMap ∘ₗ L.val.toLinearMap = L.val.toLinearMap` using `b.ext fun i => j.injective ((UpperTheory.Reformulated.B.CovariantDegrees.j_resE j σ.1 σ.2 (b i)).trans (hσ i))`. Conclude with `LinearMap.congr_fun key ⟨x, hx⟩`.
+
+Conclude with `continuous_induced_rng.2 h`.
+-/
 theorem UpperTheory.Reformulated.B.CovariantDegrees.continuous_rHom :
     ∀ {l : Nat} [hl : Fact (Nat.Prime l)] {E Ω : Type} [inst : Field E] [inst_1 : @NumberField E inst] [inst_2 : Field Ω]
       [inst_3 :

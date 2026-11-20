@@ -26,9 +26,15 @@ def toEuclidSplitConj : ((ι ⊕ κ) → mixedSpace K) ≃L[ℝ] (ι → mixedSp
   (LinearEquiv.sumArrowLequivProdArrow ι κ ℝ (mixedSpace K)).toContinuousLinearEquiv.trans
     ((ContinuousLinearEquiv.refl ℝ (ι → mixedSpace K)).prodCongr (toEuclidPiConj K))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEuclidSplitConj_apply (x : (ι ⊕ κ) → mixedSpace K) :
     toEuclidSplitConj K ι κ x = (fun i ↦ x (.inl i), toEuclidPiConj K fun k ↦ x (.inr k)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toEuclidSplit_symm_apply (a : ι → mixedSpace K) (v : EuclidPi K κ) :
     (toEuclidSplit K ι κ).symm (a, v) = Sum.elim a ((toEuclidPi K).symm v) := rfl
 
@@ -42,6 +48,9 @@ def mixedPartialFourierSchwartz (φ : 𝓢((ι ⊕ κ) → mixedSpace K, ℂ)) :
     (partialFourierSndSchwartz
       (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (toEuclidSplit K ι κ).symm φ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[mixedPartialFourier, mixedFourierPi_eq]`. Both sides reduce to the same expression.
+-/
 theorem mixedPartialFourierSchwartz_apply (φ : 𝓢((ι ⊕ κ) → mixedSpace K, ℂ)) :
     ⇑(mixedPartialFourierSchwartz φ) = mixedPartialFourier (φ : ((ι ⊕ κ) → mixedSpace K) → ℂ) := by
   funext x
@@ -51,6 +60,11 @@ theorem mixedPartialFourierSchwartz_apply (φ : 𝓢((ι ⊕ κ) → mixedSpace 
 def finitePartialFourier (g : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ) (x : (ι ⊕ κ) → 𝔸ᶠ[K]) : ℂ :=
   finiteFourierPi K (fun t : κ → 𝔸ᶠ[K] ↦ g (Sum.elim (fun i ↦ x (.inl i)) t)) (fun k ↦ x (.inr k))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hsplit : (fun t : κ → 𝔸ᶠ[K] ↦ finiteTensor h (Sum.elim (fun i ↦ x (.inl i)) t)) = (∏ i, h (.inl i) (x (.inl i))) • finiteTensor fun k ↦ h (.inr k)`. Use function extensionality and compare the values at `t`. Simplify using `only [finiteTensor, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[finitePartialFourier, hsplit, finiteFourierPi_smul, finiteFourierPi_finiteTensor]`.
+
+Simplify using `only [finiteTensor, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem finitePartialFourier_finiteTensor (h : (ι ⊕ κ) → 𝔸ᶠ[K] → ℂ) :
     finitePartialFourier (finiteTensor h) =
       finiteTensor (Sum.elim (fun i ↦ h (.inl i)) fun k ↦ finiteFourier K (h (.inr k))) := by
@@ -64,6 +78,9 @@ theorem finitePartialFourier_finiteTensor (h : (ι ⊕ κ) → 𝔸ᶠ[K] → �
   simp only [finiteTensor, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.smul_apply,
     smul_eq_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `e` using `finiteFourierPi_add (integrable_of_mem_finiteSchwartzBruhatPi (finiteSchwartzBruhatPi_sumElim_mem h₁ fun i ↦ x (.inl i))) (integrable_of_mem_finiteSchwartzBruhatPi (finiteSchwartzBruhatPi_sumElim_mem h₂ fun i ↦ x (.inl i)))`. Conclude with `congrFun e _`.
+-/
 theorem finitePartialFourier_add {g₁ g₂ : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ}
     (h₁ : g₁ ∈ finiteSchwartzBruhatPi K) (h₂ : g₂ ∈ finiteSchwartzBruhatPi K) :
     finitePartialFourier (g₁ + g₂) = finitePartialFourier g₁ + finitePartialFourier g₂ := by
@@ -73,11 +90,25 @@ theorem finitePartialFourier_add {g₁ g₂ : ((ι ⊕ κ) → 𝔸ᶠ[K]) → �
     (integrable_of_mem_finiteSchwartzBruhatPi (finiteSchwartzBruhatPi_sumElim_mem h₂ fun i ↦ x (.inl i)))
   exact congrFun e _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Conclude with `congrFun (finiteFourierPi_smul (K := K) c _) _`.
+-/
 theorem finitePartialFourier_smul (c : ℂ) (g : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ) :
     finitePartialFourier (c • g) = c • finitePartialFourier g := by
   funext x
   exact congrFun (finiteFourierPi_smul (K := K) c _) _
 
+/- English proof (translation)
+Establish `hsub` using `(finiteSchwartzBruhatPi_eq_span (K := K) (ι := ι ⊕ κ)).ge`. Rewrite `hg` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨⟨J, a⟩, rfl⟩` from `hf`.
+
+Rewrite using `[finitePartialFourier_finiteTensor]`. Use `finiteTensor_mem fun s ↦ ?_` and prove the remaining obligations. Consider the cases of `s with`. Consider the case `inl i => exact cosetIndicator_mem_finiteSchwartzBruhat J (a (.inl i))`. Consider the case `inr k`.
+
+Conclude with `finiteFourier_mem_finiteSchwartzBruhat (cosetIndicator_mem_finiteSchwartzBruhat J _)`. Consider the case `zero`. Establish `: finitePartialFourier (0 : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ) = 0`. Simplify using `using finitePartialFourier_smul (K := K) (ι := ι) (κ := κ) 0 0`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `add f₁ f₂ h₁ h₂ ih₁ ih₂`. Rewrite using `[finitePartialFourier_add (hsub h₁) (hsub h₂)]`. Conclude with `add_mem ih₁ ih₂`. Consider the case `smul c f _ ih`.
+
+Rewrite using `[finitePartialFourier_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+-/
 theorem finitePartialFourier_mem {g : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi K) :
     finitePartialFourier g ∈ finiteSchwartzBruhatPi K := by
   have hsub := (finiteSchwartzBruhatPi_eq_span (K := K) (ι := ι ⊕ κ)).ge
@@ -106,9 +137,17 @@ theorem finitePartialFourier_mem {g : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ} (hg 
 def partialFourierPi (F : ((ι ⊕ κ) → 𝔸[K]) → ℂ) (z : (ι ⊕ κ) → 𝔸[K]) : ℂ :=
   adelicFourierPi K (fun y : κ → 𝔸[K] ↦ F (Sum.elim (fun i ↦ z (.inl i)) y)) (fun k ↦ z (.inr k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partialFourierPi_sumElim (F : ((ι ⊕ κ) → 𝔸[K]) → ℂ) (a : ι → 𝔸[K]) (η : κ → 𝔸[K]) :
     partialFourierPi F (Sum.elim a η) = adelicFourierPi K (fun y ↦ F (Sum.elim a y)) η := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `hslice : (fun y : κ → 𝔸[K] ↦ schwartzBruhatTensorPi φ g (Sum.elim (fun i ↦ z (.inl i)) y)) = schwartzBruhatTensorPi (schwartzMapSliceSumElim (infPartPi fun i ↦ z (.inl i)) φ) (fun t ↦ g (Sum.elim (finPartPi fun i ↦ z (.inl i)) t))`. Use function extensionality and compare the values at `y`. Simplify using `only [schwartzBruhatTensorPi, infPartPi_sumElim, finPartPi_sumElim, schwartzMapSliceSumElim_apply]`. Rewrite using `[partialFourierPi, hslice, adelicFourierPi_schwartzBruhatTensorPi, schwartzBruhatTensorPi, schwartzBruhatTensorPi, mixedPartialFourierSchwartz_apply, mixedFourierPiSchwartz_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem partialFourierPi_schwartzBruhatTensorPi (φ : 𝓢((ι ⊕ κ) → mixedSpace K, ℂ))
     (g : ((ι ⊕ κ) → 𝔸ᶠ[K]) → ℂ) :
     partialFourierPi (schwartzBruhatTensorPi φ g) =
@@ -124,11 +163,25 @@ theorem partialFourierPi_schwartzBruhatTensorPi (φ : 𝓢((ι ⊕ κ) → mixed
     schwartzBruhatTensorPi, mixedPartialFourierSchwartz_apply, mixedFourierPiSchwartz_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `integrable_of_mem_schwartzBruhatPi (schwartzBruhatPi_sumElim_mem hF a)`.
+-/
 theorem integrable_partialFourierPi_slice {F : ((ι ⊕ κ) → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhatPi K (ι ⊕ κ)) (a : ι → 𝔸[K]) :
     Integrable (fun y : κ → 𝔸[K] ↦ F (Sum.elim a y)) (adeleMeasurePi K) :=
   integrable_of_mem_schwartzBruhatPi (schwartzBruhatPi_sumElim_mem hF a)
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[partialFourierPi_schwartzBruhatTensorPi]`. Conclude with `schwartzBruhatTensorPi_mem _ (finitePartialFourier_mem hg)`.
+
+Consider the case `zero`. Establish `: partialFourierPi (0 : ((ι ⊕ κ) → 𝔸[K]) → ℂ) = 0`. Use function extensionality and compare the values at `z`. Simplify using `[partialFourierPi, adelicFourierPi]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `add G H hG hH ihG ihH`. Establish `: partialFourierPi (G + H) = partialFourierPi G + partialFourierPi H`. Use function extensionality and compare the values at `z`. Conclude with `congrFun (adelicFourierPi_add (integrable_partialFourierPi_slice hG _) (integrable_partialFourierPi_slice hH _)) _`.
+
+Rewrite using `[this]`. Conclude with `add_mem ihG ihH`. Consider the case `smul c G _ ih`. Establish `: partialFourierPi (c • G) = c • partialFourierPi G`. Use function extensionality and compare the values at `z`.
+
+Conclude with `congrFun (adelicFourierPi_smul (K := K) c _) _`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ih`.
+-/
 theorem partialFourierPi_mem {F : ((ι ⊕ κ) → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K (ι ⊕ κ)) :
     partialFourierPi F ∈ schwartzBruhatPi K (ι ⊕ κ) := by
   induction hF using Submodule.span_induction with
@@ -156,12 +209,18 @@ theorem partialFourierPi_mem {F : ((ι ⊕ κ) → 𝔸[K]) → ℂ} (hF : F ∈
     rw [this]
     exact Submodule.smul_mem _ c ih
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+-/
 theorem algebraMap_sumElim (c : ι → K) (η : κ → K) :
     (fun s ↦ algebraMap K 𝔸[K] ((Sum.elim c η : (ι ⊕ κ) → K) s)) =
       Sum.elim (fun i ↦ algebraMap K 𝔸[K] (c i)) (fun k ↦ algebraMap K 𝔸[K] (η k)) := by
   funext s
   cases s <;> rfl
 
+/- English proof (translation)
+Set `e` to `Equiv.sumArrowEquivProdArrow ι κ K`. Establish `h1 : Summable fun p : (ι → K) × (κ → K) ↦ f (e.symm p)` using `(e.symm.summable_iff.mpr hf.of_norm)`. Rewrite using `[← e.symm.tsum_eq, h1.tsum_prod' fun c ↦ h1.prod_factor c]`. Both sides reduce to the same expression.
+-/
 theorem tsum_sumElim {f : ((ι ⊕ κ) → K) → ℂ} (hf : Summable fun ξ ↦ ‖f ξ‖) :
     ∑' ξ, f ξ = ∑' c : ι → K, ∑' η : κ → K, f (Sum.elim c η) := by
   let e := Equiv.sumArrowEquivProdArrow ι κ K
@@ -170,6 +229,9 @@ theorem tsum_sumElim {f : ((ι ⊕ κ) → K) → ℂ} (hf : Summable fun ξ ↦
   rw [← e.symm.tsum_eq, h1.tsum_prod' fun c ↦ h1.prod_factor c]
   rfl
 
+/- English proof (translation)
+Rewrite using `[tsum_sumElim (poisson_of_mem_schwartzBruhatPi (partialFourierPi_mem hF)).1, tsum_sumElim (poisson_of_mem_schwartzBruhatPi hF).1]`. Use `tsum_congr fun c ↦ ?_` and prove the remaining obligations. Simplify using `only [algebraMap_sumElim, partialFourierPi_sumElim]`. Conclude with `((poisson_of_mem_schwartzBruhatPi (schwartzBruhatPi_sumElim_mem hF fun i ↦ algebraMap K 𝔸[K] (c i))).2.2).symm`.
+-/
 theorem tsum_partialFourierPi {F : ((ι ⊕ κ) → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K (ι ⊕ κ)) :
     ∑' ξ : (ι ⊕ κ) → K, partialFourierPi F (fun s ↦ algebraMap K 𝔸[K] (ξ s)) =
       ∑' ξ : (ι ⊕ κ) → K, F (fun s ↦ algebraMap K 𝔸[K] (ξ s)) := by

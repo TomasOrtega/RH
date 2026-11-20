@@ -11,6 +11,21 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.KFin
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT K hK v φ hφ`. Take `⟨hpair, -⟩` from `GlobalTheory.ThK.Check.isPair_of_isTriple hT`. Establish `hc : IsCompact (K : Set (UA σ G.V.J))`. Take `⟨K', _, _, hK', hc, -, -⟩` from `GlobalTheory.T.theta_stabilizer_exists hP F E σ B a G.V _ _ hpair.base hpair.herm`. Establish `e : K = K'`.
+
+Use extensionality with `g`. Rewrite using `[hK g, hK' g]`. Substitute `e` using the available equality. Conclude with `hc`. Use `⟨isCompact_KAt hc _, ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, -, h3⟩` from `GlobalTheory.T.theta_action_exists hP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hpair v`. Establish `hmul` using `GlobalTheory.T.local_operator_mul_of_classicalTheorems hP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hpair v`. Take `⟨U, hU, hUact⟩` from `h3 φ hφ`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `k₀`.
+
+Establish `hcont : Continuous fun k : KAt K (evFin F v) => ((k₀.1⁻¹ * k.1 : UA σ G.V.J), (1 : UA σ G.W.J))` using `(continuous_const.mul continuous_subtype_val).prodMk continuous_const`. Establish `h1 : ((k₀.1⁻¹ * k₀.1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hev : ∀ᶠ k in 𝓝 k₀, ((k₀.1⁻¹ * k.1 : UA σ G.V.J), (1 : UA σ G.W.J)) ∈ U` using `hcont.continuousAt.preimage_mem_nhds (by rw [h1]; exact hU)`.
+
+Use `filter_upwards [hev] with k hk`. Establish `hk₀ : k₀.1 ∈ UAt σ G.V (evFin F v)` using `(mem_KAt.1 k₀.2).2`. Establish `hkk : k.1 ∈ UAt σ G.V (evFin F v)` using `(mem_KAt.1 k.2).2`. Establish `hx1 : k₀.1⁻¹ * k.1 ∈ UAt σ G.V (evFin F v)` using `(UAtSub σ G.V (evFin F v)).mul_mem ((UAtSub σ G.V (evFin F v)).inv_mem hk₀) hkk`. Establish `hone : (1 : UA σ G.W.J) ∈ UAt σ G.W (evFin F v)` using `(UAtSub σ G.W (evFin F v)).one_mem`.
+
+Establish `hact` using `hUact _ hk hx1 hone`. Establish `hfix : locOp v (om ((k₀.1⁻¹ * k.1 : UA σ G.V.J), (1 : UA σ G.W.J))) φ = φ` using `locOp_eq hφ hφ hact`. Establish `hprod : ((k.1 : UA σ G.V.J), (1 : UA σ G.W.J)) = (k₀.1, 1) * ((k₀.1⁻¹ * k.1 : UA σ G.V.J), (1 : UA σ G.W.J))`. Apply the tactic sequence `ext <;> simp`. Use `show locOp v (om (k.1, 1)) φ = locOp v (om (k₀.1, 1)) φ`.
+
+Rewrite using `[hprod, hmul _ _ hk₀ hone hx1 hone φ hφ, hfix]`.
+-/
 theorem kFinite : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K → ∀ (v : Pl F), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v),

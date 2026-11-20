@@ -28,6 +28,9 @@ attribute [local simp] pullback.lift_fst pullback.lift_snd pullback.lift_fst_ass
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Unfold `RZ oRing w0C`. Rewrite using `[Set.pair_comm]`.
+-/
 theorem RZ_eq (H : Host E) (S A : ℕ) : RZ H S A = oRing H A S := by
   unfold RZ oRing w0C
   rw [Set.pair_comm]
@@ -53,6 +56,11 @@ def aboveEquiv (C' : Cpt c' t₀' β') (C : Cpt c t₀ β) (b : O →+* O') (r :
 
 end Models
 
+/- English proof (translation)
+Introduce `x`. Use `⟨Y.X.residueField x, inferInstance, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `: Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField x) (Y.X.residueField x))) ≫ Y.X.fromSpecResidueField x = Y.X.fromSpecResidueField x`. Rewrite using `[show Spec.map (CommRingCat.ofHom (algebraMap (Y.X.residueField x) (Y.X.residueField x))) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Establish `key : ∀ f : Sp (Y.X.residueField x) ⟶ Y.X, f = Y.X.fromSpecResidueField x → ∃ S : SplitExt (Sp (Y.X.residueField x)), S.IsGt ((Over.pullback f).obj Y.t.G)`.
+
+Introduce and unpack `f rfl`. Conclude with `h x`. Conclude with `key _ this`.
+-/
 theorem splitFib_of_splitFibres {O : Type} [CommRing O] (Y : PModel H O) (h : Y.SplitFibres) : SplitFib Y.t.G := by
   intro x
   refine ⟨Y.X.residueField x, inferInstance, inferInstance, inferInstance, inferInstance, ?_⟩
@@ -66,33 +74,54 @@ theorem splitFib_of_splitFibres {O : Type} [CommRing O] (Y : PModel H O) (h : Y.
     exact h x
   exact key _ this
 
+/- English proof (translation)
+Introduce `x` and use `let ⟨V, hV, θ, hθ, _, h⟩ := h x ⟨V, hV, θ, hθ, h⟩`.
+-/
 theorem hasTheta_of_pushInvertible {X : Scheme.{0}} {G : Over X} {L : LB G.left} (h : PushInvertible G L) :
     HasTheta G L := fun x =>
   let ⟨V, hV, θ, hθ, _, h⟩ := h x
   ⟨V, hV, θ, hθ, h⟩
 
+/- English proof (translation)
+The claim follows from `Spec.map_id _`.
+-/
 theorem incl_self {R : Subring ℂ} (h : R ≤ R) : spMap (Subring.inclusion h) = 𝟙 _ := Spec.map_id _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[incl_self]`. Use `infer_instance`.
+-/
 theorem isIso_incl {R R' : Subring ℂ} (h : R = R') : IsIso (spMap (Subring.inclusion h.le)) := by
   subst h
   rw [incl_self]
   infer_instance
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[incl_self, Category.comp_id]` and apply the resulting hypothesis.
+-/
 theorem isProjOver_incl {R R' : Subring ℂ} (h : R = R') {X : Scheme.{0}} {s : X ⟶ Sp R'} (hs : IsProjOver s) :
     IsProjOver (s ≫ spMap (Subring.inclusion h.le)) := by
   subst h
   rwa [incl_self, Category.comp_id]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[incl_self, Category.comp_id]` and apply the resulting hypothesis.
+-/
 theorem isQProjOver_incl {R R' : Subring ℂ} (h : R = R') {X : Scheme.{0}} {s : X ⟶ Sp R'} (hs : IsQProjOver s) :
     IsQProjOver (s ≫ spMap (Subring.inclusion h.le)) := by
   subst h
   rwa [incl_self, Category.comp_id]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[incl_self, Category.comp_id]`.
+-/
 theorem incl_incl {R R' : Subring ℂ} (h : R = R') :
     spMap (Subring.inclusion h.le) ≫ spMap (Subring.inclusion h.symm.le) = 𝟙 _ := by
   subst h
   rw [incl_self, Category.comp_id]
 
+/- English proof (translation)
+Establish `e : pullback.lift π _ h₁ = pullback.lift π s' h ≫ pullback.map s b (s ≫ i) b₁ (𝟙 _) i' i (Category.id_comp _).symm hb`. Apply the tactic sequence `apply pullback.hom_ext <;> simp`. Use `⟨fun hf => ?_, fun hf => by rw [e]; infer_instance⟩` and prove the remaining obligations. Rewrite using `[(IsIso.comp_inv_eq _).2 e |>.symm]`. Use `infer_instance`.
+-/
 theorem isFinite_lift_iff {X X' B B' B₁ B₁' : Scheme.{0}} {π : X' ⟶ X} {s : X ⟶ B} {s' : X' ⟶ B'} {b : B' ⟶ B}
     (i : B ⟶ B₁) (i' : B' ⟶ B₁') [IsIso i] [IsIso i'] {b₁ : B₁' ⟶ B₁} (hb : b ≫ i = i' ≫ b₁) (h : π ≫ s = s' ≫ b)
     (h₁ : π ≫ s ≫ i = (s' ≫ i') ≫ b₁) : IsFinite (pullback.lift π _ h₁) ↔ IsFinite (pullback.lift π s' h) := by
@@ -110,10 +139,16 @@ def sabCmp {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S'
     (m' : SABMap t'' t' g) (m : SABMap t' t f) : SABMap t'' t (g ≫ f) :=
   (sabComp pullCubComp E H _ _ _ t t' t'' f g m m').choose
 
+/- English proof (translation)
+The claim follows from `(sabComp pullCubComp E H _ _ _ t t' t'' f g m m').choose_spec`.
+-/
 theorem sabCmp_φ {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     (m' : SABMap t'' t' g) (m : SABMap t' t f) : (sabCmp m' m).φ = m'.φ ≫ m.φ :=
   (sabComp pullCubComp E H _ _ _ t t' t'' f g m m').choose_spec
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `sabCancel pullCubCancel E H _ _ _ t t' t'' f g m n`.
+-/
 theorem sab_cancel {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} {h : S'' ⟶ S} (m : SABMap t' t f) (n : SABMap t'' t h) (e : g ≫ f = h) :
     ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
@@ -136,9 +171,15 @@ instance (h : R = R') (hβ : β'.comp (Subring.inclusion h.le) = β) {X : Scheme
   unfold genIso
   infer_instance
 
+/- English proof (translation)
+Simplify using `[genIso]`.
+-/
 @[reassoc] theorem genIso_fst (h : R = R') (hβ : β'.comp (Subring.inclusion h.le) = β) {X : Scheme.{0}} (s : X ⟶ Sp R') :
     genIso h hβ s ≫ pullback.fst _ _ = pullback.fst _ _ := by simp [genIso]
 
+/- English proof (translation)
+Simplify using `[genIso]`.
+-/
 theorem genIso_snd (h : R = R') (hβ : β'.comp (Subring.inclusion h.le) = β) {X : Scheme.{0}} (s : X ⟶ Sp R') :
     genIso h hβ s ≫ pullback.snd _ _ = pullback.snd _ _ := by simp [genIso]
 

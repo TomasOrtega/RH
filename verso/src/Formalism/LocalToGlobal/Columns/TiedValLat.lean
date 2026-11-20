@@ -17,12 +17,24 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : �
   (u : Pr.Word) (i : ℕ)
 
 omit hc hX σ₀ hσ in
+/- English proof (translation)
+Rewrite using `[lamTrue_eq_shW]`. Conclude with `natW_shW _ _`.
+-/
 theorem vl_natW_lamTrue (τ : X.Tau) : (W.lamTrue u i τ).natW = (W.lamN u i τ).natW := by
   rw [lamTrue_eq_shW]
   exact natW_shW _ _
 
 include hX in
 
+/- English proof (translation)
+Take `⟨⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩, lt, rfl⟩` from `Q`. Introduce `x`. Rewrite using `[(stepGSD W Λ u i).mem_intDel_iff (stepOk W Λ hX u i) (stepGSD W Λ u i).outSec x]`. Establish `key` using `fun c : StCl W Λ u i => vl_mem_delAtr_iff Pl pw hval X.emb σ₀ hpw (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) (W.lamTrue u i) (W.lamN u i) (vl_natW_lamTrue W u i) ((stepGSD W Λ u i).outSec.rep c).1.Lsh ((stepGSD W Λ u i).outSec.rep c).2.Lsh_lattice ((x : (stepGSD W Λ u i).D → (s …`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h w c B hB`. Establish `hB' : IsLocBasis (Pl.resChar w) (dualSet (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L) B` using `hB`. Rewrite `hB'` using `[rlc_dualSet hc (R.N i)]`. Take `⟨P, hP, he⟩` from `(key c).1 (h c) w B hB'`. Conclude with `⟨P, hP, fun z => congrFun he z⟩`.
+
+Introduce `h c`. Use `(key c).2 fun w B hB => ?_` and prove the remaining obligations. Establish `hB' : IsLocBasis (Pl.resChar w) (dualSet (hc.sig : X.E →+* X.E) (1 : Matrix (Fin (R.N i)) (Fin (R.N i)) X.E) ((stepGSD W Λ u i).outSec.rep c).1.L) B`. Rewrite using `[rlc_dualSet hc (R.N i)]`. Conclude with `hB`.
+
+Take `⟨P, hP, he⟩` from `h w c B hB'`. Conclude with `⟨P, hP, funext he⟩`.
+-/
 theorem Val.lat (Pl : Rows.Places X.K) (pw : Pl.Pl → HeightOneSpectrum (𝓞 X.K)) (hpw : Function.Surjective pw)
     (hval : ∀ w (x : X.K), x ≠ 0 → Pl.val w x = ((vAdd (pw w) x : ℤ) : WithTop ℤ)) (Q : ValCrd W Λ σ₀ u i) :
     Val.Lat W Λ hc σ₀ hσ u i Pl Q := by

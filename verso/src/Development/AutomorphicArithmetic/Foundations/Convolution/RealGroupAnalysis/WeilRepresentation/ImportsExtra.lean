@@ -8,6 +8,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π`. Take `⟨f, hf, a, k, hk, hW⟩` from `G.exIw F M π`. Take `⟨φ, hφ, hp⟩` from `G.exPhi F E D W a k hk`. Assume the negation of the conclusion as `hn`. Establish `h0 : ∀ φ ∈ Fock D.δ, W1 W M f.1 φ 1 = 0` using `fun φ hφ => by`.
+
+Assume the negation of the conclusion as `h1`. Conclude with `hn ⟨f, hf, φ, hφ, 1, h1⟩`. Establish `h` using `G.zeroW F E D W M π f hf h0 φ hφ a k hk`. Establish `e : nu F (1 : GL (Fin 2) (A E)) = 1` using `by simp [nu]`. Simplify using `only [w1, e, dM_one, mul_one, map_one, Module.End.one_apply] at h`.
+
+Conclude with `mul_ne_zero hW hp h`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.ne :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Ne W M π := by
   intro F E _ _ _ _ _ _ _ D W M π

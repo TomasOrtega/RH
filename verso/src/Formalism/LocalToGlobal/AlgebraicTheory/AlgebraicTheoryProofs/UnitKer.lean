@@ -31,11 +31,17 @@ section Int
 
 variable {K : Type} [Field K] (R : Subring K)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_mul]`. Conclude with `R.sum_mem fun x _ => R.mul_mem (hf _) (hg _)`.
+-/
 theorem intPS_mul {f g : PowerSeries K} (hf : IntPS R f) (hg : IntPS R g) : IntPS R (f * g) := by
   intro n
   rw [coeff_mul]
   exact R.sum_mem fun x _ => R.mul_mem (hf _) (hg _)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `hc`. Conclude with `R.zero_mem`.
+-/
 theorem intPS_C {c : K} (hc : c ∈ R) : IntPS R (C c) := by
   intro n
   rw [coeff_C]
@@ -43,6 +49,25 @@ theorem intPS_C {c : K} (hc : c ∈ R) : IntPS R (C c) := by
   · exact hc
   · exact R.zero_mem
 
+/- English proof (translation)
+Use `set D : PowerSeries K := PowerSeries.subst v ph - N • ph with hDdef`. Take `⟨hexp0, hcc1, hadd, -⟩` from `Formalism.L2.Th1.C.mvExpLaws K Unit`. Take `⟨-, hLGadd, hLGneg⟩` from `Formalism.L2.Th1.C.lGSubgroup K R Unit`. Establish `h2D : LG R (-(D + D))` using `hLGneg _ (hLGadd _ _ hD hD)`. Establish `hM0 : MvPowerSeries.constantCoeff (-((2 * N) • ph) : MvPowerSeries Unit K) = 0`.
+
+Rewrite using `[MvPowerSeries.smul_eq_C_mul]`. Simplify using `only [map_neg, map_mul, MvPowerSeries.constantCoeff_C, neg_eq_zero, mul_eq_zero]`. Use `right`. Conclude with `hph0`. Establish `e1 : -((2 : K) • PowerSeries.subst v ph) = -(D + D) + -((2 * N) • ph)`.
+
+Rewrite using `[hDdef, mul_smul, two_smul, two_smul]`. Normalize the expressions using the abelian group laws. Establish `hsplit : mvExp (-((2 : K) • PowerSeries.subst v ph)) = mvExp (-(D + D)) * mvExp (-((2 * N) • ph))`. Rewrite using `[e1]`. Conclude with `hadd _ _ h2D.1 hM0`.
+
+Use `set E1 : PowerSeries K := mvExp (-(D + D))`. Use `set E2 : PowerSeries K := mvExp (-((2 * N) • ph))`. Establish `hE2 : E2 ≠ 0`. Introduce `h0`. Use `hcc1 _ hM0` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `MvPowerSeries.constantCoeff E2 = 1 at this`. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`. Rewrite `hU` using `[hsplit]`. Establish `hX : (X : PowerSeries K) ≠ 0` using `X_ne_zero`.
+
+Establish `h1 : (v ^ 2 * E1) * (E2 * X ^ (2 * Fintype.card ι)) = (C (al ^ 2) * X ^ 2 * ∏ P, (A - C (xP P) * X ^ 2)) * (E2 * X ^ (2 * Fintype.card ι))`. Take the linear combination `hU`. Establish `h2` using `mul_right_cancel₀ (mul_ne_zero hE2 (pow_ne_zero _ hX)) h1`. Take `⟨h, rfl⟩` from `X_dvd_iff.2 hv0`. Establish `h3 : X ^ 2 * (h ^ 2 * E1) = X ^ 2 * (C (al ^ 2) * ∏ P, (A - C (xP P) * X ^ 2))`.
+
+Take the linear combination `h2`. Establish `h4` using `mul_left_cancel₀ (pow_ne_zero 2 hX) h3`. Establish `h5 : ∏ P, (A - C (xP P) * X ^ 2) = C (al⁻¹ ^ 2) * (h ^ 2 * E1)`. Rewrite using `[h4, ← mul_assoc, ← map_mul, ← mul_pow, inv_mul_cancel₀ hal, one_pow, map_one, one_mul]`. Rewrite using `[h5]`.
+
+Establish `hh : IntPS R h`. Introduce `n`. Use `hv (n + 1)` as an intermediate fact. Rewrite `this` using `[coeff_succ_X_mul]`. Then use the resulting hypothesis. Establish `hE1 : IntPS R E1` using `fun n => h2D.2 _`.
+
+Conclude with `intPS_mul R (intPS_C R (R.pow_mem hali 2)) (intPS_mul R (by rw [pow_two]; exact intPS_mul R hh hh) hE1)`.
+-/
 theorem prod_int [CharZero K] (v ph A : PowerSeries K) {ι : Type} [Fintype ι] (xP : ι → K) (al N : K)
     (hal : al ≠ 0) (hali : al⁻¹ ∈ R) (hv0 : constantCoeff v = 0) (hv : IntPS R v)
     (hph0 : constantCoeff ph = 0)
@@ -101,19 +126,59 @@ section Gauss
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx (by rw [norm_neg]; exact hy))`.
+-/
 theorem norm_sub_le_one {x y : K} (hx : ‖x‖ ≤ 1) (hy : ‖y‖ ≤ 1) : ‖x - y‖ ≤ 1 := by
   rw [sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx (by rw [norm_neg]; exact hy))
 
+/- English proof (translation)
+Use `⟨fun n => ?_, 0, by simp⟩` and prove the remaining obligations. Rewrite using `[coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gaussOne_one : GaussOne (1 : PowerSeries K) := by
   refine ⟨fun n => ?_, 0, by simp⟩
   rw [coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[map_sub, coeff_C_mul_X_pow]`.
+-/
 theorem coeff_factor (A : PowerSeries K) (c : K) (n : ℕ) :
     coeff n (A - C c * X ^ 2) = coeff n A - if n = 2 then c else 0 := by
   rw [map_sub, coeff_C_mul_X_pow]
 
+/- English proof (translation)
+Use `set d : ι → K := fun P => if ‖c P‖ ≤ 1 then 1 else c P with hd`. Establish `hd1 : ∀ P, 1 ≤ ‖d P‖`. Introduce `P`. Simplify using `only [hd]`. Use `split_ifs with h`.
+
+Simplify using the standard rewrite rules. Conclude with `(not_le.1 h).le`. Establish `hd0 : ∀ P, d P ≠ 0`. Introduce `P h`. Use `hd1 P` as an intermediate fact.
+
+Rewrite `this` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set g : ι → PowerSeries K := fun P => C (d P)⁻¹ * (A - C (c P) * X ^ 2) with hg`. Establish `hgc : ∀ P n, coeff n (g P) = (d P)⁻¹ * (coeff n A - if n = 2 then c P else 0)`. Introduce `P n`.
+
+Simplify using `only [hg]`. Rewrite using `[coeff_C_mul, coeff_factor]`. Establish `hG1 : ∀ P, GaussOne (g P)`. Introduce `P`. Distinguish the cases in `h : ‖c P‖ ≤ 1`.
+
+Establish `hdP : d P = 1` using `by simp only [hd]; rw [if_pos h]`. Use `⟨fun n => ?_, 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hgc, hdP, inv_one, one_mul]`. Apply `norm_sub_le_one (hA n)` to reduce the goal to its premises. Use `split_ifs`.
+
+Conclude with `h`. Simplify using the standard rewrite rules. Rewrite using `[hgc, hdP, inv_one, one_mul, if_neg (by norm_num), sub_zero, coeff_zero_eq_constantCoeff_apply, hA0, norm_one]`. Establish `hdP : d P = c P` using `by simp only [hd]; rw [if_neg h]`. Establish `hc1 : 1 < ‖c P‖` using `not_le.1 h`.
+
+Establish `hc0 : c P ≠ 0`. Introduce `h0`. Rewrite `hc1` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hci : ‖(c P)⁻¹‖ < 1`.
+
+Rewrite using `[norm_inv]`. Conclude with `inv_lt_one_of_one_lt₀ hc1`. Establish `hsmall : ∀ n, ‖(c P)⁻¹ * coeff n A‖ < 1`. Introduce `n`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e : ∀ n, coeff n (g P) = (c P)⁻¹ * coeff n A - if n = 2 then 1 else 0`. Introduce `n`. Rewrite using `[hgc, hdP, mul_sub]`. Use `split_ifs`.
+
+Rewrite using `[inv_mul_cancel₀ hc0]`. Rewrite using `[mul_zero]`. Use `⟨fun n => ?_, 2, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Apply `norm_sub_le_one (hsmall n).le` to reduce the goal to its premises.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e, if_pos rfl]`. Apply `norm_one_of_close (b := -1)` to reduce the goal to its premises. Rewrite using `[sub_neg_eq_add, sub_add_cancel]`. Conclude with `hsmall 2`.
+
+Simplify using the standard rewrite rules. Establish `hfac : ∏ P, (A - C (c P) * X ^ 2) = C (∏ P, d P) * ∏ P, g P`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P _ => ?_` and prove the remaining obligations. Simplify using `only [hg]`.
+
+Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ (hd0 P), map_one, one_mul]`. Establish `hG : GaussOne (∏ P, g P)` using `Finset.prod_induction _ GaussOne (fun f g hf hg => Formalism.L2.Th1.E.gaussMul K f g hf hg) gaussOne_one (fun P _ => hG1 P)`. Take `⟨n, hn⟩` from `hG.2`. Establish `hc` using `hF n`. Rewrite `hc` using `[hfac, coeff_C_mul, norm_mul, hn, mul_one, norm_prod]`.
+
+Introduce `P`. Assume the negation of the conclusion as `hP`. Establish `hdP : d P = c P` using `by simp only [hd]; rw [if_neg hP]`. Establish `hrest : (1 : ℝ) ≤ ∏ Q ∈ Finset.univ.erase P, ‖d Q‖`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hc` using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ P), hdP]`. Establish `: ‖c P‖ * 1 ≤ ‖c P‖ * ∏ Q ∈ Finset.univ.erase P, ‖d Q‖` using `mul_le_mul_of_nonneg_left hrest (norm_nonneg _)`. Combine the linear relations using `[not_le.1 hP]`.
+-/
 theorem gauss_roots {ι : Type} [Fintype ι] (A : PowerSeries K) (hA0 : constantCoeff A = 1)
     (hA : ∀ n, ‖coeff n A‖ ≤ 1) (c : ι → K)
     (hF : ∀ n, ‖coeff n (∏ P, (A - C (c P) * X ^ 2))‖ ≤ 1) : ∀ P, ‖c P‖ ≤ 1 := by
@@ -206,11 +271,19 @@ section Three
 
 variable {p : ℕ} [Fact p.Prime] {dK : ℕ} (ι : ℂ ≃+* ℂ_[p])
 
+/- English proof (translation)
+Apply `normZ_one` to reduce the goal to its premises. Rewrite using `[hp]`. Apply the tactic sequence `rcases hr with rfl | rfl <;> norm_num`.
+-/
 theorem padic_norm_twelve_eq_one_of_five_le (hp : p = 3) {r : ℤ} (hr : r = 1 ∨ r = 2) : ‖(r : ℂ_[p])‖ = 1 := by
   apply normZ_one
   rw [hp]
   rcases hr with rfl | rfl <;> norm_num
 
+/- English proof (translation)
+Establish `le1 : ∀ k : ℤ, ‖x - (k : ℂ_[p])‖ ≤ 1` using `fun k => norm_sub_le_one hx (normZ_le k)`. Distinguish the cases in `h1 : ‖x - ((1 : ℤ) : ℂ_[p])‖ < 1`. Use `⟨2, Or.inr rfl, le_antisymm (le1 2) (not_lt.1 fun h2 => ?_)⟩` and prove the remaining obligations. Establish `h3` using `IsUltrametricDist.norm_add_le_max (x - ((1 : ℤ) : ℂ_[p])) (-(x - ((2 : ℤ) : ℂ_[p])))`. Establish `e : x - ((1 : ℤ) : ℂ_[p]) + -(x - ((2 : ℤ) : ℂ_[p])) = ((1 : ℤ) : ℂ_[p])`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e, padic_norm_twelve_eq_one_of_five_le hp (Or.inl rfl), norm_neg]`. Conclude with `absurd h3 (not_le.2 (max_lt h1 h2))`. Conclude with `⟨1, Or.inl rfl, le_antisymm (le1 1) (not_lt.1 h1)⟩`.
+-/
 theorem pick3 (hp : p = 3) {x : ℂ_[p]} (hx : ‖x‖ ≤ 1) :
     ∃ r : ℤ, (r = 1 ∨ r = 2) ∧ ‖x - (r : ℂ_[p])‖ = 1 := by
   have le1 : ∀ k : ℤ, ‖x - (k : ℂ_[p])‖ ≤ 1 := fun k => norm_sub_le_one hx (normZ_le k)
@@ -224,15 +297,42 @@ theorem pick3 (hp : p = 3) {x : ℂ_[p]} (hx : ‖x‖ ≤ 1) :
     exact absurd h3 (not_le.2 (max_lt h1 h2))
   · exact ⟨1, Or.inl rfl, le_antisymm (le1 1) (not_lt.1 h1)⟩
 
+/- English proof (translation)
+Use `show ι _ = _`. Simplify using `[map_add, map_mul, map_intCast]`.
+-/
 theorem em_fst (a : ℤ × ℤ) : (em dK ι a).1 = (a.1 : ℂ_[p]) + (a.2 : ℂ_[p]) * ι (omegaK dK) := by
   show ι _ = _
   simp [map_add, map_mul, map_intCast]
 
+/- English proof (translation)
+Use `show ι _ = _`. Simplify using `[map_add, map_mul, map_intCast, map_sub, map_one]`.
+-/
 theorem em_snd (a : ℤ × ℤ) :
     (em dK ι a).2 = (a.1 : ℂ_[p]) + (a.2 : ℂ_[p]) * (1 - ι (omegaK dK)) := by
   show ι _ = _
   simp [map_add, map_mul, map_intCast, map_sub, map_one]
 
+/- English proof (translation)
+Establish `diag : ∀ k : ℤ, ‖(em dK ι (k, 0)).1 - (k : ℂ_[p])‖ < 1 ∧ ‖(em dK ι (k, 0)).2 - (k : ℂ_[p])‖ < 1`. Introduce `k`. Rewrite using `[em_fst, em_snd]`. Simplify using the standard rewrite rules. Establish `hwn : (‖ι (omegaK dK)‖ < 1 → ‖-ι (omegaK dK)‖ < 1) ∧ (‖ι (omegaK dK) - 1‖ < 1 → ‖-(ι (omegaK dK) - 1)‖ < 1)` using `⟨fun h => by rwa [norm_neg], fun h => by rwa [norm_neg]⟩`.
+
+Apply the tactic sequence `rcases hr with rfl | rfl <;> rcases hs with rfl | rfl`. Conclude with `⟨_, diag 1⟩`. Break down `hw with hw | hw` into its components or cases. Use `⟨(1, 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[em_fst]`.
+
+Use `hw using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Apply the tactic sequence `try ring`. Rewrite using `[em_snd]`. Use `hwn.1 hw using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Apply the tactic sequence `try ring`. Use `⟨(2, -1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[em_fst]`. Use `hwn.2 hw using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Apply the tactic sequence `try ring`. Rewrite using `[em_snd]`. Use `hw using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Apply the tactic sequence `try ring`. Break down `hw with hw | hw` into its components or cases. Use `⟨(2, -1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[em_fst]`. Use `hwn.1 hw using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Apply the tactic sequence `try ring`. Rewrite using `[em_snd]`. Use `hw using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Apply the tactic sequence `try ring`. Use `⟨(1, 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[em_fst]`. Use `hw using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Apply the tactic sequence `try ring`. Rewrite using `[em_snd]`. Use `hwn.2 hw using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Apply the tactic sequence `try ring`.
+
+Conclude with `⟨_, diag 2⟩`.
+-/
 theorem cand3 (hw : ‖ι (omegaK dK)‖ < 1 ∨ ‖ι (omegaK dK) - 1‖ < 1) (r s : ℤ) (hr : r = 1 ∨ r = 2)
     (hs : s = 1 ∨ s = 2) :
     ∃ a : ℤ × ℤ, ‖(em dK ι a).1 - (r : ℂ_[p])‖ < 1 ∧ ‖(em dK ι a).2 - (s : ℂ_[p])‖ < 1 := by
@@ -262,6 +362,15 @@ theorem cand3 (hw : ‖ι (omegaK dK)‖ < 1 ∨ ‖ι (omegaK dK) - 1‖ < 1) (
       · rw [em_snd]; convert hwn.2 hw using 2; push_cast; try ring
   · exact ⟨_, diag 2⟩
 
+/- English proof (translation)
+Take `⟨ha, hb⟩` from `norm_le ι hmod α.2`. Take `⟨r, hr, har⟩` from `pick3 hp ha`. Take `⟨s, hs, hbs⟩` from `pick3 hp hb`. Take `⟨n, h1, h2⟩` from `cand3 ι hw r s hr hs`. Establish `hc1 : ‖(em dK ι n).1‖ = 1` using `norm_one_of_close h1 (padic_norm_twelve_eq_one_of_five_le hp hr)`.
+
+Establish `hc2 : ‖(em dK ι n).2‖ = 1` using `norm_one_of_close h2 (padic_norm_twelve_eq_one_of_five_le hp hs)`. Establish `hd1 : ‖α.1.1 - (em dK ι n).1‖ = 1`. Use `norm_one_of_close (b := α.1.1 - (r : ℂ_[p])) ?_ har` and prove the remaining obligations. Rewrite using `[show α.1.1 - (em dK ι n).1 - (α.1.1 - (r : ℂ_[p])) = -((em dK ι n).1 - (r : ℂ_[p])) by ring, norm_neg]`. Conclude with `h1`.
+
+Establish `hd2 : ‖α.1.2 - (em dK ι n).2‖ = 1`. Use `norm_one_of_close (b := α.1.2 - (s : ℂ_[p])) ?_ hbs` and prove the remaining obligations. Rewrite using `[show α.1.2 - (em dK ι n).2 - (α.1.2 - (s : ℂ_[p])) = -((em dK ι n).2 - (s : ℂ_[p])) by ring, norm_neg]`. Conclude with `h2`. Use `set c : OO ι hmod := ⟨em dK ι n, em_mem ι hmod n⟩`.
+
+Establish `hu : IsUnit c` using `isUnit_of_norm ι hmod c hc1 hc2`. Establish `hv : IsUnit (α - c)` using `isUnit_of_norm ι hmod (α - c) hd1 hd2`. Use `⟨hv.unit, hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, IsUnit.unit_spec]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem two_units3 (hmod : dK % 4 = 3) (hp : p = 3)
     (hw : ‖ι (omegaK dK)‖ < 1 ∨ ‖ι (omegaK dK) - 1‖ < 1) (α : OO ι hmod) :
     ∃ u v : (OO ι hmod)ˣ, α = u + v := by
@@ -288,6 +397,13 @@ theorem two_units3 (hmod : dK % 4 = 3) (hp : p = 3)
   rw [IsUnit.unit_spec, IsUnit.unit_spec]
   ring
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℤ, (dK : ℤ) + 1 = 4 * k` from `⟨((dK : ℤ) + 1) / 4, by omega⟩`. Establish `hdiv : ((dK : ℤ) + 1) / 4 = k` using `by omega`. Establish `hd : (dK : ℤ) = 4 * k - 1` using `by omega`. Unfold `normInt at hN`. Rewrite `hN`, the goal using `[hdiv]`.
+
+Rewrite `hpd` using `[hd]`. Establish `e : ∀ x : ℤ, (3 : ℤ) ∣ x ↔ ((x : ZMod 3) = 0)` using `fun x => by`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Evaluate the numerical expressions. Rewrite `hN`, `hpd`, the goal using `[e]`.
+
+Rewrite `hmn` using `[e, e]`. Move the coercions through the operations in `at hN hpd hmn`. Establish `key : ∀ a b c : ZMod 3, a ^ 2 + a * b + b ^ 2 * c = 0 → ¬ (4 * c - 1 = 0) → ¬ (a = 0 ∧ b = 0) → c = 0` using `by decide`. Conclude with `key _ _ _ hN hpd hmn`.
+-/
 theorem three_split (hpd : ¬ (3 : ℤ) ∣ (dK : ℤ)) (hmod : dK % 4 = 3) {m n : ℤ}
     (hN : (3 : ℤ) ∣ normInt dK m n) (hmn : ¬ ((3 : ℤ) ∣ m ∧ (3 : ℤ) ∣ n)) :
     (3 : ℤ) ∣ ((dK : ℤ) + 1) / 4 := by
@@ -309,6 +425,17 @@ theorem three_split (hpd : ¬ (3 : ℤ) ∣ (dK : ℤ)) (hmod : dK % 4 = 3) {m n
 
 end Three
 
+/- English proof (translation)
+Establish `h2 : ‖(2 : ℂ_[p])‖ = 1` using `Formalism.L2.Th1.Top.OrthogonalGaussModelNormLemmas.norm_two p hp2`. Establish `hM : Formalism.L2.Th1.A.IntModel (curveL p L ι)` using `⟨hW.1, hW.2.1, hW.2.2.1, hW.2.2.2.1, hW.2.2.2.2.1⟩`. Establish `hb2 : (curveL p L ι).b₂ = 0` using `(Formalism.L2.Th1.A.shortInv ℂ_[p] _ _).1`. Set `_ : StarRing (OO ι hmod)` to `starOO ι hmod`. Establish `key` using `(Formalism.L2.Th1.C.curveEndoUnitBall ℂ_[p] h2 _ hM (ι (Formalism.L2.Th1.F.s2 L)) (OO ι hmod) (tau ι hmod) (continuous_fst.comp continuous_subtype_val) (Continuous.subtype_mk (continuous_swap.comp continuous_subtype_val) _) (fun z hz => selfadj ι hmod hp2 z.2 (congrArg Subtype.va …`.
+
+Introduce `α hα`. Take `⟨⟨m, n⟩, hN, hα⟩` from `hα`. Take `⟨S, neg, xP, yP, g1, g2, g3, g4, g5⟩` from `Formalism.L2.Th1.Top.CMDatum_proof dK L hmod hcm p ι hW m n hN`. Establish `t1 : tau ι hmod α = ι ((m : ℂ) + (n : ℂ) * omegaK dK)` using `congrArg Prod.fst hα`. Establish `t2 : tau ι hmod (star α) = ι ((m : ℂ) + (n : ℂ) * (1 - omegaK dK))` using `congrArg Prod.snd hα`.
+
+Use `⟨S, inferInstance, neg, xP, yP, ?_, g2, g3, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[t1]`. Conclude with `g1`. Rewrite using `[t1, t2]`. Conclude with `g4`.
+
+Rewrite using `[t1]`. Conclude with `Formalism.L2.Th1.Top.OrthogonalGaussModelNormLemmas.norm_eq_one_of_quad (em_sum ι (m, n)) (em_prod ι hmod (m, n)) (normZ_one hN)`. Rewrite using `[hb2]`. Simplify using the standard rewrite rules. Rewrite using `[t1, t2]`.
+
+Conclude with `g5)).1`. Establish `h` using `key ⟨(a, b), hab⟩`. Conclude with `⟨h.1, h.2.1⟩`.
+-/
 theorem calcGen {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {dK : ℕ} (L : PeriodPair) (hmod : dK % 4 = 3)
     (hcm : HasCMBy dK L) (hp2 : p ≠ 2) (hW : IntCurve (curveL p L ι))
     (htwo : ∀ α : OO ι hmod, ∃ u v : (OO ι hmod)ˣ, α = u + v) (a b : ℂ_[p]) (hab : (a, b) ∈ OO ι hmod) :
@@ -351,6 +478,25 @@ theorem calcGen {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {dK : ℕ} (L 
   have h := key ⟨(a, b), hab⟩
   exact ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+Establish `h3 : ‖((3 : ℤ) : ℂ_[p])‖ < 1` using `normZ_lt.2 (by rw [hp]; norm_num)`. Establish `hmn : ¬ ((3 : ℤ) ∣ m ∧ (3 : ℤ) ∣ n)`. Introduce and unpack `⟨⟨a, rfl⟩, ⟨b, rfl⟩⟩`. Establish `e : ι (((3 * a : ℤ) : ℂ) + ((3 * b : ℤ) : ℂ) * omegaK dK) = ((3 : ℤ) : ℂ_[p]) * (em dK ι (a, b)).1`. Rewrite using `[em_fst]`.
+
+Simplify using `only [map_add, map_mul, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hα1` using `[e, norm_mul]`. Establish `hle` using `(em_norm_le ι hmod (a, b)).1`.
+
+Establish `: ‖((3 : ℤ) : ℂ_[p])‖ * ‖(em dK ι (a, b)).1‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) hle) h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpd' : ¬ (3 : ℤ) ∣ (dK : ℤ)`. Introduce `h`. Apply `hpd` to reduce the goal to its premises.
+
+Rewrite using `[hp]`. Conclude with `h` after adjusting the coercions. Establish `hN' : (3 : ℤ) ∣ normInt dK m n`. Rewrite `hN` using `[hp]`. Conclude with `hN` after adjusting the coercions.
+
+Establish `hc` using `three_split hpd' hmod hN' hmn`. Take `⟨k, hk⟩ : ∃ k : ℤ, (dK : ℤ) + 1 = 4 * k` from `⟨((dK : ℤ) + 1) / 4, by omega⟩`. Establish `hdiv : ((dK : ℤ) + 1) / 4 = k` using `by omega`. Rewrite `hc` using `[hdiv]`. Establish `hkC : (1 + (dK : ℂ)) / 4 = (k : ℂ)`.
+
+Establish `: ((dK : ℤ) : ℂ) + 1 = 4 * (k : ℂ)` using `by exact_mod_cast hk`. Move the coercions through the operations in `at this`. Take the linear combination `this / 4`. Establish `hprod : ι (omegaK dK) * (ι (omegaK dK) - 1) = -((k : ℤ) : ℂ_[p])`. Rewrite using `[show ι (omegaK dK) * (ι (omegaK dK) - 1) = ι (omegaK dK * (omegaK dK - 1)) by`.
+
+Rewrite using `[map_mul, map_sub, map_one]]`. Rewrite using `[show omegaK dK * (omegaK dK - 1) = -((k : ℤ) : ℂ) by`. Take the linear combination `Formalism.L2.Th1.D.CurveNormEndomorphisms.omega_sq dK - hkC]`. Rewrite using `[map_neg, map_intCast]`. Establish `hn : ‖ι (omegaK dK) * (ι (omegaK dK) - 1)‖ < 1`.
+
+Rewrite using `[hprod, norm_neg]`. Conclude with `normZ_lt.2 (by rw [hp]; exact_mod_cast hc)`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_or, not_lt] at hcon`. Rewrite `hn` using `[norm_mul]`.
+
+Use polynomial arithmetic with `[hcon.1, hcon.2]`.
+-/
 theorem split_w {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {dK : ℕ} (hmod : dK % 4 = 3) (hp : p = 3)
     (hpd : ¬ p ∣ dK) {m n : ℤ} (hN : (p : ℤ) ∣ normInt dK m n)
     (hα1 : ‖ι ((m : ℂ) + (n : ℂ) * omegaK dK)‖ = 1) :
@@ -399,6 +545,39 @@ theorem split_w {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {dK : ℕ} (hm
   rw [norm_mul] at hn
   nlinarith [hcon.1, hcon.2]
 
+/- English proof (translation)
+Establish `hα0p : ι ((m : ℂ) + (n : ℂ) * omegaK dK) ≠ 0`. Introduce `h`. Rewrite `hα1` using `[h, norm_zero]`. Conclude with `zero_ne_one hα1`. Establish `hα0 : (m : ℂ) + (n : ℂ) * omegaK dK ≠ 0`.
+
+Introduce `h`. Rewrite `hα0p` using `[h, map_zero]`. Conclude with `hα0p rfl`. Establish `hmn : (m, n) ≠ (0, 0)`. Introduce `h`.
+
+Rewrite `h` using `[Prod.mk.injEq]`. Apply `hα0` to reduce the goal to its premises. Rewrite using `[h.1, h.2]`. Simplify using the standard rewrite rules. Establish `hd : 0 < dK` using `by omega`.
+
+Take `⟨S, hS, hcard, hIso, -⟩` from `Formalism.L2.Th1.F.hasCMByIsogeny dK L hcm m n hmn hd`. Take `⟨hst, -⟩` from `Formalism.L2.Th1.F.hasCMByStable dK L hcm m n`. Establish `hprod : ((m : ℂ) + (n : ℂ) * omegaK dK) * ((m : ℂ) + (n : ℂ) * (1 - omegaK dK)) = (S.card : ℂ) + 1`. Rewrite using `[Formalism.L2.Th1.D.CurveNormEndomorphisms.mul_bar]`. Use `congrArg (fun x : ℝ => (x : ℂ)) hcard` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Rewrite using `[this]`. Establish `hcardS : ((m : ℂ) + (n : ℂ) * omegaK dK) * ((m : ℂ) + (n : ℂ) * (1 - omegaK dK)) = (Fintype.card S : ℂ) + 1`. Rewrite using `[Fintype.card_coe]`. Conclude with `hprod`.
+
+Take `⟨neg, -, hE⟩` from `Formalism.L2.Th1.F.endoZInstance L _ S hα0 hst hS`. Establish `hE0 : IsEndoZ (Formalism.L2.Th1.F.pSeries L) neg (fun P : S => L.weierstrassP (P : ℂ) + 0) (fun P : S => Formalism.L2.Th1.F.taylor0 (fun z => L.weierstrassP (z + (P : ℂ)))) ((m : ℂ) + (n : ℂ) * omegaK dK)`. Simplify using `using hE`. Establish `hs2C` using `(Formalism.L2.Th1.C.isogenyIffBar ℂ (Formalism.L2.Th1.F.pSeries L) (Formalism.L2.Th1.F.s2 L) S neg (fun P : S => L.weierstrassP (P : ℂ)) 0 _ _ _ hα0 hcardS hE0).1 (by simpa using hIso)`. Establish `hb2 : (curveL p L ι).b₂ = 0` using `(Formalism.L2.Th1.A.shortInv ℂ_[p] _ _).1`.
+
+Establish `hΔ : (curveL p L ι).Δ ≠ 0`. Introduce `h`. Use `hW.2.2.2.2.2` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+
+Establish `hEp` using `Formalism.L2.Th1.D.CurveNormEndomorphisms.isEndoZ_map (ι : ℂ →+* ℂ_[p]) hE`. Rewrite `hEp` using `[← Formalism.L2.Th1.E.wpBridge p L ι]`. Establish `hEp' : IsEndoZ (wpReg (curveL p L ι)) neg (fun P : S => ι (L.weierstrassP (P : ℂ)) + (curveL p L ι).b₂ / 12) (fun P : S => PowerSeries.map (ι : ℂ →+* ℂ_[p]) (Formalism.L2.Th1.F.taylor0 (fun z => L.weierstrassP (z + (P : ℂ))))) (ι ((m : ℂ) + (n : ℂ) * omegaK dK))`. Rewrite using `[hb2]`. Simplify using `using hEp`.
+
+Establish `hNp : ι ((m : ℂ) + (n : ℂ) * omegaK dK) * ι ((m : ℂ) + (n : ℂ) * (1 - omegaK dK)) = (Fintype.card S : ℂ_[p]) + 1`. Rewrite using `[← map_mul, hcardS]`. Simplify using the standard rewrite rules. Establish `hs2p : ι ((m : ℂ) + (n : ℂ) * omegaK dK) * (ι ((m : ℂ) + (n : ℂ) * omegaK dK) - ι ((m : ℂ) + (n : ℂ) * (1 - omegaK dK))) * ι (Formalism.L2.Th1.F.s2 L) = ∑ P : S, (ι (L.weierstrassP (P : ℂ)) + (curveL p L ι).b₂ / 12)`. Rewrite using `[hb2]`.
+
+Use `congrArg ι hs2C` as an intermediate fact. Simplify `this` using `[map_mul, map_sub, map_sum]`. Establish `hIsoP` using `(Formalism.L2.Th1.C.isogenyIffBar ℂ_[p] (wpReg (curveL p L ι)) (ι (Formalism.L2.Th1.F.s2 L)) S neg (fun P : S => ι (L.weierstrassP (P : ℂ))) ((curveL p L ι).b₂ / 12) _ _ _ hα0p hNp hEp').2 hs2p`. Take `⟨hLP, hXW, hA, -, -⟩` from `Formalism.L2.Th1.C.curveFrame ℂ_[p] (unitBall ℂ_[p]) (curveL p L ι) (Formalism.L2.Th1.Top.OrthogonalGaussModelNormLemmas.coeffIn hW)`. Establish `hPh` using `(Formalism.L2.Th1.C.phOIsPh ℂ_[p] (wpReg (curveL p L ι)) (logSer (curveL p L ι)) (ι (Formalism.L2.Th1.F.s2 L)) hLP.1 hLP.2.1).2`.
+
+Establish `hU` using `Formalism.L2.Th1.C.isogenyU ℂ_[p] (wpReg (curveL p L ι)) (ι (Formalism.L2.Th1.F.s2 L)) (logSer (curveL p L ι)) (expSer (curveL p L ι)) _ (xS (curveL p L ι)) ((curveL p L ι).b₂ / 12) S (fun P : S => ι (L.weierstrassP (P : ℂ))) _ hLP hPh hXW hIsoP`. Establish `hali : (ι ((m : ℂ) + (n : ℂ) * omegaK dK))⁻¹ ∈ unitBall ℂ_[p]` using `Formalism.L2.Th1.C.inv_mem_unitBall hα1`. Establish `hPi` using `prod_int (unitBall ℂ_[p]) (mulBy (logSer (curveL p L ι)) (expSer (curveL p L ι)) (ι ((m : ℂ) + (n : ℂ) * omegaK dK))) (Formalism.L2.Th1.Top.phC p L ι) (xS (curveL p L ι)) (fun P : S => ι (L.weierstrassP (P : ℂ))) _ ((Fintype.card S : ℂ_[p]) + 1) hα0p hali (Formalism.L2.Th1.C.Pts. …`. Establish `hxP` using `gauss_roots (xS (curveL p L ι)) hA.1 (fun n => hA.2 n) (fun P : S => ι (L.weierstrassP (P : ℂ))) (fun n => hPi n)`. Take `⟨P, hP, htP⟩` from `hS.2.2 t hαt ht`.
+
+Establish `hwp : L.weierstrassP t = L.weierstrassP P`. Establish `e : t = P + ((⟨t - P, htP⟩ : L.lattice) : ℂ)` using `by simp`. Rewrite using `[e, L.weierstrassP_add_coe]`. Establish `hx : ‖ι (L.weierstrassP t)‖ ≤ 1`. Rewrite using `[hwp]`.
+
+Conclude with `hxP ⟨P, hP⟩`. Rewrite using `[Formalism.L2.Th1.E.ScaledModelNorms.px_ptOf p L ι hΔ t ht, Formalism.L2.Th1.E.ScaledModelNorms.py_ptOf p L ι hΔ t ht]`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `heq` using `(Formalism.L2.Th1.E.ScaledModelNorms.nonsing p L ι hΔ t ht).1`. Rewrite `heq` using `[WeierstrassCurve.Affine.equation_iff]`.
+
+Establish `h1 : (curveL p L ι).a₁ = 0` using `rfl`. Establish `h2 : (curveL p L ι).a₂ = 0` using `rfl`. Establish `h3 : (curveL p L ι).a₃ = 0` using `rfl`. Rewrite `heq` using `[h1, h2, h3]`. Establish `hy2 : (ι (L.derivWeierstrassP t) / 2) ^ 2 = ι (L.weierstrassP t) ^ 3 + (curveL p L ι).a₄ * ι (L.weierstrassP t) + (curveL p L ι).a₆`.
+
+Take the linear combination `heq`. Establish `hn : ‖(ι (L.derivWeierstrassP t) / 2) ^ 2‖ ≤ 1`. Rewrite using `[hy2]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)) hW.2.2.2.2.1)` and prove the remaining obligations. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_le_one₀ (norm_nonneg _) hx`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hW.2.2.2.1 (norm_nonneg _) hx`. Rewrite `hn` using `[norm_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 hn`.
+-/
 theorem main_case {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) {dK : ℕ} (L : PeriodPair) (hmod : dK % 4 = 3)
     (hcm : HasCMBy dK L) (hW : IntCurve (curveL p L ι)) (m n : ℤ)
     (hα1 : ‖ι ((m : ℂ) + (n : ℂ) * omegaK dK)‖ = 1)
@@ -520,6 +699,15 @@ open UnitKernelIntegral Formalism.L2.Th1.Top.CalcPAux in
 open Formalism.L2.Th1.CM (omegaK) in
 open Formalism.L2.Th1.D (normInt) in
 
+/- English proof (translation)
+Introduce `dK L _hsq hmod hcm p _ ι hp2 hpd hW α t hαQ hα1 hαt ht`. Take `⟨m, n, rfl⟩` from `hαQ`. Distinguish the cases in `hN : (p : ℤ) ∣ normInt dK m n`. Use `swap`. Conclude with `Formalism.L2.Th1.E.kernelPtInt dK L hmod hcm p ι hW m n t hαt hN ht`.
+
+Establish `hmem : (ι ((m : ℂ) + (n : ℂ) * omegaK dK), ι ((m : ℂ) + (n : ℂ) * (1 - omegaK dK))) ∈ OO ι hmod` using `em_mem ι hmod (m, n)`. Establish `htwo : ∀ β : OO ι hmod, ∃ u v : (OO ι hmod)ˣ, β = u + v`. Distinguish the cases in `h5 : 5 ≤ p`. Conclude with `two_units ι hmod h5`. Establish `hpr : p.Prime` using `Fact.out`.
+
+Establish `hp3 : p = 3`. Establish `h2` using `hpr.two_le`. Break down `(by omega : p = 2 ∨ p = 3 ∨ p = 4) with h | h | h` into its components or cases. Conclude with `absurd h hp2`. Conclude with `h`.
+
+It suffices to derive a contradiction. Rewrite `hpr` using `[h]`. Evaluate the numerical expressions using `at hpr`. Conclude with `two_units3 ι hmod hp3 (split_w ι hmod hp3 hpd hN hα1)`. Conclude with `main_case ι L hmod hcm hW m n hα1 (calcGen ι L hmod hcm hp2 hW htwo _ _ hmem) t hαt ht`.
+-/
 theorem unit_kernel_integral_coords : UnitKerInt := by
   intro dK L _hsq hmod hcm p _ ι hp2 hpd hW α t hαQ hα1 hαt ht
   obtain ⟨m, n, rfl⟩ := hαQ

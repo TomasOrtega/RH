@@ -5,6 +5,15 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.LocalDualNil
 
+/- English proof (translation)
+Use `set J : Ideal R := m.map (algebraMap O R) with hJ`. Distinguish the cases in `htop : J = ⊤`. Conclude with `⟨0, fun φ _ s _ => htop ▸ Submodule.mem_top⟩`. Use `letI : Field (O ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Nontrivial (R ⧸ J) := Ideal.Quotient.nontrivial_iff.2 htop`.
+
+Use `haveI : IsLocalRing (R ⧸ J) := IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`. Use `haveI : Module.Finite (O ⧸ m) (R ⧸ J) := Module.Finite.of_restrictScalars_finite O _ _`. Use `haveI : IsArtinianRing (R ⧸ J) := IsArtinianRing.of_finite (O ⧸ m) _`. Take `⟨r, hr⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := R ⧸ J)`. Rewrite `hr` using `[IsLocalRing.jacobson_eq_maximalIdeal _ bot_ne_top]`.
+
+Use `haveI : IsLocalHom (Ideal.Quotient.mk J) := IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Use `⟨r, fun φ hφ s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : ¬ IsUnit φ` using `fun h => hm.ne_top (Ideal.eq_top_of_isUnit_mem _ hφ (h.map ε))`. Establish `h2 : Ideal.Quotient.mk J φ ∈ IsLocalRing.maximalIdeal (R ⧸ J)` using `fun h => h1 (isUnit_of_map_unit _ _ h)`. Establish `h3` using `Ideal.pow_mem_pow h2 r`.
+
+Rewrite `h3` using `[hr, Submodule.zero_eq_bot, Ideal.mem_bot, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hs`. Rewrite using `[pow_add]`. Conclude with `J.mul_mem_right _ h3`.
+-/
 theorem exists_pow_mem_map {O R : Type*} [CommRing O] [CommRing R] [Algebra O R]
     [Module.Finite O R] [IsLocalRing R] (ε : R →ₐ[O] O) (m : Ideal O) (hm : m.IsMaximal) :
     ∃ r : ℕ, ∀ φ : R, ε φ ∈ m → ∀ s, r ≤ s → φ ^ s ∈ m.map (algebraMap O R) := by
@@ -31,6 +40,13 @@ theorem exists_pow_mem_map {O R : Type*} [CommRing O] [CommRing R] [Algebra O R]
   rw [pow_add]
   exact J.mul_mem_right _ h3
 
+/- English proof (translation)
+Introduce `p O _ G n m hm hloc`. Take `⟨r, hr⟩` from `exists_pow_mem_map (Bialgebra.counitAlgHom O (G.dual.A n)) m hm`. Use `⟨r, fun φ hφ s hs a => ?_⟩` and prove the remaining obligations. Establish `h` using `hr φ hφ s hs`. Generalize the expression as in `φ ^ s = ψ at h`.
+
+Establish `h' : ψ ∈ m • (⊤ : Submodule O (G.dual.A n))`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `h`. Use `Submodule.smul_induction_on (p := fun ψ : G.dual.A n => ψ a ∈ m) h' ?_ ?_` and prove the remaining obligations. Introduce `c hc χ _`.
+
+Conclude with `m.mul_mem_right (χ a) hc`. Introduce `x y hx hy`. Conclude with `m.add_mem hx hy`.
+-/
 theorem exists_pow_apply_mem : ∀ (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (n : ℕ)
     (m : Ideal O), m.IsMaximal → IsLocalRing (G.dual.A n) → ∃ r : ℕ, ∀ φ : G.dual.A n,
       φ 1 ∈ m → ∀ s, r ≤ s → ∀ a : G.A n, (φ ^ s) a ∈ m := by

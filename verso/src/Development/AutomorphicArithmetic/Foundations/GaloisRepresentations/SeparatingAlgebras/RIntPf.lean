@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 n t ht0 ht1 l hl`. Take `⟨hh, -, hev, hnorm⟩` from `h4 n t ht0 ht1`. Establish `hpt : ∀ (θ : Fin n → UnitAddCircle) (σ : Equiv.Perm (Fin n)), pt θ ∘ ⇑σ = pt (θ ∘ ⇑σ)` using `fun _ _ => rfl`. Use `set F : (Fin n → UnitAddCircle) → ℂ := fun θ => monomialChar l (pt θ) * half (t : ℂ) (pt θ) with hF`. Establish `hmc : Continuous fun θ : Fin n → UnitAddCircle => monomialChar l (pt θ)`.
+
+Use `hev (AddMonoidAlgebra.single l 1)` as an intermediate fact. Simplify `this` using `[evalAt_single]`. Establish `hFc : Continuous F` using `hmc.mul hh`. Establish `hperm : ∀ σ : Equiv.Perm (Fin n), ∫ θ : Fin n → UnitAddCircle, F (θ ∘ ⇑σ) = ∫ θ : Fin n → UnitAddCircle, F θ`. Introduce `σ`.
+
+Establish `hmp` using `volume_measurePreserving_piCongrLeft (fun _ : Fin n => UnitAddCircle) σ.symm`. Rewrite using `[← hmp.integral_comp' F]`. Use `congr 1`. Use function extensionality and compare the values at `θ`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_eq_cast]`. Establish `hae : (fun θ : Fin n → UnitAddCircle => evalAt (pt θ) (hlR (t : ℂ) l) * dens (t : ℂ) (pt θ)) =ᵐ[volume] fun θ => ∑ σ : Equiv.Perm (Fin n), F (θ ∘ ⇑σ)` using `by filter_upwards [h1 n] with θ hθ`. Rewrite using `[h2 n t ht0 ht1 l (pt θ) hθ (hnorm θ)]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hpt]`. Rewrite using `[integral_congr_ae hae, integral_finset_sum]`. Repeatedly rewrite using `[hperm]`. Rewrite using `[hF, h3 n t ht0 ht1 l hl, Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `σ _`. Establish `hc : Continuous fun θ : Fin n → UnitAddCircle => θ ∘ ⇑σ` using `continuous_pi fun i => continuous_apply (σ i)`. Conclude with `(hFc.comp hc).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem UpperTheory.Gal.Gen.rInt_pf :
     UpperTheory.Gal.Gen.InjAE → UpperTheory.Gal.Gen.RDens → UpperTheory.Gal.Gen.HalfInt → UpperTheory.Gal.Gen.DensCont → UpperTheory.Gal.Gen.RInt := by
   intro h1 h2 h3 h4 n t ht0 ht1 l hl

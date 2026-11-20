@@ -8,6 +8,15 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.SmoothVectors
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∀ v ∈ S, ContDiffOn ℝ m (o v) U`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `v hv`.
+
+Take `⟨w, -, hw⟩` from `h v hv`. Rewrite using `[Nat.cast_zero, contDiffOn_zero]`. Conclude with `fun M hM => (hw M hM).continuousAt.continuousWithinAt`. Consider the case `succ m ih`. Introduce `v hv`.
+
+Take `⟨w, hwS, hw⟩` from `h v hv`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Use `⟨fun M hM => (hw M hM).differentiableAt.differentiableWithinAt, fun hm => ?_, ?_⟩` and prove the remaining obligations. Conclude with `absurd hm (by simp)`. Use `ContDiffOn.congr (f := fun M => ∑ i, (A i M).smulRight (o (w i) M)) ?_ fun M hM => (hw M hM).fderiv` and prove the remaining obligations.
+
+Conclude with `ContDiffOn.sum fun i _ => (contDiffOn_infty.1 (hA i) m).smulRight (ih (w i) (hwS i))`. Introduce `v hv`. Conclude with `contDiffOn_infty.2 fun m => key m v hv`.
+-/
 theorem contDiffOn_of_fderiv_family {E F P : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {n : ℕ} {U : Set E} (hU : IsOpen U)
     (o : P → E → F) (S : Set P) (A : Fin n → E → E →L[ℝ] ℝ)

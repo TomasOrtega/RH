@@ -49,15 +49,24 @@ def Adapted (S : Sys X) (D : Formalism.BaseCaseIdentities.Data C Z I) (a : ZMod 
     (∀ c (k : ℕ) x, 1 ≤ k → S.al c k x = ∑ b, D.al c k b * S.al b 0 x) ∧
     (∀ c, D.lev c < Formalism.BaseCaseIdentities.Kn i → X.ty (Sum.inl c) = a + ((2 * D.lev c : ℕ) : ZMod d))
 
+/- English proof (translation)
+Simplify using `[Sys.al, (S.curve c).2.1]`.
+-/
 theorem al_zero (S : Sys X) (c x : I) : S.al c 0 x = S.tan c x := by
   simp [Sys.al, (S.curve c).2.1]
 
+/- English proof (translation)
+Rewrite using `[← al_zero]`. Conclude with `X.t2 _ (S.curve c).1 0 (fun i hi => absurd hi (Nat.not_lt_zero _)) _`.
+-/
 theorem tan_int (S : Sys X) (c x : I) : V.Ge 0 (S.tan c x) := by
   rw [← al_zero]
   exact X.t2 _ (S.curve c).1 0 (fun i hi => absurd hi (Nat.not_lt_zero _)) _
 
 variable {S : Sys X} {D : Formalism.BaseCaseIdentities.Data C Z I} {a : ZMod d} {i : ℕ}
 
+/- English proof (translation)
+Use `⟨S.curve c, fun x => ?_⟩` and prove the remaining obligations. Use `h.2.2.2.1 c 1 x le_rfl` as an intermediate fact. Simplify `this` using `[D.al_one c hc, Sys.al]`.
+-/
 theorem Adapted.good (h : Adapted S D a i) {c : I} (hc : D.good c) :
     X.Good (X.ty (Sum.inl c)) (S.tan c) (S.cur c) := by
   refine ⟨S.curve c, fun x => ?_⟩

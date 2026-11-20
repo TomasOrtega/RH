@@ -12,9 +12,21 @@ open scoped LaurentSeries PowerSeries
 section Series
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+The claim follows from `HahnSeries.ofPowerSeries_injective h`.
+-/
 theorem coe_inj {a b : k⟦X⟧} (h : (a : k⸨X⸩) = (b : k⸨X⸩)) : a = b :=
   HahnSeries.ofPowerSeries_injective h
 
+/- English proof (translation)
+Take `⟨u₁, hu₁⟩` from `h1`. Take `⟨w, rfl⟩` from `hw`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `: (0 : k⟦X⟧) = (PowerSeries.X ^ d) ^ p * (w : k⟦X⟧)` using `coe_inj (by rw [← hc]; simp)`.
+
+Conclude with `(mul_ne_zero (pow_ne_zero _ (pow_ne_zero _ PowerSeries.X_ne_zero)) w.ne_zero) this.symm`. Take `⟨r, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 (PowerSeries.X_irreducible (R := k))`. Take `⟨b, hb⟩` from `h2 (u : k⟦X⟧)`. Take `⟨b', hb'⟩` from `h2 ((u⁻¹ : (k⟦X⟧)ˣ) : k⟦X⟧)`. Establish `hbb : b * b' = 1` using `coe_inj (by`.
+
+Rewrite using `[PowerSeries.coe_mul, ← hb, ← hb', ← map_mul, ← PowerSeries.coe_mul, Units.mul_inv]`. Use the proof step `simp)`. Establish `hbu : IsUnit b` using `IsUnit.of_mul_eq_one _ hbb`. Establish `key : ((hbu.unit * u₁ ^ r : (k⟦X⟧)ˣ) : k⟦X⟧) * (PowerSeries.X : k⟦X⟧) ^ (d * r) = (w : k⟦X⟧) * PowerSeries.X ^ (d * p)` using `coe_inj (by`. Rewrite using `[mul_comm (w : k⟦X⟧), pow_mul, pow_mul, ← hc, hu, PowerSeries.coe_mul, PowerSeries.coe_mul, map_mul, hb, PowerSeries.coe_pow, PowerSeries.coe_pow, PowerSeries.coe_pow, ← vv_eq_coe_X, map_pow, hu₁, mul_pow]`.
+
+Simplify using `[mul_assoc])`. Use `IsDiscreteValuationRing.unit_mul_pow_congr_pow (PowerSeries.X_irreducible (R := k)) (PowerSeries.X_irreducible (R := k)) _ _ _ _ key` as an intermediate fact. Establish `hr : r = p` using `Nat.eq_of_mul_eq_mul_left hd this`. Conclude with `⟨u, hr ▸ hu⟩`.
+-/
 theorem eq_unit_mul_pow (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) {d : ℕ} (hd : 0 < d)
     (h1 : ∃ u : (k⟦X⟧)ˣ, ι (vv k) = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ d)
     (h2 : ∀ a : k⟦X⟧, ∃ b : k⟦X⟧, ι (a : k⸨X⸩) = (b : k⸨X⸩)) (c w : k⟦X⟧) (hw : IsUnit w) (p : ℕ)
@@ -45,12 +57,20 @@ theorem eq_unit_mul_pow (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) {d : ℕ} (hd : 0 < d
 
 variable {m : ℕ}
 
+/- English proof (translation)
+Unfold `sh`. Rewrite using `[Submodule.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem sh_span (a : ℤ) (x : Vc k m) :
     sh a (Submodule.span k⟦X⟧ {x}) = Submodule.span k⟦X⟧ {vv k ^ a • x} := by
   unfold sh
   rw [Submodule.map_span, Set.image_singleton]
   rfl
 
+/- English proof (translation)
+Unfold `pull`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`.
+
+Take `⟨b, hb⟩` from `R.φ_int c`. Use `Submodule.mem_span_singleton.mpr ⟨b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b : k⸨X⸩) • f x = f ((c : k⸨X⸩) • x)`. Rewrite using `[hf, hb]`. Conclude with `Submodule.span_mono (Set.singleton_subset_iff.mpr ⟨x, Submodule.mem_span_singleton_self x, rfl⟩)`.
+-/
 theorem pull_span {l : ℕ} (R : RingPG k l) (f : Vc k m →ₗ[k] Vc k m) (hf : Semi R.φ f) (x : Vc k m) :
     pull f (Submodule.span k⟦X⟧ {x}) = Submodule.span k⟦X⟧ {f x} := by
   unfold pull
@@ -64,6 +84,9 @@ theorem pull_span {l : ℕ} (R : RingPG k l) (f : Vc k m →ₗ[k] Vc k m) (hf :
     rw [hf, hb]
   · exact Submodule.span_mono (Set.singleton_subset_iff.mpr ⟨x, Submodule.mem_span_singleton_self x, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[mul_smul, Submodule.span_singleton_smul_eq u.isUnit]`. Use `congr 2`. Express the relevant statement in the definitionally equal form `(((PowerSeries.X : k⟦X⟧) ^ p : k⟦X⟧) : k⸨X⸩) • x = _`. Rewrite using `[PowerSeries.coe_pow, ← vv_eq_coe_X, zpow_natCast]`.
+-/
 theorem span_unit_pow (u : (k⟦X⟧)ˣ) (p : ℕ) (x : Vc k m) :
     Submodule.span k⟦X⟧ {((u : k⟦X⟧) * PowerSeries.X ^ p) • x} = Submodule.span k⟦X⟧ {vv k ^ (p : ℤ) • x} := by
   rw [mul_smul, Submodule.span_singleton_smul_eq u.isUnit]
@@ -75,6 +98,21 @@ end Series
 
 section Rank
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Establish `: Nontrivial O` using `(algebraMap O k).domain_nontrivial`. Set `b` to `Module.Free.chooseBasis O M`. Establish `hli : LinearIndependent k (fun s => q (b s))`. Rewrite using `[linearIndependent_iff']`.
+
+Introduce `s g hg i hi`. Use `choose g' hg' using fun i => hs (g i)`. Establish `h0 : q (∑ j ∈ s, g' j • b j) = 0`. Rewrite using `[map_sum, ← hg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← hg', algebraMap_smul]`. Take `⟨y, hy⟩` from `(hker _).mp h0`. Use `congrArg (fun z => b.repr z i) hy` as an intermediate fact. Simplify using `only [map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul] at this`. Rewrite `this` using `[Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (fun h => absurd hi h)]`.
+
+Rewrite using `[← hg', hk]`. Conclude with `⟨b.repr y i, by simpa using this⟩`. Establish `hsub : Subsingleton (Module.Free.ChooseBasisIndex O M)`. Use `hli.cardinal_lift_le_rank` as an intermediate fact. Simplify using `only [rank_fun', Fintype.card_fin, Nat.cast_one, Cardinal.lift_id] at this`.
+
+Conclude with `Cardinal.le_one_iff_subsingleton.mp this`. Establish `hne : Nonempty (Module.Free.ChooseBasisIndex O M)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Take `⟨x, hx⟩` from `hq 1`.
+
+Establish `: x = 0` using `by rw [← b.repr.map_eq_zero_iff]; exact Subsingleton.elim _ _`. Rewrite `hx` using `[this, map_zero]`. Conclude with `zero_ne_one hx`. Take `⟨s⟩` from `hne`. Establish `: Unique (Module.Free.ChooseBasisIndex O M)` using `uniqueOfSubsingleton s`.
+
+Use `⟨by rw [Module.finrank_eq_card_basis b]; simp, b default, b.ne_zero _, fun x => ⟨b.repr x default, ?_⟩⟩` and prove the remaining obligations. Simplify using `using (b.sum_repr x).symm`.
+-/
 theorem free_rank_one {O k M : Type} [CommRing O] [Field k] [Algebra O k] [AddCommGroup M] [Module O M]
     [Module.Free O M] {lam : O} (hs : Function.Surjective (algebraMap O k))
     (hk : ∀ x, algebraMap O k x = 0 ↔ lam ∣ x) {m : ℕ} (hm : m = 1) (q : M →ₗ[O] (Fin m → k))
@@ -126,18 +164,32 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n₀ : ℕ}
     {W : LocWach PD LL O v n₀} {k : Type} [Field k] [Algebra O k]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem γD_smulA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n₀) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n₀) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem γA_apply (g : W.Gam) (a : LetA O n₀) (j : ZMod n₀) : W.γA g a j = W.γ₀ g (a j) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[γA_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Simplify using `[letE, h]`.
+-/
 theorem γA_letE (g : W.Gam) (j : ZMod n₀) : W.γA g (letE j) = letE j := by
   funext i
   rw [γA_apply]
@@ -145,6 +197,11 @@ theorem γA_letE (g : W.Gam) (j : ZMod n₀) : W.γA g (letE j) = letE j := by
   · subst h; simp [letE]
   · simp [letE, h]
 
+/- English proof (translation)
+Establish `hQ : W.Q j = W.q₀`. Rewrite using `[LocWach.Q, hs]`. Both sides reduce to the same expression. Establish `h` using `congrArg (PowerSeries.map (algebraMap O k)) W.q₀_def`. Establish `: CharP k⟦X⟧ l` using `charP_of_injective_algebraMap (algebraMap k k⟦X⟧).injective l`.
+
+Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, PowerSeries.map_X, hp] at h`. Rewrite `h` using `[add_pow_char, one_pow, add_sub_cancel_left]`. Rewrite using `[hQ]`. Apply `mul_left_cancel₀ (PowerSeries.X_ne_zero (R := k))` to reduce the goal to its premises. Rewrite using `[h, ← pow_succ', Nat.sub_add_cancel (Fact.out : l.Prime).one_le]`.
+-/
 theorem red_Q {l : ℕ} [Fact l.Prime] [CharP k l] (hp : PD.p = l) (hs : W.s = 1) (j : ZMod n₀) :
     PowerSeries.map (algebraMap O k) (W.Q j) = PowerSeries.X ^ (l - 1) := by
   have hQ : W.Q j = W.q₀ := by
@@ -160,6 +217,13 @@ theorem red_Q {l : ℕ} [Fact l.Prime] [CharP k l] (hp : PD.p = l) (hs : W.s = 1
 
 variable {l n : ℕ} {R : RingPG k l} {F : DFun R n G} {ι : k⸨X⸩ →ₐ[k] k⸨X⸩} {τ : ZMod n → ZMod n₀} {γ : W.Gam}
 
+/- English proof (translation)
+Establish `hy' : (letE (τ i) : LetA O n₀) • (y : W.DD T) ∈ DΔ W T` using `fun δ hδ => by`. Rewrite using `[γD_smulA, γA_letE, y.2 δ hδ]`. Establish `hinv : ∀ δ ∈ W.DelF, W.γ₀ δ (g (τ i)) = g (τ i)` using `fun δ hδ => by`. Establish `h1` using `hy' δ hδ`. Rewrite `h1` using `[hxy, γD_smulA, γD_smulA, γA_letE, x.2 δ hδ, ← sub_eq_zero, ← sub_smul]`.
+
+Use `htf _ h1` as an intermediate fact. Rewrite `this` using `[Pi.sub_apply, γA_apply, sub_eq_zero]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `hΔ _ hinv`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `h1 : p.j T A q i ⟨_, hy'⟩ = p.j T A q i y`.
+
+Rewrite using `[p.j_smul T A q h i (letE (τ i)) 1 y ⟨_, hy'⟩ (by simp [letE]) rfl, one_smul]`. Rewrite using `[← h1]`. Conclude with `p.j_smul T A q h i (g * letE (τ i)) c x _ (by simpa [letE] using hc) (by rw [mul_smul]; exact hxy)`.
+-/
 theorem j_rel (p : Pres W F ι τ γ)
     (hΔ : ∀ a : O⟦X⟧, (∀ δ ∈ W.DelF, W.γ₀ δ a = a) →
       ∃ c : k⟦X⟧, ι (c : k⸨X⸩) = ((PowerSeries.map (algebraMap O k) a : k⟦X⟧) : k⸨X⸩))
@@ -182,6 +246,35 @@ theorem j_rel (p : Pres W F ι τ γ)
   rw [← h1]
   exact p.j_smul T A q h i (g * letE (τ i)) c x _ (by simpa [letE] using hc) (by rw [mul_smul]; exact hxy)
 
+/- English proof (translation)
+Establish `hd : 0 < l - 1` using `Nat.sub_pos_of_lt (Fact.out : l.Prime).one_lt`. Establish `hbN : (b : W.DD T) ∈ W.N T` using `by rw [hN]; exact Submodule.mem_span_singleton_self _`. Establish `htf : ∀ (j : ZMod n₀) (c : LetA O n₀), c • (letE j : LetA O n₀) • (b : W.DD T) = 0 → c j = 0`. Introduce `j c hc`. Rewrite `hc` using `[smul_smul]`.
+
+Simplify `congrFun (hb _ hc) j` using `[letE]`. Establish `hspan : ∀ i, N i = Submodule.span k⟦X⟧ {p.j T A q i b}`. Introduce `i`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+
+Take `⟨x, hx, rfl⟩` from `(hNi i y).mp hy`. Rewrite `hx` using `[hN]`. Take `⟨g, hg⟩` from `Submodule.mem_span_singleton.mp hx`. Take `⟨c, -, hc⟩` from `j_rel p hΔ h i b x g (by rw [← hg, smul_comm]) (htf _)`. Conclude with `Submodule.mem_span_singleton.mpr ⟨c, hc.symm⟩`.
+
+Rewrite using `[Submodule.span_singleton_le_iff_mem, hNi]`. Conclude with `⟨b, hbN, rfl⟩`. Set `fb : ↥(DΔ W T)` to `⟨W.φD T b, φ_mem W T b⟩`. Establish `hfb : p.j T A q i fb = (F.D A).φ i (p.j T A q (i - 1) b)` using `p.j_φ' h i b`. Rewrite using `[hspan, hspan, pull_span R _ ((F.D A).φ_semi i), sh_span, ← hfb]`.
+
+Establish `hpull : ∀ x ∈ W.φpull T, ∃ d : LetA O n₀, d • (fb : W.DD T) = x`. Introduce `x hx`. Rewrite using `[← Submodule.mem_span_singleton]`. Use `(Submodule.span_le.mpr ?_ : W.φpull T ≤ _) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Rewrite `hy` using `[hN]`. Take `⟨g, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Conclude with `Submodule.mem_span_singleton.mpr ⟨W.φA g, (φD_smulA T g _).symm⟩`. Take `⟨y, hy, hc⟩` from `hr1 (fb : W.DD T) (Submodule.subset_span ⟨b, hbN, rfl⟩)`. Rewrite `hy` using `[hN]`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Take `⟨x, hx, hd'⟩` from `hr2 _ hbN`. Take `⟨d, rfl⟩` from `hpull x hx`. Use `set e : LetA O n₀ := letE (τ i) with he`. Establish `hQ` using `red_Q (W := W) (k := k) hp hs (τ i)`.
+
+Establish `hcd : PowerSeries.map (algebraMap O k) (c (τ i)) * PowerSeries.map (algebraMap O k) (d (τ i)) = 1`. Establish `h3 : (W.Q ^ a.toNat * (c * d) - W.Q ^ a.toNat) • e • (b : W.DD T) = 0`. Rewrite using `[sub_smul, ← hd', sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = d • W.Q ^ (-a).toNat • e • (fb : W.DD T) := by rw [hc]`. Use `_ = _ := by simp only [smul_smul]; congr 1; ring`. Establish `h4` using `congrArg (PowerSeries.map (algebraMap O k)) (htf _ _ h3)`.
+
+Simplify using `only [Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, map_sub, map_mul, map_pow, map_zero, hQ] at h4`. Apply `mul_left_cancel₀ (pow_ne_zero a.toNat (pow_ne_zero (l - 1) (PowerSeries.X_ne_zero (R := k))))` to reduce the goal to its premises. Rewrite using `[mul_one]`. Conclude with `sub_eq_zero.mp h4`. Break down `le_total 0 a with ha | ha` into its components or cases.
+
+Establish `h0 : (-a).toNat = 0` using `by omega`. Rewrite `hc` using `[h0, pow_zero, one_smul]`. Take `⟨c', hc', hj⟩` from `j_rel p hΔ h i b fb (W.Q ^ a.toNat * c) (by rw [hc]; simp only [smul_smul]; congr 1; ring) (htf _)`. Rewrite `hc'` using `[Pi.mul_apply, Pi.pow_apply, map_mul, map_pow, hQ]`. Take `⟨u, hu⟩` from `eq_unit_mul_pow ι hd h1 h2 c' _ (IsUnit.of_mul_eq_one _ hcd) _ hc'`.
+
+Rewrite using `[hj, hu, span_unit_pow, Int.toNat_of_nonneg ha]`. Establish `h0 : a.toNat = 0` using `by omega`. Rewrite `hd'` using `[h0, pow_zero, one_smul]`. Take `⟨c', hc', hj⟩` from `j_rel p hΔ h i fb b (W.Q ^ (-a).toNat * d) (by rw [← hd']; simp only [smul_smul]; congr 1; ring) (fun z hz => htf _ z (by`. Rewrite using `[← hd']`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hz, smul_zero]))`.
+
+Rewrite `hc'` using `[Pi.mul_apply, Pi.pow_apply, map_mul, map_pow, hQ]`. Take `⟨u, hu⟩` from `eq_unit_mul_pow ι hd h1 h2 c' _ (IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact hcd)) _ hc'`. Rewrite using `[← sh_span, hj, hu, span_unit_pow, sh_span, smul_smul, ← zpow_add₀ (vv_ne_zero k), Int.toNat_of_nonneg (by omega), add_neg_cancel, zpow_zero, one_smul]`.
+-/
 theorem main_gen [Fact l.Prime] [CharP k l] (hp : PD.p = l) (hs : W.s = 1) (p : Pres W F ι τ γ)
     (h1 : ∃ u : (k⟦X⟧)ˣ, ι (vv k) = ((u : k⟦X⟧) : k⸨X⸩) * vv k ^ (l - 1))
     (h2 : ∀ a : k⟦X⟧, ∃ b : k⟦X⟧, ι (a : k⸨X⸩) = (b : k⸨X⸩))
@@ -264,6 +357,13 @@ theorem main_gen [Fact l.Prime] [CharP k l] (hp : PD.p = l) (hs : W.s = 1) (p : 
     rw [← sh_span, hj, hu, span_unit_pow, sh_span, smul_smul, ← zpow_add₀ (vv_ne_zero k),
       Int.toNat_of_nonneg (by omega), add_neg_cancel, zpow_zero, one_smul]
 
+/- English proof (translation)
+Use `T.L.free` as an intermediate fact. Take `⟨h1, e, he, hx⟩` from `free_rank_one hs hk hm q hq hker`. Use `⟨h1, finrank_eq_one (R := LL) (e : T.V) (by simpa using he) fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.mem_span_singleton]`. Establish `hw : w ∈ Submodule.span LL (T.L.T : Set T.V)` using `by rw [T.L.span]; trivial`.
+
+Use `Submodule.span_le.mpr ?_ hw` and prove the remaining obligations. Introduce `x hx'`. Take `⟨c, hc⟩` from `hx ⟨x, hx'⟩`. Conclude with `Submodule.mem_span_singleton.mpr ⟨algebraMap O LL c, by`. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `(congrArg Subtype.val hc).symm⟩`.
+-/
 theorem rank_one {lam : O} (hs : Function.Surjective (algebraMap O k))
     (hk : ∀ x, algebraMap O k x = 0 ↔ lam ∣ x) (T : LocLat G Qp LL O) {m : ℕ} (hm : m = 1)
     (q : ↥T.L.T →ₗ[O] (Fin m → k)) (hq : Function.Surjective q) (hker : KerIs lam q) :
@@ -279,6 +379,11 @@ theorem rank_one {lam : O} (hs : Function.Surjective (algebraMap O k))
   exact Submodule.mem_span_singleton.mpr ⟨algebraMap O LL c, by
     rw [algebraMap_smul]; exact (congrArg Subtype.val hc).symm⟩
 
+/- English proof (translation)
+Establish `h` using `hB T hc`. Rewrite `h` using `[h1]`. Take `⟨b, hb, hli, hN⟩` from `h`. Use `⟨⟨b 0, (hb 0).2⟩, fun c hc => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Fintype.linearIndependent_iff.mp hli) (fun _ => c) (by simpa using hc) 0`.
+
+Rewrite `hN` using `[Set.range_unique]`. Conclude with `hN`.
+-/
 theorem exists_gen (hB : GlobalTheory.WachUse.InvBasis W) (T : LocLat G Qp LL O) (hc : IsCrys PD T.ρ)
     (h1 : Module.finrank O ↥T.L.T = 1) :
     ∃ b : ↥(DΔ W T), (∀ c : LetA O n₀, c • (b : W.DD T) = 0 → c = 0) ∧
@@ -290,6 +395,13 @@ theorem exists_gen (hB : GlobalTheory.WachUse.InvBasis W) (T : LocLat G Qp LL O)
   · exact (Fintype.linearIndependent_iff.mp hli) (fun _ => c) (by simpa using hc) 0
   · rw [Set.range_unique] at hN; exact hN
 
+/- English proof (translation)
+Establish `hΔ : ∀ b : O⟦X⟧, (∀ δ ∈ W.DelF, W.γ₀ δ b = b) → ∃ c : k⟦X⟧, ι (c : k⸨X⸩) = ((PowerSeries.map (algebraMap O k) b : k⟦X⟧) : k⸨X⸩)`. Introduce `b hb`. Use `(hcyc.2.2.1 _).mp fun z hz => ?_` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `e.surjective ⟨z, hz⟩`. Establish `h` using `he δ b`.
+
+Rewrite `h` using `[hδ, hb δ.1 δ.2]`. Conclude with `h.symm`. Take `⟨h1, h2⟩` from `rank_one hsurj hk T hm q hon.1 hker`. Take `⟨b, hb, hNb⟩` from `exists_gen hQN.1 T hcr.1 h1`. Use `choose σ hσ using fun j => hbij.2 (W.emb j)`.
+
+Establish `hστ : σ (τ i) = i` using `hbij.1 ((hσ _).trans (hτ i))`. Establish `hcr' : CrysWith PD W.emb T.ρ (fun j => {a (σ j)})` using `⟨hcr.1, fun j => by have h := hcr.2 (σ j); rw [hσ j, hU] at h; exact h⟩`. Establish `hr` using `hQN.2.2.1 T (fun j => a (σ j)) hcr' h2 (τ i)`. Establish `h` using `main_gen hp hs p hcyc.1 hcyc.2.1 hΔ hon b hb hNb N hN i (a (σ (τ i))) hr.1 hr.2`. Rewrite `h` using `[hστ]`. Then use the resulting hypothesis.
+-/
 theorem main_QN [Fact l.Prime] [CharP k l] (hp : PD.p = l) (hs : W.s = 1) (p : Pres W F ι τ γ)
     (hcyc : GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.IsCyclotomic R ι)
     (e : {δ // δ ∈ W.DelF} ≃ {z : ℤ_[l] // z ^ (l - 1) = 1})
@@ -323,6 +435,9 @@ theorem main_QN [Fact l.Prime] [CharP k l] (hp : PD.p = l) (hs : W.s = 1) (p : P
 
 end Wach
 
+/- English proof (translation)
+Introduce `l _ P H S k _ _ _ hres R ι F τ γ p hcyc hτ _ hQN T A q U hon hker hcr N hN a hm hU i`. Take `⟨-, e, he⟩` from `GlobalTheory.RedAct.gamma_action_reduction H S k`. Establish `hs : (S.W H).s = 1` using `H.W_s S.K 1 S.LL _`. Conclude with `main_QN (W := S.W H) (P.PD_p S.K) hs p hcyc e he hres.1 hres.2 S.hyp.1.2.2.2.1 hτ hQN T A q U hon hker hcr N hN a hm hU i`.
+-/
 theorem pull_eq_sh : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) (S : TopSit P) (k : Type) [Field k] [Algebra S.O k] [CharP k l], S.IsRes k → ∀ {R : RingPG k l} (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) (F : DFun R S.n S.G) (τ : ZMod S.n → ZMod (Module.finrank ℚ_[l] ↥(K0 S.K))) (γ : (S.W H).Gam) (p : Pres (S.W H) F ι τ γ), GlobalTheory.IndefiniteRowSideFullHecke.OnePlusPowerCharacters.IsCyclotomic R ι → (∀ i, (S.W H).emb (τ i) = S.emb i) → ((S.W H).χΓ γ : S.O) = 1 + (l : S.O) → GlobalTheory.WachUse.QN (S.W H) → ∀ (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (A : Ob k S.G) q (U : ZMod S.n → Multiset ℤ), Onto T A q → KerIs S.Γ.lam q → CrysWith (P.PD S.K) S.emb T.ρ U → ∀ N : Lats k S.n A.m, (∀ i y, y ∈ N i ↔ ∃ x : ↥(DΔ (S.W H) T), (x : (S.W H).DD T) ∈ (S.W H).N T ∧ p.j T A q i x = y) → ∀ a : ZMod S.n → ℤ, A.m = 1 → (∀ i, U i = {a i}) → ∀ i, pull ((F.D A).φ i) (N (i - 1)) = sh (a i) (N i) := by
   intro l _ P H S k _ _ _ hres R ι F τ γ p hcyc hτ _ hQN T A q U hon hker hcr N hN a hm hU i
   obtain ⟨-, e, he⟩ := GlobalTheory.RedAct.gamma_action_reduction H S k

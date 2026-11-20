@@ -8,6 +8,25 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 
 variable {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Take `⟨hinv, -, -, -⟩` from `br_facts hP`. Establish `hPPi : P * P⁻¹ = 1`. Rewrite using `[hinv]`. Conclude with `(br_facts hP).2.1`. Establish `hPiP : P⁻¹ * P = 1`.
+
+Rewrite using `[hinv]`. Conclude with `(br_facts hP).2.2.1`. Establish `hconj : ∀ X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, P * (P⁻¹ * X * P) * P⁻¹ = X`. Introduce `X`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = X := by rw [hPPi, Matrix.one_mul, Matrix.mul_one]`. Establish `hconj' : ∀ g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, P⁻¹ * (P * g * P⁻¹) * P = g`. Introduce `g`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = g := by rw [hPiP, Matrix.one_mul, Matrix.mul_one]`. Establish `hmapid : ∀ w : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), ((w.map fun X => P⁻¹ * X * P).map fun X => P * X * P⁻¹) = w`. Introduce `w`. Rewrite using `[List.map_map]`.
+
+Use `conv_rhs => rw [← List.map_id w]`. Conclude with `List.map_congr_left (fun X _ => hconj X)`. Take `⟨C, Ws, hWs, hb⟩` from `hJ`. Use `⟨C, Ws.map fun w => w.map fun X => P⁻¹ * X * P, ?_, ?_⟩` and prove the remaining obligations. Introduce `w' hw'`.
+
+Take `⟨w, hw, rfl⟩` from `List.mem_map.1 hw'`. Use `⟨by rw [List.length_map]; exact (hWs w hw).1, ?_⟩` and prove the remaining obligations. Introduce `X' hX'`. Take `⟨X, hX, rfl⟩` from `List.mem_map.1 hX'`. Rewrite using `[bridge_lie hP, hconj]`.
+
+Conclude with `(hWs w hw).2 X hX`. Introduce `u hu v hv g hg`. Establish `hsum : ∀ x : H, ((Ws.map fun w => w.map fun X => P⁻¹ * X * P).map fun w => ‖Formalism.MainNotions.S.dsigW (k` using `k) (r := r) σ w x‖).sum = nuJ (fun g => σ (P⁻¹ * g * P)) Ws x := by`. Introduce `x`. Unfold `nuJ`.
+
+Rewrite using `[List.map_map]`. Use `congr 1`. Use `List.map_congr_left (fun w _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[bridge_dsigW hP, hmapid]`.
+
+Establish `key` using `hb u v ((bridge_smooth hP σ u).1 hu) ((bridge_smooth hP σ v).1 hv) (P * g * P⁻¹) ((bridge_group hP g).1 hg)`. Simplify using `only [] at key`. Rewrite `key` using `[hconj']`. Rewrite using `[hsum, hsum, bridge_gN hP]`. Conclude with `key`.
+-/
 theorem decSm_of_decBoundJ {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)} (m N : ℕ)
     (hJ : DecBoundJ ε (fun g => σ (P⁻¹ * g * P)) m N) :

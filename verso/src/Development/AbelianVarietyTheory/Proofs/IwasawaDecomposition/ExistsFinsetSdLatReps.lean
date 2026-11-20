@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.Mem.Col2.JetEx
 
+/- English proof (translation)
+Introduce `X hX n`. Take `⟨s, hs, H⟩` from `unimod_finite (posStar_of_conj hX.conjE) n`. Use `⟨s, hs, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨N₀, h₀, g, hg, e⟩` from `H N hN.1 hN.2`. Conclude with `⟨N₀, h₀, ⟨g, hg⟩, e.symm⟩`.
+-/
 theorem exists_finset_sdLat_reps : ∀ (X : Fields), X.Ok → ∀ n : ℕ, ∃ T : Finset (Submodule (𝓞 X.E) (Sp X.E n)), (∀ N ∈ T, IsSdLat N) ∧ ∀ N : Submodule (𝓞 X.E) (Sp X.E n), IsSdLat N → ∃ N₀ ∈ T, ∃ γ : UF X.E n, N = gmap γ.1 N₀ := by
   intro X hX n
   obtain ⟨s, hs, H⟩ := unimod_finite (posStar_of_conj hX.conjE) n

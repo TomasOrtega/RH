@@ -17,15 +17,32 @@ namespace PositivityTheory.Rg.Rsw.L.LApproxId
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_eq (x : AF F) : fstA F x = x.1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem snd_eq (x : AF F) : sndA F x = x.2 := rfl
 
+/- English proof (translation)
+The claim follows from `hε.1`.
+-/
 theorem idF_fst {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) : ε.1 = 1 := hε.1
 
 open Classical in
+/- English proof (translation)
+The claim follows from `hε.2 v`.
+-/
 theorem idF_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) (v : HeightOneSpectrum (𝓞 F)) :
     ε.2 v = if v ∈ S then 1 else 0 := hε.2 v
 
+/- English proof (translation)
+Use `Prod.ext ?_ (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ε.1 * ε.1 = ε.1`. Rewrite using `[idF_fst hε, one_mul]`. Express the relevant statement in the definitionally equal form `ε.2 v * ε.2 v = ε.2 v`. Rewrite using `[idF_snd hε v]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem idF_mul {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) : ε * ε = ε := by
   classical
   refine Prod.ext ?_ (FiniteAdeleRing.ext _ fun v => ?_)
@@ -35,12 +52,18 @@ theorem idF_mul {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
     rw [idF_snd hε v]
     split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h : (ε * y).1 = 0` using `by rw [hy]; rfl`. Express the relevant statement in the definitionally equal form `ε.1 * y.1 = 0 at h`. Rewrite `h` using `[idF_fst hε, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ker_fst {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) {y : AF F} (hy : ε * y = 0) :
     y.1 = 0 := by
   have h : (ε * y).1 = 0 := by rw [hy]; rfl
   change ε.1 * y.1 = 0 at h
   rwa [idF_fst hε, one_mul] at h
 
+/- English proof (translation)
+Establish `h : (ε * y).2 v = 0` using `by rw [hy]; rfl`. Express the relevant statement in the definitionally equal form `ε.2 v * y.2 v = 0 at h`. Rewrite `h` using `[idF_snd hε v, if_pos hv, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem ker_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) {y : AF F} (hy : ε * y = 0)
     {v : HeightOneSpectrum (𝓞 F)} (hv : v ∈ S) : y.2 v = 0 := by
   classical
@@ -48,6 +71,9 @@ theorem ker_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
   change ε.2 v * y.2 v = 0 at h
   rwa [idF_snd hε v, if_pos hv, one_mul] at h
 
+/- English proof (translation)
+Establish `h' : (ε * h).2 v = h.2 v` using `by rw [hh]`. Express the relevant statement in the definitionally equal form `ε.2 v * h.2 v = h.2 v at h'`. Rewrite `h'` using `[idF_snd hε v, if_neg hv, zero_mul]`. Conclude with `h'.symm`.
+-/
 theorem fix_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) {h : AF F} (hh : ε * h = h)
     {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) : h.2 v = 0 := by
   classical
@@ -56,6 +82,9 @@ theorem fix_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
   rw [idF_snd hε v, if_neg hv, zero_mul] at h'
   exact h'.symm
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fix_mul_ker {ε h y : AF F} (hε : ε * ε = ε) (hh : ε * h = h) (hy : ε * y = 0) : h * y = 0 := by
   calc h * y = (ε * h) * y := by rw [hh]
     _ = h * (ε * y) := by ring

@@ -7,6 +7,9 @@ section SlopeTestRemainingChoices
 
 variable {L : Type} [Field L] [NumberField L] {n : ℕ}
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) (le_locAt v _)` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `mem_locAt.1 hx`. Take `⟨t, ht, h'⟩` from `mem_locAt.1 h`. Use `mem_locAt.2 ⟨t * s, fun hm => (v.maximalIdeal.isPrime.mem_or_mem hm).elim ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]` and apply the resulting hypothesis.
+-/
 theorem locAt_locAt {W : Type} [AddCommGroup W] [Module (𝓞 L) W] (v : FinitePlace L)
     (A : Submodule (𝓞 L) W) : locAt v (locAt v A) = locAt v A := by
   refine le_antisymm (fun x hx => ?_) (le_locAt v _)
@@ -15,11 +18,19 @@ theorem locAt_locAt {W : Type} [AddCommGroup W] [Module (𝓞 L) W] (v : FiniteP
   refine mem_locAt.2 ⟨t * s, fun hm => (v.maximalIdeal.isPrime.mem_or_mem hm).elim ht hs, ?_⟩
   rwa [mul_smul]
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨t, ht, hx⟩ := mem_locAt.1 hx exact mem_locAt.2 ⟨t, ht, h hx⟩`.
+-/
 theorem locAt_mono {W : Type} [AddCommGroup W] [Module (𝓞 L) W] (v : FinitePlace L)
     {A B : Submodule (𝓞 L) W} (h : A ≤ B) : locAt v A ≤ locAt v B := fun x hx => by
   obtain ⟨t, ht, hx⟩ := mem_locAt.1 hx
   exact mem_locAt.2 ⟨t, ht, h hx⟩
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Use `Set.finite_empty.subset fun w hw => hw ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `zero_le_one`.
+
+Use `(FinitePlace.mulSupport_finite ha).subset fun w hw => ?_` and prove the remaining obligations. Introduce `h`. Conclude with `hw (le_of_eq h)`.
+-/
 theorem finite_not_le_one (a : L) : {w : FinitePlace L | ¬ w a ≤ 1}.Finite := by
   by_cases ha : a = 0
   · subst ha
@@ -30,6 +41,17 @@ theorem finite_not_le_one (a : L) : {w : FinitePlace L | ¬ w a ≤ 1}.Finite :=
     intro h
     exact hw (le_of_eq h)
 
+/- English proof (translation)
+Establish `hne : w.maximalIdeal.asIdeal ≠ v.maximalIdeal.asIdeal` using `fun h => hvw (FinitePlace.maximalIdeal_injective (HeightOneSpectrum.ext h))`. Establish `hnle : ¬ w.maximalIdeal.asIdeal ≤ v.maximalIdeal.asIdeal` using `fun h => hne (w.maximalIdeal.isMaximal.eq_of_le v.maximalIdeal.isPrime.ne_top h)`. Take `⟨p, hpw, hpv⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `hp0 : (p : L) ≠ 0`. Introduce `h`.
+
+Establish `: p = 0` using `by exact_mod_cast h`. Conclude with `hpv (this ▸ Ideal.zero_mem _)`. Establish `hlt : w (p : L) < 1`. Establish `h1 : w (p : L) ≤ 1` using `place_int_le_one w p`. Use `lt_of_le_of_ne h1 fun h => ?_` and prove the remaining obligations.
+
+Establish `h2` using `(place_le_one_iff w ((p : L)⁻¹)).1 (by rw [map_inv₀, h, inv_one])`. Establish `h3 : w.maximalIdeal.valuation L (p : L) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem _ _).2 hpw`. Establish `h4 : 0 < w.maximalIdeal.valuation L (p : L)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hp0)`. Rewrite `h2` using `[map_inv₀, inv_le_one₀ h4]`. Conclude with `absurd h3 (not_lt.2 h2)`.
+
+Distinguish the cases in `ha : w a = 0`. Conclude with `⟨1, fun h => v.maximalIdeal.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by`. Simplify using `[ha]⟩`. Establish `hapos : 0 < w a` using `lt_of_le_of_ne (apply_nonneg _ _) (Ne.symm ha)`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hapos) hlt`.
+
+Use `⟨p ^ k, fun h => hpv (v.maximalIdeal.isPrime.mem_of_pow_mem _ h), ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_mul_le_one {v w : FinitePlace L} (hvw : w ≠ v) (a : L) :
     ∃ t : 𝓞 L, t ∉ v.maximalIdeal.asIdeal ∧ w ((t : L) * a) ≤ 1 := by
   have hne : w.maximalIdeal.asIdeal ≠ v.maximalIdeal.asIdeal := fun h =>
@@ -62,6 +84,13 @@ theorem exists_mul_le_one {v w : FinitePlace L} (hvw : w ≠ v) (a : L) :
     calc w (p : L) ^ k * w a ≤ (w a)⁻¹ * w a := by gcongr
       _ = 1 := inv_mul_cancel₀ ha
 
+/- English proof (translation)
+Use `choose s hs hs' using fun i => exists_mul_le_one hvw ((T⁻¹ *ᵥ x) i)`. Use `⟨∏ i, s i, fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := v.maximalIdeal.isPrime)).1 h`. Conclude with `hs i hi`. Use `mem_locAt_frame.2 ⟨((∏ i, s i : 𝓞 L) : L) • (T⁻¹ *ᵥ x), fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (((∏ i, s i : 𝓞 L) : L) • (T⁻¹ *ᵥ x)) i = ((∏ j ∈ Finset.univ.erase i, s j : 𝓞 L) : L) * ((s i : L) * (T⁻¹ *ᵥ x) i)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ i), Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `place_mul_le_one w (place_int_le_one w _) (hs' i)`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ hT), Matrix.one_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`.
+-/
 theorem exists_smul_mem_locAt_frame {v w : FinitePlace L} (hvw : w ≠ v)
     {T : Matrix (Fin n) (Fin n) L} (hT : T.det ≠ 0) (x : Fin n → L) :
     ∃ t : 𝓞 L, t ∉ v.maximalIdeal.asIdeal ∧ t • x ∈ locAt w (frame T) := by
@@ -83,6 +112,11 @@ theorem exists_smul_mem_locAt_frame {v w : FinitePlace L} (hvw : w ≠ v)
       funext i
       simp [Algebra.smul_def]
 
+/- English proof (translation)
+Use `(hfin.union (Set.finite_iUnion fun i => finite_not_le_one (x i))).subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Set.mem_iUnion, not_or, not_not, not_exists] at hc`. Apply `hw` to reduce the goal to its premises. Rewrite using `[hc.1.locAt_frame]`.
+
+Conclude with `mem_locAt_frame_one.2 hc.2`.
+-/
 theorem finite_notMem_locAt_frame {T : FinitePlace L → Matrix (Fin n) (Fin n) L}
     (hfin : {v : FinitePlace L | ¬ UnitAt v (T v)}.Finite) (x : Fin n → L) :
     {w : FinitePlace L | x ∉ locAt w (frame (T w))}.Finite := by
@@ -95,6 +129,17 @@ theorem finite_notMem_locAt_frame {T : FinitePlace L → Matrix (Fin n) (Fin n) 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Use `le_antisymm ?_ fun x hx => ?_` and prove the remaining obligations. Establish `h : glued T ≤ locAt v (frame (T v))` using `iInf_le _ v`. Conclude with `(locAt_mono v h).trans (locAt_locAt v _).le`. Establish `hone : (1 : 𝓞 L) ∉ v.maximalIdeal.asIdeal` using `fun h => v.maximalIdeal.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hex : ∀ w : FinitePlace L, ∃ t : 𝓞 L, t ∉ v.maximalIdeal.asIdeal ∧ (w ≠ v → t • x ∈ locAt w (frame (T w)))` using `fun w => by`.
+
+Distinguish the cases in `hw : w = v`. Conclude with `⟨1, hone, fun h => absurd hw h⟩`. Take `⟨t, ht, h⟩` from `exists_smul_mem_locAt_frame hw (hdet w) x`. Conclude with `⟨t, ht, fun _ => h⟩`. Use `choose τ hτ hτ' using hex`.
+
+Set `S : Finset (FinitePlace L)` to `(finite_notMem_locAt_frame hfin x).toFinset.erase v`. Use `mem_locAt.2 ⟨∏ w ∈ S, τ w, fun h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨w, -, hw⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := v.maximalIdeal.isPrime)).1 h`. Conclude with `hτ w hw`. Use `Submodule.mem_iInf _ |>.2 fun w => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hw : w ∈ S`. Rewrite using `[← Finset.mul_prod_erase S τ hw, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hτ' w (Finset.ne_of_mem_erase hw))`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Distinguish the cases in `hv : w = v`.
+
+Rewrite using `[hv]`. Conclude with `hx`. Assume the negation of the conclusion as `hc`. Conclude with `hw (Finset.mem_erase.2 ⟨hv, (Set.Finite.mem_toFinset _).2 hc⟩)`.
+-/
 theorem locAt_glued (L : Type) [Field L] [NumberField L] (n : ℕ)
     (T : FinitePlace L → Matrix (Fin n) (Fin n) L) (hdet : ∀ v, (T v).det ≠ 0)
     (hfin : {v : FinitePlace L | ¬ UnitAt v (T v)}.Finite) (v : FinitePlace L) :

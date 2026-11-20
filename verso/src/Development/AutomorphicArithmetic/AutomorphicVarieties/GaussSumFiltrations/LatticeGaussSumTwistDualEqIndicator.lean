@@ -8,6 +8,25 @@ open scoped Matrix
 
 namespace GlobalTheory.HilbertThetaSeries
 
+/- English proof (translation)
+Take `⟨hTB, huniq⟩` from `hT`. Establish `key : ∀ x ∈ B, ∃ y ∈ T, x - y ∈ A` using `fun x hx => by`. Take `⟨y, ⟨hy, hxy⟩, _⟩` from `huniq x hx`. Conclude with `⟨y, hy, hxy⟩`. Use `choose! g hgT hgA using key`.
+
+Establish `hfx : ∀ x ∈ T, f (x + s) = f (g (x + s))`. Introduce `x hx`. Establish `hxs : x + s ∈ B` using `B.add_mem (hTB x hx) hs`. Establish `h` using `hf (g (x + s)) (hTB _ (hgT _ hxs)) _ (hgA _ hxs)`. Rewrite using `[← h]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[Finset.sum_congr rfl hfx]`. Apply `Finset.sum_nbij (fun x => g (x + s))` to reduce the goal to its premises. Introduce `x hx`.
+
+Conclude with `hgT _ (B.add_mem (hTB x hx) hs)`. Introduce `x hx x' hx' h`. Simplify using `only [Finset.mem_coe] at hx hx'`. Establish `h1` using `hgA _ (B.add_mem (hTB x hx) hs)`. Establish `h2` using `hgA _ (B.add_mem (hTB x' hx') hs)`.
+
+Simplify using `only at h`. Rewrite `h1` using `[h]`. Establish `hd : x - x' ∈ A`. Establish `h3` using `A.sub_mem h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Take `⟨y, _, hy⟩` from `huniq x (hTB x hx)`. Establish `e1` using `hy x ⟨hx, by rw [sub_self]; exact A.zero_mem⟩`. Establish `e2` using `hy x' ⟨hx', hd⟩`. Rewrite using `[e1, e2]`.
+
+Introduce `y hy`. Simplify using `only [Finset.mem_coe] at hy`. Establish `hys : y - s ∈ B` using `B.sub_mem (hTB y hy) hs`. Use `⟨g (y - s), hgT _ hys, ?_⟩` and prove the remaining obligations. Establish `hxs : g (y - s) + s ∈ B` using `B.add_mem (hTB _ (hgT _ hys)) hs`.
+
+Apply `(huniq _ hxs).unique ⟨hgT _ hxs, hgA _ hxs⟩ ⟨hy, ?_⟩` to reduce the goal to its premises. Establish `h4` using `A.neg_mem (hgA _ hys)`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Introduce `x hx`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_isReps_add_shift {V : Type} [AddCommGroup V] (A B : AddSubgroup V) (T : Finset V)
     (hT : IsReps A B T) (f : V → ℂ) (hf : ∀ x ∈ B, ∀ m ∈ A, f (x + m) = f x) (s : V) (hs : s ∈ B) :
     ∑ x ∈ T, f (x + s) = ∑ x ∈ T, f x := by
@@ -54,6 +73,51 @@ theorem sum_isReps_add_shift {V : Type} [AddCommGroup V] (A B : AddSubgroup V) (
   · intro x hx
     rfl
 
+/- English proof (translation)
+Introduce `F _ _ κ _ _ G hG N a b c d T hN hNy ha hb hcN hd hdet hc hT y hy`. Take `⟨hBsymm, hsmul, hBadd, hint, hLLiff, haL, het, hLLdual⟩` from `GlobalTheory.T.evenPos_gramForm_integral_lattice_properties F κ G hG`. Take `⟨-, -, hdd, -, -⟩` from `GlobalTheory.T.dualLattice_index_eq_discr_pow_mul_det_pow F κ G hG`. Establish `etadd : ∀ u v : F, et (u + v) = et u * et v` using `fun u v => (het u v).1`. Establish `etint : ∀ u : F, IsIntegral ℤ u → et u = 1` using `fun u hu => (het u 0).2.2.2 hu`.
+
+Establish `etiff : ∀ u : F, et u = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ F u = n` using `fun u => (het u 0).2.2.1`. Establish `hLLsmul : ∀ r : F, IsIntegral ℤ r → ∀ x ∈ LL F κ, r • x ∈ LL F κ`. Introduce `r hr x hx`. Rewrite `hx`, the goal using `[hLLiff]`. Introduce `i`.
+
+Simplify `hr.mul (hx i)` using `[Pi.smul_apply, smul_eq_mul]`. Establish `hB1 : ∀ x, x ∈ aL κ (1 : F) ↔ x ∈ LL F κ`. Introduce `x`. Rewrite using `[haL]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨l, hl, rfl⟩`. Simplify using `using hl`. Introduce `hx`. Conclude with `⟨x, hx, by simp⟩`. Establish `hdualet : ∀ w ∈ dualL F G, ∀ l ∈ LL F κ, et (BF G w l) = 1`.
+
+Introduce `w hw l hl`. Conclude with `(etiff _).2 (hw l hl)`. Establish `hexp : ∀ (x : κ → F) (r : F) (z : κ → F), QF G (x + r • z) = QF G x + r * BF G x z + r ^ 2 * QF G z`. Introduce `x r z`. Rewrite using `[(hBsymm x (r • z)).2, (hBsymm x (r • z)).1, (hsmul r z x).1, (hsmul r z x).2.1, (hBsymm z x).1]`.
+
+Establish `hBlin : ∀ (y x : κ → F) (r : F) (z : κ → F), BF G y (x + r • z) = BF G y x + r * BF G y z`. Introduce `y x r z`. Rewrite using `[(hBsymm y (x + r • z)).1, hBadd, (hsmul r z y).1, (hBsymm x y).1, (hBsymm z y).1]`. Establish `hNF : (N : F) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Establish `hcw : ∀ w ∈ dualL F G, c • w ∈ LL F κ`.
+
+Introduce `w hw`. Establish `e : c • w = (c / N) • ((N : F) • w)`. Rewrite using `[smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Conclude with `hLLsmul _ hcN _ (hNy w hw).1`. Establish `hcQ : ∀ w ∈ dualL F G, IsIntegral ℤ (a * c * QF G w)`. Introduce `w hw`. Establish `e : a * c * QF G w = a * (c / N) * ((N : F) * QF G w)`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `(ha.mul hcN).mul (hNy w hw).2`. Establish `haB : ∀ x ∈ LL F κ, ∀ w ∈ dualL F G, et (a * BF G x w) = 1`. Introduce `x hx w hw`.
+
+Rewrite using `[← (hsmul a x w).1, (hBsymm _ w).1]`. Conclude with `hdualet w hw _ (hLLsmul a ha x hx)`. Establish `hg : ∀ x ∈ aL κ (1 : F), ∀ m ∈ aL κ c, et (a / c * QF G (x + m)) = et (a / c * QF G x)`. Introduce `x hx m hm`. Rewrite `hx` using `[hB1]`.
+
+Take `⟨l, hl, rfl⟩` from `(haL c m).1 hm`. Rewrite using `[hexp]`. Establish `e : a / c * (QF G x + c * BF G x l + c ^ 2 * QF G l) = a / c * QF G x + (a * BF G x l + a * c * QF G l)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, etadd, etint _ ((ha.mul ((hint x hx).2 l hl)).add (hcQ l (hLLdual hl))), mul_one]`. Distinguish the cases in `hyL : y ∈ LL F κ`. Establish `h1 : oneL y = 1` using `by simp [oneL, hyL]`. Rewrite using `[h1, one_mul, Finset.sum_mul]`. Establish `hs : d • y ∈ aL κ (1 : F)` using `(hB1 _).2 (hLLsmul d hd y hyL)`.
+
+Use `Eq.trans ?_ (sum_isReps_add_shift (aL κ c) (aL κ 1) T hT (fun x => et (a / c * QF G x)) hg (d • y) hs)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x hxT`. Establish `hx : x ∈ LL F κ` using `(hB1 x).1 (hT.1 x hxT)`. Rewrite using `[hexp]`.
+
+Establish `key : a / c * (QF G x + d * BF G x y + d ^ 2 * QF G y) = a / c * QF G x + BF G y x / c + d / c * QF G y + (b * BF G x y + b * d * QF G y)`. Rewrite using `[(hBsymm x y).1]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(BF G y x + d * QF G y) * hdet`. Rewrite using `[key, etadd, etint _ ((hb.mul ((hint x hx).2 y hyL)).add ((hb.mul hd).mul (hint y hyL).1)), mul_one, etadd, etadd]`.
+
+Establish `h0 : oneL y = 0` using `by simp [oneL, hyL]`. Rewrite using `[h0, zero_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw, hnot⟩ : ∃ w ∈ dualL F G, et (BF G y w) ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Conclude with `hyL (hdd y (fun ν hν => (etiff _).1 (hcon ν hν)))`. Establish `hs : c • w ∈ aL κ (1 : F)` using `(hB1 _).2 (hcw w hw)`. Establish `hf : ∀ x ∈ aL κ (1 : F), ∀ m ∈ aL κ c, et (a / c * QF G (x + m)) * et (BF G y (x + m) / c) = et (a / c * QF G x) * et (BF G y x / c)`. Introduce `x hx m hm`. Rewrite using `[hg x hx m hm]`.
+
+Use `congr 1`. Take `⟨l, hl, rfl⟩` from `(haL c m).1 hm`. Rewrite using `[hBlin y x c l]`. Establish `e : (BF G y x + c * BF G y l) / c = BF G y x / c + BF G y l`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e, etadd, hdualet y hy l hl, mul_one]`. Establish `h` using `sum_isReps_add_shift (aL κ c) (aL κ 1) T hT (fun x => et (a / c * QF G x) * et (BF G y x / c)) hf (c • w) hs`. Establish `hmul : ∑ x ∈ T, et (a / c * QF G (x + c • w)) * et (BF G y (x + c • w) / c) = et (BF G y w) * ∑ x ∈ T, et (a / c * QF G x) * et (BF G y x / c)`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `x hxT`. Establish `hx : x ∈ LL F κ` using `(hB1 x).1 (hT.1 x hxT)`. Rewrite using `[hexp, hBlin]`. Establish `e1 : a / c * (QF G x + c * BF G x w + c ^ 2 * QF G w) = a / c * QF G x + (a * BF G x w + a * c * QF G w)`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (BF G y x + c * BF G y w) / c = BF G y x / c + BF G y w`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2, etadd, etadd, etadd, haB x hx w hw, etint _ (hcQ w hw)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsum : ∑ x ∈ T, et (a / c * QF G x) * et (BF G y x / c) = 0`. Rewrite `h` using `[hmul]`. Establish `h5 : (et (BF G y w) - 1) * ∑ x ∈ T, et (a / c * QF G x) * et (BF G y x / c) = 0`. Rewrite using `[sub_mul, h, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h5).resolve_left (sub_ne_zero.2 hnot)`.
+
+Rewrite using `[hsum, zero_mul]`.
+-/
 theorem gaussSum_dual_shift : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ (N : ℕ) (a b c d : F) (T : Finset (κ → F)), 0 < N → (∀ y ∈ dualL F G, (N : F) • y ∈ LL F κ ∧ IsIntegral ℤ ((N : F) * QF G y)) → IsIntegral ℤ a → IsIntegral ℤ b → IsIntegral ℤ (c / N) → IsIntegral ℤ d → a * d - b * c = 1 → c ≠ 0 → IsReps (aL κ c) (aL κ (1 : F)) T → ∀ y ∈ dualL F G, (∑ x ∈ T, et (a / c * QF G x) * et (BF G y x / c)) * et (d / c * QF G y) = oneL y * ∑ x ∈ T, et (a / c * QF G x) := by
   intro F _ _ κ _ _ G hG N a b c d T hN hNy ha hb hcN hd hdet hc hT y hy
   obtain ⟨hBsymm, hsmul, hBadd, hint, hLLiff, haL, het, hLLdual⟩ := GlobalTheory.T.evenPos_gramForm_integral_lattice_properties F κ G hG
@@ -181,5 +245,8 @@ end GlobalTheory.HilbertThetaSeries
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.gaussSum_dual_shift | exact GlobalTheory.HilbertThetaSeries.gaussSum_dual_shift | (intros; apply GlobalTheory.HilbertThetaSeries.gaussSum_dual_shift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_gaussSum_twist_dual_eq_indicator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ (N : ℕ) (a b c d : F) (T : Finset (κ → F)), 0 < N → (∀ y ∈ dualL F G, (N : F) • y ∈ LL F κ ∧ IsIntegral ℤ ((N : F) * QF G y)) → IsIntegral ℤ a → IsIntegral ℤ b → IsIntegral ℤ (c / N) → IsIntegral ℤ d → a * d - b * c = 1 → c ≠ 0 → IsReps (aL κ c) (aL κ (1 : F)) T → ∀ y ∈ dualL F G, (∑ x ∈ T, et (a / c * QF G x) * et (BF G y x / c)) * et (d / c * QF G y) = oneL y * ∑ x ∈ T, et (a / c * QF G x) := by
   first | exact @GlobalTheory.HilbertThetaSeries.gaussSum_dual_shift | exact GlobalTheory.HilbertThetaSeries.gaussSum_dual_shift | (intros; apply GlobalTheory.HilbertThetaSeries.gaussSum_dual_shift <;> assumption)

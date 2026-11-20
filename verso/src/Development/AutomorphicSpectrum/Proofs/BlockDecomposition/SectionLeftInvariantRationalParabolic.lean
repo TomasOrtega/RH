@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.FJE
 
+/- English proof (translation)
+Introduce `D n χ s f hχ hf γ hγ g`. Take `⟨a, ha⟩` from `GlobalTheory.StdUnn.LeftInvSect.exists_blkA hγ.1`. Take `⟨u, hu⟩` from `GlobalTheory.StdUnn.LeftInvSect.det_rat hγ.2 a ha`. Establish `h1 : absA D (Units.map (incA D).toMonoidHom u) = 1` using `absE_inclR u`. Rewrite using `[hf γ hγ.1 a ha g, hu, hχ.2 u, h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem leftInv_of_isLaw : ∀ {D : D7} {n : ℕ} (χ : (AE D)ˣ →* Circle) (s : ℂ) (f : G D n → ℂ), IsHeckeChar D χ → IsLaw χ s f → LeftInv (P D n ⊓ GF D n) f := by
   intro D n χ s f hχ hf γ hγ g
   obtain ⟨a, ha⟩ := GlobalTheory.StdUnn.LeftInvSect.exists_blkA hγ.1

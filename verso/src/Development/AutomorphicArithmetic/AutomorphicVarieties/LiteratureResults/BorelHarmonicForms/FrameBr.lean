@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1 : (A * (Z * B)).trace = (B * (A * Z)).trace`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Establish `h2 : (B * (Z * A)).trace = (A * (B * Z)).trace`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_sub, Matrix.trace_sub, h1, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem tr_one {R : Type} [CommRing R] {a : ℕ} (A B Z : Matrix (Fin a) (Fin a) R) :
     (A * (Z * B - B * Z)).trace = -(B * (Z * A - A * Z)).trace := by
   have h1 : (A * (Z * B)).trace = (B * (A * Z)).trace := by
@@ -11,18 +16,43 @@ private theorem tr_one {R : Type} [CommRing R] {a : ℕ} (A B Z : Matrix (Fin a)
   simp only [Matrix.mul_sub, Matrix.trace_sub, h1, h2]
   ring
 
+/- English proof (translation)
+Unfold `trF`. Rewrite using `[tr_one, ← Finset.sum_neg_distrib]`. Both sides reduce to the same expression.
+-/
 private theorem trF_one {E : Type} [Field E] [NumberField E] {a : ℕ} (A B Z : Matrix (Fin a) (Fin a) (Cinf E)) :
     trF A (Z * B - B * Z) = -trF B (Z * A - A * Z) := by
   unfold trF
   rw [tr_one, ← Finset.sum_neg_distrib]
   rfl
 
+/- English proof (translation)
+Unfold `trF`. Rewrite using `[Matrix.mul_neg, Matrix.trace_neg, ← Finset.sum_neg_distrib]`. Both sides reduce to the same expression.
+-/
 private theorem trF_neg {E : Type} [Field E] [NumberField E] {a : ℕ} (A B : Matrix (Fin a) (Fin a) (Cinf E)) :
     trF A (-B) = -trF A B := by
   unfold trF
   rw [Matrix.mul_neg, Matrix.trace_neg, ← Finset.sum_neg_distrib]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ a n e he N _ _`. Use `⟨fun β Z hZ => ?_, fun β X h => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ j, β (brH Z hZ (e j)) (e j) = ∑ k, trF (e k).1 (Z * (e j).1 - (e j).1 * Z) • β (e k) (e j)`. Introduce `j`. Use `conv_lhs => rw [he (brH Z hZ (e j))]`.
+
+Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Both sides reduce to the same expression. Establish `h2 : ∀ j, β (e j) (brH Z hZ (e j)) = ∑ k, trF (e k).1 (Z * (e j).1 - (e j).1 * Z) • β (e j) (e k)`. Introduce `j`. Use `conv_lhs => rw [he (brH Z hZ (e j))]`.
+
+Simplify using `only [map_sum, map_smul]`. Both sides reduce to the same expression. Simplify using `only [h1, h2]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[trF_one, neg_smul, neg_add_cancel]`. Establish `hb : ∀ j, (brH _ (h j) X).1 = -((Complex.I • X.1) * (e j).1 - (e j).1 * (Complex.I • X.1))`. Introduce `j`.
+
+Express the relevant statement in the definitionally equal form `(Complex.I • (e j).1) * X.1 - X.1 * (Complex.I • (e j).1) = _`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, neg_sub]`. Establish `h1 : ∀ j, X.1 * (e j).1 - (e j).1 * X.1 = ∑ k, trF (e k).1 (brH _ (h j) X).1 • (Complex.I • (e k).1)`. Introduce `j`. Establish `h0 : (brH _ (h j) X).1 = ∑ k, trF (e k).1 (brH _ (h j) X).1 • (e k).1` using `by conv_lhs => rw [he (brH _ (h j) X)]`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Establish `h3 : X.1 * (e j).1 - (e j).1 * X.1 = Complex.I • (brH _ (h j) X).1`. Rewrite using `[hb]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, ← smul_sub, smul_neg, smul_smul, Complex.I_mul_I, neg_smul, one_smul, neg_neg]`. Rewrite using `[h3]`.
+
+Use `conv_lhs => rw [h0]`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Establish `h2 : ∀ j, β (Complex.I • (e j).1) (brH _ (h j) X) = ∑ k, trF (e k).1 (brH _ (h j) X).1 • β (Complex.I • (e j).1) (e k)`. Introduce `j`.
+
+Use `conv_lhs => rw [he (brH _ (h j) X)]`. Simplify using `only [map_sum, map_smul]`. Simplify using `only [h1, h2]`. Simplify using `only [map_sum, LinearMap.map_smul β, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hb, hb, trF_neg, trF_neg, trF_one, neg_smul]`.
+-/
 theorem UpperTheory.V.Lit.Bor.frameBr :
     UpperTheory.V.Lit.Bor.FrameBr := by
   intro E _ _ _ a n e he N _ _

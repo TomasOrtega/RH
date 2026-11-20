@@ -11,6 +11,13 @@ section Kap
 variable (A B : Type) [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra A B]
   [Algebra.IsIntegral A B]
 
+/- English proof (translation)
+Establish `h0 : IsLocalization (Algebra.algebraMapSubmonoid B A⁰) (B ⊗[A] FractionRing A)` using `inferInstance`. Use `IsLocalization.of_le (Algebra.algebraMapSubmonoid B A⁰) B⁰ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hinj).mpr (nonZeroDivisors.ne_zero ha))`. Introduce `r hr`.
+
+Establish `hr0 : r ≠ 0` using `nonZeroDivisors.ne_zero hr`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := A) (I := Ideal.span {r}) hr0 (Ideal.mem_span_singleton_self r) (Algebra.IsIntegral.isIntegral r)`. Take `⟨d, hd, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton.mp (Ideal.mem_comap.mp hd)`. Establish `hu : IsUnit (algebraMap B (B ⊗[A] FractionRing A) (algebraMap A B d))` using `IsLocalization.map_units (M := Algebra.algebraMapSubmonoid B A⁰) _ ⟨_, ⟨d, mem_nonZeroDivisors_of_ne_zero hd0, rfl⟩⟩`.
+
+Rewrite `hu` using `[hs, map_mul]`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+-/
 theorem isFrac_tensor (hinj : Function.Injective (algebraMap A B)) :
     IsFractionRing B (B ⊗[A] FractionRing A) := by
   have h0 : IsLocalization (Algebra.algebraMapSubmonoid B A⁰) (B ⊗[A] FractionRing A) := inferInstance
@@ -41,6 +48,13 @@ def vecE (hinj : Function.Injective (algebraMap A B)) :
   (LinearEquiv.piCongrRight fun _ : ι => (kap A B hinj).symm.toLinearEquiv) ≪≫ₗ
     (TensorProduct.piRight A B B (fun _ : ι => FractionRing A)).symm
 
+/- English proof (translation)
+Unfold `vecE`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.symm_apply_eq]`. Use function extensionality and compare the values at `j`. Rewrite using `[TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul]`. Use `show (kap A B hinj).symm ((Pi.single a 1 : ι → FractionRing B) j) = _`.
+
+Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, map_one]`. Use `show (1 : B ⊗[A] FractionRing A) = 1 ⊗ₜ[A] (Pi.single j 1 : ι → FractionRing A) j`. Rewrite using `[Pi.single_eq_same]`.
+
+Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne h, map_zero] show (0 : B ⊗[A] FractionRing A) = 1 ⊗ₜ[A] (Pi.single a 1 : ι → FractionRing A) j`. Rewrite using `[Pi.single_eq_of_ne h, TensorProduct.tmul_zero]`.
+-/
 theorem vecE_single (hinj : Function.Injective (algebraMap A B)) (a : ι) :
     vecE A B ι hinj (Pi.single a 1) = (1 : B) ⊗ₜ[A] (Pi.single a 1 : ι → FractionRing A) := by
   unfold vecE
@@ -58,6 +72,11 @@ theorem vecE_single (hinj : Function.Injective (algebraMap A B)) (a : ι) :
     show (0 : B ⊗[A] FractionRing A) = 1 ⊗ₜ[A] (Pi.single a 1 : ι → FractionRing A) j
     rw [Pi.single_eq_of_ne h, TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Establish `h` using `(Pi.basisFun (FractionRing B) ι).linearIndependent`. Establish `h2` using `h.restrict_scalars (R := B) (by`. Introduce `x y hxy`. Simplify `hB (by simpa [Algebra.smul_def] using hxy))` using `[Algebra.smul_def]`. Establish `e : (fun a : ι => (Pi.single a 1 : ι → FractionRing B)) = ⇑(Pi.basisFun (FractionRing B) ι)`.
+
+Use function extensionality and compare the values at `fun a => (Pi.basisFun_apply _ _ a).symm`. Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem single_li (hB : Function.Injective (algebraMap B (FractionRing B))) :
     LinearIndependent B (fun a : ι => (Pi.single a 1 : ι → FractionRing B)) := by
   have h := (Pi.basisFun (FractionRing B) ι).linearIndependent
@@ -70,6 +89,15 @@ theorem single_li (hB : Function.Injective (algebraMap B (FractionRing B))) :
 
 end Kap
 
+/- English proof (translation)
+Establish `hexp' : ∀ x : W, e x = ∑ i, σ (b'.repr x i) • e (b' i)` using `fun x => by conv_lhs => rw [← b'.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ e _ _`. Establish `hspan : Submodule.span F (Set.range fun i => e (b' i)) = ⊤`. Rewrite using `[eq_top_iff, ← hb.2, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `show e (b i) ∈ _`. Rewrite using `[hexp' (b i)]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `⟨?_, hspan⟩` and prove the remaining obligations.
+
+Establish `hcard : Fintype.card κ = Fintype.card ι`. Rewrite using `[← Module.finrank_eq_card_basis b', ← Module.finrank_eq_card_basis b]`. Set `B : Module.Basis ι F M` to `Module.Basis.mk hb.1 hb.2.ge`. Establish `hfin : Module.finrank F M = Fintype.card κ`. Rewrite using `[Module.finrank_eq_card_basis B, hcard]`.
+
+Conclude with `linearIndependent_of_top_le_span_of_card_eq_finrank hspan.ge hfin.symm`.
+-/
 theorem basis_of_basisF {K F W M ι κ : Type} [Field K] [Field F] [AddCommGroup W] [Module K W] [AddCommGroup M]
     [Module F M] [Fintype ι] [Fintype κ] (σ : K →+* F) (e : W →ₛₗ[σ] M)
     (b : Module.Basis ι K W)

@@ -14,6 +14,13 @@ namespace GlobalTheory.AfUnit
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 Fact.out`. Establish `hmax : v.1.asIdeal.IsMaximal` using `v.1.isMaximal`. Establish `hmp : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hp.ne_zero).2 hp`. Establish `hnle : ¬ v.1.asIdeal ≤ Ideal.span {(p : ℤ)}` using `fun hle => v.2 (hmax.eq_of_le hmp.ne_top hle)`. Take `⟨x, hx, hxp⟩` from `Set.not_subset.1 hnle`.
+
+Establish `hxp' : ¬ (p : ℤ) ∣ x` using `fun hd => hxp (Ideal.mem_span_singleton.2 hd)`. Use `⟨x.natAbs, Int.natAbs_pos.2 (fun h0 => hxp' (h0 ▸ dvd_zero _)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 (fun hd => hxp' (Int.natCast_dvd.2 hd))).symm`. Break down `Int.natAbs_eq x with h1 | h1` into its components or cases. Rewrite using `[← h1]`.
+
+Conclude with `hx`. Rewrite using `[← neg_eq_iff_eq_neg.2 h1]`. Conclude with `neg_mem hx`.
+-/
 theorem exists_nat_mem (v : AwayP p) : ∃ l : ℕ, 0 < l ∧ l.Coprime p ∧ (l : ℤ) ∈ v.1.asIdeal := by
   have hp : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 Fact.out
   have hmax : v.1.asIdeal.IsMaximal := v.1.isMaximal
@@ -27,12 +34,24 @@ theorem exists_nat_mem (v : AwayP p) : ∃ l : ℕ, 0 < l ∧ l.Coprime p ∧ (l
     · rw [← h1]; exact hx
     · rw [← neg_eq_iff_eq_neg.2 h1]; exact neg_mem hx
 
+/- English proof (translation)
+Establish `e : ((m : ℕ) : v.1.adicCompletion ℚ) = algebraMap ℤ (v.1.adicCompletion ℚ) (m : ℤ)` using `by simp`. Rewrite using `[e, IsScalarTower.algebraMap_apply ℤ ℚ (v.1.adicCompletion ℚ)]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v.1 _`.
+-/
 theorem val_natCast (v : AwayP p) (m : ℕ) :
     Valued.v ((m : ℕ) : v.1.adicCompletion ℚ) = v.1.valuation ℚ (algebraMap ℤ ℚ (m : ℤ)) := by
   have e : ((m : ℕ) : v.1.adicCompletion ℚ) = algebraMap ℤ (v.1.adicCompletion ℚ) (m : ℤ) := by simp
   rw [e, IsScalarTower.algebraMap_apply ℤ ℚ (v.1.adicCompletion ℚ)]
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v.1 _
 
+/- English proof (translation)
+Take `⟨l, hl0, hlp, hlv⟩` from `exists_nat_mem v`. Take `⟨hcop, β, hβ, e⟩` from `h l hl0 hlp`. Establish `hlt : Valued.v ((l : ℕ) : v.1.adicCompletion ℚ) < 1`. Rewrite using `[val_natCast, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hlv`.
+
+Establish `hu : Valued.v ((u l : ℕ) : v.1.adicCompletion ℚ) = 1`. Rewrite using `[val_natCast]`. Use `le_antisymm (HeightOneSpectrum.valuation_le_one _ _) (not_lt.1 fun hlt' => ?_)` and prove the remaining obligations. Rewrite `hlt'` using `[HeightOneSpectrum.valuation_lt_one_iff_mem]`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`.
+
+Conclude with `v.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ a hlt') (Ideal.mul_mem_left _ b hlv)))`. Establish `hsmall : Valued.v (AfP.eval v (l • β)) < 1`. Rewrite using `[map_nsmul, nsmul_eq_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hβ v)) hlt`. Rewrite using `[e, map_add, map_natCast]`.
+
+Rewrite using `[Valuation.map_add_eq_of_lt_left _ (by rw [hu]; exact hsmall), hu]`.
+-/
 theorem val_eval_eq_one (c : AfP p) (u : ℕ → ℕ)
     (h : ∀ n : ℕ, 0 < n → n.Coprime p → (u n).Coprime n ∧ ∃ β : AfP p, IsIntAf β ∧ c = (u n : AfP p) + n • β)
     (v : AwayP p) : Valued.v (AfP.eval v c) = 1 := by
@@ -53,6 +72,11 @@ theorem val_eval_eq_one (c : AfP p) (u : ℕ → ℕ)
   rw [e, map_add, map_natCast]
   rw [Valuation.map_add_eq_of_lt_left _ (by rw [hu]; exact hsmall), hu]
 
+/- English proof (translation)
+Introduce `p _ c u h`. Establish `hv` using `val_eval_eq_one c u h`. Establish `hint : ∀ v : AwayP p, (AfP.eval v c)⁻¹ ∈ v.1.adicCompletionIntegers ℚ` using `fun v => by show Valued.v (AfP.eval v c)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hv v, inv_one]`. Set `c' : AfP p` to `⟨fun v => (AfP.eval v c)⁻¹, Filter.Eventually.of_forall hint⟩`.
+
+Use `⟨c', Subtype.ext (funext fun v => ?_)⟩` and prove the remaining obligations. Establish `hne : AfP.eval v c ≠ 0` using `fun h0 => by simpa [h0] using hv v`. Conclude with `mul_inv_cancel₀ hne`.
+-/
 theorem exists_mul_eq_one : ∀ (p : ℕ) [Fact p.Prime] (c : AfP p) (u : ℕ → ℕ),
     (∀ n : ℕ, 0 < n → n.Coprime p → (u n).Coprime n ∧ ∃ β : AfP p, IsIntAf β ∧ c = (u n : AfP p) + n • β) →
     ∃ c' : AfP p, c * c' = 1 := by

@@ -173,32 +173,58 @@ def tLine : Fin 2 → ℚ := fun j => if j = 0 then 0 else 1
 
 def qLine : MvPolynomial (Fin 1 × Fin 2) ℚ := X (0, 1)
 
+/- English proof (translation)
+Simplify using `[linForm, uLine]`.
+-/
 theorem linForm_uLine : linForm uLine = (X 0 : MvPolynomial (Fin 2) ℚ) := by
   simp [linForm, uLine]
 
+/- English proof (translation)
+Simplify using `[linForm, tLine, Fin.sum_univ_two]`.
+-/
 theorem linForm_tLine : linForm tLine = (X 1 : MvPolynomial (Fin 2) ℚ) := by
   simp [linForm, tLine, Fin.sum_univ_two]
 
+/- English proof (translation)
+The claim follows from `X_prime`.
+-/
 theorem prime_qLine : Prime qLine := X_prime
 
+/- English proof (translation)
+The claim follows from `(Ideal.span_singleton_prime prime_qLine.ne_zero).mpr prime_qLine`.
+-/
 theorem isPrime_span_qLine : (Ideal.span {qLine}).IsPrime :=
   (Ideal.span_singleton_prime prime_qLine.ne_zero).mpr prime_qLine
 
+/- English proof (translation)
+Simplify using `[specFirst, D2, specFirstVar, tLine]`. Both sides reduce to the same expression.
+-/
 theorem specialize_det_lineForm_eq :
     specFirst (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) tLine = -X (0, 0) := by
   simp [specFirst, D2, specFirstVar, tLine]
   rfl
 
+/- English proof (translation)
+Rewrite using `[specialize_det_lineForm_eq, dvd_neg, qLine, X_dvd_X]`. Evaluate the decidable proposition.
+-/
 theorem not_dvd_specFirst_tLine :
     ¬ qLine ∣ specFirst (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) tLine := by
   rw [specialize_det_lineForm_eq, dvd_neg, qLine, X_dvd_X]
   decide
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_span_singleton]`. Conclude with `not_dvd_specFirst_tLine`.
+-/
 theorem specFirst_tLine_not_mem :
     specFirst (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) tLine ∉ Ideal.span {qLine} := by
   rw [Ideal.mem_span_singleton]
   exact not_dvd_specFirst_tLine
 
+/- English proof (translation)
+Simplify using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker]`. Introduce and unpack `v ⟨x, hx0, hxW, hv⟩`. Establish `h0 : x 0 = 0` using `by simpa using hxW (X 0) (Ideal.mem_span_singleton_self _)`. Apply the tactic sequence `have h1 : x 1 ≠ 0 := fun h1 => hx0 (funext fun j => by fin_cases j <;> simp [h0, h1])`. Establish `h` using `hv 0`.
+
+Rewrite `h` using `[Fin.sum_univ_two, h0, mul_zero, zero_add]`. Simplify using `[qLine, (mul_eq_zero.mp h).resolve_right h1]`.
+-/
 theorem qLine_mem_incIdeal : qLine ∈ incIdeal (Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}) 1 := by
   simp only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker]
   rintro v ⟨x, hx0, hxW, hv⟩
@@ -208,53 +234,86 @@ theorem qLine_mem_incIdeal : qLine ∈ incIdeal (Ideal.span {(X 0 : MvPolynomial
   rw [Fin.sum_univ_two, h0, mul_zero, zero_add] at h
   simp [qLine, (mul_eq_zero.mp h).resolve_right h1]
 
+/- English proof (translation)
+Rewrite using `[linForm_tLine, Ideal.mem_span_singleton, X_dvd_X]`. Evaluate the decidable proposition.
+-/
 theorem linearFormLine_not_mem_span_X0 : linForm tLine ∉ Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)} := by
   rw [linForm_tLine, Ideal.mem_span_singleton, X_dvd_X]
   decide
 
+/- English proof (translation)
+Rewrite using `[linForm_tLine, Ideal.mem_bot]`. Conclude with `X_ne_zero 1`.
+-/
 theorem linForm_tLine_not_mem_bot : linForm tLine ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) := by
   rw [linForm_tLine, Ideal.mem_bot]
   exact X_ne_zero 1
 
+/- English proof (translation)
+The claim follows from `linForm_line`.
+-/
 theorem linForm_uLine_not_mem_bot : linForm uLine ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) :=
   linForm_line
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line⟩`.
+-/
 theorem line_chow :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) :=
   ⟨isProjPrime_line, isChowForm_line⟩
 
+/- English proof (translation)
+The claim follows from `line_chow`.
+-/
 theorem IncIdealBelow.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) :=
   line_chow
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isChowForm_line, bot_le, by rw [linForm_uLine]; exact Ideal.mem_span_singleton_self _⟩`.
+-/
 theorem SpecFirstMemIncIdeal.hypotheses_inhabited :
     IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
       (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ≤ Ideal.span {X 0} ∧
       linForm uLine ∈ Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)} :=
   ⟨isChowForm_line, bot_le, by rw [linForm_uLine]; exact Ideal.mem_span_singleton_self _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, prime_qLine⟩`.
+-/
 theorem ChartChoice.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
       Prime qLine :=
   ⟨isProjPrime_line, isChowForm_line, prime_qLine⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, linForm_uLine_not_mem_bot⟩`.
+-/
 theorem SpecFirstNe.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
       linForm uLine ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) :=
   ⟨isProjPrime_line, isChowForm_line, linForm_uLine_not_mem_bot⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two, Int.prime_two⟩`.
+-/
 theorem LocalizationPrimeDVR.hypotheses_inhabited :
     (Ideal.span {(2 : ℤ)}).IsPrime ∧ Prime (2 : ℤ) :=
   ⟨(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two, Int.prime_two⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two, Int.prime_two, by norm_num⟩`.
+-/
 theorem EmultiplicityOrd.hypotheses_inhabited :
     (Ideal.span {(2 : ℤ)}).IsPrime ∧ Prime (2 : ℤ) ∧ (4 : ℤ) ≠ 0 :=
   ⟨(Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two, Int.prime_two, by norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, isPrime_span_qLine, specFirst_tLine_not_mem⟩`.
+-/
 theorem ChartFinite.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -262,12 +321,18 @@ theorem ChartFinite.hypotheses_inhabited :
       specFirst (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) tLine ∉ Ideal.span {qLine} :=
   ⟨isProjPrime_line, isChowForm_line, isPrime_span_qLine, specFirst_tLine_not_mem⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, isPrime_span_qLine, linForm_tLine_not_mem_bot⟩`.
+-/
 theorem ChartLocDomain.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
       (Ideal.span {qLine}).IsPrime ∧ linForm tLine ∉ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) :=
   ⟨isProjPrime_line, isChowForm_line, isPrime_span_qLine, linForm_tLine_not_mem_bot⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, isPrime_span_qLine, Or.inr ⟨qLine, prime_qLine, rfl⟩, specFirst_tLine_not_mem⟩`.
+-/
 theorem ChartNorm.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -277,6 +342,9 @@ theorem ChartNorm.hypotheses_inhabited :
   ⟨isProjPrime_line, isChowForm_line, isPrime_span_qLine, Or.inr ⟨qLine, prime_qLine, rfl⟩,
     specFirst_tLine_not_mem⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isProjPrime_line, isChowForm_line, linForm_uLine_not_mem_bot, prime_qLine, isPrime_span_qLine, not_dvd_specFirst_tLine⟩`.
+-/
 theorem line_section :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -286,6 +354,9 @@ theorem line_section :
   ⟨isProjPrime_line, isChowForm_line, linForm_uLine_not_mem_bot, prime_qLine, isPrime_span_qLine,
     not_dvd_specFirst_tLine⟩
 
+/- English proof (translation)
+The claim follows from `line_section`.
+-/
 theorem ChartLength.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -294,6 +365,9 @@ theorem ChartLength.hypotheses_inhabited :
       ¬ qLine ∣ specFirst (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) tLine :=
   line_section
 
+/- English proof (translation)
+The claim follows from `line_section`.
+-/
 theorem ChartMaxIdeals.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -302,6 +376,9 @@ theorem ChartMaxIdeals.hypotheses_inhabited :
       ¬ qLine ∣ specFirst (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) tLine :=
   line_section
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨span_X_zero_mem_relComps ℚ, qLine_mem_incIdeal, linearFormLine_not_mem_span_X0⟩`.
+-/
 theorem line_component :
     Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)} ∈
         relComps ((⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ⊔ Ideal.span {linForm uLine}) ∧
@@ -309,6 +386,9 @@ theorem line_component :
       linForm tLine ∉ Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)} :=
   ⟨span_X_zero_mem_relComps ℚ, qLine_mem_incIdeal, linearFormLine_not_mem_span_X0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨line_section, line_component⟩`.
+-/
 theorem ChartLocalOrder.hypotheses_inhabited :
     (IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -321,6 +401,9 @@ theorem ChartLocalOrder.hypotheses_inhabited :
       linForm tLine ∉ Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}) :=
   ⟨line_section, line_component⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨line_section, line_component⟩`.
+-/
 theorem ChartResidueDegree.hypotheses_inhabited :
     (IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       IsChowForm (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) (1 + 1) (D2 : MvPolynomial (Fin (1 + 1) × Fin 2) ℚ) ∧
@@ -333,6 +416,9 @@ theorem ChartResidueDegree.hypotheses_inhabited :
       linForm tLine ∉ Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}) :=
   ⟨line_section, line_component⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem LengthFiniteAlgebra.hypotheses_inhabited :
     IsLocalRing ℤ_[2] ∧ IsNoetherianRing ℤ_[2] ∧ Module.Finite ℤ_[2] ℤ_[2] :=
   ⟨inferInstance, inferInstance, inferInstance⟩

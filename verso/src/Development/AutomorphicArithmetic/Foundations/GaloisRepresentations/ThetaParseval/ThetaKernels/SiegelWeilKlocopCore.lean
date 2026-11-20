@@ -23,15 +23,24 @@ def _root_.PositivityTheory.SiegelWeilFormula.RD_k.Good (y : GR d.n) (g f : d.LF
   ∀ Ψ, d.IsAwayW w Ψ → ∀ Φ ∈ d.sch, d.T Φ = R.tens w f Ψ → d.T (d.om (R.ι w y) Φ) = R.tens w g Ψ
 def _root_.PositivityTheory.SiegelWeilFormula.RD_k.OkY (y : GR d.n) : Prop := ∀ f, IsSw f → ∃ g, IsSw g ∧ R.Good w y g f
 def _root_.PositivityTheory.SiegelWeilFormula.RD_k.Lc (y : GR d.n) (f : d.LF) : d.LF := if h : ∃ g, IsSw g ∧ R.Good w y g f then h.choose else 0
+/- English proof (translation)
+Introduce `y f hf`. Establish `hx` using `h y f hf`. Establish `e : R.Lc w y f = hx.choose` using `by simp only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.Lc, dif_pos hx]`. Rewrite using `[e]`. Conclude with `⟨hx.choose_spec.1, fun Ψ hΨ Φ hΦ hT => hx.choose_spec.2 Ψ hΨ Φ hΦ hT⟩`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.isLocOp_of_ok (h : ∀ y, R.OkY w y) : R.IsLocOp w (R.Lc w) := by
   intro y f hf
   have hx := h y f hf
   have e : R.Lc w y f = hx.choose := by simp only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.Lc, dif_pos hx]
   rw [e]
   exact ⟨hx.choose_spec.1, fun Ψ hΨ Φ hΦ hT => hx.choose_spec.2 Ψ hΨ Φ hΦ hT⟩
+/- English proof (translation)
+Introduce `f hf`. Conclude with `⟨A f, h.1 f hf, fun Ψ hΨ Φ hΦ hT => (h.2 Ψ hΨ).2 f hf Φ hΦ hT⟩`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.ok_of_step {y : GR d.n} {A : d.LF → d.LF} (h : R.StepOK w (R.ι w y) A id) : R.OkY w y := by
   intro f hf
   exact ⟨A f, h.1 f hf, fun Ψ hΨ Φ hΦ hT => (h.2 Ψ hΨ).2 f hf Φ hΦ hT⟩
+/- English proof (translation)
+Use `⟨fun f hf => h.1 _ (h'.1 f hf), fun Ψ hΨ => ⟨(h.2 _ (h'.2 Ψ hΨ).1).1, fun f hf Φ hΦ hT => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `(h'.2 Ψ hΨ).2 f hf Φ hΦ hT`. Establish `e2` using `(h.2 (B' Ψ) (h'.2 Ψ hΨ).1).2 (A' f) (h'.1 f hf) (d.om x' Φ) (hsch x' Φ hΦ) e1`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `e2`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.step_comp (hsch : ∀ (x : d.G), ∀ Φ ∈ d.sch, d.om x Φ ∈ d.sch) {x x' : d.G} {A A' : d.LF → d.LF}
     {B B' : d.MF → d.MF} (h : R.StepOK w x A B) (h' : R.StepOK w x' A' B') :
     R.StepOK w (x * x') (A ∘ A') (B ∘ B') := by
@@ -40,6 +49,11 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.step_comp (hsch : ∀ (x 
   have e2 := (h.2 (B' Ψ) (h'.2 Ψ hΨ).1).2 (A' f) (h'.1 f hf) (d.om x' Φ) (hsch x' Φ hΦ) e1
   rw [map_mul, Module.End.mul_apply]
   exact e2
+/- English proof (translation)
+Introduce `f hf`. Take `⟨g', hg', hG'⟩` from `h' f hf`. Take `⟨g, hg, hG⟩` from `h g' hg'`. Use `⟨g, hg, fun Ψ hΨ Φ hΦ hT => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Module.End.mul_apply]`.
+
+Conclude with `hG Ψ hΨ _ (hsch _ Φ hΦ) (hG' Ψ hΨ Φ hΦ hT)`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.ok_mul (hsch : ∀ (x : d.G), ∀ Φ ∈ d.sch, d.om x Φ ∈ d.sch) {y y' : GR d.n} (h : R.OkY w y)
     (h' : R.OkY w y') : R.OkY w (y * y') := by
   intro f hf

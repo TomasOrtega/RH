@@ -13,11 +13,21 @@ variable {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 omit [NumberField F] in
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_injective (IntermediateField.inclusion h).toLinearMap (IntermediateField.inclusion_injective h)`.
+-/
 theorem finiteDimensional_of_le {E M : IntermediateField F Ω} (h : E ≤ M) [FiniteDimensional F M] :
     FiniteDimensional F E :=
   Module.Finite.of_injective (IntermediateField.inclusion h).toLinearMap
     (IntermediateField.inclusion_injective h)
 
+/- English proof (translation)
+Establish `: FiniteDimensional F E` using `finiteDimensional_of_le h`. Set `_ : Algebra E M` to `(IntermediateField.inclusion h).toAlgebra`. Establish `: IsScalarTower F E M` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `NumberField.of_module_finite F M` as an intermediate fact. Use `NumberField.of_module_finite F E` as an intermediate fact.
+
+Introduce `P hP hPv`. Take `⟨⟨Q, hQ, hQP⟩⟩` from `(inferInstance : Nonempty (P.primesOver (𝓞 M)))`. Establish `: Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q P v.asIdeal`. Establish `hu` using `((isUnramifiedAt_tower_iff (F := F) (L := E) Q).1 (hM Q hQ this)).1`. Establish `e : P = Q.under (𝓞 E)` using `Ideal.over_def Q P`.
+
+Substitute `e` using the available equality. Conclude with `hu`.
+-/
 theorem isUnramifiedIn_of_le {E M : IntermediateField F Ω} (h : E ≤ M) [FiniteDimensional F M]
     (v : HeightOneSpectrum (𝓞 F)) (hM : Algebra.IsUnramifiedIn (𝓞 M) v.asIdeal) :
     Algebra.IsUnramifiedIn (𝓞 E) v.asIdeal := by
@@ -34,6 +44,15 @@ theorem isUnramifiedIn_of_le {E M : IntermediateField F Ω} (h : E ≤ M) [Finit
   subst e
   exact hu
 
+/- English proof (translation)
+Establish `: FiniteDimensional F E` using `finiteDimensional_of_le h`. Set `_ : Algebra E M` to `(IntermediateField.inclusion h).toAlgebra`. Establish `: IsScalarTower F E M` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `NumberField.of_module_finite F M` as an intermediate fact. Use `NumberField.of_module_finite F E` as an intermediate fact.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hE Q hQ hQv σ hσ x hx`. Establish `: (Q.under (𝓞 E)).LiesOver v.asIdeal` using `⟨by rw [Ideal.under_under]; exact hQv.over⟩`. Establish `hu` using `hE (Q.under (𝓞 E)) inferInstance this`. Conclude with `(isUnramifiedAt_under_iff_inertia Q).1 hu σ hσ ⟨x, hx⟩`.
+
+Introduce `hI P hP hPv`. Take `⟨⟨Q, hQ, hQP⟩⟩` from `(inferInstance : Nonempty (P.primesOver (𝓞 M)))`. Establish `hQv : Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q P v.asIdeal`. Establish `hu` using `(isUnramifiedAt_under_iff_inertia (F := F) (E := E) Q).2 (fun σ hσ y => hI Q hQ hQv σ hσ y.1 y.2)`. Establish `e : P = Q.under (𝓞 E)` using `Ideal.over_def Q P`.
+
+Substitute `e` using the available equality. Conclude with `hu`.
+-/
 theorem isUnramifiedIn_iff_inertia {E M : IntermediateField F Ω} (h : E ≤ M)
     [FiniteDimensional F M] [IsGalois F M] (v : HeightOneSpectrum (𝓞 F)) :
     Algebra.IsUnramifiedIn (𝓞 E) v.asIdeal ↔
@@ -60,6 +79,11 @@ theorem isUnramifiedIn_iff_inertia {E M : IntermediateField F Ω} (h : E ≤ M)
 
 omit [NumberField F] in
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, fun σ hσ => (IntermediateField.mem_fixedField_iff H y).1 hy σ hσ⟩`. Introduce and unpack `⟨hx, hfix⟩`.
+
+Conclude with `⟨⟨x, hx⟩, (IntermediateField.mem_fixedField_iff H _).2 hfix, rfl⟩`.
+-/
 theorem mem_map_fixedField_iff {M : IntermediateField F Ω} (H : Subgroup Gal(M/F)) (x : Ω) :
     x ∈ (IntermediateField.fixedField H).map M.val ↔ ∃ hx : x ∈ M, ∀ σ ∈ H, σ ⟨x, hx⟩ = ⟨x, hx⟩ := by
   rw [IntermediateField.mem_map]
@@ -69,6 +93,11 @@ theorem mem_map_fixedField_iff {M : IntermediateField F Ω} (H : Subgroup Gal(M/
   · rintro ⟨hx, hfix⟩
     exact ⟨⟨x, hx⟩, (IntermediateField.mem_fixedField_iff H _).2 hfix, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[isUnramifiedIn_iff_inertia h]`. Use `forall_congr' fun Q => forall_congr' fun _ => forall_congr' fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hI x hx`. Conclude with `(mem_map_fixedField_iff _ x).2 ⟨h hx, fun σ hσ => hI σ hσ x hx⟩`.
+
+Introduce `hle σ hσ x hx`. Take `⟨_, hfix⟩` from `(mem_map_fixedField_iff _ x).1 (hle hx)`. Conclude with `hfix σ hσ`.
+-/
 theorem isUnramifiedIn_iff_le_fixedField {E M : IntermediateField F Ω} (h : E ≤ M)
     [FiniteDimensional F M] [IsGalois F M] (v : HeightOneSpectrum (𝓞 F)) :
     Algebra.IsUnramifiedIn (𝓞 E) v.asIdeal ↔
@@ -85,6 +114,9 @@ theorem isUnramifiedIn_iff_le_fixedField {E M : IntermediateField F Ω} (h : E �
 
 variable [IsGalois F Ω]
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_finiteGalois_le (E₁ ⊔ E₂)`. Rewrite using `[isUnramifiedIn_iff_le_fixedField hM]`. Rewrite `h₁` using `[isUnramifiedIn_iff_le_fixedField (le_sup_left.trans hM)]`. Rewrite `h₂` using `[isUnramifiedIn_iff_le_fixedField (le_sup_right.trans hM)]`. Conclude with `fun Q hQ hQv => sup_le (h₁ Q hQ hQv) (h₂ Q hQ hQv)`.
+-/
 theorem isUnramifiedIn_sup {E₁ E₂ : IntermediateField F Ω} [FiniteDimensional F E₁]
     [FiniteDimensional F E₂] (v : HeightOneSpectrum (𝓞 F))
     (h₁ : Algebra.IsUnramifiedIn (𝓞 E₁) v.asIdeal) (h₂ : Algebra.IsUnramifiedIn (𝓞 E₂) v.asIdeal) :
@@ -95,11 +127,17 @@ theorem isUnramifiedIn_sup {E₁ E₂ : IntermediateField F Ω} [FiniteDimension
   rw [isUnramifiedIn_iff_le_fixedField (le_sup_right.trans hM)] at h₂
   exact fun Q hQ hQv => sup_le (h₁ Q hQ hQv) (h₂ Q hQ hQv)
 
+/- English proof (translation)
+Introduce `v hv` and use `isUnramifiedIn_sup v (h₁ v hv) (h₂ v hv)`.
+-/
 theorem IsUnramifiedOutside.sup {S : Set (HeightOneSpectrum (𝓞 F))} {E₁ E₂ : IntermediateField F Ω}
     [FiniteDimensional F E₁] [FiniteDimensional F E₂] (h₁ : IsUnramifiedOutside S E₁)
     (h₂ : IsUnramifiedOutside S E₂) : IsUnramifiedOutside S (E₁ ⊔ E₂) :=
   fun v hv => isUnramifiedIn_sup v (h₁ v hv) (h₂ v hv)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_finiteGalois_le (⊥ : IntermediateField F Ω)`. Rewrite using `[isUnramifiedIn_iff_inertia hM]`. Introduce `Q _ _ σ _ x hx`. Take `⟨a, rfl⟩` from `IntermediateField.mem_bot.1 hx`. Conclude with `σ.commutes a`.
+-/
 theorem isUnramifiedIn_bot (v : HeightOneSpectrum (𝓞 F)) :
     Algebra.IsUnramifiedIn (𝓞 ↥(⊥ : IntermediateField F Ω)) v.asIdeal := by
   obtain ⟨M, hM⟩ := exists_finiteGalois_le (⊥ : IntermediateField F Ω)
@@ -108,10 +146,26 @@ theorem isUnramifiedIn_bot (v : HeightOneSpectrum (𝓞 F)) :
   obtain ⟨a, rfl⟩ := IntermediateField.mem_bot.1 hx
   exact σ.commutes a
 
+/- English proof (translation)
+Introduce `v _` and use `isUnramifiedIn_bot v`.
+-/
 theorem isUnramifiedOutside_bot (S : Set (HeightOneSpectrum (𝓞 F))) :
     IsUnramifiedOutside S (⊥ : IntermediateField F Ω) :=
   fun v _ => isUnramifiedIn_bot v
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_finiteGalois_le E`. Use `set M' : IntermediateField F Ω := M.toIntermediateField with hM'`. Use `set ρ : Gal(M'/F) := τ.restrictNormal M' with hρ`. Establish `hρapp : ∀ y (hy : y ∈ M'), ((ρ ⟨y, hy⟩ : M') : Ω) = τ y` using `fun y hy => AlgEquiv.restrictNormal_commutes τ M' ⟨y, hy⟩`. Establish `hτM : E.map (τ : Ω →ₐ[F] Ω) ≤ M'`.
+
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `(IntermediateField.mem_map _).1 hx`. Use `(ρ ⟨y, hM hy⟩).2` as an intermediate fact. Rewrite `this` using `[hρapp]`. Then use the resulting hypothesis. Rewrite `hE` using `[isUnramifiedIn_iff_inertia hM]`.
+
+Rewrite using `[isUnramifiedIn_iff_inertia hτM]`. Introduce `Q hQ hQv σ hσ x hx`. Take `⟨y, hy, rfl⟩` from `(IntermediateField.mem_map _).1 hx`. Establish `hconj : ρ⁻¹ * σ * ρ ∈ (ρ⁻¹ • Q).inertia Gal(M'/F)`. Rewrite using `[Ideal.inertia, AddSubgroup.mem_inertia]`.
+
+Introduce `z`. Rewrite using `[Submodule.mem_toAddSubgroup, Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv, smul_sub, ← mul_smul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, mul_smul]`. Conclude with `(AddSubgroup.mem_inertia.1 hσ) (ρ • z)`. Use `NumberField.of_module_finite F M'` as an intermediate fact. Establish `: IsGaloisGroup Gal(M'/F) (𝓞 F) (𝓞 M')` using `IsGaloisGroup.of_isFractionRing _ _ _ F M'`.
+
+Establish `hfix` using `hE (ρ⁻¹ • Q) inferInstance inferInstance _ hconj y hy`. Establish `hρy : ρ ⟨y, hM hy⟩ = ⟨(τ : Ω →ₐ[F] Ω) y, hτM hx⟩` using `Subtype.ext (hρapp y (hM hy))`. Rewrite using `[← hρy]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`.
+
+Use `_ = ρ ⟨y, hM hy⟩ := by rw [hfix]`.
+-/
 theorem isUnramifiedIn_map {E : IntermediateField F Ω} [FiniteDimensional F E]
     (v : HeightOneSpectrum (𝓞 F)) (hE : Algebra.IsUnramifiedIn (𝓞 E) v.asIdeal) (τ : Gal(Ω/F)) :
     Algebra.IsUnramifiedIn (𝓞 ↥(E.map (τ : Ω →ₐ[F] Ω))) v.asIdeal := by
@@ -144,6 +198,9 @@ theorem isUnramifiedIn_map {E : IntermediateField F Ω} [FiniteDimensional F E]
         simp only [AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]
     _ = ρ ⟨y, hM hy⟩ := by rw [hfix]
 
+/- English proof (translation)
+Introduce `v hv` and use `isUnramifiedIn_map v (hE v hv) τ`.
+-/
 theorem IsUnramifiedOutside.map {S : Set (HeightOneSpectrum (𝓞 F))} {E : IntermediateField F Ω}
     [FiniteDimensional F E] (hE : IsUnramifiedOutside S E) (τ : Gal(Ω/F)) :
     IsUnramifiedOutside S (E.map (τ : Ω →ₐ[F] Ω)) :=

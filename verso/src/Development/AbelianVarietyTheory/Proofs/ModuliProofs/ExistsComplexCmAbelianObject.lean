@@ -30,6 +30,19 @@ namespace GlobalTheory
 
 open PeriodPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D hpq l`. Establish `laws : Out.Laws` using `GlobalTheory.T.abelianScheme_laws_unconditional.1`. Take `⟨g, ty, hty, hg, P, hP⟩` from `PeriodExists.exists_typeFn_period H D`. Take `⟨t, -, -, f, ν, htow, hiso, hsim, hζ, -⟩` from `UnifParts.exists_inGenus D l (KA l).val.toRingHom fun l' N ν a b c => (SimMult.exists_sim_trivial_of_mult SimAlg.sim_group exists_sim_lift E H D l' N ν a b c).imp fun _ h => h.1`. Use `replace hζ : zeta l.A = _ := hζ`.
+
+Take `⟨T, L, u, hA, hdim, hamp, hK, ht₁, ht₂, hker, hact, hW⟩` from `exists_triple laws GlobalTheory.T.theorem_of_cube_polAbelianScheme principalTorus_algebraic (exists_isMonHom_of_map_lattice (thetaUnifAV_of_laws laws.cube laws.mulN laws.weil laws.weilNondeg laws.globalSectionsRank) laws) (GlobalTheory.T.lambdaBundle_adjoint_of_weilPairing_adjoin …`. Set `Q : Out.PolAV (Sp ℂ)` to `{ A := T.G, isAb := hA, g := g, smoothDim := hdim, L := T.PP.L, isLB := T.PP.isLB, rigid := ⟨T.PP.rig, T.PP.rigGen⟩, sym := CechPic.sym_of_isSymmetric T.PP T.sym, ample := hamp, ktriv := hK }`. Take `⟨v, hv, heig⟩` from `exists_lieBasis_of_holUnif T.G L g u hA.smooth ht₁ ht₂`. Establish `hmul : ∀ (n : ℕ) a, 0 < n → u.ex ((n : ℂ)⁻¹ • P (n • a)) = 1` using `fun n a hn => by`. Rewrite using `[hker, map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`.
+
+Conclude with `⟨a, rfl⟩`. Establish `hadd : ∀ (n : ℕ) a b, u.ex ((n : ℂ)⁻¹ • P (f n (a + b))) = u.ex ((n : ℂ)⁻¹ • P (f n a)) * u.ex ((n : ℂ)⁻¹ • P (f n b))` using `fun n a b => by`. Rewrite using `[map_add, map_add, smul_add, u.ex_add]`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨κ, hκ₁, hκ₂, hκ₃⟩` from `exists_halfLevel (D := D) l (fun a => u.ex ((l.M : ℂ)⁻¹ • P (f l.M a))) (hadd l.M) fun b => by rw [map_nsmul, hmul _ _ hM]`.
+
+Set `b : Base l ℂ` to `{ unit := fun n hn => IsUnit.mk0 _ (Nat.cast_ne_zero.2 hn.ne') ρ := H.rt0 ρ_sq := H.sqrt_neg_disc_sq ζ := zeta l.A ζ_prim := Complex.isPrimitiveRoot_exp l.A l.A_pos.ne' }`. Set `o : Obj D l b (𝟙 (Sp ℂ))` to `{ t := T, proper := hA.proper, ample := hamp, ktriv := hK eta := κ, eta_add := hκ₁, eta_ker := hκ₂ etaA := fun a => u.ex ((l.A : ℂ)⁻¹ • P (f l.A a)) etaA_add := hadd l.A etaA_ker := fun a => by rw [map_nsmul, hmul _ _ l.A_pos] geom := fun k _ _ x β hx => by`. Take `rfl : x = spMap β` from `(Category.comp_id x).symm.trans hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `detCond_of_eigenbasis lieMult_of_eigenbasis D T ty hty v hv (fun i a => heig _ _ (T.act.hom a) (hact a) i) β`.
+
+Take `⟨I, hI₁, hI₂⟩` from `exists_tateIso_of_periods laws E H D D g ty P Q T.act u.ex f ν hpq hP u.ex_add u.ex_onto hker hact hW htow hiso hsim k β`. Conclude with `⟨I, (hI₁ _).trans (congrArg β hζ.symm), fun a => (hI₂ _ a).symm, fun a ha => by rw [hκ₃ a ha]; exact (hI₂ _ a).symm⟩ }`. Establish `: Nontrivial D.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [D.rank]; omega)`. Take `⟨a₀, b₀, h₀⟩` from `PeriodTate.exists_pairing_one D`. Use `⟨b, o, rfl, rfl, hg ▸ hdim, u.ex ((2 : ℂ)⁻¹ • P a₀), fun h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `(hker _).1 h`. Establish `e : a₀ = 2 • c` using `hP.2.1 (by`. Rewrite using `[map_nsmul, hc, ← Nat.cast_smul_eq_nsmul ℂ, Nat.cast_ofNat, smul_inv_smul₀ two_ne_zero])`. Rewrite `h₀` using `[e, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_obj_complex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q → ∀ l : Level H, ∃ (b : Base l ℂ) (o : Obj D l b (𝟙 (Sp ℂ))), b.ρ = H.rt0 ∧ b.ζ = zeta l.A ∧ SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom ∧ ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ o.t.G, x ≠ 1 := by
   intro E _ _ _ H D hpq l
   have laws : Out.Laws := GlobalTheory.T.abelianScheme_laws_unconditional.1

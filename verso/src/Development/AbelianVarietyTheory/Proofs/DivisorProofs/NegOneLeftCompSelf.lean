@@ -11,6 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Establish `h : (-(𝟙 A)) ≫ (-(𝟙 A)) = 𝟙 A`. Rewrite using `[Preadditive.neg_comp, Preadditive.comp_neg, neg_neg, Category.id_comp]`. Establish `h2` using `congrArg (fun g : A ⟶ A => (Hom.hom g).left) h`. Simplify `h2` using `only [comp_hom, Over.comp_left, id_hom, Over.id_left]`.
+-/
 theorem neg_one_left_comp_self {K : Type} [Field K] (A : AbVar K) :
     (Hom.hom (-(𝟙 A))).left ≫ (Hom.hom (-(𝟙 A))).left = 𝟙 A.X.left := by
   have h : (-(𝟙 A)) ≫ (-(𝟙 A)) = 𝟙 A := by
@@ -18,6 +21,11 @@ theorem neg_one_left_comp_self {K : Type} [Field K] (A : AbVar K) :
   have h2 := congrArg (fun g : A ⟶ A => (Hom.hom g).left) h
   simpa only [comp_hom, Over.comp_left, id_hom, Over.id_left] using h2
 
+/- English proof (translation)
+Introduce `K _ A`. Take `⟨c₀, hc₀⟩` from `GlobalTheory.T.abelianVariety_exists_ampleClass K A`. Use `set f : A.X.left ⟶ A.X.left := (Hom.hom (-(𝟙 A))).left with hf`. Establish `hff : f ≫ f = 𝟙 A.X.left` using `neg_one_left_comp_self A`. Establish `hiso : IsIso f` using `⟨⟨f, hff, hff⟩⟩`.
+
+Establish `hfin : IsFinite (Hom.hom (-(𝟙 A))).left`. Rewrite using `[← hf]`. Use `infer_instance`. Use `⟨c₀ + CechPic.pull f c₀, GlobalTheory.T.isAbelianVarietyAmpleClass_add K A _ _ hc₀ (GlobalTheory.T.isAbelianVarietyAmpleClass_pullback_of_isFinite K A A (-(𝟙 A)) c₀ hfin hc₀), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← CechPic.pull_comp, hff, CechPic.pull_id, add_comm]`.
+-/
 theorem exists_symm_ample :
     ∀ (K : Type) [Field K] (A : AbVar K), ∃ c : Pic A.X.left, IsAmpleCls c ∧ CechPic.pull (Hom.hom (-(𝟙 A))).left c = c := by
   intro K _ A

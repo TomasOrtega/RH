@@ -17,6 +17,9 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PullRatSec.exists_sec_pull | exact GlobalTheory.PullRatSec.exists_sec_pull | (intros; apply GlobalTheory.PullRatSec.exists_sec_pull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cartier_divisor_section_nonzero_locus : ∀ (X Z : Scheme.{0}) [IsIntegral X] (B : ReciprocityTheory.ChartRestriction.G.Semi.LB X), B.IsLB →
     ∀ (R : B.ι → X.functionFieldˣ), GlobalTheory.Cartier.IsRatSec B R → ∀ (f : X.functionField) (i : Z ⟶ X),
     (∀ (z : Z) (a : B.ι), i z ∈ B.U a → GlobalTheory.Cartier.RegAt (i z) (f * R a)) →

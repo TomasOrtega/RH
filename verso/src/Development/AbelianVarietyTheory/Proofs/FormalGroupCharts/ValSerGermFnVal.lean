@@ -7,6 +7,9 @@ open CategoryTheory AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory.JetSer
 
+/- English proof (translation)
+Establish `hz : r z ∈ U` using `h (show z ∈ (⊤ : (Spec (CommRingCat.of A)).Opens) from trivial)`. Rewrite using `[gs_eq r z U hz, fnVal, dif_pos h]`. Establish `e : ∀ a, (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom a) = a` using `fun a => (Scheme.ΓSpecIso (CommRingCat.of A)).hom_inv_id_apply a`. Rewrite using `[e]`. Conclude with `TopCat.Presheaf.germ_res_apply (Spec (CommRingCat.of A)).presheaf (homOfLE h) z trivial _`.
+-/
 theorem valSer_germ_fnVal {A : Type} [CommRing A] {Y : Scheme.{0}} (r : Spec (CommRingCat.of A) ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ r ⁻¹ᵁ U) (z : Spec (CommRingCat.of A)) (f : Γ(Y, U)) :
     ((Spec (CommRingCat.of A)).presheaf.germ ⊤ z trivial).hom
@@ -18,6 +21,11 @@ theorem valSer_germ_fnVal {A : Type} [CommRing A] {Y : Scheme.{0}} (r : Spec (Co
   rw [e]
   exact TopCat.Presheaf.germ_res_apply (Spec (CommRingCat.of A)).presheaf (homOfLE h) z trivial _
 
+/- English proof (translation)
+Introduce `A _ X L hL j z Ψ _ hΨ`. Take `⟨J, hJ, e⟩` from `exists_good L hL z (K := Ψ) (fun ψ => ψ.1) (fun _ => j) (fun _ _ _ => rfl) (fun ψ => hΨ ψ.1 ψ.2 (show z ∈ (⊤ : (Spec (CommRingCat.of A)).Opens) from trivial))`. Use `⟨J, hJ, fun Y K _ φ ε t r hr => ?_⟩` and prove the remaining obligations. Establish `hU : ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ (fun _ => j)` using `fun y hy => Set.mem_iInter.2 fun k => hΨ _ (hr k) hy`. Rewrite using `[val_of t r z J (fun _ => j) (fun k => e ⟨_, hr k⟩)]`.
+
+Conclude with `(gs_unit r z _ (hU (show z ∈ (⊤ : (Spec (CommRingCat.of A)).Opens) from trivial)) _).symm.trans (valSer_germ_fnVal r _ hU z _).symm`.
+-/
 theorem valSer : ValSerSt := by
   intro A _ X L hL j z Ψ _ hΨ
   obtain ⟨J, hJ, e⟩ := exists_good L hL z (K := Ψ) (fun ψ => ψ.1) (fun _ => j) (fun _ _ _ => rfl)

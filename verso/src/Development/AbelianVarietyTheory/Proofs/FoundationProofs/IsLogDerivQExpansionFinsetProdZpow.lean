@@ -7,6 +7,19 @@ open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisens
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X hj l _ A hl n s ι I f φ m h`. Establish `C` using `fun (a b : X.K) (u v : HahnSeries ℚ Ω) => GlobalTheory.T.isLogDerivQExpansionModPrimePow_calculus ε X hj l A hl n s a b u v`. Establish `one : IsDl X A l n s (1 : X.K) 0`. Use `(C 1 1 0 0).2.2.2.1 1 one_ne_zero` as an intermediate fact. Simplify using `using this`.
+
+Establish `npow : ∀ (g : X.K) (u : HahnSeries ℚ Ω), IsDl X A l n s g u → ∀ k : ℕ, IsDl X A l n s (g ^ k) (k • u)`. Introduce `g u hg k`. Proceed by induction on `k with`. Consider the case `zero => simpa using one`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `(C (g ^ k) g (k • u) u).1 ih hg`. Establish `zp : ∀ (g : X.K) (u : HahnSeries ℚ Ω), IsDl X A l n s g u → ∀ k : ℤ, IsDl X A l n s (g ^ k) (k • u)`. Introduce `g u hg k`. Consider the cases of `k with`.
+
+Consider the case `ofNat k`. Rewrite using `[Int.ofNat_eq_coe, zpow_natCast, natCast_zsmul]`. Conclude with `npow g u hg k`. Consider the case `negSucc k`. Rewrite using `[zpow_negSucc, negSucc_zsmul]`.
+
+Conclude with `(C (g ^ (k + 1)) 1 ((k + 1) • u) 0).2.1 (npow g u hg (k + 1))`. Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simpa using one`. Consider the case `insert a I ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`.
+
+Conclude with `(C _ _ _ _).1 (zp _ _ (h a (Finset.mem_insert_self a I)) (m a)) (ih (fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem isDl_finset_prod_zpow : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (n : ℕ) (s : ℚ) (ι : Type) (I : Finset ι) (f : ι → X.K) (φ : ι → HahnSeries ℚ Ω) (m : ι → ℤ), (∀ i ∈ I, IsDl X A l n s (f i) (φ i)) → IsDl X A l n s (∏ i ∈ I, f i ^ m i) (∑ i ∈ I, m i • φ i) := by
   intro Ω _ _ _ ε X hj l _ A hl n s ι I f φ m h

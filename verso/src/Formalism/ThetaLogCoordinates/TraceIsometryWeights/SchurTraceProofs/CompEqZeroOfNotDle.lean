@@ -9,6 +9,15 @@ section abstract
 
 variable {K V : Type} [Field K] [CharZero K] [AddCommGroup V] [Module K V] {n : ℕ} (G : GlW K V n)
 
+/- English proof (translation)
+Establish `hgs : ∀ s : Set V, G.Stable (G.gS s)` using `fun s a b x hx => by`. Rewrite `hx`, the goal using `[GlW.gS, Submodule.mem_sInf]`. Conclude with `fun U hU => hU.2 a b x (hx U hU)`. Establish `hstab : G.Stable (⨆ v : {v // G.IsHW μ v}, G.gS {v.1})`. Introduce `a b x hx`.
+
+Proceed by induction on `hx using Submodule.iSup_induction' with`. Consider the case `mem i y hy => exact Submodule.mem_iSup_of_mem i (hgs _ a b y hy)`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Use `show sInf {U : Submodule K V | {v | G.IsHW μ v} ⊆ (U : Set V) ∧ G.Stable U} ≤ _`. Use `sInf_le ⟨fun v hv => ?_, hstab⟩` and prove the remaining obligations.
+
+Establish `hv' : v ∈ G.gS {v}`. Rewrite using `[GlW.gS, Submodule.mem_sInf]`. Conclude with `fun U hU => hU.1 (Set.mem_singleton v)`. Conclude with `Submodule.mem_iSup_of_mem (⟨v, hv⟩ : {v // G.IsHW μ v}) hv'`.
+-/
 theorem gSall_le_iSup (μ : Fin n → ℤ) :
     G.gS {v | G.IsHW μ v} ≤ ⨆ v : {v // G.IsHW μ v}, G.gS {v.1} := by
   have hgs : ∀ s : Set V, G.Stable (G.gS s) := fun s a b x hx => by
@@ -31,6 +40,9 @@ theorem gSall_le_iSup (μ : Fin n → ℤ) :
     exact fun U hU => hU.1 (Set.mem_singleton v)
   exact Submodule.mem_iSup_of_mem (⟨v, hv⟩ : {v // G.IsHW μ v}) hv'
 
+/- English proof (translation)
+Establish `hk : ⨆ v : {v // G.IsHW μ v}, G.gS {v.1} ≤ LinearMap.ker (G.comp ν)` using `iSup_le fun v y hy => by`. Rewrite using `[LinearMap.mem_ker]`. Assume the negation of the conclusion as `h`. Conclude with `hν (GlW.wt_le_of_mem G v.2 hy h)`. Conclude with `hk (gSall_le_iSup G μ hx)`.
+-/
 theorem comp_eq_zero_of_not_dle {μ ν : Fin n → ℤ} (hν : ¬ Dle ν μ) {x : V} (hx : x ∈ G.gS {v | G.IsHW μ v}) :
     G.comp ν x = 0 := by
   have hk : ⨆ v : {v // G.IsHW μ v}, G.gS {v.1} ≤ LinearMap.ker (G.comp ν) :=
@@ -40,6 +52,11 @@ theorem comp_eq_zero_of_not_dle {μ ν : Fin n → ℤ} (hν : ¬ Dle ν μ) {x 
       exact hν (GlW.wt_le_of_mem G v.2 hy h)
   exact hk (gSall_le_iSup G μ hx)
 
+/- English proof (translation)
+Use `⟨hw, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1 : G.IsWt (μ + dl a b) (G.E a b x)` using `G.isWt_E hw a b`. Establish `h2 : ¬ Dle (μ + dl a b) μ`. Introduce `h`. Establish `e` using `Dle_antisymm h (Dle_raise μ hab)`.
+
+Conclude with `dl_ne_zero (ne_of_lt hab) (by simpa using e)`. Rewrite using `[← h1]`. Conclude with `comp_eq_zero_of_not_dle G h2 (G.gS_stable _ a b x hx)`.
+-/
 theorem isHW_of_mem_gSall {μ : Fin n → ℤ} {x : V} (hx : x ∈ G.gS {v | G.IsHW μ v}) (hw : G.IsWt μ x) :
     G.IsHW μ x := by
   refine ⟨hw, fun a b hab => ?_⟩
@@ -53,6 +70,11 @@ theorem isHW_of_mem_gSall {μ : Fin n → ℤ} {x : V} (hx : x ∈ G.gS {v | G.I
 
 def lowIm : Submodule K V := ⨆ (a : Fin n) (b : Fin n) (_ : b < a), Submodule.map (G.E a b) ⊤
 
+/- English proof (translation)
+Establish `hle : G.gS {v | G.IsHW ν v} ≤ (lowIm G).comap (G.comp μ)`. Use `(gSall_le_iSup G ν).trans (iSup_le fun v => ?_)` and prove the remaining obligations. Use `(G.gS_le_Lw v.2).trans (G.Lw_le v.1 ?_ ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, G.comp_of_isWt v.2.1, if_neg hne]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `a b hab y _`. Rewrite using `[Submodule.mem_comap, G.shift]`. Conclude with `(le_iSup_of_le a (le_iSup_of_le b (le_iSup_of_le hab le_rfl)) : Submodule.map (G.E a b) ⊤ ≤ lowIm G) (Submodule.mem_map_of_mem Submodule.mem_top)`. Conclude with `hle hx`.
+-/
 theorem comp_mem_lowIm {μ ν : Fin n → ℤ} (hne : μ ≠ ν) {x : V} (hx : x ∈ G.gS {v | G.IsHW ν v}) :
     G.comp μ x ∈ lowIm G := by
   have hle : G.gS {v | G.IsHW ν v} ≤ (lowIm G).comap (G.comp μ) := by
@@ -70,6 +92,9 @@ end abstract
 
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ}
 
+/- English proof (translation)
+Establish `hc : la ∘ enumC Cs = la' ∘ enumC Cs`. Use function extensionality and compare the values at `i`. Conclude with `h _ (Finset.orderEmbOfFin_mem Cs rfl i)`. Rewrite using `[isoC_eq, isoC_eq, hc]`.
+-/
 theorem isoC_congr (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) {la la' : Fin r → ℤ}
     (h : ∀ c ∈ Cs, la c = la' c) : IsoC p LL j Cs la = IsoC p LL j Cs la' := by
   have hc : la ∘ enumC Cs = la' ∘ enumC Cs := by
@@ -77,12 +102,20 @@ theorem isoC_congr (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) {la la' : Fi
     exact h _ (Finset.orderEmbOfFin_mem Cs rfl i)
   rw [isoC_eq, isoC_eq, hc]
 
+/- English proof (translation)
+Use `le_antisymm (iSup₂_le fun la' h => (isoC_congr LL j Cs h).le) ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le la (fun c _ => rfl) le_rfl`.
+-/
 theorem iSup_isoC_eq (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ) :
     (⨆ (la' : Fin r → ℤ) (_ : la' ∈ {la' : Fin r → ℤ | ∀ c ∈ Cs, la' c = la c}), IsoC p LL j Cs la') =
       IsoC p LL j Cs la := by
   refine le_antisymm (iSup₂_le fun la' h => (isoC_congr LL j Cs h).le) ?_
   exact le_iSup₂_of_le la (fun c _ => rfl) le_rfl
 
+/- English proof (translation)
+Introduce `x hx`. Distinguish the cases in `hc : c ∈ Cs`. Conclude with `isoC_stable LL j Cs la c hc c hc x hx`. Use `isoC_map_of_comm LL j Cs (glAct p LL j c c) (fun c' hc' d' hd' y => ?_) la x hx` and prove the remaining obligations. Establish `h` using `glAct_comm (p := p) LL j c c c' d' y`.
+
+Establish `h1 : ¬ c = c'` using `fun h => hc (h ▸ hc')`. Establish `h2 : ¬ d' = c` using `fun h => hc (h ▸ hd')`. Rewrite `h` using `[if_neg h1, if_neg h2, sub_zero, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem isoC_diag (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (c : Fin r) (la : Fin r → ℤ) :
     ∀ x ∈ IsoC p LL j Cs la, glAct p LL j c c x ∈ IsoC p LL j Cs la := by
   intro x hx
@@ -95,6 +128,9 @@ theorem isoC_diag (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (c : Fin r) (
     rw [if_neg h1, if_neg h2, sub_zero, sub_eq_zero] at h
     exact h
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[WtSpC, MvPolynomial.mem_restrictSupport_iff]`. Conclude with `fun m hm c hc => hx hm c (h hc)`.
+-/
 theorem wtSpC_mono (LL : Letters N) (j : ℕ) {Cs Cs' : Finset (Fin r)} (h : Cs ⊆ Cs') (la : Fin r → ℤ) :
     WtSpC p LL j Cs' la ≤ WtSpC p LL j Cs la := by
   intro x hx
@@ -105,6 +141,9 @@ noncomputable def lowC (p : ℕ) [Fact p.Prime] (LL : Letters N) (j : ℕ) (Cs :
     Submodule ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]) :=
   ⨆ (c : Fin r) (d : Fin r) (_ : c ∈ Cs ∧ d ∈ Cs ∧ d < c), Submodule.map (glAct p LL j c d) ⊤
 
+/- English proof (translation)
+Unfold `lowIm lowC`. Use `iSup₂_le fun a b => iSup_le fun hab => ?_` and prove the remaining obligations. Conclude with `le_iSup₂_of_le (enumC Cs a) (enumC Cs b) (le_iSup_of_le ⟨Finset.orderEmbOfFin_mem Cs rfl a, Finset.orderEmbOfFin_mem Cs rfl b, (enumC Cs).strictMono hab⟩ le_rfl)`.
+-/
 theorem lowIm_le_lowC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) :
     lowIm (GAe p LL j (enumC Cs)) ≤ lowC p LL j Cs := by
   unfold lowIm lowC
@@ -113,6 +152,11 @@ theorem lowIm_le_lowC (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) :
     (le_iSup_of_le ⟨Finset.orderEmbOfFin_mem Cs rfl a, Finset.orderEmbOfFin_mem Cs rfl b,
       (enumC Cs).strictMono hab⟩ le_rfl)
 
+/- English proof (translation)
+Use `iSup_le fun c => iSup_le fun d => iSup_le fun hcd => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Rewrite `hh` using `[HWC, Submodule.mem_inf]`. Establish `h2` using `hh.2`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at h2`.
+
+Rewrite using `[mem_perpV, fischerAdjointness_holds, h2 d c ⟨hcd.2.1, hcd.1, hcd.2.2⟩, fock_zero_right']`.
+-/
 theorem lowC_le_perpV (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin r → ℤ)
     {h : MvPolynomial (Fin N × Fin r) ℚ_[p]} (hh : h ∈ HWC p LL j Cs la) : lowC p LL j Cs ≤ perpV h := by
   refine iSup_le fun c => iSup_le fun d => iSup_le fun hcd => ?_
@@ -122,6 +166,11 @@ theorem lowC_le_perpV (LL : Letters N) (j : ℕ) (Cs : Finset (Fin r)) (la : Fin
   simp only [Submodule.mem_iInf, LinearMap.mem_ker] at h2
   rw [mem_perpV, fischerAdjointness_holds, h2 d c ⟨hcd.2.1, hcd.1, hcd.2.2⟩, fock_zero_right']
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `(GAe p LL j e).dec z`. Establish `hz` using `(GAe p LL j e).sum_comp z (insert μ S) (fun ν hν => hS ν (fun h => hν (Finset.mem_insert_of_mem h)))`. Use `conv_lhs => rw [← hz]`. Rewrite using `[fock_sum_right', Finset.sum_eq_single μ]`. Introduce `ν _ hν`.
+
+Conclude with `fock_wt_ne LL j e (Ne.symm hν) hx ((GAe p LL j e).isWt_comp ν z)`. Introduce `h`. Conclude with `absurd (Finset.mem_insert_self μ S) h`.
+-/
 theorem fock_comp_right {n : ℕ} (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin r) {μ : Fin n → ℤ}
     {x : MvPolynomial (Fin N × Fin r) ℚ_[p]} (hx : (GAe p LL j e).IsWt μ x)
     (z : MvPolynomial (Fin N × Fin r) ℚ_[p]) : fock p x z = fock p x ((GAe p LL j e).comp μ z) := by
@@ -135,6 +184,45 @@ theorem fock_comp_right {n : ℕ} (LL : Letters N) (j : ℕ) (e : Fin n ↪o Fin
   · intro h
     exact absurd (Finset.mem_insert_self μ S) h
 
+/- English proof (translation)
+Introduce `p _ N r LL ρ j _ la`. Use `set Cs : Finset (Fin r) := univ.erase ρ with hCs`. Establish `hcard : Cs.card = r - 1`. Rewrite using `[hCs, Finset.card_erase_of_mem (Finset.mem_univ ρ), Finset.card_univ, Fintype.card_fin]`. Use `set T : Set (Fin r → ℤ) := {la' : Fin r → ℤ | ∀ c ∈ Cs, la' c = la c} with hT`.
+
+Establish `hsat : CsSaturated Cs T`. Introduce `a b hab`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Rewrite using `[← hab c hc]`.
+
+Conclude with `h c hc`. Introduce `h c hc`. Rewrite using `[hab c hc]`. Conclude with `h c hc`. Take `⟨PT, hPT, hadj⟩` from `projection_lattice_holds p N r LL j Cs T hsat`.
+
+Establish `hidem : ∀ x, PT (PT x) = PT x` using `fun x => congrArg (fun f => f x) hPT.1`. Establish `hrange : LinearMap.range PT = IsoC p LL j Cs la`. Rewrite using `[hPT.2.1]`. Conclude with `iSup_isoC_eq LL j Cs la`. Establish `hker` using `hPT.2.2`.
+
+Use `set Gu := GAe p LL j (enumC (univ : Finset (Fin r))) with hGu`. Use `set lu : Fin (univ : Finset (Fin r)).card → ℤ := la ∘ enumC univ with hlu`. Use `set G := GAe p LL j (enumC Cs) with hG`. Establish `hwt : ∀ x, x ∈ WtSpC p LL j univ la ↔ Gu.IsWt lu x` using `fun x => wtSpC_iff LL j univ la x`. Establish `hcomm : ∀ x, PT (Gu.comp lu x) = Gu.comp lu (PT x)`.
+
+Introduce `x`. Use `Formalism.CountingSumsFrames.GlX.comp_comm_of Gu (W := ⊤) (fun _ _ _ => Submodule.mem_top) PT ?_ x Submodule.mem_top lu` and prove the remaining obligations. Introduce `y _ c`. Conclude with `congrArg (fun f => f y) (typeProj_comm LL j Cs T PT hPT (glAct p LL j (enumC univ c) (enumC univ c)) (isoC_diag LL j Cs _))`. Establish `hfix : ∀ x ∈ IsoC p LL j Cs la, PT x = x`.
+
+Introduce `x hx`. Rewrite `hx` using `[← hrange]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `hidem y`. Establish `hP_wt : ∀ x ∈ WtSpC p LL j univ la, (PT ∘ₗ Gu.comp lu) x = PT x`.
+
+Introduce `x hx`. Rewrite using `[LinearMap.comp_apply, (hwt x).mp hx]`. Establish `hmem : ∀ x, (PT ∘ₗ Gu.comp lu) x ∈ HWC p LL j Cs la ⊓ WtSpC p LL j univ la`. Introduce `x`. Establish `h1 : (PT ∘ₗ Gu.comp lu) x ∈ IsoC p LL j Cs la`.
+
+Rewrite using `[← hrange]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `h2 : (PT ∘ₗ Gu.comp lu) x ∈ WtSpC p LL j univ la`. Rewrite using `[LinearMap.comp_apply, hcomm, hwt]`. Conclude with `Gu.isWt_comp lu _`.
+
+Use `Submodule.mem_inf.mpr ⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[hwc_iff]`. Rewrite `h1` using `[isoC_eq]`. Conclude with `isHW_of_mem_gSall G h1 ((wtSpC_iff LL j Cs la _).mp (wtSpC_mono LL j (Finset.subset_univ Cs) la h2))`. Use `⟨PT ∘ₗ Gu.comp lu, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hP_wt _ (hmem x).2]`. Conclude with `hfix _ (hwc_le_isoC LL j Cs la (hmem x).1)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `hmem x`. Introduce `h hh`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[hP_wt h hh.2]`. Conclude with `hfix h (hwc_le_isoC LL j Cs la hh.1)`.
+
+Use `show LinearMap.ker (PT ∘ₗ Gu.comp lu) ⊓ WtSpC p LL j univ la = lowC p LL j Cs ⊓ WtSpC p LL j univ la`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`. Use `Submodule.mem_inf.mpr ⟨?_, hx2⟩` and prove the remaining obligations.
+
+Rewrite `hx1` using `[LinearMap.mem_ker, hP_wt x hx2, ← LinearMap.mem_ker, hker]`. Establish `hle : (⨆ (mu : Fin r → ℤ) (_ : mu ∉ T), IsoC p LL j Cs mu) ≤ (lowC p LL j Cs).comap (G.comp (la ∘ enumC Cs))`. Use `iSup₂_le fun mu hmu => ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite `hz` using `[isoC_eq]`.
+
+Rewrite using `[Submodule.mem_comap]`. Use `lowIm_le_lowC LL j Cs (comp_mem_lowIm G ?_ hz)` and prove the remaining obligations. Introduce `h`. Conclude with `hmu ((comp_eq_iff Cs mu la).mp h.symm)`. Establish `h3` using `hle hx1`.
+
+Rewrite `h3` using `[Submodule.mem_comap]`. Establish `h4 : G.comp (la ∘ enumC Cs) x = x` using `(wtSpC_iff LL j Cs la x).mp (wtSpC_mono LL j (Finset.subset_univ Cs) la hx2)`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.mp hx`.
+
+Use `Submodule.mem_inf.mpr ⟨?_, hx2⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, hP_wt x hx2]`. Use `fock_nondeg _ fun y => ?_` and prove the remaining obligations. Rewrite using `[hadj, fock_comp_right LL j (enumC univ) ((hwt x).mp hx2) (PT y)]`. Establish `h5 : Gu.comp lu (PT y) ∈ HWC p LL j Cs la`.
+
+Rewrite using `[← hcomm]`. Conclude with `(hmem y).1`. Conclude with `lowC_le_perpV LL j Cs la h5 hx1`. Introduce `F F' hF hF'`. Rewrite using `[hP_wt F hF, hP_wt F' hF']`.
+
+Conclude with `hadj F F'`. Introduce `F hF hFw`. Rewrite using `[hP_wt F hFw, ← hcard]`. Conclude with `hI p N r LL j Cs T PT hsat hPT F hF`.
+-/
 theorem extP_of (hI : IntP) : ExtP := by
   intro p _ N r LL ρ j _ la
   set Cs : Finset (Fin r) := univ.erase ρ with hCs

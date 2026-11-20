@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.Ar.SncBase.Mdl
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.SncBase
 
+/- English proof (translation)
+Establish `hP : (MvPolynomial.map (Int.castRingHom ℂ) G).IsHomogeneous d` using `hG.map _`. Rewrite using `[MvPolynomial.eval_eq', MvPolynomial.eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hd : ∑ i, m i = d`. Use `hP (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact.
+
+Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_map_mul_of_isHomogeneous {σ : Type} [Fintype σ] {G : MvPolynomial σ ℤ} {d : ℕ} (hG : G.IsHomogeneous d)
     (r : σ → ℂ) (t : ℂ) :
     MvPolynomial.eval (fun i => r i * t) (MvPolynomial.map (Int.castRingHom ℂ) G) =
@@ -26,6 +31,17 @@ theorem eval_map_mul_of_isHomogeneous {σ : Type} [Fintype σ] {G : MvPolynomial
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]
   ring
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C n`. Establish `h : ratEval x c (MvPolynomial.C n) = ((n : S) : Ω)` using `by simp [ratEval]`. Use `⟨h ▸ (n : S).2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨ratEval x c (MvPolynomial.C n), h ▸ (n : S).2⟩ : S) = (n : S)` using `Subtype.ext h`.
+
+Rewrite using `[e]`. Simplify using the standard rewrite rules. Consider the case `add f g hf hg`. Take `⟨ha, hA⟩` from `hf`. Take `⟨hb, hB⟩` from `hg`.
+
+Establish `h : ratEval x c (f + g) = ((⟨_, ha⟩ + ⟨_, hb⟩ : S) : Ω)` using `by simp [ratEval]`. Use `⟨h ▸ (⟨_, ha⟩ + ⟨_, hb⟩ : S).2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨ratEval x c (f + g), h ▸ (⟨_, ha⟩ + ⟨_, hb⟩ : S).2⟩ : S) = ⟨_, ha⟩ + ⟨_, hb⟩` using `Subtype.ext h`. Rewrite using `[e, map_add, hA, hB]`. Simplify using the standard rewrite rules.
+
+Consider the case `mul_X f i hf`. Take `⟨ha, hA⟩` from `hf`. Establish `h : ratEval x c (f * MvPolynomial.X i) = ((⟨_, ha⟩ * ⟨_, hreg i.2⟩ : S) : Ω)` using `by simp [ratEval]`. Use `⟨h ▸ (⟨_, ha⟩ * ⟨_, hreg i.2⟩ : S).2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨ratEval x c (f * MvPolynomial.X i), h ▸ (⟨_, ha⟩ * ⟨_, hreg i.2⟩ : S).2⟩ : S) = ⟨_, ha⟩ * ⟨_, hreg i.2⟩` using `Subtype.ext h`.
+
+Rewrite using `[e, map_mul, hA, hval]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_ratEval_val {Ω : Type} [Field Ω] {N : ℕ} {S : Subring Ω} (φ : S →+* ℂ) (x : Fin (N + 1) → Ω)
     (c : Fin (N + 1)) (r : Fin (N + 1) → ℂ) (hreg : ∀ i, x i / x c ∈ S) (hval : ∀ i, φ ⟨_, hreg i⟩ = r i)
     (G : MRing (fun _ : Unit => Fin (N + 1))) :
@@ -55,6 +71,23 @@ theorem exists_ratEval_val {Ω : Type} [Field Ω] {N : ℕ} {S : Subring Ω} (φ
     rw [e, map_mul, hA, hval]
     simp
 
+/- English proof (translation)
+Introduce `Ω _ X ξ N x B hξ hB z w hC`. Take `⟨hu, hco⟩` from `hC`. Take `⟨c, hc⟩` from `hu ()`. Take `⟨hxc, hr⟩` from `hco () c hc`. Use `choose r hrV hrw using hr`.
+
+Take `⟨h, -⟩` from `hrV c`. Take `⟨φ, hφ, hφu⟩` from `ValHom.exists_valAt_hom X Ω ξ ℂ z h hξ`. Establish `hreg : ∀ i, x i / x c ∈ regAt ξ ⟨centre z, h⟩` using `fun i => ((hφ _ _).1 (hrV i)).choose`. Establish `hval : ∀ i, φ ⟨_, hreg i⟩ = r i` using `fun i => ((hφ _ _).1 (hrV i)).choose_spec`. Establish `hchart : InChart ξ x c ⟨centre z, h⟩` using `⟨hxc, hreg⟩`.
+
+Establish `hp0 : Char0 ξ ⟨centre z, h⟩` using `char_zero_centre_complex_point Ω X ξ z h hξ`. Establish `hw0 : w ⟨(), c⟩ ≠ 0` using `hc.ne_zero`. Establish `hw : w = fun p : (Σ _ : Unit, Fin (N + 1)) => r p.2 * w ⟨(), c⟩`. Use function extensionality and compare the values at `⟨u, i⟩`. Conclude with `hrw i`.
+
+Establish `key : ∀ (G : MRing (fun _ : Unit => Fin (N + 1))) (d : ℕ), G.IsHomogeneous d → (MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) G) = 0 ↔ ¬ unitAt ξ ⟨centre z, h⟩ (ratEval x c G))`. Introduce `G d hG`. Take `⟨ha, hA⟩` from `exists_ratEval_val φ x c r hreg hval G`. Establish `hu'` using `hφu ⟨_, ha⟩`. Rewrite using `[hw, eval_map_mul_of_isHomogeneous hG, ← hA]`.
+
+Simplify using `only [mul_eq_zero, pow_eq_zero_iff', hw0, false_and, false_or]`. Rewrite using `[← show IsUnit (φ ⟨_, ha⟩) ↔ unitAt ξ ⟨centre z, h⟩ (ratEval x c G) from hu', isUnit_iff_ne_zero, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hv⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hpB`. Take `⟨G, hG, hGu⟩` from `hB c ⟨centre z, h⟩ hp0 hchart hpB`. Take `⟨d, hd, -⟩` from `id hG`. Conclude with `(key G d hd).1 (hv G (Ideal.subset_span hG)) hGu`. Introduce and unpack `⟨h', hpB⟩`.
+
+Use `⟨fun _ => ⟨c, hw0⟩, fun f hf => ?_⟩` and prove the remaining obligations. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨d, hd, hv⟩` from `hG`. Conclude with `(key G d hd).2 (hv c _ hpB hchart)`.
+
+Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg => simp [hf, hg]`. Consider the case `smul a f _ hf => simp [hf]`.
+-/
 theorem mem_mcPts_span_bdGens_iff : ∀ (Ω : Type) [Field Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (N : ℕ)
     (x : Fin (N + 1) → Ω) (B : Set (Cpt ξ)), IsCptGen ξ →
     (∀ c (p : Cpt ξ), Char0 ξ p → InChart ξ x c p → p ∉ B → ∃ G ∈ Mdl.bdGens ξ x B, unitAt ξ p (Mdl.ratEval x c G)) →

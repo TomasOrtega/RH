@@ -20,6 +20,11 @@ variable {n : ℕ} {A : Type} [Ring A] [Algebra ℂ A]
 def opM (ρ : Mt n →ₗ[ℂ] A) (p q : Mt n) : Matrix (Fin n) (Fin n) A :=
   Matrix.of fun a b => ρ (p * Matrix.single a b 1 * q)
 
+/- English proof (translation)
+Use extensionality with `x y`. Establish `hl : (p * Matrix.single a b 1 * q : Mt n) x y = p x a * q b y`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul, mul_ite]`. Rewrite using `[hl, Matrix.sum_apply, Fintype.sum_eq_single x (fun c hc => by`. Rewrite using `[Matrix.sum_apply]`.
+
+Simplify using `[Matrix.single_apply, hc]),`. Use the proof step `Matrix.sum_apply, Fintype.sum_eq_single y (fun c hc => by simp [Matrix.single_apply, hc])]`. Simplify using the standard rewrite rules.
+-/
 private theorem single_one_mul_single_one' (p q : Mt n) (a b : Fin n) :
     p * Matrix.single a b 1 * q = ∑ i, ∑ j, (p i a * q b j) • Matrix.single i j (1 : ℂ) := by
   ext x y
@@ -30,10 +35,16 @@ private theorem single_one_mul_single_one' (p q : Mt n) (a b : Fin n) :
     Matrix.sum_apply, Fintype.sum_eq_single y (fun c hc => by simp [Matrix.single_apply, hc])]
   simp
 
+/- English proof (translation)
+Rewrite using `[mul_assoc, ← Algebra.commutes d x, ← mul_assoc, ← map_mul, ← Algebra.smul_def]`.
+-/
 private theorem mul_inv_mul_eq_mul_inv_mul_of_factorizations (c d : ℂ) (x : A) :
     algebraMap ℂ A c * x * algebraMap ℂ A d = (c * d) • x := by
   rw [mul_assoc, ← Algebra.commutes d x, ← mul_assoc, ← map_mul, ← Algebra.smul_def]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [opM, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, one_mul, mul_one, single_one_mul_single_one', map_sum, map_smul, Finset.sum_mul, mul_inv_mul_eq_mul_inv_mul_of_factorizations]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem opM_eq (ρ : Mt n →ₗ[ℂ] A) (p q : Mt n) :
     opM ρ p q = (pᵀ).map (algebraMap ℂ A) * opM ρ 1 1 * (qᵀ).map (algebraMap ℂ A) := by
   ext a b
@@ -41,12 +52,20 @@ theorem opM_eq (ρ : Mt n →ₗ[ℂ] A) (p q : Mt n) :
     single_one_mul_single_one', map_sum, map_smul, Finset.sum_mul, mul_inv_mul_eq_mul_inv_mul_of_factorizations]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Algebra.commutes]`.
+-/
 theorem trace_map_mul (x : Mt n) (M : Matrix (Fin n) (Fin n) A) :
     (x.map (algebraMap ℂ A) * M).trace = (M * x.map (algebraMap ℂ A)).trace := by
   simp only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply]
   rw [Finset.sum_comm]
   simp only [Algebra.commutes]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ O (m + 1)]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc Q P, h, one_mul]`.
+-/
 private theorem pow_succ_conj_of_mul_eq_one {P O Q : Matrix (Fin n) (Fin n) A} (h : Q * P = 1) (m : ℕ) :
     (P * O * Q) ^ (m + 1) = P * O ^ (m + 1) * Q := by
   induction m with
@@ -56,6 +75,11 @@ private theorem pow_succ_conj_of_mul_eq_one {P O Q : Matrix (Fin n) (Fin n) A} (
     simp only [mul_assoc]
     rw [← mul_assoc Q P, h, one_mul]
 
+/- English proof (translation)
+Break down `m with _ | m` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[opM_eq ρ p q]`. Establish `hQP : (qᵀ).map (algebraMap ℂ A) * (pᵀ).map (algebraMap ℂ A) = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.transpose_mul, h, Matrix.transpose_one]`.
+
+Use `first`. Consider the case `simp`. Consider the case `exact Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[pow_succ_conj_of_mul_eq_one hQP, mul_assoc, trace_map_mul, mul_assoc, hQP, mul_one]`.
+-/
 theorem trace_opM_pow (ρ : Mt n →ₗ[ℂ] A) {p q : Mt n} (h : p * q = 1) (m : ℕ) :
     (opM ρ p q ^ m).trace = (opM ρ 1 1 ^ m).trace := by
   rcases m with _ | m
@@ -68,6 +92,17 @@ theorem trace_opM_pow (ρ : Mt n →ₗ[ℂ] A) {p q : Mt n} (h : p * q = 1) (m 
     | exact Matrix.map_one _ (map_zero _) (map_one _)
   rw [pow_succ_conj_of_mul_eq_one hQP, mul_assoc, trace_map_mul, mul_assoc, hQP, mul_one]
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `e : ∀ X Y : Mt n, p * X * q * (p * Y * q) = p * (X * Y) * q`. Introduce `X Y`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc q p, h, one_mul]`.
+
+Establish `hm : Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 = (if b = c then Matrix.single a d 1 else 0) - (if d = a then Matrix.single c b 1 else 0)`. Establish `hz : ∀ i j k l : Fin n, j ≠ k → Matrix.single i j (1 : ℂ) * Matrix.single k l 1 = 0`. Introduce `i j k l hjk`. Apply `Matrix.single_mul_single_of_ne` to reduce the goal to its premises. Conclude with `hjk`.
+
+Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a`. Substitute `hbc` using the available equality. Substitute `hda` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Substitute `hbc` using the available equality.
+
+Simplify using `[Matrix.single_mul_single_same, hz _ _ _ _ hda, hda]`. Substitute `hda` using the available equality. Simplify using `[Matrix.single_mul_single_same, hz _ _ _ _ hbc, hbc]`. Simplify using `[hz _ _ _ _ hbc, hz _ _ _ _ hda, hbc, hda]`. Simplify using `only [opM, Matrix.of_apply]`.
+
+Rewrite using `[← hρ, e, e, ← sub_mul, ← mul_sub, hm]`. Apply the tactic sequence `split_ifs <;> simp [mul_sub, sub_mul]`.
+-/
 theorem glRel_opM (ρ : Mt n →ₗ[ℂ] A) (hρ : ∀ Z Z', ρ (Z * Z' - Z' * Z) = ρ Z * ρ Z' - ρ Z' * ρ Z)
     {p q : Mt n} (h : q * p = 1) : GlobalTheory.Mem.Gelf.GlRel (opM ρ p q) := by
   intro a b c d
@@ -90,6 +125,11 @@ theorem glRel_opM (ρ : Mt n →ₗ[ℂ] A) (hρ : ∀ Z Z', ρ (Z * Z' - Z' * Z
   rw [← hρ, e, e, ← sub_mul, ← mul_sub, hm]
   split_ifs <;> simp [mul_sub, sub_mul]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.one_apply_ne hab]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ, Matrix.mul_apply, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ih, mul_assoc, h, ← mul_assoc]`.
+-/
 theorem pow_intertwine {E F : Matrix (Fin n) (Fin n) A} {T : A} (h : ∀ a b, T * E a b = F a b * T) (m : ℕ)
     (a b : Fin n) : T * (E ^ m) a b = (F ^ m) a b * T := by
   induction m generalizing a b with
@@ -104,6 +144,11 @@ theorem pow_intertwine {E F : Matrix (Fin n) (Fin n) A} {T : A} (h : ∀ a b, T 
 
 end Algebra
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a b v v' with`. Consider the case `zero`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne (Ne.symm hab)]`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ', Matrix.mul_apply, Matrix.mul_apply, LinearMap.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, Submodule.coe_sum, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+-/
 theorem pow_adjoint {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {S : Submodule ℂ H}
     {E F : Matrix (Fin n) (Fin n) (Module.End ℂ S)}
     (h : ∀ a b (v v' : S), ⟪(E a b v : H), (v' : H)⟫_ℂ = ⟪(v : H), (F b a v' : H)⟫_ℂ) (m : ℕ) (a b : Fin n)
@@ -146,9 +191,15 @@ def dEnd (hh : Hm.IsHermitian) (hd : Hm.det ≠ 0) (hσ : IsURepOn (Formalism.Qu
     simp only [one_smul, add_zero, left_eq_add] at h0
     simpa [h0] using h1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dEnd_coe (hh : Hm.IsHermitian) (hd : Hm.det ≠ 0) (hσ : IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ) (Z : Mt n)
     (v : smSub Hm σ) : (dEnd hh hd hσ Z v : H) = dRepC Hm σ Z v.1 := rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons Z l ih => simp only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply, ih, h]`.
+-/
 theorem foldr_eq {S : Submodule ℂ H} (l : List (Mt n)) (f : Mt n → H → H) (F : Mt n → Module.End ℂ S)
     (h : ∀ Z (v : S), (F Z v : H) = f Z v) (v : S) :
     (l.map f).foldr (fun f acc => f acc) (v : H) = ((l.map F).prod v : S) := by
@@ -156,6 +207,13 @@ theorem foldr_eq {S : Submodule ℂ H} (l : List (Mt n)) (f : Mt n → H → H) 
   | nil => simp
   | cons Z l ih => simp only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply, ih, h]
 
+/- English proof (translation)
+Proceed by induction on `m generalizing i with`. Consider the case `zero => simp [List.ofFn_succ, Fin.snoc]`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Matrix.mul_apply]`. Repeatedly rewrite using `[ih, Finset.mul_sum]`.
+
+Rewrite using `[← Equiv.sum_comp (Fin.consEquiv fun _ => Fin n), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `show _ = (List.ofFn fun a : Fin (m + 1 + 1) => E ((Fin.cons i (Fin.cons c idx : Fin (m + 1) → Fin n) : Fin (m + 1 + 1) → Fin n) a) ((Fin.snoc (Fin.cons c idx : Fin (m + 1) → Fin n) j : Fin (m + 1 + 1) → Fin n) a)).prod`. Rewrite using `[← Fin.cons_snoc_eq_snoc_cons]`. Use `conv_rhs => rw [List.ofFn_succ, List.prod_cons]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+-/
 private theorem pow_succ_apply_eq_sum_path_prod {R : Type} [Ring R] (E : Matrix (Fin n) (Fin n) R) (m : ℕ) (i j : Fin n) :
     (E ^ (m + 1)) i j = ∑ idx : Fin m → Fin n,
       (List.ofFn fun a : Fin (m + 1) =>
@@ -174,6 +232,11 @@ private theorem pow_succ_apply_eq_sum_path_prod {R : Type} [Ring R] (E : Matrix 
     conv_rhs => rw [List.ofFn_succ, List.prod_cons]
     simp only [Fin.cons_zero, Fin.cons_succ]
 
+/- English proof (translation)
+Establish `hs : ∀ (i : Fin n) (idx : Fin k → Fin n) (a : Fin (k + 1)), (Fin.cons i idx : Fin (k + 1) → Fin n) (a + 1) = (Fin.snoc idx i : Fin (k + 1) → Fin n) a`. Introduce `i idx a`. Use `Fin.lastCases ?_ (fun b => ?_) a` and prove the remaining obligations. Simplify using `[Fin.last_add_one]`. Rewrite using `[Fin.coeSucc_eq_succ, Fin.cons_succ, Fin.snoc_castSucc]`.
+
+Simplify using `only [Matrix.trace, Matrix.diag, pow_succ_apply_eq_sum_path_prod]`. Rewrite using `[← Equiv.sum_comp (Fin.consEquiv fun _ => Fin n), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `show (List.ofFn fun a : Fin (k + 1) => E ((Fin.cons i idx : Fin (k + 1) → Fin n) a) ((Fin.cons i idx : Fin (k + 1) → Fin n) (a + 1))).prod = _`. Simplify using `only [hs]`.
+-/
 private theorem false_of_cdist_between_both_ways {R : Type} [Ring R] (E : Matrix (Fin n) (Fin n) R) (k : ℕ) :
     ∑ idx : Fin (k + 1) → Fin n, (List.ofFn fun a : Fin (k + 1) => E (idx a) (idx (a + 1))).prod =
       (E ^ (k + 1)).trace := by
@@ -190,6 +253,13 @@ private theorem false_of_cdist_between_both_ways {R : Type} [Ring R] (E : Matrix
       E ((Fin.cons i idx : Fin (k + 1) → Fin n) a) ((Fin.cons i idx : Fin (k + 1) → Fin n) (a + 1))).prod = _
   simp only [hs]
 
+/- English proof (translation)
+Rewrite using `[← false_of_cdist_between_both_ways, LinearMap.sum_apply, Submodule.coe_sum]`. Unfold `gelfRep`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Establish `e1 : (List.ofFn fun a : Fin (k + 1) => dRepC Hm σ (Matrix.single (idx a) (idx (a + 1)) 1)) = (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) (1 : ℂ)).map (dRepC Hm σ)`. Rewrite using `[List.map_ofFn]`.
+
+Both sides reduce to the same expression. Establish `e2 : (List.ofFn fun a : Fin (k + 1) => opM (dEnd hh hd hσ) 1 1 (idx a) (idx (a + 1))) = (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) (1 : ℂ)).map (dEnd hh hd hσ)`. Rewrite using `[List.map_ofFn]`. Simplify using `[opM, Function.comp_def]`. Rewrite using `[e1, e2]`.
+
+Conclude with `foldr_eq _ _ _ (fun Z w => dEnd_coe hh hd hσ Z w) v`.
+-/
 theorem gelfRep_eq (hh : Hm.IsHermitian) (hd : Hm.det ≠ 0) (hσ : IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ) (k : ℕ)
     (v : smSub Hm σ) : gelfRep Hm σ k v = ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace v : smSub Hm σ) := by
   rw [← false_of_cdist_between_both_ways, LinearMap.sum_apply, Submodule.coe_sum]
@@ -206,6 +276,21 @@ theorem gelfRep_eq (hh : Hm.IsHermitian) (hd : Hm.det ≠ 0) (hσ : IsURepOn (Fo
 
 omit [CompleteSpace H] in
 
+/- English proof (translation)
+Take `⟨⟨hσ1, hσmul⟩, -, -⟩` from `hσ`. Establish `hmul : ∀ g ∈ Formalism.QuantumDeterminants.UH Hm, ∀ h ∈ Formalism.QuantumDeterminants.UH Hm, g * h ∈ Formalism.QuantumDeterminants.UH Hm`. Introduce `g hg h hh'`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq] at hg hh' ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : Mt n) ∈ Formalism.QuantumDeterminants.UH Hm` using `by simp [Formalism.QuantumDeterminants.UH]`. Set `S : Submodule ℂ H` to `(Submodule.span ℂ ((fun g => σ g v₀) '' Formalism.QuantumDeterminants.UH Hm)).topologicalClosure`. Establish `hv₀S : v₀ ∈ S` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨1, h1, by simp [hσ1]⟩)`. Establish `hinv : ∀ g ∈ Formalism.QuantumDeterminants.UH Hm, ∀ v ∈ S, σ g v ∈ S`.
+
+Introduce `g hg`. Establish `hle : S ≤ S.comap (σ g : H →ₗ[ℂ] H)`. Apply `Submodule.topologicalClosure_minimal` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨h, hh', rfl⟩`.
+
+Use `show σ g (σ h v₀) ∈ S`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσmul g hg h hh']`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨g * h, hmul g hg h hh', rfl⟩)`. Conclude with `(Submodule.isClosed_topologicalClosure _).preimage (σ g).continuous`. Conclude with `fun v hv => hle hv`.
+
+Break down `hi S (Submodule.isClosed_topologicalClosure _) hinv with hbot | htop` into its components or cases. Rewrite `hv₀S` using `[hbot, Submodule.mem_bot]`. Conclude with `absurd hv₀S h0`. Establish `hle : S ≤ LinearMap.ker (innerSL ℂ y : H →ₗ[ℂ] ℂ)`. Apply `Submodule.topologicalClosure_minimal` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Simplify using `[hy g hg]`. Conclude with `ContinuousLinearMap.isClosed_ker (innerSL ℂ y)`. Establish `hyS : y ∈ S` using `by rw [htop]; exact Submodule.mem_top`.
+
+Use `hle hyS` as an intermediate fact. Simplify using `using this`.
+-/
 theorem eq_zero_of_inner_orbit (hd : Hm.det ≠ 0) (hσ : IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ)
     (hi : IsIrredOn (Formalism.QuantumDeterminants.UH Hm) σ) {v₀ : H} (h0 : v₀ ≠ 0) {y : H}
     (hy : ∀ g ∈ Formalism.QuantumDeterminants.UH Hm, ⟪y, σ g v₀⟫_ℂ = 0) : y = 0 := by
@@ -246,6 +331,19 @@ theorem eq_zero_of_inner_orbit (hd : Hm.det ≠ 0) (hσ : IsURepOn (Formalism.Qu
 
 end Rep
 
+/- English proof (translation)
+Take `⟨-, h⟩` from `h`. Establish `hD : ∀ a : Fin n, -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ) ≠ 0`. Introduce `a`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Establish `hdet` using `congrArg Matrix.det h`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_diagonal]`. Establish `hprod : ∏ a : Fin n, -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hD a`. Establish `hHd : Hm.det ≠ 0`. Introduce `h0`.
+
+Apply `hprod` to reduce the goal to its premises. Rewrite using `[← hdet, h0]`. Simplify using the standard rewrite rules. Establish `hxd : x₀.det ≠ 0`. Introduce `h0`.
+
+Apply `hprod` to reduce the goal to its premises. Rewrite using `[← hdet, h0]`. Simplify using the standard rewrite rules. Use `⟨?_, hHd, hxd⟩` and prove the remaining obligations. Establish `hxu : IsUnit x₀` using `(Matrix.isUnit_iff_isUnit_det x₀).2 hxd.isUnit`.
+
+Establish `hxu' : IsUnit x₀ᴴ` using `(Matrix.isUnit_iff_isUnit_det _).2 (by`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `(star_ne_zero.2 hxd).isUnit)`. Establish `h2` using `congrArg Matrix.conjTranspose h`. Rewrite `h2` using `[Matrix.diagonal_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+
+Establish `hstar : star (fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ)) = fun a : Fin n => -((ReciprocityTheory.ChartRestriction.G.FD.sgn q (a : ℕ) : ℝ) : ℂ)`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Rewrite `h2` using `[hstar, ← h, ← mul_assoc]`. Conclude with `hxu'.mul_left_cancel (hxu.mul_right_cancel h2)`.
+-/
 theorem orthFr_facts {n : ℕ} {Hm : Mt n} {q : ℕ} {x₀ : Mt n} (h : OrthFr Hm q x₀) :
     Hm.IsHermitian ∧ Hm.det ≠ 0 ∧ x₀.det ≠ 0 := by
   obtain ⟨-, h⟩ := h
@@ -274,6 +372,37 @@ theorem orthFr_facts {n : ℕ} {Hm : Mt n} {q : ℕ} {x₀ : Mt n} (h : OrthFr H
   rw [hstar, ← h, ← mul_assoc] at h2
   exact hxu'.mul_left_cancel (hxu.mul_right_cancel h2)
 
+/- English proof (translation)
+Introduce `n Hm q x₀ w H _ _ _ σ hfr hσ hi v₀ hv₀ hsm hw k`. Take `⟨hh, hd, hdx⟩` from `orthFr_facts hfr`. Establish `hHu : IsUnit Hm` using `(Matrix.isUnit_iff_isUnit_det Hm).2 hd.isUnit`. Take `⟨v₀s, rfl⟩ : ∃ u : GlobalTheory.SmVec.smSub Hm σ, (u : H) = v₀` from `⟨⟨v₀, hsm⟩, rfl⟩`. Establish `hI` using `fun (v v' : GlobalTheory.SmVec.smSub Hm σ) => GlobalTheory.T.complexifiedDerivedAction_isLieAction n Hm H σ hh hd hσ v.1 v'.1 v.2 v'.2`.
+
+Establish `hc : ∀ Z (v : GlobalTheory.SmVec.smSub Hm σ), (dEnd hh hd hσ Z v : H) = dRepC Hm σ Z v` using `fun Z v => dEnd_coe hh hd hσ Z v`. Establish `hcomm : ∀ Z Z', dEnd hh hd hσ (Z * Z' - Z' * Z) = dEnd hh hd hσ Z * dEnd hh hd hσ Z' - dEnd hh hd hσ Z' * dEnd hh hd hσ Z`. Introduce `Z Z'`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, hc]`.
+
+Conclude with `((hI v v).1 1 Z Z').2.2`. Establish `hxinv : x₀⁻¹ * x₀ = 1` using `Matrix.nonsing_inv_mul x₀ hdx.isUnit`. Establish `hxinv' : x₀ * x₀⁻¹ = 1` using `Matrix.mul_nonsing_inv x₀ hdx.isUnit`. Establish `hgl` using `glRel_opM (dEnd hh hd hσ) hcomm hxinv`. Establish `hEv : ∀ a c, (opM (dEnd hh hd hσ) x₀ x₀⁻¹ a c v₀s : H) = dRepC Hm σ (x₀ * Matrix.single a c 1 * x₀⁻¹) v₀s`.
+
+Introduce `a c`. Simplify using `only [opM, Matrix.of_apply, hc]`. Establish `hup : ∀ a c, a < c → opM (dEnd hh hd hσ) x₀ x₀⁻¹ a c v₀s = 0`. Introduce `a c hac`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hEv, hw a c hac.le, if_neg hac.ne, Submodule.coe_zero]`. Establish `hdiag : ∀ a, opM (dEnd hh hd hσ) x₀ x₀⁻¹ a a v₀s = ((w a : ℂ)) • v₀s`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hEv, hw a a le_rfl, if_pos rfl, Submodule.coe_smul]`.
+
+Establish `htr` using `GlobalTheory.Mem.GelfCheck.trace_pow_apply (μ := fun a => (w a : ℂ)) hgl hdiag hup (k + 1)`. Rewrite `htr` using `[trace_opM_pow _ hxinv']`. Use `set c := GlobalTheory.Mem.Gelf.gelfC (fun a => (w a : ℂ)) (k + 1) with hcdef`. Establish `hTv₀ : ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace v₀s : H) = c • (v₀s : H)`. Rewrite using `[htr, Submodule.coe_smul]`.
+
+Establish `hadj : ∀ u u' : GlobalTheory.SmVec.smSub Hm σ, ⟪((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace u : H), (u' : H)⟫_ℂ = ⟪(u : H), ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace u' : H)⟫_ℂ`. Establish `hF : ∀ a b (v v' : GlobalTheory.SmVec.smSub Hm σ), ⟪(opM (dEnd hh hd hσ) 1 1 a b v : H), (v' : H)⟫_ℂ = ⟪(v : H), (opM (dEnd hh hd hσ) Hm⁻¹ Hm b a v' : H)⟫_ℂ`. Introduce `a b v v'`. Establish `hst : (Matrix.single a b (1 : ℂ))ᴴ = Matrix.single b a 1`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.conjTranspose_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = j <;> by_cases h2 : b = i <;> simp [h1, h2]`. Establish `hcj : conjH Hm (Matrix.single a b 1) = (-1 : ℂ) • (Hm⁻¹ * Matrix.single b a 1 * Hm)`. Rewrite using `[conjH, hst, neg_one_smul]`. Simplify using `only [opM, Matrix.of_apply, one_mul, mul_one]`.
+
+Rewrite using `[hc, (hI v v').2.2.2, ← hc, hcj, map_smul, LinearMap.smul_apply, Submodule.coe_smul, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u u'`. Use `conv_rhs => rw [← trace_opM_pow (dEnd hh hd hσ) (Matrix.nonsing_inv_mul Hm hd.isUnit) (k + 1)]`. Simplify using `only [Matrix.trace, Matrix.diag, LinearMap.sum_apply, Submodule.coe_sum, sum_inner, inner_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => pow_adjoint hF (k + 1) a a u u'`. Establish `hint : ∀ g ∈ Formalism.QuantumDeterminants.UH Hm, ∀ (u : GlobalTheory.SmVec.smSub Hm σ) (hu : σ g (u : H) ∈ GlobalTheory.SmVec.smSub Hm σ), σ g ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace u : H) = ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace ⟨σ g u, hu⟩ : H)`. Introduce `g hg u hu`. Establish `hgu : IsUnit g` using `GlobalTheory.SmVec.isUnit_of_mem_UH hHu hg`. Establish `hmem : ∀ x ∈ GlobalTheory.SmVec.smSub Hm σ, (σ g : H →ₗ[ℂ] H) x ∈ GlobalTheory.SmVec.smSub Hm σ` using `fun x hx => GlobalTheory.SmVec.rep_mem hHu hσ hx hg`.
+
+Set `Tg : Module.End ℂ (GlobalTheory.SmVec.smSub Hm σ)` to `(σ g : H →ₗ[ℂ] H).restrict hmem`. Establish `hTg : ∀ v, (Tg v : H) = σ g (v : H)` using `fun v => rfl`. Establish `hE : ∀ a b, Tg * opM (dEnd hh hd hσ) 1 1 a b = opM (dEnd hh hd hσ) g g⁻¹ a b * Tg`. Introduce `a b`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations.
+
+Simplify using `only [Module.End.mul_apply, opM, Matrix.of_apply, one_mul, mul_one, hTg, hc]`. Conclude with `(hI v v).2.2.1 g hg (Matrix.single a b 1)`. Establish `hT : Tg * (opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace = (opM (dEnd hh hd hσ) g g⁻¹ ^ (k + 1)).trace * Tg`. Simplify using `only [Matrix.trace, Matrix.diag, Finset.mul_sum, Finset.sum_mul, pow_intertwine hE]`. Rewrite `hT` using `[trace_opM_pow _ (Matrix.mul_nonsing_inv g ((Matrix.isUnit_iff_isUnit_det g).1 hgu))]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨(starRingEnd ℂ) c, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hvs : v ∈ GlobalTheory.SmVec.smSub Hm σ` using `hv`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_inner_orbit hd hσ hi hv₀` to reduce the goal to its premises.
+
+Introduce `g hg`. Establish `hgs : σ g (v₀s : H) ∈ GlobalTheory.SmVec.smSub Hm σ` using `GlobalTheory.SmVec.rep_mem hHu hσ v₀s.2 hg`. Establish `e1 : gelfRep Hm σ k v = ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace ⟨v, hvs⟩ : H)` using `gelfRep_eq hh hd hσ k ⟨v, hvs⟩`. Establish `e2 : ⟪((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace ⟨v, hvs⟩ : H), σ g (v₀s : H)⟫_ℂ = ⟪v, ((opM (dEnd hh hd hσ) 1 1 ^ (k + 1)).trace ⟨σ g v₀s, hgs⟩ : H)⟫_ℂ` using `hadj ⟨v, hvs⟩ ⟨σ g v₀s, hgs⟩`. Establish `e3` using `hint g hg v₀s hgs`.
+
+Rewrite using `[inner_sub_left, e1, e2, ← e3, hTv₀, map_smul, inner_smul_right, inner_smul_left, Complex.conj_conj, sub_self]`.
+-/
 theorem gelfRep_scalar : ∀ (n : ℕ) (Hm : Mt n) (q : ℕ) (x₀ : Mt n) (w : Fin n → ℤ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mt n → (H →L[ℂ] H)), OrthFr Hm q x₀ → IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ → IsIrredOn (Formalism.QuantumDeterminants.UH Hm) σ → ∀ v₀, v₀ ≠ 0 → SmoothVec (lieH Hm) σ v₀ → (∀ a c : Fin n, a ≤ c → dRepC Hm σ (x₀ * Matrix.single a c 1 * x₀⁻¹) v₀ = if a = c then (w a : ℂ) • v₀ else 0) → ∀ k, ∃ c : ℂ, ∀ v, SmoothVec (lieH Hm) σ v → gelfRep Hm σ k v = c • v := by
   intro n Hm q x₀ w H _ _ _ σ hfr hσ hi v₀ hv₀ hsm hw k
   obtain ⟨hh, hd, hdx⟩ := orthFr_facts hfr

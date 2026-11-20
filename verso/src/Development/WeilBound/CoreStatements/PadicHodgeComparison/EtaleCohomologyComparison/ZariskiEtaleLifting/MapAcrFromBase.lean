@@ -25,34 +25,58 @@ def DD (k : Bool) (A : PAlg l) (n : ℕ) : DividedPowers (JJ k A n) :=
   | false => A.pdFil n
   | true => A.pdPFil n
 
+/- English proof (translation)
+Consider the cases of `k`. Use `exacts [le_rfl, le_sup_right]`.
+-/
 theorem fil_le (k : Bool) (A : PAlg l) (n : ℕ) : A.Fil n 1 ≤ JJ k A n := by
   cases k
   exacts [le_rfl, le_sup_right]
 
+/- English proof (translation)
+Consider the cases of `k`. Use `exacts [le_sup_right, le_rfl]`.
+-/
 theorem le_pfil (k : Bool) (A : PAlg l) (n : ℕ) : JJ k A n ≤ A.PFil n := by
   cases k
   exacts [le_sup_right, le_rfl]
 
+/- English proof (translation)
+Consider the cases of `k`. Use `exacts [dp_mapAcr f n, dpP_mapAcr f n]`.
+-/
 theorem dd_map (k : Bool) {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) : IsDPMorphism (DD k A n) (DD k A' n) (mapAcr f n) := by
   cases k
   exacts [dp_mapAcr f n, dpP_mapAcr f n]
 
+/- English proof (translation)
+Consider the cases of `k`. Use `exacts [A.dp_red h, A.dpP_red h]`.
+-/
 theorem dd_red (k : Bool) (A : PAlg l) {m n : ℕ} (h : n ≤ m) : IsDPMorphism (DD k A m) (DD k A n) (A.red h) := by
   cases k
   exacts [A.dp_red h, A.dpP_red h]
 
+/- English proof (translation)
+Consider the cases of `k`. Use `exacts [dp_galBase σ n, dpP_galBase σ n]`.
+-/
 theorem dd_gal (k : Bool) {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : Gal(PadicAlgCl l/K)) (n : ℕ) :
     IsDPMorphism (DD k (base l) n) (DD k (base l) n) (galBase σ n) := by
   cases k
   exacts [dp_galBase σ n, dpP_galBase σ n]
 
+/- English proof (translation)
+The claim follows from `Ideal.map_le_iff_le_comap.1 (dd_map k f n).1`.
+-/
 theorem jj_le (k : Bool) {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) : JJ k A n ≤ (JJ k A' n).comap (mapAcr f n) :=
   Ideal.map_le_iff_le_comap.1 (dd_map k f n).1
 
 def uJ (k : Bool) (A : PAlg l) (n : ℕ) : A.U →+* A.Acr n ⧸ JJ k A n := (Ideal.Quotient.factor (fil_le k A n)).comp (A.uToQ n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uJ_th (k : Bool) (A : PAlg l) (n : ℕ) (x : A.W) : uJ k A n (A.th x) = Ideal.Quotient.mk _ (A.toAcr n x) := rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective x exact congrArg (Ideal.Quotient.mk _) (mapAcr_toAcr f n w)`.
+-/
 theorem uJ_map (k : Bool) {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) :
     (Ideal.quotientMap _ (mapAcr f n) (jj_le k f n)).comp (uJ k A n) = (uJ k A' n).comp (mapU f) :=
   RingHom.ext fun x => by
@@ -88,6 +112,9 @@ def Fn.pt : PAlg l ⥤ Type where
       F.Pt.map (CommRingCat.ofHom (mapU g)) (F.Pt.map (CommRingCat.ofHom (mapU f)) y.1)
     rw [mapU_comp, CommRingCat.ofHom_comp, F.Pt.map_comp]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem schFn_pt {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) : (schFn q).pt κ = PX q κ := rfl
 
 abbrev Lc (k : Bool) (n : ℕ) : (bs l k n).Fun := F.cr (bs l k n) rfl (κb κ k n)
@@ -122,6 +149,9 @@ def gObj (k : Bool) (n : ℕ) (T : (F.pt κ).Elements) : Thick (Lc F κ k n) whe
   hs := (Finset.prod_of_isEmpty (ι := Empty) _).trans (by simp)
   hv := (map_one _).trans (Finset.prod_of_isEmpty (ι := Empty) _).symm
 
+/- English proof (translation)
+Rewrite using `[← mapAcr_comp, fromBase_comp]`.
+-/
 theorem mapAcr_fromBase {A A' : PAlg l} (f : A ⟶ A') (n : ℕ) (r : (base l).Acr n) :
     mapAcr f n (mapAcr A.fromBase n r) = mapAcr A'.fromBase n r := by rw [← mapAcr_comp, fromBase_comp]
 
@@ -166,6 +196,9 @@ def idLin {Λ B : Type} [CommRing Λ] [CommRing B] (f g : Λ →+* B) (h : ∀ a
   @LinearMap.mk Λ Λ _ _ (RingHom.id Λ) B B _ _ (@Algebra.toModule _ _ _ _ f.toAlgebra) (@Algebra.toModule _ _ _ _ g.toAlgebra)
     ⟨fun z => z, fun _ _ => rfl⟩ fun a z => congrArg (· * z) (h a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idLin_apply {Λ B : Type} [CommRing Λ] [CommRing B] (f g : Λ →+* B) (h : ∀ a, f a = g a) (z : B) : idLin f g h z = z := rfl
 
 def βMor (k : Bool) (n : ℕ) : CH.Mor (Oc F κ k n) (CH.modF (AcrEl (F.pt κ) n)) (RingHom.id _) where
@@ -205,6 +238,9 @@ def Fn.Map.pt (u : Fn.Map F F') : F.pt κ ⟶ F'.pt κ where
     have h := ConcreteCategory.congr_hom (u.u.naturality (CommRingCat.ofHom (mapU f))) y.1
     exact Subtype.ext h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem schMap_pt {X Y : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of O)} {q : Y ⟶ Spec (CommRingCat.of O)} (u : X ⟶ Y)
     (hu : u ≫ q = p) : (schMap u hu).pt κ = pxMap κ u hu := rfl
 

@@ -6,6 +6,15 @@ open scoped Manifold
 noncomputable section
 namespace GlobalTheory.EichlerChange
 
+/- English proof (translation)
+Establish `key : ∀ (u : ℂ) (R : ℝ), 0 < u.im → 0 < R → u.re ^ 2 + u.im ^ 2 < 2 * R * u.im → u ∈ Metric.ball ((R : ℂ) * Complex.I) R`. Introduce `u R hu hR h`. Rewrite using `[Metric.mem_ball, Complex.dist_eq, ← sq_lt_sq₀ (norm_nonneg _) hR.le, Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `set a := (z.re ^ 2 + z.im ^ 2) / z.im with ha`. Establish `ha0 : 0 ≤ a` using `by positivity`. Establish `ha1 : a * z.im = z.re ^ 2 + z.im ^ 2` using `by rw [ha]; field_simp`. Use `⟨((a + 1 : ℝ) : ℂ) * Complex.I, a + 1, ?_, key _ _ (by simp) (by linarith) ?_, key _ _ hz (by linarith) ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Rewrite `hu` using `[Metric.mem_ball, Complex.dist_eq]`. Use `(Complex.abs_im_le_norm _).trans_lt hu` as an intermediate fact. Simplify using `at this`. Use `(abs_lt.1 this).1` as an intermediate fact. Use `show 0 < u.im`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[mul_nonneg ha0 hz.le]`.
+-/
 lemma exists_ball (z : ℂ) (hz : 0 < z.im) :
     ∃ (c : ℂ) (r : ℝ), Metric.ball c r ⊆ {u : ℂ | 0 < u.im} ∧ Complex.I ∈ Metric.ball c r ∧
       z ∈ Metric.ball c r := by
@@ -31,6 +40,15 @@ lemma exists_ball (z : ℂ) (hz : 0 < z.im) :
   · simp; linarith
   · nlinarith [mul_nonneg ha0 hz.le]
 
+/- English proof (translation)
+Take `⟨c, r, hB, hI, hzB⟩` from `exists_ball z hz`. Take `⟨G, hG⟩` from `(hg.mono hB).isExactOn_ball`. Use `((hG z hzB).sub_const (G Complex.I)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Metric.isOpen_ball.mem_nhds hzB] with τ hτ`. Establish `hmem : ∀ t ∈ Set.uIcc (0 : ℝ) 1, Complex.I + t * (τ - Complex.I) ∈ Metric.ball c r`.
+
+Introduce `t ht`. Rewrite `ht` using `[Set.uIcc_of_le zero_le_one]`. Simplify using `using (convex_ball c r).add_smul_sub_mem hI hτ ht`. Establish `hd : ∀ t ∈ Set.uIcc (0 : ℝ) 1, HasDerivAt (fun s : ℝ => G (Complex.I + s * (τ - Complex.I))) (g (Complex.I + t * (τ - Complex.I)) * (τ - Complex.I)) t`. Introduce `t ht`.
+
+Establish `h1 : HasDerivAt (fun u : ℂ => Complex.I + u * (τ - Complex.I)) (τ - Complex.I) (t : ℂ)`. Simplify using `using ((hasDerivAt_id (t : ℂ)).mul_const (τ - Complex.I)).const_add Complex.I`. Conclude with `(HasDerivAt.comp (t : ℂ) (h₂ := G) (hG _ (hmem t ht)) h1).comp_ofReal`. Establish `hc : ContinuousOn (fun t : ℝ => g (Complex.I + t * (τ - Complex.I)) * (τ - Complex.I)) (Set.uIcc 0 1)`. Use `ContinuousOn.mul ?_ continuousOn_const` and prove the remaining obligations.
+
+Conclude with `(hg.continuousOn.mono hB).comp (f := fun t : ℝ => Complex.I + t * (τ - Complex.I)) (by fun_prop) hmem`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd hc.intervalIntegrable]`. Simplify using the standard rewrite rules.
+-/
 lemma hasDerivAt_segInt (g : ℂ → ℂ) (hg : DifferentiableOn ℂ g {z : ℂ | 0 < z.im}) (z : ℂ)
     (hz : 0 < z.im) :
     HasDerivAt (fun τ : ℂ => ∫ t in (0 : ℝ)..1,
@@ -62,6 +80,11 @@ def ecoef (w : ℕ) (h : ℍ → ℂ) (n : ℕ) (v : ℂ) : ℂ :=
   ∫ t in (0 : ℝ)..1, (h ∘ ofComplex) (Complex.I + t * (v - Complex.I)) *
     (-(Complex.I + t * (v - Complex.I))) ^ (w - n) * (v - Complex.I)
 
+/- English proof (translation)
+Unfold `eichler ecoef`. Rewrite using `[finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hn`.
+
+Both sides reduce to the same expression. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using hn)]; simp`.
+-/
 lemma coeff_eichler (w : ℕ) (h : ℍ → ℂ) (τ : ℍ) (n : ℕ) :
     (eichler w h τ).coeff n = (w.choose n : ℂ) * ecoef w h n τ := by
   unfold eichler ecoef
@@ -72,12 +95,18 @@ lemma coeff_eichler (w : ℕ) (h : ℍ → ℂ) (τ : ℍ) (n : ℕ) :
   · rfl
   · rw [Nat.choose_eq_zero_of_lt (by simpa using hn)]; simp
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_segInt (fun u => (h ∘ ofComplex) u * (-u) ^ (w - n)) ((UpperHalfPlane.mdifferentiable_iff.1 hh).mul (by fun_prop)) z hz`.
+-/
 lemma hasDerivAt_ecoef (w : ℕ) (h : ℍ → ℂ) (hh : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h) (n : ℕ) (z : ℂ)
     (hz : 0 < z.im) :
     HasDerivAt (ecoef w h n) ((h ∘ ofComplex) z * (-z) ^ (w - n)) z :=
   hasDerivAt_segInt (fun u => (h ∘ ofComplex) u * (-u) ^ (w - n))
     ((UpperHalfPlane.mdifferentiable_iff.1 hh).mul (by fun_prop)) z hz
 
+/- English proof (translation)
+Unfold `slP`. Rewrite using `[LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 lemma polySlash_apply (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) :
     slP w g p = ∑ i ∈ Finset.range (w + 1), p.coeff i •
       ((C ((g 0 0 : ℤ) : ℂ) * X + C ((g 0 1 : ℤ) : ℂ)) ^ i *
@@ -86,6 +115,11 @@ lemma polySlash_apply (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) :
   rw [LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Establish `e : C u * (X + C (-z)) = (C ((g 0 0 : ℤ) : ℂ) * X + C ((g 0 1 : ℤ) : ℂ)) + C (-s) * (C ((g 1 0 : ℤ) : ℂ) * X + C ((g 1 1 : ℤ) : ℂ))`. Establish `e1` using `congrArg C h1`. Establish `e2` using `congrArg C h2`. Simplify using `only [map_sub, map_mul, map_neg] at e1 e2 ⊢`. Take the linear combination `(-X) * e1 - e2`.
+
+Rewrite using `[C_pow, ← mul_pow, e, polySlash_apply]`. Use `conv_rhs => rw [add_pow]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_X_add_C_pow, smul_eq_C_mul, mul_pow, C_mul, C_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma polySlash_pow (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (s z u : ℂ)
     (h1 : (g 0 0 : ℂ) - s * g 1 0 = u) (h2 : (g 0 1 : ℂ) - s * g 1 1 = -z * u) :
     slP w g ((X + C (-s)) ^ w) = C (u ^ w) * (X + C (-z)) ^ w := by
@@ -101,11 +135,43 @@ lemma polySlash_pow (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (s z u : ℂ)
   rw [coeff_X_add_C_pow, smul_eq_C_mul, mul_pow, C_mul, C_pow, map_natCast]
   ring
 
+/- English proof (translation)
+Rewrite using `[coe_specialLinearGroup_apply]`. Simplify using the standard rewrite rules.
+-/
 lemma coe_smul_eq (σ : SL(2, ℤ)) (τ : ℍ) :
     ((σ • τ : ℍ) : ℂ) = ((mat σ 0 0 : ℂ) * τ + mat σ 0 1) / ((mat σ 1 0 : ℂ) * τ + mat σ 1 1) := by
   rw [coe_specialLinearGroup_apply]
   simp
 
+/- English proof (translation)
+Take `⟨w, rfl⟩ : ∃ w, k = w + 2` from `⟨k - 2, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Use `set h : ℍ → ℂ := f ∣[((w + 2 : ℕ) : ℤ)] σ with hdef`. Establish `hh : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) h`. Rewrite using `[hdef, ModularForm.SL_slash]`.
+
+Conclude with `hf.slash _ _`. Use `set a : ℂ := ((mat σ 0 0 : ℤ) : ℂ) with ha`. Use `set b : ℂ := ((mat σ 0 1 : ℤ) : ℂ) with hb`. Use `set c : ℂ := ((mat σ 1 0 : ℤ) : ℂ) with hc`. Use `set d : ℂ := ((mat σ 1 1 : ℤ) : ℂ) with hd`.
+
+Establish `hdet : a * d - b * c = 1`. Use `σ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Rewrite using `[ha, hb, hc, hd]`. Conclude with `this` after adjusting the coercions.
+
+Use `⟨slP w (mat σ) (eichler w f (σ • I)) - eichler w h I, fun τ => ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Use `set q : ℕ → ℂ := fun i => ((C a * X + C b) ^ i * (C c * X + C d) ^ (w - i)).coeff n with hq`. Establish `hslP : ∀ p : ℂ[X], (slP w (mat σ) p).coeff n = ∑ i ∈ Finset.range (w + 1), p.coeff i * q i`. Introduce `p`.
+
+Rewrite using `[polySlash_apply, finset_sum_coeff]`. Simplify using `only [coeff_smul, smul_eq_mul]`. Both sides reduce to the same expression. Use `set Φ : ℂ → ℂ := fun v => ∑ i ∈ Finset.range (w + 1), (w.choose i : ℂ) * ecoef w f i ((a * v + b) / (c * v + d)) * q i - (w.choose n : ℂ) * ecoef w h n v with hΦ`. Establish `hΦ1 : ∀ τ : ℍ, Φ τ = (slP w (mat σ) (eichler w f (σ • τ))).coeff n - (eichler w h τ).coeff n`.
+
+Introduce `τ`. Simplify using `only [hΦ, hslP, coeff_eichler, coe_smul_eq]`. Both sides reduce to the same expression. Establish `hder : ∀ z ∈ {z : ℂ | 0 < z.im}, HasDerivAt Φ 0 z`. Introduce `z hz`.
+
+Take `⟨τ, rfl⟩ : ∃ τ : ℍ, (τ : ℂ) = z` from `⟨⟨z, hz⟩, rfl⟩`. Establish `hj : c * τ + d ≠ 0`. Rewrite using `[hc, hd, ← ModularGroup.denom_apply]`. Conclude with `denom_ne_zero _ _`. Establish `hs : ((σ • τ : ℍ) : ℂ) = (a * τ + b) / (c * τ + d)` using `coe_smul_eq σ τ`.
+
+Establish `hm : HasDerivAt (fun v : ℂ => (a * v + b) / (c * v + d)) ((c * τ + d)⁻¹ ^ 2) (τ : ℂ)`. Establish `h1 : HasDerivAt (fun v : ℂ => a * v + b) a (τ : ℂ)`. Simplify using `using ((hasDerivAt_id (τ : ℂ)).const_mul a).add_const b`. Establish `h2 : HasDerivAt (fun v : ℂ => c * v + d) c (τ : ℂ)`. Simplify using `using ((hasDerivAt_id (τ : ℂ)).const_mul c).add_const d`.
+
+Use `(h1.fun_div h2 hj).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[inv_pow, div_eq_mul_inv]`. Take the linear combination `((c * τ + d) ^ 2)⁻¹ * hdet`. Establish `hA : ∀ i, HasDerivAt (fun v : ℂ => ecoef w f i ((a * v + b) / (c * v + d))) (f (σ • τ) * (-((σ • τ : ℍ) : ℂ)) ^ (w - i) * (c * τ + d)⁻¹ ^ 2) (τ : ℂ)`. Introduce `i`.
+
+Use `hasDerivAt_ecoef w f hf i _ (σ • τ).im_pos` as an intermediate fact. Simplify using `only [Function.comp_apply, ofComplex_apply] at this`. Conclude with `HasDerivAt.comp (τ : ℂ) (h₂ := ecoef w f i) (by rw [← hs]; exact this) hm`. Establish `hB` using `hasDerivAt_ecoef w h hh n _ τ.im_pos`. Simplify using `only [Function.comp_apply, ofComplex_apply] at hB`.
+
+Establish `hP` using `congrArg (fun p : ℂ[X] => p.coeff n) (polySlash_pow w (mat σ) ((σ • τ : ℍ) : ℂ) τ (c * τ + d)⁻¹ (by rw [hs, ← ha, ← hc]; rw [div_eq_mul_inv]`. Take the linear combination `(-a) * mul_inv_cancel₀ hj + (c * τ + d)⁻¹ * hdet)`. Use the proof step `(by rw [hs, ← hb, ← hd]; rw [div_eq_mul_inv]`. Take the linear combination `(-b) * mul_inv_cancel₀ hj - (c * τ + d)⁻¹ * τ * hdet))`. Simplify using `only [hslP, coeff_C_mul, coeff_X_add_C_pow] at hP`.
+
+Establish `hv : h τ = f (σ • τ) * (c * τ + d)⁻¹ ^ (w + 2)`. Rewrite using `[hdef, ModularForm.SL_slash_apply, ModularGroup.denom_apply, zpow_neg, zpow_natCast, inv_pow]`. Use `((HasDerivAt.fun_sum (u := Finset.range (w + 1)) fun i _ => ((hA i).const_mul (w.choose i : ℂ)).mul_const (q i)).fun_sub (hB.const_mul (w.choose n : ℂ))).congr_deriv ?_` and prove the remaining obligations. Establish `: ∑ i ∈ Finset.range (w + 1), (w.choose i : ℂ) * (f (σ • τ) * (-((σ • τ : ℍ) : ℂ)) ^ (w - i) * (c * τ + d)⁻¹ ^ 2) * q i = f (σ • τ) * (c * τ + d)⁻¹ ^ 2 * ∑ i ∈ Finset.range (w + 1), (-((σ • τ : ℍ) : ℂ)) ^ (w - i) * (w.choose i : ℂ) * q i`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[this, hP, hv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hconst : Φ τ = Φ (I : ℍ)` using `isOpen_upperHalfPlaneSet.is_const_of_deriv_eq_zero (convex_halfSpace_im_gt 0).isPreconnected (fun z hz => (hder z hz).differentiableAt.differentiableWithinAt) (fun z hz => (hder z hz).deriv) τ.im_pos (I : ℍ).im_pos`. Rewrite `hconst` using `[hΦ1, hΦ1]`.
+
+Rewrite using `[coeff_add, coeff_sub]`. Take the linear combination `hconst`.
+-/
 theorem polySlash_eichler_smul (k : ℕ) (hk : 2 ≤ k) (f : ℍ → ℂ) (hf : MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f)
     (σ : SL(2, ℤ)) : ∃ C : ℂ[X], ∀ τ : ℍ,
       slP (k - 2) (mat σ) (eichler (k - 2) f (σ • τ)) = eichler (k - 2) (f ∣[(k : ℤ)] σ) τ + C := by

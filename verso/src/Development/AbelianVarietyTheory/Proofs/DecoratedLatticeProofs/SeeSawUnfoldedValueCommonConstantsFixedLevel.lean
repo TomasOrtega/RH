@@ -12,6 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeeSaw.GValAll
 
+/- English proof (translation)
+Introduce `D c v n G hc hv hG`. Use `⟨fun j => if h1 : ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m then (GlobalTheory.T.seeSaw_doubleStep_value_fixedLevel_places D c v n G hc hv hG j h1.choose h1.choose_spec).choose else if h2 : ∃ h : j + 2 * 0 + 2 = D.R.m, c.Lz.rank = 1 ∧ (v.τ j h)ᴴ * ((c.bes j 0 h).L.gram * v.τ j h) = (-(D.h …` and prove the remaining obligations. Introduce `j dsimp only`. Distinguish the cases in `h1 : ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m`. Rewrite using `[dif_pos h1]`.
+
+Conclude with `(GlobalTheory.T.seeSaw_doubleStep_value_fixedLevel_places D c v n G hc hv hG j h1.choose h1.choose_spec).choose_spec.1`. Rewrite using `[dif_neg h1]`. Distinguish the cases in `h2 : ∃ h : j + 2 * 0 + 2 = D.R.m, c.Lz.rank = 1 ∧ (v.τ j h)ᴴ * ((c.bes j 0 h).L.gram * v.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • c.Lz.gram`. Rewrite using `[dif_pos h2]`. Conclude with `(GlobalTheory.T.seeSaw_lastTwoSteps_value_fixedLevel_places D c v n G hc hv hG j h2.fst h2.snd.1 h2.snd.2).choose_spec.1`.
+
+Rewrite using `[dif_neg h2]`. Conclude with `one_ne_zero`. Introduce `t _ hw`. Use `⟨fun j σ h Ψ₁ Ψ₂ h₁ h₂ => ?_, fun j h Ψ₁ Ψ₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `h1 : ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m` using `⟨σ, h⟩`.
+
+Establish `hσ : h1.choose = σ` using `by have := h1.choose_spec; omega`. Use `show _ = (if h1 : ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m then _ else _) • _`. Rewrite using `[dif_pos h1]`. Establish `key` using `(GlobalTheory.T.seeSaw_doubleStep_value_fixedLevel_places D c v n G hc hv hG j h1.choose h1.choose_spec).choose_spec.2`. Use `revert key`.
+
+Generalize the expression as in `(GlobalTheory.T.seeSaw_doubleStep_value_fixedLevel_places D c v n G hc hv hG j h1.choose h1.choose_spec).choose = C`. Introduce `key`. Substitute `hσ` using the available equality. Conclude with `key _ _ Ψ₁ Ψ₂ h₁ h₂`. Establish `h1 : ¬ ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m` using `by rintro ⟨σ, hσ⟩; omega`.
+
+Take `⟨hr, hτ⟩` from `hw.tau j h`. Establish `h2 : ∃ h : j + 2 * 0 + 2 = D.R.m, c.Lz.rank = 1 ∧ (v.τ j h)ᴴ * ((c.bes j 0 h).L.gram * v.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • c.Lz.gram` using `⟨h, hr, hτ⟩`. Use `show _ = (if h1 : ∃ σ, j + 2 * (σ + 1) + 2 = D.R.m then _ else _) • _`. Rewrite using `[dif_neg h1, dif_pos h2]`. Conclude with `(GlobalTheory.T.seeSaw_lastTwoSteps_value_fixedLevel_places D c v n G hc hv hG j h2.fst h2.snd.1 h2.snd.2).choose_spec.2 _ Ψ₁ Ψ₂ h₁ h₂`.
+-/
 theorem gValue_common : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), c.Is → v.Is → GPin G → ∃ a : ℕ → ℂ, (∀ j, a j ≠ 0) ∧ ∀ t : Tup c, t.Is → WeilOK (t := t) v → GValue (t := t) (v.withCG a) := by
   intro D c v n G hc hv hG
   classical

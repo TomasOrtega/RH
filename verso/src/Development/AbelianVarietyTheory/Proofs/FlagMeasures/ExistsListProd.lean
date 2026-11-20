@@ -9,10 +9,16 @@ open scoped Classical
 
 namespace GlobalTheory.GLm.ProdChar
 
+/- English proof (translation)
+Take `⟨V, -, hV⟩` from `h`. Conclude with `⟨V, hV⟩`.
+-/
 theorem isChar_of_irr {G : Type} [Group G] {χ : G → ℂ} (h : IsIrr χ) : IsChar χ := by
   obtain ⟨V, -, hV⟩ := h
   exact ⟨V, hV⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_zero_of_ip {G : Type} [Group G] [Fintype G] {f : G → ℂ} (hf : IsClass f)
     (h : ∀ ρ, IsIrr ρ → ip f ρ = 0) : f = 0 := by
   calc f = ∑ᶠ ρ ∈ {ρ : G → ℂ | IsIrr ρ}, ip f ρ • ρ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G f).2.1 hf
@@ -20,6 +26,9 @@ theorem eq_zero_of_ip {G : Type} [Group G] [Fintype G] {f : G → ℂ} (hf : IsC
         finsum_mem_congr rfl fun ρ hρ => by rw [h ρ hρ, zero_smul]
     _ = 0 := finsum_mem_zero _
 
+/- English proof (translation)
+Simplify using `only [ip, Fintype.card_prod, Nat.cast_mul, Fintype.sum_prod_type, Prod.fst_inv, Prod.snd_inv, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => by ring`.
+-/
 theorem ip_prod {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Group G₂] [Fintype G₂] (Φ : G₁ × G₂ → ℂ)
     (α : G₁ → ℂ) (β : G₂ → ℂ) :
     ip Φ (fun z => α z.1 * β z.2) = ip (fun y => ip (fun x => Φ (x, y)) α) β := by
@@ -28,6 +37,13 @@ theorem ip_prod {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Group G₂] [Fin
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun x _ => by ring
 
+/- English proof (translation)
+Establish `hA : IsChar (fun z : G₁ × G₂ => α z.1)` using `(GlobalTheory.T.isCharacterOfFDRep_comp_hom_and_mul).1 (G₁ × G₂) G₁ (MonoidHom.fst G₁ G₂) α (isChar_of_irr hα)`. Establish `hB : IsChar (fun z : G₁ × G₂ => β z.2)` using `(GlobalTheory.T.isCharacterOfFDRep_comp_hom_and_mul).1 (G₁ × G₂) G₂ (MonoidHom.snd G₁ G₂) β (isChar_of_irr hβ)`. Establish `hC : IsChar (fun z : G₁ × G₂ => α z.1 * β z.2)` using `(GlobalTheory.T.isCharacterOfFDRep_comp_hom_and_mul).2 (G₁ × G₂) _ _ hA hB`. Apply `(GlobalTheory.T.character_decomposition_and_classFunction_expansion (G₁ × G₂) _).2.2.2.1 hC` to reduce the goal to its premises. Establish `h1 : ip α α = 1` using `by simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G₁ α α hα hα).2.2`.
+
+Establish `h2 : ip β β = 1` using `by simpa using (GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central G₂ β β hβ hβ).2.2`. Establish `key : ∀ y, ip (fun x => α x * β y) α = β y`. Introduce `y`. Establish `e : ip (fun x => α x * β y) α = β y * ip α α`. Simplify using `only [ip, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Rewrite using `[e, h1, mul_one]`. Rewrite using `[ip_prod]`. Simplify using `only [key]`. Conclude with `h2`.
+-/
 theorem isIrr_prod {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Group G₂] [Fintype G₂]
     {α : G₁ → ℂ} {β : G₂ → ℂ} (hα : IsIrr α) (hβ : IsIrr β) :
     IsIrr (fun z : G₁ × G₂ => α z.1 * β z.2) := by
@@ -49,6 +65,19 @@ theorem isIrr_prod {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Group G₂] [
   simp only [key]
   exact h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hcl : IsClass ρ` using `(GlobalTheory.T.character_decomposition_and_classFunction_expansion _ ρ).2.2.1 (isChar_of_irr hρ)`. Establish `hip : ∀ α β, IsIrr α → IsIrr β → ip ρ (fun z : G₁ × G₂ => α z.1 * β z.2) = 0`. Introduce `α β hα hβ`.
+
+Rewrite using `[(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ ρ _ hρ (isIrr_prod hα hβ)).2.2, if_neg (by simpa using hne (α, β) ⟨hα, hβ⟩)]`. Establish `hrow : ∀ y, (fun x => ρ (x, y)) = 0`. Introduce `y`. Apply `eq_zero_of_ip` to reduce the goal to its premises. Introduce `x k`.
+
+Simplify using `using hcl (x, y) (k, 1)`. Introduce `α hα`. Establish `hF : (fun y' => ip (fun x => ρ (x, y')) α) = 0`. Apply `eq_zero_of_ip` to reduce the goal to its premises. Introduce `y' h`.
+
+Establish `e : (fun x => ρ (x, h * y' * h⁻¹)) = fun x => ρ (x, y')`. Use function extensionality and compare the values at `x`. Simplify using `using hcl (x, y') (1, h)`. Conclude with `congrArg (fun f => ip f α) e`. Introduce `β hβ`.
+
+Conclude with `(ip_prod ρ α β).symm.trans (hip α β hα hβ)`. Conclude with `congrFun hF y`. Establish `hz : ρ = 0`. Use function extensionality and compare the values at `z`. Take `⟨x, y⟩` from `z`.
+
+Conclude with `congrFun (hrow y) x`. Establish `h1` using `(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ ρ ρ hρ hρ).2.2`. Rewrite `h1` using `[if_pos rfl, hz]`. Simplify using `[ip] at h1`.
+-/
 theorem exists_prod_of_isIrr {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Group G₂] [Fintype G₂]
     {ρ : G₁ × G₂ → ℂ} (hρ : IsIrr ρ) :
     ∃ p : (G₁ → ℂ) × (G₂ → ℂ), (IsIrr p.1 ∧ IsIrr p.2) ∧ ρ = fun z => p.1 z.1 * p.2 z.2 := by
@@ -82,6 +111,13 @@ theorem exists_prod_of_isIrr {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Gro
   rw [if_pos rfl, hz] at h1
   simp [ip] at h1
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨[], by simp, by simp⟩`. Consider the case `cons ρ L ih`. Take `⟨p, hp, rfl⟩` from `exists_prod_of_isIrr (hL ρ (by simp))`. Take `⟨L', hL', hsum⟩` from `ih fun r hr => hL r (List.mem_cons_of_mem _ hr)`.
+
+Use `⟨p :: L', ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Conclude with `hp`. Conclude with `hL' q hq`.
+
+Introduce `x y`. Rewrite using `[List.sum_cons, Pi.add_apply, hsum]`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_irr_prod_eq_sum_irr_mul {G₁ G₂ : Type} [Group G₁] [Fintype G₁] [Group G₂] [Fintype G₂]
     (L : List (G₁ × G₂ → ℂ)) (hL : ∀ ρ ∈ L, IsIrr ρ) :
     ∃ L' : List ((G₁ → ℂ) × (G₂ → ℂ)), (∀ p ∈ L', IsIrr p.1 ∧ IsIrr p.2) ∧
@@ -100,6 +136,9 @@ private theorem sum_irr_prod_eq_sum_irr_mul {G₁ G₂ : Type} [Group G₁] [Fin
       rw [List.sum_cons, Pi.add_apply, hsum]
       simp
 
+/- English proof (translation)
+Introduce `G₁ G₂ _ _ _ _ Φ hΦ`. Take `⟨L, hL, rfl⟩` from `(GlobalTheory.T.character_decomposition_and_classFunction_expansion (G₁ × G₂) Φ).1 hΦ`. Conclude with `sum_irr_prod_eq_sum_irr_mul L hL`.
+-/
 theorem exists_list_prod : ∀ (G₁ G₂ : Type) [Group G₁] [Fintype G₁] [Group G₂] [Fintype G₂] (Φ : G₁ × G₂ → ℂ),
     IsChar Φ → ∃ L : List ((G₁ → ℂ) × (G₂ → ℂ)), (∀ p ∈ L, IsIrr p.1 ∧ IsIrr p.2) ∧
       ∀ x y, Φ (x, y) = (L.map fun p => p.1 x * p.2 y).sum := by

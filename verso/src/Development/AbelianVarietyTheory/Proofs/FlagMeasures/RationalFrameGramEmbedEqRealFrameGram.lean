@@ -16,6 +16,9 @@ open Matrix
 
 namespace GlobalTheory.ZhatRat
 
+/- English proof (translation)
+Use `Fin.lastCases ?_ (fun b' => ?_) b` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last, Formalism.L2.SG.TermOp.mapFlag]`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc, Formalism.L2.SG.TermOp.mapFlag]`.
+-/
 theorem mapFlag_fvec {D : D7} {r : ℕ} {T : D.host.E} (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (h : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) (F : FlagG (VS D) r T) (b : Fin (r + 1)) :
     (Formalism.L2.SG.TermOp.mapFlag γ h F).fvec b = γ (F.fvec b) := by
@@ -23,6 +26,11 @@ theorem mapFlag_fvec {D : D7} {r : ℕ} {T : D.host.E} (γ : (VS D).V ≃ₗ[D.h
   · simp only [FlagG.fvec, Fin.snoc_last, Formalism.L2.SG.TermOp.mapFlag]
   · simp only [FlagG.fvec, Fin.snoc_castSucc, Formalism.L2.SG.TermOp.mapFlag]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc Formalism.L2.SG.RealObj.fam`. Rewrite using `[Complex.ofReal_one, one_pow, inv_one, one_smul]`. Use `Fin.lastCases ?_ (fun a' => ?_) a` and prove the remaining obligations. Rewrite using `[Fin.snoc_last, FlagG.fvec, Fin.snoc_last, X.flagZVector u]`. Both sides reduce to the same expression.
+
+Rewrite using `[Fin.snoc_castSucc, FlagG.fvec, Fin.snoc_castSucc, X.Fu_e u]`. Both sides reduce to the same expression.
+-/
 theorem frm_one {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (v : NumberField.InfinitePlace X.B.I.F)
     (a : Fin (D.R.rS + 1)) :
     Formalism.L2.SG.RealObj.frm X u 1 v a = rv X.B.I v (X.crd ((X.Fu u).fvec a)) := by
@@ -38,6 +46,15 @@ end GlobalTheory.ZhatRat
 
 open GlobalTheory.ZhatRat in
 
+/- English proof (translation)
+Introduce `D X Y W u u' s τ`. Take `⟨M, _, hM1, _, hM3⟩` from `s.rep.2.1`. Establish `hiso : s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `s.rep.2.2.1`. Rewrite using `[← mapL_lf W u]`. Use `(congrArg (fun Z => Matrix.map Z (embS D τ)) (zhatL_mapL (W.δ u) (W.isom u) (lf D (X.Fu u)) s.frame)).trans ?_` and prove the remaining obligations.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Establish `hM1' : ∀ v, uMat (s.pt.1 v) = (X.B.I.P v)⁻¹ * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map ⇑(X.B.I.φ v) * X.B.I.P v` using `hM1`. Establish `hM3' : ∀ y, X.crd (s.lin y) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y` using `hM3`. Establish `hL : (s.frame).fl.fvec b = s.lin ((X.Fu u').fvec b)`.
+
+Unfold `Formalism.L2.SG.TermOp.GTerm.frame Formalism.L2.SG.TermOp.mapLF`. Rewrite using `[dif_pos hiso]`. Conclude with `mapFlag_fvec _ hiso _ _`. Express the relevant statement in the definitionally equal form `embS D τ (brS (VS D) (s.frame.fl.fvec b) ((X.Fu u).fvec a)) = _`. Rewrite using `[hL]`.
+
+Unfold `brS Formalism.L2.SG.RealObj.ZX Formalism.L2.SG.RealObj.Zhat`. Rewrite using `[frm_one, frm_one, hM1', Formalism.L2.SG.Pf.Level.rv_mulVec, ← hM3', Formalism.L2.SG.Pf.Level.hJ_rv, X.φ_eq, X.pl.apply_symm_apply, Formalism.L2.SG.PoincareInHH.Cut.hform_crd]`.
+-/
 theorem GlobalTheory.zhatRat_embed : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (W : WittDat X) (u u' : D.what₂.Word) (s : TT Y u u') (τ : D.what₂.Tau), (ZhatL (lf D (FlagOfWord W u)) (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame)).map (embS D τ) = Formalism.L2.SG.RealObj.ZX X u u' 1 s.pt.1 (X.pl.symm τ) := by
   intro D X Y W u u' s τ
   obtain ⟨M, _, hM1, _, hM3⟩ := s.rep.2.1

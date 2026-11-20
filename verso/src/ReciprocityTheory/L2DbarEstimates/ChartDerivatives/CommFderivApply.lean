@@ -7,6 +7,9 @@ open scoped ContDiff ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ g) y` using `hg.fderiv_right (by norm_num)`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ g) y` using `h1.differentiableAt one_ne_zero`. Conclude with `(ContinuousLinearMap.apply ℝ ℂ u).hasFDerivAt.comp y hd.hasFDerivAt`.
+-/
 theorem comm_fderiv_apply {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (u : V n) :
     HasFDerivAt (fun y' => fderiv ℝ g y' u)
       ((ContinuousLinearMap.apply ℝ ℂ u).comp (fderiv ℝ (fderiv ℝ g) y)) y := by
@@ -14,6 +17,11 @@ theorem comm_fderiv_apply {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt
   have hd : DifferentiableAt ℝ (fderiv ℝ g) y := h1.differentiableAt one_ne_zero
   exact (ContinuousLinearMap.apply ℝ ℂ u).hasFDerivAt.comp y hd.hasFDerivAt
 
+/- English proof (translation)
+Establish `hA` using `comm_fderiv_apply g y hg (bas n j)`. Establish `hB` using `comm_fderiv_apply g y hg (Complex.I • bas n j)`. Establish `hW : HasFDerivAt (fun y' => (2 : ℂ)⁻¹ • (fderiv ℝ g y' (bas n j) - Complex.I • fderiv ℝ g y' (Complex.I • bas n j))) _ y` using `(hA.sub (hB.const_smul Complex.I)).const_smul (2 : ℂ)⁻¹`. Establish `hfun : wd n j g = fun y' => (2 : ℂ)⁻¹ • (fderiv ℝ g y' (bas n j) - Complex.I • fderiv ℝ g y' (Complex.I • bas n j))`. Use function extensionality and compare the values at `y'`.
+
+Simplify using `only [wd, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, hW.fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comm_fderiv_wd {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j : Fin n) (v : V n) :
     fderiv ℝ (wd n j g) y v = (fderiv ℝ (fderiv ℝ g) y v (bas n j)
       - Complex.I * fderiv ℝ (fderiv ℝ g) y v (Complex.I • bas n j)) * (2 : ℂ)⁻¹ := by
@@ -31,6 +39,11 @@ theorem comm_fderiv_wd {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt �
     ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hA` using `comm_fderiv_apply g y hg (bas n j)`. Establish `hB` using `comm_fderiv_apply g y hg (Complex.I • bas n j)`. Establish `hW : HasFDerivAt (fun y' => (2 : ℂ)⁻¹ • (fderiv ℝ g y' (bas n j) + Complex.I • fderiv ℝ g y' (Complex.I • bas n j))) _ y` using `(hA.add (hB.const_smul Complex.I)).const_smul (2 : ℂ)⁻¹`. Establish `hfun : wdb n j g = fun y' => (2 : ℂ)⁻¹ • (fderiv ℝ g y' (bas n j) + Complex.I • fderiv ℝ g y' (Complex.I • bas n j))`. Use function extensionality and compare the values at `y'`.
+
+Simplify using `only [wdb, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, hW.fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comm_fderiv_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j : Fin n) (v : V n) :
     fderiv ℝ (wdb n j g) y v = (fderiv ℝ (fderiv ℝ g) y v (bas n j)
       + Complex.I * fderiv ℝ (fderiv ℝ g) y v (Complex.I • bas n j)) * (2 : ℂ)⁻¹ := by
@@ -48,6 +61,9 @@ theorem comm_fderiv_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt �
     ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `S` using `hg.isSymmSndFDerivAt (by simp)`. Establish `e1 : wd n j (wdb n k g) y = (fderiv ℝ (wdb n k g) y (bas n j) - Complex.I * fderiv ℝ (wdb n k g) y (Complex.I • bas n j)) / 2` using `rfl`. Establish `e2 : wdb n k (wd n j g) y = (fderiv ℝ (wd n j g) y (bas n k) + Complex.I * fderiv ℝ (wd n j g) y (Complex.I • bas n k)) / 2` using `rfl`. Rewrite using `[e1, e2, comm_fderiv_wdb g y hg k (bas n j), comm_fderiv_wdb g y hg k (Complex.I • bas n j), comm_fderiv_wd g y hg j (bas n k), comm_fderiv_wd g y hg j (Complex.I • bas n k), S (bas n k) (bas n j), S (bas n k) (Complex.I • bas n j), S (Complex.I • bas n k) (bas n j), S (Complex.I …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comm_wd_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j k : Fin n) :
     wd n j (wdb n k g) y = wdb n k (wd n j g) y := by
   have S := hg.isSymmSndFDerivAt (by simp)
@@ -61,6 +77,9 @@ theorem comm_wd_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2
     S (Complex.I • bas n k) (bas n j), S (Complex.I • bas n k) (Complex.I • bas n j)]
   ring
 
+/- English proof (translation)
+Establish `S` using `hg.isSymmSndFDerivAt (by simp)`. Establish `e1 : wd n j (wd n k g) y = (fderiv ℝ (wd n k g) y (bas n j) - Complex.I * fderiv ℝ (wd n k g) y (Complex.I • bas n j)) / 2` using `rfl`. Establish `e2 : wd n k (wd n j g) y = (fderiv ℝ (wd n j g) y (bas n k) - Complex.I * fderiv ℝ (wd n j g) y (Complex.I • bas n k)) / 2` using `rfl`. Rewrite using `[e1, e2, comm_fderiv_wd g y hg k (bas n j), comm_fderiv_wd g y hg k (Complex.I • bas n j), comm_fderiv_wd g y hg j (bas n k), comm_fderiv_wd g y hg j (Complex.I • bas n k), S (bas n k) (bas n j), S (bas n k) (Complex.I • bas n j), S (Complex.I • bas n k) (bas n j), S (Complex.I • …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comm_wd_wd {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j k : Fin n) :
     wd n j (wd n k g) y = wd n k (wd n j g) y := by
   have S := hg.isSymmSndFDerivAt (by simp)
@@ -74,6 +93,9 @@ theorem comm_wd_wd {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 
     S (Complex.I • bas n k) (bas n j), S (Complex.I • bas n k) (Complex.I • bas n j)]
   ring
 
+/- English proof (translation)
+Establish `S` using `hg.isSymmSndFDerivAt (by simp)`. Establish `e1 : wdb n j (wdb n k g) y = (fderiv ℝ (wdb n k g) y (bas n j) + Complex.I * fderiv ℝ (wdb n k g) y (Complex.I • bas n j)) / 2` using `rfl`. Establish `e2 : wdb n k (wdb n j g) y = (fderiv ℝ (wdb n j g) y (bas n k) + Complex.I * fderiv ℝ (wdb n j g) y (Complex.I • bas n k)) / 2` using `rfl`. Rewrite using `[e1, e2, comm_fderiv_wdb g y hg k (bas n j), comm_fderiv_wdb g y hg k (Complex.I • bas n j), comm_fderiv_wdb g y hg j (bas n k), comm_fderiv_wdb g y hg j (Complex.I • bas n k), S (bas n k) (bas n j), S (bas n k) (Complex.I • bas n j), S (Complex.I • bas n k) (bas n j), S (Complex …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comm_wdb_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 2 g y) (j k : Fin n) :
     wdb n j (wdb n k g) y = wdb n k (wdb n j g) y := by
   have S := hg.isSymmSndFDerivAt (by simp)
@@ -87,6 +109,11 @@ theorem comm_wdb_wdb {n : ℕ} (g : V n → ℂ) (y : V n) (hg : ContDiffAt ℝ 
     S (Complex.I • bas n k) (bas n j), S (Complex.I • bas n k) (Complex.I • bas n j)]
   ring
 
+/- English proof (translation)
+Establish `hzy : z y = e' y` using `he' hy'`. Establish `ht : z y ∈ e'.target` using `by rw [hzy]; exact e'.map_source hy'`. Establish `hc : ContinuousAt e'.symm (z y)` using `e'.continuousAt_symm ht`. Establish `hs : e.source ∈ 𝓝 (e'.symm (z y))`. Rewrite using `[hzy, e'.left_inv hy']`.
+
+Conclude with `e.open_source.mem_nhds hy`. Use `filter_upwards [e'.open_target.mem_nhds ht, hc hs] with w hw hw2`. Establish `h1 : e (e'.symm w) = w`. Rewrite using `[← he hw2, he' (e'.map_target hw), e'.right_inv hw]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem chart_symm_eventuallyEq_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (he' : IsChart n z e') (y : M)
     (hy : y ∈ e.source) (hy' : y ∈ e'.source) : (e'.symm : V n → M) =ᶠ[𝓝 (z y)] e.symm := by
@@ -101,6 +128,9 @@ private theorem chart_symm_eventuallyEq_symm {M : Type*} [TopologicalSpace M] (n
   calc e'.symm w = e.symm (e (e'.symm w)) := (e.left_inv hw2).symm
     _ = e.symm w := by rw [h1]
 
+/- English proof (translation)
+Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ y ∈ e.source` using `⟨e, he, hy⟩`. Establish `hg : (f ∘ (Classical.choose h).symm) =ᶠ[𝓝 (z y)] (f ∘ e.symm)` using `(chart_symm_eventuallyEq_symm n z e _ he (Classical.choose_spec h).1 y hy (Classical.choose_spec h).2).fun_comp f`. Simplify using `only [d, dif_pos h, wd, hg.fderiv_eq]`.
+-/
 private theorem d_apply_eq_wd_comp_chart_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (y : M)
     (hy : y ∈ e.source) : d n z j f y = wd n j (f ∘ e.symm) (z y) := by
@@ -110,6 +140,9 @@ private theorem d_apply_eq_wd_comp_chart_symm {M : Type*} [TopologicalSpace M] (
       (Classical.choose_spec h).2).fun_comp f
   simp only [d, dif_pos h, wd, hg.fderiv_eq]
 
+/- English proof (translation)
+Establish `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ y ∈ e.source` using `⟨e, he, hy⟩`. Establish `hg : (f ∘ (Classical.choose h).symm) =ᶠ[𝓝 (z y)] (f ∘ e.symm)` using `(chart_symm_eventuallyEq_symm n z e _ he (Classical.choose_spec h).1 y hy (Classical.choose_spec h).2).fun_comp f`. Simplify using `only [db, dif_pos h, wdb, hg.fderiv_eq]`.
+-/
 private theorem db_apply_eq_wdb_comp_chart_symm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (j : Fin n)
     (f : M → ℂ) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (y : M)
     (hy : y ∈ e.source) : db n z j f y = wdb n j (f ∘ e.symm) (z y) := by
@@ -119,6 +152,13 @@ private theorem db_apply_eq_wdb_comp_chart_symm {M : Type*} [TopologicalSpace M]
       (Classical.choose_spec h).2).fun_comp f
   simp only [db, dif_pos h, wdb, hg.fderiv_eq]
 
+/- English proof (translation)
+Establish `h1 : z x ∈ e.target` using `by rw [he hx]; exact e.map_source hx`. Use `⟨h1, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `(hf e he).contDiffAt (e.open_target.mem_nhds h1)`. Conclude with `h2` after adjusting the coercions. Introduce `j filter_upwards [e.open_target.mem_nhds h1] with w hw`.
+
+Establish `hs : e.symm w ∈ e.source` using `e.map_target hw`. Use `show d n z j f (e.symm w) = wd n j (f ∘ e.symm) w`. Rewrite using `[d_apply_eq_wd_comp_chart_symm n z j f e he _ hs, he hs, e.right_inv hw]`. Introduce `j filter_upwards [e.open_target.mem_nhds h1] with w hw`. Establish `hs : e.symm w ∈ e.source` using `e.map_target hw`.
+
+Use `show db n z j f (e.symm w) = wdb n j (f ∘ e.symm) w`. Rewrite using `[db_apply_eq_wdb_comp_chart_symm n z j f e he _ hs, he hs, e.right_inv hw]`.
+-/
 theorem comm_chart_setup {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ)
     (hf : Ck n z 2 f) (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (x : M)
     (hx : x ∈ e.source) :
@@ -140,14 +180,25 @@ theorem comm_chart_setup {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V
     show db n z j f (e.symm w) = wdb n j (f ∘ e.symm) w
     rw [db_apply_eq_wdb_comp_chart_symm n z j f e he _ hs, he hs, e.right_inv hw]
 
+/- English proof (translation)
+Simplify using `only [wd, hgh.fderiv_eq]`.
+-/
 private theorem wd_congr_of_eventuallyEq' (n : ℕ) (j : Fin n) {g h : V n → ℂ} {w : V n}
     (hgh : g =ᶠ[𝓝 w] h) : wd n j g w = wd n j h w := by
   simp only [wd, hgh.fderiv_eq]
 
+/- English proof (translation)
+Simplify using `only [wdb, hgh.fderiv_eq]`.
+-/
 private theorem wdb_congr_of_eventuallyEq (n : ℕ) (j : Fin n) {g h : V n → ℂ} {w : V n}
     (hgh : g =ᶠ[𝓝 w] h) : wdb n j g w = wdb n j h w := by
   simp only [wdb, hgh.fderiv_eq]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Take `⟨e, he, hx⟩` from `h`. Take `⟨_, h2, h3, h4⟩` from `comm_chart_setup n z f hf e he x hx`. Rewrite using `[d_apply_eq_wd_comp_chart_symm n z j _ e he x hx, db_apply_eq_wdb_comp_chart_symm n z k _ e he x hx, wd_congr_of_eventuallyEq' n j (h4 k), wdb_congr_of_eventuallyEq n k (h3 j)]`. Conclude with `comm_wd_wdb _ _ h2 j k`.
+
+Simplify using `[d, db, h]`.
+-/
 theorem d_db_comm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f : M → ℂ) (hf : Ck n z 2 f) (j k : Fin n) (x : M) :
     d n z j (db n z k f) x = db n z k (d n z j f) x := by
   by_cases h : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source
@@ -158,6 +209,13 @@ theorem d_db_comm {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (f 
     exact comm_wd_wdb _ _ h2 j k
   · simp [d, db, h]
 
+/- English proof (translation)
+Establish `hph1 : Ck n z 1 (fun y => (ph y : ℂ))` using `fun e he => (hph e he).of_le (by norm_num)`. Establish `hps1 : Ck n z 1 (fun y => (ps y : ℂ))` using `fun e he => (hps e he).of_le (by norm_num)`. Establish `e1 : (fun y => ((ph y + ps y : ℝ) : ℂ)) = fun y => (ph y : ℂ) + (ps y : ℂ)`. Use function extensionality and compare the values at `y`. Conclude with `Complex.ofReal_add _ _`.
+
+Establish `h1 : ∀ k, db n z k (fun y => ((ph y + ps y : ℝ) : ℂ)) = fun y => db n z k (fun y => (ph y : ℂ)) y + db n z k (fun y => (ps y : ℂ)) y`. Introduce `k`. Use function extensionality and compare the values at `y`. Rewrite using `[e1]`. Conclude with `db_add n z _ _ hph1 hps1 k y`.
+
+Establish `h2 : ∀ j k, d n z j (db n z k (fun y => ((ph y + ps y : ℝ) : ℂ))) x = d n z j (db n z k (fun y => (ph y : ℂ))) x + d n z j (db n z k (fun y => (ps y : ℂ))) x`. Introduce `j k`. Rewrite using `[h1 k]`. Conclude with `d_add n z _ _ (Ck.db n z 1 k _ hph) (Ck.db n z 1 k _ hps) j x`. Simplify using `only [Levi, h2, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem levi_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph ps : M → ℝ) (hph : CkR n z 2 ph) (hps : CkR n z 2 ps) (x : M) (ξ : Fin n → ℂ) :
     Levi n z (fun y => ph y + ps y) x ξ = Levi n z ph x ξ + Levi n z ps x ξ := by
   have hph1 : Ck n z 1 (fun y => (ph y : ℂ)) := fun e he => (hph e he).of_le (by norm_num)
@@ -172,6 +230,15 @@ theorem levi_add {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (ph 
     intro j k; rw [h1 k]; exact d_add n z _ _ (Ck.db n z 1 k _ hph) (Ck.db n z 1 k _ hps) j x
   simp only [Levi, h2, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `hph1 : Ck n z 1 (fun y => (ph y : ℂ))` using `fun e he => (hph e he).of_le (by norm_num)`. Establish `e1 : (fun y => ((c * ph y : ℝ) : ℂ)) = fun y => (c : ℂ) * (ph y : ℂ)`. Use function extensionality and compare the values at `y`. Conclude with `Complex.ofReal_mul _ _`. Establish `h1 : ∀ k, db n z k (fun y => ((c * ph y : ℝ) : ℂ)) = fun y => (c : ℂ) * db n z k (fun y => (ph y : ℂ)) y`.
+
+Introduce `k`. Use function extensionality and compare the values at `y`. Rewrite using `[e1]`. Conclude with `db_const_mul n z _ _ hph1 k y`. Establish `h2 : ∀ j k, d n z j (db n z k (fun y => ((c * ph y : ℝ) : ℂ))) x = (c : ℂ) * d n z j (db n z k (fun y => (ph y : ℂ))) x`.
+
+Introduce `j k`. Rewrite using `[h1 k]`. Conclude with `d_const_mul n z _ _ (Ck.db n z 1 k _ hph) j x`. Simplify using `only [Levi, h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (c : ℝ) (ph : M → ℝ) (hph : CkR n z 2 ph) (x : M) (ξ : Fin n → ℂ) :
     Levi n z (fun y => c * ph y) x ξ = (c : ℂ) * Levi n z ph x ξ := by
   have hph1 : Ck n z 1 (fun y => (ph y : ℂ)) := fun e he => (hph e he).of_le (by norm_num)
@@ -187,6 +254,17 @@ theorem levi_const_mul {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n
   refine Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))
   ring
 
+/- English proof (translation)
+Establish `hs : Smooth n z g` using `Holo.smooth n z g hg`. Establish `hC : ∀ k, Ck n z k g` using `fun k => Smooth.ck n z k g hs`. Establish `hconj : ∀ k, Ck n z k (fun y => (starRingEnd ℂ) (g y))` using `fun k => Ck.conj n z k g (hC k)`. Establish `e0 : (fun y => ((‖g y‖ ^ 2 : ℝ) : ℂ)) = fun y => g y * (starRingEnd ℂ) (g y)`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hdb : ∀ k, db n z k (fun y => ((‖g y‖ ^ 2 : ℝ) : ℂ)) = fun y => g y * (starRingEnd ℂ) (d n z k g y)`. Introduce `k`. Use function extensionality and compare the values at `y`. Rewrite using `[e0, db_mul n z _ _ (hC 1) (hconj 1) k y, Holo.db_eq_zero n z g hg k y, db_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdb0 : ∀ j, db n z j g = fun _ => 0` using `fun j => funext (Holo.db_eq_zero n z g hg j)`. Establish `hd : ∀ j k, d n z j (db n z k (fun y => ((‖g y‖ ^ 2 : ℝ) : ℂ))) x = d n z j g x * (starRingEnd ℂ) (d n z k g x)`. Introduce `j k`. Rewrite using `[hdb k, d_mul n z _ _ (hC 1) (Ck.conj n z 1 _ (Ck.d n z 1 k g (hC _))) j x, d_conj, ← d_db_comm n z g (hC 2) k j x, hdb0 j, d_const]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [Levi, hd, dDot]`. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Complex.mul_conj, map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Simplify using `only [map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_normSq {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (g : M → ℂ) (hg : Holo n z g) (x : M) (ξ : Fin n → ℂ) :
     Levi n z (fun y => ‖g y‖ ^ 2) x ξ = ((‖dDot n z g x ξ‖ ^ 2 : ℝ) : ℂ) := by
   have hs : Smooth n z g := Holo.smooth n z g hg

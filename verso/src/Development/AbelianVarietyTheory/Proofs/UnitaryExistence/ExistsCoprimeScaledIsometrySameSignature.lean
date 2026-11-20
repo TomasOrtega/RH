@@ -15,6 +15,21 @@ open scoped Matrix
 
 namespace GlobalTheory.LocalIsomAt
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨1, by simp, 0, zero_mem _, Subsingleton.elim _ _⟩`. Use `GlobalTheory.UnRep.WeakApprox.core ι c σ hσι hc hσ G hG hdet two_ne_zero O.matrix hb 1 (one_mul 1) (map_one σ) one_ne_zero (fun X hX => by rwa [one_smul]) N hN (fun X hX => by` as an intermediate fact. Rewrite using `[one_smul]`. Conclude with `GlobalTheory.GenusSelfDual.exists_inv_one_add_smul O hJ X hX)`.
+
+Use the proof step `(fun M D' hD' => by`. Take `⟨d1, hd1, h1⟩` from `hb (G.map ι)`. Take `⟨d2, hd2, h2⟩` from `hb (G.map ι)⁻¹`. Establish `hm : ((D' * (d1 * d2) : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (by positivity)`. Use `choose x hx using fun a b => happ (ι ((D' * (d1 * d2) : ℕ) : K)⁻¹ * M a b)`.
+
+Use `set Y : Matrix (Fin n) (Fin n) R := Matrix.of fun a b => -(ι (x a b) - ι ((D' * (d1 * d2) : ℕ) : K)⁻¹ * M a b) with hY`. Establish `hYO : Y ∈ (O.matrix : Subring (Matrix (Fin n) (Fin n) R))` using `fun a b => O.neg_mem (hx a b)`. Establish `hYσ : Y.map σ ∈ (O.matrix : Subring (Matrix (Fin n) (Fin n) R))` using `fun a b => hO _ (hYO a b)`. Establish `h3` using `mul_mem (mul_mem h1 hYσ) h2`. Use `⟨(D' * (d1 * d2)) • Matrix.of x, (d1 * d2) • Y - ((d1 • G.map ι) * Y.map σ * (d2 • (G.map ι)⁻¹))ᵀ, sub_mem (nsmul_mem hYO _) fun a b => h3 b a, ?_⟩` and prove the remaining obligations.
+
+Establish `e : M - ((D' * (d1 * d2)) • Matrix.of x).map ι = (D' * (d1 * d2)) • Y`. Use extensionality with `a b`. Establish `e1 : ((D' * (d1 * d2) : ℕ) : R) * ι ((D' * (d1 * d2) : ℕ) : K)⁻¹ = 1`. Rewrite using `[← map_natCast ι, ← map_mul, mul_inv_cancel₀ hm, map_one]`. Simplify using `only [hY, Matrix.sub_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.of_apply, map_nsmul]`.
+
+Simplify using `only [nsmul_eq_mul]`. Take the linear combination `(-M a b) * e1`. Establish `e2` using `(map_sub (GlobalTheory.UnRep.WeakApprox.skewPart σ (G.map ι)) M (((D' * (d1 * d2)) • Matrix.of x).map ι)).symm`. Rewrite `e2` using `[e, map_nsmul]`. Use `e2.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(d1 * d2) • (Y - (G.map ι * Y.map σ * (G.map ι)⁻¹)ᵀ) = _`. Simplify using `only [smul_sub, smul_mul_assoc, mul_smul_comm, Matrix.transpose_smul, smul_smul, mul_comm d2 d1])`. Use `g h hg hh lam hlam (by simpa [← Matrix.isUnit_iff_isUnit_det] using hu) D hD`.
+
+Simplify `this` using `only [one_smul]`.
+-/
 theorem exists_unitary_congr {K R : Type} [Field K] [CharZero K] [CommRing R] (ι : K →+* R) (c : K →+* K)
     (σ : R →+* R) (hσι : ∀ x, σ (ι x) = ι (c x)) (hc : ∀ x, c (c x) = x) (hσ : ∀ x, σ (σ x) = x) {n : ℕ}
     (G : Matrix (Fin n) (Fin n) K) (hG : (G.map c)ᵀ = G) (hdet : G.det ≠ 0) (O : Subring R)
@@ -63,6 +78,25 @@ theorem exists_unitary_congr {K R : Type} [Field K] [CharZero K] [CommRing R] (�
     g h hg hh lam hlam (by simpa [← Matrix.isUnit_iff_isUnit_det] using hu) D hD
   simpa only [one_smul] using this
 
+/- English proof (translation)
+Set `R : Type` to `∀ i, A i`. Set `ι : K →+* R` to `Pi.ringHom φ`. Set `σ : R →+* R` to `Pi.ringHom fun v => (τ v).comp (Pi.evalRingHom _ v)`. Set `O : Subring R` to `⨅ v, (B v).comap (Pi.evalRingHom _ v)`. Establish `hOm : ∀ z : R, z ∈ O ↔ ∀ v, z v ∈ B v` using `fun z => Subring.mem_iInf`.
+
+Set `ev : ∀ v, Matrix (Fin n) (Fin n) R →+* Matrix (Fin n) (Fin n) (A v)` to `fun v => (Pi.evalRingHom _ v).mapMatrix`. Establish `hext : ∀ X Y : Matrix (Fin n) (Fin n) R, (∀ v, ev v X = ev v Y) → X = Y` using `fun X Y h => Matrix.ext fun i j => funext fun v => congrFun (congrFun (h v) i) j`. Set `mk : (∀ v, Matrix (Fin n) (Fin n) (A v)) → Matrix (Fin n) (Fin n) R` to `fun X => Matrix.of fun i j v => X v i j`. Establish `hmk : ∀ X v, ev v (mk X) = X v` using `fun X v => rfl`. Establish `happ' : ∀ z : R, ∃ x : K, ι x - z ∈ O` using `fun z => by`.
+
+Take `⟨x, hx⟩` from `happ z`. Conclude with `⟨x, (hOm _).2 hx⟩`. Establish `hden' : ∀ z : R, ∃ d : ℕ, 0 < d ∧ d • z ∈ O` using `fun z => by`. Take `⟨x, hx⟩` from `happ' z`. Take `⟨k, hk, hs⟩` from `hden x`.
+
+Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_sub_cancel (ι x) z, smul_sub]`. Conclude with `sub_mem ((hOm _).2 hs) (nsmul_mem hx k)`. Establish `hb : ∀ M : Matrix (Fin n) (Fin n) R, ∃ d : ℕ, 0 < d ∧ d • M ∈ (O.matrix : Subring (Matrix (Fin n) (Fin n) R))` using `fun M => by choose d hd hdM using fun ab : Fin n × Fin n => hden' (M ab.1 ab.2)`. Use `⟨∏ ab, d ab, Finset.prod_pos fun ab _ => hd ab, fun a b => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem d (Finset.mem_univ (a, b))`. Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `nsmul_mem (hdM (a, b)) c`. Use `choose w hw using fun v => (hlu v).exists_right_inv`. Take `⟨d1, hd1, h1⟩` from `hb (mk fun v => ((P v)⁻¹).1)`.
+
+Take `⟨d2, hd2, h2⟩` from `hb (mk fun v => (P v).1)`. Take `⟨γ, hγ, X, hX, hγX⟩` from `exists_unitary_congr ι c σ (fun x => funext fun v => hτφ v x) hc (fun x => funext fun v => hτ v _) G hG hdet O (fun z hz => (hOm _).2 fun v => hB v _ ((hOm _).1 hz v)) happ' hb N hN (fun z hz => by choose y hy hy1 using fun v => hJ v (z v) ((hOm _).1 hz v)`. Conclude with `⟨y, (hOm _).2 hy, funext hy1⟩)`. Use the proof step `(mk fun v => ((u v)⁻¹).1) (mk fun v => (u v).1)`. Use the proof step `(hext _ _ fun v => by rw [map_mul, map_one, hmk, hmk, Units.mul_inv])`.
+
+Use the proof step `(hext _ _ fun v => by rw [map_mul, map_mul]; exact hu v) lam hlam`. Use the proof step `((Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse (B := mk w) (hext _ _ fun v => by`. Rewrite using `[map_mul, map_add, map_one]`. Conclude with `hw v)))`. Use the proof step `(d1 * d2) (by positivity)`.
+
+Use `⟨γ, hγ, fun v => ?_⟩` and prove the remaining obligations. Establish `e1 : γ.map (φ v) * ((u v)⁻¹).1 - 1 = (d1 * d2) • ev v X`. Use `congrArg (ev v) hγX` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_one, map_nsmul]`. Conclude with `this`.
+
+Establish `h3 : ∀ i j, (ev v ((d1 • mk fun v => ((P v)⁻¹).1) * X * (d2 • mk fun v => (P v).1) + 1)) i j ∈ B v` using `fun i j => (hOm _).1 (add_mem (mul_mem (mul_mem h1 hX) h2) (one_mem _) i j) v`. Rewrite `h3` using `[map_add, map_one, map_mul, map_mul, map_nsmul, map_nsmul, hmk, hmk]`. Rewrite using `[sub_eq_iff_eq_add.1 e1, mul_add, add_mul, mul_one, Units.inv_mul]`. Simplify `h3` using `only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_comm d2 d1]`.
+-/
 theorem exists_unitary_congr_pi {K T : Type} [Field K] [CharZero K] {A : T → Type} [∀ i, CommRing (A i)]
     (φ : ∀ i, K →+* A i) (c : K →+* K) (τ : ∀ i, A i →+* A i) (hτφ : ∀ i x, τ i (φ i x) = φ i (c x))
     (hc : ∀ x, c (c x) = x) (hτ : ∀ i x, τ i (τ i x) = x) {n : ℕ}
@@ -131,6 +165,15 @@ open ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.SelfDualGenus GlobalTh
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨θ, h0, hθ⟩` from `exists_imaginary_integer E`. Establish `hc : ∀ k : ℤ, IsCMField.complexConj E (1 + (k * θ : E)) = 1 - (k * θ)` using `fun k => by`. Rewrite using `[map_add, map_one, map_mul, map_intCast, show IsCMField.complexConj E θ = -θ from hθ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ k : ℤ, 1 + (k * θ : E) ≠ 0` using `fun k hk => by`.
+
+Use `hc k` as an intermediate fact. Rewrite `this` using `[hk, map_zero]`. Conclude with `two_ne_zero (α := E) (by linear_combination hk - this)`. Establish `hne' : ∀ k : ℤ, 1 - (k * θ : E) ≠ 0` using `fun k => by`. Rewrite using `[← hc]`.
+
+Conclude with `(_root_.map_ne_zero _).2 (hne k)`. Use `Set.infinite_of_injective_forall_mem (f := fun k : ℤ => (1 - (k * θ : E)) / (1 + k * θ)) (fun a b hab => ?_) fun k => ?_` and prove the remaining obligations. Rewrite `hab` using `[div_eq_div_iff (hne a) (hne b)]`. Establish `: (2 * θ : E) * (a - b) = 0` using `by linear_combination -hab`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left (mul_ne_zero two_ne_zero h0))` after adjusting the coercions.
+
+Use `hc (-k)` as an intermediate fact. Simplify using `only [Int.cast_neg, neg_mul, ← sub_eq_add_neg, sub_neg_eq_add] at this`. Simplify using `only [Set.mem_setOf_eq, cc, map_div₀, hc, this]`. Rewrite using `[div_mul_div_comm, mul_comm, div_self (mul_ne_zero (hne k) (hne' k))]`.
+-/
 theorem infinite_norm_one (E : Type) [Field E] [NumberField E] [IsCMField E] :
     {x : E | x * cc x = 1}.Infinite := by
   obtain ⟨θ, h0, hθ⟩ := exists_imaginary_integer E
@@ -153,6 +196,17 @@ theorem infinite_norm_one (E : Type) [Field E] [NumberField E] [IsCMField E] :
     simp only [Set.mem_setOf_eq, cc, map_div₀, hc, this]
     rw [div_mul_div_comm, mul_comm, div_self (mul_ne_zero (hne k) (hne' k))]
 
+/- English proof (translation)
+Establish `hT : {v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) | (b : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal}.Finite`. Simplify `Ideal.finite_factors (I := Ideal.span {(b : 𝓞 (maximalRealSubfield E))}) (by simpa using hb0.ne')` using `only [Ideal.dvd_span_singleton]`. Establish `hv : ∀ v : hT.toFinset, (b : 𝓞 (maximalRealSubfield E)) ∈ v.1.asIdeal` using `fun v => hT.mem_toFinset.1 v.2`. Use `choose u hu huL using hloc`. Use `choose P hP using fun v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)) => exists_frame v hL'`.
+
+Take `⟨lam, hlam, hlu⟩` from `(infinite_norm_one E).exists_notMem_finite (Set.finite_iUnion fun v : hT.toFinset => haveI : IsArtinianRing (LocAlg v.1) := IsArtinianRing.of_finite (v.1.adicCompletion (maximalRealSubfield E)) _ finite_not_isUnit_one_add_smul (locEmb v.1) (u v.1).1)`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_not] at hlu`. Take `⟨γ, hγ, hγX⟩` from `exists_unitary_congr_pi (A := fun v : hT.toFinset => LocAlg v.1) (fun v => locEmb v.1) (IsCMField.complexConj E : E →+* E) (fun v => locConj v.1) (fun v => locConj_locEmb v.1) (IsCMField.complexConj_apply_apply E) (fun v => locConj_locConj v.1) G (Matrix.ext fun a b => hG b a) hd …`. Take `⟨k, s, hk, hx⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)).exists_nsmul_eq (𝓞 E)`. Conclude with `⟨k, Nat.pos_of_ne_zero hk, fun v => by rw [← map_nsmul, hx]; exact locEmb_mem_locOrder v.1 s⟩)`.
+
+Use `b hb0 (fun v => exists_inv_one_add v.1 (hv v)) (fun v => u v.1)`. Use the proof step `(fun v => Matrix.GeneralLinearGroup.map (locEmb v.1) (P v.1)) (fun v => (hu v.1).symm) lam hlam hlu`. Use `⟨γ, hγ, fun x hx v hvb => ?_⟩` and prove the remaining obligations. Use `(locEmb_mem_locLattice_iff v hL' _).1 ?_` and prove the remaining obligations. Establish `hy` using `(huL v _).1 (Submodule.subset_span ⟨x, hx, rfl⟩)`.
+
+Rewrite `hy`, the goal using `[mem_locLattice_iff_of_frame v (hP v)]`. Establish `h3 : ∀ a b, (((P v)⁻¹).1.map (locEmb v) * (γ.map (locEmb v) * ((u v)⁻¹).1) * (P v).1.map (locEmb v)) a b ∈ locOrder v` using `hγX ⟨v, hT.mem_toFinset.2 hvb⟩`. Establish `h4` using `mulVec_mem_locOrder v h3 hy`. Rewrite `h4` using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Rewrite using `[show (fun i => locEmb v ((γ *ᵥ x) i)) = γ.map (locEmb v) *ᵥ fun i => locEmb v (x i) from` and apply the resulting hypothesis.
+
+Use function extensionality and compare the values at `fun i => RingHom.map_mulVec (locEmb v) γ x i]`.
+-/
 theorem exists_unitary_mapsTo {G : Matrix (Fin n) (Fin n) E} (hG : ∀ a b, cc (G a b) = G b a) (hd : G.det ≠ 0)
     {L L' : Submodule (𝓞 E) (Fin n → E)} (hL' : ReciprocityTheory.MultiplicativeHeights.IsLattice L') {b : ℕ} (hb0 : 0 < b)
     (hloc : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), ∃ γ, IsLocalIsometry v G L' G L γ) :
@@ -197,6 +251,11 @@ theorem exists_unitary_mapsTo {G : Matrix (Fin n) (Fin n) E} (hG : ∀ a b, cc (
   rwa [show (fun i => locEmb v ((γ *ᵥ x) i)) = γ.map (locEmb v) *ᵥ fun i => locEmb v (x i) from
     funext fun i => RingHom.map_mulVec (locEmb v) γ x i]
 
+/- English proof (translation)
+Establish `hm : ∀ k : ℕ, k • x ∈ L ↔ addOrderOf (L.mkQ x) ∣ k` using `fun k => by`. Rewrite using `[addOrderOf_dvd_iff_nsmul_eq_zero, ← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨_, Nat.coprime_of_dvd fun p hp hpk hpb => ?_, (hm _).2 dvd_rfl⟩` and prove the remaining obligations. Take `⟨k, hk, hkx⟩` from `exists_nsmul_mem hp L x fun v hv => h v (by`. Take `⟨c, rfl⟩` from `hpb`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hv)`. Conclude with `hk (hpk.trans ((hm k).1 hkx))`.
+-/
 theorem exists_coprime_nsmul_mem {b : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
     (h : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), (b : 𝓞 (maximalRealSubfield E)) ∈ v.asIdeal →
       ∃ s ∉ v.asIdeal, algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) s • x ∈ L) :
@@ -212,6 +271,11 @@ theorem exists_coprime_nsmul_mem {b : ℕ} (L : Submodule (𝓞 E) (Fin n → E)
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Use `⟨?_, fun ψ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Conclude with `⟨D.EF x y, by rw [EFf, neg_neg, hEF]⟩`. Take `⟨x, hx⟩` from `D.unimod.2 (ψ.comp φ.rangeRestrict.toAddMonoidHom).toIntLinearMap`. Use `⟨φ x, ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, y, rfl⟩`. Rewrite using `[EFf, neg_neg, ← hEF, hx]`. Both sides reduce to the same expression.
+-/
 theorem perfect_range {H : Host E} (D : Datum H) {ξ : E} {G : Matrix (Fin n) (Fin n) E}
     (φ : D.La →ₗ[𝓞 E] (Fin n → E)) (hinj : Function.Injective φ)
     (hEF : ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (ξ * herm G (φ x) (φ y))) :
@@ -228,6 +292,27 @@ theorem perfect_range {H : Host E} (D : Datum H) {ξ : E} {G : Matrix (Fin n) (F
 
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D₁ D₂ hp hq b hb`. Establish `hH` using `GlobalTheory.QNorm.hasseNormSt`. Establish `hL` using `GlobalTheory.LocalQuad.landherrSt_of_hasseNormSt hH`. Establish `hξ` using `GlobalTheory.OneSpace.cc_rt H`. Take `⟨G, φ₂, hM₂⟩` from `GlobalTheory.exists_herm_coord_of_datum E H D₂ (H.rt : E) hξ (GlobalTheory.OneSpace.rt_ne H) _ rfl`.
+
+Take `⟨φ₁, hinj₁, hspan₁, -, -, hEF₁⟩` from `GlobalTheory.model_in_same_space hL hH E H D₂ D₁ _ (H.rt : E) G φ₂ hp.symm hq.symm hξ hM₂`. Take `⟨hinj₂, hspan₂, hG, hd, hEF₂⟩` from `hM₂`. Use `D₁.fin` as an intermediate fact. Use `D₂.fin` as an intermediate fact. Use `H.unram` as an intermediate fact.
+
+Establish `hL₁ : ReciprocityTheory.MultiplicativeHeights.IsLattice (LinearMap.range φ₁)` using `⟨Submodule.fg_range φ₁, hspan₁⟩`. Establish `hL₂ : ReciprocityTheory.MultiplicativeHeights.IsLattice (LinearMap.range φ₂)` using `⟨Submodule.fg_range φ₂, hspan₂⟩`. Take `⟨γ, hγ, hγL⟩` from `exists_unitary_mapsTo hG hd hL₂ hb (GlobalTheory.selfDual_lattices_one_genus hG hG hd hd hL₂ hL₁ (Or.inr ⟨_, neg_ne_zero.2 (GlobalTheory.OneSpace.rt_ne H), (map_neg (IsCMField.complexConj E) _).trans (congrArg Neg.neg hξ), perfect_range D₂ φ₂ hinj₂ hEF₂, perfect_range D₁ φ₁ hinj₁ …`. Set `φ : D₁.La →ₗ[𝓞 E] (Fin (D₂.p + D₂.q) → E)` to `(Matrix.toLin' γ).restrictScalars (𝓞 E) ∘ₗ φ₁`. Establish `hφ : ∀ x, φ x = γ *ᵥ φ₁ x` using `fun x => rfl`.
+
+Use `choose m hm hmem using fun x => exists_coprime_nsmul_mem _ _ (hγL (φ₁ x) ⟨x, rfl⟩)`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := 𝓞 E) (M := D₁.La)`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN, hmem⟩ : ∃ N : ℕ, N.Coprime b ∧ ∀ x, (N : 𝓞 E) • φ x ∈ LinearMap.range φ₂ := by`. Use `⟨∏ x ∈ s, m x, Nat.Coprime.prod_left fun x _ => hm x, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span (𝓞 E) (s : Set D₁.La)` using `by rw [hs]; trivial`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_coe.1 hy)`. Rewrite using `[hk, Nat.cast_mul, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul _ (m y)]`. Conclude with `Submodule.smul_mem _ _ (hmem _)`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul, smul_comm]`. Conclude with `Submodule.smul_mem _ _ ha`.
+
+Set `g : D₁.La →ₗ[𝓞 E] LinearMap.range φ₂` to `((N : 𝓞 E) • φ).codRestrict _ hmem`. Set `f : D₁.La →ₗ[𝓞 E] D₂.La` to `(LinearEquiv.ofInjective φ₂ hinj₂).symm.toLinearMap ∘ₗ g`. Establish `hf : ∀ x, φ₂ (f x) = (N : E) • (γ *ᵥ φ₁ x)`. Introduce `x`. Establish `h1 : φ₂ (f x) = (N : 𝓞 E) • φ x` using `LinearEquiv.ofInjective_symm_apply φ₂ (h := hinj₂) (g x)`.
+
+Rewrite using `[h1, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, hφ]`. Use `⟨N, f, hN, fun x y => ?_⟩` and prove the remaining obligations. Establish `h2` using `hEF₂ (f x) (f y)`. Rewrite `h2` using `[hf, hf, GlobalTheory.HermModel.herm_smul_left, GlobalTheory.HermModel.herm_smul_right, herm_mulVec, hγ]`. Establish `hc : cc (N : E) = N` using `by simp [cc]`.
+
+Establish `h3 : (H.rt : E) * ((N : E) * (herm G (φ₁ x) (φ₁ y) * cc (N : E))) = ((N : ℚ) ^ 2) • ((H.rt : E) * herm G (φ₁ x) (φ₁ y))`. Rewrite using `[hc, Algebra.smul_def]`. Simplify using `only [map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3, map_smul, ← hEF₁, smul_eq_mul]`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem exists_coprime_scaled_isometry : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (D D' : Datum H), D'.p = D.p → D'.q = D.q → ∀ b : ℕ, 0 < b → ∃ (k : ℕ) (f : D.La →ₗ[𝓞 E] D'.La),
       k.Coprime b ∧ ∀ x y, D'.EF (f x) (f y) = (k : ℤ) ^ 2 * D.EF x y := by

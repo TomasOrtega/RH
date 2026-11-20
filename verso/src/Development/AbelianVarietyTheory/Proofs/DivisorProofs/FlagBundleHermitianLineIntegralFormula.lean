@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.FibCos
 
+/- English proof (translation)
+Use `choose U hUo hU hUS using hloc`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover U fun b _ => (hUo b).mem_nhds (hU b)`. Use extensionality with `J hJ`. Establish `key : Measure.map f (μ.restrict (v ⁻¹' J)) = volume (J ∩ Set.Icc (0 : ℝ) 1) • ν`. Use `Measure.ext_of_biUnion_eq_univ (S := (t : Set T)) t.countable_toSet (Set.eq_univ_of_univ_subset (by simpa using ht)) fun b _ => ?_` and prove the remaining obligations.
+
+Use extensionality with `A hA`. Rewrite using `[Measure.restrict_apply hA, Measure.restrict_apply hA, Measure.map_apply hf (hA.inter (hUo b).measurableSet), Measure.restrict_apply (hf (hA.inter (hUo b).measurableSet)), hUS b _ (hA.inter (hUo b).measurableSet) Set.inter_subset_right J hJ, Measure.smul_apply, smul_eq_mul, mul_c …`. Establish `e` using `congrArg (fun m : Measure T => m Set.univ) key`. Simplify using `only [Measure.map_apply hf MeasurableSet.univ, Set.preimage_univ, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, Measure.smul_apply, smul_eq_mul] at e`. Rewrite using `[Measure.map_apply hv hJ, e, Measure.smul_apply, smul_eq_mul, Measure.restrict_apply hJ, mul_comm]`.
+-/
 theorem map_eq_of_local {Z T : Type} [TopologicalSpace T] [CompactSpace T] [MeasurableSpace T] [OpensMeasurableSpace T]
     [MeasurableSpace Z] (μ : Measure Z) (ν : Measure T) (f : Z → T) (hf : Measurable f) (v : Z → ℝ) (hv : Measurable v)
     (hloc : ∀ b₀ : T, ∃ U : Set T, IsOpen U ∧ b₀ ∈ U ∧ ∀ S : Set T, MeasurableSet S → S ⊆ U → ∀ J : Set ℝ,
@@ -38,6 +43,11 @@ theorem map_eq_of_local {Z T : Type} [TopologicalSpace T] [CompactSpace T] [Meas
 
 end GlobalTheory.FibCos
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv φ hφ ε`. Use `haveI : CompactSpace (CxPts q σ) := hB.compactSpace σ`. Use `GlobalTheory.FibCos.map_eq_of_local _ _ _ (PtsOver.continuous_map π w (spMap σ)).measurable v (GlobalTheory.CosSqMeas.measurable_cosSq k B Y q p d hB hY π w E h H flB fl hfl A σ v hv) fun b₀ => ?_` and prove the remaining obligations. Take `⟨U, hUo, hb, G, hG, hS⟩` from `GlobalTheory.T.flag_bundle_line_bundle_chern_relation k B Y q p d hB hY π w E h H flB fl hfl A σ v hv φ hφ ε b₀`. Use `⟨U, hUo, hb, fun S hSm hSU J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hS S hSm hSU J hJ, setLIntegral_congr_fun hSm (fun b hb => GlobalTheory.T.fibre_cosine_pushforward_uniform (G b) (hG b (hSU hb)) J hJ), setLIntegral_const, mul_comm]`.
+-/
 theorem GlobalTheory.FibCos.map_part : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

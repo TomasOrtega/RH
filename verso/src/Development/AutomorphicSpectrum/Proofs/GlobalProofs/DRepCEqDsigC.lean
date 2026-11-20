@@ -42,8 +42,14 @@ def wordSpan (A : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M) (P : 
     (T : Submodule ℂ M) : Submodule ℂ M :=
   Submodule.span ℂ {w | ∃ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ Z ∈ l, Z ∈ P) ∧ ∃ t ∈ T, w = wordE A l t}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem wordE_nil (A : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M) : wordE A [] = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[wordE]`.
+-/
 @[simp] theorem wordE_cons (A : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M) (Z : Matrix (Fin n) (Fin n) ℂ)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) : wordE A (Z :: l) = A Z * wordE A l := by
   simp [wordE]

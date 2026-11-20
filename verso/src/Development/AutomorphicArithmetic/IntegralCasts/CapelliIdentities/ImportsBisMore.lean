@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `m n x`. Establish `hS : 0 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖x a i‖ ^ (2 : ℕ)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun i _ => by positivity`. Establish `hle : ‖x‖ ≤ Real.sqrt (∑ a : Fin m, ∑ i : Fin n, ‖x a i‖ ^ (2 : ℕ))`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun a => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations.
+
+Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.DYka1.main :
     ∀ {m n : ℕ} (x : Fin m → Fin n → ℂ), ‖x‖ ^ (2 : ℕ) ≤ ∑ a : Fin m, ∑ i : Fin n, ‖x a i‖ ^ (2 : ℕ) := by
   intro m n x

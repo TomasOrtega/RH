@@ -9,6 +9,15 @@ open GlobalTheory.CuspRep (Cinf Lie chart infGL pInf sInf toL lmul invSet)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
+/- English proof (translation)
+Establish `e : ∀ i j, (GlobalTheory.CuspRep.cornerGL n s y).val i j = (1 : Matrix (Fin n) (Fin n) S) i j - s ((1 : Matrix (Fin n) (Fin n) R) i j) + s (y.val i j)` using `fun _ _ => rfl`. Use `⟨fun i hi => ⟨?_, fun j hj => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, (h i hi).1]`. Simplify using the standard rewrite rules. Rewrite using `[e, (h i hi).2 j hj, Matrix.one_apply_ne hj.ne', Matrix.one_apply_ne hj.ne']`.
+
+Simplify using the standard rewrite rules. Unfold `supN`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Establish `hne : i ≠ j` using `fun h' => by subst h'; omega`. Rewrite using `[e, Matrix.one_apply_ne hne, Matrix.one_apply_ne hne]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem corner_isY {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (m : ℕ) (s : R →ₙ+* S) (y : GL (Fin n) R)
     (h : IsY m y.val) :
     IsY m (GlobalTheory.CuspRep.cornerGL n s y).val ∧ supN (GlobalTheory.CuspRep.cornerGL n s y).val = s (supN y.val) := by
@@ -27,6 +36,9 @@ private theorem corner_isY {R S : Type} [CommRing R] [CommRing S] {n : ℕ} (m :
       rw [e, Matrix.one_apply_ne hne, Matrix.one_apply_ne hne]; simp
     · simp
 
+/- English proof (translation)
+Introduce `E _ _ _ n m`. Conclude with `⟨fun w y h => corner_isY m (sLoc E w) y h, fun y h => corner_isY m (sFin E) y h, fun y h => corner_isY m (sInf E) y h, fun w => GlobalTheory.CuspRep.CuspSub.continuous_locGL w⟩`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.embY :
     UpperTheory.V.Af.StrongMultiplicityOne.EmbY := by
   intro E _ _ _ n m

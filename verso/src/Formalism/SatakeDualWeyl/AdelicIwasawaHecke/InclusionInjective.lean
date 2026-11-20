@@ -8,10 +8,16 @@ namespace Formalism.UG.P
 
 open Formalism.UG
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bc_coe {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
     (φ : A →+* B) (g : GL n A) : ((bc φ g : GL n B) : Matrix n n B) = (g : Matrix n n A).map φ :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `(RingHom.congr_fun h (M j i)).symm`.
+-/
 theorem incl_cT_map {A B : Type} [CommRing A] [CommRing B] {m p : Type}
     (σ : A →+* A) (σ' : B →+* B) (φ : A →+* B) (h : φ.comp σ = σ'.comp φ) (M : Matrix m p A) :
     cT σ' (M.map φ) = (cT σ M).map φ := by
@@ -19,6 +25,9 @@ theorem incl_cT_map {A B : Type} [CommRing A] [CommRing B] {m p : Type}
   simp only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]
   exact (RingHom.congr_fun h (M j i)).symm
 
+/- English proof (translation)
+Establish `hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Use `show cT σ' ((bc φ g : GL n B) : Matrix n n B) * J.map φ * ((bc φ g : GL n B) : Matrix n n B) = J.map φ`. Rewrite using `[bc_coe, incl_cT_map σ σ' φ h, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem bc_mem {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n]
     (σ : A →+* A) (σ' : B →+* B) (φ : A →+* B) (h : φ.comp σ = σ'.comp φ)
     (J : Matrix n n A) (g : GL n A) (hg : g ∈ UJ σ J) : bc φ g ∈ UJ σ' (J.map φ) := by
@@ -26,12 +35,20 @@ theorem bc_mem {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [De
   show cT σ' ((bc φ g : GL n B) : Matrix n n B) * J.map φ * ((bc φ g : GL n B) : Matrix n n B) = J.map φ
   rw [bc_coe, incl_cT_map σ σ' φ h, ← Matrix.map_mul, ← Matrix.map_mul, hg']
 
+/- English proof (translation)
+Introduce `x y hxy`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F R).injective hxy`.
+-/
 theorem inclE_injective (F E : Type) [Field F] [CommRing E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] [Nontrivial R] :
     Function.Injective (inclE (F := F) (E := E) R) := by
   intro x y hxy
   exact Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F R).injective hxy
 
+/- English proof (translation)
+Introduce `F E _ _ _ n _ _ R _ _ hR`. Use `haveI := hR`. Introduce `g g' hgg`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `congrArg Units.val hgg`.
+
+Rewrite `h1` using `[bc_coe, bc_coe]`. Use extensionality with `i j`. Conclude with `inclE_injective F E R (congrFun (congrFun h1 i) j)`.
+-/
 theorem UG_inclusion_injective : Formalism.UG.InclInj := by
   intro F E _ _ _ n _ _ R _ _ hR
   haveI := hR
@@ -42,6 +59,9 @@ theorem UG_inclusion_injective : Formalism.UG.InclInj := by
   ext i j
   exact inclE_injective F E R (congrFun (congrFun h1 i) j)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `simp [Formalism.UG.sigR]`. Consider the case `(unfold Formalism.UG.sigR; simp)`.
+-/
 private lemma sigR_tmul_adelic_iwasawa_hecke (F E : Type) [Field F] [CommRing E] [Algebra F E] (σ : E →ₐ[F] E)
     (x : E) (c : F) : Formalism.UG.sigR σ F (x ⊗ₜ[F] c) = σ x ⊗ₜ[F] c := by
   first

@@ -25,9 +25,17 @@ def innerSmulRightR {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] 
       calc ‖⟪x, w⟫_ℂ‖ * ‖e‖ ≤ (‖x‖ * ‖w‖) * ‖e‖ := by gcongr
         _ = ‖e‖ * ‖x‖ * ‖w‖ := by ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem innerSmulRightR_apply {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (e x : V) :
     innerSmulRightR e x = (innerSL ℂ x).smulRight e := rfl
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[ContinuousLinearMap.sum_apply]`. Simplify using `only [innerSmulRightR_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Rewrite using `[← (stdOrthonormalBasis ℂ V).sum_repr' (ContinuousLinearMap.adjoint B w)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`.
+-/
 theorem adjoint_eq_sum {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] [CompleteSpace V] (B : V →L[ℂ] V) :
     ContinuousLinearMap.adjoint B =
@@ -39,6 +47,11 @@ theorem adjoint_eq_sum {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ 
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [ContinuousLinearMap.adjoint_inner_right]
 
+/- English proof (translation)
+Introduce `W V _ _ _ _ _ _ A s hA`. Establish `hEq : (fun y => ContinuousLinearMap.adjoint (A y)) = fun y => ∑ i, innerSmulRightR (stdOrthonormalBasis ℂ V i) (A y (stdOrthonormalBasis ℂ V i))`. Use function extensionality and compare the values at `y`. Conclude with `adjoint_eq_sum (A y)`. Rewrite using `[hEq]`.
+
+Use `ContDiffOn.sum fun i _ => ?_` and prove the remaining obligations. Conclude with `(innerSmulRightR (stdOrthonormalBasis ℂ V i)).contDiff.comp_contDiffOn (hA _)`.
+-/
 theorem adjSmooth : AdjSmooth := by
   intro W V _ _ _ _ _ _ A s hA
   have hEq : (fun y => ContinuousLinearMap.adjoint (A y)) = fun y =>

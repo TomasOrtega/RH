@@ -14,6 +14,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.Nef.CurveFF
 
+/- English proof (translation)
+Establish `hna : ¬ Algebra.IsAlgebraic k F` using `fun ha => by`. Rewrite `h` using `[trdeg_eq_zero_iff.mpr ha]`. Conclude with `zero_ne_one h`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : F, Transcendental k x := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hna ⟨fun x => by simpa [Transcendental] using hc x⟩`. Conclude with `⟨x, hx, finiteDimensional_adjoin_of_trdeg_le_one h.le x hx⟩`.
+-/
 theorem isFF_of_trdeg_eq_one {k F : Type} [Field k] [Field F] [Algebra k F] [Algebra.EssFiniteType k F]
     (h : Algebra.trdeg k F = 1) : IsFF k F := by
   have hna : ¬ Algebra.IsAlgebraic k F := fun ha => by
@@ -24,6 +29,17 @@ theorem isFF_of_trdeg_eq_one {k F : Type} [Field k] [Field F] [Algebra k F] [Alg
     exact hna ⟨fun x => by simpa [Transcendental] using hc x⟩
   exact ⟨x, hx, finiteDimensional_adjoin_of_trdeg_le_one h.le x hx⟩
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Set `φ : k →+* C.functionField` to `(Spec.preimage (C.fromSpecStalk (genericPoint C) ≫ strHom k C)).hom`. Establish `hφ : C.fromSpecStalk (genericPoint C) ≫ strHom k C = spMap φ` using `(Spec.map_preimage _).symm`. Use `letI : Algebra k C.functionField := φ.toAlgebra`. Establish `htr : Algebra.trdeg k C.functionField = 1`.
+
+Use `FunctionFieldTrdeg.trdeg_functionField_eq k C (strHom k C) 1 hp (by simpa using hd) φ hφ` as an intermediate fact. Simplify using `using this`. Establish `hfg : (⊤ : IntermediateField k C.functionField).FG` using `FGFun.fg_functionField k C (strHom k C) hp k C.functionField φ (𝟙 _) (RingHom.id _) (by simp [hφ])`. Use `haveI : Algebra.EssFiniteType k C.functionField := IntermediateField.fg_top_iff.mp hfg`. Set `ψ' : C.functionField →+* K` to `ψ.hom`.
+
+Establish `hinj : Function.Injective ψ'` using `ψ'.injective`. Establish `hcomm : ∀ c : k, ψ' (φ c) = algebraMap k K c`. Rewrite `hc` using `[hφ]`. Establish `h1 : Spec.map (CommRingCat.ofHom φ ≫ ψ) = Spec.map (CommRingCat.ofHom (algebraMap k K))`. Rewrite using `[Spec.map_comp]`.
+
+Conclude with `hc`. Establish `h2` using `Spec.map_injective h1`. Introduce `c`. Conclude with `congrArg (fun f => f.hom c) h2`. Set `e : C.functionField ≃ₐ[k] K` to `AlgEquiv.ofBijective { ψ' with commutes' := hcomm } ⟨hinj, hψ⟩`.
+
+Use `haveI : Algebra.EssFiniteType k K := (Algebra.EssFiniteType.iff_of_algEquiv e).mp inferInstance`. Conclude with `isFF_of_trdeg_eq_one (e.trdeg_eq ▸ htr)`.
+-/
 theorem isFF_of_stalk (k K : Type) [Field k] [Field K] [Algebra k K] (C : Scheme.{0}) [IsIntegral C]
     [Algebra k Γ(C, ⊤)] (hp : IsProjOver (strHom k C)) (hd : topologicalKrullDim C = 1)
     (y : C) (hy : y = genericPoint C) (ψ : C.presheaf.stalk y ⟶ CommRingCat.of K)
@@ -53,6 +69,17 @@ theorem isFF_of_stalk (k K : Type) [Field k] [Field K] [Algebra k K] (C : Scheme
   haveI : Algebra.EssFiniteType k K := (Algebra.EssFiniteType.iff_of_algEquiv e).mp inferInstance
   exact isFF_of_trdeg_eq_one (e.trdeg_eq ▸ htr)
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ _ C _ x hx`. Take `⟨⟨hs, hp, hg⟩, ⟨hdom, hpre⟩, hxs⟩` from `hx`. Use `haveI : IsIntegral C := LieSemineg.isIntegral_curve hs hg`. Set `p : Sp K` to `IsLocalRing.closedPoint (CommRingCat.of K)`. Use `haveI : Nonempty C := ⟨x p⟩`.
+
+Establish `hd : topologicalKrullDim C = 1` using `LieSemineg.dim_curve hs`. Establish `hgen : x p = genericPoint C`. Establish `hr : Set.range x = {x p}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, rfl⟩`. Rewrite using `[Set.mem_singleton_iff, Subsingleton.elim v p]`. Introduce and unpack `rfl`. Conclude with `⟨p, rfl⟩`. Use `((genericPoint_spec C).eq ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[isGenericPoint_def, ← hr]`. Conclude with `x.denseRange.closure_range`. Establish `hsurj : Function.Surjective (Scheme.stalkClosedPointTo x).hom`. Unfold `Scheme.stalkClosedPointTo`. Conclude with `(ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (.of K)).hom).2.comp (x.stalkMap_surjective _)`.
+
+Use `isFF_of_stalk k K C hp hd _ hgen (Scheme.stalkClosedPointTo x) hsurj ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, hxs]`.
+-/
 theorem isFF_of_isGenOver : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   IsFF k K := by
   intro k K _ _ _ _ _ C _ x hx

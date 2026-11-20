@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.Bound₂
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
+/- English proof (translation)
+Unfold `degFl`. Simplify using `only [coeff_C_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+-/
 theorem degFl_C_mul (a : ℝ) (Q : RP Ψ N) : degFl (C a * Q) = a * degFl Q := by
   unfold degFl
   simp only [coeff_C_mul, Finset.mul_sum]
@@ -25,6 +28,11 @@ def rk (N j : ℕ) : Ψ ⊕ Ψ → ℝ
 def ep (N j p : ℕ) (fr : ℕ → Ψ ⊕ Ψ) : ℝ := (∑' n : ℕ, ((p : ℝ)⁻¹) ^ (n + 1) * rk N j (fr n)) - j / ((p : ℝ) - 1)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
+/- English proof (translation)
+Establish `hc : (Finset.univ.filter fun i : Fin N => (i : ℕ) < j).card = j`. Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Establish `hc' : (Finset.univ.filter fun i : Fin N => j ≤ (i : ℕ)).card = N - j`. Use `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin N))) (fun i : Fin N => (i : ℕ) < j)` as an intermediate fact.
+
+Simplify using `only [not_lt, Finset.card_univ, Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers. Consider the cases of `s with`. Consider the case `inl τ => simp [pLie, pkLow, rk, hc]`. Consider the case `inr τ => simp [pLie, rk, hc', Nat.cast_sub hj]`.
+-/
 theorem pLie_zero {j : ℕ} (hj : j ≤ N) (s : Ψ ⊕ Ψ) : (pLie j 0 s : RP Ψ N) = C (rk N j s) := by
   have hc : (Finset.univ.filter fun i : Fin N => (i : ℕ) < j).card = j := by
     rw [Fin.card_filter_val_lt]; omega
@@ -36,6 +44,11 @@ theorem pLie_zero {j : ℕ} (hj : j ≤ N) (s : Ψ ⊕ Ψ) : (pLie j 0 s : RP Ψ
   | inl τ => simp [pLie, pkLow, rk, hc]
   | inr τ => simp [pLie, rk, hc', Nat.cast_sub hj]
 
+/- English proof (translation)
+Establish `h2 : (pkLow j τ 0 : RP Ψ N) = C (j : ℝ)` using `pLie_zero hj (Sum.inl τ)`. Unfold `deltaTerm ep`. Simplify using `only [Nat.sub_self, pLie_zero hj, h2, degFl_C_mul, pow_one, ← mul_assoc]`. Rewrite using `[tsum_mul_right]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem delta_one {j : ℕ} (hj : j ≤ N) (p : ℕ) (τ : Ψ) (fr : ℕ → Ψ ⊕ Ψ) (Q : RP Ψ N) :
     deltaTerm j p τ fr 1 Q = ep N j p fr * Real.log p * degFl Q := by
   have h2 : (pkLow j τ 0 : RP Ψ N) = C (j : ℝ) := pLie_zero hj (Sum.inl τ)
@@ -49,6 +62,19 @@ variable (T : RootTower Ψ N) (II : IntersectionSystem)
 
 omit [Fintype Ψ] [DecidableEq Ψ] in
 
+/- English proof (translation)
+Establish `hp' : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hj' : (j : ℝ) ≤ N` using `by exact_mod_cast hj`. Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `h1 : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`. Establish `hr0 : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`.
+
+Establish `hr1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Establish `hg : HasSum (fun n : ℕ => ((p : ℝ)⁻¹) ^ (n + 1) * N) (N / ((p : ℝ) - 1))`. Use `((hasSum_geometric_of_lt_one hr0 hr1).mul_right (p : ℝ)⁻¹).mul_right (N : ℝ)` as an intermediate fact. Establish `e : (1 - (p : ℝ)⁻¹)⁻¹ * (p : ℝ)⁻¹ * N = N / ((p : ℝ) - 1)`. Establish `: (p : ℝ) ≠ 0` using `by linarith`.
+
+Use `h1.ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite `this` using `[e]`. Simplify `this` using `only [pow_succ]`. Establish `hrk : ∀ s : Ψ ⊕ Ψ, 0 ≤ rk N j s ∧ rk N j s ≤ N`.
+
+Apply the tactic sequence `rintro (s | s) <;> simp only [rk] <;> constructor <;> linarith`. Establish `hle : ∀ n : ℕ, ((p : ℝ)⁻¹) ^ (n + 1) * rk N j (fr n) ≤ ((p : ℝ)⁻¹) ^ (n + 1) * N` using `fun n => mul_le_mul_of_nonneg_left (hrk _).2 (by positivity)`. Establish `hnn : ∀ n : ℕ, 0 ≤ ((p : ℝ)⁻¹) ^ (n + 1) * rk N j (fr n)` using `fun n => mul_nonneg (by positivity) (hrk _).1`. Establish `hs` using `Summable.of_nonneg_of_le hnn hle hg.summable`. Establish `hU` using `hs.tsum_le_tsum hle hg.summable`.
+
+Rewrite `hU` using `[hg.tsum_eq]`. Establish `hL : 0 ≤ ∑' n : ℕ, ((p : ℝ)⁻¹) ^ (n + 1) * rk N j (fr n)` using `tsum_nonneg hnn`. Establish `a1 : (j : ℝ) / ((p : ℝ) - 1) ≤ N / ((p : ℝ) - 1)` using `by gcongr`. Establish `a2 : 0 ≤ (j : ℝ) / ((p : ℝ) - 1)` using `by positivity`. Unfold `ep`.
+
+Conclude with `abs_le.2 ⟨by linarith, by linarith⟩`.
+-/
 theorem abs_ep_le {j p : ℕ} (hj : j ≤ N) (hp : 2 ≤ p) (fr : ℕ → Ψ ⊕ Ψ) : |ep N j p fr| ≤ N / ((p : ℝ) - 1) := by
   have hp' : (2 : ℝ) ≤ p := by exact_mod_cast hp
   have hj' : (j : ℝ) ≤ N := by exact_mod_cast hj

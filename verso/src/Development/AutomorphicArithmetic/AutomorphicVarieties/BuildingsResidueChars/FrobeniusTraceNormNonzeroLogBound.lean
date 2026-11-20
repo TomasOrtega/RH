@@ -4,6 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.EisensteinTraceDifferenceLogBound
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
+/- English proof (translation)
+Introduce `q e hq he D Orb _ z hz hσ`. Use `D.fin` as an intermediate fact. Use `letI : Fintype D.S := Fintype.ofFinite D.S`. Set `f : Orb → D.S → ℂ` to `fun o s => (q : ℂ) ^ e * (D.t s - eis3 q e (z o))`. Establish `key : ∀ o s, D.t s ≠ eis3 q e (z o) ∧ IsIntegral ℤ (f o s) ∧ Real.log ‖f o s‖ ≤ 2 * e * Real.log q + 1`.
+
+Introduce `o s`. Take `⟨k, hk, hzk⟩` from `hz o`. Conclude with `UpperTheory.eisenstein_trace_difference_log_bound q e k hq he hk (z o) (D.t s) hzk (D.bd s) (D.int s)`. Establish `hq0 : (q : ℂ) ≠ 0`. Establish `: q ≠ 0` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Establish `hf0 : ∀ o s, f o s ≠ 0` using `fun o s => mul_ne_zero (pow_ne_zero _ hq0) (sub_ne_zero.2 (key o s).1)`. Take `⟨n, hn⟩` from `UpperTheory.exists_int_eq_prod_of_galois_permuted_integral (Orb × D.S) (fun p => f p.1 p.2) (fun p => (key p.1 p.2).2.1) (by`. Introduce `σ`. Take `⟨u, hu⟩` from `hσ σ`.
+
+Take `⟨v, hv⟩` from `D.conj σ`. Use `⟨u.prodCongr v, fun p => ?_⟩` and prove the remaining obligations. Simplify using `[f, eis3, hu, hv])`. Use `⟨n, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Rewrite `hn` using `[h, Int.cast_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun p _ => hf0 p.1 p.2) hn.symm`. Establish `h1 : |(n : ℝ)| = ∏ p : Orb × D.S, ‖f p.1 p.2‖`. Rewrite using `[← norm_prod, ← hn, Complex.norm_intCast]`. Rewrite using `[h1, Real.log_prod (fun p _ => norm_ne_zero_iff.2 (hf0 p.1 p.2))]`.
+
+Use `(Finset.sum_le_sum (fun p _ => (key p.1 p.2).2.2)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_prod, Nat.card_eq_fintype_card, nsmul_eq_mul]`. Use `push_cast`. Conclude with `le_rfl`. Introduce `l _ hl ι Γ _ g admitted hcl X hX hinj`.
+
+Take `⟨cl, hc1, hc2⟩` from `hcl`. Use `⟨fun o ρ hρ h => ?_, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[hc2 ⟨ρ, hX o ρ hρ⟩]`. Conclude with `(key o _).1 (ι.symm.injective h)`. Establish `hq1 : ‖(q : Qbar l)‖ = 1`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 hl`. Establish `h2` using `UpperTheory.adicNorm_prod_le_prod_of_injective_classes l ι Orb D.S _ f (fun o s => (key o s).2.1) X (fun o r => cl ⟨r.1, hX o r.1 r.2⟩) (fun o r r' h => Subtype.ext (hinj o _ r.2 _ r'.2 (hc1 _ _ h)))`. Rewrite `h2` using `[← Fintype.prod_prod_type', ← hn, map_intCast]`. Use `h2.trans (le_of_eq (Finset.prod_congr rfl fun o _ => ?_))` and prove the remaining obligations.
+
+Rewrite using `[← Finset.prod_coe_sort (X o)]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hc2 ⟨r.1, hX o r.1 r.2⟩]`. Simplify using `only [f, map_mul, map_pow, map_natCast, map_sub, norm_mul, norm_pow, hq1, one_pow, one_mul]`.
+-/
 theorem UpperTheory.frobenius_trace_norm_nonzero_log_bound :
     ∀ (q e : ℕ), 7 ≤ q → 1 ≤ e → ∀ (D : TrData q e) (Orb : Type) [Fintype Orb] (z : Orb → ℂ), (∀ o, ∃ k : ℕ, 0 < k ∧ z o ^ k = 1) → (∀ σ : ℂ ≃+* ℂ, ∃ u : Orb ≃ Orb, ∀ o, z (u o) = σ (z o)) → ∃ NN : ℤ, NN ≠ 0 ∧ Real.log |(NN : ℝ)| ≤ Fintype.card Orb * Nat.card D.S * (2 * e * Real.log q + 1) ∧ ∀ (l : ℕ) [Fact l.Prime], ¬ l ∣ q → ∀ (ι : Qbar l ≃+* ℂ) (Γ : Type) [Group Γ] (g : Γ) (admitted : (Γ →* GL (Fin 3) (Qbar l)) → Prop), D.Classifies ι g admitted → ∀ X : Orb → Finset (Γ →* GL (Fin 3) (Qbar l)), (∀ o, ∀ ρ ∈ X o, admitted ρ) → (∀ o, ∀ ρ ∈ X o, ∀ ρ' ∈ X o, RepIso ρ ρ' → ρ = ρ') → (∀ o, ∀ ρ ∈ X o, (ρ g : Matrix (Fin 3) (Fin 3) (Qbar l)).trace ≠ ι.symm (eis3 q e (z o))) ∧ ‖((NN : ℤ) : Qbar l)‖ ≤ ∏ o, ∏ ρ ∈ X o, ‖(ρ g : Matrix (Fin 3) (Fin 3) (Qbar l)).trace - ι.symm (eis3 q e (z o))‖ := by
   intro q e hq he D Orb _ z hz hσ

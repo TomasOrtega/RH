@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.PTIso
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ e h`. Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hw`. Establish `hr : (w.comap (e : F →+* F')).IsReal` using `(InfinitePlace.isReal_comap_iff e).2 hw`.
+
+Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (h.isComplex _) hr`.
+-/
 theorem isTotallyComplex_of_ringEquiv : ∀ (F F' : Type) [Field F] [NumberField F] [Field F']
     [NumberField F'] (e : F ≃+* F'), IsTotallyComplex F → IsTotallyComplex F' := by
   intro F F' _ _ _ _ e h

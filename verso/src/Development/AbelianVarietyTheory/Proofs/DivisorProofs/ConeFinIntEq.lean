@@ -24,6 +24,9 @@ def disp {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (x₀ : Fin n → E
     Fin n → Fv F v ⊗[F] E :=
   fun i => compFin F E v ((l : AE F E) * (mat k⁻¹ *ᵥ incV F x₀) i) - compFin F E v (incV F x₀ i)
 
+/- English proof (translation)
+The claim follows from `mul_assoc _ _ _`.
+-/
 theorem coneFinInt_eq {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W) (om : Rep σ X W)
     (v : Pl F) (ev : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Fin n₁ × Fin d₁ → Fv F v) → ℂ)
     (u : (AE F E)ˣ → Matrix (Fin n) (Fin d) (AE F E)) (ν : Chr F E) (z : ℕ) (φ : (Fin n × Fin d → Fv F v) → ℂ)
@@ -31,6 +34,9 @@ theorem coneFinInt_eq {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (B :
     coneFinInt B M om v ev u ν z φ k l y = integ B M om v ev u φ k l y * ((ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z) :=
   mul_assoc _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[disp, mat, Matrix.one_mulVec]`.
+-/
 theorem disp_one_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (x₀ : Fin n → E) :
     disp v x₀ (1 : UA σ J) 1 = 0 := by
   funext i

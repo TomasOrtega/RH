@@ -8,12 +8,22 @@ namespace PositivityTheory.Rg.BcB.CV.ClassVanishing
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4
 
+/- English proof (translation)
+Use `letI : CommGroup G := { (inferInstance : Group G) with mul_comm := hc }`. Conclude with `⟨Measure.haar, inferInstance, Measure.IsHaarMeasure.isInvInvariant_of_regular _⟩`.
+-/
 theorem exists_haar_inv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [LocallyCompactSpace G] (hc : ∀ a b : G, a * b = b * a) :
     ∃ ν : Measure G, ν.IsHaarMeasure ∧ ν.IsInvInvariant := by
   letI : CommGroup G := { (inferInstance : Group G) with mul_comm := hc }
   exact ⟨Measure.haar, inferInstance, Measure.IsHaarMeasure.isInvInvariant_of_regular _⟩
 
+/- English proof (translation)
+Unfold `gam gamOn`. Rewrite using `[Finset.sum_eq_single (∅ : Finset (Fin 0 → SignType))]`. Simplify using the standard rewrite rules. Introduce `s hs hne`. It suffices to derive a contradiction.
+
+Apply `hne` to reduce the goal to its premises. Simplify using `only [Finset.mem_filter] at hs`. Conclude with `Finset.subset_empty.mp fun e he => absurd (Subsingleton.elim e 0 ▸ he) hs.2.1`. Introduce `h`. It suffices to derive a contradiction.
+
+Apply `h` to reduce the goal to its premises. Simplify using `[Finset.mem_filter]`.
+-/
 theorem gamma_fin_zero (y : (Fin 0 → SignType) → ℝ) (a : Fin 0 → ℝ) : gam y a = 1 := by
   unfold gam gamOn
   rw [Finset.sum_eq_single (∅ : Finset (Fin 0 → SignType))]
@@ -28,10 +38,16 @@ theorem gamma_fin_zero (y : (Fin 0 → SignType) → ℝ) (a : Fin 0 → ℝ) : 
     apply h
     simp [Finset.mem_filter]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem quot_congr {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) {H H' : Subgroup G} (h : H = H')
     (F : G → ℂ) : quotIntegral μ H Measure.count F = quotIntegral μ H' Measure.count F := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem quotL_congr {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) {H H' : Subgroup G} (h : H = H')
     (F : G → ENNReal) : quotLIntegral μ H Measure.count F = quotLIntegral μ H' Measure.count F := by
   subst h; rfl
@@ -40,6 +56,37 @@ end PositivityTheory.Rg.BcB.CV.ClassVanishing
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D4 PositivityTheory.Rg.BcB.CV
 
+/- English proof (translation)
+Introduce `hPP hTC hCG hQS hRD hSB hQA hVf hAT hCI hG1 hG2`. Introduce `E _ _ _ _ n`. Take `⟨C₀, hC₀⟩` from `hCG E n`. Use `⟨max 0 C₀, ?_⟩` and prove the remaining obligations. Introduce `_ _ μ _ τ r φ d hφ hsz hvc hτ hreg hne`.
+
+Take `⟨hLC, hT2, hSC, -, -, -⟩` from `hAT E n`. Use `haveI := hLC`. Use `haveI := hT2`. Use `haveI := hSC`. Take `⟨m, Wof, hiso, huniq, hzero, hmeet, hmono, hperp⟩` from `hPP E n d hreg`.
+
+Take `⟨hcomm, a, hdegT, hadd, hrat0, hcont, hcpt⟩` from `hTC E n d m Wof hiso huniq hzero hmeet hmono hreg`. Take `⟨hle, hdisc, hclosed⟩` from `hRD.1 E n d`. Use `haveI : LocallyCompactSpace (adCent d) := hclosed.locallyCompactSpace`. Use `haveI : BorelSpace (adCent d) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (adCent d) := TopologicalSpace.Subtype.secondCountableTopology _`.
+
+Establish `hcommT : ∀ s t : adCent d, s * t = t * s` using `fun s t => Subtype.ext (hcomm s s.2 t t.2)`. Take `⟨ν, hνH, hνI⟩` from `ClassVanishing.exists_haar_inv hcommT`. Use `haveI := hνH`. Use `haveI := hνI`. Establish `hmap : (ratIn d).map (adCent d).subtype = ratCent d`.
+
+Rewrite using `[ratIn, Subgroup.subgroupOf_map_subtype, inf_of_le_left hle]`. Use `set F : GA E n → ℂ := fun x => chiT τ x * φ (twConj (thetaA E n) x (ratGL E n d)) with hF`. Take `⟨hFm, hFinv, hFfin⟩` from `hCI E n μ τ φ d hφ`. Establish `hstage` using `hQS (GA E n) μ (adCent d) ν (ratIn d) F hclosed hdisc hFm (fun g hg x => hFinv g (Subgroup.mem_subgroupOf.1 hg) x) (by rw [ClassVanishing.quotL_congr μ hmap]; exact hFfin)`. Rewrite `hstage` using `[ClassVanishing.quot_congr μ hmap]`.
+
+Take `⟨V, hVdef⟩ : ∃ V : ((Fin m → SignType) → ℝ) → ℂ, V = fun y => quotIntegral ν (ratIn d) Measure.count fun t : adCent d => (gam y (a t) : ℂ)` from `⟨_, rfl⟩`. Establish `hcptT : ∀ M : ℝ, ∃ K : Set (adCent d), IsCompact K ∧ ∀ t : adCent d, (∀ i, |a t i| ≤ M) → t ∈ ((ratIn d : Subgroup (adCent d)) : Set (adCent d)) * K`. Introduce `M`. Take `⟨K, hK, hKt⟩` from `hcpt M`. Use `⟨Subtype.val ⁻¹' K, hclosed.isClosedEmbedding_subtypeVal.isCompact_preimage hK, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg, k, hk, hgk⟩` from `Set.mem_mul.1 (hKt t t.2 ht)`. Establish `hgA : g ∈ adCent d` using `hle hg`. Establish `hkA : k ∈ adCent d`. Establish `: k = g⁻¹ * t` using `by rw [← hgk]; group`. Rewrite using `[this]`.
+
+Conclude with `(adCent d).mul_mem ((adCent d).inv_mem hgA) t.2`. Conclude with `Set.mem_mul.2 ⟨⟨g, hgA⟩, hg, ⟨k, hkA⟩, hk, Subtype.ext hgk⟩`. Take `⟨hVP, hVtr⟩` from `hVf (adCent d) ν (ratIn d) m (fun t => a t) hcommT hdisc (continuousOn_iff_continuous_domRestrict.1 hcont) (fun s t => hadd s s.2 t t.2) (fun t ht => hrat0 t (Subgroup.mem_subgroupOf.1 ht)) hcptT`. Rewrite `hVP` using `[← hVdef]`. Establish `hVinv : ∀ t ∈ adCent d, ∀ y, V (fun e => y e - sdot e (a t)) = V y`.
+
+Introduce `t ht y`. Use `hVtr y ⟨t, ht⟩` as an intermediate fact. Rewrite using `[hVdef]`. Conclude with `this`. Establish `hinner : ∀ x, (quotIntegral ν (ratIn d) Measure.count fun t : adCent d => F ((t : GA E n) * x)) = φ (twConj (thetaA E n) x (ratGL E n d)) * V (yOf τ Wof x)`.
+
+Introduce `x`. Establish `hpt : (fun t : adCent d => F ((t : GA E n) * x)) = fun t : adCent d => φ (twConj (thetaA E n) x (ratGL E n d)) * (gam (yOf τ Wof x) (a t) : ℂ)`. Use function extensionality and compare the values at `t`. Use `show chiT τ ((t : GA E n) * x) * φ (twConj (thetaA E n) ((t : GA E n) * x) (ratGL E n d)) = _`. Rewrite using `[twConj_mul_left (thetaA E n) (ratGL E n d) t.2 x]`.
+
+Distinguish the cases in `h0 : φ (twConj (thetaA E n) x (ratGL E n d)) = 0`. Simplify using `[h0]`. Establish `h1` using `hsz _ h0`. Establish `h2` using `(hSB E n).2.1 (twConj (thetaA E n) x (ratGL E n d))`. Establish `hτ' : C₀ * (1 + logSize (twConj (thetaA E n) x (ratGL E n d))) ≤ τ`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(mul_comm _ _).trans (congrArg (fun z => φ (twConj (thetaA E n) x (ratGL E n d)) * z) (hC₀ d m Wof a hiso huniq hzero hmeet hmono hreg hdegT τ x hτ' t t.2))`. Rewrite using `[hpt, (hQA (adCent d) ν (ratIn d) Measure.count).2.2 (φ (twConj (thetaA E n) x (ratGL E n d))) (fun t : adCent d => (gam (yOf τ Wof x) (a t) : ℂ)), hVdef]`. Establish `hcut : cutTerm μ τ φ d = quotIntegral μ (adCent d) ν (fun x => φ (twConj (thetaA E n) x (ratGL E n d)) * V (yOf τ Wof x))` using `by show quotIntegral μ (ratCent d) Measure.count F = _`. Rewrite using `[hstage]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hinner x`. Rewrite using `[hcut]`. Distinguish the cases in `hm : m = 0`.
+
+Substitute `hm` using the available equality. Establish `hV : ∀ y, V y = V 0` using `fun y => by`. Rewrite using `[hVdef]`. Simplify using `only [ClassVanishing.gamma_fin_zero]`. Rewrite using `[show (fun x => φ (twConj (thetaA E n) x (ratGL E n d)) * V (yOf τ Wof x)) = fun x => V 0 * φ (twConj (thetaA E n) x (ratGL E n d)) from funext fun x => by rw [hV, mul_comm], (hQA (GA E n) μ (adCent d) ν).2.2 (V 0) (fun x => φ (twConj (thetaA E n) x (ratGL E n d))), hG1 E n μ d ν …`.
+
+Conclude with `hG2 E n m μ d ν Wof a V τ φ hm ⟨hreg, hiso, huniq, hzero, hmeet, hmono, hperp, hcomm, hclosed, hdegT⟩ hVP hVinv hφ hvc`.
+-/
 theorem PositivityTheory.Rg.BcB.CV.pf_ClassVanish : PositivityTheory.Rg.BcB.D4.PairParam → PositivityTheory.Rg.BcB.D4.TorusChar → PositivityTheory.Rg.BcB.D4.ChiGam → PositivityTheory.Rg.BcB.D4.QuotStage → PositivityTheory.Rg.BcB.D4.RatDisc → PositivityTheory.Rg.BcB.SizeBasic → PositivityTheory.Rg.BcB.CV.QAdd → PositivityTheory.Rg.BcB.CV.Vfun → PositivityTheory.Rg.BcB.CV.AdTop → PositivityTheory.Rg.BcB.CV.CutInt → PositivityTheory.Rg.BcB.CV.Glob1 → PositivityTheory.Rg.BcB.CV.Glob2 → PositivityTheory.Rg.BcB.ClassVanish := by
   intro hPP hTC hCG hQS hRD hSB hQA hVf hAT hCI hG1 hG2
   intro E _ _ _ _ n

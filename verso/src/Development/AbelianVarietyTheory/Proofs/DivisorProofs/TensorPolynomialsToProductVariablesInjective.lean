@@ -10,6 +10,13 @@ namespace GlobalTheory.CCRFock
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `key : ∀ (f : W → (Λ →₀ ℕ)) (w : W) (l : Λ), (∑ w, Finsupp.mapDomain (Prod.mk w) (f w)) (w, l) = f w l`. Introduce `f w l`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single w]`. Conclude with `Finsupp.mapDomain_apply (Prod.mk_right_injective w) _ _`. Introduce `v _ hv`.
+
+Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩`. Conclude with `hv (congrArg Prod.fst hx)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+
+Introduce `f g h`. Use function extensionality and compare the values at `w`. Use extensionality with `l`. Rewrite using `[← key f w l, ← key g w l]`. Conclude with `congrArg (fun F : (W × Λ) →₀ ℕ => F (w, l)) h`.
+-/
 theorem polMap_index_injective (W Λ : Type) [Fintype W] :
     Function.Injective (fun f : W → (Λ →₀ ℕ) => ∑ w, Finsupp.mapDomain (Prod.mk w) (f w)) := by
   have key : ∀ (f : W → (Λ →₀ ℕ)) (w : W) (l : Λ),
@@ -29,6 +36,9 @@ theorem polMap_index_injective (W Λ : Type) [Fintype W] :
   rw [← key f w l, ← key g w l]
   exact congrArg (fun F : (W × Λ) →₀ ℕ => F (w, l)) h
 
+/- English proof (translation)
+Rewrite using `[monomial_sum_one]`. Simplify using `only [polMap, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply, rename_monomial]`.
+-/
 theorem polMap_tprod_monomial (W Λ : Type) [Fintype W] [DecidableEq W] (f : W → (Λ →₀ ℕ)) :
     polMap W Λ (PiTensorProduct.tprod ℂ (fun w => (monomial (f w) (1 : ℂ) : MvPolynomial Λ ℂ))) =
       monomial (∑ w, Finsupp.mapDomain (Prod.mk w) (f w)) 1 := by
@@ -36,6 +46,15 @@ theorem polMap_tprod_monomial (W Λ : Type) [Fintype W] [DecidableEq W] (f : W �
   simp only [polMap, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply,
     MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply, rename_monomial]
 
+/- English proof (translation)
+Set `B` to `Basis.piTensorProduct (fun _ : W => basisMonomials Λ ℂ)`. Establish `hli : LinearIndependent ℂ (polMap W Λ ∘ B)`. Establish `h` using `(basisMonomials (W × Λ) ℂ).linearIndependent.comp _ (polMap_index_injective W Λ)`. Establish `e : polMap W Λ ∘ B = (basisMonomials (W × Λ) ℂ) ∘ (fun f : W → (Λ →₀ ℕ) => ∑ w, Finsupp.mapDomain (Prod.mk w) (f w))`. Use function extensionality and compare the values at `f`.
+
+Simplify using `only [Function.comp, B, Basis.piTensorProduct_apply, coe_basisMonomials]`. Conclude with `polMap_tprod_monomial W Λ f`. Rewrite using `[e]`. Conclude with `h`. Establish `h1 : polMap W Λ ∘ₗ Finsupp.linearCombination ℂ B = Finsupp.linearCombination ℂ (polMap W Λ ∘ B)`.
+
+Use extensionality with `f`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Apply `B.repr.injective` to reduce the goal to its premises. Apply `hli` to reduce the goal to its premises.
+
+Rewrite using `[← h1]`. Simplify using `only [LinearMap.comp_apply, Module.Basis.linearCombination_repr, hxy]`.
+-/
 theorem polMap_injective (W Λ : Type) [Fintype W] [DecidableEq W] :
     Function.Injective (polMap W Λ) := by
   let B := Basis.piTensorProduct (fun _ : W => basisMonomials Λ ℂ)

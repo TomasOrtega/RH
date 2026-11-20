@@ -14,6 +14,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.DeltaFixed
 
+/- English proof (translation)
+Introduce `D ρ hρ i j b χ hχ hval τ hτ σ`. Use `set ψ := Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i) with hψ`. Use `set f : D.ntw.O0 i →+* ℂ := (ρ.eO i b).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i)) with hf`. Establish `hker : IsOpen (ψ.ker : Set (G D.host.E D.nd.Om))`. Consider the cases of `b`.
+
+Establish `e : (ψ.ker : Set (G D.host.E D.nd.Om)) = ((D.ntw.delta i).ker : Set _)`. Use extensionality with `g`. Simplify using `[hψ, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, MonoidHom.mem_ker]`. Rewrite using `[e]`. Conclude with `D.ntw.delta_open i`.
+
+Simplify `D.ntw.delta_open i` using `[hψ, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt]`. Establish `hram : ∀ v, v ∉ D.ntw.pD i → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A v → ∀ g ∈ Ine (F` using `D.host.E) A, ψ g = 1 := by`. Introduce `v hv A hA g hg`. Establish `h1 : D.ntw.delta i g = 1`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv ((D.ntw.delta_ram i v A hA).1 ⟨g, hg, h⟩)`. Apply the tactic sequence `cases b <;> simp [hψ, Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, h1]`. Use `haveI : Finite (G D.host.E D.nd.Om ⧸ ψ.ker) := Subgroup.quotient_finite_of_isOpen _ hker`. Establish `hn : ψ.ker.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `hpow : ∀ g, ψ g ^ ψ.ker.index = 1` using `fun g => by`.
+
+Rewrite using `[← map_pow]`. Conclude with `(MonoidHom.mem_ker).1 (Subgroup.pow_index_mem _ g)`. Establish `hchi : ChrEq (charOf ρ.rc f ψ) χ`. Use `hχ` as an intermediate fact. Rewrite `this` using `[hρ.delta i j b]`.
+
+Conclude with `this`. Set `r' : G D.host.E D.nd.Om →* ℂˣ` to `(Units.map f.toMonoidHom).comp ψ`. Set `r : G D.host.E D.nd.Om →* ℂˣ` to `(Units.map ((τ : ℂ →+* ℂ).comp f).toMonoidHom).comp ψ`. Establish `hr' : Continuous r'` using `GlobalTheory.DeltaGal.continuous_comp_of_isOpen_ker ψ hker (Units.map f.toMonoidHom)`. Establish `hr : Continuous r` using `GlobalTheory.DeltaGal.continuous_comp_of_isOpen_ker ψ hker (Units.map ((τ : ℂ →+* ℂ).comp f).toMonoidHom)`.
+
+Establish `hart : IsGlobalArtin ρ.rc.art` using `hρ.rc.artin`. Take `⟨_, _, _, _, hidem, _⟩` from `GlobalTheory.EtaProduct.exists_ev D`. Establish `key : r = r'`. Use `GlobalTheory.GalChar.eq_of_frob hart hr hr' ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.GalChar.unr_ae χ`.
+
+Establish `h2 : ∀ᶠ v in Filter.cofinite, v ∉ D.ntw.pD i` using `Filter.eventually_cofinite.2 (by simpa using (D.ntw.pD i).finite_toSet)`. Use `filter_upwards [h1, h2] with v hunr hv A hA s hs`. Take `⟨x0, hx0, hx0a⟩` from `(hart.frob v A hA (toAb D.host.E D.nd.Om s⁻¹)).2 ⟨s, hs, rfl⟩`. Use `set k := unif v`. Establish `hk : IsUnifAt v (atFin v k)` using `unif_spec v`.
+
+Establish `hu : IsUnitAt v (x0 * (atFin v k)⁻¹)`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hx0 hk`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hx0, hk]`. Conclude with `mul_inv_cancel₀ (by simp)`.
+
+Take `⟨t, ht, hta⟩` from `GlobalTheory.GalChar.exists_ine hart hA hu`. Establish `hψt : ψ t = 1` using `hram v hv A hA t ht`. Take `⟨e, he⟩` from `hidem v`. Set `xe : (Formalism.L2.Theta.AE D)ˣ` to `(Formalism.L2.JoinChr.isUnit_locE he.1 k).unit`. Establish `hxe : ρ.rc.sym xe = toAb D.host.E D.nd.Om (t⁻¹ * s⁻¹)`.
+
+Establish `e1 : Units.map ρ.rc.κ.toMonoidHom xe = Neutral.B1.localIdele D.host.E v (atFin v k)`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hρ.rc.loc v e he k`. Establish `e2 : atFin v k = (x0 * (atFin v k)⁻¹)⁻¹ * x0` using `by group`. Express the relevant statement in the definitionally equal form `ρ.rc.art (Units.map ρ.rc.κ.toMonoidHom xe) = _`.
+
+Rewrite using `[e1, e2, map_mul, map_mul, map_inv, map_inv, hta, hx0a, ← map_inv, ← map_mul]`. Establish `hc` using `charOf_eq ρ.rc f hker hxe hn (hpow _)`. Establish `hc2` using `hchi.2 v e he k xe rfl`. Establish `hloc : χ.locK v k = χ.val v` using `χ.val_eq hunr _ hk`. Take `⟨y, hy⟩` from `hval v hunr`.
+
+Establish `hy' : embLL0 D y = ((χ.val v : ℂˣ) : ℂ)`. Rewrite using `[hy, HChar.valTw]`. Simplify using the standard rewrite rules. Establish `hfs : f ((ψ s : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = embLL0 D y⁻¹`. Establish `h3 : f ((ψ (t⁻¹ * s⁻¹) : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = embLL0 D y`.
+
+Rewrite using `[← hc, hc2, hloc, hy']`. Rewrite `h3` using `[map_mul, map_inv, map_inv, hψt, inv_one, one_mul, map_units_inv]`. Rewrite using `[map_inv₀, ← h3, inv_inv]`. Apply `Units.ext` to reduce the goal to its premises. Use `show τ (f ((ψ s : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)) = f ((ψ s : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)`.
+
+Rewrite using `[hfs]`. Conclude with `hτ _`. Use `congrArg (fun φ : G D.host.E D.nd.Om →* ℂˣ => ((φ σ : ℂˣ) : ℂ)) key` as an intermediate fact. Conclude with `this`.
+-/
 theorem aut_fixes_delta_values : ∀ {D : D7} (ρ : Setup D.ntw), ρ.Good → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (χ : HChar D.host.E),
     ChrEq (ρ.B i j b).de.chi χ → χ.ValuesIn 0 (embLL0 D) → ∀ τ : ℂ ≃+* ℂ, (∀ y, τ (embLL0 D y) = embLL0 D y) →
     ∀ σ, τ (ρ.eO i b (algebraMap (D.ntw.O0 i) (D.ntw.O i)

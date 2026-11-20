@@ -4,6 +4,27 @@ import GroundTheory.AutomorphicForms.HarishChandraRegularity.CartanBasis
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
+/- English proof (translation)
+Introduce `V _ _ _ B k p hc hsymm hneg hpos hzero`. Take `⟨bk, hbk⟩` from `exists_signed_basis (B.restrict k) (fun x y => hsymm (x : V) y) (s := -1) (by norm_num) (fun v hv => by`. Establish `h0 : (v : V) ≠ 0` using `fun e => hv (Subtype.ext e)`. Use `hneg v v.2 h0` as an intermediate fact. Express the relevant statement in the definitionally equal form `0 < _ * B (v : V) v`.
+
+Use the proof step `linarith)`. Take `⟨bp, hbp⟩` from `exists_signed_basis (B.restrict p) (fun x y => hsymm (x : V) y) (s := 1) (by norm_num) (fun v hv => by`. Establish `h0 : (v : V) ≠ 0` using `fun e => hv (Subtype.ext e)`. Use `hpos v v.2 h0` as an intermediate fact. Express the relevant statement in the definitionally equal form `0 < _ * B (v : V) v`.
+
+Use the proof step `linarith)`. Use `set e := Submodule.prodEquivOfIsCompl k p hc`. Use `set b0 := (bk.prod bp).map e`. Use `set f : Fin (Module.finrank ℝ k) ⊕ Fin (Module.finrank ℝ p) → V := Sum.elim (fun i => (bk i : V)) (fun j => (bp j : V))`. Establish `hb0 : ∀ x, b0 x = f x`.
+
+Introduce and unpack `(i | j)`. Simplify using `[b0, e, f, Submodule.coe_prodEquivOfIsCompl']`. Simplify using `[b0, e, f, Submodule.coe_prodEquivOfIsCompl']`. Use `set ε0 : Fin (Module.finrank ℝ k) ⊕ Fin (Module.finrank ℝ p) → ℝ := Sum.elim (fun _ => -1) (fun _ => 1)`. Establish `horth : ∀ x y, B (b0 x) (b0 y) = if x = y then ε0 x else 0`.
+
+Introduce `x y`. Rewrite using `[hb0, hb0]`. Apply the tactic sequence `rcases x with i | i <;> rcases y with j | j`. Use `hbk i j` as an intermediate fact. Express the relevant statement in the definitionally equal form `B _ _ = _ at this`.
+
+Simplify using `only [f, ε0, Sum.elim_inl, Sum.inl.injEq]`. Conclude with `this`. Simplify using `only [f, ε0, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`. Conclude with `hzero _ (bk i).2 _ (bp j).2`. Simplify using `only [f, ε0, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, if_false]`.
+
+Rewrite using `[hsymm]`. Conclude with `hzero _ (bk j).2 _ (bp i).2`. Use `hbp i j` as an intermediate fact. Express the relevant statement in the definitionally equal form `B _ _ = _ at this`. Simplify using `only [f, ε0, Sum.elim_inr, Sum.inr.injEq]`.
+
+Conclude with `this`. Use `set σ := finSumFinEquiv (m := Module.finrank ℝ k) (n := Module.finrank ℝ p)`. Use `⟨_, b0.reindex σ, ε0 ∘ σ.symm, fun i => ?_, fun i j => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases hx : σ.symm i with a | a <;> simp [ε0, hx]`. Rewrite using `[Module.Basis.reindex_apply, Module.Basis.reindex_apply, horth]`.
+
+Simplify using `only [Function.comp_apply, σ.symm.injective.eq_iff]`. Rewrite using `[Module.Basis.reindex_apply, hb0]`. Simplify using `only [Function.comp_apply] at hi`. Break down `hx : σ.symm i with a | a` into its components or cases. Simplify using `only [f, Sum.elim_inl]`.
+
+Conclude with `(bk a).2`. Rewrite `hi` using `[hx]`. Simplify using `[ε0] at hi`. Evaluate the numerical expressions using `at hi`.
+-/
 theorem UpperTheory.exists_signed_orthonormal_basis_of_isCompl :
     ∀ (V : Type) [AddCommGroup V] [Module ℝ V] [FiniteDimensional ℝ V] (B : LinearMap.BilinForm ℝ V) (k p : Submodule ℝ V), IsCompl k p → (∀ X Y, B X Y = B Y X) → (∀ X ∈ k, X ≠ 0 → B X X < 0) → (∀ X ∈ p, X ≠ 0 → 0 < B X X) → (∀ X ∈ k, ∀ Y ∈ p, B X Y = 0) → ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ V) (ε : Fin d → ℝ), (∀ i, ε i = 1 ∨ ε i = -1) ∧ (∀ i j, B (b i) (b j) = if i = j then ε i else 0) ∧ ∀ i, ε i = -1 → b i ∈ k := by
   intro V _ _ _ B k p hc hsymm hneg hpos hzero

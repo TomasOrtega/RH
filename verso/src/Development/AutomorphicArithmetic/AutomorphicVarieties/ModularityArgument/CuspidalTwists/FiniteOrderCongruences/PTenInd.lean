@@ -15,6 +15,9 @@ section Mat
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Rewrite using `[Matrix.charpoly_fin_two, Matrix.charpoly_fin_two, Matrix.charpoly, Matrix.det_succ_row_zero]`. Simplify using `(config := {decide := true}) [Fin.succAbove, Fin.sum_univ_succ, Matrix.det_succ_row_zero, Matrix.submatrix_apply, Matrix.charmatrix_apply, Matrix.diagonal_apply, tn, Matrix.trace_fin_two]`. Use `ring1`.
+-/
 theorem ti_cp_on (g : Matrix (Fin 2) (Fin 2) k) (a b : k) :
     (tn g !![a, b; b, a]).charpoly = ((a + b) • g).charpoly * ((a - b) • g).charpoly := by
   rw [Matrix.charpoly_fin_two, Matrix.charpoly_fin_two, Matrix.charpoly, Matrix.det_succ_row_zero]
@@ -22,6 +25,9 @@ theorem ti_cp_on (g : Matrix (Fin 2) (Fin 2) k) (a b : k) :
     Matrix.diagonal_apply, tn, Matrix.trace_fin_two]
   ring1
 
+/- English proof (translation)
+Establish `h' : (C p : k[X]) ^ 2 - C q ^ 2 = 1` using `by rw [← map_pow, ← map_pow, ← map_sub, h, map_one]`. Rewrite using `[Matrix.charpoly_fin_two, Matrix.charpoly, Matrix.det_succ_row_zero]`. Simplify using `(config := {decide := true}) [Fin.succAbove, Fin.sum_univ_succ, Matrix.det_succ_row_zero, Matrix.submatrix_apply, Matrix.charmatrix_apply, Matrix.diagonal_apply, tn, Matrix.trace_fin_two, Matrix.mul_apply, Polynomial.sub_comp, Polynomial.add_comp, Polynomial.mul_comp, Polynomial. …`. Take the linear combination `(-((C (g 0 0) + C (g 1 1)) ^ 2 - 2 * (C (g 0 0) * C (g 1 1) - C (g 0 1) * C (g 1 0))) * X ^ 2 + (C p ^ 2 - C q ^ 2 + 1) * (C (g 0 0) * C (g 1 1) - C (g 0 1) * C (g 1 0)) ^ 2) * h'`.
+-/
 theorem ti_cp_off (g : Matrix (Fin 2) (Fin 2) k) (p q : k) (h : p ^ 2 - q ^ 2 = 1) :
     (tn g !![p, q; -q, -p]).charpoly = (g * g).charpoly.comp (X ^ 2) := by
   have h' : (C p : k[X]) ^ 2 - C q ^ 2 = 1 := by rw [← map_pow, ← map_pow, ← map_sub, h, map_one]
@@ -32,15 +38,24 @@ theorem ti_cp_off (g : Matrix (Fin 2) (Fin 2) k) (p q : k) (h : p ^ 2 - q ^ 2 = 
   linear_combination (-((C (g 0 0) + C (g 1 1)) ^ 2 - 2 * (C (g 0 0) * C (g 1 1) - C (g 0 1) * C (g 1 0))) * X ^ 2 +
     (C p ^ 2 - C q ^ 2 + 1) * (C (g 0 0) * C (g 1 1) - C (g 0 1) * C (g 1 0)) ^ 2) * h'
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tn] <;> first | linear_combination h | linear_combination -h`.
+-/
 theorem ti_tn_ker (c a : k) (h : c * a = 1) : tn (c • (1 : Matrix (Fin 2) (Fin 2) k)) !![a, 0; 0, a] = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [tn] <;> first | linear_combination h | linear_combination -h
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | linear_combination h | ring1`.
+-/
 theorem ti_sq_mat (p q : k) (h : p ^ 2 - q ^ 2 = 1) :
     !![p, q; -q, -p] * !![p, q; -q, -p] = (1 : Matrix (Fin 2) (Fin 2) k) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | linear_combination h | ring1
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp [Matrix.mul_fin_two]; linear_combination (a - b) * h)`. Consider the case `(simp [Matrix.mul_apply, Fin.sum_univ_two]; linear_combination (a - b) * h)`.
+-/
 theorem ti_conj_mat (a b p q : k) (h : p ^ 2 - q ^ 2 = 1) :
     (!![p, q; -q, -p] * !![a, b; b, a] * !![p, q; -q, -p]) 0 0 +
       (!![p, q; -q, -p] * !![a, b; b, a] * !![p, q; -q, -p]) 0 1 = a - b := by
@@ -48,11 +63,17 @@ theorem ti_conj_mat (a b p q : k) (h : p ^ 2 - q ^ 2 = 1) :
   | (simp [Matrix.mul_fin_two]; linear_combination (a - b) * h)
   | (simp [Matrix.mul_apply, Fin.sum_univ_two]; linear_combination (a - b) * h)
 
+/- English proof (translation)
+Rewrite using `[← Matrix.charpoly_units_conj M (c • N), mul_smul_comm, smul_mul_assoc, Matrix.coe_units_inv]`.
+-/
 theorem ti_cp_conj {n : ℕ} (c : k) (M : GL (Fin n) k) (N : Matrix (Fin n) (Fin n) k) :
     (c • ((M : Matrix (Fin n) (Fin n) k) * N * ((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))).charpoly =
       (c • N).charpoly := by
   rw [← Matrix.charpoly_units_conj M (c • N), mul_smul_comm, smul_mul_assoc, Matrix.coe_units_inv]
 
+/- English proof (translation)
+Use `ti_cp_conj c M⁻¹ N` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem ti_cp_conj' {n : ℕ} (c : k) (M : GL (Fin n) k) (N : Matrix (Fin n) (Fin n) k) :
     (c • (((M⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * N * (M : Matrix (Fin n) (Fin n) k))).charpoly =
       (c • N).charpoly := by
@@ -79,31 +100,51 @@ structure TIHyp (H : Subgroup Γ) (res : Δ →* Γ) (ρ : Γ →* GL (Fin 2) k)
 variable {H : Subgroup Γ} {res : Δ →* Γ} {ρ : Γ →* GL (Fin 2) k} {κ : Δ →* kˣ}
   {Gm T : Γ →* Matrix (Fin 2) (Fin 2) k} {R : Γ →* GL (Fin 4) k} {P : GL (Fin 2) k}
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.eta_fin_two (T x)]`. Rewrite using `[(hy.hon x hx).1, (hy.hon x hx).2]`.
+-/
 theorem ti_shape_on (hy : TIHyp H res ρ κ Gm T R P) {x : Γ} (hx : x ∈ H) :
     T x = !![T x 0 0, T x 0 1; T x 0 1, T x 0 0] := by
   conv_lhs => rw [Matrix.eta_fin_two (T x)]
   rw [(hy.hon x hx).1, (hy.hon x hx).2]
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.eta_fin_two (T x)]`. Rewrite using `[(hy.hoff x hx).1, (hy.hoff x hx).2]`.
+-/
 theorem ti_shape_off (hy : TIHyp H res ρ κ Gm T R P) {x : Γ} (hx : x ∉ H) :
     T x = !![T x 0 0, T x 0 1; -T x 0 1, -T x 0 0] := by
   conv_lhs => rw [Matrix.eta_fin_two (T x)]
   rw [(hy.hoff x hx).1, (hy.hoff x hx).2]
 
+/- English proof (translation)
+Establish `h` using `hy.hform x`. Rewrite `h` using `[(hy.hoff x hx).2]`. Take the linear combination `h`.
+-/
 theorem ti_form_off (hy : TIHyp H res ρ κ Gm T R P) {x : Γ} (hx : x ∉ H) :
     T x 0 0 ^ 2 - T x 0 1 ^ 2 = 1 := by
   have h := hy.hform x
   rw [(hy.hoff x hx).2] at h
   linear_combination h
 
+/- English proof (translation)
+Rewrite using `[ti_shape_off hy ht]`. Conclude with `ti_sq_mat _ _ (ti_form_off hy ht)`.
+-/
 theorem ti_sq (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) : T t * T t = 1 := by
   rw [ti_shape_off hy ht]
   exact ti_sq_mat _ _ (ti_form_off hy ht)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ti_inv (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) : T t⁻¹ = T t := by
   calc T t⁻¹ = T t⁻¹ * (T t * T t) := by rw [ti_sq hy ht, mul_one]
     _ = T (t⁻¹ * t) * T t := by rw [map_mul, mul_assoc]
     _ = T t := by rw [inv_mul_cancel, map_one, one_mul]
 
+/- English proof (translation)
+Establish `hx` using `hy.hres g`. Take `⟨a, ha⟩ : ∃ a, T (res g) 0 0 = a` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b, T (res g) 0 1 = b` from `⟨_, rfl⟩`. Take `⟨p, hp⟩ : ∃ p, T t 0 0 = p` from `⟨_, rfl⟩`. Take `⟨q, hq⟩ : ∃ q, T t 0 1 = q` from `⟨_, rfl⟩`.
+
+Establish `hTx : T (res g) = !![a, b; b, a]` using `by rw [ti_shape_on hy hx, ha, hb]`. Establish `hTt : T t = !![p, q; -q, -p]` using `by rw [ti_shape_off hy ht, hp, hq]`. Establish `hpq : p ^ 2 - q ^ 2 = 1` using `by rw [← hp, ← hq]; exact ti_form_off hy ht`. Rewrite using `[hy.hkap g', ha, hb, hg', map_mul, map_mul, ti_inv hy ht, hTt, hTx]`. Conclude with `ti_conj_mat a b p q hpq`.
+-/
 theorem ti_kap_conj (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) {g g' : Δ}
     (hg' : res g' = t⁻¹ * res g * t) : (κ g' : k) = T (res g) 0 0 - T (res g) 0 1 := by
   have hx := hy.hres g
@@ -117,6 +158,11 @@ theorem ti_kap_conj (hy : TIHyp H res ρ κ Gm T R P) {t : Γ} (ht : t ∉ H) {g
   rw [hy.hkap g', ha, hb, hg', map_mul, map_mul, ti_inv hy ht, hTt, hTx]
   exact ti_conj_mat a b p q hpq
 
+/- English proof (translation)
+Establish `hx` using `hy.hres g`. Establish `hk'` using `ti_kap_conj hy ht hg'`. Take `⟨a, ha⟩ : ∃ a, T (res g) 0 0 = a` from `⟨_, rfl⟩`. Take `⟨b, hb⟩ : ∃ b, T (res g) 0 1 = b` from `⟨_, rfl⟩`. Establish `hTx : T (res g) = !![a, b; b, a]` using `by rw [ti_shape_on hy hx, ha, hb]`.
+
+Establish `hρ' : (ρ (res g') : Matrix (Fin 2) (Fin 2) k) = (((ρ t)⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) * (ρ (res g) : Matrix (Fin 2) (Fin 2) k) * (ρ t : Matrix (Fin 2) (Fin 2) k)`. Rewrite using `[hg', map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul]`. Rewrite using `[UpperTheory.V.Af.tw_val, UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, MonoidHom.comp_apply, hρ', hk', hy.hkap g, ha, hb, hy.hrr, hTx, ti_cp_on, hy.hgm]`. Simplify using `only [ti_cp_conj, ti_cp_conj']`.
+-/
 theorem ti_on (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g g' : Δ) (hg' : res g' = t⁻¹ * res g * t) :
     (R (res g) : Matrix (Fin 4) (Fin 4) k).charpoly =
       (UpperTheory.V.Af.tw (ρ.comp res) κ g : Matrix (Fin 2) (Fin 2) k).charpoly *
@@ -133,6 +179,11 @@ theorem ti_on (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g g' : 
     ha, hb, hy.hrr, hTx, ti_cp_on, hy.hgm]
   simp only [ti_cp_conj, ti_cp_conj']
 
+/- English proof (translation)
+Take `⟨p, hp⟩ : ∃ p, T t 0 0 = p` from `⟨_, rfl⟩`. Take `⟨q, hq⟩ : ∃ q, T t 0 1 = q` from `⟨_, rfl⟩`. Establish `hTt : T t = !![p, q; -q, -p]` using `by rw [ti_shape_off hy ht, hp, hq]`. Establish `hpq : p ^ 2 - q ^ 2 = 1` using `by rw [← hp, ← hq]; exact ti_form_off hy ht`. Establish `hk : (κ g : k) = 1`.
+
+Rewrite using `[hy.hkap g, hg, map_mul, hTt, ti_sq_mat p q hpq]`. Simplify using the standard rewrite rules. Rewrite using `[UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, hk, one_smul, hg, hy.hrr, hTt, ti_cp_off _ _ _ hpq, ← map_mul Gm, hy.hgm, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 theorem ti_off (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g : Δ) (hg : res g = t * t) :
     (R t : Matrix (Fin 4) (Fin 4) k).charpoly =
       (UpperTheory.V.Af.tw (ρ.comp res) κ g : Matrix (Fin 2) (Fin 2) k).charpoly.comp (X ^ 2) := by
@@ -146,6 +197,19 @@ theorem ti_off (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g : Δ
   rw [UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, hk, one_smul, hg, hy.hrr, hTt, ti_cp_off _ _ _ hpq,
     ← map_mul Gm, hy.hgm, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
+/- English proof (translation)
+Establish `hx` using `hy.hres g`. Establish `e1 : (κ g : k) • (ρ (res g) : Matrix (Fin 2) (Fin 2) k) = 1`. Establish `e` using `congrArg Units.val h1`. Rewrite `e` using `[UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, Units.val_one]`. Then use the resulting hypothesis. Establish `e2 : (κ g' : k) • (ρ (res g') : Matrix (Fin 2) (Fin 2) k) = 1`.
+
+Establish `e` using `congrArg Units.val h1'`. Rewrite `e` using `[UpperTheory.V.Af.tw_val, MonoidHom.comp_apply, Units.val_one]`. Then use the resulting hypothesis. Establish `hne : (κ g : k) ≠ 0` using `Units.ne_zero _`. Establish `hρx : (ρ (res g) : Matrix (Fin 2) (Fin 2) k) = (κ g : k)⁻¹ • 1`. Rewrite using `[← e1, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+
+Establish `hρx' : (ρ (res g') : Matrix (Fin 2) (Fin 2) k) = (κ g : k)⁻¹ • 1`. Rewrite using `[hg', map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, hρx, mul_smul_comm, mul_one, smul_mul_assoc, Units.inv_mul]`. Establish `e3 : (κ g' : k) * (κ g : k)⁻¹ = 1`. Establish `e` using `congrFun (congrFun e2 0) 0`. Rewrite `e` using `[hρx', smul_smul]`.
+
+Simplify using `using e`. Establish `hkk : (κ g' : k) = κ g` using `(mul_inv_eq_one₀ hne).1 e3`. Rewrite `hkk` using `[ti_kap_conj hy ht hg', hy.hkap g]`. Establish `hb : T (res g) 0 1 = 0`. Establish `h2 : (2 : k) * T (res g) 0 1 = 0` using `by linear_combination -hkk`.
+
+Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `h`. Establish `ha0 : T (res g) 0 0 ≠ 0`. Establish `h` using `hne`.
+
+Rewrite `h` using `[hy.hkap g, hb, add_zero]`. Then use the resulting hypothesis. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hy.hrr, Units.val_one, hy.hgm, hρx, mul_smul_comm, mul_one, smul_mul_assoc, Units.mul_inv, ti_shape_on hy hx, hy.hkap g, hb, add_zero]`. Conclude with `ti_tn_ker _ _ (inv_mul_cancel₀ ha0)`.
+-/
 theorem ti_ker [CharZero k] (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t ∉ H) (g g' : Δ)
     (hg' : res g' = t⁻¹ * res g * t) (h1 : UpperTheory.V.Af.tw (ρ.comp res) κ g = 1)
     (h1' : UpperTheory.V.Af.tw (ρ.comp res) κ g' = 1) : R (res g) = 1 := by
@@ -183,6 +247,9 @@ theorem ti_ker [CharZero k] (hy : TIHyp H res ρ κ Gm T R P) (t : Γ) (ht : t �
 
 end Gen
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [tenB, rep4, tn, MonoidHom.coe_toHomUnits]`.
+-/
 theorem ti_tenB_val {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (ρ₁ τ : G ℚ Ω →* M2 c.O) (x : G ℚ Ω) :
     ((tenB ρ₁ τ x : GL (Fin 4) (Qbar l)) : Matrix (Fin 4) (Fin 4) (Qbar l)) =
@@ -192,6 +259,17 @@ theorem ti_tenB_val {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {
 
 end TenInd
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ ι K' _ _ ρ g0 m c₁ κ ρ₁ τ s hiso hτ`. Take `⟨P, hP⟩` from `hiso`. Establish `hy : TenInd.TIHyp K'.fixingSubgroup (resQ K') ρ κ (mapRep (algebraMap c₁.O (PadicAlgCl l)) ρ₁) (mapRep (algebraMap c₁.O (PadicAlgCl l)) τ) (tenB ρ₁ τ) P`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h first`.
+
+Consider the case `exact (mem_fixingSubgroup_iff _).2 fun y hy => h.commutes ⟨y, hy⟩`. Consider the case `exact fun y => h.commutes y`. Consider the case `(rw [IntermediateField.fixingSubgroup, mem_fixingSubgroup_iff]; intro y hy; exact h.commutes ⟨y, hy⟩)`. Introduce `x`. Establish `e` using `congrArg Units.val (hP x)`.
+
+Rewrite `e` using `[MonoidHom.coe_toHomUnits, Units.val_mul, Units.val_mul]`. Then use the resulting hypothesis. Conclude with `fun x => TenInd.ti_tenB_val ρ₁ τ x`. Introduce `x hx`. Simplify using `[mapRep_apply, hτ.on x hx]`. Introduce `x hx`.
+
+Simplify using `[mapRep_apply, hτ.off x hx]`. Introduce `x`. Establish `h` using `congrFun (congrFun (hτ.form x) 0) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h`. Rewrite using `[mapRep_apply, mapRep_apply, ← map_pow, ← map_pow, ← map_sub, show τ x 0 0 ^ 2 - τ x 1 0 ^ 2 = 1 by linear_combination h, map_one]`.
+
+Introduce `h`. Rewrite using `[hτ.val h, mapRep_apply, mapRep_apply, ← map_add]`. Apply the tactic sequence `first | rfl | simp`. Conclude with `⟨fun t ht g g' hg' => TenInd.ti_on hy t ht g g' hg', fun t ht g hg => TenInd.ti_off hy t ht g hg, fun t ht g g' hg' h1 h1' => TenInd.ti_ker hy t ht g g' hg' h1 h1'⟩`.
+-/
 theorem tenInd : TenInd := by
   intro Ω _ _ _ l _ ι K' _ _ ρ g0 m c₁ κ ρ₁ τ s hiso hτ
   obtain ⟨P, hP⟩ := hiso

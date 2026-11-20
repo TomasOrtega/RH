@@ -17,13 +17,32 @@ variable {K : Type} [Field K] [NumberField K] {m N : ℕ} {L : Submodule (𝓞 K
 def prodSpan (L : Submodule (𝓞 K) (Fin m → K)) (d : ℕ) : Submodule (𝓞 K) (MvPolynomial (Fin m) K) :=
   Submodule.span (𝓞 K) {p | ∃ u : Fin d → Fin m → K, (∀ i, u i ∈ latticeDual L) ∧ p = ∏ i, latticeForm (u i)}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨Fin.elim0, fun i ↦ i.elim0, by simp⟩`.
+-/
 theorem one_mem_prodSpan_zero : (1 : MvPolynomial (Fin m) K) ∈ prodSpan L 0 :=
   Submodule.subset_span ⟨Fin.elim0, fun i ↦ i.elim0, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨fun _ ↦ u, fun _ ↦ hu, by simp⟩`.
+-/
 theorem latticeForm_mem_prodSpan_one {u : Fin m → K} (hu : u ∈ latticeDual L) :
     latticeForm u ∈ prodSpan L 1 :=
   Submodule.subset_span ⟨fun _ ↦ u, fun _ ↦ hu, by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, hu, rfl⟩` from `hx`.
+
+Take `⟨v, hv, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨Fin.append u v, fun i ↦ ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i ↦ ?_) (fun i ↦ ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hu i`.
+
+Rewrite using `[Fin.append_right]`. Conclude with `hv i`. Rewrite using `[Fin.prod_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`. Consider the case `zero => rw [mul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[← algebraMap_smul K c y, smul_eq_C_mul, mul_left_comm, ← smul_eq_C_mul, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ c hy`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Rewrite using `[← algebraMap_smul K c x, smul_eq_C_mul, mul_assoc, ← smul_eq_C_mul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem mul_mem_prodSpan {a b : ℕ} {p q : MvPolynomial (Fin m) K} (hp : p ∈ prodSpan L a)
     (hq : q ∈ prodSpan L b) : p * q ∈ prodSpan L (a + b) := by
   induction hp using Submodule.span_induction with
@@ -49,12 +68,18 @@ theorem mul_mem_prodSpan {a b : ℕ} {p q : MvPolynomial (Fin m) K} (hp : p ∈ 
     rw [← algebraMap_smul K c x, smul_eq_C_mul, mul_assoc, ← smul_eq_C_mul, algebraMap_smul]
     exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `one_mem_prodSpan_zero`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `mul_mem_prodSpan ih hp`.
+-/
 theorem pow_mem_prodSpan {p : MvPolynomial (Fin m) K} (hp : p ∈ prodSpan L 1) (k : ℕ) :
     p ^ k ∈ prodSpan L k := by
   induction k with
   | zero => rw [pow_zero]; exact one_mem_prodSpan_zero
   | succ k ih => rw [pow_succ]; exact mul_mem_prodSpan ih hp
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using one_mem_prodSpan_zero`. Consider the case `insert i t hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi]`. Conclude with `mul_mem_prodSpan (h i (Finset.mem_insert_self i t)) (ih fun j hj ↦ h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem prod_mem_prodSpan {ι : Type*} (t : Finset ι) (g : ι → MvPolynomial (Fin m) K) (e : ι → ℕ)
     (h : ∀ i ∈ t, g i ∈ prodSpan L (e i)) : ∏ i ∈ t, g i ∈ prodSpan L (∑ i ∈ t, e i) := by
   classical
@@ -65,6 +90,9 @@ theorem prod_mem_prodSpan {ι : Type*} (t : Finset ι) (g : ι → MvPolynomial 
     exact mul_mem_prodSpan (h i (Finset.mem_insert_self i t))
       (ih fun j hj ↦ h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨b, hb⟩` from `hu v hv`. Conclude with `⟨c * b, by rw [map_mul, hb, smul_dotProduct, smul_eq_mul]⟩`.
+-/
 theorem smul_mem_dual (c : 𝓞 K) {u : Fin m → K} (hu : u ∈ latticeDual L) :
     algebraMap (𝓞 K) K c • u ∈ latticeDual L := by
   intro v hv
@@ -73,6 +101,11 @@ theorem smul_mem_dual (c : 𝓞 K) {u : Fin m → K} (hu : u ∈ latticeDual L) 
 
 variable {φ : Fin (N + 1) → Fin m → K}
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun s hs ↦ ?_` and prove the remaining obligations. Establish `hdeg : s.degree = d`. Use `hf (mem_support_iff.mp hs)` as an intermediate fact. Rewrite `this` using `[weight_one_eq_degree]`. Then use the resulting hypothesis.
+
+Rewrite using `[latticeMap, coe_eval₂Hom, eval₂_monomial, eq_intCast, ← zsmul_eq_mul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[← hdeg, Finsupp.prod, Finsupp.degree]`. Conclude with `prod_mem_prodSpan _ _ _ fun v _ ↦ pow_mem_prodSpan (latticeForm_mem_prodSpan_one (mem_dual hφ v.2)) _`.
+-/
 theorem latticeMap_mem_prodSpan (hφ : IsDualBasis L φ) {d : ℕ}
     {f : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ} (hf : f.IsHomogeneous d) : latticeMap φ f ∈ prodSpan L d := by
   rw [f.as_sum, map_sum]
@@ -85,6 +118,11 @@ theorem latticeMap_mem_prodSpan (hφ : IsDualBasis L φ) {d : ℕ}
   rw [← hdeg, Finsupp.prod, Finsupp.degree]
   exact prod_mem_prodSpan _ _ _ fun v _ ↦ pow_mem_prodSpan (latticeForm_mem_prodSpan_one (mem_dual hφ v.2)) _
 
+/- English proof (translation)
+Use `choose c hc using fun i ↦ (mem_dual_iff hφ (u i)).mp (hu i)`. Use `⟨∏ i, ∑ b, C (c i b) * X ⟨(), b⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `IsHomogeneous.prod Finset.univ (fun i ↦ ∑ b, C (c i b) * X (⟨(), b⟩ : Coord fun _ : Unit ↦ N)) (fun _ ↦ 1) fun i _ ↦ IsHomogeneous.sum _ _ _ fun b _ ↦ isHomogeneous_C_mul_X _ _`. Simplify using `using h`. Rewrite using `[map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[latticeMap_linear, hc i]`.
+-/
 theorem prod_mem_latticeMap_image (hφ : IsDualBasis L φ) {d : ℕ} (u : Fin d → Fin m → K)
     (hu : ∀ i, u i ∈ latticeDual L) :
     ∃ f : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ, f.IsHomogeneous d ∧ latticeMap φ f = ∏ i, latticeForm (u i) := by
@@ -97,6 +135,23 @@ theorem prod_mem_latticeMap_image (hφ : IsDualBasis L φ) {d : ℕ} (u : Fin d 
     refine Finset.prod_congr rfl fun i _ ↦ ?_
     rw [latticeMap_linear, hc i]
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `latticeMap_mem_prodSpan hφ ((isWeightedHomogeneous_coordDeg_iff f _).mp hf)`. Introduce `p hp set Img := latticeMap φ '' {f | IsWeightedHomogeneous (coordDeg fun _ : Unit ↦ N) f (fun _ ↦ d)}`. Establish `hadd : ∀ x ∈ Img, ∀ y ∈ Img, x + y ∈ Img`.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩ _ ⟨g, hg, rfl⟩`. Conclude with `⟨f + g, hf.add hg, map_add _ _ _⟩`. Establish `hprod : ∀ u : Fin d → Fin m → K, (∀ i, u i ∈ latticeDual L) → ∏ i, latticeForm (u i) ∈ Img`. Introduce `u hu`. Take `⟨f, hf, hfu⟩` from `prod_mem_latticeMap_image hφ u hu`.
+
+Conclude with `⟨f, (isWeightedHomogeneous_coordDeg_iff f _).mpr hf, hfu⟩`. Take `⟨k, rfl⟩ : ∃ k, d = k + 1` from `⟨d - 1, by omega⟩`. Establish `key : ∀ x ∈ prodSpan L (k + 1), ∀ c : 𝓞 K, C (algebraMap (𝓞 K) K c) * x ∈ Img`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Introduce `c`. Establish `hc : C (algebraMap (𝓞 K) K c) * ∏ i, latticeForm (u i) = ∏ i, latticeForm ((Fin.cons (algebraMap (𝓞 K) K c • u 0) (Fin.tail u) : Fin (k + 1) → Fin m → K) i)`. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ, Fin.cons_zero, ← mul_assoc, latticeForm_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hc]`. Use `hprod _ fun i ↦ Fin.cases ?_ (fun j ↦ ?_) i` and prove the remaining obligations. Rewrite using `[Fin.cons_zero]`. Conclude with `smul_mem_dual c (hu 0)`.
+
+Rewrite using `[Fin.cons_succ]`. Conclude with `hu j.succ`. Consider the case `zero`. Introduce `c`. Conclude with `⟨0, isWeightedHomogeneous_zero _ _ _, by rw [mul_zero, map_zero]⟩`.
+
+Consider the case `add x y _ _ hx hy`. Introduce `c`. Rewrite using `[mul_add]`. Conclude with `hadd _ (hx c) _ (hy c)`. Consider the case `smul a x _ hx`.
+
+Introduce `c`. Rewrite using `[← algebraMap_smul K a x, smul_eq_C_mul, ← mul_assoc, ← map_mul, ← map_mul]`. Conclude with `hx (c * a)`. Simplify using `using key p hp 1`.
+-/
 theorem latticeMap_image_homogeneous (hφ : IsDualBasis L φ) {d : ℕ} (hd : 1 ≤ d) :
     latticeMap φ '' {f | IsWeightedHomogeneous (coordDeg fun _ : Unit ↦ N) f (fun _ ↦ d)} =
       (prodSpan L d : Set (MvPolynomial (Fin m) K)) := by
@@ -147,6 +202,11 @@ variable {r : ℕ} {L : Submodule (𝓞 K) (Fin (r + 1) → K)} {φ : Fin (N + 1
 def yEval (φ : Fin (N + 1) → Fin (r + 1) → K) : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ →+* LatticeField K r :=
   eval₂Hom (Int.castRingHom _) (latticeCoord φ)
 
+/- English proof (translation)
+Establish `h : yEval φ = (dehom K r).comp (latticeMap φ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[yEval, latticeMap]`. Introduce `v`.
+
+Simplify using `[yEval, latticeMap, latticeCoord_eq]`. Rewrite using `[h, RingHom.comp_apply]`.
+-/
 theorem yEval_eq (g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ) : yEval φ g = dehom K r (latticeMap φ g) := by
   have h : yEval φ = (dehom K r).comp (latticeMap φ) := by
     apply MvPolynomial.ringHom_ext
@@ -156,10 +216,20 @@ theorem yEval_eq (g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ) : yEval φ g 
       simp [yEval, latticeMap, latticeCoord_eq]
   rw [h, RingHom.comp_apply]
 
+/- English proof (translation)
+Simplify using `[dehom, latticeForm]`.
+-/
 theorem dehom_latticeForm_apply (u : Fin (r + 1) → K) :
     dehom K r (latticeForm u) = ∑ j, algebraMap K (LatticeField K r) (u j) * genericVal K r j := by
   simp [dehom, latticeForm]
 
+/- English proof (translation)
+Rewrite using `[dehom_latticeForm]`. Introduce `h`. Apply `hu` to reduce the goal to its premises. Establish `h'` using `IsFractionRing.injective (MvPolynomial (Fin r) K) (LatticeField K r) (h.trans (map_zero _).symm)`. Use function extensionality and compare the values at `j`.
+
+Use `Fin.cases ?_ (fun i ↦ ?_) j` and prove the remaining obligations. Use `congrArg (coeff 0) h'` as an intermediate fact. Simplify `this` using `[coeff_sum, coeff_C_mul, coeff_X, coeff_C]`. Use `congrArg (coeff (Finsupp.single i 1)) h'` as an intermediate fact. Establish `h0 : (0 : Fin r →₀ ℕ) ≠ Finsupp.single i 1` using `(Finsupp.single_ne_zero.mpr one_ne_zero).symm`.
+
+Simplify `this` using `[coeff_sum, coeff_C_mul, coeff_X, coeff_C, Finsupp.single_left_inj, h0]`.
+-/
 theorem dehom_latticeForm_ne_zero {u : Fin (r + 1) → K} (hu : u ≠ 0) : dehom K r (latticeForm u) ≠ 0 := by
   rw [dehom_latticeForm]
   intro h
@@ -173,18 +243,30 @@ theorem dehom_latticeForm_ne_zero {u : Fin (r + 1) → K} (hu : u ≠ 0) : dehom
     have h0 : (0 : Fin r →₀ ℕ) ≠ Finsupp.single i 1 := (Finsupp.single_ne_zero.mpr one_ne_zero).symm
     simpa [coeff_sum, coeff_C_mul, coeff_X, coeff_C, Finsupp.single_left_inj, h0] using this
 
+/- English proof (translation)
+Simplify using `[dehom, latticeForm, Pi.single_apply, genericVal]`.
+-/
 theorem dehom_single_zero : dehom K r (latticeForm (Pi.single 0 1 : Fin (r + 1) → K)) = 1 := by
   simp [dehom, latticeForm, Pi.single_apply, genericVal]
 
+/- English proof (translation)
+Rewrite using `[yEval, coe_eval₂Hom, eval₂_mul, eval₂_C, eq_intCast]`.
+-/
 theorem yEval_C_mul (k : ℤ) (g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ) :
     yEval φ (C k * g) = k * yEval φ g := by
   rw [yEval, coe_eval₂Hom, eval₂_mul, eval₂_C, eq_intCast]
 
+/- English proof (translation)
+Rewrite using `[latticeForm_smul, map_mul]`. Simplify using `[dehom]`.
+-/
 theorem dehom_latticeForm_intSmul (k : ℤ) (u : Fin (r + 1) → K) :
     dehom K r (latticeForm ((k : K) • u)) = k * dehom K r (latticeForm u) := by
   rw [latticeForm_smul, map_mul]
   simp [dehom]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(mem_dual_iff hφ u).mp hu`. Conclude with `⟨∑ b, C (c b) * X ⟨(), b⟩, IsHomogeneous.sum _ _ _ fun b _ ↦ isHomogeneous_C_mul_X _ _, by rw [latticeMap_linear, hc]⟩`.
+-/
 theorem exists_linear_of_mem {m : ℕ} {L' : Submodule (𝓞 K) (Fin m → K)} {φ' : Fin (N + 1) → Fin m → K}
     (hφ : IsDualBasis L' φ') {u : Fin m → K} (hu : u ∈ latticeDual L') :
     ∃ g : MvPolynomial (Coord fun _ : Unit ↦ N) ℤ, g.IsHomogeneous 1 ∧ latticeMap φ' g = latticeForm u := by
@@ -220,6 +302,13 @@ def quotField (φ : Fin (N + 1) → Fin (r + 1) → K) : Subfield (LatticeField 
       rw [he]
       field_simp
 
+/- English proof (translation)
+Take `⟨n, hn, hnu⟩` from `exists_int_smul_mem_latticeDual hL u`. Take `⟨n', hn', hne⟩` from `exists_int_smul_mem_latticeDual hL (Pi.single 0 1 : Fin (r + 1) → K)`. Take `⟨g, hg, hgu⟩` from `exists_linear_of_mem (N := N) hφ hnu`. Take `⟨h, hh, hhe⟩` from `exists_linear_of_mem (N := N) hφ hne`. Establish `hg' : yEval φ g = n * dehom K r (latticeForm u)`.
+
+Rewrite using `[yEval_eq, hgu, dehom_latticeForm_intSmul]`. Establish `hh' : yEval φ h = n'`. Rewrite using `[yEval_eq, hhe, dehom_latticeForm_intSmul, dehom_single_zero, mul_one]`. Use `⟨1, C n' * g, C n * h, by simpa using (isHomogeneous_C _ _).mul hg, by simpa using (isHomogeneous_C _ _).mul hh, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[yEval_C_mul, hh']`.
+
+Conclude with `mul_ne_zero (Int.cast_ne_zero.mpr hn) (Int.cast_ne_zero.mpr hn')`. Rewrite using `[yEval_C_mul, yEval_C_mul, hg', hh']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dehom_mem_quotField (hL : L.FG) (hφ : IsDualBasis L φ) (u : Fin (r + 1) → K) :
     dehom K r (latticeForm u) ∈ quotField φ := by
   obtain ⟨n, hn, hnu⟩ := exists_int_smul_mem_latticeDual hL u
@@ -237,6 +326,15 @@ theorem dehom_mem_quotField (hL : L.FG) (hφ : IsDualBasis L φ) (u : Fin (r + 1
   · rw [yEval_C_mul, yEval_C_mul, hg', hh']
     ring
 
+/- English proof (translation)
+Establish `hpoly : ∀ p : MvPolynomial (Fin r) K, algebraMap _ (LatticeField K r) p ∈ quotField φ`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e : algebraMap (MvPolynomial (Fin r) K) (LatticeField K r) (C a) = dehom K r (latticeForm (Pi.single 0 a))`.
+
+Simplify using `[dehom, latticeForm, Pi.single_apply, genericVal, algebraMap_C, Fin.sum_univ_succ]`. Rewrite using `[e]`. Conclude with `dehom_mem_quotField hL hφ _`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`.
+
+Consider the case `mul_X p j hp`. Rewrite using `[map_mul]`. Use `mul_mem hp ?_` and prove the remaining obligations. Establish `e : algebraMap (MvPolynomial (Fin r) K) (LatticeField K r) (X j) = dehom K r (latticeForm (Pi.single j.succ 1))`. Simplify using `[dehom, latticeForm, Pi.single_apply, genericVal]`.
+
+Rewrite using `[e]`. Conclude with `dehom_mem_quotField hL hφ _`. Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (Fin r) K) s`. Conclude with `div_mem (hpoly a) (hpoly b)`.
+-/
 theorem mem_quotField (hL : L.FG) (hφ : IsDualBasis L φ) (s : LatticeField K r) : s ∈ quotField φ := by
   have hpoly : ∀ p : MvPolynomial (Fin r) K, algebraMap _ (LatticeField K r) p ∈ quotField φ := by
     intro p
@@ -257,6 +355,13 @@ theorem mem_quotField (hL : L.FG) (hφ : IsDualBasis L φ) (s : LatticeField K r
   obtain ⟨a, b, _, rfl⟩ := IsFractionRing.div_surjective (A := MvPolynomial (Fin r) K) s
   exact div_mem (hpoly a) (hpoly b)
 
+/- English proof (translation)
+Establish `hdeg : ∀ s : (Σ _ : Unit, Fin (N + 1)) →₀ ℕ, ∑ i : Fin (N + 1), s ⟨(), i⟩ = s.degree`. Introduce `s`. Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h s hs`. Rewrite using `[weight_one_eq_degree, ← hdeg]`. Conclude with `h s (mem_support_iff.mpr hs) ()`. Introduce `h s hs k`. Use `h (mem_support_iff.mp hs)` as an intermediate fact.
+
+Rewrite `this` using `[weight_one_eq_degree, ← hdeg]`. Conclude with `this`.
+-/
 theorem isMultiHomog_iff (g : Geo.MRing (blockIdx fun _ : Unit ↦ N)) (d : Unit → ℕ) :
     Geo.IsMultiHomog g d ↔ g.IsHomogeneous (d ()) := by
   have hdeg : ∀ s : (Σ _ : Unit, Fin (N + 1)) →₀ ℕ, ∑ i : Fin (N + 1), s ⟨(), i⟩ = s.degree := by
@@ -272,6 +377,9 @@ theorem isMultiHomog_iff (g : Geo.MRing (blockIdx fun _ : Unit ↦ N)) (d : Unit
     rw [weight_one_eq_degree, ← hdeg] at this
     exact this
 
+/- English proof (translation)
+Introduce `s`. Take `⟨d, g, h, hg, hh, hne, he⟩` from `mem_quotField hL hφ s`. Use `⟨fun _ ↦ d, g, h, (isMultiHomog_iff g _).mpr hg, (isMultiHomog_iff h _).mpr hh, ?_, ?_⟩` and prove the remaining obligations. Simplify `hne` using `only [aeval_def, algebraMap_int_eq, yEval, coe_eval₂Hom]`. Simplify `he` using `only [aeval_def, algebraMap_int_eq, yEval, coe_eval₂Hom]`.
+-/
 theorem birational_latticeCoord (hL : L.FG) (hφ : IsDualBasis L φ) :
     Geo.Birational (ι := blockIdx fun _ : Unit ↦ N) (latticeCoord φ) := by
   intro s

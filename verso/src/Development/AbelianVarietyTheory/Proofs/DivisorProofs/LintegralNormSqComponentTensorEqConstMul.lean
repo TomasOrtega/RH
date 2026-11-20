@@ -25,6 +25,33 @@ namespace GlobalTheory.AdelicPush
 
 open GlobalTheory.AdelicU
 
+/- English proof (translation)
+Introduce `F _ _ κ _ v r hr hinv μA hμA μ hμ K hK hKi hK0 hKt`. Use `letI mA : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI mV : MeasurableSpace (κ → Fv F v) := borel _`. Use `haveI : BorelSpace (κ → Fv F v) := ⟨rfl⟩`.
+
+Establish `hcont : Continuous (evFin F v)`. Express the relevant statement in the definitionally equal form `Continuous fun a => _`. Conclude with `(PI.LevelKSplit.W.Cont.continuous_evalV v).comp continuous_snd`. Set `evK : (κ → AF F) → (κ → Fv F v)` to `fun x i => evFin F v (x i)`. Establish `hevKm : Measurable evK` using `(continuous_pi fun i => hcont.comp (continuous_apply i)).measurable`.
+
+Set `ρ : (κ → AF F) → ENNReal` to `fun x => ‖r x‖ₑ ^ 2`. Establish `hρ : Measurable ρ` using `hr.enorm.pow_const 2`. Set `ν : Measure (κ → Fv F v)` to `(μA.withDensity ρ).map evK`. Establish `hνA : ∀ A, MeasurableSet A → ν A = ∫⁻ x, A.indicator 1 (evK x) * ρ x ∂μA`. Introduce `A hA`.
+
+Rewrite using `[Measure.map_apply hevKm hA, withDensity_apply _ (hevKm hA), ← lintegral_indicator (hevKm hA)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : evK x ∈ A <;> simp [Set.indicator, h]`. Use `haveI : ν.IsAddLeftInvariant := by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `y`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply (measurable_const_add y) hA, hνA _ hA, hνA _ (measurable_const_add y hA)]`. Set `z : κ → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z` using `fun u hu => funext fun i => GlobalTheory.LatVac.at_liftV v (y i) u hu`.
+
+Establish `hev : ∀ x, evK (x + z) = y + evK x` using `fun x => funext fun i => by`. Simplify using `[evK, z, GlobalTheory.LatVac.evFin_liftV, add_comm]`. Rewrite using `[← lintegral_add_right_eq_self (fun x => A.indicator 1 (evK x) * ρ x) z]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [hev, ρ, hinv x z hz]`.
+
+Apply the tactic sequence `by_cases h : y + evK x ∈ A <;> simp [Set.indicator, h]`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Use `haveI : ν.IsAddHaarMeasure := Measure.isAddHaarMeasure_of_isCompact_nonempty_interior ν K hK hKi (by rw [hνA K hKm]; exact hK0) (by rw [hνA K hKm]; exact hKt)`. Establish `hsc : ∀ s : Set (κ → Fv F v), IsCompact (closure s) → ν s = (Measure.addHaarScalarFactor ν μ : ENNReal) * μ s` using `fun s hs => by`. Rewrite using `[Measure.measure_isAddInvariant_eq_smul_of_isCompact_closure ν μ hs, ENNReal.smul_def, smul_eq_mul]`.
+
+Use `⟨(Measure.addHaarScalarFactor ν μ : ENNReal), ?_, ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `hsc K (by rw [hK.isClosed.closure_eq]; exact hK)` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, hνA K hKm]`. Conclude with `hK0 this`.
+
+Introduce `φ hφ hφc`. Use `set C : ENNReal := (Measure.addHaarScalarFactor ν μ : ENNReal)`. Set `T` to `tsupport φ`. Establish `hrest : ν.restrict T = C • μ.restrict T`. Use extensionality with `s hs`.
+
+Rewrite using `[Measure.restrict_apply hs, Measure.smul_apply, Measure.restrict_apply hs, smul_eq_mul]`. Conclude with `hsc _ (hφc.isCompact.of_isClosed_subset isClosed_closure (closure_minimal Set.inter_subset_right (isClosed_tsupport φ)))`. Establish `hf : Measurable fun y => ‖φ y‖ₑ ^ 2` using `hφ.measurable.enorm.pow_const 2`. Establish `hsupp : Function.support (fun y => ‖φ y‖ₑ ^ 2) ⊆ T`. Introduce `y hy`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy (by simp [image_eq_zero_of_notMem_tsupport h])`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.mul_apply, ρ, evK, enorm_mul, mul_pow, mul_comm]`.
+
+Use `_ = ∫⁻ x, (fun y => ‖φ y‖ₑ ^ 2) (evK x) ∂(μA.withDensity ρ) := (lintegral_withDensity_eq_lintegral_mul _ hρ (hf.comp hevKm)).symm`. Use `_ = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂ν := (lintegral_map hf hevKm).symm`. Use `_ = ∫⁻ y in T, ‖φ y‖ₑ ^ 2 ∂ν := (setLIntegral_eq_of_support_subset hsupp).symm`. Use `_ = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂(C • μ.restrict T) := by rw [hrest]`. Use `_ = C * ∫⁻ y in T, ‖φ y‖ₑ ^ 2 ∂μ := lintegral_smul_measure _ _`.
+
+Use `_ = C * ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂μ := by rw [setLIntegral_eq_of_support_subset hsupp]`.
+-/
 theorem lintegral_tens_eq_const_mul : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (r : (κ → AF F) → ℂ),
     @Measurable _ _ (borel _) _ r →
     (∀ x z, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z → r (x + z) = r x) →

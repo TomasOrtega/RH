@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_nsmul, ← WithZero.exp_add]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ WithZero.exp (-a) := by`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem pow_mul_exp_le_exp_neg_of_le_exp_neg_one (n : ℕ) (k a : ℤ) (h : k + a ≤ n) (v : WithZero (Multiplicative ℤ))
     (hv : v ≤ WithZero.exp (-1)) : v ^ n * WithZero.exp k ≤ WithZero.exp (-a) := by
   calc v ^ n * WithZero.exp k ≤ WithZero.exp (-1) ^ n * WithZero.exp k := by gcongr
@@ -14,21 +19,35 @@ private theorem pow_mul_exp_le_exp_neg_of_le_exp_neg_one (n : ℕ) (k a : ℤ) (
       rw [WithZero.exp_le_exp]
       omega
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+-/
 private theorem algebraMap_coe_ringOfIntegers_tower {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F]
     (b : 𝓞 L) : algebraMap L F (algebraMap (𝓞 L) L b) = algebraMap (𝓞 F) F (algebraMap (𝓞 L) (𝓞 F) b) := by
   rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, P.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `h`.
+-/
 private theorem valuation_eq_one_of_not_mem_asIdeal {F : Type} [Field F] [NumberField F] (P : HeightOneSpectrum (𝓞 F)) (β : 𝓞 F)
     (h : β ∉ P.asIdeal) : HeightOneSpectrum.valuation F P (algebraMap (𝓞 F) F β) = 1 := by
   rw [HeightOneSpectrum.valuation_of_algebraMap, P.intValuation_eq_one_iff_mem_primeCompl]
   exact h
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Use `(P.intValuation_le_pow_iff_mem β 1).mpr (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem valuation_le_exp_neg_one_of_mem_asIdeal {F : Type} [Field F] [NumberField F] (P : HeightOneSpectrum (𝓞 F)) (β : 𝓞 F)
     (h : β ∈ P.asIdeal) : HeightOneSpectrum.valuation F P (algebraMap (𝓞 F) F β) ≤ WithZero.exp (-1) := by
   rw [HeightOneSpectrum.valuation_of_algebraMap]
   have := (P.intValuation_le_pow_iff_mem β 1).mpr (by simpa using h)
   simpa using this
 
+/- English proof (translation)
+Introduce `j P hP`. Establish `h0 : 𝔞 j P = 0`. Assume the negation of the conclusion as `h`. Conclude with `hP (h𝔞 j P h)`. Establish `hv` using `hx j P`.
+
+Rewrite `hv` using `[Pi.smul_apply, Algebra.smul_def, map_pow, algebraMap_coe_ringOfIntegers_tower, Valuation.map_mul, Valuation.map_pow, valuation_eq_one_of_not_mem_asIdeal P _ hP, one_pow, one_mul, h0, neg_zero, WithZero.exp_zero]`. Conclude with `hv`.
+-/
 private theorem inLoc_of_inLat_pow_smul {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F]
     {J : Type} (b : 𝓞 L) (𝔞 : J → HeightOneSpectrum (𝓞 F) →₀ ℤ)
     (h𝔞 : ∀ j P, 𝔞 j P ≠ 0 → algebraMap (𝓞 L) (𝓞 F) b ∈ P.asIdeal) (n : ℕ) (x : J → F)
@@ -42,6 +61,19 @@ private theorem inLoc_of_inLat_pow_smul {L F : Type} [Field L] [NumberField L] [
     valuation_eq_one_of_not_mem_asIdeal P _ hP, one_pow, one_mul, h0, neg_zero, WithZero.exp_zero] at hv
   exact hv
 
+/- English proof (translation)
+Establish `hβ0 : algebraMap (𝓞 L) (𝓞 F) b ≠ 0`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Apply `FaithfulSMul.algebraMap_injective (𝓞 L) L` to reduce the goal to its premises. Apply `(algebraMap L F).injective` to reduce the goal to its premises.
+
+Rewrite using `[algebraMap_coe_ringOfIntegers_tower, h]`. Simplify using the standard rewrite rules. Establish `hS : {P : HeightOneSpectrum (𝓞 F) | algebraMap (𝓞 L) (𝓞 F) b ∈ P.asIdeal}.Finite`. Repeatedly rewrite using `[← Ideal.dvd_span_singleton]`. Apply `Ideal.finite_factors` to reduce the goal to its premises.
+
+Simplify using `only [Submodule.zero_eq_bot, ne_eq, Ideal.span_singleton_eq_bot]`. Use `⟨∑ p ∈ (Finset.univ : Finset J) ×ˢ hS.toFinset, (WithZero.log (HeightOneSpectrum.valuation F p.2 (x p.1)) + 𝔞 p.1 p.2).toNat, fun j P => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_pow, algebraMap_coe_ringOfIntegers_tower, Valuation.map_mul, Valuation.map_pow]`. Distinguish the cases in `hP : algebraMap (𝓞 L) (𝓞 F) b ∈ P.asIdeal`. Distinguish the cases in `hxj : x j = 0`.
+
+Simplify using `[hxj]`. Establish `hne : HeightOneSpectrum.valuation F P (x j) ≠ 0` using `by simpa using hxj`. Rewrite using `[← WithZero.exp_log hne]`. Apply `pow_mul_exp_le_exp_neg_of_le_exp_neg_one _ _ _ _ _ (valuation_le_exp_neg_one_of_mem_asIdeal P _ hP)` to reduce the goal to its premises. Establish `hmem : (j, P) ∈ (Finset.univ : Finset J) ×ˢ hS.toFinset` using `Finset.mem_product.mpr ⟨Finset.mem_univ _, hS.mem_toFinset.mpr hP⟩`.
+
+Establish `hle` using `Finset.single_le_sum (f := fun p : J × HeightOneSpectrum (𝓞 F) => (WithZero.log (HeightOneSpectrum.valuation F p.2 (x p.1)) + 𝔞 p.1 p.2).toNat) (fun _ _ => Nat.zero_le _) hmem`. Establish `h1` using `Int.self_le_toNat (WithZero.log (HeightOneSpectrum.valuation F P (x j)) + 𝔞 j P)`. Establish `h2 : ((WithZero.log (HeightOneSpectrum.valuation F P (x j)) + 𝔞 j P).toNat : ℤ) ≤ ((∑ p ∈ (Finset.univ : Finset J) ×ˢ hS.toFinset, (WithZero.log (HeightOneSpectrum.valuation F p.2 (x p.1)) + 𝔞 p.1 p.2).toNat : ℕ) : ℤ)`. Conclude with `hle` after adjusting the coercions. Use linear arithmetic over natural numbers and integers.
+
+Establish `h0 : 𝔞 j P = 0`. Assume the negation of the conclusion as `h`. Conclude with `hP (h𝔞 j P h)`. Rewrite using `[valuation_eq_one_of_not_mem_asIdeal P _ hP, one_pow, one_mul, h0, neg_zero, WithZero.exp_zero]`. Conclude with `hx j P hP`.
+-/
 private theorem exists_inLat_pow_smul_of_inLoc {L F : Type} [Field L] [NumberField L] [Field F] [NumberField F] [Algebra L F]
     {J : Type} [Fintype J] (b : 𝓞 L) (hb : b ≠ 0) (𝔞 : J → HeightOneSpectrum (𝓞 F) →₀ ℤ)
     (h𝔞 : ∀ j P, 𝔞 j P ≠ 0 → algebraMap (𝓞 L) (𝓞 F) b ∈ P.asIdeal) (x : J → F)
@@ -84,6 +116,13 @@ private theorem exists_inLat_pow_smul_of_inLoc {L F : Type} [Field L] [NumberFie
     rw [valuation_eq_one_of_not_mem_asIdeal P _ hP, one_pow, one_mul, h0, neg_zero, WithZero.exp_zero]
     exact hx j P hP
 
+/- English proof (translation)
+Introduce `L F _ _ _ _ _ J _ b hb 𝔞 𝔟 h𝔞 h𝔟 g hg`. Use `show ∀ x, InLoc b x ↔ InLoc b (g x)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨n, hn⟩` from `exists_inLat_pow_smul_of_inLoc b hb 𝔞 h𝔞 x hx`. Apply `inLoc_of_inLat_pow_smul b 𝔟 h𝔟 n` to reduce the goal to its premises. Rewrite using `[← map_smul]`. Conclude with `(hg _).mp hn`. Introduce `hx`.
+
+Take `⟨n, hn⟩` from `exists_inLat_pow_smul_of_inLoc b hb 𝔟 h𝔟 (g x) hx`. Apply `inLoc_of_inLat_pow_smul b 𝔞 h𝔞 n` to reduce the goal to its premises. Rewrite using `[hg, map_smul]`. Conclude with `hn`.
+-/
 theorem UpperTheory.V.ZK.Cl.cLatLoc :
     UpperTheory.V.ZK.Cl.CLatLoc := by
   intro L F _ _ _ _ _ J _ b hb 𝔞 𝔟 h𝔞 h𝔟 g hg

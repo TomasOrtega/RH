@@ -15,6 +15,27 @@ namespace PositivityTheory.Xgn.TestGroupPoint
 variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C NNReal}
   {R : Type} [CommRing R] [Algebra R C] {I : Type} [Fintype I] [DecidableEq I]
 
+/- English proof (translation)
+Take `⟨Λ, ε, hΛ, hspan, hε, hlen⟩` from `smith p C v R hv hp1 I AA`. Establish `hcA : cA = ∏ j, v (algebraMap R C (ε j))` using `hasLen_unique hv hA hlen`. Establish `hl` using `fun j => lifts p C v R hv hp1 I AA (Λ j) (ε j) (by rw [hspan]; exact Submodule.subset_span ⟨j, rfl⟩) (hε j)`. Use `choose u hu_mem hu_int hu_cong using hl`. Use `⟨ε, u, hu_mem, hε, hu_int, (u5 p C v R hv hp1 I Λ u hΛ hu_int hu_cong).1, ?_⟩` and prove the remaining obligations.
+
+Set `B' : Matrix (I → ZMod p) (I → ZMod p) C` to `Matrix.of fun (x α : I → ZMod p) => ∏ j, (algebraMap R C (ε j) * u j x) ^ (α j).val`. Establish `hB'v : v B'.det = ∏ j, v (algebraMap R C (ε j)) ^ (p ^ (Fintype.card I - 1) * (p * (p - 1) / 2))` using `(u5 p C v R hv hp1 I Λ u hΛ hu_int hu_cong).2 fun j => algebraMap R C (ε j)`. Establish `hsq : cA ^ (Fintype.card (I → ZMod p) * (p - 1)) = v B'.det ^ 2`. Rewrite using `[hcA, hB'v]`. Conclude with `monomialCount_exponent p _`.
+
+Establish `hp0 : v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hε0 : ∀ j, v (algebraMap R C (ε j)) ≠ 0`. Introduce `j h0`. Establish `hpp : p - 1 ≠ 0` using `by have := (Fact.out : p.Prime).two_le; omega`. Use `hε j` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_pow hpp]`. Conclude with `hp0 (le_antisymm this zero_le)`. Establish `hB'0 : v B'.det ≠ 0`. Rewrite using `[hB'v]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => pow_ne_zero _ (hε0 j)`.
+
+Establish `hmem : ∀ α : I → ZMod p, (fun x => B' x α) ∈ AA.carrier`. Introduce `α`. Conclude with `monomialCount_prod_pow_mem AA (fun j y => algebraMap R C (ε j) * u j y) (fun j => (Submodule.mem_inf.1 (hu_mem j)).1) (fun j => (α j).val)`. Take `⟨B, hAA, hBc⟩` from `hN`. Take `⟨W, hW⟩` from `monomialCount_exists_factor (R := R) B B' (fun α => hAA ▸ hmem α)`.
+
+Establish `hdet : v B'.det = cN * v (algebraMap R C W.det)`. Rewrite using `[hW, Matrix.det_mul, map_mul, RingHom.map_det, hBc]`. Both sides reduce to the same expression. Establish `hBeq : v B'.det = cN`. Rewrite `heq` using `[hsq]`.
+
+Conclude with `(pow_left_inj₀ zero_le zero_le two_ne_zero).1 heq`. Establish `hcN0 : cN ≠ 0` using `hBeq ▸ hB'0`. Establish `hw : v (algebraMap R C W.det) = 1`. Establish `h : cN * v (algebraMap R C W.det) = cN * 1` using `by rw [← hdet, hBeq, mul_one]`. Conclude with `mul_left_cancel₀ hcN0 h`.
+
+Establish `hWu : IsUnit W.det` using `hv.isUnit_of_one (isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at hw) hw`. Establish `hBeq' : B' * (W⁻¹).map (algebraMap R C) = B`. Rewrite using `[hW, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hWu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `hspan' : Submodule.span R (Set.range fun (α : I → ZMod p) (y : I → ZMod p) => ∏ j, (algebraMap R C (ε j) * u j y) ^ (α j).val) = Submodule.span R (Set.range fun α x => B' x α)` using `rfl`. Rewrite using `[hspan']`.
+
+Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[hAA]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `monomialCount_col_mem_span (R := R) B' (W⁻¹) j` as an intermediate fact.
+
+Rewrite `this` using `[hBeq']`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨α, rfl⟩`. Conclude with `hmem α`.
+-/
 theorem mono_basis (hv : v.Integers R) (hp1 : v (p : C) < 1) (AA : HopfOrder (C := C) R (I → ZMod p))
     {cA cN : NNReal} (hA : HasLen v R (AFQuot p AA.carrier) cA) (hN : HasColen R v AA.carrier cN)
     (heq : cA ^ (Fintype.card (I → ZMod p) * (p - 1)) = cN ^ 2) :
@@ -88,12 +109,18 @@ variable {W : Type} [AddCommGroup W] [Module R W] {N : Type} [AddCommGroup N] [F
   {AA : HopfOrder (C := C) R N} {Dv : AA.carrier →ₗ[R] W}
 
 omit [Fact p.Prime] [IsAlgClosed C] [CharZero C] in
+/- English proof (translation)
+Establish `h` using `hD ⟨1, AA.one_mem⟩ ⟨1, AA.one_mem⟩ ⟨1, AA.one_mem⟩ 1 1 (by simp) (by simp) (by simp)`. Rewrite `h` using `[one_smul]`. Conclude with `(left_eq_add.1 h)`.
+-/
 theorem der_one (hD : IsDerAt0 _ Dv) : Dv ⟨1, AA.one_mem⟩ = 0 := by
   have h := hD ⟨1, AA.one_mem⟩ ⟨1, AA.one_mem⟩ ⟨1, AA.one_mem⟩ 1 1 (by simp) (by simp) (by simp)
   rw [one_smul] at h
   exact (left_eq_add.1 h)
 
 omit [Fact p.Prime] [IsAlgClosed C] [CharZero C] in
+/- English proof (translation)
+Take `⟨a, ha⟩` from `PositivityTheory.HtPt.Rh.mem_pInt.1 hf`. Take `⟨b, hb⟩` from `PositivityTheory.HtPt.Rh.mem_pInt.1 hg`. Rewrite using `[hD f g h (a * p) (b * p) e (by rw [ha, map_mul, map_natCast]) (by rw [hb, map_mul, map_natCast]), mul_smul, mul_smul, hW, hW, smul_zero, smul_zero, add_zero]`.
+-/
 theorem der_mul (hD : IsDerAt0 _ Dv) (hW : ∀ w : W, (p : R) • w = 0) (f g h : AA.carrier)
     (e : (h : N → C) = (f : N → C) * (g : N → C)) (hf : f.1 0 ∈ pInt (C := C) R p) (hg : g.1 0 ∈ pInt (C := C) R p) :
     Dv h = 0 := by
@@ -103,6 +130,9 @@ theorem der_mul (hD : IsDerAt0 _ Dv) (hW : ∀ w : W, (p : R) • w = 0) (f g h 
     mul_smul, mul_smul, hW, hW, smul_zero, smul_zero, add_zero]
 
 omit [Fact p.Prime] [IsAlgClosed C] [CharZero C] in
+/- English proof (translation)
+Take `⟨r, hr⟩` from `AA.le_int hg 0`. Use `Submodule.smul_mem _ r hf` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, hr, mul_comm]`. Conclude with `this`.
+-/
 theorem mul_mem_pInt {f g : N → C} (hg : g ∈ AA.carrier) (hf : f 0 ∈ pInt (C := C) R p) :
     (f * g) 0 ∈ pInt (C := C) R p := by
   obtain ⟨r, hr⟩ := AA.le_int hg 0
@@ -111,6 +141,19 @@ theorem mul_mem_pInt {f g : N → C} (hg : g ∈ AA.carrier) (hf : f 0 ∈ pInt 
   exact this
 
 omit [IsAlgClosed C] in
+/- English proof (translation)
+Establish `hm : f.1 - 1 ∈ AA.carrier` using `AA.carrier.sub_mem f.2 AA.one_mem`. Establish `h0 : (f.1 - 1) 0 ∈ pInt (C` using `C) R p := by`. Rewrite using `[Pi.sub_apply, h1, Pi.one_apply, sub_self]`. Conclude with `Submodule.zero_mem _`. Establish `hr : ∀ k : ℕ, ∃ r : R, k ∈ Finset.Ico 1 p → algebraMap R C r = (-1) ^ (k - 1) / (k : C)`.
+
+Introduce `k`. Distinguish the cases in `hk : k ∈ Finset.Ico 1 p`. Take `⟨h1, h2⟩` from `Finset.mem_Ico.1 hk`. Take `⟨r, hr⟩` from `hv.exists_of_le_one (r := (-1) ^ (k - 1) / (k : C)) (by`. Rewrite using `[map_div₀, val_nat_eq v p hp k h1 h2, map_pow, Valuation.map_neg, map_one, one_pow, div_one])`.
+
+Conclude with `⟨r, fun _ => hr⟩`. Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose r hr using hr`. Establish `e : (⟨fun x => tl p (f.1 x), tl_mem_order hv p hp AA f.2⟩ : AA.carrier) = ∑ k ∈ Finset.Ico 1 p, r k • (⟨(f.1 - 1) ^ k, pow_mem_order AA hm k⟩ : AA.carrier)`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `tl p (f.1 x) = _`. Rewrite using `[tl]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, Algebra.smul_def, hr k hk, Pi.pow_apply, Pi.sub_apply, Pi.one_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1m : 1 ∈ Finset.Ico 1 p` using `Finset.mem_Ico.2 ⟨le_rfl, (Fact.out : p.Prime).one_lt⟩`. Rewrite using `[e, map_sum, Finset.sum_eq_single_of_mem 1 h1m]`. Establish `: r 1 = 1` using `hv.hom_inj (by rw [hr 1 h1m]; simp)`. Rewrite using `[this, one_smul]`.
+
+Establish `e2 : (⟨(f.1 - 1) ^ 1, pow_mem_order AA hm 1⟩ : AA.carrier) = f - ⟨1, AA.one_mem⟩` using `Subtype.ext (pow_one _)`. Rewrite using `[e2, map_sub, der_one hD, sub_zero]`. Introduce `k hk hk1`. Take `⟨k, rfl⟩ : ∃ j, k = j + 2` from `⟨k - 2, by have := (Finset.mem_Ico.1 hk).1; omega⟩`. Rewrite using `[map_smul, der_mul hD hW ⟨_, hm⟩ ⟨(f.1 - 1) * (f.1 - 1) ^ k, AA.mul_mem _ _ hm (pow_mem_order AA hm k)⟩ _ (by change (f.1 - 1) ^ (k + 2) = (f.1 - 1) * ((f.1 - 1) * (f.1 - 1) ^ k); ring) h0 (mul_mem_pInt (pow_mem_order AA hm k) h0), smul_zero]`.
+-/
 theorem der_tl (hv : v.Integers R) (hp : v (p : C) < 1) (hD : IsDerAt0 _ Dv) (hW : ∀ w : W, (p : R) • w = 0)
     (f : AA.carrier) (h1 : f.1 0 = 1) :
     Dv ⟨fun x => tl p (f.1 x), tl_mem_order hv p hp AA f.2⟩ = Dv f := by
@@ -149,6 +192,23 @@ theorem der_tl (hv : v.Integers R) (hp : v (p : C) < 1) (hD : IsDerAt0 _ Dv) (hW
       (mul_mem_pInt (pow_mem_order AA hm k) h0), smul_zero]
 
 omit [Fact p.Prime] [IsAlgClosed C] [CharZero C] in
+/- English proof (translation)
+Establish `split : ∀ (n : I → ℕ) j, n j ≠ 0 → (fun y => ∏ i, X i y ^ n i) = X j * fun y => ∏ i, X i y ^ (n - Pi.single j 1 : I → ℕ) i`. Introduce `n j hj`. Use function extensionality and compare the values at `y`. Establish `e : n = Pi.single j 1 + (n - Pi.single j 1)`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[h]`.
+
+Use `conv_lhs => rw [e]`. Simplify using `only [Pi.add_apply, pow_add, Finset.prod_mul_distrib, Pi.mul_apply]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Distinguish the cases in `hn : n = 0`. Use `left`. Substitute `hn` using the available equality. Establish `: (⟨_, monomialCount_prod_pow_mem AA X hX 0⟩ : AA.carrier) = ⟨1, AA.one_mem⟩` using `Subtype.ext (funext fun y => by simp)`. Rewrite using `[this, der_one hD]`.
+
+Take `⟨j, hj⟩` from `Function.ne_iff.1 hn`. Distinguish the cases in `hn' : n - Pi.single j 1 = 0`. Use `right`. Use `⟨j, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrFun hn' i` as an intermediate fact.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `at this hj ⊢`. Use linear arithmetic over natural numbers and integers. Simplify `this` using `[h]`.
+
+Use `left`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hn'`. Use `der_mul hD hW ⟨_, hX j⟩ ⟨_, monomialCount_prod_pow_mem AA X hX (n - Pi.single j 1)⟩ _ (split n j hj) (h0 j) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(fun y => ∏ i, X i y ^ (n - Pi.single j 1 : I → ℕ) i) 0 ∈ _`. Rewrite using `[split _ i hi]`.
+
+Conclude with `mul_mem_pInt (monomialCount_prod_pow_mem AA X hX _) (h0 i)`.
+-/
 theorem der_mon (hD : IsDerAt0 _ Dv) (hW : ∀ w : W, (p : R) • w = 0) (X : I → N → C) (hX : ∀ j, X j ∈ AA.carrier)
     (h0 : ∀ j, X j 0 ∈ pInt (C := C) R p) (n : I → ℕ) :
     Dv ⟨_, monomialCount_prod_pow_mem AA X hX n⟩ = 0 ∨ ∃ j, n = Pi.single j 1 := by
@@ -190,6 +250,39 @@ theorem der_mon (hD : IsDerAt0 _ Dv) (hW : ∀ w : W, (p : R) • w = 0) (X : I 
 
 end Der
 
+/- English proof (translation)
+Take `⟨ε, u, hu, hε, hu1, hdet, hsp⟩` from `mono_basis hv hp1 AA hA hN heq`. Establish `hp2` using `(Fact.out : p.Prime).two_le`. Set `X : I → (I → ZMod p) → C` to `fun j y => algebraMap R C (ε j) * u j y`. Establish `hX : ∀ j, X j ∈ AA.carrier` using `fun j => (hu j).1`. Establish `h0 : ∀ j, X j 0 ∈ pInt (C` using `C) R p := fun j => by`.
+
+Use `Submodule.neg_mem _ ((hu j).2 0 0)` as an intermediate fact. Simplify using `using this`. Set `mon : (I → ZMod p) → AA.carrier` to `fun α => ⟨_, monomialCount_prod_pow_mem AA X hX fun j => (α j).val⟩`. Establish `hexp : ∀ g : AA.carrier, ∃ c : (I → ZMod p) → R, g = ∑ α, c α • mon α`. Introduce `g`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (hsp.le g.2)`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Submodule.coe_sum]`. Both sides reduce to the same expression. Establish `hsingle : ∀ α j, (fun j => (α j).val) = Pi.single j 1 → mon α = ⟨X j, hX j⟩`.
+
+Introduce `α j h`. Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ i, X i y ^ (fun j => (α j).val) i = X j y`. Rewrite using `[h, Finset.prod_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Use `⟨fun j => ⟨X j, hX j⟩, hu, fun g => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hexp g`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Break down `der_mon hD hW X hX h0 fun j => (α j).val with h | ⟨j, h⟩` into its components or cases. Rewrite using `[show Dv (mon α) = 0 from h]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[hsingle α j h]`.
+
+Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Take `⟨c, rfl⟩` from `hexp g`. Establish `hU : ∀ x α : I → ZMod p, v (∏ j, u j x ^ (α j).val) ≤ 1` using `fun x α => by`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_le_one' fun j _ => by rw [map_pow]; exact pow_le_one₀ zero_le (hu1 j x)`.
+
+Use `choose U hU using fun x α => hv.exists_of_le_one (hU x α)`. Establish `hUm : (Matrix.of U).map (algebraMap R C) = Matrix.of fun (x α : I → ZMod p) => ∏ j, u j x ^ (α j).val`. Use extensionality with `x α`. Conclude with `hU x α`. Establish `hUu : IsUnit (Matrix.of U).det`.
+
+Use `hv.isUnit_of_one' ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hUm, hdet]`. Set `d : (I → ZMod p) → C` to `fun α => algebraMap R C (c α) * ∏ j, algebraMap R C (ε j) ^ (α j).val`. Establish `hgd : (∑ α, c α • mon α).1 = (Matrix.of U).map (algebraMap R C) *ᵥ d`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[hUm, Submodule.coe_sum, Finset.sum_apply, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c α • ∏ j, (algebraMap R C (ε j) * u j y) ^ (α j).val = _`. Simplify using `only [Algebra.smul_def, mul_pow, Finset.prod_mul_distrib, Matrix.of_apply, d]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hd : d = ((Matrix.of U)⁻¹).map (algebraMap R C) *ᵥ (∑ α, c α • mon α).1`. Rewrite using `[hgd, Matrix.mulVec_mulVec, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hUu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Establish `hdv : ∀ α, v (d α) ≤ t * v (p : C)` using `fun α => by`. Rewrite using `[hd, Matrix.mulVec, dotProduct]`. Use `v.map_sum_le fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left zero_le (hv.map_le_one _)).trans (hg y)`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Break down `der_mon hD hW X hX h0 fun j => (α j).val with h | ⟨j, h⟩` into its components or cases. Rewrite using `[show Dv (mon α) = 0 from h, smul_zero]`. Establish `h1` using `hdv α`. Establish `h2 : ∏ i, algebraMap R C (ε i) ^ (α i).val = algebraMap R C (ε j)`. Express the relevant statement in the definitionally equal form `∏ i, algebraMap R C (ε i) ^ (fun j => (α j).val) i = _`.
+
+Rewrite using `[h, Finset.prod_eq_single j (fun i _ hi => by simp [hi]) (by simp)]`. Simplify using the standard rewrite rules. Simplify using `only [d, h2, map_mul] at h1`. Establish `hp0 : v (p : C) ≠ 0` using `(Valuation.ne_zero_iff v).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `ht0 : t ≠ 0` using `fun h => hp0 (by rw [← ht, h, zero_pow (by omega)])`.
+
+Establish `h3 : t ≤ v (algebraMap R C (ε j))` using `le_of_pow_le_pow_left₀ (n := p - 1) (by omega) zero_le (ht ▸ hε j)`. Establish `h4 : v (algebraMap R C (c α)) ≤ v (algebraMap R C (p : R))`. Rewrite using `[map_natCast]`. Use `le_of_mul_le_mul_left (a := t) ?_ (pos_iff_ne_zero.2 ht0)` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Conclude with `(mul_le_mul_right h3 _).trans h1`. Take `⟨s, hs⟩` from `hv.dvd_of_le h4`. Rewrite using `[hs, mul_comm, mul_smul, hW, smul_zero]`.
+-/
 theorem small_gen (hv : v.Integers R) (hp1 : v (p : C) < 1) (AA : HopfOrder (C := C) R (I → ZMod p))
     {cA cN : NNReal} (hA : HasLen v R (AFQuot p AA.carrier) cA) (hN : HasColen R v AA.carrier cN)
     (heq : cA ^ (Fintype.card (I → ZMod p) * (p - 1)) = cN ^ 2)

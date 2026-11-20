@@ -19,6 +19,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.NLink
 
+/- English proof (translation)
+Introduce `hP D L P nch HW F Cm X C₂ hS hC hp2 hBCD`. Establish `hstep : KillingConditions.StepAD L X` using `{ a09 := GlobalTheory.T.admissible_at_inert hP D L P nch HW F Cm X C₂ hS hC hp2 hBCD a78 := GlobalTheory.T.unramified_places_declared hP D L P nch HW F Cm X C₂ hS goodR := hS.canon.fam.good }`. Establish `hst1 : TruncatedSeriesCountingIdentities.IntegralityFromMetric D` using `GlobalTheory.T.integralityFromMetric_of_designConditionAll hP.artin hP.bk hP.tate hP.euler D hS.facts.duties.2.2.1`. Establish `h78` using `GlobalTheory.T.splitCase_bound_at_point_of_admitted_items_alt hP.artin hP.tate hP.euler D`. Establish `hG2 : ∀ i, D.nd.l i ∉ TwistedPlaces.gset D → ∀ π ∈ D.nd.Zgood i, TruncatedSeriesCountingIdentities.admG2 i (X.r i) (X.ρ i) π` using `fun i hi π hπ => (GlobalTheory.T.set_point_good hP D L P nch HW F Cm X C₂ hS i hi π hπ).2.1`.
+
+Use `⟨GlobalTheory.T.starInequality_rowsAD_of_global_theorems D L HW X (rowC C₂) hS.canon.data hstep hst1 h78 hG2 hS.kill hS.sha, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.nonPlacePart_localBound_le_middleRange D L P HW X (rowC C₂) 120 (by norm_num) hS.canon.data (GlobalTheory.T.joint_condition_adm5 hP D L P nch HW F Cm X C₂ hS)`. Establish `e : (60 : ℝ) * 120 = 7200` using `by norm_num`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem rowsAD_in_setting : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc)
     (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ),
     Setup L nch HW X C₂ → 1 ≤ C₂ → WachCoordinates.Conclusion2 D C₂ → KillingConditions.JointParametersHubConditions L HW X (rowC C₂) →

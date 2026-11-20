@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.V.Published
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
+/- English proof (translation)
+Establish `h : Nat.card (𝓞 F ⧸ t.asIdeal) = Ideal.absNorm t.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `show 0 < Nat.card (𝓞 F ⧸ t.asIdeal)`. Rewrite using `[h]`. Conclude with `Nat.pos_of_ne_zero (fun h0 => t.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0))`.
+-/
 private lemma normV_pos' {F : Type} [Field F] [NumberField F] (t : HeightOneSpectrum (𝓞 F)) : 0 < normV t := by
   have h : Nat.card (𝓞 F ⧸ t.asIdeal) = Ideal.absNorm t.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
@@ -11,6 +14,9 @@ private lemma normV_pos' {F : Type} [Field F] [NumberField F] (t : HeightOneSpec
   rw [h]
   exact Nat.pos_of_ne_zero (fun h0 => t.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0))
 
+/- English proof (translation)
+Establish `h : Nat.card (𝓞 F ⧸ t.asIdeal) = Ideal.absNorm t.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `show ((Nat.card (𝓞 F ⧸ t.asIdeal) : ℕ) : 𝓞 F) ∈ t.asIdeal`. Rewrite using `[h]`. Conclude with `Ideal.absNorm_mem _`.
+-/
 private lemma normV_mem' {F : Type} [Field F] [NumberField F] (t : HeightOneSpectrum (𝓞 F)) :
     ((normV t : ℕ) : 𝓞 F) ∈ t.asIdeal := by
   have h : Nat.card (𝓞 F ⧸ t.asIdeal) = Ideal.absNorm t.asIdeal := by
@@ -19,6 +25,31 @@ private lemma normV_mem' {F : Type} [Field F] [NumberField F] (t : HeightOneSpec
   rw [h]
   exact Ideal.absNorm_mem _
 
+/- English proof (translation)
+Introduce `hS hR`. Unfold `SplitPlace at hS`. Unfold `RootMod at hR`. Unfold `FreshPrime`. Introduce `F Ω _ _ _ _ _ U hU T hT n hn`.
+
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : NeZero (((2 * n : ℕ)) : Ω) := ⟨by exact_mod_cast (by omega : 2 * n ≠ 0)⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (2 * n)`. Establish `hroot : ∀ t : HeightOneSpectrum (𝓞 F), ∃ x : Ω, x ^ n = (normV t : Ω)` using `fun t => IsAlgClosed.exists_pow_nat_eq _ hn`.
+
+Use `choose y hy using hroot`. Use `set S : Set Ω := insert ζ (y '' T) with hSeq`. Use `haveI : Finite S := (Set.Finite.insert ζ (hT.image y)).to_subtype`. Use `haveI : FiniteDimensional F (IntermediateField.adjoin F S) := IntermediateField.finiteDimensional_adjoin (fun x _ => (Algebra.IsAlgebraic.isAlgebraic (R := F) x).isIntegral)`. Use `set U' : Subgroup (G F Ω) := U ⊓ (IntermediateField.adjoin F S).fixingSubgroup with hU'eq`.
+
+Establish `hU' : IsOpen (U' : Set (G F Ω))`. Rewrite using `[hU'eq, Subgroup.coe_inf]`. Conclude with `hU.inter (IntermediateField.fixingSubgroup_isOpen _)`. Establish `hfix : ∀ g : G F Ω, g ∈ U' → ∀ x ∈ S, (g : Ω → Ω) x = x`. Introduce `g hg x hx`.
+
+Establish `hg2` using `(Subgroup.mem_inf.mp hg).2`. Conclude with `(mem_fixingSubgroup_iff _).mp hg2 x (IntermediateField.subset_adjoin F S hx)`. Establish `hfinset : ∀ a : 𝓞 F, a ≠ 0 → {w : HeightOneSpectrum (𝓞 F) | a ∈ w.asIdeal}.Finite`. Introduce `a ha`. Establish `h0 : Ideal.span {a} ≠ (0 : Ideal (𝓞 F))`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Simplify `Ideal.finite_factors h0` using `only [Ideal.dvd_span_singleton]`. Establish `hcast : ∀ m : ℕ, m ≠ 0 → ((m : ℕ) : 𝓞 F) ≠ 0` using `fun m hm => by exact_mod_cast hm`. Use `set B : Set (HeightOneSpectrum (𝓞 F)) := T ∪ (⋃ t ∈ T, {w | ((normV t : ℕ) : 𝓞 F) ∈ w.asIdeal}) ∪ {w | ((2 * n : ℕ) : 𝓞 F) ∈ w.asIdeal} with hBeq`.
+
+Establish `hB : B.Finite`. Use `(hT.union (hT.biUnion fun t _ => hfinset _ (hcast _ (normV_pos' t).ne'))).union ?_` and prove the remaining obligations. Conclude with `hfinset _ (hcast _ (by omega))`. Take `⟨u, huB, hp, hpu, hpu2, hdec⟩` from `hS F Ω U' hU' B hB`. Establish `hdvd_mem : ∀ m : ℕ, normV u ∣ m → ((m : ℕ) : 𝓞 F) ∈ u.asIdeal`.
+
+Introduce and unpack `m ⟨k, rfl⟩`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ hpu`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω u`. Establish `hDA : ∀ x ∈ S, ∀ g ∈ Dec A, (g : Ω → Ω) x = x` using `fun x hx g hg => hfix g (hdec A hA hg) x hx`.
+
+Use `⟨u, fun h => huB (Or.inl (Or.inl h)), hp, hpu, hpu2, fun A' hA' => le_trans (hdec A' hA') inf_le_left, ?_, ?_⟩` and prove the remaining obligations. Use `(hR F Ω A u hA (normV u) hp rfl ζ (2 * n) (by omega) (hDA ζ (Set.mem_insert _ _))).2 hζ ?_` and prove the remaining obligations. Introduce `h2`. Conclude with `huB (Or.inr (hdvd_mem _ h2))`. Introduce `t ht`.
+
+Use `⟨?_, (hR F Ω A u hA (normV u) hp rfl (y t) n hn (hDA (y t) (Set.mem_insert_of_mem _ ⟨t, ht, rfl⟩))).1 (normV t) (hy t)⟩` and prove the remaining obligations. Introduce `hut`. Distinguish the cases in `hd : normV u ∣ normV t`. Conclude with `huB (Or.inl (Or.inr (Set.mem_biUnion ht (hdvd_mem _ hd))))`. Establish `hcop : Nat.Coprime (normV u) (normV t)` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hd`.
+
+Establish `hg` using `Nat.gcd_eq_gcd_ab (normV u) (normV t)`. Rewrite `hg` using `[hcop]`. Establish `hg'` using `congrArg (Int.cast : ℤ → 𝓞 F) hg`. Move the coercions through the operations in `at hg'`. Establish `h1 : (1 : 𝓞 F) ∈ t.asIdeal`.
+
+Rewrite using `[hg']`. Conclude with `t.asIdeal.add_mem (Ideal.mul_mem_right _ _ hut) (Ideal.mul_mem_right _ _ (normV_mem' t))`. Conclude with `t.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+-/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.freshPrime :
     SplitPlace → RootMod → FreshPrime := by
   intro hS hR

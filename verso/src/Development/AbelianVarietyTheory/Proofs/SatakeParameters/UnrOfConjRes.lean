@@ -20,6 +20,19 @@ open Polynomial
 
 namespace GlobalTheory.RealGal.ConjUnr
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ Q l _ a ρ r hiso hr`. Use `haveI : FiniteDimensional E Q.K := Module.finite_of_finrank_eq_succ Q.two`. Establish `hS1` using `GlobalTheory.InertiaAlmostAll.finite_ramified E Ω Q.K`. Establish `hbad` using `Filter.eventually_cofinite.mp hr`. Establish `hS2` using `hbad.image (fun u : HeightOneSpectrum (𝓞 ↥Q.K) => u.under (𝓞 E))`.
+
+Use `Filter.eventually_cofinite.mpr ((hS1.union hS2).subset ?_)` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, not_forall] at hw`. Take `⟨A, hA, s, hs, hρ⟩` from `hw`. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, Set.mem_image, not_or, not_exists, not_and] at hn`. Take `⟨h1, h2⟩` from `hn`. Establish `hfix : s ∈ Q.K.fixingSubgroup`. Assume the negation of the conclusion as `hns`. Conclude with `h1 A hA (fun hle => hns (hle hs))`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.LocLanglands.EpsUnique.exists_place hA ↥Q.K`. Establish `hwu : u.under (𝓞 E) = w` using `ReciprocityTheory.Gal.eq_of_isPlaceOver (GlobalTheory.DelGlob.placeUnder_isPlaceOver ↥Q.K hu) hA`. Establish `hgood : ∀ A : ValuationSubring Ω, IsPlaceOver A u → ∀ t ∈ Ine (F` using `↥Q.K) A, r t = 1 := by`. Assume the negation of the conclusion as `hb`. Conclude with `h2 u hb hwu`.
+
+Set `t : G ↥Q.K Ω` to `IntermediateField.fixingSubgroupEquiv Q.K ⟨s, hfix⟩`. Establish `hts : UpperTheory.V.Af.Bc.res E Ω ↥Q.K t = s` using `AlgEquiv.ext fun _ => rfl`. Establish `ht : t ∈ Ine (F` using `↥Q.K) A := ⟨hs.1, hs.2⟩`. Take `⟨g, hg⟩` from `hiso`. Apply `hρ` to reduce the goal to its premises.
+
+Use `hg t` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, hts, hgood A hu t ht]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem unr_of_conj_res : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (Q : GlobalTheory.RealGal.QCM E Ω) (l : ℕ) [Fact l.Prime] (a : ℕ) (ρ : G E Ω →* GL (Fin a) (Qbar l)) (r : G ↥Q.K Ω →* GL (Fin a) (Qbar l)), UpperTheory.V.Af.RepIso r (ρ.comp (UpperTheory.V.Af.Bc.res E Ω ↥Q.K)) → (∀ᶠ w : HeightOneSpectrum (𝓞 ↥Q.K) in Filter.cofinite, ∀ A : ValuationSubring Ω, IsPlaceOver A w → ∀ s ∈ Ine (F := ↥Q.K) A, r s = 1) → ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∀ A : ValuationSubring Ω, IsPlaceOver A w → ∀ s ∈ Ine (F := E) A, ρ s = 1 := by
   intro E Ω _ _ _ _ _ Q l _ a ρ r hiso hr
   haveI : FiniteDimensional E Q.K := Module.finite_of_finrank_eq_succ Q.two

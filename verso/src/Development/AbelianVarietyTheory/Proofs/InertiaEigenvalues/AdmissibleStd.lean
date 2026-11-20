@@ -32,6 +32,9 @@ def asModuleIso (π : Representation O G M) (π' : Representation O G N) (e : M 
       | add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]
       | smul c a ha => simp only [map_smul, LinearMap.smul_apply, ha] }
 
+/- English proof (translation)
+Establish `hf : IsFiniteLength (MonoidAlgebra O G) π.asModule`. Take `⟨_, t, _, _, h3, h4, _⟩` from `h`. Conclude with `isFiniteLength_iff_exists_compositionSeries.mpr ⟨t, h3, h4⟩`. Conclude with `SameFactors.trans h (SameFactors.of_equiv hf (asModuleIso π π' e he))`.
+-/
 theorem sameSS_of_equiv {π₀ : Representation O G P} {π : Representation O G M} {π' : Representation O G N}
     (h : SameSS π₀ π) (e : M ≃ₗ[O] N) (he : ∀ g x, e (π g x) = π' g (e x)) : SameSS π₀ π' := by
   have hf : IsFiniteLength (MonoidAlgebra O G) π.asModule := by
@@ -39,6 +42,11 @@ theorem sameSS_of_equiv {π₀ : Representation O G P} {π : Representation O G 
     exact isFiniteLength_iff_exists_compositionSeries.mpr ⟨t, h3, h4⟩
   exact SameFactors.trans h (SameFactors.of_equiv hf (asModuleIso π π' e he))
 
+/- English proof (translation)
+Establish `hker : c • (⊤ : Submodule O M) = LinearMap.ker p`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, hk]`. Use `⟨(Submodule.quotEquivOfEq _ _ hker).trans (p.quotKerEquivOfSurjective hp), fun g x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Conclude with `hg g x`.
+-/
 theorem exists_modRep_equiv (π : Representation O G M) (π' : Representation O G N) (c : O) (p : M →ₗ[O] N)
     (hp : Function.Surjective p) (hk : ∀ x, p x = 0 ↔ x ∈ c • (⊤ : Submodule O M))
     (hg : ∀ g x, p (π g x) = π' g (p x)) :
@@ -49,6 +57,9 @@ theorem exists_modRep_equiv (π : Representation O G M) (π' : Representation O 
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   exact hg g x
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' O M`. Establish `h1 : Finite (N ⊗[O] (Fin n → O))` using `Finite.of_equiv _ (TensorProduct.piScalarRight O O N (Fin n)).symm.toEquiv`. Establish `h2 : Finite (N ⊗[O] M)` using `Finite.of_surjective _ (LinearMap.lTensor_surjective N hf)`. Conclude with `Finite.of_equiv _ (TensorProduct.comm O N M).toEquiv`.
+-/
 theorem finite_tensor [Module.Finite O M] [Finite N] : Finite (M ⊗[O] N) := by
   classical
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' O M
@@ -57,6 +68,9 @@ theorem finite_tensor [Module.Finite O M] [Finite N] : Finite (M ⊗[O] N) := by
   have h2 : Finite (N ⊗[O] M) := Finite.of_surjective _ (LinearMap.lTensor_surjective N hf)
   exact Finite.of_equiv _ (TensorProduct.comm O N M).toEquiv
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [coefRep_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem lTensor_coefRep (W : Representation O G M) (f : N →ₗ[O] P) (g : G) (m : M ⊗[O] N) :
     f.lTensor M (coefRep W N g m) = coefRep W P g (f.lTensor M m) := by
   induction m using TensorProduct.induction_on with
@@ -71,6 +85,9 @@ section Lat
 variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL] [Algebra Qp LL]
   [CommRing O] [Algebra O LL] [TopologicalSpace LL]
 
+/- English proof (translation)
+The claim follows from `Module.Finite.iff_fg.mpr T.L.fg`.
+-/
 theorem finite_lat (T : LocLat G Qp LL O) : Module.Finite O ↥T.L.T := Module.Finite.iff_fg.mpr T.L.fg
 
 def prodSubEquiv {R A B : Type} [Ring R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
@@ -111,6 +128,9 @@ def prodLat (T T' : LocLat G Qp LL O) : LocLat G Qp LL O where
 def prodLatEquiv (T T' : LocLat G Qp LL O) : ↥(prodLat T T').L.T ≃ₗ[O] (↥T.L.T × ↥T'.L.T) :=
   prodSubEquiv T.L.T T'.L.T
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodLatEquiv_act (T T' : LocLat G Qp LL O) (g : G) (x : ↥(prodLat T T').L.T) :
     prodLatEquiv T T' (latRep (prodLat T T').L g x) =
       (latRep T.L g (prodLatEquiv T T' x).1, latRep T'.L g (prodLatEquiv T T' x).2) := rfl
@@ -144,6 +164,9 @@ def kerLattice [IsDomain O] [IsPrincipalIdealRing O] [CharZero LL] (T : LocLat G
     have h2 := Submodule.smul_mem _ ((Nat.card M : ℕ) : LL)⁻¹ (Submodule.subset_span (R := LL) h1)
     rwa [← Nat.cast_smul_eq_nsmul LL, inv_smul_smul₀ hn] at h2
 
+/- English proof (translation)
+Use extensionality with `g`. Express the relevant statement in the definitionally equal form `algebraMap O LL (θ g) • (algebraMap O LL (χ g) • (1 : LL)) = algebraMap O LL (χ g * θ g) • (1 : LL)`. Simplify using `[mul_comm]`.
+-/
 theorem twistRep_charRep (χ θ : G →* Oˣ) :
     twistRep (charRep (chiLL LL χ)) (chiLL LL θ) = charRep (chiLL LL (χ * θ)) := by
   ext g
@@ -152,6 +175,11 @@ theorem twistRep_charRep (χ θ : G →* Oˣ) :
 
 end Lat
 
+/- English proof (translation)
+Establish `h : Finset.Ico w (w + ((k + 1 : ℕ) : ℤ)) = insert (w + k) (Finset.Ico w (w + k))`. Use extensionality with `u`. Simplify using `only [Finset.mem_Ico, Finset.mem_insert]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[block, h, Finset.insert_val_of_notMem (by simp), block, ← Multiset.singleton_add]`. Conclude with `add_comm _ _`.
+-/
 theorem block_succ (w : ℤ) (k : ℕ) : block w (k + 1) = block w k + {w + k} := by
   have h : Finset.Ico w (w + ((k + 1 : ℕ) : ℤ)) = insert (w + k) (Finset.Ico w (w + k)) := by
     ext u; simp only [Finset.mem_Ico, Finset.mem_insert]; push_cast; omega
@@ -190,6 +218,13 @@ def QuotSum (PD : PeriodData G Qp K₀ K B BdR) (emb : ZMod n → (K₀ →ₐ[Q
       Function.Surjective f → Admissible PD emb Γ t Ut π → Admissible PD emb Γ t Ut π') ∧
     (Admissible PD emb Γ t Ut π → Admissible PD emb Γ t Ut π' → Admissible PD emb Γ t Ut (π.prod π'))
 
+/- English proof (translation)
+Proceed by induction on `c with`. Consider the case `zero => simpa using h1`. Consider the case `succ c ih`. Establish `hinv` using `(htw (charLat Qp hinj Γ.χ₁ h1.1) _ Γ.ε _ h1.2 hε).2`. Establish `h` using `(htw (charLat Qp hinj _ ih.1) _ Γ.ε⁻¹ _ ih.2 hinv).1`.
+
+Rewrite using `[GalData.chi_succ]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(ih.1.mul hinv.1).congr fun g => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, MonoidHom.mul_apply, Units.val_mul, map_mul]`. Establish `h' : CrysWith PD emb (twistRep (charRep (chiLL LL (Γ.chi (c + 1)))) (chiLL LL Γ.ε⁻¹)) (fun i => ({w i + c} : Multiset ℤ).map (· + -(-1)))` using `h`.
+
+Rewrite `h'` using `[twistRep_charRep]`. Simplify `h'` using `[add_assoc]`.
+-/
 theorem isCrysChar_chi [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (htw : TwistRule PD emb O) {w : ZMod n → ℤ} (h1 : IsCrysChar PD emb Γ.χ₁ w)
     (hε : IsCrysChar PD emb Γ.ε (fun _ => -1)) (c : ℕ) :
@@ -208,6 +243,21 @@ theorem isCrysChar_chi [IsTopologicalRing LL] (hinj : Function.Injective (algebr
       rw [twistRep_charRep] at h'
       simpa [add_assoc] using h'
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Use `⟨Γ.T₀, (LinearEquiv.prodUnique).symm, ?_, fun g x => Prod.ext rfl (Subsingleton.elim _ _)⟩` and prove the remaining obligations. Simplify `h0` using `[block]`. Consider the case `succ k ih`.
+
+Take `⟨T, e, hT, he⟩` from `ih`. Take `⟨e₁, -, he₁⟩` from `charLattice_equiv hinj (Γ.chi (k + 1))`. Set `C : LocLat G Qp LL O` to `charLat Qp hinj _ (hχ k).1`. Set `e₁' : O ≃ₗ[O] ↥C.L.T` to `e₁`. Establish `he₁' : ∀ g y, e₁'.symm (latRep C.L g y) = Γ.Wchi (k + 1) g (e₁'.symm y)`.
+
+Introduce `g y`. Take `⟨a, rfl⟩` from `e₁'.surjective y`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.symm_apply_apply]`. Conclude with `(he₁ g a).symm`. Set `s : ((↥Γ.T₀.L.T × (Fin k → O)) × O) ≃ₗ[O] (↥Γ.T₀.L.T × (Fin (k + 1) → O))` to `{ toFun := fun x => (x.1.1, Fin.snoc (α := fun _ => O) x.1.2 x.2) invFun := fun y => ((y.1, Fin.init y.2), y.2 (Fin.last k)) map_add' := fun a b => Prod.ext rfl (by`.
+
+Apply the tactic sequence `funext c; refine Fin.lastCases ?_ (fun c => ?_) c <;> simp)`. Use the proof step `map_smul' := fun a b => Prod.ext rfl (by`. Apply the tactic sequence `funext c; refine Fin.lastCases ?_ (fun c => ?_) c <;> simp)`. Use `left_inv := fun x => by simp`. Use `right_inv := fun y => by simp }`.
+
+Use `⟨prodLat T C, (prodLatEquiv T C).trans ((e.prodCongr e₁'.symm).trans s), ?_, fun g x => ?_⟩` and prove the remaining obligations. Establish `h` using `hsum T C (prodLat T C) _ _ (LinearEquiv.refl _ _) (fun _ _ => rfl) hT (hχ k).2`. Simplify `h` using `only [block_succ, add_assoc]`. Express the relevant statement in the definitionally equal form `s (e (latRep T.L g (prodLatEquiv T C x).1), e₁'.symm (latRep C.L g (prodLatEquiv T C x).2)) = (Γ.W₀ g (e (prodLatEquiv T C x).1).1, fun c : Fin (k + 1) => Γ.Wchi (c.val + 1) g (Fin.snoc (α := fun _ => O) (e (prodLatEquiv T C x).1).2 (e₁'.symm (prodLatEquiv T C x).2) c))`. Rewrite using `[he, he₁']`.
+
+Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => O) _ _ c = _`. Use `Fin.lastCases ?_ (fun c => ?_) c` and prove the remaining obligations. Simplify using `only [Fin.snoc_last, Fin.val_last]`.
+
+Simplify using `only [Fin.snoc_castSucc, Fin.val_castSucc]`.
+-/
 theorem exists_sum [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap O LL))
     (hsum : SumRule PD emb O) {U : ZMod n → Multiset ℤ} {w : ZMod n → ℤ} (h0 : CrysWith PD emb Γ.T₀.ρ U)
     (hχ : ∀ c : ℕ, IsCrysChar PD emb (Γ.chi (c + 1)) (fun i => w i + c)) (k : ℕ) :
@@ -251,6 +301,17 @@ theorem exists_sum [IsTopologicalRing LL] (hinj : Function.Injective (algebraMap
       · simp only [Fin.snoc_last, Fin.val_last]
       · simp only [Fin.snoc_castSucc, Fin.val_castSucc]
 
+/- English proof (translation)
+Use `⟨hT, fun L => ?_⟩` and prove the remaining obligations. Set `p : ↥T.L.T →ₗ[O] (QuotSMulTop Γ.lam ↥Γ.T₀.L.T × (Fin t → QuotSMulTop Γ.lam O))` to `((Submodule.mkQ _).prodMap ((Submodule.mkQ _).compLeft (Fin t))).comp e.toLinearMap`. Establish `hp : ∀ x, p x = (Submodule.Quotient.mk (e x).1, fun c => Submodule.Quotient.mk ((e x).2 c))` using `fun _ => rfl`. Use `(exists_modRep_equiv (latRep T.L) (Γ.refRep t) Γ.lam p ?_ ?_ ?_).elim fun f hf => sameSS_of_equiv (reduction_sameSS_of_lattices T.ρ L T.L Γ.lam hlam) f hf` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩`.
+
+Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Use `choose b' hb' using fun c => Submodule.Quotient.mk_surjective _ (b c)`. Use `⟨e.symm (a, b'), ?_⟩` and prove the remaining obligations. Rewrite using `[hp, LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext rfl (funext hb')`.
+
+Introduce `x`. Rewrite using `[hp, Prod.ext_iff, funext_iff]`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_top, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, ha⟩, hb⟩ choose b hb using hb`.
+
+Use `⟨e.symm (a, b), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext ha (funext hb)`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[map_smul]`.
+
+Conclude with `⟨⟨_, rfl⟩, fun c => ⟨_, rfl⟩⟩`. Introduce `g x`. Rewrite using `[hp, hp, he]`. Both sides reduce to the same expression.
+-/
 theorem full_of_equiv [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] (hlam : Irreducible Γ.lam)
     {t : ℕ} {Ut : ZMod n → Multiset ℤ} (T : LocLat G Qp LL O) (e : ↥T.L.T ≃ₗ[O] (↥Γ.T₀.L.T × (Fin t → O)))
     (hT : CrysWith PD emb T.ρ Ut)
@@ -286,6 +347,11 @@ theorem full_of_equiv [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O
     rw [hp, hp, he]
     rfl
 
+/- English proof (translation)
+Use `⟨‹_›, 1, T, hT.sumFull, kerLattice T π p hg, p, ?_, hp, hg, fun x => ⟨fun h => ⟨x, h, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Introduce and unpack `⟨y, hy, hxy⟩`. Take `rfl : y = x` from `Subtype.ext hxy`.
+
+Conclude with `hy`.
+-/
 theorem admissible_of_surjective [IsDomain O] [IsPrincipalIdealRing O] [CharZero LL] {t : ℕ}
     {Ut : ZMod n → Multiset ℤ} {T : LocLat G Qp LL O} (hT : Full PD emb Γ t Ut T) {M : Type}
     [AddCommGroup M] [Module O M] [Finite M] (π : Representation O G M) (p : ↥T.L.T →ₗ[O] M)
@@ -297,6 +363,27 @@ theorem admissible_of_surjective [IsDomain O] [IsPrincipalIdealRing O] [CharZero
     obtain rfl : y = x := Subtype.ext hxy
     exact hy
 
+/- English proof (translation)
+Use `finite_lat T` as an intermediate fact. Establish `: Module.Finite O M` using `Module.Finite.of_surjective q hq`. Establish `key : ∀ (N : Submodule O X), N.FG → Admissible PD emb Γ t Ut (coefRep W ↥N)`. Introduce `N hN`. Proceed by induction on `N, hN using Submodule.fg_induction with`.
+
+Consider the case `singleton x`. Establish `: Finite (M ⊗[O] ↥(O ∙ x))` using `finite_tensor`. Set `x' : ↥(O ∙ x)` to `⟨x, Submodule.mem_span_singleton_self x⟩`. Use `admissible_of_surjective hT _ (((TensorProduct.mk O M ↥(O ∙ x)).flip x').comp q) ?_ ?_` and prove the remaining obligations. Introduce `y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add a b ha hb`. Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`.
+
+Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `tmul m y`. Take `⟨m, rfl⟩` from `hq m`. Take `⟨y, hy⟩` from `y`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hy`.
+
+Use `⟨a • m, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `q (a • m) ⊗ₜ[O] x' = q m ⊗ₜ[O] (a • x')`. Rewrite using `[map_smul, smul_tmul]`. Introduce `g y`. Express the relevant statement in the definitionally equal form `q (latRep T.L g y) ⊗ₜ[O] x' = coefRep W _ g (q y ⊗ₜ[O] x')`.
+
+Rewrite using `[hg, coefRep_tmul]`. Consider the case `sup N₁ N₂ _ _ h₁ h₂`. Use `(hc _ _ _ _).1 (((Submodule.inclusion (le_sup_left : N₁ ≤ N₁ ⊔ N₂)).lTensor M).coprod ((Submodule.inclusion (le_sup_right : N₂ ≤ N₁ ⊔ N₂)).lTensor M)) ?_ ?_ ((hc _ _ _ _).2 h₁ h₂)` and prove the remaining obligations. Introduce and unpack `g ⟨a, b⟩`. Express the relevant statement in the definitionally equal form `LinearMap.lTensor M _ (coefRep W _ g a) + LinearMap.lTensor M _ (coefRep W _ g b) = coefRep W _ g (LinearMap.lTensor M _ a + LinearMap.lTensor M _ b)`.
+
+Rewrite using `[lTensor_coefRep, lTensor_coefRep, map_add]`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add a b ha hb`.
+
+Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `tmul m y`. Take `⟨y, hy⟩` from `y`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy`. Use `⟨(m ⊗ₜ[O] ⟨a, ha⟩, m ⊗ₜ[O] ⟨b, hb⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.coprod_apply, LinearMap.lTensor_tmul, LinearMap.lTensor_tmul, ← tmul_add]`. Both sides reduce to the same expression. Establish `hfin : Module.Finite O X` using `Module.Finite.of_finite`.
+
+Conclude with `(hc _ _ _ _).1 ((⊤ : Submodule O X).subtype.lTensor M) (lTensor_coefRep W _) (LinearMap.lTensor_surjective M fun x => ⟨⟨x, trivial⟩, rfl⟩) (key ⊤ Module.Finite.fg_top)`.
+-/
 theorem admissible_coefRep [IsDomain O] [IsPrincipalIdealRing O] [CharZero LL] {t : ℕ}
     {Ut : ZMod n → Multiset ℤ} (hc : QuotSum PD emb Γ t Ut) {T : LocLat G Qp LL O} (hT : Full PD emb Γ t Ut T)
     {M : Type} [AddCommGroup M] [Module O M] (W : Representation O G M) (q : ↥T.L.T →ₗ[O] M)
@@ -352,6 +439,13 @@ theorem admissible_coefRep [IsDomain O] [IsPrincipalIdealRing O] [CharZero LL] {
   exact (hc _ _ _ _).1 ((⊤ : Submodule O X).subtype.lTensor M) (lTensor_coefRep W _)
     (LinearMap.lTensor_surjective M fun x => ⟨⟨x, trivial⟩, rfl⟩) (key ⊤ Module.Finite.fg_top)
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective O LL`. Take `⟨T, e, hT, he⟩` from `exists_sum hinj hsum hD.2.1 (isCrysChar_chi hinj htw hD.2.2.1 hε) D.t`. Establish `hF : Full PD emb Γ D.t D.Ut T` using `full_of_equiv hlam T e hT he`. Use `⟨fun X _ _ _ => admissible_coefRep hc hF _ ((LinearMap.fst O _ _).comp e.toLinearMap) ?_ ?_ X, fun c h1 h2 X _ _ _ => ?_⟩` and prove the remaining obligations. Conclude with `Prod.fst_surjective.comp e.surjective`.
+
+Introduce `g x`. Conclude with `congrArg Prod.fst (he g x)`. Take `⟨c, rfl⟩ : ∃ c', c = c' + 1` from `⟨c - 1, by omega⟩`. Use `admissible_coefRep hc hF _ ((LinearMap.proj (⟨c, h2⟩ : Fin D.t)).comp ((LinearMap.snd O _ _).comp e.toLinearMap)) ?_ ?_ X` and prove the remaining obligations. Introduce `a`.
+
+Conclude with `⟨e.symm (0, fun _ => a), by simp⟩`. Introduce `g x`. Conclude with `congrFun (congrArg Prod.snd (he g x)) ⟨c, h2⟩`.
+-/
 theorem admissible_std [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     [CharZero LL] (hlam : Irreducible Γ.lam) {r : ℕ} {D : TopData n r} (hD : IsTopGal PD emb D Γ)
     (hsum : SumRule PD emb O) (htw : TwistRule PD emb O) (hε : IsCrysChar PD emb Γ.ε (fun _ => -1))
@@ -377,6 +471,9 @@ theorem admissible_std [IsTopologicalRing LL] [IsDomain O] [IsDiscreteValuationR
 
 end Per
 
+/- English proof (translation)
+Introduce `l _ P S hcr hcl`. Take `⟨⟨_, h1, h2⟩, -, -, h3, -⟩` from `GlobalTheory.LocalIntegers.goodO_integers l S.LL`. Conclude with `admissible_std S.hyp.1.2.2.2.2.2 S.hyp.2.1 hcr.1 hcr.2.1 hcr.2.2.1 (fun M M' _ _ _ _ π π' => ⟨fun f hf => ((hcl M M' π π').1 f hf).2, (hcl M M' π π').2⟩)`.
+-/
 theorem stdAdm : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.CrysCalc → S.Closed → S.StdAdm := by
   intro l _ P S hcr hcl
   obtain ⟨⟨_, h1, h2⟩, -, -, h3, -⟩ := GlobalTheory.LocalIntegers.goodO_integers l S.LL

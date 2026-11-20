@@ -13,11 +13,19 @@ namespace Involution
 
 variable {M : Type*} [AddCommGroup M] {σ : M →+ M}
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, mem_fixedSub, AddMonoidHom.add_apply, AddMonoidHom.id_apply, AddMonoidHom.neg_apply, neg_eq_iff_eq_neg, eq_neg_iff_add_eq_zero, add_comm]`.
+-/
 theorem ker_id_add_eq_fixedSub_neg : (AddMonoidHom.id M + σ).ker = fixedSub (-σ) := by
   ext x
   rw [AddMonoidHom.mem_ker, mem_fixedSub, AddMonoidHom.add_apply, AddMonoidHom.id_apply,
     AddMonoidHom.neg_apply, neg_eq_iff_eq_neg, eq_neg_iff_add_eq_zero, add_comm]
 
+/- English proof (translation)
+Establish `h1 : Nat.card (fixedSub σ) = Nat.card (tateQuot σ) * Nat.card (traceSub σ)`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup ((traceSub σ).addSubgroupOf (fixedSub σ)), Nat.card_congr (AddSubgroup.addSubgroupOfEquivOfLe (traceSub_le_fixedSub hσ)).toEquiv]`. Establish `h2 : Nat.card (traceSub σ) * Nat.card (fixedSub (-σ)) = Nat.card M`. Rewrite using `[← ker_id_add_eq_fixedSub_neg, traceSub]`. Rewrite using `[← AddSubgroup.index_ker, mul_comm, AddSubgroup.card_mul_index]`.
+
+Rewrite using `[h1, mul_assoc, h2]`.
+-/
 theorem card_tateQuot_mul_card (hσ : ∀ x, σ (σ x) = x) :
     Nat.card (tateQuot σ) * Nat.card M = Nat.card (fixedSub σ) * Nat.card (fixedSub (-σ)) := by
   have h1 : Nat.card (fixedSub σ) =
@@ -32,6 +40,11 @@ theorem card_tateQuot_mul_card (hσ : ∀ x, σ (σ x) = x) :
 
 variable [Finite M]
 
+/- English proof (translation)
+Establish `hσ' : ∀ x, (-σ) ((-σ) x) = x` using `fun x => by`. Rewrite using `[AddMonoidHom.neg_apply, AddMonoidHom.neg_apply, map_neg, neg_neg, hσ]`. Establish `e1` using `card_tateQuot_mul_card hσ`. Establish `e2` using `card_tateQuot_mul_card hσ'`. Rewrite `e2` using `[neg_neg, mul_comm (Nat.card (fixedSub (-σ)))]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos (e2.trans e1.symm)`.
+-/
 theorem card_tateQuot_neg (hσ : ∀ x, σ (σ x) = x) :
     Nat.card (tateQuot (-σ)) = Nat.card (tateQuot σ) := by
   have hσ' : ∀ x, (-σ) ((-σ) x) = x := fun x => by
@@ -54,6 +67,9 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] [IsDiscreteRep A] in
 include hG hc in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `A.ρ c (A.ρ c x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_self_eq_one hG hc, map_one, Module.End.one_apply]`.
+-/
 theorem act_act (x : A) : act A c (act A c x) = x := by
   change A.ρ c (A.ρ c x) = x
   rw [← Module.End.mul_apply, ← map_mul, mul_self_eq_one hG hc, map_one, Module.End.one_apply]
@@ -62,22 +78,36 @@ variable [Finite A]
 
 include hG hc in
 
+/- English proof (translation)
+The claim follows from `Finite.of_equiv _ (h1EquivOfOrderTwo A hG hc).toEquiv`.
+-/
 theorem finite_cohomology_one : Finite (cohomology A 1) :=
   Finite.of_equiv _ (h1EquivOfOrderTwo A hG hc).toEquiv
 
 include hG hc in
 
+/- English proof (translation)
+The claim follows from `Finite.of_equiv _ (h2EquivOfOrderTwo A hG hc).toEquiv`.
+-/
 theorem finite_cohomology_two : Finite (cohomology A 2) :=
   Finite.of_equiv _ (h2EquivOfOrderTwo A hG hc).toEquiv
 
 include hG hc in
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_congr (h1EquivOfOrderTwo A hG hc).toEquiv, ← Nat.card_congr (h2EquivOfOrderTwo A hG hc).toEquiv]`. Conclude with `Involution.card_tateQuot_neg (act_act A hG hc)`.
+-/
 theorem card_cohomology_one_eq_two : Nat.card (cohomology A 1) = Nat.card (cohomology A 2) := by
   rw [← Nat.card_congr (h1EquivOfOrderTwo A hG hc).toEquiv, ← Nat.card_congr (h2EquivOfOrderTwo A hG hc).toEquiv]
   exact Involution.card_tateQuot_neg (act_act A hG hc)
 
 include hG hc in
 
+/- English proof (translation)
+Use `finite_cohomology_one A hG hc` as an intermediate fact. Establish `h1 : (Nat.card (cohomology A 1) : ℚ) ≠ 0`. Conclude with `(Nat.card_pos (α := cohomology A 1)).ne'` after adjusting the coercions. Rewrite using `[eulerChar, Finset.prod_range_succ, Finset.prod_range_succ, Finset.prod_range_one, ← card_cohomology_one_eq_two A hG hc]`. Evaluate the numerical expressions.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem eulerChar_eq_card_cohomology_zero : eulerChar A = Nat.card (cohomology A 0) := by
   have := finite_cohomology_one A hG hc
   have h1 : (Nat.card (cohomology A 1) : ℚ) ≠ 0 := by
@@ -101,18 +131,27 @@ variable {K : FiniteSubfield} (v : InfinitePlace K.1) (hv : v.IsReal)
 
 include hv in
 
+/- English proof (translation)
+The claim follows from `OrderTwo.card_cohomology_one_eq_two M (eq_one_or_eq_realConj v hv) (realConj_ne_one v hv)`.
+-/
 theorem card_cohomology_one_eq_two_of_isReal :
     Nat.card (cohomology M 1) = Nat.card (cohomology M 2) :=
   OrderTwo.card_cohomology_one_eq_two M (eq_one_or_eq_realConj v hv) (realConj_ne_one v hv)
 
 include hv in
 
+/- English proof (translation)
+The claim follows from `OrderTwo.eulerChar_eq_card_cohomology_zero M (eq_one_or_eq_realConj v hv) (realConj_ne_one v hv)`.
+-/
 theorem eulerChar_eq_card_cohomology_zero_of_isReal :
     eulerChar M = Nat.card (cohomology M 0) :=
   OrderTwo.eulerChar_eq_card_cohomology_zero M (eq_one_or_eq_realConj v hv) (realConj_ne_one v hv)
 
 include hv in
 
+/- English proof (translation)
+Use `interval_cases n`. Conclude with `Finite.of_equiv _ (H0Iso M).toLinearEquiv.toEquiv.symm`. Conclude with `OrderTwo.finite_cohomology_one M (eq_one_or_eq_realConj v hv) (realConj_ne_one v hv)`. Conclude with `OrderTwo.finite_cohomology_two M (eq_one_or_eq_realConj v hv) (realConj_ne_one v hv)`.
+-/
 theorem finite_cohomology_of_isReal (n : ℕ) (hn : n ≤ 2) : Finite (cohomology M n) := by
   interval_cases n
   · exact Finite.of_equiv _ (H0Iso M).toLinearEquiv.toEquiv.symm
@@ -135,16 +174,25 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 instance finite_res_gsRealFamily : Finite (Rep.res (gsRealFamily S ιr v).toMonoidHom M) :=
   inferInstanceAs (Finite M)
 
+/- English proof (translation)
+The claim follows from `card_cohomology_one_eq_two_of_isReal v.1 v.2 _`.
+-/
 theorem gsReal_card_cohomology_one_eq_two :
     Nat.card (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) 1) =
       Nat.card (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) 2) :=
   card_cohomology_one_eq_two_of_isReal v.1 v.2 _
 
+/- English proof (translation)
+The claim follows from `eulerChar_eq_card_cohomology_zero_of_isReal v.1 v.2 _`.
+-/
 theorem gsReal_eulerChar_eq_card_cohomology_zero :
     eulerChar (Rep.res (gsRealFamily S ιr v).toMonoidHom M) =
       Nat.card (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) 0) :=
   eulerChar_eq_card_cohomology_zero_of_isReal v.1 v.2 _
 
+/- English proof (translation)
+The claim follows from `finite_cohomology_of_isReal v.1 v.2 _ n hn`.
+-/
 theorem gsReal_finite_cohomology (n : ℕ) (hn : n ≤ 2) :
     Finite (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) n) :=
   finite_cohomology_of_isReal v.1 v.2 _ n hn

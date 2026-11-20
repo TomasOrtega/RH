@@ -10,5 +10,8 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevMoveAA.isMov_of_isAA | exact GlobalTheory.LevMoveAA.isMov_of_isAA | (intros; apply GlobalTheory.LevMoveAA.isMov_of_isAA <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.latticeTransport_of_polarisationIdealTimesLattice : ∀ (D : D7) {k : ℕ} (Λ ΛT : Lt D.host.E k) (m : Matrix (Fin k) (Fin k) (AfE D)), IsAA Λ ΛT → IsMov m Λ Λ → IsMov m ΛT ΛT := by
   first | exact @GlobalTheory.LevMoveAA.isMov_of_isAA | exact GlobalTheory.LevMoveAA.isMov_of_isAA | (intros; apply GlobalTheory.LevMoveAA.isMov_of_isAA <;> assumption)

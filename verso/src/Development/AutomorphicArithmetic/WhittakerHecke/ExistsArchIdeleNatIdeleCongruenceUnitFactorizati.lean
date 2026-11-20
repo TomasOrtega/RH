@@ -8,6 +8,9 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `N hN y h`. Conclude with `UpperTheory.exists_factorization_of_ideleCongruence_divisor_level N N hN dvd_rfl (fun _ h => h) y h.1 fun v _ => h.2 v`.
+-/
 theorem UpperTheory.exists_archIdele_natIdele_congruenceUnit_factorization :
     ∀ N : ℕ, 0 < N → ∀ y : (A ℚ)ˣ, ((∀ v, Bad N v → Dv N v (((y : (A ℚ)ˣ) : A ℚ) - 1)) ∧ ∀ v : H.P ℚ, Valued.v (H.cp v ((y : (A ℚ)ˣ) : A ℚ)) ≤ 1) → ∃ (n : ℕ) (r : ℝ) (τ : (A ℚ)ˣ), 0 < n ∧ n.Coprime N ∧ r ≠ 0 ∧ τ ∈ TT N ∧ y = iy r * pin n * τ := by
   intro N hN y h

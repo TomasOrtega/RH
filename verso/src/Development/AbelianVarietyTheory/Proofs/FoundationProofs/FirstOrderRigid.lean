@@ -9,36 +9,71 @@ def Top {k : Type} [Field k] (p : k[X]) (d : ℕ) (c : k) : Prop :=
 section
 variable {k : Type} [Field k] {p q : k[X]} {d e : ℕ} {c c' : k}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨natDegree_mul_le.trans (add_le_add hp.1 hq.1), by rw [coeff_mul_add_eq_of_natDegree_le hp.1 hq.1, hp.2, hq.2]⟩`.
+-/
 theorem Top.mul (hp : Top p d c) (hq : Top q e c') : Top (p * q) (d + e) (c * c') :=
   ⟨natDegree_mul_le.trans (add_le_add hp.1 hq.1), by
     rw [coeff_mul_add_eq_of_natDegree_le hp.1 hq.1, hp.2, hq.2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(natDegree_add_le _ _).trans (max_le hp.1 hq.1), by rw [coeff_add, hp.2, hq.2]⟩`.
+-/
 theorem Top.add (hp : Top p d c) (hq : Top q d c') : Top (p + q) d (c + c') :=
   ⟨(natDegree_add_le _ _).trans (max_le hp.1 hq.1), by rw [coeff_add, hp.2, hq.2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(natDegree_sub_le _ _).trans (max_le hp.1 hq.1), by rw [coeff_sub, hp.2, hq.2]⟩`.
+-/
 theorem Top.sub (hp : Top p d c) (hq : Top q d c') : Top (p - q) d (c - c') :=
   ⟨(natDegree_sub_le _ _).trans (max_le hp.1 hq.1), by rw [coeff_sub, hp.2, hq.2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(natDegree_C_mul_le _ _).trans hp.1, by rw [coeff_C_mul, hp.2]⟩`.
+-/
 theorem Top.cmul (a : k) (hp : Top p d c) : Top (C a * p) d (a * c) :=
   ⟨(natDegree_C_mul_le _ _).trans hp.1, by rw [coeff_C_mul, hp.2]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hp.1.trans h.le, coeff_eq_zero_of_natDegree_lt (hp.1.trans_lt h)⟩`.
+-/
 theorem Top.raise (hp : Top p d c) (h : d < e) : Top p e 0 :=
   ⟨hp.1.trans h.le, coeff_eq_zero_of_natDegree_lt (hp.1.trans_lt h)⟩
 
+/- English proof (translation)
+Substitute `h0 h h'` using the available equality. Conclude with `hp`.
+-/
 theorem Top.cast {p' : k[X]} (hp : Top p d c) (h0 : p = p') (h : d = e) (h' : c = c') :
     Top p' e c' := by
   subst h0 h h'; exact hp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨natDegree_X_le, by simp⟩`.
+-/
 theorem top_X : Top (X : k[X]) 1 1 := ⟨natDegree_X_le, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+-/
 theorem top_one : Top (1 : k[X]) 0 1 := ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.le, by rw [← h]; exact hp⟩`.
+-/
 theorem top_of_monic (hp : p.Monic) (h : p.natDegree = d) : Top p d 1 :=
   ⟨h.le, by rw [← h]; exact hp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨natDegree_le_of_degree_le h.le, coeff_eq_zero_of_degree_lt h⟩`.
+-/
 theorem top_of_degree_lt (h : p.degree < (d : WithBot ℕ)) : Top p d 0 :=
   ⟨natDegree_le_of_degree_le h.le, coeff_eq_zero_of_degree_lt h⟩
 
+/- English proof (translation)
+Establish `key : ∀ j : ℕ, (X * derivative p).coeff j = j * p.coeff j`. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ j => rw [coeff_X_mul, coeff_derivative]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨natDegree_le_iff_coeff_eq_zero.2 fun j hj => ?_, by rw [key, hp.2]⟩` and prove the remaining obligations. Rewrite using `[key, coeff_eq_zero_of_natDegree_lt (hp.1.trans_lt hj), mul_zero]`.
+-/
 theorem Top.xder (hp : Top p d c) : Top (X * derivative p) d (d * c) := by
   have key : ∀ j : ℕ, (X * derivative p).coeff j = j * p.coeff j := by
     intro j
@@ -48,11 +83,21 @@ theorem Top.xder (hp : Top p d c) : Top (X * derivative p) d (d * c) := by
   refine ⟨natDegree_le_iff_coeff_eq_zero.2 fun j hj => ?_, by rw [key, hp.2]⟩
   rw [key, coeff_eq_zero_of_natDegree_lt (hp.1.trans_lt hj), mul_zero]
 
+/- English proof (translation)
+The claim follows from `le_antisymm hp.1 (le_natDegree_of_ne_zero (by rw [hp.2]; exact one_ne_zero))`.
+-/
 theorem Top.natDegree_eq (hp : Top p d 1) : p.natDegree = d :=
   le_antisymm hp.1 (le_natDegree_of_ne_zero (by rw [hp.2]; exact one_ne_zero))
 
 end
 
+/- English proof (translation)
+Establish `h6 : (6 : k) ≠ 0`. Establish `: (6 : k) = 2 * 3` using `by norm_num`. Rewrite using `[this]`. Conclude with `mul_ne_zero h2 h3`. Establish `hd' : 2 * A ^ 2 * dA + 9 * B * dB = 0`.
+
+Apply `mul_left_cancel₀ h6` to reduce the goal to its premises. Take the linear combination `hd`. Use `⟨(3 * B * dA - 2 * A * dB) / ((4 * A ^ 3 + 27 * B ^ 2) * a ^ 2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, eq_div_iff (mul_ne_zero hD (pow_ne_zero 2 ha))]`. Take the linear combination `(2 * A * a ^ 2) * hd'`.
+
+Rewrite using `[← mul_div_assoc, eq_div_iff (mul_ne_zero hD (pow_ne_zero 2 ha))]`. Take the linear combination `(3 * B * a ^ 2) * hd'`.
+-/
 theorem exists_param {k : Type} [Field k] (A B a dA dB : k) (h2 : (2 : k) ≠ 0) (h3 : (3 : k) ≠ 0)
     (ha : a ≠ 0) (hD : 4 * A ^ 3 + 27 * B ^ 2 ≠ 0) (hd : 12 * A ^ 2 * dA + 54 * B * dB = 0) :
     ∃ w : k, dA = 9 * B * a ^ 2 * w ∧ dB = -2 * A ^ 2 * a ^ 2 * w := by
@@ -68,6 +113,53 @@ theorem exists_param {k : Type} [Field k] (A B a dA dB : k) (h2 : (2 : k) ≠ 0)
   · rw [← mul_div_assoc, eq_div_iff (mul_ne_zero hD (pow_ne_zero 2 ha))]
     linear_combination (3 * B * a ^ 2) * hd'
 
+/- English proof (translation)
+Introduce `k _ m A B a dA dB n h dn dh h2 h3 ha ha2 hD hd hn hh hnd hhd hdn hdh hco E Ed`. Take `⟨w, rfl, rfl⟩` from `exists_param A B a dA dB h2 h3 ha hD hd`. Take `⟨q, hq⟩ : ∃ q, q = derivative n * h - 2 * n * derivative h` from `⟨_, rfl⟩`. Take `⟨qd, hqd⟩ : ∃ qd, qd = derivative dn * h + derivative n * dh - 2 * dn * derivative h - 2 * n * derivative dh` from `⟨_, rfl⟩`. Rewrite `E`, `Ed` using `[← hq]`.
+
+Rewrite `Ed` using `[← hqd]`. Establish `c2 : (C (2 : k) : k[X]) = 2` using `rfl`. Establish `c3 : (C (3 : k) : k[X]) = 3` using `rfl`. Establish `c4 : (C (4 : k) : k[X]) = 4` using `rfl`. Establish `c6 : (C (6 : k) : k[X]) = 6` using `rfl`.
+
+Establish `c9 : (C (9 : k) : k[X]) = 9` using `rfl`. Establish `c27 : (C (27 : k) : k[X]) = 27` using `rfl`. Establish `E' : (3 * X ^ 2 + C A) * q ^ 2 + 2 * (X ^ 3 + C A * X + C B) * q * derivative q = 3 * n ^ 2 * derivative n + C (a ^ 4 * A) * (derivative n * h ^ 4 + 4 * n * h ^ 3 * derivative h) + 6 * C (a ^ 6 * B) * h ^ 5 * derivative h`. Use `congrArg derivative E` as an intermediate fact. Simplify using `only [derivative_mul, derivative_add, derivative_pow, derivative_X, derivative_C, Nat.cast_ofNat, c2, c3, c4, c6] at this`.
+
+Evaluate the numerical expressions using `only at this`. Take the linear combination `this`. Simplify using `only [map_mul, map_pow, map_neg, c2, c9] at E E' Ed`. Use `set F : k[X] := X ^ 3 + C A * X + C B with hF`. Use `set r : k[X] := dn * h - 2 * n * dh with hr`.
+
+Use `set V : k[X] := C a ^ 2 * C w * (3 * X ^ 2 + 2 * C A) with hV`. Use `set V' : k[X] := C w * (3 * n ^ 2 + 2 * (C a ^ 4 * C A) * h ^ 4) with hV'`. Use `set G : k[X] := n ^ 3 + C a ^ 4 * C A * n * h ^ 4 + C a ^ 6 * C B * h ^ 6 with hG`. Use `set G₁ : k[X] := 3 * n ^ 2 + C a ^ 4 * C A * h ^ 4 with hG₁`. Use `set P : k[X] := h * r + V * h * q - V' with hP`.
+
+Establish `key : G₁ * P = F * q * (9 * C a ^ 2 * C w * X * h ^ 2 * q + 2 * h ^ 2 * qd - 6 * h * dh * q + 2 * V * h ^ 2 * derivative q - 6 * V * h * derivative h * q - 9 * C w * n * q)`. Simplify using `only [hG₁, hP, hr, hV', hV, hF, hG] at E E' Ed ⊢`. Take the linear combination `(-h ^ 2) * Ed - (C a ^ 2 * C w * (3 * X ^ 2 + 2 * C A) * h ^ 2) * E' + (6 * h * dh + 6 * (C a ^ 2 * C w * (3 * X ^ 2 + 2 * C A)) * h * derivative h + 9 * C w * n) * E + ((3 * n ^ 2 + C a ^ 4 * C A * h ^ 4) * (C a ^ 2 * C w * (3 * X ^ 2 + 2 * C A)) * h) * hq`. Establish `hGh : IsCoprime G h`. Establish `: G = n ^ 3 + h * (C a ^ 4 * C A * n * h ^ 3 + C a ^ 6 * C B * h ^ 5)`.
+
+Rewrite using `[hG]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `IsCoprime.add_mul_left_left hco.pow_left _`. Establish `hGG : IsCoprime G G₁`.
+
+Establish `hu : IsUnit (C (a ^ 12 * (4 * A ^ 3 + 27 * B ^ 2)) : k[X])` using `isUnit_C.2 (mul_ne_zero (pow_ne_zero _ ha) hD).isUnit`. Establish `h1 : IsCoprime G (C (a ^ 12 * (4 * A ^ 3 + 27 * B ^ 2)) * h ^ 8)` using `(isCoprime_mul_unit_left_right hu _ _).2 hGh.pow_right`. Establish `h2' : C (a ^ 12 * (4 * A ^ 3 + 27 * B ^ 2)) * h ^ 8 = (6 * (C a ^ 4 * C A) * n ^ 2 - 9 * (C a ^ 6 * C B) * n * h ^ 2 + 4 * (C a ^ 4 * C A) ^ 2 * h ^ 4) * G₁ + G * (27 * (C a ^ 6 * C B) * h ^ 2 - 18 * (C a ^ 4 * C A) * n)`. Simplify using `only [map_mul, map_pow, map_add, c4, c27, hG, hG₁]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[h2']`. Conclude with `(IsCoprime.of_add_mul_left_right h1).of_mul_right_right`. Establish `hdv : F * q ∣ G` using `⟨q, by rw [← E]; ring⟩`. Establish `hc1 : IsCoprime (F * q) G₁` using `hGG.of_isCoprime_of_dvd_left hdv`. Establish `hc2 : IsCoprime (F * q) h` using `hGh.of_isCoprime_of_dvd_left hdv`.
+
+Establish `hFP : F * q ∣ P` using `hc1.dvd_of_dvd_mul_left ⟨_, key⟩`. Use `set R : k[X] := P - 6 * C w * (F * q) * derivative h with hR`. Establish `hFR : F * q ∣ R` using `dvd_sub hFP ⟨6 * C w * derivative h, by ring⟩`. Establish `hhR : h ∣ R`. Use `hco.symm.dvd_of_dvd_mul_left ⟨n * r + n * V * q + C w * (C a ^ 4 * C A) * n * h ^ 3 + 3 * C w * (C a ^ 6 * C B) * h ^ 5 - 3 * C w * F * q * derivative n, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hR, hP, hV', hG] at E ⊢`. Take the linear combination `(3 * C w) * E - (3 * C w * F * q) * hq`. Establish `hdR : F * q * h ∣ R` using `hc2.mul_dvd hFR hhR`. Establish `tn` using `top_of_monic hn hnd`. Establish `th` using `top_of_monic hh hhd`.
+
+Establish `tX` using `top_X (k := k)`. Establish `tF : Top F 3 1`. Use `((((tX.mul tX).mul tX).add ((tX.cmul A).raise (by norm_num))).add (((top_one (k := k)).cmul B).raise (by norm_num))).cast ?_ rfl (by ring)` and prove the remaining obligations. Rewrite using `[hF]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `tq : Top (X * q) (3 * m + 1) 1`. Use `((tn.xder.mul th).sub ((tn.mul th.xder).cmul 2)).cast ?_ (by ring) (by push_cast; ring)` and prove the remaining obligations. Rewrite using `[hq, c2]`. Expand and normalize the polynomial expressions, which then agree. Establish `tr : Top r (3 * m + 1) 0`.
+
+Use `(((top_of_degree_lt hdn).mul th).sub ((tn.mul (top_of_degree_lt hdh)).cmul 2)).cast ?_ (by ring) (by ring)` and prove the remaining obligations. Rewrite using `[hr, c2]`. Expand and normalize the polynomial expressions, which then agree. Establish `tV : Top V 2 (3 * a ^ 2 * w)`. Use `((((tX.mul tX).cmul 3).add (((top_one (k := k)).cmul (2 * A)).raise (by norm_num))).cmul (a ^ 2 * w)).cast ?_ rfl (by ring)` and prove the remaining obligations.
+
+Simplify using `only [hV, map_mul, map_pow, c2, c3]`. Expand and normalize the polynomial expressions, which then agree. Establish `tV' : Top V' (4 * m + 2) (3 * w)`. Use `(((((tn.mul tn).cmul 3).cast rfl (show _ = 4 * m + 2 by ring) rfl).add ((((th.mul th).mul (th.mul th)).cmul (2 * (a ^ 4 * A))).raise (by omega))).cmul w).cast ?_ rfl (by ring)` and prove the remaining obligations. Simplify using `only [hV', map_mul, map_pow, c2, c3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `tR : Top (X * X * R) (4 * m + 4) (3 * a ^ 2 * w - 3 * w - 6 * w * m)`. Establish `t1` using `(((tX.mul tX).mul th).mul tr).raise (show _ < 4 * m + 4 by omega)`. Establish `t2` using `(((tX.mul tV).mul th).mul tq).cast rfl (show _ = 4 * m + 4 by omega) rfl`. Establish `t3` using `((tX.mul tX).mul tV').cast rfl (show _ = 4 * m + 4 by omega) rfl`.
+
+Establish `t4` using `(((tF.mul tq).mul th.xder).cmul (6 * w)).cast rfl (show _ = 4 * m + 4 by omega) rfl`. Use `(((t1.add t2).sub t3).sub t4).cast ?_ rfl (by ring)` and prove the remaining obligations. Simplify using `only [hR, hP, map_mul, c6]`. Expand and normalize the polynomial expressions, which then agree. Establish `tD : Top (X * (F * (X * q) * h)) (4 * m + 5) 1` using `(tX.mul ((tF.mul tq).mul th)).cast rfl (by omega) (by ring)`.
+
+Establish `hXR : X * X * R = 0`. Use `eq_zero_of_dvd_of_natDegree_lt (p := X * (F * (X * q) * h)) ?_ ?_` and prove the remaining obligations. Take `⟨T, hT⟩` from `hdR`. Conclude with `⟨T, by rw [hT]; ring⟩`. Rewrite using `[tD.natDegree_eq]`.
+
+Use `tR.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hR0 : R = 0` using `by simpa using hXR`. Establish `hw : w = 0`. Establish `h0` using `tR.2`.
+
+Rewrite `h0` using `[hXR, coeff_zero]`. Establish `h1 : 2 * 3 * a ^ 2 * w = 0` using `by linear_combination (3 * w) * ha2 - h0`. Conclude with `(mul_eq_zero.1 h1).resolve_left (mul_ne_zero (mul_ne_zero h2 h3) (pow_ne_zero _ ha))`. Establish `hr0 : r = 0`. Establish `: h * r = 0`.
+
+Rewrite using `[← hR0]`. Simplify using `[hR, hP, hV, hV', hw]`. Conclude with `(mul_eq_zero.1 this).resolve_left hh.ne_zero`. Establish `hdh0 : dh = 0`. Establish `h1 : h ∣ n * dh` using `⟨C (2 : k)⁻¹ * dn, by`.
+
+Establish `: (C (2 : k)⁻¹ : k[X]) * 2 = 1` using `by rw [← c2, ← map_mul, inv_mul_cancel₀ h2, map_one]`. Take the linear combination `(-C (2 : k)⁻¹) * hr0 + (C (2 : k)⁻¹) * hr - (n * dh) * this⟩`. Use `eq_zero_of_dvd_of_degree_lt (hco.symm.dvd_of_dvd_mul_left h1) ?_` and prove the remaining obligations. Rewrite using `[degree_eq_natDegree hh.ne_zero, hhd]` and apply the resulting hypothesis. Use `⟨by simp [hw], by simp [hw], ?_, hdh0⟩` and prove the remaining obligations.
+
+Establish `: dn * h = 0` using `by rw [← hr0, hr, hdh0]; ring`. Conclude with `(mul_eq_zero.1 this).resolve_right hh.ne_zero`.
+-/
 theorem first_order_rigid : ∀ (k : Type) [Field k] (m : ℕ) (A B a dA dB : k) (n h dn dh : k[X]), (2 : k) ≠ 0 → (3 : k) ≠ 0 → a ≠ 0 → a ^ 2 = -(2 * (m : k) + 1) → 4 * A ^ 3 + 27 * B ^ 2 ≠ 0 → 12 * A ^ 2 * dA + 54 * B * dB = 0 → n.Monic → h.Monic → n.natDegree = 2 * m + 1 → h.natDegree = m → dn.degree < ((2 * m + 1 : ℕ) : WithBot ℕ) → dh.degree < (m : WithBot ℕ) → IsCoprime n h → (X ^ 3 + C A * X + C B) * (derivative n * h - 2 * n * derivative h) ^ 2 = n ^ 3 + C (a ^ 4 * A) * n * h ^ 4 + C (a ^ 6 * B) * h ^ 6 → (C dA * X + C dB) * (derivative n * h - 2 * n * derivative h) ^ 2 + 2 * (X ^ 3 + C A * X + C B) * (derivative n * h - 2 * n * derivative h) * (derivative dn * h + derivative n * dh - 2 * dn * derivative h - 2 * n * derivative dh) = 3 * n ^ 2 * dn + C (a ^ 4 * dA) * n * h ^ 4 + C (a ^ 4 * A) * (dn * h ^ 4 + 4 * n * h ^ 3 * dh) + C (a ^ 6 * dB) * h ^ 6 + 6 * C (a ^ 6 * B) * h ^ 5 * dh → dA = 0 ∧ dB = 0 ∧ dn = 0 ∧ dh = 0 := by
   intro k _ m A B a dA dB n h dn dh h2 h3 ha ha2 hD hd hn hh hnd hhd hdn hdh hco E Ed
   obtain ⟨w, rfl, rfl⟩ := exists_param A B a dA dB h2 h3 ha hD hd

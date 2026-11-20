@@ -27,6 +27,9 @@ def natActR (R : Type) [Field R] (g : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1))
 def gPosGL (v : Fin P.nV) (s : Fin (P.n' v)) : GL (Fin (P.m + 1)) (P.Qq v) →* GL (Fin (P.m + 1)) Kf :=
   Matrix.GeneralLinearGroup.map ((P.ι v).comp ((P.σ v ^ s.val : P.Qq v ≃+* P.Qq v) : P.Qq v →+* P.Qq v))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem natAct_eq (A : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)) :
     P.natAct A = natActR P Kf (fun v s => gPosGL P v s (A v)) := by
   rfl
@@ -35,6 +38,11 @@ section Map
 
 variable {R S : Type}
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [substR]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+
+Simplify using `[substR, map_sum, Matrix.map_apply]`.
+-/
 theorem map_substR [CommRing R] [CommRing S] (f : R →+* S)
     (G : ∀ v, Fin (P.n' v) → Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R) (Q : XR P R) :
     MvPolynomial.map f (substR P R G Q) = substR P S (fun v s => (G v s).map f) (MvPolynomial.map f Q) := by
@@ -45,6 +53,9 @@ theorem map_substR [CommRing R] [CommRing S] (f : R →+* S)
     rw [map_mul, map_mul, map_mul, hp]
     simp [substR, map_sum, Matrix.map_apply]
 
+/- English proof (translation)
+Simplify using `only [natActR, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_substR]`. Use `congr 2`. Simplify using `only [map_prod, map_zpow₀, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem map_natActR [Field R] [Field S] (f : R →+* S) (g : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1)) R) (Q : XR P R) :
     MvPolynomial.map f (natActR P R g Q) =
       natActR P S (fun v s => Matrix.GeneralLinearGroup.map f (g v s)) (MvPolynomial.map f Q) := by
@@ -61,10 +72,16 @@ variable {Tau : Type} [Fintype Tau] {n : ℕ}
 def reM (h : P.m + 1 = n) (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ :=
   A.submatrix (finCongr h) (finCongr h)
 
+/- English proof (translation)
+Unfold `reM`. Conclude with `(Matrix.submatrix_mul_equiv A B (finCongr h) (finCongr h) (finCongr h)).symm`.
+-/
 theorem reM_mul (h : P.m + 1 = n) (A B : Matrix (Fin n) (Fin n) ℂ) : reM P h (A * B) = reM P h A * reM P h B := by
   unfold reM
   exact (Matrix.submatrix_mul_equiv A B (finCongr h) (finCongr h) (finCongr h)).symm
 
+/- English proof (translation)
+Unfold `reM`. Conclude with `Matrix.submatrix_one_equiv _`.
+-/
 theorem reM_one (h : P.m + 1 = n) : reM P h (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold reM
   exact Matrix.submatrix_one_equiv _
@@ -97,6 +114,13 @@ def hAt (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (M g :
   if Even s.val then reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹)
   else invT (reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹))
 
+/- English proof (translation)
+Establish `key : reM P h ((M (pos ⟨v, s⟩) : Matrix (Fin n) (Fin n) ℂ) * y' (pos ⟨v, s⟩)) = (reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) * reM P h ((M (pos ⟨v, s⟩) : Matrix (Fin n) (Fin n) ℂ) * y (pos ⟨v, s⟩))` using `by show _ = reM P h _ * _`. Rewrite using `[← reM_mul, hy]`. Use `congr 1`. Simplify using `[Matrix.mul_assoc]`. Unfold `zAt hAt`.
+
+Use `split_ifs with hs`. Conclude with `key`. Rewrite using `[key] show _ = (((reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹))⁻¹ : GL (Fin (P.m + 1)) ℂ) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)ᵀ * _`. Rewrite using `[Matrix.coe_units_inv, Matrix.mul_inv_rev, Matrix.transpose_mul]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply]`.
+-/
 theorem zAt_tr (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (M g : Tau → GL (Fin n) ℂ)
     (y y' : Tau → Matrix (Fin n) (Fin n) ℂ) (hy : ∀ τ, y' τ = (g τ : Matrix (Fin n) (Fin n) ℂ) * y τ)
     (v : Fin P.nV) (s : Fin (P.n' v)) :
@@ -120,6 +144,19 @@ theorem zAt_tr (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau)
     ext i j
     simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Establish `hz' : ∀ v s, zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y'.1 v s = (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) * zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y.1 v s` using `fun v s => zAt_tr P h pos M g y.1 y'.1 hy v s`. Establish `hz : ∀ v s, ((((hAt P h pos M g v s)⁻¹ : GL (Fin (P.m + 1)) ℂ)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) * zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y'.1 v s = zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y.1 v s`. Introduce `v s`. Rewrite using `[hz', ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `hev : ∀ Q : XR P ℂ, MvPolynomial.eval (fun x : Var P => zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y'.1 x.1 x.2.1 x.2.2.1 x.2.2.2) (substR P ℂ (fun v s => ((((hAt P h pos M g v s)⁻¹ : GL (Fin (P.m + 1)) ℂ)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)) Q) = MvPolynomi …`.
+
+Introduce `Q`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [substR]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp`.
+
+Rewrite using `[map_mul, map_mul, map_mul, hp]`. Use `congr 1`. Simplify using `only [substR, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X]`. Rewrite using `[← hz x.1 x.2.1, Matrix.mul_apply]`. Establish `hdet : ∀ v s, (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ≠ 0` using `fun v s => ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)).ne_zero`.
+
+Establish `hc : (∏ v, ∏ s : Fin (P.n' v), (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ^ (-(eAt P v s))) * (∏ v, ∏ s : Fin (P.n' v), (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ^ (eAt P v s)) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hdet v s))]`. Establish `hnat : natActR P ℂ (hAt P h pos M g) Q = (∏ v, ∏ s : Fin (P.n' v), (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ^ (-(eAt P v s))) • substR P ℂ (fun v s => ((((hAt P h pos M g v s)⁻¹ : GL (Fin (P.m + 1)) ℂ)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)) Q` using `rfl`. Rewrite using `[hnat, map_smul, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [evC, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[hev]`.
+
+Simplify using `only [hz', Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[← mul_assoc, ← mul_assoc, hc, one_mul]`.
+-/
 theorem evC_natAct (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
     (M g : Tau → GL (Fin n) ℂ) (y y' : Frames G) (hy : IsTr (fun τ => (g τ : Matrix (Fin n) (Fin n) ℂ)) y y') (Q : XR P ℂ) :
     evC P h pos G (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) (natActR P ℂ (hAt P h pos M g) Q) y' =
@@ -163,6 +200,9 @@ def VtupR (R : Type) [Field R] : Submodule R (XR P R) :=
   Submodule.span R {Z | ∃ F : ∀ v, MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) R,
     (∀ v, F v ∈ Vsp R (P.lam0 v)) ∧ Z = ∏ v, rename (fun x => (⟨v, x⟩ : Var P)) (F v)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem VtupR_Kf : VtupR P Kf = P.Vtup := rfl
 
 def WtTie (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (lam : Tau → Formalism.BasicNotions.DomWeight n) : Prop :=

@@ -11,12 +11,22 @@ open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
 namespace GlobalTheory.ConstFrame
 
+/- English proof (translation)
+Apply `toStkA_injective` to reduce the goal to its premises. Rewrite using `[toStkA_valR x (L.U j ⊓ L.U j) _ (fun _ hz => ⟨h hz, h hz⟩), map_one]`. Conclude with `congrArg Units.val (gm_self hL x _ (h trivial))`.
+-/
 theorem valR_g_self {A : Type} [CommRing A] [IsLocalRing A] {Z : Scheme.{0}} {L : LB Z} (hL : L.IsLB) (x : Sp A ⟶ Z)
     (j : L.ι) (h : ⊤ ≤ x ⁻¹ᵁ L.U j) : valR x (L.U j ⊓ L.U j) (L.g j j).val = 1 := by
   apply toStkA_injective
   rw [toStkA_valR x (L.U j ⊓ L.U j) _ (fun _ hz => ⟨h hz, h hz⟩), map_one]
   exact congrArg Units.val (gm_self hL x _ (h trivial))
 
+/- English proof (translation)
+Establish `hc` using `hj (show cpt A ∈ (⊤ : (Sp A).Opens) from trivial)`. Establish `e` using `gm_maps_pt h (𝟙 (Sp A)) (cpt A) (fun _ => j₀) j hc.1 hc.2`. Establish `hr : ⊤ ≤ (𝟙 (Sp A)) ⁻¹ᵁ (M.pull (eSec B)).U (fun _ => j)` using `fun z hz => mem_pull.2 (hj hz).2`. Establish `h₀ : ⊤ ≤ (𝟙 (Sp A₀)) ⁻¹ᵁ (M₀.pull (eSec B₀)).U (fun _ => j₀)` using `hj₀`. Establish `h₁` using `FormalValue.top_le_comp h₀ (spMap f)`.
+
+Apply `toStkA_injective` to reduce the goal to its premises. Use `Eq.trans ?_ ((congrArg Units.val e).trans ?_)` and prove the remaining obligations. Use `(congrArg _ (FormalValue.valR_spMap f _ _ h₀ _).symm).trans ((toStkA_valR _ _ _ h₁ _).trans (congrArg Units.val ?_))` and prove the remaining obligations. Establish `hm : (𝟙 (Sp A) : Sp A ⟶ Sp A) (cpt A) ∈ ((M₀.pull φ).pull (eSec B)).U (fun _ _ => j₀)` using `mem_pull.2 hc.1`. Use `Eq.trans ?_ ((gm_res (𝟙 (Sp A)) _ _ hm _).trans (gm_pull (𝟙 (Sp A)) (spMap f) _ _ (hj₀ trivial) _)).symm` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, Category.comp_id]`. Use `Eq.trans ?_ (map_mul _ _ _).symm` and prove the remaining obligations. Conclude with `(Units.val_mul _ _).trans (congrArg₂ (· * ·) (toStkA_valR (A := A) (eSec B) _ _ hj _).symm (toStkA_valR _ _ _ hr _).symm)`.
+-/
 theorem valR_rig {A A₀ : Type} [CommRing A] [IsLocalRing A] [CommRing A₀] {B : Over (Sp A)} {B₀ : Over (Sp A₀)}
     [GrpObj B] [IsCommMonObj B] [GrpObj B₀] [IsCommMonObj B₀] {M : LB B.left} {M₀ : LB B₀.left} (f : A₀ →+* A)
     {φ : B.left ⟶ B₀.left} (he : eSec B ≫ φ = spMap f ≫ eSec B₀) (w : LB.Iso M (M₀.pull φ))
@@ -51,14 +61,23 @@ variable [Algebra (FractionRing ℂ) ℂ] {Y : Model Xo c β} {b : O →+* ℂ} 
 
 omit [Algebra (FractionRing ℂ) ℂ] in
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_self, Ideal.map_id]`. Use `infer_instance`.
+-/
 theorem complete : IsAdicComplete ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) ℂ⟦X⟧ := by
   rw [Algebra.algebraMap_self, Ideal.map_id]
   infer_instance
 
+/- English proof (translation)
+The claim follows from `((Ξ.g_rel v 0).1 2).trans (congrArg (spMap (PowerSeries.C (R := ℂ)) ≫ ·) (Λ.ex0_b v))`.
+-/
 theorem base_comp (v : Λ.A.V) :
     (show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) ≫ W.φ = spMap (PowerSeries.C (R := ℂ)) ≫ (Λ.u.ex v.2).left :=
   ((Ξ.g_rel v 0).1 2).trans (congrArg (spMap (PowerSeries.C (R := ℂ)) ≫ ·) (Λ.ex0_b v))
 
+/- English proof (translation)
+Take `⟨jM, hM⟩` from `exists_chart W.P.D.toPre.P.isLB ((show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) (cpt ℂ⟦X⟧))`. Establish `h₀` using `FrameValue.le_chartAt a.D₀.P.isLB (Λ.u.ex v.2).left`. Use `⟨jM, _, (top_le_iff_cpt _ _).2 ⟨mem_pull.2 ?_, hM⟩, h₀⟩` and prove the remaining obligations. Conclude with `(congrArg (fun q => q (cpt ℂ⟦X⟧) ∈ a.D₀.P.L.U _) (base_comp Ξ v)).mpr (FormalValue.top_le_comp h₀ _ trivial)`.
+-/
 theorem exists_charts (v : Λ.A.V) : ∃ (jM : W.P.D.toPre.P.L.ι) (j₀ : a.D₀.P.L.ι),
     ⊤ ≤ (show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) ⁻¹ᵁ (LB.div (a.D₀.P.L.pull W.φ) W.P.D.toPre.P.L).U (fun _ => j₀, jM) ∧
     ⊤ ≤ (Λ.u.ex v.2).left ⁻¹ᵁ a.D₀.P.L.U j₀ := by
@@ -67,6 +86,15 @@ theorem exists_charts (v : Λ.A.V) : ∃ (jM : W.P.D.toPre.P.L.ι) (j₀ : a.D�
   refine ⟨jM, _, (top_le_iff_cpt _ _).2 ⟨mem_pull.2 ?_, hM⟩, h₀⟩
   exact (congrArg (fun q => q (cpt ℂ⟦X⟧) ∈ a.D₀.P.L.U _) (base_comp Ξ v)).mpr (FormalValue.top_le_comp h₀ _ trivial)
 
+/- English proof (translation)
+Use `haveI := complete`. Take `⟨jM, j₀, hj, h₀⟩` from `exists_charts Ξ v`. Establish `hw` using `FormalValue.isUnit_valR (A := ℂ⟦X⟧) (Ξ.g v).b.left _ hj (W.w.s (fun _ => j₀, jM))`. Establish `hM : ⊤ ≤ FormalValue.basePt (Ξ.g v) ⁻¹ᵁ W.P.D.toPre.P.L.U jM` using `fun z hz => (hj hz).2`. Use `⟨fun j h => ?_, fun j j' h => ?_⟩` and prove the remaining obligations.
+
+Use `isUnit_of_mul_isUnit_right ((congrArg IsUnit (Ξ.τ_eq v j jM j₀ h hj)).mpr ?_)` and prove the remaining obligations. Conclude with `(Units.isUnit _).mul ((Ne.isUnit (Λ.u.fr_ne j₀ v.2 h₀)).map _)`. Establish `h₁ : ⊤ ≤ (Ξ.x v).left ⁻¹ᵁ W.P.U.LG.L.U j` using `fun z hz => (h hz).1`. Establish `h₂ : ⊤ ≤ (Ξ.x v).left ⁻¹ᵁ W.P.U.LG.L.U j'` using `fun z hz => (h hz).2`. Establish `t` using `FormalValue.tau_trans (Ξ.x_fm v) h₁ h₂ hM hM`.
+
+Rewrite `t` using `[valR_g_self W.P.D.toPre.P.isLB _ jM hM, _root_.mul_one]`. Establish `e₁` using `Ξ.τ_eq v j jM j₀ h₁ hj`. Establish `e₂` using `Ξ.τ_eq v j' jM j₀ h₂ hj`. Use `hw.mul_left_cancel (e₁.trans ?_)` and prove the remaining obligations. Use `(congrArg (· * _) t).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.mul_assoc, mul_left_comm]`. Conclude with `(mul_left_comm _ _ _).trans ((congrArg (_ * ·) e₂.symm).trans (mul_left_comm _ _ _))`.
+-/
 theorem isFrm (v : Λ.A.V) : IsFrm W.P.U.LG.L (Ξ.x v).left (Ξ.τ v) := by
   haveI := complete
   obtain ⟨jM, j₀, hj, h₀⟩ := exists_charts Ξ v
@@ -86,6 +114,19 @@ theorem isFrm (v : Λ.A.V) : IsFrm W.P.U.LG.L (Ξ.x v).left (Ξ.τ v) := by
     rw [_root_.mul_assoc, mul_left_comm]
     exact (mul_left_comm _ _ _).trans ((congrArg (_ * ·) e₂.symm).trans (mul_left_comm _ _ _))
 
+/- English proof (translation)
+Use `haveI := complete`. Establish `hs : spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) = 𝟙 _` using `Spec.map_id _`. Take `⟨jM, j₀, hj, h₀⟩` from `exists_charts Ξ 0`. Establish `hw` using `FormalValue.isUnit_valR (A := ℂ⟦X⟧) (Ξ.g 0).b.left _ hj (W.w.s (fun _ => j₀, jM))`. Establish `hM : ⊤ ≤ FormalValue.basePt (Ξ.g 0) ⁻¹ᵁ W.P.D.toPre.P.L.U jM` using `fun z hz => (hj hz).2`.
+
+Establish `hx' : (Ξ.x 0).left = spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) ≫ eSec W.t.G`. Use `(congrArg Over.Hom.left hx).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· ≫ eSec W.t.G) ((Category.comp_id _).symm.trans (Over.w (toUnit selfR)))`. Establish `hu : (Λ.u.ex (0 : Λ.A.V).2).left = eSec a.D₀.P.A`. Use `(congrArg Over.Hom.left ((Λ.u.ker 0).2 Λ.u.Λ.zero_mem)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Hom.one_def]`. Simplify using `[eSec]`. Establish `hb : FormalValue.basePt (Ξ.g 0) = eSec W.P.D.toPre.P.A`. Use `W.spec.1.1.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(base_comp Ξ 0).trans ((congrArg (_ ≫ ·) hu).trans W.he.symm)`.
+
+Conclude with `(Over.w (Ξ.g 0).b).trans (hs.trans (Over.w η[W.P.D.toPre.P.A]).symm)`. Establish `hb' : FormalValue.basePt (Ξ.g 0) = spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) ≫ eSec W.P.D.toPre.P.A` using `hb.trans ((Category.id_comp _).symm.trans (congrArg (· ≫ _) hs.symm))`. Establish `hf` using `Ξ.x_fm 0`. Establish `e` using `Ξ.τ_eq 0 j jM j₀ h hj`. Rewrite `hf`, `h`, `e` using `[hx']`.
+
+Establish `t` using `FormalValue.tau_rig hf hb' h hM`. Establish `hj₀ : ⊤ ≤ (a.D₀.P.L.pull (eSec a.D₀.P.A)).U (fun _ => j₀)` using `fun z hz => mem_pull.2 ((congrArg (fun q => q z ∈ a.D₀.P.L.U j₀) hu).mp (h₀ hz))`. Establish `r` using `valR_rig (PowerSeries.C (R := ℂ)) W.he W.w W.P.D.toPre.rig a.D₀.rig W.spec.2.2.1 jM j₀ (hb ▸ hj) hj₀`. Establish `f` using `(congrArg (PowerSeries.C (R := ℂ)) (Λ.rig (fun _ => j₀) hj₀)).trans r`. Use `replace f := f.trans (congrArg (fun q => valR (A := ℂ⟦X⟧) q _ (W.w.s (fun _ => j₀, jM)).val * _) hb.symm)`.
+
+Use `hw.mul_left_cancel (e.trans ((congrArg (_ * ·) f).trans ((mul_left_comm _ _ _).trans (congrArg (_ * ·) ?_))))` and prove the remaining obligations. Establish `t'` using `t`. Generalize the expression as in `FormalValue.tau W.P.U.toUnifPre ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) (spMap (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) ≫ eSec W.t.G) j jM = q at t' ⊢`. Rewrite `t'` using `[hs]`. Conclude with `t'`.
+-/
 theorem tau_zero (hx : Ξ.x 0 = 1) (j : W.P.U.LG.L.ι) (h : ⊤ ≤ (Ξ.x 0).left ⁻¹ᵁ W.P.U.LG.L.U j) :
     Ξ.τ 0 j = valR (𝟙 (Sp ℂ⟦X⟧)) ((W.P.U.LG.L.pull (eSec W.t.G)).U (fun _ => j))
       (W.P.U.LG.rig.s (fun _ => j)).val := by
@@ -124,6 +165,9 @@ theorem tau_zero (hx : Ξ.x 0 = 1) (j : W.P.U.LG.L.ι) (h : ⊤ ≤ (Ξ.x 0).lef
 
 omit [Algebra (FractionRing ℂ) ℂ] in
 
+/- English proof (translation)
+Introduce `h₁ h₂ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ`. Use `⟨isFrm Ξ, tau_zero Ξ ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.ArcPts.constPts_add_smul h₁ h₂ E H D l Xo c O β Y b a χ W Λ Ξ).1 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+-/
 theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (Ξ : ConstPts W Λ) , (∀ v, IsFrm W.P.U.LG.L (Ξ.x v).left (Ξ.τ v)) ∧ ∀ j, ⊤ ≤ (Ξ.x 0).left ⁻¹ᵁ W.P.U.LG.L.U j → Ξ.τ 0 j = valR (𝟙 (Sp ℂ⟦X⟧)) ((W.P.U.LG.L.pull (eSec W.t.G)).U (fun _ => j)) (W.P.U.LG.rig.s (fun _ => j)).val := by
   intro h₁ h₂ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ
   refine ⟨isFrm Ξ, tau_zero Ξ ?_⟩

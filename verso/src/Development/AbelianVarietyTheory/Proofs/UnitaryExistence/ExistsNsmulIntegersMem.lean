@@ -5,6 +5,11 @@ open IsDedekindDomain NumberField
 
 namespace GlobalTheory.NsmulIntegersMembership
 
+/- English proof (translation)
+Establish `h1 : v.valuation F (((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F) : F) < 1` using `(v.valuation_lt_one_iff_mem (K := F) _).2 (Ideal.absNorm_mem v.asIdeal)`. Establish `h2` using `v.valuedAdicCompletion_eq_valuation' (K := F) ((Ideal.absNorm v.asIdeal : ℕ) : F)`. Establish `h3 : ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) ((Ideal.absNorm v.asIdeal : ℕ) : F)`. Rewrite using `[map_natCast]`. Rewrite using `[h3]`.
+
+Use `lt_of_eq_of_lt h2 ?_` and prove the remaining obligations. Simplify using `using h1`.
+-/
 theorem valued_absNorm_lt_one (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
     Valued.v ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) < 1 := by

@@ -14,6 +14,11 @@ namespace GlobalTheory.StabInt
 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
 
+/- English proof (translation)
+Use `show _ ↔ Valued.v x ≤ 1`. Simplify using `only [Valuation.mem_integer_iff]`. Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `h1` using `(Valuation.Compatible.vle_iff_le (v := Valued.v) x 1)`. Rewrite `h1` using `[map_one]`.
+
+Rewrite using `[← h1]`. Conclude with `Iff.symm (Valuation.vle_one_iff (valuation (w.adicCompletion E)))`.
+-/
 theorem mem_O_iff (x : w.adicCompletion E) : x ∈ 𝒪[w.adicCompletion E] ↔ x ∈ w.adicCompletionIntegers E := by
   show _ ↔ Valued.v x ≤ 1
   simp only [Valuation.mem_integer_iff]
@@ -24,6 +29,9 @@ theorem mem_O_iff (x : w.adicCompletion E) : x ∈ 𝒪[w.adicCompletion E] ↔ 
   rw [← h1]
   exact Iff.symm (Valuation.vle_one_iff (valuation (w.adicCompletion E)))
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hg`. Rewrite using `[mem_integralGL_iff]`. Use `⟨fun i j => (mem_O_iff _).2 (u i j).2, fun i j => (mem_O_iff _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((u⁻¹ : GL (Fin n) (Ov E w)) i j).2`.
+-/
 theorem mem_integralGL_of_mem_KGL {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ GlobalTheory.LFun.KGL w n) :
     g ∈ integralGL (w.adicCompletion E) n := by
   obtain ⟨u, rfl⟩ := hg
@@ -32,6 +40,11 @@ theorem mem_integralGL_of_mem_KGL {g : GL (Fin n) (w.adicCompletion E)} (hg : g 
   rw [← map_inv]
   exact ((u⁻¹ : GL (Fin n) (Ov E w)) i j).2
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_integralGL_iff]`. Establish `h1 : ∀ i j, g.1 i j ∈ Ov E w` using `fun i j => (mem_O_iff _).1 (hg.1 i j)`. Establish `h2 : ∀ i j, g⁻¹.1 i j ∈ Ov E w` using `fun i j => (mem_O_iff _).1 (hg.2 i j)`. Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) (Ov E w) => A.map (Ov E w).subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.inv_mul`.
+-/
 theorem mem_KGL_of_mem_integralGL {g : GL (Fin n) (w.adicCompletion E)} (hg : g ∈ integralGL (w.adicCompletion E) n) :
     g ∈ GlobalTheory.LFun.KGL w n := by
   rw [mem_integralGL_iff] at hg
@@ -45,6 +58,27 @@ theorem mem_KGL_of_mem_integralGL {g : GL (Fin n) (w.adicCompletion E)} (hg : g 
   · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact g.inv_mul
 
+/- English proof (translation)
+Use `set F := w.adicCompletion E`. Use `letI : NontriviallyNormedField F := Valued.toNontriviallyNormedField _ _`. Use `haveI : IsUltrametricDist F := inferInstanceAs (@IsUltrametricDist F (Valued.toNormedField F (WithZero (Multiplicative ℤ))).toDist)`. Establish `hO : ∀ x : F, ‖x‖ ≤ 1 ↔ x ∈ 𝒪[F]` using `fun x => (Valued.toNormedField.norm_le_one_iff).trans (mem_O_iff x).symm`. Establish `hs : N.val.charpoly.Separable`.
+
+Take `⟨u, v, -, -, h⟩` from `hsep`. Conclude with `⟨u, v, h⟩`. Establish `hsep' : ∃ u v : Polynomial F, (∀ i, ‖u.coeff i‖ ≤ 1) ∧ (∀ i, ‖v.coeff i‖ ≤ 1) ∧ u * N.val.charpoly + v * Polynomial.derivative N.val.charpoly = 1`. Take `⟨u, v, hu, hv, h⟩` from `hsep`. Conclude with `⟨u, v, fun i => (hO _).2 ((mem_O_iff _).2 (hu i)), fun i => (hO _).2 ((mem_O_iff _).2 (hv i)), h⟩`.
+
+Establish `hNi : ∀ i j, ‖N.val i j‖ ≤ 1` using `fun i j => (hO _).2 ((mem_integralGL_iff F n).1 hN |>.1 i j)`. Establish `hN'i : ∀ i j, ‖((g.val)⁻¹ * N.val * g.val) i j‖ ≤ 1`. Introduce `i j`. Use `((mem_integralGL_iff F n).1 hN').1 i j` as an intermediate fact. Rewrite using `[← Matrix.coe_units_inv]`.
+
+Conclude with `(hO _).2 this`. Take `⟨c, hcu, hcN, hy, hdet⟩` from `GlobalTheory.IntConj.exists_commuting_mul_integral F n N.val g.val hNi hsep' g.isUnit hN'i`. Use `set cU := hcu.unit with hcU`. Establish `hcUv : (cU : Matrix (Fin n) (Fin n) F) = c` using `rfl`. Establish `hcadj : c ∈ Algebra.adjoin F {N.val}` using `GlobalTheory.Tw.CentralizerAdjoin.mem_adjoin_of_commute N.val c hs hcN`.
+
+Establish `htNv : Commute t.val N.val` using `by show t.val * N.val = N.val * t.val`. Use `congrArg Units.val htN` as an intermediate fact. Simplify `this` using `[Units.val_mul]`. Establish `htc : Commute t.val c` using `Algebra.commute_of_mem_adjoin_singleton_of_commute hcadj htNv`. Establish `htcU : t * cU = cU * t` using `Units.ext (by simpa [Units.val_mul, hcUv] using htc.eq)`.
+
+Use `set yU := cU⁻¹ * g with hyU`. Establish `hyv : (yU : Matrix (Fin n) (Fin n) F) = c⁻¹ * g.val`. Rewrite using `[hyU, Units.val_mul, Matrix.coe_units_inv, hcUv]`. Establish `hyO : yU ∈ integralGL F n`. Rewrite using `[mem_integralGL_iff]`.
+
+Establish `h1 : ∀ i j, (yU : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]` using `fun i j => by`. Rewrite using `[hyv]`. Conclude with `(hO _).1 (hy i j)`. Use `⟨h1, fun i j => ?_⟩` and prove the remaining obligations. Set `y₀ : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨_, h1 i j⟩`.
+
+Establish `hy₀ : (RingHom.mapMatrix (𝒪[F]).subtype) y₀ = (yU : Matrix (Fin n) (Fin n) F)` using `rfl`. Establish `hadj : ∀ i j, (yU : Matrix (Fin n) (Fin n) F).adjugate i j ∈ 𝒪[F]` using `fun i j => by`. Rewrite using `[← hy₀, ← RingHom.map_adjugate]`. Conclude with `(y₀.adjugate i j).2`. Establish `hd : ‖Ring.inverse (yU : Matrix (Fin n) (Fin n) F).det‖ ≤ 1`.
+
+Rewrite using `[Ring.inverse_eq_inv', norm_inv, hyv, hdet, inv_one]`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ ((hO _).1 hd) (hadj i j)`. Establish `e : t = yU * (g⁻¹ * t * g) * yU⁻¹`. Establish `e1 : cU⁻¹ * t * cU = t`.
+
+Rewrite using `[mul_assoc, htcU, ← mul_assoc, inv_mul_cancel, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ hyO ht') (Subgroup.inv_mem _ hyO)`.
+-/
 theorem mem_integralGL_of_conj (N t g : GL (Fin n) (w.adicCompletion E))
     (hN : N ∈ integralGL (w.adicCompletion E) n)
     (hsep : ∃ u v : (w.adicCompletion E)[X], (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧
@@ -118,6 +152,13 @@ def pairGrp {G : Type} [Group G] (t N : G) (h : Commute t N) : Subgroup G where
     rw [_root_.mul_inv_rev, _root_.zpow_neg, _root_.zpow_neg]
     exact (h.zpow_zpow a b).inv_inv.eq.symm
 
+/- English proof (translation)
+Introduce `E _ _ n w N t hN hsep htN htc`. Use `set F := w.adicCompletion E`. Establish `hNO : N ∈ integralGL F n` using `mem_integralGL_of_mem_KGL hN`. Set `H0` to `pairGrp t N htN`. Establish `hC : IsCompact (closure (Subgroup.zpowers t : Set (GL (Fin n) F)) * (integralGL F n : Set (GL (Fin n) F)))` using `htc.mul (isCompact_integralGL F n)`.
+
+Establish `hsub : (H0 : Set (GL (Fin n) F)) ⊆ closure (Subgroup.zpowers t : Set (GL (Fin n) F)) * (integralGL F n : Set (GL (Fin n) F))`. Introduce and unpack `_ ⟨a, b, rfl⟩`. Conclude with `Set.mul_mem_mul (subset_closure (Subgroup.zpow_mem_zpowers t a)) (Subgroup.zpow_mem _ hNO b)`. Establish `hH : IsCompact (H0.topologicalClosure : Set (GL (Fin n) F))`. Rewrite using `[Subgroup.topologicalClosure_coe]`.
+
+Conclude with `hC.of_isClosed_subset isClosed_closure (closure_minimal hsub hC.isClosed)`. Take `⟨g, hg⟩` from `exists_conj_le_integralGL F n hH`. Establish `ht'` using `hg t (H0.le_topologicalClosure ⟨1, 0, by simp⟩)`. Establish `hN'` using `hg N (H0.le_topologicalClosure ⟨0, 1, by simp⟩)`. Conclude with `mem_KGL_of_mem_integralGL (mem_integralGL_of_conj N t g hNO hsep htN ht' hN')`.
+-/
 theorem mem_KGL_of_commute : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (N t : GL (Fin n) (w.adicCompletion E)), N ∈ GlobalTheory.LFun.KGL w n →
     (∃ u v : (w.adicCompletion E)[X], (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧

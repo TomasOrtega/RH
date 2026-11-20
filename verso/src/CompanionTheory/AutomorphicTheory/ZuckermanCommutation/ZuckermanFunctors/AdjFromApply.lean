@@ -11,6 +11,13 @@ open BranchingSupport Formalism.FourierDecayAlt.ThreeDimData
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `⟨i, j⟩ u`. Rewrite using `[Matrix.mul_one]`. Establish `hij` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.one_apply] at hij`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, cM, Matrix.kroneckerMap_apply, Fintype.sum_prod_type]`.
+
+Rewrite using `[← hij]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem cMT_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : A * Bᵀ = 1) :
     (cM n)ᵀ * (1 : Matrix Unit Unit ℂ) = (A ⊗ₖ B) * (cM n)ᵀ := by
   ext ⟨i, j⟩ u
@@ -27,6 +34,9 @@ theorem cMT_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : A * Bᵀ = 1) 
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Establish `hi` using `i.2`. Establish `hl` using `l.2`. Simplify using `only [Formalism.QuantumDeterminants.Hpk]`. Apply the tactic sequence `split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | omega | norm_num`.
+-/
 private theorem hpk_apply_lemma (k r : ℕ) (i l : Fin (2 * r + k + 1)) :
     Formalism.QuantumDeterminants.Hpk k r i l = if (l : ℕ) = (if (i : ℕ) < r ∨ r + k < i then 2 * r + k - i else i) then
       (if (i : ℕ) = r + k then -1 else 1) else 0 := by
@@ -35,6 +45,13 @@ private theorem hpk_apply_lemma (k r : ℕ) (i l : Fin (2 * r + k + 1)) :
   simp only [Formalism.QuantumDeterminants.Hpk]
   split_ifs <;> (try simp only [Fin.ext_iff] at *) <;> first | rfl | omega | norm_num
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hpk_apply_lemma]`.
+
+Apply the tactic sequence `rw [Finset.sum_eq_single ⟨if (i : ℕ) < r ∨ r + k < i then 2 * r + k - i else i, by split_ifs <;> omega⟩]`. Apply the tactic sequence `simp only [Matrix.one_apply, Fin.ext_iff] split_ifs <;> first | rfl | omega | norm_num`. Introduce `l _ hl`. Rewrite using `[if_neg (fun h => hl (Fin.ext h)), zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem hpk_mul_self_lemma_2 (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
   ext i j
   have hi := i.2
@@ -49,6 +66,11 @@ private theorem hpk_mul_self_lemma_2 (k r : ℕ) : Formalism.QuantumDeterminants
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hH : (Formalism.QuantumDeterminants.Hpk k r).det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det (hpk_mul_self_lemma_2 k r)`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+
+Establish `hg' : g.conjTranspose * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Apply `hH` to reduce the goal to its premises. Rewrite using `[← hg', Matrix.det_mul, h0, mul_zero]`.
+-/
 private theorem isUnit_det_lemma_3 {k r : ℕ} {g : Formalism.FourierDecayAlt.ThreeDimData.Mx k r} (hg : g ∈ BranchingSupport.GG k r) : IsUnit g.det := by
   have hH : (Formalism.QuantumDeterminants.Hpk k r).det ≠ 0 := by
     intro h0
@@ -61,6 +83,9 @@ private theorem isUnit_det_lemma_3 {k r : ℕ} {g : Formalism.FourierDecayAlt.Th
   apply hH
   rw [← hg', Matrix.det_mul, h0, mul_zero]
 
+/- English proof (translation)
+Use `hM k r (triv k r) ((vr k r b).tens (vr k r (!b))) B (cM _)ᵀ (fun g hg => ?_)` and prove the remaining obligations. Establish `hinv : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g (isUnit_det_lemma_3 hg)`. Establish `hAB : (vr k r b).ρ g * ((vr k r (!b)).ρ g)ᵀ = 1`. Apply the tactic sequence `cases b <;> simp [vr, BranchingSupport.dualM, hinv, ← Matrix.transpose_mul]`. Conclude with `cMT_mul hAB`.
+-/
 theorem cMT_hom (hM : MatHom) (b : Bool) (B : URep k r) :
     IsHom (one B) ((vr k r b).tens (vr k r (!b)), B) (mAct (cM _)ᵀ) := by
   refine hM k r (triv k r) ((vr k r b).tens (vr k r (!b))) B (cM _)ᵀ (fun g hg => ?_)
@@ -71,11 +96,17 @@ theorem cMT_hom (hM : MatHom) (b : Bool) (B : URep k r) :
 
 def uR (ι : Type) [DecidableEq ι] : Matrix (ι × Unit) ι ℂ := fun p d => if p.1 = d then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `⟨i, u⟩ d`. Consider the cases of `u`. Simplify using `[Matrix.mul_apply, uR, FRep.tens, triv, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.one_apply]`.
+-/
 theorem uR_int (F : FRep k r) (g : Mx k r) : uR F.ι * F.ρ g = (F.tens (triv k r)).ρ g * uR F.ι := by
   ext ⟨i, u⟩ d
   cases u
   simp [Matrix.mul_apply, uR, FRep.tens, triv, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `d ⟨u, e⟩`. Consider the cases of `u`. Simplify using `[Matrix.mul_apply, uM, FRep.tens, triv, Matrix.kroneckerMap_apply, Fintype.sum_prod_type, Matrix.one_apply]`.
+-/
 theorem uMT_int (F : FRep k r) (g : Mx k r) : (uM F.ι)ᵀ * ((triv k r).tens F).ρ g = F.ρ g * (uM F.ι)ᵀ := by
   ext d ⟨u, e⟩
   cases u
@@ -91,6 +122,9 @@ def adjTo (p : (Fin n → V) →ₗ[ℂ] (Unit → V')) : (Unit → V) →ₗ[�
 def adjFrom (i : (Unit → V) →ₗ[ℂ] (Fin n → V')) : (Fin n → V) →ₗ[ℂ] (Unit → V') :=
   mAct (cM n) ∘ₗ (on2 i ∘ₗ mAct (uR (Fin n)))
 
+/- English proof (translation)
+Simplify using `[adjTo, mAct_apply, uM, cM, on1, Fintype.sum_prod_type]`. Establish `e : (LinearMap.funLeft ℂ V fun c => (c, d)) ((mAct (cM n)ᵀ) x) = Pi.single d (x ())`. Use function extensionality and compare the values at `c`. Simplify using `[LinearMap.funLeft_apply, mAct_apply, cM, Matrix.transpose_apply, Pi.single_apply]`. Rewrite using `[e]`.
+-/
 theorem adjTo_apply (p : (Fin n → V) →ₗ[ℂ] (Unit → V')) (x : Unit → V) (d : Fin n) :
     adjTo p x d = p (Pi.single d (x ())) () := by
   simp [adjTo, mAct_apply, uM, cM, on1, Fintype.sum_prod_type]
@@ -99,6 +133,11 @@ theorem adjTo_apply (p : (Fin n → V) →ₗ[ℂ] (Unit → V')) (x : Unit → 
     simp [LinearMap.funLeft_apply, mAct_apply, cM, Matrix.transpose_apply, Pi.single_apply]
   rw [e]
 
+/- English proof (translation)
+Simplify using `[adjFrom, mAct_apply, uR, cM, on2, Fintype.sum_prod_type]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Establish `e : (LinearMap.funLeft ℂ V fun d => (c, d)) ((mAct (uR (Fin n))) y) = fun _ => y c`. Use function extensionality and compare the values at `u`.
+
+Simplify using `[LinearMap.funLeft_apply, mAct_apply, uR]`. Rewrite using `[e]`.
+-/
 theorem adjFrom_apply (i : (Unit → V) →ₗ[ℂ] (Fin n → V')) (y : Fin n → V) (u : Unit) :
     adjFrom i y u = ∑ c, i (fun _ => y c) c := by
   simp [adjFrom, mAct_apply, uR, cM, on2, Fintype.sum_prod_type]
@@ -128,6 +167,13 @@ def adjEquiv : ((Fin n → V) →ₗ[ℂ] (Unit → V')) ≃ₗ[ℂ] ((Unit → 
 
 end
 
+/- English proof (translation)
+Introduce `k r b U U'`. Use `⟨adjEquiv, fun p => ⟨fun hp => ?_, fun hq => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `cMT_hom hM b U`. Establish `h2` using `(hT k r (vr k r b) (triv k r) (vr k r (!b)) U U' p hp).1`. Establish `h3 : IsHom ((triv k r).tens (vr k r (!b)), U') (vr k r (!b), U') (mAct (uM (vr k r (!b)).ι)ᵀ)` using `hM k r _ _ U' _ (fun g _ => uMT_int (vr k r (!b)) g)`.
+
+Conclude with `(hC k r).comp _ _ _ _ _ ((hC k r).comp _ _ _ _ _ h1 h2) h3`. Establish `h1 : IsHom (vr k r b, U) ((vr k r b).tens (triv k r), U) (mAct (uR (vr k r b).ι))` using `hM k r _ _ U _ (fun g _ => uR_int (vr k r b) g)`. Establish `h2` using `(hT k r (triv k r) (vr k r (!b)) (vr k r b) U U' (adjEquiv p) hq).2`. Establish `h3` using `cM_hom hM b U'`. Establish `h4` using `(hC k r).comp _ _ _ _ _ ((hC k r).comp _ _ _ _ _ h1 h2) h3`.
+
+Rewrite using `[← adjEquiv.left_inv p]`. Conclude with `h4`.
+-/
 theorem adj_of (hC : HomCat) (hM : MatHom) (hT : TensHom) : Adj := by
   intro k r b U U'
   refine ⟨adjEquiv, fun p => ⟨fun hp => ?_, fun hq => ?_⟩⟩

@@ -7,6 +7,17 @@ open scoped ENNReal ComplexOrder
 
 namespace GlobalTheory.HCXi
 
+/- English proof (translation)
+Introduce `k r`. Take `⟨hcl, hco, -⟩` from `GlobalTheory.T.maximal_compact_subgroup_properties k r`. Take `⟨μ, hμ⟩` from `Formalism.FourierDecayAlt.P.compact_group_haar_exists k r (Kset k r) hcl hco`. Establish `hfin : μ Set.univ < ∞`. Establish `h1 : μ Set.univ ≤ μ (Kset k r) + μ (Kset k r)ᶜ` using `measure_univ_le_add_compl _`.
+
+Establish `h2 : μ (Kset k r) < ∞` using `hμ.finite_compact _ hco`. Rewrite `h1` using `[hμ.conc, add_zero]`. Conclude with `h1.trans_lt h2`. Establish `hne : μ Set.univ ≠ 0`. Introduce `h`.
+
+Conclude with `hμ.ne_zero (Measure.measure_univ_eq_zero.1 h)`. Establish `hone : ((μ Set.univ)⁻¹ • μ) Set.univ = 1`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hne hfin.ne]`. Use `⟨(μ Set.univ)⁻¹ • μ, ⟨?_, ?_, ?_, ?_, ?_⟩, hone⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, hμ.conc, smul_zero]`.
+
+Introduce `a ha`. Rewrite using `[Measure.map_smul, hμ.left a ha]`. Introduce `a ha`. Rewrite using `[Measure.map_smul, hμ.right a ha]`. Introduce `K _`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Rewrite `hone` using `[h]`. Simplify using `at hone`.
+-/
 theorem exists_isKMeas : ∀ k r : ℕ, ∃ μK : Measure (Mt k r), IsKMeas k r μK := by
   intro k r
   obtain ⟨hcl, hco, -⟩ := GlobalTheory.T.maximal_compact_subgroup_properties k r

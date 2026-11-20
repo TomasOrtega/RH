@@ -10,6 +10,11 @@ namespace UpperTheory.TjLocus
 
 open GlobalTheory.LevCover GlobalTheory.LatticeTorsion
 
+/- English proof (translation)
+Set `f : ℕ →o (Ideal (S ⧸ I))ᵒᵈ` to `⟨fun n => OrderDual.toDual (Ideal.map (Ideal.Quotient.mk I) (u ^ n)), fun m n hmn => Ideal.map_mono (Ideal.pow_le_pow_right hmn)⟩`. Take `⟨E, hE⟩` from `IsArtinian.monotone_stabilizes f`. Use `⟨E, fun J hIJ n hn => ?_⟩` and prove the remaining obligations. Break down `le_total n E with h | h` into its components or cases. Conclude with `(Ideal.pow_le_pow_right h).trans hn`.
+
+Establish `hfe : Ideal.map (Ideal.Quotient.mk I) (u ^ E) = Ideal.map (Ideal.Quotient.mk I) (u ^ n)` using `hE n h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_stable_exponent {S : Type} [CommRing S] (I u : Ideal S) [Finite (S ⧸ I)] :
     ∃ E : ℕ, ∀ J : Ideal S, I ≤ J → ∀ n : ℕ, u ^ n ≤ J → u ^ E ≤ J := by
   classical
@@ -28,6 +33,9 @@ private theorem exists_stable_exponent {S : Type} [CommRing S] (I u : Ideal S) [
           Ideal.comap_mono (Ideal.map_mono hn)
       _ = J := Ideal.comap_map_mk hIJ
 
+/- English proof (translation)
+Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h` using `(hu n h0).map (Spec.preimage y).hom`. Rewrite `h` using `[map_natCast, hn]`. Conclude with `not_isUnit_zero h`.
+-/
 private theorem charZero_of_point {R : Type} [CommRing R] (hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : R)) {k : Type} [Field k]
     (y : Sp k ⟶ Sp R) : CharZero k := by
   refine charZero_of_inj_zero fun n hn => ?_
@@ -39,11 +47,17 @@ private theorem charZero_of_point {R : Type} [CommRing R] (hu : ∀ n : ℕ, n �
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {Y : Scheme.{0}}
   {s : Y ⟶ Sp R}
 
+/- English proof (translation)
+Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+-/
 private theorem act_zero (o : Obj b N s) : o.act.act (0 : D.O) = 1 := by
   have h := o.act.add 0 0
   rw [add_zero] at h
   exact left_eq_mul.mp h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero, MonObj.comp_one, pow_zero]`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, o.act.add, MonObj.comp_mul, ih, o.act.one, Category.comp_id, pow_succ]`.
+-/
 private theorem comp_act_natCast (o : Obj b N s) {T : Over Y} (g : T ⟶ o.A) (n : ℕ) :
     g ≫ o.act.act (n : D.O) = g ^ n := by
   induction n with
@@ -66,9 +80,21 @@ private def ann (o : Obj b N s) {T : Over Y} (g : T ⟶ o.A) : Ideal (𝓞 D.F) 
     haveI := o.act.hom (algebraMap (𝓞 D.F) D.O x)
     rw [smul_eq_mul, map_mul, o.act.mul, ← Category.assoc, ha, MonObj.one_comp]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem killedBy_iff (o : Obj b N s) (v : Ideal (𝓞 D.F)) {T : Over Y} (g : T ⟶ o.A) :
     KilledBy o v g ↔ v ≤ ann o g := Iff.rfl
 
+/- English proof (translation)
+Use `haveI := o.ab`. Take `⟨t, ht⟩` from `(IsNoetherian.noetherian I : I.FG)`. Establish `hgen : ∀ a : (t : Set (𝓞 D.F)), ClopenCond (torsion o.A c) fun _ z => z ≫ (torsion.ι o.A c ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)) = 1`. Introduce `a`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O a)`.
+
+Use `clopenCond_comp_eq_one _ o.A o.ab c hc _ ?_` and prove the remaining obligations. Rewrite using `[← MonObj.pow_comp, torsionι_pow_eq_one, MonObj.one_comp]`. Use `(ClopenCond.forall_finite hgen).congr fun T' z => ?_` and prove the remaining obligations. Rewrite using `[killedBy_iff, ← ht, Submodule.span_le]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a`. Use `h a.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `(z ≫ torsion.ι o.A c) ≫ _ = 1 at this`. Simplify `this` using `only [Category.assoc]`. Introduce `h a ha`.
+
+Express the relevant statement in the definitionally equal form `(z ≫ torsion.ι o.A c) ≫ _ = 1`. Simplify `h ⟨a, ha⟩` using `only [Category.assoc]`.
+-/
 private theorem clopen_killedBy (o : Obj b N s) (c : ℕ) (hc : IsUnit (c : Γ(Y, ⊤))) (I : Ideal (𝓞 D.F)) :
     ClopenCond (torsion o.A c) fun _ z => KilledBy o I (z ≫ torsion.ι o.A c) := by
   haveI := o.ab
@@ -90,6 +116,13 @@ private theorem clopen_killedBy (o : Obj b N s) (c : ℕ) (hc : IsUnit (c : Γ(Y
     change (z ≫ torsion.ι o.A c) ≫ _ = 1
     simpa only [Category.assoc] using h ⟨a, ha⟩
 
+/- English proof (translation)
+Take `⟨-, hcard⟩` from `GlobalTheory.FinEt.card_points_eq_finrank V.hom x q`. Rewrite using `[← hcard]`. Use `Nat.card_eq_of_bijective (fun v => ⟨Over.homMk v.1 v.2 ≫ j, h1 _⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v v' hvv`. Establish `h` using `hj _ _ (congrArg Subtype.val hvv)`.
+
+Conclude with `Subtype.ext (congrArg (fun m => m.left) h)`. Introduce and unpack `⟨g, hg⟩`. Take `⟨h', hh'⟩` from `h2 g hg`. Use `⟨⟨h'.left, Over.w h'⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Over.homMk h'.left _ ≫ j = g`.
+
+Rewrite using `[← hh']`. Use `congr 1`.
+-/
 private theorem card_points {V A : Over Y} [IsFinite V.hom] [Etale V.hom] (j : V ⟶ A)
     (hj : ∀ {T : Over Y} (a a' : T ⟶ V), a ≫ j = a' ≫ j → a = a') (C : ∀ T : Over Y, (T ⟶ A) → Prop)
     (h1 : ∀ {T : Over Y} (h' : T ⟶ V), C T (h' ≫ j)) (h2 : ∀ {T : Over Y} (g : T ⟶ A), C T g → ∃ h' : T ⟶ V, h' ≫ j = g)
@@ -108,6 +141,19 @@ private theorem card_points {V A : Over Y} [IsFinite V.hom] [Etale V.hom] (j : V
     rw [← hh']
     congr 1
 
+/- English proof (translation)
+Use `haveI := o.ab`. Take `⟨-, hTf, hTe⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion o.A hc`. Establish `hψc : (torsion.ι o.A c ≫ ψ) ^ c = 1`. Rewrite using `[← MonObj.pow_comp, torsionι_pow_eq_one, MonObj.one_comp]`. Establish `hP : ClopenCond (torsion o.A c) fun _ z => z ≫ (torsion.ι o.A c ≫ ψ) = 1 ∧ KilledBy o w (z ≫ torsion.ι o.A c)` using `(clopenCond_comp_eq_one _ B hB c hc _ hψc).and (clopen_killedBy o c hc w)`.
+
+Take `⟨U, hU, hUiff⟩` from `hP`. Use `haveI := hTf`. Use `haveI := hTe`. Take `⟨V, i, hVf, hVe, hi, hVi⟩` from `exists_sub U hU`. Use `haveI := hVf`.
+
+Use `haveI := hVe`. Use `⟨V, hVf, hVe, fun k _ _ x q => ?_⟩` and prove the remaining obligations. Establish `hιinj : ∀ {T : Over Y} (a a' : T ⟶ torsion o.A c), a ≫ torsion.ι o.A c = a' ≫ torsion.ι o.A c → a = a'`. Introduce `T a a' h`. Establish `hpow : (a ≫ torsion.ι o.A c) ^ c = 1`.
+
+Rewrite using `[← MonObj.comp_pow, torsionι_pow_eq_one, MonObj.comp_one]`. Conclude with `(existsUnique_torsion o.A c _ hpow).unique rfl h.symm`. Use `card_points (i ≫ torsion.ι o.A c) ?_ (fun T g => g ≫ ψ = 1 ∧ KilledBy o w g) ?_ ?_ x q` and prove the remaining obligations. Introduce `T a a' h`. Conclude with `(cancel_mono i).mp (hιinj _ _ (by simpa only [Category.assoc] using h))`.
+
+Introduce `T h'`. Use `(hUiff T (h' ≫ i)).mpr ((hVi T (h' ≫ i)).mpr ⟨h', rfl⟩)` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Introduce `T g hg`. Take `⟨y, hy, -⟩` from `existsUnique_torsion o.A c g (hkill g hg.1)`.
+
+Establish `hPy : y ≫ (torsion.ι o.A c ≫ ψ) = 1 ∧ KilledBy o w (y ≫ torsion.ι o.A c)`. Rewrite using `[← Category.assoc, hy]`. Conclude with `hg`. Take `⟨h', hh'⟩` from `(hVi T y).mp ((hUiff T y).mp hPy)`. Conclude with `⟨h', by rw [← Category.assoc, hh', hy]⟩`.
+-/
 private theorem exists_count_scheme (o : Obj b N s) {B : Over Y} [GrpObj B] (hB : IsAbelianScheme B) (ψ : o.A ⟶ B)
     [IsMonHom ψ] (c : ℕ) (hc : IsUnit (c : Γ(Y, ⊤))) (hkill : ∀ {T : Over Y} (g : T ⟶ o.A), g ≫ ψ = 1 → g ^ c = 1)
     (w : Ideal (𝓞 D.F)) :
@@ -147,6 +193,17 @@ private theorem exists_count_scheme (o : Obj b N s) {B : Over Y} [GrpObj B] (hB 
     obtain ⟨h', hh'⟩ := (hVi T y).mp ((hUiff T y).mp hPy)
     exact ⟨h', by rw [← Category.assoc, hh', hy]⟩
 
+/- English proof (translation)
+Use `haveI := o.ab`. Take `⟨-, hTf, hTe⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion o.A hc`. Use `haveI : Finite (𝓞 D.F ⧸ Ideal.span {(c : 𝓞 D.F)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hc0)` after adjusting the coercions.
+
+Take `⟨E, hE⟩` from `exists_stable_exponent (Ideal.span {(c : 𝓞 D.F)}) (uIdeal D r)`. Establish `hcann : ∀ {T : Over Y} (z : T ⟶ torsion o.A c), Ideal.span {(c : 𝓞 D.F)} ≤ ann o (z ≫ torsion.ι o.A c)`. Introduce `T z`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `(z ≫ torsion.ι o.A c) ≫ o.act.act (algebraMap (𝓞 D.F) D.O (c : 𝓞 D.F)) = 1`.
+
+Rewrite using `[map_natCast, comp_act_natCast, ← MonObj.comp_pow, torsionι_pow_eq_one, MonObj.comp_one]`. Establish `hex : ∀ {T : Over Y} (z : T ⟶ torsion o.A c), (∃ e : ℕ, KilledBy o (uIdeal D r ^ e) (z ≫ torsion.ι o.A c)) ↔ KilledBy o (uIdeal D r ^ E) (z ≫ torsion.ι o.A c)`. Introduce `T z`. Simplify using `only [killedBy_iff]`. Conclude with `⟨fun ⟨e, he⟩ => hE _ (hcann z) e he, fun h => ⟨E, h⟩⟩`.
+
+Establish `hψc : (torsion.ι o.A c ≫ ψ) ^ c = 1`. Rewrite using `[← MonObj.pow_comp, torsionι_pow_eq_one, MonObj.one_comp]`. Establish `hP : ClopenCond (torsion o.A c) fun _ z => z ≫ (torsion.ι o.A c ≫ ψ) = 1 ∧ ∃ e : ℕ, KilledBy o (uIdeal D r ^ e) (z ≫ torsion.ι o.A c)` using `((clopenCond_comp_eq_one _ B hB c hc _ hψc).and (clopen_killedBy o c hc _)).congr fun _ z => and_congr_right' (hex z)`. Take `⟨W, hWo, hWc, -, hW⟩` from `implocus_open_closed Y (torsion o.A c) _ _ hTf hTe hP (clopen_killedBy o c hc w)`. Use `⟨W, hWo, hWc, fun k _ _ x => (hW k x).trans ⟨fun h g hg he => ?_, fun h z hz => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨y, hy, -⟩` from `existsUnique_torsion o.A c g (hkill g hg)`. Substitute `hy` using the available equality. Conclude with `h y ⟨by simpa only [Category.assoc] using hg, he⟩`. Conclude with `h _ (by simpa only [Category.assoc] using hz.1) hz.2`.
+-/
 private theorem exists_killed_locus (o : Obj b N s) {B : Over Y} [GrpObj B] (hB : IsAbelianScheme B) (ψ : o.A ⟶ B)
     [IsMonHom ψ] (c : ℕ) (hc0 : c ≠ 0) (hc : IsUnit (c : Γ(Y, ⊤)))
     (hkill : ∀ {T : Over Y} (g : T ⟶ o.A), g ≫ ψ = 1 → g ^ c = 1) (r : ℤ) (w : Ideal (𝓞 D.F)) :
@@ -188,6 +245,27 @@ private theorem exists_killed_locus (o : Obj b N s) {B : Over Y} [GrpObj B] (hB 
 
 end UpperTheory.TjLocus
 
+/- English proof (translation)
+Introduce `p _ D R _ b N c Y s o B _ _ ψ ψ' hp hce hB hq r w j`. Take `⟨e, hce⟩` from `hce`. Take `⟨hψ, hψ', hψψ', -⟩` from `hq`. Use `haveI := hψ`. Use `haveI := hψ'`.
+
+Establish `hpp : p.Prime` using `Fact.out`. Establish `hu : ∀ n : ℕ, n ≠ 0 → IsUnit (n : R)`. Introduce `n hn`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p hpp.one_lt.ne'`. Rewrite using `[Nat.cast_mul, Nat.cast_pow]`.
+
+Conclude with `(hp.pow a).mul (b.unit m (Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hpp).mpr hm)))`. Establish `hc0 : c ≠ 0`. Rewrite using `[hce]`. Conclude with `pow_ne_zero _ hpp.ne_zero`. Establish `hc : IsUnit (c : Γ(Y, ⊤))`.
+
+Use `(hu c hc0).map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hkill : ∀ {T : Over Y} (g : T ⟶ o.A), g ≫ ψ = 1 → g ^ c = 1`. Introduce `T g hg`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨W1, hW1o, hW1c, hW1⟩` from `UpperTheory.TjLocus.exists_killed_locus o hB ψ c hc0 hc hkill r w`. Take `⟨V, hVf, hVe, hV⟩` from `UpperTheory.TjLocus.exists_count_scheme o hB ψ c hc hkill w`. Use `haveI := hVf`. Use `haveI := hVe`. Establish `hloc` using `(Scheme.Hom.isLocallyConstant_finrank V.hom).isClopen_fiber (Ideal.absNorm w ^ (D.m * j))`.
+
+Use `⟨W1 ∩ {y | V.hom.finrank y = Ideal.absNorm w ^ (D.m * j)}, hW1o.inter hloc.isOpen, hW1c.inter hloc.isClosed, fun Tb t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `ht k _ _ _ x hσ`. Take `⟨σ, hσ⟩` from `hσ`. Establish `hx : Set.range x.base ⊆ W1 ∩ {y | V.hom.finrank y = Ideal.absNorm w ^ (D.m * j)}`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Conclude with `ht ⟨σ.base z, by rw [← hσ]; rfl⟩`. Use `⟨(hW1 k x).mp fun y hy => (hx hy).1, ?_⟩` and prove the remaining obligations. Take `⟨q⟩ : Nonempty (Sp k)` from `inferInstance`. Rewrite using `[← hV k x q]`. Conclude with `(hx ⟨q, rfl⟩).2`.
+
+Introduce `ht`. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨k, _, _, a, ha⟩` from `GlobalTheory.FinEt.exists_algClosed_point Tb z`. Use `haveI : CharZero k := UpperTheory.TjLocus.charZero_of_point hu (a ≫ t ≫ s)`. Take `⟨hkil, hcnt⟩` from `ht k (a ≫ t) ⟨a, rfl⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : z ∈ Set.range a.base := by`. Rewrite using `[ha]`. Conclude with `Set.mem_singleton z`. Establish `hz : (a ≫ t).base q = t.base z` using `by show t.base (a.base q) = _`. Rewrite using `[hq]`.
+
+Use `⟨(hW1 k (a ≫ t)).mpr hkil ⟨q, hz⟩, ?_⟩` and prove the remaining obligations. Use `show V.hom.finrank (t.base z) = _`. Rewrite using `[← hz, hV k (a ≫ t) q]`. Conclude with `hcnt`.
+-/
 theorem UpperTheory.Cb.exists_clopen_locus_of_annihilator :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (c : ℕ) (Y : Scheme.{0}) (s : Y ⟶ Sp R) (o : Obj b N s) (B : Over Y) [GrpObj B] [IsCommMonObj B] (ψ : o.A ⟶ B) (ψ' : B ⟶ o.A), IsUnit ((p : ℕ) : R) → (∃ e : ℕ, c = p ^ e) → IsAbelianScheme B → IsQuasiInv c ψ ψ' → ∀ (r : ℤ) (w : Ideal (𝓞 D.F)) (j : ℕ), ∃ W : Set Y, IsOpen W ∧ IsClosed W ∧ ∀ (Tb : Scheme.{0}) (t : Tb ⟶ Y), Set.range t.base ⊆ W ↔ TjAt r w j o ψ t := by
   intro p _ D R _ b N c Y s o B _ _ ψ ψ' hp hce hB hq r w j

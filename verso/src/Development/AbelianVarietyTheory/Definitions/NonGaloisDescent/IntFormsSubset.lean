@@ -71,6 +71,9 @@ def intForms (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (S : Set (Heigh
     Set (GA D (T.V j σ) → ℂ) :=
   C.rd a '' {f₂ | f₂ ∈ C.cuspSec a n ∧ ∀ la ∈ S, ∀ v ∈ valSet C.d.Xo₂ C.d.c₂ (algCls C.d.Xo₂ C.d.c₂) la, 0 ≤ v f₂}
 
+/- English proof (translation)
+The claim follows from `Set.image_mono fun _ h => h.1`.
+-/
 theorem intForms_subset (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (S : Set (HeightOneSpectrum (𝓞 C.d.c₂.F))) :
     C.intForms a n S ⊆ C.ratForms a n := Set.image_mono fun _ h => h.1
 

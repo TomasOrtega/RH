@@ -56,6 +56,9 @@ instance instSmoothToAmbient (C : SmoothLocalChart G H u y) :
 instance instIsClosedImmersionImm (C : SmoothLocalChart G H u y) :
     AlgebraicGeometry.IsClosedImmersion C.imm := C.isClosedImmersion_imm
 
+/- English proof (translation)
+Use `show AlgebraicGeometry.IsAffineOpen (H.emb ⁻¹ᵁ H.ambient.basicOpen C.func)`. Establish `h : (H.emb ⁻¹ᵁ H.ambient.basicOpen C.func) = V.basicOpen (H.emb.app ⊤ C.func)` using `Scheme.preimage_basicOpen H.emb C.func`. Rewrite using `[h]`. Conclude with `(isAffineOpen_top V).basicOpen _`.
+-/
 theorem isAffineOpen_chartDomain [AlgebraicGeometry.IsAffine V]
     (C : SmoothLocalChart G H u y) :
     AlgebraicGeometry.IsAffineOpen C.chartDomain := by
@@ -65,6 +68,9 @@ theorem isAffineOpen_chartDomain [AlgebraicGeometry.IsAffine V]
   rw [h]
   exact (isAffineOpen_top V).basicOpen _
 
+/- English proof (translation)
+The claim follows from `AlgebraicGeometry.isPullback_morphismRestrict H.emb (H.ambient.basicOpen C.func)`.
+-/
 theorem isPullback_morphismRestrict_basicOpen (C : SmoothLocalChart G H u y) :
     CategoryTheory.IsPullback
       (AlgebraicGeometry.morphismRestrict H.emb (H.ambient.basicOpen C.func))

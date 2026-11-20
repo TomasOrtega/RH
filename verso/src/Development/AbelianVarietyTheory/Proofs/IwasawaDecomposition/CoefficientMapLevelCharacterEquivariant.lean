@@ -25,16 +25,25 @@ section Generic
 
 variable {Xf : Formalism.L2.Col.Fields} {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 Xf.E))} (Λ : Formalism.L2.Col.LevFam Xf.E Xf.K n SG)
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Rewrite `hu` using `[mul_one]`. Conclude with `(Subgroup.inv_mem_iff _).1 hu`.
+-/
 theorem mem_grp_of_inv_mul (a b : Formalism.L2.Col.GLG Xf.E n SG) (hb : b = 1) (hu : a⁻¹ * b ∈ Λ.grp) : a ∈ Λ.grp := by
   subst hb
   rw [mul_one] at hu
   exact (Subgroup.inv_mem_iff _).1 hu
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Rewrite using `[mul_one]`. Conclude with `Λ.grp.inv_mem ha`.
+-/
 theorem inv_mul_mem_grp (a b : Formalism.L2.Col.GLG Xf.E n SG) (hb : b = 1) (ha : a ∈ Λ.grp) : a⁻¹ * b ∈ Λ.grp := by
   subst hb
   rw [mul_one]
   exact Λ.grp.inv_mem ha
 
+/- English proof (translation)
+Substitute `hb` using the available equality. Establish `e : (⟨a⁻¹ * 1, hu⟩ : Λ.grp) = (⟨a, ha⟩ : Λ.grp)⁻¹` using `Subtype.ext (mul_one _)`. Rewrite `hz` using `[e, map_inv, Units.val_inv_eq_inv_val, map_inv₀]`. Rewrite using `[Units.val_inv_eq_inv_val, ← hz, inv_inv]`.
+-/
 theorem chr_of_inv_mul (σ : Xf.K →+* ℂ) (a b : Formalism.L2.Col.GLG Xf.E n SG) (hb : b = 1) (ha : a ∈ Λ.grp) (hu : a⁻¹ * b ∈ Λ.grp)
     (z : ℂˣ) (hz : σ ((Λ.chr ⟨_, hu⟩ : Xf.Kˣ) : Xf.K) = (z : ℂ)) :
     σ ((Λ.chr ⟨a, ha⟩ : Xf.Kˣ) : Xf.K) = ((z⁻¹ : ℂˣ) : ℂ) := by
@@ -45,12 +54,18 @@ theorem chr_of_inv_mul (σ : Xf.K →+* ℂ) (a b : Formalism.L2.Col.GLG Xf.E n 
 
 variable [NeZero n] (hc : Formalism.BasicNotions.CMData Xf.F Xf.E)
 
+/- English proof (translation)
+Rewrite `hk` using `[← colJEquiv_symm_coe, mem_principal_congruence_iff]`. Establish `hr : Formalism.L2.Col.redH hc n ∅ SG Λ.grp ((colJEquiv hc n ∅ SG Λ.grp).symm k) = 1` using `Subtype.ext hk`. Rewrite using `[hr, map_one, Units.val_one, map_one]`.
+-/
 theorem character_trivial_on_reduction_kernel (σ : Xf.K →+* ℂ) (k : colJ hc n ∅ SG Λ.grp) (hk : (k : Formalism.L2.Col.UAd hc n) ∈ principalCongruenceSubgroup hc n ∅ SG) :
     σ ((Λ.chr (Formalism.L2.Col.redH hc n ∅ SG Λ.grp ((colJEquiv hc n ∅ SG Λ.grp).symm k)) : Xf.Kˣ) : Xf.K) = 1 := by
   rw [← colJEquiv_symm_coe, mem_principal_congruence_iff] at hk
   have hr : Formalism.L2.Col.redH hc n ∅ SG Λ.grp ((colJEquiv hc n ∅ SG Λ.grp).symm k) = 1 := Subtype.ext hk
   rw [hr, map_one, Units.val_one, map_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formRho_colGl (C : Formalism.L2.Col.CoefPk Xf n (Formalism.L2.Col.DecoSet Xf.E n ∅ SG))
     (γ : Formalism.L2.Col.URat hc n) (k : colJ hc n ∅ SG Λ.grp) (v : C.V) :
     (Formalism.L2.Col.formGSD C Λ).ρ (colGl (Formalism.L2.Col.rf_onDeco C Λ) (γ, k)) v =
@@ -61,6 +76,9 @@ end Generic
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h1 : rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((k : Bridge.Gf X.toD7.sp.X') : GL _ _)) = 1` using `(RowAct.rTupQ_eq_one_iff X.toD7.sp.X' L.βX (L.datXt t) ⟨k.1, (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J_le k.2⟩).2 k.2`. Establish `h2 : eG.symm (rTup L.βX (L.datXt t) (Formalism.UG.bc (swapAE X.toD7) ((k : Bridge.Gf X.toD7.sp.X') : GL _ _))) = 1` using `(congrArg eG.symm h1).trans (map_one eG.symm)`. Conclude with `(congrArg (Formalism.L2.Col.unipotentGroupBlockEmbedding (X.B.primes px) I.sel t.1 (Formalism.L2.Col.r_le_X' X.B.R)) h2).trans (map_one _)`.
+-/
 theorem standard_level_element_hat_eq_one (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (t : TupU I U)
     (k : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J) :
@@ -74,6 +92,9 @@ theorem standard_level_element_hat_eq_one (X : Stages) (px : PreX X.B.toPre) (I 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Col.decoPtSurj_of _ _ _ _ (Formalism.L2.Col.unimodGenus_holds _ _) Formalism.L2.DIV.reduction_surjective_bis (by classical convert GlobalTheory.Mem.R3.LiftBrg.isSplitSet_sgL X px I U L hI hL t using 1; exact Finset.empty_union _) (Finset.disjoint_empty_left _)`.
+-/
 theorem deco_surj (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hI : I.Ok) (hL : LevOf X I U L) (t : TupU I U) :
     Formalism.L2.Col.DecoPtSurj X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) :=
@@ -83,6 +104,11 @@ theorem deco_surj (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hh`. Establish `hz` using `RowDeco.unitaryFiniteAdelicPointAsMatrix_mem_flagIwahori X I hI L hL t ⟨h, (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J_le hh⟩`. Conclude with `⟨hz, mem_grp_of_inv_mul (Xf := X.B.fields) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv _ _ (standard_level_element_hat_eq_one X px I U L eG t ⟨h, hh⟩) (GlobalTheory.T.inv_reduction_mul_flagTranslation_mem_rowLevelGroup X px I U L eG hI hL hG t ⟨h, (levEnv X.toD7.sp.X' L.βX (L.d …`. Introduce and unpack `⟨hz, hg⟩`.
+
+Conclude with `GlobalTheory.T.mem_rowLevel_of_reduction_mem_levelGroup X px I U L hI hL t h hz hg`.
+-/
 theorem lev_iff (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (hI : I.Ok) (hL : LevOf X I U L)
     (hG : IsPlacewiseIdentity X (px := px) eG) (t : TupU I U) (h : Bridge.Gf X.toD7.sp.X') :
@@ -101,6 +127,9 @@ theorem lev_iff (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `X px I U L eG hI hV hL hG t k hz hg`. Establish `hb` using `standard_level_element_hat_eq_one X px I U L eG t k`. Establish `hu` using `inv_mul_mem_grp (Xf := X.B.fields) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv _ _ hb hg`. Establish `h1` using `GlobalTheory.T.rowLevelCharacter_translation_eq_flagCharacter X px I U L eG hI hV hL hG t ⟨k.1, (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J_le k.2⟩ hz hu`. Conclude with `chr_of_inv_mul (Xf := X.B.fields) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv X.B.embLL _ _ hb hg hu _ (h1.trans (congrArg Units.val ((levEnv X.toD7.sp.X' L.βX (L.datXt t)).ch_J k)))`.
+-/
 theorem chi_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r),
     I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG →
@@ -119,6 +148,15 @@ theorem chi_eq : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use extensionality with `h`. Rewrite using `[lev_iff X px I U L eG hI hL hG t h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hg⟩`. Establish `e1 : RowAd.ptE X h = (e.symm h).1`.
+
+Use `he (e.symm h)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `⟨e.symm h, ⟨⟨RowAd.ptE X h, hz⟩, hg, Subtype.ext e1⟩, by simp⟩` and prove the remaining obligations. Introduce and unpack `⟨x, ⟨m, hm, rfl⟩, rfl⟩`. Establish `e1 : RowAd.ptE X (e (Formalism.L2.Col.ToUnitaryAdelic X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ m)) = m.1` using `he _`.
+
+Establish `hz : RowAd.ptE X (e (Formalism.L2.Col.ToUnitaryAdelic X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ m)) ∈ Formalism.L2.Col.J0 X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅`. Rewrite using `[e1]`. Conclude with `m.2`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `e2 : (⟨_, hz⟩ : Formalism.L2.Col.J0 X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅) = m` using `Subtype.ext e1`.
+
+Conclude with `(congrArg (fun z => Formalism.L2.Col.redG X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) z ∈ ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp) e2).mpr hm`.
+-/
 theorem lev_eq_map (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (hI : I.Ok) (hL : LevOf X I U L)
     (hG : IsPlacewiseIdentity X (px := px) eG) (t : TupU I U)
@@ -148,11 +186,39 @@ def levE {G G' : Type} [Group G] [Group G'] (e : G ≃* G') (J : Subgroup G) (J'
     J ≃* J' :=
   (J.equivMapOfInjective e.toMonoidHom e.injective).trans (MulEquiv.subgroupCongr hJ.symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levE_coe {G G' : Type} [Group G] [Group G'] (e : G ≃* G') (J : Subgroup G) (J' : Subgroup G')
     (hJ : J' = J.map e.toMonoidHom) (k : J) : ((levE e J J' hJ k : J') : G') = e k := rfl
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `X px I hX U Xg tr L eG hI hV hL hG hβ cX c hint hli hspan hpair t`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_equiv_rowStage_unitary_standard_adelic X px I hI`. Take `⟨eΓ, hι, hrat⟩` from `GlobalTheory.T.exists_rational_unitary_equiv_rowStage_compat X px I hI e he`. Establish `hS` using `deco_surj X px I U L hI hL t`. Establish `hJ` using `lev_eq_map X px I U L eG hI hL hG t e he`.
+
+Set `χ' : colJ X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp →* ℂˣ` to `(levEnv X.toD7.sp.X' L.βX (L.datXt t)).χ.comp (levE e _ _ hJ).toMonoidHom`. Set `coef : (Formalism.L2.Col.mtildeKGSD (Pr` to `X.B.primes px) X.B.wts I.Ch I.sel t.1).V →ₛₗ[X.B.embLL] cX.W := c`. Establish `hchar : ∀ k : colJ X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp, X.B.embLL (((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv.chr (Formalism.L2.Col.redH X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) …`. Introduce `k`. Establish `e1 : RowAd.ptE X ((levE e _ _ hJ k : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J) : Bridge.Gf X.toD7.sp.X') = ((((colJEquiv X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp).symm k : Formalism …`.
+
+Rewrite using `[levE_coe, he]`. Conclude with `congrArg Subtype.val (colJEquiv_symm_coe X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp k).symm`. Establish `hz : RowAd.ptE X ((levE e _ _ hJ k : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J) : Bridge.Gf X.toD7.sp.X') ∈ Formalism.L2.Col.J0 X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅`. Rewrite using `[e1]`. Conclude with `(((colJEquiv X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp).symm k : Formalism.L2.Col.JH X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formali …`.
+
+Establish `e2 : (⟨_, hz⟩ : Formalism.L2.Col.J0 X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅) = (((colJEquiv X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp).symm k : Formalism.L2.Col.JH X.toD7.sp.cm (X.B.R.N …` using `Subtype.ext e1`. Establish `hg : Formalism.L2.Col.redG X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ⟨_, hz⟩ ∈ ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp`. Rewrite using `[e2]`. Conclude with `((colJEquiv X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp).symm k).2`. Establish `h3` using `chi_eq X px I U L eG hI hV hL hG t (levE e _ _ hJ k) hz hg`.
+
+Establish `e3 : Formalism.L2.Col.redH X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp ((colJEquiv X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L …` using `Subtype.ext (congrArg (Formalism.L2.Col.redG X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) e2.symm)`. Rewrite using `[e3]`. Conclude with `h3`. Establish `hK1 : ∀ k : colJ X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp, (k : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1)) ∈ principalCongruenceSubgroup X.toD7.sp.cm (X.B.R.N X.B.R.m …`. Introduce `k hk`.
+
+Establish `h4` using `(hchar k).symm.trans (character_trivial_on_reduction_kernel (Xf := X.B.fields) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv X.toD7.sp.cm X.B.embLL k hk)`. Establish `h5 : (χ' k)⁻¹ = 1` using `Units.ext h4`. Conclude with `inv_eq_one.mp h5`. Establish `hgl : ∀ (γ : Formalism.L2.Col.URat X.toD7.sp.cm (X.B.R.N X.B.R.m - 1)) (k : colJ X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp) (v : (Formalism.L2.Col.mtildeKGSD (Pr` using `X.B.primes px) X.B.wts I.Ch I.sel t.1).V), coef ((Formalism.L2.Col.mtildeKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1).ρ (colGl (hc := X.toD7.sp.cm) (Formalism.L2.Col.rf_onDeco (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.s …`. Introduce `γ k v`.
+
+Use `(congrArg coef (formRho_colGl (Xf := X.B.fields) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv X.toD7.sp.cm (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) γ k v)).trans ?_` and prove the remaining obligations. Use `(c.map_smulₛₗ _ _).trans ?_` and prove the remaining obligations. Take `⟨γE, hr, hm⟩` from `hrat γ`. Establish `e3 : (Formalism.L2.Col.rowVal (Pr` using `X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)).rho (Formalism.L2.Col.ratHom X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) γ) v = rhoV X.B.fields.emb X.B.wts.sgTrue γ.1 v := congrArg (fun g => rhoV X.B.fields.emb X.B.wts.sgTrue g v) (LiftPres.ufGL_ratHom X.toD7.sp …`. Establish `e4` using `(congrArg c e3).trans (hint (eΓ γ) γE γ.1 hr hm v)`.
+
+Conclude with `congrArg₂ (fun (a : ℂ) (w : cX.W) => a • w) (hchar k) e4`. Set `P0` to `colClassPres (F := ↥X.toD7.host.F) (E := X.toD7.host.E) (hc := X.toD7.sp.cm) (Formalism.L2.Col.rf_onDeco (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv) hS (Formalism.L2.Col. …`. Establish `hq : ∀ x : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1), colQ (hc` using `X.toD7.sp.cm) (Formalism.L2.Col.rf_onDeco (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv) x = RowAd.decoAd X I t (e x) := by`. Introduce `x`. Use `(Formalism.L2.Col.decoPt_mk (F := ↥X.toD7.host.F) (E := X.toD7.host.E) X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) x).trans ?_` and prove the remaining obligations.
+
+Unfold `RowAd.decoAd`. Rewrite using `[he]`. Both sides reduce to the same expression. Establish `hχ : ∀ (k : colJ X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1) ((Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv).grp) (hk : e k ∈ (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J), (levEnv X.toD7.sp.X' L.βX (L.datXt t)).χ ⟨e k, hk⟩ = χ' k` using `fun k hk => rfl`. Establish `hρ : ∀ γ, cX.coef.ρ (eΓ γ) = (cX.coef.ρ.comp eΓ.toMonoidHom) γ` using `fun _ => rfl`.
+
+Use `⟨P0.transport e eΓ hι hρ hJ hχ, fun x => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `c'`. Conclude with `(hq _).symm.trans ((colAdPts (hc := X.toD7.sp.cm) (Formalism.L2.Col.rf_onDeco (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv) hS).q_y c')`. Introduce `f h`. Establish `h1` using `GlobalTheory.Mem.R3.LiftPres.transport_ext P0 e eΓ hι hρ hJ hχ f (e.symm h)`.
+
+Rewrite `h1` using `[MulEquiv.apply_symm_apply]`. Use `h1.trans ?_` and prove the remaining obligations. Use `(GlobalTheory.Mem.R3.LiftPres.classPresOf_ext (colAdPts (hc := X.toD7.sp.cm) (Formalism.L2.Col.rf_onDeco (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv) hS) _ _ _ _ coef hli …` and prove the remaining obligations. Establish `h2 : (colAdPts (hc` using `X.toD7.sp.cm) (Formalism.L2.Col.rf_onDeco (Formalism.L2.Col.rowVal (Pr := X.B.primes px) X.B.wts (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)) (Formalism.L2.Col.rowTyKK I.Ch I.sel t.1).inv) hS).q (e.symm h) = RowAd.decoAd X I t h := (hq _).trans (by rw [MulEquiv.apply_symm_ …`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_pres : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → L.βX = 1 → ∀ (cX : CoefA X.toD7.sp.X') (c : VV X.B.fields.K X.B.wts.sgTrue →ₛₗ[X.B.embLL] cX.W), (∀ (γ : GQ X.toD7.sp.X') (γE : GL (Fin X.toD7.sp.X'.rank) X.toD7.host.E) (g : GL (Fin (X.B.R.N X.B.R.m - 1)) X.B.fields.E), Bridge.IsRatMat X.toD7.sp.X' γ γE → MatEq γE g → ∀ v, c (rhoV X.B.fields.emb X.B.wts.sgTrue g v) = cX.coef.ρ γ (c v)) → LinearIndependent ℂ (fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i)) → Submodule.span ℂ (Set.range fun i => c (bVV X.B.fields.K X.B.wts.sgTrue i)) = ⊤ → (∀ x y, inner ℂ (c x) (c y) = X.B.embLL (pairV X.B.fields.emb X.B.wts.sgTrue 1 x y)) → ∀ t, ∃ P : Bridge.ClassPres (Bridge.ratF X.toD7.sp.X') ((famR X I hX U Xg tr).A.MtildeCSD t) X.toD7.what₂.embLL cX.coef.ρ (levEnv X.toD7.sp.X' L.βX (L.datXt t)).J (levEnv X.toD7.sp.X' L.βX (L.datXt t)).χ, (∀ x, P.coef x = c x) ∧ (∀ c', RowAd.decoAd X I t (P.y c') = (Formalism.L2.Col.mtildeKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1).outSec.rep c') ∧ ∀ (f : ((famR X I hX U Xg tr).A.MtildeCSD t).Forms) (h : Bridge.Gf X.toD7.sp.X'), P.ext (f : _ → _) h = c ((((Formalism.L2.Col.mtildeKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1).res (Formalism.L2.Col.mtildeKOk _ _ _ _ hX)).symm f).1 (RowAd.decoAd X I t h)) := by
   intro X px I hX U Xg tr L eG hI hV hL hG hβ cX c hint hli hspan hpair t
   obtain ⟨e, he⟩ := GlobalTheory.T.exists_equiv_rowStage_unitary_standard_adelic X px I hI

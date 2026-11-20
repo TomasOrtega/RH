@@ -1,11 +1,23 @@
 import Mathlib
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (algebraMap ℚ ℂ q)` using `by simpa using h`. Establish `h2 : IsIntegral ℤ q` using `(isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective).1 h1`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `⟨n, by simpa using hn⟩`.
+-/
 private lemma int_of_isIntegral_cast (q : ℚ) (h : IsIntegral ℤ (q : ℂ)) : ∃ n : ℤ, (n : ℚ) = q := by
   have h1 : IsIntegral ℤ (algebraMap ℚ ℂ q) := by simpa using h
   have h2 : IsIntegral ℤ q := (isIntegral_algebraMap_iff (algebraMap ℚ ℂ).injective).1 h1
   obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.1 h2
   exact ⟨n, by simpa using hn⟩
 
+/- English proof (translation)
+Establish `hq : q * (q.den : ℚ) = q.num` using `Rat.mul_den_eq_num q`. Establish `h1 : q.num ^ 2 * (d : ℤ) = m * (q.den : ℤ) ^ 2`. Establish `: ((q.num : ℚ)) ^ 2 * (d : ℚ) = (m : ℚ) * (q.den : ℚ) ^ 2`. Rewrite using `[← hq, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `this` after adjusting the coercions. Establish `hc : IsCoprime ((q.den : ℤ) ^ 2) (q.num ^ 2)`. Apply `IsCoprime.pow` to reduce the goal to its premises. Rewrite using `[Int.isCoprime_iff_gcd_eq_one, Int.gcd_comm]`. Simplify `q.reduced` using `[Int.gcd]`.
+
+Establish `h2 : (q.den : ℤ) ^ 2 ∣ (d : ℤ)` using `hc.dvd_of_dvd_mul_left ⟨m, by rw [h1]; ring⟩`. Establish `h3 : q.den * q.den ∣ d`. Establish `: q.den ^ 2 ∣ d` using `by exact_mod_cast h2`. Rewrite `this` using `[sq]`. Then use the resulting hypothesis. Establish `h4 : q.den = 1` using `Nat.isUnit_iff.1 (hd.prime.squarefree _ h3)`.
+
+Use `⟨q.num, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq, h4]`. Simplify using the standard rewrite rules.
+-/
 private lemma int_of_sq_mul (d : ℕ) (hd : d.Prime) (q : ℚ) (m : ℤ)
     (h : q ^ 2 * (d : ℚ) = m) : ∃ n : ℤ, (n : ℚ) = q := by
   have hq : q * (q.den : ℚ) = q.num := Rat.mul_den_eq_num q
@@ -26,6 +38,15 @@ private lemma int_of_sq_mul (d : ℕ) (hd : d.Prime) (q : ℚ) (m : ℤ)
   refine ⟨q.num, ?_⟩
   rw [← hq, h4]; simp
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨s, hs | hs⟩ := Int.even_or_odd' x <;> obtain ⟨t, ht | ht⟩ := Int.even_or_odd' y`. Conclude with `⟨s - t, by omega⟩`. It suffices to derive a contradiction. Establish `h1 : (d : ℤ) = 4 * (n - s ^ 2 - (t ^ 2 + t) * d)`. Rewrite `h` using `[hs, ht]`.
+
+Take the linear combination `h`. Establish `h2 : 2 * 2 ∣ d`. Establish `: ((4 : ℕ) : ℤ) ∣ (d : ℤ)` using `⟨_, by exact_mod_cast h1⟩`. Conclude with `this` after adjusting the coercions. Establish `h3` using `Nat.isUnit_iff.1 (hd.prime.squarefree _ h2)`.
+
+Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Establish `h1 : (1 : ℤ) = 4 * (n - s ^ 2 - s - t ^ 2 * d)`. Rewrite `h` using `[hs, ht]`. Take the linear combination `h`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `⟨s - t, by omega⟩`.
+-/
 private lemma even_sub_of_norm (d : ℕ) (hd : d.Prime) (x y n : ℤ)
     (h : x ^ 2 + y ^ 2 * (d : ℤ) = 4 * n) : Even (x - y) := by
   obtain ⟨s, hs | hs⟩ := Int.even_or_odd' x <;> obtain ⟨t, ht | ht⟩ := Int.even_or_odd' y
@@ -44,6 +65,21 @@ private lemma even_sub_of_norm (d : ℕ) (hd : d.Prime) (x y n : ℤ)
     omega
   · exact ⟨s - t, by omega⟩
 
+/- English proof (translation)
+Introduce `d hd a b h`. Establish `hr : ((Real.sqrt (d : ℝ) : ℝ) : ℂ) ^ 2 = (d : ℂ)`. Establish `: Real.sqrt (d : ℝ) ^ 2 = (d : ℝ)` using `Real.sq_sqrt (Nat.cast_nonneg d)`. Conclude with `this` after adjusting the coercions. Generalize the expression as in `Real.sqrt (d : ℝ) = r at h hr ⊢`.
+
+Establish `h' : IsIntegral ℤ ((a : ℂ) - (b : ℂ) * (Complex.I * (r : ℂ)))`. Establish `h0` using `map_isIntegral_int (starRingEnd ℂ) h`. Establish `e : (starRingEnd ℂ) ((a : ℂ) + (b : ℂ) * (Complex.I * (r : ℂ))) = (a : ℂ) - (b : ℂ) * (Complex.I * (r : ℂ))`. Simplify using `only [map_add, map_mul, map_ratCast, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h0` using `[e]`. Then use the resulting hypothesis. Take `⟨x, hx⟩` from `int_of_isIntegral_cast (2 * a) (by`. Establish `e : ((2 * a : ℚ) : ℂ) = ((a : ℂ) + (b : ℂ) * (Complex.I * (r : ℂ))) + ((a : ℂ) - (b : ℂ) * (Complex.I * (r : ℂ)))` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `h.add h')`.
+
+Take `⟨n, hn⟩` from `int_of_isIntegral_cast (a ^ 2 + b ^ 2 * d) (by`. Establish `e : ((a ^ 2 + b ^ 2 * d : ℚ) : ℂ) = ((a : ℂ) + (b : ℂ) * (Complex.I * (r : ℂ))) * ((a : ℂ) - (b : ℂ) * (Complex.I * (r : ℂ)))`. Use `push_cast`. Take the linear combination `(b : ℂ) ^ 2 * (r : ℂ) ^ 2 * Complex.I_sq - (b : ℂ) ^ 2 * hr`. Rewrite using `[e]`.
+
+Conclude with `h.mul h')`. Take `⟨y, hy⟩` from `int_of_sq_mul d hd (2 * b) (4 * n - x ^ 2) (by`. Use `push_cast`. Rewrite using `[hn, hx]`. Use the proof step `ring)`.
+
+Use `⟨x, y, even_sub_of_norm d hd x y n ?_, ?_⟩` and prove the remaining obligations. Establish `: (x : ℚ) ^ 2 + (y : ℚ) ^ 2 * (d : ℚ) = 4 * n`. Rewrite using `[hx, hy, hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+
+Establish `hx' : (x : ℂ) = 2 * (a : ℂ)` using `by exact_mod_cast congrArg (Rat.cast : ℚ → ℂ) hx`. Establish `hy' : (y : ℂ) = 2 * (b : ℂ)` using `by exact_mod_cast congrArg (Rat.cast : ℚ → ℂ) hy`. Rewrite using `[hx', hy']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.integral_quadratic_half_int :
     ∀ (d : ℕ), d.Prime → ∀ (a b : ℚ), IsIntegral ℤ ((a : ℂ) + (b : ℂ) * (Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ))) → ∃ x y : ℤ, Even (x - y) ∧ (a : ℂ) + (b : ℂ) * (Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ)) = ((x : ℂ) + (y : ℂ) * (Complex.I * ((Real.sqrt (d : ℝ) : ℝ) : ℂ))) / 2 := by
   intro d hd a b h

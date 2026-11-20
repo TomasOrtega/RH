@@ -19,9 +19,19 @@ def PmProp (ε : Fin n → Bool) (m : ℕ) {lam : Fin n → ℝ} (T : S7.KType �
             ∏ t, ‖g (idx t).1 (idx t).2‖ ≤
           C * NE (smE ε (rreg ε)) (m * (n - 1)) x * NE (smE ε (rreg ε)) (m * (n - 1)) y
 
+/- English proof (translation)
+Unfold `S7.q0`. Conclude with `le_min hp hq`.
+-/
 theorem one_le_q_zero {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) : 1 ≤ S7.q0 ε := by
   unfold S7.q0; exact le_min hp hq
 
+/- English proof (translation)
+Take `⟨Ψ', h1, h2, h3, h4, -, h6, -, -⟩` from `S7.psiAll (n := n) ε lam h T hlam hgap hq`. Establish `hmax` using `hth`. Unfold `thrStar at hmax`. Rewrite `hmax` using `[max_lt_iff]`. Establish `hsq : (0 : ℝ) ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`.
+
+Establish `hnq : (0 : ℝ) ≤ (n : ℝ) * S7.q0 ε` using `by positivity`. Establish `hL2 : 8 * (n : ℝ) * S7.q0 ε < h` using `by nlinarith [hmax.2]`. Establish `hw2 : 8 * (n : ℝ) * S7.q0 ε + 4 * 2 * Real.sqrt (2 * S7.q0 ε) < h` using `by nlinarith [hmax.2]`. Establish `hstd : StdGap ε lam` using `⟨hlam.1, h, hgap, hmax.1⟩`. Establish `hP' : IsPsiFor ε lam T Ψ'` using `⟨h1, h2, h3, h4, fun μ hμ => (h6 μ hμ).2.1 hL2⟩`.
+
+Establish `heq : ∀ g ∈ UJset ε, Ψ' g = Ψ g` using `puniq_psi_eq hstd hP hP' hv₀`. Use `weighted_datum hstd hP hv₀ (fun μ hμ => ?_)` and prove the remaining obligations. Use `((h6 μ hμ).2.2 2 (by norm_num) hw2).congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[heq _ g.2]`.
+-/
 theorem square_integrable_generated_vectors {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V} (hlam : S7.IsHCParam lam) {h : ℝ}
     (hgap : GapAtLeast ε lam h) (hth : thrStar ε < h) (hq : 1 ≤ S7.q0 ε) (hP : IsPsiFor ε lam T Ψ)
@@ -46,6 +56,9 @@ theorem square_integrable_generated_vectors {ε : Fin n → Bool} {lam : Fin n �
   simp only
   rw [heq _ g.2]
 
+/- English proof (translation)
+Establish `hT1 : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 ≤ thrStar ε` using `le_max_left _ _`. Establish `hstd : StdGap ε lam` using `⟨hlam.1, h, hgap, by linarith⟩`. Take `⟨hpos, hGel⟩` from `psiFor_pos_gelfand hlam hgap hth hq hP`. Conclude with `⟨hstd, hpos, square_integrable_generated_vectors hlam hgap hth hq hP hv₀, hasGelfandChar_sigLam hstd hP hv₀ hGel⟩`.
+-/
 theorem standard_gap_data {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V} (hlam : S7.IsHCParam lam) {h : ℝ}
     (hgap : GapAtLeast ε lam h) (hth : thrStar ε < h) (hq : 1 ≤ S7.q0 ε) (hP : IsPsiFor ε lam T Ψ)
@@ -61,6 +74,9 @@ theorem standard_gap_data {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KT
   obtain ⟨hpos, hGel⟩ := psiFor_pos_gelfand hlam hgap hth hq hP
   exact ⟨hstd, hpos, square_integrable_generated_vectors hlam hgap hth hq hP hv₀, hasGelfandChar_sigLam hstd hP hv₀ hGel⟩
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by simp [Pi.single_eq_of_ne hc]) (by simp)]`. Use `congr 1`. Simplify using `only [Pi.single_eq_same, tensGrp, cond_false, inner_sum, inner_smul_right]`. Rewrite using `[Finset.sum_eq_single b (fun d _ hd => by simp [Pi.single_eq_of_ne hd]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem tensor_inner_single_coef {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) {D : Submodule ℂ H}
     (a b : Fin n) (x y : D) :
@@ -73,6 +89,11 @@ theorem tensor_inner_single_coef {ε : Fin n → Bool} {H : Type*} [NormedAddCom
   rw [Finset.sum_eq_single b (fun d _ hd => by simp [Pi.single_eq_of_ne hd]) (by simp)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Simplify using `only [tensGrp, Finset.sum_apply, Submodule.coe_sum, map_sum, Finset.smul_sum, inner_sum]`.
+
+Rewrite using `[Finset.sum_comm]`.
+-/
 theorem tensor_inner_sum_eq {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) {D : Submodule ℂ H}
     (η : Fin n → H) {β : Type*} (B : Finset β) (F : β → Fin n → D) :
@@ -85,6 +106,9 @@ theorem tensor_inner_sum_eq {ε : Fin n → Bool} {H : Type*} [NormedAddCommGrou
   simp only [tensGrp, Finset.sum_apply, Submodule.coe_sum, map_sum, Finset.smul_sum, inner_sum]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use `⟨1, fun x _ y _ g hg idx => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_eq_empty, Finset.prod_empty, mul_one, zero_mul, NE_zero_eq, NE_zero_eq, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pmProp_zero {ε : Fin n → Bool} {lam : Fin n → ℝ} (T : S7.KType ε (lowK ε lam))
     (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (v₀ : T.V) : PmProp ε 0 T Ψ v₀ := by
   refine ⟨1, fun x _ y _ g hg idx => ?_⟩
@@ -93,6 +117,25 @@ theorem pmProp_zero {ε : Fin n → Bool} {lam : Fin n → ℝ} (T : S7.KType ε
       ≤ ‖((y : smD ε (rreg ε)) : L2 ε)‖ * ‖rreg ε g ((x : smD ε (rreg ε)) : L2 ε)‖ := norm_inner_le_norm _ _
     _ = _ := by rw [(rreg_isURepOn ε).2.1 g hg, mul_comm]
 
+/- English proof (translation)
+Take `⟨⟨h', hh', hth'⟩, hgap', hP', hv', hpos', hW', hG'⟩` from `hok`. Use `Hlam_nontrivial hstd hP hv₀` as an intermediate fact. Use `Hlam_nontrivial hgap' hP' hv'` as an intermediate fact. Take `⟨w, hw⟩` from `exists_ne (0 : Hlam ε Ψ v₀)`. Take `⟨w', hw'⟩` from `exists_ne (0 : Hlam ε Ψ' T'.w)`.
+
+Take `⟨⟨ι, hι, hιe, hιs⟩, -⟩` from `cc_gk false hstd hP hv₀ hgap' hP' hv' hh hth hh' hth' hpos hpos' hW hW' hG hG' s rfl hw hw'`. Take `⟨ka, q, hka, -, hqm, hT2, hT3, hT1⟩` from `form_cc false hstd hP hv₀ hgap' hP' hv' hW s hι hιe hιs hPG hPz hP1 hP0`. Take `⟨K, hK⟩` from `NE_q_le ε (smE ε (rreg ε)) (smE ε (rreg ε)) (tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))) (fun a b f hf => tensSub_stable false a b f hf) q P (n - 1) hPN ka hka (fun a b f hf => hT2 a b f hf) hT3 (m * (n - 1))`. Take `⟨C', hC'⟩` from `IH`. Use `⟨|ka| * max C' 0 * max K 0 * max K 0, fun x hx y hy g hg a b idx => ?_⟩` and prove the remaining obligations.
+
+Establish `hfx : (Pi.single b x : Fin n → smD ε (rreg ε)) ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))`. Rewrite using `[tset_mem]`. Introduce `c`. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality.
+
+Simplify using `using hx`. Simplify using `[Pi.single_eq_of_ne hc]`. Establish `hfy : (Pi.single a y : Fin n → smD ε (rreg ε)) ∈ tensSub (genSub (smE ε (rreg ε)) (datumV ε Ψ v₀))`. Rewrite using `[tset_mem]`. Introduce `c`.
+
+Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Simplify using `using hy`. Simplify using `[Pi.single_eq_of_ne hc]`. Rewrite using `[hT1 _ hfx _ hfy g hg]`.
+
+Establish `hidx : m * (n - 1) + (n - 1) = (m + 1) * (n - 1)` using `by ring`. Establish `hX` using `(hqm _ hfx).1`. Establish `hY` using `(hqm _ hfy).1`. Establish `h1` using `hC' _ hX _ hY g hg idx`. Establish `h2 : NE (smE ε (rreg ε)) (m * (n - 1)) (q (Pi.single b x)) ≤ max K 0 * NE (smE ε (rreg ε)) ((m + 1) * (n - 1)) x`.
+
+Use `(hK _ hfx).trans ?_` and prove the remaining obligations. Rewrite using `[NT_single, hidx]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (NE_nonneg _ _ _)`. Establish `h3 : NE (smE ε (rreg ε)) (m * (n - 1)) (q (Pi.single a y)) ≤ max K 0 * NE (smE ε (rreg ε)) ((m + 1) * (n - 1)) y`. Use `(hK _ hfy).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[NT_single, hidx]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (NE_nonneg _ _ _)`. Establish `hA` using `NE_nonneg (smE ε (rreg ε)) (m * (n - 1)) (q (Pi.single b x))`. Establish `hB` using `NE_nonneg (smE ε (rreg ε)) (m * (n - 1)) (q (Pi.single a y))`. Establish `hC0 : (0 : ℝ) ≤ max C' 0` using `le_max_right _ _`.
+
+Establish `hK0 : (0 : ℝ) ≤ max K 0` using `le_max_right _ _`. Establish `h4 : C' * NE (smE ε (rreg ε)) (m * (n - 1)) (q (Pi.single b x)) * NE (smE ε (rreg ε)) (m * (n - 1)) (q (Pi.single a y)) ≤ max C' 0 * (max K 0 * NE (smE ε (rreg ε)) ((m + 1) * (n - 1)) x) * (max K 0 * NE (smE ε (rreg ε)) ((m + 1) * (n - 1)) y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem regular_term_bound {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
     (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) (hstd : StdGap ε lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -179,6 +222,11 @@ theorem regular_term_bound {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.K
         mul_le_mul_of_nonneg_left (h1.trans h4) (abs_nonneg _)
     _ = _ := by ring
 
+/- English proof (translation)
+Rewrite using `[tset_mem]`. Introduce `c`. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using `using hx`.
+
+Simplify using `[Pi.single_eq_of_ne hc]`.
+-/
 theorem single_mem_tensSub {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V} (b : Fin n) {x : smD ε (rreg ε)}
     (hx : x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) :
@@ -187,6 +235,23 @@ theorem single_mem_tensSub {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.K
   · subst hc; simpa using hx
   · simp [Pi.single_eq_of_ne hc]
 
+/- English proof (translation)
+Establish `hq0` using `one_le_q_zero hp hq`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Move the coercions through the operations in `at hm`. Establish `hth : thrStar ε < h` using `by linarith`. Take `⟨hstd, hpos, hW, hG⟩` from `standard_gap_data hlam hgap hth hq0 hP hv₀`.
+
+Take `⟨P, hPG, hPz, hP1, hP0, hsum, hPN⟩` from `projection_square_integrable hlam hstd hP hv₀ hW hG`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD : IsDerivedOn ε (rreg ε) (smD ε (rreg ε)) (smE ε (rreg ε))` using `isDerivedOn_smE hσ`. Establish `hsm : ∀ v : smD ε (rreg ε), IsSmoothVecU ε (rreg ε) (v : _)` using `fun v => (mem_smD_iff ε (rreg ε) _).1 v.2`. Establish `hterm : ∀ s, ∃ C : ℝ, ∀ x ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ g ∈ UJset ε, ∀ a b : Fin n, ∀ idx : Fin m → Fin n × Fin n, ‖∑ c, (if ε c then (1 : ℂ) else -1) * inner ℂ ((((Pi.single a y : Fin n → smD ε (rreg ε)) c) : smD ε (r …`.
+
+Introduce `s`. Distinguish the cases in `hs : S7.IsHCParam (shiftF false lam s)`. Establish `hg'` using `ReciprocityTheory.ChartRestriction.DS.cns_shift_gap false hgap s`. Take `⟨T', Ψ', hok⟩` from `ReciprocityTheory.ChartRestriction.DS.cns_data' hq0 hs hg' (by linarith)`. Conclude with `regular_term_bound hP hv₀ hstd hgap hth hpos hW hG s (hPG s) (hPz s) (hP1 s) (hP0 s) (hPN s) hok m (IH hs hg' (by linarith) T' Ψ' T'.w hok.2.2.1 hok.2.2.2.1)`.
+
+Use `⟨0, fun x hx y hy g hg a b idx => ?_⟩` and prove the remaining obligations. Establish `hfx` using `single_mem_tensSub b hx`. Establish `h0 : P s (Pi.single b x) = 0` using `cc_gk_singular false hσ hD hsm hstd (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) hW hG s (ReciprocityTheory.ChartRestriction.DS.cns_sing false hlam hs) _ ((hPG s).1 _ hfx) (hPz s _ hfx)`. Rewrite using `[h0]`. Simplify using `[tensGrp]`.
+
+Use `choose Cs hCs using hterm`. Use `⟨∑ s, Cs s, fun x hx y hy g hg idx => ?_⟩` and prove the remaining obligations. Establish `hfx` using `single_mem_tensSub (idx 0).2 hx`. Establish `key` using `tensor_inner_single_coef (ε := ε) (rreg ε) g (idx 0).1 (idx 0).2 x y`. Rewrite `key` using `[hsum _ hfx, tensor_inner_sum_eq]`.
+
+Apply the tactic sequence `have hsgn : ‖(if ε (idx 0).1 then (1 : ℂ) else -1)‖ = 1 := by split_ifs <;> simp`. Rewrite using `[Fin.prod_univ_succ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, hsgn]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ (∑ s, ‖∑ c, (if ε c then (1 : ℂ) else -1) * inner ℂ ((((Pi.single (idx 0).1 y : Fin n → smD ε (rreg ε)) c) : smD ε (rreg ε)) : L2 ε) (tensGrp false (rreg ε) g (fun d => ((P s (Pi.single (idx 0).2 x) d : smD ε (rreg ε)) : L2 ε)) c)‖) * ∏ t : Fin m, ‖g (idx t.succ).1 (idx t.suc …`. Rewrite using `[← key]`. Conclude with `mul_le_mul_of_nonneg_right (norm_sum_le _ _) (prod_nonneg fun _ _ => norm_nonneg _)`. Use `_ = ∑ s, ‖∑ c, (if ε c then (1 : ℂ) else -1) * inner ℂ ((((Pi.single (idx 0).1 y : Fin n → smD ε (rreg ε)) c) : smD ε (rreg ε)) : L2 ε) (tensGrp false (rreg ε) g (fun d => ((P s (Pi.single (idx 0).2 x) d : smD ε (rreg ε)) : L2 ε)) c)‖ * ∏ t : Fin m, ‖g (idx t.succ).1 (idx t.succ) …`. Use `_ ≤ ∑ s, Cs s * NE (smE ε (rreg ε)) ((m + 1) * (n - 1)) x * NE (smE ε (rreg ε)) ((m + 1) * (n - 1)) y := Finset.sum_le_sum fun s _ => hCs s x hx y hy g hg (idx 0).1 (idx 0).2 (fun t => idx t.succ)`.
+
+Use `_ = _ := by rw [Finset.sum_mul, Finset.sum_mul]`.
+-/
 theorem pmProp_succ_of_gap {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) (m : ℕ)
     (IH : ∀ {lam : Fin n → ℝ}, S7.IsHCParam lam → ∀ {h : ℝ}, GapAtLeast ε lam h → thrStar ε + m < h →
       ∀ (T : S7.KType ε (lowK ε lam)) (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (v₀ : T.V),
@@ -255,6 +320,9 @@ theorem pmProp_succ_of_gap {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤
         Finset.sum_le_sum fun s _ => hCs s x hx y hy g hg (idx 0).1 (idx 0).2 (fun t => idx t.succ)
     _ = _ := by rw [Finset.sum_mul, Finset.sum_mul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => intro lam _ h _ _ T Ψ v₀ _ _`. Conclude with `pmProp_zero T Ψ v₀`. Consider the case `succ m ih => intro lam hlam h hgap hm T Ψ v₀ hP hv₀`. Conclude with `pmProp_succ_of_gap hp hq m ih hlam hgap hm hP hv₀`.
+-/
 theorem pmProp_of_gap {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) (m : ℕ) :
     ∀ {lam : Fin n → ℝ}, S7.IsHCParam lam → ∀ {h : ℝ}, GapAtLeast ε lam h → thrStar ε + m < h →
       ∀ (T : S7.KType ε (lowK ε lam)) (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)) (v₀ : T.V),

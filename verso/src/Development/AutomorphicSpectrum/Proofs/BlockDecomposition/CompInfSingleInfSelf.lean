@@ -19,6 +19,21 @@ open NumberField IsDedekindDomain
 
 section Abstract
 
+/- English proof (translation)
+Set `φ` to `IsArtinianRing.equivPi R`. Use `letI : Fintype (MaximalSpectrum R) := Fintype.ofFinite _`. Establish `hmax : ∀ m : MaximalSpectrum R, m.asIdeal.IsMaximal` using `fun m => m.isMaximal`. Establish `hnt : ∀ m : MaximalSpectrum R, (1 : R ⧸ m.asIdeal) ≠ 0` using `fun m => by`. Use `hmax m` as an intermediate fact.
+
+Conclude with `one_ne_zero`. Establish `hsing : ∀ (m : MaximalSpectrum R) (x : R), φ.symm (Pi.single m 1) * x = φ.symm (Pi.single m (φ x m))`. Introduce `m x`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`.
+
+Use function extensionality and compare the values at `n`. Distinguish the cases in `h : n = m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Use `⟨MaximalSpectrum R, inferInstance, fun m => φ.symm (Pi.single m 1), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsing, AlgEquiv.apply_symm_apply, Pi.single_eq_same]`. Introduce `h`.
+
+Establish `h2` using `congrFun ((map_eq_zero_iff φ.symm φ.symm.injective).1 h) m`. Rewrite `h2` using `[Pi.single_eq_same]`. Conclude with `hnt m h2`. Introduce `x hx`. Establish `hx0 : φ x m ≠ 0` using `fun h => hx (by rw [hsing, h, Pi.single_zero, map_zero])`.
+
+Use `hmax m` as an intermediate fact. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hx0`. Use `⟨φ.symm (Pi.single m b), ?_⟩` and prove the remaining obligations. Rewrite using `[hsing, ← map_mul, ← Pi.single_mul, hb]`. Introduce `m n hmn`.
+
+Rewrite using `[hsing, AlgEquiv.apply_symm_apply, Pi.single_eq_of_ne hmn, Pi.single_zero, map_zero]`. Rewrite using `[← map_sum, Finset.univ_sum_single]`. Conclude with `map_one φ.symm`.
+-/
 theorem exists_isFieldDec_one (R : Type) [CommRing R] [IsArtinianRing R] [IsReduced R] :
     ∃ (ι : Type) (_ : Fintype ι) (g : ι → R), IsFieldDec (1 : R) g := by
   classical
@@ -55,6 +70,13 @@ theorem exists_isFieldDec_one (R : Type) [CommRing R] [IsArtinianRing R] [IsRedu
   · rw [← map_sum, Finset.univ_sum_single]
     exact map_one φ.symm
 
+/- English proof (translation)
+Establish `hu : ∀ p i, f p i * u p = f p i` using `fun p i => by`. Rewrite using `[← (hf p).sum, Finset.mul_sum, Finset.sum_eq_single i]`. Conclude with `(hf p).field i |>.idem`. Conclude with `fun j _ hj => (hf p).orth i j hj.symm`. Conclude with `fun h => absurd (Finset.mem_univ i) h`.
+
+Use `⟨fun x => (hf x.1).field x.2, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p, i⟩ ⟨q, j⟩ h`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Conclude with `(hf p).orth i j fun e => h (by rw [e])`.
+
+Use `show f p i * f q j = 0`. Rewrite using `[← hu p i, ← hu q j]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl fun p _ => (hf p).sum`.
+-/
 theorem isFieldDec_sigma {A : Type} [CommRing A] {P : Type} [Fintype P] {u : P → A}
     (horth : ∀ p q, p ≠ q → u p * u q = 0) {ι : P → Type} [∀ p, Fintype (ι p)] {f : ∀ p, ι p → A}
     (hf : ∀ p, IsFieldDec (u p) (f p)) :
@@ -83,6 +105,13 @@ section Local
 
 variable {A k R : Type} [CommRing A] [CommRing R] (s : R →ₙ+* A) (c : A →+* R)
 
+/- English proof (translation)
+Establish `hss : ∀ y y', s y * s y' = s (y * y')` using `fun y y' => by rw [hmul, hcs]`. Use `⟨fun i => ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hss, (hg.field i).idem]`. Introduce `h`. Conclude with `(hg.field i).ne (by rw [← hcs (g i), h, map_zero])`.
+
+Introduce `x hx`. Establish `hx0 : g i * c x ≠ 0` using `fun h => hx (by rw [hmul, h, map_zero])`. Take `⟨y, hy⟩` from `(hg.field i).inv (c x) hx0`. Use `⟨s y, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hss, hy]`.
+
+Introduce `i j hij`. Rewrite using `[hss, hg.orth i j hij, map_zero]`. Rewrite using `[← map_sum, hg.sum]`.
+-/
 theorem isFieldDec_section (hcs : ∀ y, c (s y) = y) (hmul : ∀ y z, s y * z = s (y * c z)) {ι : Type} [Fintype ι]
     {g : ι → R} (hg : IsFieldDec (1 : R) g) : IsFieldDec (s 1) (fun i => s (g i)) := by
   have hss : ∀ y y', s y * s y' = s (y * y') := fun y y' => by rw [hmul, hcs]
@@ -99,6 +128,11 @@ theorem isFieldDec_section (hcs : ∀ y, c (s y) = y) (hmul : ∀ y z, s y * z =
     rw [hss, hg.orth i j hij, map_zero]
   · rw [← map_sum, hg.sum]
 
+/- English proof (translation)
+Introduce `V hV`. Establish `h1 : Continuous fun a : k => s (a • g)` using `hs.comp (continuous_id.smul continuous_const)`. Establish `h2 : Tendsto (fun a : k => s (a • g)) (𝓝[≠] 0) (𝓝 0)`. Use `(h1.tendsto 0).mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨a, haV, ha⟩` from `((h2.eventually hV).and self_mem_nhdsWithin).exists`. Use `⟨s (a • g), haV, fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : a • g = 0` using `by rw [← hcs (a • g), h, map_zero]`. Conclude with `(smul_ne_zero ha h0) h3`. Rewrite using `[hmul, hcs, mul_smul_comm, hg]`.
+-/
 theorem nonDiscreteAt_section [TopologicalSpace A] [Field k] [TopologicalSpace k] [(𝓝[≠] (0 : k)).NeBot] [Algebra k R]
     [TopologicalSpace R] [ContinuousSMul k R] (hs : Continuous s) (hcs : ∀ y, c (s y) = y)
     (hmul : ∀ y z, s y * z = s (y * c z)) {g : R} (hg : g * g = g) (h0 : g ≠ 0) : NonDiscreteAt (s g) := by
@@ -113,6 +147,9 @@ theorem nonDiscreteAt_section [TopologicalSpace A] [Field k] [TopologicalSpace k
     exact (smul_ne_zero ha h0) h3
   · rw [hmul, hcs, mul_smul_comm, hg]
 
+/- English proof (translation)
+Take `⟨ι, _, g, hg⟩` from `exists_isFieldDec_one R`. Conclude with `⟨ι, inferInstance, fun i => s (g i), isFieldDec_section s c hcs hmul hg, fun j => nonDiscreteAt_section (k := k) s c hs hcs hmul (hg.field j).idem (hg.field j).ne⟩`.
+-/
 theorem exists_dec_section [TopologicalSpace A] [Field k] [TopologicalSpace k] [(𝓝[≠] (0 : k)).NeBot] [Algebra k R]
     [TopologicalSpace R] [ContinuousSMul k R] [IsArtinianRing R] [IsReduced R] (hs : Continuous s)
     (hcs : ∀ y, c (s y) = y) (hmul : ∀ y z, s y * z = s (y * c z)) :
@@ -132,22 +169,37 @@ open Classical in
 def infJ (w : InfinitePlace F) : w.Completion →ₗ[F] AF F :=
   (LinearMap.inl F (Ainf F) (Af F)).comp (LinearMap.single F (fun u : InfinitePlace F => u.Completion) w)
 
+/- English proof (translation)
+Use `Prod.ext ?_ (mul_zero _).symm` and prove the remaining obligations. Conclude with `Pi.single_mul w a b`.
+-/
 theorem infJ_mul (w : InfinitePlace F) (a b : w.Completion) : infJ w (a * b) = infJ w a * infJ w b := by
   classical
   refine Prod.ext ?_ (mul_zero _).symm
   exact Pi.single_mul w a b
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Pi.single_eq_same (M := fun u : InfinitePlace F => u.Completion) w a`.
+-/
 theorem evInf_infJ_self (w : InfinitePlace F) (a : w.Completion) : evInf F w (infJ w a) = a :=
   Pi.single_eq_same (M := fun u : InfinitePlace F => u.Completion) w a
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Pi.single_eq_of_ne (M := fun u : InfinitePlace F => u.Completion) h a`.
+-/
 theorem evInf_infJ_ne {u w : InfinitePlace F} (h : u ≠ w) (a : w.Completion) : evInf F u (infJ w a) = 0 :=
   Pi.single_eq_of_ne (M := fun u : InfinitePlace F => u.Completion) h a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evFin_infJ (v : HeightOneSpectrum (𝓞 F)) (w : InfinitePlace F) (a : w.Completion) :
     evFin F v (infJ w a) = 0 := rfl
 
+/- English proof (translation)
+Conclude with `(continuous_single (A := fun u : InfinitePlace F => u.Completion) w).prodMk continuous_const`.
+-/
 theorem continuous_infJ (w : InfinitePlace F) : Continuous (infJ w) := by
   classical
   exact (continuous_single (A := fun u : InfinitePlace F => u.Completion) w).prodMk continuous_const
@@ -157,18 +209,30 @@ variable (E) in
 def singleInf (w : InfinitePlace F) : w.Completion ⊗[F] E →ₙ+* AF F ⊗[F] E :=
   GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (infJ w) (infJ_mul w)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AutFunCompare.map_tensNU_self (evInf F w) _ _ (evInf_infJ_self w) y`.
+-/
 theorem compInf_singleInf_self (w : InfinitePlace F) (y : w.Completion ⊗[F] E) :
     compInf F E w (singleInf E w y) = y :=
   GlobalTheory.AutFunCompare.map_tensNU_self (evInf F w) _ _ (evInf_infJ_self w) y
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AutFunCompare.map_tensNU_zero (evInf F u) _ _ (evInf_infJ_ne h) y`.
+-/
 theorem compInf_singleInf_ne {u w : InfinitePlace F} (h : u ≠ w) (y : w.Completion ⊗[F] E) :
     compInf F E u (singleInf E w y) = 0 :=
   GlobalTheory.AutFunCompare.map_tensNU_zero (evInf F u) _ _ (evInf_infJ_ne h) y
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AutFunCompare.map_tensNU_zero (evFin F v) _ _ (evFin_infJ v w) y`.
+-/
 theorem compFin_singleInf (v : HeightOneSpectrum (𝓞 F)) (w : InfinitePlace F) (y : w.Completion ⊗[F] E) :
     compFin F E v (singleInf E w y) = 0 :=
   GlobalTheory.AutFunCompare.map_tensNU_zero (evFin F v) _ _ (evFin_infJ v w) y
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AdelicU.Supp.adTens_ext (fun u => by by_cases e : u = w · subst e; simp [compInf_singleInf_self] · simp [compInf_singleInf_ne e]) fun v => by simp [compFin_singleInf]`.
+-/
 theorem singleInf_mul (w : InfinitePlace F) (y : w.Completion ⊗[F] E) (z : AF F ⊗[F] E) :
     singleInf E w y * z = singleInf E w (y * compInf F E w z) :=
   GlobalTheory.AdelicU.Supp.adTens_ext (fun u => by
@@ -176,17 +240,29 @@ theorem singleInf_mul (w : InfinitePlace F) (y : w.Completion ⊗[F] E) (z : AF 
     · subst e; simp [compInf_singleInf_self]
     · simp [compInf_singleInf_ne e]) fun v => by simp [compFin_singleInf]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) _ _ (Continuous.prodMk continuous_const (continuous_singleFin v))`.
+-/
 theorem singleTens_continuous [FiniteDimensional F E] (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (GlobalTheory.AdelicU.Supp.singleTens E v) :=
   GlobalTheory.AutFunCompare.continuous_tensNU (E := E) _ _ (Continuous.prodMk continuous_const (continuous_singleFin v))
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) _ _ (continuous_infJ w)`.
+-/
 theorem singleInf_continuous [FiniteDimensional F E] (w : InfinitePlace F) : Continuous (singleInf E w) :=
   GlobalTheory.AutFunCompare.continuous_tensNU (E := E) _ _ (continuous_infJ w)
 
+/- English proof (translation)
+Use `letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField _ _`. Conclude with `NormedField.nhdsNE_neBot (0 : Fv F v)`.
+-/
 theorem neBot_fin (v : HeightOneSpectrum (𝓞 F)) : (𝓝[≠] (0 : Fv F v)).NeBot := by
   letI : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField _ _
   exact NormedField.nhdsNE_neBot (0 : Fv F v)
 
+/- English proof (translation)
+Use `letI : NontriviallyNormedField w.Completion := { (inferInstance : NormedField w.Completion) with non_trivial := ⟨2, by`. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _), map_ofNat]`. Use the proof step `simp⟩ }`. Conclude with `NormedField.nhdsNE_neBot (0 : w.Completion)`.
+-/
 theorem neBot_inf (w : InfinitePlace F) : (𝓝[≠] (0 : w.Completion)).NeBot := by
   letI : NontriviallyNormedField w.Completion :=
     { (inferInstance : NormedField w.Completion) with
@@ -197,17 +273,31 @@ theorem neBot_inf (w : InfinitePlace F) : (𝓝[≠] (0 : w.Completion)).NeBot :
 
 variable [NumberField E]
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+-/
 theorem finite_of_numberField : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
 
+/- English proof (translation)
+Use `finite_of_numberField (F := F) (E := E)` as an intermediate fact. Conclude with `IsArtinianRing.of_finite k (k ⊗[F] E)`.
+-/
 theorem artinian_tens (k : Type) [Field k] [Algebra F k] : IsArtinianRing (k ⊗[F] E) := by
   have := finite_of_numberField (F := F) (E := E)
   exact IsArtinianRing.of_finite k (k ⊗[F] E)
 
+/- English proof (translation)
+Establish `: Algebra.IsSeparable F E` using `Algebra.IsSeparable.of_integral F E`. Establish `: Algebra.FormallyUnramified F E` using `Algebra.FormallyUnramified.of_isSeparable F E`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field k (k ⊗[F] E)`.
+-/
 theorem reduced_tens (k : Type) [Field k] [Algebra F k] : IsReduced (k ⊗[F] E) := by
   have : Algebra.IsSeparable F E := Algebra.IsSeparable.of_integral F E
   have : Algebra.FormallyUnramified F E := Algebra.FormallyUnramified.of_isSeparable F E
   exact Algebra.FormallyUnramified.isReduced_of_field k (k ⊗[F] E)
 
+/- English proof (translation)
+Use `neBot_fin (F := F) v` as an intermediate fact. Use `finite_of_numberField (F := F) (E := E)` as an intermediate fact. Use `artinian_tens (F := F) (E := E) (Fv F v)` as an intermediate fact. Use `reduced_tens (F := F) (E := E) (Fv F v)` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `: ContinuousSMul (Fv F v) (Fv F v ⊗[F] E)` using `IsModuleTopology.toContinuousSMul _ _`. Conclude with `exists_dec_section (k := Fv F v) (GlobalTheory.AdelicU.Supp.singleTens E v) (compFin F E v) (singleTens_continuous v) (GlobalTheory.AdelicU.Supp.compFin_singleTens_self v) (GlobalTheory.AdelicU.Supp.singleTens_mul v)`.
+-/
 theorem exists_dec_fin (v : HeightOneSpectrum (𝓞 F)) :
     ∃ (ι : Type) (_ : Fintype ι) (f : ι → AF F ⊗[F] E),
       IsFieldDec (GlobalTheory.AdelicU.Supp.singleTens E v 1) f ∧ ∀ j, NonDiscreteAt (f j) := by
@@ -220,6 +310,11 @@ theorem exists_dec_fin (v : HeightOneSpectrum (𝓞 F)) :
   exact exists_dec_section (k := Fv F v) (GlobalTheory.AdelicU.Supp.singleTens E v) (compFin F E v) (singleTens_continuous v)
     (GlobalTheory.AdelicU.Supp.compFin_singleTens_self v) (GlobalTheory.AdelicU.Supp.singleTens_mul v)
 
+/- English proof (translation)
+Use `neBot_inf (F := F) w` as an intermediate fact. Use `finite_of_numberField (F := F) (E := E)` as an intermediate fact. Use `artinian_tens (F := F) (E := E) w.Completion` as an intermediate fact. Use `reduced_tens (F := F) (E := E) w.Completion` as an intermediate fact. Establish `: IsModuleTopology w.Completion (w.Completion ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `: ContinuousSMul w.Completion (w.Completion ⊗[F] E)` using `IsModuleTopology.toContinuousSMul _ _`. Conclude with `exists_dec_section (k := w.Completion) (singleInf E w) (compInf F E w) (singleInf_continuous w) (compInf_singleInf_self w) (singleInf_mul w)`.
+-/
 theorem exists_dec_inf (w : InfinitePlace F) :
     ∃ (ι : Type) (_ : Fintype ι) (f : ι → AF F ⊗[F] E),
       IsFieldDec (singleInf E w 1) f ∧ ∀ j, NonDiscreteAt (f j) := by
@@ -232,6 +327,23 @@ theorem exists_dec_inf (w : InfinitePlace F) :
   exact exists_dec_section (k := w.Completion) (singleInf E w) (compInf F E w) (singleInf_continuous w)
     (compInf_singleInf_self w) (singleInf_mul w)
 
+/- English proof (translation)
+Set `u : InfinitePlace F ⊕ S → AF F ⊗[F] E` to `Sum.elim (fun w => singleInf E w 1) (fun v => GlobalTheory.AdelicU.Supp.singleTens E v.1 1)`. Establish `hsum : ∑ p, u p = e`. Use `GlobalTheory.AdelicU.Supp.adTens_ext (fun w => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[h1, map_sum, Fintype.sum_sum_type, Finset.sum_eq_single w]`. Simplify using `[u, compInf_singleInf_self]`.
+
+Introduce `b _ hb`. Simplify using `[u, compInf_singleInf_ne hb.symm]`. Conclude with `fun h => absurd (Finset.mem_univ w) h`. Rewrite using `[map_sum, Fintype.sum_sum_type]`. Establish `hi : ∑ x : InfinitePlace F, compFin F E v (u (Sum.inl x)) = 0` using `Finset.sum_eq_zero fun x _ => compFin_singleInf v x _`.
+
+Rewrite using `[hi, zero_add]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[h2 v hv, Finset.sum_eq_single (⟨v, hv⟩ : S)]`. Simplify using `[u]`. Introduce `b _ hb`.
+
+Conclude with `GlobalTheory.AdelicU.Supp.compFin_singleTens_ne (fun e => hb (Subtype.ext e.symm)) _`. Conclude with `fun h => absurd (Finset.mem_univ _) h`. Rewrite using `[h3 v hv]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.AdelicU.Supp.compFin_singleTens_ne (fun (e : v = b.1) => hv (by rw [e]; exact b.2)) _`.
+
+Establish `horth : ∀ p q, p ≠ q → u p * u q = 0`. Introduce and unpack `(w | v) (w' | v') h`. Use `show singleInf E w 1 * singleInf E w' 1 = 0`. Rewrite using `[singleInf_mul, compInf_singleInf_ne (fun e => h (by rw [e])), mul_zero, map_zero]`. Use `show singleInf E w 1 * GlobalTheory.AdelicU.Supp.singleTens E v'.1 1 = 0`.
+
+Rewrite using `[singleInf_mul, GlobalTheory.AdelicU.Supp.compInf_singleTens, mul_zero, map_zero]`. Use `show GlobalTheory.AdelicU.Supp.singleTens E v.1 1 * singleInf E w' 1 = 0`. Rewrite using `[GlobalTheory.AdelicU.Supp.singleTens_mul, compFin_singleInf, mul_zero, map_zero]`. Use `show GlobalTheory.AdelicU.Supp.singleTens E v.1 1 * GlobalTheory.AdelicU.Supp.singleTens E v'.1 1 = 0`. Rewrite using `[GlobalTheory.AdelicU.Supp.singleTens_mul, GlobalTheory.AdelicU.Supp.compFin_singleTens_ne (fun e => h (by rw [Subtype.ext e])), mul_zero, map_zero]`.
+
+Establish `hex : ∀ p, ∃ (ι : Type) (_ : Fintype ι) (f : ι → AF F ⊗[F] E), IsFieldDec (u p) f ∧ ∀ j, NonDiscreteAt (f j)`. Introduce and unpack `(w | v)`. Conclude with `exists_dec_inf w`. Conclude with `exists_dec_fin v.1`. Use `choose ι hι f hf hnd using hex`.
+
+Use `⟨Σ p, ι p, inferInstance, fun x => f x.1 x.2, ?_, fun x => hnd x.1 x.2⟩` and prove the remaining obligations. Rewrite using `[← hsum]`. Conclude with `isFieldDec_sigma horth hf`.
+-/
 theorem exists_dec_adeles (S : Finset (HeightOneSpectrum (𝓞 F))) {e : AF F ⊗[F] E}
     (h1 : ∀ w, compInf F E w e = 1) (h2 : ∀ v ∈ S, compFin F E v e = 1) (h3 : ∀ v ∉ S, compFin F E v e = 0) :
     ∃ (ι : Type) (_ : Fintype ι) (f : ι → AF F ⊗[F] E), IsFieldDec e f ∧ ∀ j, NonDiscreteAt (f j) := by
@@ -281,6 +393,9 @@ theorem exists_dec_adeles (S : Finset (HeightOneSpectrum (𝓞 F))) {e : AF F �
 
 end Places
 
+/- English proof (translation)
+The claim follows from `exists_dec_adeles S h.1 (fun v hv => (h.2 v).trans (if_pos hv)) fun v hv => (h.2 v).trans (if_neg hv)`.
+-/
 theorem exists_isFieldDec (D : D7) (S : Finset (Pl D)) (e : AE D) (h : IsIdem S e) :
     ∃ (ι : Type) (_ : Fintype ι) (f : ι → AE D), IsFieldDec e f ∧ ∀ j, NonDiscreteAt (f j) :=
   exists_dec_adeles S h.1 (fun v hv => (h.2 v).trans (if_pos hv)) fun v hv => (h.2 v).trans (if_neg hv)

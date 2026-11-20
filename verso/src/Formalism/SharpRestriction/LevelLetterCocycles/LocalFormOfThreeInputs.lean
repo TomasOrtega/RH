@@ -37,6 +37,13 @@ def killA : Prop :=
           (l ^ YA l (finrank ↥(K0 K) ↥K.1) s h' S η : ℕ) • p ∈
             Submodule.span ↥(OL LL) (s₀ : Set (↥(GK K) → T₂.V)) ⊔ F.ImF (P.PD K)
 
+/- English proof (translation)
+Introduce `T₁ T₂ F r S η m h up b hH`. Take `⟨s, hs, hgen⟩` from `hG T₁ T₂ F r S η m h up b hH`. Take `⟨J, hJ, h0, hlift⟩` from `hL T₁ T₂ F r S η m h up b hH`. Take `⟨σ, h', hes, hh', hle, s₀, hs₀, hsub, hkill⟩` from `hK T₁ T₂ F r S η m h up b hH`. Use `⟨σ, h', s.card, J, hes, hh', hle, hJ, h0, hs, s, s₀, le_rfl, hgen, hs₀, hsub, hkill, ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp`. Establish `hpZ : p ∈ latticeFiniteCocycles (P.PD K) T₂.L` using `(Submodule.span_le.mpr hsub) hp`. Establish `h1` using `hlift p hpZ`. Establish `e1 : ((l ^ expLift l h J : ℕ) : ↥(OL LL)) = ((((P.PD K).p : ℕ) : ↥(OL LL))) ^ expLift l h J`. Rewrite using `[P.PD_p K]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[← Nat.cast_smul_eq_nsmul ↥(OL LL), e1]`. Conclude with `h1`.
+-/
 theorem claimA_of_steps (hG : genA P K LL) (hL : liftA P K LL) (hK : killA P K LL) :
     claimA P K LL := by
   intro T₁ T₂ F r S η m h up b hH
@@ -64,10 +71,16 @@ def liftR (D : D7) : Prop :=
 def killR (D : D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ K LL : FinExt l, Good K 1 LL → killA (D.loc l) K LL
 
+/- English proof (translation)
+Introduce `l _ hl K LL hg` and use `claimA_of_steps (D.loc l) K LL (hG l hl K LL hg) (hL l hl K LL hg) (hK l hl K LL hg)`.
+-/
 theorem local_form_of_three_inputs (D : D7) (hG : genR D) (hL : liftR D) (hK : killR D) : LocalTheoremAtGoodExtensions D :=
   fun l _ hl K LL hg =>
     claimA_of_steps (D.loc l) K LL (hG l hl K LL hg) (hL l hl K LL hg) (hK l hl K LL hg)
 
+/- English proof (translation)
+Introduce `hA` and use `local_theorem_of_good_extensions D C hC (local_form_of_three_inputs D (hG hA) (hL hA) (hK hA))`.
+-/
 theorem local_theorem_of_three_inputs (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CA CB CK C : ℝ) (hC : 160 ≤ C)
     (hG : Adm1 D HW F Cm CA CB CK → genR D) (hL : Adm1 D HW F Cm CA CB CK → liftR D)

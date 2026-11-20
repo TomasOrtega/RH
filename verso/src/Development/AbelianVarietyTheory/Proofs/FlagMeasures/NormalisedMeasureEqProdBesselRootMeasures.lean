@@ -24,6 +24,13 @@ section Loc
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Establish `hle : spanLt e a ≤ (spanLt e a).comap (Matrix.toLin' A)`. Unfold `spanLt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.toLin'_apply]`.
+
+Establish `hsplit : A *ᵥ e b = e b + (A - 1) *ᵥ e b`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Use `add_mem (Submodule.subset_span ⟨b, hb, rfl⟩) ?_` and prove the remaining obligations.
+
+Use `Submodule.span_mono (Set.image_mono ?_) (hA b)` and prove the remaining obligations. Introduce `c hc`. Conclude with `lt_trans (show c.1 < b.1 from hc) (show b.1 < a from hb)`. Introduce `y hy`. Conclude with `hle hy`.
+-/
 private lemma mulVec_mem_spanLt' {n r : ℕ} {e : Fin r → Fin n → ℂ} {A : Matrix (Fin n) (Fin n) ℂ}
     (hA : ∀ b : Fin r, (A - 1) *ᵥ e b ∈ spanLt e b.1) (a : ℕ) :
     ∀ y ∈ spanLt e a, A *ᵥ y ∈ spanLt e a := by
@@ -42,6 +49,13 @@ private lemma mulVec_mem_spanLt' {n r : ℕ} {e : Fin r → Fin n → ℂ} {A : 
   intro y hy
   exact hle hy
 
+/- English proof (translation)
+Establish `key : ∀ x : Fin n → ℂ, (A * B - 1) *ᵥ x = A *ᵥ ((B - 1) *ᵥ x) + (A - 1) *ᵥ x`. Introduce `x`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key]`. Conclude with `add_mem (mulVec_mem_spanLt' hA.1.1 _ _ (hB.1.1 a)) (hA.1.1 a)`. Rewrite using `[key]`. Conclude with `add_mem (mulVec_mem_spanLt' hA.1.1 _ _ hB.1.2) hA.1.2`. Rewrite using `[key]`.
+
+Conclude with `add_mem (mulVec_mem_spanLt' hA.1.1 _ _ (hB.2 y hy)) (hA.2 y hy)`.
+-/
 private lemma inN_mul' {n r : ℕ} {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ}
     {A B : Matrix (Fin n) (Fin n) ℂ} (hA : InN ε e z A) (hB : InN ε e z B) : InN ε e z (A * B) := by
   have key : ∀ x : Fin n → ℂ, (A * B - 1) *ᵥ x = A *ᵥ ((B - 1) *ᵥ x) + (A - 1) *ᵥ x := by
@@ -53,10 +67,20 @@ private lemma inN_mul' {n r : ℕ} {ε : Fin n → Bool} {e : Fin r → Fin n �
   · rw [key]; exact add_mem (mulVec_mem_spanLt' hA.1.1 _ _ hB.1.2) hA.1.2
   · rw [key]; exact add_mem (mulVec_mem_spanLt' hA.1.1 _ _ (hB.2 y hy)) (hA.2 y hy)
 
+/- English proof (translation)
+Introduce `v`. Conclude with `inN_mul' (ha v) (hb v)`.
+-/
 theorem ninf_mul {a b : X.B.I.Ginf} (ha : a ∈ X.NinfU u) (hb : b ∈ X.NinfU u) : a * b ∈ X.NinfU u := by
   intro v
   exact inN_mul' (ha v) (hb v)
 
+/- English proof (translation)
+Introduce `y hy`. Set `f : spanLt e a →ₗ[ℂ] spanLt e a` to `(Matrix.toLin' A).restrict (fun x hx => mulVec_mem_spanLt' hA a x hx)`. Establish `hinj : Function.Injective f`. Introduce `x x' hxx`. Establish `h` using `congrArg (fun w : spanLt e a => Ai *ᵥ (w : Fin n → ℂ)) hxx`.
+
+Establish `hc : ∀ w : spanLt e a, ((f w : spanLt e a) : Fin n → ℂ) = A *ᵥ (w : Fin n → ℂ)` using `fun w => rfl`. Simplify using `only [hc, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec] at h`. Conclude with `Subtype.ext h`. Take `⟨w, hw⟩` from `(LinearMap.injective_iff_surjective.mp hinj) ⟨y, hy⟩`. Establish `hwv : A *ᵥ (w : Fin n → ℂ) = y` using `congrArg Subtype.val hw`.
+
+Establish `hw' : (w : Fin n → ℂ) = Ai *ᵥ y`. Rewrite using `[← hwv, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Rewrite using `[← hw']`. Conclude with `w.2`.
+-/
 private lemma mulVec_mem_spanLt_of_left_inv {n r : ℕ} {e : Fin r → Fin n → ℂ} {A Ai : Matrix (Fin n) (Fin n) ℂ}
     (hA : ∀ b : Fin r, (A - 1) *ᵥ e b ∈ spanLt e b.1) (h2 : Ai * A = 1) (a : ℕ) :
     ∀ y ∈ spanLt e a, Ai *ᵥ y ∈ spanLt e a := by
@@ -75,6 +99,13 @@ private lemma mulVec_mem_spanLt_of_left_inv {n r : ℕ} {e : Fin r → Fin n →
   rw [← hw']
   exact w.2
 
+/- English proof (translation)
+Establish `key : ∀ x : Fin n → ℂ, (Ai - 1) *ᵥ x = -(Ai *ᵥ ((A - 1) *ᵥ x))`. Introduce `x`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h2]`. Normalize the expressions using the abelian group laws. Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key]`. Conclude with `neg_mem (mulVec_mem_spanLt_of_left_inv hA.1.1 h2 _ _ (hA.1.1 a))`. Rewrite using `[key]`. Conclude with `neg_mem (mulVec_mem_spanLt_of_left_inv hA.1.1 h2 _ _ hA.1.2)`. Rewrite using `[key]`.
+
+Conclude with `neg_mem (mulVec_mem_spanLt_of_left_inv hA.1.1 h2 _ _ (hA.2 y hy))`.
+-/
 private lemma inN_of_left_inv {n r : ℕ} {ε : Fin n → Bool} {e : Fin r → Fin n → ℂ} {z : Fin n → ℂ}
     {A Ai : Matrix (Fin n) (Fin n) ℂ} (h2 : Ai * A = 1) (hA : InN ε e z A) : InN ε e z Ai := by
   have key : ∀ x : Fin n → ℂ, (Ai - 1) *ᵥ x = -(Ai *ᵥ ((A - 1) *ᵥ x)) := by
@@ -86,13 +117,24 @@ private lemma inN_of_left_inv {n r : ℕ} {ε : Fin n → Bool} {e : Fin r → F
   · rw [key]; exact neg_mem (mulVec_mem_spanLt_of_left_inv hA.1.1 h2 _ _ hA.1.2)
   · rw [key]; exact neg_mem (mulVec_mem_spanLt_of_left_inv hA.1.1 h2 _ _ (hA.2 y hy))
 
+/- English proof (translation)
+Simplify using `[uMat]`.
+-/
 private lemma uMat_expU_inv_mul {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) : uMat g⁻¹ * uMat g = 1 := by
   simp [uMat]
 
+/- English proof (translation)
+Introduce `v`. Conclude with `inN_of_left_inv (uMat_expU_inv_mul (a v)) (ha v)`.
+-/
 theorem ninf_inv {a : X.B.I.Ginf} (ha : a ∈ X.NinfU u) : a⁻¹ ∈ X.NinfU u := by
   intro v
   exact inN_of_left_inv (uMat_expU_inv_mul (a v)) (ha v)
 
+/- English proof (translation)
+Take `⟨h, hh, m, hm, rfl⟩` from `Formalism.L2.SG.Pf.Sinf.levi X u ha`. Establish `hmn : m * n * m⁻¹ ∈ X.NinfU u` using `ninf_mul X u (ninf_mul X u hm hn) (ninf_inv X u hm)`. Establish `hc` using `Formalism.L2.SG.Pf.Sinf.conj_ninf X u hh hmn`. Establish `e : h * m * n * (h * m)⁻¹ = h * (m * n * m⁻¹) * h⁻¹` using `by group`. Rewrite using `[e]`.
+
+Conclude with `hc`.
+-/
 theorem sinf_conj {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) {n : X.B.I.Ginf} (hn : n ∈ X.NinfU u) :
     a * n * a⁻¹ ∈ X.NinfU u := by
   obtain ⟨h, hh, m, hm, rfl⟩ := Formalism.L2.SG.Pf.Sinf.levi X u ha
@@ -102,6 +144,9 @@ theorem sinf_conj {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) {n : X.B.I.Ginf} (hn :
   rw [e]
   exact hc
 
+/- English proof (translation)
+Take `⟨h, hh, m, hm, rfl⟩` from `Formalism.L2.SG.Pf.Sinf.levi X u ha`. Establish `hc` using `Formalism.L2.SG.Pf.Sinf.conj_ninf X u hh hm`. Use `⟨h v * m v * (h v)⁻¹, hc v, h v, fun y hy => hh v y hy, ?_⟩` and prove the remaining obligations. Use `show h v * m v = h v * m v * (h v)⁻¹ * h v`. Use `group`.
+-/
 theorem sinf_nh {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (v : InfinitePlace X.B.I.F) :
     a v ∈ Formalism.L2.SG.Pf.WuDec.NHloc X u v := by
   obtain ⟨h, hh, m, hm, rfl⟩ := Formalism.L2.SG.Pf.Sinf.levi X u ha
@@ -124,6 +169,19 @@ section Gen
 
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 
+/- English proof (translation)
+Take `⟨hσ, h0, hS, hinv⟩` from `h`. Establish `hm : ∀ x : G, Measurable (fun y : G => x * y * x⁻¹)` using `fun x => (measurable_const_mul x).mul_const x⁻¹`. Set `E : G ≃ᵐ G` to `{ toFun := fun y => g * y * g⁻¹ invFun := fun y => g⁻¹ * y * g left_inv := fun y => by simp [mul_assoc] right_inv := fun y => by simp [mul_assoc] measurable_toFun := hm g measurable_invFun := (measurable_const_mul g⁻¹).mul_const g }`. Establish `hE : (fun y : G => g * y * g⁻¹) = ⇑E` using `rfl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hE]`. Use `SigmaFinite.of_map (μ.map E) E.symm.measurable.aemeasurable ?_` and prove the remaining obligations. Establish `hback : (μ.map E).map E.symm = μ`. Rewrite using `[Measure.map_map E.symm.measurable E.measurable, MeasurableEquiv.symm_comp_self, Measure.map_id]`. Rewrite using `[hback]`.
+
+Conclude with `hσ`. Conclude with `(Measure.map_ne_zero_iff (hm g).aemeasurable).mpr h0`. Rewrite using `[hE, MeasurableEquiv.map_apply]`. Establish `hpre : ⇑E ⁻¹' Tᶜ = Sᶜ`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_compl_iff]`. Conclude with `not_congr (hST z)`. Rewrite using `[hpre]`. Conclude with `hS`. Introduce `r hr`.
+
+Establish `hs : g⁻¹ * r * g ∈ S`. Rewrite using `[← hST]`. Rewrite using `[show g * (g⁻¹ * r * g) * g⁻¹ = r by group]`. Conclude with `hr`. Rewrite using `[Measure.map_map (measurable_const_mul r) (hm g)]`.
+
+Establish `hcomp : (fun x : G => r * x) ∘ (fun y : G => g * y * g⁻¹) = (fun y : G => g * y * g⁻¹) ∘ (fun x : G => (g⁻¹ * r * g) * x)`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp]`. Use `group`. Rewrite using `[hcomp, ← Measure.map_map (hm g) (measurable_const_mul _), hinv _ hs]`.
+-/
 theorem haar_conj (S T : Set G) (g : G) (hST : ∀ z, g * z * g⁻¹ ∈ T ↔ z ∈ S) {μ : Measure G}
     (h : SigmaFinite μ ∧ μ ≠ 0 ∧ μ Sᶜ = 0 ∧ ∀ s ∈ S, μ.map (fun x => s * x) = μ) :
     SigmaFinite (μ.map fun y => g * y * g⁻¹) ∧ (μ.map fun y => g * y * g⁻¹) ≠ 0 ∧
@@ -168,6 +226,11 @@ theorem haar_conj (S T : Set G) (g : G) (hST : ∀ z, g * z * g⁻¹ ∈ T ↔ z
       group
     rw [hcomp, ← Measure.map_map (hm g) (measurable_const_mul _), hinv _ hs]
 
+/- English proof (translation)
+Take `⟨hσ, h0', hS, hinv⟩` from `h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.L2.SG.NGPin.sf_smul μ ht`. Introduce `hz`. Establish `h1 : (d • μ) Set.univ = 0` using `by rw [hz]; simp`.
+
+Rewrite `h1` using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `(mul_ne_zero h0 (Measure.measure_univ_ne_zero.mpr h0')) h1`. Rewrite using `[Measure.smul_apply, hS, smul_zero]`. Introduce `s hs`. Rewrite using `[Measure.map_smul, hinv s hs]`.
+-/
 theorem haar_smul {S : Set G} {μ : Measure G}
     (h : SigmaFinite μ ∧ μ ≠ 0 ∧ μ Sᶜ = 0 ∧ ∀ s ∈ S, μ.map (fun x => s * x) = μ) {d : ℝ≥0∞} (h0 : d ≠ 0)
     (ht : d ≠ ⊤) :
@@ -185,6 +248,13 @@ theorem haar_smul {S : Set G} {μ : Measure G}
 
 end Gen
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, μ (spanningSets μ k) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `h0` to reduce the goal to its premises. Establish `hu : μ (⋃ k, spanningSets μ k) = 0` using `measure_iUnion_null hcon`.
+
+Rewrite `hu` using `[iUnion_spanningSets]`. Conclude with `Measure.measure_univ_eq_zero.mp hu`. Establish `htop : μ (spanningSets μ k) ≠ ⊤` using `(measure_spanningSets_lt_top μ k).ne`. Establish `hx : μ (spanningSets μ k) = c * μ (spanningSets μ k)`. Establish `e1` using `congrArg (fun m : Measure α => m (spanningSets μ k)) h`.
+
+Simplify using `only [Measure.smul_apply, smul_eq_mul] at e1`. Conclude with `e1`. Establish `h3 : c * μ (spanningSets μ k) / μ (spanningSets μ k) = μ (spanningSets μ k) / μ (spanningSets μ k)` using `by rw [← hx]`. Rewrite `h3` using `[ENNReal.mul_div_cancel_right hk htop, ENNReal.div_self hk htop]`. Then use the resulting hypothesis.
+-/
 theorem eq_one_of_smul {α : Type*} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ] (h0 : μ ≠ 0)
     {c : ℝ≥0∞} (h : μ = c • μ) : c = 1 := by
   obtain ⟨k, hk⟩ : ∃ k, μ (spanningSets μ k) ≠ 0 := by
@@ -203,6 +273,9 @@ theorem eq_one_of_smul {α : Type*} [MeasurableSpace α] (μ : Measure α) [Sigm
       μ (spanningSets μ k) / μ (spanningSets μ k) := by rw [← hx]
   rwa [ENNReal.mul_div_cancel_right hk htop, ENNReal.div_self hk htop] at h3
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun a => by simp, by simp⟩, fun y _ => by simp⟩`.
+-/
 private lemma inN_one' {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     InN ε e z 1 :=
   ⟨⟨fun a => by simp, by simp⟩, fun y _ => by simp⟩
@@ -211,6 +284,15 @@ section Loc
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Set `n' : X.B.I.Ginf` to `Function.update 1 v n`. Establish `hn' : n' ∈ X.NinfU u`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Establish `e : n' w = n` using `by simp [n']`. Use `show InN _ _ _ (uMat (n' w))`. Rewrite using `[e]`. Conclude with `hn`. Establish `e : n' w = 1` using `by simp [n', Function.update_of_ne hw] show InN _ _ _ (uMat (n' w))`.
+
+Rewrite using `[e]`. Conclude with `inN_one' _ _ _`. Establish `h` using `sinf_conj X u ha hn' v`. Establish `e : n' v = n` using `by simp [n']`. Use `show InN _ _ _ (uMat (a v * n * (a v)⁻¹))`.
+
+Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem conj_loc_of {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (v : InfinitePlace X.B.I.F) {n : Formalism.REAL.UJ (X.B.I.ε v)}
     (hn : n ∈ Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun b => rv X.B.I v (X.eR b)) (rv X.B.I v (X.zR u))) :
     a v * n * (a v)⁻¹ ∈
@@ -251,6 +333,13 @@ variable {D : D7} (X : HidaSetting D)
 
 def kst : ℝ≥0∞ := ENNReal.ofReal (D.host.ka / (X.B.g : ℝ) / Real.pi)
 
+/- English proof (translation)
+Establish `hg : (0 : ℝ) < (X.B.g : ℝ)`. Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos` after adjusting the coercions. Establish `hv : 0 < D.host.v`. Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`.
+
+Apply `div_pos _ two_pos` to reduce the goal to its premises. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`. Establish `hka : 0 < D.host.ka`. Unfold `Formalism.BasicNotions.Host.ka`.
+
+Conclude with `div_pos Real.pi_pos hv`. Conclude with `div_pos (div_pos hka hg) Real.pi_pos`.
+-/
 theorem kst_pos : 0 < D.host.ka / (X.B.g : ℝ) / Real.pi := by
   have hg : (0 : ℝ) < (X.B.g : ℝ) := by
     rw [X.g_eq]
@@ -265,14 +354,23 @@ theorem kst_pos : 0 < D.host.ka / (X.B.g : ℝ) / Real.pi := by
     exact div_pos Real.pi_pos hv
   exact div_pos (div_pos hka hg) Real.pi_pos
 
+/- English proof (translation)
+Unfold `kst`. Conclude with `(ENNReal.ofReal_pos.mpr (kst_pos X)).ne'`.
+-/
 theorem kst_ne_zero : kst X ≠ 0 := by
   unfold kst
   exact (ENNReal.ofReal_pos.mpr (kst_pos X)).ne'
 
+/- English proof (translation)
+Unfold `kst`. Conclude with `ENNReal.ofReal_ne_top`.
+-/
 theorem kst_ne_top : kst X ≠ ⊤ := by
   unfold kst
   exact ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+Introduce `hz`. Establish `h1 : (c • μ) Set.univ = 0` using `by rw [hz]; simp`. Rewrite `h1` using `[Measure.smul_apply, smul_eq_mul]`. Conclude with `(mul_ne_zero hc (Measure.measure_univ_ne_zero.mpr hμ)) h1`.
+-/
 private lemma smul_measure_ne_zero {α : Type*} [MeasurableSpace α] {c : ℝ≥0∞} {μ : Measure α} (hc : c ≠ 0)
     (hμ : μ ≠ 0) : c • μ ≠ 0 := by
   intro hz
@@ -280,6 +378,41 @@ private lemma smul_measure_ne_zero {α : Type*} [MeasurableSpace α] {c : ℝ≥
   rw [Measure.smul_apply, smul_eq_mul] at h1
   exact (mul_ne_zero hc (Measure.measure_univ_ne_zero.mpr hμ)) h1
 
+/- English proof (translation)
+Establish `hsfk : SigmaFinite (kst X • (volume : Measure ℂ))` using `Formalism.L2.SG.NGPin.sf_smul _ (kst_ne_top X)`. Establish `hP` using `fun v => Formalism.L2.SG.NGPin.placeHaar_holds D X u u' w γ hrep v`. Use `choose μv cv hμv hc0 hctop hmap using hP`. Use `set K : ℝ≥0∞ := kst X ^ Fintype.card (FreeE w) with hK`. Establish `hK0 : K ≠ 0` using `pow_ne_zero _ (kst_ne_zero X)`.
+
+Establish `hKt : K ≠ ⊤` using `ENNReal.pow_ne_top (kst_ne_top X)`. Establish `hpiK : Measure.pi (fun _ : FreeE w => kst X • (volume : Measure ℂ)) = K • Measure.pi (fun _ : FreeE w => (volume : Measure ℂ))`. Rewrite using `[Formalism.L2.SG.NGPin.pi_smul (fun _ : FreeE w => (volume : Measure ℂ)) (fun _ => kst X), Finset.prod_const, Finset.card_univ]`. Establish `hd0 : ∀ v, K / cv v ≠ 0` using `fun v => ENNReal.div_ne_zero.mpr ⟨hK0, hctop v⟩`. Establish `hdt : ∀ v, K / cv v ≠ ⊤` using `fun v => ENNReal.div_ne_top hKt (hc0 v)`.
+
+Establish `hpv0 : Measure.pi (fun _ : FreeE w => (volume : Measure ℂ)) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (fun m : Measure (FreeE w → ℂ) => m Set.univ) h0`. Simplify using `only [Measure.pi_univ, Measure.coe_zero, Pi.zero_apply] at h1`. Conclude with `(Finset.prod_ne_zero_iff.mpr (fun _ _ => by simp)) h1`.
+
+Set `m : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v))` to `fun v => (K / cv v) • μv v`. Establish `hmH : ∀ v, IsHaarLoc (Formalism.L2.SG.NGPin.StV X u u' γ v) (m v)` using `fun v => haar_smul (hμv v) (hd0 v) (hdt v)`. Establish `hmmap : ∀ v, (m v).map (Formalism.L2.SG.NGPin.stCoordV X u' w γ v) = Measure.pi (fun _ : FreeE w => kst X • (volume : Measure ℂ))`. Introduce `v`. Simplify using `only [m]`.
+
+Rewrite using `[Measure.map_smul, hmap v, smul_smul, ENNReal.div_mul_cancel (hc0 v) (hctop v), hpiK]`. Establish `hae : ∀ v, AEMeasurable (Formalism.L2.SG.NGPin.stCoordV X u' w γ v) (m v)`. Introduce `v`. Assume the negation of the conclusion as `hn`. Establish `h0` using `Measure.map_of_not_aemeasurable hn`.
+
+Rewrite `h0` using `[hmmap v, hpiK]`. Conclude with `smul_measure_ne_zero hK0 hpv0 h0`. Use `haveI : ∀ v, SigmaFinite (m v) := fun v => (hmH v).1`. Use `haveI : ∀ v, SigmaFinite ((m v).map (Formalism.L2.SG.NGPin.stCoordV X u' w γ v)) := fun v => by`. Rewrite using `[hmmap v]`.
+
+Use `infer_instance`. Establish `hpimap : (Measure.pi m).map (stCoord X u' w γ) = muStab X w`. Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq X u' w γ, Measure.pi_map_pi hae]`. Simplify using `only [hmmap]`. Both sides reduce to the same expression.
+
+Use `⟨m, hmH, hmmap, ?_⟩` and prove the remaining obligations. Establish `hSt` using `Formalism.L2.SG.NGPin.stInf_eq_pi X u u' γ`. Establish `hpiH : IsHaarOnSet X.B.I (StInf X u u' γ) (Measure.pi m)`. Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Establish `h1` using `congrArg (fun μ' : Measure X.B.I.Ginf => μ' Set.univ) h0`. Simplify using `only [Measure.pi_univ, Measure.coe_zero, Pi.zero_apply] at h1`. Conclude with `(Finset.prod_ne_zero_iff.mpr (fun v _ => Measure.measure_univ_ne_zero.mpr (hmH v).2.1)) h1`. Rewrite using `[hSt]`. Establish `hsub : (Set.univ.pi (Formalism.L2.SG.NGPin.StV X u u' γ))ᶜ ⊆ ⋃ v, Function.eval v ⁻¹' (Formalism.L2.SG.NGPin.StV X u u' γ v)ᶜ`.
+
+Introduce `x hx`. Simplify using `only [Set.mem_compl_iff, Set.mem_univ_pi, not_forall] at hx`. Take `⟨v, hv⟩` from `hx`. Conclude with `Set.mem_iUnion.mpr ⟨v, hv⟩`. Use `measure_mono_null hsub (measure_iUnion_null fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `Measure.pi_eval_preimage_null _ (hmH v).2.2.1`. Introduce `s hs`. Rewrite `hs` using `[hSt]`. Establish `hinv : ∀ v, (m v).map (fun y => s v * y) = m v` using `fun v => (hmH v).2.2.2 (s v) (hs v (Set.mem_univ v))`. Use `haveI : ∀ v, SigmaFinite ((m v).map (fun y => s v * y)) := fun v => by rw [hinv v]; infer_instance`.
+
+Establish `e : (fun x : X.B.I.Ginf => s * x) = fun x v => (fun y => s v * y) (x v)` using `rfl`. Rewrite using `[e, Measure.pi_map_pi (fun v => (measurable_const_mul (s v)).aemeasurable)]`. Simplify using `only [hinv]`. Establish `hclosed : IsClosed (StInf X u u' γ)`. Rewrite using `[← Formalism.L2.SG.NGPin.coe_StG X u u' γ]`.
+
+Conclude with `Formalism.L2.SG.NGPin.isClosed_StG X u u' γ`. Establish `hgrp : QPK.IsGrp (StInf X u u' γ)`. Rewrite using `[← Formalism.L2.SG.NGPin.coe_StG X u u' γ]`. Conclude with `⟨(Formalism.L2.SG.NGPin.StG X u u' γ).one_mem, fun a ha b hb => (Formalism.L2.SG.NGPin.StG X u u' γ).mul_mem ha hb, fun a ha => (Formalism.L2.SG.NGPin.StG X u u' γ).inv_mem ha⟩`. Take `⟨c, hc0', hct', hμc⟩` from `QPK.haar_measure_uniqueness X.B.I.Ginf (StInf X u u' γ) hclosed hgrp μ (Measure.pi m) hH hpiH`.
+
+Establish `hS : muStab X w = c • muStab X w`. Establish `e` using `congrArg (fun μ' : Measure X.B.I.Ginf => μ'.map (stCoord X u' w γ)) hμc`. Simplify using `only [Measure.map_smul] at e`. Rewrite `e` using `[hm, hpimap]`. Conclude with `e`.
+
+Take `⟨K', hK'0, hK't, hK'⟩` from `Formalism.L2.SG.NGPin.muStab_eq X w`. Use `haveI : SigmaFinite (muStab X w) := by`. Rewrite using `[hK']`. Conclude with `Formalism.L2.SG.NGPin.sf_smul _ hK't`. Establish `hne : muStab X w ≠ 0`.
+
+Rewrite using `[hK']`. Use `smul_measure_ne_zero hK'0 ?_` and prove the remaining obligations. Introduce `h1`. Establish `h2` using `congrArg (fun μ' : Measure (InfinitePlace X.B.I.F → FreeE w → ℂ) => μ' Set.univ) h1`. Simplify using `only [Measure.pi_univ, Measure.coe_zero, Pi.zero_apply] at h2`.
+
+Conclude with `(Finset.prod_ne_zero_iff.mpr (fun _ _ => Finset.prod_ne_zero_iff.mpr (fun _ _ => by simp))) h2`. Establish `hc1` using `eq_one_of_smul (muStab X w) hne hS`. Rewrite using `[hμc, hc1, one_smul]`.
+-/
 theorem pin_pi (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (hrep : IsPtRep X u u' w γ)
     (μ : Measure X.B.I.Ginf) (hH : IsHaarOnSet X.B.I (StInf X u u' γ) μ)
     (hm : μ.map (stCoord X u' w γ) = muStab X w) :
@@ -375,6 +508,9 @@ theorem pin_pi (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (γ : X
   have hc1 := eq_one_of_smul (muStab X w) hne hS
   rw [hμc, hc1, one_smul]
 
+/- English proof (translation)
+Use `⟨?_, fun a i _ => Matrix.one_apply, fun i j _ _ _ => Matrix.one_apply⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules.
+-/
 private lemma one_mem_Nset (k r : ℕ) :
     (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ Formalism.QuantumDeterminants.Nset k r := by
   refine ⟨?_, fun a i _ => Matrix.one_apply, fun i j _ _ _ => Matrix.one_apply⟩
@@ -395,6 +531,23 @@ section Base
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hst` using `Formalism.L2.SG.RootPatterns.stCoordV_comp (C := C) (u' := u') (w := w) (γ := γ) (τ := τ)`. Establish `hZ` using `Formalism.L2.SG.RealFrameCoordinates.zhat_conjugator_eq_point (C := C) (u := u) (u' := u') (w := w) (γ := γ) (hrep := hrep) (τ := τ)`. Establish `hmeasR : Measurable (Formalism.MainNotions.S.rootCoords D.R.k D.R.rS (zB X (C.Qi τ) u' τ) (Formalism.MainNotions.S.ThB.ptLoc D τ w))` using `GlobalTheory.Amp.RootMove.measurable_rootCoords _ _`. Establish `hcm` using `(Formalism.L2.SG.RealConjugatorData.cMr_measEmb C γ τ)`. Unfold `IsRootMeasR`.
+
+Use `⟨1, (one_mem_Nset _ _), 1, (one_mem_Nset _ _), trG (C.Q τ) (C.Qi τ) (γ (vOf X τ)), by simp, hZ, m.map (Formalism.L2.SG.RealConjugatorData.cMr C γ τ), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcm.map_apply]`. Use `measure_mono_null ?_ hH.2.2.1` and prove the remaining obligations. Introduce `y hy hyS`. Conclude with `hy ((Formalism.L2.SG.RealConjugatorData.stV_iff (C := C) (γ := γ) (τ := τ) (u := u) (u' := u') y).1 hyS)`.
+
+Rewrite using `[Measure.map_map hmeasR hcm.measurable] set E := MeasurableEquiv.piCongrLeft (fun _ : Formalism.L2.SG.RealObj.FreeE w => ℂ) (Formalism.L2.SG.RootPatterns.idxF τ w) with hEdef`. Establish `hg : Measurable (Formalism.MainNotions.S.rootCoords D.R.k D.R.rS (zB X (C.Qi τ) u' τ) (Formalism.MainNotions.S.ThB.ptLoc D τ w) ∘ Formalism.L2.SG.RealConjugatorData.cMr C γ τ)` using `hmeasR.comp hcm.measurable`. Establish `e2 : m.map (Formalism.MainNotions.S.rootCoords D.R.k D.R.rS (zB X (C.Qi τ) u' τ) (Formalism.MainNotions.S.ThB.ptLoc D τ w) ∘ Formalism.L2.SG.RealConjugatorData.cMr C γ τ) = (m.map (E ∘ (Formalism.MainNotions.S.rootCoords D.R.k D.R.rS (zB X (C.Qi τ) u' τ) (Formalism.MainNotions.S. …`. Rewrite using `[Measure.map_map E.symm.measurable (E.measurable.comp hg)]`. Use `congr 1`.
+
+Rewrite using `[e2]`. Establish `e3 : E ∘ (Formalism.MainNotions.S.rootCoords D.R.k D.R.rS (zB X (C.Qi τ) u' τ) (Formalism.MainNotions.S.ThB.ptLoc D τ w) ∘ Formalism.L2.SG.RealConjugatorData.cMr C γ τ) = Formalism.L2.SG.NGPin.stCoordV X u' w γ (vOf X τ)`. Rewrite using `[hst]`. Rewrite using `[e3, hm]`. Use `haveI : SigmaFinite (kst X • (volume : Measure ℂ)) := Formalism.L2.SG.NGPin.sf_smul _ (kst_ne_top X)`.
+
+Establish `hmp0` using `MeasureTheory.measurePreserving_piCongrLeft (fun _ : Formalism.L2.SG.RealObj.FreeE w => kst X • (volume : Measure ℂ)) (Formalism.L2.SG.RootPatterns.idxF τ w)`. Establish `hmp` using `MeasureTheory.MeasurePreserving.symm _ hmp0`. Rewrite using `[hmp.map_eq]`. Rewrite using `[Formalism.L2.SG.NGPin.pi_smul (fun _ : ↥(Formalism.MainNotions.S.rootPat (Formalism.MainNotions.S.ThB.ptLoc D τ w)) => (volume : Measure ℂ)) (fun _ => kst X)]`. Rewrite using `[← MeasureTheory.volume_pi]`.
+
+Use `congr 1`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_coe]`. Unfold `kst`. Rewrite using `[← ENNReal.ofReal_pow (kst_pos X).le]`. Use `congr 2`.
+
+Establish `hg : (X.B.g : ℝ) = gg D`. Rewrite using `[X.g_eq]`. Simplify using `[gg]`. Rewrite using `[hg]`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `[Measure.map_id']`.
+-/
 theorem root_base {θ : ℝ} (C : Choice X θ) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf)
     (τ : D.what₂.Tau) (hrep : IsPtRep X u u' w γ) (m : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ))))
     (hH : IsHaarLoc (Formalism.L2.SG.NGPin.StV X u u' γ (vOf X τ)) m)
@@ -464,6 +617,11 @@ section Main
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `conj_loc_of X u (Formalism.L2.SG.Pf.Sinf.sinf_inv' X u ha) v h`. Establish `e : a⁻¹ v * (a v * n * (a v)⁻¹) * (a⁻¹ v)⁻¹ = n`. Rewrite using `[Pi.inv_apply]`.
+
+Use `group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Conclude with `conj_loc_of X u ha v`.
+-/
 theorem conj_loc (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (v : InfinitePlace X.B.I.F)
     (n : Formalism.REAL.UJ (X.B.I.ε v)) :
     a v * n * (a v)⁻¹ ∈
@@ -477,6 +635,11 @@ theorem conj_loc (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (v
     rwa [e] at h2
   · exact conj_loc_of X u ha v
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `sinf_conj X u (Formalism.L2.SG.Pf.Sinf.sinf_inv' X u ha) h`. Establish `e : a⁻¹ * (a * n * a⁻¹) * a⁻¹⁻¹ = n` using `by group`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+
+Conclude with `sinf_conj X u ha`.
+-/
 theorem sinf_conj_iff (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (n : X.B.I.Ginf) :
     a * n * a⁻¹ ∈ X.NinfU u ↔ n ∈ X.NinfU u := by
   constructor
@@ -486,17 +649,28 @@ theorem sinf_conj_iff (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU 
     rwa [e] at h2
   · exact sinf_conj X u ha
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma uMat_mul_flag_measures {n : ℕ} {ε : Fin n → Bool} (g h : Formalism.REAL.UJ ε) :
     uMat (g * h) = uMat g * uMat h := rfl
 
 variable {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Establish `hQ : C.Q τ * C.Qi τ = 1` using `(C.isT τ).2.1`. Simplify using `only [trG, uMat_mul_flag_measures, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul]`.
+-/
 theorem trG_mul (x y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     trG (C.Q τ) (C.Qi τ) (x * y) = trG (C.Q τ) (C.Qi τ) x * trG (C.Q τ) (C.Qi τ) y := by
   have hQ : C.Q τ * C.Qi τ = 1 := (C.isT τ).2.1
   simp only [trG, uMat_mul_flag_measures, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hQ : C.Q τ * C.Qi τ = 1` using `(C.isT τ).2.1`. Establish `hQi : C.Qi τ * C.Q τ = 1` using `(C.isT τ).1`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `only [trG, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul, ← Matrix.mul_assoc (uMat x⁻¹) (uMat x), uMat_expU_inv_mul, Matrix.one_mul, hQi]`.
+-/
 theorem trG_inv (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     trG (C.Q τ) (C.Qi τ) x⁻¹ = (trG (C.Q τ) (C.Qi τ) x)⁻¹ := by
   have hQ : C.Q τ * C.Qi τ = 1 := (C.isT τ).2.1
@@ -507,6 +681,9 @@ theorem trG_inv (x : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
   rw [← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul, ← Matrix.mul_assoc (uMat x⁻¹) (uMat x),
     uMat_expU_inv_mul, Matrix.one_mul, hQi]
 
+/- English proof (translation)
+Use `show C.Qi τ * (uMat (γ (vOf X τ)))⁻¹ * uMat y * (uMat (γ (vOf X τ)) * C.Q τ) = trG (C.Q τ) (C.Qi τ) ((γ (vOf X τ))⁻¹ * y * γ (vOf X τ))`. Rewrite using `[trG, uMat_mul_flag_measures, uMat_mul_flag_measures, Formalism.L2.SG.RealConjugatorData.uMat_inv']`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem cMr_trG (γ : X.B.I.Ginf) (y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     Matrix.of (Formalism.L2.SG.RealConjugatorData.cMr C γ τ y) =
       trG (C.Q τ) (C.Qi τ) ((γ (vOf X τ))⁻¹ * y * γ (vOf X τ)) := by
@@ -515,6 +692,11 @@ theorem cMr_trG (γ : X.B.I.Ginf) (y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) 
   rw [trG, uMat_mul_flag_measures, uMat_mul_flag_measures, Formalism.L2.SG.RealConjugatorData.uMat_inv']
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hQ : C.Q τ * C.Qi τ = 1` using `(C.isT τ).2.1`. Establish `hH : (C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * C.Q τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `(C.isT τ).2.2.1`. Establish `hU : (uMat γ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * uMat γ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))` using `γ.2`. Use `show (trG (C.Q τ) (C.Qi τ) γ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * trG (C.Q τ) (C.Qi τ) γ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Rewrite using `[← hH]`.
+
+Unfold `trG`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul, ← Matrix.mul_assoc (C.Qi τ)ᴴ (C.Q τ)ᴴ, ← Matrix.conjTranspose_mul, hQ, Matrix.conjTranspose_one, Matrix.one_mul, ← Matrix.mul_assoc (Formalism.REAL.Jm (X.B.I.ε (vOf X τ))) (uMat γ)]`. Rewrite using `[← Matrix.mul_assoc (uMat γ)ᴴ (Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * uMat γ) (C.Q τ), ← Matrix.mul_assoc (uMat γ)ᴴ (Formalism.REAL.Jm (X.B.I.ε (vOf X τ))) (uMat γ), hU]`.
+-/
 private lemma trG_mem_UH {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau)
     (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     trG (C.Q τ) (C.Qi τ) γ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) := by
@@ -533,6 +715,37 @@ private lemma trG_mem_UH {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X �
 
 end Main
 
+/- English proof (translation)
+Introduce `D X Y θ C u u' s w μR h`. Take `⟨γw, s0, s1, μw, hrep, hs0, hs1, hpt, hH, hm, hμR⟩` from `h`. Take `⟨m, hmH, hmmap, hμw⟩` from `pin_pi X u u' w γw hrep μw hH hm`. Use `haveI : ∀ v, SigmaFinite (m v) := fun v => (hmH v).1`. Establish `hcjm : ∀ v, Measurable (fun y : Formalism.REAL.UJ (X.B.I.ε v) => s0 v * y * (s0 v)⁻¹)` using `fun v => (measurable_const_mul (s0 v)).mul_const _`.
+
+Establish `hST : ∀ v, ∀ z, s0 v * z * (s0 v)⁻¹ ∈ StSet (InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (s.pt.1 v) ↔ z ∈ Formalism.L2.SG.NGPi …`. Introduce `v z`. Establish `e : (s.pt.1 v)⁻¹ * (s0 v * z * (s0 v)⁻¹) * s.pt.1 v = s1 v * ((γw v)⁻¹ * z * γw v) * (s1 v)⁻¹`. Rewrite using `[hpt]`. Simplify using `only [Pi.mul_apply, Pi.inv_apply]`.
+
+Use `group`. Use `show (s0 v * z * (s0 v)⁻¹ ∈ InfCut.JacobianCoordinates.NLoc _ _ _ ∧ (s.pt.1 v)⁻¹ * (s0 v * z * (s0 v)⁻¹) * s.pt.1 v ∈ InfCut.JacobianCoordinates.NLoc _ _ _) ↔ _`. Rewrite using `[e]`. Conclude with `and_congr (conj_loc X u hs0 v z) (conj_loc X u' hs1 v _)`. Set `μl : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v))` to `fun v => (m v).map (fun y => s0 v * y * (s0 v)⁻¹)`.
+
+Establish `hμlH : ∀ v, IsHaarLoc (StSet (InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (s.pt.1 v)) (μl v)` using `fun v => haar_conj _ _ (s0 v) (hST v) (hmH v)`. Use `⟨μl, ?_, hμlH, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hμR, hμw] haveI : ∀ v, SigmaFinite ((m v).map (fun y => s0 v * y * (s0 v)⁻¹)) := fun v => (hμlH v).1`. Establish `e : (fun y : X.B.I.Ginf => s0 * y * s0⁻¹) = fun y v => (fun z => s0 v * z * (s0 v)⁻¹) (y v)` using `rfl`. Rewrite using `[e, Measure.pi_map_pi (fun v => (hcjm v).aemeasurable)]`.
+
+Rewrite using `[hμR]`. Use `haar_conj (StInf X u u' γw) (Formalism.L2.SG.TermOp.Vanish.Rset s) s0 ?_ hH` and prove the remaining obligations. Introduce `z`. Establish `e : (s.pt.1)⁻¹ * (s0 * z * s0⁻¹) * s.pt.1 = s1 * (γw⁻¹ * z * γw) * s1⁻¹`. Rewrite using `[hpt]`.
+
+Use `group`. Use `show (s0 * z * s0⁻¹ ∈ X.NinfU u ∧ (s.pt.1)⁻¹ * (s0 * z * s0⁻¹) * s.pt.1 ∈ X.NinfU u') ↔ (z ∈ X.NinfU u ∧ γw⁻¹ * z * γw ∈ X.NinfU u')`. Rewrite using `[e]`. Conclude with `and_congr (sinf_conj_iff X u hs0 z) (sinf_conj_iff X u' hs1 _)`. Introduce `τ`.
+
+Use `⟨Formalism.MainNotions.S.ThB.ptLoc D τ w, ?_⟩` and prove the remaining obligations. Establish `hb` using `root_base X C u u' w γw τ hrep (m (vOf X τ)) (hmH _) (hmmap _)`. Establish `hz` using `Formalism.L2.SG.Pf.zTr C u τ`. Establish `hz'` using `Formalism.L2.SG.Pf.zTr C u' τ`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ)`.
+
+Rewrite using `[hz.2]`. Conclude with `Formalism.MainNotions.BridgeLemma.Tr_pos D u`. Establish `hT' : 0 < Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u' τ)`. Rewrite using `[hz'.2]`. Conclude with `Formalism.MainNotions.BridgeLemma.Tr_pos D u'`.
+
+Establish `ha : trG (C.Q τ) (C.Qi τ) (s0 (vOf X τ)) ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u τ)` using `(Formalism.L2.SG.Pf.LocF.local_dictionary_all D X θ C u τ (s0 (vOf X τ))).2 (sinf_nh X u hs0 (vOf X τ))`. Establish `ha' : trG (C.Q τ) (C.Qi τ) (s1 (vOf X τ)) ∈ Formalism.QuantumDeterminants.Sset D.R.k D.R.rS (zB X (C.Qi τ) u' τ)` using `(Formalism.L2.SG.Pf.LocF.local_dictionary_all D X θ C u' τ (s1 (vOf X τ))).2 (sinf_nh X u' hs1 (vOf X τ))`. Establish `hmove` using `GlobalTheory.Amp.RootMove.rootMeas_move D _ _ _ _ _ _ _ hz.1 hz'.1 hT hT' (trG_mem_UH C τ (γw (vOf X τ))) ha ha' hb`. Establish `hg : trG (C.Q τ) (C.Qi τ) (s.pt.1 (vOf X τ)) = trG (C.Q τ) (C.Qi τ) (s0 (vOf X τ)) * trG (C.Q τ) (C.Qi τ) (γw (vOf X τ)) * (trG (C.Q τ) (C.Qi τ) (s1 (vOf X τ)))⁻¹`. Rewrite using `[hpt]`.
+
+Simplify using `only [Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[trG_mul X C τ, trG_mul X C τ, trG_inv X C τ]`. Establish `hGm : Measurable (fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => fun i j => ((trG (C.Q τ) (C.Qi τ) (s1 (vOf X τ))) * Matrix.of x * (trG (C.Q τ) (C.Qi τ) (s1 (vOf X τ)))⁻¹) i j)`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `fun_prop`.
+
+Establish `hcm` using `(Formalism.L2.SG.RealConjugatorData.cMr_measEmb C γw τ).measurable`. Establish `hFeq : (fun y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => Matrix.of.symm (trG (C.Q τ) (C.Qi τ) ((s.pt.1 (vOf X τ))⁻¹ * y * s.pt.1 (vOf X τ)))) = (fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => fun i j => ((trG (C.Q τ) (C.Qi τ) (s1 (vOf X τ))) * Matrix.of x * (trG (C.Q τ) …`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply]`. Establish `e1 : (s.pt.1 (vOf X τ))⁻¹ * y * s.pt.1 (vOf X τ) = s1 (vOf X τ) * ((γw (vOf X τ))⁻¹ * ((s0 (vOf X τ))⁻¹ * y * s0 (vOf X τ)) * γw (vOf X τ)) * (s1 (vOf X τ))⁻¹`.
+
+Rewrite using `[hpt]`. Simplify using `only [Pi.mul_apply, Pi.inv_apply]`. Use `group`. Rewrite using `[e1, trG_mul X C τ, trG_mul X C τ, trG_inv X C τ, ← cMr_trG X C τ γw _]`. Both sides reduce to the same expression.
+
+Establish `hF : Measurable (fun y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => Matrix.of.symm (trG (C.Q τ) (C.Qi τ) ((s.pt.1 (vOf X τ))⁻¹ * y * s.pt.1 (vOf X τ))))`. Rewrite using `[hFeq]`. Conclude with `hGm.comp (hcm.comp ((measurable_const_mul _).mul_const _))`. Establish `hμ : (μl (vOf X τ)).map (fun y => Matrix.of.symm (trG (C.Q τ) (C.Qi τ) ((s.pt.1 (vOf X τ))⁻¹ * y * s.pt.1 (vOf X τ)))) = ((m (vOf X τ)).map (Formalism.L2.SG.RealConjugatorData.cMr C γw τ)).map (fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => fun i j => ((trG (C.Q τ) (C.Q …`. Establish `hcomp : (fun y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => Matrix.of.symm (trG (C.Q τ) (C.Qi τ) ((s.pt.1 (vOf X τ))⁻¹ * y * s.pt.1 (vOf X τ)))) ∘ (fun y => s0 (vOf X τ) * y * (s0 (vOf X τ))⁻¹) = (fun x : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS => fun i j => ((trG (C.Q τ) (C. …`.
+
+Rewrite using `[hFeq]`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[show (s0 (vOf X τ))⁻¹ * (s0 (vOf X τ) * y * (s0 (vOf X τ))⁻¹) * s0 (vOf X τ) = y by group]`. Use `show ((m (vOf X τ)).map (fun y => s0 (vOf X τ) * y * (s0 (vOf X τ))⁻¹)).map _ = _`.
+
+Rewrite using `[Measure.map_map hF (hcjm _), Measure.map_map hGm hcm, hcomp]`. Rewrite using `[hg, hμ]`. Conclude with `hmove`.
+-/
 theorem pinned_root : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (θ : ℝ) (C : Choice X θ) (u u' : D.what₂.Word) (s : TT Y u u') (w : Point D.host.E (D.R.rS + 1)) (μR : Measure X.B.I.Ginf), Formalism.L2.SG.VolPin.IsPinnedR s w μR → ∃ μl : ∀ v, Measure (Formalism.REAL.UJ (X.B.I.ε v)), μR = Measure.pi μl ∧ (∀ v, Formalism.L2.SG.RealObj.IsHaarLoc (Formalism.L2.SG.RealObj.StSet (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (s.pt.1 v)) (μl v)) ∧ IsHaarOnSet X.B.I (Formalism.L2.SG.TermOp.Vanish.Rset s) μR ∧ ∀ τ, ∃ p, IsRootMeasR D (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) p (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (s.pt.1 (vOf X τ))) ((μl (vOf X τ)).map (fun y => Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) ((s.pt.1 (vOf X τ))⁻¹ * y * (s.pt.1 (vOf X τ)))))) := by
   intro D X Y θ C u u' s w μR h
   obtain ⟨γw, s0, s1, μw, hrep, hs0, hs1, hpt, hH, hm, hμR⟩ := h

@@ -12,6 +12,13 @@ section Std
 
 variable {K : Type} [Field K] (σ : K →+* ℂ) (r : ℕ) (g : ℝ)
 
+/- English proof (translation)
+Use `set a : ℝ := g / (2 * Real.pi)`. Use `set m := (r - o) + (r - (o + s - 1)) with hm`. Use `set e := r + 1 - (o + 1 + s - 1) with he`. Establish `hnu : Formalism.FourierDecayAlt.S6.nuBlock (r : ℤ) ((o + 1 : ℕ) : ℤ) (s : ℤ) = (m : ℤ)`. Unfold `Formalism.FourierDecayAlt.S6.nuBlock`.
+
+Rewrite using `[hm]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hme : m = 2 * e + (s - 1)` using `by rw [hm, he]; omega`. Rewrite using `[hnu, zpow_natCast]`.
+
+Unfold `blkF`. Rewrite using `[← hm, mul_pow, ← mul_assoc, ← mul_pow, neg_mul, one_mul, neg_neg, Complex.ofReal_pow, hme, pow_add, pow_mul, Complex.I_sq]`. Establish `h1 : ((-1 : ℂ) ^ e) * ((-1 : ℂ) ^ e) = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; norm_num`. Establish `h2 : ((-1 : ℂ) ^ e) = (-1) ^ e` using `rfl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem blk_std (s o : ℕ) (hs : 1 ≤ s) (hos : o + s ≤ r + 1) :
     blkF (-Complex.I * ((g / (2 * Real.pi) : ℝ) : ℂ)) r o (o + s - 1) * (-1) ^ (r + 1 - (o + 1 + s - 1)) =
       (((g / (2 * Real.pi)) ^ Formalism.FourierDecayAlt.S6.nuBlock (r : ℤ) ((o + 1 : ℕ) : ℤ) (s : ℤ) : ℝ) : ℂ) *
@@ -32,6 +39,9 @@ theorem blk_std (s o : ℕ) (hs : 1 ≤ s) (hos : o + s ≤ r + 1) :
       = (((-1 : ℂ) ^ e) * ((-1 : ℂ) ^ e)) * ((a : ℂ) ^ (2 * e + (s - 1)) * Complex.I ^ (s - 1)) := by ring
     _ = (a : ℂ) ^ (2 * e + (s - 1)) * Complex.I ^ (s - 1) := by rw [h1, one_mul]
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _ => rfl | (s, t) :: rest, o, hL, ho => by simp only [List.map_cons, List.sum_cons] at ho have hs : 1 ≤ s := hL (s, t) (List.mem_cons_self) simp only [Formalism.L2.SG.DataInst.signAux, List.map_cons, Prod.swap_prod_mk, lptOf, Formalism.FourierDecayAlt.C.loc, Formalism …`.
+-/
 theorem lptOf_toStd : ∀ (L : Formalism.FourierDecayAlt.TB.Pt K) (o : ℕ), (∀ b ∈ L, 1 ≤ b.1) → o + (L.map Prod.fst).sum ≤ r + 1 →
     lptOf σ (-Complex.I * ((g / (2 * Real.pi) : ℝ) : ℂ)) r o ((Formalism.L2.SG.DataInst.signAux r (o + 1) L).map Prod.swap) =
       Formalism.FourierDecayAlt.D.toStd r g (o + 1) (Formalism.FourierDecayAlt.C.loc σ L)

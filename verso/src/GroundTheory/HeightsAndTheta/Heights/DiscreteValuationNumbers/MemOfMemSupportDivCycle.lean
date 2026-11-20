@@ -131,6 +131,11 @@ section Inhabitants
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hW : W ∈ divSupp P s`. Assume the negation of the conclusion as `hn`. Apply `Finsupp.mem_support_iff.mp h` to reduce the goal to its premises. Simplify using `only [divCycle]`. Rewrite using `[Finsupp.ofSupportFinite_coe, if_neg hn]`.
+
+Conclude with `⟨hW.1.1.1, hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))⟩`.
+-/
 theorem mem_of_mem_support_divCycle {R : Type*} [CommRing R] [IsNoetherianRing R]
     {P W : Ideal (MRingOver R ι)} {s : MRingOver R ι} (h : W ∈ (divCycle P s).support) :
     W.IsPrime ∧ s ∈ W := by
@@ -144,6 +149,9 @@ theorem mem_of_mem_support_divCycle {R : Type*} [CommRing R] [IsNoetherianRing R
 
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Break down `Finset.mem_union.mp (Finsupp.support_sub h) with h1 | h1` into its components or cases. Conclude with `Or.inl (Finsupp.support_mapRange h1)`. Conclude with `Or.inr (Finsupp.support_mapRange h1)`.
+-/
 theorem mem_of_mem_support_divO {P W : Ideal (MRingOver O ι)} {f g : MRingOver O ι}
     (h : W ∈ (divO P f g).support) :
     W ∈ (divCycle P f).support ∨ W ∈ (divCycle P g).support := by
@@ -154,6 +162,11 @@ theorem mem_of_mem_support_divO {P W : Ideal (MRingOver O ι)} {f g : MRingOver 
 
 omit [Fintype K] [IsDomain O] [IsDiscreteValuationRing O] in
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_C]`. Use `split_ifs at hm with h0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem isMultiHomog_C (a : O) : IsMultiHomog (C a : MRingOver O ι) 0 := by
   classical
   intro m hm k
@@ -162,6 +175,9 @@ theorem isMultiHomog_C (a : O) : IsMultiHomog (C a : MRingOver O ι) 0 := by
   · subst h0; simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Use `⟨⟨0, 0, isMultiHomog_C ϖ, by simpa using isMultiHomog_C (ι := ι) (1 : O), by simp⟩, hP.one_notMem, fun W hW => ?_⟩` and prove the remaining obligations. Break down `mem_of_mem_support_divO hW with h | h` into its components or cases. Conclude with `(mem_of_mem_support_divCycle h).2`. Conclude with `absurd (mem_of_mem_support_divCycle h).2 (mem_of_mem_support_divCycle h).1.one_notMem`.
+-/
 theorem isVerticalDiv_unif (ϖ : O) {P : Ideal (MRingOver O ι)} (hP : P.IsPrime) :
     IsVerticalDiv ϖ P 0 (C ϖ) 1 := by
   refine ⟨⟨0, 0, isMultiHomog_C ϖ, by simpa using isMultiHomog_C (ι := ι) (1 : O), by simp⟩,
@@ -172,6 +188,9 @@ theorem isVerticalDiv_unif (ϖ : O) {P : Ideal (MRingOver O ι)} (hP : P.IsPrime
 
 variable (O) in
 
+/- English proof (translation)
+Use `⟨⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun k => ⟨0, by simp [X_ne_zero]⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.comap_bot_of_injective _ (MvPolynomial.C_injective _ _)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsDiscreteValuationRing.ringKrullDim_eq_one]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem isModelOver_line : IsModelOver (⊥ : Ideal (MRingOver O (fun _ : Unit => Fin 2))) 1 := by
   refine ⟨⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun k => ⟨0, by simp [X_ne_zero]⟩⟩, ?_, ?_⟩
   · exact Ideal.comap_bot_of_injective _ (MvPolynomial.C_injective _ _)

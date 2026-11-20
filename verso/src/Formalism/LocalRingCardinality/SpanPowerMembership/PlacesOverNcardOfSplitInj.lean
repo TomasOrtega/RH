@@ -15,6 +15,9 @@ abbrev AlgC : Type := ↥(algebraicClosure ℚ ℂ)
 
 instance : IsAlgClosed AlgC := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff.2 hx.isAlgebraic`.
+-/
 theorem mem_algC_of_isIntegral {x : ℂ} (hx : IsIntegral ℚ x) : x ∈ algebraicClosure ℚ ℂ :=
   mem_algebraicClosure_iff.2 hx.isAlgebraic
 
@@ -43,11 +46,17 @@ def shaExample (p e : ℕ) : ℚ :=
     ((Formalism.GaloisCohomology.shaLen (toyLocalData H p) (e : ℤ)).toNat : ℚ)
   else 0
 
+/- English proof (translation)
+Apply the tactic sequence `unfold shaExample; split_ifs <;> positivity`.
+-/
 theorem shaExample_nonneg (p e : ℕ) : 0 ≤ shaExample H p e := by
   unfold shaExample; split_ifs <;> positivity
 
 def exampleClassGroupCard : ℕ := ∏ k : Fin 2, (Nat.card (GL (Fin R.r) (ZMod (H.g k)))) ^ R.f
 
+/- English proof (translation)
+Establish `: Fact (H.g k).Prime` using `⟨H.g_prime k⟩`. Take `⟨ω, hω⟩` from `IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod (H.g k))ˣ)`. Conclude with `⟨ω, by rw [hω, Nat.card_eq_fintype_card, ZMod.card_units]⟩`.
+-/
 theorem exists_genU (k : Fin 2) : ∃ ω : (ZMod (H.g k))ˣ, orderOf ω = H.g k - 1 := by
   have : Fact (H.g k).Prime := ⟨H.g_prime k⟩
   obtain ⟨ω, hω⟩ := IsCyclic.exists_ofOrder_eq_natCard (α := (ZMod (H.g k))ˣ)
@@ -55,6 +64,9 @@ theorem exists_genU (k : Fin 2) : ∃ ω : (ZMod (H.g k))ˣ, orderOf ω = H.g k 
 
 def genU (k : Fin 2) : (ZMod (H.g k))ˣ := (exists_genU H k).choose
 
+/- English proof (translation)
+The claim follows from `(exists_genU H k).choose_spec`.
+-/
 theorem orderOf_genU (k : Fin 2) : orderOf (genU H k) = H.g k - 1 := (exists_genU H k).choose_spec
 
 structure NHyp (what₂ : Rows.Data R) : Prop where
@@ -148,9 +160,15 @@ def ndToy (what₂ : Rows.Data R) (h : NHyp H what₂) : NData R H what₂ where
   SQ_split i := i.elim
   restN_tameGenerator_generates i := i.elim
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ndToy_chiT (what₂ : Rows.Data R) (h : NHyp H what₂) (k v) (j : Fin R.m) :
     (ndToy H what₂ h).chiT k v j = genU H k ^ (2 * (j.1 + 1)) := rfl
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff.2 (((mem_algebraicClosure_iff.1 hx).isIntegral.map (starRingEnd ℂ).toRatAlgHom).isAlgebraic)`.
+-/
 theorem conj_mem_algC {x : ℂ} (hx : x ∈ algebraicClosure ℚ ℂ) :
     starRingEnd ℂ x ∈ algebraicClosure ℚ ℂ :=
   mem_algebraicClosure_iff.2
@@ -164,9 +182,15 @@ def conjAlgC : AlgC ≃+* AlgC where
   map_mul' _ _ := Subtype.ext (map_mul _ _ _)
   map_add' _ _ := Subtype.ext (map_add _ _ _)
 
+/- English proof (translation)
+The claim follows from `H.conjE_apply H.φ₀ x`.
+-/
 theorem baseEmbedding_conj (x : H.E) : H.φ₀ (H.conj x) = starRingEnd ℂ (H.φ₀ x) :=
   H.conjE_apply H.φ₀ x
 
+/- English proof (translation)
+Use `⟨⟨(algebraicClosure ℚ ℂ).val.toRingHom, fun x => rfl⟩, fun x => ⟨H.conj x, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (H.φ₀ x) = H.φ₀ (H.conj x)`. Rewrite using `[baseEmbedding_conj]`.
+-/
 theorem isCMConjOm_conjAlgC : IsCMConjOm H.E AlgC conjAlgC := by
   refine ⟨⟨(algebraicClosure ℚ ℂ).val.toRingHom, fun x => rfl⟩, fun x => ⟨H.conj x, ?_⟩⟩
   apply Subtype.ext
@@ -300,12 +324,18 @@ open Classical in
 def chv (χ : Multiset ℂ) : ℂ := if h : ∃ c, χ = {c} then h.choose else 1
 
 open Classical in
+/- English proof (translation)
+Establish `h : ∃ c', ({c} : Multiset ℂ) = {c'}` using `⟨c, rfl⟩`. Unfold `chv`. Rewrite using `[dif_pos h]`. Conclude with `(Multiset.singleton_inj.1 h.choose_spec).symm`.
+-/
 theorem chv_singleton (c : ℂ) : chv {c} = c := by
   have h : ∃ c', ({c} : Multiset ℂ) = {c'} := ⟨c, rfl⟩
   unfold chv
   rw [dif_pos h]
   exact (Multiset.singleton_inj.1 h.choose_spec).symm
 
+/- English proof (translation)
+The claim follows from `Set.nonempty_of_ncard_ne_zero (by rw [h k]; exact Module.finrank_pos.ne')`.
+-/
 theorem placesOver_g_nonempty (h : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E)
     (k : Fin 2) : (placesOver H.E (H.g k)).Nonempty :=
   Set.nonempty_of_ncard_ne_zero (by rw [h k]; exact Module.finrank_pos.ne')
@@ -313,6 +343,31 @@ theorem placesOver_g_nonempty (h : ∀ k, (placesOver H.E (H.g k)).ncard = Modul
 open Ideal in
 open scoped Pointwise in
 
+/- English proof (translation)
+Use `H.hostE_isGalois` as an intermediate fact. Establish `: IsGaloisGroup Gal(H.E/ℚ) ℤ (𝓞 H.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ H.E`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (span {(p : ℤ)}).IsPrime` using `(span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hpM : (span {(p : ℤ)}).IsMaximal` using `hpI.isMaximal (by rw [Ne, span_singleton_eq_bot]; exact hpZ.ne_zero)`.
+
+Establish `hlo : ∀ w ∈ placesOver H.E p, w.asIdeal.LiesOver (span {(p : ℤ)})` using `fun w hw => ⟨by`. Use `w.isPrime` as an intermediate fact. Use `hpM.eq_of_le (Ideal.IsPrime.under ℤ w.asIdeal).ne_top ?_` and prove the remaining obligations. Rewrite using `[span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 H.E) p ∈ w.asIdeal`.
+
+Establish `hw' : ((p : ℕ) : 𝓞 H.E) ∈ w.asIdeal` using `hw`. Simplify using `using hw'⟩`. Establish `hpos : 0 < Module.finrank ℚ H.E` using `Module.finrank_pos`. Take `⟨w0, hw0⟩ : (placesOver H.E p).Nonempty` from `Set.nonempty_of_ncard_ne_zero (by omega)`. Establish `hw0p` using `w0.isPrime`.
+
+Establish `hmem : ∀ σ : Gal(H.E/ℚ), ((p : ℕ) : 𝓞 H.E) ∈ σ • w0.asIdeal` using `fun σ => by`. Use `Ideal.smul_mem_pointwise_smul σ _ _ (show ((p : ℕ) : 𝓞 H.E) ∈ w0.asIdeal from hw0)` as an intermediate fact. Rewrite `this` using `[show σ • ((p : ℕ) : 𝓞 H.E) = p from map_natCast (MulSemiringAction.toRingHom _ _ σ) p]`. Then use the resulting hypothesis. Set `act : Gal(H.E/ℚ) → PlE H` to `fun σ => ⟨σ • w0.asIdeal, inferInstance, fun hb => by`. Use `hmem σ` as an intermediate fact.
+
+Rewrite `this` using `[hb, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast this)⟩`. Establish `himg : act '' Set.univ = placesOver H.E p`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨σ, -, rfl⟩`. Conclude with `hmem σ`. Introduce `hw`. Use `w.isPrime` as an intermediate fact. Use `hlo w hw` as an intermediate fact.
+
+Use `hlo w0 hw0` as an intermediate fact. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isGaloisGroup (span {(p : ℤ)}) w0.asIdeal w.asIdeal Gal(H.E/ℚ)`. Conclude with `⟨σ, trivial, HeightOneSpectrum.ext hσ⟩`. Establish `hinj : Function.Injective act`. Rewrite using `[← Set.injOn_univ]`.
+
+Use `Set.injOn_of_ncard_image_eq ?_ Set.finite_univ` and prove the remaining obligations. Rewrite using `[himg, h, Set.ncard_univ, IsGalois.card_aut_eq_finrank]`. Establish `hcard : Fintype.card (Fin R.f) = Fintype.card ↥(R.Psi)`. Rewrite using `[Fintype.card_fin, ← Nat.card_eq_fintype_card, R.toFrame.natCard_Psi]`. Both sides reduce to the same expression.
+
+Set `e` to `Fintype.equivOfCardEq hcard`. Set `ge` to `H.gal`. Use `⟨fun v => act (ge.symm (e v : R.GG)), fun v => hmem _, ?_, ?_⟩` and prove the remaining obligations. Introduce `v v' hv`. Conclude with `e.injective (Subtype.ext (ge.symm.injective (hinj hv)))`.
+
+Introduce `v v' hc`. Establish `h1 : act (H.conj * ge.symm (e v : R.GG)) = act (ge.symm (e v' : R.GG))`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Use `show y ∈ (H.conj * ge.symm (e v : R.GG)) • w0.asIdeal ↔ _`.
+
+Rewrite using `[mul_smul, Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Use `hc (H.conj⁻¹ • y) y ?_` and prove the remaining obligations. Conclude with `(H.conj.apply_symm_apply (y : H.E)).symm`. Establish `h2` using `congrArg ge (hinj h1)`. Rewrite `h2` using `[map_mul, ge.apply_symm_apply, ge.apply_symm_apply]`.
+
+Establish `h3 : ge H.conj = R.cc` using `H.galE_conjE`. Establish `h4 : R.cc ∈ R.Psi`. Use `mul_mem (e v').2 (inv_mem (e v).2)` as an intermediate fact. Rewrite `this` using `[← h2, h3, mul_inv_cancel_right]`. Then use the resulting hypothesis. Conclude with `R.toFrame.cc_notMem_Psi h4`.
+-/
 theorem exists_halfPlaces (p : ℕ) (hp : p.Prime)
     (h : (placesOver H.E p).ncard = Module.finrank ℚ H.E) :
     ∃ pl : Fin R.f → PlE H, (∀ v, pl v ∈ placesOver H.E p) ∧ Function.Injective pl ∧
@@ -384,21 +439,33 @@ def qPow (w : PlE H) (s : ℝ) : ℂˣ :=
     have h0 : ((normV w : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.card_pos (α := 𝓞 H.E ⧸ w.asIdeal)).ne'
     simp [Complex.cpow_eq_zero_iff, h0])
 
+/- English proof (translation)
+Establish `: Finite (𝓞 H.E ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Establish `h0 : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.card_pos (α := 𝓞 H.E ⧸ w.asIdeal)).ne'`. Use `ext`. Simplify using `[qPow, Complex.cpow_add _ _ h0]`.
+-/
 theorem qPow_add (w : PlE H) (s t : ℝ) : qPow H w s * qPow H w t = qPow H w (s + t) := by
   have : Finite (𝓞 H.E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot
   have h0 : ((normV w : ℕ) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.card_pos (α := 𝓞 H.E ⧸ w.asIdeal)).ne'
   ext
   simp [qPow, Complex.cpow_add _ _ h0]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[qPow]`.
+-/
 theorem qPow_zero (w : PlE H) : qPow H w 0 = 1 := by ext; simp [qPow]
 
 open Classical in
 
 def toU (z : ℂ) : ℂˣ := if h : z = 0 then 1 else Units.mk0 z h
 
+/- English proof (translation)
+Unfold `toU`. Rewrite using `[dif_neg u.ne_zero]`. Use `ext`. Both sides reduce to the same expression.
+-/
 theorem toU_val (u : ℂˣ) : toU (u : ℂ) = u := by
   unfold toU; rw [dif_neg u.ne_zero]; ext; rfl
 
+/- English proof (translation)
+Unfold `toU`. Rewrite using `[dif_neg h]`. Both sides reduce to the same expression.
+-/
 theorem val_toU {z : ℂ} (h : z ≠ 0) : ((toU z : ℂˣ) : ℂ) = z := by
   unfold toU; rw [dif_neg h]; rfl
 
@@ -538,6 +605,9 @@ def nautToy (what₂ : Rows.Data R) (h : NHyp H what₂) : NAut (ndToy H what₂
   locAutHodgeTateWeightsLevelZero i := i.elim
   kFbar i := i.elim
 
+/- English proof (translation)
+Unfold `shaExample`. Rewrite using `[dif_pos hp.out]`.
+-/
 theorem shaExample_eq (p : ℕ) [hp : Fact p.Prime] (e : ℕ) :
     shaExample H p e = ((Formalism.GaloisCohomology.shaLen (toyLocalData H p) (e : ℤ)).toNat : ℚ) := by
   unfold shaExample
@@ -545,6 +615,39 @@ theorem shaExample_eq (p : ℕ) [hp : Fact p.Prime] (e : ℕ) :
 
 open Ideal Polynomial in
 
+/- English proof (translation)
+Use `H.hostE_isGalois` as an intermediate fact. Establish `: IsGaloisGroup Gal(H.E/ℚ) ℤ (𝓞 H.E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ H.E`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp.out`. Establish `hpI : (span {(p : ℤ)}).IsPrime` using `(span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hpM : (span {(p : ℤ)}).IsMaximal` using `hpI.isMaximal (by rw [Ne, span_singleton_eq_bot]; exact hpZ.ne_zero)`.
+
+Take `⟨⟨P, hPp, hPl⟩⟩ : Nonempty ((span {(p : ℤ)}).primesOver (𝓞 H.E))` from `inferInstance`. Take `⟨hex, -, -, hin⟩` from `H.der.frob p hpN P`. Take `⟨σF, hσF⟩` from `hex`. Establish `hg1 : H.galE σF = 1` using `hF P σF hσF`. Establish `hσ1 : σF = 1` using `(H.galE_eq_one_iff σF).1 hg1`.
+
+Substitute `hσ1` using the available equality. Establish `hunder : P.under ℤ = span {(p : ℤ)}` using `(Ideal.LiesOver.over (P := P) (p := span {(p : ℤ)})).symm`. Establish `hcardZ : Nat.card (ℤ ⧸ span {(p : ℤ)}) = p`. Rewrite using `[Nat.card_congr (Int.quotientSpanNatEquivZMod p).toEquiv, Nat.card_zmod]`. Establish `hfrob : ∀ x : 𝓞 H.E, x - x ^ p ∈ P`.
+
+Introduce `x`. Use `hσF x` as an intermediate fact. Rewrite `this` using `[hunder, hcardZ]`. Simplify using `using this`. Establish `hne0 : ∀ I : Ideal (𝓞 H.E), I.LiesOver (span {(p : ℤ)}) → I ≠ ⊥`.
+
+Introduce and unpack `I hI rfl`. Establish `h0 : span {(p : ℤ)} = ⊥`. Rewrite using `[hI.over]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective ℤ (𝓞 H.E))`. Conclude with `hpZ.ne_zero (span_singleton_eq_bot.1 h0)`.
+
+Establish `hP0 : P ≠ ⊥` using `hne0 P hPl`. Establish `hPM : P.IsMaximal` using `hPp.isMaximal hP0`. Set `: Field (𝓞 H.E ⧸ P)` to `Ideal.Quotient.field P`. Establish `: Finite (𝓞 H.E ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot P hP0`. Set `: Fintype (𝓞 H.E ⧸ P)` to `Fintype.ofFinite _`.
+
+Establish `hne : (X ^ p - X : (𝓞 H.E ⧸ P)[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero _ hp.out.one_lt`. Establish `hroot : ∀ y : 𝓞 H.E ⧸ P, y ∈ (X ^ p - X : (𝓞 H.E ⧸ P)[X]).roots`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[mem_roots hne, IsRoot, eval_sub, eval_pow, eval_X, ← map_pow, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, ← neg_mem_iff, neg_sub]`.
+
+Conclude with `hfrob x`. Establish `hle : Fintype.card (𝓞 H.E ⧸ P) ≤ p`. Combine the equalities or inequalities in the displayed calculation. Establish `hnorm : absNorm P = p ^ ((span {(p : ℤ)}).inertiaDeg' P)` using `absNorm_eq_pow_inertiaDeg' P hp.out`. Establish `hcardk : absNorm P = Fintype.card (𝓞 H.E ⧸ P)`.
+
+Rewrite using `[absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Establish `hf : P.inertiaDeg ℤ = 1`. Rewrite using `[← inertiaDeg'_eq_inertiaDeg (span {(p : ℤ)}) P]`. Establish `hpos : 0 < (span {(p : ℤ)}).inertiaDeg' P`. Rewrite using `[inertiaDeg'_eq_inertiaDeg (span {(p : ℤ)}) P]`.
+
+Conclude with `inertiaDeg_pos P ℤ`. Establish `hle' : p ^ (span {(p : ℤ)}).inertiaDeg' P ≤ p ^ 1`. Rewrite using `[← hnorm, hcardk, pow_one]`. Conclude with `hle`. Use `(Nat.pow_le_pow_iff_right hp.out.one_lt).1 hle'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hinert : Nat.card (P.inertia Gal(H.E/ℚ)) = 1`. Establish `: P.inertia Gal(H.E/ℚ) = ⊥`. Use extensionality with `σ`. Rewrite using `[AddSubgroup.mem_inertia, Subgroup.mem_bot]`.
+
+Conclude with `hin σ`. Rewrite using `[this]`. Conclude with `Subgroup.card_bot`. Establish `key` using `ncard_primesOver_mul_card_inertia_mul_finrank (G := Gal(H.E/ℚ)) (span {(p : ℤ)}) P`. Rewrite `key` using `[hinert, hf, mul_one, mul_one, IsGalois.card_aut_eq_finrank]`.
+
+Rewrite using `[← key]`. Establish `himg : (fun v : HeightOneSpectrum (𝓞 H.E) => v.asIdeal) '' placesOver H.E p = (span {(p : ℤ)}).primesOver (𝓞 H.E)`. Use extensionality with `I`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`.
+
+Use `⟨v.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hle : span {(p : ℤ)} ≤ v.asIdeal.under ℤ`. Rewrite using `[span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `algebraMap ℤ (𝓞 H.E) p ∈ v.asIdeal`. Establish `hv' : ((p : ℕ) : 𝓞 H.E) ∈ v.asIdeal` using `hv`.
+
+Simplify using `using hv'`. Conclude with `hpM.eq_of_le (Ideal.IsPrime.under ℤ v.asIdeal).ne_top hle`. Introduce and unpack `⟨hI, hIl⟩`. Use `⟨⟨I, hI, hne0 I hIl⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((p : ℕ) : 𝓞 H.E) ∈ I`.
+
+Establish `: (p : ℤ) ∈ I.under ℤ` using `by rw [← hIl.over]; exact mem_span_singleton_self _`. Simplify using `using this`. Rewrite using `[← himg, Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h)]`.
+-/
 theorem placesOver_ncard_of_frob (p : ℕ) [hp : Fact p.Prime] (hpN : ¬ p ∣ H.condN)
     (hF : ∀ (P : Ideal (𝓞 H.E)) [P.IsPrime] [P.LiesOver (span {(p : ℤ)})] (σ : H.E ≃ₐ[ℚ] H.E),
       IsArithFrobAt ℤ σ P → H.galE σ = 1) :
@@ -638,6 +741,9 @@ theorem placesOver_ncard_of_frob (p : ℕ) [hp : Fact p.Prime] (hpN : ¬ p ∣ H
       simpa using this
   rw [← himg, Set.ncard_image_of_injective _ (fun v w h => HeightOneSpectrum.ext h)]
 
+/- English proof (translation)
+Use `placesOver_ncard_of_frob H p ((Nat.Prime.coprime_iff_not_dvd hp.out).1 hpN) ?_` and prove the remaining obligations. Introduce `P _ _ σ hσ`. Rewrite using `[(H.frob_iff p hpN P σ).1 hσ, hart]`.
+-/
 theorem placesOver_ncard_of_art (p : ℕ) [hp : Fact p.Prime] (hpN : p.Coprime H.condN)
     (hart : H.art (ZMod.unitOfCoprime p hpN) = 1) :
     (placesOver H.E p).ncard = Module.finrank ℚ H.E := by
@@ -645,6 +751,13 @@ theorem placesOver_ncard_of_art (p : ℕ) [hp : Fact p.Prime] (hpN : p.Coprime H
   intro P _ _ σ hσ
   rw [(H.frob_iff p hpN P σ).1 hσ, hart]
 
+/- English proof (translation)
+Establish `h1 : 1 < H.condN` using `lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.pos_of_ne_zero H.condN_ne_zero) H.sixteen_dvd_condN)`. Establish `hmod : p ≡ 1 [MOD H.condN]`. Unfold `Nat.ModEq`. Rewrite using `[hpm, Nat.mod_eq_of_lt h1]`. Establish `hpN : p.Coprime H.condN` using `Nat.coprime_of_mul_modEq_one 1 (by simpa using hmod)`.
+
+Use `placesOver_ncard_of_art H p hpN ?_` and prove the remaining obligations. Establish `: ZMod.unitOfCoprime p hpN = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ZMod.coe_unitOfCoprime, Units.val_one, ← Nat.cast_one (R := ZMod H.condN), ZMod.natCast_eq_natCast_iff]`. Conclude with `hmod`.
+
+Rewrite using `[this, map_one]`.
+-/
 theorem placesOver_ncard_of_split (p : ℕ) [hp : Fact p.Prime] (hpm : p % H.condN = 1) :
     (placesOver H.E p).ncard = Module.finrank ℚ H.E := by
   have h1 : 1 < H.condN := lt_of_lt_of_le (by norm_num)
@@ -660,6 +773,15 @@ theorem placesOver_ncard_of_split (p : ℕ) [hp : Fact p.Prime] (hpm : p % H.con
     exact hmod
   rw [this, map_one]
 
+/- English proof (translation)
+Use `placesOver_ncard_of_frob H p hpN ?_` and prove the remaining obligations. Introduce `P _ _ σ hσ`. Take `⟨h1, h2, u, hu, h3⟩` from `(H.der.frob p hpN P).2.2.1 σ hσ`. Rewrite `h1` using `[H.flPS.psAt_prime hp.out hpN]`. Establish `hu1 : Formalism.FrobeniusOrbits.hcl R.e u = 1`.
+
+Break down `hpm with h | h` into its components or cases. Establish `: u = 1` using `Units.ext (by rw [hu, h]; rfl)`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `: u = -1` using `Units.ext (by rw [hu, h]; simp)`.
+
+Rewrite using `[this]`. Conclude with `Formalism.FrobeniusOrbits.hcl_neg_one`. Use `Prod.ext (Prod.ext (Units.ext ?_) (Units.ext ?_)) ?_` and prove the remaining obligations. Rewrite using `[h1, hjq]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2, hjd]`. Both sides reduce to the same expression. Rewrite `h3` using `[hu1, R.toFrame.hH_apply]`. Establish `h4 : R.h (R.iotaInv (H.gal σ).2) = R.h 0` using `by rw [map_zero]; exact h3`. Conclude with `(R.toFrame.iotaInv_eq_zero_iff _).1 (hinj h4)`.
+-/
 theorem placesOver_ncard_of_split_inj (hinj : Function.Injective R.h) (p : ℕ) [hp : Fact p.Prime]
     (hpN : ¬ p ∣ H.condN) (hjq : jacobiSym (-(H.q : ℤ)) p = 1) (hjd : jacobiSym (-(H.d : ℤ)) p = 1)
     (hpm : (p : ZMod (2 ^ (R.e + 2))) = 1 ∨ (p : ZMod (2 ^ (R.e + 2))) = -1) :
@@ -681,12 +803,18 @@ theorem placesOver_ncard_of_split_inj (hinj : Function.Injective R.h) (p : ℕ) 
     have h4 : R.h (R.iotaInv (H.gal σ).2) = R.h 0 := by rw [map_zero]; exact h3
     exact (R.toFrame.iotaInv_eq_zero_iff _).1 (hinj h4)
 
+/- English proof (translation)
+Introduce `k`. Establish `: Fact (H.g k).Prime` using `⟨H.g_prime k⟩`. Conclude with `placesOver_ncard_of_split H (H.g k) (hg k)`.
+-/
 theorem g_split_of (hg : ∀ k, H.g k % H.condN = 1) :
     ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E := by
   intro k
   have : Fact (H.g k).Prime := ⟨H.g_prime k⟩
   exact placesOver_ncard_of_split H (H.g k) (hg k)
 
+/- English proof (translation)
+Introduce `k`. Establish `: Fact (H.g k).Prime` using `⟨H.g_prime k⟩`. Take `⟨h1, h2, h3, h4⟩` from `hg k`. Conclude with `placesOver_ncard_of_split_inj H hinj (H.g k) h1 h2 h3 h4`.
+-/
 theorem g_split_of_inj (hinj : Function.Injective R.h)
     (hg : ∀ k, ¬ H.g k ∣ H.condN ∧ jacobiSym (-(H.q : ℤ)) (H.g k) = 1 ∧
       jacobiSym (-(H.d : ℤ)) (H.g k) = 1 ∧
@@ -697,6 +825,9 @@ theorem g_split_of_inj (hinj : Function.Injective R.h)
   obtain ⟨h1, h2, h3, h4⟩ := hg k
   exact placesOver_ncard_of_split_inj H hinj (H.g k) h1 h2 h3 h4
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> norm_num <;> decide`.
+-/
 theorem examplePrimes_split :
     jacobiSym (-571) 127 = 1 ∧ jacobiSym (-599) 127 = 1 ∧ jacobiSym (-571) 337 = 1 ∧
       jacobiSym (-599) 337 = 1 ∧ ((127 : ℕ) : ZMod 16) = -1 ∧ ((337 : ℕ) : ZMod 16) = 1 := by
@@ -775,15 +906,24 @@ def nexpToy {what₂ : Rows.Data R} [NumberField what₂.LL] [StarRing what₂.L
   thP i := i.elim
   hkF i := i.elim
 
+/- English proof (translation)
+Introduce `i` and use `i.elim`.
+-/
 theorem example_Z_compatibility (what₂ : Rows.Data R) (h : NHyp H what₂) :
     ∀ i x, x ∈ (ndToy H what₂ h).Z i ↔ x ∈ Formalism.MainNotions.N.ZN (ndToy H what₂ h) (nautToy H what₂ h) i :=
   fun i => i.elim
 
+/- English proof (translation)
+Introduce `i` and use `i.elim`.
+-/
 theorem example_goodZ_compatibility (what₂ : Rows.Data R) (h : NHyp H what₂) :
     ∀ i x, x ∈ (ndToy H what₂ h).Zgood i ↔
       x ∈ Formalism.MainNotions.N.ZgoodN (ndToy H what₂ h) (nautToy H what₂ h) i :=
   fun i => i.elim
 
+/- English proof (translation)
+Introduce `j w _ _`. Rewrite using `[hη]`. Both sides reduce to the same expression.
+-/
 theorem example_etaJ_compatibility (what₂ : Rows.Data R) (h : NHyp H what₂) (hη : ∀ j w, what₂.etaJ j w = 0) :
     ∀ j w, 1 ≤ j → j ≤ R.m → what₂.etaJ j w = ∑ i ∈ (ndToy H what₂ h).locs j w, (ndToy H what₂ h).etaLoc i := by
   intro j w _ _

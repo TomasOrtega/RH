@@ -111,12 +111,18 @@ def RegSeq {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (F : Y.Modules) (t : List L
   List.rec (motive := fun _ => Y.Modules → Prop) (fun _ => True)
     (fun a _ ih G => Mono (GlobalTheory.cutHom G hL a) ∧ ih (GlobalTheory.cut G hL a)) t F
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem regSeq_cons {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (F : Y.Modules) (a : L.Sec) (r : List L.Sec) :
     RegSeq hL F (a :: r) ↔ Mono (GlobalTheory.cutHom F hL a) ∧ RegSeq hL (GlobalTheory.cut F hL a) r := Iff.rfl
 
 def VanishFrom {Y : Scheme.{0}} (L : LB Y) (F : Y.Modules) (j₀ : ℤ) : Prop :=
   ∀ j : ℤ, j₀ ≤ j → ∀ q : ℕ, 0 < q → Subsingleton (coh (GlobalTheory.twistZ F L j) q)
 
+/- English proof (translation)
+Discharge the goal by the elementary cases of `trivial`.
+-/
 example {Y : Scheme.{0}} {L : LB Y} (hL : L.IsLB) (F : Y.Modules) : RegSeq hL F [] := trivial
 
 end GlobalTheory.HSCore

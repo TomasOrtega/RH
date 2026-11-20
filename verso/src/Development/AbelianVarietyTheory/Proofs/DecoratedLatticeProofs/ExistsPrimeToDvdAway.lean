@@ -18,6 +18,21 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HalfTmul
 
+/- English proof (translation)
+Establish `hI : Ideal.span {m} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hm`. Establish `hfac : ∀ Q : HeightOneSpectrum R, ∃ n : ℕ, ∃ J : Ideal R, ¬ Q.asIdeal ∣ J ∧ Ideal.span {m} = Q.asIdeal ^ n * J` using `fun Q => WfDvdMonoid.max_power_factor hI Q.prime.irreducible`. Use `choose n J hJ using hfac`.
+
+Establish `hT` using `Ideal.finite_factors hI`. Take `⟨t0, ht0⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := SS ∪ hT.toFinset) (fun Q => Q.asIdeal) (fun Q => if Q ∈ SS then 1 else n Q) (fun Q _ => Q.prime) (fun Q _ Q' _ h e => h (HeightOneSpectrum.ext e)) (fun Q => if (Q : HeightOneSpectrum R) ∈ SS then 1 else 0)`. Establish `hone : ∀ Q : HeightOneSpectrum R, (1 : R) ∉ Q.asIdeal` using `fun Q h1 => Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hSS : ∀ Q ∈ SS, t0 ∉ Q.asIdeal`. Introduce `Q hQ hmem`.
+
+Establish `h` using `ht0 Q (Finset.mem_union_left _ hQ)`. Simplify using `only [if_pos hQ, pow_one] at h`. Conclude with `hone Q (by simpa using Q.asIdeal.sub_mem hmem h)`. Establish `hgood : ∀ Q : HeightOneSpectrum R, Q ∉ SS → ∃ u : R, u ∉ Q.asIdeal ∧ ∃ w : R, u * t0 = m * w`. Introduce `Q hQ`.
+
+Distinguish the cases in `hQT : Q.asIdeal ∣ Ideal.span {m}`. Establish `h` using `ht0 Q (Finset.mem_union_right _ (hT.mem_toFinset.2 hQT))`. Simplify using `only [if_neg hQ, sub_zero] at h`. Take `⟨hnd, hEq⟩` from `hJ Q`. Rewrite `hnd` using `[Ideal.dvd_iff_le]`.
+
+Take `⟨u, huJ, huQ⟩` from `SetLike.not_le_iff_exists.1 hnd`. Use `⟨u, huQ, ?_⟩` and prove the remaining obligations. Establish `hmem : t0 * u ∈ Ideal.span {m}`. Rewrite using `[hEq]`. Conclude with `Ideal.mul_mem_mul h huJ`.
+
+Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.1 hmem`. Conclude with `⟨w, by rw [mul_comm u, hw]⟩`. Use `⟨m, ?_, t0, rfl⟩` and prove the remaining obligations. Introduce `hmem`. Conclude with `hQT (Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hmem))`.
+
+Distinguish the cases in `h0 : t0 = 0`. Use `⟨m, hm, ?_, fun Q _ => ⟨1, hone Q, 1, by ring⟩⟩` and prove the remaining obligations. Introduce `Q hQ`. Conclude with `absurd (h0 ▸ Q.asIdeal.zero_mem) (hSS Q hQ)`. Conclude with `⟨t0, h0, hSS, hgood⟩`.
+-/
 theorem exists_prime_to_dvd_away {R : Type} [CommRing R] [IsDedekindDomain R] (SS : Finset (HeightOneSpectrum R))
     (m : R) (hm : m ≠ 0) : ∃ t : R, t ≠ 0 ∧ (∀ Q ∈ SS, t ∉ Q.asIdeal) ∧
       ∀ Q : HeightOneSpectrum R, Q ∉ SS → ∃ u : R, u ∉ Q.asIdeal ∧ ∃ w : R, u * t = m * w := by
@@ -60,6 +75,21 @@ theorem exists_prime_to_dvd_away {R : Type} [CommRing R] [IsDedekindDomain R] (S
     exact absurd (h0 ▸ Q.asIdeal.zero_mem) (hSS Q hQ)
   · exact ⟨t0, h0, hSS, hgood⟩
 
+/- English proof (translation)
+Establish `hcE : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hcast : ∀ (r : 𝓞 E) (z : W), (r : E) • z = r • z` using `fun r z => IsScalarTower.algebraMap_smul E r z`. Establish `hcy : (c : E) • y ∈ M`. Establish `h` using `(GlobalTheory.CommonReps.mem_twO_zero M c _).1 (GlobalTheory.CommonReps.natsmul_mem_twO M c _ _ (fun Q => by`. Apply the tactic sequence `rcases expS_cases SS Q with h | h | h <;> rw [h] <;> norm_num) hy)`.
+
+Rewrite `h` using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E]`. Then use the resulting hypothesis. Apply `Formalism.L2.Ker.mem_of_forall_locP M` to reduce the goal to its premises. Introduce `Q`. Distinguish the cases in `hQ : Q ∈ SS`. Establish `h1` using `(Formalism.L2.Ker.mem_twO M c _ y).1 hy Q`.
+
+Simplify using `only [expS, if_pos hQ, zpow_one] at h1`. Take `⟨s, hs, hsy⟩` from `h1`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : s • (((t : E) * (c : E)⁻¹) • y) = t • (s • ((c : E)⁻¹ • y))`. Rewrite using `[← hcast s, ← hcast t, ← hcast s]`.
+
+Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `M.smul_mem t hsy`.
+
+Take `⟨u, hu, w, huw⟩` from `ht Q hQ`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `huwE : (u : E) * (t : E) = (c : E) ^ 2 * (w : E)`. Use `congrArg (fun r : 𝓞 E => (r : E)) huw` as an intermediate fact. Simplify using `using this`.
+
+Establish `e : u • (((t : E) * (c : E)⁻¹) • y) = w • ((c : E) • y)`. Rewrite using `[← hcast u, ← hcast w]`. Simplify using `only [smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `huwE`. Rewrite using `[e]`. Conclude with `M.smul_mem w hcy`.
+-/
 theorem tmul_mem_of {E : Type} [Field E] [NumberField E] [StarRing E] {W : Type} [AddCommGroup W] [Module E W]
     [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W] (M : Submodule (𝓞 E) W) (SS : Finset (HeightOneSpectrum (𝓞 E)))
     (c : ℕ) (hc : 0 < c) (y : W) (hy : y ∈ twist₂ M c (expS SS)) (t : 𝓞 E)
@@ -96,6 +126,9 @@ theorem tmul_mem_of {E : Type} [Field E] [NumberField E] [StarRing E] {W : Type}
       linear_combination huwE
     rw [e]; exact M.smul_mem w hcy
 
+/- English proof (translation)
+Introduce `D a b N N' SS c hc y hy`. Take `⟨t, ht0, hSS, hgood⟩` from `exists_prime_to_dvd_away SS ((c : 𝓞 D.host.E) ^ 2) (pow_ne_zero _ (by exact_mod_cast hc.ne'))`. Conclude with `⟨t, ht0, hSS, tmul_mem_of _ SS c hc y hy t hgood⟩`.
+-/
 theorem exists_tmul_mem_perO : ∀ (D : D7) (a b : ℕ) (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (c : ℕ), 0 < c → ∀ y ∈ halfBO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c, ∃ t : 𝓞 D.host.E, t ≠ 0 ∧ (∀ Q ∈ SS, t ∉ Q.asIdeal) ∧ ((t : D.host.E) * (c : D.host.E)⁻¹) • y ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N' := by
   intro D a b N N' SS c hc y hy
   obtain ⟨t, ht0, hSS, hgood⟩ := exists_prime_to_dvd_away SS ((c : 𝓞 D.host.E) ^ 2)

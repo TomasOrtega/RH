@@ -8,6 +8,27 @@ open MeasureTheory Filter Topology Formalism.REAL Formalism.QuantumDeterminants 
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ Bs F hF`. Take `⟨hFs, ⟨R, hR⟩, ε, hε, hεF⟩` from `hF`. Use `⟨⟨ε, hε, ?_⟩, fun Dop hDop => ?_⟩` and prove the remaining obligations. Use `set R' : ℝ := |R| + 1 with hR'`. Establish `hR0 : 0 < R'` using `by positivity`.
+
+Take `⟨h1, h2⟩` from `JCx2.pd_cut_nice (E := Wq →L[ℂ] Wp) hR0 hFs`. Establish `hN : JC.NiceCoef Bs ε (fun g => JCx2.pdPhi (R'⁻¹ • g) • F g)` using `⟨h1, fun A m => h2 A m, fun g hg hne => by`. Use `hεF g hg ?_` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+
+Simplify using `[h0]⟩`. Use `JCx2.mn_nice_congr (fun g hg => ?_) hN` and prove the remaining obligations. Distinguish the cases in `h0 : F g = 0`. Simplify using `[h0]`. Establish `hgR : gN g ≤ R` using `hR g hg h0`.
+
+Establish `hg0 : 0 ≤ gN g` using `Real.sqrt_nonneg _`. Establish `hsq : JCx2.pdSq (R'⁻¹ • g) ≤ 1`. Rewrite using `[JCx2.pd_sq_smul, JCx2.pd_sq_eq, inv_pow, inv_mul_le_iff₀ (by positivity), mul_one]`. Establish `: gN g ≤ R'` using `by rw [hR']; linarith [le_abs_self R]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Simplify using `[JCx2.pdPhi, JCx2.pd_chi_one hsq]`. Establish `hGc : Continuous (Gf k r Bs.z Bs.z')` using `Formalism.FourierDecayAlt.P.Ux8.cont_Gf _ _ _ _`. Establish `hv1 : ∀ T ∈ Dop, ∀ g ∈ {g : Mat k r | Gf k r Bs.z Bs.z' g < ε}, g ∈ GV k r → Rw T.word F g = 0` using `fun T _ => PBJ.rw_vanish_GV (isOpen_lt hGc continuous_const) (fun g hg hgG => by by_contra hne; exact absurd (hεF g hgG hne) (not_le.2 hg)) T.word T.word_lie`. Establish `hv2 : ∀ T ∈ Dop, ∀ g ∈ {g : Mat k r | R < gN g}, g ∈ GV k r → Rw T.word F g = 0` using `fun T _ => PBJ.rw_vanish_GV (isOpen_lt continuous_const Formalism.FourierDecayAlt.P.B6.gN_continuous) (fun g hg hgG => by by_contra hne; exact absurd (hR g hgG hne) (not_le.2 hg)) T.word T.word_lie`. Establish `hcl : IsClosed {g : Mat k r | g ∈ GV k r ∧ ε ≤ Gf k r Bs.z Bs.z' g}` using `Formalism.FourierDecayAlt.P.B5.GV_closed.inter (isClosed_le continuous_const hGc)`.
+
+Establish `hsub : {g : Mat k r | g ∈ GV k r ∧ ε ≤ Gf k r Bs.z Bs.z' g} ⊆ C6.domL Bs ∅` using `fun g hg => ⟨hg.1, lt_of_lt_of_le hε hg.2, by simp⟩`. Establish `hsF : closure {g | g ∈ GV k r ∧ F g ≠ 0} ⊆ C6.domL Bs ∅`. Use `subset_trans (closure_minimal ?_ hcl) hsub` and prove the remaining obligations. Introduce `g hg`. Conclude with `⟨hg.1, hεF g hg.1 hg.2⟩`.
+
+Establish `hsT : ∀ T ∈ Dop, closure {g | g ∈ GV k r ∧ Rw T.word F g ≠ 0} ⊆ C6.domL Bs ∅`. Introduce `T hT`. Use `subset_trans (closure_minimal ?_ hcl) hsub` and prove the remaining obligations. Introduce `g hg`. Use `⟨hg.1, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `hg.2 (hv1 T hT g (not_le.1 hlt) hg.1)`. Use `⟨⟨?_, ⟨R, ?_⟩, ε, hε, ?_⟩, fun g hg hgn => ?_⟩` and prove the remaining obligations. Conclude with `PBJ.ckOn_opApply_list _ F hFs hsF Dop (fun T hT => (hDop T hT).1) hsT`. Introduce `g hgG hne`.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `hne (PBJ.opApply_eq_zero Dop F g fun T hT => hv2 T hT g (not_le.1 hlt) hgG)`. Introduce `g hgG hne`. Assume the negation of the conclusion as `hlt`. Conclude with `hne (PBJ.opApply_eq_zero Dop F g fun T hT => hv1 T hT g (not_le.1 hlt) hgG)`.
+
+Use `PBJ.opApply_eq_zero Dop F g fun T hT => hv1 T hT g ?_ hg show Gf k r Bs.z Bs.z' g < ε` and prove the remaining obligations. Assume the negation of the conclusion as `hge`. Conclude with `hgn ⟨hg, lt_of_lt_of_le hε (not_lt.1 hge), by simp⟩`.
+-/
 theorem compact_support_facts : TL.CptFacts := by
   intro k r Wp Wq _ _ _ _ _ Bs F hF
   obtain ⟨hFs, ⟨R, hR⟩, ε, hε, hεF⟩ := hF

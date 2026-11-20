@@ -44,10 +44,16 @@ def restrModel {m n m' n' m'' n'' : ℕ} (r : Mx D m n ≃+ Mx D m' n' × Mx D m
       funext t; simp [mul_assoc]
     rw [this, map_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrModel_apply {m n m' n' m'' n'' : ℕ} (r : Mx D m n ≃+ Mx D m' n' × Mx D m'' n'') (h : Mx D m'' n'' → ℂ)
     (T' : (Mx D m n → ℂ) →ₗ[ℂ] (Mx D m n → ℂ)) (y : Mx D m'' n'') (Φ : Mx D m' n' → ℂ) (w : Mx D m' n') :
     restrModel r h T' y Φ w = T' (fun t => Φ (r t).1 * h (r t).2) (r.symm (w, y)) := rfl
 
+/- English proof (translation)
+Simplify using `only [heisO]`. Rewrite using `[o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Establish `h0 : symplOH L T y 0 = 0` using `by simp [symplOH, symplO, hO]`. Rewrite using `[h0, add_zero, ← map_add]`. Simplify using the standard rewrite rules.
+-/
 theorem heisO_resS_symm (ψ : AddChar (AF D.host.F) ℂ) {S A L T : HSp D} (o : OrthDec S A L) (a : WO A T)
     (F : WO S T → ℂ) (w : WO A T) (y : WO L T) :
     heisO ψ S T ((o.resS T).symm (a, 0)) F ((o.resS T).symm (w, y)) =
@@ -58,6 +64,9 @@ theorem heisO_resS_symm (ψ : AddChar (AF D.host.F) ℂ) {S A L T : HSp D} (o : 
   rw [h0, add_zero, ← map_add]
   simp
 
+/- English proof (translation)
+Simplify using `only [heisO]`. Rewrite using `[o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Establish `h0 : symplOH T L y 0 = 0` using `by simp [symplOH, symplO, hO]`. Rewrite using `[h0, add_zero, ← map_add]`. Simplify using the standard rewrite rules.
+-/
 theorem heisO_resT_symm (ψ : AddChar (AF D.host.F) ℂ) {S A L T : HSp D} (o : OrthDec S A L) (a : WO T A)
     (F : WO T S → ℂ) (w : WO T A) (y : WO T L) :
     heisO ψ T S ((o.resT T).symm (a, 0)) F ((o.resT T).symm (w, y)) =
@@ -68,16 +77,25 @@ theorem heisO_resT_symm (ψ : AddChar (AF D.host.F) ℂ) {S A L T : HSp D} (o : 
   rw [h0, add_zero, ← map_add]
   simp
 
+/- English proof (translation)
+Rewrite using `[o.symplO_resS, AddEquiv.apply_symm_apply]`. Simplify using `[symplO, hO]`.
+-/
 theorem symplO_resS_symm {S A L T : HSp D} (o : OrthDec S A L) (t : WO S T) (a : WO A T) :
     symplO S T t ((o.resS T).symm (a, 0)) = symplO A T ((o.resS T) t).1 a := by
   rw [o.symplO_resS, AddEquiv.apply_symm_apply]
   simp [symplO, hO]
 
+/- English proof (translation)
+Rewrite using `[o.symplO_resT, AddEquiv.apply_symm_apply]`. Simplify using `[symplO, hO]`.
+-/
 theorem symplO_resT_symm {S A L T : HSp D} (o : OrthDec S A L) (t : WO T S) (a : WO T A) :
     symplO T S t ((o.resT T).symm (a, 0)) = symplO T A ((o.resT T) t).1 a := by
   rw [o.symplO_resT, AddEquiv.apply_symm_apply]
   simp [symplO, hO]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[OrthDec.resS_symm_apply]`. Simplify using `only [Matrix.zero_mul, add_zero, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [← mul_assoc, ha]`.
+-/
 theorem half_resS_symm {S A L T : HSp D} (o : OrthDec S A L) {e : AE D} {a : WO A T} (ha : IsHalf e a) :
     IsHalf e ((o.resS T).symm (a, 0)) := by
   intro i j
@@ -85,6 +103,9 @@ theorem half_resS_symm {S A L T : HSp D} (o : OrthDec S A L) {e : AE D} {a : WO 
   simp only [Matrix.zero_mul, add_zero, Matrix.mul_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun x _ => by rw [← mul_assoc, ha]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[OrthDec.resT_symm_apply]`. Simplify using `only [Matrix.mul_zero, add_zero, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [mul_left_comm, ha]`.
+-/
 theorem half_resT_symm {S A L T : HSp D} (o : OrthDec S A L) {e : AE D} {a : WO T A} (ha : IsHalf e a) :
     IsHalf e ((o.resT T).symm (a, 0)) := by
   intro i j
@@ -97,6 +118,19 @@ section Lat
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n n' : Type} [Fintype n] [Fintype n']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hmv : ∀ y : n' ⊕ Fin 1 → k, x *ᵥ y = x.submatrix id Sum.inl *ᵥ (y ∘ Sum.inl) + y (Sum.inr 0) • fun i => x i (Sum.inr 0)`. Introduce `y`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, mul_comm]`.
+
+Establish `key : (∀ y ∈ lastKer ΛA, x *ᵥ y ∈ ΛT) ↔ (∀ y ∈ ΛA, x.submatrix id Sum.inl *ᵥ y ∈ ΛT) ∧ (fun i => x i (Sum.inr 0)) ∈ ΛT`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `hm : Sum.elim y 0 ∈ lastKer ΛA` using `GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer.2 ⟨by simpa using hy, by simp⟩`.
+
+Use `h _ hm` as an intermediate fact. Rewrite `this` using `[hmv]`. Simplify using `using this`. Establish `hm : (Sum.elim 0 1 : n' ⊕ Fin 1 → k) ∈ lastKer ΛA` using `GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer.2 ⟨by simpa using ΛA.zero_mem, by simp⟩`. Use `h _ hm` as an intermediate fact.
+
+Rewrite `this` using `[hmv]`. Simplify using `using this`. Introduce and unpack `⟨h1, h2⟩ y hy`. Take `⟨hy1, hy2⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer.1 hy`. Rewrite using `[hmv]`.
+
+Use `ΛT.add_mem (h1 _ hy1) ?_` and prove the remaining obligations. Use `ΛT.smul_mem (⟨y (Sum.inr 0), hy2⟩ : 𝒪[k]) h2` as an intermediate fact. Conclude with `this`. Simplify using `only [latInd, tensCol, vecInd]`. Distinguish the cases in `h : ∀ y ∈ lastKer ΛA, x *ᵥ y ∈ ΛT`.
+
+Rewrite using `[if_pos h, if_pos (key.1 h).1, if_pos (key.1 h).2, mul_one]`. Rewrite using `[if_neg h]`. Distinguish the cases in `h1 : ∀ y ∈ ΛA, x.submatrix id Sum.inl *ᵥ y ∈ ΛT`. Rewrite using `[if_pos h1, if_neg fun h2 => h (key.2 ⟨h1, h2⟩), mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+-/
 theorem latInd_lastKer (ΛA : Submodule 𝒪[k] (n' → k)) (ΛT : Submodule 𝒪[k] (n → k)) :
     latInd (lastKer ΛA) ΛT = tensCol (latInd ΛA ΛT) (vecInd ΛT) := by
   classical
@@ -133,6 +167,13 @@ theorem latInd_lastKer (ΛA : Submodule 𝒪[k] (n' → k)) (ΛT : Submodule �
     · rw [if_pos h1, if_neg fun h2 => h (key.2 ⟨h1, h2⟩), mul_zero]
     · rw [if_neg h1, zero_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `key : (∀ y ∈ ΛT, x *ᵥ y ∈ lastKer ΛA) ↔ (∀ y ∈ ΛT, x.submatrix Sum.inl id *ᵥ y ∈ ΛA) ∧ InDual ΛT (x (Sum.inr 0))`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer, InDual]`. Conclude with `⟨fun h => ⟨fun y hy => (h y hy).1, fun y hy => (h y hy).2⟩, fun h y hy => ⟨h.1 y hy, h.2 y hy⟩⟩`. Simplify using `only [latInd, tensRow, dualInd]`.
+
+Distinguish the cases in `h : ∀ y ∈ ΛT, x *ᵥ y ∈ lastKer ΛA`. Rewrite using `[if_pos h, if_pos (key.1 h).1, if_pos (key.1 h).2, mul_one]`. Rewrite using `[if_neg h]`. Distinguish the cases in `h1 : ∀ y ∈ ΛT, x.submatrix Sum.inl id *ᵥ y ∈ ΛA`. Rewrite using `[if_pos h1, if_neg fun h2 => h (key.2 ⟨h1, h2⟩), mul_zero]`.
+
+Rewrite using `[if_neg h1, zero_mul]`.
+-/
 theorem latInd_lastKer_row (ΛA : Submodule 𝒪[k] (n' → k)) (ΛT : Submodule 𝒪[k] (n → k)) :
     latInd ΛT (lastKer ΛA) = tensRow (latInd ΛT ΛA) (dualInd ΛT) := by
   classical

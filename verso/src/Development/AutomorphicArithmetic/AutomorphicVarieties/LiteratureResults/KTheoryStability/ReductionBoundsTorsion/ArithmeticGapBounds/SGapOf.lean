@@ -10,6 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 open SpectralGap in
+/- English proof (translation)
+The claim follows from `sGap_of_parts (gapAbs_of hilb_holds design_holds unfold_holds aeConst_holds) unfold_holds arith_holds dens_holds`.
+-/
 theorem sGap_of : SGap :=
   sGap_of_parts (gapAbs_of hilb_holds design_holds unfold_holds aeConst_holds) unfold_holds arith_holds dens_holds
 

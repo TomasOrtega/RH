@@ -14,6 +14,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.InteriorFibre
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z K _ _ yK hy`. Establish `hr : Set.range yK ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp : p = IsLocalRing.closedPoint K` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy (GlobalTheory.Toroidal.mem_genBd.2 h)`. Use `haveI := Z.jQ_open`. Set `y'` to `IsOpenImmersion.lift Z.jQ yK hr`. Establish `hy' : y' ≫ Z.jQ = yK` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull Out.CubePf.cubePull y' Z.oF.t`. Generalize the expression as in `(⟨(Over.pullback y').obj Z.oF.t.G, IsSemiAbelian.pullback y' Z.oF.t.G Z.oF.t.semi, OAct.pullback y' Z.oF.t.G Z.oF.t.act, PP', cub, sym, adj, prim⟩ : SAB H _) = t' at m₁`. Take `⟨n, hn⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Z.m m₁`. Use `t'.semi.smooth` as an intermediate fact. Use `t'.semi.geomConnected` as an intermediate fact.
+
+Take `⟨w, g, -⟩` from `m₁.lin`. Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Xo.XF c) (U := ⊤) (x := y' (IsLocalRing.closedPoint K)) trivial`. Establish `hyU : ∀ x, y' x ∈ U` using `fun x => (congrArg (fun V => x ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem y' hc)).mpr trivial`. Establish `am` using `relAmple_pull m₁.cart.1 Z.oF.t.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) U hU hyU Z.oF.ample`. Establish `kt` using `kTriv_pull m₁.cart Z.oF.t.PP.isLB t'.PP.isLB ((isGen_iff w).1 g) Z.oF.ktriv`.
+
+Use `GlobalTheory.LocalFibre.connectedSpace_sp K` as an intermediate fact. Establish `: ConnectedSpace t'.G.left` using `GeometricallyConnected.connectedSpace t'.G.hom t'.G.hom.isOpenMap`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t'.G.hom (eSec t'.G (IsLocalRing.closedPoint K))`. Take `⟨-, ws, gs', -⟩` from `t'.sym`. Take `⟨wn, gn, -⟩` from `n.lin`.
+
+Establish `e : y' ≫ Z.jQ ≫ pullback.fst _ _ = yK ≫ GlobalTheory.Toroidal.genι Z`. Rewrite using `[← Category.assoc, hy']`. Use `⟨{ A := t'.G, g := d, smoothDim := hd, L := t'.PP.L, isLB := t'.PP.isLB, ample := am, ktriv := kt, isAb := ⟨inferInstance, inferInstance, MorphismProperty.of_isPullback (P := @IsProper) m₁.cart.1 Z.oF.proper, ‹_›⟩, rigid := ⟨t'.PP.rig, t'.PP.rigGen⟩, sym := fun _ => ⟨⊤, trivial, …` and prove the remaining obligations. Rewrite using `[← e, ← hn]`. Conclude with `n.cart`.
+
+Establish `h : LBIso t'.PP.L (Z.t.PP.L.pull n.φ)` using `⟨wn, gn⟩`. Rewrite `h` using `[hn]`. Conclude with `h.symm`.
+-/
 theorem exists_polAV_of_not_mem_genBd : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (K : Type) [Field K] [NumberField K] (yK : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K ⟶ GlobalTheory.Toroidal.gen Z), yK (IsLocalRing.closedPoint K) ∉ GlobalTheory.Toroidal.genBd Z → ∃ (P₀ : ReciprocityTheory.ChartRestriction.G.Out.PolAV (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K)) (θ : P₀.A.left ⟶ Z.t.G.left), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback P₀.A Z.t.G (yK ≫ GlobalTheory.Toroidal.genι Z) θ ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.LBIso (Z.t.PP.L.pull θ) P₀.L := by
   intro E _ _ _ H Dw l Xo c Z K _ _ yK hy
   have hr : Set.range yK ⊆ Set.range Z.jQ := by

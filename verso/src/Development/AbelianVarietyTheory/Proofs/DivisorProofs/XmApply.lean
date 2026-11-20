@@ -15,6 +15,9 @@ open Classical in
 
 def pre (ι : L →+ AE F E) (z : AE F E) : L := if h : ∃ x, ι x = z then h.choose else 0
 
+/- English proof (translation)
+Unfold `pre`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem pre_spec (ι : L →+ AE F E) {z : AE F E} (h : ∃ x, ι x = z) : ι (pre ι z) = z := by
   unfold pre
   rw [dif_pos h]
@@ -33,6 +36,9 @@ def xm (ι : L →+ AE F E) {n d : ℕ} (PV : GL (Fin n) L) (PW : GL (Fin d) L) 
   map_zero' := by ext i j; simp
   map_add' x y := by ext i j; simp [Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xm_apply (ι : L →+ AE F E) {n d : ℕ} (PV : GL (Fin n) L) (PW : GL (Fin d) L) (x : Matrix (Fin d) (Fin n) L) :
     xm ι PV PW x = ((PV : Matrix (Fin n) (Fin n) L) * xᵀ * (PW : Matrix (Fin d) (Fin d) L)ᵀ).map ι := rfl
 

@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
   {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ}
 
 include b in
+/- English proof (translation)
+Establish `h : Continuous (evalV F v)` using `RestrictedProduct.continuous_eval (R := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v`. Use `haveI : IsTopologicalRing (Af F) := inferInstance`. Establish `h2 : Continuous (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E))` using `continuous_map_tens b (evalV F v) h`. Conclude with `continuous_pi fun a => continuous_pi fun i => h2.comp ((continuous_apply i).comp (continuous_apply a))`.
+-/
 theorem continuous_projV_fin (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (fun X : Fin n → Fin M → Af F ⊗[F] E => projV v X) := by
   have h : Continuous (evalV F v) :=
@@ -26,11 +29,17 @@ theorem continuous_projV_fin (v : HeightOneSpectrum (𝓞 F)) :
   exact continuous_pi fun a => continuous_pi fun i =>
     h2.comp ((continuous_apply i).comp (continuous_apply a))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[projV, map_add]`.
+-/
 theorem projV_add (v : HeightOneSpectrum (𝓞 F)) (X Y : Fin n → Fin M → Af F ⊗[F] E) :
     projV v (X + Y) = projV v X + projV v Y := by
   funext a i
   simp [projV, map_add]
 
+/- English proof (translation)
+Introduce `a i k`. Simplify using `only [Pi.add_apply, map_add, Finsupp.add_apply]`. Conclude with `add_mem (hY a i k) (hZ a i k)`.
+-/
 theorem latV_add (v : HeightOneSpectrum (𝓞 F)) {Y Z : Fin n → Fin M → Fv F v ⊗[F] E}
     (hY : Y ∈ latV b v) (hZ : Z ∈ latV b v) : Y + Z ∈ latV b v := by
   intro a i k
@@ -39,6 +48,23 @@ theorem latV_add (v : HeightOneSpectrum (𝓞 F)) {Y Z : Fin n → Fin M → Fv 
 
 variable (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ)
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `X`. Establish `hS` using `Filter.eventually_cofinite.1 (hae.and (eventually_mem_latV b X))`. Set `O : Set (Af F)` to `{x | ∀ v, x v ∈ v.adicCompletionIntegers F}`. Establish `hOo : IsOpen O` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+
+Set `U : Set (Fin n → Fin M → Af F ⊗[F] E)` to `{Y | ∀ a i k, crd b (Af F) ((Y - X) a i) k ∈ O}`. Establish `hUo : IsOpen U`. Establish `e : U = ⋂ a, ⋂ i, ⋂ k, (fun Y : Fin n → Fin M → Af F ⊗[F] E => crd b (Af F) ((Y - X) a i) k) ⁻¹' O`. Use extensionality with `Y`. Simplify using `[U]`.
+
+Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => hOo.preimage ((continuous_crd b (Af F) k).comp ((continuous_apply i).comp ((continuous_apply a).comp (continuous_id.sub continuous_const))))`. Establish `hXU : X ∈ U`. Introduce `a i k v`. Simplify using `only [sub_self, crd, Pi.zero_apply, map_zero, Finsupp.zero_apply]`.
+
+Conclude with `zero_mem (v.adicCompletionIntegers F)`. Establish `hev : (fun Y : Fin n → Fin M → Af F ⊗[F] E => ∏ᶠ v, Φv v (projV v Y)) =ᶠ[nhds X] fun Y => ∏ v ∈ hS.toFinset, Φv v (projV v Y)` using `by filter_upwards [hUo.mem_nhds hXU] with Y hY`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[Set.Finite.coe_toFinset]`.
+
+Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `hYX : projV v (Y - X) ∈ latV b v`. Introduce `a i k`. Use `crd_projV b (Y - X) v a i k` as an intermediate fact.
+
+Simplify using `only [crd] at this`. Rewrite using `[this]`. Conclude with `hY a i k v`. Establish `hmem : projV v Y ∈ latV b v`. Establish `e : projV v Y = projV v (Y - X) + projV v X`.
+
+Rewrite using `[← projV_add]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `latV_add b v hYX h.2`. Use `show Φv v (projV v Y) = 1`.
+
+Rewrite using `[h.1, Set.indicator_of_mem hmem]`. Both sides reduce to the same expression. Use `ContinuousAt.congr ?_ hev.symm` and prove the remaining obligations. Conclude with `(continuous_finset_prod _ fun v _ => (hSB v).1.continuous.comp (continuous_projV_fin b v)).continuousAt`.
+-/
 theorem continuous_finprod (hSB : ∀ v, IsSB (Φv v))
     (hae : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1) :
     Continuous (fun X : Fin n → Fin M → Af F ⊗[F] E => ∏ᶠ v, Φv v (projV v X)) := by
@@ -90,6 +116,19 @@ theorem continuous_finprod (hSB : ∀ v, IsSB (Φv v))
   exact (continuous_finset_prod _ fun v _ =>
     (hSB v).1.continuous.comp (continuous_projV_fin b v)).continuousAt
 
+/- English proof (translation)
+Set `D : Fin n → Fin M → Fin d → ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)` to `fun i j k v => ((fun Z : Fin n → Fin M → Fv F v ⊗[F] E => crd b (Fv F v) (Z i j) k) '' tsupport (Φv v)) ∪ (v.adicCompletionIntegers F : Set (Fv F v))`. Establish `hD : ∀ i j k v, IsCompact (D i j k v)` using `fun i j k v => ((hSB v).2.isCompact.image ((continuous_crd b (Fv F v) k).comp ((continuous_apply j).comp (continuous_apply i)))).union (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v)`. Establish `hDe : ∀ i j k, ∀ᶠ v in Filter.cofinite, D i j k v = (v.adicCompletionIntegers F : Set (Fv F v))`. Introduce `i j k`. Use `filter_upwards [hae] with v hv`.
+
+Use `Set.union_eq_right.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Z, hZ, rfl⟩`. Establish `hsub : tsupport (Φv v) ⊆ latV b v`. Rewrite using `[hv]`. Conclude with `closure_minimal Set.support_indicator_subset (isClopen_latV b v n M).isClosed`.
+
+Conclude with `hsub hZ i j k`. Set `Bf : Fin n → Fin M → Fin d → Set (Af F)` to `fun i j k => {x | ∀ v, x v ∈ D i j k v}`. Establish `hBf : ∀ i j k, IsCompact (Bf i j k)` using `fun i j k => isCompact_finBox (hD i j k) (hDe i j k)`. Set `Box : Set (Fin n → Fin M → Fin d → Af F)` to `Set.pi univ fun i => Set.pi univ fun j => Set.pi univ fun k => Bf i j k`. Establish `hbox : IsCompact Box` using `isCompact_univ_pi fun i => isCompact_univ_pi fun j => isCompact_univ_pi fun k => hBf i j k`.
+
+Set `L : (Fin n → Fin M → Fin d → Af F) → (Fin n → Fin M → Af F ⊗[F] E)` to `fun c x i => ∑ k, c x i k • ((1 : Af F) ⊗ₜ[F] b k)`. Establish `hL : Continuous L`. Use `continuous_pi fun x => continuous_pi fun i => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `continuous_smul.comp (((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply x))).prodMk continuous_const)`. Use `HasCompactSupport.intro (hbox.image hL) fun X hX => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Apply `hX` to reduce the goal to its premises. Establish `hv` using `factor_ne_zero b Φv hae X h`. Use `⟨fun i j k => crd b (Af F) (X i j) k, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Box, Set.mem_pi, Set.mem_univ, true_implies]`.
+
+Introduce `i j k v`. Use `Or.inl ⟨projV v X, subset_tsupport _ (hv v), ?_⟩` and prove the remaining obligations. Conclude with `crd_projV b X v i j k`. Use function extensionality and compare the values at `i j`. Conclude with `(eq_sum_crd b (Af F) (X i j)).symm`.
+-/
 theorem hasCompactSupport_finprod (hSB : ∀ v, IsSB (Φv v))
     (hae : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1) :
     HasCompactSupport (fun X : Fin n → Fin M → Af F ⊗[F] E => ∏ᶠ v, Φv v (projV v X)) := by
@@ -141,6 +180,11 @@ end GlobalTheory.PureFinite
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d M n b Φf Φv h`. Take `⟨hSB, hae, hprod⟩` from `h`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Establish `e : Φf = fun X => ∏ᶠ v, Φv v (projV v X)` using `funext hprod`. Substitute `e` using the available equality.
+
+Conclude with `⟨PureFinite.continuous_finprod b Φv hSB hae, PureFinite.hasCompactSupport_finprod b Φv hSB hae⟩`.
+-/
 theorem isPureFin_continuous_hasCompactSupport : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (d M n : ℕ) (b : Module.Basis (Fin d) F E)
     (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ)

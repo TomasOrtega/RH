@@ -10,6 +10,13 @@ open scoped ComplexOrder
 def IsAt {K : Type} [Field K] {r : ℕ} (i : Fin r) (x : Fin r → K) : Prop :=
   ∀ a, a ≠ i → x a = 0
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_unique]`. Simplify using `only [gramC, Matrix.of_apply, embVec, diagMet, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [Fin.default_eq_zero, Matrix.cons_val_zero]`. Rewrite using `[show star (σ (x i)) * (((δ σ i : ℝ) : ℂ) * σ (x i)) = ((δ σ i : ℝ) : ℂ) * (starRingEnd ℂ (σ (x i)) * σ (x i)) by`.
+
+Rewrite using `[Complex.star_def]`. Use the proof step `ring]`. Rewrite using `[Complex.conj_mul']`. Simplify using `only [Complex.re_ofReal_mul]`. Use `norm_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `a _ ha`. Simplify using `[Fin.default_eq_zero, hx a ha]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem gramC_single {K : Type} [Field K] [NumberField K] {r : ℕ} (δ : (K →+* ℂ) → Fin r → ℝ)
     (σ : K →+* ℂ) (i : Fin r) (x : Fin r → K) (hx : IsAt i x) :
     (gramC (diagMet δ σ) σ ![x]).det.re = ‖σ (x i)‖ ^ 2 * δ σ i := by
@@ -30,6 +37,9 @@ theorem gramC_single {K : Type} [Field K] [NumberField K] {r : ℕ} (δ : (K →
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Unfold `latDeg spanIdx`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun σ _ => by rw [gramC_single δ σ i x hx]`.
+-/
 theorem latDeg_single {K : Type} [Field K] [NumberField K] {r : ℕ}
     (δ : (K →+* ℂ) → Fin r → ℝ) (C : Submodule (𝓞 K) (Fin r → K)) (i : Fin r) (x : Fin r → K)
     (hx : IsAt i x) :
@@ -39,6 +49,11 @@ theorem latDeg_single {K : Type} [Field K] [NumberField K] {r : ℕ}
   congr 2
   exact Finset.sum_congr rfl fun σ _ => by rw [gramC_single δ σ i x hx]
 
+/- English proof (translation)
+Establish `h1 : ∀ σ : K →+* ℂ, Real.log (‖σ z‖ ^ 2 * d) = 2 * Real.log ‖σ z‖ + Real.log d`. Introduce `σ`. Establish `: ‖σ z‖ ≠ 0` using `by simpa using hz`. Rewrite using `[Real.log_mul (pow_ne_zero 2 this) hd.ne', Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, Finset.sum_add_distrib, ← Finset.mul_sum, sum_log_norm_emb, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem sum_log_single {K : Type} [Field K] [NumberField K] (z : K) (hz : z ≠ 0) (d : ℝ)
     (hd : 0 < d) :
     ∑ σ : K →+* ℂ, Real.log (‖σ z‖ ^ 2 * d) =
@@ -52,6 +67,13 @@ theorem sum_log_single {K : Type} [Field K] [NumberField K] (z : K) (hz : z ≠ 
   simp only [h1, Finset.sum_add_distrib, ← Finset.mul_sum, sum_log_norm_emb, Finset.sum_const,
     Finset.card_univ, nsmul_eq_mul]
 
+/- English proof (translation)
+Establish `hv0 : v ≠ 0` using `fun h => hvi (by rw [h]; rfl)`. Use `⟨fun j => by fin_cases j; simpa using hv, ?_, ?_⟩` and prove the remaining obligations. Conclude with `linearIndependent_unique_iff.2 (by simpa using hv0)`. Introduce `x hx`. Rewrite using `[Set.range_unique, Submodule.mem_span_singleton]`.
+
+Use `⟨x i / v i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.default_eq_zero, Matrix.cons_val_zero]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hat x hx a ha, hat v hv a ha, mul_zero]`.
+-/
 theorem kBasisIn_single {K : Type} [Field K] [NumberField K] {r : ℕ} (i : Fin r)
     (Gr : Submodule (𝓞 K) (Fin r → K)) (hat : ∀ x ∈ Gr, IsAt i x) (v : Fin r → K)
     (hv : v ∈ Gr) (hvi : v i ≠ 0) : IsKBasisIn Gr ![v] := by
@@ -68,6 +90,27 @@ theorem kBasisIn_single {K : Type} [Field K] [NumberField K] {r : ℕ} (i : Fin 
       field_simp
     · rw [hat x hx a ha, hat v hv a ha, mul_zero]
 
+/- English proof (translation)
+Establish `hpd : ∀ σ, (diagMet δ σ).PosDef` using `fun σ => Matrix.posDef_diagonal_iff.2 fun a => by exact_mod_cast hδ σ a`. Establish `hci : ∀ j, c j i ≠ 0`. Introduce `j h0`. Apply `hc.2.1.ne_zero j` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Conclude with `h0`. Conclude with `hat _ (hC (hc.1 j)) a ha`. Use `match k, c, hc, hci with`.
+
+Consider the case `0, c, hc, _ => exact (latDeg_zero_fam _ _ c hc).le`. Consider the case `1, c, hc, hci`. Establish `hc1 : c = ![c 0]` using `by funext j; fin_cases j; rfl`. Establish `hGc : IsKBasisIn Gr c`. Rewrite using `[hc1]`.
+
+Conclude with `kBasisIn_single i Gr hat (c 0) (hC (hc.1 0)) (hci 0)`. Combine the equalities or inequalities in the displayed calculation. Consider the case `k + 2, c, hc, hci`. It suffices to derive a contradiction. Establish `hli` using `hc.2.1`.
+
+Set `t : Fin (k + 2) → K` to `fun j => if j = 0 then c 1 i else if j = 1 then -(c 0 i) else 0`. Establish `ht : ∑ j, t j • c j = 0`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Establish `h0 : ∀ j : Fin k, t j.succ.succ = 0` using `fun j => by`. Simplify using `only [t]`.
+
+Rewrite using `[if_neg (Fin.succ_ne_zero _), if_neg]`. Introduce `h`. Conclude with `Fin.succ_ne_zero j (Fin.succ_injective _ h)`. Simplify using `only [h0, zero_smul, Finset.sum_const_zero, add_zero]`. Establish `t0 : t 0 = c 1 i` using `by simp [t]`.
+
+Establish `t1 : t (Fin.succ 0) = -(c 0 i)`. Simplify using `only [t]`. Rewrite using `[if_neg (Fin.succ_ne_zero _)]`. Both sides reduce to the same expression. Rewrite using `[t0, t1]`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using `only [Fin.succ_zero_eq_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hat _ (hC (hc.1 0)) a ha, hat _ (hC (hc.1 _)) a ha]`. Expand and normalize the polynomial expressions, which then agree. Use `Fintype.linearIndependent_iff.1 hli t ht 1` as an intermediate fact. Simplify using `[t] at this`.
+
+Conclude with `hci 0 this`.
+-/
 theorem rankOne_le_zero (hB : LatDegBasisStatement) {K : Type} [Field K] [NumberField K]
     {r : ℕ} (δ : (K →+* ℂ) → Fin r → ℝ) (hδ : ∀ σ i, 0 < δ σ i) (i : Fin r)
     (Gr : Submodule (𝓞 K) (Fin r → K)) (hGr : Gr.FG) (hat : ∀ x ∈ Gr, IsAt i x)
@@ -125,6 +168,21 @@ theorem rankOne_le_zero (hB : LatDegBasisStatement) {K : Type} [Field K] [Number
     simp [t] at this
     exact hci 0 this
 
+/- English proof (translation)
+Establish `heq : A ⊔ X = X.comap π ⊓ (A ⊔ C)`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_inf (sup_le ?_ ?_) (sup_le_sup_left hXC A)` and prove the remaining obligations. Introduce `a ha show π a ∈ X`. Rewrite using `[hA a ha]`.
+
+Conclude with `X.zero_mem`. Introduce `x hx show π x ∈ X`. Rewrite using `[hC x (hXC hx)]`. Conclude with `hx`. Introduce and unpack `z ⟨hzX, hz⟩`.
+
+Take `⟨a, ha, w, hw, rfl⟩` from `AddSubgroup.mem_sup.1 hz`. Establish `hπ : π (a + w) = w` using `by rw [map_add, hA a ha, hC w hw, zero_add]`. Establish `hwX : w ∈ X`. Establish `: π (a + w) ∈ X` using `hzX`. Rewrite `this` using `[hπ]`. Then use the resulting hypothesis.
+
+Conclude with `AddSubgroup.add_mem_sup ha hwX`. Establish `hmap : (A ⊔ C).map π = C`. Rewrite using `[AddSubgroup.map_sup]`. Establish `h1 : A.map π = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[hA a ha]`. Conclude with `AddSubgroup.zero_mem _`. Establish `h2 : C.map π = C`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hC x hx]`. Conclude with `hx`. Introduce `x hx`. Conclude with `⟨x, hx, hC x hx⟩`.
+
+Rewrite using `[h1, h2, bot_sup_eq]`. Rewrite using `[heq, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap, hmap]`.
+-/
 theorem relIndex_sup_proj {G : Type} [AddCommGroup G] (π : G →+ G) (A X C : AddSubgroup G)
     (hXC : X ≤ C) (hA : ∀ a ∈ A, π a = 0) (hC : ∀ x ∈ C, π x = x) :
     (A ⊔ X).relIndex (A ⊔ C) = X.relIndex C := by

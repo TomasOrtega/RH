@@ -12,15 +12,26 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 
 namespace GlobalTheory.BigTop.Fun.ThbTie
 
+/- English proof (translation)
+Unfold `sqRank GlobalTheory.FunObj.SqNum.halfRank GlobalTheory.ChiGrid.rankV`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqRank_half {D : D7} (ij : Sq D) : sqRank D ij / 2 = GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 := by
   unfold sqRank GlobalTheory.FunObj.SqNum.halfRank GlobalTheory.ChiGrid.rankV
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `(finsum_nonneg fun w => mul_nonneg (div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)) (abs_nonneg _)).trans h.2`.
+-/
 theorem htLe_nonneg {K : Type} [Field K] [NumberField K] [StarRing K] {g : Formalism.PairingDivisionLocalBalance.Pl K → ℤ} {z : K} {B : ℝ}
     (h : Formalism.PairingDivisionLocalBalance.HtLe g z B) : 0 ≤ B :=
   (finsum_nonneg fun w => mul_nonneg (div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)) (abs_nonneg _)).trans h.2
 
+/- English proof (translation)
+Establish `e : (fun w : Formalism.PairingDivisionLocalBalance.Pl K => Formalism.DivisionValues.lw w * |((Formalism.DivisionValues.vw w (1 : K) + 0 : ℤ) : ℝ)|) = fun _ => 0`. Use function extensionality and compare the values at `w`. Simplify using `[Formalism.DivisionValues.ValuationRepresentative.vw_one]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, finsum_zero]`. Conclude with `hB`.
+-/
 theorem htLe_one_zero {K : Type} [Field K] [NumberField K] [StarRing K] {B : ℝ} (hB : 0 ≤ B) :
     Formalism.PairingDivisionLocalBalance.HtLe (fun _ => (0 : ℤ)) (1 : K) B := by
   have e : (fun w : Formalism.PairingDivisionLocalBalance.Pl K => Formalism.DivisionValues.lw w * |((Formalism.DivisionValues.vw w (1 : K) + 0 : ℤ) : ℝ)|) = fun _ => 0 := by
@@ -36,6 +47,23 @@ end GlobalTheory.BigTop.Fun.ThbTie
 
 open GlobalTheory.BigTop.Fun.ThbTie in
 
+/- English proof (translation)
+Establish `hQ` using `GlobalTheory.T.fitted_ties_bound_eventual _ hS hd hT`. Use `Lf.mono hQ ?_` and prove the remaining obligations. Introduce `D L hT' Gi Gl Kc Y cX ex Csz p CF d C CH _ htie`. Use `⟨htie, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `htie.2`.
+
+Establish `hsq` using `ha.sq`. Establish `hin : ∀ (ij : Sq D) (s : ℤ), 1 ≤ s → s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 → Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) 1 (bTH D C p.Z.x p.Z.b) ∧ ∀ c, d.zTd ij c s ≠ 0 ∧ Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) (d.zTd ij c s) (bTH D C p.Z.x …`. Introduce `ij s h1 h2`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le (by omega : (0 : ℤ) ≤ s)`. Establish `h1' : 1 ≤ n` using `by omega`.
+
+Establish `h2' : n ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2` using `by omega`. Conclude with `hq ij.1 ij.2 n h1' h2' _ _ (hsq.inside ij n h1' h2').1`. Establish `hB0 : ∀ ij : Sq D, 0 ≤ bTH D C p.Z.x p.Z.b`. Introduce `ij`. Establish `hr : 1 ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `GlobalTheory.FunObj.SqNum.halfRank GlobalTheory.ChiGrid.rankV`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers. Conclude with `htLe_nonneg (hin ij 1 le_rfl (by exact_mod_cast hr)).1`.
+
+Establish `hB : d.O.bTH C p.Z.x p.Z.b = bTH D C p.Z.x p.Z.b` using `rfl`. Establish `hzT : ∀ ij s, d.O.zT ij s = 1` using `hsq.base`. Use `⟨fun ij s h1 h2 => ?_, fun ij s => ?_, fun ij c s => ?_⟩` and prove the remaining obligations. Establish `h2' : s ≤ (GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 : ℤ)` using `h2.trans_eq (congrArg (fun n : ℕ => (n : ℤ)) (sqRank_half (D := D) ij))`. Conclude with `⟨by rw [hzT]; exact one_ne_zero, fun c => ((hin ij s h1 h2').2 c).1⟩`.
+
+Rewrite using `[hzT, hB]`. Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`. Conclude with `(hin ij s hs.1 hs.2).1`. Use `(hsq.outside ij s hs).2.1` as an intermediate fact. Express the relevant statement in the definitionally equal form `Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) 1 _`.
+
+Rewrite using `[this]`. Conclude with `htLe_one_zero (hB0 ij)`. Rewrite using `[hB]`. Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`. Conclude with `((hin ij s hs.1 hs.2).2 c).2`.
+
+Take `⟨e1, e2, -⟩` from `hsq.outside ij s hs`. Express the relevant statement in the definitionally equal form `Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) (d.zTd ij c s) _`. Rewrite using `[e1 c, e2]`. Conclude with `htLe_one_zero (hB0 ij)`.
+-/
 theorem GlobalTheory.BigTop.Fun.thb_tie (hS : SetAt)
     (hd : Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps)
     (hT : ThbSt) : Thb @Comparison₂ := by

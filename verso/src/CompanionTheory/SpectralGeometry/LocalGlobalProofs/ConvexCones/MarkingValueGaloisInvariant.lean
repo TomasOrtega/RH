@@ -16,6 +16,9 @@ variable {O : Type} [CommRing O]
 def twPi (σ : O ≃+* O) (n : ℕ) : (Fin n → O) ≃+ (Fin n → O) :=
   AddEquiv.piCongrRight fun _ => σ.toAddEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem twPi_apply (σ : O ≃+* O) (n : ℕ) (a : Fin n → O) : twPi σ n a = fun j => σ (a j) := rfl
 
 def twForm (σ : O ≃+* O) (n : ℕ) :
@@ -26,9 +29,17 @@ def twForm (σ : O ≃+* O) (n : ℕ) :
   right_inv β := LinearMap.ext₂ fun a b => by simp
   map_add' _ _ := LinearMap.ext₂ fun a b => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem twForm_apply (σ : O ≃+* O) (n : ℕ) (β : LinearMap.BilinForm ℤ (Fin n → O)) (a b : Fin n → O) :
     twForm σ n β a b = β (fun j => σ (a j)) (fun j => σ (b j)) := rfl
 
+/- English proof (translation)
+Use `⟨fun y z => by simp only [twForm_apply]; exact h.1 _ _, fun a y z => ?_⟩` and prove the remaining obligations. Simplify using `only [twForm_apply]`. Establish `e1 : (fun j => σ ((a • y) j)) = σ a • fun j => σ (y j)` using `funext fun j => by simp`. Establish `e2 : (fun j => σ ((bar a • z) j)) = bar (σ a) • fun j => σ (z j)` using `funext fun j => by`. Simplify using `[hb.comm]`.
+
+Rewrite using `[e1, e2]`. Conclude with `h.2 _ _ _`.
+-/
 theorem twForm_mem_balForms {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+* O) {n : ℕ}
     {β : LinearMap.BilinForm ℤ (Fin n → O)}
     (h : β ∈ balForms bar (Fin n → O)) : twForm σ n β ∈ balForms bar (Fin n → O) := by
@@ -40,20 +51,36 @@ theorem twForm_mem_balForms {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+* O) 
   rw [e1, e2]
   exact h.2 _ _ _
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext₂ fun a b => by simp`.
+-/
 theorem twForm_symm_twForm (σ : O ≃+* O) {n : ℕ} (β : LinearMap.BilinForm ℤ (Fin n → O)) :
     twForm σ.symm n (twForm σ n β) = β := LinearMap.ext₂ fun a b => by simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa [twForm_symm_twForm] using twForm_mem_balForms hb σ.symm h, twForm_mem_balForms hb σ⟩`.
+-/
 theorem twForm_mem_balForms_iff {bar : O → O} (hb : CMOrd O bar) (σ : O ≃+* O) {n : ℕ}
     (β : LinearMap.BilinForm ℤ (Fin n → O)) :
     twForm σ n β ∈ balForms bar (Fin n → O) ↔ β ∈ balForms bar (Fin n → O) :=
   ⟨fun h => by simpa [twForm_symm_twForm] using twForm_mem_balForms hb σ.symm h, twForm_mem_balForms hb σ⟩
 
+/- English proof (translation)
+Unfold `InvFun.evalZ`. Rewrite using `[InvFun.eval_pi, InvFun.eval_pi]`. Conclude with `hφ σ hσ n fun a b => (β a b : ℝ)`.
+-/
 theorem evalZ_twForm {w0 : O} {φ : InvFun O} (hφ : IsTwG w0 φ) {σ : O ≃+* O} (hσ : σ w0 = w0)
     {n : ℕ} (β : LinearMap.BilinForm ℤ (Fin n → O)) : φ.evalZ (twForm σ n β) = φ.evalZ β := by
   unfold InvFun.evalZ
   rw [InvFun.eval_pi, InvFun.eval_pi]
   exact hφ σ hσ n fun a b => (β a b : ℝ)
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hb ψ lab i hψ hlab σ hσ n B`. Unfold `markVal`. Distinguish the cases in `h2 : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B a b = β a b`. Establish `h1 : ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B (fun j => σ (a j)) (fun j => σ (b j)) = β a b` using `⟨twForm σ n h2.choose, fun a b => h2.choose_spec _ _⟩`. Rewrite using `[dif_pos h1, dif_pos h2]`.
+
+Establish `e : h1.choose = twForm σ n h2.choose` using `LinearMap.ext₂ fun a b => by`. Use `(h1.choose_spec a b).symm.trans (h2.choose_spec _ _)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[e, isMarked_transport (T := (twPi σ n).toEquiv) (fun _ _ _ => rfl) (twForm_mem_balForms_iff hb σ) (evalZ_twForm hψ hσ) (evalZ_twForm hlab hσ)]`. Establish `h1 : ¬ ∃ β : LinearMap.BilinForm ℤ (Fin n → O), ∀ a b, B (fun j => σ (a j)) (fun j => σ (b j)) = β a b` using `fun ⟨β, hβ⟩ => h2 ⟨twForm σ.symm n β, fun a b => by`.
+
+Use `hβ (fun j => σ.symm (a j)) (fun j => σ.symm (b j))` as an intermediate fact. Simplify using `using this⟩`. Rewrite using `[dif_neg h1, dif_neg h2]`.
+-/
 theorem markVal_twist : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (w0 : O), CMOrd O bar → ∀ (ψ lab : InvFun O) (i : ℕ), IsTwG w0 ψ → IsTwG w0 lab →
     ∀ σ : O ≃+* O, σ w0 = w0 → ∀ (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ),

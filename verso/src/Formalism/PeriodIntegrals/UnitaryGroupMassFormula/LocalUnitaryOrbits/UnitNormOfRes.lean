@@ -14,6 +14,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Establish `hu : ∃ u : K, u + σ' u ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hne` to reduce the goal to its premises. Establish `h1 : (1 : K) + 1 = 0` using `by simpa using h 1`.
+
+Use extensionality with `u`. Establish `h2 : σ' u = -u` using `eq_neg_of_add_eq_zero_right (h u)`. Rewrite using `[h2]`. Use `show -u = u`. Establish `h3 : u + u = 0` using `by rw [← mul_one u, ← mul_add, h1, mul_zero]`.
+
+Conclude with `(eq_neg_of_add_eq_zero_left h3).symm`. Take `⟨u, hu⟩` from `hu`. Use `⟨u * z⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, inv_mul_cancel₀ hz, mul_one]`. Conclude with `hu`.
+-/
 theorem tr_nd_field {k K : Type} [Field k] [Field K] [Algebra k K] (σ' : K ≃ₐ[k] K) (hne : σ' ≠ AlgEquiv.refl)
     (z : K) (hz : z ≠ 0) : ∃ t : K, t * z + σ' (t * z) ≠ 0 := by
   have hu : ∃ u : K, u + σ' u ≠ 0 := by
@@ -32,6 +39,11 @@ theorem tr_nd_field {k K : Type} [Field k] [Field K] [Algebra k K] (σ' : K ≃�
   rw [mul_assoc, inv_mul_cancel₀ hz, mul_one]
   exact hu
 
+/- English proof (translation)
+Distinguish the cases in `h1 : z.1 = 0`. Establish `h2 : z.2 ≠ 0`. Introduce `h2`. Conclude with `hz (Prod.ext h1 h2)`. Use `⟨(0, z.2⁻¹), fun h => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg Prod.fst h` as an intermediate fact. Simplify using `[inv_mul_cancel₀ h2] at this`. Use `⟨(z.1⁻¹, 0), fun h => ?_⟩` and prove the remaining obligations. Use `congrArg Prod.fst h` as an intermediate fact. Simplify using `[inv_mul_cancel₀ h1] at this`.
+-/
 theorem tr_nd_prod {k : Type} [Field k] (z : k × k) (hz : z ≠ 0) :
     ∃ t : k × k, t * z + (RingEquiv.prodComm (R := k) (S := k)).toRingHom (t * z) ≠ 0 := by
   by_cases h1 : z.1 = 0
@@ -45,6 +57,27 @@ theorem tr_nd_prod {k : Type} [Field k] (z : k × k) (hz : z ≠ 0) :
     have := congrArg Prod.fst h
     simp [inv_mul_cancel₀ h1] at this
 
+/- English proof (translation)
+Establish `hv : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`.
+
+Take `⟨hsurj, hker, hsig⟩` from `hres`. Set `cO : OR (E` to `E) v := ⟨c, hc⟩`. Establish `hc0 : π cO ≠ 0`. Introduce `h`. Take `⟨d, hd0, hd⟩` from `(hker cO).1 h`.
+
+Apply `hcn` to reduce the goal to its premises. Establish `hd' : c = sc (E` using `E) v ϖ * d := hd`. Rewrite using `[hd', ← mul_assoc, sc_eq, sc_eq, ← map_mul, inv_mul_cancel₀ hϖ0, map_one, one_mul]`. Conclude with `hd0`. Take `⟨tb, htb⟩` from `hnd _ hc0`.
+
+Take `⟨tO, htO⟩` from `hsurj tb`. Establish `ht0 : (tO : Fv F v ⊗[F] E) ∈ OEv (E` using `E) v := tO.2`. Establish `htc0 : (tO : Fv F v ⊗[F] E) * c ∈ OEv (E` using `E) v := (tO * cO).2`. Set `yO : OR (E` to `E) v := ⟨sigR (Fv F v) σ ((tO : Fv F v ⊗[F] E) * c), sigR_mem σ v htc0⟩`. Establish `hy : π yO = τ (π (tO * cO))` using `hsig (tO * cO) yO rfl`.
+
+Use `set s := (tO : Fv F v ⊗[F] E) * c + sigR (Fv F v) σ ((tO : Fv F v ⊗[F] E) * c) with hs`. Establish `hsO : π (tO * cO + yO) ≠ 0`. Rewrite using `[map_add, hy, map_mul, htO]`. Conclude with `htb`. Establish `hs0 : s ∈ OEv (E` using `E) v := (tO * cO + yO).2`.
+
+Establish `hsf : sigR (Fv F v) σ s = s`. Rewrite using `[hs, map_add, sigR_invol σ v hcm, add_comm]`. Use `⟨tO, ht0, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hsa⟩` from `fix_int σ v hcm hs0 hsf`. Rewrite using `[← hs, hsa]`.
+
+Distinguish the cases in `hva : Valued.v a < 1`. It suffices to derive a contradiction. Take `⟨d, hd⟩` from `(mem_unifO_iff v hϖ ⟨a, ha⟩).2 hva`. Apply `hsO` to reduce the goal to its premises. Apply `(hker _).2` to reduce the goal to its premises.
+
+Use `⟨sc (E := E) v (d : Fv F v), sc_mem v d.2, ?_⟩` and prove the remaining obligations. Use `show s = _`. Rewrite using `[hsa, sc_eq, sc_eq, sc_eq, ← map_mul]`. Conclude with `congrArg _ hd`. Establish `ha1 : Valued.v a = 1` using `le_antisymm ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) (K := F) (v := v)).1 ha) (not_lt.1 hva)`.
+
+Establish `ha0 : a ≠ 0`. Introduce `h`. Rewrite `ha1` using `[h, map_zero]`. Conclude with `zero_ne_one ha1`. Establish `hai : a⁻¹ ∈ v.adicCompletionIntegers F`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, ha1, inv_one]`. Use `⟨sc (E := E) v (a⁻¹), sc_mem v hai, ?_⟩` and prove the remaining obligations. Rewrite using `[sc_eq, sc_eq, ← map_mul, mul_inv_cancel₀ ha0, map_one]`.
+-/
 theorem trNd_of_res {K : Type} [CommRing K] (τ : K →+* K) (π : OR (E := E) v →+* K) (hcm : IsCMExt F E σ)
     {ϖ : Fv F v} (hϖ : IsUnif v ϖ) (hres : IsRes σ v ϖ τ π) (hnd : ∀ z : K, z ≠ 0 → ∃ t : K, t * z + τ (t * z) ≠ 0)
     (c : Fv F v ⊗[F] E) (hc : c ∈ OEv (E := E) v) (hcn : sc (E := E) v (ϖ⁻¹) * c ∉ OEv (E := E) v) :
@@ -98,6 +131,9 @@ theorem trNd_of_res {K : Type} [CommRing K] (τ : K →+* K) (π : OR (E := E) v
     refine ⟨sc (E := E) v (a⁻¹), sc_mem v hai, ?_⟩
     rw [sc_eq, sc_eq, ← map_mul, mul_inv_cancel₀ ha0, map_one]
 
+/- English proof (translation)
+Introduce `hstd hun ϖ hϖ c hc hcn`. Take `⟨k, _, _, -, hcase⟩` from `hR hstd hun ϖ hϖ`. Break down `hcase with ⟨-, K, _, _, σ', π, -, -, hne, hres⟩ | ⟨-, π, hres⟩` into its components or cases. Conclude with `trNd_of_res σ v (σ' : K →+* K) π hstd.1 hϖ hres (fun z hz => tr_nd_field σ' hne z hz) c hc hcn`. Conclude with `trNd_of_res σ v _ π hstd.1 hϖ hres (fun z hz => tr_nd_prod z hz) c hc hcn`.
+-/
 theorem trNd_of (hR : ResAlg σ J ψ v) : TrNd σ J ψ v := by
   intro hstd hun ϖ hϖ c hc hcn
   obtain ⟨k, _, _, -, hcase⟩ := hR hstd hun ϖ hϖ
@@ -105,9 +141,15 @@ theorem trNd_of (hR : ResAlg σ J ψ v) : TrNd σ J ψ v := by
   · exact trNd_of_res σ v (σ' : K →+* K) π hstd.1 hϖ hres (fun z hz => tr_nd_field σ' hne z hz) c hc hcn
   · exact trNd_of_res σ v _ π hstd.1 hϖ hres (fun z hz => tr_nd_prod z hz) c hc hcn
 
+/- English proof (translation)
+The claim follows from `unitNorm_of σ J ψ v Λ (fixLoc_holds σ v) (trNd_of σ J ψ v hR) (primPerp_holds σ J ψ v Λ)`.
+-/
 theorem unitNorm_of_res (hR : ResAlg σ J ψ v) : UnitNorm σ J ψ v Λ :=
   unitNorm_of σ J ψ v Λ (fixLoc_holds σ v) (trNd_of σ J ψ v hR) (primPerp_holds σ J ψ v Λ)
 
+/- English proof (translation)
+The claim follows from `orbAll_of_norm σ J ψ v Λ a Y hN (unitNorm_of_res σ J ψ v Λ hR)`.
+-/
 theorem orbAll_of_res (a : ℕ) (Y : TupV (E := E) v n a) (hN : NormOne σ J ψ v) (hR : ResAlg σ J ψ v) :
     OrbAll σ J ψ v Λ a Y :=
   orbAll_of_norm σ J ψ v Λ a Y hN (unitNorm_of_res σ J ψ v Λ hR)

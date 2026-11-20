@@ -11,6 +11,11 @@ noncomputable section
 
 namespace HeckeRatioInvariant
 
+/- English proof (translation)
+Establish `h` using `congr_fun (SlashInvariantForm.slash_action_generators_SL2Z discriminant_S_invariant discriminant_T_invariant γ) z`. Rewrite `h` using `[SL_slash_apply]`. Establish `hd : denom γ z = ((γ 1 0 : ℤ) : ℂ) * z + ((γ 1 1 : ℤ) : ℂ)`. Simplify using `[denom]`. Establish `hne : denom γ z ≠ 0` using `denom_ne_zero _ _`.
+
+Rewrite using `[← hd, ← h, zpow_neg, show (12 : ℤ) = ((12 : ℕ) : ℤ) from rfl, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem discriminant_smul (γ : SL(2, ℤ)) (z : ℍ) :
     discriminant (γ • z) = (((γ 1 0 : ℤ) : ℂ) * z + ((γ 1 1 : ℤ) : ℂ)) ^ 12 * discriminant z := by
   have h := congr_fun (SlashInvariantForm.slash_action_generators_SL2Z
@@ -22,6 +27,9 @@ theorem discriminant_smul (γ : SL(2, ℤ)) (z : ℍ) :
   rw [← hd, ← h, zpow_neg, show (12 : ℤ) = ((12 : ℕ) : ℤ) from rfl, zpow_natCast]
   field_simp
 
+/- English proof (translation)
+Set `γ : SL(2, ℤ)` to `⟨!![a, b; c, d], by simp [Matrix.det_fin_two_of, hdet]⟩`. Establish `hw : w = γ • z` using `UpperHalfPlane.ext (by rw [h, coe_specialLinearGroup_apply]; simp [γ])`. Rewrite using `[hw, discriminant_smul]`. Simplify using `[γ]`.
+-/
 theorem discriminant_eq_of_coe_eq (a b c d : ℤ) (hdet : a * d - b * c = 1) {z w : ℍ}
     (h : (w : ℂ) = ((a : ℂ) * z + b) / ((c : ℂ) * z + d)) :
     discriminant w = ((c : ℂ) * z + d) ^ 12 * discriminant z := by
@@ -30,12 +38,18 @@ theorem discriminant_eq_of_coe_eq (a b c d : ℤ) (hdet : a * d - b * c = 1) {z 
   rw [hw, discriminant_smul]
   simp [γ]
 
+/- English proof (translation)
+Rewrite using `[← Multiset.coe_range, ← Multiset.coe_range, Multiset.map_coe, Multiset.map_coe, List.range_succ_eq_map]`. Simplify using `[Function.comp_def]`.
+-/
 theorem map_range_succ_eq_cons (f : ℕ → ℂ) (m : ℕ) :
     (Multiset.range (m + 1)).map f = f 0 ::ₘ (Multiset.range m).map (fun a ↦ f (a + 1)) := by
   rw [← Multiset.coe_range, ← Multiset.coe_range, Multiset.map_coe, Multiset.map_coe,
     List.range_succ_eq_map]
   simp [Function.comp_def]
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `zero => rfl`. Consider the case `succ m`. Rewrite using `[map_range_succ_eq_cons g m, Multiset.range_succ, Multiset.map_cons, h]`.
+-/
 theorem map_range_shift (g : ℕ → ℂ) (m : ℕ) (h : g m = g 0) :
     (Multiset.range m).map (fun a ↦ g (a + 1)) = (Multiset.range m).map g := by
   cases m with
@@ -43,6 +57,15 @@ theorem map_range_shift (g : ℕ → ℂ) (m : ℕ) (h : g m = g 0) :
   | succ m =>
     rw [map_range_succ_eq_cons g m, Multiset.range_succ, Multiset.map_cons, h]
 
+/- English proof (translation)
+Establish `hT : ((ModularGroup.T • τ : ℍ) : ℂ) = τ + 1`. Rewrite using `[modular_T_smul, coe_vadd]`. Simplify using `[add_comm]`. Establish `hn : ((n : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast n.ne_zero`. Establish `h0 : discriminant (ModularGroup.T • τ) = discriminant τ`.
+
+Rewrite using `[discriminant_eq_of_coe_eq 1 1 0 1 (by norm_num) (z := τ) (by rw [hT]; push_cast; ring)]`. Simplify using the standard rewrite rules. Establish `h1 : discriminant (mulPoint n (ModularGroup.T • τ)) = discriminant (mulPoint n τ)`. Rewrite using `[discriminant_eq_of_coe_eq 1 (n : ℕ) 0 1 (by norm_num) (z := mulPoint n τ) (by rw [coe_mulPoint, coe_mulPoint, hT]; push_cast; ring)]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : ∀ a : ℕ, divPoint n a (ModularGroup.T • τ) = divPoint n (a + 1) τ` using `fun a ↦ UpperHalfPlane.ext (by rw [coe_divPoint, coe_divPoint, hT]; push_cast; ring)`. Establish `h3 : discriminant (divPoint n n τ) = discriminant (divPoint n 0 τ)`. Rewrite using `[discriminant_eq_of_coe_eq 1 1 0 1 (by norm_num) (z := divPoint n 0 τ) (by rw [coe_divPoint, coe_divPoint]; field_simp; push_cast; ring)]`. Simplify using the standard rewrite rules. Establish `h4 : (Multiset.range n).map (fun a : ℕ ↦ discriminant (divPoint n a (ModularGroup.T • τ)) / discriminant τ) = (Multiset.range n).map (fun a : ℕ ↦ discriminant (divPoint n a τ) / discriminant τ)`.
+
+Repeatedly rewrite using `[h2]`. Conclude with `map_range_shift (fun a ↦ discriminant (divPoint n a τ) / discriminant τ) n (by simp [h3])`. Unfold `heckeRatios`. Rewrite using `[h0, h1, h4]`.
+-/
 theorem heckeRatios_alt (n : ℕ+) (τ : ℍ) :
     heckeRatios n (ModularGroup.T • τ) = heckeRatios n τ := by
   have hT : ((ModularGroup.T • τ : ℍ) : ℂ) = τ + 1 := by
@@ -71,6 +94,13 @@ theorem heckeRatios_alt (n : ℕ+) (τ : ℍ) :
 
 def negInvMod (p j : ℕ) : ℕ := (-((j : ZMod p)⁻¹)).val
 
+/- English proof (translation)
+Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `hj0 : ((j : ℕ) : ZMod p) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Introduce `hd`. Use `Nat.le_of_dvd h0 hd` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcast : ((negInvMod p j : ℕ) : ZMod p) = -((j : ZMod p)⁻¹)` using `ZMod.natCast_zmod_val _`. Use `⟨?_, ZMod.val_lt _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.pos_iff_ne_zero, negInvMod, Ne, ZMod.val_eq_zero, neg_eq_zero, inv_eq_zero]`. Conclude with `hj0`.
+
+Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Rewrite using `[hcast, mul_neg, mul_inv_cancel₀ hj0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[negInvMod, hcast, inv_neg, neg_neg, inv_inv, ZMod.val_natCast, Nat.mod_eq_of_lt hj]`.
+-/
 theorem negInvMod_spec {p : ℕ} [Fact p.Prime] {j : ℕ} (h0 : 0 < j) (hj : j < p) :
     0 < negInvMod p j ∧ negInvMod p j < p ∧ p ∣ j * negInvMod p j + 1 ∧
       negInvMod p (negInvMod p j) = j := by
@@ -90,9 +120,15 @@ theorem negInvMod_spec {p : ℕ} [Fact p.Prime] {j : ℕ} (h0 : 0 < j) (hj : j <
     ring
   · rw [negInvMod, hcast, inv_neg, neg_neg, inv_inv, ZMod.val_natCast, Nat.mod_eq_of_lt hj]
 
+/- English proof (translation)
+Rewrite using `[modular_S_smul, coe_mk]`.
+-/
 theorem coe_S_smul (τ : ℍ) : ((ModularGroup.S • τ : ℍ) : ℂ) = (-(τ : ℂ))⁻¹ := by
   rw [modular_S_smul, coe_mk]
 
+/- English proof (translation)
+Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`. Rewrite using `[discriminant_eq_of_coe_eq 0 (-1) 1 0 (by norm_num) (z := τ) (by rw [coe_S_smul]; push_cast; ring)]`. Simplify using the standard rewrite rules.
+-/
 theorem discriminant_S_smul (τ : ℍ) :
     discriminant (ModularGroup.S • τ) = (τ : ℂ) ^ 12 * discriminant τ := by
   have hτ : (τ : ℂ) ≠ 0 := τ.ne_zero
@@ -100,6 +136,15 @@ theorem discriminant_S_smul (τ : ℍ) :
     (by rw [coe_S_smul]; push_cast; ring)]
   simp
 
+/- English proof (translation)
+Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`. Establish `hn : ((n : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast n.ne_zero`. Establish `hC : (j : ℂ) * b + 1 = (n : ℕ) * k` using `by exact_mod_cast h`. Establish `hZ : (j : ℤ) * (-(b : ℤ)) - (-(k : ℤ)) * ((n : ℕ) : ℤ) = 1`. Establish `: ((j * b + 1 : ℕ) : ℤ) = (((n : ℕ) * k : ℕ) : ℤ)` using `by rw [h]`.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hden : (((((n : ℕ) : ℤ)) : ℂ) * (divPoint n b τ : ℂ) + ((-(b : ℤ) : ℤ) : ℂ)) = τ`. Rewrite using `[coe_divPoint]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `discriminant_eq_of_coe_eq (j : ℤ) (-(k : ℤ)) ((n : ℕ) : ℤ) (-(b : ℤ)) hZ (z := divPoint n b τ) (w := divPoint n j (ModularGroup.S • τ)) (by`. Rewrite using `[hden, coe_divPoint, coe_divPoint, coe_S_smul]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : ℂ) * hC)`. Rewrite using `[e, hden, discriminant_S_smul]`. Use `discriminant_ne_zero τ` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ratio_S (n : ℕ+) (τ : ℍ) (j b k : ℕ) (h : j * b + 1 = (n : ℕ) * k) :
     discriminant (divPoint n j (ModularGroup.S • τ)) / discriminant (ModularGroup.S • τ) =
       discriminant (divPoint n b τ) / discriminant τ := by
@@ -122,6 +167,29 @@ theorem ratio_S (n : ℕ+) (τ : ℍ) (j b k : ℕ) (h : j * b + 1 = (n : ℕ) *
   have := discriminant_ne_zero τ
   field_simp
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Take `⟨m, rfl⟩ : ∃ m, p = m + 1` from `⟨p - 1, by have := hp.pos; omega⟩`. Use `set n : ℕ+ := ⟨m + 1, hp.pos⟩ with hn_def`. Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`. Establish `hn : ((n : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast n.ne_zero`.
+
+Establish `hΔ` using `discriminant_ne_zero τ`. Use `set g : ℕ → ℂ := fun a ↦ discriminant (divPoint n a τ) / discriminant τ with hg`. Use `set gS : ℕ → ℂ := fun a ↦ discriminant (divPoint n a (ModularGroup.S • τ)) / discriminant (ModularGroup.S • τ) with hgS`. Establish `e1 : heckeRatios n (ModularGroup.S • τ) = ((n : ℂ) ^ 12 * discriminant (mulPoint n (ModularGroup.S • τ)) / discriminant (ModularGroup.S • τ)) ::ₘ (gS 0 ::ₘ (Multiset.range m).map (fun a ↦ gS (a + 1)))`. Rewrite using `[← map_range_succ_eq_cons]`.
+
+Both sides reduce to the same expression. Establish `e2 : heckeRatios n τ = ((n : ℂ) ^ 12 * discriminant (mulPoint n τ) / discriminant τ) ::ₘ (g 0 ::ₘ (Multiset.range m).map (fun a ↦ g (a + 1)))`. Rewrite using `[← map_range_succ_eq_cons]`. Both sides reduce to the same expression. Establish `hA : (n : ℂ) ^ 12 * discriminant (mulPoint n (ModularGroup.S • τ)) / discriminant (ModularGroup.S • τ) = g 0`.
+
+Apply the tactic sequence `rw [discriminant_eq_of_coe_eq 0 (-1) 1 0 (by norm_num) (z := divPoint n 0 τ) (by rw [coe_mulPoint, coe_divPoint, coe_S_smul]; push_cast; ring_nf; simp only [inv_inv]; try ring), discriminant_S_smul, hg]`. Simplify using `only [coe_divPoint]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+
+Establish `hB : gS 0 = (n : ℂ) ^ 12 * discriminant (mulPoint n τ) / discriminant τ`. Rewrite using `[hgS]`. Simplify using `only`. Rewrite using `[discriminant_eq_of_coe_eq 0 (-1) 1 0 (by norm_num) (z := mulPoint n τ) (by rw [coe_mulPoint, coe_divPoint, coe_S_smul]; push_cast; ring), discriminant_S_smul, coe_mulPoint]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Establish `hmid : (Multiset.range m).map (fun a ↦ gS (a + 1)) = (Multiset.range m).map (fun a ↦ g (a + 1))`. Use `Multiset.map_eq_map_of_bij_of_nodup _ _ (Multiset.nodup_range m) (Multiset.nodup_range m) (fun a _ ↦ negInvMod (m + 1) (a + 1) - 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`.
+
+Rewrite `ha`, the goal using `[Multiset.mem_range]`. Use `negInvMod_spec (p := m + 1) (j := a + 1) (by omega) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `a₁ ha₁ a₂ ha₂ he`. Rewrite `ha₁`, `ha₂` using `[Multiset.mem_range]`.
+
+Establish `s₁` using `negInvMod_spec (p := m + 1) (j := a₁ + 1) (by omega) (by omega)`. Establish `s₂` using `negInvMod_spec (p := m + 1) (j := a₂ + 1) (by omega) (by omega)`. Establish `he' : negInvMod (m + 1) (a₁ + 1) = negInvMod (m + 1) (a₂ + 1)` using `by omega`. Use `congrArg (negInvMod (m + 1)) he'` as an intermediate fact. Rewrite `this` using `[s₁.2.2.2, s₂.2.2.2]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `b hb`. Rewrite `hb` using `[Multiset.mem_range]`. Establish `s` using `negInvMod_spec (p := m + 1) (j := b + 1) (by omega) (by omega)`. Use `⟨negInvMod (m + 1) (b + 1) - 1, Multiset.mem_range.2 (by omega), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.sub_add_cancel s.1, s.2.2.2]`. Both sides reduce to the same expression. Introduce `a ha`. Rewrite `ha` using `[Multiset.mem_range]`. Establish `s` using `negInvMod_spec (p := m + 1) (j := a + 1) (by omega) (by omega)`.
+
+Take `⟨k, hk⟩` from `s.2.2.1`. Rewrite using `[Nat.sub_add_cancel s.1]`. Conclude with `ratio_S n τ (a + 1) (negInvMod (m + 1) (a + 1)) k hk`. Rewrite using `[e1, e2, hA, hB, hmid, Multiset.cons_swap]`.
+-/
 theorem heckeRatios_S (p : ℕ) (hp : p.Prime) (τ : ℍ) :
     heckeRatios ⟨p, hp.pos⟩ (ModularGroup.S • τ) = heckeRatios ⟨p, hp.pos⟩ τ := by
   have := Fact.mk hp
@@ -189,6 +257,15 @@ theorem heckeRatios_S (p : ℕ) (hp : p.Prime) (τ : ℍ) :
       exact ratio_S n τ (a + 1) (negInvMod (m + 1) (a + 1)) k hk
   rw [e1, e2, hA, hB, hmid, Multiset.cons_swap]
 
+/- English proof (translation)
+Introduce `p hp γ τ`. Set `H : Subgroup SL(2, ℤ)` to `{ carrier := {g | ∀ τ : ℍ, heckeRatios ⟨p, hp.pos⟩ (g • τ) = heckeRatios ⟨p, hp.pos⟩ τ} mul_mem' := by`. Introduce `a b ha hb τ`. Simplify using `only [Set.mem_ofPred_eq] at ha hb`. Rewrite using `[mul_smul, ha, hb]`.
+
+Use the proof step `one_mem' := by intro τ; simp`. Use the proof step `inv_mem' := by`. Introduce `a ha τ`. Simplify using `only [Set.mem_ofPred_eq] at ha`. Rewrite using `[← ha (a⁻¹ • τ), smul_inv_smul] }`.
+
+Establish `hle : Subgroup.closure {ModularGroup.S, ModularGroup.T} ≤ H`. Rewrite using `[Subgroup.closure_le]`. Introduce `g hg`. Break down `hg with rfl | rfl` into its components or cases. Conclude with `heckeRatios_S p hp`.
+
+Conclude with `heckeRatios_alt _`. Establish `hγ : γ ∈ H` using `hle (by rw [SpecialLinearGroup.SL2Z_generators]; trivial)`. Conclude with `hγ τ`.
+-/
 theorem proof : HeckeRatioInvariant.Statement := by
   intro p hp γ τ
   let H : Subgroup SL(2, ℤ) :=

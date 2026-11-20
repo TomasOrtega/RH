@@ -17,6 +17,9 @@ def eigSub (μ : O →+* Module.End T V) (τ : O →+* T) : Submodule T V where
   zero_mem' c := by simp
   smul_mem' r v hv c := by simp only [Set.mem_setOf_eq, map_smul, hv c, smul_comm r]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_eigSub {μ : O →+* Module.End T V} {τ : O →+* T} {v : V} :
     v ∈ eigSub μ τ ↔ ∀ c, μ c v = τ c • v := Iff.rfl
 
@@ -29,6 +32,9 @@ def matAct {O B T : Type} [CommRing O] [CommRing B] [CommRing T] {n : ℕ} (M : 
     (f : B →+* T) : O →+* Module.End T (Fin n → T) :=
   (Matrix.toLinAlgEquiv' (R := T) (n := Fin n)).toRingEquiv.toRingHom.comp (f.mapMatrix.comp M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem matAct_apply {O B T : Type} [CommRing O] [CommRing B] [CommRing T] {n : ℕ}
     (M : O →+* Matrix (Fin n) (Fin n) B) (f : B →+* T) (c : O) (v : Fin n → T) :
     matAct M f c v = ((M c).map f).mulVec v := rfl

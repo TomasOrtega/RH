@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ModelsAreCoverSe
 
 namespace GlobalTheory.CoverModel
 
+/- English proof (translation)
+The claim follows from `modelsAreCoverSeries`.
+-/
 theorem modelsAreCoverSeries_all :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules →
       ∀ D : Formalism.BasicNotions.D7, GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D :=

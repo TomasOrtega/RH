@@ -30,10 +30,20 @@ variable (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (Xo : Moduli Dw l)
 def nu (g : LevelAut Dw l) : SABMap Xo.univ.t Xo.univ.t (GlobalTheory.CompLevelStab.mv hpq hA Xo g) :=
   (GlobalTheory.CompLevelStab.mv_spec hpq hA Xo g).choose
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompLevelStab.mv_spec hpq hA Xo g).choose_spec.2`.
+-/
 theorem nu_spec (g : LevelAut Dw l) :
     IsLevMove (GlobalTheory.CompLevelStab.mv hpq hA Xo g) (nu hpq hA Xo g) (liftLa g) LinearMap.id :=
   (GlobalTheory.CompLevelStab.mv_spec hpq hA Xo g).choose_spec.2
 
+/- English proof (translation)
+Take `⟨μ, hμ, -⟩` from `(GlobalTheory.T.framedPointMove_calculus E H Dw l Xo c).2.1 _ _ (nu hpq hA Xo g) (nu hpq hA Xo h)`. Establish `hg` using `nu_spec hpq hA Xo g`. Establish `hh` using `nu_spec hpq hA Xo h`. Establish `hc : IsLevMove (GlobalTheory.CompLevelStab.mv hpq hA Xo g ≫ GlobalTheory.CompLevelStab.mv hpq hA Xo h) μ (liftLa (g * h)) LinearMap.id`. Use `⟨?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hh.1, hg.1]`. Rewrite using `[GlobalTheory.LevelActionLaws.eta_congr Xo (GlobalTheory.LevelActionLaws.liftLa_mul_sub g h a), hμ, ← Category.assoc, hg.2.1, Category.assoc, hh.2.1, Category.assoc]`. Establish `e : (LinearMap.id : Dw.La →ₗ[𝓞 E] Dw.La) a = (LinearMap.id : Dw.La →ₗ[𝓞 E] Dw.La) ((LinearMap.id : Dw.La →ₗ[𝓞 E] Dw.La) a)` using `rfl`. Rewrite using `[e, hμ, ← Category.assoc, hg.2.2, Category.assoc, hh.2.2, Category.assoc]`. Use `(GlobalTheory.CompLevelStab.mv_spec hpq hA Xo g).choose_spec.1` as an intermediate fact.
+
+Use `(GlobalTheory.CompLevelStab.mv_spec hpq hA Xo h).choose_spec.1` as an intermediate fact. Rewrite using `[← hμ]`. Conclude with `(GlobalTheory.LevelActionLaws.move_unique hpq hA Xo c (g * h) (GlobalTheory.CompLevelStab.mv_spec hpq hA Xo (g * h)).choose_spec.1 inferInstance (nu_spec hpq hA Xo (g * h)) hc).2`.
+-/
 theorem nu_mul (c : Coeff l) (g h : LevelAut Dw l) : (nu hpq hA Xo (g * h)).φ = (nu hpq hA Xo g).φ ≫ (nu hpq hA Xo h).φ := by
   obtain ⟨μ, hμ, -⟩ := (GlobalTheory.T.framedPointMove_calculus E H Dw l Xo c).2.1 _ _ (nu hpq hA Xo g) (nu hpq hA Xo h)
   have hg := nu_spec hpq hA Xo g
@@ -60,6 +70,9 @@ section Lift
 variable {hpq : 1 ≤ Dw.p + Dw.q} {hA : l.A.Coprime l.M} {Xo : Moduli Dw l} {c : Coeff l}
 variable (TF : TorFlag Xo c) (Z : Comp Xo c)
 
+/- English proof (translation)
+The claim follows from `j₀_ι TF.Y Z`.
+-/
 theorem j₀_ι' : j₀ TF.Y Z ≫ (barComp TF.Y Z).ι = i₀ TF.Y Z ≫ (TF.Y.jQ ≫ pullback.fst _ _) := j₀_ι TF.Y Z
 
 def toF : (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left ⟶ TF.Y.oF.t.G.left :=
@@ -67,23 +80,38 @@ def toF : (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left ⟶ TF.Y.oF.t.G.le
     (pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) ≫ i₀ TF.Y Z) (by
       rw [pullback.condition, Category.assoc]; exact congrArg (_ ≫ ·) (j₀_ι' TF Z))
 
+/- English proof (translation)
+The claim follows from `TF.Y.m.cart.1.lift_fst _ _ _`.
+-/
 theorem toF_m : toF TF Z ≫ TF.Y.m.φ = pullback.fst TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) :=
   TF.Y.m.cart.1.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `TF.Y.m.cart.1.lift_snd _ _ _`.
+-/
 theorem toF_hom : toF TF Z ≫ TF.Y.oF.t.G.hom =
     pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) ≫ i₀ TF.Y Z :=
   TF.Y.m.cart.1.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `IsGrpPullback.cancel TF.Y.m.cart ((GlobalTheory.EqvAct.isGrpPullback_pullψ TF Z (j₀ TF.Y Z)).congr (j₀_ι' TF Z) (toF_m TF Z).symm) (toF_hom TF Z)`.
+-/
 theorem toF_cart : IsGrpPullback (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)) TF.Y.oF.t.G (i₀ TF.Y Z) (toF TF Z) :=
   IsGrpPullback.cancel TF.Y.m.cart
     ((GlobalTheory.EqvAct.isGrpPullback_pullψ TF Z (j₀ TF.Y Z)).congr (j₀_ι' TF Z) (toF_m TF Z).symm) (toF_hom TF Z)
 
 def toU : (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left ⟶ Xo.univ.t.G.left := toF TF Z ≫ TF.Y.m0.toSABMap.φ
 
+/- English proof (translation)
+The claim follows from `(toF_cart TF Z).comp TF.Y.m0.cart`.
+-/
 theorem toU_cart : IsGrpPullback (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)) Xo.univ.t.G (i₀ TF.Y Z ≫ pullback.fst _ _)
     (toU TF Z) :=
   (toF_cart TF Z).comp TF.Y.m0.cart
 
+/- English proof (translation)
+The claim follows from `(toU_cart TF Z).1.hom_ext h₂ h₁`.
+-/
 theorem hom_ext' {T : Scheme.{0}} {u u' : T ⟶ (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left}
     (h₁ : u ≫ pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) =
       u' ≫ pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι))
@@ -97,6 +125,9 @@ section Move
 variable (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) {Xo : Moduli Dw l} {c : Coeff l}
 variable (TF : TorFlag Xo c) (Z : Comp Xo c)
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, (nu hpq hA Xo g).cart.1.w, ← Category.assoc, (toU_cart TF Z).1.w, hr, Category.assoc, Category.assoc, Category.assoc, Category.assoc, GlobalTheory.CompLevelStab.mvF_fst]`. Both sides reduce to the same expression.
+-/
 theorem nF_w (g : LevelAut Dw l) (r : V₀ TF.Y Z ⟶ V₀ TF.Y Z)
     (hr : r ≫ i₀ TF.Y Z = i₀ TF.Y Z ≫ GlobalTheory.CompLevelStab.mvF hpq hA Xo c g) :
     (toU TF Z ≫ (nu hpq hA Xo g).φ) ≫ Xo.univ.t.G.hom =
@@ -119,10 +150,16 @@ def nF (g : LevelAut Dw l) (r : V₀ TF.Y Z ⟶ V₀ TF.Y Z)
 variable (g : LevelAut Dw l) (r : V₀ TF.Y Z ⟶ V₀ TF.Y Z)
   (hr : r ≫ i₀ TF.Y Z = i₀ TF.Y Z ≫ GlobalTheory.CompLevelStab.mvF hpq hA Xo c g)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem nF_snd : nF hpq hA TF Z g r hr ≫ pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) =
     pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) ≫ r :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Apply `TF.Y.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toF_m]`. Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[Category.assoc, toF_hom, ← Category.assoc, nF_snd, Category.assoc, TF.Y.m0.cart.1.lift_snd]`.
+-/
 theorem nF_toF : nF hpq hA TF Z g r hr ≫ toF TF Z = TF.Y.m0.cart.1.lift (toU TF Z ≫ (nu hpq hA Xo g).φ)
       (pullback.snd TF.Y.t.G.hom (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι) ≫ r ≫ i₀ TF.Y Z) (nF_w hpq hA TF Z g r hr) := by
   apply TF.Y.m.cart.1.hom_ext
@@ -130,10 +167,16 @@ theorem nF_toF : nF hpq hA TF Z g r hr ≫ toF TF Z = TF.Y.m0.cart.1.lift (toU T
     exact pullback.lift_fst _ _ _
   · rw [Category.assoc, toF_hom, ← Category.assoc, nF_snd, Category.assoc, TF.Y.m0.cart.1.lift_snd]
 
+/- English proof (translation)
+Rewrite using `[toU, ← Category.assoc, nF_toF]`. Conclude with `TF.Y.m0.cart.1.lift_fst _ _ _`.
+-/
 theorem nF_toU : nF hpq hA TF Z g r hr ≫ toU TF Z = toU TF Z ≫ (nu hpq hA Xo g).φ := by
   rw [toU, ← Category.assoc, nF_toF]
   exact TF.Y.m0.cart.1.lift_fst _ _ _
 
+/- English proof (translation)
+Use `IsGrpPullback.cancel (toU_cart TF Z) (((toU_cart TF Z).comp (nu hpq hA Xo g).cart).congr ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← GlobalTheory.CompLevelStab.mvF_fst, ← Category.assoc, ← hr, Category.assoc]`. Conclude with `(nF_toU hpq hA TF Z g r hr).symm`. Conclude with `nF_snd hpq hA TF Z g r hr`.
+-/
 theorem nF_cart : IsGrpPullback (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)) (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)) r
     (nF hpq hA TF Z g r hr) := by
   refine IsGrpPullback.cancel (toU_cart TF Z) (((toU_cart TF Z).comp (nu hpq hA Xo g).cart).congr ?_ ?_) ?_
@@ -148,6 +191,9 @@ section Laws
 variable (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) {Xo : Moduli Dw l} {c : Coeff l}
 variable (TF : TorFlag Xo c) (Z : Comp Xo c)
 
+/- English proof (translation)
+Apply `TF.Y.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toF_m, Category.assoc, TF.Y.m.act a, ← Category.assoc, toF_m]`. Conclude with `GlobalTheory.EqvAct.pullAct_pullψ TF Z (j₀ TF.Y Z) a`. Rewrite using `[Category.assoc, toF_hom, Category.assoc, Over.w (TF.Y.oF.t.act.act a), toF_hom, ← Category.assoc]`. Conclude with `congrArg (· ≫ i₀ TF.Y Z) (Over.w ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a))`.
+-/
 theorem act_toF (a : 𝓞 E) : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a).left ≫ toF TF Z =
     toF TF Z ≫ (TF.Y.oF.t.act.act a).left := by
   apply TF.Y.m.cart.1.hom_ext
@@ -156,6 +202,9 @@ theorem act_toF (a : 𝓞 E) : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z))
   · rw [Category.assoc, toF_hom, Category.assoc, Over.w (TF.Y.oF.t.act.act a), toF_hom, ← Category.assoc]
     exact congrArg (· ≫ i₀ TF.Y Z) (Over.w ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a))
 
+/- English proof (translation)
+Rewrite using `[toU, ← Category.assoc, act_toF, Category.assoc, TF.Y.m0.toSABMap.act a, Category.assoc]`.
+-/
 theorem act_toU (a : 𝓞 E) : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a).left ≫ toU TF Z =
     toU TF Z ≫ (Xo.univ.t.act.act a).left := by
   rw [toU, ← Category.assoc, act_toF, Category.assoc, TF.Y.m0.toSABMap.act a, Category.assoc]
@@ -163,6 +212,11 @@ theorem act_toU (a : 𝓞 E) : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z))
 variable (g : LevelAut Dw l) (r : V₀ TF.Y Z ⟶ V₀ TF.Y Z)
   (hr : r ≫ i₀ TF.Y Z = i₀ TF.Y Z ≫ GlobalTheory.CompLevelStab.mvF hpq hA Xo c g)
 
+/- English proof (translation)
+Apply `hom_ext' TF Z` to reduce the goal to its premises. Rewrite using `[Category.assoc, nF_snd, Category.assoc]`. Establish `e` using `Over.w ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a)`. Use `erw [e, ← Category.assoc, e]`. Conclude with `(nF_snd hpq hA TF Z g r hr).symm`.
+
+Establish `e1 : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a).left ≫ nF hpq hA TF Z g r hr ≫ toU TF Z = toU TF Z ≫ (Xo.univ.t.act.act a).left ≫ (nu hpq hA Xo g).φ`. Rewrite using `[nF_toU, ← Category.assoc, act_toU, Category.assoc]`. Establish `e2 : (nF hpq hA TF Z g r hr ≫ ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a).left) ≫ toU TF Z = toU TF Z ≫ (nu hpq hA Xo g).φ ≫ (Xo.univ.t.act.act a).left`. Rewrite using `[Category.assoc, act_toU, ← Category.assoc, nF_toU, Category.assoc]`. Rewrite using `[Category.assoc, e1, e2, (nu hpq hA Xo g).act a]`.
+-/
 theorem act_nF (a : 𝓞 E) : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a).left ≫ nF hpq hA TF Z g r hr =
     nF hpq hA TF Z g r hr ≫ ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).act a).left := by
   apply hom_ext' TF Z
@@ -178,6 +232,11 @@ theorem act_nF (a : 𝓞 E) : ((GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)).
       rw [Category.assoc, act_toU, ← Category.assoc, nF_toU, Category.assoc]
     rw [Category.assoc, e1, e2, (nu hpq hA Xo g).act a]
 
+/- English proof (translation)
+Establish `hF : w ≫ toF TF Z = i₀ TF.Y Z ≫ (TF.Y.oF.eta b).left`. Apply `TF.Y.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, toF_m, Category.assoc]`. Conclude with `hb`. Rewrite using `[Category.assoc, toF_hom, ← Category.assoc] erw [hw]`.
+
+Rewrite using `[Category.id_comp, Category.assoc, Over.w (TF.Y.oF.eta b)]`. Conclude with `(Category.comp_id _).symm`. Rewrite using `[toU, ← Category.assoc, hF, Category.assoc, TF.Y.m0.eta b]`.
+-/
 theorem sec_toU (b : Dw.La) (w : V₀ TF.Y Z ⟶ (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left)
     (hw : w ≫ (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).hom = 𝟙 _)
     (hb : w ≫ GlobalTheory.EqvAct.pullψ TF Z (j₀ TF.Y Z) = i₀ TF.Y Z ≫ (TF.Y.oF.eta b).left ≫ TF.Y.m.φ) :
@@ -194,6 +253,15 @@ theorem sec_toU (b : Dw.La) (w : V₀ TF.Y Z ⟶ (GlobalTheory.EqvAct.pullG TF Z
 
 end Laws
 
+/- English proof (translation)
+Introduce `_ E _ _ _ H Dw l Xo c TF Z hpq hA Γ _ ι ρ hρ`. Use `⟨fun γ => nF hpq hA TF Z (ι γ)⁻¹ (ρ γ).hom (hρ γ), ⟨fun γ => nF_cart hpq hA TF Z _ _ (hρ γ), fun γ a => act_nF hpq hA TF Z _ _ (hρ γ) a, fun γ₁ γ₂ => ?_⟩, fun γ a b hab w w' hw hw' hb ha => ?_⟩` and prove the remaining obligations. Apply `hom_ext' TF Z` to reduce the goal to its premises. Rewrite using `[nF_snd, Category.assoc, nF_snd, ← Category.assoc, nF_snd, Category.assoc, map_mul, Aut.Aut_mul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[nF_toU, Category.assoc, nF_toU, ← Category.assoc, nF_toU, Category.assoc, ← nu_mul hpq hA Xo c, map_mul, mul_inv_rev]`. Apply `hom_ext' TF Z` to reduce the goal to its premises. Rewrite using `[Category.assoc, nF_snd, ← Category.assoc, Category.assoc (ρ γ).hom] erw [hw, hw']`. Rewrite using `[Category.id_comp, Category.comp_id]`. Establish `hq : b - liftLa (ι γ)⁻¹ a ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)`.
+
+Rewrite using `[← Submodule.Quotient.eq]`. Conclude with `hab.trans (liftLa_spec (ι γ)⁻¹ a).symm`. Establish `L : (w ≫ nF hpq hA TF Z (ι γ)⁻¹ (ρ γ).hom (hρ γ)) ≫ toU TF Z = i₀ TF.Y Z ≫ pullback.fst _ _ ≫ (Xo.univ.eta b).left ≫ (nu hpq hA Xo (ι γ)⁻¹).φ`. Rewrite using `[Category.assoc, nF_toU, ← Category.assoc, sec_toU TF Z b w hw hb, Category.assoc, Category.assoc]`. Establish `R : ((ρ γ).hom ≫ w') ≫ toU TF Z = (ρ γ).hom ≫ i₀ TF.Y Z ≫ pullback.fst _ _ ≫ (Xo.univ.eta a).left`.
+
+Rewrite using `[Category.assoc, sec_toU TF Z a w' hw' ha]`. Rewrite using `[L, R, GlobalTheory.LevelActionLaws.eta_congr Xo hq, (nu_spec hpq hA Xo (ι γ)⁻¹).2.1 a, ← Category.assoc (pullback.fst _ _), ← GlobalTheory.CompLevelStab.mvF_fst]`. Simplify using `only [← Category.assoc]`. Rewrite using `[← hρ γ]`.
+-/
 theorem eqvAct_interior : Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A.Coprime l.M) (Γ : Type) [Group Γ] (ι : Γ →* LevelAut Dw l) (ρ : Γ →* Aut (V₀ TF.Y Z)), (∀ γ : Γ, (ρ γ).hom ≫ i₀ TF.Y Z = i₀ TF.Y Z ≫ GlobalTheory.CompLevelStab.mvF hpq hA Xo c (ι γ)⁻¹) → ∃ n : Γ → ((GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left ⟶ (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)).left), GlobalTheory.EqvAct.IsEqvAct ρ (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)) (GlobalTheory.EqvAct.pullAct TF Z (j₀ TF.Y Z)) n ∧ GlobalTheory.EqvAct.MovesEta TF Z ι ρ (𝟙 (V₀ TF.Y Z)) (GlobalTheory.EqvAct.pullG TF Z (j₀ TF.Y Z)) (GlobalTheory.EqvAct.pullψ TF Z (j₀ TF.Y Z)) n := by
   intro _ E _ _ _ H Dw l Xo c TF Z hpq hA Γ _ ι ρ hρ
   refine ⟨fun γ => nF hpq hA TF Z (ι γ)⁻¹ (ρ γ).hom (hρ γ),

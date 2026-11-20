@@ -20,6 +20,11 @@ def swapTD (P Q R S : ι → ℕ) :
     (⨂[ℂ] w : ι, Formalism.BasicNotions.TH.Pol (R w) (S w) (P w) (Q w)) ≃ₗ[ℂ] ⨂[ℂ] w : ι, Formalism.BasicNotions.TH.Pol (P w) (Q w) (R w) (S w) :=
   PiTensorProduct.congr fun w => GlobalTheory.RealLift.LieFirstPf.swapE (P w) (Q w) (R w) (S w)
 
+/- English proof (translation)
+Establish `e : (swapTD P Q R S).toLinearMap ∘ₗ atPl w L' = atPl w L ∘ₗ (swapTD P Q R S).toLinearMap`. Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, atPl, swapTD, PiTensorProduct.map_tprod, PiTensorProduct.congr_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = w`. Substitute `hi` using the available equality. Simplify using `[h]`. Simplify using `[Function.update_of_ne hi]`. Conclude with `LinearMap.congr_fun e T`.
+-/
 theorem swapTD_atPl (w : ι) (L' : Module.End ℂ (Formalism.BasicNotions.TH.Pol (R w) (S w) (P w) (Q w)))
     (L : Module.End ℂ (Formalism.BasicNotions.TH.Pol (P w) (Q w) (R w) (S w)))
     (h : ∀ f, GlobalTheory.RealLift.LieFirstPf.swapE (P w) (Q w) (R w) (S w) (L' f) =
@@ -37,6 +42,9 @@ theorem swapTD_atPl (w : ι) (L' : Module.End ℂ (Formalism.BasicNotions.TH.Pol
     · simp [Function.update_of_ne hi]
   exact LinearMap.congr_fun e T
 
+/- English proof (translation)
+Simplify using `only [sumPl, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun w _ => swapTD_atPl w (L' w) (L w) (h w) T`.
+-/
 theorem swapTD_sumPl (L' : ∀ w, Module.End ℂ (Formalism.BasicNotions.TH.Pol (R w) (S w) (P w) (Q w)))
     (L : ∀ w, Module.End ℂ (Formalism.BasicNotions.TH.Pol (P w) (Q w) (R w) (S w)))
     (h : ∀ w f, GlobalTheory.RealLift.LieFirstPf.swapE (P w) (Q w) (R w) (S w) (L' w f) =
@@ -48,6 +56,15 @@ theorem swapTD_sumPl (L' : ∀ w, Module.End ℂ (Formalism.BasicNotions.TH.Pol 
 
 end Tensor
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d d' a b A C Φ om hCM hψ hfr hΦ hdd hW`. Establish `hfr' : FramedD τ JB JA b a C A` using `⟨by rw [mul_comm]; exact hfr.1, hfr.2.2, hfr.2.1⟩`. Establish `hΦ' : IsFockMapD ψ τ d' C A (Φ ∘ₗ (swapTD P Q R S).toLinearMap)`. Use `⟨hΦ.1.comp (swapTD P Q R S).injective, fun u hu c hc T => ?_⟩` and prove the remaining obligations. Establish `hu' : At (evI F) uᵀ` using `fun x hx => by rw [← Matrix.transpose_smul, hu x hx, Matrix.transpose_zero]`.
+
+Establish `hc' : ∀ w, uᵀ.map (piInf (τ w)) = A w * (c w)ᵀ * (C w)ᵀ` using `fun w => by`. Rewrite using `[Matrix.transpose_map, hc w]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `key` using `hΦ.2 uᵀ hu' (fun w => (c w)ᵀ) hc' (swapTD P Q R S T)`. Establish `hr : ∀ t : ℝ, d'.rho ψ (realAd F t • u) = d.rho ψ (realAd F t • uᵀ)` using `fun t => by show schr ψ (d'.e _) = schr ψ (d.e _)`.
+
+Rewrite using `[← hdd, Matrix.transpose_smul, Matrix.transpose_transpose]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hr]`. Rewrite using `[swapTD_sumPl (fun w => heisOp (c w)) (fun w => heisOp (c w)ᵀ) (fun w f => GlobalTheory.RealLift.LieFirstPf.swapE_heisOp (c w) f)]` and apply the resulting hypothesis. Take `⟨c, hA⟩` from `GlobalTheory.T.howeSplitting_acts_fockAction_plus_traceMultiples F E σ β α κ R S P Q ψ τ JB JA d' b a C A _ om hCM hψ hfr' hΦ' hW`. Use `⟨c, fun γ hγ Y hY T => ?_⟩` and prove the remaining obligations.
+
+Establish `key` using `hA γ hγ Y hY ((swapTD P Q R S).symm T)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at key`. Rewrite using `[swapTD_sumPl (fun w => fockAct2 (R w) (S w) (P w) (Q w) (Y w) + (c w * (Y w).trace) • 1) (fun w => fockAct1 (P w) (Q w) (R w) (S w) (Y w) + (c w * (Y w).trace) • 1) (fun w f => by` and apply the resulting hypothesis. Apply the tactic sequence `simp only [LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul, GlobalTheory.RealLift.LieFirstPf.swapE_apply, (GlobalTheory.FockSwap.swap_symmetry (R w) (S w) (P w) (Q w)).2.1]),`. Use the proof step `LinearEquiv.apply_symm_apply] at key`.
+-/
 theorem lieFirstD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (α β κ : Type) [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : InfinitePlace F → ℕ)
     (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))

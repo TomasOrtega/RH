@@ -9,14 +9,23 @@ open scoped Real
 
 namespace LocUnifAnalyticProof
 
+/- English proof (translation)
+Simplify using `[torusMap, abs_of_nonneg hr]`.
+-/
 theorem norm_torusMap_sub {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r) (θ : Fin D → ℝ)
     (j : Fin D) : ‖torusMap c (fun _ => r) θ j - c j‖ = r := by
   simp [torusMap, abs_of_nonneg hr]
 
+/- English proof (translation)
+Unfold `torusMap`. Use `fun_prop`.
+-/
 theorem continuous_torusMap' {D : ℕ} (c : Fin D → ℂ) (R : Fin D → ℝ) :
     Continuous (torusMap c R) := by
   unfold torusMap; fun_prop
 
+/- English proof (translation)
+The claim follows from `| 0, g, c, r, _, _, z, _ => by simp [Subsingleton.elim z c] | D + 1, g, c, r, hc, hd, z, hz => by have hr : 0 < r := lt_of_le_of_lt (norm_nonneg _) (hz 0) have mem : ∀ (t : ℂ) (y : Fin D → ℂ), ‖t - c 0‖ ≤ r → (∀ j, ‖y j - c (Fin.succ j)‖ ≤ r) → (Fin.cons t y : Fin (D + 1) → ℂ) ∈ …`.
+-/
 theorem cauchy_polydisc : ∀ (D : ℕ) (g : (Fin D → ℂ) → ℂ) (c : Fin D → ℂ) (r : ℝ),
     ContinuousOn g {w | ∀ j, ‖w j - c j‖ ≤ r} →
     (∀ w ∈ {w : Fin D → ℂ | ∀ j, ‖w j - c j‖ ≤ r}, ∀ j,
@@ -99,10 +108,16 @@ def torusSet {D : ℕ} (c : Fin D → ℂ) (r : ℝ) : Set (Fin D → ℂ) :=
 instance {D : ℕ} (c : Fin D → ℂ) (r : ℝ) : CompactSpace (torusSet c r) :=
   isCompact_iff_compactSpace.mp (isCompact_univ_pi fun _ => isCompact_sphere _ _)
 
+/- English proof (translation)
+Introduce `j _` and use `by rw [mem_sphere, dist_eq_norm]; exact norm_torusMap_sub c hr θ j`.
+-/
 theorem torusMap_mem {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r) (θ : Fin D → ℝ) :
     torusMap c (fun _ => r) θ ∈ torusSet c r := fun j _ => by
   rw [mem_sphere, dist_eq_norm]; exact norm_torusMap_sub c hr θ j
 
+/- English proof (translation)
+The claim follows from `κ.continuous.comp ((continuous_torusMap' c _).subtype_mk _)`.
+-/
 theorem continuous_torusMap_comp {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r)
     (κ : C(torusSet c r, ℂ)) :
     Continuous fun θ : Fin D → ℝ => κ ⟨torusMap c (fun _ => r) θ, torusMap_mem c hr θ⟩ :=
@@ -125,10 +140,36 @@ noncomputable def boxIntegral {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 �
     (fun κ => (norm_setIntegral_le_of_norm_le_const (μ := (volume : Measure (Fin D → ℝ)))
         measure_Icc_lt_top fun θ _ => κ.norm_coe_le_norm _).trans_eq (mul_comm _ _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem boxIntegral_apply {D : ℕ} (c : Fin D → ℂ) {r : ℝ} (hr : 0 ≤ r) (κ : C(torusSet c r, ℂ)) :
     boxIntegral c hr κ = ∫ θ in Icc (0 : Fin D → ℝ) (fun _ => 2 * π),
         κ ⟨torusMap c (fun _ => r) θ, torusMap_mem c hr θ⟩ := rfl
 
+/- English proof (translation)
+Set `ψ : Fin D → C(torusSet c r, ℂ)` to `fun j => ⟨fun w => (w : Fin D → ℂ) j, (continuous_apply j).comp continuous_subtype_val⟩`. Set `u : Fin D → (Fin D → ℂ) → C(torusSet c r, ℂ)` to `fun j z => ψ j - algebraMap ℂ C(torusSet c r, ℂ) (z j)`. Establish `hu_apply : ∀ j z (w : torusSet c r), u j z w = (w : Fin D → ℂ) j - z j`. Introduce `j z w`. Simplify using `[u, ψ]`.
+
+Establish `hunit : ∀ z : Fin D → ℂ, (∀ j, ‖z j - c j‖ < r) → ∀ j, IsUnit (u j z)`. Introduce `z hz j`. Rewrite using `[ContinuousMap.isUnit_iff_forall_ne_zero]`. Introduce `w h`. Rewrite `h` using `[hu_apply, sub_eq_zero]`.
+
+Establish `hw` using `w.2 j (mem_univ _)`. Rewrite `hw` using `[mem_sphere, dist_eq_norm, h]`. Combine the linear relations using `[hz j]`. Establish `hinv_apply : ∀ z : Fin D → ℂ, (∀ j, ‖z j - c j‖ < r) → ∀ j (w : torusSet c r), Ring.inverse (u j z) w = ((w : Fin D → ℂ) j - z j)⁻¹`. Introduce `z hz j w`.
+
+Take `⟨U, hU⟩` from `hunit z hz j`. Rewrite using `[← hu_apply, ← hU, Ring.inverse_unit]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← ContinuousMap.mul_apply, Units.inv_mul]`. Both sides reduce to the same expression.
+
+Establish `hcT : ∀ w ∈ torusSet c r, w ∈ {w : Fin D → ℂ | ∀ j, ‖w j - c j‖ ≤ r}`. Introduce `w hw j`. Use `hw j (mem_univ _)` as an intermediate fact. Rewrite `this` using `[mem_sphere, dist_eq_norm]`. Conclude with `this.le`.
+
+Set `G : C(torusSet c r, ℂ)` to `⟨fun w => (∏ j, ((w : Fin D → ℂ) j - c j) * I) * g w, by`. Use `Continuous.mul (continuous_finsetProd _ fun j _ => (((continuous_apply j).comp continuous_subtype_val).sub continuous_const).mul continuous_const) ?_` and prove the remaining obligations. Conclude with `hc.comp_continuous continuous_subtype_val fun w => hcT w w.2⟩`. Establish `hc0 : ∀ j, ‖c j - c j‖ < r` using `fun j => by simpa using hr`. Establish `han : AnalyticAt ℂ (fun z => (2 * π * I)⁻¹ ^ D * boxIntegral c hr.le ((∏ j, Ring.inverse (u j z)) * G)) c`.
+
+Use `analyticAt_const.mul (((boxIntegral c hr.le).analyticAt _).comp ?_)` and prove the remaining obligations. Use `AnalyticAt.mul ?_ analyticAt_const` and prove the remaining obligations. Use `Finset.analyticAt_fun_prod _ fun j _ => ?_` and prove the remaining obligations. Take `⟨U, hU⟩` from `hunit c hc0 j`. Establish `hlin : AnalyticAt ℂ (u j) c`.
+
+Establish `h2 : AnalyticAt ℂ (fun z : Fin D → ℂ => algebraMap ℂ C(torusSet c r, ℂ) (z j)) c` using `((algebraMapCLM ℂ C(torusSet c r, ℂ)).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) j)).analyticAt c`. Conclude with `analyticAt_const.sub h2`. Conclude with `(analyticAt_inverse (𝕜 := ℂ) U).comp_of_eq hlin hU.symm`. Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds c hr] with z hz`.
+
+Establish `hz' : ∀ j, ‖z j - c j‖ < r`. Introduce `j`. Rewrite `hz` using `[mem_ball, dist_eq_norm]`. Conclude with `lt_of_le_of_lt (norm_le_pi_norm (z - c) j) hz`. Establish `key` using `cauchy_polydisc D g c r hc hd z hz'`.
+
+Establish `hT : boxIntegral c hr.le ((∏ j, Ring.inverse (u j z)) * G) = ∯ w in T(c, fun _ => r), (∏ j, (w j - z j)⁻¹) * g w`. Rewrite using `[boxIntegral_apply, torusIntegral]`. Use `integral_congr_ae (Eventually.of_forall fun θ => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousMap.mul_apply, ContinuousMap.prod_apply, hinv_apply z hz', smul_eq_mul]`. Simplify using `[G, torusMap]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT, ← key, inv_pow, inv_mul_cancel_left₀ (pow_ne_zero _ two_pi_I_ne_zero)]`.
+-/
 theorem analyticAt_of_sep {D : ℕ} (g : (Fin D → ℂ) → ℂ) (c : Fin D → ℂ) {r : ℝ} (hr : 0 < r)
     (hc : ContinuousOn g {w | ∀ j, ‖w j - c j‖ ≤ r})
     (hd : ∀ w ∈ {w : Fin D → ℂ | ∀ j, ‖w j - c j‖ ≤ r}, ∀ j,
@@ -195,6 +236,15 @@ theorem analyticAt_of_sep {D : ℕ} (g : (Fin D → ℂ) → ℂ) (c : Fin D →
     ring
   rw [hT, ← key, inv_pow, inv_mul_cancel_left₀ (pow_ne_zero _ two_pi_I_ne_zero)]
 
+/- English proof (translation)
+Introduce `D V f g hV hf hlim c hc`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hV c hc`. Establish `hr : 0 < ε / 2` using `half_pos hε`. Establish `hsub : {w : Fin D → ℂ | ∀ j, ‖w j - c j‖ ≤ ε / 2} ⊆ V`. Introduce `w hw`.
+
+Apply `hball` to reduce the goal to its premises. Rewrite using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgc : ContinuousOn g V` using `hlim.continuousOn (Frequently.of_forall fun n => (hf n).continuousOn)`. Use `analyticAt_of_sep g c hr (hgc.mono hsub) fun w hw j => ?_` and prove the remaining obligations.
+
+Establish `hwV` using `hsub hw`. Set `s : ℂ → (Fin D → ℂ)` to `fun t => Function.update w j t`. Establish `hs : Continuous s` using `continuous_const.update j continuous_id`. Establish `hS : IsOpen (s ⁻¹' V)` using `hV.preimage hs`. Establish `hmem : w j ∈ s ⁻¹' V` using `by simpa [s] using hwV`.
+
+Establish `hd : DifferentiableOn ℂ (g ∘ s) (s ⁻¹' V)`. Use `(hlim.comp s (mapsTo_preimage s V) hs.continuousOn).differentiableOn ?_ hS` and prove the remaining obligations. Use `Eventually.of_forall fun n t ht => ?_` and prove the remaining obligations. Conclude with `((hf n (s t) ht).differentiableAt.comp t (hasFDerivAt_update (𝕜 := ℂ) w (i := j) t).differentiableAt).differentiableWithinAt`. Conclude with `hd.differentiableAt (hS.mem_nhds hmem)`.
+-/
 theorem _root_.GroundTheory.Heights₂.Heights.EffectiveHS.LocUnifAnalytic.proof :
     LocUnifAnalytic.Statement := by
   intro D V f g hV hf hlim c hc

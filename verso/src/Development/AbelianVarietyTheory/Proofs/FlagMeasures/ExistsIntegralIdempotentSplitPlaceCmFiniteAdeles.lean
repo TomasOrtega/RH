@@ -24,18 +24,29 @@ def singleAt (v : HeightOneSpectrum (𝓞 L⁺)) (t : v.adicCompletion L⁺) : A
     rw [Pi.single_eq_of_ne hw]
     exact zero_mem _)
 
+/- English proof (translation)
+Use `show Pi.single v t v = t`. Conclude with `Pi.single_eq_same v t`.
+-/
 theorem singleAt_self (v : HeightOneSpectrum (𝓞 L⁺)) (t : v.adicCompletion L⁺) :
     singleAt (L := L) v t v = t := by
   classical
   show Pi.single v t v = t
   exact Pi.single_eq_same v t
 
+/- English proof (translation)
+Use `show Pi.single v t w = 0`. Conclude with `Pi.single_eq_of_ne h t`.
+-/
 theorem singleAt_ne {v w : HeightOneSpectrum (𝓞 L⁺)} (t : v.adicCompletion L⁺) (h : w ≠ v) :
     singleAt (L := L) v t w = 0 := by
   classical
   show Pi.single v t w = 0
   exact Pi.single_eq_of_ne h t
 
+/- English proof (translation)
+Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[singleAt_self]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ht`.
+
+Rewrite using `[singleAt_ne t h]`. Conclude with `zero_mem _`.
+-/
 theorem singleAt_int (v : HeightOneSpectrum (𝓞 L⁺)) (t : v.adicCompletion L⁺) (ht : Valued.v t ≤ 1) :
     ∀ w, singleAt (L := L) v t w ∈ w.adicCompletionIntegers L⁺ := by
   intro w
@@ -46,12 +57,72 @@ theorem singleAt_int (v : HeightOneSpectrum (𝓞 L⁺)) (t : v.adicCompletion L
   · rw [singleAt_ne t h]
     exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]`.
+-/
 theorem one_tmul_algebraMap (c : L⁺) :
     ((1 : L) ⊗ₜ[L⁺] algebraMap L⁺ (AFplus L) c : AL L) = (algebraMap L⁺ L c) ⊗ₜ[L⁺] (1 : AFplus L) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]
 
 end Single
 
+/- English proof (translation)
+Introduce `L _ _ _ s`. Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep (L := L) s`. Use `set cc := IsCMField.complexConj L with hcc`. Use `set α := s.i (e : L) with hα`. Use `set β := s.i (cc (e : L)) with hβ`.
+
+Establish `hαβ : Valued.v (α - β) = 1`. Rewrite using `[Valuation.map_sub_eq_of_lt_left _ (he'.trans_eq he.symm)]`. Conclude with `he`. Establish `hne : α - β ≠ 0`. Introduce `h`.
+
+Rewrite `hαβ` using `[h, map_zero]`. Conclude with `zero_ne_one hαβ`. Use `set a := (α - β)⁻¹ with ha`. Use `set b := -β * a with hb`. Establish `hva : Valued.v a = 1` using `by rw [ha, map_inv₀, hαβ, inv_one]`.
+
+Establish `hvb : Valued.v b ≤ 1`. Rewrite using `[hb, map_mul, Valuation.map_neg, hva, mul_one]`. Conclude with `he'.le`. Establish `hT : cc ((e : L) + cc (e : L)) = (e : L) + cc (e : L)`. Rewrite using `[map_add, IsCMField.complexConj_apply_apply, add_comm]`.
+
+Establish `hN : cc ((e : L) * cc (e : L)) = (e : L) * cc (e : L)`. Rewrite using `[map_mul, IsCMField.complexConj_apply_apply, mul_comm]`. Set `T : maximalRealSubfield L` to `⟨(e : L) + cc (e : L), (IsCMField.complexConj_eq_self_iff L _).1 hT⟩`. Set `N : maximalRealSubfield L` to `⟨(e : L) * cc (e : L), (IsCMField.complexConj_eq_self_iff L _).1 hN⟩`. Establish `hTL : algebraMap (maximalRealSubfield L) L T = (e : L) + cc (e : L)` using `rfl`.
+
+Establish `hNL : algebraMap (maximalRealSubfield L) L N = (e : L) * cc (e : L)` using `rfl`. Establish `hTv : algebraMap (maximalRealSubfield L) (s.v.adicCompletion (maximalRealSubfield L)) T = α + β`. Rewrite using `[hα, hβ, ← map_add, ← hTL, AlgHom.commutes]`. Establish `hNv : algebraMap (maximalRealSubfield L) (s.v.adicCompletion (maximalRealSubfield L)) N = α * β`. Rewrite using `[hα, hβ, ← map_mul, ← hNL, AlgHom.commutes]`.
+
+Use `set A : AFplus L := singleAt s.v a with hA`. Use `set B : AFplus L := singleAt s.v b with hB`. Set `ι` to `(Algebra.TensorProduct.includeRight : AFplus L →ₐ[maximalRealSubfield L] AL L)`. Establish `hι : ∀ x : AFplus L, ι x = (1 : L) ⊗ₜ x` using `fun x => rfl`. Use `set E : AL L := (e : L) ⊗ₜ[maximalRealSubfield L] (1 : AFplus L) with hEdef`.
+
+Establish `hinv : (α - β) * a = 1` using `mul_inv_cancel₀ hne`. Establish `hE : E * E = ι (algebraMap _ _ T) * E - ι (algebraMap _ _ N)`. Rewrite using `[hι, hι, one_tmul_algebraMap, one_tmul_algebraMap, hEdef, hTL, hNL, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← TensorProduct.sub_tmul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcE : conjAL L E = ι (algebraMap _ _ T) - E`. Rewrite using `[hι, one_tmul_algebraMap, hTL, hEdef, ← TensorProduct.sub_tmul, add_sub_cancel_left]`. Simplify using `[conjAL, Algebra.TensorProduct.map_tmul, hcc]`. Establish `hcι : ∀ x : AFplus L, conjAL L (ι x) = ι x`. Introduce `x`.
+
+Rewrite using `[hι]`. Simplify using `[conjAL, Algebra.TensorProduct.map_tmul]`. Establish `ext' : ∀ x y : AFplus L, (∀ w, x w = y w) → x = y` using `fun x y h => RestrictedProduct.ext _ _ h`. Establish `comp : ∀ w, (A w = 0 ∧ B w = 0) ∨ (w = s.v)`. Introduce `w`.
+
+Distinguish the cases in `h : w = s.v`. Conclude with `Or.inr h`. Conclude with `Or.inl ⟨singleAt_ne a h, singleAt_ne b h⟩`. Establish `hAv : A s.v = a` using `singleAt_self _ _`. Establish `hBv : B s.v = b` using `singleAt_self _ _`.
+
+Establish `hTw : (algebraMap (maximalRealSubfield L) (AFplus L) T) s.v = α + β` using `hTv`. Establish `hNw : (algebraMap (maximalRealSubfield L) (AFplus L) N) s.v = α * β` using `hNv`. Establish `hP : algebraMap _ _ T * A * A + (A * B + A * B) = A`. Apply `ext'` to reduce the goal to its premises. Introduce `w`.
+
+Break down `comp w with ⟨h1, h2⟩ | rfl` into its components or cases. Use `show _ * A w * A w + (A w * B w + A w * B w) = A w`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ * A s.v * A s.v + (A s.v * B s.v + A s.v * B s.v) = A s.v`.
+
+Rewrite using `[hAv, hBv, hb]`. Use `erw [hTw]`. Take the linear combination `a * hinv`. Establish `hQ : B * B - algebraMap _ _ N * A * A = B`. Apply `ext'` to reduce the goal to its premises.
+
+Introduce `w`. Break down `comp w with ⟨h1, h2⟩ | rfl` into its components or cases. Use `show B w * B w - _ * A w * A w = B w`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show B s.v * B s.v - _ * A s.v * A s.v = B s.v`. Rewrite using `[hAv, hBv, hb]`. Use `erw [hNw]`. Take the linear combination `(-β * a) * hinv`. Establish `hR : algebraMap _ _ N * A * A + algebraMap _ _ T * A * B + B * B = 0`.
+
+Apply `ext'` to reduce the goal to its premises. Introduce `w`. Break down `comp w with ⟨h1, h2⟩ | rfl` into its components or cases. Use `show _ * A w * A w + _ * A w * B w + B w * B w = 0`. Rewrite using `[h1, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show _ * A s.v * A s.v + _ * A s.v * B s.v + B s.v * B s.v = 0`. Rewrite using `[hAv, hBv, hb]`. Use `erw [hNw, hTw]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hS : (algebraMap _ _ T * A + (B + B) : AFplus L) s.v = 1` using `by show _ * A s.v + (B s.v + B s.v) = 1`. Rewrite using `[hAv, hBv, hb]`. Use `erw [hTw]`. Take the linear combination `hinv`. Establish `hP'` using `congrArg ι hP`.
+
+Establish `hQ'` using `congrArg ι hQ`. Establish `hR'` using `congrArg ι hR`. Simplify using `only [map_add, map_mul, map_sub, map_zero] at hP' hQ' hR'`. Establish `hpE : s.proj E = α`. Rewrite using `[hEdef]`.
+
+Unfold `SplitPlace.proj`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[map_one, mul_one]`. Establish `hpι : ∀ x : AFplus L, s.proj (ι x) = x s.v`. Introduce `x`.
+
+Rewrite using `[hι]`. Unfold `SplitPlace.proj`. Use `erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression.
+
+Establish `hcomp : ∀ w (x : AFplus L), compAt L w (ι x) = (1 : L) ⊗ₜ (x w)`. Introduce `w x`. Rewrite using `[hι]`. Unfold `compAt`. Use `erw [Algebra.TensorProduct.map_tmul]`.
+
+Both sides reduce to the same expression. Establish `hconjε : conjAL L (E * ι A + ι B) = (ι (algebraMap _ _ T) - E) * ι A + ι B`. Rewrite using `[map_add, map_mul, hcE, hcι, hcι]`. Use `⟨E * ι A + ι B, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `(ι A) ^ 2 * hE + E * hP' + hQ'`.
+
+Rewrite using `[hconjε]`. Take the linear combination `(-(ι A) ^ 2) * hE + hR'`. Use `Subring.add_mem _ (Subring.mul_mem _ (Subring.subset_closure (Or.inl ⟨e, rfl⟩)) (Subring.subset_closure (Or.inr ⟨A, singleAt_int _ _ hva.le, rfl⟩))) (Subring.subset_closure (Or.inr ⟨B, singleAt_int _ _ hvb, rfl⟩))` and prove the remaining obligations. Rewrite using `[map_add, map_mul, hpE, hpι, hpι, hAv, hBv, hb]`. Take the linear combination `hinv`.
+
+Establish `h : E * ι A + ι B + conjAL L (E * ι A + ι B) = ι (algebraMap _ _ T * A + (B + B))`. Rewrite using `[hconjε]`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, hcomp, hS]`.
+
+Both sides reduce to the same expression. Introduce `w hw`. Break down `comp w with ⟨h1, h2⟩ | h` into its components or cases. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, hcomp, hcomp, h1, h2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hconjε, map_add, map_mul, hcomp, hcomp, h1, h2]`. Simplify using the standard rewrite rules. Conclude with `absurd h hw`.
+-/
 theorem exists_idem : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : ReciprocityTheory.Aut.SplitPlace L),
     ∃ ε : ReciprocityTheory.Aut.AL L, ε * ε = ε ∧ ε * ReciprocityTheory.Aut.conjAL L ε = 0 ∧ ε ∈ ReciprocityTheory.Aut.ALint L ∧
       s.proj ε = 1 ∧ ReciprocityTheory.Aut.compAt L s.v (ε + ReciprocityTheory.Aut.conjAL L ε) = 1 ∧

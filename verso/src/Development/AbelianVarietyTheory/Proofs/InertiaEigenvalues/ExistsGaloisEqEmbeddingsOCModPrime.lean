@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.EmbTwo
 
+/- English proof (translation)
+Set `e : E ≃ₐ[F] ψ.fieldRange` to `AlgEquiv.ofInjectiveField ψ`. Use `haveI : Normal F ψ.fieldRange := Normal.of_algEquiv e`. Establish `h` using `AlgHom.fieldRange_of_normal (E := ψ.fieldRange) (φ.comp e.symm.toAlgHom)`. Rewrite using `[← h]`. Use extensionality with `x`.
+
+Simplify using `only [AlgHom.mem_fieldRange, AlgHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩; exact ⟨e y, by simp⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem range_eq_of_normal {F E L : Type} [Field F] [Field E] [Algebra F E] [Normal F E] [Field L]
     [Algebra F L] (φ ψ : E →ₐ[F] L) : φ.fieldRange = ψ.fieldRange := by
   let e : E ≃ₐ[F] ψ.fieldRange := AlgEquiv.ofInjectiveField ψ
@@ -23,6 +28,15 @@ theorem range_eq_of_normal {F E L : Type} [Field F] [Field E] [Algebra F E] [Nor
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hl : 0 < ‖((l : ℕ) : ℂ_[l])‖` using `norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero`. Take `⟨z', hz'⟩` from `(UniformSpace.Completion.denseRange_coe (α := Om l)).exists_dist_lt (y : ℂ_[l]) hl`. Use `set w : ℂ_[l] := (y : ℂ_[l]) - (z' : ℂ_[l]) with hw`. Establish `hw1 : ‖w‖ < ‖((l : ℕ) : ℂ_[l])‖` using `by rw [hw, ← dist_eq_norm]; exact hz'`. Establish `hwO : w ∈ 𝓞_ℂ_[l]` using `(GlobalTheory.RingBasics.mem_OC _).2 (hw1.le.trans GlobalTheory.RingBasics.norm_p_lt.le)`.
+
+Establish `hzO : (z' : ℂ_[l]) ∈ 𝓞_ℂ_[l]`. Establish `: (z' : ℂ_[l]) = (y : ℂ_[l]) - w` using `by rw [hw]; ring`. Rewrite using `[this]`. Conclude with `Subring.sub_mem _ y.2 hwO`. Establish `hq : w / ((l : ℕ) : ℂ_[l]) ∈ 𝓞_ℂ_[l]`.
+
+Rewrite using `[GlobalTheory.RingBasics.mem_OC, norm_div, div_le_one hl]`. Conclude with `hw1.le`. Use `⟨⟨_, hzO⟩, ⟨_, hq⟩, ⟨z', rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_div_cancel₀ _ GlobalTheory.RingBasics.p_ne_zero, hw]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_approx (y : OC l) : ∃ (z : OC l) (w : OC l), (∃ z' : Om l, (z : ℂ_[l]) = (z' : ℂ_[l])) ∧
     y = z + (l : OC l) * w := by
   have hl : 0 < ‖((l : ℕ) : ℂ_[l])‖ := norm_pos_iff.2 GlobalTheory.RingBasics.p_ne_zero
@@ -43,6 +57,33 @@ end GlobalTheory.EmbTwo
 
 open GlobalTheory.EmbTwo in
 
+/- English proof (translation)
+Introduce `l _ K D _ _ θ₁ θ₂ h1 h2 hK`. Set `F` to `FractionRing D`. Establish `i1 : Function.Injective ((algebraMap D F).comp θ₁)` using `(IsFractionRing.injective D F).comp h1`. Establish `i2 : Function.Injective ((algebraMap D F).comp θ₂)` using `(IsFractionRing.injective D F).comp h2`. Set `τ₁ : ℂ_[l] →+* F` to `IsFractionRing.lift i1`.
+
+Set `τ₂ : ℂ_[l] →+* F` to `IsFractionRing.lift i2`. Set `σ₁ : Om l →+* F` to `τ₁.comp (algebraMap (Om l) ℂ_[l])`. Set `σ₂ : Om l →+* F` to `τ₂.comp (algebraMap (Om l) ℂ_[l])`. Establish `hτ₁ : ∀ y : OC l, τ₁ (y : ℂ_[l]) = algebraMap D F (θ₁ y)` using `fun y => IsFractionRing.lift_algebraMap (K := ℂ_[l]) i1 y`. Establish `hτ₂ : ∀ y : OC l, τ₂ (y : ℂ_[l]) = algebraMap D F (θ₂ y)` using `fun y => IsFractionRing.lift_algebraMap (K := ℂ_[l]) i2 y`.
+
+Establish `hO : ∀ r : ↥(OL K), σ₁ ((r : ↥K.1) : Om l) = σ₂ ((r : ↥K.1) : Om l)` using `fun r => by`. Express the relevant statement in the definitionally equal form `τ₁ ((intToOC K r : OC l) : ℂ_[l]) = τ₂ ((intToOC K r : OC l) : ℂ_[l])`. Rewrite using `[hτ₁, hτ₂, hK]`. Establish `hKK : ∀ x : ↥K.1, σ₁ (x : Om l) = σ₂ (x : Om l)` using `fun x => by`. Establish `ha : IsAlgebraic ℤ_[l] x` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥K.1).2 (Algebra.IsAlgebraic.isAlgebraic x)`.
+
+Take `⟨y, hy0, hy⟩` from `ha.exists_integral_multiple`. Set `r : ↥(OL K)` to `⟨y • x, hy⟩`. Set `s : ↥(OL K)` to `algebraMap ℤ_[l] ↥(OL K) y`. Establish `hrs : ((r : ↥K.1) : Om l) = ((s : ↥K.1) : Om l) * (x : Om l)`. Express the relevant statement in the definitionally equal form `((y • x : ↥K.1) : Om l) = _`.
+
+Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hs0 : ((s : ↥K.1) : Om l) ≠ 0`. Introduce `h0`. Apply `hy0` to reduce the goal to its premises.
+
+Establish `: (s : ↥K.1) = 0` using `Subtype.ext h0`. Establish `h3 : algebraMap ℤ_[l] ↥K.1 y = 0` using `this`. Rewrite `h3` using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥K.1, _root_.map_eq_zero]`. Conclude with `(IsFractionRing.injective ℤ_[l] ℚ_[l]) (h3.trans (map_zero _).symm)`. Establish `e1` using `hO r`.
+
+Rewrite `e1` using `[hrs, map_mul, map_mul, hO s]`. Conclude with `mul_left_cancel₀ ((map_ne_zero σ₂).2 hs0) e1`. Use `letI : Algebra ↥K.1 F := (σ₁.comp (algebraMap ↥K.1 (Om l))).toAlgebra`. Set `φ₁ : Om l →ₐ[↥K.1] F` to `{ σ₁ with commutes' := fun _ => rfl }`. Set `φ₂ : Om l →ₐ[↥K.1] F` to `{ σ₂ with commutes' := fun x => (hKK x).symm }`.
+
+Establish `hR` using `range_eq_of_normal φ₁ φ₂`. Set `e₁ : Om l ≃ₐ[↥K.1] φ₁.fieldRange` to `AlgEquiv.ofInjectiveField φ₁`. Establish `hmem : ∀ z, φ₂ z ∈ φ₁.fieldRange` using `fun z => hR ▸ ⟨z, rfl⟩`. Set `g₀ : Om l →ₐ[↥K.1] Om l` to `e₁.symm.toAlgHom.comp (φ₂.codRestrict φ₁.fieldRange.toSubalgebra hmem)`. Establish `hg₀ : ∀ z, σ₁ (g₀ z) = σ₂ z` using `fun z => by`.
+
+Use `congrArg Subtype.val (e₁.apply_symm_apply ⟨φ₂ z, hmem z⟩)` as an intermediate fact. Conclude with `this`. Set `g₁ : Om l ≃ₐ[↥K.1] Om l` to `AlgEquiv.ofBijective g₀ (Algebra.IsAlgebraic.algHom_bijective g₀)`. Set `g : GQ l` to `g₁.restrictScalars ℚ_[l]`. Establish `hgK : g ∈ GK K`.
+
+Rewrite using `[GK, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `g₀.commutes ⟨x, hx⟩`. Establish `hg : ∀ z : Om l, σ₁ (g z) = σ₂ z` using `hg₀`. Establish `c1 : ∀ y : OC l, (∃ z : Om l, (y : ℂ_[l]) = (z : ℂ_[l])) → θ₂ y = θ₁ (Per.σO g y)`.
+
+Introduce and unpack `y ⟨z, hz⟩`. Apply `IsFractionRing.injective D F` to reduce the goal to its premises. Rewrite using `[← hτ₁, ← hτ₂]`. Establish `e2 : ((Per.σO g y : OC l) : ℂ_[l]) = ((g z : Om l) : ℂ_[l])`. Use `(GlobalTheory.RingIface.sigO_coe l g y).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hz, GlobalTheory.RingBasics.σC_coe]`. Rewrite using `[e2, hz]`. Conclude with `(hg z).symm`. Use `⟨⟨g, hgK⟩, c1, fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, w, hz, rfl⟩` from `exists_approx y`.
+
+Use `⟨θ₂ w - θ₁ (Per.σO g w), ?_⟩` and prove the remaining obligations. Use `c1 z hz` as an intermediate fact. Simplify using `only [map_add, map_mul, map_natCast]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.EmbTwo.exists_gal_eq : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (D : Type) [CommRing D] [IsDomain D] (θ₁ θ₂ : OC l →+* D), Function.Injective θ₁ → Function.Injective θ₂ → (∀ r : ↥(OL K), θ₁ (intToOC K r) = θ₂ (intToOC K r)) → ∃ g : ↥(GK K), (∀ y : OC l, (∃ z : Om l, (y : ℂ_[l]) = (z : ℂ_[l])) → θ₂ y = θ₁ (Per.σO (g : GQ l) y)) ∧ ∀ y : OC l, ((l : ℕ) : D) ∣ θ₂ y - θ₁ (Per.σO (g : GQ l) y) := by
   intro l _ K D _ _ θ₁ θ₂ h1 h2 hK
   let F := FractionRing D

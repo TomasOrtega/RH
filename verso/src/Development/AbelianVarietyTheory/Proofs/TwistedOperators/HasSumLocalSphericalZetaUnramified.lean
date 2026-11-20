@@ -30,25 +30,42 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.LocZeta
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hasSum_quotient_of_hasSum_mulEquiv_quotient G H e K K' hK f hf s h`.
+-/
 theorem hasSum_quot_of_equiv {G H : Type} [Group G] [Group H] (e : G ≃* H) {K : Subgroup G} {K' : Subgroup H}
     (hK : ∀ g, g ∈ K ↔ e g ∈ K') {f : G → ℂ} (hf : ∀ g, ∀ k ∈ K, f (g * k) = f g) {s : ℂ}
     (h : HasSum (fun b : H ⧸ K' => f (e.symm b.out)) s) : HasSum (fun a : G ⧸ K => f a.out) s :=
   GlobalTheory.T.hasSum_quotient_of_hasSum_mulEquiv_quotient G H e K K' hK f hf s h
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.sphericalZetaKernelGL_right_invariant_integral E w r N z φ hφ g k hk`.
+-/
 theorem kerGL_mul_right {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r N : ℕ} {z : ℂˣ}
     {φ : GL (Fin r) (w.adicCompletion E) → ℂ} (hφ : KerGL w N z φ) (g k : GL (Fin r) (w.adicCompletion E))
     (hk : k ∈ KGL w r) : φ (g * k) = φ g :=
   GlobalTheory.T.sphericalZetaKernelGL_right_invariant_integral E w r N z φ hφ g k hk
 
+/- English proof (translation)
+Take `⟨d, t, -, ht, k₁, h₁, k₂, h₂, rfl⟩` from `cartanU hU g`. Rewrite using `[mul_assoc (k₁ * t), hφ d t ht k₁ h₁ _ (mul_mem h₂ hk), hφ d t ht k₁ h₁ k₂ h₂]`.
+-/
 theorem kerU_mul_right {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
     {σ : w.adicCompletion E →+* w.adicCompletion E} {ϖ : w.adicCompletion E} {q r N : ℕ} (hU : IsUnramInv ϖ σ q)
     {z : ℂˣ} {φ : GU σ r → ℂ} (hφ : KerU ϖ q N z φ) (g k : GU σ r) (hk : k ∈ KU σ r) : φ (g * k) = φ g := by
   obtain ⟨d, t, -, ht, k₁, h₁, k₂, h₂, rfl⟩ := cartanU hU g
   rw [mul_assoc (k₁ * t), hφ d t ht k₁ h₁ _ (mul_mem h₂ hk), hφ d t ht k₁ h₁ k₂ h₂]
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.conj_ofReal]`.
+-/
 theorem conj_qpow (q : ℕ) (x : ℝ) : starRingEnd ℂ ((q : ℂ) ^ (x : ℂ)) = (q : ℂ) ^ (x : ℂ) := by
   rw [← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.conj_ofReal]
 
+/- English proof (translation)
+Introduce `ϖ hϖ d t ht k₁ h₁ k₂ h₂`. Use `show starRingEnd ℂ (φ (k₁ * t * k₂)) = _`. Rewrite using `[hφ ϖ hϖ d t ht k₁ h₁ k₂ h₂, map_mul, map_zpow₀]`. Use `conj_qpow (qV E w) (-((N : ℝ) / 2) * ((∑ i, |d i| : ℤ) : ℝ))` as an intermediate fact. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_neg, Complex.ofReal_div, Complex.ofReal_natCast, Complex.ofReal_intCast, Complex.ofReal_ofNat] at this`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem kerGL_conj {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {r N : ℕ} {z : ℂˣ}
     {φ : GL (Fin r) (w.adicCompletion E) → ℂ} (hφ : KerGL w N z φ) :
     KerGL w N (star z) (fun g => starRingEnd ℂ (φ g)) := by
@@ -61,6 +78,9 @@ theorem kerGL_conj {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (
   rw [this]
   rfl
 
+/- English proof (translation)
+Introduce `d t ht k₁ h₁ k₂ h₂`. Use `show starRingEnd ℂ (φ (k₁ * t * k₂)) = _`. Rewrite using `[hφ d t ht k₁ h₁ k₂ h₂]`. Simplify using `[map_zpow₀]`.
+-/
 theorem kerU_conj {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {r : ℕ} {ϖ : L}
     {q N : ℕ} {z : ℂˣ} {φ : GU σ r → ℂ} (hφ : KerU ϖ q N z φ) :
     KerU ϖ q N (star z) (fun g => starRingEnd ℂ (φ g)) := by
@@ -69,12 +89,18 @@ theorem kerU_conj {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))
   rw [hφ d t ht k₁ h₁ k₂ h₂]
   simp [map_zpow₀]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unramifiedQuadraticCharSign_split_eq_one_inert_eq_neg D v`.
+-/
 theorem quadSign_eq (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     (∀ w w' : HeightOneSpectrum (𝓞 D.host.E), w ≠ w' → (∀ u, u.under (𝓞 D.host.F) = v ↔ u = w ∨ u = w') →
       quadSign D v = 1) ∧
     (∀ w : HeightOneSpectrum (𝓞 D.host.E), (∀ u, u.under (𝓞 D.host.F) = v ↔ u = w) → quadSign D v = -1) :=
   GlobalTheory.T.unramifiedQuadraticCharSign_split_eq_one_inert_eq_neg D v
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.conj_localTwistedLFactor_ratio_split_eq_zetaSum D B m v w w' hne hall hN hN' hB' hs hm hm1 hq`.
+-/
 theorem value_split (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.host.E) → ℂˣ)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (w w' : HeightOneSpectrum (𝓞 D.host.E)) (hne : w ≠ w')
     (hall : ∀ u, u.under (𝓞 D.host.F) = v ↔ u = w ∨ u = w') (hN : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal)
@@ -86,6 +112,9 @@ theorem value_split (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.h
         ∏ i ∈ Finset.Ioc D.R.t (D.R.r + D.R.t), (1 - ((qV D.host.E w : ℂ) ^ i)⁻¹) :=
   GlobalTheory.T.conj_localTwistedLFactor_ratio_split_eq_zetaSum D B m v w w' hne hall hN hN' hB' hs hm hm1 hq
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.conj_localTwistedLFactor_ratio_inert_eq_zetaSum D B m v w hall hN hs hm hq`.
+-/
 theorem value_inert (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.host.E) → ℂˣ)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hall : ∀ u, u.under (𝓞 D.host.F) = v ↔ u = w) (hN : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ 2)
@@ -98,6 +127,43 @@ theorem value_inert (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.h
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hG D V hr χ hχ v hU φ hφ X _ _ ρ hρu x B hB ℓ hℓ`. Establish `hc` using `isCMExt_host D`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `hc.2.2.1`. Establish `hχ'` using `(resEta_iff χ _).1 hχ`. Establish `hJ` using `GlobalTheory.Mem.VolExists.isHermND D.sp.cm V`.
+
+Establish `hd` using `SelfDual.isSelfDualAt_frameLat D V v`. Establish `hrt : V.rank ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Rewrite using `[hr]`. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hnV : D.R.nV = V.rank + D.R.t` using `by rw [hr]; rfl`. Choose the witnesses or unpack the hypotheses as in `⟨w, h⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by`. Use `v.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 D.host.E) v.asIdeal`.
+
+Conclude with `⟨⟨Q, hQ.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`. Take `⟨C, hC⟩` from `hℓ`. Establish `hfix : ∀ k ∈ Kv V v, ρ k x = x` using `GlobalTheory.LGrp.mem_fixed.1 (hB w h).1.mem_fixed`. Establish `hnz : ‖(((star (val χ w) : ℂˣ)) : ℂ)‖ = 1`. Rewrite using `[Units.coe_star]`.
+
+Simplify using `using norm_val χ w`. It suffices to establish `H : HasSum (fun a : Gv V v ⧸ Kv V v => starRingEnd ℂ (φ a.out) * ℓ (ρ a.out x)) (starRingEnd ℂ (LvTw B (val χ) v ((1 + (D.R.t : ℂ)) / 2) / (dLoc D v : ℂ)) * ℓ x) by`. Use `H.map (starRingEnd ℂ) Complex.continuous_conj` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Break down `(hB w h).1 with ⟨hv, e, he, hsat⟩ | ⟨hw, c, ϖ, e, α, hUI, he, hsat, hBw⟩` into its components or cases.
+
+Take `⟨w', hne, hall, hN, hN', -⟩` from `SplitChart.exists_conj_place hc h hv`. Establish `h' : w'.under (𝓞 D.host.F) = v` using `(hall w').2 (Or.inr rfl)`. Establish `hB' : B w' = (B w).map (·⁻¹)` using `ConjPlace.eq_map_inv_of_isParamVec hc hJ hd hne (hB w h).1 (hB w' h').1`. Establish `hm : val χ w * val χ w' = 1` using `ResEta.val_mul_val h2 hχ' hne h h' (hU w h) (hU w' h')`. Establish `hs : (B w).map star = (B w).map (·⁻¹)` using `GlobalTheory.T.satakeParameterGL_star_eq_inv_of_unitarisable _ w _ _ _ x (B w) (hρu.imp fun _ hb => ⟨hb.1, hb.2.1, fun g => hb.2.2 (e.symm g)⟩) hsat`.
+
+Establish `hk` using `kerGL_conj ((hφ w h).1 hv e he)`. Rewrite `hk` using `[hnV]`. Establish `hbd : ∀ β ∈ B w, ‖(β : ℂ)‖ ≤ (qV D.host.E w : ℝ) ^ (((V.rank : ℝ) - 1) / 2) ∧ ‖((β⁻¹ : ℂˣ) : ℂ)‖ ≤ (qV D.host.E w : ℝ) ^ (((V.rank : ℝ) - 1) / 2)`. Introduce `β hβ`. Rewrite using `[hr]`.
+
+Use `⟨(hB w h).2 β hβ, ?_⟩` and prove the remaining obligations. Use `(hB w' h').2 β⁻¹ (hB' ▸ Multiset.mem_map_of_mem _ hβ)` as an intermediate fact. Establish `e2 : (qV D.host.E w : ℝ) = ((Ideal.absNorm w'.asIdeal : ℕ) : ℝ)`. Rewrite using `[hN', ← hN]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2]`. Conclude with `this`. Establish `hsum` using `GlobalTheory.T.unramified_zeta_sum_GL_cosets hG D.host.E w V.rank D.R.t hrt (star (val χ w)) _ hnz hk X (ρ.comp e.symm.toMonoidHom) x (B w) hsat hbd ℓ ⟨C, fun g => hC _⟩`. Rewrite using `[value_split D B (val χ) v w w' hne hall hN hN' hB' hs hm (norm_val χ w) ((quadSign_eq D v).1 w w' hne hall), ← hr]`. Use `hasSum_quot_of_equiv e he.2 (f := fun g => starRingEnd ℂ (φ g) * ℓ (ρ g x)) ?_ hsum` and prove the remaining obligations.
+
+Introduce `g k hk'`. Establish `e1 : φ (g * k) = φ g`. Use `kerGL_mul_right ((hφ w h).1 hv e he) (e g) (e k) ((he.2 k).1 hk')` as an intermediate fact. Simplify using `using this`. Use `show starRingEnd ℂ (φ (g * k)) * ℓ (ρ (g * k) x) = starRingEnd ℂ (φ g) * ℓ (ρ g x)`.
+
+Rewrite using `[e1, map_mul, Module.End.mul_apply, hfix k hk']`. Establish `hall` using `InertChart.under_eq_iff hw`. Establish `hNw` using `InertChart.absNorm_eq h2 hw`. Establish `hval : val χ w = (-1) ^ D.R.nV` using `ResEta.val_of_isInertAt h2 hχ' hw (hU w h)`. Establish `hk` using `kerU_conj ((hφ w h).2 hw c ϖ e hUI he)`.
+
+Rewrite `hk` using `[hnV]`. Establish `hstarB : (B w).map star = B w`. Rewrite using `[hBw]`. Use `bcParam_eq_of_satU_eq (α := fun i => star (α i)) hUI (GlobalTheory.T.unitarySatakeTransform_star_parameter_eq_of_unitarisable _ ϖ c _ _ hUI _ _ x α (hρu.imp fun _ hb => ⟨hb.1, hb.2.1, fun g => hb.2.2 (e.symm g)⟩) hsat)` as an intermediate fact. Use `conv_rhs => rw [← this]`.
+
+Simplify using `[bcParam, star_inv, Function.comp_def]`. Establish `htb : GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound (qV D.host.F v) V.rank α`. Establish `hq : ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) = (qV D.host.F v : ℝ) ^ 2`. Rewrite using `[hNw]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hQ : (0 : ℝ) < (qV D.host.F v : ℝ) ^ 2`. Use `one_lt_absNorm v` as an intermediate fact. Establish `: (0 : ℝ) < (qV D.host.F v : ℝ)` using `by show (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)`. Conclude with `(by omega : 0 < Ideal.absNorm v.asIdeal)` after adjusting the coercions.
+
+Check the signs of the components of the expression. Introduce `i`. Establish `h1` using `(hB w h).2 (α i) (by rw [hBw]; simp [bcParam])`. Establish `h3` using `(hB w h).2 (α i)⁻¹ (by rw [hBw]; simp [bcParam])`. Rewrite `h1`, `h3` using `[hq, ← hr]`.
+
+Use `⟨?_, h1⟩` and prove the remaining obligations. Rewrite using `[Real.rpow_neg hQ.le]`. Rewrite `h3` using `[Units.val_inv_eq_inv_val, norm_inv]`. Conclude with `inv_le_of_inv_le₀ (norm_pos_iff.2 (α i).ne_zero) h3`. Establish `hsum` using `GlobalTheory.T.hasSum_unramifiedZetaSum_unitary_inert _ ϖ c (qV D.host.F v) V.rank D.R.t hUI hrt (star (val χ w)) _ hnz hk X (ρ.comp e.symm.toMonoidHom) x α hsat htb ℓ ⟨C, fun g => hC _⟩`.
+
+Rewrite using `[value_inert D B (val χ) v w hall hNw hstarB (by rw [hval]; push_cast; rfl) ((quadSign_eq D v).2 w hall), hBw, ← hr]`. Use `hasSum_quot_of_equiv e he.2.2 (f := fun g => starRingEnd ℂ (φ g) * ℓ (ρ g x)) ?_ hsum` and prove the remaining obligations. Introduce `g k hk'`. Establish `e1 : φ (g * k) = φ g`. Use `kerU_mul_right hUI ((hφ w h).2 hw c ϖ e hUI he) (e g) (e k) ((he.2.2 k).1 hk')` as an intermediate fact.
+
+Simplify using `using this`. Use `show starRingEnd ℂ (φ (g * k)) * ℓ (ρ (g * k) x) = starRingEnd ℂ (φ g) * ℓ (ρ g x)`. Rewrite using `[e1, map_mul, Module.End.mul_apply, hfix k hk']`.
+-/
 theorem hasSum_localZeta : GlobalTheory.Published.UnramifiedDoublingGL → ∀ (D : D7) (V : HSp D), V.rank = D.R.r → ∀ (χ : (AE D)ˣ →* Circle), Formalism.L2.Theta.ResEta D χ D.R.nV → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → UnrAt χ w) → ∀ φ : Gv V v → ℂ, IsLocKer V D.R.nV (val χ) v φ → ∀ (X : Type) [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (Gv V v) X), IsUnitarisable ρ → ∀ (x : X) (B : Fam D.host.E), (∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsParamVec D.sp.cm.sig V.gram (frameLat V) h ρ x (B w) ∧ ∀ β ∈ B w, ‖(β : ℂ)‖ ≤ ((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ (((D.R.r : ℝ) - 1) / 2)) → ∀ ℓ : X →ₗ[ℂ] ℂ, (∃ C : ℝ, ∀ g, ‖ℓ (ρ g x)‖ ≤ C) → HasSum (fun a : Gv V v ⧸ Kv V v => φ a.out * starRingEnd ℂ (ℓ (ρ a.out x))) (LvTw B (val χ) v ((1 + (D.R.t : ℂ)) / 2) / (dLoc D v : ℂ) * starRingEnd ℂ (ℓ x)) := by
   intro hG D V hr χ hχ v hU φ hφ X _ _ ρ hρu x B hB ℓ hℓ
   classical

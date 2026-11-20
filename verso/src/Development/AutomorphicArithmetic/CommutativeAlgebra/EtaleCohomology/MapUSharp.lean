@@ -50,12 +50,24 @@ open UpperTheory.Gal.crystallineComparison
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `normPt_of (sameNormRing_of (normRead_of (normInt_of (normEx_of matRep_of detSplit_of) splitsBC_of (injSplit_of (rankDeg_of splitsField_of) splitsEquiv_of) coeffInt_of liftingProperty) etUnit_of splitsField_of valPts_of) valLift_of ptsProd_of congrRad_of) (baseChart_of (baseSmooth …`.
+-/
 private theorem normOfPt' : NormOfPt :=
   normPt_of (sameNormRing_of (normRead_of (normInt_of (normEx_of matRep_of detSplit_of) splitsBC_of
     (injSplit_of (rankDeg_of splitsField_of) splitsEquiv_of) coeffInt_of liftingProperty) etUnit_of splitsField_of valPts_of)
     valLift_of ptsProd_of congrRad_of) (baseChart_of (baseSmooth_of smoothClosed_of smoothRed_of)) secChart_of
     (etAway_of secChart_of etChart_of) genChart_of ptChart_of
 
+/- English proof (translation)
+Set `Φ : Multiset P →+ (P →₀ ℤ)` to `(Multiset.sumAddMonoidHom).comp (Multiset.mapAddMonoidHom fun p => Finsupp.single p (1 : ℤ))`. Set `G : Fin (n + 1) → (P →₀ ℤ)` to `fun j => ∑ i, Finsupp.single (v j i) (1 : ℤ)`. Establish `hG : ∀ j, Φ (Finset.univ.val.map (v j)) = G j` using `fun j => by`. Express the relevant statement in the definitionally equal form `((Finset.univ.val.map (v j)).map fun p => Finsupp.single p (1 : ℤ)).sum = _`. Rewrite using `[Multiset.map_map]`.
+
+Both sides reduce to the same expression. Establish `key : ∀ a : Fin (n + 1) → ℕ, Φ (pts a v) = ∑ j, a j • G j` using `fun a => by`. Simplify using `only [pts, map_sum, map_nsmul, hG]`. Establish `h0 : ∑ j, wEv q j • G j = ∑ j, wOd q j • G j` using `by rw [← key, ← key, h]`. Rewrite using `[Fintype.sum_sigma]`.
+
+Establish `e : ∀ j : Fin (n + 1), ∑ i, Finsupp.single (v j i) ((-1 : ℤ) ^ (j : ℕ) * ((q ^ ((j : ℕ).choose 2) : ℕ) : ℤ)) = ((wEv q j : ℤ) - (wOd q j : ℤ)) • G j` using `fun j => by`. Establish `: (-1 : ℤ) ^ (j : ℕ) * ((q ^ ((j : ℕ).choose 2) : ℕ) : ℤ) = (wEv q j : ℤ) - (wOd q j : ℤ)`. Distinguish the cases in `hj : Even (j : ℕ)`. Simplify using `[wEv, wOd, hj, hj.neg_one_pow]`. Simplify using `[wEv, wOd, hj, (Nat.not_even_iff_odd.1 hj).neg_one_pow]`.
+
+Rewrite using `[this, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Finsupp.smul_single]`. Simplify using `only [e, sub_smul, Finset.sum_sub_distrib, natCast_zsmul]`. Rewrite using `[h0, sub_self]`.
+-/
 private theorem wzSum {P : Type} (q n : ℕ) {I : Fin (n + 1) → Type} [∀ j, Fintype (I j)] (v : ∀ j, I j → P)
     (h : pts (wEv q) v = pts (wOd q) v) :
     ∑ x : (Σ j, I j), Finsupp.single (v x.1 x.2) ((-1 : ℤ) ^ (x.1 : ℕ) * ((q ^ ((x.1 : ℕ).choose 2) : ℕ) : ℤ)) = 0 := by
@@ -82,6 +94,11 @@ private theorem wzSum {P : Type} (q n : ℕ) {I : Fin (n + 1) → Type} [∀ j, 
   simp only [e, sub_smul, Finset.sum_sub_distrib, natCast_zsmul]
   rw [h0, sub_self]
 
+/- English proof (translation)
+Establish `hm : ∀ {K : Type} [Fintype K] (g : K → P), Finset.univ.val.map g = ∑ x, ({g x} : Multiset P)` using `fun {K} _ g => by`. Use `Multiset.sum_map_singleton (Finset.univ.val.map g)` as an intermediate fact. Rewrite `this` using `[Multiset.map_map]`. Conclude with `this.symm`. Simplify using `only [pts, hm]`.
+
+Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Simplify using the standard rewrite rules.
+-/
 private theorem wzPts {J P : Type} [Fintype J] {I : J → Type} [∀ j, Fintype (I j)] (a : J → ℕ) (v : ∀ j, I j → P) :
     pts a v = Finset.univ.val.map (fun x : (Σ j, Fin (a j) × I j) => v x.1 x.2.2) := by
   have hm : ∀ {K : Type} [Fintype K] (g : K → P), Finset.univ.val.map g = ∑ x, ({g x} : Multiset P) := fun {K} _ g => by
@@ -94,6 +111,11 @@ private theorem wzPts {J P : Type} [Fintype J] {I : J → Type} [∀ j, Fintype 
   rw [Fintype.sum_prod_type]
   simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply, ih]`. Express the relevant statement in the definitionally equal form `(a ^ l ^ k) ^ l = _`.
+
+Rewrite using `[← pow_mul, pow_succ]`.
+-/
 private theorem frob_pow' (A : PAlg l) (k : ℕ) (a : A.A) : (A.frob ^ k) a = a ^ l ^ k := by
   induction k with
   | zero => simp
@@ -102,6 +124,9 @@ private theorem frob_pow' (A : PAlg l) (k : ℕ) (a : A.A) : (A.frob ^ k) a = a 
     change (a ^ l ^ k) ^ l = _
     rw [← pow_mul, pow_succ]
 
+/- English proof (translation)
+Use `⟨Ideal.quotientMap _ (A.frob ^ m) ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, frob_pow']`. Conclude with `Ideal.mem_span_singleton.2 (dvd_pow_self _ (pow_ne_zero _ (Fact.out : l.Prime).ne_zero))`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.quotientMap_mk, frob_pow', map_pow]`.
+-/
 private theorem wzPhi (A : PAlg l) (m : ℕ) : ∃ φ : Qb A →+* Qb A, ∀ x, φ x = x ^ l ^ m := by
   refine ⟨Ideal.quotientMap _ (A.frob ^ m) ?_, fun x => ?_⟩
   · rw [Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, frob_pow']
@@ -109,6 +134,13 @@ private theorem wzPhi (A : PAlg l) (m : ℕ) : ∃ φ : Qb A →+* Qb A, ∀ x, 
   · obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective x
     rw [Ideal.quotientMap_mk, frob_pow', map_pow]
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `wzPhi A m`. Establish `hxi : (Ideal.Quotient.mk (Ideal.span {A.s (pFlat l)})).comp WittVector.constantCoeff A.xi = 0`. Establish `e : WittVector.constantCoeff A.xi = - A.s (pFlat l)`. Rewrite using `[PAlg.xi, PAlg.sW, xi0, map_sub, map_sub, map_natCast, map_natCast, PAlg.natCast_l, WittVector.map_teichmuller]`. Simplify using `[WittVector.constantCoeff_apply]`.
+
+Rewrite using `[RingHom.comp_apply, e, map_neg, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _), neg_zero]`. Set `ψ₀ : A.U →+* Qb A` to `Ideal.Quotient.lift _ ((Ideal.Quotient.mk _).comp WittVector.constantCoeff) (fun a ha => by`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, hxi, mul_zero])`. Use `⟨φ.comp ψ₀, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, hφ]`. Both sides reduce to the same expression.
+-/
 private theorem wzPsi (A : PAlg l) (m : ℕ) : ∃ ψ : A.U →+* Qb A, ∀ x : A.W,
     ψ (A.th x) = Ideal.Quotient.mk _ (x.coeff 0) ^ l ^ m := by
   obtain ⟨φ, hφ⟩ := wzPhi A m
@@ -124,11 +156,19 @@ private theorem wzPsi (A : PAlg l) (m : ℕ) : ∃ ψ : A.U →+* Qb A, ∀ x : 
   rw [RingHom.comp_apply, hφ]
   rfl
 
+/- English proof (translation)
+Simplify using `only [ptOf, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+-/
 private theorem ptOf_pre {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {B C : Type} [CommRing B] [CommRing C]
     (ρ : B →+* C) (f : Γ(Y, V) →+* B) :
     Spec.map (CommRingCat.ofHom ρ) ≫ ptOf hV B f = ptOf hV C (ρ.comp f) := by
   simp only [ptOf, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Simplify `hP` using `[itE, RingHom.one_def]`. Consider the case `succ k ih`. Establish `e : itE F (k + 1) = itE F k ≫ F`.
+
+Simplify using `only [itE, pow_succ']`. Both sides reduce to the same expression. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `(F.app A ((itE F k).app A P)).1 = _`. Rewrite using `[hF A φ hφ, ih, ptOf_pre, pow_succ', RingHom.mul_def, RingHom.comp_assoc]`.
+-/
 private theorem wzFr {O : Type} [CommRing O] {Y : Scheme.{0}} {q : Y ⟶ Spec (CommRingCat.of O)} {g : O →+* Qo l}
     {f : ℕ} {F : PQ q g ⟶ PQ q g} (hF : IsFr f F) (A : PAlg l) (φ : Qb A →+* Qb A) (hφ : ∀ x, φ x = x ^ l ^ f)
     {V : Y.Opens} (hV : IsAffineOpen V) (β : Γ(Y, V) →+* Qb A) (P : (PQ q g).obj A) (hP : P.1 = ptOf hV _ β) (k : ℕ) :
@@ -144,6 +184,9 @@ private theorem wzFr {O : Type} [CommRing O] {Y : Scheme.{0}} {q : Y ⟶ Spec (C
     change (F.app A ((itE F k).app A P)).1 = _
     rw [hF A φ hφ, ih, ptOf_pre, pow_succ', RingHom.mul_def, RingHom.comp_assoc]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply, ih, hφ, ← pow_mul, pow_succ]`.
+-/
 private theorem wzPhiPow {B : Type} [CommRing B] (φ : B →+* B) (Q : ℕ) (hφ : ∀ x, φ x = x ^ Q) (k : ℕ) (x : B) :
     (φ ^ k) x = x ^ Q ^ k := by
   induction k with
@@ -151,6 +194,11 @@ private theorem wzPhiPow {B : Type} [CommRing B] (φ : B →+* B) (Q : ℕ) (hφ
   | succ k ih =>
     rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, ih, hφ, ← pow_mul, pow_succ]
 
+/- English proof (translation)
+Use `Ideal.Quotient.nontrivial_iff.2 fun ht => h ⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ x : A.A, x = 0` using `fun x => by`. Use `A.compl.toIsHausdorff` as an intermediate fact. Use `this.haus' x fun n => ?_` and prove the remaining obligations. Rewrite using `[ht]`.
+
+Simplify using `[SModEq.zero, Ideal.top_pow]`. Rewrite using `[hz a, hz b]`.
+-/
 private theorem wzNontriv (A : PAlg l) (h : ¬ Subsingleton A.A) : Nontrivial (Qb A) := by
   refine Ideal.Quotient.nontrivial_iff.2 fun ht => h ⟨fun a b => ?_⟩
   have hz : ∀ x : A.A, x = 0 := fun x => by
@@ -160,6 +208,25 @@ private theorem wzNontriv (A : PAlg l) (h : ¬ Subsingleton A.A) : Nontrivial (Q
     simp [SModEq.zero, Ideal.top_pow]
   rw [hz a, hz b]
 
+/- English proof (translation)
+Distinguish the cases in `hsub : Subsingleton A.obj.A`. Use `⟨⟨Unit, fun _ => A, fun _ => 𝟙 A⟩, ⟨fun a b hab => congrFun hab (), fun b => ⟨b (), funext fun _ => rfl⟩⟩, fun _ => Or.inr hsub⟩` and prove the remaining obligations. Establish `hnt` using `wzNontriv A.obj hsub`. Set `c : (Σ j, Fin (wEv (l ^ f) j) × Fin (d j)) → ι → Qb A.obj` to `fun e k => β e.1 e.2.2 (x k) ^ (l ^ f) ^ (n - e.1)`. Set `c' : (Σ j, Fin (wOd (l ^ f) j) × Fin (d j)) → ι → Qb A.obj` to `fun e k => β e.1 e.2.2 (x k) ^ (l ^ f) ^ (n - e.1)`.
+
+Establish `hS' : SameNorm (Finset.univ.val.map c) (Finset.univ.val.map c')`. Rewrite `hS` using `[wzPts, wzPts]`. Conclude with `hS`. Establish `hcI : Fintype.card (Σ j, Fin (wEv (l ^ f) j) × Fin (d j)) = ∑ j, wEv (l ^ f) j * d j`. Simplify using `[Fintype.card_sigma]`.
+
+Establish `hcI' : Fintype.card (Σ j, Fin (wOd (l ^ f) j) × Fin (d j)) = ∑ j, wEv (l ^ f) j * d j`. Use `(snBasic_of (Qb A.obj) ι).2.2.1 hnt _ _ hS'` as an intermediate fact. Simplify using `only [Multiset.card_map, Finset.card_val, Finset.card_univ] at this`. Rewrite using `[← this, hcI]`. Establish `hL : (l ^ f) ^ N = l ^ (f * N)` using `by rw [pow_mul]`.
+
+Take `⟨e, he, hm⟩` from `UpperTheory.exists_orthogonalIdempotents_matching_of_sameNorm l A.obj A.property (f * N) _ hcI hcI' (by rw [← hL]; exact hN) c c' hS'`. Take `⟨B, fσ, hd, h1⟩` from `decEx l A _ e he`. Use `⟨⟨_, B, fσ⟩, hd, fun σ => Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[wzPts, wzPts]`. Rewrite using `[← Multiset.map_univ_val_equiv σ, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `hm σ i`. Set `f₀` to `(fσ σ).hom`. Express the relevant statement in the definitionally equal form `(PQ q g).map f₀ (v i.1 i.2.2) = (PQ q g).map f₀ (v (σ i).1 (σ i).2.2)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hpt : ∀ (j) (t), ((PQ q g).map f₀ (v j t)).1 = ptOf hV _ ((PAlg.mapQ f₀ (pFlat l)).comp ((φ ^ (n - j + N)).comp (β j t)))` using `fun j t => by`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (PAlg.mapQ f₀ (pFlat l))) ≫ (v j t).1 = _`. Rewrite using `[hv, ptOf_pre]`. Rewrite using `[hpt, hpt]`. Use `congrArg _ (hx _ _ _ ?_ fun k => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hpt, ← hpt, ((PQ q g).map f₀ (v i.1 i.2.2)).2, ((PQ q g).map f₀ (v (σ i).1 (σ i).2.2)).2]`. Establish `a : ∀ (j : Fin (n + 1)) t, (φ ^ (n - j + N)) (β j t (x k)) = (β j t (x k) ^ (l ^ f) ^ (n - j)) ^ l ^ (f * N)` using `fun j t => by`. Rewrite using `[wzPhiPow φ (l ^ f) hφ, pow_add, pow_mul, ← hL]`. Establish `h1' : PAlg.mapQ f₀ (pFlat l) (Ideal.Quotient.mk _ (e σ)) = 1`. Rewrite using `[PAlg.mapQ, Ideal.quotientMap_mk]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (PAlg.Hom.f (fσ σ).hom (e σ)) = 1`. Rewrite using `[h1 σ, map_one]`. Use `congrArg (PAlg.mapQ f₀ (pFlat l)) (hi k)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, h1', one_mul, one_mul]`. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[a, a]`. Conclude with `this`.
+-/
 private theorem wzCore (f n : ℕ) {O : Type} [CommRing O] {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of O)) (g : O →+* Qo l)
     {V : Y.Opens} (hV : IsAffineOpen V) (d : Fin (n + 1) → ℕ) (N : ℕ)
     (hN : ((∑ j, wEv (l ^ f) j * d j) + 1) ^ (∑ j, wEv (l ^ f) j * d j) ≤ (l ^ f) ^ N)
@@ -220,10 +287,22 @@ private theorem wzCore (f n : ℕ) {O : Type} [CommRing O] {Y : Scheme.{0}} (q :
     rw [a, a]
     exact this
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `B.th (PAlg.mapW f (WittVector.teichmuller l a)) = B.th (WittVector.teichmuller l (PAlg.Hom.f f a))`. Rewrite using `[PAlg.mapW, WittVector.map_teichmuller]`.
+-/
 private theorem mapU_sharp' {A B : PAlg l} (f : A ⟶ B) (a : A.A) : PAlg.mapU f (A.sharp a) = B.sharp (PAlg.Hom.f f a) := by
   change B.th (PAlg.mapW f (WittVector.teichmuller l a)) = B.th (WittVector.teichmuller l (PAlg.Hom.f f a))
   rw [PAlg.mapW, WittVector.map_teichmuller]
 
+/- English proof (translation)
+Establish `hT` using `testFacts l A.obj A.property`. Use `choose U V hU hV hx hUV using charts_of l Y hY J T`. Take `⟨I, _, e, a, he, hea⟩` from `UpperTheory.exists_orthogonalIdempotents_subordinate_of_etale_sections A.obj.U hT.2.2.2.1 Y (fun x => y ⁻¹' (U x : Set Y)) (fun x => (U x).isOpen.preimage y.continuous) (fun p => ⟨y p, hx _⟩)`. Take `⟨e₀, he₀, hs⟩` from `UpperTheory.exists_orthogonalIdempotents_lift_through_sharp l A I e he`. Take `⟨B, f, hd, h1⟩` from `decEx l A I e₀ he₀`.
+
+Use `⟨⟨I, B, f⟩, hd, fun s => ⟨U (a s), V (a s), hU _, hV _, hUV _, fun p _ => ?_⟩⟩` and prove the remaining obligations. Establish `h2 : PAlg.mapU (f s).hom (e s) = 1`. Rewrite using `[← hs, mapU_sharp']`. Express the relevant statement in the definitionally equal form `(B s).obj.sharp (PAlg.Hom.f (f s).hom (e₀ s)) = 1`. Rewrite using `[h1 s]`.
+
+Simplify using `[PAlg.sharp]`. Use `hea s (PrimeSpectrum.comap (PAlg.mapU (f s).hom) p) (fun hmem => by` as an intermediate fact. Establish `h3 : PAlg.mapU (f s).hom (e s) ∈ p.asIdeal` using `hmem`. Rewrite `h3` using `[h2]`. Conclude with `p.2.ne_top ((Ideal.eq_top_iff_one _).2 h3))`.
+
+Conclude with `this`.
+-/
 private theorem wzChart {Y : Scheme.{0}} (hY : AffFin Y) {J : Type} [Finite J] (T : J → Corr l Y) (A : Test l)
     (y : Spec (CommRingCat.of A.obj.U) ⟶ Y) :
     ∃ S : Fam A, IsDec S ∧ ∀ s, ∃ U V : Y.Opens, IsAffineOpen U ∧ IsAffineOpen V ∧
@@ -248,9 +327,23 @@ private theorem wzChart {Y : Scheme.{0}} (hY : AffFin Y) {J : Type} [Finite J] (
     exact p.2.ne_top ((Ideal.eq_top_iff_one _).2 h3))
   exact this
 
+/- English proof (translation)
+The claim follows from `FunctorToTypes.naturality u f y`.
+-/
 private theorem wzNat {C : Type 1} [Category.{0} C] {F G : C ⥤ Type} (u : F ⟶ G) {A B : C} (f : A ⟶ B) (y : F.obj A) :
     u.app B (F.map f y) = G.map f (u.app A y) := FunctorToTypes.naturality u f y
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `wzPhi A.obj f`. Take `⟨ψ, hψ⟩` from `wzPsi A.obj m`. Set `y' : (PX q κ).obj A.obj` to `⟨y.1 ≫ D.π, by rw [Category.assoc]; exact y.2⟩`. Establish `hc : ∀ x : O, ψ (A.obj.oC (κ x)) = qs A.obj (g x)`. Establish `h1` using `(ρ.app A.obj y').2`.
+
+Rewrite `h1` using `[hρ A.obj ψ hψ y', Category.assoc, y'.2, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h2` using `Spec.map_injective h1`. Introduce `x`. Conclude with `RingHom.congr_fun (CommRingCat.hom_ext_iff.1 h2) x`. Take `⟨α, hα, hnorm⟩` from `UpperTheory.correspondence_norm_bound_of_affine_opens l q ϖ (l ^ f) n T κ D A y hU hV h hy hn ψ (by rw [hc, hg, map_zero])`.
+
+Take `⟨k, x, hx⟩` from `UpperTheory.exists_finite_sections_determining_ringHom_of_smooth q hq hV`. Set `u : ∀ j, Fin (T j).d → (PX (D.π ≫ q) κ ⟶ PQ q g)` to `fun j i => pxMap (p := D.π ≫ q) κ (D.s j i ≫ (T j).r) (by rw [Category.assoc, hr, ← Category.assoc, D.hs]) ≫ ρ ≫ itE F (n - j + N)`. Establish `hv : ∀ j i, ((u j i).app A.obj y).1 = ptOf hV _ ((φ ^ (n - j + N)).comp (ψ.comp (α j i)))` using `fun j i => by`. Set `yy : (PX q κ).obj A.obj` to `(pxMap (p := D.π ≫ q) κ (D.s j i ≫ (T j).r) (by rw [Category.assoc, hr, ← Category.assoc, D.hs])).app A.obj y`. Establish `e1 : (ρ.app A.obj yy).1 = ptOf hV _ (ψ.comp (α j i))`.
+
+Rewrite using `[hρ A.obj ψ hψ yy, ← ptOf_pre, ← hα]`. Both sides reduce to the same expression. Conclude with `wzFr hF A.obj φ hφ hV (ψ.comp (α j i)) (ρ.app A.obj yy) e1 _`. Take `⟨S, hS, hs⟩` from `wzCore f n q g hV (fun j => (T j).d) N hN A (fun j i => ψ.comp (α j i)) φ hφ (fun j i => (u j i).app A.obj y) hv x hx (hnorm _ x)`. Use `⟨S, hS, fun s => (hs s).imp (fun e => ?_) id⟩` and prove the remaining obligations.
+
+Establish `nat : ∀ j i, (u j i).app (S.B s).obj ((PX (D.π ≫ q) κ).map (S.f s).hom y) = (PQ q g).map (S.f s).hom ((u j i).app A.obj y)` using `fun j i => wzNat (u j i) (S.f s).hom y`. Establish `e3` using `wzSum (l ^ f) n (I := fun j => Fin (T j).d) (fun j i => (PQ q g).map (S.f s).hom ((u j i).app A.obj y)) e`. Use `Eq.trans (Finset.sum_congr rfl fun x _ => ?_) e3` and prove the remaining obligations. Conclude with `congrArg (fun w => Finsupp.single w ((-1 : ℤ) ^ (x.1 : ℕ) * (((l ^ f) ^ ((x.1 : ℕ).choose 2) : ℕ) : ℤ))) (nat x.1 x.2)`.
+-/
 private theorem wzLocal {O : Type} [CommRing O] (f n : ℕ) {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of O)) (hq : Smooth q)
     (ϖ : O) (T : Fin (n + 1) → Corr l Y) (hr : ∀ j, (T j).r ≫ q = (T j).p ≫ q) (κ : O →+* OC l) (g : O →+* Qo l)
     (hg : g ϖ = 0) (m : ℕ) (F : PQ q g ⟶ PQ q g) (ρ : PX q κ ⟶ PQ q g) (hF : IsFr f F) (hρ : IsRd m ρ) (D : WDat l T)
@@ -295,6 +388,17 @@ private theorem wzLocal {O : Type} [CommRing O] (f n : ℕ) {Y : Scheme.{0}} (q 
   refine Eq.trans (Finset.sum_congr rfl fun x _ => ?_) e3
   exact congrArg (fun w => Finsupp.single w ((-1 : ℤ) ^ (x.1 : ℕ) * (((l ^ f) ^ ((x.1 : ℕ).choose 2) : ℕ) : ℤ))) (nat x.1 x.2)
 
+/- English proof (translation)
+Introduce `l _ f n O _ _ _ ϖ hϖ hl0 hlu Y q hq hqc hY hf T hr hpt κ g hg m F ρ hF hρ _ D`. Establish `hl2 : 2 ≤ l ^ f`. Establish `h2` using `(Fact.out : l.Prime).two_le`. Conclude with `h2.trans (Nat.le_self_pow hf.ne' l)`. Use `⟨((∑ j, wEv (l ^ f) j * (T j).d) + 1) ^ (∑ j, wEv (l ^ f) j * (T j).d), ?_⟩` and prove the remaining obligations.
+
+Introduce `A y`. Take `⟨S, hS, hch⟩` from `wzChart hY T A (y.1 ≫ D.π)`. Use `choose U V hU hV h hy using hch`. Establish `hpar` using `fun s => wzLocal f n q hq ϖ T hr κ g hg m F ρ hF hρ D _ (Nat.lt_pow_self (by omega)).le (S.B s) ((PX (D.π ≫ q) κ).map (S.f s).hom y) (hU s) (hV s) (h s) (by`. Establish `e : ((PX (D.π ≫ q) κ).map (S.f s).hom y).1 ≫ D.π = Spec.map (CommRingCat.ofHom (PAlg.mapU (S.f s).hom)) ≫ y.1 ≫ D.π` using `Category.assoc _ _ _`.
+
+Rewrite using `[e]`. Conclude with `hy s) (normOfPt' l f n (Fact.out) O ϖ hϖ hl0 hlu Y q hq T hpt _ _ (hU s) (hV s) (h s))`. Use `choose R hR hz using hpar`. Take `⟨Pa, hPa⟩` from `partsEx l`. Establish `hd` using `(hPa A _).1 (Pa.trans S R ((hPa A S).2 hS) fun s => (hPa _ _).2 (hR s))`.
+
+Use `⟨_, hd, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, t⟩`. Establish `e` using `hz s t`. Establish `e2 : (PX (D.π ≫ q) κ).map (S.f s ≫ (R s).f t).hom y = (PX (D.π ≫ q) κ).map ((R s).f t).hom ((PX (D.π ≫ q) κ).map (S.f s).hom y)` using `FunctorToTypes.map_comp_apply _ _ _ _`. Express the relevant statement in the definitionally equal form `(∑ i, _) = 0 ∨ _`.
+
+Simplify using `only [e2]`. Conclude with `e`.
+-/
 theorem wZero : UpperTheory.Ru.crystallineComparison.WZero := by
   intro l _ f n O _ _ _ ϖ hϖ hl0 hlu Y q hq hqc hY hf T hr hpt κ g hg m F ρ hF hρ _ D
   have hl2 : 2 ≤ l ^ f := by

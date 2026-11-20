@@ -75,6 +75,9 @@ def clsG (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u
   obtain ⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩ := Q
   exact clsG₁ hc hX hPr σ₀ u Λ c₀ s hS hs
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clsG_std (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c) :
     clsG hc hX hPr σ₀ u Λ c₀ s hS hs (StepCrd.std Pr σ₀ n _) = clsG₁ hc hX hPr σ₀ u Λ c₀ s hS hs := rfl
 
@@ -84,6 +87,17 @@ section Rec
 
 variable {d : ColDat} (a : ColArgs d)
 
+/- English proof (translation)
+Establish `key : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 d.X.F)), v ∈ plUnder d.X.F (d.Pr.vG i) ↔ (d.Pr.g i : 𝓞 d.X.F) ∈ v.asIdeal`. Introduce `i v`. Establish `h0 : d.X.conjO (d.Pr.piG i) ≠ 0`. Introduce `h`. Establish `h1` using `d.hPr.piG_norm i`.
+
+Rewrite `h1` using `[h, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (d.hPr.g_prime i).ne_zero) h1.symm`. Use `mem_plUnder_iff_norm d.sp.cm (fun P => mem_divs h0 P) (d.Pr.g i) ?_ v` and prove the remaining obligations. Establish `h2 : cO d.X.E (d.X.conjO (d.Pr.piG i)) = d.Pr.piG i` using `cO_cO _`. Rewrite using `[h2, mul_comm]`.
+
+Conclude with `d.hPr.piG_norm i`. Use extensionality with `v`. Use `show ((d.Pr.g 0 : 𝓞 d.X.F) ∈ v.asIdeal ∨ (d.Pr.g 1 : 𝓞 d.X.F) ∈ v.asIdeal) ↔ _`. Rewrite using `[← key 0, ← key 1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `(⟨P, hP, h⟩ | ⟨P, hP, h⟩)`. Conclude with `⟨P, Finset.mem_union_left _ hP, h⟩`. Conclude with `⟨P, Finset.mem_union_right _ hP, h⟩`. Introduce and unpack `⟨P, hP, h⟩`. Break down `Finset.mem_union.1 hP with h' | h'` into its components or cases.
+
+Conclude with `Or.inl ⟨P, h', h⟩`. Conclude with `Or.inr ⟨P, h', h⟩`.
+-/
 theorem badG_eq : CF.badG (d.colRec a) = plUnder d.X.F d.Pr.vGs := by
   classical
   have key : ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 d.X.F)), v ∈ plUnder d.X.F (d.Pr.vG i) ↔ (d.Pr.g i : 𝓞 d.X.F) ∈ v.asIdeal := by
@@ -109,6 +123,21 @@ theorem badG_eq : CF.badG (d.colRec a) = plUnder d.X.F d.Pr.vGs := by
     · exact Or.inl ⟨P, h', h⟩
     · exact Or.inr ⟨P, h', h⟩
 
+/- English proof (translation)
+Use `show (d.sp.X i).L0.map (((d.crd i hi : (d.sp.X i).V ≃ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)) : (d.sp.X i).V →ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)).restrictScalars (𝓞 d.host.E)) = _`. Rewrite using `[hS.selfDual_span_frame_X i hi, Submodule.map_span, ← Set.range_comp]`. Establish `hfr : ∀ b, (d.crd i hi) ((d.sp.X i).frame b) = Pi.single (finCongr (d.sp.X_rank i hi) b) (1 : d.host.E)`. Introduce `b`. Use function extensionality and compare the values at `j`.
+
+Use `show (d.sp.X i).frame.equivFun ((d.sp.X i).frame b) ((finCongr (d.sp.X_rank i hi)).symm j) = _`. Rewrite using `[Basis.equivFun_self, Pi.single_apply]`. Use `congr 1`. Conclude with `propext ⟨fun h => by rw [h, Equiv.apply_symm_apply], fun h => by rw [h, Equiv.symm_apply_apply]⟩`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Use `show (d.crd i hi) ((d.sp.X i).frame b) ∈ _`. Rewrite using `[hfr]`. Introduce `j _`.
+
+Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Submodule.one_le.1 le_rfl`. Conclude with `zero_mem _`. Introduce `x hx`.
+
+Establish `hx' : ∀ j, ∃ r : 𝓞 d.host.E, algebraMap (𝓞 d.host.E) d.host.E r = x j` using `fun j => Submodule.mem_one.1 (hx j trivial)`. Use `choose r hr using hx'`. Establish `hsum : x = ∑ j, r j • (d.crd i hi) ((d.sp.X i).frame ((finCongr (d.sp.X_rank i hi)).symm j))`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k]`.
+
+Rewrite using `[hfr, Equiv.apply_symm_apply, Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, mul_one, hr]`. Introduce `j _ hj`. Rewrite using `[hfr, Equiv.apply_symm_apply, Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hj), smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+-/
 theorem selfDualLatticeCoords_eq_std (hS : SpStd d.toColBase) (i : ℕ) (hi : i ≤ d.R.m) : CF.selfDualLatticeCoords (d.colRec a) i hi = stdLat d.X.E (d.R.N i) := by
   show (d.sp.X i).L0.map (((d.crd i hi : (d.sp.X i).V ≃ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)) :
     (d.sp.X i).V →ₗ[d.host.E] (Fin (d.R.N i) → d.host.E)).restrictScalars (𝓞 d.host.E)) = _

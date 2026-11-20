@@ -9,6 +9,15 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G
 
+/- English proof (translation)
+Introduce `ι _ _ n x s a hx hs hsW v hsv`. Take `⟨c, hc⟩` from `exists_chart_ciSup x hx v`. Establish `hrel : Geo.IsRelevant (ι` using `blockIdx n) (orbitCenter x v) := fun k ↦ ⟨c k, fun h ↦ by`. Use `(hMI ι n x hx v _ _ ((geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, c k⟩))).mp h` as an intermediate fact. Simplify using `[evalCone, coordDeg, Pi.single_apply, pow_ite, (hc k).1] at this⟩`.
+
+Establish `hW : orbitIdeal x ≤ orbitCenter x v`. Take `⟨S, hS, hspan⟩` from `OrbitCurve.isMultiHomogIdeal_orbitIdeal x`. Establish `hSW : ∀ F ∈ S, F ∈ orbitIdeal x` using `fun F hF ↦ by rw [hspan]; exact Ideal.subset_span hF`. Rewrite using `[hspan]`. Use `Ideal.span_le.mpr fun F hF ↦ ?_` and prove the remaining obligations.
+
+Take `⟨d, hd⟩` from `hS F hF`. Use `Ideal.subset_span ⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[(mem_orbitIdeal_iff_of_isMultiHomog x F d hd).mp (hSW F hF), map_zero]`. Conclude with `Finset.prod_pos fun k _ ↦ pow_pos (hc k).2 _`. Use `⟨⟨⟨hPr ι n x hx v, sup_le hW ((Ideal.span_singleton_le_iff_mem _).mpr hsv)⟩, fun Q hQ hle ↦ ?_⟩, hrel⟩` and prove the remaining obligations.
+
+Use `hQ.1` as an intermediate fact. Conclude with `orbitCenter_le_of_le hMI hSP x hx v c hc s a hs hsW Q (le_sup_left.trans hQ.2) (hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))) hle`.
+-/
 theorem OrbitCenterDivSupp.proof (hMI : OrbitCenterMemIff.Statement)
     (hPr : OrbitCenterPrime.Statement) (hSP : SubringPrimeMaximal.Statement) :
     OrbitCenterDivSupp.Statement := by

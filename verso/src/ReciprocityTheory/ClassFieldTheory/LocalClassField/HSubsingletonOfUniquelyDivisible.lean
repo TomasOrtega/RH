@@ -12,6 +12,17 @@ noncomputable section
 
 variable (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+It suffices to establish `h : ∀ x : M.H n, x = 0 from ⟨fun x y => (h x).trans (h y).symm⟩`. Introduce `x`. Take `⟨-, h⟩` from `finiteLevel_holds R G M n x`. Take `⟨k, hk, hkx⟩` from `h hn`. Set `e : M.V ≃ₗ[R] M.V` to `LinearEquiv.ofBijective ((k : R) • LinearMap.id) (by`.
+
+Use `hM k hk` as an intermediate fact. Use `this using 2 with m` and compare the differences between its conclusion and the goal. Simplify using `[Nat.cast_smul_eq_nsmul])`. Establish `he : ∀ m, e m = (k : R) • m` using `fun m => rfl`. Set `Q : Pair M M` to `Pair.ofMap e.symm.toLinearMap continuous_of_discreteTopology (by`.
+
+Introduce `g m`. Apply `e.injective` to reduce the goal to its premises. Use `show e (e.symm _) = e (M.rho g (e.symm m))`. Rewrite using `[e.apply_symm_apply, he, ← map_smul, ← he, e.apply_symm_apply])`. Establish `hQ : ∀ y : M.H n, (k : R) • Q.hom.H n y = y`.
+
+Introduce `y`. Proceed by induction on `y using Cx.H_ind with`. Consider the case `h c hc`. Rewrite using `[Cx.Hom.H_cls, Cx.cls_smul]`. Use `Cx.cls_congr _ _ (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations.
+
+Conclude with `e.apply_symm_apply _`. Rewrite using `[← hQ x, ← map_smul, Nat.cast_smul_eq_nsmul, hkx, map_zero]`.
+-/
 theorem h_subsingleton_of_uniquely_divisible [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] {R : Type} [CommRing R]
     (M : TRep R G) [DiscreteTopology M.V] (hM : ∀ k : ℕ, 0 < k → Bijective fun m : M.V => k • m)
     (n : ℕ) (hn : 0 < n) : Subsingleton (M.H n) := by
@@ -38,11 +49,19 @@ theorem h_subsingleton_of_uniquely_divisible [CompactSpace G] [T2Space G] [Total
       exact e.apply_symm_apply _
   rw [← hQ x, ← map_smul, Nat.cast_smul_eq_nsmul, hkx, map_zero]
 
+/- English proof (translation)
+The claim follows from `h_subsingleton_of_uniquely_divisible G M hM n hn`.
+-/
 theorem h_subsingleton_of_divisible [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     (M : TRep ℤ G) [DiscreteTopology M.V] (hM : ∀ k : ℕ, 0 < k → Bijective fun m : M.V => k • m)
     (n : ℕ) (hn : 0 < n) : Subsingleton (M.H n) :=
   h_subsingleton_of_uniquely_divisible G M hM n hn
 
+/- English proof (translation)
+Use `h_subsingleton_of_divisible G (trivRep G ℚ) (fun k hk => ?_) n hn` and prove the remaining obligations. Use `show Bijective fun m : ℚ => k • m`. Establish `hk' : (k : ℚ) ≠ 0` using `by exact_mod_cast hk.ne'`. Use `⟨fun a b h => ?_, fun y => ⟨y / k, ?_⟩⟩` and prove the remaining obligations. Simplify `h` using `[nsmul_eq_mul, hk']`.
+
+Simplify using `only [nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem h_rat_subsingleton [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] (n : ℕ) (hn : 0 < n) :
     Subsingleton ((trivRep G ℚ).H n) := by
   refine h_subsingleton_of_divisible G (trivRep G ℚ) (fun k hk => ?_) n hn
@@ -52,6 +71,9 @@ theorem h_rat_subsingleton [CompactSpace G] [T2Space G] [TotallyDisconnectedSpac
   · simpa [nsmul_eq_mul, hk'] using h
   · simp only [nsmul_eq_mul]; field_simp
 
+/- English proof (translation)
+The claim follows from `rfl p_id := rfl emb := by have hi : Injective (trivMap G (Int.castAddHom ℚ)).u := Int.cast_injective (α := ℚ) exact (Topology.IsOpenEmbedding.of_continuous_injective_isOpenMap continuous_of_discreteTopology hi fun _ _ => isOpen_discrete _).isEmbedding exact := by intro (y : ℚ) sh …`.
+-/
 theorem admissible_int_rat_sequence : admitted (trivMap G (Int.castAddHom ℚ)) (trivMap G (QuotientAddGroup.mk' (Int.castAddHom ℚ).range)) where
   i_id := rfl
   p_id := rfl
@@ -66,6 +88,13 @@ theorem admissible_int_rat_sequence : admitted (trivMap G (Int.castAddHom ℚ)) 
   sec := ⟨Function.surjInv (QuotientAddGroup.mk'_surjective (Int.castAddHom ℚ).range),
     continuous_of_discreteTopology, Function.surjInv_eq _⟩
 
+/- English proof (translation)
+Establish `hs` using `admissibility_holds ℤ G _ _ _ _ _ (admissible_int_rat_sequence G)`. Take `⟨⟨δ', h1, h2⟩, hu⟩` from `lES_holds ℤ _ _ _ _ _ hs`. Take `rfl` from `hu δ δ' hδ h1`. Establish `s1` using `h_rat_subsingleton G n hn`. Establish `s2` using `h_rat_subsingleton G (n + 1) n.succ_pos`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(h2.exC n x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+
+Introduce `y`. Conclude with `(h2.exA n y).1 (Subsingleton.elim _ _)`.
+-/
 theorem conn_int_rat_bijective [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     (δ : ∀ n, (trivRep G QZ).H n →ₗ[ℤ] (trivRep G ℤ).H (n + 1))
     (hδ : Cx.IsConn (trivMap G (Int.castAddHom ℚ)).hom
@@ -94,12 +123,20 @@ def oneCocycleEquivCharacters : Gal.Z1 (trivRep G QZ).rho ≃+ charGrp G where
   right_inv _ := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨m, rfl⟩`. Use `(Submodule.mem_bot _).2 (funext fun g => ?_)` and prove the remaining obligations. Conclude with `sub_self m`.
+-/
 theorem one_coboundaries_trivial_eq_bot (A : Type) [AddCommGroup A] : Gal.B1 (trivRep G A).rho = ⊥ := by
   rw [eq_bot_iff]
   rintro _ ⟨m, rfl⟩
   refine (Submodule.mem_bot _).2 (funext fun g => ?_)
   exact sub_self m
 
+/- English proof (translation)
+Take `⟨-, -, ⟨e, he⟩, -⟩` from `low_holds ℤ G (trivRep G QZ)`. Establish `hB : (Gal.B1 (trivRep G QZ).rho).comap (Gal.Z1 (trivRep G QZ).rho).subtype = ⊥`. Rewrite using `[one_coboundaries_trivial_eq_bot, Submodule.comap_bot, Submodule.ker_subtype]`. Use `⟨e.toAddEquiv.trans ((Submodule.quotEquivOfEqBot _ hB).toAddEquiv.trans (oneCocycleEquivCharacters G)), ?_⟩` and prove the remaining obligations. Introduce `x hx g`.
+
+Take `⟨hz, h⟩` from `he x hx`. Use `show (oneCocycleEquivCharacters G (Submodule.quotEquivOfEqBot _ hB (e _))).1 (Additive.ofMul g) = _`. Rewrite using `[h, Submodule.quotEquivOfEqBot_apply_mk]`. Both sides reduce to the same expression.
+-/
 theorem exists_h1_equiv_characters : ∃ e : (trivRep G QZ).H 1 ≃+ charGrp G,
     ∀ x hx g, (e ((trivRep G QZ).coch.cls 1 x hx)).1 (Additive.ofMul g) = x.1 ![g] := by
   obtain ⟨-, -, ⟨e, he⟩, -⟩ := low_holds ℤ G (trivRep G QZ)
@@ -112,6 +149,11 @@ theorem exists_h1_equiv_characters : ∃ e : (trivRep G QZ).H 1 ≃+ charGrp G,
   rw [h, Submodule.quotEquivOfEqBot_apply_mk]
   rfl
 
+/- English proof (translation)
+Establish `hs` using `admissibility_holds ℤ G _ _ _ _ _ (admissible_int_rat_sequence G)`. Take `⟨⟨δ', h1, -⟩, hu⟩` from `lES_holds ℤ _ _ _ _ _ hs`. Take `⟨e, he⟩` from `exists_h1_equiv_characters G`. Set `d : (trivRep G QZ).H 1 ≃+ (trivRep G ℤ).H 2` to `AddEquiv.ofBijective (δ' 1).toAddMonoidHom (conn_int_rat_bijective G δ' h1 1 one_pos)`. Use `⟨d.symm.trans e, fun δ hδ x hx g => ?_⟩` and prove the remaining obligations.
+
+Take `rfl` from `hu δ δ' hδ h1`. Use `show (e (d.symm (d _))).1 _ = _`. Rewrite using `[d.symm_apply_apply, he]`.
+-/
 theorem exists_h2_int_equiv_characters [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] :
     ∃ e : (trivRep G ℤ).H 2 ≃+ charGrp G, ∀ δ, Cx.IsConn (trivMap G (Int.castAddHom ℚ)).hom
       (trivMap G (QuotientAddGroup.mk' (Int.castAddHom ℚ).range)).hom δ →
@@ -126,6 +168,13 @@ theorem exists_h2_int_equiv_characters [CompactSpace G] [T2Space G] [TotallyDisc
   show (e (d.symm (d _))).1 _ = _
   rw [d.symm_apply_apply, he]
 
+/- English proof (translation)
+Establish `key : ∀ ψ : charGrp G, ψ.1 (Additive.ofMul s) = 0 → ψ = 0`. Introduce `ψ h`. Establish `hcl : IsClosed {g : G | ψ.1 (Additive.ofMul g) = 0}` using `(IsLocallyConstant.isClopen_fiber ψ.2 0).1`. Establish `hsub : (Subgroup.zpowers s : Set G) ⊆ {g : G | ψ.1 (Additive.ofMul g) = 0}`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Use `show ψ.1 (Additive.ofMul (s ^ k)) = 0`. Rewrite using `[ofMul_zpow, map_zsmul, h, smul_zero]`. Establish `hall` using `closure_minimal hsub hcl`. Rewrite `hall` using `[hs.closure_eq]`. Conclude with `Subtype.ext (AddMonoidHom.ext fun a => hall (Set.mem_univ a.toMul))`.
+
+Introduce `χ χ' h`. Use `sub_eq_zero.1 (key (χ - χ') ?_)` and prove the remaining obligations. Use `show χ.1 (Additive.ofMul s) - χ'.1 (Additive.ofMul s) = 0`. Conclude with `sub_eq_zero.2 h`.
+-/
 theorem charGrp_eval_injective (s : G) (hs : Dense (Subgroup.zpowers s : Set G)) :
     Injective fun χ : charGrp G => χ.1 (Additive.ofMul s) := by
   have key : ∀ ψ : charGrp G, ψ.1 (Additive.ofMul s) = 0 → ψ = 0 := by
@@ -143,6 +192,11 @@ theorem charGrp_eval_injective (s : G) (hs : Dense (Subgroup.zpowers s : Set G))
   show χ.1 (Additive.ofMul s) - χ'.1 (Additive.ofMul s) = 0
   exact sub_eq_zero.2 h
 
+/- English proof (translation)
+Use `⟨charGrp_eval_injective G s hs.1, fun (q : (trivRep G QZ).V) => ?_⟩` and prove the remaining obligations. Take `⟨⟨e, he⟩, -⟩` from `zHat_holds ℤ G s hs (trivRep G QZ) RationalModIntegerChains.qz_torsion`. Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective _ (e.symm (Submodule.Quotient.mk q))`. Establish `h` using `he c`. Rewrite `h` using `[hc, e.apply_symm_apply]`.
+
+Take `⟨m, hm⟩` from `(Submodule.Quotient.eq _).1 h`. Establish `hm' : 0 = q - c.1 s` using `by rw [← hm]; exact (sub_self m).symm`. Conclude with `⟨oneCocycleEquivCharacters G c, (sub_eq_zero.1 hm'.symm).symm⟩`.
+-/
 theorem charGrp_eval_bijective [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] (s : G)
     (hs : IsZHat G s) : Bijective fun χ : charGrp G => χ.1 (Additive.ofMul s) := by
   refine ⟨charGrp_eval_injective G s hs.1, fun (q : (trivRep G QZ).V) => ?_⟩
@@ -154,6 +208,9 @@ theorem charGrp_eval_bijective [CompactSpace G] [T2Space G] [TotallyDisconnected
   have hm' : 0 = q - c.1 s := by rw [← hm]; exact (sub_self m).symm
   exact ⟨oneCocycleEquivCharacters G c, (sub_eq_zero.1 hm'.symm).symm⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_h2_int_equiv_characters G`. Set `ev : charGrp G →+ QZ` to `{ toFun := fun χ => χ.1 (Additive.ofMul s), map_zero' := rfl, map_add' := fun _ _ => rfl }`. Conclude with `⟨e.trans (AddEquiv.ofBijective ev (charGrp_eval_bijective G s hs)), fun δ hδ x hx => he δ hδ x hx s⟩`.
+-/
 theorem exists_h2_int_equiv_rat_mod_int [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] (s : G)
     (hs : IsZHat G s) : ∃ e : (trivRep G ℤ).H 2 ≃+ QZ, ∀ δ, Cx.IsConn (trivMap G (Int.castAddHom ℚ)).hom
       (trivMap G (QuotientAddGroup.mk' (Int.castAddHom ℚ).range)).hom δ →

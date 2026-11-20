@@ -12,6 +12,19 @@ open GlobalTheory.Mum GlobalTheory.Mum.GenDesc
 
 namespace GlobalTheory.Mum.GenDesc
 
+/- English proof (translation)
+Introduce `hinv σ`. Establish `h₁ : G'.hom ≫ spMap (Gal.hom σ) = a.act σ ≫ G'.hom` using `((a.cart σ).1.w).symm`. Establish `h₂ : jK R' ≫ spMap (Gal.hom σ) = spMap (fracAut σ.1).toRingHom ≫ jK R'`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `x`. Conclude with `(fracAut_algebraMap σ.1 x).symm`. Set `ψ` to `pullback.map G'.hom (jK R') G'.hom (jK R') (a.act σ) (spMap (fracAut σ.1).toRingHom) (spMap (Gal.hom σ)) h₁ h₂`. Establish `hψ₁ : ψ ≫ pullback.fst G'.hom (jK R') = pullback.fst G'.hom (jK R') ≫ a.act σ` using `pullback.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ pullback.snd G'.hom (jK R') = pullback.snd G'.hom (jK R') ≫ spMap (fracAut σ.1).toRingHom` using `pullback.lift_snd _ _ _`.
+
+Establish `hfr : spMap (fracAut σ.1).toRingHom ≫ spMap (fracMap ρ hρ) = spMap (fracMap ρ hρ)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `fracAut_fracMap hρ σ x`.
+
+Use `⟨ψ, ?_, hψ₂, ?_⟩` and prove the remaining obligations. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, genMap_fst, ← Category.assoc, hψ₁, Category.assoc, hinv σ]`. Rewrite using `[Category.assoc, genMap_snd, ← Category.assoc, hψ₂, Category.assoc, hfr]`. Take `⟨h, bc, hbc, hU, -⟩` from `a.unif σ`.
+
+Take `⟨wL, hwL, -⟩` from `hU.lg`. Establish `hL : LBIso U'.LG.L (U'.LG.L.pull (a.act σ))`. Rewrite using `[← hbc]`. Conclude with `⟨wL, hwL⟩`. Establish `hL₀` using `U'.LG.isLB`.
+
+Use `LBIso.trans (pull_isLB hL₀ _) (pull_isLB hL₀ _) (pull_isLB (pull_isLB hL₀ _) _) (GlobalTheory.GenSpread.lbIso_pull_of_lbIso hL (pullback.fst G'.hom (jK R')) rfl) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.GenSpread.lbIso_pull_pull hL₀ ψ hψ₁.symm`.
+-/
 theorem exists_inv (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (R' : Type) [CommRing R'] [IsDomain R']
     [IsLocalRing R'] (ρ : R →+* R') (hρ : Function.Injective ρ) (D : DegData R (maximalIdeal R))
     (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R')))

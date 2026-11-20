@@ -8,6 +8,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.ResComm
 
+/- English proof (translation)
+Establish `key : ∀ A ∈ S, ∀ B ∈ Submodule.span Λ S, ∀ m, φ (A (B m)) = φ (B (A m))`. Introduce `A hA B hB`. Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB => exact h A hA B hB`. Consider the case `zero => intro m`.
+
+Simplify using the standard rewrite rules. Consider the case `add B₁ B₂ _ _ h₁ h₂ => intro m`. Simplify using `[h₁, h₂]`. Consider the case `smul c B _ hB'`. Introduce `m`.
+
+Simplify using `only [LinearMap.smul_apply, ← map_smul]`. Conclude with `hB' (c • m)`. Introduce `A hA B hB`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => exact key A hA B hB`.
+
+Consider the case `zero => intro m`. Simplify using the standard rewrite rules. Consider the case `add A₁ A₂ _ _ h₁ h₂ => intro m`. Simplify using `[h₁, h₂]`. Consider the case `smul c A _ hA'`.
+
+Introduce `m`. Simplify using `only [LinearMap.smul_apply, ← map_smul]`. Conclude with `hA' (c • m)`.
+-/
 theorem comm_span {Λ M C : Type} [CommRing Λ] [AddCommGroup M] [Module Λ M] [AddCommGroup C] (S : Set (Module.End Λ M))
     (φ : M →+ C) (h : ∀ A ∈ S, ∀ B ∈ S, ∀ m, φ (A (B m)) = φ (B (A m))) :
     ∀ A ∈ Submodule.span Λ S, ∀ B ∈ Submodule.span Λ S, ∀ m, φ (A (B m)) = φ (B (A m)) := by
@@ -32,6 +43,9 @@ theorem comm_span {Λ M C : Type} [CommRing Λ] [AddCommGroup M] [Module Λ M] [
     simp only [LinearMap.smul_apply, ← map_smul]
     exact hA' (c • m)
 
+/- English proof (translation)
+Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[matAct, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem act_add {O Λ K : Type} [CommRing O] [CommRing Λ] [Algebra O Λ] [AddCommGroup K] [Module Λ K] {r : ℕ}
     (P Q : Matrix (Fin r) (Fin r) O) :
     matAct (M := K) ((P + Q).map (algebraMap O Λ)) =
@@ -39,12 +53,20 @@ theorem act_add {O Λ K : Type} [CommRing O] [CommRing Λ] [Algebra O Λ] [AddCo
   refine LinearMap.ext fun v => funext fun i => ?_
   simp [matAct, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[matAct, mul_smul, Finset.smul_sum]`.
+-/
 theorem act_smul {O Λ K : Type} [CommRing O] [CommRing Λ] [Algebra O Λ] [AddCommGroup K] [Module Λ K] {r : ℕ}
     (c : O) (P : Matrix (Fin r) (Fin r) O) :
     matAct (M := K) ((c • P).map (algebraMap O Λ)) = algebraMap O Λ c • matAct (P.map (algebraMap O Λ)) := by
   refine LinearMap.ext fun v => funext fun i => ?_
   simp [matAct, mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `only [matAct, LinearMap.coe_mk, AddHom.coe_mk, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hPQ : P i j - Q i j ∈ IsLocalRing.maximalIdeal O`. Establish `e` using `congrFun (congrFun h i) j`.
+
+Simplify using `only [Matrix.map_apply] at e`. Conclude with `Ideal.Quotient.eq.mp e`. Establish `hΛ : algebraMap O Λ (P i j - Q i j) ∈ IsLocalRing.maximalIdeal Λ` using `(IsLocalRing.mem_maximalIdeal _).mpr (mem_nonunits_iff.mpr fun hu => mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal _).mp hPQ) (isUnit_of_map_unit (algebraMap O Λ) _ hu))`. Establish `e` using `hm _ hΛ (v j)`. Rewrite `e` using `[map_sub, sub_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem act_congr {O Λ K : Type} [CommRing O] [IsLocalRing O] [CommRing Λ] [IsLocalRing Λ] [Algebra O Λ]
     [IsLocalHom (algebraMap O Λ)] [AddCommGroup K] [Module Λ K] {r : ℕ}
     (hm : ∀ x ∈ IsLocalRing.maximalIdeal Λ, ∀ k : K, x • k = 0) (P Q : Matrix (Fin r) (Fin r) O)
@@ -64,6 +86,11 @@ theorem act_congr {O Λ K : Type} [CommRing O] [IsLocalRing O] [CommRing Λ] [Is
   have e := hm _ hΛ (v j)
   rwa [map_sub, sub_smul, sub_eq_zero] at e
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [matAct, LinearMap.coe_mk, AddHom.coe_mk, Matrix.map_apply, Matrix.of_apply]`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[apply_ite (algebraMap O Λ), ite_smul]`.
+
+Simplify using `[hi]`.
+-/
 private theorem matAct_single {O Λ K : Type} [CommRing O] [CommRing Λ] [Algebra O Λ] [AddCommGroup K] [Module Λ K] {r : ℕ}
     (a b : Fin r) (v : Fin r → K) :
     matAct (M := K) ((Matrix.of fun i j => if i = a ∧ j = b then (1 : O) else 0).map (algebraMap O Λ)) v =
@@ -75,6 +102,25 @@ private theorem matAct_single {O Λ K : Type} [CommRing O] [CommRing Λ] [Algebr
     simp [apply_ite (algebraMap O Λ), ite_smul]
   · simp [hi]
 
+/- English proof (translation)
+Establish `lift : ∀ X : Matrix (Fin r) (Fin r) (IsLocalRing.ResidueField O), ∃ P' : Matrix (Fin r) (Fin r) O, P'.map (IsLocalRing.residue O) = X` using `fun X => ⟨X.map (Function.surjInv IsLocalRing.residue_surjective), by`. Use extensionality with `i j`. Simplify using `[Function.surjInv_eq IsLocalRing.residue_surjective]⟩`. It suffices to establish `H : ∀ X ∈ Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (IsLocalRing.residue O)), ∀ P : Matrix (Fin r) (Fin r) O, P.map (IsLocalRing.residue O) = X → matAct (M` using `K) (P.map (algebraMap O Λ)) ∈ Submodule.span Λ (Set.range fun g => matAct (M := K) (((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (algebraMap O Λ))) by`. Conclude with `H _ (by rw [hsp]; exact Submodule.mem_top) P rfl`.
+
+Introduce `X hX`. Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem X hX`. Take `⟨g, rfl⟩` from `hX`. Introduce `P hP`.
+
+Rewrite using `[act_congr (K := K) hm P _ hP]`. Conclude with `Submodule.subset_span ⟨g, rfl⟩`. Consider the case `zero`. Introduce `P hP`. Establish `hP0 : P.map (IsLocalRing.residue O) = (0 : Matrix (Fin r) (Fin r) O).map (IsLocalRing.residue O)`.
+
+Rewrite using `[hP]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[act_congr (K := K) hm P 0 hP0]`. Establish `h0 : matAct (M` using `K) ((0 : Matrix (Fin r) (Fin r) O).map (algebraMap O Λ)) = 0 := by`.
+
+Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[matAct]`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add X Y _ _ hX hY`.
+
+Introduce `P hP`. Take `⟨P₁, hP₁⟩` from `lift X`. Establish `hP₂ : (P - P₁).map (IsLocalRing.residue O) = Y`. Establish `e : (P - P₁).map (IsLocalRing.residue O) = P.map (IsLocalRing.residue O) - P₁.map (IsLocalRing.residue O)`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, hP, hP₁, add_sub_cancel_left]`. Establish `e : P = P₁ + (P - P₁)` using `by abel`. Rewrite using `[e, act_add]`. Conclude with `Submodule.add_mem _ (hX P₁ hP₁) (hY _ hP₂)`.
+
+Consider the case `smul c X _ hX`. Introduce `P hP`. Take `⟨P₁, hP₁⟩` from `lift X`. Take `⟨c₀, rfl⟩` from `IsLocalRing.residue_surjective c`. Establish `h' : P.map (IsLocalRing.residue O) = (c₀ • P₁).map (IsLocalRing.residue O)`.
+
+Rewrite using `[hP, ← hP₁]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[act_congr (K := K) hm P _ h', act_smul]`. Conclude with `Submodule.smul_mem _ _ (hX P₁ hP₁)`.
+-/
 private theorem matAct_of_span_residue_spans {Γ O Λ K : Type} [Group Γ] [CommRing O] [IsLocalRing O] [CommRing Λ] [IsLocalRing Λ]
     [Algebra O Λ] [IsLocalHom (algebraMap O Λ)] [AddCommGroup K] [Module Λ K] {r : ℕ} (ρ : Γ →* GL (Fin r) O)
     (hm : ∀ x ∈ IsLocalRing.maximalIdeal Λ, ∀ k : K, x • k = 0)
@@ -132,6 +178,9 @@ private theorem matAct_of_span_residue_spans {Γ O Λ K : Type} [Group Γ] [Comm
     rw [act_congr (K := K) hm P _ h', act_smul]
     exact Submodule.smul_mem _ _ (hX P₁ hP₁)
 
+/- English proof (translation)
+Establish `e : (((twGL ρ χ) g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O) = (((χ g)⁻¹ : Oˣ) : O) • ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O)`. Simplify using `[twGL, scalGL, Matrix.smul_eq_diagonal_mul]`. Use `show ((κ g : Λ) • matAct (M := K) ((((twGL ρ χ) g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (algebraMap O Λ))) m = _`. Rewrite using `[e, act_smul, smul_smul]`. Both sides reduce to the same expression.
+-/
 private theorem matAct_rep {Γ O Λ K : Type} [Group Γ] [CommRing O] [CommRing Λ] [Algebra O Λ] [AddCommGroup K]
     [Module Λ K] {r : ℕ} (ρ : Γ →* GL (Fin r) O) (χ : Γ →* Oˣ) (κ : Γ →* Λˣ) (g : Γ) (m : Fin r → K) :
     repOn (twGL ρ χ) κ K g m = ((κ g : Λ) * algebraMap O Λ (((χ g)⁻¹ : Oˣ) : O)) •
@@ -144,6 +193,17 @@ private theorem matAct_rep {Γ O Λ K : Type} [Group Γ] [CommRing O] [CommRing 
   rw [e, act_smul, smul_smul]
   rfl
 
+/- English proof (translation)
+Introduce `Γ O Λ K C _ _ _ _ _ _ _ _ _ _ r ρ χ κ hr hm hsp φ hφ`. Establish `hunit : ∀ g, IsUnit ((κ g : Λ) * algebraMap O Λ (((χ g)⁻¹ : Oˣ) : O))` using `fun g => (κ g).isUnit.mul (((χ g)⁻¹).isUnit.map _)`. Establish `hcomm : ∀ A ∈ Set.range fun g => matAct (M` using `K) (((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (algebraMap O Λ)), ∀ B ∈ Set.range fun g => matAct (M := K) (((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (algebraMap O Λ)), ∀ m, φ (A (B m)) = φ (B (A m)) := by`. Introduce and unpack `_ ⟨g, rfl⟩ _ ⟨h, rfl⟩ m`. Take `⟨w, hw⟩ : ∃ w : Λ, ((κ g : Λ) * algebraMap O Λ (((χ g)⁻¹ : Oˣ) : O)) * ((κ h : Λ) * algebraMap O Λ (((χ h)⁻¹ : Oˣ) : O)) * w = 1` from `⟨(((hunit g).mul (hunit h)).unit⁻¹ : Λˣ), by simp⟩`.
+
+Establish `e` using `hφ g h (w • m)`. Simplify using `only [matAct_rep, map_smul, smul_smul] at e`. Establish `e1 : w * ((κ h : Λ) * algebraMap O Λ (((χ h)⁻¹ : Oˣ) : O)) * ((κ g : Λ) * algebraMap O Λ (((χ g)⁻¹ : Oˣ) : O)) = 1` using `by linear_combination hw`. Establish `e2 : w * ((κ g : Λ) * algebraMap O Λ (((χ g)⁻¹ : Oˣ) : O)) * ((κ h : Λ) * algebraMap O Λ (((χ h)⁻¹ : Oˣ) : O)) = 1` using `by linear_combination hw`. Rewrite `e` using `[e1, e2, one_smul, one_smul]`.
+
+Conclude with `e`. Establish `hall : ∀ (P Q : Matrix (Fin r) (Fin r) O) (m : Fin r → K), φ (matAct (M` using `K) (P.map (algebraMap O Λ)) (matAct (M := K) (Q.map (algebraMap O Λ)) m)) = φ (matAct (M := K) (Q.map (algebraMap O Λ)) (matAct (M := K) (P.map (algebraMap O Λ)) m)) := fun P Q => comm_span _ φ hcomm _ (matAct_of_span_residue_spans ρ hm hsp P) _ (matAct_of_span_residue_spans ρ hm …`. Establish `: Nontrivial (Fin r)` using `Fin.nontrivial_iff_two_le.mpr hr`. Establish `hsingle : ∀ (a : Fin r) (x : K), φ (Pi.single a x) = 0`. Introduce `a x`.
+
+Take `⟨b, hb⟩` from `exists_ne a`. Establish `e` using `hall (Matrix.of fun i j => if i = a ∧ j = b then (1 : O) else 0) (Matrix.of fun i j => if i = b ∧ j = b then (1 : O) else 0) (Pi.single b x)`. Simplify using `only [matAct_single] at e`. Simplify `e` using `[Pi.single_eq_of_ne hb]`. Use `AddMonoidHom.ext fun m => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.univ_sum_single m, map_sum]`. Simplify using `[hsingle]`.
+-/
 theorem eq_zero_of_comm : ∀ (Γ O Λ K C : Type) [Group Γ] [CommRing O] [IsLocalRing O] [CommRing Λ] [IsLocalRing Λ] [Algebra O Λ] [IsLocalHom (algebraMap O Λ)] [AddCommGroup K] [Module Λ K] [AddCommGroup C] (r : ℕ) (ρ : Γ →* GL (Fin r) O) (χ : Γ →* Oˣ) (κ : Γ →* Λˣ), 2 ≤ r → (∀ x ∈ IsLocalRing.maximalIdeal Λ, ∀ k : K, x • k = 0) → Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (IsLocalRing.residue O)) = ⊤ → ∀ φ : (Fin r → K) →+ C, (∀ g h m, φ (repOn (twGL ρ χ) κ K g (repOn (twGL ρ χ) κ K h m)) = φ (repOn (twGL ρ χ) κ K h (repOn (twGL ρ χ) κ K g m))) → φ = 0 := by
   intro Γ O Λ K C _ _ _ _ _ _ _ _ _ _ r ρ χ κ hr hm hsp φ hφ
 

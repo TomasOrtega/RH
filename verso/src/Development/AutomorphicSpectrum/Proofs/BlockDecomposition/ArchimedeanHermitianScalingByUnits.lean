@@ -17,6 +17,11 @@ namespace GlobalTheory.CompanionTheory.SW.DiagScale
 
 section Gen
 
+/- English proof (translation)
+Use `haveI : ∀ i, SigmaFinite (μ.map (f i)) := fun i => by rw [h i]; infer_instance`. Rewrite using `[Measure.pi_map_pi (f := f) (fun i => (hf i).aemeasurable)]`. Simplify using `only [h]`. Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi]`.
+
+Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, Finset.prod_mul_distrib]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem pi_map_scale_family {ι X : Type} [Fintype ι] [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ]
     (f : ι → X → X) (hf : ∀ i, Measurable (f i)) (c : ι → ℝ≥0) (h : ∀ i, μ.map (f i) = c i • μ) :
     (Measure.pi fun _ : ι => μ).map (fun x i => f i (x i)) =
@@ -30,6 +35,9 @@ theorem pi_map_scale_family {ι X : Type} [Fintype ι] [MeasurableSpace X] (μ :
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `hm : ∀ x : A, Measurable (fun y : A => x * y)` using `fun x => (continuous_const.mul continuous_id).measurable`. Establish `e : (fun y => u * v * y) = (fun y => u * y) ∘ (fun y => v * y)`. Use function extensionality and compare the values at `y`. Simplify using `[mul_assoc]`. Rewrite using `[e, ← Measure.map_map (hm u) (hm v), hv, Measure.map_smul, hu, smul_smul, mul_comm]`.
+-/
 theorem map_mul_scale {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [MeasurableSpace A] [BorelSpace A] (lam : Measure A) (u v : A) (c c' : ℝ≥0)
     (hu : lam.map (fun y => u * y) = c • lam) (hv : lam.map (fun y => v * y) = c' • lam) :
@@ -47,6 +55,21 @@ def mulU (A : Type) [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     measurable_toFun := (continuous_const.mul continuous_id).measurable
     measurable_invFun := (continuous_const.mul continuous_id).measurable }
 
+/- English proof (translation)
+Use `set g : Fin n × Fin n → ℝ≥0 := fun x => c x.1 * c x.2 with hg`. Establish `h1 : ∏ x : Fin n × Fin n, g x = (∏ a, c a) ^ (2 * n)`. Rewrite using `[Fintype.prod_prod_type]`. Simplify using `only [hg, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Finset.prod_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hU : ∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.1 < x.2), g x = ∏ p : {p : Fin n × Fin n // p.1 < p.2}, g p` using `Finset.prod_subtype _ (by simp) _`. Establish `hL : ∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.2 < x.1), g x = ∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.1 < x.2), g x` using `Finset.prod_equiv (Equiv.prodComm _ _) (by simp) (by simp [hg, mul_comm])`. Establish `hD : ∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.1 = x.2), g x = ∏ i, c i * c i`. Use `symm`.
+
+Use `Finset.prod_nbij' (fun i => (i, i)) Prod.fst (by simp) (by simp) (by simp) ?_ (by simp [hg])` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ h`. Simplify using `using (Finset.mem_filter.1 h).2`. Establish `hS : ∏ x : Fin n × Fin n, g x = (∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.1 < x.2), g x) * ((∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.1 = x.2), g x) * (∏ x ∈ Finset.univ.filter (fun x : Fin n × Fin n => x.2 < x.1), g x))`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun x : Fin n × Fin n => x.1 < x.2) g]`.
+
+Use `congr 1`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not (Finset.univ.filter (fun x : Fin n × Fin n => ¬ x.1 < x.2)) (fun x => x.1 = x.2) g, Finset.filter_filter, Finset.filter_filter]`. Use `congr 1`. Use `Finset.prod_congr (Finset.filter_congr fun x _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `fun h => h.2`. Conclude with `fun h => ⟨by simp [h], h⟩`. Use `Finset.prod_congr (Finset.filter_congr fun x _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `lt_of_le_of_ne (not_lt.1 h.1) (fun e => h.2 e.symm)`. Introduce `h`. Conclude with `⟨not_lt.2 h.le, h.ne'⟩`. Establish `hP : ∏ p : {p : Fin n × Fin n // p.1 < p.2}, (c p.1.1 * c p.1.2) ^ 2 = (∏ p : {p : Fin n × Fin n // p.1 < p.2}, g p) ^ 2`. Rewrite using `[Finset.prod_pow]`.
+
+Establish `hT : ∏ a, c a ^ (2 * n) = (∏ a, c a) ^ (2 * n)` using `Finset.prod_pow _ _ _`. Rewrite using `[hT, ← h1, hS, hL, hD, hU, hP]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_pairs {n : ℕ} (c : Fin n → ℝ≥0) :
     (∏ i, c i * c i) * ∏ p : {p : Fin n × Fin n // p.1 < p.2}, (c p.1.1 * c p.1.2) ^ 2 =
       ∏ a, c a ^ (2 * n) := by
@@ -103,6 +126,27 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
   [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R] [MeasurableSpace R] [BorelSpace R]
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, t5, t6, t7, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`. Establish `h2 : Module.finrank F E = 2` using `hσ.2.2.1`. Establish `hd : d = 2`. Rewrite using `[← h2, Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+
+Substitute `hd` using the available equality. Take `⟨hinv, δ, hδ, hσδ⟩` from `GlobalTheory.CompanionTheory.SW.HaarCoord.conj_facts hσ`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R _`. Take `⟨hK, -, hH⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ R 2 b lam ‹_›`.
+
+Use `haveI := hK`. Use `haveI := hH n`. Establish `hhom` using `GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord_isHomeomorph R hinv h2 hδ hσδ n t5 t6`. Set `φ` to `GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord R σ n`. Set `Q : Measure ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E)` to `Measure.pi fun _ => GlobalTheory.CompanionTheory.SW.coordK R b lam`.
+
+Set `P` to `(Measure.pi fun _ : Fin n => lam).prod Q`. Establish `hν : GlobalTheory.CompanionTheory.SW.coordHerm R σ b lam n = Measure.comap φ P` using `rfl`. Establish `hcond : Function.Injective φ ∧ ∀ s, MeasurableSet s → NullMeasurableSet (φ '' s) P`. Assume the negation of the conclusion as `hc`. Establish `h0 : GlobalTheory.CompanionTheory.SW.coordHerm R σ b lam n = 0`.
+
+Rewrite using `[hν, Measure.comap, dif_neg hc]`. Use `isOpen_univ.measure_pos (GlobalTheory.CompanionTheory.SW.coordHerm R σ b lam n) Set.univ_nonempty` as an intermediate fact. Simplify using `[h0] at this`. Set `D1 : (Fin n → R) ≃ᵐ (Fin n → R)` to `MeasurableEquiv.piCongrRight fun i => mulU R (u i * u i)`. Set `D2 : ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E) ≃ᵐ ({p : Fin n × Fin n // p.1 < p.2} → R ⊗[F] E)` to `MeasurableEquiv.piCongrRight fun p => mulU (R ⊗[F] E) (Units.map (algebraMap R (R ⊗[F] E)).toMonoidHom (u p.1.1 * u p.1.2))`.
+
+Establish `hsc : ∀ a a', lam.map (fun y => ((u a * u a' : Rˣ) : R) * y) = (c a * c a') • lam`. Introduce `a a'`. Rewrite using `[Units.val_mul]`. Conclude with `map_mul_scale lam _ _ _ _ (h a) (h a')`. Establish `m1 : (Measure.pi fun _ : Fin n => lam).map D1 = (∏ i, c i * c i) • Measure.pi fun _ : Fin n => lam` using `pi_map_scale_family lam (fun i y => ((u i * u i : Rˣ) : R) * y) (fun i => (continuous_const.mul continuous_id).measurable) _ (fun i => hsc i i)`.
+
+Establish `m2 : Q.map D2 = (∏ p : {p : Fin n × Fin n // p.1 < p.2}, (c p.1.1 * c p.1.2) ^ 2) • Q` using `pi_map_scale_family (GlobalTheory.CompanionTheory.SW.coordK R b lam) (fun (p : {p : Fin n × Fin n // p.1 < p.2}) y => algebraMap R (R ⊗[F] E) ((u p.1.1 * u p.1.2 : Rˣ) : R) * y) (fun p => (continuous_const.mul continuous_id).measurable) _ (fun p => GlobalTheory.CompanionTheory.SW …`. Establish `hD : P.map (D1.prodCongr D2) = (∏ a, c a ^ (2 * n)) • P`. Establish `e` using `Measure.map_prod_map (Measure.pi fun _ : Fin n => lam) Q D1.measurable D2.measurable`. Rewrite `e` using `[m1, m2, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, prod_pairs]`. Conclude with `e.symm`.
+
+Rewrite using `[hν]`. Use `GlobalTheory.CompanionTheory.SW.Dil.map_comap_scale φ P τ hτm (D1.prodCongr D2) _ hhom.surjective hcond.1 hcond.2 ?_ hD` and prove the remaining obligations. Introduce `S`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((τ S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i i) = ((u i * u i : Rˣ) : R) * (algebraMap F R (1 / 2) * Algebra.trace R (R ⊗[F] E) ((S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i i))`. Establish `e : algebraMap R (R ⊗[F] E) (u i) * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i i * algebraMap R (R ⊗[F] E) (u i) = ((u i * u i : Rˣ) : R) • (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i i`. Rewrite using `[Algebra.smul_def, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hτ, e, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `(τ S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) p.1.1 p.1.2 = algebraMap R (R ⊗[F] E) ((u p.1.1 * u p.1.2 : Rˣ) : R) * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) p.1.1 p.1.2`. Rewrite using `[hτ, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coordHerm_map_diag (σ : E →ₐ[F] E) (hσ : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (lam : Measure R) [lam.IsAddHaarMeasure] {n : ℕ}
     (u : Fin n → Rˣ) (c : Fin n → ℝ≥0) (h : ∀ a, lam.map (fun y => (u a : R) * y) = c a • lam)
@@ -183,6 +227,9 @@ theorem coordHerm_map_diag (σ : E →ₐ[F] E) (hσ : HeckeCharacterZeroLocus.S
 
 end H
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n d b lam hlam e he t ht τ hτm hτ`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Conclude with `coordHerm_map_diag (Ainf F) σ hσ b lam (fun a => (ht a).unit) (fun a => (∏ w, ‖e (t a) w‖₊)⁻¹) (fun a => GlobalTheory.CompanionTheory.HaarScale.unit_mul_map_haar F e he lam hlam (t a) (ht a)) τ hτm hτ`.
+-/
 theorem coordHerm_map_diag_ainf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure (Ainf F)), lam.IsAddHaarMeasure → ∀ e : Ainf F ≃+* (NumberField.InfinitePlace F → ℝ), IsHomeomorph e → ∀ t : Fin n → Ainf F, (∀ a, IsUnit (t a)) → ∀ τ : HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n → HeckeCharacterZeroLocus.SiegelWeilU.HermR (Ainf F) σ n, Measurable τ → (∀ S i j, (τ S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j = algebraMap (Ainf F) (Ainf F ⊗[F] E) (t i) * (S : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) i j * algebraMap (Ainf F) (Ainf F ⊗[F] E) (t j)) → (GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n).map τ = (∏ a, ((∏ w, ‖e (t a) w‖₊)⁻¹) ^ (2 * n)) • GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b lam n := by
   intro F E _ _ _ _ _ σ hσ n d b lam hlam e he t ht τ hτm hτ
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩

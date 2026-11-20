@@ -16,6 +16,9 @@ namespace GlobalTheory.PrimVan
 
 variable {X Y Y' : Scheme.{0}}
 
+/- English proof (translation)
+Use `(gm_div (pw B (-1)) A (𝟙 Y) y p q ⟨hp, hq⟩).trans ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `(gm (𝟙 Y) y (B.U p.2 ⊓ B.U q.2) (B.g p.2 q.2 ^ (-1 : ℤ)))⁻¹ = _`. Rewrite using `[zpow_neg_one, map_inv, inv_inv]`.
+-/
 theorem gm_tw_one (A B : LB Y) (y : Y) (p q : A.ι × B.ι) (hp : y ∈ A.U p.1 ⊓ B.U p.2)
     (hq : y ∈ A.U q.1 ⊓ B.U q.2) :
     gm (𝟙 Y) y (A.U p.1 ⊓ B.U p.2 ⊓ (A.U q.1 ⊓ B.U q.2)) ((tw A B 1).g p q) =
@@ -59,12 +62,22 @@ def chartInv (M : LB X) :
       rw [Fintype.prod_unique, Category.id_comp]
       exact map_zpow _ _ _ }
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Conclude with `(((SecOn.topEquiv L).symm ≪≫ₗ SecOn.congr hL hM w hw ⊤) ≪≫ₗ SecOn.topEquiv M).injective.nontrivial`.
+-/
 theorem nontrivial_sec_of_lbIso {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (h : LBIso L M)
     (hn : Nontrivial (LB.Sec L)) : Nontrivial (LB.Sec M) := by
   obtain ⟨w, hw⟩ := h
   exact (((SecOn.topEquiv L).symm ≪≫ₗ SecOn.congr hL hM w hw ⊤) ≪≫ₗ
     SecOn.topEquiv M).injective.nontrivial
 
+/- English proof (translation)
+Rewrite `hn`, the goal using `[TrivLocus.nontrivial_sec_iff]`. Take `⟨σ, i, hi⟩` from `hn`. Take `⟨x, hx⟩` from `TrivLocus.nonempty_of_ne_zero hi`. Take `⟨y, rfl⟩` from `e.homeomorph.surjective x`. Establish `hy : y ∈ (M.pull e).U fun _ => i` using `mem_pull.2 hx`.
+
+Use `⟨SecOn.topEquiv _ (SecOn.pullLE M e ⊤ ⊤ le_top (GlobalTheory.LB.ofSec σ ⊤)), fun _ => i, ?_⟩` and prove the remaining obligations. Use `(SecOn.topEquiv_f _ _).trans_ne ?_` and prove the remaining obligations. Use `TrivLocus.rs_ne_zero _ ⟨y, hy⟩ ?_` and prove the remaining obligations. Use `(SecOn.coord_pullLE e le_top (GlobalTheory.LB.ofSec σ ⊤) fun _ => i).trans_ne ?_` and prove the remaining obligations. Use `TrivLocus.rs_ne_zero (U := e ⁻¹ᵁ (⊤ ⊓ M.U i)) (V := ⊤ ⊓ (M.pull e).U fun _ => i) (fun _ hz => ⟨trivial, mem_pull.1 hz.2⟩) ⟨y, trivial, hy⟩ ?_` and prove the remaining obligations.
+
+Use `(map_ne_zero_iff _ (ConcreteCategory.bijective_of_isIso (e.app _)).1).2 ?_` and prove the remaining obligations. Conclude with `TrivLocus.rs_ne_zero (U := M.U i) (V := ⊤ ⊓ M.U i) inf_le_right ⟨_, trivial, hx⟩ hi`.
+-/
 theorem nontrivial_sec_pull [IsIntegral X] (M : LB X) (e : X ⟶ X) [IsIso e]
     (hn : Nontrivial (LB.Sec M)) : Nontrivial (LB.Sec (M.pull e)) := by
   rw [TrivLocus.nontrivial_sec_iff] at hn ⊢
@@ -84,6 +97,13 @@ theorem nontrivial_sec_pull [IsIntegral X] (M : LB X) (e : X ⟶ X) [IsIso e]
 variable {K : Type} [Field K] {B : Over (Spec (CommRingCat.of K))} [GrpObj B] [IsCommMonObj B]
   {M : LB B.left}
 
+/- English proof (translation)
+Establish `h1 : ptCls M T 1 = 1`. Take `⟨i, hi⟩` from `exists_chart hM (η[B].left (IsLocalRing.closedPoint K))`. Use `(hasGen_iff hM (K := PUnit) (fun _ => (1 : T ⟶ B).left) fun _ => 1).1 (AbSquare.exists_gen_of_mem_chart hM _ _ (fun _ => i) fun _ z => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `η[B].left ((toUnit T).left z) ∈ _`. Establish `: (toUnit T).left z = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`.
+
+Rewrite using `[this]`. Conclude with `hi)`. Rewrite `this` using `[Fintype.prod_unique, zpow_one]`. Then use the resulting hypothesis. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `h` using `(hasGen_iff hM _ _).1 (MulPull.HasGen.pull hu (lift x y).left)`.
+
+Establish `h'` using `(prod_square (lift x y) (fst B B) (snd B B) (cls M)).symm.trans h`. Rewrite `h'` using `[lift_fst, lift_snd]`. Express the relevant statement in the definitionally equal form `ptCls M T (x * y) * (ptCls M T x)⁻¹ * (ptCls M T y)⁻¹ * ptCls M T 1 = 1 at h'`. Rewrite `h'` using `[h1, _root_.mul_one, mul_inv_eq_one, mul_inv_eq_iff_eq_mul, _root_.mul_comm (ptCls M T y)]`. Conclude with `h'`.
+-/
 theorem ptCls_mul (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.IsGen)
     {T : Over (Spec (CommRingCat.of K))} (x y : T ⟶ B) :
     ptCls M T (x * y) = ptCls M T x * ptCls M T y ∧ ptCls M T 1 = 1 := by
@@ -104,6 +124,11 @@ theorem ptCls_mul (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.IsGen)
   rw [h1, _root_.mul_one, mul_inv_eq_one, mul_inv_eq_iff_eq_mul, _root_.mul_comm (ptCls M T y)] at h'
   exact h'
 
+/- English proof (translation)
+Use `LBIso.chartPull (chartPullId _) (chartTw M _ _) ((lbIso_iff hM _ _ _ _).2 ?_)` and prove the remaining obligations. Establish `h` using `(ptCls_mul hM hu (fst B B) (snd B B)).1`. Establish `e : fst B B * snd B B = μ[B]` using `by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite `h` using `[e]`. Rewrite using `[Fintype.prod_unique, Fin.prod_univ_two]`.
+
+Conclude with `(zpow_one _).trans (h.trans (congrArg₂ (· * ·) (zpow_one _).symm (zpow_one _).symm))`.
+-/
 theorem lbIso_pull_mul (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.IsGen) :
     LBIso (M.pull μ[B].left) (tw (M.pull (fst B B).left) (M.pull (snd B B).left) 1) := by
   refine LBIso.chartPull (chartPullId _) (chartTw M _ _) ((lbIso_iff hM _ _ _ _).2 ?_)
@@ -113,6 +138,9 @@ theorem lbIso_pull_mul (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.Is
   rw [Fintype.prod_unique, Fin.prod_univ_two]
   exact (zpow_one _).trans (h.trans (congrArg₂ (· * ·) (zpow_one _).symm (zpow_one _).symm))
 
+/- English proof (translation)
+Use `LBIso.chartPull (chartPullId _) (chartInv M) ((lbIso_iff hM _ _ _ _).2 ?_)` and prove the remaining obligations. Take `⟨h, h1⟩` from `ptCls_mul hM hu (𝟙 B : B ⟶ B)⁻¹ (𝟙 B)`. Rewrite `h` using `[inv_mul_cancel, h1]`. Rewrite using `[Fintype.prod_unique, Fintype.prod_unique, zpow_one, zpow_neg_one]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+-/
 theorem lbIso_pull_inv (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.IsGen) :
     LBIso (M.pull (𝟙 B : B ⟶ B)⁻¹.left) (pw M (-1)) := by
   refine LBIso.chartPull (chartPullId _) (chartInv M) ((lbIso_iff hM _ _ _ _).2 ?_)
@@ -123,11 +151,19 @@ theorem lbIso_pull_inv (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.Is
 
 omit [IsCommMonObj B] in
 
+/- English proof (translation)
+The claim follows from `have := forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ B.hom hB.smooth hB.geomConnected GeometricallyIntegral.geometrically_isIntegral (f := B.hom) _ _ _ (IsPullback.of_id_fst (f := B.hom))`.
+-/
 theorem isIntegral_left (hB : IsAbelianScheme B) : IsIntegral B.left :=
   have := forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ B.hom hB.smooth
     hB.geomConnected
   GeometricallyIntegral.geometrically_isIntegral (f := B.hom) _ _ _ (IsPullback.of_id_fst (f := B.hom))
 
+/- English proof (translation)
+Use `isIntegral_left hB` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `not_nontrivial_iff_subsingleton.1 fun h => hn ?_` and prove the remaining obligations. Establish `hi : IsIso (𝟙 B : B ⟶ B)⁻¹`. Establish `e : (𝟙 B : B ⟶ B)⁻¹ ≫ (𝟙 B : B ⟶ B)⁻¹ = 𝟙 B`.
+
+Rewrite using `[GrpObj.comp_inv, Category.comp_id, inv_inv]`. Conclude with `⟨_, e, e⟩`. Establish `: IsIso (𝟙 B : B ⟶ B)⁻¹.left` using `inferInstanceAs (IsIso ((Over.forget _).map (𝟙 B : B ⟶ B)⁻¹))`. Conclude with `(TrivLocus.triv_iff (isField_of_universallyClosed K B.hom) M hM.cover).2 ⟨h, nontrivial_sec_of_lbIso (LB.isLB_pull hM _) (isLB_pw hM _) (lbIso_pull_inv hM hu) (nontrivial_sec_pull M _ h)⟩`.
+-/
 theorem subsingleton_sec (hB : IsAbelianScheme B) (hM : M.IsLB) (hu : ∃ u : LB.Gen (abelian₂ B M), u.IsGen)
     (hn : ¬ Triv M) : Subsingleton (LB.Sec M) := by
   have := isIntegral_left hB
@@ -150,6 +186,11 @@ def homologyZeroEquiv {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)
       (LinearMap.ker ((cechLB f N D).d 0 1).hom) (by rw [cechLB_d f N D 0]; rfl)).trans
       (CechOne.kerEquiv N f (fun _ => le_top) hc.ge).symm)
 
+/- English proof (translation)
+Take `⟨s, hs, e⟩` from `(isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens (U := (Set.univ : Set X))).1 ⟨isCompact_univ, isOpen_univ⟩`. Take `⟨n, ⟨φ⟩⟩` from `Finite.exists_equiv_fin (α := s) (h := hs)`. Use `⟨n, fun i => (φ.symm i).1.1, fun i => (φ.symm i).1.2, top_unique fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx⟩` from `Set.mem_iUnion₂.1 (e.le (Set.mem_univ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨φ ⟨U, hU⟩, show x ∈ (φ.symm (φ ⟨U, hU⟩)).1.1 by`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `hx⟩`.
+-/
 theorem exists_fin_affine_cover (X : Scheme.{0}) [CompactSpace X] :
     ∃ (n : ℕ) (D : Fin n → X.Opens), (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ := by
   obtain ⟨s, hs, e⟩ := (isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens
@@ -160,6 +201,11 @@ theorem exists_fin_affine_cover (X : Scheme.{0}) [CompactSpace X] :
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨φ ⟨U, hU⟩, show x ∈ (φ.symm (φ ⟨U, hU⟩)).1.1 by
     rw [Equiv.symm_apply_apply]; exact hx⟩
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `hr : ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, h x.1 * h x.2 = 0` using `Finset.sum_eq_zero fun x hx => by`. Establish `hx` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Break down `Nat.eq_zero_or_pos x.2 with h2 | h2` into its components or cases.
+
+Rewrite using `[h2, h0, mul_zero]`. Rewrite using `[ih x.1 (by omega), zero_mul]`. Use `Finset.sum_eq_zero_iff.1 ((e n).trans hr) (n, 0) (by simp)` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right o0`.
+-/
 theorem eq_zero_of_conv (h o : ℕ → ℕ) (h0 : h 0 = 0) (o0 : o 0 ≠ 0)
     (e : ∀ n, ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, h x.1 * o x.2 = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, h x.1 * h x.2)
     (n : ℕ) : h n = 0 := by
@@ -175,6 +221,13 @@ theorem eq_zero_of_conv (h o : ℕ → ℕ) (h0 : h 0 = 0) (o0 : o 0 ≠ 0)
 
 omit [IsCommMonObj B] in
 
+/- English proof (translation)
+Establish `e : fst B B * snd B B = μ[B]` using `by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]`. Set `α : B ⊗ B ≅ B ⊗ B` to `{ hom := lift (fst B B * snd B B) (snd B B) inv := lift (fst B B * (snd B B)⁻¹) (snd B B) hom_inv_id := by ext1`. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv]`. Simplify using the standard rewrite rules. Use `inv_hom_id := by ext1`.
+
+Simplify using `[MonObj.comp_mul]`. Simplify using `}`. Use `(IsPullback.of_hasPullback B.hom B.hom).of_iso ((Over.forget _).mapIso α).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ (by simp) (by simp)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `congrArg (·.left) (show fst B B ≫ 𝟙 B = α.inv ≫ (fst B B * snd B B) by`.
+
+Simplify using `[α, MonObj.comp_mul])`. Conclude with `congrArg (·.left) (show snd B B ≫ 𝟙 B = α.inv ≫ snd B B by simp [α])`.
+-/
 theorem isPullback_mul_snd : IsPullback μ[B].left (snd B B).left B.hom B.hom := by
   have e : fst B B * snd B B = μ[B] := by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]
   let α : B ⊗ B ≅ B ⊗ B :=
@@ -195,6 +248,17 @@ theorem isPullback_mul_snd : IsPullback μ[B].left (snd B B).left B.hom B.hom :=
       simp [α, MonObj.comp_mul])
   · exact congrArg (·.left) (show snd B B ≫ 𝟙 B = α.inv ≫ snd B B by simp [α])
 
+/- English proof (translation)
+Use `isIntegral_left hB` as an intermediate fact. Use `hB.proper` as an intermediate fact. Establish `hO` using `Inh.trivLB_isLB B.left`. Establish `: CompactSpace B.left` using `QuasiCompact.compactSpace_of_compactSpace B.hom`. Establish `: CompactSpace (B ⊗ B).left` using `QuasiCompact.compactSpace_of_compactSpace (pullback.fst B.hom B.hom)`.
+
+Take `⟨m, E, hE, hEc⟩` from `exists_fin_affine_cover (B ⊗ B).left`. Establish `k₁` using `kun K _ _ _ _ _ _ _ M _ isPullback_mul_snd hM hO inferInstance inferInstance κ D κ D _ E hD hc hD hc hE hEc hfM hfO`. Establish `k₂` using `kun K _ _ (B ⊗ B).left _ _ (fst B B).left (snd B B).left M M (IsPullback.of_hasPullback B.hom B.hom) hM hM inferInstance inferInstance κ D κ D _ E hD hc hD hc hE hEc hfM hfM`. Establish `l₁` using `isLB_tw (LB.isLB_pull hM μ[B].left) (LB.isLB_pull hO (snd B B).left) 1`. Establish `l₂` using `isLB_tw (LB.isLB_pull hM (fst B B).left) (LB.isLB_pull hM (snd B B).left) 1`.
+
+Take `⟨w, hw⟩` from `LBIso.chartPull (chartTwTriv _ (snd B B).left) (chartPullId _) hadd`. Rewrite `k₁` using `[Over.w μ[B], ← Over.w (fst B B)]`. Establish `key` using `eq_zero_of_conv (fun n => Module.finrank K ((cechLB B.hom M D).homology n)) (fun n => Module.finrank K ((cechLB B.hom (Inh.trivLB _) D).homology n)) ?_ ?_ fun n => (k₁ n).symm.trans (Eq.trans (LinearEquiv.finrank_eq (HomologicalComplex.homologyMapIso (cechLBCongr _ E l₁ l₂ w hw) …`. Introduce `n`. Use `hfM n` as an intermediate fact.
+
+Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`. Conclude with `Module.finrank_zero_iff.1 (key n)`. Establish `: Subsingleton ((cechLB B.hom M D).homology 0)` using `((homologyZeroEquiv B.hom M hc).toEquiv.trans (SecOnR.topEquiv B.hom M).toEquiv).subsingleton`. Conclude with `Module.finrank_zero_of_subsingleton`. Establish `: Nontrivial (LB.Sec (Inh.trivLB B.left))` using `((TrivLocus.triv_iff (isField_of_universallyClosed K B.hom) _ hO.cover).1 (triv_trivLB _)).1`.
+
+Establish `: Nontrivial ((cechLB B.hom (Inh.trivLB _) D).homology 0)` using `((homologyZeroEquiv B.hom _ hc).toEquiv.trans (SecOnR.topEquiv B.hom _).toEquiv).nontrivial`. Use `hfO 0` as an intermediate fact. Conclude with `Module.finrank_pos.ne'`.
+-/
 theorem acyclic_of_kuenneth
     (kun : ∀ (K : Type) [Field K] (Y Y' Z : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of K)) (f' : Y' ⟶ Spec (CommRingCat.of K)) (p₁ : Z ⟶ Y) (p₂ : Z ⟶ Y') (M : LB Y) (M' : LB Y'), IsPullback p₁ p₂ f f' → M.IsLB → M'.IsLB → IsSeparated f → IsSeparated f' → ∀ (κ₁ : Type) [LinearOrder κ₁] [Fintype κ₁] (U : κ₁ → Y.Opens) (κ₂ : Type) [LinearOrder κ₂] [Fintype κ₂] (W : κ₂ → Y'.Opens) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Z.Opens), (∀ i, IsAffineOpen (U i)) → ⨆ i, U i = ⊤ → (∀ i, IsAffineOpen (W i)) → ⨆ i, W i = ⊤ → (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (∀ n, Module.Finite K ((cechLB f M U).homology n)) → (∀ n, Module.Finite K ((cechLB f' M' W).homology n)) → ∀ n, Module.finrank K ((cechLB (p₁ ≫ f) (tw (M.pull p₁) (M'.pull p₂) 1) D).homology n) = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, Module.finrank K ((cechLB f M U).homology x.1) * Module.finrank K ((cechLB f' M' W).homology x.2))
     (hB : IsAbelianScheme B) (hM : M.IsLB)

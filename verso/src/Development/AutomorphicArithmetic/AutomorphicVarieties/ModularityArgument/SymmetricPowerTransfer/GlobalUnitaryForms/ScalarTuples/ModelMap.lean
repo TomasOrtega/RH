@@ -11,26 +11,47 @@ section Generic
 
 variable {K : Type} [Field K] {Δ τ : K}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 private lemma starL_alg (r : K) : star (algebraMap K (Lsq K Δ) r) = algebraMap K (Lsq K Δ) r := by
   ext <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL]`.
+-/
 private lemma sigL_add (x y : EL Δ τ) : sigL (x + y) = sigL x + sigL y := by
   ext <;> simp [sigL]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL, starL_alg]`.
+-/
 private lemma sigL_mul (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
   ext <;> simp [sigL, starL_alg]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL]`.
+-/
 private lemma sigL_smul (a : Lsq K Δ) (x : EL Δ τ) : sigL (a • x) = star a • sigL x := by
   ext <;> simp [sigL]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp <;> ring`.
+-/
 private lemma star_smulE (a : Lsq K Δ) (x : EL Δ τ) : star (a • x) = a • star x := by
   ext <;> simp <;> ring
 
+/- English proof (translation)
+Simplify using `only [herm, Prod.fst_add, Prod.snd_add, mul_add, add_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_add_left (c : K) (m : EL Δ τ) (x x' y : Sp Δ τ) :
     herm c m (x + x') y = herm c m x y + herm c m x' y := by
   simp only [herm, Prod.fst_add, Prod.snd_add, mul_add, add_mul, map_add]
   ring
 
+/- English proof (translation)
+Establish `e : m * a • x.2 * star (sigL y.2) = a • (m * x.2 * star (sigL y.2))`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Simplify using `only [herm, Prod.smul_fst, Prod.smul_snd, e, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_smul_left (c : K) (m : EL Δ τ) (a : Lsq K Δ) (x y : Sp Δ τ) :
     herm c m (a • x) y = a * herm c m x y := by
   have e : m * a • x.2 * star (sigL y.2) = a • (m * x.2 * star (sigL y.2)) := by
@@ -38,11 +59,17 @@ private lemma herm_smul_left (c : K) (m : EL Δ τ) (a : Lsq K Δ) (x y : Sp Δ 
   simp only [herm, Prod.smul_fst, Prod.smul_snd, e, map_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [herm, Prod.fst_add, Prod.snd_add, sigL_add, star_add, mul_add, add_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_add_right (c : K) (m : EL Δ τ) (x y y' : Sp Δ τ) :
     herm c m x (y + y') = herm c m x y + herm c m x y' := by
   simp only [herm, Prod.fst_add, Prod.snd_add, sigL_add, star_add, mul_add, add_mul, map_add]
   ring
 
+/- English proof (translation)
+Establish `e : m * x.2 * star (sigL (a • y.2)) = star a • (m * x.2 * star (sigL y.2))`. Rewrite using `[sigL_smul, star_smulE, mul_smul_comm]`. Simplify using `only [herm, Prod.smul_fst, Prod.smul_snd, e, map_smul, smul_eq_mul, star_smul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma herm_smul_right (c : K) (m : EL Δ τ) (a : Lsq K Δ) (x y : Sp Δ τ) :
     herm c m x (a • y) = star a * herm c m x y := by
   have e : m * x.2 * star (sigL (a • y.2)) = star a • (m * x.2 * star (sigL y.2)) := by
@@ -50,9 +77,15 @@ private lemma herm_smul_right (c : K) (m : EL Δ τ) (a : Lsq K Δ) (x y : Sp Δ
   simp only [herm, Prod.smul_fst, Prod.smul_snd, e, map_smul, smul_eq_mul, star_smul, star_mul']
   ring
 
+/- English proof (translation)
+Simplify using `[semi, sigL_add, mul_add]`.
+-/
 private lemma semi_add (d : EL Δ τ) (x y : Sp Δ τ) : semi d (x + y) = semi d x + semi d y := by
   simp [semi, sigL_add, mul_add]
 
+/- English proof (translation)
+Simplify using `[semi, sigL_smul, mul_smul_comm]`.
+-/
 private lemma semi_smul (d : EL Δ τ) (a : Lsq K Δ) (x : Sp Δ τ) : semi d (a • x) = star a • semi d x := by
   simp [semi, sigL_smul, mul_smul_comm]
 
@@ -62,23 +95,44 @@ section Torus
 
 variable {K : Type} [Field K] {Δ τ : K}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private lemma ofE_mul (x y : Etau K τ) : ofE Δ (x * y) = ofE Δ x * ofE Δ y := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 private lemma ofE_one : ofE Δ (1 : Etau K τ) = 1 := by
   ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL, ofE, starL_alg]`.
+-/
 private lemma sigL_ofE (x : Etau K τ) : sigL (ofE Δ x) = ofE Δ x := by
   ext <;> simp [sigL, ofE, starL_alg]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private lemma star_ofE (x : Etau K τ) : star (ofE Δ x) = ofE Δ (star x) := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Simplify using `only [quo, _root_.mul_inv_rev, Units.val_mul, star_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma quo_mul (a b : (Etau K τ)ˣ) : quo (a * b) = quo a * quo b := by
   simp only [quo, _root_.mul_inv_rev, Units.val_mul, star_mul]; ring
 
+/- English proof (translation)
+Simplify using `[quo]`.
+-/
 private lemma quo_one : quo (1 : (Etau K τ)ˣ) = 1 := by simp [quo]
 
+/- English proof (translation)
+Establish `e : (z : Etau K τ) * ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1` using `by simp`. Establish `e' : star (z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1`. Rewrite using `[← star_mul', e, star_one]`. Simplify using `only [quo, star_mul', star_star]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma quo_star (z : (Etau K τ)ˣ) : quo z * star (quo z) = 1 := by
   have e : (z : Etau K τ) * ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1 := by simp
   have e' : star (z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1 := by
@@ -95,12 +149,23 @@ private def torL (z : (Etau K τ)ˣ) : Sp Δ τ →ₗ[Lsq K Δ] Sp Δ τ where
   map_add' x y := by simp [tor, mul_add]
   map_smul' a x := by simp [tor, mul_smul_comm]
 
+/- English proof (translation)
+Simplify using `[tor, quo_mul, ofE_mul, mul_assoc]`.
+-/
 private lemma tor_mul (a b : (Etau K τ)ˣ) (x : Sp Δ τ) : tor Δ (a * b) x = tor Δ a (tor Δ b x) := by
   simp [tor, quo_mul, ofE_mul, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[tor, quo_one, ofE_one]`.
+-/
 private lemma tor_one (x : Sp Δ τ) : tor Δ (1 : (Etau K τ)ˣ) x = x := by
   simp [tor, quo_one, ofE_one]
 
+/- English proof (translation)
+Establish `e : ofE Δ (quo z) * star (ofE Δ (quo z)) = 1`. Rewrite using `[star_ofE, ← ofE_mul, quo_star, ofE_one]`. Establish `e2 : m * (ofE Δ (quo z) * x.2) * star (sigL (ofE Δ (quo z) * y.2)) = m * x.2 * star (sigL y.2)`. Rewrite using `[sigL_mul, sigL_ofE, star_mul']`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [herm, tor, e2]`.
+-/
 private lemma herm_tor (c : K) (m : EL Δ τ) (z : (Etau K τ)ˣ) (x y : Sp Δ τ) :
     herm c m (tor Δ z x) (tor Δ z y) = herm c m x y := by
   have e : ofE Δ (quo z) * star (ofE Δ (quo z)) = 1 := by
@@ -115,22 +180,38 @@ private def mtor (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) (z : (Etau
     Matrix (Fin 3) (Fin 3) (Lsq K Δ) :=
   LinearMap.toMatrix' (P.toLinearMap ∘ₗ torL Δ z ∘ₗ P.symm.toLinearMap)
 
+/- English proof (translation)
+Simplify using `only [mtor, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+-/
 private lemma mtor_mulVec (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) (z : (Etau K τ)ˣ) (u : Fin 3 → Lsq K Δ) :
     mtor P z *ᵥ u = P (tor Δ z (P.symm u)) := by
   simp only [mtor, LinearMap.toMatrix'_mulVec]
   rfl
 
+/- English proof (translation)
+Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `j`. Rewrite using `[← Matrix.mulVec_mulVec, mtor_mulVec, mtor_mulVec, mtor_mulVec, tor_mul, LinearEquiv.symm_apply_apply]`.
+-/
 private lemma mtor_mul (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) (a b : (Etau K τ)ˣ) :
     mtor P (a * b) = mtor P a * mtor P b := by
   apply Matrix.ext_of_mulVec_single
   intro j
   rw [← Matrix.mulVec_mulVec, mtor_mulVec, mtor_mulVec, mtor_mulVec, tor_mul, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `j`. Rewrite using `[mtor_mulVec, tor_one, LinearEquiv.apply_symm_apply, Matrix.one_mulVec]`.
+-/
 private lemma mtor_one (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) : mtor P (1 : (Etau K τ)ˣ) = 1 := by
   apply Matrix.ext_of_mulVec_single
   intro j
   rw [mtor_mulVec, tor_one, LinearEquiv.apply_symm_apply, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use `ext1 i j`. Establish `h` using `herm_tor c m z (P.symm (Pi.single j 1)) (P.symm (Pi.single i 1))`. Rewrite `h` using `[hP, hP]`. Simplify using `only [LinearEquiv.apply_symm_apply] at h`.
+
+Establish `col : ∀ j k, mtor P z k j = P (tor Δ z (P.symm (Pi.single j 1))) k` using `fun j k => by`. Rewrite using `[← mtor_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `r : ∑ k, (Pi.single j 1 : Fin 3 → Lsq K Δ) k * star ((Pi.single i 1 : Fin 3 → Lsq K Δ) k) = (1 : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j`. Simplify using `only [Pi.single_apply, Matrix.one_apply, eq_comm]`.
+
+Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[Matrix.mul_apply, ← r, ← h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.star_apply, col, col, mul_comm]`.
+-/
 private lemma mtor_mem {c : K} {m : EL Δ τ} (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
     (hP : ∀ x y, herm c m x y = ∑ i, P x i * star (P y i)) (z : (Etau K τ)ˣ) :
     mtor P z ∈ unitaryGroup (Fin 3) (Lsq K Δ) := by
@@ -155,46 +236,85 @@ section Nat
 
 variable {K K' : Type} [Field K] [Field K'] (f : K →+* K') {Δ τ : K}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [lmap]`.
+-/
 private lemma lmap_alg (r : K) : lmap f Δ (algebraMap K (Lsq K Δ) r) = algebraMap K' (Lsq K' (f Δ)) (f r) := by
   ext <;> simp [lmap]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [lmap]`.
+-/
 private lemma lmap_star (x : Lsq K Δ) : lmap f Δ (star x) = star (lmap f Δ x) := by
   ext <;> simp [lmap]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [elmap, lmap_alg]`.
+-/
 private lemma elmap_mul (x y : EL Δ τ) : elmap f (x * y) = elmap f x * elmap f y := by
   ext <;> simp [elmap, lmap_alg]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [elmap, sigL, lmap_star]`.
+-/
 private lemma elmap_sigL (x : EL Δ τ) : elmap f (sigL x) = sigL (elmap f x) := by
   ext <;> simp [elmap, sigL, lmap_star]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [elmap, lmap_alg]`.
+-/
 private lemma elmap_star (x : EL Δ τ) : elmap f (star x) = star (elmap f x) := by
   ext <;> simp [elmap, lmap_alg]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [elmap, ofE, emap, lmap_alg]`.
+-/
 private lemma elmap_ofE (x : Etau K τ) : elmap f (ofE Δ x) = ofE (f Δ) (emap f τ x) := by
   ext <;> simp [elmap, ofE, emap, lmap_alg]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [elmap, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 private lemma elmap_one : elmap f (1 : EL Δ τ) = 1 := by
   ext <;> simp [elmap, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Establish `e : lmap f Δ 2 = 2` using `map_ofNat _ 2`. Simplify using `[trace_def, elmap, lmap_alg, e]`.
+-/
 private lemma lmap_trace (x : EL Δ τ) : lmap f Δ (trace x) = trace (elmap f x) := by
   have e : lmap f Δ 2 = 2 := map_ofNat _ 2
   simp [trace_def, elmap, lmap_alg, e]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [emap]`.
+-/
 private lemma emap_star (x : Etau K τ) : emap f τ (star x) = star (emap f τ x) := by
   ext <;> simp [emap]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [emap]`.
+-/
 private lemma emap_omega : emap f τ (ω : Etau K τ) = ω := by
   ext <;> simp [emap]
 
 private def spm (x : Sp Δ τ) : Sp (f Δ) (f τ) := (lmap f Δ x.1, elmap f x.2)
 
+/- English proof (translation)
+Simplify using `only [herm, spm, map_add, map_mul, lmap_alg, lmap_star, lmap_trace, elmap_mul, elmap_star, elmap_sigL]`.
+-/
 private lemma herm_spm (c : K) (m : EL Δ τ) (x y : Sp Δ τ) :
     herm (f c) (elmap f m) (spm f x) (spm f y) = lmap f Δ (herm c m x y) := by
   simp only [herm, spm, map_add, map_mul, lmap_alg, lmap_star, lmap_trace, elmap_mul, elmap_star, elmap_sigL]
 
+/- English proof (translation)
+Simplify using `only [semi, spm, lmap_star, elmap_mul, elmap_sigL]`.
+-/
 private lemma semi_spm (d : EL Δ τ) (x : Sp Δ τ) : semi (elmap f d) (spm f x) = spm f (semi d x) := by
   simp only [semi, spm, lmap_star, elmap_mul, elmap_sigL]
 
+/- English proof (translation)
+Establish `e : ((z'⁻¹ : (Etau K' (f τ))ˣ) : Etau K' (f τ)) = emap f τ ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[h, ← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [quo, e, h, map_mul, emap_star]`.
+-/
 private lemma quo_emap (z : (Etau K τ)ˣ) (z' : (Etau K' (f τ))ˣ) (h : (z' : Etau K' (f τ)) = emap f τ z) :
     quo z' = emap f τ (quo z) := by
   have e : ((z'⁻¹ : (Etau K' (f τ))ˣ) : Etau K' (f τ)) = emap f τ ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) := by
@@ -203,10 +323,16 @@ private lemma quo_emap (z : (Etau K τ)ˣ) (z' : (Etau K' (f τ))ˣ) (h : (z' : 
     simp
   simp only [quo, e, h, map_mul, emap_star]
 
+/- English proof (translation)
+Simplify using `only [tor, spm, elmap_mul, elmap_ofE, quo_emap f z z' h]`.
+-/
 private lemma tor_spm (z : (Etau K τ)ˣ) (z' : (Etau K' (f τ))ˣ) (h : (z' : Etau K' (f τ)) = emap f τ z) (x : Sp Δ τ) :
     tor (f Δ) z' (spm f x) = spm f (tor Δ z x) := by
   simp only [tor, spm, elmap_mul, elmap_ofE, quo_emap f z z' h]
 
+/- English proof (translation)
+Establish `e : x = x.1 • spm f ((1, 0) : Sp Δ τ) + (x.2.re • spm f ((0, 1) : Sp Δ τ) + x.2.im • spm f ((0, ω) : Sp Δ τ))`. Apply the tactic sequence `refine Prod.ext ?_ (QuadraticAlgebra.ext ?_ ?_) <;>`. Simplify using `[spm, elmap, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Rewrite using `[e]`. Conclude with `hadd _ _ (hsmul _ _ (h _)) (hadd _ _ (hsmul _ _ (h _)) (hsmul _ _ (h _)))`.
+-/
 private lemma sp_ind {p : Sp (f Δ) (f τ) → Prop} (hadd : ∀ x y, p x → p y → p (x + y))
     (hsmul : ∀ (a : Lsq K' (f Δ)) x, p x → p (a • x)) (h : ∀ x : Sp Δ τ, p (spm f x)) (x : Sp (f Δ) (f τ)) : p x := by
   have e : x = x.1 • spm f ((1, 0) : Sp Δ τ) + (x.2.re • spm f ((0, 1) : Sp Δ τ) + x.2.im • spm f ((0, ω) : Sp Δ τ)) := by
@@ -215,6 +341,13 @@ private lemma sp_ind {p : Sp (f Δ) (f τ) → Prop} (hadd : ∀ x y, p x → p 
   rw [e]
   exact hadd _ _ (hsmul _ _ (h _)) (hadd _ _ (hsmul _ _ (h _)) (hsmul _ _ (h _)))
 
+/- English proof (translation)
+Rewrite using `[show f τ ^ 2 - 4 = f (τ ^ 2 - 4) by rw [map_sub, map_pow, map_ofNat]]`. Conclude with `(map_ne_zero f).2 h.reg`. Use `c_ne := (map_ne_zero f).2 h.c_ne`. Use `d_norm := by`. Rewrite using `[← elmap_sigL, ← elmap_mul, h.d_norm, elmap_ofE, emap_omega]`.
+
+Use `m_unit := by`. Take `⟨u, hu⟩` from `h.m_unit`. Establish `e1 : (u : EL Δ τ) * ((u⁻¹ : (EL Δ τ)ˣ) : EL Δ τ) = 1` using `by simp`. Establish `e2` using `congrArg (elmap f) e1`. Rewrite `e2` using `[elmap_mul, elmap_one, hu]`.
+
+Conclude with `IsUnit.of_mul_eq_one _ e2`. Use `m_star := by`. Rewrite using `[← elmap_sigL, ← elmap_star, h.m_star]`. Use `m_sig := by`. Rewrite using `[← elmap_sigL, h.m_sig, ← elmap_sigL, ← elmap_star, elmap_mul, elmap_mul]`.
+-/
 private lemma isDat_map {c : K} {d m : EL Δ τ} (h : IsDat c d m) : IsDat (f c) (elmap f d) (elmap f m) where
   reg := by
     rw [show f τ ^ 2 - 4 = f (τ ^ 2 - 4) by rw [map_sub, map_pow, map_ofNat]]
@@ -252,6 +385,9 @@ private def cdE : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ) where
   right_inv u := by
     funext i; fin_cases i <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; fin_cases i <;> simp [cdE, spm, elmap]`.
+-/
 private lemma cdE_spm (x : Sp Δ τ) : cdE (f Δ) (f τ) (spm f x) = lmap f Δ ∘ cdE Δ τ x := by
   funext i; fin_cases i <;> simp [cdE, spm, elmap]
 
@@ -261,12 +397,21 @@ private def mA (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) : Matrix (Fi
 private def mB (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) : Matrix (Fin 3) (Fin 3) (Lsq K Δ) :=
   LinearMap.toMatrix' ((cdE Δ τ).symm.trans P).symm.toLinearMap
 
+/- English proof (translation)
+Rewrite using `[mA, mB, ← LinearMap.toMatrix'_comp, LinearEquiv.comp_symm, LinearMap.toMatrix'_id]`.
+-/
 private lemma mA_mB (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) : mA P * mB P = 1 := by
   rw [mA, mB, ← LinearMap.toMatrix'_comp, LinearEquiv.comp_symm, LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Rewrite using `[mA, mB, ← LinearMap.toMatrix'_comp, LinearEquiv.symm_comp, LinearMap.toMatrix'_id]`.
+-/
 private lemma mB_mA (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) : mB P * mA P = 1 := by
   rw [mA, mB, ← LinearMap.toMatrix'_comp, LinearEquiv.symm_comp, LinearMap.toMatrix'_id]
 
+/- English proof (translation)
+Simplify using `[mA, LinearMap.toMatrix'_mulVec]`.
+-/
 private lemma mA_mulVec (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) (x : Sp Δ τ) : mA P *ᵥ cdE Δ τ x = P x := by
   simp [mA, LinearMap.toMatrix'_mulVec]
 
@@ -276,6 +421,9 @@ private def mapP (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) :
     (by rw [← Matrix.map_mul, mB_mA, Matrix.map_one _ (map_zero _) (map_one _)])
     (by rw [← Matrix.map_mul, mA_mB, Matrix.map_one _ (map_zero _) (map_one _)]))
 
+/- English proof (translation)
+Establish `e : mapP f P (spm f x) = (mA P).map (lmap f Δ) *ᵥ cdE (f Δ) (f τ) (spm f x)` using `rfl`. Rewrite using `[e, cdE_spm, ← mA_mulVec P x]`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (lmap f Δ) (mA P) _ i).symm`.
+-/
 private lemma mapP_spm (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) (x : Sp Δ τ) :
     mapP f P (spm f x) = lmap f Δ ∘ P x := by
   have e : mapP f P (spm f x) = (mA P).map (lmap f Δ) *ᵥ cdE (f Δ) (f τ) (spm f x) := rfl
@@ -283,11 +431,23 @@ private lemma mapP_spm (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)) (x :
   funext i
   exact (RingHom.map_mulVec (lmap f Δ) (mA P) _ i).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (lmap f Δ) M u i`.
+-/
 private lemma map_mulVec' (M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (u : Fin 3 → Lsq K Δ) :
     lmap f Δ ∘ (M *ᵥ u) = M.map (lmap f Δ) *ᵥ (lmap f Δ ∘ u) := by
   funext i
   exact RingHom.map_mulVec (lmap f Δ) M u i
 
+/- English proof (translation)
+Use `revert y`. Use `sp_ind f (p := fun x => ∀ y, herm (f c) (elmap f m) x y = ∑ i, mapP f P x i * star (mapP f P y i)) ?_ ?_ ?_ x` and prove the remaining obligations. Introduce `x x' hx hx' y`. Simplify using `only [herm_add_left, hx, hx', map_add, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Introduce `a x hx y`.
+
+Simplify using `only [herm_smul_left, hx, map_smul, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Introduce `x y`. Use `sp_ind f (p := fun y => herm (f c) (elmap f m) (spm f x) y = ∑ i, mapP f P (spm f x) i * star (mapP f P y i)) ?_ ?_ ?_ y` and prove the remaining obligations. Introduce `y y' hy hy'`. Simplify using `only [herm_add_right, hy, hy', map_add, Pi.add_apply, star_add, mul_add, Finset.sum_add_distrib]`.
+
+Introduce `a y hy`. Rewrite using `[herm_smul_right, hy, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `y`. Rewrite using `[herm_spm, hP, map_sum]`. Simplify using `only [map_mul, lmap_star, mapP_spm, Function.comp_apply]`.
+-/
 private lemma form_map {c : K} {m : EL Δ τ} (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
     (hP : ∀ x y, herm c m x y = ∑ i, P x i * star (P y i)) (x y : Sp (f Δ) (f τ)) :
     herm (f c) (elmap f m) x y = ∑ i, mapP f P x i * star (mapP f P y i) := by
@@ -310,6 +470,11 @@ private lemma form_map {c : K} {m : EL Δ τ} (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fi
       rw [herm_spm, hP, map_sum]
       simp only [map_mul, lmap_star, mapP_spm, Function.comp_apply]
 
+/- English proof (translation)
+Use `sp_ind f (p := fun x => mapP f P (semi (elmap f d) x) = δ.map (lmap f Δ) *ᵥ star (mapP f P x)) ?_ ?_ ?_ x` and prove the remaining obligations. Introduce `x y hx hy`. Rewrite using `[semi_add, map_add, hx, hy, map_add, star_add, Matrix.mulVec_add]`. Introduce `a x hx`. Rewrite using `[semi_smul, map_smul, hx, map_smul, star_smul, Matrix.mulVec_smul]`.
+
+Introduce `x`. Rewrite using `[semi_spm, mapP_spm, hP, map_mulVec', mapP_spm]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[lmap_star]`.
+-/
 private lemma semi_map {d : EL Δ τ} {δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)} (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
     (hP : ∀ x, P (semi d x) = δ *ᵥ star (P x)) (x : Sp (f Δ) (f τ)) :
     mapP f P (semi (elmap f d) x) = δ.map (lmap f Δ) *ᵥ star (mapP f P x) := by
@@ -332,6 +497,15 @@ private def torHom {c : K'} {Δ' τ' : K'} {m : EL Δ' τ'} (P : Sp Δ' τ' ≃�
 
 end Main
 
+/- English proof (translation)
+Introduce `K K' _ _ f Δ τ c d m hD`. Use `⟨isDat_map f hD, fun δ ι P hM δ' hδ => ?_⟩` and prove the remaining obligations. Establish `hf` using `form_map f P hM.form`. Use `⟨torHom _ hf, mapP f P, ⟨hf, fun x => ?_, fun z x => ?_⟩, fun z z' h => ?_⟩` and prove the remaining obligations. Rewrite using `[hδ]`.
+
+Conclude with `semi_map f P hM.semi x`. Express the relevant statement in the definitionally equal form `_ = mtor (mapP f P) z *ᵥ _`. Rewrite using `[mtor_mulVec, LinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `mtor (mapP f P) z' = _`. Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises.
+
+Introduce `j`. Establish `hs : mapP f P (spm f (P.symm (Pi.single j 1))) = Pi.single j 1`. Rewrite using `[mapP_spm, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply, apply_ite (lmap f Δ)]`.
+
+Rewrite using `[← hs, mtor_mulVec, LinearEquiv.symm_apply_apply, tor_spm f z z' h, mapP_spm, hM.tor, map_mulVec', ← mapP_spm]`.
+-/
 private theorem model_map_exists : ModelMap := by
   intro K K' _ _ f Δ τ c d m hD
   refine ⟨isDat_map f hD, fun δ ι P hM δ' hδ => ?_⟩
@@ -352,5 +526,8 @@ private theorem model_map_exists : ModelMap := by
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Z.Sym.Glob.model_map_exists`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.modelMap :
     UpperTheory.V.Z.Sym.Glob.ModelMap := UpperTheory.V.Z.Sym.Glob.model_map_exists

@@ -24,6 +24,11 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory.KollarApp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), ih, Nat.choose_succ_succ (n + 1) 1]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_Icc_cast_eq_choose (n : ℕ) :
     ∑ e ∈ Finset.Icc 1 n, (e : ℝ) = (((n + 1).choose 2 : ℕ) : ℝ) := by
   induction n with
@@ -33,6 +38,13 @@ theorem sum_Icc_cast_eq_choose (n : ℕ) :
     simp
     ring
 
+/- English proof (translation)
+Introduce `hK X _ _ q D _ hproj hD`. Use `letI := algebraΓOfHom q`. Introduce `N₀ r x hr hnef hbig hx hint`. Use `haveI := SmoothOfRelativeDimension.smooth D q`. Use `haveI : GlobalTheory.IsNormalScheme X := isNormalScheme_of_smooth q`.
+
+Establish `hdim : topologicalKrullDim X = D` using `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth q D inferInstance`. Establish `hc : (0 : ℝ) < (((D + 1).choose 2 : ℕ) : ℝ)`. Establish `: 0 < (D + 1).choose 2` using `Nat.choose_pos (by omega)`. Conclude with `this` after adjusting the coercions. Establish `hsum : ∑ e ∈ Finset.Icc 1 D, (e : ℝ) / (((D + 1).choose 2 : ℕ) : ℝ) ≤ 1`.
+
+Rewrite using `[← Finset.sum_div, sum_Icc_cast_eq_choose, div_self hc.ne']`. Take `⟨m, D₀, U, hm, hD₀, hnum, hxU, -, hklt, hnot⟩` from `hK X q D hproj hdim hD 0 r N₀ x (fun _ => (((D + 1).choose 2 : ℕ) : ℝ)) ⟨by simp, fun z hz => absurd rfl hz, fun _ => le_rfl⟩ (fun y => GlobalTheory.Discrepancy.kltAt_zero_of_smooth hdim y) hr hnef hbig hx (fun _ _ => hc) hint hsum`. Use `⟨m, D₀, U, hm, hD₀, hnum, hxU, fun y hy hyx => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hklt y hy hyx`. Simplify using `using hnot`.
+-/
 theorem isolatedNonKlt_smooth : GlobalTheory.Published.IsolatedNonKltDivisor → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (q : X ⟶ Sp ℂ) (D : ℕ) [SmoothOfRelativeDimension D q], IsProjOver q → 1 ≤ D → letI := algebraΓOfHom q; ∀ (N₀ : LB X) (r : ℕ) (x : X), 0 < r → IsNef ℂ N₀ → IsBig ℂ N₀ → IsClosed ({x} : Set X) → (∀ (Z : Closeds X) (e : ℕ), IsIrreducible (Z : Set X) → x ∈ Z → 1 ≤ e → topologicalKrullDim (Z : Set X) = e → (((D + 1).choose 2 : ℕ) : ℝ) ^ e < (interNumRed ℂ Z (fun _ : Fin e => N₀) : ℝ) / (r : ℝ) ^ e) → ∃ (m' : ℕ) (D₀ : CartierDiv X) (U : X.Opens), 0 < m' ∧ D₀.Eff ∧ (∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![toLB D₀] : ℚ) / m' = interNumRed ℂ C ![N₀] / r) ∧ x ∈ U ∧ (∀ y ∈ U, y ≠ x → KltAt q D (qWeil D₀ m') y) ∧ ¬ KltAt q D (qWeil D₀ m') x := by
   intro hK X _ _ q D _ hproj hD
   letI := algebraΓOfHom q

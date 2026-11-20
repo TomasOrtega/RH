@@ -14,6 +14,13 @@ namespace GlobalTheory.PoleExistence
 
 open GlobalTheory.Up GlobalTheory.MinorRatioNear
 
+/- English proof (translation)
+Establish `hc : Continuous fun N : Fin p → Fin p → ℂ => ‖(Matrix.of N).det‖` using `(Continuous.matrix_det (A := fun N : Fin p → Fin p → ℂ => Matrix.of N) continuous_id).norm`. Take `⟨δ, hδ, H⟩` from `Metric.continuousAt_iff.1 (hc.continuousAt (x := fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j)) (1 - c) (by linarith)`. Use `⟨δ, hδ, fun N hN => ?_⟩` and prove the remaining obligations. Use `@H (fun i j => N i j) (by` as an intermediate fact. Rewrite using `[dist_pi_lt_iff hδ]`.
+
+Introduce `i`. Rewrite using `[dist_pi_lt_iff hδ]`. Introduce `j`. Rewrite using `[dist_eq_norm]`. Conclude with `hN i j)`.
+
+Establish `e : (Matrix.of fun i j => (1 : Matrix (Fin p) (Fin p) ℂ) i j).det = 1` using `Matrix.det_one`. Rewrite `this` using `[e, norm_one, Real.dist_eq, abs_lt]`. Establish `e' : (Matrix.of fun i j => N i j) = N` using `rfl`. Rewrite `this` using `[e']`. Combine the linear relations using `[this.1]`.
+-/
 theorem exists_det_ge (p : ℕ) {c : ℝ} (hc1 : c < 1) : ∃ δ : ℝ, 0 < δ ∧ ∀ N : Matrix (Fin p) (Fin p) ℂ,
     (∀ i j, ‖(N - 1) i j‖ < δ) → c ≤ ‖N.det‖ := by
   have hc : Continuous fun N : Fin p → Fin p → ℂ => ‖(Matrix.of N).det‖ :=
@@ -31,6 +38,17 @@ theorem exists_det_ge (p : ℕ) {c : ℝ} (hc1 : c < 1) : ∃ δ : ℝ, 0 < δ �
   rw [e'] at this
   linarith [this.1]
 
+/- English proof (translation)
+Take `⟨δ, hδ, H⟩` from `exists_det_ge p hc`. Use `⟨δ / (r + 1), by positivity, fun g n h hn => ?_⟩` and prove the remaining obligations. Use `set A := g.submatrix (Fin.castLE hp) (Fin.castLE hp) with hA`. Use `set R := g.submatrix (Fin.castLE hp) (id : Fin r → Fin r) with hR`. Establish `hu : IsUnit A.det` using `(det_block_ne_zero hp h).isUnit`.
+
+Establish `e1 : (g * n).submatrix (Fin.castLE hp) (Fin.castLE hp) = A * (A⁻¹ * R * n.submatrix id (Fin.castLE hp))`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`. Both sides reduce to the same expression. Establish `e2 : R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = A`. Establish `: R * (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp) = (g * 1).submatrix (Fin.castLE hp) (Fin.castLE hp)` using `rfl`.
+
+Rewrite using `[this, Matrix.mul_one]`. Establish `e3 : A⁻¹ * R * n.submatrix id (Fin.castLE hp) - 1 = A⁻¹ * R * (n - 1).submatrix id (Fin.castLE hp)`. Establish `: (n - 1).submatrix id (Fin.castLE hp) = n.submatrix id (Fin.castLE hp) - (1 : Matrix (Fin r) (Fin r) ℂ).submatrix id (Fin.castLE hp)` using `rfl`. Rewrite using `[this, Matrix.mul_sub, Matrix.mul_assoc A⁻¹ R (Matrix.submatrix 1 _ _), e2, Matrix.nonsing_inv_mul _ hu]`. Establish `h1` using `H (A⁻¹ * R * n.submatrix id (Fin.castLE hp)) fun i j => by`.
+
+Rewrite using `[e3, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ < δ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_div_assoc, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[e1, Matrix.det_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left h1 (norm_nonneg _)`.
+-/
 theorem exists_block_det_ge' {r p : ℕ} (hp : p ≤ r) {c : ℝ} (hc : c < 1) : ∃ δ : ℝ, 0 < δ ∧
     ∀ g n : Matrix (Fin r) (Fin r) ℂ, g * sgnMat r p * gᴴ = sgnMat r p →
       (∀ a b, ‖(n - 1) a b‖ ≤ δ) →
@@ -73,6 +91,25 @@ theorem exists_block_det_ge' {r p : ℕ} (hp : p ≤ r) {c : ℝ} (hc : c < 1) :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `set i0 : Fin (r + 1) := ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ with hi0`. Use `set k : ℝ := ((Fintype.card X.Ψ : ℕ) : ℝ) with hk`. Establish `hk0 : 0 ≤ k` using `Nat.cast_nonneg _`. Use `set u : ℝ := t / (3 * k + 1) with hu`. Establish `hu0 : 0 < u` using `by positivity`.
+
+Take `⟨δ, hδ, H⟩` from `exists_block_det_ge' X.p0_le (c := Real.exp (-u)) (Real.exp_lt_one_iff.2 (by linarith))`. Establish `ha : ∀ᶠ y in 𝓝 x1, ∀ τ, ‖dmin X.Gm y τ i0‖ < Real.exp u`. Use `Filter.eventually_all.2 fun τ => ?_` and prove the remaining obligations. Use `(ExtFPf.cont_dmin X τ i0).norm.continuousAt.eventually (gt_mem_nhds ?_)` and prove the remaining obligations. Use `show ‖dmin X.Gm x1 τ i0‖ < _`.
+
+Rewrite using `[FramePotential.norm_dmin_of_isOrth X h1]`. Conclude with `Real.one_lt_exp_iff.2 hu0`. Establish `hb : ∀ᶠ y in 𝓝 x1, ∀ τ a b, ‖((mat x1 τ)⁻¹ * mat y τ - 1) a b‖ < δ`. Use `Filter.eventually_all.2 fun τ => Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => ?_` and prove the remaining obligations. Establish `hm : Continuous fun x : Frame X.Ψ r => mat x τ` using `continuous_apply τ`.
+
+Establish `hc : Continuous fun y : Frame X.Ψ r => ‖((mat x1 τ)⁻¹ * mat y τ - 1) a b‖` using `(((continuous_const.matrix_mul hm).sub continuous_const).matrix_elem a b).norm`. Use `hc.continuousAt.eventually (gt_mem_nhds ?_)` and prove the remaining obligations. Use `show ‖((mat x1 τ)⁻¹ * mat x1 τ - 1) a b‖ < δ`. Rewrite using `[Matrix.nonsing_inv_mul _ (ExF.det_ne_of_orth X h1 τ).isUnit, sub_self]`. Simplify using `using hδ`.
+
+Use `filter_upwards [ha, hb] with y hya hyb hy x2 h2`. Establish `hx1` using `IW.orth_mem_dom X x1 h1`. Rewrite using `[rhX_eq_sum h2 hx1, rhX_eq_sum h2 hy]`. Establish `s1 : ∑ τ : X.Ψ, Real.log ‖dmin X.Gm x1 τ i0‖ = 0` using `Finset.sum_eq_zero fun τ _ => by rw [FramePotential.norm_dmin_of_isOrth X h1, Real.log_one]`. Establish `s2 : ∑ τ : X.Ψ, Real.log ‖dmin X.Gm y τ i0‖ ≤ ∑ _τ : X.Ψ, u` using `Finset.sum_le_sum fun τ _ => by`.
+
+Rewrite using `[Real.log_le_iff_le_exp (norm_pos_iff.2 (IW.dmin_ne_zero X hy τ _))]`. Conclude with `(hya τ).le`. Establish `s3 : ∑ τ : X.Ψ, (Real.log (‖lminor ((mat x2 τ)⁻¹ * mat x1 τ) i0‖ ^ 2) - 2 * u) ≤ ∑ τ : X.Ψ, Real.log (‖lminor ((mat x2 τ)⁻¹ * mat y τ) i0‖ ^ 2)` using `Finset.sum_le_sum fun τ _ => by`. Establish `hp` using `norm_pos_iff.2 (lminor_inv_mul_ne_zero h2 hx1 τ)`. Establish `h3 : ‖lminor ((mat x2 τ)⁻¹ * mat x1 τ) i0‖ * Real.exp (-u) ≤ ‖lminor ((mat x2 τ)⁻¹ * mat y τ) i0‖`.
+
+Use `H _ _ (isometry_of_orth X h2 h1 τ) fun a b => (hyb τ a b).le` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (ExF.det_ne_of_orth X h1 τ).isUnit]`. Conclude with `this`. Establish `h4` using `Real.log_le_log (by positivity) h3`. Rewrite `h4` using `[Real.log_mul hp.ne' (Real.exp_pos _).ne', Real.log_exp]`.
+
+Rewrite using `[Real.log_pow, Real.log_pow]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `s3` using `[Finset.sum_sub_distrib]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hk] at s2 s3`.
+
+Establish `e : t = 3 * k * u + u` using `by rw [hu]; field_simp`. Rewrite using `[s1]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem rhX_lower_orth {r : ℕ} (X : Data E r) {x1 : Frame X.Ψ r} (h1 : IsOrth X x1) {t : ℝ} (ht : 0 < t) :
     ∀ᶠ y in 𝓝 x1, y ∈ X.dom → ∀ x2, IsOrth X x2 → rhX X x2 x1 - t ≤ rhX X x2 y := by
   set i0 : Fin (r + 1) := ⟨X.p0, Nat.lt_succ_of_le X.p0_le⟩ with hi0
@@ -128,6 +165,13 @@ theorem rhX_lower_orth {r : ℕ} (X : Data E r) {x1 : Frame X.Ψ r} (h1 : IsOrth
   rw [s1]
   nlinarith
 
+/- English proof (translation)
+Take `⟨x1, h1, b, hb, rfl⟩` from `ortho_holds r X x hx`. Establish `hb'` using `ExtFPf.invF_mem X hb`. Establish `hc : Continuous fun y : Frame X.Ψ r => rmul y (ExtFPf.invF X b)` using `continuous_pi fun τ => by`. Establish `hm : Continuous fun x : Frame X.Ψ r => mat x τ` using `continuous_apply τ`. Conclude with `hm.matrix_mul continuous_const`.
+
+Establish `e : rmul (rmul x1 b) (ExtFPf.invF X b) = x1`. Rewrite using `[ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`. Establish `h` using `rhX_lower_orth X h1 ht`. Rewrite `h` using `[← e]`. Use `filter_upwards [hc.continuousAt.eventually h] with y hy hyd x2 h2`.
+
+Use `hy (OntoS.dom_rmul X hyd hb') x2 h2` as an intermediate fact. Rewrite `this` using `[rhX_rmul _ _ hb', rhX_rmul _ _ hb']`. Then use the resulting hypothesis.
+-/
 theorem rhX_lower {r : ℕ} (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {t : ℝ} (ht : 0 < t) :
     ∀ᶠ y in 𝓝 x, y ∈ X.dom → ∀ x2, IsOrth X x2 → rhX X x2 x - t ≤ rhX X x2 y := by
   obtain ⟨x1, h1, b, hb, rfl⟩ := ortho_holds r X x hx
@@ -152,11 +196,17 @@ noncomputable def poleFn {r : ℕ} (X : Data E r) (G : Subgroup (GL (Fin r) E)) 
 section
 variable {r : ℕ} {X : Data E r} {G : Subgroup (GL (Fin r) E)} {x0 x : Frame X.Ψ r} {ρ0 : ℝ} {k : ℝ → ℝ}
 
+/- English proof (translation)
+Establish `hex : ∃ γ, γ ∈ G ∧ rhX X x0 (lact γ x) < ρ0` using `⟨γ, hγ, h⟩`. Rewrite using `[poleFn, dif_pos hex, hG.unique hex.choose_spec.1 hγ hx hex.choose_spec.2 h]`.
+-/
 theorem poleFn_eq (hG : FreeBall X G x0 ρ0) (hx : x ∈ X.dom) {γ : GL (Fin r) E} (hγ : γ ∈ G)
     (h : rhX X x0 (lact γ x) < ρ0) : poleFn X G x0 ρ0 k x = k (rhX X x0 (lact γ x)) := by
   have hex : ∃ γ, γ ∈ G ∧ rhX X x0 (lact γ x) < ρ0 := ⟨γ, hγ, h⟩
   rw [poleFn, dif_pos hex, hG.unique hex.choose_spec.1 hγ hx hex.choose_spec.2 h]
 
+/- English proof (translation)
+Unfold `poleFn`. Use `split_ifs with hex`. Conclude with `hk _ (h _ hex.choose_spec.1)`. Both sides reduce to the same expression.
+-/
 theorem poleFn_eq_zero {a : ℝ} (hk : ∀ u, a ≤ u → k u = 0) (h : ∀ γ ∈ G, a ≤ rhX X x0 (lact γ x)) :
     poleFn X G x0 ρ0 k x = 0 := by
   unfold poleFn
@@ -164,6 +214,11 @@ theorem poleFn_eq_zero {a : ℝ} (hk : ∀ u, a ≤ u → k u = 0) (h : ∀ γ �
   · exact hk _ (h _ hex.choose_spec.1)
   · rfl
 
+/- English proof (translation)
+Establish `e : ∀ g : GL (Fin r) E, rhX X x0 (lact g (lact γ (rmul x b))) = rhX X x0 (lact (g * γ) x)` using `fun g => by rw [← FundSetPf.lact_mul, FundSetPf.lact_rmul, rhX_rmul _ _ hb]`. Distinguish the cases in `hex : ∃ g, g ∈ G ∧ rhX X x0 (lact g x) < ρ0`. Take `⟨g, hg, h⟩` from `hex`. Establish `e'` using `e (g * γ⁻¹)`. Rewrite `e'` using `[inv_mul_cancel_right]`.
+
+Rewrite using `[poleFn_eq hG hx hg h, poleFn_eq hG (MajInv.lact_mem_dom X (hG.isUStab hγ) (OntoS.dom_rmul X hx hb)) (G.mul_mem hg (G.inv_mem hγ)) (by rwa [e']), e']`. Establish `hex' : ¬ ∃ g, g ∈ G ∧ rhX X x0 (lact g (lact γ (rmul x b))) < ρ0`. Introduce and unpack `⟨g, hg, h⟩`. Conclude with `hex ⟨g * γ, G.mul_mem hg hγ, by rwa [← e]⟩`. Rewrite using `[poleFn, poleFn, dif_neg hex, dif_neg hex']`.
+-/
 theorem poleFn_inv (hG : FreeBall X G x0 ρ0) {γ : GL (Fin r) E} (hγ : γ ∈ G) (hx : x ∈ X.dom)
     {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
     poleFn X G x0 ρ0 k (lact γ (rmul x b)) = poleFn X G x0 ρ0 k x := by
@@ -180,6 +235,15 @@ theorem poleFn_inv (hG : FreeBall X G x0 ρ0) {γ : GL (Fin r) E} (hγ : γ ∈ 
       exact hex ⟨g * γ, G.mul_mem hg hγ, by rwa [← e]⟩
     rw [poleFn, poleFn, dif_neg hex, dif_neg hex']
 
+/- English proof (translation)
+Establish `hO` using `(OntoB.isOpen_OmF X x1).mem_nhds hz`. Establish `hc : Continuous (cpt X x1)` using `FundSetPf.cont_cpt X x1`. Establish `horth : ∀ γ ∈ G, IsOrth X (lact γ⁻¹ x0)` using `fun γ hγ => isOrth_lact_of_isUStab (hG.isUStab (G.inv_mem hγ)) h0`. Distinguish the cases in `hex : ∃ g, g ∈ G ∧ rhX X x0 (lact g (cpt X x1 z)) < ρ0`. Take `⟨g, hg, h⟩` from `hex`.
+
+Use `Or.inl ⟨_, horth g hg, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[rhX_lact (hG.isUStab hg)]`. Establish `hca : ContinuousAt (fun w => rhX X (lact g⁻¹ x0) (cpt X x1 w)) z` using `((continuousOn_rhX (horth g hg)).comp hc.continuousOn fun w hw => hw).continuousAt hO`. Use `filter_upwards [hO, hca.eventually (gt_mem_nhds h)] with w hw hlt`. Rewrite using `[poleFn_eq hG hw hg (by rwa [rhX_lact (hG.isUStab hg)]), rhX_lact (hG.isUStab hg)]`.
+
+Use `Or.inr ?_ filter_upwards [hO, hc.continuousAt.eventually (rhX_lower X (show cpt X x1 z ∈ X.dom from hz) (sub_pos.2 ha))] with w hw hlow` and prove the remaining obligations. Use `poleFn_eq_zero hk fun γ hγ => ?_` and prove the remaining obligations. Establish `h1` using `hlow hw _ (horth γ hγ)`. Establish `h2 : ρ0 ≤ rhX X x0 (lact γ (cpt X x1 z))` using `not_lt.1 fun h => hex ⟨γ, hγ, h⟩`. Rewrite `h2`, the goal using `[rhX_lact (hG.isUStab hγ)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem poleFn_local (h0 : IsOrth X x0) (hG : FreeBall X G x0 ρ0) {a : ℝ} (ha : a < ρ0)
     (hk : ∀ u, a ≤ u → k u = 0) {x1 : Frame X.Ψ r} {z : V (nd X)} (hz : z ∈ OmF X x1) :
     (∃ x2, IsOrth X x2 ∧
@@ -208,6 +272,33 @@ theorem poleFn_local (h0 : IsOrth X x0) (hG : FreeBall X G x0 ρ0) {a : ℝ} (ha
 
 end
 
+/- English proof (translation)
+Introduce `r X G x0 ρ0 θ h0 hρ0 hθ hG`. Take `⟨ε, C, hε, hερ, H⟩` from `GlobalTheory.exists_cutoff_log_sharp ρ0 θ hρ0 hθ`. Use `set D : ℝ := ((dimX X : ℕ) : ℝ) with hD`. Establish `hD0 : 0 ≤ D` using `Nat.cast_nonneg _`. Use `⟨ε, D * C, hε, hερ, fun δ hδ hδ1 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hgs, hg0, hgd, hgu, hgl⟩` from `H δ hδ hδ1`. Establish `hk0 : ∀ u, ρ0 - ε ≤ u → D * g u = 0` using `fun u hu => by rw [hg0 u hu, mul_zero]`. Establish `hks : ∀ u, 0 ≤ u → ContDiffAt ℝ ∞ (fun u => D * g u) u` using `fun u hu => contDiffAt_const.mul (hgs.contDiffAt (Ioi_mem_nhds (by linarith)))`. Establish `hone : ∀ x ∈ X.dom, rhX X x0 x ≤ ε → poleFn X G x0 ρ0 (fun u => D * g u) x = D * g (rhX X x0 x)` using `fun x hx hle => by`. Rewrite using `[poleFn_eq hG hx G.one_mem (by rw [FundSetPf.lact_one]; linarith), FundSetPf.lact_one]`.
+
+Use `⟨poleFn X G x0 ρ0 fun u => D * g u, fun γ hγ x hx b hb => poleFn_inv hG hγ hx hb, fun x hx => ?_, fun x1 h1 => ⟨fun z hz => ?_, fun z hz ξ => ?_⟩, fun x hx hle => ?_, fun x hx ha hle => ?_⟩` and prove the remaining obligations. Unfold `poleFn split_ifs with hex`. Conclude with `mul_nonpos_of_nonneg_of_nonpos hD0 (hgd _ (rhX_nonneg h0 (MajInv.lact_mem_dom X (hG.isUStab hex.choose_spec.1) hx))).1`. Conclude with `le_rfl`. Establish `hO` using `(OntoB.isOpen_OmF X x1).mem_nhds hz`.
+
+Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Break down `poleFn_local h0 hG (sub_lt_self ρ0 hε) hk0 hz with ⟨x2, h2, he⟩ | he` into its components or cases. Take `⟨hs, hp⟩` from `hT r X x1 x2 h1 h2`. Conclude with `(ContDiffAt.comp z (g := fun u => D * g u) (hks _ (hp z hz).1) (hs.contDiffAt hO)).congr_of_eventuallyEq he`. Conclude with `contDiffAt_const.congr_of_eventuallyEq he`.
+
+Establish `hO` using `(OntoB.isOpen_OmF X x1).mem_nhds hz`. Establish `hL` using `leviRh_nonneg h1 hz ξ`. Establish `hκ : 0 ≤ θ / ρ0` using `by positivity`. Unfold `leviO leviM`. Break down `poleFn_local h0 hG (sub_lt_self ρ0 hε) hk0 hz with ⟨x2, h2, he⟩ | he` into its components or cases.
+
+Take `⟨hs, hp⟩` from `hT r X x1 x2 h1 h2`. Take `⟨hf0, hp⟩` from `hp z hz`. Take `⟨hl, hgr⟩` from `hp ξ`. Unfold `leviO leviM at hl`. Use `le_trans ?_ (congrArg Complex.re (leviV_congr (he.fun_comp fun t : ℝ => (t : ℂ)) ξ)).ge` and prove the remaining obligations.
+
+Establish `h2i : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `WithTop.coe_le_coe.2 (le_top (a := (2 : ℕ∞)))`. Establish `hch` using `ReciprocityTheory.L2DbarEstimates.H.leviChain (nd X) (fun u => D * g u) (fun w => rhX X x2 (cpt X x1 w)) z ξ ((hs.contDiffAt hO).of_le h2i) ((hks _ hf0).of_le h2i)`. Simplify using `only [deriv_const_mul_field'] at hch`. Establish `hch'` using `congrArg Complex.re hch`. Rewrite `hch'` using `[Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul, Complex.ofReal_re, hl]`.
+
+Use `le_trans ?_ (le_of_eq hch'.symm)` and prove the remaining obligations. Take `⟨-, hd1, hd2⟩` from `hgd _ hf0`. Establish `hn` using `Complex.normSq_nonneg (∑ j, wd (nd X) j (fun w => ((rhX X x2 (cpt X x1 w) : ℝ) : ℂ)) z * ξ j)`. Generalize the expression as in `Complex.normSq _ = N at hn hgr ⊢`. Generalize the expression as in `deriv (deriv g) (rhX X x2 (cpt X x1 z)) = g2 at hd2 ⊢`.
+
+Generalize the expression as in `deriv g (rhX X x2 (cpt X x1 z)) = g1 at hd1 hd2 ⊢`. Generalize the expression as in `rhX X x2 (cpt X x1 z) = f at hf0 hgr hd2`. Generalize the expression as in `leviRh X x1 z ξ = L at hL hgr ⊢`. Establish `key : -(θ / ρ0 * L) ≤ g1 * L + g2 * N`. Break down `le_total 0 g2 with h | h` into its components or cases.
+
+Use polynomial arithmetic with `[mul_nonneg hd1 hL, mul_nonneg h hn, mul_nonneg hκ hL]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hd2 hL, mul_le_mul_of_nonpos_left hgr h]`. Use `mul_le_mul_of_nonneg_left key hD0` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ (congrArg Complex.re (leviV_congr (he.fun_comp fun t : ℝ => (t : ℂ)) ξ)).ge` and prove the remaining obligations.
+
+Establish `e1 : ∀ k, wdb (nd X) k (fun _ => (0 : ℂ)) = fun _ => 0` using `fun k => by`. Use function extensionality and compare the values at `y`. Simplify using `[wdb]`. Establish `e : (leviV (nd X) ((fun t : ℝ => (t : ℂ)) ∘ fun _ => 0) z ξ).re = 0`. Simplify using `[leviV, Function.comp_def, e1, wd]`.
+
+Rewrite using `[e]`. Conclude with `neg_nonpos.2 (mul_nonneg (by positivity) hL)`. Rewrite using `[hone x hx hle, ← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (hgu _ (rhX_nonneg h0 hx) hle) hD0`. Rewrite using `[hone x hx hle, ← mul_neg]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hgl _ ha) hD0`.
+-/
 theorem poleEx_of_rhTr (hT : RhTr (E := E)) : PoleEx (E := E) := by
   intro r X G x0 ρ0 θ h0 hρ0 hθ hG
   obtain ⟨ε, C, hε, hερ, H⟩ := GlobalTheory.exists_cutoff_log_sharp ρ0 θ hρ0 hθ
@@ -280,6 +371,9 @@ theorem poleEx_of_rhTr (hT : RhTr (E := E)) : PoleEx (E := E) := by
   · rw [hone x hx hle, ← mul_neg]
     exact mul_le_mul_of_nonneg_left (hgl _ ha) hD0
 
+/- English proof (translation)
+The claim follows from `poleEx_of_rhTr GlobalTheory.PotentialTransfer.potential_transfer`.
+-/
 theorem poleEx_holds : PoleEx (E := E) := poleEx_of_rhTr GlobalTheory.PotentialTransfer.potential_transfer
 
 end GlobalTheory.PoleExistence

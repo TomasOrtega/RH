@@ -9,6 +9,11 @@ namespace Formalism.L2.SG.Pf.NcVal.VolUH
 open Formalism.L2.SG.LocVol Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes MeasureTheory NumberField IsDedekindDomain
 open scoped ENNReal NNReal TensorProduct
 
+/- English proof (translation)
+Establish `he : MeasurableEmbedding φ` using `φ.toHomeomorph.measurableEmbedding`. Use `haveI : (μ.map φ).IsAddHaarMeasure := μ.isAddHaarMeasure_map (φ : G →+ G) φ.continuous φ.surjective φ.toHomeomorph.isClosedEmbedding.tendsto_cocompact`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul (μ.map φ) μ`. Establish `key : ∀ T : Set G, μ (φ ⁻¹' T) = (μ.map φ).addHaarScalarFactor μ * μ T`. Introduce `T`.
+
+Rewrite using `[← he.map_apply]`. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[key S, key K, hK, mul_one]`.
+-/
 theorem haar_pre {G : Type*} [AddCommGroup G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
     [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
     (μ : Measure G) [μ.IsAddHaarMeasure] (φ : G ≃ₜ+ G) (K : Set G) (hK : μ K = 1) (S : Set G) :
@@ -30,6 +35,9 @@ section R
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Conclude with `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem top_facts (ι : Type) [Fintype ι] :
     IsTopologicalAddGroup (ι → Fv F v ⊗[F] E) ∧ LocallyCompactSpace (ι → Fv F v ⊗[F] E) ∧
       SecondCountableTopology (ι → Fv F v ⊗[F] E) ∧ BorelSpace (ι → Fv F v ⊗[F] E) ∧
@@ -67,12 +75,18 @@ def scMul {ι : Type} [Fintype ι] (z : ι → Fv F v) (hz : ∀ i, z i ≠ 0) :
     exact IsModuleTopology.continuous_of_linearMap
       (PI.UnitaryGroupMassFormula.LocJacTyp.BM.mulL v fun i => sc (E := E) v (z i)⁻¹)
 
+/- English proof (translation)
+Conclude with `haar_pre μ (scMul (E := E) v z hz) _ hK S`.
+-/
 theorem sc_pre (ι : Type) [Fintype ι] (μ : Measure (ι → Fv F v ⊗[F] E)) [μ.IsAddHaarMeasure]
     (hK : μ (VolTO (E := E) v ι) = 1) (z : ι → Fv F v) (hz : ∀ i, z i ≠ 0) (S : Set (ι → Fv F v ⊗[F] E)) :
     μ {w | (fun i => sc (E := E) v (z i) * w i) ∈ S} =
       μ {w | ∀ i, sc (E := E) v (z i) * w i ∈ OEv (E := E) v} * μ S := by
   exact haar_pre μ (scMul (E := E) v z hz) _ hK S
 
+/- English proof (translation)
+Establish `h : {w | (fun i => w i - b i) ∈ S} = (fun w => w + -b) ⁻¹' S`. Use extensionality with `w`. Simplify using `[sub_eq_add_neg]`. Both sides reduce to the same expression. Rewrite using `[h, measure_preimage_add_right]`.
+-/
 theorem sub_pre (ι : Type) [Fintype ι] (μ : Measure (ι → Fv F v ⊗[F] E)) [μ.IsAddHaarMeasure]
     (b : ι → Fv F v ⊗[F] E) (S : Set (ι → Fv F v ⊗[F] E)) :
     μ {w | (fun i => w i - b i) ∈ S} = μ S := by

@@ -8,6 +8,9 @@ import Formalism.SharpRestriction.Divisibility.SchurIrreducible
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split | exact GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split | (intros; apply GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.splitPlace_tensorLattice_selfDual : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ), X.IsHerm σ B r s → Y.IsSkew σ B r' s' →

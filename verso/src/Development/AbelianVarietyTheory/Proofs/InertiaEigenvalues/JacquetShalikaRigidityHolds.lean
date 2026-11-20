@@ -15,12 +15,20 @@ namespace GlobalTheory.JSW.Rigid
 section lemmas
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hT hT' x hx).2`.
+-/
 theorem hasProd_exp_logRS {a b : ℕ} {σ : CG E a} {σ' : CG E b} (hσ : σ.IsUnitary) (hσ' : σ'.IsUnitary)
     {T : Finset (HeightOneSpectrum (𝓞 E))} (hT : UnrOutside T σ) (hT' : UnrOutside T σ') {x : ℝ} (hx : 1 < x) :
     HasProd (fun w : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} => locL (Ideal.absNorm w.1.asIdeal) (sat σ w.1)
       ((sat σ' w.1).map (Units.map (starRingEnd ℂ).toMonoidHom)) (x : ℂ)) (Complex.exp (logRS T σ σ' x)) :=
   (GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hT hT' x hx).2
 
+/- English proof (translation)
+Establish `hq0 : (Ideal.absNorm w.asIdeal : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := NumberField.HeightOneSpectrum.one_lt_absNorm w; omega)`. Establish `e : (Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * ((y + d : ℝ) : ℂ))) = (Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * (y : ℂ))) * (Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * (d : ℂ)))`. Rewrite using `[← Complex.cpow_add _ _ hq0]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rsTerm, rsTerm, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rsTerm_shift {a b : ℕ} (σ : CG E a) (σ' : CG E b) (y d : ℝ) (w : HeightOneSpectrum (𝓞 E)) (r : ℕ) :
     rsTerm σ σ' (y + d) w r = rsTerm σ σ' y w r * (Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * (d : ℂ))) := by
   have hq0 : (Ideal.absNorm w.asIdeal : ℂ) ≠ 0 :=
@@ -35,6 +43,15 @@ theorem rsTerm_shift {a b : ℕ} (σ : CG E a) (σ' : CG E b) (y d : ℝ) (w : H
   rw [rsTerm, rsTerm, e]
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ a b σ σ' hσ hσ' T hT hT' δ hδ`. Establish `hs` using `fun y (hy : 1 < y) => (GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hT hT' y hy).1`. Use `⟨∑' p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ, ‖rsTerm σ σ' (1 + δ) p.1.1 p.2‖, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : Summable fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ => ‖rsTerm σ σ' (1 + δ) p.1.1 p.2‖` using `hs (1 + δ) (by linarith)`. Establish `h1 : Summable fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ => ‖rsTerm σ σ' (x + δ) p.1.1 p.2‖` using `hs (x + δ) (by linarith)`.
+
+Use `(norm_tsum_le_tsum_norm h1).trans (Summable.tsum_le_tsum (fun p => ?_) h1 h0)` and prove the remaining obligations. Establish `e : x + δ = (1 + δ) + (x - 1)` using `by ring`. Rewrite using `[e, rsTerm_shift, norm_mul]`. Establish `hq` using `NumberField.HeightOneSpectrum.one_lt_absNorm p.1.1`. Establish `hn : ‖(Ideal.absNorm p.1.1.asIdeal : ℂ) ^ (-(((p.2 : ℂ) + 1) * ((x - 1 : ℝ) : ℂ)))‖ ≤ 1`.
+
+Rewrite using `[Complex.norm_natCast_cpow_of_pos (by omega)]`. Use `Real.rpow_le_one_of_one_le_of_nonpos (by exact_mod_cast hq.le) ?_` and prove the remaining obligations. Establish `: (-(((p.2 : ℂ) + 1) * ((x - 1 : ℝ) : ℂ))).re = -(((p.2 : ℝ) + 1) * (x - 1))`. Simplify using `[Complex.mul_re]`. Rewrite using `[this]`.
+
+Establish `: 0 ≤ ((p.2 : ℝ) + 1) * (x - 1)` using `mul_nonneg (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_logRS_add_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a b : ℕ) (σ : CG E a) (σ' : CG E b), σ.IsUnitary → σ'.IsUnitary → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T σ → UnrOutside T σ' → ∀ δ : ℝ, 0 < δ → ∃ C : ℝ, ∀ x : ℝ, 1 < x → ‖logRS T σ σ' (x + δ)‖ ≤ C := by
   intro E _ _ _ a b σ σ' hσ hσ' T hT hT' δ hδ
   have hs := fun y (hy : 1 < y) => (GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hT hT' y hy).1
@@ -59,6 +76,13 @@ theorem norm_logRS_add_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyC
         mul_le_mul_of_nonneg_left hn (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Introduce `E _ _ _ a b σ σ' ha hb hσ hσ' hne T hT hT'`. Take `⟨z, hz, hlim⟩` from `GlobalTheory.T.rankinSelberg_partialL_tendsto_ne_zero_at_one E a b σ σ' ha hb hσ hσ' hne T hT hT'`. Establish `hx1 : ∀ᶠ x in 𝓝[>] (1 : ℝ), 1 < x` using `self_mem_nhdsWithin`. Establish `h1 : Tendsto (fun x : ℝ => Complex.exp (logRS T σ σ' x)) (𝓝[>] 1) (𝓝 z)` using `hlim.congr' (hx1.mono fun x hx => (hasProd_exp_logRS hσ hσ' hT hT' hx).tprod_eq)`. Establish `h2 : Tendsto (fun x : ℝ => (logRS T σ σ' x).re) (𝓝[>] 1) (𝓝 (Real.log ‖z‖))`.
+
+Establish `h3` using `(h1.norm.log (norm_ne_zero_iff.2 hz))`. Use `h3.congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_exp, Real.log_exp]`. Establish `h4` using `h2.eventually (Icc_mem_nhds (show Real.log ‖z‖ - 1 < Real.log ‖z‖ by linarith) (show Real.log ‖z‖ < Real.log ‖z‖ + 1 by linarith))`. Use `⟨|Real.log ‖z‖| + 1, h4.mono fun x hx => abs_le.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Combine the linear relations using `[hx.1, neg_abs_le (Real.log ‖z‖)]`. Combine the linear relations using `[hx.2, le_abs_self (Real.log ‖z‖)]`.
+-/
 theorem abs_re_logRS_bdd : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a b : ℕ) (σ : CG E a) (σ' : CG E b), 1 ≤ a → 1 ≤ b → σ.IsUnitary → σ'.IsUnitary → (⟨a, σ⟩ : Σ a, CG E a) ≠ ⟨b, σ'⟩ → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T σ → UnrOutside T σ' → ∃ C : ℝ, ∀ᶠ x in 𝓝[>] (1 : ℝ), |(logRS T σ σ' x).re| ≤ C := by
   intro E _ _ _ a b σ σ' ha hb hσ hσ' hne T hT hT'
   obtain ⟨z, hz, hlim⟩ := GlobalTheory.T.rankinSelberg_partialL_tendsto_ne_zero_at_one E a b σ σ' ha hb hσ hσ' hne T hT hT'
@@ -75,6 +99,15 @@ theorem abs_re_logRS_bdd : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyCo
   · linarith [hx.1, neg_abs_le (Real.log ‖z‖)]
   · linarith [hx.2, le_abs_self (Real.log ‖z‖)]
 
+/- English proof (translation)
+Introduce `E _ _ _ a π ha hπ T hT`. Take `⟨L, hL, -, c, hc, hlim⟩` from `GlobalTheory.T.rankinSelberg_partialL_pole_at_one_conj E a π ha hπ T hT`. Establish `hx1 : ∀ᶠ x in 𝓝[>] (1 : ℝ), 1 < x` using `self_mem_nhdsWithin`. Establish `he : ∀ x : ℝ, 1 < x → (logRS T π π x).re = Real.log (L x)` using `fun x hx => by`. Establish `e` using `(hL x hx).1.unique (hasProd_exp_logRS hπ hπ hT hT hx)`.
+
+Establish `e2` using `congrArg (fun u : ℂ => ‖u‖) e`. Simplify using `only [Complex.norm_exp, Complex.norm_real, Real.norm_eq_abs] at e2`. Rewrite `e2` using `[abs_of_pos (by linarith [(hL x hx).2])]`. Rewrite using `[e2, Real.log_exp]`. Establish `hsub : Tendsto (fun x : ℝ => x - 1) (𝓝[>] 1) (𝓝[>] 0)`.
+
+Use `tendsto_nhdsWithin_iff.2 ⟨?_, hx1.mono fun x hx => ?_⟩` and prove the remaining obligations. Establish `: Tendsto (fun x : ℝ => x - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_id.sub continuous_const).tendsto 1`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Conclude with `sub_pos.2 hx`.
+
+Establish `hinv : Tendsto (fun x : ℝ => (x - 1)⁻¹) (𝓝[>] 1) atTop` using `tendsto_inv_nhdsGT_zero.comp hsub`. Establish `hLtop : Tendsto L (𝓝[>] 1) atTop`. Use `(hlim.pos_mul_atTop hc hinv).congr' (hx1.mono fun x hx => ?_)` and prove the remaining obligations. Clear denominators, using `[(sub_pos.2 hx).ne']` for the nonvanishing conditions. Conclude with `(Real.tendsto_log_atTop.comp hLtop).congr' (hx1.mono fun x hx => (he x hx).symm)`.
+-/
 theorem tendsto_re_logRS_self : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CG E a), 1 ≤ a → π.IsUnitary → ∀ T : Finset (HeightOneSpectrum (𝓞 E)), UnrOutside T π → Tendsto (fun x : ℝ => (logRS T π π x).re) (𝓝[>] 1) atTop := by
   intro E _ _ _ a π ha hπ T hT
   obtain ⟨L, hL, -, c, hc, hlim⟩ := GlobalTheory.T.rankinSelberg_partialL_pole_at_one_conj E a π ha hπ T hT
@@ -100,6 +133,11 @@ end lemmas
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `hc : ∀ c, Fintype.card {i // f i = c} = Fintype.card {j // g j = c}`. Introduce `c`. Establish `h1` using `congrArg (Multiset.count c) h`. Rewrite `h1` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+
+Simplify `h1` using `[Finset.card, Finset.filter_val, eq_comm]`. Conclude with `⟨Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hc c), fun i => (Equiv.ofFiberEquiv_map _ i).symm⟩`.
+-/
 theorem exists_equiv_of_map_eq {ι κ α : Type} [Fintype ι] [Fintype κ] (f : ι → α) (g : κ → α)
     (h : (Finset.univ.val.map f : Multiset α) = Finset.univ.val.map g) : ∃ s : ι ≃ κ, ∀ i, f i = g (s i) := by
   classical
@@ -111,6 +149,11 @@ theorem exists_equiv_of_map_eq {ι κ α : Type} [Fintype ι] [Fintype κ] (f : 
     simpa [Finset.card, Finset.filter_val, eq_comm] using h1
   exact ⟨Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hc c), fun i => (Equiv.ofFiberEquiv_map _ i).symm⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, Eventually.of_forall fun x => by simp⟩`. Consider the case `insert i s hi ih`. Take `⟨C1, h1⟩` from `h i (Finset.mem_insert_self _ _)`. Take `⟨C2, h2⟩` from `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`.
+
+Use `⟨C1 + C2, (h1.and h2).mono fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hi]`. Conclude with `(abs_add_le _ _).trans (add_le_add hx.1 hx.2)`.
+-/
 theorem eventually_bdd_sum {ι : Type} (s : Finset ι) (f : ι → ℝ → ℝ) (l : Filter ℝ)
     (h : ∀ i ∈ s, ∃ C, ∀ᶠ x in l, |f i x| ≤ C) : ∃ C, ∀ᶠ x in l, |∑ i ∈ s, f i x| ≤ C := by
   classical
@@ -123,11 +166,43 @@ theorem eventually_bdd_sum {ι : Type} (s : Finset ι) (f : ι → ℝ → ℝ) 
     rw [Finset.sum_insert hi]
     exact (abs_add_le _ _).trans (add_le_add hx.1 hx.2)
 
+/- English proof (translation)
+The claim follows from `Summable.of_norm (GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hT hT' y hy).1`.
+-/
 theorem summable_rsTerm {a b : ℕ} {σ : CG E a} {σ' : CG E b} (hσ : σ.IsUnitary) (hσ' : σ'.IsUnitary)
     {T : Finset (HeightOneSpectrum (𝓞 E))} (hT : UnrOutside T σ) (hT' : UnrOutside T σ') {y : ℝ} (hy : 1 < y) :
     Summable fun p : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ => rsTerm σ σ' y p.1.1 p.2 :=
   Summable.of_norm (GlobalTheory.T.localRankinSelberg_logarithm_formula.2 E a b σ σ' hσ hσ' T hT hT' y hy).1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨p1, hp1S, hp1⟩` from `hne`. Use `set S' := S.filter fun p => c p ≠ 0 with hS'`. Establish `hS'ne : S'.Nonempty` using `⟨p1, Finset.mem_filter.2 ⟨hp1S, hp1⟩⟩`.
+
+Take `⟨p0, hp0, hmin⟩` from `S'.exists_min_image (fun p => p.2) hS'ne`. Establish `hp0S` using `(Finset.mem_filter.1 hp0).1`. Establish `hc0` using `(Finset.mem_filter.1 hp0).2`. Take `⟨hm0, hu0, hT0⟩` from `hS p0 hp0S`. Set `ℓ : (Σ a, CG E a) × ℝ → ℝ → ℂ` to `fun p x => logRS T p.1.2 p0.1.2 (x + (p.2 - p0.2))`.
+
+Establish `hzero : ∀ x : ℝ, 1 < x → ∑ p ∈ S', (c p : ℂ) * ℓ p x = 0`. Introduce `x hx`. Establish `hsum : ∀ p ∈ S', Summable fun q : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} × ℕ => (c p : ℂ) * rsTerm p.1.2 p0.1.2 (x + (p.2 - p0.2)) q.1.1 q.2`. Introduce `p hp`. Take `⟨-, hu, hT⟩` from `hS p (Finset.mem_filter.1 hp).1`.
+
+Conclude with `(summable_rsTerm hu hu0 hT hT0 (by linarith [hmin p hp])).mul_left _`. Simplify using `only [ℓ, logRS, ← tsum_mul_left]`. Rewrite using `[← Summable.tsum_finsetSum hsum]`. Use `(tsum_congr fun q => ?_).trans tsum_zero` and prove the remaining obligations. Establish `hq0 : (Ideal.absNorm q.1.1.asIdeal : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := NumberField.HeightOneSpectrum.one_lt_absNorm q.1.1; omega)`.
+
+Establish `hterm : ∀ p : (Σ a, CG E a) × ℝ, (c p : ℂ) * rsTerm p.1.2 p0.1.2 (x + (p.2 - p0.2)) q.1.1 q.2 = (c p : ℂ) * ((Ideal.absNorm q.1.1.asIdeal : ℂ) ^ (-(((q.2 : ℂ) + 1) * (p.2 : ℂ))) * ((sat p.1.2 q.1.1).map fun α => (α : ℂ) ^ (q.2 + 1)).sum) * (((sat p0.1.2 q.1.1).map fun β => (starR …`. Introduce `p`. Establish `e : (Ideal.absNorm q.1.1.asIdeal : ℂ) ^ (-(((q.2 : ℂ) + 1) * ((x + (p.2 - p0.2) : ℝ) : ℂ))) = (Ideal.absNorm q.1.1.asIdeal : ℂ) ^ (-(((q.2 : ℂ) + 1) * (p.2 : ℂ))) * (Ideal.absNorm q.1.1.asIdeal : ℂ) ^ (-(((q.2 : ℂ) + 1) * ((x - p0.2 : ℝ) : ℂ)))`. Rewrite using `[← Complex.cpow_add _ _ hq0]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[rsTerm, e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS', Finset.sum_filter_of_ne (p := fun p => c p ≠ 0) fun p _ h hc => h (by rw [hc, Int.cast_zero, zero_mul]), Finset.sum_congr rfl fun p _ => hterm p, ← Finset.sum_mul, hid q.1.1 q.1.2 q.2, zero_mul]`.
+
+Establish `hre : ∀ x : ℝ, 1 < x → ∑ p ∈ S', (c p : ℝ) * (ℓ p x).re = 0`. Introduce `x hx`. Use `congrArg Complex.re (hzero x hx)` as an intermediate fact. Simplify `this` using `[Complex.re_sum]`. Establish `hb : ∀ p ∈ S'.erase p0, ∃ C, ∀ᶠ x in 𝓝[>] (1 : ℝ), |(c p : ℝ) * (ℓ p x).re| ≤ C`.
+
+Introduce `p hp`. Establish `hpS'` using `Finset.mem_of_mem_erase hp`. Establish `hne` using `Finset.ne_of_mem_erase hp`. Take `⟨hm1, hu, hT⟩` from `hS p (Finset.mem_filter.1 hpS').1`. Break down `(hmin p hpS').lt_or_eq with hlt | heq` into its components or cases.
+
+Take `⟨C, hC⟩` from `norm_logRS_add_le E _ _ p.1.2 p0.1.2 hu hu0 T hT hT0 (p.2 - p0.2) (by linarith)`. Use `⟨|(c p : ℝ)| * C, eventually_nhdsWithin_of_forall fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((Complex.abs_re_le_norm _).trans (hC x hx)) (abs_nonneg _)`. Establish `hne' : p.1 ≠ p0.1` using `fun h => hne (Prod.ext h heq.symm)`.
+
+Take `⟨C, hC⟩` from `abs_re_logRS_bdd E _ _ p.1.2 p0.1.2 hm1 hm0 hu hu0 hne' T hT hT0`. Use `⟨|(c p : ℝ)| * C, hC.mono fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : ℓ p x = logRS T p.1.2 p0.1.2 x` using `by simp only [ℓ, heq, sub_self, add_zero]`. Rewrite using `[abs_mul, e]`. Conclude with `mul_le_mul_of_nonneg_left hx (abs_nonneg _)`.
+
+Take `⟨C, hC⟩` from `eventually_bdd_sum (S'.erase p0) (fun p x => (c p : ℝ) * (ℓ p x).re) _ hb`. Establish `hpole` using `tendsto_re_logRS_self E _ p0.1.2 hm0 hu0 T hT0`. Establish `hℓ0 : ∀ x, ℓ p0 x = logRS T p0.1.2 p0.1.2 x` using `fun x => by simp only [ℓ, sub_self, add_zero]`. Establish `hev : ∀ᶠ x in 𝓝[>] (1 : ℝ), C + 1 ≤ (logRS T p0.1.2 p0.1.2 x).re` using `hpole.eventually_ge_atTop _`. Establish `hx1 : ∀ᶠ x in 𝓝[>] (1 : ℝ), 1 < x` using `self_mem_nhdsWithin`.
+
+Take `⟨x, hCx, hevx, hx⟩` from `(hC.and (hev.and hx1)).exists`. Establish `h1` using `hre x hx`. Rewrite `h1` using `[← Finset.add_sum_erase _ _ hp0, hℓ0]`. Establish `hc0' : (1 : ℝ) ≤ |(c p0 : ℝ)|`. Rewrite using `[← Int.cast_abs]`.
+
+Conclude with `Int.one_le_abs hc0` after adjusting the coercions. Establish `e1 : (c p0 : ℝ) * (logRS T p0.1.2 p0.1.2 x).re = -∑ p ∈ S'.erase p0, (c p : ℝ) * (ℓ p x).re` using `by linarith`. Establish `e2 : |(c p0 : ℝ) * (logRS T p0.1.2 p0.1.2 x).re| ≤ C` using `by rw [e1, abs_neg]; exact hCx`. Establish `e3 : (logRS T p0.1.2 p0.1.2 x).re ≤ |(c p0 : ℝ) * (logRS T p0.1.2 p0.1.2 x).re|`. Rewrite using `[abs_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vanish (T : Finset (HeightOneSpectrum (𝓞 E))) (S : Finset ((Σ a, CG E a) × ℝ)) (c : (Σ a, CG E a) × ℝ → ℤ)
     (hS : ∀ p ∈ S, 1 ≤ p.1.1 ∧ p.1.2.IsUnitary ∧ UnrOutside T p.1.2)
     (hid : ∀ w ∉ T, ∀ r : ℕ, ∑ p ∈ S, (c p : ℂ) * ((Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * (p.2 : ℂ))) *
@@ -212,10 +287,18 @@ theorem vanish (T : Finset (HeightOneSpectrum (𝓞 E))) (S : Finset ((Σ a, CG 
       _ ≤ |(c p0 : ℝ)| * |(logRS T p0.1.2 p0.1.2 x).re| := mul_le_mul_of_nonneg_right hc0' (abs_nonneg _)
   linarith
 
+/- English proof (translation)
+Simplify using `[Multiset.bind_singleton]`.
+-/
 theorem map_coe_pow (A : Multiset ℂˣ) (r : ℕ) :
     (A.map fun α => (α : ℂ) ^ (r + 1)) = (A.map fun α : ℂˣ => (α : ℂ) ^ (r + 1)) := by
   simp [Multiset.bind_singleton]
 
+/- English proof (translation)
+Rewrite using `[map_coe_pow, Multiset.map_map, ← Multiset.sum_map_mul_left]`. Use `congr 1`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, (absPow_isAbsPow E s).2.1 w, mul_pow]`. Rewrite using `[mul_comm, ← Complex.cpow_nat_mul]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_map_pow_twist (s : ℝ) (w : HeightOneSpectrum (𝓞 E)) (A : Multiset ℂˣ) (r : ℕ) :
     ((A.map (· * (absPow E s).val w)).map fun α : ℂˣ => (α : ℂ) ^ (r + 1)).sum =
       (Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * (s : ℂ))) * (A.map fun α => (α : ℂ) ^ (r + 1)).sum := by
@@ -228,12 +311,20 @@ theorem sum_map_pow_twist (s : ℝ) (w : HeightOneSpectrum (𝓞 E)) (A : Multis
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `sat`. Rewrite using `[dif_pos (h w hw)]`. Conclude with `(h w hw).choose_spec`.
+-/
 theorem hasSat_sat {a : ℕ} {σ : CG E a} {T : Finset (HeightOneSpectrum (𝓞 E))} (h : UnrOutside T σ)
     {w : HeightOneSpectrum (𝓞 E)} (hw : w ∉ T) : σ.HasSat w (sat σ w) := by
   unfold sat
   rw [dif_pos (h w hw)]
   exact (h w hw).choose_spec
 
+/- English proof (translation)
+Introduce `w hw`. Take `⟨B, hB⟩` from `h w hw`. Establish `e : σ.twist (absPow E (-s)) = σ₀`. Rewrite using `[he, ← CG.twist_mul, mul_comm, CG.absPow_neg_mul, CG.twist_one]`. Rewrite using `[← e]`.
+
+Conclude with `⟨_, (hB.twist_absPow (-s)).1⟩`.
+-/
 theorem unrOutside_of_twist {a : ℕ} {σ σ₀ : CG E a} {s : ℝ} (he : σ = σ₀.twist (absPow E s))
     {T : Finset (HeightOneSpectrum (𝓞 E))} (h : ∀ w ∉ T, ∃ B, σ.HasSat w B) : UnrOutside T σ₀ := by
   intro w hw
@@ -247,6 +338,39 @@ end GlobalTheory.JSW.Rigid
 
 open GlobalTheory.JSW.Rigid in
 
+/- English proof (translation)
+Introduce `E _ _ _ ι κ _ _ m m' π π' hm hm' hw`. Use `choose π0 t hu0 he0 using fun i => CG.exists_isUnitary_twist_absPow (π i) (hm i)`. Use `choose π0' t' hu0' he0' using fun j => CG.exists_isUnitary_twist_absPow (π' j) (hm' j)`. Establish `hfin` using `Filter.eventually_cofinite.1 hw`. Use `set T := hfin.toFinset with hTdef`.
+
+Establish `hgood : ∀ w ∉ T, ∃ (B : ι → Multiset ℂˣ) (B' : κ → Multiset ℂˣ), (∀ i, (π i).HasSat w (B i)) ∧ (∀ j, (π' j).HasSat w (B' j)) ∧ ∑ i, B i = ∑ j, B' j`. Introduce `w hw'`. Assume the negation of the conclusion as `h`. Conclude with `hw' (hfin.mem_toFinset.2 h)`. Establish `hT0 : ∀ i, UnrOutside T (π0 i)` using `fun i => unrOutside_of_twist (he0 i) fun w hw => by`.
+
+Take `⟨B, -, hB, -, -⟩` from `hgood w hw`. Conclude with `⟨_, hB i⟩`. Establish `hT0' : ∀ j, UnrOutside T (π0' j)` using `fun j => unrOutside_of_twist (he0' j) fun w hw => by`. Take `⟨-, B', -, hB', -⟩` from `hgood w hw`. Conclude with `⟨_, hB' j⟩`.
+
+Use `set M : Multiset ((Σ a, CG E a) × ℝ) := Finset.univ.val.map fun i => ((⟨m i, π0 i⟩ : Σ a, CG E a), t i) with hM`. Use `set M' : Multiset ((Σ a, CG E a) × ℝ) := Finset.univ.val.map fun j => ((⟨m' j, π0' j⟩ : Σ a, CG E a), t' j) with hM'`. Use `set S := (M + M').toFinset with hSdef`. Set `c : (Σ a, CG E a) × ℝ → ℤ` to `fun p => (M.count p : ℤ) - M'.count p`. Set `f : HeightOneSpectrum (𝓞 E) → ℕ → (Σ a, CG E a) × ℝ → ℂ` to `fun w r p => (Ideal.absNorm w.asIdeal : ℂ) ^ (-(((r : ℂ) + 1) * (p.2 : ℂ))) * ((sat p.1.2 w).map fun α => (α : ℂ) ^ (r + 1)).sum`.
+
+Establish `hcount : ∀ N : Multiset ((Σ a, CG E a) × ℝ), N ≤ M + M' → ∀ g : (Σ a, CG E a) × ℝ → ℂ, ∑ p ∈ S, (N.count p : ℂ) * g p = (N.map g).sum`. Introduce `N hN g`. Rewrite using `[Finset.sum_multiset_map_count]`. Repeatedly rewrite using `[nsmul_eq_mul]`. Use `symm`.
+
+Apply `Finset.sum_subset` to reduce the goal to its premises. Conclude with `Multiset.toFinset_subset.2 (Multiset.subset_of_le hN)`. Introduce `p _ hp`. Rewrite using `[Multiset.count_eq_zero.2 (fun h => hp (Multiset.mem_toFinset.2 h))]`. Simplify using the standard rewrite rules.
+
+Establish `hpw : ∀ (N : Multiset ℂˣ) (r : ℕ), (N.map fun α : ℂˣ => (α : ℂ) ^ (r + 1)).sum = (Multiset.sumAddMonoidHom.comp (Multiset.mapAddMonoidHom fun α : ℂˣ => (α : ℂ) ^ (r + 1))) N` using `fun _ _ => rfl`. Establish `hMsum : ∀ w ∉ T, ∀ r, (M.map (f w r)).sum = (M'.map (f w r)).sum`. Introduce `w hw r`. Take `⟨B, B', hB, hB', hBB⟩` from `hgood w hw`. Establish `e1 : ∀ i, B i = (sat (π0 i) w).map (· * (absPow E (t i)).val w)` using `fun i => (hB i).unique (by rw [he0 i]; exact ((hasSat_sat (hT0 i) hw).twist_absPow (t i)).1)`.
+
+Establish `e1' : ∀ j, B' j = (sat (π0' j) w).map (· * (absPow E (t' j)).val w)` using `fun j => (hB' j).unique (by rw [he0' j]; exact ((hasSat_sat (hT0' j) hw).twist_absPow (t' j)).1)`. Establish `hL : (M.map (f w r)).sum = ((∑ i, B i).map fun α : ℂˣ => (α : ℂ) ^ (r + 1)).sum`. Rewrite using `[hpw, map_sum, hM, Multiset.map_map, ← Finset.sum_eq_multiset_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hpw, e1 i, sum_map_pow_twist]`.
+
+Both sides reduce to the same expression. Establish `hR : (M'.map (f w r)).sum = ((∑ j, B' j).map fun α : ℂˣ => (α : ℂ) ^ (r + 1)).sum`. Rewrite using `[hpw, map_sum, hM', Multiset.map_map, ← Finset.sum_eq_multiset_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hpw, e1' j, sum_map_pow_twist]`.
+
+Both sides reduce to the same expression. Rewrite using `[hL, hR, hBB]`. Establish `hS : ∀ p ∈ S, 1 ≤ p.1.1 ∧ p.1.2.IsUnitary ∧ UnrOutside T p.1.2`. Introduce `p hp`. Rewrite `hp` using `[hSdef, Multiset.mem_toFinset, Multiset.mem_add, hM, hM']`.
+
+Break down `hp with hp | hp` into its components or cases. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hp`. Conclude with `⟨hm i, hu0 i, hT0 i⟩`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hp`. Conclude with `⟨hm' j, hu0' j, hT0' j⟩`.
+
+Establish `hv` using `vanish T S c hS fun w hw r => by`. Express the relevant statement in the definitionally equal form `∑ p ∈ S, (c p : ℂ) * f w r p = 0`. Simplify using `only [c, Int.cast_sub, Int.cast_natCast, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[hcount M (Multiset.le_add_right _ _), hcount M' (Multiset.le_add_left _ _), hMsum w hw r, sub_self]`. Establish `hMM : M = M'`.
+
+Use `Multiset.ext.2 fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ S`. Use `hv p hp` as an intermediate fact. Simplify using `only [c] at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hp` using `[hSdef, Multiset.mem_toFinset, Multiset.mem_add, not_or]`. Rewrite using `[Multiset.count_eq_zero.2 hp.1, Multiset.count_eq_zero.2 hp.2]`. Set `tw : (Σ a, CG E a) × ℝ → Σ a, CG E a` to `fun p => ⟨p.1.1, p.1.2.twist (absPow E p.2)⟩`. Establish `h1 : (Finset.univ.val.map fun i => (⟨m i, π i⟩ : Σ a, CG E a)) = M.map tw`. Rewrite using `[hM, Multiset.map_map]`.
+
+Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, tw, ← he0 i]`. Establish `h2 : (Finset.univ.val.map fun j => (⟨m' j, π' j⟩ : Σ a, CG E a)) = M'.map tw`. Rewrite using `[hM', Multiset.map_map]`. Use `Multiset.map_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, tw, ← he0' j]`. Conclude with `exists_equiv_of_map_eq (fun i => (⟨m i, π i⟩ : Σ a, CG E a)) (fun j => (⟨m' j, π' j⟩ : Σ a, CG E a)) (by rw [h1, h2, hMM])`.
+-/
 theorem GlobalTheory.JSW.jacquetShalikaRigidity_holds : GlobalTheory.Published.JacquetShalikaRigidity := by
   intro E _ _ _ ι κ _ _ m m' π π' hm hm' hw
   classical

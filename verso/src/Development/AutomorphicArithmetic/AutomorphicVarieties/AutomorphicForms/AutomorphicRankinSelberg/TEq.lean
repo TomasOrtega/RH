@@ -4,6 +4,21 @@ open MeasureTheory Set UpperTheory.V.Af.Rs
 open UpperHalfPlane hiding I
 open scoped MatrixGroups
 
+/- English proof (translation)
+Introduce `hRB hSI hUnf hGcd hKer hSw hLB L _ ψ F G hG hF hGn s hs`. Establish `hs' : s ∈ Icc (1 : ℝ) 2` using `⟨hs.1.le, hs.2⟩`. Take `⟨hkc, hk0, hkz, hkrow, hkn, -⟩` from `hKer s hs'`. Take `⟨hint, hsum⟩` from `hSw L G hGn s hs`. Establish `hrow : ∀ x : Cop, ∃ γ : SL(2, ℤ), row γ = (x : Fin 2 → ℤ)` using `fun x => ((hRB.2 UpperHalfPlane.I x).exists).imp fun γ h => h.1`.
+
+Establish `hone : ∀ (γ : SL(2, ℤ)) (z : ℍ), G (cls L (row γ)) z = F (γ • z)`. Introduce `γ z`. Use `hG 1 γ z` as an intermediate fact. Simplify using `using this`. Establish `hGn' : ∀ (n : ℕ) (γ : SL(2, ℤ)) (z : ℍ), G (cls L ((n : ℤ) • row γ)) z = ψ n * G (cls L (row γ)) z`.
+
+Introduce `n γ z`. Rewrite using `[hG, hone]`. Use `set a : (Fin 2 → ℤ) → ℂ := fun x => ∫ z in ModularGroup.fd, G (cls L x) z * (ker s x z : ℂ) with ha`. Use `set c : ℕ → ℂ := fun n => ψ n / ((n : ℝ) ^ (2 * s) : ℝ) with hc`. Establish `hs2 : (2 * s) ≠ 0` using `by have := hs.1; linarith`.
+
+Establish `hgcd` using `hGcd a c hsum.summable (hLB L ψ s hs.1.le).1 (by simp [ha, hkz]) (by simp [hc, Real.zero_rpow hs2]) (by`. Introduce `n x`. Take `⟨γ, hγ⟩` from `hrow x`. Simplify using `only [ha, hc]`. Rewrite using `[← hγ, ← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hkn]`. Rewrite using `[hGn', Complex.ofReal_div]`. Use the proof step `ring)`. Establish `hunf` using `hUnf (fun z => F z * ((z.im ^ s : ℝ) : ℂ)) (fun x z => G (cls L x) z * (ker s x z : ℂ)) (by`.
+
+Establish `hc1 : Continuous (fun z : ℍ => z.im ^ s)` using `UpperHalfPlane.continuous_im.rpow_const (fun _ => Or.inr (by linarith [hs.1]))`. Conclude with `hF.1.mul (Complex.continuous_ofReal.comp hc1))`. Use the proof step `(hSI F hF s hs)`. Use the proof step `(by intro γ z; rw [hkrow, hone])`. Use the proof step `(fun x => hint x)`.
+
+Rewrite using `[← hsum.tsum_eq, hgcd]`. Use `congr 1`. Conclude with `hunf.tsum_eq`.
+-/
 theorem UpperTheory.V.Af.Rs.tEq :
     UpperTheory.V.Af.Rs.RowBij → UpperTheory.V.Af.Rs.StripInt → UpperTheory.V.Af.Rs.Unfold → UpperTheory.V.Af.Rs.GcdSum → UpperTheory.V.Af.Rs.KerBd → UpperTheory.V.Af.Rs.Swap → UpperTheory.V.Af.Rs.LBd → UpperTheory.V.Af.Rs.TEq := by
   intro hRB hSI hUnf hGcd hKer hSw hLB L _ ψ F G hG hF hGn s hs

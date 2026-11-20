@@ -21,6 +21,11 @@ variable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 noncomputable def zc (p q : ℕ) : Mat p q :=
   Matrix.diagonal (Sum.elim (fun _ => 1) (fun _ => 0))
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Simplify using `[zc, Eab, Matrix.sum_apply, Matrix.single_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Simplify using `[Finset.filter_eq']`. Rewrite using `[if_neg h, eq_comm]`. Simplify using `only [Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `x - ⟨rfl, rfl⟩`. Conclude with `h rfl`.
+-/
 lemma zc_eq : zc p q = ∑ i : Fin p, Eab (Sum.inl i) (Sum.inl i) := by
   ext a b
   rcases a with a | a <;> rcases b with b | b <;>
@@ -32,10 +37,18 @@ lemma zc_eq : zc p q = ∑ i : Fin p, Eab (Sum.inl i) (Sum.inl i) := by
     rintro x - ⟨rfl, rfl⟩
     exact h rfl
 
+/- English proof (translation)
+Rewrite using `[zc_eq, map_sum, LinearMap.sum_apply]`.
+-/
 lemma act_zc (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (x : V) :
     act (zc p q) x = ∑ i : Fin p, act (Eab (Sum.inl i) (Sum.inl i)) x := by
   rw [zc_eq, map_sum, LinearMap.sum_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[zc, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using the standard rewrite rules. Simplify using `[hX (.inl a) (.inr b) (by simp [sameBlock])]`.
+
+Simplify using `[hX (.inr a) (.inl b) (by simp [sameBlock])]`. Simplify using the standard rewrite rules.
+-/
 lemma zc_comm {X : Mat p q} (hX : IsKC X) : zc p q * X = X * zc p q := by
   ext a b
   rw [zc, Matrix.diagonal_mul, Matrix.mul_diagonal]
@@ -45,6 +58,11 @@ lemma zc_comm {X : Mat p q} (hX : IsKC X) : zc p q * X = X * zc p q := by
   · simp [hX (.inr a) (.inl b) (by simp [sameBlock])]
   · simp
 
+/- English proof (translation)
+Introduce `X hX w hw`. Rewrite `hw`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `h` using `hL (zc p q) X`. Rewrite `h` using `[zc_comm hX, sub_self, map_zero, eq_comm, sub_eq_zero]`. Establish `h2` using `LinearMap.congr_fun h w`.
+
+Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[h2, hw, map_smul]`.
+-/
 lemma kstable_eig {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (hL : IsLieAct act) (t : ℂ) :
     KStable act (Module.End.eigenspace (act (zc p q)) t) := by
   intro X hX w hw
@@ -55,10 +73,16 @@ lemma kstable_eig {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (hL : IsLieAct ac
   simp only [Module.End.mul_apply] at h2
   rw [h2, hw, map_smul]
 
+/- English proof (translation)
+Introduce `X hX w hw` and use `⟨hA X hX w hw.1, hB X hX w hw.2⟩`.
+-/
 lemma kstable_inf {act : Mat p q →ₗ[ℂ] Module.End ℂ V} {A B : Submodule ℂ V}
     (hA : KStable act A) (hB : KStable act B) : KStable act (A ⊓ B) :=
   fun X hX w hw => ⟨hA X hX w hw.1, hB X hX w hw.2⟩
 
+/- English proof (translation)
+Rewrite using `[Module.End.mem_eigenspace_iff, act_zc]`. Simplify using `only [mem_wt.1 hx]`. Rewrite using `[← Finset.sum_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 lemma wt_eig {act : Mat p q →ₗ[ℂ] Module.End ℂ V} {μ : Ix p q → ℚ} {x : V}
     (hx : x ∈ wtSub act μ) :
     x ∈ Module.End.eigenspace (act (zc p q)) ((∑ i : Fin p, μ (Sum.inl i) : ℚ) : ℂ) := by
@@ -68,6 +92,15 @@ lemma wt_eig {act : Mat p q →ₗ[ℂ] Module.End ℂ V} {μ : Ix p q → ℚ} 
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h1 : (⊤ : Submodule ℂ V) ≤ (⨆ m : ℕ, ⨆ _ : c + m = t, N m) ⊔ ⨆ s, ⨆ _ : s ≠ t, f.eigenspace s`. Rewrite using `[← hN]`. Use `iSup_le fun m => ?_` and prove the remaining obligations. Distinguish the cases in `hm : c + m = t`.
+
+Conclude with `le_sup_of_le_left (le_iSup₂_of_le m hm le_rfl)`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le (c + m) hm (h m))`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (h1 (Submodule.mem_top : x ∈ ⊤))`. Establish `ha' : a ∈ f.eigenspace t`. Use `(iSup₂_le fun m hm => ?_ : (⨆ m : ℕ, ⨆ _ : c + m = t, N m) ≤ f.eigenspace t) ha` and prove the remaining obligations.
+
+Rewrite using `[← hm]`. Conclude with `h m`. Establish `hb' : b ∈ f.eigenspace t`. Simplify using `using Submodule.sub_mem _ hx ha'`. Establish `hd` using `Module.End.eigenspaces_iSupIndep f t`.
+
+Establish `: b = 0` using `(Submodule.disjoint_def.1 hd) b hb' hb`. Simplify `ha` using `[this]`.
+-/
 lemma eig_le (f : Module.End ℂ V) (c : ℂ) (N : ℕ → Submodule ℂ V) (hN : (⨆ m, N m) = ⊤)
     (h : ∀ m : ℕ, N m ≤ f.eigenspace (c + m)) (t : ℂ) :
     f.eigenspace t ≤ ⨆ m : ℕ, ⨆ _ : c + m = t, N m := by
@@ -88,6 +121,11 @@ lemma eig_le (f : Module.End ℂ V) (c : ℂ) (N : ℕ → Submodule ℂ V) (hN 
   have : b = 0 := (Submodule.disjoint_def.1 hd) b hb' hb
   simpa [this] using ha
 
+/- English proof (translation)
+Establish `h1` using `eig_le f c N hN h t hx`. Distinguish the cases in `hm : ∃ m : ℕ, c + m = t`. Take `⟨m, rfl⟩` from `hm`. Use `⟨m, rfl, (iSup₂_le fun k hk => ?_ : (⨆ k : ℕ, ⨆ _ : c + k = c + m, N k) ≤ N m) h1⟩` and prove the remaining obligations. Establish `: k = m` using `by exact_mod_cast add_left_cancel hk`.
+
+Rewrite using `[this]`. Use `absurd ?_ h0` and prove the remaining obligations. Conclude with `(iSup₂_le fun k hk => absurd ⟨k, hk⟩ hm : (⨆ k : ℕ, ⨆ _ : c + k = t, N k) ≤ ⊥) h1`.
+-/
 lemma eig_mem (f : Module.End ℂ V) (c : ℂ) (N : ℕ → Submodule ℂ V) (hN : (⨆ m, N m) = ⊤)
     (h : ∀ m : ℕ, N m ≤ f.eigenspace (c + m)) (t : ℂ) {x : V} (hx : x ∈ f.eigenspace t) (h0 : x ≠ 0) :
     ∃ m : ℕ, t = c + m ∧ x ∈ N m := by
@@ -100,6 +138,9 @@ lemma eig_mem (f : Module.End ℂ V) (c : ℂ) (N : ℕ → Submodule ℂ V) (hN
   · refine absurd ?_ h0
     exact (iSup₂_le fun k hk => absurd ⟨k, hk⟩ hm : (⨆ k : ℕ, ⨆ _ : c + k = t, N k) ≤ ⊥) h1
 
+/- English proof (translation)
+Rewrite `hs`, `ht` using `[Module.End.mem_eigenspace_iff]`. Conclude with `smul_left_injective ℂ h0 (hs.symm.trans ht)`.
+-/
 lemma eig_unique {f : Module.End ℂ V} {s t : ℂ} {x : V} (hs : x ∈ f.eigenspace s)
     (ht : x ∈ f.eigenspace t) (h0 : x ≠ 0) : s = t := by
   rw [Module.End.mem_eigenspace_iff] at hs ht
@@ -107,6 +148,11 @@ lemma eig_unique {f : Module.End ℂ V} {s t : ℂ} {x : V} (hs : x ∈ f.eigens
 
 def rk : Ix p q → ℕ := Sum.elim (fun i => i.1) (fun j => p + j.1)
 
+/- English proof (translation)
+Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [rk, Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[Fin.ext h]`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `b.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.ext (add_left_cancel h)]`.
+-/
 lemma rk_inj : Function.Injective (rk : Ix p q → ℕ) := by
   rintro (a | a) (b | b) h <;> simp only [rk, Sum.elim_inl, Sum.elim_inr] at h
   · rw [Fin.ext h]
@@ -114,14 +160,27 @@ lemma rk_inj : Function.Injective (rk : Ix p q → ℕ) := by
   · have := b.2; omega
   · rw [Fin.ext (add_left_cancel h)]
 
+/- English proof (translation)
+Use `⟨same_refl, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp_all [sameBlock]`. Apply the tactic sequence `rintro (a | a) (b | b) (c | c) h h' <;> simp_all [sameBlock]`.
+-/
 lemma same_equiv : Equivalence (sameBlock : Ix p q → Ix p q → Prop) := by
   refine ⟨same_refl, ?_, ?_⟩
   · rintro (a | a) (b | b) h <;> simp_all [sameBlock]
   · rintro (a | a) (b | b) (c | c) h h' <;> simp_all [sameBlock]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock, rk, posC]`.
+-/
 lemma pos_of_rk {a b : Ix p q} (h : sameBlock a b) (hr : rk a < rk b) : posC a b := by
   rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock, rk, posC]
 
+/- English proof (translation)
+Take `⟨U, hvU, hS, hmin, h1, h2⟩` from `GlobalTheory.ExtremalGen.exists_generated p q V act hL sameBlock same_equiv rk rk_inj μ v hh.2.1 (fun a b hab hr => by`. Use `hh.2.2` as an intermediate fact. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, SetLike.mem_coe] at this`. Conclude with `this a b (pos_of_rk hab hr))`. Establish `hUW : U ≤ W` using `hmin W hv fun a b hab _ x hx => hW _ (isKC_Eab (same_equiv.symm hab)) x hx`.
+
+Establish `hU : U = W`. Use `(hirr U hUW fun X hX w hw => kc_ind act U w (fun a b hab => hS a b hab w hw) hX).resolve_left ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hh.1 (by simpa using hvU)`. Substitute `hU` using the available equality.
+
+Conclude with `⟨h1, h2⟩`.
+-/
 lemma hw_irr {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (hL : IsLieAct act) {W : Submodule ℂ V}
     (hW : KStable act W) (hirr : ∀ N : Submodule ℂ V, N ≤ W → KStable act N → N = ⊥ ∨ N = W)
     {μ : Ix p q → ℚ} {v : V} (hv : v ∈ W) (hh : IsHW act μ v) :
@@ -141,6 +200,29 @@ lemma hw_irr {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (hL : IsLieAct act) {W
   subst hU
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Introduce `p q M Λ W hM hfd hW hirr hex hlow hgen`. Take `⟨e, heW, he⟩` from `hex`. Use `set c : ℂ := ((∑ i : Fin p, Λ (Sum.inl i) : ℚ) : ℂ) with hc`. Establish `hWc : W ≤ Module.End.eigenspace (M.act (zc p q)) c`. Break down `hirr _ inf_le_left (kstable_inf hW (kstable_eig M.lie c)) with h | h` into its components or cases.
+
+Conclude with `absurd ((Submodule.eq_bot_iff _).1 h e ⟨heW, wt_eig he.2.1⟩) he.1`. Conclude with `h.ge.trans inf_le_right`. Take `⟨N, hN0, hNfd, hNtop, hN⟩` from `GlobalTheory.FockGrade.exists_grading p q M.V M.act M.lie W c hfd hW hlow (fun x hx => by rw [← act_zc]; exact Module.End.mem_eigenspace_iff.1 (hWc hx))`. Rewrite `hNtop` using `[hgen]`. Establish `hNe : ∀ m : ℕ, N m ≤ Module.End.eigenspace (M.act (zc p q)) (c + m)` using `fun m x hx => by`.
+
+Rewrite using `[Module.End.mem_eigenspace_iff, act_zc]`. Conclude with `hN m x hx`. Establish `hcW : Module.End.eigenspace (M.act (zc p q)) c ≤ W`. Introduce `x hx`. Distinguish the cases in `h0 : x = 0`.
+
+Rewrite using `[h0]`. Conclude with `W.zero_mem`. Take `⟨m, hm, hxm⟩` from `eig_mem _ c N hNtop hNe c hx h0`. Establish `: m = 0` using `by exact_mod_cast left_eq_add.1 hm`. Rewrite `hxm` using `[this, hN0]`. Then use the resulting hypothesis.
+
+Establish `hline` using `hw_irr M.lie hW hirr heW he`. Use `⟨⟨hM, hfd, hW, hirr, ⟨e, heW, he⟩, fun x => ⟨fun hx => ⟨W, hfd, hx, hW, ?_⟩, ?_⟩, hlow, hgen, ?_⟩, ?_, N, hNfd, hNtop, hN⟩` and prove the remaining obligations. Introduce `ν w hw hh`. Break down `hline.2 ν w hw hh.1 hh.2.1 with h | h` into its components or cases. Conclude with `h`.
+
+Break down `(hw_irr M.lie hW hirr hw hh).2 Λ e heW he.1 he.2.1 with h' | h'` into its components or cases. Conclude with `h'.symm`. Conclude with `absurd h (not_lt.2 h'.le)`. Introduce and unpack `⟨W', hfd', hx, hW', hall⟩`. Establish `h1` using `GlobalTheory.WeightDecomp.mem_iSup_inf_wtSub p q M.V M.act W' (fun a y hy => hW' _ (isKC_Eab (same_refl a)) y hy) x hx (M.wts x)`.
+
+Use `(iSup_le fun μ y hy => ?_ : (⨆ μ : Ix p q → ℚ, W' ⊓ wtSub M.act μ) ≤ W) h1` and prove the remaining obligations. Distinguish the cases in `h0 : y = 0`. Rewrite using `[h0]`. Conclude with `W.zero_mem`. Establish `hy2` using `wt_eig hy.2`.
+
+Use `hfd'` as an intermediate fact. Take `⟨ν, v, hv, hh⟩` from `GlobalTheory.ExistsHW.exists_highestWeight p q M _ (Submodule.finiteDimensional_of_le inf_le_left) (kstable_inf hW' (kstable_eig M.lie ((∑ i : Fin p, μ (Sum.inl i) : ℚ) : ℂ))) (fun h => h0 ((Submodule.eq_bot_iff _).1 h y ⟨hy.1, hy2⟩))`. Take `rfl` from `hall ν v hv.1 hh`. Use `eig_unique hv.2 (wt_eig hh.2.1) hh.1` as an intermediate fact. Rewrite `hy2` using `[this]`.
+
+Conclude with `hcW hy2`. Introduce `μ x h0 hx`. Take `⟨m, hm, hxm⟩` from `eig_mem _ c N hNtop hNe _ (wt_eig hx) h0`. Use `⟨m, by rw [hc] at hm; exact_mod_cast hm, ?_, fun hxW => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `hxm` using `[hN0]`. Then use the resulting hypothesis. Use `eig_unique (hWc hxW) (hNe m hxm) h0` as an intermediate fact. Conclude with `left_eq_add.1 this` after adjusting the coercions. Establish `: hwSub M.act Λ = Submodule.span ℂ {e}`. Use `le_antisymm (fun x hx => ?_) ((Submodule.span_singleton_le_iff_mem _ _).2 he.2)` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `hline.1 x (hcW (wt_eig hx.1)) hx.1`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e)`. Rewrite using `[this]`. Conclude with `finrank_span_singleton he.1`.
+-/
 theorem lowest : ∀ (p q : ℕ) (M : GKMod p q) (Λ : Ix p q → ℚ) (W : Submodule ℂ M.V), IrrGK M → FiniteDimensional ℂ W → KStable M.act W → (∀ N : Submodule ℂ M.V, N ≤ W → KStable M.act N → N = ⊥ ∨ N = W) → (∃ e ∈ W, IsHW M.act Λ e) → (∀ e ∈ W, KilledByLower M.act e) → genSub M.act (W : Set M.V) = ⊤ → IsLowestType M Λ W ∧ Module.finrank ℂ ↥(hwSub M.act Λ) = 1 ∧ ∃ N : ℕ → Submodule ℂ M.V, (∀ m, FiniteDimensional ℂ (N m)) ∧ (⨆ m, N m) = ⊤ ∧ ∀ m : ℕ, ∀ x ∈ N m, ∑ i : Fin p, M.act (Eab (Sum.inl i) (Sum.inl i)) x = (((∑ i : Fin p, Λ (Sum.inl i) : ℚ) : ℂ) + m) • x := by
   intro p q M Λ W hM hfd hW hirr hex hlow hgen
   obtain ⟨e, heW, he⟩ := hex

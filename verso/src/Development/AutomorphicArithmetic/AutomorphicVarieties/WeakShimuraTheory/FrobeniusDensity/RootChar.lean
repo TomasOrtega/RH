@@ -9,10 +9,22 @@ section SlopeTestRemainingChoices
 
 open Polynomial
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.CoefficientRingContainingIntegers.rc_coef K`.
+-/
 private theorem rc_coef {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
     ∃ c : Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O :=
   _root_.UpperTheory.Reformulated.B.CoefficientRingContainingIntegers.rc_coef K
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hm : (X ^ n - C γ : κ[X]).Monic` using `monic_X_pow_sub_C γ hn.ne'`. Establish `hs` using `(IsAlgClosed.splits (X ^ n - C γ : κ[X])).eq_prod_roots_of_monic hm`. Establish `he` using `congrArg (fun p => ‖eval 1 p‖) hs`.
+
+Simplify using `only [eval_sub, eval_pow, eval_X, one_pow, eval_C, eval_multiset_prod, Multiset.map_map] at he`. Establish `h1 : 1 ≤ ‖(Multiset.map (eval 1 ∘ fun a => X - C a) (X ^ n - C γ : κ[X]).roots).prod‖`. Use `Multiset.prod_induction (fun x : κ => 1 ≤ ‖x‖) _ (fun a b ha hb => ?_) (by simp) ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `one_le_mul_of_one_le_of_one_le ha hb`.
+
+Introduce `a ha`. Take `⟨b, hb, rfl⟩` from `Multiset.mem_map.1 ha`. Establish `hb' : b ^ n = γ`. Use `(mem_roots hm.ne_zero).1 hb` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+
+Use `hc b hb'` as an intermediate fact. Rewrite `this` using `[norm_sub_rev]`. Simplify using `using this`. Rewrite `hγ` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem rc_root {κ : Type} [NormedField κ] [IsAlgClosed κ] (γ : κ) (hγ : ‖γ - 1‖ < 1) (n : ℕ) (hn : 0 < n) :
     ∃ b : κ, b ^ n = γ ∧ ‖b - 1‖ < 1 := by
   by_contra hc
@@ -35,6 +47,11 @@ private theorem rc_root {κ : Type} [NormedField κ] [IsAlgClosed κ] (γ : κ) 
   rw [norm_sub_rev] at hγ
   linarith
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h : b ^ (k + 1) - 1 = (b ^ k - 1) * (b - 1) + ((b ^ k - 1) + (b - 1))` using `by ring`. Rewrite using `[h]`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih le_rfl)))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (ih.trans hb.le)`.
+-/
 private theorem rc_pow {κ : Type} [NormedField κ] [IsUltrametricDist κ] (b : κ) (hb : ‖b - 1‖ < 1) (k : ℕ) :
     ‖b ^ k - 1‖ ≤ ‖b - 1‖ := by
   induction k with
@@ -47,6 +64,21 @@ private theorem rc_pow {κ : Type} [NormedField κ] [IsUltrametricDist κ] (b : 
     rw [norm_mul]
     exact mul_le_of_le_one_left (norm_nonneg _) (ih.trans hb.le)
 
+/- English proof (translation)
+Set `K : IntermediateField ℚ_[l] (PadicAlgCl l)` to `IntermediateField.adjoin ℚ_[l] {b}`. Use `haveI : FiniteDimensional ℚ_[l] K := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral b)`. Take `⟨c, hc⟩` from `rc_coef K`. Use `haveI : CompleteSpace K := by`. Establish `h : IsClosed (K.toSubmodule : Set (PadicAlgCl l))` using `Submodule.closed_of_finiteDimensional _`.
+
+Establish `h2 : IsComplete (K.toSubmodule : Set (PadicAlgCl l))` using `Submodule.complete_of_finiteDimensional _`. Conclude with `h2.completeSpace_coe`. Use `haveI : IsBoundedSMul ℤ_[l] K := by`. Use `IsBoundedSMul.of_norm_smul_le fun r x => ?_` and prove the remaining obligations. Use `show ‖((r • x : K) : PadicAlgCl l)‖ ≤ ‖r‖ * ‖(x : PadicAlgCl l)‖`.
+
+Establish `: ((r • x : K) : PadicAlgCl l) = (r : ℚ_[l]) • (x : PadicAlgCl l)` using `rfl`. Rewrite using `[this, norm_smul]`. Both sides reduce to the same expression. Set `b' : K` to `⟨b, IntermediateField.mem_adjoin_simple_self _ b⟩`. Establish `hb' : ‖b' - 1‖ < 1` using `hb`.
+
+Establish `ht` using `tendsto_pow_atTop_nhds_zero_iff_norm_lt_one.mpr hb'`. Set `κ₀ : AddChar ℤ_[l] K` to `PadicInt.addChar_of_value_at_one (b' - 1) ht`. Establish `h0 : Continuous κ₀` using `PadicInt.continuous_addChar_of_value_at_one ht`. Establish `h1 : κ₀ 1 = b'`. Rewrite using `[PadicInt.addChar_of_value_at_one_def]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `κ : AddChar ℤ_[l] (PadicAlgCl l)` to `(K.val : K →* PadicAlgCl l).compAddChar κ₀`. Establish `hκ : ∀ x, κ x = (κ₀ x : PadicAlgCl l)` using `fun _ => rfl`. Establish `hcont : Continuous κ` using `continuous_subtype_val.comp h0`. Establish `hone : κ 1 = b` using `by rw [hκ, h1]`.
+
+Establish `hle : ∀ x, ‖κ x - 1‖ ≤ ‖b - 1‖`. Introduce `x`. Use `PadicInt.denseRange_natCast.induction_on x (isClosed_le (hcont.sub continuous_const).norm continuous_const) fun k => ?_` and prove the remaining obligations. Rewrite using `[← nsmul_one, AddChar.map_nsmul_eq_pow, hone]`. Conclude with `rc_pow b hb k`.
+
+Use `⟨κ, c, hcont, hone, fun x => ⟨hc _ (κ₀ x).2 ?_, (hle x).trans_lt hb⟩⟩` and prove the remaining obligations. Establish `: κ x = (κ x - 1) + 1` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((hle x).trans hb.le) (by simp))`.
+-/
 private theorem rc_char {l : ℕ} [Fact l.Prime] (b : PadicAlgCl l) (hb : ‖b - 1‖ < 1) :
     ∃ (κ : AddChar ℤ_[l] (PadicAlgCl l)) (c : Coef l), Continuous κ ∧ κ 1 = b ∧ ∀ x, κ x ∈ c.O ∧ ‖κ x - 1‖ < 1 := by
   let K : IntermediateField ℚ_[l] (PadicAlgCl l) := IntermediateField.adjoin ℚ_[l] {b}
@@ -84,9 +116,19 @@ private theorem rc_char {l : ℕ} [Fact l.Prime] (b : PadicAlgCl l) (hb : ‖b -
   rw [this]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((hle x).trans hb.le) (by simp))
 
+/- English proof (translation)
+Rewrite using `[KStar.TotallyRealRoots.mem_princ, pow_one, PadicInt.norm_lt_one_iff_dvd]`.
+-/
 private theorem rc_princ {l : ℕ} [Fact l.Prime] (u : ℤ_[l]ˣ) : u ∈ KStar.TotallyRealRoots.princ l 1 ↔ ‖(u : ℤ_[l]) - 1‖ < 1 := by
   rw [KStar.TotallyRealRoots.mem_princ, pow_one, PadicInt.norm_lt_one_iff_dvd]
 
+/- English proof (translation)
+Use `(princZl l (KStar.TotallyRealRoots.princ l 1) ?_ (by rw [qExp, if_neg hl]) ?_).1` and prove the remaining obligations. Apply `Subgroup.isClosed_of_isOpen` to reduce the goal to its premises. Establish `: (KStar.TotallyRealRoots.princ l 1 : Set ℤ_[l]ˣ) = {u : ℤ_[l]ˣ | ‖(u : ℤ_[l]) - 1‖ < 1}` using `Set.ext rc_princ`. Rewrite using `[this]`. Conclude with `isOpen_lt (Units.continuous_val.sub continuous_const).norm continuous_const`.
+
+Establish `hn : ‖(l : ℤ_[l])‖ < 1` using `by rw [PadicInt.norm_lt_one_iff_dvd]`. Establish `hu : IsUnit (1 - (l : ℤ_[l]))` using `(Units.oneSub _ hn).isUnit`. Introduce `h`. Establish `h1 : hu.unit ∈ KStar.TotallyRealRoots.princ l 1`. Rewrite using `[rc_princ]`.
+
+Simplify using `using hn`. Rewrite `h1` using `[h, Subgroup.mem_bot]`. Establish `h2` using `congrArg Units.val h1`. Establish `h3 : (l : ℤ_[l]) = 0` using `by simpa using h2`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h3)`.
+-/
 private theorem rc_equiv {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) :
     Nonempty (KStar.TotallyRealRoots.princ l 1 ≃ₜ* Multiplicative ℤ_[l]) := by
   refine (princZl l (KStar.TotallyRealRoots.princ l 1) ?_ (by rw [qExp, if_neg hl]) ?_).1
@@ -106,6 +148,25 @@ private theorem rc_equiv {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ hl Γ _ _ _ _ π hπ h1 n hn`. Take `⟨e⟩` from `rc_equiv hl`. Set `π' : Γ →* KStar.TotallyRealRoots.princ l 1` to `π.codRestrict _ fun s => (rc_princ _).2 (h1 s)`. Establish `hπ' : Continuous π'` using `hπ.subtype_mk _`. Set `t : Γ →* Multiplicative ℤ_[l]` to `(e.toMulEquiv : _ →* _).comp π'`.
+
+Establish `ht : ∀ s, t s = e (π' s)` using `fun _ => rfl`. Establish `htc : Continuous t` using `e.continuous.comp hπ'`. Establish `hnorm : ∀ x : ℤ_[l], ‖algebraMap ℤ_[l] (PadicAlgCl l) x‖ = ‖x‖` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), norm_algebraMap']`. Both sides reduce to the same expression.
+
+Establish `hac : Continuous (algebraMap ℤ_[l] (PadicAlgCl l))` using `(AddMonoidHomClass.isometry_of_norm _ hnorm).continuous`. Set `κ₀ : AddChar ℤ_[l] (PadicAlgCl l)` to `AddChar.toMonoidHomEquiv.symm ((algebraMap ℤ_[l] (PadicAlgCl l) : ℤ_[l] →* _).comp ((Units.coeHom _).comp ((KStar.TotallyRealRoots.princ l 1).subtype.comp (e.toMulEquiv.symm : _ →* _))))`. Establish `hκ₀ : ∀ x, κ₀ x = algebraMap ℤ_[l] (PadicAlgCl l) ((e.symm (Multiplicative.ofAdd x) : ℤ_[l]ˣ) : ℤ_[l])` using `fun _ => rfl`. Establish `hc₀ : Continuous κ₀` using `hac.comp (Units.continuous_val.comp (continuous_subtype_val.comp (e.symm.continuous.comp continuous_ofAdd)))`. Establish `hγ : ‖κ₀ 1 - 1‖ < 1`.
+
+Rewrite using `[hκ₀, ← map_one (algebraMap ℤ_[l] (PadicAlgCl l)), ← map_sub, hnorm]`. Conclude with `(rc_princ _).1 (e.symm _).2`. Take `⟨b, hbn, hb⟩` from `rc_root _ hγ n hn`. Take `⟨κ, c, hκc, hκ1, hκ⟩` from `rc_char b hb`. Establish `heq : κ ^ n = κ₀`.
+
+Use `PadicInt.denseRange_natCast.addChar_eq_of_eval_one_eq ?_ hc₀ ?_` and prove the remaining obligations. Conclude with `(hκc.pow n).congr fun x => (AddChar.pow_apply κ n x).symm`. Rewrite using `[AddChar.pow_apply, hκ1, hbn]`. Set `β : Γ →* (PadicAlgCl l)ˣ` to `(κ.toMonoidHom.comp t).toHomUnits`. Establish `hβ : ∀ s, (β s : PadicAlgCl l) = κ (Multiplicative.toAdd (t s))` using `fun _ => rfl`.
+
+Establish `hβv : Continuous fun s => (β s : PadicAlgCl l)` using `hκc.comp (continuous_toAdd.comp htc)`. Establish `hker : t.ker = π.ker`. Use extensionality with `s`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, ht, map_eq_one_iff e e.injective]`. Conclude with `Subtype.ext_iff`.
+
+Establish `hle : t.ker ≤ β.ker`. Introduce `s hs`. Rewrite `hs`, the goal using `[MonoidHom.mem_ker]`. Use `ext`. Rewrite using `[hβ, hs]`.
+
+Simplify using the standard rewrite rules. Use `⟨t, β, c, htc, hker, hle, ?_, fun s => hκ _, fun s => ?_, fun s s' h => ?_⟩` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨hβv, ?_⟩` and prove the remaining obligations. Conclude with `(hβv.comp continuous_inv).congr fun s => by simp`. Rewrite using `[hβ, ← AddChar.pow_apply, heq, hκ₀, ofAdd_toAdd, ht, e.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Rewrite `h`, the goal using `[← map_mul]`. Conclude with `hle (hker ▸ h)`.
+-/
 theorem UpperTheory.V.Ws.Tw.rootChar :
     ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] (π : Γ →* ℤ_[l]ˣ), Continuous π → (∀ s, ‖(π s : ℤ_[l]) - 1‖ < 1) → ∀ n : ℕ, 0 < n → ∃ (t : Γ →* Multiplicative ℤ_[l]) (β : Γ →* (PadicAlgCl l)ˣ) (c₁ : Coef l), Continuous t ∧ t.ker = π.ker ∧ t.ker ≤ β.ker ∧ Continuous β ∧ (∀ s, (β s : PadicAlgCl l) ∈ c₁.O ∧ ‖(β s : PadicAlgCl l) - 1‖ < 1) ∧ (∀ s, (β s : PadicAlgCl l) ^ n = algebraMap ℤ_[l] (PadicAlgCl l) (π s : ℤ_[l])) ∧ ∀ s s', π s * π s' = 1 → β s * β s' = 1 := by
   intro l _ hl Γ _ _ _ _ π hπ h1 n hn

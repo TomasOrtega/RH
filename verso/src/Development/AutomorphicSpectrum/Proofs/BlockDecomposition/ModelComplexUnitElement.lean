@@ -9,6 +9,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 
 namespace GlobalTheory.CompanionTheory.PerfVB
 
+/- English proof (translation)
+Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul r a => simp`.
+-/
 theorem lid_lTensor_unit {R A B : Type} [CommRing R] [AddCommGroup A] [AddCommGroup B] [Module R A]
     [Module R B] (f : A →ₗ[R] B) (u : R ⊗[R] A) :
     TensorProduct.lid R B (f.lTensor R u) = f (TensorProduct.lid R A u) := by
@@ -17,11 +20,19 @@ theorem lid_lTensor_unit {R A B : Type} [CommRing R] [AddCommGroup A] [AddCommGr
   | add a b ha hb => simp only [map_add, ha, hb]
   | tmul r a => simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T T' φ`. Simplify using `[d0]`.
+-/
 theorem d0_one {R C : Type} [CommRing R] [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) :
     d0 F (1 : C0 F) = 0 := by
   funext T T' φ
   simp [d0]
 
+/- English proof (translation)
+Introduce `R C P₀ P₁ P₂ _ _ F _ _ _ _ _ _ a₀ a₁ ψ₀ ψ₁ ψ₂ h`. Take `⟨-, -, -, hM⟩` from `h`. Take `⟨x, y, h1, h2⟩` from `(hM (ModuleCat.of R R)).1.2 ((1 : R) ⊗ₜ[R] (1 : C0 F)) (by simp [d0_one F])`. Establish `h1' : a₀.lTensor R x = 0` using `h1`. Establish `h2' : ψ₀.lTensor R x - (1 : R) ⊗ₜ[R] (1 : C0 F) = 0` using `by simpa using h2`.
+
+Use `⟨TensorProduct.lid R P₀ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← lid_lTensor_unit, h1', map_zero]`. Rewrite using `[← lid_lTensor_unit, sub_eq_zero.mp h2']`. Simplify using the standard rewrite rules.
+-/
 theorem unit_of_model : ∀ (R C P₀ P₁ P₂ : Type) [CommRing R] [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     [AddCommGroup P₀] [AddCommGroup P₁] [AddCommGroup P₂] [Module R P₀] [Module R P₁] [Module R P₂]
     (a₀ : P₀ →ₗ[R] P₁) (a₁ : P₁ →ₗ[R] P₂) (ψ₀ : P₀ →ₗ[R] C0 F) (ψ₁ : P₁ →ₗ[R] C1 F)

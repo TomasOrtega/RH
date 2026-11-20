@@ -9,6 +9,11 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.RowDict Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.PackageTie2
   GlobalTheory.Mem.Top GlobalTheory.Fc GlobalTheory.Cp
 namespace GlobalTheory.CountRow
+/- English proof (translation)
+Introduce `hSW Q Lk hrow`. Take `⟨c30, -, h1, -, -, h4⟩` from `GlobalTheory.CountConstants.count_constants_of_siegelWeil hSW`. Take `⟨cIc, hc, H⟩` from `GlobalTheory.T.irreducibilityRow_of_concreteAutomorphicData hSW GlobalTheory.rowsFinDim_link`. Use `⟨c30, cIc, h1, hc, hrow.imp fun 𝒜 σ _ hA => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `Formalism.MainNotions.Pk.Closed.of_class fun Fm _ _ => h4 _ Fm`.
+
+Conclude with `H (D3 3 𝒜) (fun Fm hw => hw.2.2.1) (Formalism.MainNotions.Pk.Closed.of_class fun Fm _ hw _ => ⟨0, fun x hx _ i => hA Fm (d3_a hw) x hx i⟩)`.
+-/
 theorem row_counts_of_ties_alt : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (Q : V4.Slot) (Lk : LkT _root_.GlobalTheory.Fc.BundleCondition),
     Row Q Lk (AtAll fun D _ _ _ => ∃ (X : HidaSetting D) (G : GoodOp X) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X),
       AutTie D X.B X.pl ∧ RowDictTie X G ι ∧ GlobalTheory.LabPin.LabTie X ι) → _root_.GlobalTheory.Fc.R1.CountsIrreducibilityConstants' Q Lk := by

@@ -15,6 +15,11 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.Mass.SpaceMass
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `hp τ x h0` as an intermediate fact. Rewrite `this` using `[hx x]`.
+
+Simplify using `at this`. Assume the negation of the conclusion as `h0`. Use `hp τ x h0` as an intermediate fact. Rewrite `this` using `[hx x]`. Simplify using `at this`.
+-/
 theorem nondeg_of_PD {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : PD h) : h.Nondegenerate := by
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -28,6 +33,15 @@ theorem nondeg_of_PD {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCom
     rw [hx x] at this
     simp at this
 
+/- English proof (translation)
+Take `⟨e, -, hsp, -, hort⟩` from `hI`. Introduce `τ x hx`. Establish `hx' : x ∈ Submodule.span K (Set.range e)` using `by rw [hsp]; trivial`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx'`. Establish `e1 : h (∑ i, a i • e i) (∑ i, a i • e i) = ∑ i, star (a i) * a i`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hort, smul_eq_mul, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Establish `e2 : (τ (∑ i, star (a i) * a i)).re = ∑ i, Complex.normSq (τ (a i))`. Rewrite using `[map_sum, Complex.re_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hK.2.1, Complex.normSq_eq_conj_mul_self.symm]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hx (by simp [hc])`. Use `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Complex.normSq_pos.2 ((map_ne_zero τ).2 hi)`.
+-/
 theorem PD_of_ortho {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] (h : V →ₗ⋆[K] V →ₗ[K] K) (hK : IsCMUnram K) (I : Submodule (𝓞 K) V) (n : ℕ)
     (hI : IsOrthoLattice h I n) : PD h := by
@@ -53,12 +67,20 @@ theorem PD_of_ortho {K V : Type} [Field K] [NumberField K] [StarRing K] [AddComm
   refine Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩
   exact Complex.normSq_pos.2 ((map_ne_zero τ).2 hi)
 
+/- English proof (translation)
+Use `⟨hM, fun p _ => ⟨1, (isom h).one_mem, ?_⟩⟩` and prove the remaining obligations. Conclude with `one_smul (isom h) (loc (K := K) p M)`.
+-/
 theorem mem_genus_self {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (M : Submodule (𝓞 K) V)
     (hM : Submodule.IsLattice K M) : M ∈ genus h M := by
   refine ⟨hM, fun p _ => ⟨1, (isom h).one_mem, ?_⟩⟩
   exact one_smul (isom h) (loc (K := K) p M)
 
+/- English proof (translation)
+Establish `h1 : (n' : ℝ) ^ (j / 2) ≤ (n' : ℝ) ^ ((j + l) / 2)` using `Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) (by linarith)`. Establish `h2 : ((n' * i ^ 2 : ℕ) : ℝ) ^ ((j + l) / 2) = (n' : ℝ) ^ ((j + l) / 2) * (i : ℝ) ^ (j + l)`. Use `push_cast`. Rewrite using `[Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Use `congr 2`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (0 : ℝ) ≤ (i : ℝ) ^ (j + l)` using `by positivity`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem real_bound (n' i : ℕ) (j l c m : ℝ) (hn : 1 ≤ n') (hl : 0 ≤ l) (hc : 0 ≤ c)
     (hm : m ≤ c * (n' : ℝ) ^ (j / 2)) :
     (i : ℝ) ^ (j + l) * m ≤ c * ((n' * i ^ 2 : ℕ) : ℝ) ^ ((j + l) / 2) := by
@@ -76,6 +98,35 @@ theorem real_bound (n' i : ℕ) (j l c m : ℝ) (hn : 1 ≤ n') (hl : 0 ≤ l) (
         mul_le_mul_of_nonneg_left (hm.trans (mul_le_mul_of_nonneg_left h1 hc)) h3
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `hMM K V _ _ _ _ _ _ _ _ h hK hs hp hj V' _ _ _ _ _ h' hs' I hI n hn`. Establish `hnd` using `nondeg_of_PD h hp`. Establish `hp'` using `PD_of_ortho h' hK I _ hI`. Establish `hnd'` using `nondeg_of_PD h' hp'`. Break down `(latsDisc (R := 𝓞 K) h n).eq_empty_or_nonempty with hE | ⟨M₁, hM₁⟩` into its components or cases.
+
+Rewrite using `[hE]`. Unfold `orbMass orbSum`. Use `le_of_eq_of_le (ENNReal.tsum_eq_zero.2 fun q => q.2.elim) zero_le` and prove the remaining obligations. Take `⟨hex, -, -⟩` from `GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V h hK hs hnd`. Take `⟨M₀, hM₀, hle₀⟩` from `hex M₁ hM₁.1`.
+
+Take `⟨c, hc⟩` from `hMM K hK _ hj`. Take `⟨-, hu', ho'⟩` from `GlobalTheory.T.exists_maximal_integralHermitianLattice_orthonormal_maximal K V' h' hK hs' hnd'`. Take `⟨hIl, hIu, hIr⟩` from `ho' I _ hI`. Take `⟨hImax, -, hIlam⟩` from `hu' I hIl hIu`. Establish `hcI : mass h' I = c` using `by rw [hc V' h' hs' hp' hIr I hImax, hIlam, mul_one]`.
+
+Establish `hcpos : 0 < c` using `hcI ▸ (GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V' h' hK hs' hp' I hIl).2.1`. Establish `hdisc` using `GlobalTheory.T.hermitianLatticeDiscriminantOrder_ne_zero_unimodular K V h hK hs hnd`. Take `⟨hmass, hmpos, hYst, hfin, -⟩` from `GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M₀ hM₀.1.1`. Take `⟨hi0, hn₀⟩` from `(hdisc M₁ hM₁.1).2.2.1 M₀ hM₀.1 hle₀`. Establish `hn'0` using `(hdisc M₀ hM₀.1).1`.
+
+Use `set n' := discN h M₀ with hn'`. Use `set i := idxN M₀ M₁ with hi`. Establish `hnn : n = n' * i ^ 2` using `hM₁.2 ▸ hn₀`. Establish `hm₀ : mass h M₀ ≤ c * (n' : ℝ) ^ ((Module.finrank K V : ℝ) / 2)`. Rewrite using `[hc V h hs hp rfl M₀ hM₀]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (GlobalTheory.T.maximalLatticeLocalFactorProduct_pos_and_le K V h hK hs hnd hj M₀ hM₀).2 hcpos.le`. Establish `hDst : Stable (isom h) (latsDisc (R` using `𝓞 K) h n) := by`. Introduce `g M hM`. Establish `h1` using `(GlobalTheory.T.hermitianGenusMass_eq_orbitStabilizerMass K V h hK hs hp M hM.1.1).2.2.1 g M (mem_genus_self h M hM.1.1)`. Establish `h2` using `(hdisc M hM.1).2.2.2.1 _ h1`.
+
+Conclude with `⟨h2.1, h2.2.trans hM.2⟩`. Set `X : Set (Submodule (𝓞 K) V × Submodule (𝓞 K) V)` to `{p | p.1 ∈ latsDisc (R := 𝓞 K) h n ∧ p.2 ∈ genus h M₀ ∧ p.1 ≤ p.2}`. Establish `hXst : Stable (isom h) X`. Introduce and unpack `g p ⟨h1, h2, h3⟩`. Conclude with `⟨hDst g _ h1, hYst g _ h2, Submodule.map_mono h3⟩`.
+
+Establish `f1` using `GlobalTheory.T.orbitStabilizerMass_eq_weightedSum_fibres (isom h) _ _ X (latsDisc (R := 𝓞 K) h n) Prod.fst (fun _ _ => rfl) hXst hDst (fun p hp => hp.1) (fun y hy => hfin y hy.1.1)`. Establish `f2` using `GlobalTheory.T.orbitStabilizerMass_eq_weightedSum_fibres (isom h) _ _ X (genus h M₀) Prod.snd (fun _ _ => rfl) hXst hYst (fun p hp => hp.2.1) (fun y hy => hfin y hy.1)`. Take `⟨mono, hconst, -⟩` from `GlobalTheory.T.orbitWeightedStabilizerSum_mono_subadditive (isom h) (Submodule (𝓞 K) V)`. Establish `s1 : orbMass (isom h) (latsDisc (R` using `𝓞 K) h n) ≤ orbMass (isom h) X := by`. Rewrite using `[f1]`.
+
+Use `mono _ _ _ _ subset_rfl fun M hM => ?_` and prove the remaining obligations. Take `⟨M', hM', hle⟩` from `hex M hM.1`. Establish `hne : (X ∩ Prod.fst ⁻¹' {M}).Nonempty` using `⟨(M, M'), ⟨hM, (GlobalTheory.T.mem_genus_iff_maximalIntegralHermitianLattice K V h hK hs hp M₀ M' hM₀).2 hM', hle⟩, rfl⟩`. Use `Set.one_le_encard_iff_nonempty.2 hne` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `s2 : orbMass (isom h) X ≤ ENNReal.ofReal ((i : ℝ) ^ ((Module.finrank K V : ℝ) + Real.logb 2 (Module.finrank ℚ K))) * orbMass (isom h) (genus h M₀)`. Rewrite using `[f2, ← hconst]`. Use `mono _ _ _ _ subset_rfl fun M' hM' => ?_` and prove the remaining obligations. Use `le_trans ?_ (GlobalTheory.T.encard_sublattices_of_index_le K V h hK hs hnd M' hM'.1 i (Nat.one_le_iff_ne_zero.2 hi0))` and prove the remaining obligations. Establish `hM''` using `(hdisc M₀ hM₀.1).2.2.2.1 M' hM'`.
+
+Establish `: (X ∩ Prod.snd ⁻¹' {M'}).encard ≤ {N : Submodule (𝓞 K) V | N ≤ M' ∧ idxN M' N = i}.encard`. Use `Set.encard_le_encard_of_injOn (f := Prod.fst) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨N, N'⟩ ⟨⟨h1, -, h3⟩, h4⟩`. Take `rfl : N' = M'` from `h4`. Use `⟨h3, ?_⟩` and prove the remaining obligations.
+
+Establish `h5` using `((hdisc N h1.1).2.2.1 N' hM''.1 h3).2`. Rewrite `h5` using `[h1.2, hM''.2, hnn]`. Establish `h6` using `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hn'0) h5`. Conclude with `((Nat.pow_left_injective (by norm_num)) h6).symm`. Introduce and unpack `⟨N, N'⟩ ⟨-, h4⟩ ⟨P, P'⟩ ⟨-, h5⟩ h6`.
+
+Take `rfl : N' = M'` from `h4`. Take `rfl : P' = N'` from `h5`. Take `rfl : N = P` from `h6`. Both sides reduce to the same expression. Conclude with `this` after adjusting the coercions.
+
+Use `s1.trans (s2.trans ?_)` and prove the remaining obligations. Rewrite using `[← hmass, ← ENNReal.ofReal_mul (by positivity), hcI, hnn]`. Use `ENNReal.ofReal_le_ofReal (real_bound n' i _ _ c _ (Nat.one_le_iff_ne_zero.2 hn'0) ?_ hcpos.le hm₀)` and prove the remaining obligations. Use `Real.logb_nonneg (by norm_num) ?_` and prove the remaining obligations. Conclude with `Module.finrank_pos (R := ℚ) (M := K)` after adjusting the coercions.
+-/
 theorem main : MaxMass → ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → PD h → 1 ≤ Module.finrank K V → ∀ (V' : Type) [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (h' : V' →ₗ⋆[K] V' →ₗ[K] K), h'.IsSymm → ∀ I : Submodule (𝓞 K) V', IsOrthoLattice h' I (Module.finrank K V) → ∀ n : ℕ, 1 ≤ n → orbMass (isom h) (latsDisc (R := 𝓞 K) h n) ≤ ENNReal.ofReal (mass h' I * (n : ℝ) ^ (((Module.finrank K V : ℝ) + Real.logb 2 (Module.finrank ℚ K)) / 2)) := by
   intro hMM K V _ _ _ _ _ _ _ _ h hK hs hp hj V' _ _ _ _ _ h' hs' I hI n hn
   have hnd := nondeg_of_PD h hp

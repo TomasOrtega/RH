@@ -5,10 +5,32 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Locally
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h`.
+-/
 private theorem lc_of_open_ker {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     (f : G →* H) (h : IsOpen (f.ker : Set G)) : IsLocallyConstant f :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ h`. Establish `hχ : ∀ g : F.G0, (F.Ψ⁻¹ * F.delK k) (g : F.Γ) = (F.Ψ g)⁻¹` using `fun g => by`. Establish `hg : F.del (g : F.Γ) = 1` using `g.2`. Simplify using `[Frame.delK, hg]`. Establish `hc : (F.Ψ⁻¹ * F.delK k) F.c = -1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Frame.delK, h.Ψ_c, h.del_c]`. Establish `hl : ∀ v s, F.loc v s = ((F.loc0 v s : F.G0) : F.Γ)` using `fun _ _ => rfl`. Take `⟨x, x1, x2, x3, x4, g₁, x5⟩` from `UpperTheory.smooth_vector_fixed_by_open_subgroup h (F.Ψ⁻¹ * F.delK k) hc (fun v => by`. Take `⟨s, hs⟩` from `h.f3 v`.
+
+Use `⟨s, fun e => hs ?_⟩` and prove the remaining obligations. Rewrite `e` using `[hl, hχ, inv_eq_one]`. Rewrite using `[hl, e, one_pow]) h.f4`. Establish `x0 : x 1 = 0`. Use `x2 1 1` as an intermediate fact.
+
+Simplify using `using this`. Establish `hci : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right h.c_sq`. Use `⟨fun g => x g * (F.Ψ g : k), ?_, fun g g' => ?_, fun g => ?_, fun v => ?_, fun e => x5 ?_⟩` and prove the remaining obligations. Conclude with `(x1.mul ((lc_of_open_ker F.Ψ h.Ψ_open).comp Units.val)).comp_continuous continuous_subtype_val`. Use `show x ((g : F.Γ) * g') * (F.Ψ ((g : F.Γ) * g') : k) = _`.
+
+Rewrite using `[x2, hχ, map_mul, Units.val_mul, Units.val_inv_eq_inv_val]`. Use `(F.Ψ g).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hs : ((F.star g : F.G0) : F.Γ) = F.c * ((g : F.Γ)⁻¹ * F.c)` using `by show F.c * (g : F.Γ)⁻¹ * F.c⁻¹ = _`. Rewrite using `[hci, mul_assoc]`.
+
+Establish `h1 : x (g : F.Γ)⁻¹ + (F.Ψ g : k) * x g = 0`. Use `x2 (g : F.Γ)⁻¹ g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, x0, map_inv, hχ, inv_inv]`. Conclude with `this.symm`. Use `show x (F.star g) * (F.Ψ (F.star g) : k) = _`.
+
+Rewrite using `[(UpperTheory.V.Fr.star h).2.2.1, hs, x2, x2, x3, hc]`. Simplify using `only [Units.val_neg, Units.val_one]`. Take the linear combination `(-(((F.Ψ g)⁻¹ : kˣ) : k)) * h1`. Take `⟨Y, hY⟩` from `x4 v`. Use `⟨-Y, fun s => ?_⟩` and prove the remaining obligations.
+
+Use `show x (F.loc v s) * (F.Ψ (F.loc v s) : k) = _`. Rewrite using `[hY, hl, hχ, Units.val_inv_eq_inv_val]`. Use `(F.Ψ (F.loc0 v s)).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `(mul_eq_zero.1 (congrFun e g₁)).resolve_right (F.Ψ g₁).ne_zero`.
+-/
 theorem UpperTheory.exists_locallyConstant_twistedCocycle_ne_zero_of_frameOk :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → ∃ u : F.G0 → k, IsLocallyConstant u ∧ (∀ g h : F.G0, u (g * h) = (F.Ψ h : k) * u g + u h) ∧ (∀ g : F.G0, u (F.star g) = (((F.Ψ g)⁻¹ : kˣ) : k) * u g) ∧ (∀ v, ∃ α : k, ∀ s, u (F.loc0 v s) = ((F.Ψ (F.loc v s) : k) - 1) * α) ∧ u ≠ 0 := by
   intro l _ k _ _ F C₀ h

@@ -20,6 +20,15 @@ section General
 variable {R K V : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K] [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Set `I : Ideal R` to `{ carrier := {r | r • x ∈ A} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, add_smul] at *`. Conclude with `A.add_mem ha hb`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c r hr => by`.
+
+Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, mul_smul] at *`. Conclude with `A.smul_mem c hr }`. Assume the negation of the conclusion as `hxA`. Establish `hI : I ≠ ⊤` using `fun h => hxA (by`. Establish `h1 : (1 : R) ∈ I` using `h ▸ Submodule.mem_top`.
+
+Simplify `h1)` using `[I]`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Establish `hM0 : M ≠ ⊥` using `fun h => hR (Ring.isField_iff_maximal_bot.2 (h ▸ hM))`. Set `w : HeightOneSpectrum R` to `⟨M, hM.isPrime, hM0⟩`. Take `⟨s, hs, hsx⟩` from `hx w`.
+
+Conclude with `hs (hIM hsx)`.
+-/
 theorem lg (hR : ¬ IsField R) (A : Submodule R V) (x : V)
     (hx : ∀ w : HeightOneSpectrum R, x ∈ localization₂ w.asIdeal A) : x ∈ A := by
   let I : Ideal R :=
@@ -41,10 +50,20 @@ theorem lg (hR : ¬ IsField R) (A : Submodule R V) (x : V)
   obtain ⟨s, hs, hsx⟩ := hx w
   exact hs (hIM hsx)
 
+/- English proof (translation)
+Introduce `x hx` and use `lg hR B x fun w => h w ⟨1, w.asIdeal.primeCompl.one_mem, by simpa using hx⟩`.
+-/
 theorem le_of_forall_localized_le_of_not_isField (hR : ¬ IsField R) (A B : Submodule R V)
     (h : ∀ w : HeightOneSpectrum R, localization₂ w.asIdeal A ≤ localization₂ w.asIdeal B) : A ≤ B :=
   fun x hx => lg hR B x fun w => h w ⟨1, w.asIdeal.primeCompl.one_mem, by simpa using hx⟩
 
+/- English proof (translation)
+Establish `hfin : FiniteMultiplicity w.asIdeal (Ideal.span {c})` using `FiniteMultiplicity.of_not_isUnit (by rw [Ideal.isUnit_iff]; exact w.isPrime.ne_top) (by simpa using hc)`. Take `⟨J, hJ, hnd⟩` from `hfin.exists_eq_pow_mul_and_not_dvd`. Establish `hJw : ¬ J ≤ w.asIdeal` using `fun h => hnd (Ideal.dvd_iff_le.mpr h)`. Take `⟨s, hsJ, hsw⟩` from `SetLike.not_le_iff_exists.mp hJw`. Use `⟨s, hsw, fun w' hw' => ?_⟩` and prove the remaining obligations.
+
+Establish `hpow : ¬ w.asIdeal ^ multiplicity w.asIdeal (Ideal.span {c}) ≤ w'.asIdeal`. Introduce `h`. Establish `h1 : w.asIdeal ≤ w'.asIdeal` using `w'.isPrime.le_of_pow_le h`. Conclude with `hw' (HeightOneSpectrum.ext (w.isMaximal.eq_of_le w'.isPrime.ne_top h1).symm)`. Take `⟨t, ht, htw⟩` from `SetLike.not_le_iff_exists.mp hpow`.
+
+Use `⟨t, htw, ?_⟩` and prove the remaining obligations. Establish `: t * s ∈ Ideal.span {c}`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_mem_mul ht hsJ`. Conclude with `Ideal.mem_span_singleton.mp this`.
+-/
 theorem sep (w : HeightOneSpectrum R) (c : R) (hc : c ≠ 0) :
     ∃ s, s ∉ w.asIdeal ∧ ∀ w' : HeightOneSpectrum R, w' ≠ w → ∃ t, t ∉ w'.asIdeal ∧ c ∣ t * s := by
   have hfin : FiniteMultiplicity w.asIdeal (Ideal.span {c}) :=
@@ -65,12 +84,52 @@ theorem sep (w : HeightOneSpectrum R) (c : R) (hc : c ≠ 0) :
     exact Ideal.mul_mem_mul ht hsJ
   exact Ideal.mem_span_singleton.mp this
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `indexBasic_denom (nonZeroDivisors R) A B hA (by rw [indexBasic_locS_top (K := K) B hB]; exact le_top)`. Conclude with `⟨d, nonZeroDivisors.ne_zero hd, h⟩`.
+-/
 theorem denom (A B : Submodule R V) (hA : A.FG) (hB : Submodule.span K (B : Set V) = ⊤) :
     ∃ d : R, d ≠ 0 ∧ ∀ x ∈ A, d • x ∈ B := by
   obtain ⟨d, hd, h⟩ := indexBasic_denom (nonZeroDivisors R) A B hA
     (by rw [indexBasic_locS_top (K := K) B hB]; exact le_top)
   exact ⟨d, nonZeroDivisors.ne_zero hd, h⟩
 
+/- English proof (translation)
+Use `set G : Submodule R V := ⨅ w : HeightOneSpectrum R, localization₂ w.asIdeal (L w) with hG`. Establish `hGmem : ∀ x, x ∈ G ↔ ∀ w : HeightOneSpectrum R, x ∈ localization₂ w.asIdeal (L w)`. Introduce `x`. Rewrite using `[hG, Submodule.mem_iInf]`. Establish `hA : ∃ a : R, a ≠ 0 ∧ ∀ x ∈ L0, a • x ∈ G` using `by choose a ha0 ha using fun w => denom (K := K) L0 (L w) (Submodule.IsLattice.fg (self := h0)) (Submodule.IsLattice.span_eq_top (self := hL w))`.
+
+Use `⟨∏ w ∈ hfin.toFinset, a w, Finset.prod_ne_zero_iff.mpr (fun w _ => ha0 w), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hGmem]`. Introduce `w`. Distinguish the cases in `hw : w ∈ hfin.toFinset`.
+
+Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem a hw`. Rewrite using `[hr, mul_comm, mul_smul]`. Conclude with `locBasic_le_locS _ _ ((L w).smul_mem r (ha w x hx))`. Establish `hw' : localization₂ w.asIdeal (L w) = localization₂ w.asIdeal L0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hw (hfin.mem_toFinset.mpr h)`. Rewrite using `[hw']`. Conclude with `locBasic_le_locS _ _ (L0.smul_mem _ hx)`. Establish `hB : ∃ b : R, b ≠ 0 ∧ ∀ x ∈ G, b • x ∈ L0` using `by choose b hb0 hb using fun w => denom (K := K) (L w) L0 (Submodule.IsLattice.fg (self := hL w)) (Submodule.IsLattice.span_eq_top (self := h0))`. Use `⟨∏ w ∈ hfin.toFinset, b w, Finset.prod_ne_zero_iff.mpr (fun w _ => hb0 w), ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Apply `lg hR` to reduce the goal to its premises. Introduce `w`. Establish `hxw` using `(hGmem x).mp hx w`. Distinguish the cases in `hw : w ∈ hfin.toFinset`.
+
+Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem b hw`. Take `⟨s, hs, hsx⟩` from `hxw`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : s • (∏ w ∈ hfin.toFinset, b w) • x = r • (b w • (s • x))`. Rewrite using `[hr]`.
+
+Use `module`. Rewrite using `[e]`. Conclude with `L0.smul_mem r (hb w _ hsx)`. Establish `hw' : localization₂ w.asIdeal (L w) = localization₂ w.asIdeal L0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hw (hfin.mem_toFinset.mpr h)`. Rewrite `hxw` using `[hw']`. Conclude with `(localization₂ w.asIdeal L0).smul_mem _ hxw`. Take `⟨a, ha0, ha⟩` from `hA`. Take `⟨b, hb0, hb⟩` from `hB`.
+
+Establish `hinvsmul : ∀ (r : R), r ≠ 0 → ∀ y : V, (algebraMap R K r)⁻¹ • (r • y) = y`. Introduce `r hr y`. Establish `: algebraMap R K r ≠ 0`. Simplify using `using (IsFractionRing.injective R K).ne hr`. Rewrite using `[← algebraMap_smul K r y, smul_smul, inv_mul_cancel₀ this, one_smul]`.
+
+Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hN : IsNoetherian R L0` using `isNoetherian_of_fg_of_noetherian L0 (Submodule.IsLattice.fg (self := h0))`. Establish `hle : G.map (LinearMap.lsmul R V b) ≤ L0`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hb x hx`.
+
+Establish `hfg : (G.map (LinearMap.lsmul R V b)).FG` using `isNoetherian_submodule.mp hN _ hle`. Use `Submodule.fg_of_fg_map_injective (LinearMap.lsmul R V b) ?_ hfg` and prove the remaining obligations. Introduce `x y hxy`. Establish `hxy' : b • x = b • y` using `hxy`. Rewrite using `[← hinvsmul b hb0 x, ← hinvsmul b hb0 y, hxy']`.
+
+Rewrite using `[eq_top_iff, ← Submodule.IsLattice.span_eq_top (self := h0), Submodule.span_le]`. Introduce `x hx`. Rewrite using `[← hinvsmul a ha0 x]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (ha x hx))`. Introduce `w`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Establish `h1 : G ≤ localization₂ w.asIdeal (L w)` using `iInf_le _ w`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : L w ≤ localization₂ w.asIdeal G`. Introduce `x hx`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c', hc', hc'x⟩ : ∃ c' ∈ nonZeroDivisors R, c' • x ∈ L0 := by`. Establish `: x ∈ locS (nonZeroDivisors R) L0`. Rewrite using `[indexBasic_locS_top (K := K) L0 (Submodule.IsLattice.span_eq_top (self := h0))]`. Conclude with `Submodule.mem_top`. Conclude with `this`.
+
+Establish `hc0 : a * c' ≠ 0` using `mul_ne_zero ha0 (nonZeroDivisors.ne_zero hc')`. Establish `hcx : (a * c') • x ∈ G`. Rewrite using `[mul_smul]`. Conclude with `ha _ hc'x`. Take `⟨s, hsw, hs⟩` from `sep w (a * c') hc0`.
+
+Use `⟨s, hsw, ?_⟩` and prove the remaining obligations. Rewrite using `[hGmem]`. Introduce `w'`. Distinguish the cases in `hw' : w' = w`. Substitute `hw'` using the available equality.
+
+Conclude with `locBasic_le_locS _ _ ((L w').smul_mem s hx)`. Take `⟨t, ht, u, hu⟩` from `hs w' hw'`. Establish `h2 : t • (s • x) ∈ localization₂ w'.asIdeal (L w')`. Rewrite using `[smul_smul, hu, mul_comm, mul_smul]`. Conclude with `(localization₂ w'.asIdeal (L w')).smul_mem u ((hGmem _).mp hcx w')`.
+
+Establish `h3 : s • x ∈ localization₂ w'.asIdeal (localization₂ w'.asIdeal (L w'))` using `⟨t, ht, h2⟩`. Rewrite `h3` using `[show localization₂ w'.asIdeal (localization₂ w'.asIdeal (L w')) = localization₂ w'.asIdeal (L w') from locBasic_locS_idem _ _]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem glue_spec (hR : ¬ IsField R) (L0 : Submodule R V) (L : HeightOneSpectrum R → Submodule R V)
     (h0 : Submodule.IsLattice K L0) (hL : ∀ w, Submodule.IsLattice K (L w))
     (hfin : {w : HeightOneSpectrum R | localization₂ w.asIdeal (L w) ≠ localization₂ w.asIdeal L0}.Finite) :
@@ -187,6 +246,9 @@ section NF
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `glue_spec (NumberField.RingOfIntegers.not_isField K) L0 L h0 hL hfin`.
+-/
 theorem glueLat_spec {D : ℕ} (L0 : Submodule (𝓞 K) (Fin D → K))
     (L : HeightOneSpectrum (𝓞 K) → Submodule (𝓞 K) (Fin D → K))
     (h0 : Submodule.IsLattice K L0) (hL : ∀ w, Submodule.IsLattice K (L w))
@@ -195,6 +257,9 @@ theorem glueLat_spec {D : ℕ} (L0 : Submodule (𝓞 K) (Fin D → K))
       ∀ w : HeightOneSpectrum (𝓞 K), localization₂ w.asIdeal (glueLat L) = localization₂ w.asIdeal (L w) :=
   glue_spec (NumberField.RingOfIntegers.not_isField K) L0 L h0 hL hfin
 
+/- English proof (translation)
+The claim follows from `le_antisymm (le_of_forall_localized_le_of_not_isField (NumberField.RingOfIntegers.not_isField K) R R' fun w => (h w).le) (le_of_forall_localized_le_of_not_isField (NumberField.RingOfIntegers.not_isField K) R' R fun w => (h w).ge)`.
+-/
 theorem eq_of_localization_eq {D : ℕ} (R R' : Submodule (𝓞 K) (Fin D → K))
     (h : ∀ w : HeightOneSpectrum (𝓞 K), localization₂ w.asIdeal R = localization₂ w.asIdeal R') : R = R' :=
   le_antisymm (le_of_forall_localized_le_of_not_isField (NumberField.RingOfIntegers.not_isField K) R R' fun w => (h w).le)
@@ -206,6 +271,11 @@ section Star
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Use `show Ideal.span _ = Ideal.map (cO K) w.asIdeal`. Unfold `Ideal.map`. Use `congr 1`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, hs, h⟩`. Conclude with `⟨s, hs, (RingOfIntegers.ext h).symm⟩`. Introduce and unpack `⟨s, hs, rfl⟩`. Conclude with `⟨s, hs, rfl⟩`.
+-/
 theorem conjIdeal_eq (w : HeightOneSpectrum (𝓞 K)) :
     conjIdeal (K := K) w.asIdeal = (conjPl w).asIdeal := by
   show Ideal.span _ = Ideal.map (cO K) w.asIdeal
@@ -218,6 +288,11 @@ theorem conjIdeal_eq (w : HeightOneSpectrum (𝓞 K)) :
   · rintro ⟨s, hs, rfl⟩
     exact ⟨s, hs, rfl⟩
 
+/- English proof (translation)
+Take `⟨hp, h⟩` from `(locBasic (𝓞 K) K (Fin d → K) (IsFractionRing.injective (𝓞 K) K)).2.2.2.2 (fun r => ⟨cO K r, rfl⟩) w.asIdeal`. Rewrite using `[h A]`. Use `congr 1`. Use extensionality with `x`. Unfold `localization₂`.
+
+Simplify using `only [locBasic_mem_locS, Ideal.mem_primeCompl_iff, conjIdeal_eq]`.
+-/
 theorem loc_eq (w : HeightOneSpectrum (𝓞 K)) {d : ℕ} (A : Submodule (𝓞 K) (Fin d → K)) :
     loc (K := K) w.asIdeal A = localization₂ w.asIdeal A ⊓ localization₂ (conjPl w).asIdeal A := by
   obtain ⟨hp, h⟩ := (locBasic (𝓞 K) K (Fin d → K) (IsFractionRing.injective (𝓞 K) K)).2.2.2.2
@@ -228,6 +303,11 @@ theorem loc_eq (w : HeightOneSpectrum (𝓞 K)) {d : ℕ} (A : Submodule (𝓞 K
   unfold localization₂
   simp only [locBasic_mem_locS, Ideal.mem_primeCompl_iff, conjIdeal_eq]
 
+/- English proof (translation)
+Use `⟨(Submodule.IsLattice.fg (self := hM)).map _, ?_⟩` and prove the remaining obligations. Establish `: ((matLat P M : Submodule (𝓞 K) (Fin D → K)) : Set (Fin D → K)) = (Matrix.mulVecLin P) '' (M : Set (Fin n → K))`. Rewrite using `[matLat, Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, Submodule.IsLattice.span_eq_top (self := hM), Submodule.map_top, LinearMap.range_eq_top]`.
+
+Conclude with `hP`.
+-/
 theorem matLat_lattice' {n D : ℕ} (P : Matrix (Fin D) (Fin n) K)
     (hP : Function.Surjective P.mulVec) (M : Submodule (𝓞 K) (Fin n → K))
     (hM : Submodule.IsLattice K M) : Submodule.IsLattice K (matLat P M) := by
@@ -240,6 +320,9 @@ theorem matLat_lattice' {n D : ℕ} (P : Matrix (Fin D) (Fin n) K)
     LinearMap.range_eq_top]
   exact hP
 
+/- English proof (translation)
+Rewrite using `[loc_eq, loc_eq, hR w, hR (conjPl w), hc w]`.
+-/
 theorem loc_glueLat {D : ℕ} (L : HeightOneSpectrum (𝓞 K) → Submodule (𝓞 K) (Fin D → K))
     (hc : ∀ w, L (conjPl w) = L w) (R : Submodule (𝓞 K) (Fin D → K))
     (hR : ∀ w : HeightOneSpectrum (𝓞 K), localization₂ w.asIdeal R = localization₂ w.asIdeal (L w))
@@ -253,10 +336,18 @@ end GluingInclusion
 
 open GluingInclusion Formalism.HermitianLatticesTheory
 
+/- English proof (translation)
+Introduce `K _ _ D L0 L h0 hL hfin`. Conclude with `glueLat_spec L0 L h0 hL hfin`.
+-/
 theorem lattice_gluing : LatticeGlue := by
   intro K _ _ D L0 L h0 hL hfin
   exact glueLat_spec L0 L h0 hL hfin
 
+/- English proof (translation)
+Introduce `K _ _ D R R'`. Establish `hR` using `NumberField.RingOfIntegers.not_isField K`. Use `⟨eq_of_localization_eq R R', le_of_forall_localized_le_of_not_isField hR R R', ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Conclude with `lg hR R x fun w => (Submodule.mem_iInf _).1 hx w`. Introduce `x hx`. Conclude with `(Submodule.mem_iInf _).2 fun w => ⟨1, w.asIdeal.primeCompl.one_mem, by simpa using hx⟩`.
+-/
 theorem lattice_gluing_unique : LatticeGlueUnique := by
   intro K _ _ D R R'
   have hR := NumberField.RingOfIntegers.not_isField K
@@ -267,6 +358,15 @@ theorem lattice_gluing_unique : LatticeGlueUnique := by
   · intro x hx
     exact (Submodule.mem_iInf _).2 fun w => ⟨1, w.asIdeal.primeCompl.one_mem, by simpa using hx⟩
 
+/- English proof (translation)
+Introduce `K _ _ D L0 L1 h0 h1 S hS`. Apply the tactic sequence `obtain ⟨hlat, hloc⟩ := glueLat_spec L0 (fun w => if w ∈ S then L1 else L0) h0 (fun w => by by_cases hw : w ∈ S <;> simp only [hw, if_true, if_false] <;> assumption) (hS.subset (fun w hw => by`. Assume the negation of the conclusion as `hwS`. Apply `hw` to reduce the goal to its premises. Simplify using `only [hwS, if_false]))`.
+
+Use `⟨_, ⟨hlat, fun w hw => ?_, fun w hw => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hloc w]`. Simplify using `only [hw, if_true]`. Rewrite using `[hloc w]`. Simplify using `only [hw, if_false]`.
+
+Introduce and unpack `R ⟨-, hR1, hR0⟩`. Apply `eq_of_localization_eq` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hloc w]`. Distinguish the cases in `hw : w ∈ S`.
+
+Simplify using `only [hw, if_true]`. Conclude with `hR1 w hw`. Simplify using `only [hw, if_false]`. Conclude with `hR0 w hw`.
+-/
 theorem lattice_gluing_independent : LatticeGlueIndep := by
   classical
   intro K _ _ D L0 L1 h0 h1 S hS
@@ -291,6 +391,15 @@ theorem lattice_gluing_independent : LatticeGlueIndep := by
     · simp only [hw, if_false]
       exact hR0 w hw
 
+/- English proof (translation)
+Introduce `K _ _ _ D`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `L0 L h0 hL hc hfin`. Take `⟨hlat, hloc⟩` from `glueLat_spec L0 L h0 hL (hfin.subset (fun w hw h => hw (StepBAux.localization_eq_and_conj_eq_of_semilocalization_eq w _ _ h).1))`. Use `⟨hlat, loc_glueLat L hc _ hloc, ?_⟩` and prove the remaining obligations.
+
+Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf (fun w => ?_)` and prove the remaining obligations. Rewrite using `[loc_eq]`. Use `le_inf (iInf_le _ w) ?_` and prove the remaining obligations. Establish `h` using `iInf_le (fun w : HeightOneSpectrum (𝓞 K) => localization₂ w.asIdeal (L w)) (conjPl w)`.
+
+Rewrite `h` using `[hc w]`. Conclude with `h`. Use `le_iInf (fun w => le_trans (iInf_le _ w) ?_)` and prove the remaining obligations. Rewrite using `[loc_eq]`. Conclude with `inf_le_left`.
+
+Introduce `R R' h`. Conclude with `eq_of_localization_eq R R' (fun w => (StepBAux.localization_eq_and_conj_eq_of_semilocalization_eq w _ _ (h w)).1)`.
+-/
 theorem lattice_gluing_semilocal : LatticeGlueSemi := by
   intro K _ _ _ D
   refine ⟨?_, ?_⟩
@@ -311,6 +420,13 @@ theorem lattice_gluing_semilocal : LatticeGlueSemi := by
   · intro R R' h
     exact eq_of_localization_eq R R' (fun w => (StepBAux.localization_eq_and_conj_eq_of_semilocalization_eq w _ _ (h w)).1)
 
+/- English proof (translation)
+Introduce `K _ _ _ D Tup μ0 μ hμc hμ abelian₂ hLam ι hι`. Establish `hfin : {w : HeightOneSpectrum (𝓞 K) | localization₂ w.asIdeal (matLat (ι (μ w)) (abelian₂ (μ w))) ≠ localization₂ w.asIdeal (matLat (ι μ0) (abelian₂ μ0))}.Finite` using `hμ.subset (fun w hw h => hw (by rw [h]))`. Take `⟨hlat, hloc⟩` from `glueLat_spec (matLat (ι μ0) (abelian₂ μ0)) (fun w => matLat (ι (μ w)) (abelian₂ (μ w))) (StepBAux.matLat_lattice _ (hι _) _ (hLam _)) (fun w => StepBAux.matLat_lattice _ (hι _) _ (hLam _)) hfin`. Establish `huniq : ∀ R : Submodule (𝓞 K) (Fin D → K), (∀ w : HeightOneSpectrum (𝓞 K), localization₂ w.asIdeal R = localization₂ w.asIdeal (matLat (ι (μ w)) (abelian₂ (μ w)))) → R = glueLat (fun w => matLat (ι (μ w)) (abelian₂ (μ w)))` using `fun R hR => eq_of_localization_eq _ _ (fun w => by rw [hR w, hloc w])`. Use `⟨⟨_, hloc, huniq⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `R hR`. Use `⟨?_, huniq R hR, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[huniq R hR]`. Conclude with `hlat`. Conclude with `loc_glueLat (fun w => matLat (ι (μ w)) (abelian₂ (μ w))) (fun w => by simp only [hμc w]) R hR`.
+
+Use `hfin.subset (fun w hw => ?_)` and prove the remaining obligations. Rewrite `hw` using `[Set.mem_ofPred_eq, hR w]`. Conclude with `hw`.
+-/
 theorem second_step_gluing : StepBGlue := by
   intro K _ _ _ D Tup μ0 μ hμc hμ abelian₂ hLam ι hι
   have hfin : {w : HeightOneSpectrum (𝓞 K) | localization₂ w.asIdeal (matLat (ι (μ w)) (abelian₂ (μ w))) ≠
@@ -334,6 +450,9 @@ theorem second_step_gluing : StepBGlue := by
     rw [Set.mem_ofPred_eq, hR w] at hw
     exact hw
 
+/- English proof (translation)
+Introduce `K _ _ _ D Tup μ0 μ hμ n M hM π hπ ι hι`. Establish `hl : ∀ t, Submodule.IsLattice K (matLat (ι t) (matLat (π t) (M t)))` using `fun t => StepBAux.matLat_lattice _ (hι t) _ (matLat_lattice' _ (hπ t) _ (hM t))`. Take `⟨hlat, hloc⟩` from `glueLat_spec (matLat (ι μ0) (matLat (π μ0) (M μ0))) (fun w => matLat (ι (μ w)) (matLat (π (μ w)) (M (μ w)))) (hl μ0) (fun w => hl (μ w)) (hμ.subset (fun w hw h => hw (by rw [h])))`. Conclude with `⟨_, ⟨hlat, hloc⟩, fun R hR => eq_of_localization_eq _ _ (fun w => by rw [hR.2 w, hloc w])⟩`.
+-/
 theorem divisor_into_dual_gluing : DivIntoDualGlue := by
   intro K _ _ _ D Tup μ0 μ hμ n M hM π hπ ι hι
   have hl : ∀ t, Submodule.IsLattice K (matLat (ι t) (matLat (π t) (M t))) := fun t =>

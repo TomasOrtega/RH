@@ -15,6 +15,13 @@ namespace ChartIntCountAdd
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ ⋃ i, E i`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hx`. Establish `hval : (⋃ i, E i).indicator g x = (E j).indicator g x`. Simplify using `[Set.indicator_of_mem hx, Set.indicator_of_mem hj]`. Rewrite using `[hval]`.
+
+Use `hasSum_single j fun i hi => ?_` and prove the remaining obligations. Establish `hxi : x ∉ E i` using `fun hxi => Set.disjoint_left.1 (hE hi) hxi hj`. Simplify using `[hxi]`. Establish `h0 : ∀ i, (E i).indicator g x = 0` using `fun i => by`. Establish `hxi : x ∉ E i` using `fun h => hx (Set.mem_iUnion.2 ⟨i, h⟩)`.
+
+Simplify using `[hxi]`. Establish `hu : (⋃ i, E i).indicator g x = 0` using `by simp only [Set.indicator_of_notMem hx]`. Simplify using `only [h0, hu]`. Conclude with `hasSum_zero`.
+-/
 theorem hasSum_indicator {E : ℕ → Set (Fin n → ℂ)} (hE : Pairwise (Function.onFun Disjoint E))
     (g : (Fin n → ℂ) → ℝ) (x : Fin n → ℂ) :
     HasSum (fun i => (E i).indicator g x) ((⋃ i, E i).indicator g x) := by
@@ -35,6 +42,9 @@ theorem hasSum_indicator {E : ℕ → Set (Fin n → ℂ)} (hE : Pairwise (Funct
 
 open Classical in
 
+/- English proof (translation)
+Unfold `sheetSum`. Conclude with `finsum_mem_eq_finite_toFinset_sum _ hfin`.
+-/
 theorem sheetSum_eq_sum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ} {y : Fin d → ℂ}
     (hfin : (fibre J A y).Finite) (F : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ) :
     sheetSum J A F y =
@@ -42,6 +52,11 @@ theorem sheetSum_eq_sum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
   unfold sheetSum
   exact finsum_mem_eq_finite_toFinset_sum _ hfin
 
+/- English proof (translation)
+Simplify using `only [sheetSum_eq_sum hfin]`. Use `hasSum_sum fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ s, IsSheetAt J A x s`. Simplify using `only [dif_pos h]`. Conclude with `hF x _`.
+
+Simplify using `only [dif_neg h]`. Conclude with `hasSum_zero`.
+-/
 theorem hasSum_sheetSum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ} {y : Fin d → ℂ}
     (hfin : (fibre J A y).Finite) (F : ℕ → (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ)
     (G : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ) (hF : ∀ x s, HasSum (fun i => F i x s) (G x s)) :
@@ -53,6 +68,9 @@ theorem hasSum_sheetSum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
   · simp only [dif_pos h]; exact hF x _
   · simp only [dif_neg h]; exact hasSum_zero
 
+/- English proof (translation)
+The claim follows from `|sheetSum J A F y| ≤ sheetSum J A (fun x s => |F x s|) y := by classical rw [sheetSum_eq_sum hfin, sheetSum_eq_sum hfin] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_) by_cases h : ∃ s, IsSheetAt J A x s · simp only [dif_pos h, le_refl] · simp only …`.
+-/
 theorem abs_sheetSum_le {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ} {y : Fin d → ℂ}
     (hfin : (fibre J A y).Finite) (F : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ) :
     |sheetSum J A F y| ≤ sheetSum J A (fun x s => |F x s|) y := by
@@ -63,6 +81,11 @@ theorem abs_sheetSum_le {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
   · simp only [dif_pos h, le_refl]
   · simp only [dif_neg h, abs_zero, le_refl]
 
+/- English proof (translation)
+Rewrite using `[sheetSum_eq_sum hfin, sheetSum_eq_sum hfin]`. Use `Finset.sum_le_sum fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ s, IsSheetAt J A x s`. Simplify using `only [dif_pos h]`. Conclude with `hFG x _`.
+
+Simplify using `only [dif_neg h, le_refl]`.
+-/
 theorem sheetSum_mono {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ} {y : Fin d → ℂ}
     (hfin : (fibre J A y).Finite) {F G : (Fin n → ℂ) → ((Fin d → ℂ) → Fin n → ℂ) → ℝ}
     (hFG : ∀ x s, F x s ≤ G x s) : sheetSum J A F y ≤ sheetSum J A G y := by
@@ -73,14 +96,23 @@ theorem sheetSum_mono {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d)
   · simp only [dif_pos h]; exact hFG x _
   · simp only [dif_neg h, le_refl]
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases hx : x ∈ S <;> simp [hx]`.
+-/
 theorem indicator_mul (S : Set (Fin n → ℂ)) (f : (Fin n → ℂ) → ℝ) (x : Fin n → ℂ) (c : ℝ) :
     S.indicator f x * c = S.indicator (fun z => f z * c) x := by
   by_cases hx : x ∈ S <;> simp [hx]
 
+/- English proof (translation)
+The claim follows from `|S.indicator f x * c| = S.indicator (fun z => |f z * c|) x := by by_cases hx : x ∈ S <;> simp [hx]`.
+-/
 theorem abs_indicator_mul (S : Set (Fin n → ℂ)) (f : (Fin n → ℂ) → ℝ) (x : Fin n → ℂ) (c : ℝ) :
     |S.indicator f x * c| = S.indicator (fun z => |f z * c|) x := by
   by_cases hx : x ∈ S <;> simp [hx]
 
+/- English proof (translation)
+The claim follows from `|S.indicator f x * c| ≤ |f x * c| := by by_cases hx : x ∈ S <;> simp [hx] <;> positivity`.
+-/
 theorem abs_indicator_mul_le (S : Set (Fin n → ℂ)) (f : (Fin n → ℂ) → ℝ) (x : Fin n → ℂ) (c : ℝ) :
     |S.indicator f x * c| ≤ |f x * c| := by
   by_cases hx : x ∈ S <;> simp [hx] <;> positivity
@@ -89,6 +121,21 @@ end ChartIntCountAdd
 
 open ChartIntCountAdd in
 
+/- English proof (translation)
+Introduce `n d W A f φ E hW hdim hA hf hfc hφ hEm hE`. Establish `hfin : ∀ y, (fibre W A y).Finite` using `fun y => (ComplexSets.FibreBound.proof n d W A hW hdim hA y).2.1`. Establish `hmeas : ∀ g : (Fin n → ℂ) → ℝ, Measurable g → Measurable (chartDens W A g φ) ∧ Measurable (chartAbsDens W A g φ)` using `fun g hg => SheetSumMeasurable.proof n d W A g φ hW hdim hA hg hφ`. Establish `hgm : ∀ i, Measurable ((E i).indicator f)` using `fun i => hf.measurable.indicator (hEm i)`. Establish `hgu : Measurable ((⋃ i, E i).indicator f)` using `hf.measurable.indicator (MeasurableSet.iUnion hEm)`.
+
+Establish `hdens : ∀ y, HasSum (fun i => chartDens W A ((E i).indicator f) φ y) (chartDens W A ((⋃ i, E i).indicator f) φ y)`. Introduce `y`. Unfold `chartDens`. Use `hasSum_sheetSum (hfin y) _ _ fun x s => ?_` and prove the remaining obligations. Simplify using `only [indicator_mul]`.
+
+Conclude with `hasSum_indicator hE _ x`. Establish `habs : ∀ y, HasSum (fun i => chartAbsDens W A ((E i).indicator f) φ y) (chartAbsDens W A ((⋃ i, E i).indicator f) φ y)`. Introduce `y`. Unfold `chartAbsDens`. Use `hasSum_sheetSum (hfin y) _ _ fun x s => ?_` and prove the remaining obligations.
+
+Simplify using `only [abs_indicator_mul]`. Conclude with `hasSum_indicator hE _ x`. Establish `hdom : Integrable (chartAbsDens W A ((⋃ i, E i).indicator f) φ)`. Use `(hCM n d W A f φ hW hdim hA hf.continuousOn hφ (Or.inl hfc)).mono' (hmeas _ hgu).2.aestronglyMeasurable (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`.
+
+Unfold `chartAbsDens`. Use `(abs_sheetSum_le (hfin y) _).trans (sheetSum_mono (hfin y) fun x s => ?_)` and prove the remaining obligations. Rewrite using `[abs_abs]`. Conclude with `abs_indicator_mul_le _ _ _ _`. Establish `hsum : (fun y => ∑' i, chartAbsDens W A ((E i).indicator f) φ y) = chartAbsDens W A ((⋃ i, E i).indicator f) φ` using `funext fun y => (habs y).tsum_eq`.
+
+Conclude with `hasSum_integral_of_dominated_convergence (μ := volume) (F := fun i => chartDens W A ((E i).indicator f) φ) (f := chartDens W A ((⋃ i, E i).indicator f) φ) (fun i => chartAbsDens W A ((E i).indicator f) φ) (fun i => (hmeas _ (hgm i)).1.aestronglyMeasurable) (fun i => ae_of_all _ f …`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `abs_sheetSum_le (hfin y) _)`. Use the proof step `(ae_of_all _ fun y => (habs y).summable)`. Use the proof step `(by rw [hsum]; exact hdom)`.
+
+Use the proof step `(ae_of_all _ hdens)`.
+-/
 theorem ChartIntCountAdd.proof (hCM : ChartMassCompact.Statement) : ChartIntCountAdd.Statement := by
   intro n d W A f φ E hW hdim hA hf hfc hφ hEm hE
   have hfin : ∀ y, (fibre W A y).Finite := fun y =>

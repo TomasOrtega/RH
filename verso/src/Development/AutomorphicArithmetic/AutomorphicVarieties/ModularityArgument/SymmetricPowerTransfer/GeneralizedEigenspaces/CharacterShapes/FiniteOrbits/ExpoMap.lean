@@ -18,12 +18,23 @@ section SlopeTestRemainingChoices
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (T : Spl B)
   {S : Finset (Plc L)} {VL : ∀ w : Plc L, Lev (Kw w)} {A : SD B.Δ}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem eU_congr {K : Type} [Field K] {Δ s s' : K} (e : s = s') (h : s * s = Δ) (h' : s' * s' = Δ) :
     eU h = eU h' := by subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem eD_congr {K : Type} [Field K] {Δ s s' : K} (e : s = s') (h : s * s = Δ) (h' : s' * s' = Δ) :
     eD h = eD h' := by subst e; rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, val_diagT]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.diagonal_apply_ne _ h]`.
+-/
 private theorem map_dg {k k' : Type} [Field k] [Field k'] {n : ℕ} (i : k ≃+* k') (d : Fin n → kˣ) :
     Matrix.GeneralLinearGroup.map (i : k →+* k') (diagT k (Fin n) d) =
       diagT k' (Fin n) fun a => Units.map (i : k →* k') (d a) := by
@@ -33,6 +44,9 @@ private theorem map_dg {k k' : Type} [Field k] [Field k'] {n : ℕ} (i : k ≃+*
   · subst h; simp
   · simp [Matrix.diagonal_apply_ne _ h]
 
+/- English proof (translation)
+Introduce `g g' h`. Use extensionality with `a b`. Use `congrArg (fun x : GL (Fin n) k' => (x : Matrix (Fin n) (Fin n) k') a b) h` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem map_inj {k k' : Type} [Field k] [Field k'] {n : ℕ} (i : k ≃+* k') :
     Function.Injective (Matrix.GeneralLinearGroup.map (n := Fin n) (i : k →+* k')) := by
   intro g g' h
@@ -40,6 +54,17 @@ private theorem map_inj {k k' : Type} [Field k] [Field k'] {n : ℕ} (i : k ≃+
   have := congrArg (fun x : GL (Fin n) k' => (x : Matrix (Fin n) (Fin n) k') a b) h
   simpa using this
 
+/- English proof (translation)
+Establish `memL : x ∈ lev (Kall L n) S VL ↔ (x ∈ finU L n ∧ ∀ w, cLoc w x ∈ GlobalTheory.LFun.KGL w n) ∧ ∀ w ∈ S, cLoc w x ∈ (VL w).J n`. Simplify using `[lev, Kall, Subgroup.mem_inf, Subgroup.mem_iInf]`. Rewrite using `[memL]`. Establish `loc : ∀ w (hw : w ∈ S) (h : IsSplitAt w) (hv : un w ∈ A.Sg), cLoc w x ∈ (VL w).J n ↔ E (un w) hv ∈ (A.V (un w)).J n`. Introduce `w hw h hv`.
+
+Rewrite using `[hE w hw h hv]`. Conclude with `(T w h).J _ _ (hF.c w hw) (hF.H w hw h) n _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨hx, fun w => ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hv : un w ∈ A.Sg`. Take `⟨w0, hw0, e⟩` from `(hF.sg _).1 hv`. Establish `sp` using `hF.pl.split w0 hw0`. Establish `hv0 : un w0 ∈ A.Sg` using `e ▸ hv`. Establish `hk : cLoc w0 x ∈ GlobalTheory.LFun.KGL w0 n`.
+
+Rewrite using `[hE w0 hw0 sp hv0]`. Conclude with `((T w0 sp).K n _).2 (((Sig.finFacts _ (A.V (un w0))).2.2.2.2.2 n).2.2.2 (h1 _ hv0))`. Conclude with `(Br.uaFacts L n).2.2.2.2.2.2.2 w0 sp x hk w e.symm`. Conclude with `(hK _).1 (h2 _ hv) w rfl`. Conclude with `(loc w hw (hF.pl.split w hw) ((hF.sg _).2 ⟨w, hw, rfl⟩)).2 (h1 _ _)`.
+
+Introduce and unpack `⟨⟨_, h1⟩, h2⟩`. Use `⟨fun v hv => ?_, fun v _ => (hK v).2 fun w _ => h1 w⟩` and prove the remaining obligations. Take `⟨w0, hw0, rfl⟩` from `(hF.sg _).1 hv`. Conclude with `(loc w0 hw0 (hF.pl.split w0 hw0) hv).1 (h2 w0 hw0)`.
+-/
 private theorem levCore (hF : Fit T S VL A) {n : ℕ} (x : UA L n) (hx : x ∈ finU L n)
     (P : Pl (Lp L) → Prop) (E : ∀ v, v ∈ A.Sg → GL (Fin n) (Kv v))
     (hK : ∀ v, P v ↔ ∀ w, un w = v → cLoc w x ∈ GlobalTheory.LFun.KGL w n)
@@ -73,6 +98,15 @@ private theorem levCore (hF : Fit T S VL A) {n : ℕ} (x : UA L n) (hx : x ∈ f
     obtain ⟨w0, hw0, rfl⟩ := (hF.sg _).1 hv
     exact (loc w0 hw0 (hF.pl.split w0 hw0) hv).1 (h2 w0 hw0)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨hx, fun u hu => ?_⟩, fun w hw h => ?_⟩` and prove the remaining obligations. Establish `hv : un u ∉ A.Sg` using `fun hv => by`. Take `⟨w, hw, e⟩` from `(hF.sg _).1 hv`.
+
+Conclude with `hu w hw e.symm`. Conclude with `(hO _).1 (h2 _ hv) u rfl`. Establish `hv : un w ∈ A.Sg` using `(hF.sg _).2 ⟨w, hw, rfl⟩`. Rewrite using `[hE w hw h hv, h1 _ hv]`. Conclude with `map_dg (T w h).i (d (un w))`.
+
+Introduce and unpack `⟨⟨_, h1⟩, h2⟩`. Use `⟨fun v hv => ?_, fun v hv => (hO v).2 fun w e => h1 w fun w' hw' e' => hv ?_⟩` and prove the remaining obligations. Take `⟨w0, hw0, rfl⟩` from `(hF.sg _).1 hv`. Establish `sp` using `hF.pl.split w0 hw0`. Apply `map_inj (T w0 sp).i` to reduce the goal to its premises.
+
+Rewrite using `[← hE w0 hw0 sp hv, h2 w0 hw0 sp]`. Conclude with `(map_dg (T w0 sp).i (d (un w0))).symm`. Conclude with `(hF.sg _).2 ⟨w', hw', by rw [← e', e]⟩`.
+-/
 private theorem elCore (hF : Fit T S VL A) {n : ℕ} (x : UA L n) (hx : x ∈ finU L n)
     (O : Pl (Lp L) → Prop) (E : ∀ v, v ∈ A.Sg → GL (Fin n) (Kv v)) (d : ParN (Lp L) n)
     (hO : ∀ v, O v ↔ ∀ w, un w = v → cLoc w x = 1)
@@ -99,6 +133,13 @@ private theorem elCore (hF : Fit T S VL A) {n : ℕ} (x : UA L n) (hx : x ∈ fi
       exact (map_dg (T w0 sp).i (d (un w0))).symm
     · exact (hF.sg _).2 ⟨w', hw', by rw [← e', e]⟩
 
+/- English proof (translation)
+Establish `hdet : ∀ {R : Type} [CommRing R] (t : Fin n → Rˣ) (a : Fin n), Matrix.GeneralLinearGroup.det ((leviTorus R (Fin n)) t a) = t a` using `fun t a => congrFun ((leviTorus _ (Fin n)).symm_apply_apply t) a`. Establish `h1 : torusChar ψ (fun a => Units.map (i : k →* k') (d a)) = torusChar (fun a => (ψ a).comp (Units.map (i : k →* k'))) d`. Simplify using `[torusChar_apply]`. Establish `h2 : ((deltaHalf k' fun _ : Fin n => Unit).comp (leviTorus k' (Fin n)).toMonoidHom) (fun a => Units.map (i : k →* k') (d a)) = ((deltaHalf k fun _ : Fin n => Unit).comp (leviTorus k (Fin n)).toMonoidHom) d`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, deltaHalf_apply, deltaHalf_apply]`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e1` using `hdet (fun a => Units.map (i : k →* k') (d a)) a`. Establish `e2` using `hdet d a`. Simplify using `only [MulEquiv.coe_toMonoidHom]`. Rewrite using `[e1, e2]`.
+
+Conclude with `habs _ _`. Simplify using `only [Dict.expo]`. Rewrite using `[h1, h2]`.
+-/
 private theorem expo_map {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (i : k ≃+* k')
     (habs : ∀ (z : ℂ) (a : kˣ), absPow k' z (Units.map (i : k →* k') a) = absPow k z a)
@@ -131,37 +172,58 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (hB :
   {S : Finset (Plc L)} {VL : ∀ w : Plc L, Lev (Kw w)} {A : SD B.Δ} (hF : Fit T S VL A)
 
 include hB hF in
+/- English proof (translation)
+Rewrite using `[hB.splG w (T w h) g, eU_congr (hF.s w hw h) (A.hs _ hv) (T w h).hs]`.
+-/
 private theorem hsG (w : Plc L) (hw : w ∈ S) (h : IsSplitAt w) (hv : un w ∈ A.Sg) (g : GA B.Δ) :
     cLoc w (B.bG g : UA L 3) =
       Matrix.GeneralLinearGroup.map ((T w h).i : Kv (un w) →+* Kw w) (eU (A.hs _ hv) (g.1 (un w))) := by
   rw [hB.splG w (T w h) g, eU_congr (hF.s w hw h) (A.hs _ hv) (T w h).hs]
 
 include hB hF in
+/- English proof (translation)
+Rewrite using `[hB.splS w (T w h) g, eD_congr (hF.s w hw h) (A.hs _ hv) (T w h).hs]`.
+-/
 private theorem hsS (w : Plc L) (hw : w ∈ S) (h : IsSplitAt w) (hv : un w ∈ A.Sg) (g : SA B.Δ) :
     cLoc w (B.bS g : UA L 2) =
       Matrix.GeneralLinearGroup.map ((T w h).i : Kv (un w) →+* Kw w) (eD (A.hs _ hv) ((g : DA B.Δ).1 (un w))) := by
   rw [hB.splS w (T w h) g, eD_congr (hF.s w hw h) (A.hs _ hv) (T w h).hs]
 
+/- English proof (translation)
+The claim follows from `(B.bS g).2.1`.
+-/
 private theorem hfS (g : SA B.Δ) : (B.bS g : UA L 2) ∈ finU L 2 := (B.bS g).2.1
 
 include hB hF in
+/- English proof (translation)
+The claim follows from `((datOk _ _ A hA).2.2.2.1 g).trans (levCore T hF _ (B.bG g).2 (fun v => g.1 v ∈ KU (Ov v) _) (fun v h => eU (A.hs v h) (g.1 v)) (fun v => hB.KG g v) (fun w hw h hv => hsG hB T hF w hw h hv g))`.
+-/
 private theorem cl1 (hA : A.Ok) (g : GA B.Δ) : g ∈ A.dat.UG ↔ (B.bG g : UA L 3) ∈ lev (Kall L 3) S VL :=
   ((datOk _ _ A hA).2.2.2.1 g).trans (levCore T hF _ (B.bG g).2 (fun v => g.1 v ∈ KU (Ov v) _)
     (fun v h => eU (A.hs v h) (g.1 v)) (fun v => hB.KG g v) (fun w hw h hv => hsG hB T hF w hw h hv g))
 
 include hB hF in
+/- English proof (translation)
+The claim follows from `((datOk _ _ A hA).2.2.2.2 (g : DA B.Δ)).trans (levCore T hF _ (hfS g) (fun v => (g : DA B.Δ).1 v ∈ KD _ (Ov v)) (fun v h => eD (A.hs v h) ((g : DA B.Δ).1 v)) (fun v => hB.KS g v) (fun w hw h hv => hsS hB T hF w hw h hv g))`.
+-/
 private theorem cl2 (hA : A.Ok) (g : SA B.Δ) :
     (g : DA B.Δ) ∈ A.dat.U2 ↔ (B.bS g : UA L 2) ∈ lev (Kall L 2) S VL :=
   ((datOk _ _ A hA).2.2.2.2 (g : DA B.Δ)).trans (levCore T hF _ (hfS g) (fun v => (g : DA B.Δ).1 v ∈ KD _ (Ov v))
     (fun v h => eD (A.hs v h) ((g : DA B.Δ).1 v)) (fun v => hB.KS g v) (fun w hw h hv => hsS hB T hF w hw h hv g))
 
 include hB hF in
+/- English proof (translation)
+The claim follows from `elCore T hF _ (B.bG g).2 (fun v => g.1 v = 1) (fun v h => eU (A.hs v h) (g.1 v)) d (fun v => hB.oneG g v) (fun w hw h hv => hsG hB T hF w hw h hv g)`.
+-/
 private theorem cl3 (g : GA B.Δ) (d : ParN (Lp L) 3) : A.IsElG g d ↔ OnS S (B.bG g : UA L 3) ∧
     ∀ w ∈ S, ∀ h, cLoc w (B.bG g : UA L 3) = Sig.dg fun i => iu T w h (d (un w) i) :=
   elCore T hF _ (B.bG g).2 (fun v => g.1 v = 1) (fun v h => eU (A.hs v h) (g.1 v)) d (fun v => hB.oneG g v)
     (fun w hw h hv => hsG hB T hF w hw h hv g)
 
 include hB hF in
+/- English proof (translation)
+The claim follows from `elCore T hF _ (hfS g) (fun v => (g : DA B.Δ).1 v = 1) (fun v h => eD (A.hs v h) ((g : DA B.Δ).1 v)) d (fun v => hB.oneS g v) (fun w hw h hv => hsS hB T hF w hw h hv g)`.
+-/
 private theorem cl4 (g : SA B.Δ) (d : ParN (Lp L) 2) : A.IsElD g d ↔ OnS S (B.bS g : UA L 2) ∧
     ∀ w ∈ S, ∀ h, cLoc w (B.bS g : UA L 2) = Sig.dg fun i => iu T w h (d (un w) i) :=
   elCore T hF _ (hfS g) (fun v => (g : DA B.Δ).1 v = 1) (fun v h => eD (A.hs v h) ((g : DA B.Δ).1 v)) d
@@ -170,6 +232,11 @@ private theorem cl4 (g : SA B.Δ) (d : ParN (Lp L) 2) : A.IsElD g d ↔ OnS S (B
 end Main
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `L _ _ _ B hB T S VL A hA hF`. Use `⟨?_, ?_, ?_, ?_, fun w h n ψ d _ => expo_map (T w h).i (T w h).abs ψ d⟩` and prove the remaining obligations. Use `with_reducible exact cl1 hB T hF hA`. Use `with_reducible exact cl2 hB T hF hA`. Use `with_reducible exact cl3 hB T hF`.
+
+Use `with_reducible exact cl4 hB T hF`.
+-/
 theorem levG : LevG := by
   intro L _ _ _ B hB T S VL A hA hF
   refine ⟨?_, ?_, ?_, ?_, fun w h n ψ d _ => expo_map (T w h).i (T w h).abs ψ d⟩

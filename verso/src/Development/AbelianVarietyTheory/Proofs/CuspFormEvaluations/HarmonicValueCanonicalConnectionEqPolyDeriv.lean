@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnVal
 
+/- English proof (translation)
+Rewrite using `[hs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, map_mul, map_natCast, _root_.mul_assoc]`.
+-/
 theorem sum_support_natCast_smul {σ K : Type} [Field K] [Algebra K ℂ] (N : ℕ) (P : MvPolynomial σ K)
     (hs : ((N : K) • P).support = P.support) (v : (σ →₀ ℕ) → ℂ) :
     ∑ m ∈ ((N : K) • P).support, algebraMap K ℂ (((N : K) • P).coeff m) * v m =
@@ -22,6 +25,21 @@ theorem sum_support_natCast_smul {σ K : Type} [Field K] [Algebra K ℂ] (N : �
   refine Finset.sum_congr rfl fun m _ => ?_
   rw [MvPolynomial.coeff_smul, smul_eq_mul, map_mul, map_natCast, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c _ _ y g ty el Φ nab hnab k n F θ hθ a P hP`. Take `⟨N, hN, hNP, hs⟩` from `GlobalTheory.exists_natCast_smul_mem_harmA E H Dw l c a n P hP`. Take `⟨C₁, hex₁, hpin₁⟩` from `hnab.2 ℂ y`. Use `choose f₁ hf₁ using fun b => hex₁ k (F b)`. Take `⟨C, hd, hh, hF, hu, hgerm⟩` from `GlobalTheory.T.exists_analytic_biextension_chart_complex_point E H Dw l Xo c y g ty el Φ hnab.1`.
+
+Substitute `hd` using the available equality. Establish `hdiff : ∀ b, Differentiable ℂ (θ b)` using `fun b => ((GlobalTheory.T.section_reading_existsUnique_isTheta _ _ _ _ _ Φ.toAnFr k (F b)).2.1 (θ b) (hθ b)).1`. Establish `hg : ∀ b, IsGerm y C.d C.x C.B.A.act C.e C.wP k (F b) (tay (θ b) 0)` using `fun b => by`. Establish `h` using `hgerm k (F b) (θ b) (hθ b)`. Establish `e : (fun p : Fin 1 × Fin C.d => (p.1, Fin.cast (rfl : C.d = C.d).symm p.2)) = id` using `rfl`.
+
+Simplify using `only [e, MvPowerSeries.rename_id, AlgHom.id_apply] at h`. Conclude with `h`. Establish `h` using `hC E H Dw l Xo c hnab.1 ℂ y C₁ C k n F f₁ (fun b => tay (θ b) 0) hf₁ hg a _ hNP`. Unfold `chartVal at h`. Rewrite `h` using `[sum_support_natCast_smul N P hs, sum_support_natCast_smul N P hs]`.
+
+Establish `h'` using `mul_left_cancel₀ (Nat.cast_ne_zero.2 hN.ne' : (N : ℂ) ≠ 0) h`. Establish `e₁ : ∀ m, ∏ b, nab y k (F b) (colOf m b) = ∏ b, C₁.B.nabVal ℂ C₁.h H.w0 k (f₁ b) C₁.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin₁ k (F b) (f₁ b) (hf₁ b) (colOf m b)`. Simplify using `only [e₁]`. Rewrite using `[h']`. Establish `huu : C.uvec = fun ℓ : Lt1 Dw => (Pi.single (el.symm ℓ) 1 : Fin C.d → ℂ)`.
+
+Use function extensionality and compare the values at `ℓ i`. Rewrite using `[hu ℓ i, Pi.single_apply]`. Both sides reduce to the same expression. Establish `hpd` using `GlobalTheory.T.polyDeriv_prod_column_functions (Fin C.d → ℂ) (E →+* ℂ) Dw.mult n (fun ℓ : Lt1 Dw => (Pi.single (el.symm ℓ) 1 : Fin C.d → ℂ)) θ hdiff (MvPolynomial.map (algebraMap c.F ℂ) P)`. Use `Eq.trans ?_ hpd.symm` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.support_map_of_injective P (algebraMap c.F ℂ).injective]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hh, huu]`. Conclude with `nabVal_additive C.B hF H.w0 k ((GlobalTheory.SCV.contDiff_of_differentiable (hdiff b) _).contDiffAt) _ _`.
+-/
 theorem harm_nab_eq_polyDeriv : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] [StarRing (𝓞 E)] (y : FrPt Xo c ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (el : Fin g ≃ Lt1 Dw) (Φ : AnPt y g ty el), ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (k n : ℕ) (F : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo y.x))) (θ : Fin n → (Fin g → ℂ) → ℂ), (∀ b, Φ.toAnFr.Rd k (F b) (θ b)) → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) → ∑ m ∈ P.support, algebraMap c.F ℂ (P.coeff m) * ∏ b, nab y k (F b) (colOf m b) = I2.polyDeriv (MvPolynomial.map (algebraMap c.F ℂ) P) (letDir el) (fun z => ∏ b, θ b (z b)) 0 := by
   intro hC E _ _ _ H Dw l Xo c _ _ y g ty el Φ nab hnab k n F θ hθ a P hP
   classical

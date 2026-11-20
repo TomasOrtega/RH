@@ -12,6 +12,9 @@ namespace GlobalTheory.LevelLoss
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+The claim follows from `|(((D.hcW u τ).u l : ℚ) : ℝ)| ≤ 3 * L.sc.b := by have hk : 5 ≤ D.R.k := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega have hm := D.R.two_le_m have hb := GlobalTheory.HCEntries.one_le_b L have hb1 := GlobalTheory.HCEntries.b_bounds h hx τ ⟨0, by omega⟩ obtain ⟨-, -, …`.
+-/
 theorem u_bound_off_top (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (u : D.what₂.Word) (τ : D.what₂.Tau)
     (l : Fin D.R.k) (hl0 : ¬ (l.1 = 0 ∧ τ ∈ topsOf D.host D.eTau)) :
     |(((D.hcW u τ).u l : ℚ) : ℝ)| ≤ 3 * L.sc.b := by
@@ -52,6 +55,9 @@ theorem u_bound_off_top (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L
         exact_mod_cast this
       constructor <;> linarith [h2.2, hb1.2]
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.FockDegreeGap.errors_le h P).2.2`. Establish `hk : (5 : ℝ) ≤ D.R.k`. Conclude with `(by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega : 5 ≤ D.R.k)` after adjusting the coercions. Establish `h0 : (0 : ℝ) ≤ D.R.N D.R.m` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem N_le_b (h : SizesAt L) (P : ParameterChoice' D L) : 5 * (D.R.N D.R.m : ℝ) ≤ L.sc.b := by
   have h1 := (GlobalTheory.FockDegreeGap.errors_le h P).2.2
   have hk : (5 : ℝ) ≤ D.R.k := by
@@ -59,6 +65,9 @@ theorem N_le_b (h : SizesAt L) (P : ParameterChoice' D L) : 5 * (D.R.N D.R.m : �
   have h0 : (0 : ℝ) ≤ D.R.N D.R.m := Nat.cast_nonneg _
   nlinarith
 
+/- English proof (translation)
+The claim follows from `|((((D.fm u).lam i τ).w a - ((i * (D.R.t + 1) / 2 : ℕ) : ℤ) : ℤ) : ℝ)| ≤ 5 * L.sc.b := by have hN := N_le_b h P have hNe : (D.R.N D.R.m : ℝ) = D.R.k + D.R.m * (D.R.t + 1) := by unfold Ranks.N; push_cast; ring have hk0 : (0 : ℝ) ≤ D.R.k := Nat.cast_nonneg _ have ht0 : (0 : ℝ) ≤ D. …`.
+-/
 theorem true_entry_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (u : D.what₂.Word) (τ : D.what₂.Tau)
     (i : ℕ) (hi : i ≤ D.R.m) (a : Fin (D.R.N i)) (ha : ¬ (a.1 = 0 ∧ τ ∈ topsOf D.host D.eTau)) :
     |((((D.fm u).lam i τ).w a - ((i * (D.R.t + 1) / 2 : ℕ) : ℤ) : ℤ) : ℝ)| ≤ 5 * L.sc.b := by
@@ -99,6 +108,11 @@ theorem true_entry_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.s
     rw [abs_le]
     constructor <;> linarith
 
+/- English proof (translation)
+Establish `hb` using `GlobalTheory.HCEntries.one_le_b L`. Rewrite using `[← Nat.le_floor_iff (by linarith)]`. Unfold `Wtau`. Use `Finset.sup_le fun i hi => Finset.sup_le fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with ha`.
+
+Conclude with `Nat.zero_le _`. Rewrite using `[Nat.le_floor_iff (by linarith), Nat.cast_natAbs, Int.cast_abs]`. Conclude with `true_entry_le h P hx u τ i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) a ha`.
+-/
 theorem Wtau_le (h : SizesAt L) (P : ParameterChoice' D L) (hx : 2 ≤ L.sc.x) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     (Wtau D u τ : ℝ) ≤ 5 * L.sc.b := by
   have hb := GlobalTheory.HCEntries.one_le_b L

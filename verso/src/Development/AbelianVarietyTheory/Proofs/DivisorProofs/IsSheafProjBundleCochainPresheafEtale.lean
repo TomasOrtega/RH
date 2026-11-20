@@ -17,26 +17,46 @@ variable {R : Type} [CommRing R] {q N : ℕ} {I : Cx R} {n : ℤ}
 
 def fstHom {U W : Scheme.{0}} {E : Spc} {p : ℕ} (y : Sx (sch.obj U ⨯ E) p W) : W ⟶ U := y.map prod.fst
 
+/- English proof (translation)
+The claim follows from `sxPair_fst _ _`.
+-/
 theorem fstHom_pair {U W : Scheme.{0}} {E : Spc} {p : ℕ} (v : W ⟶ U) (b : Sx E p W) :
     fstHom (sxPair (schSx v p) b) = v := sxPair_fst _ _
 
+/- English proof (translation)
+Rewrite using `[fstHom, sxMap_res]`. Both sides reduce to the same expression.
+-/
 theorem fstHom_res {U W W' : Scheme.{0}} {E : Spc} {p : ℕ} (y : Sx (sch.obj U ⨯ E) p W) (w : W' ⟶ W) :
     fstHom (y.res w) = w ≫ fstHom y := by
   rw [fstHom, sxMap_res]; rfl
 
+/- English proof (translation)
+Rewrite using `[fstHom, ← sxMap_comp, prod.map_fst, sxMap_comp]`. Both sides reduce to the same expression.
+-/
 theorem fstHom_map {U Y W : Scheme.{0}} {E : Spc} {p : ℕ} (y : Sx (sch.obj Y ⨯ E) p W) (g : Y ⟶ U) :
     fstHom (y.map (prod.map (sch.map g) (𝟙 E))) = fstHom y ≫ g := by
   rw [fstHom, ← sxMap_comp, prod.map_fst, sxMap_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[← sxMap_comp, prod.map_snd, Category.comp_id]`.
+-/
 theorem snd_map {U Y W : Scheme.{0}} {E : Spc} {p : ℕ} (y : Sx (sch.obj Y ⨯ E) p W) (g : Y ⟶ U) :
     (y.map (prod.map (sch.map g) (𝟙 E))).map prod.snd = y.map prod.snd := by
   rw [← sxMap_comp, prod.map_snd, Category.comp_id]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (E.obj (op (SimplexCategory.mk p))).map (g ≫ f).op x`. Rewrite using `[op_comp, FunctorToTypes.map_comp_apply]`. Both sides reduce to the same expression.
+-/
 theorem sx_res_res {E : Spc} {p : ℕ} {U V W : Scheme.{0}} (x : Sx E p U) (f : V ⟶ U) (g : W ⟶ V) :
     (x.res f).res g = x.res (g ≫ f) := by
   change _ = (E.obj (op (SimplexCategory.mk p))).map (g ≫ f).op x
   rw [op_comp, FunctorToTypes.map_comp_apply]; rfl
 
+/- English proof (translation)
+Rewrite using `[ev_res, cotPre_ev]`. Use `congr 1`. Apply `sx_prod_ext` to reduce the goal to its premises. Rewrite using `[sxPair_map, sxPair_fst, sxMap_res, schSx_map, Category.id_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[sxMap_res, sxPair_map, sxPair_snd]`. Both sides reduce to the same expression.
+-/
 theorem ev_res_pair {U W W' : Scheme.{0}} (α : Cochain ((chains R).obj (sch.obj U ⨯ fibQ q N)) I n) (p : ℕ) (s : ℤ)
     (h : -(p : ℤ) + n = s) (y : Sx (sch.obj U ⨯ fibQ q N) p W) (w : W' ⟶ W) :
     Sec.res w (ev α p s h W y) =
@@ -56,6 +76,31 @@ namespace GlobalTheory.EtC
 
 open CupSpec CotSheaf
 
+/- English proof (translation)
+Rewrite using `[Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} R))), isSheaf_iff_isSheaf_of_type]`. Establish `hI : ∀ s : ℤ, Presieve.IsSheaf Scheme.etaleTopology.{0} ((I.X s).obj ⋙ forget (ModuleCat.{1} (ULift.{1} R)))` using `fun s => (isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget _)).1 (I.X s).cond)`. Establish `sep : ∀ (s : ℤ) (W : Scheme.{0}) (T : Sieve W), T ∈ Scheme.etaleTopology.{0} W → ∀ t t' : Sec (I.X s) W, (∀ (W' : Scheme.{0}) (w : W' ⟶ W), T w → Sec.res w t = Sec.res w t') → t = t'` using `fun s W T hT t t' ht => (hI s T hT).isSeparatedFor.ext fun _ w hw => ht _ w hw`. Introduce `U S hS c hc`. Rewrite `hc` using `[Presieve.compatible_iff_sieveCompatible]`.
+
+Establish `hC : ∀ {Y Z : Scheme.{0}} (f : Y ⟶ U) (g : Z ⟶ Y) (hf : S f), ((cotPre R q N I n).map g.op).hom (c f hf) = c (g ≫ f) (S.downward_closed hf g)` using `fun f g hf => (hc f g hf).symm`. Establish `hcong : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) {W : Scheme.{0}} (g g' : W ⟶ U) (hg : S g) (hg' : S g') (x x' : Sx (fibQ q N) p W), g = g' → x = x' → ev (I` using `I) (E := sch.obj W ⨯ fibQ q N) (c g hg) p s h W (sxPair (schSx (𝟙 W) p) x) = ev (I := I) (E := sch.obj W ⨯ fibQ q N) (c g' hg') p s h W (sxPair (schSx (𝟙 W) p) x') := by`. Introduce and unpack `p s h W g _ hg hg' x _ rfl rfl`. Both sides reduce to the same expression. Establish `hL : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) {W W' : Scheme.{0}} (g : W ⟶ U) (hg : S g) (x : Sx (fibQ q N) p W) (t : W' ⟶ W), Sec.res t (ev (I` using `I) (E := sch.obj W ⨯ fibQ q N) (c g hg) p s h W (sxPair (schSx (𝟙 W) p) x)) = ev (I := I) (E := sch.obj W' ⨯ fibQ q N) (c (t ≫ g) (S.downward_closed hg t)) p s h W' (sxPair (schSx (𝟙 W') p) (x.res t)) := by`.
+
+Introduce `p s h W W' g hg x t`. Use `(ev_res_pair (c g hg) p s h _ t).trans ?_` and prove the remaining obligations. Rewrite using `[fstHom_pair, Category.comp_id, hC, sxPair_snd]`. Establish `hAm : ∀ γ : Cochain ((chains R).obj (sch.obj U ⨯ fibQ q N)) I n, (∀ {Y : Scheme.{0}} (g : Y ⟶ U) (hg : S g), ((cotPre R q N I n).map g.op).hom γ = c g hg) → ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) {W W' : Scheme.{0}} (y : Sx (sch.obj U ⨯ fibQ q N) p W) (w : W' ⟶ W) (hw : S (w ≫ …` using `I) (E := sch.obj W' ⨯ fibQ q N) (c (w ≫ fstHom y) hw) p s h W' (sxPair (schSx (𝟙 W') p) ((y.map prod.snd).res w)) := by`. Introduce `γ hγ p s h W W' y w hw`.
+
+Use `(ev_res_pair γ p s h y w).trans ?_` and prove the remaining obligations. Rewrite using `[hγ]`. Establish `key : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (W : Scheme.{0}) (y : Sx (sch.obj U ⨯ fibQ q N) p W), ∃ t : Sec (I.X s) W, ∀ (W' : Scheme.{0}) (w : W' ⟶ W) (hw : S (w ≫ fstHom y)), Sec.res w t = ev (I` using `I) (E := sch.obj W' ⨯ fibQ q N) (c (w ≫ fstHom y) hw) p s h W' (sxPair (schSx (𝟙 W') p) ((y.map prod.snd).res w)) := by`. Introduce `p s h W y`. Set `fam : Presieve.FamilyOfElements ((I.X s).obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) (S.pullback (fstHom y)).arrows` to `fun W' w hw => ev (I := I) (E := sch.obj W' ⨯ fibQ q N) (c (w ≫ fstHom y) hw) p s h W' (sxPair (schSx (𝟙 W') p) ((y.map prod.snd).res w))`.
+
+Establish `hfam : fam.Compatible`. Rewrite using `[Presieve.compatible_iff_sieveCompatible]`. Introduce `Y Z f g hf`. Use `Eq.trans ?_ (hL p s h (f ≫ fstHom y) hf _ g).symm` and prove the remaining obligations. Conclude with `hcong _ _ _ _ _ _ _ _ _ (Category.assoc _ _ _) (sx_res_res _ _ _).symm`.
+
+Take `⟨t, ht, -⟩` from `hI s _ (Scheme.etaleTopology.{0}.pullback_stable (fstHom y) hS) fam hfam`. Conclude with `⟨t, fun W' w hw => ht w hw⟩`. Use `choose a ha using key`. Establish `hnat : ∀ (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (V W : Scheme.{0}) (g : V ⟶ W) (y : Sx (sch.obj U ⨯ fibQ q N) p W), Sec.res g (a p s h W y) = a p s h V (y.res g)`. Introduce `p s h V W g y`.
+
+Apply `sep s V _ (Scheme.etaleTopology.{0}.pullback_stable (fstHom (y.res g)) hS)` to reduce the goal to its premises. Introduce `W' w hw`. Establish `hw' : S ((w ≫ g) ≫ fstHom y)`. Rewrite `hw` using `[fstHom_res]`. Simplify `hw` using `[Category.assoc]`.
+
+Rewrite using `[secRes_res, ha p s h W y W' (w ≫ g) hw', ha p s h V (y.res g) W' w hw]`. Use `hcong _ _ _ _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[fstHom_res, Category.assoc]`. Rewrite using `[sxMap_res, sx_res_res]`. Take `⟨α, hα⟩` from `ev_exists (R := R) (E := sch.obj U ⨯ fibQ q N) (I := I) (n := n) a hnat`.
+
+Establish `hαam : ∀ {Y : Scheme.{0}} (g : Y ⟶ U) (hg : S g), ((cotPre R q N I n).map g.op).hom α = c g hg`. Introduce `Y g hg`. Apply `ev_ext` to reduce the goal to its premises. Introduce `p s h W y`. Rewrite using `[cotPre_ev, hα]`.
+
+Apply `sep s W _ (Scheme.etaleTopology.{0}.pullback_stable (fstHom (y.map (prod.map (sch.map g) (𝟙 _)))) hS)` to reduce the goal to its premises. Introduce `W' w hw`. Rewrite using `[ha p s h W _ W' w hw]`. Use `Eq.trans ?_ (ev_res_pair (c g hg) p s h y w).symm` and prove the remaining obligations. Rewrite using `[hC, snd_map]`.
+
+Use `hcong _ _ _ _ _ _ _ _ _ ?_ rfl` and prove the remaining obligations. Rewrite using `[fstHom_map, Category.assoc]`. Use `⟨α, fun Y g hg => hαam g hg, fun β hβ => ?_⟩` and prove the remaining obligations. Apply `ev_ext` to reduce the goal to its premises. Introduce `p s h W y`.
+
+Apply `sep s W _ (Scheme.etaleTopology.{0}.pullback_stable (fstHom y) hS)` to reduce the goal to its premises. Introduce `W' w hw`. Rewrite using `[hAm β (fun g hg => hβ g hg) p s h y w hw, hAm α (fun g hg => hαam g hg) p s h y w hw]`.
+-/
 theorem cotPre_isSheaf (R : Type) [CommRing R] (q N : ℕ) (I : Cx R) (n : ℤ) :
     Presheaf.IsSheaf Scheme.etaleTopology.{0} (cotPre R q N I n) := by
   rw [Presheaf.isSheaf_iff_isSheaf_forget _ _ (forget (ModuleCat.{1} (ULift.{1} R))), isSheaf_iff_isSheaf_of_type]

@@ -9,6 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdCharLocal
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hs` using `GlobalTheory.SnMass.Inhab.stdAt_of_psiInf h hinf v`. Take `⟨d, hd, hd0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F))`. Establish `hd1 : algebraMap F (Fv F v) (d : F) ≠ 0`.
+
+Rewrite using `[Ne, map_eq_zero]`. Conclude with `hd0` after adjusting the coercions. Take `⟨z, hz⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp 1)`. Establish `h1` using `(hs (z * (algebraMap F (Fv F v) (d : F))⁻¹)).1 (fun y _ => hn _) d hd`. Rewrite `h1` using `[inv_mul_cancel_right₀ hd1, HeightOneSpectrum.mem_adicCompletionIntegers, hz, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem psiV_ne_one_of_trace {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (h : IsCharAF F ψ)
     (hinf : ∀ a : F, psiInf F ψ (algebraMap F (Ainf F) a) =
       Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ F a : ℚ) : ℂ))) (v : HeightOneSpectrum (𝓞 F)) :
@@ -26,6 +33,11 @@ theorem psiV_ne_one_of_trace {F : Type} [Field F] [NumberField F] {ψ : AddChar 
     WithZero.exp_le_exp] at h1
   omega
 
+/- English proof (translation)
+Introduce `D ψ hψ v`. Establish `h` using `GlobalTheory.StdAdelicChar.isStdChar_inv hψ`. Take `⟨θ, hθ⟩` from `h.2.1`. Take `⟨y, hy⟩` from `psiV_ne_one_of_trace h.1 (fun a => by`. Rewrite using `[h.2.2 θ hθ, GlobalTheory.StdRat.tmul_one_eq, Finset.sum_congr rfl fun ρ _ => (hθ ρ).1 _, GlobalTheory.StdRat.sum_tauE_eq_trace]`.
+
+Use the proof step `simp) v`. Use `⟨y, fun h1 => hy ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[psiV]`. Rewrite using `[AddChar.inv_apply', h1, inv_one]`.
+-/
 theorem psiV_ne_one : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ v, ∃ y, psiV D.host.F ψ v y ≠ 1 := by
   intro D ψ hψ v

@@ -16,11 +16,47 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
 def lpt (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (s : ℕ) (t : E) (h : TB.Pt E) : C.LPt :=
   C.loc (S.σ v) h ++ [(s, S.σ v t)]
 
+/- English proof (translation)
+Rewrite using `[Complex.re_ofReal_mul, Complex.re_sum]`. Simplify using `only [Complex.re_ofReal_mul]`.
+-/
 theorem re_real_sum {W : Type} (c : ℝ) (Ws : Finset W) (p : W → ℝ) (N : W → ℂ) :
     ((c : ℂ) * ∑ w ∈ Ws, (p w : ℂ) * N w).re = c * ∑ w ∈ Ws, p w * (N w).re := by
   rw [Complex.re_ofReal_mul, Complex.re_sum]
   simp only [Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S Λ hpos _ _ hloc`. Introduce `ε hε i s hs hsi hir w _ hcnt`. Establish `hcnt' : w.1.cnt + C.Kst ≤ S.Ntop` using `hcnt`. Establish `hlen : ∀ v, (w.1 v).length + C.Kst ≤ S.Ntop` using `fun v => by`. Use `len_le_cnt S w.1 v` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hb1 : 1 ≤ i - s + 1` using `by omega`. Establish `hbs : i - s + 1 + s ≤ S.G.r + 1` using `by omega`. Establish `hlev : i - s + 1 + s - 1 = i` using `by omega`. Establish `hi : i ≤ S.G.r + 1` using `by omega`.
+
+Establish `hwn : w.1.cnt ≤ w.1.cnt + C.Kst` using `by omega`. Establish `hL` using `fun v => hloc v (i - s + 1) s hb1 hs hbs (w.1 v) ⟨w, rfl⟩ (hlen v)`. Simplify using `only [hlev] at hL`. Use `choose Up θp Um θm hPp hPm hblk using hL`. Establish `hUp : ∀ v, ∀ a ∈ Up v, D.AdmAt S v a ∧ a.length ≤ w.1.cnt + C.Kst` using `fun v a ha => ⟨((hPp v).2 a ha).1, ((hPp v).2 a ha).2.trans (by have := len_le_cnt S w.1 v; omega)⟩`.
+
+Establish `hUm : ∀ v, ∀ a ∈ Um v, D.AdmAt S v a ∧ a.length ≤ w.1.cnt + C.Kst` using `fun v a ha => ⟨((hPm v).2 a ha).1, ((hPm v).2 a ha).2.trans (by have := len_le_cnt S w.1 v; omega)⟩`. Establish `hprobP` using `fun A : Finset (Fin S.f) => pθ_prob (A := A) (θ := θp) (fun v _ => (hPp v).1) (fun v _ => hUp v) hwn hcnt'`. Establish `hprobM` using `fun A : Finset (Fin S.f) => pθ_prob (A := A) (θ := θm) (fun v _ => (hPm v).1) (fun v _ => hUm v) hwn hcnt'`. Use `⟨fun A x => pθ S A w θp x.1 * pθ S A w θm x.2, fun A => pair_prob (hprobP A) (hprobM A), ?_⟩` and prove the remaining obligations. Introduce `Y T κ hY hκ t ht t' ht' ht0 ht0' _ A`.
+
+Establish `hσ : ∀ v, S.σ v t ≠ 0` using `fun v => (map_ne_zero _).2 ht0`. Establish `hσ' : ∀ v, S.σ v t' ≠ 0` using `fun v => (map_ne_zero _).2 ht0'`. Establish `hsz : ∀ v, ∀ p ∈ Y.image (C.loc (S.σ v)), D.ptSize p = i - s + 1 - 1`. Introduce `v p hp`. Take `⟨h, hh, rfl⟩` from `Finset.mem_image.1 hp`.
+
+Rewrite using `[ptSize_loc, hY h hh]`. Use linear arithmetic over natural numbers and integers. Establish `hU : ∀ v, ∃ u : ℂ, ‖u‖ = 1 ∧ (v ∈ A → KB.BlockPSD Y Y (fun h h' => ((Λ (i - s + 1) s v ^ C.Kst : ℝ) : ℂ) * KB.mix S v ε i (Up v) (θp v) (lpt S v s t h) (lpt S v s t h')) (fun h h' => u * ((S.σ v t)⁻¹ - (S.σ v t')⁻¹) ^ C.Kst * KB.gN S v ε i (w.1 v) (lpt S v s t h) (lpt S v s t' h' …`. Introduce `v`. Distinguish the cases in `hv : v ∈ A`.
+
+Take `⟨u, hu, hB⟩` from `hblk v ε hε (S.σ v t) (S.σ v t') (Y.image (C.loc (S.σ v))) (hσ v) (hσ' v) (hsz v)`. Conclude with `⟨u, hu, fun _ => blockPSD_comp _ _ _ _ hB Y (C.loc (S.σ v)) (fun x hx => Finset.mem_image_of_mem _ hx)⟩`. Conclude with `⟨1, by simp, fun h => absurd h hv⟩`. Use `choose u hu1 hu2 using hU`. Establish `hprod` using `blockPSD_prod (Y₁ := Y) (Y₂ := Y) univ (fun v h h' => (if v ∈ A then ((Λ (i - s + 1) s v ^ C.Kst : ℝ) : ℂ) else 1) * (if v ∈ A then KB.mix S v ε i (Up v) (θp v) (lpt S v s t h) (lpt S v s t h') else KB.gN S v ε i (w.1 v) (lpt S v s t h) (lpt S v s t h'))) (fun v h h' => (if v ∈ A …`.
+
+Introduce `v _`. Distinguish the cases in `hv : v ∈ A`. Simplify using `only [if_pos hv]`. Conclude with `hu2 v hv`. Simplify using `only [if_neg hv, one_mul]`.
+
+Conclude with `blockPSD_pull (Y.image (lpt S v s t) ∪ Y.image (lpt S v s t')) (KB.gN S v ε i (w.1 v)) (gN_psd S hpos v hε hi w _) Y (lpt S v s t) (lpt S v s t') (fun h hh => Finset.mem_union_left _ (Finset.mem_image_of_mem _ hh)) (fun h hh => Finset.mem_union_right _ (Finset.mem_image_of_mem _ …`. Establish `hmem : ∀ τ ∈ T, ∀ h ∈ Y, TB.join h s τ ∈ TB.pts Y s T` using `by classical`. Introduce `τ hτ h hh`. Unfold `TB.pts`. Conclude with `Finset.mem_image.2 ⟨(h, τ), Finset.mem_product.2 ⟨hh, hτ⟩, rfl⟩`.
+
+Establish `hκb : KB.BlockPSD Y Y (TB.blk κ s t t) (TB.blk κ s t t') (TB.blk κ s t' t')` using `blockPSD_pull (TB.pts Y s T) κ hκ Y (fun h => TB.join h s t) (fun h => TB.join h s t') (hmem t ht) (hmem t' ht')`. Establish `hmain` using `block_cross_le (blockPSD_mul hκb hprod)`. Establish `eL : (∑ h ∈ Y, ∑ h' ∈ Y, TB.blk κ s t t' h h' * ∏ v, (if v ∈ A then u v * ((S.σ v t)⁻¹ - (S.σ v t')⁻¹) ^ C.Kst else 1) * KB.gN S v ε i (w.1 v) (lpt S v s t h) (lpt S v s t' h')) = (∏ v ∈ A, u v * ((S.σ v t)⁻¹ - (S.σ v t')⁻¹) ^ C.Kst) * S.base.Nst ε i s w Y (TB.blk κ s t t') t t'`. Rewrite using `[Nst_eq S hi, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_mem, Finset.univ_inter]`. Simplify using `only [lpt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `eD : ∀ (τ : E) (Uq : Fin S.f → Finset (List C.Letter)) (θq : Fin S.f → List C.Letter → ℝ), (∀ v, TB.IsProb (Uq v) (θq v)) → (∀ v, ∀ a ∈ Uq v, D.AdmAt S v a ∧ a.length ≤ w.1.cnt + C.Kst) → (∑ h ∈ Y, ∑ h' ∈ Y, TB.blk κ s τ τ h h' * ∏ v, (if v ∈ A then ((Λ (i - s + 1) s v ^ C.Kst : …`. Introduce `τ Uq θq hP hUq`. Establish `hx : ∀ h h', (∏ v, (if v ∈ A then ((Λ (i - s + 1) s v ^ C.Kst : ℝ) : ℂ) else 1) * (if v ∈ A then KB.mix S v ε i (Uq v) (θq v) (lpt S v s τ h) (lpt S v s τ h') else KB.gN S v ε i (w.1 v) (lpt S v s τ h) (lpt S v s τ h'))) = ((∏ v ∈ A, Λ (i - s + 1) s v ^ C.Kst : ℝ) : ℂ) * ∑ w' ∈ S …`. Introduce `h h'`. Establish `he` using `expand (A := A) (w := w) (θ := θq) (U := Uq) (fun v _ => hP v) (fun v _ => hUq v) hwn hcnt' (fun v a => KB.gN S v ε i a (lpt S v s τ h) (lpt S v s τ h'))`.
+
+Rewrite using `[he, Finset.prod_mul_distrib, Finset.prod_ite_mem, Finset.univ_inter, Complex.ofReal_prod]`. Both sides reduce to the same expression. Simplify using `only [hx]`. Rewrite using `[mix_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Rewrite using `[Nst_eq S hi]`. Both sides reduce to the same expression. Establish `hK : S.base.K = C.Kst` using `rfl`. Establish `hcw : S.base.cnt w = w.1.cnt` using `rfl`.
+
+Rewrite `hmain` using `[eL, eD t Up θp (fun v => (hPp v).1) hUp, eD t' Um θm (fun v => (hPm v).1) hUm, re_real_sum, re_real_sum]`. Establish `hsp` using `sum_pair (S.base.Wb (w.1.cnt + C.Kst)) (S.base.Wb (w.1.cnt + C.Kst)) (pθ S A w θp) (pθ S A w θm) (fun w' => (S.base.Nst ε i s w' Y (TB.blk κ s t t) t t).re) (fun w' => (S.base.Nst ε i s w' Y (TB.blk κ s t' t') t' t').re) (hprobM A).2.2 (hprobP A).2.2`. Rewrite using `[hK, hcw, hsp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_prod]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hu1, one_mul, norm_pow, av_eq, map_sub, map_inv₀, map_inv₀]`. Use `_ ≤ _ := hmain`. Use `_ = _ := by ring`.
+-/
 theorem liftOfLoc_statement : KB.LiftOfLoc := by
   intro E _ _ _ Wp Wq _ _ _ _ S Λ hpos _ _ hloc
   intro ε hε i s hs hsi hir w _ hcnt

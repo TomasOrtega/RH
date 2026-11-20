@@ -14,5 +14,8 @@ open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.S
 open scoped ContDiff ComplexOrder ENNReal Classical
 open GlobalTheory.HorComp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.closed_eq_sUnion_maximal_irreducible | exact GlobalTheory.closed_eq_sUnion_maximal_irreducible | (intros; apply GlobalTheory.closed_eq_sUnion_maximal_irreducible <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.irreducible_components_noetherian_finite : ∀ (X : Type) [TopologicalSpace X] [NoetherianSpace X] (S : Set X), IsClosed S → {W : Set X | Maximal (fun W : Set X => _root_.IsIrreducible W ∧ W ⊆ S) W}.Finite ∧ ⋃₀ {W : Set X | Maximal (fun W : Set X => _root_.IsIrreducible W ∧ W ⊆ S) W} = S ∧ ∀ W : Set X, Maximal (fun W : Set X => _root_.IsIrreducible W ∧ W ⊆ S) W → IsClosed W := by
   first | exact @GlobalTheory.closed_eq_sUnion_maximal_irreducible | exact GlobalTheory.closed_eq_sUnion_maximal_irreducible | (intros; apply GlobalTheory.closed_eq_sUnion_maximal_irreducible <;> assumption)

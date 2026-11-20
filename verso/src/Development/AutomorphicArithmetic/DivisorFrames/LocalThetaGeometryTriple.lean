@@ -17,6 +17,9 @@ namespace UpperTheory.SymplecticShiftFixed
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = a ⊗ₜ[F] e`. Rewrite using `[GlobalTheory.XTermSupp.invol hcm]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 private theorem cA_cA (hcm : IsCMExt F E σ) (x : AE F E) : cA σ (cA σ x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -25,6 +28,9 @@ private theorem cA_cA (hcm : IsCMExt F E σ) (x : AE F E) : cA σ (cA σ x) = x 
     rw [GlobalTheory.XTermSupp.invol hcm]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[← smul_assoc, symp, shiftB, GlobalTheory.XTermSupp.hTens_vv, GlobalTheory.XTermSupp.form_inc, GlobalTheory.XTermSupp.form_inc, hH, GlobalTheory.XTermSupp.form_skew hcm hJ, hH', cA_cA hcm, ← smul_eq_mul a, ← map_smul (Algebra.trace (AF F) (AE F E))]`. Use `congr 1`. Simplify using `[mul_comm]`.
+-/
 private theorem symp_shiftB (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (JW j i) = -JW i j) (H : Plane E n n₁) (H' : Plane E d d₁) (hH : form σ JX H.x H.y = 1)
     (hH' : form σ JW H'.x H'.y = 1) (l : (AE F E)ˣ) (a : AF F) (c : E) :
@@ -36,6 +42,13 @@ private theorem symp_shiftB (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : M
   congr 1
   simp [mul_comm]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin n) (Fin d) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin d → AE F E))`. Establish `hm : Continuous fun g : UA σ X.J => mat g⁻¹` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_inv`. Establish `hm' : Continuous fun g : UA σ W.J => mat g⁻¹` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_inv`.
+
+Establish `he : Continuous M.co.e` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`. Establish `hg : Continuous fun p : UA σ X.J × UA σ W.J => M.co.e (mat p.1⁻¹ * u * (mat p.2⁻¹)ᵀ)` using `he.comp (((hm.comp continuous_fst).matrix_mul continuous_const).matrix_mul (hm'.comp continuous_snd).matrix_transpose)`. Use `filter_upwards [GlobalTheory.XTermSupp.schA_fixed_smul ψ hψ Φ hΦ hC _ hg] with a ha p hp`. Take `⟨k, h⟩` from `p`. Establish `h1` using `(IsUWeilPair.isUSplitting hom).impl (k, h) (pairA F 0 a • (mat k⁻¹ * u * (mat h⁻¹)ᵀ)) Φ hΦ`.
+
+Establish `h2 : actAB (cA σ) (k, h) (pairA F 0 a • (mat k⁻¹ * u * (mat h⁻¹)ᵀ)) = pairA F 0 a • u` using `by show mat k * (pairA F 0 a • (mat k⁻¹ * u * (mat h⁻¹)ᵀ)) * (mat h)ᵀ = _`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.StabHaar.mat_mul_inv, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, GlobalTheory.StabHaar.mat_mul_inv, Matrix.transpose_one, Matrix.mul_one]`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1, Darboux.rho, map_smul, ha (k, h) hp]`.
+-/
 private theorem rho_om_fixed {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (hψ : Continuous ψ) {χX χW : Chr F E} {om : Rep σ X W} (hom : M.IsWeil ψ χX χW om)
     {C : Set (UA σ X.J × UA σ W.J)} (hC : IsCompact C)
@@ -68,6 +81,15 @@ end UpperTheory.SymplecticShiftFixed
 end
 
 open UpperTheory.SymplecticShiftFixed in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e he X om om' om₁ om₁' hT _ Φ hΦ' C hKc`. Establish `hstd` using `hT.base.std`. Use `choose c hc using GlobalTheory.XTermSupp.trace_mul_dual (F := F) (E := E)`. Establish `hO` using `fun i => rho_om_fixed G.M' B.ψ hstd.1 hT.weil' hKc Φ hΦ' (inclR (F := F) (AF F) (c i) • Matrix.vecMulVec (incV F H.x) (incV F H'.y))`. Take `⟨U, hU, hUm⟩` from `GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F B.ψ hstd.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hstd) _ (Filter.eventually_all.2 hO)`.
+
+Use `⟨Set.pi Set.univ fun _ => U, isCompact_univ_pi fun _ => hU, fun p hp l hl => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hl fun i _ => hUm _ fun t ht => ?_` and prove the remaining obligations. Establish `hfix` using `ht i p hp`. Establish `hΨ : om' p Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))` using `(IsUWeilPair.isUSplitting hT.weil').pres _ _ hΦ'`.
+
+Establish `h1` using `congrArg e (GlobalTheory.XTermSupp.rho_comm G.M'.co B.ψ (pairA F 0 t • inclR (F := F) (AF F) (c i) • Matrix.vecMulVec (incV F H.x) (incV F H'.y)) (shiftB σ H H' l) (om' p Φ))`. Rewrite using `[hfix, map_smul, he.inv _ (Or.inl ⟨pairA F 0 t • inclR (F := F) (AF F) (c i) • incV F H'.y, by`. Rewrite using `[Matrix.vecMulVec_smul, Matrix.vecMulVec_smul]⟩) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hstd _ _ hΨ),`. Use `symp_shiftB hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy, hc] at h1`. Establish `h2 : pairA F 0 t * GlobalTheory.XTermMaj.crd F E (l : AE F E) i = pairA F 0 (t * (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2)` using `Prod.ext (zero_mul _) rfl`.
+
+Rewrite `h1` using `[h2]`. Conclude with `(smul_left_injective ℂ hne (h1.symm.trans (one_smul ℂ _).symm))`.
+-/
 theorem UpperTheory.local_theta_geometry_triple :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
         (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `C' Cl Cg cb Cw cT CT C0 D large₂ X Y hH`. Establish `hPg` using `Formalism.L2.SG.Pf.SatGram.tt_eq' Formalism.L2.SG.Pf.splitPrimeLoc_holds Formalism.L2.SG.Pf.SatGramLoc.reduction_structure_holds Y.TR`. Unfold `Formalism.L2.SG.RowsConc.PgC`. Rewrite using `[hPg, Formalism.L2.SG.KappaOffDiagonal.PgLe.finrank_F X]`. Take `⟨⟨hS0, -, -⟩, hP⟩` from `hH`.
+
+Take `⟨-, -, -, hfk, -⟩` from `hS0`. Establish `hg` using `hP.2.1`. Establish `hb` using `Formalism.MainNotions.KappaEndpoints.two_le_scale_b D large₂`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 ≤ D.R.k)` as an intermediate fact.
+
+Establish `hf : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast hfk`. Establish `h0` using `Formalism.L2.SG.KappaOffDiagonal.PgLe.one_factor (D.R.k : ℝ) large₂.sc.b (D.host.g 0 : ℝ) D.R.f hk hb (hg 0).1 hf`. Establish `h1` using `Formalism.L2.SG.KappaOffDiagonal.PgLe.one_factor (D.R.k : ℝ) large₂.sc.b (D.host.g 1 : ℝ) D.R.f hk hb (hg 1).1 hf`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pgC_le_two_at_record : ∀ (C' Cl Cg cb Cw cT CT C0 : ℝ) (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X),
     Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoHypotheses D large₂ C' Cl Cg cb Cw cT CT C0 → PgC Y ≤ 2 := by
   intro C' Cl Cg cb Cw cT CT C0 D large₂ X Y hH

@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G MvPolynomial
 
+/- English proof (translation)
+Establish `hx : P ∈ Set.range (MvPolynomial.map (algebraMap O (KK O)))`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `a ha`. Take `⟨μ, -, rfl⟩` from `(MvPolynomial.mem_coeffs_iff).1 ha`. Take `⟨c, hc⟩` from `h μ`.
+
+Conclude with `⟨c, hc.symm⟩`. Take `⟨Q, rfl⟩` from `hx`. Conclude with `⟨Q, rfl⟩`.
+-/
 theorem mem_intPol_of_coeff {O : Type} [CommRing O] [IsDomain O] {σ : Type} (P : MvPolynomial σ (KK O))
     (h : ∀ μ, ∃ c : O, P.coeff μ = algebraMap O (KK O) c) : P ∈ IntPol O σ := by
   have hx : P ∈ Set.range (MvPolynomial.map (algebraMap O (KK O))) := by
@@ -19,6 +24,15 @@ theorem mem_intPol_of_coeff {O : Type} [CommRing O] [IsDomain O] {σ : Type} (P 
   obtain ⟨Q, rfl⟩ := hx
   exact ⟨Q, rfl⟩
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `pow_padicValNat_dvd (p := p) (n := m)`. Establish `hp0 : (p : O) ≠ 0` using `S.p_ne`. Establish `hcast : (m : KK O) = algebraMap O (KK O) ((p : O) ^ padicValNat p m) * algebraMap O (KK O) (r : O)` using `by conv_lhs => rw [hr]`. Simplify using `[map_pow, map_natCast]`. Establish `hr0 : 0 ≤ vK p (algebraMap O (KK O) (r : O))` using `(GLWeightTheory.valuation_nonneg_iff_integral S _).2 ⟨_, rfl⟩`.
+
+Establish `hE : ramE p O = GLWeightTheory.dvrOrderNat (p : O)`. Unfold `ramE`. Rewrite using `[← GLWeightTheory.dvr_order_coe_addVal hp0]`. Both sides reduce to the same expression. Establish `hE0` using `GLWeightTheory.ramification_index_ne_zero S`.
+
+Rewrite using `[hcast, GLWeightTheory.valuation_mul_alt, GLWeightTheory.valuation_algebraMap_eq_alt p _ (pow_ne_zero _ hp0), GLWeightTheory.dvr_order_pow hp0]`. Establish `hq : (((padicValNat p m * GLWeightTheory.dvrOrderNat (p : O) : ℕ) : ℚ) / (ramE p O : ℚ)) = (padicValNat p m : ℚ)`. Rewrite `hE0`, the goal using `[hE]`. Establish `: ((GLWeightTheory.dvrOrderNat (p : O) : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hE0`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hq]`. Conclude with `le_add_of_nonneg_right hr0`.
+-/
 private theorem padicValNat_le_vK_natCast {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ}
     (S : UniformizedDVR p O) (m : ℕ) : (((padicValNat p m : ℚ)) : WithTop ℚ) ≤ vK p (m : KK O) := by
   obtain ⟨r, hr⟩ := pow_padicValNat_dvd (p := p) (n := m)
@@ -41,6 +55,15 @@ private theorem padicValNat_le_vK_natCast {O : Type} [CommRing O] [IsDomain O] [
   rw [hq]
   exact le_add_of_nonneg_right hr0
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ν, c, hc, rfl⟩` from `hx`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Conclude with `hc`. Rewrite using `[GLWeightTheory.valuation_zero_alt]`. Simplify using the standard rewrite rules. Consider the case `zero`.
+
+Rewrite using `[MvPolynomial.coeff_zero, GLWeightTheory.valuation_zero_alt]`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Rewrite using `[MvPolynomial.coeff_add]`. Combine the equalities or inequalities in the displayed calculation.
+
+Consider the case `smul a x _ hx`. Rewrite using `[MvPolynomial.coeff_smul, Algebra.smul_def, GLWeightTheory.valuation_mul_alt, add_assoc]`. Conclude with `add_nonneg ((GLWeightTheory.valuation_nonneg_iff_integral S _).2 ⟨a, rfl⟩) hx`.
+-/
 private theorem vK_coeff_add_half_padicVal_nonneg_of_bbSpec {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ}
     (S : UniformizedDVR p O) {σ : Type} (sp : ℕ) (u : MvPolynomial σ (KK O)) (hu : u ∈ bbSpec O p σ sp)
     (μ : σ →₀ ℕ) :
@@ -68,6 +91,13 @@ private theorem vK_coeff_add_half_padicVal_nonneg_of_bbSpec {O : Type} [CommRing
     rw [MvPolynomial.coeff_smul, Algebra.smul_def, GLWeightTheory.valuation_mul_alt, add_assoc]
     exact add_nonneg ((GLWeightTheory.valuation_nonneg_iff_integral S _).2 ⟨a, rfl⟩) hx
 
+/- English proof (translation)
+Establish `hA` using `vK_coeff_add_half_padicVal_nonneg_of_bbSpec S sp u hu μ`. Establish `hB` using `vK_coeff_add_half_padicVal_nonneg_of_bbSpec S sp u' hu' μ`. Establish `h1` using `padicValNat_le_vK_natCast S (expFact μ)`. Establish `h2` using `padicValNat_le_vK_natCast S sp`. Rewrite using `[← GLWeightTheory.valuation_nonneg_iff_integral S, GLWeightTheory.valuation_mul_alt, GLWeightTheory.valuation_mul_alt, GLWeightTheory.valuation_mul_alt]`.
+
+Use `set T : ℚ := (padicValNat p (expFact μ) : ℚ) / 2 + (padicValNat p sp : ℚ) / 2`. Establish `hT : (T : WithTop ℚ) + T = ((padicValNat p (expFact μ) : ℚ) : WithTop ℚ) + ((padicValNat p sp : ℚ) : WithTop ℚ)`. Rewrite using `[← WithTop.coe_add, ← WithTop.coe_add]`. Use `congr 1`. Simplify using `only [T]`.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT]`. Conclude with `add_le_add le_rfl (add_le_add h1 h2)`.
+-/
 theorem bb_pair {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} (S : UniformizedDVR p O)
     (h2 : S.w ^ 2 = (p : O)) {σ : Type} (sp : ℕ) (u u' : MvPolynomial σ (KK O)) (hu : u ∈ bbSpec O p σ sp)
     (hu' : u' ∈ bbSpec O p σ sp) (μ : σ →₀ ℕ) :
@@ -89,6 +119,11 @@ theorem bb_pair {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
       rw [hT]
       exact add_le_add le_rfl (add_le_add h1 h2)
 
+/- English proof (translation)
+Unfold `specConst`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _`. Use `split_ifs`. Conclude with `Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)`.
+
+Conclude with `one_ne_zero`.
+-/
 theorem specConst_ne (p : ℕ) {s r : ℕ} (S : SegData s) (b : SegBlock s r) : specConst p S b ≠ 0 := by
   unfold specConst
   rw [Finset.prod_ne_zero_iff]
@@ -97,6 +132,9 @@ theorem specConst_ne (p : ℕ) {s r : ℕ} (S : SegData s) (b : SegBlock s r) : 
   · exact Nat.mul_ne_zero (Nat.factorial_ne_zero _) (Nat.factorial_ne_zero _)
   · exact one_ne_zero
 
+/- English proof (translation)
+Use extensionality with `μ`. Rewrite using `[hEig, MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, hEig, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem gOp_smul (hEig : EigAt) {O : Type} [CommRing O] [IsDomain O] {σ : Type}
     (T : Finset (σ →₀ ℕ)) (q : (σ →₀ ℕ) → O) (k : KK O) (u : MvPolynomial σ (KK O)) :
     gOp T q (k • u) = k • gOp T q u := by
@@ -104,6 +142,9 @@ private theorem gOp_smul (hEig : EigAt) {O : Type} [CommRing O] [IsDomain O] {σ
   rw [hEig, MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, hEig, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `μ`. Rewrite using `[hEig, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hEig, hEig]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem gOp_add (hEig : EigAt) {O : Type} [CommRing O] [IsDomain O] {σ : Type}
     (T : Finset (σ →₀ ℕ)) (q : (σ →₀ ℕ) → O) (u v : MvPolynomial σ (KK O)) :
     gOp T q (u + v) = gOp T q u + gOp T q v := by
@@ -111,6 +152,13 @@ private theorem gOp_add (hEig : EigAt) {O : Type} [CommRing O] [IsDomain O] {σ 
   rw [hEig, MvPolynomial.coeff_add, MvPolynomial.coeff_add, hEig, hEig]
   ring
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (hAB x hx)`. Consider the case `zero`. Establish `h0 : gOp T q (0 : MvPolynomial σ (KK O)) = 0`. Use extensionality with `μ`.
+
+Rewrite using `[hEig, MvPolynomial.coeff_zero, mul_zero]`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[gOp_add hEig]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul k x _ hx`. Rewrite using `[gOp_smul hEig]`. Conclude with `Submodule.smul_mem _ k hx`.
+-/
 private theorem gOp_mem_span_of_mem_span (hEig : EigAt) {O : Type} [CommRing O] [IsDomain O] {σ : Type}
     (T : Finset (σ →₀ ℕ)) (q : (σ →₀ ℕ) → O) (A B : Submodule O (MvPolynomial σ (KK O)))
     (hAB : ∀ x ∈ A, gOp T q x ∈ B) (u : MvPolynomial σ (KK O))
@@ -131,6 +179,19 @@ private theorem gOp_mem_span_of_mem_span (hEig : EigAt) {O : Type} [CommRing O] 
     rw [gOp_smul hEig]
     exact Submodule.smul_mem _ k hx
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hc`. Take `⟨e, N', hndvd, hN'⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN p hp.ne_one`. Establish `hN'0 : N' ≠ 0`. Introduce and unpack `rfl`. Conclude with `hndvd (dvd_zero p)`.
+
+Establish `hv : padicValNat p N = e` using `by haveI := Fact.mk hp`. Rewrite using `[hN', padicValNat.mul (pow_ne_zero _ hp.ne_zero) hN'0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hndvd, add_zero]`. Rewrite `hz` using `[hv]`. Take `⟨uu, huu⟩` from `GLWeightTheory.natCast_isUnit_of_coprime hp DS N' hndvd`. Establish `hpw : (algebraMap O (KK O) w ^ e) ^ 2 = (p : KK O) ^ e`.
+
+Rewrite using `[← pow_mul, mul_comm, pow_mul, ← map_pow, hw2, map_natCast]`. Establish `hcast : (p : KK O) ^ e * (N' : KK O) = (E : KK O) * (d : KK O)`. Establish `h1 : ((p ^ e * N' : ℕ) : KK O) = ((E * d : ℕ) : KK O)` using `by rw [← hN', hNE]`. Move the coercions through the operations in `at h1`. Conclude with `h1`.
+
+Establish `hz2 : z ^ 2 * algebraMap O (KK O) (uu : O) = algebraMap O (KK O) (y * d)`. Rewrite using `[huu, map_natCast, map_mul, map_natCast, ← hy, hz, map_pow]`. Take the linear combination `(c ^ 2 * (N' : KK O)) * hpw + c ^ 2 * hcast`. Establish `hz3 : z ^ 2 = algebraMap O (KK O) (y * d * ↑uu⁻¹)`. Rewrite using `[map_mul (algebraMap O (KK O)) (y * d), ← hz2, mul_assoc, ← map_mul, Units.mul_inv, map_one, mul_one]`.
+
+Establish `hint : IsIntegral O z`. Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[hz3]`. Conclude with `isIntegral_algebraMap`. Take `⟨o, ho⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+
+Conclude with `⟨o, ho.symm⟩`.
+-/
 private theorem exists_algebraMap_eq_of_w_pow_padicVal_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ}
     (hp : p.Prime) (DS : UniformizedDVR p O) (w : O) (hw2 : w ^ 2 = (p : O)) (N E d : ℕ) (hN : N ≠ 0)
     (hNE : N = E * d) (z c : KK O) (hz : z = algebraMap O (KK O) (w ^ padicValNat p N) * c)
@@ -164,11 +225,19 @@ private theorem exists_algebraMap_eq_of_w_pow_padicVal_mul {O : Type} [CommRing 
   obtain ⟨o, ho⟩ := IsIntegrallyClosed.isIntegral_iff.1 hint
   exact ⟨o, ho.symm⟩
 
+/- English proof (translation)
+Unfold `Nblk`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun x _ => Nat.factorial_ne_zero _) (specConst_ne _ _ _)`.
+-/
 theorem Nblk_ne (C0 CE1 CE2 : ℝ) (X : Loc) (j : Fin (numSeg X.TT)) (b : SegBlock (segS X.TT j) X.m) :
     Nblk C0 CE1 CE2 X j b ≠ 0 := by
   unfold Nblk
   exact mul_ne_zero (Finset.prod_ne_zero_iff.2 fun x _ => Nat.factorial_ne_zero _) (specConst_ne _ _ _)
 
+/- English proof (translation)
+Unfold `YCond`. Apply `sSup_le_sSup` to reduce the goal to its premises. Introduce and unpack `S ⟨h1, h2⟩`. Use `⟨h1.trans ?_, h2⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Conclude with `(show _ ≤ M from hx hm).trans h`.
+-/
 private theorem yCond_mono {K : Type} [CommRing K] {N r : ℕ} [NeZero r] (LL : ChainLetters N) (j : ℕ)
     {M M' : WithTop ℤ} (h : M ≤ M') : YCond K (r := r) LL j M ≤ YCond K (r := r) LL j M' := by
   unfold YCond
@@ -180,6 +249,11 @@ private theorem yCond_mono {K : Type} [CommRing K] {N r : ℕ} [NeZero r] (LL : 
   intro m hm
   exact (show _ ≤ M from hx hm).trans h
 
+/- English proof (translation)
+Unfold `YjtZ Yjt`. Introduce `x hx`. Use `⟨?_, hx.2⟩` and prove the remaining obligations. Establish `hx1 : x ∈ chPol (KK O) r LL ⊓ ⨅ k, YCond (KK O) LL (J k) (M k)` using `hx.1`. Use `show x ∈ chPol (KK O) r LL ⊓ ⨅ k, YCond (KK O) LL (J k) (M' k)`.
+
+Use `⟨hx1.1, ?_⟩` and prove the remaining obligations. Establish `h2 : x ∈ ⨅ k, YCond (KK O) LL (J k) (M k)` using `hx1.2`. Use `show x ∈ ⨅ k, YCond (KK O) LL (J k) (M' k)`. Rewrite `h2`, the goal using `[Submodule.mem_iInf]`. Conclude with `fun k => yCond_mono LL (J k) (h k) (h2 k)`.
+-/
 private theorem yjtZ_mono' {O : Type} [CommRing O] [IsDomain O] {N r : ℕ} [NeZero r] (LL : ChainLetters N)
     {q : ℕ} (J : Fin q → ℕ) {M M' : Fin q → WithTop ℤ} (h : ∀ k, M k ≤ M' k) :
     YjtZ O (r := r) LL J M ≤ YjtZ O (r := r) LL J M' := by
@@ -194,6 +268,13 @@ private theorem yjtZ_mono' {O : Type} [CommRing O] [IsDomain O] {N r : ℕ} [NeZ
   rw [Submodule.mem_iInf] at h2 ⊢
   exact fun k => yCond_mono LL (J k) (h k) (h2 k)
 
+/- English proof (translation)
+Unfold `BlockData.SSZ`. Apply `Submodule.span_mono` to reduce the goal to its premises. Use `Set.iUnion_mono fun jj => Set.iUnion_mono fun jp => Set.iUnion_mono fun hL => ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, g, hg, rfl⟩`. Use `⟨y, yjtZ_mono' _ _ ?_ hy, g, hg, rfl⟩` and prove the remaining obligations.
+
+Introduce `k`. Use `show WithTop.map (fun x : ℤ => ⌊(x : ℝ) - m2⌋) (segmentCapacities p S b k) ≤ WithTop.map (fun x : ℤ => ⌊(x : ℝ) - m1⌋) (segmentCapacities p S b k)`. Generalize the expression as in `segmentCapacities p S b k = t`. Proceed by induction on `t using WithTop.recTopCoe with`. Consider the case `top => simp`.
+
+Consider the case `coe z`. Simplify using `only [WithTop.map_coe, WithTop.coe_le_coe]`. Conclude with `Int.floor_mono (by linarith)`.
+-/
 private theorem ssz_antitone_of_le {s r : ℕ} [NeZero r] (O : Type) [CommRing O] [IsDomain O] (p : ℕ) (S : SegData s)
     (aTop : Fin s → ℕ) (aPlus : ℕ) (b : SegBlock s r) {m1 m2 : ℝ} (hm : m1 ≤ m2) :
     BlockData.SSZ O (r := r) (blockData p S aTop aPlus m2 b) ≤ BlockData.SSZ O (r := r) (blockData p S aTop aPlus m1 b) := by
@@ -212,6 +293,49 @@ private theorem ssz_antitone_of_le {s r : ℕ} [NeZero r] (O : Type) [CommRing O
     simp only [WithTop.map_coe, WithTop.coe_le_coe]
     exact Int.floor_mono (by linarith)
 
+/- English proof (translation)
+Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hC hc j b hK`. Take `⟨hSet, hw, -, -⟩` from `hS`. Establish `hD1 : D1num X` using `⟨hSet.prime, hSet.five_le, hSet.two_le, hSet.even⟩`. Establish `hwsq : w ^ 2 = (X.p : O)` using `hSet.w_sq`. Establish `hpP : X.p.Prime` using `hSet.prime`.
+
+Establish `hN1 : 1 ≤ X.N1` using `(hstd X hD1 hH hC).N1pos`. Establish `hw0 : w ≠ 0` using `hw.ne_zero`. Set `DS : UniformizedDVR X.p O` to `{ w := w, w_irr := hw, p_mem := by`. Rewrite using `[← hwsq, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_pow_iff (by norm_num)]`. Conclude with `hw.not_isUnit`.
+
+Use `p_ne := by`. Rewrite using `[← hwsq]`. Conclude with `pow_ne_zero 2 hw0`. Use `complete := hSet.complete_O }`. Use `haveI : CharZero (KK O) := GLWeightTheory.dvr_fraction_field_char_zero hpP DS`.
+
+Take `⟨κ, T, q, hκ0, hκv, hT, hfac⟩` from `hF X O w hw hwsq hD1 hH hC j b hK`. Use `set v := padicValNat X.p (Nblk C0 CE1 CE2 X j b) with hv`. Use `set sc : KK O := algebraMap O (KK O) (w ^ v) with hsc_def`. Establish `hsc : sc * sc = (X.p : KK O) ^ v`. Rewrite using `[hsc_def, ← map_mul, ← mul_pow, ← sq, hwsq, map_pow, map_natCast]`.
+
+Establish `hmle : X.m0 13 ≤ X.m0 Cm - 4 * (X.c : ℝ)`. Unfold `Loc.m0 m0G4 m1G4`. Establish `hk1 : (1 : ℝ) ≤ X.k`. Unfold `Loc.k`. Use `(Nat.cast_nonneg X.m : (0 : ℝ) ≤ X.m)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN1r : (1 : ℝ) ≤ X.N1` using `by exact_mod_cast hN1`. Establish `hQ : (1 : ℝ) ≤ X.Q`. Unfold `Loc.Q`. Conclude with `one_le_pow₀ (by exact_mod_cast hpP.one_lt.le)`.
+
+Establish `hP : (1 : ℝ) ≤ X.k * X.N1 * X.Q`. Establish `h1` using `mul_le_mul hk1 hN1r zero_le_one (by linarith)`. Establish `h2` using `mul_le_mul h1 hQ zero_le_one (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc0 : (0 : ℝ) ≤ X.c` using `Nat.cast_nonneg _`.
+
+Establish `h4 : 4 ≤ (Cm - 13) * (X.k * X.N1 * X.Q)` using `by nlinarith`. Use `mul_le_mul_of_nonneg_right h4 hc0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hmle2 : X.m0 13 ≤ X.m0 Cm`. Establish `: (0 : ℝ) ≤ 4 * X.c` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : ∀ u ∈ blockLat O X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (X.m0 Cm) b, ∀ μ, ∃ o : O, sc * u.coeff μ = algebraMap O (KK O) o`. Introduce `u hu μ`. Distinguish the cases in `hμ : μ ∈ u.support`. Establish `hHE` using `hHom X O hD1 hH hC j b hK (X.m0 Cm) u hu.1 μ hμ`.
+
+Take `⟨d, hd⟩` from `hDvd C0 CE1 CE2 X j b hK μ hHE`. Take `⟨o, ho⟩` from `exists_algebraMap_eq_of_w_pow_padicVal_mul hpP DS w hwsq _ _ d (Nblk_ne C0 CE1 CE2 X j b) hd (sc * u.coeff μ) (u.coeff μ) rfl (by`. Take `⟨y, hy⟩` from `bb_pair DS hwsq _ u u hu.2 hu.2 μ`. Conclude with `⟨y, by rw [← hy]; push_cast; ring⟩)`. Conclude with `⟨o, ho⟩`.
+
+Rewrite using `[MvPolynomial.notMem_support_iff.1 hμ, mul_zero]`. Conclude with `⟨0, (map_zero _).symm⟩`. Use `⟨κ, fun u => sc • gOp T q u, fun u => sc • u, hκ0, hκv, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `hsp` using `hu.1`.
+
+Prove the components needed by the constructor for the conclusion. Apply `hSat` to reduce the goal to its premises. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.span_mono (ssz_antitone_of_le O X.p _ _ _ b hmle)` to reduce the goal to its premises. Conclude with `gOp_mem_span_of_mem_span hEig T q _ _ (fun x hx => hG C0 CE1 CE2 X O j b hK X.c T q hT (X.m0 Cm) x hx) u hsp`.
+
+Use `mem_intPol_of_coeff (σ := BV C0 CE1 CE2 X j) _ fun μ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hint u hu μ`. Use `⟨gEv T q μ * o, ?_⟩` and prove the remaining obligations. Use `show (sc • gOp T q u).coeff μ = _`. Rewrite using `[MvPolynomial.coeff_smul, hEig, smul_eq_mul, map_mul, ← ho]`.
+
+Expand and normalize the polynomial expressions, which then agree. Apply `hSat` to reduce the goal to its premises. Conclude with `Submodule.smul_mem _ _ (Submodule.span_mono (ssz_antitone_of_le O X.p _ _ _ b hmle2) hsp)`. Use `mem_intPol_of_coeff (σ := BV C0 CE1 CE2 X j) _ fun μ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `hint u hu μ`.
+
+Conclude with `⟨o, by show (sc • u).coeff μ = _`. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, ho]⟩`. Introduce `u hu u' hu' a ha beta_reduce`. Establish `hio` using `hIo C0 CE1 CE2 X (KK O) hpP.pos j b (sc • gOp T q u) (sc • u')`. Establish `key : ∀ μ ∈ u.support, ∃ t : O, zSeg (KK O) X j * ((sc • gOp T q u).coeff μ * (sc • u').coeff μ * (expFact (ioExp C0 CE1 CE2 X j b μ) : KK O)) = algebraMap O (KK O) κ * ((specConst X.p (X.seg C0 CE1 CE2 j) b : KK O) * (u.coeff μ * u'.coeff μ * (expFact μ : KK O))) + algebraMap O …`.
+
+Introduce `μ hμ`. Establish `hHE` using `hHom X O hD1 hH hC j b hK (X.m0 Cm) u hu.1 μ hμ`. Take `⟨h, hh⟩` from `hfac μ hHE`. Take `⟨y, hy⟩` from `bb_pair DS hwsq _ u u' hu.2 hu'.2 μ`. Use `⟨h * y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.coeff_smul, MvPolynomial.coeff_smul, hEig, smul_eq_mul, smul_eq_mul]`. Simplify using `only [map_mul, map_add, map_one, map_pow] at hh hy ⊢`. Take the linear combination `(u.coeff μ * u'.coeff μ * zSeg (KK O) X j * (expFact (ioExp C0 CE1 CE2 X j b μ) : KK O) * algebraMap O (KK O) (gEv T q μ)) * hsc + (u.coeff μ * u'.coeff μ) * hh + (algebraMap O (KK O) κ * algebraMap O (KK O) w ^ X.c * algebraMap O (KK O) h) * hy`. Use `choose! t ht using key`. Use `⟨∑ μ ∈ u.support, t μ, ?_⟩` and prove the remaining obligations.
+
+Establish `hsub : (sc • gOp T q u).support ⊆ u.support`. Introduce `μ hμ`. Rewrite `hμ`, the goal using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Apply `hμ` to reduce the goal to its premises.
+
+Rewrite using `[MvPolynomial.coeff_smul, hEig, h0, mul_zero, smul_zero]`. Rewrite using `[hio, Finset.sum_subset hsub (fun μ _ hμ => by rw [MvPolynomial.notMem_support_iff.1 hμ, zero_mul, zero_mul]), Finset.mul_sum, Finset.sum_congr rfl ht, Finset.sum_add_distrib]`. Establish `hf : ∑ μ ∈ u.support, algebraMap O (KK O) κ * ((specConst X.p (X.seg C0 CE1 CE2 j) b : KK O) * (u.coeff μ * u'.coeff μ * (expFact μ : KK O))) = algebraMap O (KK O) κ * algebraMap O (KK O) a`. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, ← ha]`. Both sides reduce to the same expression.
+
+Rewrite using `[hf, ← map_sum, ← map_mul, ← map_add]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, mul_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blockFormAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc H : ℝ} (hCm : 17 ≤ Cm)
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
     (hIo : IoFockAt) (hEig : EigAt) (hHom : HomAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) (hDvd : DvdAt) (hSat : SatAt)

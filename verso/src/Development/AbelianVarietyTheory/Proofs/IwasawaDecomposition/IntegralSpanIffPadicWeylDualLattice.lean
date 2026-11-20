@@ -26,6 +26,15 @@ def spanO {K : Type} [CommRing K] (O : Set K) (G : Set (MvPolynomial σ ℤ)) :
     AddSubgroup (MvPolynomial σ K) :=
   AddSubgroup.closure {p | ∃ r ∈ O, ∃ g ∈ G, p = r • map (Int.castRingHom K) g}
 
+/- English proof (translation)
+Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, hr, g, hg, rfl⟩` from `hx`. Conclude with `⟨1, fun _ => r, fun _ => g, fun _ => ⟨hr, hg⟩, by simp⟩`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨m1, r1, g1, h1, rfl⟩` from `hx`. Take `⟨m2, r2, g2, h2, rfl⟩` from `hy`. Use `⟨m1 + m2, Fin.append r1 r2, Fin.append g1 g2, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `using h1 j`. Simplify using `using h2 j`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+
+Consider the case `neg x _ hx`. Take `⟨m, r, g, h, rfl⟩` from `hx`. Conclude with `⟨m, fun i => -r i, g, fun i => ⟨hO _ (h i).1, (h i).2⟩, by simp [Finset.sum_neg_distrib, neg_smul]⟩`.
+-/
 theorem exists_fin_of_mem {K : Type} [CommRing K] {O : Set K} (hO : ∀ r ∈ O, -r ∈ O)
     {G : Set (MvPolynomial σ ℤ)} {P : MvPolynomial σ K} (h : P ∈ spanO O G) :
     ∃ (m : ℕ) (r : Fin m → K) (g : Fin m → MvPolynomial σ ℤ), (∀ i, r i ∈ O ∧ g i ∈ G) ∧
@@ -48,14 +57,25 @@ theorem exists_fin_of_mem {K : Type} [CommRing K] {O : Set K} (hO : ∀ r ∈ O,
     obtain ⟨m, r, g, h, rfl⟩ := hx
     exact ⟨m, fun i => -r i, g, fun i => ⟨hO _ (h i).1, (h i).2⟩, by simp [Finset.sum_neg_distrib, neg_smul]⟩
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.map_map, RingHom.ext_int (φ.comp (Int.castRingHom L)) (Int.castRingHom K)]`.
+-/
 theorem map_map_int {L K : Type} [CommRing L] [CommRing K] (φ : L →+* K) (g : MvPolynomial σ ℤ) :
     map φ (map (Int.castRingHom L) g) = map (Int.castRingHom K) g := by
   rw [MvPolynomial.map_map, RingHom.ext_int (φ.comp (Int.castRingHom L)) (Int.castRingHom K)]
 
+/- English proof (translation)
+Rewrite using `[smul_eq_C_mul, map_mul, map_C, map_map_int, smul_eq_C_mul]`.
+-/
 theorem map_smul_map {L K : Type} [CommRing L] [CommRing K] (φ : L →+* K) (r : L) (g : MvPolynomial σ ℤ) :
     map φ (r • map (Int.castRingHom L) g) = φ r • map (Int.castRingHom K) g := by
   rw [smul_eq_C_mul, map_mul, map_C, map_map_int, smul_eq_C_mul]
 
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => exact AddSubgroup.subset_closure ⟨r, hr, x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `smul z x _ hx`. Rewrite using `[map_zsmul, smul_comm]`. Conclude with `zsmul_mem hx z`.
+-/
 theorem smul_map_mem {K : Type} [CommRing K] (O : AddSubgroup K) (G : Set (MvPolynomial σ ℤ))
     {r : K} (hr : r ∈ O) {g : MvPolynomial σ ℤ} (hg : g ∈ Submodule.span ℤ G) :
     r • map (Int.castRingHom K) g ∈ spanO (O : Set K) G := by
@@ -67,6 +87,11 @@ theorem smul_map_mem {K : Type} [CommRing K] (O : AddSubgroup K) (G : Set (MvPol
     rw [map_zsmul, smul_comm]
     exact zsmul_mem hx z
 
+/- English proof (translation)
+Proceed by induction on `hR using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, hr, g, hg, rfl⟩` from `hx`. Rewrite using `[map_smul_map]`. Conclude with `AddSubgroup.subset_closure ⟨φ r, h r hr, g, hg, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem map_mem {L K : Type} [CommRing L] [CommRing K] (φ : L →+* K) {O : Set L} {O' : Set K}
     (h : ∀ r ∈ O, φ r ∈ O') {G : Set (MvPolynomial σ ℤ)} {R : MvPolynomial σ L} (hR : R ∈ spanO O G) :
     map φ R ∈ spanO O' G := by
@@ -79,6 +104,11 @@ theorem map_mem {L K : Type} [CommRing L] [CommRing K] (φ : L →+* K) {O : Set
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Take `⟨m, r, g, h, hR'⟩` from `exists_fin_of_mem (fun x hx => by obtain ⟨y, hy, e⟩ := hx; exact ⟨-y, neg_mem hy, by rw [map_neg, e]⟩) hR`. Use `choose r' hr' e using fun i => (h i).1`. Establish `: R = ∑ i, r' i • map (Int.castRingHom L) (g i)`. Apply `map_injective φ hφ` to reduce the goal to its premises. Rewrite using `[hR', map_sum]`.
+
+Simplify using `only [map_smul_map, e]`. Rewrite using `[this]`. Conclude with `sum_mem fun i _ => AddSubgroup.subset_closure ⟨r' i, hr' i, g i, (h i).2, rfl⟩`.
+-/
 theorem of_map_mem {L K : Type} [CommRing L] [CommRing K] (φ : L →+* K) (hφ : Function.Injective φ)
     (O : AddSubgroup L) {G : Set (MvPolynomial σ ℤ)} {R : MvPolynomial σ L}
     (hR : map φ R ∈ spanO (φ '' (O : Set L)) G) : R ∈ spanO (O : Set L) G := by
@@ -92,6 +122,11 @@ theorem of_map_mem {L K : Type} [CommRing L] [CommRing K] (φ : L →+* K) (hφ 
   rw [this]
   exact sum_mem fun i _ => AddSubgroup.subset_closure ⟨r' i, hr' i, g i, (h i).2, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `Module.Flat.linearIndependent_one_tmul (S := K) he`. Establish `h2` using `h1.map' (algebraTensorAlgEquiv ℤ K).toLinearEquiv.toLinearMap (LinearEquiv.ker _)`. Establish `key : ((algebraTensorAlgEquiv ℤ K).toLinearEquiv.toLinearMap ∘ fun x => (1 : K) ⊗ₜ[ℤ] e x) = fun k => map (Int.castRingHom K) (e k)`. Use function extensionality and compare the values at `k`. Simplify using `[algebraTensorAlgEquiv_tmul]`.
+
+Rewrite `h2` using `[key]`. Conclude with `h2`.
+-/
 theorem li_map {ι K : Type} [Field K] [Module.Flat ℤ K] {e : ι → MvPolynomial σ ℤ}
     (he : LinearIndependent ℤ e) : LinearIndependent K (fun k => map (Int.castRingHom K) (e k)) := by
   have h1 := Module.Flat.linearIndependent_one_tmul (S := K) he
@@ -113,6 +148,31 @@ open MvPolynomial
 
 variable {σ : Type}
 
+/- English proof (translation)
+Take `⟨m1, r1, g1, h1, hR1⟩` from `exists_fin_of_mem (O := (Set.univ : Set L)) (fun _ _ => Set.mem_univ _) hR`. Take `⟨m2, r2, g2, h2, hR2⟩` from `exists_fin_of_mem (fun _ h => neg_mem h) hc`. Use `set T : Finset (MvPolynomial σ ℤ) := Finset.univ.image g1 ∪ Finset.univ.image g2 with hT`. Use `set N : Submodule ℤ (MvPolynomial σ ℤ) := Submodule.span ℤ (T : Set (MvPolynomial σ ℤ)) with hN`. Use `haveI : Module.Finite ℤ N := Module.Finite.span_of_finite ℤ T.finite_toSet`.
+
+Use `haveI : Module.Free ℤ N := Module.free_of_finite_type_torsion_free'`. Use `set b := Module.Free.chooseBasis ℤ N with hb`. Use `set e : Module.Free.ChooseBasisIndex ℤ N → MvPolynomial σ ℤ := fun k => (b k : MvPolynomial σ ℤ) with he_def`. Establish `he : LinearIndependent ℤ e` using `b.linearIndependent.map' N.subtype N.ker_subtype`. Set `crd : MvPolynomial σ ℤ → Module.Free.ChooseBasisIndex ℤ N → ℤ` to `fun g => if hg : g ∈ N then b.repr ⟨g, hg⟩ else 0`.
+
+Establish `hexp : ∀ g ∈ N, g = ∑ k, crd g k • e k`. Introduce `g hg`. Use `congrArg Subtype.val (b.sum_repr ⟨g, hg⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [SetLike.val_smul] at this`.
+
+Simplify using `only [crd, dif_pos hg, e]`. Conclude with `this.symm`. Establish `mapExp : ∀ (K' : Type) [CommRing K'], ∀ g ∈ N, map (Int.castRingHom K') g = ∑ k, (crd g k : K') • map (Int.castRingHom K') (e k)`. Introduce `K' _ g hg`. Use `conv_lhs => rw [hexp g hg]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `hg1 : ∀ i, g1 i ∈ N` using `fun i => Submodule.subset_span (by simp [hT])`. Establish `hg2 : ∀ i, g2 i ∈ N` using `fun i => Submodule.subset_span (by simp [hT])`.
+
+Establish `hNG : N ≤ Submodule.span ℤ G`. Rewrite using `[hN, Submodule.span_le]`. Introduce `g hg`. Simplify using `only [hT, Finset.coe_union, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_union, Set.mem_range] at hg`. Break down `hg with ⟨i, rfl⟩ | ⟨i, rfl⟩` into its components or cases.
+
+Conclude with `Submodule.subset_span (h1 i).2`. Conclude with `Submodule.subset_span (h2 i).2`. Use `set c : Module.Free.ChooseBasisIndex ℤ N → L := fun k => ∑ i, r1 i * (crd (g1 i) k : L) with hc_def`. Use `set d : Module.Free.ChooseBasisIndex ℤ N → K := fun k => ∑ i, r2 i * (crd (g2 i) k : K) with hd_def`. Establish `hRc : R = ∑ k, c k • map (Int.castRingHom L) (e k)`.
+
+Rewrite using `[hR1]`. Repeatedly rewrite using `[mapExp L _ (hg1 _), Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[c, Finset.sum_smul]`. Establish `hψ : map ψ R = ∑ k, ψ (c k) • map (Int.castRingHom K) (e k)`.
+
+Rewrite using `[hRc, map_sum]`. Simplify using `only [map_smul_map]`. Establish `hd : map ψ R = ∑ k, d k • map (Int.castRingHom K) (e k)`. Rewrite using `[hR2]`. Repeatedly rewrite using `[mapExp K _ (hg2 _), Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `[d, Finset.sum_smul]`. Establish `hcd : ∀ k, ψ (c k) = d k`. Use `Fintype.linearIndependent_iff.mp (li_map (K := K) he) (fun k => ψ (c k) - d k) (by simp only [sub_smul, Finset.sum_sub_distrib]; rw [← hψ, ← hd, sub_self])` as an intermediate fact. Conclude with `fun k => sub_eq_zero.mp (this k)`.
+
+Establish `hdO : ∀ k, d k ∈ Oc` using `fun k => sum_mem fun i _ => by`. Rewrite using `[mul_comm, ← zsmul_eq_mul]`. Conclude with `zsmul_mem (h2 i).1 _`. Rewrite using `[hRc]`. Use `sum_mem fun k _ => smul_map_mem _ G ?_ (hNG (b k).2)` and prove the remaining obligations.
+
+Use `show ψ (c k) ∈ Oc`. Rewrite using `[hcd]`. Conclude with `hdO k`.
+-/
 theorem keyCoord {L K : Type} [Field L] [Field K] [Module.Flat ℤ K] (ψ : L →+* K) (Oc : AddSubgroup K)
     (G : Set (MvPolynomial σ ℤ)) (R : MvPolynomial σ L) (hR : R ∈ spanO (Set.univ : Set L) G)
     (hc : map ψ R ∈ spanO (Oc : Set K) G) :
@@ -186,6 +246,9 @@ namespace GlobalTheory.IntSpanCmp
 
 open MvPolynomial
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Forms.ten, map_prod, map_rename]`.
+-/
 theorem ten_map {ι R K : Type} [Fintype ι] [CommRing R] [CommRing K] (φ : R →+* K) {n : ℕ}
     (f : ι → MvPolynomial (Fin n × Fin n) R) :
     Formalism.L2.Forms.ten (fun τ => map φ (f τ)) = map φ (Formalism.L2.Forms.ten f) := by
@@ -203,6 +266,9 @@ noncomputable def polFunHom {K ι : Type} [CommRing K] (n : ℕ) :
   map_zero' := by funext y; simp [polFun]
   map_add' P Q := by funext y; simp [polFun]
 
+/- English proof (translation)
+Introduce `P Q h`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Use `congrFun h (fun τ a b => x (τ, a, b))` as an intermediate fact. Conclude with `this`.
+-/
 theorem polFunHom_inj {K ι : Type} [Field K] [Infinite K] (n : ℕ) :
     Function.Injective (polFunHom (K := K) (ι := ι) n) := by
   intro P Q h
@@ -211,6 +277,9 @@ theorem polFunHom_inj {K ι : Type} [Field K] [Infinite K] (n : ℕ) :
   have := congrFun h (fun τ a b => x (τ, a, b))
   exact this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[polFun, Formalism.L2.Forms.ten, smul_eq_C_mul, map_prod, eval_prod, eval_rename, Function.comp_def, map_rename]`.
+-/
 theorem polFun_smul_ten {K ι : Type} [CommRing K] [Fintype ι] {n : ℕ} (r : K)
     (f : ι → MvPolynomial (Fin n × Fin n) ℤ) :
     polFun (r • map (Int.castRingHom K) (Formalism.L2.Forms.ten f)) =
@@ -224,6 +293,27 @@ namespace GlobalTheory.IntSpanCmp
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `D Pl w n lam R hRat`. Use `set G : Set (MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℤ) := {g | ∃ f : D.what₂.Tau → MvPolynomial (Fin n × Fin n) ℤ, (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧ g = Formalism.L2.Forms.ten f} with hG`. Establish `hinj : Function.Injective D.what₂.embLL` using `D.what₂.embLL.injective`. Establish `hR : R ∈ spanO (Set.univ : Set D.what₂.LL) G`. Establish `h1 : MvPolynomial.map D.what₂.embLL R ∈ spanO (D.what₂.embLL '' ((⊤ : AddSubgroup D.what₂.LL) : Set D.what₂.LL)) G`.
+
+Use `(AddSubgroup.closure_le _).mpr ?_ hRat` and prove the remaining obligations. Introduce and unpack `p ⟨r, f, hf, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨D.what₂.embLL r, ⟨r, trivial, rfl⟩, Formalism.L2.Forms.ten f, ⟨f, hf, rfl⟩, by rw [ten_map]⟩`. Use `of_map_mem D.what₂.embLL hinj ⊤ h1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hInt : MvPolynomial.map D.what₂.embLL R ∈ Formalism.L2.Forms.IntSpan D w lam ↔ R ∈ spanO (((intW D.what₂.places w).toAddSubgroup : AddSubgroup D.what₂.LL) : Set D.what₂.LL) G`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : MvPolynomial.map D.what₂.embLL R ∈ spanO (D.what₂.embLL '' (((intW D.what₂.places w).toAddSubgroup : AddSubgroup D.what₂.LL) : Set D.what₂.LL)) G`. Use `(AddSubgroup.closure_le _).mpr ?_ h` and prove the remaining obligations.
+
+Introduce and unpack `p ⟨r, f, hr, hf, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨D.what₂.embLL r, ⟨r, hr, rfl⟩, Formalism.L2.Forms.ten f, ⟨f, hf, rfl⟩, by rw [ten_map]⟩`. Conclude with `of_map_mem D.what₂.embLL hinj (intW D.what₂.places w).toAddSubgroup h1`. Introduce `h`. Establish `h1` using `map_mem D.what₂.embLL (O' := D.what₂.embLL '' (((intW D.what₂.places w).toAddSubgroup : AddSubgroup D.what₂.LL) : Set D.what₂.LL)) (fun r hr => ⟨r, hr, rfl⟩) h`.
+
+Use `(AddSubgroup.closure_le _).mpr ?_ h1` and prove the remaining obligations. Introduce and unpack `p ⟨_, ⟨r, hr, rfl⟩, g, ⟨f, hf, rfl⟩, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨r, f, Subring.mem_toAddSubgroup.mp hr, hf, by rw [ten_map]⟩`. Establish `hDelW : WeylLatticeDuality.DelW (D.what₂.places.resChar w) D.what₂.Tau n (fun τ => (lam τ).natW) = (spanO ((ballO (D.what₂.places.resChar w) : AddSubgroup ℂ_[D.what₂.places.resChar w]) : Set ℂ_[D.what₂.places.resChar w]) G).map (polFunHom n)`. Unfold `WeylLatticeDuality.DelW`.
+
+Rewrite using `[spanO, AddMonoidHom.map_closure]`. Use `congrArg AddSubgroup.closure ?_` and prove the remaining obligations. Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, f, hr, hf, rfl⟩`.
+
+Conclude with `⟨_, ⟨r, hr, Formalism.L2.Forms.ten f, ⟨f, hf, rfl⟩, rfl⟩, by simp [polFunHom, polFun_smul_ten]⟩`. Introduce and unpack `⟨_, ⟨r, hr, _, ⟨f, hf, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨r, f, hr, hf, by simp [polFunHom, polFun_smul_ten]⟩`. Establish `hD : polFun (MvPolynomial.map (Pl.iL w) R) ∈ WeylLatticeDuality.DelW (D.what₂.places.resChar w) D.what₂.Tau n (fun τ => (lam τ).natW) ↔ MvPolynomial.map (Pl.iL w) R ∈ spanO ((ballO (D.what₂.places.resChar w) : AddSubgroup ℂ_[D.what₂.places.resChar w]) : Set ℂ_[D.what₂.places.resC …`. Rewrite using `[hDelW]`.
+
+Conclude with `AddSubgroup.mem_map_iff_mem (polFunHom_inj n)`. Rewrite using `[hInt, hD]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `map_mem (Pl.iL w) (fun r hr => (Pl.iL_int w r).1 hr) h`.
+
+Introduce `h`. Use `keyCoord (Pl.iL w) (ballO (D.what₂.places.resChar w)) G R hR h` as an intermediate fact. Establish `hset : (((ballO (D.what₂.places.resChar w)).comap (Pl.iL w).toAddMonoidHom : AddSubgroup D.what₂.LL) : Set D.what₂.LL) = (((intW D.what₂.places w).toAddSubgroup : AddSubgroup D.what₂.LL) : Set D.what₂.LL)`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, SetLike.mem_coe, Subring.mem_toAddSubgroup]`.
+
+Conclude with `(Pl.iL_int w x).symm`. Rewrite `this` using `[hset]`. Conclude with `this`.
+-/
 theorem intSpan_iff_delW : ∀ (D : D7) (Pl : Examples₂.EntPl D) (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → DomWeight n)
     (R : MvPolynomial (D.what₂.Tau × Fin n × Fin n) D.what₂.LL),
     MvPolynomial.map D.what₂.embLL R ∈ Formalism.L2.Forms.RatSpan D lam →

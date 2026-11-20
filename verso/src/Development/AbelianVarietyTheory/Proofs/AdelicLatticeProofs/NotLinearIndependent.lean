@@ -8,6 +8,13 @@ open Matrix
 
 namespace GlobalTheory.VacuumLine
 
+/- English proof (translation)
+Set `φ : ℂ →ₐ[ℝ] Module.End ℝ U` to `Complex.liftAux (J : Module.End ℝ U) (by ext x; simp [hJ])`. Use `letI : Module ℂ U := Module.compHom U (φ : ℂ →+* Module.End ℝ U)`. Establish `hsm : ∀ (z : ℂ) (v : U), z • v = z.re • v + z.im • J v` using `fun z v => by`. Express the relevant statement in the definitionally equal form `φ z v = _`. Simplify using `[φ, Complex.liftAux_apply]`.
+
+Use `haveI : IsScalarTower ℝ ℂ U := ⟨fun r z v => by`. Simplify using `[hsm, smul_add, smul_smul]⟩`. Use `haveI : FiniteDimensional ℂ U := Module.Finite.of_restrictScalars_finite ℝ ℂ U`. Establish `hI : ∀ v : U, Complex.I • v = J v` using `fun v => by simp [hsm]`. Set `e` to `(Module.finBasis ℂ U).equivFun`.
+
+Conclude with `⟨_, e.restrictScalars ℝ, fun v => by rw [← hI]; exact e.map_smul _ _⟩`.
+-/
 theorem exists_coord {U : Type} [AddCommGroup U] [Module ℝ U] [FiniteDimensional ℝ U]
     (J : U →ₗ[ℝ] U) (hJ : ∀ x, J (J x) = -x) :
     ∃ (g : ℕ) (e : U ≃ₗ[ℝ] (Fin g → ℂ)), ∀ v, e (J v) = Complex.I • e v := by
@@ -23,6 +30,11 @@ theorem exists_coord {U : Type} [AddCommGroup U] [Module ℝ U] [FiniteDimension
   let e := (Module.finBasis ℂ U).equivFun
   exact ⟨_, e.restrictScalars ℝ, fun v => by rw [← hI]; exact e.map_smul _ _⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm`. Consider the case `exact _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm`. Consider the case `(apply _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm ..)`.
+-/
 theorem exists_ratForm {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ)
     {V : Type} [AddCommGroup V] [Module ℚ V] (p : V →+ U) (L : AddSubgroup V)
     (hN : ∀ x : V, ∃ N : ℕ, 0 < N ∧ N • x ∈ L)
@@ -36,6 +48,11 @@ theorem exists_ratForm {U : Type} [AddCommGroup U] [Module ℝ U] (om : U →ₗ
   | (intros; apply @_root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RationalValueRealScalar.exists_rat_bilinForm ..)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨N, hN0, hx⟩` from `hN x`. Establish `h0 : (N : ℝ) ≠ 0` using `by positivity`. Establish `: p x = (N : ℝ)⁻¹ • p (N • x)`.
+
+Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, inv_smul_smul₀ h0]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hx, rfl⟩)`.
+-/
 theorem span_image {U : Type} [AddCommGroup U] [Module ℝ U]
     {V : Type} [AddCommGroup V] (p : V →+ U) (hsp : Submodule.span ℝ (Set.range p) = ⊤)
     (L : AddSubgroup V) (hN : ∀ x : V, ∃ N : ℕ, 0 < N ∧ N • x ∈ L) :
@@ -49,6 +66,17 @@ theorem span_image {U : Type} [AddCommGroup U] [Module ℝ U]
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hx, rfl⟩)
 
+/- English proof (translation)
+Establish `hfg : (Submodule.span ℝ (p '' (L : Set V))).FG` using `hsp ▸ Module.Finite.fg_top`. Take `⟨s, hs, hss⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Rewrite `hss` using `[hsp]`. Establish `h : ∀ (x : AddSubgroup.toIntSubmodule L) (y : s), ∃ k : ℤ, (k : ℝ) = om (p x) y`. Introduce and unpack `x ⟨y, hy⟩`.
+
+Take `⟨y, hy', rfl⟩` from `hs hy`. Take `⟨k, hk⟩` from `hint x x.2 y hy'`. Conclude with `⟨k, hk.symm⟩`. Use `choose k hk using h`. Set `φ : AddSubgroup.toIntSubmodule L →+ (s → ℤ)` to `AddMonoidHom.mk' k fun a b => by`.
+
+Use function extensionality and compare the values at `y`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Simplify using `[hk]`. Establish `hφ : Function.Injective φ.toIntLinearMap`. Use `(injective_iff_map_eq_zero _).2 fun x hx => Subtype.ext (hp ?_)` and prove the remaining obligations.
+
+Rewrite using `[ZeroMemClass.coe_zero, map_zero]`. Use `hom _ (LinearMap.ext_on hss.symm fun y hy => ?_)` and prove the remaining obligations. Establish `: k x ⟨y, hy⟩ = 0` using `congrFun hx ⟨y, hy⟩`. Establish `h2` using `hk x ⟨y, hy⟩`. Rewrite `h2` using `[this]`.
+
+Simplify using `using h2.symm`. Conclude with `Module.Finite.iff_fg.1 (Module.Finite.of_injective _ hφ)`.
+-/
 theorem fg_of_integral {U : Type} [AddCommGroup U] [Module ℝ U] [FiniteDimensional ℝ U]
     (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ) (hom : ∀ x, om x = 0 → x = 0)
     {V : Type} [AddCommGroup V] (p : V →+ U) (hp : Function.Injective p) (L : AddSubgroup V)
@@ -78,6 +106,37 @@ theorem fg_of_integral {U : Type} [AddCommGroup U] [Module ℝ U] [FiniteDimensi
     simpa using h2.symm
   exact Module.Finite.iff_fg.1 (Module.Finite.of_injective _ hφ)
 
+/- English proof (translation)
+Introduce `U _ _ _ J om hJ halt hinv hpos V _ _ _ p hp hsp L hN hL c hc f hd hann hf hli`. Take `⟨g, e, he⟩` from `exists_coord J hJ`. Establish `hs : ∀ z, e.symm (Complex.I • z) = J (e.symm z)` using `fun z => by`. Rewrite using `[e.symm_apply_eq, he, e.apply_symm_apply]`. Take `⟨Hm, hH, hHpos, hHim⟩` from `GlobalTheory.PeriodNonempty.exists_herm (-(om.compl₁₂ e.symm.toLinearMap e.symm.toLinearMap)) (fun x y => by simp [halt (e.symm x)]) (fun x y => by simp [hs, hinv]) (fun x hx => by simpa [hs] using hpos (e.symm x) (by simpa using hx))`.
+
+Establish `him : ∀ x y, (x ⬝ᵥ Hm.mulVec (star y)).im = -om (e.symm x) (e.symm y)` using `hHim`. Establish `hpos' : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re` using `hHpos`. Establish `hint : ∀ x ∈ L, ∀ y ∈ L, ∃ k : ℤ, om (p x) (p y) = k` using `fun x hx => (hL x).1 hx`. Take `⟨B, hB⟩` from `exists_ratForm om p L hN hint`. Establish `hspL` using `span_image p hsp L hN`.
+
+Establish `hom : ∀ x, om x = 0 → x = 0` using `fun x hx => by`. Assume the negation of the conclusion as `h`. Use `hpos x h` as an intermediate fact. Rewrite `this` using `[halt, hx]`. Simplify using `at this`.
+
+Establish `hfg` using `fg_of_integral om hom p hp L hspL hint`. Set `P : V →ₗ[ℤ] (Fin g → ℂ)` to `(e.toLinearMap.toAddMonoidHom.comp p).toIntLinearMap`. Establish `hP : ∀ v, P v = e (p v)` using `fun _ => rfl`. Set `E : (Fin g → ℂ) →L[ℝ] U` to `LinearMap.toContinuousLinearMap e.symm.toLinearMap`. Establish `hE : ∀ z, E z = e.symm z` using `fun _ => rfl`.
+
+Establish `hconj : ∀ x y : Fin g → ℂ, x ⬝ᵥ Hm.mulVec (star y) = starRingEnd ℂ (y ⬝ᵥ Hm.mulVec (star x))` using `fun x y => by`. Express the relevant statement in the definitionally equal form `_ = star _`. Rewrite using `[← star_dotProduct_star, star_mulVec, star_star, hH.eq, dotProduct_mulVec]`. Use `GlobalTheory.Dict.ThetaOne.proportional_of_selfDual B P (e.injective.comp hp) (AddSubgroup.toIntSubmodule L) hfg ?_ ?_ hH hpos' ?_ c hc (fun k w => Complex.exp (Real.pi / 2 * (w ⬝ᵥ Hm.mulVec (star w))) * f k (e.symm w)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x`.
+
+Use `(hL x).trans (forall₂_congr fun y _ => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩`. Use `⟨-k, Rat.cast_injective (α := ℝ) ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hk]`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨k, hk⟩`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Use `hB x y` as an intermediate fact. Rewrite `this` using `[hk]`. Move the coercions through the operations in `at this ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: P '' (AddSubgroup.toIntSubmodule L : Set V) = e.toLinearMap '' (p '' (L : Set V))`. Rewrite using `[Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, hspL, Submodule.map_top, LinearEquiv.range]`.
+
+Introduce `u v`. Rewrite using `[him, hB, hP, hP, e.symm_apply_apply, e.symm_apply_apply]`. Introduce `k`. Use `GlobalTheory.T.differentiable_exp_mul_of_annihilated' g Hm hH (fun w => f k (E w)) ((hd k).comp E.differentiable) fun w z => ?_` and prove the remaining obligations. Establish `h1 : fderiv ℝ (fun w => f k (E w)) w = (fderiv ℝ (f k) (E w)).comp E` using `((hd k (E w)).hasFDerivAt.comp w E.hasFDerivAt).fderiv`.
+
+Establish `h2` using `hann k (e.symm w) (e.symm z)`. Rewrite using `[h1]`. Simplify using `only [ContinuousLinearMap.comp_apply, hE, him, hs]`. Use `push_cast`. Take the linear combination `h2`.
+
+Introduce `k v hv z`. Establish `h1 : (om (e.symm z) (p v) : ℂ) = -((z ⬝ᵥ Hm.mulVec (star (P v))).im : ℂ)`. Rewrite using `[him, hP, e.symm_apply_apply]`. Simplify using the standard rewrite rules. Establish `h2 : e.symm (z + P v) = e.symm z + p v` using `by rw [map_add, hP, e.symm_apply_apply]`.
+
+Establish `h3 : (Real.pi / 2 * ((z + P v) ⬝ᵥ Hm.mulVec (star (z + P v))) : ℂ) + -(Real.pi * Complex.I) * (om (e.symm z) (p v) : ℂ) = (Real.pi * (z ⬝ᵥ Hm.mulVec (star (P v))) + Real.pi / 2 * (P v ⬝ᵥ Hm.mulVec (star (P v)))) + Real.pi / 2 * (z ⬝ᵥ Hm.mulVec (star z))`. Rewrite using `[h1, star_add, mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, hconj (P v) z]`. Establish `h4` using `Complex.sub_conj (z ⬝ᵥ Hm.mulVec (star (P v)))`. Move the coercions through the operations in `at h4`. Take the linear combination `(-(Real.pi : ℂ) / 2) * h4`.
+
+Establish `h5` using `congrArg Complex.exp h3`. Rewrite `h5` using `[Complex.exp_add, Complex.exp_add _ (Real.pi / 2 * (z ⬝ᵥ Hm.mulVec (star z)))]`. Simplify using `only [h2, hf k v hv]`. Take the linear combination `c v * f k (e.symm z) * h5`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`.
+
+Introduce `a ha`. Use `hli a (funext fun u => ?_)` and prove the remaining obligations. Establish `h1` using `congrFun ha (e u)`. Simplify using `only [Fin.sum_univ_two, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, e.symm_apply_apply] at h1 ⊢`. Use `mul_left_cancel₀ (Complex.exp_ne_zero (Real.pi / 2 * (e u ⬝ᵥ Hm.mulVec (star (e u))))) ?_` and prove the remaining obligations.
+
+Take the linear combination `h1`.
+-/
 theorem not_linearIndependent : ∀ (U : Type) [NormedAddCommGroup U] [NormedSpace ℝ U] [FiniteDimensional ℝ U] (J : U →ₗ[ℝ] U) (om : U →ₗ[ℝ] U →ₗ[ℝ] ℝ), (∀ x, J (J x) = -x) → (∀ x y, om x y = -om y x) → (∀ x y, om (J x) (J y) = om x y) → (∀ x, x ≠ 0 → om (J x) x < 0) → ∀ (V : Type) [AddCommGroup V] [Module ℚ V] [FiniteDimensional ℚ V] (p : V →+ U), Function.Injective p → Submodule.span ℝ (Set.range p) = ⊤ → ∀ L : AddSubgroup V, (∀ x : V, ∃ N : ℕ, 0 < N ∧ N • x ∈ L) → (∀ x : V, x ∈ L ↔ ∀ y ∈ L, ∃ k : ℤ, om (p x) (p y) = k) → ∀ c : V → ℂ, (∀ v, ‖c v‖ = 1) → ∀ f : Fin 2 → U → ℂ, (∀ k, Differentiable ℝ (f k)) → (∀ k w z, (fderiv ℝ (f k) w z - Real.pi * Complex.I * (om w z : ℂ) * f k w) + Complex.I * (fderiv ℝ (f k) w (J z) - Real.pi * Complex.I * (om w (J z) : ℂ) * f k w) = 0) → (∀ k, ∀ v ∈ L, ∀ z, f k (z + p v) = c v * Complex.exp (-(Real.pi * Complex.I) * (om z (p v) : ℂ)) * f k z) → ¬ LinearIndependent ℂ f := by
   intro U _ _ _ J om hJ halt hinv hpos V _ _ _ p hp hsp L hN hL c hc f hd hann hf hli
   obtain ⟨g, e, he⟩ := exists_coord J hJ

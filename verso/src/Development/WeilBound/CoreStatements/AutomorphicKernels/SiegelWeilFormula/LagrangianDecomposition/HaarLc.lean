@@ -10,6 +10,27 @@ open GlobalTheory.ModuLR GlobalTheory.GaugeEx GlobalTheory.JacSubst
 
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm m J hJ bs g μ hμ f`. Use `letI mA : MeasurableSpace (Fin m × Fin 2 → AF F) := borel _`. Use `haveI : BorelSpace (Fin m × Fin 2 → AF F) := ⟨rfl⟩`. Use `letI mV : MeasurableSpace (Fin m → AE F E) := borel _`. Use `haveI : BorelSpace (Fin m → AE F E) := ⟨rfl⟩`.
+
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Set `e` to `coordCE F E (Module.finBasis F E)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isOpenEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`.
+
+Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (Matrix (Fin m) (Fin 1) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin m → Fin 1 → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin m) (Fin 1) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin m → Fin 1 → AE F E))`. Use `letI : MeasurableSpace (Matrix (Fin m) (Fin 1) (AE F E)) := borel _`. Use `haveI : BorelSpace (Matrix (Fin m) (Fin 1) (AE F E)) := ⟨rfl⟩`.
+
+Use `set t : GL (Fin m) (AE F E) := (g : GL (Fin m) (AE F E)) with ht`. Establish `hdt : IsUnit (t : Matrix (Fin m) (Fin m) (AE F E)).det`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`. Set `φ` to `mulVecCE (t : Matrix (Fin m) (Fin m) (AE F E)) hdt`.
+
+Take `⟨κ, _, _, Λ, hΛ, hdet, hχ⟩` from `@exists_matrix_restrictScalars_lrCE F E _ _ _ _ _ m (1 : ℕ) _ _ _ _ t (1 : GL (Fin 1) (AE F E))`. Establish `hc : addEquivAddHaarChar φ = 1`. Establish `h1 : addEquivAddHaarChar φ = addEquivAddHaarChar (lrCE t (1 : GL (Fin 1) (AE F E)))`. Rewrite using `[← addEquivAddHaarChar_transport (colCE (AE F E) m) φ]`. Use `congr 1`.
+
+Use extensionality with `M i j`. Rewrite using `[Fin.fin_one_eq_zero j]`. Use `show ((t : Matrix (Fin m) (Fin m) (AE F E)) *ᵥ (fun k => M k 0)) i = ((t : Matrix (Fin m) (Fin m) (AE F E)) * M * ((1 : GL (Fin 1) (AE F E)) : Matrix (Fin 1) (Fin 1) (AE F E))) i 0`. Rewrite using `[Units.val_one, Matrix.mul_one]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+
+Establish `hu : hΛ.unit = Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)`. Use `ext`. Simplify using `only [IsUnit.unit_spec, hdet, Units.coe_map, MonoidHom.coe_coe, map_one, one_pow, mul_one, pow_one]`. Rewrite using `[h1, hχ, chi_AF_det, hu, ht, norm_det_unitary hcm hJ g, map_one]`. Establish `hV : ∀ (ν : Measure (Fin m → AE F E)), ν.IsAddHaarMeasure → ν.map φ = ν`.
+
+Introduce `ν hν`. Use `haveI : ν.Regular := inferInstance`. Establish `key` using `addEquivAddHaarChar_smul_map ν φ`. Rewrite `key` using `[hc, one_smul]`. Then use the resulting hypothesis. Set `cm : (Fin m × Fin 2 → AF F) ≃ᵐ (Fin m → AE F E)` to `(colv m bs).toHomeomorph.toMeasurableEquiv`.
+
+Set `pm : (Fin m → AE F E) ≃ᵐ (Fin m → AE F E)` to `φ.toHomeomorph.toMeasurableEquiv`. Use `haveI : μ.IsAddHaarMeasure := hμ`. Establish `hH : (μ.map cm).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map μ (colv m bs)`. Establish `hmap : (μ.map cm).map pm = μ.map cm` using `hV _ hH`. Establish `e1 : ∀ x, Lc bs (mat g) x = cm.symm (pm (cm x))` using `fun x => by rw [Lc_eq_colv]; rfl`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem haarLc : HaarLc := by
   intro F E _ _ _ _ _ σ hcm m J hJ bs g μ hμ f
   letI mA : MeasurableSpace (Fin m × Fin 2 → AF F) := borel _

@@ -8,9 +8,15 @@ universe u
 
 namespace Formalism.RepresentationBoundsCohomology.LOC
 
+/- English proof (translation)
+The claim follows from `propLocCont_of connTors hEmb hDual`.
+-/
 theorem propLocCont_of_lattices (hEmb : StatQuotEmbeds.{u}) (hDual : StatDualLattice.{u}) :
     StatPropLocCont.{u} := propLocCont_of connTors hEmb hDual
 
+/- English proof (translation)
+The claim follows from `propLocCont_of_lattices quotEmbeds dualLattice`.
+-/
 theorem propLocCont : StatPropLocCont.{u} := propLocCont_of_lattices quotEmbeds dualLattice
 
 end Formalism.RepresentationBoundsCohomology.LOC

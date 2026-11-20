@@ -23,6 +23,15 @@ variable {E : Type} [Field E] [NumberField E]
 
 open Classical in
 
+/- English proof (translation)
+Establish `li : LinearIndependent ℂ fun ρ : E →+* ℂ => (fun α : 𝓞 E => ρ α)` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp (fun ρ : E →+* ℂ => (ρ.comp (algebraMap (𝓞 E) E)).toMonoidHom) fun ρ ρ' e => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => DFunLike.congr_fun e a)`. Use `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 li (fun ρ => ∑ j, (if ty j = ρ then t j else 0) - ∑ j, (if conjEmb (ty j) = ρ then conj (t j) else 0) - 2 * Complex.I * ρ s) (funext fun α => ?_) ρ)` and prove the remaining obligations. Establish `h1 : ((Algebra.trace ℚ E (α * s) : ℚ) : ℂ) = ∑ ρ : E →+* ℂ, ρ α * ρ s`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), trace_eq_sum_embeddings (K := ℚ) (E := ℂ)]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)) _ _ fun σ => (map_mul σ _ _).symm).symm`.
+
+Establish `h2` using `Complex.sub_conj (∑ j, ty j α * t j)`. Rewrite `h2` using `[h, Complex.ofReal_mul, Complex.ofReal_ratCast, h1]`. Establish `h3 : ∀ (ty : Fin g → E →+* ℂ) (t : Fin g → ℂ), ∑ ρ : E →+* ℂ, (∑ j, if ty j = ρ then t j else 0) * ρ α = ∑ j, ty j α * t j` using `fun ty t => by`. Simplify using `only [Finset.sum_mul, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `[mul_comm]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[h3, h3 (fun j => conjEmb (ty j))]`. Establish `h4 : ∑ j, conjEmb (ty j) α * conj (t j) = conj (∑ j, ty j α * t j)`. Simplify using `[conjEmb]`.
+
+Rewrite using `[h4, h2]`. Simplify using `only [Complex.ofReal_ofNat, Finset.mul_sum, Finset.sum_mul]`. Conclude with `sub_eq_zero.2 (Finset.sum_congr rfl fun _ _ => by ring)`.
+-/
 theorem char_part {g : ℕ} (ty : Fin g → E →+* ℂ) (t : Fin g → ℂ) (s : E)
     (h : ∀ α : 𝓞 E, (∑ j, ty j α * t j).im = ((Algebra.trace ℚ E (α * s) : ℚ) : ℝ)) (ρ : E →+* ℂ) :
     ∑ j, (if ty j = ρ then t j else 0) - ∑ j, (if conjEmb (ty j) = ρ then conj (t j) else 0) =
@@ -53,6 +62,19 @@ theorem char_part {g : ℕ} (ty : Fin g → E →+* ℂ) (t : Fin g → ℂ) (s 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `h0 : f 0 = 0` using `by simpa using hs 0 0`. Establish `h1 : ∀ v : Fin r → E, f (fun n => τ (v n)) = 0` using `fun v => by`. Establish `hv : v ∈ Submodule.span E Λ` using `hΛ ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact h v hv`.
+
+Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `h0`. Consider the case `add v w _ _ hv hw`. Use `ha (fun n => τ (v n)) (fun n => τ (w n))` as an intermediate fact. Rewrite `this` using `[hv, hw, add_zero]`.
+
+Simplify using `only [Pi.add_apply, map_add]`. Conclude with `this`. Consider the case `smul a v _ hv`. Use `hs (τ a) (fun n => τ (v n))` as an intermediate fact. Rewrite `this` using `[hv, mul_zero]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `this`. Set `K : Submodule ℂ (Fin r → ℂ)` to `{ carrier := {u | f u = 0} add_mem' := fun {u v} hu hv => by simp only [Set.mem_setOf_eq] at *; rw [ha, hu, hv, add_zero] zero_mem' := h0 smul_mem' := fun s u hu => by simp only [Set.mem_setOf_eq] at *; rw [hs, hu, mul_zero] }`. Establish `: u ∈ K`. Rewrite using `[pi_eq_sum_univ' u]`.
+
+Use `K.sum_mem fun n _ => K.smul_mem _ ?_` and prove the remaining obligations. Use `h1 (Pi.single n 1)` as an intermediate fact. Use `show f _ = 0`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`.
+
+Apply the tactic sequence `by_cases e : m = n <;> simp [e, Pi.single_apply]`. Conclude with `this`.
+-/
 theorem eq_zero_of_span {r : ℕ} (τ : E →+* ℂ) (Λ : Set (Fin r → E)) (hΛ : Submodule.span E Λ = ⊤)
     (f : (Fin r → ℂ) → ℂ) (ha : ∀ u v, f (u + v) = f u + f v) (hs : ∀ (s : ℂ) u, f (s • u) = conj s * f u)
     (h : ∀ v ∈ Λ, f (fun n => τ (v n)) = 0) (u : Fin r → ℂ) : f u = 0 := by
@@ -85,6 +107,13 @@ theorem eq_zero_of_span {r : ℕ} (τ : E →+* ℂ) (Λ : Set (Fin r → E)) (h
     by_cases e : m = n <;> simp [e, Pi.single_apply]
   exact this
 
+/- English proof (translation)
+Establish `key : (Matrix.of fun k => Sum.elim (A k) fun b => y k (ε (.inr b))) * Matrix.fromBlocks (Γ.submatrix (ε ∘ Sum.inl) (ε ∘ Sum.inl)) 0 0 1 = (Matrix.of fun k m => y k (ε m)) * Matrix.fromBlocks (κ • Γ.submatrix (ε ∘ Sum.inl) (ε ∘ Sum.inl)) 0 (κ • Γ.submatrix (ε ∘ Sum.inr) (ε ∘ Sum.i …`. Use extensionality with `k (j | j)`. Use `h k j` as an intermediate fact. Rewrite `this` using `[← ε.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.submatrix_apply, Function.comp_apply, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, Matrix.smul_apply, smul_eq_m …`.
+
+Simplify using `only [mul_comm (A k _), this, mul_add, Finset.mul_sum, mul_left_comm κ]`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Use `congrArg Matrix.det key` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₁₂, Matrix.det_smul, Matrix.det_one, Fintype.card_fin]`. Use `mul_right_cancel₀ hΓ ?_` and prove the remaining obligations.
+
+Take the linear combination `this`.
+-/
 theorem det_sum_elim {p q r : ℕ} (ε : Fin q ⊕ Fin p ≃ Fin r) (Γ : Matrix (Fin r) (Fin r) ℂ)
     (hΓ : (Γ.submatrix (ε ∘ Sum.inl) (ε ∘ Sum.inl)).det ≠ 0) (y : Fin q ⊕ Fin p → Fin r → ℂ)
     (A : Fin q ⊕ Fin p → Fin q → ℂ) (κ : ℂ)
@@ -113,6 +142,29 @@ variable [IsCMField E]
 
 open Classical in
 
+/- English proof (translation)
+Establish `hXu : IsUnit X.det` using `hX.isUnit`. Establish `hcol : ∀ a, col X a = X *ᵥ Pi.single a 1` using `fun a => by`. Use extensionality with `k`. Simplify using `[col]`. Establish `hinv : ∀ u : Fin r → ℂ, X *ᵥ (X⁻¹ *ᵥ u) = u` using `fun u => by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hXu, Matrix.one_mulVec]`. Establish `hcj : ∀ ρ : E →+* ℂ, conjEmb ρ = conjEmb τ ↔ ρ = τ` using `fun ρ => ⟨fun e => RingHom.ext fun a => (starRingEnd ℂ).injective (DFunLike.congr_fun e a), fun e => e ▸ rfl⟩`. Establish `main : ∀ (b₀ : La) (u : Fin r → ℂ), ∑ b, hermC τ G (col X (ε (.inl b))) u * (Hm *ᵥ star (P b₀)) (jw b) - ∑ b, conj ((X⁻¹ *ᵥ u) (ε (.inr b)) * (Hm *ᵥ star (P b₀)) (jv b)) - 2 * Complex.I * conj (τ ξ) * hermC τ G (Data.emb τ (φ b₀)) u = 0` using `fun b₀ u => by`. Use `eq_zero_of_span τ _ hφ (fun u => ∑ b, hermC τ G (col X (ε (.inl b))) u * (Hm *ᵥ star (P b₀)) (jw b) - ∑ b, conj ((X⁻¹ *ᵥ u) (ε (.inr b)) * (Hm *ᵥ star (P b₀)) (jv b)) - 2 * Complex.I * conj (τ ξ) * hermC τ G (Data.emb τ (φ b₀)) u) (fun u v => ?_) (fun s u => ?_) ?_ u` and prove the remaining obligations. Simplify using `only [UnitFrame.hermC_eq, star_add, Matrix.mulVec_add, dotProduct_add, add_mul, Pi.add_apply, map_add, Finset.sum_add_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [UnitFrame.hermC_eq, star_smul, Matrix.mulVec_smul, dotProduct_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, map_mul, ← Finset.mul_sum, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `h1` using `char_part ty (fun j => P a j * (Hm *ᵥ star (P b₀)) j) (ξ * herm G (φ a) (φ b₀)) (fun α => by`.
+
+Use `hH (α • a) b₀` as an intermediate fact. Rewrite `this` using `[hermForm, dotProduct]`. Establish `e : ξ * herm G (φ (α • a)) (φ b₀) = α * (ξ * herm G (φ a) (φ b₀))`. Rewrite using `[map_smul]`. Simplify using `only [herm, Pi.smul_apply, Algebra.smul_def, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`. Simplify `this) (conjEmb τ)` using `only [hP, mul_assoc]`.
+
+Simplify using `only [hcj] at h1`. Rewrite `h1` using `[hw, hv]`. Simplify using `only [hPw, hPv] at h1`. Establish `h2 : conjEmb τ (herm G (φ a) (φ b₀)) = hermC τ G (Data.emb τ (φ b₀)) (Data.emb τ (φ a))`. Establish `h3 : ∀ a b, conj (τ (G a b)) = τ (G b a)` using `fun a b => by`.
+
+Rewrite using `[← hG a b, cc, IsCMField.complexEmbedding_complexConj]`. Simplify using `only [conjEmb, RingHom.comp_apply, herm, hermC, Data.emb, cc, map_sum, map_mul, h3, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite `h1` using `[map_mul, h2]`.
+
+Conclude with `sub_eq_zero.2 (h1.trans (mul_assoc _ _ _).symm)`. Establish `hd` using `det_sum_elim ε (gram τ G X) hΓ (fun k => X⁻¹ *ᵥ Data.emb τ (φ (x k))) (fun k b => -(Real.pi : ℂ) * hermForm Hm (Pi.single (jw b) 1) (P (x k))) (-(Real.pi : ℂ) * (2 * Complex.I * conj (τ ξ))) fun k j => by`. Establish `h1` using `main (x k) (col X (ε (.inl j)))`. Establish `h2 : ∀ b, (X⁻¹ *ᵥ col X (ε (.inl j))) (ε (.inr b)) = 0` using `fun b => by`. Rewrite using `[hcol, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hXu, Matrix.one_mulVec]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : hermC τ G (Data.emb τ (φ (x k))) (col X (ε (.inl j))) = ∑ m, (X⁻¹ *ᵥ Data.emb τ (φ (x k))) m * gram τ G X m (ε (.inl j))` using `by conv_lhs => rw [← hinv (Data.emb τ (φ (x k))), hcol, UnitFrame.hermC_mulVec]`. Simplify using `[dotProduct]`. Simplify using `only [h2, zero_mul, map_zero, Finset.sum_const_zero, sub_zero, h3] at h1`. Simplify using `only [hermForm, single_dotProduct, one_mul, mul_left_comm _ (-(Real.pi : ℂ)), ← Finset.mul_sum]`.
+
+Rewrite using `[mul_assoc, ← sub_eq_zero.1 h1]`. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.flatCoord, hPv]`. Rewrite using `[hd, mul_assoc (_ ^ q), ← Ring.inverse_eq_inv', ← Matrix.det_nonsing_inv, ← Matrix.det_transpose X⁻¹, ← Matrix.det_submatrix_equiv_self ε X⁻¹ᵀ, ← Matrix.det_mul]`. Use `congr 2`.
+
+Use extensionality with `k m`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.mulVec, dotProduct, Matrix.submatrix_apply, Matrix.transpose_apply, Data.emb]`. Rewrite using `[← ε.sum_comp]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem flatCoord_eq {p q r g : ℕ} (ε : Fin q ⊕ Fin p ≃ Fin r) (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (hG : ∀ a b, cc (G a b) = G b a) (ξ : E) (X : Matrix (Fin r) (Fin r) ℂ) (hX : X.det ≠ 0)
     (hΓ : ((gram τ G X).submatrix (ε ∘ Sum.inl) (ε ∘ Sum.inl)).det ≠ 0)
@@ -206,6 +258,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 open Classical in
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite using `[← e.symm.sum_comp, Fintype.sum_sigma, Finset.sum_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `ρ _ hρ`. Simplify using `[(relab_injective σ).eq_iff, hρ]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_letters (σ : c.F →+* ℂ) {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (τ : E →+* ℂ) {n : ℕ}
     (hn : n = Dw.mult τ) (F : Fin g → ℂ) :
     ∑ j, (if relab c σ (e j).1 = relab c σ τ then F j else 0) = ∑ b : Fin n, F (e.symm ⟨τ, Fin.cast hn b⟩) := by
@@ -216,6 +273,39 @@ theorem sum_letters (σ : c.F →+* ℂ) {g : ℕ} (e : Fin g ≃ Σ τ : E →+
     simp [(relab_injective σ).eq_iff, hρ]
   · simp
 
+/- English proof (translation)
+Take `⟨hrk, hsh, -, -, -, g, e, F, ik, φ, hEF, hper⟩` from `hU`. Take `⟨hp0, hΨ⟩` from `hsh k`. Take `⟨x₀, hx₀⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 E) (M := (F.Di (ik k)).La) (n := Dw.q + Dw.p) (by rw [(F.Di (ik k)).rank, (F.sig _).1, (F.sig _).2, add_comm])`. Take `⟨κ, -, hκ⟩` from `hh σ hσ g _ (PeriodRowsCompare.isTypeFn_letters c σ hσ e) F (ik k) (x₀ ∘ finSumFinEquiv) (hx₀.comp _ finSumFinEquiv.injective)`. Establish `hp : Dw.p = Dw.mult τ.1` using `(if_pos τ.2).symm`.
+
+Establish `hq : Dw.q = Dw.mult (conjEmb τ.1)` using `(if_neg (conj_not_mem τ)).symm`. Set `ε : Fin Dw.q ⊕ Fin Dw.p ≃ Fin r` to `((Equiv.sumCongr Fin.revPerm (Equiv.refl _)).trans finSumFinEquiv).trans (finCongr (by omega))`. Establish `hε₁ : ∀ b, (ε (.inl b) : ℕ) = Dw.q - 1 - b` using `fun b => by simp [ε]; omega`. Establish `hε₂ : ∀ b, (ε (.inr b) : ℕ) = Dw.q + b` using `fun b => by simp [ε]`. Set `ψ : (F.Di (ik k)).La →ₗ[𝓞 E] (Fin r → E)` to `(U.X k).Λ.subtype.comp (φ k).toLinearMap`.
+
+Establish `hψ : Submodule.span E (Set.range ψ) = ⊤`. Rewrite using `[← (U.X k).Λ_span]`. Use `congr 1`. Use extensionality with `v`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ (φ k a).2, fun hv => ⟨(φ k).symm ⟨v, hv⟩, by simp [ψ]⟩⟩`.
+
+Use `⟨κ * ((-(Real.pi : ℂ) * (2 * Complex.I * conj (relab c σ τ.1 (-(U.X k).ξ0)))) ^ Dw.q * (Matrix.of fun i m => relab c σ τ.1 (ψ ((x₀ ∘ finSumFinEquiv) i) (ε m))).det), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨P, hP, hPer, hx, hder, -⟩` from `hper k y`. Take `⟨a, ha⟩` from `exists_matches Y V τ (U.un k y) hy`. Establish `hval : rdU U f k y = sig (CAt σ) (algebraMap c.F (CAt σ)) a`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, y.2, dif_pos]`.
+
+Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Conclude with `hr (CAt σ) _ (FlagTan.fromTest_of_isLocalRing (S := CAt σ) _) a ha`. Use `⟨hval ▸ (show IsUnit (M := ℂ) _ from hn _ _ a).ne_zero, ?_⟩` and prove the remaining obligations. Take `⟨Hm, hH, -, hHE⟩` from `hPer.2.2.2.2`. Establish `hdir : ∀ (ρ : E →+* ℂ) (j : Fin (Dw.mult ρ)) v, SameVec (S` using `CAt σ) Y (U.un k y) ((U.un k y).u ρ j) v → GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.IsDirection Y (ptF (S := CAt σ) (U.un k y)) (fun z => (F.ex (ik k) P z).left) (Pi.single (e.symm ⟨ρ, j⟩) 1) v := by`.
+
+Introduce and unpack `ρ j v ⟨w, hw, h1, h2⟩`. Conclude with `⟨Over.homMk w hw.1, h2, (congrArg _ h1).mpr (hder ρ j)⟩`. Establish `h1` using `hκ P Hm hPer hH hHE (ptF (S := CAt σ) (U.un k y)) a ((pullback.lift_fst _ _ _).trans hx) ha.1 (fun b => Pi.single (e.symm ⟨τ.1, Fin.cast hp b⟩) 1) (fun b => Pi.single (e.symm ⟨conjEmb τ.1, Fin.cast hq b⟩) 1) (fun i b => P ((x₀ ∘ finSumFinEquiv) i) (e.symm ⟨τ.1, Fin.cast hp b⟩)) ( …`. Take `⟨j, hj, hs⟩` from `ha.2.1 b`. Take `rfl : j = Fin.cast hp b` from `Fin.ext hj`.
+
+Conclude with `hdir _ _ _ hs)`. Use the proof step `(fun b => by`. Take `⟨j, hj, hs⟩` from `ha.2.2 b`. Take `rfl : j = Fin.cast hq b` from `Fin.ext hj`. Conclude with `hdir _ _ _ hs)`.
+
+Use the proof step `(fun i n => by`. Use `sum_letters σ e τ.1 hp fun j => P ((x₀ ∘ finSumFinEquiv) i) j * (Pi.single j 1 : Fin g → ℂ) n` as an intermediate fact. Rewrite using `[← this, Finset.sum_eq_single n (fun j _ hj => by simp [Ne.symm hj]) (by simp)]`. Simplify using `only [Pi.single_eq_same, mul_one]`. Use the proof step `rfl)`.
+
+Establish `hnot : conjEmb (relab c σ τ.1) ∉ (U.X k).Ψ` using `((U.X k).cmType _).1 hτ`. Establish `hcc : conjEmb (conjEmb (relab c σ τ.1)) = relab c σ τ.1` using `RingHom.ext fun a => by simp [conjEmb]`. Establish `h2` using `flatCoord_eq ε (relab c σ τ.1) (U.X k).Gm (U.X k).Gm_herm (-(U.X k).ξ0) (mat y.1 ⟨_, hτ⟩) (y.2 ⟨_, hτ⟩).1 (by`. Establish `h3` using `(y.2 ⟨_, hτ⟩).2 ⟨Dw.q, by omega⟩`. Introduce `h0`.
+
+Establish `h4 : dmin (U.X k).Gm y.1 ⟨_, hτ⟩ ⟨Dw.q, by omega⟩ = 0`. Rewrite using `[← h0, dmin, lminor, ← Matrix.det_submatrix_equiv_self (Fin.revPerm : Fin Dw.q ≃ Fin Dw.q)]`. Both sides reduce to the same expression. Rewrite `h3` using `[h4]`. Simplify using `at h3)`.
+
+Use `ψ hψ (fun j => relab c σ (e j).1) P hPer.1 Hm`. Use the proof step `(fun a b => by rw [hHE]; exact_mod_cast congrArg (fun z : ℚ => (z : ℝ)) (hEF k a b))`. Use the proof step `(fun b => e.symm ⟨conjEmb τ.1, Fin.cast hq b⟩) (fun b => e.symm ⟨τ.1, Fin.cast hp b⟩)`. Use the proof step `(fun F => by rw [← relab_conj]; exact sum_letters σ e _ hq F) (sum_letters σ e _ hp)`. Use the proof step `(fun a b => by`.
+
+Rewrite using `[hP, Equiv.apply_symm_apply, relab_conj]`. Establish `hb : (U.X k).p0 - 1 - b < r` using `by have := b.2; omega`. Establish `key : ∀ (ρ : E →+* ℂ) (hρ : ρ = relab c σ τ.1) (h' : ρ ∈ (U.X k).Ψ), hermC ρ (U.X k).Gm (col (mat y.1 ⟨ρ, h'⟩) ⟨_, hb⟩) (Data.emb ρ (φ k a : Fin r → E)) = hermC (relab c σ τ.1) (U.X k).Gm (col (mat y.1 ⟨_, hτ⟩) (ε (.inl b))) (Data.emb (relab c σ τ.1) (ψ a))`. Introduce and unpack `_ rfl _`. Rewrite using `[show (⟨_, hb⟩ : Fin r) = ε (.inl b) from Fin.ext (by rw [hε₁]; simp only [hp0])]`.
+
+Both sides reduce to the same expression. Unfold `perFr`. Rewrite using `[dif_neg hnot, dif_pos (hcc.symm ▸ hτ)]`. Conclude with `(dif_pos hb).trans (key _ hcc _))`. Use the proof step `(fun a b => by`.
+
+Rewrite using `[hP, Equiv.apply_symm_apply]`. Establish `hb : (U.X k).p0 + b < r` using `by have := b.2; omega`. Unfold `perFr`. Rewrite using `[dif_pos hτ]`. Use `(dif_pos hb).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[show ε (.inr b) = (⟨_, hb⟩ : Fin r) from Fin.ext (by rw [hε₂]; simp only [hp0])]`. Use the proof step `rfl)`. Use the proof step `(x₀ ∘ finSumFinEquiv)`. Rewrite `h1` using `[h2]`. Rewrite using `[hval, horizGen, mul_assoc]`.
+
+Conclude with `h1`.
+-/
 theorem rdU_eq_mul_horizGen {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (τ : Psi H)
     {Y : Model Xo c (RingHom.id c.F)} {V : (Xo.XF c).Opens} {sig : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.Rule Y V τ.1} {f : Rul Xo c}
     (hn : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.VanishesNowhere sig) (hh : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.IsHorizontal sig) (hr : Reads Y V τ sig f)
@@ -313,6 +403,17 @@ theorem rdU_eq_mul_horizGen {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : Good
   rw [hval, horizGen, mul_assoc]
   exact h1
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ Y V sig f hV _ hn hh _ hr σ hσ`. Take `⟨k, hk⟩` from `framesOn_eq_model E H Dw l Xo c r U x hL Z σ hσ`. Establish `hτ : relab c σ τ.1 ∈ ((U σ).X k).Ψ`. Use `(((hL.unf σ hσ).2.1 k).2 _).2 ?_` and prove the remaining obligations. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`.
+
+Conclude with `(congrArg σ (Subtype.ext τ.2)).trans hσ0`. Take `⟨a, ha⟩` from `rdU_eq_mul_horizGen (U σ) hσ (hL.unf σ hσ) τ hn hh hr k hτ`. Take `⟨y, hy⟩` from `GlobalTheory.CompBij.frames_nonempty ((U σ).X k)`. Establish `hy' : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z` using `by rw [hk]; exact ⟨rfl, hy⟩`. Establish `ha0 : a ≠ 0`.
+
+Take `⟨h1, h2⟩` from `ha ⟨y, hy⟩ (hV ▸ hy'.2)`. Conclude with `left_ne_zero_of_mul (h2 ▸ h1)`. Use `⟨lieFacZ Dw x (wtOf Dw (flatWt Dw τ) 0) * (‖a‖ * Real.sqrt ‖relab c σ τ.1 ((U σ).X k).Gm.det‖), mul_pos (lieFacZ_pos _ _) (mul_pos (norm_pos_iff.2 ha0) (Real.sqrt_pos.2 (norm_pos_iff.2 ((map_ne_zero _).2 ((U σ).X k).Gm_det)))), image_eq_singleton_iff.2 ⟨⟨_, hy'⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k', y'⟩ hz`. Establish `hz'` using `hz`.
+
+Rewrite `hz'` using `[hk]`. Take `⟨rfl, hy₁⟩ : k' = k ∧ y' ∈ ((U σ).X k').dom` from `hz'`. Establish `h1` using `(ha ⟨y', hy₁⟩ (hV ▸ hz.2)).2`. Rewrite using `[← pnorm_horizGen ((U σ).X k') ⟨_, hτ⟩ hy₁, homN, ptN, modelWt_flatWt (U σ) hσ (hL.unf σ hσ) τ k' hτ]`. Simplify using `only at h1`.
+
+Simplify using `only [Data.pnorm, h1, norm_mul, mul_assoc]`.
+-/
 theorem const_length_of_reads : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H) (Y : Model Xo c (RingHom.id c.F)) (V : (Xo.XF c).Opens) (sig : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.Rule Y V τ.1) (f : Rul Xo c), (V : Set (Xo.XF c)) = Z → sig ∈ GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.sections Y V τ.1 → GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.VanishesNowhere sig → GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.IsHorizontal sig → f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0) → Reads Y V τ sig f → ∀ σ, GoodEmb c σ → ∃ b : ℝ, 0 < b ∧ homN (U σ) x (wtOf Dw (flatWt Dw τ) 0) f '' framesOn (U σ) Z = {b} := by
   intro E _ _ _ H Dw l Xo c r U x hL Z τ Y V sig f hV _ hn hh _ hr σ hσ
   obtain ⟨k, hk⟩ := framesOn_eq_model E H Dw l Xo c r U x hL Z σ hσ

@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdeleDecay.measurable_decay | exact GlobalTheory.IdeleDecay.measurable_decay | (intros; apply GlobalTheory.IdeleDecay.measurable_decay <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_decay_measurable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (N m : ℕ),
     Measurable (GlobalTheory.IdeleDecay.decay F E N m) := by
   first | exact @GlobalTheory.IdeleDecay.measurable_decay | exact GlobalTheory.IdeleDecay.measurable_decay | (intros; apply GlobalTheory.IdeleDecay.measurable_decay <;> assumption)

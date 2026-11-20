@@ -52,25 +52,46 @@ def toOver (R : Type) [CommRing R] [Algebra O R] (y : specO O R ⟶ G) : overAt 
 
 variable (R : Type) [CommRing R] [Algebra O R]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toOver_left (y : specO O R ⟶ G) : (toOver hφ R y).left = y.left ≫ φ := rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (hφ.2 (specO O R) y y' (toOver hφ R y) (toOver hφ R y') rfl rfl).symm`.
+-/
 theorem toOver_mul (y y' : specO O R ⟶ G) : toOver hφ R (y * y') = toOver hφ R y * toOver hφ R y' :=
   Over.OverMorphism.ext (hφ.2 (specO O R) y y' (toOver hφ R y) (toOver hφ R y') rfl rfl).symm
 
 def toOverHom : (specO O R ⟶ G) →* (overAt z R ⟶ G') := MonoidHom.mk' (toOver hφ R) (toOver_mul hφ R)
 
+/- English proof (translation)
+The claim follows from `map_pow (toOverHom hφ R) y k`.
+-/
 theorem toOver_pow (y : specO O R ⟶ G) (k : ℕ) : toOver hφ R (y ^ k) = toOver hφ R y ^ k :=
   map_pow (toOverHom hφ R) y k
 
+/- English proof (translation)
+The claim follows from `map_one (toOverHom hφ R)`.
+-/
 theorem toOver_one : toOver hφ R (1 : specO O R ⟶ G) = 1 := map_one (toOverHom hφ R)
 
+/- English proof (translation)
+Introduce `y y' h` and use `Over.OverMorphism.ext (hφ.1.hom_ext (congrArg CommaMorphism.left h) (by rw [Over.w y, Over.w y']))`.
+-/
 theorem toOver_injective : Function.Injective (toOver hφ R) := fun y y' h =>
   Over.OverMorphism.ext (hφ.1.hom_ext (congrArg CommaMorphism.left h) (by rw [Over.w y, Over.w y']))
 
+/- English proof (translation)
+Introduce `w` and use `⟨Over.homMk (hφ.1.lift w.left (specO O R).hom (Over.w w)) (hφ.1.lift_snd _ _ _), Over.OverMorphism.ext (hφ.1.lift_fst _ _ _)⟩`.
+-/
 theorem toOver_surjective : Function.Surjective (toOver hφ R) := fun w =>
   ⟨Over.homMk (hφ.1.lift w.left (specO O R).hom (Over.w w)) (hφ.1.lift_snd _ _ _),
     Over.OverMorphism.ext (hφ.1.lift_fst _ _ _)⟩
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by change spMap _ ≫ y.left ≫ φ = (Spec.map _ ≫ y.left) ≫ φ rw [Category.assoc] rfl)`.
+-/
 theorem homAt_toOver {R' : Type} [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R') (y : specO O R ⟶ G) :
     homAt z f ≫ toOver hφ R y = toOver hφ R' (ptMap f ≫ y) :=
   Over.OverMorphism.ext (by
@@ -79,6 +100,9 @@ theorem homAt_toOver {R' : Type} [CommRing R'] [Algebra O R'] (f : R →ₐ[O] R
     rfl)
 
 omit [GrpObj G] [GrpObj G'] in
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by change spMap _ ≫ spMap _ = spMap _ rw [← Spec.map_comp] rfl)`.
+-/
 theorem homAt_comp_homAt {A B D : Type} [CommRing A] [Algebra O A] [CommRing B] [Algebra O B] [CommRing D]
     [Algebra O D] (f : A →ₐ[O] B) (g : B →ₐ[O] D) : homAt z g ≫ homAt z f = homAt z (g.comp f) :=
   Over.OverMorphism.ext (by
@@ -97,6 +121,35 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {O : Type} [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [hO : IsAdicComplete (Ideal.span {(p : O)}) O]
   [HenselianLocalRing O] [Algebra ℤ_[p] O] {Λ : Type} [CommRing Λ] [StarRing Λ]
 
+/- English proof (translation)
+Establish `hv` using `P.integers`. Establish `hp0` using `(Fact.out : p.Prime).ne_zero`. Establish `hN` using `one_le_ppow p n`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero n hp0`. Use `haveI : IsDomain O := hv.hom_inj.isDomain _`.
+
+Use `haveI := ValuationRing.of_integers v hv`. Use `haveI := P.isLocalRing`. Use `haveI := (P.finite_flat _ hN).1`. Use `haveI := (P.finite_flat _ hN).2`. Take `⟨A₀, _, _, u, _, _, hu, hrep⟩` from `GlobalTheory.TorsionRep.exists_finite_free_torsion_rep X t.G t.semi O z (p ^ n) hq`.
+
+Take `⟨A, _, _, Y, I, m, _, _, hsep, hY, hI, hl⟩` from `exists_connected_part hv hp0 P.Gt (p ^ n) hq`. Establish `hAc : IsAdicComplete (Ideal.span {(p : A)}) A`. Use `FlatComplete.isAdicComplete_of_finite_flat _ _ hO A` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Establish `hYp : (Y ≫ torsion.ι P.Gt (p ^ n)) ^ (p ^ n) = 1`.
+
+Rewrite using `[← MonObj.comp_pow, torsionι_pow, MonObj.comp_one]`. Set `q : ∀ k : ℕ, specO O (A ⧸ Ideal.span {(p : A) ^ k}) ⟶ P.G` to `fun k => P.cmp _ (nilpR k) (ptMap (redR p O A k) ≫ Y ≫ torsion.ι P.Gt (p ^ n))`. Establish `hqp : ∀ k, toOver hφ _ (q k) ^ (p ^ n) = 1` using `fun k => by`. Rewrite using `[← toOver_pow]`. Simplify using `only [q]`.
+
+Rewrite using `[← map_pow, ← MonObj.comp_pow, hYp, MonObj.comp_one, map_one, toOver_one]`. Establish `hfin : ∀ k, Module.Finite O (A ⧸ Ideal.span {(p : A) ^ k})` using `fun k => Module.Finite.of_surjective (Ideal.Quotient.mkₐ O (Ideal.span {(p : A) ^ k})).toLinearMap Ideal.Quotient.mk_surjective`. Establish `ex : ∀ k, ∃ ψ : A₀ →ₐ[O] A ⧸ Ideal.span {(p : A) ^ k}, homAt z ψ ≫ u = toOver hφ _ (q k)` using `fun k => by haveI := hfin k`. Take `⟨ψ, hψ, -⟩` from `hrep _ (toOver hφ _ (q k)) (hqp k)`. Conclude with `⟨ψ, hψ⟩`.
+
+Use `choose ψ hψ using ex`. Establish `hψc : ∀ k, (Ideal.Quotient.factorₐ O (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow (p : A) (Nat.le_succ k)))).comp (ψ (k + 1)) = ψ k` using `fun k => by haveI := hfin k`. Use `(hrep _ (toOver hφ _ (q k)) (hqp k)).unique ?_ (hψ k)` and prove the remaining obligations. Rewrite using `[← homAt_comp_homAt, Category.assoc, hψ, homAt_toOver]`. Use `congr 1`.
+
+Simplify using `only [q]`. Rewrite using `[← P.cmp_nat _ _ (nilpR (k + 1)) (nilpR k), ← Category.assoc, factor_redR]`. Take `⟨Q', hQ'⟩` from `exists_lim_affine hAc (fun k => ptMap (ψ k)) fun k => by`. Rewrite using `[ptMap_comp_ptMap, hψc]`. Take `⟨L, rfl⟩` from `GlobalTheory.TorsionCharacter.exists_ptMap Q'`.
+
+Establish `hL : ∀ k, (redR p O A k).comp L = ψ k` using `fun k => ptMap_inj (by rw [← ptMap_comp_ptMap]; exact hQ' k)`. Take `⟨Q, hQw⟩` from `toOver_surjective hφ A (homAt z L ≫ u)`. Establish `hQc : Corr P (Y ≫ torsion.ι P.Gt (p ^ n)) Q` using `fun k => toOver_injective hφ _ (by`. Rewrite using `[← homAt_toOver, hQw, ← Category.assoc, homAt_comp_homAt, hL, hψ])`. Establish `hQp : toOver hφ A Q ^ (p ^ n) = 1` using `by rw [hQw, ← MonObj.comp_pow, hu, MonObj.comp_one]`.
+
+Establish `e : (c.χ A (toOver hφ A Q) : A) = (unitOf (Y ≫ (P.weilChar s).χ n) : A)` using `hsep _ _ fun f => hv.hom_inj (by`. Establish `h1 : P.toG ((ptMap f ≫ Y) ≫ torsion.ι P.Gt (p ^ n)) = ptMap f ≫ Q` using `P.hom_ext_red fun k => by`. Rewrite using `[P.red_toG, Category.assoc (ptMap f)]`. Conclude with `(hQc.comp f k).symm`. Establish `h2` using `hc (toOver hφ O (ptMap f ≫ Q)) (P.toA ((ptMap f ≫ Y) ≫ torsion.ι P.Gt (p ^ n))) (by rw [← homAt_toOver, ← MonObj.comp_pow, hQp, MonObj.comp_one]) (by rw [← Category.assoc, (P.eq_toA_iff _ _).1 rfl, h1, Category.assoc]; rfl)`.
+
+Establish `h3` using `c.nat A O f (toOver hφ A Q) (toOver hφ O (ptMap f ≫ Q)) hQp (by`. Rewrite using `[toOver_left, toOver_left, Over.comp_left, Category.assoc]`. Use the proof step `rfl)`. Rewrite using `[← h3, h2, ← unitOf_ptMap, ← Category.assoc, P.isWeilChar_weilChar])`. Establish `hR : (p : O ⧸ Ideal.span {(p : O) ^ n}) ^ n = 0`.
+
+Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hn : IsNilpotent (p : DualNumber (O ⧸ Ideal.span {(p : O) ^ n}))` using `⟨n, by rw [← map_natCast (algebraMap (O ⧸ Ideal.span {(p : O) ^ n}) (DualNumber (O ⧸ Ideal.span {(p : O) ^ n}))), ← map_pow, hR, map_zero]⟩`. Establish `hx1` using `fst_bc (O := O) (G := P.Gt) (O ⧸ Ideal.span {(p : O) ^ n}) x`. Establish `hpow : bc (O` using `O) (G := P.Gt) (O ⧸ Ideal.span {(p : O) ^ n}) x ^ (p ^ n) = 1 := by`.
+
+Rewrite using `[pow_eq_scale_comp hx1, Nat.cast_pow, hR, scale_zero_comp hx1]`. Take `⟨ψ', hψ'⟩` from `hl _ (torsionLift _ hpow) (by rw [torsionLift_ι]; exact hx1)`. Establish `hx : (ptMap ψ' ≫ Y) ≫ torsion.ι P.Gt (p ^ n) = ptMap (dualBC (Algebra.ofId O (O ⧸ Ideal.span {(p : O) ^ n}))) ≫ x.1`. Rewrite using `[← hψ', torsionLift_ι]`. Both sides reduce to the same expression.
+
+Establish `h5 : ptMap ψ' ≫ Q = ptMap (dualBC (Algebra.ofId O (O ⧸ Ideal.span {(p : O) ^ n}))) ≫ (P.lieCmp x).1`. Rewrite using `[← GlobalTheory.CompHt.FormalChar.cmp_of_corr P hQc ψ' hn, ← GlobalTheory.CompHt.FormalChar.cmp_of_corr P (P.corr_lieCmp x) _ hn, ← hx, Category.assoc]`. Establish `hgQ : g.left = spMap ψ'.toRingHom ≫ (toOver hφ A Q).left`. Rewrite using `[hg, ← GlobalTheory.FinPartAt.ptMap_dualBC_left, ← Category.assoc, ← Over.comp_left, ← h5, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[c.nat A _ ψ' (toOver hφ A Q) g hQp hgQ, e, ← unitOf_ptMap, ← Category.assoc, isAl_dlogTv (P.weilChar s) n _ hR x _ hx, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Both sides reduce to the same expression.
+-/
 theorem snd_chi_eq (P : Point p v O Λ) (z : Sp O ⟶ X) (φ : P.G.left ⟶ t.G.left) (hφ : IsGrpPullback P.G t.G z φ)
     (n : ℕ) (c : TorsChar t z (p ^ n)) (s : P.T)
     (hc : ∀ (w : Over.mk (spMap (algebraMap O O) ≫ z) ⟶ t.G) (a : GlobalTheory.ChTor.Pts P.A.A), w ^ (p ^ n) = 1 →

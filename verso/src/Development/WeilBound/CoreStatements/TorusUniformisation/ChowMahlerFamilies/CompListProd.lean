@@ -16,10 +16,16 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.MainNotions.ModuliIntegralCharts.H1.GermD Formalism.MainNotions.ModuliIntegralCharts.H1.JetTr
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_cp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [MonObj.comp_mul, ih]`.
+-/
 theorem comp_listProd {X0 : Scheme.{0}} {G T T' : Over X0} [GrpObj G] (ρ : T' ⟶ T) (l : List (T ⟶ G)) :
     ρ ≫ l.prod = (l.map (ρ ≫ ·)).prod := by
   induction l with
@@ -31,6 +37,15 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
 variable {S S₂ : Type} [CommRing S] [CommRing S₂] (f : S →+* S₂) (x : Sp S ⟶ X0)
 
+/- English proof (translation)
+Establish `h0 : M.pt 0 = 1`. Use `M.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`. Set `φ : Multiplicative V →* (tEpsG x ⟶ t.G)` to `{ toFun := fun v => M.pt v.toAdd, map_one' := h0, map_mul' := fun u v => M.add _ _ }`.
+
+Establish `hs : M.pt (∑ i, a i • b i) = (List.ofFn fun i => M.pt (a i • b i)).prod`. Use `map_prod φ (fun i => Multiplicative.ofAdd (a i • b i)) Finset.univ` as an intermediate fact. Rewrite using `[List.prod_ofFn]`. Rewrite `this` using `[← ofAdd_sum]`. Conclude with `this`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: u = fun i => M.pt (a i • b i)` using `funext fun i => Over.OverMorphism.ext ((hu i).trans (M.smul _ _).symm)`. Rewrite using `[hs, this]`. Introduce and unpack `rfl`.
+
+Conclude with `⟨fun i => M.pt (a i • b i), fun i => M.smul _ _, by rw [hs]⟩`.
+-/
 theorem comb_iff {V : Type} [AddCommGroup V] [Module S V] (M : GlobalTheory.CompanionTheory.Ar.LieModel t.G x V) {n : ℕ} (b : Fin n → V)
     (a : Fin n → S) (w : Sp (DualNumber S) ⟶ t.G.left) :
     IsCombAtG t x (fun l => (M.pt (b l)).left) a w ↔ (M.pt (∑ i, a i • b i)).left = w := by
@@ -59,6 +74,11 @@ def epsBC : tEpsG (spMap f ≫ x) ⟶ tEpsG x :=
     congr 2
     ext s <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl])
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Use `⟨fun i => epsBC f x ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ (u i).left = _`. Rewrite using `[hu, ← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp]`. Use `congr 2`.
+
+Use `RingHom.ext fun s => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, epsMul, GlobalTheory.CompanionTheory.Ar.epsMul, mul_comm]`. Use `comp_listProd (epsBC f x) (List.ofFn u)` as an intermediate fact. Rewrite `this` using `[List.map_ofFn]`. Conclude with `(congrArg (fun q => q.left) this).symm`.
+-/
 theorem comb_bc {n : ℕ} {v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} {a : Fin n → S}
     {w : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x v a w) :
     IsCombAtG t (spMap f ≫ x) (fun i => spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ v i) (fun i => f (a i))
@@ -74,6 +94,11 @@ theorem comb_bc {n : ℕ} {v : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} {a : 
     rw [List.map_ofFn] at this
     exact (congrArg (fun q => q.left) this).symm
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h.1]`. Conclude with `Over.w (epsBC f x)`. Establish `e : spMap (TrivSqZeroExt.fstHom S₂ S₂ S₂).toRingHom ≫ spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) = spMap f ≫ spMap (TrivSqZeroExt.fstHom S S S).toRingHom`. Rewrite using `[spMap_cp, spMap_cp]`.
+
+Use `congr 1`. Use `RingHom.ext fun s => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.CompanionTheory.Ar.dualMap]`. Rewrite using `[← Category.assoc, e, Category.assoc, h.2]`. Conclude with `congrArg (fun q => q.left) (MonObj.comp_one (M := t.G) (Over.homMk (spMap f) rfl : Over.mk (spMap f ≫ x) ⟶ Over.mk x))`.
+-/
 theorem tan_bc {v : Sp (DualNumber S) ⟶ t.G.left} (h : IsTanAtG t x v) :
     IsTanAtG t (spMap f ≫ x) (spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ v) := by
   refine ⟨?_, ?_⟩
@@ -89,6 +114,21 @@ theorem tan_bc {v : Sp (DualNumber S) ⟶ t.G.left} (h : IsTanAtG t x v) :
     exact congrArg (fun q => q.left)
       (MonObj.comp_one (M := t.G) (Over.homMk (spMap f) rfl : Over.mk (spMap f ≫ x) ⟶ Over.mk x))
 
+/- English proof (translation)
+Use `letI : Algebra S S₂ := f.toAlgebra`. Take `⟨V, _, _, ⟨M⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists X0 t.G S x`. Take `⟨V', _, _, ⟨M'⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists X0 t.G S₂ (spMap f ≫ x)`. Take `⟨j, hj, -, hbs⟩` from `PositivityTheory.HtPt.Htat.lie_bc X0 t.G S S₂ x V V' M M'`. Use `choose b hb' using fun l => M.onto (Over.homMk (tg l) (ht l).1) (ht l).2`.
+
+Establish `htg : tg = fun l => (M.pt (b l)).left` using `funext fun l => by rw [hb']; rfl`. Establish `hu : ∀ v : V, ∃! a : Fin n → S, ∑ i, a i • b i = v` using `fun v => by`. Take `⟨a, ha, hau⟩` from `hb (M.pt v).left ⟨Over.w (M.pt v), M.tan v⟩`. Rewrite `ha` using `[htg, comb_iff]`. Use `⟨a, M.inj (Over.OverMorphism.ext ha), fun a' ha' => hau a' ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[htg, comb_iff, ha']`. Establish `hli : LinearIndependent S b` using `Fintype.linearIndependent_iff.2 fun a ha i => congrFun ((hu 0).unique (y₁ := a) (y₂ := 0) ha (by simp)) i`. Establish `hsp : ⊤ ≤ Submodule.span S (Set.range b)` using `fun v _ => by`. Take `⟨a, rfl, -⟩` from `hu v`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨hli', hsp'⟩` from `hbs t.semi.smooth n (Module.Basis.mk hli hsp)`. Simplify using `only [Module.Basis.mk_apply] at hli' hsp'`. Establish `htg' : (fun i => spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ tg i) = fun l => (M'.pt (j (b l))).left`. Use function extensionality and compare the values at `fun l => by rw [hj, htg]`.
+
+Take `⟨v, hv⟩` from `M'.onto (Over.homMk w hw.1) hw.2`. Establish `hvw : (M'.pt v).left = w` using `by rw [hv]; rfl`. Set `B` to `Module.Basis.mk hli' hsp'.ge`. Establish `hB : ∀ i, j (b i) = B i` using `fun i => by simp [B]`. Use `⟨B.equivFun v, ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[htg', comb_iff]`. Simplify using `only [hB, Module.Basis.sum_equivFun, hvw]`. Rewrite `ha` using `[htg', comb_iff, ← hvw]`. Use `M'.inj (Over.OverMorphism.ext ha)` as an intermediate fact.
+
+Simplify using `only [hB] at this`. Rewrite using `[← this, ← Module.Basis.equivFun_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem basis_bc {n : ℕ} {tg : Fin n → (Sp (DualNumber S) ⟶ t.G.left)} (ht : ∀ l, IsTanAtG t x (tg l))
     (hb : ∀ w, IsTanAtG t x w → ∃! a : Fin n → S, IsCombAtG t x tg a w) (w : Sp (DualNumber S₂) ⟶ t.G.left)
     (hw : IsTanAtG t (spMap f ≫ x) w) :
@@ -132,6 +172,9 @@ def cO (κ : Type) (m : ℕ) : overAt (spMap f ≫ x) (Jet S₂ κ m) ⟶ overAt
     change spMap _ ≫ spMap _ ≫ x = spMap _ ≫ spMap f ≫ x
     rw [← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp, jetCoef_alg])
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[spMap_cp, spMap_cp, h]`.
+-/
 theorem sq_of {κ κ' : Type} {m m' : ℕ} (α : Jet S κ m →ₐ[S] Jet S κ' m') (β : Jet S₂ κ m →ₐ[S₂] Jet S₂ κ' m')
     (h : (jetCoef f κ' m').comp (α : Jet S κ m →+* Jet S κ' m') =
       (β : Jet S₂ κ m →+* Jet S₂ κ' m').comp (jetCoef f κ m)) :
@@ -140,6 +183,9 @@ theorem sq_of {κ κ' : Type} {m m' : ℕ} (α : Jet S κ m →ₐ[S] Jet S κ' 
   change spMap _ ≫ spMap _ = spMap _ ≫ spMap _
   rw [spMap_cp, spMap_cp, h]
 
+/- English proof (translation)
+Take `rfl : φ' = _` from `funext h`. Conclude with `sq_of f x _ _ (jetCoef_substP f m φ)`.
+-/
 theorem sq_subst {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S) (φ' : κ → MvPolynomial κ' S₂)
     (h : ∀ i, φ' i = MvPolynomial.map f (φ i)) :
     homAt (spMap f ≫ x) (jetSubstP m φ') ≫ cO f x κ m = cO f x κ' m ≫ homAt x (jetSubstP m φ) := by
@@ -150,10 +196,28 @@ variable {d : ℕ} (y : ∀ m, jOG x d m 1 ⟶ t.G)
 
 def yBC (m : ℕ) : jOG (spMap f ≫ x) d m 1 ⟶ t.G := cO f x _ m ≫ y m
 
+/- English proof (translation)
+Rewrite using `[jptG, jptG, yBC, ← Category.assoc, sq_of f x _ _ (jetCoef_copy f d m n i), Category.assoc]`.
+-/
 theorem jpt_bc {n : ℕ} (m : ℕ) (i : Fin n) :
     jptG t (spMap f ≫ x) d (yBC t f x y) m i = cO f x _ m ≫ jptG t x d y m i := by
   rw [jptG, jptG, yBC, ← Category.assoc, sq_of f x _ _ (jetCoef_copy f d m n i), Category.assoc]
 
+/- English proof (translation)
+Set `ρ : overAt (spMap f ≫ x) S₂ ⟶ overAt x S` to `Over.homMk (spMap f) (by`. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ x = spMap _ ≫ spMap f ≫ x`. Rewrite using `[spMap_alg_self, spMap_alg_self, Category.id_comp, Category.id_comp])`. Establish `e : homAt (spMap f ≫ x) (jetAug : Jet S₂ (Fin 1 × Fin d) m →ₐ[S₂] S₂) ≫ cO f x _ m = ρ ≫ homAt x (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _ ≫ spMap _`. Rewrite using `[spMap_cp, spMap_cp, jetCoef_aug]`. Rewrite using `[yBC, ← Category.assoc, e, Category.assoc, h.zero, MonObj.comp_one]`. Use `trunc m := by`. Rewrite using `[yBC, yBC, ← Category.assoc, sq_of f x _ _ (jetCoef_trunc f _ m).symm, Category.assoc, h.trunc]`.
+
+Use `law m := by`. Rewrite using `[jpt_bc, jpt_bc, ← MonObj.comp_mul, ← h.law, yBC, ← Category.assoc, sq_subst f x m (fun p : Fin 1 × Fin d => psTrunc m (F p.2)) _ (fun i => psTrunc_map f m _), Category.assoc]`. Use `act m a := by`. Rewrite using `[yBC, Category.assoc, h.act, ← Category.assoc (homAt _ _), sq_subst f x m (fun p : Fin 1 × Fin d => psTrunc m (act a p.2)) _ (fun i => psTrunc_map f m _), Category.assoc]`. Use `tan l := by`.
+
+Use `comb_bc t f x (h.tan l)` as an intermediate fact. Use `this using 2 with j j` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ ≫ (y 1).left = spMap _ ≫ spMap _ ≫ (y 1).left`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_cp, spMap_cp]`. Use `congr 2`.
+
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Express the relevant statement in the definitionally equal form `(MvPolynomial.aeval _) (MvPolynomial.map f (MvPolynomial.C r)) = GlobalTheory.CompanionTheory.Ar.dualMap f ((MvPolynomial.aeval _) (MvPolynomial.C r))`. Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Introduce `i`. Express the relevant statement in the definitionally equal form `(MvPolynomial.aeval _) (MvPolynomial.map f (MvPolynomial.X i)) = GlobalTheory.CompanionTheory.Ar.dualMap f ((MvPolynomial.aeval _) (MvPolynomial.X i))`. Rewrite using `[MvPolynomial.map_X, MvPolynomial.aeval_X, MvPolynomial.aeval_X]`. Use `split_ifs`. Apply the tactic sequence `ext <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap]`.
+
+Simplify using the standard rewrite rules. Apply the tactic sequence `split_ifs <;> simp`. Use `basis v := ⟨v, fun j => by simp, fun a ha => funext fun j => by simpa using ha j⟩`.
+-/
 theorem chart_bc {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S}
     {tg : Fin d → (Sp (DualNumber S) ⟶ t.G.left)} (h : IsChartG t x d F act tg (fun l j => if l = j then 1 else 0) y) :
     IsChartG t (spMap f ≫ x) d (fun i => MvPowerSeries.map f (F i)) (fun a i => MvPowerSeries.map f (act a i))
@@ -208,9 +272,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
 variable {S S₂ : Type} [CommRing S] [CommRing S₂] (f : S →+* S₂) (x : Sp S ⟶ X0)
 variable {d : ℕ} (y : ∀ m, jOG x d m 1 ⟶ t.G)
 
+/- English proof (translation)
+The claim follows from `foldr_padd_pre h a _`.
+-/
 theorem psum_pre {T T' : Over X0} (h : T' ⟶ T) {n : ℕ} (a : Fin n → (T ⟶ t.G)) (I : Finset (Fin n)) :
     psum t.G (fun k => h ≫ a k) I = h ≫ psum t.G a I := foldr_padd_pre h a _
 
+/- English proof (translation)
+Rewrite using `[cφG, cφG, ← Over.comp_left, ← psum_pre]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> exact jpt_bc t f x y m _`.
+-/
 theorem cφ_bc (m : ℕ) (I : ULift (Finset (Fin 2))) :
     cφG t ![jptG t (spMap f ≫ x) d (yBC t f x y) m (0 : Fin 2), jptG t (spMap f ≫ x) d (yBC t f x y) m (1 : Fin 2)] I =
       (cO f x _ m).left ≫ cφG t ![jptG t x d y m (0 : Fin 2), jptG t x d y m (1 : Fin 2)] I := by
@@ -219,11 +289,17 @@ theorem cφ_bc (m : ℕ) (I : ULift (Finset (Fin 2))) :
   funext k
   fin_cases k <;> exact jpt_bc t f x y m _
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg (· * _) (gm_res r z _ (hJ.mem φ r) _))`.
+-/
 theorem val_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ t.G.left)} {ε : K → ℤ} (u : Γ(Y, ⊤)ˣ)
     (g : LB.Gen (LB.LinComb t.PP.L φ ε)) (r : Z ⟶ Y) {z : Z} {J} (hJ : Good t.PP.L z J) :
     val (scaleGenG t φ ε u g) r z J = gm r z ⊤ u * val g r z J :=
   (map_mul _ _ _).trans (congrArg (· * _) (gm_res r z _ (hJ.mem φ r) _))
 
+/- English proof (translation)
+Rewrite using `[← gm_pull r (cO f x κ m).left z ⊤ trivial]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (jetCoef f κ m))))`.
+-/
 theorem gm_unit_bc {Z : Scheme.{0}} {κ : Type} {m : ℕ} (u : (Jet S κ m)ˣ) (r : Z ⟶ Sp (Jet S₂ κ m)) (z : Z) :
     gm r z ⊤ (unitΓ (Units.map (jetCoef f κ m).toMonoidHom u)) =
       gm (r ≫ (cO f x κ m).left) z ⊤ (unitΓ u) := by
@@ -232,10 +308,16 @@ theorem gm_unit_bc {Z : Scheme.{0}} {κ : Type} {m : ℕ} (u : (Jet S κ m)ˣ) (
   apply Units.ext
   exact (congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (jetCoef f κ m))))
 
+/- English proof (translation)
+Rewrite using `[psJet, psJet, jetCoef_mk, psTrunc_map]`.
+-/
 theorem coef_psJet {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (F : MvPowerSeries κ S) :
     jetCoef f κ m (psJet m F) = psJet m (MvPowerSeries.map f F) := by
   rw [psJet, psJet, jetCoef_mk, psTrunc_map]
 
+/- English proof (translation)
+Rewrite using `[psIn, psIn, psTrunc_map, MvPolynomial.map_rename]`.
+-/
 theorem psIn_map {n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (F : MvPowerSeries (Fin n × Fin d) S) :
     psIn d m r (MvPowerSeries.map f F) = MvPolynomial.map f (psIn d m r F) := by
   rw [psIn, psIn, psTrunc_map, MvPolynomial.map_rename]
@@ -248,6 +330,9 @@ def FrBC : Prop := ∀ (m : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet S₂ (Fin 2
   val (L := t.PP.L) (φ := cφG t ![jptG t x d y m (0 : Fin 2), jptG t x d y m (1 : Fin 2)]) (ε := cε 2) (e m)
     (r ≫ (cO f x _ m).left) z J
 
+/- English proof (translation)
+Use `fun m => exists_gen t.PP.isLB (φ' := cφG t ![jptG t (spMap f ≫ x) d (yBC t f x y) m (0 : Fin 2), jptG t (spMap f ≫ x) d (yBC t f x y) m (1 : Fin 2)]) (ε' := cε 2) (fun U _ h => Finset.prod_congr rfl fun k _ => by rw [cφ_bc]) (LB.pullGen t.PP.L (cφG t ![jptG t x d y m (0 : Fin 2), …` as an intermediate fact. Use `choose e₂ h1 h2 using this`. Conclude with `⟨e₂, h1, fun m Z r z J hJ => (h2 m Z r z J hJ).trans (val_pull hJ _ _ _)⟩`.
+-/
 theorem exists_frBC (he : ∀ m, (e m).IsGen) :
     ∃ e₂ : ∀ m, FrTyG t (spMap f ≫ x) d (yBC t f x y) m, (∀ m, (e₂ m).IsGen) ∧ FrBC t f x y e e₂ := by
   have := fun m => exists_gen t.PP.isLB
@@ -261,6 +346,9 @@ theorem exists_frBC (he : ∀ m, (e m).IsGen) :
 
 variable {t f x y e e₂}
 
+/- English proof (translation)
+Use `(val_pull hJ _ _ _).trans ((h m Z _ z J hJ).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, hs]`.
+-/
 theorem FrBC.pull (h : FrBC t f x y e e₂) {m m' : ℕ} {κ : Type} (α : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S κ m')
     (β : Jet S₂ (Fin 2 × Fin d) m →ₐ[S₂] Jet S₂ κ m')
     (hs : homAt (spMap f ≫ x) β ≫ cO f x _ m = cO f x κ m' ≫ homAt x α)
@@ -272,6 +360,9 @@ theorem FrBC.pull (h : FrBC t f x y e e₂) {m m' : ℕ} {κ : Type} (α : Jet S
   refine (val_pull hJ _ _ _).trans ((h m Z _ z J hJ).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))
   rw [Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, hs]
 
+/- English proof (translation)
+The claim follows from `h.pull _ _ (sq_subst f x m _ _ fun ⟨i, j⟩ => by fin_cases i; exacts [ha j, hb j]) r hJ`.
+-/
 theorem FrBC.pe (h : FrBC t f x y e e₂) {m n : ℕ} (a b : Fin d → MvPolynomial (Fin n × Fin d) S)
     (a' b' : Fin d → MvPolynomial (Fin n × Fin d) S₂) (ha : ∀ j, a' j = MvPolynomial.map f (a j))
     (hb : ∀ j, b' j = MvPolynomial.map f (b j))
@@ -280,12 +371,18 @@ theorem FrBC.pe (h : FrBC t f x y e e₂) {m n : ℕ} (a b : Fin d → MvPolynom
       val (peG t x d y e m ![a, b]) (r ≫ (cO f x _ m).left) z J :=
   h.pull _ _ (sq_subst f x m _ _ fun ⟨i, j⟩ => by fin_cases i; exacts [ha j, hb j]) r hJ
 
+/- English proof (translation)
+Rewrite using `[val_pull hJ, val_pull hJ, hc, Category.assoc]`.
+-/
 theorem val_pull_eq {Y Y₁ Y₂ Z : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ t.G.left)} {ε : K → ℤ}
     (g : LB.Gen (LB.LinComb t.PP.L φ ε)) (h₁ : Y₁ ⟶ Y) (h₂ : Y₂ ⟶ Y) (c : Y₂ ⟶ Y₁) (hc : h₂ = c ≫ h₁) (r : Z ⟶ Y₂)
     {z : Z} {J} (hJ : Good t.PP.L z J) :
     val (LB.pullGen t.PP.L φ ε g h₂) r z J = val (LB.pullGen t.PP.L φ ε g h₁) (r ≫ c) z J := by
   rw [val_pull hJ, val_pull hJ, hc, Category.assoc]
 
+/- English proof (translation)
+The claim follows from `hg ph1 m := by obtain ⟨u, hu, hc⟩ := hf.ph1 m refine ⟨Units.map (jetCoef f _ m).toMonoidHom u, by rw [← coef_psJet, ← hu]; rfl, corr_of_val t.PP.isLB fun z J hJ => ?_⟩ refine (val_pull_eq _ _ _ (cO f x _ m).left ?_ _ hJ).trans ((val_corr hJ hc _).trans ?_) · rw [← Over.comp_left, …`.
+-/
 theorem FrBC.frame (h : FrBC t f x y e e₂) (hg : ∀ m, (e₂ m).IsGen)
     {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S} {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S}
     {ph1 ph2 : MvPowerSeries (Fin 3 × Fin d) S} {sy : MvPowerSeries (Fin 2 × Fin d) S}
@@ -337,11 +434,17 @@ theorem FrBC.frame (h : FrBC t f x y e e₂) (hg : ∀ m, (e₂ m).IsGen)
       val_pull_eq _ (lift (jptG t x d y m (0 : Fin 2)) (jptG t x d y m (1 : Fin 2))).left _ (cO f x _ m).left
         (by rw [← Over.comp_left, comp_lift, jpt_bc, jpt_bc]) _ hJ]
 
+/- English proof (translation)
+Introduce `m` and use `corr_of_val t.PP.isLB fun z J hJ => (h.pull _ _ (sq_of f x _ _ (jetCoef_trunc f _ m).symm) _ hJ).trans ((val_corr hJ (hf m) _).trans (h m _ _ z J hJ).symm)`.
+-/
 theorem FrBC.trunc (h : FrBC t f x y e e₂) (hf : FrTrunc t x d y e) : FrTrunc t (spMap f ≫ x) d (yBC t f x y) e₂ :=
   fun m => corr_of_val t.PP.isLB fun z J hJ =>
     (h.pull _ _ (sq_of f x _ _ (jetCoef_trunc f _ m).symm) _ hJ).trans
       ((val_corr hJ (hf m) _).trans (h m _ _ z J hJ).symm)
 
+/- English proof (translation)
+Introduce `m` and use `⟨corr_of_val t.PP.isLB fun z J hJ => (h.pe _ _ _ _ (fun _ => (map_zero _).symm) (fun _ => (MvPolynomial.map_X f _).symm) _ hJ).trans ((val_corr hJ (hf m).1 _).trans ((val_one _).trans (val_one _).symm)), corr_of_val t.PP.isLB fun z J hJ => (h.pe _ _ _ _ (fun _ => (MvPolynomial.ma …`.
+-/
 theorem FrBC.axes (h : FrBC t f x y e e₂) (hf : FrAxes t x d y e) : FrAxes t (spMap f ≫ x) d (yBC t f x y) e₂ :=
   fun m => ⟨corr_of_val t.PP.isLB fun z J hJ =>
     (h.pe _ _ _ _ (fun _ => (map_zero _).symm) (fun _ => (MvPolynomial.map_X f _).symm) _ hJ).trans

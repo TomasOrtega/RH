@@ -4,6 +4,17 @@ universe u_1
 
 namespace Bl.general_b_fact_right_variant
 
+/- English proof (translation)
+Introduce `R _ P hP n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hmem`. Distinguish the cases in `h1 : n = 1`.
+
+Substitute `h1` using the available equality. Rewrite `hmem` using `[Nat.cast_one]`. Conclude with `absurd ((Ideal.eq_top_iff_one P).2 hmem) hP.ne_top`. Establish `hp` using `Nat.minFac_prime h1`. Take `⟨m, hm⟩` from `Nat.minFac_dvd n`.
+
+Establish `hmem' : ((n.minFac : R) * (m : R)) ∈ P`. Rewrite using `[← Nat.cast_mul, ← hm]`. Conclude with `hmem`. Break down `hP.mem_or_mem hmem' with h | h` into its components or cases. Conclude with `⟨_, hp, Nat.minFac_dvd n, h⟩`.
+
+Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn (by simpa using hm)`. Establish `hpos : 0 < m` using `Nat.pos_of_ne_zero hm0`. Establish `h2` using `hp.two_le`.
+
+Establish `hlt : m < n` using `by nlinarith`. Take `⟨p, pp, pd, pm⟩` from `ih m hlt hm0 h`. Conclude with `⟨p, pp, Dvd.dvd.trans pd ⟨n.minFac, hm.trans (Nat.mul_comm _ _)⟩, pm⟩`.
+-/
 theorem goal1 :
   ∀ {R : Type u_1} [inst : CommRing.{u_1} R] (P : Ideal.{u_1} R) [hP : Ideal.IsPrime.{u_1} P] (n : Nat),
   Ne.{1} n 0 →

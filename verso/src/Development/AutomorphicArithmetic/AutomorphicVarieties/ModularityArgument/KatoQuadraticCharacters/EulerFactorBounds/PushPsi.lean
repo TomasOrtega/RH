@@ -5,6 +5,11 @@ open scoped Matrix MatrixGroups Classical
 
 namespace UpperTheory.V.Z.Kato.Nb.PushforwardPsi
 
+/- English proof (translation)
+Establish `h1 : ∀ a : A, ∃ s, c s = a⁻¹ * (QuotientGroup.mk a : A ⧸ c.range).out` using `fun a => QuotientGroup.eq.1 (QuotientGroup.out_eq' (QuotientGroup.mk a : A ⧸ c.range)).symm`. Use `choose σ hσ using h1`. Use `⟨fun a => ψ (σ a), fun a s => ?_⟩` and prove the remaining obligations. Establish `e : (QuotientGroup.mk (a * (c s)⁻¹) : A ⧸ c.range) = QuotientGroup.mk a` using `QuotientGroup.eq.2 ⟨s, by simp⟩`. Establish `h2` using `h ((σ (a * (c s)⁻¹))⁻¹ * (σ a * s)) (by`.
+
+Rewrite using `[map_mul, map_mul, map_inv, hσ, hσ, e, inv_mul_eq_one, mul_inv, inv_inv, mul_right_comm])`. Rewrite `h2` using `[map_mul, map_inv, inv_mul_eq_one, map_mul]`. Conclude with `h2`.
+-/
 private theorem exF {Γ A C : Type} [Group Γ] [CommGroup A] [CommGroup C] (c : Γ →* A) (ψ : Γ →* C)
     (h : ∀ s, c s = 1 → ψ s = 1) : ∃ f : A → C, ∀ a s, f (a * (c s)⁻¹) = f a * ψ s := by
   have h1 : ∀ a : A, ∃ s, c s = a⁻¹ * (QuotientGroup.mk a : A ⧸ c.range).out := fun a =>
@@ -18,6 +23,13 @@ private theorem exF {Γ A C : Type} [Group Γ] [CommGroup A] [CommGroup C] (c : 
   rw [map_mul, map_inv, inv_mul_eq_one, map_mul] at h2
   exact h2
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Use `⟨hζ.autToPow ℚ, fun s => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ z : Ω, z ^ M = 1 → s z = z ^ (hζ.autToPow ℚ s : ZMod M).val` using `fun w hw => by`.
+
+Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hw`. Rewrite using `[map_pow, ← hζ.autToPow_spec ℚ s, ← pow_mul, ← pow_mul, mul_comm]`. Use `⟨?_, hs⟩` and prove the remaining obligations. Establish `hM` using `cycM_spec M s ⟨_, hs⟩`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `ZMod.val_injective` to reduce the goal to its premises. Conclude with `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) ((hM ζ hζ.pow_eq_one).symm.trans (hs ζ hζ.pow_eq_one))`.
+-/
 private theorem exC (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (M : ℕ) [NeZero M] :
     ∃ c : (Ω ≃ₐ[ℚ] Ω) →* (ZMod M)ˣ, ∀ s, cycM M s = c s ∧ ∀ z : Ω, z ^ M = 1 → s z = z ^ (c s : ZMod M).val := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -33,6 +45,9 @@ private theorem exC (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω
   apply ZMod.val_injective
   exact hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) ((hM ζ hζ.pow_eq_one).symm.trans (hs ζ hζ.pow_eq_one))
 
+/- English proof (translation)
+Take `rfl : i1 = instFintypeProd A B'` from `Subsingleton.elim _ _`. Unfold `push`. Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun y' _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : g y' = y <;> simp [h]`.
+-/
 private theorem push_prod {Γ A B B' V : Type} [Group Γ] [AddCommMonoid V] [Fintype A] [Fintype B'] [DecidableEq B]
     {i1 : Fintype (A × B')} {i2 : DecidableEq (A × B)} (g : B' → B) (Z : Γ → A × B' → V) (s : Γ) (a : A) (y : B) :
     @push Γ (A × B) (A × B') i1 i2 V _ (Prod.map id g) Z s (a, y) = ∑ y', if g y' = y then Z s (a, y') else 0 := by
@@ -45,6 +60,23 @@ private theorem push_prod {Γ A B B' V : Type} [Group Γ] [AddCommMonoid V] [Fin
 end UpperTheory.V.Z.Kato.Nb.PushforwardPsi
 
 open UpperTheory.V.Z.Kato.Nb.PushforwardPsi in
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ cf ρ p n _ ψw hψ Y hc hp hcont hO`. Take `⟨c, hcs⟩` from `exC Ω p`. Take `⟨f, hf⟩` from `exF c ψw fun s hs => hψ s fun z hz => by`. Rewrite using `[(hcs s).2 z hz, hs, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ hz, pow_one]`. Use `⟨fun r s x => ∑ t, if f t = x.1 then Y r s (t, x.2) else 0, fun r s s' x => ?_, fun r x i => ?_, fun r s x i => ?_, fun r s => ?_, fun r s y => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∑ t, (if f t = (x * (ψw.prod (cycMod ℚ Ω l r)⁻¹) s).1 then Y r s' (t, (x * (ψw.prod (cycMod ℚ Ω l r)⁻¹) s).2) else 0) = ∑ t, if f t = x.1 then Y r s' ((t, x.2) * cycT l r p s) else 0`. Use `symm`. Use `Fintype.sum_equiv (Equiv.mulRight (c s)⁻¹) _ _ fun t => ?_` and prove the remaining obligations. Simplify using `[hf, cycT, (hcs s).1]`. Use `beta_reduce`.
+
+Rewrite using `[e, Matrix.mulVec_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hc r s s' _`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Finset.sum_apply]`. Use `continuous_finset_sum _ fun t _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hcont r _ i`. Conclude with `continuous_const`.
+
+Simplify using `only [Finset.sum_apply]`. Use `sum_mem fun t _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hO r s _ i`. Conclude with `zero_mem _`.
+
+Use function extensionality and compare the values at `⟨a, y⟩`. Rewrite using `[push_prod]`. Establish `e : ∀ t, Y r s (t, y) = ∑ y', if redL l r y' = y then Y (r + 1) s (t, y') else 0` using `fun t => by`. Rewrite using `[hp r, push_prod]`. Simplify using `only [e]`.
+
+Apply the tactic sequence `have e2 : ∀ (P : Prop) [Decidable P] {ι : Type} [Fintype ι] (v : ι → Fin 2 → Qbar l), (if P then ∑ j, v j else 0) = ∑ j, if P then v j else 0 := fun P _ _ _ v => by split_ifs <;> simp`. Simplify using `only [e2]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y' _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if f t = a then if redL l r y' = y then _ else 0 else 0) = if redL l r y' = y then if f t = a then _ else 0 else 0`.
+
+Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.sPushPsi :
     UpperTheory.V.Z.Kato.Nb.SPushPsi := by
   intro l _ Ω _ _ _ cf ρ p n _ ψw hψ Y hc hp hcont hO

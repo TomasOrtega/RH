@@ -9,10 +9,16 @@ open NumberField IsDedekindDomain
 
 abbrev Tau2 (R : Ranks) : Type := ↥(R.Psi)
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card, R.toFrame.natCard_Psi]`. Both sides reduce to the same expression.
+-/
 theorem card_realPlaces_eq_degree (R : Ranks) : Fintype.card (Tau2 R) = R.f := by
   rw [← Nat.card_eq_fintype_card, R.toFrame.natCard_Psi]
   rfl
 
+/- English proof (translation)
+Establish `h1 : 0 < R.f` using `by unfold Ranks.f Ranks.n; positivity`. Establish `h2 : 0 < R.k` using `by have := R.m_add_three_le_k; omega`. Conclude with `(Nat.mul_pos h1 h2).ne'`.
+-/
 theorem fk_ne (R : Ranks) : R.f * R.k ≠ 0 := by
   have h1 : 0 < R.f := by unfold Ranks.f Ranks.n; positivity
   have h2 : 0 < R.k := by have := R.m_add_three_le_k; omega
@@ -87,6 +93,9 @@ end Member2
 def dstarOfRanks (R : Ranks) (Ts Gam : ℝ) : ℝ :=
   (Ts * Gam ^ ((2 : ℝ) / ((R.f * R.k : ℕ) : ℝ))) ^ (R.f * R.k)
 
+/- English proof (translation)
+Establish `: 0 < Gam` using `by linarith`. Unfold `dstarOfRanks`. Check the signs of the components of the expression.
+-/
 theorem dstar2_pos (R : Ranks) {Ts Gam : ℝ} (hTs : 0 < Ts) (hG : 1 < Gam) : 0 < dstarOfRanks R Ts Gam := by
   have : 0 < Gam := by linarith
   unfold dstarOfRanks; positivity
@@ -102,6 +111,9 @@ abbrev mem2 (hc : Tau2 R → HCParam R) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hTs
     (hG : 1 < Gam) : Member R (Tau2 R) hc :=
   ⟨chain2 hc, levelColumnsAt hc T (dstarOfRanks R Ts Gam) (dstar2_pos R hTs hG) Gam hG, period2 hc⟩
 
+/- English proof (translation)
+Establish `hG0 : 0 < Gam` using `by linarith`. Use `show (dstarOfRanks R Ts Gam / ((1 : ℕ) : ℝ)) ^ ((1 : ℝ) / ((R.f : ℝ) * (R.k : ℝ))) * Gam ^ (-(2 : ℝ) / ((R.f : ℝ) * (R.k : ℝ))) = Ts`. Establish `hn : (R.f : ℝ) * (R.k : ℝ) = ((R.f * R.k : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[Nat.cast_one, div_one, hn, one_div, dstarOfRanks, Real.pow_rpow_inv_natCast (by positivity) (fk_ne R), mul_assoc, ← Real.rpow_add hG0]`. Rewrite using `[show (2 : ℝ) / ((R.f * R.k : ℕ) : ℝ) + -2 / ((R.f * R.k : ℕ) : ℝ) = 0 by ring, Real.rpow_zero, mul_one]`.
+-/
 theorem rankMember_lowerLevel_eq (hc : Tau2 R → HCParam R) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hTs : 0 < Ts) (Gam : ℝ)
     (hG : 1 < Gam) : (mem2 hc T Ts hTs Gam hG).A.Tstar = Ts := by
   have hG0 : 0 < Gam := by linarith
@@ -113,6 +125,9 @@ theorem rankMember_lowerLevel_eq (hc : Tau2 R → HCParam R) (T : ℕ) [Fact T.P
   rw [show (2 : ℝ) / ((R.f * R.k : ℕ) : ℝ) + -2 / ((R.f * R.k : ℕ) : ℝ) = 0 by ring, Real.rpow_zero,
     mul_one]
 
+/- English proof (translation)
+Rewrite using `[rankMember_lowerLevel_eq]`. Conclude with `⟨hw1, hw2⟩`.
+-/
 theorem rankMember_level_near_lower (hc : Tau2 R → HCParam R) (T : ℕ) [Fact T.Prime] (Ts : ℝ) (hTs : 0 < Ts) (Gam : ℝ)
     (hG : 1 < Gam) (hw1 : Ts ≤ T) (hw2 : (T : ℝ) ≤ (1 + 1 / ((R.f : ℝ) * R.k)) * Ts) :
     (mem2 hc T Ts hTs Gam hG).A.Tstar ≤ ((mem2 hc T Ts hTs Gam hG).A.T : ℝ) ∧
@@ -127,6 +142,9 @@ abbrev hostLevelData (Ts Gam : ℝ) : Rows.Data R :=
   rowsG H.E H.φ₀ (@placesOf H.E _ _ H.cmStar) (Tau2 R) (card_realPlaces_eq_degree R) (dstarOfRanks R Ts Gam) (shaExample H)
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H)
 
+/- English proof (translation)
+Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+-/
 theorem nHyp_hostLevelData_of_places_card (Ts Gam : ℝ)
     (hg : ∀ k, (placesOver H.E (H.g k)).ncard = Module.finrank ℚ H.E) :
     NHyp H (hostLevelData H Ts Gam) where
@@ -321,24 +339,81 @@ def rankRecord : D7 :=
     gat_d := fun _ _ _ => (gAtPExample_d _).trans (finrank_bot ℂ _).symm
     Y_sigval := spaces_signature_eq R _ _ _ _ _ _ _ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_host : (⟨(rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).R, (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).host⟩ : Σ R : Ranks, Host R) = ⟨R, H⟩ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_ranks : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).R = R := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_word (u : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.Word) : u = (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).u₀ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_embedding (τ : Tau2 R) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).eTau τ = τ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_hc_eq : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).hc = hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_hcW_eq (u) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).hcW u = hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_eta (j w) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.etaJ j w = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_mem_A_T (u) : ((rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.T = T := rfl
+/- English proof (translation)
+The claim follows from `rankMember_lowerLevel_eq hc T Ts hTs Gam hG`.
+-/
 theorem rankRecord_lowerLevel (u) : ((rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.Tstar = Ts := rankMember_lowerLevel_eq hc T Ts hTs Gam hG
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_gamma (u) : ((rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).mem u).A.GamP = Gam := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_delta : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.Del = Del := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_letter (u l) : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.letter u l = false := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_cdScale : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).s.cdScale = cdS := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_cd : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).cd = G.cd := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_dsig : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).dsig = dsg := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_etaF : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).div.etaF = etaF := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_dimensionBound : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.Dstar = dstarOfRanks R Ts Gam := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rankRecord_rowDimension_zero : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).what₂.Drows = 0 := rfl
+/- English proof (translation)
+Use `show ∑ u : Unit, (zeroHLat H.E).rank = 0`. Simplify using `[zeroHLat_rank]`.
+-/
 theorem rankRecord_divisor_zero : (rankRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF T Ts hTs Gam hG hw1 hw2 hg ht hlev hpde pz hK hpz hcong G).div.R = 0 := by
   show ∑ u : Unit, (zeroHLat H.E).rank = 0
   simp [zeroHLat_rank]

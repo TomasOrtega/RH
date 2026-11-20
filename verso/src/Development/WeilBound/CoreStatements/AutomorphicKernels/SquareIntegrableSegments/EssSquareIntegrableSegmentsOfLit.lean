@@ -7,6 +7,9 @@ noncomputable section
 
 namespace PositivityTheory.PfEss
 
+/- English proof (translation)
+The claim follows from `essSquareIntegrableSegments_of hE PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top hF hS hL hJ`.
+-/
 theorem essSquareIntegrableSegments_main (hE : GlobalTheory.Published.LanglandsExhaustionGL)
     (hF : GlobalTheory.Published.StandardFunctorsFiniteLength)
     (hS : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k], Zc.LSocleGL k)

@@ -6,10 +6,16 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.GKLocalProof
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun _ => Units.ext rfl`.
+-/
 theorem invT_eq_invTranspose {A : Type} [CommRing A] (N : ℕ) :
     (invT : GL (Fin N) A →* GL (Fin N) A) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion.invTranspose N A :=
   MonoidHom.ext fun _ => Units.ext rfl
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA N V _ _ π hs hi`. Rewrite using `[invT_eq_invTranspose]`. Conclude with `GlobalTheory.GelfandKazhdan.equiv_contra k N V π (hA k N V π hs hi) hi`.
+-/
 theorem gkLocal : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GKLocal k := by
   intro k _ _ _ _ hA N V _ _ π hs hi

@@ -28,6 +28,9 @@ namespace PI.AprimeInfAsm
 
 open PI.AprimeInfW
 
+/- English proof (translation)
+The claim follows from `have hJ : JacOneC := jacOneC_of_charts kPos_holds unimodInf_holds wittNear_holds hG aprimeInf_of_leaves exInf_holds (pushInf_of_pushLFin_of_orbUniq_of_constTest (pushLFin_of_compact hC) (orbUniq_of_compact hC) (constTest_of_polar_compact (polar_local_of_fibres kPos_holds gramMeas …`.
+-/
 theorem aprimeInf_of_good (hC : MassDataMassesW.HinfCompact) (hG : GoodChartEx) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   have hJ : JacOneC := jacOneC_of_charts kPos_holds unimodInf_holds wittNear_holds hG
@@ -37,17 +40,29 @@ theorem aprimeInf_of_good (hC : MassDataMassesW.HinfCompact) (hG : GoodChartEx) 
         (polar_local_of_fibres kPos_holds gramMeas_holds (fibOrbAt_of_compact hC) (pushCont_of_compact hC) hJ) hC))
     (weilInf_of (htotInf_of (hinfFin_of hC))) hC
 
+/- English proof (translation)
+The claim follows from `aprimeInf_of_good hC (goodChartEx_of_witt linIndW_holds perpPosV wittLin_holds hG hT)`.
+-/
 theorem aprimeInf_of_std (hC : MassDataMassesW.HinfCompact) (hG : GrpStd) (hT : TupStd) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of_good hC (goodChartEx_of_witt linIndW_holds perpPosV wittLin_holds hG hT)
 
+/- English proof (translation)
+The claim follows from `lamDet_of betaIso_holds muBridge_holds hN dKForm_holds rowsZ_holds detT_holds hP`.
+-/
 theorem lamDet_of_open (hN : NuBridge) (hP : PlaceJacAll) : LamDet :=
   lamDet_of betaIso_holds muBridge_holds hN dKForm_holds rowsZ_holds detT_holds hP
 
+/- English proof (translation)
+The claim follows from `aprimeInf_of_std hC hG (tupStd_of_sm kapSm_holds (lamDet_of_open hN hP))`.
+-/
 theorem aprimeInf_of_grp (hC : MassDataMassesW.HinfCompact) (hG : GrpStd) (hN : NuBridge) (hP : PlaceJacAll) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of_std hC hG (tupStd_of_sm kapSm_holds (lamDet_of_open hN hP))
 
+/- English proof (translation)
+The claim follows from `aprimeInf_of_grp hC (grpStd_full (expProdU_of_hua cayDensEx_holds hCV) hGV) hN placeJacAll_holds`.
+-/
 theorem aprimeInf_of_open (hC : MassDataMassesW.HinfCompact) (hGV : GaugeVolUD) (hCV : CayValId) (hN : NuBridge) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of_grp hC (grpStd_full (expProdU_of_hua cayDensEx_holds hCV) hGV) hN placeJacAll_holds

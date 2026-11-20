@@ -18,6 +18,9 @@ def foldTensor {n : ℕ} (L : Fin n → Kleiman.LineBundle S x) (l : List (Fin n
     Kleiman.LineBundle S x :=
   l.foldl (fun P i => P.tensor (L i)) Q
 
+/- English proof (translation)
+Proceed by induction on `l generalizing Q with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[foldTensor, List.foldl_cons, List.foldl_cons, ← Kleiman.LineBundle.tensor_toSubSystem]`. Conclude with `ih _`.
+-/
 theorem foldTensor_toSubSystem {n : ℕ} (L : Fin n → Kleiman.LineBundle S x) (l : List (Fin n))
     (Q : Kleiman.LineBundle S x) :
     (foldTensor L l Q).toSubSystem = l.foldl (fun P i => P.twist (L i).toSubSystem) Q.toSubSystem := by
@@ -29,6 +32,11 @@ theorem foldTensor_toSubSystem {n : ℕ} (L : Fin n → Kleiman.LineBundle S x) 
 
 end Fold
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro Q β hQ`. Simplify `hQ` using `[foldTensor]`. Consider the case `cons a l ih`. Introduce `Q β hQ`.
+
+Establish `h` using `ih (Q.tensor (L a)) (β + δ a) (hT F K ι Ω y k₀ N e hmod Q (L a) β (δ a) hQ (hL a))`. Rewrite using `[List.map_cons, List.sum_cons, ← add_assoc]`. Conclude with `h`.
+-/
 theorem realises_foldTensor (hT : TensorRealises.Statement)
     {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {Ω : Type} [Field Ω] [Algebra F Ω] {y : (Σ k, ι k) → Ω} {k₀ : K} {N : ℕ} {e : ι k₀ ≃ Fin (N + 1)}
@@ -45,6 +53,13 @@ theorem realises_foldTensor (hT : TensorRealises.Statement)
     rw [List.map_cons, List.sum_cons, ← add_assoc]
     exact h
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod n L δ hL T`. Substitute `hx` using the available equality. Use `Filter.Eventually.of_forall fun c => ?_` and prove the remaining obligations. Establish `h0` using `BaseRealises.proof F K ι Ω y k₀ N e _ rfl hmod 0`. Establish `h` using `realises_foldTensor hT hmod L δ hL ((List.finRange n).filter (· ∈ T)) _ _ h0 (c : ℤ)`.
+
+Rewrite `h` using `[foldTensor_toSubSystem, Kleiman.twistBundle_toSubSystem]`. Establish `hsum : (((List.finRange n).filter (· ∈ T)).map δ).sum = ∑ i ∈ T, δ i`. Rewrite using `[← List.sum_toFinset δ ((List.nodup_finRange n).filter _)]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[hsum, zero_smul, zero_add]`. Conclude with `h`.
+-/
 theorem TensorRealise.proof (hT : TensorRealises.Statement) : TensorRealise.Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod n L δ hL T
   subst hx

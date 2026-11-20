@@ -11,6 +11,13 @@ section Frob
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro t ht; simpa using hy t (by simpa using ht)`. Consider the case `succ k ih`. Introduce `t ht`.
+
+Rewrite `ht` using `[pow_succ]`. Establish `hmem : t ∈ (y ^ (k + 1) * y).support` using `ht`. Take `⟨u, hu, v, hv, rfl⟩` from `Set.mem_add.1 (HahnSeries.support_mul_subset hmem)`. Establish `h1` using `ih u hu`. Establish `h2` using `hy v hv`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pow_coeff_lt (y : HahnSeries ℚ R) (N : ℚ) (hy : ∀ t, y.coeff t ≠ 0 → t < N) :
     ∀ k : ℕ, ∀ t, (y ^ (k + 1)).coeff t ≠ 0 → t < (k + 1) * N := by
   intro k
@@ -25,6 +32,13 @@ theorem pow_coeff_lt (y : HahnSeries ℚ R) (N : ℚ) (hy : ∀ t, y.coeff t ≠
     have h2 := hy v hv
     push_cast; linarith
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro t ht; simpa using hy t (by simpa using ht)`. Consider the case `succ k ih`. Introduce `t ht`.
+
+Rewrite `ht` using `[pow_succ]`. Establish `hmem : t ∈ (y ^ (k + 1) * y).support` using `ht`. Take `⟨u, hu, v, hv, rfl⟩` from `Set.mem_add.1 (HahnSeries.support_mul_subset hmem)`. Establish `h1` using `ih u hu`. Establish `h2` using `hy v hv`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pow_coeff_gt (y : HahnSeries ℚ R) (N : ℚ) (hy : ∀ t, y.coeff t ≠ 0 → N < t) :
     ∀ k : ℕ, ∀ t, (y ^ (k + 1)).coeff t ≠ 0 → (k + 1) * N < t := by
   intro k
@@ -39,6 +53,25 @@ theorem pow_coeff_gt (y : HahnSeries ℚ R) (N : ℚ) (hy : ∀ t, y.coeff t ≠
     have h2 := hy v hv
     push_cast; linarith
 
+/- English proof (translation)
+Use `haveI : CharP (HahnSeries ℚ R) p := charP_of_injective_ringHom (HahnSeries.C_injective) p`. Use `set N : ℚ := n / p with hN`. Establish `hp0 : (p : ℚ) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hpN : (p : ℚ) * N = n` using `by rw [hN]; field_simp`. Take `⟨k, hk⟩ : ∃ k, p = k + 1` from `⟨p - 1, by have := hp.out.one_lt; omega⟩`.
+
+Establish `hkq : ((k : ℚ) + 1) * N = n` using `by rw [← hpN, hk]; push_cast; ring`. Use `set a := HahnSeries.truncLT N x with ha_def`. Use `set c := HahnSeries.single N (x.coeff N) with hc_def`. Use `set b := x - a - c with hb_def`. Establish `hx : x = a + c + b` using `by rw [hb_def]; abel`.
+
+Establish `ha : ∀ t, a.coeff t ≠ 0 → t < N`. Introduce `t ht`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `ht (HahnSeries.coeff_truncLT_of_le h x)`.
+
+Establish `hb : ∀ t, b.coeff t ≠ 0 → N < t`. Introduce `t ht`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `ht` to reduce the goal to its premises.
+
+Rewrite using `[hb_def, HahnSeries.coeff_sub, HahnSeries.coeff_sub, ha_def, hc_def, HahnSeries.coeff_truncLT]`. Break down `h.lt_or_eq with h | h` into its components or cases. Rewrite using `[if_pos h, HahnSeries.coeff_single_of_ne h.ne]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[show x ^ p = (a + c + b) ^ p by rw [← hx], add_pow_char, add_pow_char, HahnSeries.coeff_add, HahnSeries.coeff_add]`. Establish `h1 : (a ^ p).coeff n = 0`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[hk]`.
+
+Use `pow_coeff_lt a N ha k n h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (b ^ p).coeff n = 0`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[hk]`.
+
+Use `pow_coeff_gt b N hb k n h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (c ^ p).coeff n = x.coeff N ^ p`. Rewrite using `[hc_def, HahnSeries.single_pow, nsmul_eq_mul, hpN]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, h2, h3]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_pow_char (p : ℕ) [hp : Fact p.Prime] [CharP R p] (x : HahnSeries ℚ R) (n : ℚ) :
     (x ^ p).coeff n = (x.coeff (n / p)) ^ p := by
   classical
@@ -82,6 +115,15 @@ section Roots
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := (RingHom.charZero_iff hε).2 inferInstance`. Establish `hn : 0 < y.den` using `y.den_pos`. Use `haveI : NeZero y.den := ⟨hn.ne'⟩`. Take `⟨ω, hω⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω y.den`.
+
+Establish `hεω` using `hω.map_of_injective hε`. Establish `hz : (Complex.exp (2 * Real.pi * Complex.I * (y : ℂ))) ^ y.den = 1`. Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Use `⟨y.num, ?_⟩` and prove the remaining obligations. Establish `e : (y.den : ℂ) * (y : ℂ) = (y.num : ℂ)`.
+
+Use `Rat.mul_den_eq_num y` as an intermediate fact. Conclude with `(by rw [mul_comm]; exact this)` after adjusting the coercions. Take the linear combination `(2 * Real.pi * Complex.I) * e`. Take `⟨i, -, hi⟩` from `hεω.eq_pow_of_pow_eq_one hz`. Establish `hr : ∃ w, ε w = Complex.exp (2 * Real.pi * Complex.I * (y : ℂ))` using `⟨ω ^ i, by rw [map_pow, hi]⟩`.
+
+Conclude with `Function.invFun_eq hr`.
+-/
 theorem eOm_spec (hε : Function.Injective ε) (y : ℚ) :
     ε (eOm ε y) = Complex.exp (2 * Real.pi * Complex.I * (y : ℂ)) := by
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ
@@ -101,12 +143,21 @@ theorem eOm_spec (hε : Function.Injective ε) (y : ℚ) :
   have hr : ∃ w, ε w = Complex.exp (2 * Real.pi * Complex.I * (y : ℂ)) := ⟨ω ^ i, by rw [map_pow, hi]⟩
   exact Function.invFun_eq hr
 
+/- English proof (translation)
+Apply `hε` to reduce the goal to its premises. Rewrite using `[eOm_spec hε, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem eOm_zero (hε : Function.Injective ε) : eOm ε 0 = 1 := by
   apply hε; rw [eOm_spec hε, map_one]; simp
 
+/- English proof (translation)
+Apply `hε` to reduce the goal to its premises. Rewrite using `[map_pow, eOm_spec hε, eOm_spec hε, ← Complex.exp_nat_mul]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem eOm_mul_nat (hε : Function.Injective ε) (n : ℕ) (y : ℚ) : eOm ε (n * y) = eOm ε y ^ n := by
   apply hε; rw [map_pow, eOm_spec hε, eOm_spec hε, ← Complex.exp_nat_mul]; push_cast; ring_nf
 
+/- English proof (translation)
+Apply `hε; rw [eOm_spec hε, map_one, Complex.exp_eq_one_iff]; exact ⟨z, by push_cast; ring⟩` to reduce the goal to its premises.
+-/
 theorem eOm_intCast (hε : Function.Injective ε) (z : ℤ) : eOm ε z = 1 := by
   apply hε; rw [eOm_spec hε, map_one, Complex.exp_eq_one_iff]; exact ⟨z, by push_cast; ring⟩
 
@@ -118,12 +169,23 @@ namespace GlobalTheory.KroneckerCongruence
 
 section Mat
 
+/- English proof (translation)
+Simplify using `[ent, toGQ, h]`.
+-/
 theorem ent_toGQ (m : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (i j : Fin 2) : ent (toGQ m) i j = (m i j : ℚ) := by
   simp [ent, toGQ, h]
 
+/- English proof (translation)
+Simplify using `[ent, ofSL]`.
+-/
 theorem ent_ofSL (γ : SL(2, ℤ)) (i j : Fin 2) : ent (ofSL γ) i j = ((γ : Matrix (Fin 2) (Fin 2) ℤ) i j : ℚ) := by
   simp [ent, ofSL]
 
+/- English proof (translation)
+Establish `hd : 0 < ((γ : Matrix (Fin 2) (Fin 2) ℤ) * m).det`. Rewrite using `[Matrix.det_mul, γ.det_coe, one_mul]`. Conclude with `h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Simplify using `[toGQ, hd, h, ofSL, Matrix.mul_apply]`.
+-/
 theorem toGQ_mul (γ : SL(2, ℤ)) (m : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) :
     toGQ ((γ : Matrix (Fin 2) (Fin 2) ℤ) * m) = ofSL γ * toGQ m := by
   have hd : 0 < ((γ : Matrix (Fin 2) (Fin 2) ℤ) * m).det := by
@@ -149,12 +211,23 @@ def hahnSeriesCoeffRingHomMap {R S : Type} [CommRing R] [CommRing S] (f : R →+
   map_zero' := by ext; simp
   map_add' _ _ := by ext; simp
 
+/- English proof (translation)
+The claim follows from `HahnSeries.map_coeff x f r`.
+-/
 theorem hahnSeriesCoeffRingHomMap_coeff {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : HahnSeries ℚ R) (r : ℚ) :
     (hahnSeriesCoeffRingHomMap f x).coeff r = f (x.coeff r) := HahnSeries.map_coeff x f r
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[hahnSeriesCoeffRingHomMap_coeff]`. Both sides reduce to the same expression.
+-/
 theorem map_liftV (x : HahnSeries ℚ Ω) (h : ∀ r, x.coeff r ∈ V) : hahnSeriesCoeffRingHomMap V.subtype (liftV V x h) = x := by
   ext r; rw [hahnSeriesCoeffRingHomMap_coeff]; rfl
 
+/- English proof (translation)
+Rewrite using `[← ValuationSubring.valuation_le_one_iff]`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `one_lt_pow₀ h hn` as an intermediate fact. Rewrite `this` using `[← map_pow, hw, map_one]`.
+
+Conclude with `lt_irrefl _ this`.
+-/
 theorem mem_of_pow_eq_one {w : Ω} {n : ℕ} (hn : n ≠ 0) (hw : w ^ n = 1) : w ∈ V := by
   rw [← ValuationSubring.valuation_le_one_iff]
   by_contra h
@@ -171,6 +244,13 @@ namespace GlobalTheory.KroneckerCongruence
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Set `γ : SL(2, ℤ)` to `⟨!![1, (M : ℤ); 0, 1], by simp [Matrix.det_fin_two]⟩`. Establish `hγ : γ ∈ CongruenceSubgroup.Gamma M`. Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[γ]`. Establish `h` using `X.exp_upper (ofSL γ) (by rw [ent_ofSL]; simp [γ]) f r`.
+
+Rewrite `h` using `[hf γ hγ, ent_ofSL, ent_ofSL, ent_ofSL]`. Simplify using `[γ] at h`. Establish `h2 : (eOm ε (r * M) - 1) * (X.exp f).coeff r = 0` using `by rw [sub_mul, ← h]; ring`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.1 h3`.
+
+Conclude with `absurd h3 hr`.
+-/
 theorem eOm_level (X : Tower Ω ε) (M : ℕ) (f : X.K) (hf : ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) f = f)
     (r : ℚ) (hr : (X.exp f).coeff r ≠ 0) : eOm ε (r * M) = 1 := by
   let γ : SL(2, ℤ) := ⟨!![1, (M : ℤ); 0, 1], by simp [Matrix.det_fin_two]⟩
@@ -190,6 +270,47 @@ namespace GlobalTheory.KZ
 
 open GlobalTheory.KroneckerCongruence in
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X hε _ M q f hM hq _ hf σ _ V s hqV hs hfV hσV r`. Use `haveI : Fact q.Prime := ⟨hq⟩`. Establish `hq0 : (q : ℚ) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Use `set ρ := IsLocalRing.residue V with hρ_def`. Establish `hρ0 : ∀ x : V, ρ x = 0 ↔ V.valuation (x : Ω) < 1` using `fun x => by`.
+
+Rewrite using `[hρ_def, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Use `haveI : CharP (IsLocalRing.ResidueField V) q := (CharP.charP_iff_prime_eq_zero hq).2 (by`. Establish `: ρ (q : V) = 0` using `(hρ0 _).2 (by simpa [ValuationSubring.mem_nonunits_iff] using hqV)`. Simplify using `using this)`. Establish `hfrob : ∀ x : V, ρ ⟨s x, (hs x x.2).1⟩ = ρ x ^ q`.
+
+Introduce `x`. Rewrite using `[← sub_eq_zero, ← map_pow, ← map_sub, hρ0]`. Simplify using `using (hs x x.2).2.2`. Use `set c := X.exp f with hc`. Use `set c' := X.exp (X.sl (ofSL σ) f) with hc'`.
+
+Establish `hdet : ∀ j : ℕ, 0 < (!![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)] : Matrix (Fin 2) (Fin 2) ℤ).det`. Introduce `j`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hq.pos` after adjusting the coercions. Establish `hFj : ∀ (j : ℕ) (t : ℚ), (X.exp (X.sl (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) f)).coeff t = eOm ε (t * j * M) * c.coeff (t * q)`.
+
+Introduce `j t`. Establish `h` using `X.exp_upper (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) (by rw [ent_toGQ _ (hdet j)]; simp) f (t * q)`. Rewrite `h` using `[ent_toGQ _ (hdet j), ent_toGQ _ (hdet j), ent_toGQ _ (hdet j)]`. Simplify using `at h`. Apply the tactic sequence `convert h using 2 <;> first | field_simp | (congr 1; field_simp)`.
+
+Establish `hdq : 0 < (!![(q : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det`. Simplify using `[Matrix.det_fin_two]`. Conclude with `hq.pos` after adjusting the coercions. Establish `hB : ∀ t : ℚ, (X.exp (X.sl (toGQ ((σ : Matrix (Fin 2) (Fin 2) ℤ) * !![(q : ℤ), 0; 0, 1])) f)).coeff t = c'.coeff (t / q)`. Introduce `t`.
+
+Rewrite using `[toGQ_mul σ _ hdq, X.sl_mul]`. Establish `h` using `X.exp_upper (toGQ !![(q : ℤ), 0; 0, 1]) (by rw [ent_toGQ _ hdq]; simp) (X.sl (ofSL σ) f) (t / q)`. Rewrite `h` using `[ent_toGQ _ hdq, ent_toGQ _ hdq, ent_toGQ _ hdq]`. Simplify using `[eOm_zero hε] at h`. Rewrite using `[← h]`.
+
+Establish `hw : ∀ (j : ℕ) (t : ℚ), c.coeff (t * q) ≠ 0 → ∃ h : eOm ε (t * j * M) ∈ V, ρ ⟨_, h⟩ = 1`. Introduce `j t ht`. Establish `h1 : eOm ε (t * j * M) ^ q = 1`. Rewrite using `[← eOm_mul_nat hε, show (q : ℚ) * (t * j * M) = j * (t * q * M) by ring, eOm_mul_nat hε, eOm_level X M f hf _ ht, one_pow]`. Establish `hmem : eOm ε (t * j * M) ∈ V` using `mem_of_pow_eq_one V hq.ne_zero h1`.
+
+Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `h2 : (⟨_, hmem⟩ : V) ^ q = 1` using `Subtype.ext (by simpa using h1)`. Establish `h3 : (ρ ⟨_, hmem⟩ - 1) ^ q = 0` using `by rw [sub_pow_char, ← map_pow, h2, map_one, one_pow, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff hq.ne_zero |>.1 h3)`. Establish `memF : ∀ (j : ℕ) (t : ℚ), (X.exp (X.sl (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) f)).coeff t ∈ V`.
+
+Introduce `j t`. Rewrite using `[hFj]`. Distinguish the cases in `h0 : c.coeff (t * q) = 0`. Rewrite using `[h0, mul_zero]`. Conclude with `zero_mem V`.
+
+Conclude with `mul_mem (hw j t h0).1 (hfV _)`. Establish `redF : ∀ (j : ℕ) (t : ℚ), ρ ⟨_, memF j t⟩ = ρ ⟨_, hfV (t * q)⟩`. Introduce `j t`. Distinguish the cases in `h0 : c.coeff (t * q) = 0`. Conclude with `congrArg ρ (Subtype.ext (by simp only; rw [hFj, h0, mul_zero]))`.
+
+Take `⟨hm, h1⟩` from `hw j t h0`. Establish `e : (⟨_, memF j t⟩ : V) = ⟨_, hm⟩ * ⟨_, hfV (t * q)⟩` using `Subtype.ext (by simp only [MulMemClass.mk_mul_mk]; rw [hFj])`. Rewrite using `[e, map_mul, h1, one_mul]`. Establish `memB : ∀ t : ℚ, (X.exp (X.sl (toGQ ((σ : Matrix (Fin 2) (Fin 2) ℤ) * !![(q : ℤ), 0; 0, 1])) f)).coeff t ∈ V`. Introduce `t`.
+
+Rewrite using `[hB]`. Conclude with `hσV _`. Establish `memC : ∀ t : ℚ, (X.exp (X.gal s f)).coeff t ∈ V`. Introduce `t`. Rewrite using `[X.gal_exp]`.
+
+Conclude with `(hs _ (hfV t)).1`. Establish `memD : ∀ t : ℚ, (X.exp (X.gal s.symm (X.sl (ofSL σ) f))).coeff t ∈ V`. Introduce `t`. Rewrite using `[X.gal_exp]`. Conclude with `(hs _ (hσV t)).2.1`.
+
+Use `set LF : ℕ → HahnSeries ℚ V := fun j => liftV V _ (memF j) with hLF`. Use `set LB := liftV V _ memB with hLB`. Use `set LC := liftV V _ memC with hLC`. Use `set LD := liftV V _ memD with hLD`. Establish `h1 : ∀ j, hahnSeriesCoeffRingHomMap ρ (LF j) = hahnSeriesCoeffRingHomMap ρ (LF 0)`.
+
+Introduce `j`. Use extensionality with `t`. Rewrite using `[hahnSeriesCoeffRingHomMap_coeff, hahnSeriesCoeffRingHomMap_coeff]`. Conclude with `(redF j t).trans (redF 0 t).symm`. Establish `h2 : hahnSeriesCoeffRingHomMap ρ (LF 0) ^ q = hahnSeriesCoeffRingHomMap ρ LC`.
+
+Use extensionality with `t`. Rewrite using `[coeff_pow_char q, hahnSeriesCoeffRingHomMap_coeff, hahnSeriesCoeffRingHomMap_coeff]`. Use `show ρ ⟨_, memF 0 (t / q)⟩ ^ q = ρ ⟨_, memC t⟩`. Rewrite using `[redF 0 (t / q), ← hfrob]`. Conclude with `congrArg ρ (Subtype.ext (by simp only; rw [X.gal_exp, div_mul_cancel₀ t hq0]))`.
+
+Establish `h3 : hahnSeriesCoeffRingHomMap ρ LD ^ q = hahnSeriesCoeffRingHomMap ρ LB`. Use extensionality with `t`. Rewrite using `[coeff_pow_char q, hahnSeriesCoeffRingHomMap_coeff, hahnSeriesCoeffRingHomMap_coeff]`. Use `show ρ ⟨_, memD (t / q)⟩ ^ q = ρ ⟨_, memB t⟩`. Rewrite using `[← hfrob]`.
+
+Conclude with `congrArg ρ (Subtype.ext (by simp only; rw [X.gal_exp, hB, AlgEquiv.apply_symm_apply]))`. Establish `hexp : X.exp ((∏ j ∈ Finset.range q, X.sl (toGQ !![1, ((j : ℤ) * M : ℤ); 0, (q : ℤ)]) f) * X.sl (toGQ ((σ : Matrix (Fin 2) (Fin 2) ℤ) * !![(q : ℤ), 0; 0, 1])) f - X.gal s f * (X.gal s.symm (X.sl (ofSL σ) f)) ^ q) = hahnSeriesCoeffRingHomMap V.subtype ((∏ j ∈ Finset.range q, LF j) …`. Simplify using `only [map_sub, map_mul, map_prod, map_pow, hLF, hLB, hLC, hLD, map_liftV]`. Establish `hW : hahnSeriesCoeffRingHomMap ρ ((∏ j ∈ Finset.range q, LF j) * LB - LC * LD ^ q) = 0`. Rewrite using `[map_sub, map_mul, map_prod, map_mul, map_pow, Finset.prod_congr rfl (fun j _ => h1 j), Finset.prod_const, Finset.card_range, h2, h3, sub_self]`.
+
+Rewrite using `[hexp, hahnSeriesCoeffRingHomMap_coeff, ValuationSubring.mem_nonunits_iff]`. Use `(hρ0 (((∏ j ∈ Finset.range q, LF j) * LB - LC * LD ^ q).coeff r)).1 ?_` and prove the remaining obligations. Rewrite using `[← hahnSeriesCoeffRingHomMap_coeff, hW]`. Both sides reduce to the same expression.
+-/
 theorem kronecker_congruence_tower : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (M q : ℕ) (f : X.K), 0 < M → q.Prime → Nat.Coprime q M → (∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) f = f) → ∀ (σ : SL(2, ℤ)), ((en σ 1 0 : ZMod M) = 0 ∧ (en σ 1 1 : ZMod M) = q) → ∀ (V : ValuationSubring Ω) (s : Ω ≃ₐ[ℚ] Ω), ((q : ℕ) : Ω) ∈ V.nonunits → (∀ x ∈ V, s x ∈ V ∧ s.symm x ∈ V ∧ V.valuation (s x - x ^ q) < 1) → (∀ r, (X.exp f).coeff r ∈ V) → (∀ r, (X.exp (X.sl (ofSL σ) f)).coeff r ∈ V) → ∀ r, (X.exp ((∏ j ∈ Finset.range q, X.sl (toGQ !![1, (j * M : ℤ); 0, (q : ℤ)]) f) * X.sl (toGQ ((σ : Matrix (Fin 2) (Fin 2) ℤ) * !![(q : ℤ), 0; 0, 1])) f - X.gal s f * (X.gal s.symm (X.sl (ofSL σ) f)) ^ q)).coeff r ∈ V.nonunits := by
   intro Ω _ _ _ ε X hε _ M q f hM hq _ hf σ _ V s hqV hs hfV hσV r
   classical

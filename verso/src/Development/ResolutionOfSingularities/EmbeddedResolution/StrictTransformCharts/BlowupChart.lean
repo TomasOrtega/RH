@@ -23,6 +23,13 @@ structure BlowupChart {X X₁ : Scheme.{u}} {k : Type u} [Field k]
   chart : EtaleChart (π ≫ p) domain m
   comm : chart.map ≫ coordBlowupSubstMap k m S s = π.resLE U domain domain_le ≫ c.map
 
+/- English proof (translation)
+Establish `hdle : Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι) ≤ V`. Introduce and unpack `x ⟨y, rfl⟩`. Establish `h1 : V.ι.base ((q ⁻¹ᵁ W).ι.base y) ∈ Set.range V.ι.base` using `⟨_, rfl⟩`. Rewrite `h1` using `[Scheme.Opens.range_ι]`. Conclude with `h1`.
+
+Take `⟨e, he⟩ : ∃ e : (Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι)).toScheme ≅ (q ⁻¹ᵁ W).toScheme, e.hom ≫ ((q ⁻¹ᵁ W).ι ≫ V.ι) = (Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι)).ι` from `⟨IsOpenImmersion.isoOfRangeEq (Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι)).ι ((q ⁻¹ᵁ W).ι ≫ V.ι) (Scheme.Opens.range_ι _), IsOpenImmersion.isoOfRangeEq_hom_fac _ _ _⟩`. Use `⟨Scheme.Hom.opensRange ((q ⁻¹ᵁ W).ι ≫ V.ι), hdle, e.hom ≫ (q ∣_ W), e.hom ≫ (q ⁻¹ᵁ W).ι, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsPullback e.hom (e.hom ≫ (q ⁻¹ᵁ W).ι) ((q ⁻¹ᵁ W).ι) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `h2` using `h1.paste_horiz (isPullback_morphismRestrict q W)`. Rewrite `h2` using `[Category.id_comp]`. Then use the resulting hypothesis.
+
+Rewrite using `[Category.assoc]`. Conclude with `he`. Introduce `y hy`. Conclude with `⟨⟨y, hy⟩, rfl⟩`.
+-/
 private theorem exists_opens_isPullback_of_opens {X₁ M : Scheme.{u}} (V : X₁.Opens)
     (q : V.toScheme ⟶ M) (W : M.Opens) :
     ∃ (dom : X₁.Opens) (_hle : dom ≤ V) (g : dom.toScheme ⟶ W.toScheme)
@@ -52,6 +59,27 @@ private theorem exists_opens_isPullback_of_opens {X₁ M : Scheme.{u}} (V : X₁
   · intro y hy
     exact ⟨⟨y, hy⟩, rfl⟩
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Etale c.map` using `c.isEtale`. Establish `: AlgebraicGeometry.Flat c.map` using `inferInstance`. Establish `hcomap : Z.comap U.ι = (coordSubspaceIdeal k m S).comap c.map`. Rewrite using `[← restrictIdeal_eq_comap_ι, hZ, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Establish `hres : Blowup.IsBlowupAlongIdealSheaf (π ∣_ U) ((coordSubspaceIdeal k m S).comap c.map)`.
+
+Establish `h1` using `hπ.restrict U`. Rewrite `h1` using `[hcomap]`. Then use the resulting hypothesis. Take `⟨q, -, hq⟩` from `(isBlowupAlongIdealSheaf_affineSpaceCoordBlowupMap k m S).exists_isPullback_of_flat c.map hres`. Establish `key : ∀ (s : Fin m) (hs : s ∈ S), ∃ B : BlowupChart π c S s, IsPullback B.chart.map (π.resLE U B.domain B.domain_le) (coordBlowupSubstMap k m S s) c.map ∧ ∀ y, q.base y ∈ Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs) → (π ⁻¹ᵁ U).ι.base y ∈ B.domain`. Introduce `s hs`.
+
+Take `⟨dom, hle, g, r, hpb, hrι, hmem⟩` from `exists_opens_isPullback_of_opens (π ⁻¹ᵁ U) q (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs))`. Establish `hrange : Set.range (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs)).ι.base = Set.range (affineSpaceCoordBlowupChart k m S s hs).base` using `Scheme.Opens.range_ι (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs))`. Choose the witnesses or unpack the hypotheses as in `⟨eW, heW⟩ : ∃ e : (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs)).toScheme ≅ affineSpaceFin k m, e.hom ≫ coordBlowupSubstMap k m S s = (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs)).ι ≫ affineSpaceCoordBlowupMap k m S := by`. Use `⟨IsOpenImmersion.isoOfRangeEq (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs)).ι (affineSpaceCoordBlowupChart k m S s hs) hrange ≪≫ specCoordBlowupChartRingIsoAffineSpace k m S s hs, ?_⟩` and prove the remaining obligations. Establish `hfac` using `IsOpenImmersion.isoOfRangeEq_hom_fac (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs)).ι (affineSpaceCoordBlowupChart k m S s hs) hrange`.
+
+Rewrite using `[Iso.trans_hom, Category.assoc, ← affineSpaceCoordBlowupChart_comp_affineSpaceCoordBlowupMap, ← Category.assoc, hfac]`. Establish `heW' : eW.inv ≫ (Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S s hs)).ι ≫ affineSpaceCoordBlowupMap k m S = coordBlowupSubstMap k m S s`. Rewrite using `[← heW, Iso.inv_hom_id_assoc]`. Establish `hleft : r ≫ (π ∣_ U) = π.resLE U dom hle`. Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, Scheme.Hom.resLE_comp_ι, ← Category.assoc, hrι]`.
+
+Establish `hsq : IsPullback (g ≫ eW.hom) (π.resLE U dom hle) (coordBlowupSubstMap k m S s) c.map`. Establish `h1 : IsPullback (g ≫ eW.hom) (𝟙 _) eW.inv g` using `IsPullback.of_vert_isIso ⟨by simp⟩`. Establish `h2` using `h1.paste_vert (hpb.paste_vert hq)`. Rewrite `h2` using `[Category.id_comp, hleft, heW']`. Then use the resulting hypothesis. Establish `hetale : AlgebraicGeometry.Etale (g ≫ eW.hom)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback hsq.flip c.isEtale`.
+
+Use `⟨⟨dom, hle, ⟨g ≫ eW.hom, ?_, hetale⟩, hsq.w⟩, hsq, hmem⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[coordBlowupSubstMap_comp_affineSpaceFinToSpec]`. Use `_ = ((g ≫ eW.hom) ≫ coordBlowupSubstMap k m S s) ≫ affineSpaceFinToSpec k m := by`. Simplify using `only [Category.assoc]`.
+
+Use `_ = (π.resLE U dom hle ≫ c.map) ≫ affineSpaceFinToSpec k m := by rw [hsq.w]`. Use `_ = π.resLE U dom hle ≫ c.map ≫ affineSpaceFinToSpec k m := by simp only [Category.assoc]`. Use `_ = π.resLE U dom hle ≫ U.ι ≫ p := by rw [c.comp_struct]`. Use `_ = (π.resLE U dom hle ≫ U.ι) ≫ p := by simp only [Category.assoc]`. Use `_ = (dom.ι ≫ π) ≫ p := by rw [Scheme.Hom.resLE_comp_ι]`.
+
+Use `_ = dom.ι ≫ π ≫ p := by simp only [Category.assoc]`. Use `choose F hF1 hF2 using key`. Use `⟨F, hF1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : x ∈ Set.range (π ⁻¹ᵁ U).ι.base`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hx`. Take `⟨y, rfl⟩` from `hx'`. Establish `hy : q.base y ∈ (⨆ i : ↥S, Scheme.Hom.opensRange (affineSpaceCoordBlowupChart k m S i.1 i.2))`. Rewrite using `[iSup_opensRange_affineSpaceCoordBlowupChart k m S]`.
+
+Simplify using the standard rewrite rules. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hy`. Conclude with `⟨i.1, i.2, hF2 i.1 i.2 y hi⟩`.
+-/
 private theorem exists_blowupChart_family_isPullback_covering {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}
     (c : EtaleChart p U m) (S : Finset (Fin m)) (Z : X.IdealSheafData)
@@ -139,6 +167,9 @@ def blowupChartOfIsBlowup {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     (s : Fin m) (hs : s ∈ S) : BlowupChart π c S s :=
   (exists_blowupChart_family_isPullback_covering π c S Z hπ hZ).choose s hs
 
+/- English proof (translation)
+The claim follows from `(exists_blowupChart_family_isPullback_covering π c S Z hπ hZ).choose_spec.1 s hs`.
+-/
 theorem isPullback_blowupChart_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}
     (c : EtaleChart p U m) (S : Finset (Fin m)) {Z : X.IdealSheafData}
@@ -150,6 +181,9 @@ theorem isPullback_blowupChart_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} 
       (coordBlowupSubstMap k m S s) c.map :=
   (exists_blowupChart_family_isPullback_covering π c S Z hπ hZ).choose_spec.1 s hs
 
+/- English proof (translation)
+The claim follows from `(exists_blowupChart_family_isPullback_covering π c S Z hπ hZ).choose_spec.2 x hx`.
+-/
 theorem exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} (π : X₁ ⟶ X) {U : X.Opens} {m : ℕ}
     (c : EtaleChart p U m) (S : Finset (Fin m)) {Z : X.IdealSheafData}

@@ -25,6 +25,9 @@ def funRep {Γ : Type} [Group Γ] (X : Type) [MulAction Γ X] {d : ℕ} (ξ : Γ
   map_one' := by ext f x; simp
   map_mul' γ δ := by ext f x; simp [mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem funRep_apply {Γ : Type} [Group Γ] (X : Type) [MulAction Γ X] {d : ℕ} (ξ : Γ →* Matrix (Fin d) (Fin d) ℂ)
     (γ : Γ) (f : X → Fin d → ℂ) (x : X) : funRep X ξ γ f x = ξ γ *ᵥ f (γ⁻¹ • x) := rfl
 
@@ -56,6 +59,9 @@ def toCo (p : X → Y) (hp : ∀ (γ : Γ) x, p (γ • x) = γ • p x) (y : Y)
   map_add' f f' := Subtype.ext (funext fun g => funext fun x => by simp [Matrix.mulVec_add])
   map_smul' c f := Subtype.ext (funext fun g => funext fun x => by simp [Matrix.mulVec_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCo_apply (p : X → Y) (hp : ∀ (γ : Γ) x, p (γ • x) = γ • p x) (y : Y) {d : ℕ} (ξ : Γ →* Matrix (Fin d) (Fin d) ℂ)
     (f : X → Fin d → ℂ) (g : Γ) (x : ↥(fib p hp y)) : (toCo p hp y ξ f).1 g x = ξ g *ᵥ f (g⁻¹ • x.1) := rfl
 
@@ -139,6 +145,9 @@ def arith (g : GL (Fin n) (Af F)) (U : Subgroup (GL (Fin n) (Af F))) : Subgroup 
   (U.comap (MulAut.conj g⁻¹).toMonoidHom).comap (ratAf F n)
 
 variable {F n} in
+/- English proof (translation)
+Simplify using `[arith]`.
+-/
 theorem mem_arith {g : GL (Fin n) (Af F)} {U : Subgroup (GL (Fin n) (Af F))} {γ : GL (Fin n) F} :
     γ ∈ arith g U ↔ g⁻¹ * ratAf F n γ * g ∈ U := by
   simp [arith]

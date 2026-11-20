@@ -18,14 +18,23 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.LagrangianAverage
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[schr, mul_add]`.
+-/
 theorem schr_add_fun {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w : (κ → R) × (κ → R)) (φ φ' : (κ → R) → ℂ) : schr ψ w (φ + φ') = schr ψ w φ + schr ψ w φ' := by
   funext x; simp [schr, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[schr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_smul_fun {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w : (κ → R) × (κ → R)) (c : ℂ) (φ : (κ → R) → ℂ) : schr ψ w (c • φ) = c • schr ψ w φ := by
   funext x; simp [schr]; ring
 
+/- English proof (translation)
+Set `f : p →ₗ[ℂ] ℂ` to `{ toFun := fun x => Φ x, map_add' := fun x y => hadd x x.2 y y.2, map_smul' := fun c x => hsmul c x x.2 }`. Take `⟨g, hg⟩` from `LinearMap.exists_extend f`. Conclude with `⟨g, fun x hx => by simpa [f] using congrArg (fun h => h ⟨x, hx⟩) hg⟩`.
+-/
 theorem exists_linear_extension {V : Type} [AddCommGroup V] [Module ℂ V] (p : Submodule ℂ V) (Φ : V → ℂ)
     (hadd : ∀ x ∈ p, ∀ y ∈ p, Φ (x + y) = Φ x + Φ y) (hsmul : ∀ (c : ℂ), ∀ x ∈ p, Φ (c • x) = c * Φ x) :
     ∃ L : V →ₗ[ℂ] ℂ, ∀ x ∈ p, L x = Φ x := by
@@ -34,6 +43,15 @@ theorem exists_linear_extension {V : Type} [AddCommGroup V] [Module ℂ V] (p : 
   obtain ⟨g, hg⟩ := LinearMap.exists_extend f
   exact ⟨g, fun x hx => by simpa [f] using congrArg (fun h => h ⟨x, hx⟩) hg⟩
 
+/- English proof (translation)
+Introduce `F _ κ _ Λ`. Set `P : Submodule F (κ → F)` to `Λ.map (LinearMap.fst F (κ → F) (κ → F))`. Set `b` to `Module.finBasis F P`. Establish `hlift : ∀ j, ∃ z ∈ Λ, z.1 = (b j : κ → F)` using `fun j => by`. Take `⟨z, hz, e⟩` from `Submodule.mem_map.1 (b j).2`.
+
+Conclude with `⟨z, hz, e⟩`. Use `choose u hu hu1 using hlift`. Use `⟨Module.finrank F P, u, hu, ?_, ?_⟩` and prove the remaining obligations. Establish `: (fun j => (u j).1) = P.subtype ∘ b` using `funext fun j => hu1 j`. Rewrite using `[this]`.
+
+Conclude with `b.linearIndependent.map' P.subtype (Submodule.ker_subtype P)`. Introduce `v hv`. Establish `hvP : v.1 ∈ P` using `Submodule.mem_map.2 ⟨v, hv, rfl⟩`. Use `⟨b.repr ⟨v.1, hvP⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨v.1, hvP⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Use `h2.symm.trans ?_` and prove the remaining obligations. Simplify using `[hu1]`.
+-/
 theorem exists_lift_basis : ∀ (F : Type) [Field F] (κ : Type) [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F))),
     ∃ (r : ℕ) (u : Fin r → (κ → F) × (κ → F)),
     (∀ j, u j ∈ Λ) ∧ LinearIndependent F (fun j => (u j).1) ∧ ∀ v ∈ Λ, ∃ c : Fin r → F, v.1 = ∑ j, c j • (u j).1 := by
@@ -55,6 +73,35 @@ theorem exists_lift_basis : ∀ (F : Type) [Field F] (κ : Type) [Fintype κ] (�
     refine h2.symm.trans ?_
     simp [hu1]
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ Λ hiso hrank ι _ w hw hnd l hl hinv ν hν`. Take `⟨r, u, huΛ, hli, hsp⟩` from `exists_lift_basis F κ Λ`. Use `letI mS : MeasurableSpace (Fin r → AF F) := borel _`. Use `haveI : BorelSpace (Fin r → AF F) := ⟨rfl⟩`. Set `μ : Measure (Fin r → AF F)` to `Measure.addHaar`.
+
+Establish `hμ : Measure.IsAddHaarMeasure μ` using `inferInstance`. Set `Φ : ((κ → AF F) → ℂ) → ℂ` to `fun φ => ∫ x, schr ψ (∑ j, x j • ((fun k => algebraMap F (AF F) ((u j).1 k)), (fun k => algebraMap F (AF F) ((u j).2 k)))) φ 0 ∂μ`. Establish `hint` using `GlobalTheory.T.schrodinger_lattice_sum_integrable F ψ hψ κ r u hli μ hμ`. Establish `Φadd : ∀ φ ∈ schA F κ, ∀ φ' ∈ schA F κ, Φ (φ + φ') = Φ φ + Φ φ'`. Introduce `φ hφ φ' hφ'`.
+
+Simplify using `only [Φ, schr_add_fun, Pi.add_apply]`. Conclude with `integral_add (hint φ hφ) (hint φ' hφ')`. Establish `Φsmul : ∀ (c : ℂ), ∀ φ ∈ schA F κ, Φ (c • φ) = c * Φ φ`. Introduce `c φ hφ`. Simplify using `only [Φ, schr_smul_fun, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `integral_const_mul c _`. Take `⟨lam, hlam⟩` from `exists_linear_extension (schA F κ) Φ Φadd Φsmul`. Establish `lam_adm : lam ∈ (adeleClass F).adm κ`. Introduce `g hg`. Take `⟨T, hT⟩` from `GlobalTheory.T.schrodinger_lattice_distribution_continuous F ψ hψ κ r u hli μ hμ g hg`.
+
+Use `⟨T, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[hlam _ (Submodule.subset_span ⟨f, g, hg, rfl⟩)]`. Conclude with `hT f`. Establish `lam_inv : ∀ (t : AF F), ∀ v ∈ Λ, ∀ φ ∈ schA F κ, lam (schr ψ (t • ((fun k => algebraMap F (AF F) (v.1 k)), (fun k => algebraMap F (AF F) (v.2 k)))) φ) = lam φ`. Introduce `t v hv φ hφ`.
+
+Rewrite using `[hlam _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ), hlam φ hφ]`. Conclude with `GlobalTheory.T.schrodinger_theta_lattice_translation F ψ κ Λ hiso r u huΛ hsp μ hμ t v hv φ`. Establish `lam_ne : ∃ φ ∈ schA F κ, lam φ ≠ 0`. Take `⟨φ, hφ, h⟩` from `GlobalTheory.T.schrodinger_lattice_integral_nonvanishing F ψ hψ κ r u hli μ hμ`. Conclude with `⟨φ, hφ, by rwa [hlam φ hφ]⟩`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F ψ hψ κ Λ hiso hrank l hl lam lam_adm hinv lam_inv lam_ne`. Establish `hl_eq : ∀ φ ∈ schA F κ, ∀ t : ι → AF F, l (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ) = c * Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ)` using `fun φ hφ t => by`. Rewrite using `[hc _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ), hlam _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ)]`. Establish `hint3` using `GlobalTheory.T.lagrangian_lattice_theta_integral_formula F ψ hψ κ Λ hiso hrank r u huΛ hli hsp μ hμ ι w hw hnd ν hν`. Use `⟨fun φ hφ => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun t : ι → AF F => l (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ)) = fun t => c * Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ)` using `funext (hl_eq φ hφ)`. Rewrite using `[this]`. Conclude with `(hint3 φ hφ).const_mul c`. Set `Ψ : ((κ → AF F) → ℂ) → ℂ` to `fun φ => ∫ t, Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ) ∂ν`. Establish `Ψadd : ∀ φ ∈ schA F κ, ∀ φ' ∈ schA F κ, Ψ (φ + φ') = Ψ φ + Ψ φ'`.
+
+Introduce `φ hφ φ' hφ'`. Establish `: (fun t : ι → AF F => Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) (φ + φ'))) = fun t => Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ) + Φ (sch …`. Use function extensionality and compare the values at `t`. Rewrite using `[schr_add_fun]`. Conclude with `Φadd _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ) _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ' hφ')`.
+
+Simplify using `only [Ψ]`. Rewrite using `[this]`. Conclude with `integral_add (hint3 φ hφ) (hint3 φ' hφ')`. Establish `Ψsmul : ∀ (a : ℂ), ∀ φ ∈ schA F κ, Ψ (a • φ) = a * Ψ φ`. Introduce `a φ hφ`.
+
+Establish `: (fun t : ι → AF F => Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) (a • φ))) = fun t => a * Φ (schr ψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) φ)`. Use function extensionality and compare the values at `t`. Rewrite using `[schr_smul_fun]`. Conclude with `Φsmul _ _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ)`. Simplify using `only [Ψ]`.
+
+Rewrite using `[this]`. Conclude with `integral_const_mul a _`. Take `⟨L, hL⟩` from `exists_linear_extension (schA F κ) Ψ Ψadd Ψsmul`. Use `⟨c • L, ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨T, hT⟩` from `GlobalTheory.T.lagrangian_lattice_theta_integral_bound F ψ hψ κ Λ hiso hrank r u huΛ hli hsp μ hμ ι w hw hnd ν hν g hg`. Use `⟨c • T, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hL _ (Submodule.subset_span ⟨f, g, hg, rfl⟩), ContinuousLinearMap.smul_apply]`. Conclude with `congrArg (c • ·) (hT f)`. Rewrite using `[LinearMap.smul_apply, hL φ hφ, smul_eq_mul, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hl_eq φ hφ t]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (Λ : Submodule F ((κ → F) × (κ → F))), (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) → Module.finrank F Λ = Fintype.card κ →
     ∀ (ι : Type) [Fintype ι] (w : ι → (κ → F) × (κ → F)), (∀ i j, (w i).1 ⬝ᵥ (w j).2 = (w j).1 ⬝ᵥ (w i).2) →

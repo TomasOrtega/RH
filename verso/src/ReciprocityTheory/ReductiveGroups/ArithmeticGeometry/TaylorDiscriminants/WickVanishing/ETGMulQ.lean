@@ -16,19 +16,31 @@ variable {k : Type} [CommRing k] {S : Type} [CommRing S] {ι : Type}
 def TG (w : List ι) (A : S) : S := w.foldr (fun l g => D l g) A
 
 include hadd in
+/- English proof (translation)
+Simplify using `using hadd l 0 0`.
+-/
 theorem D_zero (l : ι) : D l 0 = 0 := by
   simpa using hadd l 0 0
 
 include hadd in
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simpa using D_zero D hadd l`. Consider the case `cons a L ih => simp [hadd, ih]`.
+-/
 theorem D_list_sum (l : ι) (L : List S) : D l L.sum = (L.map (D l)).sum := by
   induction L with
   | nil => simpa using D_zero D hadd l
   | cons a L ih => simp [hadd, ih]
 
+/- English proof (translation)
+Simplify using `only [TG, List.foldr_append]`.
+-/
 theorem TG_append (w w' : List ι) (A : S) : TG D (w ++ w') A = TG D w (TG D w' A) := by
   simp only [TG, List.foldr_append]
 
 include hadd in
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons l w ih => show D l (TG D w (A + B)) = D l (TG D w A) + D l (TG D w B)`. Rewrite using `[ih, hadd]`.
+-/
 theorem TG_add (w : List ι) (A B : S) : TG D w (A + B) = TG D w A + TG D w B := by
   induction w with
   | nil => rfl
@@ -37,6 +49,11 @@ theorem TG_add (w : List ι) (A B : S) : TG D w (A + B) = TG D w A + TG D w B :=
     rw [ih, hadd]
 
 include hadd hmul in
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp [TG, splits]`. Consider the case `cons l w ih`. Establish `e : ∀ (v : List ι) (X : S), TG D (l :: v) X = D l (TG D v X)` using `fun _ _ => rfl`. Rewrite using `[e, ih, D_list_sum D hadd]`.
+
+Simplify using `only [splits, List.map_append, List.sum_append, List.map_map, Function.comp_def, e, hmul, List.sum_map_add]`.
+-/
 theorem TG_mul (w : List ι) (A B : S) :
     TG D w (A * B) = ((splits w).map (fun p => TG D p.1 A * TG D p.2 B)).sum := by
   induction w with
@@ -52,6 +69,13 @@ variable (e : S →+* k) (c : ι → ι → k) (q : S)
   (hq0 : e q = 0) (hq1 : ∀ l, e (D l q) = 0) (hq2 : ∀ l l', D l (D l' q) = κ (c l l'))
 
 include hadd hC hq2 in
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp at hw`. Consider the case `cons l w ih => show D l (TG D w q) = 0`. Break down `Nat.lt_or_ge w.length 3 with h | h` into its components or cases. Establish `h2 : w.length = 2`.
+
+Simplify using `only [List.length_cons] at hw`. Use linear arithmetic over natural numbers and integers. Take `⟨y, z, rfl⟩` from `List.length_eq_two.mp h2`. Use `show D l (D y (D z q)) = 0`. Rewrite using `[hq2, hC]`.
+
+Rewrite using `[ih h, D_zero D hadd]`.
+-/
 theorem TG_q_long (w : List ι) (hw : 3 ≤ w.length) : TG D w q = 0 := by
   induction w with
   | nil => simp at hw
@@ -69,6 +93,11 @@ theorem TG_q_long (w : List ι) (hw : 3 ≤ w.length) : TG D w q = 0 := by
 variable (he : ∀ a, e (κ a) = a)
 
 include hadd hC hq0 hq1 hq2 he in
+/- English proof (translation)
+Use `match b with`. Consider the case `[] => exact hq0`. Consider the case `[x] => exact hq1 x`. Consider the case `[x, y] => show e (D x (D y q)) = c x y`. Rewrite using `[hq2, he]`.
+
+Consider the case `x :: y :: z :: r`. Rewrite using `[TG_q_long (D := D) (κ := κ) (hadd := hadd) (hC := hC) (c := c) (q := q) (hq2 := hq2) (w := x :: y :: z :: r) (by simp)]`. Conclude with `map_zero e`.
+-/
 theorem e_TG_q (b : List ι) : e (TG D b q) = ev2 c b := by
   match b with
   | [] => exact hq0
@@ -82,6 +111,9 @@ theorem e_TG_q (b : List ι) : e (TG D b q) = ev2 c b := by
     exact map_zero e
 
 include hadd hmul hC hq0 hq1 hq2 he in
+/- English proof (translation)
+Simplify using `only [TG_mul (D := D) (hadd := hadd) (hmul := hmul), map_list_sum, List.map_map, Function.comp_def, map_mul, e_TG_q (D := D) (κ := κ) (hadd := hadd) (hC := hC) (e := e) (c := c) (q := q) (hq0 := hq0) (hq1 := hq1) (hq2 := hq2) (he := he)]`.
+-/
 theorem e_TG_mul_q (w : List ι) (A : S) :
     e (TG D w (A * q)) = ((splits w).map (fun p => e (TG D p.1 A) * ev2 c p.2)).sum := by
   simp only [TG_mul (D := D) (hadd := hadd) (hmul := hmul), map_list_sum, List.map_map,

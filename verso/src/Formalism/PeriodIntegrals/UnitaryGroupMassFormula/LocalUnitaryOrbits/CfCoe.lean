@@ -13,6 +13,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+The claim follows from `X.2 i`.
+-/
 theorem memA {a : ℕ} (X : lamA v Λ a) (i : Fin a) : (X : TupV (E := E) v n a) i ∈ latLoc (E := E) v Λ :=
   X.2 i
 
@@ -20,6 +23,9 @@ def cf (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F] E} (he :
     (X : lamA v Λ a) (i : Fin a) (p : Fin n) : OR (E := E) v :=
   ⟨hR (Fv F v) σ J (e p) ((X : TupV (E := E) v n a) i), (hSD _).1 (memA v Λ X i) _ (bas_mem v Λ he p)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cf_coe (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F] E} (he : Orb.IsOBas v Λ e) {a : ℕ}
     (X : lamA v Λ a) (i : Fin a) (p : Fin n) :
     (cf σ J v Λ hSD he X i p : Fv F v ⊗[F] E) = hR (Fv F v) σ J (e p) ((X : TupV (E := E) v n a) i) := rfl
@@ -42,6 +48,9 @@ def phi (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F] E} (he 
       exact hR_add_right σ J v _ _ _
     simp only [h, map_add, Pi.add_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (hSD : IsSDLoc σ J v Λ) {e : Fin n → Fin n → Fv F v ⊗[F] E} (he : Orb.IsOBas v Λ e) {K : Type}
     [CommRing K] (π : OR (E := E) v →+* K) {a : ℕ} (X : lamA v Λ a) (i : Fin a) (p : Fin n) :
     phi σ J v Λ hSD he π a X i p = π (cf σ J v Λ hSD he X i p) := rfl

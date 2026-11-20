@@ -16,6 +16,25 @@ noncomputable section
 
 namespace GlobalTheory.FinZeta
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT βS βT LT Q m Z e hS hT hfS hfT he`. Establish `hlin : ∀ (k : ℕ) (u : WO S T), frMapAdj S T βS βT (k • u) = k • frMapAdj S T βS βT u`. Introduce `k u`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Establish `h0` using `GlobalTheory.PlaceVec.frMapAdj_add S T βS βT 0 0`. Simplify using `using h0`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul, GlobalTheory.PlaceVec.frMapAdj_add, ih, succ_nsmul]`. Establish `hadd : ∀ (x u : WO S T) (k : ℕ) i j, frMapAdj S T βS βT (x + k • u) i j = frMapAdj S T βS βT x i j + k * frMapAdj S T βS βT u i j`.
+
+Introduce `x u k i j`. Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_add, hlin, Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul]`. Establish `hB : ∃ M : ℕ, 0 < M ∧ ∀ u ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True), ∀ i j, (M : EAf D) * frMapAdj S T βS βT u i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Take `⟨M, hM, hMl⟩` from `GlobalTheory.PlaceDatum.exists_den_latO (S := S) (T := T) hS.1.fg hT.1.fg`. Take `⟨k, hk, hup⟩` from `GlobalTheory.PlaceVec.frMapAdj_up S T βS βT`.
+
+Use `⟨k * M, Nat.mul_pos hk hM, fun u hu i j => ?_⟩` and prove the remaining obligations. Establish `hint : IsIntM ((M • u).map (toEAf D))`. Introduce `a b`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, map_nsmul, nsmul_eq_mul]`. Conclude with `hMl u hu a b`.
+
+Establish `h` using `hup (M • u) hint i j`. Rewrite `h` using `[hlin, Matrix.smul_apply, Matrix.smul_apply, nsmul_eq_mul, nsmul_eq_mul, ← mul_assoc]`. Simplify `h` using `[Nat.cast_mul]`. Establish `hC : ∃ K : ℕ, 0 < K ∧ ∀ t, IsHalf (cA D e) t → IsIntM (frMapAdj S T βS βT t) → K • t ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True)`. Take `⟨k, hk, hdown⟩` from `GlobalTheory.PlaceVec.frMapAdj_down S T βS βT`.
+
+Take `⟨K, hK, hKl⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO (S := S) (T := T) hS.1 hT.1`. Use `⟨K * k, Nat.mul_pos hK hk, fun t ht hti => ?_⟩` and prove the remaining obligations. Establish `hinf : t.map (infPart D) = 0` using `GlobalTheory.PlaceDatum.infPart_of_half (GlobalTheory.PlaceDatum.infPart_cA (GlobalTheory.PlaceDatum.infPart_idemSum he)) ht`. Establish `hinf' : (k • t).map (infPart D) = 0`. Use extensionality with `a b`.
+
+Establish `h1` using `congrFun (congrFun hinf a) b`. Rewrite `h1` using `[Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, map_nsmul, h1, smul_zero, Matrix.zero_apply]`. Establish `hint' : ∀ a b, toEAf D ((k • t) a b) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `a b`.
+
+Establish `h2` using `hdown t hti a b`. Rewrite `h2` using `[Matrix.smul_apply, Matrix.map_apply, ← map_nsmul]`. Then use the resulting hypothesis. Rewrite using `[← smul_smul]`. Conclude with `hKl (k • t) hinf' hint'`. Establish `hω : ∀ y y' : (∀ PP : Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (kP PP)), (∀ PP ∈ LT.Pg ∪ Q, y PP = y' PP) → omegaG LT m y * omegaQ Q T.rank m (-1) y = omegaG LT m y' * omegaQ Q T.rank m (-1) y'`.
+
+Introduce `y y' h`. Rewrite using `[GlobalTheory.PlaceDatum.omegaG_congr LT m y y' (fun PP hP => h PP (Finset.mem_union_left _ hP)), GlobalTheory.PlaceDatum.omegaQ_congr Q T.rank m (-1) y y' (fun PP hP => h PP (Finset.mem_union_right _ hP))]`. Establish `key` using `GlobalTheory.PlaceDatum.isSBHalf_of_red (cA D e) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) (frMapAdj S T βS βT) hadd hB hC (LT.Pg ∪ Q) (fun y => omegaG LT m y * omegaQ Q T.rank m (-1) y) hω`. Unfold `levDatum`. Conclude with `key`.
+-/
 theorem isSBHalf_levDatum : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (LT : LevDat D.host.E ℂ T.rank) (Q : Finset (Pl D.host.E)) (m : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (Z : Finset (Pl D.host.E)) (e : AE D), IsSelfDualC S ΛS → IsSelfDualC T ΛT → IsFrame βS ΛS → IsFrame βT ΛT → IsIdemSum e Z → IsSBHalf (cA D e) (latO S T ΛS ΛT fun _ => True) (levDatum S T βS βT LT Q m e) := by
   intro D S T ΛS ΛT βS βT LT Q m Z e hS hT hfS hfT he
   classical

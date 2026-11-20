@@ -15,25 +15,42 @@ open Classical in
 def gs (f : Y ⟶ X) (y : Y) (U : X.Opens) (a : Γ(X, U)) : Y.presheaf.stalk y :=
   if h : f y ∈ U then (Y.presheaf.germ (f ⁻¹ᵁ U) y h).hom ((f.app U).hom a) else 0
 
+/- English proof (translation)
+Unfold `gs`. Conclude with `dif_pos h`.
+-/
 theorem gs_eq (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)) :
     gs f y U a = (Y.presheaf.germ (f ⁻¹ᵁ U) y h).hom ((f.app U).hom a) := by
   unfold gs
   exact dif_pos h
 
+/- English proof (translation)
+Rewrite using `[gs_eq f y U h]`. Unfold `gm`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem gs_unit (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a : Γ(X, U)ˣ) : gs f y U a.val = (gm f y U a).val := by
   rw [gs_eq f y U h]
   unfold gm
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_mul]`.
+-/
 theorem gs_mul (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a * b) = gs f y U a * gs f y U b := by
   simp only [gs_eq f y U h, map_mul]
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_add]`.
+-/
 theorem gs_add (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a + b) = gs f y U a + gs f y U b := by
   simp only [gs_eq f y U h, map_add]
 
+/- English proof (translation)
+Rewrite using `[gs_eq f y V h, gs_eq f y U (hle h)]`. Use `first`. Consider the case `(rw [← CategoryTheory.comp_apply, ← CategoryTheory.comp_apply, ← CategoryTheory.comp_apply, Scheme.Hom.naturality_assoc] first`. Consider the case `(erw [TopCat.Presheaf.germ_res]; done)`. Consider the case `(simp only [TopCat.Presheaf.germ_res]; done))`.
+
+Consider the case `(rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.naturality_assoc] erw [TopCat.Presheaf.germ_res])`.
+-/
 theorem gs_res (f : Y ⟶ X) (y : Y) {U V : X.Opens} (hle : V ≤ U) (h : f y ∈ V) (a : Γ(X, U)) :
     gs f y V ((X.presheaf.map (homOfLE hle).op).hom a) = gs f y U a := by
   rw [gs_eq f y V h, gs_eq f y U (hle h)]
@@ -47,6 +64,9 @@ theorem gs_res (f : Y ⟶ X) (y : Y) {U V : X.Opens} (hle : V ≤ U) (h : f y �
       Scheme.Hom.naturality_assoc]
      erw [TopCat.Presheaf.germ_res])
 
+/- English proof (translation)
+Establish `h' : (f ≫ g) z ∈ U` using `h`. Rewrite using `[gs_eq f z (g ⁻¹ᵁ U) h, gs_eq (f ≫ g) z U h']`. Simplify using `only [Scheme.Hom.comp_app, CommRingCat.comp_apply]`. Apply the tactic sequence `try rfl`.
+-/
 theorem gs_pull (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (f z) ∈ U) (a : Γ(X, U)) :
     gs f z (g ⁻¹ᵁ U) ((g.app U).hom a) = gs (f ≫ g) z U a := by
   have h' : (f ≫ g) z ∈ U := h
@@ -54,6 +74,9 @@ theorem gs_pull (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (f z) �
   simp only [Scheme.Hom.comp_app, CommRingCat.comp_apply]
   try rfl
 
+/- English proof (translation)
+Apply `TopCat.Presheaf.section_ext X.sheaf V a b` to reduce the goal to its premises. Introduce `x hx`. Establish `e` using `h x hx`. Rewrite `e` using `[gs_eq (𝟙 X) x V hx, gs_eq (𝟙 X) x V hx]`. Conclude with `e`.
+-/
 theorem fn_ext {V : X.Opens} {a b : Γ(X, V)} (h : ∀ x ∈ V, gs (𝟙 X) x V a = gs (𝟙 X) x V b) : a = b := by
   apply TopCat.Presheaf.section_ext X.sheaf V a b
   intro x hx
@@ -65,6 +88,13 @@ variable (L : LB X)
 
 def Good (z : Z) (J : (Z ⟶ X) → L.ι) : Prop := ∀ ψ : Z ⟶ X, ψ z ∈ L.U (J ψ)
 
+/- English proof (translation)
+Establish `hcov : ∀ x : X, ∃ i, x ∈ L.U i` using `fun x => by`. Establish `hx : x ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; simp`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨fun ψ' => if hk : ∃ k, ψ k = ψ' then j hk.choose else (hcov (ψ' z)).choose, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ' dsimp only split_ifs with hk`.
+
+Establish `hm` using `hj hk.choose`. Rewrite `hm` using `[hk.choose_spec]`. Conclude with `hm`. Conclude with `(hcov _).choose_spec`. Introduce `k dsimp only`.
+
+Rewrite using `[dif_pos ⟨k, rfl⟩]`. Conclude with `hc _ _ (Exists.choose_spec (⟨k, rfl⟩ : ∃ k', ψ k' = ψ k))`.
+-/
 theorem exists_good (hL : L.IsLB) (z : Z) {K : Type} (ψ : K → (Z ⟶ X)) (j : K → L.ι)
     (hc : ∀ a b, ψ a = ψ b → j a = j b) (hj : ∀ k, ψ k z ∈ L.U (j k)) :
     ∃ J, Good L z J ∧ ∀ k, J (ψ k) = j k := by
@@ -87,6 +117,9 @@ theorem exists_good (hL : L.IsLB) (z : Z) {K : Type} (ψ : K → (Z ⟶ X)) (j :
 
 variable {L} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun k => hJ (r ≫ φ k)`.
+-/
 theorem Good.mem {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (φ : K → (Y ⟶ X)) (r : Z ⟶ Y) :
     r z ∈ LB.wchart L φ (fun k => J (r ≫ φ k)) := Set.mem_iInter.2 fun k => hJ (r ≫ φ k)
 
@@ -96,12 +129,18 @@ def val {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)
 def sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
     Z.presheaf.stalk z := gs r z (LB.wchart L φ (fun k => J (r ≫ φ k))) (s.f (fun k => J (r ≫ φ k)))
 
+/- English proof (translation)
+Take `rfl : (fun k => J (r ≫ φ k)) = j` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem val_of {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     (J : (Z ⟶ X) → L.ι) (j : K → L.ι) (h : ∀ k, J (r ≫ φ k) = j k) :
     val t r z J = gm r z (LB.wchart L φ j) (t.s j) := by
   obtain rfl : (fun k => J (r ≫ φ k)) = j := funext h
   rfl
 
+/- English proof (translation)
+Take `rfl : (fun k => J (r ≫ φ k)) = j` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem sval_of {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     (J : (Z ⟶ X) → L.ι) (j : K → L.ι) (h : ∀ k, J (r ≫ φ k) = j k) :
     sval s r z J = gs r z (LB.wchart L φ j) (s.f j) := by
@@ -112,6 +151,9 @@ section
 variable {z : Z} {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
 include hJ
 
+/- English proof (translation)
+Simplify using `only [val, LB.mulGen, map_mul]`. Use `congr 1`. Conclude with `gm_res r z _ (hJ.mem (Sum.elim φ φ') r) _`. Conclude with `gm_res r z _ (hJ.mem (Sum.elim φ φ') r) _`.
+-/
 theorem val_mul (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) (r : Z ⟶ Y) :
     val (LB.mulGen L φ ε φ' ε' t t') r z J = val t r z J * val t' r z J := by
   simp only [val, LB.mulGen, map_mul]
@@ -120,10 +162,16 @@ theorem val_mul (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ'
   · exact gm_res r z _ (hJ.mem (Sum.elim φ φ') r) _
 
 omit hJ in
+/- English proof (translation)
+Simplify using `only [val, LB.invGen]`. Conclude with `map_inv _ _`.
+-/
 theorem val_inv (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) : val (LB.invGen L φ ε t) r z J = (val t r z J)⁻¹ := by
   simp only [val, LB.invGen]
   exact map_inv _ _
 
+/- English proof (translation)
+Rewrite using `[val_of t (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Simplify using `only [val, LB.pullGen]`. Establish `hm : h (r z) ∈ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)`. Conclude with `(gm_res r z _ (hJ.mem (fun k => h ≫ φ k) r) _).trans (gm_pull r h z _ hm _)`.
+-/
 theorem val_pull (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y') :
     val (LB.pullGen L φ ε t h) r z J = val t (r ≫ h) z J := by
   rw [val_of t (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]
@@ -132,10 +180,16 @@ theorem val_pull (t : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y')
   exact (gm_res r z _ (hJ.mem (fun k => h ≫ φ k) r) _).trans (gm_pull r h z _ hm _)
 
 omit hJ in
+/- English proof (translation)
+Simplify using `only [val, LB.oneGen]`. Conclude with `map_one _`.
+-/
 theorem val_one (r : Z ⟶ Y) : val (LB.oneGen L (Y := Y)) r z J = 1 := by
   simp only [val, LB.oneGen]
   exact map_one _
 
+/- English proof (translation)
+Establish `hm : r z ∈ LB.wchart L φ (fun k => J (r ≫ φ k)) ⊓ LB.wchart L φ' (fun k => J (r ≫ φ' k))` using `⟨hJ.mem φ r, hJ.mem φ' r⟩`. Establish `e` using `h (fun k => J (r ≫ φ k)) (fun k => J (r ≫ φ' k)) (fun a b hab => by simp only [hab]) (fun a b hab => by simp only [hab]) (fun a b hab => by simp only [hab])`. Establish `e2` using `congrArg (gm r z (LB.wchart L φ (fun k => J (r ≫ φ k)) ⊓ LB.wchart L φ' (fun k => J (r ≫ φ' k)))) e`. Conclude with `(gm_res r z inf_le_left hm _).symm.trans (e2.trans (gm_res r z inf_le_right hm _))`.
+-/
 theorem val_corr {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : LB.Gen.Corr L φ ε φ' ε' t t') (r : Z ⟶ Y) : val t r z J = val t' r z J := by
   have hm : r z ∈ LB.wchart L φ (fun k => J (r ≫ φ k)) ⊓ LB.wchart L φ' (fun k => J (r ≫ φ' k)) :=
@@ -147,6 +201,15 @@ theorem val_corr {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ
 
 end
 
+/- English proof (translation)
+Introduce `j j' hj hj' hjj'`. Apply `Units.ext` to reduce the goal to its premises. Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Establish `hyl : y ∈ LB.wchart L φ j` using `hy.1`.
+
+Establish `hyr : y ∈ LB.wchart L φ' j'` using `hy.2`. Establish `hc : ∀ a b, Sum.elim (fun k => 𝟙 Y ≫ φ k) (fun k => 𝟙 Y ≫ φ' k) a = Sum.elim (fun k => 𝟙 Y ≫ φ k) (fun k => 𝟙 Y ≫ φ' k) b → Sum.elim j j' a = Sum.elim j j' b`. Apply the tactic sequence `rintro (a | a) (b | b) hab <;> simp only [Sum.elim_inl, Sum.elim_inr, Category.id_comp] at hab ⊢`. Conclude with `hj a b hab`. Conclude with `hjj' a b hab`.
+
+Conclude with `(hjj' b a hab.symm).symm`. Conclude with `hj' a b hab`. Establish `hjv : ∀ k, Sum.elim (fun k => 𝟙 Y ≫ φ k) (fun k => 𝟙 Y ≫ φ' k) k y ∈ L.U (Sum.elim j j' k)`. Introduce and unpack `(k | k)`. Conclude with `Set.mem_iInter.1 hyl k`.
+
+Conclude with `Set.mem_iInter.1 hyr k`. Take `⟨J, hJ, hJj⟩` from `exists_good L hL y (Sum.elim (fun k => 𝟙 Y ≫ φ k) (fun k => 𝟙 Y ≫ φ' k)) (Sum.elim j j') hc hjv`. Establish `e` using `h y J hJ`. Rewrite `e` using `[val_of t (𝟙 Y) y J j (fun k => hJj (Sum.inl k)), val_of t' (𝟙 Y) y J j' (fun k => hJj (Sum.inr k))]`. Conclude with `((gs_res (𝟙 Y) y inf_le_left hy (t.s j).val).trans (gs_unit (𝟙 Y) y _ hyl _)).trans ((congrArg Units.val e).trans ((gs_res (𝟙 Y) y inf_le_right hy (t'.s j').val).trans (gs_unit (𝟙 Y) y _ hyr _)).symm)`.
+-/
 theorem corr_of_val (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : ∀ y J, Good L y J → val t (𝟙 Y) y J = val t' (𝟙 Y) y J) : LB.Gen.Corr L φ ε φ' ε' t t' := by
@@ -177,6 +240,11 @@ theorem corr_of_val (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' :
 def trF (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z) (j j' : K → L.ι) : (Z.presheaf.stalk z)ˣ :=
   ∏ k, gm (r ≫ φ k) z (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k)) ^ ε k
 
+/- English proof (translation)
+Unfold `trF`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Use `congr 1`.
+
+Establish `hm : (r ≫ φ c) z ∈ L.U (i c) ⊓ L.U (j c) ⊓ L.U (k c)` using `⟨⟨Set.mem_iInter.1 hi c, Set.mem_iInter.1 hj c⟩, Set.mem_iInter.1 hk c⟩`. Establish `c1` using `congrArg (gm (r ≫ φ c) z (L.U (i c) ⊓ L.U (j c) ⊓ L.U (k c))) (hL.cocycle (i c) (j c) (k c))`. Rewrite `c1` using `[map_mul]`. Conclude with `(congrArg₂ (· * ·) (gm_res (r ≫ φ c) z _ hm _) (gm_res (r ≫ φ c) z _ hm _)).symm.trans (c1.trans (gm_res (r ≫ φ c) z _ hm _))`.
+-/
 theorem trF_trans (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) (z : Z) {i j k : K → L.ι}
     (hi : r z ∈ LB.wchart L φ i) (hj : r z ∈ LB.wchart L φ j) (hk : r z ∈ LB.wchart L φ k) :
     trF φ ε r z i j * trF φ ε r z j k = trF φ ε r z i k := by
@@ -192,6 +260,9 @@ theorem trF_trans (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z �
   exact (congrArg₂ (· * ·) (gm_res (r ≫ φ c) z _ hm _) (gm_res (r ≫ φ c) z _ hm _)).symm.trans
     (c1.trans (gm_res (r ≫ φ c) z _ hm _))
 
+/- English proof (translation)
+Establish `hm : r z ∈ LB.wchart L φ j ⊓ LB.wchart L φ j'` using `⟨hj, hj'⟩`. Establish `e` using `congrArg (gm r z (LB.wchart L φ j ⊓ LB.wchart L φ j')) (ht j j')`. Establish `e1 : gm r z (LB.wchart L φ j ⊓ LB.wchart L φ j') ((LB.LinComb L φ ε).g j j') = trF φ ε r z j j'` using `gm_linComb L φ ε r z j j' hj hj'`. Conclude with `(gm_res r z inf_le_left hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) e1 (gm_res r z inf_le_right hm _))))`.
+-/
 theorem gen_trans {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) (r : Z ⟶ Y) (z : Z)
     {j j' : K → L.ι} (hj : r z ∈ LB.wchart L φ j) (hj' : r z ∈ LB.wchart L φ j') :
     gm r z (LB.wchart L φ j) (t.s j) = trF φ ε r z j j' * gm r z (LB.wchart L φ j') (t.s j') := by
@@ -202,6 +273,9 @@ theorem gen_trans {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinCom
   exact (gm_res r z inf_le_left hm _).symm.trans
     (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) e1 (gm_res r z inf_le_right hm _))))
 
+/- English proof (translation)
+Establish `hm : r z ∈ LB.wchart L φ j ⊓ LB.wchart L φ j'` using `⟨hj, hj'⟩`. Establish `e` using `congrArg (gs r z (LB.wchart L φ j ⊓ LB.wchart L φ j')) (s.compat j j')`. Establish `e1` using `(gs_unit r z _ hm ((LB.LinComb L φ ε).g j j')).trans (congrArg Units.val (gm_linComb L φ ε r z j j' hj hj'))`. Conclude with `(gs_res r z inf_le_left hm _).symm.trans (e.trans ((gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) e1 (gs_res r z inf_le_right hm _))))`.
+-/
 theorem sec_trans {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     {j j' : K → L.ι} (hj : r z ∈ LB.wchart L φ j) (hj' : r z ∈ LB.wchart L φ j') :
     gs r z (LB.wchart L φ j) (s.f j) = (trF φ ε r z j j').val * gs r z (LB.wchart L φ j') (s.f j') := by
@@ -215,10 +289,24 @@ theorem sec_trans {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinCom
 def FormEq (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) : Prop :=
   ∀ (U : Type) [CommGroup U] (h : (Y ⟶ X) → U), ∏ k, h (φ k) ^ ε k = ∏ k, h (φ' k) ^ ε' k
 
+/- English proof (translation)
+The claim follows from `h _ fun ψ => gm (r ≫ ψ) z (L.U (I ψ) ⊓ L.U (I' ψ)) (L.g (I ψ) (I' ψ))`.
+-/
 theorem FormEq.trF {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (h : FormEq φ ε φ' ε') (r : Z ⟶ Y)
     (z : Z) (I I' : (Y ⟶ X) → L.ι) :
     trF φ ε r z (fun k => I (φ k)) (fun k => I' (φ k)) = trF φ' ε' r z (fun k => I (φ' k)) (fun k => I' (φ' k)) := h _ fun ψ => gm (r ≫ ψ) z (L.U (I ψ) ⊓ L.U (I' ψ)) (L.g (I ψ) (I' ψ))
 
+/- English proof (translation)
+Establish `glue : ∀ j : K' → L.ι, ∃ a : Γ(Y, LB.wchart L φ' j), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (I : (Y ⟶ X) → L.ι), r z ∈ LB.wchart L φ' j → r z ∈ LB.wchart L φ' (fun k => I (φ' k)) → r z ∈ LB.wchart L φ (fun k => I (φ k)) → gs r z _ a = (trF φ' ε' r z j (fun k => I (φ' k))).val * g …`. Introduce `j`. Set `W : ((Y ⟶ X) → L.ι) → Y.Opens` to `fun I => LB.wchart L φ' j ⊓ LB.wchart L φ' (fun k => I (φ' k)) ⊓ LB.wchart L φ (fun k => I (φ k))`. Take `⟨u, hu⟩ : ∃ u : ∀ I, Γ(Y, W I), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) I, r z ∈ W I → gs r z (W I) (u I) = (trF φ' ε' r z j (fun k => I (φ' k))).val * gs r z (LB.wchart L φ (fun k => I (φ k))) (s.f (fun k => I (φ k)))` from `⟨fun I => (Y.presheaf.map (homOfLE (inf_le_left : W I ≤ LB.wchart L φ' j ⊓ LB.wchart L φ' (fun k => I (φ' k)))).op).hom ((LB.LinComb L φ' ε').g j (fun k => I (φ' k))).val * (Y.presheaf.map (homOfLE (inf_le_right : W I ≤ LB.wchart L φ (fun k => I (φ k)))).op).hom (s.f (fun k => I …`. Take `⟨a, ha, -⟩` from `Y.sheaf.existsUnique_gluing' W (LB.wchart L φ' j) (fun I => homOfLE (inf_le_left.trans inf_le_left)) (fun y hy => by choose I hI using fun χ : Y ⟶ X => exists_chart hL (χ y)`.
+
+Conclude with `Opens.mem_iSup.2 ⟨I, ⟨hy, Set.mem_iInter.2 fun k => hI _⟩, Set.mem_iInter.2 fun k => hI _⟩) u`. Use the proof step `(fun I I' => fn_ext (V := W I ⊓ W I') fun y hy => by`. Use `(gs_res (𝟙 Y) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 Y) y inf_le_right hy _).symm)` and prove the remaining obligations. Rewrite using `[hu _ _ y I hy.1, hu _ _ y I' hy.2, sec_trans s (𝟙 Y) y hy.1.2 hy.2.2, h.trF, ← mul_assoc, ← Units.val_mul, trF_trans hL φ' ε' (𝟙 Y) y hy.1.1.1 hy.1.1.2 hy.2.1.2])`. Use `⟨a, fun Z r z I h₁ h₂ h₃ => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : r z ∈ W I` using `⟨⟨h₁, h₂⟩, h₃⟩`. Conclude with `(gs_res r z (inf_le_left.trans inf_le_left) hz a).symm.trans ((congrArg (gs r z (W I)) (ha I)).trans (hu Z r z I hz))`. Use `choose a ha using glue`. Use `⟨⟨a, fun j j' => fn_ext fun y hy => ?_⟩, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `choose I hI using fun χ : Y ⟶ X => exists_chart hL (χ y)`.
+
+Establish `m₁ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L φ' (fun k => I (φ' k))` using `Set.mem_iInter.2 fun k => hI _`. Establish `m₂ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L φ (fun k => I (φ k))` using `Set.mem_iInter.2 fun k => hI _`. Use `(gs_res (𝟙 Y) y _ hy _).trans (Eq.trans ?_ ((gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 Y) y _ hy _).trans (congrArg Units.val (gm_linComb L φ' ε' (𝟙 Y) y j j' hy.1 hy.2))) (gs_res (𝟙 Y) y _ hy _))).symm)` and prove the remaining obligations. Use `(ha j _ (𝟙 Y) y I hy.1 m₁ m₂).trans (Eq.trans ?_ (congrArg _ (ha j' _ (𝟙 Y) y I hy.2 m₁ m₂)).symm)` and prove the remaining obligations. Rewrite using `[← trF_trans hL φ' ε' (𝟙 Y) y hy.1 hy.2 m₁, Units.val_mul, mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `m` using `hJ.mem φ' r`. Use `(ha _ Z r z (fun χ => J (r ≫ χ)) m m (hJ.mem φ r)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_eq_left.1 (trF_trans hL φ' ε' r z m m m), Units.val_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_sec (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (h : FormEq φ ε φ' ε') (s : LB.Sec (LB.LinComb L φ ε)) : ∃ s' : LB.Sec (LB.LinComb L φ' ε'),
       ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good L z J → sval s' r z J = sval s r z J := by
@@ -263,11 +351,17 @@ theorem exists_sec (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : 
 
 def genSec {M : LB Y} (t : LB.Gen M) (ht : t.IsGen) : LB.Sec M := ⟨fun i => (t.s i).val, fun i j => congrArg Units.val (ht i j)⟩
 
+/- English proof (translation)
+Simplify using `only [sval, val, genSec]`. Conclude with `gs_unit r z _ (hJ.mem φ r) _`.
+-/
 theorem sval_genSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (r : Z ⟶ Y) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) : sval (genSec t ht) r z J = (val t r z J).val := by
   simp only [sval, val, genSec]
   exact gs_unit r z _ (hJ.mem φ r) _
 
+/- English proof (translation)
+Take `⟨J, hJ, -⟩` from `exists_good L hL y (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim (fun a => a.elim) (fun k => k.elim)`. Conclude with `⟨J, hJ, sec_trans s (𝟙 Y) y hy (hJ.mem φ (𝟙 Y))⟩`.
+-/
 theorem sval_trans (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (y : Y) (j : K → L.ι)
     (hy : y ∈ LB.wchart L φ j) : ∃ J, Good L y J ∧ gs (𝟙 Y) y (LB.wchart L φ j) (s.f j) =
       (trF φ ε (𝟙 Y) y j (fun k => J (𝟙 Y ≫ φ k))).val * sval s (𝟙 Y) y J := by
@@ -275,6 +369,9 @@ theorem sval_trans (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB
     (fun k => k.elim)
   exact ⟨J, hJ, sec_trans s (𝟙 Y) y hy (hJ.mem φ (𝟙 Y))⟩
 
+/- English proof (translation)
+Apply `fn_ext` to reduce the goal to its premises. Introduce `y hy`. Take `⟨J, hJ, -⟩` from `exists_good L hL y (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim (fun a => a.elim) (fun k => k.elim)`. Conclude with `(sec_trans s (𝟙 Y) y hy (hJ.mem φ (𝟙 Y))).trans ((congrArg ((trF φ ε (𝟙 Y) y j (fun k => J (𝟙 Y ≫ φ k))).val * ·) (h y J hJ)).trans (sec_trans s' (𝟙 Y) y hy (hJ.mem φ (𝟙 Y))).symm)`.
+-/
 theorem sec_ext_val (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s s' : LB.Sec (LB.LinComb L φ ε)}
     (h : ∀ y J, Good L y J → sval s (𝟙 Y) y J = sval s' (𝟙 Y) y J) (j : K → L.ι) : s.f j = s'.f j := by
   apply fn_ext
@@ -285,6 +382,11 @@ theorem sec_ext_val (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s s' 
     ((congrArg ((trF φ ε (𝟙 Y) y j (fun k => J (𝟙 Y ≫ φ k))).val * ·) (h y J hJ)).trans
       (sec_trans s' (𝟙 Y) y hy (hJ.mem φ (𝟙 Y))).symm)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_sec hL h (genSec t ht)`. Establish `hu : ∀ j, IsUnit (s.f j)` using `fun j => Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `⟨J, hJ, e⟩` from `sval_trans hL s y j hy`. Rewrite `e` using `[hs _ _ y J hJ, sval_genSec t ht _ y hJ, ← Units.val_mul]`. Conclude with `(congrArg IsUnit ((gs_eq (𝟙 Y) y (LB.wchart L φ' j) hy _).symm.trans e)).mpr (Units.isUnit _)`.
+
+Use `⟨⟨fun j => (hu j).unit⟩, fun i j => Units.ext (s.compat i j), fun Z r z J hJ => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `(gs_unit r z _ (hJ.mem φ' r) _).symm.trans ((hs Z r z J hJ).trans (sval_genSec t ht r z hJ))`.
+-/
 theorem exists_gen (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (h : FormEq φ ε φ' ε') (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : ∃ t' : LB.Gen (LB.LinComb L φ' ε'),
       t'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good L z J → val t' r z J = val t r z J := by
@@ -320,6 +422,9 @@ def pullMulSec {K₃ : Type} [Fintype K₃] {φ : K → (Y ⟶ X)} {ε : K → �
         Fintype.prod_sum_type, Units.val_mul, Units.val_mul, mul_mul_mul_comm]
       simp only [trF, Category.assoc, Sum.elim_inl, Sum.elim_inr, Function.comp_apply] }
 
+/- English proof (translation)
+Establish `hm` using `hJ.mem (Sum.elim (fun k => h ≫ φ k) φ₃) r`. Establish `hm1 : h (r z) ∈ LB.wchart L φ (fun k => J (r ≫ h ≫ φ k))` using `Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)`. Establish `hm3 : r z ∈ LB.wchart L φ₃ (fun k => J (r ≫ φ₃ k))` using `hJ.mem φ₃ r`. Rewrite using `[sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) ((gs_res r z _ hm _).trans (gs_pull r h z _ hm1 _)) ((gs_res r z _ hm _).trans (gs_unit r z _ hm3 _)))`.
+-/
 theorem sval_pullMulSec {K₃ : Type} [Fintype K₃] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε))
     (h : Y' ⟶ Y) {φ₃ : K₃ → (Y' ⟶ X)} {ε₃ : K₃ → ℤ} (u : LB.Gen (LB.LinComb L φ₃ ε₃)) (hu : u.IsGen) (r : Z ⟶ Y') (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -333,6 +438,15 @@ theorem sval_pullMulSec {K₃ : Type} [Fintype K₃] {φ : K → (Y ⟶ X)} {ε 
     ((gs_res r z _ hm _).trans (gs_pull r h z _ hm1 _))
     ((gs_res r z _ hm _).trans (gs_unit r z _ hm3 _)))
 
+/- English proof (translation)
+Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (j₁ : K' → L.ι) (j₂ : K → L.ι) (j₃ : K₃ → L.ι) (hm : r z ∈ LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂ ⊓ LB.wchart L φ₃ j₃) (a₁ : LB.wchart L φ₁ j₁ ⊓ LB.wchart L (fun k => h ≫ φ k) j₂ ⊓ LB.wchart L φ₃ j₃ ≤ LB.wchart L φ₁ j₁) …` using `fun Z r z j₁ j₂ j₃ hm a₁ a₂ a₃ => ⟨gs_res r z a₁ hm _, (gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) ((gs_res r z a₂ hm _).trans (gs_pull r h z _ (a₂ hm) _)) ((gs_res r z a₃ hm _).trans (gs_unit r z _ (a₃ hm) _)))⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H Z r z J hJ`. Rewrite using `[sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Establish `hm : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k)) ⊓ LB.wchart L φ₃ (fun k => J (r ≫ φ₃ k))` using `⟨⟨hJ.mem φ₁ r, hJ.mem (fun k => h ≫ φ k) r⟩, hJ.mem φ₃ r⟩`.
+
+Establish `e` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ k)) (fun k => J (r ≫ φ₃ k)) (by`. Apply the tactic sequence `rintro (a | a | a) (b | b | b) e <;> exact congrArg (fun q => J (r ≫ q)) e)`. Take `⟨k₁, k₂⟩` from `key Z r z _ _ _ hm _ _ _`. Conclude with `k₁.symm.trans ((congrArg (gs r z _) e).trans k₂)`. Introduce `H j₁ j₂ j₃ hc`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL y _ _ hc (by`. Introduce and unpack `(a | a | a)`. Use `exacts [Set.mem_iInter.1 hy.1.1 a, Set.mem_iInter.1 hy.1.2 a, Set.mem_iInter.1 hy.2 a])`. Use `H y J hJ` as an intermediate fact.
+
+Rewrite `this` using `[sval_of s₁ _ y J j₁ (fun k => by rw [Category.id_comp]; exact e (.inl k)), sval_of s _ y J j₂ (fun k => by rw [Category.id_comp]; exact e (.inr (.inl k))), val_of u _ y J j₃ (fun k => by rw [Category.id_comp]; exact e (.inr (.inr k)))]`. Take `⟨k₁, k₂⟩` from `key _ (𝟙 Y') y j₁ j₂ j₃ hy _ _ _`. Conclude with `k₁.trans (this.trans k₂.symm)`.
+-/
 theorem secRel_iff (hL : L.IsLB) {K₃ : Type} [Fintype K₃] (φ₁ : K' → (Y' ⟶ X)) (ε₁ : K' → ℤ)
     (s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y)
     (φ₃ : K₃ → (Y' ⟶ X)) (ε₃ : K₃ → ℤ) (u : LB.Gen (LB.LinComb L φ₃ ε₃)) :

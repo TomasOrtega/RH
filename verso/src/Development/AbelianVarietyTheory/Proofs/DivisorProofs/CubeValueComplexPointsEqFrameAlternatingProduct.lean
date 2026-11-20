@@ -15,6 +15,9 @@ open GlobalTheory.MBLow.Cl Matrix
 noncomputable section
 namespace GlobalTheory.MBLow.Cl.CubeVal
 
+/- English proof (translation)
+Rewrite using `[show (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset. …`. The two sides agree by associativity and commutativity.
+-/
 theorem prod_three' {M : Type} [CommMonoid M] (F : Finset (Fin 3) → M) :
     ∏ s, F s = F ∅ * F {0} * F {1} * F {2} * F {0, 1} * F {0, 2} * F {1, 2} * F {0, 1, 2} := by
   rw [show (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} by decide,
@@ -23,12 +26,20 @@ theorem prod_three' {M : Type} [CommMonoid M] (F : Finset (Fin 3) → M) :
     Finset.prod_insert (by decide), Finset.prod_singleton]
   ac_rfl
 
+/- English proof (translation)
+The claim follows from `(Equiv.prod_comp (Equiv.ulift.symm : Finset (Fin 3) ≃ thK.{0}) F).symm.trans (prod_three' fun s => F ⟨s⟩)`.
+-/
 theorem prod_three {M : Type} [CommMonoid M] (F : thK.{0} → M) :
     ∏ I, F I = F ⟨∅⟩ * F ⟨{0}⟩ * F ⟨{1}⟩ * F ⟨{2}⟩ * F ⟨{0, 1}⟩ * F ⟨{0, 2}⟩ * F ⟨{1, 2}⟩ * F ⟨{0, 1, 2}⟩ :=
   (Equiv.prod_comp (Equiv.ulift.symm : Finset (Fin 3) ≃ thK.{0}) F).symm.trans (prod_three' fun s => F ⟨s⟩)
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ} {g : ℕ}
 
+/- English proof (translation)
+Establish `h0 : d.ex 0 = 1`. Establish `e` using `d.ex_add 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `(mul_eq_left.1 e.symm)`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, d.ex_add, ih]`.
+-/
 theorem ex_sum (d : AB N.toNumB g) {κ : Type} (s : Finset κ) (v : κ → Fin g → ℂ) :
     d.ex (∑ i ∈ s, v i) = ∏ i ∈ s, d.ex (v i) := by
   classical
@@ -40,6 +51,9 @@ theorem ex_sum (d : AB N.toNumB g) {κ : Type} (s : Finset κ) (v : κ → Fin g
   | empty => simpa using h0
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, d.ex_add, ih]
 
+/- English proof (translation)
+Use `show _ ≫ (psum D.P.A (x3 D.P.A) I.down).left = _`. Rewrite using `[← Over.comp_left, CubePf.CubeCoordinateSums.psum_eq_prod, CubePf.CubeCoordinateSums.comp_prod, ex_sum, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [x3]`.
+-/
 theorem pt_thφ (ν : NumOf D ℂ N) (d : AB N.toNumB g) (x y z : Fin g → ℂ) (I : thK.{0}) :
     (lift (ν.eA (d.ex x)) (lift (ν.eA (d.ex y)) (ν.eA (d.ex z)))).left ≫ thφ D.P.A (x3 D.P.A) I =
       (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, z] i))).left := by
@@ -53,16 +67,27 @@ end GlobalTheory.MBLow.Cl.CubeVal
 
 namespace GlobalTheory.MBLow.Cl.CubeVal
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> decide`.
+-/
 theorem thε_vals : thε ⟨(∅ : Finset (Fin 3))⟩ = -1 ∧ thε ⟨({0} : Finset (Fin 3))⟩ = 1 ∧ thε ⟨({1} : Finset (Fin 3))⟩ = 1 ∧
     thε ⟨({2} : Finset (Fin 3))⟩ = 1 ∧ thε ⟨({0, 1} : Finset (Fin 3))⟩ = -1 ∧ thε ⟨({0, 2} : Finset (Fin 3))⟩ = -1 ∧
     thε ⟨({1, 2} : Finset (Fin 3))⟩ = -1 ∧ thε ⟨({0, 1, 2} : Finset (Fin 3))⟩ = 1 := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> decide
 
+/- English proof (translation)
+Take `⟨e0, e1, e2, e3, e4, e5, e6, e7⟩` from `thε_vals`. Rewrite using `[prod_three, e0, e1, e2, e3, e4, e5, e6, e7]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_const_zpow (r : ℂ) (hr : r ≠ 0) : ∏ I : thK.{0}, r ^ thε I = 1 := by
   obtain ⟨e0, e1, e2, e3, e4, e5, e6, e7⟩ := thε_vals
   rw [prod_three, e0, e1, e2, e3, e4, e5, e6, e7]
   field_simp
 
+/- English proof (translation)
+Establish `ha : ∀ I, a I ≠ 0` using `fun I => left_ne_zero_of_mul (h I ▸ mul_ne_zero (hf I) hr)`. Establish `hA : (∏ I, a I ^ thε I) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun I _ => zpow_ne_zero _ (ha I)`. Establish `hAB : (∏ I, a I ^ thε I) * ∏ I, b I ^ thε I = ∏ I, f I ^ thε I`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `e : ∀ I, a I ^ thε I * b I ^ thε I = f I ^ thε I * r ^ thε I` using `fun I => by`.
+
+Rewrite using `[← mul_zpow, ← mul_zpow, h I]`. Simplify using `only [e, Finset.prod_mul_distrib, prod_const_zpow r hr, _root_.mul_one]`. Rewrite `h2` using `[h1]`. Conclude with `mul_left_cancel₀ hA (h2.trans hAB.symm)`.
+-/
 theorem alg (a b f : thK.{0} → ℂ) (r θ V : ℂ) (hr : r ≠ 0) (hf : ∀ I, f I ≠ 0) (h : ∀ I, f I * r = a I * b I)
     (h1 : θ = (∏ I, a I ^ thε I) * V) (h2 : θ = ∏ I, f I ^ thε I) : V = ∏ I, b I ^ thε I := by
   have ha : ∀ I, a I ≠ 0 := fun I => left_ne_zero_of_mul (h I ▸ mul_ne_zero (hf I) hr)
@@ -77,6 +102,11 @@ theorem alg (a b f : thK.{0} → ℂ) (r θ V : ℂ) (hr : r ≠ 0) (hf : ∀ I,
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ} {g : ℕ}
 
+/- English proof (translation)
+Take `⟨e0, e1, e2, e3, e4, e5, e6, e7⟩` from `thε_vals`. Establish `h` using `congrArg Units.val (hc x y z)`. Simplify using `only [Units.val_mul] at h`. Rewrite using `[prod_three, e0, e1, e2, e3, e4, e5, e6, e7]`. Simplify using `[Finset.sum_insert, d.fr_zero, ← add_assoc]`.
+
+Use `(d.fr (x + y)).ne_zero` as an intermediate fact. Use `(d.fr (x + z)).ne_zero` as an intermediate fact. Use `(d.fr (y + z)).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+-/
 theorem theta_eq_prod (d : AB N.toNumB g) (hc : d.Cub) (x y z : Fin g → ℂ) :
     (N.θ (d.ex x) (d.ex y) (d.ex z) : ℂ) = ∏ I : thK.{0}, (d.fr (∑ i ∈ I.down, ![x, y, z] i) : ℂ) ^ thε I := by
   obtain ⟨e0, e1, e2, e3, e4, e5, e6, e7⟩ := thε_vals
@@ -96,6 +126,13 @@ namespace GlobalTheory.MBLow.Cl
 
 open CubeVal in
 
+/- English proof (translation)
+Introduce `R _ _ D _ N g ν d hc G x y z j hj`. Establish `hpt` using `pt_thφ ν d x y z`. Use `set p := (lift (ν.eA (d.ex x)) (lift (ν.eA (d.ex y)) (ν.eA (d.ex z)))).left with hp`. Establish `htr : ∀ I : thK.{0}, (d.fr (∑ i ∈ I.down, ![x, y, z] i) : ℂ) * ν.rg = valF (p ≫ thφ D.P.A (x3 D.P.A) I) (D.P.L.U (ν.J (p ≫ thφ D.P.A (x3 D.P.A) I)) ⊓ D.P.L.U (j I)) (D.P.L.g (ν.J (p ≫ thφ D.P.A (x3 D.P.A) I)) (j I)).val * G.frG (j I) (∑ i ∈ I.down, ![x, y, z] i)`. Introduce `I`.
+
+Rewrite using `[hpt I, G.fr_eq]`. Conclude with `G.fr_compat _ _ _ fun q _ => ⟨ν.good _ (x := q) trivial, hj I (x := q) trivial⟩`. Establish `hin : ⊤ ≤ p ⁻¹ᵁ (LB.wchart D.P.L (thφ D.P.A (x3 D.P.A)) (fun I => ν.J (p ≫ thφ D.P.A (x3 D.P.A) I)) ⊓ LB.wchart D.P.L (thφ D.P.A (x3 D.P.A)) j)` using `fun q _ => ⟨Set.mem_iInter.2 fun I => ν.good (p ≫ thφ D.P.A (x3 D.P.A) I) (x := q) trivial, Set.mem_iInter.2 fun I => by`. Establish `h` using `hj I`. Rewrite `h` using `[← hpt I]`.
+
+Conclude with `h (x := q) trivial⟩`. Establish `e1` using `PullbackSections.vtf_isGen_val D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t D.cub.isGen p _ j hin`. Establish `e2` using `ν.θ_eq (d.ex x) (d.ex y) (d.ex z)`. Conclude with `alg _ _ (fun I => (d.fr (∑ i ∈ I.down, ![x, y, z] i) : ℂ)) ν.rg _ _ (SymFrame.rg_ne ν) (fun I => Units.ne_zero _) htr (e2.trans e1) (theta_eq_prod d hc x y z)`.
+-/
 theorem cube_val_frame : ∀ {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
     {g : ℕ} (ν : NumOf D ℂ N) (d : AB N.toNumB g), d.Cub → ∀ (G : Geo ν d) (x y z : Fin g → ℂ) (j : thK.{0} → D.P.L.ι),
     (∀ I : thK.{0}, ⊤ ≤ (ν.eA (d.ex (∑ i ∈ I.down, ![x, y, z] i))).left ⁻¹ᵁ D.P.L.U (j I)) →

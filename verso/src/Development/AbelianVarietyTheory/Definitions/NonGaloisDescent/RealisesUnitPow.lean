@@ -10,6 +10,9 @@ namespace GlobalTheory.BKReal
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Introduce `Q _ _ v`. Use `⟨c.constr B fun i => v (b i), fun x => ?_, fun w hw => c.ext fun i => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (b.ext (f₁ := (c.constr B fun i => v (b i)).comp u) (f₂ := v) fun i => by`. Rewrite using `[LinearMap.comp_apply, h, Module.Basis.constr_basis]) x`. Rewrite using `[Module.Basis.constr_basis, ← h, hw]`.
+-/
 theorem semiBC_of_basis {A B M N J : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (b : Module.Basis J A M)
     (c : Module.Basis J B N) (h : ∀ i, u (b i) = c i) : SemiBC u := by
@@ -24,12 +27,18 @@ def piMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (J : Type) : (J
   map_add' x y := funext fun i => map_add f (x i) (y i)
   map_smul' c x := funext fun i => map_mul f c (x i)
 
+/- English proof (translation)
+Use `ext1 k`. Express the relevant statement in the definitionally equal form `f (Pi.single (M := fun _ => A) i 1 k) = _`. Simplify using `[Pi.single_apply, apply_ite f]`.
+-/
 theorem piMap_single {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {J : Type} [DecidableEq J] (i : J) :
     piMap f J (Pi.single i 1) = Pi.single i 1 := by
   ext1 k
   change f (Pi.single (M := fun _ => A) i 1 k) = _
   simp [Pi.single_apply, apply_ite f]
 
+/- English proof (translation)
+The claim follows from `semiBC_of_basis (Pi.basisFun A J) (Pi.basisFun B J) fun i => by rw [Pi.basisFun_apply, Pi.basisFun_apply, piMap_single]`.
+-/
 theorem semiBC_piMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (J : Type) [Fintype J]
     [DecidableEq J] : SemiBC (piMap f J) :=
   semiBC_of_basis (Pi.basisFun A J) (Pi.basisFun B J) fun i => by
@@ -42,6 +51,9 @@ def piFrob {A : Type} [CommRing A] (φ : A →+* A) (d : A) (J : Type) :
   map_smul' c x := by
     rw [RingHom.comp_apply, algebraMap_smul, LocalizedModule.smul'_mk, LinearMap.map_smulₛₗ]
 
+/- English proof (translation)
+Take `⟨⟨_, r, rfl⟩, hr⟩` from `LocalizedModule.mk_eq.1 h`. Conclude with `⟨r, by simpa [Submonoid.smul_def] using hr⟩`.
+-/
 theorem exists_of_isFrac {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] {d : A} {y m : M} {k : ℕ}
     (h : IsFrac d (LocalizedModule.mk y 1) m k) : ∃ r : ℕ, d ^ r • d ^ k • y = d ^ r • m := by
   obtain ⟨⟨_, r, rfl⟩, hr⟩ := LocalizedModule.mk_eq.1 h
@@ -78,6 +90,9 @@ def unitPowMap (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [
       (WCb l ⊗[ℤ_[l]] T) :=
   (β.baseChange (WCb l)).equivFun.symm.toLinearMap.comp (piMap ((inclW l).comp (ainfId F).toRingHom) J)
 
+/- English proof (translation)
+Use `((β.baseChange (WCb l)).equivFun_symm_apply fun i => inclW l (x i)).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Module.Basis.baseChange_apply, smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem unitPowMap_apply (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J]
     [DecidableEq J] (β : Module.Basis J ℤ_[l] T) (x : J → Ainf l) :
     unitPowMap F β x = ∑ i, inclW l (x i) ⊗ₜ[ℤ_[l]] β i := by
@@ -85,6 +100,9 @@ theorem unitPowMap_apply (F : FinExt l) {T J : Type} [AddCommGroup T] [Module �
     (Finset.sum_congr rfl fun i _ => ?_)
   rw [Module.Basis.baseChange_apply, smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, frobW_inclW, ← mul_left_cancel₀ (pow_ne_zero r hd) (h i), map_mul, map_pow, smul_tmul', smul_eq_mul]`.
+-/
 theorem sum_frob {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J] (β : J → T) {d : Ainf l}
     (hd : d ≠ 0) (x m : J → Ainf l) (k r : ℕ)
     (h : ∀ i, d ^ r * (d ^ k * WittVector.frobenius (x i)) = d ^ r * m i) :
@@ -95,6 +113,9 @@ theorem sum_frob {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J] (�
   rw [TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, frobW_inclW,
     ← mul_left_cancel₀ (pow_ne_zero r hd) (h i), map_mul, map_pow, smul_tmul', smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, AlgEquiv.toLinearMap_apply, galW_inclW, hρ]`.
+-/
 theorem sum_gal {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J] (β : J → T) (g : GQ l)
     (ρ : T →ₗ[ℤ_[l]] T) (hρ : ∀ x, ρ x = x) (x : J → Ainf l) :
     ∑ i, inclW l (Per.σA g (x i)) ⊗ₜ[ℤ_[l]] β i =
@@ -103,6 +124,9 @@ theorem sum_gal {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J] (β
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [TensorProduct.map_tmul, AlgEquiv.toLinearMap_apply, galW_inclW, hρ]
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_of_isFrac h`. Rewrite using `[unitPowMap_apply, unitPowMap_apply]`. Conclude with `sum_frob β hd x m k r fun i => congrFun hr i`.
+-/
 theorem unitPowMap_frob (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J]
     [DecidableEq J] (β : Module.Basis J ℤ_[l] T) (d : Ainf l) (hd : d ≠ 0) (x m : J → Ainf l) (k : ℕ)
     (h : IsFrac d (LocalizedModule.mk (piMap WittVector.frobenius J x) 1) m k) :
@@ -112,6 +136,9 @@ theorem unitPowMap_frob (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ
   rw [unitPowMap_apply, unitPowMap_apply]
   exact sum_frob β hd x m k r fun i => congrFun hr i
 
+/- English proof (translation)
+Rewrite using `[unitPowMap_apply, unitPowMap_apply]`. Conclude with `sum_gal β g ρ hρ x`.
+-/
 theorem unitPowMap_gal (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J]
     [DecidableEq J] (β : Module.Basis J ℤ_[l] T) (g : GQ l) (ρ : T →ₗ[ℤ_[l]] T) (hρ : ∀ x, ρ x = x)
     (x : J → Ainf l) : unitPowMap F β (fun i => Per.σA g (x i)) =
@@ -119,6 +146,9 @@ theorem unitPowMap_gal (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ_
   rw [unitPowMap_apply, unitPowMap_apply]
   exact sum_gal β g ρ hρ x
 
+/- English proof (translation)
+The claim follows from `isAinf_ainfObj F bc := SemiBC.comp_equiv (semiBC_piMap ((inclW l).comp (ainfId F).toRingHom) J) _ j_φ d hd x m k h := unitPowMap_frob F β d.1 hd x m k h j_act g x := unitPowMap_gal F β g (ρ g) (hρ g) x`.
+-/
 theorem realises_unitPow (F : FinExt l) {T J : Type} [AddCommGroup T] [Module ℤ_[l] T] [Fintype J]
     [DecidableEq J] (β : Module.Basis J ℤ_[l] T) (ρ : ↥(GK F) → (T →ₗ[ℤ_[l]] T)) (hρ : ∀ g x, ρ g x = x) :
     Realises F (unitPow l ↥(OL F) J) (ainfObj F) (ainfId F) T ρ (unitPowMap F β) where

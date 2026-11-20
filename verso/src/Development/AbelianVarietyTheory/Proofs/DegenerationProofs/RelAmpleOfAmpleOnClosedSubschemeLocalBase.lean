@@ -18,12 +18,30 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AmpleLocalBase
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hw`. Conclude with `relAmple_pull h hL hL' ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top S) (fun _ => trivial) hA`.
+-/
 theorem relAmple_baseChange {S S' : Scheme.{0}} [IsAffine S] {f : S' ⟶ S} {A : Over S} {A' : Over S'}
     {φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left} (h : IsPullback φ A'.hom A.hom f)
     (hL : L.IsLB) (hL' : L'.IsLB) (hw : LBIso L' (L.pull φ)) (hA : RelAmple A L) : RelAmple A' L' := by
   obtain ⟨w, hw⟩ := hw
   exact relAmple_pull h hL hL' ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top S) (fun _ => trivial) hA
 
+/- English proof (translation)
+Introduce `R _ _ _ B M hF hP hM R₀ _ _ g hg Y₀ b hb N₀ hN₀ hiso hA`. Establish `hker : RingHom.ker g ≤ RingHom.ker (IsLocalRing.residue R)`. Rewrite using `[IsLocalRing.ker_residue]`. Conclude with `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top g)`. Set `g' : R₀ →+* IsLocalRing.ResidueField R` to `RingHom.liftOfSurjective g hg ⟨IsLocalRing.residue R, hker⟩`.
+
+Establish `hg' : g'.comp g = IsLocalRing.residue R` using `RingHom.liftOfSurjective_comp g hg _`. Set `k` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))`. Establish `hk : Spec.map (CommRingCat.ofHom g') ≫ Spec.map (CommRingCat.ofHom g) = k`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hg']`. Set `ψ : pullback B.hom k ⟶ Y₀.left` to `hb.lift (pullback.fst B.hom k) (pullback.snd B.hom k ≫ Spec.map (CommRingCat.ofHom g')) (by rw [Category.assoc, hk, pullback.condition])`.
+
+Establish `hψ : ψ ≫ b = pullback.fst B.hom k` using `hb.lift_fst _ _ _`. Establish `hψ' : IsPullback ψ (pullback.snd B.hom k) Y₀.hom (Spec.map (CommRingCat.ofHom g'))`. Use `IsPullback.of_right ?_ (hb.lift_snd _ _ _) hb` and prove the remaining obligations. Rewrite using `[hψ, hk]`. Conclude with `IsPullback.of_hasPullback _ _`.
+
+Establish `h₁ : RelAmple ((Over.pullback k).obj B) (M.pull (pullback.fst B.hom k))` using `relAmple_baseChange (A' := (Over.pullback k).obj B) hψ' hN₀ (pull_isLB hM _) (LBIso.chartPull (Geo.Tor.chartPullPull N₀ ψ ψ rfl) (chartPullSame M (fun _ : PUnit => pullback.fst B.hom k) (fun _ => b) (fun _ => 1) ψ fun _ => hψ.symm) hiso).symm hA`. Take `⟨r, hr, h₂⟩` from `GlobalTheory.AmpleNear.relAmple_near_fibre R B M hF hP hM _ (IsLocalRing.residue R) (fun y => by`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Conclude with `⟨a, 1, by simp, by simp⟩) h₁`. Establish `hu : IsUnit r` using `(IsLocalRing.residue_ne_zero_iff_isUnit r).1 hr`.
+
+Establish `htop : PrimeSpectrum.basicOpen r = ⊤`. Conclude with `top_le_iff.1 fun p _ => fun hp => p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp hu)`. Generalize the expression as in `(PrimeSpectrum.basicOpen r : (Spec (CommRingCat.of R)).Opens) = U at htop h₂`. Substitute `htop` using the available equality. Set `j` to `Scheme.Opens.ι (X := Spec (CommRingCat.of R)) ⊤`.
+
+Establish `: IsIso j` using `inferInstanceAs (IsIso (Spec (CommRingCat.of R)).topIso.hom)`. Establish `: IsAffine (⊤ : (Spec (CommRingCat.of R)).Opens).toScheme` using `isAffineOpen_top _`. Establish `h₃ : IsPullback (inv (pullback.fst B.hom j)) B.hom (pullback.snd B.hom j) (inv j)` using `IsPullback.of_horiz_isIso ⟨by`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, pullback.condition, Category.assoc, IsIso.hom_inv_id, Category.comp_id]⟩`. Use `relAmple_baseChange (A := (Over.pullback j).obj B) h₃ (pull_isLB hM _) hM ?_ h₂` and prove the remaining obligations.
+
+Conclude with `(LBIso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSec M _ _ (IsIso.inv_hom_id (pullback.fst B.hom j))) ⟨_, idIso_isGen (pull_isLB hM _)⟩).symm`.
+-/
 theorem relAmple_of_closed : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (B : Over (Spec (CommRingCat.of R))) (M : LB B.left), Flat B.hom → IsProjBy B.hom → M.IsLB → ∀ (R₀ : Type) [CommRing R₀] [Nontrivial R₀] (g : R →+* R₀), Function.Surjective g → ∀ (Y₀ : Over (Spec (CommRingCat.of R₀))) (b : Y₀.left ⟶ B.left), IsPullback b Y₀.hom B.hom (Spec.map (CommRingCat.ofHom g)) → ∀ N₀ : LB Y₀.left, N₀.IsLB → LBIso N₀ (M.pull b) → RelAmple Y₀ N₀ → RelAmple B M := by
   intro R _ _ _ B M hF hP hM R₀ _ _ g hg Y₀ b hb N₀ hN₀ hiso hA
   have hker : RingHom.ker g ≤ RingHom.ker (IsLocalRing.residue R) := by

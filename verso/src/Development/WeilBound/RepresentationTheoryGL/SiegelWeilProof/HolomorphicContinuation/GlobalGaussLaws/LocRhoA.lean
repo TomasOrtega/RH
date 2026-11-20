@@ -31,6 +31,17 @@ noncomputable section
 
 namespace PositivityTheory.Rg.Sw.Glob.RhoH
 
+/- English proof (translation)
+Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs Φ hΦ k hk`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, hlam, hψeq, hchart, hdat, htr⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨lam', hlam', -, l', hl', habs⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ₀ hstd θ hθ μ' hsk`. Establish `hll : lam' = lam` using `(algebraMap D.host.F D.host.E).injective (hlam'.trans hlam.symm)`.
+
+Substitute `hll` using the available equality. Establish `hl'' : HasRealPar ψ θ l'` using `hψeq ▸ hl'`. Establish `hleq : l = l'` using `GlobalTheory.T.archimedean_parameters_addChar_unique D ψ θ hθ l l' hl hl''`. Substitute `hleq` using the available equality. Take `⟨-, hsurj, -⟩` from `GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ₀ hstd θ hθ A V μ 𝓕 hμ`.
+
+Take `⟨f, hf, hfΦ⟩` from `hsurj Φ.1 Φ.2`. Take `⟨s', hstd', hcomm⟩` from `GlobalTheory.T.exists_standardCartanInvolution_commute_compact D A μ' hsk κ hchart θ hθ`. Establish `hfock : IsFockVec ψ₀ θ (dblSp A) V s' s f` using `GlobalTheory.T.isFockVector_of_schrodinger_mem_fockSpace D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs f hf (hfΦ ▸ hΦ)`. Establish `hkk : κ (κ.symm k) ∈ K D A.rank`. Rewrite using `[show κ (κ.symm k) = k from κ.apply_symm_apply k]`.
+
+Conclude with `hk`. Establish `hfock' : IsFockVec ψ₀ θ (dblSp A) V s' s (omh (κ.symm k, 1) f)` using `GlobalTheory.T.isPolynomialFockThetaVector_weilOperator_cartan D ψ₀ (dblSp A) V 1 χ⁻¹ omh hdat θ hθ s' s' s (κ.symm k) (fun τ => (hcomm (κ.symm k) hkk τ).symm) f hfock`. Establish `hmem` using `GlobalTheory.T.schroedingerFunction_fockVector_polynomial_gaussian D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs _ hfock'`. Use `htr (κ.symm k) f hf Φ hfΦ.symm` as an intermediate fact. Rewrite `this` using `[show κ (κ.symm k) = k from κ.apply_symm_apply k]`.
+
+Conclude with `this.symm ▸ hmem`.
+-/
 theorem fock_stable : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
     ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ →
     ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 →
@@ -63,6 +74,13 @@ theorem fock_stable : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.hos
   rw [show κ (κ.symm k) = k from κ.apply_symm_apply k] at this
   exact this.symm ▸ hmem
 
+/- English proof (translation)
+Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl τ h0`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, hlam, hψeq, hchart, hdat, htr⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨lam', hlam', -, l', hl', habs⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ₀ hstd θ hθ μ' hsk`. Establish `hll : lam' = lam` using `(algebraMap D.host.F D.host.E).injective (hlam'.trans hlam.symm)`.
+
+Substitute `hll` using the available equality. Establish `hl'' : HasRealPar ψ θ l'` using `hψeq ▸ hl'`. Establish `hleq : l = l'` using `GlobalTheory.T.archimedean_parameters_addChar_unique D ψ θ hθ l l' hl hl''`. Substitute `hleq` using the available equality. Establish `h` using `habs τ`.
+
+Rewrite `h` using `[h0, abs_zero]`. Establish `hx : ‖tauE D τ D.host.xi0‖ ≠ 0` using `norm_ne_zero_iff.2 ((map_ne_zero (tauE D τ)).2 (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D))`. Establish `hm : ‖tauE D τ μ'‖ ≠ 0` using `norm_ne_zero_iff.2 ((map_ne_zero (tauE D τ)).2 hsk.1)`. Conclude with `(div_ne_zero hx hm) h.symm`.
+-/
 theorem l_ne_zero : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
     ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ →
     ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 →

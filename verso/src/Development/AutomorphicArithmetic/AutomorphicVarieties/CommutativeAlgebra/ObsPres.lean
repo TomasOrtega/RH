@@ -8,6 +8,23 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.PredMulS
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Establish `hex : ∃ n, ∃ s : Finset ι, s.card = n ∧ K = K0 ⊔ Ideal.span (Set.range fun u : s => f u)`. Use `⟨_, Finset.univ, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Use `congr 2`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Take `⟨s, hs, hK⟩` from `Nat.find_spec hex`. Use `⟨s, hK, fun c hc u => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `hun : IsUnit (c u)`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `hu h'`. Take `⟨v, hv⟩` from `hun`. Use `Nat.find_min hex (m := (s.erase u).card) (by rw [← hs]; exact Finset.card_erase_lt_of_mem u.2) ⟨s.erase u, rfl, ?_⟩` and prove the remaining obligations. Use `set N : Ideal A := K0 ⊔ Ideal.span (Set.range fun w : s.erase u => f w) with hN`.
+
+Establish `hmem : ∀ w : s, w ≠ u → f w ∈ N` using `fun w hw => Ideal.mem_sup_right (Ideal.subset_span ⟨⟨w, Finset.mem_erase.2 ⟨fun e => hw (Subtype.ext e), w.2⟩⟩, rfl⟩)`. Establish `hNK : N ≤ K`. Rewrite using `[hK]`. Use `sup_le_sup_left (Ideal.span_mono ?_) _` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Conclude with `⟨⟨w, Finset.mem_of_mem_erase w.2⟩, rfl⟩`. Use `le_antisymm ?_ hNK` and prove the remaining obligations. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal A) (IsNoetherian.noetherian K) (maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Establish `h1 : f u ∈ N ⊔ maximalIdeal A • K`. Establish `h2 : ∑ w, c w * f w ∈ N ⊔ maximalIdeal A • K` using `(sup_le_sup_right (le_sup_left : K0 ≤ N) (maximalIdeal A * K)) hc`.
+
+Rewrite `h2` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ u)]`. Establish `h3 : ∑ w ∈ Finset.univ.erase u, c w * f w ∈ N ⊔ maximalIdeal A • K` using `Ideal.mem_sup_left (Ideal.sum_mem _ fun w hw => Ideal.mul_mem_left _ _ (hmem w (Finset.mem_erase.1 hw).1))`. Establish `h4` using `Ideal.mul_mem_left _ (↑v⁻¹ : A) (sub_mem h2 h3)`. Rewrite `h4` using `[add_sub_cancel_right, ← hv, Units.inv_mul_cancel_left]`. Then use the resulting hypothesis. Use `conv_lhs => rw [hK]`.
+
+Use `sup_le (le_sup_of_le_left le_sup_left) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Distinguish the cases in `hw : w = u`. Substitute `hw` using the available equality. Conclude with `h1`.
+
+Conclude with `Ideal.mem_sup_left (hmem w hw)`.
+-/
 private theorem op_min {A ι : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Fintype ι]
     (K K0 : Ideal A) (f : ι → A) (h : K = K0 ⊔ Ideal.span (Set.range f)) :
     ∃ s : Finset ι, K = K0 ⊔ Ideal.span (Set.range fun u : s => f u) ∧
@@ -55,15 +72,24 @@ private theorem op_min {A ι : Type} [CommRing A] [IsLocalRing A] [IsNoetherianR
   · subst hw; exact h1
   · exact Ideal.mem_sup_left (hmem w hw)
 
+/- English proof (translation)
+Rewrite using `[mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_iff_constantCoeff]`.
+-/
 private theorem op_mem_max {O σ : Type} [CommRing O] [IsLocalRing O] (x : MvPowerSeries σ O) :
     x ∈ maximalIdeal (MvPowerSeries σ O) ↔ constantCoeff x ∈ maximalIdeal O := by
   rw [mem_maximalIdeal, mem_maximalIdeal, mem_nonunits_iff, mem_nonunits_iff, isUnit_iff_constantCoeff]
 
+/- English proof (translation)
+Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`.
+-/
 private theorem op_loc {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (x : R) :
     f x ∈ maximalIdeal R' ↔ x ∈ maximalIdeal R := by
   rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
 
+/- English proof (translation)
+Establish `h : (maximalIdeal R).map f ≤ maximalIdeal R'` using `Ideal.map_le_iff_le_comap.2 fun y hy => (op_loc f y).2 hy`. Use `Ideal.mem_map_of_mem f hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h 2 this`.
+-/
 private theorem op_loc_sq {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') {x : R} (hx : x ∈ maximalIdeal R ^ 2) :
     f x ∈ maximalIdeal R' ^ 2 := by
@@ -73,6 +99,13 @@ private theorem op_loc_sq {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRing
   rw [Ideal.map_pow] at this
   exact Ideal.pow_right_mono h 2 this
 
+/- English proof (translation)
+Take `⟨k, -, hk⟩` from `GlobalTheory.exists_eq_sum_X_mul (n := 0) (g := g - C (constantCoeff g)) fun d hd => by`. Establish `: d = 0` using `(Finsupp.degree_eq_zero_iff d).1 (by simpa using hd)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Use `⟨fun s => constantCoeff (k s), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show algebraMap O (MvPowerSeries σ O) (constantCoeff g) = C (constantCoeff g) from rfl, hk, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Establish `: X s * k s - constantCoeff (k s) • X s = X s * (k s - C (constantCoeff (k s)))`. Rewrite using `[smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, pow_two]`. Apply the tactic sequence `refine Ideal.mul_mem_mul ?_ ?_ <;> rw [op_mem_max] <;> simp`.
+-/
 private theorem op_taylor {O σ : Type} [CommRing O] [IsLocalRing O] [Fintype σ] (g : MvPowerSeries σ O) :
     ∃ c : σ → O, g - algebraMap O _ (constantCoeff g) - ∑ s, c s • X s ∈ maximalIdeal (MvPowerSeries σ O) ^ 2 := by
   obtain ⟨k, -, hk⟩ := GlobalTheory.exists_eq_sum_X_mul (n := 0) (g := g - C (constantCoeff g)) fun d hd => by
@@ -88,6 +121,33 @@ private theorem op_taylor {O σ : Type} [CommRing O] [IsLocalRing O] [Fintype σ
   rw [this, pow_two]
   refine Ideal.mul_mem_mul ?_ ?_ <;> rw [op_mem_max] <;> simp
 
+/- English proof (translation)
+Introduce `u0`. Assume the negation of the conclusion as `h0`. Take `⟨d, hd⟩` from `(notMem_maximalIdeal.1 h0).exists_right_inv`. Establish `hz : ∀ x ∈ maximalIdeal A, ∀ y, p y = 0 → x * y = 0` using `fun x hx y hy => by`. Use `Ideal.mul_mem_mul hx (show y ∈ RingHom.ker p from hy)` as an intermediate fact.
+
+Rewrite `this` using `[hm]`. Then use the resulting hypothesis. Set `δ : κ → A` to `fun u => ε u - (c u * d) • ε u0`. Establish `hδ : ∀ u, p (δ u) = 0` using `fun u => by simp [δ, hε]`. Set `I : Ideal A` to `Ideal.span (Set.range δ)`. Establish `hI : I ≤ RingHom.ker p` using `Ideal.span_le.2 (by rintro _ ⟨u, rfl⟩; exact hδ u)`.
+
+Set `p'' : (A ⧸ I) →ₐ[O] R` to `Ideal.Quotient.liftₐ I p hI`. Set `p' : A →ₐ[O] A ⧸ I` to `Ideal.Quotient.mkₐ O I`. Establish `hp' : Function.Surjective p'` using `Ideal.Quotient.mk_surjective`. Establish `hpp : ∀ x, p'' (p' x) = p x` using `fun x => rfl`. Use `haveI : Nontrivial (A ⧸ I) := p''.toRingHom.domain_nontrivial`.
+
+Use `haveI : IsCO O (A ⧸ I) := co_quot O A _ p' hp'`. Take `⟨s, hs1, hs2⟩` from `H (A ⧸ I) p' p'' (p' (d • ε u0)) hp' (AlgHom.ext hpp) (fun x hx => by`. Take `⟨x, rfl⟩` from `hp' x`. Rewrite using `[← map_mul, hz x ((op_loc p' x).1 hx) _ (by simp [hε]), map_zero])`. Use the proof step `(by rw [hpp]; simp [hε])`.
+
+Use the proof step `(fun u => by`. Rewrite using `[← map_smul, smul_smul]`. Conclude with `Ideal.Quotient.eq.2 (Ideal.subset_span ⟨u, rfl⟩))`. Establish `hs1' : ∀ x, p'' (s x) = x` using `fun x => DFunLike.congr_fun hs1 x`. Establish `hs : Function.Surjective s`.
+
+Use `co_surj O R _ s fun x hx => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hp' (x - s (p'' x))`. Establish `h1 : y ∈ RingHom.ker p` using `by show p y = 0`. Rewrite using `[← hpp, hy, map_sub, hs1', sub_self]`. Establish `h2 : x = s (p'' x) + p' y` using `by rw [hy]; ring`.
+
+Rewrite using `[h2]`. Use `add_mem (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ((op_loc p'' x).2 hx))) ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hker h1)`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup ?_ (op_loc_sq p' hb)` and prove the remaining obligations.
+
+Establish `h3 : (maximalIdeal B).map i ≤ ((maximalIdeal R).map s).comap p'` using `Ideal.map_le_iff_le_comap.2 fun t ht => by show p' (i t) ∈ (maximalIdeal R).map s`. Establish `h4 : s (p (i t)) = p' (i t)` using `DFunLike.congr_fun hs2 t`. Rewrite using `[← h4]`. Conclude with `Ideal.mem_map_of_mem _ ((op_loc p _).2 ((op_loc i _).2 ht))`. Conclude with `h3 ha`.
+
+Establish `h5 : ε u0 ∈ I`. Take `⟨y, hy⟩` from `hs (p' (ε u0))`. Establish `: y = 0` using `by rw [← hs1' y, hy, hpp, hε]`. Rewrite `hy` using `[this, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 hy.symm`.
+
+Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h5`. Use `choose b hb using fun u => IsCO.res_surj (O := O) (a u)`. Establish `h6 : ∑ u, b u • δ u = ε u0`. Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Use `hz _ (hb u) _ (hδ u)` as an intermediate fact. Rewrite `this` using `[sub_mul, sub_eq_zero]`. Rewrite using `[this, Algebra.smul_def]`. Establish `h7` using `hind (fun u => b u - if u = u0 then 1 + ∑ v, b v * (c v * d) else 0) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, add_smul, one_smul, Finset.sum_smul]`.
+
+Simplify using `only [δ, smul_sub, Finset.sum_sub_distrib, smul_smul] at h6`. Take the linear combination `h6)`. Establish `h8 : ∑ u, (b u - if u = u0 then 1 + ∑ v, b v * (c v * d) else 0) * (c u * d) ∈ maximalIdeal O` using `Ideal.sum_mem _ fun u _ => Ideal.mul_mem_right _ _ (h7 u)`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, hd, mul_one] at h8`. Rewrite `h8` using `[sub_add_cancel_right, neg_mem_iff]`.
+
+Conclude with `(maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h8)`.
+-/
 private theorem op_detect {O B A R κ : Type} [CommRing O] [IsLocalRing O] [CommRing B] [Algebra O B] [IsCO O B]
     [CommRing A] [Algebra O A] [IsCO O A] [CommRing R] [Algebra O R] [IsCO O R] [Fintype κ]
     (i : B →ₐ[O] A) (p : A →ₐ[O] R) (hm : maximalIdeal A * RingHom.ker p = ⊥)
@@ -168,6 +228,23 @@ private theorem op_detect {O B A R κ : Type} [CommRing O] [IsLocalRing O] [Comm
   rw [sub_add_cancel_right, neg_mem_iff] at h8
   exact (maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h8)
 
+/- English proof (translation)
+Use `haveI : IsCO O (MvPowerSeries σ O) := co_mvps O O σ`. Introduce `x hx`. Take `⟨g, rfl⟩` from `hπ x`. Establish `hx' : p (π g) = 0` using `hx`. Establish `hg : constantCoeff g ∈ maximalIdeal O`.
+
+Rewrite using `[← op_mem_max, ← op_loc π, ← op_loc p, hx']`. Conclude with `zero_mem _`. Take `⟨c, hc⟩` from `op_taylor g`. Establish `key : ∀ (T : Type) [CommRing T] [Algebra O T] [IsCO O T] (q : A →ₐ[O] T), q (π g) - ∑ t, c (e (.inr t)) • q (π (X (e (.inr t)))) ∈ (maximalIdeal B).map (q.comp i) ⊔ maximalIdeal T ^ 2`. Introduce `T _ _ _ q`.
+
+Establish `k1` using `op_loc_sq (q.comp π) hc`. Rewrite `k1` using `[map_sub, map_sub, AlgHom.commutes, map_sum, ← e.sum_comp, Fintype.sum_sum_type]`. Simplify using `only [map_smul, AlgHom.comp_apply] at k1`. Establish `k2 : algebraMap O T (constantCoeff g) ∈ (maximalIdeal B).map (q.comp i)`. Rewrite using `[← (q.comp i).commutes]`.
+
+Conclude with `Ideal.mem_map_of_mem _ ((op_loc (Algebra.ofId O B) _).2 hg)`. Establish `k3 : ∑ s, c (e (.inl s)) • q (π (X (e (.inl s)))) ∈ (maximalIdeal B).map (q.comp i)`. Use `Ideal.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Take `⟨b, hb, hb'⟩` from `h1 s`. Rewrite using `[hb', Algebra.smul_def]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem (q.comp i) hb)`. Use `Submodule.add_mem_sup (add_mem k2 k3) k1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `k4` using `key R p`.
+
+Rewrite `k4` using `[hx', zero_sub, neg_mem_iff]`. Establish `k5` using `h2 _ k4`. Establish `k6` using `key A (AlgHom.id O A)`. Simplify using `only [AlgHom.id_apply, AlgHom.id_comp] at k6`. Establish `k7 : ∑ t, c (e (.inr t)) • π (X (e (.inr t))) ∈ maximalIdeal A ^ 2`.
+
+Use `Ideal.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, pow_two]`. Use `Ideal.mul_mem_mul ((op_loc (Algebra.ofId O A) _).2 (k5 t)) ((op_loc π _).2 ?_)` and prove the remaining obligations. Rewrite using `[op_mem_max]`. Simplify using the standard rewrite rules.
+
+Simplify using `using add_mem k6 (Ideal.mem_sup_right k7)`.
+-/
 private theorem op_ker {O B A R σ σB τ : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] [CommRing B] [Algebra O B] [IsCO O B]
     [CommRing A] [Algebra O A] [IsCO O A] [CommRing R] [Algebra O R] [IsCO O R] [Fintype σ] [Fintype σB] [Fintype τ]
@@ -214,6 +291,13 @@ private theorem op_ker {O B A R σ σB τ : Type} [CommRing O] [IsLocalRing O] [
     rw [op_mem_max]; simp
   simpa using add_mem k6 (Ideal.mem_sup_right k7)
 
+/- English proof (translation)
+Take `⟨m, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian K)`. Establish `hg' : Ideal.span (Set.range g) = K` using `hg`. Take `⟨s, hs, hmin⟩` from `op_min K K0 g (by rw [hg', sup_eq_right.2 h])`. Set `e` to `(Fintype.equivFin s).symm`. Use `⟨_, fun u => g (e u), ?_, fun c hc u => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs]`. Use `congr 2`. Conclude with `(e.surjective.range_comp fun u : s => g u).symm`. Use `hmin (fun v => c (e.symm v)) (by` as an intermediate fact. Rewrite using `[← e.sum_comp]`.
+
+Simplify using `using hc) (e u)`. Simplify using `using this`.
+-/
 private theorem op_min_fin {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     (K K0 : Ideal A) (h : K0 ≤ K) :
     ∃ (n : ℕ) (f : Fin n → A), K = K0 ⊔ Ideal.span (Set.range f) ∧
@@ -231,6 +315,15 @@ private theorem op_min_fin {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherian
       simpa using hc) (e u)
     simpa using this
 
+/- English proof (translation)
+Take `⟨a, z, hz, hmin⟩` from `op_min_fin (maximalIdeal R) ((maximalIdeal O).map (Algebra.ofId O R)) (Ideal.map_le_iff_le_comap.2 fun x hx => (op_loc (Algebra.ofId O R) x).2 hx)`. Use `haveI : IsCO O (MvPowerSeries (Fin a) O) := co_mvps O O _`. Establish `hzm : ∀ s, z s ∈ maximalIdeal R` using `fun s => hz ▸ Ideal.mem_sup_right (Ideal.subset_span ⟨s, rfl⟩)`. Take `⟨π, ⟨-, hX⟩, -⟩` from `co_ev O O R (Fin a) (Algebra.ofId O R) z hzm`. Use `⟨a, π, co_surj O _ R π (le_sup_of_le_left ?_), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz]`. Use `sup_le (Ideal.map_le_iff_le_comap.2 fun x hx => ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Use `show algebraMap O R x ∈ (maximalIdeal _).map π`. Rewrite using `[← π.commutes]`. Conclude with `Ideal.mem_map_of_mem _ ((op_loc (Algebra.ofId O _) x).2 hx)`.
+
+Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[← hX]`. Conclude with `Ideal.mem_map_of_mem _ (by rw [op_mem_max]; simp)`. Use `op_ker (Equiv.emptySum Empty (Fin a)) (Algebra.ofId O _) π (AlgHom.id O _) Function.surjective_id (fun s => s.elim) fun c hc t => ?_` and prove the remaining obligations. Rewrite using `[← op_loc (Algebra.ofId O R)]`.
+
+Use `hmin (fun t => algebraMap O R (c t)) ?_ t` and prove the remaining obligations. Rewrite `hc` using `[Subsingleton.elim (π.comp _) (Algebra.ofId O R), pow_two]`. Simplify `hc` using `[hX, Algebra.smul_def]`.
+-/
 private theorem op_min_pres (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] :
     ∃ (a : ℕ) (π : MvPowerSeries (Fin a) O →ₐ[O] R), Function.Surjective π ∧
@@ -256,6 +349,21 @@ private theorem op_min_pres (O : Type) [CommRing O] [IsLocalRing O] [IsNoetheria
     rw [Subsingleton.elim (π.comp _) (Algebra.ofId O R), pow_two] at hc
     simpa [hX, Algebra.smul_def] using hc
 
+/- English proof (translation)
+Use `haveI : IsCO O (MvPowerSeries (Fin a) O) := co_mvps O O _`. Use `haveI : IsCO O (DualNumber (ResidueField O)) := (co_res O).2`. Establish `hm : ∀ x : DualNumber (ResidueField O), x ∈ maximalIdeal (DualNumber (ResidueField O)) ↔ x.fst = 0` using `fun x => by`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not]`. Establish `hsq : maximalIdeal (DualNumber (ResidueField O)) ^ 2 ≤ ⊥`.
+
+Rewrite using `[sq, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[hm]`. Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]`.
+
+Establish `hev` using `fun v : Fin a → ResidueField O => co_ev O O (DualNumber (ResidueField O)) (Fin a) (Algebra.ofId O _) (fun s => TrivSqZeroExt.inr (v s)) fun s => (hm _).2 (by simp)`. Establish `hb : Function.Bijective fun (f : R →ₐ[O] DualNumber (ResidueField O)) (s : Fin a) => (f (π (X s))).snd`. Establish `hX : ∀ (f : R →ₐ[O] DualNumber (ResidueField O)) (s : Fin a), (f.comp π) (X s) = TrivSqZeroExt.inr (f (π (X s))).snd` using `fun f s => by`. Use `TrivSqZeroExt.ext ?_ rfl` and prove the remaining obligations. Conclude with `(hm _).1 ((op_loc (f.comp π) _).2 (by rw [op_mem_max]; simp))`.
+
+Use `⟨fun f g hfg => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `: f.comp π = g.comp π` using `(hev fun s => (f (π (X s))).snd).unique ⟨fun x => AlgHom.commutes _ x, hX f⟩ ⟨fun x => AlgHom.commutes _ x, fun s => by`. Rewrite using `[hX g]`. Conclude with `congrArg _ (congrFun hfg s).symm⟩`. Use `ext1 x`.
+
+Take `⟨x, rfl⟩` from `hπ x`. Conclude with `DFunLike.congr_fun this x`. Take `⟨F, ⟨-, hF⟩, -⟩` from `hev v`. Establish `hle : ∀ x ∈ RingHom.ker π, F x = 0` using `fun x hx => by`. Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 (hk hx)`.
+
+Establish `h1 : F w = 0` using `hsq (op_loc_sq F hw)`. Establish `h2 : (maximalIdeal O).map (Algebra.ofId O (MvPowerSeries (Fin a) O)) ≤ RingHom.ker F` using `Ideal.map_le_iff_le_comap.2 fun c hc => by show F (algebraMap O _ c) = 0`. Rewrite using `[F.commutes, IsScalarTower.algebraMap_apply O (ResidueField O), ResidueField.algebraMap_eq, (residue_eq_zero_iff c).2 hc, map_zero]`. Rewrite using `[map_add, h1, add_zero]`. Conclude with `h2 hy`.
+
+Use `⟨AlgHom.liftOfSurjective π hπ F hle, funext fun s => ?_⟩` and prove the remaining obligations. Use `show (AlgHom.liftOfSurjective π hπ F hle (π (X s))).snd = v s`. Conclude with `congrArg TrivSqZeroExt.snd ((AlgHom.liftOfSurjective_apply π hπ F hle _).trans (hF s))`. Rewrite using `[Nat.card_eq_of_bijective _ hb, Nat.card_fun]`. Simplify using the standard rewrite rules.
+-/
 private theorem op_count (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (R : Type) [CommRing R] [Algebra O R] [IsCO O R]
     (a : ℕ) (π : MvPowerSeries (Fin a) O →ₐ[O] R) (hπ : Function.Surjective π)
@@ -303,6 +411,37 @@ private theorem op_count (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRi
   rw [Nat.card_eq_of_bijective _ hb, Nat.card_fun]
   simp
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ R _ _ _ V _ _ _ H`. Take `⟨a, π₀, hπ₀, hk⟩` from `op_min_pres O R`. Use `haveI : IsCO O (MvPowerSeries (Fin a) O) := co_mvps O O _`. Take `⟨n, f, hf, hmin⟩` from `op_min_fin (RingHom.ker π₀) ⊥ bot_le`. Rewrite `hf`, `hmin` using `[bot_sup_eq]`.
+
+Establish `bound : n ≤ Module.finrank (ResidueField O) V` using `by set N : Ideal (MvPowerSeries (Fin a) O) := maximalIdeal _ * RingHom.ker π₀ with hNdef`. Establish `hNK : N ≤ RingHom.ker π₀` using `Ideal.mul_le_right`. Set `π : MvPowerSeries (Fin a) O →ₐ[O] MvPowerSeries (Fin a) O ⧸ N` to `Ideal.Quotient.mkₐ O N`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Establish `hπ0 : ∀ x, π x = 0 ↔ x ∈ N` using `fun x => Ideal.Quotient.eq_zero_iff_mem`.
+
+Set `p : (MvPowerSeries (Fin a) O ⧸ N) →ₐ[O] R` to `Ideal.Quotient.liftₐ N π₀ hNK`. Establish `hpπ : ∀ x, p (π x) = π₀ x` using `fun x => rfl`. Use `haveI : Nontrivial (MvPowerSeries (Fin a) O ⧸ N) := p.toRingHom.domain_nontrivial`. Use `haveI : IsCO O (MvPowerSeries (Fin a) O ⧸ N) := co_quot O _ _ π hπ`. Establish `hp : Function.Surjective p` using `fun x => by`.
+
+Take `⟨y, rfl⟩` from `hπ₀ x`. Conclude with `⟨π y, rfl⟩`. Establish `hm : maximalIdeal _ * RingHom.ker p = ⊥`. Rewrite using `[eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`.
+
+Take `⟨x, rfl⟩` from `hπ x`. Take `⟨y, rfl⟩` from `hπ y`. Rewrite using `[Ideal.mem_bot, ← map_mul, hπ0]`. Conclude with `Ideal.mul_mem_mul ((op_loc π x).1 hx) hy`. Establish `hε0 : ∀ u, p (π (f u)) = 0` using `fun u => by`.
+
+Establish `: f u ∈ RingHom.ker π₀` using `hf ▸ Ideal.subset_span ⟨u, rfl⟩`. Conclude with `this`. Establish `hkp : RingHom.ker p = Ideal.span (Set.range fun u => π (f u))`. Use `le_antisymm (fun y hy => ?_) (Ideal.span_le.2 (by rintro _ ⟨u, rfl⟩; exact hε0 u))` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hπ y`.
+
+Establish `hy' : y ∈ RingHom.ker π₀` using `hy`. Rewrite `hy'` using `[hf]`. Take `⟨d, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hy'`. Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨u, rfl⟩)`. Establish `hind : ∀ c : Fin n → O, ∑ u, c u • π (f u) = 0 → ∀ u, c u ∈ maximalIdeal O` using `fun c hc u => by`. Rewrite using `[← op_loc (Algebra.ofId O (MvPowerSeries (Fin a) O))]`. Use `hmin (fun u => algebraMap O _ (c u)) ((hπ0 _).1 ?_) u` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Simplify `hc` using `only [← Algebra.smul_def, map_smul]`. Establish `hker : RingHom.ker p ≤ (maximalIdeal O).map (Algebra.ofId O _) ⊔ maximalIdeal _ ^ 2`. Introduce `x hx`. Take `⟨x, rfl⟩` from `hπ x`.
+
+Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 (hk hx)`. Rewrite using `[map_add]`. Use `Submodule.add_mem_sup ?_ (op_loc_sq π hw)` and prove the remaining obligations. Establish `h2 : (maximalIdeal O).map (Algebra.ofId O (MvPowerSeries (Fin a) O)) ≤ ((maximalIdeal O).map (Algebra.ofId O (MvPowerSeries (Fin a) O ⧸ N))).comap π` using `Ideal.map_le_iff_le_comap.2 fun c hc => Ideal.mem_map_of_mem (Algebra.ofId O _) hc`. Conclude with `h2 hy`.
+
+Take `⟨o, ho⟩` from `H _ p hp hm (Fin n) (fun u => π (f u)) hkp hind`. Establish `hli : LinearIndependent (ResidueField O) o`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `cb hcb`. Use `choose c hc using fun u => residue_surjective (cb u)`.
+
+Establish `h3` using `op_detect (Algebra.ofId O _) p hm hker (fun u => π (f u)) hε0 hind c (by`. Introduce `A' _ _ _ p' p'' η k1 k2 k3 k4 k5`. Take `⟨s, hs⟩` from `ho c (by simpa only [hc] using hcb) A' p' p'' η k1 k2 k3 k4 k5`. Conclude with `⟨s, hs, Subsingleton.elim _ _⟩)`. Introduce `u`.
+
+Rewrite using `[← hc, residue_eq_zero_iff]`. Conclude with `h3 u`. Simplify using `using hli.fintype_card_le_finrank`. Use `⟨a, π₀, fun u => if h : u.1 < n then f ⟨u, h⟩ else 0, hπ₀, ?_, op_count O R a π₀ hπ₀ hk⟩` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Use `le_antisymm (Ideal.span_mono ?_) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨⟨u, u.2.trans_le bound⟩, dif_pos u.2⟩`. Introduce and unpack `_ ⟨u, rfl⟩`. Distinguish the cases in `h : u.1 < n`.
+
+Simplify using `only [dif_pos h]`. Conclude with `Ideal.subset_span ⟨_, rfl⟩`. Simplify using `only [dif_neg h]`. Conclude with `zero_mem _`.
+-/
 theorem UpperTheory.V.Alg.obs_pres :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (V : Type) [AddCommGroup V] [Module (ResidueField O) V] [Module.Finite (ResidueField O) V],
       (∀ (A : Type) [CommRing A] [Algebra O A] [IsCO O A] (p : A →ₐ[O] R), Function.Surjective p → maximalIdeal A * RingHom.ker p = ⊥ →

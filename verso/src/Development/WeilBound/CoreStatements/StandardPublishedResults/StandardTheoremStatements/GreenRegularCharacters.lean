@@ -2,6 +2,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GreenCuspidalC
 
 namespace PositivityTheory.Stage1.PM
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.greenCuspidalCharsByRegularChars_proof`.
+-/
 theorem greenRegularCharacters : GlobalTheory.Published.GreenRegularCharacters :=
   GlobalTheory.T.greenCuspidalCharsByRegularChars_proof
 

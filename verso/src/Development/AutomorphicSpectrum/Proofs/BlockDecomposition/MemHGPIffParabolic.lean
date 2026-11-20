@@ -7,6 +7,15 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 
 namespace GlobalTheory.CompanionTheory.GPMem
 
+/- English proof (translation)
+Establish `hlast : ((g : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) (Fin.last (m + j)) = GlobalTheory.BZMir.eLast k (m + j)` using `(GlobalTheory.BZMir.mem_Mir_iff k (g : GL (Fin (m + j + 1)) k)).1 g.2`. Establish `hproj : ∀ a b : Fin (m + j), ((GlobalTheory.BZMir.mirabolicProjection k (m + j) g : GL (Fin (m + j)) k) : Matrix (Fin (m + j)) (Fin (m + j)) k) a b = ((g : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) (Fin.castSucc a) (Fin.castSucc b)` using `fun _ _ => rfl`. Simplify using `only [GlobalTheory.BZMir.Leib.MirabolicParabolic, GlobalTheory.BZMir.Leib.eGP, Subgroup.mem_comap, Subgroup.coe_subtype, GlobalTheory.SmGL.mem_parab_two, hproj]`. Prove the components needed by the constructor for the conclusion. Introduce `h b a`.
+
+Apply the tactic sequence `convert h (Fin.castSucc b) a using 2 <;> apply Fin.ext <;>`. Simplify using `[GlobalTheory.SmGL.stdSum_inl, GlobalTheory.SmGL.stdSum_inr]`. Introduce `h b a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+
+Establish `h0 : ((g : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) (Fin.last (m + j)) (Fin.castSucc (GlobalTheory.SmGL.stdSum (rfl : m + j = m + j) (Sum.inl a))) = 0`. Rewrite using `[hlast]`. Simplify using `only [GlobalTheory.BZMir.eLast, Pi.single_apply]`. Rewrite using `[if_neg (Fin.castSucc_lt_last _).ne]`. Apply the tactic sequence `convert h0 using 2 <;> apply Fin.ext <;>`.
+
+Simplify using `[GlobalTheory.SmGL.stdSum_inl, GlobalTheory.SmGL.stdSum_inr]`. Consider the case `cast b`. Apply the tactic sequence `convert h b a using 2 <;> apply Fin.ext <;>`. Simplify using `[GlobalTheory.SmGL.stdSum_inl, GlobalTheory.SmGL.stdSum_inr]`.
+-/
 theorem mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m j : ℕ) (g : Mir k (m + j)) :
     g ∈ MirabolicParabolic k m j ↔ mirabolicProjection k (m + j) g ∈ parab k (two (stdSum (rfl : m + j = m + j))) := by

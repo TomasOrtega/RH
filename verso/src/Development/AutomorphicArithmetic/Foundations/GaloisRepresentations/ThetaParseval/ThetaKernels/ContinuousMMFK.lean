@@ -11,6 +11,13 @@ open GlobalTheory.RealWeil GlobalTheory.RealWeilF
 open Classical
 noncomputable section
 namespace GlobalTheory.RealWeilF.MCont
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT θ hθ`. Establish `hc : ∀ (w : InfinitePlace F) (m n : ℕ), Continuous fun x : Matrix (Fin m) (Fin n) (AEF F E) => compAtF θ w x` using `fun w m n => continuous_id.matrix_map (continuous_comp_infPartF (hθ w))`. Establish `h1 : Continuous fun p : GAF σ JS × GAF σ JT => mtF σ JT p.2` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_snd`. Establish `h2 : Continuous fun p : GAF σ JS × GAF σ JT => mtF σ JS p.1⁻¹`. Establish `: (fun g : GAF σ JS => mtF σ JS g⁻¹) = fun g => (((Subtype.val (show HR (AF F) σ JS from g))⁻¹ : GL (Fin nS) (AF F ⊗[F] E)) : Matrix _ _ _)` using `rfl`.
+
+Establish `hi : Continuous fun g : GAF σ JS => mtF σ JS g⁻¹`. Rewrite using `[this]`. Conclude with `Units.continuous_coe_inv.comp continuous_subtype_val`. Conclude with `hi.comp continuous_fst`. Establish `e : (mMF σ JS JT θ : GAF σ JS × GAF σ JT → _) = fun p => GlobalTheory.RealWeil.blk (fun w => compAtF θ w (mtF σ JT p.2)) fun w => compAtF θ w (mtF σ JS p.1⁻¹)` using `funext fun p => rfl`.
+
+Rewrite using `[e]`. Conclude with `GlobalTheory.RealWeil.continuous_blk (fun w => (hc w _ _).comp h1) fun w => (hc w _ _).comp h2`.
+-/
 theorem continuous_mMF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
       (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)),

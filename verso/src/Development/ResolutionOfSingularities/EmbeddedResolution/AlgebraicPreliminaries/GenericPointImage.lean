@@ -2,6 +2,11 @@ import Mathlib
 
 namespace IsOpenMap
 
+/- English proof (translation)
+Rewrite using `[mem_closure_iff]`. Introduce `O hO hbO`. Take `⟨y, hymem, hy⟩` from `(mem_closure_iff.mp h) (f '' O) (hopen O hO) ⟨b, hbO, rfl⟩`. Take `⟨z, hzO, hz⟩` from `hymem`. Rewrite `hy` using `[Set.mem_singleton_iff]`.
+
+Establish `hza : z = a` using `hinj (hz.trans hy)`. Substitute `hza` using the available equality. Conclude with `⟨z, hzO, rfl⟩`.
+-/
 theorem mem_closure_singleton_of_apply {A B : Type*} [TopologicalSpace A]
     [TopologicalSpace B] {f : A → B} (hopen : IsOpenMap f) (hinj : Function.Injective f)
     {a b : A} (h : f b ∈ closure ({f a} : Set B)) : b ∈ closure ({a} : Set A) := by
@@ -22,6 +27,9 @@ section
 
 variable {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
 
+/- English proof (translation)
+Use `⟨hne, ?_⟩` and prove the remaining obligations. Introduce and unpack `u v hu hv ⟨a, ⟨haS, haU⟩, hau⟩ ⟨b, ⟨hbS, hbU⟩, hbv⟩`. Take `⟨c, hcS, hc⟩` from `hS.2 (U ∩ u) (U ∩ v) (hU.inter hu) (hU.inter hv) ⟨a, haS, haU, hau⟩ ⟨b, hbS, hbU, hbv⟩`. Conclude with `⟨c, ⟨hcS, hc.1.1⟩, hc.1.2, hc.2.2⟩`.
+-/
 theorem isIrreducible_inter_open {S U : Set X} (hS : IsIrreducible S) (hU : IsOpen U)
     (hne : (S ∩ U).Nonempty) : IsIrreducible (S ∩ U) := by
   refine ⟨hne, ?_⟩
@@ -30,6 +38,11 @@ theorem isIrreducible_inter_open {S U : Set X} (hS : IsIrreducible S) (hU : IsOp
     ⟨a, haS, haU, hau⟩ ⟨b, hbS, hbU, hbv⟩
   exact ⟨c, ⟨hcS, hc.1.1⟩, hc.1.2, hc.2.2⟩
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Conclude with `hS.closure_subset_iff.mpr Set.inter_subset_left`. Introduce `x hx`. Rewrite using `[mem_closure_iff]`. Introduce `o ho hxo`.
+
+Take `⟨c, hcS, hc⟩` from `hirr.2 o U ho hU ⟨x, hx, hxo⟩ hne`. Conclude with `⟨c, hc.1, hcS, hc.2⟩`.
+-/
 theorem closure_inter_open_eq {S U : Set X} (hS : IsClosed S) (hirr : IsIrreducible S)
     (hU : IsOpen U) (hne : (S ∩ U).Nonempty) : closure (S ∩ U) = S := by
   apply Set.Subset.antisymm
@@ -40,6 +53,11 @@ theorem closure_inter_open_eq {S U : Set X} (hS : IsClosed S) (hirr : IsIrreduci
     obtain ⟨c, hcS, hc⟩ := hirr.2 o U ho hU ⟨x, hx, hxo⟩ hne
     exact ⟨c, hc.1, hcS, hc.2⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hT.1`. Take `⟨y, rfl⟩` from `hTr ht`. Use `⟨⟨y, ht⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u v hu hv ⟨a, haT, hau⟩ ⟨b, hbT, hbv⟩`. Take `⟨u', hu', rfl⟩` from `hf.toIsInducing.isOpen_iff.mp hu`.
+
+Take `⟨v', hv', rfl⟩` from `hf.toIsInducing.isOpen_iff.mp hv`. Take `⟨c, hcT, hcu, hcv⟩` from `hT.2 u' v' hu' hv' ⟨f a, haT, hau⟩ ⟨f b, hbT, hbv⟩`. Take `⟨z, rfl⟩` from `hTr hcT`. Conclude with `⟨z, hcT, hcu, hcv⟩`.
+-/
 theorem isIrreducible_preimage_of_isEmbedding {f : Y → X} (hf : Topology.IsEmbedding f)
     {T : Set X} (hT : IsIrreducible T) (hTr : T ⊆ Set.range f) :
     IsIrreducible (f ⁻¹' T) := by
@@ -53,6 +71,9 @@ theorem isIrreducible_preimage_of_isEmbedding {f : Y → X} (hf : Topology.IsEmb
   obtain ⟨z, rfl⟩ := hTr hcT
   exact ⟨z, hcT, hcu, hcv⟩
 
+/- English proof (translation)
+Establish `h2 : closure ({y} : Set Y) = f ⁻¹' closure (f '' ({y} : Set Y))` using `hf.closure_eq_preimage_closure_image _`. Rewrite `h2` using `[Set.image_singleton, hy, IsGenericPoint.def h]`. Conclude with `h2`.
+-/
 theorem isGenericPoint_preimage_of_isInducing {f : Y → X} (hf : Topology.IsInducing f)
     {ξ : X} {T : Set X} (h : IsGenericPoint ξ T) {y : Y} (hy : f y = ξ) :
     IsGenericPoint y (f ⁻¹' T) := by
@@ -61,6 +82,13 @@ theorem isGenericPoint_preimage_of_isInducing {f : Y → X} (hf : Topology.IsInd
   rw [Set.image_singleton, hy, IsGenericPoint.def h] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hyT : y ∈ T` using `IsGenericPoint.mem h`. Use `show closure ({f y} : Set X) = f '' T`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Establish `hcl : IsClosed (f '' T)`. Rewrite using `[← IsGenericPoint.def h]`.
+
+Conclude with `hf.isClosedMap _ isClosed_closure`. Conclude with `hcl.closure_subset_iff.mpr (Set.singleton_subset_iff.mpr ⟨y, hyT, rfl⟩)`. Establish `h2 : f '' closure ({y} : Set Y) ⊆ closure (f '' ({y} : Set Y))` using `image_closure_subset_closure_image hf.continuous`. Rewrite `h2` using `[Set.image_singleton]`. Rewrite using `[← IsGenericPoint.def h]`.
+
+Conclude with `h2`.
+-/
 theorem isGenericPoint_image_of_isClosedEmbedding {f : Y → X}
     (hf : Topology.IsClosedEmbedding f) {y : Y} {T : Set Y} (h : IsGenericPoint y T) :
     IsGenericPoint (f y) (f '' T) := by
@@ -77,6 +105,11 @@ theorem isGenericPoint_image_of_isClosedEmbedding {f : Y → X}
     rw [← IsGenericPoint.def h]
     exact h2
 
+/- English proof (translation)
+Use `Set.Subset.antisymm ?_ ?_` and prove the remaining obligations. Use `closure_minimal ?_ isClosed_closure` and prove the remaining obligations. Establish `hsub` using `image_closure_subset_closure_image (f := f) (s := ({ξ} : Set X)) hcont`. Rewrite `hsub` using `[Set.image_singleton]`. Rewrite using `[← hξ]`.
+
+Conclude with `hsub`. Use `closure_mono ?_` and prove the remaining obligations. Use `Set.singleton_subset_iff.2 ⟨ξ, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hξ]`. Conclude with `subset_closure rfl`.
+-/
 theorem closure_image_genericPoint {f : X → Y} (hcont : Continuous f) {S : Set X} {ξ : X}
     (hξ : IsGenericPoint ξ S) : closure (f '' S) = closure ({f ξ} : Set Y) := by
   refine Set.Subset.antisymm ?_ ?_
@@ -90,6 +123,15 @@ theorem closure_image_genericPoint {f : X → Y} (hcont : Continuous f) {S : Set
     rw [← hξ]
     exact subset_closure rfl
 
+/- English proof (translation)
+Establish `hcomp : (irreducibleComponents Z).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Establish `hfin : (irreducibleComponents Z \ C).Finite` using `hcomp.subset Set.sdiff_subset`. Establish `hclosed : IsClosed (⋃₀ (irreducibleComponents Z \ C))`. Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion fun i hi => isClosed_of_mem_irreducibleComponents i hi.1`.
+
+Establish `heq : ⋃₀ C = (⋃₀ (irreducibleComponents Z \ C))ᶜ`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨S, hSmem, hxS⟩`. Establish `hx : x ∉ ⋃₀ (irreducibleComponents Z \ C)`. Introduce and unpack `⟨W, ⟨hW, hWC⟩, hxW⟩`.
+
+Conclude with `Set.disjoint_left.mp (hdisj S hSmem W hW hWC) hxS hxW`. Conclude with `hx`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_compl_iff]`. Distinguish the cases in `hmem : irreducibleComponent x ∈ C`.
+
+Conclude with `Set.mem_sUnion_of_mem mem_irreducibleComponent hmem`. Conclude with `absurd (Set.mem_sUnion_of_mem mem_irreducibleComponent (Set.mem_sdiff_of_mem (irreducibleComponent_mem_irreducibleComponents x) hmem)) hx`. Rewrite using `[heq]`. Conclude with `hclosed.isOpen_compl`.
+-/
 theorem isOpen_sUnion_of_irreducibleComponents {Z : Type*} [TopologicalSpace Z]
     [TopologicalSpace.NoetherianSpace Z] (C : Set (Set Z))
     (hdisj : ∀ S ∈ C, ∀ W ∈ irreducibleComponents Z, W ∉ C → Disjoint S W) :
@@ -122,11 +164,19 @@ section
 
 open AlgebraicGeometry
 
+/- English proof (translation)
+The claim follows from `congrArg (fun s : TopologicalSpace.Closeds X => (s : Set X)) (Scheme.IdealSheafData.support_comap I f)`.
+-/
 theorem support_comap_eq {X Y : Scheme} (f : X ⟶ Y) (I : Y.IdealSheafData) :
     ((I.comap f).support : Set X) = f.base ⁻¹' (I.support : Set Y) :=
   congrArg (fun s : TopologicalSpace.Closeds X => (s : Set X))
     (Scheme.IdealSheafData.support_comap I f)
 
+/- English proof (translation)
+Establish `hempty : ((I.comap U.ι).support : Set U) = ∅`. Rewrite using `[support_comap_eq]`. Use `Set.eq_empty_iff_forall_notMem.mpr fun x hx => ?_` and prove the remaining obligations. Establish `hxU : U.ι.base x ∈ (U : Set X)`. Rewrite using `[← Scheme.Opens.range_ι]`.
+
+Conclude with `⟨x, rfl⟩`. Conclude with `Set.disjoint_left.mp h hxU hx`. Rewrite using `[← Scheme.IdealSheafData.support_eq_bot_iff]`. Conclude with `SetLike.ext' hempty`.
+-/
 theorem comap_ι_eq_top_of_disjoint {X : Scheme} (I : X.IdealSheafData) (U : X.Opens)
     (h : Disjoint (U : Set X) (I.support : Set X)) : I.comap U.ι = ⊤ := by
   have hempty : ((I.comap U.ι).support : Set U) = ∅ := by

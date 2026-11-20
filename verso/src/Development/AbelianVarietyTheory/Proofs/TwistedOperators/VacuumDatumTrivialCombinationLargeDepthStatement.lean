@@ -13,5 +13,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VacComb.main | exact GlobalTheory.VacComb.main | (intros; apply GlobalTheory.VacComb.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.vacuumDatum_trivialCombination_largeDepth : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (j : Fin D.R.m), IsCombOf ch.W (FinDatum.vacuum ch.G t (.top t j)) (Finsupp.single 0 1) := by
   first | exact @GlobalTheory.VacComb.main | exact GlobalTheory.VacComb.main | (intros; apply GlobalTheory.VacComb.main <;> assumption)

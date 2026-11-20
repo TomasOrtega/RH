@@ -7,6 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaMvp
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDetCore
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Establish `h1 : ∀ k, z.det • n k = 0`. Introduce `k`. Establish `h2 : ∑ i, z.adjugate k i • ∑ j, z i j • n j = 0` using `by simp [hrel]`. Establish `h3 : ∑ i, z.adjugate k i • ∑ j, z i j • n j = ∑ j, (z.adjugate * z) k j • n j`. Simplify using `only [Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, mul_smul]`.
+
+Conclude with `Finset.sum_comm`. Rewrite `h2` using `[h3, Matrix.adjugate_mul]`. Simplify `h2` using `[Matrix.one_apply, ite_smul]`. Rewrite using `[Module.mem_annihilator]`. Introduce `x`.
+
+Establish `hx : x ∈ Submodule.span B (Set.range n)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `h1 k`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [smul_comm, hx, smul_zero]`.
+-/
 private theorem det_mem_annihilator_of_relations {B N ι : Type} [CommRing B] [AddCommGroup N] [Module B N] [Fintype ι] [DecidableEq ι]
     (z : Matrix ι ι B) (n : ι → N) (hspan : Submodule.span B (Set.range n) = ⊤)
     (hrel : ∀ i, ∑ j, z i j • n j = 0) : z.det ∈ Module.annihilator B N := by
@@ -27,6 +36,19 @@ private theorem det_mem_annihilator_of_relations {B N ι : Type} [CommRing B] [A
   | add x y _ _ hx hy => rw [smul_add, hx, hy, add_zero]
   | smul a x _ hx => rw [smul_comm, hx, smul_zero]
 
+/- English proof (translation)
+Take `⟨-, -, hx⟩` from `mvPowerSeries_cotInd O ϖ hϖ (Fin D0 ⊕ Fin g)`. Establish `hw' : ∀ p, ∃ u s, s ∈ maximalIdeal (MvPowerSeries (Fin D0 ⊕ Fin g) O) ^ 2 ∧ w p = u * MvPowerSeries.C ϖ + s`. Introduce `p`. Take `⟨y, hy, s, hs, h⟩` from `Submodule.mem_sup.1 (hw p)`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`.
+
+Conclude with `⟨u, s, hs, h.symm⟩`. Use `choose u s hs hus using hw'`. Use `⟨?_, fun b hb => ?_⟩` and prove the remaining obligations. Introduce and unpack `(p | j)`. Use `sub_mem (Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (hx.mem (some (Sum.inl a)))) ?_` and prove the remaining obligations.
+
+Rewrite using `[hus]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (hx.mem none)) (Ideal.pow_le_self two_ne_zero (hs p))`. Conclude with `hx.mem (some (Sum.inr j))`. Establish `h1 : ∑ p, b (Sum.inl p) * s p ∈ maximalIdeal (MvPowerSeries (Fin D0 ⊕ Fin g) O) ^ 2` using `Ideal.sum_mem _ fun p _ => Ideal.mul_mem_left _ _ (hs p)`. Establish `h2` using `hx.indep (fun o => o.elim (-∑ p, b (Sum.inl p) * u p) (Sum.elim (fun a => ∑ p, b (Sum.inl p) * MvPowerSeries.C (c p a)) (fun j => b (Sum.inr j)))) (by`.
+
+Establish `h3` using `add_mem hb h1`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Fintype.sum_option, Fintype.sum_sum_type, Option.elim, Sum.elim_inl, Sum.elim_inr, hus, Finset.sum_mul, mul_sub, mul_add, Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_add_distrib, neg_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use the proof step `ring)`.
+
+Introduce and unpack `(p | j)`. Rewrite using `[GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff, ← residue_eq_zero_iff]`. Use `Fintype.linearIndependent_iff.1 hc (fun p => residue O (MvPowerSeries.constantCoeff (b (Sum.inl p)))) ?_ p` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `h4` using `h2 (some (Sum.inl a))`.
+
+Rewrite `h4` using `[GlobalTheory.FormalIsogeny.mem_maximalIdeal_iff_constantCoeff, ← residue_eq_zero_iff]`. Simplify `h4` using `[Finset.sum_apply, map_sum, map_mul]`. Conclude with `h2 (some (Sum.inr j))`.
+-/
 private theorem cotangent_independent_of_residues (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O)
     (hϖ : Irreducible ϖ) (D0 g : ℕ) (c : Fin g × Fin g → Fin D0 → O)
     (hc : LinearIndependent (ResidueField O) (fun p a => residue O (c p a)))
@@ -71,6 +93,59 @@ private theorem cotangent_independent_of_residues (O : Type) [CommRing O] [IsDom
       simpa [Finset.sum_apply, map_sum, map_mul] using h4
     · exact h2 (some (Sum.inr j))
 
+/- English proof (translation)
+Introduce `O B A _ _ _ _ _ _ _ _ _ _ N hinj hcompl hmul D0 g X m c hX hm hc hg hr Z Q hZ hQ hd hZr hQr`. Use `letI : Algebra O A := ((algebraMap B A).comp (algebraMap O B)).toAlgebra`. Use `haveI : IsScalarTower O B A := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨hA, hmA, hired⟩` from `aaCO O B A N hinj hcompl hmul`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Establish `hmO : maximalIdeal O = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Take `⟨hreg, hdim, hx⟩` from `mvPowerSeries_cotInd O ϖ hϖ (Fin D0 ⊕ Fin g)`. Use `haveI := co_mvps O O (Fin D0 ⊕ Fin g)`. Establish `hBA : (maximalIdeal B).map (algebraMap B A) ≤ maximalIdeal A` using `fun a ha => (hmA a).2 (Ideal.mem_sup_left ha)`. Take `⟨F, ⟨hC, hF⟩, -⟩` from `co_ev O O A (Fin D0 ⊕ Fin g) (Algebra.ofId O A) (Sum.elim (fun a => algebraMap B A (X a)) (fun j => (m j : A))) (by`.
+
+Introduce and unpack `(a | j)`. Conclude with `hBA (Ideal.mem_map_of_mem _ (hX a))`. Conclude with `(hmA _).2 (Ideal.mem_sup_right (Ideal.subset_span (m j).2)))`. Establish `hC' : ∀ x, F (MvPowerSeries.C x) = algebraMap B A (algebraMap O B x)` using `hC`. Establish `hF1 : ∀ a, F (MvPowerSeries.X (Sum.inl a)) = algebraMap B A (X a)` using `fun a => hF (Sum.inl a)`.
+
+Establish `hF2 : ∀ j, F (MvPowerSeries.X (Sum.inr j)) = (m j : A)` using `fun j => hF (Sum.inr j)`. Establish `hNI : ∀ I : Ideal A, (∀ j, (m j : A) ∈ I) → ∀ y ∈ N, y ∈ I`. Introduce `I hI y hy`. Establish `hy' : (⟨y, hy⟩ : N) ∈ Submodule.span B (Set.range m)` using `hm ▸ Submodule.mem_top`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun B).1 hy'`.
+
+Establish `: y = ∑ j, b j • (m j : A)`. Use `congrArg Subtype.val hb` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[this]`. Conclude with `Ideal.sum_mem _ fun j _ => by`.
+
+Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (hI j)`. Establish `hJ : ((maximalIdeal O).map (algebraMap O B) ⊔ maximalIdeal B ^ 2 ⊔ ired N).map (algebraMap B A) ≤ (Ideal.span {(MvPowerSeries.C ϖ : MvPowerSeries (Fin D0 ⊕ Fin g) O)}).map F ⊔ maximalIdeal A ^ 2`. Rewrite using `[Ideal.map_sup, Ideal.map_sup]`. Use `sup_le (sup_le (le_sup_of_le_left ?_) (le_sup_of_le_right ?_)) (le_sup_of_le_right hired)` and prove the remaining obligations.
+
+Rewrite using `[hmO, Ideal.map_span, Ideal.map_span, Ideal.map_span]`. Simplify using `[hC']`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hBA 2`. Establish `hcot : maximalIdeal A ≤ (maximalIdeal (MvPowerSeries (Fin D0 ⊕ Fin g) O)).map F ⊔ maximalIdeal A ^ 2`.
+
+Use `le_trans (fun a ha => (hmA a).1 ha) (sup_le ?_ ?_)` and prove the remaining obligations. Use `(Ideal.map_mono hg).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_sup]`. Use `sup_le (le_sup_of_le_left ?_) (hJ.trans (sup_le_sup_right (Ideal.map_mono ?_) _))` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, ← hF1]`. Conclude with `Ideal.mem_map_of_mem _ (hx.mem (some (Sum.inl a)))`. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `hx.mem none`.
+
+Use `le_sup_of_le_left (Ideal.span_le.2 fun y hy => hNI _ (fun j => ?_) y hy)` and prove the remaining obligations. Rewrite using `[← hF2]`. Conclude with `Ideal.mem_map_of_mem _ (hx.mem (some (Sum.inr j)))`. Establish `hsurj : Function.Surjective F` using `co_surj O _ A F hcot`. Establish `hmP : maximalIdeal A ≤ (maximalIdeal (MvPowerSeries (Fin D0 ⊕ Fin g) O)).map F`.
+
+Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal A) (IsNoetherian.noetherian _) (IsLocalRing.maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← pow_two]` and apply the resulting hypothesis. Establish `hw : ∀ i, ∃ w : Fin g → B, (∀ j, w j ∈ (maximalIdeal O).map (algebraMap O B) ⊔ maximalIdeal B ^ 2 ⊔ ired N) ∧ ∑ j, w j • m j = ∑ j, (∑ a, algebraMap O B (c (i, j) a) * X a) • m j`. Introduce `i`. Establish `h` using `hr i`.
+
+Rewrite `h` using `[← hm, Submodule.mem_ideal_smul_span_iff_exists_sum]`. Take `⟨a, ha, h⟩` from `h`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, Finsupp.sum_fintype _ _ (by simp)]`. Use `choose w hwJ hwe using hw`.
+
+Establish `hw2 : ∀ p : Fin g × Fin g, ∃ v ∈ Ideal.span {(MvPowerSeries.C ϖ : MvPowerSeries (Fin D0 ⊕ Fin g) O)} ⊔ maximalIdeal _ ^ 2, F v = algebraMap B A (w p.1 p.2)`. Introduce `p`. Use `(Ideal.mem_map_iff_of_surjective F hsurj).1 ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_sup, Ideal.map_pow]`. Conclude with `sup_le_sup_left (Ideal.pow_right_mono hmP 2) _ (hJ (Ideal.mem_map_of_mem _ (hwJ p.1 p.2)))`.
+
+Use `choose v hv hFv using hw2`. Set `ζ : Matrix (Fin g) (Fin g) B` to `Matrix.of fun i j => (∑ a, algebraMap O B (c (i, j) a) * X a) - w i j`. Set `z : Matrix (Fin g) (Fin g) (MvPowerSeries (Fin D0 ⊕ Fin g) O)` to `Matrix.of fun i j => (∑ a, MvPowerSeries.C (c (i, j) a) * MvPowerSeries.X (Sum.inl a)) - v (i, j)`. Establish `hζ : ∀ i, ∑ j, ζ i j • m j = 0`. Introduce `i`.
+
+Simplify using `only [ζ, Matrix.of_apply, sub_smul, Finset.sum_sub_distrib, hwe, sub_self]`. Establish `hzζ : ∀ i j, F (z i j) = algebraMap B A (ζ i j)`. Introduce `i j`. Simplify using `only [z, ζ, Matrix.of_apply, map_sub, map_sum, map_mul, hC', hF1, hFv]`. Establish `hann` using `det_mem_annihilator_of_relations ζ m hm hζ`.
+
+Establish `hdetQ : ζ.det ∈ Q`. Break down `hQr with h | h` into its components or cases. Assume the negation of the conclusion as `hn`. Apply `h` to reduce the goal to its premises. Rewrite using `[ired, Ideal.span_le]`.
+
+Introduce and unpack `b ⟨x, hx, y, hy, hxy⟩`. Use `(hQ.mem_or_mem (x := ζ.det) ?_).resolve_left hn` and prove the remaining obligations. Establish `h0 : ζ.det • x = 0` using `congrArg Subtype.val (Module.mem_annihilator.1 hann ⟨x, hx⟩)`. Establish `: ζ.det * b = 0` using `hinj (by`. Rewrite using `[map_mul, ← hxy, ← mul_assoc, ← Algebra.smul_def, h0, zero_mul, map_zero])`.
+
+Rewrite using `[this]`. Conclude with `Q.zero_mem`. Conclude with `h hann`. Use `haveI : FaithfulSMul B A := (faithfulSMul_iff_algebraMap_injective B A).2 hinj`. Take `⟨Q', -, hQ', hQQ⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral Q (⊥ : Ideal A) (by`.
+
+Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`. Establish `: x = 0` using `hinj (by rw [hx, map_zero])`. Rewrite using `[this]`. Conclude with `Q.zero_mem)`.
+
+Rewrite using `[← hQQ]`. Use `under_le_of_det_mem _ (Fin g) z (fun j => MvPowerSeries.X (Sum.inr j)) (cotangent_independent_of_residues O ϖ hϖ D0 g c hc v hv) B A (F : _ →+* A) hsurj ?_ Z hZ ?_ ?_ Q' hQ' ?_` and prove the remaining obligations. Rewrite using `[relIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show F (∑ j, z i j * MvPowerSeries.X (Sum.inr j)) = 0`.
+
+Use `congrArg Subtype.val (hζ i)` as an intermediate fact. Simplify using `only [map_sum, map_mul, hzζ, hF2, ← Algebra.smul_def]`. Simplify using `using this`. Rewrite using `[hdim]`. Use `le_trans (le_of_eq ?_) (add_le_add_left hd _)` and prove the remaining obligations.
+
+Simplify using `only [Fintype.card_sum, Fintype.card_fin]`. Rewrite using `[← Nat.cast_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Introduce `Z' hZ' hZZ`.
+
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `hZr` to reduce the goal to its premises. Rewrite using `[ired, Ideal.span_le]`. Introduce and unpack `b ⟨x, hx, y, hy, hxy⟩`.
+
+Rewrite using `[← hZZ]`. Use `show algebraMap B A b ∈ Z'`. Rewrite using `[← hxy]`. Conclude with `Ideal.mul_mem_left _ _ (hNI Z' (fun j => hF2 j ▸ hn j) y hy)`. Establish `: (F : MvPowerSeries (Fin D0 ⊕ Fin g) O →+* A) z.det = algebraMap B A ζ.det`.
+
+Rewrite using `[RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `hzζ i j`. Rewrite using `[this]`.
+
+Rewrite `hdetQ` using `[← hQQ]`. Conclude with `hdetQ`.
+-/
 theorem UpperTheory.V.Pa.presOut1 :
     ∀ (O B A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CommRing B] [Algebra O B] [IsCO O B] [CommRing A] [Algebra B A] [Module.Finite B A] (N : Submodule B A), Function.Injective (algebraMap B A) → _root_.IsCompl (1 : Submodule B A) N → (∀ a ∈ N, ∀ b ∈ N, ∃ c ∈ maximalIdeal B, a * b = algebraMap B A c) → ∀ (D0 g : ℕ) (X : Fin D0 → B) (m : Fin g → N) (c : Fin g × Fin g → Fin D0 → O), (∀ a, X a ∈ maximalIdeal B) → Submodule.span B (Set.range m) = ⊤ → LinearIndependent (ResidueField O) (fun p a => residue O (c p a)) → maximalIdeal B ≤ Ideal.span (Set.range X) ⊔ ((maximalIdeal O).map (algebraMap O B) ⊔ maximalIdeal B ^ 2 ⊔ ired N) → (∀ i, ∑ j, (∑ a, algebraMap O B (c (i, j) a) * X a) • m j ∈ ((maximalIdeal O).map (algebraMap O B) ⊔ maximalIdeal B ^ 2 ⊔ ired N) • (⊤ : Submodule B N)) → ∀ Z Q : Ideal B, Z.IsPrime → Q.IsPrime → ((1 + D0 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (B ⧸ Z) → ¬ ired N ≤ Z → (¬ ired N ≤ Q ∨ Module.annihilator B N ≤ Q) → Z ≤ Q := by
   intro O B A _ _ _ _ _ _ _ _ _ _ N hinj hcompl hmul D0 g X m c hX hm hc hg hr Z Q hZ hQ hd hZr hQr

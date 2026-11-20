@@ -21,6 +21,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {f : X' ⟶ X} {φ : t'.G.left ⟶ t.G.left} (m : IsGrpPullback t'.G t.G f φ) (x' : Sp S ⟶ X') (hx : x' ≫ f = x)
 
 include m hx in
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `⟨by rw [Category.assoc, m.1.w, ← Category.assoc, hv.1, Category.assoc], by rw [← Category.assoc, hv.2]; exact (grpPull_one m (Over.mk x')).symm⟩`.
+-/
 private theorem tan_push {v : Sp (DualNumber S) ⟶ t'.G.left} (hv : IsTanAtG t' x' v) : IsTanAtG t x (v ≫ φ) := by
   subst hx
   exact ⟨by rw [Category.assoc, m.1.w, ← Category.assoc, hv.1, Category.assoc],
@@ -38,6 +41,13 @@ private def pL : TanM x' t'.G →ₗ[S] TanM x t.G where
     exact (key _ e _ _ rfl rfl).symm)
   map_smul' a v := tan_ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+Use `⟨fun v w h => tan_ext (m.1.hom_ext (congrArg (fun z => (tv z).left) h) ((isTan_tv v).1.trans (isTan_tv w).1.symm)), fun w => ?_⟩` and prove the remaining obligations. Substitute `hx` using the available equality. Establish `hw : (tv w).left ≫ t.G.hom = (spMap (algebraMap S (DualNumber S)) ≫ x') ≫ f` using `(isTan_tv w).1.trans (Category.assoc _ _ _).symm`. Establish `e : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 (Sp S)`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`.
+
+Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun x => by simp [TrivSqZeroExt.algebraMap_eq_inl]))`. Use `⟨tanOf (v := m.1.lift _ _ hw) ⟨m.1.lift_snd _ _ _, m.1.hom_ext ?_ ?_⟩, tan_ext (m.1.lift_fst _ _ _)⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, m.1.lift_fst, (isTan_tv w).2]`. Conclude with `grpPull_one m (Over.mk x')`. Rewrite using `[Category.assoc, m.1.lift_snd, ← Category.assoc, e, Category.id_comp]`.
+
+Conclude with `(Over.w (1 : Over.mk x' ⟶ t'.G)).symm`.
+-/
 private theorem pL_bijective : Function.Bijective (pL m x' hx) := by
   refine ⟨fun v w h => tan_ext (m.1.hom_ext (congrArg (fun z => (tv z).left) h)
     ((isTan_tv v).1.trans (isTan_tv w).1.symm)), fun w => ?_⟩
@@ -58,11 +68,17 @@ private def pE : TanM x' t'.G ≃ₗ[S] TanM x t.G := LinearEquiv.ofBijective _ 
 
 include m hx
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `(pE m x' hx).surjective (tanOf hw)`. Conclude with `⟨_, isTan_tv v, congrArg (fun z => (tv z).left) hv⟩`.
+-/
 private theorem tan_lift {w : Sp (DualNumber S) ⟶ t.G.left} (hw : IsTanAtG t x w) :
     ∃ v, IsTanAtG t' x' v ∧ v ≫ φ = w := by
   obtain ⟨v, hv⟩ := (pE m x' hx).surjective (tanOf hw)
   exact ⟨_, isTan_tv v, congrArg (fun z => (tv z).left) hv⟩
 
+/- English proof (translation)
+Use `(GlobalTheory.LieMet.isComb_iff (fun i => pE m x' hx (tanOf (hu i))) cf (pE m x' hx (tanOf hw))).trans (Iff.trans ?_ (GlobalTheory.LieMet.isComb_iff (fun i => tanOf (hu i)) cf (tanOf hw)).symm)` and prove the remaining obligations. Simplify using `only [← map_smul, ← map_sum, EmbeddingLike.apply_eq_iff_eq]`.
+-/
 private theorem comb_iff' {n : ℕ} {u : Fin n → (Sp (DualNumber S) ⟶ t'.G.left)} (hu : ∀ i, IsTanAtG t' x' (u i))
     {w : Sp (DualNumber S) ⟶ t'.G.left} (hw : IsTanAtG t' x' w) (cf : Fin n → S) :
     IsCombAtG t x (fun i => u i ≫ φ) cf (w ≫ φ) ↔ IsCombAtG t' x' u cf w := by
@@ -70,6 +86,9 @@ private theorem comb_iff' {n : ℕ} {u : Fin n → (Sp (DualNumber S) ⟶ t'.G.l
     (Iff.trans ?_ (GlobalTheory.LieMet.isComb_iff (fun i => tanOf (hu i)) cf (tanOf hw)).symm)
   simp only [← map_smul, ← map_sum, EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Use `Iff.trans (eig_iff (pE m x' hx (tanOf hw)) a s) (Iff.trans ?_ (eig_iff (tanOf hw) a s).symm)` and prove the remaining obligations. Establish `: pE m x' hx (actR t'.act a (tanOf hw)) = actR t.act a (pE m x' hx (tanOf hw))` using `tan_ext (by show (w ≫ (t'.act.act a).left) ≫ φ = (w ≫ φ) ≫ (t.act.act a).left`. Rewrite using `[Category.assoc, Category.assoc, ha])`. Rewrite using `[← this, ← map_smul, EmbeddingLike.apply_eq_iff_eq]`.
+-/
 private theorem eig_iff' (ha : ∀ a, (t'.act.act a).left ≫ φ = φ ≫ (t.act.act a).left)
     {w : Sp (DualNumber S) ⟶ t'.G.left} (hw : IsTanAtG t' x' w) (a : 𝓞 E) (s : S) :
     (w ≫ φ) ≫ (t.act.act a).left = spMap (epsMul s) ≫ w ≫ φ ↔ w ≫ (t'.act.act a).left = spMap (epsMul s) ≫ w := by
@@ -79,6 +98,15 @@ private theorem eig_iff' (ha : ∀ a, (t'.act.act a).left ≫ φ = φ ≫ (t.act
     rw [Category.assoc, Category.assoc, ha])
   rw [← this, ← map_smul, EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun τ i => ⟨hu τ i, fun a => ?_⟩, fun τ w hw he => ?_⟩` and prove the remaining obligations. Rewrite using `[← eig_iff' m x' hx ha (hu τ i), ← hf]`. Conclude with `(h.1 τ i).2 a`.
+
+Use `(existsUnique_congr fun cf => comb_iff' m x' hx (hu τ) hw cf).1 (h.2 τ _ (tan_push m x' hx hw) fun a => ?_)` and prove the remaining obligations. Rewrite using `[eig_iff' m x' hx ha hw, hf]`. Conclude with `he a`. Introduce `h`. Use `⟨fun τ i => ⟨tan_push m x' hx (hu τ i), fun a => ?_⟩, fun τ w hw he => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eig_iff' m x' hx ha (hu τ i), hf]`. Conclude with `(h.1 τ i).2 a`. Take `⟨v, hv, rfl⟩` from `tan_lift m x' hx hw`. Use `(existsUnique_congr fun cf => comb_iff' m x' hx (hu τ) hv cf).2 (h.2 τ _ hv fun a => ?_)` and prove the remaining obligations. Rewrite using `[← eig_iff' m x' hx ha hv, ← hf]`.
+
+Conclude with `he a`.
+-/
 private theorem frame_iff (ha : ∀ a, (t'.act.act a).left ≫ φ = φ ≫ (t.act.act a).left)
     {l l' : Level H} {c : Coeff l} {c' : Coeff l'} {g' : c'.F →+* S} {g : c.F →+* S}
     (hf : ∀ τ a, g (embK c τ a) = g' (embK c' τ a)) {u : Vecs Dw t' S} (hu : ∀ τ i, IsTanAtG t' x' (u τ i)) :
@@ -107,6 +135,13 @@ namespace UpperTheory.FrameMove
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Establish `hc : IsGrpPullback s₀.G t₁.G (y ≫ g) (n₀.φ ≫ μ.φ)` using `IsGrpPullback.comp n₀.cart μ.cart`. Establish `hw : (n₀.φ ≫ μ.φ) ≫ t₁.G.hom = (s₀.G.hom ≫ j) ≫ a`. Rewrite using `[hc.1.w, h, Category.assoc]`. Establish `h1 : n₁.cart.1.lift _ _ hw ≫ n₁.φ = n₀.φ ≫ μ.φ` using `n₁.cart.1.lift_fst _ _ _`. Establish `h2 : n₁.cart.1.lift _ _ hw ≫ s₁.G.hom = s₀.G.hom ≫ j` using `n₁.cart.1.lift_snd _ _ _`.
+
+Generalize the expression as in `n₁.cart.1.lift _ _ hw = ψ at h1 h2`. Use `⟨ψ, IsGrpPullback.cancel (φ := n₁.φ) n₁.cart (hc.congr h h1.symm) h2, h1, fun b => ?_⟩` and prove the remaining obligations. Establish `a₀ : (s₀.act.act b).left ≫ n₀.φ = n₀.φ ≫ (t₀.act.act b).left` using `n₀.act b`. Establish `a₁ : (s₁.act.act b).left ≫ n₁.φ = n₁.φ ≫ (t₁.act.act b).left` using `n₁.act b`. Establish `a₂ : (t₀.act.act b).left ≫ μ.φ = μ.φ ≫ (t₁.act.act b).left` using `μ.act b`.
+
+Use `n₁.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `show (_ ≫ ψ) ≫ n₁.φ = (ψ ≫ _) ≫ n₁.φ`. Rewrite using `[Category.assoc, h1, Category.assoc, a₁, reassoc_of% h1, reassoc_of% a₀, a₂]`. Rewrite using `[Category.assoc, h2, Category.assoc, Over.w, h2, ← Category.assoc, Over.w]`.
+-/
 private theorem exists_gen {U S X₀ X₁ : Scheme.{0}} {t₀ : SAB H X₀} {t₁ : SAB H X₁} {s₀ : SAB H U} {s₁ : SAB H S}
     {g : X₀ ⟶ X₁} {y : U ⟶ X₀} {a : S ⟶ X₁} {j : U ⟶ S} (μ : SABMap t₀ t₁ g) (n₀ : SABMap s₀ t₀ y)
     (n₁ : SABMap s₁ t₁ a) (h : y ≫ g = j ≫ a) :
@@ -130,6 +165,19 @@ private theorem exists_gen {U S X₀ X₁ : Scheme.{0}} {t₀ : SAB H X₀} {t�
 end UpperTheory.FrameMove
 
 open UpperTheory.FrameMove GlobalTheory.Published.SemiAbelianHomExtension in
+/- English proof (translation)
+Introduce `hE E _ _ _ H Dw l₁ l₂ c₁ c₂ X₀ X₁ X₂ t₀ t₁ t₂ g₁ g₂ μ₁ μ₂ K _ R hR y a₁ a₂ h₁ h₂ φ₁ φ₂ hφ f₂ hf₂`. Take `⟨s₀, ⟨n₀⟩⟩` from `exists_sab y t₀`. Take `⟨s₁, ⟨n₁⟩⟩` from `exists_sab a₁ t₁`. Take `⟨s₂, ⟨n₂⟩⟩` from `exists_sab a₂ t₂`. Take `⟨ψ₁, p₁, q₁, r₁⟩` from `exists_gen μ₁ n₀ n₁ h₁`.
+
+Take `⟨ψ₂, p₂, q₂, r₂⟩` from `exists_gen μ₂ n₀ n₂ h₂`. Establish `: IsOpenImmersion (spMap R.subtype)` using `isOpenImmersion_generic_dvr R K`. Establish `: IsDominant (spMap R.subtype)` using `isDominant_generic_dvr R K`. Take `⟨e, ⟨he, he'⟩, -⟩` from `hE.existsUnique_iso_of_extensions (isNormalScheme_dvr R) s₂.semi s₁.semi p₂ p₁`. Take `⟨_, _⟩` from `quasiCompact_and_dominant (isNormalScheme_dvr R) (spMap R.subtype)`.
+
+Take `⟨_, -⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian _ s₂.semi`. Take `⟨-, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian _ s₁.semi`. Establish `hact : ∀ b, s₂.act.act b ≫ e.hom = e.hom ≫ s₁.act.act b` using `act_comp_of_isPullback p₂.1 s₂.act s₁.act s₀.act s₀.act r₂ r₁ (𝟙 _) (fun b => by simp) e.hom (by rw [he']; exact Category.id_comp _)`. Establish `pe : IsGrpPullback s₂.G t₁.G (𝟙 _ ≫ a₁) (e.hom.left ≫ n₁.φ)` using `IsGrpPullback.comp (isGrpPullback_of_iso e) n₁.cart`. Establish `ae : ∀ b, (s₂.act.act b).left ≫ e.hom.left ≫ n₁.φ = (e.hom.left ≫ n₁.φ) ≫ (t₁.act.act b).left` using `fun b => by`.
+
+Establish `a₁ : (s₁.act.act b).left ≫ n₁.φ = n₁.φ ≫ (t₁.act.act b).left` using `n₁.act b`. Rewrite using `[← Category.assoc, ← Over.comp_left, hact, Over.comp_left, Category.assoc, Category.assoc, a₁]`. Establish `pn : IsGrpPullback s₂.G t₂.G a₂ n₂.φ` using `n₂.cart`. Establish `pn₀ : IsGrpPullback s₀.G t₀.G y n₀.φ` using `n₀.cart`. Use `choose u hu hu' using fun τ i => tan_lift pn (𝟙 _) (Category.id_comp a₂) (hf₂.1 τ i).1`.
+
+Take `rfl : (fun τ i => u τ i ≫ n₂.φ) = f₂` from `funext fun τ => funext fun i => hu' τ i`. Establish `hF : LocM.IsFrame (Dw` using `Dw) s₂ φ₂ (𝟙 _) u := (frame_iff pn (𝟙 _) (Category.id_comp a₂) n₂.act (fun _ _ => rfl) hu).1 hf₂`. Use `choose w hw hw' using fun τ i => tan_lift p₂ (𝟙 _) (Category.id_comp _) (LieMet.isTan_map R.subtype (Category.comp_id _) (hu τ i))`. Use `⟨fun τ i => u τ i ≫ e.hom.left ≫ n₁.φ, fun τ i => w τ i ≫ n₀.φ, (frame_iff pe (𝟙 _) (by simp) ae hφ hu).2 hF, fun τ i => ⟨tan_push pn₀ (𝟙 _) (Category.id_comp y) (hw τ i), ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Vecs.bc, Category.assoc, ← q₁, ← he', Category.assoc, reassoc_of% hw' τ i]`.
+
+Rewrite using `[Vecs.bc, Category.assoc, ← q₂, reassoc_of% hw' τ i]`.
+-/
 theorem UpperTheory.abelian_scheme_maps_valuation :
     GlobalTheory.Published.SemiAbelianHomExtension → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l₁ l₂ : Level H} {c₁ : Coeff l₁} {c₂ : Coeff l₂} {X₀ X₁ X₂ : Scheme.{0}} {t₀ : SAB H X₀} {t₁ : SAB H X₁} {t₂ : SAB H X₂} {g₁ : X₀ ⟶ X₁} {g₂ : X₀ ⟶ X₂} (μ₁ : SABMap t₀ t₁ g₁) (μ₂ : SABMap t₀ t₂ g₂) (K : Type) [Field K] (R : ValuationSubring K), IsDiscreteValuationRing R → ∀ (y : Sp K ⟶ X₀) (a₁ : Sp R ⟶ X₁) (a₂ : Sp R ⟶ X₂), y ≫ g₁ = spMap R.subtype ≫ a₁ → y ≫ g₂ = spMap R.subtype ≫ a₂ → ∀ (φ₁ : c₁.F →+* R) (φ₂ : c₂.F →+* R), (∀ τ a, φ₁ (embK c₁ τ a) = φ₂ (embK c₂ τ a)) → ∀ f₂ : Vecs Dw t₂ R, LocM.IsFrame t₂ φ₂ a₂ f₂ → ∃ (f₁ : Vecs Dw t₁ R) (v : Vecs Dw t₀ K), LocM.IsFrame t₁ φ₁ a₁ f₁ ∧ ∀ τ i, IsTanAtG t₀ y (v τ i) ∧ v τ i ≫ μ₁.φ = f₁.bc R.subtype τ i ∧ v τ i ≫ μ₂.φ = f₂.bc R.subtype τ i := by
   intro hE E _ _ _ H Dw l₁ l₂ c₁ c₂ X₀ X₁ X₂ t₀ t₁ t₂ g₁ g₂ μ₁ μ₂ K _ R hR y a₁ a₂ h₁ h₂ φ₁ φ₂ hφ f₂ hf₂

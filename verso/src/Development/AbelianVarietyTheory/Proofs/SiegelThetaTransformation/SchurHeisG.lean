@@ -15,6 +15,19 @@ namespace GlobalTheory.Ker
 
 open GlobalTheory.SW.DblZero in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n hs _ A hA hadd hsmul hcomm`. Take `⟨c, hc⟩` from `exists_eq_mul_ip (κ := Fin n) (ι := Fin g) (fun φ ψ => ip (A φ) ψ) (fun φ φ' ψ hφ hφ' hψ => by`. Rewrite using `[hadd φ φ' hφ hφ', ip_add_left (hA φ hφ) (hA φ' hφ') hψ])`. Use the proof step `(fun φ ψ ψ' hφ hψ hψ' => by`. Conclude with `ip_add_right (hA φ hφ) hψ hψ')`.
+
+Use the proof step `(fun a b φ ψ hφ hψ => by`. Rewrite using `[hsmul a φ hφ, ip_smul (hA φ hφ) hψ])`. Use the proof step `(fun a b φ ψ hφ hψ => by`. Take `⟨y, hy⟩` from `exists_heisG (n := n) hs a b`. Rewrite using `[← hy φ, hcomm y φ hφ, hy (A φ)]`.
+
+Conclude with `((heisS_laws _ _ a b (A φ) (hA φ hφ)).2.2.2.2) ψ hψ)`. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hAφ` using `hA φ hφ`. Establish `hcφ : IsSB (-c • φ)` using `((isSB_algebra_haar_linear _ _ _ φ φ hφ hφ).2.1) (-c)`. Establish `hd : IsSB (A φ + -c • φ)` using `(isSB_algebra_haar_linear _ _ _ (A φ) (-c • φ) hAφ hcφ).1`.
+
+Establish `hzero : ip (A φ + -c • φ) (A φ + -c • φ) = 0`. Rewrite using `[ip_add_left hAφ hcφ hd, hc φ _ hφ hd]`. Establish `h1 : ip (-c • φ) (A φ + -c • φ) = -c * ip φ (A φ + -c • φ)`. Use `ip_smul hφ hd (-c) 1` as an intermediate fact. Rewrite `this` using `[one_smul, map_one, mul_one]`.
+
+Conclude with `this`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hne`. Establish `hne' : A φ + -c • φ ≠ 0`.
+
+Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `: A φ = -(-c • φ)` using `eq_neg_of_add_eq_zero_left h0`. Rewrite using `[this, neg_smul, neg_neg]`. Conclude with `ip_self_ne_zero hd hne' hzero`.
+-/
 theorem schur_heisG : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ A : TF n g → TF n g, (∀ φ, IsSB φ → IsSB (A φ)) → (∀ φ ψ, IsSB φ → IsSB ψ → A (φ + ψ) = A φ + A ψ) → (∀ (a : ℂ) φ, IsSB φ → A (a • φ) = a • A φ) → (∀ (y : Matrix (Fin n) (Fin r) E) φ, IsSB φ → A (heisG X bas y φ) = heisG X bas y (A φ)) → ∃ c : ℂ, ∀ φ, IsSB φ → A φ = c • φ := by
   intro E _ _ _ r X g q0 hr bas idx n hs _ A hA hadd hsmul hcomm
 

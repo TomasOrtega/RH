@@ -3,6 +3,23 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ ι f s i₀ hsum h`. Establish `hs : Summable f` using `hsum.summable`. Establish `hf : Filter.Tendsto f Filter.cofinite (nhds 0)` using `hs.tendsto_cofinite_zero`. Rewrite using `[← hsum.tsum_eq, hs.tsum_eq_add_tsum_ite i₀]`. Distinguish the cases in `h0 : f i₀ = 0`.
+
+Establish `: ∀ i, (if i = i₀ then 0 else f i) = 0`. Introduce `i`. Use `split_ifs with hi`. Both sides reduce to the same expression. Use `h i hi` as an intermediate fact.
+
+Rewrite `this` using `[h0, norm_zero]`. Conclude with `absurd this (norm_nonneg _).not_gt`. Simplify using `[this]`. Establish `hc : 0 < ‖f i₀‖` using `norm_pos_iff.2 h0`. Use `set g : ι → K := fun i => if i = i₀ then 0 else f i with hg`.
+
+Establish `hglt : ∀ i, ‖g i‖ < ‖f i₀‖`. Introduce `i`. Simplify using `only [hg]`. Use `split_ifs with hi`. Simplify using `using hc`.
+
+Conclude with `h i hi`. Establish `hfin : {i | ¬ ‖f i‖ < ‖f i₀‖ / 2}.Finite`. Use `(NormedAddCommGroup.tendsto_nhds_zero.1 hf) (‖f i₀‖ / 2) (by positivity)` as an intermediate fact. Conclude with `Filter.eventually_cofinite.1 this`. Take `⟨j, -, hj⟩` from `Set.exists_max_image _ (fun i => ‖g i‖) hfin ⟨i₀, by simp only [Set.mem_setOf_eq]; linarith⟩`.
+
+Establish `hb : ‖∑' i, g i‖ ≤ max (‖f i₀‖ / 2) ‖g j‖`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by positivity) fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : ‖f i‖ < ‖f i₀‖ / 2`. Use `le_max_of_le_left ?_` and prove the remaining obligations. Simplify using `only [hg]`.
+
+Use `split_ifs`. Simplify using `only [norm_zero]`. Check the signs of the components of the expression. Conclude with `hi.le`. Conclude with `le_max_of_le_right (hj i hi)`.
+
+Establish `hlt : ‖∑' i, g i‖ < ‖f i₀‖` using `hb.trans_lt (max_lt (by linarith) (hglt j))`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne', max_eq_left hlt.le]`.
+-/
 theorem norm_hasSum_eq_of_dominant : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] (ι : Type)
     (f : ι → K) (s : K) (i₀ : ι), HasSum f s → (∀ i, i ≠ i₀ → ‖f i‖ < ‖f i₀‖) → ‖s‖ = ‖f i₀‖ := by
   intro K _ _ ι f s i₀ hsum h

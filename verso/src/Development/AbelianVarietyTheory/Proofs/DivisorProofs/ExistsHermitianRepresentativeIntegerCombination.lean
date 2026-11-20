@@ -12,6 +12,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Introduce `k _ X _ p P a b`. Take `⟨hL, hA, -⟩` from `Pair.rep_base k X p P`. Establish `cast (x y x' y' : ℤ) (M : HermLB p) (h : P.Rep x y M) (hx : x = x') (hy : y = y') : P.Rep x' y' M` using `by subst hx; subst hy; exact h`. Establish `hLa` using `Pair.rep_tens k X p P _ _ _ _ _ _ (Pair.rep_pow k X p P _ _ _ a.toNat hL) (Pair.rep_dual k X p P _ _ _ (Pair.rep_pow k X p P _ _ _ (-a).toNat hL))`. Establish `hAb` using `Pair.rep_tens k X p P _ _ _ _ _ _ (Pair.rep_pow k X p P _ _ _ b.toNat hA) (Pair.rep_dual k X p P _ _ _ (Pair.rep_pow k X p P _ _ _ (-b).toNat hA))`.
+
+Use `⟨_, cast _ _ _ _ _ (Pair.rep_tens k X p P _ _ _ _ _ _ hLa hAb) ?_ ?_⟩` and prove the remaining obligations. Establish `h1` using `Int.toNat_sub_toNat_neg a`. Simplify using `only [mul_one, mul_zero, neg_zero, add_zero]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `Int.toNat_sub_toNat_neg b`.
+
+Simplify using `only [mul_one, mul_zero, neg_zero, zero_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GlobalTheory.VolBr.Pair.exists_rep : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k),
     ∀ (P : Pair p) (a b : ℤ), ∃ M : HermLB p, P.Rep a b M := by
   intro k _ X _ p P a b

@@ -13,6 +13,11 @@ open GlobalTheory.IwLevel
 
 namespace GlobalTheory.IwLevel.KerDet
 
+/- English proof (translation)
+Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `w hw`. Establish `h : x ⤳ w` using `specializes_iff_mem_closure.mpr hw`. Establish `e : s w = s x` using `Subsingleton.elim (α := Spec (CommRingCat.of k)) _ _`. Establish `hd` using `(s.isDiscrete_preimage_singleton (s x)).to_subtype`.
+
+Establish `hs : (⟨x, rfl⟩ : s ⁻¹' {s x}) ⤳ ⟨w, e⟩` using `Topology.IsInducing.subtypeVal.specializes_iff.mp h`. Conclude with `congrArg Subtype.val hs.eq.symm`.
+-/
 theorem isClosed_pt {k : Type} [Field k] {X : Scheme.{0}} (s : X ⟶ Sp k) [IsFinite s] (x : X) :
     IsClosed ({x} : Set X) := by
   rw [← closure_subset_iff_isClosed]
@@ -23,6 +28,11 @@ theorem isClosed_pt {k : Type} [Field k] {X : Scheme.{0}} (s : X ⟶ Sp k) [IsFi
   have hs : (⟨x, rfl⟩ : s ⁻¹' {s x}) ⤳ ⟨w, e⟩ := Topology.IsInducing.subtypeVal.specializes_iff.mp h
   exact congrArg Subtype.val hs.eq.symm
 
+/- English proof (translation)
+Take `⟨⟨x, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField L X).symm.surjective u`. Establish `hx` using `isClosed_pt s x`. Use `⟨pointOfClosedPoint s x hx, pointOfClosedPoint_comp s x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map φ ≫ X.fromSpecResidueField x = ((Spec.map φ ≫ X.fromSpecResidueField x) ≫ s) ≫ Spec.map (residueFieldIsoBase s x hx).hom ≫ X.fromSpecResidueField x`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← SpecMap_residueFieldIsoBase_inv_assoc s x hx, ← Spec.map_comp_assoc (residueFieldIsoBase s x hx).hom, Iso.hom_inv_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem exists_section {k L : Type} [Field k] [IsAlgClosed k] [Field L] {X : Scheme.{0}} (s : X ⟶ Sp k)
     [IsFinite s] (u : Sp L ⟶ X) : ∃ a : Sp k ⟶ X, a ≫ s = 𝟙 _ ∧ u = (u ≫ s) ≫ a := by
   obtain ⟨⟨x, φ⟩, rfl⟩ := (Scheme.SpecToEquivOfField L X).symm.surjective u
@@ -35,6 +45,11 @@ theorem exists_section {k L : Type} [Field k] [IsAlgClosed k] [Field L] {X : Sch
   rw [← SpecMap_residueFieldIsoBase_inv_assoc s x hx, ← Spec.map_comp_assoc (residueFieldIsoBase s x hx).hom,
     Iso.hom_inv_id, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Take `⟨⟨y, φ, hφ⟩, rfl⟩` from `(SpecToEquivOfLocalRing X R).symm.surjective f`. Establish `hy : y = x`. Rewrite using `[← hx]`. Express the relevant statement in the definitionally equal form `y = (Spec.map φ ≫ X.fromSpecStalk y) _`. Conclude with `((Scheme.Hom.comp_apply _ _ _).trans ((congrArg (X.fromSpecStalk y) Spec_closedPoint).trans Scheme.fromSpecStalk_closedPoint)).symm`.
+
+Substitute `hy` using the available equality. Conclude with `⟨φ, rfl⟩`.
+-/
 theorem exists_stalk_factor {X : Scheme.{0}} {R : CommRingCat.{0}} [IsLocalRing R] (f : Spec R ⟶ X) (x : X)
     (hx : f (IsLocalRing.closedPoint R) = x) : ∃ ψ : X.presheaf.stalk x ⟶ R, f = Spec.map ψ ≫ X.fromSpecStalk x := by
   obtain ⟨⟨y, φ, hφ⟩, rfl⟩ := (SpecToEquivOfLocalRing X R).symm.surjective f
@@ -51,6 +66,11 @@ variable {k : Type} [Field k]
 def InK {A B : Over (Sp k)} [GrpObj B] (π : A ⟶ B) {T : Scheme.{0}} (y : T ⟶ A.left) : Prop :=
   ∃ z : T ⟶ Sp k, z ≫ (η[B]).left = y ≫ π.left
 
+/- English proof (translation)
+Establish `hη : (η[B]).left ≫ B.hom = 𝟙 _` using `by simpa using Over.w (η[B])`. Use `⟨fun ⟨z, hz⟩ => ?_, fun h => ⟨_, h.symm⟩⟩` and prove the remaining obligations. Establish `e : z = y ≫ A.hom`. Use `congrArg (· ≫ B.hom) hz` as an intermediate fact. Simplify using `only [Category.assoc, hη, Category.comp_id, Over.w π] at this`.
+
+Conclude with `this`. Rewrite using `[← hz, e]`.
+-/
 theorem inK_iff {A B : Over (Sp k)} [GrpObj B] (π : A ⟶ B) {T : Scheme.{0}} (y : T ⟶ A.left) :
     InK π y ↔ y ≫ π.left = (y ≫ A.hom) ≫ (η[B]).left := by
   have hη : (η[B]).left ≫ B.hom = 𝟙 _ := by simpa using Over.w (η[B])
@@ -61,6 +81,11 @@ theorem inK_iff {A B : Over (Sp k)} [GrpObj B] (π : A ⟶ B) {T : Scheme.{0}} (
     exact this
   rw [← hz, e]
 
+/- English proof (translation)
+Establish `hT : (toUnit T).left = T.hom` using `by simpa using Over.w (toUnit T)`. Rewrite using `[inK_iff, Over.w Y, ← hT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg (fun q => q.left) h`.
+
+Introduce `h`. Conclude with `Over.OverMorphism.ext h`.
+-/
 theorem comp_eq_one_iff {A B : Over (Sp k)} [GrpObj B] (π : A ⟶ B) {T : Over (Sp k)} (Y : T ⟶ A) :
     Y ≫ π = 1 ↔ InK π Y.left := by
   have hT : (toUnit T).left = T.hom := by simpa using Over.w (toUnit T)
@@ -75,13 +100,46 @@ namespace GlobalTheory.IwLevel.KerDet
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Simplify using `using Over.w (toUnit T)`.
+-/
 theorem toUnit_left (T : Over (Sp k)) : (toUnit T).left = T.hom := by simpa using Over.w (toUnit T)
 
+/- English proof (translation)
+Rewrite using `[← toUnit_left]`. Both sides reduce to the same expression.
+-/
 theorem one_left {A T : Over (Sp k)} [GrpObj A] : (1 : T ⟶ A).left = T.hom ≫ (η[A]).left := by
   rw [← toUnit_left]; rfl
 
 variable [IsAlgClosed k]
 
+/- English proof (translation)
+Set `c : Sp (IsLocalRing.ResidueField R) ⟶ Spec R` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))`. Use `haveI : IsLocalHom (CommRingCat.ofHom (IsLocalRing.residue R)).hom := inferInstanceAs (IsLocalHom (IsLocalRing.residue R))`. Establish `hc : c (IsLocalRing.closedPoint (IsLocalRing.ResidueField R)) = IsLocalRing.closedPoint R` using `Spec_closedPoint`. Take `⟨z, hz⟩` from `hy`. Set `ũ : Sp (IsLocalRing.ResidueField R) ⟶ pullback π.left (η[B]).left` to `pullback.lift (c ≫ y) (c ≫ z) (by rw [Category.assoc, Category.assoc, hz])`.
+
+Take `⟨a', ha's, hu⟩` from `exists_section (pullback.snd π.left (η[B]).left) ũ`. Set `a0` to `a' ≫ pullback.fst π.left (η[B]).left`. Establish `hη : (η[B]).left ≫ B.hom = 𝟙 _` using `by simpa using Over.w (η[B])`. Establish `ha0 : a0 ≫ A.hom = 𝟙 _`. Simplify using `only [a0, Category.assoc]`.
+
+Rewrite using `[← Over.w π, pullback.condition_assoc, hη, Category.comp_id, ha's]`. Set `a : 𝟙_ (Over (Sp k)) ⟶ A` to `Over.homMk a0 ha0`. Establish `ha : a ≫ π = 1` using `(comp_eq_one_iff π a).2 ⟨a' ≫ pullback.snd _ _, by`. Simplify using `only [a, a0, Over.homMk_left, Category.assoc, pullback.condition]⟩`. Establish `ha' : a ≫ π' = 1` using `h1 a ha`.
+
+Establish `e1 : c ≫ y = (ũ ≫ pullback.snd _ _) ≫ a0`. Simplify using `only [a0]`. Rewrite using `[← Category.assoc, ← hu]`. Conclude with `(pullback.lift_fst _ _ _).symm`. Establish `hu' : c ≫ y = ((c ≫ y) ≫ A.hom) ≫ a0`.
+
+Establish `e2 : (c ≫ y) ≫ A.hom = ũ ≫ pullback.snd _ _`. Rewrite using `[e1, Category.assoc, ha0]`. Conclude with `Category.comp_id _`. Rewrite using `[e2]`. Conclude with `e1`.
+
+Set `T' : Over (Sp k)` to `Over.mk (y ≫ A.hom)`. Set `Y : T' ⟶ A` to `Over.homMk y rfl`. Set `Ta : T' ⟶ A` to `toUnit T' ≫ a`. Set `D : T' ⟶ A` to `Y / Ta`. Establish `hYπ : Y ≫ π = 1` using `(comp_eq_one_iff π Y).2 ⟨z, hz⟩`.
+
+Establish `hDπ : D ≫ π = 1`. Simplify using `only [D, Ta]`. Rewrite using `[GrpObj.div_comp, hYπ, Category.assoc, ha, MonObj.comp_one, div_one]`. Set `C : Over.mk ((c ≫ y) ≫ A.hom) ⟶ T'` to `Over.homMk c (by simp [T'])`. Establish `hCY : C ≫ Y = C ≫ Ta`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Ta, toUnit_left, Over.homMk_left, C, Y, T', Over.mk_hom]`. Rewrite using `[← Category.assoc c, ← Category.assoc c]`. Conclude with `hu'`. Establish `hCD : C ≫ D = 1`.
+
+Simplify using `only [D]`. Rewrite using `[GrpObj.comp_div, hCY, div_self']`. Establish `hD0 : c ≫ D.left = ((c ≫ y) ≫ A.hom) ≫ (η[A]).left`. Use `congrArg (fun q => q.left) hCD` as an intermediate fact. Simplify using `only [Over.comp_left, one_left] at this`.
+
+Conclude with `this`. Establish `hDx : D.left (IsLocalRing.closedPoint R) = x₀`. Take `⟨p, hp⟩` from `hx₀`. Rewrite using `[← hc]`. Express the relevant statement in the definitionally equal form `(c ≫ D.left) _ = x₀`.
+
+Rewrite using `[hD0, ← hp]`. Express the relevant statement in the definitionally equal form `(η[A]).left (((c ≫ y) ≫ A.hom) _) = (η[A]).left p`. Conclude with `congrArg (η[A]).left (Subsingleton.elim (α := Spec (CommRingCat.of k)) _ _)`. Take `⟨ψ, hψ⟩` from `exists_stalk_factor D.left x₀ hDx`. Establish `hDK : InK π D.left` using `(comp_eq_one_iff π D).1 hDπ`.
+
+Establish `hDK' : InK π' D.left`. Rewrite `hDK`, the goal using `[hψ]`. Conclude with `h2 R ψ.hom hDK`. Establish `hDπ' : D ≫ π' = 1` using `(comp_eq_one_iff π' D).2 hDK'`. Establish `hYπ' : Y ≫ π' = 1`.
+
+Rewrite using `[← div_mul_cancel Y Ta, MonObj.mul_comp, hDπ', Category.assoc, ha', MonObj.comp_one, _root_.one_mul]`. Conclude with `(comp_eq_one_iff π' Y).1 hYπ'`.
+-/
 theorem local_step {A B B' : Over (Sp k)} [GrpObj A] [GrpObj B] [GrpObj B'] (π : A ⟶ B) (π' : A ⟶ B')
     [IsMonHom π] [IsMonHom π'] [IsFinite π.left]
     (h1 : ∀ a : 𝟙_ (Over (Sp k)) ⟶ A, a ≫ π = 1 → a ≫ π' = 1)
@@ -157,6 +215,11 @@ namespace GlobalTheory.IwLevel.KerDet
 
 variable {k : Type} [Field k] [IsAlgClosed k]
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[inK_iff]`. Use `ReciprocityTheory.ChartRestriction.G.TB.JGPf.ext_of_fromSpecStalk _ _ fun t => ?_` and prove the remaining obligations. Establish `h` using `local_step π π' h1 x₀ hx₀ h2 (T.fromSpecStalk t ≫ y) ((inK_iff π _).2 (by`. Simplify using `only [Category.assoc]`. Rewrite using `[hy, Category.assoc]))`.
+
+Rewrite `h` using `[inK_iff]`. Simplify `h` using `only [Category.assoc]`.
+-/
 theorem inK_of_inK {A B B' : Over (Sp k)} [GrpObj A] [GrpObj B] [GrpObj B'] (π : A ⟶ B) (π' : A ⟶ B')
     [IsMonHom π] [IsMonHom π'] [IsFinite π.left]
     (h1 : ∀ a : 𝟙_ (Over (Sp k)) ⟶ A, a ≫ π = 1 → a ≫ π' = 1)

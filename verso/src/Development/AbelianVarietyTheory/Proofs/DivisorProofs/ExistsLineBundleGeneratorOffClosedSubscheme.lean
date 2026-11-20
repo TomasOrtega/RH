@@ -9,6 +9,25 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PinchLift
 
+/- English proof (translation)
+Introduce `X X' Z Z' p i i' p' _ hp hi hG L' hL x hx`. Set `U : X.Opens` to `⟨(Set.range i)ᶜ, i.isClosedEmbedding.isClosed_range.isOpen_compl⟩`. Establish `hxU : x ∈ U` using `by rintro ⟨z, rfl⟩; exact hx z rfl`. Take `⟨V, hV, hxV, hVU⟩` from `exists_isAffineOpen_mem_and_subset hxU`. Establish `hiV : ∀ {O : X.Opens}, O ≤ V → i ⁻¹ᵁ O = ⊥` using `fun {O} hO => eq_bot_iff.2 fun z hz => (hVU (hO hz) ⟨z, rfl⟩).elim`.
+
+Establish `hbot : i ⁻¹ᵁ V = ⊥` using `hiV le_rfl`. Establish `hsZ : Subsingleton Γ(Z, i ⁻¹ᵁ V)` using `by rw [hbot]; infer_instance`. Establish `hbot' : i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V) = ⊥` using `eq_bot_iff.2 fun z hz => (hVU (show i (p' z) ∈ V from hz.2) ⟨p' z, rfl⟩).elim`. Establish `hsZ' : Subsingleton Γ(Z', i' ⁻¹ᵁ (p ⁻¹ᵁ V) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ V))` using `by rw [hbot']; infer_instance`. Establish `hbij : Function.Bijective (p.app V).hom`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `s t hst`. Establish `h1` using `hG V ((p.app V).hom s) ((i.app V).hom s) (Subsingleton.elim _ _)`. Conclude with `h1.unique ⟨rfl, rfl⟩ ⟨hst.symm, Subsingleton.elim _ _⟩`. Introduce `a`.
+
+Take `⟨s, hs, -⟩` from `hG V a 0 (Subsingleton.elim _ _)`. Conclude with `⟨s, hs.1⟩`. Use `haveI : IsIso (p.app V) := (ConcreteCategory.isIso_iff_bijective (p.app V)).2 hbij`. Use `haveI : IsIso (p ∣_ V) := (isIso_morphismRestrict_iff_isIso_app p hV).2 inferInstance`. Establish `hg : ∀ y, (p ∣_ V ≫ V.ι) y = p ((p ⁻¹ᵁ V).ι y)` using `fun y => by rw [morphismRestrict_ι]; rfl`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, (p ∣_ V ≫ V.ι) y = x := by`. Take `⟨v, hv⟩` from `(p ∣_ V).surjective ⟨x, hxV⟩`. Conclude with `⟨v, by show V.ι ((p ∣_ V) v) = x; rw [hv]; rfl⟩`. Take `⟨k₀, hk₀⟩` from `exists_chart hL ((p ⁻¹ᵁ V).ι y)`. Set `W : X.Opens` to `(p ∣_ V ≫ V.ι) ''ᵁ ((p ⁻¹ᵁ V).ι ⁻¹ᵁ L'.U k₀)`.
+
+Establish `hmemW : ∀ z, z ∈ W ↔ ∃ w, (p ⁻¹ᵁ V).ι w ∈ L'.U k₀ ∧ (p ∣_ V ≫ V.ι) w = z` using `fun z => Iff.rfl`. Establish `hxW : x ∈ W` using `(hmemW x).2 ⟨y, hk₀, hy⟩`. Establish `hWV : W ≤ V`. Introduce `z hz`. Take `⟨w, -, rfl⟩` from `(hmemW z).1 hz`.
+
+Rewrite using `[hg]`. Conclude with `w.2`. Establish `hWk : p ⁻¹ᵁ W ≤ L'.U k₀`. Introduce `x'' hx''`. Take `⟨w, hw, hwe⟩` from `(hmemW _).1 hx''`.
+
+Establish `hv : x'' ∈ p ⁻¹ᵁ V` using `hWV hx''`. Establish `: (⟨x'', hv⟩ : (p ⁻¹ᵁ V).toScheme) = w` using `(p ∣_ V ≫ V.ι).isOpenEmbedding.injective (by rw [hwe]; exact hg _)`. Rewrite `hw` using `[← this]`. Conclude with `hw`. Use `⟨W, fun k => res (le_inf inf_le_left (inf_le_right.trans hWk)) (L'.g k k₀), hxW, hiV hWV, ?_⟩` and prove the remaining obligations.
+
+Introduce `k l z hk hl hz`. Establish `hz0 : z ∈ L'.U k₀` using `hWk hz`. Rewrite using `[gm_res (𝟙 X') z _ (show z ∈ L'.U k ⊓ p ⁻¹ᵁ W from ⟨hk, hz⟩), gm_res (𝟙 X') z _ (show z ∈ L'.U l ⊓ p ⁻¹ᵁ W from ⟨hl, hz⟩)]`. Conclude with `(gm_cocycle hL (𝟙 X') z hk hl hz0).symm`.
+-/
 theorem exists_gen_away_of_closed : ∀ (X X' Z Z' : Scheme.{0}) (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z), IsPullback i' p' p i → IsAffineHom p → IsClosedImmersion i → GlobalTheory.PinchLift.Glues p i i' p' → ∀ (L' : LB X'), L'.IsLB → ∀ x : X, (∀ z : Z, i z ≠ x) → ∃ (W : X.Opens) (s' : ∀ k, Γ(X', L'.U k ⊓ p ⁻¹ᵁ W)ˣ), x ∈ W ∧ i ⁻¹ᵁ W = ⊥ ∧ GlobalTheory.PinchLift.GenOn L' (p ⁻¹ᵁ W) s' := by
   intro X X' Z Z' p i i' p' _ hp hi hG L' hL x hx
   let U : X.Opens := ⟨(Set.range i)ᶜ, i.isClosedEmbedding.isClosed_range.isOpen_compl⟩

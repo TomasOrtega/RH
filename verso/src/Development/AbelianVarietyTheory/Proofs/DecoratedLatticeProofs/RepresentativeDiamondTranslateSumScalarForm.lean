@@ -11,6 +11,13 @@ open GlobalTheory.Unf GlobalTheory.Grow GlobalTheory.FinPl ValuativeRel IsLocalR
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `B X I hok hpins l Z u a Ch A hA θ hθ k _ _ _ _ ι p β Q L hT j hj φ hφ i v hv g hg b y c`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_chartPoint_rightTranslate_stabilizer_splitPlace I hok hpins l Z u a Ch A hA k ι p β Q L hT j hj i v hv g hg b c`. Establish `hs : ∀ s, A.rd θ j hj b φ y (A.h j b c * (β j i).gl (g s)) = (I.fm l u a).dilT j v (e s) c.1 (φ ((I.fm l u a).dil j v (e s) c.1)) y`. Introduce `s`. Take `⟨z, hz, hpt⟩` from `he s`.
+
+Establish `hG : A.h j b c * (β j i).gl (g s) ∈ GfC _` using `mul_mem (hA.h j hj b c).1 (GlobalTheory.FrameGfCImg.gl_mem_GfC (β j i) (g s))`. Establish `hch : A.chOf j ((I.stp u a j).cl c.1.1 (((I.atIn u a).A j).diaPt v (e s) c.1)) = b` using `(GlobalTheory.AdForm.chOf_dil I hok hpins l Z u a Ch A hA j hj v (e s) c.1).trans c.2`. Establish `hco : cosetIn (GlobalTheory.Mem.Col2.DiaChart.dp I u a j v (e s) c.1) = cosetIn ((I.stp u a j).rep ((I.stp u a j).cl c.1.1 (GlobalTheory.Mem.Col2.DiaChart.dp I u a j v (e s) c.1)))` using `(GlobalTheory.Mem.Col2.DiaChart.cosetIn_dia _ v (e s)).trans (GlobalTheory.Mem.Col2.DiaChart.cosetIn_rep I l u a j v (e s) c.1).symm`. Conclude with `GlobalTheory.T.chartScalarForm_adelicPoint_eq_classTransport I hok hpins l Z u a Ch A hA θ hθ j hj φ hφ b c.1 _ _ z hG hz hpt hch hco y`. Rewrite using `[finsum_congr hs]`.
+
+Rewrite using `[finsum_comp_equiv e (f := fun s' => (I.fm l u a).dilT j v s' c.1 (φ ((I.fm l u a).dil j v s' c.1)) y)]`. Rewrite using `[finsum_apply]`. Conclude with `Set.toFinite _`.
+-/
 theorem GlobalTheory.AdForm.rd_dia_sum : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

@@ -18,17 +18,31 @@ abbrev StepRing : Type u := MvPolynomial (MonP R) R ⧸ stepIdeal R
 
 def stepHom : R →+* StepRing R := algebraMap R (StepRing R)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma stepHom_eq : stepHom R = (Ideal.Quotient.mk (stepIdeal R)).comp MvPolynomial.C := rfl
 
+/- English proof (translation)
+Rewrite using `[eval_map, eval₂_at_apply]`.
+-/
 lemma eval_map_hom {A B : Type*} [CommRing A] [CommRing B] (P : A[X]) (g : A →+* B) (a : A) :
     (P.map g).eval (g a) = g (P.eval a) := by
   rw [eval_map, eval₂_at_apply]
 
+/- English proof (translation)
+Rewrite using `[eval_map, stepHom_eq, ← hom_eval₂]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨p, rfl⟩)`.
+-/
 lemma step_root (p : MonP R) :
     (p.1.map (stepHom R)).eval (Ideal.Quotient.mk (stepIdeal R) (MvPolynomial.X p)) = 0 := by
   rw [eval_map, stepHom_eq, ← hom_eval₂]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨p, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Assume the negation of the conclusion as `h`. Establish `h1 : AdjoinRoot.mk q (C r) = 0` using `hr`. Rewrite `h1` using `[AdjoinRoot.mk_eq_zero]`.
+
+Conclude with `hq.not_dvd_of_natDegree_lt (by simpa using h) (by simpa using hd) h1`.
+-/
 lemma adjoinRoot_of_injective {T : Type u} [CommRing T] (q : T[X]) (hq : q.Monic)
     (hd : 0 < q.natDegree) : Function.Injective (AdjoinRoot.of q) := by
   rw [injective_iff_map_eq_zero]
@@ -38,6 +52,15 @@ lemma adjoinRoot_of_injective {T : Type u} [CommRing T] (q : T[X]) (hq : q.Monic
   rw [AdjoinRoot.mk_eq_zero] at h1
   exact hq.not_dvd_of_natDegree_lt (by simpa using h) (by simpa using hd) h1
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => exact ⟨R, inferInstance, RingHom.id R, Function.injective_id, by simp⟩`. Consider the case `insert q F _ ih`. Take `⟨T, _, φ, hφ, hF⟩` from `ih`. Distinguish the cases in `hT : Subsingleton T`.
+
+Use `⟨T, inferInstance, φ, hφ, fun p _ => ⟨0, Subsingleton.elim _ _⟩⟩` and prove the remaining obligations. Use `haveI : Nontrivial T := not_subsingleton_iff_nontrivial.1 hT`. Use `set q' := q.1.map φ with hq'`. Establish `hm : q'.Monic` using `q.2.1.map φ`. Establish `hd : 0 < q'.natDegree` using `by rw [hq', q.2.1.natDegree_map]; exact q.2.2`.
+
+Use `⟨AdjoinRoot q', inferInstance, (AdjoinRoot.of q').comp φ, (adjoinRoot_of_injective q' hm hd).comp hφ, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Use `⟨AdjoinRoot.root q', ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.map_map, eval_map, AdjoinRoot.eval₂_root]`.
+
+Take `⟨a, ha⟩` from `hF p hp`. Use `⟨AdjoinRoot.of q' a, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.map_map, eval_map_hom, ha, map_zero]`.
+-/
 lemma finite_roots (F : Finset (MonP R)) : ∃ (T : Type u) (_ : CommRing T) (φ : R →+* T),
     Function.Injective φ ∧ ∀ p ∈ F, ∃ a : T, (p.1.map φ).eval a = 0 := by
   classical
@@ -61,6 +84,17 @@ lemma finite_roots (F : Finset (MonP R)) : ∃ (T : Type u) (_ : CommRing T) (φ
       refine ⟨AdjoinRoot.of q' a, ?_⟩
       rw [← Polynomial.map_map, eval_map_hom, ha, map_zero]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Establish `hmem : MvPolynomial.C r ∈ stepIdeal R` using `Ideal.Quotient.eq_zero_iff_mem.1 hr`. Take `⟨S, hS, hx⟩` from `Submodule.mem_span_finite_of_mem_span hmem`. Rewrite `hS` using `[← Set.image_univ]`.
+
+Take `⟨F, -, rfl⟩` from `Finset.subset_set_image_iff.1 hS`. Take `⟨T, _, φ, hφ, hF⟩` from `finite_roots R F`. Set `v : MonP R → T` to `fun p => if h : p ∈ F then (hF p h).choose else 0`. Set `ev` to `MvPolynomial.eval₂Hom φ v`. Establish `hk : Ideal.span (↑(F.image fun p : MonP R => p.1.eval₂ MvPolynomial.C (MvPolynomial.X p)) : Set (MvPolynomial (MonP R) R)) ≤ RingHom.ker ev`.
+
+Rewrite using `[Ideal.span_le]`. Introduce `t ht`. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 ht)`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hom_eval₂, MvPolynomial.eval₂Hom_comp_C]`. Establish `: ev (MvPolynomial.X p) = (hF p hp).choose`.
+
+Simplify using `[ev, v, hp]`. Rewrite using `[this, ← eval_map]`. Conclude with `(hF p hp).choose_spec`. Establish `h0 : ev (MvPolynomial.C r) = 0` using `RingHom.mem_ker.1 (hk hx)`. Establish `: ev (MvPolynomial.C r) = φ r` using `by simp [ev]`.
+
+Conclude with `(injective_iff_map_eq_zero φ).1 hφ r (this ▸ h0)`.
+-/
 theorem stepHom_injective : Function.Injective (stepHom R) := by
   classical
   rw [injective_iff_map_eq_zero]
@@ -86,6 +120,13 @@ theorem stepHom_injective : Function.Injective (stepHom R) := by
   have : ev (MvPolynomial.C r) = φ r := by simp [ev]
   exact (injective_iff_map_eq_zero φ).1 hφ r (this ▸ h0)
 
+/- English proof (translation)
+Introduce `z`. Express the relevant statement in the definitionally equal form `IsIntegral R z`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => exact isIntegral_algebraMap`.
+
+Consider the case `add a b ha hb => rw [map_add]`. Conclude with `ha.add hb`. Consider the case `mul_X a p ha`. Rewrite using `[map_mul]`. Use `ha.mul ⟨p.1, p.2.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← eval_map]`. Conclude with `step_root R p`.
+-/
 theorem stepHom_isIntegral : (stepHom R).IsIntegral := by
   intro z
   change IsIntegral R z
@@ -99,6 +140,9 @@ theorem stepHom_isIntegral : (stepHom R).IsIntegral := by
     rw [← eval_map]
     exact step_root R p
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, step_root R ⟨p, hp, hd⟩⟩`.
+-/
 theorem step_has_root (p : R[X]) (hp : p.Monic) (hd : 0 < p.natDegree) :
     ∃ a : StepRing R, (p.map (stepHom R)).eval a = 0 :=
   ⟨_, step_root R ⟨p, hp, hd⟩⟩

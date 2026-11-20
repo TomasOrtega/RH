@@ -21,10 +21,18 @@ variable {R : Type} [CommRing R] {N k : Type} [Fintype N] [DecidableEq N] [Finty
 def rankMat (c : R →+* R) (D : Matrix N N R) (P : Matrix N k R) (C : Matrix k k R) : Matrix N N R :=
   1 + P * C * (D * P.map c)ᵀ
 
+/- English proof (translation)
+Rewrite using `[dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem gram_entry (c : R →+* R) (D : Matrix N N R) (P : Matrix N k R) (i j : k) :
     (Pᵀ * D * P.map c) i j = (fun r => P r i) ⬝ᵥ D *ᵥ (fun r => c (P r j)) := by
   rw [dotProduct_mulVec]; rfl
 
+/- English proof (translation)
+Establish `e : (D * P.map c)ᵀ * P = (Pᵀ * D * P.map c)ᵀ`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `: rankMat c D P C * rankMat c D P C' = 1 + P * (C + C' + C * (Pᵀ * D * P.map c)ᵀ * C') * (D * P.map c)ᵀ`. Rewrite using `[← e]`. Simplify using `only [rankMat, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this, h]`. Simplify using the standard rewrite rules.
+-/
 theorem rankMat_mul (c : R →+* R) (D : Matrix N N R) (P : Matrix N k R) (C C' : Matrix k k R)
     (h : C + C' + C * (Pᵀ * D * P.map c)ᵀ * C' = 0) :
     rankMat c D P C * rankMat c D P C' = 1 := by
@@ -37,6 +45,13 @@ theorem rankMat_mul (c : R →+* R) (D : Matrix N N R) (P : Matrix N k R) (C C' 
     abel
   rw [this, h]; simp
 
+/- English proof (translation)
+Establish `hDm : D.map c = Dᵀ` using `by ext i j; simp [hD]`. Establish `hPP : (P.map c).map c = P` using `by ext i j; simp [hc]`. Establish `hmap : (rankMat c D P C).map c = 1 + P.map c * C.map c * (Pᵀ * D)`. Rewrite using `[rankMat, Matrix.map_add, Matrix.map_one _ (map_zero c) (map_one c), Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.map_mul, hDm, hPP]`. Apply the tactic sequence `all_goals first | simp [Matrix.transpose_mul] | exact fun a b => map_add c a b`.
+
+Establish `htr : (rankMat c D P C)ᵀ = 1 + D * P.map c * Cᵀ * Pᵀ`. Simplify using `[rankMat, Matrix.transpose_add, Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `: (rankMat c D P C)ᵀ * D * (rankMat c D P C).map c = D + D * P.map c * (C.map c + Cᵀ + Cᵀ * (Pᵀ * D * P.map c) * C.map c) * (Pᵀ * D)`. Rewrite using `[hmap, htr]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this, h]`. Simplify using the standard rewrite rules.
+-/
 theorem rankMat_unitary (c : R →+* R) (hc : ∀ r, c (c r) = r) (D : Matrix N N R) (hD : ∀ i j, c (D j i) = D i j)
     (P : Matrix N k R) (C : Matrix k k R)
     (h : C.map c + Cᵀ + Cᵀ * (Pᵀ * D * P.map c) * C.map c = 0) :
@@ -68,6 +83,9 @@ section Plane
 
 variable {R : Type} [CommRing R] {n m : ℕ}
 
+/- English proof (translation)
+Establish `: (fun r => c (Sum.elim w₁ w₂ r)) = Sum.elim (fun i => c (w₁ i)) (fun i => c (w₂ i))`. Apply the tactic sequence `funext r; cases r <;> rfl`. Rewrite using `[this, dbl, fromBlocks_mulVec]`. Simplify using `[sumElim_dotProduct_sumElim, neg_mulVec, sub_eq_add_neg]`.
+-/
 theorem dbl_form (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (v₁ v₂ w₁ w₂ : Fin n → R) :
     Sum.elim v₁ v₂ ⬝ᵥ dbl J *ᵥ (fun r => c (Sum.elim w₁ w₂ r)) =
       v₁ ⬝ᵥ J *ᵥ (fun i => c (w₁ i)) - v₂ ⬝ᵥ J *ᵥ (fun i => c (w₂ i)) := by
@@ -76,16 +94,25 @@ theorem dbl_form (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (v₁ v₂ w₁ 
   rw [this, dbl, fromBlocks_mulVec]
   simp [sumElim_dotProduct_sumElim, neg_mulVec, sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `: (fun i => c ((0 : Fin n → R) i)) = 0` using `by funext i; simp`. Rewrite using `[this, mulVec_zero, dotProduct_zero]`.
+-/
 theorem form_zero (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (v : Fin n → R) :
     v ⬝ᵥ J *ᵥ (fun i => c ((0 : Fin n → R) i)) = 0 := by
   have : (fun i => c ((0 : Fin n → R) i)) = 0 := by funext i; simp
   rw [this, mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Establish `: (fun _ : Fin n => (0 : R)) = 0` using `rfl`. Rewrite using `[this, mulVec_zero, dotProduct_zero]`.
+-/
 theorem form_zero' (J : Matrix (Fin n) (Fin n) R) (v : Fin n → R) :
     v ⬝ᵥ J *ᵥ (fun _ => (0 : R)) = 0 := by
   have : (fun _ : Fin n => (0 : R)) = 0 := rfl
   rw [this, mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, map_sum, map_mul, hc, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem herm_swap (c : R →+* R) (hc : ∀ r, c (c r) = r) (J : Matrix (Fin n) (Fin n) R)
     (hJ : ∀ i j, c (J j i) = J i j) (v w : Fin n → R) :
     w ⬝ᵥ J *ᵥ (fun i => c (v i)) = c (v ⬝ᵥ J *ᵥ fun i => c (w i)) := by
@@ -104,6 +131,9 @@ def Cm' (h : R) : Matrix (Fin 4) (Fin 4) R := !![0, -h, 0, -h; 0, 0, 1, 0; h, 0,
 
 variable {c : R →+* R} {J : Matrix (Fin n) (Fin n) R} {x y : Fin n → R}
 
+/- English proof (translation)
+Establish `hyx : y ⬝ᵥ J *ᵥ (fun i => c (x i)) = 1` using `by rw [herm_swap c hc J hJ x y, hXY, map_one]`. Use extensionality with `i j`. Rewrite using `[gram_entry]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Pm, gram0, dbl_form, form_zero, form_zero', hXX, hYY, hXY, hyx]`.
+-/
 theorem Pm_gram (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j)
     (hXX : x ⬝ᵥ J *ᵥ (fun i => c (x i)) = 0) (hYY : y ⬝ᵥ J *ᵥ (fun i => c (y i)) = 0)
     (hXY : x ⬝ᵥ J *ᵥ (fun i => c (y i)) = 1) :
@@ -113,6 +143,11 @@ theorem Pm_gram (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j)
   rw [gram_entry]
   fin_cases i <;> fin_cases j <;> simp [Pm, gram0, dbl_form, form_zero, form_zero', hXX, hYY, hXY, hyx]
 
+/- English proof (translation)
+Establish `hm : (Cm h).map c = Cm h`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Cm, hch]`. Rewrite using `[hm]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Cm, gram0, Matrix.mul_apply, Fin.sum_univ_four] <;> first | ring1 | linear_combination h2 | linear_combination -h2 | linear_combination h * h2 |`.
+
+Take the linear combination `-h * h2`.
+-/
 theorem Cm_unitary (h : R) (h2 : 2 * h = 1) (hch : c h = h) :
     (Cm h).map c + (Cm h)ᵀ + (Cm h)ᵀ * gram0 * (Cm h).map c = 0 := by
   have hm : (Cm h).map c = Cm h := by
@@ -123,9 +158,15 @@ theorem Cm_unitary (h : R) (h2 : 2 * h = 1) (hch : c h = h) :
     first | ring1 | linear_combination h2 | linear_combination -h2 | linear_combination h * h2 |
       linear_combination -h * h2
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> rfl`.
+-/
 theorem gram_matrix_transpose : (gram0 : Matrix (Fin 4) (Fin 4) R)ᵀ = gram0 := by
   ext i j; fin_cases i <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[gram_matrix_transpose]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Cm, Cm', gram0, Matrix.mul_apply, Fin.sum_univ_four] <;> first | ring1 | linear_combination h2 | linear_combination -h2 | linear_combination h * h2 |`. Take the linear combination `-h * h2`.
+-/
 theorem Cm_mul (h : R) (h2 : 2 * h = 1) : Cm h + Cm' h + Cm h * (gram0 : Matrix (Fin 4) (Fin 4) R)ᵀ * Cm' h = 0 := by
   rw [gram_matrix_transpose]
   ext i j
@@ -133,6 +174,9 @@ theorem Cm_mul (h : R) (h2 : 2 * h = 1) : Cm h + Cm' h + Cm h * (gram0 : Matrix 
     first | ring1 | linear_combination h2 | linear_combination -h2 | linear_combination h * h2 |
       linear_combination -h * h2
 
+/- English proof (translation)
+Rewrite using `[gram_matrix_transpose]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Cm, Cm', gram0, Matrix.mul_apply, Fin.sum_univ_four] <;> first | ring1 | linear_combination h2 | linear_combination -h2 | linear_combination h * h2 |`. Take the linear combination `-h * h2`.
+-/
 theorem Cm_mul' (h : R) (h2 : 2 * h = 1) : Cm' h + Cm h + Cm' h * (gram0 : Matrix (Fin 4) (Fin 4) R)ᵀ * Cm h = 0 := by
   rw [gram_matrix_transpose]
   ext i j
@@ -152,6 +196,9 @@ section Cols
 
 variable {R : Type} [CommRing R] {n m : ℕ}
 
+/- English proof (translation)
+Rewrite using `[rankMat, add_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec]`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `j`. Rewrite using `[mulVec_transpose, ← vecMul_vecMul, dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem rankMat_mulVec {N k : Type} [Fintype N] [DecidableEq N] [Fintype k] [DecidableEq k] (c : R →+* R)
     (D : Matrix N N R) (P : Matrix N k R) (C : Matrix k k R) (v : N → R) :
     rankMat c D P C *ᵥ v = v + P *ᵥ (C *ᵥ (fun j => v ⬝ᵥ D *ᵥ fun r => c (P r j))) := by
@@ -160,10 +207,16 @@ theorem rankMat_mulVec {N k : Type} [Fintype N] [DecidableEq N] [Fintype k] [Dec
   funext j
   rw [mulVec_transpose, ← vecMul_vecMul, dotProduct_mulVec]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `funext r; cases r <;> simp [Pm, mulVec, dotProduct, Fin.sum_univ_four] <;> ring`.
+-/
 theorem Pm_mulVec (x y : Fin n → R) (w : Fin 4 → R) :
     Pm x y *ᵥ w = Sum.elim (w 0 • x + w 1 • y) (w 2 • x + w 3 • y) := by
   funext r; cases r <;> simp [Pm, mulVec, dotProduct, Fin.sum_univ_four] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `funext j; fin_cases j <;> simp [Pm, dbl_form, form_zero, form_zero']`.
+-/
 theorem Pm_form (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) (x y v₁ v₂ : Fin n → R) :
     (fun j => Sum.elim v₁ v₂ ⬝ᵥ dbl J *ᵥ fun r => c (Pm x y r j)) =
       ![v₁ ⬝ᵥ J *ᵥ (fun i => c (x i)), v₁ ⬝ᵥ J *ᵥ (fun i => c (y i)), -(v₂ ⬝ᵥ J *ᵥ (fun i => c (x i))),
@@ -178,6 +231,13 @@ def colS (x y : Fin n → R) (ι : Matrix (Fin n) (Fin m) R) : Fin m ⊕ Fin 2 �
 
 variable {c : R →+* R} {J : Matrix (Fin n) (Fin n) R} {x y : Fin n → R} {ι : Matrix (Fin n) (Fin m) R}
 
+/- English proof (translation)
+Break down `k with j | i` into its components or cases. Simplify using `only [colF, colS, Sum.elim_inl]`. Rewrite using `[rankMat_mulVec, Pm_form, hιx, hιy]`. Simplify using `only [neg_zero]`. Apply the tactic sequence `rw [show (![0, 0, 0, 0] : Fin 4 → R) = 0 by ext i; fin_cases i <;> rfl, mulVec_zero, mulVec_zero]`.
+
+Apply the tactic sequence `funext r; cases r <;> simp`. Use `fin_cases i`. Simplify using `only [colF, colS, Sum.elim_inr]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[rankMat_mulVec, Pm_form, Pm_mulVec, hXX, hXY]`.
+
+Apply the tactic sequence `funext r; cases r <;> simp [Cm, mulVec, dotProduct, Fin.sum_univ_four]`. Simplify using `only [colF, colS, Sum.elim_inr]`. Simplify using `only [Fin.mk_one, Fin.isValue, Matrix.cons_val_one, Matrix.cons_val_zero]`. Rewrite using `[rankMat_mulVec, Pm_form, Pm_mulVec, hXX, hXY]`. Apply the tactic sequence `funext r; cases r <;> simp [Cm, mulVec, dotProduct, Fin.sum_univ_four]`.
+-/
 theorem g_colF (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j)
     (hXX : x ⬝ᵥ J *ᵥ (fun i => c (x i)) = 0) (hYY : y ⬝ᵥ J *ᵥ (fun i => c (y i)) = 0)
     (hXY : x ⬝ᵥ J *ᵥ (fun i => c (y i)) = 1)
@@ -200,10 +260,18 @@ theorem g_colF (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j)
       rw [rankMat_mulVec, Pm_form, Pm_mulVec, hXX, hXY]
       funext r; cases r <;> simp [Cm, mulVec, dotProduct, Fin.sum_univ_four]
 
+/- English proof (translation)
+Use extensionality with `r k`. Both sides reduce to the same expression.
+-/
 theorem mul_of' {N κ : Type} [Fintype N] (M : Matrix N N R) (f : κ → N → R) :
     M * Matrix.of (fun r k => f k r) = Matrix.of fun r k => (M *ᵥ f k) r := by
   ext r k; rfl
 
+/- English proof (translation)
+Establish `hcol : ∀ j, M *ᵥ (fun r => ι r j) = fun r => ι r j` using `fun j => by`. Use function extensionality and compare the values at `r`. Conclude with `congrFun (congrFun hMι r) j`. Break down `k with j | i` into its components or cases. Simplify using `only [colF, Sum.elim_inl, fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, zero_mulVec, add_zero, zero_add, one_mulVec, hcol, Pi.one_apply, one_smul]`.
+
+Use `fin_cases i`. Apply the tactic sequence `funext r; cases r <;> simp [colF, fromBlocks_mulVec, hMx]`. Apply the tactic sequence `funext r; cases r <;> simp [colF, fromBlocks_mulVec]`.
+-/
 theorem md_colF (M : Matrix (Fin n) (Fin n) R) (t : R) (hMx : M *ᵥ x = t • x) (hMι : M * ι = ι)
     (k : Fin m ⊕ Fin 2) :
     fromBlocks M 0 0 1 *ᵥ colF x ι k = (Sum.elim 1 ![t, 1] k : R) • colF x ι k := by
@@ -228,6 +296,13 @@ section Assemble
 
 variable {R : Type} [CommRing R] {n m : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i => z i (e (Sum.inr 0)), fun i => z i (e (Sum.inr 1)), fun i j => z i (e (Sum.inl j)), ?_⟩` and prove the remaining obligations. Use extensionality with `i r`. Break down `r with r | r` into its components or cases. Simplify using `only [Matrix.mul_apply, transpose_apply, of_apply, fromCols_apply_inl]`. Rewrite using `[← e.sum_comp]`.
+
+Simplify using `[Fintype.sum_sum_type, colF, vecMulVec_apply]`. Rewrite using `[add_comm]`. Both sides reduce to the same expression. Simplify using `only [Matrix.mul_apply, transpose_apply, of_apply, fromCols_apply_inr]`. Rewrite using `[← e.sum_comp]`.
+
+Simplify using `[Fintype.sum_sum_type, colF, vecMulVec_apply]`. Rewrite using `[add_comm]`. Both sides reduce to the same expression.
+-/
 theorem colF_cols {d : ℕ} (x : Fin n → R) (ι : Matrix (Fin n) (Fin m) R) (e : Fin m ⊕ Fin 2 ≃ Fin n)
     (z : Matrix (Fin d) (Fin n) R) :
     ∃ (y₁ y₂ : Fin d → R) (u : Matrix (Fin d) (Fin m) R),
@@ -245,6 +320,9 @@ theorem colF_cols {d : ℕ} (x : Fin n → R) (ι : Matrix (Fin n) (Fin m) R) (e
     simp [Fintype.sum_sum_type, colF, vecMulVec_apply]
     rw [add_comm]; rfl
 
+/- English proof (translation)
+Rewrite using `[mul_of']`. Use extensionality with `r k`. Rewrite using `[of_apply, g_colF hc hJ hXX hYY hXY hιx hιy h]`. Apply the tactic sequence `rcases r with r | r <;> simp [diagCols, Matrix.mul_apply, fromRows_apply_inl, fromRows_apply_inr, one_apply]`.
+-/
 theorem g_mul_cols {c : R →+* R} {J : Matrix (Fin n) (Fin n) R} {x y : Fin n → R} {ι : Matrix (Fin n) (Fin m) R}
     (hc : ∀ r, c (c r) = r) (hJ : ∀ i j, c (J j i) = J i j)
     (hXX : x ⬝ᵥ J *ᵥ (fun i => c (x i)) = 0) (hYY : y ⬝ᵥ J *ᵥ (fun i => c (y i)) = 0)
@@ -270,6 +348,17 @@ section Det
 
 variable {K : Type} [Field K] {n m : ℕ}
 
+/- English proof (translation)
+Establish `hyx : y ⬝ᵥ J *ᵥ (fun i => c (x i)) = 1` using `by rw [herm_swap c hc J hJ x y, hXY, map_one]`. Use `set S₀ : Matrix (Fin n) (Fin m ⊕ Fin 2) K := Matrix.of fun r k => colS x y ι k r with hS₀`. Establish `hG : S₀ᵀ * J * S₀.map c = fromBlocks (ιᵀ * J * ι.map c) 0 (S₀ᵀ * J * S₀.map c).toBlocks₂₁ !![0, 1; 1, 0]`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₁₂, gram_entry] fin_cases j`. Simplify `hιx i` using `[hS₀, colS]`. Simplify `hιy i` using `[hS₀, colS]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `rw [fromBlocks_apply₂₂, gram_entry] fin_cases i <;> fin_cases j <;> simp [hS₀, colS, hXX, hYY, hXY, hyx]`. Establish `hdet : (S₀ᵀ * J * S₀.map c).det = -(ιᵀ * J * ι.map c).det`. Rewrite using `[hG, det_fromBlocks_zero₁₂]`. Simplify using `[det_fin_two]`. Establish `hS : (Matrix.of fun r k => colS x y ι (e.symm k) r)ᵀ * J * (Matrix.of fun r k => colS x y ι (e.symm k) r).map c = (S₀ᵀ * J * S₀.map c).submatrix e.symm e.symm`.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hS`. Rewrite `h1` using `[det_mul, det_mul, det_transpose, h0, zero_mul, zero_mul, det_submatrix_equiv_self, hdet]`.
+
+Conclude with `hJ₁ (neg_eq_zero.mp h1.symm)`.
+-/
 theorem colS_det_ne (c : K →+* K) (hc : ∀ r, c (c r) = r) {J : Matrix (Fin n) (Fin n) K}
     (hJ : ∀ i j, c (J j i) = J i j) {x y : Fin n → K} {ι : Matrix (Fin n) (Fin m) K}
     (hXX : x ⬝ᵥ J *ᵥ (fun i => c (x i)) = 0) (hYY : y ⬝ᵥ J *ᵥ (fun i => c (y i)) = 0)
@@ -302,6 +391,13 @@ theorem colS_det_ne (c : K →+* K) (hc : ∀ r, c (c r) = r) {J : Matrix (Fin n
   rw [det_mul, det_mul, det_transpose, h0, zero_mul, zero_mul, det_submatrix_equiv_self, hdet] at h1
   exact hJ₁ (neg_eq_zero.mp h1.symm)
 
+/- English proof (translation)
+Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hrs)`. Establish `hB : (A.submatrix id e.symm)ᵀ * M * (A.submatrix id e.symm).map star = (fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix e.symm e.symm`. Rewrite using `[← hA]`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hB`. Rewrite `h1` using `[det_mul, det_mul, h0, mul_zero, zero_mul, det_submatrix_equiv_self, det_fromBlocks_zero₂₁]`. Simplify using `[det_neg] at h1`.
+
+Conclude with `pow_ne_zero s (neg_ne_zero.mpr one_ne_zero) h1.symm`.
+-/
 theorem det_ne_of_sig {n r s : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
   let e : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr hrs)
@@ -320,6 +416,43 @@ end GlobalTheory.MixedPlane
 
 open Matrix in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hA hP₁ t m hL`. Establish `hσ` using `GlobalTheory.LeviTorus.sigma_invol hP.base.cm`. Establish `hJE : ∀ i j, σ.toRingHom (X.J j i) = X.J i j` using `hP.herm.herm`. Establish `hσE : ∀ a, σ.toRingHom (σ.toRingHom a) = a` using `hσ`. Establish `hιxE : ∀ j, form σ X.J (fun r => H.ι r j) H.x = 0` using `fun j => by`.
+
+Establish `h` using `(hA.orth (Pi.single j 1)).1`. Rewrite `h` using `[mulVec_single_one]`. Then use the resulting hypothesis. Establish `hιyE : ∀ j, form σ X.J (fun r => H.ι r j) H.y = 0` using `fun j => by`. Establish `h` using `(hA.orth (Pi.single j 1)).2`. Rewrite `h` using `[mulVec_single_one]`. Then use the resulting hypothesis.
+
+Establish `hJ₁ : (H.ιᵀ * X.J * H.ι.map σ.toRingHom).det ≠ 0`. Establish `hg : H.ιᵀ * X.J * H.ι.map σ.toRingHom = X₁.J` using `hA.gram`. Rewrite using `[hg]`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h1` using `GlobalTheory.MixedPlane.det_ne_of_sig _ (hP₁.herm.sig w)`.
+
+Introduce `h0`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `hSE` using `GlobalTheory.MixedPlane.colS_det_ne σ.toRingHom hσE hJE (x := H.x) (y := H.y) (ι := H.ι) hA.xx hA.yy hA.xy hιxE hιyE hJ₁ (finSumFinEquiv.trans (finCongr hA.rank.symm))`. Use `set c : AE F E →+* AE F E := (cA σ).toRingHom with hcdef`.
+
+Establish `hc : ∀ a, c (c a) = a` using `GlobalTheory.LeviTorus.cA_invol hσ`. Establish `hJ : ∀ i j, c (incM F X.J j i) = incM F X.J i j`. Introduce `i j`. Simplify using `only [c, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, incM, Matrix.map_apply, GlobalTheory.LeviTorus.cA_incl, hP.herm.herm i j]`. Establish `hXX : incV F H.x ⬝ᵥ incM F X.J *ᵥ (fun i => c (incV F H.x i)) = 0`.
+
+Rewrite using `[show (fun i => c (incV F H.x i)) = fun i => cA σ (incV F H.x i) from rfl, GlobalTheory.LeviTorus.form_incl, hA.xx, map_zero]`. Establish `hYY : incV F H.y ⬝ᵥ incM F X.J *ᵥ (fun i => c (incV F H.y i)) = 0`. Rewrite using `[show (fun i => c (incV F H.y i)) = fun i => cA σ (incV F H.y i) from rfl, GlobalTheory.LeviTorus.form_incl, hA.yy, map_zero]`. Establish `hXY : incV F H.x ⬝ᵥ incM F X.J *ᵥ (fun i => c (incV F H.y i)) = 1`. Rewrite using `[show (fun i => c (incV F H.y i)) = fun i => cA σ (incV F H.y i) from rfl, GlobalTheory.LeviTorus.form_incl, hA.xy, map_one]`.
+
+Establish `hιx : ∀ j, (fun r => incM F H.ι r j) ⬝ᵥ incM F X.J *ᵥ (fun i => c (incV F H.x i)) = 0` using `fun j => by`. Establish `h` using `GlobalTheory.LeviTorus.form_incl σ X.J (fun r => H.ι r j) H.x`. Rewrite `h` using `[hιxE j, map_zero]`. Conclude with `h`. Establish `hιy : ∀ j, (fun r => incM F H.ι r j) ⬝ᵥ incM F X.J *ᵥ (fun i => c (incV F H.y i)) = 0` using `fun j => by`.
+
+Establish `h` using `GlobalTheory.LeviTorus.form_incl σ X.J (fun r => H.ι r j) H.y`. Rewrite `h` using `[hιyE j, map_zero]`. Conclude with `h`. Use `set hf : AE F E := inclR (F := F) (AF F) (2⁻¹ : E) with hhf`. Establish `h2 : 2 * hf = 1`.
+
+Rewrite using `[hhf, show (2 : AE F E) = inclR (F := F) (AF F) (2 : E) from (map_ofNat _ 2).symm, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one]`. Establish `hch : c hf = hf`. Simplify using `only [c, hhf, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, GlobalTheory.LeviTorus.cA_incl, map_inv₀, map_ofNat]`. Use `set e : Fin n₁ ⊕ Fin 2 ≃ Fin n := finSumFinEquiv.trans (finCongr hA.rank.symm) with he`. Establish `hD : ∀ i j, c (dbl (incM F X.J) j i) = dbl (incM F X.J) i j`.
+
+Introduce `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [dbl, hJ]`. Establish `hgram` using `GlobalTheory.MixedPlane.Pm_gram hc hJ hXX hYY hXY`. Set `gU : GL (Fin n ⊕ Fin n) (AE F E)` to `⟨GlobalTheory.MixedPlane.rankMat c (dbl (incM F X.J)) (GlobalTheory.MixedPlane.Pm (incV F H.x) (incV F H.y)) (GlobalTheory.MixedPlane.Cm hf), GlobalTheory.MixedPlane.rankMat c (dbl (incM F X.J)) (GlobalTheory.MixedPlane.Pm (incV F H.x) (incV F H.y)) (GlobalTheory.MixedPlane.Cm' h …`. Establish `gmem : gU ∈ UG (cA σ) (dbl (incM F X.J))` using `GlobalTheory.MixedPlane.rankMat_unitary c hc _ hD _ _ (by rw [hgram]; exact GlobalTheory.MixedPlane.Cm_unitary hf h2 hch)`.
+
+Establish `hm : (mat m)ᵀ * incM F X.J * (mat m).map (cA σ) = incM F X.J` using `m.2`. Establish `hmi : mat m * mat m⁻¹ = 1` using `Units.mul_inv m.1`. Establish `him : mat m⁻¹ * mat m = 1` using `Units.inv_mul m.1`. Set `mdU : GL (Fin n ⊕ Fin n) (AE F E)` to `⟨fromBlocks (mat m) 0 0 1, fromBlocks (mat m⁻¹) 0 0 1, by rw [fromBlocks_multiply]; simp [hmi], by rw [fromBlocks_multiply]; simp [him]⟩`. Establish `mdmem : mdU ∈ UG (cA σ) (dbl (incM F X.J))` using `by show (fromBlocks (mat m) 0 0 1)ᵀ * dbl (incM F X.J) * (fromBlocks (mat m) 0 0 1).map (cA σ) = dbl (incM F X.J)`.
+
+Rewrite using `[dbl, fromBlocks_transpose, fromBlocks_map, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[hm]`. Set `du : Fin n₁ ⊕ Fin 2 → (AE F E)ˣ` to `Sum.elim 1 ![t, 1]`. Set `TU : GL (Fin n) (AE F E)` to `⟨diagonal fun k => (du (e.symm k) : AE F E), diagonal fun k => ((du (e.symm k))⁻¹ : (AE F E)ˣ), by rw [diagonal_mul_diagonal]; simp, by rw [diagonal_mul_diagonal]; simp⟩`. Establish `hSmap : (Matrix.of fun r k => GlobalTheory.MixedPlane.colS (incV F H.x) (incV F H.y) (incM F H.ι) (e.symm k) r) = (Matrix.of fun r k => GlobalTheory.MixedPlane.colS H.x H.y H.ι (e.symm k) r).map (inclR (F` using `F) (AF F)) := by`.
+
+Use extensionality with `r k`. Simplify using `only [of_apply, Matrix.map_apply]`. Generalize the expression as in `e.symm k = k'`. Break down `k' with j | i` into its components or cases. Both sides reduce to the same expression.
+
+Apply the tactic sequence `fin_cases i <;> rfl`. Establish `hSunit : IsUnit (Matrix.of fun r k => GlobalTheory.MixedPlane.colS (incV F H.x) (incV F H.y) (incM F H.ι) (e.symm k) r).det`. Rewrite using `[hSmap, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(isUnit_iff_ne_zero.mpr hSE).map _`. Set `SU : GL (Fin n) (AE F E)` to `((Matrix.isUnit_iff_isUnit_det _).mpr hSunit).unit`.
+
+Use `⟨Matrix.of fun r k => GlobalTheory.MixedPlane.colF (incV F H.x) (incM F H.ι) (e.symm k) r, ⟨mdU, mdmem⟩, TU, ⟨gU, gmem⟩, SU, ?_, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun z => GlobalTheory.MixedPlane.colF_cols _ _ e z`. Establish `hMx : mat m *ᵥ incV F H.x = t.1 • incV F H.x` using `hL.1`. Establish `hMι : mat m * incM F H.ι = incM F H.ι` using `by rw [hL.2.2]; exact Matrix.mul_one _`. Use `show fromBlocks (mat m) 0 0 1 * _ = _ * diagonal _`.
+
+Rewrite using `[GlobalTheory.MixedPlane.mul_of']`. Use extensionality with `r k`. Rewrite using `[of_apply, GlobalTheory.MixedPlane.md_colF (mat m) t.1 hMx hMι, mul_diagonal, of_apply]`. Generalize the expression as in `e.symm k = k'`. Break down `k' with j | i` into its components or cases.
+
+Simplify using `[du]`. Apply the tactic sequence `fin_cases i <;> simp [du, mul_comm]`. Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, TU, det_diagonal]`. Rewrite using `[Equiv.prod_comp e.symm (fun k => (du k : AE F E))]`.
+
+Simplify using `[du, Fintype.prod_sum_type]`. Use `show GlobalTheory.MixedPlane.rankMat c (dbl (incM F X.J)) (GlobalTheory.MixedPlane.Pm (incV F H.x) (incV F H.y)) (GlobalTheory.MixedPlane.Cm hf) * _ = _ * (Matrix.of fun r k => GlobalTheory.MixedPlane.colS (incV F H.x) (incV F H.y) (incM F H.ι) (e.symm k) r)`. Conclude with `GlobalTheory.MixedPlane.g_mul_cols hc hJ hXX hYY hXY hιx hιy hf e`.
+-/
 theorem GlobalTheory.MixedPlane.exists_mixed_model : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

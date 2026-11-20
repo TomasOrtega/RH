@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RestrictedPr
 open scoped Matrix GlobalTheory.VacAny ENNReal
 open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RatWeilOp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant | exact GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant | (intros; apply GlobalTheory.HaarFactorOffPlace.lintegral_evalV_mul_shiftInvariant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lintegral_finiteAdelic_factor_offPlace : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)]
     (w : HeightOneSpectrum (𝓞 F)) [MeasurableSpace (κ → Fv F w)] [BorelSpace (κ → Fv F w)]
     (μf : Measure (κ → Af F)) [μf.IsAddHaarMeasure] (μw : Measure (κ → Fv F w)) [μw.IsAddHaarMeasure],

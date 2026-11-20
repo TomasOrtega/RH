@@ -20,6 +20,9 @@ variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
   {σ : R →+* R'} {τ : R' →+* R''} {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R'}
   {F'' : C'' ⥤ CommAlgCat.{0} R''} (m : CoefMap σ F F')
 
+/- English proof (translation)
+The claim follows from `m.smul T`.
+-/
 theorem semiHom_coef (T : C') : SemiHom σ (m.α T) := m.smul T
 
 def q1 (T : C') : Ω[F.obj (m.G.obj T)⁄R] →ₛₗ[σ] Ω[F'.obj T⁄R'] := (semiHom_coef m T).m1
@@ -30,27 +33,48 @@ def qOm (j : ℕ) (T : C') : Om R (F.obj (m.G.obj T)) j →ₛₗ[σ] Om R' (F'.
 section
 variable {T T' : C'}
 
+/- English proof (translation)
+The claim follows from `(semiHom_coef m T).m1_D b`.
+-/
 theorem cechDeRhamCoefMapOneForms_D (b : F.obj (m.G.obj T)) : q1 m T (D R _ b) = D R' _ (m.α T b) := (semiHom_coef m T).m1_D b
 
+/- English proof (translation)
+The claim follows from `(semiHom_coef m T).oneFormMap_smul_semilinear b ω`.
+-/
 theorem prodFirstProjection_smul (b : F.obj (m.G.obj T)) (ω : Ω[F.obj (m.G.obj T)⁄R]) :
     q1 m T (b • ω) = m.α T b • q1 m T ω := (semiHom_coef m T).oneFormMap_smul_semilinear b ω
 
+/- English proof (translation)
+The claim follows from `(SemiHom.oneFormMap_comp_oneFormMap _ _ ((semiHom_coef m T).comp (semiHom_mp F' φ)) (m.naturality φ) ω).trans (SemiHom.oneFormMap_comp_oneFormMap _ _ _ (fun _ ↦ rfl) ω).symm`.
+-/
 theorem cechDeRhamCoefMapOneForms_naturality (φ : T ⟶ T') (ω : Ω[F.obj (m.G.obj T)⁄R]) :
     q1 m T' (p1 F (m.G.map φ) ω) = p1 F' φ (q1 m T ω) :=
   (SemiHom.oneFormMap_comp_oneFormMap _ _ ((semiHom_coef m T).comp (semiHom_mp F' φ)) (m.naturality φ) ω).trans
     (SemiHom.oneFormMap_comp_oneFormMap _ _ _ (fun _ ↦ rfl) ω).symm
 
+/- English proof (translation)
+The claim follows from `(SemiHom.mOm_mOm _ _ ((semiHom_coef m T).comp (semiHom_mp F' φ)) (m.naturality φ) x).trans (SemiHom.mOm_mOm _ _ _ (fun _ ↦ rfl) x).symm`.
+-/
 theorem qOm_pOm {j : ℕ} (φ : T ⟶ T') (x : Om R (F.obj (m.G.obj T)) j) :
     qOm m j T' (pOm F j (m.G.map φ) x) = pOm F' j φ (qOm m j T x) :=
   (SemiHom.mOm_mOm _ _ ((semiHom_coef m T).comp (semiHom_mp F' φ)) (m.naturality φ) x).trans
     (SemiHom.mOm_mOm _ _ _ (fun _ ↦ rfl) x).symm
 
+/- English proof (translation)
+The claim follows from `(semiHom_coef m T).mOm_dOne ω`.
+-/
 theorem qOm_dOne (ω : Ω[F.obj (m.G.obj T)⁄R]) : qOm m 2 T (dOne R _ ω) = dOne R' _ (q1 m T ω) :=
   (semiHom_coef m T).mOm_dOne ω
 
+/- English proof (translation)
+The claim follows from `(semiHom_coef m T).mOm_dTwo x`.
+-/
 theorem qOm_dTwo (x : Om R (F.obj (m.G.obj T)) 2) : qOm m 3 T (dTwo R _ x) = dTwo R' _ (qOm m 2 T x) :=
   (semiHom_coef m T).mOm_dTwo x
 
+/- English proof (translation)
+The claim follows from `(semiHom_coef m T).mOm_wedge a b`.
+-/
 theorem qOm_wedge (a b : Ω[F.obj (m.G.obj T)⁄R]) :
     qOm m 2 T (wedge R _ a b) = wedge R' _ (q1 m T a) (q1 m T b) := (semiHom_coef m T).mOm_wedge a b
 
@@ -70,29 +94,53 @@ def pullTot2 : Tot2 F →ₛₗ[σ] Tot2 F' where
 section
 variable {T T' T'' : C'} (φ : T ⟶ T') (ψ : T' ⟶ T'')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullTot1_f (c : Tot1 F) : (pullTot1 m c).1 T T' φ = m.α T' (c.1 _ _ (m.G.map φ)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullTot1_ω (c : Tot1 F) (T : C') : (pullTot1 m c).2 T = q1 m T (c.2 _) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechDeRhamPullbackTotalDegreeTwo_function_part (c : Tot2 F) :
     (pullTot2 m c).1 T T' T'' φ ψ = m.α T'' (c.1 _ _ _ (m.G.map φ) (m.G.map ψ)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullTot2_a (c : Tot2 F) : (pullTot2 m c).2.1 T T' φ = q1 m T' (c.2.1 _ _ (m.G.map φ)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullTot2_η (c : Tot2 F) (T : C') : (pullTot2 m c).2.2 T = qOm m 2 T (c.2.2 _) := rfl
 
 end
 
+/- English proof (translation)
+The claim follows from `Tot1.ext (fun T T' φ ↦ by simp only [pullTot1_f, dTot0_f, map_sub, m.naturality]) fun T ↦ by simp only [pullTot1_ω, dTot0_ω, cechDeRhamCoefMapOneForms_D]`.
+-/
 theorem pullTot1_dTot0 (g : Tot0 F) : pullTot1 m (dTot0 F g) = dTot0 F' fun T ↦ m.α T (g _) :=
   Tot1.ext (fun T T' φ ↦ by simp only [pullTot1_f, dTot0_f, map_sub, m.naturality])
     fun T ↦ by simp only [pullTot1_ω, dTot0_ω, cechDeRhamCoefMapOneForms_D]
 
+/- English proof (translation)
+The claim follows from `Tot2.ext (fun T T' T'' φ ψ ↦ by simp only [cechDeRhamPullbackTotalDegreeTwo_function_part, cechDeRhamTotalDifferentialOne_functionPart, pullTot1_f, map_sub, map_add, m.naturality, Functor.map_comp]) (fun T T' φ ↦ by simp only [pullTot2_a, dTot1_a, pullTot1_f, pullTot1_ω, map_sub, …`.
+-/
 theorem pullTot2_dTot1 (c : Tot1 F) : pullTot2 m (dTot1 F c) = dTot1 F' (pullTot1 m c) :=
   Tot2.ext (fun T T' T'' φ ψ ↦ by
       simp only [cechDeRhamPullbackTotalDegreeTwo_function_part, cechDeRhamTotalDifferentialOne_functionPart, pullTot1_f, map_sub, map_add, m.naturality, Functor.map_comp])
     (fun T T' φ ↦ by simp only [pullTot2_a, dTot1_a, pullTot1_f, pullTot1_ω, map_sub, cechDeRhamCoefMapOneForms_naturality, cechDeRhamCoefMapOneForms_D])
     fun T ↦ by simp only [pullTot2_η, dTot1_η, pullTot1_ω, qOm_dOne]
 
+/- English proof (translation)
+The claim follows from `Tot2.ext (fun T T' T'' φ ψ ↦ by simp only [cechDeRhamPullbackTotalDegreeTwo_function_part, cupTot_apply, pullTot1_f, map_mul, m.naturality]) (fun T T' φ ↦ by simp only [pullTot2_a, cupTot_a, pullTot1_f, pullTot1_ω, map_sub, cechDeRhamCoefMapOneForms_naturality, prodFirstProjectio …`.
+-/
 theorem pullTot2_cupTot (a b : Tot1 F) :
     pullTot2 m (cupTot F a b) = cupTot F' (pullTot1 m a) (pullTot1 m b) :=
   Tot2.ext (fun T T' T'' φ ψ ↦ by simp only [cechDeRhamPullbackTotalDegreeTwo_function_part, cupTot_apply, pullTot1_f, map_mul, m.naturality])
@@ -114,8 +162,14 @@ def pullZZ2 : cechDeRhamTotalCocyclesTwo F →ₛₗ[σ] cechDeRhamTotalCocycles
       rw [cechDeRhamTotalCocyclesTwo.two c (m.G.map φ), map_add, qOm_pOm, qOm_dOne]
     · rw [pullTot2_η, ← qOm_dTwo, cechDeRhamTotalCocyclesTwo.closed c, map_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_pullZZ1 (c : cechDeRhamTotalCocyclesOne F) : (pullZZ1 m c).1 = pullTot1 m c.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_pullZZ2 (c : cechDeRhamTotalCocyclesTwo F) : (pullZZ2 m c).1 = pullTot2 m c.1 := rfl
 
 def pullHyp1 : Hyp1 F →ₛₗ[σ] Hyp1 F' :=
@@ -128,16 +182,28 @@ def pullHyp2 : Hyp2 F →ₛₗ[σ] Hyp2 F' :=
     rintro _ ⟨g, rfl⟩
     exact ⟨_, Subtype.ext (pullTot2_dTot1 m g).symm⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullHyp1_mk (c : cechDeRhamTotalCocyclesOne F) : pullHyp1 m (Hyp1.mk F c) = Hyp1.mk F' (pullZZ1 m c) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullHyp2_mk (c : cechDeRhamTotalCocyclesTwo F) : pullHyp2 m (Hyp2.mk F c) = Hyp2.mk F' (pullZZ2 m c) := rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Hyp1.mk_surjective F a`. Take `⟨b, rfl⟩` from `Hyp1.mk_surjective F b`. Conclude with `congrArg (Hyp2.mk F') (Subtype.ext (pullTot2_cupTot m a.1 b.1))`.
+-/
 theorem pullHyp2_cup (a b : Hyp1 F) :
     pullHyp2 m (cupHyp F a b) = cupHyp F' (pullHyp1 m a) (pullHyp1 m b) := by
   obtain ⟨a, rfl⟩ := Hyp1.mk_surjective F a
   obtain ⟨b, rfl⟩ := Hyp1.mk_surjective F b
   exact congrArg (Hyp2.mk F') (Subtype.ext (pullTot2_cupTot m a.1 b.1))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Hyp1.mk_surjective F c`. Both sides reduce to the same expression.
+-/
 theorem toO_pullHyp1 (c : Hyp1 F) : toO F' (pullHyp1 m c) = m.pull1 (toO F c) := by
   obtain ⟨a, rfl⟩ := Hyp1.mk_surjective F c; rfl
 
@@ -152,32 +218,53 @@ def pullClosed1 : Closed1 F →ₛₗ[σ] Closed1 F' :=
     change dOne R' _ (q1 m T (ω.1.1 _)) = 0
     rw [← qOm_dOne, ω.2, map_zero]
 
+/- English proof (translation)
+The claim follows from `congrArg (Hyp1.mk F') (Subtype.ext (Tot1.ext (fun _ _ _ ↦ map_zero _) fun _ ↦ rfl))`.
+-/
 theorem pullHyp1_ofForm (ω : Closed1 F) : pullHyp1 m (ofForm F ω) = ofForm F' (pullClosed1 m ω) :=
   congrArg (Hyp1.mk F') (Subtype.ext (Tot1.ext (fun _ _ _ ↦ map_zero _) fun _ ↦ rfl))
 
+/- English proof (translation)
+The claim follows from `SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) ω`.
+-/
 theorem cechDeRhamCoefMapOneForms_restrictAlongFunctor (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (T : C') (ω : Ω[F.obj (G.obj T)⁄R]) :
     q1 (CoefMap.restrict F G) T ω = ω := SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) ω
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_id _ (fun _ ↦ rfl) x`.
+-/
 theorem qOm_restrict (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) {j : ℕ} (T : C')
     (x : Om R (F.obj (G.obj T)) j) : qOm (CoefMap.restrict F G) j T x = x :=
   SemiHom.mOm_id _ (fun _ ↦ rfl) x
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Hyp1.mk_surjective F c`. Conclude with `congrArg (Hyp1.mk F) (Subtype.ext (Tot1.ext (fun _ _ _ ↦ rfl) fun _ ↦ SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) _))`.
+-/
 theorem pullHyp1_id (c : Hyp1 F) : pullHyp1 (CoefMap.id F) c = c := by
   obtain ⟨a, rfl⟩ := Hyp1.mk_surjective F c
   exact congrArg (Hyp1.mk F) (Subtype.ext (Tot1.ext (fun _ _ _ ↦ rfl)
     fun _ ↦ SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) _))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Hyp2.mk_surjective F c`. Conclude with `congrArg (Hyp2.mk F) (Subtype.ext (Tot2.ext (fun _ _ _ _ _ ↦ rfl) (fun _ _ _ ↦ SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) _) fun _ ↦ SemiHom.mOm_id _ (fun _ ↦ rfl) _))`.
+-/
 theorem pullHyp2_id (c : Hyp2 F) : pullHyp2 (CoefMap.id F) c = c := by
   obtain ⟨a, rfl⟩ := Hyp2.mk_surjective F c
   exact congrArg (Hyp2.mk F) (Subtype.ext (Tot2.ext (fun _ _ _ _ _ ↦ rfl)
     (fun _ _ _ ↦ SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) _) fun _ ↦ SemiHom.mOm_id _ (fun _ ↦ rfl) _))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Hyp1.mk_surjective F c`. Conclude with `congrArg (Hyp1.mk F'') (Subtype.ext (Tot1.ext (fun _ _ _ ↦ rfl) fun _ ↦ (SemiHom.oneFormMap_comp_oneFormMap _ _ _ (fun _ ↦ rfl) _).symm))`.
+-/
 theorem pullHyp1_comp (n : CoefMap τ F' F'') (c : Hyp1 F) :
     pullHyp1 (m.comp n) c = pullHyp1 n (pullHyp1 m c) := by
   obtain ⟨a, rfl⟩ := Hyp1.mk_surjective F c
   exact congrArg (Hyp1.mk F'') (Subtype.ext (Tot1.ext (fun _ _ _ ↦ rfl)
     fun _ ↦ (SemiHom.oneFormMap_comp_oneFormMap _ _ _ (fun _ ↦ rfl) _).symm))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Hyp2.mk_surjective F c`. Conclude with `congrArg (Hyp2.mk F'') (Subtype.ext (Tot2.ext (fun _ _ _ _ _ ↦ rfl) (fun _ _ _ ↦ (SemiHom.oneFormMap_comp_oneFormMap _ _ _ (fun _ ↦ rfl) _).symm) fun _ ↦ (SemiHom.mOm_mOm _ _ _ (fun _ ↦ rfl) _).symm))`.
+-/
 theorem pullHyp2_comp (n : CoefMap τ F' F'') (c : Hyp2 F) :
     pullHyp2 (m.comp n) c = pullHyp2 n (pullHyp2 m c) := by
   obtain ⟨a, rfl⟩ := Hyp2.mk_surjective F c
@@ -191,12 +278,23 @@ variable {σ' : R →+* R'} (m' : CoefMap σ' F F') (θ : m.G ⟶ m'.G)
   (h : ∀ T b, m'.α T (mp F (θ.app T) b) = m.α T b)
 include h
 
+/- English proof (translation)
+The claim follows from `SemiHom.oneFormMap_comp_oneFormMap _ _ _ (h T) ω`.
+-/
 theorem cechDeRhamCoefMapOneForms_eq_of_natTrans (T : C') (ω : Ω[F.obj (m.G.obj T)⁄R]) : q1 m' T (p1 F (θ.app T) ω) = q1 m T ω :=
   SemiHom.oneFormMap_comp_oneFormMap _ _ _ (h T) ω
 
+/- English proof (translation)
+The claim follows from `SemiHom.mOm_mOm _ _ _ (h T) x`.
+-/
 theorem qOm_pOm_app {j : ℕ} (T : C') (x : Om R (F.obj (m.G.obj T)) j) :
     qOm m' j T (pOm F j (θ.app T) x) = qOm m j T x := SemiHom.mOm_mOm _ _ _ (h T) x
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `Hyp1.mk_surjective F c`. Rewrite using `[pullHyp1_mk, pullHyp1_mk, Hyp1.mk_eq_mk]`. Use `⟨fun T ↦ -m'.α T (f.1.1 _ _ (θ.app T)), Tot1.ext (fun T T' φ ↦ ?_) fun T ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun ξ ↦ m'.α T' (f.1.1 _ _ ξ)) (θ.naturality φ)`. Simplify using `only [cechDeRhamTotalCocyclesOne.comp f, map_add, h, m'.naturality] at e`.
+
+Simplify using `only [dTot0_f, Prod.fst_sub, Pi.sub_apply, coe_pullZZ1, pullTot1_f, map_neg]`. Take the linear combination `-e`. Simplify using `only [dTot0_ω, Prod.snd_sub, Pi.sub_apply, coe_pullZZ1, pullTot1_ω, map_neg]`. Rewrite using `[cechDeRhamTotalCocyclesOne.conn f (θ.app T), map_add, cechDeRhamCoefMapOneForms_eq_of_natTrans m m' θ h, cechDeRhamCoefMapOneForms_D]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pullHyp1_eq_of_natTrans (c : Hyp1 F) : pullHyp1 m c = pullHyp1 m' c := by
   obtain ⟨f, rfl⟩ := Hyp1.mk_surjective F c
   rw [pullHyp1_mk, pullHyp1_mk, Hyp1.mk_eq_mk]
@@ -208,6 +306,15 @@ theorem pullHyp1_eq_of_natTrans (c : Hyp1 F) : pullHyp1 m c = pullHyp1 m' c := b
   · simp only [dTot0_ω, Prod.snd_sub, Pi.sub_apply, coe_pullZZ1, pullTot1_ω, map_neg]
     rw [cechDeRhamTotalCocyclesOne.conn f (θ.app T), map_add, cechDeRhamCoefMapOneForms_eq_of_natTrans m m' θ h, cechDeRhamCoefMapOneForms_D]; abel
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Hyp2.mk_surjective F c`. Rewrite using `[pullHyp2_mk, pullHyp2_mk, Hyp2.mk_eq_mk]`. Use `⟨(fun T T' φ ↦ m'.α T' (z.1.1 _ _ _ (m.G.map φ) (θ.app T') - z.1.1 _ _ _ (θ.app T) (m'.G.map φ)), fun T ↦ -q1 m' T (z.1.2.1 _ _ (θ.app T))), Tot2.ext (fun T T' T'' φ ψ ↦ ?_) (fun T T' φ ↦ ?_) fun T ↦ ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (m'.α T'') (cechDeRhamTotalCocyclesTwo.comp z (m.G.map φ) (m.G.map ψ) (θ.app T''))`. Establish `e2` using `congrArg (m'.α T'') (cechDeRhamTotalCocyclesTwo.comp z (m.G.map φ) (θ.app T') (m'.G.map ψ))`.
+
+Establish `e3` using `congrArg (m'.α T'') (cechDeRhamTotalCocyclesTwo.comp z (θ.app T) (m'.G.map φ) (m'.G.map ψ))`. Rewrite `e1` using `[θ.naturality ψ]`. Rewrite `e2` using `[θ.naturality φ]`. Simplify using `only [map_add, h, m'.naturality] at e1 e2 e3`. Simplify using `only [cechDeRhamTotalDifferentialOne_functionPart, Prod.fst_sub, Pi.sub_apply, coe_pullZZ2, cechDeRhamPullbackTotalDegreeTwo_function_part, map_sub, Functor.map_comp]`.
+
+Take the linear combination `-e1 + e2 - e3`. Establish `e` using `congrArg (fun ξ ↦ q1 m' T' (z.1.2.1 _ _ ξ)) (θ.naturality φ)`. Simplify using `only [cechDeRhamTotalCocyclesTwo.one z, map_add, cechDeRhamCoefMapOneForms_eq_of_natTrans m m' θ h, cechDeRhamCoefMapOneForms_naturality, cechDeRhamCoefMapOneForms_D] at e`. Simplify using `only [dTot1_a, Prod.fst_sub, Prod.snd_sub, Pi.sub_apply, coe_pullZZ2, pullTot2_a, map_sub, map_neg]`. Take the linear combination `(norm := abel1) -e`.
+
+Simplify using `only [dTot1_η, Prod.snd_sub, Pi.sub_apply, coe_pullZZ2, pullTot2_η, map_neg]`. Rewrite using `[cechDeRhamTotalCocyclesTwo.two z (θ.app T), map_add, qOm_pOm_app m m' θ h, qOm_dOne]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pullHyp2_eq_of_natTrans (c : Hyp2 F) : pullHyp2 m c = pullHyp2 m' c := by
   obtain ⟨z, rfl⟩ := Hyp2.mk_surjective F c
   rw [pullHyp2_mk, pullHyp2_mk, Hyp2.mk_eq_mk]
@@ -254,6 +361,9 @@ def coneForm : LinearMap.ker (dOne R B) →ₗ[R] Closed1 F where
   map_add' a b := Subtype.ext (Subtype.ext (funext fun T ↦ map_add _ _ _))
   map_smul' r a := Subtype.ext (Subtype.ext (funext fun T ↦ (SemiHom.of_algHom (e T)).m1.map_smulₛₗ r a.1))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coneForm_apply (ω : LinearMap.ker (dOne R B)) (T : C) :
     (coneForm e he ω).1.1 T = (SemiHom.of_algHom (e T)).m1 ω.1 := rfl
 
@@ -263,9 +373,23 @@ def coneMap : AlgebraFirstDeRham R B →ₗ[R] Hyp1 F :=
     refine ofForm_eq_zero.2 ⟨fun T ↦ e T b, fun T T' φ ↦ (he φ b).symm, fun T ↦ ?_⟩
     rw [coneForm_apply, show ω.1 = D R B b from hb.symm, SemiHom.m1_D]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coneMap_mk (ω : LinearMap.ker (dOne R B)) :
     coneMap e he (Submodule.Quotient.mk ω) = ofForm F (coneForm e he ω) := rfl
 
+/- English proof (translation)
+Set `i` to `(AlgEquiv.ofBijective _ hb).symm.toAlgHom`. Establish `hi : ∀ b, i (e T₀ b) = b` using `(AlgEquiv.ofBijective _ hb).symm_apply_apply`. Establish `hi' : ∀ b, e T₀ (i b) = b` using `(AlgEquiv.ofBijective _ hb).apply_symm_apply`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `c hc`. Take `⟨ω, rfl⟩` from `Submodule.Quotient.mk_surjective _ c`. Take `⟨g, -, hg⟩` from `ofForm_eq_zero.1 hc`. Use `(Submodule.Quotient.mk_eq_zero _).2 ⟨i (g T₀), ?_⟩` and prove the remaining obligations. Use `congrArg (SemiHom.of_algHom i).m1 (hg T₀)` as an intermediate fact.
+
+Rewrite `this` using `[SemiHom.m1_D, coneForm_apply]`. Conclude with `this.trans ((SemiHom.oneFormMap_comp_oneFormMap _ _ (SemiHom.of_algHom (AlgHom.id R B)) (fun b ↦ hi b) _).trans (SemiHom.oneFormMap_eq_self_of_id _ (fun _ ↦ rfl) _))`. Introduce `c`. Establish `hc : c ∈ Fil1 F` using `H1.eq_zero_of_isInitial F h _`. Rewrite `hc` using `[Fil1_eq_range]`.
+
+Take `⟨ω, rfl⟩` from `hc`. Use `⟨Submodule.Quotient.mk ⟨(SemiHom.of_algHom i).m1 (ω.1.1 T₀), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, ← SemiHom.mOm_dOne, ω.2 T₀, map_zero]`. Rewrite using `[coneMap_mk]`. Use `congrArg _ (Subtype.ext (Subtype.ext (funext fun T ↦ ?_)))` and prove the remaining obligations.
+
+Rewrite using `[coneForm_apply, ω.1.2 (h.to T)]`. Conclude with `SemiHom.oneFormMap_comp_oneFormMap _ _ (semiHom_mp F (h.to T)) (fun b ↦ ((he (h.to T) (i b)).symm.trans (congrArg _ (hi' b)))) _`.
+-/
 theorem coneMap_bijective {T₀ : C} (h : Limits.IsInitial T₀) (hb : Function.Bijective (e T₀)) :
     Function.Bijective (coneMap e he) := by
   let i := (AlgEquiv.ofBijective _ hb).symm.toAlgHom

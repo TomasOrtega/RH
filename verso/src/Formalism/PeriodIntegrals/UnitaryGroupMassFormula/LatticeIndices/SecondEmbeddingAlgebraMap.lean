@@ -24,6 +24,9 @@ def ApproxP : Prop :=
   ∀ z : Fin X.B.I.n → FpX X p, (∀ y ∈ Mlat1 X p θ, z ⬝ᵥ (J1 X p θ *ᵥ y) ∈ OpX X p) →
     ∃ x : Fin X.B.I.n → X.B.I.E, LocInt X p θ x ∧ z - (fun j => iota2 X p θ (x j)) ∈ Mlat2 X p θ
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨x, hx, hzx⟩` from `h2 z hz`. Establish `h` using `Submodule.add_mem _ hzx (h1 x hx)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem dualBack_of (h1 : LocGlob X p θ) (h2 : ApproxP X p θ) : DualBack X p θ := by
   intro z hz
   obtain ⟨x, hx, hzx⟩ := h2 z hz
@@ -34,6 +37,11 @@ def DenomP : Prop :=
   ∀ e : X.B.I.E, iota1 X p θ e ∈ OpX X p → iota2 X p θ e ∈ OpX X p →
     ∃ s : 𝓞 X.B.I.F, s ∉ p.1.asIdeal ∧ ∃ c : 𝓞 X.B.I.E, (c : X.B.I.E) = algebraMap X.B.I.F X.B.I.E s * e
 
+/- English proof (translation)
+Establish `h1 : inclR (FpX X p) (algebraMap X.B.I.F X.B.I.E f) = algebraMap (FpX X p) (TpX X p) (algebraMap X.B.I.F (FpX X p) f)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : X.B.I.E →ₐ[X.B.I.F] TpX X p).commutes f`. Establish `h2` using `congrArg Prod.snd (th_incl (X := X) (p := p) (θ := θ) (algebraMap X.B.I.F X.B.I.E f))`. Simplify using `only at h2`.
+
+Rewrite using `[← h2, h1, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem secondEmbedding_algebraMap (f : X.B.I.F) : iota2 X p θ (algebraMap X.B.I.F X.B.I.E f) = algebraMap X.B.I.F (FpX X p) f := by
   have h1 : inclR (FpX X p) (algebraMap X.B.I.F X.B.I.E f) =
       algebraMap (FpX X p) (TpX X p) (algebraMap X.B.I.F (FpX X p) f) := by
@@ -44,6 +52,13 @@ theorem secondEmbedding_algebraMap (f : X.B.I.F) : iota2 X p θ (algebraMap X.B.
   rw [← h2, h1, AlgEquiv.commutes]
   rfl
 
+/- English proof (translation)
+Establish `hle : p.1.intValuation t ≤ 1` using `p.1.intValuation_le_one t`. Establish `hnlt : ¬ p.1.intValuation t < 1` using `fun h => ht ((p.1.intValuation_lt_one_iff_mem t).mp h)`. Establish `hval : Valued.v (algebraMap X.B.I.F (FpX X p) (t : X.B.I.F)) = 1`. Establish `e1 : Valued.v (algebraMap X.B.I.F (FpX X p) (t : X.B.I.F)) = p.1.intValuation t` using `by first`. Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (K := X.B.I.F) p.1 (t : X.B.I.F)).trans (IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := X.B.I.F) p.1 t)`.
+
+Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := X.B.I.F) p.1 t).trans (IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := X.B.I.F) p.1 t)`. Rewrite using `[e1]`. Conclude with `le_antisymm hle (not_lt.mp hnlt)`. Establish `hne : algebraMap X.B.I.F (FpX X p) (t : X.B.I.F) ≠ 0`. Introduce `h0`.
+
+Rewrite `hval` using `[h0, map_zero]`. Conclude with `zero_ne_one hval`. Use `⟨?_, hne⟩` and prove the remaining obligations. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`.
+-/
 theorem unit_of_notMem (t : 𝓞 X.B.I.F) (ht : t ∉ p.1.asIdeal) :
     (algebraMap X.B.I.F (FpX X p) (t : X.B.I.F))⁻¹ ∈ OpX X p ∧ algebraMap X.B.I.F (FpX X p) (t : X.B.I.F) ≠ 0 := by
   have hle : p.1.intValuation t ≤ 1 := p.1.intValuation_le_one t
@@ -65,6 +80,9 @@ theorem unit_of_notMem (t : 𝓞 X.B.I.F) (ht : t ∉ p.1.asIdeal) :
   refine ⟨?_, hne⟩
   rw [IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul_right (y x : Fin X.B.I.n → X.B.I.E) (c : X.B.I.E) :
     Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J y (c • x) = c * Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J y x := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]

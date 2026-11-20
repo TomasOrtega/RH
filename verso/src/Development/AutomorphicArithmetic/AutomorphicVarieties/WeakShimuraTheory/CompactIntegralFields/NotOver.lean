@@ -11,6 +11,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Introduce `hq'` and use `by obtain ⟨a, b, hab⟩ : IsCoprime (q : ℤ) (p : ℤ) := Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 e) have h1 : A.valuation ((a : Ω) * (q : Ω) + (b : Ω) * (p : Ω)) < 1 := by refine Valuation.map_add_lt _ ?_ ?_ · rw [map_mul] exact lt_of_le_of_lt (mul_le_of_le_one_left …`.
+-/
 private theorem not_over {Ω : Type} [Field Ω] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (e : q ≠ p) {A : ValuationSubring Ω}
     (hA : A.valuation (p : Ω) < 1) : ¬ A.valuation (q : Ω) < 1 := fun hq' => by
   obtain ⟨a, b, hab⟩ : IsCoprime (q : ℤ) (p : ℤ) := Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 e)
@@ -27,6 +30,11 @@ private theorem not_over {Ω : Type} [Field Ω] {p q : ℕ} (hp : p.Prime) (hq :
 section
 variable {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R')
 
+/- English proof (translation)
+Use `⟨fun i j e => by rw [Matrix.map_apply, h.1 i j e, map_zero], ?_⟩` and prove the remaining obligations. Establish `e : adj Y = -Y` using `h.2`. Use `show adj _ = -_`. Rewrite using `[(grp R).2.2.2.2.2.1, e]`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem uM_map {Y : M4 R} (h : Y ∈ uM R) : Y.map f ∈ uM R' := by
   refine ⟨fun i j e => by rw [Matrix.map_apply, h.1 i j e, map_zero], ?_⟩
   have e : adj Y = -Y := h.2
@@ -35,19 +43,60 @@ private theorem uM_map {Y : M4 R} (h : Y ∈ uM R) : Y.map f ∈ uM R' := by
   ext i j
   simp
 
+/- English proof (translation)
+Introduce `i j e` and use `by rw [Matrix.map_apply, h i j e, map_zero]`.
+-/
 private theorem blk_map {Y : M4 R} (h : IsBlock Y) : IsBlock (Y.map f) := fun i j e => by
   rw [Matrix.map_apply, h i j e, map_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem rep_eq {Γ : Type} [Group Γ] (r : Γ →* M4 R) (g : Γ) : mapRep f r g = f.mapMatrix (r g) := rfl
 
+/- English proof (translation)
+The claim follows from `(grp R).2.2.2.2.2.1 R' f Y`.
+-/
 private theorem adj_map (Y : M4 R) : adj (f.mapMatrix Y) = f.mapMatrix (adj Y) := (grp R).2.2.2.2.2.1 R' f Y
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [eAB]`.
+-/
 private theorem eAB_map : (eAB R).map f = eAB R' := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [eAB]
 
 end
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l hl c D hD 𝔞 r u hK hB hsp`. Take `⟨hpos, h2, A, _, _, _, f, r₁, u₁, hf, hr, hu, hlA, hb⟩` from `toGlobalTheory D hD 𝔞 r u hK hB`. Use `haveI := hf.fin`. Use `haveI := hf.loc`. Take `⟨r', z, y, e, hc, hz, hy, hm, hzc, hN, hfl, hne⟩` from `cocA hP _ _ _ _ hpos A r₁ u₁ hf.complete hlA hb`.
+
+Establish `hinj : Function.Injective (f.mapMatrix : M4 A →+* M4 𝔞.V)` using `Matrix.map_injective hf.inj`. Establish `er : ∀ g, r g = f.mapMatrix (r₁ g)` using `fun g => by rw [← hr]; rfl`. Establish `eu : u = f.mapMatrix u₁` using `hu.symm`. Establish `eV : ∀ g, mapRep f r' g = (1 + (z g).map f) * r g` using `fun g => by`. Rewrite using `[rep_eq, e, map_mul, map_add, map_one, er]`.
+
+Both sides reduce to the same expression. Establish `hzV : ∀ g, (z g).map f ∈ uM 𝔞.V` using `fun g => uM_map f (hz g)`. Establish `hyV` using `uM_map f hy`. Establish `kill : ∀ g (B : ValuationSubring Ω), ¬ B.valuation (l : Ω) < 1 → g ∈ Ine (F` using `ℚ) B → r g = 1 → mapRep f r' g = 1 := fun g B h1 h3 h4 => by`. Establish `h5 : r₁ g = 1` using `hinj (by rw [← er, h4, map_one])`.
+
+Rewrite using `[eV, hN g ⟨h5, B, h1, h3⟩, h4]`. Simplify using the standard rewrite rules. Establish `fl : ∀ s ∈ D.Gp l, IsUp (adj ((1 - y.map f) * u) * mapRep f r' s * ((1 - y.map f) * u)) ∧ ∀ i, (adj ((1 - y.map f) * u) * mapRep f r' s * ((1 - y.map f) * u) : M4 𝔞.V) i i = (adj u * r s * u : M4 𝔞.V) i i` using `fun s hs => by`. Rewrite using `[eV]`. Use `twistFlag _ (r s) (r s⁻¹) _ _ u (hB s) (hB _) (by rw [← map_mul, inv_mul_cancel, map_one]) (hzV s) hyV hK.sp (hK.flag s hs) fun i j hij => ?_` and prove the remaining obligations.
+
+Establish `h1 : adj u * ((z s).map f - (r s * y.map f * r s⁻¹ - y.map f)) * u = f.mapMatrix (adj u₁ * (z s - (r₁ s * y * r₁ s⁻¹ - y)) * u₁)`. Rewrite using `[eu, er, er, adj_map]`. Simplify using `only [map_mul, map_sub]`. Both sides reduce to the same expression. Rewrite using `[h1, RingHom.mapMatrix_apply, Matrix.map_apply, hfl s hs i j hij, map_zero]`.
+
+Establish `eK : ∀ g, mapRep 𝔞.toK (mapRep f r') g = (1 + ((z g).map f).map 𝔞.toK) * mapRep 𝔞.toK r g` using `fun g => by`. Rewrite using `[rep_eq, eV, map_mul, map_add, map_one]`. Both sides reduce to the same expression. Establish `hBK : ∀ g, IsBlock (mapRep 𝔞.toK r g)` using `fun g => blk_map 𝔞.toK (hB g)`. Establish `hzK : ∀ g, ((z g).map f).map 𝔞.toK ∈ uM 𝔞.K` using `fun g => uM_map _ (hzV g)`.
+
+Use `⟨mapRep f r', (1 - y.map f) * u, ⟨⟨A, _, _, _, f, ⟨r', fun _ => (1 - y) * u₁⟩, hf, hc, ?_⟩, fun g i j => ?_, fun g => ?_, fun B hA g hg h1 => ?_, fun p hp g hg => ?_, ?_, fun s hs => (fl s hs).1, fun s hs i => ?_, fun s hs i => ?_⟩, ⟨fun g i j h => ?_, ?_, ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Use `PD.ext rfl (funext fun _ => ?_) show f.mapMatrix ((1 - y) * u₁) = _` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, map_one, eu]`. Both sides reduce to the same expression. Rewrite using `[eV, add_mul, one_mul, Matrix.add_apply, add_sub_right_comm]`.
+
+Use `Ideal.add_mem _ (hK.red g i j) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (map_nonunit f _ (hm g i k))`. Rewrite using `[eV]`. Conclude with `(twistPt _ _ _ (hB g) (hzV g)).1 _ _ (hK.mult g)`.
+
+Conclude with `kill g B (hA l (Finset.mem_insert_self _ _)) hg (hK.unr B hA g hg h1)`. Take `⟨h3, h4, -⟩` from `(facts D hD).1 p hp`. Conclude with `kill g _ (not_over h3 hl.out h4.symm (hD.pl_over p h3)) hg.1 (hK.atP p hp g hg)`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(twistPt _ _ _ (hB 1) (neg_mem hyV)).1 _ _ hK.sp`.
+
+Rewrite using `[(fl s hs).2]`. Conclude with `hK.char s hs i`. Rewrite using `[(fl s (Ine_le_Dec _ hs)).2]`. Conclude with `hK.inert s hs i`. Rewrite using `[eK]`.
+
+Conclude with `(twistPt _ _ _ (hBK g) (hzK g)).2.1 i j h`. Rewrite using `[show (fun g => (mapRep 𝔞.toK (mapRep f r') g).submatrix ixB ixB) = fun g => (mapRep 𝔞.toK r g).submatrix ixB ixB from`. Use function extensionality and compare the values at `fun g => by rw [eK]; exact (twistPt _ _ _ (hBK g) (hzK g)).2.2.1]`. Use `spanB _ _ _ ⟨fun g => ⟨𝔞.toK (𝔞.a c (D.th g)), ?_⟩, hBK⟩ hsp` and prove the remaining obligations. Establish `h1` using `congrArg (𝔞.toK.mapMatrix : M4 𝔞.V →+* M4 𝔞.K) (hK.mult g)`.
+
+Rewrite `h1` using `[map_mul, ← adj_map]`. Use `h1.trans ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Introduce and unpack `⟨Y, hY, hblk⟩`.
+
+Establish `h3 : IsUnit (2 : 𝔞.K)` using `by have := h2.map 𝔞.toK; rwa [map_ofNat] at this`. Establish `h4` using `noCompl _ _ (mapRep 𝔞.toK r) (fun g => ((z g).map f).map 𝔞.toK) D.cc Y h3 hBK (fun g => (hzK g).1) (by rw [rep_eq, er, hb.cc]; exact (congrArg (·.map 𝔞.toK) (eAB_map f)).trans (eAB_map _)) (by rw [hzc]; ext i j; simp) hY fun g => by rw [← eK]; exact hblk g`. Use `hne (funext fun g => ?_)` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `hf.inj (Subtype.ext (by simpa using congrFun (congrFun (h4 g) i) j))`.
+
+Rewrite using `[eV]`. Conclude with `(twistPt _ _ _ (hB g) (hzV g)).2.2.2`.
+-/
 theorem UpperTheory.V.Ws.bl :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) r u, KPair D 𝔞 r u → (∀ g, IsBlock (r g)) →
       Submodule.span 𝔞.K (Set.range fun g => (mapRep 𝔞.toK r g).submatrix ixA ixA) = ⊤ →

@@ -4,6 +4,17 @@ namespace GlobalTheory.NonzeroSmulMem
 
 open NumberField
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `M.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `M.smul_mem b hay`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem a hbz`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨p, q, hq, hc⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) c`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hqK : algebraMap (𝓞 K) K q ≠ 0`. Introduce `h`. Conclude with `hq0 ((IsFractionRing.injective (𝓞 K) K) (by rw [h, map_zero]))`.
+
+Use `⟨a * q, mul_ne_zero ha hq0, ?_⟩` and prove the remaining obligations. Establish `h1 : q • (c • y) = p • y`. Rewrite using `[← algebraMap_smul K q, ← algebraMap_smul K p, smul_smul, ← hc, mul_div_cancel₀ _ hqK]`. Rewrite using `[mul_smul, h1, smul_smul, mul_comm, mul_smul]`. Conclude with `M.smul_mem p hay`.
+-/
 theorem exists_ne_zero_smul_mem {K V : Type} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     {M : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Submodule.span K (M : Set V)) :

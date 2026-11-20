@@ -26,6 +26,9 @@ namespace GlobalTheory.ChF
 section
 variable {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {d : ℕ} (F : FGLaw R d)
 
+/- English proof (translation)
+The claim follows from `| 0, j => by simp [mulF] | N + 1, j => by have h : ∀ q : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![mulF F.F N, pt R d 0] : Fin 2 → Pt R 1 d) q.1 q.2) = 0 := by rintro ⟨x, l⟩ fin_cases x · exact kill_cc N l · simp [pt] exact MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerS …`.
+-/
 private theorem kill_cc : ∀ (N : ℕ) (j : Fin d), MvPowerSeries.constantCoeff (mulF F.F N j) = 0
   | 0, j => by simp [mulF]
   | N + 1, j => by
@@ -38,26 +41,43 @@ private theorem kill_cc : ∀ (N : ℕ) (j : Fin d), MvPowerSeries.constantCoeff
     exact MvPowerSeries.constantCoeff_subst_eq_zero
       (MvPowerSeries.hasSubst_of_constantCoeff_zero h) h (F.const j)
 
+/- English proof (translation)
+Take `⟨ψ, h1, -, h3⟩` from `(nv_calculus R S s n d a ha).1`. Conclude with `(h1 _).symm.trans (h3 (i, j))`.
+-/
 private theorem kill_X {n : ℕ} (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (i : Fin n) (j : Fin d) :
     nv s (pt R d i j) a = a i j := by
   obtain ⟨ψ, h1, -, h3⟩ := (nv_calculus R S s n d a ha).1
   exact (h1 _).symm.trans (h3 (i, j))
 
+/- English proof (translation)
+Take `⟨ψ, h1, -, -⟩` from `(nv_calculus R S s n d a ha).1`. Conclude with `(h1 _).symm.trans (map_zero ψ)`.
+-/
 private theorem kill_zero {n : ℕ} (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) :
     nv s (0 : PS R n d) a = 0 := by
   obtain ⟨ψ, h1, -, -⟩ := (nv_calculus R S s n d a ha).1
   exact (h1 _).symm.trans (map_zero ψ)
 
+/- English proof (translation)
+Introduce `i j` and use `by fin_cases i; exact ha j`.
+-/
 private theorem kill_one {a : Fin d → S} (ha : ∀ i, IsNilpotent (a i)) :
     ∀ i j, IsNilpotent ((![a] : Fin 1 → Fin d → S) i j) := fun i j => by
   fin_cases i; exact ha j
 
+/- English proof (translation)
+Introduce `i j` and use `by fin_cases i · exact ha j · exact hb j`.
+-/
 private theorem kill_two {a b : Fin d → S} (ha : ∀ i, IsNilpotent (a i)) (hb : ∀ i, IsNilpotent (b i)) :
     ∀ i j, IsNilpotent ((![a, b] : Fin 2 → Fin d → S) i j) := fun i j => by
   fin_cases i
   · exact ha j
   · exact hb j
 
+/- English proof (translation)
+Use `(nv_calculus R S s n d a ha).2.2.1 2 d ![x, y] f (fun i j => by fin_cases i` as an intermediate fact. Conclude with `hx j`. Conclude with `hy j)`. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private theorem kill_add {n : ℕ} (a : Fin n → Fin d → S) (ha : ∀ i j, IsNilpotent (a i j)) (x y : Pt R n d)
     (hx : ∀ j, MvPowerSeries.constantCoeff (x j) = 0) (hy : ∀ j, MvPowerSeries.constantCoeff (y j) = 0)
     (f : PS R 2 d) : nv s (ev ![x, y] f) a = nv s f ![fun l => nv s (x l) a, fun l => nv s (y l) a] := by
@@ -70,6 +90,9 @@ private theorem kill_add {n : ℕ} (a : Fin n → Fin d → S) (ha : ∀ i j, Is
   funext i
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Use `(kill_add s ![a] (kill_one ha) _ _ (kill_cc F N) (fun l => by simp [pt]) (F.F j)).trans ?_` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `l`. Conclude with `kill_X s ![a] (kill_one ha) 0 l`.
+-/
 private theorem kill_succ {a : Fin d → S} (ha : ∀ i, IsNilpotent (a i)) (N : ℕ) (j : Fin d) :
     nv s (mulF F.F (N + 1) j) ![a] = nv s (F.F j) ![fun l => nv s (mulF F.F N l) ![a], a] := by
   refine (kill_add s ![a] (kill_one ha) _ _ (kill_cc F N) (fun l => by simp [pt]) (F.F j)).trans ?_
@@ -77,6 +100,11 @@ private theorem kill_succ {a : Fin d → S} (ha : ∀ i, IsNilpotent (a i)) (N :
   funext l
   exact kill_X s ![a] (kill_one ha) 0 l
 
+/- English proof (translation)
+Establish `h` using `kill_add s ![c] (kill_one hc) 0 (pt R d 0) (fun l => by simp) (fun l => by simp [pt]) (F.F j)`. Rewrite `h` using `[F.unit j]`. Establish `h1 : (fun l => nv s ((0 : Pt R 1 d) l) ![c]) = 0` using `funext fun l => kill_zero s _ (kill_one hc)`. Establish `h2 : (fun l => nv s (pt R d (0 : Fin 1) l) ![c]) = c` using `funext fun l => kill_X s _ (kill_one hc) 0 l`. Rewrite `h` using `[h1, h2]`.
+
+Conclude with `h.symm.trans (kill_X s _ (kill_one hc) 0 j)`.
+-/
 private theorem kill_unitL {c : Fin d → S} (hc : ∀ i, IsNilpotent (c i)) (j : Fin d) :
     nv s (F.F j) ![0, c] = c j := by
   have h := kill_add s ![c] (kill_one hc) 0 (pt R d 0) (fun l => by simp) (fun l => by simp [pt]) (F.F j)
@@ -86,6 +114,11 @@ private theorem kill_unitL {c : Fin d → S} (hc : ∀ i, IsNilpotent (c i)) (j 
   rw [h1, h2] at h
   exact h.symm.trans (kill_X s _ (kill_one hc) 0 j)
 
+/- English proof (translation)
+Establish `h0` using `kill_two hb (fun _ => IsNilpotent.zero : ∀ i, IsNilpotent ((0 : Fin d → S) i))`. Establish `h` using `kill_add s ![b, 0] h0 (pt R d 1) (pt R d 0) (fun l => by simp [pt]) (fun l => by simp [pt]) (F.F j)`. Rewrite `h` using `[F.comm j]`. Establish `h1 : (fun l => nv s (pt R d (1 : Fin 2) l) ![b, 0]) = 0` using `funext fun l => kill_X s _ h0 1 l`. Establish `h2 : (fun l => nv s (pt R d (0 : Fin 2) l) ![b, 0]) = b` using `funext fun l => kill_X s _ h0 0 l`.
+
+Rewrite `h` using `[h1, h2]`. Conclude with `h.trans (kill_unitL s F hb j)`.
+-/
 private theorem kill_unitR {b : Fin d → S} (hb : ∀ i, IsNilpotent (b i)) (j : Fin d) :
     nv s (F.F j) ![b, 0] = b j := by
   have h0 := kill_two hb (fun _ => IsNilpotent.zero : ∀ i, IsNilpotent ((0 : Fin d → S) i))
@@ -96,6 +129,13 @@ private theorem kill_unitR {b : Fin d → S} (hb : ∀ i, IsNilpotent (b i)) (j 
   rw [h1, h2] at h
   exact h.trans (kill_unitL s F hb j)
 
+/- English proof (translation)
+Establish `hn : ∀ x ∈ K, IsNilpotent x` using `fun x hx => ⟨2, by rw [pow_two]; exact hK x hx x hx⟩`. Establish `key : ∀ b c : Fin d → S, (∀ i, b i ∈ K) → (∀ i, c i ∈ K) → nv s (F.F j) ![b, c] = ∑ l, s (MvPowerSeries.coeff (Finsupp.single (0, l) 1) (F.F j)) * b l + ∑ l, s (MvPowerSeries.coeff (Finsupp.single (1, l) 1) (F.F j)) * c l`. Introduce `b c hb hc`. Establish `hm : ∀ i l, (![b, c] : Fin 2 → Fin d → S) i l ∈ K` using `fun i l => by fin_cases i`. Conclude with `hb l`.
+
+Conclude with `hc l`. Rewrite using `[(nv_calculus R S s 2 d ![b, c] (fun i l => hn _ (hm i l))).2.2.2.2.2 (fun _ _ _ _ => hK _ (hm _ _) _ (hm _ _)), F.const j, map_zero, zero_add, Fintype.sum_prod_type, Fin.sum_univ_two]`. Both sides reduce to the same expression. Establish `h1` using `key b 0 hb (fun _ => K.zero_mem)`. Establish `h2` using `key 0 c (fun _ => K.zero_mem) hc`.
+
+Rewrite `h1` using `[kill_unitR s F (fun i => hn _ (hb i))]`. Rewrite `h2` using `[kill_unitL s F (fun i => hn _ (hc i))]`. Rewrite using `[key b c hb hc, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 private theorem kill_sq (K : Ideal S) (hK : ∀ x ∈ K, ∀ y ∈ K, x * y = 0) {b c : Fin d → S}
     (hb : ∀ i, b i ∈ K) (hc : ∀ i, c i ∈ K) (j : Fin d) : nv s (F.F j) ![b, c] = b j + c j := by
   have hn : ∀ x ∈ K, IsNilpotent x := fun x hx => ⟨2, by rw [pow_two]; exact hK x hx x hx⟩
@@ -118,6 +158,11 @@ private theorem kill_sq (K : Ideal S) (hK : ∀ x ∈ K, ∀ y ∈ K, x * y = 0)
   rw [key b c hb hc, h1, h2]
   simp
 
+/- English proof (translation)
+Establish `hn : ∀ i, IsNilpotent (c i)` using `fun i => ⟨2, by rw [pow_two]; exact hK _ (hc i) _ (hc i)⟩`. Proceed by induction on `N with`. Consider the case `zero => intro j; exact (kill_zero s ![c] (kill_one hn)).trans (by simp)`. Consider the case `succ N ih`. Introduce `j`.
+
+Rewrite using `[kill_succ s F hn, funext ih, kill_sq s F K hK (fun i => K.mul_mem_left _ (hc i)) hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem kill_sqN (K : Ideal S) (hK : ∀ x ∈ K, ∀ y ∈ K, x * y = 0) {c : Fin d → S}
     (hc : ∀ i, c i ∈ K) (N : ℕ) : ∀ j, nv s (mulF F.F N j) ![c] = (N : S) * c j := by
   have hn : ∀ i, IsNilpotent (c i) := fun i => ⟨2, by rw [pow_two]; exact hK _ (hc i) _ (hc i)⟩
@@ -129,6 +174,13 @@ private theorem kill_sqN (K : Ideal S) (hK : ∀ x ∈ K, ∀ y ∈ K, x * y = 0
     push_cast
     ring
 
+/- English proof (translation)
+Set `t` to `Ideal.Quotient.mk (K * K)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero, map_mul, map_natCast]`. Use `((nv_calculus R S s 1 d ![c] (kill_one hn)).2.2.2.2.1 _ t _).trans ?_` and prove the remaining obligations. Establish `h : (fun i l => t ((![c] : Fin 1 → Fin d → S) i l)) = ![fun l => t (c l)]`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `kill_sqN (t.comp s) F (K.map t) ?_ (fun i => Ideal.mem_map_of_mem t (hc i)) N j` and prove the remaining obligations. Introduce `x hx y hy`.
+
+Take `⟨x, hx', rfl⟩` from `(Ideal.mem_map_iff_of_surjective t Ideal.Quotient.mk_surjective).1 hx`. Take `⟨y, hy', rfl⟩` from `(Ideal.mem_map_iff_of_surjective t Ideal.Quotient.mk_surjective).1 hy`. Rewrite using `[← map_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_mul hx' hy')`.
+-/
 private theorem kill_lin (K : Ideal S) {c : Fin d → S} (hn : ∀ i, IsNilpotent (c i))
     (hc : ∀ i, c i ∈ K) (N : ℕ) (j : Fin d) : nv s (mulF F.F N j) ![c] - (N : S) * c j ∈ K * K := by
   let t := Ideal.Quotient.mk (K * K)
@@ -144,12 +196,36 @@ private theorem kill_lin (K : Ideal S) {c : Fin d → S} (hn : ∀ i, IsNilpoten
   rw [← map_mul]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_mul hx' hy')
 
+/- English proof (translation)
+The claim follows from `((nv_calculus R S s 1 d ![c] (kill_one hn)).2.1 _ (kill_cc F N j)).1`.
+-/
 private theorem kill_nil {c : Fin d → S} (hn : ∀ i, IsNilpotent (c i)) (N : ℕ) (j : Fin d) :
     IsNilpotent (nv s (mulF F.F N j) ![c]) :=
   ((nv_calculus R S s 1 d ![c] (kill_one hn)).2.1 _ (kill_cc F N j)).1
 
 end
 
+/- English proof (translation)
+Introduce `R₀ _ B O g F Y hY p R s a hp ha`. Establish `h1 : ∀ a : Fin g → (R : Type), (∀ i, IsNilpotent (a i)) → ∀ N : ℕ, N • Y R s a = Y R s (fun j => nv s.1.toRingHom (mulF F.F N j) ![a])`. Introduce `a ha N`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Rewrite using `[zero_nsmul, ← hY.zero R s]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(kill_zero _ ![a] (kill_one ha)).symm`. Consider the case `succ N ih`.
+
+Rewrite using `[succ_nsmul, ih, hY.law R s _ _ (kill_nil _ F ha N) ha]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(kill_succ _ F ha N j).symm`. Use `⟨h1 a ha, ?_⟩` and prove the remaining obligations.
+
+Set `J : Ideal (R : Type)` to `Ideal.span (insert (p : (R : Type)) (Set.range a))`. Establish `hpJ : (p : (R : Type)) ∈ J` using `Ideal.subset_span (Set.mem_insert _ _)`. Establish `h2 : ∀ k : ℕ, ∃ b : Fin g → (R : Type), (∀ i, IsNilpotent (b i)) ∧ (∀ i, b i ∈ J ^ (k + 1)) ∧ p ^ k • Y R s a = Y R s b`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Use `⟨a, ha, fun i => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[zero_add, pow_one]`. Conclude with `Ideal.subset_span (Set.mem_insert_of_mem _ ⟨i, rfl⟩)`. Consider the case `succ k ih`.
+
+Take `⟨b, hb, hbJ, e⟩` from `ih`. Use `⟨_, kill_nil _ F hb p, fun i => ?_, by rw [pow_succ', mul_smul, e, h1 b hb p]⟩` and prove the remaining obligations. Establish `h3` using `kill_lin s.1.toRingHom F (J ^ (k + 1)) hb hbJ p i`. Rewrite `h3` using `[← pow_add]`. Establish `h4 : (p : (R : Type)) * b i ∈ J ^ (k + 1 + 1)`.
+
+Rewrite using `[pow_succ' J (k + 1)]`. Conclude with `Ideal.mul_mem_mul hpJ (hbJ i)`. Simplify using `using add_mem (Ideal.pow_le_pow_right (by omega : k + 1 + 1 ≤ k + 1 + (k + 1)) h3) h4`. Establish `hfg : J.FG` using `Submodule.fg_span ((Set.finite_range a).insert _)`. Establish `hle : J ≤ nilradical (R : Type)`.
+
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | ⟨i, rfl⟩)`. Conclude with `hp`. Conclude with `ha i`. Take `⟨n, hn⟩` from `(Ideal.FG.isNilpotent_iff_le_nilradical hfg).2 hle`.
+
+Take `⟨b, -, hbJ, e⟩` from `h2 (n + 1)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← hY.zero R s]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Use `Ideal.pow_le_pow_right (by omega : n ≤ n + 1 + 1) (hbJ i)` as an intermediate fact. Rewrite `this` using `[hn]`. Simplify using `using this`.
+-/
 theorem bxChart_nsmul_and_killed : ∀ (R₀ : Type) [CommRing R₀] (B : BX R₀) (O : LAlg R₀) (g : ℕ) (F : FGLaw (O : Type) g) (Y : ∀ R : LAlg R₀, LHom O R → (Fin g → (R : Type)) → B.G R), BXChart B O F.F Y → ∀ (p : ℕ) (R : LAlg R₀) (s : LHom O R) (a : Fin g → (R : Type)), IsNilpotent (p : (R : Type)) → (∀ i, IsNilpotent (a i)) → (∀ N : ℕ, N • Y R s a = Y R s (fun j => nv s.1.toRingHom (mulF F.F N j) ![a])) ∧ ∃ n : ℕ, p ^ (n + 1) • Y R s a = 0 := by
   intro R₀ _ B O g F Y hY p R s a hp ha
   have h1 : ∀ a : Fin g → (R : Type), (∀ i, IsNilpotent (a i)) → ∀ N : ℕ,

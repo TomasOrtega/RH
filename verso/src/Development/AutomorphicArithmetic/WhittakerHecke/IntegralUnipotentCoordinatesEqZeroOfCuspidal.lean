@@ -24,6 +24,17 @@ private noncomputable def latE' {F E : Type} [Field F] [NumberField F] [Field E]
   right_inv y := Subtype.ext (D.coE.symm_apply_apply y.1)
 
 open GroundTheory.Automorphic.FourierWhittaker in
+/- English proof (translation)
+Introduce `E _ _ D Φ hL h0 h`. Establish `hl` using `hL.2`. Set `β : (Fin 2 → A ℚ) ≃ₜ+ A E` to `D.coE.symm`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`. Use `haveI : (adeleMeasurePi ℚ (ι := Fin 2)).IsAddHaarMeasure := inferInstanceAs (Measure.pi fun _ : Fin 2 => adeleMeasure ℚ).IsAddHaarMeasure`.
+
+Use `haveI : ((adeleMeasurePi ℚ (ι := Fin 2)).map m).IsAddHaarMeasure := β.isAddHaarMeasure_map (adeleMeasurePi ℚ)`. Establish `hF : IsAddFundamentalDomain (AdeleRing.principalSubgroup (𝓞 E) E) (m '' FS2 ℚ) ((adeleMeasurePi ℚ (ι` using `Fin 2)).map m) := (isAddFundamentalDomain_vecDomain (K := ℚ) (ι := Fin 2)).image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving (latE' D).symm fun y x => by`. Express the relevant statement in the definitionally equal form `β (D.coE y.1 + x) = y.1 + β x`. Rewrite using `[map_add]`. Use `congr 1`.
+
+Conclude with `D.coE.symm_apply_apply y.1`. Establish `hF' : IsAddFundamentalDomain (AdeleRing.principalSubgroup (𝓞 E) E) (m '' FS2 ℚ) (adeleMeasure E)` using `hF.mono (Measure.absolutelyContinuous_isAddHaarMeasure _ _)`. Establish `hper : ∀ (g : AdeleRing.principalSubgroup (𝓞 E) E) (x : A E), Φ (gl (nU (g +ᵥ x)) * h) = Φ (gl (nU x) * h)`. Introduce and unpack `⟨_, k, rfl⟩ x`. Take `⟨γ, hγ⟩` from `Pp.rat_n k`.
+
+Express the relevant statement in the definitionally equal form `Φ (gl (nU (rt k + x)) * h) = _`. Rewrite using `[Pp.n_add, ← hγ, mul_assoc, hl]`. Use `haveI : Countable (AdeleRing.principalSubgroup (𝓞 E) E) := (latE' D).symm.injective.countable`. Establish `h1` using `(isAddFundamentalDomain_fundamentalSet E).setIntegral_eq hF' (f := fun x => Φ (gl (nU x) * h)) hper`. Establish `h2 : ∫ x in fundamentalSet E, Φ (gl (nU x) * h) ∂(adeleMeasure E) = 0` using `h0 h`.
+
+Establish `hc` using `(Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (adeleMeasure E) ((adeleMeasurePi ℚ (ι := Fin 2)).map m)).ne'`. Rewrite `h2` using `[h1, Measure.isAddLeftInvariant_eq_smul (adeleMeasure E) ((adeleMeasurePi ℚ (ι := Fin 2)).map m), Measure.restrict_smul, integral_smul_nnreal_measure, m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Conclude with `(smul_eq_zero.1 h2).resolve_left hc`.
+-/
 theorem UpperTheory.integral_unipotentCoordinates_eq_zero_of_cuspidal :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (f : GL (Fin 2) (A E) → ℂ), Pp.Lf f →
         (∀ g, ∫ b in fundamentalSet E, f (gl (nU b) * g) ∂(adeleMeasure E) = 0) →

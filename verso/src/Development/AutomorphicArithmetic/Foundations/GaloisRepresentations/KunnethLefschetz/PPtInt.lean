@@ -8,9 +8,17 @@ open scoped TensorProduct DirectSum
 
 namespace UpperTheory.Gal.KunnethLefschetz
 
+/- English proof (translation)
+Simplify using `[pb, pullHQ, pullHl_id, LinearMap.baseChange_id]`.
+-/
 private theorem pb_id' (l : ℕ) [Fact l.Prime] (X : Scheme.{0}) (n : ℤ) (z : V l X n) : pb l (𝟙 X) n z = z := by
   simp [pb, pullHQ, pullHl_id, LinearMap.baseChange_id]
 
+/- English proof (translation)
+Simplify using `only [ext2]`. Rewrite using `[R.nat (slice y) a b n h]`. Establish `e1 : pb l (slice y) a (pb l (pullback.fst p p) a u) = u`. Rewrite using `[← LinearMap.comp_apply, ← pb_comp]`. Simplify using `only [slice, pullback.lift_fst]`.
+
+Conclude with `pb_id' l X a u`. Establish `e2 : pb l (slice y) b (pb l (pullback.snd p p) b v) = pb l p b (pb l y.1 b v)`. Rewrite using `[← LinearMap.comp_apply, ← pb_comp, ← LinearMap.comp_apply, ← pb_comp]`. Simplify using `only [slice, pullback.lift_snd]`. Rewrite using `[e1, e2]`.
+-/
 private theorem slice_gen {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (R : Ring l) {X : Scheme.{0}} {p : X ⟶ S k}
     (y : Pt p) {a b n : ℤ} (h : a + b = n) (u : V l X a) (v : V l X b) :
     pb l (slice y) n (ext2 l p h u v) = cupV l X h u (pb l p b (pb l y.1 b v)) := by
@@ -25,6 +33,19 @@ private theorem slice_gen {l : ℕ} [Fact l.Prime] {k : Type} [Field k] (R : Rin
     simp only [slice, pullback.lift_snd]
   rw [e1, e2]
 
+/- English proof (translation)
+Introduce `l _ k _ _ hl d X p hSP R L K lam Λ hΛ y w`. Establish `hunitX : IsUnit ((l : Γ(X, ⊤)))`. Establish `h1 : IsUnit ((l : k))` using `isUnit_iff_ne_zero.mpr hl`. Establish `h2` using `(h1.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).map p.appTop.hom`. Simplify `h2` using `[map_natCast]`.
+
+Establish `hunitS : IsUnit ((l : Γ(S k, ⊤)))`. Simplify `hunitX.map (y.1.appTop).hom` using `[map_natCast]`. Establish `key : (pb l y.1 0) ∘ₗ Λ = (lam ∘ₗ pb l (slice y) (2 * d)).smulRight (oneV l (S k))`. Apply `LinearMap.ext_on (K.span (2 * d))` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, b, hab, u, v, rfl⟩`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.smulRight_apply]`. Rewrite using `[slice_gen R y hab u v]`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `ha : a = 2 * d` using `by omega`.
+
+Substitute `ha` using the available equality. Take `⟨r, hr, -⟩` from `L.line (pb l y.1 0 v)`. Rewrite using `[hΛ.1, map_smul, hr]`. Simplify using `only [map_smul, R.one_nat p hunitS, R.mul_one X hunitX, smul_smul, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+
+Establish `hz : pb l y.1 b v = 0`. Break down `lt_or_gt_of_ne hb with hneg | hpos` into its components or cases. Use `haveI := L.neg (S k) b hneg`. Conclude with `Subsingleton.elim _ _`. Use `haveI := L.pos b hpos`.
+
+Conclude with `Subsingleton.elim _ _`. Rewrite using `[hΛ.2 a b hab hb u v, map_zero, hz, map_zero, map_zero, map_zero, zero_smul]`. Conclude with `LinearMap.congr_fun key w`.
+-/
 theorem ptInt_holds : PtInt := by
   intro l _ k _ _ hl d X p hSP R L K lam Λ hΛ y w
   have hunitX : IsUnit ((l : Γ(X, ⊤))) := by

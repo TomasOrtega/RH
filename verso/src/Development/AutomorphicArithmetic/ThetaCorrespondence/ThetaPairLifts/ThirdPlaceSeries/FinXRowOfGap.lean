@@ -26,6 +26,9 @@ abbrev IndefiniteRealisationSelection (𝒜 : FamClass) (sel : _root_.Formalism.
     _root_.Formalism.L2.SG.JoinSI.IndefiniteRealisationJoin (R := (sel Fm hc).2 x hx h i) (S := selS Fm hc x hx h i) (Q := selI Fm hc x hx h i)
 variable {𝒜 : FamClass} {sel : _root_.Formalism.L2.TwistSelection 𝒜} {selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel} {selP : _root_.Formalism.L2.Top4.BaseLevelTiedChoiceAlt 𝒜 sel} {selDH : _root_.Formalism.L2.Top3.SelectionDefiniteHeightCondition 𝒜 sel}
   {selC : _root_.Formalism.L2.Top4.ColumnChoiceCompatibleSelection 𝒜 sel selP} {selK : _root_.Formalism.L2.Top4.KernelSelection 𝒜 sel} {selI : _root_.Formalism.L2.Top4.IndefiniteRealisationChoice' 𝒜 sel selS selP selDH selC selK}
+/- English proof (translation)
+The claim follows from `hG.imp fun Fm _ _ H hc => by obtain ⟨x0, H'⟩ := H hc exact ⟨x0, fun x hx h hx0 i => hFXC _ (selS Fm hc x hx h i).toSTies (H' x hx h hx0 i)⟩`.
+-/
 theorem closed_finX_of_gapHyp (hFXC : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FinXC)
     (hG : Closed 𝒜 fun Fm _ => ∀ hc : 𝒜 Fm, _root_.Formalism.L2.Top4.EventuallyAlongSelection sel Fm hc fun x _ _ i => Formalism.L2.SG.ConcreteSettingExists.GapHyp (Fm.D x i)) :
     Closed 𝒜 fun Fm _ => ∀ hc : 𝒜 Fm, _root_.Formalism.L2.Top4.EventuallyAlongSelection sel Fm hc fun x hx h i => FinX (selS Fm hc x hx h i).Y :=

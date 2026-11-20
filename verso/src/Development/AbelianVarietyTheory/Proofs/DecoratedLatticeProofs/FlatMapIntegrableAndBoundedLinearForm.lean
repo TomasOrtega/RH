@@ -23,6 +23,9 @@ namespace GlobalTheory.Unf.FlatForm
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Rewrite using `[← ofReal_norm_eq_enorm, hψ.1.2.1 a, ENNReal.ofReal_one]`.
+-/
 theorem enorm_psi (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : ‖ψ a‖ₑ = 1 := by
   rw [← ofReal_norm_eq_enorm, hψ.1.2.1 a, ENNReal.ofReal_one]
 
@@ -30,6 +33,9 @@ section
 variable {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
   {μS : Measure (Mx D W.rank ρ)} {𝓕S : Set (Mx D W.rank ρ)} {μT : Measure (Mx D σ V₀.rank)} {𝓕T : Set (Mx D σ V₀.rank)}
 
+/- English proof (translation)
+Unfold `evalAt HypDec.mixT`. Use `(enorm_integral_le_lintegral_enorm _).trans ((lintegral_mono (g := fun _ => M) fun ξ => ?_).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[HypDec.integrandT_eq, enorm_mul, enorm_psi hψ, one_mul]`. Conclude with `hM _`. Rewrite using `[setLIntegral_const, hT, mul_one]`.
+-/
 theorem enorm_evalAt_le (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (f : WO V W → ℂ) (x : Mx D W.rank ρ) (M : ℝ≥0∞)
     (hM : ∀ w', ‖dV.mixS W ψ μS 𝓕S f x w'‖ₑ ≤ M) (y : Mx D V₀.rank σ) (w : WO V₀ W₀) :
     ‖evalAt ψ dV dW μS 𝓕S μT 𝓕T f x y w‖ₑ ≤ M := by
@@ -38,6 +44,9 @@ theorem enorm_evalAt_le (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (f : WO
   · rw [HypDec.integrandT_eq, enorm_mul, enorm_psi hψ, one_mul]; exact hM _
   · rw [setLIntegral_const, hT, mul_one]
 
+/- English proof (translation)
+Unfold `flatFun`. Rewrite using `[enorm_mul, show ‖star (psiUni ψ u.1)‖ₑ = 1 by`. Rewrite using `[← ofReal_norm_eq_enorm, norm_star, psiUni, psiE, hψ.1.2.1, ENNReal.ofReal_one], one_mul]`. Conclude with `enorm_evalAt_le dV dW hψ hT f _ _ (hM _) y w`.
+-/
 theorem enorm_flatFun_le (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (f : WO V W → ℂ) (x : Mx D W.rank ρ)
     (M : Mx D W.rank ρ → ℝ≥0∞) (hM : ∀ x' w', ‖dV.mixS W ψ μS 𝓕S f x' w'‖ₑ ≤ M x') (y : Mx D V₀.rank σ)
     (w : WO V₀ W₀) (u : UX D ρ) :
@@ -59,6 +68,11 @@ section
 variable {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
   {μS : Measure (Mx D W.rank ρ)} {𝓕S : Set (Mx D W.rank ρ)} {μT : Measure (Mx D σ V₀.rank)} {𝓕T : Set (Mx D σ V₀.rank)}
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Mx D σ V₀.rank) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μT.restrict 𝓕T) := ⟨by rw [Measure.restrict_apply_univ, hT]; exact ENNReal.one_lt_top⟩`. Establish `hcX : Continuous (dW.incX V₀)` using `continuous_const.matrix_mul continuous_id`. Establish `hc : Continuous fun ξ : Mx D σ V₀.rank => ψ (symplOH V₀ W (dW.incX V₀ ξ) (dW.incAdj V₀ y)) * g (dW.incX V₀ ξ + dW.incAdj V₀ y + dW.inc0 V₀ w)` using `(hψ.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH hcX continuous_const)).mul (hg.comp ((hcX.add continuous_const).add continuous_const))`. Use `Integrable.mono' (integrable_const B) hc.aestronglyMeasurable (ae_of_all _ fun ξ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `hB _`.
+-/
 theorem integrable_integrandT (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (g : WO V₀ W → ℂ) (B : ℝ)
     (hB : ∀ w', ‖g w'‖ ≤ B) (hg : Continuous g) (y : Mx D V₀.rank σ) (w : WO V₀ W₀) :
     Integrable (fun ξ => ψ (symplOH V₀ W (dW.incX V₀ ξ) (dW.incAdj V₀ y)) *
@@ -73,6 +87,13 @@ theorem integrable_integrandT (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (
   refine Integrable.mono' (integrable_const B) hc.aestronglyMeasurable (ae_of_all _ fun ξ => ?_)
   rw [norm_mul, hψ.1.2.1, one_mul]; exact hB _
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1`. Use `haveI : SecondCountableTopology (Mx D W.rank ρ) := inferInstanceAs (SecondCountableTopology (Fin W.rank → Fin ρ → AE D))`. Use `haveI : FirstCountableTopology (Mx D W.rank ρ) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Use `haveI : BorelSpace (Mx D σ V₀.rank) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μT.restrict 𝓕T) := ⟨by rw [Measure.restrict_apply_univ, hT]; exact ENNReal.one_lt_top⟩`.
+
+Establish `hcX : Continuous (dW.incX V₀)` using `continuous_const.matrix_mul continuous_id`. Establish `hj : Continuous (Function.uncurry fun (x : Mx D W.rank ρ) (ξ : Mx D σ V₀.rank) => ψ (symplOH V₀ W (dW.incX V₀ ξ) (dW.incAdj V₀ y)) * dV.mixS W ψ μS 𝓕S f x (dW.incX V₀ ξ + dW.incAdj V₀ y + dW.inc0 V₀ w))` using `(hψ.1.1.comp (GlobalTheory.OrientedHeis.continuous_symplOH (hcX.comp continuous_snd) continuous_const)).mul (Continuous.comp (g := fun q : Mx D W.rank ρ × WO V₀ W => dV.mixS W ψ μS 𝓕S f q.1 q.2) (f := fun p : Mx D W.rank ρ × Mx D σ V₀.rank => (p.1, dW.incX V₀ p.2 + dW.incAdj V₀ y …`. Unfold `evalAt HypDec.mixT`. Simplify using `only [HypDec.integrandT_eq]`. Use `continuous_of_dominated (bound := fun _ => B) (fun x => (hj.uncurry_left x).aestronglyMeasurable) (fun x => ae_of_all _ fun ξ => ?_) (integrable_const B) (ae_of_all _ fun ξ => hj.uncurry_right ξ)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, hψ.1.2.1, one_mul]`. Conclude with `hB _ _`.
+-/
 theorem continuous_evalAt (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (f : WO V W → ℂ) (B : ℝ)
     (hB : ∀ x w', ‖dV.mixS W ψ μS 𝓕S f x w'‖ ≤ B)
     (hc : Continuous fun p : Mx D W.rank ρ × WO V₀ W => dV.mixS W ψ μS 𝓕S f p.1 p.2) (y : Mx D V₀.rank σ)
@@ -98,6 +119,11 @@ theorem continuous_evalAt (hψ : IsStdChar D ψ (-1)) (hT : μT 𝓕T = 1) (f : 
     (ae_of_all _ fun ξ => hj.uncurry_right ξ)
   rw [norm_mul, hψ.1.2.1, one_mul]; exact hB _ _
 
+/- English proof (translation)
+Establish `hval : Continuous fun u : UX D ρ => (u.1.1 : Matrix (Fin ρ) (Fin ρ) (AE D))` using `Units.continuous_val.comp continuous_subtype_val`. Unfold `upSum`. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j.1 = i.1 + 1`. Simplify using `only [h, if_true]`.
+
+Conclude with `(continuous_apply j).comp ((continuous_apply i).comp hval)`. Simplify using `only [h, if_false]`. Conclude with `continuous_const`.
+-/
 theorem continuous_upSum : Continuous fun u : UX D ρ => upSum (u.1.1 : Mx D ρ ρ) := by
   have hval : Continuous fun u : UX D ρ => (u.1.1 : Matrix (Fin ρ) (Fin ρ) (AE D)) :=
     Units.continuous_val.comp continuous_subtype_val
@@ -107,6 +133,9 @@ theorem continuous_upSum : Continuous fun u : UX D ρ => upSum (u.1.1 : Mx D ρ 
   · simp only [h, if_true]; exact (continuous_apply j).comp ((continuous_apply i).comp hval)
   · simp only [h, if_false]; exact continuous_const
 
+/- English proof (translation)
+Establish `hval : Continuous fun u : UX D ρ => (u.1.1 : Matrix (Fin ρ) (Fin ρ) (AE D))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Unfold `flatFun psiUni psiE`. Conclude with `(continuous_star.comp (hψ.1.1.comp (ht.comp continuous_upSum))).mul (hc.comp (continuous_const.matrix_mul hval))`.
+-/
 theorem continuous_flatFun (hψ : IsStdChar D ψ (-1)) (f : WO V W → ℂ) (x : Mx D W.rank ρ) (y : Mx D V₀.rank σ)
     (w : WO V₀ W₀) (hc : Continuous fun x' => evalAt ψ dV dW μS 𝓕S μT 𝓕T f x' y w) :
     Continuous (flatFun ψ dV dW μS 𝓕S μT 𝓕T x y f w) := by
@@ -129,6 +158,11 @@ section
 variable {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
   {μS : Measure (Mx D W.rank ρ)} {𝓕S : Set (Mx D W.rank ρ)} {μT : Measure (Mx D σ V₀.rank)} {𝓕T : Set (Mx D σ V₀.rank)}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w'`. Establish `h1` using `dV.integrableOn_mixS hψ.1.1 hS hf x w'`. Establish `h2` using `dV.integrableOn_mixS hψ.1.1 hS hg x w'`. Simplify using `only [HypDec.integrandS_eq] at h1 h2`. Simplify using `only [HypDec.mixS, HypDec.integrandS_eq, Pi.add_apply, mul_add]`.
+
+Conclude with `integral_add h1 h2`.
+-/
 theorem mixS_add (hψ : IsStdChar D ψ (-1)) (hS : IsCovolOne (ratMx D W.rank ρ) μS 𝓕S) {f g : WO V W → ℂ}
     (hf : IsThetaFunO ψ V W f) (hg : IsThetaFunO ψ V W g) (x : Mx D W.rank ρ) :
     dV.mixS W ψ μS 𝓕S (f + g) x = dV.mixS W ψ μS 𝓕S f x + dV.mixS W ψ μS 𝓕S g x := by
@@ -139,6 +173,11 @@ theorem mixS_add (hψ : IsStdChar D ψ (-1)) (hS : IsCovolOne (ratMx D W.rank ρ
   simp only [HypDec.mixS, HypDec.integrandS_eq, Pi.add_apply, mul_add]
   exact integral_add h1 h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w'`. Simplify using `only [HypDec.mixS, HypDec.integrandS_eq, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixS_smul (c : ℂ) (f : WO V W → ℂ) (x : Mx D W.rank ρ) :
     dV.mixS W ψ μS 𝓕S (c • f) x = c • dV.mixS W ψ μS 𝓕S f x := by
   funext w'
@@ -146,6 +185,9 @@ theorem mixS_smul (c : ℂ) (f : WO V W → ℂ) (x : Mx D W.rank ρ) :
   rw [← integral_const_mul]
   congr 1; funext a; ring
 
+/- English proof (translation)
+Simplify using `only [HypDec.mixT, HypDec.integrandT_eq, Pi.add_apply, mul_add]`. Conclude with `integral_add h₁ h₂`.
+-/
 theorem mixT_add (g₁ g₂ : WO V₀ W → ℂ) (y : Mx D V₀.rank σ) (w : WO V₀ W₀)
     (h₁ : Integrable (fun ξ => ψ (symplOH V₀ W (dW.incX V₀ ξ) (dW.incAdj V₀ y)) *
       g₁ (dW.incX V₀ ξ + dW.incAdj V₀ y + dW.inc0 V₀ w)) (μT.restrict 𝓕T))
@@ -155,6 +197,9 @@ theorem mixT_add (g₁ g₂ : WO V₀ W → ℂ) (y : Mx D V₀.rank σ) (w : WO
   simp only [HypDec.mixT, HypDec.integrandT_eq, Pi.add_apply, mul_add]
   exact integral_add h₁ h₂
 
+/- English proof (translation)
+Simplify using `only [HypDec.mixT, HypDec.integrandT_eq, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixT_smul (c : ℂ) (g : WO V₀ W → ℂ) (y : Mx D V₀.rank σ) (w : WO V₀ W₀) :
     dW.mixT V₀ ψ μT 𝓕T (c • g) y w = c * dW.mixT V₀ ψ μT 𝓕T g y w := by
   simp only [HypDec.mixT, HypDec.integrandT_eq, Pi.smul_apply, smul_eq_mul]
@@ -163,6 +208,13 @@ theorem mixT_smul (c : ℂ) (g : WO V₀ W → ℂ) (y : Mx D V₀.rank σ) (w :
 
 end
 
+/- English proof (translation)
+Take `⟨U, hU, hfix⟩` from `hf.level`. Take `⟨K, -, hK⟩` from `GlobalTheory.T.mixedCoordinate_thetaFun_le_schwartz_majorant_level D ψ hψ θ hθ V V₀ W ρ dV vS U hU`. Take `⟨C, hC⟩` from `hK 0`. Establish `hfin` using `(GlobalTheory.T.heisenberg_sup_sobolev_seminorm_theta_laws D ψ hψ θ hθ V W).1 0 f hf`. Establish `hmem : f ∈ GlobalTheory.Size.thetaLevel ψ V W U` using `⟨hf, hfix⟩`.
+
+Use `⟨(C * supSob ψ θ 0 f).toReal, fun x w' => ?_⟩` and prove the remaining obligations. Establish `hm : ENNReal.ofReal (maj θ K 0 x) ≤ 1`. Apply the tactic sequence `unfold maj; split_ifs <;> simp`. Establish `h2 : ‖dV.mixS W ψ vS.μ vS.𝓕 f x w'‖ₑ ≤ C * supSob ψ θ 0 f` using `(hC f hmem x w').trans (by`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h2` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_iff_le_toReal (ENNReal.mul_ne_top ENNReal.coe_ne_top hfin)).1 h2`.
+-/
 theorem mixS_bounded (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) {V V₀ W : HSp D} {ρ : ℕ}
     (dV : HypDec V V₀ ρ) (vS : VolM D W.rank ρ) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) :
     ∃ B : ℝ, ∀ x w', ‖dV.mixS W ψ vS.μ vS.𝓕 f x w'‖ ≤ B := by
@@ -187,6 +239,11 @@ namespace GlobalTheory.Unf.FlatForm
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Take `⟨K, hK, hKC⟩` from `GlobalTheory.T.mixedCoordinate_thetaFun_le_schwartz_majorant_level D ψ hψ θ hθ V V₀ W ρ dV vS U hU`. Take `⟨N, hN⟩` from `GlobalTheory.T.integrable_schwartzMajorant_pullback_unitriangular D θ hθ W.rank ρ vU x hx`. Take `⟨C, hC⟩` from `hKC N`. Establish `hI` using `hN K hK`. Establish `hIfin : ∫⁻ u, ENNReal.ofReal (maj θ K N ((rat x : Mx D W.rank ρ) ⬝ u.1.1)) ∂vU.ν ≠ ⊤` using `hI.lintegral_lt_top.ne`.
+
+Use `⟨N, C * (∫⁻ u, ENNReal.ofReal (maj θ K N ((rat x : Mx D W.rank ρ) ⬝ u.1.1)) ∂vU.ν).toNNReal, fun f hf w => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_flatFun_le (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) {V V₀ W W₀ : HSp D} {ρ σ : ℕ}
     (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (vT : VolM D σ V₀.rank) (vU : VolU D ρ)
     (x : Matrix (Fin W.rank) (Fin ρ) D.host.E) (hx : LinearIndependent D.host.E x.transpose) (y : Mx D V₀.rank σ)
@@ -209,6 +266,23 @@ theorem lintegral_flatFun_le (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : 
         lintegral_const_mul'' _ hI.1.aemeasurable.ennreal_ofReal
     _ = _ := by rw [ENNReal.coe_mul, ENNReal.coe_toNNReal hIfin]; ring
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ V V₀ W W₀ ρ σ dV dW vS vT vU x hx y`. Establish `hT` using `vT.covol.2.2`. Establish `hS` using `vS.covol`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Establish `hB : ∀ Ψ, IsThetaFunO ψ V W Ψ → ∃ B : ℝ, ∀ x' w', ‖dV.mixS W ψ vS.μ vS.𝓕 Ψ x' w'‖ ≤ B` using `fun Ψ hΨ => mixS_bounded hψ hθ dV vS hΨ`.
+
+Establish `hc : ∀ Ψ, IsThetaFunO ψ V W Ψ → Continuous fun p : Mx D W.rank ρ × WO V₀ W => dV.mixS W ψ vS.μ vS.𝓕 Ψ p.1 p.2` using `fun Ψ hΨ => (GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ V V₀ W ρ dV vS Ψ hΨ).2.2.2.1`. Establish `hmeas : ∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ w, AEStronglyMeasurable (flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y Ψ w) vU.ν`. Introduce `Ψ hΨ w`. Take `⟨B, hB'⟩` from `hB Ψ hΨ`. Conclude with `(continuous_flatFun dV dW hψ Ψ (rat x) y w (continuous_evalAt dV dW hψ hT Ψ B hB' (hc Ψ hΨ) y w)).aestronglyMeasurable`.
+
+Establish `hint : ∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ w, Integrable (flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y Ψ w) vU.ν`. Introduce `Ψ hΨ w`. Take `⟨U, hU, hfix⟩` from `hΨ.level`. Take `⟨N, C, hb⟩` from `lintegral_flatFun_le hψ hθ dV dW vS vT vU x hx y U hU`. Conclude with `⟨hmeas Ψ hΨ w, (hb Ψ ⟨hΨ, hfix⟩ w).trans_lt (ENNReal.mul_lt_top ENNReal.coe_lt_top ((GlobalTheory.T.heisenberg_sup_sobolev_seminorm_theta_laws D ψ hψ θ hθ V W).1 N Ψ hΨ).lt_top)⟩`.
+
+Establish `hTint : ∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ x' w, Integrable (fun ξ => ψ (symplOH V₀ W (dW.incX V₀ ξ) (dW.incAdj V₀ y)) * dV.mixS W ψ vS.μ vS.𝓕 Ψ x' (dW.incX V₀ ξ + dW.incAdj V₀ y + dW.inc0 V₀ w)) (vT.μ.restrict vT.𝓕)`. Introduce `Ψ hΨ x' w`. Take `⟨B, hB'⟩` from `hB Ψ hΨ`. Conclude with `integrable_integrandT dW hψ hT _ B (hB' x') (Continuous.uncurry_left (f := fun a b => dV.mixS W ψ vS.μ vS.𝓕 Ψ a b) x' (hc Ψ hΨ)) y w`. Establish `hadd : ∀ f g, IsThetaFunO ψ V W f → IsThetaFunO ψ V W g → ∀ w u, flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y (f + g) w u = flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y f w u + flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y g w u`.
+
+Introduce `f g hf hg w u`. Simplify using `only [flatFun, evalAt]`. Rewrite using `[mixS_add dV hψ hS hf hg, mixT_add dW _ _ y w (hTint f hf _ w) (hTint g hg _ w), mul_add]`. Establish `hsmul : ∀ (c : ℂ) f w u, flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y (c • f) w u = c * flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y f w u`. Introduce `c f w u`.
+
+Simplify using `only [flatFun, evalAt]`. Rewrite using `[mixS_smul dV c f, mixT_smul dW c _ y w]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hint, fun w => ⟨fun f g hf hg => ?_, fun c f hf => ?_, fun U hU => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [flatAt]`.
+
+Repeatedly rewrite using `[hadd f g hf hg w]`. Conclude with `integral_add (hint f hf w) (hint g hg w)`. Simplify using `only [flatAt]`. Repeatedly rewrite using `[hsmul c f w]`. Conclude with `integral_const_mul c _`.
+
+Take `⟨N, C, hb⟩` from `lintegral_flatFun_le hψ hθ dV dW vS vT vU x hx y U hU`. Conclude with `⟨N, C, fun f hf => (enorm_integral_le_lintegral_enorm _).trans (hb f hf w)⟩`.
+-/
 theorem flatAt_isSobForm : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (V V₀ W W₀ : HSp D) (ρ σ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (vS : VolM D W.rank ρ) (vT : VolM D σ V₀.rank) (vU : VolU D ρ) (x : Matrix (Fin W.rank) (Fin ρ) D.host.E), LinearIndependent D.host.E x.transpose → ∀ y : Mx D V₀.rank σ, (∀ Ψ, IsThetaFunO ψ V W Ψ → ∀ w, Integrable (flatFun ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 (rat x) y Ψ w) vU.ν) ∧ ∀ w, IsSobForm ψ θ V W fun Ψ => flatAt ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 vU.ν (rat x) y Ψ w := by
   intro D ψ hψ θ hθ V V₀ W W₀ ρ σ dV dW vS vT vU x hx y
   have hT := vT.covol.2.2

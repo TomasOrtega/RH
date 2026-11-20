@@ -11,6 +11,19 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ D P ω χ hC hU hχ L N hL φ hA hG s k hk hS t hs hc`. Take `⟨b, ζ, κ, hζ, hκ, hdec⟩` from `UpperTheory.exists_unipotent_diag_rotation_level_decomposition N hG.pos k hk hS t hs hc`. Establish `hab : ab ζ = 1` using `UpperTheory.ratIdeleAbs_realIdele_natIdele_unitIdeles.2.2.1 ζ hζ`. Establish `habm : ∀ y : (A ℚ)ˣ, ab (y * ζ ^ 2) = ab y`. Introduce `y`.
+
+Establish `h1 : IdeleGroup.ideleModule ℚ ζ = 1` using `Subtype.ext hab`. Use `show ((IdeleGroup.ideleModule ℚ (y * ζ ^ 2) : {r : ℝ // 0 < r}) : ℝ) = _`. Rewrite using `[map_mul, map_pow, h1, one_pow, mul_one]`. Both sides reduce to the same expression. Establish `hχω : ((ω.1 ζ⁻¹ : ℂˣ) : ℂ) ^ 2 = ((χ.1 ζ : ℂˣ) : ℂ) ^ 2`.
+
+Establish `h` using `hχ ζ`. Establish `h2 : (ω.1 ζ⁻¹) ^ 2 = (χ.1 ζ) ^ 2`. Rewrite using `[map_inv, inv_pow, inv_eq_iff_mul_eq_one, ← mul_pow, mul_comm]`. Conclude with `h`. Conclude with `congrArg (fun u : ℂˣ => (u : ℂ)) h2` after adjusting the coercions.
+
+Set `Gf : IdeleGroup ℚ → ℂ` to `fun y => Wo D φ (em E (aE y * rot t)) * ((χ.1 y : ℂˣ) : ℂ) * ((ab y : ℝ) : ℂ) ^ (s - 1)`. Establish `key : ∀ y : IdeleGroup ℚ, Wo D φ (em E (aE y * gl k)) * ((χ.1 y : ℂˣ) : ℂ) * ((ab y : ℝ) : ℂ) ^ (s - 1) = Gf (y * ζ ^ 2)`. Introduce `y`. Rewrite using `[hdec, UpperTheory.whittaker_diagTorus_mul_iwasawa_eq E D ω φ hA N hG.lev y ζ b (rot t) κ hκ, hχω]`. Use `show _ = Wo D φ (em E (aE (y * ζ ^ 2) * rot t)) * ((χ.1 (y * ζ ^ 2) : ℂˣ) : ℂ) * ((ab (y * ζ ^ 2) : ℝ) : ℂ) ^ (s - 1)`.
+
+Establish `hχm : χ.1 (y * ζ ^ 2) = χ.1 y * χ.1 ζ ^ 2` using `by rw [map_mul, map_pow]`. Rewrite using `[habm, hχm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `Yt`.
+
+Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key)]`. Conclude with `integral_mul_right_eq_self Gf (ζ ^ 2)`.
+-/
 theorem UpperTheory.twisted_zeta_integral_at_compact_eq_at_rotation :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (P : CuspSub E 2) (ω χ : HChar ℚ),
         CenN P ω → Unit1 ω → (∀ a, (χ.1 a * ω.1 a) ^ 2 = 1) → ∀ (L N : ℕ), ChOk χ L → ∀ φ, admitted D ω φ → Gd D P L N φ → ∀ (s : ℂ), ∀ k ∈ KK ℚ, k ∈ SS N → ∀ t : ℝ, re (k 1 0) = Real.sin t → re (k 1 1) = Real.cos t →

@@ -17,6 +17,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Establish `hd1 : dot lam (Pi.single s 1) = lam s` using `by simp [dot, Pi.single_apply]`. Establish `hd2 : nsq (Pi.single s (1 : ℝ)) = 1` using `by simp [nsq, dot, Pi.single_apply]`. Unfold `casVal thVd`. Rewrite using `[nsq_sub', hd1, hd2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem casimirValue_sub_single {n : ℕ} (lam : Fin n → ℝ) (s : Fin n) :
     casVal (lam - Pi.single s 1) = casVal lam + n + 2 * thVd lam s := by
   have hd1 : dot lam (Pi.single s 1) = lam s := by simp [dot, Pi.single_apply]
@@ -25,6 +28,9 @@ theorem casimirValue_sub_single {n : ℕ} (lam : Fin n → ℝ) (s : Fin n) :
   rw [nsq_sub', hd1, hd2]
   ring
 
+/- English proof (translation)
+Unfold `hNeed`. Establish `h1` using `le_max_right (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))`. Establish `h2` using `le_max_left (2 + max (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))) (max (16 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ) + 8 * Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ)) + 2) (8 * Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ)) * (4 * max (2 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ) …`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem three_add_le_gapBound_dual {n : ℕ} (ε : Fin n → Bool) : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 3 ≤ hNeed ε := by
   unfold hNeed
   have h1 := le_max_right (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))
@@ -34,6 +40,115 @@ theorem three_add_le_gapBound_dual {n : ℕ} (ε : Fin n → Bool) : (n : ℝ) *
         (4 * max (2 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ)) (2 * ((qOf ε : ℝ) - 1) * (n : ℝ) ^ 2) + 1)))
   linarith
 
+/- English proof (translation)
+Introduce `ε lam h H _ _ _ σ D E V s N _ _ EN φ x hσ hD hV hc hVK hint hmono hgap hp hq hmono' hEN hUN hφ hx hφx`. Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hKU` using `isKUnitary_of_isInfUnitary hU`. Establish `hKUN` using `isKUnitary_of_isInfUnitary hUN`.
+
+Establish `hVk : IsKStableSub ε E V` using `hV.2.1`. Establish `hVfd : FiniteDimensional ℂ V` using `hV.1`. Establish `hGs : ∀ a b, ∀ v ∈ genSub E V, E a b v ∈ genSub E V` using `fun a b v hv => generated_submodule_stable_under_action V a b hv`. Establish `hXg : ∀ f ∈ Xs (eeVd E) (genSub E V) (thVd lam s), ∀ c, f c ∈ genSub E V` using `fun f hf => (mem_euler_eigenspace_iff.1 hf).1`. Establish `hps : ∀ k (u v : Fin n → ℝ), kirrPs k (u - v) = kirrPs k u - kirrPs k v`.
+
+Introduce `k u v`. Rewrite using `[← k3vdPs_apply, map_sub, k3vdPs_apply, k3vdPs_apply]`. Establish `hpa : ∀ k (u v : Fin n → ℝ), kirrPs k (u + v) = kirrPs k u + kirrPs k v`. Introduce `k u v`. Rewrite using `[← k3vdPs_apply, map_add, k3vdPs_apply, k3vdPs_apply]`.
+
+Establish `hN3` using `three_add_le_gapBound_dual ε`. Establish `hnpq : 0 ≤ (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)` using `by positivity`. Establish `hh` using `hgap.2.2`. Use `set Y := (Xs (eeVd E) (genSub E V) (thVd lam s)).map φ with hYdef`. Establish `hYst : ∀ a b, ∀ y ∈ Y, EN a b y ∈ Y`.
+
+Introduce `a b y hy`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy`. Rewrite using `[← hφ a b f (hXg f hf)]`. Conclude with `Submodule.mem_map_of_mem (euler_eigenspace_stable_under_action hE hGs a b hf)`. Establish `hcasY : ∀ y ∈ Y, casimir EN y = (casVal (lam - Pi.single s 1) : ℂ) • y`.
+
+Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy`. Establish `hfg` using `hXg f hf`. Establish `h1 : casimir EN (φ f) = φ (casimir (tensVd E) f)`. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hφ b a f hfg, ← hφ a b _ (dualTensorAction_mem hGs b a hfg)]`. Establish `h2` using `((tens_statement n) (↥D) E hE).2.2.2 f`. Establish `h3 : (fun c => casimir E (f c)) = (casVal lam : ℂ) • f`. Use function extensionality and compare the values at `fun c => casimir_genSub hE hc (f c) (hfg c)`.
+
+Establish `hnum : (casVal (lam - Pi.single s 1) : ℂ) = (casVal lam : ℂ) + n + 2 * ((thVd lam s : ℝ) : ℂ)`. Rewrite using `[casimirValue_sub_single]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2, h3, (mem_euler_eigenspace_iff.1 hf).2, smul_smul, ← add_smul, ← add_smul, ← hnum, map_smul]`.
+
+Establish `hK2` using `(k2Vd n ε lam h H σ D E V s hσ hD hV hc hVK hint hmono hgap hp hq).1`. Establish `hcone : ∀ (μ : Fin n → ℝ) (y : N), y ∈ Y → y ≠ 0 → IsKHWVec ε EN μ y → InRootCone (μ - lowK ε (lam - Pi.single s 1))` using `fun μ y hy hy0 hμ => image_weights_in_root_cone hE hU hVfd hVk hφ hK2 hy hy0 hμ`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hφx (map_zero φ)`. Establish `hinj : ∀ t, t ≠ s → thVd lam t ≠ thVd lam s`. Introduce `t hts heq`.
+
+Apply `hts` to reduce the goal to its premises. Establish `: lam t = lam s` using `by unfold thVd at heq; linarith`. Conclude with `hmono.injective this`. Use `set Fs : ℂ[X] := ∏ t ∈ univ.erase s, (X - C (((thVd lam t : ℝ) : ℂ))) with hFs`. Use `set P : Module.End ℂ (Fin n → D) := aeval (eeVd E) Fs with hP`.
+
+Establish `hPg : ∀ f : Fin n → D, (∀ c, f c ∈ genSub E V) → ∀ c, P f c ∈ genSub E V`. Introduce `f hf`. Use `aeval_mem_invariant_submodule (eeVd E) (Submodule.pi Set.univ fun _ => genSub E V) (fun g hg => mem_pi_submodule_iff.2 (euler_tensor_dual_mem_of_stable hGs (mem_pi_submodule_iff.1 hg))) Fs f (mem_pi_submodule_iff.2 hf)` as an intermediate fact. Conclude with `mem_pi_submodule_iff.1 this`. Establish `hPc : ∀ a b, Commute P (tensVd E a b)` using `fun a b => aeval_commute_of_commute (eeVd E) (tensVd E a b) (euler_tensor_dual_commute_gl_action hE a b) Fs`.
+
+Establish `hPX : ∀ f : Fin n → D, (∀ c, f c ∈ genSub E V) → P f ∈ Xs (eeVd E) (genSub E V) (thVd lam s)`. Introduce `f hf`. Establish `hk1` using `k1Vd n ε lam h H σ D E V hσ hD hV hc hVK hint hmono hgap hp hq f hf`. Rewrite `hk1` using `[shifted_product_eq_aeval, ← Finset.mul_prod_erase univ _ (mem_univ s), map_mul, Module.End.mul_apply, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Use `mem_euler_eigenspace_iff.2 ⟨hPg f hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hk1` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hk1`. Establish `hPx : P x = (Fs.eval ((thVd lam s : ℝ) : ℂ)) • x`. Apply `Module.End.aeval_apply_of_hasEigenvector` to reduce the goal to its premises. Use `⟨Module.End.mem_eigenspace_iff.2 (mem_euler_eigenspace_iff.1 hx).2, hx0⟩` and prove the remaining obligations.
+
+Establish `hFs0 : Fs.eval ((thVd lam s : ℝ) : ℂ) ≠ 0`. Rewrite using `[hFs, eval_prod, Finset.prod_ne_zero_iff]`. Introduce `t ht`. Rewrite using `[eval_sub, eval_X, eval_C, sub_ne_zero]`. Conclude with `(hinj t (Finset.ne_of_mem_erase ht)).symm` after adjusting the coercions.
+
+Establish `hφPx : φ (P x) ≠ 0`. Rewrite using `[hPx, map_smul]`. Conclude with `smul_ne_zero hFs0 hφx`. Establish `hGen` using `(gen_statement n ε (↥D) E V hE hVk).2`. Take `⟨u, huV, hu⟩` from `exists_commuting_projection_image V hGen P hPg hPc φ hφ (hXg x hx) hφPx`.
+
+Establish `hpiV : ∀ a b, ε a = ε b → ∀ w ∈ Submodule.pi Set.univ (fun _ : Fin n => V), tensVd E a b w ∈ Submodule.pi Set.univ (fun _ : Fin n => V)`. Introduce `a b hab w hw`. Use `mem_pi_submodule_iff.2 fun c => ?_` and prove the remaining obligations. Rewrite using `[tensor_dual_action_apply_component]`. Use `sub_mem (hVk a b hab _ (mem_pi_submodule_iff.1 hw c)) ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `mem_pi_submodule_iff.1 hw a`. Conclude with `zero_mem _`. Establish `hVg : ∀ w ∈ Submodule.pi Set.univ (fun _ : Fin n => V), ∀ c, w c ∈ genSub E V` using `fun w hw c => le_generatedSubmodule_dual V (mem_pi_submodule_iff.1 hw c)`. Establish `hfPV : ∀ a b, ε a = ε b → ∀ w ∈ Submodule.pi Set.univ (fun _ : Fin n => V), (φ ∘ₗ P) (tensVd E a b w) = EN a b ((φ ∘ₗ P) w)`.
+
+Introduce `a b _ w hw`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← Module.End.mul_apply, (hPc a b).eq, Module.End.mul_apply, hφ a b _ (hPg w (hVg w hw))]`. Establish `hfdpi : FiniteDimensional ℂ (Submodule.pi Set.univ (fun _ : Fin n => V))` using `pi_submodule_finiteDimensional V`. Use `set Z := (Submodule.pi Set.univ (fun _ : Fin n => V)).map (φ ∘ₗ P) with hZ`.
+
+Establish `hZst : IsKStableSub ε EN Z`. Introduce `a b hab z hz`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hz`. Rewrite using `[← hfPV a b hab w hw]`. Conclude with `Submodule.mem_map_of_mem (hpiV a b hab w hw)`.
+
+Establish `hZne : Z ≠ ⊥`. Introduce `hZb`. Establish `: (φ ∘ₗ P) u ∈ Z` using `Submodule.mem_map_of_mem (mem_pi_submodule_iff.2 huV)`. Rewrite `this` using `[hZb, Submodule.mem_bot]`. Conclude with `hu this`.
+
+Take `⟨y0, hy0Z, hy00, ν0, hν0⟩` from `exists_khw hEN hKUN inferInstance hZst hZne`. Take `⟨w0, hw0, rfl⟩` from `Submodule.mem_map.1 hy0Z`. Establish `hy0Y : (φ ∘ₗ P) w0 ∈ Y` using `Submodule.mem_map_of_mem (hPX w0 (hVg w0 hw0))`. Establish `hν0lo : ∀ k, kirrPs k ν0 ≤ kirrPs k (lowK ε lam)`. Take `⟨u1, hu1, hkhw, hfu1⟩` from `exists_highest_weight_lift_pi hKU (φ ∘ₗ P) hfdpi (fun a b hab w hw => hpiV a b hab w hw) hfPV hw0 hν0`.
+
+Establish `hu10 : u1 ≠ 0` using `by rintro rfl; rw [map_zero] at hfu1; exact hy00 hfu1.symm`. Take `⟨c, hc0⟩` from `Function.ne_iff.1 hu10`. Establish `hwt : ∀ a, E a a (u1 c) = (((ν0 + Pi.single c (1 : ℝ) : Fin n → ℝ) a : ℝ) : ℂ) • u1 c`. Introduce `a`. Use `congrFun (hkhw.1 a) c` as an intermediate fact.
+
+Rewrite `this` using `[tensor_dual_action_apply_component, Pi.smul_apply]`. Distinguish the cases in `hca : c = a`. Substitute `hca` using the available equality. Simplify using `only [if_true] at this`. Rewrite `this` using `[sub_eq_iff_eq_add]`.
+
+Rewrite using `[this]`. Simplify using `[add_smul, Pi.add_apply]`. Simplify using `only [hca, if_false, sub_zero] at this`. Rewrite using `[this]`. Simplify using `[Pi.add_apply, Pi.single_apply, Ne.symm hca]`.
+
+Take `⟨w1, hw1V, hw10, hw1⟩` from `hV.2.2.2`. Introduce `k`. Use `kirrPs_le hE hV hw1V hw10 hw1 (mem_pi_submodule_iff.1 hu1 c) (by simpa using hc0) hwt k` as an intermediate fact. Rewrite `this` using `[hpa, partial_sum_of_basis_vector]`. Apply the tactic sequence `split_ifs at this <;> linarith`.
+
+Establish `hQ : ∃ m : ℕ, ∃ y ∈ Y, y ≠ 0 ∧ ∃ ν : Fin n → ℝ, IsKHWVec ε EN ν y ∧ (∀ k, kirrPs k ν ≤ kirrPs k ν0) ∧ weightHeightFunctional (ν - lowK ε (lam - Pi.single s 1)) = m`. Take `⟨N0, hN0⟩` from `root_cone_height_natural (hcone ν0 _ hy0Y hy00 hν0)`. Conclude with `⟨N0, _, hy0Y, hy00, ν0, hν0, fun k => le_rfl, hN0⟩`. Take `⟨y, hyY, hy0, ν, hν, hνbd, hνht⟩` from `Nat.find_spec hQ`. Establish `hβ` using `hcone ν y hyY hy0 hν`.
+
+Establish `hlowK' : lowK ε (lam - Pi.single s 1) = lowK ε lam - Pi.single s 1`. Use extensionality with `a`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `set γ : Fin n → ℝ := ν - lowK ε lam with hγ`.
+
+Establish `hγβ : γ = (ν - lowK ε (lam - Pi.single s 1)) - Pi.single s 1`. Rewrite using `[hlowK', hγ]`. Normalize the expressions using the abelian group laws. Establish `hγps : ∀ k, kirrPs k γ = kirrPs k (ν - lowK ε (lam - Pi.single s 1)) - (if (s : ℕ) < k then 1 else 0)`. Introduce `k`.
+
+Rewrite using `[hγβ, hps, partial_sum_of_basis_vector]`. Establish `hSγ : ∀ k, -1 ≤ kirrPs k γ ∧ kirrPs k γ ≤ 0`. Introduce `k`. Take `⟨Nk, hNk⟩` from `root_cone_partial_sum_natural hβ k`. Establish `hNk0 : (0 : ℝ) ≤ Nk` using `Nat.cast_nonneg _`.
+
+Apply the tactic sequence `refine ⟨by rw [hγps, hNk]; split_ifs <;> linarith, ?_⟩`. Rewrite using `[hγ, hps]`. Combine the linear relations using `[hνbd k, hν0lo k]`. Take `⟨T, hTY, hTfd, hTk, hyT⟩` from `image_eigenspace_K_finite hE hVfd hVk hφ hyY`. Take `⟨W, hWT, hWirr⟩` from `exists_irreducible_highest_weight_submodule hKUN _ T rfl hTfd hTk y hyT hy0 hν`.
+
+Establish `hWY : W ≤ Y` using `hWT.trans hTY`. Use `set lam'' : Fin n → ℝ := ν + rhoC ε - rhoN ε with hlam''`. Establish `hlowK'' : lowK ε lam'' = ν`. Use extensionality with `a`. Simplify using `only [lowK, hlam'', Pi.add_apply, Pi.sub_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hlam''γ : ∀ a, lam'' a = lam a + γ a`. Introduce `a`. Simplify using `only [hlam'', hγ, lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hγd : ∀ a b, |γ a - γ b| ≤ 2` using `coordinate_difference_le_two γ hSγ`. Establish `hmono'' : StrictAnti lam''`. Use `strictAnti_of_consecutive_lt fun a b hb => ?_` and prove the remaining obligations. Establish `hab : a < b` using `Fin.lt_def.2 (by omega)`. Distinguish the cases in `he : ε a = ε b`.
+
+Take `⟨h1, h2⟩` from `rho_consecutive_compact_pair ε a b hb he`. Use `highest_weight_dominant_of_unitary hEN hKUN hν hy0 hab he` as an intermediate fact. Simplify using `only [hlam'', Pi.add_apply, Pi.sub_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hgap.2.1 a b he`.
+
+Establish `hlt` using `hmono hab`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 hlt)]`. Establish `h2` using `abs_le.1 (hγd a b)`. Rewrite using `[hlam''γ, hlam''γ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hgap'' : GapAtLeast ε lam'' (h - 2)`. Introduce `a b he`. Rewrite using `[hlam''γ, hlam''γ]`. Establish `h1` using `hgap.2.1 a b he`. Establish `h2` using `abs_sub_abs_le_abs_sub (lam a - lam b) (γ b - γ a)`.
+
+Establish `h3 : |γ b - γ a| ≤ 2` using `by rw [abs_sub_comm]; exact hγd a b`. Establish `e : lam a - lam b - (γ b - γ a) = lam a + γ a - (lam b + γ b)` using `by ring`. Rewrite `h2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint'' : ∀ a, ∃ m : ℤ, lam'' a - ((n : ℝ) - 1) / 2 = (m : ℝ)`.
+
+Introduce `a`. Take `⟨m1, hm1⟩` from `hint a`. Take `⟨N1, hN1⟩` from `root_cone_partial_sum_natural hβ ((a : ℕ) + 1)`. Take `⟨N2, hN2⟩` from `root_cone_partial_sum_natural hβ (a : ℕ)`. Use `⟨m1 + N1 - N2 - (if (s : ℕ) < (a : ℕ) + 1 then 1 else 0) + (if (s : ℕ) < (a : ℕ) then 1 else 0), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlam''γ, coordinate_eq_partial_sum_difference γ a, hγps, hγps, hN1, hN2]`. Apply the tactic sequence `split_ifs <;> push_cast <;> linarith`. Establish `hbig : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h - 2` using `by linarith`. Establish `hW'' : IsKIrrHW ε EN (lowK ε lam'') W` using `by rw [hlowK'']; exact hWirr`. Establish `hSch : ∀ w ∈ Wm ε EN W, phi EN 1 w = 0`.
+
+Introduce `w hw`. Assume the negation of the conclusion as `hne`. Use `finiteDimensional_ncV (ε := ε) hWirr.1 1` as an intermediate fact. Establish `hfdW : FiniteDimensional ℂ (Wm ε EN W)` using `Submodule.finiteDimensional_of_le Wm_le_ncV`. Establish `hWst : IsKStableSub ε (bAct EN 1) (Wm ε EN W)` using `Wm_kStable hEN hUN hW''`.
+
+Use `set T' : Submodule ℂ N := (Wm ε EN W).map (phi EN 1) with hT'`. Establish `hT'st : IsKStableSub ε EN T'`. Introduce `a b hab v hv`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hv`. Rewrite using `[← phi_bAct hEN 1 hab z]`.
+
+Conclude with `Submodule.mem_map_of_mem (hWst a b hab z hz)`. Establish `hT'ne : T' ≠ ⊥`. Introduce `hb`. Establish `: phi EN 1 w ∈ T'` using `Submodule.mem_map_of_mem hw`. Rewrite `this` using `[hb, Submodule.mem_bot]`.
+
+Conclude with `hne this`. Take `⟨y', hy'T, hy'0, μ', hy'μ⟩` from `exists_khw hEN hKUN inferInstance hT'st hT'ne`. Take `⟨w0', hw0', rfl⟩` from `Submodule.mem_map.1 hy'T`. Take `⟨x1, hx1, -, hkhw, hfx⟩` from `lift_khw (A := bAct EN 1) (bAct_isKUnitary hUN 1) (phi EN 1) (fun a b hab z => phi_bAct hEN 1 hab z) hfdW hWst hw0' hy'μ`. Establish `hx10 : x1 ≠ 0` using `by rintro rfl; rw [map_zero] at hfx; exact hy'0 hfx.symm`.
+
+Take `⟨a, b, hab, -, hμ'⟩` from `Wm_khw hEN hUN hW'' hmono'' hgap'' hbig hx1 hx10 hkhw`. Rewrite `hμ'` using `[hlowK'']`. Establish `hw0Y : phi EN 1 w0' ∈ Y`. Rewrite using `[sch_phi_one_apply]`. Use `Submodule.sum_mem _ fun p _ => hYst _ _ _ (hWY ?_)` and prove the remaining obligations.
+
+Establish `hn` using `Wm_le_ncV hw0'`. Unfold `ncV at hn`. Establish `h1` using `(Submodule.mem_iInf _).1 hn (fun _ => p)`. Rewrite `h1` using `[Submodule.mem_comap]`. Use `split_ifs at h1`.
+
+Conclude with `h1`. Rewrite `h1` using `[Submodule.mem_bot]`. Rewrite using `[← sch_coord_apply, h1]`. Conclude with `zero_mem _`. Establish `hcone'` using `hcone μ' _ hw0Y hy'0 hy'μ`.
+
+Take `⟨N', hN'⟩` from `root_cone_height_natural hcone'`. Establish `hbd' : ∀ k, kirrPs k μ' ≤ kirrPs k ν0`. Introduce `k`. Rewrite using `[hμ', hps, partial_sum_of_root]`. Use `Fin.lt_def.1 hab` as an intermediate fact.
+
+Establish `hνk` using `hνbd k`. Apply the tactic sequence `by_cases h1 : (a : ℕ) < k <;> by_cases h2 : (b : ℕ) < k`. Simplify using `only [h1, h2, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [h1, h2, if_true, if_false]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Simplify using `only [h1, h2, if_false]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmin` using `Nat.find_min' hQ ⟨_, hw0Y, hy'0, μ', hy'μ, hbd', hN'⟩`.
+
+Establish `e : μ' - lowK ε (lam - Pi.single s 1) = (ν - lowK ε (lam - Pi.single s 1)) - root a b`. Rewrite using `[hμ']`. Normalize the expressions using the abelian group laws. Rewrite `hN'` using `[e, map_sub, hνht, k3vdHt_root]`. Establish `hba : ((a : ℕ) : ℝ) + 1 ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast Fin.lt_def.1 hab`.
+
+Establish `hmin' : ((Nat.find hQ : ℕ) : ℝ) ≤ (N' : ℝ)` using `by exact_mod_cast hmin`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcasW : ∀ v ∈ W, casimir EN v = (casVal (lam - Pi.single s 1) : ℂ) • v` using `fun v hv => hcasY v (hWY hv)`. Establish `hSC` using `schmid_casimir n ε ν (h - 2) (casVal (lam - Pi.single s 1) : ℂ) N EN W hEN hUN hWirr hSch hcasW hint'' hmono'' hgap'' (by linarith) hp hq`. Establish `hcv : casVal (lam - Pi.single s 1) = casVal lam''` using `by exact_mod_cast hSC`.
+
+Establish `hsum : (lam - Pi.single s 1) + (ν - lowK ε (lam - Pi.single s 1)) = lam''`. Use extensionality with `a`. Simplify using `only [hlam'', lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnsq : nsq ((lam - Pi.single s 1) + (ν - lowK ε (lam - Pi.single s 1))) = nsq (lam - Pi.single s 1)`.
+
+Rewrite using `[hsum]`. Unfold `casVal at hcv`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hβ0` using `cone_norm n (lam - Pi.single s 1) _ hmono'.antitone hβ hnsq`. Establish `hνeq : ν = lowK ε (lam - Pi.single s 1)` using `sub_eq_zero.1 hβ0`.
+
+Conclude with `⟨W, hWY, hνeq ▸ hWirr, hcasW⟩`.
+-/
 theorem k3Vd (n : ℕ) : QuotientHighestWeightTensorDual n := by
   intro ε lam h H _ _ _ σ D E V s N _ _ EN φ x hσ hD hV hc hVK hint hmono hgap hp hq hmono' hEN hUN hφ hx hφx
   classical

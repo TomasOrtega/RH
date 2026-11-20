@@ -12,6 +12,11 @@ open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hL : ∑ i ∈ s, t i • f i = ∑ j : Fin s.card, t (s.equivFin.symm j) • f (s.equivFin.symm j)`. Rewrite using `[← Finset.sum_coe_sort s]`. Conclude with `(Equiv.sum_comp s.equivFin.symm (fun i : s => t i • f i)).symm`. Establish `hR : ∑ i ∈ s, algebraMap c.F S (t i) * evR Xo c (f i) y = ∑ j : Fin s.card, algebraMap c.F S (t (s.equivFin.symm j)) * evR Xo c (f (s.equivFin.symm j)) y`. Rewrite using `[← Finset.sum_coe_sort s]`.
+
+Conclude with `(Equiv.sum_comp s.equivFin.symm (fun i : s => algebraMap c.F S (t i) * evR Xo c (f i) y)).symm`. Rewrite using `[hL, hR]`. Conclude with `Formalism.L2.Pj.evR_sum_smul y (fun j => t (s.equivFin.symm j)) (fun j => f (s.equivFin.symm j))`.
+-/
 theorem evR_sum_smul_fin {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (Xo : Moduli Dw l) (c : Coeff l) {ι : Type} (s : Finset ι) (t : ι → c.F) (f : ι → Rul Xo c)
     {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :

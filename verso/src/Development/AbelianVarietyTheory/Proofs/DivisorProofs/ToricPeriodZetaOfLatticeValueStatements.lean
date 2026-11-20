@@ -18,6 +18,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NatCastMemBelow
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SquareBottomHalfRankDiffLeHalfRank
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ReflectionOfFunctionalEquation
 
+/- English proof (translation)
+Introduce `hEM hHCF hSKDR hHT hRam hUnr hLatAlg hLatConj`. Establish `hZD` using `GlobalTheory.ZetaDenom.zetaDenominators hSKDR`. Establish `hField` using `GlobalTheory.SqTop.fieldDat`. Establish `hAbs` using `GlobalTheory.Published.HeckeTateFunctionalEquation.abs hHT`. Establish `hLNe` using `GlobalTheory.SqTop.lNe_of_functionalEquation hAbs GlobalTheory.HeckeStrip.completedLBoundedInStrips hField`.
+
+Conclude with `⟨GlobalTheory.ToricDenomRow.toricDenominator hZD hRam hUnr, GlobalTheory.TransportProof.transport_of hHCF hLatAlg hLatConj, GlobalTheory.TwistedTransportProof.main (GlobalTheory.LatVal.periodEx_of_mainTheorem hEM) hLatAlg hLatConj, hZD, GlobalTheory.SqTop.refl_of_functionalEquati …`.
+-/
 theorem GlobalTheory.JoinFun.joinOut_of_lat : GlobalTheory.Published.EllipticMainTheoremCM → GlobalTheory.Published.HilbertClassFieldJ → GlobalTheory.Published.SiegelKlingenDeligneRibet → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.LatVal.LatIntRam → GlobalTheory.LatVal.LatIntUnr → GlobalTheory.LatVal.LatAlg → GlobalTheory.LatVal.LatConj → GlobalTheory.Mem.LiteralAutomorphy.JoinOut := by
   intro hEM hHCF hSKDR hHT hRam hUnr hLatAlg hLatConj
   have hZD := GlobalTheory.ZetaDenom.zetaDenominators hSKDR

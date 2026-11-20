@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `O T X _ _ _ _ _ x₀ h m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, TensorProduct.zero_tmul T x₀⟩`. Consider the case `tmul t x`. Take `⟨c, rfl⟩` from `h x`.
+
+Conclude with `⟨c • t, TensorProduct.smul_tmul c t x₀⟩`. Consider the case `add a b ha hb`. Take `⟨s, rfl⟩` from `ha`. Take `⟨t, rfl⟩` from `hb`. Conclude with `⟨s + t, TensorProduct.add_tmul s t x₀⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qj4.tmul_surjective_rank_one :
     ∀ {O T X : Type} [inst : CommRing O]
     [inst_1 : AddCommGroup T] [inst_2 : _root_.Module O T] [inst_3 : AddCommGroup X] [inst_4 : _root_.Module O X]

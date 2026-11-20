@@ -10,6 +10,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Establish `e : GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (finGL E a (locGL E a w k)) = GeneralLinearGroup.map (pLoc E v) (GeneralLinearGroup.map (pFin E) (finGL E a (locGL E a w k)))` using `by ext; rfl`. Rewrite using `[e, pFin_finGL, pLoc_locGL_of_ne h]`.
+-/
 theorem map_pLoc_pFin_finGL_locGL_of_ne {E : Type} [Field E] [NumberField E] {a : ℕ}
     {v w : HeightOneSpectrum (𝓞 E)} (h : v ≠ w) (k : GL (Fin a) (w.adicCompletion E)) :
     GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (finGL E a (locGL E a w k)) = 1 := by
@@ -18,6 +21,13 @@ theorem map_pLoc_pFin_finGL_locGL_of_ne {E : Type} [Field E] [NumberField E] {a 
     ext; rfl
   rw [e, pFin_finGL, pLoc_locGL_of_ne h]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => intro g _`. Simplify using the standard rewrite rules. Consider the case `cons w L ih`. Introduce `g hg`.
+
+Rewrite `hL` using `[List.nodup_cons]`. Establish `hw0` using `hw w (List.mem_cons_self ..)`. Establish `ih'` using `ih hL.2 (fun v hv => hw v (List.mem_cons_of_mem _ hv))`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[← mul_assoc, ih' (g * finGL E a (locGL E a w (diagPow (ϖ w) (l w)))) ?_, whit_mul_locGL_diagPow E a π w (α w) hw0.1 hw0.2.1 φ hφV hw0.2.2.1 g (hg w (List.mem_cons_self ..)) (ϖ w) hw0.2.2.2 (l w)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `v hv`. Establish `hne : v ≠ w` using `fun h => hL.1 (h ▸ hv)`. Rewrite using `[map_mul, hg v (List.mem_cons_of_mem _ hv), map_pLoc_pFin_finGL_locGL_of_ne hne, one_mul]`.
+-/
 theorem whit_mul_list_prod (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (π : CuspSub E a) (α : HeightOneSpectrum (𝓞 E) → Fin a → ℂˣ) (φ) (hφV : φ ∈ π.V)
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (l : HeightOneSpectrum (𝓞 E) → Fin a → ℕ)
@@ -44,6 +54,9 @@ theorem whit_mul_list_prod (E : Type) [Field E] [NumberField E] [IsTotallyComple
       have hne : v ≠ w := fun h => hL.1 (h ▸ hv)
       rw [map_mul, hg v (List.mem_cons_of_mem _ hv), map_pLoc_pFin_finGL_locGL_of_ne hne, one_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ a S hψ π α hα φ hφV hφ ϖ hϖ l hl x hx`. Establish `hmem : ∀ w ∈ l.support.toList, w ∉ S` using `fun w hw => hl w (Finset.mem_toList.1 hw)`. Rewrite using `[tl, whit_mul_list_prod E a π α φ hφV ϖ l l.support.toList (Finset.nodup_toList _) (fun w hw => ⟨hψ w (hmem w hw), hα w (hmem w hw), hφ w (hmem w hw), hϖ w⟩) x (fun w hw => hx w (hmem w hw))]`. Use `congr 1`. Conclude with `Finset.prod_map_toList _ _`.
+-/
 theorem whit_mul_tl : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))), (∀ w ∉ S, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w) → ∀ (π : CuspSub E a) (α : HeightOneSpectrum (𝓞 E) → Fin a → ℂˣ), (∀ w ∉ S, HasSatGL w (π.locRep w) (Finset.univ.val.map (α w))) → ∀ φ ∈ π.V, (∀ w ∉ S, ∀ k ∈ KGL w a, act (.fin (locGL E a w k)) φ = φ) → ∀ (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) → ∀ l : HeightOneSpectrum (𝓞 E) →₀ (Fin a → ℕ), (∀ w ∈ l.support, w ∉ S) → ∀ x ∈ GlobalTheory.JSW.supS E a S, GlobalTheory.JSW.whit φ.1 (x * GlobalTheory.JSW.tl ϖ l) = (∏ w ∈ l.support, GlobalTheory.JSW.sphW (qV E w) (fun i => (α w i : ℂ)) (l w)) * GlobalTheory.JSW.whit φ.1 x := by
   intro E _ _ _ a S hψ π α hα φ hφV hφ ϖ hϖ l hl x hx
   have hmem : ∀ w ∈ l.support.toList, w ∉ S := fun w hw => hl w (Finset.mem_toList.1 hw)

@@ -22,11 +22,19 @@ namespace Model
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem prodIrr_congr {h N : ℕ} {y z : Fin h → IrrGL k} (e : y = z) (hy : ∑ a, (y a).1 = N) (hz : ∑ a, (z a).1 = N) :
     Nonempty ((prodIrr y hy).Equiv (prodIrr z hz)) := by
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
+/- English proof (translation)
+Use extensionality with `g : 1`. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `ht : ∀ {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) k) V) (χ : GL (Fin n) k →* ℂˣ) (g : GL (Fin n) k), twist ρ χ g = ((χ g : ℂ) • ρ g)` using `fun _ _ _ => rfl`. Establish `ht2 : ∀ (g : Levi k fun _ : Fin 2 => Fin x.1), twist (piTensor fun _ : Fin 2 => x.rep) (chi k x.1 s) g = ((chi k x.1 s g : ℂ) • (piTensor fun _ : Fin 2 => x.rep) g)` using `fun _ => rfl`. Simplify using `only [LinearMap.compMultilinearMap_apply, piTensor_tprod, ht, ht2, LinearMap.smul_apply]`.
+
+Rewrite using `[MultilinearMap.map_smul_univ]`. Use `congr 1`. Simplify using `[chi, Fin.prod_univ_two, Units.val_mul]`.
+-/
 theorem piTensor_twist (x : IrrGL k) (s : ℝ) :
     piTensor (fun a : Fin 2 => twist x.rep (detChar (Fin x.1) (absPow k (![-(s : ℂ), (s : ℂ)] a)))) =
       twist (piTensor fun _ : Fin 2 => x.rep) (chi k x.1 s) := by
@@ -44,6 +52,13 @@ theorem piTensor_twist (x : IrrGL k) (s : ℝ) :
 end Model
 
 open Model in
+/- English proof (translation)
+Introduce `x s hd`. Set `π : ∀ a : Fin 2, Representation ℂ (GL (Fin x.1) k) x.2.rep.V` to `fun a => twist x.rep (detChar (Fin x.1) (absPow k (![-(s : ℂ), (s : ℂ)] a)))`. Establish `hs : ∀ a, IsSmooth (π a)` using `fun a => isSmooth_twist x.2.rep.smooth (isSmoothChar_absPow _).detChar`. Establish `hi : ∀ a, (π a).IsIrreducible` using `fun a => isIrreducible_twist x.2.rep.irr _`. Establish `e1` using `prodIrrEquiv (d := fun _ : Fin 2 => x.1) (sum_two x.1) π hs hi`.
+
+Establish `hy : (fun a => IrrGL.of (π a) (hs a) (hi a)) = ![x.nu (-(s : ℂ)), x.nu (s : ℂ)]`. Use function extensionality and compare the values at `a`. Establish `key : ∀ c : ℂ, IrrGL.of (twist x.rep (detChar (Fin x.1) (absPow k c))) (isSmooth_twist x.2.rep.smooth (isSmoothChar_absPow c).detChar) (isIrreducible_twist x.2.rep.irr _) = x.nu c` using `fun c => (IrrGL.tw_of x.rep x.2.rep.smooth x.2.rep.irr (absPow k c) (isSmoothChar_absPow c)).symm.trans (congrArg (fun y => IrrGL.tw y (absPow k c) (isSmoothChar_absPow c)) (IrrGL.of_rep x))`. Use `fin_cases a`. Conclude with `key _`.
+
+Conclude with `key _`. Take `⟨e2⟩` from `prodIrr_congr hy (sum_two x.1) hd`. Establish `e3 : (multiProd (stdBlocks (fun _ : Fin 2 => x.1) (sum_two x.1)) π).Equiv (parInd (blk2 x.1) (twist (piTensor fun _ : Fin 2 => x.rep) (chi k x.1 s)))` using `parIndEquiv (blk2 x.1) ((piTensor_twist x s) ▸ Representation.Equiv.refl _)`. Conclude with `⟨(e2.symm.trans e1.symm).trans e3⟩`.
+-/
 theorem prodModel (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     ProdModel k := by
   intro x s hd
@@ -67,6 +82,19 @@ theorem prodModel (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
     parIndEquiv (blk2 x.1) ((piTensor_twist x s) ▸ Representation.Equiv.refl _)
   exact ⟨(e2.symm.trans e1.symm).trans e3⟩
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨ω, hωs, hω⟩` from `exists_smooth_hasCentralChar y.2.rep.smooth y.2.rep.irr`. Take `⟨s, hs⟩` from `GlobalTheory.SmoothCharNorm.norm_eq_nabs_rpow k ω hωs`. Establish `hN : (y.1 : ℝ) ≠ 0` using `by exact_mod_cast hy.1.ne'`. Use `⟨y.nu ((-(s / y.1) : ℝ) : ℂ), s / y.1, hy.nu _, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hρc : (y.nu ((-(s / y.1) : ℝ) : ℂ)).IsCusp` using `hy.nu _`. Establish `hcc` using `UnitaryOrder.hasCentralChar_nu y hω ((-(s / y.1) : ℝ) : ℂ)`. Establish `hi` using `(y.nu ((-(s / y.1) : ℝ) : ℂ)).2.rep.irr`. Establish `hsm` using `(y.nu ((-(s / y.1) : ℝ) : ℂ)).2.rep.smooth`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hi`.
+
+Take `⟨v₀, hv₀⟩` from `exists_ne (0 : (y.nu ((-(s / y.1) : ℝ) : ℂ)).2.rep.V)`. Take `⟨l, hl⟩` from `GlobalTheory.ContraRefl.exists_smooth_form_ne hsm (GlobalTheory.SqIntUnit.compactOpen_basis k _) hv₀`. Use `GlobalTheory.isUnitarisable_of_isSupercuspidal _ _ _ (l : Module.Dual ℂ _) l.2 (fun e => hl (by rw [e]; rfl)) hi (GlobalTheory.CuspCoef.isSupercuspidal_of_isCuspidal k _ _ _ hρc.2) ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite `hg` using `[Matrix.GeneralLinearGroup.center_eq_range_scalar]`.
+
+Take `⟨a, rfl⟩` from `hg`. Use `⟨_, ?_, hcc a⟩` and prove the remaining obligations. Establish `h1` using `UnitaryOrder.log_norm_mul_absPow ω (-(s / y.1)) y.1 a`. Establish `hpos` using `nabs_pos' k a`. Rewrite `h1` using `[hs a, Real.log_rpow hpos]`.
+
+Establish `h2 : Real.log ‖(((ω * absPow k ((-(s / y.1) : ℝ) : ℂ) ^ y.1) a : ℂˣ) : ℂ)‖ = 0`. Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `Real.eq_one_of_pos_of_log_eq_zero (norm_pos_iff.2 (Units.ne_zero _)) h2`.
+
+Rewrite using `[IrrGL.nu_nu, show ((-(s / y.1) : ℝ) : ℂ) + ((s / y.1 : ℝ) : ℂ) = 0 by push_cast; ring, IrrGL.nu_zero]`.
+-/
 theorem cuspUnit (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     CuspUnit k := by
   intro y hy

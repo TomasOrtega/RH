@@ -12,6 +12,11 @@ namespace KummerIndex
 
 variable {K : Type*} [Field K] [NumberField K] {p : ℕ}
 
+/- English proof (translation)
+Introduce `v hv`. Establish `he : v.valuationOfNeZero (b ^ p) = 1`. Establish `h` using `hb v hv`. Rewrite `h` using `[← valuationOfNeZero_eq]`. Conclude with `h` after adjusting the coercions.
+
+Rewrite `he` using `[map_pow]`. Rewrite using `[← valuationOfNeZero_eq, (pow_eq_one_iff.1 he).resolve_right hp, WithZero.coe_one]`.
+-/
 theorem mem_unit_of_pow_mem_unit {S : Set (HeightOneSpectrum (𝓞 K))} (hp : p ≠ 0) {b : Kˣ}
     (hb : b ^ p ∈ S.unit K) : b ∈ S.unit K := by
   intro v hv
@@ -22,6 +27,11 @@ theorem mem_unit_of_pow_mem_unit {S : Set (HeightOneSpectrum (𝓞 K))} (hp : p 
   rw [map_pow] at he
   rw [← valuationOfNeZero_eq, (pow_eq_one_iff.1 he).resolve_right hp, WithZero.coe_one]
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[Subgroup.mem_subgroupOf, MonoidHom.mem_range, mem_unitsPow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Use `⟨⟨b, mem_unit_of_pow_mem_unit hp (hb ▸ e.2)⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[powMonoidHom_apply, Subgroup.coe_pow]`. Conclude with `hb`. Introduce and unpack `⟨f, rfl⟩`. Conclude with `⟨f, rfl⟩`.
+-/
 theorem unitsPow_subgroupOf_unit (S : Set (HeightOneSpectrum (𝓞 K))) (hp : p ≠ 0) :
     (unitsPow K p).subgroupOf (S.unit K) = (powMonoidHom p : S.unit K →* S.unit K).range := by
   ext e
@@ -34,6 +44,9 @@ theorem unitsPow_subgroupOf_unit (S : Set (HeightOneSpectrum (𝓞 K))) (hp : p 
   · rintro ⟨f, rfl⟩
     exact ⟨f, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[relIndex_powerSubgroup, ← relIndex_powerSubgroup_empty, relIndex_powerSubgroup_empty_eq_pow S hpS]`.
+-/
 theorem relIndex_powerSubgroup_eq_pow [NeZero p] [HasEnoughRootsOfUnity K p]
     (S : Finset (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K)))
     (hpS : ∀ v, (p : 𝓞 K) ∈ v.asIdeal → v ∈ S) :
@@ -46,6 +59,17 @@ universe u
 
 variable {K : Type u} [Field K] [NumberField K] [Fact p.Prime] [HasEnoughRootsOfUnity K p]
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf, coe_sUnitsToSIdeles, powerSubgroup, mem_localSubgroup, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hi, -⟩`. Establish `hy` using `hFI.mem_unitsPow_of_forall_mem_unitsPowIn S T hST hpS hJ hsurj e.2 (fun v hv ↦ by`.
+
+Take `⟨u, hu⟩` from `hf v hv`. Use `mem_unitsPowIn.2 ⟨(u : v.adicCompletion K), ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← powMonoidHom_apply, hu, finiteProj_diagonal]`. Use the proof step `rfl)`. Use the proof step `(fun w ↦ by`.
+
+Take `⟨u, hu⟩` from `hi w`. Use `mem_unitsPowIn.2 ⟨(u : w.Completion), ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← powMonoidHom_apply, hu, infiniteProj_diagonal]`. Use the proof step `rfl)`. Take `⟨b, hb⟩` from `mem_unitsPow.1 hy`.
+
+Use `⟨⟨b, mem_unit_of_pow_mem_unit (Fact.out : p.Prime).ne_zero (hb ▸ e.2)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[powMonoidHom_apply, Subgroup.coe_pow]`. Conclude with `hb`. Introduce and unpack `⟨f, rfl⟩`. Use `⟨fun v _ ↦ ⟨finiteProj v (diagonal K f), ?_⟩, fun w ↦ ⟨infiniteProj w (diagonal K f), ?_⟩, fun v hv ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[powMonoidHom_apply, ← map_pow, ← map_pow]`. Both sides reduce to the same expression. Rewrite using `[powMonoidHom_apply, ← map_pow, ← map_pow]`. Both sides reduce to the same expression. Conclude with `(diagonal_mem_sIdeles_iff _ _).2 (powMonoidHom p f).2 v hv`.
+-/
 theorem _root_.GroundTheory.Global.FirstInequality.comap_sUnitsToSIdeles_powerSubgroup_union
     (hFI : FirstInequality.{u}) (S T : Finset (HeightOneSpectrum (𝓞 K))) (hST : Disjoint S T)
     (hpS : ∀ v, (p : 𝓞 K) ∈ v.asIdeal → v ∈ S)
@@ -87,6 +111,23 @@ theorem _root_.GroundTheory.Global.FirstInequality.comap_sUnitsToSIdeles_powerSu
       rfl
     · exact (diagonal_mem_sIdeles_iff _ _).2 (powMonoidHom p f).2 v hv
 
+/- English proof (translation)
+Use `set Δ := (S : Set (HeightOneSpectrum (𝓞 K))).unit K`. Establish `hΔp : (unitsPow K p).relIndex Δ = p ^ (Fintype.card (InfinitePlace K) + S.card)`. Rewrite using `[Subgroup.relIndex, unitsPow_subgroupOf_unit _ (Fact.out : p.Prime).ne_zero, SUnit.index_range_powMonoidHom]`. Simplify using the standard rewrite rules. Establish `heq : radicalGroup K p a ⊓ Δ = unitsPowAt p T ⊓ Δ`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨radicalGroup_le (mem_unitsPowAt.2 haT) (unitsPow_le_unitsPowAt p T) h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨hker x h2 h1, h2⟩`. Establish `hrad : (radicalGroup K p a).relIndex Δ = p ^ T.card`. Rewrite using `[← Subgroup.inf_relIndex_right, heq, Subgroup.inf_relIndex_right, hidx]`. Establish `hstep : (unitsPow K p).relIndex (radicalGroup K p a ⊓ Δ) = p`. Rewrite using `[← QuotientGroup.ker_mk' (unitsPow K p), Subgroup.relIndex_ker]`.
+
+Use `set H := (radicalGroup K p a ⊓ Δ).map (QuotientGroup.mk' (unitsPow K p))`. Establish `hle : H ≤ Subgroup.zpowers (QuotientGroup.mk' (unitsPow K p) a)`. Rewrite using `[← radicalClasses_radicalGroup]`. Conclude with `Subgroup.map_mono inf_le_left`. Establish `hord : orderOf (QuotientGroup.mk' (unitsPow K p) a) = p`.
+
+Use `orderOf_eq_prime (UnitsModPow.pow_eq_one _ _ _) ?_` and prove the remaining obligations. Rewrite using `[ne_eq, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]` and apply the resulting hypothesis. Establish `hdvd : Nat.card H ∣ p`. Use `Subgroup.card_dvd_of_le hle` as an intermediate fact. Rewrite `this` using `[Nat.card_zpowers, hord]`. Then use the resulting hypothesis.
+
+Break down `(Nat.dvd_prime (Fact.out : p.Prime)).1 hdvd with h1 | hp` into its components or cases. It suffices to derive a contradiction. Establish `hbot` using `Subgroup.card_eq_one.1 h1`. Establish `hmem : QuotientGroup.mk' (unitsPow K p) a ∈ H` using `Subgroup.mem_map_of_mem _ ⟨mem_radicalGroup_self a, ha⟩`. Rewrite `hmem` using `[hbot, Subgroup.mem_bot, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`.
+
+Conclude with `hap hmem`. Conclude with `hp`. Establish `h` using `Subgroup.relIndex_inf_mul_relIndex (unitsPow K p) (radicalGroup K p a) Δ`. Rewrite `h` using `[inf_of_le_left (unitsPow_le_radicalGroup a), hstep, hrad, hΔp, ← pow_succ']`. Use `Nat.pow_right_injective (Fact.out : p.Prime).two_le h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_add_one_eq (S T : Finset (HeightOneSpectrum (𝓞 K))) {a : Kˣ}
     (ha : a ∈ (S : Set (HeightOneSpectrum (𝓞 K))).unit K) (hap : a ∉ unitsPow K p)
     (haT : ∀ v ∈ T, a ∈ unitsPowIn K p (v.adicCompletion K))
@@ -133,6 +174,17 @@ theorem card_add_one_eq (S T : Finset (HeightOneSpectrum (𝓞 K))) {a : Kˣ}
   have := Nat.pow_right_injective (Fact.out : p.Prime).two_le h
   omega
 
+/- English proof (translation)
+Take `⟨T, hST, haT, hidx, hker⟩` from `hFI.exists_places_unitsPowAt S hpS ha`. Establish `hcard` using `card_add_one_eq S T ha hap haT hidx hker`. Use `⟨T, hST, hcard, haT, ?_⟩` and prove the remaining obligations. Establish `hpT : ∀ v ∈ T, (p : 𝓞 K) ∉ v.asIdeal` using `fun v hv h ↦ Finset.disjoint_right.1 hST hv (hpS v h)`. Establish `hsurj` using `exists_localClass_eq S T hST hpT hidx`.
+
+Use `set S' : Set (HeightOneSpectrum (𝓞 K)) := (S : Set (HeightOneSpectrum (𝓞 K))) ∪ T with hS'`. Establish `hJ' : (diagonal K).range ⊔ sIdeles S' = ⊤` using `sup_sIdeles_eq_top_of_subset Set.subset_union_left hJ`. Use `set W := (powerSubgroup p (S : Set (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K)))).subgroupOf (sIdeles S')`. Establish `hle : powerSubgroup p (S : Set (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K))) ≤ sIdeles S'` using `powerSubgroup_le_sIdeles _ _ p`. Establish `hmap : W.map (sIdelesToIdeleClassGroup S') = (powerSubgroup p (S : Set (HeightOneSpectrum (𝓞 K))) (T : Set (HeightOneSpectrum (𝓞 K)))).map (IdeleClassGroup.mk K)`.
+
+Rewrite using `[sIdelesToIdeleClassGroup, ← Subgroup.map_map, Subgroup.subgroupOf_map_subtype, inf_of_le_left hle]`. Establish `hW : W.index = p ^ (2 * (S.card + Fintype.card (InfinitePlace K)))` using `relIndex_powerSubgroup_eq_pow S T hpS`. Establish `hcardS' : Nat.card S' = S.card + T.card`. Rewrite using `[hS', ← Finset.coe_union, Nat.card_coe_set_eq, Set.ncard_coe_finset, Finset.card_union_of_disjoint hST]`. Establish `hE : (W.comap (sUnitsToSIdeles S')).index = p ^ (Fintype.card (InfinitePlace K) + (S.card + T.card))`.
+
+Rewrite using `[hFI.comap_sUnitsToSIdeles_powerSubgroup_union S T hST hpS hJ hsurj, SUnit.index_range_powMonoidHom, hcardS']`. Establish `h` using `index_map_mul_index_comap S' hJ' W`. Rewrite `h` using `[hmap, hE, hW]`. Establish `h2 : 2 * (S.card + Fintype.card (InfinitePlace K)) = 1 + (Fintype.card (InfinitePlace K) + (S.card + T.card))` using `by omega`. Rewrite `h` using `[h2, pow_add p 1, pow_one]`.
+
+Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos (Fact.out : p.Prime).pos _) h`.
+-/
 theorem _root_.GroundTheory.Global.FirstInequality.exists_places_index_map_powerSubgroup
     (hFI : FirstInequality.{u}) (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hpS : ∀ v, (p : 𝓞 K) ∈ v.asIdeal → v ∈ S)

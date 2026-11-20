@@ -31,19 +31,31 @@ structure NormalModel {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) where
 def lineDiagonalMap : MvPolynomial (Fin 1 ⊕ Fin 1) ℂ →ₐ[ℂ] MvPolynomial (Fin 1) ℂ :=
   aeval (Sum.elim X fun _ => X 0)
 
+/- English proof (translation)
+Rewrite using `[lineDiagonalMap, aeval_rename]`. Conclude with `aeval_X_left_apply q`.
+-/
 theorem lineDiagonalMap_rename (q : MvPolynomial (Fin 1) ℂ) : lineDiagonalMap (rename Sum.inl q) = q := by
   rw [lineDiagonalMap, aeval_rename]
   exact aeval_X_left_apply q
 
+/- English proof (translation)
+Introduce `q` and use `⟨rename Sum.inl q, lineDiagonalMap_rename q⟩`.
+-/
 theorem lineDiagonalMap_surjective : Function.Surjective lineDiagonalMap :=
   fun q => ⟨rename Sum.inl q, lineDiagonalMap_rename q⟩
 
 def lineDiagonalIdeal : Ideal (MvPolynomial (Fin 1 ⊕ Fin 1) ℂ) :=
   RingHom.ker lineDiagonalMap.toRingHom
 
+/- English proof (translation)
+The claim follows from `RingHom.ker_isPrime _`.
+-/
 theorem lineDiagonalIdeal_isPrime : lineDiagonalIdeal.IsPrime :=
   RingHom.ker_isPrime _
 
+/- English proof (translation)
+The claim follows from `IsIntegrallyClosed.of_equiv (RingHom.quotientKerEquivOfSurjective (f := lineDiagonalMap.toRingHom) lineDiagonalMap_surjective).symm`.
+-/
 theorem lineDiagonalIdeal_isIntegrallyClosed :
     IsIntegrallyClosed (MvPolynomial (Fin 1 ⊕ Fin 1) ℂ ⧸ lineDiagonalIdeal) :=
   IsIntegrallyClosed.of_equiv (RingHom.quotientKerEquivOfSurjective
@@ -66,6 +78,11 @@ def lineDiagonalModel : NormalModel (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) whe
     show lineDiagonalMap _ = 0
     simp [lineDiagonalMap]⟩
 
+/- English proof (translation)
+Establish `h2 : ((aeval (fun _ : Fin 1 => c)).comp lineDiagonalMap) q = 0`. Rewrite using `[AlgHom.comp_apply, hq, map_zero]`. Rewrite `h2` using `[lineDiagonalMap, MvPolynomial.comp_aeval]`. Establish `hpt : (fun i : Fin 1 ⊕ Fin 1 => (aeval (fun _ : Fin 1 => c) : MvPolynomial (Fin 1) ℂ →ₐ[ℂ] ℂ) (Sum.elim (X : Fin 1 → MvPolynomial (Fin 1) ℂ) (fun _ => X 0) i)) = fun _ => c`. Use function extensionality and compare the values at `s`.
+
+Apply the tactic sequence `rcases s with i | i <;> simp`. Rewrite `h2` using `[hpt]`. Rewrite using `[← coe_aeval_eq_eval]`. Conclude with `h2`.
+-/
 theorem eval_const_of_lineDiagonalMap_eq_zero (c : ℂ) (q : MvPolynomial (Fin 1 ⊕ Fin 1) ℂ)
     (hq : lineDiagonalMap q = 0) : eval (fun _ => c) q = 0 := by
   have h2 : ((aeval (fun _ : Fin 1 => c)).comp lineDiagonalMap) q = 0 := by
@@ -79,10 +96,16 @@ theorem eval_const_of_lineDiagonalMap_eq_zero (c : ℂ) (q : MvPolynomial (Fin 1
   rw [← coe_aeval_eq_eval]
   exact h2
 
+/- English proof (translation)
+Introduce `q hq` and use `eval_const_of_lineDiagonalMap_eq_zero c q hq`.
+-/
 theorem const_mem_zeroSetIn_lineDiagonal (c : ℂ) :
     (fun _ => c : Fin 1 ⊕ Fin 1 → ℂ) ∈ zeroSetIn lineDiagonalIdeal :=
   fun q hq => eval_const_of_lineDiagonalMap_eq_zero c q hq
 
+/- English proof (translation)
+Introduce `hX`. Establish `h1 : lineDiagonalMap (X (Sum.inl 0)) = 0` using `hX`. Simplify using `[lineDiagonalMap] at h1`.
+-/
 theorem X_inl_not_mem_lineDiagonalIdeal :
     (X (Sum.inl 0) : MvPolynomial (Fin 1 ⊕ Fin 1) ℂ) ∉ lineDiagonalIdeal := by
   intro hX

@@ -8,6 +8,19 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.DblVac.BlocksPreserved
 
+/- English proof (translation)
+Establish `eL : ∀ z : Fin d → R, (Sum.elim z 0 : Fin d ⊕ Fin d → R) ∘ Sum.inl = z` using `fun z => rfl`. Establish `eR : ∀ z : Fin d → R, (Sum.elim z 0 : Fin d ⊕ Fin d → R) ∘ Sum.inr = 0` using `fun z => rfl`. Establish `fL : ∀ z : Fin d → R, (Sum.elim 0 z : Fin d ⊕ Fin d → R) ∘ Sum.inl = 0` using `fun z => rfl`. Establish `fR : ∀ z : Fin d → R, (Sum.elim 0 z : Fin d ⊕ Fin d → R) ∘ Sum.inr = z` using `fun z => rfl`. Establish `a11 : ∀ z : Fin d → R, (M *ᵥ Sum.elim z 0) ∘ Sum.inl = M.toBlocks₁₁ *ᵥ z`.
+
+Introduce `z`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₁₁]`. Establish `a21 : ∀ z : Fin d → R, (M *ᵥ Sum.elim z 0) ∘ Sum.inr = M.toBlocks₂₁ *ᵥ z`. Introduce `z`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₂₁]`. Establish `a12 : ∀ z : Fin d → R, (M *ᵥ Sum.elim 0 z) ∘ Sum.inl = M.toBlocks₁₂ *ᵥ z`. Introduce `z`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₁₂]`. Establish `a22 : ∀ z : Fin d → R, (M *ᵥ Sum.elim 0 z) ∘ Sum.inr = M.toBlocks₂₂ *ᵥ z`. Introduce `z`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₂₂]`.
+
+Use `⟨fun z hz => ?_, fun z hz => ?_, fun z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `(h (Sum.elim z 0) (by rw [eL]; exact hz) (by rw [eR]; exact S.zero_mem)).1` as an intermediate fact. Rewrite `this` using `[a11]`. Then use the resulting hypothesis. Use `(h (Sum.elim 0 z) (by rw [fL]; exact S.zero_mem) (by rw [fR]; exact hz)).1` as an intermediate fact. Rewrite `this` using `[a12]`. Then use the resulting hypothesis.
+
+Use `(h (Sum.elim z 0) (by rw [eL]; exact hz) (by rw [eR]; exact S.zero_mem)).2` as an intermediate fact. Rewrite `this` using `[a21]`. Then use the resulting hypothesis. Use `(h (Sum.elim 0 z) (by rw [fL]; exact S.zero_mem) (by rw [fR]; exact hz)).2` as an intermediate fact. Rewrite `this` using `[a22]`. Then use the resulting hypothesis.
+-/
 theorem blocks_keep {R : Type} [CommRing R] {d : ℕ} (S : AddSubgroup (Fin d → R))
     (M : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) R)
     (h : ∀ z : Fin d ⊕ Fin d → R, z ∘ Sum.inl ∈ S → z ∘ Sum.inr ∈ S →
@@ -40,6 +53,9 @@ end GlobalTheory.DblVac.BlocksPreserved
 
 namespace GlobalTheory.DblVac
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d W v g hg`. Establish `h1` using `BlocksPreserved.blocks_keep (GlobalTheory.InertSph.latAt W v) (matD g) (fun z h1 h2 => (hg.2 z ⟨h1, h2⟩).1)`. Establish `h2` using `BlocksPreserved.blocks_keep (GlobalTheory.InertSph.latAt W v) (matD g⁻¹) (fun z h1 h2 => (hg.2 z ⟨h1, h2⟩).2)`. Conclude with `⟨h1.1, h1.2.1, h1.2.2.1, h1.2.2.2, h2.1, h2.2.1, h2.2.2.1, h2.2.2.2⟩`.
+-/
 theorem KD_blocks_keep : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F), ∀ g ∈ GlobalTheory.DblVac.KD σ W v,
   (∀ z ∈ GlobalTheory.InertSph.latAt W v, (GlobalTheory.DblVac.matD g).toBlocks₁₁ *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) ∧
   (∀ z ∈ GlobalTheory.InertSph.latAt W v, (GlobalTheory.DblVac.matD g).toBlocks₁₂ *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) ∧

@@ -15,6 +15,17 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [S
 
 variable (Y : FBChart C V O dd)
 
+/- English proof (translation)
+Establish `h` using `hadd`. Rewrite `h` using `[addOf_eq', addOf_eq', comp_eq_map_at, comp_eq_map_at, comp_eq_map_at]`. Establish `k0` using `cc_pt (C := C) (dd := dd) (0 : Fin 2)`. Establish `k1` using `cc_pt (C := C) (dd := dd) (1 : Fin 2)`. Establish `hP` using `constantCoeff_pair_substitution ha hb`.
+
+Establish `e0 : (fun i => MvPowerSeries.subst (P2 a b) (pt C dd (0 : Fin 2) i)) = a` using `funext fun i => pair_subst_coordinate ha hb 0 i`. Establish `e1 : (fun i => MvPowerSeries.subst (P2 a b) (pt C dd (1 : Fin 2) i)) = b` using `funext fun i => pair_subst_coordinate ha hb 1 i`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrArg (MvPowerSeries.subst (P2 a b)) (congrFun h i)`. Rewrite `h2` using `[mapAt_subst hP ε (cc_addAt Y k0 k1), addAt_subst Y hP (cc_mapAt hε k0) (cc_mapAt hε k1)]`.
+
+Establish `e2 : (fun i => MvPowerSeries.subst (P2 a b) (addAt Y (pt C dd (0 : Fin 2)) (pt C dd (1 : Fin 2)) i)) = addAt Y a b`. Use function extensionality and compare the values at `j`. Rewrite using `[addAt_subst Y hP k0 k1, e0, e1]`. Establish `e3 : (fun i => MvPowerSeries.subst (P2 a b) (mapAt ε (pt C dd (0 : Fin 2)) i)) = mapAt ε a`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[mapAt_subst hP ε k0, e0]`. Establish `e4 : (fun i => MvPowerSeries.subst (P2 a b) (mapAt ε (pt C dd (1 : Fin 2)) i)) = mapAt ε b`. Use function extensionality and compare the values at `j`. Rewrite using `[mapAt_subst hP ε k1, e1]`. Rewrite `h2` using `[e2, e3, e4]`.
+
+Conclude with `h2`.
+-/
 theorem mapAt_addAt {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0)
     (hadd : comp1 ε (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1)) =
       addOf Y.B.G.F (comp1 ε (pt C (n := 2) dd 0)) (comp1 ε (pt C (n := 2) dd 1)))
@@ -47,6 +58,9 @@ theorem mapAt_addAt {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (
 def PhiAt (ε : Pt C 1 dd) (a : Fin dd → MvPowerSeries τ C) (m : Fin dd) : MvPowerSeries τ C :=
   MvPowerSeries.subst (mapAt ε (exAt Y a)) (l Y m)
 
+/- English proof (translation)
+The claim follows from `subst_subst hu hA _`.
+-/
 theorem exAt_subst [Finite τ] {A : τ → MvPowerSeries τ' C} (hA : ∀ s, MvPowerSeries.constantCoeff (A s) = 0)
     {u : Fin dd → MvPowerSeries τ C} (hu : ∀ i, MvPowerSeries.constantCoeff (u i) = 0) (i : Fin dd) :
     MvPowerSeries.subst A (exAt Y u i) = exAt Y (fun i => MvPowerSeries.subst A (u i)) i := subst_subst hu hA _
@@ -54,6 +68,11 @@ theorem exAt_subst [Finite τ] {A : τ → MvPowerSeries τ' C} (hA : ∀ s, MvP
 variable {ε : Pt C 1 dd} (hε : ∀ i, MvPowerSeries.constantCoeff (ε i) = 0)
 
 include hε in
+/- English proof (translation)
+Unfold `PhiAt`. Rewrite using `[subst_subst (cc_mapAt hε (cc_exAt Y hu)) hA]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[mapAt_subst hA ε (cc_exAt Y hu)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `exAt_subst Y hA hu i`.
+-/
 theorem PhiAt_subst [Finite τ] {A : τ → MvPowerSeries τ' C} (hA : ∀ s, MvPowerSeries.constantCoeff (A s) = 0)
     {u : Fin dd → MvPowerSeries τ C} (hu : ∀ i, MvPowerSeries.constantCoeff (u i) = 0) (m : Fin dd) :
     MvPowerSeries.subst A (PhiAt Y ε u m) = PhiAt Y ε (fun i => MvPowerSeries.subst A (u i)) m := by
@@ -67,6 +86,9 @@ theorem PhiAt_subst [Finite τ] {A : τ → MvPowerSeries τ' C} (hA : ∀ s, Mv
   exact exAt_subst Y hA hu i
 
 include hε in
+/- English proof (translation)
+Unfold `PhiAt`. Rewrite using `[ex_add Y ha hb, mapAt_addAt Y hε hadd (cc_exAt Y ha) (cc_exAt Y hb), l_add_at Y (cc_mapAt hε (cc_exAt Y ha)) (cc_mapAt hε (cc_exAt Y hb))]`.
+-/
 theorem PhiAt_add (hadd : comp1 ε (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n := 2) dd 1)) =
       addOf Y.B.G.F (comp1 ε (pt C (n := 2) dd 0)) (comp1 ε (pt C (n := 2) dd 1)))
     {a b : Fin dd → MvPowerSeries τ C} (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
@@ -76,8 +98,16 @@ theorem PhiAt_add (hadd : comp1 ε (addOf Y.B.G.F (pt C (n := 2) dd 0) (pt C (n 
   rw [ex_add Y ha hb, mapAt_addAt Y hε hadd (cc_exAt Y ha) (cc_exAt Y hb),
     l_add_at Y (cc_mapAt hε (cc_exAt Y ha)) (cc_mapAt hε (cc_exAt Y hb))]
 
+/- English proof (translation)
+The claim follows from `pderiv_l_zero Y m k`.
+-/
 theorem linear_coeff_logarithm_eq_ite (m k : Fin dd) : lin1 (l Y m) k = if m = k then 1 else 0 := pderiv_l_zero Y m k
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f => lin1 f j) (lgex Y m)`. Use `beta_reduce at h`. Rewrite `h` using `[linear_coeff_subst_chain_rule (cc_e Y), linear_coeff_X_eq_ite]`. Establish `h' : ∑ k, lin1 (e Y k) j * lin1 (l Y m) k = lin1 (e Y m) j`. Simplify using `only [linear_coeff_logarithm_eq_ite, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Rewrite `h` using `[h']`. Use `h` and compare the differences between its conclusion and the goal.
+-/
 theorem linear_coeff_exponential_eq_ite (m j : Fin dd) : lin1 (e Y m) j = if m = j then 1 else 0 := by
   have h := congrArg (fun f => lin1 f j) (lgex Y m)
   beta_reduce at h
@@ -87,6 +117,9 @@ theorem linear_coeff_exponential_eq_ite (m j : Fin dd) : lin1 (e Y m) j = if m =
   rw [h'] at h
   convert h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `exAt`. Rewrite using `[MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem exAt_X : exAt Y (MvPowerSeries.X : Fin dd → MvPowerSeries (Fin dd) C) = e Y := by
   funext i
   unfold exAt
@@ -94,6 +127,15 @@ theorem exAt_X : exAt Y (MvPowerSeries.X : Fin dd → MvPowerSeries (Fin dd) C) 
   rfl
 
 include hε in
+/- English proof (translation)
+Unfold `PhiAt`. Rewrite using `[linear_coeff_subst_chain_rule (cc_mapAt hε (cc_exAt Y fun _ => cc_X _))]`. Simplify using `only [linear_coeff_logarithm_eq_ite, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[exAt_X]`. Unfold `mapAt`.
+
+Rewrite using `[linear_coeff_subst_chain_rule (A := fun q : Fin 1 × Fin dd => e Y q.2) (fun q => cc_e Y q.2), Finset.sum_eq_single ((0 : Fin 1), j)]`. Rewrite using `[linear_coeff_exponential_eq_ite, if_pos rfl, one_mul, linear_coeff_eq_coeff_single]`. Introduce `q _ hq`. Rewrite using `[linear_coeff_exponential_eq_ite, if_neg, zero_mul]`. Introduce `h`.
+
+Apply `hq` to reduce the goal to its premises. Take `⟨q1, q2⟩` from `q`. Establish `: q1 = 0` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `Prod.ext rfl h`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem linear_coeff_formal_law_at_X (m j : Fin dd) :
     lin1 (PhiAt Y ε (MvPowerSeries.X : Fin dd → MvPowerSeries (Fin dd) C) m) j =
       MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (ε m) := by
@@ -116,6 +158,19 @@ theorem linear_coeff_formal_law_at_X (m j : Fin dd) :
 
 end VP
 
+/- English proof (translation)
+Introduce `ε hε hadd τ _ a ha i`. Establish `cX : ∀ i : Fin dd, MvPowerSeries.constantCoeff (MvPowerSeries.X i : MvPowerSeries (Fin dd) C) = 0` using `fun _ => VP.cc_X _`. Use `set φ : Fin dd → MvPowerSeries (Fin dd) C := VP.PhiAt Y ε MvPowerSeries.X with hφ`. Establish `cφ : ∀ m, MvPowerSeries.constantCoeff (φ m) = 0` using `fun m => VP.cc_subst (VP.cc_mapAt hε (VP.cc_exAt Y cX)) (VP.cc_l Y m)`. Establish `hsub : ∀ {τ' : Type} (b : Fin dd → MvPowerSeries τ' C), (∀ i, MvPowerSeries.constantCoeff (b i) = 0) → ∀ m, MvPowerSeries.subst b (φ m) = VP.PhiAt Y ε b m`.
+
+Introduce `τ' b hb m`. Rewrite using `[hφ, VP.PhiAt_subst Y hε hb cX]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `VP.subst_X hb i`.
+
+Establish `hlin : ∀ m, φ m = ∑ j, VP.lin1 (φ m) j • (MvPowerSeries.X j : MvPowerSeries (Fin dd) C)`. Introduce `m`. Use `VP.lin_of_add (φ m) (cφ m) ?_` and prove the remaining obligations. Rewrite using `[hsub _ (fun k => by rw [map_add, VP.cc_X, VP.cc_X, add_zero]) m, hsub _ (fun _ => VP.cc_X _) m, hsub _ (fun _ => VP.cc_X _) m]`. Conclude with `VP.PhiAt_add Y hε hadd (fun _ => VP.cc_X _) (fun _ => VP.cc_X _) m`.
+
+Establish `hP` using `VP.cc_mapAt hε (VP.cc_exAt Y ha)`. Use `show VP.mapAt ε (VP.exAt Y a) i = _`. Rewrite using `[← VP.e_lAt Y hP i]`. Use `show VP.exAt Y (fun m => VP.PhiAt Y ε a m) i = _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[← hsub a ha m, hlin m, VP.subst_sum ha]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[VP.subst_smul ha, VP.subst_X ha]`. Use `show VP.lin1 (VP.PhiAt Y ε MvPowerSeries.X m) j • a j = _`.
+
+Rewrite using `[VP.linear_coeff_formal_law_at_X Y hε]`.
+-/
 theorem endoLog_holds {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) : EndoLogSt Y := by
   intro ε hε hadd τ _ a ha i
@@ -149,6 +204,9 @@ theorem endoLog_holds {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [C
   show VP.lin1 (VP.PhiAt Y ε MvPowerSeries.X m) j • a j = _
   rw [VP.linear_coeff_formal_law_at_X Y hε]
 
+/- English proof (translation)
+The claim follows from `valuation_eq_pair_of_projections Y p H Ls n (endoLog_holds Y) hK hP hT`.
+-/
 theorem valuation_eq_pair_of_projections' {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
     [NeZero d] {Orb : Type} [Fintype Orb] {I : Orb → Fin 2 → Type} [∀ o g, Fintype (I o g)]
     (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)

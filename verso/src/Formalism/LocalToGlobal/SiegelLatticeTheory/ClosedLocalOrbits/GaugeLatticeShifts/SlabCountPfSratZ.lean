@@ -14,6 +14,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Matrix
 
+/- English proof (translation)
+Introduce `D X u' s σ hs hS`. Take `⟨M, -, -, h2, h3⟩` from `hs`. Take `⟨-, hsf⟩` from `Formalism.L2.SG.PoincareInHH.Cut.sratComp_holds X u' _ hS`. Take `⟨-, hfz⟩` from `hsf`. Establish `hG : ∀ y, X.B.I.fmat s.2 *ᵥ Formalism.L2.SG.Pf.Vanish2.inclHom X.B.I y = Formalism.L2.SG.Pf.Vanish2.inclHom X.B.I ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y)`.
+
+Introduce `y`. Rewrite using `[Formalism.L2.SG.Pf.Vanish2.inclHom_apply, Formalism.L2.SG.Pf.Vanish2.inclHom_apply, h2]`. Conclude with `Formalism.L2.SG.Pf.Level.incl_mulVec X _ y`. Establish `e` using `Formalism.L2.SG.Pf.Vanish2.tr_sub (Formalism.L2.SG.Pf.Vanish2.inclHom X.B.I) _ _ hG (X.zR u')`. Rewrite `e` using `[Formalism.L2.SG.Pf.Vanish2.inclHom_apply, Formalism.L2.SG.Pf.Vanish2.inclHom_apply]`.
+
+Rewrite `hfz` using `[e, ← Set.image_univ]`. Establish `hd` using `Formalism.L2.SG.Pf.Level.descend X Set.univ _ hfz`. Establish `hm : ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) - 1) *ᵥ X.zR u' = X.crd (σ (X.zu u') - X.zu u')` using `Formalism.L2.SG.Pf.Vanish2.mcrd X h3 (X.zu u')`. Rewrite `hd` using `[hm]`. Establish `ht` using `Formalism.L2.SG.Pf.RegroupPf.StabFlagPf.toV_span X hd`.
+
+Rewrite `ht` using `[Formalism.L2.SG.Pf.Level.toV_crd, Set.image_image]`. Establish `e2 : (fun b => Formalism.L2.SG.Pf.Level.toV X (X.eR b)) = X.eX`. Use function extensionality and compare the values at `fun b => Formalism.L2.SG.Pf.Level.toV_crd X (X.eX b)`. Rewrite `ht` using `[e2]`. Establish `hXs : Xsp (lf D (X.Fu u')) = Submodule.span D.host.E (X.eX '' Set.univ)`.
+
+Rewrite using `[Set.image_univ]`. Use `show Submodule.span D.host.E (Set.range (X.Fu u').e) = _`. Rewrite using `[X.Fu_e]`. Rewrite using `[hXs]`. Conclude with `ht`.
+-/
 theorem rational_z_condition_holds : SratZC := by
   intro D X u' s σ hs hS
   obtain ⟨M, -, -, h2, h3⟩ := hs

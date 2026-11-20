@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Introduce `v γ μRv ν hH`. Take `⟨j, rfl⟩` from `(tauE X e).surjective v`. Establish `key : ∀ (j' : Fin (nfE D)) (h' : X.pl.symm (e (plE D j')) = tauE X e j), (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u (tauE X e j)); Jv ν (X.Wloc u (tauE X e j)) (X.Wloc u' (tauE X e j)) γ) = ((castLoc X u h').toContinuousLinearEquiv.toContinuousLinearMap : X.Vloc u (tauE X e j') →L[ℂ] X.Vloc u (tauE X e j)).comp ((Formalism.FourierDecayAlt.D.orbJ (towersOf …`. Introduce `j' h'`. Establish `hj : j' = j` using `(tauE X e).injective h'`.
+
+Substitute `hj` using the available equality. Rewrite using `[towersOf_base, Hj j' γ μRv ν hH]`. Use extensionality with `x`. Both sides reduce to the same expression. Conclude with `key _ (tauE_symm X e (tauE X e j))`.
+-/
 theorem pinCov_carrierInTc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

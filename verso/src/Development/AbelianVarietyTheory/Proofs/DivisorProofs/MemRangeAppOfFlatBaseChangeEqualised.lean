@@ -12,10 +12,18 @@ namespace GlobalTheory.Mum.AffDesc
 
 open TensorProduct
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_eq_of_eq {X Y : Scheme.{0}} {f g : X ⟶ Y} (h : f = g) (U : Y.Opens) (V : X.Opens)
     (e : V ≤ f ⁻¹ᵁ U) (e' : V ≤ g ⁻¹ᵁ U) : f.appLE U V e = g.appLE U V e' := by
   subst h; rfl
 
+/- English proof (translation)
+Establish `e : a ⊗ₜ[R0] b = Algebra.TensorProduct.includeLeftRingHom a * Algebra.TensorProduct.includeRight.toRingHom b`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[e, map_mul]`. Establish `h1` using `congrArg (fun φ => φ.hom a) ((CommRingCat.isPushout_tensorProduct R0 A B).inl_isoPushout_hom =≫ pushout.desc u v w)`. Establish `h2` using `congrArg (fun φ => φ.hom b) ((CommRingCat.isPushout_tensorProduct R0 A B).inr_isoPushout_hom =≫ pushout.desc u v w)`.
+
+Simplify using `only [Category.assoc, pushout.inl_desc, pushout.inr_desc, CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h1 h2`. Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem isoPushout_desc_tmul {R0 A B : Type} [CommRing R0] [CommRing A] [CommRing B] [Algebra R0 A]
     [Algebra R0 B] {D : CommRingCat.{0}} (u : CommRingCat.of A ⟶ D) (v : CommRingCat.of B ⟶ D)
     (w : CommRingCat.ofHom (algebraMap R0 A) ≫ u = CommRingCat.ofHom (algebraMap R0 B) ≫ v) (a : A) (b : B) :
@@ -34,6 +42,9 @@ theorem isoPushout_desc_tmul {R0 A B : Type} [CommRing R0] [CommRing A] [CommRin
   rw [← h1, ← h2]
   rfl
 
+/- English proof (translation)
+Establish `a` using `Scheme.Hom.appLE_comp_appLE f g U V W e₁ e₂`. Establish `b` using `Scheme.Hom.appLE_comp_appLE f' g' U V' W e₁' e₂'`. Establish `c` using `appLE_eq_of_eq h U W (by rw [Scheme.Hom.comp_preimage]; exact le_trans e₂ (Scheme.Hom.preimage_mono f e₁)) (by rw [Scheme.Hom.comp_preimage]; exact le_trans e₂' (Scheme.Hom.preimage_mono f' e₁'))`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ x) (a.trans (c.trans b.symm))`.
+-/
 theorem appLE_apply_appLE {X Y Y' Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (f' : X ⟶ Y') (g' : Y' ⟶ Z)
     (h : f ≫ g = f' ≫ g') (U : Z.Opens) (V : Y.Opens) (V' : Y'.Opens) (W : X.Opens) (e₁ : V ≤ g ⁻¹ᵁ U)
     (e₂ : W ≤ f ⁻¹ᵁ V) (e₁' : V' ≤ g' ⁻¹ᵁ U) (e₂' : W ≤ f' ⁻¹ᵁ V') (x : Γ(Z, U)) :
@@ -44,6 +55,9 @@ theorem appLE_apply_appLE {X Y Y' Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (f
     (by rw [Scheme.Hom.comp_preimage]; exact le_trans e₂' (Scheme.Hom.preimage_mono f' e₁'))
   exact congrArg (fun φ => CommRingCat.Hom.hom φ x) (a.trans (c.trans b.symm))
 
+/- English proof (translation)
+The claim follows from `Scheme.Hom.app_eq_appLE f`.
+-/
 theorem appTop_eq_appLE {X Y : Scheme.{0}} (f : X ⟶ Y) : f.appTop = f.appLE ⊤ ⊤ le_top :=
   Scheme.Hom.app_eq_appLE f
 
@@ -52,6 +66,39 @@ end GlobalTheory.Mum.AffDesc
 namespace GlobalTheory.Mum.AffDesc
 open TensorProduct
 
+/- English proof (translation)
+Introduce `R _ S Y Z π y p q hπ hy H r h1 h2 hP hx V hV f hf`. Use `haveI : CompactSpace S := QuasiCompact.compactSpace_of_compactSpace π`. Use `haveI : QuasiSeparatedSpace S := (quasiSeparated_iff_quasiSeparatedSpace π).1 inferInstance`. Use `haveI : CompactSpace (pullback π π : Scheme) := QuasiCompact.compactSpace_of_compactSpace (pullback.fst π π ≫ π)`. Establish `hUY1 : p ⁻¹ᵁ V = q ⁻¹ᵁ ⊤ ⊓ p ⁻¹ᵁ V` using `by simp`.
+
+Establish `hUY2 : pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V) = r ⁻¹ᵁ ⊤ ⊓ (pullback.fst p p ≫ p) ⁻¹ᵁ V`. Simplify using `[Scheme.Hom.comp_preimage]`. Establish `i1` using `isIso_pushoutSection_of_isQuasiSeparated_of_flat_right H.flip (US := ⊤) (UX := ⊤) (UT := V) le_top le_top hUY1 (isAffineOpen_top _) hV isCompact_univ isQuasiSeparated_univ`. Establish `m2` using `mono_pushoutSection_of_isCompact_of_flat_right hP (US := ⊤) (UX := ⊤) (UT := V) le_top le_top hUY2 (isAffineOpen_top _) hV isCompact_univ`. Use `letI aB : Algebra Γ(Sp R, ⊤) Γ(S, ⊤) := (π.appLE ⊤ ⊤ le_top).hom.toAlgebra`.
+
+Use `letI aA : Algebra Γ(Sp R, ⊤) Γ(Y, V) := (y.appLE ⊤ V le_top).hom.toAlgebra`. Use `letI aC : Algebra Γ(Sp R, ⊤) Γ(pullback π π, ⊤) := ((pullback.fst π π ≫ π).appLE ⊤ ⊤ le_top).hom.toAlgebra`. Use `haveI : Module.Flat Γ(Sp R, ⊤) Γ(Y, V) := y.flat_appLE (isAffineOpen_top _) hV le_top`. Set `ΦB` to `(CommRingCat.isPushout_tensorProduct Γ(Sp R, ⊤) Γ(S, ⊤) Γ(Y, V)).isoPushout.hom ≫ pushoutSection H.flip (US := ⊤) (UX := ⊤) (UT := V) le_top le_top hUY1`. Set `ΦC` to `(CommRingCat.isPushout_tensorProduct Γ(Sp R, ⊤) Γ(pullback π π, ⊤) Γ(Y, V)).isoPushout.hom ≫ pushoutSection hP (US := ⊤) (UX := ⊤) (UT := V) le_top le_top hUY2`.
+
+Establish `hB : Function.Surjective ΦB.hom`. Establish `: IsIso ΦB` using `by dsimp only [ΦB]; infer_instance`. Conclude with `(ConcreteCategory.bijective_of_isIso ΦB).2`. Establish `hC : Function.Injective ΦC.hom`. Establish `: Mono ΦC` using `by dsimp only [ΦC]; infer_instance`.
+
+Conclude with `(ConcreteCategory.mono_iff_injective_of_preservesPullback ΦC).1 this`. Establish `fB : ∀ (b : Γ(S, ⊤)) (a : Γ(Y, V)), ΦB.hom (b ⊗ₜ a) = (q.appLE ⊤ (p ⁻¹ᵁ V) (by simp)).hom b * (p.appLE V (p ⁻¹ᵁ V) le_rfl).hom a` using `fun b a => isoPushout_desc_tmul _ _ _ b a`. Establish `fC : ∀ (c : Γ(pullback π π, ⊤)) (a : Γ(Y, V)), ΦC.hom (c ⊗ₜ a) = (r.appLE ⊤ (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp)).hom c * ((pullback.fst p p ≫ p).appLE V (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp [Scheme.Hom.comp_preimage])).hom a` using `fun c a => isoPushout_desc_tmul _ _ _ c a`. Establish `k1 : ∀ x, (pullback.fst π π).appLE ⊤ ⊤ le_top ((π.appLE ⊤ ⊤ le_top) x) = ((pullback.fst π π ≫ π).appLE ⊤ ⊤ le_top) x` using `fun x => congrArg (fun φ => CommRingCat.Hom.hom φ x) (Scheme.Hom.appLE_comp_appLE (pullback.fst π π) π ⊤ ⊤ ⊤ le_top le_top)`. Establish `k2 : ∀ x, (pullback.snd π π).appLE ⊤ ⊤ le_top ((π.appLE ⊤ ⊤ le_top) x) = ((pullback.fst π π ≫ π).appLE ⊤ ⊤ le_top) x` using `fun x => (congrArg (fun φ => CommRingCat.Hom.hom φ x) (Scheme.Hom.appLE_comp_appLE (pullback.snd π π) π ⊤ ⊤ ⊤ le_top le_top)).trans (congrArg (fun φ => CommRingCat.Hom.hom φ x) (appLE_eq_of_eq (pullback.condition (f := π) (g := π)).symm _ _ _ _))`.
+
+Set `d : Γ(S, ⊤) →ₗ[Γ(Sp R, ⊤)] Γ(pullback π π, ⊤)` to `{ toFun := fun x => (pullback.fst π π).appLE ⊤ ⊤ le_top x - (pullback.snd π π).appLE ⊤ ⊤ le_top x map_add' := fun x x' => by simp only [map_add]; abel map_smul' := fun c x => by`. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_mul, k1, k2, RingHom.id_apply]`. Use `ring }`. Establish `hex : Function.Exact (Algebra.linearMap Γ(Sp R, ⊤) Γ(S, ⊤)) d`. Introduce `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `e0 : (pullback.fst π π).appTop.hom x = (pullback.snd π π).appTop.hom x`. Rewrite using `[appTop_eq_appLE, appTop_eq_appLE]`. Conclude with `sub_eq_zero.1 h0`.
+
+Take `⟨c, hc⟩` from `hx x e0`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[appTop_eq_appLE]`. Conclude with `hc`. Introduce and unpack `⟨c, rfl⟩ show (pullback.fst π π).appLE ⊤ ⊤ le_top ((π.appLE ⊤ ⊤ le_top) c) - (pullback.snd π π).appLE ⊤ ⊤ le_top ((π.appLE ⊤ ⊤ le_top) c) = 0`.
+
+Rewrite using `[k1, k2, sub_self]`. Establish `hex'` using `Module.Flat.rTensor_exact Γ(Y, V) hex`. Establish `hEq : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, pullback.condition]`. Establish `c1 : ∀ b, ((pullback.fst p p).app (p ⁻¹ᵁ V)).hom ((q.appLE ⊤ (p ⁻¹ᵁ V) (by simp)).hom b) = (r.appLE ⊤ (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp)).hom ((pullback.fst π π).appLE ⊤ ⊤ le_top b)` using `fun b => by`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `appLE_apply_appLE (pullback.fst p p) q r (pullback.fst π π) h1.symm ⊤ (p ⁻¹ᵁ V) ⊤ (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp) le_rfl le_top (by simp) b`. Establish `c2 : ∀ b, ((pullback.snd p p).appLE _ _ hEq.ge).hom ((q.appLE ⊤ (p ⁻¹ᵁ V) (by simp)).hom b) = (r.appLE ⊤ (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp)).hom ((pullback.snd π π).appLE ⊤ ⊤ le_top b)` using `fun b => appLE_apply_appLE (pullback.snd p p) q r (pullback.snd π π) h2.symm ⊤ (p ⁻¹ᵁ V) ⊤ (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp) hEq.ge le_top (by simp) b`. Establish `c3 : ∀ a, ((pullback.fst p p).app (p ⁻¹ᵁ V)).hom ((p.appLE V (p ⁻¹ᵁ V) le_rfl).hom a) = ((pullback.fst p p ≫ p).appLE V (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp [Scheme.Hom.comp_preimage])).hom a` using `fun a => by`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+
+Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ a) (Scheme.Hom.appLE_comp_appLE (pullback.fst p p) p V (p ⁻¹ᵁ V) (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) le_rfl le_rfl)`. Establish `c4 : ∀ a, ((pullback.snd p p).appLE _ _ hEq.ge).hom ((p.appLE V (p ⁻¹ᵁ V) le_rfl).hom a) = ((pullback.fst p p ≫ p).appLE V (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) (by simp [Scheme.Hom.comp_preimage])).hom a` using `fun a => (congrArg (fun φ => CommRingCat.Hom.hom φ a) (Scheme.Hom.appLE_comp_appLE (pullback.snd p p) p V (p ⁻¹ᵁ V) (pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V)) le_rfl hEq.ge)).trans (congrArg (fun φ => CommRingCat.Hom.hom φ a) (appLE_eq_of_eq (pullback.condition (f := p) (g := p)).symm V (p …`. Establish `key : ∀ t, ΦC.hom (d.rTensor Γ(Y, V) t) = ((pullback.fst p p).app (p ⁻¹ᵁ V)).hom (ΦB.hom t) - ((pullback.snd p p).appLE _ _ hEq.ge).hom (ΦB.hom t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul b a`. Rewrite using `[LinearMap.rTensor_tmul, fC, fB, map_mul, map_mul, c1, c2, c3, c4]`. Express the relevant statement in the definitionally equal form `(r.appLE _ _ _).hom ((pullback.fst π π).appLE ⊤ ⊤ le_top b - (pullback.snd π π).appLE ⊤ ⊤ le_top b) * _ = _`. Rewrite using `[map_sub, sub_mul]`.
+
+Consider the case `add t t' ht ht'`. Rewrite using `[map_add, map_add, ht, ht', map_add, map_add, map_add]`. Normalize the expressions using the abelian group laws. Take `⟨t, rfl⟩` from `hB f`. Establish `hz : d.rTensor Γ(Y, V) t = 0` using `hC (by rw [key, map_zero, hf hEq, sub_self])`.
+
+Take `⟨s, rfl⟩` from `(hex' t).1 hz`. Use `clear hf hz key`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul c a`.
+
+Rewrite using `[LinearMap.rTensor_tmul, fB]`. Use `⟨(y.appLE ⊤ V le_top).hom c * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Scheme.Hom.app_eq_appLE]`. Use `congr 1`. Conclude with `appLE_apply_appLE p y q π H.w ⊤ V ⊤ (p ⁻¹ᵁ V) le_top le_rfl le_top (by simp) c`.
+
+Consider the case `add s s' hs hs'`. Take `⟨u, hu⟩` from `hs`. Take `⟨u', hu'⟩` from `hs'`. Conclude with `⟨u + u', by rw [map_add, hu, hu', map_add, map_add]⟩`.
+-/
 theorem mem_range_app_of_flat : ∀ (R : Type) [CommRing R] (S Y Z : Scheme.{0}) (π : S ⟶ Sp R) (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ S), IsProper π → Flat y → IsPullback p q y π → ∀ r : pullback p p ⟶ pullback π π, r ≫ pullback.fst π π = pullback.fst p p ≫ q → r ≫ pullback.snd π π = pullback.snd p p ≫ q → IsPullback r (pullback.fst p p ≫ p) (pullback.fst π π ≫ π) y → (∀ x : Γ(S, ⊤), (pullback.fst π π).appTop.hom x = (pullback.snd π π).appTop.hom x → x ∈ Set.range π.appTop.hom) → ∀ V : Y.Opens, IsAffineOpen V → ∀ f : Γ(Z, p ⁻¹ᵁ V), (∀ h : pullback.snd p p ⁻¹ᵁ (p ⁻¹ᵁ V) = pullback.fst p p ⁻¹ᵁ (p ⁻¹ᵁ V), ((pullback.fst p p).app _).hom f = ((pullback.snd p p).appLE _ _ h.ge).hom f) → f ∈ Set.range (p.app V).hom := by
   intro R _ S Y Z π y p q hπ hy H r h1 h2 hP hx V hV f hf
   classical

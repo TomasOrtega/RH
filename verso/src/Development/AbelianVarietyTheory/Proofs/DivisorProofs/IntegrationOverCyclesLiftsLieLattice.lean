@@ -25,6 +25,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AnPer
 
+/- English proof (translation)
+Introduce `A _ g hA _ L u P hP x`. Establish `hs` using `GlobalTheory.T.abelianScheme_isSeparated_of_affine_base A hA`. Take `⟨K, -, -, hK, hsm, -⟩` from `GlobalTheory.T.exists_small_chart_pair_along_linear_map (fibUnif u) (fibUnif u) id analyticOnNhd_id (fun _ h ↦ h) LinearMap.id (AddMonoidHom.id _) (fun _ _ _ ↦ rfl)`. Take `⟨r, hr, -⟩` from `GlobalTheory.T.exists_analyticChartsRealization_of_affine (fibUnif u) hs K hsm`. Take `⟨k, hk⟩` from `hK.1 0 trivial`.
+
+Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_firstOrderJet_algHom (K.W k) 0 hk (0, (x : Fin g → ℂ))`. Take `⟨v, hv, ht, hd⟩` from `GlobalTheory.T.exists_tangent_of_uniformisation_jet u hs (K.W k) (r.x k) (hr k) ((congrArg (r.x k ≫ ·) (Category.comp_id A.hom).symm).trans (r.w k)) hk x ρ hρ`. Use `⟨v, ⟨ht, fun f hf ↦ ?_⟩, hd⟩` and prove the remaining obligations. Take `⟨q, G, hq, hG, hGk, hGl⟩` from `GlobalTheory.T.exists_global_bound_of_period_class K hK r f _ (hP ⟨_, hf⟩ K r hr)`. Rewrite using `[GlobalTheory.T.form_on_tangent_eq_derivative_bounding_function K r k 0 hk x ρ hρ v hv f _ q hq, Hol.fderiv_fn_congr _ (hGk k) hk]`.
+
+Establish `hdG : ∀ p, DifferentiableAt ℂ G p` using `fun p ↦ (hG p trivial).differentiableAt`. Establish `hi : ∀ w : Fin g → ℂ, HasFDerivAt (fun w : Fin g → ℂ ↦ ((0, w) : Tot Empty g)) (ContinuousLinearMap.inr ℂ (Empty → ℂ) (Fin g → ℂ)) w` using `fun w ↦ hasFDerivAt_prodMk_right _ _`. Use `GlobalTheory.fderiv_zero_eq_of_const_differences u.Λ u.full (fun w ↦ G (0, w)) (fun l ↦ P l ⟨_, hf⟩) (fun w ↦ (hdG _).comp w (hi w).differentiableAt) (fun l w ↦ (hGl l (0, w) trivial).trans (congrArg (G (0, w) + ·) (Hol.fn_algebraMap _ trivial))) x` as an intermediate fact. Rewrite using `[← this]`. Conclude with `congrArg (fun D : (Fin g → ℂ) →L[ℂ] ℂ ↦ D x) ((hdG (0, 0)).hasFDerivAt.comp (0 : Fin g → ℂ) (hi 0)).fderiv`.
+-/
 theorem pLie_holds : PLie := by
   intro A _ g hA _ L u P hP x
   have hs := GlobalTheory.T.abelianScheme_isSeparated_of_affine_base A hA

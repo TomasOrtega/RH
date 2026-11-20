@@ -18,6 +18,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem I_om_one (M : Model σ Y W) (om : Rep σ Y W) (Φ : Fn F n d) (h h₀ : UA σ W.J) :
     M.I om (om (1, h) Φ) h₀ = M.I om Φ (h₀ * h) := by
   unfold Model.I theta
@@ -26,6 +29,9 @@ theorem I_om_one (M : Model σ Y W) (om : Rep σ Y W) (Φ : Fn F n d) (h h₀ : 
   congr 1
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v h hh Φ hΦ => Submodule.mem_inf.2 ⟨h₁.fin v h hh Φ (Submodule.mem_inf.1 hΦ).1, h₂.fin v h hh Φ (Submodule.mem_inf.1 hΦ).2⟩, fun γ hγ Φ hΦ Φ₁ hΦ₁ hd => Submodule.mem_inf.2 ⟨h₁.lie γ hγ Φ (Submodule.mem_inf.1 hΦ).1 Φ₁ hΦ₁ hd, h₂.lie γ hγ Φ (Submodule.mem_inf.1 hΦ).2 Φ₁ hΦ₁ hd …`.
+-/
 theorem wStable_inf {B : Base F E} {om : Rep σ Y W} {D N₁ N₂ : Submodule ℂ (Fn F n d)}
     (h₁ : GlobalTheory.ThetaFac.WStable B om D N₁) (h₂ : GlobalTheory.ThetaFac.WStable B om D N₂) :
     GlobalTheory.ThetaFac.WStable B om D (N₁ ⊓ N₂) :=
@@ -34,6 +40,17 @@ theorem wStable_inf {B : Base F E} {om : Rep σ Y W} {D N₁ N₂ : Submodule �
      h₂.lie γ hγ Φ (Submodule.mem_inf.1 hΦ).2 Φ₁ hΦ₁ hd⟩,
    fun k hk Φ hΦ => Submodule.mem_inf.2 ⟨h₁.cpt k hk Φ (Submodule.mem_inf.1 hΦ).1, h₂.cpt k hk Φ (Submodule.mem_inf.1 hΦ).2⟩⟩
 
+/- English proof (translation)
+Use `⟨fun v h hh Φ hΦ => ?_, fun γ hγ Φ hΦ Φ₁ hΦ₁ hd => ?_, fun k hk Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hΦ`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h₁.fin v h hh y hy) (h₂.fin v h hh z hz)`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hΦ`.
+
+Take `⟨y₁, hy₁D, hy₁⟩` from `hD γ hγ y (l₁ hy)`. Take `⟨z₁, hz₁D, hz₁⟩` from `hD γ hγ z (l₂ hz)`. Establish `e : Φ₁ = y₁ + z₁`. Use function extensionality and compare the values at `x`. Establish `h2 : HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (y + z) x) (y₁ x + z₁ x) 0`.
+
+Establish `hf : (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) (y + z) x) = fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) y x + om (1, γ (Multiplicative.ofAdd t)) z x`. Use function extensionality and compare the values at `t`. Rewrite using `[map_add, Pi.add_apply]`. Rewrite using `[hf]`. Conclude with `(hy₁ x).add (hz₁ x)`.
+
+Conclude with `(hd x).unique h2`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (h₁.lie γ hγ y hy y₁ hy₁D hy₁) (h₂.lie γ hγ z hz z₁ hz₁D hz₁)`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hΦ`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem_sup (h₁.cpt k hk y hy) (h₂.cpt k hk z hz)`.
+-/
 theorem wStable_sup {B : Base F E} {om : Rep σ Y W} {D N₁ N₂ : Submodule ℂ (Fn F n d)}
     (hD : ∀ γ ∈ Lines σ W, ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x,
       HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0)
@@ -63,6 +80,11 @@ theorem wStable_sup {B : Base F E} {om : Rep σ Y W} {D N₁ N₂ : Submodule �
     rw [map_add]
     exact Submodule.add_mem_sup (h₁.cpt k hk y hy) (h₂.cpt k hk z hz)
 
+/- English proof (translation)
+Establish `hdir : DirectedOn (· ≤ ·) c` using `hc.directedOn`. Use `⟨fun v g hg Φ hΦ => ?_, fun γ hγ Φ hΦ Φ₁ hΦ₁ hd => ?_, fun k hk Φ hΦ => ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hΦN⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hΦ`. Conclude with `(Submodule.mem_sSup_of_directed hne hdir).2 ⟨N, hN, (h N hN).fin v g hg Φ hΦN⟩`. Take `⟨N, hN, hΦN⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hΦ`.
+
+Conclude with `(Submodule.mem_sSup_of_directed hne hdir).2 ⟨N, hN, (h N hN).lie γ hγ Φ hΦN Φ₁ hΦ₁ hd⟩`. Take `⟨N, hN, hΦN⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hΦ`. Conclude with `(Submodule.mem_sSup_of_directed hne hdir).2 ⟨N, hN, (h N hN).cpt k hk Φ hΦN⟩`.
+-/
 theorem wStable_sSup {B : Base F E} {om : Rep σ Y W} {D : Submodule ℂ (Fn F n d)} {c : Set (Submodule ℂ (Fn F n d))}
     (hne : c.Nonempty) (hc : IsChain (· ≤ ·) c) (h : ∀ N ∈ c, GlobalTheory.ThetaFac.WStable B om D N) :
     GlobalTheory.ThetaFac.WStable B om D (sSup c) := by

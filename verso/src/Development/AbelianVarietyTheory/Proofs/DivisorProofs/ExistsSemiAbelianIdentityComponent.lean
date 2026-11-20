@@ -46,11 +46,21 @@ abbrev RangeIsId : Prop := ∀ x : G.left, x ∈ Set.range j.left ↔
   x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x))
 
 include j in
+/- English proof (translation)
+Use `show G.hom ((η[G]).left s) = s`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`. Both sides reduce to the same expression.
+-/
 theorem unit_mem_fibre (s : S) : (η[G]).left s ∈ G.hom ⁻¹' {s} := by
   show G.hom ((η[G]).left s) = s
   rw [← Scheme.Hom.comp_apply, Over.w]
   rfl
 
+/- English proof (translation)
+Establish `hw : ∀ x, G.hom (j.left x) = G₀.hom x` using `fun x => by`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`. Establish `himg : j.left '' (G₀.hom ⁻¹' {s}) = connectedComponentIn (G.hom ⁻¹' {s}) ((η[G]).left s)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Use `(hr (j.left x)).1 ⟨x, rfl⟩` as an intermediate fact. Rewrite `this` using `[hw, show G₀.hom x = s from hx]`. Then use the resulting hypothesis. Introduce `hy`. Establish `hys : G.hom y = s` using `connectedComponentIn_subset (G.hom ⁻¹' {s}) _ hy`.
+
+Take `⟨x, rfl⟩` from `(hr y).2 (by rwa [hys])`. Conclude with `⟨x, by rw [Set.mem_preimage, ← hw, hys]; rfl, rfl⟩`. Establish `hc : _root_.IsConnected (connectedComponentIn (G.hom ⁻¹' {s}) ((η[G]).left s))` using `isConnected_connectedComponentIn_iff.mpr (unit_mem_fibre j s)`. Rewrite `hc` using `[← himg]`. Conclude with `⟨hc.nonempty.of_image, j.left.isOpenEmbedding.isInducing.isPreconnected_image.1 hc.isPreconnected⟩`.
+-/
 theorem isConnected_fibre [IsOpenImmersion j.left] (hr : RangeIsId j) (s : S) :
     _root_.IsConnected (G₀.hom ⁻¹' {s}) := by
   have hw : ∀ x, G.hom (j.left x) = G₀.hom x := fun x => by

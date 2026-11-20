@@ -10,6 +10,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl PositivityTheory.SiegelWeilFormula
 namespace PositivityTheory.SiegelWeilFormula.Khead
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B m n A Y r s r' s' hlt h1 h2 h3 h4 h5 χ h6 h7 κ _ dd om S l h8 b K a h9 h10 h11 μ D h12 h13 Φ h14 h15`. Simplify using `only [if_pos hlt, one_mul]`. Conclude with `h F E σ B m n A Y r s r' s' χ κ dd om S l b K a μ D Φ ⟨h1, h2, h3, hlt, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15⟩`.
+-/
 theorem siegelWeilStd_lt_k (h : _root_.PositivityTheory.SiegelWeilFormula.SWStdLt_k) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (m n : ℕ) (A : Spc F E m) (Y : Spc F E n) r s r' s', n < m → _root_.UpperTheory.TP.W.GoodK σ B → 1 ≤ m → 1 ≤ n →
     min r s = 0 → (A.IsHerm σ B r s ∧ Y.IsSkew σ B r' s' ∨ A.IsSkew σ B r s ∧ Y.IsHerm σ B r' s') →

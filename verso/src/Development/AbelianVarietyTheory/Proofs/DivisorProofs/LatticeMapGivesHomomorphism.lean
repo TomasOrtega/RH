@@ -15,6 +15,13 @@ namespace GlobalTheory.HolUnifHom
 
 open GlobalTheory.SS GlobalTheory.EighthPowerFactor CechPic in
 
+/- English proof (translation)
+Use `hB.comm` as an intermediate fact. Take `⟨L₁, L₂⟩` from `abelianSchemeLaws_all`. Take `⟨W, hW, hbas⟩` from `ZM.exists_isE8_isSharpBasis`. Take `⟨bas, hb⟩` from `hbas g`. Take `⟨a, w, w', hw, hw', hs⟩` from `exists_matrices hW.2`.
+
+Set `b : ZM.TBase k 1` to `⟨1, by simp, fun K _ β => by simp⟩`. Establish `hc : (siegOne L₁.globalFns hB hM g).Principal` using `⟨relAmple_diag_lam hB hM (exists_gen_theta_of_isAbelianScheme k B hB M hM) ha, fun T x hx => SiegelOfPolarised.eq_one_of_lam hM hK x hx⟩`. Take `⟨t, ⟨pr, hpr, hu, -⟩, -, -, -⟩` from `exists_isSharp_and_prim L₁ L₂ Moduli.cube_of_isLB g _ W _ a w w' bas hW hb hw hw' hs 1 k b _ (𝟙 _) (siegOne L₁.globalFns hB hM g) (one_pow _) odd_one hc hd`. Take `⟨i, hi, -⟩` from `hu B fun _ => 𝟙 B`. Use `⟨t.pol, i, pr 0, rfl, isMonHom_of_coord hpr hu fun u => ?_, hpr 0, hi 0⟩` and prove the remaining obligations.
+
+Rewrite using `[hi u]`. Conclude with `inferInstanceAs (IsMonHom (𝟙 B))`.
+-/
 theorem exists_polAV_retract_dim (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g : ℕ)
     (hB : IsAbelianScheme B) (hd : SmoothOfRelativeDimension g B.hom) (M : LB B.left) (hM : M.IsLB)
     (ha : Out.RelAmple B M) (hK : Out.KTriv B M) :
@@ -42,6 +49,33 @@ namespace GlobalTheory.HolUnifHom
 
 open GlobalTheory GlobalTheory.SurjIsogeny GlobalTheory.IsogenyModel GlobalTheory.HolUnifEnd in
 
+/- English proof (translation)
+Take `⟨B, _, MB, i, r, m, hB, hgB, hMB, hamp, hK, hi, hr, hm, hri⟩` from `SS.PrincIsog.exists_isogeny_kTriv ℂ A g hA hgA`. Take `⟨Q, i', r', hQg, hi', hr', hir'⟩` from `exists_polAV_retract_dim ℂ B g hB hgB MB hMB hamp hK`. Use `haveI := hi`. Use `haveI := hr`. Use `haveI := hi'`.
+
+Use `haveI := hr'`. It suffices to establish `key : ∀ n, Q.g = n → ∃ (v : HolUnif Q.A Q.L n) (J : (Fin g → ℂ) →ₗ[ℂ] (Fin n → ℂ)) (R : (Fin n → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ z, v.ex (J z) = u.ex z ≫ (i ≫ i')) ∧ (∀ z, u.ex (R z) = v.ex z ≫ (r' ≫ r)) ∧ (∀ x ∈ u.Λ, J x ∈ v.Λ) ∧ (∀ x ∈ v.Λ, R x ∈ u.Λ) ∧ ∀ z, R (J z) = m • z by`. Take `⟨v, J, R, hJ, hR, hJΛ, hRΛ, hRJ⟩` from `key (8 * g) hQg`. Conclude with `⟨Q, v, i ≫ i', r' ≫ r, J, R, m, hQg, inferInstance, inferInstance, hm, hJ, hR, hJΛ, hRΛ, hRJ⟩`. Introduce and unpack `n rfl`.
+
+Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨v, -, -, -, -, -, hv1, hv2, -⟩` from `thetaUnifAV_all Q rig hrig`. Establish `hu` using `TorusTransfer.tangent_bijective u hgA`. Take `⟨J, hJ, hJΛ, -, -⟩` from `HomLinear.exists_linear_of_isMonHom A Q.A hA Q.isAb L Q.L g Q.g u v hv1 hv2 (i ≫ i') inferInstance`. Take `⟨R, hR, hRΛ, -, -⟩` from `HomLinear.exists_linear_of_isMonHom Q.A A Q.isAb hA Q.L L Q.g g v u hu.1 hu.2 (r' ≫ r) inferInstance`.
+
+Establish `hunit : IsUnit ((m : ℕ) : Γ(Sp ℂ, ⊤))`. Use `(IsUnit.mk0 (m : ℂ) (by exact_mod_cast (show m ≠ 0 by omega))).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hsB` using `(abelianScheme_id_pow_finite_etale_surjective _ B m hB hunit).2.2.2`. Establish `: Surjective (r.left ≫ i.left)` using `by rw [← Over.comp_left, hri]; exact hsB`.
+
+Establish `: Surjective i.left` using `Surjective.of_comp r.left i.left`. Take `⟨n, hn, hkill⟩` from `exists_pow_eq_one_of_surjective A B g hA hB hgA hgB i`. Establish `hpt : ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, x ≫ (i ≫ i') ≫ (r' ≫ r) ≫ (i ≫ i') = (x ≫ i ≫ i') ^ m`. Introduce `x`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[reassoc_of% hir', reassoc_of% hri, ← Category.assoc x i, ← Category.assoc (x ≫ i), MonObj.comp_pow, Category.comp_id, MonObj.pow_comp, Category.assoc]`. Establish `hsubv : ∀ a b, v.ex a = v.ex b → a - b ∈ v.Λ`. Introduce `a b h`. Rewrite using `[← v.ker]`. Establish `e` using `v.ex_add (a - b) b`.
+
+Rewrite `e` using `[sub_add_cancel, h]`. Establish `e2` using `congrArg (· * (v.ex b)⁻¹) e`. Simplify using `using e2.symm`. Establish `hRJ : ∀ z, R (J z) = m • z`. Introduce `z`.
+
+Establish `hJy : ∀ t : ℂ, J (t • (R (J z) - m • z)) ∈ v.Λ`. Introduce `t`. Establish `h1 : v.ex (J (R (J (t • z)))) = v.ex (m • J (t • z))`. Rewrite using `[hJ, hR, hJ, holUnif_ex_nsmul_eq_pow, hJ, ← hpt]`. Simplify using `only [Category.assoc]`.
+
+Establish `h2` using `hsubv _ _ h1`. Establish `h3 : t • (R (J z) - m • z) = R (J (t • z)) - m • (t • z)`. Rewrite using `[map_smul, map_smul, smul_sub, smul_comm t m z]`. Rewrite using `[h3, map_sub, map_nsmul]`. Conclude with `h2`.
+
+Establish `hJy0 : J (R (J z) - m • z) = 0` using `LatticeHom.eq_zero_of_forall_smul_mem v.Λ v.discrete fun t => by rw [← map_smul]; exact hJy t`. Establish `hker : ∀ t : ℂ, u.ex (t • (R (J z) - m • z)) ≫ i = 1`. Introduce `t`. Establish `h2 : u.ex (t • (R (J z) - m • z)) ≫ i ≫ i' = 1`. Rewrite using `[← hJ, map_smul, hJy0, smul_zero, holUnif_ex_zero_eq_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hir', Category.comp_id]`. Use `_ = (u.ex (t • (R (J z) - m • z)) ≫ i ≫ i') ≫ r' := by simp only [Category.assoc]`. Use `_ = 1 := by rw [h2, MonObj.one_comp]`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`.
+
+Establish `hy0 : R (J z) - m • z = 0` using `LatticeHom.eq_zero_of_forall_smul_mem u.Λ u.discrete fun t => by`. Rewrite using `[← u.ker]`. Establish `e` using `hkill _ (hker ((n : ℂ)⁻¹ * t))`. Rewrite `e` using `[← holUnif_ex_nsmul_eq_pow, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ← _root_.mul_assoc, mul_inv_cancel₀ hn0, _root_.one_mul]`. Conclude with `e`.
+
+Conclude with `sub_eq_zero.1 hy0`. Conclude with `⟨v, J, R, hJ, hR, hJΛ, hRΛ, hRJ⟩`.
+-/
 theorem exists_linear_factor (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hgA : SmoothOfRelativeDimension g A.hom) (L : LB A.left) (u : HolUnif A L g) :
     ∃ (Q : Out.PolAV (Sp ℂ)) (v : HolUnif Q.A Q.L (8 * g)) (i : A ⟶ Q.A) (r : Q.A ⟶ A)
@@ -125,6 +159,17 @@ namespace GlobalTheory.HolUnifHom
 
 open GlobalTheory.HolUnifEnd in
 
+/- English proof (translation)
+Introduce `A A' _ _ g hA hA' hgA hgA' L L' u u' M hM`. Take `⟨hL, -⟩` from `abelianSchemeLaws_all`. Take `⟨Q, v, i, r, J, R, m, hQ, hi, hr, hm, hJ, hR, hJΛ, hRΛ, hRJ⟩` from `exists_linear_factor A g hA hgA L u`. Take `⟨Q', v', i', r', J', R', m', hQ', hi', hr', hm', hJ', hR', hJΛ', hRΛ', hRJ'⟩` from `exists_linear_factor A' g hA' hgA' L' u'`. Take `⟨β, hβ, hβe⟩` from `_root_.GlobalTheory.exists_isMonHom_of_map_lattice thetaUnifAV_all hL Q Q' (8 * g) v v' (J' ∘ₗ M ∘ₗ R) hQ hQ' (fun l hl => hJΛ' _ (hM _ (hRΛ _ hl)))`.
+
+Use `haveI := hi`. Use `haveI := hr'`. Use `haveI := hβ`. Establish `hφ : ∀ z, u.ex z ≫ i ≫ β ≫ r' = u'.ex ((m' * m) • M z)`. Introduce `z`.
+
+Establish `e` using `hβe (J z)`. Simplify using `only [LinearMap.comp_apply] at e`. Rewrite using `[← Category.assoc, ← hJ, ← Category.assoc, ← e, ← hR', hRJ', hRJ, map_nsmul, smul_smul]`. Use `hA'.proper` as an intermediate fact. Take `⟨α, hα, hαφ⟩` from `exists_factor_pow A A' hA (m' * m) (Nat.one_le_iff_ne_zero.2 (by positivity)) (i ≫ β ≫ r') fun y hy => by`.
+
+Take `⟨z, rfl⟩` from `u.ex_onto y`. Rewrite `hy` using `[← holUnif_ex_nsmul_eq_pow, u.ker]`. Rewrite using `[hφ, u'.ker, ← map_nsmul]`. Conclude with `hM _ hy`. Use `⟨α, hα, fun w => ?_⟩` and prove the remaining obligations.
+
+Establish `hN0 : ((m' * m : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (show m' * m ≠ 0 by positivity)`. Establish `hw : (m' * m) • (((m' * m : ℕ) : ℂ)⁻¹ • w) = w`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hN0, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, MonObj.comp_pow, Category.comp_id, ← holUnif_ex_nsmul_eq_pow, hw]`.
+-/
 theorem exists_isMonHom_of_map_lattice :
     ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (g : ℕ), IsAbelianScheme A → IsAbelianScheme A' →
     SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g A'.hom →

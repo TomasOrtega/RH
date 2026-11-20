@@ -12,11 +12,21 @@ open ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [adLW, Finsupp.add_apply]`. Apply the tactic sequence `rw [Finsupp.mapDomain_of_notMem_range, Finsupp.mapDomain_of_notMem_range, add_zero] <;> simp`.
+-/
 theorem klw_cons_nil (a b : Fin n) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     adLW a b (p :: w) [] = 0 := by
   simp only [adLW, Finsupp.add_apply]
   rw [Finsupp.mapDomain_of_notMem_range, Finsupp.mapDomain_of_notMem_range, add_zero] <;> simp
 
+/- English proof (translation)
+Simplify using `only [adLW, Finsupp.add_apply]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `Finsupp.mapDomain_apply (f := fun x => x :: w') (fun x y hxy => (List.cons.inj hxy).1) _ _`.
+
+Rewrite using `[Finsupp.mapDomain_of_notMem_range]`. Introduce and unpack `⟨x, hx⟩`. Conclude with `h (List.cons.inj hx).2.symm`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `Finsupp.mapDomain_apply (f := fun x => q :: x) List.cons_injective _ _`. Rewrite using `[Finsupp.mapDomain_of_notMem_range]`. Introduce and unpack `⟨x, hx⟩`. Conclude with `h (List.cons.inj hx).1.symm`.
+-/
 theorem klw_cons_cons (a b : Fin n) (p q : Fin n × Fin n) (w w' : List (Fin n × Fin n)) :
     adLW a b (p :: w) (q :: w') =
       (if w' = w then adL a b p q else 0) + (if q = p then adLW a b w w' else 0) := by
@@ -35,6 +45,11 @@ theorem klw_cons_cons (a b : Fin n) (p q : Fin n × Fin n) (w w' : List (Fin n �
       rintro ⟨x, hx⟩
       exact h (List.cons.inj hx).1.symm
 
+/- English proof (translation)
+Simplify using `only [adL, Finsupp.sub_apply]`. Use `congr 1`. Distinguish the cases in `h : b = p.1`. Simplify using `[h, Finsupp.single_apply, eq_comm]`. Simplify using `[h]`.
+
+Distinguish the cases in `h : p.2 = a`. Simplify using `[h, Finsupp.single_apply, eq_comm]`. Simplify using `[h]`.
+-/
 theorem kl_adL_apply (a b : Fin n) (p q : Fin n × Fin n) :
     adL a b p q = (if b = p.1 ∧ q = (a, p.2) then 1 else 0) - (if p.2 = a ∧ q = (p.1, b) then 1 else 0) := by
   simp only [adL, Finsupp.sub_apply]
@@ -46,6 +61,15 @@ theorem kl_adL_apply (a b : Fin n) (p q : Fin n × Fin n) :
     · simp [h, Finsupp.single_apply, eq_comm]
     · simp [h]
 
+/- English proof (translation)
+Rewrite using `[kl_adL_apply, kl_adL_apply]`. Take `⟨p1, p2⟩` from `p`. Take `⟨q1, q2⟩` from `q`. Simplify using `only [map_sub, apply_ite (starRingEnd ℂ), map_one, map_zero, Prod.mk.injEq]`. Use `congr 1`.
+
+Distinguish the cases in `h : b = p1 ∧ q1 = a ∧ q2 = p2`. Take `⟨rfl, rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`. Introduce and unpack `⟨rfl, rfl, rfl⟩`.
+
+Conclude with `h ⟨rfl, rfl, rfl⟩`. Distinguish the cases in `h : p2 = a ∧ q1 = p1 ∧ q2 = b`. Take `⟨rfl, rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce and unpack `⟨rfl, rfl, rfl⟩`. Conclude with `h ⟨rfl, rfl, rfl⟩`.
+-/
 theorem kl_adL_symm (a b : Fin n) (p q : Fin n × Fin n) :
     starRingEnd ℂ (adL a b p q) = adL b a q p := by
   rw [kl_adL_apply, kl_adL_apply]
@@ -60,6 +84,17 @@ theorem kl_adL_symm (a b : Fin n) (p q : Fin n × Fin n) :
     · obtain ⟨rfl, rfl, rfl⟩ := h; simp
     · rw [if_neg h, if_neg]; rintro ⟨rfl, rfl, rfl⟩; exact h ⟨rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `w generalizing w' with`. Consider the case `nil`. Consider the cases of `w' with`. Consider the case `nil => simp [adLW]`. Consider the case `cons q w' => rw [klw_cons_nil]`.
+
+Simplify using `[adLW]`. Consider the case `cons p w ih`. Consider the cases of `w' with`. Consider the case `nil => rw [klw_cons_nil]`. Simplify using `[adLW]`.
+
+Consider the case `cons q w'`. Rewrite using `[klw_cons_cons, klw_cons_cons, map_add, apply_ite (starRingEnd ℂ), apply_ite (starRingEnd ℂ)]`. Simplify using `only [map_zero, kl_adL_symm, ih]`. Distinguish the cases in `h1 : w' = w`. Substitute `h1` using the available equality.
+
+Distinguish the cases in `h2 : q = p`. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h2, Ne.symm h2]`. Distinguish the cases in `h2 : q = p`.
+
+Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, Ne.symm h1, h2, Ne.symm h2]`.
+-/
 theorem klw_symm (a b : Fin n) (w w' : List (Fin n × Fin n)) :
     starRingEnd ℂ (adLW a b w w') = adLW b a w' w := by
   induction w generalizing w' with
@@ -93,15 +128,28 @@ def ipK (V : Submodule ℂ M) : KS (n := n) V →ₗ⋆[ℂ] KS (n := n) V →�
     rw [Finsupp.sum_smul_index' (fun p => by simp), Finsupp.smul_sum]
     exact Finsupp.sum_congr fun p _ => by rw [map_smulₛₗ, LinearMap.smul_comp]
 
+/- English proof (translation)
+Use `show ((Finsupp.single p v).sum fun p v => (innerₛₗ ℂ v) ∘ₗ Finsupp.lapply p) y = _`. Rewrite using `[Finsupp.sum_single_index (by simp)]; rfl`.
+-/
 theorem ipK_single (p : List (Fin n × Fin n) × Fin n) (v : V) (y : KS (n := n) V) :
     ipK V (Finsupp.single p v) y = ⟪v, y p⟫_ℂ := by
   show ((Finsupp.single p v).sum fun p v => (innerₛₗ ℂ v) ∘ₗ Finsupp.lapply p) y = _
   rw [Finsupp.sum_single_index (by simp)]; rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finsupp.sum_single x, Finsupp.sum, map_sum, LinearMap.sum_apply]`. Simplify using `only [ipK_single]`.
+-/
 theorem ipK_apply (x y : KS (n := n) V) : ipK V x y = ∑ p ∈ x.support, ⟪x p, y p⟫_ℂ := by
   conv_lhs => rw [← Finsupp.sum_single x, Finsupp.sum, map_sum, LinearMap.sum_apply]
   simp only [ipK_single]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `single p v`. Proceed by induction on `y using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `single q u`. Rewrite using `[ipK_single, ipK_single, Finsupp.single_apply, Finsupp.single_apply]`. Distinguish the cases in `h : p = q`.
+
+Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem ipK_symm (x y : KS (n := n) V) : conj (ipK V y x) = ipK V x y := by
   classical
   induction x using Finsupp.induction_linear with
@@ -117,6 +165,11 @@ theorem ipK_symm (x y : KS (n := n) V) : conj (ipK V y x) = ipK V x y := by
       · simp [h]
       · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[compactWordAction_single, dif_pos hab, Finsupp.add_apply, Finsupp.single_apply, Finsupp.finsetSum_apply]`. Use `congr 1`. Simplify using `only [Finsupp.smul_apply, Finsupp.single_apply, Prod.ext_iff]`. Distinguish the cases in `h : p.2 = q.2`. Simplify using `only [h, and_true, if_true]`.
+
+Rewrite using `[sum_eq_single q.1 (fun w _ hw => by simp [hw]) (fun hq => by`. Simplify using `[Finsupp.notMem_support_iff.mp hq])]`. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem compactWordAction_single_apply (hV : IsKStableSub ε E V) {a b : Fin n} (hab : ε a = ε b)
     (p q : List (Fin n × Fin n) × Fin n) (v : V) :
     compactWordAction ε E V hV a b (Finsupp.single p v) q = (if p.2 = q.2 then adLW a b p.1 q.1 • v else 0) +
@@ -132,6 +185,15 @@ theorem compactWordAction_single_apply (hV : IsKStableSub ε E V) {a b : Fin n} 
     simp
   · simp [h]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `single p v`. Proceed by induction on `y using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [map_add, h, h']`. Consider the case `single q u`. Rewrite using `[← ipK_symm, ipK_single, ipK_single, compactWordAction_single_apply hV hab, compactWordAction_single_apply hV hab.symm, inner_conj_symm, inner_add_left, inner_add_right]`. Use `congr 1`.
+
+Distinguish the cases in `h : p.2 = q.2`. Rewrite using `[if_pos h, if_pos h.symm, inner_smul_left, inner_smul_right, klw_symm]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), inner_zero_left, inner_zero_right]`. Distinguish the cases in `h : p = q`. Rewrite using `[if_pos h, if_pos h.symm]`.
+
+Conclude with `hU a b hab v u`. Rewrite using `[if_neg h, if_neg (Ne.symm h), inner_zero_left, inner_zero_right]`.
+-/
 theorem inner_compactWordAction_adjoint (hV : IsKStableSub ε E V) (hU : IsKUnitary ε E) {a b : Fin n} (hab : ε a = ε b)
     (x y : KS (n := n) V) : ipK V (compactWordAction ε E V hV a b x) y = ipK V x (compactWordAction ε E V hV b a y) := by
   classical
@@ -153,6 +215,23 @@ theorem inner_compactWordAction_adjoint (hV : IsKStableSub ε E V) (hU : IsKUnit
         · rw [if_pos h, if_pos h.symm]; exact hU a b hab v u
         · rw [if_neg h, if_neg (Ne.symm h), inner_zero_left, inner_zero_right]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `sT_surj E V f hf`. Use `set R := x.support.sup fun p => p.1.length with hR`. Set `S : Set (List (Fin n × Fin n) × Fin n)` to `{p | p.1.length ≤ R}`. Establish `hSf : S.Finite` using `((List.finite_length_le (Fin n × Fin n) R).prod Set.finite_univ).subset fun p hp => ⟨hp, trivial⟩`. Use `hSf.to_subtype` as an intermediate fact.
+
+Establish `hfd : FiniteDimensional ℂ (Finsupp.supported V ℂ S)` using `Module.Finite.equiv (Finsupp.supportedEquivFinsupp (M := V) (R := ℂ) S).symm`. Establish `hS : IsKStableSub ε (compactWordAction ε E V hV) (Finsupp.supported V ℂ S)`. Introduce `a b hab y hy`. Rewrite using `[← Finsupp.sum_single y, Finsupp.sum, map_sum]`. Use `Submodule.sum_mem _ fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hpS : p.1.length ≤ R` using `hy hp`. Rewrite using `[compactWordAction_single]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun w' hw' => Submodule.smul_mem _ _ (Finsupp.single_mem_supported ℂ _ ?_)) ?_` and prove the remaining obligations. Use `show w'.length ≤ R`. Rewrite using `[TRA.adLW_length a b _ _ hw']`.
+
+Conclude with `hpS`. Rewrite using `[dif_pos hab]`. Conclude with `Finsupp.single_mem_supported ℂ _ hpS`. Set `cr : InnerProductSpace.Core ℂ (KS (n` to `n) V) := { inner := fun x y => ipK V x y conj_inner_symm := fun x y => ipK_symm x y re_inner_nonneg := fun x => by`. Rewrite using `[ipK_apply, map_sum]`.
+
+Conclude with `sum_nonneg fun p _ => inner_self_nonneg`. Use `add_left := fun x y z => by rw [map_add, LinearMap.add_apply]`. Use `smul_left := fun x y r => by rw [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Use `definite := fun x hx => by`. Establish `h1` using `congrArg RCLike.re hx`.
+
+Rewrite `h1` using `[ipK_apply, map_sum, map_zero, sum_eq_zero_iff_of_nonneg fun p _ => inner_self_nonneg]`. Use `ext1 p`. Distinguish the cases in `hp : p ∈ x.support`. Establish `h2` using `h1 p hp`. Rewrite `h2` using `[inner_self_eq_norm_sq]`.
+
+Conclude with `norm_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp h2)`. Conclude with `Finsupp.notMem_support_iff.mp hp }`. Set `_ : NormedAddCommGroup (KS (n` to `n) V) := @InnerProductSpace.Core.toNormedAddCommGroup ℂ _ _ _ _ cr`. Set `_ : InnerProductSpace ℂ (KS (n` to `n) V) := InnerProductSpace.ofCore cr.toCore`. Take `⟨u, -, -, h1, h2⟩` from `lift_khw (ε := ε) (A := compactWordAction ε E V hV) (μ := μ) (B := fun a b => (E a b).compLeft (Fin n)) (fun a b hab x y => inner_compactWordAction_adjoint hV hU hab x y) (sT E V) (fun a b hab x => funext fun c => contraction_compactWordAction hV hE a b hab x c) hfd hS (x₀ := x) …`.
+
+Conclude with `⟨u, h1, h2⟩`.
+-/
 theorem lift0 (hV : IsKStableSub ε E V) [FiniteDimensional ℂ V] (hE : IsGlRep E) (hU : IsKUnitary ε E)
     {μ : Fin n → ℝ} {f : Fin n → M} (hf : ∀ c, f c ∈ genSub E V) (hμ : ∀ c, IsKHWVec ε E μ (f c)) :
     ∃ u, IsKHWVec ε (compactWordAction ε E V hV) μ u ∧ sT E V u = f := by

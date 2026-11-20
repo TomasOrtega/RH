@@ -18,10 +18,16 @@ open Formalism.QuantumDeterminants
 
 namespace Transport
 
+/- English proof (translation)
+Conclude with `(Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)).2.1 a ha b hb`.
+-/
 theorem uh_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) :
     a * b ∈ UH (Hpk k r) := by
   exact (Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)).2.1 a ha b hb
 
+/- English proof (translation)
+Establish `hG` using `(Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)).2.2 a ha`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Conclude with `⟨hG.1, hG.2, (Formalism.QuantumDeterminants.uHConj _ ε (Hpk k r) P hPd hP.2 a).1 ha⟩`.
+-/
 theorem uh_facts {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {a : Mat k r} (ha : a ∈ UH (Hpk k r)) :
     IsUnit a.det ∧ a⁻¹ ∈ UH (Hpk k r) ∧ Formalism.REAL.inUJ ε (P * a * P⁻¹) := by
@@ -29,6 +35,11 @@ theorem uh_facts {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (
   have hPd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP.1
   exact ⟨hG.1, hG.2, (Formalism.QuantumDeterminants.uHConj _ ε (Hpk k r) P hPd hP.2 a).1 ha⟩
 
+/- English proof (translation)
+Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Rewrite using `[Formalism.QuantumDeterminants.uHConj _ ε (Hpk k r) P hPd hP.2]`. Establish `h : P * (P⁻¹ * g * P) * P⁻¹ = g`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPd, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hPd]`. Rewrite using `[h]`.
+
+Conclude with `hg`.
+-/
 theorem conj_mem_uh {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
     {g : Mat k r} (hg : Formalism.REAL.inUJ ε g) : P⁻¹ * g * P ∈ UH (Hpk k r) := by
   have hPd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP.1
@@ -39,6 +50,15 @@ theorem conj_mem_uh {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r
   rw [h]
   exact hg
 
+/- English proof (translation)
+Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Establish `hP'd : IsUnit P'.det` using `(Matrix.isUnit_iff_isUnit_det P').1 hP'.1`. Establish `hb : P⁻¹ * P' ∈ UH (Hpk k r)`. Establish `h1 : ∀ X : Mat k r, (P⁻¹)ᴴ * (Pᴴ * X) = X`. Introduce `X`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hPd, Matrix.conjTranspose_one, Matrix.one_mul]`. Use `show (P⁻¹ * P')ᴴ * Hpk k r * (P⁻¹ * P') = Hpk k r`. Use `nth_rewrite 1 [← hP.2]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hPd, h1]`. Rewrite using `[← hP'.2, Matrix.mul_assoc]`.
+
+Establish `hbd : IsUnit (P⁻¹ * P').det`. Rewrite using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnit_nonsing_inv_det P hPd).mul hP'd`. Establish `key : ∀ Y : Mat k r, P' * (x₀⁻¹ * (Y * x)) * P'⁻¹ = P * ((x₀ * (P⁻¹ * P')⁻¹)⁻¹ * (Y * (x * (P⁻¹ * P')⁻¹))) * P⁻¹`. Introduce `Y`.
+
+Rewrite using `[Matrix.mul_inv_rev x₀, Matrix.nonsing_inv_nonsing_inv _ hbd, Matrix.mul_inv_rev P⁻¹ P', Matrix.nonsing_inv_nonsing_inv _ hPd]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPd, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hPd]`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Simplify using `only [aaFun, sInt, psiCoef, key]`.
+-/
 theorem aaFun_cayley {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Λ : Fin (2 * r + k + 1) → ℝ}
     {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
     (T : S7.KType ε Λ) (μ : Fin (2 * r + k + 1) → ℤ) {P P' : Mat k r}
@@ -72,6 +92,23 @@ theorem aaFun_cayley {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Λ : Fin (
   refine ⟨hb, ?_⟩
   simp only [aaFun, sInt, psiCoef, key]
 
+/- English proof (translation)
+Take `⟨φ, hφK, -, hφw⟩` from `HW.kType_unique T T'`. Set `C : (T.V →L[ℂ] T.V) ≃L[ℂ] (T'.V →L[ℂ] T'.V)` to `ContinuousLinearEquiv.arrowCongr φ.toContinuousLinearEquiv φ.toContinuousLinearEquiv`. Establish `hC : ∀ (A : T.V →L[ℂ] T.V) (v : T.V), C A (φ v) = φ (A v)`. Introduce `A v`. Simplify using `[C, ContinuousLinearEquiv.arrowCongr_apply]`.
+
+Establish `hop : ∀ k : S7.KG ε, C (T.op k) = T'.op k`. Introduce `k`. Use extensionality with `w`. Take `⟨v, rfl⟩` from `φ.surjective w`. Rewrite using `[hC, hφK]`.
+
+Establish `hproj : C (S7.projW T) = S7.projW T'`. Use extensionality with `w`. Take `⟨v, rfl⟩` from `φ.surjective w`. Rewrite using `[hC]`. Simplify using `only [S7.projW, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, map_smul, hφw]`.
+
+Rewrite using `[← hφw, LinearIsometryEquiv.inner_map_map]`. Establish `hmul : ∀ A B : T.V →L[ℂ] T.V, C (A * B) = C A * C B`. Introduce `A B`. Use extensionality with `w`. Take `⟨v, rfl⟩` from `φ.surjective w`.
+
+Simplify using `only [ContinuousLinearMap.mul_apply, hC]`. Establish `hfin : Module.finrank ℂ T'.V = Module.finrank ℂ T.V` using `(φ.toLinearEquiv.finrank_eq).symm`. Establish `hps : ∀ (μ : Fin n → ℤ) (x : Matrix (Fin n) (Fin n) ℂ), S7.psM T' μ x = C (S7.psM T μ x)`. Introduce `μ x`. Unfold `S7.psM`.
+
+Rewrite using `[map_smul, ← ContinuousLinearEquiv.integral_comp_comm, hfin]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Rewrite using `[map_smul, hmul, hmul, hop, hproj, hop]`. Establish `hPsi : ∀ (μ : Fin n → ℤ) (g : Matrix (Fin n) (Fin n) ℂ), S7.PsiM T' μ g = C (S7.PsiM T μ g)`.
+
+Introduce `μ g`. Unfold `S7.PsiM`. Use `split_ifs with h`. Rewrite using `[hmul, hop, hps]`. Simplify using the standard rewrite rules.
+
+Use `⟨φ, fun μ g v => ?_⟩` and prove the remaining obligations. Rewrite using `[hPsi, hC]`.
+-/
 theorem psiM_iso {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T T' : S7.KType ε Λ) :
     ∃ U : T.V ≃ₗᵢ[ℂ] T'.V, ∀ (μ : Fin n → ℤ) (g : Matrix (Fin n) (Fin n) ℂ) (v : T.V),
       S7.PsiM T' μ g (U v) = U (S7.PsiM T μ g v) := by
@@ -115,6 +152,19 @@ theorem psiM_iso {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T T' : S7
   refine ⟨φ, fun μ g v => ?_⟩
   rw [hPsi, hC]
 
+/- English proof (translation)
+Establish `hG` using `Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [UWset, Set.mem_setOf_eq, Matrix.one_mulVec]`. Conclude with `⟨hG.1, by simp⟩`. Introduce `g hg h hh`.
+
+Simplify using `only [UWset, Set.mem_setOf_eq] at hg hh ⊢`. Take `⟨hg1, hg2, hg3⟩` from `hg`. Take `⟨hh1, hh2, hh3⟩` from `hh`. Use `⟨hG.2.1 g hg1 h hh1, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, (hh2 a).1, (hg2 a).1]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, (hh2 a).2, (hg2 a).2]`. Rewrite using `[← Matrix.mulVec_mulVec, hh3, hg3]`. Introduce `g hg`. Simplify using `only [UWset, Set.mem_setOf_eq] at hg ⊢`. Take `⟨hg1, hg2, hg3⟩` from `hg`.
+
+Establish `hu` using `(hG.2.2 g hg1).1`. Establish `key : ∀ v, g *ᵥ v = v → g⁻¹ *ᵥ v = v`. Introduce `v hv`. Use `conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+
+Conclude with `⟨(hG.2.2 g hg1).2, fun a => ⟨key _ (hg2 a).1, key _ (hg2 a).2⟩, key _ hg3⟩`. Introduce `g hg`. Simplify using `only [UWset, Set.mem_setOf_eq] at hg`. Conclude with `(hG.2.2 g hg.1).1`. Establish `hA : IsClosed (UH (Hpk k r))` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+
+Establish `hB : IsClosed {g : Mat k r | ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a)}`. Simplify using `only [Set.setOf_forall, Set.setOf_and]`. Conclude with `isClosed_iInter fun a => (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const).inter (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const)`. Establish `hC : IsClosed {g : Mat k r | g *ᵥ z = z}` using `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`. Conclude with `hA.inter (hB.inter hC)`.
+-/
 theorem uw_closedSubgroup (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) :
     Formalism.FourierDecayAlt.B2.IsClosedSubgroup (UWset k r z) := by
   have hG := Formalism.QuantumDeterminants.uHGroup _ (Hpk k r) (Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r)
@@ -154,8 +204,14 @@ theorem uw_closedSubgroup (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) :
       isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const
     exact hA.inter (hB.inter hC)
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.B2x2.closedN k r`.
+-/
 theorem n_closedSubgroup (k r : ℕ) : Formalism.FourierDecayAlt.B2.IsClosedSubgroup (Nset k r) := Formalism.FourierDecayAlt.P.B2x2.closedN k r
 
+/- English proof (translation)
+Take `⟨μ₀, h₀⟩` from `hex`. Take `⟨c, hc, hμc⟩` from `ReciprocityTheory.ChartRestriction.DS.Mult1.haarUniqueSF' k r S μ₀ μ hS h₀ hμ`. Take `⟨c', hc', hμc'⟩` from `ReciprocityTheory.ChartRestriction.DS.Mult1.haarUniqueSF' k r S μ₀ μ' hS h₀ hμ'`. Use `⟨((c / c' : ℝ≥0) : ℝ), NNReal.coe_pos.2 (div_pos (pos_iff_ne_zero.2 hc) (pos_iff_ne_zero.2 hc')), ?_⟩` and prove the remaining obligations. Rewrite using `[hμc, hμc', ENNReal.smul_def c, ENNReal.smul_def c', smul_smul, ENNReal.ofReal_coe_nnreal, ← ENNReal.coe_mul, div_mul_cancel₀ c hc']`.
+-/
 theorem haar_unique {k r : ℕ} {S : Set (Mat k r)} (hS : Formalism.FourierDecayAlt.B2.IsClosedSubgroup S)
     (hex : ∃ μ₀ : Measure (Mt k r), Formalism.FourierDecayAlt.B.IsHaarOn S μ₀) {μ μ' : Measure (Mt k r)}
     (hμ : Formalism.MainNotions.S.IsHaarOn S μ) (hμ' : Formalism.MainNotions.S.IsHaarOn S μ') :
@@ -191,6 +247,21 @@ def conjEquiv {k r : ℕ} (a : Mat k r) (ha : IsUnit a.det) : Mt k r ≃ᵐ Mt k
       exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
     exact hc.measurable
 
+/- English proof (translation)
+Establish `hmeas : Measurable (conjM (k` using `k) (r := r) a) := (conjEquiv a ha).measurable`. Establish `hmapeq : Measure.map (conjM a) μ = Measure.map (conjEquiv a ha) μ` using `rfl`. Take `⟨hsf, hne, hnull, hleft⟩` from `hμ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmapeq]`.
+
+Conclude with `MeasurableEquiv.sigmaFinite_map _`. Conclude with `(Measure.map_ne_zero_iff hmeas.aemeasurable).2 hne`. Establish `hpre : (conjEquiv a ha) ⁻¹' {x | Matrix.of x ∉ S'} = {x | Matrix.of x ∉ S}`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`.
+
+Rewrite using `[hSS (Matrix.of x)]`. Conclude with `Iff.rfl`. Rewrite using `[hmapeq, MeasurableEquiv.map_apply, hpre]`. Conclude with `hnull`. Introduce `s hs`.
+
+Establish `hs' : a⁻¹ * s * a ∈ S`. Rewrite using `[hSS]`. Establish `h : a * (a⁻¹ * s * a) * a⁻¹ = s`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ ha]`. Rewrite using `[h]`.
+
+Conclude with `hs`. Establish `hl : ∀ b : Mat k r, Measurable (lmulM (k` using `k) (r := r) b) := by`. Introduce `b`. Establish `hc : Continuous (lmulM (k` using `k) (r := r) b) := by`. Unfold `lmulM`.
+
+Conclude with `continuous_const.matrix_mul continuous_id`. Conclude with `hc.measurable`. Establish `hcomp : lmulM s ∘ conjM a = conjM a ∘ lmulM (a⁻¹ * s * a)`. Use function extensionality and compare the values at `x`. Use `show s * (a * Matrix.of x * a⁻¹) = a * (a⁻¹ * s * a * Matrix.of x) * a⁻¹`.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ ha]`. Rewrite using `[Measure.map_map (hl s) hmeas, hcomp, ← Measure.map_map hmeas (hl _), hleft _ hs']`.
+-/
 theorem haar_conj {k r : ℕ} {S S' : Set (Mat k r)} {a : Mat k r} (ha : IsUnit a.det)
     (hSS : ∀ h, h ∈ S ↔ a * h * a⁻¹ ∈ S') {μ : Measure (Mt k r)} (hμ : Formalism.MainNotions.S.IsHaarOn S μ) :
     Formalism.MainNotions.S.IsHaarOn S' (Measure.map (conjM a) μ) := by
@@ -228,6 +299,9 @@ theorem haar_conj {k r : ℕ} {S S' : Set (Mat k r)} {a : Mat k r} (ha : IsUnit 
       simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ ha]
     rw [Measure.map_map (hl s) hmeas, hcomp, ← Measure.map_map hmeas (hl _), hleft _ hs']
 
+/- English proof (translation)
+The claim follows from `TransportGeo.conj_data hz hT hc hz' hT' hc'`.
+-/
 theorem conj_data {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {c c' : Fin r → ℂ}
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hc : ∀ a, c a ≠ 0)
     (hz' : inWb k r z') (hT' : 0 < Tz k r z') (hc' : ∀ a, c' a ≠ 0) :
@@ -238,6 +312,9 @@ theorem conj_data {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {c c' : Fin r
       (∀ g, Formalism.MainNotions.S.IsFrameW k r z g → ∃ g', Formalism.MainNotions.S.IsFrameW k r z' g' ∧
         ∀ h, a * (g * Formalism.MainNotions.S.blockW k r h * g⁻¹) * a⁻¹ = g' * Formalism.MainNotions.S.blockW k r h * g'⁻¹) := TransportGeo.conj_data hz hT hc hz' hT' hc'
 
+/- English proof (translation)
+The claim follows from `TransportGeo.pi_conj ha hz hT hz' hT' hUW hfr hπ hπ'`.
+-/
 theorem pi_conj {k r : ℕ} {u : Fin k → ℝ}
     {Vp Vp' : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [NormedAddCommGroup Vp']
     [InnerProductSpace ℂ Vp'] {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mat k r → (Vp →L[ℂ] Vp)}
@@ -249,6 +326,27 @@ theorem pi_conj {k r : ℕ} {u : Fin k → ℝ}
     (hπ : Formalism.MainNotions.S.IsHCTypeW k r z u π) (hπ' : Formalism.MainNotions.S.IsHCTypeW k r z' u π') :
     ∃ U : Vp ≃ₗᵢ[ℂ] Vp', ∀ h ∈ UWset k r z, ∀ ξ : Vp, π' (a * h * a⁻¹) (U ξ) = U (π h ξ) := TransportGeo.pi_conj ha hz hT hz' hT' hUW hfr hπ hπ'
 
+/- English proof (translation)
+Take `⟨hz, hT, hc, hπ, hW, hN⟩` from `hB`. Take `⟨hz', hT', hc', hπ', hW', hN'⟩` from `hB'`. Take `⟨a, ha, had, hUW, hNN, hψ, hfr⟩` from `conj_data hz hT hc hz' hT' hc'`. Take `⟨U, hU⟩` from `pi_conj had hz hT hz' hT' hUW hfr hπ hπ'`. Take `⟨κW, hκW, hWeq⟩` from `haar_unique (uw_closedSubgroup k r z') (Formalism.FourierDecayAlt.P.weyl_haar_exists k r z' hz' hT') (haar_conj had hUW hW) hW'`.
+
+Take `⟨κN, hκN, hNeq⟩` from `haar_unique (n_closedSubgroup k r) (Formalism.FourierDecayAlt.P.unipotent_haar_exists k r) (haar_conj had hNN hN) hN'`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `: SigmaFinite μW'` using `hW'.1`. Establish `: SigmaFinite μN'` using `hN'.1`.
+
+Set `e` to `conjEquiv a had`. Establish `he : ∀ y, e y = conjM a y` using `fun _ => rfl`. Establish `hinvW` using `(uw_closedSubgroup k r z).inv_mem`. Use `⟨a, U, (κW * κN)⁻¹, ha, by positivity, ?_⟩` and prove the remaining obligations. Introduce `ε Λ T μ P v₁ v₂ ξ x₀ x`.
+
+Establish `hprod : (Measure.map (conjM a) μW).prod (Measure.map (conjM a) μN) = Measure.map (Prod.map (conjM a) (conjM a)) (μW.prod μN)` using `Measure.map_prod_map μW μN e.measurable e.measurable`. Rewrite `hprod` using `[hWeq, hNeq, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Establish `hWae : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z`. Rewrite using `[ae_iff]`. Simplify using `using hW.2.2.1`.
+
+Establish `hNae : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r`. Rewrite using `[ae_iff]`. Simplify using `using hN.2.2.1`. Establish `hpae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Establish `hE : MeasurableEmbedding (Prod.map (conjM (k` using `k) (r := r) a) (conjM a)) := (MeasurableEquiv.prodCongr e e).measurableEmbedding`.
+
+Establish `hmain : ((ENNReal.ofReal κW * ENNReal.ofReal κN).toReal) • aaFun T μ P μW' μN' (Formalism.MainNotions.S.psiGen k r z' c') π' v₁ v₂ (U ξ) x₀ x = U (aaFun T μ P μW μN (Formalism.MainNotions.S.psiGen k r z c) π v₁ v₂ ξ (a⁻¹ * x₀) (a⁻¹ * x))`. Unfold `aaFun sInt`. Establish `hUint : ∀ f : Mt k r × Mt k r → Vp, ∫ p, U (f p) ∂(μW.prod μN) = U (∫ p, f p ∂(μW.prod μN))` using `fun f => U.toLinearIsometry.integral_comp_comm f`. Rewrite using `[← integral_smul_measure, hprod, hE.integral_map, ← hUint]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hpae] with p hp`. Establish `hof : ∀ y : Mt k r, Matrix.of (conjM a y) = a * Matrix.of y * a⁻¹` using `fun _ => rfl`. Simplify using `only [Prod.map_fst, Prod.map_snd, hof, LinearIsometryEquiv.map_smul]`. Establish `hmat : x₀⁻¹ * (a * Matrix.of p.1 * a⁻¹ * (a * Matrix.of p.2 * a⁻¹) * x) = (a⁻¹ * x₀)⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * (a⁻¹ * x))`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv a had]`.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ had]`. Establish `hinv : (a * Matrix.of p.1 * a⁻¹)⁻¹ = a * (Matrix.of p.1)⁻¹ * a⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv a had, Matrix.mul_assoc]`. Rewrite using `[hmat]`. Use `congr 1`.
+
+Unfold `chiInv`. Rewrite using `[hψ _ hp.2, hinv, hU _ (hinvW _ hp.1), LinearIsometryEquiv.map_smul]`. Establish `hc0 : (ENNReal.ofReal κW * ENNReal.ofReal κN).toReal = κW * κN`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hκW.le, ENNReal.toReal_ofReal hκN.le]`. Rewrite `hmain` using `[hc0]`.
+
+Rewrite using `[← hmain, smul_smul, inv_mul_cancel₀ (by positivity), one_smul]`.
+-/
 theorem aaFun_data {k r : ℕ} {u : Fin k → ℝ}
     {Vp Vp' : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
     [NormedAddCommGroup Vp'] [InnerProductSpace ℂ Vp'] [CompleteSpace Vp']
@@ -316,6 +414,21 @@ theorem aaFun_data {k r : ℕ} {u : Fin k → ℝ}
   rw [hc0] at hmain
   rw [← hmain, smul_smul, inv_mul_cancel₀ (by positivity), one_smul]
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hW, hN⟩` from `hB`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SigmaFinite μN` using `hN.1`. Establish `hWae : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z`.
+
+Rewrite using `[ae_iff]`. Simplify using `using hW.2.2.1`. Establish `hNae : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r`. Rewrite using `[ae_iff]`. Simplify using `using hN.2.2.1`.
+
+Establish `hprod : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Establish `hK2 : (S7.toMK k₂)⁻¹ = S7.toMK k₂⁻¹` using `Matrix.inv_eq_left_inv (S7.toMK_inv_mul' k₂)`. Establish `hB2 : (P⁻¹ * S7.toMK k₂ * P)⁻¹ = P⁻¹ * S7.toMK k₂⁻¹ * P`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hd, hK2, Matrix.mul_assoc]`. Establish `hinner : ∀ a b : T.V, ⟪T.op k₂ a, b⟫_ℂ = ⟪a, T.op k₂⁻¹ b⟫_ℂ`.
+
+Introduce `a b`. Establish `hb : b = T.op k₂ (T.op k₂⁻¹ b)`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← S7.op_mul', mul_inv_cancel, S7.op_one']`. Both sides reduce to the same expression. Use `conv_lhs => rw [hb]`.
+
+Conclude with `ContinuousLinearMap.inner_map_map_of_mem_unitary (T.τ k₂).property a _`. Unfold `aaFun sInt`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hprod] with p hp`. Establish `hs : Matrix.of p.1 * Matrix.of p.2 * x ∈ UH (Hpk k r)` using `uh_mul (uh_mul hp.1.1 hp.2.1) hx`.
+
+Establish `hg : x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x) ∈ UH (Hpk k r)` using `uh_mul (uh_facts hP hx₀).2.1 hs`. Establish `hJ` using `(uh_facts hP hg).2.2`. Use `congr 1`. Unfold `psiCoef`. Rewrite using `[hinner]`.
+
+Establish `key : S7.toMK k₂⁻¹ * (P * (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) * P⁻¹) * S7.toMK k₁ = P * ((x₀ * (P⁻¹ * S7.toMK k₂ * P))⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * (x * (P⁻¹ * S7.toMK k₁ * P)))) * P⁻¹`. Rewrite using `[Matrix.mul_inv_rev, hB2]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite using `[← key, S7.psiM_equiv T μ k₂⁻¹ k₁ hJ]`. Both sides reduce to the same expression.
+-/
 theorem aaFun_K {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {Λ : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ}
     {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
     (T : S7.KType ε Λ) (μ : Fin (2 * r + k + 1) → ℤ) {P : Mat k r} (hP : Formalism.MainNotions.S.IsCayley k r ε P)
@@ -375,6 +488,53 @@ def IntCoefStatement : Prop :=
       psiCoef T μ P v₁ v₂ (x₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * x)) •
         chiInv (Formalism.MainNotions.S.psiGen k r z c) π (Matrix.of p.1) (Matrix.of p.2) ξ) (μW.prod μN)
 
+/- English proof (translation)
+Introduce and unpack `⟨T₀, μ₀, P₀, z₀, c₀, Vp₀, i₁, i₂, i₃, π₀, μW₀, μN₀, hμ₀, hP₀, hB₀, v₁, v₂, ξ₀, y₀, y, hy₀, hy, hne⟩`. Introduce `T μ P z c Vp _ _ _ π μW μN hμ hP hB v hv`. Establish `hμeq : μ = μ₀`. Use function extensionality and compare the values at `a`. Establish `h` using `(hμ a).trans (hμ₀ a).symm`.
+
+Conclude with `h` after adjusting the coercions. Substitute `hμeq` using the available equality. Take `⟨hb, hcay⟩` from `aaFun_cayley T₀ μ hP₀ hP μW₀ μN₀ (Formalism.MainNotions.S.psiGen k r z₀ c₀) π₀ v₁ v₂ ξ₀ (y₀ * (P₀⁻¹ * P)) (y * (P₀⁻¹ * P))`. Establish `hbd` using `(uh_facts hP hb).1`. Rewrite `hcay` using `[Matrix.mul_nonsing_inv_cancel_right _ _ hbd, Matrix.mul_nonsing_inv_cancel_right _ _ hbd]`.
+
+Rewrite `hne` using `[← hcay]`. Take `⟨a, U, κ, ha, hκ, hdata⟩` from `aaFun_data hB₀ hB`. Establish `had` using `(uh_facts hP ha).1`. Establish `hne2 : aaFun T₀ μ P μW μN (Formalism.MainNotions.S.psiGen k r z c) π v₁ v₂ (U ξ₀) (a * (y₀ * (P₀⁻¹ * P))) (a * (y * (P₀⁻¹ * P))) ≠ 0`. Rewrite using `[hdata, Matrix.nonsing_inv_mul_cancel_left _ _ had, Matrix.nonsing_inv_mul_cancel_left _ _ had]`.
+
+Conclude with `smul_ne_zero (by exact_mod_cast hκ.ne') (fun h0 => hne (U.injective (by rw [h0, map_zero])))`. Establish `hX₀ : a * (y₀ * (P₀⁻¹ * P)) ∈ UH (Hpk k r)` using `uh_mul ha (uh_mul hy₀ hb)`. Establish `hX : a * (y * (P₀⁻¹ * P)) ∈ UH (Hpk k r)` using `uh_mul ha (uh_mul hy hb)`. Take `⟨U₁, hU₁⟩` from `psiM_iso T₀ T`. Establish `hne3 : aaFun T μ P μW μN (Formalism.MainNotions.S.psiGen k r z c) π (U₁ v₁) (U₁ v₂) (U ξ₀) (a * (y₀ * (P₀⁻¹ * P))) (a * (y * (P₀⁻¹ * P))) ≠ 0`.
+
+Use `hne2 using 1` and compare the differences between its conclusion and the goal. Unfold `aaFun sInt psiCoef`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `only [hU₁, LinearIsometryEquiv.inner_map_map]`.
+
+Use `set ψ := Formalism.MainNotions.S.psiGen k r z c with hψ`. Set `F : T.V → T.V → Vp → Mat k r → Mat k r → Mt k r × Mt k r → Vp` to `fun w₁ w₂ ξ Y₀ Y p => psiCoef T μ P w₁ w₂ (Y₀⁻¹ * (Matrix.of p.1 * Matrix.of p.2 * Y)) • chiInv ψ π (Matrix.of p.1) (Matrix.of p.2) ξ`. Establish `hA : ∀ w₁ w₂ ξ Y₀ Y, aaFun T μ P μW μN ψ π w₁ w₂ ξ Y₀ Y = ∫ p, F w₁ w₂ ξ Y₀ Y p ∂(μW.prod μN)` using `fun _ _ _ _ _ => rfl`. Establish `hint : ∀ w₁ w₂ ξ {Y₀ Y : Mat k r}, Y₀ ∈ UH (Hpk k r) → Y ∈ UH (Hpk k r) → Integrable (F w₁ w₂ ξ Y₀ Y) (μW.prod μN)` using `fun w₁ w₂ ξ _ _ h₀ h₁ => hIC k r hk ε lam h hgap u Vp T μ hμ P hP z c π μW μN hB w₁ w₂ ξ _ _ h₀ h₁`. Establish `hlin₁ : ∀ (b : ℂ) (w w' w₂ : T.V) ξ {Y₀ Y : Mat k r}, Y₀ ∈ UH (Hpk k r) → Y ∈ UH (Hpk k r) → aaFun T μ P μW μN ψ π (b • w + w') w₂ ξ Y₀ Y = b • aaFun T μ P μW μN ψ π w w₂ ξ Y₀ Y + aaFun T μ P μW μN ψ π w' w₂ ξ Y₀ Y`.
+
+Introduce `b w w' w₂ ξ Y₀ Y h₀ h₁`. Establish `e : F (b • w + w') w₂ ξ Y₀ Y = fun p => b • F w w₂ ξ Y₀ Y p + F w' w₂ ξ Y₀ Y p`. Use function extensionality and compare the values at `p`. Simplify using `only [F, psiCoef, map_add, map_smul, inner_add_right, inner_smul_right, add_smul, mul_smul]`. Establish `i1 : Integrable (fun p => b • F w w₂ ξ Y₀ Y p) (μW.prod μN)` using `(hint w w₂ ξ h₀ h₁).smul b`.
+
+Rewrite using `[hA, hA, hA, e, integral_add i1 (hint w' w₂ ξ h₀ h₁), integral_smul]`. Establish `hlin₂ : ∀ (b : ℂ) (w₁ w w' : T.V) ξ {Y₀ Y : Mat k r}, Y₀ ∈ UH (Hpk k r) → Y ∈ UH (Hpk k r) → aaFun T μ P μW μN ψ π w₁ (b • w + w') ξ Y₀ Y = (starRingEnd ℂ b) • aaFun T μ P μW μN ψ π w₁ w ξ Y₀ Y + aaFun T μ P μW μN ψ π w₁ w' ξ Y₀ Y`. Introduce `b w₁ w w' ξ Y₀ Y h₀ h₁`. Establish `e : F w₁ (b • w + w') ξ Y₀ Y = fun p => (starRingEnd ℂ b) • F w₁ w ξ Y₀ Y p + F w₁ w' ξ Y₀ Y p`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [F, psiCoef, inner_add_left, inner_smul_left, add_smul, mul_smul]`. Establish `i1 : Integrable (fun p => (starRingEnd ℂ b) • F w₁ w ξ Y₀ Y p) (μW.prod μN)` using `(hint w₁ w ξ h₀ h₁).smul _`. Rewrite using `[hA, hA, hA, e, integral_add i1 (hint w₁ w' ξ h₀ h₁), integral_smul]`. Establish `hz₁ : ∀ w₂ ξ Y₀ Y, aaFun T μ P μW μN ψ π 0 w₂ ξ Y₀ Y = 0`. Introduce `w₂ ξ Y₀ Y`.
+
+Simplify using `[aaFun, sInt, psiCoef]`. Establish `hz₂ : ∀ w₁ ξ Y₀ Y, aaFun T μ P μW μN ψ π w₁ 0 ξ Y₀ Y = 0`. Introduce `w₁ ξ Y₀ Y`. Simplify using `[aaFun, sInt, psiCoef]`. Establish `hKmem : ∀ kk : S7.KG ε, P⁻¹ * S7.toMK kk * P ∈ UH (Hpk k r)` using `fun kk => conj_mem_uh hP (by exact (kk : S7.UJ ε).2)`.
+
+Establish `hop1 : ∀ w : T.V, T.op 1 w = w` using `fun w => by rw [S7.op_one']; rfl`. Assume the negation of the conclusion as `hcon'`. Establish `hcon : ∀ (ξ : Vp) (x₀ x : Mat k r), x₀ ∈ UH (Hpk k r) → x ∈ UH (Hpk k r) → aaFun T μ P μW μN ψ π v v ξ x₀ x = 0` using `fun ξ x₀ x h0 h1 => by_contra fun h2 => hcon' ⟨ξ, x₀, x, h0, h1, h2⟩`. Use `set ξ' := U ξ₀`. Set `Z₁ : Submodule ℂ T.V` to `{ carrier := {w | ∀ (k₂ : S7.KG ε) (Y₀ Y : Mat k r), Y₀ ∈ UH (Hpk k r) → Y ∈ UH (Hpk k r) → aaFun T μ P μW μN ψ π w (T.op k₂ v) ξ' Y₀ Y = 0} add_mem' := by`.
+
+Introduce `w w' hw hw' k₂ Y₀ Y h₀ h₁`. Use `hlin₁ 1 w w' (T.op k₂ v) ξ' h₀ h₁` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this, hw k₂ Y₀ Y h₀ h₁, hw' k₂ Y₀ Y h₀ h₁, add_zero]`. Use the proof step `zero_mem' := fun k₂ Y₀ Y _ _ => hz₁ _ _ _ _`.
+
+Use the proof step `smul_mem' := by`. Introduce `b w hw k₂ Y₀ Y h₀ h₁`. Use `hlin₁ b w 0 (T.op k₂ v) ξ' h₀ h₁` as an intermediate fact. Rewrite `this` using `[add_zero, hz₁, add_zero]`. Rewrite using `[this, hw k₂ Y₀ Y h₀ h₁, smul_zero] }`.
+
+Establish `hZ₁ : Z₁ = ⊤`. Break down `T.irred Z₁ (by` into its components or cases. Introduce `kk w hw k₂ Y₀ Y h₀ h₁`. Use `aaFun_K T μ hP hB kk 1 w (T.op k₂ v) ξ' h₀ h₁` as an intermediate fact. Rewrite `this` using `[hop1]`.
+
+Rewrite using `[this]`. Conclude with `hw k₂ _ _ (uh_mul h₀ (hKmem 1)) (uh_mul h₁ (hKmem kk))) with h | h`. It suffices to derive a contradiction. Establish `hvZ : v ∈ Z₁`. Introduce `k₂ Y₀ Y h₀ h₁`.
+
+Use `aaFun_K T μ hP hB 1 k₂ v v ξ' h₀ h₁` as an intermediate fact. Rewrite `this` using `[hop1]`. Rewrite using `[this]`. Conclude with `hcon ξ' _ _ (uh_mul h₀ (hKmem k₂)) (uh_mul h₁ (hKmem 1))`. Rewrite `hvZ` using `[h, Submodule.mem_bot]`.
+
+Conclude with `hv hvZ`. Conclude with `h`. Set `Z₂ : Submodule ℂ T.V` to `{ carrier := {w | ∀ (w₁ : T.V) (Y₀ Y : Mat k r), Y₀ ∈ UH (Hpk k r) → Y ∈ UH (Hpk k r) → aaFun T μ P μW μN ψ π w₁ w ξ' Y₀ Y = 0} add_mem' := by`. Introduce `w w' hw hw' w₁ Y₀ Y h₀ h₁`. Use `hlin₂ 1 w₁ w w' ξ' h₀ h₁` as an intermediate fact.
+
+Rewrite `this` using `[one_smul, map_one, one_smul]`. Rewrite using `[this, hw w₁ Y₀ Y h₀ h₁, hw' w₁ Y₀ Y h₀ h₁, add_zero]`. Use the proof step `zero_mem' := fun w₁ Y₀ Y _ _ => hz₂ _ _ _ _`. Use the proof step `smul_mem' := by`. Introduce `b w hw w₁ Y₀ Y h₀ h₁`.
+
+Use `hlin₂ b w₁ w 0 ξ' h₀ h₁` as an intermediate fact. Rewrite `this` using `[add_zero, hz₂, add_zero]`. Rewrite using `[this, hw w₁ Y₀ Y h₀ h₁, smul_zero] }`. Establish `hZ₂ : Z₂ = ⊤`. Break down `T.irred Z₂ (by` into its components or cases.
+
+Introduce `kk w hw w₁ Y₀ Y h₀ h₁`. Use `aaFun_K T μ hP hB 1 kk w₁ w ξ' h₀ h₁` as an intermediate fact. Rewrite `this` using `[hop1]`. Rewrite using `[this]`. Conclude with `hw w₁ _ _ (uh_mul h₀ (hKmem kk)) (uh_mul h₁ (hKmem 1))) with h | h`.
+
+It suffices to derive a contradiction. Establish `hvZ : v ∈ Z₂`. Introduce `w₁ Y₀ Y h₀ h₁`. Establish `h1 : w₁ ∈ Z₁` using `by rw [hZ₁]; exact Submodule.mem_top`. Use `h1 1 Y₀ Y h₀ h₁` as an intermediate fact.
+
+Rewrite `this` using `[hop1]`. Then use the resulting hypothesis. Rewrite `hvZ` using `[h, Submodule.mem_bot]`. Conclude with `hv hvZ`. Conclude with `h`. Establish `hw₂ : U₁ v₂ ∈ Z₂` using `by rw [hZ₂]; exact Submodule.mem_top`.
+
+Conclude with `hne3 (hw₂ (U₁ v₁) _ _ hX₀ hX)`.
+-/
 theorem transport (hIC : IntCoefStatement) {k r : ℕ} (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {u : Fin k → ℝ} {h : ℝ} (hgap : GapLap ε lam h) :
     BesselNZ ε lam u → BesselAll ε lam u := by

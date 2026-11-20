@@ -11,6 +11,21 @@ variable {M : Type} [AddCommGroup M] [Module ℂ M] (B : M →ₗ⋆[ℂ] M →�
 variable {G : Type} [Group G] (ρ : Representation ℂ G M) (hinv : ∀ g x y, B (ρ g x) (ρ g y) = B x y)
 
 include hinv in
+/- English proof (translation)
+Use `set W := (Z.map (iota B hB)).topologicalClosure with hW`. Establish `: CompleteSpace W` using `(Submodule.isClosed_topologicalClosure _).completeSpace_coe`. Establish `hWinv : ∀ g, ∀ w ∈ W, pi B hB ρ hinv g w ∈ W`. Introduce `g w hw`. Rewrite `hw`, the goal using `[← SetLike.mem_coe, hW, Submodule.topologicalClosure_coe]`.
+
+Use `map_mem_closure (pi B hB ρ hinv g).continuous hw fun v hv => ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hv`. Conclude with `Submodule.mem_map.2 ⟨ρ g z, hZ g z hz, (pi_iota B hB ρ hinv g z).symm⟩`. Establish `hP : ∀ g, W.starProjection * pi B hB ρ hinv g = pi B hB ρ hinv g * W.starProjection`. Introduce `g`.
+
+Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show W.starProjection (pi B hB ρ hinv g v) = pi B hB ρ hinv g (W.starProjection v)`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `hWinv g _ (W.starProjection_apply_mem v)`. Introduce `w hw`.
+
+Rewrite using `[← map_sub, inner_left]`. Conclude with `W.starProjection_inner_eq_zero v _ (hWinv _ _ hw)`. Take `⟨c, hc⟩` from `commutant B hB ρ hinv hext _ hP`. Establish `hι0 : iota B hB z₀ ≠ 0` using `fun h => hne (by rw [← inner_iota B hB, h, inner_zero_left])`. Establish `hmem : iota B hB z₀ ∈ W` using `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hz₀)`.
+
+Establish `h1 : W.starProjection (iota B hB z₀) = iota B hB z₀` using `Submodule.starProjection_eq_self_iff.2 hmem`. Rewrite `h1` using `[hc]`. Establish `hc1 : c = 1`. Establish `e : (c - 1) • iota B hB z₀ = 0`. Rewrite using `[sub_smul, one_smul, sub_eq_zero]`.
+
+Simplify using `using h1`. Break down `smul_eq_zero.1 e with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hι0`. Apply `Submodule.starProjection_eq_self_iff.1` to reduce the goal to its premises.
+
+Rewrite using `[hc, hc1, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem closure_top (hext : IsExtremeForm ρ B) (Z : Submodule ℂ M) (hZ : ∀ g, ∀ z ∈ Z, ρ g z ∈ Z)
     (z₀ : M) (hz₀ : z₀ ∈ Z) (hne : B z₀ z₀ ≠ 0) (y : Hs B hB) :
     y ∈ (Z.map (iota B hB)).topologicalClosure := by
@@ -50,6 +65,19 @@ end DiscreteGroups.sglob.LConv.IrreduciblePresentation
 namespace DiscreteGroups.sglob.LConv
 
 open IrreduciblePresentation in
+/- English proof (translation)
+Introduce `G M _ _ _ _ _ ρ hsm hK hAdm B hext Z hZ`. Distinguish the cases in `h0 : ∀ z ∈ Z, B z z = 0`. Conclude with `Or.inl h0`. Use `right`. Simplify using `only [not_forall, exists_prop] at h0`.
+
+Take `⟨z₀, hz₀, hne⟩` from `h0`. Establish `hB : IsPsd B` using `⟨hext.1.1, hext.1.2.1⟩`. Establish `hinv` using `hext.1.2.2`. Introduce `x`. Take `⟨K, hKo, hKc, hxK⟩` from `hK x`.
+
+Take `⟨s, hs⟩` from `hAdm K hKo hKc (Hs B hB) (pi B hB ρ hinv) (norm_pi B hB ρ hinv) (commutant B hB ρ hinv hext)`. Use `set L : Submodule ℂ (Hs B hB) := (Z ⊓ fixSub ρ K).map (iota B hB) with hL`. Establish `hle : L ≤ Submodule.span ℂ (s : Set (Hs B hB))`. Introduce `v hv`. Take `⟨a, ⟨_, haK⟩, rfl⟩` from `Submodule.mem_map.1 hv`.
+
+Conclude with `hs _ fun κ hκ => by rw [pi_iota, haK κ hκ]`. Establish `: FiniteDimensional ℂ L` using `Submodule.finiteDimensional_of_le hle`. Establish `hcl : IsClosed (L : Set (Hs B hB))` using `L.closed_of_finiteDimensional`. Establish `hxL : iota B hB x ∈ L`. Rewrite using `[← SetLike.mem_coe, ← hcl.closure_eq, Metric.mem_closure_iff]`.
+
+Introduce `ε hε`. Establish `hxW` using `closure_top B hB ρ hinv hext Z hZ z₀ hz₀ hne (iota B hB x)`. Rewrite `hxW` using `[← SetLike.mem_coe, Submodule.topologicalClosure_coe, Metric.mem_closure_iff]`. Take `⟨_, hb, hd⟩` from `hxW ε hε`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hb`.
+
+Take `⟨a, haZ, haK, hda⟩` from `avg_exists B hB ρ hinv hsm Z hZ K hKc x hxK z hz`. Conclude with `⟨iota B hB a, Submodule.mem_map_of_mem ⟨haZ, haK⟩, lt_of_le_of_lt hda hd⟩`. Take `⟨a, ⟨haZ, _⟩, ha⟩` from `Submodule.mem_map.1 hxL`. Use `⟨a, haZ, ?_⟩` and prove the remaining obligations. Rewrite using `[← inner_iota B hB, map_sub, ha, sub_self, inner_zero_left]`.
+-/
 theorem extremeIrred : ExtremeIrred := by
   intro G M _ _ _ _ _ ρ hsm hK hAdm B hext Z hZ
   by_cases h0 : ∀ z ∈ Z, B z z = 0

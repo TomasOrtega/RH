@@ -15,6 +15,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ _ n A ι w w' hw P`. Take `⟨hD1, -, hDalg⟩` from `dbarCoh_algebra M n A`. Take `⟨-, hc, -, -, -⟩` from `GlobalTheory.formCalculus M n A`. Take `⟨hfin, hadd, -, -⟩` from `GlobalTheory.LineForm.wInt_props M n A`. Establish `key : DbarCoh A (fun x => aeval (fun i => w i x) (P.map (algebraMap ℝ ℂ))) (fun x => aeval (fun i => w' i x) (P.map (algebraMap ℝ ℂ)))`.
+
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h` using `(hDalg (a : ℂ) 1 1 1 1 hD1 hD1).1`. Apply the tactic sequence `convert h using 1 <;> funext x <;> simp [Algebra.algebraMap_eq_smul_one]`. Consider the case `add p q hp hq`.
+
+Establish `h` using `(hDalg 1 _ _ _ _ hp hq).2.1`. Apply the tactic sequence `convert h using 1 <;> funext x <;> simp`. Consider the case `mul_X p i hp`. Establish `h` using `(hDalg 1 _ _ _ _ hp (hw i)).2.2`. Apply the tactic sequence `convert h using 1 <;> funext x <;> simp`.
+
+Take `⟨-, hf', -, -, u, hu, eu⟩` from `key`. Establish `e1 : evalF A w P = evalF A w' P + A.dbar u` using `by show fld A _ = fld A _ + _`. Rewrite using `[← eu]`. Normalize the expressions using the abelian group laws. Establish `hdu : A.IsForm (A.dbar u)` using `(hc 1 u u hu hu).2.2.2.2.1`.
+
+Establish `int1 : ∀ α : A.Fld, A.IsForm α → ∀ ε : ℤˣ, Integrable (fun _ : M => (1 : ℝ)) (A.part α ε)` using `fun α h ε => by haveI := hfin α h ε`. Conclude with `integrable_const 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[wInt_one, wInt_one, (GlobalTheory.CxFormStokesBoth.stokes M n A u hu).2, add_zero]`.
+-/
 theorem integral_evalF_of_dbarCoh : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n) (ι : Type) (w w' : ι → A.Pt → Ev n), (∀ i, DbarCoh A (w i) (w' i)) → ∀ P : MvPolynomial ι ℝ, A.integral (evalF A w P) = A.integral (evalF A w' P) := by
   intro M _ _ _ _ _ _ n A ι w w' hw P
   obtain ⟨hD1, -, hDalg⟩ := dbarCoh_algebra M n A

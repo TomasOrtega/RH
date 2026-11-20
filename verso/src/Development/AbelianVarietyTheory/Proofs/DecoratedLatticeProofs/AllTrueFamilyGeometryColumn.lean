@@ -33,10 +33,18 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.FrameLat
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[p.int_iff, p.sec_pr, RingHom.map_mul]`. Conclude with `mul_mem_intAE (e_mem_intAt p).2 ha`.
+-/
 theorem pr_mem_of_fin_int (p : SplitPt D k) {a : AE D} (ha : finPart D a ∈ intAE D) : p.pr a ∈ 𝒪[k] := by
   rw [p.int_iff, p.sec_pr, RingHom.map_mul]
   exact mul_mem_intAE (e_mem_intAt p).2 ha
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hp.1 _ (e_mem_intAt p)`. Establish `he : p.pr p.e = 1` using `by rw [← sec_one, p.pr_sec]`. Establish `h3` using `pr_mem_of_fin_int p h1.2`. Establish `h4` using `pr_mem_of_fin_int p h2.2`. Rewrite `h3`, `h4` using `[RingHom.map_mul, he, mul_one, Valuation.mem_integer_iff]`.
+
+Establish `h5 : valuation k (p.pr (incA D D.host.xi0)) * valuation k (p.pr (incA D D.host.xi0⁻¹)) = 1`. Rewrite using `[← map_mul, ← RingHom.map_mul, ← RingHom.map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), RingHom.map_one, RingHom.map_one, map_one]`. Use `le_antisymm h3 ?_` and prove the remaining obligations. Rewrite using `[← h5]`. Conclude with `mul_le_of_le_one_right' h4`.
+-/
 theorem splitPlace_valuation_cmImaginaryGenerator_eq_one (p : SplitPt D k) (hp : p.UnitAA) : valuation k (p.pr (incA D D.host.xi0)) = 1 := by
   obtain ⟨h1, h2⟩ := hp.1 _ (e_mem_intAt p)
   have he : p.pr p.e = 1 := by rw [← sec_one, p.pr_sec]
@@ -50,6 +58,9 @@ theorem splitPlace_valuation_cmImaginaryGenerator_eq_one (p : SplitPt D k) (hp :
   rw [← h5]
   exact mul_le_of_le_one_right' h4
 
+/- English proof (translation)
+Establish `h` using `splitPlace_valuation_cmImaginaryGenerator_eq_one p hp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_neg, RingHom.map_neg, RingHom.map_pow, RingHom.map_pow, Valuation.map_neg, map_pow, h, one_pow]`. Rewrite using `[star_neg, star_pow, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_neg, RingHom.map_neg, RingHom.map_pow, RingHom.map_pow, RingHom.map_neg, RingHom.map_neg, Valuation.map_neg, map_pow, Valuation.map_neg, h, one_pow]`.
+-/
 theorem splitPlace_valuation_neg_cmGenerator_pow_eq_one (p : SplitPt D k) (hp : p.UnitAA) (n : ℕ) :
     valuation k (p.pr (incA D (-D.host.xi0 ^ n))) = 1 ∧ valuation k (p.pr (incA D (star (-D.host.xi0 ^ n)))) = 1 := by
   have h := splitPlace_valuation_cmImaginaryGenerator_eq_one p hp
@@ -60,6 +71,19 @@ theorem splitPlace_valuation_neg_cmGenerator_pow_eq_one (p : SplitPt D k) (hp : 
 
 end GlobalTheory.LevPrimeData
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u g c₀ v ζ₀ hPin hNT htP hline hz hemb hort htau`. Take `⟨pins⟩` from `hW.tr.pins`. Take `⟨k, _, _, _, _, ι, p, J, q, χ, β, Q, hPl, hch, -, hval, hpl, hb, hStd⟩` from `GlobalTheory.T.standardPairs_exist_at_levelPrime I hW.tr.ok pins l Z u (pk W).ψ hPin.std (fun j => (g.x j).L) (fun j hj z => (hPin.xs j hj).2.2 z)`. Establish `hG : ∀ j, ((I.rec7 l Z).sp.X j).gram = 1` using `fun j => hW.tr.ok.gram_X j`. Establish `hz' : ∀ r : Fin ((I.rec7 l Z).sp.X B.R.m).rank, vecB (g.oT B.R.m rfl) ζ₀ r = if r.1 + 1 = ((I.rec7 l Z).sp.X B.R.m).rank then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0`.
+
+Introduce `r`. Rewrite using `[hz r]`. Establish `e : ((I.rec7 l Z).sp.X B.R.m).rank = B.R.N B.R.m` using `Formalism.L2.Forms.rankN (I.rec7 l Z) _ le_rfl`. Use `show (if r.1 + 1 = B.R.N B.R.m then ((X.piT u : 𝓞 B.host.E) : B.host.E) else 0) = _`. Rewrite using `[← e]`.
+
+Establish `hpos : 0 < ((I.rec7 l Z).sp.X B.R.m).rank`. Establish `h1` using `(g.oT B.R.m rfl).rank_add`. Establish `h2 : g.Lz.rank = 1` using `hline.1`. Use linear arithmetic over natural numbers and integers. Establish `htop` using `fun i => GlobalTheory.StdPairTop.ker_stdPair _ k (p i) q _ _ _ (g.oT B.R.m rfl) (hG _) ζ₀ hline (X.piT u) _ hz' (hval i).1 (hval i).2 (g.x B.R.m).L v.NT (fun z => (hPin.xs _ le_rfl).2.2 z) (by obtain ⟨LZ, h⟩ := hort (p i).v ((hpl _).1 ⟨i, rfl⟩); exact ⟨LZ, hNT ▸ h⟩) (β B.R.m i) ( …`.
+
+Use `choose γ γ₀ hγ using htop`. Establish `hcore : ∀ j ρ h i, Nonempty (GlobalTheory.FinPl.Frame (p i) (g.bes j ρ h).V₀ (Fin ((I.rec7 l Z).sp.X j).rank ⊕ Fin 1))`. Introduce `j ρ h i`. Take `⟨γ', -⟩` from `((GlobalTheory.T.exists_splitPoint_frame_character _).2 k (p i)).1 (g.bes j ρ h).V₀ (Fin (g.bes j ρ h).V₀.rank) 1 1 (Matrix.mul_one _) (Matrix.mul_one _)`. Take `⟨α, -⟩` from `((GlobalTheory.T.exists_splitPoint_frame_character _).2 k (p i)).1 ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank) 1 1 (Matrix.mul_one _) (Matrix.mul_one _)`.
+
+Take `⟨β₀, -⟩` from `GlobalTheory.FinPl.DblInh.exists_sumFrame (g.bes j ρ h).o (g.bes j ρ h).line α γ'`. Conclude with `⟨β₀⟩`. Use `⟨k, inferInstance, inferInstance, inferInstance, inferInstance, ι, ⟨p, J, q, χ, fun i => (hch i).1, β, Q, fun j ρ h i => (hcore j ρ h i).some, fun _ _ _ => ⊥, ζ₀, γ, fun n h i => h ▸ γ₀ i⟩, ?_, rfl, hStd⟩` and prove the remaining obligations. Use `⟨hPl.nodup, hPl.all, hPl.inj, fun x => (htP x).trans (hpl x).symm, fun i => ⟨(hch i).2, hPl.unit i⟩, fun j hj i => ((hStd.2 j hj).2 i).1, hline, fun j h => (htau j h).1, fun j h => ⟨_, (htau j h).2, fun i => GlobalTheory.LevPrimeData.splitPlace_valuation_neg_cmGenerator_pow_eq_on …` and prove the remaining obligations. Substitute `h` using the available equality.
+
+Take `⟨h1, Λ, s, h2, h3, h4⟩` from `hγ i`. Conclude with `⟨h1, Λ, s, hNT ▸ h2, h3, h4⟩`.
+-/
 theorem GlobalTheory.LevPrimeData.data_preT : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (g : GlobalTheory.Fam.Geo (I.rec7 l Z)) (c₀ : ℕ → ℂ) (v : VCom (commOf (pk W) u g)) (ζ₀ : Fin g.Lz.rank → (I.rec7 l Z).host.E), GlobalTheory.AdForm.PinX I l Z (pk W).ψ (pk W).θ g.x g.vac c₀ → v.NT = (pk W).ΛX → (∀ p, p ∈ v.tP ↔ ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ p.asIdeal) → IsLineVec g.Lz ζ₀ → (∀ r, vecB (g.oT B.R.m rfl) ζ₀ r = (show Fin (B.R.N B.R.m) → (I.rec7 l Z).host.E from TC.z0 X u) (Fin.cast (Formalism.L2.Forms.rankN (I.rec7 l Z) _ le_rfl) r)) → GlobalTheory.AdForm.IsEmbTop (D := I.rec7 l Z) (TC.z0 X u) ((g.oT B.R.m rfl).emb.comp (MonoidHom.inl _ _)) → (∀ x : GlobalTheory.FinPl.Pl (I.rec7 l Z), ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ x.asIdeal → ∃ LZ : GlobalTheory.FinPl.Lat g.Lz, GlobalTheory.FinPl.OrthAt (g.oT B.R.m rfl) (g.x B.R.m).L (pk W).ΛX LZ x) → (∀ j h, (v.τ j h)ᴴ * ((g.bes j 0 h).L.gram * v.τ j h) = (-((I.rec7 l Z).host.xi0 * star (I.rec7 l Z).host.xi0)) • g.Lz.gram ∧ v.τ j h *ᵥ ζ₀ = (-(I.rec7 l Z).host.xi0 ^ (B.R.m / 2)) • (g.bes j 0 h).ζ) → ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (ι : Type) (o : TDat (commOf (pk W) u g) k ι), PreT v o ∧ o.ζ₀ = ζ₀ ∧ GlobalTheory.AdForm.StdT I l Z u o.p o.β o.Q fun j => (g.x j).L := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u g c₀ v ζ₀ hPin hNT htP hline hz hemb hort htau
   obtain ⟨pins⟩ := hW.tr.pins

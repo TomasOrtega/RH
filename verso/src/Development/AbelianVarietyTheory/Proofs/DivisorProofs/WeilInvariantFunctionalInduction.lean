@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.RowCut
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_SB_iff {Z : Type} [TopologicalSpace Z] (f : Z → ℂ) :
     f ∈ GlobalTheory.SplitWeil.SB Z ↔ IsLocallyConstant f ∧ HasCompactSupport f := Iff.rfl
 
@@ -20,9 +23,15 @@ def IsTop (X : Matrix (Fin (n + 1)) (Fin (m + 1)) k) (i : Fin (m + 1)) : Prop :=
 
 def sel (X : Matrix (Fin (n + 1)) (Fin (m + 1)) k) : Fin (m + 1) := Classical.epsilon (IsTop X)
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (Finite.exists_max fun j => valuation k (X 0 j))`.
+-/
 lemma isTop_sel (X : Matrix (Fin (n + 1)) (Fin (m + 1)) k) : IsTop X (sel X) :=
   Classical.epsilon_spec (Finite.exists_max fun j => valuation k (X 0 j))
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Function.ne_iff.1 hX`. Introduce `h`. Establish `h1` using `isTop_sel X j`. Rewrite `h1` using `[h, map_zero]`. Conclude with `hj ((valuation k).zero_iff.1 (le_antisymm h1 zero_le'))`.
+-/
 lemma sel_ne_zero {X : Matrix (Fin (n + 1)) (Fin (m + 1)) k} (hX : X 0 ≠ 0) : X 0 (sel X) ≠ 0 := by
   obtain ⟨j, hj⟩ := Function.ne_iff.1 hX
   intro h
@@ -30,6 +39,25 @@ lemma sel_ne_zero {X : Matrix (Fin (n + 1)) (Fin (m + 1)) k} (hX : X 0 ≠ 0) : 
   rw [h, map_zero] at h1
   exact hj ((valuation k).zero_iff.1 (le_antisymm h1 zero_le'))
 
+/- English proof (translation)
+Use `set s := sel X with hs_def`. Establish `hs : X 0 s ≠ 0` using `sel_ne_zero hX`. Use `set M := valuation k (X 0 s) with hM_def`. Establish `hM : M ≠ 0` using `(Valuation.ne_zero_iff _).2 hs`. Establish `key : ∀ᶠ X' in 𝓝 X, ∀ j, (X 0 j ≠ 0 → valuation k (X' 0 j) = valuation k (X 0 j)) ∧ (X 0 j = 0 → valuation k (X' 0 j) < M)`.
+
+Rewrite using `[Filter.eventually_all]`. Introduce `j`. Establish `hc : Continuous fun X' : Matrix (Fin (n + 1)) (Fin (m + 1)) k => X' 0 j` using `(continuous_apply j).comp (continuous_apply 0)`. Distinguish the cases in `hj : X 0 j = 0`. Establish `h0 : {x : k | valuation k x < M} ∈ 𝓝 (X 0 j)`.
+
+Rewrite using `[hj]`. Conclude with `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨Units.mk0 M hM, by simp⟩`. Use `filter_upwards [hc.continuousAt.preimage_mem_nhds h0] with X' h`. Conclude with `⟨fun h' => absurd hj h', fun _ => h⟩`. Establish `h0` using `(valuation k).locally_const ((Valuation.ne_zero_iff _).2 hj) filter_upwards [hc.continuousAt.preimage_mem_nhds h0] with X' h`.
+
+Conclude with `⟨fun _ => h, fun h' => absurd h' hj⟩`. Establish `htop : ∀ᶠ X' in 𝓝 X, IsTop X' = IsTop X` using `by filter_upwards [key] with X' h`. Use function extensionality and compare the values at `i`. Apply `propext` to reduce the goal to its premises. Establish `hvs : valuation k (X' 0 s) = M` using `(h s).1 hs`.
+
+Distinguish the cases in `hi : X 0 i = 0`. Use `iff_of_false (fun h' => ?_) (fun h' => ?_)` and prove the remaining obligations. Use `h' s` as an intermediate fact. Rewrite `this` using `[hvs]`. Conclude with `absurd (lt_of_le_of_lt this ((h i).2 hi)) (lt_irrefl _)`.
+
+Use `h' s` as an intermediate fact. Rewrite `this` using `[hi, map_zero]`. Conclude with `hM (le_antisymm this zero_le')`. Establish `hv` using `(h i).1 hi`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h' j`. Distinguish the cases in `hj : X 0 j = 0`. Rewrite using `[hj, map_zero]`. Conclude with `zero_le'`. Rewrite using `[← (h j).1 hj, ← hv]`.
+
+Conclude with `h' j`. Introduce `h' j`. Rewrite using `[hv]`. Distinguish the cases in `hj : X 0 j = 0`. Conclude with `le_of_lt (lt_of_lt_of_le ((h j).2 hj) (h' s))`.
+
+Rewrite using `[(h j).1 hj]`. Conclude with `h' j`. Use `filter_upwards [htop] with X' h`. Simplify using `only [sel, h, hs_def]`.
+-/
 lemma sel_eventually {X : Matrix (Fin (n + 1)) (Fin (m + 1)) k} (hX : X 0 ≠ 0) :
     ∀ᶠ X' in 𝓝 X, sel X' = sel X := by
   set s := sel X with hs_def
@@ -84,6 +112,11 @@ def piece (Φ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ) (i : Fin (m +
     Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ :=
   fun p => if sel p.2 = i then Φ p else 0
 
+/- English proof (translation)
+Rewrite `hΦ`, the goal using `[mem_SB_iff]`. Use `⟨?_, hΦ.2.mono fun p hp h => hp (by simp [piece, h])⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `p`. Establish `hev` using `(IsLocallyConstant.iff_eventually_eq _).1 hΦ.1 p`.
+
+Distinguish the cases in `hp : Φ p = 0`. Use `filter_upwards [hev] with q hq`. Simplify using `[piece, hq, hp]`. Establish `hX : p.2 0 ≠ 0` using `fun h => hp (by simpa using hrow p.1 p.2 h) filter_upwards [hev, (continuous_snd.tendsto p).eventually (sel_eventually hX)] with q hq hs`. Simplify using `only [piece, hq, hs]`.
+-/
 lemma piece_mem {Φ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ} (hΦ : Φ ∈ GlobalTheory.SplitWeil.SB _)
     (hrow : ∀ y X, X 0 = 0 → Φ (y, X) = 0) (i : Fin (m + 1)) :
     piece Φ i ∈ GlobalTheory.SplitWeil.SB _ := by
@@ -99,6 +132,11 @@ lemma piece_mem {Φ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ} (hΦ : 
     filter_upwards [hev, (continuous_snd.tendsto p).eventually (sel_eventually hX)] with q hq hs
     simp only [piece, hq, hs]
 
+/- English proof (translation)
+Simplify using `only [piece]`. Use `split_ifs with h`. Distinguish the cases in `h0 : X 0 = 0`. Conclude with `hrow y X h0`. Conclude with `absurd (h ▸ hX) (sel_ne_zero h0)`.
+
+Both sides reduce to the same expression.
+-/
 lemma piece_vanish {Φ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ}
     (hrow : ∀ y X, X 0 = 0 → Φ (y, X) = 0) (i : Fin (m + 1)) (y : Y)
     (X : Matrix (Fin (n + 1)) (Fin (m + 1)) k) (hX : X 0 i = 0) : piece Φ i (y, X) = 0 := by
@@ -109,6 +147,9 @@ lemma piece_vanish {Φ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ}
     · exact absurd (h ▸ hX) (sel_ne_zero h0)
   · rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[piece, Finset.sum_apply]`.
+-/
 lemma sum_piece (Φ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ) :
     ∑ i, piece Φ i = Φ := by
   funext p
@@ -130,11 +171,25 @@ def permGL' (σ : Equiv.Perm (Fin (m + 1))) : GL (Fin (m + 1)) k :=
     rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [PEquiv.toMatrix_apply, Matrix.one_apply, eq_comm], by
     rw [PEquiv.toMatrix_toPEquiv_mul]; ext i j; simp [PEquiv.toMatrix_apply, Matrix.one_apply, eq_comm]⟩
 
+/- English proof (translation)
+Use `show X * σ.toPEquiv.toMatrix = _`. Rewrite using `[PEquiv.mul_toMatrix_toPEquiv]`.
+-/
 lemma mul_permGL' (σ : Equiv.Perm (Fin (m + 1))) (X : Matrix (Fin (n + 1)) (Fin (m + 1)) k) :
     X * ((permGL' σ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) = X.submatrix id σ.symm := by
   show X * σ.toPEquiv.toMatrix = _
   rw [PEquiv.mul_toMatrix_toPEquiv]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n Y _ m μ L hL h0 Φ hrow`. Establish `step1 : ∀ (i : Fin (m + 1)) (Ψ : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k)), (∀ y X, X 0 i = 0 → (Ψ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ) (y, X) = 0) → L Ψ = 0`. Introduce `i Ψ hΨ`. Establish `hm` using `(mem_SB_iff _).1 Ψ.2`. Establish `hmem : ((Ψ : Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k → ℂ) ∘ swapH (k` using `k) (n := n) (Y := Y) i) ∈ GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k) := (mem_SB_iff _).2 ⟨hm.1.comp_continuous (swapH i).continuous, hm.2.comp_homeomorph (swapH i)⟩`.
+
+Establish `h1` using `hL (permGL' (Equiv.swap 0 i)) Ψ ⟨_, hmem⟩ (by`. Introduce `y X`. Rewrite using `[mul_permGL', Equiv.symm_swap]`. Use the proof step `rfl)`. Establish `h2 : L ⟨_, hmem⟩ = 0` using `h0 _ (by`.
+
+Introduce `y X hX`. Use `hΨ y (X.submatrix id (Equiv.swap 0 i)) ?_` and prove the remaining obligations. Simplify using `using hX)`. Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (Units.ne_zero _)`.
+
+Establish `hsum : Φ = ∑ i, (⟨piece Φ.1 i, piece_mem Φ.2 hrow i⟩ : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `(sum_piece Φ.1).symm`. Rewrite using `[hsum, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => step1 i _ fun y X hX => piece_vanish hrow i y X hX`.
+-/
 theorem eq_zero_of_row_vanish : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (Y : Type) [TopologicalSpace Y] (m : ℕ) (μ : kˣ →* ℂˣ)
     (L : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k) →ₗ[ℂ] ℂ),
       (∀ (g : GL (Fin (m + 1)) k) (Φ Φ' : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin (m + 1)) k)),

@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.BSP.IdealSubMembership
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := J) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 (PadicInt.appr_spec n c)`.
+
+Establish `h1 : c = ((c.appr n : ℕ) : ℤ_[l]) + (l : ℤ_[l]) ^ n * d` using `by rw [← hd]; ring`. Establish `e : φ c - ψ c = (l : A) ^ n * (φ d - ψ d)`. Rewrite using `[h1]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hlJ n)`.
+-/
 theorem padicInt_ringHom_ext {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] {J : Ideal A}
     (hlJ : (l : A) ∈ J) [IsHausdorff J A] (φ ψ : ℤ_[l] →+* A) : φ = ψ := by
   ext c
@@ -23,6 +30,17 @@ theorem padicInt_ringHom_ext {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] {J
   rw [e]
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hlJ n)
 
+/- English proof (translation)
+Use `set S := ∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i) with hS`. Establish `hS1 : S * (x - y) = x - y`. Rewrite using `[hS, geom_sum₂_mul, hx, hy]`. Establish `hSJ : S ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `hxy' : Ideal.Quotient.mk J y = Ideal.Quotient.mk J x` using `(Ideal.Quotient.eq.2 hxy).symm`. Establish `hq' : (q : A ⧸ J) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk J), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hq`. Rewrite using `[hS, map_sum]`.
+
+Simplify using `only [map_mul, map_pow, hxy']`. Break down `Nat.eq_zero_or_pos q with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `: ∀ i ∈ Finset.range q, (Ideal.Quotient.mk J x) ^ i * (Ideal.Quotient.mk J x) ^ (q - 1 - i) = (Ideal.Quotient.mk J x) ^ (q - 1)` using `fun i hi => by`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, Finset.card_range, nsmul_eq_mul, hq', zero_mul]`.
+
+Establish `hu : IsUnit (S * (-1) + 1)` using `(Ideal.mem_jacobson_bot.1 (hJ hSJ)) (-1)`. Establish `h2 : (S * (-1) + 1) * (x - y) = 0` using `by linear_combination -hS1`. Rewrite using `[← sub_eq_zero]`. Conclude with `(hu.mul_right_eq_zero).1 h2`.
+-/
 theorem eq_of_pow_eq_self {A : Type} [CommRing A] {J : Ideal A} (hJ : J ≤ (⊥ : Ideal A).jacobson) {q : ℕ}
     (hq : (q : A) ∈ J) {x y : A} (hx : x ^ q = x) (hy : y ^ q = y) (hxy : x - y ∈ J) : x = y := by
   set S := ∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i) with hS
@@ -48,6 +66,9 @@ theorem eq_of_pow_eq_self {A : Type} [CommRing A] {J : Ideal A} (hJ : J ≤ (⊥
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `h : Ideal.Quotient.mk bk.prism.I x = bk.prism.str (bk.str.symm (Ideal.Quotient.mk _ x))` using `(bk.str.apply_symm_apply _).symm`. Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `(f.f_str _ x h).trans (g.f_str _ x h).symm`.
+-/
 theorem sub_mem_I {K : FinExt l} (bk : BK K) {B : Obj l ↥(OL K)} (f g : Hom bk.prism B) (x : bk.S) :
     BK.hf f x - BK.hf g x ∈ B.I := by
   have h : Ideal.Quotient.mk bk.prism.I x = bk.prism.str (bk.str.symm (Ideal.Quotient.mk _ x)) :=
@@ -55,6 +76,21 @@ theorem sub_mem_I {K : FinExt l} (bk : BK K) {B : Obj l ↥(OL K)} (f g : Hom bk
   rw [← Ideal.Quotient.eq]
   exact (f.f_str _ x h).trans (g.f_str _ x h).symm
 
+/- English proof (translation)
+Introduce `l _ K bk B f g`. Use `haveI := B.complete`. Establish `hlJ : (l : B.A) ∈ Ideal.span {(l : B.A)} ⊔ B.I` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Use `⟨fun w => ?_, sub_mem_I bk f g X, ?_⟩` and prove the remaining obligations. Set `φ1 : Wq l bk.a →+* B.A` to `(BK.hf f).comp C`.
+
+Set `φ2 : Wq l bk.a →+* B.A` to `(BK.hf g).comp C`. Establish `hz` using `padicInt_ringHom_ext hlJ (φ1.comp (algebraMap ℤ_[l] (Wq l bk.a))) (φ2.comp (algebraMap ℤ_[l] (Wq l bk.a)))`. Establish `ht : ∀ z : Fq l bk.a, φ1 (WittVector.teichmuller l z) = φ2 (WittVector.teichmuller l z)`. Introduce `z`. Establish `hq : ((l ^ bk.a : ℕ) : B.A) ∈ Ideal.span {(l : B.A)} ⊔ B.I`.
+
+Rewrite using `[Nat.cast_pow]`. Conclude with `Ideal.pow_mem_of_mem _ hlJ _ (Nat.pos_of_ne_zero (NeZero.ne bk.a))`. Establish `hp : WittVector.teichmuller l z ^ (l ^ bk.a) = WittVector.teichmuller l z`. Rewrite using `[← map_pow, Fq.pow_card]`. Use `eq_of_pow_eq_self (IsAdicComplete.le_jacobson_bot _) hq ?_ ?_ (Ideal.mem_sup_right (sub_mem_I bk f g _))` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, hp]`. Rewrite using `[← map_pow, hp]`. Establish `hw : w ∈ Submodule.span ℤ_[l] (Set.range (WittVector.teichmuller l : Fq l bk.a → Wq l bk.a))`. Rewrite using `[span_teich]`. Conclude with `Submodule.mem_top`.
+
+Express the relevant statement in the definitionally equal form `φ1 w = φ2 w`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨z, rfl⟩ := hx`. Conclude with `ht z`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul c x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, map_mul, hx]`. Conclude with `congrArg (· * φ2 x) (RingHom.congr_fun hz c)`. Rewrite using `[← GlobalTheory.T.prism_hom_map_ideal_eq l _ bk.prism B f]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.map f.f (Ideal.span ({bk.E} : Set bk.prism.A)) = _`. Rewrite using `[Ideal.map_span]`. Conclude with `congrArg Ideal.span (Set.image_singleton (f := f.f) (a := bk.E))`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (B : Obj l ↥(OL K)) (f g : Hom bk.prism B),
     (∀ w, BK.hf f (PowerSeries.C w) = BK.hf g (PowerSeries.C w)) ∧ BK.hf f X - BK.hf g X ∈ B.I ∧
       B.I = Ideal.span {BK.hf f bk.E} := by

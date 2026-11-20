@@ -23,16 +23,33 @@ section Inhabitants
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `Prod.ext h1 h2`.
+-/
 theorem adele_ext {a b : AF F} (h1 : fstA F a = fstA F b) (h2 : sndA F a = sndA F b) : a = b :=
   Prod.ext h1 h2
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.ext _ _ h`.
+-/
 theorem finAdele_ext {x y : Af F} (h : ∀ w, evalV F w x = evalV F w y) : x = y :=
   RestrictedProduct.ext _ _ h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fstA_pairA (x : Ainf F) (y : Af F) : fstA F (pairA F x y) = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sndA_pairA (x : Ainf F) (y : Af F) : sndA F (pairA F x y) = y := rfl
 
+/- English proof (translation)
+Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion F → RestrictedProduct (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) (fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) (Filter.principal ({v}ᶜ : Set _))` to `fun x => ⟨Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v x, by`. Introduce `w hw`. Establish `hw' : w ≠ v` using `hw`. Simplify using `only [Set.mem_ofPred_eq, Pi.single_eq_of_ne hw', SetLike.mem_coe]`.
+
+Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hf`.
+-/
 theorem continuous_singleV' (v : HeightOneSpectrum (𝓞 F)) : Continuous (singleV F v) := by
   classical
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F))) :=
@@ -48,6 +65,9 @@ theorem continuous_singleV' (v : HeightOneSpectrum (𝓞 F)) : Continuous (singl
   have hf : Continuous f := RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)
   exact (RestrictedProduct.continuous_inclusion hS).comp hf
 
+/- English proof (translation)
+Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[StrongApprox.evalV_single_same, StrongApprox.evalV_single_same]`. Rewrite using `[StrongApprox.evalV_single_ne h, StrongApprox.evalV_single_ne h, h0]`.
+-/
 theorem evalV_singleV_eq (v w : HeightOneSpectrum (𝓞 F)) (y : Fv F v) (f : ∀ u, Fv F u → Fv F u)
     (h0 : ∀ u, f u 0 = 0) :
     f w (evalV F w (singleV F v y)) = evalV F w (singleV F v (f v y)) := by
@@ -112,14 +132,23 @@ def singleI (w : InfinitePlace F) (y : w.Completion) : Ainf F :=
   (Pi.single (M := fun u : InfinitePlace F => u.Completion) w y : ∀ u : InfinitePlace F, u.Completion)
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Pi.single_eq_same (M := fun u : InfinitePlace F => u.Completion) w y`.
+-/
 theorem singleI_self (w : InfinitePlace F) (y : w.Completion) : (singleI w y : ∀ u : InfinitePlace F, u.Completion) w = y :=
   Pi.single_eq_same (M := fun u : InfinitePlace F => u.Completion) w y
 
 open Classical in
+/- English proof (translation)
+The claim follows from `Pi.single_eq_of_ne (M := fun u : InfinitePlace F => u.Completion) h y`.
+-/
 theorem singleI_ne {w u : InfinitePlace F} (h : u ≠ w) (y : w.Completion) :
     (singleI w y : ∀ u : InfinitePlace F, u.Completion) u = 0 :=
   Pi.single_eq_of_ne (M := fun u : InfinitePlace F => u.Completion) h y
 
+/- English proof (translation)
+The claim follows from `funext h`.
+-/
 theorem ainf_ext {x y : Ainf F} (h : ∀ u, (x : ∀ u : InfinitePlace F, u.Completion) u = (y : ∀ u : InfinitePlace F, u.Completion) u) : x = y :=
   funext h
 
@@ -169,6 +198,13 @@ def placeMapInf (w : InfinitePlace F) : PlaceMap F w.Completion where
   cont_proj := (continuous_apply w).comp continuous_fst
   cont_inj := (continuous_single w).prodMk continuous_const
 
+/- English proof (translation)
+Use `letI nn : NontriviallyNormedField (v.adicCompletion F) := Valued.toNontriviallyNormedField _ _`. Use `haveI pr : ProperSpace (v.adicCompletion F) := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace (v.adicCompletion F)`. Use `⟨v.adicCompletion F, nn, pr, inferInstance, placeMapFin v, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Conclude with `absurd hw (Finset.notMem_empty w)`.
+
+Introduce `w _`. Both sides reduce to the same expression. Introduce `u hu`. Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `StrongApprox.evalV_single_same v 1`.
+
+Introduce `u hu`. Conclude with `StrongApprox.evalV_single_ne (fun h => hu (Finset.mem_singleton.2 h)) 1`.
+-/
 theorem exists_placeMap_fin (v : HeightOneSpectrum (𝓞 F)) :
     ∃ (K : Type) (_ : NontriviallyNormedField K) (_ : ProperSpace K) (_ : Algebra F K) (P : PlaceMap F K),
       IsPlacesIdem ∅ {v} (P.inj 1) := by
@@ -186,6 +222,13 @@ theorem exists_placeMap_fin (v : HeightOneSpectrum (𝓞 F)) :
   · intro u hu
     exact StrongApprox.evalV_single_ne (fun h => hu (Finset.mem_singleton.2 h)) 1
 
+/- English proof (translation)
+Use `letI nn : NontriviallyNormedField w.Completion := { (inferInstance : NormedField w.Completion) with non_trivial := ⟨2, by`. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _), map_ofNat]`. Use the proof step `simp⟩ }`. Use `haveI pr : ProperSpace w.Completion := ProperSpace.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace w.Completion`. Use `⟨w.Completion, nn, pr, inferInstance, placeMapInf w, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `u hu`. Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `singleI_self w 1`. Introduce `u hu`. Conclude with `singleI_ne (fun h => hu (Finset.mem_singleton.2 h)) 1`.
+
+Introduce `u hu`. Conclude with `absurd hu (Finset.notMem_empty u)`. Introduce `u _`. Conclude with `map_zero (evalV F u)`.
+-/
 theorem exists_placeMap_inf (w : InfinitePlace F) :
     ∃ (K : Type) (_ : NontriviallyNormedField K) (_ : ProperSpace K) (_ : Algebra F K) (P : PlaceMap F K),
       IsPlacesIdem {w} ∅ (P.inj 1) := by

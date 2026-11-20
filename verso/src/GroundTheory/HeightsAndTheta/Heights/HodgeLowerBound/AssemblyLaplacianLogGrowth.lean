@@ -7,6 +7,9 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
+/- English proof (translation)
+The claim follows from `LaplacianLogGrowth.proof FsPotLaplacian.proof InvDerivDecay.proof LaplacianDecayZero.proof`.
+-/
 theorem LaplacianLogGrowth.full : LaplacianLogGrowth.Statement :=
   LaplacianLogGrowth.proof FsPotLaplacian.proof InvDerivDecay.proof LaplacianDecayZero.proof
 

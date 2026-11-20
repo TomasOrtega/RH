@@ -10,6 +10,17 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 noncomputable section
 namespace GlobalTheory.Mem.ChiType
 
+/- English proof (translation)
+Introduce `X px I U L hI hL i w hw u`. Establish `hw' : w ∈ L.Pg` using `hL.Pg ▸ hw`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP w)`. Establish `hu0 : (u : kP w) ≠ 0` using `u.ne_zero`. Establish `ha0 : ((a : 𝓞 X.toD7.host.E) : X.toD7.host.E) ≠ 0`.
+
+Introduce `h0`. Apply `hu0` to reduce the goal to its premises. Rewrite using `[← ha, (FaithfulSMul.algebraMap_eq_zero_iff (𝓞 X.toD7.host.E) X.toD7.host.E).1 h0, map_zero]`. Set `k : X.toD7.host.Eˣ` to `Units.mk0 _ ha0`. Establish `h1` using `(hI.ch_tied.mu0 i).atg ⟨w, hw⟩ k a u rfl ha.symm`.
+
+Establish `h2` using `hL.is.chi i w hw' a k u rfl ha.symm`. Rewrite `h2` using `[hL.C]`. Establish `h2' : (L.chi ((i : ℕ) + 1) w u : ℂˣ) = ((((Top.Fr.at X I.C).mu0 i).locK w k))⁻¹`. Rewrite using `[← h2, MonoidHom.inv_apply, inv_inv]`. Establish `e : Formalism.L2.Col.chiAt I.Ch ⟨w, hw⟩ (i : ℕ) u = I.Ch.chi i ⟨w, hw⟩ u`.
+
+Simplify using `only [Formalism.L2.Col.chiAt, Formalism.L2.Col.extChi]`. Rewrite using `[dif_pos (show (i : ℕ) < X.B.R.m from i.2)]`. Both sides reduce to the same expression. Rewrite using `[e, h2', Units.val_inv_eq_inv_val]`. Express the relevant statement in the definitionally equal form `_ = (((((I.C.mu0 i).locK (⟨w, hw⟩ : {w // w ∈ (X.B.primes px).vGs}).1) k : ℂˣ) : ℂ))⁻¹`.
+
+Rewrite using `[h1, Units.val_inv_eq_inv_val, map_inv₀, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem embLL_chiAt_eq_levChi : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L →
     ∀ (i : Fin X.toD7.R.m) (w : Pl X.toD7.host.E) (hw : w ∈ (X.B.primes px).vGs) (u : (kP w)ˣ),

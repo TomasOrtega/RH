@@ -9,6 +9,11 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Ka
 
 attribute [local instance] algMdl
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l n M hl hM hd u v hu hv huF hvF`. Take `⟨e, he⟩` from `isoEx Ω ε X M`. Take `⟨h1, h2⟩` from `TopEta.spec_of_units X hM.ne' hl.ne_zero hd (isTopUnit X M hu huF) (isTopUnit X M hv hvF)`. Establish `hη` using `isTopEta_topEta X M h1`. Use `⟨_, ptIs Ω ε X l n M hl hM hd u v hu hv huF hvF e he _ hη, ptGam Ω ε X l n M hl hM hd u v hu hv huF hvF e he _ hη, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hw` using `h2 (topLift X M s)⁻¹`. Establish `h0 : wGen X M l n u v s ≠ 0` using `fun h => hw.1 (Subtype.ext h)`. Conclude with `⟨Units.mk0 _ h0, rfl, ptGal Ω ε X l n M hl hM hd u v hu hv huF hvF e he _ hη s hs _ hw _ rfl⟩`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.ptTop :
     UpperTheory.V.Z.Kato.Sym.PtTop := by
   intro Ω _ _ _ ε X l n M hl hM hd u v hu hv huF hvF

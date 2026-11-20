@@ -31,6 +31,9 @@ abbrev toSpec (O : Type) [CommRing O] [Algebra O K] (B : Type) [CommRing B] [Alg
     Spec (CommRingCat.of (K ⊗[O] B)) ⟶ Spec (CommRingCat.of B) :=
   Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := O) (A := K) (B := B)).toRingHom)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `a`. Simplify using `[Algebra.TensorProduct.tmul_one_eq_one_tmul]`.
+-/
 theorem toSpec_str (B : Type) [CommRing B] [Algebra O B] :
     toSpec K O B ≫ Spec.map (CommRingCat.ofHom (algebraMap O B)) =
       GlobalTheory.FNC.str K (K ⊗[O] B) ≫ Spec.map (CommRingCat.ofHom (algebraMap O K)) := by
@@ -39,6 +42,9 @@ theorem toSpec_str (B : Type) [CommRing B] [Algebra O B] :
   ext a
   simp [Algebra.TensorProduct.tmul_one_eq_one_tmul]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+-/
 theorem spec_tower : Spec.map (CommRingCat.ofHom (algebraMap K Ω)) ≫ Spec.map (CommRingCat.ofHom (algebraMap O K)) =
     Spec.map (CommRingCat.ofHom (algebraMap O Ω)) := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]
@@ -72,6 +78,9 @@ def formalSemi {B B' : Type} [CommRing B] [Algebra O B] [CommRing B'] [Algebra O
     rw [Category.assoc, h1, pullback.condition_assoc, Category.assoc, ← Spec.map_comp, ← Spec.map_comp,
       ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hτ])
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_eq O K Ω, ← RingHom.comp_assoc, hτ, RingHom.comp_assoc, hρ, RingHom.comp_assoc]`.
+-/
 theorem semi_tower {σ : O →+* O} {ρ : K →+* K} (hρ : ρ.comp (algebraMap O K) = (algebraMap O K).comp σ)
     {τ : Ω →+* Ω} (hτ : τ.comp (algebraMap K Ω) = (algebraMap K Ω).comp ρ) :
     τ.comp (algebraMap O Ω) = (algebraMap O Ω).comp σ := by
@@ -90,6 +99,9 @@ variable [IsAlgClosed Ω] [FaithfulSMul O Ω] [Algebra.IsAlgebraic O Ω]
 variable {X : Scheme.{0}} {p : X ⟶ Spec (CommRingCat.of O)} {x : SpecialPoint p}
 
 omit [IsSepClosed (ResidueField O)] in
+/- English proof (translation)
+Rewrite using `[← hψ.2, ← hθ, StrictLoc.toX, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc]`.
+-/
 theorem spec_lift_over (L : StrictLoc X x.1) {B : Type} [CommRing B] [Algebra O B] {ψ : X.presheaf.stalk x.1 →+* B}
     (hψ : IsCompletedStalk p x.1 ψ) {θ : L.A →+* B} (hθ : θ.comp L.φ = ψ) :
     Spec.map (CommRingCat.ofHom θ) ≫ L.toX ≫ p = Spec.map (CommRingCat.ofHom (algebraMap O B)) := by

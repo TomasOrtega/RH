@@ -13,10 +13,20 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+The claim follows from `(la.valuation K).valuationSubring_isDiscreteValuationRing`.
+-/
 theorem isDiscreteValuationRing_valuationSubring_place {K : Type} [Field K] [NumberField K]
     (la : HeightOneSpectrum (𝓞 K)) : IsDiscreteValuationRing (la.valuation K).valuationSubring :=
   (la.valuation K).valuationSubring_isDiscreteValuationRing
 
+/- English proof (translation)
+Introduce `hST E _ _ _ H Dw l Xo c hEv hDiag la hM`. Take `⟨Y, hY⟩` from `hM`. Use `isDiscreteValuationRing_valuationSubring_place la` as an intermediate fact. Take `⟨J, hJ, P, hP⟩` from `GlobalTheory.T.exists_finite_integral_chart_cover_flagSpace hST E H Dw l Xo c hEv.bc (la.valuation c.F).valuationSubring Y hY`. Use `hJ` as an intermediate fact.
+
+Take `⟨S, hS, -⟩` from `GlobalTheory.T.exists_normal_charts_of_covering_charts E H Dw l Xo c hEv hDiag la J P hP`. Use `⟨⟨S, hS⟩, fun a n m ws hws hnz => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ', P', hP', hF⟩` from `GlobalTheory.T.exists_refined_covering_chart_family E H Dw l Xo c hEv _ _ J P hP a n m ws hws hnz`. Use `hJ'` as an intermediate fact. Take `⟨S', hS', hW⟩` from `GlobalTheory.T.exists_normal_charts_of_covering_charts E H Dw l Xo c hEv hDiag la J' P' hP'`.
+
+Conclude with `⟨S', hW m ws hF, hS'⟩`.
+-/
 theorem exists_sCharts : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → IntDiagUnit Xo c → ∀ la : HeightOneSpectrum (𝓞 c.F), ModelAt Xo c la → (∃ S : SCharts Xo c la, S.CovQ) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → Formalism.L2.PjFree.NoCommonZero Xo c ws → ∃ S : SCharts Xo c la, S.FamW ws ∧ S.CovQ := by
   intro hST E _ _ _ H Dw l Xo c hEv hDiag la hM
   obtain ⟨Y, hY⟩ := hM

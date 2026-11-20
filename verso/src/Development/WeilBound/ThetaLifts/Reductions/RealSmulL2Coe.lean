@@ -15,6 +15,15 @@ section Tele
 
 variable {𝕜 V B : Type} [RCLike 𝕜] [AddCommGroup V] [Module 𝕜 V] [NormedAddCommGroup B] [NormedSpace 𝕜 B]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : j (L^[n + 1] f) - μ ^ (n + 1) • j f = j (L (L^[n] f - μ ^ n • f)) + μ ^ n • (j (L f) - μ • j f)`. Rewrite using `[Function.iterate_succ_apply']`.
+
+Simplify using `only [map_sub, map_smul, smul_sub, smul_smul, pow_succ]`. Normalize the expressions using the abelian group laws. Establish `h1` using `hL (L^[n] f - μ ^ n • f)`. Rewrite `h1` using `[map_sub j, map_smul j]`. Establish `h2 : ‖μ ^ n • (j (L f) - μ • j f)‖ ≤ q ^ n * ‖j (L f) - μ • j f‖`.
+
+Rewrite using `[norm_smul, norm_pow]`. Use `gcongr`. Establish `hq0 : 0 ≤ q` using `by linarith`. Establish `h3 : q ^ n * ‖j (L f) - μ • j f‖ ≤ q * (q ^ n * ‖j (L f) - μ • j f‖)` using `le_mul_of_one_le_left (by positivity) hq`. Establish `h4` using `mul_le_mul_of_nonneg_left ih hq0`.
+
+Rewrite using `[e]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tele (j : V →ₗ[𝕜] B) (L : V →ₗ[𝕜] V) (μ : 𝕜) {q : ℝ} (hq : 1 ≤ q) (hL : ∀ v, ‖j (L v)‖ ≤ q * ‖j v‖)
     (hμ : ‖μ‖ ≤ q) (f : V) (n : ℕ) : ‖j (L^[n] f) - μ ^ n • j f‖ ≤ n * q ^ n * ‖j (L f) - μ • j f‖ := by
   induction n with
@@ -39,6 +48,15 @@ theorem tele (j : V →ₗ[𝕜] B) (L : V →ₗ[𝕜] V) (μ : 𝕜) {q : ℝ}
     rw [pow_succ]
     nlinarith
 
+/- English proof (translation)
+Establish `hi : Tendsto (fun n : ℕ => (n : ℝ)⁻¹) atTop (𝓝 0)` using `tendsto_inv_atTop_nhds_zero_nat`. Establish `h1` using `(ho.norm_left.tendsto_div_nhds_zero.comp hi).const_mul (Real.exp C)`. Rewrite `h1` using `[mul_zero]`. Use `squeeze_zero_norm' ?_ h1` and prove the remaining obligations. Use `filter_upwards [hi.eventually h, eventually_gt_atTop 0] with n hn hn0`.
+
+Establish `hn1 : (0 : ℝ) < n` using `by exact_mod_cast hn0`. Establish `ha : |(n : ℝ)⁻¹| = (n : ℝ)⁻¹` using `abs_of_pos (inv_pos.2 hn1)`. Use `(tele j _ _ (le_add_of_nonneg_right (by positivity)) hn.1 hn.2 f n).trans ?_` and prove the remaining obligations. Establish `h2 : (1 + C * |(n : ℝ)⁻¹|) ^ n ≤ Real.exp C`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[ha]`. Use `gcongr`. Rewrite using `[add_comm]`. Conclude with `Real.add_one_le_exp _`. Use `_ = _ := by`.
+
+Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Function.comp_apply, div_inv_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tele_lim (j : V →ₗ[𝕜] B) (L : ℝ → V →ₗ[𝕜] V) (μ : ℝ → 𝕜) {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ᶠ t in 𝓝 (0 : ℝ), (∀ v, ‖j (L t v)‖ ≤ (1 + C * |t|) * ‖j v‖) ∧ ‖μ t‖ ≤ 1 + C * |t|) (f : V)
     (ho : (fun t => j (L t f) - μ t • j f) =o[𝓝 0] fun t => t) :
@@ -67,12 +85,22 @@ theorem tele_lim (j : V →ₗ[𝕜] B) (L : ℝ → V →ₗ[𝕜] V) (μ : ℝ
 
 end Tele
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `h.isBigO_sub.exists_nonneg`. Use `⟨C, hC, h.bound.mono fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `using ht`.
+-/
 theorem norm_le_lin {B : Type} [NormedAddCommGroup B] [NormedSpace ℝ B] {g : ℝ → B} {g' : B} (h : HasDerivAt g g' 0) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ᶠ t in 𝓝 (0 : ℝ), ‖g t - g 0‖ ≤ C * |t| := by
   obtain ⟨C, hC, h⟩ := h.isBigO_sub.exists_nonneg
   refine ⟨C, hC, h.bound.mono fun t ht => ?_⟩
   simpa using ht
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `norm_le_lin hd`. Use `tele_lim (𝕜 := ℝ) LinearMap.id (fun t => LinearMap.mulLeft ℝ (k t)) (fun _ => 1) hC (h.mono fun t ht => ⟨fun v => ?_, ?_⟩) 1 (by simpa [h0] using hasDerivAt_iff_isLittleO_nhds_zero.1 hd)` as an intermediate fact. Rewrite using `[← tendsto_sub_nhds_zero_iff]`. Use `this.congr fun n => ?_` and prove the remaining obligations. Establish `e : (LinearMap.mulLeft ℝ (k (n : ℝ)⁻¹))^[n] 1 = k (n : ℝ)⁻¹ ^ n` using `mul_left_iterate_apply_one _`.
+
+Simplify using `[e]`. Use `show ‖k t * v‖ ≤ _ * ‖v‖`. Establish `e : k t * v = v + (k t - k 0) * v` using `by rw [h0, sub_mul, one_mul, add_sub_cancel]`. Rewrite using `[e, add_mul, one_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add le_rfl ((norm_mul_le _ _).trans (by gcongr)))`.
+
+Establish `: 0 ≤ C * |t|` using `by positivity`. Simplify using `using this`.
+-/
 theorem pow_lim {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] (k : ℝ → 𝔸) (h0 : k 0 = 1) (hd : HasDerivAt k 0 0) :
     Tendsto (fun n : ℕ => k (n : ℝ)⁻¹ ^ n) atTop (𝓝 1) := by
   obtain ⟨C, hC, h⟩ := norm_le_lin hd
@@ -91,13 +119,40 @@ theorem pow_lim {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] (k : �
 
 variable {l : Type} [Fintype l]
 
+/- English proof (translation)
+The claim follows from `algebraMap_smul ℂ t v`.
+-/
 theorem real_smul_L2_coe (t : ℝ) (v : L2 l) : (t : ℂ) • v = t • v := algebraMap_smul ℂ t v
 
+/- English proof (translation)
+Introduce `h` and use `hf (SchwartzMap.injective_toLp (E := EuclideanSpace ℝ l) (F := ℂ) 2 volume (h.trans (map_zero (schwartzToL2 l)).symm))`.
+-/
 theorem j_ne {f : Sch l} (hf : f ≠ 0) : schwartzToL2 l f ≠ 0 := fun h =>
   hf (SchwartzMap.injective_toLp (E := EuclideanSpace ℝ l) (F := ℂ) 2 volume (h.trans (map_zero (schwartzToL2 l)).symm))
 
 def Conf (U : Sch l →L[ℂ] Sch l) : Prop := ∃ n : ℝ, ∀ f, ‖schwartzToL2 l (U f)‖ = n * ‖schwartzToL2 l f‖
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_ne (l := l)`. Establish `hj` using `j_ne hf`. Establish `hp : 0 < ‖schwartzToL2 l f‖` using `norm_pos_iff.2 hj`. Establish `he : HasDerivAt (fun t : ℝ => cexp (d * t)) d 0`. Simplify using `using (((hasDerivAt_id (0 : ℝ)).ofReal_comp).const_mul d).cexp`.
+
+Take `⟨C1, hC1, h1⟩` from `norm_le_lin (hd f)`. Take `⟨C2, hC2, h2⟩` from `norm_le_lin he`. Establish `h3` using `tele_lim (C := C1 / ‖schwartzToL2 l f‖ + C2) (schwartzToL2 l).toLinearMap (fun t => (A (k t)).toLinearMap) (fun t => cexp (d * t)) (by positivity) ?_ f ?_`. Set `T : L2 l →L[ℂ] ℂ` to `innerSL ℂ (schwartzToL2 l f)`. Establish `h4` using `(T.continuous.tendsto _).comp h3`.
+
+Establish `h5` using `((hw (T ∘L schwartzToL2 l) f).tendsto 1).comp hk`. Establish `h6 : Tendsto (fun n : ℕ => cexp d * T (schwartzToL2 l f)) atTop (𝓝 (T (schwartzToL2 l f)))`. Use `h5.sub h4` as an intermediate fact. Simplify using `only [map_one, map_zero, sub_zero] at this`. Use `this.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_gt_atTop 0] with n hn`. Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `e : cexp (d * ((n : ℝ)⁻¹ : ℝ)) ^ n = cexp d`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e' : ∀ U : Sch l →L[ℂ] Sch l, (U ^ n) f = U^[n] f` using `fun U => congrFun (hom_coe_pow _ rfl (fun _ _ => rfl) U n) f`. Simplify using `only [Function.comp_apply, e, map_pow, ContinuousLinearMap.comp_apply, e', ContinuousLinearMap.coe_coe, map_sub, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h7` using `tendsto_nhds_unique tendsto_const_nhds h6`. Establish `h8 : T (schwartzToL2 l f) ≠ 0` using `fun h => hj (inner_self_eq_zero.1 h)`. Conclude with `mul_right_cancel₀ h8 (h7.trans (one_mul _).symm)`. Use `filter_upwards [h1, h2] with t a1 a2`. Simplify using `only [k0, map_one, ContinuousLinearMap.one_apply, ofReal_zero, mul_zero, Complex.exp_zero] at a1 a2`.
+
+Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hc (k t) show ‖schwartzToL2 l (A (k t) v)‖ ≤ _ * ‖schwartzToL2 l v‖`. Rewrite using `[hn]`. Use `gcongr`. Establish `b1` using `norm_le_norm_add_norm_sub' (schwartzToL2 l (A (k t) f)) (schwartzToL2 l f)`.
+
+Rewrite `b1` using `[hn]`. Establish `b2 : n ≤ 1 + C1 / ‖schwartzToL2 l f‖ * |t|`. Use `le_of_mul_le_mul_right ?_ hp` and prove the remaining obligations. Rewrite using `[add_mul, mul_right_comm, div_mul_cancel₀ _ hp.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: 0 ≤ C2 * |t|` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b1` using `norm_le_norm_add_norm_sub' (cexp (d * t)) 1`. Establish `: 0 ≤ C1 / ‖schwartzToL2 l f‖ * |t|` using `by positivity`. Rewrite `b1` using `[norm_one]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hasDerivAt_iff_isLittleO_nhds_zero.1 ((hd f).sub (he.smul_const (schwartzToL2 l f)))` as an intermediate fact. Simplify `this` using `[k0]`.
+-/
 theorem delta_zero {G : Type} [Group G] [TopologicalSpace G] (A : G →* (Sch l →L[ℂ] Sch l))
     (hw : ∀ (T : Sch l →L[ℂ] ℂ) f, Continuous fun g => T (A g f)) (hc : ∀ g, Conf (A g)) (k : ℝ → G) (k0 : k 0 = 1)
     (hk : Tendsto (fun n : ℕ => k (n : ℝ)⁻¹ ^ n) atTop (𝓝 1)) (d : ℂ)
@@ -154,6 +209,11 @@ theorem delta_zero {G : Type} [Group G] [TopologicalSpace G] (A : G →* (Sch l 
   · have := hasDerivAt_iff_isLittleO_nhds_zero.1 ((hd f).sub (he.smul_const (schwartzToL2 l f)))
     simpa [k0] using this
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_ne (l := l)`. Establish `hp : 0 < ‖schwartzToL2 l f‖` using `norm_pos_iff.2 (j_ne hf)`. Take `⟨M, hM⟩` from `bdd_of_weak (fun t => schwartzToL2 l (U t f)) fun φ => hw (φ ∘L schwartzToL2 l) f`. Use `⟨M / ‖schwartzToL2 l f‖, fun t ht g => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hc t`.
+
+Use `hM t ht` as an intermediate fact. Rewrite `this`, the goal using `[hn]`. Use `gcongr`. Rewrite using `[le_div_iff₀ hp]` and apply the resulting hypothesis.
+-/
 theorem bd_of_conf (U : ℝ → Sch l →L[ℂ] Sch l) (hc : ∀ t, Conf (U t))
     (hw : ∀ (T : Sch l →L[ℂ] ℂ) f, Continuous fun t => T (U t f)) :
     ∃ C : ℝ, ∀ t ∈ Set.Icc (-1 : ℝ) 1, ∀ f, ‖schwartzToL2 l (U t f)‖ ≤ C * ‖schwartzToL2 l f‖ := by
@@ -167,6 +227,23 @@ theorem bd_of_conf (U : ℝ → Sch l →L[ℂ] Sch l) (hc : ∀ t, Conf (U t))
   gcongr
   rwa [le_div_iff₀ hp]
 
+/- English proof (translation)
+Set `lam : Sch l →L[ℂ] ℂ` to `(innerSL ℂ (schwartzToL2 l φ)).comp (schwartzToL2 l)`. Establish `h2 : lam φ ≠ 0` using `fun h => j_ne hφ (inner_self_eq_zero.1 h)`. Take `⟨C, hC⟩` from `bd_of_conf S hc Sc`. Establish `hb : ∀ t ∈ Set.Icc (-1 : ℝ) 1, ∀ f, ‖lam (S t f)‖ ≤ ‖schwartzToL2 l φ‖ * (C * ‖schwartzToL2 l f‖)` using `fun t ht f => (norm_inner_le_norm (𝕜 := ℂ) (schwartzToL2 l φ) (schwartzToL2 l (S t f))).trans (mul_le_mul_of_nonneg_left (hC t ht f) (norm_nonneg _))`. Establish `hc` using `Sc lam φ`.
+
+Establish `hI : ∀ t, HasDerivAt (fun u => ∫ s in (0 : ℝ)..u, lam (S s φ)) (lam (S t φ)) t` using `fun t => intervalIntegral.integral_hasDerivAt_right (hc.intervalIntegrable _ _) (hc.stronglyMeasurableAtFilter _ _) hc.continuousAt`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ1, hδ⟩ : ∃ δ ∈ Set.Icc (-1 : ℝ) 1, (∫ s in (0 : ℝ)..δ, lam (S s φ)) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h3` using `hI 0`.
+
+Simplify using `only [S0, ContinuousLinearMap.one_apply] at h3`. Use `h2 (h3.unique ((hasDerivAt_const (0 : ℝ) (0 : ℂ)).congr_of_eventuallyEq ?_))` and prove the remaining obligations. Use `filter_upwards [Icc_mem_nhds (show (-1 : ℝ) < 0 by norm_num) (show (0 : ℝ) < 1 by norm_num)] with t ht using h t ht`. Set `m : Sch l →ₗ[ℂ] ℂ` to `{ toFun := fun f => ∫ s in (0 : ℝ)..δ, lam (S s f) map_add' := fun f g => by`. Simplify using `only [map_add]`.
+
+Conclude with `intervalIntegral.integral_add ((Sc lam f).intervalIntegrable _ _) ((Sc lam g).intervalIntegrable _ _)`. Use the proof step `map_smul' := fun a f => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Conclude with `intervalIntegral.integral_smul _ _ }`. Establish `mc : Continuous m`.
+
+Use `continuous_of_continuousAt_zero m ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Establish `h0 : Continuous fun f : Sch l => ‖schwartzToL2 l φ‖ * (C * ‖schwartzToL2 l f‖) * |δ - 0|` using `by fun_prop`. Establish `h1` using `h0.tendsto 0`. Simplify using `only [map_zero, norm_zero, mul_zero, zero_mul] at h1`.
+
+Conclude with `squeeze_zero_norm (fun f => intervalIntegral.norm_integral_le_of_norm_le_const fun s hs => hb s (Set.uIcc_subset_Icc (by norm_num) hδ1 (Set.uIoc_subset_uIcc hs)) f) h1`. Use `⟨⟨m, mc⟩, hδ, ?_⟩` and prove the remaining obligations. Establish `key : ∀ t, m (S t φ) = (∫ s in (0 : ℝ)..(δ + t), lam (S s φ)) - ∫ s in (0 : ℝ)..t, lam (S s φ)` using `fun t => by`. Rewrite using `[intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable _ _) (hc.intervalIntegrable _ _)]`. Use `intervalIntegral.integral_comp_add_right (fun s => lam (S s φ)) (a := 0) (b := δ) t` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Rewrite using `[← this]`. Simplify using `only [Sm]`. Both sides reduce to the same expression. Use `show DifferentiableAt ℝ (fun t => m (S t φ)) 0`.
+
+Simplify using `only [key]`. Conclude with `(((hI (δ + 0)).comp_const_add δ 0).sub (hI 0)).differentiableAt`.
+-/
 theorem exists_avg (S : ℝ → Sch l →L[ℂ] Sch l) (hc : ∀ t, Conf (S t)) (S0 : S 0 = 1) (Sm : ∀ t u, S (t + u) = S t * S u)
     (Sc : ∀ (T : Sch l →L[ℂ] ℂ) f, Continuous fun t => T (S t f)) {φ : Sch l} (hφ : φ ≠ 0) :
     ∃ mu : Sch l →L[ℂ] ℂ, mu φ ≠ 0 ∧ DifferentiableAt ℝ (fun t => mu (S t φ)) 0 := by
@@ -215,6 +292,15 @@ theorem exists_avg (S : ℝ → Sch l →L[ℂ] Sch l) (hc : ∀ t, Conf (S t)) 
   simp only [key]
   exact (((hI (δ + 0)).comp_const_add δ 0).sub (hI 0)).differentiableAt
 
+/- English proof (translation)
+Establish `hd : ∀ (T : Sch l →L[ℂ] ℂ) g s, HasDerivAt (fun t => T (S t g)) (T (S s (Q g))) s` using `fun T g s => by`. Establish `a` using `h (T ∘L S s) g`. Rewrite `a` using `[← sub_self s]`. Use `(a.comp_sub_const s s).congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations. Use `show _ = T ((S s * S (t - s)) g)`.
+
+Rewrite using `[← Sm, add_sub_cancel]`. Take `⟨M, hM⟩` from `bdd_of_weak (fun t => schwartzToL2 l (S t (Q (Q f)))) fun φ => continuous_iff_continuousAt.2 fun s => (hd (φ ∘L schwartzToL2 l) _ s).continuousAt`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0 (by norm_num))`. Establish `key : ∀ t ∈ Set.Icc (-1 : ℝ) 1, ‖schwartzToL2 l (S t f) - schwartzToL2 l f - (t : ℂ) • schwartzToL2 l (Q f)‖ ≤ M * t ^ 2` using `fun t ht => by`. Use `NormedSpace.norm_le_dual_bound ℂ _ (by positivity) fun φ => ?_` and prove the remaining obligations.
+
+Use `taylor2 _ _ _ (hd (φ ∘L schwartzToL2 l) f) (hd (φ ∘L schwartzToL2 l) (Q f)) (M := ‖φ‖ * M) (fun v hv => (φ.le_opNorm _).trans (mul_le_mul_of_nonneg_left (hM v hv) (norm_nonneg _))) ht` as an intermediate fact. Simplify using `only [S0, ContinuousLinearMap.one_apply, ContinuousLinearMap.comp_apply] at this`. Simplify using `only [map_sub, map_smul, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`.
+
+Use `IsBigO.trans_isLittleO (g := fun t : ℝ => t ^ 2) (IsBigO.of_bound M ?_) (isLittleO_pow_id (by norm_num))` and prove the remaining obligations. Use `filter_upwards [Icc_mem_nhds (show (-1 : ℝ) < 0 by norm_num) (show (0 : ℝ) < 1 by norm_num)] with t ht`. Use `key t ht` as an intermediate fact. Rewrite `this` using `[real_smul_L2_coe]`. Simplify `this` using `[S0]`.
+-/
 theorem strong (S : ℝ → Sch l →L[ℂ] Sch l) (Q : Sch l →L[ℂ] Sch l) (S0 : S 0 = 1) (Sm : ∀ t u, S (t + u) = S t * S u)
     (h : ∀ (T : Sch l →L[ℂ] ℂ) f, HasDerivAt (fun t => T (S t f)) (T (Q f)) 0) (f : Sch l) :
     HasDerivAt (fun t => schwartzToL2 l (S t f)) (schwartzToL2 l (Q f)) 0 := by
@@ -242,6 +328,13 @@ theorem strong (S : ℝ → Sch l →L[ℂ] Sch l) (Q : Sch l →L[ℂ] Sch l) (
   rw [real_smul_L2_coe] at this
   simpa [S0] using this
 
+/- English proof (translation)
+Establish `a1 : HasDerivAt (fun t : ℝ => schwartzToL2 l (U t (U' t f - f - (t : ℂ) • Q' f))) 0 0`. Use `hasDerivAt_iff_isLittleO_nhds_zero.1 (h' f)` as an intermediate fact. Rewrite using `[hasDerivAt_iff_isLittleO_nhds_zero]`. Use `IsBigO.trans_isLittleO (IsBigO.of_bound C ?_) this` and prove the remaining obligations. Use `filter_upwards [Icc_mem_nhds (show (-1 : ℝ) < 0 by norm_num) (show (0 : ℝ) < 1 by norm_num)] with t ht`.
+
+Use `hC t ht (U' t f - f - (t : ℂ) • Q' f)` as an intermediate fact. Rewrite `this` using `[map_sub (schwartzToL2 l), map_sub (schwartzToL2 l), map_smul (schwartzToL2 l), real_smul_L2_coe]`. Simplify using `only [zero_add, U0', ContinuousLinearMap.one_apply, ofReal_zero, zero_smul, sub_self, map_zero, smul_zero, sub_zero]`. Conclude with `this`. Establish `a2` using `((hasDerivAt_id (0 : ℝ)).ofReal_comp).smul (h (Q' f))`.
+
+Use `(((a1.add (h f)).add a2).congr_deriv (by simp [U0])).congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply', id, map_sub, map_smul, ContinuousLinearMap.mul_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dif_mul {U U' : ℝ → Sch l →L[ℂ] Sch l} {Q Q' : Sch l →L[ℂ] Sch l} (U0 : U 0 = 1) (U0' : U' 0 = 1) {C : ℝ}
     (hC : ∀ t ∈ Set.Icc (-1 : ℝ) 1, ∀ f, ‖schwartzToL2 l (U t f)‖ ≤ C * ‖schwartzToL2 l f‖)
     (h : ∀ f, HasDerivAt (fun t => schwartzToL2 l (U t f)) (schwartzToL2 l (Q f)) 0)
@@ -267,19 +360,33 @@ variable [DecidableEq l]
 def Im (s : Matrix (l ⊕ l) (l ⊕ l) ℝ) (U : Sch l →L[ℂ] Sch l) : Prop :=
   (∀ f, ‖schwartzToL2 l (U f)‖ = ‖schwartzToL2 l f‖) ∧ ∀ w f, U (rhoS w f) = rhoS (s *ᵥ w) (U f)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.norm, fun w f => SchwartzMap.ext fun x => (congrFun (h.impl w f (rhoS w f) (funext (rhoS_apply w f))) x).trans (rhoS_apply _ _ _).symm⟩`.
+-/
 theorem Im.of_impl {s : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : Sch l →L[ℂ] Sch l}
     (h : PositivityTheory.ThKF.E.Impl (fun w => s *ᵥ w) U.toLinearMap) : Im s U :=
   ⟨h.norm, fun w f => SchwartzMap.ext fun x =>
     (congrFun (h.impl w f (rhoS w f) (funext (rhoS_apply w f))) x).trans (rhoS_apply _ _ _).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun w f => by rw [one_mulVec]; rfl⟩`.
+-/
 theorem Im.one : Im (1 : Matrix (l ⊕ l) (l ⊕ l) ℝ) 1 := ⟨fun _ => rfl, fun w f => by rw [one_mulVec]; rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun f => (h.1 _).trans (h'.1 f), fun w f => by rw [ContinuousLinearMap.mul_apply, h'.2, h.2, mulVec_mulVec] rfl⟩`.
+-/
 theorem Im.mul {s s' : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U U' : Sch l →L[ℂ] Sch l} (h : Im s U) (h' : Im s' U') :
     Im (s * s') (U * U') :=
   ⟨fun f => (h.1 _).trans (h'.1 f), fun w f => by
     rw [ContinuousLinearMap.mul_apply, h'.2, h.2, mulVec_mulVec]
     rfl⟩
 
+/- English proof (translation)
+Establish `e : ∀ f, U.1 (U⁻¹.1 f) = f` using `fun f => by rw [← ContinuousLinearMap.mul_apply, Units.mul_inv]; rfl`. Establish `e' : ∀ f, U⁻¹.1 (U.1 f) = f` using `fun f => by rw [← ContinuousLinearMap.mul_apply, Units.inv_mul]; rfl`. Use `⟨fun f => by rw [← h.1, e], fun w f => ?_⟩` and prove the remaining obligations. Use `h.2 (s' *ᵥ w) (U⁻¹.1 f)` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, hs, one_mulVec, e]`.
+
+Rewrite using `[← this, e']`.
+-/
 theorem Im.inv {s s' : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : (Sch l →L[ℂ] Sch l)ˣ} (h : Im s U.1) (hs : s * s' = 1) :
     Im s' U⁻¹.1 := by
   have e : ∀ f, U.1 (U⁻¹.1 f) = f := fun f => by rw [← ContinuousLinearMap.mul_apply, Units.mul_inv]; rfl
@@ -289,6 +396,11 @@ theorem Im.inv {s s' : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : (Sch l →L[ℂ] Sch
   rw [mulVec_mulVec, hs, one_mulVec, e] at this
   rw [← this, e']
 
+/- English proof (translation)
+Use extensionality with `f x`. Set `T : Sch l →L[ℂ] ℂ` to `BoundedContinuousFunction.evalCLM ℂ x ∘L toBoundedContinuousFunctionCLM ℂ _ ℂ`. Establish `h1` using `hasDerivAt_rhoS w f (T ∘L U)`. Establish `h2` using `hasDerivAt_rhoS (s *ᵥ w) (U f) T`. Simplify using `only [ContinuousLinearMap.comp_apply, h.2, mulVec_smul] at h1`.
+
+Conclude with `h1.unique h2`.
+-/
 theorem Im.covD {s : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : Sch l →L[ℂ] Sch l} (h : Im s U) (w : l ⊕ l → ℝ) :
     U * dRho w = dRho (s *ᵥ w) * U := by
   ext f x
@@ -298,6 +410,15 @@ theorem Im.covD {s : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : Sch l →L[ℂ] Sch l}
   simp only [ContinuousLinearMap.comp_apply, h.2, mulVec_smul] at h1
   exact h1.unique h2
 
+/- English proof (translation)
+Set `u : l ⊕ l → l ⊕ l → ℝ` to `fun b => (X * Matrix.J l ℝ) *ᵥ Pi.single b 1`. Establish `h1 : ∀ w, X *ᵥ w = ∑ b, sympl (Pi.single b 1) w • u b` using `fun w => by`. Establish `e : X *ᵥ w = (X * Matrix.J l ℝ) *ᵥ (-(Matrix.J l ℝ *ᵥ w))`. Rewrite using `[mulVec_neg, mulVec_mulVec, Matrix.mul_assoc, Matrix.J_squared, Matrix.mul_neg, Matrix.mul_one, neg_mulVec, neg_neg]`. Rewrite using `[e, ← Finset.univ_sum_single (-(Matrix.J l ℝ *ᵥ w)), mulVec_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[sympl_single, ← mulVec_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Establish `h2 : ∀ w, (s * X * s') *ᵥ w = ∑ b, sympl (s *ᵥ Pi.single b 1) w • s *ᵥ u b` using `fun w => by`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, h1, mulVec_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mulVec_smul, ← hs, mulVec_mulVec w, hs', one_mulVec]`. Rewrite using `[quad_eq X _ _ h1, quad_eq _ _ _ h2, mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul]`. Use `congrArg _ (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Establish `e : ∀ a b, U * (dRho a * dRho b) = dRho (s *ᵥ a) * dRho (s *ᵥ b) * U` using `fun a b => by`.
+
+Rewrite using `[← mul_assoc, h.covD, mul_assoc, h.covD, mul_assoc]`. Rewrite using `[mul_add, add_mul, e, e]`.
+-/
 theorem Im.quad {s : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : Sch l →L[ℂ] Sch l} (h : Im s U)
     (hs : ∀ w w', sympl (s *ᵥ w) (s *ᵥ w') = sympl w w') {s' : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hs' : s * s' = 1)
     (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) : U * quad X = quad (s * X * s') * U := by
@@ -319,15 +440,30 @@ theorem Im.quad {s : Matrix (l ⊕ l) (l ⊕ l) ℝ} {U : Sch l →L[ℂ] Sch l}
     rw [← mul_assoc, h.covD, mul_assoc, h.covD, mul_assoc]
   rw [mul_add, add_mul, e, e]
 
+/- English proof (translation)
+Simplify using `only [quad, Matrix.add_mul, Matrix.add_apply, add_div, ofReal_add, add_smul, Finset.sum_add_distrib, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem quad_add (X Y : Matrix (l ⊕ l) (l ⊕ l) ℝ) : quad (X + Y) = quad X + quad Y := by
   simp only [quad, Matrix.add_mul, Matrix.add_apply, add_div, ofReal_add, add_smul, Finset.sum_add_distrib, smul_add]
   abel
 
+/- English proof (translation)
+Simplify using `only [quad, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, mul_div_assoc, ofReal_mul, mul_smul, ← Finset.smul_sum]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem quad_smul (r : ℝ) (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) : quad (r • X) = (r : ℂ) • quad X := by
   simp only [quad, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, mul_div_assoc, ofReal_mul, mul_smul,
     ← Finset.smul_sum]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Take `⟨ε, V, W, -, hε, -, hV, -⟩` from `hL l X hX`. Take `⟨n, hn⟩` from `exists_nat_gt (|t| / ε)`. Establish `hn0 : (0 : ℝ) < n` using `lt_of_le_of_lt (by positivity) hn`. Take `⟨h1, h2, h3⟩` from `hV (t / n) (by`. Rewrite using `[abs_div, abs_of_pos hn0, div_lt_iff₀ hn0]`.
+
+Rewrite `hn` using `[div_lt_iff₀ hε]`. Use the proof step `linarith)`. Set `U : (Sch l →L[ℂ] Sch l)ˣ` to `⟨V (t / n), W (t / n), ContinuousLinearMap.ext h1, ContinuousLinearMap.ext h2⟩`. Establish `hp : ∀ m : ℕ, Im (NormedSpace.exp ((t / n) • X) ^ m) (U ^ m).1` using `fun m => by`. Proceed by induction on `m with`.
+
+Consider the case `zero => simpa using Im.one`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `ih.mul (Im.of_impl h3)`. Use `⟨U ^ n, ?_⟩` and prove the remaining obligations.
+
+Use `hp n` as an intermediate fact. Rewrite `this` using `[← Matrix.exp_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, mul_div_cancel₀ _ hn0.ne']`. Then use the resulting hypothesis.
+-/
 theorem exists_im (hL : LocalLift) {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X ∈ LieAlgebra.Symplectic.sp l ℝ) (t : ℝ) :
     ∃ U : (Sch l →L[ℂ] Sch l)ˣ, Im (NormedSpace.exp (t • X)) U.1 := by
   obtain ⟨ε, V, W, -, hε, -, hV, -⟩ := hL l X hX
@@ -348,6 +484,17 @@ theorem exists_im (hL : LocalLift) {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X 
   have := hp n
   rwa [← Matrix.exp_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, mul_div_cancel₀ _ hn0.ne'] at this
 
+/- English proof (translation)
+Take `⟨ε, V, W, a, hε, V0, Vi, -, Vd⟩` from `hL l X hX`. Take `⟨φ, hφ⟩` from `exists_ne (l := l)`. Take `⟨mu, hmu, md⟩` from `exists_avg S hc S0 Sm Sc hφ`. Establish `hV0 : mu (V 0 φ) ≠ 0` using `by rwa [V0]`. Set `c : ℝ → ℂ` to `fun t => mu (S t φ) / mu (V t φ)`.
+
+Establish `cd : DifferentiableAt ℝ c 0` using `md.div (Vd φ mu).differentiableAt hV0`. Establish `c0 : c 0 = 1` using `by simp only [c, S0, V0]; exact div_self hmu`. Establish `ev : ∀ᶠ t in 𝓝 (0 : ℝ), S t = c t • V t`. Establish `e1 : ∀ᶠ t in 𝓝 (0 : ℝ), |t| < ε` using `continuous_abs.continuousAt.eventually_lt continuousAt_const (by simpa using hε)`. Use `filter_upwards [e1, (Vd φ mu).continuousAt.eventually_ne hV0] with t ht hne`.
+
+Take `⟨h1, h2, h3⟩` from `Vi t ht`. Take `⟨b, hb⟩` from `hS t ⟨V t, W t, ContinuousLinearMap.ext h1, ContinuousLinearMap.ext h2⟩ (Im.of_impl h3)`. Establish `: c t = b`. Simplify using `only [c, hb, ContinuousLinearMap.smul_apply, map_smul, smul_eq_mul]`. Conclude with `mul_div_cancel_right₀ _ hne`.
+
+Rewrite using `[this, hb]`. Use `⟨deriv c 0 + a, fun T f => ?_⟩` and prove the remaining obligations. Use `((cd.hasDerivAt.fun_mul (Vd f T)).congr_deriv ?_).congr_of_eventuallyEq ?_` and prove the remaining obligations. Simplify using `[c0, V0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `filter_upwards [ev] with t ht`. Rewrite using `[ht, ContinuousLinearMap.smul_apply, map_smul, smul_eq_mul]`.
+-/
 theorem line (hL : LocalLift) {X : Matrix (l ⊕ l) (l ⊕ l) ℝ} (hX : X ∈ LieAlgebra.Symplectic.sp l ℝ)
     (S : ℝ → Sch l →L[ℂ] Sch l) (hc : ∀ t, Conf (S t)) (S0 : S 0 = 1) (Sm : ∀ t u, S (t + u) = S t * S u)
     (Sc : ∀ (T : Sch l →L[ℂ] ℂ) f, Continuous fun t => T (S t f))

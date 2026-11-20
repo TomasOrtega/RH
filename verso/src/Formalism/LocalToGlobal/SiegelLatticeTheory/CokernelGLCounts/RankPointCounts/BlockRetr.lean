@@ -40,6 +40,9 @@ instance actGG : MulAction (GG p) (MP p) where
       ((x.1 : GLp p) : MP p) * (((y.1 : GLp p) : MP p) * X * ((y.2.unop : GLp p) : MP p)) * ((x.2.unop : GLp p) : MP p)
     simp only [Prod.fst_mul, Prod.snd_mul, MulOpposite.unop_mul, Units.val_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def (x : GG p) (X : MP p) : x • X = ((x.1 : GLp p) : MP p) * X * ((x.2.unop : GLp p) : MP p) := rfl
 
 def KU : Subgroup (UP p) := (KP M p).subgroupOf (UP p)

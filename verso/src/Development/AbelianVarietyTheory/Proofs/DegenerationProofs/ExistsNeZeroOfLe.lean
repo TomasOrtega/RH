@@ -15,6 +15,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH.OpenPart
 
+/- English proof (translation)
+Establish `h : Crd H (fun _ : Unit => φ) x (fun _ => ∑ j, ψ (a j) * v j)`. Take `⟨l, c, hl, hv⟩` from `hv`. Use `⟨l, c, hl, fun _ => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hφ l, CrdCalc.valR_eq x _ hl, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← CrdCalc.valR_eq, ← CrdCalc.valR_eq, GlobalTheory.Points.valR_constFn_of_over p ψ x hx _ hl, hv, mul_left_comm]`. Conclude with `(CrdCalc.crd_isUnit_iff () h).symm.trans isUnit_iff_ne_zero`.
+-/
 theorem le_nonzeroLocus_iff {k K : Type} [CommRing k] [Field K] {X : Scheme.{0}} {p : X ⟶ Sp k} {H : LB X}
     {J : Type} [Fintype J] {s : J → H.Sec} {a : J → k} {φ : H.Sec} (hφ : IsLin p s a φ)
     {x : Sp K ⟶ X} {ψ : k →+* K} (hx : x ≫ p = spMap ψ) {v : J → K} (hv : Crd H s x v) :
@@ -31,9 +36,17 @@ theorem le_nonzeroLocus_iff {k K : Type} [CommRing k] [Field K] {X : Scheme.{0}}
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {M : RatModel o Ω}
 
+/- English proof (translation)
+Introduce `_ ha b hb` and use `ha b (AddSubgroup.closure_mono h hb)`.
+-/
 theorem TT_le_TT {z z' : M.Z} (h : S.supI M z' ⊆ S.supI M z) : S.TT M z ≤ S.TT M z' :=
   fun _ ha b hb => ha b (AddSubgroup.closure_mono h hb)
 
+/- English proof (translation)
+Establish `hN` using `S.N_ge`. Establish `hr` using `S.r_pos`. Establish `: NeZero (S.r * S.N)` using `⟨Nat.mul_ne_zero (by omega) (by omega)⟩`. Establish `: {z' | S.supI M z ⊆ S.supI M z'} = ⋂ a ∈ S.supI M z, {z' | M.Div S.th a z'}`. Use extensionality with `z'`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Set.toFinite _).isOpen_biInter fun a _ => M.isOpen_setOf_div _ _`.
+-/
 theorem isOpen_supI_subset (z : M.Z) : IsOpen {z' | S.supI M z ⊆ S.supI M z'} := by
   have hN := S.N_ge
   have hr := S.r_pos
@@ -45,11 +58,21 @@ theorem isOpen_supI_subset (z : M.Z) : IsOpen {z' | S.supI M z ⊆ S.supI M z'} 
   rw [this]
   exact (Set.toFinite _).isOpen_biInter fun a _ => M.isOpen_setOf_div _ _
 
+/- English proof (translation)
+Introduce `a ha` and use `⟨ha.1, fun j => by rw [div_eq_mul_inv] exact RatModel.ringOn_le_O hz' (mul_mem (h.le (S.th_mem j)) (h.th_unit a ha.1))⟩`.
+-/
 theorem supI_subset {U₀ : M.Z.Opens} (h : S.Over₀ M U₀) (z : M.Z) {z' : M.Z} (hz' : z' ∈ U₀) :
     S.supI M z ⊆ S.supI M z' := fun a ha => ⟨ha.1, fun j => by
   rw [div_eq_mul_inv]
   exact RatModel.ringOn_le_O hz' (mul_mem (h.le (S.th_mem j)) (h.th_unit a ha.1))⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← GlobalTheory.ThetaBound.proj_mul_proj S T T' h hT.1 hT' 0 0 fun _ => rfl]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `congrArg (ψ (S.proj T 0 k i) * ·) (hn k)` as an intermediate fact. Simplify using `only [Finset.mul_sum, mul_zero] at this`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem exists_ne_zero_of_le {T T' : AddSubgroup S.Gam} (h : T' ≤ T) (hT : S.IsoFree T) (hT' : S.IsoFree T')
     {K : Type} [Field K] (ψ : o →+* K) (v : S.J → K) {i : S.J} (hi : ∑ j, ψ (S.proj T 0 j i) * v j ≠ 0) :
     ∃ i, ∑ j, ψ (S.proj T' 0 j i) * v j ≠ 0 := by
@@ -65,6 +88,19 @@ theorem exists_ne_zero_of_le {T T' : AddSubgroup S.Gam} (h : T' ≤ T) (hT : S.I
   rw [← this]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ EE hB Q K _ x z ψ v hz hc hψ hv`. Establish `hψ' : x ≫ (Q.P.hom ≫ M.s) = spMap ψ` using `hψ`. Establish `hxz : Q.P.hom (x (IsLocalRing.closedPoint K)) = z`. Establish `: (x ≫ Q.P.hom) (IsLocalRing.closedPoint K) ∈ Set.range (x ≫ Q.P.hom)` using `⟨_, rfl⟩`. Rewrite `this` using `[hz]`.
+
+Conclude with `this`. Rewrite using `[CrdCalc.top_le_iff]`. Simplify using `only [Clos.G, TopologicalSpace.Opens.mem_iSup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', -, W, hW, i, φ, hφ, h1, h2⟩`.
+
+Establish `h1' : z ∈ W` using `hxz ▸ h1`. Conclude with `exists_ne_zero_of_le (TT_le_TT (hW z h1')) (hB.free _).1 (hB.free _).1 ψ v ((le_nonzeroLocus_iff hφ hψ' hv).1 ((CrdCalc.top_le_iff x _).2 h2))`. Introduce `hi`. Choose the witnesses or unpack the hypotheses as in `⟨z', hz', hs, hs'⟩ : ∃ z' : M.Z, IsClosed ({z'} : Set M.Z) ∧ S.supI M z' ⊆ S.supI M z ∧ S.supI M z ⊆ S.supI M z' := by`. Break down `hc with hc | hc` into its components or cases.
+
+Conclude with `⟨z, hc, le_rfl, le_rfl⟩`. Use `hB.jac` as an intermediate fact. Take `⟨z', h1, h2⟩` from `nonempty_inter_closedPoints (Z := (U₀ : Set M.Z)) ⟨z, hc⟩ U₀.isOpen.isLocallyClosed`. Conclude with `⟨z', h2, supI_subset hB.ov _ hc, supI_subset hB.ov _ h1⟩`. Take `⟨i, hi⟩` from `hi`.
+
+Take `⟨i, hi⟩` from `exists_ne_zero_of_le (TT_le_TT hs') (hB.free _).1 (hB.free _).1 ψ v hi`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.SecRatio.existsUnique_isLin (Q.P.hom ≫ M.s) Q.st (fun j => S.proj (S.TT M z') 0 j i)`. Use `⟨z', hz', ⟨_, isOpen_supI_subset z'⟩, fun _ h => h, i, φ, hφ, ?_, (CrdCalc.top_le_iff x _).1 ((le_nonzeroLocus_iff hφ hψ' hv).2 hi)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.supI M z' ⊆ S.supI M (Q.P.hom (x (IsLocalRing.closedPoint K)))`. Rewrite using `[hxz]`.
+
+Conclude with `hs`.
+-/
 theorem le_preimage_G_iff : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE) (K : Type) [Field K] (x : Sp K ⟶ Q.P.left) (z : M.Z) (ψ : o →+* K) (v : S.J → K), Set.range (x ≫ Q.P.hom) = {z} → (IsClosed ({z} : Set M.Z) ∨ z ∈ U₀) → x ≫ Q.P.hom ≫ M.s = spMap ψ → Crd Q.O1 Q.st x v → (⊤ ≤ x ⁻¹ᵁ Q.G ↔ ∃ i, ∑ j, ψ (S.proj (S.TT M z) 0 j i) * v j ≠ 0) := by
   intro o Ω _ _ _ _ S ρ M U₀ EE hB Q K _ x z ψ v hz hc hψ hv
   have hψ' : x ≫ (Q.P.hom ≫ M.s) = spMap ψ := hψ

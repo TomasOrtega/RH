@@ -21,6 +21,19 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 
 namespace GlobalTheory.KerStd
 
+/- English proof (translation)
+Introduce `hAlg hHost D L hT Gi Gl K Y cX ex t hHyp hAd h3`. Establish `hOrb` using `(Formalism.MainNotions.DIV.Inh.orbit_admissible_of_split_bound D h3).1`. Establish `key : ∀ w : D.what₂.places.Pl, ∃ (e : ℂ_[D.what₂.places.resChar w]) (b : MvPowerSeries (ZMod (nP D (D.what₂.places.resChar w))) ℂ_[D.what₂.places.resChar w]), ((IsResidueClassZero D (D.what₂.places.resChar w) ∧ HEv D (D.what₂.places.resChar w)) ∨ IsSg D (D.what₂.places.resChar w) …`. Introduce `w`. Distinguish the cases in `hc : (IsResidueClassZero D (D.what₂.places.resChar w) ∧ HEv D (D.what₂.places.resChar w)) ∨ IsSg D (D.what₂.places.resChar w)`.
+
+Establish `hO` using `hOrb _ (D.what₂.places.resChar_prime w) hc`. Establish `hH` using `hHost D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok t.χ_ok (D.what₂.places.resChar w) (t.ent.lam w) hO.five (hc.imp_left And.left)`. Take `⟨e, b, he, hb, hB⟩` from `GlobalTheory.T.normalisedFamily_standardBases_integrality_alt D t.cc t.δ t.B t.χ _ (t.ent.lam w) hH hO (hc.imp_left (And.imp_right HEv.ne_zero))`. Conclude with `⟨e, b, fun _ => ⟨he, hb, hB⟩⟩`. Conclude with `⟨1, 0, fun h => absurd h hc⟩`.
+
+Use `choose ep be hbe using key`. Use `⟨ep, fun w _ => be w, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hc`. Take `⟨he, hb, -⟩` from `hbe w hc`. Conclude with `⟨he, fun _ => hb⟩`.
+
+Introduce `u μ w hLev hc R hR`. Take `⟨he, hb, hB⟩` from `hbe w hc`. Establish `hO` using `hOrb _ (D.what₂.places.resChar_prime w) hc`. Use `⟨⟨he, fun _ _ => Or.inr rfl, fun _ _ => GlobalTheory.T.standard_series_b_conditions_large_prime _ _ _ hO.five hO.two hO.even hb⟩, ?_⟩` and prove the remaining obligations. Introduce `i hi _ c c'`.
+
+Establish `hAdPl : Formalism.L2.Ker.AdPl D w`. Break down `hc with h | h` into its components or cases. Conclude with `Or.inl h.1`. Conclude with `Or.inr (Or.inl h)`. Take `⟨Pm, hBas, -, hConj, hTh⟩` from `hAd w hAdPl u μ hLev`.
+
+Establish `hcomb` using `GlobalTheory.Ggeo.KerComb.comb_of_tied hAlg D L hT Gi Gl K Y cX ex t hHyp u μ w hLev i hi c c'`. Establish `hS : ∀ j, j ≤ D.R.m → ∀ c, StdBases D (t.ent.lam w) ((t.O u μ).lat j c).1 (Pm j c)` using `fun j hj c => GlobalTheory.T.isStandardBasesLatticeAtPlace_of_adapted_bases D _ (t.ent.lam w) _ _ _ ((t.O u μ).lat j c).2.1 (fun τ => hBas j hj c τ) (fun τ τ' h => hConj j hj c τ τ' h)`. Use `show OrbitPlaces.ThetaExpansionAllPlaces D _ R (ep w) (fun _ => -1) (fun _ => be w) (t.ent.Th u μ w i c c')`. Rewrite using `[hTh i hi c c', GlobalTheory.T.atLin_adaptedCoef_eq_standardSeries]`. Conclude with `hB _ _ _ _ _ _ hcomb.1 (hS i hi.le c) (hS (i + 1) hi c') _ hcomb.2 R hR`.
+-/
 theorem exists_beFam_evenConditionsInert_of_kerEnt : Formalism.L2.KerInert.AlgTAll → (∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), 5 ≤ p → (IsResidueClassZero D p ∨ IsSg D p) → HostAt B χ p lam) → ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : Formalism.L2.Ker.KerEntTied ex), t.Hyp → t.Adapted → 3 ≤ D.host.splitBound → ∃ ep be, BeFam D ep be ∧ OrbitPlaces.EvenConditionsInert (OrbitPlaces.ofKer (nuRowOK D) t.ent ep be (fun _ _ => -1)) Y := by
   intro hAlg hHost D L hT Gi Gl K Y cX ex t hHyp hAd h3
   have hOrb := (Formalism.MainNotions.DIV.Inh.orbit_admissible_of_split_bound D h3).1

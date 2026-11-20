@@ -9,6 +9,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton.LayerCake
 noncomputable def lay (x : ℝ≥0∞) : ℝ≥0∞ :=
   ∑' l : ℕ, if ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0
 
+/- English proof (translation)
+Establish `key : ∀ N : ℕ, ∑ l ∈ Finset.range N, (if ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0) ≤ x ∧ ∑ l ∈ Finset.range N, (if ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0) ≤ N`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[Finset.sum_range_succ]`. Distinguish the cases in `h : ((n : ℝ≥0∞) + 1) < x`. Simplify using `only [h, if_true]`. Establish `h1` using `add_le_add_left ih.2 (1 : ℝ≥0∞)`. Conclude with `⟨h1.trans h.le, by push_cast; exact h1⟩`.
+
+Simplify using `only [h, if_false, add_zero]`. Conclude with `⟨ih.1, ih.2.trans (by exact_mod_cast Nat.le_succ n)⟩`. Rewrite using `[lay, ENNReal.tsum_eq_iSup_nat]`. Conclude with `iSup_le fun N => (key N).1`.
+-/
 theorem lay_le (x : ℝ≥0∞) : lay x ≤ x := by
   have key : ∀ N : ℕ,
       ∑ l ∈ Finset.range N, (if ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0) ≤ x ∧
@@ -27,6 +34,11 @@ theorem lay_le (x : ℝ≥0∞) : lay x ≤ x := by
   rw [lay, ENNReal.tsum_eq_iSup_nat]
   exact iSup_le fun N => (key N).1
 
+/- English proof (translation)
+Establish `h1 : ∑ l ∈ Finset.range N, (if ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0) = N`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (1 : ℝ≥0∞))]`. Simplify using the standard rewrite rules. Introduce `l hl`. Establish `hl' : l + 1 ≤ N` using `Finset.mem_range.1 hl`.
+
+Establish `: ((l : ℝ≥0∞) + 1) ≤ N` using `by exact_mod_cast hl'`. Simplify using `[this.trans_lt h]`. Rewrite using `[← h1]`. Conclude with `ENNReal.sum_le_tsum _`.
+-/
 theorem nat_le_lay {x : ℝ≥0∞} {N : ℕ} (h : (N : ℝ≥0∞) < x) : (N : ℝ≥0∞) ≤ lay x := by
   have h1 : ∑ l ∈ Finset.range N, (if ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0) = N := by
     rw [Finset.sum_congr rfl (g := fun _ => (1 : ℝ≥0∞))]
@@ -38,6 +50,15 @@ theorem nat_le_lay {x : ℝ≥0∞} {N : ℕ} (h : (N : ℝ≥0∞) < x) : (N : 
   rw [← h1]
   exact ENNReal.sum_le_tsum _
 
+/- English proof (translation)
+Distinguish the cases in `top : x = ∞`. Substitute `top` using the available equality. Establish `: lay ∞ = ∞`. Assume the negation of the conclusion as `hne`. Take `⟨n, hn⟩` from `ENNReal.exists_nat_gt hne`.
+
+Conclude with `absurd (nat_le_lay (N := n) (ENNReal.natCast_lt_top n)) (not_le.2 hn)`. Simplify using `[this]`. Use `lift x to NNReal using top`. Establish `hx : x ≤ (⌈x⌉₊ : NNReal)` using `Nat.le_ceil x`. Establish `hx' : (x : ℝ≥0∞) ≤ (⌈x⌉₊ : ℝ≥0∞)` using `by exact_mod_cast hx`.
+
+Break down `hm : ⌈x⌉₊ with _ | n` into its components or cases. Rewrite `hx'` using `[hm]`. Conclude with `hx'.trans (by simp)`. Establish `hn : (n : NNReal) < x` using `Nat.lt_ceil.1 (by omega)`. Establish `hn' : (n : ℝ≥0∞) < x` using `by exact_mod_cast hn`.
+
+Rewrite `hx'` using `[hm]`. Use `hx'.trans ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `add_le_add_left (nat_le_lay hn') 1`.
+-/
 theorem le_lay_add_one (x : ℝ≥0∞) : x ≤ lay x + 1 := by
   by_cases top : x = ∞
   · subst top
@@ -59,9 +80,23 @@ theorem le_lay_add_one (x : ℝ≥0∞) : x ≤ lay x + 1 := by
       push_cast
       exact add_le_add_left (nat_le_lay hn') 1
 
+/- English proof (translation)
+The claim follows from `(ENNReal.mul_lt_mul_iff_right two_ne_zero ENNReal.ofNat_ne_top).2 h`.
+-/
 theorem two_lt_two {a b : ℝ≥0∞} (h : a < b) : 2 * a < 2 * b :=
   (ENNReal.mul_lt_mul_iff_right two_ne_zero ENNReal.ofNat_ne_top).2 h
 
+/- English proof (translation)
+Establish `e : lay (2 * x) = (∑' l : ℕ, if (((2 * l : ℕ) : ℝ≥0∞) + 1) < 2 * x then (1 : ℝ≥0∞) else 0) + ∑' l : ℕ, if (((2 * l + 1 : ℕ) : ℝ≥0∞) + 1) < 2 * x then (1 : ℝ≥0∞) else 0`. Rewrite using `[lay]`. Conclude with `(tsum_even_add_odd ENNReal.summable ENNReal.summable).symm`. Rewrite using `[two_mul, e, lay]`. Use `add_le_add (ENNReal.tsum_le_tsum fun l => ?_) (ENNReal.tsum_le_tsum fun l => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `h : ((l : ℝ≥0∞) + 1) < x`. Establish `h2` using `two_lt_two h`. Establish `h3 : (((2 * l : ℕ) : ℝ≥0∞) + 1) < 2 * x`. Use `lt_of_le_of_lt ?_ h2` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[mul_add]`. Use `gcongr`. Evaluate the numerical expressions. Rewrite using `[if_pos h, if_pos h3]`. Simplify using `[h]`.
+
+Distinguish the cases in `h : ((l : ℝ≥0∞) + 1) < x`. Establish `h2` using `two_lt_two h`. Establish `h3 : (((2 * l + 1 : ℕ) : ℝ≥0∞) + 1) < 2 * x`. Use `lt_of_le_of_lt (le_of_eq ?_) h2` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos h, if_pos h3]`. Simplify using `[h]`.
+-/
 theorem two_mul_lay_le (x : ℝ≥0∞) : 2 * lay x ≤ lay (2 * x) := by
   have e : lay (2 * x) =
       (∑' l : ℕ, if (((2 * l : ℕ) : ℝ≥0∞) + 1) < 2 * x then (1 : ℝ≥0∞) else 0) +
@@ -91,9 +126,20 @@ theorem two_mul_lay_le (x : ℝ≥0∞) : 2 * lay x ≤ lay (2 * x) := by
 
 noncomputable def dy (k : ℕ) (x : ℝ≥0∞) : ℝ≥0∞ := (2 ^ k : ℝ≥0∞)⁻¹ * lay (2 ^ k * x)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem two_pow_ne_zero' (k : ℕ) : (2 ^ k : ℝ≥0∞) ≠ 0 := by simp
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem two_pow_ne_top' (k : ℕ) : (2 ^ k : ℝ≥0∞) ≠ ∞ := by simp
 
+/- English proof (translation)
+Establish `e : (2 ^ k : ℝ≥0∞)⁻¹ = (2 ^ (k + 1) : ℝ≥0∞)⁻¹ * 2`. Rewrite using `[pow_succ, ENNReal.mul_inv (Or.inl (two_pow_ne_zero' k)) (Or.inl (two_pow_ne_top' k)), mul_assoc, ENNReal.inv_mul_cancel two_ne_zero ENNReal.ofNat_ne_top, mul_one]`. Establish `e2 : (2 ^ (k + 1) : ℝ≥0∞) * x = 2 * (2 ^ k * x)` using `by rw [pow_succ]; ring`. Rewrite using `[dy, dy, e, e2, mul_assoc]`. Use `gcongr`.
+
+Conclude with `two_mul_lay_le _`.
+-/
 theorem dy_le_succ (k : ℕ) (x : ℝ≥0∞) : dy k x ≤ dy (k + 1) x := by
   have e : (2 ^ k : ℝ≥0∞)⁻¹ = (2 ^ (k + 1) : ℝ≥0∞)⁻¹ * 2 := by
     rw [pow_succ, ENNReal.mul_inv (Or.inl (two_pow_ne_zero' k)) (Or.inl (two_pow_ne_top' k)),
@@ -103,12 +149,25 @@ theorem dy_le_succ (k : ℕ) (x : ℝ≥0∞) : dy k x ≤ dy (k + 1) x := by
   gcongr
   exact two_mul_lay_le _
 
+/- English proof (translation)
+The claim follows from `monotone_nat_of_le_succ fun k => dy_le_succ k x`.
+-/
 theorem dy_mono (x : ℝ≥0∞) : Monotone fun k => dy k x :=
   monotone_nat_of_le_succ fun k => dy_le_succ k x
 
+/- English proof (translation)
+Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel (two_pow_ne_zero' k) (two_pow_ne_top' k), one_mul]`.
+-/
 theorem inv_mul_cancel_two_pow (k : ℕ) (x : ℝ≥0∞) : (2 ^ k : ℝ≥0∞)⁻¹ * (2 ^ k * x) = x := by
   rw [← mul_assoc, ENNReal.inv_mul_cancel (two_pow_ne_zero' k) (two_pow_ne_top' k), one_mul]
 
+/- English proof (translation)
+Use `le_antisymm (iSup_le fun k => ?_) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[dy]`. Use `gcongr`. Conclude with `lay_le _`.
+
+Use `_ = x := inv_mul_cancel_two_pow k x`. Establish `hb : ∀ k : ℕ, x ≤ (⨆ j, dy j x) + (2 : ℝ≥0∞)⁻¹ ^ k`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation. Establish `ht : Filter.Tendsto (fun k : ℕ => (⨆ j, dy j x) + (2 : ℝ≥0∞)⁻¹ ^ k) Filter.atTop (nhds ((⨆ j, dy j x) + 0))` using `tendsto_const_nhds.add (ENNReal.tendsto_pow_atTop_nhds_zero_of_lt_one (ENNReal.inv_lt_one.2 (by norm_num)))`.
+
+Rewrite `ht` using `[add_zero]`. Conclude with `ge_of_tendsto' ht hb`.
+-/
 theorem iSup_dy (x : ℝ≥0∞) : ⨆ k, dy k x = x := by
   refine le_antisymm (iSup_le fun k => ?_) ?_
   · calc dy k x ≤ (2 ^ k : ℝ≥0∞)⁻¹ * (2 ^ k * x) := by
@@ -128,6 +187,11 @@ theorem iSup_dy (x : ℝ≥0∞) : ⨆ k, dy k x = x := by
     rw [add_zero] at ht
     exact ge_of_tendsto' ht hb
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(ENNReal.mul_lt_mul_iff_right (ENNReal.inv_ne_zero.2 (two_pow_ne_top' k)) (ENNReal.inv_ne_top.2 (two_pow_ne_zero' k))).2 h` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_two_pow]`. Then use the resulting hypothesis. Introduce `h`.
+
+Use `(ENNReal.mul_lt_mul_iff_right (two_pow_ne_zero' k) (two_pow_ne_top' k)).2 h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ENNReal.mul_inv_cancel (two_pow_ne_zero' k) (two_pow_ne_top' k), one_mul]`. Then use the resulting hypothesis.
+-/
 theorem lt_pow_mul_iff (k : ℕ) (b x : ℝ≥0∞) :
     b < 2 ^ k * x ↔ (2 ^ k : ℝ≥0∞)⁻¹ * b < x := by
   constructor
@@ -140,12 +204,18 @@ theorem lt_pow_mul_iff (k : ℕ) (b x : ℝ≥0∞) :
     rwa [← mul_assoc, ENNReal.mul_inv_cancel (two_pow_ne_zero' k) (two_pow_ne_top' k),
       one_mul] at this
 
+/- English proof (translation)
+Rewrite using `[dy, lay, ENNReal.tsum_mul_left]`. Simplify using `only [lt_pow_mul_iff]`.
+-/
 theorem dy_eq_tsum (k : ℕ) (x : ℝ≥0∞) :
     dy k x = ∑' l : ℕ, (2 ^ k : ℝ≥0∞)⁻¹ *
       (if (2 ^ k : ℝ≥0∞)⁻¹ * ((l : ℝ≥0∞) + 1) < x then (1 : ℝ≥0∞) else 0) := by
   rw [dy, lay, ENNReal.tsum_mul_left]
   simp only [lt_pow_mul_iff]
 
+/- English proof (translation)
+Rewrite using `[← ENNReal.tsum_set_one, tsum_subtype S (fun y => if s < φ y then (1 : ℝ≥0∞) else 0), tsum_subtype (S ∩ {y | s < φ y}) (fun _ => (1 : ℝ≥0∞))]`. Use `tsum_congr fun y => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : y ∈ S <;> by_cases h2 : s < φ y <;> simp [Set.indicator, h1, h2]`.
+-/
 theorem tsum_ite_lt {Y : Type} (S : Set Y) (φ : Y → ℝ≥0∞) (s : ℝ≥0∞) :
     ∑' y : S, (if s < φ y then (1 : ℝ≥0∞) else 0) =
       (((S ∩ {y | s < φ y}).encard : ℕ∞) : ℝ≥0∞) := by
@@ -154,6 +224,9 @@ theorem tsum_ite_lt {Y : Type} (S : Set Y) (φ : Y → ℝ≥0∞) (s : ℝ≥0�
   refine tsum_congr fun y => ?_
   by_cases h1 : y ∈ S <;> by_cases h2 : s < φ y <;> simp [Set.indicator, h1, h2]
 
+/- English proof (translation)
+Repeatedly rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Rewrite using `[iSup_comm]`. Use `iSup_congr fun s => ?_` and prove the remaining obligations. Conclude with `ENNReal.finsetSum_iSup_of_monotone hf`.
+-/
 theorem tsum_iSup_of_mono {ι : Type} (f : ℕ → ι → ℝ≥0∞) (hf : ∀ i, Monotone fun k => f k i) :
     ∑' i, ⨆ k, f k i = ⨆ k, ∑' i, f k i := by
   simp_rw [ENNReal.tsum_eq_iSup_sum]
@@ -161,6 +234,25 @@ theorem tsum_iSup_of_mono {ι : Type} (f : ℕ → ι → ℝ≥0∞) (hf : ∀ 
   refine iSup_congr fun s => ?_
   exact ENNReal.finsetSum_iSup_of_monotone hf
 
+/- English proof (translation)
+Establish `hG : ∀ k ω, ∑' y : L ω, dy k (φ y) = ∑' l : ℕ, (2 ^ k : ℝ≥0∞)⁻¹ * (((L ω ∩ {y | (2 ^ k : ℝ≥0∞)⁻¹ * ((l : ℝ≥0∞) + 1) < φ y}).encard : ℕ∞) : ℝ≥0∞)`. Introduce `k ω`. Repeatedly rewrite using `[dy_eq_tsum]`. Rewrite using `[ENNReal.tsum_comm]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.tsum_mul_left, tsum_ite_lt]`. Establish `hGm : ∀ k, Measurable fun ω => ∑' y : L ω, dy k (φ y)`. Introduce `k`. Repeatedly rewrite using `[hG]`. Conclude with `Measurable.ennreal_tsum fun l => (hN _).const_mul _`.
+
+Establish `hGi : ∀ k, ∫⁻ ω, ∑' y : L ω, dy k (φ y) ∂P = c * ∫⁻ y, dy k (φ y) ∂ν`. Introduce `k`. Establish `hlev : ∀ s : ℝ≥0∞, Measurable fun y => if s < φ y then (1 : ℝ≥0∞) else 0` using `fun s => Measurable.ite (measurableSet_lt measurable_const hφ) measurable_const measurable_const`. Establish `hone : ∀ s : ℝ≥0∞, ∫⁻ y, (if s < φ y then (1 : ℝ≥0∞) else 0) ∂ν = ν {y | s < φ y}`. Introduce `s`.
+
+Rewrite using `[← lintegral_indicator_one (measurableSet_lt measurable_const hφ)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : s < φ y <;> simp [Set.indicator, h]`. Repeatedly rewrite using `[hG, dy_eq_tsum]`. Rewrite using `[lintegral_tsum fun l => ((hN _).const_mul _).aemeasurable, lintegral_tsum fun l => ((hlev _).const_mul _).aemeasurable, ← ENNReal.tsum_mul_left]`.
+
+Use `tsum_congr fun l => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ (hN _), hI, lintegral_const_mul _ (hlev _), hone, mul_left_comm]`. Establish `hmono : ∀ ω (y : L ω), Monotone fun k => dy k (φ y)` using `fun _ y => dy_mono _`. Establish `hS : (fun ω => ∑' y : L ω, φ y) = fun ω => ⨆ k, ∑' y : L ω, dy k (φ y)`. Use function extensionality and compare the values at `ω`.
+
+Rewrite using `[← tsum_iSup_of_mono (fun k (y : L ω) => dy k (φ y)) (hmono ω)]`. Conclude with `tsum_congr fun y => (iSup_dy _).symm`. Establish `hGmono : Monotone fun k ω => ∑' y : L ω, dy k (φ y)`. Introduce `j k hjk ω`. Conclude with `ENNReal.tsum_le_tsum fun y => dy_mono _ hjk`.
+
+Establish `hdm : ∀ k, Measurable fun y => dy k (φ y)`. Introduce `k`. Repeatedly rewrite using `[dy_eq_tsum]`. Conclude with `Measurable.ennreal_tsum fun l => (Measurable.ite (measurableSet_lt measurable_const hφ) measurable_const measurable_const).const_mul _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hS]`. Conclude with `Measurable.iSup hGm`. Rewrite using `[hS, lintegral_iSup hGm hGmono]`. Repeatedly rewrite using `[hGi]`. Rewrite using `[← ENNReal.mul_iSup, ← lintegral_iSup hdm (fun j k hjk y => dy_mono _ hjk)]`.
+
+Repeatedly rewrite using `[iSup_dy]`.
+-/
 theorem measurable_lintegral_tsum_of_level_counts
     {Ω Y : Type} [MeasurableSpace Ω] [MeasurableSpace Y] (P : Measure Ω) (ν : Measure Y)
     (L : Ω → Set Y) (φ : Y → ℝ≥0∞) (c : ℝ≥0∞) (hφ : Measurable φ)

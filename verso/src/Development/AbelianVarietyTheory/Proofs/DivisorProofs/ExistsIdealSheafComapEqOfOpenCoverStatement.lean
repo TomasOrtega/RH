@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapBcComp
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 universe u
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.IdealGlue.exists_comap_eq) | (exact GlobalTheory.IdealGlue.exists_comap_eq) | (intros; apply GlobalTheory.IdealGlue.exists_comap_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_idealSheaf_comap_eq_of_openCover : ∀ {X : Scheme.{0}} {ι : Type u} (V : ι → Scheme.{0}) (f : ∀ i, V i ⟶ X),
     (∀ i, IsOpenImmersion (f i)) → (∀ x : X, ∃ i y, f i y = x) →
     ∀ (J : ∀ i, (V i).IdealSheafData),

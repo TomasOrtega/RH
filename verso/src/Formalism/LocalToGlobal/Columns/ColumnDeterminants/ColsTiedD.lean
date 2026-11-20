@@ -105,6 +105,9 @@ def tHerm : CH.ColsHerm (d.colRec a) :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `rfl piU := rfl res := rfl car0 := characters_level_zero_agree a h.sp h.host (ptSurj_holds d) (localLevelIsKOne_everywhere d) (spl d) (iwAll d (spl d)) u carI := fun i h1 hm => th_carI a h.sp h.host (ptSurj_holds d) (localLevelIsKOne_everywhere d) (spl d) (iwAll d (spl d)) u i h1 …`.
+-/
 theorem tJoint (u : d.what₂.Word) : CF.Joint (tHerm a h) u (formsTied a h u) where
   eV := rfl
   piU := rfl

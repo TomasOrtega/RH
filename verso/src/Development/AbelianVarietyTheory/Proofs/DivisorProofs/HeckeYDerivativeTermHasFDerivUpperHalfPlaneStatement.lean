@@ -11,6 +11,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeckeTwo.termQ_fderiv | exact GlobalTheory.HeckeTwo.termQ_fderiv | (intros; apply GlobalTheory.HeckeTwo.termQ_fderiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeYDerivativeTerm_hasFDeriv_upperHalfPlane : ∀ (F : Type) [Field F] [NumberField F] (b ν : F), b ≠ 0 → (∀ (n : ℝ) (k : ℕ) (y : ℝ), y ≠ 0 →
     (∀ σ ∈ halfPlane, HasDerivAt (iteratedDeriv k (hTrans σ n)) (iteratedDeriv (k + 1) (hTrans σ n) y) y) ∧
     DifferentiableOn ℂ (fun σ => iteratedDeriv k (hTrans σ n) y) halfPlane) →

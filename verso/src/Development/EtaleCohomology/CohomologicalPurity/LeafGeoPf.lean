@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.Thom.GeoPf
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(g ≫ f).appTop.hom (v.1 i) = g.appTop.hom (f.appTop.hom (v.1 i))`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem vec_map_comp {N k : ℕ} {Z Y X : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (v : Vec N k X) :
     (Vec.map N k (g ≫ f)).obj v = (Vec.map N k g).obj ((Vec.map N k f).obj v) := by
   apply Subtype.ext
@@ -13,6 +16,9 @@ theorem vec_map_comp {N k : ℕ} {Z Y X : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X
   rw [Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Use extensionality with `n U g`. Express the relevant statement in the definitionally equal form `(Functor.const (Fin (n.unop.len + 1))).obj ((Vec.map N k (g ≫ f)).obj v) = (Functor.const (Fin (n.unop.len + 1))).obj ((Vec.map N k g).obj ((Vec.map N k f).obj v))`. Conclude with `congrArg (Functor.const (Fin (n.unop.len + 1))).obj (vec_map_comp (show U.unop ⟶ Y from g) f v)`.
+-/
 theorem sch_map_pt {N k : ℕ} {Y X : Scheme.{0}} (f : Y ⟶ X) (v : Vec N k X) :
     sch.map f ≫ Pj.pt v = Pj.pt ((Vec.map N k f).obj v) := by
   ext n U g
@@ -20,6 +26,13 @@ theorem sch_map_pt {N k : ℕ} {Y X : Scheme.{0}} (f : Y ⟶ X) (v : Vec N k X) 
     (Functor.const (Fin (n.unop.len + 1))).obj ((Vec.map N k g).obj ((Vec.map N k f).obj v))
   exact congrArg (Functor.const (Fin (n.unop.len + 1))).obj (vec_map_comp (show U.unop ⟶ Y from g) f v)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `sch.map _ ≫ _ = _`. Rewrite using `[sch_map_pt]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom φ)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Fin.cons 1 x : Fin (d + 1) → A) i)) = (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ((Fin.cons 1 (φ ∘ x) : Fin (d + 1) → B) i)`. Establish `key` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ)`. Use `congrArg (fun g => g.hom ((Fin.cons 1 x : Fin (d + 1) → A) i)) key` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (φ ((Fin.cons 1 x : Fin (d + 1) → A) i)) = _`.
+
+Use `congr 1`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+-/
 theorem part3 (d : ℕ) (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (x : Fin d → A) :
     spMap φ ≫ Pj.pt (vec1 x) = Pj.pt (vec1 (φ ∘ x)) := by
   change sch.map _ ≫ _ = _
@@ -36,20 +49,37 @@ theorem part3 (d : ℕ) (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) 
   congr 1
   refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
+/- English proof (translation)
+Introduce `U ⟨y⟩`. Set `f : U ⟶ Spec (CommRingCat.of R)` to `((prod.snd : PR N k R ⟶ sp R).app _).app (op U) y`. Establish `h` using `(hq.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).map f.appTop.hom`. Rewrite `h` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem part2 (q N k : ℕ) (R : Type) [CommRing R] (hq : IsUnit (q : R)) : Inv q (PR N k R) := by
   intro U ⟨y⟩
   let f : U ⟶ Spec (CommRingCat.of R) := ((prod.snd : PR N k R ⟶ sp R).app _).app (op U) y
   have h := (hq.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).map f.appTop.hom
   rwa [map_natCast, map_natCast] at h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_val {N k : ℕ} {U : Scheme.{0}} {a b c : Vec N k U} (f : a ⟶ b) (g : b ⟶ c) :
     (f ≫ g).1 = g.1 * f.1 := rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem eqToHom_val {N k : ℕ} {U : Scheme.{0}} {a b : Vec N k U} (e : a = b) : (eqToHom e).1 = 1 := by
   subst e; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_map_val {N : ℕ} {U : Scheme.{0}} {a b : Vec N 1 U} (u : a ⟶ b) : ((Vec.incl N U).map u).1 = u.1 := rfl
 
+/- English proof (translation)
+Establish `hobj : ∀ j, F.obj j = G.obj j` using `fun j => Subtype.ext (by have := congrArg Subtype.val (Functor.congr_obj h j); exact this)`. Use `CategoryTheory.Functor.ext hobj (fun a b f => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2` using `congrArg Subtype.val (Functor.congr_hom h f)`. Simplify using `only [Functor.comp_map, comp_val, eqToHom_val, incl_map_val, mul_one, one_mul] at h2 ⊢`.
+
+Conclude with `h2`.
+-/
 theorem incl_cancel {N : ℕ} {U : Scheme.{0}} {J : Type} [Category J] (F G : J ⥤ Vec N 1 U)
     (h : F ⋙ Vec.incl N U = G ⋙ Vec.incl N U) : F = G := by
   have hobj : ∀ j, F.obj j = G.obj j := fun j => Subtype.ext (by have := congrArg Subtype.val (Functor.congr_obj h j); exact this)
@@ -59,6 +89,11 @@ theorem incl_cancel {N : ℕ} {U : Scheme.{0}} {J : Type} [Category J] (F G : J 
   simp only [Functor.comp_map, comp_val, eqToHom_val, incl_map_val, mul_one, one_mul] at h2 ⊢
   exact h2
 
+/- English proof (translation)
+Establish `: ∀ n, Mono ((Pj.incl N).app n)` using `fun n => by`. Establish `: ∀ U, Mono (((Pj.incl N).app n).app U)` using `fun U => by`. Rewrite using `[mono_iff_injective]`. Introduce `F G h`. Conclude with `incl_cancel (U := U.unop) F G h`.
+
+Conclude with `NatTrans.mono_of_mono_app _`. Conclude with `NatTrans.mono_of_mono_app _`.
+-/
 theorem incl_mono (N : ℕ) : Mono (Pj.incl N) := by
   have : ∀ n, Mono ((Pj.incl N).app n) := fun n => by
     have : ∀ U, Mono (((Pj.incl N).app n).app U) := fun U => by
@@ -68,14 +103,31 @@ theorem incl_mono (N : ℕ) : Mono (Pj.incl N) := by
     exact NatTrans.mono_of_mono_app _
   exact NatTrans.mono_of_mono_app _
 
+/- English proof (translation)
+Use `incl_mono (d + 1)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Mono (prod.map _ _)`. Use `infer_instance`.
+-/
 theorem part1 (d : ℕ) (R : Type) [CommRing R] : Mono (pr d R).hom := by
   have := incl_mono (d + 1)
   change Mono (prod.map _ _)
   infer_instance
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pt_incl {N : ℕ} {X : Scheme.{0}} (v : Vec N 1 X) :
     Pj.pt v ≫ Pj.incl N = Pj.pt ((Vec.incl N X).obj v) := rfl
 
+/- English proof (translation)
+Set `w : Vec (d + 1) 1 (off A I).toScheme` to `⟨((Vec.map (d + 1) 0 (off A I).ι).obj (vec1 x)).1, fun p => by`. Establish `hp : ¬ (Ideal.span (Set.range x) ≤ ((off A I).ι p).asIdeal)` using `by rw [hI]; exact p.2`. Rewrite `hp` using `[Ideal.span_le]`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, x j ∉ ((off A I).ι p).asIdeal := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hp (by rintro _ ⟨j, rfl⟩; exact hc j)`. Use `⟨j.succ, by simp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p ∈ (off A I).toScheme.basicOpen ((off A I).ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Fin.cons 1 x : Fin (d + 1) → A) j.succ)))`. Rewrite using `[← Scheme.preimage_basicOpen_top]`.
+
+Express the relevant statement in the definitionally equal form `(off A I).ι p ∈ (Spec (CommRingCat.of A)).basicOpen _`. Rewrite using `[basicOpen_eq_of_affine]`. Simplify using `only [Fin.cons_succ]`. Conclude with `hj⟩`. Use `⟨Arrow.homMk (prod.lift (Pj.pt w) (sch.map (off A I).ι)) (chart x) ?_, rfl⟩` and prove the remaining obligations.
+
+Apply `prod.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `prod.lift (Pj.pt w) (sch.map (off A I).ι) ≫ prod.map (Pj.incl (d + 1)) (𝟙 _) ≫ prod.fst = sch.map (off A I).ι ≫ chart x ≫ prod.fst`. Rewrite using `[prod.map_fst, prod.lift_fst_assoc, chart, prod.lift_fst, pt_incl, sch_map_pt]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `prod.lift (Pj.pt w) (sch.map (off A I).ι) ≫ prod.map (Pj.incl (d + 1)) (𝟙 _) ≫ prod.snd = sch.map (off A I).ι ≫ chart x ≫ prod.snd`.
+
+Rewrite using `[prod.map_snd, prod.lift_snd_assoc, chart, prod.lift_snd]`.
+-/
 theorem part4 (d : ℕ) (A : Type) [CommRing A] (I : Ideal A) (x : Fin d → A) (hI : Ideal.span (Set.range x) = I) :
     ∃ Φ : opn (off A I) ⟶ pr d A, Φ.right = chart x := by
   let w : Vec (d + 1) 1 (off A I).toScheme := ⟨((Vec.map (d + 1) 0 (off A I).ι).obj (vec1 x)).1, fun p => by
@@ -107,6 +159,9 @@ end LateralTheory.CohomologicalPurity.Thom.GeoPf
 
 namespace LateralTheory.CohomologicalPurity.Thom
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GeoPf.part1, GeoPf.part2, GeoPf.part3, GeoPf.part4⟩`.
+-/
 theorem LeafGeo_of : LeafGeo :=
   ⟨GeoPf.part1, GeoPf.part2, GeoPf.part3, GeoPf.part4⟩
 

@@ -13,9 +13,35 @@ open GlobalTheory.KS
 namespace GlobalTheory.LocDerExtK
 open GlobalTheory.LocDerExt
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem rsT_eq {Y : Scheme.{0}} {O₀ O : Y.Opens} (h : O ≤ O₀) (s : Γ(Y, O₀)) :
     rsT s O = resG Y h s := dif_pos h
 
+/- English proof (translation)
+Introduce `K _ R _ Y X q p m D W₀ hW d₀ hadd hmul hbase`. Establish `H : ∀ f : Γ(X, W₀), ∃ δ : Γ(X, X.basicOpen f) → Γ(Y, m ⁻¹ᵁ X.basicOpen f), (∀ a b, δ (a + b) = δ a + δ b) ∧ (∀ a b, δ (a * b) = (m.app _).hom a * δ b + (m.app _).hom b * δ a) ∧ ∀ a, δ (resG X (X.basicOpen_le f) a) = resG Y (pre_le m (X.basicOpen_le f)) (d₀ a)`. Introduce `f`. Use `haveI := hW.isLocalization_basicOpen f`. Use `der_exists f (m.app (X.basicOpen f)).hom (fun a => resG Y (pre_le m (X.basicOpen_le f)) (d₀ a)) (fun a b => by simp only [hadd, map_add]) (fun a b => ?_)` and prove the remaining obligations.
+
+Establish `e : ∀ a, (m.app (X.basicOpen f)).hom (algebraMap Γ(X, W₀) Γ(X, X.basicOpen f) a) = resG Y (pre_le m (X.basicOpen_le f)) ((m.app W₀).hom a)` using `fun a => app_res m (X.basicOpen_le f) a`. Rewrite using `[e, e]`. Simplify using `only [hmul, map_add, map_mul]`. Use `choose δ δadd δmul δres using H`. Establish `compat : ∀ (f g : Γ(X, W₀)) (k : X.basicOpen g ≤ X.basicOpen f) (s : Γ(X, X.basicOpen f)), resG Y (pre_le m k) (δ f s) = δ g (resG X k s)`.
+
+Introduce `f g k s`. Use `haveI := hW.isLocalization_basicOpen f`. Use `der_unique f ((m.app (X.basicOpen g)).hom.comp (resG X k)) (fun s => resG Y (pre_le m k) (δ f s)) (fun s => δ g (resG X k s)) (fun a b => ?_) (fun a b => ?_) (fun a => ?_) s` and prove the remaining obligations. Simplify using `only [δmul, map_add, map_mul, RingHom.comp_apply, app_res m k]`. Simplify using `only [δmul, map_mul, RingHom.comp_apply]`.
+
+Express the relevant statement in the definitionally equal form `resG Y (pre_le m k) (δ f (resG X (X.basicOpen_le f) a)) = δ g (resG X k (resG X (X.basicOpen_le f) a))`. Rewrite using `[res_res X, δres, δres, res_res Y]`. Establish `G : ∀ (W : X.Opens), W ≤ W₀ → ∀ s : Γ(X, W), ∃ t : Γ(Y, m ⁻¹ᵁ W), ∀ (f : Γ(X, W₀)) (k : X.basicOpen f ≤ W), resG Y (pre_le m k) t = δ f (resG X k s)`. Introduce `W h s`. Take `⟨t, ht, -⟩` from `Y.sheaf.existsUnique_gluing' (fun i : {f : Γ(X, W₀) // X.basicOpen f ≤ W} => m ⁻¹ᵁ X.basicOpen i.1) (m ⁻¹ᵁ W) (fun i => homOfLE (pre_le m i.2)) (cover m hW h) (fun i => δ i.1 (resG X i.2 s)) (fun i j => by`.
+
+Establish `e : X.basicOpen (i.1 * j.1) = X.basicOpen i.1 ⊓ X.basicOpen j.1` using `X.basicOpen_mul _ _`. Establish `ki : X.basicOpen (i.1 * j.1) ≤ X.basicOpen i.1` using `e.le.trans inf_le_left`. Establish `kj : X.basicOpen (i.1 * j.1) ≤ X.basicOpen j.1` using `e.le.trans inf_le_right`. Establish `k : m ⁻¹ᵁ X.basicOpen i.1 ⊓ m ⁻¹ᵁ X.basicOpen j.1 ≤ m ⁻¹ᵁ X.basicOpen (i.1 * j.1)` using `fun y hy => e.ge hy`. Establish `e' : resG Y (pre_le m ki) (δ i.1 (resG X i.2 s)) = resG Y (pre_le m kj) (δ j.1 (resG X j.2 s))`.
+
+Rewrite using `[compat _ _ ki, compat _ _ kj, res_res X, res_res X]`. Establish `e''` using `congrArg (resG Y k) e'`. Rewrite `e''` using `[res_res Y, res_res Y]`. Conclude with `e'')`. Conclude with `⟨t, fun f k => ht ⟨f, k⟩⟩`.
+
+Use `choose t ht using G`. Use `⟨fun W s => if h : W ≤ W₀ then t W h s else 0, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `W h a b`. Simplify using `only [dif_pos h]`. Use `sep m hW h _ _ (fun f k => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_add, ht W h _ f k, ht W h _ f k, ht W h _ f k, map_add, δadd]`. Introduce `W h a b`. Simplify using `only [dif_pos h]`. Use `sep m hW h _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, ht W h _ f k, ht W h _ f k, ht W h _ f k, map_mul, δmul, app_res m k, app_res m k]`.
+
+Introduce `W W' h' h a`. Simplify using `only [dif_pos h, dif_pos (h'.trans h)]`. Use `sep m hW (h'.trans h) _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[rsT_eq (pre_le m h')]`. Use `Eq.trans ?_ (res_res Y (pre_le m h') (pre_le m k) _).symm` and prove the remaining obligations.
+
+Rewrite using `[ht W' _ _ f k, ht W h a f (k.trans h'), res_res X]`. Introduce `W h r`. Simplify using `only [dif_pos h]`. Use `sep m hW h _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[ht W h _ f k, res_const, res_const, ← res_const p (X.basicOpen_le f), δres, hbase, res_const]`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [dif_pos (le_refl W₀)]`. Use `sep m hW le_rfl _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[ht W₀ _ _ f k, δres]`.
+-/
 theorem exists_locDerK : ∀ (K : Type) [Field K] (R : Type) [CommRing R] (Y X : Scheme.{0}) (q : Y ⟶ Sp K) (p : X ⟶ Sp R) (m : Y ⟶ X) (D : R → K) (W₀ : X.Opens), IsAffineOpen W₀ → ∀ d₀ : Γ(X, W₀) → Γ(Y, m ⁻¹ᵁ W₀), (∀ a b, d₀ (a + b) = d₀ a + d₀ b) → (∀ a b, d₀ (a * b) = (m.app W₀).hom a * d₀ b + (m.app W₀).hom b * d₀ a) → (∀ r, d₀ (constFn p W₀ r) = constFn q (m ⁻¹ᵁ W₀) (D r)) → ∃ d, LocDerK q p m D W₀ d ∧ d W₀ = d₀ := by
   intro K _ R _ Y X q p m D W₀ hW d₀ hadd hmul hbase
   have H : ∀ f : Γ(X, W₀), ∃ δ : Γ(X, X.basicOpen f) → Γ(Y, m ⁻¹ᵁ X.basicOpen f),
@@ -90,6 +116,11 @@ theorem exists_locDerK : ∀ (K : Type) [Field K] (R : Type) [CommRing R] (Y X :
     refine sep m hW le_rfl _ _ (fun f k => ?_)
     rw [ht W₀ _ _ f k, δres]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Use `sep m hW hle _ _ (fun f k => ?_)` and prove the remaining obligations. Rewrite using `[← rsT_eq (pre_le m k), ← rsT_eq (pre_le m k), ← h.res W _ k hle, ← h'.res W _ k hle]`. Use `haveI := hW.isLocalization_basicOpen f`. Use `der_unique f (m.app (X.basicOpen f)).hom (d _) (d' _) (h.mul _ (X.basicOpen_le f)) (h'.mul _ (X.basicOpen_le f)) (fun a => ?_) _` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `d _ (resG X (X.basicOpen_le f) a) = d' _ (resG X (X.basicOpen_le f) a)`. Rewrite using `[h.res W₀ _ _ le_rfl, h'.res W₀ _ _ le_rfl, e]`.
+-/
 theorem locDerK_unique {K : Type} [Field K] {R : Type} [CommRing R] {Y X : Scheme.{0}} {q : Y ⟶ Sp K}
     {p : X ⟶ Sp R} {m : Y ⟶ X} {D : R → K} {W₀ : X.Opens} (hW : IsAffineOpen W₀)
     (d d' : ∀ W : X.Opens, Γ(X, W) → Γ(Y, m ⁻¹ᵁ W)) (h : LocDerK q p m D W₀ d)
@@ -103,6 +134,9 @@ theorem locDerK_unique {K : Type} [Field K] {R : Type} [CommRing R] {Y X : Schem
   change d _ (resG X (X.basicOpen_le f) a) = d' _ (resG X (X.basicOpen_le f) a)
   rw [h.res W₀ _ _ le_rfl, h'.res W₀ _ _ le_rfl, e]
 
+/- English proof (translation)
+Introduce `K _ R _ Y X q p m D W₀ hW` and use `⟨exists_locDerK K R Y X q p m D W₀ hW, fun d d' h h' e W hle => locDerK_unique hW d d' h h' e W hle⟩`.
+-/
 theorem exists_unique_locDerK : ∀ (K : Type) [Field K] (R : Type) [CommRing R] (Y X : Scheme.{0}) (q : Y ⟶ Sp K) (p : X ⟶ Sp R) (m : Y ⟶ X) (D : R → K) (W₀ : X.Opens), IsAffineOpen W₀ → (∀ d₀ : Γ(X, W₀) → Γ(Y, m ⁻¹ᵁ W₀), (∀ a b, d₀ (a + b) = d₀ a + d₀ b) → (∀ a b, d₀ (a * b) = (m.app W₀).hom a * d₀ b + (m.app W₀).hom b * d₀ a) → (∀ r, d₀ (constFn p W₀ r) = constFn q (m ⁻¹ᵁ W₀) (D r)) → ∃ d, LocDerK q p m D W₀ d ∧ d W₀ = d₀) ∧ ∀ d d', LocDerK q p m D W₀ d → LocDerK q p m D W₀ d' → d W₀ = d' W₀ → ∀ W, W ≤ W₀ → d W = d' W :=
   fun K _ R _ Y X q p m D W₀ hW =>
     ⟨exists_locDerK K R Y X q p m D W₀ hW, fun d d' h h' e W hle => locDerK_unique hW d d' h h' e W hle⟩

@@ -33,6 +33,9 @@ namespace GlobalTheory.BotKerLevel
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
     {A A' WW : HSp D} {X : Tri T A A' WW}
 
+/- English proof (translation)
+Take `⟨U₁, hU₁, h₁⟩` from `GlobalTheory.T.exists_open_subgroup_fixes_vacuum_definiteBottom hX t`. Take `⟨U₂, hU₂, h₂⟩` from `GlobalTheory.T.exists_open_fixing_vacuum_translate_source D W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.Λ X.rW.Λ hX.is.rigA'.1 hX.is.rigW.1 X.vac' hX.is.isVac' u hu`. Establish `hW : IsWeilDatumO W.ψ A' WW _ _ (X.ω' t)` using `hX.is.weil' t`. Use `⟨U₁ ⊓ U₂, hU₁.inter hU₂, fun κ hκ hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hW.om_heis κ 1 u X.vac' hX.is.isVac'.2.theta, h₁ κ hκ.1 hf, h₂ κ hκ.2 hf]`.
+-/
 theorem fixTranslate (hX : IsBottomTri W i j X) (t : T) (u : WO A' WW) (hu : u.map (infPart D) = 0) :
     ∃ U : Subgroup (GA D A'), IsOpen (U : Set (GA D A')) ∧ ∀ κ ∈ U, κ ∈ GfC A' →
       X.ω' t (κ, 1) (heisO W.ψ A' WW u X.vac') = heisO W.ψ A' WW u X.vac' := by
@@ -43,6 +46,13 @@ theorem fixTranslate (hX : IsBottomTri W i j X) (t : T) (u : WO A' WW) (hu : u.m
   refine ⟨U₁ ⊓ U₂, hU₁.inter hU₂, fun κ hκ hf => ?_⟩
   rw [hW.om_heis κ 1 u X.vac' hX.is.isVac'.2.theta, h₁ κ hκ.1 hf, h₂ κ hκ.2 hf]
 
+/- English proof (translation)
+Take `⟨n, c, x, hx, e⟩` from `GlobalTheory.T.definiteBottom_finiteVector_eq_finite_heisenbergComb hX t`. Use `choose U hU hfix using fun k => fixTranslate hX t (x k) (hx k)`. Use `⟨⨅ k, U k, ?_, fun κ hκ hf => ?_⟩` and prove the remaining obligations. Establish `e2 : (((⨅ k, U k) : Subgroup (GA D A')) : Set (GA D A')) = ⋂ k, (U k : Set (GA D A'))`. Use extensionality with `y`.
+
+Simplify using `[Subgroup.mem_iInf]`. Rewrite using `[e2]`. Conclude with `isOpen_iInter_of_finite hU`. Rewrite using `[e, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, hfix k κ (Subgroup.mem_iInf.1 hκ k) hf]`.
+-/
 theorem exists_open_fix (hX : IsBottomTri W i j X) (t : T) :
     ∃ U : Subgroup (GA D A'), IsOpen (U : Set (GA D A')) ∧ ∀ κ ∈ U, κ ∈ GfC A' → X.ω' t (κ, 1) (X.f' t) = X.f' t := by
   obtain ⟨n, c, x, hx, e⟩ := GlobalTheory.T.definiteBottom_finiteVector_eq_finite_heisenbergComb hX t
@@ -56,6 +66,9 @@ theorem exists_open_fix (hX : IsBottomTri W i j X) (t : T) :
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [map_smul, hfix k κ (Subgroup.mem_iInf.1 hκ k) hf]
 
+/- English proof (translation)
+Establish `e : GlobalTheory.DefiniteClassAvg.finPart V = fun y => (GlobalTheory.DefiniteClassAvg.realPart V y)⁻¹ * y`. Use function extensionality and compare the values at `y`. Conclude with `eq_inv_mul_of_mul_eq (GlobalTheory.DefiniteClassAvg.realPart_mul_finPart V y)`. Rewrite using `[e]`. Conclude with `((GlobalTheory.DefiniteClassAvg.continuous_realPart V).inv).mul continuous_id`.
+-/
 theorem continuous_finPart (V : HSp D) : Continuous (GlobalTheory.DefiniteClassAvg.finPart V) := by
   have e : GlobalTheory.DefiniteClassAvg.finPart V = fun y => (GlobalTheory.DefiniteClassAvg.realPart V y)⁻¹ * y := by
     funext y
@@ -63,6 +76,11 @@ theorem continuous_finPart (V : HSp D) : Continuous (GlobalTheory.DefiniteClassA
   rw [e]
   exact ((GlobalTheory.DefiniteClassAvg.continuous_realPart V).inv).mul continuous_id
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.DefiniteClassAvg.finPart_mul_realPart V 1`. Establish `h2 : GlobalTheory.DefiniteClassAvg.finPart V 1 ∈ GinfC V ⊓ GfC V`. Use `⟨?_, GlobalTheory.DefiniteClassAvg.finPart_mem V 1⟩` and prove the remaining obligations. Establish `: GlobalTheory.DefiniteClassAvg.finPart V 1 = (GlobalTheory.DefiniteClassAvg.realPart V 1)⁻¹` using `eq_inv_of_mul_eq_one_left h1`. Rewrite using `[this]`.
+
+Conclude with `(GinfC V).inv_mem (GlobalTheory.DefiniteClassAvg.realPart_mem V 1)`. Rewrite `h2` using `[Formalism.IndefR.TopMult.inf_GinfC_GfC', Subgroup.mem_bot]`. Conclude with `h2`.
+-/
 theorem finPart_one (V : HSp D) : GlobalTheory.DefiniteClassAvg.finPart V 1 = 1 := by
   have h1 := GlobalTheory.DefiniteClassAvg.finPart_mul_realPart V 1
   have h2 : GlobalTheory.DefiniteClassAvg.finPart V 1 ∈ GinfC V ⊓ GfC V := by
@@ -73,6 +91,13 @@ theorem finPart_one (V : HSp D) : GlobalTheory.DefiniteClassAvg.finPart V 1 = 1 
   rw [Formalism.IndefR.TopMult.inf_GinfC_GfC', Subgroup.mem_bot] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h1 : finHom V a = finHom V b`. Establish `inj : Function.Injective (Formalism.UG.bc (n` using `Fin V.rank) (Lev.swapAE D)) := by`. Introduce `x y hxy`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`.
+
+Use `congrArg (fun z : GL (Fin V.rank) (Lev.EAf D) => z.1 p q) hxy` as an intermediate fact. Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at this`. Conclude with `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).injective this`. Conclude with `inj h`. Establish `h2 : a⁻¹ * b ∈ GinfC V ⊓ GfC V`.
+
+Use `⟨?_, (GfC V).mul_mem ((GfC V).inv_mem ha) hb⟩` and prove the remaining obligations. Use `show finHom V (a⁻¹ * b) = 1`. Rewrite using `[map_mul, map_inv, h1, inv_mul_cancel]`. Rewrite `h2` using `[Formalism.IndefR.TopMult.inf_GinfC_GfC', Subgroup.mem_bot]`. Conclude with `(inv_mul_eq_one.1 h2)`.
+-/
 theorem eq_of_finE_eq (V : HSp D) {a b : GA D V} (ha : a ∈ GfC V) (hb : b ∈ GfC V) (h : Lev.finE V a = Lev.finE V b) :
     a = b := by
   have h1 : finHom V a = finHom V b := by
@@ -91,6 +116,17 @@ theorem eq_of_finE_eq (V : HSp D) {a b : GA D V} (ha : a ∈ GfC V) (hb : b ∈ 
   rw [Formalism.IndefR.TopMult.inf_GinfC_GfC', Subgroup.mem_bot] at h2
   exact (inv_mul_eq_one.1 h2)
 
+/- English proof (translation)
+Introduce `D T L sc G W i j A A' WW X hX t`. Take `⟨U, hUo, hfix⟩` from `exists_open_fix hX t`. Establish `hW : IsWeilDatumO W.ψ A' WW _ _ (X.ω' t)` using `hX.is.weil' t`. Establish `hθ : IsInfFam W.θ` using `hX.is.isVac'.2.inf`. Establish `hf' : IsThetaFunO W.ψ A' WW (X.f' t)` using `(GlobalTheory.ConstRatio.theta_f hX.is t).2`.
+
+Set `K : Subgroup (GL (Fin A'.rank) (Lev.EAf D))` to `St X.rA'.β ⊓ (U ⊓ GfC A').map (Lev.finE A')`. Establish `hKo : IsOpen ((K.comap (Lev.finE A') : Subgroup (GA D A')) : Set (GA D A'))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `hU1 : GlobalTheory.DefiniteClassAvg.finPart A' ⁻¹' (U : Set (GA D A')) ∈ nhds (1 : GA D A')` using `(continuous_finPart A').continuousAt.preimage_mem_nhds (by rw [finPart_one]; exact hUo.mem_nhds U.one_mem)`. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ A' X.rA'.β ∅, hU1] with κ h1 h2`.
+
+Conclude with `⟨h1.2.1, ⟨GlobalTheory.DefiniteClassAvg.finPart A' κ, ⟨h2, GlobalTheory.DefiniteClassAvg.finPart_mem A' κ⟩, GlobalTheory.DefiniteClassAvg.finE_finPart A' κ⟩⟩`. Establish `hKc : IsCompact ((Lev.levA A' K : Subgroup (GA D A')) : Set (GA D A'))`. Take `⟨C, hC, hCm⟩` from `GlobalTheory.ParahoricCompact.exists_compact A' X.rA'.β`. Use `hC.of_isClosed_subset ((GlobalTheory.Ker.CongTop.isClosed_GfC A').inter (Subgroup.isClosed_of_isOpen _ hKo)) fun k hk => ?_` and prove the remaining obligations. Take `⟨hk1, hk2⟩` from `Lev.mem_levA.1 hk`.
+
+Conclude with `hCm k hk1 hk2.1`. Use `⟨K, ⟨hKo, hKc⟩, fun P h k hk g => ?_⟩` and prove the remaining obligations. Take `⟨hk1, hk2⟩` from `Lev.mem_levA.1 hk`. Take `⟨u, ⟨huU, huf⟩, hue⟩` from `hk2.2`. Establish `hku : k = u` using `(eq_of_finE_eq A' huf hk1 hue).symm`.
+
+Establish `hk3 : X.ω' t (k, 1) (X.f' t) = X.f' t` using `hku ▸ hfix u huU huf`. Use `show X.ω' t (g * k, h) _ 0 = X.ω' t (g, h) _ 0`. Establish `e : ((g * k, h) : GA D A' × GA D WW) = (g, h) * (k, 1)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ A' WW _ _ _ hW W.θ hθ k hk1 1 (GfC WW).one_mem _ _ _ _ _ P hf', hk3]`.
+-/
 theorem exists_level : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {i j : Fin D.R.m}
     {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,
     ∃ K : Subgroup (GL (Fin A'.rank) (Lev.EAf D)), GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsOpenCompactLevel A' K ∧

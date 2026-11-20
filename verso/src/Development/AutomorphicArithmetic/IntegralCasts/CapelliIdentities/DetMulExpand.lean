@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `F _ k r A B`. Establish `h1 : (A * B) = (fun a => ∑ j, (A a j • B j : Fin k → F))`. Use extensionality with `a c`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Establish `h2 : (A * B).det = (Matrix.detRowAlternating (R` using `F) (n := Fin k)).toMultilinearMap (fun a => ∑ j, (A a j • B j : Fin k → F)) := by`.
+
+Rewrite using `[← h1]`. Both sides reduce to the same expression. Rewrite using `[h2, MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Reformulated.B.DetMulExpand.det_mul_expand :
     ∀ {F : Type} [inst : CommRing F] {k r : ℕ} (A : Matrix (Fin k) (Fin r) F) (B : Matrix (Fin r) (Fin k) F),
       (A * B).det = ∑ f : Fin k → Fin r, (∏ a : Fin k, A a (f a)) * (B.submatrix f id).det := by

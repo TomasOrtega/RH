@@ -19,6 +19,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Take `⟨hf', hdc, -, R, hR1, hR2, hR3⟩` from `dcSub G V S U a hf hc hS`. Establish `hφ' : ∀ u ∈ U.subgroupOf S, ∀ g : S, (fun s : S => φ (x * s)) (g * u) = (fun s : S => φ (x * s)) g`. Introduce `u hu g`. Use `hφ _ (Subgroup.mem_subgroupOf.1 hu) (x * g)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Establish `h1` using `(dcBasic S V (U.subgroupOf S) a hf' (fun s : S => φ (x * s)) hφ').2.2.2.2 R hR1 hR2`. Establish `h2` using `(dcBasic G V U a hf φ hφ).2.2.2.2 (R.image (fun r : S => (r : G))) (by`. Introduce `y hy`. Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `(hdc r).1 (hR1 r hr))`.
+
+Use the proof step `(by`. Introduce `y hy`. Take `⟨r, ⟨hr, hu⟩, hun⟩` from `hR3 y hy`. Use `⟨r, ⟨Finset.mem_image_of_mem _ hr, hu⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨hr', hu'⟩`.
+
+Take `⟨r', hr'', rfl⟩` from `Finset.mem_image.1 hr'`. Rewrite using `[hun r' ⟨hr'', hu'⟩])`. Use function extensionality and compare the values at `g`. Establish `h3` using `congrFun he (x * g)`. Rewrite `h3` using `[h2, Finset.sum_image (fun a _ b _ h => Subtype.ext h)]`.
+
+Rewrite using `[h1 g]`. Simplify `h3` using `[mul_assoc]`.
+-/
 private theorem dc_sub {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (S U : Subgroup G) (hS : S.Normal) (a : S)
     (hf : AlgebraTools.FinOrb U U (a : G)) (hc : ∀ u ∈ U, ∃ c ∈ U, c * a = a * c ∧ u * c⁻¹ ∈ S ∧ c⁻¹ * u ∈ S)
     (φ : G → V) (hφ : ∀ u ∈ U, ∀ g, φ (g * u) = φ g) (c : ℂ) (he : dcF U (a : G) φ = c • φ) (x : G) :
@@ -48,6 +59,15 @@ private theorem dc_sub {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (S
   rw [h1 g]
   simpa [mul_assoc] using h3
 
+/- English proof (translation)
+Establish `h1 : infC L 2 k = Wt.infG (em B) 2 ((γ : DX B.Δ) : GL (Fin 2) (Lsq (Lp L) B.Δ))`. Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((cEmb v.embedding k : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ) = _`. Rewrite using `[hk, B.rS_inf]`.
+
+Both sides reduce to the same expression. Establish `hd : ∀ v, Matrix.GeneralLinearGroup.det (infC L 2 k v) = 1`. Introduce `v`. Rewrite using `[h1]`. Establish `hγ : Matrix.GeneralLinearGroup.det ((γ : DX B.Δ) : GL (Fin 2) (Lsq (Lp L) B.Δ)) = 1` using `γ.2`.
+
+Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (em B v) _) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun u : (Lsq (Lp L) B.Δ)ˣ => em B v (u : Lsq (Lp L) B.Δ)) hγ` as an intermediate fact. Simplify `this` using `[Matrix.GeneralLinearGroup.map, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `((∏ v, Matrix.GeneralLinearGroup.det (infC L 2 k v) ^ e v : ℂˣ) : ℂ) • Wt.mRep 2 _ (infC L 2 k) = (Wt.detE 2 0 _ : ℂ) • Wt.mRep 2 _ _`.
+
+Establish `hs : (∏ v, Matrix.GeneralLinearGroup.det (infC L 2 k v) ^ e v : ℂˣ) = 1` using `Finset.prod_eq_one fun v _ => by rw [hd, one_zpow]`. Establish `ht : ∀ g : InfinitePlace L → GL (Fin 2) ℂ, Wt.detE 2 0 g = 1` using `fun g => by simp [Wt.detE]`. Rewrite using `[hs, ht, h1]`. Both sides reduce to the same expression.
+-/
 private theorem rep_eq {L : Type} [Field L] [NumberField L] [IsCMField L] (B : Bridge L) (j : ℕ) (e : InfinitePlace L → ℤ)
     (γ : SU B.Δ) (k : UA L 2) (hk : ∀ τ, cEmb τ k = cEmb τ (B.rS γ : UA L 2)) :
     repE j e (infC L 2 k) = Wt.cS (em B) j γ := by
@@ -77,6 +97,9 @@ end UpperTheory.V.Z.Sym.So
 
 namespace UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Establish `h1 : valuation k (unif k : k) ≤ 1`. Rewrite using `[GlAx.unif_spec]`. Conclude with `uniformizer_lt_one.le`. Conclude with `lt_of_lt_of_le ht (pow_le_one' h1 2)`.
+-/
 private theorem val_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : kˣ)
     (ht : valuation k (t : k) < valuation k (unif k : k) ^ 2) : valuation k (t : k) < 1 := by
   have h1 : valuation k (unif k : k) ≤ 1 := by
@@ -84,6 +107,11 @@ private theorem val_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
     exact uniformizer_lt_one.le
   exact lt_of_lt_of_le ht (pow_le_one' h1 2)
 
+/- English proof (translation)
+Establish `h6` using `(uaFacts L 2).2.2.2.2.2.1`. Establish `h1 : (finU L 2).Normal` using `⟨fun n hn g => by`. Use `((h6 _).1).2 fun τ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, ((h6 n).1).1 hn τ]`. Use the proof step `simp⟩`.
+
+Establish `h2 : (SUA L).Normal`. Unfold `SUA`. Use `infer_instance`. Use `infer_instance`.
+-/
 private theorem sub_normal (L : Type) [Field L] [NumberField L] [IsCMField L] : (finU L 2 ⊓ SUA L).Normal := by
   have h6 := (uaFacts L 2).2.2.2.2.2.1
   have h1 : (finU L 2).Normal := ⟨fun n hn g => by
@@ -95,6 +123,11 @@ private theorem sub_normal (L : Type) [Field L] [NumberField L] [IsCMField L] : 
     infer_instance
   infer_instance
 
+/- English proof (translation)
+Establish `h5` using `(uaFacts L 2).2.2.2.2.1`. Establish `h6` using `(uaFacts L 2).2.2.2.2.2.1`. Use `h5 _ _ (fun u => ?_) (fun τ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : ∀ w ∈ S, un u ≠ un w`. Rewrite using `[map_mul, map_mul, ha.2 u h, one_mul, mul_one]`.
+
+Use `push_neg at h`. Take `⟨w, hw, hu⟩` from `h`. Rewrite using `[map_mul, map_mul, hoff w hw u hu, one_mul, mul_one]`. Rewrite using `[map_mul, map_mul, ((h6 x).1).1 hx τ, ((h6 a).1).1 ha.1 τ]`.
+-/
 private theorem off_on_comm {L : Type} [Field L] [NumberField L] [IsCMField L] (S : Finset (Plc L)) (x a : UA L 2)
     (hx : x ∈ finU L 2) (hoff : OffS S x) (ha : OnS S a) : x * a = a * x := by
   have h5 := (uaFacts L 2).2.2.2.2.1
@@ -111,6 +144,19 @@ end UpperTheory.V.Z.Sym.So
 
 namespace UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Use `haveI := hS`. Set `β : H ≃* S` to `b.trans (MulAut.conjNormal x⁻¹)`. Establish `hβ : ∀ g, ((β g : S) : G) = x⁻¹ * b g * x`. Introduce `g`. Simplify using `[β, MulAut.conjNormal_apply]`.
+
+Establish `hCU' : CU = (U.subgroupOf S).comap β.toMonoidHom`. Use extensionality with `g`. Rewrite using `[hCU, Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Express the relevant statement in the definitionally equal form `_ ↔ ((β g : S) : G) ∈ _`. Rewrite using `[hβ]`.
+
+Establish `hβg : β.toMonoidHom g = b g`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((β g : S) : G) = _`. Rewrite using `[hβ, mul_assoc, ← hx]`. Use `group`.
+
+Establish `hfin'` using `(dcSub G V S U (b g) hf hc hS).1`. Establish `hφ' : ∀ u ∈ U.subgroupOf S, ∀ g : S, (fun s : S => φ (x * s)) (g * u) = (fun s : S => φ (x * s)) g`. Introduce `u hu g`. Use `hφ _ (Subgroup.mem_subgroupOf.1 hu) (x * g)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Establish `hm` using `(dcMap H S V β.toMonoidHom β.bijective (U.subgroupOf S) g g).2.2.2 (by rw [hβg]; exact hfin') (fun s : S => φ (x * s)) hφ'`. Establish `hψ : (fun h => φ ((b h : G) * x)) = (fun s : S => φ (x * s)) ∘ β.toMonoidHom`. Use function extensionality and compare the values at `h`. Express the relevant statement in the definitionally equal form `φ _ = φ (x * ((β h : S) : G))`. Rewrite using `[hβ]`.
+
+Simplify using `[mul_assoc]`. Rewrite using `[hCU', hψ, hm, hβg, dc_sub S U hS (b g) hf hc φ hφ c he x]`. Both sides reduce to the same expression.
+-/
 private theorem dc_tr {H G V : Type} [Group H] [Group G] [AddCommGroup V] [Module ℂ V] (S U : Subgroup G) (hS : S.Normal)
     (b : H ≃* S) (x : G) (CU : Subgroup H) (hCU : ∀ g, g ∈ CU ↔ x⁻¹ * (b g : G) * x ∈ U) (g : H) (hx : x * (b g : G) = b g * x)
     (hf : AlgebraTools.FinOrb U U (b g : G)) (hc : ∀ u ∈ U, ∃ c ∈ U, c * (b g : G) = b g * c ∧ u * c⁻¹ ∈ S ∧ c⁻¹ * u ∈ S)
@@ -148,6 +194,9 @@ private theorem dc_tr {H G V : Type} [Group H] [Group G] [AddCommGroup V] [Modul
 end UpperTheory.V.Z.Sym.So
 
 namespace UpperTheory.V.Z.Sym.So
+/- English proof (translation)
+Rewrite using `[hr, hc]`. Use `group`.
+-/
 private theorem grp1 {G : Type} [Group G] (r p k h x : G) (hr : r = p * k) (hc : (h * x) * k⁻¹ = k⁻¹ * (h * x)) :
     (p * h) * x = r * ((h * x) * k⁻¹) := by
   rw [hr, hc]
@@ -155,6 +204,11 @@ private theorem grp1 {G : Type} [Group G] (r p k h x : G) (hr : r = p * k) (hc :
 end UpperTheory.V.Z.Sym.So
 
 namespace UpperTheory.V.Z.Sym.So
+/- English proof (translation)
+Take `⟨k, hk, hr, hτ⟩` from `hB.finS γ (ι γ) (hι γ)`. Establish `hc : (((B.bS g : UA L 2) * x) * k⁻¹) = k⁻¹ * ((B.bS g : UA L 2) * x)` using `(((uaFacts L 2).2.2.2.1 _ (mul_mem (B.bS g).2.1 hxf) _ (inv_mem hk.1))).eq`. Establish `e1 : ((B.bS (ι γ * g) : UA L 2) * x) = (B.rS γ : UA L 2) * (((B.bS g : UA L 2) * x) * k⁻¹)`. Rewrite using `[map_mul, Subgroup.coe_mul]`. Conclude with `grp1 _ _ _ _ _ hr hc`.
+
+Establish `e2 : φ ((B.rS γ : UA L 2) * (((B.bS g : UA L 2) * x) * k⁻¹)) = φ (((B.bS g : UA L 2) * x) * k⁻¹)` using `hφ.left _ (B.rS γ).2.1 _`. Establish `e3` using `hφ.inf _ (inv_mem hk.1) ((B.bS g : UA L 2) * x)`. Rewrite `e3` using `[inv_inv]`. Rewrite using `[e1, e2, e3, rep_eq B j e γ k hτ]`.
+-/
 private theorem inS_left {L : Type} [Field L] [NumberField L] [IsCMField L] (B : Bridge L) (hB : B.Ok) (j : ℕ) (e : InfinitePlace L → ℤ)
     (U : Subgroup (UA L 2)) (φ : UA L 2 → Wt.VD (InfinitePlace L) j) (hφ : IsAF (repE j e) U φ) (x : UA L 2) (hxf : x ∈ finU L 2)
     (ι : SU B.Δ →* SA B.Δ) (hι : ∀ γ v, mt ((ι γ : DA B.Δ).1 v) = (mt (γ : DX B.Δ)).map (lmap (cv v) B.Δ)) (γ : SU B.Δ) (g : SA B.Δ) :
@@ -173,6 +227,13 @@ end UpperTheory.V.Z.Sym.So
 
 namespace UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Use `⟨fun h => φ ((b h : G) * x), ⟨hleft, fun g u => ?_⟩, fun h => hs ?_, fun g c hgc => ?_⟩` and prove the remaining obligations. Rewrite using `[hω]`. Establish `h1` using `hφ _ ((hCU u.1).1 u.2) ((b g : G) * x)`. Establish `h2 : (b g : G) * x * (x⁻¹ * (b u.1 : G) * x) = (b (g * u.1) : G) * x`. Rewrite using `[map_mul, Subgroup.coe_mul]`.
+
+Use `group`. Rewrite `h1` using `[h2]`. Simplify using `using h1`. Use `congrFun h (b.symm s)` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hP g c hgc`. Conclude with `dc_tr S U hS b x C.U hCU g h1 h2 h3 φ hφ c h4`.
+-/
 private theorem gen {Γ H G V : Type} [Group Γ] [Group H] [Group G] [AddCommGroup V] [Module ℂ V] (S U : Subgroup G) (hS : S.Normal)
     (b : H ≃* S) (x : G) (C : Base Γ H V) (hω : C.ω = 1) (hCU : ∀ g, g ∈ C.U ↔ x⁻¹ * (b g : G) * x ∈ U)
     (φ : G → V) (hφ : ∀ u ∈ U, ∀ g, φ (g * u) = φ g)
@@ -193,6 +254,9 @@ private theorem gen {Γ H G V : Type} [Group Γ] [Group H] [Group G] [AddCommGro
   · obtain ⟨h1, h2, h3, h4⟩ := hP g c hgc
     exact dc_tr S U hS b x C.U hCU g h1 h2 h3 φ hφ c h4
 
+/- English proof (translation)
+The claim follows from `(hy g).elim fun g' h => ((hC.U g).trans (Iff.of_eq (congrArg (· ∈ D.U2) h.1.symm))).trans ((hL g').trans (Iff.of_eq (congrArg (· ∈ U) h.2)))`.
+-/
 private theorem inS_cu {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (D : Dat B.Δ) (U : Subgroup (UA L 2)) (x : UA L 2) (y : DA B.Δ)
     (hy : ∀ g : SA B.Δ, ∃ g' : SA B.Δ, (g' : DA B.Δ) = y⁻¹ * g * y ∧ (B.bS g' : UA L 2) = x⁻¹ * B.bS g * x)
     (hL : ∀ g : SA B.Δ, (g : DA B.Δ) ∈ D.U2 ↔ (B.bS g : UA L 2) ∈ U) {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -211,6 +275,9 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (hB :
     (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (hF : Fit T S VL A)
 include hB hA hF
 
+/- English proof (translation)
+The claim follows from `(levG L B hB T S VL A hA hF).2.2.2.2`.
+-/
 private theorem lev5 : ∀ w (h : IsSplitAt w) (n : ℕ) (ψ : Fin n → (Kw w)ˣ →* ℂˣ) (d : Fin n → (Kv (un w))ˣ), n = 2 ∨ n = 3 →
     expo ψ (fun i => iu T w h (d i)) = expo (fun i => (ψ i).comp (iu T w h)) d :=
   (levG L B hB T S VL A hA hF).2.2.2.2
@@ -218,15 +285,34 @@ private theorem lev5 : ∀ w (h : IsSplitAt w) (n : ℕ) (ψ : Fin n → (Kw w)�
 set_option allowUnsafeReducibility true in
 attribute [local irreducible] cv Kv Ov DX KD RP SA Lsq
 
+/- English proof (translation)
+The claim follows from `(levG L B hB T S VL A hA hF).2.1`.
+-/
 private theorem lev2 : ∀ g : SA B.Δ, (g : DA B.Δ) ∈ A.dat.U2 ↔ (B.bS g : UA L 2) ∈ lev (Kall L 2) S VL :=
   (levG L B hB T S VL A hA hF).2.1
 
+/- English proof (translation)
+The claim follows from `(levG L B hB T S VL A hA hF).2.2.2.1`.
+-/
 private theorem lev4 : ∀ (g : SA B.Δ) d, A.IsElD g d ↔ OnS S (B.bS g : UA L 2) ∧
     ∀ w ∈ S, ∀ h, cLoc w (B.bS g : UA L 2) = Sig.dg fun i => iu T w h (d (un w) i) :=
   (levG L B hB T S VL A hA hF).2.2.2.1
 
 end
 
+/- English proof (translation)
+Establish `hfull : Full (Kall L 2) S` using `⟨le_rfl, fun _ _ => inf_le_right⟩`. Establish `hd : ∃ d : ∀ w : Plc L, Fin 2 → (Kw w)ˣ, ∀ w h, d w = fun i => iu T w h (SD.dS t (un w) i)` using `⟨fun w => if h : IsSplitAt w then fun i => iu T w h (SD.dS t (un w) i) else 1, fun w h => dif_pos h⟩`. Use `hd.elim fun d hd => ?_` and prove the remaining obligations. Establish `h3 : ∀ w ∈ S, cLoc w x = Sig.dg (d w)` using `fun w hw => (h2 w hw (hF.pl.split w hw)).trans (congrArg _ (hd w _).symm)`. Establish `hp` using `prodEig L 2 _ S VL hF.pl hfull d x h1 h3`.
+
+Use `⟨hp.1, fun u hu => (torUA L _ S VL hF.pl hfull u hu).imp fun c hc => ⟨hc.1, hc.2.2.2 x d h1 h3, hc.2.1, hc.2.2.1⟩, ?_⟩` and prove the remaining obligations. Use `(hp.2 V φ hφ (fun w => expo ![a w, 1] (d w)) fun w hw => ?_).trans (congrArg (· • φ) ?_)` and prove the remaining obligations. Establish `h` using `hF.pl.split w hw`. Establish `e : d w = ![iu T w h (t (un w)), (iu T w h (t (un w)))⁻¹]`. Rewrite using `[hd w h]`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Conclude with `map_inv _ _`. Rewrite using `[e]`.
+
+Use `hE w hw _ ?_` and prove the remaining obligations. Establish `hv` using `val_lt_one _ _ (hCone _ ((hF.sg _).2 ⟨w, hw, rfl⟩))`. Use `((T w h).val_le 1 (t (un w))).not` as an intermediate fact. Rewrite `this` using `[map_one, map_one, map_one, not_le, not_le]`. Conclude with `this.2 hv`.
+
+Use `Finset.prod_bij (fun w _ => un w) (fun w hw => (hF.sg _).2 ⟨w, hw, rfl⟩) (fun w hw w' hw' e => hF.pl.inj hw hw' e) (fun v hv => ((hF.sg v).1 hv).elim fun w hw => ⟨w, hw.1, hw.2⟩) fun w hw => ?_` and prove the remaining obligations. Establish `h` using `hF.pl.split w hw`. Rewrite using `[hd w h, lev5 hB T S VL A hA hF w h 2 _ _ (.inl rfl), hab w hw h]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private theorem op0 {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (hB : B.Ok) (T : Spl B) (S : Finset (Plc L))
     (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (hF : Fit T S VL A) (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hab : FitCh T S a b)
     {V : Type} [AddCommGroup V] [Module ℂ V] (φ : UA L 2 → V) (hφ : ∀ u ∈ lev (Kall L 2) S VL, ∀ g, φ (g * u) = φ g)
@@ -265,6 +351,9 @@ private theorem op0 {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Brid
     funext i
     fin_cases i <;> rfl
 
+/- English proof (translation)
+The claim follows from `have h := (lev4 hB T S VL A hA hF g _).1 hEl ⟨h.1, op0 hB T S VL A hA hF a b hab φ hφ hE t _ hCone h.1 h.2⟩`.
+-/
 private theorem inS_op {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (hB : B.Ok) (T : Spl B) (S : Finset (Plc L))
     (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (hF : Fit T S VL A) (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hab : FitCh T S a b)
     {V : Type} [AddCommGroup V] [Module ℂ V] (φ : UA L 2 → V) (hφ : ∀ u ∈ lev (Kall L 2) S VL, ∀ g, φ (g * u) = φ g)
@@ -275,6 +364,9 @@ private theorem inS_op {L : Type} [Field L] [NumberField L] [IsCMField L] {B : B
   have h := (lev4 hB T S VL A hA hF g _).1 hEl
   ⟨h.1, op0 hB T S VL A hA hF a b hab φ hφ hE t _ hCone h.1 h.2⟩
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Conclude with `inS_left B hB j e U φ hφ x hxf ι hι γ g`.
+-/
 private theorem inS_left' {L : Type} [Field L] [NumberField L] [IsCMField L] (B : Bridge L) (hB : B.Ok) (j : ℕ) (e : InfinitePlace L → ℤ)
     (U : Subgroup (UA L 2)) (φ : UA L 2 → Wt.VD (InfinitePlace L) j) (hφ : IsAF (repE j e) U φ) (x : UA L 2) (hxf : x ∈ finU L 2)
     (ι : SU B.Δ →* SA B.Δ) (hι : ∀ γ v, mt ((ι γ : DA B.Δ).1 v) = (mt (γ : DX B.Δ)).map (lmap (cv v) B.Δ))
@@ -283,6 +375,9 @@ private theorem inS_left' {L : Type} [Field L] [NumberField L] [IsCMField L] (B 
   subst hW
   exact inS_left B hB j e U φ hφ x hxf ι hι γ g
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `h` using `inS_op hB T S VL A hA hF a b hab φ hφ hE t g hCone hEl`. Conclude with `⟨off_on_comm S x _ hxf hxo h.1, h.2⟩`.
+-/
 private theorem inS_p {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (hB : B.Ok) (T : Spl B) (S : Finset (Plc L))
     (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (hF : Fit T S VL A) (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hab : FitCh T S a b)
     {V : Type} [AddCommGroup V] [Module ℂ V] (φ : UA L 2 → V) (hφ : ∀ u ∈ lev (Kall L 2) S VL, ∀ g, φ (g * u) = φ g)
@@ -295,6 +390,9 @@ private theorem inS_p {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Br
   have h := inS_op hB T S VL A hA hF a b hab φ hφ hE t g hCone hEl
   exact ⟨off_on_comm S x _ hxf hxo h.1, h.2⟩
 
+/- English proof (translation)
+The claim follows from `(So.translate L S VL hF.pl _ (repE j e) φ hφ hφ0).elim fun x hx => hx.2.2.elim fun s hs => (hB.conj x hx.1).elim fun y hy => ⟨y, fun v hv => ((hF.sg v).1 hv).elim fun w hw => hw.2 ▸ hy.1 _ fun u hu => hx.2.1 w hw.1 u hu, fun ch C hC hW => (gen (H := ↥(SA B.Δ)) (G := ↥(UA L 2)) (f …`.
+-/
 private theorem automorphic_in_spherical_level {L : Type} [Field L] [NumberField L] [IsCMField L] {B : Bridge L} (hB : B.Ok) (T : Spl B) (S : Finset (Plc L))
     (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (hF : Fit T S VL A) (j : ℕ) (e : InfinitePlace L → ℤ)
     (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hab : FitCh T S a b)
@@ -315,6 +413,9 @@ end UpperTheory.V.Z.Sym.So
 set_option allowUnsafeReducibility true in
 attribute [local irreducible] cv Kv Ov DX KD RP SA Lsq
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ hB T S VL A hA hF j e a b hab φ h0 hφ hE` and use `automorphic_in_spherical_level hB T S VL A hA hF j e a b hab φ h0 hφ hE`.
+-/
 theorem UpperTheory.V.Z.Sym.So.inS :
     UpperTheory.V.Z.Sym.So.InS := fun _ _ _ _ _ hB T S VL A hA hF j e a b hab φ h0 hφ hE => automorphic_in_spherical_level hB T S VL A hA hF j e a b hab φ h0 hφ hE
 

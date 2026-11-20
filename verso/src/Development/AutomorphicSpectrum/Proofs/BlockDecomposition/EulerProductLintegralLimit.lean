@@ -15,6 +15,31 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, fun h => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => change σ 0 = 0`.
+
+Simplify using the standard rewrite rules. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => change σ 1 = 1`. Simplify using the standard rewrite rules.
+
+Consider the case `succ j => change σ 0 = 0`. Simplify using the standard rewrite rules. Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`.
+
+Proceed by induction on `j using Fin.cases with`. Consider the case `zero => change σ 1 = 1`. Simplify using the standard rewrite rules. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => change σ 0 = 0`. Simplify using the standard rewrite rules. Consider the case `succ j => change σ 0 = 0`. Simplify using the standard rewrite rules. Consider the case `succ i`.
+
+Proceed by induction on `j using Fin.cases with`. Consider the case `zero => change σ 0 = 0`. Simplify using the standard rewrite rules. Consider the case `succ j`. Proceed by induction on `j using Fin.cases with`.
+
+Consider the case `zero => change σ 0 = 0`. Simplify using the standard rewrite rules. Consider the case `succ j => exact hJ.1 i j`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Establish `hrow : ∀ i, ∑ j, hypOne J i j * v j = 0` using `fun i => congrFun hv0 i`.
+
+Establish `h1 : v 1 = 0`. Use `hrow 0` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify `this` using `[hypOne_zero_rest, hypOne_zero_zero, hypOne_zero_one]`. Establish `h0 : v 0 = 0`.
+
+Use `hrow 1` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify `this` using `[hypOne_one_rest, hypOne_one_zero, hypOne_one_one]`. Establish `ht : J.mulVec (fun j : Fin M => v j.succ.succ) = 0`. Use function extensionality and compare the values at `i`.
+
+Use `hrow i.succ.succ` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Simplify `this` using `[Matrix.mulVec, dotProduct, hypOne_rest_rest, hypOne_rest_zero, hypOne_rest_one]`. Establish `hz : (fun j : Fin M => v j.succ.succ) = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hJ.2 (Matrix.exists_mulVec_eq_zero_iff.1 ⟨_, hne, ht⟩)`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact h0`.
+
+Consider the case `succ i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => exact h1`. Consider the case `succ i => exact congrFun hz i`.
+-/
 theorem isHermND_hypOne (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) :
     IsHermND σ (hypOne J) := by
   refine ⟨fun i j => ?_, fun h => ?_⟩
@@ -71,6 +96,23 @@ theorem isHermND_hypOne (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin 
 
 end Alg
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : LocallyCompactSpace (Fv F v) := inferInstance`. Use `haveI : SecondCountableTopology (Fv F v) := inferInstance`. Use `haveI : T2Space (Fv F v) := inferInstance`. Take `⟨-, -, -, t2, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`.
+
+Use `haveI := t2`. Take `⟨-, lc, sc, -, -, hact⟩` from `GlobalTheory.CompanionTheory.SW.TopH.topH_props F E σ hσ (M + 2) (hypOne J) (isHermND_hypOne σ J hJ) (Fv F v)`. Use `haveI := lc`. Use `haveI := sc`. Use `haveI := GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_fv F E σ hσ 1 (M + 2) v`.
+
+Establish `hc` using `(hact 1).1`. Establish `hlat` using `(GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b 1 (M + 2)).2.2.2.1 v`. Establish `hclopen : IsClopen (latV b v : Set (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E))` using `⟨hlat.1.isClosed, hlat.2⟩`. Establish `hcl : IsClosed {g : HA (Fv F v) σ (hypOne J) | latStab σ (hypOne J) b v g}`. Establish `hE : {g : HA (Fv F v) σ (hypOne J) | latStab σ (hypOne J) b v g} = ⋂ x : Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E, {g | actW (Fv F v) σ (hypOne J) g x ∈ latV b v ↔ x ∈ latV b v}`.
+
+Use extensionality with `g`. Simplify using `[latStab]`. Rewrite using `[hE]`. Use `isClosed_iInter fun x => ?_` and prove the remaining obligations. Establish `hcx : Continuous fun g : HA (Fv F v) σ (hypOne J) => actW (Fv F v) σ (hypOne J) g x` using `hc.comp (continuous_id.prodMk continuous_const)`.
+
+Establish `hp` using `hclopen.preimage hcx`. Distinguish the cases in `hx : x ∈ (latV b v : Set (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E))`. Establish `hs : {g : HA (Fv F v) σ (hypOne J) | actW (Fv F v) σ (hypOne J) g x ∈ latV b v ↔ x ∈ latV b v} = (fun g => actW (Fv F v) σ (hypOne J) g x) ⁻¹' latV b v`. Use extensionality with `g`. Simplify using `[hx]`.
+
+Rewrite using `[hs]`. Conclude with `hp.1`. Establish `hs : {g : HA (Fv F v) σ (hypOne J) | actW (Fv F v) σ (hypOne J) g x ∈ latV b v ↔ x ∈ latV b v} = ((fun g => actW (Fv F v) σ (hypOne J) g x) ⁻¹' latV b v)ᶜ`. Use extensionality with `g`. Simplify using `[hx]`.
+
+Rewrite using `[hs]`. Conclude with `hp.compl.1`. Establish `hcont : Continuous fun g : HA (Fv F v) σ (hypOne J) => actW (Fv F v) σ (hypOne J) g (e0 _ M)` using `hc.comp (continuous_id.prodMk continuous_const)`. Establish `him : IsSigmaCompact (primV σ J b v)`. Conclude with `(isSigmaCompact_univ.of_isClosed_subset hcl (Set.subset_univ _)).image hcont`.
+
+Take `⟨K, hK, hU⟩` from `him`. Rewrite using `[← hU]`. Conclude with `MeasurableSet.iUnion fun n => (hK n).measurableSet`.
+-/
 theorem measurableSet_primV (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
@@ -122,6 +164,15 @@ theorem measurableSet_primV (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   rw [← hU]
   exact MeasurableSet.iUnion fun n => (hK n).measurableSet
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ d b S Ψinf Ψ hΨinf hΨ`. Take `⟨hpi, hpf, hpv, -⟩` from `GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b 1 (M + 2)`. Use `haveI := GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_af F E σ hσ 1 (M + 2)`. Use `haveI := GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_ainf F E σ hσ 1 (M + 2)`. Use `haveI : ∀ v, BorelSpace (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) := fun v => GlobalTheory.CompanionTheory.SW.PureMeas.borelSpace_fv F E σ hσ 1 (M + 2) v`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F`. Establish `hset : MeasurableSet {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v}`. Establish `hE : {y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E | ∀ v, v ∉ S → projV v (projFin y) ∈ primV σ J b v} = ⋂ v, ⋂ _ : v ∉ S, (fun y : Fin 1 → Fin (M + 2) → AF F ⊗[F] E => projV v (projFin y)) ⁻¹' primV σ J b v`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hE]`. Use `MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ => ?_` and prove the remaining obligations. Conclude with `((hpv v).comp hpf).measurable (measurableSet_primV F E σ hσ M J hJ d b v)`. Unfold `purePr`. Use `Measurable.indicator ?_ hset` and prove the remaining obligations.
+
+Use `(hΨinf.comp hpi.measurable).mul ?_` and prove the remaining obligations. Use `Finset.measurable_prod _ fun v _ => ?_` and prove the remaining obligations. Conclude with `(hΨ v).comp ((hpv v).comp hpf).measurable`.
+-/
 theorem measurable_purePr : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (S : Finset (HeightOneSpectrum (𝓞 F))) (Ψinf : (Fin 1 → Fin (M + 2) → Ainf F ⊗[F] E) → ℝ≥0∞) (Ψ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin 1 → Fin (M + 2) → Fv F v ⊗[F] E) → ℝ≥0∞), Measurable Ψinf → (∀ v, Measurable (Ψ v)) → Measurable (purePr σ J b S Ψinf Ψ) := by
   intro F E _ _ _ _ _ σ hσ M J hJ d b S Ψinf Ψ hΨinf hΨ
   obtain ⟨hpi, hpf, hpv, -⟩ := GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b 1 (M + 2)

@@ -35,6 +35,9 @@ def ioL (L : Lattice (O := O) ρ) (ϖ : O) (r : ℕ) :
       · rw [h, inv_zero, zero_mul, zero_pow hr.ne', zero_smul]; exact L.T.zero_mem
     · rw [inv_mul_cancel₀ h, one_pow, one_smul]; exact y.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ioL_mk (L : Lattice (O := O) ρ) (ϖ : O) (r : ℕ) (y : ↥L.T) :
     ioL L ϖ r (Submodule.Quotient.mk y) =
       Submodule.Quotient.mk ((algebraMap O LL ϖ)⁻¹ ^ r • (y : V)) := rfl

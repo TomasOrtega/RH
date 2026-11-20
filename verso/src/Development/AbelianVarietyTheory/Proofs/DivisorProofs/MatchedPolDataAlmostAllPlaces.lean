@@ -28,19 +28,33 @@ def tensL {κ : Type} (v : Pl F) (r : (κ → AF F) → ℂ) : ((κ → Fv F v) 
   map_add' _ _ := funext fun _ => add_mul _ _ _
   map_smul' _ _ := funext fun _ => mul_assoc _ _ _
 
+/- English proof (translation)
+Simplify using `[Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`.
+-/
 theorem lc_apply_end {ι M : Type} [AddCommGroup M] [Module ℂ M] (T : ι → Module.End ℂ M) (z : ι →₀ ℂ) (x : M) :
     Finsupp.linearCombination ℂ T z x = Finsupp.linearCombination ℂ (fun i => T i x) z := by
   simp [Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_apply]`.
+-/
 theorem lc_apply_fun {ι A : Type} (T : ι → A → ℂ) (z : ι →₀ ℂ) (x : A) :
     Finsupp.linearCombination ℂ T z x = Finsupp.linearCombination ℂ (fun i => T i x) z := by
   simp [Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[Finsupp.linearCombination_apply]`. Conclude with `Submodule.finsuppSum_mem _ _ _ _ fun i _ => N.smul_mem _ (hf i)`.
+-/
 theorem lc_mem {ι M : Type} [AddCommGroup M] [Module ℂ M] (N : Submodule ℂ M) (f : ι → M) (hf : ∀ i, f i ∈ N)
     (z : ι →₀ ℂ) : Finsupp.linearCombination ℂ f z ∈ N := by
   rw [Finsupp.linearCombination_apply]
   exact Submodule.finsuppSum_mem _ _ _ _ fun i _ => N.smul_mem _ (hf i)
 
+/- English proof (translation)
+Introduce `r hr`. Rewrite using `[lc_apply_end]`. Express the relevant statement in the definitionally equal form `_ = tensL v r (Finsupp.linearCombination ℂ φs z)`. Rewrite using `[Finsupp.apply_linearCombination]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `i`. Conclude with `h i r hr`.
+-/
 theorem acts_lc {κ : Type} [Fintype κ] {ι : Type} (v : Pl F) (T : ι → Module.End ℂ ((κ → AF F) → ℂ))
     (φ : (κ → Fv F v) → ℂ) (φs : ι → (κ → Fv F v) → ℂ) (h : ∀ i, Acts (evFin F v) (T i) φ (φs i)) (z : ι →₀ ℂ) :
     Acts (evFin F v) (Finsupp.linearCombination ℂ T z) φ (Finsupp.linearCombination ℂ φs z) := by
@@ -52,6 +66,11 @@ theorem acts_lc {κ : Type} [Fintype κ] {ι : Type} (v : Pl F) (T : ι → Modu
   funext i
   exact h i r hr
 
+/- English proof (translation)
+Introduce `u hu`. Establish `e : mat (y * x) - 1 = (mat y - 1) * mat x + (mat x - 1)`. Establish `: mat (y * x) = mat y * mat x` using `rfl`. Rewrite using `[this]`. Use `noncomm_ring`.
+
+Rewrite using `[e, smul_add, ← Matrix.smul_mul, hy u hu, hx u hu, Matrix.zero_mul, add_zero]`.
+-/
 theorem mul_mem_UAt {n : ℕ} (W : Spc F E n) (v : Pl F) {y x : UA σ W.J} (hy : y ∈ UAt σ W (evFin F v))
     (hx : x ∈ UAt σ W (evFin F v)) : y * x ∈ UAt σ W (evFin F v) := by
   intro u hu
@@ -60,6 +79,13 @@ theorem mul_mem_UAt {n : ℕ} (W : Spc F E n) (v : Pl F) {y x : UA σ W.J} (hy :
     rw [this]; noncomm_ring
   rw [e, smul_add, ← Matrix.smul_mul, hy u hu, hx u hu, Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hx`. Take `⟨φ₁, hφ₁, hact⟩` from `hOp (φ v) (hφ v)`.
+
+Establish `hF : GlobalTheory.BigNZ.Fam M φ` using `⟨hφ, hvac⟩`. Establish `e` using `hF.acts hG f (hφ v) hact`. Rewrite `e` using `[Function.update_eq_self]`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨f, hf, _, (hF.update v hφ₁).1, (hF.update v hφ₁).2, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul t x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ t hx`.
+-/
 theorem polData_stable {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} (B : Base F E)
     (hG : M.IsGood B.ψ) (v : Pl F) (Op : Module.End ℂ ((Fin n × Fin d → AF F) → ℂ))
     (hOp : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∃ φ₁ ∈ SB (Fin n × Fin d → Fv F v), Acts (evFin F v) Op φ φ₁) :
@@ -81,6 +107,21 @@ theorem polData_stable {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
   {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hx`. Establish `hF : GlobalTheory.BigNZ.Fam G.M φ` using `⟨hφ, hvac⟩`.
+
+Establish `hfin` using `Filter.eventually_cofinite.1 hvac`. Use `⟨X.T ∪ hfin.toFinset, fun v hv Op χ hχ hact hp => ?_⟩` and prove the remaining obligations. Establish `hφv : φ v = G.M.vac v`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc))`.
+
+Establish `e` using `hF.acts hM.triple.geo.hM f (hφ v) (hφv ▸ hact)`. Rewrite `e` using `[Function.update_eq_self]`. Rewrite using `[e]`. Use `⟨insert v (X.T ∪ hfin.toFinset), fun x hx => Finset.mem_insert_of_mem (Finset.mem_union_left _ hx), 1, 0, fun _ => f, fun _ => Function.update φ v χ, Fin.elim0, Fin.elim0, fun _ => ⟨hf, (hF.update v hχ).1, fun u hu => ?_⟩, fun j => j.elim0, by simp, by simp, ?_⟩` and prove the remaining obligations. Establish `hne : u ≠ v` using `fun h => hu (h ▸ Finset.mem_insert_self _ _) show Function.update φ v χ u = _`.
+
+Rewrite using `[Function.update_of_ne hne]`. Assume the negation of the conclusion as `hc`. Conclude with `hu (Finset.mem_insert_of_mem (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc)))`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, Finset.univ_eq_empty, Finset.sum_empty]`. Rewrite using `[(PiTensorProduct.tprod ℂ).map_coord_zero (⟨v, Finset.mem_insert_self _ _⟩ : ↥(insert v (X.T ∪ hfin.toFinset))) (by simp [hp]), TensorProduct.tmul_zero]`.
+
+Consider the case `zero`. Conclude with `⟨∅, fun v _ Op χ _ _ _ => by`. Simplify using `using (GlobalTheory.ThK.DiffsMaps.polMatch_zero_zero (B := B) (G := G) (X := X) (R := R) (Rf := Rf))⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨S₁, h₁⟩` from `hx`.
+
+Take `⟨S₂, h₂⟩` from `hy`. Use `⟨S₁ ∪ S₂, fun v hv Op χ hχ hact hp => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hv`. Use `GlobalTheory.PolMatchLin.polMatch_smul_add _ _ _ _ _ _ _ _ _ _ _ _ hM _ _ _ _ 1 (h₁ v hv.1 Op χ hχ hact hp) (h₂ v hv.2 Op χ hχ hact hp)` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `smul t x _ hx`. Take `⟨S, h⟩` from `hx`. Use `⟨S, fun v hv Op χ hχ hact hp => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.PolMatchLin.polMatch_smul_add _ _ _ _ _ _ _ _ _ _ _ _ hM _ _ _ _ t (h v hv Op χ hχ hact hp) (GlobalTheory.ThK.DiffsMaps.polMatch_zero_zero (B := B) (G := G) (X := X) (R := R) (Rf := Rf))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem polMatch_zero_left (hM : IsMatched B G X om om' R Rf) : ∀ Φ ∈ PolData B G.M, ∃ S : Finset (Pl F), ∀ v ∉ S,
     ∀ (Op : Module.End ℂ ((Fin a × Fin (a + a') → AF F) → ℂ)) (χ : (Fin a × Fin (a + a') → Fv F v) → ℂ),
       χ ∈ SB _ → Acts (evFin F v) Op (G.M.vac v) χ → Rf.p v χ = 0 → PolMatch B G X R Rf (Op Φ) 0 := by
@@ -125,6 +166,21 @@ theorem polMatch_zero_left (hM : IsMatched B G X om om' R Rf) : ∀ Φ ∈ PolDa
       (GlobalTheory.ThK.DiffsMaps.polMatch_zero_zero (B := B) (G := G) (X := X) (R := R) (Rf := Rf))
     simpa using this
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hx`. Establish `hF : GlobalTheory.BigNZ.Fam G.M' φ` using `⟨hφ, hvac⟩`.
+
+Establish `hfin` using `Filter.eventually_cofinite.1 hvac`. Use `⟨X.T ∪ hfin.toFinset, fun v hv Op χ hχ hact hp => ?_⟩` and prove the remaining obligations. Establish `hφv : φ v = G.M'.vac v`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc))`.
+
+Establish `e` using `hF.acts hM.triple.geo.hM' f (hφ v) (hφv ▸ hact)`. Rewrite `e` using `[Function.update_eq_self]`. Rewrite using `[e]`. Use `⟨insert v (X.T ∪ hfin.toFinset), fun x hx => Finset.mem_insert_of_mem (Finset.mem_union_left _ hx), 0, 1, Fin.elim0, Fin.elim0, fun _ => f, fun _ => Function.update φ v χ, fun i => i.elim0, fun _ => ⟨hf, (hF.update v hχ).1, fun u hu => ?_⟩, by simp, by simp, ?_⟩` and prove the remaining obligations. Establish `hne : u ≠ v` using `fun h => hu (h ▸ Finset.mem_insert_self _ _) show Function.update φ v χ u = _`.
+
+Rewrite using `[Function.update_of_ne hne]`. Assume the negation of the conclusion as `hc`. Conclude with `hu (Finset.mem_insert_of_mem (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc)))`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, Finset.univ_eq_empty, Finset.sum_empty]`. Rewrite using `[(PiTensorProduct.tprod ℂ).map_coord_zero (⟨v, Finset.mem_insert_self _ _⟩ : ↥(insert v (X.T ∪ hfin.toFinset))) (by simp [hp]), TensorProduct.tmul_zero]`.
+
+Consider the case `zero`. Conclude with `⟨∅, fun v _ Op χ _ _ _ => by`. Simplify using `using (GlobalTheory.ThK.DiffsMaps.polMatch_zero_zero (B := B) (G := G) (X := X) (R := R) (Rf := Rf))⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨S₁, h₁⟩` from `hx`.
+
+Take `⟨S₂, h₂⟩` from `hy`. Use `⟨S₁ ∪ S₂, fun v hv Op χ hχ hact hp => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hv`. Use `GlobalTheory.PolMatchLin.polMatch_smul_add _ _ _ _ _ _ _ _ _ _ _ _ hM _ _ _ _ 1 (h₁ v hv.1 Op χ hχ hact hp) (h₂ v hv.2 Op χ hχ hact hp)` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `smul t x _ hx`. Take `⟨S, h⟩` from `hx`. Use `⟨S, fun v hv Op χ hχ hact hp => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.PolMatchLin.polMatch_smul_add _ _ _ _ _ _ _ _ _ _ _ _ hM _ _ _ _ t (h v hv Op χ hχ hact hp) (GlobalTheory.ThK.DiffsMaps.polMatch_zero_zero (B := B) (G := G) (X := X) (R := R) (Rf := Rf))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem polMatch_zero_right (hM : IsMatched B G X om om' R Rf) : ∀ Φ' ∈ PolData B G.M', ∃ S : Finset (Pl F), ∀ v ∉ S,
     ∀ (Op : Module.End ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ)) (χ : (Fin a' × Fin (a + a') → Fv F v) → ℂ),
       χ ∈ SB _ → Acts (evFin F v) Op (G.M'.vac v) χ → Rf.p' v χ = 0 → PolMatch B G X R Rf 0 (Op Φ') := by
@@ -169,6 +225,13 @@ theorem polMatch_zero_right (hM : IsMatched B G X om om' R Rf) : ∀ Φ' ∈ Pol
       (GlobalTheory.ThK.DiffsMaps.polMatch_zero_zero (B := B) (G := G) (X := X) (R := R) (Rf := Rf))
     simpa using this
 
+/- English proof (translation)
+Establish `hI` using `GlobalTheory.T.matched_triple_inner_unitary_compatible hK _ _ _ _ _ _ _ _ _ _ _ _ hM`. Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero`. Establish `h0` using `(hI 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 0).1`. Simplify using `only [add_zero] at h0`.
+
+Simplify using `using h0`. Consider the case `add z₁ z₂ h₁ h₂`. Rewrite using `[map_add, map_add, (hI _ (lc_mem _ _ hΨ z₁) _ (lc_mem _ _ hΨ z₂) 0).1, h₁, h₂]`. Consider the case `single i t`. Simplify using `only [Finsupp.linearCombination_single]`.
+
+Conclude with `(hI _ (hΨ i) _ (hΨ i) t).2`.
+-/
 theorem I_lc (hK : KP) (hM : IsMatched B G X om om' R Rf) {ι : Type} (Ψ : ι → (Fin a × Fin (a + a') → AF F) → ℂ)
     (hΨ : ∀ i, Ψ i ∈ PolData B G.M) (z : ι →₀ ℂ) :
     G.M.I om (Finsupp.linearCombination ℂ Ψ z) = Finsupp.linearCombination ℂ (fun i => G.M.I om (Ψ i)) z := by
@@ -184,6 +247,13 @@ theorem I_lc (hK : KP) (hM : IsMatched B G X om om' R Rf) {ι : Type} (Ψ : ι �
     simp only [Finsupp.linearCombination_single]
     exact (hI _ (hΨ i) _ (hΨ i) t).2
 
+/- English proof (translation)
+Establish `hI` using `GlobalTheory.T.matched_pair_theta_local_global hK _ _ _ _ _ _ _ _ _ _ _ _ hM`. Establish `h0 : G.M'.I om' 0 = 0`. Use `hI 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1` as an intermediate fact. Simplify using `only [one_smul, add_zero] at this`. Simplify using `using this`.
+
+Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simpa using h0`. Consider the case `add z₁ z₂ h₁ h₂`. Use `hI _ (lc_mem _ _ hΨ z₁) _ (lc_mem _ _ hΨ z₂) 1` as an intermediate fact. Simplify using `only [one_smul] at this`.
+
+Rewrite using `[map_add, map_add, this, h₁, h₂]`. Consider the case `single i t`. Simplify using `only [Finsupp.linearCombination_single]`. Use `hI 0 (Submodule.zero_mem _) _ (hΨ i) t` as an intermediate fact. Rewrite `this` using `[zero_add, h0, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem I'_lc (hK : KP) (hM : IsMatched B G X om om' R Rf) {ι : Type} (Ψ : ι → (Fin a' × Fin (a + a') → AF F) → ℂ)
     (hΨ : ∀ i, Ψ i ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) (z : ι →₀ ℂ) :
     G.M'.I om' (Finsupp.linearCombination ℂ Ψ z) = Finsupp.linearCombination ℂ (fun i => G.M'.I om' (Ψ i)) z := by
@@ -207,6 +277,57 @@ end GlobalTheory.ThK.TMapGood
 
 open GlobalTheory.ThK.TMapGood in
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM c Φ hΦ Φ' hΦ'`. Take `⟨S₁, hS₁⟩` from `polMatch_zero_left hM Φ hΦ`. Take `⟨S₂, hS₂⟩` from `polMatch_zero_right hM Φ' hΦ'.1`. Use `⟨X.T ∪ S₁ ∪ S₂, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, not_or] at hv`.
+
+Take `⟨⟨hvT, hv1⟩, hv2⟩` from `hv`. Establish `hG` using `hM.triple.geo.hM`. Establish `hG'` using `hM.triple.geo.hM'`. Establish `hAE` using `GlobalTheory.T.theta_action_exists hK.base`. Establish `ex` using `(hAE F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hM.triple) v).1`.
+
+Establish `ex'` using `(hAE F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hM.triple) v).1`. Establish `h1V` using `GlobalTheory.ThK.DiffsMaps.one_mem_UAt (σ := σ) G.V v`. Establish `h1V'` using `GlobalTheory.ThK.DiffsMaps.one_mem_UAt (σ := σ) G.V' v`. Establish `h1W` using `GlobalTheory.ThK.DiffsMaps.one_mem_UAt (σ := σ) G.W v`. Use `choose! L hL using fun y (hy : y ∈ UAt σ G.W (evFin F v)) φ (hφ : φ ∈ SB (Fin a × Fin (a + a') → Fv F v)) => (ex 1 h1V y hy φ hφ).exists`.
+
+Use `choose! L' hL' using fun y (hy : y ∈ UAt σ G.W (evFin F v)) φ (hφ : φ ∈ SB (Fin a' × Fin (a + a') → Fv F v)) => (ex' 1 h1V' y hy φ hφ).exists`. Take `⟨Rw, hRw0, hRw⟩` from `GlobalTheory.RestWitness.exists_rest (Fin a × Fin (a + a')) v`. Establish `hvac : G.M.vac v ∈ SB _` using `(hG.vac v).1`. Establish `hvac' : G.M'.vac v ∈ SB _` using `(hG'.vac v).1`. Establish `tensEq : ∀ y ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), om (1, y) (tensL v Rw φ) = tensL v Rw (L y φ)` using `fun y hy φ hφ => (hL y hy φ hφ).2 Rw (hRw φ hφ)`.
+
+Establish `uniq : ∀ y ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ ψ, om (1, y) (tensL v Rw φ) = tensL v Rw ψ → L y φ = ψ` using `fun y hy φ hφ ψ e => GlobalTheory.InertAvgDual.eq_of_tens_eq v hRw0 (hRw _ hvac).1 ((tensEq y hy φ hφ).symm.trans e)`. Establish `Lcomp : ∀ y ∈ UAt σ G.W (evFin F v), ∀ x ∈ UAt σ G.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), L (y * x) φ = L y (L x φ)` using `fun y hy x hx φ hφ => by`. Use `uniq _ (mul_mem_UAt G.W v hy hx) φ hφ _ ?_` and prove the remaining obligations. Rewrite using `[show ((1 : UA σ G.V.J), y * x) = (1, y) * (1, x) by simp, map_mul, Module.End.mul_apply, tensEq x hx φ hφ, tensEq y hy _ (hL x hx φ hφ).1]`. Establish `Lone : ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), L 1 φ = φ` using `fun φ hφ => by`.
+
+Use `uniq _ h1W φ hφ _ ?_` and prove the remaining obligations. Rewrite using `[show ((1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Establish `Llin : ∀ y ∈ UAt σ G.W (evFin F v), ∀ {ι : Type} (f : ι → (Fin a × Fin (a + a') → Fv F v) → ℂ), (∀ i, f i ∈ SB _) → ∀ z : ι →₀ ℂ, L y (Finsupp.linearCombination ℂ f z) = Finsupp.linearCombination ℂ (fun i => L y (f i)) z`. Introduce `y hy ι f hf z`. Use `uniq y hy _ (lc_mem _ _ hf z) _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.apply_linearCombination, Finsupp.apply_linearCombination, Finsupp.apply_linearCombination]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `tensEq y hy _ (hf i)`. Use `set U := UAt σ G.W (evFin F v) with hU`.
+
+Set `g : U → (Fin a × Fin (a + a') → Fv F v) → ℂ` to `fun x => L x.1 (G.M.vac v)`. Set `g' : U → (Fin a' × Fin (a + a') → Fv F v) → ℂ` to `fun x => L' x.1 (G.M'.vac v)`. Establish `hg : ∀ x, g x ∈ SB _` using `fun x => (hL x.1 x.2 _ hvac).1`. Establish `hg' : ∀ x, g' x ∈ SB _` using `fun x => (hL' x.1 x.2 _ hvac').1`. Set `π : (U →₀ ℂ) →ₗ[ℂ] Rf.Pi v` to `Rf.p v ∘ₗ Finsupp.linearCombination ℂ g`.
+
+Set `π' : (U →₀ ℂ) →ₗ[ℂ] Rf.Pi v` to `Rf.p' v ∘ₗ Finsupp.linearCombination ℂ g'`. Set `fd : UA σ G.W.J → ℂ` to `fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h`. Set `ρ : (U →₀ ℂ) →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `Finsupp.linearCombination ℂ (fun x : U => fun h => fd (h * x.1))`. Establish `sph` using `hM.fin.sph v hvT`. Establish `eππ : ∀ z, π' z = π z` using `fun z => by`.
+
+Simplify using `only [π, π', LinearMap.comp_apply, Finsupp.apply_linearCombination]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Conclude with `(hM.fin.equiv v x.1 x.2 _ hvac _ hvac' _ (hg x) _ (hg' x) (hL x.1 x.2 _ hvac).2 (hL' x.1 x.2 _ hvac').2 sph.1).symm`. Set `sh : ∀ y ∈ U, U → U` to `fun y hy x => ⟨y * x.1, mul_mem_UAt G.W v hy x.2⟩`.
+
+Establish `shift : ∀ y (hy : y ∈ U), ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (1, y)) φ φ₁ → ∀ z, π z = Rf.p v φ → π (Finsupp.mapDomain (sh y hy) z) = Rf.p v φ₁`. Introduce `y hy φ hφ φ₁ hφ₁ hact z hz`. Establish `hχ` using `lc_mem _ _ hg z`. Take `⟨φ', hφ', e'⟩ : Rf.p v φ ∈ (SB _).map (Rf.p' v)` from `hM.fin.onto' v ▸ Submodule.mem_top`. Establish `a1` using `hM.fin.equiv v y hy φ hφ φ' hφ' φ₁ hφ₁ _ (hL' y hy φ' hφ').1 hact (hL' y hy φ' hφ').2 e'.symm`.
+
+Establish `a2` using `hM.fin.equiv v y hy _ hχ φ' hφ' _ (hL y hy _ hχ).1 _ (hL' y hy φ' hφ').1 (hL y hy _ hχ).2 (hL' y hy φ' hφ').2 (hz.trans e'.symm)`. Simplify using `only [π, LinearMap.comp_apply, Finsupp.linearCombination_mapDomain]`. Rewrite using `[a1, ← a2, Llin y hy g hg z]`. Use `congrArg (fun f => Rf.p v (Finsupp.linearCombination ℂ f z)) (funext fun x => ?_)` and prove the remaining obligations. Conclude with `Lcomp y hy x.1 x.2 _ hvac`.
+
+Establish `πone : π (Finsupp.single ⟨1, h1W⟩ 1) = Rf.p v (G.M.vac v)`. Simplify using `only [π, LinearMap.comp_apply, Finsupp.linearCombination_single, one_smul, g]`. Rewrite using `[Lone _ hvac]`. Establish `hsurj : Function.Surjective π`. Break down `hM.fin.irred v (LinearMap.range π) (fun y hy φ hφ φ₁ hφ₁ hact hm => by` into its components or cases.
+
+Take `⟨z, hz⟩` from `LinearMap.mem_range.1 hm`. Conclude with `⟨_, shift y hy φ hφ φ₁ hφ₁ hact z hz⟩) with h | h`. It suffices to derive a contradiction. Establish `: π (Finsupp.single ⟨1, h1W⟩ 1) ∈ LinearMap.range π` using `LinearMap.mem_range_self _ _`. Rewrite `this` using `[h, πone, Submodule.mem_bot]`.
+
+Conclude with `sph.2 this`. Conclude with `LinearMap.range_eq_top.1 h`. Establish `hker : ∀ z, π z = 0 → ρ z = 0`. Introduce `z hz`. Establish `hχ0 : Rf.p v (Finsupp.linearCombination ℂ g z) = 0` using `hz`.
+
+Establish `hχ0' : Rf.p' v (Finsupp.linearCombination ℂ g' z) = 0` using `(eππ z).trans hz`. Establish `hOp : Acts (evFin F v) (Finsupp.linearCombination ℂ (fun x : U => om (1, x.1)) z) (G.M.vac v) (Finsupp.linearCombination ℂ g z)` using `acts_lc v (fun x : U => om (1, x.1)) (G.M.vac v) g (fun x => (hL x.1 x.2 _ hvac).2) z`. Establish `hOp' : Acts (evFin F v) (Finsupp.linearCombination ℂ (fun x : U => om' (1, x.1)) z) (G.M'.vac v) (Finsupp.linearCombination ℂ g' z)` using `acts_lc v (fun x : U => om' (1, x.1)) (G.M'.vac v) g' (fun x => (hL' x.1 x.2 _ hvac').2) z`. Establish `m1` using `hS₁ v hv1 _ _ (lc_mem _ _ hg z) hOp hχ0`. Establish `m2` using `hS₂ v hv2 _ _ (lc_mem _ _ hg' z) hOp' hχ0'`.
+
+Establish `hF` using `GlobalTheory.T.theta_factorization hK F E σ B a a' G X om om' R Rf hM`. Establish `hco` using `GlobalTheory.T.theta_kernel_coinvariant hK.base F E σ B a a' G X om om' R Rf hM`. Establish `hP : ∀ x : U, om (1, x.1) Φ ∈ PolData B G.M` using `fun x => polData_stable B hG v _ (fun φ hφ => ⟨_, (hL x.1 x.2 φ hφ).1, (hL x.1 x.2 φ hφ).2⟩) Φ hΦ`. Establish `hP' : ∀ x : U, om' (1, x.1) Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁` using `fun x => ⟨polData_stable B hG' v _ (fun φ hφ => ⟨_, (hL' x.1 x.2 φ hφ).1, (hL' x.1 x.2 φ hφ).2⟩) Φ' hΦ'.1, hco.2 _ Φ' hΦ'.2⟩`. Rewrite `m1`, `m2` using `[lc_apply_end]`.
+
+Establish `i1` using `hF.1 _ m1`. Establish `i2` using `hF.2 _ (lc_mem _ _ (fun x => (hP' x).2) z) m2`. Rewrite `i1` using `[I_lc hK hM _ hP]`. Rewrite `i2` using `[I'_lc hK hM _ hP']`. Use function extensionality and compare the values at `h`.
+
+Establish `e1` using `congrFun i1 h`. Establish `e2` using `congrFun i2 h`. Rewrite `e1`, `e2` using `[lc_apply_fun]`. Simplify using `only [Pi.zero_apply] at e1 e2`. Simplify using `only [ρ, lc_apply_fun, Pi.zero_apply, fd]`.
+
+Simplify using `only [GlobalTheory.BigNZ.I_om] at e1 e2`. Rewrite `e1`, `e2`, the goal using `[Finsupp.linearCombination_apply]`. Simplify using `only [Finsupp.sum, smul_eq_mul, mul_sub] at e1 e2 ⊢`. Rewrite using `[Finset.sum_sub_distrib, e1]`. Establish `: ∑ x ∈ z.support, z x * (c * G.M'.I om' Φ' (h * x.1)) = c * ∑ x ∈ z.support, z x * G.M'.I om' Φ' (h * x.1)`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[this, e2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨gR, hgR⟩` from `LinearMap.exists_rightInverse_of_surjective π (LinearMap.range_eq_top.2 hsurj)`. Establish `key : ∀ z, ρ (gR (π z)) = ρ z` using `fun z => by`.
+
+Establish `h0 : π (gR (π z) - z) = 0`. Rewrite using `[map_sub, ← LinearMap.comp_apply, hgR, LinearMap.id_apply, sub_self]`. Use `hker _ h0` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨ρ ∘ₗ gR, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← πone, LinearMap.comp_apply, key]`. Simplify using `only [ρ, Finsupp.linearCombination_single, one_smul, mul_one, fd]`. Introduce `ξ`. Establish `hmem : ρ (gR ξ) ∈ LinearMap.range ρ` using `LinearMap.mem_range_self _ _`. Rewrite `hmem` using `[Finsupp.range_linearCombination]`.
+
+Use `Submodule.span_mono ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨x.1, x.2, rfl⟩`. Introduce `y hy φ hφ φ₁ hφ₁ hact h`. Take `⟨z, hz⟩` from `hsurj (Rf.p v φ)`.
+
+Establish `e1` using `shift y hy φ hφ φ₁ hφ₁ hact z hz`. Establish `k1 : ρ (gR (Rf.p v φ₁)) = ρ (Finsupp.mapDomain (sh y hy) z)` using `e1 ▸ key _`. Establish `k2 : ρ (gR (Rf.p v φ)) = ρ z` using `hz ▸ key z`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, k1, k2]`. Simplify using `only [ρ, Finsupp.linearCombination_mapDomain, lc_apply_fun, Function.comp_def, sh, fd, mul_assoc]`.
+-/
 theorem GlobalTheory.ThK.TMapGood.exists_tmap : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → ∀ c : ℂ, ∀ Φ ∈ PolData B G.M, ∀ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁,

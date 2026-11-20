@@ -10,8 +10,20 @@ namespace GlobalTheory.GLq.ZOrth
 
 open GlobalTheory.BadShare GlobalTheory.BadShare.Basic
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zOf_eq_alg {G : Type} [Group G] [Fintype G] (χ : G → ℂ) : zOf χ = alg (zc χ) := rfl
 
+/- English proof (translation)
+Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (by`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `Fintype.card_ne_zero)` after adjusting the coercions. Establish `h` using `FDRep.char_orthonormal V W`. Rewrite `h` using `[Nat.card_eq_fintype_card]`.
+
+Unfold `ip`. Rewrite using `[h]`. Distinguish the cases in `hi : Nonempty (V ≅ W)`. Rewrite using `[if_pos hi, if_pos (FDRep.char_iso hi.some)]`. Rewrite using `[if_neg hi]`.
+
+Distinguish the cases in `hc : V.character = W.character`. It suffices to derive a contradiction. Establish `h1` using `FDRep.char_orthonormal V V`. Rewrite `h1` using `[if_pos ⟨CategoryTheory.Iso.refl V⟩]`. Establish `h2` using `FDRep.char_orthonormal V W`.
+
+Rewrite `h2` using `[if_neg hi, ← hc]`. Rewrite `h2` using `[h1]`. Simplify using `at h2`. Rewrite using `[if_neg hc]`.
+-/
 theorem ip_simple {G : Type} [Group G] [Fintype G] (V W : FDRep ℂ G) [CategoryTheory.Simple V]
     [CategoryTheory.Simple W] :
     ip V.character W.character = if V.character = W.character then 1 else 0 := by
@@ -34,6 +46,15 @@ theorem ip_simple {G : Type} [Group G] [Fintype G] (V W : FDRep ℂ G) [Category
       simp at h2
     · rw [if_neg hc]
 
+/- English proof (translation)
+Introduce `G _ _ χ χ' hχ hχ'`. Take `⟨V, hV, hVχ⟩` from `hχ`. Take `⟨W, hW, hWχ⟩` from `hχ'`. Establish `eV : V.character = χ` using `funext hVχ`. Establish `eW : W.character = χ'` using `funext hWχ`.
+
+Substitute `eV eW` using the available equality. Take `⟨⟨hidem, _⟩, hcen, horth, _⟩` from `GlobalTheory.BadShare.ZCalc.zc_calc G V`. Use `⟨?_, ?_, ip_simple V W⟩` and prove the remaining obligations. Rewrite using `[zOf_eq_alg, zOf_eq_alg, ← alg_conv]`. Distinguish the cases in `hc : V.character = W.character`.
+
+Rewrite using `[if_pos hc, ← hc, hidem]`. Rewrite using `[if_neg hc, horth W hc]`. Unfold `alg`. Simplify using the standard rewrite rules. Introduce `a`.
+
+Rewrite using `[zOf_eq_alg, ← alg_coeff a, ← alg_conv, ← alg_conv, hcen]`.
+-/
 theorem zorth : ∀ (G : Type) [Group G] [Fintype G] (χ χ' : G → ℂ), IsIrr χ → IsIrr χ' → (zOf χ * zOf χ' = if χ = χ' then zOf χ else 0) ∧ (∀ a, zOf χ * a = a * zOf χ) ∧ ip χ χ' = if χ = χ' then 1 else 0 := by
   intro G _ _ χ χ' hχ hχ'
   obtain ⟨V, hV, hVχ⟩ := hχ

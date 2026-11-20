@@ -11,5 +11,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LiftLevel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.primeProd_squarefree_le_conj | exact GlobalTheory.primeProd_squarefree_le_conj | (intros; apply GlobalTheory.primeProd_squarefree_le_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.prod_primes_squarefree_conjugateIdeal_prod : ∀ (D : D7) (P : Finset (Formalism.L2.DIV.Pl D.host.E)), Squarefree (∏ PP ∈ P, PP.asIdeal) ∧ (∀ PP' : Formalism.L2.DIV.Pl D.host.E, (∏ PP ∈ P, PP.asIdeal) ≤ PP'.asIdeal ↔ PP' ∈ P) ∧ conjI (∏ PP ∈ P, PP.asIdeal) = ∏ PP ∈ P, conjI PP.asIdeal := by
   first | exact @GlobalTheory.primeProd_squarefree_le_conj | exact GlobalTheory.primeProd_squarefree_le_conj | (intros; apply GlobalTheory.primeProd_squarefree_le_conj <;> assumption)

@@ -17,10 +17,16 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 local notation "Γ₁" => rationalGLOne K n
 
+/- English proof (translation)
+Rewrite using `[whittaker_lift, retract_coe]`.
+-/
 theorem whittakerOne_eq_whittaker_lift (ϕ : normOneGL K n → ℂ) (x : normOneGL K n) :
     whittakerOne ϕ x = whittaker (lift ϕ) (x : AdelicGLn.AdelicGL K n) := by
   rw [whittaker_lift, retract_coe]
 
+/- English proof (translation)
+Rewrite using `[whittakerOne_eq_whittaker_lift, whittakerOne_eq_whittaker_lift, Subgroup.coe_mul, coe_uOne]`. Conclude with `whittaker_uGL_mul (continuous_lift hc) (isLeftInvariant_lift hl) X x`.
+-/
 theorem whittakerOne_uOne_mul {ϕ : normOneGL K n → ℂ} (hc : Continuous ϕ)
     (hl : ∀ γ ∈ Γ₁, ∀ y, ϕ (γ * y) = ϕ y) (X : Pos n → 𝔸[K]) (x : normOneGL K n) :
     whittakerOne ϕ (uOne X * x) =
@@ -28,18 +34,30 @@ theorem whittakerOne_uOne_mul {ϕ : normOneGL K n → ℂ} (hc : Continuous ϕ)
   rw [whittakerOne_eq_whittaker_lift, whittakerOne_eq_whittaker_lift, Subgroup.coe_mul, coe_uOne]
   exact whittaker_uGL_mul (continuous_lift hc) (isLeftInvariant_lift hl) X x
 
+/- English proof (translation)
+Unfold `whittakerOne`. Repeatedly rewrite using `[mul_assoc]`.
+-/
 theorem whittakerOne_mul_right (ϕ : normOneGL K n → ℂ) (x y : normOneGL K n) :
     whittakerOne (fun z => ϕ (z * y)) x = whittakerOne ϕ (x * y) := by
   unfold whittakerOne
   simp_rw [mul_assoc]
 
+/- English proof (translation)
+The claim follows from `continuous_induced_rng.2 continuous_uGL`.
+-/
 theorem continuous_uOne : Continuous (uOne (K := K) (n := n)) :=
   continuous_induced_rng.2 continuous_uGL
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg)`.
+-/
 theorem continuous_adelicChar_neg_supSum :
     Continuous fun X : Pos n → 𝔸[K] => (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ) :=
   continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun X : Pos n → 𝔸[K] => ϕ (uOne X * x) * (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ)` using `(hc.comp (continuous_uOne.mul continuous_const)).mul continuous_adelicChar_neg_supSum`. Conclude with `(hcont.continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure`.
+-/
 theorem integrableOn_whittakerOne {ϕ : normOneGL K n → ℂ} (hc : Continuous ϕ) (x : normOneGL K n) :
     IntegrableOn (fun X => ϕ (uOne X * x) * (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ))
       (vecDomain K (Pos n)) (vecMeasure K (Pos n)) := by
@@ -48,6 +66,9 @@ theorem integrableOn_whittakerOne {ϕ : normOneGL K n → ℂ} (hc : Continuous 
     (hc.comp (continuous_uOne.mul continuous_const)).mul continuous_adelicChar_neg_supSum
   exact (hcont.continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure
 
+/- English proof (translation)
+Unfold `whittakerOne`. Rewrite using `[← integral_add (integrableOn_whittakerOne hc x) (integrableOn_whittakerOne hc' x)]`. Use `congr 1`. Use function extensionality and compare the values at `X`. Simplify using `only [Pi.add_apply, add_mul]`.
+-/
 theorem whittakerOne_add {ϕ ϕ' : normOneGL K n → ℂ} (hc : Continuous ϕ) (hc' : Continuous ϕ')
     (x : normOneGL K n) : whittakerOne (ϕ + ϕ') x = whittakerOne ϕ x + whittakerOne ϕ' x := by
   unfold whittakerOne
@@ -56,6 +77,9 @@ theorem whittakerOne_add {ϕ ϕ' : normOneGL K n → ℂ} (hc : Continuous ϕ) (
   funext X
   simp only [Pi.add_apply, add_mul]
 
+/- English proof (translation)
+Unfold `whittakerOne`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `X`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem whittakerOne_smul (c : ℂ) (ϕ : normOneGL K n → ℂ) (x : normOneGL K n) :
     whittakerOne (c • ϕ) x = c * whittakerOne ϕ x := by
   unfold whittakerOne
@@ -64,9 +88,15 @@ theorem whittakerOne_smul (c : ℂ) (ϕ : normOneGL K n → ℂ) (x : normOneGL 
   funext X
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[whittakerOne]`.
+-/
 theorem whittakerOne_zero (x : normOneGL K n) : whittakerOne (0 : normOneGL K n → ℂ) x = 0 := by
   simp [whittakerOne]
 
+/- English proof (translation)
+Unfold `whittakerOne`. Establish `h` using `norm_setIntegral_le_of_norm_le_const (μ := vecMeasure K (Pos n)) (s := vecDomain K (Pos n)) (C := B) (f := fun X => ϕ (uOne X * x) * (GroundTheory.Global.adelicChar K (-supSum 0 X) : ℂ)) (by rw [vecMeasure_vecDomain]; exact ENNReal.one_lt_top) fun X _ => by`. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Conclude with `hB _`. Rewrite `h` using `[measureReal_def, vecMeasure_vecDomain, ENNReal.toReal_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem norm_whittakerOne_le {ϕ : normOneGL K n → ℂ} {B : ℝ} (hB : ∀ y, ‖ϕ y‖ ≤ B)
     (x : normOneGL K n) : ‖whittakerOne ϕ x‖ ≤ B := by
   unfold whittakerOne
@@ -84,16 +114,25 @@ def HasContRep (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) (F : normOneGL K n →
 
 variable {μ}
 
+/- English proof (translation)
+The claim follows from `(h.1.ae_eq_iff_eq μ h'.1).1 (h.2.2.symm.trans h'.2.2)`.
+-/
 theorem HasContRep.unique {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : normOneGL K n → ℂ}
     (h : HasContRep μ φ F) (h' : HasContRep μ φ F') : F = F' :=
   (h.1.ae_eq_iff_eq μ h'.1).1 (h.2.2.symm.trans h'.2.2)
 
+/- English proof (translation)
+Use `⟨continuous_const, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (Lp.coeFn_zero ℂ 2 (quotientMeasure Γ₁ μ))] with y hy`. Conclude with `hy`.
+-/
 theorem hasContRep_zero : HasContRep μ (0 : Lp ℂ 2 (quotientMeasure Γ₁ μ)) 0 := by
   refine ⟨continuous_const, fun _ _ _ => rfl, ?_⟩
   filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp
     (Lp.coeFn_zero ℂ 2 (quotientMeasure Γ₁ μ))] with y hy
   exact hy
 
+/- English proof (translation)
+Use `⟨h.1.add h'.1, fun γ hγ y => by simp [h.2.1 γ hγ y, h'.2.1 γ hγ y], ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (Lp.coeFn_add φ ψ), h.2.2, h'.2.2] with y h1 h2 h3`. Simplify using `only [Function.comp_apply, Pi.add_apply] at h1`. Rewrite using `[h1, h2, h3, Pi.add_apply]`.
+-/
 theorem HasContRep.add {φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : normOneGL K n → ℂ}
     (h : HasContRep μ φ F) (h' : HasContRep μ ψ F') : HasContRep μ (φ + ψ) (F + F') := by
   refine ⟨h.1.add h'.1, fun γ hγ y => by simp [h.2.1 γ hγ y, h'.2.1 γ hγ y], ?_⟩
@@ -102,6 +141,9 @@ theorem HasContRep.add {φ ψ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F F' : nor
   simp only [Function.comp_apply, Pi.add_apply] at h1
   rw [h1, h2, h3, Pi.add_apply]
 
+/- English proof (translation)
+Use `⟨h.1.const_smul c, fun γ hγ y => by simp [h.2.1 γ hγ y], ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (Lp.coeFn_smul c φ), h.2.2] with y h1 h2`. Simplify using `only [Function.comp_apply, Pi.smul_apply] at h1`. Rewrite using `[h1, h2, Pi.smul_apply]`.
+-/
 theorem HasContRep.smul (c : ℂ) {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : normOneGL K n → ℂ}
     (h : HasContRep μ φ F) : HasContRep μ (c • φ) (c • F) := by
   refine ⟨h.1.const_smul c, fun γ hγ y => by simp [h.2.1 γ hγ y], ?_⟩
@@ -112,6 +154,9 @@ theorem HasContRep.smul (c : ℂ) {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F 
 
 variable (μ) in
 
+/- English proof (translation)
+Use `isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Use `⟨continuous_rconv Γ₁ μ f φ, fun γ hγ y => rconv_mul_left Γ₁ μ f φ hγ y, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (integrated_ae_eq_rconvQ Γ₁ μ f φ)] with y hy`. Simplify using `only [Function.comp_apply] at hy`. Rewrite using `[hy, rconvQ_mk]`.
+-/
 theorem hasContRep_rconv (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)) :
     HasContRep μ ((rightRegularRep Γ₁ μ).integrated μ (UnitaryRep.ccToL1 μ f) φ)
@@ -123,6 +168,11 @@ theorem hasContRep_rconv (f : CompactlySupportedContinuousMap (normOneGL K n) �
   simp only [Function.comp_apply] at hy
   rw [hy, rconvQ_mk]
 
+/- English proof (translation)
+Use `⟨h.1.comp (continuous_mul_const x), fun γ hγ y => by show F (γ * y * x) = F (y * x)` and prove the remaining obligations. Rewrite using `[mul_assoc, h.2.1 γ hγ], ?_⟩`. Establish `h2 : (fun y => φ (mk Γ₁ (y * x))) =ᵐ[μ] fun y => F (y * x)` using `(measurePreserving_mul_right μ x).quasiMeasurePreserving.ae_eq_comp h.2.2`. Use `filter_upwards [(quasiMeasurePreserving_mk Γ₁ μ).ae_eq_comp (coeFn_rightRegularRep Γ₁ μ x φ), h2] with y h1 h3`. Simplify using `only [Function.comp_apply] at h1`.
+
+Rewrite using `[h1, rightMul_mk, h3]`.
+-/
 theorem HasContRep.translate {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} {F : normOneGL K n → ℂ}
     (h : HasContRep μ φ F) (x : normOneGL K n) :
     HasContRep μ (rightRegularRep Γ₁ μ x φ) (fun y => F (y * x)) := by
@@ -144,6 +194,11 @@ def smoothSpan (σ : UnitaryRep (normOneGL K n) H) : Submodule ℂ H :=
   Submodule.span ℂ {w | ∃ (x : normOneGL K n) (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     (v : H), IsSmoothTest f ∧ w = σ x (σ.integrated μ (UnitaryRep.ccToL1 μ f) v)}
 
+/- English proof (translation)
+Establish `: smoothSpan μ σ ≤ (smoothSpan μ σ).comap ((σ x : H →L[ℂ] H) : H →ₗ[ℂ] H)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, f, v, hf, rfl⟩`. Use `Submodule.subset_span ⟨x * y, f, v, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[σ.map_mul_apply]`.
+
+Both sides reduce to the same expression. Conclude with `this hw`.
+-/
 theorem map_mem_smoothSpan (σ : UnitaryRep (normOneGL K n) H) (x : normOneGL K n) {w : H}
     (hw : w ∈ smoothSpan μ σ) : σ x w ∈ smoothSpan μ σ := by
   have : smoothSpan μ σ ≤ (smoothSpan μ σ).comap ((σ x : H →L[ℂ] H) : H →ₗ[ℂ] H) := by
@@ -154,6 +209,9 @@ theorem map_mem_smoothSpan (σ : UnitaryRep (normOneGL K n) H) (x : normOneGL K 
     rfl
   exact this hw
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, f, v, hf, by rw [σ.map_one_apply]⟩`.
+-/
 theorem integrated_mem_smoothSpan (σ : UnitaryRep (normOneGL K n) H)
     {f : CompactlySupportedContinuousMap (normOneGL K n) ℂ} (hf : IsSmoothTest f) (v : H) :
     σ.integrated μ (UnitaryRep.ccToL1 μ f) v ∈ smoothSpan μ σ :=

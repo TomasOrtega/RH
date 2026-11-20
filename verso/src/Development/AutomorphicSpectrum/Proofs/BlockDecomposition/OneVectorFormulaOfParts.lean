@@ -8,6 +8,19 @@ open PositivityTheory.Rg.Mass
 
 namespace GlobalTheory.CompanionTheory.Mass
 
+/- English proof (translation)
+Introduce `hP hS hH hC F E _ _ _ _ _ σ hcm J hJ hA T hT hd d b li lam hli hlam μ 𝓕 hμ h𝓕 mi m hmi hm`. Take `⟨β, rfl, hβ, he⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT`. Establish `hβ0 : β ≠ 0` using `hβ hd`. Simplify using `only [he]`. Establish `hsph : {X : Fin 1 → Fin 2 → E | gramE σ J X = fun _ _ => algebraMap F E β} = sph σ J β` using `rfl`.
+
+Rewrite using `[hsph]`. Take `⟨c, hc⟩` from `hP F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β hβ0`. Distinguish the cases in `h0 : mi (hermScal (Ainf F) σ (algebraMap F _ β)) = 0 ∨ ∃ v, m v (hermScal (Fv F v) σ (algebraMap F _ β)) = 0`. Rewrite using `[(GlobalTheory.T.euler_product_measure_zero F E σ hcm d b 1 2 _ c _ _).2.1 hc h0]`. Conclude with `(GlobalTheory.T.euler_product_measure_zero F E σ hcm d b 1 2 0 1 _ _).2.2 hc.1 hc.2.1 h0`.
+
+Use `push Not at h0`. Establish `hne : (sph σ J β).Nonempty` using `hH F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β hβ0 h0.1`. Establish `hall : ∀ β' : F, β' ≠ 0 → EP b μ 𝓕 mi m β' c`. Introduce `β' hβ'`. Distinguish the cases in `hn : (sph σ J β').Nonempty`.
+
+Conclude with `hS F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β β' hβ0 hβ' hne hn c hc`. Take `⟨c', hc'⟩` from `hP F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β' hβ'`. Establish `hz : mi (hermScal (Ainf F) σ (algebraMap F _ β')) = 0`. Assume the negation of the conclusion as `hz`. Conclude with `hn (hH F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm β' hβ' hz)`.
+
+Establish `ht : thetaMeas σ J μ 𝓕 (sph σ J β') = 0`. Establish `he' : IsEmpty (sph σ J β')` using `Set.not_nonempty_iff_eq_empty.1 hn ▸ inferInstance`. Simplify using `[thetaMeas]`. Unfold `EP`. Rewrite using `[ht]`.
+
+Conclude with `(GlobalTheory.T.euler_product_measure_zero F E σ hcm d b 1 2 0 c _ _).2.2 hc'.1 hc'.2.1 (Or.inl hz)`. Establish `h1 : c = 1` using `hC F E σ J d b li lam μ 𝓕 mi m hcm hJ hA hli hlam hμ h𝓕 hmi hm c hall`. Conclude with `h1 ▸ hc`.
+-/
 theorem anisotropic_binary_one_vector_formula : Prop1 → Simil → Hasse → Cnt → E1 := by
   intro hP hS hH hC F E _ _ _ _ _ σ hcm J hJ hA T hT hd d b li lam hli hlam μ 𝓕 hμ h𝓕 mi m hmi hm
   obtain ⟨β, rfl, hβ, he⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT

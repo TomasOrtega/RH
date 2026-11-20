@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AlgebraisationPrope
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.T.formalAlgebraisation_morphisms', GlobalTheory.T.algebraisation_properFormalScheme_ampleBundle⟩`.
+-/
 theorem formalAlgebraisation : GlobalTheory.Published.FormalAlgebraisation :=
   ⟨GlobalTheory.T.formalAlgebraisation_morphisms', GlobalTheory.T.algebraisation_properFormalScheme_ampleBundle⟩
 

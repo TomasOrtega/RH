@@ -19,6 +19,11 @@ open CategoryTheory in
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
+/- English proof (translation)
+Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Submodule.zero_eq_bot, ← le_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.fstHom_apply] at hx hy`.
+
+Rewrite using `[Ideal.mem_bot]`. Apply the tactic sequence `ext <;> simp [hx, hy]`.
+-/
 theorem _root_.GlobalTheory.AnPer.Charts.tsze_nil {O : Type} [CommRing O] [Algebra ℂ O] :
     IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom ℂ O (Fin g → O)).toRingHom) := by
   refine ⟨2, ?_⟩
@@ -53,6 +58,9 @@ open CategoryTheory in
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.AnPer.Charts.tszeSec]`.
+-/
 theorem _root_.GlobalTheory.AnPer.Charts.fst_tszeSec {O : Type} [CommRing O] [Algebra ℂ O]
     (D : Fin g → Derivation ℂ O O) (h : O) :
     (_root_.GlobalTheory.AnPer.Charts.tszeSec D h).fst = h := by
@@ -64,6 +72,9 @@ open CategoryTheory in
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.AnPer.Charts.tszeSec]`.
+-/
 theorem _root_.GlobalTheory.AnPer.Charts.snd_tszeSec {O : Type} [CommRing O] [Algebra ℂ O]
     (D : Fin g → Derivation ℂ O O) (h : O) (a : Fin g) :
     (_root_.GlobalTheory.AnPer.Charts.tszeSec D h).snd a = D a h := by
@@ -77,6 +88,9 @@ open CategoryTheory in
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ]
   {F : _root_.GlobalTheory.AnPer.Fam I g Λ} {K : _root_.GlobalTheory.AnPer.Charts F} in
 
+/- English proof (translation)
+Use `congr 1`. Simplify using `only [TrivSqZeroExt.inl_mul_inr]`. Use extensionality with `b`. Simplify using `[TrivSqZeroExt.fst_sum]`. Simplify using `[TrivSqZeroExt.snd_sum, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem _root_.GlobalTheory.AnPer.Charts.tsze_expand {O : Type} [CommRing O] (h : O) (v : Fin g → O) :
     (TrivSqZeroExt.inl h + TrivSqZeroExt.inr v : TrivSqZeroExt O (Fin g → O)) = TrivSqZeroExt.inl h +
       ∑ a, TrivSqZeroExt.inl (v a) * TrivSqZeroExt.inr (Pi.single a (1 : O)) := by

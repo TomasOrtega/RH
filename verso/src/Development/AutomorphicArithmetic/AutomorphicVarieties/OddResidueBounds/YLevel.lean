@@ -3,12 +3,28 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff, ZMod.unitsMap_def, Units.coe_map]`. Simplify using `only [MonoidHom.coe_coe, ZMod.castHom_apply]`. Rewrite using `[ZMod.cast_eq_val, ← (ZMod.val_injective N).eq_iff, ZMod.val_natCast]`.
+-/
 private theorem fib_iff {N M : ℕ} [NeZero N] [NeZero M] (h : N ∣ M) (b' : (ZMod M)ˣ) (b : (ZMod N)ˣ) :
     ZMod.unitsMap h b' = b ↔ (b' : ZMod M).val % N = (b : ZMod N).val := by
   rw [Units.ext_iff, ZMod.unitsMap_def, Units.coe_map]
   simp only [MonoidHom.coe_coe, ZMod.castHom_apply]
   rw [ZMod.cast_eq_val, ← (ZMod.val_injective N).eq_iff, ZMod.val_natCast]
 
+/- English proof (translation)
+Establish `hN : 0 < N` using `NeZero.pos N`. Establish `hbN : (b : ZMod N).val < N` using `ZMod.val_lt _`. Establish `hcop : ∀ n : ℕ, ((b : ZMod N).val + n * N).Coprime M` using `fun n => hc _ (by simpa using ZMod.val_coe_unit_coprime b)`. Establish `hlt : ∀ n ∈ Finset.range L, (b : ZMod N).val + n * N < M`. Introduce `n hn`.
+
+Rewrite `hn` using `[Finset.mem_range]`. Rewrite using `[hM]`. Use the polynomial consequences of the given equalities and inequalities. Use `symm`. Use `Finset.sum_nbij' (fun n => ZMod.unitOfCoprime _ (hcop n)) (fun b' => (b' : ZMod M).val / N) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `n hn`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[fib_iff, ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt (hlt n hn), Nat.add_mul_mod_self_right, Nat.mod_eq_of_lt hbN]`. Introduce `b' _`.
+
+Rewrite using `[Finset.mem_range, Nat.div_lt_iff_lt_mul hN, mul_comm, ← hM]`. Conclude with `ZMod.val_lt _`. Introduce `n hn`. Simplify using `only [ZMod.coe_unitOfCoprime, ZMod.val_natCast]`. Rewrite using `[Nat.mod_eq_of_lt (hlt n hn), Nat.add_mul_div_right _ _ hN, Nat.div_eq_of_lt hbN, zero_add]`.
+
+Introduce `b' hb'`. Rewrite `hb'` using `[Finset.mem_filter, fib_iff]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ZMod.coe_unitOfCoprime, ← hb'.2, Nat.mod_add_div', ZMod.natCast_zmod_val]`. Introduce `n hn`.
+
+Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt (hlt n hn)]`.
+-/
 private theorem fib_sum {N L M : ℕ} [NeZero N] [NeZero M] (h : N ∣ M) (hM : M = N * L)
     (hc : ∀ n : ℕ, n.Coprime N → n.Coprime M) (f : ℕ → ℚ) (b : (ZMod N)ˣ) :
     ∑ b' ∈ Finset.univ.filter (fun b' : (ZMod M)ˣ => ZMod.unitsMap h b' = b), f (b' : ZMod M).val
@@ -43,6 +59,9 @@ private theorem fib_sum {N L M : ℕ} [NeZero N] [NeZero M] (h : N ∣ M) (hM : 
   · intro n hn
     rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt (hlt n hn)]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, ih, Finset.sum_insert ha, MonoidAlgebra.single_add]`.
+-/
 private theorem sum_single_eq_single_sum {Γ : Type} [CommGroup Γ] {ι : Type} (s : Finset ι) (g : Γ) (F : ι → ℚ) :
     ∑ x ∈ s, MonoidAlgebra.single g (F x) = MonoidAlgebra.single g (∑ x ∈ s, F x) := by
   classical
@@ -50,6 +69,15 @@ private theorem sum_single_eq_single_sum {Γ : Type} [CommGroup Γ] {ι : Type} 
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, ih, Finset.sum_insert ha, MonoidAlgebra.single_add]
 
+/- English proof (translation)
+Establish `hLpos : 0 < L`. Break down `Nat.eq_zero_or_pos L with hL | hL` into its components or cases. Conclude with `absurd (hM.trans (by rw [hL, mul_zero])) (NeZero.ne M)`. Conclude with `hL`. Unfold `thetaEl sumEl`.
+
+Use `congr 1`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (ZMod.unitsMap h)]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hfib : ∀ b' ∈ Finset.univ.filter (fun b' : (ZMod M)ˣ => ZMod.unitsMap h b' = b), MonoidAlgebra.single ((φ.comp (ZMod.unitsMap h)) b')⁻¹ (Ek M k (b' : ZMod M)) = MonoidAlgebra.single (φ b)⁻¹ (Ek M k (b' : ZMod M))`. Introduce `b' hb'`.
+
+Rewrite `hb'` using `[Finset.mem_filter]`. Rewrite using `[MonoidHom.comp_apply, hb'.2]`. Rewrite using `[Finset.sum_congr rfl hfib, sum_single_eq_single_sum]`. Use `congr 1`. Unfold `Ek`.
+
+Rewrite using `[← Finset.sum_div, fib_sum h hM hc (fun n => bcoef M k n) b, hM, b_raabe N L k _ (NeZero.pos N) hLpos]`.
+-/
 private theorem theta_level {Γ : Type} [CommGroup Γ] {N L M : ℕ} [NeZero N] [NeZero M] (h : N ∣ M) (hM : M = N * L)
     (hc : ∀ n : ℕ, n.Coprime N → n.Coprime M) (φ : (ZMod N)ˣ →* Γ) (k : ℕ) :
     thetaEl k (φ.comp (ZMod.unitsMap h)) = thetaEl k φ := by
@@ -73,6 +101,13 @@ private theorem theta_level {Γ : Type} [CommGroup Γ] {N L M : ℕ} [NeZero N] 
   rw [← Finset.sum_div, fib_sum h hM hc (fun n => bcoef M k n) b, hM,
     b_raabe N L k _ (NeZero.pos N) hLpos]
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ N _ φ k a ha hk hl m M _ h ha' hM`. Establish `hc : ∀ n : ℕ, n.Coprime N → n.Coprime M`. Introduce `n hn`. Rewrite using `[hM]`. Conclude with `hn.mul_right ((Nat.Coprime.coprime_dvd_right hl hn).pow_right m)`.
+
+Unfold `yEl`. Rewrite using `[theta_level h hM hc φ k]`. Use `congr 4`. Rewrite using `[MonoidHom.comp_apply]`. Use `congr 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ZMod.unitsMap_def, Units.coe_map]`. Simplify using `only [MonoidHom.coe_coe, ZMod.castHom_apply, ZMod.coe_unitOfCoprime]`. Conclude with `ZMod.cast_natCast h a`.
+-/
 theorem UpperTheory.V.Odd.yLevel :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [CommGroup Γ] [Finite Γ] (N : ℕ) [NeZero N] (φ : (ZMod N)ˣ →* Γ) (k a : ℕ) (ha : a.Coprime N), 1 ≤ k → l ∣ N → ∀ (m M : ℕ) [NeZero M] (h : N ∣ M) (ha' : a.Coprime M), M = N * l ^ m → yEl k a ha' (φ.comp (ZMod.unitsMap h)) = yEl k a ha φ := by
   intro l _ Γ _ _ N _ φ k a ha hk hl m M _ h ha' hM

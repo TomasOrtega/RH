@@ -4,16 +4,31 @@ open IsLocalRing
 namespace GlobalTheory
 namespace SpreadOut
 
+/- English proof (translation)
+Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective p.primeCompl y`. Conclude with `⟨a, s, s.2, IsLocalization.mk'_spec' _ a s⟩`.
+-/
 lemma exists_num_den {T : Type} [CommRing T] (p : Ideal T) [p.IsPrime]
     (y : Localization.AtPrime p) :
     ∃ a s : T, s ∉ p ∧ algebraMap T _ s * y = algebraMap T _ a := by
   obtain ⟨⟨a, s⟩, rfl⟩ := IsLocalization.mk'_surjective p.primeCompl y
   exact ⟨a, s, s.2, IsLocalization.mk'_spec' _ a s⟩
 
+/- English proof (translation)
+The claim follows from `Submonoid.prod_mem p.primeCompl (fun i hi => h i hi)`.
+-/
 lemma prod_not_mem {T : Type} [CommRing T] {ι : Type} (p : Ideal T) [p.IsPrime]
     (S : Finset ι) (g : ι → T) (h : ∀ i ∈ S, g i ∉ p) : ∏ i ∈ S, g i ∉ p :=
   Submonoid.prod_mem p.primeCompl (fun i hi => h i hi)
 
+/- English proof (translation)
+Take `⟨⟨b, m⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers f₀) z`. Establish `hspec` using `IsLocalization.mk'_spec' (Localization.Away f₀) b m`. Establish `h1 : algebraMap T (Localization.AtPrime p) b = 0`. Use `congrArg ι₀ hspec` as an intermediate fact. Rewrite `this` using `[map_mul, AlgHom.commutes, AlgHom.commutes, hz, mul_zero]`.
+
+Conclude with `this.symm`. Take `⟨t, ht⟩` from `(IsLocalization.map_eq_zero_iff p.primeCompl _ b).1 h1`. Use `⟨t, t.2, fun B _ _ κ hu => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg κ hspec`. Rewrite `h2` using `[map_mul, AlgHom.commutes, AlgHom.commutes]`.
+
+Establish `hb : algebraMap T B b = 0`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ht, map_zero, mul_zero]`. Establish `hm : IsUnit (algebraMap T B m)`. Rewrite using `[← AlgHom.commutes κ]`.
+
+Conclude with `(IsLocalization.map_units (Localization.Away f₀) m).map κ`. Rewrite `h2` using `[hb]`. Conclude with `hm.mul_right_eq_zero.1 h2`.
+-/
 lemma exists_kill {T : Type} [CommRing T] (p : Ideal T) [p.IsPrime] (f₀ : T)
     (z : Localization.Away f₀)
     (ι₀ : Localization.Away f₀ →ₐ[T] Localization.AtPrime p) (hz : ι₀ z = 0) :
@@ -38,6 +53,39 @@ lemma exists_kill {T : Type} [CommRing T] (p : Ideal T) [p.IsPrime] (f₀ : T)
   rw [hb] at h2
   exact hm.mul_right_eq_zero.1 h2
 
+/- English proof (translation)
+Introduce `T A _ _ _ _ p _ φ`. Take `⟨n, π, hπ, hker⟩` from `Algebra.FinitePresentation.out (R := T) (A := A)`. Take `⟨G, hG⟩` from `hker`. Use `choose a s hs hy using fun i : Fin n => exists_num_den p (φ (π (MvPolynomial.X i)))`. Use `set f₀ : T := ∏ i, s i with hf₀`.
+
+Establish `hf₀p : f₀ ∉ p` using `prod_not_mem p _ s (fun i _ => hs i)`. Establish `hu₀ : IsUnit ((Algebra.ofId T (Localization.AtPrime p)) f₀)` using `IsLocalization.map_units (Localization.AtPrime p) (⟨f₀, hf₀p⟩ : p.primeCompl)`. Set `ι₀ : Localization.Away f₀ →ₐ[T] Localization.AtPrime p` to `IsLocalization.Away.liftAlgHom (S := Localization.Away f₀) f₀ hu₀`. Establish `hu : ∀ i, IsUnit (algebraMap T (Localization.Away f₀) (s i))` using `fun i => isUnit_of_dvd_unit (map_dvd _ (Finset.dvd_prod_of_mem s (Finset.mem_univ i))) (IsLocalization.Away.algebraMap_isUnit f₀)`. Set `x : Fin n → Localization.Away f₀` to `fun i => algebraMap T _ (a i) * ↑(hu i).unit⁻¹`.
+
+Set `ψ₀ : MvPolynomial (Fin n) T →ₐ[T] Localization.Away f₀` to `MvPolynomial.aeval x`. Establish `hι0 : ∀ i, ι₀ (x i) = φ (π (MvPolynomial.X i))`. Introduce `i`. Establish `hu' : IsUnit (algebraMap T (Localization.AtPrime p) (s i))` using `IsLocalization.map_units _ (⟨s i, hs i⟩ : p.primeCompl)`. Apply `hu'.mul_left_cancel` to reduce the goal to its premises.
+
+Rewrite using `[hy i, ← AlgHom.commutes ι₀ (s i), ← map_mul]`. Simplify using `only [x]`. Rewrite using `[mul_left_comm, IsUnit.mul_val_inv, mul_one, AlgHom.commutes]`. Establish `hφ : ι₀.comp ψ₀ = φ.comp π`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `i`. Simplify using `only [AlgHom.comp_apply, ψ₀, MvPolynomial.aeval_X]`. Conclude with `hι0 i`. Establish `hzero : ∀ g : G, ι₀ (ψ₀ g) = 0`. Introduce `g`.
+
+Establish `hg : (g : MvPolynomial (Fin n) T) ∈ RingHom.ker π.toRingHom`. Rewrite using `[← hG]`. Conclude with `Ideal.subset_span g.2`. Rewrite `hg` using `[RingHom.mem_ker]`. Use `congrArg (fun h => h (g : MvPolynomial (Fin n) T)) hφ` as an intermediate fact.
+
+Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this]`. Establish `hg' : π g = 0` using `hg`. Rewrite using `[hg', map_zero]`. Use `choose t ht hkill using fun g : G => exists_kill p f₀ (ψ₀ g) ι₀ (hzero g)`.
+
+Use `set f : T := f₀ * ∏ g, t g with hfdef`. Establish `hfp : f ∉ p` using `p.primeCompl.mul_mem hf₀p (prod_not_mem p _ t (fun g _ => ht g))`. Establish `huj : IsUnit ((Algebra.ofId T (Localization.Away f)) f₀)` using `isUnit_of_dvd_unit (map_dvd _ (dvd_mul_right f₀ _)) (IsLocalization.Away.algebraMap_isUnit f)`. Set `j : Localization.Away f₀ →ₐ[T] Localization.Away f` to `IsLocalization.Away.liftAlgHom (S := Localization.Away f₀) f₀ huj`. Set `ψ : MvPolynomial (Fin n) T →ₐ[T] Localization.Away f` to `j.comp ψ₀`.
+
+Establish `hψG : ∀ g : G, ψ g = 0`. Introduce `g`. Apply `hkill g (Localization.Away f) j` to reduce the goal to its premises. Conclude with `isUnit_of_dvd_unit (map_dvd _ (Dvd.dvd.mul_left (Finset.dvd_prod_of_mem t (Finset.mem_univ g)) f₀)) (IsLocalization.Away.algebraMap_isUnit f)`. Establish `hspan : Ideal.span (G : Set (MvPolynomial (Fin n) T)) ≤ RingHom.ker (ψ : MvPolynomial (Fin n) T →+* Localization.Away f)`.
+
+Rewrite using `[Ideal.span_le]`. Introduce `g hg`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Conclude with `hψG ⟨g, hg⟩`. Establish `hψker : ∀ q : MvPolynomial (Fin n) T, q ∈ RingHom.ker π → ψ q = 0`.
+
+Introduce `q hq`. Establish `hq' : q ∈ Ideal.span (G : Set (MvPolynomial (Fin n) T))`. Rewrite using `[hG]`. Conclude with `hq`. Conclude with `(RingHom.mem_ker).1 (hspan hq')`.
+
+Set `sq` to `Ideal.Quotient.liftₐ (RingHom.ker π) ψ hψker`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hπ`. Set `σ : A →ₐ[T] Localization.Away f` to `sq.comp e.symm.toAlgHom`. Establish `hσ : ∀ q, σ (π q) = ψ q`. Introduce `q`.
+
+Establish `: e.symm (π q) = Ideal.Quotient.mk (RingHom.ker π) q`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show sq (e.symm (π q)) = ψ q`. Rewrite using `[this]`.
+
+Simplify using `only [sq, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]`. Both sides reduce to the same expression. Establish `huι : IsUnit ((Algebra.ofId T (Localization.AtPrime p)) f)` using `IsLocalization.map_units (Localization.AtPrime p) (⟨f, hfp⟩ : p.primeCompl)`. Set `ι : Localization.Away f →ₐ[T] Localization.AtPrime p` to `IsLocalization.Away.liftAlgHom (S := Localization.Away f) f huι`. Use `⟨f, hfp, σ, ι, ?_⟩` and prove the remaining obligations.
+
+Establish `hιj : ι.comp j = ι₀` using `(IsLocalization.algHom_subsingleton (Submonoid.powers f₀)).elim _ _`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨q, rfl⟩` from `hπ y`. Rewrite using `[AlgHom.comp_apply, hσ q]`.
+
+Establish `h1` using `congrArg (fun h => h (ψ₀ q)) hιj`. Establish `h2` using `congrArg (fun h => h q) hφ`. Simplify using `only [AlgHom.comp_apply] at h1 h2`. Simplify using `only [ψ, AlgHom.comp_apply]`. Rewrite using `[h1, h2]`.
+-/
 theorem spread_out : ∀ (T A : Type) [CommRing T] [CommRing A] [Algebra T A]
     [Algebra.FinitePresentation T A] (p : Ideal T) [p.IsPrime]
     (φ : A →ₐ[T] Localization.AtPrime p), ∃ f : T, f ∉ p ∧

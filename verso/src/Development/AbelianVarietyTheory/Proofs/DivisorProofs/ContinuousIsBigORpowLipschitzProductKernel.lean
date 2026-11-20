@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.LipschitzTR
 
+/- English proof (translation)
+Break down `lt_trichotomy w.im 0 with hw | hw | hw` into its components or cases. Rewrite `h` using `[sign_neg hw]`. Simplify using `at h`. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h` using `[hw, sign_zero]`.
+
+Simplify using `at h`. Rewrite `h` using `[sign_pos hw]`. Simplify using `at h`. Check the signs of the components of the expression.
+-/
 theorem mul_im_pos_of_sign_mul_pos {w : ℂ} {t : ℝ} (h : 0 < (SignType.sign w.im : ℝ) * t) :
     0 < t * w.im := by
   rcases lt_trichotomy w.im 0 with hw | hw | hw
@@ -21,6 +26,11 @@ theorem mul_im_pos_of_sign_mul_pos {w : ℂ} {t : ℝ} (h : 0 < (SignType.sign w
     simp at h
     positivity
 
+/- English proof (translation)
+Unfold `phi1`. Use `split_ifs with h`. Establish `hp` using `mul_im_pos_of_sign_mul_pos h`. Establish `habs : |t| * |w.im| = t * w.im` using `by rw [← abs_mul]; exact abs_of_pos hp`. Establish `hre : (2 * (Real.pi : ℂ) * Complex.I * (t : ℂ) * w).re = -(2 * Real.pi * |w.im|) * |t|`.
+
+Simplify using `[Complex.mul_re]`. Take the linear combination `(-2 * Real.pi) * habs`. Rewrite using `[norm_mul, Complex.norm_exp, hre, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Simplify using `only [norm_zero]`. Check the signs of the components of the expression.
+-/
 theorem norm_lipschitzOneVariableKernel_le (k : ℕ) (w : ℂ) (t : ℝ) :
     ‖phi1 k w t‖ ≤ |t| ^ (k - 1) * Real.exp (-(2 * Real.pi * |w.im|) * |t|) := by
   unfold phi1
@@ -35,6 +45,9 @@ theorem norm_lipschitzOneVariableKernel_le (k : ℕ) (w : ℂ) (t : ℝ) :
   · simp only [norm_zero]
     positivity
 
+/- English proof (translation)
+The claim follows from `|t| ^ n * Real.exp (-a * |t|) ≤ (n.factorial * (2 / a) ^ n) * Real.exp (-(a / 2) * |t|) := by have h := Real.pow_div_factorial_le_exp (a / 2 * |t|) (by positivity) n rw [div_le_iff₀ (by positivity)] at h have h1 : |t| ^ n ≤ n.factorial * (2 / a) ^ n * Real.exp (a / 2 * |t|) := by …`.
+-/
 theorem abs_pow_mul_exp_le (n : ℕ) {a : ℝ} (ha : 0 < a) (t : ℝ) :
     |t| ^ n * Real.exp (-a * |t|) ≤ (n.factorial * (2 / a) ^ n) * Real.exp (-(a / 2) * |t|) := by
   have h := Real.pow_div_factorial_le_exp (a / 2 * |t|) (by positivity) n
@@ -48,6 +61,15 @@ theorem abs_pow_mul_exp_le (n : ℕ) {a : ℝ} (ha : 0 < a) (t : ℝ) :
       ≤ (n.factorial * (2 / a) ^ n * Real.exp (a / 2 * |t|)) * Real.exp (-a * |t|) := by gcongr
     _ = _ := by rw [mul_assoc, ← Real.exp_add]; congr 2; ring
 
+/- English proof (translation)
+Establish `hg : Continuous fun t : ℝ => ((|t| ^ (k - 1) : ℝ) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * t * w)` using `by fun_prop`. Use `show Continuous fun t => if 0 < (SignType.sign w.im : ℝ) * t then ((|t| ^ (k - 1) : ℝ) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * t * w) else 0`. Use `continuous_if (fun a ha => ?_) hg.continuousOn continuous_const.continuousOn` and prove the remaining obligations. Establish `h0` using `frontier_lt_subset_eq (continuous_const (y := (0 : ℝ))) (continuous_const.mul continuous_id (f := fun _ : ℝ => (SignType.sign w.im : ℝ))) ha`. Simplify using `only [Set.mem_setOf_eq, id] at h0`.
+
+Establish `ha0 : a = 0`. Break down `mul_eq_zero.1 h0.symm with h | h` into its components or cases. It suffices to derive a contradiction. Break down `lt_trichotomy w.im 0 with h' | h' | h'` into its components or cases. Rewrite `h` using `[sign_neg h']`.
+
+Evaluate the numerical expressions using `at h`. Conclude with `hw h'`. Rewrite `h` using `[sign_pos h']`. Evaluate the numerical expressions using `at h`. Conclude with `h`.
+
+Substitute `ha0` using the available equality. Establish `: k - 1 ≠ 0` using `by omega`. Simplify using `[this]`.
+-/
 theorem continuous_lipschitzOneVariableKernel {k : ℕ} (hk : 2 ≤ k) {w : ℂ} (hw : w.im ≠ 0) : Continuous (phi1 k w) := by
   have hg : Continuous fun t : ℝ =>
       ((|t| ^ (k - 1) : ℝ) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * t * w) := by fun_prop
@@ -73,6 +95,9 @@ end GlobalTheory.LipschitzTR
 
 namespace GlobalTheory.LipschitzTR
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Use `Real.sqrt_le_iff.2 ⟨Finset.sum_nonneg fun _ _ => abs_nonneg _, ?_⟩` and prove the remaining obligations. Simplify `Finset.sum_sq_le_sq_sum_of_nonneg (s := Finset.univ) (f := fun τ => |v τ|) fun _ _ => abs_nonneg _` using `[Real.norm_eq_abs]`.
+-/
 theorem norm_le_sum_abs {F : Type} [Field F] [NumberField F] (v : RSp F) :
     ‖v‖ ≤ ∑ τ, |v τ| := by
   rw [EuclideanSpace.norm_eq]
@@ -80,6 +105,19 @@ theorem norm_le_sum_abs {F : Type} [Field F] [NumberField F] (v : RSp F) :
   simpa [Real.norm_eq_abs] using
     Finset.sum_sq_le_sq_sum_of_nonneg (s := Finset.univ) (f := fun τ => |v τ|) fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+Use `⟨?_, fun b => ?_⟩` and prove the remaining obligations. Unfold `Phi`. Conclude with `continuous_finset_prod _ fun τ _ => (continuous_lipschitzOneVariableKernel hk (hz τ)).comp ((EuclideanSpace.proj τ : RSp F →L[ℝ] ℝ).continuous)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hcle⟩ : ∃ c > 0, ∀ τ, c ≤ 2 * Real.pi * |(z τ).im| / 2 := by`. Break down `isEmpty_or_nonempty (F →+* ℝ) with h | h` into its components or cases.
+
+Conclude with `⟨1, one_pos, fun τ => (IsEmpty.false τ).elim⟩`. Take `⟨τ0, hτ0⟩` from `Finite.exists_min (fun τ => 2 * Real.pi * |(z τ).im| / 2)`. Conclude with `⟨_, by have := abs_pos.2 (hz τ0); positivity, hτ0⟩`. Use `set K : ℝ := ∏ τ, (((k - 1).factorial : ℝ) * (2 / (2 * Real.pi * |(z τ).im|)) ^ (k - 1)) with hK`. Establish `hbound : ∀ v : RSp F, ‖Phi k z v‖ ≤ K * Real.exp (-c * ‖v‖)`.
+
+Introduce `v`. Establish `hfac : ∀ τ, ‖phi1 k (z τ) (v τ)‖ ≤ (((k - 1).factorial : ℝ) * (2 / (2 * Real.pi * |(z τ).im|)) ^ (k - 1)) * Real.exp (-c * |v τ|)`. Introduce `τ`. Establish `ha : 0 < 2 * Real.pi * |(z τ).im|` using `by have := abs_pos.2 (hz τ); positivity`. Use `(norm_lipschitzOneVariableKernel_le k (z τ) (v τ)).trans ((abs_pow_mul_exp_le (k - 1) ha (v τ)).trans ?_)` and prove the remaining obligations.
+
+Use `gcongr`. Use `hcle τ` as an intermediate fact. Use polynomial arithmetic with `[abs_nonneg (v τ)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.mul_sum, Real.exp_sum]`.
+
+Use `_ ≤ K * Real.exp (-c * ‖v‖) := by`. Establish `hK0 : 0 ≤ K` using `Finset.prod_nonneg fun τ _ => by positivity`. Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 (by nlinarith [norm_le_sum_abs v])) hK0`. Establish `h1 : Phi k z =O[Filter.cocompact (RSp F)] fun v : RSp F => Real.exp (-c * ‖v‖)` using `Asymptotics.IsBigO.of_bound K (Filter.Eventually.of_forall fun v => by`. Rewrite using `[Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+
+Conclude with `hbound v)`. Establish `h2 : (fun v : RSp F => Real.exp (-c * ‖v‖)) =O[Filter.cocompact (RSp F)] fun v : RSp F => ‖v‖ ^ (-b)` using `(isLittleO_exp_neg_mul_rpow_atTop hc (-b)).isBigO.comp_tendsto tendsto_norm_cocompact_atTop`. Conclude with `h1.trans h2`.
+-/
 theorem continuous_and_isBigO_rpow_Phi (F : Type) [Field F] [NumberField F] (k : ℕ) (hk : 2 ≤ k)
     (z : (F →+* ℝ) → ℂ) (hz : ∀ τ, (z τ).im ≠ 0) :
     Continuous (Phi k z) ∧ ∀ b : ℝ, Phi k z =O[Filter.cocompact (RSp F)] fun v => ‖v‖ ^ (-b) := by

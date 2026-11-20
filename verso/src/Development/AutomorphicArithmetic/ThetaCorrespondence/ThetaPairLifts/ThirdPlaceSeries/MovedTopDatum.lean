@@ -34,6 +34,9 @@ section Fam
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : D.what₂.Word} {f : _root_.GlobalTheory.Fam.FamilyCharacter W u}
   {v : VCom f.c}
+/- English proof (translation)
+Use `G.hs` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem k_add_s_succ_eq_r (G : GLoc v) : D.R.k + (G.s + 1) = D.R.r := by
   have := G.hs
   unfold Ranks.r
@@ -43,6 +46,13 @@ def ReducesModIdeal (G : GLoc v) (w : Pl D.host.E) (x : G.S.P.J) (g : GL (Fin D.
     a'.val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ a → b'.val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ b → ∀ z : 𝓞 D.host.E,
       Ideal.Quotient.mk w.asIdeal z = g.val a' b' →
       valuation G.k ((x : GL (Fin D.R.k ⊕ Fin (G.s + 1)) G.k).val a b - (ofSplit G.q).pr (z : D.host.E)) < 1
+/- English proof (translation)
+Establish `key : ∀ a b (z : 𝓞 D.host.E), Ideal.Quotient.mk w.asIdeal z = g.val (firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) a) (firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) b) → valuation G.k ((π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subt …` using `fun a b z hz => by`. Establish `h1 : (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype) (Formalism.L2.DIV.oToS D.host.F D.host.E z) = (ofSplit G.q).pr (z : D.host.E)` using `hπ (incA D (z : D.host.E))`. Rewrite using `[← h1, ← RingHom.map_sub, ← hred.ker, RingHom.map_sub, Formalism.L2.DIV.resS_oToS, sub_eq_zero]`. Conclude with `(hz.trans (congrFun (congrFun hM a) b)).symm`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h a b`. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (g.val (firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) a) (firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) b))`. Use `Valuation.map_sub_lt _ (h a b _ _ (firstOrd_val _ a) (firstOrd_val _ b) z hz) (key a b z hz)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `h a b a' b' ha hb z hz`.
+
+Take `rfl : a' = firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) a` from `Fin.ext (ha.trans (firstOrd_val _ a).symm)`. Take `rfl : b' = firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) b` from `Fin.ext (hb.trans (firstOrd_val _ b).symm)`. Use `Valuation.map_add_lt _ (h a b) (key a b z hz)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.map_apply, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem reducesModIdeal_iff_maxM_sub {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.k} (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
     (hred : IsRed (resS D.host.F w) (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) (x : G.S.P.J)
     (g : GL (Fin D.R.r) (kP w)) (M : Matrix (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin D.R.k ⊕ Fin (G.s + 1)) (Formalism.L2.Herm.intAf D.host.F D.host.E))
@@ -65,6 +75,11 @@ theorem reducesModIdeal_iff_maxM_sub {w : Pl D.host.E} (G : GLoc v) {π' : Datum
     obtain rfl : b' = firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G) b := Fin.ext (hb.trans (firstOrd_val _ b).symm)
     have := Valuation.map_add_lt _ (h a b) (key a b z hz)
     rwa [Matrix.sub_apply, Matrix.map_apply, sub_add_sub_cancel] at this
+/- English proof (translation)
+Establish `hL : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0` using `hPk.bot.hyp.2.2.2.1.lev`. Establish `hb : (_root_.GlobalTheory.Fam.pk_z W).xi W.P.A3.A.μ0 = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi W.P.A3.A.μ0))`. Establish `e : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu W.P.A3.A.μ0 = (_root_.GlobalTheory.Fam.pk_z W).mu0` using `funext fun i => by`. Express the relevant statement in the definitionally equal form `(_root_.GlobalTheory.Fam.pk_z W).mu0 i * (_root_.GlobalTheory.Fam.pk_z W).xi W.P.A3.A.μ0 = _`. Rewrite using `[hb, mul_one]`.
+
+Express the relevant statement in the definitionally equal form `(Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu W.P.A3.A.μ0) (_root_.GlobalTheory.Fam.pk_z W).eta j).1 = _`. Rewrite using `[e]`.
+-/
 theorem chS_eq_chrStep_fst (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) (j : ℕ) : (_root_.GlobalTheory.BaseChain.com_z W).chS j = (Lift.chrStep (_root_.GlobalTheory.Fam.pk_z W).mu0 (_root_.GlobalTheory.Fam.pk_z W).eta j).1 := by
   have hL : (_root_.GlobalTheory.Fam.pk_z W).toLevCh.Is W.P.A3.A.μ0 := hPk.bot.hyp.2.2.2.1.lev
   have hb : (_root_.GlobalTheory.Fam.pk_z W).xi W.P.A3.A.μ0 = 1 :=
@@ -74,6 +89,9 @@ theorem chS_eq_chrStep_fst (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) (
     rw [hb, mul_one]
   change (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu W.P.A3.A.μ0) (_root_.GlobalTheory.Fam.pk_z W).eta j).1 = _
   rw [e]
+/- English proof (translation)
+Rewrite using `[redM_eq_map _ hN]`. Conclude with `locF_eq (GlobalTheory.FunObj.TieLev.iterPhi_read _ _ _ _ _ hred _ _ _ _ _ _ (firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G)) ea eb (isIx_of_isOrd _ ha oa) (isIx_of_isOrd _ hb ob) hr G.S.P G.S.μ G.S.tame χ hχ (_root_.GlobalTheory.TopDatumTheta.ReducesModIdeal G w …`.
+-/
 theorem locF_iter_alt {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.k} (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
     (hred : IsRed (resS D.host.F w) (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) {j a b : ℕ}
     (ha : a = D.R.r + j * D.R.t) (hb : b = D.R.r + (j + 1) * D.R.t) (hr : D.R.r ≤ a)
@@ -87,6 +105,9 @@ theorem locF_iter_alt {w : Pl D.host.E} (G : GLoc v) {π' : Datum.EAf D →+* G.
   exact locF_eq (GlobalTheory.FunObj.TieLev.iterPhi_read _ _ _ _ _ hred _ _ _ _ _ _ (firstOrd (_root_.GlobalTheory.TopDatumTheta.k_add_s_succ_eq_r G)) ea eb
     (isIx_of_isOrd _ ha oa) (isIx_of_isOrd _ hb ob) hr G.S.P G.S.μ G.S.tame χ hχ (_root_.GlobalTheory.TopDatumTheta.ReducesModIdeal G w) (_root_.GlobalTheory.TopDatumTheta.reducesModIdeal_iff_maxM_sub G hπ hred)
     (Matrix.of fun i j => (⟨N i j, hN i j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E)))
+/- English proof (translation)
+The claim follows from `GlobalTheory.ChainOnto.chi_compat_of_isComp D _ G.q w.1 hq π' hπ hred (_root_.GlobalTheory.BaseChain.com_z W) (_root_.GlobalTheory.BaseChain.com_is_alt W hPk) w.2 c h1 h2 _ (G.S.tame _) (by rw [_root_.GlobalTheory.TopDatumTheta.chS_eq_chrStep_fst hPk]; exact hμ)`.
+-/
 theorem chi_compat_of_mu_eq (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) (G : GLoc v) (w : (_root_.GlobalTheory.Fam.pk_z W).Pg) (hq : Formalism.L2.NTheta.IsIdemAt G.q.e w.1) {π' : Datum.EAf D →+* G.k}
     (hπ : ∀ a, π' (toEAf D a) = G.q.pr a)
     (hred : IsRed (resS D.host.F w.1) (π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype)) {c : ℕ} (h1 : 1 ≤ c) (h2 : c ≤ D.R.m)
@@ -95,6 +116,15 @@ theorem chi_compat_of_mu_eq (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) 
   GlobalTheory.ChainOnto.chi_compat_of_isComp D _ G.q w.1 hq π' hπ hred (_root_.GlobalTheory.BaseChain.com_z W) (_root_.GlobalTheory.BaseChain.com_is_alt W hPk) w.2 c h1 h2 _
     (G.S.tame _) (by rw [_root_.GlobalTheory.TopDatumTheta.chS_eq_chrStep_fst hPk]; exact hμ)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `rfl : (G i).s = j` from `_root_.GlobalTheory.TopLocData.s_eq_alt (G i) h`. Establish `hq` using `(hGR.idem i).1`. Take `⟨π', hπ, hred, hint, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D _ (G i).q (pl i).1 hq`. Take `⟨ea, ha, mS⟩` from `hGR.frame i ((G i).s + 1) 0 rfl`. Take `⟨eb, hb, mT⟩` from `hGR.frameTop i`.
+
+Establish `hco` using `coords_moved (ofSplit (G i).q) ((G i).FY ((G i).s + 1) 0 rfl) (G i).FT hπ (typeFrame (G i).S.ϖ (stdOrd _ _ ((G i).s + 1) 0 rfl)) (LatFrame.refl _ _) ea eb mS (by rw [show (LatFrame.refl (G i).k _).bas.val = 1 from rfl, Matrix.mul_one]; exact mT) x`. Establish `hP : ((G i).S.T (Fin D.R.t)).PhiTop ((ofSplit (G i).q).down (_root_.GlobalTheory.TopLocData.frameOfSuccessor (G i) h) (G i).FT x) = (G i).S.P.iterPhi (Fin D.R.t) (G i).S.μ (G i).S.tame ((G i).s + 1) ((N.map π').submatrix eb ea)`. Rewrite using `[hN]`. Conclude with `congrArg ((G i).S.P.iterPhi (Fin D.R.t) (G i).S.μ (G i).S.tame ((G i).s + 1)) hco`. Rewrite using `[hP]`.
+
+Use `⟨fun hz a b => part_int (G i).q hπ hint ?_, fun hI => ?_⟩` and prove the remaining obligations. Simplify using `using TypeDatum.intM_of_Phi_ne_zero _ _ hz ((ixSucc _ _ ((G i).s + 1)).symm (eb.symm a)) (ea.symm b)`. Establish `r1 : (Yc D ((G i).s + 1)).rank = D.R.r + ((G i).s + 1) * D.R.t`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), min_eq_left (by omega)]; rfl`. Establish `r2 : D.sp.X'.rank = D.R.r + ((G i).s + 1 + 1) * D.R.t`.
+
+Rewrite using `[D.sp.X'_rank, (G i).hs]`. Both sides reduce to the same expression. Establish `hs` using `(G i).hs`. Conclude with `_root_.GlobalTheory.TopDatumTheta.locF_iter_alt (G i) hπ hred r1 r2 _ ha hb (fun c => (_root_.GlobalTheory.Fam.pk_z W).chi c (pl i).1) (fun c hc => _root_.GlobalTheory.TopDatumTheta.chi_compat_of_mu_eq hPk (G i) (pl i) hq hπ hred (by omega) (by omega) (hGR.mu i (c + 1) (by omega) …`.
+-/
 theorem place_alt (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) {n : ℕ} {G : Fin n → GLoc v} {pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg} (hGR : _root_.GlobalTheory.Fam.LocalGroupReading f G pl) (i : Fin n) {j : ℕ}
     (h : j + 2 * 0 + 2 = D.R.m) (x : WO (Yc D (j + 1)) D.sp.X') {N : Matrix (Fin D.sp.X'.rank) (Fin (Yc D (j + 1)).rank) (Datum.EAf D)}
     (hN : N = frMapO (Yc D (j + 1)) D.sp.X' ((_root_.GlobalTheory.Fam.pk_z W).βY (j + 1)) (_root_.GlobalTheory.Fam.pk_z W).βX (actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x)) :
@@ -125,6 +155,13 @@ theorem place_alt (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) {n : ℕ} 
     exact _root_.GlobalTheory.TopDatumTheta.locF_iter_alt (G i) hπ hred r1 r2 _ ha hb (fun c => (_root_.GlobalTheory.Fam.pk_z W).chi c (pl i).1)
       (fun c hc => _root_.GlobalTheory.TopDatumTheta.chi_compat_of_mu_eq hPk (G i) (pl i) hq hπ hred (by omega) (by omega) (hGR.mu i (c + 1) (by omega) (by omega))) hI
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨G', rfl⟩ : ∃ G' : (_root_.GlobalTheory.Fam.pk_z W).Pg → GLoc v, G = fun i => G' (pl i)` from `⟨fun w => G (pl.symm w), funext fun i => congrArg G (pl.symm_apply_apply i).symm⟩`. Establish `hpl` using `fun i => _root_.GlobalTheory.TopDatumTheta.place_alt hPk hGR i h x rfl`. Distinguish the cases in `hx : IsHalf (∑ i, (G' (pl i)).q.e) x`. Use `swap`. Rewrite using `[if_neg hx, if_neg fun H => hx ((isHalf_actO_iff _ _ _).1 H.1)]`.
+
+Establish `hy` using `(isHalf_actO_iff (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x).2 hx`. Rewrite using `[if_pos hx]`. Distinguish the cases in `hI : IsIntM (frMapO (Yc D (j + 1)) D.sp.X' ((_root_.GlobalTheory.Fam.pk_z W).βY (j + 1)) (_root_.GlobalTheory.Fam.pk_z W).βX (actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x))`. Rewrite using `[if_pos ⟨hy, hI⟩, GlobalTheory.FunObj.Comparison₂.omegaQ_eq_prod, Finset.prod_empty, mul_one, omegaG_eq_prod (r_le_Y (j + 1)) _ _ _ _ _ (fun w => _root_.GlobalTheory.TopDatumTheta.ReducesModIdeal (G' w) w.1) (fun w y => (G' w).S.P.lam y) (fun g => (hGR.lev g).1.trans (pl.forall_c …`. Conclude with `Finset.prod_congr rfl fun i _ => (hpl i).2 hI`.
+
+Rewrite using `[if_neg fun H => hI H.2]`. Use `(Finset.prod_eq_zero_iff.2 (by_contra fun hne => hI fun a b => ?_)).symm` and prove the remaining obligations. Establish `h1 : (∑ i, (G' (pl i)).q.e) • actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x = actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x` using `Matrix.ext fun r s => hy r s`. Rewrite using `[← h1, frMapO_smul]`. Conclude with `sum_part_mem _ _ _ _ fun i => (hpl i).1 (fun h0 => hne ⟨i, Finset.mem_univ _, h0⟩) a b`.
+-/
 theorem datum_eq_alt (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) {n : ℕ} {G : Fin n → GLoc v} {pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg} (hGR : _root_.GlobalTheory.Fam.LocalGroupReading f G pl) {j : ℕ}
     (h : j + 2 * 0 + 2 = D.R.m) (x : WO (Yc D (j + 1)) D.sp.X') :
     (if IsHalf (∑ i, (G i).q.e) (actO _ _ (f.g.b (j + 1))⁻¹ f.g.bT⁻¹ x) ∧
@@ -157,6 +194,9 @@ theorem datum_eq_alt (hPk : _root_.GlobalTheory.Fam.PackageHypotheses W) {n : �
       Matrix.ext fun r s => hy r s
     rw [← h1, frMapO_smul]
     exact sum_part_mem _ _ _ _ fun i => (hpl i).1 (fun h0 => hne ⟨i, Finset.mem_univ _, h0⟩) a b
+/- English proof (translation)
+Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu W.P.A3.A.μ0) (_root_.GlobalTheory.Fam.pk_z W).eta D.R.m).1 (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu W.P.A3. …` using `fun n _ => Om (Yc D n) D.sp.X') ((_root_.GlobalTheory.Fam.pk_z W).ωX W.P.A3.A.μ0) e) := by`. Introduce and unpack `n rfl`. Conclude with `W.Q.charW.base.chain.ωX W.P.A3.A.μ0`. Conclude with `⟨_, _, key _ (GlobalTheory.Fam.idx_top h)⟩`.
+-/
 theorem exists_isWeilDatumO_omT_at_last (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : ∃ χS χT, IsWeilDatumO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D (j + 1)) D.sp.X' χS χT
     (omT (_root_.GlobalTheory.Fam.pk_z W) W.P.A3.A.μ0 j h) := by
   have key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D n) D.sp.X'
@@ -168,6 +208,13 @@ theorem exists_isWeilDatumO_omT_at_last (W : _root_.GlobalTheory.MiS.RealPackAlt
   exact ⟨_, _, key _ (GlobalTheory.Fam.idx_top h)⟩
 end Fam
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f hPk _ v hv hVT n G pl hGP hGR j h hψ _ _ hΛ hΛX M hM hLT hMv`. Use `⟨1, one_ne_zero, fun d hd => ?_⟩` and prove the remaining obligations. Take `⟨hvac, e, he, hθ⟩` from `hd.2`. Take `⟨χS, χT, hWe⟩` from `_root_.GlobalTheory.TopDatumTheta.exists_isWeilDatumO_omT_at_last W j h`. Establish `hb : f.g.b (j + 1) ∈ GfC _` using `hVT.b (j + 1) ▸ hv.b (j + 1)`.
+
+Establish `hb' : f.g.bT ∈ GfC _` using `hVT.bT.1 ▸ hv.bT`. Establish `hcth` using `GlobalTheory.VecTheta.isThetaFunO_stepVec hd.2`. Establish `he' : IsIdemSum e ((_root_.GlobalTheory.Fam.pk_z W).Pg)` using `by simpa only [datY, Finset.union_empty] using he`. Establish `hee : e = ∑ i, (G i).q.e` using `idem_eq he' _ pl fun i => (hGR.idem i).1`. Establish `hmove` using `GlobalTheory.VacMove.isThetaAt_moveLat D f.c.ψ _ _ _ _ _ hWe ((_root_.GlobalTheory.Fam.pk_z W).ΛY (j + 1)) M (_root_.GlobalTheory.Fam.pk_z W).ΛX f.g.LT hΛ hM hΛX hLT _ hb _ hb' (hMv _) (hVT.movesT _) e _ _ _ (GlobalTheory.PlaceDatum.idemSum_mul_self he) (GlobalTheory.PlaceDatum.i …`.
+
+Substitute `hee` using the available equality. Use `⟨_, ?_, hWe.om_pres _ _ hcth, (one_smul _ _).symm⟩` and prove the remaining obligations. Establish `hfun : prodDat (_root_.GlobalTheory.TopLocData.localLatticeAtPlace hψ hGP h hM hLT) = _` using `funext fun x => (_root_.GlobalTheory.TopDatumTheta.datum_eq_alt hPk hGR h x).symm`. Rewrite using `[hfun]`. Conclude with `hmove`.
+-/
 theorem moved_top_datum_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word) (f : _root_.GlobalTheory.Fam.FamilyCharacter W u), _root_.GlobalTheory.Fam.PackageHypotheses W → f.RowOK → ∀ v : VCom f.c, v.Is → _root_.GlobalTheory.Fam.CommutingVectorTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg) (hGP : GPin G), _root_.GlobalTheory.Fam.LocalGroupReading f G pl → ∀ j (h : j + 2 * 0 + 2 = D.R.m) (hψ : IsStdChar D f.c.ψ (-1)) d₀, _root_.GlobalTheory.Fam.IsDivisorGlobal W (j + 1) (_root_.GlobalTheory.Fam.pk_z W).MX (_root_.GlobalTheory.Fam.pk_z W).ΛX (_root_.GlobalTheory.Fam.pk_z W).βX (vacT (_root_.GlobalTheory.Fam.pk_z W) j h) d₀ → IsSelfDualC (Yc D (j + 1)) ((_root_.GlobalTheory.Fam.pk_z W).ΛY (j + 1)) → IsSelfDualC D.sp.X' (_root_.GlobalTheory.Fam.pk_z W).ΛX → ∀ (M : GlobalTheory.FinPl.Lat (Yc D (j + 1))) (hM : IsSelfDualC (Yc D (j + 1)) M) (hLT : IsSelfDualC D.sp.X' f.g.LT), (∀ P, GlobalTheory.FinPl.Moves (Yc D (j + 1)) (f.g.b (j + 1)) ((_root_.GlobalTheory.Fam.pk_z W).ΛY (j + 1)) M P) → ∃ κ : ℂ, κ ≠ 0 ∧ ∀ d, _root_.GlobalTheory.Fam.IsDivisorGlobal W (j + 1) (_root_.GlobalTheory.Fam.pk_z W).MX (_root_.GlobalTheory.Fam.pk_z W).ΛX (_root_.GlobalTheory.Fam.pk_z W).βX (vacT (_root_.GlobalTheory.Fam.pk_z W) j h) d → ∃ F, IsThetaAt f.c.ψ (symplO (Yc D (j + 1)) D.sp.X') (heisO f.c.ψ (Yc D (j + 1)) D.sp.X') (∑ i, (_root_.GlobalTheory.TopLocData.localLatticeAtPlace hψ hGP h hM hLT i).q.e) (latO (Yc D (j + 1)) D.sp.X' (M : Set _) (f.g.LT : Set _) fun _ => True) 1 (omT (_root_.GlobalTheory.Fam.pk_z W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (vacT (_root_.GlobalTheory.Fam.pk_z W) j h)) (prodDat (_root_.GlobalTheory.TopLocData.localLatticeAtPlace hψ hGP h hM hLT)) F ∧ IsThetaFunO f.c.ψ (Yc D (j + 1)) D.sp.X' F ∧ omT (_root_.GlobalTheory.Fam.pk_z W) W.P.A3.A.μ0 j h (f.g.b (j + 1), f.g.bT) (comb f.c.ψ _ _ d (vacT (_root_.GlobalTheory.Fam.pk_z W) j h)) = κ • F := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hPk _ v hv hVT n G pl hGP hGR j h hψ _ _ hΛ hΛX M hM hLT hMv
   refine ⟨1, one_ne_zero, fun d hd => ?_⟩

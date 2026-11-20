@@ -17,10 +17,16 @@ def levelTwo (K : Subgroup (GL (Fin (r + s)) (Af E))) (t : GL (Fin (r + s)) (Af 
     Subgroup (GL (Fin s) (Af E)) :=
   K.comap ((MulAut.conj t⁻¹).toMonoidHom.comp (Slice2.lev2 (Af E) r s))
 
+/- English proof (translation)
+Simplify using `[levelTwo, MulAut.conj_apply, Slice2.lev2]`.
+-/
 theorem mem_levelTwo {K : Subgroup (GL (Fin (r + s)) (Af E))} {t : GL (Fin (r + s)) (Af E)}
     {u : GL (Fin s) (Af E)} : u ∈ levelTwo K t ↔ t⁻¹ * lev (Af E) r s (1, u) * t ∈ K := by
   simp [levelTwo, MulAut.conj_apply, Slice2.lev2]
 
+/- English proof (translation)
+Establish `hc : Continuous fun u : GL (Fin s) (Af E) => t⁻¹ * Slice2.lev2 (Af E) r s u * t` using `(continuous_const.mul Slice2.continuous_lev2).mul continuous_const`. Use `hK.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Conclude with `mem_levelTwo`.
+-/
 theorem isOpen_levelTwo {K : Subgroup (GL (Fin (r + s)) (Af E))}
     (hK : IsOpen (K : Set (GL (Fin (r + s)) (Af E)))) (t : GL (Fin (r + s)) (Af E)) :
     IsOpen (levelTwo K t : Set (GL (Fin s) (Af E))) := by
@@ -33,6 +39,11 @@ theorem isOpen_levelTwo {K : Subgroup (GL (Fin (r + s)) (Af E))}
 def sliceMap (k : Kinf E (r + s)) : (Kinf E (r + s) → ℂ) →ₗ[ℂ] (Kinf E s → ℂ) :=
   LinearMap.funLeft ℂ ℂ fun κ => Slice2.levK E r s κ * k
 
+/- English proof (translation)
+Establish `hY : finGL E (r + s) (lev (Af E) r s (1, u)) * finGL E (r + s) t = finGL E (r + s) t * finGL E (r + s) (t⁻¹ * lev (Af E) r s (1, u) * t)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`. Rewrite using `[Slice2.lev_mul_right, Slice2.lev_finGL_one, cf, mul_assoc (lev (Ad E) r s (x, g)), ← mul_assoc (finGL E (r + s) _), ← infGL_comm, mul_assoc (infGL E (r + s) _), hY]`.
+
+Simplify using `only [mul_assoc]`.
+-/
 theorem lev_finGL_right (x : GA E r) (g : GA E s) (u : GL (Fin s) (Af E)) (k : Kinf E (r + s))
     (t : GL (Fin (r + s)) (Af E)) :
     lev (Ad E) r s (x, g * finGL E s u) * cf (r + s) k t =
@@ -46,6 +57,9 @@ theorem lev_finGL_right (x : GA E r) (g : GA E s) (u : GL (Fin s) (Af E)) (k : K
     ← mul_assoc (finGL E (r + s) _), ← infGL_comm, mul_assoc (infGL E (r + s) _), hY]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Slice2.lev_mul_right, Slice2.lev_infGL_one, cf, map_mul Unitary.toUnits, Slice2.toUnits_levK, map_mul (infGL E (r + s)), mul_assoc (lev (Ad E) r s (x, g)) (finGL E (r + s) t), infGL_comm _ t]`. Rewrite using `[mul_assoc (lev (Ad E) r s (x, g)) (infGL E (r + s) _), ← mul_assoc (infGL E (r + s) _) (finGL E (r + s) t), infGL_comm]`. Simplify using `only [mul_assoc]`.
+-/
 theorem lev_infGL_right (x : GA E r) (g : GA E s) (κ : Kinf E s) (k : Kinf E (r + s))
     (t : GL (Fin (r + s)) (Af E)) :
     lev (Ad E) r s (x, g * infGL E s (Unitary.toUnits κ)) * cf (r + s) k t =
@@ -59,6 +73,11 @@ theorem lev_infGL_right (x : GA E r) (g : GA E s) (κ : Kinf E s) (k : Kinf E (r
 
 end GlobalTheory.CompanionTheory.LimV.SliceR
 
+/- English proof (translation)
+Introduce `E _ _ _ r s k t K W hK hW`. Use `⟨SliceR.levelTwo K t, W.map (SliceR.sliceMap k), SliceR.isOpen_levelTwo hK t, inferInstance, fun f hf x => ⟨fun u hu g => ?_, fun g => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (lev (Ad E) r s (x, g * finGL E s u) * cf (r + s) k t) = f (lev (Ad E) r s (x, g) * cf (r + s) k t)`. Rewrite using `[SliceR.lev_finGL_right]`. Conclude with `hf.1 _ (SliceR.mem_levelTwo.1 hu) _`.
+
+Use `⟨_, hf.2 (lev (Ad E) r s (x, g) * finGL E (r + s) t), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `κ`. Express the relevant statement in the definitionally equal form `f _ = f (lev (Ad E) r s (x, g * infGL E s (Unitary.toUnits κ)) * cf (r + s) k t)`. Rewrite using `[SliceR.lev_infGL_right]`.
+-/
 theorem GlobalTheory.CompanionTheory.LimV.SliceR.slice_right : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ} (k : Kinf E (r + s)) (t : GL (Fin (r + s)) (Af E)) (K : Subgroup (GL (Fin (r + s)) (Af E))) (W : Submodule ℂ (Kinf E (r + s) → ℂ)), IsOpen (K : Set (GL (Fin (r + s)) (Af E))) → FiniteDimensional ℂ W → ∃ (K₂ : Subgroup (GL (Fin s) (Af E))) (W₂ : Submodule ℂ (Kinf E s → ℂ)), IsOpen (K₂ : Set (GL (Fin s) (Af E))) ∧ FiniteDimensional ℂ W₂ ∧ ∀ f ∈ typeF K W, ∀ x : GA E r, (fun y : GA E s => f (lev (Ad E) r s (x, y) * cf (r + s) k t)) ∈ typeF K₂ W₂ := by
   intro E _ _ _ r s k t K W hK hW
   refine ⟨SliceR.levelTwo K t, W.map (SliceR.sliceMap k), SliceR.isOpen_levelTwo hK t, inferInstance,

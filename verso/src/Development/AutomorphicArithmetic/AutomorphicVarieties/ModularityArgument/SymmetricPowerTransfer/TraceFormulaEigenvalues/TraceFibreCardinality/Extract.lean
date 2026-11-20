@@ -1,10 +1,20 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.TraceFormulaEigenvalues.FormsFin
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Artin
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qh30.artin T`.
+-/
 private theorem artin {P : Type} [Mul P] (T : Finset (P → ℂ)) : ∀ c : (P → ℂ) → ℂ,
     (∀ χ ∈ T, χ ≠ 0 ∧ ∀ p q, χ (p * q) = χ p * χ q) → (∀ p, ∑ χ ∈ T, c χ * χ p = 0) → ∀ χ ∈ T, c χ = 0 :=
   _root_.UpperTheory.Reformulated.B.Qh30.artin T
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_filter, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : α i = 0`. Rewrite using `[h0]`.
+
+Simplify using `only [Pi.zero_apply, mul_zero]`. Use `Finset.sum_eq_zero fun χ _ => ?_` and prove the remaining obligations. Use `split_ifs with e`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single (α i) (fun χ _ e => by simp [e.symm]) fun e => absurd (h i hi h0) e]; simp`.
+-/
 private theorem grp {P I : Type} [DecidableEq (P → ℂ)] (S : Finset I) (a : I → ℂ) (α : I → P → ℂ) (T : Finset (P → ℂ))
     (h : ∀ i ∈ S, α i ≠ 0 → α i ∈ T) (p : P) :
     ∑ χ ∈ T, (∑ i ∈ S.filter (fun i => α i = χ), a i) * χ p = ∑ i ∈ S, a i * α i p := by
@@ -19,6 +29,15 @@ private theorem grp {P I : Type} [DecidableEq (P → ℂ)] (S : Finset I) (a : I
     · simp
   · rw [Finset.sum_eq_single (α i) (fun χ _ e => by simp [e.symm]) fun e => absurd (h i hi h0) e]; simp
 
+/- English proof (translation)
+Introduce `P I J _ S S' a b α β hα hβ h χ hχ hb`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `set T := (S.image α ∪ S'.image β).filter (· ≠ 0) with hT`. Establish `key` using `artin T (fun χ => ∑ i ∈ S.filter (fun i => α i = χ), a i - ∑ j ∈ S'.filter (fun j => β j = χ), b j) (fun ψ hψ => by`.
+
+Simplify using `only [hT, Finset.mem_filter, Finset.mem_union, Finset.mem_image] at hψ`. Use `⟨hψ.2, ?_⟩` and prove the remaining obligations. Break down `hψ.1 with ⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩` into its components or cases. Use `exacts [hα i hi, hβ i hi])`. Use the proof step `(fun p => by`.
+
+Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[grp S a α T (fun i hi h0 => by simp only [hT, Finset.mem_filter, Finset.mem_union, Finset.mem_image]; exact ⟨.inl ⟨i, hi, rfl⟩, h0⟩), grp S' b β T (fun i hi h0 => by simp only [hT, Finset.mem_filter, Finset.mem_union, Finset.mem_image]; exact ⟨.inr ⟨i, hi, rfl⟩, h0⟩), h, sub_sel …`. Take `⟨j, hj, -⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hb`. Establish `hj'` using `Finset.mem_filter.1 hj`. Use `key χ (by simp only [hT, Finset.mem_filter, Finset.mem_union, Finset.mem_image]; exact ⟨.inr ⟨j, hj'.1, hj'.2⟩, hχ⟩)` as an intermediate fact.
+
+Rewrite using `[Finset.sum_eq_zero (s := S.filter _) fun i hi => by`. Assume the negation of the conclusion as `e`. Conclude with `hn i (Finset.mem_filter.1 hi).1 e (Finset.mem_filter.1 hi).2, zero_sub, neg_eq_zero] at this`. Conclude with `hb (by convert this)`.
+-/
 theorem UpperTheory.V.Z.Sym.Tf.extract :
     UpperTheory.V.Z.Sym.Tf.Extract := by
   classical

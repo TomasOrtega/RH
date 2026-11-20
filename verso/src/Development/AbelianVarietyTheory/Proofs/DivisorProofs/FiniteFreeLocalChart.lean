@@ -12,6 +12,33 @@ noncomputable section
 namespace GlobalTheory.SplitUnique
 open GlobalTheory.WeilSchUnique
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ a b JA JB ε hJ hdet ψ hψ κ _ dd omd omd₁ hS hC hS₁ hC₁ l ⟨φ₀, hφ₀, hl0⟩ hl`. Establish `inv_mul : ∀ (p : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F JB))) φ, omd p (omd p⁻¹ φ) = φ` using `fun p φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Take `⟨φz, hφz, hφz0⟩` from `GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F κ`. Establish `key : ∀ p, ∃ c : ℂ, ∀ φ ∈ schA F κ, omd₁ p φ = c • omd p φ` using `fun p => by`.
+
+Take `⟨c, hc⟩` from `scalar_of_commute ψ hψ (omd p⁻¹ * omd₁ p) (fun l hl => by`. Rewrite using `[Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Conclude with `hS₁.adm p _ (hS.adm p⁻¹ l hl))`. Use the proof step `(fun w φ hφ => by`. Take `⟨w', rfl⟩` from `dd.e.surjective w`.
+
+Establish `e1 : schr ψ (dd.e w') = dd.rho ψ w'` using `rfl`. Rewrite using `[e1, Module.End.mul_apply, Module.End.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `congrArg (omd p) (hc φ hφ)` as an intermediate fact.
+
+Rewrite `this` using `[Module.End.mul_apply, inv_mul, map_smul]`. Then use the resulting hypothesis. Use `choose cf hcf using key`. Establish `hsp : ∀ p, ∀ φ ∈ schA F κ, omd p φ ∈ schA F κ` using `fun p φ hφ => hS.pres p φ hφ`. Establish `huniq : ∀ p (c : ℂ), (∀ φ ∈ schA F κ, omd₁ p φ = c • omd p φ) → c = cf p` using `fun p c hc => by`. Establish `h1` using `hc _ (hsp p⁻¹ φz hφz)`.
+
+Rewrite `h1` using `[hcf p _ (hsp p⁻¹ φz hφz), inv_mul]`. Establish `h2` using `congrFun h1 0`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `(mul_right_cancel₀ hφz0 h2).symm`. Establish `hmul : ∀ p q, cf (p * q) = cf p * cf q` using `fun p q => (huniq (p * q) _ fun φ hφ => by`.
+
+Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcf q φ hφ, map_smul, hcf p _ (hsp q φ hφ), smul_smul, mul_comm]).symm`. Establish `hone : cf 1 = 1` using `(huniq 1 1 fun φ _ => by simp).symm`. Set `cM : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F JB)) →* ℂ` to `{ toFun := cf, map_one' := hone, map_mul' := hmul }`. Set `c` to `cM.toHomUnits`. Establish `hcv : ∀ p, ((c p : ℂˣ) : ℂ) = cf p` using `fun p => rfl`.
+
+Establish `hcont_cf : Continuous cf`. Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Establish `hφ` using `hsp p₀⁻¹ φz hφz`. Establish `hf` using `hC _ (evalZero_mem_adelicSchwartzAdmittedForms κ) _ hφ`. Establish `hf₁` using `hC₁ _ (evalZero_mem_adelicSchwartzAdmittedForms κ) _ hφ`.
+
+Simplify using `only [LinearMap.proj_apply] at hf hf₁`. Establish `h0 : omd p₀ (omd p₀⁻¹ φz) 0 ≠ 0` using `by rw [inv_mul]; exact hφz0`. Use `(hf₁.continuousAt.div hf.continuousAt h0).congr ?_` and prove the remaining obligations. Use `filter_upwards [hf.continuousAt.eventually_ne h0] with p hp`. Use `show omd₁ p _ 0 / omd p _ 0 = cf p`.
+
+Rewrite using `[hcf p _ hφ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hcont : Continuous c`. Use `Units.continuous_iff.2 ⟨hcont_cf, ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun p => ((c p)⁻¹ : ℂˣ).val) = fun p => (cf p)⁻¹` using `funext fun p => by`. Rewrite using `[Units.val_inv_eq_inv_val, hcv]`. Rewrite using `[this]`. Conclude with `hcont_cf.inv₀ fun p => by rw [← hcv]; exact (c p).ne_zero`. Establish `hP : ∀ (p : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F JB))) (t : GL (Fin b) (AE F E)), ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix _ _ (AE F E)) * diagCols (Fin b) = diagCols (Fin b) * t.1 → c p = 1` using `fun p t hpt => by`.
+
+Establish `hφ` using `hsp p⁻¹ φ₀ hφ₀`. Establish `e1` using `hl p t hpt _ hφ`. Rewrite `e1` using `[hcf p _ hφ, inv_mul, map_smul, smul_eq_mul]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hcv, Units.val_one]`.
+
+Conclude with `mul_right_cancel₀ hl0 (by rw [one_mul]; exact e1.symm)`. Establish `hc1` using `GlobalTheory.SiegelChar.eq_one_of_siegel F E σ hσ b JB ε hJ hdet c hcont hP`. Establish `hcf1 : ∀ p, cf p = 1` using `fun p => by`. Rewrite using `[← hcv, hc1]`. Both sides reduce to the same expression.
+
+Introduce `p φ hφ`. Rewrite using `[hcf p φ hφ, hcf1 p, one_smul]`.
+-/
 theorem splitting_unique : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (a b : ℕ) (JA : Matrix (Fin a) (Fin a) E) (JB : Matrix (Fin b) (Fin b) E) (ε : ℤˣ), (∀ i j, σ (JB j i) = ((ε : ℤ) : E) * JB i j) → JB.det ≠ 0 →
     ∀ (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]

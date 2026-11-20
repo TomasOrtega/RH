@@ -9,16 +9,32 @@ section
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem qzTor_smul_mk (x : ℤ_[l]) (q : ℚ_[l]) :
     x • QZ.mk l q = QZ.mk l ((x : ℚ_[l]) * q) := rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_eq_zero (ZlSub l)`.
+-/
 private theorem qzTor_mk_eq_zero (q : ℚ_[l]) :
     QZ.mk l q = 0 ↔ ∃ z : ℤ_[l], (z : ℚ_[l]) = q :=
   Submodule.Quotient.mk_eq_zero (ZlSub l)
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_surjective (ZlSub l) a`.
+-/
 private theorem qzTor_mk_surj (a : QZ l) : ∃ q, QZ.mk l q = a :=
   Submodule.Quotient.mk_surjective (ZlSub l) a
 
+/- English proof (translation)
+Establish `hl : ((l : ℚ_[l]) ^ r) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Rewrite using `[qzTor_smul_mk, qzTor_mk_eq_zero, ← RingHom.mem_ker, PadicInt.ker_toZModPow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Establish `: ((z * (l : ℤ_[l]) ^ r : ℤ_[l]) : ℚ_[l]) = (z : ℚ_[l]) * (l : ℚ_[l]) ^ r` using `by push_cast; rfl`. Rewrite using `[this, hz]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨z, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem qzTor_key (r : ℕ) (x : ℤ_[l]) :
     x • QZ.mk l (((l : ℚ_[l]) ^ r)⁻¹) = 0 ↔ PadicInt.toZModPow r x = 0 := by
   have hl : ((l : ℚ_[l]) ^ r) ≠ 0 :=
@@ -39,6 +55,27 @@ private theorem qzTor_key (r : ℕ) (x : ℤ_[l]) :
 
 end
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `⟨fun a => ?_, fun r => ?_⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `qzTor_mk_surj l a`. Establish `hlt : ‖(l : ℚ_[l])‖ < 1` using `Padic.norm_p_lt_one`. Establish `hpos : (0 : ℝ) < (‖q‖ + 1)⁻¹` using `by positivity`.
+
+Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hpos hlt`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[qzTor_smul_mk, qzTor_mk_eq_zero]`. Establish `hle : ‖(l : ℚ_[l]) ^ r * q‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨_, hle⟩, ?_⟩` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression. Establish `hl : ((l : ℚ_[l]) ^ r) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr hp.ne_zero) set e : QZ l := QZ.mk l (((l : ℚ_[l]) ^ r)⁻¹) with he`.
+
+Establish `hs : Function.Surjective (PadicInt.toZModPow (p` using `l) r) := by haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Conclude with `ZMod.ringHom_surjective _`. Establish `hwd : ∀ x x' : ℤ_[l], PadicInt.toZModPow r x = PadicInt.toZModPow r x' → x • e = x' • e`. Introduce `x x' h`. Rewrite using `[← sub_eq_zero, ← sub_smul, he, qzTor_key, map_sub, h, sub_self]`.
+
+Establish `hinv` using `Function.surjInv_eq hs`. Set `ι : ZMod (l ^ r) →+ QZ l` to `AddMonoidHom.mk' (fun y => Function.surjInv hs y • e) (by`. Introduce `y y'`. Rewrite using `[← add_smul]`. Apply `hwd` to reduce the goal to its premises.
+
+Rewrite using `[map_add, hinv, hinv, hinv])`. Establish `hι : ∀ x : ℤ_[l], ι (PadicInt.toZModPow r x) = x • e` using `fun x => hwd _ _ (hinv _)`. Use `⟨ι, ?_, fun a => ⟨fun ha => ?_, ?_⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`.
+
+Take `⟨x, rfl⟩` from `hs y`. Rewrite `hy` using `[hι, he, qzTor_key]`. Conclude with `hy`. Take `⟨q, rfl⟩` from `qzTor_mk_surj l a`. Rewrite `ha` using `[qzTor_smul_mk, qzTor_mk_eq_zero]`.
+
+Take `⟨z, hz⟩` from `ha`. Use `⟨PadicInt.toZModPow r z, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, he, qzTor_smul_mk, hz]`. Use `congr 1`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `hs y`. Rewrite using `[hι, smul_smul, he, qzTor_key, ← RingHom.mem_ker, PadicInt.ker_toZModPow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+
+Take `⟨x', rfl⟩` from `hs y`. Rewrite using `[← map_mul, hι, hι, mul_smul]`.
+-/
 theorem qz_torsion_zmod_embedding (l : ℕ) [Fact l.Prime] :
     (∀ a : QZ l, ∃ r : ℕ, (l : ℤ_[l]) ^ r • a = 0) ∧
     ∀ r : ℕ, ∃ ι : ZMod (l ^ r) →+ QZ l, Function.Injective ι ∧

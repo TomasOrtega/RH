@@ -41,6 +41,9 @@ variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 scoped instance topGroupHA : IsTopologicalGroup (HA R σ J) :=
   inferInstanceAs (IsTopologicalGroup (HR R σ J))
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_mat : Continuous fun g : HA R σ J =>
     ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) :=
   Units.continuous_val.comp continuous_subtype_val
@@ -167,9 +170,15 @@ def prV (v : HeightOneSpectrum (𝓞 F)) : AF F ⊗[F] E →+* Fv F v ⊗[F] E :
   (Algebra.TensorProduct.map (evalV F v) (AlgHom.id F E)).toRingHom.comp
     (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projInf_apply {M n : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E) (a : Fin n) (i : Fin M) :
     projInf X a i = prInf (X a i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projV_apply (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (X : Fin n → Fin M → AF F ⊗[F] E)
     (a : Fin n) (i : Fin M) : projV v (projFin X) a i = prV v (X a i) := rfl
 
@@ -178,6 +187,9 @@ variable {d : ℕ} (b : Module.Basis (Fin d) F E)
 def intV (v : HeightOneSpectrum (𝓞 F)) : Set (Fv F v ⊗[F] E) :=
   {y | ∀ k, (Algebra.TensorProduct.basis (Fv F v) b).repr y k ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latV_iff (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (Y : Fin n → Fin M → Fv F v ⊗[F] E) :
     Y ∈ latV b v ↔ ∀ a i, Y a i ∈ intV b v := Iff.rfl
 

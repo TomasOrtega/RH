@@ -13,6 +13,13 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (pullHerm)
 
 namespace GlobalTheory.CompanionTheory.Ar.Chg.Stalk
 
+/- English proof (translation)
+Introduce `X X₀ Ω Ω₀ _ _ ξ ξ₀ h i hd hc`. Use `⟨fun p a ha => ?_, fun p a ha hu => ?_, fun z a r hz hv => ?_⟩` and prove the remaining obligations. Take `⟨hh, h1, -⟩` from `GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates X₀ Ω₀ ξ₀ X Ω ξ h i hd p`. Conclude with `h1 a ha`. Take `⟨hh, -, h2⟩` from `GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates X₀ Ω₀ ξ₀ X Ω ξ h i hd p`.
+
+Conclude with `h2 hc a ha hu`. Take `⟨h0, s, hs1, hs2⟩` from `hv`. Use `⟨hz, (Scheme.Hom.stalkMap h (centre z)).hom s, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Ar.RegAtDom.genMap_stalkMap hd (centre z) hz h0 s]`. Conclude with `congrArg i hs1`.
+
+Rewrite `hs2` using `[Scheme.stalkClosedPointTo_comp]`. Rewrite using `[← hs2]`. Both sides reduce to the same expression.
+-/
 theorem regular_along_dominant : ∀ (X X₀ : Scheme.{0}) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀) (h : X ⟶ X₀) (i : Ω₀ →+* Ω) (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ ξ₀ h i), IsCptGen ξ → (∀ (p : Cpt ξ) (a : Ω₀), a ∈ regAt ξ₀ (pushCpt hd p) → i a ∈ regAt ξ p) ∧ (∀ (p : Cpt ξ) (a : Ω₀), a ∈ regAt ξ₀ (pushCpt hd p) → unitAt ξ p (i a) → unitAt ξ₀ (pushCpt hd p) a) ∧ (∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) (a : Ω₀) (r : ℂ), genPt ξ ⤳ centre z → ValAt ξ₀ (z ≫ h) a r → ValAt ξ z (i a) r) := by
   intro X X₀ Ω Ω₀ _ _ ξ ξ₀ h i hd hc
   refine ⟨fun p a ha => ?_, fun p a ha hu => ?_, fun z a r hz hv => ?_⟩

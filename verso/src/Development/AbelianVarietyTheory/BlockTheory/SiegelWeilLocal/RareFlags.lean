@@ -13,10 +13,16 @@ def FlagRare : Prop :=
     prob B {x | least B.I x < 1 / 2} ≤
       Real.exp (-(1 / 4 * (B.I.n : ℝ) * (B.I.f : ℝ) * Real.log B.I.n))
 
+/- English proof (translation)
+Rewrite using `[Real.le_sqrt (by positivity) (by positivity)]`. Conclude with `Iff.rfl` after adjusting the coercions.
+-/
 example (q n : ℕ) : q ^ 2 ≤ n ↔ (q : ℝ) ≤ Real.sqrt n := by
   rw [Real.le_sqrt (by positivity) (by positivity)]
   exact_mod_cast Iff.rfl
 
+/- English proof (translation)
+Simplify using `[tau1]`.
+-/
 example (I : AutInst) (x : I.GA) : least I x < 1 / 2 ↔ tau1 I x < 1 / 2 := by
   simp [tau1]
 

@@ -15,9 +15,15 @@ abbrev resField (PP : Pl E) : Field (kP PP) :=
   haveI := PP.isMaximal
   Ideal.Quotient.field PP.asIdeal
 
+/- English proof (translation)
+The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot`.
+-/
 theorem finite_res (PP : Pl E) : Finite (kP PP) :=
   Ideal.finiteQuotientOfFreeOfNeBot PP.asIdeal PP.ne_bot
 
+/- English proof (translation)
+Use `haveI := fun PP : Pl E => finite_res PP`. Use `infer_instance`.
+-/
 theorem finite_boundedLevelClassGroupFamily (Pg : Finset (Pl E)) (r : ℕ) : Finite (G0 Pg r) := by
   haveI := fun PP : Pl E => finite_res PP
   infer_instance

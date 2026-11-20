@@ -20,11 +20,17 @@ variable {F : Type} [Field F] [NumberField F]
 def shiftFin (v : Pl F) {κ : Type} (x₀ : κ → Fv F v) (y : κ → Af F) : κ → Af F :=
   fun i => y i + (singleFin v (x₀ i) - singleFin v (evalV F v (y i)))
 
+/- English proof (translation)
+Simplify using `only [shiftFin, map_add, map_sub, evalV_singleFin_self]`. Normalize the expressions using the abelian group laws.
+-/
 theorem evalV_shiftFin (v : Pl F) {κ : Type} (x₀ : κ → Fv F v) (y : κ → Af F) (i : κ) :
     evalV F v (shiftFin v x₀ y i) = x₀ i := by
   simp only [shiftFin, map_add, map_sub, evalV_singleFin_self]
   abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[shiftFin, evalV_shiftFin]`. Simplify using `only [shiftFin]`. Normalize the expressions using the abelian group laws.
+-/
 theorem shiftFin_back (v : Pl F) {κ : Type} (x₀ : κ → Fv F v) (y : κ → Af F) :
     shiftFin v (fun i => evalV F v (y i)) (shiftFin v x₀ y) = y := by
   funext i
@@ -32,6 +38,9 @@ theorem shiftFin_back (v : Pl F) {κ : Type} (x₀ : κ → Fv F v) (y : κ → 
   simp only [shiftFin]
   abel
 
+/- English proof (translation)
+Establish `hev : Continuous (evalV F v)` using `RestrictedProduct.continuous_eval v`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h2 : Continuous fun p : (κ → Fv F v) × (κ → Af F) => p.2 i` using `(continuous_apply i).comp continuous_snd`. Establish `h1 : Continuous fun p : (κ → Fv F v) × (κ → Af F) => p.1 i` using `(continuous_apply i).comp continuous_fst`. Conclude with `h2.add (((continuous_singleFin v).comp h1).sub ((continuous_singleFin v).comp (hev.comp h2)))`.
+-/
 theorem continuous_shiftFin (v : Pl F) {κ : Type} :
     Continuous fun p : (κ → Fv F v) × (κ → Af F) => shiftFin v p.1 p.2 := by
   have hev : Continuous (evalV F v) := RestrictedProduct.continuous_eval v
@@ -40,6 +49,11 @@ theorem continuous_shiftFin (v : Pl F) {κ : Type} :
   have h1 : Continuous fun p : (κ → Fv F v) × (κ → Af F) => p.1 i := (continuous_apply i).comp continuous_fst
   exact h2.add (((continuous_singleFin v).comp h1).sub ((continuous_singleFin v).comp (hev.comp h2)))
 
+/- English proof (translation)
+Establish `hev : Continuous (evalV F v)` using `RestrictedProduct.continuous_eval v`. Establish `hE : Continuous fun y : κ → Af F => fun i => evalV F v (y i)` using `continuous_pi fun i => hev.comp (continuous_apply i)`. Establish `hS : Continuous (shiftFin v x₀)` using `(continuous_shiftFin v).comp (continuous_const.prodMk continuous_id)`. Use `⟨(hφ'.1.comp_continuous hE).mul (hg.1.comp_continuous hS), ?_⟩` and prove the remaining obligations. Establish `hK : IsCompact ((fun p : (κ → Fv F v) × (κ → Af F) => shiftFin v p.1 p.2) '' (tsupport φ' ×ˢ tsupport g))` using `(IsCompact.prod hφ'.2 hg.2).image (continuous_shiftFin v)`.
+
+Use `HasCompactSupport.intro hK fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `ha : φ' (fun i => evalV F v (y i)) ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hb : g (shiftFin v x₀ y) ≠ 0` using `right_ne_zero_of_mul hne`. Conclude with `hy ⟨(fun i => evalV F v (y i), shiftFin v x₀ y), ⟨subset_tsupport _ ha, subset_tsupport _ hb⟩, shiftFin_back v x₀ y⟩`.
+-/
 theorem mem_SB_shift (v : Pl F) {κ : Type} (x₀ : κ → Fv F v) {φ' : (κ → Fv F v) → ℂ}
     (hφ' : φ' ∈ SB (κ → Fv F v)) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
     (fun y : κ → Af F => φ' (fun i => evalV F v (y i)) * g (shiftFin v x₀ y)) ∈ SB (κ → Af F) := by
@@ -58,6 +72,25 @@ theorem mem_SB_shift (v : Pl F) {κ : Type} (x₀ : κ → Fv F v) {φ' : (κ �
   exact hy ⟨(fun i => evalV F v (y i), shiftFin v x₀ y),
     ⟨subset_tsupport _ ha, subset_tsupport _ hb⟩, shiftFin_back v x₀ y⟩
 
+/- English proof (translation)
+Introduce `F _ _ κ _ v φ φ' r hφ hφ' hr`. Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp hφ`. Use `⟨hr.1, ?_⟩` and prove the remaining obligations. Set `z : (κ → AF F) → κ → AF F` to `fun x i => pairA F 0 (singleFin v (x₀ i) - singleFin v (evalV F v (x i).2))`. Establish `hz : ∀ x, At (evFin F v) (z x)`.
+
+Introduce `x u hu`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * 0 = 0`. Conclude with `mul_zero _`.
+
+Express the relevant statement in the definitionally equal form `u.2 * (singleFin v (x₀ i) - singleFin v (evalV F v (x i).2)) = 0`. Use `af_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Establish `: evalV F w u.2 = 0` using `hu`. Rewrite using `[this, zero_mul]`. Rewrite using `[map_sub, evalV_singleFin_ne hw, evalV_singleFin_ne hw, sub_zero, mul_zero]`. Establish `h1 : ∀ x i, ((x + z x) i).1 = (x i).1` using `fun x i => by`. Express the relevant statement in the definitionally equal form `(x i).1 + 0 = (x i).1`.
+
+Conclude with `add_zero _`. Establish `h2 : ∀ x i, ((x + z x) i).2 = shiftFin v x₀ (fun i => (x i).2) i` using `fun x i => rfl`. Establish `hev : ∀ x i, evFin F v ((x + z x) i) = x₀ i` using `fun x i => by`. Express the relevant statement in the definitionally equal form `evalV F v ((x + z x) i).2 = x₀ i`. Rewrite using `[h2, evalV_shiftFin]`.
+
+Set `L : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `{ toFun := fun Φ x => φ' (fun i => evFin F v (x i)) * Φ (x + z x) map_add' := fun Φ Ψ => funext fun x => by simp only [Pi.add_apply]; ring map_smul' := fun c Φ => funext fun x => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `hL : schA F κ ≤ (schA F κ).comap L`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `Submodule.subset_span ⟨f, _, mem_SB_shift v x₀ hφ' hg, funext fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ' (fun i => evFin F v (x i)) * pureA F f g (x + z x) = _`. Simplify using `only [pureA, h1, h2]`. Express the relevant statement in the definitionally equal form `_ = _ * (φ' (fun i => evFin F v (x i)) * _)`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key : tens (evFin F v) φ' r = (φ x₀)⁻¹ • L (tens (evFin F v) φ r)`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `φ' (fun i => evFin F v (x i)) * r x = (φ x₀)⁻¹ * (φ' (fun i => evFin F v (x i)) * (φ (fun i => evFin F v ((x + z x) i)) * r (x + z x)))`. Establish `hx : φ x₀ ≠ 0` using `hx₀`.
+
+Simplify using `only [hev, hr.1 x (z x) (hz x)]`. Rewrite using `[mul_left_comm (φ x₀)⁻¹, ← mul_assoc (φ x₀)⁻¹, inv_mul_cancel₀ hx, one_mul]`. Rewrite using `[key]`. Conclude with `Submodule.smul_mem _ _ (hL hr.2)`.
+-/
 theorem rest_of_rest : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (φ φ' : (κ → Fv F v) → ℂ) (r : (κ → AF F) → ℂ), φ ≠ 0 → φ' ∈ SB (κ → Fv F v) →
     Rest (evFin F v) φ r → Rest (evFin F v) φ' r := by

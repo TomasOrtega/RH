@@ -1,6 +1,15 @@
 import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.BaseRepGL3NormalisedOfPsiEqOne
 
+/- English proof (translation)
+Establish `key : ∀ v : Fin m → R, P.mulVec (Q.mulVec v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`. Establish `mem : ∀ v : Fin m → R, v ∈ S.comap P.mulVecLin ↔ P.mulVec v ∈ S` using `fun v => Iff.rfl`. Establish `hst : ∀ g ∈ U, ∀ v ∈ S.comap P.mulVecLin, (a g).mulVec v ∈ S.comap P.mulVecLin`. Introduce `g hg v hv`.
+
+Rewrite `hv`, the goal using `[mem]`. Rewrite using `[H g hg, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, key]`. Conclude with `hS g hg _ hv`. Break down `hirr _ hst with h0 | h1` into its components or cases. Use `left`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `h2 : Q.mulVec v ∈ S.comap P.mulVecLin` using `by rw [mem, key]; exact hv`. Rewrite `h2` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot, ← key v, h2, Matrix.mulVec_zero]`.
+
+Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h2 : Q.mulVec v ∈ S.comap P.mulVecLin` using `by rw [h1]; exact Submodule.mem_top`. Rewrite `h2` using `[mem, key]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.Reformulated.B.G5.irr_conj {G R : Type} [Group G] [CommRing R] {m : ℕ}
     {U : Subgroup G} {a a' : G → Matrix (Fin m) (Fin m) R} (P Q : Matrix (Fin m) (Fin m) R)
     (hPQ : P * Q = 1) (H : ∀ g ∈ U, a g = Q * a' g * P)
@@ -29,6 +38,9 @@ private theorem UpperTheory.Reformulated.B.G5.irr_conj {G R : Type} [Group G] [C
     have h2 : Q.mulVec v ∈ S.comap P.mulVecLin := by rw [h1]; exact Submodule.mem_top
     rwa [mem, key] at h2
 
+/- English proof (translation)
+Introduce `G R _ _ m U a a' h H hirr`. Conclude with `UpperTheory.Reformulated.B.G5.irr_conj _ _ (Units.mul_inv h) H hirr`.
+-/
 theorem UpperTheory.Reformulated.B.G5.matIrr_conj :
     ∀ {G R : Type} [inst : Group G] [inst_1 : CommRing R] {m : ℕ}
     {U : Subgroup G} {a a' : G → Matrix (Fin m) (Fin m) R} (h : GL (Fin m) R),

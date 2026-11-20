@@ -21,11 +21,19 @@ namespace GlobalTheory.CompanionTheory.GL3BlockMatrixLocal
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[CtLevel.blk_val, CtLevel.dgM_val, CtLevel.dgMat, Matrix.mul_zero]`.
+-/
 theorem blk_zero_eq {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w) :
     blk h w m 0 = CtLevel.dgM h w m := by
   ext1
   rw [CtLevel.blk_val, CtLevel.dgM_val, CtLevel.dgMat, Matrix.mul_zero]
 
+/- English proof (translation)
+Establish `e : (CtLevel.dgM h w : GLw a w × GLw b w → GLw n w) = fun k => ((CtLevel.dgM h w).comp (MonoidHom.inl (GLw a w) (GLw b w))) k.1 * ((CtLevel.dgM h w).comp (MonoidHom.inr (GLw a w) (GLw b w))) k.2`. Use function extensionality and compare the values at `k`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.inl_apply, MonoidHom.inr_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `((CtLevel.continuous_dgM_inl h w).comp continuous_fst).mul ((CtLevel.continuous_dgM_inr h w).comp continuous_snd)`.
+-/
 theorem continuous_dgM {a b n : ℕ} (h : a + b = n) (w : Pl E) :
     Continuous (CtLevel.dgM h w : GLw a w × GLw b w → GLw n w) := by
   have e : (CtLevel.dgM h w : GLw a w × GLw b w → GLw n w) = fun k =>
@@ -38,6 +46,9 @@ theorem continuous_dgM {a b n : ℕ} (h : a + b = n) (w : Pl E) :
   exact ((CtLevel.continuous_dgM_inl h w).comp continuous_fst).mul
     ((CtLevel.continuous_dgM_inr h w).comp continuous_snd)
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> intro i j <;>`. Apply the tactic sequence `rw [CtLevel.dgM_val, CtLevel.dgMat, reindex_apply, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply] <;> simp`.
+-/
 theorem dgM_entries {a b n : ℕ} (h : a + b = n) (w : Pl E) (k : GLw a w × GLw b w) :
     (∀ i j, (CtLevel.dgM h w k).val (CtLevel.blkEq h (Sum.inl i)) (CtLevel.blkEq h (Sum.inl j)) = k.1.val i j) ∧
       ∀ i j, (CtLevel.dgM h w k).val (CtLevel.blkEq h (Sum.inr i)) (CtLevel.blkEq h (Sum.inr j)) = k.2.val i j := by
@@ -45,6 +56,13 @@ theorem dgM_entries {a b n : ℕ} (h : a + b = n) (w : Pl E) (k : GLw a w × GLw
     rw [CtLevel.dgM_val, CtLevel.dgMat, reindex_apply, submatrix_apply, Equiv.symm_apply_apply,
       Equiv.symm_apply_apply] <;> simp
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hk`. Rewrite `h2` using `[← map_inv]`. Use `⟨GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩, GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun i j => ?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Use `h1 (CtLevel.blkEq h (Sum.inl i)) (CtLevel.blkEq h (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[(dgM_entries h w k).1]`. Then use the resulting hypothesis.
+
+Use `h2 (CtLevel.blkEq h (Sum.inl i)) (CtLevel.blkEq h (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[(dgM_entries h w k⁻¹).1]`. Then use the resulting hypothesis. Use `h1 (CtLevel.blkEq h (Sum.inr i)) (CtLevel.blkEq h (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[(dgM_entries h w k).2]`. Then use the resulting hypothesis. Use `h2 (CtLevel.blkEq h (Sum.inr i)) (CtLevel.blkEq h (Sum.inr j))` as an intermediate fact.
+
+Rewrite `this` using `[(dgM_entries h w k⁻¹).2]`. Then use the resulting hypothesis.
+-/
 theorem blocks_mem_KGL {a b n : ℕ} (h : a + b = n) (w : Pl E) (k : GLw a w × GLw b w)
     (hk : CtLevel.dgM h w k ∈ GlobalTheory.LFun.KGL w n) : k.1 ∈ GlobalTheory.LFun.KGL w a ∧ k.2 ∈ GlobalTheory.LFun.KGL w b := by
   obtain ⟨h1, h2⟩ := GlobalTheory.AdelicU.mem_GLint_iff.1 hk
@@ -60,6 +78,17 @@ theorem blocks_mem_KGL {a b n : ℕ} (h : a + b = n) (w : Pl E) (k : GLw a w × 
   · have := h2 (CtLevel.blkEq h (Sum.inr i)) (CtLevel.blkEq h (Sum.inr j))
     rwa [(dgM_entries h w k⁻¹).2] at this
 
+/- English proof (translation)
+Establish `hd₁ : CtLevel.dgM h w k₁ ∈ K'`. Establish `: blk h w k₁ 0 ∈ K'` using `hk₁`. Rewrite `this` using `[blk_zero_eq]`. Then use the resulting hypothesis. Establish `hd₂ : CtLevel.dgM h w k₂ ∈ K'`. Establish `: blk h w k₂ 0 ∈ K'` using `hk₂`.
+
+Rewrite `this` using `[blk_zero_eq]`. Then use the resulting hypothesis. Take `⟨h11, h12⟩` from `blocks_mem_KGL h w k₁ (hKK hd₁)`. Take `⟨h21, h22⟩` from `blocks_mem_KGL h w k₂ (hKK hd₂)`. Establish `hab : absHalf w ((k₁ * m * k₂).1.val.det ^ b / (k₁ * m * k₂).2.val.det ^ a) = absHalf w (m.1.val.det ^ b / m.2.val.det ^ a)`. Rewrite using `[(absHalf_blockDet_KGL_invariant E a b w (k₁ * m) k₂ h21 h22).2]`.
+
+Conclude with `(absHalf_blockDet_KGL_invariant E a b w m k₁ h11 h12).1`. Establish `e : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => f (x⁻¹ * blk h w (k₁ * m * k₂) (Multiplicative.toAdd X) * y)) = fun X => (fun Y : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => f (x⁻¹ * blk h w m (Multiplicative.toAdd Y) * y)) (Multip …`. Use function extensionality and compare the values at `X`. Rewrite using `[(CtLevel.blk_mul_dgM E a b n h w (k₁ * m) k₂ _).2, (CtLevel.blk_mul_dgM E a b n h w m k₁ _).1]`. Establish `hc₁ : x⁻¹ * CtLevel.dgM h w k₁ * x ∈ K'`.
+
+Simplify using `using hN x⁻¹ (inv_mem hx) _ hd₁`. Establish `hc₂ : y⁻¹ * CtLevel.dgM h w k₂ * y ∈ K'`. Simplify using `using hN y⁻¹ (inv_mem hy) _ hd₂`. Establish `e2 : x⁻¹ * (CtLevel.dgM h w k₁ * blk h w m (k₂.1.val * Multiplicative.toAdd X * (k₂.2⁻¹).val) * CtLevel.dgM h w k₂) * y = (x⁻¹ * CtLevel.dgM h w k₁ * x) * (x⁻¹ * blk h w m (k₂.1.val * Multiplicative.toAdd X * (k₂.2⁻¹).val) * y) * (y⁻¹ * CtLevel.dgM h w k₂ * y)` using `by group`. Rewrite using `[e2, hf _ hc₁ _ hc₂]`.
+
+Both sides reduce to the same expression. Unfold `phi3`. Rewrite using `[hab, e, HintInv.hint_intMat_mul_mul E a b w (fun Y => f (x⁻¹ * blk h w m (Multiplicative.toAdd Y) * y)) k₂.1 k₂.2⁻¹ h21 (inv_mem h22)]`.
+-/
 theorem constant_term_bi_invariant {a b n : ℕ} (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w))
     (hKK : K' ≤ GlobalTheory.LFun.KGL w n) (hN : ∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ k' ∈ K', k * k' * k⁻¹ ∈ K')
     (f : GLw n w → ℂ) (hf : ∀ k₁ ∈ K', ∀ k₂ ∈ K', ∀ g, f (k₁ * g * k₂) = f g)
@@ -100,6 +129,9 @@ theorem constant_term_bi_invariant {a b n : ℕ} (h : a + b = n) (w : Pl E) (K' 
   rw [hab, e, HintInv.hint_intMat_mul_mul E a b w (fun Y => f (x⁻¹ * blk h w m (Multiplicative.toAdd Y) * y))
     k₂.1 k₂.2⁻¹ h21 (inv_mem h22)]
 
+/- English proof (translation)
+Take `⟨X, hX⟩` from `CtLevel.exists_ne_zero_of_hint_ne_zero _ _ (right_ne_zero_of_mul hm)`. Use `⟨Multiplicative.toAdd X, ?_⟩` and prove the remaining obligations. Establish `e : blk h w m (Multiplicative.toAdd X) = x * (x⁻¹ * blk h w m (Multiplicative.toAdd X) * y) * y⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul rfl (subset_tsupport _ hX)) rfl`.
+-/
 theorem constant_term_support {a b n : ℕ} (h : a + b = n) (w : Pl E) (f : GLw n w → ℂ) (x y : GLw n w)
     (m : GLw a w × GLw b w) (hm : phi3 h w f x y m ≠ 0) :
     ∃ X, blk h w m X ∈ ({x} : Set (GLw n w)) * tsupport f * {y⁻¹} := by
@@ -110,6 +142,15 @@ theorem constant_term_support {a b n : ℕ} (h : a + b = n) (w : Pl E) (f : GLw 
   rw [e]
   exact Set.mul_mem_mul (Set.mul_mem_mul rfl (subset_tsupport _ hX)) rfl
 
+/- English proof (translation)
+Use `set C : Set (GLw n w) := ({x} : Set (GLw n w)) * tsupport f * {y⁻¹} with hCdef`. Establish `hC : IsCompact C` using `(isCompact_singleton.mul hf).mul isCompact_singleton`. Set `ψ : GLw n w → ((Matrix (Fin a) (Fin a) (w.adicCompletion E) × (Matrix (Fin a) (Fin a) (w.adicCompletion E))ᵐᵒᵖ) × (Matrix (Fin b) (Fin b) (w.adicCompletion E) × (Matrix (Fin b) (Fin b) (w.adicCompletion E))ᵐᵒᵖ))` to `fun g => ((CtLevel.blkTL h g.val, MulOpposite.op (CtLevel.blkTL h (g⁻¹).val)), (CtLevel.blkBR h g.val, MulOpposite.op (CtLevel.blkBR h (g⁻¹).val)))`. Establish `hψ : Continuous ψ`. Use `((((CtLevel.continuous_blkTL h).comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp ((CtLevel.continuous_blkTL h).comp Units.continuous_coe_inv))).prodMk (((CtLevel.continuous_blkBR h).comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp ((CtLevel.conti …` and prove the remaining obligations.
+
+Set `ι : GLw a w × GLw b w → _` to `Prod.map (Units.embedProduct (Matrix (Fin a) (Fin a) (w.adicCompletion E))) (Units.embedProduct (Matrix (Fin b) (Fin b) (w.adicCompletion E)))`. Establish `hι : Topology.IsClosedEmbedding ι` using `Units.isClosedEmbedding_embedProduct.prodMap Units.isClosedEmbedding_embedProduct`. Establish `hιψ : ∀ m X, ι m = ψ (blk h w m X)`. Introduce `m X`. Simplify using `only [ι, ψ, Prod.map, Units.embedProduct_apply, CtLevel.blk_inv, CtLevel.blkTL_blk, CtLevel.blkBR_blk, Prod.fst_inv, Prod.snd_inv]`.
+
+Establish `hT : IsCompact (ψ '' C)` using `hC.image hψ`. Use `HasCompactSupport.intro' (hι.isCompact_preimage hT) (hT.isClosed.preimage hι.continuous) ?_` and prove the remaining obligations. Introduce `m hm`. Assume the negation of the conclusion as `hne`. Take `⟨X, hX⟩` from `constant_term_support h w f x y m hne`.
+
+Conclude with `hm ⟨blk h w m X, hX, (hιψ m X).symm⟩`.
+-/
 theorem constant_term_compact_support {a b n : ℕ} (h : a + b = n) (w : Pl E) (f : GLw n w → ℂ)
     (hf : HasCompactSupport f) (x y : GLw n w) : HasCompactSupport (phi3 h w f x y) := by
   set C : Set (GLw n w) := ({x} : Set (GLw n w)) * tsupport f * {y⁻¹} with hCdef
@@ -138,6 +179,15 @@ theorem constant_term_compact_support {a b n : ℕ} (h : a + b = n) (w : Pl E) (
   obtain ⟨X, hX⟩ := constant_term_support h w f x y m hne
   exact hm ⟨blk h w m X, hX, (hιψ m X).symm⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h w K' hKo hKK hN X hXK _ f hf x hx y hy`. Establish `hbi` using `constant_term_bi_invariant h w K' hKK hN f hf.2.2.2 x y (hXK x hx) (hXK y hy)`. Use `⟨?_, constant_term_compact_support h w f hf.2.2.1 x y, fun k₁ h₁ k₂ h₂ m => hbi k₁ k₂ h₁ h₂ m⟩` and prove the remaining obligations. Establish `hL : IsOpen (leviOf h w K')`. Establish `e : leviOf h w K' = (CtLevel.dgM h w) ⁻¹' (K' : Set (GLw n w))`.
+
+Use extensionality with `m`. Simplify using `only [leviOf, Set.mem_setOf_eq, Set.mem_preimage, blk_zero_eq, SetLike.mem_coe]`. Rewrite using `[e]`. Conclude with `hKo.preimage (continuous_dgM h w)`. Establish `h1 : (1 : GLw a w × GLw b w) ∈ leviOf h w K'` using `by show blk h w 1 0 ∈ K'`.
+
+Rewrite using `[blk_zero_eq, map_one]`. Conclude with `K'.one_mem`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `m`. Use `⟨(fun m' => m⁻¹ * m') ⁻¹' leviOf h w K', hL.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using h1`. Introduce `m' hm'`. Use `hbi 1 (m⁻¹ * m') h1 hm' m` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem constant_term_locally_constant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (K' : Subgroup (GLw n w)), IsOpen (K' : Set (GLw n w)) → K' ≤ GlobalTheory.LFun.KGL w n → (∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ k' ∈ K', k * k' * k⁻¹ ∈ K') → ∀ X : Finset (GLw n w), (∀ x ∈ X, x ∈ GlobalTheory.LFun.KGL w n) → (∀ k ∈ GlobalTheory.LFun.KGL w n, ∃! x ∈ X, x⁻¹ * k ∈ K') → ∀ f : GLw n w → ℂ, IsHk K' f → ∀ x ∈ X, ∀ y ∈ X, IsLocallyConstant (phi3 h w f x y) ∧ HasCompactSupport (phi3 h w f x y) ∧ ∀ k₁ ∈ leviOf h w K', ∀ k₂ ∈ leviOf h w K', ∀ m, phi3 h w f x y (k₁ * m * k₂) = phi3 h w f x y m := by
   intro E _ _ _ n a b h w K' hKo hKK hN X hXK _ f hf x hx y hy
   have hbi := constant_term_bi_invariant h w K' hKK hN f hf.2.2.2 x y (hXK x hx) (hXK y hy)

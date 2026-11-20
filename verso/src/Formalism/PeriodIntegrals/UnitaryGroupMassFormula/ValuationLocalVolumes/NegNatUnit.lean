@@ -11,6 +11,13 @@ open scoped TensorProduct
 
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word)
 
+/- English proof (translation)
+Use `set t : Fv X.B.I.F v := ((T : ℕ) : Fv X.B.I.F v) with ht_def`. Establish `hv1 : Valued.v t = 1` using `val_natCast_eq_one v _ hT`. Establish `ht0 : t ≠ 0`. Introduce `h0`. Rewrite `hv1` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hv1`. Establish `hti : t⁻¹ ∈ v.adicCompletionIntegers X.B.I.F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv1, inv_one]`. Use `⟨(⟨t⁻¹, hti⟩ : v.adicCompletionIntegers X.B.I.F) • inclR (Fv X.B.I.F v) (((-1 : ℤ) : 𝓞 X.B.I.E) : X.B.I.E), Submodule.smul_mem _ _ (inclR_mem_OEv X v _), ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨t⁻¹, hti⟩ : v.adicCompletionIntegers X.B.I.F) • inclR (Fv X.B.I.F v) (((-1 : ℤ) : 𝓞 X.B.I.E) : X.B.I.E) = algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E) t⁻¹ * inclR (Fv X.B.I.F v) (((-1 : ℤ) : 𝓞 X.B.I.E) : X.B.I.E)`.
+
+Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e1, mul_left_comm, ← map_mul]`. Establish `e2 : (-((T : ℕ) : X.B.I.E)) * (((-1 : ℤ) : 𝓞 X.B.I.E) : X.B.I.E) = ((T : ℕ) : X.B.I.E)` using `by push_cast; ring`. Rewrite using `[e2, map_natCast, ← map_natCast (algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)), ← map_mul, inv_mul_cancel₀ ht0, map_one]`.
+-/
 theorem negNat_unit (v : PlX X) (T : ℕ) (hT : ((T : ℕ) : 𝓞 X.B.I.F) ∉ v.asIdeal) :
     ∃ u ∈ OEv (E := X.B.I.E) v, inclR (Fv X.B.I.F v) (-((T : ℕ) : X.B.I.E)) * u = 1 := by
   set t : Fv X.B.I.F v := ((T : ℕ) : Fv X.B.I.F v) with ht_def
@@ -31,8 +38,14 @@ theorem negNat_unit (v : PlX X) (T : ℕ) (hT : ((T : ℕ) : 𝓞 X.B.I.F) ∉ v
   rw [e2, map_natCast, ← map_natCast (algebraMap (Fv X.B.I.F v) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)), ← map_mul,
     inv_mul_cancel₀ ht0, map_one]
 
+/- English proof (translation)
+Simplify using `[zi]`.
+-/
 theorem zi_val : (zi (D := D)).val = D.R.rS := by simp [zi]
 
+/- English proof (translation)
+Rewrite using `[hR_sum_right]`. Establish `hg : ∀ i, hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (yTup X u' v j) (yTup X u' v i) = inclR (Fv X.B.I.F v) (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) j i)` using `fun i => congrFun (congrFun (omVGram_holds X u' v) j) i`. Simplify using `only [hR_smulE_right, hg, gramE_entry, apply_ite (inclR (Fv X.B.I.F v)), map_zero, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem hR_comb (v : PlX X) (c : Fin (D.R.rS + 1 + D.R.rS) → Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)
     (j : Fin (D.R.rS + 1 + D.R.rS)) :
     hR (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (yTup X u' v j) (∑ i, c i • yTup X u' v i) =
@@ -44,6 +57,23 @@ theorem hR_comb (v : PlX X) (c : Fin (D.R.rS + 1 + D.R.rS) → Fv X.B.I.F v ⊗[
   simp only [hR_smulE_right, hg, gramE_entry, apply_ite (inclR (Fv X.B.I.F v)), map_zero, mul_ite, mul_zero,
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Introduce `v`. Use `⟨hM v, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hne : ∀ i, i ≠ zi (D` using `D) → c i ∈ OEv (E := X.B.I.E) v := by`. Introduce `i hi`. Establish `hj : piv D.R.rS (piv D.R.rS i) = i` using `piv_invol D.R.rS i`.
+
+Establish `hjz : (piv D.R.rS i).val ≠ D.R.rS`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Establish `: piv D.R.rS i = zi (D` using `D) := Fin.ext (by rw [h, zi_val])`. Rewrite using `[← hj, this, pivot_castAdd_last]`.
+
+Establish `h1` using `hR_comb X u' v c (piv D.R.rS i)`. Rewrite `h1` using `[hj, cD, if_neg hjz, map_one, mul_one]`. Rewrite using `[← h1]`. Conclude with `omVSD_fwd X v (hM v _) hc`. Introduce `i`.
+
+Distinguish the cases in `hi : i = zi (D := D)`. Substitute `hi` using the available equality. Establish `hz : c (zi (D` using `D)) • yTup X u' v (zi (D := D)) ∈ latLoc (E := X.B.I.E) v (abelian₂ X) := by`. Establish `e : c (zi (D` using `D)) • yTup X u' v (zi (D := D)) = (∑ i, c i • yTup X u' v i) - ∑ i ∈ Finset.univ.erase (zi (D := D)), c i • yTup X u' v i := by`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (zi (D := D))), add_sub_cancel_right]`.
+
+Rewrite using `[e]`. Use `Submodule.sub_mem _ hc (Submodule.sum_mem _ fun i hi => lat_oev_smul X v ?_ (hM v i))` and prove the remaining obligations. Conclude with `hne i (Finset.ne_of_mem_erase hi)`. Distinguish the cases in `hT : ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal`. Conclude with `hZ v hT _ hz`.
+
+Take `⟨u, hu, hu1⟩` from `negNat_unit X v (Tw u') hT`. Establish `h1` using `hR_comb X u' v c (zi (D := D))`. Rewrite `h1` using `[pivot_castAdd_last, cD, if_pos zi_val]`. Establish `h2 : c (zi (D` using `D)) * inclR (Fv X.B.I.F v) (-((Tw u' : ℕ) : X.B.I.E)) ∈ OEv (E := X.B.I.E) v := by`. Rewrite using `[← h1]`.
+
+Conclude with `omVSD_fwd X v (hM v _) hc`. Establish `h3 : c (zi (D` using `D)) = (c (zi (D := D)) * inclR (Fv X.B.I.F v) (-((Tw u' : ℕ) : X.B.I.E))) * u := by`. Rewrite using `[mul_assoc, hu1, mul_one]`. Rewrite using `[h3]`. Conclude with `oev_mul v h2 hu`.
+
+Conclude with `hne i hi`.
+-/
 theorem omVPrim_of (hM : OmVMem X u') (hZ : OmVZPrim X u') : OmVPrim X u' := by
   intro v
   refine ⟨hM v, fun c hc => ?_⟩

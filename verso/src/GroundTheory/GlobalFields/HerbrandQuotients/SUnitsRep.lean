@@ -37,6 +37,9 @@ def unitsRep : Representation ℤ (L ≃ₐ[K] L) (Additive (𝓞 L)ˣ) where
     rfl
 
 omit [NumberField L] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsRep_apply (g : L ≃ₐ[K] L) (u : Additive (𝓞 L)ˣ) :
     unitsRep K L g u = Additive.ofMul (unitsMap g u.toMul) :=
   rfl
@@ -47,6 +50,11 @@ section SUnits
 
 variable [NumberField L] (S : Set (HeightOneSpectrum (𝓞 L)))
 
+/- English proof (translation)
+Introduce `w hw`. Establish `hw' : g⁻¹ • w ∉ S` using `fun h => hw (by simpa using hS g _ h)`. Establish `h1` using `SemiLocal.valuation_smul g (g⁻¹ • w) (x : L)`. Rewrite `h1` using `[smul_inv_smul]`. Express the relevant statement in the definitionally equal form `w.valuation L (g (x : L)) = 1`.
+
+Rewrite using `[h1]`. Conclude with `hx _ hw'`.
+-/
 theorem map_mem_unit (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L ≃ₐ[K] L) {x : Lˣ}
     (hx : x ∈ S.unit L) : Units.map (g : L →+* L).toMonoidHom x ∈ S.unit L := by
   intro w hw
@@ -62,6 +70,9 @@ def sUnitMap (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L �
   ((Units.map (g : L →+* L).toMonoidHom).comp (S.unit L).subtype).codRestrict (S.unit L)
     fun x => map_mem_unit S hS g x.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_sUnitMap (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L ≃ₐ[K] L)
     (x : S.unit L) : (((sUnitMap S hS g x : S.unit L) : Lˣ) : L) = g ((x : Lˣ) : L) :=
   rfl
@@ -82,11 +93,17 @@ def sUnitRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) :
     apply Units.ext
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sUnitRep_apply (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L ≃ₐ[K] L)
     (x : Additive (S.unit L)) :
     sUnitRep S hS g x = Additive.ofMul (sUnitMap S hS g x.toMul) :=
   rfl
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem ofUnits_unitsRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S) (g : L ≃ₐ[K] L)
     (u : Additive (𝓞 L)ˣ) :
     (SUnit.ofUnits S).toAdditive (unitsRep K L g u) =
@@ -96,6 +113,11 @@ theorem ofUnits_unitsRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Set `` to `stableMulAction S hS`. Use function extensionality and compare the values at `w`. Rewrite using `[funPermRep_apply, ← ofMul_toMul x, sUnitRep_apply, toMul_ofMul, SUnit.valuationVector_apply, SUnit.valuationVector_apply]`. Use `congr 1`. Rewrite using `[← WithZero.coe_inj, HeightOneSpectrum.valuationOfNeZero_eq, HeightOneSpectrum.valuationOfNeZero_eq, coe_sUnitMap]`.
+
+Establish `h1` using `SemiLocal.valuation_smul g (g⁻¹ • w.1) ((x.toMul : Lˣ) : L)`. Rewrite `h1` using `[smul_inv_smul]`. Conclude with `h1`.
+-/
 theorem valuationVector_sUnitRep (hS : ∀ (g : L ≃ₐ[K] L), ∀ w ∈ S, g • w ∈ S)
     (g : L ≃ₐ[K] L) (x : Additive (S.unit L)) :
     letI := stableMulAction S hS

@@ -19,17 +19,26 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {k : ℤ} {T :
 
 def noCharts (X : Scheme.{0}) : LB X := ⟨PEmpty, PEmpty.elim, fun i => i.elim⟩
 
+/- English proof (translation)
+Introduce `_` and use `⟨⊤, trivial, ⟨⟨_, ⟨fun j => (j 0).elim⟩, fun j => (j 0).elim⟩, ⟨_, ⟨fun j => (j 0).elim⟩, fun j => (j 0).elim⟩, rfl, rfl⟩, fun _ _ _ _ j => (j (Sum.inl 0)).elim⟩`.
+-/
 theorem weilIs_noCharts (k : ℤ) (x y : T ⟶ A) (c : Γ(T.left, ⊤)ˣ) : WeilIs A (noCharts A.left) k x y c :=
   fun _ => ⟨⊤, trivial,
     ⟨⟨_, ⟨fun j => (j 0).elim⟩, fun j => (j 0).elim⟩, ⟨_, ⟨fun j => (j 0).elim⟩, fun j => (j 0).elim⟩, rfl, rfl⟩,
     fun _ _ _ _ j => (j (Sum.inl 0)).elim⟩
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨x⟩ := ‹Nonempty X› have hx : x ∈ ⨆ i, (noCharts X).U i := h.cover ▸ trivial obtain ⟨i, -⟩ := Opens.mem_iSup.1 hx exact i.elim`.
+-/
 theorem not_isLB_noCharts (X : Scheme.{0}) [Nonempty X] : ¬ (noCharts X).IsLB := fun h => by
   obtain ⟨x⟩ := ‹Nonempty X›
   have hx : x ∈ ⨆ i, (noCharts X).U i := h.cover ▸ trivial
   obtain ⟨i, -⟩ := Opens.mem_iSup.1 hx
   exact i.elim
 
+/- English proof (translation)
+Take `⟨V, hV, ⟨θx, θy, hx, hy⟩, H⟩` from `h p`. Take `⟨V', hV', -, H'⟩` from `h' p`. Take `rfl` from `hp V hV`. Take `rfl` from `hp V' hV'`. Conclude with `commIsOf_unique hL θx θy _ _ (H θx θy hx hy) (H' θx θy hx hy)`.
+-/
 theorem weilIs_unique_of_local (p : T.left) (hp : ∀ V : T.left.Opens, p ∈ V → V = ⊤) (hL : L.IsLB) {x y : T ⟶ A}
     {c c' : Γ(T.left, ⊤)ˣ} (h : WeilIs A L k x y c) (h' : WeilIs A L k x y c') :
     unitRes (T := T) ⊤ c = unitRes (T := T) ⊤ c' := by

@@ -11,11 +11,17 @@ namespace GlobalTheory.SkewAdCover
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem sig_sig (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, sig_sig σ h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sigR_sigR (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (z : AF F ⊗[F] E) :
     sigR (AF F) σ (sigR (AF F) σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -23,16 +29,30 @@ theorem sigR_sigR (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (z : AF F ⊗[F] E) 
   | tmul a e => simp [sigR, sig_sig σ h]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (σ : E →ₐ[F] E) (e : E) : sigR (AF F) σ (inclR (F := F) (AF F) e) = inclR (AF F) (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.map (AlgHom.id F (AF F)) σ).commutes c`.
+-/
 theorem sigR_alg (σ : E →ₐ[F] E) (c : F) :
     sigR (AF F) σ (algebraMap F (AF F ⊗[F] E) c) = algebraMap F (AF F ⊗[F] E) c :=
   (Algebra.TensorProduct.map (AlgHom.id F (AF F)) σ).commutes c
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.includeRight (R := F) (A := AF F) (B := E)).commutes c`.
+-/
 theorem inclR_alg (c : F) : inclR (F := F) (AF F) (algebraMap F E c) = algebraMap F (AF F ⊗[F] E) c :=
   (Algebra.TensorProduct.includeRight (R := F) (A := AF F) (B := E)).commutes c
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Establish `: (sigR (AF F) σ : AF F ⊗[F] E → AF F ⊗[F] E) = LinearMap.baseChange (AF F) σ.toLinearMap`. Use function extensionality and compare the values at `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+-/
 theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR (AF F) σ) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -45,9 +65,35 @@ theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR (AF F) σ) := by
   rw [this]
   exact IsModuleTopology.continuous_of_linearMap _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cT_apply {A : Type} [CommRing A] (s : A →+* A) {m p : Type} (M : Matrix m p A) (i : p) (k : m) :
     cT s M i k = s (M k i) := rfl
 
+/- English proof (translation)
+Use `haveI := hσ.1`. Use `haveI := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)`. Take `⟨Ω₀, C₀, hΩ₀, hcov⟩` from `GlobalTheory.T.exists_adele_cover_mod_field_shrunk_compact F`. Take `⟨Ω, C, hΩ, h⟩` from `GlobalTheory.T.skewHermitian_adelic_cover_of_adele_cover F E σ hσ _ _ _ hΩ₀ hcov j`. Use `set s := sigR (AF F) σ with hs_def`.
+
+Use `set hh : AF F ⊗[F] E := algebraMap F (AF F ⊗[F] E) 2⁻¹ with hh_def`. Establish `h2 : hh * 2 = 1`. Rewrite using `[hh_def, ← map_ofNat (algebraMap F (AF F ⊗[F] E)) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`. Establish `hsh : s hh = hh` using `sigR_alg σ _`. Establish `hss : ∀ z, s (s z) = z` using `sigR_sigR σ hσ`.
+
+Establish `hsi : ∀ e, s (inclR (F` using `F) (AF F) e) = inclR (AF F) (σ e) := sigR_inclR σ`. Set `sk : Matrix (Fin j) (Fin j) (AF F ⊗[F] E) → Matrix (Fin j) (Fin j) (AF F ⊗[F] E)` to `fun z => Matrix.of fun i k => hh * (z i k - s (z k i))`. Establish `sk_skew : ∀ z, cT s (sk z) = -sk z` using `fun z => by`. Use extensionality with `i k`. Simplify using `only [cT_apply, sk, Matrix.of_apply, Matrix.neg_apply, map_mul, map_sub, hsh, hss]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun p : (AF F ⊗[F] E) × (AF F ⊗[F] E) => hh * (p.1 - s p.2)` using `continuous_const.mul (continuous_fst.sub ((continuous_sigR σ).comp continuous_snd))`. Use `⟨_, C, (hΩ.prod hΩ).image hcont, fun μ => ?_⟩` and prove the remaining obligations. Take `⟨Y, hY, hc⟩` from `h μ`. Establish `hd : ∀ i, s ((GlobalTheory.Eis.Conv.halfE F E).1 ^ μ i) = (GlobalTheory.Eis.Conv.halfE F E).1 ^ μ i` using `fun i => by`.
+
+Rewrite using `[map_pow, hs_def, GlobalTheory.Eis.Conv.sigR_halfE]`. Establish `htor : (tor F E fun i => (μ i : ℤ)).1 = Matrix.diagonal fun i => (GlobalTheory.Eis.Conv.halfE F E).1 ^ μ i`. Simplify using `[tor, GlobalTheory.Eis.Conv.dg]`. Establish `htor' : cT s (tor F E fun i => (μ i : ℤ)).1 = Matrix.diagonal fun i => (GlobalTheory.Eis.Conv.halfE F E).1 ^ μ i`. Rewrite using `[htor]`.
+
+Use extensionality with `i k`. Rewrite using `[cT_apply, Matrix.diagonal_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[hd]`.
+
+Simplify using `[hik, Ne.symm hik]`. Use `⟨Y.image sk, (Nat.cast_le.mpr Finset.card_image_le).trans (hY.trans (le_of_eq ?_)), ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [bse, ← pow_mul, mul_comm _ 2, show (4 : ℝ) = 2 ^ 2 by norm_num]`. Introduce `y hy`. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Conclude with `sk_skew z`. Take `⟨S₀, y, hy, ω, hω, e⟩` from `hc x hx set c : E := algebraMap F E 2⁻¹ with hc_def`. Establish `hσc : σ c = c` using `σ.commutes _`. Use `⟨Matrix.of fun i k => c * (S₀ i k - σ (S₀ k i)), ?_, sk y, Finset.mem_image_of_mem _ hy, sk ω, sk_skew ω, fun i k => ⟨(ω i k, ω k i), ⟨hω i k, hω k i⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i k`.
+
+Simplify using `only [cT_apply, Matrix.of_apply, Matrix.neg_apply, AlgHom.coe_toRingHom, map_mul, map_sub, hσc, sig_sig σ hσ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htor', htor]`. Use extensionality with `i k`. Establish `hx1 : s (x k i) = - x i k`.
+
+Use `congrFun (congrFun hx i) k` as an intermediate fact. Rewrite `this` using `[cT_apply, Matrix.neg_apply]`. Then use the resulting hypothesis. Establish `e1` using `congrFun (congrFun e i) k`. Establish `e2` using `congrArg s (congrFun (congrFun e k) i)`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, map_add, map_mul, hsi, hd] at e1 e2`.
+
+Rewrite `e2` using `[hx1]`. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, adMat, Matrix.map_apply, Matrix.of_apply, sk, map_mul, map_sub, inclR_alg]`. Rewrite using `[hc_def, inclR_alg, ← hh_def]`. Take the linear combination `hh * e1 - hh * e2 - x i k * h2`.
+-/
 theorem cover (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : IsCMExt F E σ) (j : ℕ) : ∃ (Ω : Set (AF F ⊗[F] E)) (B : ℝ), IsCompact Ω ∧ ∀ μ : Fin j → ℕ, ∃ Y : Finset (Matrix (Fin j) (Fin j) (AF F ⊗[F] E)), (Y.card : ℝ) ≤ B * ∏ i, bse F ^ (j * μ i) ∧ (∀ y ∈ Y, cT (sigR (AF F) σ) y = -y) ∧ ∀ x : Matrix (Fin j) (Fin j) (AF F ⊗[F] E), cT (sigR (AF F) σ) x = -x → ∃ x₀ : Matrix (Fin j) (Fin j) E, cT (σ : E →+* E) x₀ = -x₀ ∧ ∃ y ∈ Y, ∃ ω : Matrix (Fin j) (Fin j) (AF F ⊗[F] E), cT (sigR (AF F) σ) ω = -ω ∧ (∀ i k, ω i k ∈ Ω) ∧ x = adMat F x₀ + (y + (tor F E fun i => (μ i : ℤ)).1 * ω * cT (sigR (AF F) σ) (tor F E fun i => (μ i : ℤ)).1) := by
   classical

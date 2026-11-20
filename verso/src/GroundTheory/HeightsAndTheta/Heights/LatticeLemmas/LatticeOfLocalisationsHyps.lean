@@ -36,11 +36,17 @@ def fmap (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E] 
   map_smul' := lTensor_complex_smul σ f
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fmap_tmul (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E]
     [AddCommGroup E'] [Module (𝓞 K) E'] (f : E' →ₗ[𝓞 K] E) (z : ComplexAt σ) (e : E') :
     fmap σ f (z ⊗ₜ e) = z ⊗ₜ f e := rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem conjMap_fmap (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E]
     [AddCommGroup E'] [Module (𝓞 K) E'] (f : E' →ₗ[𝓞 K] E) (x : Fibre σ E') :
     conjMap σ E (fmap σ f x) = fmap (conjugate σ) f (conjMap σ E' x) := by
@@ -51,6 +57,13 @@ theorem conjMap_fmap (σ : K →+* ℂ) {E E' : Type*} [AddCommGroup E] [Module 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul w e`. Use `⟨ofComplex σ (starRingEnd ℂ ((ofComplex (conjugate σ)).symm w)) ⊗ₜ e, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[conjMap_tmul, conj_ofComplex, Complex.conj_conj]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+
+Conclude with `⟨a + b, map_add _ _ _⟩`.
+-/
 theorem conjMap_surjective (σ : K →+* ℂ) (E : Type*) [AddCommGroup E] [Module (𝓞 K) E] :
     Function.Surjective (conjMap σ E) := by
   intro u
@@ -78,6 +91,9 @@ def restrictedMetric (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) 
 def sub (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) : HermitianBundle K :=
   ⟨F, restrictedMetric M F⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictedMetric_inner (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier)
     (σ : K →+* ℂ) (x y : Fibre σ F) :
     ((restrictedMetric M F).form σ).inner x y =
@@ -89,6 +105,11 @@ section Quotient
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `⟨fun a ha z w hzw ↦ ?_⟩` and prove the remaining obligations. Establish `ha0 : a ≠ 0` using `ha.ne_zero`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective F z`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective F w`. Express the relevant statement in the definitionally equal form `a • Submodule.Quotient.mk x = a • Submodule.Quotient.mk y at hzw`.
+
+Rewrite `hzw` using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← smul_sub]`. Conclude with `(Submodule.Quotient.eq F).mpr (hF a _ ha0 hzw)`.
+-/
 theorem isTorsionFree_quotient {M : HermitianBundle K} {F : Submodule (𝓞 K) M.carrier}
     (hF : M.Saturated F) : Module.IsTorsionFree (𝓞 K) (M.carrier ⧸ F) := by
   refine ⟨fun a ha z w hzw ↦ ?_⟩
@@ -100,6 +121,9 @@ theorem isTorsionFree_quotient {M : HermitianBundle K} {F : Submodule (𝓞 K) M
     ← smul_sub] at hzw
   exact (Submodule.Quotient.eq F).mpr (hF a _ ha0 hzw)
 
+/- English proof (translation)
+The claim follows from `haveI := isTorsionFree_quotient hF projective_of_isTorsionFree _`.
+-/
 theorem projective_quotient {M : HermitianBundle K} {F : Submodule (𝓞 K) M.carrier}
     (hF : M.Saturated F) : Module.Projective (𝓞 K) (M.carrier ⧸ F) :=
   haveI := isTorsionFree_quotient hF
@@ -113,6 +137,11 @@ def subImage (σ : K →+* ℂ) : Submodule ℂ (FibreSpace M.metric σ) :=
 def quotMap (σ : K →+* ℂ) : FibreSpace M.metric σ →ₗ[ℂ] Fibre σ (M.carrier ⧸ F) :=
   fmap σ F.mkQ ∘ₗ (FibreSpace.equiv M.metric σ).symm.toLinearMap
 
+/- English proof (translation)
+Establish `hex` using `Module.Flat.lTensor_exact (ComplexAt σ) (LinearMap.exact_subtype_mkQ F)`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy⟩` from `(hex ((FibreSpace.equiv M.metric σ).symm x)).mp hx`. Conclude with `⟨y, by`.
+
+Express the relevant statement in the definitionally equal form `FibreSpace.equiv M.metric σ (F.subtype.lTensor (ComplexAt σ) y) = x`. Rewrite using `[hy]`. Use the proof step `rfl⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(hex _).mpr ⟨y, rfl⟩`.
+-/
 theorem quotMap_eq_zero_iff (σ : K →+* ℂ) (x : FibreSpace M.metric σ) :
     quotMap M F σ x = 0 ↔ x ∈ subImage M F σ := by
   have hex := Module.Flat.lTensor_exact (ComplexAt σ) (LinearMap.exact_subtype_mkQ F)
@@ -125,11 +154,23 @@ theorem quotMap_eq_zero_iff (σ : K →+* ℂ) (x : FibreSpace M.metric σ) :
   · rintro ⟨y, rfl⟩
     exact (hex _).mpr ⟨y, rfl⟩
 
+/- English proof (translation)
+Introduce `ξ`. Take `⟨y, hy⟩` from `LinearMap.lTensor_surjective (ComplexAt σ) (Submodule.mkQ_surjective F) ξ`. Conclude with `⟨FibreSpace.equiv M.metric σ y, hy⟩`.
+-/
 theorem quotMap_surjective (σ : K →+* ℂ) : Function.Surjective (quotMap M F σ) := by
   intro ξ
   obtain ⟨y, hy⟩ := LinearMap.lTensor_surjective (ComplexAt σ) (Submodule.mkQ_surjective F) ξ
   exact ⟨FibreSpace.equiv M.metric σ y, hy⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`. Establish `h1 : (x : FibreSpace M.metric σ) ∈ subImage M F σ` using `(quotMap_eq_zero_iff M F σ _).mp hx`. Establish `h2 : (x : FibreSpace M.metric σ) ∈ subImage M F σ ⊓ (subImage M F σ)ᗮ` using `⟨h1, x.2⟩`.
+
+Rewrite `h2` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Conclude with `Subtype.ext h2`. Introduce `ξ`. Take `⟨y, rfl⟩` from `quotMap_surjective M F σ ξ`. Establish `hy : y ∈ subImage M F σ ⊔ (subImage M F σ)ᗮ`.
+
+Rewrite using `[Submodule.sup_orthogonal_of_hasOrthogonalProjection]`. Conclude with `Submodule.mem_top`. Take `⟨w, hw, x, hx, rfl⟩` from `Submodule.mem_sup.mp hy`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `quotMap M F σ x = quotMap M F σ (w + x)`.
+
+Rewrite using `[map_add, (quotMap_eq_zero_iff M F σ w).mpr hw, zero_add]`.
+-/
 theorem quotMap_perp_bijective (σ : K →+* ℂ) :
     Function.Bijective (quotMap M F σ ∘ₗ (subImage M F σ)ᗮ.subtype) := by
   constructor
@@ -151,9 +192,17 @@ theorem quotMap_perp_bijective (σ : K →+* ℂ) :
 def perpEquiv (σ : K →+* ℂ) : (subImage M F σ)ᗮ ≃ₗ[ℂ] Fibre σ (M.carrier ⧸ F) :=
   LinearEquiv.ofBijective _ (quotMap_perp_bijective M F σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perpEquiv_apply (σ : K →+* ℂ) (x : (subImage M F σ)ᗮ) :
     perpEquiv M F σ x = quotMap M F σ x := rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `_ ⟨u, rfl⟩`. Take `⟨u', rfl⟩` from `conjMap_surjective σ F u`. Express the relevant statement in the definitionally equal form `(M.metric.form (conjugate σ)).inner (fmap (conjugate σ) F.subtype (conjMap σ F u')) (conjMap σ M.carrier ((FibreSpace.equiv M.metric σ).symm x)) = 0`. Rewrite using `[← conjMap_fmap, M.metric.form_conj]`.
+
+Establish `h0 : inner ℂ (FibreSpace.equiv M.metric σ (fmap σ F.subtype u')) (x : FibreSpace M.metric σ) = 0` using `Submodule.inner_right_of_mem_orthogonal (LinearMap.mem_range.mpr ⟨u', rfl⟩ : _ ∈ subImage M F σ) x.2`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (inner ℂ (FibreSpace.equiv M.metric σ (fmap σ F.subtype u')) (FibreSpace.equiv M.metric σ ((FibreSpace.equiv M.metric σ).symm x))) = 0`. Rewrite using `[LinearEquiv.apply_symm_apply, h0, map_zero]`.
+-/
 theorem conj_mem_perp (σ : K →+* ℂ) (x : (subImage M F σ)ᗮ) :
     FibreSpace.equiv M.metric (conjugate σ)
         (conjMap σ M.carrier ((FibreSpace.equiv M.metric σ).symm x)) ∈
@@ -172,6 +221,11 @@ theorem conj_mem_perp (σ : K →+* ℂ) (x : (subImage M F σ)ᗮ) :
     (FibreSpace.equiv M.metric σ ((FibreSpace.equiv M.metric σ).symm x))) = 0
   rw [LinearEquiv.apply_symm_apply, h0, map_zero]
 
+/- English proof (translation)
+Apply `(perpEquiv M F (conjugate σ)).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, perpEquiv_apply]`. Express the relevant statement in the definitionally equal form `conjMap σ (M.carrier ⧸ F) ξ = fmap (conjugate σ) F.mkQ (conjMap σ M.carrier ((FibreSpace.equiv M.metric σ).symm ((perpEquiv M F σ).symm ξ)))`. Rewrite using `[← conjMap_fmap]`. Use `congr 1`.
+
+Use `conv_lhs => rw [← LinearEquiv.apply_symm_apply (perpEquiv M F σ) ξ]`. Both sides reduce to the same expression.
+-/
 theorem perpEquiv_symm_conj (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
     (perpEquiv M F (conjugate σ)).symm (conjMap σ (M.carrier ⧸ F) ξ) =
       ⟨_, conj_mem_perp M F σ ((perpEquiv M F σ).symm ξ)⟩ := by
@@ -212,6 +266,9 @@ variable (K) in
 abbrev resEmb (τ : E →+* ℂ) : K →+* ℂ := τ.comp (algebraMap K E)
 
 omit [NumberField K] [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_algebraMap_integers (a : 𝓞 K) :
     ((algebraMap (𝓞 K) (𝓞 E) a : 𝓞 E) : E) = algebraMap K E (a : K) := rfl
 
@@ -228,6 +285,9 @@ def bcScalar (τ : E →+* ℂ) (z : ComplexAt τ) : 𝓞 E →ₗ[𝓞 K] Compl
     rw [coe_algebraMap_integers, map_mul, mul_assoc]
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcScalar_apply (τ : E →+* ℂ) (z : ComplexAt τ) (b : 𝓞 E) :
     bcScalar K τ z b = ofComplex _ (τ (b : E) * (ofComplex τ).symm z) := rfl
 
@@ -237,9 +297,17 @@ def bcInner (τ : E →+* ℂ) (z : ComplexAt τ) :
     𝓞 E ⊗[𝓞 K] M.carrier →ₗ[𝓞 K] Fibre (resEmb K τ) M.carrier :=
   TensorProduct.map (bcScalar K τ z) LinearMap.id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcInner_tmul (τ : E →+* ℂ) (z : ComplexAt τ) (b : 𝓞 E) (m : M.carrier) :
     bcInner M τ z (b ⊗ₜ m) = bcScalar K τ z b ⊗ₜ m := rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, add_zero]`. Consider the case `tmul b m`. Rewrite using `[bcInner_tmul, bcInner_tmul, bcInner_tmul, ← add_tmul]`. Use `congr 1`.
+
+Express the relevant statement in the definitionally equal form `(τ (b : E) * (ofComplex τ).symm (z + z') : ℂ) = τ (b : E) * (ofComplex τ).symm z + τ (b : E) * (ofComplex τ).symm z'`. Rewrite using `[map_add, mul_add]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+-/
 theorem bcInner_add (τ : E →+* ℂ) (z z' : ComplexAt τ) (t : 𝓞 E ⊗[𝓞 K] M.carrier) :
     bcInner M τ (z + z') t = bcInner M τ z t + bcInner M τ z' t := by
   induction t using TensorProduct.induction_on with
@@ -270,6 +338,9 @@ def bcFwdAdd (τ : E →+* ℂ) :
       rw [map_mul, map_mul, AlgEquiv.symm_apply_apply]; ring
     | add x y hx hy => rw [map_add, hx, hy, smul_add, map_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcFwdAdd_tmul (τ : E →+* ℂ) (z : ComplexAt τ) (t : 𝓞 E ⊗[𝓞 K] M.carrier) :
     bcFwdAdd M τ (z ⊗ₜ t) = bcInner M τ z t := rfl
 
@@ -293,6 +364,9 @@ def bcFwd (τ : E →+* ℂ) :
       | add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]
     | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcFwd_tmul_tmul (τ : E →+* ℂ) (z : ComplexAt τ) (b : 𝓞 E) (m : M.carrier) :
     bcFwd M τ (z ⊗ₜ (b ⊗ₜ m)) = bcScalar K τ z b ⊗ₜ m := rfl
 
@@ -314,6 +388,13 @@ def bcInv (τ : E →+* ℂ) :
       congr 1
       rw [smul_tmul', ← TensorProduct.smul_tmul, algebraMap_smul]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [tmul_zero, map_zero]`.
+
+Consider the case `tmul b m`. Rewrite using `[bcFwd_tmul_tmul]`. Express the relevant statement in the definitionally equal form `(ofComplex τ (τ (b : E) * (ofComplex τ).symm z)) ⊗ₜ[𝓞 E] ((1 : 𝓞 E) ⊗ₜ[𝓞 K] m) = _`. Establish `h1 : (ofComplex τ (τ (b : E) * (ofComplex τ).symm z) : ComplexAt τ) = b • z` using `rfl`. Rewrite using `[h1, TensorProduct.smul_tmul, smul_tmul', smul_eq_mul, mul_one]`.
+
+Consider the case `add x y hx hy => rw [tmul_add, map_add, map_add, hx, hy]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem bcInv_bcFwd (τ : E →+* ℂ) (t : Fibre τ (𝓞 E ⊗[𝓞 K] M.carrier)) :
     bcInv M τ (bcFwd M τ t) = t := by
   induction t using TensorProduct.induction_on with
@@ -329,9 +410,19 @@ theorem bcInv_bcFwd (τ : E →+* ℂ) (t : Fibre τ (𝓞 E ⊗[𝓞 K] M.carri
     | add x y hx hy => rw [tmul_add, map_add, map_add, hx, hy]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+The claim follows from `fun x y h ↦ by rw [← bcInv_bcFwd M τ x, ← bcInv_bcFwd M τ y, h]`.
+-/
 theorem bcFwd_injective (τ : E →+* ℂ) : Function.Injective (bcFwd M τ) := fun x y h ↦ by
   rw [← bcInv_bcFwd M τ x, ← bcInv_bcFwd M τ y, h]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [tmul_zero, map_zero]`.
+
+Consider the case `tmul b m`. Rewrite using `[conjMap_tmul, bcFwd_tmul_tmul, bcFwd_tmul_tmul, conjMap_tmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(starRingEnd ℂ (τ (b : E)) * starRingEnd ℂ ((ofComplex τ).symm z) : ℂ) = starRingEnd ℂ (τ (b : E) * (ofComplex τ).symm z)`. Rewrite using `[map_mul]`.
+
+Consider the case `add x y hx hy => simp only [tmul_add, map_add, hx, hy]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem bcFwd_conj (τ : E →+* ℂ) (x : Fibre τ (𝓞 E ⊗[𝓞 K] M.carrier)) :
     bcFwd M (conjugate τ) (conjMap τ _ x) = conjMap (resEmb K τ) M.carrier (bcFwd M τ x) := by
   induction x using TensorProduct.induction_on with
@@ -374,6 +465,15 @@ section Space
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨a, d, hd, rfl⟩` from `IsFractionRing.div_surjective (𝓞 K) c`. Establish `hd0 : algebraMap (𝓞 K) K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `hσd : σ (algebraMap (𝓞 K) K d) ≠ 0` using `(map_ne_zero σ).mpr hd0`. Use `set w : ComplexAt σ := ofComplex σ ((ofComplex σ).symm z / σ (algebraMap (𝓞 K) K d)) with hw`. Establish `hz : z = d • w`.
+
+Rewrite using `[smul_def]`. Express the relevant statement in the definitionally equal form `(ofComplex σ).symm z = σ (algebraMap (𝓞 K) K d) * ((ofComplex σ).symm z / σ (algebraMap (𝓞 K) K d))`. Clear the denominators using the available nonvanishing facts. Establish `hx : d • ((algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K d) • x) = a • x`. Rewrite using `[← smul_assoc, Algebra.smul_def, mul_div_cancel₀ _ hd0, algebraMap_smul]`.
+
+Rewrite using `[hz, TensorProduct.smul_tmul, hx, ← TensorProduct.smul_tmul]`. Use `congr 1`. Rewrite using `[smul_def, hw]`. Express the relevant statement in the definitionally equal form `σ (algebraMap (𝓞 K) K a) * ((ofComplex σ).symm z / σ (algebraMap (𝓞 K) K d)) = σ (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K d) * (ofComplex σ).symm (d • w)`. Rewrite using `[← hz, map_div₀]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem tmul_smul_field (σ : K →+* ℂ) {V : Type*} [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (z : ComplexAt σ) (c : K) (x : V) :
     z ⊗ₜ[𝓞 K] (c • x) = (ofComplex σ (σ c) * z) ⊗ₜ[𝓞 K] x := by
@@ -427,6 +527,9 @@ def coordMap (σ : K →+* ℂ) : Fibre σ (Fin r → K) →ₗ[ℂ] (Fin r → 
 
 variable {r}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(ofComplex σ).symm (ofComplex σ (σ (v i)) * z) = _`. Rewrite using `[map_mul, AlgEquiv.symm_apply_apply]`.
+-/
 theorem coordMap_tmul (σ : K →+* ℂ) (z : ComplexAt σ) (v : Fin r → K) (i : Fin r) :
     coordMap r σ (z ⊗ₜ v) i = σ (v i) * (ofComplex σ).symm z := by
   change (ofComplex σ).symm (ofComplex σ (σ (v i)) * z) = _
@@ -435,6 +538,13 @@ theorem coordMap_tmul (σ : K →+* ℂ) (z : ComplexAt σ) (v : Fin r → K) (i
 def coordInv (σ : K →+* ℂ) (w : Fin r → ℂ) : Fibre σ (Fin r → K) :=
   ∑ i, ofComplex σ (w i) ⊗ₜ[𝓞 K] (Pi.single i (1 : K) : Fin r → K)
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp [coordInv]`. Consider the case `tmul z v`. Simplify using `only [coordInv, coordMap_tmul]`. Establish `h : ∀ i, ofComplex σ (σ (v i) * (ofComplex σ).symm z) ⊗ₜ[𝓞 K] (Pi.single i (1 : K) : Fin r → K) = z ⊗ₜ[𝓞 K] (v i • (Pi.single i (1 : K) : Fin r → K))`.
+
+Introduce `i`. Rewrite using `[tmul_smul_field, map_mul, AlgEquiv.apply_symm_apply]`. Simplify using `only [h, ← tmul_sum]`. Use `congr 1`. Use extensionality with `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Simplify using `only [coordInv, Pi.add_apply, map_add, add_tmul, Finset.sum_add_distrib] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+-/
 theorem coordInv_coordMap (σ : K →+* ℂ) (t : Fibre σ (Fin r → K)) :
     coordInv σ (coordMap r σ t) = t := by
   induction t using TensorProduct.induction_on with
@@ -454,18 +564,29 @@ theorem coordInv_coordMap (σ : K →+* ℂ) (t : Fibre σ (Fin r → K)) :
     simp only [coordInv, Pi.add_apply, map_add, add_tmul, Finset.sum_add_distrib] at hx hy ⊢
     rw [hx, hy]
 
+/- English proof (translation)
+The claim follows from `fun s t h ↦ by rw [← coordInv_coordMap σ s, ← coordInv_coordMap σ t, h]`.
+-/
 theorem coordMap_injective (σ : K →+* ℂ) : Function.Injective (coordMap r σ) := fun s t h ↦ by
   rw [← coordInv_coordMap σ s, ← coordInv_coordMap σ t, h]
 
 def latticeMap (σ : K →+* ℂ) (L : Submodule (𝓞 K) (Fin r → K)) : Fibre σ L →ₗ[ℂ] (Fin r → ℂ) :=
   coordMap r σ ∘ₗ fmap σ L.subtype
 
+/- English proof (translation)
+Rewrite using `[latticeMap, LinearMap.coe_comp]`. Conclude with `(coordMap_injective σ).comp (Module.Flat.lTensor_preserves_injective_linearMap L.subtype L.injective_subtype)`.
+-/
 theorem latticeMap_injective (σ : K →+* ℂ) (L : Submodule (𝓞 K) (Fin r → K)) :
     Function.Injective (latticeMap σ L) := by
   rw [latticeMap, LinearMap.coe_comp]
   exact (coordMap_injective σ).comp
     (Module.Flat.lTensor_preserves_injective_linearMap L.subtype L.injective_subtype)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, star_zero]`. Consider the case `tmul z l`. Use extensionality with `i`. Rewrite using `[conjMap_tmul]`.
+
+Express the relevant statement in the definitionally equal form `coordMap r (conjugate σ) (conj σ z ⊗ₜ (l : Fin r → K)) i = starRingEnd ℂ (coordMap r σ (z ⊗ₜ (l : Fin r → K)) i)`. Rewrite using `[coordMap_tmul, coordMap_tmul, map_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]`.
+-/
 theorem latticeMap_conj (σ : K →+* ℂ) (L : Submodule (𝓞 K) (Fin r → K)) (x : Fibre σ L) :
     latticeMap (conjugate σ) L (conjMap σ L x) = star (latticeMap σ L x) := by
   induction x using TensorProduct.induction_on with
@@ -483,9 +604,15 @@ def IsLattice (L : Submodule (𝓞 K) (Fin r → K)) : Prop :=
   L.FG ∧ Submodule.span K (L : Set (Fin r → K)) = ⊤
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `Module.Finite.iff_fg.mpr hL`.
+-/
 theorem finite_of_fg {L : Submodule (𝓞 K) (Fin r → K)} (hL : L.FG) : Module.Finite (𝓞 K) L :=
   Module.Finite.iff_fg.mpr hL
 
+/- English proof (translation)
+The claim follows from `haveI := finite_of_fg hL projective_of_isTorsionFree L`.
+-/
 theorem projective_of_fg {L : Submodule (𝓞 K) (Fin r → K)} (hL : L.FG) :
     Module.Projective (𝓞 K) L :=
   haveI := finite_of_fg hL
@@ -517,6 +644,9 @@ def IsLocalLattice (N : Submodule (v.adicCompletionIntegers K) (Fin r → v.adic
     Prop :=
   N.FG ∧ Submodule.span (v.adicCompletion K) (N : Set (Fin r → v.adicCompletion K)) = ⊤
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `algebraMap K _ ((a : K) * x i) = ((algebraMap (𝓞 K) (v.adicCompletionIntegers K) a : v.adicCompletionIntegers K) : v.adicCompletion K) * algebraMap K _ (x i)`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem locVec_smul (a : 𝓞 K) (x : Fin r → K) :
     locVec v (a • x) = (algebraMap (𝓞 K) (v.adicCompletionIntegers K) a) • locVec v x := by
   funext i
@@ -526,8 +656,14 @@ theorem locVec_smul (a : 𝓞 K) (x : Fin r → K) :
   rw [IsDedekindDomain.HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, map_mul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[locVec]`.
+-/
 theorem locVec_zero : locVec v (0 : Fin r → K) = 0 := by funext i; simp [locVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[locVec]`.
+-/
 theorem locVec_add (x y : Fin r → K) : locVec v (x + y) = locVec v x + locVec v y := by
   funext i; simp [locVec]
 
@@ -557,6 +693,9 @@ section Chain
 
 variable {K : Type*} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `fun a x ha hx ↦ hF a (G.subtype x) ha hx`.
+-/
 theorem saturated_comap {M : HermitianBundle K} {F : Submodule (𝓞 K) M.carrier}
     (hF : M.Saturated F) (G : Submodule (𝓞 K) M.carrier) :
     (sub M G).Saturated (F.comap G.subtype) := fun a x ha hx ↦ hF a (G.subtype x) ha hx
@@ -674,6 +813,9 @@ variable (K : Type*) [Field K] [NumberField K]
 
 abbrev firstLine : Submodule (𝓞 K) (HermitianBundle.standard K 2).carrier := standardFlag K 1
 
+/- English proof (translation)
+The claim follows from `standardFlag_saturated 1`.
+-/
 theorem firstLine_saturated : (HermitianBundle.standard K 2).Saturated (firstLine K) :=
   standardFlag_saturated 1
 
@@ -684,26 +826,53 @@ def exampleQuotient : HermitianBundle K :=
 
 def exampleBaseChange : HermitianBundle GaussianField := baseChange GaussianField (ratStandard 2)
 
+/- English proof (translation)
+The claim follows from `exampleSub ℚ`.
+-/
 example : HermitianBundle ℚ := exampleSub ℚ
+/- English proof (translation)
+The claim follows from `exampleSub GaussianField`.
+-/
 example : HermitianBundle GaussianField := exampleSub GaussianField
+/- English proof (translation)
+The claim follows from `exampleQuotient ℚ`.
+-/
 example : HermitianBundle ℚ := exampleQuotient ℚ
+/- English proof (translation)
+The claim follows from `exampleQuotient GaussianField`.
+-/
 example : HermitianBundle GaussianField := exampleQuotient GaussianField
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Algebra ℚ GaussianField := inferInstance
 
 def stdVec (i : Fin 2) : (HermitianBundle.standard K 2).carrier := Pi.single i 1
 
+/- English proof (translation)
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.basisFun_apply]`. Both sides reduce to the same expression.
+-/
 theorem range_stdVec :
     Set.range (stdVec K) = Set.range (Pi.basisFun (𝓞 K) (Fin 2)) := by
   congr 1; funext i; rw [Pi.basisFun_apply]; rfl
 
+/- English proof (translation)
+Rewrite using `[range_stdVec]`. Conclude with `(Pi.basisFun (𝓞 K) (Fin 2)).span_eq`.
+-/
 theorem span_stdVec : Submodule.span (𝓞 K) (Set.range (stdVec K)) = ⊤ := by
   rw [range_stdVec]; exact (Pi.basisFun (𝓞 K) (Fin 2)).span_eq
 
+/- English proof (translation)
+Establish `h` using `(Pi.basisFun (𝓞 K) (Fin 2)).linearIndependent`. Rewrite using `[show ⇑(Pi.basisFun (𝓞 K) (Fin 2)) = stdVec K from` and apply the resulting hypothesis. Use function extensionality and compare the values at `fun i ↦ by rw [Pi.basisFun_apply]; rfl] at h`.
+-/
 theorem linearIndependent_stdVec : LinearIndependent (𝓞 K) (stdVec K) := by
   have h := (Pi.basisFun (𝓞 K) (Fin 2)).linearIndependent
   rwa [show ⇑(Pi.basisFun (𝓞 K) (Fin 2)) = stdVec K from
     funext fun i ↦ by rw [Pi.basisFun_apply]; rfl] at h
 
+/- English proof (translation)
+Use `(sq_eq_sq₀ (norm_nonneg _) zero_le_one).mp ?_` and prove the remaining obligations. Rewrite using `[one_pow, norm_fibreVec_sq]`. Express the relevant statement in the definitionally equal form `(((HermitianMetric.standard K (Fin 2)).form σ).inner (1 ⊗ₜ Pi.single i 1) (1 ⊗ₜ Pi.single i 1)).re = 1`. Rewrite using `[HermitianMetric.standard_inner_single]`. Both sides reduce to the same expression.
+-/
 theorem vecNorm_stdVec (σ : K →+* ℂ) (i : Fin 2) :
     vecNorm (HermitianBundle.standard K 2).metric σ (stdVec K i) = 1 := by
   refine (sq_eq_sq₀ (norm_nonneg _) zero_le_one).mp ?_
@@ -712,6 +881,9 @@ theorem vecNorm_stdVec (σ : K →+* ℂ) (i : Fin 2) :
     (1 ⊗ₜ Pi.single i 1)).re = 1
   rw [HermitianMetric.standard_inner_single]; rfl
 
+/- English proof (translation)
+The claim follows from `Module.finrank_fin_fun _`.
+-/
 theorem finrank_standard_two : Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carrier = 2 :=
   Module.finrank_fin_fun _
 
@@ -719,12 +891,18 @@ def stdFamily : Fin (Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carr
     (HermitianBundle.standard K 2).carrier :=
   fun i ↦ stdVec K (Fin.cast (finrank_standard_two K) i)
 
+/- English proof (translation)
+The claim follows from `(linearIndependent_stdVec K).comp _ (Fin.cast_injective _)`.
+-/
 theorem linearIndependent_stdFamily : LinearIndependent (𝓞 K) (stdFamily K) :=
   (linearIndependent_stdVec K).comp _ (Fin.cast_injective _)
 
 def twiceLattice : Submodule (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   LinearMap.range ((2 : 𝓞 K) • LinearMap.id)
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((2 : 𝓞 K) • LinearMap.id : (HermitianBundle.standard K 2).carrier →ₗ[𝓞 K] _)`. Introduce `x y hxy`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply] at hxy`. Conclude with `smul_right_injective _ two_ne_zero hxy`. Conclude with `(LinearEquiv.ofInjective _ hinj).finrank_eq.symm`.
+-/
 theorem twiceLattice_rank : Module.finrank (𝓞 K) (twiceLattice K) =
     Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carrier := by
   have hinj : Function.Injective
@@ -734,6 +912,9 @@ theorem twiceLattice_rank : Module.finrank (𝓞 K) (twiceLattice K) =
     exact smul_right_injective _ two_ne_zero hxy
   exact (LinearEquiv.ofInjective _ hinj).finrank_eq.symm
 
+/- English proof (translation)
+Use `(sq_eq_sq₀ (norm_nonneg _) (mul_nonneg hc.le (norm_nonneg _))).mp ?_` and prove the remaining obligations. Use `show ‖FibreSpace.equiv (h.scale c hc) σ x‖ ^ 2 = (c * ‖FibreSpace.equiv h σ x‖) ^ 2`. Rewrite using `[mul_pow, @norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, FibreSpace.inner_equiv, FibreSpace.inner_equiv, HermitianMetric.scale_inner]`. Conclude with `Complex.re_ofReal_mul _ _`.
+-/
 theorem normAt_scale {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K) E]
     [Module.Projective (𝓞 K) E] (h : HermitianMetric K E) (c : ℝ) (hc : 0 < c) (σ : K →+* ℂ)
     (x : Fibre σ E) : normAt (h.scale c hc) σ x = c * normAt h σ x := by
@@ -743,11 +924,17 @@ theorem normAt_scale {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Fi
     FibreSpace.inner_equiv, FibreSpace.inner_equiv, HermitianMetric.scale_inner]
   exact Complex.re_ofReal_mul _ _
 
+/- English proof (translation)
+The claim follows from `fun σ x ↦ (normAt_scale K h 2 two_pos σ x).le`.
+-/
 theorem normComparison_hyps {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K) E]
     [Module.Projective (𝓞 K) E] (h : HermitianMetric K E) :
     ∀ (σ : K →+* ℂ) (x : Fibre σ E), normAt (h.scale 2 two_pos) σ x ≤ 2 * normAt h σ x :=
   fun σ x ↦ (normAt_scale K h 2 two_pos σ x).le
 
+/- English proof (translation)
+Use `⟨fun σ x ↦ ?_, fun σ ↦ ⟨_, stdOrthonormalBasis ℂ (FibreSpace h σ), fun _ ↦ 2, fun i ↦ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[normAt_scale] show 2 * ‖FibreSpace.equiv h σ x‖ = ‖FibreSpace.equiv h σ (((2 : ℂ) • LinearMap.id : Fibre σ E →ₗ[ℂ] _) x)‖`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, map_smul, norm_smul]`. Evaluate the numerical expressions. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, map_smul, LinearEquiv.apply_symm_apply]`.
+-/
 theorem diagonalChange_hyps {E : Type*} [AddCommGroup E] [Module (𝓞 K) E]
     [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] (h : HermitianMetric K E) :
     (∀ (σ : K →+* ℂ) (x : Fibre σ E),
@@ -766,15 +953,24 @@ theorem diagonalChange_hyps {E : Type*} [AddCommGroup E] [Module (𝓞 K) E]
 def exampleChain : Fin 3 → Submodule (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   fun a ↦ standardFlag K a.rev
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun _ _ hab ↦ standardFlag_monotone (Fin.rev_le_rev.mpr hab), fun _ ↦ standardFlag_saturated _⟩`.
+-/
 theorem exampleChain_hyps : exampleChain K 0 = ⊤ ∧ Antitone (exampleChain K) ∧
     ∀ a, (HermitianBundle.standard K 2).Saturated (exampleChain K a) :=
   ⟨rfl, fun _ _ hab ↦ standardFlag_monotone (Fin.rev_le_rev.mpr hab),
     fun _ ↦ standardFlag_saturated _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨linearIndependent_stdFamily K, fun _ σ ↦ (vecNorm_stdVec K σ _).le⟩`.
+-/
 theorem hadamard_hyps : LinearIndependent (𝓞 K) (stdFamily K) ∧
     ∀ i (σ : K →+* ℂ), vecNorm (HermitianBundle.standard K 2).metric σ (stdFamily K i) ≤ 1 :=
   ⟨linearIndependent_stdFamily K, fun _ σ ↦ (vecNorm_stdVec K σ _).le⟩
 
+/- English proof (translation)
+Use `⟨by rw [span_stdVec, finrank_top], ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ σ`. Conclude with `(vecNorm_stdVec K σ i).le`.
+-/
 theorem hadamardQuotient_hyps :
     Module.finrank (𝓞 K) (Submodule.span (𝓞 K) (Set.range (stdVec K))) =
       Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carrier ∧
@@ -800,6 +996,9 @@ def stdLattice : Submodule (𝓞 K) (Fin r → K) :=
   Submodule.span (𝓞 K) (Set.range fun i : Fin r ↦ (Pi.single i (1 : K) : Fin r → K))
 
 omit [NumberField K] in
+/- English proof (translation)
+Use `⟨Submodule.fg_span (Set.finite_range _), top_unique ?_⟩` and prove the remaining obligations. Rewrite using `[← (Pi.basisFun K (Fin r)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, by simp⟩`.
+-/
 theorem isLattice_std : IsLattice (stdLattice K r) := by
   refine ⟨Submodule.fg_span (Set.finite_range _), top_unique ?_⟩
   rw [← (Pi.basisFun K (Fin r)).span_eq]
@@ -809,12 +1008,22 @@ theorem isLattice_std : IsLattice (stdLattice K r) := by
 
 variable {K r}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[locVec]`. Simplify using `[locVec, h]`.
+-/
 theorem locVec_single (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (i : Fin r) :
     locVec v (Pi.single i (1 : K)) = Pi.single i 1 := by
   funext j; by_cases h : j = i
   · subst h; simp [locVec]
   · simp [locVec, h]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[localLattice, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+
+Consider the case `zero => rw [locVec_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [locVec_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [locVec_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+-/
 theorem localLattice_span (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (S : Set (Fin r → K)) :
     localLattice v (Submodule.span (𝓞 K) S) = Submodule.span _ (locVec v '' S) := by
   apply le_antisymm
@@ -829,6 +1038,11 @@ theorem localLattice_span (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (S :
 
 variable (K r)
 
+/- English proof (translation)
+Use `⟨?_, top_unique ?_⟩` and prove the remaining obligations. Rewrite using `[stdLattice, localLattice_span]`. Conclude with `Submodule.fg_span ((Set.finite_range _).image _)`. Rewrite using `[← (Pi.basisFun (v.adicCompletion K) (Fin r)).span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `Submodule.subset_span ⟨Pi.single i 1, Submodule.subset_span ⟨i, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[locVec_single]`. Simplify using the standard rewrite rules.
+-/
 theorem isLocalLattice_std (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
     IsLocalLattice v (localLattice v (stdLattice K r)) := by
   refine ⟨?_, top_unique ?_⟩
@@ -840,6 +1054,9 @@ theorem isLocalLattice_std (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
     refine Submodule.subset_span ⟨Pi.single i 1, Submodule.subset_span ⟨i, rfl⟩, ?_⟩
     rw [locVec_single]; simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isLattice_std K r, isLocalLattice_std K r, by simp⟩`.
+-/
 theorem latticeOfLocalisations_hyps :
     IsLattice (stdLattice K r) ∧ (∀ v, IsLocalLattice v (localLattice v (stdLattice K r))) ∧
       {v | localLattice v (stdLattice K r) ≠ localLattice v (stdLattice K r)}.Finite :=
@@ -852,6 +1069,13 @@ def signChange (v₀ : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     Matrix.GeneralLinearGroup (Fin r) (v.adicCompletion K) :=
   if v = v₀ then -1 else 1
 
+/- English proof (translation)
+Use `⟨(Set.finite_singleton v₀).subset fun v hv ↦ ?_, fun v ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (by rw [signChange, if_neg (by simpa using h)])`. Distinguish the cases in `h : v = v₀`. Establish `: glMap v (signChange K r v₀ v) = -LinearMap.id`.
+
+Rewrite using `[signChange, if_pos h]`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Simplify using `only [glMap, LinearMap.restrictScalars_apply, Units.val_neg, Units.val_one, Matrix.toLin'_apply, Matrix.neg_mulVec, Matrix.one_mulVec, LinearMap.neg_apply, LinearMap.id_apply]`. Rewrite using `[this, Submodule.map_neg, Submodule.map_id]`. Establish `: glMap v (signChange K r v₀ v) = LinearMap.id`.
+
+Rewrite using `[signChange, if_neg h]`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Simplify using `only [glMap, LinearMap.restrictScalars_apply, Units.val_one, Matrix.toLin'_apply, Matrix.one_mulVec, LinearMap.id_apply]`. Rewrite using `[this, Submodule.map_id]`.
+-/
 theorem localChange_hyps (v₀ : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
     {v | signChange K r v₀ v ≠ 1}.Finite ∧
     ∀ v, localLattice v (stdLattice K r) =
@@ -874,29 +1098,95 @@ theorem localChange_hyps (v₀ : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
           Matrix.one_mulVec, LinearMap.id_apply]
       rw [this, Submodule.map_id]
 
+/- English proof (translation)
+The claim follows from `HermitianSpace.standard ℚ 2`.
+-/
 example : HermitianSpace ℚ 2 := HermitianSpace.standard ℚ 2
+/- English proof (translation)
+The claim follows from `HermitianSpace.standard GaussianField 2`.
+-/
 example : HermitianSpace GaussianField 2 := HermitianSpace.standard GaussianField 2
+/- English proof (translation)
+The claim follows from `(HermitianSpace.standard ℚ 2).lattice (stdLattice ℚ 2) (isLattice_std ℚ 2).1`.
+-/
 example : HermitianBundle ℚ := (HermitianSpace.standard ℚ 2).lattice (stdLattice ℚ 2) (isLattice_std ℚ 2).1
+/- English proof (translation)
+The claim follows from `(HermitianSpace.standard GaussianField 2).lattice (stdLattice GaussianField 2) (isLattice_std GaussianField 2).1`.
+-/
 example : HermitianBundle GaussianField :=
   (HermitianSpace.standard GaussianField 2).lattice (stdLattice GaussianField 2)
     (isLattice_std GaussianField 2).1
+/- English proof (translation)
+The claim follows from `latticeOfLocalisations_hyps ℚ 2`.
+-/
 example := latticeOfLocalisations_hyps ℚ 2
+/- English proof (translation)
+The claim follows from `latticeOfLocalisations_hyps GaussianField 2`.
+-/
 example := latticeOfLocalisations_hyps GaussianField 2
+/- English proof (translation)
+The claim follows from `localChange_hyps ℚ 2`.
+-/
 example := localChange_hyps ℚ 2
+/- English proof (translation)
+The claim follows from `localChange_hyps GaussianField 2`.
+-/
 example := localChange_hyps GaussianField 2
+/- English proof (translation)
+The claim follows from `twiceLattice_rank ℚ`.
+-/
 example := twiceLattice_rank ℚ
+/- English proof (translation)
+The claim follows from `twiceLattice_rank GaussianField`.
+-/
 example := twiceLattice_rank GaussianField
+/- English proof (translation)
+The claim follows from `normComparison_hyps ℚ (HermitianBundle.standard ℚ 2).metric`.
+-/
 example := normComparison_hyps ℚ (HermitianBundle.standard ℚ 2).metric
+/- English proof (translation)
+The claim follows from `normComparison_hyps GaussianField (HermitianBundle.standard GaussianField 2).metric`.
+-/
 example := normComparison_hyps GaussianField (HermitianBundle.standard GaussianField 2).metric
+/- English proof (translation)
+The claim follows from `diagonalChange_hyps ℚ (HermitianBundle.standard ℚ 2).metric`.
+-/
 example := diagonalChange_hyps ℚ (HermitianBundle.standard ℚ 2).metric
+/- English proof (translation)
+The claim follows from `diagonalChange_hyps GaussianField (HermitianBundle.standard GaussianField 2).metric`.
+-/
 example := diagonalChange_hyps GaussianField (HermitianBundle.standard GaussianField 2).metric
+/- English proof (translation)
+The claim follows from `exampleChain_hyps ℚ`.
+-/
 example := exampleChain_hyps ℚ
+/- English proof (translation)
+The claim follows from `exampleChain_hyps GaussianField`.
+-/
 example := exampleChain_hyps GaussianField
+/- English proof (translation)
+The claim follows from `hadamard_hyps ℚ`.
+-/
 example := hadamard_hyps ℚ
+/- English proof (translation)
+The claim follows from `hadamard_hyps GaussianField`.
+-/
 example := hadamard_hyps GaussianField
+/- English proof (translation)
+The claim follows from `hadamardQuotient_hyps ℚ`.
+-/
 example := hadamardQuotient_hyps ℚ
+/- English proof (translation)
+The claim follows from `hadamardQuotient_hyps GaussianField`.
+-/
 example := hadamardQuotient_hyps GaussianField
+/- English proof (translation)
+The claim follows from `firstLine_saturated ℚ`.
+-/
 example := firstLine_saturated ℚ
+/- English proof (translation)
+The claim follows from `firstLine_saturated GaussianField`.
+-/
 example := firstLine_saturated GaussianField
 
 end Examples

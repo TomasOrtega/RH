@@ -1,6 +1,9 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.ContinuousTorusCharacter
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Establish `h1 : y⁻¹ * z ∈ K'` using `QuotientGroup.eq.mp h`. Establish `h2 : ρ (y⁻¹ * z) v = v` using `hv _ h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem dcSum_eq_of_mk {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K' : Subgroup H) {v : M} (hv : v ∈ fixd ρ K') {y z : H}
     (h : (y : H ⧸ K') = (z : H ⧸ K')) : ρ y v = ρ z v := by
@@ -10,12 +13,34 @@ private theorem dcSum_eq_of_mk {A H M : Type} [CommRing A] [Group H] [AddCommGro
     _ = ρ (y * (y⁻¹ * z)) v := by rw [map_mul ρ y]; rfl
     _ = ρ z v := by rw [mul_inv_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+-/
 private theorem dcSum_apply {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K K' : Subgroup H) (x : H)
     [Fintype (MulAction.orbit K (x : H ⧸ K'))] (v : M) :
     dc ρ K K' x v = ∑ q : MulAction.orbit K (x : H ⧸ K'), ρ (q : H ⧸ K').out v := by
   rw [dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply]
 
+/- English proof (translation)
+Introduce `A H M _ _ _ _ ρ K K' x hfin`. Use `letI : Fintype (MulAction.orbit K (x : H ⧸ K')) := hfin.fintype`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs hu v hv`. Rewrite using `[dcSum_apply]`.
+
+Use `symm`. Use `Finset.sum_bij (fun y hy => (⟨(y : H ⧸ K'), hs y hy⟩ : MulAction.orbit K (x : H ⧸ K'))) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `y hy z hz h`. Establish `h' : (y : H ⧸ K') = (z : H ⧸ K')` using `congrArg Subtype.val h`. Conclude with `(hu _ (hs z hz)).unique ⟨hy, h'⟩ ⟨hz, rfl⟩`.
+
+Introduce `q _`. Take `⟨y, ⟨hy, hq⟩, -⟩` from `hu q.1 q.2`. Conclude with `⟨y, hy, Subtype.ext hq⟩`. Introduce `y hy`. Conclude with `dcSum_eq_of_mk ρ K' hv (QuotientGroup.out_eq' _).symm`.
+
+Introduce `v hv u hu`. Rewrite using `[dcSum_apply, map_sum]`. Use `Fintype.sum_equiv (MulAction.toPerm (⟨u, hu⟩ : K)) _ _ ?_` and prove the remaining obligations. Introduce `q`. Establish `: ρ u (ρ (q : H ⧸ K').out v) = ρ (u * (q : H ⧸ K').out) v` using `by rw [map_mul]; rfl`.
+
+Rewrite using `[this]`. Apply `dcSum_eq_of_mk ρ K' hv` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq']`. Express the relevant statement in the definitionally equal form `_ = u • (q : H ⧸ K')`. Use `conv_rhs => rw [← QuotientGroup.out_eq' (q : H ⧸ K')]`.
+
+Both sides reduce to the same expression. Introduce `V hV v hv hvV u hu`. Rewrite using `[dcSum_apply, map_sum]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨q, k, hk⟩ _`.
+
+Establish `h1 : ρ q.out v = ρ ((k : H) * x) v`. Apply `dcSum_eq_of_mk ρ K' hv` to reduce the goal to its premises. Rewrite using `[QuotientGroup.out_eq', ← hk]`. Both sides reduce to the same expression. Establish `h2 : u * ((k : H) * x) = ((k : H) * x) * u`.
+
+Rewrite using `[← mul_assoc, (hV u hu).2 k k.2, mul_assoc, (hV u hu).1, mul_assoc]`. Express the relevant statement in the definitionally equal form `ρ u (ρ q.out v) = ρ q.out v`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Introduce `A' M' _ _ _ ρ' f hf v`.
+
+Rewrite using `[dcSum_apply, dcSum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => hf _ _`.
+-/
 theorem UpperTheory.V.Hi.dcSum :
     ∀ (A H M : Type) [CommRing A] [Group H] [AddCommGroup M] [Module A M] (ρ : Representation A H M) (K K' : Subgroup H) (x : H), (MulAction.orbit K (x : H ⧸ K')).Finite → (∀ s : Finset H, (∀ y ∈ s, (y : H ⧸ K') ∈ MulAction.orbit K (x : H ⧸ K')) → (∀ q ∈ MulAction.orbit K (x : H ⧸ K'), ∃! y, y ∈ s ∧ (y : H ⧸ K') = q) → ∀ v ∈ fixd ρ K', dc ρ K K' x v = ∑ y ∈ s, ρ y v) ∧ (∀ v ∈ fixd ρ K', dc ρ K K' x v ∈ fixd ρ K) ∧ (∀ V : Subgroup H, (∀ u ∈ V, u * x = x * u ∧ ∀ k ∈ K, u * k = k * u) → ∀ v ∈ fixd ρ K', v ∈ fixd ρ V → dc ρ K K' x v ∈ fixd ρ V) ∧ ∀ (A' M' : Type) [CommRing A'] [AddCommGroup M'] [Module A' M'] (ρ' : Representation A' H M') (f : M →+ M'), (∀ h v, f (ρ h v) = ρ' h (f v)) → ∀ v, f (dc ρ K K' x v) = dc ρ' K K' x (f v) := by
   intro A H M _ _ _ _ ρ K K' x hfin

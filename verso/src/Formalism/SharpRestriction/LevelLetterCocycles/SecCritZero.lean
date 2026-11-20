@@ -23,6 +23,9 @@ variable [IsDomain O] [NeZero n]
 
 variable {W}
 
+/- English proof (translation)
+Take `⟨κ, Hh, hHh⟩` from `horTr_exists W C.hO2 C.hH C.hCA T hTc c' b sol hb (A.M PD.p)`. Conclude with `⟨κ, 0, Hh, fun _ => 0, hHh, fun k => ⟨W.AΔ.zero_mem, by simp⟩, by`. Simplify using `only [smul_zero, zero_smul, Finset.sum_const_zero, sub_zero]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_zero W T c' e _⟩`.
+-/
 theorem repVV_zero (C : Ctx W) (A : ArcP n) (c' : ZMod n) (e : ℕ) (T : LocLat G Qp LL O) (hTc : IsCrys PD T.ρ)
     {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL) (hb : IsHor W T c' b sol) (Λ : LetA O n) :
     RepVV W T c' e (A.M PD.p) Λ b sol 0 (fun _ => 0) := by
@@ -31,6 +34,11 @@ theorem repVV_zero (C : Ctx W) (A : ArcP n) (c' : ZMod n) (e : ℕ) (T : LocLat 
     simp only [smul_zero, zero_smul, Finset.sum_const_zero, sub_zero]
     exact Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_zero W T c' e _⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using repVV_zero C A c' e T hTc b sol hb Λ`. Consider the case `insert j s hj ih`. Use `repVV_add W C.hinj T c' e _ Λ b sol _ _ _ _ (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Rewrite using `[Finset.sum_insert hj]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Rewrite using `[Finset.sum_insert hj]`. Both sides reduce to the same expression.
+-/
 theorem repVV_sum (C : Ctx W) (A : ArcP n) (c' : ZMod n) (e : ℕ) (T : LocLat G Qp LL O) (hTc : IsCrys PD T.ρ)
     {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL) (hb : IsHor W T c' b sol) (Λ : LetA O n)
     {ι : Type} (s : Finset ι) (z : ι → W.DD T) (F : ι → Fin d → W.EE)
@@ -47,6 +55,9 @@ theorem repVV_sum (C : Ctx W) (A : ArcP n) (c' : ZMod n) (e : ℕ) (T : LocLat G
     rw [Finset.sum_insert hj]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using inFNc_zero T a`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `inFNc_add T a (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem inFNc_sum (T : LocLat G Qp LL O) (a : ZMod n) {ι : Type} (s : Finset ι) (z : ι → W.DD T)
     (h : ∀ j ∈ s, InFNc W T a 1 (z j)) : InFNc W T a 1 (∑ j ∈ s, z j) := by
   induction s using Finset.induction_on with
@@ -55,6 +66,17 @@ theorem inFNc_sum (T : LocLat G Qp LL O) (a : ZMod n) {ι : Type} (s : Finset ι
     rw [Finset.sum_insert hj]
     exact inFNc_add T a (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `x k f hx _ hfr`. Establish `hc : c' + ((0 : ℕ) : ZMod n) = c'` using `by simp`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Use `⟨0, d, fun m => lE W 0 * f m, fun m => Pi.single m 1, fun _ _ => 0, fun m => ⟨?_, fun s hs => absurd hs (by omega)⟩, fun k => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu, hfu⟩` from `hfr m`. Use `⟨lA W ^ 0 * u, W.AΔ.mul_mem (lA_mem W 0) hu, ?_⟩` and prove the remaining obligations. Rewrite `hfu` using `[lam_zero, map_one, one_mul]`. Simplify using `only [Finset.range_zero, Finset.prod_empty, pow_zero, map_one, one_mul, mul_one, map_mul] at hfu ⊢`. Rewrite using `[show lE W 0 = 1 by simp [lE], one_mul]`.
+
+Conclude with `hfu`. Simplify using `[Pi.single_apply]`. Introduce `_`. Rewrite `hx` using `[lam_zero, one_smul]`. Take `⟨p, hp, rfl⟩` from `hx`.
+
+Rewrite using `[one_smul]`. Establish `: ∀ y ∈ Pp W T c' 0, InFNc W T (c' + ((0 : ℕ) : ZMod n)) 1 y`. Use `Formalism.MainNotions.UnusedSlot80.Relay2.Pp_ind W T c' 0 _ (inFNc_zero T _) (fun x y hx hy => inFNc_add T _ hx hy) (fun x hx => inFNc_neg T _ hx) ?_` and prove the remaining obligations. Introduce `a ha y hy`. Rewrite using `[pow_zero, Module.End.one_apply]`.
+
+Take `⟨hyN, ⟨y', -, hyl⟩⟩` from `hy`. Use `⟨a • y, Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T ha hyN, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Rewrite using `[hc, ← hyl, LinearMap.smul_apply, LinearMap.id_apply, smul_comm (letE c' : LetA O n) a, smul_smul (letE c' : LetA O n) (letE c' : LetA O n), Formalism.MainNotions.WachCoordinates.Br.letE_mul_self]`. Conclude with `this p hp`.
+-/
 theorem secCrit_zero (A : ArcP n) (c' : ZMod n) (T : LocLat G Qp LL O) {d : ℕ} (b : Fin d → W.DD T)
     (sol : Fin d → ℕ → Fin d → LL) : Formalism.MainNotions.UnusedSlot80.ArcC.SecCrit W A c' 0 T d b sol := by
   intro x k f hx _ hfr

@@ -12,6 +12,15 @@ open scoped nonZeroDivisors ComplexOrder
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `genIndex`. Rewrite using `[AddSubgroup.relIndex_eq_one.mpr hCA, AddSubgroup.relIndex_eq_one.mpr hCB]`. Establish `h1` using `AddSubgroup.relIndex_mul_relIndex C (A ⊓ B) A (le_inf hCA hCB) inf_le_left`. Establish `h2` using `AddSubgroup.relIndex_mul_relIndex C (A ⊓ B) B (le_inf hCA hCB) inf_le_right`. Establish `h1' : (A ⊓ B).relIndex A = B.relIndex A`.
+
+Rewrite using `[inf_comm]`. Conclude with `AddSubgroup.inf_relIndex_right B A`. Establish `h2' : (A ⊓ B).relIndex B = A.relIndex B` using `AddSubgroup.inf_relIndex_right A B`. Rewrite `h1` using `[h1']`. Rewrite `h2` using `[h2']`.
+
+Establish `hb : (A.relIndex B : ℝ) ≠ 0`. Introduce `h0`. Apply `hBC` to reduce the goal to its premises. Rewrite using `[← h2, Nat.cast_eq_zero.mp h0, mul_zero]`. Rewrite using `[← h1, ← h2]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem S6.MatrixSubDegree.genIndex_trans {G : Type*} [AddCommGroup G] {A B C : AddSubgroup G}
     (hCA : C ≤ A) (hCB : C ≤ B) (hBC : C.relIndex B ≠ 0) :
     genIndex A C = genIndex A B * genIndex B C := by
@@ -32,6 +41,9 @@ theorem S6.MatrixSubDegree.genIndex_trans {G : Type*} [AddCommGroup G] {A B C : 
   push_cast
   field_simp
 
+/- English proof (translation)
+Unfold `genIndex`. Rewrite using `[AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_map_map_of_injective _ _ hf]`.
+-/
 theorem S6.MatrixSubDegree.genIndex_map {G G' : Type*} [AddCommGroup G] [AddCommGroup G']
     (f : G →+ G') (hf : Function.Injective f) (A B : AddSubgroup G) :
     genIndex (A.map f) (B.map f) = genIndex A B := by
@@ -39,12 +51,24 @@ theorem S6.MatrixSubDegree.genIndex_map {G G' : Type*} [AddCommGroup G] [AddComm
   rw [AddSubgroup.relIndex_map_map_of_injective _ _ hf,
     AddSubgroup.relIndex_map_map_of_injective _ _ hf]
 
+/- English proof (translation)
+The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_smul_mem_family_of_span_eq_top M hspan v`.
+-/
 theorem S6.MatrixSubDegree.exists_smul_mem {K : Type} [Field K] [NumberField K] {N : ℕ}
     (M : Submodule (𝓞 K) (Fin N → K)) (hspan : Submodule.span K (M : Set (Fin N → K)) = ⊤)
     {ι : Type*} [Fintype ι] (v : ι → Fin N → K) :
     ∃ t : 𝓞 K, t ≠ 0 ∧ ∀ i, algebraMap (𝓞 K) K t • v i ∈ M :=
   _root_.GroundTheory.Variant₂.N1.exists_smul_mem_family_of_span_eq_top M hspan v
 
+/- English proof (translation)
+Use `set W := Submodule.span K (Set.range u)`. Set `L : satSub M u →ₗ[𝓞 K] (Fin N → K)` to `M.subtype ∘ₗ (satSub M u).subtype`. Establish `hLi : Function.Injective L`. Introduce `x y h`. Conclude with `Subtype.ext (Subtype.ext h)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Apply `Module.finrank_le_of_rank_le` to reduce the goal to its premises. Apply `rank_le` to reduce the goal to its premises. Introduce `T hT`. Establish `h0` using `hT.map_injOn L hLi.injOn`.
+
+Establish `h1 : LinearIndependent K (L ∘ fun i : T => (i : satSub M u))` using `(LinearIndependent.iff_fractionRing (𝓞 K) K).mp h0`. Establish `hmem : ∀ i : T, L i ∈ W` using `fun i => (i : satSub M u).2`. Establish `h2 : LinearIndependent K (fun i : T => (⟨L i, hmem i⟩ : W))` using `LinearIndependent.of_comp W.subtype h1`. Use `h2.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[finrank_span_eq_card hu, Fintype.card_fin, Fintype.card_coe]`.
+
+Conclude with `this`. Use `hs.fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`.
+-/
 theorem S6.MatrixSubDegree.finrank_satSub {K : Type} [Field K] [NumberField K] {N : ℕ}
     (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M] {r : ℕ} (u : Fin r → Fin N → K)
     (hu : LinearIndependent K u) (s : Fin r → satSub M u) (hs : LinearIndependent (𝓞 K) s) :
@@ -70,6 +94,11 @@ theorem S6.MatrixSubDegree.finrank_satSub {K : Type} [Field K] [NumberField K] {
   · have := hs.fintype_card_le_finrank
     simpa using this
 
+/- English proof (translation)
+Establish `he : ∀ v : Fin N → K, embVec σ (c • v) = σ c • embVec σ v` using `fun v => by`. Use function extensionality and compare the values at `k`. Simplify using `[embVec]`. Use extensionality with `a b`. Simplify using `only [gramAt, he, star_smul, mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, Matrix.smul_apply, RCLike.star_def, ← mul_assoc]`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem S6.MatrixSubDegree.gramAt_smul {K : Type} [Field K] {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ)
     (σ : K →+* ℂ) {ι : Type*} [Fintype ι] (u : ι → Fin N → K) (c : K) :
     gramAt h σ (fun i => c • u i) = ((‖σ c‖ ^ 2 : ℝ) : ℂ) • gramAt h σ u := by
@@ -80,6 +109,15 @@ theorem S6.MatrixSubDegree.gramAt_smul {K : Type} [Field K] {N : ℕ} (h : Matri
     Matrix.smul_apply, RCLike.star_def, ← mul_assoc]
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `hG : (gram ℂ fun i => fibreVec (matrixBundle M H hH hconj).metric σ (v i)) = ((‖σ c‖ ^ 2 : ℝ) : ℂ) • gramAt (H σ) σ u`. Establish `e : (fun i => c • u i) = fun i => (v i : Fin N → K)` using `funext fun i => (hv i).symm`. Rewrite using `[← S6.MatrixSubDegree.gramAt_smul, e]`. Use extensionality with `i j`. Rewrite using `[gram_apply]`.
+
+Conclude with `matrixMetric_inner_one_tmul M H hH hconj σ (v i) (v j)`. Establish `hD : 0 < (gramAt (H σ) σ u).det.re`. Use `(LinesGramPosDef.full K N (H σ) σ (Fin r) u (hH σ) hu).det_pos` as an intermediate fact. Conclude with `(RCLike.pos_iff.mp this).1`. Establish `hσc : ‖σ c‖ ≠ 0`.
+
+Rewrite using `[norm_ne_zero_iff, map_ne_zero]`. Conclude with `hc`. Simplify using `only [GroundTheory.Heights₂.Heights.gramDet]`. Rewrite using `[hG, det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.log_mul (pow_ne_zero _ (pow_ne_zero _ hσc)) hD.ne', Real.log_pow, Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem S6.MatrixSubDegree.log_gramDet {K : Type} [Field K] [NumberField K] {N : ℕ}
     (M : Submodule (𝓞 K) (Fin N → K)) [Module.Finite (𝓞 K) M]
     (H : (K →+* ℂ) → Matrix (Fin N) (Fin N) ℂ) (hH : ∀ σ, (H σ).PosDef)
@@ -106,6 +144,9 @@ theorem S6.MatrixSubDegree.log_gramDet {K : Type} [Field K] [NumberField K] {N :
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ c : ℚ) : ℝ)| ^ r := by let φ : (Fin r → K) →ₗ[𝓞 K] (Fin N → K) := (Fintype.linearCombination K u).restrictScalars (𝓞 K) have hφx : ∀ x, φ x = ∑ i, x i • u i := fun x => Fintype.linearCombination_apply K u x have hφ : Function.Injective φ := by intro x y hxy rw [ …`.
+-/
 theorem S6.MatrixSubDegree.genIndex_span_smul {K : Type} [Field K] [NumberField K] {N r : ℕ}
     (u : Fin r → Fin N → K) (hu : LinearIndependent K u) (c : K) (hc : c ≠ 0) :
     genIndex (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup
@@ -143,6 +184,9 @@ theorem S6.MatrixSubDegree.genIndex_span_smul {K : Type} [Field K] [NumberField 
     S6.MatrixSubDegree.genIndex_map _ hφ, hstd, det_smul, det_one, mul_one, Fintype.card_fin,
     map_pow, Rat.cast_pow, abs_pow]
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_toAddSubgroup, Submodule.map_toAddSubgroup, S6.MatrixSubDegree.genIndex_map _ hL, genIndex, Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right, AddSubgroup.relIndex_top_left, Nat.cast_one, div_one]`. Both sides reduce to the same expression.
+-/
 theorem S6.MatrixSubDegree.card_quotient_eq_genIndex {R E G : Type*} [Ring R] [AddCommGroup E]
     [Module R E] [AddCommGroup G] [Module R G] (F : Submodule R E) (p : Submodule R F)
     (L : F →ₗ[R] G) (hL : Function.Injective L) :
@@ -152,6 +196,9 @@ theorem S6.MatrixSubDegree.card_quotient_eq_genIndex {R E G : Type*} [Ring R] [A
     AddSubgroup.relIndex_top_right, AddSubgroup.relIndex_top_left, Nat.cast_one, div_one]
   rfl
 
+/- English proof (translation)
+Use `finite_quotient_span hs (by rw [Fintype.card_fin, hr])` as an intermediate fact. Conclude with `Nat.card_pos` after adjusting the coercions.
+-/
 theorem S6.MatrixSubDegree.card_quotient_pos {K : Type} [Field K] [NumberField K] {E : Type*}
     [AddCommGroup E] [Module (𝓞 K) E] (F : Submodule (𝓞 K) E) [Module.Finite (𝓞 K) F] {r : ℕ}
     (s : Fin r → F) (hs : LinearIndependent (𝓞 K) s) (hr : Module.finrank (𝓞 K) F = r) :
@@ -159,6 +206,29 @@ theorem S6.MatrixSubDegree.card_quotient_pos {K : Type} [Field K] [NumberField K
   have := finite_quotient_span hs (by rw [Fintype.card_fin, hr])
   exact_mod_cast Nat.card_pos
 
+/- English proof (translation)
+Introduce `K _ _ N M _ H hH hconj hspan r u hu`. Take `⟨t, ht, htM⟩` from `S6.MatrixSubDegree.exists_smul_mem M hspan u`. Establish `hτ : algebraMap (𝓞 K) K t ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr ht`. Establish `hfW : ∀ i, algebraMap (𝓞 K) K t • u i ∈ Submodule.span K (Set.range u)` using `fun i => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `s : Fin r → satSub M u` to `fun i => ⟨⟨algebraMap (𝓞 K) K t • u i, htM i⟩, hfW i⟩`.
+
+Set `L : satSub M u →ₗ[𝓞 K] (Fin N → K)` to `M.subtype ∘ₗ (satSub M u).subtype`. Establish `hL : Function.Injective L`. Introduce `x y h`. Conclude with `Subtype.ext (Subtype.ext h)`. Establish `hLs : ⇑L ∘ s = fun i => algebraMap (𝓞 K) K t • u i` using `rfl`.
+
+Establish `hs : LinearIndependent (𝓞 K) s`. Use `LinearIndependent.of_comp L ?_` and prove the remaining obligations. Rewrite using `[hLs]`. Conclude with `(LinearIndependent.iff_fractionRing (𝓞 K) K).mpr (hu.units_smul fun _ => Units.mk0 _ hτ)`. Establish `hrank : (matrixBundle M H hH hconj).rank (satSub M u) = r` using `S6.MatrixSubDegree.finrank_satSub M u hu s hs`.
+
+Use `⟨hrank, ?_⟩` and prove the remaining obligations. Establish `hcard : Fintype.card (Fin r) = (matrixBundle M H hH hconj).rank (satSub M u)`. Rewrite using `[Fintype.card_fin, hrank]`. Rewrite using `[(matrixBundle M H hH hconj).degree_eq_of_linearIndependent (satSub M u) hs hcard]`. Establish `hlog` using `fun σ => S6.MatrixSubDegree.log_gramDet M H hH hconj u hu _ hτ (fun i => (s i : M)) (fun i => rfl) σ`.
+
+Repeatedly rewrite using `[hlog]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, LinesProductFormula.full K _ hτ]`. Establish `hA : M ⊓ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K) = (⊤ : Submodule (𝓞 K) (satSub M u)).map L`. Rewrite using `[Submodule.map_top, LinearMap.range_comp, Submodule.range_subtype, satSub, Submodule.map_comap_subtype]`. Establish `hC : Submodule.span (𝓞 K) (Set.range fun i => algebraMap (𝓞 K) K t • u i) = (Submodule.span (𝓞 K) (Set.range s)).map L`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp, hLs]`. Establish `hpos` using `S6.MatrixSubDegree.card_quotient_pos (satSub M u) s hs hrank`. Rewrite `hpos` using `[S6.MatrixSubDegree.card_quotient_eq_genIndex (satSub M u) _ L hL, ← hA, ← hC]`. Use `erw [S6.MatrixSubDegree.card_quotient_eq_genIndex (satSub M u) _ L hL]`. Rewrite using `[← hA]`.
+
+Use `erw [← hC]`. Establish `hBC` using `S6.MatrixSubDegree.genIndex_span_smul u hu _ hτ`. Establish `hN : |((Algebra.norm ℚ (algebraMap (𝓞 K) K t) : ℚ) : ℝ)| ≠ 0`. Rewrite using `[abs_ne_zero, Rat.cast_ne_zero, Algebra.norm_ne_zero_iff]`. Conclude with `hτ`.
+
+Establish `hCA : (Submodule.span (𝓞 K) (Set.range fun i => algebraMap (𝓞 K) K t • u i)).toAddSubgroup ≤ (M ⊓ (Submodule.span K (Set.range u)).restrictScalars (𝓞 K)).toAddSubgroup`. Rewrite using `[Submodule.toAddSubgroup_le, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨htM i, hfW i⟩`. Establish `hCB : (Submodule.span (𝓞 K) (Set.range fun i => algebraMap (𝓞 K) K t • u i)).toAddSubgroup ≤ (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup`.
+
+Rewrite using `[Submodule.toAddSubgroup_le, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show algebraMap (𝓞 K) K t • u i ∈ Submodule.span (𝓞 K) (Set.range u)`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ t (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hrel : (Submodule.span (𝓞 K) (Set.range fun i => algebraMap (𝓞 K) K t • u i)).toAddSubgroup.relIndex (Submodule.span (𝓞 K) (Set.range u)).toAddSubgroup ≠ 0`. Introduce `h0`. Apply `pow_ne_zero r hN` to reduce the goal to its premises. Rewrite using `[← hBC, genIndex, h0, Nat.cast_zero, zero_div]`. Establish `htrans` using `S6.MatrixSubDegree.genIndex_trans hCA hCB hrel`.
+
+Rewrite `hpos`, the goal using `[htrans, hBC]`. Establish `hAB` using `left_ne_zero_of_mul hpos.ne'`. Rewrite using `[Real.log_mul hAB (pow_ne_zero _ hN), Real.log_pow, subDegree]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem S6.MatrixSubDegree.proof : S6.MatrixSubDegree.Statement := by
   intro K _ _ N M _ H hH hconj hspan r u hu
   obtain ⟨t, ht, htM⟩ := S6.MatrixSubDegree.exists_smul_mem M hspan u

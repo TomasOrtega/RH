@@ -25,6 +25,11 @@ def contLeft : Submodule ℂ (Sm E a) where
     change c • f.1 _ = c • f.1 _
     rw [hf.2]⟩
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hc` using `ContAut.continuous_of_isOpen_stab E a φ hA.level`. Use `⟨hc.comp (continuous_mul_const _), fun γ g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E a γ * g * _) = φ.1 (g * _)`.
+
+Rewrite using `[mul_assoc, hA.left]`.
+-/
 theorem span_cpt_le_contLeft {φ : Sm E a} (hA : IsAutForm φ) :
     Submodule.span ℂ (Set.range fun k => cptRep E a k φ) ≤ contLeft E a := by
   refine Submodule.span_le.2 ?_
@@ -47,6 +52,17 @@ def sliceLin (μ : Measure (BlockIx a r → Ad E)) [μ.IsAddHaarMeasure] {𝓕 :
     funext m₂
     exact integral_const_mul c _
 
+/- English proof (translation)
+Introduce `E _ _ _ a r hr _ _ μ 𝓕 hμ h𝓕 _ φ hA m₁ t κ ψ hψ`. Use `set V := Submodule.span ℂ (Set.range fun k => cptRep E a k φ) with hV`. Establish `hfin : FiniteDimensional ℂ V` using `hA.kfin`. Establish `hle` using `span_cpt_le_contLeft hA`. Set `L : V →ₗ[ℂ] (GA E (a - r) → ℂ)` to `sliceLin μ h𝓕 hr m₁ t κ ∘ₗ Submodule.inclusion hle`.
+
+Establish `hR : FiniteDimensional ℂ (LinearMap.range L)` using `inferInstance`. Use `set S := Submodule.span ℂ (Set.range fun k => cptRep E (a - r) k ψ)`. Establish `hS : S.map (Sm E (a - r)).subtype ≤ LinearMap.range L`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+
+Use `⟨⟨cptRep E a (κ⁻¹ * blkK hr k * κ) φ, Submodule.subset_span ⟨_, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `slice E μ 𝓕 hr (cptRep E a (κ⁻¹ * blkK hr k * κ) φ).1 m₁ t κ g = ψ.1 (g * infGL E (a - r) (Unitary.toUnits k))`. Rewrite using `[hψ, slice_mul_cpt]`. Unfold `slice`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `φ.1 (_ * _ * _) = _`. Simplify using `only [mul_assoc]`. Both sides reduce to the same expression.
+
+Establish `h1 : FiniteDimensional ℂ (S.map (Sm E (a - r)).subtype)` using `Submodule.finiteDimensional_of_le hS`. Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective (Sm E (a - r)).subtype Subtype.val_injective S).symm`.
+-/
 theorem slice_kfin : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (hr : r ≤ a)
     [MeasurableSpace (BlockIx a r → Ad E)] [BorelSpace (BlockIx a r → Ad E)] (μ : Measure (BlockIx a r → Ad E))
     (𝓕 : Set (BlockIx a r → Ad E)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratN E a r) 𝓕 μ → μ 𝓕 = 1 →

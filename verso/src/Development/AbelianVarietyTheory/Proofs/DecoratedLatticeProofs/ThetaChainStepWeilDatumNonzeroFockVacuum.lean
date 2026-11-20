@@ -16,6 +16,11 @@ namespace GlobalTheory.ChainOnto.StepExp
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h1 : HasInfExp D (c.μ ((k : ℕ) + 1)) τ (-(D.hc τ).e k)` using `hc.exp k τ`. Establish `h2 : HasInfExp D c.η τ (1 / 2)` using `hc.chars.2.2.2.1 τ`. Establish `h3` using `GlobalTheory.Chain.StepVac.hasInfExp_mul h1 (GlobalTheory.Chain.StepVac.hasInfExp_inv h2)`. Unfold `Com.chS Com.chT Lift.chrStep expS expT`. Distinguish the cases in `hk : Even (k : ℕ)`.
+
+Rewrite using `[if_pos hk.add_one, if_pos hk, if_pos hk, sub_zero, sub_eq_add_neg]`. Conclude with `⟨h3, h1⟩`. Rewrite using `[if_neg (by rwa [Nat.odd_add_one, Nat.not_odd_iff_even]), if_neg hk, if_neg hk, sub_zero, sub_eq_add_neg]`. Conclude with `⟨h1, h3⟩`.
+-/
 theorem chrStep_exp' {c : Com D} (hc : c.Is) (k : Fin D.R.m) (τ : D.what₂.Tau) :
     HasInfExp D (c.chS ((k : ℕ) + 1)) τ (expS D k τ) ∧ HasInfExp D (c.chT ((k : ℕ) + 1)) τ (expT D k τ) := by
   have h1 : HasInfExp D (c.μ ((k : ℕ) + 1)) τ (-(D.hc τ).e k) := hc.exp k τ
@@ -28,6 +33,11 @@ theorem chrStep_exp' {c : Com D} (hc : c.Is) (k : Fin D.R.m) (τ : D.what₂.Tau
   · rw [if_neg (by rwa [Nat.odd_add_one, Nat.not_odd_iff_even]), if_neg hk, if_neg hk, sub_zero, sub_eq_add_neg]
     exact ⟨h1, h3⟩
 
+/- English proof (translation)
+Introduce `D _ c hc k _ s s' hs hs' p hp hk`. Use `⟨⟨c.chS (k + 1), c.chT (k + 1), hp.weil, fun τ => chrStep_exp' hc ⟨k, hk⟩ τ⟩, ?_⟩` and prove the remaining obligations. Take `⟨ξ, f₀, hv⟩` from `hp.vec`. Establish `hr : s.V.rank ≤ s'.V.rank`. Rewrite using `[hs.rank, hs'.rank]`.
+
+Use `show D.R.r + k * D.R.t ≤ D.R.r + (k + 1) * D.R.t`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.le_succ k)) _`. Take `⟨a, b, d⟩` from `GlobalTheory.Chain.StepVac.stepVec_vac hs.selfDual hs'.selfDual hr hv`. Conclude with `⟨a, b, d⟩`.
+-/
 theorem stepExpVac : ∀ D : D7, GlobalTheory.ChainOnto.ForStep D fun c k s s' p => ∀ hk : k < D.R.m,
     IsWeilExp c.ψ s.V s'.V (expS D ⟨k, hk⟩) (expT D ⟨k, hk⟩) p.ω ∧ IsVacVec c.ψ c.θ s.M s'.M p.f := by
   intro D _ c hc k _ s s' hs hs' p hp hk

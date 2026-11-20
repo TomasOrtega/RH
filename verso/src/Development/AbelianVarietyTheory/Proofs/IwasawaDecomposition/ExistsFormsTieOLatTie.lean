@@ -8,6 +8,11 @@ open scoped Matrix MatrixOrder
 
 namespace GlobalTheory.Mem.CoordForms
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg`. Rewrite `hS` using `[Matrix.star_eq_conjTranspose]`. Establish `hdet : IsUnit S.det`. Establish `h` using `hA.det_pos.ne'`. Rewrite `h` using `[hS, Matrix.det_mul]`.
+
+Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul h)`. Conclude with `⟨S, S⁻¹, hS.symm, Matrix.mul_nonsing_inv S hdet, Matrix.nonsing_inv_mul S hdet⟩`.
+-/
 theorem exists_sqrt {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.PosDef) :
     ∃ S T : Matrix (Fin n) (Fin n) ℂ, Sᴴ * S = A ∧ S * T = 1 ∧ T * S = 1 := by
   obtain ⟨S, hS⟩ := CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg
@@ -33,6 +38,9 @@ noncomputable def emb (σ : K →+* ℂ) (S : Matrix (Fin n) (Fin n) ℂ) : (Fin
     ext i
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_ofLp (σ : K →+* ℂ) (S : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → K) :
     (emb σ S x).ofLp = S *ᵥ fun i => σ (x i) := rfl
 
@@ -56,6 +64,11 @@ noncomputable def act (σ : K →+* ℂ) (S T : Matrix (Fin n) (Fin n) ℂ) (h1 
   map_add' E F := by
     rw [← map_add, Matrix.map_add _ (map_add σ), mul_add, add_mul]
 
+/- English proof (translation)
+Apply `WithLp.ofLp_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `S *ᵥ (fun k => σ ((Pi.single i (1 : K) : Fin n → K) k)) = S *ᵥ (EuclideanSpace.basisFun (Fin n) ℂ i).ofLp`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[EuclideanSpace.basisFun_apply]`.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem emb_single (σ : K →+* ℂ) (S : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) :
     emb σ S (Pi.single i 1) = Matrix.toEuclideanLin S (EuclideanSpace.basisFun (Fin n) ℂ i) := by
   apply WithLp.ofLp_injective
@@ -67,6 +80,11 @@ theorem emb_single (σ : K →+* ℂ) (S : Matrix (Fin n) (Fin n) ℂ) (i : Fin 
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `h` using `congrArg (fun v => (Matrix.toEuclideanLin T v).ofLp) hxy`. Express the relevant statement in the definitionally equal form `T *ᵥ (S *ᵥ x.ofLp) = T *ᵥ (S *ᵥ y.ofLp) at h`. Rewrite `h` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `WithLp.ofLp_injective 2 h`. Introduce `y`. Use `⟨Matrix.toEuclideanLin T y, WithLp.ofLp_injective 2 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S *ᵥ (T *ᵥ y.ofLp) = y.ofLp`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`.
+-/
 theorem bij (S T : Matrix (Fin n) (Fin n) ℂ) (h1 : S * T = 1) (h2 : T * S = 1) :
     Function.Bijective (Matrix.toEuclideanLin S) := by
   constructor
@@ -80,6 +98,9 @@ theorem bij (S T : Matrix (Fin n) (Fin n) ℂ) (h1 : S * T = 1) (h2 : T * S = 1)
     change S *ᵥ (T *ᵥ y.ofLp) = y.ofLp
     rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h : (WithLp.toLp 2 fun i => σ (x i) : EuclideanSpace ℂ (Fin n)) = WithLp.toLp 2 fun i => σ (y i)` using `(bij S T h1 h2).1 (show Matrix.toEuclideanLin S (WithLp.toLp 2 fun i => σ (x i)) = Matrix.toEuclideanLin S (WithLp.toLp 2 fun i => σ (y i)) from hxy)`. Use function extensionality and compare the values at `i`. Conclude with `σ.injective (congrFun (congrArg WithLp.ofLp h) i)`.
+-/
 theorem emb_injective (σ : K →+* ℂ) (S T : Matrix (Fin n) (Fin n) ℂ) (h1 : S * T = 1) (h2 : T * S = 1) :
     Function.Injective (emb σ S) := by
   intro x y hxy
@@ -89,6 +110,9 @@ theorem emb_injective (σ : K →+* ℂ) (S T : Matrix (Fin n) (Fin n) ℂ) (h1 
   funext i
   exact σ.injective (congrFun (congrArg WithLp.ofLp h) i)
 
+/- English proof (translation)
+Establish `hs : (fun i => emb σ S (Pi.single i 1)) = (Matrix.toEuclideanLin S) ∘ (EuclideanSpace.basisFun (Fin n) ℂ)`. Use function extensionality and compare the values at `(emb_single σ S)`. Rewrite using `[hs, Set.range_comp, Submodule.span_image, ← OrthonormalBasis.coe_toBasis, Module.Basis.span_eq, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `(bij S T h1 h2).2`.
+-/
 theorem emb_span (σ : K →+* ℂ) (S T : Matrix (Fin n) (Fin n) ℂ) (h1 : S * T = 1) (h2 : T * S = 1) :
     Submodule.span ℂ (Set.range fun i => emb σ S (Pi.single i 1)) = ⊤ := by
   have hs : (fun i => emb σ S (Pi.single i 1)) =
@@ -98,6 +122,15 @@ theorem emb_span (σ : K →+* ℂ) (S T : Matrix (Fin n) (Fin n) ℂ) (h1 : S *
     Submodule.map_top, LinearMap.range_eq_top]
   exact (bij S T h1 h2).2
 
+/- English proof (translation)
+Rewrite using `[show (fun i => emb σ S (Pi.single i 1)) = (Matrix.toEuclideanLin S) ∘ (EuclideanSpace.basisFun (Fin n) ℂ) from funext (emb_single σ S)]`. Conclude with `(EuclideanSpace.basisFun (Fin n) ℂ).orthonormal.linearIndependent.map' _ (LinearMap.ker_eq_bot.mpr (bij S T h1 h2).1)`. Use `span := emb_span σ S T h1 h2`. Use `inner x y := by`. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct, emb_ofLp, emb_ofLp, Matrix.star_mulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h0]`.
+
+Simplify using `only [Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, map_sum, map_mul, smul_eq_mul, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, Matrix.map_apply, RingHom.id_apply, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [hσ, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `op_eq x := by`.
+
+Apply `WithLp.ofLp_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(S * E.map σ * T) *ᵥ (S *ᵥ fun i => σ (x i)) = S *ᵥ fun i => σ ((E *ᵥ x) i)`. Rewrite using `[Matrix.mulVec_mulVec, mul_assoc (S * E.map σ), h2, mul_one, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(RingHom.map_mulVec σ E x i).symm`.
+-/
 theorem formsTie [NumberField K] [StarRing K] (σ : K →+* ℂ) (hσ : ∀ x, σ (star x) = starRingEnd ℂ (σ x))
     (H : Matrix (Fin n) (Fin n) K) (S T : Matrix (Fin n) (Fin n) ℂ) (h0 : Sᴴ * S = H.map σ) (h1 : S * T = 1)
     (h2 : T * S = 1) (E : Matrix (Fin n) (Fin n) K) : FormsTie σ (emb σ S) H E (act σ S T h1 h2 E) where
@@ -123,6 +156,35 @@ theorem formsTie [NumberField K] [StarRing K] (σ : K →+* ℂ) (hσ : ∀ x, �
     funext i
     exact (RingHom.map_mulVec σ E x i).symm
 
+/- English proof (translation)
+Take `⟨G, hG⟩` from `hN.fg.restrictScalars (R := ℤ)`. Establish `hGN : ∀ g ∈ G, g ∈ N` using `fun g hg => by`. Establish `: g ∈ Submodule.span ℤ (G : Set (Fin n → K))` using `Submodule.subset_span hg`. Rewrite `this` using `[hG]`. Conclude with `this`.
+
+Establish `hsum : ∀ φ : W → ℂ, ∑ v ∈ G.image j, φ v • v = ∑ g ∈ G, φ (j g) • j g` using `fun φ => Finset.sum_image fun a _ b _ h => hj h`. Establish `key : ∀ y ∈ Submodule.span K (G : Set (Fin n → K)), j y ∈ Submodule.span ℂ ((G.image j : Finset W) : Set W)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem j (Finset.mem_coe.mp hx)))`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Establish `hGK : Submodule.span K (G : Set (Fin n → K)) = ⊤`. Rewrite using `[eq_top_iff, ← hN.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span ℤ (G : Set (Fin n → K))` using `by rw [hG]; exact hx`. Conclude with `Submodule.span_le_restrictScalars ℤ K _ hx'`.
+
+Establish `hspan : Submodule.span ℂ ((G.image j : Finset W) : Set W) = ⊤`. Rewrite using `[eq_top_iff, ← hsp, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `key _ (hGK ▸ Submodule.mem_top)`. Establish `hZ : ∀ x ∈ N, ∃ f : (Fin n → K) → ℤ, j x = ∑ g ∈ G, (f g : ℂ) • j g`.
+
+Introduce `x hx`. Establish `hx' : x ∈ Submodule.span ℤ (G : Set (Fin n → K))` using `by rw [hG]; exact hx`. Take `⟨f, -, hf⟩` from `Submodule.mem_span_finset.mp hx'`. Use `⟨f, ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, map_sum]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `hcomb : ∀ a : (Fin n → K) → K, ∑ g ∈ G, σ (a g) • j g = j (∑ g ∈ G, a g • g)` using `fun a => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => (LinearMap.map_smulₛₗ j (a g) g).symm`.
+
+Use `⟨⟨G.image j, hspan⟩, ⟨fun v hv => ?_, fun x => ⟨fun hx => ?_, fun ⟨c, hc⟩ => ?_⟩⟩, fun hint => ?_⟩` and prove the remaining obligations. Take `⟨g, -, rfl⟩` from `Finset.mem_image.mp hv`. Conclude with `⟨g, rfl⟩`. Take `⟨f, hf⟩` from `hZ x hx`. Use `⟨fun w => (f (Function.invFun j w) : 𝓞 K), ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `j x = ∑ v ∈ G.image j, σ ((f (Function.invFun j v) : 𝓞 K) : K) • v`. Rewrite using `[hsum, hf]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Function.leftInverse_invFun hj g]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `j x = ∑ v ∈ G.image j, σ (c v : K) • v at hc`. Rewrite `hc` using `[hsum, hcomb]`. Rewrite using `[hj hc]`. Use `Submodule.sum_mem _ fun g hg => ?_` and prove the remaining obligations. Establish `hm` using `N.smul_mem (c (j g)) (hGN g hg)`.
+
+Rewrite `hm` using `[← algebraMap_smul K (c (j g)) g]`. Then use the resulting hypothesis. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Set `a : (Fin n → K) → 𝓞 K` to `fun g => ⟨o (c (j g)), hint _⟩`.
+
+Use `⟨∑ g ∈ G, (a g : K) • g, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun g hg => ?_` and prove the remaining obligations. Establish `hm` using `N.smul_mem (a g) (hGN g hg)`. Rewrite `hm` using `[← algebraMap_smul K (a g) g]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `j (∑ g ∈ G, (a g : K) • g) = ∑ v ∈ G.image j, σ (o (c v)) • v`.
+
+Rewrite using `[hsum, ← hcomb]`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨f, hf⟩` from `hZ x hx`. Use `⟨fun w => (f (Function.invFun j w) : O), ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `j x = ∑ v ∈ G.image j, σ (o (f (Function.invFun j v) : O)) • v`. Rewrite using `[hsum, hf]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Function.leftInverse_invFun hj g]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_lat [NumberField K] {O : Type} [CommRing O] (o : O →+* K) (σ : K →+* ℂ) {W : Type} [AddCommGroup W]
     [Module ℂ W] (j : (Fin n → K) →ₛₗ[σ] W) (hj : Function.Injective j)
     (hsp : Submodule.span ℂ (Set.range fun i => j (Pi.single i 1)) = ⊤)
@@ -206,6 +268,9 @@ theorem exists_lat [NumberField K] {O : Type} [CommRing O] (o : O →+* K) (σ :
       rw [Function.leftInverse_invFun hj g]
       simp
 
+/- English proof (translation)
+Introduce `K O _ _ _ _ o σ n H N hσ hH hN`. Take `⟨S, T, h0, h1, h2⟩` from `exists_sqrt (H.map σ) hH`. Take `⟨M, hM, hcar⟩` from `exists_lat o σ (emb σ S) (emb_injective σ S T h1 h2) (emb_span σ S T h1 h2) N hN`. Conclude with `⟨emb σ S, M, act σ S T h1 h2, fun E => formsTie σ hσ H S T h0 h1 h2 E, hM, hcar⟩`.
+-/
 theorem exists_formsTie_oLatTie : ∀ (K O : Type) [Field K] [NumberField K] [StarRing K] [CommRing O] (o : O →+* K) (σ : K →+* ℂ) (n : ℕ) (H : Matrix (Fin n) (Fin n) K) (N : Submodule (𝓞 K) (Fin n → K)), (∀ x, σ (star x) = starRingEnd ℂ (σ x)) → (H.map σ).PosDef → Submodule.IsLattice K N → ∃ (j : (Fin n → K) →ₛₗ[σ] EuclideanSpace ℂ (Fin n)) (M : Rows.OLat O (σ.comp o) (EuclideanSpace ℂ (Fin n))) (ρ : Matrix (Fin n) (Fin n) K →+* Module.End ℂ (EuclideanSpace ℂ (Fin n))), (∀ E, FormsTie σ j H E (ρ E)) ∧ OLatTie σ M j N ∧ ((∀ y, IsIntegral ℤ (o y)) → (M.carrier : Set (EuclideanSpace ℂ (Fin n))) = j '' (N : Set (Fin n → K))) := by
   intro K O _ _ _ _ o σ n H N hσ hH hN
   obtain ⟨S, T, h0, h1, h2⟩ := exists_sqrt (H.map σ) hH

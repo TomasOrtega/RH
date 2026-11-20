@@ -10,6 +10,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace LiftSpread
 
+/- English proof (translation)
+Use `choose N hN1 hN using h`. Use `⟨∏ a, N a, Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun a _ => by` and prove the remaining obligations. Use `hN1 a` as an intermediate fact. Use the proof step `omega), fun a => ?_⟩`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem N (Finset.mem_univ a)`.
+
+Rewrite using `[hm, mul_comm]`. Conclude with `hQ a _ m (hN a)`.
+-/
 theorem exists_common {α : Type} [Fintype α] (Q : α → ℕ → Prop) (hQ : ∀ a n k, Q a n → Q a (k * n))
     (h : ∀ a, ∃ n, 1 ≤ n ∧ Q a n) : ∃ n, 1 ≤ n ∧ ∀ a, Q a n := by
   classical
@@ -24,6 +29,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_zpow_nsmul (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (t : ℕ) (a : K → ℤ) :
     ∏ k, y ⟨k, c k⟩ ^ (-(t • a) k) = ∏ _l : Fin t, ∏ k, y ⟨k, c k⟩ ^ (-a k) := by
   rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← Finset.prod_pow]
@@ -33,6 +43,11 @@ theorem prod_zpow_nsmul (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (t : ℕ) (a
   simp only [Pi.smul_apply, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `c hc`. Establish `hW : ∀ j, x j * ∏ k, y ⟨k, c k⟩ ^ (-a k) ∈ chartRingZ y c` using `fun j => by`. Establish `h` using `hx j c hc`. Simplify `h` using `only [Nat.cast_one, one_mul]`. Simplify using `only [Nat.cast_one, one_mul]`.
+
+Rewrite using `[prod_zpow_nsmul, ← Finset.prod_mul_distrib]`. Conclude with `Subalgebra.prod_mem _ fun l _ => hW (f l)`.
+-/
 theorem prod_mem_chartLat (y : (Σ k, ι k) → Ω) {σ : Type} (t : ℕ) (a : K → ℤ) (x : σ → Ω)
     (hx : ∀ j, x j ∈ chartLat y a 1) (f : Fin t → σ) : ∏ l, x (f l) ∈ chartLat y (t • a) 1 := by
   intro c hc
@@ -45,6 +60,27 @@ theorem prod_mem_chartLat (y : (Σ k, ι k) → Ω) {σ : Type} (t : ℕ) (a : K
 
 end LiftSpread
 
+/- English proof (translation)
+Introduce `K _ _ ι _ _ Ω _ _ y D N _ hA`. Take `⟨q, hq, hgen, -⟩` from `hA`. Take `⟨σ, _, s, hs, hrel⟩` from `GenRead.exists_sections_of_generatedV y hgen`. Take `⟨M, hM1, hM⟩` from `LiftSpread.exists_common (fun j n => (n : Ω) * s j ∈ chartLat y (q • N) 1) (fun j n k h => by`. Establish `e : ((k * n : ℕ) : Ω) * s j = k • ((n : Ω) * s j)`.
+
+Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `AddSubgroup.nsmul_mem _ h k)`.
+
+Use the proof step `(fun j => ChartDenominator.proof K ι Ω y (q • N) 1 (s j) (hs j))`. Establish `hrel' : ∀ c : ∀ k, ι k, ∃ v : σ → Ω, (∀ k, y ⟨k, c k⟩ ≠ 0) → (∀ j, v j ∈ chartRingQ y c) ∧ ∑ j, v j * (s j * ∏ k, y ⟨k, c k⟩ ^ (-(q • N) k)) = 1` using `fun c => by`. Distinguish the cases in `hc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Take `⟨v, hv⟩` from `hrel c hc`. Conclude with `⟨v, fun _ => hv⟩`.
+
+Conclude with `⟨0, fun h => absurd h hc⟩`. Use `choose v hv using hrel'`. Take `⟨Δ, hΔ1, hΔ⟩` from `LiftSpread.exists_common (α := (∀ k, ι k) × σ) (fun p n => (∀ k, y ⟨k, p.1 k⟩ ≠ 0) → (n : Ω) * v p.1 p.2 ∈ chartRingZ y p.1) (fun p n k h hc => by`. Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ k) (h hc))`.
+
+Use the proof step `(fun p => by`. Distinguish the cases in `hc : ∀ k, y ⟨k, p.1 k⟩ ≠ 0`. Take `⟨n, hn, h⟩` from `exists_nat_mul_mem_adjoin_int _ ((hv p.1 hc).1 p.2)`. Conclude with `⟨n, hn, fun _ => h⟩`. Conclude with `⟨1, le_rfl, fun h => absurd h hc⟩)`.
+
+Use `⟨q, Δ * M, 0, hq, Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega)), fun t _ => ?_⟩` and prove the remaining obligations. Set `e` to `Fintype.equivFin (Fin t → σ)`. Use `⟨Fintype.card (Fin t → σ), fun i => ∏ l, (M : Ω) * s (e.symm i l), fun i => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `LiftSpread.prod_mem_chartLat y t (q • N) _ hM (e.symm i)`.
+
+Use `⟨t, fun i => ∏ l, (Δ : Ω) * v c (e.symm i l), fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subalgebra.prod_mem _ fun l _ => hΔ (c, e.symm i l) hc`. Use `set w := ∏ k, y ⟨k, c k⟩ ^ (-(q • N) k) with hw`. Establish `hbase : ∑ j, (Δ : Ω) * v c j * ((M : Ω) * s j * w) = ((Δ * M : ℕ) : Ω)`. Establish `h1` using `(hv c hc).2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `_ = ((Δ * M : ℕ) : Ω) := by rw [h1]; push_cast; ring`. Rewrite using `[e.symm.sum_comp (fun f : Fin t → σ => (∏ l, (Δ : Ω) * v c (f l)) * ((∏ l, (M : Ω) * s (f l)) * ∏ k, y ⟨k, c k⟩ ^ (-((t * q) • N) k)))]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, LiftSpread.prod_zpow_nsmul, ← hw, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `_ = (∑ j, (Δ : Ω) * v c j * ((M : Ω) * s j * w)) ^ t := by`. Rewrite using `[Finset.sum_pow', Fintype.piFinset_univ]`.
+
+Use `_ = ((Δ * M : ℕ) : Ω) ^ t := by rw [hbase]`.
+-/
 theorem LiftSpread.proof : LiftSpread.Statement := by
   intro K _ _ ι _ _ Ω _ _ y D N _ hA
   classical

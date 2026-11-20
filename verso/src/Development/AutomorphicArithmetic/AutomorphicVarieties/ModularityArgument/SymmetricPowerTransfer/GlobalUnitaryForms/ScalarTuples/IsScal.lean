@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Establish `e : mt (y⁻¹ * j z * y) = mt y⁻¹ * mt (j z) * mt y` using `rfl`. Establish `e' : mt y * mt y⁻¹ = 1`. Express the relevant statement in the definitionally equal form `mt (y * y⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression.
+
+Establish `e1 : mt (j z) = 1 + mt γ` using `by rw [hj, hz]; simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Establish `h1` using `hγ.1`. Establish `h2` using `hγ.2`. Rewrite `h1` using `[Matrix.det_fin_two]`. Rewrite `h2` using `[Matrix.trace_fin_two]`.
+
+Establish `t1 : (mt (j z)).trace = algebraMap K _ (2 + τ)`. Rewrite using `[e1, Matrix.trace_fin_two, map_add, map_ofNat, ← h2]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `t2 : (mt (j z)).det = algebraMap K _ (2 + τ)`.
+
+Rewrite using `[e1, Matrix.det_fin_two, map_add, map_ofNat, ← h2]`. Simplify using the standard rewrite rules. Take the linear combination `h1`. Rewrite `h` using `[e, Matrix.trace_mul_cycle, e', one_mul, Matrix.det_mul, mul_comm _ (mt y).det, Matrix.det_mul, ← mul_assoc (mt y).det, ← Matrix.det_mul, e', Matrix.det_one, one_mul, t1, t2, ← map_pow, ← map_mul]`. Establish `h3` using `(algebraMap K (Lsq K Δ)).injective h`.
+
+Establish `h4 : 2 + τ ≠ 0` using `fun e => hr (by linear_combination (τ - 2) * e)`. Conclude with `mul_right_cancel₀ h4 (by linear_combination -h3)`.
+-/
 private theorem tau_eq {K : Type} [Field K] {Δ τ τ' : K} (hr : τ ^ 2 - 4 ≠ 0) {γ : DX Δ} {j} (hγ : HasTr γ τ) (hj : IsEmb τ γ j)
     {z : (Etau K τ)ˣ} (hz : (z : Etau K τ) = 1 + QuadraticAlgebra.omega) (y : DX Δ)
     (h : (mt (y⁻¹ * j z * y)).trace ^ 2 = algebraMap K _ (2 + τ') * (mt (y⁻¹ * j z * y)).det) : τ' = τ := by
@@ -25,6 +36,27 @@ private theorem tau_eq {K : Type} [Field K] {Δ τ τ' : K} (hr : τ ^ 2 - 4 ≠
   have h4 : 2 + τ ≠ 0 := fun e => hr (by linear_combination (τ - 2) * e)
   exact mul_right_cancel₀ h4 (by linear_combination -h3)
 
+/- English proof (translation)
+Introduce `F _ _ Δ D hD ι hι t ht τ hτ γ j hγ hj z hz`. Use `haveI := hD.real`. Establish `hr` using `cm_ne hτ`. Establish `htr : ∀ v, HasTr ((ι γ).1 v) (cv v τ)` using `fun v => hasTr_map _ (hι γ v) hγ`. Establish `f1 : ∀ v ∈ D.Sg, D.fKv t v = (D.S v).fK (t v)` using `fun v hv => funext fun g => if_pos hv`.
+
+Establish `f2 : ∀ v ∉ D.Sg, D.fKv t v = fZD (Ov v) (D.χ v)` using `fun v hv => funext fun g => if_neg hv`. Establish `J1 : ∀ v ∈ D.Sg, D.J2v v = (D.S v).J2` using `fun v hv => if_pos hv`. Establish `J2 : ∀ v ∉ D.Sg, D.J2v v = KD _ (Ov v)` using `fun v hv => if_neg hv`. Use `choose zv hzv using fun v => zEx (cv_reg hr v)`. Establish `ez : ∀ v jv, IsEmb (cv v τ) ((ι γ).1 v) jv → (ι (j z)).1 v = jv (zv v)` using `fun v jv hjv => dx_ext ((hι (j z) v).trans (emb_map _ (hι γ v) hj hjv z _ (by`.
+
+Apply the tactic sequence `rw [hzv, hz]; ext <;> simp [emap, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one])).symm)`. Establish `k1 : ∀ v ∉ D.Sg, ∀ k ∈ KD _ (Ov v), fZD (Ov v) (D.χ v) k = 1` using `fun v hv k hk => by`. Use `(Loc.fzdLaw _ _ _ (hD.off v hv) _ (hD.chi v).1).2 1 1 k (by simp [IsScal, mt]) hk` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hA : D.admitted t τ`.
+
+Rewrite using `[show one (D.admitted t τ) = 1 from if_pos hA, one_mul]`. Use `gqD D hD ι hι t ht τ hτ hA γ j hγ hj (j z) (D.fKv t) (fun v => ?_) _ _ fun v jv hjv => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ D.Sg`. Rewrite using `[f1 v hv, J1 v hv]`. Introduce `u hu x`.
+
+Rewrite using `[(((hD.sig v hv).K_inv _ (ht v hv)).1 u hu _).2, (((hD.sig v hv).K_inv _ (ht v hv)).1 _ (inv_mem hu) _).1]`. Rewrite using `[f2 v hv, J2 v hv]`. Conclude with `fZD_conj _ (hD.off v hv) _ (hD.chi v).1`. Rewrite using `[ez v jv hjv]`. Use `⟨fun s => by rw [← map_mul, ← map_mul, mul_comm], ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ D.Sg`. Rewrite using `[f1 v hv, J1 v hv]`. Take `⟨-, h1, -, h3, -⟩` from `(hD.sig v hv).D_orb _ (ht v hv) _ _ _ (cv_reg hr v) (htr v) hjv _ (hzv v)`. Conclude with `⟨h1, fun _ => by rw [h3, show one (Ind _ _ _) = 1 from if_pos (hA v hv), mul_one], fun h => absurd hv h⟩`. Rewrite using `[f2 v hv, J2 v hv]`.
+
+Use `⟨(Loc.finD _ _ _ _ (hD.off v hv) (cv_reg hr v) _ _ (htr v) hjv).2.1 _ (hzv v) _, fun h => absurd h hv, fun _ => ⟨(locD _ _ _ _ (hD.off v hv) (cv_reg hr v) _ _ (htr v) hjv _ (hD.chi v).1 _ (hzv v)).2, fun h1 h2 => ?_⟩⟩` and prove the remaining obligations. Take `⟨h3, h4⟩` from `(Loc.oneD _ _ _ _ (hD.off v hv) (cv_reg hr v) _ _ (htr v) hjv h1 h2).2.2 _ (hzv v)`. Use `⟨k1 v hv _ h3, fun y hy => h4 y ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy ((Loc.fzdLaw _ _ _ (hD.off v hv) _ (hD.chi v).1).1 _ h)`.
+
+Rewrite using `[show one (D.admitted t τ) = 0 from if_neg hA, zero_mul, mul_zero]`. Use `gqOn_zero _ _ _ _ fun y => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `not_forall.1 hA`. Take `⟨hv, hI⟩` from `Classical.not_imp.1 hv`. Use `fin_mulSupp (D.fKv t) D.Sg (fun v hv k hk => by rw [f2 v hv]; exact k1 v hv k hk) _ (v := v) ?_` and prove the remaining obligations.
+
+Rewrite using `[f1 v hv]`. Assume the negation of the conclusion as `h`. Use `haveI : CharZero (Kv v) := algebraRat.charZero _`. Take `⟨jv, hjv⟩` from `(embAlg (Kv v) _ _ ((map_ne_zero _).2 hD.ne0) (cv_reg hr v) _ (htr v)).1`. Establish `h' : (D.S v).fK (t v) ((y.out.1 v)⁻¹ * (ι (j z)).1 v * y.out.1 v) ≠ 0` using `h`.
+
+Rewrite `h'` using `[ez v jv hjv]`. Take `⟨τ', h1, h2⟩` from `(hD.sig v hv).K_supp _ (ht v hv) _ h'`. Conclude with `hI (tau_eq (cv_reg hr v) (htr v) hjv (hzv v) _ h2 ▸ h1)`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.gqK :
     UpperTheory.V.Z.Sym.Glob.GqK := by
   classical

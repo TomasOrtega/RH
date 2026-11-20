@@ -12,12 +12,18 @@ section Integral
 
 variable {K : Type*} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integralMv_one {σ : Type*} : IntegralMv (1 : MvPowerSeries σ K) := by
   classical
   intro d
   rw [MvPowerSeries.coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (hg _)`.
+-/
 theorem integralMv_mul {σ : Type*} {f g : MvPowerSeries σ K} (hf : IntegralMv f)
     (hg : IntegralMv g) : IntegralMv (f * g) := by
   classical
@@ -27,18 +33,27 @@ theorem integralMv_mul {σ : Type*} {f g : MvPowerSeries σ K} (hf : IntegralMv 
   rw [norm_mul]
   exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (integralMv_one (K := K) (σ := σ))`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `integralMv_mul ih hf`.
+-/
 theorem integralMv_pow {σ : Type*} {f : MvPowerSeries σ K} (hf : IntegralMv f) (n : ℕ) :
     IntegralMv (f ^ n) := by
   induction n with
   | zero => simpa using (integralMv_one (K := K) (σ := σ))
   | succ n ih => rw [pow_succ]; exact integralMv_mul ih hf
 
+/- English proof (translation)
+Distinguish the cases in `hs : (Function.support f).Finite`. Rewrite using `[finsum_eq_sum f hs]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun i _ => h i)`. Rewrite using `[finsum_of_infinite_support hs]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_finsum_le_one {f : ℕ → K} (h : ∀ n, ‖f n‖ ≤ 1) : ‖∑ᶠ n, f n‖ ≤ 1 := by
   by_cases hs : (Function.support f).Finite
   · rw [finsum_eq_sum f hs]
     exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun i _ => h i)
   · rw [finsum_of_infinite_support hs]; simp
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[PowerSeries.coeff_subst (HasSubst.of_constantCoeff_zero hf0)]`. Use `norm_finsum_le_one (fun n => ?_)` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ (ha n) (norm_nonneg _) (integralMv_pow hf n d)`.
+-/
 theorem integralMv_subst {σ : Type*} {a : PowerSeries K} (ha : IntegralPS a)
     {f : MvPowerSeries σ K} (hf0 : MvPowerSeries.constantCoeff f = 0) (hf : IntegralMv f) :
     IntegralMv (a.subst f) := by
@@ -57,6 +72,11 @@ variable {K : Type*} [Field K] [CharZero K]
 def geometricSignedSeries (K : Type*) [Field K] [CharZero K] : PowerSeries K :=
   mk fun n => algebraMap ℚ K ((-1 : ℚ) ^ n)
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[mul_add, mul_one, map_add, mul_comm]`. Break down `n with _ | m` into its components or cases. Simplify using `[geometricSignedSeries]`. Rewrite using `[coeff_succ_X_mul]`.
+
+Simplify using `only [geometricSignedSeries, coeff_mk, coeff_one]`. Rewrite using `[← map_add]`. Establish `: ((-1 : ℚ) ^ (m + 1) + (-1) ^ m) = 0` using `by ring`. Simplify using `[this]`.
+-/
 theorem geomAlt_mul : geometricSignedSeries K * (1 + X) = 1 := by
   ext n
   rw [mul_add, mul_one, map_add, mul_comm]
@@ -68,6 +88,17 @@ theorem geomAlt_mul : geometricSignedSeries K * (1 + X) = 1 := by
     have : ((-1 : ℚ) ^ (m + 1) + (-1) ^ m) = 0 := by ring
     simp [this]
 
+/- English proof (translation)
+Establish `h0 : constantCoeff (B - 1) = 0` using `by simp [hB0]`. Establish `hS : HasSubst (B - 1)` using `HasSubst.of_constantCoeff_zero' h0`. Establish `hone : (1 + X : PowerSeries K).subst (B - 1) = B`. Rewrite using `[subst_add hS, subst_X hS, ← coe_substAlgHom hS, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hGB : (geometricSignedSeries K).subst (B - 1) * B = 1`. Establish `hm` using `subst_mul hS (geometricSignedSeries K) (1 + X)`. Rewrite `hm` using `[geomAlt_mul, hone, ← coe_substAlgHom hS, map_one]`. Rewrite using `[← coe_substAlgHom hS, ← hm]`. Establish `hD : derivative K ((log K).subst (B - 1)) = derivative K (c • log K)`.
+
+Establish `hX : (1 + X : PowerSeries K) ≠ 0`. Introduce `h`. Use `congrArg constantCoeff h` as an intermediate fact. Simplify using `at this`. Use `mul_right_cancel₀ hX ?_` and prove the remaining obligations.
+
+Rewrite using `[derivative_subst hS, deriv_log, Derivation.map_smul, deriv_log]`. Express the relevant statement in the definitionally equal form `(geometricSignedSeries K).subst (B - 1) * derivative K (B - 1) * (1 + X) = c • geometricSignedSeries K * (1 + X)`. Rewrite using `[map_sub, derivative_one, sub_zero, mul_assoc, mul_comm (derivative K B), hBd, mul_smul_comm, hGB, smul_mul_assoc, geomAlt_mul]`. Use `derivative.ext hD ?_` and prove the remaining obligations. Rewrite using `[show constantCoeff (c • log K) = 0 by simp]`.
+
+Conclude with `constantCoeff_subst_eq_zero h0 _ constantCoeff_log`.
+-/
 theorem log_subst_eq_smul (c : K) (B : PowerSeries K) (hB0 : constantCoeff B = 1)
     (hBd : (1 + X) * derivative K B = c • B) :
     (log K).subst (B - 1) = c • log K := by
@@ -104,6 +135,9 @@ def phi : ℤ_[p] →+* K := (algebraMap ℚ_[p] K).comp PadicInt.Coe.ringHom
 
 def bser (b : ℤ_[p]) : PowerSeries K := mk fun n => phi p K (Ring.choose b n)
 
+/- English proof (translation)
+Establish `h` using `Ring.choose_smul_choose b (Nat.le_succ n)`. Rewrite `h` using `[Nat.choose_succ_self_right, show n.succ - n = 1 by omega, Ring.choose_one_right, nsmul_eq_mul]`. Rewrite using `[mul_comm (b - (n : ℤ_[p]))]`. Conclude with `h`.
+-/
 theorem choose_rec (b : ℤ_[p]) (n : ℕ) :
     ((n + 1 : ℕ) : ℤ_[p]) * Ring.choose b (n + 1) = (b - n) * Ring.choose b n := by
   have h := Ring.choose_smul_choose b (Nat.le_succ n)
@@ -112,9 +146,19 @@ theorem choose_rec (b : ℤ_[p]) (n : ℕ) :
   rw [mul_comm (b - (n : ℤ_[p]))]
   exact h
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, bser, coeff_mk, Ring.choose_zero_right, map_one]`.
+-/
 theorem bser_constantCoeff (b : ℤ_[p]) : constantCoeff (bser p K b) = 1 := by
   rw [← coeff_zero_eq_constantCoeff_apply, bser, coeff_mk, Ring.choose_zero_right, map_one]
 
+/- English proof (translation)
+Use extensionality with `n`. Establish `hr` using `congrArg (phi p K) (choose_rec p b n)`. Simplify using `only [map_mul, map_sub, map_natCast] at hr`. Rewrite using `[add_mul, one_mul, map_add, coeff_derivative, coeff_smul]`. Break down `n with _ | m` into its components or cases.
+
+Simplify using `only [bser, coeff_mk, coeff_zero_X_mul, smul_eq_mul] at hr ⊢`. Move the coercions through the operations in `at hr ⊢`. Take the linear combination `hr`. Rewrite using `[coeff_succ_X_mul, coeff_derivative]`. Simplify using `only [bser, coeff_mk, smul_eq_mul] at hr ⊢`.
+
+Move the coercions through the operations in `at hr ⊢`. Take the linear combination `hr`.
+-/
 theorem bser_deriv (b : ℤ_[p]) :
     (1 + X) * derivative K (bser p K b) = phi p K b • bser p K b := by
   ext n
@@ -130,10 +174,18 @@ theorem bser_deriv (b : ℤ_[p]) :
     push_cast at hr ⊢
     linear_combination hr
 
+/- English proof (translation)
+Rewrite using `[phi, RingHom.comp_apply, norm_algebraMap']`. Conclude with `PadicInt.norm_le_one z`.
+-/
 theorem norm_phi_le (z : ℤ_[p]) : ‖phi p K z‖ ≤ 1 := by
   rw [phi, RingHom.comp_apply, norm_algebraMap']
   exact PadicInt.norm_le_one z
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_sub, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[bser, coeff_mk]`. Conclude with `norm_phi_le p K _`.
+
+Apply the tactic sequence `rw [norm_neg, coeff_one]; split_ifs <;> simp`.
+-/
 theorem integralPS_bser_sub_one [IsUltrametricDist K] (b : ℤ_[p]) :
     IntegralPS (bser p K b - 1) := by
   intro n
@@ -147,6 +199,11 @@ end Binom
 end PadicLogarithmSubstitution
 
 open PadicLogarithmSubstitution in
+/- English proof (translation)
+Introduce `p _ K _ _ _ _ σ G hG b`. Take `⟨f, hf0, hfi, rfl⟩` from `hG`. Establish `hB0` using `bser_constantCoeff p K b`. Establish `h0 : constantCoeff (bser p K b - 1) = 0` using `by simp [hB0]`. Establish `hS : HasSubst (bser p K b - 1)` using `HasSubst.of_constantCoeff_zero' h0`.
+
+Establish `hf : HasSubst f` using `HasSubst.of_constantCoeff_zero hf0`. Establish `hc : algebraMap ℚ_[p] K (b : ℚ_[p]) = phi p K b` using `rfl`. Use `⟨(bser p K b - 1).subst f, constantCoeff_subst_eq_zero hf0 _ h0, integralMv_subst (integralPS_bser_sub_one p K b) hf0 hfi, ?_⟩` and prove the remaining obligations. Unfold `logOnePlus`. Rewrite using `[← subst_comp_subst_apply hS hf, log_subst_eq_smul _ _ hB0 (bser_deriv p K b), subst_smul hf, hc]`.
+-/
 theorem N_padic_integer_smul : Formalism.ELL.NZpSmul := by
   intro p _ K _ _ _ _ σ G hG b
   obtain ⟨f, hf0, hfi, rfl⟩ := hG

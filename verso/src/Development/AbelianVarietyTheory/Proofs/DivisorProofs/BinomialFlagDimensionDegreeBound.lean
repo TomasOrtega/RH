@@ -50,6 +50,13 @@ section Weights
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Use `⟨fun τ => ?_, fun τ => h τ _ (by omega)⟩` and prove the remaining obligations. Establish `key : ∀ (n : ℕ) (a b : Fin (Dw.p + Dw.q)), (b : ℕ) = a + n → la τ b ≤ la τ a`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a b e`.
+
+Rewrite using `[show b = a from Fin.ext e]`. Consider the case `succ n ih`. Introduce `a b e`. Establish `hb` using `b.2`. Establish `h1` using `ih a ⟨a + n, by omega⟩ rfl`.
+
+Establish `h2` using `h τ (a + n) (by omega)`. Rewrite `h2` using `[gap_eq (la τ) (i := ⟨a + n, by omega⟩) (j := b) e]`. Use linear arithmetic over natural numbers and integers. Introduce `a b hab`. Conclude with `key (b - a) a b (by have : (a : ℕ) ≤ b := hab; omega)`.
+-/
 theorem antitone_of_gapGe (hp : 1 ≤ Dw.p) (hq : 1 ≤ Dw.q) {la : AllWt.Weight Dw} (h : GapGe 1 la) :
     (∀ τ, Antitone (la τ)) ∧ ∀ τ, 1 ≤ gap (la τ) (Dw.p - 1) := by
   refine ⟨fun τ => ?_, fun τ => h τ _ (by omega)⟩
@@ -67,6 +74,15 @@ theorem antitone_of_gapGe (hp : 1 ≤ Dw.p) (hq : 1 ≤ Dw.q) {la : AllWt.Weight
   intro a b hab
   exact key (b - a) a b (by have : (a : ℕ) ≤ b := hab; omega)
 
+/- English proof (translation)
+Establish `h3 : GapGe 3 P.u₁` using `h.gaps.mono (by`. Establish `: 3 * 1 ≤ (FlagTan.dimFlag Dw + 3) * ((FlagTan.dimFlag Dw + 1).choose 2 + 4 * (Dw.p + Dw.q) + FlagTan.dimFlag Dw + 3)` using `Nat.mul_le_mul (by omega) (by omega)`. Conclude with `this)` after adjusting the coercions. Establish `h2 : ∀ τ k, k + 1 < Dw.p + Dw.q → 3 ≤ gap (P.u₂ τ) k` using `fun τ k hk => by`. Establish `a` using `h3 τ k hk`.
+
+Establish `b` using `(P.gap_rem τ k).1`. Simplify using `only [gap, dif_pos hk, WtPar.u₂, Pi.add_apply] at a b ⊢`. Use linear arithmetic over natural numbers and integers. Use `⟨h3.mono (by norm_num), fun τ k hk => le_trans (by norm_num) (h2 τ k hk), fun j τ k hk => ?_⟩` and prove the remaining obligations. Establish `a` using `h3 τ k hk`.
+
+Establish `b` using `h2 τ k hk`. Establish `c : -2 ≤ gap (FlagTan.kap Dw τ) k`. Simplify using `only [gap, dif_pos hk, FlagTan.kap]`. Apply the tactic sequence `split_ifs <;> push_cast <;> omega`. Simplify using `only [gap, dif_pos hk, WtPar.wt, WtPar.uc, Pi.add_apply, Pi.smul_apply] at a b c ⊢`.
+
+Simplify using `only [nsmul_eq_mul]`. Establish `e1` using `mul_nonneg (Int.natCast_nonneg (FlagTan.dimFlag Dw)) (le_trans (by norm_num) a)`. Establish `e2` using `mul_nonneg (Int.natCast_nonneg j) (le_trans (by norm_num) a)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem gapGe_of_wtBig {P : WtPar Dw} (h : WtBig P) : GapGe 1 P.u₁ ∧ GapGe 1 P.u₂ ∧ ∀ j, GapGe 1 (P.wt j) := by
   have h3 : GapGe 3 P.u₁ := h.gaps.mono (by
     have : 3 * 1 ≤ (FlagTan.dimFlag Dw + 3) * ((FlagTan.dimFlag Dw + 1).choose 2 + 4 * (Dw.p + Dw.q) + FlagTan.dimFlag Dw + 3) :=
@@ -91,12 +107,22 @@ theorem gapGe_of_wtBig {P : WtPar Dw} (h : WtBig P) : GapGe 1 P.u₁ ∧ GapGe 1
 
 end Weights
 
+/- English proof (translation)
+The claim follows from `Closed.imp (Closed.and h h') fun _ _ _ ⟨⟨C, _, a⟩, C', _, b⟩ => ⟨0, le_rfl, (a.and b).imp fun _ h x hx hle ι p hp i => ⟨⟨C, (h x hx hle ι p hp).1 i⟩, C', (h x hx hle ι p hp).2 i⟩⟩`.
+-/
 theorem lifts_and {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
     (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop} (h : Lifts Q) (h' : Lifts Q') :
     Lifts fun Fm x hx ι p i PP _ => (∃ C, Q Fm x hx ι p i PP C) ∧ ∃ C, Q' Fm x hx ι p i PP C :=
   Closed.imp (Closed.and h h') fun _ _ _ ⟨⟨C, _, a⟩, C', _, b⟩ => ⟨0, le_rfl, (a.and b).imp fun _ h x hx hle ι p hp i =>
     ⟨⟨C, (h x hx hle ι p hp).1 i⟩, C', (h x hx hle ι p hp).2 i⟩⟩
 
+/- English proof (translation)
+Establish `hP1` using `GlobalTheory.T.stronger_published_hypotheses_imply hP`. Take `⟨g1, g2, g3⟩` from `gapGe_of_wtBig hB`. Establish `good : ∀ la, GapGe 1 la → _` using `fun la h => GlobalTheory.T.good_weight_antitone_gap hP D T hT j hp hq hf hj Y e o hY la (antitone_of_gapGe hp hq h).1 (antitone_of_gapGe hp hq h).2`. Take `⟨TF, R, ω, h⟩` from `GlobalTheory.T.deep_model_weight_section hP1 hG hQ hP.q15 hP.q16 hSi hFa hSA D T.toCore j Y e o hY hf Z P hB fun i _ => (good _ (g3 i)).1`. Take `⟨f₁⟩` from `nonempty_cuspFrame ((good _ g1).2 Z)`.
+
+Take `⟨f₂⟩` from `nonempty_cuspFrame ((good _ g2).2 Z)`. Set `k : CompHS.Consts` to `⟨1, 1, 1, 1, 1, le_rfl, le_rfl, le_rfl⟩`. Set `th : R.L.Sec` to `GlobalTheory.CompHS.toSec (R.Δ₁.lift 0)`. Take `⟨a1, a2⟩` from `GlobalTheory.T.choice_free_section_construction hP1 hP.q7 hSi hFa hSA _ _ _ _ _ _ TF Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k hY.geo hB`. Establish `a3` using `birational_of_ratGen TF.X Z Y.U P R ω _ _ _ h f₁ f₂ th k (ratGen_of_birOn TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hbir)`.
+
+Conclude with `GlobalTheory.HSCore.CompShare.choose_mul_compDeg_le hQ _ _ _ _ _ _ _ _ Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k a1 a2 a3`.
+-/
 theorem lower (hP : Hypotheses2) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : GlobalTheory.HSCore.Quoted)
     (hSi : GlobalTheory.Published.SiegelToroidalIntegral) (hFa : GlobalTheory.Published.ToroidalChartsForFan) (hSA : GlobalTheory.Published.SemiAbelianLieSeminegative) {D : D7} {T : CoreJ D}
     (hT : LawsJ T) {j : ℕ} (hp : 1 ≤ (T.Q.Dw j).p) (hq : 1 ≤ (T.Q.Dw j).q) (hf : 2 < Module.finrank ℚ D.host.E / 2)
@@ -119,6 +145,13 @@ theorem lower (hP : Hypotheses2) (hG : GlobalTheory.Published.GrothendieckDeform
     (ratGen_of_birOn TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hbir)
   exact GlobalTheory.HSCore.CompShare.choose_mul_compDeg_le hQ _ _ _ _ _ _ _ _ Z _ Y.U P R ω _ D _ _ h f₁ f₂ th k a1 a2 a3
 
+/- English proof (translation)
+Introduce `hX hP hG hQ hSi hKS hSA _ hS _`. Establish `hFa` using `hKS.toroidalChartsForFan`. Establish `h4` using `GlobalTheory.T.size_bounds_for_family hS`. Establish `h5` using `GlobalTheory.T.birational_on_weight_parameters hX hG hQ hSi hP hS`. Unfold `Covers at h4 h5`.
+
+Establish `all` using `lifts_and (lifts_and (GlobalTheory.T.weight_parameter_strict_antitone hS) wtBig_run) (lifts_and h4 h5)`. Use `clear h4 h5`. Use `Closed.imp all fun Fm _ _ ⟨C, hC, x0, h⟩ => ⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY Z => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, ⟨_, hq⟩, _, hB⟩, _, ⟨_, hz⟩, _, hb⟩` from `h x hx hle ι p hp i`. Take `⟨hp1, hq1, hf, -⟩` from `hq hi`.
+
+Take `⟨hT, hj, -⟩` from `hz hi Y hY`. Conclude with `lower hP hG hQ hSi hFa hSA hT hp1 hq1 hf hj Y hY.1 _ (hB hi) Z (hb hi Y hY Z).1`.
+-/
 theorem choose_mul_compDeg_le : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg →
     Covers fun Fm x _ ι p i Y PP _ => ∀ Z, (lenT p i PP - 1).choose (GlobalTheory.CompHt.dimFlag (dat p i)) *

@@ -15,6 +15,25 @@ open Formalism.L2.SG.Full
 
 variable {D : D7} {X : HidaSetting D} (Y : Full X)
 
+/- English proof (translation)
+Establish `hst : Formalism.L2.SG.ColsDim.StabTriv (iotaF X u) (Ku X u Y.hK)` using `hN`. Set `cls : (Y.cs u).Cl → Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u Y.hK)` to `fun ρ => DoubleCoset.mk (iotaF X u).range (Ku X u Y.hK) ((Y.cs u).h ρ)`. Establish `hcls : Function.Bijective cls`. Use `⟨fun ρ ρ' h => ?_, fun c => ?_⟩` and prove the remaining obligations. Take `⟨a, ⟨γ, rfl⟩, κ, hκ, hab⟩` from `(DoubleCoset.eq _ _ _ _).1 h`.
+
+Take `⟨ρ0, _, huniq⟩` from `Y.colReps u ((Y.cs u).h ρ')`. Establish `h1` using `huniq ρ ⟨γ, ⟨κ, hκ⟩, hab⟩`. Establish `h2` using `huniq ρ' ⟨1, 1, by simp⟩`. Conclude with `h1.trans h2.symm`. Proceed by induction on `c using Quotient.inductionOn' with`.
+
+Consider the case `h g`. Take `⟨ρ, ⟨γ, κ, hg⟩, _⟩` from `Y.colReps u g`. Use `⟨ρ, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk _ _ _ = DoubleCoset.mk _ _ g`. Rewrite using `[DoubleCoset.eq]`.
+
+Conclude with `⟨iotaF X u γ, ⟨γ, rfl⟩, κ, κ.2, hg⟩`. Set `ec` to `Equiv.ofBijective cls hcls`. Set `s : Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u Y.hK) → Hfin X u` to `fun c => (Y.cs u).h (ec.symm c)`. Establish `hs : ∀ c, DoubleCoset.mk (iotaF X u).range (Ku X u Y.hK) (s c) = c` using `fun c => ec.apply_symm_apply c`. Take `⟨e, he⟩` from `Formalism.L2.SG.ColsDim.columns_decomposition (Gam X u) (Hinf X u) (Hfin X u) ℂ (X.Vpi u) (iotaI X u) (iotaF X u) (Ku X u Y.hK) (psiK X u Y.hK) (piRep X u) s hs hst`.
+
+Establish `key : ∀ T ρ, (sharp Y.hK (Y.cs u) T) ρ = (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap (e T (cls ρ)))`. Introduce `T ρ`. Establish `hsρ : s (cls ρ) = (Y.cs u).h ρ` using `by show (Y.cs u).h (ec.symm (ec ρ)) = _`. Rewrite using `[ec.symm_apply_apply]`. Use `show (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap ((LinearMap.proj ((1 : Hinf X u), (Y.cs u).h ρ)).comp T.1)) = _`.
+
+Use `congr 2`. Use `LinearMap.ext fun ξ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (he T (cls ρ) ξ).symm` and prove the remaining obligations. Rewrite using `[hsρ]`. Both sides reduce to the same expression.
+
+Use `⟨fun T T' h => ?_, fun x => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Take `⟨ρ, rfl⟩` from `hcls.2 c`. Establish `h1 : (sharp Y.hK (Y.cs u) T) ρ = (sharp Y.hK (Y.cs u) T') ρ` using `by rw [h]`.
+
+Rewrite `h1` using `[key T ρ, key T' ρ]`. Conclude with `LinearMap.toContinuousLinearMap.injective ((InnerProductSpace.toDual ℂ (X.Vpi u)).symm.injective h1)`. Set `d : Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u Y.hK) → Module.Dual ℂ (X.Vpi u)` to `fun c => LinearMap.toContinuousLinearMap.symm (InnerProductSpace.toDual ℂ (X.Vpi u) (x (ec.symm c)))`. Use `⟨e.symm d, ?_⟩` and prove the remaining obligations. Use extensionality with `ρ`.
+
+Use `(key (e.symm d) ρ).trans ?_` and prove the remaining obligations. Rewrite using `[e.apply_symm_apply]`. Use `show (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap (LinearMap.toContinuousLinearMap.symm (InnerProductSpace.toDual ℂ (X.Vpi u) (x (ec.symm (ec ρ)))))) = x ρ`. Rewrite using `[LinearEquiv.apply_symm_apply, LinearIsometryEquiv.symm_apply_apply, ec.symm_apply_apply]`.
+-/
 theorem sharp_bij_of_neat (u : D.what₂.Word) (hN : Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u Y.hK) :
     Function.Bijective (sharp Y.hK (Y.cs u)) := by
   have hst : Formalism.L2.SG.ColsDim.StabTriv (iotaF X u) (Ku X u Y.hK) := hN
@@ -69,6 +88,9 @@ theorem sharp_bij_of_neat (u : D.what₂.Word) (hN : Formalism.L2.SG.PoincareInH
       (LinearMap.toContinuousLinearMap.symm (InnerProductSpace.toDual ℂ (X.Vpi u) (x (ec.symm (ec ρ)))))) = x ρ
     rw [LinearEquiv.apply_symm_apply, LinearIsometryEquiv.symm_apply_apply, ec.symm_apply_apply]
 
+/- English proof (translation)
+The claim follows from `(sharp_bij_of_neat Y u (hN u)).1 shSurj u := (sharp_bij_of_neat Y u (hN u)).2 inHH := hin puLin u := Formalism.L2.SG.PoincareInHH.Cut.puLinear_holds X u Y.hK (Y.Dt u) finHH := hfin fibFin := hfib pairIndep := hpi Greal := hG cdEx n ε := cd_haar_scaling D.cd n ε volPos u := hvol D …`.
+-/
 theorem finX_of_neat (hN : ∀ u, Formalism.L2.SG.PoincareInHH.Cut.NeatKu X u Y.hK) (hin : ∀ u, InHH X u Y.hK) (hfin : FiniteDimensional ℂ (HHX X))
     (hfib : ∀ u u' (t : RT Y u u'), Finite (fib Y t))
     (hpi : ∀ u u' (s₁ s₂ s₁' s₂' : TT Y u u'), s₁.toTerm = s₁'.toTerm → s₂.toTerm = s₂'.toTerm →

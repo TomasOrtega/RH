@@ -14,11 +14,27 @@ namespace GlobalTheory.ChainOnto.LevelWithP
 
 variable {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Unfold `Lev.levChi`. Rewrite using `[Lev.levFn_withP, extendOne_of_mem _ hp, Units.val_mul]`.
+-/
 theorem levelCharacter_withLevel_of_mem {P : LevelP L.Pg L.r ℂ} {κ : GA D V} (hp : rTup β L (Lev.finE V κ) ∈ P.H) :
     Lev.levChi V β (Lev.withP L P) κ = ((P.chi ⟨_, hp⟩ : ℂˣ) : ℂ) * Lev.levChi V β (Lev.flagL L) κ := by
   unfold Lev.levChi
   rw [Lev.levFn_withP, extendOne_of_mem _ hp, Units.val_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun κ hκ g => ?_, fun p κ hκ g => ?_⟩` and prove the remaining obligations. Establish `h1 : rTup β L (Lev.finE V κ) = 1` using `Subgroup.mem_bot.1 hκ.2.2`. Establish `hp : rTup β L (Lev.finE V κ) ∈ P.H` using `by rw [h1]; exact P.H.one_mem`.
+
+Establish `hw : κ ∈ Lev.levG V β (Lev.withP L P)` using `⟨hκ.1, hκ.2.1, hp⟩`. Rewrite using `[h κ hw g]`. Use `congr 1`. Rewrite using `[levelCharacter_withLevel_of_mem hp]`. Establish `e : (⟨_, hp⟩ : P.H) = 1` using `Subtype.ext h1`.
+
+Rewrite using `[e, map_one, Units.val_one, one_mul]`. Unfold `Lev.levChi`. Rewrite using `[Lev.levFn_flag1]`. Establish `hp : rTup β L (Lev.finE V κ) ∈ P.H` using `by rw [hκ.2.2]; exact p.2`. Establish `hw : κ ∈ Lev.levG V β (Lev.withP L P)` using `⟨hκ.1, hκ.2.1, hp⟩`.
+
+Establish `hne` using `Lev.levChi_ne_zero (β := β) (Lev.flagL L) κ`. Rewrite using `[h κ hw g, levelCharacter_withLevel_of_mem hp]`. Establish `e : (⟨_, hp⟩ : P.H) = p` using `Subtype.ext hκ.2.2`. Rewrite using `[e, inv_mul_eq_iff_eq_mul₀ hne]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨-, h⟩ κ hκ g`. Establish `hp : rTup β L (Lev.finE V κ) ∈ P.H` using `hκ.2.2`. Establish `hl : Lev.IsLevelLift V β L (⟨_, hp⟩ : P.H).1 κ` using `⟨hκ.1, hκ.2.1, rfl⟩`. Establish `key` using `h ⟨_, hp⟩ κ hl g`. Establish `hne` using `Lev.levChi_ne_zero (β := β) (Lev.flagL L) κ`.
+
+Rewrite `key` using `[inv_mul_eq_iff_eq_mul₀ hne]`. Rewrite using `[key, levelCharacter_withLevel_of_mem hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasType_withCharacter_iff (P : LevelP L.Pg L.r ℂ) (F : GA D V → ℂ) :
     Lev.HasType V β (Lev.withP L P) F ↔ Lev.HasType V β (Lev.flag1L L) F ∧
       ∀ (p : P.H) κ, Lev.IsLevelLift V β L p.1 κ → ∀ g,
@@ -56,6 +72,15 @@ end GlobalTheory.ChainOnto.LevelWithP
 
 open GlobalTheory.ChainOnto.LevelWithP in
 
+/- English proof (translation)
+Introduce `D θ V S M β L P T`. Rewrite using `[mem_multT, mem_multT, GlobalTheory.MultMem.mem_mult_iff, GlobalTheory.MultMem.mem_mult_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hT : ∀ v, Lev.HasType V β (Lev.withP L P) (PiTensorProduct.lift.symm T v)` using `fun v κ hκ g => h.lev v κ hκ g`.
+
+Use `⟨⟨h.aut, h.cusp, fun v κ hκ g => ((hasType_withCharacter_iff P _).1 (hT v)).1 κ hκ g, h.equiv, h.cont⟩, ?_⟩` and prove the remaining obligations. Introduce `p κ hκ w g`. Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Establish `key : (Lev.levChi V β (Lev.flagL L) κ)⁻¹ * T (PiTensorProduct.tprod ℂ v) (g * κ) = ((P.chi p : ℂˣ) : ℂ) * T (PiTensorProduct.tprod ℂ v) g` using `((hasType_withCharacter_iff P _).1 (hT v)).2 p κ hκ g`.
+
+Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `r * key`. Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply]`. Take the linear combination `hx + hy`.
+
+Introduce and unpack `⟨h, hP⟩`. Use `⟨h.aut, h.cusp, fun v κ hκ g => ?_, h.equiv, h.cont⟩` and prove the remaining obligations. Use `(hasType_withCharacter_iff P _).2 ⟨fun κ hκ g => h.lev v κ hκ g, fun p κ' hκ' g' => ?_⟩ κ hκ g` and prove the remaining obligations. Conclude with `hP p κ' hκ' _ g'`.
+-/
 theorem GlobalTheory.ChainOnto.LevelWithP.mem_multT_withP_iff : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) (P : LevelP L.Pg L.r ℂ) (T : SmT M →ₗ[ℂ] (GA D V → ℂ)), T ∈ MultT θ M (levS V β (Lev.withP L P)) (Lev.levChi V β (Lev.withP L P)) ↔ T ∈ MultT θ M (levS V β (Lev.flag1L L)) (Lev.levChi V β (Lev.flag1L L)) ∧ ∀ (p : P.H) κ, Lev.IsLevelLift V β L p.1 κ → ∀ w g, (Lev.levChi V β (Lev.flagL L) κ)⁻¹ * T w (g * κ) = ((P.chi p : ℂˣ) : ℂ) * T w g := by
   intro D θ V S M β L P T
   rw [mem_multT, mem_multT, GlobalTheory.MultMem.mem_mult_iff, GlobalTheory.MultMem.mem_mult_iff]

@@ -23,6 +23,15 @@ private noncomputable def gbEquiv (k : Type) [Field k] (j : ℤ) :
     show (if h : wt a b = j then f ⟨(a, b), h⟩ else 0) = _
     rw [dif_pos h]
 
+/- English proof (translation)
+Break down `(show j ≤ -3 ∨ j = -2 ∨ j = -1 ∨ j = 0 ∨ j = 1 ∨ j = 2 ∨ 3 ≤ j by omega) with h | rfl | rfl | rfl | rfl | rfl | h` into its components or cases. Rewrite using `[show (3 - |j|).toNat = 0 by rw [abs_of_neg (by omega)]; omega]`. Rewrite using `[Fintype.card_eq_zero_iff]`. Use `⟨fun ⟨⟨a, b⟩, hp⟩ => ?_⟩` and prove the remaining obligations. Simplify using `only [wt, wt1] at hp`.
+
+Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Evaluate the decidable proposition. Evaluate the decidable proposition.
+
+Evaluate the decidable proposition. Evaluate the decidable proposition. Evaluate the decidable proposition. Rewrite using `[show (3 - |j|).toNat = 0 by rw [abs_of_pos (by omega)]; omega]`. Rewrite using `[Fintype.card_eq_zero_iff]`.
+
+Use `⟨fun ⟨⟨a, b⟩, hp⟩ => ?_⟩` and prove the remaining obligations. Simplify using `only [wt, wt1] at hp`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem card_wt (j : ℤ) : Fintype.card {p : Fin 3 × Fin 3 // wt p.1 p.2 = j} = (3 - |j|).toNat := by
   rcases (show j ≤ -3 ∨ j = -2 ∨ j = -1 ∨ j = 0 ∨ j = 1 ∨ j = 2 ∨ 3 ≤ j by omega)
     with h | rfl | rfl | rfl | rfl | rfl | h
@@ -46,6 +55,13 @@ private theorem card_wt (j : ℤ) : Fintype.card {p : Fin 3 × Fin 3 // wt p.1 p
     have := b.isLt
     omega
 
+/- English proof (translation)
+Establish `hne : η c ≠ 1` using `by rw [hη]; decide`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Establish `h1` using `congrArg (fun Y : Gb k j => Y.val a b) h`.
+
+Simplify using `only [gRep_val, adRep_baseLift_apply, hΨ, _root_.one_zpow, Units.val_one, one_mul, if_neg hne] at h1`. Conclude with `h1.symm`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`.
+
+Use `show ((gRep η Ψ j c) X).val a b = X.val a b`. Rewrite using `[gRep_val, adRep_baseLift_apply, hΨ, _root_.one_zpow, Units.val_one, one_mul, if_neg hne]`. Conclude with `(h a b).symm`.
+-/
 private theorem mem_ker_iff {k D : Type} [Field k] [Group D] (η : D →* ℤˣ) (Ψ : D →* kˣ) (c : D)
     (hη : η c = -1) (hΨ : Ψ c = 1) (j : ℤ) (X : Gb k j) :
     X ∈ LinearMap.ker (gRep η Ψ j c - LinearMap.id) ↔ ∀ a b, X.val a b = -X.val b.rev a.rev := by
@@ -63,6 +79,13 @@ private theorem mem_ker_iff {k D : Type} [Field k] [Group D] (η : D →* ℤˣ)
     rw [gRep_val, adRep_baseLift_apply, hΨ, _root_.one_zpow, Units.val_one, one_mul, if_neg hne]
     exact (h a b).symm
 
+/- English proof (translation)
+Rewrite using `[finrank_eq_one_iff']`. Use `⟨⟨(⟨M, hM⟩ : gw k j), (hK _).2 hM'⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `: M a₀ b₀ = 0` using `congrArg (fun Y : K => Y.1.val a₀ b₀) h`. Rewrite `this` using `[h1]`.
+
+Conclude with `one_ne_zero this`. Introduce `w`. Use `⟨w.1.val a₀ b₀, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `a b`. Conclude with `hall w.1.val w.1.2 ((hK _).1 w.2) a b`.
+-/
 private theorem ker_one {k : Type} [Field k] (j : ℤ) (K : Submodule k (Gb k j))
     (hK : ∀ X, X ∈ K ↔ ∀ a b, X.val a b = -X.val b.rev a.rev) (M : Matrix (Fin 3) (Fin 3) k)
     (hM : M ∈ gw k j) (hM' : ∀ a b, M a b = -M b.rev a.rev) (a₀ b₀ : Fin 3) (h1 : M a₀ b₀ = 1)
@@ -81,12 +104,58 @@ private theorem ker_one {k : Type} [Field k] (j : ℤ) (K : Submodule k (Gb k j)
     ext a b
     exact hall w.1.val w.1.2 ((hK _).1 w.2) a b
 
+/- English proof (translation)
+Establish `h' : (2 : k) * x = 0` using `by rw [two_mul]; nth_rewrite 1 [h]; ring`. Break down `mul_eq_zero.mp h' with h'' | h''` into its components or cases. Conclude with `absurd h'' h2`. Conclude with `h''`.
+-/
 private theorem half {k : Type} [Field k] (h2 : (2 : k) ≠ 0) {x : k} (h : x = -x) : x = 0 := by
   have h' : (2 : k) * x = 0 := by rw [two_mul]; nth_rewrite 1 [h]; ring
   rcases mul_eq_zero.mp h' with h'' | h''
   · exact absurd h'' h2
   · exact h''
 
+/- English proof (translation)
+Introduce `k D _ _ η Ψ c h2 hη hΨ j`. Establish `e` using `gbEquiv k j`. Use `haveI : Module.Finite k (Gb k j) := Module.Finite.equiv e.symm`. Establish `hdim : finrank k (Gb k j) = (3 - |j|).toNat`. Rewrite using `[e.finrank_eq, Module.finrank_fintype_fun_eq_card, card_wt]`.
+
+Use `⟨inferInstance, hdim, ?_⟩` and prove the remaining obligations. Establish `hK` using `mem_ker_iff η Ψ c hη hΨ j`. Establish `zero_case : (∀ X : Gb k j, (∀ a b, X.val a b = -X.val b.rev a.rev) → X = 0) → finrank k (LinearMap.ker (gRep η Ψ j c - LinearMap.id)) = 0`. Introduce `hz`. Rewrite using `[Submodule.finrank_eq_zero, Submodule.eq_bot_iff]`.
+
+Introduce `X hX`. Conclude with `hz X ((hK X).1 hX)`. Break down `(show j ≤ -3 ∨ j = -2 ∨ j = -1 ∨ j = 0 ∨ j = 1 ∨ j = 2 ∨ 3 ≤ j by omega) with h | rfl | rfl | rfl | rfl | rfl | h` into its components or cases. Rewrite using `[if_neg (by rw [abs_le]; omega)]`. Apply `zero_case` to reduce the goal to its premises.
+
+Introduce `X hA`. Establish `hZ : ∀ a b, wt a b ≠ j → X.val a b = 0` using `X.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show X.val a b = 0`.
+
+Apply `hZ` to reduce the goal to its premises. Simplify using `only [wt, wt1]`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg (by norm_num)]`. Apply `zero_case` to reduce the goal to its premises. Introduce `X hA`. Establish `hZ : ∀ a b, wt a b ≠ -2 → X.val a b = 0` using `X.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `a b`. Use `show X.val a b = 0`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first`. Consider the case `exact hZ _ _ (by decide)`. Consider the case `exact half h2 (hA _ _)`.
+
+Rewrite using `[if_pos (by norm_num)]`. Use `ker_one _ _ hK (!![0, 0, 0; 1, 0, 0; 0, -1, 0]) ?_ ?_ 1 0 (by simp) ?_` and prove the remaining obligations. Use `show ∀ a b, wt a b ≠ -1 → _ = 0`. Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first`.
+
+Consider the case `exact absurd (by decide) hab`. Consider the case `simp`. Apply the tactic sequence `intro a b fin_cases a <;> fin_cases b <;> simp [Fin.rev]`. Introduce `X hX hXa a b`. Establish `hZ : ∀ a b, wt a b ≠ -1 → X a b = 0` using `hX`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp <;> first`. Consider the case `exact (hZ _ _ (by decide)).symm`. Consider the case `exact (half h2 (hXa 1 1)).symm`. Consider the case `exact (hXa 2 1).symm`. Consider the case `exact (hXa 2 2).symm`.
+
+Consider the case `exact (hXa 1 2).symm`. Rewrite using `[if_pos (by norm_num)]`. Use `ker_one _ _ hK (!![1, 0, 0; 0, 0, 0; 0, 0, -1]) ?_ ?_ 0 0 (by simp) ?_` and prove the remaining obligations. Use `show ∀ a b, wt a b ≠ 0 → _ = 0`. Introduce `a b hab`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first`. Consider the case `exact absurd (by decide) hab`. Consider the case `simp`. Apply the tactic sequence `intro a b fin_cases a <;> fin_cases b <;> simp [Fin.rev]`. Introduce `X hX hXa a b`.
+
+Establish `hZ : ∀ a b, wt a b ≠ 0 → X a b = 0` using `hX`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp <;> first`. Consider the case `exact (hZ _ _ (by decide)).symm`. Consider the case `exact (half h2 (hXa 1 1)).symm`. Consider the case `exact (hXa 2 1).symm`.
+
+Consider the case `exact (hXa 2 2).symm`. Consider the case `exact (hXa 1 2).symm`. Rewrite using `[if_pos (by norm_num)]`. Use `ker_one _ _ hK (!![0, 1, 0; 0, 0, -1; 0, 0, 0]) ?_ ?_ 0 1 (by simp) ?_` and prove the remaining obligations. Use `show ∀ a b, wt a b ≠ 1 → _ = 0`.
+
+Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first`. Consider the case `exact absurd (by decide) hab`. Consider the case `simp`. Apply the tactic sequence `intro a b fin_cases a <;> fin_cases b <;> simp [Fin.rev]`.
+
+Introduce `X hX hXa a b`. Establish `hZ : ∀ a b, wt a b ≠ 1 → X a b = 0` using `hX`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp <;> first`. Consider the case `exact (hZ _ _ (by decide)).symm`. Consider the case `exact (half h2 (hXa 1 1)).symm`.
+
+Consider the case `exact (hXa 2 1).symm`. Consider the case `exact (hXa 2 2).symm`. Consider the case `exact (hXa 1 2).symm`. Rewrite using `[if_neg (by norm_num)]`. Apply `zero_case` to reduce the goal to its premises.
+
+Introduce `X hA`. Establish `hZ : ∀ a b, wt a b ≠ 2 → X.val a b = 0` using `X.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show X.val a b = 0`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first`. Consider the case `exact hZ _ _ (by decide)`. Consider the case `exact half h2 (hA _ _)`. Rewrite using `[if_neg (by rw [abs_le]; omega)]`. Apply `zero_case` to reduce the goal to its premises.
+
+Introduce `X hA`. Establish `hZ : ∀ a b, wt a b ≠ j → X.val a b = 0` using `X.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show X.val a b = 0`.
+
+Apply `hZ` to reduce the goal to its premises. Simplify using `only [wt, wt1]`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.finrank_gradedPiece_and_complexConjugation_invariants :
     ∀ {k D : Type} [Field k] [Group D] (η : D →* ℤˣ) (Ψ : D →* kˣ) (c : D), (2 : k) ≠ 0 → η c = -1 → Ψ c = 1 → ∀ j : ℤ,
         Module.Finite k (Gb k j) ∧ finrank k (Gb k j) = (3 - |j|).toNat ∧

@@ -19,6 +19,11 @@ variable {d : SD σ} (L : LD d)
 
 namespace Bq
 
+/- English proof (translation)
+Introduce `r c h`. Break down `h with h | h | h | h` into its components or cases. Conclude with `(L.j_out g r (by simp [h]) c).1`. Conclude with `(L.j_out g r (by simp [h]) c).1`. Conclude with `(L.j_out g c (by simp [h]) r).2`.
+
+Conclude with `(L.j_out g c (by simp [h]) r).2`.
+-/
 theorem pad_j (g : G2 σ L.Y) : Pad (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b (L.j g)) := by
   intro r c h
   rcases h with h | h | h | h
@@ -30,6 +35,17 @@ theorem pad_j (g : G2 σ L.Y) : Pad (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d
 def bp (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) : Matrix (Fin d.n) (Fin d.n) (AE F E) :=
   Matrix.of fun i k => if i = L.i₀ ∨ k = L.i₀ then 0 else β i k
 
+/- English proof (translation)
+Use `Matrix.ext fun r c => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with i | i <;> rcases c with k | k`. Use `all_goals`. Distinguish the cases in `hi : i = L.i₀`. Use `first`.
+
+Consider the case `rw [padM_out_row L _ (not_inl L i hi)]`. Consider the case `rw [padM_out_row L _ (not_inr L i hi)]`. Substitute `hi` using the available equality. Simplify using `[bp, Matrix.one_apply]`. Distinguish the cases in `hk : k = L.i₀`.
+
+Use `first`. Consider the case `rw [padM_out_col L _ _ (not_inl L k hk)]`. Consider the case `rw [padM_out_col L _ _ (not_inr L k hk)]`. Substitute `hk` using the available equality. Simplify using `[bp, Matrix.one_apply, hi]`.
+
+Take `⟨a, rfl⟩` from `(L.rng i).1 hi`. Take `⟨a', rfl⟩` from `(L.rng k).1 hk`. Use `first`. Consider the case `exact (padM_emS L _ (Sum.inl a) (Sum.inl a')).trans (by simp [bp, Matrix.one_apply, L.inj.eq_iff, em_ne])`. Consider the case `exact (padM_emS L _ (Sum.inl a) (Sum.inr a')).trans (by simp [bp, Matrix.one_apply, L.inj.eq_iff, em_ne])`.
+
+Consider the case `exact (padM_emS L _ (Sum.inr a) (Sum.inl a')).trans (by simp [bp, Matrix.one_apply, L.inj.eq_iff, em_ne])`. Consider the case `exact (padM_emS L _ (Sum.inr a) (Sum.inr a')).trans (by simp [bp, Matrix.one_apply, L.inj.eq_iff, em_ne])`.
+-/
 theorem padM_n (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
     padM L (Matrix.fromBlocks 1 (-(β.submatrix L.em L.em)) 0 1) = Matrix.fromBlocks 1 (-(bp L β)) 0 1 := by
   refine Matrix.ext fun r c => ?_
@@ -55,6 +71,11 @@ theorem padM_n (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) :
           | exact (padM_emS L _ (Sum.inr a) (Sum.inl a')).trans (by simp [bp, Matrix.one_apply, L.inj.eq_iff, em_ne])
           | exact (padM_emS L _ (Sum.inr a) (Sum.inr a')).trans (by simp [bp, Matrix.one_apply, L.inj.eq_iff, em_ne])
 
+/- English proof (translation)
+Simplify using `only [ComplexParameterFamilyContinuity.nilpotentFrameMatrix, Matrix.sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨h1, h2⟩`. Break down `h with h | h` into its components or cases.
+
+Conclude with `h h1.symm`. Conclude with `em_ne L j (h2.trans h)`.
+-/
 theorem nilpotentFramePart_apply_zero (u : Fin L.n → AE F E) (a k : Fin d.n) (h : a ≠ L.i₀ ∨ k = L.i₀) : ComplexParameterFamilyContinuity.nilpotentFrameMatrix L u a k = 0 := by
   simp only [ComplexParameterFamilyContinuity.nilpotentFrameMatrix, Matrix.sum_apply]
   refine Finset.sum_eq_zero fun j _ => ?_
@@ -64,6 +85,21 @@ theorem nilpotentFramePart_apply_zero (u : Fin L.n → AE F E) (a k : Fin d.n) (
   · exact h h1.symm
   · exact em_ne L j (h2.trans h)
 
+/- English proof (translation)
+Use `set A := 1 + ComplexParameterFamilyContinuity.nilpotentFrameMatrix L u with hA`. Use `set D := ((1 - ComplexParameterFamilyContinuity.nilpotentFrameMatrix L u)ᵀ).map (cA σ) with hD`. Establish `e : Matrix.fromBlocks 1 β 0 1 * ComplexParameterFamilyContinuity.muF L u * Matrix.fromBlocks 1 (-(bp L β)) 0 1 = Matrix.fromBlocks A (-(A * bp L β) + β * D) 0 D`. Simplify using `only [ComplexParameterFamilyContinuity.muF, Matrix.fromBlocks_multiply, Matrix.one_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, hA, hD]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Establish `hA1 : ∀ a k, a ≠ L.i₀ ∨ k = L.i₀ → (A - 1) a k = 0` using `fun a k h => by`. Rewrite using `[hA, add_sub_cancel_left, nilpotentFramePart_apply_zero L u a k h]`. Establish `hD1 : ∀ a k, k ≠ L.i₀ → D a k = (1 : Matrix _ _ (AE F E)) a k` using `fun a k hk => by`. Simplify using `only [hD, Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, nilpotentFramePart_apply_zero L u k a (Or.inl hk), sub_zero]`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `h : k = a`. Substitute `h` using the available equality. Simplify using `[map_one]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), map_zero]`.
+
+Rewrite using `[e]`. Use `Bq.NQ.of_blocks (fun a => hA1 a L.i₀ (Or.inr rfl)) (fun a k ha => hA1 a k (Or.inl ha)) (fun a k ha hk => ?_) (fun a k hk => by rw [Matrix.sub_apply, hD1 a k hk, sub_self])` and prove the remaining obligations. Establish `h1 : (A * bp L β) a k = β a k`. Rewrite using `[Matrix.mul_apply]`. Establish `: ∀ m, A a m * bp L β m k = if m = a then β a k else 0` using `fun m => by`.
+
+Establish `hAm : A a m = (1 : Matrix _ _ (AE F E)) a m`. Use `hA1 a m (Or.inl ha)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hAm, Matrix.one_apply]`. Distinguish the cases in `hm : a = m`.
+
+Substitute `hm` using the available equality. Simplify using `[bp, ha, hk]`. Simplify using `[hm, Ne.symm hm]`. Simplify using `only [this, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `h2 : (β * D) a k = β a k`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hD1 _ k hk, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Matrix.add_apply, Matrix.neg_apply, h1, h2, neg_add_cancel]`.
+-/
 theorem nq_q (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) (u : Fin L.n → AE F E) :
     NQ (Sum.inl L.i₀) (Sum.inr L.i₀)
       (Matrix.fromBlocks 1 β 0 1 * ComplexParameterFamilyContinuity.muF L u * Matrix.fromBlocks 1 (-(bp L β)) 0 1) := by
@@ -101,6 +137,13 @@ theorem nq_q (β : Matrix (Fin d.n) (Fin d.n) (AE F E)) (u : Fin L.n → AE F E)
     simp only [hD1 _ k hk, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   rw [Matrix.add_apply, Matrix.neg_apply, h1, h2, neg_add_cancel]
 
+/- English proof (translation)
+Take `⟨-, t₀, ht₀⟩` from `d.ok.frame`. Use `set M := inFrame d.b p`. Use `set T0 := incM F t₀.1`. Use `set T0i := incM F (t₀⁻¹).1`. Establish `e1 : T0 * T0i = 1`.
+
+Simplify using `only [T0, T0i, incM, ← Matrix.map_mul]`. Rewrite using `[show t₀.1 * (t₀⁻¹).1 = 1 from t₀.mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hdet : (T0 * M.toBlocks₁₁ * T0i).det = 1`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, h.upper_block_det_one, mul_one, ← Matrix.det_mul, e1, Matrix.det_one]`.
+
+Establish `hu : IsUnit (T0 * M.toBlocks₁₁ * T0i)` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [hdet]; exact isUnit_one)`. Use `⟨hu.unit, (kunf.isPar_frame ht₀ p hu.unit).2 ⟨h.projected_block_lower_sum, rfl⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, hdet]`.
+-/
 theorem isPar_of_nq {p : d.G} (h : NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b p)) :
     ∃ t, IsPar p t ∧ Matrix.GeneralLinearGroup.det t = 1 := by
   obtain ⟨-, t₀, ht₀⟩ := d.ok.frame
@@ -120,6 +163,15 @@ theorem isPar_of_nq {p : d.G} (h : NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame
 
 end Bq
 
+/- English proof (translation)
+Use `set q : d.G := nb β * uM u * L.j (nb' (-prj L β)) with hq`. Use `set p : d.G := L.j h * q * L.j h⁻¹ with hp`. Establish `hinv : L.j (nb' (-prj L β)) = (L.j (nb' (prj L β)))⁻¹`. Rewrite using `[kunf.nb_neg hnb', map_inv]`. Establish `hid : L.j h * (nb β * (uM u * x)) = p * (L.j (h * nb' (prj L β)) * x)`.
+
+Simplify using `only [hp, hq, hinv, map_mul, map_inv, mul_assoc, inv_mul_cancel_left]`. Establish `hQ : inFrame d.b q = Matrix.fromBlocks 1 β.1 0 1 * ComplexParameterFamilyContinuity.muF L u * Matrix.fromBlocks 1 (-(Bq.bp L β.1)) 0 1`. Rewrite using `[hq, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hnb β, ComplexParameterFamilyContinuity.inFrame_uM L hU u, inFrame_j, hnb' (-prj L β), ← Bq.padM_n L β.1]`. Both sides reduce to the same expression. Establish `hJJ : inFrame d.b (L.j h) * inFrame d.b (L.j h⁻¹) = 1`.
+
+Rewrite using `[← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, ← map_mul, mul_inv_cancel, map_one, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Establish `hnq : Bq.NQ (Sum.inl L.i₀) (Sum.inr L.i₀) (inFrame d.b p)`. Rewrite using `[hp, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hQ]`. Conclude with `Bq.NQ.conj (by simp) (Bq.pad_j L h) (Bq.pad_j L h⁻¹) hJJ (Bq.nq_q L β.1 u)`. Take `⟨t, ht, hdt⟩` from `Bq.isPar_of_nq L hnq`.
+
+Conclude with `⟨p, t, ht, hdt, hid⟩`.
+-/
 theorem key_id_pf {nb : nA σ d.Y d.b → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} (hnb : IsNMap d.b nb)
     (hnb' : IsNMap L.b nb') {uM : (Fin L.n → AE F E) → d.G} {ν : Measure (Fin L.n → AE F E)}
     {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤) (h : G2 σ L.Y) (β : nA σ d.Y d.b) (u : Fin L.n → AE F E)

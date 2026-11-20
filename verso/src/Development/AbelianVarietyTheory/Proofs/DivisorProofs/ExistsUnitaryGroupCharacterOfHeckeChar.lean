@@ -26,6 +26,11 @@ def cut {R : Type} [CommRing R] (ε : R) (h : ε * ε = ε) : R →* R where
   map_one' := by ring
   map_mul' u v := by linear_combination (-(1 - u - v + u * v)) * h
 
+/- English proof (translation)
+Set `I : Ideal R` to `LinearMap.ker (LinearMap.mul R R a)`. Establish `h1 : (Ideal.Quotient.mk I).mapMatrix M = (Ideal.Quotient.mk I).mapMatrix 1`. Use extensionality with `i j`. Conclude with `Ideal.Quotient.eq.2 (h i j)`. Establish `h2` using `congrArg Matrix.det h1`.
+
+Rewrite `h2` using `[← RingHom.map_det, ← RingHom.map_det, Matrix.det_one]`. Conclude with `Ideal.Quotient.eq.1 h2`.
+-/
 theorem mul_det_sub_one {R : Type} [CommRing R] {n : ℕ} (a : R) (M : Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, a * (M - 1) i j = 0) : a * (M.det - 1) = 0 := by
   let I : Ideal R := LinearMap.ker (LinearMap.mul R R a)
@@ -36,10 +41,16 @@ theorem mul_det_sub_one {R : Type} [CommRing R] {n : ℕ} (a : R) (M : Matrix (F
   rw [← RingHom.map_det, ← RingHom.map_det, Matrix.det_one] at h2
   exact Ideal.Quotient.eq.1 h2
 
+/- English proof (translation)
+Take the linear combination `ε * hd + (d - 1) * (a1 + a2)`.
+-/
 theorem cut_eq {R : Type} [CommRing R] {ε e f d : R} (a1 : ε * e = e)
     (a2 : ε * f = 0) (hd : (1 - (e + f)) * (d - 1) = 0) : (1 - ε) + ε * d = e * d + (1 - e) := by
   linear_combination ε * hd + (d - 1) * (a1 + a2)
 
+/- English proof (translation)
+Establish `e4 : ε * (d - 1) = f * (d - 1)`. Take the linear combination `ε * hd + (d - 1) * (a1 + a2)`. Take the linear combination `(1 + f * (d' - 1)) * e4 + (d - 1) * (d' - 1) * e2 + f * e3`.
+-/
 theorem cut_mul {R : Type} [CommRing R] {ε e f d d' : R} (e2 : f * f = f) (a1 : ε * e = 0)
     (a2 : ε * f = f) (hd : (1 - (e + f)) * (d - 1) = 0) (e3 : d * d' = 1) :
     ((1 - ε) + ε * d) * (f * d' + (1 - f)) = 1 := by
@@ -49,6 +60,11 @@ theorem cut_mul {R : Type} [CommRing R] {ε e f d d' : R} (e2 : f * f = f) (a1 :
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D)` using `g.2`. Establish `hu` using `(GlobalTheory.LatVac.gram_det_isUnit V).map (incA D)`. Rewrite `hu` using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `h2` using `congrArg Matrix.det h`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, ← RingHom.mapMatrix_apply (cA D), ← RingHom.map_det]`.
+
+Use `hu.mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `h2`.
+-/
 theorem det_mul_conj (V : HSp D) (g : GA D V) :
     (Formalism.L2.Theta.mt V g).det * cA D (Formalism.L2.Theta.mt V g).det = 1 := by
   have h : ((Formalism.L2.Theta.mt V g).map (cA D))ᵀ * V.gram.map (incA D) * Formalism.L2.Theta.mt V g = V.gram.map (incA D) := g.2
@@ -59,6 +75,13 @@ theorem det_mul_conj (V : HSp D) (g : GA D V) :
   refine hu.mul_left_cancel ?_
   linear_combination h2
 
+/- English proof (translation)
+Establish `hx : ∃ x, D.sp.cm.sig x ≠ x`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hs : Function.Surjective (algebraMap D.host.F D.host.E)` using `fun x => (D.sp.cm.fixed x).1 (h x)`. Establish `h1 : Module.finrank D.host.F D.host.E = 1`.
+
+Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap D.host.F D.host.E) ⟨(algebraMap D.host.F D.host.E).injective, hs⟩).finrank_eq, Module.finrank_self]`. Establish `h2` using `D.sp.cm.deg2`. Use linear arithmetic over natural numbers and integers. Take `⟨δ, -, h⟩` from `GlobalTheory.QuadNormBase.norm_form D.host.F D.host.E D.sp.cm.sig D.sp.cm.deg2 (fun x => star_star x) hx`. Take `⟨x, y, e1, e2⟩` from `(h (AF D.host.F)).1 z`.
+
+Rewrite using `[e1, e2]`.
+-/
 theorem algebraMap_norm (z : AE D) :
     algebraMap (AF D.host.F) (AE D) (Algebra.norm (AF D.host.F) z) = z * cA D z := by
   have hx : ∃ x, D.sp.cm.sig x ≠ x := by
@@ -74,6 +97,11 @@ theorem algebraMap_norm (z : AE D) :
   obtain ⟨x, y, e1, e2⟩ := (h (AF D.host.F)).1 z
   rw [e1, e2]
 
+/- English proof (translation)
+Take `⟨⟨η, hη⟩, h1⟩` from `h`. Establish `e : x * x' = idF D (Units.map (Algebra.norm (AF D.host.F) : AE D →* AF D.host.F) x)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, hx]`. Conclude with `(algebraMap_norm (x : AE D)).symm`.
+
+Rewrite using `[← map_mul, e, h1 η hη, hη.2.2.1 x, one_pow]`.
+-/
 theorem char_norm {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (x x' : (AE D)ˣ)
     (hx : (x' : AE D) = cA D x) : χ x * χ x' = 1 := by
   obtain ⟨⟨η, hη⟩, h1⟩ := h
@@ -83,6 +111,11 @@ theorem char_norm {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (x x
     exact (algebraMap_norm (x : AE D)).symm
   rw [← map_mul, e, h1 η hη, hη.2.2.1 x, one_pow]
 
+/- English proof (translation)
+Take `⟨x', hx'⟩ : IsUnit (cA D x)` from `x.isUnit.map (cA D)`. Establish `hc` using `char_norm h x x' hx'`. Establish `h1 : y * x' = 1` using `Units.ext (by rw [Units.val_mul, hx', hy, Units.val_one])`. Establish `h2` using `congrArg χ h1`. Rewrite `h2` using `[map_mul, map_one, ← hc]`.
+
+Conclude with `mul_right_cancel h2`.
+-/
 theorem char_eq_of_mul_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D χ n) (y x : (AE D)ˣ)
     (hy : (y : AE D) * cA D x = 1) : χ y = χ x := by
   obtain ⟨x', hx'⟩ : IsUnit (cA D x) := x.isUnit.map (cA D)
@@ -95,15 +128,28 @@ theorem char_eq_of_mul_conj {χ : (AE D)ˣ →* Circle} {n : ℕ} (h : ResEta D 
 def cutDet (ε : AE D) (h : ε * ε = ε) (V : HSp D) : GA D V →* (AE D)ˣ :=
   (Units.map (cut ε h)).comp ((Matrix.GeneralLinearGroup.det (n := Fin V.rank) (R := AE D)).comp (matHom V))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cutDet_val (ε : AE D) (h : ε * ε = ε) (V : HSp D) (g : GA D V) :
     (cutDet ε h V g : AE D) = (1 - ε) + ε * (Formalism.L2.Theta.mt V g).det := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[cutDet_val, Units.val_one]`. Take the linear combination `mul_det_sub_one ε _ hg`.
+-/
 theorem cutDet_eq_one (ε : AE D) (h : ε * ε = ε) (V : HSp D) (g : GA D V)
     (hg : ∀ i j, ε * (Formalism.L2.Theta.mt V g - 1) i j = 0) : cutDet ε h V g = 1 := by
   refine Units.ext ?_
   rw [cutDet_val, Units.val_one]
   linear_combination mul_det_sub_one ε _ hg
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Establish `h0 : Continuous fun g : GA D V => matHom V g` using `continuous_subtype_val`. Establish `h1 : Continuous (Formalism.L2.Theta.mt V)` using `Units.continuous_val.comp h0`. Establish `h2 : Continuous fun g : GA D V => Formalism.L2.Theta.mt V g⁻¹`.
+
+Establish `e : (fun g : GA D V => Formalism.L2.Theta.mt V g⁻¹) = fun g => ((matHom V g)⁻¹).1`. Use function extensionality and compare the values at `g`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_inv]`. Rewrite using `[e]`.
+
+Conclude with `Units.continuous_coe_inv.comp h0`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_const.mul h1.matrix_det)`. Simplify using `only [← map_inv, cutDet_val]`. Conclude with `continuous_const.add (continuous_const.mul h2.matrix_det)`.
+-/
 theorem continuous_cutDet (ε : AE D) (h : ε * ε = ε) (V : HSp D) : Continuous (cutDet ε h V) := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -121,6 +167,11 @@ theorem continuous_cutDet (ε : AE D) (h : ε * ε = ε) (V : HSp D) : Continuou
   · simp only [← map_inv, cutDet_val]
     exact continuous_const.add (continuous_const.mul h2.matrix_det)
 
+/- English proof (translation)
+Use `cutDet_eq_one ε h1 V g fun i j => ?_` and prove the remaining obligations. Establish `hm : (Formalism.L2.Theta.mt V g).map (finPart D) = 1` using `congrArg Units.val (show finHom V g = 1 from hg)`. Establish `hf : finPart D ((Formalism.L2.Theta.mt V g - 1) i j) = 0`. Establish `e1 : finPart D (Formalism.L2.Theta.mt V g i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j` using `congrFun (congrFun hm i) j`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, e1, sub_eq_zero]`.
+
+Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`. Conclude with `GlobalTheory.SplitScalar.adele_ext (by rw [RingHom.map_mul, h3, zero_mul, RingHom.map_zero]) (by rw [RingHom.map_mul, hf, mul_zero, RingHom.map_zero])`.
+-/
 theorem cutDet_real (ε : AE D) (h1 : ε * ε = ε) (h3 : infPart D ε = 0) (V : HSp D) (g : GA D V) (hg : g ∈ GinfC V) :
     cutDet ε h1 V g = 1 := by
   refine cutDet_eq_one ε h1 V g fun i j => ?_
@@ -135,11 +186,17 @@ theorem cutDet_real (ε : AE D) (h1 : ε * ε = ε) (h3 : infPart D ε = 0) (V :
   exact GlobalTheory.SplitScalar.adele_ext (by rw [RingHom.map_mul, h3, zero_mul, RingHom.map_zero])
     (by rw [RingHom.map_mul, hf, mul_zero, RingHom.map_zero])
 
+/- English proof (translation)
+The claim follows from `mul_det_sub_one _ _ fun i j => by rw [sub_mul, one_mul, hg i j, sub_self]`.
+-/
 theorem det_supp {e : AE D} {V : HSp D} {g : GA D V} (hg : SuppAt e V g) :
     (1 - (e + cA D e)) * ((Formalism.L2.Theta.mt V g).det - 1) = 0 :=
   mul_det_sub_one _ _ fun i j => by rw [sub_mul, one_mul, hg i j, sub_self]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hx' : (x : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e)` using `hx`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[cutDet_val, hx']`. Conclude with `cut_eq a1 a2 (det_supp hg)`.
+-/
 theorem cutDet_same (ε : AE D) (h1 : ε * ε = ε) {e : AE D} (a1 : ε * e = e) (a2 : ε * cA D e = 0) {V : HSp D} {g : GA D V}
     {x : (AE D)ˣ} (hg : SuppAt e V g) (hx : IsDetAt e V g x) : cutDet ε h1 V g = x := by
   have hx' : (x : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e) := hx
@@ -148,6 +205,11 @@ theorem cutDet_same (ε : AE D) (h1 : ε * ε = ε) {e : AE D} (a1 : ε * e = e)
   exact cut_eq a1 a2 (det_supp hg)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hx' : (x : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e)` using `hx`. Establish `e2 : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Establish `e5 : cA D x = cA D e * cA D (Formalism.L2.Theta.mt V g).det + (1 - cA D e)`. Rewrite using `[hx', RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one]`. Rewrite using `[cutDet_val, e5]`.
+
+Conclude with `cut_mul e2 a1 a2 (det_supp hg) (det_mul_conj V g)`.
+-/
 theorem cutDet_conj (ε : AE D) (h1 : ε * ε = ε) {e : AE D} (he : e * e = e) (a1 : ε * e = 0) (a2 : ε * cA D e = cA D e)
     {V : HSp D} {g : GA D V} {x : (AE D)ˣ} (hg : SuppAt e V g) (hx : IsDetAt e V g x) :
     (cutDet ε h1 V g : AE D) * cA D x = 1 := by
@@ -160,6 +222,11 @@ theorem cutDet_conj (ε : AE D) (h1 : ε * ε = ε) {e : AE D} (he : e * e = e) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce and unpack `D ε ⟨h1, -, h3, h4, h5⟩ V χ n hχ hres`. Use `⟨χ.comp (cutDet ε h1 V), hχ.1.comp (continuous_cutDet ε h1 V), fun g hg => ?_, fun v η hv g hg => ?_, fun e he g x hg hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, cutDet_real ε h1 h3 V g hg, map_one]`. Rewrite using `[MonoidHom.comp_apply, cutDet_eq_one ε h1 V g fun i j => ?_, map_one]`. Rewrite using `[← hg i j, ← mul_assoc, mul_comm ε, h5 v η hv, zero_mul]`.
+
+Rewrite using `[MonoidHom.comp_apply]`. Break down `h4 e he with ⟨a1, a2⟩ | ⟨a1, a2⟩` into its components or cases. Rewrite using `[cutDet_same ε h1 a1 a2 hg hx]`. Conclude with `char_eq_of_mul_conj hres _ x (cutDet_conj ε h1 he.1 a1 a2 hg hx)`.
+-/
 theorem exists_character : ∀ (D : D7) (ε : AE D), (ε * ε = ε ∧ ε * cA D ε = 0 ∧ infPart D ε = 0 ∧ (∀ e, IsSplitIdem D e → (ε * e = e ∧ ε * cA D e = 0) ∨ (ε * e = 0 ∧ ε * cA D e = cA D e)) ∧ ∀ v η, NonSplitAt D v η → algebraMap (AF D.host.F) (AE D) η * ε = 0) → ∀ (V : HSp D) (χ : (AE D)ˣ →* Circle) (n : ℕ), IsHeckeChar D χ → ResEta D χ n → ∃ c : GA D V →* Circle, Continuous c ∧ (∀ g ∈ GinfC V, c g = 1) ∧ (∀ v η, NonSplitAt D v η → ∀ g, SuppPl η V g → c g = 1) ∧ ∀ e, IsSplitIdem D e → ∀ g x, SuppAt e V g → IsDetAt e V g x → c g = χ x := by
   rintro D ε ⟨h1, -, h3, h4, h5⟩ V χ n hχ hres
   refine ⟨χ.comp (cutDet ε h1 V), hχ.1.comp (continuous_cutDet ε h1 V), fun g hg => ?_, fun v η hv g hg => ?_,

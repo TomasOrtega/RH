@@ -19,6 +19,9 @@ def ccToL1 (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
     (f : CompactlySupportedContinuousMap G ℂ) : G →₁[μ] ℂ :=
   (f.continuous.memLp_of_hasCompactSupport (μ := μ) (p := 1) f.hasCompactSupport).toLp f
 
+/- English proof (translation)
+The claim follows from `π.integrated_toLp_apply μ f v`.
+-/
 theorem integrated_ccToL1_apply (π : UnitaryRep G H) (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
     (f : CompactlySupportedContinuousMap G ℂ) (v : H) :
     π.integrated μ (ccToL1 μ f) v = ∫ g, f g • π g v ∂μ :=
@@ -29,16 +32,28 @@ def absSqOp (π : UnitaryRep G H) (μ : Measure G) (f : G →₁[μ] ℂ) : H �
 
 variable (π : UnitaryRep G H) (μ : Measure G)
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.isSelfAdjoint_iff', absSqOp, adjoint_comp, adjoint_adjoint]`.
+-/
 theorem isSelfAdjoint_absSqOp (f : G →₁[μ] ℂ) : IsSelfAdjoint (π.absSqOp μ f) := by
   rw [ContinuousLinearMap.isSelfAdjoint_iff', absSqOp, adjoint_comp, adjoint_adjoint]
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 (π.isSelfAdjoint_absSqOp μ f)`.
+-/
 theorem isSymmetric_absSqOp (f : G →₁[μ] ℂ) : (π.absSqOp μ f : H →ₗ[ℂ] H).IsSymmetric :=
   ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 (π.isSelfAdjoint_absSqOp μ f)
 
+/- English proof (translation)
+Rewrite using `[absSqOp, comp_apply, adjoint_inner_right]`.
+-/
 theorem inner_absSqOp_self (f : G →₁[μ] ℂ) (v : H) :
     ⟪v, π.absSqOp μ f v⟫_ℂ = ⟪π.integrated μ f v, π.integrated μ f v⟫_ℂ := by
   rw [absSqOp, comp_apply, adjoint_inner_right]
 
+/- English proof (translation)
+Introduce `h0`. Use `π.inner_absSqOp_self μ f v` as an intermediate fact. Rewrite `this` using `[h0, inner_zero_right, eq_comm, inner_self_eq_zero]`. Conclude with `h this`.
+-/
 theorem absSqOp_apply_ne_zero {f : G →₁[μ] ℂ} {v : H} (h : π.integrated μ f v ≠ 0) :
     π.absSqOp μ f v ≠ 0 := by
   intro h0
@@ -46,12 +61,20 @@ theorem absSqOp_apply_ne_zero {f : G →₁[μ] ℂ} {v : H} (h : π.integrated 
   rw [h0, inner_zero_right, eq_comm, inner_self_eq_zero] at this
   exact h this
 
+/- English proof (translation)
+The claim follows from `hf.clm_comp (adjoint (π.integrated μ f))`.
+-/
 theorem IsCompactOperator.absSqOp {f : G →₁[μ] ℂ} (hf : IsCompactOperator (π.integrated μ f)) :
     IsCompactOperator (π.absSqOp μ f) :=
   hf.clm_comp (adjoint (π.integrated μ f))
 
 variable {π μ}
 
+/- English proof (translation)
+Establish `: CompleteSpace V` using `hcl.completeSpace_coe`. Rewrite using `[← Submodule.orthogonal_orthogonal V, Submodule.mem_orthogonal]`. Introduce `u hu`. Rewrite using `[adjoint_inner_right]`. Establish `hu' : π.integrated μ f u ∈ Vᗮ` using `IsInvariant.integrated_mem π μ (Submodule.isClosed_orthogonal V) hV.orthogonal f hu`.
+
+Conclude with `(Submodule.mem_orthogonal' _ _).1 hu' v hv`.
+-/
 theorem IsInvariant.adjoint_integrated_mem {V : Submodule ℂ H} (hcl : IsClosed (V : Set H))
     (hV : π.IsInvariant V) (f : G →₁[μ] ℂ) {v : H} (hv : v ∈ V) :
     adjoint (π.integrated μ f) v ∈ V := by
@@ -63,11 +86,19 @@ theorem IsInvariant.adjoint_integrated_mem {V : Submodule ℂ H} (hcl : IsClosed
     IsInvariant.integrated_mem π μ (Submodule.isClosed_orthogonal V) hV.orthogonal f hu
   exact (Submodule.mem_orthogonal' _ _).1 hu' v hv
 
+/- English proof (translation)
+The claim follows from `hV.adjoint_integrated_mem hcl f (IsInvariant.integrated_mem π μ hcl hV f hv)`.
+-/
 theorem IsInvariant.absSqOp_mem {V : Submodule ℂ H} (hcl : IsClosed (V : Set H))
     (hV : π.IsInvariant V) (f : G →₁[μ] ℂ) {v : H} (hv : v ∈ V) :
     π.absSqOp μ f v ∈ V :=
   hV.adjoint_integrated_mem hcl f (IsInvariant.integrated_mem π μ hcl hV f hv)
 
+/- English proof (translation)
+Establish `h1` using `σ.comp_integrated_of_mem_intertwiners μ hT f`. Establish `h2` using `π.comp_integrated_of_mem_intertwiners μ (adjoint_mem_intertwiners hT) f`. Establish `h3 : adjoint (π.integrated μ f) ∘L T = T ∘L adjoint (σ.integrated μ f)`. Use `congrArg adjoint h2` as an intermediate fact. Simplify `this` using `only [adjoint_comp, adjoint_adjoint]`.
+
+Simplify using `only [absSqOp]`. Rewrite using `[← ContinuousLinearMap.comp_assoc, ← h3, ContinuousLinearMap.comp_assoc, h1, ContinuousLinearMap.comp_assoc]`.
+-/
 theorem comp_absSqOp_of_mem_intertwiners {σ : UnitaryRep G K} {T : K →L[ℂ] H}
     (hT : T ∈ σ.intertwiners π) (f : G →₁[μ] ℂ) :
     T ∘L σ.absSqOp μ f = π.absSqOp μ f ∘L T := by
@@ -80,6 +111,21 @@ theorem comp_absSqOp_of_mem_intertwiners {σ : UnitaryRep G K} {T : K →L[ℂ] 
   rw [← ContinuousLinearMap.comp_assoc, ← h3, ContinuousLinearMap.comp_assoc, h1,
     ContinuousLinearMap.comp_assoc]
 
+/- English proof (translation)
+Establish `hvpos : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Establish `hU : {g | ‖π g v - v‖ < ‖v‖ / 2} ∈ 𝓝 (1 : G)`. Establish `hc : Continuous fun g => ‖π g v - v‖` using `((π.continuous_orbit v).sub continuous_const).norm`. Establish `h1 : ‖π 1 v - v‖ < ‖v‖ / 2` using `by simp [hvpos]`. Conclude with `hc.continuousAt.preimage_mem_nhds (Iio_mem_nhds h1)`.
+
+Take `⟨U, hUsub, hUo, h1U⟩` from `mem_nhds_iff.1 hU`. Take `⟨h, h1, h0, hcs, hrange⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := (1 : G))) hUo.isClosed_compl (Set.disjoint_singleton_left.2 fun h => h h1U)`. Establish `hnn : ∀ g, 0 ≤ h g` using `fun g => (hrange g).1`. Set `f : CompactlySupportedContinuousMap G ℂ` to `⟨⟨fun g => (h g : ℂ), by fun_prop⟩, hcs.comp_left Complex.ofReal_zero⟩`. Establish `hfg : ∀ g, f g = (h g : ℂ)` using `fun _ => rfl`.
+
+Use `⟨f, fun hzero => ?_⟩` and prove the remaining obligations. Use `set c : ℝ := ∫ g, h g ∂μ with hc`. Establish `hcpos : 0 < c` using `h.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hcs hnn (by rw [h1 (Set.mem_singleton 1)]; exact one_ne_zero)`. Establish `hint : Integrable (fun g => h g) μ` using `h.continuous.integrable_of_hasCompactSupport hcs`. Establish `hint1 : Integrable (fun g => f g • π g v) μ` using `(f.continuous.smul (π.continuous_orbit v)).integrable_of_hasCompactSupport f.hasCompactSupport.smul_right`.
+
+Establish `hint2 : Integrable (fun g => f g • v) μ` using `(f.continuous.smul continuous_const).integrable_of_hasCompactSupport f.hasCompactSupport.smul_right`. Establish `hRv` using `π.integrated_ccToL1_apply μ f v`. Establish `hcv : ∫ g, f g • v ∂μ = (c : ℂ) • v`. Rewrite using `[integral_smul_const]`. Simplify using `only [hfg]`.
+
+Establish `: ∫ g, (h g : ℂ) ∂μ = (c : ℂ)` using `integral_ofReal`. Rewrite using `[this]`. Establish `key : ∫ g, f g • (π g v - v) ∂μ = - ((c : ℂ) • v)`. Simplify using `only [smul_sub]`. Rewrite using `[integral_sub hint1 hint2, ← hRv, hzero, hcv, zero_sub]`.
+
+Establish `hbound : ‖∫ g, f g • (π g v - v) ∂μ‖ ≤ ∫ g, h g * (‖v‖ / 2) ∂μ`. Use `norm_integral_le_of_norm_le (hint.mul_const _) (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, hfg, Complex.norm_real, Real.norm_of_nonneg (hnn g)]`. Distinguish the cases in `hg : g ∈ U`. Conclude with `mul_le_mul_of_nonneg_left (hUsub hg).le (hnn g)`.
+
+Rewrite using `[h0 hg]`. Simplify using the standard rewrite rules. Rewrite `hbound` using `[key, norm_neg, norm_smul, Complex.norm_real, Real.norm_of_nonneg hcpos.le, integral_mul_const, ← hc]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_integrated_ne_zero [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     (π : UnitaryRep G H) (μ : Measure G) [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure]
     {v : H} (hv : v ≠ 0) :
@@ -134,6 +180,19 @@ def IsMinimal (π : UnitaryRep G H) (V : Submodule ℂ H) : Prop :=
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
 
+/- English proof (translation)
+Take `⟨hcl, -, hne, hmin⟩` from `h`. Use `⟨Submodule.nontrivial_iff_ne_bot.2 hne, fun W hW hWinv => ?_⟩` and prove the remaining obligations. Use `set U : Submodule ℂ H := W.map V.subtype with hU`. Establish `hUcl : IsClosed (U : Set H)`. Rewrite using `[hU, Submodule.map_coe]`.
+
+Conclude with `hcl.isClosedMap_subtype_val _ hW`. Establish `hUinv : π.IsInvariant U`. Introduce and unpack `g _ ⟨w, hw, rfl⟩`. Conclude with `⟨π.restrict V hV g w, hWinv g w hw, rfl⟩`. Establish `hUV : U ≤ V`.
+
+Introduce and unpack `_ ⟨w, -, rfl⟩`. Conclude with `w.2`. Break down `hmin U hUcl hUinv hUV with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `w hw`. Establish `: (w : H) ∈ U` using `⟨w, hw, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext this`.
+
+Use `right`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `: (w : H) ∈ U` using `by rw [h]; exact w.2`. Take `⟨w', hw', hww'⟩` from `this`.
+
+Establish `: w' = w` using `Subtype.ext hww'`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem isIrreducible_restrict_of_isMinimal {V : Submodule ℂ H} [CompleteSpace V]
     (hV : π.IsInvariant V) (h : π.IsMinimal V) : (π.restrict V hV).IsIrreducible := by
   obtain ⟨hcl, -, hne, hmin⟩ := h
@@ -166,6 +225,9 @@ theorem isIrreducible_restrict_of_isMinimal {V : Submodule ℂ H} [CompleteSpace
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
 
+/- English proof (translation)
+Introduce `g v hv` and use `⟨hU g v hv.1, hV g v hv.2⟩`.
+-/
 theorem IsInvariant.inf {U V : Submodule ℂ H} (hU : π.IsInvariant U) (hV : π.IsInvariant V) :
     π.IsInvariant (U ⊓ V) :=
   fun g v hv => ⟨hU g v hv.1, hV g v hv.2⟩
@@ -174,10 +236,20 @@ def cyclicSubspace (π : UnitaryRep G H) (v : H) : Submodule ℂ H :=
   (Submodule.span ℂ (Set.range fun g => π g v)).topologicalClosure
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
+/- English proof (translation)
+The claim follows from `Submodule.isClosed_topologicalClosure _`.
+-/
 theorem isClosed_cyclicSubspace (v : H) : IsClosed (π.cyclicSubspace v : Set H) :=
   Submodule.isClosed_topologicalClosure _
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
+/- English proof (translation)
+Use `IsInvariant.topologicalClosure ?_` and prove the remaining obligations. Introduce `g x hx`. Use `Submodule.span_induction (p := fun x _ => π g x ∈ Submodule.span ℂ _) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, π.map_mul_apply g h v⟩`.
+
+Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `c x _ hx`.
+
+Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem isInvariant_cyclicSubspace (v : H) : π.IsInvariant (π.cyclicSubspace v) := by
   refine IsInvariant.topologicalClosure ?_
   intro g x hx
@@ -193,16 +265,67 @@ theorem isInvariant_cyclicSubspace (v : H) : π.IsInvariant (π.cyclicSubspace v
     exact Submodule.smul_mem _ c hx
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
+/- English proof (translation)
+The claim follows from `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨1, by simp⟩)`.
+-/
 theorem mem_cyclicSubspace_self (v : H) : v ∈ π.cyclicSubspace v :=
   Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨1, by simp⟩)
 
 omit [MeasurableSpace G] [OpensMeasurableSpace G] in
 
+/- English proof (translation)
+The claim follows from `Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact hV g v hv)) hcl`.
+-/
 theorem cyclicSubspace_le {v : H} {V : Submodule ℂ H} (hcl : IsClosed (V : Set H))
     (hV : π.IsInvariant V) (hv : v ∈ V) : π.cyclicSubspace v ≤ V :=
   Submodule.topologicalClosure_minimal _
     (Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact hV g v hv)) hcl
 
+/- English proof (translation)
+Take `⟨w, hwW, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Take `⟨f, hf⟩` from `exists_integrated_ne_zero π μ hw0`. Use `set A := π.absSqOp μ (ccToL1 μ f) with hA`. Establish `hAc : IsCompactOperator A` using `IsCompactOperator.absSqOp π μ (hcpt f)`. Establish `hAs : (A : H →ₗ[ℂ] H).IsSymmetric` using `π.isSymmetric_absSqOp μ _`.
+
+Establish `hAinv : ∀ {V : Submodule ℂ H}, IsClosed (V : Set H) → π.IsInvariant V → ∀ v ∈ V, A v ∈ V` using `fun hcl hV v hv => hV.absSqOp_mem hcl _ hv`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam0, u, huW, hu0, hu⟩ : ∃ lam : ℂ, lam ≠ 0 ∧ ∃ u ∈ W, u ≠ 0 ∧ A u = lam • u := by`. Establish `: CompleteSpace W` using `hWcl.completeSpace_coe`. Set `S : W →L[ℂ] W` to `A.restrict (hAinv hWcl hWinv)`. Establish `hSc : IsCompactOperator S` using `hAc.restrict' (hAinv hWcl hWinv)`.
+
+Establish `hSs : (S : W →ₗ[ℂ] W).IsSymmetric` using `hAs.restrict_invariant (hAinv hWcl hWinv)`. Establish `hS0 : S ≠ 0`. Introduce `h`. Apply `absSqOp_apply_ne_zero π μ hf` to reduce the goal to its premises. Use `congrArg (fun g : W →L[ℂ] W => ((g ⟨w, hwW⟩ : W) : H)) h` as an intermediate fact.
+
+Simplify `this` using `[S]`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam, hlam0⟩ : ∃ lam, HasEigenvalue (S : W →ₗ[ℂ] W) lam ∧ lam ≠ 0 := by`. Assume the negation of the conclusion as `h'`. Use `push Not at h'`. Conclude with `hS0 ((ContinuousLinearMap.eq_zero_of_forall_hasEigenvalue_eq_zero hSc hSs).1 h')`.
+
+Take `⟨u, hu1, hu2⟩` from `hlam.exists_hasEigenvector`. Use `⟨lam, hlam0, u, u.2, fun h => hu2 (Subtype.ext h), ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (mem_eigenspace_iff.1 hu1)` as an intermediate fact. Simplify `this` using `[S]`. Use `set E := eigenspace (A : H →ₗ[ℂ] H) lam with hE`.
+
+Establish `hEfin : FiniteDimensional ℂ E` using `ContinuousLinearMap.finite_dimensional_eigenspace hAc lam hlam0`. Establish `hmemE : ∀ x, x ∈ E ↔ A x = lam • x` using `fun x => by`. Rewrite using `[hE, mem_eigenspace_iff, ContinuousLinearMap.coe_coe]`. Set `P : ℕ → Prop` to `fun n => ∃ V : Submodule ℂ H, IsClosed (V : Set H) ∧ π.IsInvariant V ∧ V ≤ W ∧ E ⊓ V ≠ ⊥ ∧ finrank ℂ ↥(E ⊓ V) = n`. Establish `hP : ∃ n, P n` using `⟨_, W, hWcl, hWinv, le_rfl, fun h => by`.
+
+Establish `: u ∈ E ⊓ W` using `⟨(hmemE u).2 hu, huW⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hu0 this, rfl⟩`. Take `⟨V₀, hV₀cl, hV₀inv, hV₀W, hV₀ne, hV₀n⟩` from `Nat.find_spec hP`. Establish `hmin : ∀ V : Submodule ℂ H, IsClosed (V : Set H) → π.IsInvariant V → V ≤ V₀ → E ⊓ V ≠ ⊥ → E ⊓ V = E ⊓ V₀`.
+
+Introduce `V hVcl hVinv hVV₀ hVne`. Establish `hle : E ⊓ V ≤ E ⊓ V₀` using `inf_le_inf_left E hVV₀`. Establish `: FiniteDimensional ℂ ↥(E ⊓ V₀)` using `Submodule.finiteDimensional_of_le inf_le_left`. Use `Submodule.eq_of_le_of_finrank_le hle ?_` and prove the remaining obligations. Rewrite using `[hV₀n]`.
+
+Conclude with `Nat.find_min' hP ⟨V, hVcl, hVinv, hVV₀.trans hV₀W, hVne, rfl⟩`. Take `⟨v, hvEV, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV₀ne`. Use `set U := π.cyclicSubspace v with hU`. Establish `hUcl : IsClosed (U : Set H)` using `π.isClosed_cyclicSubspace v`. Establish `hUinv : π.IsInvariant U` using `π.isInvariant_cyclicSubspace v`.
+
+Establish `hvU : v ∈ U` using `π.mem_cyclicSubspace_self v`. Establish `hUV₀ : U ≤ V₀` using `π.cyclicSubspace_le hV₀cl hV₀inv hvEV.2`. Use `⟨U, ⟨hUcl, hUinv, fun h => hv0 (by rw [h] at hvU; exact hvU), ?_⟩, hUV₀.trans hV₀W⟩` and prove the remaining obligations. Introduce `U' hU'cl hU'inv hU'U`. Establish `: CompleteSpace U'` using `hU'cl.completeSpace_coe`.
+
+Use `set p := U'.starProjection v with hp`. Use `set q := v - p with hq`. Establish `hpU' : p ∈ U'` using `U'.starProjection_apply_mem v`. Establish `hqU' : q ∈ U'ᗮ` using `U'.sub_starProjection_mem_orthogonal v`. Establish `hqU : q ∈ U` using `sub_mem hvU (hU'U hpU')`.
+
+Establish `h1 : A p - lam • p ∈ U'` using `sub_mem (hAinv hU'cl hU'inv p hpU') (Submodule.smul_mem _ _ hpU')`. Establish `h2 : A q - lam • q ∈ U'ᗮ` using `sub_mem (hAinv (Submodule.isClosed_orthogonal U') hU'inv.orthogonal q hqU') (Submodule.smul_mem _ _ hqU')`. Establish `hsum : (A p - lam • p) + (A q - lam • q) = 0`. Establish `hv : A v = lam • v` using `(hmemE v).1 hvEV.1`. Establish `: v = p + q` using `by rw [hq]; abel`.
+
+Rewrite `hv` using `[this, map_add, smul_add]`. Rewrite `hv` using `[← sub_eq_zero]`. Rewrite using `[← hv]`. Normalize the expressions using the abelian group laws. Establish `hp0 : A p - lam • p = 0`.
+
+Establish `h3 : A p - lam • p = -(A q - lam • q)` using `eq_neg_of_add_eq_zero_left hsum`. Establish `h4 : A p - lam • p ∈ U' ⊓ U'ᗮ` using `⟨h1, h3 ▸ neg_mem h2⟩`. Rewrite `h4` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hq0 : A q - lam • q = 0`. Rewrite `hsum` using `[hp0, zero_add]`.
+
+Conclude with `hsum`. Establish `hpE : p ∈ E` using `(hmemE p).2 (sub_eq_zero.1 hp0)`. Establish `hqE : q ∈ E` using `(hmemE q).2 (sub_eq_zero.1 hq0)`. Use `set U'' := U'ᗮ ⊓ U with hU''`. Establish `hU''cl : IsClosed (U'' : Set H)` using `(Submodule.isClosed_orthogonal U').inter hUcl`.
+
+Establish `hU''inv : π.IsInvariant U''` using `hU'inv.orthogonal.inf hUinv`. Distinguish the cases in `hpz : p = 0`. Use `left`. Establish `hvU'' : v ∈ U''`. Establish `: v = q` using `by rw [hq, hpz, sub_zero]`.
+
+Rewrite using `[this]`. Conclude with `⟨hqU', hqU⟩`. Establish `hUU'' : U ≤ U''` using `π.cyclicSubspace_le hU''cl hU''inv hvU''`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+
+Establish `hx' : x ∈ U'ᗮ` using `(hUU'' (hU'U hx)).1`. Establish `: x ∈ U' ⊓ U'ᗮ` using `⟨hx, hx'⟩`. Rewrite `this` using `[Submodule.inf_orthogonal_eq_bot]`. Then use the resulting hypothesis. Distinguish the cases in `hqz : q = 0`. Use `right`.
+
+Establish `hvU' : v ∈ U'`. Establish `: v = p` using `by rw [← sub_eq_zero]; exact hqz`. Rewrite using `[this]`. Conclude with `hpU'`. Conclude with `le_antisymm hU'U (π.cyclicSubspace_le hU'cl hU'inv hvU')`.
+
+It suffices to derive a contradiction. Establish `hne1 : E ⊓ U' ≠ ⊥` using `fun h => by`. Establish `: p ∈ E ⊓ U'` using `⟨hpE, hpU'⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hpz this`.
+
+Establish `hne2 : E ⊓ U'' ≠ ⊥` using `fun h => by`. Establish `: q ∈ E ⊓ U''` using `⟨hqE, hqU', hqU⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hqz this`. Establish `e1` using `hmin U' hU'cl hU'inv (hU'U.trans hUV₀) hne1`.
+
+Establish `e2` using `hmin U'' hU''cl hU''inv (inf_le_right.trans hUV₀) hne2`. Establish `hpU'' : p ∈ E ⊓ U''` using `by rw [e2, ← e1]; exact ⟨hpE, hpU'⟩`. Establish `: p ∈ U' ⊓ U'ᗮ` using `⟨hpU', hpU''.2.1⟩`. Rewrite `this` using `[Submodule.inf_orthogonal_eq_bot, Submodule.mem_bot]`. Conclude with `hpz this`.
+-/
 theorem exists_isMinimal_le [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure]
     (hcpt : ∀ f : CompactlySupportedContinuousMap G ℂ,
@@ -338,6 +461,23 @@ section decomposition
 variable [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure]
 
+/- English proof (translation)
+Set `S : Set (Set (Submodule ℂ H))` to `{s | (∀ V ∈ s, π.IsMinimal V) ∧ s.Pairwise fun V V' => V ⟂ V'}`. Take `⟨s, hs⟩` from `zorn_subset S fun c hcS hc => by`. Use `⟨⋃₀ c, ⟨fun V hV => ?_, fun V hV V' hV' hne => ?_⟩, fun t ht => Set.subset_sUnion_of_mem ht⟩` and prove the remaining obligations. Take `⟨t, ht, hVt⟩` from `Set.mem_sUnion.1 hV`. Conclude with `(hcS ht).1 V hVt`.
+
+Take `⟨t, ht, hVt⟩` from `Set.mem_sUnion.1 hV`. Take `⟨t', ht', hVt'⟩` from `Set.mem_sUnion.1 hV'`. Break down `hc.total ht ht' with h | h` into its components or cases. Conclude with `(hcS ht').2 (h hVt) hVt' hne`. Conclude with `(hcS ht).2 hVt (h hVt') hne`.
+
+Take `⟨hsmin, hsort⟩` from `hs.1`. Establish `hcomp : ∀ V : s, CompleteSpace (V : Submodule ℂ H)` using `fun V => (hsmin V V.2).1.completeSpace_coe`. Use `⟨s, hcomp, hsmin, ?_⟩` and prove the remaining obligations. Use `set M : Submodule ℂ H := ⨆ V : s, (V : Submodule ℂ H) with hM`. Establish `hMinv : π.IsInvariant Mᗮ` using `(IsInvariant.iSup fun V : s => (hsmin V V.2).2.1).orthogonal`.
+
+Establish `hMbot : Mᗮ = ⊥`. Assume the negation of the conclusion as `hne`. Take `⟨U, hU, hUM⟩` from `exists_isMinimal_le hcpt (Submodule.isClosed_orthogonal M) hMinv hne`. Establish `hUV : ∀ V ∈ s, U ⟂ V` using `fun V hV => by`. Rewrite using `[Submodule.isOrtho_iff_le]`.
+
+Use `hUM.trans (Submodule.orthogonal_le ?_)` and prove the remaining obligations. Conclude with `le_iSup (fun V : s => (V : Submodule ℂ H)) ⟨V, hV⟩`. Establish `hUs : U ∉ s` using `fun hUs => by`. Establish `h1 : U ≤ M` using `le_iSup (fun V : s => (V : Submodule ℂ H)) ⟨U, hUs⟩`. Apply `hU.2.2.1` to reduce the goal to its premises.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Establish `: x ∈ M ⊓ Mᗮ` using `⟨h1 hx, hUM hx⟩`. Rewrite `this` using `[Submodule.inf_orthogonal_eq_bot]`. Then use the resulting hypothesis. Establish `hins : insert U s ∈ S`.
+
+Use `⟨fun V hV => ?_, ?_⟩` and prove the remaining obligations. Break down `Set.mem_insert_iff.1 hV with rfl | hV` into its components or cases. Conclude with `hU`. Conclude with `hsmin V hV`. Rewrite using `[Set.pairwise_insert]`.
+
+Conclude with `⟨hsort, fun V hV _ => ⟨hUV V hV, (hUV V hV).symm⟩⟩`. Conclude with `hUs (hs.2 hins (Set.subset_insert U s) (Set.mem_insert U s))`. Use `IsHilbertSum.mkInternal _ (orthogonalFamily_iff_pairwise.mpr fun V V' hne => hsort V.2 V'.2 fun h => hne (Subtype.ext h)) ?_` and prove the remaining obligations. Rewrite using `[← hM, Submodule.topologicalClosure_eq_top_iff.2 hMbot]`.
+-/
 theorem exists_isHilbertSum_isMinimal
     (hcpt : ∀ f : CompactlySupportedContinuousMap G ℂ,
       IsCompactOperator (π.integrated μ (ccToL1 μ f))) :
@@ -389,6 +529,9 @@ theorem exists_isHilbertSum_isMinimal
     hsort V.2 V'.2 fun h => hne (Subtype.ext h)) ?_
   rw [← hM, Submodule.topologicalClosure_eq_top_iff.2 hMbot]
 
+/- English proof (translation)
+Take `⟨s, hcomp, hmin, hsum⟩` from `exists_isHilbertSum_isMinimal hcpt`. Conclude with `⟨s, hcomp, fun V => (hmin V V.2).2.1, hsum, fun V => isIrreducible_restrict_of_isMinimal _ (hmin V V.2)⟩`.
+-/
 theorem exists_isHilbertSum_isIrreducible
     (hcpt : ∀ f : CompactlySupportedContinuousMap G ℂ,
       IsCompactOperator (π.integrated μ (ccToL1 μ f))) :
@@ -400,6 +543,33 @@ theorem exists_isHilbertSum_isIrreducible
   exact ⟨s, hcomp, fun V => (hmin V V.2).2.1, hsum, fun V =>
     isIrreducible_restrict_of_isMinimal _ (hmin V V.2)⟩
 
+/- English proof (translation)
+Distinguish the cases in `h0 : σ.intertwiners π = ⊥`. Rewrite using `[h0]`. Use `infer_instance`. Take `⟨T₀, hT₀, hT₀ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Take `⟨c, hc⟩` from `hσ.exists_eq_smul_one (comp_mem_intertwiners (adjoint_mem_intertwiners hT₀) hT₀)`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hT₀ne` to reduce the goal to its premises. Use `ContinuousLinearMap.ext fun k => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun A : K →L[ℂ] K => ⟪k, A k⟫_ℂ) hc`.
+
+Simplify using `only [comp_apply, adjoint_inner_right, zero_smul, zero_apply, inner_zero_right, inner_self_eq_zero] at h`. Simplify using `using h`. Use `hσ.1` as an intermediate fact. Take `⟨k, hk⟩` from `exists_ne (0 : K)`. Take `⟨f, hf⟩` from `exists_integrated_ne_zero σ μ hk`.
+
+Use `set A := σ.absSqOp μ (ccToL1 μ f) with hA`. Use `set B := π.absSqOp μ (ccToL1 μ f) with hB`. Establish `hBc : IsCompactOperator B` using `IsCompactOperator.absSqOp π μ (hcpt f)`. Establish `hint : ∀ T ∈ σ.intertwiners π, T ∘L A = B ∘L T` using `fun T hT => comp_absSqOp_of_mem_intertwiners hT _`. Establish `hAeq' : adjoint T₀ ∘L (B ∘L T₀) = c • A`.
+
+Rewrite using `[← hint T₀ hT₀, ← ContinuousLinearMap.comp_assoc, hc, smul_comp]`. Use `congr 1`. Establish `hAeq : A = c⁻¹ • (adjoint T₀ ∘L (B ∘L T₀))`. Rewrite using `[hAeq', smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Establish `hAc : IsCompactOperator A`.
+
+Rewrite using `[hAeq]`. Conclude with `((hBc.comp_clm T₀).clm_comp (adjoint T₀)).smul c⁻¹`. Establish `hAs : (A : K →ₗ[ℂ] K).IsSymmetric` using `σ.isSymmetric_absSqOp μ _`. Establish `hA0 : A ≠ 0` using `fun h => absSqOp_apply_ne_zero σ μ hf (by rw [← hA, h, zero_apply])`. Choose the witnesses or unpack the hypotheses as in `⟨lam, hlam, hlam0⟩ : ∃ lam, HasEigenvalue (A : K →ₗ[ℂ] K) lam ∧ lam ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h'`. Use `push Not at h'`. Conclude with `hA0 ((ContinuousLinearMap.eq_zero_of_forall_hasEigenvalue_eq_zero hAc hAs).1 h')`. Take `⟨e, he1, he0⟩` from `hlam.exists_hasEigenvector`. Establish `he : A e = lam • e` using `by simpa using mem_eigenspace_iff.1 he1`.
+
+Use `set E := eigenspace (B : H →ₗ[ℂ] H) lam with hE`. Establish `hEfin : FiniteDimensional ℂ E` using `ContinuousLinearMap.finite_dimensional_eigenspace hBc lam hlam0`. Establish `hmem : ∀ T : σ.intertwiners π, (T : K →L[ℂ] H) e ∈ E` using `fun T => by`. Rewrite using `[hE, mem_eigenspace_iff, ContinuousLinearMap.coe_coe]`. Use `congrArg (fun S : K →L[ℂ] H => S e) (hint T T.2)` as an intermediate fact.
+
+Simplify using `only [comp_apply, he, map_smul] at this`. Conclude with `this.symm`. Set `Φ : σ.intertwiners π →ₗ[ℂ] E` to `{ toFun := fun T => ⟨(T : K →L[ℂ] H) e, hmem T⟩ map_add' := fun S T => Subtype.ext (by simp) map_smul' := fun a T => Subtype.ext (by simp) }`. Use `Module.Finite.of_injective Φ fun S T hST => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+
+Establish `h1 : ((S - T : σ.intertwiners π) : K →L[ℂ] H) e = 0`. Use `congrArg Subtype.val hST` as an intermediate fact. Simplify using `only [Φ, LinearMap.coe_mk, AddHom.coe_mk] at this`. Simplify using `[this]`. Use `set D := S - T with hD`.
+
+Establish `hker : LinearMap.ker ((D : K →L[ℂ] H) : K →ₗ[ℂ] H) = ⊤`. Break down `hσ.2 _ (D : K →L[ℂ] H).isClosed_ker (isInvariant_ker D.2) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: e ∈ LinearMap.ker ((D : K →L[ℂ] H) : K →ₗ[ℂ] H)`. Simplify using `using h1`.
+
+Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `he0 this`. Conclude with `h`. Use `Subtype.ext (ContinuousLinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `: x ∈ LinearMap.ker ((D : K →L[ℂ] H) : K →ₗ[ℂ] H)` using `by rw [hker]; trivial`.
+
+Simplify using `using this`.
+-/
 theorem finiteDimensional_intertwiners
     (hcpt : ∀ f : CompactlySupportedContinuousMap G ℂ,
       IsCompactOperator (π.integrated μ (ccToL1 μ f)))
@@ -476,6 +646,19 @@ theorem finiteDimensional_intertwiners
   have : x ∈ LinearMap.ker ((D : K →L[ℂ] H) : K →ₗ[ℂ] H) := by rw [hker]; trivial
   simpa using this
 
+/- English proof (translation)
+Use `finiteDimensional_intertwiners hcpt hσ` as an intermediate fact. Use `set J := {i | (π.restrict (V i) (hinv i)).IsEquivalent σ}`. Set `T : J → K →L[ℂ] H` to `fun i => (V i).subtypeL ∘L ((i.2.some.symm.toLinearIsometryEquiv : K ≃ₗᵢ[ℂ] V i) : K →L[ℂ] V i)`. Establish `hT : ∀ i, T i ∈ σ.intertwiners π` using `fun i => comp_mem_intertwiners (subtypeL_mem_intertwiners π (V i) (hinv i)) i.2.some.symm.mem_intertwiners`. Establish `hTV : ∀ (i : J) x, T i x ∈ V i` using `fun i x => ((i.2.some.symm.toLinearIsometryEquiv : K ≃ₗᵢ[ℂ] V i) x).2`.
+
+Establish `hTnorm : ∀ (i : J) x, ‖T i x‖ = ‖x‖` using `fun i x => ((V i).subtypeₗᵢ.norm_map _).trans (LinearIsometryEquiv.norm_map _ x)`. Use `hσ.1` as an intermediate fact. Take `⟨k, hk⟩` from `exists_ne (0 : K)`. Set `t : J → σ.intertwiners π` to `fun i => ⟨T i, hT i⟩`. Establish `hli : LinearIndependent ℂ t`.
+
+Rewrite using `[linearIndependent_iff']`. Introduce `u g hg j hj`. Establish `h1` using `congrArg (fun S : σ.intertwiners π => ⟪T j k, (S : K →L[ℂ] H) k⟫_ℂ) hg`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, FunLike.coe_sum, Finset.sum_apply, FunLike.coe_smul, Pi.smul_apply, inner_sum, inner_smul_right, ZeroMemClass.coe_zero, zero_apply, inner_zero_right, t] at h1`. Rewrite `h1` using `[Finset.sum_eq_single j]`.
+
+Rewrite `h1` using `[inner_self_eq_norm_sq_to_K, hTnorm]`. Establish `: (‖k‖ : ℂ) ^ 2 ≠ 0` using `by simpa using hk`. Conclude with `(mul_eq_zero.1 h1).resolve_right this`. Introduce `i _ hij`. Establish `hne : (i : ι) ≠ j` using `fun h => hij (Subtype.ext h)`.
+
+Use `hV hne.symm (⟨T j k, hTV j k⟩ : V j) (⟨T i k, hTV i k⟩ : V i)` as an intermediate fact. Establish `h0 : ⟪T j k, T i k⟫_ℂ = 0` using `this`. Rewrite using `[h0, mul_zero]`. Introduce `hj'`. Conclude with `absurd hj hj'`.
+
+Establish `: Finite J` using `hli.finite`. Conclude with `Set.toFinite J`.
+-/
 theorem finite_setOf_isEquivalent
     (hcpt : ∀ f : CompactlySupportedContinuousMap G ℂ,
       IsCompactOperator (π.integrated μ (ccToL1 μ f)))

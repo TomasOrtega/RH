@@ -10,6 +10,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.SatSplitAt
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ n π D w B ⟨σ, hc, hs⟩ ⟨b, hb, rfl⟩`. Take `⟨P, hsub, -, hsat⟩` from `GlobalTheory.PfBCI.unram_component D.h w (D.σ · w) b hb`. Take `⟨α, hα, hσ⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ _).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hs⟩)`. Take `⟨y, hy⟩` from `hsat.exists_vec`. Establish `hP : GlobalTheory.SmGL.HasSatake P.ρ α` using `GlobalTheory.CompanionTheory.SatComp.hasSatake_of_isSatVecGL ⟨P.smooth, P.irred⟩ α (hα ▸ hy)`.
+
+Take `⟨e⟩` from `GlobalTheory.SmGL.SphUniq.equiv_of_parInd _ _ hP.1 hσ.1 hP.2.2 hσ.2.2 hP.2.1 hσ.2.1`. Conclude with `⟨σ, (GlobalTheory.SmGL.IsSubquotient.of_surjective e.toIntertwiningMap e.toLinearEquiv.surjective).trans hsub, hc⟩`.
+-/
 theorem satSplit : PositivityTheory.Rg.BcB.F.RS.SatSplit := by
   rintro E _ _ _ n π D w B ⟨σ, hc, hs⟩ ⟨b, hb, rfl⟩
   obtain ⟨P, hsub, -, hsat⟩ := GlobalTheory.PfBCI.unram_component D.h w (D.σ · w) b hb

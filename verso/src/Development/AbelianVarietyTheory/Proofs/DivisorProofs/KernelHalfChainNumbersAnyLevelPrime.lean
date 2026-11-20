@@ -25,6 +25,17 @@ namespace GlobalTheory.KernelHalfS
 
 open GlobalTheory.ColNorms GlobalTheory.ColNorms.NumMean GlobalTheory.KernelHalf
 
+/- English proof (translation)
+Take `⟨⟨hrd, -, -, hx4, -⟩, hg, hlT, hfN, hnu, -⟩` from `hS`. Establish `hA` using `N_le N (j := i) (by omega)`. Establish `hB` using `N_le N (j := i + 1) (by omega)`. Establish `hL` using `one_le_L N.sc`. Establish `hb` using `two_le_b N.sc`.
+
+Establish `hx` using `N.sc.one_lt_alt`. Establish `hrd1` using `one_le_rd N`. Establish `hf` using `one_le_f N.R`. Establish `hNb : (N.Nm : ℝ) ≤ N.sc.b` using `le_trans (le_mul_of_one_le_left (by positivity) hf) hfN`. Establish `hAB : (N.R.N i : ℝ) * N.R.N (i + 1) ≤ (N.Nm : ℝ) ^ 2` using `by rw [sq]; gcongr`.
+
+Establish `hgb : (N.R.f : ℝ) * ((N.R.N i : ℝ) * N.R.N (i + 1)) ≤ N.sc.b ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hrdb : N.rd ≤ N.sc.b` using `(Real.log_le_iff_le_exp (by linarith)).1 hrd`. Establish `hxb : 4 * N.sc.x ≤ N.sc.b` using `(Real.log_le_iff_le_exp (by linarith)).1 hx4`. Establish `hv0 : 0 ≤ N.v` using `by unfold NumDatum.v; linarith`.
+
+Establish `hvb : N.v ≤ N.sc.b / 2` using `by unfold NumDatum.v; linarith`. Establish `hb3 : 8 ≤ N.sc.b ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `hb5 : 32 ≤ N.sc.b ^ 5`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `log_le_mul N.sc (y := 8 + 32 * ((N.R.f : ℝ) * ((N.R.N i : ℝ) * N.R.N (i + 1))) * N.v) (by positivity) 8 (by` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `using this`.
+-/
 theorem log_eight_leS (CY : ℝ) (N : NumDatum) (δ : Code N) (hS : GlobalTheory.Core.Ht2.SizeRowsS CY N δ) {i : ℕ} (hi : i < N.R.m) :
     Real.log (8 + 32 * ((N.R.f : ℝ) * ((N.R.N i : ℝ) * N.R.N (i + 1))) * N.v) ≤ 8 * N.sc.L := by
   obtain ⟨⟨hrd, -, -, hx4, -⟩, hg, hlT, hfN, hnu, -⟩ := hS
@@ -60,6 +71,19 @@ theorem log_eight_leS (CY : ℝ) (N : NumDatum) (δ : Code N) (hS : GlobalTheory
       _ = _ := by ring)
   simpa using this
 
+/- English proof (translation)
+Take `⟨⟨hrd, -, -, hx4, -⟩, hg, hlT, hfN, hnu, -⟩` from `hS`. Establish `hj : i + 1 ∈ N.lifts` using `Finset.mem_Icc.2 ⟨by omega, by omega⟩`. Establish `hA` using `N_le N (j := i) (by omega)`. Establish `hb` using `two_le_b N.sc`. Establish `hx` using `N.sc.one_lt_alt`.
+
+Establish `hf` using `one_le_f N.R`. Establish `hNb : (N.Nm : ℝ) ≤ N.sc.b` using `le_trans (le_mul_of_one_le_left (by positivity) hf) hfN`. Establish `hxb : 4 * N.sc.x ≤ N.sc.b` using `(Real.log_le_iff_le_exp (by linarith)).1 hx4`. Establish `hb2 : 4 ≤ N.sc.b ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hb3 : 8 ≤ N.sc.b ^ 3`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : (0 : ℝ) ≤ ((N.nuAbs δ (i + 1) z : ℚ) : ℝ)`. Establish `: 0 ≤ N.nuAbs δ (i + 1) z` using `Finset.sum_nonneg fun k hk => (hnu (i + 1) hj z k (Finset.mem_range.1 hk)).1`. Conclude with `this` after adjusting the coercions.
+
+Establish `h1 : ((N.nuAbs δ (i + 1) z : ℚ) : ℝ) ≤ (N.R.N i : ℝ) * (3 * N.sc.a)`. Unfold `NumDatum.nuAbs`. Use `push_cast`. Use `Finset.sum_le_card_nsmul (Finset.range (N.R.N i)) (fun k => ((N.nu δ (i + 1) z k : ℚ) : ℝ)) (3 * N.sc.a) fun k hk => (hnu (i + 1) hj z k (Finset.mem_range.1 hk)).2` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : ((N.nuAbs δ (i + 1) z : ℚ) : ℝ) ≤ N.sc.b ^ 3`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = _ := by ring`.
+
+Use `log_le_mul N.sc (y := 2 * ((N.nuAbs δ (i + 1) z : ℚ) : ℝ) + 2) (by positivity) 5 (by` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `using this`.
+-/
 theorem log_nu_leS (CY : ℝ) (N : NumDatum) (δ : Code N) (hS : GlobalTheory.Core.Ht2.SizeRowsS CY N δ) {i : ℕ} (hi : i < N.R.m) (z : RPl N.R) :
     Real.log (2 * ((N.nuAbs δ (i + 1) z : ℚ) : ℝ) + 2) ≤ 5 * N.sc.L := by
   obtain ⟨⟨hrd, -, -, hx4, -⟩, hg, hlT, hfN, hnu, -⟩ := hS
@@ -101,6 +125,45 @@ theorem log_nu_leS (CY : ℝ) (N : NumDatum) (δ : Code N) (hS : GlobalTheory.Co
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hmx : 0 ≤ max CY 0` using `le_max_right _ _`. Take `⟨nL, na, nb, nLa, nm, nf, nk, nNn, nS, nη, nb', nlo⟩` from `hR.nums`. Establish `hL` using `one_le_L N.sc`. Establish `hf` using `one_le_f N.R`. Establish `hN` using `one_le_Nm N`.
+
+Establish `hLL` using `L_le_La N`. Establish `hg0 : (1 : ℝ) ≤ N.g 0` using `by exact_mod_cast (N.g_prime 0).one_lt.le`. Establish `hg1 : (1 : ℝ) ≤ N.g 1` using `by exact_mod_cast (N.g_prime 1).one_lt.le`. Establish `hT1 : (1 : ℝ) ≤ T` using `by exact_mod_cast (by omega : 1 ≤ T)`. Establish `hlg0 : 0 ≤ Real.log ((N.g 0 : ℝ) * N.g 1)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hg0 hg1)`.
+
+Establish `hlT0 : 0 ≤ Real.log (T : ℝ)` using `Real.log_nonneg hT1`. Establish `hlog : Real.log ((N.g 0 : ℝ) * N.g 1 * T) = Real.log ((N.g 0 : ℝ) * N.g 1) + Real.log (T : ℝ)` using `Real.log_mul (by positivity) (by positivity)`. Establish `hU0 : 0 ≤ errUnit N T`. Unfold `errUnit`. Rewrite using `[hlog]`.
+
+Check the signs of the components of the expression. Use `set C : ℝ := CK + 2 * E + 2 * Ct + 20 + 2 * max CY 0 with hC`. Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `hX0 : 0 ≤ E * errUnit N T` using `mul_nonneg hE hU0`. Unfold `KerSide`.
+
+Use `⟨fun l => (N.R.N (eJ l).1 : ℝ) * (N.R.N ((eJ l).1 + 1) : ℝ), fun l _ => CK * N.R.f * (N.R.m : ℝ) ^ 2 * (N.Nm : ℝ) ^ 2 * Real.log ((N.g 0 : ℝ) * N.g 1 * T) + (1 / 2) * Real.log ((h (eJ l).1 : ℝ) * h ((eJ l).1 + 1)) + (1 / 2) * Real.log ((n (eJ l).1 : ℝ) * n ((eJ l).1 + 1)), fun z …` and prove the remaining obligations. Introduce `τ`. Rewrite using `[wt_mean wt _ d hmean (fun a => lo a τ), hlo, nlo]`. Introduce `l _`. Establish `hl` using `(eJ l).2`.
+
+Establish `a1` using `log_mul_le hX0 (hh (eJ l).1 hl.le) (hh ((eJ l).1 + 1) hl)`. Establish `a2` using `log_mul_le hX0 (hn (eJ l).1 hl.le) (hn ((eJ l).1 + 1) hl)`. Rewrite using `[nf, nm, nNn, hR.logT]`. Establish `e : CK * N.R.f * (N.R.m : ℝ) ^ 2 * (N.Nm : ℝ) ^ 2 * Real.log ((N.g 0 : ℝ) * N.g 1 * T) = CK * errUnit N T`. Unfold `errUnit`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : C * N.R.f * (N.R.m : ℝ) ^ 2 * (N.Nm : ℝ) ^ 2 * (Real.log ((N.g 0 : ℝ) * N.g 1) + Real.log (T : ℝ)) = C * errUnit N T`. Unfold `errUnit`. Rewrite using `[hlog]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, e2]`. Establish `h3 : (CK + 2 * E) * errUnit N T ≤ C * errUnit N T`. Use `mul_le_mul_of_nonneg_right ?_ hU0` and prove the remaining obligations. Rewrite using `[hC]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h4 : 0 ≤ C * N.R.f * (N.Nm : ℝ) ^ 2 * Real.log ((N.g 0 : ℝ) * N.g 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (∑ v, (∑ a, wt v a * lt a) / (N.R.f : ℝ)) / (Fintype.card Emb : ℝ) = ((∑ a, lt a) / d) / N.R.f`. Rewrite using `[← Finset.sum_div, div_right_comm, wt_mean wt _ d hmean lt]`. Rewrite using `[e, nL]`.
+
+Establish `hf0 : (0 : ℝ) < N.R.f` using `by linarith`. Rewrite using `[div_le_iff₀ hf0]`. Use `hlt.trans ?_` and prove the remaining obligations. Establish `: 2 * Ct ≤ C` using `by rw [hC]; linarith`. Establish `h5 : 2 * Ct * N.sc.L ≤ C * N.sc.L` using `mul_le_mul_of_nonneg_right this (by linarith)`.
+
+Establish `h7` using `mul_le_mul_of_nonneg_right h5 hf0.le`. Combine the equalities or inequalities in the displayed calculation. Introduce `_`. Rewrite using `[nf, nNn, nL, hR.logT]`. Establish `: 0 ≤ N.sc.L` using `by linarith`.
+
+Check the signs of the components of the expression. Introduce `_`. Rewrite using `[nf, nNn, nL, hR.logT]`. Establish `: 0 ≤ N.sc.L` using `by linarith`. Check the signs of the components of the expression.
+
+Introduce `l`. Establish `hl` using `(eJ l).2`. Rewrite using `[nNn, sq]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Conclude with `mul_le_mul (N_le N hl.le) (N_le N hl) (by positivity) (by positivity)`.
+
+Introduce `l`. Rewrite using `[card_RPl, nLa]`. Use `(log_eight_leS CY N δ hS (eJ l).2).trans ?_` and prove the remaining obligations. Establish `h6 : 8 ≤ C` using `by rw [hC]; linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `l τ`. Rewrite using `[hR.sumNu, nLa]`. Use `(log_nu_leS CY N δ hS (eJ l).2 τ).trans ?_` and prove the remaining obligations. Establish `h6 : 5 ≤ C` using `by rw [hC]; linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[nL, Real.log_mul (by positivity) (by positivity)]`. Establish `b0` using `(hS.2.1 0).2`. Establish `b1` using `(hS.2.1 1).2`. Establish `h6 : 2 * max CY 0 + 2 ≤ C` using `by rw [hC]; linarith`. Establish `c0 : CY * N.sc.L ≤ max CY 0 * N.sc.L` using `mul_le_mul_of_nonneg_right (le_max_left _ _) (by linarith)`.
+
+Establish `c1 : 2 ≤ 2 * N.sc.L` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Use `hP _ fun l v => ?_` and prove the remaining obligations. Rewrite using `[kernelBound_wt N δ T CK _ (wt v) (h1 v) lo _]`. Establish `hf0 : (N.R.f : ℝ) ≠ 0` using `by linarith`.
+
+Establish `e : (N.R.f : ℝ) * ((N.R.N (eJ l).1 : ℝ) * (N.R.N ((eJ l).1 + 1) : ℝ)) * ((∑ a, wt v a * lt a) / N.R.f) = ∑ a, wt v a * ((N.R.N (eJ l).1 : ℝ) * (N.R.N ((eJ l).1 + 1) : ℝ) * lt a)`. Simplify using `only [Finset.mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Unfold `Formalism.DimensionVariation.liftedMapLogSize kernelBound_sq`.
+
+Simplify using `only [hR.phNu, hR.sumNu, card_RPl, Nat.add_sub_cancel]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kerSide_of_meansS {J Emb α : Type} [Fintype J] [Fintype Emb] [Fintype α] (N : NumDatum) (δ : Code N) (T : ℕ) (hT : 2 ≤ T)
     (CY : ℝ) (hS : GlobalTheory.Core.Ht2.SizeRowsS CY N δ) (eJ : J ≃ Fin N.R.m) (R : RecNums J (RPl N.R)) (hR : Reads N eJ δ T R)
     (CK E Ct d : ℝ) (hCK : 0 ≤ CK) (hE : 0 ≤ E) (hCt : 0 ≤ Ct)
@@ -216,6 +279,47 @@ theorem kerSide_of_meansS {J Emb α : Type} [Fintype J] [Fintype Emb] [Fintype �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `CY`. Take `⟨CK, hCK, hfac⟩` from `GlobalTheory.T.norms_matrixSteps_coupledFactor_bounded_anyLevelPrime (GlobalTheory.Proof.WeightSequenceEntries.blockBound_iff.1 GlobalTheory.JetBlock.blockBound) GlobalTheory.T.normalisedFamily_eq_tensorPower_vacuum GlobalTheory.T.normalisedFamily_nonzeroThetaVectors_numberField …`. Take `⟨Cc, hCc, hcl⟩` from `GlobalTheory.ChainClassNumbersS.classNumbers_leS`. Take `⟨Ci, hCi, hidx⟩` from `GlobalTheory.T.card_matrixStep_indices_le_exp`. Take `⟨Cy, hCy, hyb⟩` from `GlobalTheory.CouplingCosetsS.ncard_ybSet_le`.
+
+Take `⟨Ct, hth⟩` from `GlobalTheory.T.normalisedFamily_normBound_absoluteConstant`. Establish `hP` using `GlobalTheory.T.meanLogPeriod_chowlaSelberg`. Establish `hV` using `GlobalTheory.T.normalisedFamily_nonzeroThetaVectors_numberField`. Use `⟨CK + 2 * (Cc + Ci + Cy) + 2 * max Ct 0 + 20 + 2 * max CY 0, by positivity, ?_⟩` and prove the remaining obligations. Introduce `D N X _ s Pr W Ch G sel Sg mu cst I dl B χ cD pl u δ b hY hK hF hE J _ eJ R h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 hR`.
+
+Establish `H : GlobalTheory.Core.Ht2.HypS CY N s W Ch G sel mu cst I dl χ cD pl u δ` using `⟨h1, h2, h3, h4, h5, h6, h7, h9, h10⟩`. Take `⟨trd, tv, tL, tOm, tf, -, tE, -, tcc⟩` from `GlobalTheory.T.numDatum_numbers_eq_host_of_compatible D N X s Pr h1`. Take `⟨-, -, -, -, hpsi, hadm, hX, hs, -, hPr, -, -, hg, -⟩` from `id h1`. Establish `hcrv : StandardLatticesGL3.Crv D D.host.ccK dl` using `⟨tcc, h4.1⟩`. Establish `hYf` using `GlobalTheory.T.kernelConstant_exponents_finite D B.γ₀ B.kc`.
+
+Establish `hVe : B.VecP χ` using `hV D _ dl B χ hadm hpsi tcc h4.1 h4.2.1 hYf`. Establish `hev : ∀ l, Even (N.R.N l)` using `fun l => by`. Unfold `Ranks.N`. Conclude with `N.R.k_even.add ((N.R.t_odd.add_one).mul_left l)`. Establish `hm` using `N.R.two_le_m`.
+
+Establish `hU : 0 ≤ errUnit N (Pr.T u)`. Establish `h0 : (1 : ℝ) ≤ N.g 0` using `by exact_mod_cast (N.g_prime 0).one_lt.le`. Establish `h1' : (1 : ℝ) ≤ N.g 1` using `by exact_mod_cast (N.g_prime 1).one_lt.le`. Establish `h2' : (1 : ℝ) ≤ Pr.T u` using `by exact_mod_cast (hPr.T_prime u).one_lt.le`. Establish `h3' : 0 ≤ Real.log ((N.g 0 : ℝ) * N.g 1 * Pr.T u)` using `Real.log_nonneg (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h0 h1') h2')`.
+
+Unfold `errUnit`. Check the signs of the components of the expression. Take `⟨hc1, -, hc3⟩` from `hcl CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H`. Establish `m1 : Real.exp (Cc * errUnit N (Pr.T u)) ≤ Real.exp ((Cc + Ci + Cy) * errUnit N (Pr.T u))` using `by gcongr; linarith`. Establish `m2 : Real.exp (Ci * errUnit N (Pr.T u)) ≤ Real.exp ((Cc + Ci + Cy) * errUnit N (Pr.T u))` using `by gcongr; linarith`.
+
+Establish `m3 : Real.exp (Cy * errUnit N (Pr.T u)) ≤ Real.exp ((Cc + Ci + Cy) * errUnit N (Pr.T u))` using `by gcongr; linarith`. Establish `hh : ∀ l ≤ N.R.m, (classNumberAt W Ch sel mu I u l : ℝ) ≤ Real.exp ((Cc + Ci + Cy) * errUnit N (Pr.T u))`. Introduce `l hl`. Use `le_trans ?_ m1` and prove the remaining obligations. Unfold `classNumberAt`.
+
+Use `split_ifs with h`. Conclude with `hc3`. Rewrite using `[← Nat.le_floor_iff (Real.exp_pos _).le]`. Conclude with `Finset.sup_le fun b _ => Nat.le_floor (hc1 l hl b)`. Establish `hn : ∀ l ≤ N.R.m, (indexCount sel mu cst I l : ℝ) ≤ Real.exp ((Cc + Ci + Cy) * errUnit N (Pr.T u))`.
+
+Introduce `l hl`. Unfold `indexCount`. Use `split_ifs with h h'`. Rewrite using `[Nat.cast_one]`. Conclude with `Real.one_le_exp (by positivity)`.
+
+Use `le_trans (hyb CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H _ ?_).1 m3` and prove the remaining obligations. Unfold `NumDatum.Nm Ranks.N`. Use `gcongr`. Conclude with `le_trans (hidx CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H l (by omega)) m2`. Choose the witnesses or unpack the hypotheses as in `⟨M, hfd, hM⟩ : ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ ThetaFieldData B cD s.σ₀ N.R M := by`.
+
+Use `GlobalTheory.T.exists_numberField_containing_coefficientData D _ dl B cD X.K s.σ₀ N.R hcrv h4.2.2 fun i _ => ?_` and prove the remaining obligations. Take `⟨hAdm, hbase⟩` from `GlobalTheory.T.normalisedFamily_standardLattices_eq_baseVector D _ dl B χ h4.2.1 hVe _ _ (hev i) (hev (i + 1))`. Rewrite using `[← hbase]`. Conclude with `(hVe _ _ _ _ hAdm).2.2`. Use `haveI := hfd`.
+
+Establish `hfac` using `fun ρ => hfac CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H B b hY hK hF hE h8 M hM ρ`. Take `⟨wt, w0, w1, wup, wmean⟩` from `GlobalTheory.PlaceWeights.exists_weights X.K s.σ₀ M hM.1`. Use `choose lt hlt using GlobalTheory.T.log_norm_conj_vacuum_eq_rank_product_mul D dl B χ cD X.K s.σ₀ N.R M hadm hpsi tcc h4.1 h4.2.1 hVe hM`. Establish `hmean : (∑ ρ, lt ρ) / (Module.finrank ℚ M : ℝ) ≤ max Ct 0 * N.R.f * (2 * N.sc.L)`. Take `⟨hAdm, hbase⟩` from `GlobalTheory.T.normalisedFamily_standardLattices_eq_baseVector D _ dl B χ h4.2.1 hVe _ _ (hev 0) (hev 1)`.
+
+Establish `hco : TaylorLogMetric.CoefIn D (B.thZero (N.R.N 0) (N.R.N 1)) M` using `hM.2.2.2 0 (by omega)`. Establish `hL0 : 0 ≤ N.sc.L` using `(Real.rpow_pos_of_pos (by linarith [N.sc.one_lt_alt]) _).le`. Establish `hLs : Real.log D.host.v + |TaylorLogMetric.logDerivativeAtOne D| ≤ 2 * N.sc.L`. Establish `g1` using `h10.1.1`. Establish `g2` using `h10.1.2.2.2.2`.
+
+Rewrite using `[← tv, ← tL]`. Establish `g3 : 0 < N.rd` using `lt_of_lt_of_le one_pos (one_le_rd N)`. Establish `g4 : Real.log N.v ≤ Real.log N.rd` using `Real.log_le_log (by unfold NumDatum.v; positivity) (by unfold NumDatum.v; linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5'` using `(hth D _ dl B χ hadm hpsi tcc h4.1 h4.2.1 hYf).2.1 _ hLs _ _ _ _ hAdm M hM.2.1 (by rwa [hbase])`.
+
+Rewrite `h5'` using `[hbase, tf]`. Establish `e : (∑ ρ : M →ₐ[ℚ] ℂ, logThAt B M ρ (N.R.N 0) (N.R.N 1)) / (Module.finrank ℚ M : ℝ) = ((N.R.N 0 : ℝ) * (N.R.N 1 : ℝ)) * ((∑ ρ, lt ρ) / (Module.finrank ℚ M : ℝ))`. Simplify using `only [fun ρ => hlt ρ 0 (by omega : 0 < N.R.m)]`. Rewrite using `[← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpos : (0 : ℝ) < (N.R.N 0 : ℝ) * (N.R.N 1 : ℝ)`. Establish `hk` using `N.R.m_add_three_le_k`. Establish `a0 : 0 < N.R.N 0` using `by unfold Ranks.N; omega`. Establish `a1 : 0 < N.R.N 1` using `by unfold Ranks.N; omega`. Check the signs of the components of the expression.
+
+Establish `h6 : ((N.R.N 0 : ℝ) * (N.R.N 1 : ℝ)) * ((∑ ρ, lt ρ) / (Module.finrank ℚ M : ℝ)) ≤ ((N.R.N 0 : ℝ) * (N.R.N 1 : ℝ)) * (max Ct 0 * N.R.f * (2 * N.sc.L))`. Rewrite using `[← e]`. Use `le_trans h5' ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_max_left _ _`.
+
+Use `_ = _ := by ring`. Conclude with `le_of_mul_le_mul_left h6 hpos`. Use `kerSide_of_meansS N δ (Pr.T u) (hPr.T_prime u).two_le CY h10 eJ R hR CK (Cc + Ci + Cy) (max Ct 0) (Module.finrank ℚ M : ℝ) hCK (by positivity) (le_max_right _ _) wt w1 wmean (fun ρ z => logOmAt B cD M ρ (s.iT (pl z))) lt ?_ hmean (classNumberAt W Ch sel mu I u) (indexCount sel mu …` and prove the remaining obligations. Introduce `z`. Rewrite using `[tOm]`.
+
+Conclude with `(GlobalTheory.T.mean_logMetric_generator_eq_meanPeriod D _ dl cD hcrv (hP D _ dl tcc h4.1) h4.2.2).2 M hM.2.1 hM.2.2.1 _`. Introduce `t ht`. Use `factorBounds_of_weights _ hm rfl eJ (fun ρ => placeUnder s.σ₀ hM.1 ρ) wt w0 w1 wup (fun ρ j => liftBound_sq N s W Ch sel mu cst I B cD pl u δ CK M ρ j) (fun i v φ => GlobalTheory.ColumnFamilyMetric.famIpAt_nonneg X Pr N.R W sel Sg mu I u i (hF i) v φ) (fun a i hi => (hfac a).1 i …` and prove the remaining obligations. Rewrite using `[ht]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+
+Unfold `liftBound_sq`. Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[hlt ρ _ (eJ l).2]`.
+-/
 theorem kerSide_chainS : ∀ CY : ℝ, ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (N : NumDatum) (X : Fields) [IsTotallyComplex X.K] (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (B : Base D D.host.ccK dl) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N) (b : I.β (N.R.m - 2 + 1)) (hY : YbHyp (R := N.R) sel mu cst I u (N.R.m - 2) b) (hK : KerEquivC W Ch sel mu cst I (ambOf s B χ cD) u (N.R.m - 2) b hY (rPsymF Ch)) (hF : ∀ j, (chF W sel mu I u j).Ok) (hE : (evGSD W Ch sel mu (rPsymF Ch) u).Ok) (J : Type) [Fintype J] (eJ : J ≃ Fin N.R.m) (R : RecNums J (RPl N.R)), HostTie N s Pr → WeightTie N W pl u δ → CharTie N s W Ch G sel → AnalyticTie D dl χ cD → mu = 1 → cst.sharp = true → I.Ok Ch sel mu cst G (N.R.m - 2) → FieldOfDefinition W sel mu cst u (ambOf s B χ cD) → Sizes Pr W N.sc.a → GlobalTheory.Core.Ht2.SizeRowsS CY N δ → Reads N eJ δ (Pr.T u) R → KerSide R (InfinitePlace X.K) C (FactorBounds (KerChain.ofCol W Ch sel mu cst I (chKerC W Ch sel mu cst I (ambOf s B χ cD) u (N.R.m - 2) b hY (rPsymF Ch) hK) hF hE) fun l => (eJ l).1) := by
   intro CY
   obtain ⟨CK, hCK, hfac⟩ := GlobalTheory.T.norms_matrixSteps_coupledFactor_bounded_anyLevelPrime (GlobalTheory.Proof.WeightSequenceEntries.blockBound_iff.1 GlobalTheory.JetBlock.blockBound) GlobalTheory.T.normalisedFamily_eq_tensorPower_vacuum

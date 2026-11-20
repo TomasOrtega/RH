@@ -11,6 +11,11 @@ open MvPolynomial
 
 universe u
 
+/- English proof (translation)
+Apply `Set.Finite.subset (Ideal.finite_minimalPrimes_of_isNoetherianRing _ J)` to reduce the goal to its premises. Introduce `W hW`. Assume the negation of the conclusion as `hmin`. Apply `hW` to reduce the goal to its premises. Unfold `idealCycle`.
+
+Rewrite using `[dif_neg]`. Conclude with `fun h => hmin h.1`.
+-/
 theorem idealCycle_support_finite {R : Type*} [CommRing R] {K : Type*} {ι : K → Type*}
     [IsNoetherianRing (MRing ι R)] (J : Ideal (MRing ι R)) :
     (Function.support (idealCycle J)).Finite := by
@@ -22,6 +27,19 @@ theorem idealCycle_support_finite {R : Type*} [CommRing R] {K : Type*} {ι : K �
   rw [dif_neg]
   exact fun h => hmin h.1
 
+/- English proof (translation)
+Use `set S := ha.toFinset`. Use `set T := S.biUnion (fun W => (hc W).toFinset)`. Establish `hcT : ∀ W ∈ S, Function.support (c W) ⊆ ↑T`. Introduce `W hW U hU`. Rewrite using `[Finset.mem_coe, Finset.mem_biUnion]`.
+
+Conclude with `⟨W, hW, (hc W).mem_toFinset.mpr hU⟩`. Establish `hin : ∀ U, ∑ᶠ W, a W * c W U = ∑ W ∈ S, a W * c W U`. Introduce `U`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `W hW`.
+
+Rewrite using `[Finset.mem_coe, ha.mem_toFinset]`. Conclude with `left_ne_zero_of_mul hW`. Repeatedly rewrite using `[hin]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S), finsum_eq_sum_of_support_subset (s := T)]`. Rewrite using `[Finset.sum_congr rfl (g := fun W => a W * ∑ U ∈ T, c W U * n U)]`.
+
+Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm`. Introduce `W hW`. Use `congr 1`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+
+Introduce `U hU`. Conclude with `hcT W hW (left_ne_zero_of_mul hU)`. Introduce `U hU`. Take `⟨W, hW, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (left_ne_zero_of_mul hU)`. Conclude with `hcT W hW (right_ne_zero_of_mul hne)`.
+
+Introduce `W hW`. Rewrite using `[Finset.mem_coe, ha.mem_toFinset]`. Conclude with `left_ne_zero_of_mul hW`.
+-/
 theorem finsum_mul_finsum_comm {α β : Type*} (a : α → ℤ) (c : α → β → ℤ) (n : β → ℤ)
     (ha : (Function.support a).Finite) (hc : ∀ W, (Function.support (c W)).Finite) :
     ∑ᶠ W, a W * ∑ᶠ U, c W U * n U = ∑ᶠ U, (∑ᶠ W, a W * c W U) * n U := by
@@ -55,6 +73,15 @@ theorem finsum_mul_finsum_comm {α β : Type*} (a : α → ℤ) (c : α → β �
     rw [Finset.mem_coe, ha.mem_toFinset]
     exact left_ne_zero_of_mul hW
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hmodel b f g heff c s hs hsP hhor hnc L`. Establish `hPmh : IsMultiHomogIdeal (P ⊔ Ideal.span {s})` using `SupSpanMultiHomog.proof O K ι P s c hmodel.multiProj.multiHomog hs`. Establish `key : ∀ W : Ideal (MRing ι O), divCycle P s W * (if (C ϖ : MRing ι O) ∈ W then vNum W (Matrix.vecCons b L) else cycEval (fun G => vNum G L) (ratDiv W f g)) = divCycle P s W * cycEval (fun U => vNum U L) (idealCycle (W ⊔ divisorIdeal P f g))`. Introduce `W`. Distinguish the cases in `hW : divCycle P s W = 0`.
+
+Rewrite using `[hW, zero_mul, zero_mul]`. Use `congr 1`. Take `⟨hWp, hPW, hWrel⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Establish `hWmin : W ∈ (P ⊔ Ideal.span {s}).minimalPrimes`. Unfold `divCycle at hW`.
+
+Use `split_ifs at hW with h`. Conclude with `h.1`. Conclude with `absurd rfl hW`. Use `split_ifs with hϖW`. Conclude with `hV O ϖ hϖ K ι P d hmodel b f g heff W s hsP hWmin hWrel (MinimalPrimeMultiHomog.proof O K ι _ W hPmh hWmin) hϖW (hnc W hϖW hW) L`.
+
+Establish `hv` using `hhor W hW hϖW`. Establish `hP : P.IsPrime` using `hmodel.multiProj.isPrime`. Rewrite using `[hD O K ι P W f g g f hP hWp hPW heff.1.den_not_mem (fun U hU hWU hUrel => heff.2 U hU (hPW.trans hWU) hUrel) hv.den_not_mem hv.num_not_mem (by rw [mul_comm, sub_self]; exact P.zero_mem)]`. Conclude with `(finsum_congr key).trans <| finsum_mul_finsum_comm _ (fun W U => idealCycle (W ⊔ divisorIdeal P f g) U) _ (DivCycleFiniteSupport.proof O K ι P s) (fun W => idealCycle_support_finite _)`.
+-/
 theorem RightExpansion.proof (hV : VertCutEff.Statement.{u})
     (hD : DivisorIdealCycle.Statement.{u}) : RightExpansion.Statement.{u} := by
   classical

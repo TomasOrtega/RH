@@ -11,6 +11,9 @@ open scoped Matrix ENNReal
 
 namespace GlobalTheory.DblInt
 
+/- English proof (translation)
+Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+-/
 theorem elim_dot' {R : Type} [CommRing R] {κ κ' : Type} [Fintype κ] [Fintype κ'] (u v : κ → R) (x y : κ' → R) :
     Sum.elim u x ⬝ᵥ Sum.elim v y = u ⬝ᵥ v + x ⬝ᵥ y := by
   simp [dotProduct, Fintype.sum_sum_type]
@@ -20,6 +23,9 @@ section Coord
 variable {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E)
   {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
+/- English proof (translation)
+Simplify using `only [hTens, dbl, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, Matrix.toCols₁_apply, Matrix.toC …`. Rewrite using `[← sub_eq_add_neg]`.
+-/
 theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (w w' : Matrix α (β ⊕ β) E) :
     hTens c JA (dbl JB) w w' = hTens c JA JB w.toCols₁ w'.toCols₁ - hTens c JA JB w.toCols₂ w'.toCols₂ := by
   simp only [hTens, dbl, Fintype.sum_sum_type, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
@@ -28,6 +34,9 @@ theorem hTens_dbl (JA : Matrix α α E) (JB : Matrix β β E) (w w' : Matrix α 
     Finset.sum_neg_distrib, Finset.sum_add_distrib]
   rw [← sub_eq_add_neg]
 
+/- English proof (translation)
+Unfold `symp`. Rewrite using `[hTens_dbl, mul_sub, map_sub]`.
+-/
 theorem symp_dbl (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (w w' : Matrix α (β ⊕ β) E) :
     symp c ξ JA (dbl JB) w w' = symp c ξ JA JB w.toCols₁ w'.toCols₁ - symp c ξ JA JB w.toCols₂ w'.toCols₂ := by
   unfold symp
@@ -61,6 +70,9 @@ def dblCo (d : Darboux (symp c ξ JA JB) κ) : Darboux (symp c ξ JA (dbl JB)) (
     rw [symp_dbl, d.form, d.form, elim_dot', elim_dot', dotProduct_neg, dotProduct_neg]
     ring
 
+/- English proof (translation)
+Introduce `w₁ w₂` and use `by simp [dblCo]`.
+-/
 theorem dblCo_isDblCoord (d : Darboux (symp c ξ JA JB) κ) : IsDblCoord c ξ JA JB d (dblCo c d) := fun w₁ w₂ => by
   simp [dblCo]
 
@@ -74,6 +86,9 @@ def conjE {X : Type} (T : (X → ℂ) ≃ₗ[ℂ] (X → ℂ)) : (X → ℂ) ≃
   LinearEquiv.ofLinear (conjMap T.toLinearMap) (conjMap T.symm.toLinearMap)
     (LinearMap.ext fun φ => by simp [conjMap_apply]) (LinearMap.ext fun φ => by simp [conjMap_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjE_apply {X : Type} (T : (X → ℂ) ≃ₗ[ℂ] (X → ℂ)) (φ : X → ℂ) : conjE T φ = star (T (star φ)) := rfl
 
 def partLE {κ κ' : Type} (T : ((κ → R) → ℂ) ≃ₗ[ℂ] ((κ → R) → ℂ)) : ((κ ⊕ κ' → R) → ℂ) ≃ₗ[ℂ] ((κ ⊕ κ' → R) → ℂ) :=

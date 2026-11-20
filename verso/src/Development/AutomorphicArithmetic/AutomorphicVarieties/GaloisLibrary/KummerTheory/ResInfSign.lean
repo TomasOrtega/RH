@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Use `⟨UpperTheory.V.Kum.resInfMem F Ω l D e ⟨x, hx, rfl⟩, fun u u' huu => ?_⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.V.Kum.resInfConj F Ω l D e (cE F) σ h.isLift x u u' huu`. Rewrite `hx'` using `[Module.End.mem_eigenspace_iff, cAct]`. Rewrite `h1` using `[hx', twScal_conj (E := F) h, map_smul, Pi.smul_apply]`. Establish `hs : (-1 : ℤ_[l]) ^ e * (-1) ^ e = 1` using `by rw [← mul_pow]; simp`.
+
+Establish `h2` using `congrArg (fun m => (s * (-1 : ℤ_[l]) ^ e) • m) h1`. Establish `k1 : s * (-1 : ℤ_[l]) ^ e * ((-1) ^ e * s) = 1`. Rewrite using `[mul_assoc, ← mul_assoc ((-1 : ℤ_[l]) ^ e), hs, one_mul, hss]`. Establish `k2 : s * (-1 : ℤ_[l]) ^ e * (-1) ^ e = s` using `by rw [mul_assoc, hs, mul_one]`. Simplify using `only [smul_smul, k1, k2, one_smul] at h2`.
+
+Conclude with `h2`.
+-/
 private theorem UpperTheory.V.Kum.restriction_infinity_sign_eigen
     (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
     (D : LData F Ω l) (e : ℕ) (σ : Ω ≃+* Ω) (h : IsConjOm σ) (s : ℤ_[l]) (hss : s * s = 1) (x : H1 (qzTw D (e : ℤ)))
@@ -21,6 +28,11 @@ private theorem UpperTheory.V.Kum.restriction_infinity_sign_eigen
   simp only [smul_smul, k1, k2, one_smul] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ l _ D e σ h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `UpperTheory.V.Kum.restriction_infinity_sign_eigen F Ω l D e σ h 1 (mul_one _) x hx.1 (by rw [mul_one]; exact hx.2)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `UpperTheory.V.Kum.restriction_infinity_sign_eigen F Ω l D e σ h (-1) (by simp) x hx.1 (by rw [← pow_succ]; exact hx.2)`.
+-/
 theorem UpperTheory.V.Kum.resInfSign :
     ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℕ) (σ : Ω ≃+* Ω), IsConjOm σ →
     (ShaPlus D e).map (resInf D e) ≤ EqEig l (Uinf F Ω l) (qzG F Ω l e) σ 1 ∧ (ShaMinus D e).map (resInf D e) ≤ EqEig l (Uinf F Ω l) (qzG F Ω l e) σ (-1) := by

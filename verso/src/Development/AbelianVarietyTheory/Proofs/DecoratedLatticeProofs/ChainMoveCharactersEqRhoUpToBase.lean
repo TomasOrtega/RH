@@ -23,6 +23,17 @@ namespace GlobalTheory.AdForm.TwDat
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `c`. Establish `hlev` using `GlobalTheory.Mem.LevTwist.levOk_twists B X I hI`. Establish `hpt` using `(hA.reads k hk).pt c`. Take `⟨a', ha'⟩` from `GlobalTheory.Mem.DetLift.exists_isDetLift B.R B.host (B.R.N k) _ hpt.uni`. Take `⟨hkA, hkAm, hxr⟩` from `hA.kA k hk (A.chOf k c)`.
+
+Take `⟨hh, hhm⟩` from `hA.h k hk (A.chOf k c) ⟨c, rfl⟩`. Establish `hg : A.h k (A.chOf k c) ⟨c, rfl⟩ * A.kA k (A.chOf k c) ∈ GfC _` using `mul_mem hh hkA`. Establish `hfin : finM _ (rankN (I.rec7 l Z) k hk) (A.h k (A.chOf k c) ⟨c, rfl⟩ * A.kA k (A.chOf k c)) = ((((show TC.GA B (B.R.N k) from ((A.K k hk (A.chOf k c)).y ⟨c, rfl⟩).1) * A.kb k (A.chOf k c) : TC.GA B (B.R.N k))) : Matrix (Fin (B.R.N k)) (Fin (B.R.N k)) (Formalism.L2.DIV.AfE B.host. …`. Rewrite using `[GlobalTheory.RepLattice.finM_mul', hhm, hkAm, Units.val_mul]`. Both sides reduce to the same expression.
+
+Establish `hroot` using `GlobalTheory.TwistFinPart.isDetRoot_mul' _ _ _ _ _ hx hxr`. Establish `htw` using `(GlobalTheory.Mem.ReadTwist.isTwist_of_reads B.R B.host _ B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)).1`. Establish `key` using `GlobalTheory.DetRootRead.chr_at_detRoot (I.rec7 l Z) (A.chr ((j : ℕ) + 1)) (I.C.mu0 j * I.xi a) (hA.chr j) (Formalism.L2.Host.HChar.TrivOn.mul (I.C.isMu0 j).triv htw.2.1) _ _ _ _ hg hfin _ hroot a' ha'`. Establish `hm` using `reference_characters_factor_tame I.SQ I.C j`. Establish `hxi : KDq B.host I.SQ ≤ ((I.xi a).1.comp (Chr.finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ a)).trans (hlev.2.2 a).1`.
+
+Establish `hfac : KDq B.host I.SQ ≤ ((I.C.mu0 j * I.xi a).1.comp (Chr.finPartI B.host.E)).ker` using `fun b hb => by`. Establish `e : (I.C.mu0 j).1 (Chr.finPartI B.host.E b) = 1` using `hm hb`. Establish `e' : (I.xi a).1 (Chr.finPartI B.host.E b) = 1` using `hxi hb`. Use `show (I.C.mu0 j).1 (Chr.finPartI B.host.E b) * (I.xi a).1 (Chr.finPartI B.host.E b) = 1`. Rewrite using `[e, e', one_mul]`.
+
+Rewrite using `[← GlobalTheory.Mem.Col2.DetSpec.mk_eq_detPt B.R B.host _ _ _ _ _ _ _ a' hlev.1 hpt ha', tildeQ_mk _ _ hfac, ← Circle.coe_mul, ← map_mul]`. Conclude with `key`.
+-/
 theorem chr_root_mul_base {B : Base} {X : PreX B.toPre} {I : TC B X} (hI : I.Ok) {l : I.Laws} {Z : TC.Later B (I.cols l)}
     {u : B.Word} {a : I.ι} {Ch : ℕ → Type} {A : TwDat I l Z u a Ch} (hA : A.Is) (j : Fin B.R.m) (k : ℕ) (hk : k ≤ B.R.m)
     (β : Ch k) (c : {c // A.chOf k c = β}) (x : (AE (I.rec7 l Z))ˣ) (hx : IsDetRoot _ (A.h k β c) x) :
@@ -55,6 +66,11 @@ theorem chr_root_mul_base {B : Base} {X : PreX B.toPre} {I : TC B X} (hI : I.Ok)
   rw [← GlobalTheory.Mem.Col2.DetSpec.mk_eq_detPt B.R B.host _ _ _ _ _ _ _ a' hlev.1 hpt ha', tildeQ_mk _ _ hfac, ← Circle.coe_mul, ← map_mul]
   exact key
 
+/- English proof (translation)
+Establish `hlev` using `GlobalTheory.Mem.LevTwist.levOk_twists B X I hI`. Establish `hxi : KDq B.host I.SQ ≤ ((I.xi a).1.comp (Chr.finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ a)).trans (hlev.2.2 a).1`. Use `show ((rhoAt I.SQ I.C (I.xi a) i ((I.stp u a i).rep c).1.1 : ℂˣ) : ℂ) = _`. Rewrite using `[rhoAt, muTilQ_succ B.host I.SQ I.C.mu0 ⟨i, hi⟩, xiDet, tildeQ_mul B.host I.SQ (reference_characters_factor_tame I.SQ I.C ⟨i, hi⟩) hxi, MonoidHom.mul_apply]`. Rewrite using `[← GlobalTheory.Mem.ChiDet.tildeQ_detPt_eq_chiId B.R B.host _ I.C _ _ _ _ I.SQ _ hlev.1]`.
+
+Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, mul_inv]`.
+-/
 theorem rho_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i + 1 ≤ B.R.m)
     (c : (I.stp u a i).Cl) : (I.chIn u a).rho i c =
       ((tildeQ B.host I.SQ (I.C.mu0 ⟨i, hi⟩ * I.xi a) (detPt B.host I.SQ ((I.stp u a i).rep c).1.1) : ℂˣ) : ℂ)⁻¹ *
@@ -69,6 +85,11 @@ theorem rho_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (u : B.Wor
   rw [← GlobalTheory.Mem.ChiDet.tildeQ_detPt_eq_chiId B.R B.host _ I.C _ _ _ _ I.SQ _ hlev.1]
   simp only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, mul_inv]
 
+/- English proof (translation)
+Establish `hlev` using `GlobalTheory.Mem.LevTwist.levOk_twists B X I hI`. Establish `hxi : KDq B.host I.SQ ≤ ((I.xi a).1.comp (Chr.finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ a)).trans (hlev.2.2 a).1`. Use `show ((rhoAt' I.SQ I.C (I.xi a) i ((I.stp u a (i + 1)).rep c').1.1 : ℂˣ) : ℂ) = _`. Rewrite using `[rhoAt', muTilQ_succ B.host I.SQ I.C.mu0 ⟨i, hi⟩, xiDet, tildeQ_mul B.host I.SQ (reference_characters_factor_tame I.SQ I.C ⟨i, hi⟩) hxi, MonoidHom.mul_apply]`. Rewrite using `[← GlobalTheory.Mem.ChiDet.tildeQ_detPt_eq_chiId B.R B.host _ I.C _ _ _ _ I.SQ _ hlev.1]`.
+
+Simplify using `only [Units.val_mul, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem rho'_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i + 1 ≤ B.R.m)
     (c' : (I.stp u a (i + 1)).Cl) : (I.chIn u a).rho' i c' =
       ((tildeQ B.host I.SQ (I.C.mu0 ⟨i, hi⟩ * I.xi a) (detPt B.host I.SQ ((I.stp u a (i + 1)).rep c').1.1) : ℂˣ) : ℂ) *
@@ -83,6 +104,9 @@ theorem rho'_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (u : B.Wo
   rw [← GlobalTheory.Mem.ChiDet.tildeQ_detPt_eq_chiId B.R B.host _ I.C _ _ _ _ I.SQ _ hlev.1]
   simp only [Units.val_mul, Units.val_zpow_eq_zpow_val]
 
+/- English proof (translation)
+Establish `h1 : a ^ p ≠ 0` using `zpow_ne_zero p ha`. Establish `h2 : b ^ q ≠ 0` using `zpow_ne_zero q hb`. Rewrite using `[_root_.zpow_neg, _root_.zpow_neg]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem moves_alg (X Y r₀ r₁ a b : ℂ) (p q : ℤ) (hX : X ≠ 0) (hY : Y ≠ 0) (h₀ : r₀ ≠ 0) (h₁ : r₁ ≠ 0) (ha : a ≠ 0) (hb : b ≠ 0) :
     X⁻¹ * Y = r₀ * r₁⁻¹ * ((X * r₀)⁻¹ * a ^ (-p) * (Y * r₁ * b ^ q)) * (a ^ p * b ^ (-q)) := by
   have h1 : a ^ p ≠ 0 := zpow_ne_zero p ha
@@ -90,6 +114,11 @@ theorem moves_alg (X Y r₀ r₁ a b : ℂ) (p q : ℤ) (hX : X ≠ 0) (hY : Y �
   rw [_root_.zpow_neg, _root_.zpow_neg]
   field_simp
 
+/- English proof (translation)
+Introduce `B X I hI _ l Z u a Ch A hA i hi α γ c c' x y hx hy`. Establish `h0` using `chr_root_mul_base hI hA ⟨i, hi⟩ i (Nat.le_of_succ_le hi) α c x hx`. Establish `h1` using `chr_root_mul_base hI hA ⟨i, hi⟩ (i + 1) hi γ c' y hy`. Rewrite using `[rho_eq I hI u a i hi, rho'_eq I hI u a i hi]`. Simplify using `only [ColIn.A, AmbIn.amb, Th.chiFac, ColIn.chi]`.
+
+Rewrite using `[← h0, ← h1]`. Conclude with `moves_alg _ _ _ _ _ _ _ _ (Circle.coe_ne_zero _) (Circle.coe_ne_zero _) (Circle.coe_ne_zero _) (Circle.coe_ne_zero _) (chiId_ne_zero _ _) (chiId_ne_zero _ _)`.
+-/
 theorem chr_moves_eq_rho_base : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (i : ℕ) (hi : i + 1 ≤ B.R.m) α γ (c : {c // A.chOf i c = α}) (c' : {c // A.chOf (i + 1) c = γ}) x y, IsDetRoot _ (A.h i α c) x → IsDetRoot _ (A.h (i + 1) γ c') y → (A.chr (i + 1) x : ℂ)⁻¹ * (A.chr (i + 1) y : ℂ) = (A.chr (i + 1) (A.xr i α) : ℂ) * (A.chr (i + 1) (A.xr (i + 1) γ) : ℂ)⁻¹ * ((I.chIn u a).rho i c.1 * (I.chIn u a).rho' i c'.1) * I.A.chiF (B.R.N i) (B.R.N (i + 1)) ((I.stp u a i).rep c.1).1.1.deco.1.N ((I.stp u a (i + 1)).rep c'.1).1.1.deco.1.N := by
   intro B X I hI _ l Z u a Ch A hA i hi α γ c c' x y hx hy
   have h0 := chr_root_mul_base hI hA ⟨i, hi⟩ i (Nat.le_of_succ_le hi) α c x hx

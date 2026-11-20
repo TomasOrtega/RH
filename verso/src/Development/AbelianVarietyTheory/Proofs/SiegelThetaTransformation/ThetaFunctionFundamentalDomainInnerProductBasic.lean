@@ -17,6 +17,9 @@ namespace GlobalTheory.Ker.ScalarProduct
 
 open GlobalTheory.HeisOrtho
 
+/- English proof (translation)
+Establish `h : ∀ z : ℂ, ((‖z‖ ^ 2 : ℝ) : ℂ) = z * conj z` using `fun z => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[h, h, h, h]`. Simplify using `only [map_add, map_mul, map_neg, map_one, Complex.conj_I]`. Take the linear combination `((a * conj b - b * conj a) / 2) * Complex.I_sq`.
+-/
 theorem mul_conj_polar (a b : ℂ) : a * conj b =
     (1 / 4 : ℂ) * (((‖a + (1 : ℂ) * b‖ ^ 2 : ℝ) : ℂ) - ((‖a + (-1 : ℂ) * b‖ ^ 2 : ℝ) : ℂ) +
       I * ((‖a + I * b‖ ^ 2 : ℝ) : ℂ) - I * ((‖a + (-I) * b‖ ^ 2 : ℝ) : ℂ)) := by
@@ -33,6 +36,9 @@ variable {X : Type} [MeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν]
 def BM (f : X → ℂ) : Prop := Measurable f ∧ ∃ b : ℝ, ∀ w, ‖f w‖ ≤ b
 
 omit [IsFiniteMeasure ν] in
+/- English proof (translation)
+Take `⟨hfm, bf, hbf⟩` from `hf`. Take `⟨hgm, bg, hbg⟩` from `hg`. Use `⟨hfm.add (hgm.const_smul c), bf + ‖c‖ * bg, fun w => ?_⟩` and prove the remaining obligations. Use `show ‖f w + c * g w‖ ≤ bf + ‖c‖ * bg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem BM.add_smul {f g : X → ℂ} (hf : BM f) (hg : BM g) (c : ℂ) : BM (f + c • g) := by
   obtain ⟨hfm, bf, hbf⟩ := hf
   obtain ⟨hgm, bg, hbg⟩ := hg
@@ -42,6 +48,9 @@ theorem BM.add_smul {f g : X → ℂ} (hf : BM f) (hg : BM g) (c : ℂ) : BM (f 
     _ = ‖f w‖ + ‖c‖ * ‖g w‖ := by rw [norm_mul]
     _ ≤ bf + ‖c‖ * bg := add_le_add (hbf w) (mul_le_mul_of_nonneg_left (hbg w) (norm_nonneg c))
 
+/- English proof (translation)
+Take `⟨hfm, bf, hbf⟩` from `hf`. Take `⟨hgm, bg, hbg⟩` from `hg`. Use `Integrable.mono' (integrable_const (bf * bg)) (hfm.mul (Complex.continuous_conj.measurable.comp hgm)).aestronglyMeasurable (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hbf w) (hbg w) (norm_nonneg _) ((norm_nonneg _).trans (hbf w))`.
+-/
 theorem integrable_mul_conj {f g : X → ℂ} (hf : BM f) (hg : BM g) :
     Integrable (fun w => f w * conj (g w)) ν := by
   obtain ⟨hfm, bf, hbf⟩ := hf
@@ -51,11 +60,19 @@ theorem integrable_mul_conj {f g : X → ℂ} (hf : BM f) (hg : BM g) :
   rw [norm_mul, Complex.norm_conj]
   exact mul_le_mul (hbf w) (hbg w) (norm_nonneg _) ((norm_nonneg _).trans (hbf w))
 
+/- English proof (translation)
+Use `(integrable_mul_conj ν hf hf).congr (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Use `show f w * conj (f w) = ((‖f w‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem integrable_normSq {f : X → ℂ} (hf : BM f) : Integrable (fun w => ((‖f w‖ ^ 2 : ℝ) : ℂ)) ν := by
   refine (integrable_mul_conj ν hf hf).congr (ae_of_all _ fun w => ?_)
   show f w * conj (f w) = ((‖f w‖ ^ 2 : ℝ) : ℂ)
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `hInt : ∀ c : ℂ, Integrable (fun w => ((‖(f + c • g) w‖ ^ 2 : ℝ) : ℂ)) ν` using `fun c => integrable_normSq ν (hf.add_smul hg c)`. Establish `iA` using `hInt 1`. Establish `iB` using `hInt (-1)`. Establish `iC` using `(hInt I).const_mul I`. Establish `iD` using `(hInt (-I)).const_mul I`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_sub, integral_add, integral_sub, integral_const_mul, integral_const_mul]`. Apply the tactic sequence `all_goals first`. Consider the case `simp only [integral_complex_ofReal]`. Consider the case `exact iA | exact iB | exact iC | exact iD | exact iA.sub iB | exact (iA.sub iB).add iC`.
+-/
 theorem integral_polar {f g : X → ℂ} (hf : BM f) (hg : BM g) :
     ∫ w, f w * conj (g w) ∂ν =
       (1 / 4 : ℂ) * (((∫ w, ‖(f + (1 : ℂ) • g) w‖ ^ 2 ∂ν : ℝ) : ℂ) - ((∫ w, ‖(f + (-1 : ℂ) • g) w‖ ^ 2 ∂ν : ℝ) : ℂ) +
@@ -77,6 +94,9 @@ theorem integral_polar {f g : X → ℂ} (hf : BM f) (hg : BM g) :
           | exact iA | exact iB | exact iC | exact iD | exact iA.sub iB | exact (iA.sub iB).add iC
 
 omit [IsFiniteMeasure ν] in
+/- English proof (translation)
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun w => sq_nonneg _) (hf.norm.pow_const 2).aestronglyMeasurable]`. Use `congr 1`. Use `lintegral_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+-/
 theorem integral_normSq_eq {f : X → ℂ} (hf : Measurable f) :
     ∫ w, ‖f w‖ ^ 2 ∂ν = (∫⁻ w, ‖f w‖ₑ ^ 2 ∂ν).toReal := by
   rw [integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun w => sq_nonneg _)
@@ -85,6 +105,9 @@ theorem integral_normSq_eq {f : X → ℂ} (hf : Measurable f) :
   refine lintegral_congr fun w => ?_
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
+/- English proof (translation)
+Introduce `γ hγ w`. Take `⟨y, rfl⟩` from `AddMonoidHom.mem_range.1 hγ`. Establish `hf' : IsThetaFunO C.ψ S T f` using `hf`. Use `show ‖f (ratW T S y + w)‖ = ‖f w‖`. Rewrite using `[hf'.quasi y w, norm_mul, C.std.1.2.1, one_mul]`.
+-/
 private theorem norm_add_ratL_eq_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) :
     ∀ γ : WO S T, γ ∈ ratL T S → ∀ w, ‖f (γ + w)‖ = ‖f w‖ := by
   intro γ hγ w
@@ -93,6 +116,11 @@ private theorem norm_add_ratL_eq_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T) {f
   show ‖f (ratW T S y + w)‖ = ‖f w‖
   rw [hf'.quasi y w, norm_mul, C.std.1.2.1, one_mul]
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `hf' : IsThetaFunO C.ψ S T f` using `hf`. Take `⟨b, hb⟩` from `hK.exists_bound_of_continuousOn hf'.cont.continuousOn`. Use `⟨b, fun w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγK⟩` from `hKc w`.
+
+Rewrite using `[← norm_add_ratL_eq_of_isTh C hf γ hγ w]`. Conclude with `hb _ hγK`.
+-/
 private theorem exists_norm_le_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) :
     ∃ b : ℝ, ∀ w, ‖f w‖ ≤ b := by
   obtain ⟨-, -, -, -, -, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
@@ -103,11 +131,19 @@ private theorem exists_norm_le_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T) {f :
   rw [← norm_add_ratL_eq_of_isTh C hf γ hγ w]
   exact hb _ hγK
 
+/- English proof (translation)
+Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `hf' : IsThetaFunO C.ψ S T f` using `hf`. Conclude with `⟨hf'.cont.measurable, exists_norm_le_of_isTh C hf⟩`.
+-/
 private theorem bm_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T) {f : WO S T → ℂ} (hf : C.IsTh f) : BM f := by
   have : BorelSpace (WO S T) := ⟨rfl⟩
   have hf' : IsThetaFunO C.ψ S T f := hf
   exact ⟨hf'.cont.measurable, exists_norm_le_of_isTh C hf⟩
 
+/- English proof (translation)
+Introduce `γ hγ w`. Take `⟨y, rfl⟩` from `AddMonoidHom.mem_range.1 hγ`. Establish `hf' : IsThetaFunO C.ψ S T f` using `hf`. Establish `hg' : IsThetaFunO C.ψ S T g` using `hg`. Use `show f (ratW T S y + w) * conj (g (ratW T S y + w)) = f w * conj (g w)`.
+
+Rewrite using `[hf'.quasi y w, hg'.quasi y w, map_mul]`. Establish `hz : C.ψ (-symplOH S T (ratW T S y) w) * conj (C.ψ (-symplOH S T (ratW T S y) w)) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, C.std.1.2.1]`. Evaluate the numerical expressions. Take the linear combination `(f w * conj (g w)) * hz`.
+-/
 private theorem mul_conj_add_ratL_eq_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T) {f g : WO S T → ℂ} (hf : C.IsTh f)
     (hg : C.IsTh g) : ∀ γ : WO S T, γ ∈ ratL T S → ∀ w, f (γ + w) * conj (g (γ + w)) = f w * conj (g w) := by
   intro γ hγ w
@@ -123,6 +159,47 @@ private theorem mul_conj_add_ratL_eq_of_isTh {D : D7} {S T : HSp D} (C : Ctx S T
 
 end Meas
 
+/- English proof (translation)
+Introduce `D S T C`. Take `⟨hTG, hLC, hSC, hT2, hDisc, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: IsTopologicalAddGroup (WO S T)` using `hTG`. Establish `: LocallyCompactSpace (WO S T)` using `hLC`.
+
+Establish `: SecondCountableTopology (WO S T)` using `hSC`. Establish `: SecondCountableTopology (WA T S)` using `hSC`. Establish `: T2Space (WO S T)` using `hT2`. Establish `: DiscreteTopology (ratL T S)` using `hDisc`. Establish `: Countable (ratL T S)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`.
+
+Use `⟨?_, fun μ 𝓕 hμ f hf => ?_⟩` and prove the remaining obligations. Take `⟨⟨μ, 𝓕, h1, h2, h3⟩, -⟩` from `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hKc (fun _ => (1 : ℂ)) continuous_const (fun h => one_ne_zero (congrFun h 0)) (fun _ _ _ => rfl)`. Use `⟨μ, 𝓕, ?_⟩` and prove the remaining obligations. Unfold `IsCovolOne`. Conclude with `⟨h1, h2, h3⟩`.
+
+Unfold `IsCovolOne at hμ`. Take `⟨hH, hFD, h1⟩` from `hμ`. Establish `: VAddInvariantMeasure (ratL T S) (WO S T) μ` using `⟨fun c s _ => measure_preimage_add μ (c : WO S T) s⟩`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Establish `hbm : ∀ g, C.IsTh g → BM g` using `fun g hg => bm_of_isTh C hg`.
+
+Establish `hf' : IsThetaFunO C.ψ S T f` using `hf`. Establish `hnorm : ipO μ 𝓕 f f = nrm2 μ 𝓕 f`. Unfold `ipO nrm2`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations.
+
+Use `show f w * conj (f w) = ((‖f w‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `⟨exists_norm_le_of_isTh C hf, ?_, hnorm, fun f' hf2 => ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `h0` using `[hnorm]`.
+
+Unfold `nrm2 at h0`. Establish `h0' : ∫ w in 𝓕, ‖f w‖ ^ 2 ∂μ = 0` using `by exact_mod_cast h0`. Establish `hint : Integrable (fun w => ‖f w‖ ^ 2) (μ.restrict 𝓕)`. Take `⟨hm, b, hb⟩` from `hbm f hf`. Use `Integrable.mono' (integrable_const (b ^ 2)) (hm.norm.pow_const 2).aestronglyMeasurable (ae_of_all _ fun w => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hb w) 2`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (by intro w; exact sq_nonneg _) hint).1 h0'`. Establish `hU : IsOpen {w : WO S T | f w ≠ 0}` using `isOpen_compl_singleton.preimage hf'.cont`. Establish `hae' : ∀ᵐ w ∂(μ.restrict 𝓕), ‖f w‖ ^ 2 = 0` using `hae`.
+
+Establish `h0r : μ.restrict 𝓕 {w : WO S T | f w ≠ 0} = 0` using `measure_mono_null (fun a (ha : f a ≠ 0) (h : ‖f a‖ ^ 2 = 0) => ha (by simpa using h)) (ae_iff.1 hae')`. Rewrite `h0r` using `[Measure.restrict_apply hU.measurableSet]`. Use `open Pointwise in`. Establish `hμU : μ {w : WO S T | f w ≠ 0} = 0`. Use `hFD.measure_zero_of_invariant _ (fun γ => ?_) h0r` and prove the remaining obligations.
+
+Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Establish `hp` using `norm_add_ratL_eq_of_isTh C hf ((-γ : ratL T S) : WO S T) (-γ).2 x`. Express the relevant statement in the definitionally equal form `f (((-γ : ratL T S) : WO S T) + x) ≠ 0 ↔ f x ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hp, norm_ne_zero_iff]`.
+
+Establish `hUe` using `(hU.measure_eq_zero_iff μ).1 hμU`. Use function extensionality and compare the values at `w`. Assume the negation of the conclusion as `hw`. Establish `hw' : w ∈ {w : WO S T | f w ≠ 0}` using `hw`. Rewrite `hw'` using `[hUe]`.
+
+Conclude with `hw'`. Establish `hI1 : IntegrableOn (fun w => f w * conj (f' w)) 𝓕 μ` using `integrable_mul_conj (μ.restrict 𝓕) (hbm f hf) (hbm f' hf2)`. Use `⟨hI1, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `ipO`. Rewrite using `[← integral_conj]`.
+
+Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Use `show f' w * conj (f w) = conj (f w * conj (f' w))`. Rewrite using `[map_mul, Complex.conj_conj, mul_comm]`. Introduce `a`. Unfold `ipO`.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Use `show (a • f) w * conj (f' w) = a * (f w * conj (f' w))`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_assoc]`. Introduce `f'' hf3`.
+
+Unfold `ipO`. Rewrite using `[← integral_add (integrable_mul_conj (μ.restrict 𝓕) (hbm f hf) (hbm f'' hf3)) (integrable_mul_conj (μ.restrict 𝓕) (hbm f' hf2) (hbm f'' hf3))]`. Use `integral_congr_ae (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Use `show (f w + f' w) * conj (f'' w) = f w * conj (f'' w) + f' w * conj (f'' w)`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `u`. Establish `hh : ∀ (g : WO S T → ℂ) x, C.rho u g x = C.ψ (symplOH S T x u) * g (x + u)` using `fun g x => rfl`. Unfold `ipO`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+
+Use `show C.rho u f x * conj (C.rho u f' x) = f (x + u) * conj (f' (x + u))`. Rewrite using `[hh, hh, map_mul]`. Establish `hz : C.ψ (symplOH S T x u) * conj (C.ψ (symplOH S T x u)) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, C.std.1.2.1]`. Evaluate the numerical expressions.
+
+Take the linear combination `(f (x + u) * conj (f' (x + u))) * hz`. Use `_ = ∫ x in 𝓕, f x * conj (f' x) ∂μ := setIntegral_add_right (G := WO S T) (E := ℂ) (ratL T S) μ 𝓕 hFD (fun y => f y * conj (f' y)) (mul_conj_add_ratL_eq_of_isTh C hf hf2) u`. Introduce `om hw p`. Establish `hth : ∀ g, C.IsTh g → C.IsTh (om p g)` using `fun g hg => hw.om_pres p g hg`. Establish `key : ∀ c : ℂ, ∫ x, ‖(om p f + c • om p f') x‖ ^ 2 ∂(μ.restrict 𝓕) = ∫ x, ‖(f + c • f') x‖ ^ 2 ∂(μ.restrict 𝓕)`.
+
+Introduce `c`. Establish `hg : C.IsTh (f + c • f')` using `GlobalTheory.WeilVacMove.isTheta_add hf (GlobalTheory.WeilVacMove.isTheta_smul c hf2)`. Establish `e : om p f + c • om p f' = om p (f + c • f')` using `by rw [map_add, map_smul]`. Rewrite using `[e, integral_normSq_eq _ (hbm _ (hth _ hg)).1, integral_normSq_eq _ (hbm _ hg).1, hw.om_unit μ 𝓕 hH hFD p _ hg]`. Unfold `ipO`.
+
+Rewrite using `[integral_polar _ (hbm _ (hth f hf)) (hbm _ (hth f' hf2)), integral_polar _ (hbm f hf) (hbm f' hf2), key 1, key (-1), key I, key (-I)]`.
+-/
 theorem ip_basic : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), (∃ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕) ∧ ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ f, C.IsTh f → (∃ b : ℝ, ∀ w, ‖f w‖ ≤ b) ∧ (ipO μ 𝓕 f f = 0 → f = 0) ∧ ipO μ 𝓕 f f = nrm2 μ 𝓕 f ∧ ∀ f', C.IsTh f' → IntegrableOn (fun w => f w * conj (f' w)) 𝓕 μ ∧ ipO μ 𝓕 f' f = conj (ipO μ 𝓕 f f') ∧ (∀ a : ℂ, ipO μ 𝓕 (a • f) f' = a * ipO μ 𝓕 f f') ∧ (∀ f'', C.IsTh f'' → ipO μ 𝓕 (f + f') f'' = ipO μ 𝓕 f f'' + ipO μ 𝓕 f' f'') ∧ (∀ w, ipO μ 𝓕 (C.rho w f) (C.rho w f') = ipO μ 𝓕 f f') ∧ ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → ∀ p, ipO μ 𝓕 (om p f) (om p f') = ipO μ 𝓕 f f' := by
   intro D S T C
   obtain ⟨hTG, hLC, hSC, hT2, hDisc, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S

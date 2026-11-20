@@ -7,6 +7,27 @@ noncomputable section
 
 namespace GlobalTheory.K5.DerExt
 
+/- English proof (translation)
+Set `g : R →+* TrivSqZeroExt S S` to `{ toFun := fun r ↦ TrivSqZeroExt.inl (algebraMap R S r) + TrivSqZeroExt.inr (algebraMap R S (D r)) map_one' := by`. Use `ext`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.fst_one, map_one, add_zero]`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_one, Derivation.map_one_eq_zero, map_zero, zero_add]`. Use the proof step `map_mul' := fun a b ↦ by`.
+
+Use `ext`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.fst_mul, map_mul, add_zero]`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, Derivation.leibniz, smul_eq_mul, map_add, map_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, zero_add, a …`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_zero' := by`.
+
+Use `ext`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.fst_zero, map_zero, add_zero]`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_zero, map_zero, zero_add]`. Use the proof step `map_add' := fun a b ↦ by`. Use `ext`.
+
+Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, map_add, add_zero]`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, map_add, zero_add] }`. Establish `hg : ∀ r, (g r).fst = algebraMap R S r ∧ (g r).snd = algebraMap R S (D r)` using `fun r ↦ by`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (algebraMap R S r) + TrivSqZeroExt.inr (algebraMap R S (D r)) : TrivSqZeroExt S S).fst = _`.
+
+Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero]`. Express the relevant statement in the definitionally equal form `(TrivSqZeroExt.inl (algebraMap R S r) + TrivSqZeroExt.inr (algebraMap R S (D r)) : TrivSqZeroExt S S).snd = _`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Choose the witnesses or unpack the hypotheses as in `⟨l, h1, h2⟩ : ∃ l : S →+* TrivSqZeroExt S S, (∀ s, (l s).fst = s) ∧ ∀ r, l (algebraMap R S r) = g r := by`. Use `letI : Algebra R (TrivSqZeroExt S S) := g.toAlgebra`.
+
+Set `π : TrivSqZeroExt S S →ₐ[R] S` to `{ (TrivSqZeroExt.fstHom S S S).toRingHom with commutes' := fun r ↦ (hg r).1 }`. Establish `hs : Function.Surjective π` using `fun s ↦ ⟨TrivSqZeroExt.inl s, rfl⟩`. Establish `hk : IsNilpotent (RingHom.ker (π : TrivSqZeroExt S S →+* S))`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Submodule.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`.
+
+Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `x.fst = 0 at hx`. Express the relevant statement in the definitionally equal form `y.fst = 0 at hy`. Rewrite using `[Ideal.mem_bot]`.
+
+Use `ext`. Simplify using `[hx]`. Simplify using `[TrivSqZeroExt.snd_mul, hx, hy]`. Set `l` to `Algebra.FormallySmooth.liftOfSurjective (AlgHom.id R S) π hs hk`. Conclude with `⟨l, fun s ↦ AlgHom.congr_fun (Algebra.FormallySmooth.comp_liftOfSurjective (AlgHom.id R S) π hs hk) s, fun r ↦ l.commutes r⟩`.
+
+Use `⟨Derivation.mk' (AddMonoidHom.toIntLinearMap { toFun := fun s ↦ (l s).snd, map_zero' := by simp, map_add' := fun x y ↦ by rw [map_add]; rfl }) fun a b ↦ ?_, fun r ↦ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(l (a * b)).snd = a • (l b).snd + b • (l a).snd`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, h1, h1]`. Simplify using `[mul_comm]`. Express the relevant statement in the definitionally equal form `(l _).snd = _`.
+
+Rewrite using `[h2, (hg r).2]`.
+-/
 theorem exists_extend_of_formallySmooth {R S : Type} [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.FormallySmooth R S] [Algebra ℤ R] (D : Derivation ℤ R R) :
     ∃ D' : Derivation ℤ S S, ∀ r, D' (algebraMap R S r) = algebraMap R S (D r) := by
@@ -72,6 +93,13 @@ theorem exists_extend_of_formallySmooth {R S : Type} [CommRing R] [CommRing S] [
   · change (l _).snd = _
     rw [h2, (hg r).2]
 
+/- English proof (translation)
+Introduce `p _ Ω _ _ h D`. Use `haveI : IsDomain (O0 p) := h.inj.isDomain _`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo h`. Set `K` to `FractionRing (O0 p)`. Use `letI : Algebra K Ω := (IsFractionRing.lift h.inj).toAlgebra`.
+
+Use `haveI : IsScalarTower (O0 p) K Ω := IsScalarTower.of_algebraMap_eq fun x ↦ by`. Express the relevant statement in the definitionally equal form `_ = IsFractionRing.lift h.inj (algebraMap (O0 p) K x)`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Use `haveI : Algebra.IsAlgebraic (O0 p) Ω := h.alg`. Use `haveI : Algebra.IsAlgebraic K Ω := Algebra.IsAlgebraic.extendScalars (IsFractionRing.injective (O0 p) K)`.
+
+Use `haveI : Algebra.IsSeparable K Ω := Algebra.IsSeparable.of_integral K Ω`. Use `haveI : Algebra.FormallyEtale K Ω := Algebra.FormallyEtale.of_isSeparable K Ω`. Use `haveI : Algebra.FormallySmooth (O0 p) K := Algebra.FormallySmooth.of_isLocalization (nonZeroDivisors (O0 p))`. Use `haveI : Algebra.FormallySmooth (O0 p) Ω := Algebra.FormallySmooth.comp (O0 p) K Ω`. Conclude with `exists_extend_of_formallySmooth D`.
+-/
 theorem derivation_extend : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ D : Derivation ℤ (O0 p) (O0 p),
     ∃ E : Derivation ℤ Ω Ω, ∀ x, E (algebraMap (O0 p) Ω x) = algebraMap (O0 p) Ω (D x) := by

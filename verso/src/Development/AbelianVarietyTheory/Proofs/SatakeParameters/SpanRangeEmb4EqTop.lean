@@ -17,11 +17,19 @@ namespace GlobalTheory.FourthRootStd
 section
 variable (D : D7)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.StandardLatticesGL3.stdL`. Simplify using `[Submodule.mem_pi, Submodule.mem_one]`.
+-/
 theorem mem_stdL {N : ℕ} (x : Fin N → D.host.E) :
     x ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N ↔ ∀ i, x i ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   unfold Formalism.MainNotions.StandardLatticesGL3.stdL
   simp [Submodule.mem_pi, Submodule.mem_one]
 
+/- English proof (translation)
+Rewrite using `[mem_stdL]`. Introduce `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem single_mem_stdL {N : ℕ} (a : Fin N) : (Pi.single a 1 : Fin N → D.host.E) ∈ Formalism.MainNotions.StandardLatticesGL3.stdL D N := by
   rw [mem_stdL]
   intro i
@@ -29,6 +37,9 @@ theorem single_mem_stdL {N : ℕ} (a : Fin N) : (Pi.single a 1 : Fin N → D.hos
   · subst h; simp
   · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Establish `h1 : IsIntegral ℤ x` using `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).2 h`. Establish `h2 : IsIntegral ℤ (starRingEnd D.host.E x)` using `map_isIntegral_int (starRingEnd D.host.E) h1`. Conclude with `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 h2`.
+-/
 theorem star_mem_range (x : D.host.E) (h : x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
     (letI := D.host.cmStar; star x) ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
   let _ := D.host.cmStar
@@ -36,6 +47,23 @@ theorem star_mem_range (x : D.host.E) (h : x ∈ (algebraMap (𝓞 D.host.E) D.h
   have h2 : IsIntegral ℤ (starRingEnd D.host.E x) := map_isIntegral_int (starRingEnd D.host.E) h1
   exact (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 h2
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: Formalism.MainNotions.StandardLatticesGL3.stdL D N = Submodule.span (𝓞 D.host.E) (Set.range fun a : Fin N => (Pi.single a 1 : Fin N → D.host.E))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Rewrite `hx` using `[mem_stdL]`. Use `choose c hc using hx`. Establish `: x = ∑ a, c a • (Pi.single a 1 : Fin N → D.host.E)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, hc]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `single_mem_stdL D a`.
+
+Rewrite using `[this]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Establish `: x = ∑ a, x a • (Pi.single a 1 : Fin N → D.host.E)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span (single_mem_stdL D a))`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx`, `hy` using `[mem_stdL]`. Unfold `Formalism.BasicNotions.stdH`. Conclude with `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (star_mem_range D _ (hx i)) (hy i)`.
+
+Introduce `h`. Rewrite using `[mem_stdL]`. Introduce `i`. Use `h _ (single_mem_stdL D i)` as an intermediate fact. Unfold `Formalism.BasicNotions.stdH at this`.
+
+Simplify `this` using `[Pi.single_apply, apply_ite star]`.
+-/
 theorem stdL_isSD (N : ℕ) : (letI := D.host.cmStar; IsSDLat D.host.E N (Formalism.MainNotions.StandardLatticesGL3.stdL D N)) := by
   let _ := D.host.cmStar
   refine ⟨?_, ?_, ?_⟩
@@ -75,6 +103,9 @@ theorem stdL_isSD (N : ℕ) : (letI := D.host.cmStar; IsSDLat D.host.E N (Formal
       unfold Formalism.BasicNotions.stdH at this
       simpa [Pi.single_apply, apply_ite star] using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, h', stdL_isSD D N, stdL_isSD D N'⟩`.
+-/
 theorem Adm_std (N N' : ℕ) (h : Even N) (h' : Even N') :
     Formalism.MainNotions.TaylorLogMetric.admitted D N N' (Formalism.MainNotions.StandardLatticesGL3.stdL D N) (Formalism.MainNotions.StandardLatticesGL3.stdL D N') :=
   ⟨h, h', stdL_isSD D N, stdL_isSD D N'⟩
@@ -84,12 +115,18 @@ end
 open Formalism.MainNotions Formalism.L2.Ker Formalism.L2.Th1.H Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 open Formalism.L2.Th1.F (cmTheta)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formV_apply (A : ℝ) (n : Type) [Fintype n] (N N' : ℕ) (z w : n → Fin N' → Fin N → ℂ) :
     formV A n N N' z w = (∑ τ, ∑ i, ∑ j, z τ i j * conj (w τ i j)) / (A : ℂ) := rfl
 
 section
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use `show (∑ i, ∑ j, z i * hOne L n i j * conj (w j)) = _`. Simplify using `only [hOne, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem matH_hOne (L : PeriodPair) (z w : n → ℂ) :
     matH (hOne L n) z w = (∑ τ, z τ * conj (w τ)) / ((Formalism.L2.Th1.F.area L : ℝ) : ℂ) := by
   show (∑ i, ∑ j, z i * hOne L n i j * conj (w j)) = _
@@ -100,6 +137,17 @@ theorem matH_hOne (L : PeriodPair) (z w : n → ℂ) :
 
 end
 
+/- English proof (translation)
+Establish `hA` using `Formalism.L2.Th1.F.areaPos_thm L`. Unfold `TaylorLogMetric.area`. Apply `le_antisymm` to reduce the goal to its premises. Apply `csInf_le` to reduce the goal to its premises. Conclude with `⟨0, fun a ha => ha.1.le⟩`.
+
+Conclude with `⟨hA, L.ω₁, L.ω₁_mem_lattice, L.ω₂, L.ω₂_mem_lattice, rfl⟩`. Apply `le_csInf` to reduce the goal to its premises. Conclude with `⟨_, hA, L.ω₁, L.ω₁_mem_lattice, L.ω₂, L.ω₂_mem_lattice, rfl⟩`. Introduce and unpack `a ⟨ha, w₁, h₁, w₂, h₂, rfl⟩`. Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.1 h₁`.
+
+Take `⟨k, l, rfl⟩` from `PeriodPair.mem_lattice.1 h₂`. Establish `key : (conj ((m : ℂ) * L.ω₁ + (n : ℂ) * L.ω₂) * ((k : ℂ) * L.ω₁ + (l : ℂ) * L.ω₂)).im = ((m * l - n * k : ℤ) : ℝ) * (conj L.ω₁ * L.ω₂).im`. Simplify using `only [map_add, map_mul, map_intCast, Complex.mul_im, Complex.add_im, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.intCast_re, Complex.intCast_im]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `ha`, the goal using `[key, abs_mul]`. Establish `hne : (m * l - n * k : ℤ) ≠ 0`. Introduce `h`. Rewrite `ha` using `[h]`. Simplify using `at ha`.
+
+Establish `h1 : (1 : ℝ) ≤ |((m * l - n * k : ℤ) : ℝ)|` using `by exact_mod_cast Int.one_le_abs hne`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem area_eq (L : PeriodPair) : TaylorLogMetric.area L.lattice.toAddSubgroup = Formalism.L2.Th1.F.area L := by
   have hA := Formalism.L2.Th1.F.areaPos_thm L
   unfold TaylorLogMetric.area
@@ -125,15 +173,24 @@ theorem area_eq (L : PeriodPair) : TaylorLogMetric.area L.lattice.toAddSubgroup 
       calc Formalism.L2.Th1.F.area L = 1 * |(conj L.ω₁ * L.ω₂).im| := (one_mul _).symm
         _ ≤ _ := mul_le_mul_of_nonneg_right h1 (abs_nonneg _)
 
+/- English proof (translation)
+Unfold `Base.AreaOK`. Rewrite using `[← B.lat]`. Conclude with `area_eq B.L`.
+-/
 theorem areaOK {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) : B.AreaOK := by
   unfold Base.AreaOK; rw [← B.lat]; exact area_eq B.L
 
+/- English proof (translation)
+Establish `h` using `B.t0.1`. Rewrite `h` using `[← B.lat]`. Establish `e : 2 * (B.ω₀ / 2) = B.ω₀` using `by ring`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem omega_mem {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) : B.ω₀ ∈ B.L.lattice := by
   have h := B.t0.1
   rw [← B.lat] at h
   have e : 2 * (B.ω₀ / 2) = B.ω₀ := by ring
   rw [e] at h; exact h
 
+/- English proof (translation)
+The claim follows from `{ per := omega_mem B half := half isom := isom alpha0 := by simp [alphaQ, qOf] betaStd := betaStd betaSemi := betaSemi betaAlpha := fun x => by rw [← quadMultiplierRules.2] exact quadMultiplierRules.1 _ _ _ _ _ isom _ x selfDual := selfDual idx₁ := idx₁ idx₂ := idx₂ }`.
+-/
 theorem stdOK_of {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
     (half : B.ω₀ / 2 ∉ B.L.lattice)
     (isom : IsIsom (matH (blk4 (hOne B.L D.what₂.Tau))) (stdH B.L (Fin 4 × D.what₂.Tau))
@@ -166,6 +223,11 @@ section Lat0
 
 variable (D : D7) {N N' : ℕ}
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.homL at hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A h`. Use `(mem_stdL D _).1 (h _ (single_mem_stdL D j)) i` as an intermediate fact. Simplify using `using this`.
+
+Consider the case `zero => exact Subring.zero_mem _`. Consider the case `add A B _ _ hA hB => exact Subring.add_mem _ hA hB`. Consider the case `smul r A _ hA => exact Subring.mul_mem _ ⟨r, rfl⟩ hA`.
+-/
 theorem homL_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
     (hA : A ∈ TaylorLogMetric.homL D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (i : Fin N') (j : Fin N) :
     A i j ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -178,6 +240,13 @@ theorem homL_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
   | add A B _ _ hA hB => exact Subring.add_mem _ hA hB
   | smul r A _ hA => exact Subring.mul_mem _ ⟨r, rfl⟩ hA
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.YYl at hA`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem B h`. Take `⟨a, ha, A, hA, rfl⟩` from `h`. Apply the tactic sequence `obtain ⟨r, hr⟩ := homL_std_entry D hA i j`.
+
+Establish `: (a • A) i j = r • a`. Rewrite using `[Matrix.smul_apply, ← hr, smul_eq_mul, Algebra.smul_def, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r ha`. Consider the case `zero => exact Submodule.zero_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Consider the case `add A B _ _ hA hB => exact Submodule.add_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) hA hB`. Consider the case `smul r A _ hA => exact Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r hA`.
+-/
 theorem YYl_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
     (hA : A ∈ TaylorLogMetric.YYl D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')) (i : Fin N') (j : Fin N) :
     A i j ∈ D.host.AA0 := by
@@ -194,6 +263,11 @@ theorem YYl_std_entry {A : Matrix (Fin N') (Fin N) D.host.E}
   | add A B _ _ hA hB => exact Submodule.add_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) hA hB
   | smul r A _ hA => exact Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) r hA
 
+/- English proof (translation)
+Use `Submodule.subset_span fun x hx => ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_stdL]`. Introduce `i'`. Distinguish the cases in `h : i = i'`. Substitute `h` using the available equality.
+
+Simplify `hx j` using `[Matrix.mulVec, dotProduct, Matrix.single_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, h]`.
+-/
 theorem single_mem_homL (i : Fin N') (j : Fin N) :
     (Matrix.single i j (1 : D.host.E)) ∈ TaylorLogMetric.homL D (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') := by
   refine Submodule.subset_span fun x hx => ?_
@@ -208,6 +282,21 @@ def putE (D : D7) (N N' : ℕ) (i : Fin N') (j : Fin N) : (D.what₂.Tau → ℂ
   map_zero' := by funext τ i' j'; simp
   map_add' := by intro a b; funext τ i' j'; by_cases h : i' = i ∧ j' = j <;> simp [h]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Unfold `TaylorLogMetric.La`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `z ⟨w, hw, A, hA, rfl⟩ i j`. Apply the tactic sequence `exact AddSubgroup.subset_closure ⟨w, hw, A i j, YYl_std_entry D hA i j, rfl⟩`.
+
+Introduce `z hz`. Establish `key : ∀ (i : Fin N') (j : Fin N), lamMM D (TaylorLogMetric.lamOf D cc δ) ≤ (TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')).comap (putE D N N' i j)`. Introduce `i j`. Unfold `lamMM`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `v ⟨w, hw, a, ha, rfl⟩`. Use `AddSubgroup.subset_closure ⟨w, hw, a • Matrix.single i j (1 : D.host.E), Submodule.subset_span ⟨a, ha, _, single_mem_homL D i j, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i' j'`. Use `show (if i' = i ∧ j' = j then w * TaylorLogMetric.embT D τ a else 0) = w * TaylorLogMetric.embT D τ ((a • Matrix.single i j (1 : D.host.E)) i' j')`. Distinguish the cases in `h : i' = i ∧ j' = j`.
+
+Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Establish `h' : ¬ (i = i' ∧ j = j')` using `fun e => h ⟨e.1.symm, e.2.symm⟩`. Simplify using `[h, Matrix.single_apply, h']`. Establish `hsum : z = ∑ i, ∑ j, putE D N N' i j (fun τ => z τ i j)`.
+
+Use function extensionality and compare the values at `τ i' j'`. Simplify using `only [Finset.sum_apply, putE, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single i', Finset.sum_eq_single j']`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hsum]`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.sum_mem _ fun j _ => key i j (hz i j)`.
+-/
 theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat (lamMM D (TaylorLogMetric.lamOf D cc δ)) N N' := by
   apply le_antisymm
@@ -245,6 +334,9 @@ theorem Lat0 (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
 
 end Lat0
 
+/- English proof (translation)
+The claim follows from `Lat0 D cc δ`.
+-/
 theorem lat0OK {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (N N' : ℕ) : B.Lat0OK N N' :=
   Lat0 D cc δ
 
@@ -253,6 +345,25 @@ variable {D : D7}
 
 def emb4 (D : D7) (x : Fin 4 → D.host.E) : Fin 4 × D.what₂.Tau → ℂ := fun w => TaylorLogMetric.embT D w.2 (x w.1)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = ∑ a : Fin 4, (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then v (a, w.2) else 0)`. Use function extensionality and compare the values at `w`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single w.1]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[hv]`.
+
+Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `key : ∀ u : D.what₂.Tau → ℂ, (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then u w.2 else 0) ∈ Submodule.span ℂ (Set.range (emb4 D))`. Introduce `u`. Establish `hu : u ∈ Submodule.span ℝ (Set.range fun b : 𝓞 D.host.E => FL.embP D (b : D.host.E))`. Rewrite using `[FL.span_embP]`.
+
+Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u h`. Take `⟨b, rfl⟩` from `h`. Use `Submodule.subset_span ⟨Pi.single a (b : D.host.E), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w.1 = a`. Simplify using `[emb4, h, FL.embP]`. Simplify using `[emb4, h, Pi.single_apply]`. Consider the case `zero`.
+
+Establish `: (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (0 : D.what₂.Tau → ℂ) w.2 else 0) = 0`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.zero_mem (Submodule.span ℂ (Set.range (emb4 D)))`.
+
+Consider the case `add x y _ _ hx hy`. Establish `: (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (x + y) w.2 else 0) = (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then x w.2 else 0) + (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then y w.2 else 0)`. Apply the tactic sequence `funext w; by_cases h : w.1 = a <;> simp [h]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul r x _ hx`. Establish `: (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then (r • x) w.2 else 0) = (r : ℂ) • (fun w : Fin 4 × D.what₂.Tau => if w.1 = a then x w.2 else 0)`. Apply the tactic sequence `funext w; by_cases h : w.1 = a <;> simp [h]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Conclude with `key fun τ => v (a, τ)`.
+-/
 theorem span_range_emb4_eq_top (D : D7) : Submodule.span ℂ (Set.range (emb4 D)) = ⊤ := by
   rw [eq_top_iff]
   intro v _
@@ -294,6 +405,13 @@ theorem span_range_emb4_eq_top (D : D7) : Submodule.span ℂ (Set.range (emb4 D)
       rw [this]; exact Submodule.smul_mem _ _ hx
   exact key fun τ => v (a, τ)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, CU.emb_conj]`. Both sides reduce to the same expression.
+
+Use `_ = D.host.φ₀ (algebraMap D.host.K D.host.E (∑ a, Algebra.trace D.host.K D.host.E (x a * D.host.conj (y a)))) := by rw [γ.isom]`. Use `_ = ∑ a, D.host.φ₀ (algebraMap D.host.K D.host.E (Algebra.trace D.host.K D.host.E (x a * D.host.conj (y a)))) := by rw [map_sum, map_sum]`. Use `_ = ∑ a, ∑ τ, TaylorLogMetric.embT D τ (x a * D.host.conj (y a)) := Finset.sum_congr rfl fun a _ => by rw [FL.sum_tau_trace]; rfl`. Use `_ = ∑ w, emb4 D x w * conj (emb4 D y w) := by`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, CU.emb_conj]`. Both sides reduce to the same expression.
+-/
 theorem isoK_hermitian_sum_eq_emb4_hermitian_sum (γ : IsoK D) (x y : Fin 4 → D.host.E) :
     ∑ w, D.host.φ₀ ((γ.g x w : D.host.K) : D.host.E) * conj (D.host.φ₀ ((γ.g y w : D.host.K) : D.host.E))
       = ∑ w, emb4 D x w * conj (emb4 D y w) := by
@@ -313,12 +431,24 @@ theorem isoK_hermitian_sum_eq_emb4_hermitian_sum (γ : IsoK D) (x y : Fin 4 → 
         refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun τ _ => ?_
         rw [map_mul, CU.emb_conj]; rfl
 
+/- English proof (translation)
+Use extensionality with `⟨a, i⟩ ⟨a', i'⟩`. Simplify using `only [blk4, hOne, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]`. Apply the tactic sequence `by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]`.
+-/
 theorem blockFourfold_hOne_eq_hOne (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
     blk4 (hOne L n) = hOne L (Fin 4 × n) := by
   ext ⟨a, i⟩ ⟨a', i'⟩
   simp only [blk4, hOne, Matrix.smul_apply, Matrix.one_apply, Prod.mk.injEq, smul_eq_mul]
   by_cases h1 : a = a' <;> by_cases h2 : i = i' <;> simp [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[blockFourfold_hOne_eq_hOne]`. Use `show ∀ x y, matH (hOne B.L (Fin 4 × D.what₂.Tau)) (B.gC x) (B.gC y) = matH (hOne B.L (Fin 4 × D.what₂.Tau)) x y`. Establish `hS : ∀ x y, matH (hOne B.L (Fin 4 × D.what₂.Tau)) (B.gC (emb4 D x)) (B.gC (emb4 D y)) = matH (hOne B.L (Fin 4 × D.what₂.Tau)) (emb4 D x) (emb4 D y)`. Introduce `x y`. Rewrite using `[show B.gC (emb4 D x) = _ from B.gC_spec x, show B.gC (emb4 D y) = _ from B.gC_spec y, matH_hOne, matH_hOne, isoK_hermitian_sum_eq_emb4_hermitian_sum]`.
+
+Establish `h1 : ∀ y, ((matH (hOne B.L (Fin 4 × D.what₂.Tau))).flip (B.gC (emb4 D y))).comp (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) = (matH (hOne B.L (Fin 4 × D.what₂.Tau))).flip (emb4 D y)`. Introduce `y`. Use `LinearMap.ext_on (span_range_emb4_eq_top D) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hS x y`.
+
+Establish `h2 : ∀ u, (matH (hOne B.L (Fin 4 × D.what₂.Tau)) (B.gC u)).comp (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) = matH (hOne B.L (Fin 4 × D.what₂.Tau)) u`. Introduce `u`. Use `LinearMap.ext_on (span_range_emb4_eq_top D) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun (h1 y) u`.
+
+Introduce `x y`. Conclude with `LinearMap.congr_fun (h2 x) y`.
+-/
 theorem isomOK {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) :
     IsIsom (matH (blk4 (hOne B.L D.what₂.Tau))) (stdH B.L (Fin 4 × D.what₂.Tau))
       (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) := by
@@ -348,6 +478,13 @@ theorem isomOK {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) :
 
 end
 
+/- English proof (translation)
+Introduce `h0`. Substitute `h0` using the available equality. Establish `hz : TaylorLogMetric.lamOf D cc 0 = ⊥`. Unfold `TaylorLogMetric.lamOf`. Rewrite using `[AddSubgroup.closure_eq_bot_iff]`.
+
+Introduce and unpack `w ⟨c, -, rfl⟩`. Simplify using the standard rewrite rules. Establish `h1 : B.L.ω₁ ∈ B.L.lattice.toAddSubgroup` using `B.L.ω₁_mem_lattice`. Rewrite `h1` using `[B.lat, hz, AddSubgroup.mem_bot]`. Establish `h2` using `B.L.indep.ne_zero 0`.
+
+Conclude with `h2 (by simpa using h1)`.
+-/
 theorem delta_ne_zero {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) : δ ≠ 0 := by
   intro h0
   subst h0
@@ -361,6 +498,11 @@ theorem delta_ne_zero {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base
   have h2 := B.L.indep.ne_zero 0
   exact h2 (by simpa using h1)
 
+/- English proof (translation)
+Establish `hI` using `hermitian_form_integral_values D cc hcc δ hδ h0 N N' L L' hA`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Conclude with `self_dual_lattice D cc hcc δ hδ h0 N N' L L' hA v (fun y hy => hv y hy)`. Introduce `v hv y hy`.
+
+Take `⟨a, b, -, hab⟩` from `hI v hv y hy`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `show (TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) v y).im = (b : ℝ)`. Rewrite using `[hab]`. Simplify using the standard rewrite rules.
+-/
 theorem selfDual_La {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hcc : TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (h0 : δ ≠ 0) (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : TaylorLogMetric.admitted D N N' L L') :
@@ -375,6 +517,15 @@ theorem selfDual_La {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hcc : Tayl
     show (TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) v y).im = (b : ℝ)
     rw [hab]; simp
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `⟨g.symm x, ?_, g.apply_symm_apply x⟩` and prove the remaining obligations. Rewrite using `[← h]`. Introduce `y hy`.
+
+Take `⟨m, hm⟩` from `hx (g y) ⟨y, hy, rfl⟩`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm]`. Use `hg (g.symm x) y` as an intermediate fact. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`.
+
+Simplify using `only [altE, this]`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Rewrite `hx` using `[← h]`. Take `⟨m, hm⟩` from `hx y hy`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm]`. Use `hg x y` as an intermediate fact. Simplify using `only [altE]`. Conclude with `congrArg Complex.im this`.
+-/
 theorem selfDual_image {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (H : Sesq V) (H' : Sesq W)
     (g : V ≃ₗ[ℂ] W) (hg : IsIsom H H' (g : V →ₗ[ℂ] W)) (Λ : AddSubgroup V) (h : IsSelfDual H Λ) :
     IsSelfDual H' (imgLat (g : V →ₗ[ℂ] W) Λ) := by
@@ -398,6 +549,15 @@ theorem selfDual_image {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGro
     simp only [altE]
     exact congrArg Complex.im this
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 F)) T`. Establish `hn : Ideal.absNorm (Ideal.span {(b : 𝓞 F)}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `nonZeroDivisors.ne_zero b.2`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {(b : 𝓞 F)}))`.
+
+Use `⟨_, Nat.pos_of_ne_zero hn, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hb x hx`. Establish `: ((Ideal.absNorm (Ideal.span {(b : 𝓞 F)}) : ℕ) : F) * x = ((t * r : 𝓞 F) : F)`. Rewrite `hr` using `[Algebra.smul_def]`. Establish `h1 : ((Ideal.absNorm (Ideal.span {(b : 𝓞 F)}) : ℕ) : F) = (t : F) * ((b : 𝓞 F) : F)`.
+
+Use `congrArg (fun y : 𝓞 F => (y : F)) ht` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[h1, mul_assoc]`. Use `push_cast`. Conclude with `congrArg ((t : F) * ·) hr.symm`.
+
+Rewrite using `[this]`. Conclude with `RingOfIntegers.isIntegral_coe _`.
+-/
 theorem exists_nat_mul (F : Type*) [Field F] [NumberField F] (T : Finset F) :
     ∃ m : ℕ, 0 < m ∧ ∀ x ∈ T, IsIntegral ℤ ((m : F) * x) := by
   obtain ⟨b, hb⟩ := IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 F)) T
@@ -416,6 +576,11 @@ theorem exists_nat_mul (F : Type*) [Field F] [NumberField F] (T : Finset F) :
     exact congrArg ((t : F) * ·) hr.symm
   rw [this]; exact RingOfIntegers.isIntegral_coe _
 
+/- English proof (translation)
+Set `bs` to `RingOfIntegers.basis E`. Take `⟨m, hm, h⟩` from `exists_nat_mul K (Finset.univ.image fun p : ι × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => f p.1 ((bs p.2 : 𝓞 E) : E))`. Use `⟨m, hm, fun i x => ?_⟩` and prove the remaining obligations. Establish `hx : (x : E) = ∑ j, (bs.repr x j) • ((bs j : 𝓞 E) : E)` using `by conv_lhs => rw [← bs.sum_repr x]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hx, map_sum, Finset.mul_sum]`. Use `IsIntegral.sum _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, mul_smul_comm]`. Conclude with `(h _ (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)).zsmul _`.
+-/
 theorem denom (E K : Type*) [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type*} [Fintype ι] (f : ι → E →+ K) :
     ∃ m : ℕ, 0 < m ∧ ∀ i, ∀ x : 𝓞 E, IsIntegral ℤ ((m : K) * f i (x : E)) := by
   let bs := RingOfIntegers.basis E
@@ -430,6 +595,11 @@ theorem denom (E K : Type*) [Field E] [NumberField E] [Field K] [NumberField K] 
   rw [map_zsmul, mul_smul_comm]
   exact (h _ (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩)).zsmul _
 
+/- English proof (translation)
+Rewrite using `[← Module.Finite.iff_addGroup_fg]`. Establish `: Module.Finite ℤ M'` using `Module.Finite.iff_addGroup_fg.2 inferInstance`. Set `f : M →+ M'` to `{ toFun := fun x => ⟨N • x.1, h x.1 x.2⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp }`. Use `Module.Finite.of_injective f.toIntLinearMap ?_` and prove the remaining obligations. Introduce `x y hxy`.
+
+Establish `h1 : N • x.1 = N • y.1` using `congrArg (fun z : M' => z.1) hxy`. Use extensionality with `i`. Establish `h2` using `congrFun h1 i`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul] at h2`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hN.ne') h2`.
+-/
 theorem fg_of_nsmul_le {ι : Type} (M M' : AddSubgroup (ι → ℂ)) [AddGroup.FG M'] (N : ℕ) (hN : 0 < N)
     (h : ∀ x ∈ M, N • x ∈ M') : AddGroup.FG M := by
   rw [← Module.Finite.iff_addGroup_fg]
@@ -456,6 +626,11 @@ def reix (n : Type) : (n → Fin 2 → Fin 2 → ℂ) ≃ₗ[ℂ] (Fin 4 × n �
   left_inv u := by funext τ i j; simp
   right_inv z := by funext ⟨a, τ⟩; simp
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩ a`. Conclude with `hu (e4.symm a).1 (e4.symm a).2`. Introduce `hz`.
+
+Conclude with `⟨(reix n).symm z, fun i j => hz (e4 (i, j)), (reix n).apply_symm_apply z⟩`.
+-/
 theorem reix_pow {n : Type} [Fintype n] (Λ : AddSubgroup (n → ℂ)) :
     imgLat (reix n : (n → Fin 2 → Fin 2 → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (powLat Λ 2 2) = pow4 Λ := by
   ext z
@@ -465,6 +640,11 @@ theorem reix_pow {n : Type} [Fintype n] (Λ : AddSubgroup (n → ℂ)) :
   · intro hz
     exact ⟨(reix n).symm z, fun i j => hz (e4 (i, j)), (reix n).apply_symm_apply z⟩
 
+/- English proof (translation)
+Introduce `x y`. Rewrite using `[blockFourfold_hOne_eq_hOne, matH_hOne, formV_apply]`. Use `congr 1`. Use `show ∑ w : Fin 4 × n, x w.2 (e4.symm w.1).1 (e4.symm w.1).2 * conj (y w.2 (e4.symm w.1).1 (e4.symm w.1).2) = ∑ τ, ∑ i, ∑ j, x τ i j * conj (y τ i j)`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `Equiv.sum_comp e4.symm (fun p : Fin 2 × Fin 2 => x τ p.1 p.2 * conj (y τ p.1 p.2))` as an intermediate fact. Rewrite `this` using `[Fintype.sum_prod_type]`. Conclude with `this`.
+-/
 theorem reix_isom (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
     IsIsom (formV (Formalism.L2.Th1.F.area L) n 2 2) (matH (blk4 (hOne L n)))
       (reix n : (n → Fin 2 → Fin 2 → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) := by
@@ -481,6 +661,9 @@ theorem reix_isom (L : PeriodPair) (n : Type) [Fintype n] [DecidableEq n] :
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ}
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `FL.lam_mem D cc δ w hw`. Use `AddSubgroup.subset_closure ⟨o * c, cc.mul_mem_left _ hc, ?_⟩` and prove the remaining obligations. Establish `: (((o * c : 𝓞 D.host.K) : D.host.K) : D.host.E) = ((o : D.host.K) : D.host.E) * ((c : D.host.K) : D.host.E)` using `by push_cast; rfl`. Rewrite using `[this, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lam_mul (o : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ TaylorLogMetric.lamOf D cc δ) :
     D.host.φ₀ (((o : D.host.K) : D.host.E)) * w ∈ TaylorLogMetric.lamOf D cc δ := by
   obtain ⟨c, hc, rfl⟩ := FL.lam_mem D cc δ w hw
@@ -489,14 +672,25 @@ theorem lam_mul (o : 𝓞 D.host.K) {w : ℂ} (hw : w ∈ TaylorLogMetric.lamOf 
       = ((o : D.host.K) : D.host.E) * ((c : D.host.K) : D.host.E) := by push_cast; rfl
   rw [this, map_mul]; ring
 
+/- English proof (translation)
+Use `AR.ph_om D` as an intermediate fact. Rewrite using `[show D.host.φ₀ (((AR.om D : D.host.K) : D.host.E)) = _ from this]`. Simplify using `[cmTheta]`.
+-/
 theorem theta_eq (D : D7) : cmTheta 1 D.host.d = D.host.φ₀ (((AR.om D : D.host.K) : D.host.E)) := by
   have := AR.ph_om D
   rw [show D.host.φ₀ (((AR.om D : D.host.K) : D.host.E)) = _ from this]
   simp [cmTheta]
 
+/- English proof (translation)
+Rewrite using `[theta_eq]`. Conclude with `lam_mul _ hw`.
+-/
 theorem lam_theta {w : ℂ} (hw : w ∈ TaylorLogMetric.lamOf D cc δ) : cmTheta 1 D.host.d * w ∈ TaylorLogMetric.lamOf D cc δ := by
   rw [theta_eq]; exact lam_mul _ hw
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, a, ha, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨_, lam_mul o hw, a, ha, by funext τ; simp [mul_assoc]⟩`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg x _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem lamMM_smul (o : 𝓞 D.host.K) {v : D.what₂.Tau → ℂ} (hv : v ∈ lamMM D (TaylorLogMetric.lamOf D cc δ)) :
     D.host.φ₀ (((o : D.host.K) : D.host.E)) • v ∈ lamMM D (TaylorLogMetric.lamOf D cc δ) := by
   induction hv using AddSubgroup.closure_induction with
@@ -507,6 +701,9 @@ theorem lamMM_smul (o : 𝓞 D.host.K) {v : D.what₂.Tau → ℂ} (hv : v ∈ l
   | add x y _ _ h1 h2 => rw [smul_add]; exact add_mem h1 h2
   | neg x _ h => rw [smul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Introduce `a` and use `AddSubgroup.subset_closure ⟨w, hw, y a, hy a, rfl⟩`.
+-/
 theorem gen_mem {Λ : AddSubgroup ℂ} {w : ℂ} (hw : w ∈ Λ) {y : Fin 4 → D.host.E} (hy : ∀ a, y a ∈ D.host.AA0) :
     w • emb4 D y ∈ pow4 (lamMM D Λ) :=
   fun a => AddSubgroup.subset_closure ⟨w, hw, y a, hy a, rfl⟩
@@ -516,6 +713,19 @@ def put4 (n : Type) (a : Fin 4) : (n → ℂ) →+ (Fin 4 × n → ℂ) where
   map_zero' := by funext w; simp
   map_add' := by intro x y; funext w; by_cases h : w.1 = a <;> simp [h]
 
+/- English proof (translation)
+Introduce `z hz`. Establish `key : ∀ a : Fin 4, lamMM D Λ ≤ (AddSubgroup.closure {z | ∃ w ∈ Λ, ∃ y : Fin 4 → D.host.E, (∀ a, y a ∈ D.host.AA0) ∧ z = w • emb4 D y}).comap (put4 D.what₂.Tau a)`. Introduce `a`. Unfold `lamMM`. Rewrite using `[AddSubgroup.closure_le]`.
+
+Introduce and unpack `v ⟨w, hw, a0, ha0, rfl⟩`. Use `AddSubgroup.subset_closure ⟨w, hw, Pi.single a a0, ?_, ?_⟩` and prove the remaining obligations. Introduce `a'`. Distinguish the cases in `h : a' = a`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `FractionalIdeal.zero_mem _`. Use function extensionality and compare the values at `⟨a', τ⟩ show (if a' = a then w * TaylorLogMetric.embT D τ a0 else 0) = w * TaylorLogMetric.embT D τ ((Pi.single a a0 : Fin 4 → D.host.E) a')`. Distinguish the cases in `h : a' = a`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h]`. Simplify using `[h]`. Establish `hsum : z = ∑ a, put4 D.what₂.Tau a (slice a z)`.
+
+Use function extensionality and compare the values at `⟨a', τ⟩`. Simplify using `only [Finset.sum_apply, put4, AddMonoidHom.coe_mk, ZeroHom.coe_mk, slice]`. Rewrite using `[Finset.sum_eq_single a']`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Conclude with `AddSubgroup.sum_mem _ fun a _ => key a (hz a)`.
+-/
 theorem fourth_power_le_closure_embeddings (Λ : AddSubgroup ℂ) : pow4 (lamMM D Λ) ≤
     AddSubgroup.closure {z | ∃ w ∈ Λ, ∃ y : Fin 4 → D.host.E, (∀ a, y a ∈ D.host.AA0) ∧ z = w • emb4 D y} := by
   intro z hz
@@ -546,6 +756,9 @@ theorem fourth_power_le_closure_embeddings (Λ : AddSubgroup ℂ) : pow4 (lamMM 
   rw [hsum]
   exact AddSubgroup.sum_mem _ fun a _ => key a (hz a)
 
+/- English proof (translation)
+Establish `h1` using `FL.one_mem_inverse_halfDifferent D`. Establish `h2 : ((⟨x, hx⟩ : 𝓞 D.host.E) • (1 : D.host.E)) ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)` using `Submodule.smul_mem _ _ h1`. Establish `e : ((⟨x, hx⟩ : 𝓞 D.host.E) • (1 : D.host.E)) = x` using `by rw [Algebra.smul_def, mul_one]; rfl`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 theorem int_mem_inverse_half_different {x : D.host.E} (hx : IsIntegral ℤ x) : x ∈ D.host.AA0 := by
   have h1 := FL.one_mem_inverse_halfDifferent D
   have h2 : ((⟨x, hx⟩ : 𝓞 D.host.E) • (1 : D.host.E)) ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) :=
@@ -554,6 +767,11 @@ theorem int_mem_inverse_half_different {x : D.host.E} (hx : IsIntegral ℤ x) : 
   rw [e] at h2
   exact h2
 
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `FL.exists_int_clearing_order_denominators D`. Use `⟨k.natAbs, Int.natAbs_pos.2 hk, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `h a ha`. Rewrite using `[Nat.cast_natAbs]`. Apply the tactic sequence `rcases abs_choice k with e | e <;> rw [e]`.
+
+Conclude with `h1`. Use `push_cast`. Rewrite using `[neg_mul]`. Conclude with `h1.neg`.
+-/
 theorem exists_nat_clearing_order_denominators (D : D7) : ∃ k : ℕ, 0 < k ∧ ∀ a ∈ D.host.AA0, IsIntegral ℤ ((k : D.host.E) * a) := by
   obtain ⟨k, hk, h⟩ := FL.exists_int_clearing_order_denominators D
   refine ⟨k.natAbs, Int.natAbs_pos.2 hk, fun a ha => ?_⟩
@@ -567,28 +785,52 @@ section B
 
 variable (B : Base D cc δ)
 
+/- English proof (translation)
+Rewrite using `[← B.lat]`. Both sides reduce to the same expression.
+-/
 theorem mem_iff (x : ℂ) : x ∈ B.L.lattice ↔ x ∈ TaylorLogMetric.lamOf D cc δ := by
   rw [← B.lat]; rfl
 
+/- English proof (translation)
+Introduce `x hx` and use `(mem_iff B _).2 (lam_theta ((mem_iff B x).1 hx))`.
+-/
 theorem hst : ∀ x ∈ B.L.lattice, cmTheta 1 D.host.d * x ∈ B.L.lattice :=
   fun x hx => (mem_iff B _).2 (lam_theta ((mem_iff B x).1 hx))
 
+/- English proof (translation)
+Simplify using `[cmTheta]`.
+-/
 theorem theta_val (D : D7) : cmTheta 1 D.host.d = (1 + Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 := by
   simp [cmTheta]
 
+/- English proof (translation)
+Rewrite using `[mem_iff, theta_val]`. Conclude with `B.t0.2.1`.
+-/
 theorem hθ : cmTheta 1 D.host.d * (B.ω₀ / 2) ∉ B.L.lattice := by
   rw [mem_iff, theta_val]; exact B.t0.2.1
 
+/- English proof (translation)
+Establish `e : 1 - cmTheta 1 D.host.d = (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2` using `by rw [theta_val]; ring`. Rewrite using `[mem_iff, e]`. Conclude with `B.t0.2.2`.
+-/
 theorem hθ' : (1 - cmTheta 1 D.host.d) * (B.ω₀ / 2) ∉ B.L.lattice := by
   have e : 1 - cmTheta 1 D.host.d = (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 := by rw [theta_val]; ring
   rw [mem_iff, e]; exact B.t0.2.2
 
+/- English proof (translation)
+The claim follows from `SC.half_notMem (hst B) (omega_mem B) (hθ B) (hθ' B)`.
+-/
 theorem half : B.ω₀ / 2 ∉ B.L.lattice := SC.half_notMem (hst B) (omega_mem B) (hθ B) (hθ' B)
 
+/- English proof (translation)
+Introduce `x hx` and use `SC.stdChar_eq (hst B) (omega_mem B) (hθ B) (hθ' B) (by have := D.host.hyp.2.2.2.1; omega) _ x hx`.
+-/
 theorem betaStd : ∀ x ∈ stdLat B.L (Fin 4 × D.what₂.Tau),
     alphaQ B.cq (stdH B.L (Fin 4 × D.what₂.Tau)) x = stdChar B.L B.ω₀ x :=
   fun x hx => SC.stdChar_eq (hst B) (omega_mem B) (hθ B) (hθ' B) (by have := D.host.hyp.2.2.2.1; omega) _ x hx
 
+/- English proof (translation)
+Establish `h` using `selfDual_La hcc hδ (delta_ne_zero B) 2 2 _ _ (Adm_std D 2 2 even_two even_two)`. Rewrite `h` using `[show TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ) = _ from areaOK B, Lat0 D cc δ]`. Establish `h2` using `selfDual_image _ _ (reix D.what₂.Tau) (reix_isom B.L D.what₂.Tau) _ h`. Rewrite `h2` using `[reix_pow]`. Conclude with `selfDual_image _ _ B.gC (isomOK B) _ h2`.
+-/
 theorem selfDual (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSelfDual (stdH B.L (Fin 4 × D.what₂.Tau))
       (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM)) := by
@@ -598,6 +840,11 @@ theorem selfDual (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetri
   rw [reix_pow] at h2
   exact selfDual_image _ _ B.gC (isomOK B) _ h2
 
+/- English proof (translation)
+Use `(quadMultiplierSemicharacter _ _ (standardFormBasic _ _).2.1 1 D.host.d odd_one _ (le_of_eq (selfDual B hcc hδ).symm) ?_).2.2` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨cmTheta 1 D.host.d • z, fun a => ?_, map_smul B.gC _ z⟩` and prove the remaining obligations. Use `lamMM_smul (AR.om D) (hz a)` as an intermediate fact. Rewrite `this` using `[← theta_eq]`.
+
+Conclude with `this`.
+-/
 theorem betaSemi (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     IsSemiChar (stdH B.L (Fin 4 × D.what₂.Tau))
       (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM))
@@ -610,6 +857,25 @@ theorem betaSemi (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetri
   rw [← theta_eq] at this
   exact this
 
+/- English proof (translation)
+Take `⟨k, hk, hA⟩` from `exists_nat_clearing_order_denominators D`. Set `f : Fin 4 × (Fin 4 × D.what₂.Tau) → D.host.E →+ D.host.K` to `fun p => { toFun := fun x => B.γ₀.g (Pi.single p.1 x) p.2 map_zero' := by simp map_add' := fun x y => by rw [Pi.single_add, map_add]; rfl }`. Take `⟨m, hm, hf⟩` from `denom D.host.E D.host.K f`. Use `⟨m * k, Nat.mul_pos hm hk, ?_⟩` and prove the remaining obligations. Establish `hle : pow4 B.lamM ≤ ((stdLat B.L (Fin 4 × D.what₂.Tau)).comap (nsmulAddMonoidHom (α` using `Fin 4 × D.what₂.Tau → ℂ) (m * k))).comap (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)).toAddMonoidHom := by`.
+
+Use `(fourth_power_le_closure_embeddings _).trans ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨w, hw, y, hy, rfl⟩`. Use `show (m * k) • B.gC (w • emb4 D y) ∈ stdLat B.L (Fin 4 × D.what₂.Tau)`. Rewrite using `[mem_stdLat]`.
+
+Introduce `v`. Rewrite using `[map_smul, show B.gC (emb4 D y) = _ from B.gC_spec y, mem_iff]`. Establish `hint : IsIntegral ℤ (((m * k : ℕ) : D.host.K) * B.γ₀.g y v)`. Establish `hy' : y = ∑ a, Pi.single a (y a)`. Use function extensionality and compare the values at `a'`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `e : ((m * k : ℕ) : D.host.K) * B.γ₀.g y v = ∑ a, (m : D.host.K) * f (a, v) ((k : D.host.E) * y a)` using `by conv_lhs => rw [hy']`. Rewrite using `[map_sum, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `show ((m * k : ℕ) : D.host.K) * B.γ₀.g (Pi.single a (y a)) v = (m : D.host.K) * B.γ₀.g (Pi.single a ((k : D.host.E) * y a)) v`.
+
+Establish `: (Pi.single a ((k : D.host.E) * y a) : Fin 4 → D.host.E) = k • Pi.single a (y a)`. Use function extensionality and compare the values at `a'`. Distinguish the cases in `h : a' = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne h]`. Rewrite using `[this, map_nsmul]`. Simplify using `only [Pi.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `IsIntegral.sum _ fun a _ => hf (a, v) ⟨_, hA _ (hy a)⟩`. Use `lam_mul (cc := cc) (δ := δ) (⟨_, hint⟩ : 𝓞 D.host.K) hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul, nsmul_eq_mul]`.
+
+Use `show ((m * k : ℕ) : ℂ) * (w * D.host.φ₀ ((B.γ₀.g y v : D.host.K) : D.host.E)) = D.host.φ₀ (((((m * k : ℕ) : D.host.K) * B.γ₀.g y v : D.host.K)) : D.host.E) * w`. Use `push_cast`. Rewrite using `[map_mul, map_mul, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `hle hz`.
+-/
 theorem up : ∃ N : ℕ, 0 < N ∧
     ∀ x ∈ imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM),
       N • x ∈ stdLat B.L (Fin 4 × D.what₂.Tau) := by
@@ -662,6 +928,17 @@ theorem up : ∃ N : ℕ, 0 < N ∧
   rintro _ ⟨z, hz, rfl⟩
   exact hle hz
 
+/- English proof (translation)
+Take `⟨m, hm, hT⟩` from `exists_nat_mul D.host.E (Finset.univ.image fun p : (Fin 4 × D.what₂.Tau) × Fin 4 => B.γ₀.g.symm (Pi.single p.1 (1 : D.host.K)) p.2)`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_stdLat]`. Establish `hsum : m • x = ∑ v, m • (Pi.single v (x v) : Fin 4 × D.what₂.Tau → ℂ)`. Rewrite using `[← Finset.smul_sum]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `v'`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum]`. Use `AddSubgroup.sum_mem _ fun v _ => ?_` and prove the remaining obligations.
+
+Use `⟨x v • emb4 D (m • B.γ₀.g.symm (Pi.single v (1 : D.host.K))), gen_mem ((mem_iff B _).1 (hx v)) (fun a => int_mem_inverse_half_different ?_), ?_⟩` and prove the remaining obligations. Use `hT _ (Finset.mem_image.2 ⟨(v, a), Finset.mem_univ _, rfl⟩)` as an intermediate fact. Simplify using `using this`. Use `show B.gC (x v • emb4 D (m • B.γ₀.g.symm (Pi.single v (1 : D.host.K)))) = _`. Rewrite using `[map_smul, show B.gC (emb4 D _) = _ from B.gC_spec _, map_nsmul, LinearEquiv.apply_symm_apply]`.
+
+Use function extensionality and compare the values at `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem down : ∃ N : ℕ, 0 < N ∧ ∀ x ∈ stdLat B.L (Fin 4 × D.what₂.Tau),
     N • x ∈ imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM) := by
   obtain ⟨m, hm, hT⟩ := exists_nat_mul D.host.E
@@ -686,22 +963,34 @@ theorem down : ∃ N : ℕ, 0 < N ∧ ∀ x ∈ stdLat B.L (Fin 4 × D.what₂.T
     · subst h; simp; ring
     · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `down B`. Conclude with `Formalism.L2.Th1.H.Inh.relIdx_ne_zero_of_fg _ _ N hN h`.
+-/
 theorem idx₂ : relIdx (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM))
     (stdLat B.L (Fin 4 × D.what₂.Tau)) ≠ 0 := by
   obtain ⟨N, hN, h⟩ := down B
   exact Formalism.L2.Th1.H.Inh.relIdx_ne_zero_of_fg _ _ N hN h
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `up B`. Use `fg_of_nsmul_le _ (stdLat B.L (Fin 4 × D.what₂.Tau)) N hN h` as an intermediate fact. Conclude with `Formalism.L2.Th1.H.Inh.relIdx_ne_zero_of_fg _ _ N hN h`.
+-/
 theorem idx₁ : relIdx (stdLat B.L (Fin 4 × D.what₂.Tau))
     (imgLat (B.gC : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM)) ≠ 0 := by
   obtain ⟨N, hN, h⟩ := up B
   have := fg_of_nsmul_le _ (stdLat B.L (Fin 4 × D.what₂.Tau)) N hN h
   exact Formalism.L2.Th1.H.Inh.relIdx_ne_zero_of_fg _ _ N hN h
 
+/- English proof (translation)
+The claim follows from `stdOK_of B (half B) (isomOK B) (betaStd B) (betaSemi B hcc hδ) (selfDual B hcc hδ) (idx₁ B) (idx₂ B)`.
+-/
 theorem stdOK (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : B.StdOK :=
   stdOK_of B (half B) (isomOK B) (betaStd B) (betaSemi B hcc hδ) (selfDual B hcc hδ) (idx₁ B) (idx₂ B)
 
 end B
 
+/- English proof (translation)
+Introduce `_ _ _ B h` and use `stdOK B h.1 h.2`.
+-/
 theorem stdOK_of_crv : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ),
     StandardLatticesGL3.Crv D cc δ → B.StdOK :=
   fun _ _ _ B h => stdOK B h.1 h.2

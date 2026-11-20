@@ -4,6 +4,11 @@ open NumberField
 namespace GlobalTheory
 open TensorProduct nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `E _ _ N _ _ _ _`. Set `g : N →ₗ[𝓞 E] E ⊗[𝓞 E] N` to `TensorProduct.mk (𝓞 E) E N 1`. Establish `hb : IsBaseChange E g` using `TensorProduct.isBaseChange (𝓞 E) N E`. Establish `h1 : Module.finrank E (E ⊗[𝓞 E] N) = Module.finrank (𝓞 E) N` using `hb.finrank_eq`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) E := inferInstance`.
+
+Use `haveI h2 : IsLocalizedModule (Algebra.algebraMapSubmonoid (𝓞 E) ℤ⁰) g := (isLocalizedModule_iff_isBaseChange _ E g).2 hb`. Use `haveI h3 : IsLocalizedModule ℤ⁰ (g.restrictScalars ℤ) := IsLocalizedModule.restrictScalars ℤ⁰ g`. Establish `h4 : Module.finrank ℤ (E ⊗[𝓞 E] N) = Module.finrank ℤ N` using `IsLocalizedModule.finrank_eq ℤ⁰ (g.restrictScalars ℤ) le_rfl`. Establish `h5 : Module.finrank ℚ (E ⊗[𝓞 E] N) = Module.finrank ℤ (E ⊗[𝓞 E] N)` using `IsFractionRing.finrank_right_eq ℤ ℚ _`. Rewrite using `[← h4, ← h5, ← h1, mul_comm, Module.finrank_mul_finrank]`.
+-/
 theorem finrank_int_eq_finrank_ringOfIntegers_mul : ∀ (E : Type) [Field E] [NumberField E] (N : Type) [AddCommGroup N] [Module (𝓞 E) N] [Module.Free ℤ N] [Module.Finite ℤ N], Module.finrank ℤ N = Module.finrank (𝓞 E) N * Module.finrank ℚ E := by
   intro E _ _ N _ _ _ _
   let g : N →ₗ[𝓞 E] E ⊗[𝓞 E] N := TensorProduct.mk (𝓞 E) E N 1

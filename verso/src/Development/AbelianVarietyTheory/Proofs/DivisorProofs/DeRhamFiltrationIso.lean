@@ -14,6 +14,19 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.HodgeIso
 
+/- English proof (translation)
+Introduce `P T A _ g hA hg H e he F hF`. Take `⟨i, hi⟩` from `GlobalTheory.T.hodge_into_de_rham_injective P T A g hA hg H e he`. Establish `haff : ∀ (W : T.Opens) (hW : IsAffineOpen W) (s : Γ(GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A, W)), i.app W s ∈ F.sec W` using `fun W hW s => (hF W hW _).2 ((hi W hW).2.1 ▸ ⟨s, rfl⟩)`. Establish `hmem : ∀ V s, i.app V s ∈ F.sec V`. Introduce `V s`.
+
+Use `F.mem_of_local fun x hx => ?_` and prove the remaining obligations. Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (X := T) (x := x) (U := V) hx`. Establish `hWV' : W ≤ V` using `hWV`. Use `⟨W, hWV', hxW, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Twist.app_resM]`.
+
+Conclude with `haff W hW _`. Set `ψ` to `F.lift i hmem`. Establish `hinj : ∀ (W : T.Opens), IsAffineOpen W → Function.Injective (ψ.app W)`. Introduce `W hW s s' h`. Conclude with `(hi W hW).1 (congrArg (F.incl.app W) h)`.
+
+Establish `hsurj : ∀ (W : T.Opens), IsAffineOpen W → Function.Surjective (ψ.app W)`. Introduce `W hW t`. Establish `ht : e W hW (F.incl.app W t) ∈ PrimitiveSubmodule (onAff A hW)` using `(hF W hW _).1 (F.incl_app_mem t)`. Rewrite `ht` using `[← (hi W hW).2.1]`. Take `⟨s, hs⟩` from `ht`.
+
+Use `⟨s, F.incl_app_injective W ?_⟩` and prove the remaining obligations. Conclude with `(e W hW).injective hs`. Establish `: Mono ψ` using `GlobalTheory.QCoh.mono_of_locally_app_injective ψ fun V x hx => by`. Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (X := T) (x := x) (U := V) hx`. Conclude with `⟨W, hxW, hWV, hinj W hW⟩`.
+
+Establish `: Epi ψ` using `GlobalTheory.QCoh.epi_of_locally_app_surjective ψ fun V x hx => by`. Take `⟨W, hW, hxW, hWV⟩` from `exists_isAffineOpen_mem_and_subset (X := T) (x := x) (U := V) hx`. Conclude with `⟨W, hxW, hWV, hsurj W hW⟩`. Establish `: IsIso ψ` using `isIso_of_mono_of_epi ψ`. Conclude with `⟨(asIso ψ).symm⟩`.
+-/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → ∀ {T : Scheme.{0}} (A : Over T) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)
     (e : ∀ (V : T.Opens) (hV : IsAffineOpen V), Γ(H, V) ≃ₗ[Γ(T, V)] primDR (onAff A hV)), IsDRIso A H e →

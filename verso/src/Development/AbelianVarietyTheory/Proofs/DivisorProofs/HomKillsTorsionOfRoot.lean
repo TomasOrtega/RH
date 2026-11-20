@@ -21,6 +21,9 @@ open GlobalTheory.AbDual GlobalTheory.CechPic GlobalTheory.AbLaw
 
 namespace GlobalTheory.RootTorsion
 
+/- English proof (translation)
+Use `⟨Over.homMk (hpb.1.lift x.left Z'.hom (Over.w x)) (hpb.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Use `ext`. Conclude with `hpb.1.lift_fst _ _ _`.
+-/
 theorem exists_lift {Y Tb : Scheme.{0}} {t : Tb ⟶ Y} {A : Over Y} {A' : Over Tb} [GrpObj A] [GrpObj A']
     {φ' : A'.left ⟶ A.left} (hpb : IsGrpPullback A' A t φ') {Z' : Over Tb} (x : Over.mk (Z'.hom ≫ t) ⟶ A) :
     ∃ x' : Z' ⟶ A', pushPt hpb.1.w x' = x := by

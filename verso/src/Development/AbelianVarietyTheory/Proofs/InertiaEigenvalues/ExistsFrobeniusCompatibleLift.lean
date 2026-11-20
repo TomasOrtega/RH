@@ -5,6 +5,15 @@ open scoped NNReal
 
 namespace GlobalTheory.DworkLift
 
+/- English proof (translation)
+Introduce `l _ A _ φ hφ htor O _ _ f`. Establish `hex` using `GlobalTheory.T.exists_wittVector_ghost_eq_frobenius_iterate l A φ hφ`. Establish `inj` using `GlobalTheory.T.wittVector_eq_of_ghostComponent_eq_of_no_torsion l A htor`. Set `s : A → WittVector l A` to `fun a => Classical.choose (hex a)`. Establish `hs : ∀ a n, WittVector.ghostComponent n (s a) = φ^[n] a` using `fun a => Classical.choose_spec (hex a)`.
+
+Establish `hit : ∀ (n : ℕ) (a : A), φ^[n] a = (φ ^ n) a` using `fun n a => by rw [RingHom.coe_pow]`. Set `S : A →+* WittVector l A` to `{ toFun := s map_one' := inj _ _ fun n => by rw [hs, map_one, hit, map_one] map_mul' := fun a b => inj _ _ fun n => by rw [map_mul, hs, hs, hs, hit, hit, hit, map_mul] map_zero' := inj _ _ fun n => by rw [hs, map_zero, hit, map_zero] map_add' := fun a b => inj _ _ fun n => by rw …`. Establish `hS0 : ∀ a, (S a).coeff 0 = a` using `fun a => by`. Express the relevant statement in the definitionally equal form `(s a).coeff 0 = a`. Establish `h` using `hs a 0`.
+
+Rewrite `h` using `[WittVector.ghostComponent_apply, wittPolynomial_zero]`. Simplify using `using h`. Establish `hSφ : ∀ a, S (φ a) = WittVector.frobenius (S a)` using `fun a => inj _ _ fun n => by`. Express the relevant statement in the definitionally equal form `WittVector.ghostComponent n (s (φ a)) = WittVector.ghostComponent n (WittVector.frobenius (s a))`. Rewrite using `[WittVector.ghostComponent_frobenius, hs, hs, Function.iterate_succ_apply]`.
+
+Use `⟨(WittVector.map f).comp S, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, WittVector.map_coeff, hS0]`. Simplify using `only [RingHom.comp_apply, hSφ]`. Conclude with `WittVector.IsPoly.map (WittVector.frobenius_isPoly l) f (S a)`.
+-/
 theorem exists_frobenius_compatible_lift : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (φ : A →+* A),
     (∀ a, ((l : ℕ) : A) ∣ φ a - a ^ l) → (∀ a : A, ((l : ℕ) : A) * a = 0 → a = 0) →
     ∀ (O : Type) [CommRing O] [CharP O l] (f : A →+* O), ∃ F : A →+* WittVector l O,

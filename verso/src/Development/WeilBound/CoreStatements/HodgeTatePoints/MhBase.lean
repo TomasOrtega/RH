@@ -23,10 +23,16 @@ def pb (j : X ⟶ Spec (CommRingCat.of A)) : A →+* Γ(X, ⊤) :=
 def val (x : Spec (CommRingCat.of B) ⟶ X) : Γ(X, ⊤) →+* B :=
   (x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom).hom
 
+/- English proof (translation)
+Simplify using `only [valAt, val, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 theorem valAt_top (x : Spec (CommRingCat.of B) ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ ⊤) (s : Γ(X, ⊤)) : valAt x ⊤ h s = val x s := by
   simp only [valAt, val, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Apply `ext_of_isAffine` to reduce the goal to its premises. Establish `e : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ j.appTop = (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ j'.appTop`. Use extensionality with `a`. Conclude with `h a`. Conclude with `(cancel_epi _).1 e`.
+-/
 theorem pb_ext {j j' : X ⟶ Spec (CommRingCat.of A)} (h : ∀ a, pb j a = pb j' a) : j = j' := by
   apply ext_of_isAffine
   have e : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ j.appTop =
@@ -35,35 +41,56 @@ theorem pb_ext {j j' : X ⟶ Spec (CommRingCat.of A)} (h : ∀ a, pb j a = pb j'
     exact h a
   exact (cancel_epi _).1 e
 
+/- English proof (translation)
+Unfold `pb`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem pb_comp (f : Y ⟶ X) (j : X ⟶ Spec (CommRingCat.of A)) (a : A) : pb (f ≫ j) a = f.appTop (pb j a) := by
   unfold pb
   rw [Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem val_comp (x : Spec (CommRingCat.of B) ⟶ Y) (f : Y ⟶ X) (s : Γ(X, ⊤)) :
     val (x ≫ f) s = val x (f.appTop s) := by
   unfold val
   rw [Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Simplify using `only [pb, Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression.
+-/
 theorem pb_spec (j : X ⟶ Spec (CommRingCat.of B)) (ψ : A →+* B) (a : A) :
     pb (j ≫ Spec.map (CommRingCat.ofHom ψ)) a = pb j (ψ a) := by
   simp only [pb, Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]
   rfl
 
+/- English proof (translation)
+Simplify using `[val, pb]`.
+-/
 theorem val_pb_id (b : B) : val (𝟙 _) (pb (𝟙 (Spec (CommRingCat.of B))) b) = b := by
   simp [val, pb]
 
+/- English proof (translation)
+Rewrite using `[pb_comp, ← val_comp, Category.id_comp]`.
+-/
 theorem val_pb_comp (x : Spec (CommRingCat.of B) ⟶ X) (j : X ⟶ Spec (CommRingCat.of A)) (a : A) :
     val x (pb j a) = val (𝟙 _) (pb (x ≫ j) a) := by
   rw [pb_comp, ← val_comp, Category.id_comp]
 
+/- English proof (translation)
+Establish `e` using `pb_spec (𝟙 (Spec (CommRingCat.of B))) φ a`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[val_pb_comp, h, e, val_pb_id]`.
+-/
 theorem val_pb {x : Spec (CommRingCat.of B) ⟶ X} {j : X ⟶ Spec (CommRingCat.of A)} {φ : A →+* B}
     (h : x ≫ j = Spec.map (CommRingCat.ofHom φ)) (a : A) : val x (pb j a) = φ a := by
   have e := pb_spec (𝟙 (Spec (CommRingCat.of B))) φ a
   rw [Category.id_comp] at e
   rw [val_pb_comp, h, e, val_pb_id]
 
+/- English proof (translation)
+Introduce `s t hst`. Establish `e : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (val (𝟙 _) s) = (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (val (𝟙 _) t)`. Rewrite using `[hst]`. Simplify `e` using `[val]`.
+-/
 theorem val_id_injective : Function.Injective (val (𝟙 (Spec (CommRingCat.of B)))) := by
   intro s t hst
   have e : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (val (𝟙 _) s) =
@@ -71,20 +98,32 @@ theorem val_id_injective : Function.Injective (val (𝟙 (Spec (CommRingCat.of B
     rw [hst]
   simpa [val] using e
 
+/- English proof (translation)
+Use `pb_ext fun a => val_id_injective ?_` and prove the remaining obligations. Rewrite using `[← val_pb_comp, h, val_pb (Category.id_comp _)]`.
+-/
 theorem comp_eq_spec {x : Spec (CommRingCat.of B) ⟶ X} {j : X ⟶ Spec (CommRingCat.of A)} {φ : A →+* B}
     (h : ∀ a, val x (pb j a) = φ a) : x ≫ j = Spec.map (CommRingCat.ofHom φ) := by
   refine pb_ext fun a => val_id_injective ?_
   rw [← val_pb_comp, h, val_pb (Category.id_comp _)]
 
+/- English proof (translation)
+Use `⟨(ΓSpec.adjunction.homEquiv X (Opposite.op (CommRingCat.of A))) (CommRingCat.ofHom φ).op, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[pb, ΓSpecIso_inv_ΓSpec_adjunction_homEquiv]`. Both sides reduce to the same expression.
+-/
 theorem exists_pb (φ : A →+* Γ(X, ⊤)) : ∃ j : X ⟶ Spec (CommRingCat.of A), ∀ a, pb j a = φ a := by
   refine ⟨(ΓSpec.adjunction.homEquiv X (Opposite.op (CommRingCat.of A))) (CommRingCat.ofHom φ).op,
     fun a => ?_⟩
   rw [pb, ΓSpecIso_inv_ΓSpec_adjunction_homEquiv]
   rfl
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+-/
 theorem spec_inj {φ ψ : A →+* B} (h : Spec.map (CommRingCat.ofHom φ) = Spec.map (CommRingCat.ofHom ψ)) : φ = ψ :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spec_comp (φ : A →+* B) (ψ : B →+* C) :
     Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map (CommRingCat.ofHom φ) = Spec.map (CommRingCat.ofHom (ψ.comp φ)) := by
   rw [← Spec.map_comp]
@@ -94,16 +133,37 @@ end pb
 
 variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] [Finite T]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `Twhopf.sec_inj R T Γ ⊤ _ fun t ht => ?_` and prove the remaining obligations. Rewrite using `[valAt_top, map_sub, h, sub_self]`.
+-/
 theorem sec_ext (Γ : QFGroup R T) {s s' : Γ(Γ.G.left, ⊤)} (h : ∀ t, val (Γ.pt t).left s = val (Γ.pt t).left s') :
     s = s' := by
   rw [← sub_eq_zero]
   refine Twhopf.sec_inj R T Γ ⊤ _ fun t ht => ?_
   rw [valAt_top, map_sub, h, sub_self]
 
+/- English proof (translation)
+The claim follows from `pb_ext fun a => sec_ext Γ fun t => by rw [val_pb_comp, h, ← val_pb_comp]`.
+-/
 theorem hom_ext_pt (Γ : QFGroup R T) {A : Type} [CommRing A] {j j' : Γ.G.left ⟶ Spec (CommRingCat.of A)}
     (h : ∀ t, (Γ.pt t).left ≫ j = (Γ.pt t).left ≫ j') : j = j' :=
   pb_ext fun a => sec_ext Γ fun t => by rw [val_pb_comp, h, ← val_pb_comp]
 
+/- English proof (translation)
+Establish `hsub : ∀ {B : Type} [CommRing B] {X : Scheme} (x : Spec (CommRingCat.of B) ⟶ X) (U : X.Opens) (hx : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)), valAt x U hx (a - b) = valAt x U hx a - valAt x U hx b`. Introduce `B _ X x U hx a b`. Simplify using `only [valAt, map_sub]`. Prove the components needed by the constructor for the conclusion. Introduce `hf t`.
+
+Rewrite `hf` using `[Twhopf.mem_order]`. Establish `hreg : ∀ g : Γ.G.left, ∃ U : Γ.G.left.Opens, g ∈ U ∧ ∃ s : Γ(Γ.G.left, U), ∀ (h : T) (hh : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U), valAt (Γ.pt h).left U hh s = algebraMap R (FractionRing R) (f (t * h))` using `fun g => hf t g (by simp)`. Use `choose U hgU s hs using hreg`. Take `⟨g0, hglue, -⟩` from `TopCat.Sheaf.existsUnique_gluing' Γ.G.left.sheaf U ⊤ (fun g => homOfLE le_top) (fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hgU x⟩) s (by`. Introduce `g g'`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `Twhopf.sec_inj R T Γ _ _` to reduce the goal to its premises. Introduce `h hh`. Establish `h1 : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U g` using `(SubOrder.top_le_iff_mem _ _).2 fun z => ((SubOrder.top_le_iff_mem _ _).1 hh z).1`. Establish `h2 : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U g'` using `(SubOrder.top_le_iff_mem _ _).2 fun z => ((SubOrder.top_le_iff_mem _ _).1 hh z).2`.
+
+Use `(hsub _ _ hh _ _).trans ?_` and prove the remaining obligations. Use `erw [Twhopf.valAt_restrict _ _ hh h1, Twhopf.valAt_restrict _ _ hh h2]`. Rewrite using `[hs, hs, sub_self])`. Use `⟨g0, fun h => ?_⟩` and prove the remaining obligations. Establish `htop : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ ⊤` using `(SubOrder.top_le_iff_mem _ _).2 fun _ => trivial`.
+
+Set `z : Spec (CommRingCat.of (FractionRing R))` to `IsLocalRing.closedPoint (FractionRing R)`. Establish `hh : ⊤ ≤ (Γ.pt h).left ⁻¹ᵁ U ((Γ.pt h).left z)` using `Twhopf.top_le_of_mem _ z (hgU _)`. Use `(valAt_top _ htop g0).symm.trans ?_` and prove the remaining obligations. Use `(Twhopf.valAt_restrict _ (homOfLE le_top) hh htop g0).symm.trans ?_` and prove the remaining obligations. Use `erw [hglue ((Γ.pt h).left z)]`.
+
+Conclude with `hs _ h hh`. Introduce `hf`. Rewrite using `[Twhopf.mem_order]`. Introduce `t g _`. Take `⟨s, hs⟩` from `hf t`.
+
+Unfold `QFGroup.RegularAt`. Conclude with `⟨⊤, by simp, s, fun h hh => by rw [valAt_top, hs]⟩`.
+-/
 theorem mem_top_iff (Γ : QFGroup R T) (f : T → R) : f ∈ Γ.btOrder ⊤ ↔
     ∀ t, ∃ s : Γ(Γ.G.left, ⊤), ∀ h, val (Γ.pt h).left s = algebraMap R (FractionRing R) (f (t * h)) := by
   have hsub : ∀ {B : Type} [CommRing B] {X : Scheme} (x : Spec (CommRingCat.of B) ⟶ X) (U : X.Opens)
@@ -148,16 +208,29 @@ theorem mem_top_iff (Γ : QFGroup R T) (f : T → R) : f ∈ Γ.btOrder ⊤ ↔
     exact ⟨⊤, by simp, s, fun h hh => by rw [valAt_top, hs]⟩
 
 omit [Finite T] in
+/- English proof (translation)
+The claim follows from `val_pb (Over.w (Γ.pt t)) r`.
+-/
 theorem val_const (Γ : QFGroup R T) (t : T) (r : R) :
     val (Γ.pt t).left (pb Γ.G.hom r) = algebraMap R (FractionRing R) r :=
   val_pb (Over.w (Γ.pt t)) r
 
 omit [Finite T] in
+/- English proof (translation)
+The claim follows from `val_pb (hj.pt t) a`.
+-/
 theorem val_emb {Γ : QFGroup R T} {A : Subalgebra R (T → R)} {j : Γ.G.left ⟶ Spec (CommRingCat.of A)}
     (hj : Γ.IsEmb A j) (t : T) (a : A) :
     val (Γ.pt t).left (pb j a) = algebraMap R (FractionRing R) (a.1 t) :=
   val_pb (hj.pt t) a
 
+/- English proof (translation)
+Use `choose s hs using hA`. Set `φ : A →+* Γ(Γ.G.left, ⊤)` to `{ toFun := s map_one' := sec_ext Γ fun t => by rw [hs, map_one]; simp map_mul' := fun a b => sec_ext Γ fun t => by rw [hs, map_mul, hs, hs]; simp map_zero' := sec_ext Γ fun t => by rw [hs, map_zero]; simp map_add' := fun a b => sec_ext Γ fun t => by rw [hs, map_add, hs, hs]; simp …`. Take `⟨j, hj⟩` from `exists_pb φ`. Establish `hpt : ∀ t, (Γ.pt t).left ≫ j = Spec.map (CommRingCat.ofHom ((algebraMap R (FractionRing R)).comp ((Pi.evalRingHom (fun _ : T => R) t).comp A.val.toRingHom)))`. Introduce `t`.
+
+Apply `comp_eq_spec` to reduce the goal to its premises. Introduce `a`. Rewrite using `[hj]`. Conclude with `hs a t`. Use `⟨j, ⟨?_, hpt⟩, fun j' hj' => hom_ext_pt Γ fun t => by rw [hj'.pt, hpt]⟩` and prove the remaining obligations.
+
+Apply `hom_ext_pt Γ` to reduce the goal to its premises. Introduce `t`. Rewrite using `[← Category.assoc, hpt, spec_comp, Over.w (Γ.pt t)]`. Use `show _ = Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))`. Use `congr 2`.
+-/
 theorem exists_emb (Γ : QFGroup R T) (A : Subalgebra R (T → R))
     (hA : ∀ a : A, ∃ s : Γ(Γ.G.left, ⊤), ∀ t, val (Γ.pt t).left s = algebraMap R (FractionRing R) (a.1 t)) :
     ∃! j : Γ.G.left ⟶ Spec (CommRingCat.of A), Γ.IsEmb A j := by

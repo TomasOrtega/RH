@@ -23,23 +23,46 @@ variable {n : ℕ} {ε ε' : Fin n → Bool}
 
 def barRev (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := rv (g.map (starRingEnd ℂ))
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[barRev, rv]`.
+-/
 theorem barRev_barRev (g : Matrix (Fin n) (Fin n) ℂ) : barRev (barRev g) = g := by
   ext i j; simp [barRev, rv]
 
+/- English proof (translation)
+Simplify using `only [barRev, Matrix.map_mul, rv_mul]`.
+-/
 theorem barRev_mul (g h : Matrix (Fin n) (Fin n) ℂ) : barRev (g * h) = barRev g * barRev h := by
   simp only [barRev, Matrix.map_mul, rv_mul]
 
+/- English proof (translation)
+Simplify using `[barRev, rv_one]`.
+-/
 theorem barRev_one : barRev (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   simp [barRev, rv_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem barRev_ct (g : Matrix (Fin n) (Fin n) ℂ) : barRev gᴴ = (barRev g)ᴴ := rfl
 
+/- English proof (translation)
+Rewrite using `[barRev, Matrix.diagonal_map (map_zero _), rv_diag]`.
+-/
 theorem barRev_diag (d : Fin n → ℂ) : barRev (diagonal d) = diagonal fun a => starRingEnd ℂ (d a.rev) := by
   rw [barRev, Matrix.diagonal_map (map_zero _), rv_diag]
 
+/- English proof (translation)
+The claim follows from `rv_cont.comp (continuous_id.matrix_map Complex.continuous_conj)`.
+-/
 theorem barRev_cont : Continuous (barRev : Matrix (Fin n) (Fin n) ℂ → _) :=
   rv_cont.comp (continuous_id.matrix_map Complex.continuous_conj)
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[barRev_diag]`. Simplify using `only [← sg_symm he]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem barRev_Jm (he : ∀ a, ε' a = ε a.rev) : barRev (Formalism.REAL.Jm ε') = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
   rw [barRev_diag]
@@ -48,12 +71,18 @@ theorem barRev_Jm (he : ∀ a, ε' a = ε a.rev) : barRev (Formalism.REAL.Jm ε'
   funext a
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Formalism.REAL.Jm ε' * g = Formalism.REAL.Jm ε'` using `hg`. Use `show (barRev g)ᴴ * Formalism.REAL.Jm ε * barRev g = Formalism.REAL.Jm ε`. Rewrite using `[← barRev_Jm he, ← barRev_ct, ← barRev_mul, ← barRev_mul, hg']`.
+-/
 theorem barRev_UJ (he : ∀ a, ε' a = ε a.rev) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε') :
     barRev g ∈ UJset ε := by
   have hg' : gᴴ * Formalism.REAL.Jm ε' * g = Formalism.REAL.Jm ε' := hg
   show (barRev g)ᴴ * Formalism.REAL.Jm ε * barRev g = Formalism.REAL.Jm ε
   rw [← barRev_Jm he, ← barRev_ct, ← barRev_mul, ← barRev_mul, hg']
 
+/- English proof (translation)
+Establish `hg1 : gᴴ * g = 1` using `(Matrix.mem_unitaryGroup_iff').1 hg.1`. Use `⟨(Matrix.mem_unitaryGroup_iff').2 ?_, ?_⟩` and prove the remaining obligations. Use `show (barRev g)ᴴ * barRev g = 1`. Rewrite using `[← barRev_ct, ← barRev_mul, hg1, barRev_one]`. Rewrite using `[← barRev_Jm he, ← barRev_mul, ← barRev_mul, hg.2]`.
+-/
 theorem barRev_K (he : ∀ a, ε' a = ε a.rev) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε') :
     barRev g ∈ Formalism.REAL.Kset ε := by
   have hg1 : gᴴ * g = 1 := (Matrix.mem_unitaryGroup_iff').1 hg.1
@@ -71,11 +100,17 @@ def barRevU (he : ∀ a, ε' a = ε a.rev) : Formalism.REAL.UJ ε' ≃* Formalis
   right_inv g := Subtype.ext (Units.ext (barRev_barRev _))
   map_mul' g h := Subtype.ext (Units.ext (barRev_mul _ _))
 
+/- English proof (translation)
+Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `barRev_cont.comp (Units.continuous_val.comp continuous_subtype_val)`. Conclude with `barRev_cont.comp (Units.continuous_coe_inv.comp continuous_subtype_val)`.
+-/
 theorem barRevU_cont (he : ∀ a, ε' a = ε a.rev) : Continuous (barRevU he) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
   · exact barRev_cont.comp (Units.continuous_val.comp continuous_subtype_val)
   · exact barRev_cont.comp (Units.continuous_coe_inv.comp continuous_subtype_val)
 
+/- English proof (translation)
+Use `haveI : ((Formalism.REAL.muG ε').map (barRevU he)).IsHaarMeasure := MulEquiv.isHaarMeasure_map _ (barRevU he) (barRevU_cont he) (barRevU_cont (sg_symm he))`. Use `MemLp.comp_of_map ?_ (barRevU_cont he).measurable.aemeasurable` and prove the remaining obligations. Rewrite using `[Measure.isMulLeftInvariant_eq_smul ((Formalism.REAL.muG ε').map (barRevU he)) (Formalism.REAL.muG ε)]`. Conclude with `hF.smul_measure ENNReal.coe_ne_top`.
+-/
 theorem memLp_barRev (he : ∀ a, ε' a = ε a.rev) {F : Formalism.REAL.UJ ε → ℂ} (hF : MemLp F 2 (Formalism.REAL.muG ε)) :
     MemLp (F ∘ barRevU he) 2 (Formalism.REAL.muG ε') := by
   haveI : ((Formalism.REAL.muG ε').map (barRevU he)).IsHaarMeasure :=
@@ -87,6 +122,13 @@ theorem memLp_barRev (he : ∀ a, ε' a = ε a.rev) {F : Formalism.REAL.UJ ε �
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ σ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Introduce `θ hθ`. Establish `h1` using `barRev_K (sg_symm he) hθ`. Establish `h2 : barRev (diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) = diagonal fun a : Fin n => Complex.exp (((-θ a.rev : ℝ) : ℂ) * Complex.I)`. Rewrite using `[barRev_diag]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite `h1` using `[h2]`.
+
+Rewrite using `[h, h2, hv (fun a => -θ a.rev) h1]`. Establish `: ∑ a, nr μ a * θ a = ∑ a, μ a * -θ a.rev` using `Fintype.sum_equiv Fin.revPerm _ _ fun a => by simp [nr]`. Rewrite using `[this]`.
+-/
 theorem wt_barRev (he : ∀ a, ε' a = ε a.rev) (h : ∀ g, σ g = σ' (barRev g))
     {μ : Fin n → ℝ} {v : H} (hv : IsWtOn (Formalism.REAL.Kset ε') σ' μ v) :
     IsWtOn (Formalism.REAL.Kset ε) σ (nr μ) v := by
@@ -106,6 +148,11 @@ theorem wt_barRev (he : ∀ a, ε' a = ε a.rev) (h : ∀ g, σ g = σ' (barRev 
     Fintype.sum_equiv Fin.revPerm _ _ fun a => by simp [nr]
   rw [this]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, ⟨v, hv, hv0, hvw⟩, h5⟩` from `hS`. Establish `h' : ∀ g, σ' g = σ (barRev g)` using `fun g => by rw [h, barRev_barRev]`. Use `⟨h1, fun g hg x hx => ?_, fun S' hle hst => h3 S' hle fun g hg x hx => ?_, ⟨v, hv, hv0, wt_barRev (σ := σ) (σ' := σ') he h hvw⟩, fun μ x hx h0 hw => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `h2 _ (barRev_K (sg_symm he) hg) _ hx`.
+
+Rewrite using `[h']`. Conclude with `hst _ (barRev_K he hg) _ hx`. Establish `h6` using `cdom_rev he (h5 (nr μ) x hx h0 (wt_barRev (σ := σ') (σ' := σ) (sg_symm he) h' hw))`. Rewrite `h6` using `[nr_nr]`. Then use the resulting hypothesis.
+-/
 theorem ktype_barRev (he : ∀ a, ε' a = ε a.rev) (h : ∀ g, σ g = σ' (barRev g))
     {Λ : Fin n → ℝ} {S : Submodule ℂ H} (hS : IsKTypeOf ε' σ' Λ S) : IsKTypeOf ε σ (nr Λ) S := by
   obtain ⟨h1, h2, h3, ⟨v, hv, hv0, hvw⟩, h5⟩ := hS
@@ -117,6 +164,13 @@ theorem ktype_barRev (he : ∀ a, ε' a = ε a.rev) (h : ∀ g, σ g = σ' (barR
   · have h6 := cdom_rev he (h5 (nr μ) x hx h0 (wt_barRev (σ := σ') (σ' := σ) (sg_symm he) h' hw))
     rwa [nr_nr] at h6
 
+/- English proof (translation)
+Take `⟨c1, c2, ⟨⟨r1, r2⟩, r3, r4⟩, c4, c5, ⟨S, hS⟩, c7⟩` from `hσ`. Use `⟨c1, c2, ⟨⟨by simp only [barRev_one, r1], fun a ha b hb => ?_⟩, fun g hg => r3 _ (barRev_UJ he hg), fun v => ?_⟩, fun S' hcl hst => c4 S' hcl fun g hg x hx => ?_, fun v w => ?_, ⟨S, by rw [lowK_rev he lam]; exact ktype_barRev (σ' := σ) (sg_symm he) (fun _ => rfl) hS⟩, fun μ S' hS …` and prove the remaining obligations. Simplify using `only [barRev_mul, r2 _ (barRev_UJ he ha) _ (barRev_UJ he hb)]`. Conclude with `ContinuousOn.comp (g := fun g => σ g v) (r4 v) barRev_cont.continuousOn fun g hg => barRev_UJ he hg`. Use `hst _ (barRev_UJ (sg_symm he) hg) x hx` as an intermediate fact.
+
+Simplify `this` using `only [barRev_barRev]`. Establish `: coefOn (ε` using `ε') (fun g => σ (barRev g)) v w = coefOn (ε := ε) σ v w ∘ barRevU he := funext fun _ => rfl`. Rewrite using `[this]`. Conclude with `memLp_barRev he (c5 v w)`. Use `c7 _ _ (ktype_barRev (σ := σ) (σ' := fun g => σ (barRev g)) he (fun g => by rw [barRev_barRev]) hS')` as an intermediate fact.
+
+Rewrite using `[lowK_rev he, vNormSq_rev he]`. Rewrite `this` using `[vNormSq_rev (sg_symm he)]`. Then use the resulting hypothesis.
+-/
 theorem isDS_barRev (he : ∀ a, ε' a = ε a.rev) {lam : Fin n → ℝ} (hσ : IsDS ε lam σ) :
     IsDS ε' (nr lam) fun g => σ (barRev g) := by
   obtain ⟨c1, c2, ⟨⟨r1, r2⟩, r3, r4⟩, c4, c5, ⟨S, hS⟩, c7⟩ := hσ
@@ -140,6 +194,19 @@ section Cover
 
 variable {p q n : ℕ} {T : GrpData p q}
 
+/- English proof (translation)
+Use `haveI : CompleteSpace H := hσ.1`. Establish `hU` using `hσ.2.2.1`. Establish `hirr : Formalism.MainNotions.SchurIrreducible.IrrU (GlobalTheory.Published.CoverSeries.pull h T hU)` using `⟨hσ.2.1, fun S hS hst => hσ.2.2.2.1 S hS fun g hg v hv => by`. Take `⟨x, rfl⟩` from `h.cov_surj T hg`. Conclude with `hst x v hv⟩`.
+
+Take `⟨M, io, m1, m2, m3⟩` from `hM _ hirr`. Use `haveI := SqInt.isHaarMeasure_map_covU h T`. Establish `hμ` using `Measure.isMulLeftInvariant_eq_smul (T.haar.map (SqInt.covU h T)) (Formalism.REAL.muG P.sgn)`. Take `⟨d, hd, hI⟩` from `GlobalTheory.Mem.Vol.exists_isFdeg_smul_of_isDS n P.sgn P.lam H σ hσ _ (Measure.haarScalarFactor_pos_of_isHaarMeasure (T.haar.map (SqInt.covU h T)) (Formalism.REAL.muG P.sgn))`. Use `⟨⟨GlobalTheory.Published.CoverSeries.pull h T hU, hirr.1, hirr.2, d, hd, fun x y => ?_, M, io, m1, m2, m3⟩, LinearIsometryEquiv.refl ℂ H, ?_, fun _ _ => rfl⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `H at x y`. Take `⟨i1, i2⟩` from `hI x y x y`. Rewrite `i1`, `i2` using `[← ENNReal.smul_def, ← hμ]`. Establish `hf : (fun g => coefOn (ε` using `P.sgn) σ x y g * star (coefOn (ε := P.sgn) σ x y g)) = fun g => ((‖coefOn (ε := P.sgn) σ x y g‖ ^ 2 : ℝ) : ℂ) := by`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `i1`, `i2` using `[hf]`. Establish `hm` using `(SqInt.continuous_covU h T).measurable.aemeasurable (μ := T.haar)`. Rewrite `i2` using `[integral_map hm i1.aestronglyMeasurable]`. Establish `i3` using `(integrable_map_measure i1.aestronglyMeasurable hm).1 i1`.
+
+Use `⟨i3.re.congr (Filter.Eventually.of_forall fun g => Complex.ofReal_re _), ?_⟩` and prove the remaining obligations. Rewrite `i2` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `i4 : ((∫ g, ‖coefOn (ε` using `P.sgn) σ x y (SqInt.covU h T g)‖ ^ 2 ∂T.haar : ℝ) : ℂ) = ((‖x‖ ^ 2 * ‖y‖ ^ 2 / d : ℝ) : ℂ) := by`. Use `push_cast`. Conclude with `i2`.
+
+Conclude with `i4` after adjusting the coercions. Conclude with `(hasParam_iff_isDSPar _ P h (σ := σ) fun _ => rfl).2 hσ`.
+-/
 theorem exists_pull (T : GrpData p q)
     (hM : ∀ U : URep T, Formalism.MainNotions.SchurIrreducible.IrrU U → ∃ (M : GKMod p q) (io : M.V →ₗ[ℂ] U.H), Formalism.MainNotions.SchurIrreducible.IsHCMod U M io)
     (P : SignedPar n) {e : Ix p q ≃ Fin n} (h : BlockOrd e P.sgn) {H : Type} [NormedAddCommGroup H]
@@ -179,6 +246,9 @@ theorem exists_pull (T : GrpData p q)
     exact_mod_cast i4
   · exact (hasParam_iff_isDSPar _ P h (σ := σ) fun _ => rfl).2 hσ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y e => hl.1 (add_left_injective _ e), fun x y e => by simpa using hl.2.1 x y e, fun x => by obtain ⟨j, hj⟩ := hl.2.2.1 x exact ⟨j + k, by push_cast; linarith⟩, fun x y => by simpa using hl.2.2.2 x y⟩`.
+-/
 theorem isParam_add_half {lam : Ix p q → ℚ} (hl : IsParam lam) (k : ℤ) : IsParam fun a => lam a + k / 2 :=
   ⟨fun x y e => hl.1 (add_left_injective _ e), fun x y e => by simpa using hl.2.1 x y e,
     fun x => by
@@ -186,6 +256,15 @@ theorem isParam_add_half {lam : Ix p q → ℚ} (hl : IsParam lam) (k : ℤ) : I
       exact ⟨j + k, by push_cast; linarith⟩,
     fun x y => by simpa using hl.2.2.2 x y⟩
 
+/- English proof (translation)
+Proceed by induction on `m using Int.induction_on with`. Consider the case `zero`. Introduce `lam hl R R' h h'`. Take `⟨U, hU⟩` from `unitEquiv_of_hasParam hD hn hl (by simpa using h) h'`. Conclude with `⟨U, fun g x => by simp [hU]⟩`.
+
+Consider the case `succ k ih`. Introduce `lam hl R R' h h'`. Take `⟨U, hU⟩ : ∃ U : R.U.H ≃ₗᵢ[ℂ] R'.U.H, ∀ g x, R'.U.π g (U x) = ((T.sq g : ℂˣ) : ℂ) ^ (-(k : ℤ)) • U (((T.sq g : ℂˣ) : ℂ)⁻¹ • R.U.π g x)` from `ih lam hl (Cover.twist R) R' ((Cover.hasParam_twist R _).2 (by convert h using 2; push_cast; ring)) h'`. Use `⟨U, fun g x => (hU g x).trans ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, smul_smul, neg_add, zpow_add₀ (Units.ne_zero _), _root_.zpow_neg_one]`.
+
+Consider the case `pred k ih`. Introduce `lam hl R R' h h'`. Take `⟨U, hU⟩ : ∃ U : R.U.H ≃ₗᵢ[ℂ] R'.U.H, ∀ g x, ((T.sq g : ℂˣ) : ℂ)⁻¹ • R'.U.π g (U x) = ((T.sq g : ℂˣ) : ℂ) ^ (- -(k : ℤ)) • U (R.U.π g x)` from `ih _ (isParam_add_half hl (-1)) R (Cover.twist R') (by convert h using 2; push_cast; ring) ((Cover.hasParam_twist R' _).2 (by convert h' using 2; push_cast; ring))`. Use `⟨U, fun g x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hU g x`.
+
+Rewrite `h1` using `[inv_smul_eq_iff₀ (Units.ne_zero _), smul_smul]`. Rewrite using `[h1, neg_sub, sub_eq_add_neg, zpow_add₀ (Units.ne_zero _), zpow_one]`.
+-/
 theorem exists_twist_equiv (hD : GlobalTheory.Published.DiscreteSeriesCover) (hn : 1 ≤ p + q) (m : ℤ) :
     ∀ lam : Ix p q → ℚ, IsParam lam → ∀ R R' : DSRep T, HasParam R (fun a => lam a + m / 2) → HasParam R' lam →
       ∃ U : R.U.H ≃ₗᵢ[ℂ] R'.U.H, ∀ g x, R'.U.π g (U x) = ((T.sq g : ℂˣ) : ℂ) ^ (-m) • U (R.U.π g x) := by
@@ -212,6 +291,21 @@ theorem exists_twist_equiv (hD : GlobalTheory.Published.DiscreteSeriesCover) (hn
     rw [inv_smul_eq_iff₀ (Units.ne_zero _), smul_smul] at h1
     rw [h1, neg_sub, sub_eq_add_neg, zpow_add₀ (Units.ne_zero _), zpow_one]
 
+/- English proof (translation)
+Take `⟨hs, r, hr, hS⟩` from `hE`. Set `f : Ix p q → ℚ × Bool` to `fun a => (-((ofBlocks l₁ l₂ : Ix p q → ℚ) a + c), a.isLeft)`. Set `g : Fin n → ℚ × Bool` to `fun a => (r a, ε a)`. Establish `hf : Function.Injective f` using `fun a b h => hl.1 (by simpa [f] using congrArg Prod.fst h)`. Establish `hg : Function.Injective g` using `fun a b h => hs.injective (by`.
+
+Rewrite using `[hr, hr, show r a = r b from congrArg Prod.fst h])`. Establish `hrange : Set.range f = Set.range g`. Rewrite using `[← Set.image_univ (f := g), ← Finset.coe_univ, ← Finset.coe_image, ← hS]`. Substitute `h₁ h₂` using the available equality. Use extensionality with `x`.
+
+Simplify using `only [dualPar, GlobalTheory.Chain.signed, Set.mem_range, Sum.exists, Finset.coe_image, Finset.coe_union, List.coe_toFinset, List.mem_map, Set.mem_image, Set.mem_union, f, ofBlocks, Set.mem_setOf_eq]`. Simplify using `only [List.mem_iff_get]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨i, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `⟨_, .inl ⟨_, ⟨i, rfl⟩, rfl⟩, by simp⟩`.
+
+Conclude with `⟨_, .inr ⟨_, ⟨i, rfl⟩, rfl⟩, by simp⟩`. Introduce and unpack `⟨_, ⟨_, ⟨i, rfl⟩, rfl⟩ | ⟨_, ⟨i, rfl⟩, rfl⟩, rfl⟩`. Conclude with `.inl ⟨i, by simp⟩`. Conclude with `.inr ⟨i, by simp⟩`. Set `e₀ : Ix p q ≃ Fin n` to `(Equiv.ofInjective f hf).trans ((Equiv.setCongr hrange).trans (Equiv.ofInjective g hg).symm)`.
+
+Establish `he : ∀ a, g (e₀ a) = f a` using `fun a => by`. Simplify using `only [e₀, Equiv.trans_apply, Equiv.apply_ofInjective_symm]`. Both sides reduce to the same expression. Establish `h1 : ∀ a, lam (e₀ a) = -((((ofBlocks l₁ l₂ : Ix p q → ℚ) a + c : ℚ)) : ℝ)` using `fun a => by`. Rewrite using `[hr, show r (e₀ a) = _ from congrArg Prod.fst (he a)]`.
+
+Move the coercions through the operations in `[f]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ a, ε (e₀ a) = a.isLeft` using `fun a => congrArg Prod.snd (he a)`. Use `⟨e₀.trans Fin.revPerm, ⟨fun i => by simp [h2], fun j => by simp [h2], fun a b hab => ?_⟩, fun a => by simp [nr, h1]⟩` and prove the remaining obligations. Use `Fin.rev_lt_rev.2 (hs.lt_iff_gt.1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[h1, h1, neg_lt_neg_iff]`. Conclude with `add_lt_add_left (hl.2.1 a b hab) c` after adjusting the coercions.
+-/
 theorem exists_numbering {l₁ l₂ : List ℚ} {c : ℚ} {lam : Fin n → ℝ} {ε : Fin n → Bool} (h₁ : l₁.length = p)
     (h₂ : l₂.length = q) (hl : IsParam (ofBlocks l₁ l₂ : Ix p q → ℚ))
     (hE : IsEnum (dualPar (GlobalTheory.Chain.signed l₁ l₂ c)) lam ε) :
@@ -268,6 +362,9 @@ structure IsFormIso (ε : Fin n → Bool) (φ : Mat p q → Matrix (Fin n) (Fin 
 
 variable {ε : Fin n → Bool} {φ : Mat p q → Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+The claim follows from `(Matrix.reindex e e).bijective mul a b := by simp [plainMat] add _ _ := rfl ct _ := rfl form := reindex_form h exp := exp_plainMat e`.
+-/
 theorem isFormIso_plainMat {e : Ix p q ≃ Fin n} (h : SignCompat ε e) : IsFormIso ε (plainMat e) where
   bij := (Matrix.reindex e e).bijective
   mul a b := by simp [plainMat]
@@ -276,6 +373,9 @@ theorem isFormIso_plainMat {e : Ix p q ≃ Fin n} (h : SignCompat ε e) : IsForm
   form := reindex_form h
   exp := exp_plainMat e
 
+/- English proof (translation)
+The claim follows from `(Matrix.reindex e e).bijective.comp (Function.Involutive.bijective (f := fun g : Mat p q => g.map (starRingEnd ℂ)) fun g => by ext a b; simp) mul a b := by simp [barMat, Matrix.map_mul] add a b := by ext; simp [barMat] ct _ := rfl form := by have hJ : (Jm p q).map (starRingEnd ℂ) …`.
+-/
 theorem isFormIso_barMat {e : Ix p q ≃ Fin n} (h : SignCompat ε e) : IsFormIso ε (barMat e) where
   bij := (Matrix.reindex e e).bijective.comp (Function.Involutive.bijective
     (f := fun g : Mat p q => g.map (starRingEnd ℂ)) fun g => by ext a b; simp)
@@ -291,10 +391,18 @@ theorem isFormIso_barMat {e : Ix p q ≃ Fin n} (h : SignCompat ε e) : IsFormIs
     exact reindex_form h
   exp := exp_barMat e
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(φ g)ᴴ * Formalism.REAL.Jm ε * φ g = Formalism.REAL.Jm ε ↔ _`. Rewrite using `[← h.form, ← h.ct, ← h.mul, ← h.mul, h.bij.1.eq_iff]`.
+-/
 theorem IsFormIso.mem_UJ (h : IsFormIso ε φ) (g : Mat p q) : φ g ∈ UJset ε ↔ gᴴ * Jm p q * g = Jm p q := by
   change (φ g)ᴴ * Formalism.REAL.Jm ε * φ g = Formalism.REAL.Jm ε ↔ _
   rw [← h.form, ← h.ct, ← h.mul, ← h.mul, h.bij.1.eq_iff]
 
+/- English proof (translation)
+Establish `h0 : φ 0 = 0`. Use `h.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Express the relevant statement in the definitionally equal form `(φ Z)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * φ Z = 0 ↔ Zᴴ * Jm p q + Jm p q * Z = 0`.
+
+Rewrite using `[← h.form, ← h.ct, ← h.mul, ← h.mul, ← h.add, ← h0, h.bij.1.eq_iff]`.
+-/
 theorem IsFormIso.mem_lie (h : IsFormIso ε φ) (Z : Mat p q) : Formalism.REAL.inG ε (φ Z) ↔ Z ∈ upq p q := by
   have h0 : φ 0 = 0 := by
     have := h.add 0 0
@@ -303,6 +411,11 @@ theorem IsFormIso.mem_lie (h : IsFormIso ε φ) (Z : Mat p q) : Formalism.REAL.i
   change (φ Z)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * φ Z = 0 ↔ Zᴴ * Jm p q + Jm p q * Z = 0
   rw [← h.form, ← h.ct, ← h.mul, ← h.mul, ← h.add, ← h0, h.bij.1.eq_iff]
 
+/- English proof (translation)
+Use `and_congr_left fun h3 => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.mul_assoc, ← h3, ← Matrix.mul_assoc]`. Use `⟨fun h => by rw [h, one_mul], fun h1 => ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg (· * Formalism.REAL.Jm ε) h1`.
+
+Simplify `h4` using `only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`.
+-/
 theorem mem_K_iff {g : Matrix (Fin n) (Fin n) ℂ} :
     g ∈ Formalism.REAL.Kset ε ↔ g ∈ UJset ε ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g := by
   refine and_congr_left fun h3 => ?_
@@ -312,11 +425,21 @@ theorem mem_K_iff {g : Matrix (Fin n) (Fin n) ℂ} :
   have h4 := congrArg (· * Formalism.REAL.Jm ε) h1
   simpa only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one] using h4
 
+/- English proof (translation)
+Rewrite using `[mem_K_iff, ← h.form, ← h.mul, ← h.mul, h.bij.1.eq_iff, ← KStabLie.isKC_iff]`. Conclude with `and_iff_right ((h.mem_UJ _).2 (T.cov_mem x))`.
+-/
 theorem IsFormIso.mem_K (h : IsFormIso ε φ) (T : GrpData p q) (x : T.G) :
     φ ((T.cov x : GL (Ix p q) ℂ) : Mat p q) ∈ Formalism.REAL.Kset ε ↔ x ∈ T.Kset := by
   rw [mem_K_iff, ← h.form, ← h.mul, ← h.mul, h.bij.1.eq_iff, ← KStabLie.isKC_iff]
   exact and_iff_right ((h.mem_UJ _).2 (T.cov_mem x))
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `h.bij.2 g`. Establish `h1` using `(h.mem_UJ g).1 hg`. Establish `hJ : (Jm p q).det ≠ 0` using `left_ne_zero_of_mul_eq_one (by rw [← Matrix.det_mul, KStabLie.Jm_sq, Matrix.det_one])`. Establish `hd : g.det ≠ 0`. Introduce `h0`.
+
+Use `congrArg Matrix.det h1` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero]`. Conclude with `hJ this.symm`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq g.det two_pos`. Establish `hw0 : w ≠ 0` using `by rintro rfl; exact hd (by simpa using hw.symm)`.
+
+Take `⟨x, hx, -⟩` from `T.bij (Matrix.GeneralLinearGroup.mkOfDetNeZero g hd) h1 (Units.mk0 w hw0) hw`. Conclude with `⟨x, by rw [hx.1]; rfl⟩`.
+-/
 theorem IsFormIso.surj (h : IsFormIso ε φ) (T : GrpData p q) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) :
     ∃ x : T.G, φ ((T.cov x : GL (Ix p q) ℂ) : Mat p q) = g := by
   obtain ⟨g, rfl⟩ := h.bij.2 g
@@ -336,6 +459,9 @@ theorem IsFormIso.surj (h : IsFormIso ε φ) (T : GrpData p q) {g : Matrix (Fin 
 variable {s : ℂ →+* ℂ} [RingHomInvPair s s] {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
 
+/- English proof (translation)
+Take `⟨b, hb⟩ : S.FG` from `Module.Finite.iff_fg.1 inferInstance`. Use `haveI := FiniteDimensional.span_of_finite ℂ (b.finite_toSet.image (U.symm.toLinearEquiv : H' →ₛₗ[s] H))`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((U.symm.toLinearEquiv : H' →ₛₗ[s] H) '' (b : Set H'))) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_span, hb]`. Conclude with `⟨U x, hx, U.symm_apply_apply x⟩`.
+-/
 theorem finite_comap' (U : H ≃ₛₗᵢ[s] H') (S : Submodule ℂ H') [FiniteDimensional ℂ S] :
     FiniteDimensional ℂ (S.comap (U.toLinearEquiv : H →ₛₗ[s] H')) := by
   obtain ⟨b, hb⟩ : S.FG := Module.Finite.iff_fg.1 inferInstance
@@ -345,6 +471,17 @@ theorem finite_comap' (U : H ≃ₛₗᵢ[s] H') (S : Submodule ℂ H') [FiniteD
   rw [← Submodule.map_span, hb]
   exact ⟨U x, hx, U.symm_apply_apply x⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hx, hK⟩ haveI := finite_comap' U.symm S`. Use `Submodule.finiteDimensional_of_le (S₂ := S.comap (U.symm.toLinearEquiv : H' →ₛₗ[s] H)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `beta_reduce`.
+
+Rewrite using `[hU]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `U.symm (U _) ∈ S`. Rewrite using `[U.symm_apply_apply]`. Conclude with `hK _ ((h.mem_K T k).2 k.2) x hx`.
+
+Introduce `hx`. Unfold `KFin at hx`. Establish `h1 : (1 : T.G) ∈ T.Kset` using `(KStabLie.isKC_iff _).2 (by simp)`. Use `⟨_, finite_comap' U (Submodule.span ℂ (Set.range fun k : T.Kset => π k (U x))), Submodule.subset_span ⟨⟨1, h1⟩, by simp⟩, fun g hg y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `h.surj T (mem_K_iff.1 hg).1`.
+
+Establish `hk` using `(h.mem_K T k).1 hg`. Establish `h2 : (Submodule.span ℂ (Set.range fun k : T.Kset => π k (U x))).map (π k : H' →ₗ[ℂ] H') ≤ Submodule.span ℂ (Set.range fun k : T.Kset => π k (U x))`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `hj : k * j ∈ T.Kset` using `(KStabLie.isKC_iff _).2 (by`.
+
+Rewrite using `[map_mul, Units.val_mul, mul_assoc, (KStabLie.isKC_iff _).1 j.2, ← mul_assoc, (KStabLie.isKC_iff _).1 hk, mul_assoc])`. Conclude with `Submodule.subset_span ⟨⟨_, hj⟩, by simp⟩`. Establish `h3 : π k (U y) ∈ _` using `h2 ⟨U y, hy, rfl⟩`. Rewrite `h3` using `[hU, Submodule.smul_mem_iff _ (hc k)]`. Conclude with `h3`.
+-/
 theorem kFin_iff (h : IsFormIso ε φ) {T : GrpData p q} {π : T.G →* (H' →L[ℂ] H')}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (U : H ≃ₛₗᵢ[s] H') {c : T.G → ℂ} (hc : ∀ g, c g ≠ 0)
     (hU : ∀ g x, π g (U x) = c g • U (σ (φ ((T.cov g : GL (Ix p q) ℂ) : Mat p q)) x)) (x : H) :
@@ -389,6 +526,15 @@ def realCLM (hs : ∀ r : ℝ, s r = r) (U : H ≃ₛₗᵢ[s] H') : H →L[ℝ]
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `key : ∀ X, (M.fr τ)ᴴ * ((M.fr τ * X * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) + Formalism.REAL.Jm (M.ε τ) * (M.fr τ * X * (M.fr τ)⁻¹)) * M.fr τ = Xᴴ * gramAt D V τ + gramAt D V τ * X`. Introduce `X`. Establish `h1 : (M.fr τ)ᴴ * ((M.fr τ)⁻¹)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hd, Matrix.conjTranspose_one]`.
+
+Rewrite using `[← M.fr_gram τ]`. Simplify using `only [Matrix.conjTranspose_mul, mul_add, add_mul, ← mul_assoc, h1, one_mul]`. Simplify using `only [mul_assoc, Matrix.nonsing_inv_mul _ hd, mul_one]`. Use extensionality with `X`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨Y, hY, rfl⟩`. Express the relevant statement in the definitionally equal form `_ + _ = 0`. Rewrite using `[← key, fr_toFrame, show Yᴴ * _ + _ = 0 from hY, mul_zero, zero_mul]`. Introduce `hX`. Use `⟨M.fr τ * X * (M.fr τ)⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `(key X).trans hX`. Rewrite `h2` using `[(M.fr_unit τ).mul_left_eq_zero, ((Matrix.isUnit_conjTranspose _).2 (M.fr_unit τ)).mul_right_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[toFrame, ← mul_assoc, ← mul_assoc, Matrix.nonsing_inv_mul _ hd, one_mul, mul_assoc, Matrix.nonsing_inv_mul _ hd, mul_one]`.
+-/
 theorem toFrame_image (M : DSModel V S) (τ : D.what₂.Tau) :
     toFrame M τ '' {Y | Formalism.REAL.inG (M.ε τ) Y} = lieAt V τ := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -412,6 +558,23 @@ theorem toFrame_image (M : DSModel V S) (τ : D.what₂.Tau) :
     · rw [toFrame, ← mul_assoc, ← mul_assoc, Matrix.nonsing_inv_mul _ hd, one_mul, mul_assoc,
         Matrix.nonsing_inv_mul _ hd, mul_one]
 
+/- English proof (translation)
+Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hk : ∀ x, IsKFin (M.ε τ) (M.σ τ) x ↔ U x ∈ Set.range R.ι` using `fun x => (kFin_iff h U (fun g => zpow_ne_zero _ (Units.ne_zero _)) hU x).trans (R.ι_range _).symm`. Establish `hder : ∀ Z ∈ upq p q, ∀ (v : R.HK.V) (x : M.H τ), U x = R.ι v → HasDerivAt (fun t : ℝ => M.rep τ (NormedSpace.exp (t • toFrame M τ (φ Z))) x) (U.symm (R.ι (R.HK.act Z v + ((m : ℂ) / 2 * Z.trace) • v))) 0`. Introduce `Z hZ v x hx`. Establish `h1` using `(hasDerivAt_sq_zpow T m hZ).fun_smul (R.der Z hZ v)`.
+
+Establish `h2` using `(realCLM hs U.symm).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Apply `U.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = U (U.symm _)`.
+
+Rewrite using `[U.apply_symm_apply, rep_exp, h.exp, ← hx]`. Use `beta_reduce`. Rewrite using `[hU, T.expt_cov _ (KStabLie.smul_mem_upq hZ t), smul_smul, ← zpow_add₀ (Units.ne_zero _), add_neg_cancel, zpow_zero, one_smul]`. Express the relevant statement in the definitionally equal form `_ = U.symm _`. Rewrite using `[show (m : ℂ) * (Z.trace / 2) = m / 2 * Z.trace by ring]`.
+
+Simplify using `[T.expt_zero]`. Use `⟨hU, hk, fun x hx => ?_, ?_, fun Z hZ v x hx => ?_, fun Z hZ v x y hx hy w => ?_⟩` and prove the remaining obligations. Conclude with `hH.smoothVec (M.ds τ).2.2.1 (M.ds τ).2.2.2.1 ((hk x).2 hx) (M.fr_unit τ) (M.fr_gram τ)`. Rewrite using `[← toFrame_image M τ, ← Set.image_image (toFrame M τ) φ]`. Use `congr 1`.
+
+Use extensionality with `Y`. Take `⟨Z, rfl⟩` from `h.bij.2 Y`. Rewrite using `[h.bij.1.mem_set_image, ← h.mem_lie]`. Both sides reduce to the same expression. Rewrite using `[dRep, (hder Z hZ v x hx).deriv, U.apply_symm_apply]`.
+
+Establish `h1` using `hder Z hZ v _ hx`. Rewrite `h1` using `[← hy, U.symm_apply_apply]`. Establish `h2` using `(((innerSL ℂ (w τ)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1).mul_const (∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, (x ρ : M.H ρ)⟫_ℂ)`. Use `(h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)).congr_deriv (Eq.symm ?_)` and prove the remaining obligations. Simplify using `only [ellT, actT, inclT, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_congr rfl fun ρ hρ => by simp [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Simplify using `only [ellT, inclT, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Use `congr 1`. Simplify using the standard rewrite rules. Conclude with `Finset.prod_congr rfl fun ρ hρ => by simp [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`.
+-/
 theorem matches_of_grp (hH : GlobalTheory.Published.HarishChandraModules) (hs : ∀ r : ℝ, s r = r) {T : GrpData p q} (R : DSRep T)
     (M : DSModel V S) (τ : D.what₂.Tau) {φ : Mat p q → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (h : IsFormIso (M.ε τ) φ) (m : ℤ) (U : M.H τ ≃ₛₗᵢ[s] R.U.H)
@@ -472,6 +635,13 @@ section Bridge
 
 variable {p q n : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ {e e' : Ix p q ≃ Fin n}, SignCompat ε e → SignCompat ε e' → Matrix.reindex e' e (1 : Mat p q) ∈ UJset ε`. Introduce `e e' h h'`. Express the relevant statement in the definitionally equal form `(Matrix.reindex e' e (1 : Mat p q))ᴴ * Formalism.REAL.Jm ε * Matrix.reindex e' e (1 : Mat p q) = Formalism.REAL.Jm ε`. Use `conv_lhs => rw [← reindex_form h']`. Rewrite using `[← reindex_form h]`.
+
+Simplify using the standard rewrite rules. Establish `inv : ∀ {e e' : Ix p q ≃ Fin n}, SignCompat ε e → SignCompat ε e' → ∀ x, σ (Matrix.reindex e' e (1 : Mat p q)) (σ (Matrix.reindex e e' (1 : Mat p q)) x) = x`. Introduce `e e' h h' x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (key h h') _ (key h' h)]`. Simplify using `[hσ.1.1]`.
+
+Use `⟨⟨⟨(σ (Matrix.reindex e' e (1 : Mat p q)) : H →ₗ[ℂ] H), σ (Matrix.reindex e e' (1 : Mat p q)), inv h' h, inv h h'⟩, hσ.2.1 _ (key h h')⟩, fun g hg x => ?_⟩` and prove the remaining obligations. Establish `hg' : plainMat e' g ∈ UJset ε` using `((isFormIso_plainMat h').mem_UJ g).2 (((isFormIso_plainMat h).mem_UJ g).1 hg)`. Express the relevant statement in the definitionally equal form `σ _ (σ (Matrix.reindex e' e (1 : Mat p q)) x) = σ (Matrix.reindex e' e (1 : Mat p q)) (σ _ x)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ hg' _ (key h h'), ← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (key h h') _ hg]`. Simplify using `[plainMat]`.
+-/
 theorem exists_renumber {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) {e e' : Ix p q ≃ Fin n}
     (h : SignCompat ε e) (h' : SignCompat ε e') :
@@ -499,6 +669,19 @@ theorem exists_renumber {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] 
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Take `⟨hn, h₁, h₂, hl, hX, hτ⟩` from `hS`. Take `⟨e₁, he₁, hlam⟩` from `exists_numbering h₁ h₂ hl (hτ ▸ M.enum τ)`. Establish `he' : SignCompat (M.ε τ) (e₁.trans Fin.revPerm)`. Introduce and unpack `(a | a)`. Conclude with `he₁.1 a`.
+
+Conclude with `he₁.2.1 a`. Set `P : SignedPar V.rank` to `⟨nr (M.lam τ), fun a => M.ε τ a.rev, GlobalTheory.DSParam.isHCParam_of_isDS _ _ _ _ _ (isEnum_dual (M.enum τ)).1 hσ'⟩`. Establish `hP : ∀ a, blockPar P e₁ a = (ofBlocks l₁ l₂ : Ix p q → ℚ) a + c` using `fun a => by`. Establish `: ((blockPar P e₁ a : ℚ) : ℝ) = _` using `(ratEntry_cast P (e₁ a)).trans (hlam a)`. Conclude with `this` after adjusting the coercions.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℤ, (m : ℚ) = 2 * c := by`. Take `⟨a⟩ : Nonempty (Ix p q)` from `Fintype.card_pos_iff.1 (by rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]; exact hn)`. Take `⟨j, hj⟩` from `(isParam_blockPar P he₁).2.2.1 a`. Take `⟨k, hk⟩` from `hl.2.2.1 a`. Rewrite `hj` using `[hP]`.
+
+Conclude with `⟨j - k, by push_cast; linarith⟩`. Use `⟨⟨_, he'⟩, m, hm, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨R, U₀, hR, hU₀⟩` from `exists_pull (X.grp p q) (fun U hU => ((hH.1 p q hn _).1 U hU).2.1) P he₁ hσ'`. Take `⟨U₁, hU₁⟩` from `exists_twist_equiv hD hn m _ hl R _ (by`. Use `hR using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hP, hm]`. Use the proof step `ring) hX`. Take `⟨A, hA⟩` from `exists_renumber (M.ds τ).2.2.1 he he'`. Use `⟨A.trans (C.trans (U₀.trans U₁)), matches_of_grp hH hs _ M τ (hψ e he) m _ fun g x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearIsometryEquiv.trans_apply]`.
+
+Rewrite using `[hU₁, hU₀, ← plainMat, hC, hA _ (((hψ e he).mem_UJ _).2 ((X.grp p q).cov_mem g))]`.
+-/
 theorem bridge (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : GlobalTheory.Published.HarishChandraModules) (X : ProvA)
     (M : DSModel V S) (τ : D.what₂.Tau) {l₁ l₂ : List ℚ} {c : ℚ} (hS : HidaSetting X p q l₁ l₂ c S τ)
     {s : ℂ →+* ℂ} [RingHomInvPair s s] (hs : ∀ r : ℝ, s r = r) (ψ : Mat p q → Mat p q)
@@ -539,6 +722,9 @@ theorem bridge (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : GlobalThe
   simp only [LinearIsometryEquiv.trans_apply]
   rw [hU₁, hU₀, ← plainMat, hC, hA _ (((hψ e he).mem_UJ _).2 ((X.grp p q).cov_mem g))]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun X _ _ M τ _ _ _ _ _ hS => bridge hD hH X M τ hS (s := RingHom.id ℂ) (fun _ => rfl) (fun g => g.map (starRingEnd ℂ)) (fun _ he => isFormIso_barMat he) (isDS_barRev (fun _ => rfl) (M.ds τ)) (LinearIsometryEquiv.refl ℂ _) fun _ _ _ => rfl, fun X _ _ M τ _ _ _ _ _ hS => bridge h …`.
+-/
 theorem modelsAreCoverSeries (hD : GlobalTheory.Published.DiscreteSeriesCover) (hH : GlobalTheory.Published.HarishChandraModules) (D : D7) :
     ModelsAreCoverSeries D :=
   ⟨fun X _ _ M τ _ _ _ _ _ hS => bridge hD hH X M τ hS (s := RingHom.id ℂ) (fun _ => rfl)

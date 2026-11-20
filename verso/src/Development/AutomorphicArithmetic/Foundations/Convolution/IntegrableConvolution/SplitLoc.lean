@@ -12,6 +12,9 @@ section Unif
 
 variable (A : Type*) [Field A] [ValuativeRel A] [TopologicalSpace A] [IsNonarchimedeanLocalField A]
 
+/- English proof (translation)
+Set `y : 𝒪[A]` to `⟨x, (Valuation.mem_integer_iff _ _).2 hx.le⟩`. Establish `hy : y ∈ IsLocalRing.maximalIdeal 𝒪[A] ^ 1`. Rewrite using `[pow_one, ← IsLocalRing.residue_eq_zero_iff]`. Conclude with `(GLnLocal.residue_eq_zero_iff_valuation_lt_one A y).2 hx`. Simplify using `using (GLnLocal.mem_maximalIdeal_pow_iff A (m := 1)).1 hy`.
+-/
 private theorem val_le_unif {x : A} (hx : valuation A x < 1) :
     valuation A x ≤ valuation A (GLnLocal.uniformizer A : A) := by
   let y : 𝒪[A] := ⟨x, (Valuation.mem_integer_iff _ _).2 hx.le⟩
@@ -27,6 +30,9 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : Pl F) (w : HeightOneSpectrum (𝓞 E)) [w.asIdeal.LiesOver v.asIdeal]
 
+/- English proof (translation)
+Rewrite using `[← finrank_eq_ramificationIdx_mul_inertiaDeg E v w]`. Establish `hb : Function.Bijective (Algebra.linearMap (v.adicCompletion F) (w.adicCompletion E))` using `⟨(completionMap v w).injective, hs⟩`. Rewrite using `[← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]`.
+-/
 private theorem ef_eq_one (hs : Function.Surjective (completionMap v w)) :
     w.asIdeal.ramificationIdx (𝓞 F) * w.asIdeal.inertiaDeg (𝓞 F) = 1 := by
   rw [← finrank_eq_ramificationIdx_mul_inertiaDeg E v w]
@@ -34,27 +40,46 @@ private theorem ef_eq_one (hs : Function.Surjective (completionMap v w)) :
     ⟨(completionMap v w).injective, hs⟩
   rw [← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]
 
+/- English proof (translation)
+Establish `h` using `ef_eq_one v w hs`. Establish `he : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `Nat.eq_one_of_mul_eq_one_right h`. Rewrite using `[valued_completionMap, he, pow_one]`.
+-/
 private theorem val_map (hs : Function.Surjective (completionMap v w)) (x : v.adicCompletion F) :
     Valued.v (completionMap v w x) = Valued.v x := by
   have h := ef_eq_one v w hs
   have he : w.asIdeal.ramificationIdx (𝓞 F) = 1 := Nat.eq_one_of_mul_eq_one_right h
   rw [valued_completionMap, he, pow_one]
 
+/- English proof (translation)
+Rewrite using `[(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).le_one_iff_le_one, (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).le_one_iff_le_one, val_map v w hs]`.
+-/
 private theorem le_iff (hs : Function.Surjective (completionMap v w)) (x : v.adicCompletion F) :
     valuation (w.adicCompletion E) (completionMap v w x) ≤ 1 ↔ valuation (v.adicCompletion F) x ≤ 1 := by
   rw [(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).le_one_iff_le_one,
     (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).le_one_iff_le_one, val_map v w hs]
 
+/- English proof (translation)
+Rewrite using `[(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).lt_one_iff_lt_one, (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).lt_one_iff_lt_one, val_map v w hs]`.
+-/
 private theorem lt_iff (hs : Function.Surjective (completionMap v w)) (x : v.adicCompletion F) :
     valuation (w.adicCompletion E) (completionMap v w x) < 1 ↔ valuation (v.adicCompletion F) x < 1 := by
   rw [(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).lt_one_iff_lt_one,
     (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).lt_one_iff_lt_one, val_map v w hs]
 
+/- English proof (translation)
+Rewrite using `[(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one, (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).eq_one_iff_eq_one, val_map v w hs]`.
+-/
 private theorem eq_iff (hs : Function.Surjective (completionMap v w)) (x : v.adicCompletion F) :
     valuation (w.adicCompletion E) (completionMap v w x) = 1 ↔ valuation (v.adicCompletion F) x = 1 := by
   rw [(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one,
     (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).eq_one_iff_eq_one, val_map v w hs]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hs (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E)`. Establish `hB` using `GLnLocal.valuation_uniformizer_lt_one (w.adicCompletion E)`. Establish `hA` using `GLnLocal.valuation_uniformizer_lt_one (v.adicCompletion F)`. Apply `le_antisymm` to reduce the goal to its premises. Use `val_le_unif (w.adicCompletion E) ((lt_iff v w hs _).2 hA)` as an intermediate fact.
+
+Conclude with `(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).le_iff_le.1 this`. Rewrite using `[← hy, val_map v w hs, val_map v w hs]`. Establish `hy1 : valuation (v.adicCompletion F) y < 1`. Rewrite using `[← lt_iff v w hs, hy]`. Conclude with `hB`.
+
+Use `val_le_unif (v.adicCompletion F) hy1` as an intermediate fact. Conclude with `(ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).le_iff_le.1 this`.
+-/
 private theorem val_unif (hs : Function.Surjective (completionMap v w)) :
     Valued.v (completionMap v w (GLnLocal.uniformizer (v.adicCompletion F) : v.adicCompletion F)) =
       Valued.v (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E) := by
@@ -70,6 +95,15 @@ private theorem val_unif (hs : Function.Surjective (completionMap v w)) :
     have := val_le_unif (v.adicCompletion F) hy1
     exact (ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).le_iff_le.1 this
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero φ.symm.toAddMonoidHom ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Use `((IsValuativeTopology.hasBasis_nhds_zero (w.adicCompletion E)).tendsto_iff (IsValuativeTopology.hasBasis_nhds_zero (v.adicCompletion F))).2 ?_` and prove the remaining obligations. Introduce `γ _`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, valuation (v.adicCompletion F) c = (γ : ValueGroupWithZero (v.adicCompletion F)) := by`.
+
+Conclude with `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero (v.adicCompletion F))`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `γ.ne_zero hc.symm`.
+
+Use `⟨Units.mk0 (valuation (w.adicCompletion E) (φ c)) ((Valuation.ne_zero_iff _).2 ((map_ne_zero φ).2 hc0)), trivial, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : valuation (w.adicCompletion E) x < valuation (w.adicCompletion E) (φ c)` using `hx`. Establish `h2` using `(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).lt_iff_lt.1 hx'`. Establish `h1 : Valued.v (φ.symm x) = Valued.v x`. Rewrite using `[← val_map v w hs, ← hφ, RingEquiv.apply_symm_apply]`.
+
+Rewrite `h2` using `[hφ, val_map v w hs, ← h1]`. Express the relevant statement in the definitionally equal form `valuation (v.adicCompletion F) (φ.symm x) < γ`. Rewrite using `[← hc]`. Conclude with `(ValuativeRel.isEquiv (valuation (v.adicCompletion F)) Valued.v).lt_iff_lt.2 h2`.
+-/
 private theorem cont_symm (hs : Function.Surjective (completionMap v w))
     (φ : v.adicCompletion F ≃+* w.adicCompletion E) (hφ : ∀ x, φ x = completionMap v w x) :
     Continuous φ.symm := by
@@ -97,10 +131,16 @@ private theorem cont_symm (hs : Function.Surjective (completionMap v w))
 
 variable (n : ℕ)
 
+/- English proof (translation)
+Introduce `a b h` and use `Units.ext (Matrix.ext fun i j => (completionMap v w).injective (congrArg (fun g : GL (Fin n) (w.adicCompletion E) => g i j) h))`.
+-/
 private theorem map_inj : Function.Injective (mapGL n (completionMap v w)) := fun a b h =>
   Units.ext (Matrix.ext fun i j => (completionMap v w).injective
     (congrArg (fun g : GL (Fin n) (w.adicCompletion E) => g i j) h))
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_integralGL_iff, GLnLocal.mem_integralGL_iff, ← map_inv]`. Simplify using `only [Valuation.mem_integer_iff]`. Conclude with `and_congr (forall₂_congr fun i j => le_iff v w hs _) (forall₂_congr fun i j => le_iff v w hs _)`.
+-/
 private theorem integral_iff (hs : Function.Surjective (completionMap v w)) (g : GL (Fin n) (v.adicCompletion F)) :
     mapGL n (completionMap v w) g ∈ GLnLocal.integralGL (w.adicCompletion E) n ↔
       g ∈ GLnLocal.integralGL (v.adicCompletion F) n := by
@@ -108,6 +148,9 @@ private theorem integral_iff (hs : Function.Surjective (completionMap v w)) (g :
   simp only [Valuation.mem_integer_iff]
   exact and_congr (forall₂_congr fun i j => le_iff v w hs _) (forall₂_congr fun i j => le_iff v w hs _)
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_iwahori_iff, GLnLocal.mem_iwahori_iff]`. Conclude with `and_congr (forall₂_congr fun i j => le_iff v w hs _) (and_congr (forall₂_congr fun i j => forall_congr' fun _ => lt_iff v w hs _) (forall_congr' fun i => eq_iff v w hs _))`.
+-/
 private theorem iw_iff (hs : Function.Surjective (completionMap v w)) (g : GL (Fin n) (v.adicCompletion F)) :
     mapGL n (completionMap v w) g ∈ GLnLocal.iwahori (w.adicCompletion E) n ↔
       g ∈ GLnLocal.iwahori (v.adicCompletion F) n := by
@@ -116,6 +159,19 @@ private theorem iw_iff (hs : Function.Surjective (completionMap v w)) (g : GL (F
     (and_congr (forall₂_congr fun i j => forall_congr' fun _ => lt_iff v w hs _)
       (forall_congr' fun i => eq_iff v w hs _))
 
+/- English proof (translation)
+Use `set a : w.adicCompletion E := completionMap v w (GLnLocal.uniformizer (v.adicCompletion F) : v.adicCompletion F) with ha`. Use `set b : w.adicCompletion E := (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E) with hb`. Establish `ha0 : a ≠ 0` using `(map_ne_zero _).2 (Cartan.uniformizer_ne_zero (v.adicCompletion F))`. Establish `hb0 : b ≠ 0` using `Cartan.uniformizer_ne_zero (w.adicCompletion E)`. Establish `hu : valuation (w.adicCompletion E) (b / a) = 1`.
+
+Rewrite using `[(ValuativeRel.isEquiv (valuation (w.adicCompletion E)) Valued.v).eq_one_iff_eq_one, map_div₀, ha, val_unif v w hs, div_self ((Valuation.ne_zero_iff _).2 hb0)]`. Establish `hz : ∀ k : ℤ, valuation (w.adicCompletion E) ((b / a) ^ k) = 1` using `fun k => by`. Rewrite using `[map_zpow₀, hu, one_zpow]`. Take `⟨x, hx, hxm⟩` from `GLnLocal.exists_mem_iwahori (w.adicCompletion E) n (Matrix.diagonal fun i => (b / a) ^ ν i) (fun i j => by`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Conclude with `(hz _).le`. Rewrite using `[Matrix.diagonal_apply_ne _ h, map_zero]`. Conclude with `zero_le')`.
+
+Use the proof step `(fun i j hij => by`. Rewrite using `[Matrix.diagonal_apply_ne _ hij.ne', map_zero]`. Conclude with `zero_lt_one)`. Use the proof step `(fun i => by rw [Matrix.diagonal_apply_eq]; exact hz _)`. Use `⟨x, hx, Units.ext ?_⟩` and prove the remaining obligations.
+
+Establish `hm : ((mapGL n (completionMap v w) (Cartan.diagPow (v.adicCompletion F) n ν) : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal fun i => a ^ ν i`. Express the relevant statement in the definitionally equal form `(Cartan.diagPow (v.adicCompletion F) n ν : Matrix (Fin n) (Fin n) (v.adicCompletion F)).map (completionMap v w) = _`. Rewrite using `[Cartan.coe_diagPow, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Function.comp_apply, map_zpow₀, ha]`. Rewrite using `[Units.val_mul, hxm, hm, Cartan.coe_diagPow, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← mul_zpow, mul_div_cancel₀ _ ha0]`.
+-/
 private theorem diag_fac (hs : Function.Surjective (completionMap v w)) (ν : Fin n → ℤ) :
     ∃ d ∈ GLnLocal.iwahori (w.adicCompletion E) n, Cartan.diagPow (w.adicCompletion E) n ν =
       mapGL n (completionMap v w) (Cartan.diagPow (v.adicCompletion F) n ν) * d := by
@@ -151,6 +207,13 @@ private theorem diag_fac (hs : Function.Surjective (completionMap v w)) (ν : Fi
   funext i
   rw [← mul_zpow, mul_div_cancel₀ _ ha0]
 
+/- English proof (translation)
+Take `⟨d, hd, hD⟩` from `diag_fac v w n hs ν`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, h⟩`. Take `⟨a', rfl⟩` from `hsurj a`. Take `⟨b', hb'⟩` from `hsurj (d * b)`.
+
+Use `⟨a', (iw_iff v w n hs _).1 ha, b', (iw_iff v w n hs _).1 (hb' ▸ mul_mem hd hb), map_inj v w n ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_mul, map_mul, hb', hD]`. Simplify using `only [mul_assoc]`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨mapGL n (completionMap v w) a, (iw_iff v w n hs _).2 ha, d⁻¹ * mapGL n (completionMap v w) b, mul_mem (inv_mem hd) ((iw_iff v w n hs _).2 hb), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hD]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+-/
 private theorem coset_iff (hs : Function.Surjective (completionMap v w)) (ν : Fin n → ℤ)
     (hsurj : Function.Surjective (mapGL n (completionMap v w))) (g : GL (Fin n) (v.adicCompletion F)) :
     mapGL n (completionMap v w) g ∈ GM.iwCoset w ν ↔ g ∈ GM.iwCoset v ν := by
@@ -168,12 +231,20 @@ private theorem coset_iff (hs : Function.Surjective (completionMap v w)) (ν : F
     rw [map_mul, map_mul, hD]
     simp only [mul_assoc, mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `hf : w.asIdeal.inertiaDeg (𝓞 F) = 1` using `Nat.eq_one_of_mul_eq_one_left (ef_eq_one v w hs)`. Establish `h` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal v.asIdeal v.isPrime v.ne_bot`. Rewrite using `[h, Ideal.inertiaDeg'_eq_inertiaDeg, hf, pow_one]`.
+-/
 private theorem norm_eq (hs : Function.Surjective (completionMap v w)) :
     Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal := by
   have hf : w.asIdeal.inertiaDeg (𝓞 F) = 1 := Nat.eq_one_of_mul_eq_one_left (ef_eq_one v w hs)
   have h := Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal v.asIdeal v.isPrime v.ne_bot
   rw [h, Ideal.inertiaDeg'_eq_inertiaDeg, hf, pow_one]
 
+/- English proof (translation)
+Set `φ : v.adicCompletion F ≃+* w.adicCompletion E` to `RingEquiv.ofBijective (completionMap v w) ⟨(completionMap v w).injective, hs⟩`. Establish `hφ : ∀ x, φ x = completionMap v w x` using `fun _ => rfl`. Establish `hc : Continuous (completionMap v w)` using `continuous_completionMap v w`. Establish `hc' : Continuous φ.symm` using `cont_symm v w hs φ hφ`. Establish `hl : ∀ g, mapGL n (φ.symm : w.adicCompletion E →+* v.adicCompletion F) (mapGL n (completionMap v w) g) = g` using `fun g => Units.ext (Matrix.ext fun i j => φ.symm_apply_apply _)`.
+
+Establish `hr : ∀ g, mapGL n (completionMap v w) (mapGL n (φ.symm : w.adicCompletion E →+* v.adicCompletion F) g) = g` using `fun g => Units.ext (Matrix.ext fun i j => φ.apply_symm_apply _)`. Establish `hsurj : Function.Surjective (mapGL n (completionMap v w))` using `fun y => ⟨_, hr y⟩`. Use `⟨⟨{ toFun := mapGL n (completionMap v w) invFun := mapGL n (φ.symm : w.adicCompletion E →+* v.adicCompletion F) left_inv := hl right_inv := hr map_mul' := map_mul _ continuous_toFun := Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map hc, Units.continuous_coe_inv.matrix_map …` and prove the remaining obligations.
+-/
 private theorem main (hs : Function.Surjective (completionMap v w)) :
     (∃ e : GL (Fin n) (v.adicCompletion F) ≃ₜ* GL (Fin n) (w.adicCompletion E),
       ∀ g, e g = mapGL n (completionMap v w) g) ∧
@@ -209,6 +280,9 @@ end Main
 
 end UpperTheory.ConvolutionTheory.L1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v w hs n`. Conclude with `UpperTheory.ConvolutionTheory.L1.main v w.1 n hs`.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.splitLoc :
     UpperTheory.ConvolutionTheory.L1.SplitLoc := by
   intro F E _ _ _ _ _ v w hs n

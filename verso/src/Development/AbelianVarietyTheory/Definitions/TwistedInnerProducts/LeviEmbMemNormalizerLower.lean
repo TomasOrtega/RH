@@ -19,6 +19,9 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 omit [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n]
   [DecidableEq n] in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SmGL.blk]`.
+-/
 @[simp] theorem _root_.GlobalTheory.SmGL.blk_apply (e : (Σ a, m a) ≃ n) (a : α) (i : m a) :
     _root_.GlobalTheory.SmGL.blk e (e ⟨a, i⟩) = a := by
   simp [_root_.GlobalTheory.SmGL.blk]
@@ -50,6 +53,9 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 variable {R} in
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ _ hij => h hij, fun h _ _ hij => h _ _ hij⟩`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_parab {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.parab R e ↔ ∀ i j, _root_.GlobalTheory.SmGL.blk e j <
       _root_.GlobalTheory.SmGL.blk e i → (g : Matrix n n R) i j = 0 :=
@@ -61,6 +67,11 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 variable {R} in
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SmGL.mem_parab]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b i j hab`. Conclude with `h _ _ (by simpa using hab)`. Introduce `h i j hij`.
+
+Simplify using `using h (e.symm i).1 (e.symm j).1 (e.symm i).2 (e.symm j).2 hij`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_parab_iff {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.parab R e ↔ ∀ a b (i : m a) (j : m b), b < a →
       (g : Matrix n n R) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0 := by
@@ -93,6 +104,9 @@ def diagBlock (e : (Σ a, m a) ≃ n) (a : α) : parab R e →* Matrix (m a) (m 
 def leviProj (e : (Σ a, m a) ≃ n) : parab R e →* Levi R m :=
   MonoidHom.pi fun a => (diagBlock R e a).toHomUnits
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leviProj_apply (e : (Σ a, m a) ≃ n) (p : parab R e) (a : α) (i j : m a) :
     (leviProj R e p a : Matrix (m a) (m a) R) i j =
       ((p : GL n R) : Matrix n n R) (e ⟨a, i⟩) (e ⟨a, j⟩) := rfl
@@ -121,6 +135,9 @@ variable {R} in
 variable (R) in
 omit [LinearOrder α] in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SmGL.leviEmb, blockDiagonal'_apply_eq]`.
+-/
 @[simp] theorem _root_.GlobalTheory.SmGL.leviEmb_apply_same (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) (a : α) (i j : m a) :
     (_root_.GlobalTheory.SmGL.leviEmb R e g : Matrix n n R) (e ⟨a, i⟩) (e ⟨a, j⟩) =
@@ -134,6 +151,9 @@ variable {R} in
 variable (R) in
 omit [LinearOrder α] in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SmGL.leviEmb, blockDiagonal'_apply_ne _ _ _ h]`.
+-/
 theorem _root_.GlobalTheory.SmGL.leviEmb_apply_ne (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) {a b : α} (h : a ≠ b) (i : m a) (j : m b) :
     (_root_.GlobalTheory.SmGL.leviEmb R e g : Matrix n n R) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0 := by
@@ -146,6 +166,9 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SmGL.mem_parab_iff.2 fun _ _ i j hab => _root_.GlobalTheory.SmGL.leviEmb_apply_ne R e g hab.ne' i j`.
+-/
 theorem _root_.GlobalTheory.SmGL.leviEmb_mem_parab (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) :
     _root_.GlobalTheory.SmGL.leviEmb R e g ∈ _root_.GlobalTheory.SmGL.parab R e :=
@@ -158,6 +181,9 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem _root_.GlobalTheory.SmGL.leviProj_leviEmb (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) :
     _root_.GlobalTheory.SmGL.leviProj R e ⟨_root_.GlobalTheory.SmGL.leviEmb R e g,
@@ -172,6 +198,11 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 variable {R} in
 variable (R) in
 omit [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Establish `h` using `e.injective (Subtype.ext_iff.1 hij)`. Simplify using `using h`. Introduce and unpack `⟨k, hk⟩`.
+
+Take `⟨⟨b, i⟩, rfl⟩` from `e.surjective k`. Simplify using `only [_root_.GlobalTheory.SmGL.blk_apply] at hk`. Substitute `hk` using the available equality. Conclude with `⟨i, rfl⟩`.
+-/
 private lemma bijective_blockPosition_of_equiv_sigma (e : (Σ a, m a) ≃ n) (a : α) :
     Function.Bijective fun i : m a =>
       (⟨e ⟨a, i⟩, _root_.GlobalTheory.SmGL.blk_apply e a i⟩ :
@@ -192,6 +223,11 @@ variable (R : Type) [CommRing R] {α n : Type} {m : α → Type} [Fintype α] [L
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Establish `hp : ((p : GL n R) : Matrix n n R).BlockTriangular (_root_.GlobalTheory.SmGL.blk e)` using `p.2`. Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, Units.coe_prod, hp.det_fintype]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[GeneralLinearGroup.val_det_apply, ← Matrix.det_submatrix_equiv_self (Equiv.ofBijective _ (bijective_blockPosition_of_equiv_sigma e a))]`.
+
+Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.SmGL.det_parab (e : (Σ a, m a) ≃ n)
     (p : _root_.GlobalTheory.SmGL.parab R e) :
     GeneralLinearGroup.det (p : GL n R) =
@@ -211,6 +247,9 @@ variable {R} in
 variable (R) in
 omit [LinearOrder α] in
 
+/- English proof (translation)
+Use `letI : LinearOrder α := LinearOrder.lift' _ (Fintype.equivFin α).injective`. Establish `h` using `_root_.GlobalTheory.SmGL.det_parab R e ⟨_, _root_.GlobalTheory.SmGL.leviEmb_mem_parab R e g⟩`. Rewrite `h` using `[_root_.GlobalTheory.SmGL.leviProj_leviEmb]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.SmGL.det_leviEmb (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) :
     GeneralLinearGroup.det (_root_.GlobalTheory.SmGL.leviEmb R e g) =
@@ -232,6 +271,13 @@ variable {R} in
 variable (R) in
 variable {R} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SmGL.unipRad, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Use `⟨p.2, fun a i j => ?_⟩` and prove the remaining obligations. Establish `h` using `congr_arg (fun x : _root_.GlobalTheory.SmGL.Levi R m => ((x a : GL (m a) R) : Matrix (m a) (m a) R) i j) (MonoidHom.mem_ker.1 hp)`.
+
+Simplify using `using h`. Introduce and unpack `⟨hg, h⟩`. Use `⟨⟨g, hg⟩, MonoidHom.mem_ker.2 ?_, rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use extensionality with `i j`.
+
+Simplify using `[h]`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_unipRad {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.unipRad R e ↔ g ∈ _root_.GlobalTheory.SmGL.parab R e ∧ ∀ a (i j : m a),
       (g : Matrix n n R) (e ⟨a, i⟩) (e ⟨a, j⟩) = (1 : Matrix (m a) (m a) R) i j := by
@@ -258,6 +304,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Introduce `_ hg` and use `(_root_.GlobalTheory.SmGL.mem_unipRad.1 hg).1`.
+-/
 theorem _root_.GlobalTheory.SmGL.unipRad_le_parab (e : (Σ a, m a) ≃ n) :
     _root_.GlobalTheory.SmGL.unipRad R e ≤ _root_.GlobalTheory.SmGL.parab R e := fun _ hg =>
   (_root_.GlobalTheory.SmGL.mem_unipRad.1 hg).1
@@ -270,6 +319,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `(Subgroup.mem_map_iff_mem (Subgroup.subtype_injective _)).trans MonoidHom.mem_ker`.
+-/
 theorem _root_.GlobalTheory.SmGL.coe_mem_unipRad {e : (Σ a, m a) ≃ n}
     (p : _root_.GlobalTheory.SmGL.parab R e) :
     (p : GL n R) ∈ _root_.GlobalTheory.SmGL.unipRad R e ↔ _root_.GlobalTheory.SmGL.leviProj R e p = 1 :=
@@ -282,6 +334,11 @@ variable {R} in
 variable (R) in
 variable {R} in
 variable (R) in
+/- English proof (translation)
+Establish `hu'` using `_root_.GlobalTheory.SmGL.unipRad_le_parab R e hu`. Set `P : _root_.GlobalTheory.SmGL.parab R e` to `⟨p, hp⟩`. Set `U : _root_.GlobalTheory.SmGL.parab R e` to `⟨u, hu'⟩`. Establish `hU : _root_.GlobalTheory.SmGL.leviProj R e U = 1` using `(_root_.GlobalTheory.SmGL.coe_mem_unipRad R U).1 hu`. Use `show ((P * U * P⁻¹ : _root_.GlobalTheory.SmGL.parab R e) : GL n R) ∈ _`.
+
+Rewrite using `[_root_.GlobalTheory.SmGL.coe_mem_unipRad, map_mul, map_mul, map_inv, hU, mul_one, mul_inv_cancel]`.
+-/
 private lemma conj_mem_unipRad_of_mem_parab {e : (Σ a, m a) ≃ n} {p u : GL n R}
     (hp : p ∈ _root_.GlobalTheory.SmGL.parab R e) (hu : u ∈ _root_.GlobalTheory.SmGL.unipRad R e) :
     p * u * p⁻¹ ∈ _root_.GlobalTheory.SmGL.unipRad R e := by
@@ -302,6 +359,11 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Introduce `p hp`. Rewrite using `[Subgroup.mem_normalizer_iff]`. Introduce `u`. Prove the components needed by the constructor for the conclusion. Conclude with `conj_mem_unipRad_of_mem_parab R hp`.
+
+Introduce `h`. Use `conj_mem_unipRad_of_mem_parab R (inv_mem hp) h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.SmGL.parab_le_normalizer (e : (Σ a, m a) ≃ n) :
     _root_.GlobalTheory.SmGL.parab R e ≤
       Subgroup.normalizer (_root_.GlobalTheory.SmGL.unipRad R e : Set (GL n R)) := by
@@ -322,6 +384,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SmGL.parab_le_normalizer R e (_root_.GlobalTheory.SmGL.leviEmb_mem_parab R e g)`.
+-/
 theorem _root_.GlobalTheory.SmGL.leviEmb_mem_normalizer (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) :
     _root_.GlobalTheory.SmGL.leviEmb R e g ∈
@@ -337,6 +402,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Set `L : _root_.GlobalTheory.SmGL.parab R e` to `⟨_root_.GlobalTheory.SmGL.leviEmb R e (_root_.GlobalTheory.SmGL.leviProj R e p), _root_.GlobalTheory.SmGL.leviEmb_mem_parab R e _⟩`. Use `⟨((L⁻¹ * p : _root_.GlobalTheory.SmGL.parab R e) : GL n R), (_root_.GlobalTheory.SmGL.coe_mem_unipRad R _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, _root_.GlobalTheory.SmGL.leviProj_leviEmb, inv_mul_cancel]`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `(mul_inv_cancel_left _ _).symm`.
+-/
 theorem _root_.GlobalTheory.SmGL.exists_levi_mul_unip (e : (Σ a, m a) ≃ n)
     (p : _root_.GlobalTheory.SmGL.parab R e) :
     ∃ u ∈ _root_.GlobalTheory.SmGL.unipRad R e,
@@ -358,6 +426,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Take `⟨p, hp, rfl⟩` from `Subgroup.mem_map.1 hu`. Use `show GeneralLinearGroup.det (p : GL n R) = 1`. Rewrite using `[_root_.GlobalTheory.SmGL.det_parab, MonoidHom.mem_ker.1 hp]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.SmGL.det_eq_one_of_mem_unipRad {e : (Σ a, m a) ≃ n} {u : GL n R}
     (hu : u ∈ _root_.GlobalTheory.SmGL.unipRad R e) : GeneralLinearGroup.det u = 1 := by
   obtain ⟨p, hp, rfl⟩ := Subgroup.mem_map.1 hu
@@ -374,6 +445,11 @@ variable {R} in
 variable (R) in
 open Classical in
 
+/- English proof (translation)
+Establish `hval : Continuous fun g : _root_.GlobalTheory.SmGL.Levi R m => ((_root_.GlobalTheory.SmGL.leviEmb R e g : GL n R) : Matrix n n R)` using `by show Continuous fun g : _root_.GlobalTheory.SmGL.Levi R m => Matrix.reindex e e (blockDiagonal' fun a => (g a : Matrix (m a) (m a) R))`. Conclude with `(Continuous.matrix_blockDiagonal' (continuous_pi fun a => Units.continuous_val.comp (continuous_apply a))).matrix_reindex e e`. Establish `hinv : Continuous fun g : _root_.GlobalTheory.SmGL.Levi R m => g⁻¹` using `continuous_pi fun a => Units.continuous_iff.2 ⟨Units.continuous_coe_inv.comp (continuous_apply a), by simp; exact Units.continuous_val.comp (continuous_apply a)⟩`. Use `Units.continuous_iff.2 ⟨hval, ?_⟩` and prove the remaining obligations. Use `hval.comp hinv using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g`. Simplify using `[map_inv]`.
+-/
 theorem _root_.GlobalTheory.SmGL.continuous_leviEmb [TopologicalSpace R] {α : Type} {m : α → Type}
     [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] (e : (Σ a, m a) ≃ n) :
     Continuous (_root_.GlobalTheory.SmGL.leviEmb R e) := by
@@ -407,6 +483,11 @@ variable {R} in
 variable (R) in
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SmGL.parabLower`. Rewrite using `[_root_.GlobalTheory.SmGL.mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b i j hab`. Conclude with `h (OrderDual.toDual a) (OrderDual.toDual b) i j hab`.
+
+Introduce `h a b i j hab`. Conclude with `h (OrderDual.ofDual a) (OrderDual.ofDual b) i j hab`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_parabLower_iff {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.parabLower R e ↔ ∀ a b (i : m a) (j : m b), a < b →
       (g : Matrix n n R) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0 := by
@@ -420,6 +501,9 @@ theorem _root_.GlobalTheory.SmGL.mem_parabLower_iff {e : (Σ a, m a) ≃ n} {g :
 
 def leviProjLower (e : (Σ a, m a) ≃ n) : parabLower R e →* Levi R m := leviProj R (opp e)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leviProjLower_apply (e : (Σ a, m a) ≃ n) (p : parabLower R e) (a : α) (i j : m a) :
     (leviProjLower R e p a : Matrix (m a) (m a) R) i j =
       ((p : GL n R) : Matrix n n R) (e ⟨a, i⟩) (e ⟨a, j⟩) := rfl
@@ -432,6 +516,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SmGL.mem_unipRad (e := _root_.GlobalTheory.SmGL.opp e)`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_unipRadLower {e : (Σ a, m a) ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.unipRadLower R e ↔ g ∈ _root_.GlobalTheory.SmGL.parabLower R e ∧
       ∀ a (i j : m a),
@@ -446,6 +533,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `(_root_.GlobalTheory.SmGL.mem_parabLower_iff R).2 fun _ _ i j hab => _root_.GlobalTheory.SmGL.leviEmb_apply_ne R e g hab.ne i j`.
+-/
 theorem _root_.GlobalTheory.SmGL.leviEmb_mem_parabLower (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) :
     _root_.GlobalTheory.SmGL.leviEmb R e g ∈ _root_.GlobalTheory.SmGL.parabLower R e :=
@@ -460,6 +550,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SmGL.parab_le_normalizer R (_root_.GlobalTheory.SmGL.opp e) (_root_.GlobalTheory.SmGL.leviEmb_mem_parabLower R e g)`.
+-/
 theorem _root_.GlobalTheory.SmGL.leviEmb_mem_normalizer_lower (e : (Σ a, m a) ≃ n)
     (g : _root_.GlobalTheory.SmGL.Levi R m) :
     _root_.GlobalTheory.SmGL.leviEmb R e g ∈
@@ -478,6 +571,9 @@ variable (R) in
 variable {R} in
 variable (R) in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SmGL.stdBlocks, finSigmaFinEquiv_apply]`.
+-/
 theorem _root_.GlobalTheory.SmGL.stdBlocks_val {s N : ℕ} (d : Fin s → ℕ) (h : ∑ a, d a = N)
     (a : Fin s) (i : Fin (d a)) :
     (_root_.GlobalTheory.SmGL.stdBlocks d h ⟨a, i⟩ : ℕ) =
@@ -511,10 +607,16 @@ def two (e : a ⊕ b ≃ n) : (Σ x, Two a b x) ≃ n :=
 
 omit [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem two_false (e : a ⊕ b ≃ n) (i : a) : two e ⟨false, i⟩ = e (Sum.inl i) := rfl
 
 omit [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem two_true (e : a ⊕ b ≃ n) (j : b) : two e ⟨true, j⟩ = e (Sum.inr j) := rfl
 
 def stdSum {r t N : ℕ} (h : r + t = N) : Fin r ⊕ Fin t ≃ Fin N := finSumFinEquiv.trans (finCongr h)
@@ -528,6 +630,9 @@ variable {R} in
 variable (R) in
 variable {a b : Type} in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SmGL.stdSum]`.
+-/
 @[simp] theorem _root_.GlobalTheory.SmGL.stdSum_inl {r t N : ℕ} (h : r + t = N) (i : Fin r) :
     (_root_.GlobalTheory.SmGL.stdSum h (Sum.inl i) : ℕ) = i := by
   simp [_root_.GlobalTheory.SmGL.stdSum]
@@ -541,6 +646,9 @@ variable {R} in
 variable (R) in
 variable {a b : Type} in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.SmGL.stdSum]`.
+-/
 @[simp] theorem _root_.GlobalTheory.SmGL.stdSum_inr {r t N : ℕ} (h : r + t = N) (j : Fin t) :
     (_root_.GlobalTheory.SmGL.stdSum h (Sum.inr j) : ℕ) = r + j := by
   simp [_root_.GlobalTheory.SmGL.stdSum]
@@ -567,6 +675,9 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun x => by cases x · exact continuous_fst · exact continuous_snd`.
+-/
 theorem _root_.GlobalTheory.SmGL.continuous_leviTwo [TopologicalSpace R] :
     Continuous (_root_.GlobalTheory.SmGL.leviTwo R a b) :=
   continuous_pi fun x => by
@@ -587,6 +698,11 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨s, rfl⟩` from `e.surjective i`. Take `⟨t, rfl⟩` from `e.surjective j`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases s with s | s <;> rcases t with t | t`.
+
+Conclude with `_root_.GlobalTheory.SmGL.leviEmb_apply_same R (_root_.GlobalTheory.SmGL.two e) (_root_.GlobalTheory.SmGL.leviTwo R a b g) false s t`. Conclude with `_root_.GlobalTheory.SmGL.leviEmb_apply_ne R (_root_.GlobalTheory.SmGL.two e) (_root_.GlobalTheory.SmGL.leviTwo R a b g) (by decide : false ≠ true) s t`. Conclude with `_root_.GlobalTheory.SmGL.leviEmb_apply_ne R (_root_.GlobalTheory.SmGL.two e) (_root_.GlobalTheory.SmGL.leviTwo R a b g) (by decide : true ≠ false) s t`. Conclude with `_root_.GlobalTheory.SmGL.leviEmb_apply_same R (_root_.GlobalTheory.SmGL.two e) (_root_.GlobalTheory.SmGL.leviTwo R a b g) true s t`.
+-/
 theorem _root_.GlobalTheory.SmGL.val_emb₂ (e : a ⊕ b ≃ n) (g : GL a R × GL b R) :
     (_root_.GlobalTheory.SmGL.emb₂ R e g : Matrix n n R) =
       Matrix.reindex e e (fromBlocks g.1.val 0 0 g.2.val) := by
@@ -614,6 +730,9 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SmGL.emb₂, MonoidHom.comp_apply, _root_.GlobalTheory.SmGL.det_leviEmb, Fintype.prod_bool, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.SmGL.det_emb₂ (e : a ⊕ b ≃ n) (g : GL a R × GL b R) :
     GeneralLinearGroup.det (_root_.GlobalTheory.SmGL.emb₂ R e g) =
       GeneralLinearGroup.det g.1 * GeneralLinearGroup.det g.2 := by
@@ -632,6 +751,11 @@ variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 omit [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SmGL.mem_parab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h j i`. Conclude with `h true false j i (by decide)`. Introduce `h x y i j hxy`.
+
+Apply the tactic sequence `rcases x with _ | _ <;> rcases y with _ | _`. Conclude with `absurd hxy (by decide)`. Conclude with `absurd hxy (by decide)`. Conclude with `h i j`. Conclude with `absurd hxy (by decide)`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_parab_two {e : a ⊕ b ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.parab R (_root_.GlobalTheory.SmGL.two e) ↔
       ∀ (j : b) (i : a), (g : Matrix n n R) (e (.inr j)) (e (.inl i)) = 0 := by
@@ -657,6 +781,11 @@ variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 omit [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.SmGL.mem_parabLower_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `h false true i j (by decide)`. Introduce `h x y i j hxy`.
+
+Apply the tactic sequence `rcases x with _ | _ <;> rcases y with _ | _`. Conclude with `absurd hxy (by decide)`. Conclude with `h i j`. Conclude with `absurd hxy (by decide)`. Conclude with `absurd hxy (by decide)`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_parabLower_two {e : a ⊕ b ≃ n} {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.parabLower R (_root_.GlobalTheory.SmGL.two e) ↔
       ∀ (i : a) (j : b), (g : Matrix n n R) (e (.inl i)) (e (.inr j)) = 0 := by
@@ -675,6 +804,9 @@ def points (n : Type) : (Σ _ : n, Unit) ≃ n := Equiv.sigmaUnique n fun _ => U
 
 omit [Fintype n] [DecidableEq n] in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem points_apply (i : n) (u : Unit) : points n ⟨i, u⟩ = i := rfl
 
 def leviTorus (n : Type) : (n → Rˣ) ≃* Levi R (fun _ : n => Unit) where
@@ -702,6 +834,9 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun i => Units.continuous_iff.2 ⟨continuous_pi fun x => continuous_pi fun y => by simp [_root_.GlobalTheory.SmGL.leviTorus, GeneralLinearGroup.scalar] exact Units.continuous_val.comp (continuous_apply i), continuous_pi fun x => continuous_pi fun y => by simp [_root_ …`.
+-/
 theorem _root_.GlobalTheory.SmGL.continuous_leviTorus [TopologicalSpace R] (n : Type) :
     Continuous (_root_.GlobalTheory.SmGL.leviTorus R n) :=
   continuous_pi fun i => Units.continuous_iff.2
@@ -725,6 +860,11 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[diagonal_apply_eq]`. Conclude with `(_root_.GlobalTheory.SmGL.leviEmb_apply_same R (_root_.GlobalTheory.SmGL.points n) (_root_.GlobalTheory.SmGL.leviTorus R n t) i () ()).trans (by simp [_root_.GlobalTheory.SmGL.leviTorus, GeneralLinearGroup.scalar])`.
+
+Rewrite using `[diagonal_apply_ne _ h]`. Conclude with `_root_.GlobalTheory.SmGL.leviEmb_apply_ne R (_root_.GlobalTheory.SmGL.points n) (_root_.GlobalTheory.SmGL.leviTorus R n t) h () ()`.
+-/
 theorem _root_.GlobalTheory.SmGL.val_diagT (t : n → Rˣ) :
     (_root_.GlobalTheory.SmGL.diagT R n t : Matrix n n R) = diagonal fun i => (t i : R) := by
   ext i j
@@ -754,6 +894,9 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.SmGL.mem_parab`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_borel {n : Type} [Fintype n] [DecidableEq n]
     [LinearOrder n] {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.borel R n ↔ ∀ i j, j < i → (g : Matrix n n R) i j = 0 :=
@@ -769,6 +912,11 @@ variable (R) in
 variable {a b : Type} in
 variable [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] in
 
+/- English proof (translation)
+Use `show g ∈ _root_.GlobalTheory.SmGL.unipRad R (_root_.GlobalTheory.SmGL.points n) ↔ _`. Rewrite using `[_root_.GlobalTheory.SmGL.mem_unipRad]`. Use `and_congr _root_.GlobalTheory.SmGL.mem_parab ⟨fun h i => ?_, fun h a i j => ?_⟩` and prove the remaining obligations. Conclude with `(h i () ()).trans (one_apply_eq ())`. Consider the cases of `i`.
+
+Consider the cases of `j`. Conclude with `(h a).trans (one_apply_eq ()).symm`.
+-/
 theorem _root_.GlobalTheory.SmGL.mem_unipB {n : Type} [Fintype n] [DecidableEq n]
     [LinearOrder n] {g : GL n R} :
     g ∈ _root_.GlobalTheory.SmGL.unipB R n ↔

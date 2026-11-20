@@ -10,6 +10,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `F L _ _ _ _ _ _ _ _ _ _ _ _ p E r B hp hE hord hax hdet`. Take `⟨hanti, hbot⟩` from `GlobalTheory.T.wildLowerRamificationGroup_antitone_eventually_bot F L`. Take `⟨n, hn⟩` from `GlobalTheory.T.exists_initialSegment_not_inf_le_filtration _ (wild F L) ⊤ B hanti hbot`. Break down `n with _ | k` into its components or cases. Rewrite using `[GlobalTheory.T.ramificationJumpSum_eq_sum_range _ (wild F L) ⊤ B 0 hanti hn]`.
+
+Simplify using the standard rewrite rules. Establish `hk : ¬ (⊤ : Subgroup (L ≃ₐ[F] L)) ⊓ wild F L k ≤ B` using `(hn k).1 (Nat.lt_succ_self k)`. Take `⟨σ₀, hσ₀, hσ₀B⟩` from `SetLike.not_le_iff_exists.1 hk`. Establish `hσ₀k : σ₀ ∈ wild F L k` using `(Subgroup.mem_inf.1 hσ₀).2`. Take `⟨x, a, hxa, hnd⟩` from `hdet σ₀ (Subgroup.mem_top σ₀) hσ₀B`.
+
+Take `⟨J, hJ, hJsum⟩` from `GlobalTheory.T.jumpSum_kernel_coboundaryChar_le_six_mul F L p E r x a hp hE hord hax (fun σ => hxa σ (Subgroup.mem_top σ)) ⟨σ₀, hnd⟩`. Establish `hσ₀J : σ₀ ∉ J` using `fun h => hnd ((hJ σ₀).1 h)`. Establish `hmono : ∀ t, (⊤ : Subgroup (L ≃ₐ[F] L)) ⊓ wild F L t ≤ J → (⊤ : Subgroup (L ≃ₐ[F] L)) ⊓ wild F L t ≤ B`. Introduce `t ht`. Assume the negation of the conclusion as `hB`.
+
+Establish `htk : t ≤ k` using `Nat.lt_succ_iff.1 ((hn t).2 hB)`. Establish `hσ₀t : σ₀ ∈ wild F L t` using `hanti htk hσ₀k`. Conclude with `hσ₀J (ht (Subgroup.mem_inf.2 ⟨Subgroup.mem_top σ₀, hσ₀t⟩))`. Conclude with `le_trans (GlobalTheory.T.ramificationJumpSum_mono_of_le _ (wild F L) ⊤ B J hanti hbot hmono) hJsum`.
+-/
 theorem jumpSum_wild_top_le_of_detects : ∀ (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra F L] [ValuativeExtension F L] [FiniteDimensional F L] [IsGalois F L] (p E r : ℕ) (B : Subgroup (L ≃ₐ[F] L)), p.Prime → 0 < E → OrdIs L p E → AxIn F L p → Detects p r ⊤ B → jumpSum (wild F L) ⊤ B ≤ 6 * E := by
   intro F L _ _ _ _ _ _ _ _ _ _ _ _ p E r B hp hE hord hax hdet
   obtain ⟨hanti, hbot⟩ := GlobalTheory.T.wildLowerRamificationGroup_antitone_eventually_bot F L

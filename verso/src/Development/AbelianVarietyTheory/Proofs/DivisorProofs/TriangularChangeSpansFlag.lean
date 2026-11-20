@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Introduce `X F m fl V v M hs hM hu l`. Take `⟨s, hf, hι⟩` from `hs l`. Establish `hb : ∀ i j : Fin m, j < i → M i j = 0` using `fun i j h => hM h`. Use `⟨_, GlobalTheory.FlagZ.Univ.isFrame_sum_smul_of_isUnit hf _ (GlobalTheory.FlagZ.Loc.isUnit_submatrix_castLE_of_upper l.is_le M hb ((Matrix.isUnit_iff_isUnit_det M).2 hu)), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.QCoh.appLinear_apply]`.
+
+Simplify using `only [map_sum, map_smul, GlobalTheory.QCoh.appLinear_apply, hι, Matrix.submatrix_apply]`. Use `Finset.sum_of_injOn (Fin.castLE l.is_le) (Fin.castLE_injective _).injOn (fun _ _ => Finset.mem_univ _) (fun k _ hk => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[hb, zero_smul]`. Assume the negation of the conclusion as `hlt`. Establish `hk' : (k : ℕ) < l` using `lt_of_le_of_lt (Fin.le_def.1 (not_lt.1 hlt)) j.2`.
+
+Conclude with `hk ⟨⟨k, hk'⟩, Finset.mem_coe.2 (Finset.mem_univ _), rfl⟩`.
+-/
 theorem Spans.mul_upper : ∀ (X : Scheme.{0}) (F : X.Modules) (m : ℕ) (fl : Vert.Flag F m) (V : X.Opens) (v : Fin m → Γ(F, V)) (M : Matrix (Fin m) (Fin m) Γ(X, V)), Spans fl V v → M.BlockTriangular id → IsUnit M.det → Spans fl V fun j => ∑ k, M k j • v k := by
   intro X F m fl V v M hs hM hu l
   obtain ⟨s, hf, hι⟩ := hs l

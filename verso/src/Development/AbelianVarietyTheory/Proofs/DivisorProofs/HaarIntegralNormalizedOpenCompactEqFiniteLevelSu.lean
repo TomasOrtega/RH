@@ -6,6 +6,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BCT.HintLevel
 
+/- English proof (translation)
+Distinguish the cases in `hf : (Function.support f).Finite`. Establish `hg : (Function.support fun x : A × T => f x.1).Finite`. Use `(hf.prod (Set.finite_univ (α := T))).subset ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨hx, Set.mem_univ _⟩`.
+
+Rewrite using `[finsum_curry _ hg, mul_finsum]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Use `haveI := Fintype.ofFinite T`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `show ∑ _i : T, f a = _`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`. Establish `hg : ¬ (Function.support fun x : A × T => f x.1).Finite`. Introduce `hg`. Apply `hf` to reduce the goal to its premises. Use `(hg.image Prod.fst).subset ?_` and prove the remaining obligations.
+
+Introduce `a ha`. Conclude with `⟨(a, Classical.arbitrary T), ha, rfl⟩`. Rewrite using `[finsum_of_infinite_support hg, finsum_of_infinite_support hf, mul_zero]`.
+-/
 theorem finsum_prod_fst {A T : Type} [Finite T] [Nonempty T] (f : A → ℂ) :
     ∑ᶠ x : A × T, f x.1 = (Nat.card T : ℂ) * ∑ᶠ a : A, f a := by
   by_cases hf : (Function.support f).Finite
@@ -27,6 +36,13 @@ theorem finsum_prod_fst {A T : Type} [Finite T] [Nonempty T] (f : A → ℂ) :
       exact ⟨(a, Classical.arbitrary T), ha, rfl⟩
     rw [finsum_of_infinite_support hg, finsum_of_infinite_support hf, mul_zero]
 
+/- English proof (translation)
+Establish `hinv : ∀ g : H, u ((QuotientGroup.mk g : H ⧸ S).out) = u g`. Introduce `g`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul S g`. Rewrite using `[hk]`. Conclude with `hS k.2 g`.
+
+Establish `hfst : ∀ q : H ⧸ L, u q.out = u ((Subgroup.quotientEquivProdOfLE hLS q).1.out)`. Introduce `q`. Establish `: (Subgroup.quotientEquivProdOfLE hLS q).1 = (QuotientGroup.mk q.out : H ⧸ S)`. Simplify using `only [Subgroup.quotientEquivProdOfLE, Subgroup.quotientEquivProdOfLE']`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, hinv]`. Use `haveI : Finite (S ⧸ L.subgroupOf S) := Subgroup.index_ne_zero_iff_finite.1 hfin`. Rewrite using `[finsum_congr hfst, finsum_comp_equiv (Subgroup.quotientEquivProdOfLE hLS) (f := fun x : (H ⧸ S) × (S ⧸ L.subgroupOf S) => u x.1.out)]`. Conclude with `finsum_prod_fst (fun p : H ⧸ S => u p.out)`.
+-/
 theorem sum_level (H : Type) [Group H] (S L : Subgroup H) (u : H → ℂ) (hLS : L ≤ S) (hS : S ≤ rStab u)
     (hfin : L.relIndex S ≠ 0) :
     ∑ᶠ q : H ⧸ L, u q.out = ((L.relIndex S : ℕ) : ℂ) * ∑ᶠ p : H ⧸ S, u p.out := by
@@ -47,6 +63,13 @@ theorem sum_level (H : Type) [Group H] (S L : Subgroup H) (u : H → ℂ) (hLS :
     (f := fun x : (H ⧸ S) × (S ⧸ L.subgroupOf S) => u x.1.out)]
   exact finsum_prod_fst (fun p : H ⧸ S => u p.out)
 
+/- English proof (translation)
+Introduce `H _ K L u hLK hLu hne`. Establish `hLS : L ≤ rStab u ⊓ K` using `le_inf hLu hLK`. Establish `hmul` using `Subgroup.relIndex_mul_relIndex L (rStab u ⊓ K) K hLS inf_le_right`. Establish `h1 : L.relIndex (rStab u ⊓ K) ≠ 0`. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[← hmul, h0, zero_mul]`. Establish `h2 : (rStab u ⊓ K).relIndex K ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[← hmul, h0, mul_zero]`. Rewrite using `[sum_level H (rStab u ⊓ K) L u hLS inf_le_left h1, hint, ← hmul]`. Use `push_cast`. Establish `h1' : ((L.relIndex (rStab u ⊓ K) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 h1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hint_level : ∀ (H : Type) [Group H] (K L : Subgroup H) (u : H → ℂ), L ≤ K → L ≤ rStab u →
     L.relIndex K ≠ 0 → hint K u = ((L.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : H ⧸ L, u q.out := by
   intro H _ K L u hLK hLu hne

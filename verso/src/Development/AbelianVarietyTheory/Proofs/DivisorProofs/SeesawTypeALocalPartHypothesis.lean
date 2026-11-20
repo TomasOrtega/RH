@@ -13,6 +13,23 @@ namespace GlobalTheory.VanishLocInvA
 
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' e hEv ei ev hloc X om om' om₁ om₁' hT hT₁ v u hu hat φ hφ`. Take `⟨hei, hev, hfac⟩` from `hloc`. Use `set φ₁ := schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v u) φ with hφ₁def`. Establish `hφ₁ : φ₁ ∈ SB _` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hT.base.std.1 v _ φ hφ`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hei (ContinuousLinearMap.ext hc)`. Establish `hSB : ∀ c ∈ SB (Fin (b + 2) × Fin (b + 2 + a') → Fv F v), ∀ w, Function.update G.M.vac v c w ∈ SB _`. Introduce `c hc w`.
+
+Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hc`. Rewrite using `[Function.update_of_ne hwv]`.
+
+Conclude with `(hT.geo.hM.vac w).1`. Establish `hco : ∀ c : (Fin (b + 2) × Fin (b + 2 + a') → Fv F v) → ℂ, ∀ᶠ w in cofinite, Function.update G.M.vac v c w = G.M.vac w`. Introduce `c`. Use `filter_upwards [Filter.eventually_cofinite_ne v] with w hw`. Conclude with `Function.update_of_ne hw _ _`.
+
+Establish `hstd` using `GlobalTheory.PureFactor.update_eventually G.M.vac v φ hT.geo.hM.std`. Establish `hpure` using `GlobalTheory.TensUniq.pure_mem_schA f _ (hSB φ hφ) hstd`. Establish `hfin` using `GlobalTheory.PureFactor.mulSupport_finite _ hstd`. Establish `hact : Acts (evFin F v) (G.M.co.rho B.ψ u) (Function.update G.M.vac v φ v) φ₁`. Rewrite using `[Function.update_self]`.
+
+Conclude with `GlobalTheory.VacBridge.rho_acts_locCo G.M.co B.ψ v u hat φ`. Establish `hrho` using `GlobalTheory.ThK.LocalOps.acts_pure v (G.M.co.rho B.ψ u) f _ φ₁ hpure hfin hact`. Rewrite `hrho` using `[Function.update_idem]`. Establish `hinv` using `hEv.inv u hu _ hpure`. Rewrite `hinv` using `[hrho, hfac f _ (hSB φ₁ hφ₁) (hco φ₁), hfac f _ (hSB φ hφ) (hco φ)]`.
+
+Establish `hup : ∀ c : (Fin (b + 2) × Fin (b + 2 + a') → Fv F v) → ℂ, (fun w => ev w (Function.update G.M.vac v c w)) = Function.update G₁.M.vac v (ev v c)`. Introduce `c`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality.
+
+Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne hwv, Function.update_of_ne hwv]`. Conclude with `(hev w).1`. Rewrite `hinv` using `[hup, hup]`. Conclude with `GlobalTheory.VanishLocInv.eq_of_pure_update_eq G₁.M.vac (fun w => (hT₁.geo.hM.vac w).2.1) hT₁.geo.hM.std (ei f) hf v _ _ hinv`.
+-/
 theorem inv_local : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {b a' : ℕ}
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')),
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ ei ev, GlobalTheory.ThK.LemF.IsLocPart G.M G₁.M e ei ev →

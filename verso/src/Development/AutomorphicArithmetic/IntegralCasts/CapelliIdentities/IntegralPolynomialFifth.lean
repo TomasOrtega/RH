@@ -15,6 +15,9 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.Is
           x)
         (@OfNat.ofNat Real (nat_lit 1) (@One.toOfNat1 Real Real.instOne))
 
+/- English proof (translation)
+Introduce `p inst`. Conclude with `Valued.isTopologicalDivisionRing`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux2 :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)],
       @IsTopologicalDivisionRing (@PadicAlgCl p inst)
@@ -28,6 +31,9 @@ theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux2 :
   intro p inst
   exact Valued.isTopologicalDivisionRing
 
+/- English proof (translation)
+Introduce `p inst`. Conclude with `NormedField.instCompletableTopField`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux3 :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)],
       @CompletableTopField (@PadicAlgCl p inst) (@NormedField.toField (@PadicAlgCl p inst) (@PadicAlgCl.normedField p inst))
@@ -39,6 +45,9 @@ theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux3 :
   intro p inst
   exact NormedField.instCompletableTopField
 
+/- English proof (translation)
+Introduce `p inst`. Conclude with `Valued.toIsUniformAddGroup`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.aux4 :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)],
       @IsUniformAddGroup (@PadicAlgCl p inst)
@@ -312,6 +321,11 @@ noncomputable def UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.In
               n)
             F)
 
+/- English proof (translation)
+Introduce `p inst σ i n`. Express the relevant statement in the definitionally equal form `‖(MvPowerSeries.coeff n (MvPowerSeries.X i : MvPowerSeries σ ℂ_[p]) : ℂ_[p])‖ ≤ 1`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `norm_one.le`.
+
+Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.intMv_X.{u_1} :
     ∀ {p : Nat} [inst : Fact (Nat.Prime p)] {σ : Type u_1} (i : σ),
       @UpperTheory.Reformulated.B.IntegralPolynomialOverPadicAlgCl.IntegralMv σ p inst

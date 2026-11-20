@@ -13,15 +13,26 @@ noncomputable section
 
 namespace GlobalTheory.GeomConnDesc
 
+/- English proof (translation)
+Use `haveI : IsIntegral (Sp K) := by unfold Sp; infer_instance`. Use `haveI : Subsingleton (Sp K) := by unfold Sp; infer_instance`. Use `infer_instance`.
+-/
 theorem flat_spec_field {K : Type} [Field K] {Z : Scheme.{0}} (f : Z ⟶ Sp K) : Flat f := by
   haveI : IsIntegral (Sp K) := by unfold Sp; infer_instance
   haveI : Subsingleton (Sp K) := by unfold Sp; infer_instance
   infer_instance
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (i : A →+* B) (j : B →+* C) :
     spMap (j.comp i) = spMap j ≫ spMap i := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Introduce `a b h`. Establish `e` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom j)`. Establish `h3 : ∀ x, (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom ((spMap j).appTop.hom x) = j ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom x)` using `fun x => congrArg (fun f => f.hom x) e`. Establish `h2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom h`. Rewrite `h2` using `[h3, h3]`.
+
+Establish `h4` using `hj h2`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom h4` as an intermediate fact. Simplify using `using this`.
+-/
 theorem appTop_spMap_injective {A B : Type} [CommRing A] [CommRing B] (j : A →+* B)
     (hj : Function.Injective j) : Function.Injective (spMap j).appTop.hom := by
   intro a b h
@@ -34,6 +45,9 @@ theorem appTop_spMap_injective {A B : Type} [CommRing A] [CommRing B] (j : A →
   have := congrArg (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom h4
   simpa using this
 
+/- English proof (translation)
+Establish `e` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j)`. Conclude with `(congrArg (fun f => f.hom y) e).symm`.
+-/
 theorem appTop_spMap_inv {A B : Type} [CommRing A] [CommRing B] (j : A →+* B) (y : A) :
     (spMap j).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom y) =
       (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (j y) := by
@@ -47,16 +61,25 @@ def bc {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A)
   pullback.map f (spMap i₀) f (spMap i) (𝟙 X) (spMap j) (𝟙 _) (by simp)
     (by rw [Category.comp_id, ← hji, spMap_comp])
 
+/- English proof (translation)
+Simplify using `only [bc, pullback.map, Category.comp_id]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem bc_fst {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A) (j : A →+* K) (hji : j.comp i = i₀) :
     bc f i₀ i j hji ≫ pullback.fst f (spMap i) = pullback.fst f (spMap i₀) := by
   simp only [bc, pullback.map, Category.comp_id]
   exact pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Simplify using `only [bc, pullback.map, Category.comp_id]`. Conclude with `pullback.lift_snd _ _ _`.
+-/
 theorem bc_snd {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A) (j : A →+* K) (hji : j.comp i = i₀) :
     bc f i₀ i j hji ≫ pullback.snd f (spMap i) = pullback.snd f (spMap i₀) ≫ spMap j := by
   simp only [bc, pullback.map, Category.comp_id]
   exact pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Establish `s : IsPullback (bc f i₀ i j hji ≫ pullback.fst f (spMap i)) (pullback.snd f (spMap i₀)) f (spMap j ≫ spMap i)`. Rewrite using `[bc_fst, ← spMap_comp, hji]`. Conclude with `IsPullback.of_hasPullback f (spMap i₀)`. Conclude with `IsPullback.of_right s (bc_snd f i₀ i j hji) (IsPullback.of_hasPullback f (spMap i))`.
+-/
 theorem isPullback_bc {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) (i : F →+* A) (j : A →+* K) (hji : j.comp i = i₀) :
     IsPullback (bc f i₀ i j hji) (pullback.snd f (spMap i₀)) (pullback.snd f (spMap i)) (spMap j) := by
   have s : IsPullback (bc f i₀ i j hji ≫ pullback.fst f (spMap i)) (pullback.snd f (spMap i₀)) f
@@ -65,6 +88,9 @@ theorem isPullback_bc {K A : Type} [CommRing K] [CommRing A] (i₀ : F →+* K) 
     exact IsPullback.of_hasPullback f (spMap i₀)
   exact IsPullback.of_right s (bc_snd f i₀ i j hji) (IsPullback.of_hasPullback f (spMap i))
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[bc_fst]`. Rewrite using `[Category.assoc, bc_snd, bc_snd, ← Category.assoc, bc_snd, Category.assoc, ← spMap_comp, hk']`.
+-/
 theorem bc_trans {K A B : Type} [CommRing K] [CommRing A] [CommRing B] (i₀ : F →+* K) (i₁ : F →+* A) (j₁ : A →+* K) (h₁ : j₁.comp i₁ = i₀)
     (i₂ : F →+* B) (j₂ : B →+* K) (h₂ : j₂.comp i₂ = i₀) (k : A →+* B) (hk : k.comp i₁ = i₂)
     (hk' : j₂.comp k = j₁) :
@@ -73,6 +99,13 @@ theorem bc_trans {K A B : Type} [CommRing K] [CommRing A] [CommRing B] (i₀ : F
   · simp [bc_fst]
   · rw [Category.assoc, bc_snd, bc_snd, ← Category.assoc, bc_snd, Category.assoc, ← spMap_comp, hk']
 
+/- English proof (translation)
+Set `inl' : A ⟶ CommRingCat.of S` to `CommRingCat.ofHom (inl.hom.codRestrict S hA)`. Set `inr' : B ⟶ CommRingCat.of S` to `CommRingCat.ofHom (inr.hom.codRestrict S hB)`. Establish `w : φ ≫ inl' = ψ ≫ inr'`. Use extensionality with `r`. Conclude with `congrArg (fun g => g.hom r) H.w`.
+
+Establish `hd : H.desc inl' inr' w ≫ CommRingCat.ofHom S.subtype = 𝟙 P`. Apply `H.hom_ext` to reduce the goal to its premises. Rewrite using `[H.inl_desc_assoc, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[H.inr_desc_assoc, Category.comp_id]`.
+
+Both sides reduce to the same expression. Use `congrArg (fun g => g.hom x) hd` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_id, RingHom.id_apply] at this`. Rewrite using `[← this]`. Conclude with `((H.desc inl' inr' w).hom x).2`.
+-/
 theorem mem_of_isPushout {R A B P : CommRingCat.{0}} {φ : R ⟶ A} {ψ : R ⟶ B} {inl : A ⟶ P} {inr : B ⟶ P}
     (H : IsPushout φ ψ inl inr) (S : Subring P) (hA : ∀ a, inl.hom a ∈ S) (hB : ∀ b, inr.hom b ∈ S)
     (x : P) : x ∈ S := by
@@ -90,6 +123,13 @@ theorem mem_of_isPushout {R A B P : CommRingCat.{0}} {φ : R ⟶ A} {ψ : R ⟶ 
   rw [← this]
   exact ((H.desc inl' inr' w).hom x).2
 
+/- English proof (translation)
+Establish `: (Y.basicOpen e : Set Y) = (Y.basicOpen (1 - e) : Set Y)ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Establish `hx : x ∈ Y.basicOpen (e * (1 - e))` using `by rw [Scheme.basicOpen_mul]; exact ⟨h, h'⟩`.
+
+Rewrite `hx` using `[he.mul_one_sub_self, Scheme.basicOpen_zero]`. Conclude with `hx`. Introduce `h`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (Y.presheaf.germ ⊤ x trivial e) with h' | h'` into its components or cases. Conclude with `(Y.mem_basicOpen e x trivial).2 h'`.
+
+Conclude with `absurd ((Y.mem_basicOpen (U := ⊤) (1 - e) x trivial).2 (by rwa [map_sub, map_one])) h`. Rewrite using `[this]`. Conclude with `(Y.basicOpen (1 - e)).isOpen.isClosed_compl`.
+-/
 theorem isClosed_basicOpen_idem {Y : Scheme.{0}} {e : Γ(Y, ⊤)} (he : IsIdempotentElem e) :
     IsClosed (Y.basicOpen e : Set Y) := by
   have : (Y.basicOpen e : Set Y) = (Y.basicOpen (1 - e) : Set Y)ᶜ := by
@@ -114,6 +154,9 @@ noncomputable section
 
 namespace GlobalTheory.GeomConnDesc
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 theorem appTop_comp_apply {X Y Z : Scheme.{0}} (g : X ⟶ Y) (h : Y ⟶ Z) (x : Γ(Z, ⊤)) :
     (g ≫ h).appTop.hom x = g.appTop.hom (h.appTop.hom x) := by
   rw [Scheme.Hom.comp_appTop]; rfl
@@ -122,12 +165,21 @@ variable {F : Type} [Field F] {X : Scheme.{0}} (f : X ⟶ Sp F) {K : Type} [Fiel
 
 def Lc {n : ℕ} (c : Fin n → K) : Subfield K := Subfield.closure (Set.range i₀ ∪ Set.range c)
 
+/- English proof (translation)
+The claim follows from `Subfield.subset_closure (Or.inl ⟨x, rfl⟩)`.
+-/
 theorem mem_Lc {n : ℕ} (c : Fin n → K) (x : F) : i₀ x ∈ Lc i₀ c :=
   Subfield.subset_closure (Or.inl ⟨x, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subfield.subset_closure (Or.inr ⟨k, rfl⟩)`.
+-/
 theorem mem_Lc' {n : ℕ} (c : Fin n → K) (k : Fin n) : c k ∈ Lc i₀ c :=
   Subfield.subset_closure (Or.inr ⟨k, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem hji_L (L : Subfield K) (hL : ∀ x, i₀ x ∈ L) : L.subtype.comp (i₀.codRestrict L hL) = i₀ :=
   RingHom.ext fun _ => rfl
 
@@ -135,6 +187,9 @@ def hcL (L : Subfield K) (hL : ∀ x, i₀ x ∈ L) :
     pullback f (spMap i₀) ⟶ pullback f (spMap (i₀.codRestrict L hL)) :=
   bc f i₀ (i₀.codRestrict L hL) L.subtype (hji_L i₀ L hL)
 
+/- English proof (translation)
+Establish `e : hcL f i₀ L₁ hL₁ = hcL f i₀ L₂ hL₂ ≫ bc f (i₀.codRestrict L₂ hL₂) (i₀.codRestrict L₁ hL₁) (Subfield.inclusion hle) (RingHom.ext fun _ => rfl)` using `bc_trans f i₀ (i₀.codRestrict L₁ hL₁) L₁.subtype (hji_L i₀ L₁ hL₁) (i₀.codRestrict L₂ hL₂) L₂.subtype (hji_L i₀ L₂ hL₂) (Subfield.inclusion hle) (RingHom.ext fun _ => rfl) (RingHom.ext fun _ => rfl)`. Conclude with `⟨_, by rw [e, appTop_comp_apply]⟩`.
+-/
 theorem hcL_factor {L₁ L₂ : Subfield K} (hL₁ : ∀ x, i₀ x ∈ L₁) (hL₂ : ∀ x, i₀ x ∈ L₂) (hle : L₁ ≤ L₂)
     (y : Γ(pullback f (spMap (i₀.codRestrict L₁ hL₁)), ⊤)) :
     ∃ y', (hcL f i₀ L₁ hL₁).appTop.hom y = (hcL f i₀ L₂ hL₂).appTop.hom y' := by
@@ -149,19 +204,39 @@ def hc {n : ℕ} (c : Fin n → K) :
     pullback f (spMap i₀) ⟶ pullback f (spMap (i₀.codRestrict (Lc i₀ c) (mem_Lc i₀ c))) :=
   hcL f i₀ (Lc i₀ c) (mem_Lc i₀ c)
 
+/- English proof (translation)
+The claim follows from `hcL_factor f i₀ (mem_Lc i₀ c) (mem_Lc i₀ d) hle y`.
+-/
 theorem hc_factor {n m : ℕ} (c : Fin n → K) (d : Fin m → K) (hle : Lc i₀ c ≤ Lc i₀ d)
     (y : Γ(pullback f (spMap (i₀.codRestrict (Lc i₀ c) (mem_Lc i₀ c))), ⊤)) :
     ∃ y', (hc f i₀ c).appTop.hom y = (hc f i₀ d).appTop.hom y' :=
   hcL_factor f i₀ (mem_Lc i₀ c) (mem_Lc i₀ d) hle y
 
+/- English proof (translation)
+The claim follows from `Subfield.closure_mono (Set.union_subset_union_right _ (Set.range_subset_iff.2 fun k => ⟨Fin.castAdd m k, Fin.append_left _ _ _⟩))`.
+-/
 theorem Lc_le_append_left {n m : ℕ} (c : Fin n → K) (d : Fin m → K) : Lc i₀ c ≤ Lc i₀ (Fin.append c d) :=
   Subfield.closure_mono (Set.union_subset_union_right _
     (Set.range_subset_iff.2 fun k => ⟨Fin.castAdd m k, Fin.append_left _ _ _⟩))
 
+/- English proof (translation)
+The claim follows from `Subfield.closure_mono (Set.union_subset_union_right _ (Set.range_subset_iff.2 fun k => ⟨Fin.natAdd n k, Fin.append_right _ _ _⟩))`.
+-/
 theorem Lc_le_append_right {n m : ℕ} (c : Fin n → K) (d : Fin m → K) : Lc i₀ d ≤ Lc i₀ (Fin.append c d) :=
   Subfield.closure_mono (Set.union_subset_union_right _
     (Set.range_subset_iff.2 fun k => ⟨Fin.natAdd n k, Fin.append_right _ _ _⟩))
 
+/- English proof (translation)
+Use `haveI : Flat (spMap i₀) := flat_spec_field _`. Set `S : Subring Γ(pullback f (spMap i₀), ⊤)` to `{ carrier := {x | ∃ (n : ℕ) (c : Fin n → K) (y : Γ(pullback f (spMap (i₀.codRestrict (Lc i₀ c) (mem_Lc i₀ c))), ⊤)), (hc f i₀ c).appTop.hom y = x} zero_mem' := ⟨0, Fin.elim0, 0, map_zero _⟩ one_mem' := ⟨0, Fin.elim0, 1, map_one _⟩ neg_mem' := by`. Introduce and unpack `_ ⟨n, c, y, rfl⟩`. Conclude with `⟨n, c, -y, map_neg _ _⟩`. Use the proof step `add_mem' := by`.
+
+Introduce and unpack `_ _ ⟨n, c, y, rfl⟩ ⟨m, d, z, rfl⟩`. Take `⟨y', hy'⟩` from `hc_factor f i₀ c (Fin.append c d) (Lc_le_append_left i₀ c d) y`. Take `⟨z', hz'⟩` from `hc_factor f i₀ d (Fin.append c d) (Lc_le_append_right i₀ c d) z`. Conclude with `⟨_, Fin.append c d, y' + z', by rw [map_add, hy', hz']⟩`. Use the proof step `mul_mem' := by`.
+
+Introduce and unpack `_ _ ⟨n, c, y, rfl⟩ ⟨m, d, z, rfl⟩`. Take `⟨y', hy'⟩` from `hc_factor f i₀ c (Fin.append c d) (Lc_le_append_left i₀ c d) y`. Take `⟨z', hz'⟩` from `hc_factor f i₀ d (Fin.append c d) (Lc_le_append_right i₀ c d) z`. Conclude with `⟨_, Fin.append c d, y' * z', by rw [map_mul, hy', hz']⟩ }`. Establish `H` using `ProperFunctions.isPushout_appTop (IsPullback.of_hasPullback f (spMap i₀))`.
+
+Use `mem_of_isPushout H S (fun a => ?_) (fun b => ?_) x` and prove the remaining obligations. Use `⟨0, Fin.elim0, (pullback.fst f _).appTop.hom a, ?_⟩` and prove the remaining obligations. Rewrite using `[← appTop_comp_apply]`. Conclude with `congrArg (fun g => g.appTop.hom a) (bc_fst f i₀ (i₀.codRestrict (Lc i₀ Fin.elim0) (mem_Lc i₀ Fin.elim0)) (Lc i₀ Fin.elim0).subtype (hji_L i₀ _ (mem_Lc i₀ Fin.elim0)))`. Set `c : Fin 1 → K` to `![(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom b]`.
+
+Use `⟨1, c, (pullback.snd f _).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Lc i₀ c))).inv.hom ⟨c 0, mem_Lc' i₀ c 0⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[← appTop_comp_apply]`. Rewrite using `[show hc f i₀ c ≫ pullback.snd f _ = pullback.snd f (spMap i₀) ≫ spMap (Lc i₀ c).subtype from bc_snd f i₀ (i₀.codRestrict (Lc i₀ c) (mem_Lc i₀ c)) (Lc i₀ c).subtype (hji_L i₀ _ (mem_Lc i₀ c)), appTop_comp_apply, appTop_spMap_inv]`. Express the relevant statement in the definitionally equal form `(pullback.snd f (spMap i₀)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom b)) = _`. Simplify using the standard rewrite rules.
+-/
 theorem gen [QuasiCompact f] [QuasiSeparated f] (x : Γ(pullback f (spMap i₀), ⊤)) :
     ∃ (n : ℕ) (c : Fin n → K) (y : Γ(pullback f (spMap (i₀.codRestrict (Lc i₀ c) (mem_Lc i₀ c))), ⊤)),
       (hc f i₀ c).appTop.hom y = x := by
@@ -199,6 +274,15 @@ theorem gen [QuasiCompact f] [QuasiSeparated f] (x : Γ(pullback f (spMap i₀),
       ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom b)) = _
     simp
 
+/- English proof (translation)
+Introduce `F _ X f _ _ K _ i₀ hyp`. Use `haveI : Flat f := flat_spec_field f`. Use `preconnectedSpace_iff_clopen.2 fun U hU => ?_` and prove the remaining obligations. Take `⟨e, he, hUe⟩` from `GlobalTheory.exists_idempotent_basicOpen_eq_of_isClopen _ U hU`. Take `⟨n, c, y, rfl⟩` from `gen f i₀ e`.
+
+Establish `hinj : Function.Injective (hc f i₀ c).appTop.hom` using `ProperFunctions.injective_appTop_of_isPullback (isPullback_bc f i₀ (i₀.codRestrict (Lc i₀ c) (mem_Lc i₀ c)) (Lc i₀ c).subtype (hji_L i₀ _ (mem_Lc i₀ c))) (appTop_spMap_injective _ (Lc i₀ c).subtype.injective)`. Establish `hy : IsIdempotentElem y` using `hinj (by rw [map_mul]; exact he)`. Establish `hcl : IsClopen (SetLike.coe (Scheme.basicOpen _ y))` using `⟨isClosed_basicOpen_idem hy, (Scheme.basicOpen _ y).isOpen⟩`. Use `haveI := hyp (Lc i₀ c) (mem_Lc i₀ c) n c rfl`. Establish `hU' : U = (hc f i₀ c) ⁻¹' (SetLike.coe (Scheme.basicOpen _ y))`.
+
+Rewrite using `[← hUe, ← Scheme.preimage_basicOpen_top]`. Both sides reduce to the same expression. Break down `isClopen_iff.1 hcl with h0 | h1` into its components or cases. Use `left`. Rewrite using `[hU', h0]`.
+
+Both sides reduce to the same expression. Use `right`. Rewrite using `[hU', h1]`. Both sides reduce to the same expression.
+-/
 theorem preconnectedSpace_of_finGen : ∀ (F : Type) [Field F] (X : Scheme.{0}) (f : X ⟶ Sp F),
     QuasiCompact f → QuasiSeparated f →
       ∀ (K : Type) [Field K] (i₀ : F →+* K),

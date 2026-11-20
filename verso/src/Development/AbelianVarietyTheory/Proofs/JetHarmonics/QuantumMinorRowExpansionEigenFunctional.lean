@@ -10,6 +10,19 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `M Wp _ _ _ _ n t E l a b a' b' a0 b0 p hE ha hb ha' hb' hra ha0 hrb hb0 hab hl`. Establish `hA : Function.Injective (Fin.cons a0 a' : Fin (t + 1) → Fin n)` using `Fin.cons_injective_iff.2 ⟨ha0, ha'⟩`. Establish `hB : Function.Injective (Fin.cons b0 b' : Fin (t + 1) → Fin n)` using `Fin.cons_injective_iff.2 ⟨hb0, hb'⟩`. Establish `hrB : Set.range b = Set.range (Fin.cons b0 b' : Fin (t + 1) → Fin n)`. Rewrite using `[Fin.range_cons]`.
+
+Conclude with `hrb`. Take `⟨e, he, hq⟩` from `GlobalTheory.T.quantumMinor_eq_unit_smul_of_range_eq (Module.End ℂ M) n (t + 1) E a (Fin.cons a0 a') b (Fin.cons b0 b') hE ha hA hb hB (by rw [Fin.range_cons]; exact hra) hrB`. Use `⟨e, he, fun u v => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (j : Fin (t + 1)) (w : ℂ) (x : M), l (Formalism.REAL.Tm E w a0 ((Fin.cons b0 b' : Fin (t + 1) → Fin n) j) x) = (if j = 0 then p else 0) • l x`. Introduce `j w x`.
+
+Establish `hmem : (Fin.cons b0 b' : Fin (t + 1) → Fin n) j ∈ Set.range b`. Rewrite using `[hrB]`. Conclude with `⟨j, rfl⟩`. Establish `hne : a0 ≠ (Fin.cons b0 b' : Fin (t + 1) → Fin n) j` using `fun h => hab (h ▸ hmem)`. Take `⟨k, hk⟩` from `hmem`.
+
+Establish `hiff : b k = b0 ↔ j = 0`. Rewrite using `[hk]`. Conclude with `⟨fun h => hB (by simpa using h), fun h => by subst h; rfl⟩`. Unfold `Formalism.REAL.Tm`. Rewrite using `[if_neg hne, zero_add, ← hk, hl k x]`.
+
+Simplify using `only [hiff]`. Rewrite using `[hq u, quantum_minor_row_expansion.1 (Module.End ℂ M) n t E hE, LinearMap.smul_apply, map_smul, LinearMap.sum_apply, map_sum, Fin.sum_univ_succ, Finset.sum_eq_zero, add_zero, mul_smul]`. Use `congr 1`. Establish `h0` using `key 0`. Simplify using `only [Fin.cons_zero, if_true] at h0`.
+
+Simplify using `only [Fin.val_zero, pow_zero, Int.cast_one, one_mul, Module.End.mul_apply, Fin.cons_zero, h0, Fin.succAbove_zero]`. Both sides reduce to the same expression. Introduce `j _`. Rewrite using `[← zsmul_eq_mul, LinearMap.smul_apply, map_zsmul, Module.End.mul_apply, Fin.cons_zero, key, if_neg (Fin.succ_ne_zero j), zero_smul, smul_zero]`.
+-/
 theorem qminor_row_step_under_functional : ∀ (M Wp : Type) [AddCommGroup M] [Module ℂ M] [AddCommGroup Wp] [Module ℂ Wp] (n t : ℕ) (E : Fin n → Fin n → Module.End ℂ M) (l : M →ₗ[ℂ] Wp) (a b : Fin (t + 1) → Fin n) (a' b' : Fin t → Fin n) (a0 b0 : Fin n) (p : ℂ), Formalism.REAL.GlRel E → Function.Injective a → Function.Injective b → Function.Injective a' → Function.Injective b' → Set.range a = insert a0 (Set.range a') → a0 ∉ Set.range a' → Set.range b = insert b0 (Set.range b') → b0 ∉ Set.range b' → a0 ∉ Set.range b → (∀ j v, l (E a0 (b j) v) = (if b j = b0 then p else 0) • l v) → ∃ e : ℂ, ‖e‖ = 1 ∧ ∀ u v, l (Formalism.REAL.qminor E a b u v) = (e * p) • l (Formalism.REAL.qminor E a' b' u v) := by
   intro M Wp _ _ _ _ n t E l a b a' b' a0 b0 p hE ha hb ha' hb' hra ha0 hrb hb0 hab hl
   have hA : Function.Injective (Fin.cons a0 a' : Fin (t + 1) → Fin n) :=

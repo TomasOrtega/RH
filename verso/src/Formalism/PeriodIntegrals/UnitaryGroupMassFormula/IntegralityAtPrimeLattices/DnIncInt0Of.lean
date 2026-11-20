@@ -28,6 +28,11 @@ def DnLatLoc0 (T : Forms0 D u) : Prop :=
             (if τ = (D.fm u).tauOf w v then atInf (embT D) (B' : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ
               else atInf (embT D) (B : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ))
 
+/- English proof (translation)
+Set `N : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ` to `fun τ => M τ * atInf (embT D) (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ * Ki τ`. Establish `hMK : (fun τ => M τ * atInf (embT D) (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ) = fun τ => N τ * Kt τ`. Use function extensionality and compare the values at `τ`. Simplify using `only [N, Matrix.mul_assoc, hK τ, Matrix.mul_one]`. Use `⟨MvPolynomial.C (∏ τ, (N τ).det ^ shiftOf (lamT u 0) τ) * subP N P, ?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Use `bwG_intSpan_allSubP D w _ N _ ?_ P hP` and prove the remaining obligations. Introduce `τ f hf`. Take `⟨N', h1, h2, h3⟩` from `hN τ`. Conclude with `local_GL_stabilises_lattice D w _ _ _ _ N' h1 h2 h3 f hf`. Rewrite using `[hPe, Equiv.apply_symm_apply, PI.UnitaryGroupMassFormula.IAT.fnOf_tr, hMK, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.fnOf_mul]`.
+-/
 theorem tr_int (w : D.what₂.places.Pl) (T : Forms0 D u) (h : (D.mem u).C.Y 0 → ℂ)
     (g : GL (Fin (D.R.N 0)) D.host.E) (hg : g ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
     (M : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ)
@@ -51,6 +56,11 @@ theorem tr_int (w : D.what₂.places.Pl) (T : Forms0 D u) (h : (D.mem u).C.Y 0 �
     exact local_GL_stabilises_lattice D w _ _ _ _ N' h1 h2 h3 f hf
   · rw [hPe, Equiv.apply_symm_apply, PI.UnitaryGroupMassFormula.IAT.fnOf_tr, hMK, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.fnOf_mul]
 
+/- English proof (translation)
+Proceed by induction on `hQ using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨r', f, hr', hf, rfl⟩` from `hp`. Conclude with `AddSubgroup.subset_closure ⟨r * r', f, mul_mem hr hr', hf, by rw [smul_smul, map_mul]⟩`. Consider the case `zero => simp`.
+
+Consider the case `add p q _ _ hp hq => rw [smul_add]`. Conclude with `add_mem hp hq`. Consider the case `neg p _ hp => rw [smul_neg]`. Conclude with `neg_mem hp`.
+-/
 private theorem embLL_smul_mem_intSpan_of_mem_intW (w : D.what₂.places.Pl) {n : ℕ} (lam : D.what₂.Tau → DomWeight n)
     (r : D.what₂.LL) (hr : r ∈ intW D.what₂.places w) {Q : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ}
     (hQ : Q ∈ Formalism.L2.Forms.IntSpan D w lam) : D.what₂.embLL r • Q ∈ Formalism.L2.Forms.IntSpan D w lam := by
@@ -62,6 +72,13 @@ private theorem embLL_smul_mem_intSpan_of_mem_intW (w : D.what₂.places.Pl) {n 
   | add p q _ _ hp hq => rw [smul_add]; exact add_mem hp hq
   | neg p _ hp => rw [smul_neg]; exact neg_mem hp
 
+/- English proof (translation)
+Introduce `w hw hseen v c g hg h hh B B' hB hB'`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hg`. Take `⟨γ, η, κ, hη, hrel, hloc, -, htr⟩` from `T.down_natural_level_zero v c g hg0`.
+
+Take `⟨⟨B₂, hB₂⟩, -⟩` from `bases0 T ((D.fm u).dn 0 v c g)`. Take `⟨P, hP, hPe⟩` from `hh B₂ hB₂`. Apply the tactic sequence `obtain ⟨Q, hQ, hQe⟩ := tr_int w T h γ.1⁻¹ ((UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))).inv_mem γ.2) _ P hP hPe (fun τ => if τ = (D.fm u).tauOf w v then atInf (embT D) (B'⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1 τ else atInf (embT D) (B⁻¹ : GL (Fin (D.R.N 0)) D.ho …`. Take `⟨r, hr, hre⟩` from `chi_inv_int T hC w κ`. Use `⟨D.what₂.embLL r • Q, embLL_smul_mem_intSpan_of_mem_intW w _ r hr hQ, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[htr h z (T.val0.eY.symm (frameTranslate (embT D) (fun τ x => embedding_conj_compat D τ x) γ.1⁻¹ ((UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))).inv_mem γ.2) (T.val0.eY z))) ?_, hQe, LinearMap.map_smul, Pi.smul_apply, smul_eq_mul, hre]`. Introduce `τ`. Rewrite using `[Equiv.apply_symm_apply]`. Use `show _ = _ * (_ * _)`. Rewrite using `[← Matrix.mul_assoc, at_infinity_mul_inv, Matrix.one_mul]`.
+-/
 theorem dnIncInt0_of (T : Forms0 D u) (hC : LocalLatticeBases.ChiFin0 T) (hL : DnLatLoc0 T) : DnIncInt0 T := by
   intro w hw hseen v c g hg h hh B B' hB hB'
   have hg0 : g ≠ 0 := by

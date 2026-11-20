@@ -80,8 +80,14 @@ instance : SetLike.GradedMonoid M.sPart where
 
 def SS : Subalgebra c.O M.S := gradedSub M.sPart
 
+/- English proof (translation)
+The claim follows from `M.hom g i j`.
+-/
 theorem entry_mem (g : G ℚ Ω) (i j : Fin 4) : M.ru.hom g i j ∈ M.sPart (wt i j) := M.hom g i j
 
+/- English proof (translation)
+The claim follows from `le_iSup M.sPart j hx`.
+-/
 theorem sPart_le {j : ℤ × ℤ} {x : M.S} (hx : x ∈ M.sPart j) : x ∈ M.SS := le_iSup M.sPart j hx
 
 def ent (g : G ℚ Ω) (i j : Fin 4) : M.SS := ⟨M.ru.hom g i j, M.sPart_le (M.entry_mem g i j)⟩
@@ -117,6 +123,9 @@ instance : SetLike.GradedMonoid M.gr where
   one_mem := (SetLike.GradedOne.one_mem : (1 : M.R) ∈ M.aPart 0)
   mul_mem _ _ _ _ ha hb := (SetLike.GradedMul.mul_mem ha hb : _ ∈ M.aPart _)
 
+/- English proof (translation)
+The claim follows from `le_iSup M.aPart n hx`.
+-/
 theorem aPart_le {n : ℤ} {x : M.R} (hx : x ∈ M.aPart n) : x ∈ M.A := le_iSup M.aPart n hx
 
 def x0 : M.A →ₐ[c.O] c.O := (M.W.origin M.org).comp M.A.val
@@ -133,6 +142,9 @@ def eqns : Eqns M.gr M.x0 M.r 0 M.r' 0 M.m where
   hE' i := i.elim0
   hZ i := M.hZ i
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `f`. Use `Submodule.iSup_induction M.aPart (motive := fun f => M.π f ∈ M.SS) hf (fun n a ha => ?_) (by simp) (fun a b ha hb => by rw [map_add]; exact add_mem ha hb)` and prove the remaining obligations. Conclude with `M.sPart_le (j := (0, n)) ⟨a, ha, rfl⟩`.
+-/
 theorem π_mem (f : M.A) : M.π f ∈ M.SS := by
   obtain ⟨f, hf⟩ := f
   refine Submodule.iSup_induction M.aPart (motive := fun f => M.π f ∈ M.SS) hf (fun n a ha => ?_) (by simp)

@@ -10,6 +10,9 @@ section
 open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep Matrix
 section
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
+/- English proof (translation)
+Use `Submodule.mem_comap.1 ((iSup_le (fun f => ?_) : _ ≤ Submodule.comap T _) hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem ⟨T ∘ₗ f.1, fun g v => by simp only [LinearMap.comp_apply, f.2, hT]⟩ ⟨v, rfl⟩`.
+-/
 private theorem iso_comm (σ : Representation ℂ G W) (ρ : Representation ℂ G V) (T : Module.End ℂ V)
     (hT : ∀ g x, T (ρ g x) = ρ g (T x)) {x : V}
     (hx : x ∈ ⨆ f : {f : W →ₗ[ℂ] V // ∀ g v, f (σ g v) = ρ g (f v)}, LinearMap.range f.1) :
@@ -17,6 +20,9 @@ private theorem iso_comm (σ : Representation ℂ G W) (ρ : Representation ℂ 
   refine Submodule.mem_comap.1 ((iSup_le (fun f => ?_) : _ ≤ Submodule.comap T _) hx)
   rintro _ ⟨v, rfl⟩
   exact Submodule.mem_iSup_of_mem ⟨T ∘ₗ f.1, fun g v => by simp only [LinearMap.comp_apply, f.2, hT]⟩ ⟨v, rfl⟩
+/- English proof (translation)
+Use `Submodule.mem_comap.1 ((iSup_le (fun f => ?_) : _ ≤ Submodule.comap (ρ g) _) hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem f ⟨σ g v, f.2 g v⟩`.
+-/
 private theorem iso_act (σ : Representation ℂ G W) (ρ : Representation ℂ G V) (g : G) {x : V}
     (hx : x ∈ ⨆ f : {f : W →ₗ[ℂ] V // ∀ g v, f (σ g v) = ρ g (f v)}, LinearMap.range f.1) :
     ρ g x ∈ ⨆ f : {f : W →ₗ[ℂ] V // ∀ g v, f (σ g v) = ρ g (f v)}, LinearMap.range f.1 := by
@@ -24,6 +30,19 @@ private theorem iso_act (σ : Representation ℂ G W) (ρ : Representation ℂ G
   rintro _ ⟨v, rfl⟩
   exact Submodule.mem_iSup_of_mem f ⟨σ g v, f.2 g v⟩
 end
+/- English proof (translation)
+Introduce `P E _ _ _ a π w`. Use `⟨(LocEx.exists_isLocComp P.litN.aut.fin E a π w).imp fun _ h => h.1, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `⟨Submodule.nontrivial_iff_ne_bot.2 π.ne_bot, ?_⟩` and prove the remaining obligations. Take `⟨f, h0, hf⟩` from `hσ`. Express the relevant statement in the definitionally equal form `⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)}, LinearMap.range f.1 = ⊤`.
+
+Establish `hi` using `Submodule.map_injective_of_injective π.V.injective_subtype`. Establish `hop : ∀ (o : Op E a) (x : π.V), x ∈ (⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)}, LinearMap.range f.1) → π.op o x ∈ ⨆ f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)}, LinearMap.range f.1`. Introduce `o x hx`. Consider the cases of `o with`. Consider the case `fin k`.
+
+Establish `h1` using `iso_act σ.ρ (π.locRep w) (GeneralLinearGroup.map (pLoc E w) k) (iso_comm σ.ρ (π.locRep w) (π.finPart ((locGL E a w (GeneralLinearGroup.map (pLoc E w) k))⁻¹ * k)) (fun g' y => by`. Simplify using `only [CuspSub.locRep, MonoidHom.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, LocUniq.comm_locGL w (LocEx.map_pLoc_inv_mul w k)]) hx)`. Establish `e : π.locRep w (GeneralLinearGroup.map (pLoc E w) k) (π.finPart ((locGL E a w (GeneralLinearGroup.map (pLoc E w) k))⁻¹ * k) x) = π.op (.fin k) x`. Rewrite using `[CuspSub.locRep, MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Consider the case `cpt k`. Use `iso_comm _ _ _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(rt E a (infGL E a (Unitary.toUnits k)) * rt E a (finGL E a (locGL E a w g))) y.1 = (rt E a (finGL E a (locGL E a w g)) * rt E a (infGL E a (Unitary.toUnits k))) y.1`.
+
+Rewrite using `[← map_mul, ← map_mul, infGL_comm]`. Consider the case `lie X`. Use `iso_comm _ _ _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (lie_rt_fin X (locGL E a w g)) y.1`. Break down `π.irred (Submodule.map π.V.subtype _) (Submodule.map_subtype_le _ _) (by` into its components or cases.
+
+Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, hop o x hx, rfl⟩) with h1 | h1`. Establish `h2` using `hi (h1.trans (Submodule.map_bot _).symm)`. Conclude with `absurd (LinearMap.range_eq_bot.1 (le_bot_iff.1 (h2 ▸ le_iSup (fun f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.locRep w g (f v)} => LinearMap.range f.1) ⟨f, hf⟩))) h0`. Conclude with `hi (h1.trans (Submodule.map_subtype_top _).symm)`.
+-/
 theorem UpperTheory.V.Af.local_comp_complex_of_printed_results :
     _root_.UpperTheory.V.Af.Hypotheses' → UpperTheory.V.Af.LocCompC := by
   intro P E _ _ _ a π w

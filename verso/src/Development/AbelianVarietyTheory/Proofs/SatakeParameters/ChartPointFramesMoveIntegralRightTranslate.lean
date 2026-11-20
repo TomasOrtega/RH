@@ -13,6 +13,17 @@ namespace GlobalTheory.FrameShift
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨g0, hg0⟩` from `GlobalTheory.TwU.Approx.exists_nearAt D.host.F D.host.E n (d + 1) (seamP s P) k`. Use `set h := seamLE s g0 with hhdef`. Establish `hh : seamGL s h = g0` using `seamGL_seamLE s g0`. Establish `hC : CongAt (F` using `D.host.F) (seamP s P) (d + 1) (k⁻¹ * ratA D.host.F (seamGL s h)) := by`. Rewrite using `[hh]`.
+
+Conclude with `hg0`. Establish `h0 : CongAt (F` using `D.host.F) (seamP s P) 0 (ratA D.host.F (seamGL s h)) := by`. Establish `e : ratA D.host.F (seamGL s h) = k * (k⁻¹ * ratA D.host.F (seamGL s h))` using `by group`. Rewrite using `[e]`. Conclude with `GlobalTheory.CplPt.congAt_mul 0 hk (GlobalTheory.FrameMove.congAt_mono (Nat.zero_le _) hC)`.
+
+Establish `h0' : CongAt (F` using `D.host.F) (seamP s P) 0 (ratA D.host.F (seamGL s h⁻¹)) := by`. Rewrite using `[map_inv, map_inv]`. Establish `e : (ratA D.host.F (seamGL s h))⁻¹ = (k⁻¹ * ratA D.host.F (seamGL s h))⁻¹ * k⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `GlobalTheory.CplPt.congAt_mul 0 (GlobalTheory.FrameMove.congAt_mono (Nat.zero_le _) (GlobalTheory.LevFrame.congAt_inv _ _ _ _ _ _ (Nat.succ_pos d) hC)) hk'`.
+
+Establish `l1` using `GlobalTheory.TwU.MidIndep.congAt_local s P 0 n h h0`. Establish `l2` using `GlobalTheory.TwU.MidIndep.congAt_local s P 0 n h⁻¹ h0'`. Establish `hmem : h ∈ GLint X.E n P`. Use `fun w => ⟨fun hw => ?_, fun hw => GlobalTheory.FrameMove.mem_of_local P 0 h l1 w hw⟩` and prove the remaining obligations. Use `GlobalTheory.FrameMove.mem_of_local P 0 h⁻¹ l2 _ hw` as an intermediate fact.
+
+Rewrite `this` using `[show (h⁻¹ : Sp X.E n ≃ₗ[X.E] Sp X.E n) (h w) = w from h.symm_apply_apply w]`. Then use the resulting hypothesis. Use `⟨⟨h, hmem⟩, ?_⟩` and prove the remaining obligations. Use `show CongAt _ d (k⁻¹ * ratA D.host.F (seamGL s h))`. Conclude with `GlobalTheory.FrameMove.congAt_mono (Nat.le_succ d) hC`.
+-/
 theorem exists_glint_nearAt {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) (d : ℕ)
     (k : GL (Fin n) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (hk : CongAt (seamP s P) 0 k) (hk' : CongAt (seamP s P) 0 k⁻¹) :
@@ -46,6 +57,15 @@ end GlobalTheory.FrameShift
 
 namespace GlobalTheory.FrameShift
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie i p y k hk hy`. Use `choose g hg using fun P : SB t μ => exists_glint_nearAt t.seam P.1 ((t.cst μ).D P) (k P) (hk P).1 (hk P).2`. Take `⟨q, κ, hN, hf, hfr, hκ⟩` from `GlobalTheory.CplPt.exists_pt_frames p g`. Use `⟨q, hN, hf, fun P => ?_⟩` and prove the remaining obligations. Establish `base` using `GlobalTheory.CplPt.nearAt_mul_int _ (hy P) (hg P) (GlobalTheory.CplPt.seamGL_int t.seam (g P))`.
+
+Rewrite using `[hfr P, map_mul]`. Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `hD : (t.cst μ).D P = 1` using `(t.idx_ok μ).depthG P hP`. Establish `hq` using `(GlobalTheory.ColPeriod.levelPrimes t.X t.Pr t.sel t.S (t.tup μ) hPin.fields.ok t.pr_ok hPin.sel P).1.2`. Establish `e : ((κ P)⁻¹).1 = (g P).1 * ((g P)⁻¹ * (κ P)⁻¹).1`.
+
+Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel_left]`. Rewrite using `[e, map_mul, ← mul_assoc]`. Use `GlobalTheory.CplPt.nearAt_mul _ base ?_` and prove the remaining obligations. Rewrite using `[hD]`. Conclude with `GlobalTheory.CplPt.congAt_one_of_redGL t.seam hq ((g P)⁻¹ * (κ P)⁻¹) (hκ P).1`.
+
+Rewrite using `[(hκ P).2 hP]`. Conclude with `base`.
+-/
 theorem exists_pt_mul : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (i : ℕ) (p : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) i) (y k : SB t μ → GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)), (∀ P : SB t μ, CongAt (seamP t.seam P.1) 0 (k P) ∧ CongAt (seamP t.seam P.1) 0 (k P)⁻¹) → (∀ P : SB t μ, NearAt (seamP t.seam P.1) ((t.cst μ).D P) (y P) (seamGL t.seam (frsF t.sel (t.tup μ) p P))) → ∃ p' : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) i, p'.deco.1.N = p.deco.1.N ∧ p'.deco.1.f = p.deco.1.f ∧ ∀ P : SB t μ, NearAt (seamP t.seam P.1) ((t.cst μ).D P) (y P * k P) (seamGL t.seam (frsF t.sel (t.tup μ) p' P))) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie i p y k hk hy
   choose g hg using fun P : SB t μ => exists_glint_nearAt t.seam P.1 ((t.cst μ).D P) (k P) (hk P).1 (hk P).2

@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.HTObjMap
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S₀ A₀ _ P₀ hP₀ T Z t₁ t₂ o u g πZ z φo φ₂o φu φ₂u ψ ho sqo io hu squ iu hz hψ hw hact heta`. Establish `cart : IsGrpPullback o.A u.A z ψ` using `IsGrpPullback.cancel hu (by rw [hz, hψ]; exact ho) hw`. Establish `wc : ((fst o.A o.A).left ≫ ψ) ≫ u.A.hom = ((snd o.A o.A).left ≫ ψ) ≫ u.A.hom`. Rewrite using `[Category.assoc, Category.assoc, hw, ← Category.assoc, ← Category.assoc, Over.w (fst o.A o.A), Over.w (snd o.A o.A)]`. Set `φ₂ : (G2 o.A).left ⟶ (G2 u.A).left` to `pullback.lift ((fst o.A o.A).left ≫ ψ) ((snd o.A o.A).left ≫ ψ) wc`.
+
+Establish `s₁ : φ₂ ≫ (fst u.A u.A).left = (fst o.A o.A).left ≫ ψ` using `pullback.lift_fst _ _ _`. Establish `s₂ : φ₂ ≫ (snd u.A u.A).left = (snd o.A o.A).left ≫ ψ` using `pullback.lift_snd _ _ _`. Establish `sq : IsSquare ψ φ₂` using `⟨s₁, s₂⟩`. Establish `a₁ : (φ₂ ≫ φ₂u) ≫ (fst A₀ A₀).left = φ₂o ≫ (fst A₀ A₀).left`. Rewrite using `[Category.assoc, squ.1, ← Category.assoc, s₁, Category.assoc, hψ, sqo.1]`.
+
+Establish `a₂ : (φ₂ ≫ φ₂u) ≫ (snd A₀ A₀).left = φ₂o ≫ (snd A₀ A₀).left`. Rewrite using `[Category.assoc, squ.2, ← Category.assoc, s₂, Category.assoc, hψ, sqo.2]`. Establish `e₂ : φ₂ ≫ φ₂u = φ₂o` using `Over.tensorObj_ext _ _ a₁ a₂`. Establish `i₂ : LBIso (P₀.pull φ₂o) (u.P.pull φ₂)` using `LBIso.chartPull (chartPullSame P₀ _ _ _ φ₂ (fun _ => e₂.symm)) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull u.P φ₂ φ₂ rfl) (LBIso.symm iu)`. Establish `pol : LBIso o.P (u.P.pull φ₂)` using `LBIso.trans o.isLB (pull_isLB hP₀ _) (pull_isLB u.isLB _) io i₂`.
+
+Conclude with `⟨{ φ := ψ, φ₂ := φ₂, cart := cart, sq := sq, act := hact, pol := pol, eta := heta }, rfl⟩`.
+-/
 theorem exists_objMap_of_common_pullback : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S₀ : Scheme.{0}) (A₀ : Over S₀) [GrpObj A₀] (P₀ : LB (G2 A₀).left), P₀.IsLB → ∀ (T Z : Scheme.{0}) (t₁ : T ⟶ Sp R) (t₂ : Z ⟶ Sp R) (o : Obj b N t₁) (u : Obj b N t₂) (g : T ⟶ S₀) (πZ : Z ⟶ S₀) (z : T ⟶ Z) (φo : o.A.left ⟶ A₀.left) (φ₂o : (G2 o.A).left ⟶ (G2 A₀).left) (φu : u.A.left ⟶ A₀.left) (φ₂u : (G2 u.A).left ⟶ (G2 A₀).left) (ψ : o.A.left ⟶ u.A.left), IsGrpPullback o.A A₀ g φo → IsSquare φo φ₂o → LBIso o.P (P₀.pull φ₂o) → IsGrpPullback u.A A₀ πZ φu → IsSquare φu φ₂u → LBIso u.P (P₀.pull φ₂u) → z ≫ πZ = g → ψ ≫ φu = φo → ψ ≫ u.A.hom = o.A.hom ≫ z → (∀ a : D.O, (o.act.act a).left ≫ ψ = ψ ≫ (u.act.act a).left) → (∀ y, (o.eta y).left ≫ ψ = z ≫ (u.eta y).left) → ∃ m : ObjMap o u z, m.φ = ψ := by
   intro p _ D R _ b N S₀ A₀ _ P₀ hP₀ T Z t₁ t₂ o u g πZ z φo φ₂o φu φ₂u ψ ho sqo io hu squ iu hz hψ hw hact heta
   have cart : IsGrpPullback o.A u.A z ψ := IsGrpPullback.cancel hu (by rw [hz, hψ]; exact ho) hw

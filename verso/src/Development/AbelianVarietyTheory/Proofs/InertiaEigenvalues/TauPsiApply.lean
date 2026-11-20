@@ -24,6 +24,9 @@ def tauPsi (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE 
       obtain ⟨ρ, h⟩ := (hΨ τ.1).1 τ.2
       exact ⟨ρ, Subtype.ext h.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tauPsi_apply (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (ρ : D.what₂.Tau) :
     ((tauPsi hΨ ρ : {τ : D.host.E →+* ℂ // InPsi H τ}) : D.host.E →+* ℂ) = tauE D ρ := rfl
 

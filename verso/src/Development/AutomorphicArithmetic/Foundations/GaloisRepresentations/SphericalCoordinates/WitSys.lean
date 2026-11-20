@@ -14,27 +14,42 @@ namespace UpperTheory.Gal.W2.Wit
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `only [actQ, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression.
+-/
 theorem actQ_tmul {D : Datum p} (b : D.O) (q : ℚ) (x : D.La) : actQ D b (q ⊗ₜ x) = q ⊗ₜ (b • x) := by
   simp only [actQ, LinearMap.baseChange_tmul]; rfl
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q x => rw [actQ_tmul, one_smul]`. Consider the case `add u v hu hv => rw [map_add, hu, hv]`.
+-/
 theorem actQ_one (D : Datum p) (w : VQ D) : actQ D 1 w = w := by
   induction w using TensorProduct.induction_on with
   | zero => simp
   | tmul q x => rw [actQ_tmul, one_smul]
   | add u v hu hv => rw [map_add, hu, hv]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q x => rw [actQ_tmul, actQ_tmul, actQ_tmul, mul_smul]`. Consider the case `add u v hu hv => rw [map_add, hu, hv, map_add, map_add]`.
+-/
 theorem actQ_mul (D : Datum p) (a b : D.O) (w : VQ D) : actQ D (a * b) w = actQ D a (actQ D b w) := by
   induction w using TensorProduct.induction_on with
   | zero => simp
   | tmul q x => rw [actQ_tmul, actQ_tmul, actQ_tmul, mul_smul]
   | add u v hu hv => rw [map_add, hu, hv, map_add, map_add]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q x => rw [actQ_tmul, actQ_tmul, actQ_tmul, add_smul, TensorProduct.tmul_add]`. Consider the case `add u v hu hv => rw [map_add, hu, hv, map_add, map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem actQ_add (D : Datum p) (a b : D.O) (w : VQ D) : actQ D (a + b) w = actQ D a w + actQ D b w := by
   induction w using TensorProduct.induction_on with
   | zero => simp
   | tmul q x => rw [actQ_tmul, actQ_tmul, actQ_tmul, add_smul, TensorProduct.tmul_add]
   | add u v hu hv => rw [map_add, hu, hv, map_add, map_add]; abel
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul q x => rw [actQ_tmul, zero_smul, TensorProduct.tmul_zero]`. Consider the case `add u v hu hv => rw [map_add, hu, hv, add_zero]`.
+-/
 theorem actQ_zero (D : Datum p) (w : VQ D) : actQ D 0 w = 0 := by
   induction w using TensorProduct.induction_on with
   | zero => simp
@@ -69,8 +84,14 @@ variable {D : Datum p} (X : Sys D)
 def r : VQ D →ₗ[ℚ] AfP p ⊗[ℚ] VQ D :=
   (X.T.restrictScalars ℚ) ∘ₗ (TensorProduct.mk ℚ (AfP p) (VQ D) 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem r_apply (w : VQ D) : X.r w = X.T ((1 : AfP p) ⊗ₜ w) := rfl
 
+/- English proof (translation)
+Rewrite using `[r_apply, r_apply]`. Establish `h` using `LinearMap.congr_fun (X.comm c) ((1 : AfP p) ⊗ₜ w)`. Rewrite `h` using `[Module.End.mul_apply, Module.End.mul_apply, LinearMap.baseChange_tmul]`. Conclude with `h`.
+-/
 theorem r_act (c : D.O) (w : VQ D) : X.r (actQ D c w) = (actQ D c).baseChange (AfP p) (X.r w) := by
   rw [r_apply, r_apply]
   have h := LinearMap.congr_fun (X.comm c) ((1 : AfP p) ⊗ₜ w)
@@ -83,8 +104,14 @@ def lat : AddSubgroup (VQ D) where
   add_mem' := fun h h' => ⟨add_mem h.1 h'.1, by rw [map_add]; exact add_mem h.2 h'.2⟩
   neg_mem' := fun h => ⟨neg_mem h.1, by rw [map_neg]; exact neg_mem h.2⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lat {w : VQ D} : w ∈ X.lat ↔ w ∈ X.M ∧ X.r w ∈ LaHat D := Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.hM.1 c w hw.1, by rw [r_act]; exact GlobalTheory.AdelicSim.bc_mem D c hw.2⟩`.
+-/
 theorem act_mem (c : D.O) {w : VQ D} (hw : w ∈ X.lat) : actQ D c w ∈ X.lat :=
   ⟨X.hM.1 c w hw.1, by rw [r_act]; exact GlobalTheory.AdelicSim.bc_mem D c hw.2⟩
 
@@ -97,6 +124,9 @@ instance : Module D.O X.lat where
   add_smul a b w := Subtype.ext (actQ_add D a b w.1)
   zero_smul w := Subtype.ext (actQ_zero D w.1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul (c : D.O) (w : X.lat) : ((c • w : X.lat) : VQ D) = actQ D c w := rfl
 
 end Sys

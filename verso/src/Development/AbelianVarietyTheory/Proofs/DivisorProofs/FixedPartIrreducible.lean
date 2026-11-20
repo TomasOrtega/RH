@@ -26,6 +26,45 @@ open GlobalTheory.RealLift GlobalTheory.RealLift.Main Formalism.BasicNotions.TH
 
 namespace GlobalTheory.KFixIrr
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT m hm H hH hK`. Take `⟨hb, hg, hc, hw, hw'⟩` from `hT`. Use `choose A hA hAθ using fun w => i_frameex _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`. Use `choose C hC hCθ using fun w => i_frameex _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V.J).map (piInf (B.emb w))) (A w)` using `fun w => by`.
+
+Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`.
+
+Establish `fr : Framed B.emb (incM F G.V.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Establish `hvl` using `i_vacline i_derex`. Establish `hfe` using `i_fockex i_derex`. Establish `hsec` using `i_liesecond hKP.base i_derex hfe hvl (i_liescalar hKP.base i_derex hvl)`. Establish `hfst` using `i_liefirst hsec`.
+
+Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `i_polrange i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 Complex.I A C Φ _ X.β B.mβ hb.cm hb.std fr hΦ hwp.1 hc.expβ`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`.
+
+Establish `hW1` using `hfst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std fr hΦ hd hB1 (hasExp_div B.emb hc.expβ hc.expα)`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Set `c : InfinitePlace F → ℚ` to `fun w => ((B.mα w - B.mβ w : ℤ) : ℚ) / 2`. Establish `ec : (fun w => -((c w : ℚ) : ℂ)) = fun w => ((B.mβ w - B.mα w : ℤ) : ℂ) / 2`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [c]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hW1' : ActsBy B.emb A (om.comp (MonoidHom.inl _ _)) Φ (fockAct1 _ _ _ _) (fun w => -((c w : ℚ) : ℂ))`. Rewrite using `[ec]`.
+
+Conclude with `hW1`. Establish `hinj : Function.Injective Φ` using `hΦ.1`. Establish `L1` using `GlobalTheory.T.archimedean_theta_polynomial_lift_exists i_actslaws i_derex hvl F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `L2` using `GlobalTheory.T.archimedean_polynomial_tensor_character i_actslaws i_lineex (i_kline i_lineex) F E σ B _ _ _ _ _ _ G.V G.W om A Φ c hb.cm hA1 hAθ hinj hW1' hadm`. Establish `key : ∀ k, fixPart B G.M om k = (GlobalTheory.KFixIrr.chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ GlobalTheory.KFixIrr.degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) k).map Φ`.
+
+Introduce `k`. Establish `hs : {f | f ∈ fockDeg G.M B.ψ B.emb k ∧ IsKFix B om f} = Φ '' ((GlobalTheory.KFixIrr.chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ GlobalTheory.KFixIrr.degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) k : Submodule ℂ _) : S …`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hfix⟩`.
+
+Rewrite `hf` using `[L1 k]`. Take `⟨T, hT, rfl⟩` from `hf`. Conclude with `⟨T, ⟨(L2 T).1 hfix, hT⟩, rfl⟩`. Introduce and unpack `⟨T, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨by rw [L1 k]; exact ⟨T, h2, rfl⟩, (L2 T).2 h1⟩`.
+
+Rewrite using `[fixPart, hs, Submodule.span_image, Submodule.span_eq]`. Establish `bot : ∀ k < fixDeg B G.M om, GlobalTheory.KFixIrr.chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ GlobalTheory.KFixIrr.degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) k = ⊥`. Introduce `k hk`. Establish `h0` using `fixPart_eq_bot_of_lt B G.M om hk`. Rewrite `h0` using `[key]`.
+
+Rewrite using `[← Submodule.comap_map_eq_of_injective hinj (GlobalTheory.KFixIrr.chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ GlobalTheory.KFixIrr.degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) k), h0, Submodule.comap_bot, LinearMap.ke …`. Set `N` to `H.comap Φ`. Establish `hHpol : H ≤ LinearMap.range Φ` using `hr ▸ hH.trans (fixPart_le_pol B G.M om m)`. Establish `hHN : H = N.map Φ` using `(Submodule.map_comap_eq_of_le hHpol).symm`. Establish `hNle : N ≤ GlobalTheory.KFixIrr.chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ GlobalTheory.KFixIrr.degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) m`.
+
+Introduce `T hT`. Establish `h1 : Φ T ∈ (GlobalTheory.KFixIrr.chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ GlobalTheory.KFixIrr.degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) m).map Φ` using `key m ▸ hH hT`. Take `⟨T', hT', e⟩` from `h1`. Conclude with `hinj e ▸ hT'`. Establish `hNst` using `GlobalTheory.T.archimedean_polynomial_tensor_weight i_actslaws i_lineex F E σ B _ _ _ _ _ _ G.V G.W om C Φ _ hb.cm hC1 hCθ hinj hW2 hadm N (fun k hk T hT f₁ h => hHN ▸ hK k hk (Φ T) hT f₁ h)`.
+
+Establish `hPR : a - G.p ≤ a + a' - (G.p + G.q)` using `by have := hg.aBig; omega`. Establish `hQS : G.p ≤ G.p + G.q` using `Nat.le_add_right _ _`. Establish `hnum : ∀ w, ∃ k k' : ℕ, 0 < k ∧ 0 < k' ∧ c w - cPair (a + a' - (G.p + G.q)) (G.p + G.q) = k ∧ c w + cPair (a + a' - (G.p + G.q)) (G.p + G.q) = k'`. Introduce `w`. Establish `hk` using `hg.kappa w`.
+
+Establish `hev` using `i_parity F E σ B a a' G X om om' ⟨hb, hg, hc, hw, hw'⟩ w`. Take `⟨j, hj⟩` from `hev`. Take `⟨i, hi⟩` from `hg.even`. Establish `h1` using `hg.eBig`. Establish `h2` using `hg.aBig`.
+
+Establish `hle : G.p + G.q ≤ a + a'` using `by omega`. Establish `hR : ((a + a' - (G.p + G.q) : ℕ) : ℚ) = (i : ℚ) + i - ((G.p : ℚ) + G.q)`. Rewrite using `[Nat.cast_sub hle, hi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨(j - i + (G.p + G.q : ℕ)).toNat, (j + i - (G.p + G.q : ℕ)).toNat, by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (((j - i + (G.p + G.q : ℕ)).toNat : ℕ) : ℚ) = ((j - i + (G.p + G.q : ℕ) : ℤ) : ℚ) from by`. Conclude with `Int.toNat_of_nonneg (by omega)]` after adjusting the coercions. Simplify using `only [c, cPair, hj, hR]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (((j + i - (G.p + G.q : ℕ)).toNat : ℕ) : ℚ) = ((j + i - (G.p + G.q : ℕ) : ℤ) : ℚ) from by`. Conclude with `Int.toNat_of_nonneg (by omega)]` after adjusting the coercions. Simplify using `only [c, cPair, hj, hR]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Break down `GlobalTheory.T.k_fixed_irreducible_lowest_degree _ _ _ _ _ c hPR hQS hnum m (fun m' hm' => bot m' (lt_of_lt_of_le hm' hm)) N hNle hNst with h | h` into its components or cases. Use `left`. Rewrite using `[hHN, h, Submodule.map_bot]`. Use `right`.
+
+Rewrite using `[hHN, h, ← key]`.
+-/
 theorem fixPart_irreducible : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ m : ℕ, m ≤ fixDeg B G.M om → ∀ H : Submodule ℂ (SInf F (Fin a × Fin (a + a'))),

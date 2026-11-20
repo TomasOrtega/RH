@@ -27,6 +27,37 @@ open GlobalTheory.CechDR (HO1)
 
 namespace GlobalTheory.CechFree
 
+/- English proof (translation)
+Introduce `A _ _ _ B _ _ g I _ U hA hg hcov hU`. Establish `hinf : ∀ V W : B.left.Opens, IsAffineOpen V → IsAffineOpen W → IsAffineOpen (V ⊓ W)` using `by haveI := hA.proper`. Establish `: B.left.IsSeparated` using `⟨by rw [← terminal.comp_from B.hom]; infer_instance⟩`. Conclude with `fun V W hV hW => hV.inf hW`. Take `⟨hfin, hproj, hrk⟩` from `(GlobalTheory.T.abelianScheme_structureSheafCohomology_noetherian A B g hA hg).1`.
+
+Use `haveI := hfin`. Use `haveI := hproj`. Use `haveI : Module.Free A (HO1 B.hom) := Module.free_of_flat_of_isLocalRing`. Establish `hr : Module.finrank A (HO1 B.hom) = g`. Rewrite using `[← hrk (IsLocalRing.closedPoint A), Module.rankAtStalk_eq_finrank_tensorProduct, Module.finrank_baseChange]`.
+
+Set `bH` to `Module.finBasisOfFinrankEq A (HO1 B.hom) hr`. Set `F` to `GlobalTheory.CechCmp.capF B.hom U hU hinf`. Set `e : HO1 B.hom ≃ₗ[A] CatCoh.H1 F` to `LinearEquiv.ofBijective (CatCoh.CoefMap.restrict (GlobalTheory.CechDR.OAff B.hom) (GlobalTheory.CechCmp.capAff_mono U hU hinf).functor.op).pull1 (GlobalTheory.CechCmp.restrict_capF_bijective B.hom U hU hinf hcov)`. Set `bP` to `bH.map e`. Use `choose f hf using fun a => CatCoh.H1.mk_surjective F (bP a)`.
+
+Set `b : Fin g → C1 U` to `fun a => GlobalTheory.CechCmp.toCech B.hom U hU hinf (f a).1`. Establish `hb : ∀ a, IsCoc U (b a)` using `fun a => GlobalTheory.T.isCechOneCocycle_posetOneCochainToCechCochain I B.left A B.hom U hU hinf _ (f a).2`. Establish `hbP : ∀ a, CatCoh.H1.mk F ⟨GlobalTheory.CechCmp.toPos B.hom U hU hinf (b a), GlobalTheory.T.toPos_mem_Z1_of_isCoc I B.left A B.hom U hU hinf _ (hb a)⟩ = bP a`. Introduce `a`. Rewrite using `[← hf a, CatCoh.H1.mk_eq_mk]`.
+
+Conclude with `GlobalTheory.T.exists_d0_eq_toPos_toCech_sub_of_mem_Z1 I B.left A B.hom U hU hinf _ (f a).2`. Establish `hbb : ∀ a, GlobalTheory.CechCmp.toCech B.hom U hU hinf (GlobalTheory.CechCmp.toPos B.hom U hU hinf (b a)) = b a` using `fun a => GlobalTheory.T.posetToCech_cechToPoset_cocycle_eq I B.left A B.hom U hU hinf _ (hb a)`. Establish `hlc : ∀ (cc : Fin g → A) (hm : GlobalTheory.CechCmp.toPos B.hom U hU hinf (fun i j => ∑ a, constFn B.hom (U i ⊓ U j) (cc a) * b a i j) ∈ CatCoh.Z1 F), CatCoh.H1.mk F ⟨_, hm⟩ = ∑ a, cc a • bP a`. Introduce `cc hm`. Establish `: (⟨_, hm⟩ : CatCoh.Z1 F) = ∑ a, cc a • ⟨GlobalTheory.CechCmp.toPos B.hom U hU hinf (b a), GlobalTheory.T.toPos_mem_Z1_of_isCoc I B.left A B.hom U hU hinf _ (hb a)⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Conclude with `GlobalTheory.CechCmp.toPos_lc B.hom U hU hinf cc b`. Rewrite using `[this, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => by rw [map_smul, hbP]`. Establish `hmem : ∀ cc : Fin g → A, GlobalTheory.CechCmp.toPos B.hom U hU hinf (fun i j => ∑ a, constFn B.hom (U i ⊓ U j) (cc a) * b a i j) ∈ CatCoh.Z1 F`. Introduce `cc`. Rewrite using `[GlobalTheory.CechCmp.toPos_lc]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (GlobalTheory.T.toPos_mem_Z1_of_isCoc I B.left A B.hom U hU hinf _ (hb a))`.
+
+Use `⟨b, hb, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hcm` using `GlobalTheory.T.toPos_mem_Z1_of_isCoc I B.left A B.hom U hU hinf c hc`. Set `x` to `CatCoh.H1.mk F ⟨_, hcm⟩`. Establish `hex : IsCob U (fun i j => c i j - ∑ a, constFn B.hom (U i ⊓ U j) (bP.repr x a) * b a i j)`. Set `l : C1 U` to `fun i j => ∑ a, constFn B.hom (U i ⊓ U j) (bP.repr x a) * b a i j`.
+
+Establish `hl : GlobalTheory.CechCmp.toCech B.hom U hU hinf (GlobalTheory.CechCmp.toPos B.hom U hU hinf l) = l`. Rewrite using `[GlobalTheory.CechCmp.toPos_lc, GlobalTheory.CechCmp.toCech_lc]`. Simplify using `only [hbb, l]`. Establish `h0 : CatCoh.H1.mk F ⟨_, hcm⟩ = CatCoh.H1.mk F ⟨_, hmem (bP.repr x)⟩`. Rewrite using `[hlc _ (hmem _)]`.
+
+Conclude with `(bP.sum_repr x).symm`. Take `⟨g0, hg0⟩` from `CatCoh.H1.mk_eq_mk.1 h0`. Establish `key : (fun i j => c i j - l i j) = GlobalTheory.CechCmp.toCech B.hom U hU hinf (CatCoh.d0 F g0)`. Rewrite using `[hg0, GlobalTheory.CechCmp.toCech_sub, GlobalTheory.T.posetToCech_cechToPoset_cocycle_eq I B.left A B.hom U hU hinf c hc, hl]`. Both sides reduce to the same expression.
+
+Use `show IsCob U (fun i j => c i j - l i j)`. Rewrite using `[key]`. Conclude with `GlobalTheory.T.isCob_toCech_d0 I B.left A B.hom U hU hinf g0`. Use `⟨bP.repr x, hex, fun cc hcc => ?_⟩` and prove the remaining obligations. Establish `hcs : ∀ (O : B.left.Opens) (y z : A), constFn B.hom O (y - z) = constFn B.hom O y - constFn B.hom O z` using `fun O y z => by simp only [constFn, map_sub]`.
+
+Set `δ : Fin g → A` to `fun a => bP.repr x a - cc a`. Establish `hcob : IsCob U (fun i j => ∑ a, constFn B.hom (U i ⊓ U j) (δ a) * b a i j)`. Take `⟨β₁, h₁⟩` from `hcc`. Take `⟨β₂, h₂⟩` from `hex`. Use `⟨fun i => β₁ i - β₂ i, fun i j => ?_⟩` and prove the remaining obligations.
+
+Establish `e₁` using `h₁ i j`. Establish `e₂` using `h₂ i j`. Simplify using `only [δ, hcs, sub_mul, Finset.sum_sub_distrib, GlobalTheory.KS.rsT_sub] at e₁ e₂ ⊢`. Take the linear combination `e₁ - e₂`. Take `⟨g1, hg1⟩` from `GlobalTheory.T.exists_d0_eq_toPos_of_isCob I B.left A B.hom U hU hinf _ hcob`.
+
+Establish `hz : ∑ a, δ a • bP a = 0`. Rewrite using `[← hlc δ (hmem δ)]`. Conclude with `CatCoh.H1.mk_eq_zero.2 ⟨g1, hg1⟩`. Establish `hδ` using `Fintype.linearIndependent_iff.1 bP.linearIndependent δ hz`. Use function extensionality and compare the values at `a`.
+
+Conclude with `(sub_eq_zero.1 (hδ a)).symm`.
+-/
 theorem cech_free : ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (g : ℕ) (I : Type) [Finite I] (U : I → B.left.Opens), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ⨆ i, U i = ⊤ → (∀ i, IsAffineOpen (U i)) → ∃ b : Fin g → C1 U, (∀ a, IsCoc U (b a)) ∧ ∀ c : C1 U, IsCoc U c → ∃! cc : Fin g → A, IsCob U (fun i j => c i j - ∑ a, constFn B.hom _ (cc a) * b a i j) := by
   intro A _ _ _ B _ _ g I _ U hA hg hcov hU
   classical

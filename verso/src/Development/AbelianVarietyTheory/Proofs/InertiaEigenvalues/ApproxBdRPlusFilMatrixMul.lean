@@ -9,6 +9,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ K bk n d X Z ⟨k₁, s₁, h₁⟩ ⟨k₂, s₂, h₂⟩`. Use `⟨k₁ + k₂, s₁ * s₂, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : aDp l (bk.ev ((s₁ * s₂) i j)) - (l : Per.BdRp l) ^ (k₁ + k₂) * (X * Z) i j = ∑ m, (aDp l (bk.ev (s₁ i m)) * (aDp l (bk.ev (s₂ m j)) - (l : Per.BdRp l) ^ k₂ * Z m j) + (aDp l (bk.ev (s₁ i m)) - (l : Per.BdRp l) ^ k₁ * X i m) * ((l : Per.BdRp l) ^ k₂ * Z m j))`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, map_sum, map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun m _ => Ideal.add_mem _ (Ideal.mul_mem_left _ _ (h₂ m j)) (Ideal.mul_mem_right _ _ (h₁ i m))`.
+-/
 theorem use₁₀ : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n d : ℕ) (X Z : Matrix (Fin d) (Fin d) (Per.BdRp l)), (∃ (k : ℕ) (s : Matrix (Fin d) (Fin d) bk.S), ∀ i j, aDp l (bk.ev (s i j)) - (l : Per.BdRp l) ^ k * X i j ∈ Per.FilP l n) → (∃ (k : ℕ) (s : Matrix (Fin d) (Fin d) bk.S), ∀ i j, aDp l (bk.ev (s i j)) - (l : Per.BdRp l) ^ k * Z i j ∈ Per.FilP l n) → ∃ (k : ℕ) (s : Matrix (Fin d) (Fin d) bk.S), ∀ i j, aDp l (bk.ev (s i j)) - (l : Per.BdRp l) ^ k * (X * Z) i j ∈ Per.FilP l n := by
   intro l _ K bk n d X Z ⟨k₁, s₁, h₁⟩ ⟨k₂, s₂, h₂⟩
   refine ⟨k₁ + k₂, s₁ * s₂, fun i j => ?_⟩

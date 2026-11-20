@@ -30,6 +30,13 @@ def wlen {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v) (c : In
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Unfold `wlen`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hk'` using `inv_mem hk`.
+
+Rewrite `hk'` using `[Majorant.stab, Subgroup.mem_subgroupOf]`. Establish `hA` using `mem_unitaryGroupMatrix.1 ((Subgroup.mem_pi _).1 hk' w (Set.mem_univ w))`. Use `set A : Matrix ι ι ℂ := (((k⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) with hA_def`. Establish `hA' : Aᴴ * M.P w * A = M.P w` using `hA`. Simplify using `only [invApply]`.
+
+Rewrite using `[← hA_def, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA']`.
+-/
 theorem wlen_invApply_of_mem_stab {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (c : InfinitePlace E → ℝ) {k : archUnitary h v} (hk : k ∈ M.stab) (y : InfinitePlace E → ι → ℂ) :
     wlen M c (invApply k y) = wlen M c y := by
@@ -49,6 +56,9 @@ theorem wlen_invApply_of_mem_stab {h : HermitianForm F E W} {v : Basis ι E W} (
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `hw : ∀ w, Continuous fun g : archUnitary h v => invApply g y w` using `fun w => (Units.continuous_val.comp ((continuous_apply w).comp (continuous_subtype_val.comp continuous_inv))).matrix_mulVec continuous_const`. Unfold `wlen`. Use `Real.continuous_sqrt.comp (continuous_finsetSum _ fun w _ => ?_)` and prove the remaining obligations. Conclude with `continuous_const.mul (Complex.continuous_re.comp ((continuous_star.comp (hw w)).dotProduct (continuous_const.matrix_mulVec (hw w))))`.
+-/
 theorem continuous_wlen_invApply {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (c : InfinitePlace E → ℝ) (y : InfinitePlace E → ι → ℂ) :
     Continuous fun g : archUnitary h v => wlen M c (invApply g y) := by
@@ -61,11 +71,33 @@ theorem continuous_wlen_invApply {h : HermitianForm F E W} {v : Basis ι E W} (M
     ((continuous_star.comp (hw w)).dotProduct (continuous_const.matrix_mulVec (hw w))))
 
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `(isOpen_lt (continuous_wlen_invApply M c y) continuous_const).measurableSet`.
+-/
 theorem measurableSet_wbelow {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (c : InfinitePlace E → ℝ) (y : InfinitePlace E → ι → ℂ) (t : ℝ) :
     MeasurableSet {g : archUnitary h v | wlen M c (invApply g y) < t} :=
   (isOpen_lt (continuous_wlen_invApply M c y) continuous_const).measurableSet
 
+/- English proof (translation)
+Take `⟨ν, κ, τ, hν, -, hκ, hτm, hτ, hμ⟩` from `h₂ M μ x₀ hne hiso`. Take `⟨FD₀, hFD₀, h0, htop⟩` from `h₃ D La x₀ hLa hx₀ hne hiso ν hν`. Use `⟨ν FD₀, h0, htop, fun FD hFD t ht => ?_⟩` and prove the remaining obligations. Use `set y₀ := vecAt v x₀ with hy₀`. Use `set wt : (InfinitePlace E → ℂ) → ℝ≥0∞ := fun b => ∏ w, ‖b w‖ₑ ^ (2 * (finrank E W - 2)) with hwt`.
+
+Use `set S := {g : archUnitary h v | wlen M c (invApply g y₀) < t} with hS_def`. Use `set T := {b : InfinitePlace E → ℂ | wlen M c (fun w => b w • y₀ w) < t} with hT_def`. Establish `hS : MeasurableSet S` using `measurableSet_wbelow M c y₀ t`. Establish `: SecondCountableTopology (vecStabGroup h v La x₀)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: DiscreteTopology (vecStabGroup h v La x₀)`.
+
+Use `ArchLatticeDiscrete.proof h v La hLa.isLattice` as an intermediate fact. Establish `hle : vecStabGroup h v La x₀ ≤ archLatticeGroup h v La`. Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `⟨(γ : h.unitaryGroup), γ.2, rfl⟩`. Conclude with `DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)`.
+
+Establish `: Countable (vecStabGroup h v La x₀)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `s : (InfinitePlace E → ℂ) × M.stab → archUnitary h v` to `fun y => τ y.1 * y.2`. Establish `hwtm : Measurable wt` using `Finset.measurable_prod _ fun w _ => (measurable_pi_apply w).enorm.pow_const _`. Establish `hsm' : Measurable s` using `(hτm.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd)`. Establish `hsm : Measurable fun p : vecFixGroup h v x₀ × ((InfinitePlace E → ℂ) × M.stab) => (p.1 : archUnitary h v) * s p.2` using `(measurable_subtype_coe.comp measurable_fst).mul (hsm'.comp measurable_snd)`.
+
+Establish `hform : ∀ f : archUnitary h v → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μ = ∫⁻ y, ∫⁻ x, f (x * s y) ∂ν ∂((volume.withDensity wt).prod κ)`. Introduce `f hf`. Establish `hin : Measurable fun y => ∫⁻ x : vecFixGroup h v x₀, f (x * s y) ∂ν` using `(hf.comp hsm).lintegral_prod_left'`. Rewrite using `[hμ f hf, lintegral_prod _ hin.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hwtm hin.lintegral_prod_right']`. Both sides reduce to the same expression.
+
+Establish `hf : Measurable (S.indicator (1 : archUnitary h v → ℝ≥0∞))` using `measurable_one.indicator hS`. Establish `hinv : ∀ x : vecFixGroup h v x₀, ∀ g, S.indicator (1 : archUnitary h v → ℝ≥0∞) (x * g) = S.indicator 1 g`. Introduce `x g`. Establish `hx : invApply (x : archUnitary h v) y₀ = y₀` using `invApply_of_mem_vecFixGroup x.2`. Simplify using `only [hS_def, Set.indicator_apply, Set.mem_ofPred_eq, invApply_mul, hx, Pi.one_apply]`.
+
+Establish `key` using `h₁ M μ (vecFixGroup h v x₀) ν ((volume.withDensity wt).prod κ) s hsm hform (vecStabGroup h v La x₀) (vecStabGroup_le_vecFixGroup h v La x₀) FD FD₀ hFD hFD₀ _ hf hinv`. Rewrite using `[Set.inter_comm, ← Measure.restrict_apply hS, ← lintegral_indicator_one hS, key]`. Use `congr 1`. Establish `hmS : Measurable fun y => S.indicator (1 : archUnitary h v → ℝ≥0∞) (s y)` using `hf.comp hsm'`. Rewrite using `[lintegral_prod _ hmS.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ hwtm hmS.lintegral_prod_right']`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_forall_ne_zero (InfinitePlace E)] with b hb`. Establish `hk : ∀ k : M.stab, S.indicator (1 : archUnitary h v → ℝ≥0∞) (s (b, k)) = T.indicator 1 b`. Introduce `k`. Simplify using `only [s, Set.indicator_apply, hS_def, hT_def, Set.mem_ofPred_eq, invApply_mul, hτ b hb, wlen_invApply_of_mem_stab M c k.2, Pi.one_apply]`.
+
+Simplify using `only [Pi.mul_apply, hk, lintegral_const, measure_univ, mul_one]`. Distinguish the cases in `hbT : b ∈ T`. Simplify using `[Set.indicator_of_mem hbT]`. Simplify using `[Set.indicator_of_notMem hbT]`.
+-/
 theorem wUnfoldingTorus (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : ∀ M : Majorant h v,
       UnfoldAlongSubgroup.Statement (archUnitary h v) ((InfinitePlace E → ℂ) × M.stab))
@@ -143,6 +175,19 @@ theorem wUnfoldingTorus (h : HermitianForm F E W) (v : Basis ι E W)
   · simp [Set.indicator_of_mem hbT]
   · simp [Set.indicator_of_notMem hbT]
 
+/- English proof (translation)
+Establish `: FiniteDimensional E W` using `v.finiteDimensional_of_finite`. Take `⟨c₀, -, hc₀top, hc₀⟩` from `wUnfoldingTorus h v h₁ h₂ h₃ M c μ D La x₀ hLa hx₀ hne hiso`. Use `set y := vecAt v x₀ with hy`. Use `set q : InfinitePlace E → ℝ := fun w => c w * (star (y w) ⬝ᵥ (M.P w *ᵥ y w)).re with hq_def`. Establish `hq : ∀ w, 0 < q w` using `fun w => mul_pos (hc w) (Complex.pos_iff.mp ((M.posDef w).dotProduct_mulVec_pos (VecAtNeZero.proof v x₀ hne w))).1`.
+
+Take `⟨C, -, hCtop, hC⟩` from `TorusIntegralHomogeneous.full (InfinitePlace E) q hq (finrank E W - 2)`. Take `⟨k, hk⟩ : ∃ k, finrank E W = k + 2` from `⟨finrank E W - 2, by have := two_le_finrank_of_isotropic h hne hiso; omega⟩`. Establish `hcard : Fintype.card (InfinitePlace E) = finrank ℚ F`. Establish `h1` using `IsTotallyComplex.finrank (K := E)`. Establish `h2 : finrank ℚ F * finrank F E = finrank ℚ E` using `Module.finrank_mul_finrank ℚ F E`.
+
+Rewrite `h2` using `[Algebra.IsQuadraticExtension.finrank_eq_two F E]`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hexp : (2 * (finrank E W - 2) + 2) * Fintype.card (InfinitePlace E) = 2 * finrank ℚ F * (finrank E W - 1)`. Rewrite using `[hcard, hk, Nat.add_sub_cancel, show k + 2 - 1 = k + 1 by omega]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hset : ∀ t : ℝ, 0 < t → {b : InfinitePlace E → ℂ | wlen M c (fun w => b w • y w) < t} = {b | ∑ w, q w * ‖b w‖ ^ 2 < t ^ 2}`. Introduce `t ht`. Use extensionality with `b`. Simplify using `only [Set.mem_ofPred_eq, wlen, Real.sqrt_lt' ht, re_form_smul, hq_def, mul_assoc]`.
+
+Establish `hval : ∀ t : ℝ, 0 < t → μ (FD ∩ {g | wlen M c (invApply g y) < t}) = c₀ * (C * ENNReal.ofReal (t ^ (2 * finrank ℚ F * (finrank E W - 1))))`. Introduce `t ht`. Rewrite using `[hc₀ FD hFD t ht, hset t ht, hC t ht, hexp]`. Establish `h1` using `hval 1 one_pos`. Rewrite `h1` using `[one_pow, ENNReal.ofReal_one, mul_one]`.
+
+Use `⟨by rw [h1]; exact ENNReal.mul_lt_top hc₀top hCtop, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[hval t ht, h1, ENNReal.ofReal_pow ht.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wUnfoldingIntegral (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : ∀ M : Majorant h v,
       UnfoldAlongSubgroup.Statement (archUnitary h v) ((InfinitePlace E → ℂ) × M.stab))
@@ -195,12 +240,18 @@ theorem wUnfoldingIntegral (h : HermitianForm F E W) (v : Basis ι E W)
 
 end OneSpace
 
+/- English proof (translation)
+The claim follows from `HaarParabolicCoordinates.of_open h v (ArchUnimodular.proof h v) (MajorantStabCompact.proof h v) (LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (TorusEmbedding.full h v) (LineEigenvalue.closed h v) (TorusModulus.full h v) (SemidirectHaar.proof _ _) (UnitsInvHaar …`.
+-/
 theorem haarParabolicCoordinates_closed {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W) : HaarParabolicCoordinates.Statement h v :=
   HaarParabolicCoordinates.of_open h v (ArchUnimodular.proof h v) (MajorantStabCompact.proof h v)
     (LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (TorusEmbedding.full h v)
       (LineEigenvalue.closed h v) (TorusModulus.full h v) (SemidirectHaar.proof _ _) (UnitsInvHaar.proof _))
 
+/- English proof (translation)
+The claim follows from `StabilizerCovolumeFinite.of_open (fun _ _ _ _ h _ v => ArchUnimodular.proof h v) (fun _ _ _ _ h _ v => MajorantStabCompact.proof h v) (fun _ _ _ _ h _ v => LineStabHaar.proof h v (WittPartner.full h) (VecAtNeZero.full v) (TorusEmbedding.full h v) (LineEigenvalue.closed h v) (Toru …`.
+-/
 theorem stabilizerCovolumeFinite_closed {W : Type u} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W) : StabilizerCovolumeFinite.Statement h v :=
   StabilizerCovolumeFinite.of_open
@@ -220,6 +271,9 @@ theorem stabilizerCovolumeFinite_closed {W : Type u} [AddCommGroup W] [Module E 
     (UnipotentCocompact.proof h v (UnipotentCoordProper.proof h v) (UnipotentHorizontal.full h v)
       (UnipotentCentral.full h v))
 
+/- English proof (translation)
+The claim follows from `wUnfoldingIntegral h v (fun _ => UnfoldAlongSubgroup.proof _ _) (haarParabolicCoordinates_closed h v) (stabilizerCovolumeFinite_closed h v) M c hc μ D La x₀ hLa hx₀ hne hiso FD hFD`.
+-/
 theorem wUnfoldingIntegral_closed {W : Type u} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
     [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W)
     (M : Majorant h v) (c : InfinitePlace E → ℝ) (hc : ∀ w, 0 < c w)
@@ -248,6 +302,11 @@ variable {F : Type*} {E : Type} [Field F] [Field E] [NumberField F] [NumberField
 variable {W : Type u} [AddCommGroup W] [Module E W] {N : ℕ}
 variable (h : HermitianForm F E W) (v : Basis (Fin N) E W)
 
+/- English proof (translation)
+Unfold `wlen wNorm`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Use `congr 2`. Simplify using `only [majOf, ReciprocityTheory.ChartRestriction.G.SA.hf, dotProduct, mulVec, Matrix.transpose_apply, Pi.star_apply, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wNorm_majOf (M : Majorant h v) (c : InfinitePlace E → ℝ) (y : InfinitePlace E → Fin N → ℂ) :
     wlen M c y = wNorm (majOf M) c y := by
   unfold wlen wNorm
@@ -261,6 +320,11 @@ theorem wNorm_majOf (M : Majorant h v) (c : InfinitePlace E → ℝ) (y : Infini
   simp only [Complex.star_def]
   ring
 
+/- English proof (translation)
+Rewrite using `[MeasurableEquiv.restrict_map, lintegral_map_equiv]`. Establish `hfun : ∀ g, wBelowInd (majOf M) c (v.equivFun x₀) t (realMeas h v g) = {g : archUnitary h v | wlen M c (invApply g (vecAt v x₀)) < t}.indicator 1 g`. Introduce `g`. Simplify using `only [wBelowInd, Set.indicator_apply, Set.mem_ofPred_eq, realMeas_apply, wNorm_majOf, invApply.equiv, vecAt.equiv, Pi.one_apply]`. Establish `hm : MeasurableSet {g : archUnitary h v | wlen M c (invApply g (vecAt v x₀)) < t}` using `measurableSet_wbelow M c (vecAt v x₀) t`.
+
+Repeatedly rewrite using `[hfun]`. Rewrite using `[lintegral_indicator_one hm, Measure.restrict_apply hm, Set.inter_comm]`.
+-/
 theorem lintegral_wBelowInd (M : Majorant h v) (c : InfinitePlace E → ℝ) (μ : Measure (archUnitary h v))
     (x₀ : W) (s : Set (IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v))) (t : ℝ) :
     ∫⁻ g in s, wBelowInd (majOf M) c (v.equivFun x₀) t g ∂(μ.map (realMeas h v)) =
@@ -276,6 +340,19 @@ theorem lintegral_wBelowInd (M : Majorant h v) (c : InfinitePlace E → ℝ) (μ
   simp_rw [hfun]
   rw [lintegral_indicator_one hm, Measure.restrict_apply hm, Set.inter_comm]
 
+/- English proof (translation)
+Introduce `M' c hc L v₀ hL hint hv₀ hne hiso μ' hμ'`. Take `⟨M, rfl⟩` from `(Majorant.equiv (h := h) (v := v)).2 M'`. Take `⟨x₀, rfl⟩` from `v.equivFun.surjective v₀`. Establish `hD : IndefiniteRowSideFullHecke.FiniteCovolume.IsDIntegral (divisionPairOfAdelicFormsFaceColumnsData h v) (L.toAddSubgroup.relIndex (IndefiniteRowSideFullHecke.FiniteCovolume.dual (divisionPairOfAdelicFormsFaceColumnsData h v) L).toAddSubgroup) L` using `⟨hL, hint, le_rfl⟩`. Establish `hLa` using `(IsDIntegral.equiv_of_dualIndexFinite (DualIndexFinite.proof h) _ L).2 hD`.
+
+Establish `hne' : x₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (map_zero _)`. Establish `hiso' : h.toSesq x₀ x₀ = 0`. Rewrite using `[← HermSpace.h.equiv h v]`.
+
+Conclude with `hiso`. Use `isHaarMeasure_map_realMeas_symm h v μ'` as an intermediate fact. Establish `hμ : (μ'.map (realMeas h v).symm).map (realMeas h v) = μ'` using `MeasurableEquiv.map_map_symm _`. Take `⟨FD, hFDm, hFD⟩` from `DiscreteFundamentalDomain.proof (archUnitary h v) (μ'.map (realMeas h v).symm) _ (vecStabGroup_discrete h v (latOf v L) hLa.isLattice x₀)`. Establish `hs : IsFundamentalDomain (IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf (divisionPairOfAdelicFormsFaceColumnsData h v) L (v.equivFun x₀)) (realMeas h v '' FD) ((μ'.map (realMeas h v).symm).map (realMeas h v))`.
+
+Use `hFD.image_of_equiv (realMeas h v).toEquiv ?_ (vecStabEquiv h v L x₀).symm.toEquiv (fun g x => realMeas_semiconj h v L x₀ g x)` and prove the remaining obligations. Use `((realMeas h v).symm.measurable.measurePreserving ((μ'.map (realMeas h v).symm).map (realMeas h v)))` as an intermediate fact. Rewrite `this` using `[MeasurableEquiv.map_symm_map]`. Conclude with `this.quasiMeasurePreserving`. Rewrite `hs` using `[hμ]`.
+
+Take `⟨h1, h2⟩` from `wUnfoldingIntegral_closed h v M c hc (μ'.map (realMeas h v).symm) _ (latOf v L) x₀ hLa hv₀ hne' hiso' FD hFD`. Use `⟨_, (realMeas h v).measurableSet_image.2 hFDm, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hμ]`. Simplify using `only [lintegral_wBelowInd, MeasurableEquiv.preimage_image]`. Use `⟨h1, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2 t ht, exponent_eq (F := F) v]`.
+-/
 theorem unfolding_hermitian_lattice :
     ∀ (M' : IndefiniteRowSideFullHecke.FiniteCovolume.Majorant (divisionPairOfAdelicFormsFaceColumnsData h v)) (c : InfinitePlace E → ℝ), (∀ w, 0 < c w) →
     ∀ (L : Submodule (𝓞 E) (Fin N → E)) (v₀ : Fin N → E),
@@ -326,6 +403,9 @@ theorem unfolding_hermitian_lattice :
 
 end IndefiniteRowSideFullHecke
 
+/- English proof (translation)
+Introduce `E _ _ _ N V`. Use `unfolding_hermitian_lattice (FiniteCovolume.HermitianSpaceComparison.hermitianFormOfMatrix (maximalRealSubfield E) V) (Pi.basisFun E (Fin N))` as an intermediate fact. Rewrite `this` using `[FiniteCovolume.HermitianSpaceComparison.matrixHermSpace_surjective]`. Then use the resulting hypothesis.
+-/
 theorem WeightedUnfoldingIntegral.full : WeightedUnfoldingIntegral.Statement := by
   intro E _ _ _ N V
   have := unfolding_hermitian_lattice (FiniteCovolume.HermitianSpaceComparison.hermitianFormOfMatrix (maximalRealSubfield E) V)

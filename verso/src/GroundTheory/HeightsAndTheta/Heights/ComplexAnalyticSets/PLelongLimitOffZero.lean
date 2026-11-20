@@ -13,6 +13,23 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Filter Topology Matrix ComplexSets ReciprocityTheory.AnForm
 open scoped ContDiff
 
+/- English proof (translation)
+Use `set L : (Fin D → ℂ) → ℝ := fun w => Real.log ‖h w‖ with hLdef`. Use `set F : ℝ → ℝ := fun t => Real.log (Real.exp (2 * t) + ε) / 2 with hFdef`. Use `set G : ℝ → ℝ := fun t => Real.exp (2 * t) with hGdef`. Establish `hhc : ContDiffAt ℝ 2 h y` using `(hh.contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hLc : ContDiffAt ℝ 2 L y` using `(hhc.norm ℝ hy).log (norm_ne_zero_iff.2 hy)`.
+
+Establish `hL0 : hessC L y = 0` using `ReciprocityTheory.AnForm.A.hessC_log_norm h y hh hy`. Establish `he : ∀ t, HasDerivAt (fun t : ℝ => Real.exp (2 * t)) (Real.exp (2 * t) * 2) t` using `fun t => by`. Simplify using `using ((hasDerivAt_id t).const_mul 2).exp`. Establish `hFc : ContDiff ℝ 2 F` using `((Real.contDiff_exp.comp (contDiff_const.mul contDiff_id)).add contDiff_const).log (fun t => by simp only [Function.comp_apply, id]; positivity) |>.div_const 2`. Establish `hGc : ContDiff ℝ 2 G` using `Real.contDiff_exp.comp (contDiff_const.mul contDiff_id)`.
+
+Establish `hF` using `HessCCompPluri.proof D F L y hFc.contDiffAt hLc hL0`. Establish `hG` using `HessCCompPluri.proof D G L y hGc.contDiffAt hLc hL0`. Establish `hdF : deriv F = fun t => Real.exp (2 * t) / (Real.exp (2 * t) + ε)`. Use function extensionality and compare the values at `t`. Establish `hp : Real.exp (2 * t) + ε ≠ 0` using `by positivity`.
+
+Use `(((he t).add_const ε).log hp |>.div_const 2).deriv.trans ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `hddF : ∀ t, deriv (deriv F) t = 2 * ε * Real.exp (2 * t) / (Real.exp (2 * t) + ε) ^ 2`. Introduce `t`. Establish `hp : Real.exp (2 * t) + ε ≠ 0` using `by positivity`.
+
+Rewrite using `[hdF]`. Use `((he t).div ((he t).add_const ε) hp).deriv.trans ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hdG : deriv G = fun t => Real.exp (2 * t) * 2` using `funext fun t => (he t).deriv`.
+
+Establish `hddG : ∀ t, deriv (deriv G) t = Real.exp (2 * t) * 2 * 2` using `fun t => by`. Rewrite using `[hdG]`. Conclude with `((he t).mul_const 2).deriv`. Establish `hexp : ∀ w, h w ≠ 0 → Real.exp (2 * L w) = ‖h w‖ ^ 2` using `fun w hw => by`. Rewrite using `[hLdef, show 2 * Real.log ‖h w‖ = Real.log (‖h w‖ ^ 2) by rw [Real.log_pow]; push_cast; ring, Real.exp_log (by positivity)]`.
+
+Establish `hev : ∀ᶠ w in 𝓝 y, h w ≠ 0` using `hh.continuousAt.eventually_ne hy`. Establish `eF : hessC (fun w => Real.log (‖h w‖ ^ 2 + ε) / 2) y = hessC (fun w => F (L w)) y` using `ReciprocityTheory.AnForm.A.hessC_congr' (hev.mono fun w hw => by simp only [hFdef, hexp w hw])`. Establish `eG : hessC (fun w => ‖h w‖ ^ 2) y = hessC (fun w => G (L w)) y` using `ReciprocityTheory.AnForm.A.hessC_congr' (hev.mono fun w hw => by simp only [hGdef, hexp w hw])`. Rewrite using `[eF, eG, hF, hG, hddF, hddG, hexp y hy, smul_smul]`. Use `congr 1`.
+
+Establish `ha : 0 < ‖h y‖ ^ 2` using `by positivity`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hessC_half_log_normSq_add {D : ℕ} (h : (Fin D → ℂ) → ℂ) (y : Fin D → ℂ)
     (hh : AnalyticAt ℂ h y) (hy : h y ≠ 0) {ε : ℝ} (hε : 0 < ε) :
     hessC (fun w => Real.log (‖h w‖ ^ 2 + ε) / 2) y =
@@ -61,6 +78,33 @@ theorem hessC_half_log_normSq_add {D : ℕ} (h : (Fin D → ℂ) → ℂ) (y : F
   push_cast
   field_simp
 
+/- English proof (translation)
+Introduce `n d J u f φ hJ hdim hu hf hfc hφ hdisj`. Unfold `varInt`. Use `split_ifs with hA`. Use `swap`. Conclude with `tendsto_const_nhds`.
+
+Use `set A := hA.choose with hAdef`. Establish `hAf : IsFiniteProjection J A` using `hA.choose_spec`. Establish `hZc : IsClosed (zeroSet J)`. Establish `: zeroSet J = ⋂ q ∈ J, {x : Fin n → ℂ | MvPolynomial.eval x q = 0}`. Use extensionality with `x`.
+
+Simplify using `[zeroSet]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`. Establish `hK : IsCompact (tsupport f ∩ zeroSet J)` using `hfc.isCompact.inter_right hZc`. Establish `hu0 : ∀ x ∈ tsupport f ∩ zeroSet J, linEval u x ≠ 0` using `fun x hx h0 => Set.disjoint_left.1 hdisj hx.1 ⟨hx.2, h0⟩`.
+
+Use `set q : (Fin n → ℂ) → ℝ := fun x => ‖linEval u x‖ ^ 2 with hq`. Establish `hqc : ContDiff ℝ ∞ q` using `(contDiff_norm_sq ℝ).comp (contDiff_linEval u)`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm0, hm⟩ : ∃ m : ℝ, 0 < m ∧ ∀ x ∈ tsupport f ∩ zeroSet J, m ≤ q x := by`. Break down `(tsupport f ∩ zeroSet J).eq_empty_or_nonempty with he | hne` into its components or cases. Conclude with `⟨1, one_pos, by simp [he]⟩`.
+
+Take `⟨x₀, hx₀, hmin⟩` from `hK.exists_isMinOn hne hqc.continuous.continuousOn`. Conclude with `⟨q x₀, by have := hu0 x₀ hx₀; simp only [hq]; positivity, fun x hx => hmin hx⟩`. Establish `hGi : Integrable (chartAbsDens J A f (vecCons q φ))`. Use `hM n (d + 1) J A f _ hJ hdim hAf hf.continuous.continuousOn (fun i => ?_) (Or.inl hfc)` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+
+Simplify using `using smoothNear_of_contDiff (S := zeroSet J) hqc`. Simplify using `using hφ j`. Establish `hb : ∀ ε : ℝ, 0 < ε → ∀ y, ‖chartDens J A f (vecCons (logReg u ε) φ) y‖ ≤ ε / (2 * m ^ 2) * chartAbsDens J A f (vecCons q φ) y`. Introduce `ε hε y`. Rewrite using `[Real.norm_eq_abs]`.
+
+Use `(abs_chartDens_le J A f _ y).trans ?_` and prove the remaining obligations. Establish `hfin` using `(FibreBound.proof n (d + 1) J A hJ hdim hAf y).2.1`. Unfold `chartAbsDens`. Use `sheetSum_le_mul hfin _ _ _ fun x hx s hs => ?_` and prove the remaining obligations. Distinguish the cases in `hfx : f x = 0`.
+
+Simplify using `[hfx]`. Establish `hxK : x ∈ tsupport f ∩ zeroSet J` using `⟨subset_tsupport _ hfx, hx.1⟩`. Take `rfl : A *ᵥ x = y` from `hx.2`. Take `⟨U, hU, hxU, hsd, hsx, -, -⟩` from `hs`. Establish `hsa : AnalyticAt ℂ s (A *ᵥ x)` using `analyticAt_pi_iff.2 fun i => ReciprocityTheory.AnForm.Osgood.osgood _ U (fun z => s z i) hU (differentiableOn_pi.1 hsd i) _ hxU`.
+
+Establish `hha : AnalyticAt ℂ (fun w => linEval u (s w)) (A *ᵥ x)`. Unfold `linEval`. Conclude with `Finset.analyticAt_fun_sum _ fun j _ => analyticAt_const.mul ((analyticAt_pi_iff.1 hsa) j)`. Establish `hne : linEval u (s (A *ᵥ x)) ≠ 0` using `by rw [hsx]; exact hu0 x hxK`. Establish `hH0` using `hessC_half_log_normSq_add (fun w => linEval u (s w)) _ hha hne hε`.
+
+Simplify using `only [hsx] at hH0`. Establish `hH : hessC (logReg u ε ∘ s) (A *ᵥ x) = ((ε / (2 * (q x + ε) ^ 2) : ℝ) : ℂ) • hessC (q ∘ s) (A *ᵥ x)` using `hH0`. Rewrite using `[vecCons_comp, vecCons_comp, maDens_cons_of_hessC_eq_smul (logReg u ε ∘ s) (q ∘ s) _ _ _ hH]`. Establish `ha : m ≤ q x` using `hm x hxK`. Establish `hc0 : 0 ≤ ε / (2 * (q x + ε) ^ 2)` using `by positivity`.
+
+Establish `hc : ε / (2 * (q x + ε) ^ 2) ≤ ε / (2 * m ^ 2)` using `div_le_div_of_nonneg_left hε.le (by positivity) (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_left_comm, abs_mul, abs_of_nonneg hc0]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right hc (abs_nonneg _)`. Establish `hlim : Tendsto (fun ε : ℝ => ε / (2 * m ^ 2) * ∫ y, chartAbsDens J A f (vecCons q φ) y) (𝓝[>] 0) (𝓝 0)`.
+
+Establish `hc : Continuous (fun ε : ℝ => ε / (2 * m ^ 2) * ∫ y, chartAbsDens J A f (vecCons q φ) y)` using `by fun_prop`. Conclude with `tendsto_nhdsWithin_of_tendsto_nhds (hc.tendsto' 0 0 (by simp))`. Use `squeeze_zero_norm' ?_ hlim` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε (hε : 0 < ε)`. Unfold `chartInt`.
+
+Rewrite using `[← integral_const_mul]`. Conclude with `norm_integral_le_of_norm_le (hGi.const_mul _) (Eventually.of_forall (hb ε hε))`.
+-/
 theorem LelongLimitOffZero.proof (hM : ChartMassCompact.Statement) : LelongLimitOffZero.Statement := by
   classical
   intro n d J u f φ hJ hdim hu hf hfc hφ hdisj

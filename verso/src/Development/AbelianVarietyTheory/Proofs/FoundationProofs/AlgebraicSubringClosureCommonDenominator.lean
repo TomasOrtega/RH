@@ -9,6 +9,29 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ _ _ S`. Establish `hZQ : Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `hZ : Algebra.IsAlgebraic ℤ Ω` using `Algebra.IsAlgebraic.trans ℤ ℚ Ω`. Take `⟨y, hy0, hy⟩` from `Algebra.IsAlgebraic.exists_integral_multiples (R := ℤ) S`. Use `set D : ℕ := y.natAbs with hDdef`.
+
+Use `⟨D, Int.natAbs_pos.mpr hy0, ?_⟩` and prove the remaining obligations. Establish `hDint : ∀ j : ℕ, IsIntegral ℤ ((D : Ω) ^ j)`. Introduce `j`. Establish `h : ((D : Ω) ^ j) = algebraMap ℤ Ω ((D : ℤ) ^ j)` using `by simp`. Rewrite using `[h]`.
+
+Conclude with `isIntegral_algebraMap`. Set `T : Subring Ω` to `{ carrier := {x | ∃ k : ℕ, IsIntegral ℤ ((D : Ω) ^ k * x)} mul_mem' := by`. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩`. Use `⟨i + j, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) ^ (i + j) * (a * b) = ((D : Ω) ^ i * a) * ((D : Ω) ^ j * b)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `hi.mul hj`. Use the proof step `one_mem' := ⟨0, by simpa using (isIntegral_one : IsIntegral ℤ (1 : Ω))⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `a b ⟨i, hi⟩ ⟨j, hj⟩`.
+
+Use `⟨i + j, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) ^ (i + j) * (a + b) = (D : Ω) ^ j * ((D : Ω) ^ i * a) + (D : Ω) ^ i * ((D : Ω) ^ j * b)` using `by ring`. Rewrite using `[this]`. Conclude with `((hDint j).mul hi).add ((hDint i).mul hj)`. Use the proof step `zero_mem' := ⟨0, by simpa using (isIntegral_zero : IsIntegral ℤ (0 : Ω))⟩`.
+
+Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨i, hi⟩`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `: (D : Ω) ^ i * -a = -((D : Ω) ^ i * a)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `hi.neg }`. Establish `hST : (S : Set Ω) ⊆ T`. Introduce `x hx`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `hx'` using `hy x hx`.
+
+Rewrite using `[pow_one]`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `e : y • x = (D : Ω) * x`. Rewrite using `[zsmul_eq_mul]`. Use `congr 1`.
+
+Rewrite using `[h]`. Simplify using `[hDdef]`. Rewrite using `[← e]`. Conclude with `hx'`. Establish `e : y • x = -((D : Ω) * x)`.
+
+Rewrite using `[zsmul_eq_mul, h]`. Simplify using `[hDdef]`. Use `hx'.neg` as an intermediate fact. Rewrite `this` using `[e, neg_neg]`. Conclude with `this`.
+
+Introduce `x hx`. Conclude with `(Subring.closure_le.mpr hST) hx`.
+-/
 theorem finite_subring_common_denominator :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [Algebra.IsAlgebraic ℚ Ω] (S : Finset Ω),
       ∃ D : ℕ, 0 < D ∧ ∀ x ∈ Subring.closure (S : Set Ω),

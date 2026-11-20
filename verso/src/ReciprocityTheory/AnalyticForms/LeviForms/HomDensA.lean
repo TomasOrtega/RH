@@ -8,6 +8,15 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hev1 : ∀ᶠ x in 𝓝 z, f x ≠ 0` using `hf.continuousAt.eventually_ne hz`. Establish `hev2 : ∀ᶠ x in 𝓝 z, ContDiffAt ℝ 2 f x` using `hf.eventually (by simp)`. Establish `hderiv : fderiv ℝ (fun x => (1 / 2) * Real.log |f x|) =ᶠ[𝓝 z] fun x => ((1 / 2) * (f x)⁻¹) • fderiv ℝ f x` using `by filter_upwards [hev1, hev2] with x hx1 hx2`. Establish `hfd : HasFDerivAt f (fderiv ℝ f x) x` using `(hx2.differentiableAt (by norm_num)).hasFDerivAt`. Establish `hl : HasFDerivAt (fun y => (1 / 2 : ℝ) * Real.log (f y)) ((1 / 2 : ℝ) • (f x)⁻¹ • fderiv ℝ f x) x` using `(hfd.log hx1).const_mul (1 / 2)`.
+
+Establish `e : (fun y => (1 / 2 : ℝ) * Real.log |f y|) = fun y => (1 / 2 : ℝ) * Real.log (f y)`. Use function extensionality and compare the values at `y`. Rewrite using `[Real.log_abs]`. Rewrite using `[e, hl.fderiv, smul_smul]`. Establish `hL : HasFDerivAt (fderiv ℝ f) (fderiv ℝ (fderiv ℝ f) z) z` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`.
+
+Establish `hfz : HasFDerivAt f (fderiv ℝ f z) z` using `(hf.differentiableAt (by norm_num)).hasFDerivAt`. Establish `hc : HasFDerivAt (fun x => (1 / 2 : ℝ) * (f x)⁻¹) _ z` using `((hasDerivAt_inv hz).comp_hasFDerivAt z hfz).const_mul (1 / 2 : ℝ)`. Establish `hprod` using `hc.smul hL`. Unfold `levi`. Establish `hprod' : HasFDerivAt (fun x => ((1 / 2 : ℝ) * (f x)⁻¹) • fderiv ℝ f x) _ z` using `hprod`.
+
+Rewrite using `[hderiv.fderiv_eq, hprod'.fderiv, hd]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+-/
 theorem leviForm_half_log_abs_of_fderiv_eq_zero {ι : Type} [Fintype ι] (f : (ι → ℂ) → ℝ) (z : ι → ℂ)
     (hf : ContDiffAt ℝ 2 f z) (hz : f z ≠ 0) (hd : fderiv ℝ f z = 0) (w : ι → ℂ) :
     levi (fun x => (1 / 2) * Real.log |f x|) z w = levi f z w / (2 * f z) := by
@@ -36,12 +45,22 @@ theorem leviForm_half_log_abs_of_fderiv_eq_zero {ι : Type} [Fintype ι] (f : (�
   simp
   field_simp
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun s : ℝ => s • v) v t` using `by simpa using (hasDerivAt_id t).smul_const v`. Conclude with `h.hasFDerivAt.comp_hasDerivAt t h1`.
+-/
 theorem hasDerivAt_line {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {φ : E → ℝ}
     {v : E} {t : ℝ} (h : DifferentiableAt ℝ φ (t • v)) :
     HasDerivAt (fun s : ℝ => φ (s • v)) (fderiv ℝ φ (t • v) v) t := by
   have h1 : HasDerivAt (fun s : ℝ => s • v) v t := by simpa using (hasDerivAt_id t).smul_const v
   exact h.hasFDerivAt.comp_hasDerivAt t h1
 
+/- English proof (translation)
+Establish `hd : ∀ x, DifferentiableAt ℝ φ x` using `fun x => hφ.differentiable (by norm_num) x`. Establish `e : deriv (fun s : ℝ => φ (s • v)) = fun s => fderiv ℝ φ (s • v) v`. Use function extensionality and compare the values at `s`. Conclude with `(hasDerivAt_line (hd _)).deriv`. Rewrite using `[e]`.
+
+Establish `hf2 : Differentiable ℝ (fderiv ℝ φ)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiable (by norm_num)`. Establish `h1 : HasDerivAt (fun s : ℝ => s • v) v 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).smul_const v`. Establish `h2` using `(hf2 ((0 : ℝ) • v)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h3` using `h2.clm_apply (hasDerivAt_const (0 : ℝ) v)`. Rewrite `h3` using `[zero_smul]`.
+
+Simplify using `using h3.deriv`.
+-/
 theorem deriv2_line {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {φ : E → ℝ}
     (hφ : ContDiff ℝ 2 φ) (v : E) :
     deriv (deriv (fun s : ℝ => φ (s • v))) 0 = fderiv ℝ (fderiv ℝ φ) 0 v v := by
@@ -58,6 +77,9 @@ theorem deriv2_line {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {φ :
   rw [zero_smul] at h3
   simpa using h3.deriv
 
+/- English proof (translation)
+Unfold `levi`. Rewrite using `[deriv2_line hφ w, deriv2_line hφ (Complex.I • w)]`.
+-/
 theorem levi_eq_lines {ι : Type*} [Fintype ι] {φ : (ι → ℂ) → ℝ} (hφ : ContDiff ℝ 2 φ)
     (w : ι → ℂ) :
     levi φ 0 w = (deriv (deriv (fun s : ℝ => φ (s • w))) 0 +
@@ -65,22 +87,34 @@ theorem levi_eq_lines {ι : Type*} [Fintype ι] {φ : (ι → ℂ) → ℝ} (hφ
   unfold levi
   rw [deriv2_line hφ w, deriv2_line hφ (Complex.I • w)]
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_line (v := v) (t := 0) (by rwa [zero_smul])`. Rewrite using `[h.deriv, zero_smul]`.
+-/
 theorem fderiv_line_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {φ : E → ℝ}
     (hφ : DifferentiableAt ℝ φ 0) (v : E) :
     fderiv ℝ φ 0 v = deriv (fun s : ℝ => φ (s • v)) 0 := by
   have h := hasDerivAt_line (v := v) (t := 0) (by rwa [zero_smul])
   rw [h.deriv, zero_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Conclude with `((Polynomial.hasDerivAt D (s : ℂ)).real_of_complex).deriv`.
+-/
 theorem deriv_re_eval (D : ℂ[X]) :
     deriv (fun s : ℝ => (D.eval (s : ℂ)).re) = fun s : ℝ => (D.derivative.eval (s : ℂ)).re := by
   funext s
   exact ((Polynomial.hasDerivAt D (s : ℂ)).real_of_complex).deriv
 
+/- English proof (translation)
+Rewrite using `[deriv_re_eval]`. Simplify using `[← Polynomial.coeff_zero_eq_eval_zero, Polynomial.coeff_derivative]`.
+-/
 theorem deriv_re_eval_zero (D : ℂ[X]) :
     deriv (fun s : ℝ => (D.eval (s : ℂ)).re) 0 = (D.coeff 1).re := by
   rw [deriv_re_eval]
   simp [← Polynomial.coeff_zero_eq_eval_zero, Polynomial.coeff_derivative]
 
+/- English proof (translation)
+Rewrite using `[deriv_re_eval, deriv_re_eval]`. Simplify using `[← Polynomial.coeff_zero_eq_eval_zero, Polynomial.coeff_derivative]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv2_re_eval_zero (D : ℂ[X]) :
     deriv (deriv (fun s : ℝ => (D.eval (s : ℂ)).re)) 0 = 2 * (D.coeff 2).re := by
   rw [deriv_re_eval, deriv_re_eval]
@@ -89,9 +123,15 @@ theorem deriv2_re_eval_zero (D : ℂ[X]) :
 
 def cf {α β : Type*} (n : ℕ) (P : Matrix α β ℂ[X]) : Matrix α β ℂ := P.map fun p => p.coeff n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cf_apply {α β : Type*} (n : ℕ) (P : Matrix α β ℂ[X]) (i : α) (j : β) :
     cf n P i j = (P i j).coeff n := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cf, Matrix.map_apply, Matrix.mul_apply, Polynomial.finset_sum_coeff, Polynomial.coeff_mul, Matrix.sum_apply]`. Conclude with `Finset.sum_comm`.
+-/
 theorem cf_mul {α β γ : Type*} [Fintype β] (n : ℕ) (P : Matrix α β ℂ[X]) (Q : Matrix β γ ℂ[X]) :
     cf n (P * Q) = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, cf x.1 P * cf x.2 Q := by
   ext i j
@@ -99,14 +139,23 @@ theorem cf_mul {α β γ : Type*} [Fintype β] (n : ℕ) (P : Matrix α β ℂ[X
     Matrix.sum_apply]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [cf, Matrix.map_apply, Matrix.mul_apply, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul]`.
+-/
 theorem cf_mapC_mul {α β γ : Type*} [Fintype β] (n : ℕ) (A : Matrix α β ℂ)
     (P : Matrix β γ ℂ[X]) : cf n (A.map C * P) = A * cf n P := by
   ext i j
   simp only [cf, Matrix.map_apply, Matrix.mul_apply, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, Polynomial.coeff_C_mul_X]`.
+-/
 theorem coeff_X_mul_C (a : ℂ) (n : ℕ) : (X * C a).coeff n = if n = 1 then a else 0 := by
   rw [mul_comm, Polynomial.coeff_C_mul_X]
 
+/- English proof (translation)
+Establish `e1` using `Polynomial.X_mul_divX_add q`. Establish `e2` using `Polynomial.X_mul_divX_add q.divX`. Rewrite `e1` using `[h0, map_zero, add_zero]`. Rewrite `e2` using `[Polynomial.coeff_divX, zero_add, h1, map_zero, add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_X_sq_mul (q : ℂ[X]) (h0 : q.coeff 0 = 0) (h1 : q.coeff 1 = 0) :
     q = X ^ 2 * q.divX.divX := by
   have e1 := Polynomial.X_mul_divX_add q
@@ -117,6 +166,13 @@ theorem eq_X_sq_mul (q : ℂ[X]) (h0 : q.coeff 0 = 0) (h1 : q.coeff 1 = 0) :
     _ = X * (X * q.divX.divX) := by rw [e2]
     _ = X ^ 2 * q.divX.divX := by ring
 
+/- English proof (translation)
+Establish `hmap : (A.map C + (X ^ 2 : ℂ[X]) • M).map (Ideal.Quotient.mk (Ideal.span {X ^ 2})) = (A.map C).map (Ideal.Quotient.mk (Ideal.span {(X : ℂ[X]) ^ 2}))`. Use extensionality with `i j`. Simplify using `[Ideal.Quotient.mk_singleton_self]`. Establish `h` using `congrArg Matrix.det hmap`. Establish `e1 : (Ideal.Quotient.mk (Ideal.span {(X : ℂ[X]) ^ 2})) (A.map C + (X ^ 2 : ℂ[X]) • M).det = (Ideal.Quotient.mk (Ideal.span {(X : ℂ[X]) ^ 2})) (A.map C).det`.
+
+Rewrite using `[RingHom.map_det, RingHom.map_det]`. Conclude with `h`. Rewrite `e1` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨r, hr⟩` from `e1`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Establish `hdet : (A.map C).det = C A.det` using `(RingHom.map_det C A).symm`. Rewrite `hr` using `[hdet]`. Take the linear combination `hr`.
+-/
 theorem det_map_C_add_X_sq_smul {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ)
     (M : Matrix n n ℂ[X]) :
     ∃ r : ℂ[X], (A.map C + (X ^ 2 : ℂ[X]) • M).det = C A.det + X ^ 2 * r := by
@@ -136,6 +192,11 @@ theorem det_map_C_add_X_sq_smul {n : Type*} [Fintype n] [DecidableEq n] (A : Mat
   rw [hdet] at hr
   linear_combination hr
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1' : (P i j).coeff 1 = 0`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Simplify `this` using `[cf]`. Establish `hq0 : (P i j - C ((P i j).coeff 0)).coeff 0 = 0` using `by simp`.
+
+Establish `hq1 : (P i j - C ((P i j).coeff 0)).coeff 1 = 0` using `by simp [h1', Polynomial.coeff_C]`. Simplify using `only [Matrix.add_apply, Matrix.map_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, cf]`. Rewrite using `[← eq_X_sq_mul _ hq0 hq1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eq_map_C_add_X_sq_smul {n : Type*} (P : Matrix n n ℂ[X]) (h1 : cf 1 P = 0) :
     P = (cf 0 P).map C + (X ^ 2 : ℂ[X]) • (P - (cf 0 P).map C).map (fun q => q.divX.divX) := by
   ext i j
@@ -148,6 +209,11 @@ theorem eq_map_C_add_X_sq_smul {n : Type*} (P : Matrix n n ℂ[X]) (h1 : cf 1 P 
   rw [← eq_X_sq_mul _ hq0 hq1]
   ring
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `det_map_C_add_X_sq_smul (cf 0 P) ((P - (cf 0 P).map C).map fun q => q.divX.divX)`. Rewrite `hr` using `[← eq_map_C_add_X_sq_smul P h1]`. Rewrite using `[hr]`. Prove the components needed by the constructor for the conclusion. Simplify using `[Polynomial.coeff_X_pow_mul']`.
+
+Simplify using `[Polynomial.coeff_X_pow_mul', Polynomial.coeff_C]`.
+-/
 theorem det_coeff_zero_one_of_coeffMatrix_one {n : Type*} [Fintype n] [DecidableEq n] (P : Matrix n n ℂ[X])
     (h1 : cf 1 P = 0) : P.det.coeff 0 = (cf 0 P).det ∧ P.det.coeff 1 = 0 := by
   obtain ⟨r, hr⟩ := det_map_C_add_X_sq_smul (cf 0 P) ((P - (cf 0 P).map C).map fun q => q.divX.divX)
@@ -157,6 +223,17 @@ theorem det_coeff_zero_one_of_coeffMatrix_one {n : Type*} [Fintype n] [Decidable
   · simp [Polynomial.coeff_X_pow_mul']
   · simp [Polynomial.coeff_X_pow_mul', Polynomial.coeff_C]
 
+/- English proof (translation)
+Use `set N : Matrix n n ℂ[X] := (P - (cf 0 P).map C).map (fun q => q.divX.divX) with hN`. Use `set K : Matrix n n ℂ[X] := diagonal (fun a => C (d a)⁻¹) * N with hK`. Establish `hP` using `eq_map_C_add_X_sq_smul P h1`. Rewrite `hP` using `[← hN]`. Establish `hD : (cf 0 P).map C = diagonal (fun a => C (d a))`.
+
+Rewrite using `[h0, Matrix.diagonal_map (map_zero C)]`. Establish `hfac : P = diagonal (fun a => C (d a)) * (1 + ((X : ℂ[X]) ^ 2) • K)`. Establish `hone : diagonal (fun a => C (d a)) * diagonal (fun a => C (d a)⁻¹) = (1 : Matrix n n ℂ[X])`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[← map_mul, mul_inv_cancel₀ (hd a), map_one]`. Rewrite using `[mul_add, mul_one, Matrix.mul_smul, hK, ← mul_assoc, hone, one_mul, ← hD]`. Conclude with `hP`. Establish `hdet : P.det = C (∏ a, d a) * (1 + ((X : ℂ[X]) ^ 2) • K).det` using `by conv_lhs => rw [hfac]`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_diagonal, map_prod]`. Rewrite using `[hdet, Polynomial.coeff_C_mul, Matrix.det_one_add_smul]`. Establish `e4 : ((X : ℂ[X]) ^ 2) ^ 2 = X ^ 4` using `by ring`. Rewrite using `[e4, Polynomial.coeff_add, Polynomial.coeff_add, Polynomial.coeff_mul_X_pow', Polynomial.coeff_mul_X_pow']`. Simplify using `only [show ¬ (4 ≤ 2) by norm_num, show (2 ≤ 2) by norm_num, if_false, if_true, Nat.sub_self, add_zero, Polynomial.coeff_one, show (2 : ℕ) ≠ 0 by norm_num, if_false, zero_add]`.
+
+Use `congr 1`. Rewrite using `[Matrix.trace, Polynomial.finset_sum_coeff]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, hK, Matrix.diagonal_mul, Polynomial.coeff_C_mul, hN]`. Simplify using `[Polynomial.coeff_divX, cf]`.
+-/
 theorem coeff2_det_of {n : Type*} [Fintype n] [DecidableEq n] (P : Matrix n n ℂ[X])
     (d : n → ℂ) (hd : ∀ a, d a ≠ 0) (h0 : cf 0 P = diagonal d) (h1 : cf 1 P = 0) :
     P.det.coeff 2 = (∏ a, d a) * ∑ a, (d a)⁻¹ * cf 2 P a a := by

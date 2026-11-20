@@ -31,6 +31,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.HeckeLevelFrameExistence
 
+/- English proof (translation)
+Introduce `E _ _ _ n w hw b ϖ c`. Establish `hg : gc w b ϖ c = ∑ x ∈ c.support, (c x * (((iwU n w b).relIndex (KL n w) : ℕ) : ℂ)) • fU n w b ϖ (lOf x)`. Use function extensionality and compare the values at `γ`. Simplify using `only [gc, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hg]`.
+
+Conclude with `isHecke_fsum _ _ _ _ fun x => GlobalTheory.CompanionTheory.MatchPow.fU_hecke hw b ϖ _ (GlobalTheory.LocFinU.continuous_cj w)`.
+-/
 theorem gcHecke : GcHecke := by
   intro E _ _ _ n w hw b ϖ c
   have hg : gc w b ϖ c = ∑ x ∈ c.support,
@@ -40,6 +45,9 @@ theorem gcHecke : GcHecke := by
   rw [hg]
   exact isHecke_fsum _ _ _ _ fun x => GlobalTheory.CompanionTheory.MatchPow.fU_hecke hw b ϖ _ (GlobalTheory.LocFinU.continuous_cj w)
 
+/- English proof (translation)
+The claim follows from `frameEx_of hUS (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.CompanionTheory.LocHecke.locAlg) (GlobalTheory.T.spectral_trace_of_model_algebra GlobalTheory.T.unitary_model_holds GlobalTheory.CompanionTheory.LocHecke.locAlg) GlobalTheory.CompanionTheory.LocHecke.locAl …`.
+-/
 theorem frameEx_of_fin (hUS : USide) (hCF : CandFin) : FrameEx :=
   frameEx_of hUS (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.CompanionTheory.LocHecke.locAlg) (GlobalTheory.T.spectral_trace_of_model_algebra GlobalTheory.T.unitary_model_holds GlobalTheory.CompanionTheory.LocHecke.locAlg)
     GlobalTheory.CompanionTheory.LocHecke.locAlg (exTbOf Inert.frameInert_all.1 Inert.frameInert_all.2.1 inertInSec) Inert.frameInert_all.2.2.2.1

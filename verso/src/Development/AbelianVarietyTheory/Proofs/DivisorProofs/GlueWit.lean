@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.EndLoc.HomGlue
 
+/- English proof (translation)
+Use `Scheme.Cover.hom_ext (𝒰.pullback₁ (pullback.snd A.hom t)) _ _ fun (i : 𝒰.I₀) => ?_` and prove the remaining obligations. Establish `w : (pullback.fst (pullback.snd A.hom t) (𝒰.f i) ≫ pullback.fst A.hom t) ≫ A.hom = pullback.snd (pullback.snd A.hom t) (𝒰.f i) ≫ 𝒰.f i ≫ t`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pullback.condition, Category.assoc]`. Establish `e : pullback.fst (pullback.snd A.hom t) (𝒰.f i) = pullback.lift _ _ w ≫ pmap A t (𝒰.f i)`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, pullback.condition]`. Use `show pullback.fst (pullback.snd A.hom t) (𝒰.f i) ≫ g₁ = pullback.fst (pullback.snd A.hom t) (𝒰.f i) ≫ g₂`. Rewrite using `[e, Category.assoc, Category.assoc, h]`.
+-/
 theorem pmap_hom_ext {S Z Y : Scheme.{0}} (A : Over S) (𝒰 : Z.OpenCover) (t : Z ⟶ S)
     {g₁ g₂ : pullback A.hom t ⟶ Y} (h : ∀ i, pmap A t (𝒰.f i) ≫ g₁ = pmap A t (𝒰.f i) ≫ g₂) : g₁ = g₂ := by
   refine Scheme.Cover.hom_ext (𝒰.pullback₁ (pullback.snd A.hom t)) _ _ fun (i : 𝒰.I₀) => ?_
@@ -24,6 +29,11 @@ theorem pmap_hom_ext {S Z Y : Scheme.{0}} (A : Over S) (𝒰 : Z.OpenCover) (t :
   show pullback.fst (pullback.snd A.hom t) (𝒰.f i) ≫ g₁ = pullback.fst (pullback.snd A.hom t) (𝒰.f i) ≫ g₂
   rw [e, Category.assoc, Category.assoc, h]
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.Cover.hom_ext (𝒰.pullback₁ X.hom) _ _ fun (i : 𝒰.I₀) => ?_` and prove the remaining obligations. Establish `e1 : ((Over.pullback (𝒰.f i)).map g₁).left ≫ pullback.fst Y.hom (𝒰.f i) = pullback.fst X.hom (𝒰.f i) ≫ g₁.left` using `pullback.lift_fst _ _ _`. Establish `e2 : ((Over.pullback (𝒰.f i)).map g₂).left ≫ pullback.fst Y.hom (𝒰.f i) = pullback.fst X.hom (𝒰.f i) ≫ g₂.left` using `pullback.lift_fst _ _ _`. Use `show pullback.fst X.hom (𝒰.f i) ≫ g₁.left = pullback.fst X.hom (𝒰.f i) ≫ g₂.left`.
+
+Rewrite using `[← e1, ← e2, h i]`.
+-/
 theorem over_hom_ext_cover {Z : Scheme.{0}} (𝒰 : Z.OpenCover) {X Y : Over Z} {g₁ g₂ : X ⟶ Y}
     (h : ∀ i, (Over.pullback (𝒰.f i)).map g₁ = (Over.pullback (𝒰.f i)).map g₂) : g₁ = g₂ := by
   apply Over.OverMorphism.ext
@@ -35,6 +45,11 @@ theorem over_hom_ext_cover {Z : Scheme.{0}} (𝒰 : Z.OpenCover) {X Y : Over Z} 
   show pullback.fst X.hom (𝒰.f i) ≫ g₁.left = pullback.fst X.hom (𝒰.f i) ≫ g₂.left
   rw [← e1, ← e2, h i]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `over_hom_ext_cover 𝒰 fun i => ?_` and prove the remaining obligations. Establish `h` using `(hf i).one_hom`. Rewrite `h` using `[Functor.obj.η_def, Functor.obj.η_def, Category.assoc, cancel_epi]`. Rewrite using `[Functor.map_comp, h]`.
+
+Use `over_hom_ext_cover 𝒰 fun i => ?_` and prove the remaining obligations. Establish `h` using `(hf i).mul_hom`. Rewrite `h` using `[Functor.obj.μ_def, Functor.obj.μ_def, Functor.LaxMonoidal.μ_natural_assoc, Category.assoc, cancel_epi]`. Rewrite using `[Functor.map_comp, Functor.map_comp, h]`.
+-/
 theorem isMonHom_of_cover {Z : Scheme.{0}} (𝒰 : Z.OpenCover) {G H : Over Z} [MonObj G] [MonObj H] (f : G ⟶ H)
     (hf : ∀ i, IsMonHom ((Over.pullback (𝒰.f i)).map f)) : IsMonHom f := by
   constructor
@@ -48,6 +63,9 @@ theorem isMonHom_of_cover {Z : Scheme.{0}} (𝒰 : Z.OpenCover) {G H : Over Z} [
       cancel_epi] at h
     rw [Functor.map_comp, Functor.map_comp, h]
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullLinComb L a (fun _ : PUnit => b) (fun _ => b ≫ a) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (GlobalTheory.PolBaseChange.lbIso_refl (pull_isLB hL _))`.
+-/
 theorem lbIso_pull_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶ X) (b : Y' ⟶ Y) :
     LBIso ((L.pull a).pull b) (L.pull (b ≫ a)) :=
   LBIso.chartPull (chartPullLinComb L a (fun _ : PUnit => b) (fun _ => b ≫ a) (fun _ => 1) (𝟙 _)
@@ -55,6 +73,11 @@ theorem lbIso_pull_pull {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y �
 
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] {L : LB A.left} {M : LB B.left}
 
+/- English proof (translation)
+Take `⟨A', B', _, _, φA, φB, Φ, hA, hB, -, -, e, e1, e2, e3⟩` from `h`. Use `haveI : IsIso e := by`. Establish `: e = hA.1.isoPullback.hom` using `pullback.hom_ext (by rw [e1, IsPullback.isoPullback_hom_fst]) (by rw [e2, IsPullback.isoPullback_hom_snd])`. Rewrite using `[this]`. Use `infer_instance`.
+
+Rewrite using `[← cancel_epi e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pullback.lift_snd_assoc, Category.assoc, reassoc_of% e2]`.
+-/
 theorem wit_w {Z Z' : Scheme.{0}} {t : Z ⟶ S} {f : pullback A.hom t ⟶ B.left} (g : Z' ⟶ Z)
     (h : Wit A B L M (g ≫ t) (pmap A t g ≫ f)) :
     pmap A t g ≫ f ≫ B.hom = pmap A t g ≫ pullback.snd A.hom t ≫ t := by
@@ -70,6 +93,17 @@ theorem wit_w {Z Z' : Scheme.{0}} {t : Z ⟶ S} {f : pullback A.hom t ⟶ B.left
     _ = e ≫ pmap A t g ≫ pullback.snd A.hom t ≫ t := by
         rw [pullback.lift_snd_assoc, Category.assoc, reassoc_of% e2]
 
+/- English proof (translation)
+Take `⟨A', B', _, _, φA, φB, Φ', hA, hB, hΦ', -, e, e1, e2, e3⟩` from `h`. Establish `hPA` using `(isGrpPullback_pullback ((Over.pullback t).obj A) g).comp (isGrpPullback_pullback A t)`. Establish `hPB` using `(isGrpPullback_pullback ((Over.pullback t).obj B) g).comp (isGrpPullback_pullback B t)`. Take `⟨a, ha, ha'⟩` from `grpPullback_iso hPA hA`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso hB hPB`.
+
+Establish `key : a.hom.left ≫ e ≫ pmap A t g = pullback.fst _ g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst, e1, ha']`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, reassoc_of% e2, Over.w_assoc a.hom]`. Conclude with `pullback.condition.symm`.
+
+Establish `hmap : ((Over.pullback g).map Φ).left ≫ pullback.fst _ g = pullback.fst _ g ≫ Φ.left` using `pullback.lift_fst _ _ _`. Establish `eq : (Over.pullback g).map Φ = a.hom ≫ Φ' ≫ b.hom`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hPB.1.hom_ext` to reduce the goal to its premises. Establish `lhs : ((Over.pullback g).map Φ).left ≫ pullback.fst _ g ≫ pullback.fst B.hom t = pullback.fst _ g ≫ f`.
+
+Rewrite using `[← Category.assoc, hmap, Category.assoc, hΦ]`. Establish `rhs : (a.hom ≫ Φ' ≫ b.hom).left ≫ pullback.fst _ g ≫ pullback.fst B.hom t = pullback.fst _ g ≫ f`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[hb', ← e3, ← key]`. Simplify using `only [Category.assoc]`.
+
+Conclude with `lhs.trans rhs.symm`. Conclude with `(Over.w _).trans (Over.w _).symm`. Rewrite using `[eq]`. Use `infer_instance`.
+-/
 theorem isMonHom_pull_of_wit {Z Z' : Scheme.{0}} {t : Z ⟶ S} {f : pullback A.hom t ⟶ B.left} (g : Z' ⟶ Z)
     (h : Wit A B L M (g ≫ t) (pmap A t g ≫ f)) (Φ : (Over.pullback t).obj A ⟶ (Over.pullback t).obj B)
     (hΦ : Φ.left ≫ pullback.fst B.hom t = f) : IsMonHom ((Over.pullback g).map Φ) := by
@@ -101,6 +135,17 @@ theorem isMonHom_pull_of_wit {Z Z' : Scheme.{0}} {t : Z ⟶ S} {f : pullback A.h
   rw [eq]
   infer_instance
 
+/- English proof (translation)
+Take `⟨A', B', _, _, φA, φB, Φ', hA, hB, -, hI, e, e1, e2, e3⟩` from `h`. Use `set U := ((Over.pullback t).obj A).hom ⁻¹ᵁ g.opensRange with hU`. Establish `hr : Set.range ⇑(U.ι ≫ pullback.snd A.hom t) ⊆ Set.range ⇑g`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : U.ι x ∈ (U : Set _)` using `Scheme.Opens.range_ι U ▸ ⟨x, rfl⟩`.
+
+Conclude with `Scheme.Hom.mem_opensRange.1 hx`. Establish `hl : IsOpenImmersion.lift g _ hr ≫ g = U.ι ≫ pullback.snd A.hom t` using `IsOpenImmersion.lift_fac _ _ _`. Establish `wl : (U.ι ≫ pullback.fst A.hom t) ≫ A.hom = IsOpenImmersion.lift g _ hr ≫ g ≫ t`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `(congrArg (· ≫ t) hl.symm).trans (Category.assoc _ _ _)`.
+
+Establish `he' : pullback.lift _ _ wl ≫ pmap A t g = U.ι`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, hl]`. Establish `he : hA.1.isoPullback.inv ≫ e = 𝟙 _`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e1, IsPullback.isoPullback_inv_fst, Category.id_comp]`. Rewrite using `[Category.assoc, e2, IsPullback.isoPullback_inv_snd, Category.id_comp]`. Take `⟨E, hE⟩ : ∃ E, E ≫ e = pullback.lift _ _ wl` from `⟨pullback.lift _ _ wl ≫ hA.1.isoPullback.inv, by rw [Category.assoc, he, Category.comp_id]⟩`. Establish `h2 : LBIso (L.pull (U.ι ≫ pullback.fst A.hom t)) ((M.pull (pullback.fst B.hom t)).pull (U.ι ≫ Φ.left))`.
+
+Use `lbIso_pull hL hM E ?_ ?_ hI` and prove the remaining obligations. Rewrite using `[← e1, ← Category.assoc, hE, pullback.lift_fst]`. Rewrite using `[Category.assoc, hΦ, ← e3, ← Category.assoc, hE, ← Category.assoc, he']`. Conclude with `LBIso.trans (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) (pull_isLB (pull_isLB (pull_isLB hM _) _) _) (lbIso_pull_pull hL _ _) (LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hM _) _) (pull_isLB (pull_isLB (pull_isLB hM _) _) _) h2 (lbIso_pull_pull (pull_isLB hM _) _ _).sy …`.
+-/
 theorem local_iso (hL : L.IsLB) (hM : M.IsLB) {Z Z' : Scheme.{0}} {t : Z ⟶ S} {f : pullback A.hom t ⟶ B.left}
     (g : Z' ⟶ Z) [IsOpenImmersion g] (h : Wit A B L M (g ≫ t) (pmap A t g ≫ f))
     (Φ : (Over.pullback t).obj A ⟶ (Over.pullback t).obj B) (hΦ : Φ.left ≫ pullback.fst B.hom t = f) :
@@ -135,6 +180,13 @@ theorem local_iso (hL : L.IsLB) (hM : M.IsLB) {Z Z' : Scheme.{0}} {t : Z ⟶ S} 
     (lbIso_pull_pull hL _ _) (LBIso.trans (pull_isLB hL _) (pull_isLB (pull_isLB hM _) _)
       (pull_isLB (pull_isLB (pull_isLB hM _) _) _) h2 (lbIso_pull_pull (pull_isLB hM _) _ _).symm)
 
+/- English proof (translation)
+Introduce `hiso S A B _ _ _ _ L M hL hM hA hB hrA hrB Z 𝒰 t f hw`. Establish `w : f ≫ B.hom = pullback.snd A.hom t ≫ t` using `pmap_hom_ext A 𝒰 t fun i => wit_w (𝒰.f i) (hw i)`. Set `Φ : (Over.pullback t).obj A ⟶ (Over.pullback t).obj B` to `Over.homMk (pullback.lift f (pullback.snd A.hom t) w) (pullback.lift_snd _ _ _)`. Establish `hΦf : Φ.left ≫ pullback.fst B.hom t = f` using `pullback.lift_fst _ _ _`. Establish `hΦ : IsMonHom Φ` using `isMonHom_of_cover 𝒰 Φ fun i => isMonHom_pull_of_wit (𝒰.f i) (hw i) Φ hΦf`.
+
+Establish `hA'` using `GlobalTheory.isAbelianScheme_pullback_obj t A hA`. Establish `hB'` using `GlobalTheory.isAbelianScheme_pullback_obj t B hB`. Use `haveI : IsCommMonObj ((Over.pullback t).obj A) := hA'.comm`. Use `haveI : IsCommMonObj ((Over.pullback t).obj B) := hB'.comm`. Establish `hI : LBIso (L.pull (pullback.fst A.hom t)) ((M.pull (pullback.fst B.hom t)).pull Φ.left)` using `hiso Z _ _ _ _ Φ hΦ hA' hB' (pull_isLB hL _) (pull_isLB hM _) (GlobalTheory.PolBaseChange.rigidified_pull (isGrpPullback_pullback A t) hrA) (GlobalTheory.PolBaseChange.rigidified_pull (isGrpPullback_pullback B t) hrB) fun z => ⟨(𝒰.f (𝒰.idx z)).opensRange, Scheme.Hom.mem_opensRang …`.
+
+Conclude with `⟨_, _, inferInstance, inferInstance, _, _, Φ, isGrpPullback_pullback A t, isGrpPullback_pullback B t, hΦ, hI, 𝟙 _, Category.id_comp _, Category.id_comp _, (Category.id_comp _).trans hΦf.symm⟩`.
+-/
 theorem glue_wit : (∀ (H : Scheme.{0}) (A B : Over H) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left) (Φ : A ⟶ B), IsMonHom Φ → IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → (∀ h : H, ∃ W : H.Opens, h ∈ W ∧ LBIso (L.pull (A.hom ⁻¹ᵁ W).ι) ((M.pull Φ.left).pull (A.hom ⁻¹ᵁ W).ι)) → LBIso L (M.pull Φ.left)) → ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left), L.IsLB → M.IsLB → IsAbelianScheme A → IsAbelianScheme B → Out.Rigidified A L → Out.Rigidified B M → ∀ (Z : Scheme.{0}) (𝒰 : Z.OpenCover) (t : Z ⟶ S) (f : pullback A.hom t ⟶ B.left), (∀ i, HomGlue.Wit A B L M (𝒰.f i ≫ t) (HomGlue.pmap A t (𝒰.f i) ≫ f)) → HomGlue.Wit A B L M t f := by
   intro hiso S A B _ _ _ _ L M hL hM hA hB hrA hrB Z 𝒰 t f hw
   have w : f ≫ B.hom = pullback.snd A.hom t ≫ t :=

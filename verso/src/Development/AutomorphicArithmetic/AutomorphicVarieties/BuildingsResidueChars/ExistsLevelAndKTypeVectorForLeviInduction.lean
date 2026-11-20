@@ -19,40 +19,77 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (archProj_of_mem (A := ((a : archGroup K n) : ArchUnits K n)) (maxCompact_le_normOneGL a.2))`.
+-/
 private theorem arcV {n : ℕ} (a : archCompact K n) :
     ((arc1 a : G1 K n) : AdelicGLn.AdelicGL K n) = infEmb K n (a : archGroup K n) :=
   congrArg Subtype.val (archProj_of_mem (A := ((a : archGroup K n) : ArchUnits K n))
     (maxCompact_le_normOneGL a.2))
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact h.2)))`.
+-/
 private theorem finV {n : ℕ} (h : AdelicGLn.integralFiniteGL K n) :
     ((fin1 (h : FA K n) : G1 K n) : AdelicGLn.AdelicGL K n) = finEmb K n (h : FA K n) :=
   congrArg Subtype.val (MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact h.2)))
 
+/- English proof (translation)
+The claim follows from `(MultiplicityOne.finProj_mul_archProj_comm h _).symm`.
+-/
 private theorem cm {n : ℕ} (a : archCompact K n) (h : FA K n) : Commute (arc1 a) (fin1 h) :=
   (MultiplicityOne.finProj_mul_archProj_comm h _).symm
 
+/- English proof (translation)
+The claim follows from `map_mul (archP K n) _ _`.
+-/
 private theorem arcM {n : ℕ} (a b : archCompact K n) : (arc1 (a * b) : G1 K n) = arc1 a * arc1 b :=
   map_mul (archP K n) _ _
 
+/- English proof (translation)
+The claim follows from `map_inv (archP K n) _`.
+-/
 private theorem arcI {n : ℕ} (a : archCompact K n) : (arc1 a⁻¹ : G1 K n) = (arc1 a)⁻¹ :=
   map_inv (archP K n) _
 
+/- English proof (translation)
+The claim follows from `map_mul (MultiplicityOne.finProj K n) a b`.
+-/
 private theorem fin1M {n : ℕ} (a b : FA K n) : (fin1 (a * b) : G1 K n) = fin1 a * fin1 b :=
   map_mul (MultiplicityOne.finProj K n) a b
 
+/- English proof (translation)
+The claim follows from `map_one (MultiplicityOne.finProj K n)`.
+-/
 private theorem finite_projection_one {n : ℕ} : (fin1 (1 : FA K n) : G1 K n) = 1 := map_one (MultiplicityOne.finProj K n)
 
+/- English proof (translation)
+The claim follows from `map_one (archP K n)`.
+-/
 private theorem archimedean_projection_one {n : ℕ} : (arc1 (1 : archCompact K n) : G1 K n) = 1 := map_one (archP K n)
 
+/- English proof (translation)
+Rewrite using `[zt, ← map_one (centralSection K 2)]`. Conclude with `congrArg _ (Subtype.ext Real.exp_zero)`.
+-/
 private theorem zt00 : zt K 0 = 1 := by
   rw [zt, ← map_one (centralSection K 2)]
   exact congrArg _ (Subtype.ext Real.exp_zero)
 
+/- English proof (translation)
+Rewrite using `[← AdelicGLn.prodEquiv_apply_fst, prodEquiv_finEmb]`. Both sides reduce to the same expression.
+-/
 private theorem fin_fst {n : ℕ} (y : FA K n) (a b : Fin n) :
     (finEmb K n y a b).1 = (1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) a b := by
   rw [← AdelicGLn.prodEquiv_apply_fst, prodEquiv_finEmb]
   rfl
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun r s => ?_)` and prove the remaining obligations. Rewrite using `[AdelicGLn.prodEquiv_apply_fst]`. Take `⟨r, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective r`. Take `⟨s, rfl⟩` from `(finSumFinEquiv (m := 2) (n := 2)).surjective s`. Express the relevant statement in the definitionally equal form `_ = (1 : Matrix (Fin (2 + 2)) (Fin (2 + 2)) (InfiniteAdeleRing K)) _ _`.
+
+Rewrite using `[← Matrix.submatrix_apply (1 : Matrix _ _ _) finSumFinEquiv finSumFinEquiv, Matrix.submatrix_one_equiv, ← Matrix.fromBlocks_one]`. Simplify using `only [blk, reindex_apply, submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Conclude with `fin_fst _ r s`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Conclude with `fin_fst _ r s`.
+-/
 private theorem blk_fst (d₁ d₂ : FA K 2) :
     (AdelicGLn.prodEquiv K (2 + 2) (blk (finEmb K 2 d₁) (finEmb K 2 d₂))).1 = 1 := by
   refine Units.ext (Matrix.ext fun r s => ?_)
@@ -69,6 +106,15 @@ private theorem blk_fst (d₁ d₂ : FA K 2) :
   · rfl
   · exact fin_fst _ r s
 
+/- English proof (translation)
+Take `⟨α, β, -, -, hdec, -, -, -⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)`. Take `⟨_, _, _, _, _, _, _, hfin⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) 2`. Establish `hmem : lv (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 ∈ KG K (2 + 2)` using `(blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.1 _ (hfin d₁) _ (hfin d₂)`. Establish `e` using `hdec ⟨_, hmem⟩`. Simplify using `only at e`.
+
+Establish `e1 : ((lv (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = blk (finEmb K 2 (d₁ : FA K 2)) (finEmb K 2 (d₂ : FA K 2))`. Rewrite using `[(blkLaws (K := K)).1, neg_zero, zt00, mul_one, mul_one, finV, finV]`. Establish `e2` using `congrArg (fun g : G1 K (2 + 2) => (AdelicGLn.prodEquiv K (2 + 2) (g : AdelicGLn.AdelicGL K (2 + 2))).1) e`. Simplify using `only [e1, blk_fst, Subgroup.coe_mul, arcV, finV, map_mul, prodEquiv_infEmb, prodEquiv_finEmb, Prod.fst_mul, mul_one] at e2`. Establish `e3 : α ⟨_, hmem⟩ = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (archEquiv K (2 + 2)) e2` as an intermediate fact. Simplify using `using this.symm`. Use `⟨β ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[e3, archimedean_projection_one, one_mul]`.
+
+Conclude with `e`.
+-/
 private theorem lv_fin (d₁ d₂ : AdelicGLn.integralFiniteGL K 2) :
     ∃ h : AdelicGLn.integralFiniteGL K (2 + 2), lv (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 = fin1 (h : FA K (2 + 2)) := by
   obtain ⟨α, β, -, -, hdec, -, -, -⟩ := UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)
@@ -96,6 +142,11 @@ section Aux2
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Set `G : C(Y, C(Z, ℝ))` to `ContinuousMap.curry ⟨Function.uncurry F, hF⟩`. Establish `hL : Continuous fun g : C(Z, ℝ) => ∫ z, g z ∂ν`. Use `(LipschitzWith.of_dist_le_mul (K := (ν.real Set.univ).toNNReal) fun f g => ?_).continuous` and prove the remaining obligations. Establish `hi : ∀ g : C(Z, ℝ), Integrable g ν` using `fun g => g.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Rewrite using `[dist_eq_norm, ← integral_sub (hi f) (hi g), Real.coe_toNNReal _ measureReal_nonneg, dist_eq_norm, mul_comm]`.
+
+Use `norm_integral_le_of_norm_le_const (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `(f - g).norm_coe_le_norm z`. Conclude with `hL.comp G.continuous`.
+-/
 private theorem cont_int {Y Z : Type*} [TopologicalSpace Y] [TopologicalSpace Z] [CompactSpace Z] [MeasurableSpace Z]
     [OpensMeasurableSpace Z] (ν : Measure Z) [IsFiniteMeasure ν] (F : Y → Z → ℝ) (hF : Continuous (Function.uncurry F)) :
     Continuous fun y => ∫ z, F y z ∂ν := by
@@ -109,6 +160,9 @@ private theorem cont_int {Y Z : Type*} [TopologicalSpace Y] [TopologicalSpace Z]
     exact (f - g).norm_coe_le_norm z
   exact hL.comp G.continuous
 
+/- English proof (translation)
+Rewrite using `[integral_pos_iff_support_of_nonneg h0 (hg.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))]`. Conclude with `(isOpen_compl_singleton.preimage hg).measure_pos ν ⟨z₀, hz.ne'⟩`.
+-/
 private theorem int_pos {Z : Type*} [TopologicalSpace Z] [CompactSpace Z] [MeasurableSpace Z] [OpensMeasurableSpace Z]
     (ν : Measure Z) [IsFiniteMeasure ν] [ν.IsOpenPosMeasure] (g : Z → ℝ) (hg : Continuous g) (h0 : ∀ z, 0 ≤ g z) (z₀ : Z)
     (hz : 0 < g z₀) : 0 < ∫ z, g z ∂ν := by
@@ -116,6 +170,9 @@ private theorem int_pos {Z : Type*} [TopologicalSpace Z] [CompactSpace Z] [Measu
     (hg.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))]
   exact (isOpen_compl_singleton.preimage hg).measure_pos ν ⟨z₀, hz.ne'⟩
 
+/- English proof (translation)
+Establish `e : (arc1 a * fin1 d)⁻¹ = arc1 a⁻¹ * fin1 d⁻¹`. Rewrite using `[_root_.mul_inv_rev, ← arcI, ← map_inv (MultiplicityOne.finProj K n) d]`. Conclude with `(cm a⁻¹ d⁻¹).eq.symm`. Rewrite using `[e, ← mul_assoc]`. Conclude with `hF _ (V.inv_mem hd) _`.
+-/
 private theorem drop {n : ℕ} (V : Subgroup (FA K n)) (φ : G1 K n → ℂ) (hF : FixF V φ) (a : archCompact K n) (d : FA K n)
     (hd : d ∈ V) (m : G1 K n) : φ (m * (arc1 a * fin1 d)⁻¹) = φ (m * arc1 a⁻¹) := by
   have e : (arc1 a * fin1 d)⁻¹ = arc1 a⁻¹ * fin1 d⁻¹ := by
@@ -124,6 +181,9 @@ private theorem drop {n : ℕ} (V : Subgroup (FA K n)) (φ : G1 K n → ℂ) (hF
   rw [e, ← mul_assoc]
   exact hF _ (V.inv_mem hd) _
 
+/- English proof (translation)
+Rewrite using `[← h m]`. Use `hinv.integral_comp (Homeomorph.inv (archCompact K n)).measurableEmbedding (fun k => p k * φ (m * arc1 k))` as an intermediate fact. Simplify using `only [hs] at this`. Conclude with `this`.
+-/
 private theorem fixInv {n : ℕ} (κ : Measure (archCompact K n)) (hinv : MeasurePreserving (·⁻¹) κ κ) (p : archCompact K n → ℂ)
     (hs : ∀ k, p k⁻¹ = conj (p k)) (φ : G1 K n → ℂ) (h : FixA κ p φ) (m : G1 K n) :
     ∫ a, conj (p a) * φ (m * arc1 a⁻¹) ∂κ = φ m := by
@@ -132,6 +192,11 @@ private theorem fixInv {n : ℕ} (κ : Measure (archCompact K n)) (hinv : Measur
   simp only [hs] at this
   exact this
 
+/- English proof (translation)
+Establish `hm : Measurable (C.Φ 2).symm` using `(C.Φ 2).symm.continuous.measurable`. Establish `hE : MeasurePreserving (C.Φ 2).symm (Measure.pi fun _ : ι => μK) C.κ₂` using `⟨hm, rfl⟩`. Use `hE.of_semiconj (measurePreserving_pi _ _ fun i => Measure.measurePreserving_inv μK) (fun x => ?_) continuous_inv.measurable` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(C.Φ 2).symm (fun i => (x i)⁻¹) = ((C.Φ 2).symm x)⁻¹`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem κInv {ι : Type} [Fintype ι] (C : Co K ι) : MeasurePreserving (·⁻¹) C.κ₂ C.κ₂ := by
   have hm : Measurable (C.Φ 2).symm := (C.Φ 2).symm.continuous.measurable
   have hE : MeasurePreserving (C.Φ 2).symm (Measure.pi fun _ : ι => μK) C.κ₂ := ⟨hm, rfl⟩
@@ -141,10 +206,16 @@ private theorem κInv {ι : Type} [Fintype ι] (C : Co K ι) : MeasurePreserving
   rw [← map_inv]
   rfl
 
+/- English proof (translation)
+The claim follows from `continuous_finset_prod _ fun i _ => (continuous_const.mul (KT.continuous_conj_psi (n i) (q i) (n i))).comp ((continuous_apply i).comp (C.Φ 2).continuous)`.
+-/
 private theorem pCont {ι : Type} [Fintype ι] (C : Co K ι) (n : ι → ℕ) (q : ι → ℤ) : Continuous (C.p n q) :=
   continuous_finset_prod _ fun i _ =>
     (continuous_const.mul (KT.continuous_conj_psi (n i) (q i) (n i))).comp ((continuous_apply i).comp (C.Φ 2).continuous)
 
+/- English proof (translation)
+Simplify using `only [Co.p, map_inv, Pi.inv_apply, map_prod, T, KT.psi_self_inv, map_mul, map_inv₀, Complex.conj_ofReal, starRingEnd_self_apply]`.
+-/
 private theorem pStar {ι : Type} [Fintype ι] (C : Co K ι) (n : ι → ℕ) (q : ι → ℤ) (k : archCompact K 2) :
     C.p n q k⁻¹ = conj (C.p n q k) := by
   simp only [Co.p, map_inv, Pi.inv_apply, map_prod, T, KT.psi_self_inv, map_mul, map_inv₀, Complex.conj_ofReal,
@@ -154,6 +225,9 @@ private noncomputable def psi {m : ℕ} (α : KG K m → archCompact K m) (β : 
     (f : archCompact K m → ℂ) (χ : AdelicGLn.integralFiniteGL K m → ℂ) (g : G1 K m) : ℂ :=
   if h : g ∈ KG K m then f (α ⟨g, h⟩) * χ (β ⟨g, h⟩) else 0
 
+/- English proof (translation)
+Establish `hm : arc1 a * fin1 (h : FA K m) ∈ KG K m` using `mul_mem (ha a) (hf h)`. Take `⟨h1, h2⟩` from `hu a h ⟨_, hm⟩ rfl`. Rewrite using `[psi, dif_pos hm, h1, h2]`.
+-/
 private theorem psi_at {m : ℕ} {α : KG K m → archCompact K m} {β : KG K m → AdelicGLn.integralFiniteGL K m}
     (f : archCompact K m → ℂ) (χ : AdelicGLn.integralFiniteGL K m → ℂ)
     (hu : ∀ (a : archCompact K m) (h : AdelicGLn.integralFiniteGL K m) (k : KG K m),
@@ -165,6 +239,9 @@ private theorem psi_at {m : ℕ} {α : KG K m → archCompact K m} {β : KG K m 
   obtain ⟨h1, h2⟩ := hu a h ⟨_, hm⟩ rfl
   rw [psi, dif_pos hm, h1, h2]
 
+/- English proof (translation)
+Establish `e : (fun k : KG K m => psi α β f χ k) = fun k => f (α k) * χ (β k)`. Use function extensionality and compare the values at `k`. Rewrite using `[psi, dif_pos k.2]`. Rewrite using `[e]`. Conclude with `(hf.comp hα).mul (hχ.comp hβ)`.
+-/
 private theorem psi_cont {m : ℕ} {α : KG K m → archCompact K m} {β : KG K m → AdelicGLn.integralFiniteGL K m}
     {f : archCompact K m → ℂ} {χ : AdelicGLn.integralFiniteGL K m → ℂ} (hα : Continuous α) (hβ : Continuous β)
     (hf : Continuous f) (hχ : Continuous χ) : Continuous fun k : KG K m => psi α β f χ k := by
@@ -180,13 +257,24 @@ section Aux3
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `(blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.1 _ v₁.2 _ v₂.2`.
+-/
 private theorem lvKG (v₁ v₂ : KG K 2) : lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 ∈ KG K (2 + 2) :=
   (blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.1 _ v₁.2 _ v₂.2
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, h, _⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)`. Conclude with `h y`.
+-/
 private theorem arcKG (y : archCompact K (2 + 2)) : arc1 y ∈ KG K (2 + 2) := by
   obtain ⟨_, _, _, _, _, _, h, _⟩ := UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)
   exact h y
 
+/- English proof (translation)
+Establish `h1 : Continuous fun k : KG K 2 => ((v₁ : G1 K 2), (k : G1 K 2), (0 : ℝ))` using `continuous_const.prodMk (continuous_subtype_val.prodMk continuous_const)`. Establish `h0 : Continuous (fun p : G1 K 2 × G1 K 2 × ℝ => lv p.1 p.2.1 p.2.2)` using `(blkLaws (K := K)).2.2.2.1`. Establish `h2 : Continuous fun k : KG K 2 => lv (v₁ : G1 K 2) (k : G1 K 2) 0`. Establish `h` using `Continuous.comp h0 h1`. Conclude with `h`.
+
+Establish `h3 : Continuous fun k : KG K 2 => (⟨lv (v₁ : G1 K 2) (k : G1 K 2) 0 * arc1 y, mul_mem (lvKG v₁ k) (arcKG y)⟩ : KG K (2 + 2))` using `Continuous.subtype_mk (h2.mul continuous_const) _`. Conclude with `hΨc.comp h3`.
+-/
 private theorem lvy_cont (Ψ : G1 K (2 + 2) → ℂ) (hΨc : Continuous fun k : KG K (2 + 2) => Ψ k) (y : archCompact K (2 + 2))
     (v₁ : KG K 2) : Continuous fun k : KG K 2 => Ψ (lv (v₁ : G1 K 2) (k : G1 K 2) 0 * arc1 y) := by
   have h1 : Continuous fun k : KG K 2 => ((v₁ : G1 K 2), (k : G1 K 2), (0 : ℝ)) :=
@@ -199,6 +287,11 @@ private theorem lvy_cont (Ψ : G1 K (2 + 2) → ℂ) (hΨc : Continuous fun k : 
     Continuous.subtype_mk (h2.mul continuous_const) _
   exact hΨc.comp h3
 
+/- English proof (translation)
+Establish `e1 : lv (arc1 a₁ * fin1 (d₁ : FA K 2)) (arc1 a₂ * fin1 (d₂ : FA K 2)) 0 * arc1 y = lv (arc1 a₁) (arc1 a₂) 0 * arc1 y * fin1 (B d₁ d₂ : FA K (2 + 2))`. Establish `e` using `(blkLaws (K := K)).2.1 (arc1 a₁) (arc1 a₂) (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 0`. Rewrite `e` using `[add_zero]`. Rewrite using `[← e, hB, mul_assoc, mul_assoc, (cm y _).eq]`. Rewrite using `[e1, hΨ]`.
+
+Distinguish the cases in `h0 : χ (B d₁ d₂) = 0`. Simplify using `[h0]`. Take `⟨h₁, h₂⟩` from `hχV d₁ d₂ h0`. Rewrite using `[drop V₁ φ₁ hF₁ a₁ _ h₁, drop V₂ φ₂ hF₂ a₂ _ h₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pt_val (Ψ : G1 K (2 + 2) → ℂ) (y : archCompact K (2 + 2))
     (B : AdelicGLn.integralFiniteGL K 2 → AdelicGLn.integralFiniteGL K 2 → AdelicGLn.integralFiniteGL K (2 + 2))
     (hB : ∀ d₁ d₂ : AdelicGLn.integralFiniteGL K 2, lv (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 = fin1 (B d₁ d₂ : FA K (2 + 2)))
@@ -223,6 +316,11 @@ private theorem pt_val (Ψ : G1 K (2 + 2) → ℂ) (y : archCompact K (2 + 2))
     rw [drop V₁ φ₁ hF₁ a₁ _ h₁, drop V₂ φ₂ hF₂ a₂ _ h₂]
     ring
 
+/- English proof (translation)
+Establish `hFc : Continuous fun k : KG K 2 => psi α₂ β₂ (fun a => g₁ a * G) X k` using `psi_cont hα₂ hβ₂ (hg₁c.mul continuous_const) hXc`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun v₁ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `J v₁ = psi α₂ β₂ (fun a => g₁ a * G) X (v₁ : G1 K 2)`. Rewrite using `[hJ, psi, dif_pos v₁.2]`.
+
+Use `_ = ∫ a, ∫ d, g₁ a * G * X d ∂ν ∂κ := by`. Rewrite using `[hρF _ hFc]`. Simplify using `only [psi_at _ _ huniq₂ harc₂ hfin₂]`. Use `_ = _ := by`. Simplify using `only [integral_const_mul, integral_mul_const]`.
+-/
 private theorem closing (κ : Measure (archCompact K 2)) (ν : Measure (AdelicGLn.integralFiniteGL K 2)) (ρ : Measure (KG K 2))
     (hρF : ∀ F : G1 K 2 → ℂ, (Continuous fun k : KG K 2 => F k) →
       ∫ v, F (v : G1 K 2) ∂ρ = ∫ a, ∫ d, F (arc1 a * fin1 (d : FA K 2)) ∂ν ∂κ)
@@ -246,6 +344,13 @@ private theorem closing (κ : Measure (archCompact K 2)) (ν : Measure (AdelicGL
     _ = _ := by
         simp only [integral_const_mul, integral_mul_const]
 
+/- English proof (translation)
+Take `⟨α₂, β₂, hα₂, hβ₂, hdec₂, huniq₂, harc₂, hfin₂⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) 2`. Establish `hac : Continuous (arc1 : archCompact K 2 → G1 K 2)` using `continuous_archP.comp continuous_subtype_val`. Establish `hg₁c : Continuous fun a => f₁ a * φ₁ (m₁ * arc1 a⁻¹)` using `hf₁.mul (hφ₁.comp (continuous_const.mul (hac.comp continuous_inv)))`. Use `closing κ ν ρ hρF _ hg₁c _ X hXc _ α₂ β₂ hα₂ hβ₂ huniq₂ harc₂ hfin₂ fun v₁ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun k : KG K 2 => Ψ (lv (v₁ : G1 K 2) (k : G1 K 2) 0 * arc1 y) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (k : G1 K 2)⁻¹)` using `((lvy_cont Ψ hΨc y v₁).mul continuous_const).mul (hφ₂.comp (continuous_const.mul continuous_subtype_val.inv))`.
+
+Rewrite using `[hρF (fun g => Ψ (lv (v₁ : G1 K 2) g 0 * arc1 y) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * g⁻¹)) hc]`. Establish `e : ∀ a (d : AdelicGLn.integralFiniteGL K 2), Ψ (lv (v₁ : G1 K 2) (arc1 a * fin1 (d : FA K 2)) 0 * arc1 y) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (arc1 a * fin1 (d : FA K 2))⁻¹) = (f₁ (α₂ v₁) * φ₁ (m₁ * arc1 (α₂ v₁)⁻¹)) * (f₂ a * φ₂ (m₂ * arc1 a⁻¹)) * χ (B (β₂ v₁) d)`. Introduce `a d`. Use `pt_val Ψ y B hB χ f₁ f₂ hΨ V₁ V₂ hχV φ₁ φ₂ hF₁ hF₂ m₁ m₂ (α₂ v₁) (β₂ v₁) a d` as an intermediate fact. Rewrite `this` using `[← hdec₂ v₁]`. Then use the resulting hypothesis.
+
+Simplify using `only [e, integral_const_mul, hX, integral_mul_const]`.
+-/
 private theorem value (κ : Measure (archCompact K 2)) (ν : Measure (AdelicGLn.integralFiniteGL K 2)) (ρ : Measure (KG K 2))
     (hρF : ∀ F : G1 K 2 → ℂ, (Continuous fun k : KG K 2 => F k) →
       ∫ v, F (v : G1 K 2) ∂ρ = ∫ a, ∫ d, F (arc1 a * fin1 (d : FA K 2)) ∂ν ∂κ)
@@ -285,6 +390,15 @@ section PrimeReciprocalSums
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, hfin⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) 2`. Establish `hm : ∀ d₁ d₂ : AdelicGLn.integralFiniteGL K 2, lv (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 ∈ KG K (2 + 2)` using `fun d₁ d₂ => lvKG ⟨_, hfin d₁⟩ ⟨_, hfin d₂⟩`. Establish `hB : ∀ d₁ d₂ : AdelicGLn.integralFiniteGL K 2, lv (fin1 (d₁ : FA K 2)) (fin1 (d₂ : FA K 2)) 0 = fin1 (β ⟨_, hm d₁ d₂⟩ : FA K (2 + 2))`. Introduce `d₁ d₂`. Take `⟨h, eh⟩` from `lv_fin d₁ d₂`.
+
+Rewrite using `[huniq 1 h ⟨_, hm d₁ d₂⟩ (by rw [archimedean_projection_one, one_mul]; exact eh)]`. Conclude with `eh`. Use `⟨fun d₁ d₂ => β ⟨_, hm d₁ d₂⟩, hB, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : Continuous (fun p : G1 K 2 × G1 K 2 × ℝ => lv p.1 p.2.1 p.2.2)` using `(blkLaws (K := K)).2.2.2.1`. Establish `hf : Continuous fun d : AdelicGLn.integralFiniteGL K 2 => fin1 (d : FA K 2)` using `MultiplicityOne.continuous_finProj.comp continuous_subtype_val`.
+
+Establish `h1 : Continuous fun p : AdelicGLn.integralFiniteGL K 2 × AdelicGLn.integralFiniteGL K 2 => ((fin1 (p.1 : FA K 2) : G1 K 2), (fin1 (p.2 : FA K 2) : G1 K 2), (0 : ℝ))` using `(hf.comp continuous_fst).prodMk ((hf.comp continuous_snd).prodMk continuous_const)`. Establish `h2 : Continuous fun p : AdelicGLn.integralFiniteGL K 2 × AdelicGLn.integralFiniteGL K 2 => lv (fin1 (p.1 : FA K 2)) (fin1 (p.2 : FA K 2)) 0`. Establish `h` using `Continuous.comp h0 h1`. Conclude with `h`. Establish `h3 : Continuous fun p : AdelicGLn.integralFiniteGL K 2 × AdelicGLn.integralFiniteGL K 2 => (⟨_, hm p.1 p.2⟩ : KG K (2 + 2))` using `Continuous.subtype_mk h2 _`.
+
+Conclude with `hβ.comp h3`. Apply `huniq 1 1` to reduce the goal to its premises. Simplify using `only [OneMemClass.coe_one, finite_projection_one, archimedean_projection_one, one_mul, mul_one]`. Conclude with `(blkLaws (K := K)).2.2.1`.
+-/
 private theorem blockEx (β : KG K (2 + 2) → AdelicGLn.integralFiniteGL K (2 + 2)) (hβ : Continuous β)
     (huniq : ∀ (a : archCompact K (2 + 2)) (h : AdelicGLn.integralFiniteGL K (2 + 2)) (k : KG K (2 + 2)),
       (k : G1 K (2 + 2)) = arc1 a * fin1 (h : FA K (2 + 2)) → β k = h) :
@@ -318,12 +432,24 @@ private theorem blockEx (β : KG K (2 + 2) → AdelicGLn.integralFiniteGL K (2 +
     simp only [OneMemClass.coe_one, finite_projection_one, archimedean_projection_one, one_mul, mul_one]
     exact (blkLaws (K := K)).2.2.1
 
+/- English proof (translation)
+Take `⟨α, β, -, hβ, -, huniq, harc, hfin⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) 2`. Use `haveI : CompactSpace (KG K 2) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 2).1`. Use `Function.Surjective.compactSpace (f := β) hβ (fun h => ⟨⟨_, hfin h⟩, ?_⟩)` and prove the remaining obligations. Conclude with `(huniq 1 h ⟨_, hfin h⟩ (by rw [archimedean_projection_one, one_mul])).2`.
+-/
 private theorem compact_integral_finite_gl2 : CompactSpace (AdelicGLn.integralFiniteGL K 2) := by
   obtain ⟨α, β, -, hβ, -, huniq, harc, hfin⟩ := UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) 2
   haveI : CompactSpace (KG K 2) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 2).1
   refine Function.Surjective.compactSpace (f := β) hβ (fun h => ⟨⟨_, hfin h⟩, ?_⟩)
   exact (huniq 1 h ⟨_, hfin h⟩ (by rw [archimedean_projection_one, one_mul])).2
 
+/- English proof (translation)
+Use `haveI := compact_integral_finite_gl2 (K := K)`. Establish `hre : ∀ h, χ h = (((χ h).re : ℝ) : ℂ)`. Introduce `h`. Apply the tactic sequence `rcases h01 h with e | e <;> simp [e]`. Establish `hnn : ∀ h, 0 ≤ (χ h).re`.
+
+Introduce `h`. Apply the tactic sequence `rcases h01 h with e | e <;> simp [e]`. Establish `hc2 : Continuous (Function.uncurry fun d₁ d₂ => (χ (B d₁ d₂)).re)` using `Complex.continuous_re.comp (hχc.comp hBc)`. Establish `hXc : Continuous fun d₁ => ∫ d₂, (χ (B d₁ d₂)).re ∂ν` using `cont_int ν _ hc2`. Establish `hs : Continuous fun d₂ => (χ (B 1 d₂)).re` using `hc2.comp (continuous_const.prodMk continuous_id)`.
+
+Use `⟨∫ d₁, ∫ d₂, (χ (B d₁ d₂)).re ∂ν ∂ν, fun d₁ => ((∫ d₂, (χ (B d₁ d₂)).re ∂ν : ℝ) : ℂ), ?_, Complex.continuous_ofReal.comp hXc, fun d₁ => ?_, ?_⟩` and prove the remaining obligations. Use `int_pos ν _ hXc (fun d₁ => integral_nonneg fun d₂ => hnn _) 1 ?_` and prove the remaining obligations. Use `int_pos ν _ hs (fun d₂ => hnn _) 1 ?_` and prove the remaining obligations. Simplify using `[hB1, h1]`. Use `Eq.trans ?_ integral_complex_ofReal` and prove the remaining obligations.
+
+Conclude with `integral_congr_ae (Eventually.of_forall fun d₂ => hre _)`. Conclude with `integral_complex_ofReal`.
+-/
 private theorem cEx (ν : Measure (AdelicGLn.integralFiniteGL K 2)) [IsProbabilityMeasure ν] [ν.IsOpenPosMeasure]
     (B : AdelicGLn.integralFiniteGL K 2 → AdelicGLn.integralFiniteGL K 2 → AdelicGLn.integralFiniteGL K (2 + 2))
     (hBc : Continuous (Function.uncurry B)) (hB1 : B 1 1 = 1)
@@ -353,6 +479,29 @@ private theorem cEx (ν : Measure (AdelicGLn.integralFiniteGL K 2)) [IsProbabili
 
 end PrimeReciprocalSums
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C μ e n q n' q' x hμ hE S U₁ U₂ hU₁ hU₂`. Take `⟨α, β, hα, hβ, hdec, huniq, harc, hfin⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)`. Take `⟨U, χ, hU, hχc, hχ01, hχ1, hχN, hχR, hχL⟩` from `UpperTheory.exists_level_indicator_unipotent_invariant S U₁ U₂ hU₁ hU₂`. Establish `hCo` using `coLaws K ι C`. Take `⟨ν, ρ, hν, hνo, hρ, hρr, hρF⟩` from `UpperTheory.haar_decomposition_norm_one_gl2 C.κ₂ hCo.1`.
+
+Take `⟨ψ, hψc, hψfix, hψval⟩` from `hE.ex`. Take `⟨B, hB, hBc, hB1⟩` from `blockEx β hβ fun a h k hk => (huniq a h k hk).2`. Take `⟨c, X, hc, hXc, hX, hXi⟩` from `cEx ν B hBc hB1 χ hχc hχ01 hχ1`. Establish `hf : Continuous fun a : archCompact K (2 + 2) => ψ (C.Φ (2 + 2) a)` using `hψc.comp (C.Φ (2 + 2)).continuous`. Establish `hat` using `psi_at (fun a : archCompact K (2 + 2) => ψ (C.Φ (2 + 2) a)) χ huniq harc hfin`.
+
+Establish `hcont` using `psi_cont hα hβ hf hχc`. Establish `hdc : ∀ k ∈ KG K (2 + 2), ∃ (a : archCompact K (2 + 2)) (h : AdelicGLn.integralFiniteGL K (2 + 2)), k = arc1 a * fin1 (h : FA K (2 + 2))` using `fun k hk => ⟨_, _, hdec ⟨k, hk⟩⟩`. Establish `hle : levOn S U ≤ AdelicGLn.integralFiniteGL K (2 + 2)`. Introduce `u hu`. Use `(AdelicGLn.mem_integralFiniteGL_iff_forall K (2 + 2)).2 fun v => ?_` and prove the remaining obligations.
+
+Establish `h : finAt v (finEmb K (2 + 2) u) ∈ (if v ∈ S then U v else GLnLocal.integralGL (v.adicCompletion K) (2 + 2))` using `hu v`. Use `split_ifs at h`. Conclude with `(hU v).2 h`. Conclude with `h`. Use `⟨U, ρ, psi α β (fun a => ψ (C.Φ (2 + 2) a)) χ, c, hU, hρ, hρr, hcont, ?_, ?_, ?_, hc, ?_⟩` and prove the remaining obligations.
+
+Introduce `Y hY k hk`. Take `⟨h₀, e₀⟩` from `UpperTheory.unipotent_mem_maximalCompact_finite_integral Y hY`. Take `⟨a, h, rfl⟩` from `hdc k hk`. Establish `e1 : nn Y * (arc1 a * fin1 (h : FA K (2 + 2))) = arc1 a * fin1 ((h₀ * h : AdelicGLn.integralFiniteGL K (2 + 2)) : FA K (2 + 2))`. Rewrite using `[e₀, Subgroup.coe_mul, fin1M, ← mul_assoc, ← mul_assoc, (cm a (h₀ : FA K (2 + 2))).eq]`.
+
+Rewrite using `[e1, hat, hat, hχN h₀ h Y e₀.symm]`. Introduce `k hk`. Take `⟨a₀, h, rfl⟩` from `hdc k hk`. Establish `e1 : ∀ a, psi α β (fun a => ψ (C.Φ (2 + 2) a)) χ (arc1 a₀ * fin1 (h : FA K (2 + 2)) * arc1 a) = ψ (C.Φ (2 + 2) (a₀ * a)) * χ h`. Introduce `a`.
+
+Rewrite using `[mul_assoc, ← (cm a (h : FA K (2 + 2))).eq, ← mul_assoc, ← arcM, hat]`. Establish `hi : ∀ g : archCompact K (2 + 2) → ℂ, ∫ a, g a ∂C.κ₄ μ = ∫ m, g ((C.Φ (2 + 2)).symm m) ∂(Measure.pi fun _ : ι => μ)` using `fun g => (C.Φ (2 + 2)).symm.toHomeomorph.measurableEmbedding.integral_map g`. Establish `e2 : ∫ a, C.e e a * ψ (C.Φ (2 + 2) (a₀ * a)) ∂C.κ₄ μ = ψ (C.Φ (2 + 2) a₀)`. Rewrite using `[hi]`. Simplify using `only [Co.e, map_mul, ContinuousMulEquiv.apply_symm_apply]`.
+
+Conclude with `hψfix _`. Simplify using `only [e1, ← mul_assoc]`. Rewrite using `[integral_mul_const, e2, hat]`. Introduce `k hk u hu`. Take `⟨a, h, rfl⟩` from `hdc k hk`.
+
+Establish `e1 : arc1 a * fin1 (h : FA K (2 + 2)) * fin1 u = arc1 a * fin1 ((h * ⟨u, hle hu⟩ : AdelicGLn.integralFiniteGL K (2 + 2)) : FA K (2 + 2))`. Rewrite using `[Subgroup.coe_mul, fin1M, mul_assoc]`. Rewrite using `[e1, hat, hat, hχR h ⟨u, hle hu⟩ hu]`. Introduce `φ₁ φ₂ hφ₁ hφ₂ hA₁ hA₂ hF₁ hF₂ m₁ m₂`. Establish `hΨ : ∀ a₁ a₂ (h : AdelicGLn.integralFiniteGL K (2 + 2)), psi α β (fun a => ψ (C.Φ (2 + 2) a)) χ (lv (arc1 a₁) (arc1 a₂) 0 * arc1 ((C.Φ (2 + 2)).symm x) * fin1 (h : FA K (2 + 2))) = conj (C.p n q a₁) * conj (C.p n' q' a₂) * χ h`.
+
+Introduce `a₁ a₂ h`. Establish `e1` using `hCo.2.2.2.2.2.2.2.2.2.1 (C.Φ 2 a₁) (C.Φ 2 a₂)`. Simplify using `only [ContinuousMulEquiv.symm_apply_apply] at e1`. Rewrite using `[e1, ← arcM, hat]`. Simplify using `only [map_mul, ContinuousMulEquiv.apply_symm_apply]`.
+
+Express the relevant statement in the definitionally equal form `ψ ((fun i => bd (C.Φ 2 a₁ i) (C.Φ 2 a₂ i)) * x) * χ h = _`. Rewrite using `[hψval]`. Both sides reduce to the same expression. Rewrite using `[value C.κ₂ ν ρ hρF _ hcont _ B hB χ (fun a => conj (C.p n q a)) (fun a => conj (C.p n' q' a)) (Complex.continuous_conj.comp (pCont C n q)) hΨ X hX hXc _ _ (fun d₁ d₂ h => hχL d₁ d₂ _ (hB d₁ d₂).symm h) φ₁ φ₂ hφ₁ hφ₂ hF₁ hF₂ m₁ m₂, fixInv C.κ₂ (κInv C) _ (pStar C n q) φ₁ hA₁, fix …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.exists_level_and_KTypeVector_for_leviInduction :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ : Measure U4) (e : ι → U4 → ℂ) n q n' q' (x : ι → U4), Haar4 μ → ExtP μ e n q n' q' x → ∀ (S : Finset (Pl K)) (U₁ U₂ : ∀ w : Pl K, Subgroup (Gw 2 w)), Lev U₁ → Lev U₂ → ∃ (U : ∀ w : Pl K, Subgroup (Gw (2 + 2) w)) (ρ : Measure (KG K 2)) (Ψ : G1 K (2 + 2) → ℂ) (c : ℝ), Lev U ∧ IsProbabilityMeasure ρ ∧ (∀ u : KG K 2, MeasurePreserving (· * u) ρ ρ) ∧ (Continuous fun k : KG K (2 + 2) => Ψ k) ∧ (∀ X, nn X ∈ KG K (2 + 2) → ∀ k ∈ KG K (2 + 2), Ψ (nn X * k) = Ψ k) ∧ (∀ k ∈ KG K (2 + 2), ∫ a, C.e e a * Ψ (k * arc1 a) ∂C.κ₄ μ = Ψ k) ∧ (∀ k ∈ KG K (2 + 2), ∀ u ∈ levOn S U, Ψ (k * fin1 u) = Ψ k) ∧ 0 < c ∧ ∀ φ₁ φ₂ : G1 K 2 → ℂ, Continuous φ₁ → Continuous φ₂ → FixA C.κ₂ (C.p n q) φ₁ → FixA C.κ₂ (C.p n' q') φ₂ → FixF (levOn S U₁) φ₁ → FixF (levOn S U₂) φ₂ → ∀ m₁ m₂, (∫ v₁ : KG K 2, ∫ v₂ : KG K 2, Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * arc1 ((C.Φ (2 + 2)).symm x)) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹) ∂ρ ∂ρ) = c * φ₁ m₁ * φ₂ m₂ := by
   intro K _ _ _ ι _ C μ e n q n' q' x hμ hE S U₁ U₂ hU₁ hU₂

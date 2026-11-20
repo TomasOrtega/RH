@@ -4,5 +4,8 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeCountingBound.As
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeCountingBound.IndexOf
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeCountingBound.IndexDet
 
+/- English proof (translation)
+The claim follows from `PI.UnitaryGroupMassFormula.LCG.latCountAll_of_idx PI.UnitaryGroupMassFormula.LCG.determinant_index_formula PI.UnitaryGroupMassFormula.LCG.lattice_indexOf`.
+-/
 theorem lattice_count_all : PI.LatCountG.LatCountAll :=
   PI.UnitaryGroupMassFormula.LCG.latCountAll_of_idx PI.UnitaryGroupMassFormula.LCG.determinant_index_formula PI.UnitaryGroupMassFormula.LCG.lattice_indexOf

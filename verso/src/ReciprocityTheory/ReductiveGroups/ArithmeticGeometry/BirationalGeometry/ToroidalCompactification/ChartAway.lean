@@ -19,6 +19,17 @@ abbrev Gs (s : S) : Over (Spec (CommRingCat.of (Localization.Away s))) :=
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Establish `hP` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback G (fB S (Localization.Away s))`. Establish `key : (η[Gs G s]).left ≫ pullback.fst G.hom (fB S (Localization.Away s)) = fB S (Localization.Away s) ≫ (η[G]).left`. Establish `h1` using `congrArg (fun m => m.left) (map_one (ReciprocityTheory.ChartRestriction.G.Geo.Tor.pushHom hP (Over.mk (𝟙 (Spec (CommRingCat.of (Localization.Away s)))))))`. Simplify using `only [one_left'] at h1`. Express the relevant statement in the definitionally equal form `(1 : Over.mk (𝟙 (Spec (CommRingCat.of (Localization.Away s)))) ⟶ Gs G s).left ≫ pullback.fst G.hom (fB S (Localization.Away s)) = _ at h1`.
+
+Rewrite `h1` using `[one_left']`. Simplify using `using h1`. Establish `hs' : ∀ y : Spec (CommRingCat.of (Localization.Away s)), s ∉ ((fB S (Localization.Away s)).base y).asIdeal`. Introduce `y hy`. Establish `hu : IsUnit (algebraMap S (Localization.Away s) s)` using `IsLocalization.Away.algebraMap_isUnit s`.
+
+Establish `hmem : algebraMap S (Localization.Away s) s ∈ y.asIdeal` using `hy`. Conclude with `y.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)`. Use `haveI hf : IsAffineHom (fB S (Localization.Away s)) := inferInstance`. Use `haveI : IsAffineHom (pullback.fst G.hom (fB S (Localization.Away s))) := MorphismProperty.pullback_fst (P := @IsAffineHom) _ _ hf`. Use `⟨⟨pullback.fst G.hom (fB S (Localization.Away s)) ⁻¹ᵁ U, hU.preimage _, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `y _`. Establish `hk : (pullback.fst G.hom (fB S (Localization.Away s))).base ((η[Gs G s]).left.base y) = (η[G]).left.base ((fB S (Localization.Away s)).base y)`. Express the relevant statement in the definitionally equal form `((η[Gs G s]).left ≫ pullback.fst G.hom (fB S (Localization.Away s))).base y = (fB S (Localization.Away s) ≫ (η[G]).left).base y`. Rewrite using `[key]`. Use `show (pullback.fst G.hom (fB S (Localization.Away s))).base ((η[Gs G s]).left.base y) ∈ U`.
+
+Rewrite using `[hk]`. Conclude with `hs _ (hs' y)`.
+-/
 theorem chart_away (U : G.left.Opens) (hU : IsAffineOpen U) (s : S)
     (hs : ∀ x : Spec (CommRingCat.of S), s ∉ x.asIdeal → (η[G]).left x ∈ U) : Nonempty (Chart (Gs G s)) := by
   have hP := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_pullback G (fB S (Localization.Away s))
@@ -53,6 +64,17 @@ theorem chart_away (U : G.left.Opens) (hU : IsAffineOpen U) (s : S)
   rw [hk]
   exact hs _ (hs' y)
 
+/- English proof (translation)
+Establish `htop : Ideal.span {t : S | Nonempty (Chart (Gs G t))} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `p : Spec (CommRingCat.of S)` to `⟨M, hM.isPrime⟩`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (show (η[G]).left p ∈ (⊤ : G.left.Opens) by simp)`.
+
+Take `⟨V, ⟨t, rfl⟩, hpV, hVle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (PrimeSpectrum.isBasis_basic_opens (R := S))) (show p ∈ ((η[G]).left ⁻¹ᵁ U : (Spec (CommRingCat.of S)).Opens) from hpU)`. Establish `hc : Nonempty (Chart (Gs G t))` using `chart_away G U hU t (fun x hx => hVle hx)`. Conclude with `hpV (hle (Ideal.subset_span hc))`. Take `⟨T, hsub, hspan⟩` from `(Ideal.span_eq_top_iff_finite _).mp htop`. Use `⟨T.card, fun i => (T.equivFin.symm i : S), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : Set.range (fun i => (T.equivFin.symm i : S)) = (T : Set S)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(T.equivFin.symm i).2`.
+
+Introduce `hx`. Conclude with `⟨T.equivFin ⟨x, hx⟩, by simp⟩`. Rewrite using `[hr]`. Conclude with `hspan`. Introduce `i`.
+
+Conclude with `hsub (T.equivFin.symm i).2`.
+-/
 theorem exists_cover : ∃ (n : ℕ) (s : Fin n → S), Ideal.span (Set.range s) = ⊤ ∧ ∀ i, Nonempty (Chart (Gs G (s i))) := by
   classical
   have htop : Ideal.span {t : S | Nonempty (Chart (Gs G t))} = ⊤ := by

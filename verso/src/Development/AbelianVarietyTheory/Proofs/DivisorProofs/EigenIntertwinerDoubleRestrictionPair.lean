@@ -12,6 +12,21 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThKSumm
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `hst : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) ℂ) (B : Matrix (Fin b) (Fin c) ℂ), (A * B).map star = A.map star * B.map star` using `fun A B => by`. Simplify using `using (Matrix.map_mul (f := starRingEnd ℂ) (M := A) (N := B))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e : ι * θ₁ * θ₁ = θ * θ * ι`. Rewrite using `[← hc, Matrix.mul_assoc, ← hc, Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_assoc] at e ⊢`. Rewrite using `[e]`. Use `_ = 1 := by rw [h1, Matrix.mul_one, hL]`.
+
+Establish `hc' : (ι * θ₁).map star = (θ * ι).map star` using `by rw [hc]`. Rewrite `hc'` using `[hst, hst]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = (θ * ι)ᵀ * M * (θ.map star * ι.map star) := by rw [hc', hc]`. Use `_ = ιᵀ * (θᵀ * M * θ.map star) * ι.map star := by`. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ιᵀ * M * ι.map star := by rw [h2]`.
+
+Introduce `x hx`. Establish `hy : ι *ᵥ x ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Use `congrArg (fun v => L *ᵥ v) h0` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec_mulVec, hL]`. Establish `key : θ₁ *ᵥ x ⬝ᵥ (ιᵀ * M * ι.map star) *ᵥ star x = θ *ᵥ (ι *ᵥ x) ⬝ᵥ M *ᵥ star (ι *ᵥ x)`. Establish `e1 : (ι.map star) *ᵥ star x = star (ι *ᵥ x)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum, mul_comm]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, ← hc, ← Matrix.mulVec_mulVec]`. Rewrite using `[key]`. Conclude with `h3 _ hy`.
+-/
 theorem isCartan_restrict {n m : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (ι : Matrix (Fin n) (Fin m) ℂ)
     (L : Matrix (Fin m) (Fin n) ℂ) (hL : L * ι = 1) (θ₁ : Matrix (Fin m) (Fin m) ℂ)
     (h : IsCartan M θ) (hc : θ * ι = ι * θ₁) : IsCartan (ιᵀ * M * ι.map star) θ₁ := by
@@ -50,6 +65,13 @@ end GlobalTheory.ThKSumm
 
 namespace GlobalTheory.ThKSumm
 
+/- English proof (translation)
+Establish `h1 : Module.finrank E (⊤ : Submodule E (Fin d → E)) ≤ Module.finrank E (Submodule.span E (Set.range ![x, y])) + Module.finrank E (LinearMap.range (Matrix.mulVecLin ι))`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Module.finrank E (Submodule.span E (Set.range ![x, y])) ≤ 2`. Use `finrank_range_le_card (R := E) ![x, y]` as an intermediate fact. Conclude with `this`.
+
+Establish `h3` using `LinearMap.finrank_range_add_finrank_ker (Matrix.mulVecLin ι)`. Rewrite `h1` using `[finrank_top, Module.finrank_fin_fun]`. Rewrite `h3` using `[Module.finrank_fin_fun]`. Establish `hk : Module.finrank E (LinearMap.ker (Matrix.mulVecLin ι)) = 0` using `by omega`. Establish `hker : LinearMap.ker (Matrix.mulVecLin ι) = ⊥` using `Submodule.finrank_eq_zero.mp hk`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+-/
 theorem exists_leftInverse {E : Type} [Field E] {d d₁ : ℕ} (x y : Fin d → E) (ι : Matrix (Fin d) (Fin d₁) E)
     (hrank : d = d₁ + 2)
     (hspan : ⊤ ≤ Submodule.span E (Set.range ![x, y]) ⊔ LinearMap.range (Matrix.mulVecLin ι)) :
@@ -77,6 +99,17 @@ end GlobalTheory.ThKSumm
 
 namespace GlobalTheory.ThKSumm
 
+/- English proof (translation)
+Use `DescB.IsIsoPlane.of_adapted hH' hW.cartan fun w => ?_` and prove the remaining obligations. Establish `hspan : ⊤ ≤ Submodule.span E (Set.range ![H'.x, H'.y]) ⊔ LinearMap.range (Matrix.mulVecLin H'.ι)`. Introduce `z _`. Establish `hz : z ∈ Submodule.span E (W.L : Set (Fin d → E))` using `by rw [hW.lat.span_eq_top]; trivial`. Use `(Submodule.span_le.mpr ?_) hz` and prove the remaining obligations.
+
+Introduce `z hz`. Take `⟨s, t, u, -, -, -, rfl⟩` from `hH'.split z hz`. Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩))`. Conclude with `Submodule.mem_sup_right ⟨u, rfl⟩`.
+
+Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Take `⟨Lm, hLm⟩` from `exists_leftInverse H'.x H'.y H'.ι hH'.rank hspan`. Use `set φ : E →+* ℂ := (B.emb w : E →+* ℂ) with hφ`. Establish `hconj : ∀ a, φ (σ a) = star (φ a)` using `hcm.2.2.2 φ`. Establish `hJ : W₁.J.map φ = (H'.ι.map φ)ᵀ * W.J.map φ * (H'.ι.map φ).map star`.
+
+Rewrite using `[← hH'.gram, Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[hconj]`. Establish `hL : Lm.map φ * H'.ι.map φ = 1`.
+
+Rewrite using `[← Matrix.map_mul, hLm, Matrix.map_one _ φ.map_zero φ.map_one]`. Rewrite using `[hJ, show Complex.I • ((H'.ι.map φ)ᵀ * W.J.map φ * (H'.ι.map φ).map star) = (H'.ι.map φ)ᵀ * (Complex.I • W.J.map φ) * (H'.ι.map φ).map star by`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul]]`. Conclude with `isCartan_restrict _ _ _ _ hL _ (hW.cartan w) (hH'.cartan w).1`.
+-/
 theorem isIsoPlane_of_adapted {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) {d d₁ : ℕ} (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁)
     (i₀ i₁ r' s' : ℕ) (hcm : IsCMExt F E σ) (hW : W.IsSkew σ B r' s') (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) :
@@ -109,6 +142,11 @@ end GlobalTheory.ThKSumm
 
 namespace GlobalTheory.ThKSumm
 
+/- English proof (translation)
+Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.eigen_intertwiner_double_restriction hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he`. Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `GlobalTheory.T.unipotent_quotient_unit_volume F E σ B hP.base d d₁ W W₁ H' hP.skew.skew hiso`. Establish `hS` using `(GlobalTheory.T.eigen_intertwiner_restriction_character hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Ψ hΨ).1`. Establish `hS'` using `(hS.subtype {x : Fin n → E | x ≠ 0 ∧ form σ X.J x x = 0}).mul_left C⁻¹`. Use `hS'.congr fun x => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[hC χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Ψ hΨ x.1 x.2.1 x.2.2 (γ x) (hγ x).1 (hγ x).2, ← mul_assoc, inv_mul_cancel₀ hC0, one_mul]`.
+-/
 theorem summable_of_isoPlane (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ)
     (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) (hM₁ : M₁.IsGood B.ψ) (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁) (he₀ : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀)
@@ -126,6 +164,9 @@ theorem summable_of_isoPlane (hKP : GlobalTheory.ThK.KP) (F E : Type) [Field F] 
   simp only [Function.comp_apply]
   rw [hC χX χW om r s r' s' hP μ 𝓕 hμ h𝓕 h1 Ψ hΨ x.1 x.2.1 x.2.2 (γ x) (hγ x).1 (hγ x).2, ← mul_assoc, inv_mul_cancel₀ hC0, one_mul]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he γ hγ χX χW om r s r' s' hP Ψ hΨ`. Conclude with `summable_of_isoPlane hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he γ hγ χX χW om r s r' s' hP Ψ hΨ (isIsoPlane_of_adapted σ B W W₁ H' i₀ i₁ r' s' hP.base.cm hP.skew hH')`.
+-/
 theorem summable_isotropic : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),
     H'.IsAdapted σ B W W₁ i₀ i₁ → M₁.IsGood B.ψ → ∀ (e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁), IsEv B M M₁ 1 H'.ι (iso0 n H') e₀ → ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ W₁), H.IsAdapted σ B X X₁ j₀ j₁ → M₂.IsGood B.ψ →

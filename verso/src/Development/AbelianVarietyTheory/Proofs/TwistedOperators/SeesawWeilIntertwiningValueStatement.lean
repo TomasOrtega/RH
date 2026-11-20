@@ -14,6 +14,9 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TripleAssembly.mapA_mapB_invFin | exact GlobalTheory.TripleAssembly.mapA_mapB_invFin | (intros; apply GlobalTheory.TripleAssembly.mapA_mapB_invFin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mapA_mapB_invariant_under_finite_group : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

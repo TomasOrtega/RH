@@ -13,6 +13,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+/- English proof (translation)
+Establish `htr : Continuous (Algebra.trace (AF F) (AE F E))` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (Algebra.trace (AF F) (AE F E))`. Conclude with `hψ.comp ((htr.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace).neg)`.
+-/
 theorem continuous_chr {ψ : AddChar (AF F) ℂ} (hψ : Continuous ψ) {b : GL (Fin n ⊕ Fin n) E}
     (T : Matrix (Fin n) (Fin n) (AE F E)) :
     Continuous fun β : nA σ Y b => ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T * β.1)))) := by
@@ -20,6 +23,11 @@ theorem continuous_chr {ψ : AddChar (AF F) ℂ} (hψ : Continuous ψ) {b : GL (
     IsModuleTopology.continuous_of_linearMap (R := AF F) (Algebra.trace (AF F) (AE F E))
   exact hψ.comp ((htr.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace).neg)
 
+/- English proof (translation)
+Establish `h : Algebra.lmul (AF F) (AE F E) (inclR (AF F) e) = (Algebra.lmul F E e).baseChange (AF F)`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `a x`. Use `show (1 ⊗ₜ[F] e) * (a ⊗ₜ[F] x) = _`. Rewrite using `[LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]`.
+-/
 private theorem trace_inclR_eq_algebraMap_trace (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
   have h : Algebra.lmul (AF F) (AE F E) (inclR (AF F) e) =
@@ -31,6 +39,39 @@ private theorem trace_inclR_eq_algebraMap_trace (e : E) :
     rfl
   rw [Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d L hL`. Take `⟨nb, lam, 𝓖, T, x, ⟨hnb, -, -, h1⟩, -, rfl⟩` from `hL`. Establish `good` using `d.ok.good`. Establish `hσ` using `sigma_sigma_of_good good`. Establish `hfr` using `d.ok.frame`.
+
+Take `⟨hLC, hSC, hT2, hBo⟩` from `nA_top hσ hfr`. Establish `hnbc : Continuous nb` using `nb_continuous hσ hfr hnb`. Take `⟨K, hK, hKcov⟩` from `nF_cocompact hσ hfr`. Establish `hψ1 : ∀ c : F, d.B.ψ (algebraMap F (AF F) c) = 1` using `good.std.2.1`. Set `χ : nA σ d.Y d.b → ℂ` to `fun β => d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (((T : nA σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) (AE F E)) * β.1))))`.
+
+Establish `hχadd : ∀ β γ, χ (β + γ) = χ β * χ γ`. Introduce `β γ`. Simplify using `only [χ, AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, map_add, neg_add]`. Conclude with `AddChar.map_add_eq_mul _ _ _`. Establish `hχns : ∀ (k : ℕ) β, χ (k • β) = χ β ^ k`.
+
+Introduce `k β`. Simplify using `only [χ, AddSubgroup.coe_nsmul, Matrix.mul_smul, Matrix.trace_smul, map_nsmul, ← smul_neg]`. Conclude with `AddChar.map_nsmul_eq_pow _ _ _`. Establish `htr : ∀ X : Matrix (Fin d.n) (Fin d.n) E, Matrix.trace (incM F X) = inclR (AF F) (Matrix.trace X)`. Introduce `X`.
+
+Simplify using `[incM, Matrix.trace, map_sum]`. Establish `hχF : ∀ γ ∈ nF σ d.Y d.b, χ γ = 1`. Introduce `γ hγ`. Take `⟨G0, hG0⟩` from `(mem_nF_iff γ).1 hγ`. Take `⟨T0, hT0⟩` from `(mem_nF_iff (T : nA σ d.Y d.b)).1 T.2`.
+
+Simplify using `only [χ]`. Rewrite using `[hT0, hG0, ← incM_mul', htr, trace_inclR_eq_algebraMap_trace, ← map_neg]`. Conclude with `hψ1 _`. Establish `hχc : Continuous χ` using `continuous_chr good.std.1 _`. Take `⟨R, hR⟩` from `hK.exists_bound_of_continuousOn hχc.continuousOn`.
+
+Establish `hχR : ∀ β, ‖χ β‖ ≤ R`. Introduce `β`. Take `⟨γ, hγ, hmem⟩` from `hKcov β`. Use `hR _ hmem` as an intermediate fact. Rewrite `this` using `[hχadd, hχF γ hγ, one_mul]`. Then use the resulting hypothesis.
+
+Establish `hχ1 : ∀ β, ‖χ β‖ ≤ 1`. Introduce `β`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt R hlt`.
+
+Use `hχR (k • β)` as an intermediate fact. Rewrite `this` using `[hχns, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hper : ∀ f : G2 σ d.Y → ℂ, (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → ∀ β, ∃ β' ∈ K, f (nb β * x) = f (nb β' * x)`. Introduce `f hf β`.
+
+Take `⟨γ, hγ, hmem⟩` from `hKcov β`. Use `⟨γ + β, hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[nb_add hnb, mul_assoc, hf _ (nb_rat hnb γ hγ)]`. Establish `hfin : lam 𝓖 < ⊤`. Rewrite using `[h1]`.
+
+Conclude with `ENNReal.one_lt_top`. Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Establish `hint : ∀ f : G2 σ d.Y → ℂ, Continuous f → (∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g) → Integrable (fun β => f (nb β * x) * χ β) (lam.restrict 𝓖)`. Introduce `f hf hfi`. Establish `hc : Continuous fun β => f (nb β * x)` using `hf.comp (hnbc.mul continuous_const)`.
+
+Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Use `Integrable.of_bound (hc.mul hχc).aestronglyMeasurable M (Filter.Eventually.of_forall fun β => ?_)` and prove the remaining obligations. Take `⟨β', hβ', he⟩` from `hper f hfi β`. Rewrite using `[norm_mul, he]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hχ1 β)).trans (hM β' hβ')`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a f f' hf hf' hfi hfi' show ∫ β in 𝓖, (a • f + f') (nb β * x) * χ β ∂lam = a * ∫ β in 𝓖, f (nb β * x) * χ β ∂lam + ∫ β in 𝓖, f' (nb β * x) * χ β ∂lam`. Establish `e : (fun β => (a • f + f') (nb β * x) * χ β) = fun β => a * (f (nb β * x) * χ β) + f' (nb β * x) * χ β`. Use function extensionality and compare the values at `β`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_add ((hint f hf hfi).const_mul a) (hint f' hf' hfi'), integral_const_mul]`. Use `⟨(fun β => nb β * x) '' K, hK.image (hnbc.mul continuous_const), ?_⟩` and prove the remaining obligations. Introduce `f M hf hfi hM`. Use `show ‖∫ β in 𝓖, f (nb β * x) * χ β ∂lam‖ ≤ M`.
+
+Establish `hb : ∀ β ∈ 𝓖, ‖f (nb β * x) * χ β‖ ≤ M`. Introduce `β _`. Take `⟨β', hβ', he⟩` from `hper f hfi β`. Rewrite using `[norm_mul, he]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hχ1 β)).trans (hM _ ⟨β', hβ', rfl⟩)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lamBd : LamBd := by
   intro F E _ _ _ _ _ σ d L hL
   obtain ⟨nb, lam, 𝓖, T, x, ⟨hnb, -, -, h1⟩, -, rfl⟩ := hL

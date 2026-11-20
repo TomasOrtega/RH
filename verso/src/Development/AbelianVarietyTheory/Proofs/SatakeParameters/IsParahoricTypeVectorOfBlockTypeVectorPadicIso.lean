@@ -13,9 +13,17 @@ open ValuativeRel Matrix
 variable {g : ℕ} [Fact g.Prime] {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+The claim follows from `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, by simp⟩`.
+-/
 theorem lt_one_mem_nhds : {x : F | valuation F x < 1} ∈ nhds (0 : F) :=
   (IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, by simp⟩
 
+/- English proof (translation)
+Establish `h1 : Filter.Tendsto (fun n : ℕ => (e z) ^ n) Filter.atTop (nhds 0)`. Use `(he.tendsto 0).comp (tendsto_pow_atTop_nhds_zero_of_norm_lt_one hz)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Simplify `this` using `[Function.comp_def, map_pow]`. Take `⟨n, hn⟩` from `(h1.eventually lt_one_mem_nhds).exists`.
+
+Rewrite `hn` using `[map_pow]`. Assume the negation of the conclusion as `hc`. Conclude with `absurd hn (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))`.
+-/
 theorem val_lt_one {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℚ_[g]} (hz : ‖z‖ < 1) :
     valuation F (e z) < 1 := by
   have h1 : Filter.Tendsto (fun n : ℕ => (e z) ^ n) Filter.atTop (nhds 0) := by
@@ -27,12 +35,22 @@ theorem val_lt_one {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℚ_[g]} (hz :
   by_contra hc
   exact absurd hn (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))
 
+/- English proof (translation)
+Establish `: z ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := hz`. Rewrite `this` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `val_lt_one he this`.
+-/
 theorem val_lt_one_of_red {e : ℚ_[g] ≃+* F} (he : Continuous e) {z : ℤ_[g]}
     (hz : PadicInt.toZMod z = 0) : valuation F (e z) < 1 := by
   have : z ∈ RingHom.ker (PadicInt.toZMod (p := g)) := hz
   rw [PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits] at this
   exact val_lt_one he this
 
+/- English proof (translation)
+Use `set m : ℕ := (PadicInt.toZMod z).val`. Establish `hm : PadicInt.toZMod (z - (m : ℤ_[g])) = 0`. Rewrite using `[map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Establish `e1 : e (z : ℚ_[g]) = (m : F) + e ((z - (m : ℤ_[g]) : ℤ_[g]) : ℚ_[g])`. Rewrite using `[PadicInt.coe_sub, map_sub, PadicInt.coe_natCast, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `(Valuation.map_add _ _ _).trans (max_le ?_ (val_lt_one_of_red he hm).le)` and prove the remaining obligations. Use `clear e1 hm`. Proceed by induction on `m with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ih => rw [Nat.cast_succ]; exact (Valuation.map_add _ _ _).trans (max_le ih (by simp))`.
+-/
 theorem val_le_one {e : ℚ_[g] ≃+* F} (he : Continuous e) (z : ℤ_[g]) : valuation F (e z) ≤ 1 := by
   set m : ℕ := (PadicInt.toZMod z).val
   have hm : PadicInt.toZMod (z - (m : ℤ_[g])) = 0 := by
@@ -50,6 +68,9 @@ def intHom {e : ℚ_[g] ≃+* F} (he : Continuous e) : ℤ_[g] →+* 𝒪[F] :=
   (e.toRingHom.comp (algebraMap ℤ_[g] ℚ_[g])).codRestrict 𝒪[F] fun z => by
     rw [Valuation.mem_integer_iff]; exact val_le_one he z
 
+/- English proof (translation)
+Use `⟨Matrix.GeneralLinearGroup.map (intHom he) k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[inc, intHom]`. Both sides reduce to the same expression.
+-/
 theorem map_inc_mem_KO {e : ℚ_[g] ≃+* F} (he : Continuous e) {n : ℕ} (k : GL (Fin n) ℤ_[g]) :
     Matrix.GeneralLinearGroup.map e.toRingHom (inc g n k) ∈ GlobalTheory.SplitWeil.KO F (Fin n) := by
   refine ⟨Matrix.GeneralLinearGroup.map (intHom he) k, ?_⟩
@@ -57,6 +78,25 @@ theorem map_inc_mem_KO {e : ℚ_[g] ≃+* F} (he : Continuous e) {n : ℕ} (k : 
   simp [inc, intHom]
   rfl
 
+/- English proof (translation)
+Establish `hred : ∀ i j, (red g (r + t) k : Mt g (r + t)) i j = PadicInt.toZMod ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]) i j)` using `fun i j => by simp [red]`. Establish `hent : ∀ i j, (Matrix.GeneralLinearGroup.map e.toRingHom (inc g (r + t) k)).val i j = e ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]) i j : ℚ_[g])` using `fun i j => by simp [inc]`. Use `set d : ℤ_[g] := ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]).submatrix (Fin.natAdd r) (Fin.natAdd r)).det with hd`. Establish `hbr : br r t (red g (r + t) k : Mt g (r + t)) = (PadicInt.toZMod (p` using `g)).mapMatrix ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]).submatrix (Fin.natAdd r) (Fin.natAdd r)) := by`. Use extensionality with `i j`.
+
+Establish `hi : r + (i : ℕ) < r + t` using `by omega`. Establish `hj : r + (j : ℕ) < r + t` using `by omega`. Simplify using `only [br, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), hred]`. Both sides reduce to the same expression. Establish `hdc : PadicInt.toZMod d = c` using `by rw [hc, hbr, hd, RingHom.map_det]`.
+
+Establish `hdu : IsUnit d`. Assume the negation of the conclusion as `h`. Establish `: d ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by rw [PadicInt.ker_toZMod]; exact h`. Rewrite `this` using `[RingHom.mem_ker, hdc]`. Conclude with `c.ne_zero this`.
+
+Use `(hu _ (map_inc_mem_KO he k) ?_ ?_ (Units.map e.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom hdu.unit)) ?_).trans ?_` and prove the remaining obligations. Introduce `i j`. Rewrite using `[hent]`. Apply `val_lt_one_of_red he` to reduce the goal to its premises. Rewrite using `[← hred]`.
+
+Conclude with `h0 _ _ (by simp) (by simp)`. Introduce `i j`. Rewrite using `[hent]`. Establish `hij : (red g (r + t) k : Mt g (r + t)) (Fin.castAdd t i) (Fin.castAdd t j) = (1 : Mt g r) i j`. Rewrite using `[← h1]`.
+
+Establish `hi : (i : ℕ) < r + t` using `by omega`. Establish `hj : (j : ℕ) < r + t` using `by omega`. Simplify using `only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj)]`. Both sides reduce to the same expression. Establish `h2 : PadicInt.toZMod ((k : Matrix (Fin (r + t)) (Fin (r + t)) ℤ_[g]) (Fin.castAdd t i) (Fin.castAdd t j) - if i = j then 1 else 0) = 0`.
+
+Rewrite using `[map_sub, ← hred, hij, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `val_lt_one_of_red he h2` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `[hd, RingHom.map_det]`. Use `congr 1`. Establish `h2` using `hT hdu.unit`. Establish `h3 : Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom hdu.unit = c := Units.ext (by simpa using hdc)`. Rewrite `h2` using `[h3, MonoidHom.comp_apply]`.
+
+Rewrite using `[h2]`.
+-/
 theorem act_inc {e : ℚ_[g] ≃+* F} (he : Continuous e) {ξ : Fˣ →* ℂˣ} {χ : (ZMod g)ˣ →* ℂˣ}
     (hT : TamePart (ξ.comp (Units.map e.toMonoidHom)) χ) {r t : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin (r + t)) F) V} {u : V} (hu : GlobalTheory.SplitRead.IsBlockVec ξ ρ u)
@@ -111,16 +151,27 @@ theorem act_inc {e : ℚ_[g] ≃+* F} (he : Continuous e) {ξ : Fˣ →* ℂˣ} 
     rw [h3, MonoidHom.comp_apply] at h2
     rw [h2]
 
+/- English proof (translation)
+Introduce `i j hj hi` and use `by rw [Matrix.one_apply_ne] intro h; rw [h] at hi; omega`.
+-/
 theorem inPar_one {r n : ℕ} : InPar r (1 : Mt g n) := fun i j hj hi => by
   rw [Matrix.one_apply_ne]
   intro h; rw [h] at hi; omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi : (i : ℕ) < r + t` using `by omega`. Establish `hj : (j : ℕ) < r + t` using `by omega`. Simplify using `only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), Matrix.one_apply, Fin.ext_iff]`.
+-/
 theorem tl_one {r t : ℕ} : tl r (1 : Mt g (r + t)) = 1 := by
   ext i j
   have hi : (i : ℕ) < r + t := by omega
   have hj : (j : ℕ) < r + t := by omega
   simp only [tl, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), Matrix.one_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi : r + (i : ℕ) < r + t` using `by omega`. Establish `hj : r + (j : ℕ) < r + t` using `by omega`. Simplify using `only [br, Formalism.MainNotions.ArithmeticCylinders.entN, dif_pos (And.intro hi hj), Matrix.one_apply, Fin.ext_iff]`. Distinguish the cases in `h : (i : ℕ) = j`.
+
+Simplify using `[h]`. Rewrite using `[if_neg (by omega), if_neg h]`.
+-/
 theorem br_one {r t : ℕ} : br r t (1 : Mt g (r + t)) = 1 := by
   ext i j
   have hi : r + (i : ℕ) < r + t := by omega
@@ -130,6 +181,15 @@ theorem br_one {r t : ℕ} : br r t (1 : Mt g (r + t)) = 1 := by
   · simp [h]
   · rw [if_neg (by omega), if_neg h]
 
+/- English proof (translation)
+Use `set M : Mt g (r + t) := fun i j : Fin (r + t) => if (i : ℕ) < r ∧ (j : ℕ) < r then Formalism.MainNotions.ArithmeticCylinders.entN ((1 : Gn g r) : Mt g r) i j else if r ≤ (i : ℕ) ∧ r ≤ (j : ℕ) then Formalism.MainNotions.ArithmeticCylinders.entN (y : Mt g t) (i - r) (j - r) else 0 …`. Establish `h0 : InPar r M` using `fun i j hj hi => by rw [hM]; dsimp only; rw [if_neg (by omega), if_neg (by omega)]`. Establish `h1 : tl r M = 1`. Use extensionality with `i j`. Establish `hi : (i : ℕ) < r + t` using `by omega`.
+
+Establish `hj : (j : ℕ) < r + t` using `by omega`. Simplify using `[tl, Formalism.MainNotions.ArithmeticCylinders.entN, hM, hi, hj]`. Establish `h2 : br r t M = y`. Use extensionality with `i j`. Simplify using `[br, Formalism.MainNotions.ArithmeticCylinders.entN, hM]`.
+
+Establish `hu : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, LabelDet.det_inPar r t M h0, h1, h2, Matrix.det_one, one_mul]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Establish `hb : (blk r t (r + t) 1 y : Mt g (r + t)) = M` using `by show ((toG M : Gn g (r + t)) : Mt g (r + t)) = M`. Rewrite using `[toG, dif_pos hu]`.
+
+Both sides reduce to the same expression. Rewrite using `[hb]`. Conclude with `⟨h0, h1, h2⟩`.
+-/
 theorem blk_parts {r t : ℕ} (y : Gn g t) :
     InPar r (blk r t (r + t) 1 y : Mt g (r + t)) ∧ tl r (blk r t (r + t) 1 y : Mt g (r + t)) = 1 ∧
       br r t (blk r t (r + t) 1 y : Mt g (r + t)) = (y : Mt g t) := by
@@ -153,6 +213,15 @@ theorem blk_parts {r t : ℕ} (y : Gn g t) :
     rw [toG, dif_pos hu]; rfl
   rw [hb]; exact ⟨h0, h1, h2⟩
 
+/- English proof (translation)
+Introduce `g _ F _ _ _ _ e he ξ χ hT r t V _ _ ρ u hu`. Establish `hsurj : ∀ x : Gn g (r + t), red g (r + t) (Function.invFun (red g (r + t)) x) = x` using `fun x => Function.invFun_eq (Model.red_surjective _ x)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.mem_principalCongruenceFixedVectors_iff]`. Introduce `k hk`.
+
+Use `act_inc he hT hu k (by rw [hk, Units.val_one]; exact inPar_one) (by rw [hk, Units.val_one]; exact tl_one) 1 (by rw [hk, Units.val_one, Units.val_one, br_one, Matrix.det_one])` as an intermediate fact. Rewrite `this` using `[map_one, Units.val_one, one_smul]`. Conclude with `this`. Introduce `x h0 h1 h2`. Use `act_inc he hT hu (Function.invFun (red g (r + t)) x) (by rw [hsurj]; exact h0) (by rw [hsurj]; exact h1) 1 (by rw [hsurj, h2, Matrix.det_one, Units.val_one])` as an intermediate fact.
+
+Rewrite `this` using `[map_one, Units.val_one, one_smul]`. Conclude with `this`. Introduce `y`. Take `⟨h0, h1, h2⟩` from `blk_parts (r := r) y`. Use `act_inc he hT hu (Function.invFun (red g (r + t)) (blk r t (r + t) 1 y)) (by rw [hsurj]; exact h0) (by rw [hsurj]; exact h1) (Matrix.GeneralLinearGroup.det y) (by rw [hsurj, h2, Matrix.GeneralLinearGroup.val_det_apply])` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem isParVec_of_isBlockVec : ∀ (g : ℕ) [Fact g.Prime] (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (e : ℚ_[g] ≃+* F), Continuous e → ∀ (ξ : Fˣ →* ℂˣ) (χ : (ZMod g)ˣ →* ℂˣ),
     TamePart (ξ.comp (Units.map e.toMonoidHom)) χ → ∀ (r t : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]

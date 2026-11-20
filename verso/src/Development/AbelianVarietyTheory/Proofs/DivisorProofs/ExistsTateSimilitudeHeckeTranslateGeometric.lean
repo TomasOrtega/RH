@@ -19,34 +19,99 @@ section Ev
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {κ : Type} [Field κ] {Q : Type} [Group Q] {act : D.O → Q → Q}
   {e : ℕ → Q → Q → κˣ → Prop} (I : TateIsoO D κ Q act e)
 
+/- English proof (translation)
+Establish `h` using `I.add n 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+-/
 theorem ev_zero (n : ℕ) : I.ev n 0 = 1 := by
   have h := I.add n 0 0
   rw [add_zero] at h
   simpa using h
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rw [zero_smul, ev_zero, pow_zero]`. Consider the case `succ j ih => rw [succ_nsmul, I.add, ih, pow_succ]`.
+-/
 theorem ev_nsmul (n j : ℕ) (w : D.La) : I.ev n (j • w) = I.ev n w ^ j := by
   induction j with
   | zero => rw [zero_smul, ev_zero, pow_zero]
   | succ j ih => rw [succ_nsmul, I.add, ih, pow_succ]
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← I.add, neg_add_cancel, ev_zero])`.
+-/
 theorem ev_neg (n : ℕ) (w : D.La) : I.ev n (-w) = (I.ev n w)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← I.add, neg_add_cancel, ev_zero])
 
+/- English proof (translation)
+Rewrite using `[← I.ker n hn hnp, sub_eq_add_neg, I.add, ev_neg, mul_inv_eq_one]`.
+-/
 theorem ev_eq_iff (n : ℕ) (hn : 0 < n) (hnp : n.Coprime p) (w w' : D.La) :
     I.ev n w = I.ev n w' ↔ ∃ y, w - w' = n • y := by
   rw [← I.ker n hn hnp, sub_eq_add_neg, I.add, ev_neg, mul_inv_eq_one]
 
+/- English proof (translation)
+Rewrite using `[ev_nsmul, mul_comm n j, I.tower j n hj hn hc]`.
+-/
 theorem ev_mul_nsmul (n j : ℕ) (hn : 0 < n) (hj : 0 < j) (hc : (j * n).Coprime p) (w : D.La) :
     I.ev (n * j) (n • w) = I.ev j w := by
   rw [ev_nsmul, mul_comm n j, I.tower j n hj hn hc]
 
 end Ev
 
+/- English proof (translation)
+Rewrite using `[transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique ((1 : T ⟶ A) ≫ toUnit A) (toUnit T), _root_.one_mul]`.
+-/
 theorem one_comp_transl_pt {S : Scheme.{0}} {A : Over S} [GrpObj A] {T : Over S} (h : 𝟙_ (Over S) ⟶ A) :
     (1 : T ⟶ A) ≫ transl h = toUnit T ≫ h := by
   rw [transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique ((1 : T ⟶ A) ≫ toUnit A) (toUnit T),
     _root_.one_mul]
 
+/- English proof (translation)
+Introduce `p _ D R _ b g c k N hcp hkp hN hNp hEF hg hck S s o A' _ _ act' ψ hA' hψ hGal hact P' hP' r₁ r₂ hiso κ _ _ x β hx`. Take `⟨I, hI⟩` from `o.geom κ x β hx`. Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `kpos : 0 < k` using `Nat.pos_of_ne_zero fun h => by subst h; rw [Nat.coprime_zero_left] at hkp; omega`. Establish `cpos : 0 < c` using `Nat.pos_of_ne_zero fun h => by subst h; rw [Nat.coprime_zero_left] at hcp; omega`.
+
+Establish `Npos : 0 < N` using `by omega`. Use `haveI := D.freeLa`. Set `Ψ : (Over.mk x ⟶ o.A) →* (Over.mk x ⟶ A')` to `MonoidHom.mk' (fun t => t ≫ ψ) (fun a a' => MonObj.mul_comp a a' ψ)`. Establish `hΨ : ∀ t, Ψ t = t ≫ ψ` using `fun _ => rfl`. Establish `ginj : Function.Injective g`.
+
+Introduce `u v huv`. Establish `h0 : D.EF (u - v) = 0`. Use extensionality with `w`. Establish `e` using `hEF (u - v) w`. Rewrite `e` using `[map_sub, huv, sub_self, map_zero, LinearMap.zero_apply]`.
+
+Rewrite using `[LinearMap.zero_apply]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left (by exact_mod_cast cpos.ne')`. Use `D.nondeg (h0.trans (map_zero D.EF).symm)` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Establish `hlev : ∀ n, 0 < n → n.Coprime p → ∀ w, I.ev (n * k) (n • w) = I.ev k w` using `fun n hn hnp w => ev_mul_nsmul I n k hn kpos (Nat.Coprime.mul hkp hnp) w`.
+
+Establish `hker : ∀ t : Over.mk x ⟶ o.A, t ≫ ψ = 1 ↔ ∃ z, t = I.ev (N * k) (N • g z)`. Introduce `t`. Prove the components needed by the constructor for the conclusion. Introduce `ht`. Establish `e1 : t.left ≫ ψ.left = (1 : Over.mk x ⟶ o.A).left ≫ ψ.left`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, ht, MonObj.one_comp]`. Take `⟨h, hh, -⟩` from `hGal.fibre κ (1 : Over.mk x ⟶ o.A).left t.left e1.symm`. Take `⟨z, hz⟩` from `h.2`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `e2 : t = (1 : Over.mk x ⟶ o.A) ≫ transl h.1` using `Over.OverMorphism.ext (by rw [Over.comp_left]; exact hh.symm)`.
+
+Rewrite using `[e2, one_comp_transl_pt, hz, hI]`. Introduce and unpack `⟨z, rfl⟩`. Rewrite using `[← hI, Category.assoc, comp_eq_one_of_transl ψ (o.eta (N • g z)) (hGal.inv ⟨_, mem_heckeSub o g N z⟩), MonObj.comp_one]`. Establish `ker' : ∀ n, 0 < n → n.Coprime p → ∀ y, I.ev (n * k) (g y) ≫ ψ = 1 ↔ ∃ z, y = n • z`. Introduce `n hn hnp y`.
+
+Rewrite using `[hker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Rewrite `hz` using `[hlev N Npos hNp, ← hlev n hn hnp]`. Take `⟨w, hw⟩` from `(ev_eq_iff I (n * k) (Nat.mul_pos hn kpos) (Nat.Coprime.mul hnp hkp) _ _).1 hz`.
+
+Take `⟨w', hw'⟩` from `hg w`. Use `⟨z + w', ginj ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, map_add, hw', smul_add, smul_smul, ← sub_eq_iff_eq_add', hw]`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, by rw [map_nsmul, hlev n hn hnp, hlev N Npos hNp]⟩`.
+
+Establish `htor : ∀ n, 0 < n → n.Coprime p → ∀ y, (I.ev (n * k) (g y) ≫ ψ) ^ n = 1`. Introduce `n hn hnp y`. Rewrite using `[← hΨ, ← map_pow, hΨ, ← ev_nsmul, ← map_nsmul]`. Conclude with `(ker' n hn hnp (n • y)).2 ⟨y, rfl⟩`. Establish `onto' : ∀ n, 0 < n → n.Coprime p → ∀ q : Over.mk x ⟶ A', q ^ n = 1 ↔ ∃ y, I.ev (n * k) (g y) ≫ ψ = q`.
+
+Introduce `n hn hnp q`. Prove the components needed by the constructor for the conclusion. Introduce `hq haveI := hGal.fin haveI := hGal.onto`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective ψ.left q.left`. Set `a : Over.mk x ⟶ o.A` to `Over.homMk a₀ (by show a₀ ≫ o.A.hom = x`.
+
+Rewrite using `[← Over.w ψ, ← Category.assoc, ← ha₀, Over.w q]`. Use the proof step `rfl)`. Establish `ha : a ≫ ψ = q` using `Over.OverMorphism.ext (by rw [Over.comp_left]; exact ha₀.symm)`. Establish `han : (a ^ n) ≫ ψ = 1` using `by rw [← hΨ, map_pow, hΨ, ha, hq]`. Take `⟨z, hz⟩` from `(hker _).1 han`.
+
+Rewrite `hz` using `[hlev N Npos hNp, ← hlev n hn hnp]`. Establish `hnk : 0 < n * k` using `Nat.mul_pos hn kpos`. Establish `hnkp : (n * k).Coprime p` using `Nat.Coprime.mul hnp hkp`. Establish `hak : a ^ (n * k) = 1`. Rewrite using `[pow_mul, hz, ← ev_nsmul, I.ker _ hnk hnkp]`.
+
+Conclude with `⟨g z, by rw [smul_smul, mul_comm]⟩`. Take `⟨w, hw⟩` from `(I.onto _ hnk hnkp a).1 hak`. Rewrite `hz` using `[← hw, ← ev_nsmul, ev_eq_iff I _ hnk hnkp]`. Take `⟨v, hv⟩` from `hz`. Establish `e1 : n • (w - g z - k • v) = 0` using `by rw [smul_sub, smul_sub, smul_smul, ← hv, sub_self]`.
+
+Establish `e2 : w - g z - k • v = 0`. Establish `e3 : ((n : ℤ)) • (w - g z - k • v) = 0` using `by rw [natCast_zsmul]; exact e1`. Conclude with `(smul_eq_zero.1 e3).resolve_left (by exact_mod_cast hn.ne')`. Establish `e4 : w = g z + k • v` using `by rw [sub_sub, sub_eq_zero] at e2; exact e2`. Take `⟨v', hv'⟩` from `hg v`.
+
+Use `⟨z + v', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hv', ← e4, hw, ha]`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `htor n hn hnp y`. Establish `hnκ : ∀ n : ℕ, n.Coprime p → (n : κ) ≠ 0` using `fun n hnp => by`.
+
+Establish `h` using `(b.unit n hnp).map β`. Rewrite `h` using `[map_natCast]`. Conclude with `h.ne_zero`. Establish `hiso2 : LBIso (ReciprocityTheory.ChartRestriction.G.Geo.Tor.lbPow (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) (k ^ 2 / c)) ((P'.pull (lift (𝟙 A') (𝟙 A')).left).pull ψ.left)`. Use `(GlobalTheory.CechPic.cls_eq_iff (LB.isLB_linComb (pull_isLB o.isLB _) _ _) (pull_isLB (pull_isLB hP' _) _)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.CechPic.cls_lbPow (pull_isLB o.isLB _), GlobalTheory.CechPic.cls_pull o.isLB, GlobalTheory.CechPic.cls_pull (pull_isLB hP' _), GlobalTheory.CechPic.cls_pull hP', ← GlobalTheory.CechPic.pull_comp]`. Establish `h1` using `(GlobalTheory.CechPic.cls_eq_iff (LB.isLB_linComb o.isLB _ _) (pull_isLB hP' _)).2 hiso`. Rewrite `h1` using `[GlobalTheory.CechPic.cls_linComb o.isLB, GlobalTheory.CechPic.cls_pull hP']`. Simplify using `only [GlobalTheory.CechPic.pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin] at h1`. Establish `h2` using `congrArg (GlobalTheory.CechPic.pull (lift (𝟙 o.A) (𝟙 o.A)).left) h1`.
+
+Rewrite `h2` using `[map_nsmul, ← GlobalTheory.CechPic.pull_comp]`. Rewrite using `[h2]`. Use `congr 1`. Simplify using `only [sq2, ← Over.comp_left, comp_lift, Category.id_comp, lift_fst_assoc, lift_snd_assoc, Category.comp_id]`. Use `⟨⟨I.ζ, I.ζ_prim, I.ζ_pow, fun n y => I.ev (n * k) (g y) ≫ ψ, ?_, ?_, ?_, ?_, ?_, ?_⟩, fun y => ?_⟩` and prove the remaining obligations.
+
+Introduce `n y y'`. Rewrite using `[map_add, I.add, MonObj.mul_comp]`. Introduce `n b' y`. Rewrite using `[map_smul, I.lin, Category.assoc, hact, ← Category.assoc]`. Conclude with `fun n hn hnp y => ker' n hn hnp y`.
+
+Conclude with `fun n hn hnp q => onto' n hn hnp q`. Introduce `n m hn hm hnm y`. Rewrite using `[← hΨ, ← map_pow, hΨ, Nat.mul_right_comm n m k, I.tower (n * k) m (Nat.mul_pos hn kpos) hm (by rw [Nat.mul_right_comm]; exact Nat.Coprime.mul hnm hkp)]`. Introduce `n hn hnp u v`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_weilCommutatorPairing_torsion_geometricPoint S A' (P'.pull (lift (𝟙 A') (𝟙 A')).left) hA' (pull_isLB hP' _) κ x n hn (hnκ n hnp) _ _ (htor n hn hnp u) (htor n hn hnp v)`.
+
+Establish `h2` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom GlobalTheory.globalFns_holds o.ab (pull_isLB o.isLB _) (pull_isLB hP' _) ψ hiso2 he`. Establish `h3` using `GlobalTheory.T.commutatorPairing_heckeTranslate_eq_zeta p D R b g c k (N * k) hcp hkp hEF hg hck S s o κ x β hx I n hn hnp u v e (by rw [Nat.cast_mul]; exact h2)`. Rewrite `he` using `[h3]`. Conclude with `he`. Use `show toUnit _ ≫ (o.eta (g y) ≫ ψ) = I.ev (N * k) (g y) ≫ ψ`.
+
+Rewrite using `[← Category.assoc, hI]`.
+-/
 theorem exists_tateIsoO_transl : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) → c ∣ k ^ 2 → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s) (A' : Over S) [GrpObj A'] [IsCommMonObj A'] (act' : OActN D.O A') (ψ : o.A ⟶ A'), IsAbelianScheme A' → IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover (GlobalTheory.UPel.HT.Hecke.heckeSub o g N) (fun h => (GlobalTheory.UPel.HT.Hecke.transl h.1).left) ψ.left → (∀ c' : D.O, o.act.act c' ≫ ψ = ψ ≫ act'.act c') → ∀ P' : LB (G2 A').left, P'.IsLB → (∃ t : (P'.pull (lift (1 : A' ⟶ A') (𝟙 A')).left).Gen, t.IsGen) → (∃ t : (P'.pull (lift (𝟙 A') (1 : A' ⟶ A')).left).Gen, t.IsGen) → LBIso (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) (P'.pull (GlobalTheory.UPel.HT.Hecke.sq2 ψ)) → ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ S) (β : R →+* κ), x ≫ s = spMap β → ∃ I : TateIsoO D κ (Over.mk x ⟶ A') (fun c g => g ≫ act'.act c) (fun n g g' z => Out.WeilIs A' (P'.pull (lift (𝟙 A') (𝟙 A')).left) n g g' (unitOn z)), ∀ y, toUnit _ ≫ (o.eta (g y) ≫ ψ) = I.ev N y := by
   intro p _ D R _ b g c k N hcp hkp hN hNp hEF hg hck S s o A' _ _ act' ψ hA' hψ hGal hact P' hP' r₁ r₂ hiso κ _ _ x β hx
   obtain ⟨I, hI⟩ := o.geom κ x β hx

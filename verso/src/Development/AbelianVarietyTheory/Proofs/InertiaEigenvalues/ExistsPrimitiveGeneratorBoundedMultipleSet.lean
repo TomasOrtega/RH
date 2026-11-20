@@ -13,10 +13,22 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 local notation "𝒪" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_ball (x : K) : x ∈ 𝒪 ↔ ‖x‖ ≤ 1 := by
   rw [Valuation.mem_valuationSubring_iff, NormedField.valuation_apply, ← NNReal.coe_le_coe]
   simp
 
+/- English proof (translation)
+Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Establish `hy : ‖(y : K)‖ ≤ 1` using `(mem_ball _).1 y.2`. Establish `e : ((y * a ^ n : 𝒪) : K) = (y : K) * (a : K) ^ n` using `by push_cast; ring`.
+
+Rewrite using `[e, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Introduce `hx`. Distinguish the cases in `ha : (a : K) ^ n = 0`. Establish `hx0 : (x : K) = 0`.
+
+Rewrite using `[← norm_le_zero_iff]`. Rewrite `hx` using `[← norm_pow, ha, norm_zero]`. Conclude with `hx`. Use `⟨0, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[hx0]`.
+
+Use `⟨⟨(x : K) / (a : K) ^ n, (mem_ball _).2 ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_pow]; exact div_le_one_of_le₀ hx (by positivity)`. Use `show (x : K) / (a : K) ^ n * ((a ^ n : 𝒪) : K) = x`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mem_span_pow (a x : 𝒪) (n : ℕ) :
     x ∈ (Ideal.span {a}) ^ n ↔ ‖(x : K)‖ ≤ ‖(a : K)‖ ^ n := by
   rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton']
@@ -40,6 +52,17 @@ theorem mem_span_pow (a x : 𝒪) (n : ℕ) :
         push_cast
         field_simp
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (x y : 𝒪), x ≡ y [SMOD (Ideal.span {a}) ^ n • (⊤ : Submodule 𝒪 𝒪)] ↔ ‖(x : K) - y‖ ≤ ‖(a : K)‖ ^ n`. Introduce `n x y`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, mem_span_pow]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `h0` using `norm_nonneg (a : K)`. Use `{ haus' := fun x hx => ?_, prec' := fun f hf => ?_ }` and prove the remaining obligations. Establish `hle : ∀ n : ℕ, ‖(x : K)‖ ≤ ‖(a : K)‖ ^ n` using `fun n => by`. Simplify using `using (key n x 0).1 (hx n)`. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one h0 ha`.
+
+Establish `: ‖(x : K)‖ ≤ 0` using `ge_of_tendsto' ht hle`. Conclude with `Subtype.ext (by simpa using this)`. Establish `hC : ∀ {m n : ℕ}, m ≤ n → ‖(f m : K) - f n‖ ≤ ‖(a : K)‖ ^ m` using `fun h => (key _ _ _).1 (hf h)`. Establish `hcs : CauchySeq (fun n => (f n : K))`. Use `cauchySeq_of_le_geometric ‖(a : K)‖ 1 ha fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[dist_eq_norm, one_mul]`. Conclude with `hC (Nat.le_succ n)`. Take `⟨L, hL⟩` from `cauchySeq_tendsto_of_complete hcs`. Establish `hL1 : ‖L‖ ≤ 1` using `le_of_tendsto' hL.norm fun n => (mem_ball _).1 (f n).2`. Use `⟨⟨L, (mem_ball _).2 hL1⟩, fun n => (key _ _ _).2 ?_⟩` and prove the remaining obligations.
+
+Use `show ‖(f n : K) - L‖ ≤ _`. Establish `ht : Filter.Tendsto (fun m => ‖(f n : K) - f m‖) Filter.atTop (nhds ‖(f n : K) - L‖)` using `(tendsto_const_nhds.sub hL).norm`. Conclude with `le_of_tendsto ht (Filter.eventually_atTop.2 ⟨n, fun m hm => hC hm⟩)`.
+-/
 theorem isAdicComplete_span [CompleteSpace K] (a : 𝒪) (ha : ‖(a : K)‖ < 1) :
     IsAdicComplete (Ideal.span {a}) 𝒪 := by
   have key : ∀ (n : ℕ) (x y : 𝒪), x ≡ y [SMOD (Ideal.span {a}) ^ n • (⊤ : Submodule 𝒪 𝒪)] ↔
@@ -67,6 +90,11 @@ theorem isAdicComplete_span [CompleteSpace K] (a : 𝒪) (ha : ‖(a : K)‖ < 1
         (nhds ‖(f n : K) - L‖) := (tendsto_const_nhds.sub hL).norm
     exact le_of_tendsto ht (Filter.eventually_atTop.2 ⟨n, fun m hm => hC hm⟩)
 
+/- English proof (translation)
+Establish `hx0 : (x : K) ≠ 0`. Introduce `h`. Rewrite `hx` using `[h, norm_zero]`. Conclude with `zero_ne_one hx`. Use `IsUnit.of_mul_eq_one (⟨(x : K)⁻¹, (mem_ball _).2 (by rw [norm_inv, hx, inv_one])⟩ : 𝒪) ?_` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (by simp [hx0])`.
+-/
 theorem isUnit_of_norm_eq_one (x : 𝒪) (hx : ‖(x : K)‖ = 1) : IsUnit x := by
   have hx0 : (x : K) ≠ 0 := by
     intro h; rw [h, norm_zero] at hx; exact zero_ne_one hx
@@ -81,6 +109,27 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 local notation "𝒪" => Valuation.valuationSubring (NormedField.valuation (K := K))
 
+/- English proof (translation)
+Set `ι : 𝒪 →+* K` to `(𝒪).subtype`. Set `g' : (𝒪)⟦X⟧` to `PowerSeries.mk fun n => ⟨coeff n g, (mem_ball _).2 (hg1 n)⟩`. Set `h' : (𝒪)⟦X⟧` to `PowerSeries.mk fun n => ⟨coeff n h, (mem_ball _).2 (hh n)⟩`. Establish `hg' : PowerSeries.map ι g' = g` using `by ext n; simp [g', ι]`. Establish `hh' : PowerSeries.map ι h' = h` using `by ext n; simp [h', ι]`.
+
+Take `⟨a, has, hamax⟩` from `Finset.exists_max_image (insert (0 : K) ((Finset.range d).image fun n => coeff n g)) (fun x => ‖x‖) ⟨0, Finset.mem_insert_self _ _⟩`. Establish `ha1 : ‖a‖ < 1`. Break down `Finset.mem_insert.1 has with rfl | h2` into its components or cases. Simplify using the standard rewrite rules. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 h2`.
+
+Conclude with `hlt n (Finset.mem_range.1 hn)`. Establish `hle : ∀ n < d, ‖coeff n g‖ ≤ ‖a‖` using `fun n hn => hamax _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_range.2 hn)))`. Set `a' : 𝒪` to `⟨a, (mem_ball _).2 ha1.le⟩`. Use `haveI : IsAdicComplete (Ideal.span {a'}) 𝒪 := isAdicComplete_span a' ha1`. Establish `hgdU : IsUnit (coeff d g')` using `isUnit_of_norm_eq_one _ (by simpa [g'] using hgd)`.
+
+Establish `hI : Ideal.span {a'} ≠ ⊤`. Introduce `htop`. Establish `h1 : (1 : 𝒪) ∈ (Ideal.span {a'}) ^ 1` using `by rw [pow_one, htop]; trivial`. Rewrite `h1` using `[mem_span_pow]`. Establish `: ‖(a' : K)‖ = ‖a‖` using `rfl`.
+
+Simplify using `only [OneMemClass.coe_one, norm_one, pow_one] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hord : (g'.map (Ideal.Quotient.mk (Ideal.span {a'}))).order = d`. Rewrite using `[PowerSeries.order_eq_nat]`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[PowerSeries.coeff_map, Ne, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `hmem`. Conclude with `hI (Ideal.eq_top_of_isUnit_mem _ hmem hgdU)`. Rewrite using `[PowerSeries.coeff_map, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1` using `(mem_span_pow a' (coeff i g') 1).2 (by simpa [g', a'] using hle i hi)`.
+
+Rewrite `h1` using `[pow_one]`. Then use the resulting hypothesis. Establish `H : g'.IsWeierstrassDivisorAt (Ideal.span {a'})`. Unfold `PowerSeries.IsWeierstrassDivisorAt`. Rewrite using `[hord, ENat.toNat_coe]`. Conclude with `hgdU`.
+
+Establish `hdiv` using `H.isWeierstrassDivisionAt_div_mod h'`. Use `⟨PowerSeries.map ι (H.div h'), PowerSeries.map ι (H.mod h' : (𝒪)⟦X⟧), fun n => ?_, fun n => ?_, fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_map]`. Conclude with `(mem_ball _).1 (coeff n (H.div h')).2`. Rewrite using `[PowerSeries.coeff_map]`.
+
+Conclude with `(mem_ball _).1 (coeff n (H.mod h' : (𝒪)⟦X⟧)).2`. Rewrite using `[PowerSeries.coeff_map, Polynomial.coeff_coe, Polynomial.coeff_eq_zero_of_degree_lt, map_zero]`. Establish `hdl` using `hdiv.degree_lt`. Rewrite `hdl` using `[hord, ENat.toNat_coe]`. Conclude with `lt_of_lt_of_le hdl (by exact_mod_cast hn)`.
+
+Establish `e` using `congrArg (PowerSeries.map ι) hdiv.eq_mul_add`. Rewrite `e` using `[hh', map_add, map_mul, hg']`. Conclude with `e`.
+-/
 theorem wdiv [CompleteSpace K] (g h : K⟦X⟧) (d : ℕ) (hg1 : ∀ n, ‖coeff n g‖ ≤ 1)
     (hgd : ‖coeff d g‖ = 1) (hlt : ∀ n < d, ‖coeff n g‖ < 1) (hh : ∀ n, ‖coeff n h‖ ≤ 1) :
     ∃ q r : K⟦X⟧, (∀ n, ‖coeff n q‖ ≤ 1) ∧ (∀ n, ‖coeff n r‖ ≤ 1) ∧
@@ -137,6 +186,9 @@ theorem wdiv [CompleteSpace K] (g h : K⟦X⟧) (d : ℕ) (hg1 : ∀ n, ‖coeff
     rw [hh', map_add, map_mul, hg'] at e
     exact e
 
+/- English proof (translation)
+Establish `hex : ∃ n, ‖coeff n g‖ = 1` using `⟨m, hm⟩`. Conclude with `⟨Nat.find hex, Nat.find_min' hex hm, Nat.find_spec hex, fun n hn => lt_of_le_of_ne (hg1 n) (Nat.find_min hex hn)⟩`.
+-/
 theorem first_unit_index (g : K⟦X⟧) (m : ℕ) (hg1 : ∀ n, ‖coeff n g‖ ≤ 1)
     (hm : ‖coeff m g‖ = 1) : ∃ d ≤ m, ‖coeff d g‖ = 1 ∧ ∀ n < d, ‖coeff n g‖ < 1 := by
   classical
@@ -148,6 +200,29 @@ end GlobalTheory.GcdGen
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ _ J hadd hmul ⟨g0, hg0J, hg01, m0, hm0⟩`. Set `S : ℕ → Prop` to `fun d => ∃ g ∈ J, (∀ n, ‖coeff n g‖ ≤ 1) ∧ ‖coeff d g‖ = 1 ∧ ∀ n < d, ‖coeff n g‖ < 1`. Establish `hS : ∃ d, S d`. Take `⟨d, -, hd1, hd2⟩` from `GcdGen.first_unit_index g0 m0 hg01 hm0`. Conclude with `⟨d, g0, hg0J, hg01, hd1, hd2⟩`.
+
+Take `⟨Δ, hΔJ, hΔ1, hΔd, hΔlt⟩` from `Nat.find_spec hS`. Use `⟨Δ, hΔJ, hΔ1, ⟨_, hΔd⟩, fun h hhJ hh1 => ?_⟩` and prove the remaining obligations. Take `⟨q, r, hq1, hr1, hr0, hqr⟩` from `GcdGen.wdiv Δ h (Nat.find hS) hΔ1 hΔd hΔlt hh1`. Establish `hrJ : r ∈ J`. Establish `h1 : (-q) * Δ ∈ J` using `hmul Δ hΔJ (-q) ⟨1, fun n => by simpa using hq1 n⟩`.
+
+Establish `h2` using `hadd h hhJ _ h1`. Establish `e : r = h + (-q) * Δ` using `by rw [hqr]; ring`. Rewrite using `[e]`. Conclude with `h2`. Distinguish the cases in `hr : r = 0`.
+
+Conclude with `⟨q, hq1, by rw [hqr, hr, add_zero, mul_comm]⟩`. It suffices to derive a contradiction. Establish `hex : ∃ n, coeff n r ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Conclude with `hr (PowerSeries.ext fun n => by simpa using hne n)`. Take `⟨n0, hn0⟩` from `hex`. Establish `hn0d : n0 < Nat.find hS`. Assume the negation of the conclusion as `hc`. Conclude with `hn0 (hr0 n0 (not_lt.1 hc))`.
+
+Take `⟨m, hm, hmax⟩` from `Finset.exists_max_image (Finset.range (Nat.find hS)) (fun n => ‖coeff n r‖) ⟨n0, Finset.mem_range.2 hn0d⟩`. Establish `hmd : m < Nat.find hS` using `Finset.mem_range.1 hm`. Establish `hrle : ∀ n, ‖coeff n r‖ ≤ ‖coeff m r‖` using `fun n => by`. Distinguish the cases in `hn : n < Nat.find hS`. Conclude with `hmax n (Finset.mem_range.2 hn)`.
+
+Rewrite using `[hr0 n (not_lt.1 hn), norm_zero]`. Conclude with `norm_nonneg _`. Establish `hcpos : 0 < ‖coeff m r‖`. Break down `(norm_nonneg (coeff m r)).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+
+It suffices to derive a contradiction. Apply `hn0` to reduce the goal to its premises. Use `hrle n0` as an intermediate fact. Rewrite `this` using `[← h]`. Conclude with `norm_le_zero_iff.1 this`.
+
+Set `r'` to `PowerSeries.C (R := K) (coeff m r)⁻¹ * r`. Establish `hcoeff : ∀ n, coeff n r' = (coeff m r)⁻¹ * coeff n r` using `fun n => by`. Simplify using `[r', PowerSeries.coeff_C_mul]`. Establish `hr'J : r' ∈ J` using `hmul r hrJ _ ⟨‖(coeff m r)⁻¹‖, fun n => by`. Apply the tactic sequence `rw [PowerSeries.coeff_C]; split_ifs <;> simp⟩`.
+
+Establish `hr'1 : ∀ n, ‖coeff n r'‖ ≤ 1` using `fun n => by`. Rewrite using `[hcoeff, norm_mul, norm_inv, inv_mul_le_iff₀ hcpos, mul_one]`. Conclude with `hrle n`. Establish `hr'm : ‖coeff m r'‖ = 1`. Rewrite using `[hcoeff, norm_mul, norm_inv]`.
+
+Conclude with `inv_mul_cancel₀ hcpos.ne'`. Take `⟨d', hd'm, hd'1, hd'lt⟩` from `GcdGen.first_unit_index r' m hr'1 hr'm`. Establish `hmin` using `Nat.find_min' hS ⟨r', hr'J, hr'1, hd'1, hd'lt⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_primitive_generator : ∀ (K : Type) [NormedField K] [IsUltrametricDist K]
     [CompleteSpace K] (J : Set K⟦X⟧), (∀ x ∈ J, ∀ y ∈ J, x + y ∈ J) →
     (∀ x ∈ J, ∀ b : K⟦X⟧, (∃ c : ℝ, ∀ n, ‖coeff n b‖ ≤ c) → b * x ∈ J) →

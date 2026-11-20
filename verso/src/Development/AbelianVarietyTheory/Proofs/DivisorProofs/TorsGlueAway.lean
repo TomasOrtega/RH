@@ -14,6 +14,17 @@ namespace GlobalTheory.GroupBplus.Aff
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `R _ G _ _ N B _ _ Idx f hf z h`. Set `q : ∀ i, B →ₐ[R] Localization.Away (f i)` to `fun i => IsScalarTower.toAlgHom R B (Localization.Away (f i))`. Set `𝒰` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of B) f hf).openCover`. Set `y : ∀ i : Idx, 𝒰.X i ⟶ G.left` to `fun i => (z i).1.left`. Establish `hc : ∀ i j, pullback.fst (𝒰.f i) (𝒰.f j) ≫ y i = pullback.snd _ _ ≫ y j`.
+
+Introduce `(i : Idx) (j : Idx)`. Use `congrArg (fun t => CommaMorphism.left t.1) (h i j (TensorProduct B (Localization.Away (f i)) (Localization.Away (f j))) Algebra.TensorProduct.includeLeft (Algebra.TensorProduct.includeRight.restrictScalars R) (AlgHom.ext fun a => by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(algebraMap B (Localization.Away (f i)) a) ⊗ₜ[B] (1 : Localization.Away (f j)) = (1 : Localization.Away (f i)) ⊗ₜ[B] algebraMap B (Localization.Away (f j)) a`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]))`. Express the relevant statement in the definitionally equal form `pullback.fst (Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away (f i))))) (Spec.map (CommRingCat.ofHom (algebraMap B (Localization.Away (f j))))) ≫ _ = pullback.snd _ _ ≫ _`.
+
+Rewrite using `[← pullbackSpecIso_hom_fst, ← pullbackSpecIso_hom_snd, Category.assoc, Category.assoc]`. Conclude with `congrArg _ this`. Establish `hk : ∀ i : Idx, (spOver (q i)).left ≫ 𝒰.glueMorphisms y hc = (z i).1.left` using `fun i => 𝒰.ι_glueMorphisms y hc i`. Establish `hw : 𝒰.glueMorphisms y hc ≫ G.hom = (SpAlg R B).hom`. Use `𝒰.hom_ext _ _ fun (i : Idx) => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(spOver (q i)).left ≫ _ = (spOver (q i)).left ≫ (SpAlg R B).hom`. Rewrite using `[← Category.assoc, hk, Over.w, Over.w]`. Set `w : SpAlg R B ⟶ G` to `Over.homMk (𝒰.glueMorphisms y hc) hw`. Establish `hres : ∀ i, spOver (q i) ≫ w = (z i).1` using `fun i => Over.OverMorphism.ext (hk i)`. Establish `hN : w ^ N = 1`.
+
+Use `Over.OverMorphism.ext (𝒰.hom_ext _ _ fun (i : Idx) => ?_)` and prove the remaining obligations. Establish `e : spOver (q i) ≫ (w ^ N) = spOver (q i) ≫ 1`. Rewrite using `[MonObj.comp_pow, hres, (z i).2, MonObj.comp_one]`. Conclude with `congrArg CommaMorphism.left e`. Conclude with `⟨⟨w, hN⟩, fun i => Subtype.ext (hres i)⟩`.
+-/
 theorem tors_glue_away : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (B : Type) [CommRing B] [Algebra R B], ∀ (Idx : Type) (f : Idx → B), Ideal.span (Set.range f) = ⊤ → ∀ z : ∀ i, Tors G N (Localization.Away (f i)), (∀ (i j : Idx) (D : Type) [CommRing D] [Algebra R D] (a : Localization.Away (f i) →ₐ[R] D) (b : Localization.Away (f j) →ₐ[R] D), a.comp (IsScalarTower.toAlgHom R B (Localization.Away (f i))) = b.comp (IsScalarTower.toAlgHom R B (Localization.Away (f j))) → torsMap a (z i) = torsMap b (z j)) → ∃ w : Tors G N B, ∀ i, torsMap (IsScalarTower.toAlgHom R B (Localization.Away (f i))) w = z i := by
   intro R _ G _ _ N B _ _ Idx f hf z h
   let q : ∀ i, B →ₐ[R] Localization.Away (f i) := fun i => IsScalarTower.toAlgHom R B (Localization.Away (f i))

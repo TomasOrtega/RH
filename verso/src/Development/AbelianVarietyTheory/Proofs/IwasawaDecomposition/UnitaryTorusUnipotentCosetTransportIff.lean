@@ -12,6 +12,13 @@ section CosetTransport
 
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Establish `hx0 : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Take `⟨k, hk⟩` from `WithZero.ne_zero_iff_exists.1 hx0`. Rewrite `h2` using `[map_inv₀, ← hk]`. Rewrite `h1`, the goal using `[← hk]`. Establish `h2' : ¬ (k⁻¹ : Multiplicative ℤ) ≤ 1`.
+
+Introduce `h`. Apply `h2` to reduce the goal to its premises. Rewrite using `[← WithZero.coe_inv]`. Conclude with `h` after adjusting the coercions. Rewrite using `[WithZero.coe_le_coe]`.
+
+Establish `: (k⁻¹ : Multiplicative ℤ) = Multiplicative.ofAdd (- Multiplicative.toAdd k)` using `rfl`. Rewrite `h2'` using `[this, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Rewrite using `[← ofAdd_toAdd k, Multiplicative.ofAdd_le]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cosetT_le_of_nonunit {x : K} (h1 : Valued.v x ≤ 1) (h2 : ¬ Valued.v x⁻¹ ≤ 1) (h0 : x ≠ 0) :
     Valued.v x ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
   have hx0 : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).2 h0
@@ -26,6 +33,13 @@ theorem cosetT_le_of_nonunit {x : K} (h1 : Valued.v x ≤ 1) (h2 : ¬ Valued.v x
   rw [← ofAdd_toAdd k, Multiplicative.ofAdd_le]
   omega
 
+/- English proof (translation)
+Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, Valuation.map_zero]`. Conclude with `absurd hv WithZero.zero_ne_coe`. Establish `hmem : ∀ x : K, x ∈ intL K ↔ Valued.v x ≤ 1` using `fun x => Iff.rfl`.
+
+Apply `cosetT_le_of_nonunit` to reduce the goal to its premises. Rewrite using `[← hmem, ← hint, hmem, hv]; exact_mod_cast (by decide : (Multiplicative.ofAdd (-1 : ℤ)) ≤ 1)`. Rewrite using `[← map_inv₀, ← hmem, ← hint, hmem, map_inv₀, hv]`. Rewrite using `[← WithZero.coe_inv, ← WithZero.coe_one, WithZero.coe_le_coe]`. Evaluate the decidable proposition.
+
+Conclude with `(map_ne_zero g).2 hϖ0`.
+-/
 theorem cosetT_v_image (g : K ≃+* K) (hint : ∀ x, x ∈ intL K ↔ g x ∈ intL K) {ϖ : K}
     (hv : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) :
     Valued.v (g ϖ) ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -39,6 +53,23 @@ theorem cosetT_v_image (g : K ≃+* K) (hint : ∀ x, x ∈ intL K ↔ g x ∈ i
     decide
   · exact (map_ne_zero g).2 hϖ0
 
+/- English proof (translation)
+Establish `hint' : ∀ x, x ∈ intL K ↔ g.symm x ∈ intL K`. Introduce `x`. Rewrite using `[hint (g.symm x), RingEquiv.apply_symm_apply]`. Establish `hmem : ∀ x : K, x ∈ intL K ↔ Valued.v x ≤ 1` using `fun x => Iff.rfl`. Establish `hϖ0 : ϖ ≠ 0`.
+
+Introduce `h`. Rewrite `hv` using `[h, Valuation.map_zero]`. Conclude with `absurd hv WithZero.zero_ne_coe`. Establish `hinv : Valued.v ϖ⁻¹ = ((Multiplicative.ofAdd (1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[map_inv₀, hv, ← WithZero.coe_inv]`.
+
+Both sides reduce to the same expression. Establish `hinv' : Valued.v ϖ'⁻¹ = ((Multiplicative.ofAdd (1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[map_inv₀, hv', ← WithZero.coe_inv]`. Both sides reduce to the same expression. Establish `hone : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) * ((Multiplicative.ofAdd (1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = 1`.
+
+Rewrite using `[← WithZero.coe_mul, ← ofAdd_add]`. Both sides reduce to the same expression. Establish `h1 : Valued.v (g ϖ * ϖ'⁻¹) ≤ 1`. Rewrite using `[Valuation.map_mul, hinv', ← hone]`. Conclude with `mul_le_mul' (cosetT_v_image g hint hv) le_rfl`.
+
+Establish `h2 : Valued.v (g.symm ϖ' * ϖ⁻¹) ≤ 1`. Rewrite using `[Valuation.map_mul, hinv, ← hone]`. Conclude with `mul_le_mul' (cosetT_v_image g.symm hint' hv') le_rfl`. Establish `h3 : Valued.v (g ϖ * ϖ'⁻¹)⁻¹ ≤ 1`. Establish `e : (g ϖ * ϖ'⁻¹)⁻¹ = g (g.symm ϖ' * ϖ⁻¹)`.
+
+Rewrite using `[map_mul, RingEquiv.apply_symm_apply, map_inv₀, mul_inv, inv_inv, mul_comm]`. Rewrite using `[e, ← hmem, ← hint, hmem]`. Conclude with `h2`. Rewrite `h3` using `[map_inv₀]`. Establish `hϖ'0 : ϖ' ≠ 0`.
+
+Introduce `h`. Rewrite `hv'` using `[h, Valuation.map_zero]`. Conclude with `absurd hv' WithZero.zero_ne_coe`. Establish `hne : Valued.v (g ϖ * ϖ'⁻¹) ≠ 0` using `(Valuation.ne_zero_iff _).2 (mul_ne_zero ((map_ne_zero g).2 hϖ0) (inv_ne_zero hϖ'0))`. Conclude with `le_antisymm h1 (by`.
+
+Use `mul_le_mul' (le_refl (Valued.v (g ϖ * ϖ'⁻¹))) h3` as an intermediate fact. Rewrite using `[mul_inv_cancel₀ hne, mul_one] at this)` and apply the resulting hypothesis.
+-/
 theorem cosetT_unit (g : K ≃+* K) (hint : ∀ x, x ∈ intL K ↔ g x ∈ intL K) {ϖ ϖ' : K}
     (hv : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
     (hv' : Valued.v ϖ' = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))) :
@@ -85,6 +116,9 @@ variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 local notation "⟪" b "⟫" => (((b : GU _ _) : GL (Fin _) K) : Matrix (Fin _) (Fin _) K)
 
+/- English proof (translation)
+Unfold `tMat`. Rewrite using `[Matrix.diagonal_map (map_zero g)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp [map_zpow₀]`.
+-/
 theorem cosetT_tMat_map (g : K →+* K) (x : K) (n m : ℕ) (a : Fin m → ℤ) :
     (tMat x n m a).map g = tMat (g x) n m a := by
   unfold tMat
@@ -93,6 +127,9 @@ theorem cosetT_tMat_map (g : K →+* K) (x : K) (n m : ℕ) (a : Fin m → ℤ) 
   funext i
   split_ifs <;> simp [map_zpow₀]
 
+/- English proof (translation)
+Unfold `tMat`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> first | exact mul_zpow _ _ _ | exact (mul_one 1).symm`.
+-/
 theorem cosetT_tMat_mul (x y : K) (n m : ℕ) (a : Fin m → ℤ) :
     tMat (x * y) n m a = tMat x n m a * tMat y n m a := by
   unfold tMat
@@ -101,6 +138,19 @@ theorem cosetT_tMat_mul (x y : K) (n m : ℕ) (a : Fin m → ℤ) :
   funext i
   split_ifs <;> first | exact mul_zpow _ _ _ | exact (mul_one 1).symm
 
+/- English proof (translation)
+Establish `h0 : u ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, Valuation.map_zero]`. Conclude with `zero_ne_one hv`. Set `f : Fin n → K` to `fun i : Fin n => if h : i.val < m then u ^ (a ⟨i.val, h⟩) else if h' : n - m ≤ i.val ∧ n - 1 - i.val < m then u ^ (-(a ⟨n - 1 - i.val, h'.2⟩)) else 1`.
+
+Establish `hf : ∀ i, σ (f i) * f i.rev = 1`. Introduce `i`. Simplify using `only [f]`. Establish `hs : ∀ k : ℤ, σ (u ^ k) = u ^ k` using `fun k => by rw [map_zpow₀, hσ]`. Establish `hi` using `i.isLt`.
+
+Establish `hr : (i.rev : ℕ) = n - 1 - i` using `by rw [Fin.val_rev]; omega`. Distinguish the cases in `h1 : (i : ℕ) < m`. Establish `h2 : ¬ (i.rev : ℕ) < m` using `by omega`. Establish `h3 : n - m ≤ (i.rev : ℕ) ∧ n - 1 - (i.rev : ℕ) < m` using `by omega`. Simplify using `only [dif_pos h1, dif_neg h2, dif_pos h3, hs]`.
+
+Establish `: (⟨n - 1 - (i.rev : ℕ), h3.2⟩ : Fin m) = ⟨i, h1⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[this, ← zpow_add₀ h0, add_neg_cancel, zpow_zero]`. Distinguish the cases in `h1' : n - m ≤ (i : ℕ) ∧ n - 1 - (i : ℕ) < m`. Establish `h2 : (i.rev : ℕ) < m` using `by omega`. Simplify using `only [dif_neg h1, dif_pos h1', dif_pos h2, hs]`.
+
+Establish `: (⟨(i.rev : ℕ), h2⟩ : Fin m) = ⟨n - 1 - i, h1'.2⟩` using `Fin.ext (by simp only; omega)`. Rewrite using `[this, ← zpow_add₀ h0, neg_add_cancel, zpow_zero]`. Establish `h2 : ¬ (i.rev : ℕ) < m` using `by omega`. Establish `h3 : ¬ (n - m ≤ (i.rev : ℕ) ∧ n - 1 - (i.rev : ℕ) < m)` using `by omega`. Simplify using `only [dif_neg h1, dif_neg h1', dif_neg h2, dif_neg h3, map_one, one_mul]`.
+
+Take `⟨t, ht, ht'⟩` from `fSatake_diag_exists f hf`. Use `⟨t, ht, fSatake_diag_mem_K ht ht' (fun i => ?_)⟩` and prove the remaining obligations. Simplify using `only [f]`. Apply the tactic sequence `split_ifs <;> simp [map_zpow₀, hv]`.
+-/
 theorem cosetT_tMat_unit {σ : K →+* K} {u : K} (hσ : σ u = u) (hv : Valued.v u = 1) {n m : ℕ}
     (hm : 2 * m ≤ n) (a : Fin m → ℤ) :
     ∃ t : GU σ n, (((t : GU σ n) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = tMat u n m a ∧
@@ -135,6 +185,13 @@ theorem cosetT_tMat_unit {σ : K →+* K} {u : K} (hσ : σ u = u) (hv : Valued.
   simp only [f]
   split_ifs <;> simp [map_zpow₀, hv]
 
+/- English proof (translation)
+Establish `hmem : ∀ M : Matrix (Fin n) (Fin n) K, (∀ i j, M i j ∈ intL K) → M ∈ (RingHom.mapMatrix (m` using `Fin n) (intL K).subtype).range := by`. Introduce `M hM`. Conclude with `⟨Matrix.of fun i j => ⟨M i j, hM i j⟩, by ext i j; rfl⟩`. Unfold `KU intPts`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+
+Use `⟨(guMap g hg n k).2, glint_mem_range_of_integral (intL K) _ ?_ ?_⟩` and prove the remaining obligations. Use `hmem _ (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[guMap_val, Matrix.map_apply]`. Conclude with `(hint _).1 (fSatake_K_int hk i j)`. Rewrite using `[← Subgroup.coe_inv, ← map_inv]`.
+
+Use `hmem _ (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[guMap_val, Matrix.map_apply]`. Conclude with `(hint _).1 (fSatake_K_int (inv_mem hk) i j)`.
+-/
 theorem cosetT_guMap_mem_KU (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x))
     (hint : ∀ x, x ∈ intL K ↔ g x ∈ intL K) {n : ℕ} {k : GU σ n} (hk : k ∈ KU σ n) :
     guMap g hg n k ∈ KU σ' n := by
@@ -162,6 +219,17 @@ section CosetTransport3
 
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Take `⟨u₁, hu₁, k, hk, hy⟩` from `h`. Establish `hϖ'0 : ϖ' ≠ 0`. Introduce `h0`. Use `hU'.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h0, Valuation.map_zero]`.
+
+Conclude with `absurd this WithZero.zero_ne_coe`. Establish `hcv : Valued.v (g ϖ * ϖ'⁻¹) = 1` using `cosetT_unit g hint hU.2.2.2.1 hU'.2.2.2.1`. Establish `hcσ : σ' (g ϖ * ϖ'⁻¹) = g ϖ * ϖ'⁻¹`. Rewrite using `[map_mul, map_inv₀, ← hg, hU.2.2.1, hU'.2.2.1]`. Take `⟨t, ht, htK⟩` from `cosetT_tMat_unit hcσ hcv hm a`.
+
+Establish `hgϖ : g ϖ = ϖ' * (g ϖ * ϖ'⁻¹)` using `by field_simp`. Establish `hmap : ∀ M N : Matrix (Fin n) (Fin n) K, (M * N).map g = M.map g * N.map g` using `fun M N => Matrix.map_mul (f := (g : K →+* K))`. Establish `htm : (tMat ϖ n m a).map g = tMat (g ϖ) n m a` using `cosetT_tMat_map (g : K →+* K) ϖ n m a`. Establish `hgu : IsBorelU (guMap g hg n u₁)` using `fun i j hij => by`. Rewrite using `[guMap_val, Matrix.map_apply, hu₁.1 i j hij, map_zero]`.
+
+Establish `htb : IsBorelU t` using `fSatake_borel_tMat ht`. Use `⟨t * guMap g hg n u₁ * t⁻¹, ⟨fSatake_borel_mul (fSatake_borel_mul htb hgu) (fSatake_borel_inv htb), fun i => ?_⟩, t * guMap g hg n k, mul_mem htK (cosetT_guMap_mem_KU g hg hint hk), ?_⟩` and prove the remaining obligations. Rewrite using `[fSatake_borel_diag_mul (fSatake_borel_mul htb hgu) (fSatake_borel_inv htb), fSatake_borel_diag_mul htb hgu, guMap_val, Matrix.map_apply, hu₁.2 i, map_one, mul_one, mul_comm]`. Conclude with `fSatake_borel_diag_inv htb i`. Establish `e : t * guMap g hg n u₁ * t⁻¹ * (t * guMap g hg n k) = t * guMap g hg n u₁ * guMap g hg n k` using `by group`.
+
+Rewrite using `[Matrix.mul_assoc (tMat ϖ' n m a), ← Units.val_mul, ← Subgroup.coe_mul, e, guMap_val, hy, hmap, hmap, htm, hgϖ, cosetT_tMat_mul, ← ht]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, guMap_val, Matrix.mul_assoc]`.
+-/
 theorem cosetT_fwd (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x))
     (hint : ∀ x, x ∈ intL K ↔ g x ∈ intL K) (ϖ ϖ' : K) (q q' n m : ℕ)
     (hU : IsUnramInv ϖ σ q) (hU' : IsUnramInv ϖ' σ' q') (hm : 2 * m ≤ n) (a : Fin m → ℤ)
@@ -202,6 +270,15 @@ theorem cosetT_fwd (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = 
       hmap, hmap, htm, hgϖ, cosetT_tMat_mul, ← ht]
     simp only [Subgroup.coe_mul, Units.val_mul, guMap_val, Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `K _ _ g σ σ' hg hint ϖ ϖ' q q' n m hU hU' hm a y`. Prove the components needed by the constructor for the conclusion. Conclude with `cosetT_fwd g hg hint ϖ ϖ' q q' n m hU hU' hm a y`. Introduce `h`. Establish `hg' : ∀ x, g.symm (σ' x) = σ (g.symm x)` using `fun x => by`.
+
+Apply `g.injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, hg, RingEquiv.apply_symm_apply]`. Establish `hint' : ∀ x, x ∈ intL K ↔ g.symm x ∈ intL K` using `fun x => by`. Rewrite using `[hint (g.symm x), RingEquiv.apply_symm_apply]`. Establish `h2` using `cosetT_fwd g.symm hg' hint' ϖ' ϖ q' q n m hU' hU hm a (guMap g hg n y) h`.
+
+Establish `hyy : guMap g.symm hg' n (guMap g hg n y) = y`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[guMap_val, guMap_val]`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[hyy]`. Then use the resulting hypothesis.
+-/
 theorem cosetT_iff : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (g : K ≃+* K) {σ σ' : K →+* K} (hg : ∀ x, g (σ x) = σ' (g x)), (∀ x, x ∈ intL K ↔ g x ∈ intL K) → ∀ (ϖ ϖ' : K) (q q' n m : ℕ), IsUnramInv ϖ σ q → IsUnramInv ϖ' σ' q' → 2 * m ≤ n → ∀ (a : Fin m → ℤ) (y : GU σ n), (∃ u : GU σ n, IsUnipU u ∧ ∃ k ∈ KU σ n, ((y : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = tMat ϖ n m a * ((u : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((k : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) ↔ (∃ u : GU σ' n, IsUnipU u ∧ ∃ k ∈ KU σ' n, ((guMap g hg n y : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = tMat ϖ' n m a * ((u : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * ((k : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) := by
   intro K _ _ g σ σ' hg hint ϖ ϖ' q q' n m hU hU' hm a y
   constructor

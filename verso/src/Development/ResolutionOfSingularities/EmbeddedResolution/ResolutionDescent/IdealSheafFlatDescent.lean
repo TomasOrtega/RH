@@ -7,12 +7,21 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem map_eq_ker {X Y : Scheme.{u}} (I : X.IdealSheafData) (f : X ⟶ Y) :
     I.map f = (I.subschemeι ≫ f).ker := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem comap_eq_ker_pullback_fst {X Y : Scheme.{u}} (I : Y.IdealSheafData) (f : X ⟶ Y) :
     I.comap f = (pullback.fst f I.subschemeι).ker := rfl
 
+/- English proof (translation)
+Establish `hqc : QuasiCompact (I.subschemeι ≫ f)` using `inferInstance`. Establish `S : IsPullback (pullback.snd g' I.subschemeι) (pullback.fst g' I.subschemeι ≫ f') (I.subschemeι ≫ f) g` using `(IsPullback.of_hasPullback g' I.subschemeι).flip.paste_vert H`. Establish `hqc' : QuasiCompact (pullback.fst g' I.subschemeι ≫ f')` using `quasiCompact_of_isPullback S`. Establish `h1` using `ker_eq_comap_ker_of_isPullback_of_flat S`. Rewrite using `[map_eq_ker, ← h1, Scheme.Hom.ker_comp, comap_eq_ker_pullback_fst]`.
+-/
 theorem comap_map_eq_map_comap_of_isPullback {W X X' W' : Scheme.{u}} {f : W ⟶ X} {g : X' ⟶ X}
     {g' : W' ⟶ W} {f' : W' ⟶ X'} (H : IsPullback g' f' f g)
     [QuasiCompact f] [AlgebraicGeometry.Flat g] (I : W.IdealSheafData) :
@@ -24,6 +33,11 @@ theorem comap_map_eq_map_comap_of_isPullback {W X X' W' : Scheme.{u}} {f : W ⟶
   have h1 := ker_eq_comap_ker_of_isPullback_of_flat S
   rw [map_eq_ker, ← h1, Scheme.Hom.ker_comp, comap_eq_ker_pullback_fst]
 
+/- English proof (translation)
+Establish `key` using `comap_map_eq_map_comap_of_isPullback H I`. Rewrite `key` using `[hI]`. Rewrite using `[key]`. Take `⟨s, hsq⟩ : ∃ s : W ⟶ Q, s ≫ q = 𝟙 W` from `⟨H.lift (𝟙 W) (𝟙 W) rfl, H.lift_snd _ _ _⟩`. Use `le_antisymm ?_ (Scheme.IdealSheafData.le_map_comap I q)` and prove the remaining obligations.
+
+Establish `h1` using `Scheme.IdealSheafData.comap_map_le (I.comap q) q`. Establish `h2 : (((I.comap q).map q).comap q).comap s ≤ ((I.comap q).comap s)` using `Scheme.IdealSheafData.comap_mono s h1`. Rewrite `h2` using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hsq, Scheme.IdealSheafData.comap_id, Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis.
+-/
 theorem comap_map_eq_self_of_isPullback {W X Q : Scheme.{u}} (γ : W ⟶ X)
     [QuasiCompact γ] [AlgebraicGeometry.Flat γ] {p q : Q ⟶ W} (H : IsPullback p q γ γ)
     (I : W.IdealSheafData) (hI : I.comap p = I.comap q) :

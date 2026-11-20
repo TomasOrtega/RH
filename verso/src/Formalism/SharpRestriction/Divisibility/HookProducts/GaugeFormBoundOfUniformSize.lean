@@ -9,6 +9,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Proo
 
 variable {D : D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Establish `ha : 0 < L.sc.a`. Unfold `Scale.a Scale.b`. Conclude with `mul_pos (by linarith [L.sc.one_lt_alt]) (Real.exp_pos _)`. Establish `hP : 0 ≤ (∑ t : D.host.TT, (L.aT t : ℝ)) * Real.log (∏ g ∈ L.gTypes, (g : ℝ))`. Apply `mul_nonneg` to reduce the goal to its premises.
+
+Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `t _`. Conclude with `le_trans ha.le (L.aT_win t).1`. Rewrite using `[← Nat.cast_prod]`. Break down `Nat.eq_zero_or_pos (∏ g ∈ L.gTypes, g) with h | h` into its components or cases.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `Real.log_nonneg (Nat.one_le_cast.mpr h)`. Establish `hj : ∀ j ∈ SizeData₂.lifts D, -(C * L.B0) ≤ ∑ w ∈ L.supp, SizeData₂.sz w (L.E u j w)`. Introduce `j hj`.
+
+Establish `h3` using `(abs_le.mp (h2 u j hj).1).1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_le_sum hj`. Establish `hE : L.Ee u = ∑ j ∈ SizeData₂.lifts D, ∑ w ∈ L.supp, SizeData₂.sz w (L.E u j w)` using `rfl`. Rewrite using `[hE]`.
+
+Rewrite `hsum` using `[Finset.sum_const, SizeData₂.lifts, Nat.card_Icc, nsmul_eq_mul]`. Rewrite using `[SizeData₂.lifts]`. Establish `hm : ((D.R.m + 1 - 1 : ℕ) : ℝ) = D.R.m` using `by simp`. Rewrite `hsum` using `[hm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem negEe_le (C : ℝ) (h2 : Formalism.MainNotions.LocalQuadraticParts.adm11 D L C) (u : D.what₂.Word) :
     -(L.Ee u) ≤ C * D.R.m * L.B0 := by
   have ha : 0 < L.sc.a := by
@@ -38,6 +49,27 @@ theorem negEe_le (C : ℝ) (h2 : Formalism.MainNotions.LocalQuadraticParts.adm11
 
 def EcHH (l : List ℝ) : ℝ := 9 * (max (l.headD 0) 5 + 3) + 2
 
+/- English proof (translation)
+Take `⟨C, xa, hC⟩` from `c2`. Take `⟨xg, hg⟩` from `Formalism.MainNotions.DIV.HookProducts.Row4.ga_pow Fm`. Take `⟨xf, hf⟩` from `Formalism.MainNotions.DIV.HookProducts.HookProductWeightBounds.fo_pow Fm`. Use `⟨max (max xa xg) (max (max xf 9) (2 + |C|)), fun x hx hx1 i u => ?_⟩` and prove the remaining obligations. Establish `hxa : xa ≤ x` using `le_trans (le_max_left _ _) (le_trans (le_max_left _ _) hx)`.
+
+Establish `hxg : xg ≤ x` using `le_trans (le_max_right _ _) (le_trans (le_max_left _ _) hx)`. Establish `hxf : xf ≤ x` using `le_trans (le_max_left _ _) (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) hx))`. Establish `hx9 : 9 ≤ x` using `le_trans (le_max_right _ _) (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) hx))`. Establish `hxC : 2 + |C| ≤ x` using `le_trans (le_max_right _ _) (le_trans (le_max_right _ _) hx)`. Establish `hLx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`.
+
+Establish `hEe` using `negEe_le C (hC x hxa i) u`. Establish `hB` using `Formalism.MainNotions.DIV.Proofs.const_rank_base_le_poly_fourth (D := Fm.D x i) (L := Fm.L x i) C`. Establish `hS` using `Formalism.MainNotions.DIV.Proofs.szPol_le_rpow (Fm.sizes x hx1 i) (by rw [hLx]; exact hx9)`. Rewrite `hS` using `[Fm.Ct_eq, hLx]`. Establish `hS1` using `one_le_szPol (L := Fm.L x i)`.
+
+Establish `hGa` using `hg x hxg hx1 i`. Establish `hFo` using `hf x hxf hx1 i`. Rewrite using `[hLx]`. Unfold `EcHH`. Simplify using `only [Formalism.MainNotions.FamP.cOut, List.headD_cons]`.
+
+Use `set M := max Fm.Ct 5 + 3 with hM`. Establish `hM0 : 0 ≤ M` using `by have := le_max_right Fm.Ct 5; linarith`. Establish `hb : 0 ≤ (Fm.L x i).sc.b` using `(Real.exp_pos _).le`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hx1' : 1 ≤ x` using `by linarith`.
+
+Establish `hS4 : Formalism.MainNotions.DIV.Proofs.szPol (Fm.L x i) ^ 4 ≤ x ^ (4 * M)`. Establish `e : (x ^ M) ^ (4 : ℕ) = x ^ (4 * M)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`. Conclude with `pow_le_pow_left₀ (by linarith) hS 4`. Establish `A1 : x ^ (4 * M + 1) ≤ x ^ (9 * M + 1)` using `Real.rpow_le_rpow_of_exponent_le hx1' (by linarith)`. Establish `A2 : x ^ (4 * M) ≤ x ^ (9 * M + 1)` using `Real.rpow_le_rpow_of_exponent_le hx1' (by linarith)`.
+
+Establish `e2 : x ^ (9 * M + 2) = x ^ (9 * M + 1) * x`. Rewrite using `[show 9 * M + 2 = (9 * M + 1) + 1 by ring, Real.rpow_add hx0, Real.rpow_one]`. Rewrite using `[e2]`. Use `set P := x ^ (9 * M + 1) with hP`. Establish `hP0 : 0 ≤ P` using `(Real.rpow_pos_of_pos hx0 _).le`.
+
+Establish `hPb : 0 ≤ P * (Fm.L x i).sc.b` using `mul_nonneg hP0 hb`. Establish `t1 : (Fm.L x i).Ga ≤ P * (Fm.L x i).sc.b` using `hGa.trans (mul_le_mul_of_nonneg_right A1 hb)`. Establish `t3 : -((Fm.L x i).Ee u) ≤ |C| * (P * (Fm.L x i).sc.b)`. Establish `h4 : Formalism.MainNotions.DIV.Proofs.szPol (Fm.L x i) ^ 4 ≤ P` using `hS4.trans A2`. Establish `h5 : |C| * Formalism.MainNotions.DIV.Proofs.szPol (Fm.L x i) ^ 4 * (Fm.L x i).sc.b ≤ |C| * (P * (Fm.L x i).sc.b)`.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right h4 hb) (abs_nonneg C)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `mul_le_mul_of_nonneg_right hxC hPb`. Combine the linear relations using `[t1, hFo, t3, h]`.
+-/
 theorem gauge_form_bound_of_uniform_size {eps : ℝ} (Fm : FamP eps) (c2 : Formalism.MainNotions.LocalQuadraticParts.ComplementTwoFamily Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,
       (Fm.L x i).Ga + (Fm.L x i).Fo - (Fm.L x i).Ee u ≤ (Fm.L x i).sc.x ^ EcHH Fm.cOut * (Fm.L x i).sc.b := by

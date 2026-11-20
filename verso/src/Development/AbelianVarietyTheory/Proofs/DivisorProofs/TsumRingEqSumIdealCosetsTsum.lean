@@ -19,6 +19,9 @@ noncomputable def quotCosetProdEquiv (R : Type) [CommRing R] (M : Ideal R) : (R 
     · simp only [hc]; ring
   right_inv α := by simp
 
+/- English proof (translation)
+Rewrite using `[← (quotCosetProdEquiv R M).tsum_eq h]`. Establish `hs' : Summable (h ∘ quotCosetProdEquiv R M)` using `(quotCosetProdEquiv R M).summable_iff.mpr hs`. Rewrite using `[show (∑' c : (R ⧸ M) × ↥M, h (quotCosetProdEquiv R M c)) = ∑' p, (h ∘ quotCosetProdEquiv R M) p from rfl, hs'.tsum_prod, tsum_fintype]`. Both sides reduce to the same expression.
+-/
 theorem tsum_eq_sum_quotient_tsum_ideal (R : Type) [CommRing R] (M : Ideal R) [Fintype (R ⧸ M)]
     (h : R → ℂ) (hs : Summable h) :
     ∑' α, h α = ∑ c : R ⧸ M, ∑' μ : M, h (Quotient.out c + μ) := by
@@ -28,6 +31,9 @@ theorem tsum_eq_sum_quotient_tsum_ideal (R : Type) [CommRing R] (M : Ideal R) [F
     hs'.tsum_prod, tsum_fintype]
   rfl
 
+/- English proof (translation)
+Introduce `R _ M _ h hs` and use `tsum_eq_sum_quotient_tsum_ideal R M h hs`.
+-/
 theorem cosets_main : ∀ (R : Type) [CommRing R] (M : Ideal R) [Fintype (R ⧸ M)] (h : R → ℂ), Summable h → ∑' α, h α = ∑ c : R ⧸ M, ∑' μ : M, h (Quotient.out c + μ) :=
   fun R _ M _ h hs => tsum_eq_sum_quotient_tsum_ideal R M h hs
 

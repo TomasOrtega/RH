@@ -12,38 +12,66 @@ section Alg2
 
 variable {k r : ℕ} {κ τ : ℝ}
 
+/- English proof (translation)
+Unfold `tV eI`. Rewrite using `[if_pos a.isLt]`.
+-/
 theorem tV_eI (a : Fin r) : tV k r κ τ (eI k r a) = tF r κ τ a.val := by
   unfold tV eI; rw [if_pos a.isLt]
 
+/- English proof (translation)
+Unfold `tV esI`. Establish `h` using `a.isLt`. Rewrite using `[if_neg (by simp only; omega), if_neg (by simp only; omega)]`. Use `congr 2`. Simplify using `only`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem tV_esI (a : Fin r) : tV k r κ τ (esI k r a) = (tF r κ τ a.val)⁻¹ := by
   unfold tV esI
   have h := a.isLt
   rw [if_neg (by simp only; omega), if_neg (by simp only; omega)]
   congr 2; simp only; omega
 
+/- English proof (translation)
+Unfold `tV; rw [if_neg (by omega), if_pos h2]`.
+-/
 theorem tV_wb (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) : tV k r κ τ i = 1 := by
   unfold tV; rw [if_neg (by omega), if_pos h2]
 
+/- English proof (translation)
+Rewrite using `[dM, Matrix.mulVec_diagonal]`.
+-/
 theorem dM_mulVec_apply (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (dM k r κ τ *ᵥ v) i = ((tV k r κ τ i : ℝ) : ℂ) * v i := by
   rw [dM, Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Rewrite using `[dMi, Matrix.mulVec_diagonal]`.
+-/
 theorem dMi_mulVec_apply (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (dMi k r κ τ *ᵥ v) i = (((tV k r κ τ i)⁻¹ : ℝ) : ℂ) * v i := by
   rw [dMi, Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[dM_mulVec_apply]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i h, mul_zero]`. Rewrite using `[tV_wb i (by omega) (by omega)]; simp`.
+-/
 theorem dM_mulVec_wb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : dM k r κ τ *ᵥ z = z := by
   funext i; rw [dM_mulVec_apply]
   by_cases h : i.val < r ∨ r + k < i.val
   · rw [hz i h, mul_zero]
   · rw [tV_wb i (by omega) (by omega)]; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[dMi_mulVec_apply]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[hz i h, mul_zero]`. Rewrite using `[tV_wb i (by omega) (by omega)]; simp`.
+-/
 theorem dMi_mulVec_wb {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : dMi k r κ τ *ᵥ z = z := by
   funext i; rw [dMi_mulVec_apply]
   by_cases h : i.val < r ∨ r + k < i.val
   · rw [hz i h, mul_zero]
   · rw [tV_wb i (by omega) (by omega)]; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[dM_mulVec_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Simplify using `[bvec, h]`.
+-/
 theorem dM_mulVec_bvec (i : Fin (2 * r + k + 1)) :
     dM k r κ τ *ᵥ bvec i = ((tV k r κ τ i : ℝ) : ℂ) • bvec i := by
   funext j; rw [dM_mulVec_apply, Pi.smul_apply, smul_eq_mul]
@@ -51,6 +79,11 @@ theorem dM_mulVec_bvec (i : Fin (2 * r + k + 1)) :
   · subst h; rfl
   · simp [bvec, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[dMi_mulVec_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+
+Simplify using `[bvec, h]`.
+-/
 theorem dMi_mulVec_bvec (i : Fin (2 * r + k + 1)) :
     dMi k r κ τ *ᵥ bvec i = (((tV k r κ τ i)⁻¹ : ℝ) : ℂ) • bvec i := by
   funext j; rw [dMi_mulVec_apply, Pi.smul_apply, smul_eq_mul]
@@ -58,13 +91,24 @@ theorem dMi_mulVec_bvec (i : Fin (2 * r + k + 1)) :
   · subst h; rfl
   · simp [bvec, h]
 
+/- English proof (translation)
+Introduce `i hi`. Rewrite using `[Pi.smul_apply, hz i hi, smul_zero]`.
+-/
 theorem inWb_smul {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : ℂ) : inWb k r (a • z) := by
   intro i hi; rw [Pi.smul_apply, hz i hi, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[cj, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+-/
 theorem cj_mulVec (x : Mx k r) (v : Fin (2 * r + k + 1) → ℂ) :
     cj k r κ τ x *ᵥ v = dMi k r κ τ *ᵥ (x *ᵥ (dM k r κ τ *ᵥ v)) := by
   rw [cj, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Unfold `fvec`. Distinguish the cases in `h : a.val < r`. Rewrite using `[dif_pos h, dif_pos h, dM_mulVec_bvec, tV_eI]`. Rewrite using `[dif_neg h, dif_neg h, dM_mulVec_wb (inWb_smul hz _)]`. Establish `: a.val = r` using `by omega`.
+
+Simplify using `[tF, this]`.
+-/
 theorem dM_mulVec_fvec {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (r + 1)) :
     dM k r κ τ *ᵥ fvec k r ((τ : ℂ) • z) a = ((tF r κ τ a.val : ℝ) : ℂ) • fvec k r z a := by
   unfold fvec
@@ -74,6 +118,17 @@ theorem dM_mulVec_fvec {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : 
     have : a.val = r := by omega
     simp [tF, this]
 
+/- English proof (translation)
+Unfold `ell`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val + 1 < r`. Rewrite using `[dif_pos h, dif_pos h, cj_apply, tV_eI, tV_eI]`.
+
+Establish `e : r - a.val = (r - (a.val + 1)) + 1` using `by omega`. Establish `hk` using `pow_pos hκ (r - (a.val + 1))`. Establish `hκc : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Establish `hτc : (τ : ℂ) ≠ 0` using `by exact_mod_cast hτ.ne'`. Establish `hkc : (κ : ℂ) ^ (r - (a.val + 1)) ≠ 0` using `pow_ne_zero _ hκc`.
+
+Simplify using `only [tF]`. Rewrite using `[e, pow_succ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[dif_neg h, dif_neg h, cj_mulVec, dM_mulVec_wb (inWb_smul hz _), Matrix.mulVec_smul, dMi_mulVec_apply, tV_eI, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `e : r - a.val = 1` using `by omega`. Establish `hκc : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Establish `hτc : (τ : ℂ) ≠ 0` using `by exact_mod_cast hτ.ne'`. Simplify using `only [tF, e, pow_one]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem ell_cj (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (x : Mx k r) :
     ell k r ((τ : ℂ) • z) (cj k r κ τ x) = (κ : ℂ)⁻¹ * ell k r z x := by
   unfold ell
@@ -99,6 +154,11 @@ theorem ell_cj (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) → ℂ} (
     push_cast
     field_simp
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[ell_cj hκ hτ hz]`. Establish `hκc : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Establish `: (κ : ℂ) * c * ((κ : ℂ)⁻¹ * ell k r z x) = c * ell k r z x`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`.
+-/
 theorem psi_cj (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) (x : Mx k r) :
     psi k r ((τ : ℂ) • z) ((κ : ℂ) * c) (cj k r κ τ x) = psi k r z c x := by
   unfold psi
@@ -108,22 +168,36 @@ theorem psi_cj (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) → ℂ} (
     field_simp
   rw [this]
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Rewrite using `[h1 h, one_mul]`. Simplify using `only [h, if_false, mul_eq_zero, hs, false_or]`.
+-/
 theorem delta_iff {s y : ℂ} {i j : Fin (2 * r + k + 1)} (hs : s ≠ 0) (h1 : i = j → s = 1) :
     (s * y = if i = j then 1 else 0) ↔ (y = if i = j then 1 else 0) := by
   by_cases h : i = j
   · rw [h1 h, one_mul]
   · simp only [h, if_false, mul_eq_zero, hs, false_or]
 
+/- English proof (translation)
+Use `tV_pos (k := k) (r := r) hκ hτ i` as an intermediate fact. Use `tV_pos (k := k) (r := r) hκ hτ j` as an intermediate fact. Conclude with `(mul_pos (inv_pos.mpr ‹0 < tV k r κ τ i›) this).ne'` after adjusting the coercions.
+-/
 theorem cj_fac_ne (hκ : 0 < κ) (hτ : 0 < τ) (i j : Fin (2 * r + k + 1)) :
     ((((tV k r κ τ i)⁻¹ * tV k r κ τ j : ℝ)) : ℂ) ≠ 0 := by
   have := tV_pos (k := k) (r := r) hκ hτ i
   have := tV_pos (k := k) (r := r) hκ hτ j
   exact_mod_cast (mul_pos (inv_pos.mpr ‹0 < tV k r κ τ i›) this).ne'
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[inv_mul_cancel₀ (tV_pos hκ hτ i).ne']`. Simplify using the standard rewrite rules.
+-/
 theorem cj_fac_diag (hκ : 0 < κ) (hτ : 0 < τ) (i j : Fin (2 * r + k + 1)) (h : i = j) :
     ((((tV k r κ τ i)⁻¹ * tV k r κ τ j : ℝ)) : ℂ) = 1 := by
   subst h; rw [inv_mul_cancel₀ (tV_pos hκ hτ i).ne']; simp
 
+/- English proof (translation)
+Simplify using `only [Nset, Set.mem_ofPred_eq, cj_mem_UH_iff hκ hτ, cj_apply]`. Use `and_congr Iff.rfl (and_congr ?_ ?_)` and prove the remaining obligations. Use `forall_congr' fun a => forall_congr' fun i => imp_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `delta_iff (cj_fac_ne hκ hτ _ _) (cj_fac_diag hκ hτ _ _)`. Use `forall_congr' fun i => forall_congr' fun j => imp_congr_right fun _ => imp_congr_right fun _ => imp_congr_right fun _ => ?_` and prove the remaining obligations.
+
+Conclude with `delta_iff (cj_fac_ne hκ hτ _ _) (cj_fac_diag hκ hτ _ _)`.
+-/
 theorem cj_mem_Nset_iff (hκ : 0 < κ) (hτ : 0 < τ) (x : Mx k r) :
     cj k r κ τ x ∈ Nset k r ↔ x ∈ Nset k r := by
   simp only [Nset, Set.mem_ofPred_eq, cj_mem_UH_iff hκ hτ, cj_apply]
@@ -134,6 +208,9 @@ theorem cj_mem_Nset_iff (hκ : 0 < κ) (hτ : 0 < τ) (x : Mx k r) :
       imp_congr_right fun _ => imp_congr_right fun _ => ?_
     exact delta_iff (cj_fac_ne hκ hτ _ _) (cj_fac_diag hκ hτ _ _)
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [UWset, Set.mem_ofPred_eq, Matrix.mulVec_smul]`. Establish `hτ' : (τ : ℂ) ≠ 0` using `by exact_mod_cast hτ.ne'`. Use `and_congr Iff.rfl (and_congr Iff.rfl ⟨fun h => ?_, fun h => by rw [h]⟩)` and prove the remaining obligations. Conclude with `smul_right_injective _ hτ' h`.
+-/
 theorem UWset_smul {z : Fin (2 * r + k + 1) → ℂ} (hτ : 0 < τ) : UWset k r ((τ : ℂ) • z) = UWset k r z := by
   ext g
   simp only [UWset, Set.mem_ofPred_eq, Matrix.mulVec_smul]
@@ -141,6 +218,11 @@ theorem UWset_smul {z : Fin (2 * r + k + 1) → ℂ} (hτ : 0 < τ) : UWset k r 
   refine and_congr Iff.rfl (and_congr Iff.rfl ⟨fun h => ?_, fun h => by rw [h]⟩)
   exact smul_right_injective _ hτ' h
 
+/- English proof (translation)
+Rewrite using `[cj_mulVec, h1, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h3 : dM k r κ τ *ᵥ (s • (dMi k r κ τ *ᵥ (g *ᵥ v))) = dM k r κ τ *ᵥ v` using `by rw [h]`. Rewrite `h3` using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, dM_mul_dMi hκ hτ, Matrix.one_mulVec, h1]`.
+
+Conclude with `smul_right_injective _ hs h3`. Introduce `h`. Rewrite using `[h, h2, smul_smul, mul_inv_cancel₀ hs, one_smul]`.
+-/
 theorem cj_fix_iff (hκ : 0 < κ) (hτ : 0 < τ) (g : Mx k r) (v : Fin (2 * r + k + 1) → ℂ) (s : ℂ) (hs : s ≠ 0)
     (h1 : dM k r κ τ *ᵥ v = s • v) (h2 : dMi k r κ τ *ᵥ v = s⁻¹ • v) :
     cj k r κ τ g *ᵥ v = v ↔ g *ᵥ v = v := by
@@ -152,12 +234,18 @@ theorem cj_fix_iff (hκ : 0 < κ) (hτ : 0 < τ) (g : Mx k r) (v : Fin (2 * r + 
     exact smul_right_injective _ hs h3
   · intro h; rw [h, h2, smul_smul, mul_inv_cancel₀ hs, one_smul]
 
+/- English proof (translation)
+Use `cj_fix_iff hκ hτ g _ ((tV k r κ τ i : ℝ) : ℂ) (by exact_mod_cast (tV_pos hκ hτ i).ne') (dM_mulVec_bvec i) ?_` and prove the remaining obligations. Rewrite using `[dMi_mulVec_bvec, Complex.ofReal_inv]`.
+-/
 theorem cj_fix_bvec_iff (hκ : 0 < κ) (hτ : 0 < τ) (g : Mx k r) (i : Fin (2 * r + k + 1)) :
     cj k r κ τ g *ᵥ bvec i = bvec i ↔ g *ᵥ bvec i = bvec i := by
   refine cj_fix_iff hκ hτ g _ ((tV k r κ τ i : ℝ) : ℂ) (by exact_mod_cast (tV_pos hκ hτ i).ne')
     (dM_mulVec_bvec i) ?_
   rw [dMi_mulVec_bvec, Complex.ofReal_inv]
 
+/- English proof (translation)
+Simplify using `only [UWset, Set.mem_ofPred_eq, cj_mem_UH_iff hκ hτ]`. Use `and_congr Iff.rfl (and_congr (forall_congr' fun a => and_congr (cj_fix_bvec_iff hκ hτ g _) (cj_fix_bvec_iff hκ hτ g _)) ?_)` and prove the remaining obligations. Conclude with `cj_fix_iff hκ hτ g z 1 one_ne_zero (by rw [one_smul, dM_mulVec_wb hz]) (by rw [inv_one, one_smul, dMi_mulVec_wb hz])`.
+-/
 theorem cj_mem_UWset_iff (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (g : Mx k r) :
     cj k r κ τ g ∈ UWset k r z ↔ g ∈ UWset k r z := by
   simp only [UWset, Set.mem_ofPred_eq, cj_mem_UH_iff hκ hτ]
@@ -166,6 +254,9 @@ theorem cj_mem_UWset_iff (hκ : 0 < κ) (hτ : 0 < τ) {z : Fin (2 * r + k + 1) 
   exact cj_fix_iff hκ hτ g z 1 one_ne_zero (by rw [one_smul, dM_mulVec_wb hz])
     (by rw [inv_one, one_smul, dMi_mulVec_wb hz])
 
+/- English proof (translation)
+Simplify using `only [RStab, Set.mem_ofPred_eq]`. Rewrite using `[← cj_inv hκ hτ, ← cj_mul hκ hτ, ← cj_mul hκ hτ, cj_mem_Nset_iff hκ hτ, cj_mem_Nset_iff hκ hτ]`.
+-/
 theorem cj_mem_RStab_iff (hκ : 0 < κ) (hτ : 0 < τ) (g a : Mx k r) :
     cj k r κ τ a ∈ RStab k r (cj k r κ τ g) ↔ a ∈ RStab k r g := by
   simp only [RStab, Set.mem_ofPred_eq]

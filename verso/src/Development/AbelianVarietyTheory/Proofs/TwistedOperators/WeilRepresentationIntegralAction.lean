@@ -17,6 +17,11 @@ namespace GlobalTheory.ArchIsom
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `: (InfiniteAdeleRing.ringEquiv_mixedSpace F : InfiniteAdeleRing F → mixedEmbedding.mixedSpace F) = fun x => ((fun v : {w : InfinitePlace F // InfinitePlace.IsReal w} => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun v : {w : InfinitePlace F // InfinitePlace. …`. Use function extensionality and compare the values at `x`. Conclude with `InfiniteAdeleRing.ringEquiv_mixedSpace_apply F x`. Rewrite using `[this]`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+-/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   have : (InfiniteAdeleRing.ringEquiv_mixedSpace F : InfiniteAdeleRing F → mixedEmbedding.mixedSpace F) =
       fun x => ((fun v : {w : InfinitePlace F // InfinitePlace.IsReal w} =>
@@ -43,16 +48,25 @@ def splitEquiv (κ : Type) :
     exact Prod.ext ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm_apply_apply _) rfl
   map_add' p q := by funext i; simp; rfl
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.HeckeOne.continuous_ringEquiv_mixedSpace_symm F).comp ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`.
+-/
 theorem continuous_splitEquiv (κ : Type) : Continuous (splitEquiv F κ) := by
   refine continuous_pi fun i => ?_
   exact ((GlobalTheory.HeckeOne.continuous_ringEquiv_mixedSpace_symm F).comp
     ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)
 
+/- English proof (translation)
+Use `(continuous_pi fun i => ?_).prodMk (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `continuous_toMixed.comp (continuous_fst.comp (continuous_apply i))`. Conclude with `continuous_snd.comp (continuous_apply i)`.
+-/
 theorem continuous_splitEquiv_symm (κ : Type) : Continuous (splitEquiv F κ).symm := by
   refine (continuous_pi fun i => ?_).prodMk (continuous_pi fun i => ?_)
   · exact continuous_toMixed.comp (continuous_fst.comp (continuous_apply i))
   · exact continuous_snd.comp (continuous_apply i)
 
+/- English proof (translation)
+The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`.
+-/
 theorem evI_splitEquiv (κ : Type) (p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F))
     (i : κ) : evI F (splitEquiv F κ p i) = p.1 i :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _
@@ -62,13 +76,22 @@ variable (F) in
 def intPts (κ : Type) : Set (κ → FiniteAdeleRing (𝓞 F) F) :=
   Set.univ.pi fun _ => {b | ∀ v : HeightOneSpectrum (𝓞 F), b.1 v ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+The claim follows from `isCompact_univ_pi fun _ => GlobalTheory.LatHatClosed.isCompact_integralFinite F`.
+-/
 theorem isCompact_intPts (κ : Type) : IsCompact (intPts F κ) :=
   isCompact_univ_pi fun _ => GlobalTheory.LatHatClosed.isCompact_integralFinite F
 
+/- English proof (translation)
+The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ => RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_intPts (κ : Type) [Finite κ] : IsOpen (intPts F κ) :=
   isOpen_set_pi Set.finite_univ fun _ _ =>
     RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)
 
+/- English proof (translation)
+Introduce `_ _ v` and use `zero_mem (v.adicCompletionIntegers F)`.
+-/
 theorem zero_mem_intPts (κ : Type) : (0 : κ → FiniteAdeleRing (𝓞 F) F) ∈ intPts F κ :=
   fun _ _ v => zero_mem (v.adicCompletionIntegers F)
 
@@ -80,6 +103,13 @@ variable (F) in
 
 def r0 (κ : Type) : (κ → AF F) → ℂ := fun x => g0 F κ (fun i => (x i).2)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Establish `hc : IsCompact (intPts F κ)` using `isCompact_intPts κ`. Establish `hW : IsClopen (intPts F κ)` using `⟨hc.isClosed, isOpen_intPts κ⟩`. Use `⟨?_, HasCompactSupport.intro' hc hW.isClosed fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ intPts F κ`. Use `filter_upwards [hW.isOpen.mem_nhds hx] with y hy`. Simplify using `[g0, Set.indicator_of_mem hy, Set.indicator_of_mem hx]`. Use `filter_upwards [hW.isClosed.isOpen_compl.mem_nhds hx] with y hy`.
+
+Simplify using `[g0, Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+-/
 theorem standard_vector_mem_schwartz_bruhat (κ : Type) [Fintype κ] : g0 F κ ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) := by
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
   have hc : IsCompact (intPts F κ) := isCompact_intPts κ
@@ -93,9 +123,21 @@ theorem standard_vector_mem_schwartz_bruhat (κ : Type) [Fintype κ] : g0 F κ �
   · filter_upwards [hW.isClosed.isOpen_compl.mem_nhds hx] with y hy
     simp [g0, Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensor_at_standard_point (κ : Type) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) :
     tens (evI F) f (r0 F κ) = pureA F f (g0 F κ) := rfl
 
+/- English proof (translation)
+Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hz2 : ∀ i, (z i).2 = 0`. Introduce `i`. Set `u : AF F` to `show AF F from (0, 1)`. Establish `h0 : evI F u = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+
+Establish `h` using `congrFun (hz u h0) i`. Establish `h2` using `congrArg Prod.snd h`. Establish `h4 : ((u • z) i).2 = (1 : FiniteAdeleRing (𝓞 F) F) * (z i).2` using `rfl`. Rewrite `h2` using `[h4, one_mul]`. Conclude with `h2`.
+
+Use `show g0 F κ (fun i => (x i + z i).2) = g0 F κ (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[hz2 i, add_zero]`.
+
+Rewrite using `[tensor_at_standard_point]`. Conclude with `Submodule.subset_span ⟨f, g0 F κ, standard_vector_mem_schwartz_bruhat κ, rfl⟩`.
+-/
 theorem restriction_at_standard_point (κ : Type) [Fintype κ] (f : SInf F κ) : Rest (evI F) (⇑f) (r0 F κ) := by
   refine ⟨fun x z hz => ?_, ?_⟩
   · have hz2 : ∀ i, (z i).2 = 0 := by
@@ -121,6 +163,13 @@ namespace GlobalTheory.ArchIsom
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[lintegral_map_equiv]`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Establish `hpt : ∀ p : (κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F), ‖tens (evI F) (⇑g) (r0 F κ) (e p)‖ₑ ^ 2 = ‖g p.1‖ₑ ^ 2 * (intPts F κ).indicator 1 p.2`. Introduce `p`. Establish `h1 : (fun i => evI F (e p i)) = p.1` using `funext fun i => by rw [he]; exact evI_splitEquiv κ p i`.
+
+Establish `h2 : (fun i => (e p i).2) = p.2` using `funext fun i => by rw [he]; rfl`. Simplify using `only [tens, r0, h1, h2, g0, enorm_mul, mul_pow]`. Use `congr 1`. Distinguish the cases in `hp : p.2 ∈ intPts F κ`. Simplify using `[Set.indicator_of_mem hp]`.
+
+Simplify using `[Set.indicator_of_notMem hp]`. Repeatedly rewrite using `[hpt]`. Establish `hm` using `lintegral_prod_mul (μ := μ) (ν := ν) (f := fun y => ‖g y‖ₑ ^ 2) (g := (intPts F κ).indicator 1) (g.continuous.measurable.enorm.pow_const 2).aemeasurable ((measurable_one.indicator (isOpen_intPts κ).measurableSet).aemeasurable)`. Rewrite `hm` using `[lintegral_indicator_one (isOpen_intPts κ).measurableSet]`. Conclude with `hm`.
+-/
 theorem lintegral_tensor_at_standard_point (κ : Type) [Fintype κ] (μ : Measure (κ → mixedEmbedding.mixedSpace F))
     [mB : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F)] [BorelSpace (κ → FiniteAdeleRing (𝓞 F) F)]
     (ν : Measure (κ → FiniteAdeleRing (𝓞 F) F)) [SFinite ν]
@@ -152,6 +201,19 @@ end GlobalTheory.ArchIsom
 
 namespace GlobalTheory.ArchIsom
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hW μ hμ h f f₁ hact`. Establish `hU` using `(IsUWeilPair.isUSplitting hW).unit`. Use `haveI := hμ`. Establish `hΦ` using `hact (r0 F (Fin n × Fin d)) (restriction_at_standard_point _ f)`. Use `letI mB : MeasurableSpace (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) := borel _`.
+
+Use `haveI : BorelSpace (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `letI mA : MeasurableSpace (Fin n × Fin d → AF F) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF F) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI : BorelSpace (Fin n × Fin d → mixedEmbedding.mixedSpace F) := inferInstance`. Set `ν : Measure (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)` to `Measure.addHaar`. Set `H : ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F)) ≃ₜ (Fin n × Fin d → AF F)` to `{ (splitEquiv F (Fin n × Fin d)).toEquiv with continuous_toFun := continuous_splitEquiv _ continuous_invFun := continuous_splitEquiv_symm _ }`. Set `e` to `H.toMeasurableEquiv`.
+
+Establish `he : ∀ p, e p = splitEquiv F (Fin n × Fin d) p` using `fun _ => rfl`. Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite μ := inferInstance`. Establish `hμ' : (Measure.map e (μ.prod ν)).IsAddHaarMeasure` using `(splitEquiv F (Fin n × Fin d)).isAddHaarMeasure_map (μ.prod ν) (continuous_splitEquiv _) (continuous_splitEquiv_symm _)`. Establish `hmem : tens (evI F) (⇑f) (r0 F (Fin n × Fin d)) ∈ schA F (Fin n × Fin d)` using `(restriction_at_standard_point _ f).2`.
+
+Establish `hu` using `hU (Measure.map e (μ.prod ν)) hμ' (1, h) _ hmem`. Rewrite `hu` using `[hΦ, lintegral_tensor_at_standard_point _ μ ν e he, lintegral_tensor_at_standard_point _ μ ν e he]`. Establish `hc0 : ν (intPts F (Fin n × Fin d)) ≠ 0` using `((isOpen_intPts _).measure_pos ν ⟨0, zero_mem_intPts _⟩).ne'`. Establish `hct : ν (intPts F (Fin n × Fin d)) ≠ ⊤` using `(isCompact_intPts _).measure_lt_top.ne`. Establish `hl` using `(ENNReal.mul_left_inj hc0 hct).mp hu`.
+
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f₁ x‖ ^ 2) (Filter.Eventually.of_forall fun _ => by positivity) ((f₁.continuous.norm.pow 2 : Continuous fun x => ‖f₁ x‖ ^ 2).aestronglyMeasurable), integral_eq_lintegral_of_nonneg_ae (f := fun x => ‖f x‖ ^ 2) (Filter.Eventually. …`. Use `congr 1`. Repeatedly rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Conclude with `hl`.
+-/
 theorem acts_norm_sq_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     M.IsWeil ψ χX χW om → ∀ (μ : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F)), μ.IsAddHaarMeasure →

@@ -20,12 +20,18 @@ open Formalism.CohomologicalDescent.ShortWeightBounds (Wts)
 open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.FrameAut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `IsCMField.complexEmbedding_complexConj E (io.toRingHom.comp τ) x`.
+-/
 private theorem emb_cj {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] (io : PadicAlgCl l ≃+* ℂ)
     (τ : E →+* PadicAlgCl l) :
     io.toRingHom.comp (GlobalTheory.ExpFrame.cj τ) = ComplexEmbedding.conjugate (io.toRingHom.comp τ) := by
   ext x
   exact IsCMField.complexEmbedding_complexConj E (io.toRingHom.comp τ) x
 
+/- English proof (translation)
+Introduce `τ τ' e`. Establish `hi : ∀ a b : E →+* PadicAlgCl l, io.toRingHom.comp a = io.toRingHom.comp b → a = b` using `fun a b hab => RingHom.ext fun x => io.injective (RingHom.congr_fun hab x)`. Break down `InfinitePlace.mk_eq_iff.1 e with e | e` into its components or cases. Conclude with `h.1 (hi _ _ e)`. Conclude with `absurd (hi _ _ ((emb_cj io _).trans e)) (h.2.1 τ τ')`.
+-/
 private theorem places_inj {E : Type} [Field E] [NumberField E] [IsCMField E] {l : ℕ} [Fact l.Prime] (io : PadicAlgCl l ≃+* ℂ)
     {ι : Type} {inc : ι → (E →+* PadicAlgCl l)} (h : IsHalf inc) :
     Function.Injective fun τ => InfinitePlace.mk (io.toRingHom.comp (inc τ)) := by
@@ -37,6 +43,27 @@ private theorem places_inj {E : Type} [Field E] [NumberField E] [IsCMField E] {l
   · exact absurd (hi _ _ ((emb_cj io _).trans e)) (h.2.1 τ τ')
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Substitute `hN` using the available equality. Establish `hs : (Vc D j).SigOK` using `D.sp.V_sig _`. Establish `hp : (Vc D j).IsPosDef` using `p.vpos j`. Establish `hinf : Formalism.L2.Theta.IsInfFam p.R.θ` using `p.charW.base.models.inf`. Take `⟨jj, h₀, hTr⟩` from `GlobalTheory.DefTransfer.exists_isTransfer D (Vc D j) p.R.θ hinf hs hp`.
+
+Take `⟨B, hB1, hB2⟩` from `UpperTheory.exists_invariant_posDef_hermitian_form_autForm_unitary D (Vc D j) hs hp jj hTr.2.1`. Take `⟨Fm, hF0, hFl, hFr, hFh⟩` from `UpperTheory.exists_nonzero_vectorValued_eigenform_unitary p j t F e0 ix inc T mu θ hθ`. Establish `hb : ∀ τ, T.io.toRingHom.comp (e0.comp (Links.labLL D τ)) = Formalism.BasicNotions.TH.tauE D τ` using `fun τ => by`. Rewrite using `[← Formalism.IndefR.Conj.labE_base τ]`. Conclude with `RingHom.ext fun x => T.liftFrame_embedding_base _`.
+
+Establish `hemb : ∀ τ, T.io.toRingHom.comp (inc τ) = Formalism.BasicNotions.TH.tauE D τ ∨ T.io.toRingHom.comp (inc τ) = ComplexEmbedding.conjugate (Formalism.BasicNotions.TH.tauE D τ)` using `fun τ => by`. Break down `T.lab τ with h | h` into its components or cases. Conclude with `Or.inl (by rw [h, hb])`. Conclude with `Or.inr (by rw [h, emb_cj, hb])`. Establish `hfix : ∀ (k : Formalism.L2.Theta.GA D (Vc D j)), (∃ h : (Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict k ∈ levJ p j t, levChi p j t ⟨_, h⟩ = 1) → ∀ g, Fm (g * (Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict k) = Fm g`.
+
+Introduce and unpack `k ⟨h, h1⟩ g`. Use `hFr ⟨_, h⟩ g` as an intermediate fact. Rewrite `this` using `[h1, Units.val_one, one_smul]`. Conclude with `this`. Establish `hev : ∀ᶠ κ in nhds (1 : Formalism.L2.Theta.GA D (Vc D j)), ∀ g, Fm (g * (Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict κ) = Fm g` using `(GlobalTheory.ThetaIntegrand.eventually_level (Vc D j) (p.R.βV j) (p.R.datVt j t)).mono fun κ h => hfix κ h`.
+
+Take `⟨F1, h10, h1l, h1i, h1e, A, hA⟩` from `UpperTheory.vectorValued_autForm_equivariant_infinite_component D (Vc D j) p.R.θ jj h₀ hinf hTr (fun τ => T.io.toRingHom.comp (inc τ)) hemb mu T.sh Fm hF0 hFl hev`. Set `lam : D.what₂.Tau → DomWeight (Vc D j).rank` to `fun τ => ⟨fun a => (mu τ a : ℤ) + T.sh τ, fun a b hab => add_le_add_left (Int.ofNat_le.2 (hmu τ hab)) _⟩`. Take `⟨π, hπ, hw, φ, hφ, hφ0, hsum⟩` from `UpperTheory.exists_unitaryAutomorphicForm_of_weightVectorValued D.host.E (Vc D j).rank D.what₂.Tau (fun τ => T.io.toRingHom.comp (inc τ)) (places_inj T.io T.half) mu T.sh lam (fun _ _ => rfl) B hB1 hB2 F1 h10 h1l h1i h1e`. Establish `htr : ∀ g y, F1 (g * y) = A (Fm ((Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict (jj g * h₀) * (Formalism.L2.Theta.finHom (Vc D j)).rangeRestrict (GlobalTheory.DefTransfer.cj jj h₀ y)))` using `fun g y => by`. Rewrite using `[hA, ← map_mul, GlobalTheory.DefTransfer.cj_apply, map_mul jj]`.
+
+Use `congr 3`. Use `group`. Establish `hK : ∀ v v', GlobalTheory.Hk3.Good p.R.toRealDat t v' → GlobalTheory.Hk3.hyp (Vc D j) v = GlobalTheory.Hk3.hyp (Vc D j) v' → ∀ x ∈ GlobalTheory.DefTransfer.KP (Vc D j).rank v, RU D.host.E (Vc D j).rank x φ = φ`. Introduce `v v' hg he x hx`. Establish `h1` using `(hTr.2.2.2.2.2.2.1 v x).2 hx`.
+
+Rewrite `h1` using `[he]`. Establish `h2` using `hfix _ (UpperTheory.levChi_eq_one_of_good_place p j t v' hg _ h1)`. Use `hsum Unit Finset.univ (fun _ => x) 1 (fun _ _ => hx.1.1) fun g => by` as an intermediate fact. Rewrite using `[Finset.univ_unique, Finset.sum_singleton, one_smul, htr, h2, hA]`. Simplify using `using this`.
+
+Use `⟨π, hπ, fun τ => ⟨lam τ, fun _ => rfl, hw τ, ?_⟩, φ, hφ, hφ0, fun v hv x h1 h2 => hK v v hv rfl x ⟨h1, h2⟩, fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[emb_cj]`. Conclude with `GlobalTheory.DefU.AU.HasWt.conjugate (π := GlobalTheory.DefU.AU.mk ⟨π, hπ⟩) (hw τ)`. Establish `hg : GlobalTheory.Hk3.Good p.R.toRealDat t (plOf p j t Q)` using `((GlobalTheory.GoodPrimes.good_primes p.R.toRealDat (p.P.face p.Dcf p.Spf p.Del p.h0 Csz).lv2 p.charW.base.lev).2.2.2 p.charW.base.fam t Q.1 Q.2).1`. Establish `hKQ` using `hK (labOf p j t Q) _ hg (GlobalTheory.SphConj.hyp_conj _ _)`.
+
+Use `⟨fun x h1 h2 => hKQ x ⟨h1, h2⟩, fun i hi => ?_⟩` and prove the remaining obligations. Substitute `hi` using the available equality. Take `⟨r1, r2, -⟩` from `(T.ix_range (ix i)).1 ⟨i, rfl⟩`. Take `⟨hloc, R, hR, hRs⟩` from `UpperTheory.exists_sphericalHeckeRep_splitLabel_of_offLevelPlace p j t (ix i).1 (ix i).2 r1 r2`. Rewrite using `[GlobalTheory.SplitTransfer.heckeVec_divInd hTr hKQ hR]`.
+
+Use `hsum _ R (fun γ => (GlobalTheory.DefTransfer.cj jj h₀).symm γ) _ (fun γ hγ => ((hTr.2.2.2.2.2.2.2 _ _ R hR).1 γ hγ).1.1) fun g => ?_` and prove the remaining obligations. Simplify using `only [htr, MulEquiv.apply_symm_apply]`. Rewrite using `[← map_sum, hRs _ Fm hFr, hA, ← map_smul]`. Conclude with `congrArg A (hFh i hloc _)`.
+-/
 private theorem finiteRing_sq_sub_mul_sq_eq_of_card {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
     (j : Fin D.R.m) (t : p.P.T) {l : ℕ} [Fact l.Prime] {N : ℕ} (hN : N = (Vc D j).rank)
@@ -118,6 +145,9 @@ private theorem finiteRing_sq_sub_mul_sq_eq_of_card {D : D7} {L : SizeData₂ D}
   rw [← map_sum, hRs _ Fm hFr, hA, ← map_smul]
   exact congrArg A (hFh i hloc _)
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ _ j P W hD _ w hw hW _ _ F R inc T mu θ hmu hθ`. Take `⟨π, h1, h2, φ, h3, h4, h5, h6⟩` from `finiteRing_sq_sub_mul_sq_eq_of_card p j (p.R.mu w) hD.Nr F R.e0 R.ix inc T mu θ hmu hθ`. Conclude with `⟨π, h1, h2, fun v hv => ⟨φ, h3, h4, h5 v (UpperTheory.good_place_of_twist_place_dividing p j P W hD w hw hW v hv)⟩, φ, h3, h4, fun Q _ => h6 Q⟩`.
+-/
 theorem _root_.GlobalTheory.T.small_place_prime_local : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), PtAt.Rows p → More p →
     ∀ (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau), Dict L j P W → NumOk P W →

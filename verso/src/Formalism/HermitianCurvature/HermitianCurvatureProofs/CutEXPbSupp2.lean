@@ -10,6 +10,9 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P.CutEXPbSupp
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, diagonal_apply, dS, Fin.ext_iff, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem hpk_zero (k : ℕ) : Hpk k 0 = diagonal (dS (2 * 0 + k)) := by
   ext i j
   have hi := i.isLt
@@ -17,6 +20,13 @@ theorem hpk_zero (k : ℕ) : Hpk k 0 = diagonal (dS (2 * 0 + k)) := by
   simp only [Hpk, diagonal_apply, dS, Fin.ext_iff, Fin.val_last]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `e : ∀ w : ℂ, (starRingEnd ℂ w * w).re = ‖w‖ ^ 2`. Introduce `w`. Rewrite using `[Complex.conj_mul']`. Use `norm_cast`. Unfold `Tz herm`.
+
+Rewrite using `[hpk_zero]`. Simplify using `only [Matrix.mulVec_diagonal, dotProduct, Fin.sum_univ_castSucc, Pi.star_apply, Complex.star_def]`. Establish `h1 : ∀ i : Fin (2 * 0 + k), dS (2 * 0 + k) i.castSucc = 1` using `fun i => by`. Unfold `dS`. Rewrite using `[if_neg (Fin.castSucc_lt_last i).ne]`.
+
+Establish `h2 : dS (2 * 0 + k) (Fin.last (2 * 0 + k)) = -1`. Unfold `dS`. Rewrite using `[if_pos rfl]`. Simplify using `only [h1, h2, one_mul, neg_one_mul, mul_neg, Complex.add_re, Complex.neg_re, Complex.re_sum, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tz_sum (k : ℕ) (z : Fin (2 * 0 + k + 1) → ℂ) :
     ∑ i : Fin (2 * 0 + k), ‖z i.castSucc‖ ^ 2 = ‖z (Fin.last _)‖ ^ 2 - Tz k 0 z := by
   have e : ∀ w : ℂ, (starRingEnd ℂ w * w).re = ‖w‖ ^ 2 := by
@@ -35,6 +45,9 @@ theorem tz_sum (k : ℕ) (z : Fin (2 * 0 + k + 1) → ℂ) :
   simp only [h1, h2, one_mul, neg_one_mul, mul_neg, Complex.add_re, Complex.neg_re, Complex.re_sum, e]
   ring
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Unfold `Gf Q.GGl Dmin`. Rewrite using `[Matrix.det_fin_zero, Matrix.det_fin_one]`. Simplify using `only [Complex.normSq_one, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem gf_eq_GGl (k ρ : ℕ) (hρ : ρ = 0) (z z' : Fin (2 * ρ + k + 1) → ℂ) (g : B.Mat k ρ) :
     Gf k ρ z z' g = Q.GGl k ρ z z' g := by
   subst hρ
@@ -43,6 +56,13 @@ theorem gf_eq_GGl (k ρ : ℕ) (hρ : ρ = 0) (z z' : Fin (2 * ρ + k + 1) → �
   simp only [Complex.normSq_one, mul_one]
   rfl
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Establish `hU : μᴴ * diagonal (dS (2 * 0 + k)) * μ = diagonal (dS (2 * 0 + k))`. Establish `h` using `hμ.1`. Rewrite `h` using `[hpk_zero]`. Conclude with `h`.
+
+Establish `hζ : Q.zetaL k 0 z z' (Fin.last 0) μ = star z ⬝ᵥ (diagonal (dS (2 * 0 + k)) *ᵥ (μ *ᵥ z'))`. Unfold `Q.zetaL herm`. Rewrite using `[hpk_zero]`. Simplify using `[fvec]`. Rewrite using `[hζ]`.
+
+Conclude with `entry_bound μ hU z z' _ _ hT hT' (tz_sum k z) (tz_sum k z') i j`.
+-/
 theorem mu_bound (k ρ : ℕ) (hρ : ρ = 0) (z z' : Fin (2 * ρ + k + 1) → ℂ) (hT : 0 < Tz k ρ z) (hT' : 0 < Tz k ρ z')
     (μ : B.Mat k ρ) (hμ : μ ∈ Q.Glev k ρ (Fin.last ρ)) (i j : Fin (2 * ρ + k + 1)) :
     ‖μ i j‖ * (Tz k ρ z * Tz k ρ z') ≤ 4 * ‖z ⟨2 * ρ + k, by omega⟩‖ * ‖z' ⟨2 * ρ + k, by omega⟩‖ *
@@ -66,6 +86,45 @@ namespace Formalism.FourierDecayAlt.P
 open CutEX CutEXPbSupp
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p G hG`. Take `⟨⟨_, ⟨R, hR⟩, ⟨ε, hε, hεG⟩⟩, K0, hK0c, h0K0, hK0⟩` from `hG`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδK⟩ : ∃ δ : ℝ, 0 < δ ∧ ∀ w ∈ K0, δ ≤ ‖w‖ := by`. Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.mp hK0c.isClosed.isOpen_compl 0 h0K0`. Use `⟨δ, hδ, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Conclude with `hball (by simpa [Metric.mem_ball, dist_zero_right] using hlt) hw`. Take `⟨M1, hM1⟩` from `hK0c.isBounded.exists_norm_le`. Use `set M0 : ℝ := max M1 1 with hM0`.
+
+Establish `hM0pos : 0 < M0` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set SR : Set (B.Mat P.k P.r) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) R with hSRdef`. Establish `hSR : IsCompact SR` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Take `⟨Cg, hCg⟩` from `hSR.exists_bound_of_continuousOn (f := fun g : B.Mat P.k P.r => Gf P.k P.r p.T.base.z p.T.base.z' g) (Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf p.T.base.z p.T.base.z').continuous.continuousOn`. Use `set zr := (p.T.bs P.r).z with hzr`.
+
+Use `set zr' := (p.T.bs P.r).z' with hzr'`. Establish `hT : 0 < Tz P.k (P.r - P.r) zr` using `(p.T.bs P.r).T_pos`. Establish `hT' : 0 < Tz P.k (P.r - P.r) zr'` using `(p.T.bs P.r).T'_pos`. Use `set TT : ℝ := Tz P.k (P.r - P.r) zr * Tz P.k (P.r - P.r) zr' with hTT`. Establish `hTTpos : 0 < TT` using `mul_pos hT hT'`.
+
+Use `set Zb : ℝ := Real.sqrt (Cg / δ ^ 2 + TT) with hZb`. Use `set Bμ : ℝ := 4 * ‖zr ⟨2 * (P.r - P.r) + P.k, by omega⟩‖ * ‖zr' ⟨2 * (P.r - P.r) + P.k, by omega⟩‖ * Zb / TT with hBμ`. Use `set c : ℝ := ε / M0 ^ 2 with hc`. Establish `hcpos : 0 < c` using `div_pos hε (by positivity)`. Use `set Bset : Set (Mt P.k (P.r - P.r)) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) Bμ with hBset`.
+
+Use `set Aset : Set (Fin P.r → Fin P.r → ℂ) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) R with hAset`. Establish `hA : IsCompact Aset` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `hB : IsCompact Bset` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `⟨(Aset ×ˢ Bset) ∩ ((fun q : (Fin P.r → Fin P.r → ℂ) × Mt P.k (P.r - P.r) => (Matrix.of q.1).det) ⁻¹' K0) ∩ ((fun q : (Fin P.r → Fin P.r → ℂ) × Mt P.k (P.r - P.r) => (Matrix.of q.2 : B.Mat P.k (P.r - P.r))) ⁻¹' Q.Glev P.k (P.r - P.r) (Fin.last _)) ∩ {q | c ≤ Q.GGl P.k (P.r - P.r) …` and prove the remaining obligations. Use `(((hA.prod hB).inter_right ?_).inter_right ?_).inter_right ?_` and prove the remaining obligations.
+
+Conclude with `hK0c.isClosed.preimage (Continuous.matrix_det continuous_fst)`. Conclude with `(Formalism.FourierDecayAlt.P.JCTx5.glev_closed _ _ _).preimage continuous_snd`. Conclude with `isClosed_le continuous_const ((Formalism.FourierDecayAlt.P.Qx8.GGl_cont _ _ _ _).comp continuous_snd)`. Introduce and unpack `q ⟨⟨⟨_, hq1⟩, _⟩, hq3⟩`. Use `⟨fun h0 => h0K0 ?_, lt_of_lt_of_le hcpos hq3⟩` and prove the remaining obligations.
+
+Establish `: (Matrix.of q.1).det ∈ K0` using `hq1`. Rewrite `this` using `[h0]`. Then use the resulting hypothesis. Introduce `q hdet hμ hpb`. Take `⟨g, hg, hGg, u, hu, hb, hD, hGf⟩` from `CutEXPbSupp.orbit_point p G (Matrix.of q.1) (Matrix.of q.2) hdet hμ hpb`. Establish `hgR : B.gN g ≤ R` using `hR g hg hGg`.
+
+Establish `hDK : (Matrix.of q.1).det ∈ K0` using `hD ▸ hK0 g hg hGg`. Establish `hdetδ : δ ≤ ‖(Matrix.of q.1).det‖` using `hδK _ hDK`. Establish `hdetM : ‖(Matrix.of q.1).det‖ ≤ M0` using `(hM1 _ hDK).trans (le_max_left _ _)`. Establish `hGε : ε ≤ Gf P.k P.r p.T.base.z p.T.base.z' g` using `hεG g hg hGg`. Establish `hgSR : g ∈ SR`.
+
+Rewrite using `[hSRdef]`. Conclude with `fun a _ b _ => by`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(CutEXPbSupp.norm_entry_le_gN g a b).trans hgR`. Establish `hGC : Gf P.k P.r p.T.base.z p.T.base.z' g ≤ Cg` using `(le_abs_self _).trans (hCg g hgSR)`.
+
+Use `set Gr := Gf P.k (P.r - P.r) zr zr' (Matrix.of q.2) with hGr`. Establish `hns : Complex.normSq (Matrix.of q.1).det = ‖(Matrix.of q.1).det‖ ^ 2` using `Complex.normSq_eq_norm_sq _`. Establish `hGr_pos : 0 < Gr`. Assume the negation of the conclusion as `hle`. Use `push Not at hle`.
+
+Establish `: Gf P.k P.r p.T.base.z p.T.base.z' g ≤ 0`. Rewrite using `[hGf]`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (Complex.normSq_nonneg _) hle`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hGGl : Q.GGl P.k (P.r - P.r) zr zr' (Matrix.of q.2) = Gr` using `(CutEXPbSupp.gf_eq_GGl P.k (P.r - P.r) (Nat.sub_self _) zr zr' _).symm`.
+
+Establish `hδ2 : δ ^ 2 ≤ Complex.normSq (Matrix.of q.1).det`. Rewrite using `[hns]`. Conclude with `pow_le_pow_left₀ hδ.le hdetδ 2`. Establish `hM2 : Complex.normSq (Matrix.of q.1).det ≤ M0 ^ 2`. Rewrite using `[hns]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) hdetM 2`. Establish `hGr_up : Gr ≤ Cg / δ ^ 2`. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hGr_lo : c ≤ Gr`.
+
+Rewrite using `[hc, div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hζ : ‖Q.zetaL P.k (P.r - P.r) zr zr' (Fin.last _) (Matrix.of q.2)‖ ≤ Zb`. Rewrite using `[Complex.norm_def, hZb]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations.
+
+Establish `e : Q.GGl P.k (P.r - P.r) zr zr' (Matrix.of q.2) = Complex.normSq (Q.zetaL P.k (P.r - P.r) zr zr' (Fin.last _) (Matrix.of q.2)) - TT` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨u, hu, ⟨⟨⟨?_, ?_⟩, hμ⟩, ?_⟩⟩` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hAset, Set.mem_univ_pi, Metric.mem_closedBall, dist_zero_right]`.
+
+Conclude with `fun a b => (hb a b).trans hgR`. Simplify using `only [hBset, Set.mem_univ_pi, Metric.mem_closedBall, dist_zero_right]`. Introduce `a b`. Establish `hm` using `CutEXPbSupp.mu_bound P.k (P.r - P.r) (Nat.sub_self _) zr zr' hT hT' (Matrix.of q.2) hμ a b`. Rewrite using `[hBμ, le_div_iff₀ hTTpos]`.
+
+Use `hm.trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left hζ (by positivity)`. Use `show (Matrix.of (Matrix.of.symm (Matrix.of q.1 * u))).det ∈ K0`. Rewrite using `[Equiv.apply_symm_apply, Matrix.det_mul, Formalism.DoubleCosetMeasures.isUpUni_det ℂ hu, mul_one]`. Conclude with `hDK`.
+
+Use `show c ≤ Q.GGl P.k (P.r - P.r) zr zr' (Matrix.of q.2)`. Rewrite using `[hGGl]`. Conclude with `hGr_lo`.
+-/
 theorem pullback_support : CutEX.PbSupp := by
   intro Wp Wq _ _ _ _ _ _ P p G hG
   obtain ⟨⟨_, ⟨R, hR⟩, ⟨ε, hε, hεG⟩⟩, K0, hK0c, h0K0, hK0⟩ := hG

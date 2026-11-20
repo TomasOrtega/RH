@@ -13,20 +13,35 @@ section Gen
 variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+The claim follows from `sub_self _`.
+-/
 theorem idx_self (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) V) : idxAt w M M = 0 := sub_self _
 
+/- English proof (translation)
+The claim follows from `(neg_sub _ _).symm`.
+-/
 theorem idx_anti (w : HeightOneSpectrum (𝓞 K)) (M N : Submodule (𝓞 K) V) : idxAt w M N = -idxAt w N M :=
   (neg_sub _ _).symm
 
+/- English proof (translation)
+Introduce `h` and use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)`.
+-/
 theorem one_notMem_w (w : HeightOneSpectrum (𝓞 K)) : (1 : 𝓞 K) ∉ w.asIdeal :=
   fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr h)
 
+/- English proof (translation)
+The claim follows from `(hI K V w M N hM hN h1).2.1 P hP h2`.
+-/
 theorem idx_chain (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (M N P : Submodule (𝓞 K) V) (hM : M.FG) (hN : N.FG)
     (hP : P.FG) (h1 : Submodule.span K (M : Set V) = Submodule.span K (N : Set V))
     (h2 : Submodule.span K (P : Set V) = Submodule.span K (N : Set V)) :
     idxAt w M P = idxAt w M N + idxAt w N P :=
   (hI K V w M N hM hN h1).2.1 P hP h2
 
+/- English proof (translation)
+Use `(hI K V w M N hM hN h1).2.2.2.1 0 (fun x hx => ⟨1, one_notMem_w w, by` as an intermediate fact. Rewrite using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul, one_smul]`. Conclude with `hle hx⟩)`. Simplify using `using this`.
+-/
 theorem idx_nonneg_of_le (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (M N : Submodule (𝓞 K) V) (hM : M.FG)
     (hN : N.FG) (h1 : Submodule.span K (M : Set V) = Submodule.span K (N : Set V)) (hle : N ≤ M) :
     0 ≤ idxAt w M N := by
@@ -34,12 +49,18 @@ theorem idx_nonneg_of_le (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (M N : 
     rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul, one_smul]; exact hle hx⟩)
   simpa using this
 
+/- English proof (translation)
+The claim follows from `(hI K V w M N hM hN h1).2.2.2.2.2 n hn hle hsm`.
+-/
 theorem idx_le_nat (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (M N : Submodule (𝓞 K) V) (hM : M.FG)
     (hN : N.FG) (h1 : Submodule.span K (M : Set V) = Submodule.span K (N : Set V)) (n : ℕ) (hn : 0 < n)
     (hle : N ≤ M) (hsm : ∀ x ∈ M, ((n : ℕ) : 𝓞 K) • x ∈ N) :
     idxAt w M N ≤ (Formalism.HN.rkK M : ℤ) * vAdd w ((n : ℕ) : K) :=
   (hI K V w M N hM hN h1).2.2.2.2.2 n hn hle hsm
 
+/- English proof (translation)
+Use `(hI K V w M N hM hN h1).2.2.1 V' φ` as an intermediate fact. Rewrite `this` using `[hker, idx_self, zero_add]`. Conclude with `this`.
+-/
 theorem idx_map (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) {V' : Type} [AddCommGroup V'] [Module K V']
     [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (φ : V →ₗ[K] V') (M N : Submodule (𝓞 K) V) (hM : M.FG)
     (hN : N.FG) (h1 : Submodule.span K (M : Set V) = Submodule.span K (N : Set V))
@@ -49,6 +70,11 @@ theorem idx_map (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) {V' : Type} [Add
   rw [hker, idx_self, zero_add] at this
   exact this
 
+/- English proof (translation)
+Use `idx_map hI w φ M N hM hN h1 ?_` and prove the remaining obligations. Establish `hb : ∀ P : Submodule (𝓞 K) V, (∀ x ∈ P, φ x = 0 → x = 0) → P ⊓ (LinearMap.ker φ).restrictScalars (𝓞 K) = ⊥`. Introduce `P hP`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hx1, hx2⟩`.
+
+Conclude with `(Submodule.mem_bot _).mpr (hP x hx1 hx2)`. Rewrite using `[hb M hinjM, hb N hinjN]`.
+-/
 theorem idx_map_inj (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) {V' : Type} [AddCommGroup V'] [Module K V']
     [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (φ : V →ₗ[K] V') (M N : Submodule (𝓞 K) V) (hM : M.FG)
     (hN : N.FG) (h1 : Submodule.span K (M : Set V) = Submodule.span K (N : Set V))
@@ -63,6 +89,13 @@ theorem idx_map_inj (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) {V' : Type} 
     exact (Submodule.mem_bot _).mpr (hP x hx1 hx2)
   rw [hb M hinjM, hb N hinjN]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx i _`. Conclude with `Submodule.subset_span (hx i (Set.mem_univ i))`. Rewrite using `[← Submodule.iSup_map_single]`.
+
+Use `iSup_le fun i => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce `m hm`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Introduce `j _`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hm`. Simplify using `[h]`.
+-/
 theorem span_pi_eq {ι : Type} [Fintype ι] [DecidableEq ι] (M : ι → Submodule (𝓞 K) V) :
     Submodule.span K ((Submodule.pi Set.univ M : Submodule (𝓞 K) (ι → V)) : Set (ι → V)) =
       Submodule.pi Set.univ (fun i => Submodule.span K (M i : Set V)) := by
@@ -81,6 +114,29 @@ theorem span_pi_eq {ι : Type} [Fintype ι] [DecidableEq ι] (M : ι → Submodu
     · subst h; simpa using hm
     · simp [h]
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, idxAt w (Submodule.pi Set.univ fun i => if i ∈ s then M i else ⊥) (Submodule.pi Set.univ fun i => if i ∈ s then N i else ⊥) = ∑ i ∈ s, idxAt w (M i) (N i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [idx_self]`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, ← ih]`. Establish `fg : ∀ P : ι → Submodule (𝓞 K) V, (∀ i, (P i).FG) → (Submodule.pi Set.univ fun i => if i ∈ insert a s then P i else ⊥).FG` using `fun P hP => Submodule.fg_pi fun i => by split_ifs; exacts [hP i, Submodule.fg_bot]`. Establish `sp : Submodule.span K ((Submodule.pi Set.univ fun i => if i ∈ insert a s then M i else ⊥ : Submodule (𝓞 K) (ι → V)) : Set (ι → V)) = Submodule.span K ((Submodule.pi Set.univ fun i => if i ∈ insert a s then N i else ⊥ : Submodule (𝓞 K) (ι → V)) : Set (ι → V))`. Rewrite using `[span_pi_eq, span_pi_eq]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Use `split_ifs`. Conclude with `hsp i`. Simplify using the standard rewrite rules. Establish `hc` using `(hI K (ι → V) w _ _ (fg M hM) (fg N hN) sp).2.2.1 V (LinearMap.proj a)`.
+
+Establish `hker : ∀ P : ι → Submodule (𝓞 K) V, (Submodule.pi Set.univ fun i => if i ∈ insert a s then P i else ⊥) ⊓ (LinearMap.ker (LinearMap.proj a : (ι → V) →ₗ[K] V)).restrictScalars (𝓞 K) = Submodule.pi Set.univ fun i => if i ∈ s then P i else ⊥`. Introduce `P`. Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.restrictScalars_mem, LinearMap.mem_ker, LinearMap.proj_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩ i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[ha, h2]`. Use `h1 i` as an intermediate fact.
+
+Simplify `this` using `[Finset.mem_insert, hi]`. Introduce `h`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+
+Use `h i` as an intermediate fact. Simplify using `only [ha, if_false, Submodule.mem_bot] at this`. Simplify using `[this]`. Use `h i` as an intermediate fact. Simplify `this` using `[Finset.mem_insert, hi]`.
+
+Use `h a` as an intermediate fact. Simplify `this` using `[ha]`. Establish `hmap : ∀ P : ι → Submodule (𝓞 K) V, (Submodule.pi Set.univ fun i => if i ∈ insert a s then P i else ⊥).map ((LinearMap.proj a : (ι → V) →ₗ[K] V).restrictScalars (𝓞 K)) = P a`. Introduce `P`. Use extensionality with `m`.
+
+Simplify using `only [Submodule.mem_map, Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.coe_restrictScalars, LinearMap.proj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `hx a` as an intermediate fact. Simplify using `using this`.
+
+Introduce `hm`. Use `⟨Pi.single a m, fun i => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `using hm`.
+
+Simplify using `[hi]`. Rewrite using `[hc, hker, hker, hmap, hmap, add_comm]`. Simplify using `using key Finset.univ`.
+-/
 theorem idx_pi (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) {ι : Type} [Fintype ι] [DecidableEq ι]
     (M N : ι → Submodule (𝓞 K) V) (hM : ∀ i, (M i).FG) (hN : ∀ i, (N i).FG)
     (hsp : ∀ i, Submodule.span K (M i : Set V) = Submodule.span K (N i : Set V)) :

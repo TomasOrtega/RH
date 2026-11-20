@@ -12,6 +12,17 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn T hT hdet d b lam hlam m hm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`.
+
+Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+
+Establish `hh` using `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1`. Use `haveI hW := hh.2.1 n M`. Use `haveI hH := hh.2.2 n`. Establish `hlf` using `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ (Fv F v) hloc n _ _ (m v) hW hH (hm v) (hermOf (Fv F v) σ T hT)).1`. Conclude with `(GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b n M v).1.measure_lt_top`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.T.local_densities_bounded_almost_all F E σ hCM M J hJ n hn T hT hdet d b`. Use `Summable.of_norm_bounded_eventually (g := fun v : HeightOneSpectrum (𝓞 F) => C * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2)) ((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left C) ?_` and prove the remaining obligations. Use `filter_upwards [hC] with v hv`. Use `hv (lam v) (hlam v) (m v) (hm v)` as an intermediate fact. Rewrite using `[Real.norm_eq_abs, abs_abs]`.
+
+Simplify `this` using `[div_eq_mul_inv]`.
+-/
 theorem mass_fibre_summable :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ), n = 0 ∨ n + 2 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFib (Fv F v) σ J n (coordW (Fv F v) b (lam v) n M) (coordHerm (Fv F v) σ b (lam v) n) (m v)) → (∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤) ∧ Summable fun v => |(m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn T hT hdet d b lam hlam m hm

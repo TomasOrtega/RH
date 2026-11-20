@@ -12,10 +12,19 @@ open PI.UJClassFin
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem intAf_iff (a : Af F) : a ∈ intAf F ↔ a ∈ Formalism.UG.intAd F := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(intAf_iff _).mpr (mul_mem ((intAf_iff a).mp ha) ((intAf_iff b).mp hb))`.
+-/
 theorem intAf_mul {a b : Af F} (ha : a ∈ intAf F) (hb : b ∈ intAf F) : a * b ∈ intAf F := (intAf_iff _).mpr (mul_mem ((intAf_iff a).mp ha) ((intAf_iff b).mp hb))
 
+/- English proof (translation)
+The claim follows from `(intAf_iff _).mpr (one_mem _)`.
+-/
 theorem intAf_one : (1 : Af F) ∈ intAf F := (intAf_iff _).mpr (one_mem _)
 
 variable (F E) in
@@ -23,8 +32,24 @@ variable (F E) in
 def Oh : AddSubgroup (Af F ⊗[F] E) :=
   AddSubgroup.closure {r | ∃ a ∈ intAf F, ∃ e : E, IsIntegral ℤ e ∧ r = a ⊗ₜ[F] e}
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, ha, e, he, rfl⟩`.
+-/
 theorem tmul_mem_Oh {a : Af F} (ha : a ∈ intAf F) {e : E} (he : IsIntegral ℤ e) : a ⊗ₜ[F] e ∈ Oh F E := AddSubgroup.subset_closure ⟨a, ha, e, he, rfl⟩
 
+/- English proof (translation)
+Unfold `Oh at hx hy ⊢`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy'`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx'`.
+
+Take `⟨a, ha, e, he, rfl⟩` from `hx'`. Take `⟨b, hb, f, hf, rfl⟩` from `hy'`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨a * b, intAf_mul ha hb, e * f, he.mul hf, rfl⟩`. Consider the case `zero`.
+
+Rewrite using `[zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x x' _ _ h1 h2`. Rewrite using `[add_mul]`. Conclude with `add_mem h1 h2`.
+
+Consider the case `neg x _ h1`. Rewrite using `[neg_mul]`. Conclude with `neg_mem h1`. Consider the case `zero`. Rewrite using `[mul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y y' _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1`.
+
+Rewrite using `[mul_neg]`. Conclude with `neg_mem h1`.
+-/
 theorem Oh_mul {x y : Af F ⊗[F] E} (hx : x ∈ Oh F E) (hy : y ∈ Oh F E) : x * y ∈ Oh F E := by
   unfold Oh at hx hy ⊢
   induction hy using AddSubgroup.closure_induction with
@@ -54,10 +79,16 @@ theorem Oh_mul {x y : Af F ⊗[F] E} (hx : x ∈ Oh F E) (hy : y ∈ Oh F E) : x
     rw [mul_neg]
     exact neg_mem h1
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `RingHom.mem_range.mp he`. Conclude with `RingOfIntegers.isIntegral_coe a`.
+-/
 theorem isIntegral_of_intOE {e : E} (he : e ∈ Formalism.UG.intOE E) : IsIntegral ℤ e := by
   obtain ⟨a, rfl⟩ := RingHom.mem_range.mp he
   exact RingOfIntegers.isIntegral_coe a
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul F, Nat.cast_mul, mul_smul, ← TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[Algebra.smul_def, map_natCast]`. Rewrite using `[Algebra.smul_def, map_natCast]`.
+-/
 theorem nsmul_tmul' (m n : ℕ) (a : Af F) (e : E) :
     (m * n) • (a ⊗ₜ[F] e) = ((m : Af F) * a) ⊗ₜ[F] ((n : E) * e) := by
   rw [← Nat.cast_smul_eq_nsmul F, Nat.cast_mul, mul_smul, ← TensorProduct.tmul_smul,
@@ -66,6 +97,13 @@ theorem nsmul_tmul' (m n : ℕ) (a : Af F) (e : E) :
   · rw [Algebra.smul_def, map_natCast]
   · rw [Algebra.smul_def, map_natCast]
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `tmul a e`. Take `⟨m1, hm1, h1⟩` from `PIW.AdelClassFin.DictRing.af_denom a`. Take `⟨m2, hm2, h2⟩` from `PIW.AdelClassFin.DictRing.e_denom e`.
+
+Use `⟨m1 * m2, Nat.mul_pos hm1 hm2, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_tmul']`. Conclude with `tmul_mem_Oh h1 (isIntegral_of_intOE h2)`. Consider the case `add x y hx hy`. Take `⟨m1, hm1, h1⟩` from `hx`.
+
+Take `⟨m2, hm2, h2⟩` from `hy`. Use `⟨m1 * m2, Nat.mul_pos hm1 hm2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm m1 m2, mul_smul, mul_comm m2 m1, mul_smul]`. Conclude with `add_mem (AddSubgroup.nsmul_mem _ h1 _) (AddSubgroup.nsmul_mem _ h2 _)`.
+-/
 theorem den (r : Af F ⊗[F] E) : ∃ m : ℕ, 0 < m ∧ m • r ∈ Oh F E := by
   induction r using TensorProduct.induction_on with
   | zero => exact ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩
@@ -82,10 +120,28 @@ theorem den (r : Af F ⊗[F] E) : ∃ m : ℕ, 0 < m ∧ m • r ∈ Oh F E := b
     rw [smul_add, mul_comm m1 m2, mul_smul, mul_comm m2 m1, mul_smul]
     exact add_mem (AddSubgroup.nsmul_mem _ h1 _) (AddSubgroup.nsmul_mem _ h2 _)
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def, TensorProduct.smul_tmul]`.
+-/
 theorem alg_tmul (t : F) (a : Af F) (e : E) :
     (algebraMap F (Af F) t * a) ⊗ₜ[F] e = a ⊗ₜ[F] (t • e) := by
   rw [← Algebra.smul_def, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `tmul a e`. Take `⟨d, hd, hde⟩` from `PIW.AdelClassFin.DictRing.e_denom e`. Establish `hdF : (d : F) ≠ 0` using `by exact_mod_cast hd.ne'`.
+
+Use `set a' : Af F := algebraMap F (Af F) (d : F)⁻¹ * a with ha'`. Establish `h1 : a ⊗ₜ[F] e = a' ⊗ₜ[F] ((d : E) * e)`. Rewrite using `[ha', alg_tmul]`. Use `congr 1`. Rewrite using `[Algebra.smul_def, ← mul_assoc, map_inv₀, map_natCast, inv_mul_cancel₀ (by exact_mod_cast hd.ne' : (d : E) ≠ 0), one_mul]`.
+
+Take `⟨m, hm, hma⟩` from `PIW.AdelClassFin.DictRing.af_denom a'`. Take `⟨β, y, hy, hβ⟩` from `PIW.AdelClassFin.DictRing.af_approx _ hma (N * m) (Nat.mul_pos hN hm)`. Establish `hmF : (m : F) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `h2 : a' = algebraMap F (Af F) ((m : F)⁻¹ * algebraMap (𝓞 F) F β) + (N : Af F) * y`. Establish `hinv : algebraMap F (Af F) (m : F)⁻¹ * (m : Af F) = 1`.
+
+Rewrite using `[← map_natCast (algebraMap F (Af F)) m, ← map_mul, inv_mul_cancel₀ hmF, map_one]`. Establish `e1 : algebraMap F (Af F) (m : F)⁻¹ * algebraMap (𝓞 F) (Af F) β = algebraMap F (Af F) ((m : F)⁻¹ * algebraMap (𝓞 F) F β)`. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `e2 : algebraMap F (Af F) (m : F)⁻¹ * (((N * m : ℕ) : Af F) * y) = (N : Af F) * y`. Rewrite using `[Nat.cast_mul, mul_comm (N : Af F) (m : Af F), mul_assoc (m : Af F), ← mul_assoc (algebraMap F (Af F) (m : F)⁻¹), hinv, one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨((m : F)⁻¹ * algebraMap (𝓞 F) F β) • ((d : E) * e), y ⊗ₜ[F] ((d : E) * e), tmul_mem_Oh hy (isIntegral_of_intOE hde), ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, TensorProduct.add_tmul, ← mul_one (algebraMap F (Af F) _), alg_tmul, ← nsmul_eq_mul, TensorProduct.smul_tmul']`. Simplify using `only [nsmul_eq_mul]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy`. Take `⟨e1, o1, ho1, rfl⟩` from `hx`. Take `⟨e2, o2, ho2, rfl⟩` from `hy`. Use `⟨e1 + e2, o1 + o2, add_mem ho1 ho2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem approx (N : ℕ) (hN : 0 < N) (r : Af F ⊗[F] E) :
     ∃ e : E, ∃ o ∈ Oh F E, r = inclR (Af F) e + N • o := by
   induction r using TensorProduct.induction_on with
@@ -125,12 +181,22 @@ theorem approx (N : ℕ) (hN : 0 < N) (r : Af F ⊗[F] E) :
     refine ⟨e1 + e2, o1 + o2, add_mem ho1 ho2, ?_⟩
     rw [map_add, smul_add]; abel
 
+/- English proof (translation)
+Take `⟨c', h⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {c}))`. Use `⟨Ideal.absNorm (Ideal.span {c}), ?_, c', by rw [← h, mul_comm]⟩` and prove the remaining obligations. Rewrite using `[Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc`.
+-/
 theorem nat_mult (c : 𝓞 F) (hc : c ≠ 0) : ∃ k : ℕ, 0 < k ∧ ∃ c' : 𝓞 F, (k : 𝓞 F) = c * c' := by
   obtain ⟨c', h⟩ := Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {c}))
   refine ⟨Ideal.absNorm (Ideal.span {c}), ?_, c', by rw [← h, mul_comm]⟩
   rw [Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
   exact hc
 
+/- English proof (translation)
+Take `⟨c, hc, hL⟩` from `h5`. Take `⟨k, hk, c', hkc⟩` from `nat_mult c hc`. Use `⟨k, hk, fun i e he => ?_⟩` and prove the remaining obligations. Establish `hkF : (k : F) = (c : F) * (c' : F)`. Establish `h1` using `congrArg (algebraMap (𝓞 F) F) hkc`.
+
+Rewrite `h1` using `[map_natCast, map_mul]`. Conclude with `h1`. Establish `he' : IsIntegral ℤ ((c' : F) • e)`. Rewrite using `[Algebra.smul_def]`. Conclude with `(map_isIntegral_int (algebraMap F E) (RingOfIntegers.isIntegral_coe c')).mul he`.
+
+Establish `e1 : (k : F) • e = (c : F) • ((c' : F) • e)`. Rewrite using `[smul_smul, ← hkF]`. Rewrite using `[e1]`. Conclude with `hL i _ he'`.
+-/
 theorem low_nat {M : ℕ} (L : Set (Fin M → E))
     (h5 : ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ i, ∀ e : E, IsIntegral ℤ e → Pi.single i ((c : F) • e) ∈ L) :
     ∃ k : ℕ, 0 < k ∧ ∀ i, ∀ e : E, IsIntegral ℤ e → Pi.single i ((k : F) • e) ∈ L := by

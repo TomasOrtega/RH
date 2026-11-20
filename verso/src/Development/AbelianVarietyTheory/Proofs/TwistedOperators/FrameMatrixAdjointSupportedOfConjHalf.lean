@@ -10,11 +10,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HalfSupp
 
+/- English proof (translation)
+Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, h]`.
+-/
 theorem smul_mul_mul_of_smul_eq {R : Type} [CommRing R] {a b c d : Type} [Fintype b] [Fintype c]
     (r : R) (A : Matrix a b R) (N : Matrix b c R) (B : Matrix c d R) (h : r • N = N) :
     r • (A * N * B) = A * N * B := by
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, h]
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Rewrite using `[← map_mul]`. Use `congr 1`. Simplify `congrFun (congrFun h k) l` using `[Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem map_smul_of_smul_eq {R S : Type} [CommRing R] [CommRing S] {a b : Type} (f : R →+* S)
     (r : R) (N : Matrix a b R) (h : r • N = N) : f r • N.map f = N.map f := by
   ext k l
@@ -23,6 +29,13 @@ theorem map_smul_of_smul_eq {R S : Type} [CommRing R] [CommRing S] {a b : Type} 
   congr 1
   simpa [Matrix.smul_apply, smul_eq_mul] using congrFun (congrFun h k) l
 
+/- English proof (translation)
+Introduce `D S T βS βT e x he hx i j`. Establish `hN : e • (x.map (cA D))ᵀ = (x.map (cA D))ᵀ`. Use extensionality with `k l`. Simplify using `only [Matrix.smul_apply, Matrix.transpose_apply, Matrix.map_apply, smul_eq_mul]`. Establish `h1` using `hx l k`.
+
+Establish `h2 : cA D (x l k) = e * cA D (x l k)` using `by conv_lhs => rw [← h1]`. Rewrite using `[map_mul, cA_cA]`. Conclude with `h2.symm`. Establish `hM` using `smul_mul_mul_of_smul_eq e ((S.gram⁻¹).map (incA D)) _ (T.gram.map (incA D)) hN`. Establish `hM'` using `map_smul_of_smul_eq (toEAf D) e _ hM`.
+
+Establish `hF` using `smul_mul_mul_of_smul_eq (toEAf D e) (βS⁻¹).val _ βT.val hM'`. Use `congrFun (congrFun hF i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this`.
+-/
 theorem frMapAdj_supp : ∀ {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D) (x : WO S T), e * e = e → IsHalf (cA D e) x → ∀ i j, toEAf D e * frMapAdj S T βS βT x i j = frMapAdj S T βS βT x i j := by
   intro D S T βS βT e x he hx i j
   have hN : e • (x.map (cA D))ᵀ = (x.map (cA D))ᵀ := by

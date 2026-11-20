@@ -24,22 +24,37 @@ def strictUpperCoords (X : Matrix n n 𝕜) : StrictUpperIndex n → 𝕜 := fun
 
 def IsStrictUpper (X : Matrix n n 𝕜) : Prop := ∀ i j, j ≤ i → X i j = 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strictUpperMatrix_apply (v : StrictUpperIndex n → 𝕜) (i j : n) :
     strictUpperMatrix v i j = if h : i < j then v ⟨(i, j), h⟩ else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem strictUpperCoords_apply (X : Matrix n n 𝕜) (p : StrictUpperIndex n) :
     strictUpperCoords X p = X p.1.1 p.1.2 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[strictUpperMatrix_apply, p.2]`.
+-/
 @[simp] theorem strictUpperCoords_strictUpperMatrix (v : StrictUpperIndex n → 𝕜) :
     strictUpperCoords (strictUpperMatrix v) = v := by
   funext p
   simp [strictUpperMatrix_apply, p.2]
 
+/- English proof (translation)
+Introduce `i j h`. Simplify using `[strictUpperMatrix_apply, not_lt.2 h]`.
+-/
 theorem isStrictUpper_strictUpperMatrix (v : StrictUpperIndex n → 𝕜) :
     IsStrictUpper (strictUpperMatrix v) := by
   intro i j h
   simp [strictUpperMatrix_apply, not_lt.2 h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i < j`. Simplify using `[strictUpperMatrix_apply, h]`. Simplify using `[strictUpperMatrix_apply, h, hX i j (not_lt.1 h)]`.
+-/
 theorem strictUpperMatrix_strictUpperCoords {X : Matrix n n 𝕜} (hX : IsStrictUpper X) :
     strictUpperMatrix (strictUpperCoords X) = X := by
   ext i j
@@ -47,29 +62,52 @@ theorem strictUpperMatrix_strictUpperCoords {X : Matrix n n 𝕜} (hX : IsStrict
   · simp [strictUpperMatrix_apply, h]
   · simp [strictUpperMatrix_apply, h, hX i j (not_lt.1 h)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i < j <;> simp [strictUpperMatrix_apply, h]`.
+-/
 theorem strictUpperMatrix_add (v w : StrictUpperIndex n → 𝕜) :
     strictUpperMatrix (v + w) = strictUpperMatrix v + strictUpperMatrix w := by
   ext i j
   by_cases h : i < j <;> simp [strictUpperMatrix_apply, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i < j <;> simp [strictUpperMatrix_apply, h]`.
+-/
 theorem strictUpperMatrix_smul (c : 𝕜) (v : StrictUpperIndex n → 𝕜) :
     strictUpperMatrix (c • v) = c • strictUpperMatrix v := by
   ext i j
   by_cases h : i < j <;> simp [strictUpperMatrix_apply, h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strictUpperCoords_add (X Y : Matrix n n 𝕜) :
     strictUpperCoords (X + Y) = strictUpperCoords X + strictUpperCoords Y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem strictUpperCoords_smul (c : 𝕜) (X : Matrix n n 𝕜) :
     strictUpperCoords (c • X) = c • strictUpperCoords X := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[one_apply, p.2.ne]`.
+-/
 @[simp] theorem strictUpperCoords_one : strictUpperCoords (1 : Matrix n n 𝕜) = 0 := by
   funext p
   simp [one_apply, p.2.ne]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `hX _ _ h.le`.
+-/
 theorem IsStrictUpper.isUpperTriangular {X : Matrix n n 𝕜} (hX : IsStrictUpper X) :
     X.IsUpperTriangular := fun _ _ h => hX _ _ h.le
 
+/- English proof (translation)
+Introduce `i j hji`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `lt_or_ge k i with hki | hik` into its components or cases. Rewrite using `[hX hki, zero_mul]`.
+
+Rewrite using `[hY k j (hji.trans hik), mul_zero]`.
+-/
 theorem IsStrictUpper.mul_left {X Y : Matrix n n 𝕜} (hX : X.IsUpperTriangular)
     (hY : IsStrictUpper Y) : IsStrictUpper (X * Y) := by
   intro i j hji
@@ -79,6 +117,11 @@ theorem IsStrictUpper.mul_left {X Y : Matrix n n 𝕜} (hX : X.IsUpperTriangular
   · rw [hX hki, zero_mul]
   · rw [hY k j (hji.trans hik), mul_zero]
 
+/- English proof (translation)
+Introduce `i j hji`. Rewrite using `[mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Break down `le_or_gt k i with hki | hik` into its components or cases. Rewrite using `[hX i k hki, zero_mul]`.
+
+Rewrite using `[hY (lt_of_le_of_lt hji hik), mul_zero]`.
+-/
 theorem IsStrictUpper.mul_right {X Y : Matrix n n 𝕜} (hX : IsStrictUpper X)
     (hY : Y.IsUpperTriangular) : IsStrictUpper (X * Y) := by
   intro i j hji
@@ -90,15 +133,24 @@ theorem IsStrictUpper.mul_right {X Y : Matrix n n 𝕜} (hX : IsStrictUpper X)
 
 private def rankBelow (i : n) : ℕ := (Finset.univ.filter (· < i)).card
 
+/- English proof (translation)
+Use `Finset.card_lt_card ⟨Finset.subset_univ _, fun hsub => ?_⟩` and prove the remaining obligations. Use `hsub (Finset.mem_univ j)` as an intermediate fact. Simplify using `at this`.
+-/
 private theorem rankBelow_lt_card (j : n) : rankBelow j < Fintype.card n := by
   refine Finset.card_lt_card ⟨Finset.subset_univ _, fun hsub => ?_⟩
   have := hsub (Finset.mem_univ j)
   simp at this
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.StrictlyUpperRank.rank_add_le_of_pow_ne_zero hX`.
+-/
 private theorem rank_add_le_of_pow_ne_zero {X : Matrix n n 𝕜} (hX : IsStrictUpper X) :
     ∀ (k : ℕ) (i j : n), (X ^ k) i j ≠ 0 → rankBelow i + k ≤ rankBelow j :=
   _root_.UpperTheory.Reformulated.B.StrictlyUpperRank.rank_add_le_of_pow_ne_zero hX
 
+/- English proof (translation)
+Use extensionality with `i j`. Assume the negation of the conclusion as `h`. Establish `h1` using `rank_add_le_of_pow_ne_zero hX _ i j h`. Establish `h2` using `rankBelow_lt_card j`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsStrictUpper.pow_card_eq_zero {X : Matrix n n 𝕜} (hX : IsStrictUpper X) :
     X ^ Fintype.card n = 0 := by
   ext i j
@@ -107,9 +159,17 @@ theorem IsStrictUpper.pow_card_eq_zero {X : Matrix n n 𝕜} (hX : IsStrictUpper
   have h2 := rankBelow_lt_card j
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, hX.pow_card_eq_zero⟩`.
+-/
 theorem IsStrictUpper.isNilpotent {X : Matrix n n 𝕜} (hX : IsStrictUpper X) : IsNilpotent X :=
   ⟨_, hX.pow_card_eq_zero⟩
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i < j`. Simplify using `only [strictUpperMatrix_apply, h, dite_true]`. Conclude with `continuous_apply _`. Simplify using `only [strictUpperMatrix_apply, h, dite_false]`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_strictUpperMatrix :
     Continuous (strictUpperMatrix : (StrictUpperIndex n → 𝕜) → Matrix n n 𝕜) := by
   refine continuous_matrix fun i j => ?_
@@ -142,14 +202,23 @@ def upperUnipotentSubgroup (n 𝕜 : Type*) [RCLike 𝕜] [Fintype n] [LinearOrd
     rw [mul_apply_self_of_isUpperTriangular hU ha.1, one_apply_eq, ha.2 i, mul_one] at e
     exact e
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_upperUnipotentSubgroup {g : GL n 𝕜} :
     g ∈ upperUnipotentSubgroup n 𝕜 ↔
       (g : Matrix n n 𝕜).IsUpperTriangular ∧ ∀ i, (g : Matrix n n 𝕜) i i = 1 := Iff.rfl
 
+/- English proof (translation)
+Introduce `g hg` and use `⟨hg.1, fun i => by rw [hg.2 i]; exact one_pos⟩`.
+-/
 theorem upperUnipotentSubgroup_le_upperPosSubgroup :
     upperUnipotentSubgroup n 𝕜 ≤ upperPosSubgroup n 𝕜 := fun g hg =>
   ⟨hg.1, fun i => by rw [hg.2 i]; exact one_pos⟩
 
+/- English proof (translation)
+Introduce `i j hji`. Break down `hji.lt_or_eq with h | h` into its components or cases. Rewrite using `[Matrix.sub_apply, hg.1 h, one_apply_ne h.ne', sub_zero]`. Substitute `h` using the available equality. Rewrite using `[Matrix.sub_apply, hg.2, one_apply_eq, sub_self]`.
+-/
 theorem isStrictUpper_sub_one {g : GL n 𝕜} (hg : g ∈ upperUnipotentSubgroup n 𝕜) :
     IsStrictUpper ((g : Matrix n n 𝕜) - 1) := by
   intro i j hji
@@ -169,9 +238,15 @@ def unipotentOfCoords (v : StrictUpperIndex n → 𝕜) : GL n 𝕜 where
     rwa [sub_neg_eq_add, neg_pow, (isStrictUpper_strictUpperMatrix v).pow_card_eq_zero, mul_zero,
       sub_zero] at this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_unipotentOfCoords (v : StrictUpperIndex n → 𝕜) :
     ((unipotentOfCoords v : GL n 𝕜) : Matrix n n 𝕜) = 1 + strictUpperMatrix v := rfl
 
+/- English proof (translation)
+Use `⟨blockTriangular_one.add (isStrictUpper_strictUpperMatrix v).isUpperTriangular, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[coe_unipotentOfCoords, Matrix.add_apply, isStrictUpper_strictUpperMatrix v i i le_rfl, add_zero, one_apply_eq]`.
+-/
 theorem unipotentOfCoords_mem (v : StrictUpperIndex n → 𝕜) :
     unipotentOfCoords v ∈ upperUnipotentSubgroup n 𝕜 := by
   refine ⟨blockTriangular_one.add (isStrictUpper_strictUpperMatrix v).isUpperTriangular,
@@ -179,10 +254,16 @@ theorem unipotentOfCoords_mem (v : StrictUpperIndex n → 𝕜) :
   rw [coe_unipotentOfCoords, Matrix.add_apply, isStrictUpper_strictUpperMatrix v i i le_rfl, add_zero,
     one_apply_eq]
 
+/- English proof (translation)
+Rewrite using `[strictUpperCoords_add, strictUpperCoords_one, zero_add, strictUpperCoords_strictUpperMatrix]`.
+-/
 theorem strictUpperCoords_one_add (v : StrictUpperIndex n → 𝕜) :
     strictUpperCoords (1 + strictUpperMatrix v) = v := by
   rw [strictUpperCoords_add, strictUpperCoords_one, zero_add, strictUpperCoords_strictUpperMatrix]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e : strictUpperCoords (g : Matrix n n 𝕜) = strictUpperCoords ((g : Matrix n n 𝕜) - 1)`. Rewrite using `[sub_eq_add_neg, strictUpperCoords_add, ← neg_one_smul 𝕜 (1 : Matrix n n 𝕜), strictUpperCoords_smul, strictUpperCoords_one, smul_zero, add_zero]`. Rewrite using `[coe_unipotentOfCoords, e, strictUpperMatrix_strictUpperCoords (isStrictUpper_sub_one hg), add_sub_cancel]`.
+-/
 theorem unipotentOfCoords_strictUpperCoords {g : GL n 𝕜} (hg : g ∈ upperUnipotentSubgroup n 𝕜) :
     unipotentOfCoords (strictUpperCoords (g : Matrix n n 𝕜)) = g := by
   apply Units.ext
@@ -206,10 +287,16 @@ def unipotentCoordsHomeomorph : (StrictUpperIndex n → 𝕜) ≃ₜ upperUnipot
   continuous_invFun :=
     continuous_pi fun p => (Units.continuous_val.comp continuous_subtype_val).matrix_elem _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_unipotentCoordsHomeomorph (v : StrictUpperIndex n → 𝕜) :
     ((unipotentCoordsHomeomorph v : upperUnipotentSubgroup n 𝕜) : GL n 𝕜) = unipotentOfCoords v :=
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `hS : IsStrictUpper (strictUpperMatrix v * strictUpperMatrix w)` using `(isStrictUpper_strictUpperMatrix v).mul_right (isStrictUpper_strictUpperMatrix w).isUpperTriangular`. Rewrite using `[Units.val_mul, coe_unipotentOfCoords, coe_unipotentOfCoords, coe_unipotentOfCoords, strictUpperMatrix_add, strictUpperMatrix_add, strictUpperMatrix_strictUpperCoords hS]`. Use `noncomm_ring`.
+-/
 theorem unipotentOfCoords_mul (v w : StrictUpperIndex n → 𝕜) :
     unipotentOfCoords v * unipotentOfCoords w =
       unipotentOfCoords (v + w + strictUpperCoords (strictUpperMatrix v * strictUpperMatrix w)) := by
@@ -251,6 +338,11 @@ def diagPosSubgroup (n 𝕜 : Type*) [RCLike 𝕜] [Fintype n] [DecidableEq n] :
             rw [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one,
               Matrix.one_mul]
 
+/- English proof (translation)
+Introduce and unpack `g ⟨a, ha, hga⟩`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hga]`. Conclude with `blockTriangular_diagonal _`. Rewrite using `[hga, diagonal_apply_eq]`.
+
+Conclude with `RCLike.ofReal_pos.2 (ha i)`.
+-/
 theorem diagPosSubgroup_le_upperPosSubgroup : diagPosSubgroup n 𝕜 ≤ upperPosSubgroup n 𝕜 := by
   rintro g ⟨a, ha, hga⟩
   refine ⟨?_, fun i => ?_⟩
@@ -269,25 +361,46 @@ def diagPosOf (a : PosDiag n) : GL n 𝕜 where
     congr 1; funext i
     exact inv_mul_cancel₀ (by exact_mod_cast (a.2 i).ne')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_diagPosOf (a : PosDiag n) :
     ((diagPosOf a : GL n 𝕜) : Matrix n n 𝕜) = diagonal fun i => (a.1 i : 𝕜) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_diagPosOf_inv (a : PosDiag n) :
     (((diagPosOf a)⁻¹ : GL n 𝕜) : Matrix n n 𝕜) = diagonal fun i => ((a.1 i)⁻¹ : 𝕜) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a.1, a.2, rfl⟩`.
+-/
 theorem diagPosOf_mem (a : PosDiag n) : diagPosOf a ∈ diagPosSubgroup n 𝕜 := ⟨a.1, a.2, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(RCLike.pos_iff.1 hz).1`.
+-/
 theorem re_pos_of_pos {z : 𝕜} (hz : 0 < z) : 0 < RCLike.re z := (RCLike.pos_iff.1 hz).1
 
+/- English proof (translation)
+Take `⟨-, him⟩` from `RCLike.pos_iff.1 hz`. Use `conv_rhs => rw [← RCLike.re_add_im z, him]`. Simplify using the standard rewrite rules.
+-/
 theorem ofReal_re_of_pos {z : 𝕜} (hz : 0 < z) : ((RCLike.re z : ℝ) : 𝕜) = z := by
   obtain ⟨-, him⟩ := RCLike.pos_iff.1 hz
   conv_rhs => rw [← RCLike.re_add_im z, him]
   simp
 
+/- English proof (translation)
+The claim follows from `(diagPosSubgroup_le_upperPosSubgroup hg).2 i`.
+-/
 theorem diag_pos_of_mem_diagPos {g : GL n 𝕜} (hg : g ∈ diagPosSubgroup n 𝕜) (i : n) :
     0 < (g : Matrix n n 𝕜) i i :=
   (diagPosSubgroup_le_upperPosSubgroup hg).2 i
 
+/- English proof (translation)
+Take `⟨a, ha, hga⟩` from `hg`. Rewrite using `[hga]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem eq_diagonal_of_mem_diagPos {g : GL n 𝕜} (hg : g ∈ diagPosSubgroup n 𝕜) :
     (g : Matrix n n 𝕜) = diagonal fun i => ((RCLike.re ((g : Matrix n n 𝕜) i i) : ℝ) : 𝕜) := by
   obtain ⟨a, ha, hga⟩ := hg
@@ -319,9 +432,19 @@ def diagPosHomeomorph : PosDiag n ≃ₜ diagPosSubgroup n 𝕜 where
     exact RCLike.continuous_re.comp
       ((Units.continuous_val.comp continuous_subtype_val).matrix_elem i i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_diagPosHomeomorph (a : PosDiag n) :
     ((diagPosHomeomorph a : diagPosSubgroup n 𝕜) : GL n 𝕜) = diagPosOf a := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, coe_diagPosOf, coe_diagPosOf_inv, coe_unipotentOfCoords, coe_unipotentOfCoords]`. Use extensionality with `i j`. Rewrite using `[mul_diagonal, diagonal_mul, Matrix.add_apply, Matrix.add_apply, one_apply, strictUpperMatrix_apply, strictUpperMatrix_apply]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Establish `h0 : (a.1 i : 𝕜) ≠ 0` using `by exact_mod_cast (a.2 i).ne'`. Simplify using `[h0]`. Distinguish the cases in `h : i < j`. Simplify using `only [hij, h, if_false, dite_true, zero_add]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hij, h]`.
+-/
 theorem conj_unipotentOfCoords (a : PosDiag n) (v : StrictUpperIndex n → 𝕜) :
     diagPosOf a * unipotentOfCoords v * (diagPosOf a)⁻¹ =
       unipotentOfCoords (fun p => ((a.1 p.1.1 / a.1 p.1.2 : ℝ) : 𝕜) * v p) := by
@@ -351,12 +474,20 @@ def upperPosDiagPart (b : upperPosSubgroup n 𝕜) : diagPosSubgroup n 𝕜 :=
   diagPosHomeomorph ⟨fun i => RCLike.re (((b : GL n 𝕜) : Matrix n n 𝕜) i i),
     fun i => re_pos_of_pos (b.2.2 i)⟩
 
+/- English proof (translation)
+The claim follows from `diagPosHomeomorph.continuous.comp (Continuous.subtype_mk (continuous_pi fun i => RCLike.continuous_re.comp ((Units.continuous_val.comp continuous_subtype_val).matrix_elem i i)) _)`.
+-/
 theorem continuous_upperPosDiagPart :
     Continuous (upperPosDiagPart : upperPosSubgroup n 𝕜 → diagPosSubgroup n 𝕜) :=
   diagPosHomeomorph.continuous.comp (Continuous.subtype_mk (continuous_pi fun i =>
     RCLike.continuous_re.comp ((Units.continuous_val.comp continuous_subtype_val).matrix_elem i i))
     _)
 
+/- English proof (translation)
+Establish `e : ((((upperPosDiagPart b : GL n 𝕜))⁻¹ * (b : GL n 𝕜) : GL n 𝕜) : Matrix n n 𝕜) = (diagonal fun i => ((RCLike.re (((b : GL n 𝕜) : Matrix n n 𝕜) i i))⁻¹ : 𝕜)) * ((b : GL n 𝕜) : Matrix n n 𝕜)` using `rfl`. Rewrite using `[mem_upperUnipotentSubgroup, e]`. Use `⟨(blockTriangular_diagonal _).mul b.2.1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_mul]`. Use `push_cast`.
+
+Rewrite using `[ofReal_re_of_pos (b.2.2 i)]`. Conclude with `inv_mul_cancel₀ (b.2.2 i).ne'`.
+-/
 theorem upperPosDiagPart_inv_mul_mem (b : upperPosSubgroup n 𝕜) :
     ((upperPosDiagPart b : GL n 𝕜))⁻¹ * (b : GL n 𝕜) ∈ upperUnipotentSubgroup n 𝕜 := by
   have e : ((((upperPosDiagPart b : GL n 𝕜))⁻¹ * (b : GL n 𝕜) : GL n 𝕜) : Matrix n n 𝕜) =
@@ -372,6 +503,9 @@ theorem upperPosDiagPart_inv_mul_mem (b : upperPosSubgroup n 𝕜) :
 def upperPosUnipotentPart (b : upperPosSubgroup n 𝕜) : upperUnipotentSubgroup n 𝕜 :=
   ⟨_, upperPosDiagPart_inv_mul_mem b⟩
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((continuous_subtype_val.comp continuous_upperPosDiagPart).inv.mul continuous_subtype_val) _`.
+-/
 theorem continuous_upperPosUnipotentPart :
     Continuous (upperPosUnipotentPart : upperPosSubgroup n 𝕜 → upperUnipotentSubgroup n 𝕜) :=
   Continuous.subtype_mk ((continuous_subtype_val.comp continuous_upperPosDiagPart).inv.mul
@@ -382,9 +516,17 @@ def diagUnipotentMul (p : diagPosSubgroup n 𝕜 × upperUnipotentSubgroup n �
   ⟨(p.1 : GL n 𝕜) * p.2, (upperPosSubgroup n 𝕜).mul_mem
     (diagPosSubgroup_le_upperPosSubgroup p.1.2) (upperUnipotentSubgroup_le_upperPosSubgroup p.2.2)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_diagUnipotentMul (p : diagPosSubgroup n 𝕜 × upperUnipotentSubgroup n 𝕜) :
     ((diagUnipotentMul p : upperPosSubgroup n 𝕜) : GL n 𝕜) = (p.1 : GL n 𝕜) * p.2 := rfl
 
+/- English proof (translation)
+Take `⟨⟨g, hg⟩, ⟨u, hu⟩⟩` from `p`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show diagonal (fun i => ((RCLike.re (((g * u : GL n 𝕜) : Matrix n n 𝕜) i i) : ℝ) : 𝕜)) = g`. Establish `hd : ∀ i, ((g * u : GL n 𝕜) : Matrix n n 𝕜) i i = (g : Matrix n n 𝕜) i i`.
+
+Introduce `i`. Rewrite using `[Units.val_mul, mul_apply_self_of_isUpperTriangular (diagPosSubgroup_le_upperPosSubgroup hg).1 hu.1, hu.2 i, mul_one]`. Repeatedly rewrite using `[hd]`. Conclude with `(eq_diagonal_of_mem_diagPos hg).symm`.
+-/
 theorem upperPosDiagPart_diagUnipotentMul (p : diagPosSubgroup n 𝕜 × upperUnipotentSubgroup n 𝕜) :
     upperPosDiagPart (diagUnipotentMul p) = p.1 := by
   obtain ⟨⟨g, hg⟩, ⟨u, hu⟩⟩ := p
@@ -398,6 +540,9 @@ theorem upperPosDiagPart_diagUnipotentMul (p : diagPosSubgroup n 𝕜 × upperUn
   simp_rw [hd]
   exact (eq_diagonal_of_mem_diagPos hg).symm
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((upperPosDiagPart b : GL n 𝕜)) * (((upperPosDiagPart b : GL n 𝕜))⁻¹ * b) = b`. Rewrite using `[mul_inv_cancel_left]`.
+-/
 theorem diagUnipotentMul_parts (b : upperPosSubgroup n 𝕜) :
     diagUnipotentMul (upperPosDiagPart b, upperPosUnipotentPart b) = b := by
   apply Subtype.ext
@@ -418,6 +563,9 @@ def diagUnipotentHomeomorph :
     ((continuous_subtype_val.comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)) _
   continuous_invFun := continuous_upperPosDiagPart.prodMk continuous_upperPosUnipotentPart
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem diagUnipotentHomeomorph_apply
     (p : diagPosSubgroup n 𝕜 × upperUnipotentSubgroup n 𝕜) :
     diagUnipotentHomeomorph p = diagUnipotentMul p := rfl
@@ -430,6 +578,9 @@ noncomputable def iwasawaDelta (g : GL n 𝕜) : ℝ≥0 :=
   ∏ p : StrictUpperIndex n,
     (‖(g : Matrix n n 𝕜) p.1.1 p.1.1‖₊ / ‖(g : Matrix n n 𝕜) p.1.2 p.1.2‖₊) ^ Module.finrank ℝ 𝕜
 
+/- English proof (translation)
+Simplify using `only [iwasawaDelta, ← Finset.prod_mul_distrib, ← mul_pow]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_apply_self_of_isUpperTriangular hg hh, mul_apply_self_of_isUpperTriangular hg hh, nnnorm_mul, nnnorm_mul, mul_div_mul_comm]`.
+-/
 theorem iwasawaDelta_mul {g h : GL n 𝕜} (hg : (g : Matrix n n 𝕜).IsUpperTriangular)
     (hh : (h : Matrix n n 𝕜).IsUpperTriangular) :
     iwasawaDelta (g * h) = iwasawaDelta g * iwasawaDelta h := by
@@ -438,15 +589,24 @@ theorem iwasawaDelta_mul {g h : GL n 𝕜} (hg : (g : Matrix n n 𝕜).IsUpperTr
   rw [Units.val_mul, mul_apply_self_of_isUpperTriangular hg hh,
     mul_apply_self_of_isUpperTriangular hg hh, nnnorm_mul, nnnorm_mul, mul_div_mul_comm]
 
+/- English proof (translation)
+Simplify using `[iwasawaDelta]`.
+-/
 @[simp] theorem iwasawaDelta_one : iwasawaDelta (1 : GL n 𝕜) = 1 := by
   simp [iwasawaDelta]
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun p _ => pow_ne_zero _ (div_ne_zero ?_ ?_)` and prove the remaining obligations. Conclude with `nnnorm_ne_zero_iff.2 (hg.2 _).ne'`. Conclude with `nnnorm_ne_zero_iff.2 (hg.2 _).ne'`.
+-/
 theorem iwasawaDelta_ne_zero {g : GL n 𝕜} (hg : g ∈ upperPosSubgroup n 𝕜) :
     iwasawaDelta g ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun p _ => pow_ne_zero _ (div_ne_zero ?_ ?_)
   · exact nnnorm_ne_zero_iff.2 (hg.2 _).ne'
   · exact nnnorm_ne_zero_iff.2 (hg.2 _).ne'
 
+/- English proof (translation)
+Rewrite using `[coe_diagUnipotentMul, iwasawaDelta_mul (diagPosSubgroup_le_upperPosSubgroup p.1.2).1 p.2.2.1]`. Establish `: iwasawaDelta (p.2 : GL n 𝕜) = 1`. Simplify using `[iwasawaDelta, p.2.2.2]`. Rewrite using `[this, mul_one]`.
+-/
 theorem iwasawaDelta_diagUnipotentMul [WellFoundedLT n] [LocallyFiniteOrderBot n]
     (p : diagPosSubgroup n 𝕜 × upperUnipotentSubgroup n 𝕜) :
     iwasawaDelta ((diagUnipotentMul p : upperPosSubgroup n 𝕜) : GL n 𝕜) =
@@ -457,6 +617,9 @@ theorem iwasawaDelta_diagUnipotentMul [WellFoundedLT n] [LocallyFiniteOrderBot n
     simp [iwasawaDelta, p.2.2.2]
   rw [this, mul_one]
 
+/- English proof (translation)
+Simplify using `only [iwasawaDelta, coe_diagPosOf, diagonal_apply_eq, NNReal.coe_prod, NNReal.coe_pow, NNReal.coe_div, coe_nnnorm, RCLike.norm_ofReal]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[abs_of_pos (a.2 _), abs_of_pos (a.2 _)]`.
+-/
 theorem iwasawaDelta_diagPosOf (a : PosDiag n) :
     (iwasawaDelta (diagPosOf a : GL n 𝕜) : ℝ) =
       ∏ p : StrictUpperIndex n, (a.1 p.1.1 / a.1 p.1.2) ^ Module.finrank ℝ 𝕜 := by
@@ -465,6 +628,13 @@ theorem iwasawaDelta_diagPosOf (a : PosDiag n) :
   refine Finset.prod_congr rfl fun p _ => ?_
   rw [abs_of_pos (a.2 _), abs_of_pos (a.2 _)]
 
+/- English proof (translation)
+Establish `e : (fun a : diagPosSubgroup n 𝕜 => iwasawaDelta (a : GL n 𝕜)) = (fun a : PosDiag n => iwasawaDelta (diagPosOf a : GL n 𝕜)) ∘ diagPosHomeomorph.symm`. Use function extensionality and compare the values at `a`. Use `conv_lhs => rw [← diagPosHomeomorph.apply_symm_apply a]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `Continuous.comp ?_ diagPosHomeomorph.symm.continuous` and prove the remaining obligations. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `show Continuous fun a : PosDiag n => (iwasawaDelta (diagPosOf a : GL n 𝕜) : ℝ)`. Repeatedly rewrite using `[iwasawaDelta_diagPosOf]`. Use `continuous_finset_prod _ fun p _ => (Continuous.div ?_ ?_ fun a => (a.2 _).ne').pow _` and prove the remaining obligations.
+
+Conclude with `(continuous_apply _).comp continuous_subtype_val`. Conclude with `(continuous_apply _).comp continuous_subtype_val`.
+-/
 theorem continuous_iwasawaDelta_diagPos :
     Continuous (fun a : diagPosSubgroup n 𝕜 => iwasawaDelta (a : GL n 𝕜)) := by
   have e : (fun a : diagPosSubgroup n 𝕜 => iwasawaDelta (a : GL n 𝕜)) =

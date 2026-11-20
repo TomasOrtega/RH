@@ -12,8 +12,14 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Simplify using `[fsv]`.
+-/
 theorem fsv_zero' (t : ℂ) : fsv 0 t = 1 := by simp [fsv]
 
+/- English proof (translation)
+Unfold `fsv`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fsv_mul' (s s' t : ℂ) : fsv s t * fsv s' t = fsv (s + s') t := by
   unfold fsv
   rw [← Complex.exp_add]
@@ -21,6 +27,9 @@ theorem fsv_mul' (s s' t : ℂ) : fsv s t * fsv s' t = fsv (s + s') t := by
   simp only [map_add]
   ring
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ∞ (fun t : ℂ => conj t)` using `Complex.conjCLE.contDiff`. Establish `h1 : ContDiff ℝ ∞ (fun t : ℂ => s * t - conj s * conj t)` using `(contDiff_const.mul contDiff_id).sub (contDiff_const.mul hc)`. Establish `he : ContDiff ℝ ∞ Complex.exp` using `Complex.contDiff_exp`. Conclude with `he.comp h1`.
+-/
 theorem fsv_contDiff' (s : ℂ) : ContDiff ℝ ∞ (fsv s) := by
   have hc : ContDiff ℝ ∞ (fun t : ℂ => conj t) := Complex.conjCLE.contDiff
   have h1 : ContDiff ℝ ∞ (fun t : ℂ => s * t - conj s * conj t) :=
@@ -33,10 +42,18 @@ section asm
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Simplify using `[cc, consC]`.
+-/
 theorem cc_zero {P : M.Par} (j : ℕ) (hj : j + 1 ≤ P.r) (t : ℂ) (c : Fin (P.r - (j + 1)) → ℂ) :
     cc j hj t c ⟨0, by omega⟩ = t := by
   simp [cc, consC]
 
+/- English proof (translation)
+Take `⟨lam, hlam⟩` from `Algebra.mem_bot.1 (hU (Pr V) S s w a b)`. Use `⟨lam, fun Φ => ?_⟩` and prove the remaining obligations. Establish `hab : Wd.Vw (mkP Wv Wv') s w a b = mkP Wv Wv' * Wd.UUiw (A` using `Pr V) s w a b := by`. Simplify using `[Wd.Vw, Wd.io, Matrix.scalar_apply, Matrix.diagonal_mul]`. Rewrite using `[hab, ← hlam]`.
+
+Express the relevant statement in the definitionally equal form `(Wv * algebraMap ℂ (Module.End ℂ V) lam) Φ = _`. Rewrite using `[Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`.
+-/
 theorem vw_entry (hU : UUiwScalar) {V : Type} [AddCommGroup V] [Module ℂ V] (S : Type) [Fintype S] [DecidableEq S]
     (Wv Wv' : Module.End ℂ V) (s : ℂ) (w : List (Wd.Letter ℂ S)) (a b : Wd.Ix S) :
     ∃ lam : ℂ, ∀ Φ : V, (Wd.Vw (mkP Wv Wv') s w a b).1 Φ = lam • Wv Φ := by
@@ -48,6 +65,19 @@ theorem vw_entry (hU : UUiwScalar) {V : Type} [AddCommGroup V] [Module ℂ V] (S
   change (Wv * algebraMap ℂ (Module.End ℂ V) lam) Φ = _
   rw [Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]
 
+/- English proof (translation)
+Introduce `i Ψ h`. Proceed by induction on `h with`. Consider the case `jf F Φ hF hΦ`. Introduce `_`. Conclude with `⟨F, Φ, 0, 1, hF, hΦ, fun c g => by simp [fsv_zero']⟩`.
+
+Consider the case `slice l w a b Φ hw hΦ ih`. Introduce `h`. Conclude with `absurd h (Fin.succ_ne_zero l)`. Consider the case `waveC l w s Wv Wv' a b Φ hw hW hW' hΦ ih`. Introduce `h`.
+
+Establish `hl0 : l.val = 0`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `using this`. Take `⟨F, Φ0, s0, κ0, hF, hΦ0, hv⟩` from `ih h`. Apply the tactic sequence `obtain ⟨lam, hlam⟩ := vw_entry hU S Wv Wv' s w a b`.
+
+Use `⟨F, Φ0, s + s0, lam * κ0, hF, hΦ0, fun c g => ?_⟩` and prove the remaining obligations. Establish `hcl : c l = c ⟨0, by change 0 < P.r - j; omega⟩` using `congrArg c (Fin.ext hl0)`. Rewrite using `[hlam, Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hW, hv, smul_smul, smul_smul]`. Use `beta_reduce`. Rewrite using `[hcl, ← fsv_mul']`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `waveZ w s Wv Wv' a b Φ hw hW hW' hΦ ih`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `[JC.parLev] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem class0_form (hU : UUiwScalar) (S : Type) [Fintype S] [DecidableEq S] (P : M.Par)
     (T : D.LevTower P.k P.r Wp Wq) (j : ℕ) (hj : j + 1 ≤ P.r)
     (Lj : R.LevelData (Pr (RadSp P.k (P.r - j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')) (P.r - j))
@@ -92,6 +122,9 @@ theorem class0_form (hU : UUiwScalar) (S : Type) [Fintype S] [DecidableEq S] (P 
 
 variable {P : M.Par} {T : D.LevTower P.k P.r Wp Wq} {j : ℕ} {hj : j + 1 ≤ P.r}
 
+/- English proof (translation)
+Take `⟨G, hG, hR⟩` from `h`. Take `⟨G', hG', hR'⟩` from `h'`. Use `⟨fun t γ => G t γ + G' t γ, (h2 Wp Wq P T j G G' hG hG' (fun _ => 1) contDiffOn_const).1, fun t ht x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_add, Pi.add_apply, Pi.add_apply, hR t ht x hx, hR' t ht x hx, (h4 Wp Wq P T hP hT j hj hPs G G' hG hG' t ht 0 x hx).1]`.
+-/
 theorem inC_add (h2 : FamAlg) (h4 : RepLin) (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π')
     (hT : D.TowerNormalised T)
     (hPs : IsPlace (JC.parLev P (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z' (T.bs (j + 1)).π (T.bs (j + 1)).π')
@@ -104,6 +137,9 @@ theorem inC_add (h2 : FamAlg) (h4 : RepLin) (hP : IsPlace P T.base.z T.base.z' T
   rw [Submodule.coe_add, Pi.add_apply, Pi.add_apply, hR t ht x hx, hR' t ht x hx,
     (h4 Wp Wq P T hP hT j hj hPs G G' hG hG' t ht 0 x hx).1]
 
+/- English proof (translation)
+Take `⟨G, hG, hR⟩` from `h`. Use `⟨fun t γ => a • G t γ, (h2 Wp Wq P T j G G hG hG (fun _ => a) contDiffOn_const).2, fun t ht x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hR t ht x hx, (h4 Wp Wq P T hP hT j hj hPs G G hG hG t ht a x hx).2]`.
+-/
 theorem inC_smul (h2 : FamAlg) (h4 : RepLin) (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π')
     (hT : D.TowerNormalised T)
     (hPs : IsPlace (JC.parLev P (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z' (T.bs (j + 1)).π (T.bs (j + 1)).π')
@@ -115,6 +151,11 @@ theorem inC_smul (h2 : FamAlg) (h4 : RepLin) (hP : IsPlace P T.base.z T.base.z' 
   rw [Submodule.coe_smul, Pi.smul_apply, Pi.smul_apply, hR t ht x hx,
     (h4 Wp Wq P T hP hT j hj hPs G G hG hG t ht a x hx).2]
 
+/- English proof (translation)
+Use `⟨sliceFam T j hj F, h7 Wp Wq P T hP hT j hj hPj hPs F hF, fun t ht x hx => ?_⟩` and prove the remaining obligations. Take `⟨hdom, hGV, hOm⟩` from `h6 Wp Wq P T hP hT j hj hPj hPs t ht x hx`. Establish `e1 : (Φ : Fn P.k (P.r - j) (Wq →L[ℂ] Wp)) (cc j hj t x.1) (gi j hj x.2) = resG P.k (P.r - j) (Fin.last _) (B.JF (T.bs j) F) (cc j hj t x.1) (gi j hj x.2)` using `hΦ (cc j hj t x.1, gi j hj x.2) hdom`. Establish `e2` using `Formalism.FourierDecayAlt.P.PBP.resG_cast (k := P.k) (ρ := P.r - (j + 1)) (n := P.r - j) (by omega) ht (B.JF (T.bs j) F) x.1 x.2`. Rewrite using `[e1]`.
+
+Use `e2.trans ?_` and prove the remaining obligations. Unfold `resG`. Rewrite using `[h8 Wp Wq P T hP hT j hj hPj hPs F hF t ht _ hGV hOm, smul_comm]`. Use `congr 2`.
+-/
 theorem inC_seed (h6 : CellTie) (h7 : SliceFamGood) (h8 : SliceFamJF)
     (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π') (hT : D.TowerNormalised T)
     (hPj : IsPlace (JC.parLev P j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')
@@ -136,6 +177,9 @@ theorem inC_seed (h6 : CellTie) (h7 : SliceFamGood) (h8 : SliceFamJF)
   rw [h8 Wp Wq P T hP hT j hj hPj hPs F hF t ht _ hGV hOm, smul_comm]
   congr 2
 
+/- English proof (translation)
+Take `⟨G, hG, hR⟩` from `h`. Establish `hm : ContDiffOn ℝ ∞ (fun t : ℂ => κ * fsv s t) {t | t ≠ 0}` using `(contDiff_const.mul (fsv_contDiff' s)).contDiffOn`. Use `⟨fun t γ => (κ * fsv s t) • G t γ, (h2 Wp Wq P T j G G hG hG _ hm).2, fun t ht x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, cc_zero, hR t ht x hx, (h4 Wp Wq P T hP hT j hj hPs G G hG hG t ht _ x hx).2]`.
+-/
 theorem inC_wave (h2 : FamAlg) (h4 : RepLin) (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π')
     (hT : D.TowerNormalised T)
     (hPs : IsPlace (JC.parLev P (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z' (T.bs (j + 1)).π (T.bs (j + 1)).π')
@@ -149,6 +193,15 @@ theorem inC_wave (h2 : FamAlg) (h4 : RepLin) (hP : IsPlace P T.base.z T.base.z' 
   refine ⟨fun t γ => (κ * fsv s t) • G t γ, (h2 Wp Wq P T j G G hG hG _ hm).2, fun t ht x hx => ?_⟩
   rw [hv, cc_zero, hR t ht x hx, (h4 Wp Wq P T hP hT j hj hPs G G hG hG t ht _ x hx).2]
 
+/- English proof (translation)
+Proceed by induction on `hA using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `fun Ψ h => h9 Wp Wq P T hP hT j hj hPj hPs X i Ψ h`. Consider the case `algebraMap r`.
+
+Introduce `Ψ h`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `inC_smul h2 h4 hP hT hPs h r`. Consider the case `add x y _ _ hx hy`. Introduce `Ψ h`.
+
+Rewrite using `[LinearMap.add_apply]`. Conclude with `inC_add h2 h4 hP hT hPs (hx Ψ h) (hy Ψ h)`. Consider the case `mul x y _ _ hx hy`. Introduce `Ψ h`. Rewrite using `[Module.End.mul_apply]`.
+
+Conclude with `hx _ (hy Ψ h)`.
+-/
 theorem inC_adjoin (h2 : FamAlg) (h4 : RepLin) (h9 : OpClosed)
     (hP : IsPlace P T.base.z T.base.z' T.base.π T.base.π') (hT : D.TowerNormalised T)
     (hPj : IsPlace (JC.parLev P j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')
@@ -174,6 +227,9 @@ theorem inC_adjoin (h2 : FamAlg) (h4 : RepLin) (h9 : OpClosed)
     rw [Module.End.mul_apply]
     exact hx _ (hy Ψ h)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span (HerGenC.jf F Φ hF hΦ)`.
+-/
 theorem herKc_jf' {S : Type} [Fintype S] [DecidableEq S] {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ}
     {π : Mx P.k P.r → (Wp →L[ℂ] Wp)} {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)}
     {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r} {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))} {l0 : ℕ}
@@ -181,6 +237,11 @@ theorem herKc_jf' {S : Type} [Fintype S] [DecidableEq S] {P : M.Par} {z z' : Fin
     (Φ : RadSp P.k P.r z z' π π') (hΦ : IsRadJF P z z' π π' D F Φ) : Φ ∈ herKc S P z z' π π' L st l0 D 0 :=
   Submodule.subset_span (HerGenC.jf F Φ hF hΦ)
 
+/- English proof (translation)
+Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx => exact hgen x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`.
+
+Conclude with `K.add_mem hx hy`. Consider the case `smul r x _ hx => rw [map_smul, map_smul]`. Conclude with `K.smul_mem r hx`.
+-/
 theorem span_step
     (Tt : RadSp P.k (P.r - j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' →ₗ[ℂ]
       RadSp P.k (P.r - (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z' (T.bs (j + 1)).π (T.bs (j + 1)).π')
@@ -197,6 +258,13 @@ theorem span_step
 
 end asm
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P T hP hT j hj l0 _ _ Xj μj Lj stj Xs μs Ls sts hDj hDs Tt t ht hTt S _ _ w a b hw Ψ hΨ`. Establish `hPj` using `hDj.1`. Establish `hPs` using `hDs.1`. Establish `hAct` using `hDj.2.2.1`. Establish `hA` using `h10 Wp Wq P.k (P.r - j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' Xj Lj hAct S ⟨0, by change 0 < P.r - j; omega⟩ w a b`.
+
+Establish `hΨ' : Ψ ∈ Submodule.span ℂ {Φ | HerGenC S (JC.parLev P j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' Lj stj l0 (T.bs j) 0 Φ}` using `hΨ`. Use `span_step (P := P) (T := T) (j := j) Tt (bTl Lj ⟨0, by change 0 < P.r - j; omega⟩ w a b).1 (herKc S (JC.parLev P (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z' (T.bs (j + 1)).π (T.bs (j + 1)).π' Ls sts l0 (T.bs (j + 1)) 0) _ (fun Ψ hg => ?_) Ψ hΨ'` and prove the remaining obligations. Take `⟨F, Φ, s, κ, hF, hΦ, hv⟩` from `class0_form h11 S P T j hj Lj stj l0 0 Ψ hg rfl`. Establish `hC0 : InC T j hj Φ` using `inC_seed h6 h7 h8 hP hT hPj hPs F hF Φ hΦ`. Establish `hC : InC T j hj Ψ` using `inC_wave (Φ := Φ) h2 h4 hP hT hPs s κ hv hC0`.
+
+Take `⟨G, hG, hR⟩` from `inC_adjoin h2 h4 h9 hP hT hPj hPs Xj _ hA Ψ hC`. Establish `hJ` using `h1 Wp Wq P T j G hG t ht`. Establish `hRad : IsRadJF (JC.parLev P (j + 1)) (T.bs (j + 1)).z (T.bs (j + 1)).z' (T.bs (j + 1)).π (T.bs (j + 1)).π' (T.bs (j + 1)) (G t) (Tt ((bTl Lj ⟨0, by change 0 < P.r - j; omega⟩ w a b).1 Ψ))` using `fun x hx => (hTt _ x.1 x.2).trans (hR t ht x hx)`. Conclude with `herKc_jf' (S := S) (P := JC.parLev P (j + 1)) (L := Ls) (st := sts) (l0 := l0) (G t) hJ _ hRad`.
+-/
 theorem sliceStepHer_of (h1 : FamJFOK) (h2 : FamAlg) (h4 : RepLin) (h6 : CellTie) (h7 : SliceFamGood)
     (h8 : SliceFamJF) (h9 : OpClosed) (h10 : BTlAdjoin) (h11 : UUiwScalar) : PTie.SliceStepHer := by
   intro Wp Wq _ _ _ _ _ _ P T hP hT j hj l0 _ _ Xj μj Lj stj Xs μs Ls sts hDj hDs Tt t ht hTt S _ _ w a b hw Ψ hΨ

@@ -24,6 +24,11 @@ def ExpGood (D : D7) (I : TwIn D) (A : Finset (PlE D.host)) (i : D.ntw.Tw) (p : 
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3⟩, h4⟩` from `h`. Use `And.intro (And.intro h1 (And.intro (h2.mono_right ?_) h3)) h4` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_union] at hx ⊢`. Break down `hx with hx | hx | hx` into its components or cases.
+
+Conclude with `Or.inl hx`. Conclude with `Or.inr (Or.inl hx)`. Conclude with `Or.inr (Or.inr (hA hx))`.
+-/
 theorem expGood_anti {D : D7} {I : TwIn D} {A A' : Finset (PlE D.host)} (hA : A ⊆ A') {i : D.ntw.Tw} {p : TwPick D i}
     (h : ExpGood D I A' i p) : ExpGood D I A i p := by
   obtain ⟨⟨h1, h2, h3⟩, h4⟩ := h
@@ -35,6 +40,11 @@ theorem expGood_anti {D : D7} {I : TwIn D} {A A' : Finset (PlE D.host)} (hA : A 
   · exact Or.inr (Or.inl hx)
   · exact Or.inr (Or.inr (hA hx))
 
+/- English proof (translation)
+Distinguish the cases in `h : ExpHyp D I i`. Take `⟨h1, h2, h3, h4⟩` from `h`. Unfold `Formalism.MainNotions.IntegralHeckeEveryConjugate at h1`. Take `⟨Q, k', ψ', hg⟩` from `h1 i h2 h3 (twEps D i) (twEps_pos D i) h4.1 (I.S i) h4.2 A`. Use `⟨⟨Q, k', ψ'⟩, fun _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hg1` using `hg 1 (by simp)`. Rewrite `hg1` using `[zpow_one]`. Conclude with `hg1`. Conclude with `⟨⟨∅, 0, 1⟩, fun h' => absurd h' h⟩`.
+-/
 theorem exists_expPick (D : D7) (I : TwIn D) (A : Finset (PlE D.host)) (i : D.ntw.Tw) :
     ∃ p : TwPick D i, ExpHyp D I i → ExpGood D I A i p := by
   by_cases h : ExpHyp D I i
@@ -50,6 +60,9 @@ theorem exists_expPick (D : D7) (I : TwIn D) (A : Finset (PlE D.host)) (i : D.nt
 def expPick (D : D7) (I : TwIn D) (A : Finset (PlE D.host)) (i : D.ntw.Tw) : TwPick D i :=
   Classical.choose (exists_expPick D I A i)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_expPick D I A i) h`.
+-/
 theorem expPick_good (D : D7) (I : TwIn D) (A : Finset (PlE D.host)) (i : D.ntw.Tw) (h : ExpHyp D I i) :
     ExpGood D I A i (expPick D I A i) := Classical.choose_spec (exists_expPick D I A i) h
 
@@ -58,12 +71,18 @@ abbrev TwAv (D : D7) : Type := D.ntw.Tw → Finset (PlE D.host)
 def avD (D : D7) (Av : TwAv D) (i : D.ntw.Tw) : Finset (PlE D.host) :=
   open Classical in AvRec D ∪ Av i
 
+/- English proof (translation)
+Introduce `v hv`. Unfold `avD`. Conclude with `Finset.mem_union_left _ hv`.
+-/
 theorem avRec_subset_avD (D : D7) (Av : TwAv D) (i : D.ntw.Tw) : AvRec D ⊆ avD D Av i := by
   classical
   intro v hv
   unfold avD
   exact Finset.mem_union_left _ hv
 
+/- English proof (translation)
+Introduce `v hv`. Unfold `avD`. Conclude with `Finset.mem_union_right _ hv`.
+-/
 theorem av_subset_avD (D : D7) (Av : TwAv D) (i : D.ntw.Tw) : Av i ⊆ avD D Av i := by
   classical
   intro v hv
@@ -73,10 +92,16 @@ theorem av_subset_avD (D : D7) (Av : TwAv D) (i : D.ntw.Tw) : Av i ⊆ avD D Av 
 def placesOverQ0 (D : D7) : Finset (PlE D.host) :=
   (placesOver_finite_av D.host.E (AbsolutelyIrreducibleSpan.q0 D) (Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1.ne_zero).toFinset
 
+/- English proof (translation)
+Unfold `placesOverQ0`. Conclude with `Set.Finite.mem_toFinset _`.
+-/
 theorem mem_places_over_q0 {D : D7} (v : PlE D.host) : v ∈ placesOverQ0 D ↔ v ∈ placesOver D.host.E (AbsolutelyIrreducibleSpan.q0 D) := by
   unfold placesOverQ0
   exact Set.Finite.mem_toFinset _
 
+/- English proof (translation)
+Establish `h1 : (placesOver D.host.E (AbsolutelyIrreducibleSpan.q0 D)).ncard ≠ 0`. Rewrite using `[Host.split_prime_splits_completely (D := D)]`. Conclude with `Module.finrank_pos.ne'`. Take `⟨v, hv⟩` from `Set.nonempty_of_ncard_ne_zero h1`. Conclude with `⟨v, (mem_places_over_q0 v).2 hv⟩`.
+-/
 theorem places_over_q0_nonempty (D : D7) : (placesOverQ0 D).Nonempty := by
   have h1 : (placesOver D.host.E (AbsolutelyIrreducibleSpan.q0 D)).ncard ≠ 0 := by
     rw [Host.split_prime_splits_completely (D := D)]
@@ -88,6 +113,9 @@ def avOver (D : D7) (s : Finset ℕ) : Finset (PlE D.host) :=
   (Set.Finite.biUnion (s := ((s.filter (· ≠ 0) : Finset ℕ) : Set ℕ)) (t := fun p => placesOver D.host.E p)
     (Finset.finite_toSet _) fun p hp => placesOver_finite_av _ p (Finset.mem_filter.1 hp).2).toFinset
 
+/- English proof (translation)
+Simplify using `only [avOver, Set.Finite.mem_toFinset, Set.mem_iUnion, exists_prop, Finset.mem_coe, Finset.mem_filter, and_assoc]`.
+-/
 theorem mem_avOver {D : D7} (s : Finset ℕ) (v : PlE D.host) :
     v ∈ avOver D s ↔ ∃ p ∈ s, p ≠ 0 ∧ v ∈ placesOver D.host.E p := by
   simp only [avOver, Set.Finite.mem_toFinset, Set.mem_iUnion, exists_prop, Finset.mem_coe,
@@ -96,6 +124,11 @@ theorem mem_avOver {D : D7} (s : Finset ℕ) (v : PlE D.host) :
 def avPrimesDesign (D : D7) (i : D.ntw.Tw) : Finset ℕ :=
   insert 2 (insert (D.ntw.l i) (insert (AbsolutelyIrreducibleSpan.q0 D) (NumberField.discr D.host.E).natAbs.primeFactors))
 
+/- English proof (translation)
+Unfold `avPrimesDesign at hp`. Simplify using `only [Finset.mem_insert, Nat.mem_primeFactors] at hp`. Break down `hp with rfl | rfl | rfl | ⟨hp, -, -⟩` into its components or cases. Conclude with `Nat.prime_two`. Conclude with `Fact.out`.
+
+Conclude with `(Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1`. Conclude with `hp`.
+-/
 theorem prime_of_mem_avPrimesDesign {D : D7} {i : D.ntw.Tw} {p : ℕ} (hp : p ∈ avPrimesDesign D i) : p.Prime := by
   unfold avPrimesDesign at hp
   simp only [Finset.mem_insert, Nat.mem_primeFactors] at hp
@@ -107,6 +140,11 @@ theorem prime_of_mem_avPrimesDesign {D : D7} {i : D.ntw.Tw} {p : ℕ} (hp : p �
 
 def avDesign (D : D7) : TwAv D := fun i => avOver D (avPrimesDesign D i)
 
+/- English proof (translation)
+Use `show v ∈ avOver D (avPrimesDesign D i) ↔ _`. Rewrite using `[mem_avOver]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, -, hv⟩`. Conclude with `⟨p, hp, hv⟩`.
+
+Introduce and unpack `⟨p, hp, hv⟩`. Conclude with `⟨p, hp, (prime_of_mem_avPrimesDesign hp).ne_zero, hv⟩`.
+-/
 theorem mem_avDesign {D : D7} (i : D.ntw.Tw) (v : PlE D.host) :
     v ∈ avDesign D i ↔ ∃ p ∈ avPrimesDesign D i, v ∈ placesOver D.host.E p := by
   show v ∈ avOver D (avPrimesDesign D i) ↔ _
@@ -117,6 +155,11 @@ theorem mem_avDesign {D : D7} (i : D.ntw.Tw) (v : PlE D.host) :
   · rintro ⟨p, hp, hv⟩
     exact ⟨p, hp, (prime_of_mem_avPrimesDesign hp).ne_zero, hv⟩
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite `hv` using `[mem_places_over_q0]`. Rewrite using `[mem_avDesign]`. Use `⟨AbsolutelyIrreducibleSpan.q0 D, ?_, hv⟩` and prove the remaining obligations. Unfold `avPrimesDesign`.
+
+Conclude with `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`.
+-/
 theorem places_over_q0_subset_design (D : D7) (i : D.ntw.Tw) : placesOverQ0 D ⊆ avDesign D i := by
   intro v hv
   rw [mem_places_over_q0] at hv
@@ -125,8 +168,16 @@ theorem places_over_q0_subset_design (D : D7) (i : D.ntw.Tw) : placesOverQ0 D �
   unfold avPrimesDesign
   exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
 
+/- English proof (translation)
+The claim follows from `(places_over_q0_subset_design D i).trans (av_subset_avD D (avDesign D) i)`.
+-/
 theorem places_over_q0_subset_avD (D : D7) (i : D.ntw.Tw) : placesOverQ0 D ⊆ avD D (avDesign D) i := (places_over_q0_subset_design D i).trans (av_subset_avD D (avDesign D) i)
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite `hv` using `[mem_places_over_q0]`. Rewrite using `[mem_avRec]`. Use `⟨AbsolutelyIrreducibleSpan.q0 D, ?_, hv⟩` and prove the remaining obligations. Establish `hq : q0Av D = AbsolutelyIrreducibleSpan.q0 D` using `rfl`.
+
+Establish `hne : q0Av D ≠ 0` using `hq ▸ (Host.leastSplitAuxiliaryPrimeThetaChain_spec D).1.ne_zero`. Rewrite using `[← hq]`. Unfold `avPrimes`. Simplify using `[hne]`.
+-/
 theorem places_over_q0_subset_avRec (D : D7) : placesOverQ0 D ⊆ AvRec D := by
   intro v hv
   rw [mem_places_over_q0] at hv
@@ -179,22 +230,41 @@ def NChoiceOff (D : D7) (C : NChoice D) : Prop :=
 
 variable {D : D7} {C : NChoice D} {I : TwIn D} {Av : TwAv D}
 
+/- English proof (translation)
+Break down `p with ⟨i, Q, k, ψ⟩` into its components or cases. Simplify using `only [twPackPow, zpow_one]`.
+-/
 theorem twPackPow_one (p : TwPack D) : twPackPow D 1 p = p := by
   rcases p with ⟨i, Q, k, ψ⟩
   simp only [twPackPow, zpow_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp, by rw [h, twPackPow_one]⟩`.
+-/
 theorem one_of_pack_eq {p p' : TwPack D} (n : ℕ) (h : p' = p) : ∃ a : ℤ, Nat.Coprime a.natAbs n ∧ p' = twPackPow D a p := ⟨1, by simp, by rw [h, twPackPow_one]⟩
 
+/- English proof (translation)
+Take `⟨a, -, ha⟩` from `hT.one w w' hw hw' h`. Conclude with `congrArg (fun p : TwPack D => p.2.1) ha`.
+-/
 theorem NChoiceTied.Q_eq (hT : NChoiceTied D C I Av) {w w' : D.what₂.places.Pl} (hw : TwistedAt D w)
     (hw' : TwistedAt D w') (h : C.twI w' = C.twI w) : C.Q w' = C.Q w := by
   obtain ⟨a, -, ha⟩ := hT.one w w' hw hw' h
   exact congrArg (fun p : TwPack D => p.2.1) ha
 
+/- English proof (translation)
+Take `⟨a, -, ha⟩` from `hT.one w w' hw hw' h`. Conclude with `congrArg (fun p : TwPack D => p.2.2.1) ha`.
+-/
 theorem NChoiceTied.k'_eq (hT : NChoiceTied D C I Av) {w w' : D.what₂.places.Pl} (hw : TwistedAt D w)
     (hw' : TwistedAt D w') (h : C.twI w' = C.twI w) : C.k' w' = C.k' w := by
   obtain ⟨a, -, ha⟩ := hT.one w w' hw hw' h
   exact congrArg (fun p : TwPack D => p.2.2.1) ha
 
+/- English proof (translation)
+Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.1 h`. Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.1 (eq_of_heq h)`. Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.1 (eq_of_heq h)`. Establish `h'` using `eq_of_heq h`. Establish `key : ψ' = ψ ^ (if s = s' then a else -a)`.
+
+Apply the tactic sequence `cases s <;> cases s' <;> simp only [BlochKatoReduction.Gen.psiAt, Bool.false_eq_true, Bool.true_eq_false, ↓reduceIte] at h' ⊢`. Rewrite `h'` using `[inv_zpow]`. Conclude with `inv_injective h'`. Rewrite using `[h', inv_zpow']`. Rewrite using `[zpow_neg, ← h', inv_inv]`.
+
+Conclude with `h'`. Rewrite using `[key]`.
+-/
 theorem raw_pow_of_pack {i i' : D.ntw.Tw} {Q Q' : Finset (PlE D.host)} {k k' : ℕ}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k)ˣ} {ψ' : D.ntw.RCG i' Q' →* (D.ntw.Ok i' k')ˣ} {s s' : Bool} {a : ℤ}
     (h : (⟨i', Q', k', BlochKatoReduction.Gen.psiAt s' ψ'⟩ : TwPack D) = ⟨i, Q, k, (BlochKatoReduction.Gen.psiAt s ψ) ^ a⟩) :
@@ -212,6 +282,11 @@ theorem raw_pow_of_pack {i i' : D.ntw.Tw} {Q Q' : Finset (PlE D.host)} {k k' : �
     · exact h'
   rw [key]
 
+/- English proof (translation)
+Unfold `TwConjAllAt`. Introduce `w w' hw hw' h`. Take `⟨a, ha, hp⟩` from `hT.one w w' hw hw' h`. Unfold `NChoicePack twPack twPackPow at hp`. Use `⟨if C.sd w = C.sd w' then a else -a, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `ha`. Rewrite using `[Int.natAbs_neg]` and apply the resulting hypothesis. Conclude with `raw_pow_of_pack hp`.
+-/
 theorem NChoiceTied.conjAllAt (hT : NChoiceTied D C I Av) : TwConjAllAt D C := by
   unfold TwConjAllAt
   intro w w' hw hw' h
@@ -223,21 +298,33 @@ theorem NChoiceTied.conjAllAt (hT : NChoiceTied D C I Av) : TwConjAllAt D C := b
     · rwa [Int.natAbs_neg]
   · exact raw_pow_of_pack hp
 
+/- English proof (translation)
+Establish `h` using `hT.pick w hw`. Unfold `NChoicePack twPack at h`. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h).2`.
+-/
 theorem NChoicePick.pick_eq (hT : NChoicePick D C I Av) (w : D.what₂.places.Pl) (hw : TwistedAt D w) :
     (⟨C.Q w, C.k' w, BlochKatoReduction.Gen.psiAt (C.sd w) (C.psi' w)⟩ : TwPick D (C.twI w)) = expPick D I (avD D Av (C.twI w)) (C.twI w) := by
   have h := hT.pick w hw
   unfold NChoicePack twPack at h
   exact eq_of_heq (Sigma.mk.inj_iff.1 h).2
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> simp [BlochKatoReduction.Gen.psiAt]`.
+-/
 private theorem psiAt_psiAt' {Γ A : Type} [Group Γ] [CommGroup A] (b : Bool) (ψ : Γ →* A) :
     BlochKatoReduction.Gen.psiAt b (BlochKatoReduction.Gen.psiAt b ψ) = ψ := by
   cases b <;> simp [BlochKatoReduction.Gen.psiAt]
 
+/- English proof (translation)
+Unfold `twPack`. Rewrite using `[psiAt_psiAt']`.
+-/
 private theorem twPack_psiAt_eq (i : D.ntw.Tw) (s : Bool) (e : TwPick D i) :
     twPack D i s e.1 e.2.1 (BlochKatoReduction.Gen.psiAt s e.2.2) = ⟨i, e⟩ := by
   unfold twPack
   rw [psiAt_psiAt']
 
+/- English proof (translation)
+Rewrite using `[← hT.pick_eq w hw]`. Rewrite using `[psiAt_psiAt']`.
+-/
 theorem NChoicePick.psi'_eq (hT : NChoicePick D C I Av) (w : D.what₂.places.Pl) (hw : TwistedAt D w) :
     (⟨C.Q w, C.k' w, C.psi' w⟩ : TwPick D (C.twI w)) =
       ⟨(expPick D I (avD D Av (C.twI w)) (C.twI w)).1, (expPick D I (avD D Av (C.twI w)) (C.twI w)).2.1,
@@ -245,6 +332,9 @@ theorem NChoicePick.psi'_eq (hT : NChoicePick D C I Av) (w : D.what₂.places.Pl
   rw [← hT.pick_eq w hw]
   rw [psiAt_psiAt']
 
+/- English proof (translation)
+The claim follows from `hT.twI_conj sd_place w _ := hT.sd_place w emb_side w _ := hT.emb_side w sd_conj w _ := hT.sd_conj w one w w' hw hw' h := one_of_pack_eq _ (by rw [hT.pick w' hw', hT.pick w hw, h]) good w hw hE := by have hG := expPick_good D I (avD D Av (C.twI w)) (C.twI w) hE rw [← hT.pick_eq w …`.
+-/
 theorem NChoicePick.tied (hT : NChoicePick D C I Av) : NChoiceTied D C I Av where
   twI_conj := hT.twI_conj
   sd_place w _ := hT.sd_place w
@@ -257,6 +347,9 @@ theorem NChoicePick.tied (hT : NChoicePick D C I Av) : NChoiceTied D C I Av wher
     exact hG
   conj w hw := by rw [hT.pick _ ((twistedAt_conj D w).2 hw), hT.pick w hw, hT.twI_conj w]
 
+/- English proof (translation)
+Introduce `w hw`. Conclude with `⟨hI w hw, expGood_anti (avRec_subset_avD D Av _) (hT.good w hw (And.intro hconds (And.intro (hW1 w hw) (And.intro (hset w hw) (hI w hw)))))⟩`.
+-/
 theorem twGoodAt_of_tied (hT : NChoiceTied D C I Av) (hconds : Formalism.MainNotions.IntegralHeckeEveryConjugate D (BlochKatoReduction.bk0 D) I.E I.N0)
     (hW1 : ∀ w, TwistedAt D w → D.ntw.NonzeroIndexPlace (C.twI w))
     (hset : ∀ w, TwistedAt D w → BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) (C.twI w))
@@ -267,6 +360,9 @@ theorem twGoodAt_of_tied (hT : NChoiceTied D C I Av) (hconds : Formalism.MainNot
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨⟨-, hd, -⟩, -⟩` from `hT.good w hw (And.intro hconds (And.intro hW1 (And.intro hset hI)))`. Use `hd.mono_right ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_union]`. Conclude with `Or.inr (Or.inr hx)`.
+-/
 theorem disjoint_av_of_tied (hT : NChoiceTied D C I Av) (hconds : Formalism.MainNotions.IntegralHeckeEveryConjugate D (BlochKatoReduction.bk0 D) I.E I.N0)
     (w : D.what₂.places.Pl) (hw : TwistedAt D w) (hW1 : D.ntw.NonzeroIndexPlace (C.twI w))
     (hset : BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) (C.twI w)) (hI : I.Ok (C.twI w)) :
@@ -278,6 +374,9 @@ theorem disjoint_av_of_tied (hT : NChoiceTied D C I Av) (hconds : Formalism.Main
   simp only [Finset.mem_union]
   exact Or.inr (Or.inr hx)
 
+/- English proof (translation)
+The claim follows from `hT.twI_conj sd_place := hT.sd_place emb_side := hT.emb_side sd_conj := hT.sd_conj one := hT.one good w hw hE := by classical refine expGood_anti ?_ (hT.good w hw hE) unfold avD exact Finset.union_subset_union (subset_refl _) (h _) conj := hT.conj`.
+-/
 theorem NChoiceTied.mono {Av' : TwAv D} (hT : NChoiceTied D C I Av) (h : ∀ i, Av' i ⊆ Av i) : NChoiceTied D C I Av' where
   twI_conj := hT.twI_conj
   sd_place := hT.sd_place
@@ -291,6 +390,9 @@ theorem NChoiceTied.mono {Av' : TwAv D} (hT : NChoiceTied D C I Av) (h : ∀ i, 
     exact Finset.union_subset_union (subset_refl _) (h _)
   conj := hT.conj
 
+/- English proof (translation)
+Introduce `v hv p hp hvp`. Establish `hd` using `disjoint_av_of_tied hT hconds w hw hW1 hset hI`. Establish `hmem : v ∈ avD D (avDesign D) (C.twI w)` using `av_subset_avD D _ _ ((mem_avDesign _ v).2 ⟨p, hp, hvp⟩)`. Conclude with `Finset.disjoint_left.1 hd hv hmem`.
+-/
 theorem disjoint_design_of_tied (hT : NChoiceTied D C I (avDesign D)) (hconds : Formalism.MainNotions.IntegralHeckeEveryConjugate D (BlochKatoReduction.bk0 D) I.E I.N0)
     (w : D.what₂.places.Pl) (hw : TwistedAt D w) (hW1 : D.ntw.NonzeroIndexPlace (C.twI w))
     (hset : BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) (C.twI w)) (hI : I.Ok (C.twI w)) :
@@ -300,6 +402,9 @@ theorem disjoint_design_of_tied (hT : NChoiceTied D C I (avDesign D)) (hconds : 
   have hmem : v ∈ avD D (avDesign D) (C.twI w) := av_subset_avD D _ _ ((mem_avDesign _ v).2 ⟨p, hp, hvp⟩)
   exact Finset.disjoint_left.1 hd hv hmem
 
+/- English proof (translation)
+Introduce `v hv hvq`. Use `disjoint_design_of_tied hT hconds w hw hW1 hset hI v hv (AbsolutelyIrreducibleSpan.q0 D) ?_ hvq` and prove the remaining obligations. Unfold `avPrimesDesign`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`.
+-/
 theorem disjoint_q0_of_agreement (hT : NChoiceTied D C I (avDesign D)) (hconds : Formalism.MainNotions.IntegralHeckeEveryConjugate D (BlochKatoReduction.bk0 D) I.E I.N0)
     (w : D.what₂.places.Pl) (hw : TwistedAt D w) (hW1 : D.ntw.NonzeroIndexPlace (C.twI w))
     (hset : BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) (C.twI w)) (hI : I.Ok (C.twI w)) :
@@ -309,8 +414,16 @@ theorem disjoint_q0_of_agreement (hT : NChoiceTied D C I (avDesign D)) (hconds :
   unfold avPrimesDesign
   exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
 
+/- English proof (translation)
+Introduce `w hw` and use `⟨hT.conj w hw, hT.sd_conj w hw⟩`.
+-/
 theorem twConjAt_of_tied (hT : NChoiceTied D C I Av) : TwConjAt D C := fun w hw => ⟨hT.conj w hw, hT.sd_conj w hw⟩
 
+/- English proof (translation)
+Use `⟨fun w => (expPick D I (avD D Av (twI w)) (twI w)).1, fun w => (expPick D I (avD D Av (twI w)) (twI w)).2.1, fun w => BlochKatoReduction.Gen.psiAt (sd w) (expPick D I (avD D Av (twI w)) (twI w)).2.2, fun w w' h => ?_, fun w hE => ?_⟩` and prove the remaining obligations. Unfold `twPack`. Rewrite using `[psiAt_psiAt, psiAt_psiAt]`. Conclude with `congrArg (fun i => (⟨i, expPick D I (avD D Av i) i⟩ : TwPack D)) h`. Establish `hG` using `expPick_good D I (avD D Av (twI w)) (twI w) hE`.
+
+Rewrite using `[psiAt_psiAt]`. Conclude with `hG`.
+-/
 theorem exists_tied_choice (D : D7) (I : TwIn D) (Av : TwAv D) (twI : D.what₂.places.Pl → D.ntw.Tw)
     (sd : D.what₂.places.Pl → Bool) :
     ∃ (Q : D.what₂.places.Pl → Finset (PlE D.host)) (k' : D.what₂.places.Pl → ℕ)
@@ -327,6 +440,11 @@ theorem exists_tied_choice (D : D7) (I : TwIn D) (Av : TwAv D) (twI : D.what₂.
     rw [psiAt_psiAt]
     exact hG
 
+/- English proof (translation)
+Introduce `x`. Set `y : D.LL0` to `⟨star (x : D.what₂.LL), hstar x⟩`. Rewrite using `[D.conj_val, show star (x : D.what₂.LL) = (y : D.what₂.LL) from rfl, h y]`. Consider the cases of `s`. Establish `e : D.ntw.emb0b i y = D.ntw.emb0 i x` using `D.ntw.restX_coefficientEmbedding_conj i y x (by simp [y])`.
+
+Simplify using `only [Bool.not_false, Bool.false_eq_true, if_false, if_true, e]`. Establish `e : D.ntw.emb0b i x = D.ntw.emb0 i y` using `D.ntw.restX_coefficientEmbedding_conj i x y rfl`. Simplify using `only [Bool.not_true, Bool.false_eq_true, if_false, if_true, e]`.
+-/
 theorem sidePl_conj (D : D7) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) (w : D.what₂.places.Pl)
     (i : D.ntw.Tw) (s : Bool) (h : SidePl D w i s) : SidePl D (D.what₂.places.conj w) i (!s) := by
   intro x
@@ -338,6 +456,9 @@ theorem sidePl_conj (D : D7) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈
   · have e : D.ntw.emb0b i x = D.ntw.emb0 i y := D.ntw.restX_coefficientEmbedding_conj i x y rfl
     simp only [Bool.not_true, Bool.false_eq_true, if_false, if_true, e]
 
+/- English proof (translation)
+Rewrite using `[h1, h2]`. Conclude with `sidePl_conj D hstar w _ _ h`.
+-/
 theorem sdPlace_conj_of (D : D7) (C : NChoice D) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (w : D.what₂.places.Pl) (h1 : C.twI (D.what₂.places.conj w) = C.twI w)
     (h2 : C.sd (D.what₂.places.conj w) = !C.sd w) (h : SidePl D w (C.twI w) (C.sd w)) :
@@ -345,6 +466,25 @@ theorem sdPlace_conj_of (D : D7) (C : NChoice D) (hstar : ∀ x : D.LL0, star (x
   rw [h1, h2]
   exact sidePl_conj D hstar w _ _ h
 
+/- English proof (translation)
+Establish `key : ∀ z : D.LL0, 0 ≤ D.what₂.places.val w (z : D.what₂.LL) ↔ D.ntw.emb0 i z ∈ (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))).range` using `fun z => by`. Simplify using `using h z`. Establish `hinj` using `IsFractionRing.injective (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))`. Establish `hmul : ∀ z : D.LL0, z ≠ 0 → D.what₂.places.val w (z : D.what₂.LL) + D.what₂.places.val w ((z⁻¹ : D.LL0) : D.what₂.LL) = 0`. Introduce `z hz`.
+
+Rewrite using `[← AddValuation.map_mul, IntermediateField.coe_inv, mul_inv_cancel₀ (by exact_mod_cast hz), AddValuation.map_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hyx⟩`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+
+Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hlt`. Establish `h0 : 0 ≤ D.what₂.places.val w (x : D.what₂.LL)` using `(key x).2 ⟨y, hyx⟩`. Establish `heq : D.what₂.places.val w (x : D.what₂.LL) = 0` using `le_antisymm (not_lt.1 hlt) h0`. Establish `hinv : 0 ≤ D.what₂.places.val w ((x⁻¹ : D.LL0) : D.what₂.LL)`.
+
+Use `hmul x hx` as an intermediate fact. Rewrite `this` using `[heq, zero_add]`. Rewrite using `[this]`. Take `⟨y', hy'⟩` from `(key x⁻¹).1 hinv`. Establish `hne : D.ntw.emb0 i x ≠ 0` using `(map_ne_zero _).2 hx`.
+
+Establish `hone : algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) (y * y') = 1`. Rewrite using `[map_mul, hyx, hy', map_inv₀, mul_inv_cancel₀ hne]`. Establish `hyy : y * y' = 1` using `hinj (by rw [hone, map_one])`. Establish `hu : IsUnit y` using `⟨⟨y, y', hyy, by rw [mul_comm]; exact hyy⟩, rfl⟩`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hy hu`.
+
+Introduce `hpos`. Take `⟨y, hy⟩` from `(key x).1 hpos.le`. Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`. Establish `: y = 0` using `hinj (by rw [hy, map_zero])`. Conclude with `not_isUnit_zero (this ▸ hu)`.
+
+Establish `hinv : 0 ≤ D.what₂.places.val w ((x⁻¹ : D.LL0) : D.what₂.LL)`. Use `(key x⁻¹).2 ⟨((hu.unit⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, ← hy]`. Conclude with `(map_units_inv _ hu.unit).trans (by simp)`. Establish `hsum` using `hmul x hx`.
+
+Establish `: 0 < D.what₂.places.val w (x : D.what₂.LL) + D.what₂.places.val w ((x⁻¹ : D.LL0) : D.what₂.LL)` using `add_pos_of_pos_of_nonneg hpos hinv`. Rewrite `this` using `[hsum]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem emb0_mem_maximalIdeal_iff_val_pos_of_sidePl (D : D7) (w : D.what₂.places.Pl) (i : D.ntw.Tw) (h : SidePl D w i true)
     (x : D.LL0) :
     (∃ y ∈ IsLocalRing.maximalIdeal (D.ntw.O0 i),
@@ -397,9 +537,19 @@ theorem emb0_mem_maximalIdeal_iff_val_pos_of_sidePl (D : D7) (w : D.what₂.plac
     rw [hsum] at this
     exact lt_irrefl _ this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨w, hw, fun x => emb0_mem_maximalIdeal_iff_val_pos_of_sidePl D w i h (x : D.LL0)⟩`.
+-/
 theorem nonzeroIndexPlace_of_sidePl_twistedAt (D : D7) (w : D.what₂.places.Pl) (i : D.ntw.Tw) (h : SidePl D w i true)
     (hw : TwistedAt D w) : D.ntw.NonzeroIndexPlace i := ⟨w, hw, fun x => emb0_mem_maximalIdeal_iff_val_pos_of_sidePl D w i h (x : D.LL0)⟩
 
+/- English proof (translation)
+Establish `hs` using `hT.sd_place w hw`. Consider the cases of `hsd : C.sd w with`. Consider the case `true`. Rewrite `hs` using `[hsd]`. Conclude with `nonzeroIndexPlace_of_sidePl_twistedAt D w _ hs hw`.
+
+Consider the case `false`. Rewrite `hs` using `[hsd]`. Unfold `ConjPreservesLL0 at hc`. Establish `hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0`. Introduce `x`.
+
+Take `⟨y, hy⟩` from `hc x`. Rewrite using `[← hy]`. Conclude with `y.2`. Conclude with `nonzeroIndexPlace_of_sidePl_twistedAt D (D.what₂.places.conj w) _ (sidePl_conj D hstar w _ _ hs) ((twistedAt_conj D w).2 hw)`.
+-/
 theorem nonzero_index_place_of_twisted (hT : NChoiceTied D C I Av) (hc : ConjPreservesLL0 D) (w : D.what₂.places.Pl) (hw : TwistedAt D w) :
     D.ntw.NonzeroIndexPlace (C.twI w) := by
   have hs := hT.sd_place w hw
@@ -417,6 +567,9 @@ theorem nonzero_index_place_of_twisted (hT : NChoiceTied D C I Av) (hc : ConjPre
       exact y.2
     exact nonzeroIndexPlace_of_sidePl_twistedAt D (D.what₂.places.conj w) _ (sidePl_conj D hstar w _ _ hs) ((twistedAt_conj D w).2 hw)
 
+/- English proof (translation)
+The claim follows from `twGoodAt_of_tied hT hconds (fun w hw => nonzero_index_place_of_twisted hT hc w hw) hset hI`.
+-/
 theorem twGoodAt_of_tied_conj (hT : NChoiceTied D C I Av) (hc : ConjPreservesLL0 D) (hconds : Formalism.MainNotions.IntegralHeckeEveryConjugate D (BlochKatoReduction.bk0 D) I.E I.N0)
     (hset : ∀ w, TwistedAt D w → BlochKatoReduction.Gen.SetHyp (BlochKatoReduction.bk0 D) (C.twI w))
     (hI : ∀ w, TwistedAt D w → I.Ok (C.twI w)) : TwGoodAt D C I := twGoodAt_of_tied hT hconds (fun w hw => nonzero_index_place_of_twisted hT hc w hw) hset hI
@@ -432,13 +585,27 @@ def twInRec (D : D7) (T : ThData D) (N0 : D.ntw.Tw → ℕ) : TwIn D := twInOf D
 
 def twInAll (D : D7) (N0 : D.ntw.Tw → ℕ) : TwIn D := twInOf D (IntegralHeckeForms.ExpDat.all D.nexp) N0
 
+/- English proof (translation)
+The claim follows from `IntegralHeckeForms.ExpDat.all_max D.nexp`.
+-/
 theorem twInAll_max (D : D7) (N0 : D.ntw.Tw → ℕ) : (twInAll D N0).E.Max := IntegralHeckeForms.ExpDat.all_max D.nexp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twInAll_Sg (D : D7) (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     (twInAll D N0).Sg i j b = (twInAll D N0).E.Dat0 i j b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twInRec_E (D : D7) (T : ThData D) (N0 : D.ntw.Tw → ℕ) : (twInRec D T N0).E.Dat0 = T.xd0 := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hF, hB⟩ j hj b`. Conclude with `⟨hF j hj b, _, hB j hj b⟩`. Introduce `h`. Use `⟨fun j hj b => (h j hj b).1, fun j hj b => ?_⟩` and prove the remaining obligations.
+
+Establish `hx` using `(h j hj b).2`. Use `show IntegralHeckeForms.BasisOf D.nexp i j b (IntegralHeckeForms.SgJ D.nexp E i j b) (if h : ∃ S, IntegralHeckeForms.BasisOf D.nexp i j b (IntegralHeckeForms.SgJ D.nexp E i j b) S then h.choose else ∅)`. Rewrite using `[dif_pos hx]`. Conclude with `hx.choose_spec`.
+-/
 theorem twInOf_ok_iff (D : D7) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw) :
     (twInOf D E N0).Ok i ↔ ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool,
       IntegralHeckeForms.FullRk D.nexp E i j b (IntegralHeckeForms.SgJ D.nexp E i j b) ∧ ∃ S, IntegralHeckeForms.BasisOf D.nexp i j b (IntegralHeckeForms.SgJ D.nexp E i j b) S := by
@@ -454,11 +621,17 @@ theorem twInOf_ok_iff (D : D7) (E : IntegralHeckeForms.XD D) (N0 : D.ntw.Tw → 
     rw [dif_pos hx]
     exact hx.choose_spec
 
+/- English proof (translation)
+The claim follows from `twInOf_ok_iff D _ N0 i`.
+-/
 theorem twInAll_ok_iff (D : D7) (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw) :
     (twInAll D N0).Ok i ↔ ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool,
       IntegralHeckeForms.FullRk D.nexp (IntegralHeckeForms.ExpDat.all D.nexp) i j b ((IntegralHeckeForms.ExpDat.all D.nexp).Dat0 i j b) ∧
         ∃ S, IntegralHeckeForms.BasisOf D.nexp i j b ((IntegralHeckeForms.ExpDat.all D.nexp).Dat0 i j b) S := twInOf_ok_iff D _ N0 i
 
+/- English proof (translation)
+Unfold `TwGood TwGoodE`. Use `⟨x0, fun x hx0 hx i => ?_⟩` and prove the remaining obligations. Take `⟨hT, hconds, hw⟩` from `h x hx0 hx i`. Conclude with `⟨twConjAt_of_tied hT, N0 x hx i, (twInRec (Fm.D x i) (Fm.ex x hx i).xd (N0 x hx i)).S, twGoodAt_of_tied hT hconds (fun w hw' => (hw w hw').1) (fun w hw' => (hw w hw').2.1) (fun w hw' => (hw w hw').2.2)⟩`.
+-/
 theorem twGood_of_tied {eps : ℝ} (Fm : FamP eps) (N0 : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, (Fm.D x i).ntw.Tw → ℕ)
     (x0 : ℝ) (h : ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x),
       NChoiceTied (Fm.D x i) (Fm.ex x hx i).nch (twInRec (Fm.D x i) (Fm.ex x hx i).xd (N0 x hx i)) (avDesign (Fm.D x i)) ∧
@@ -475,6 +648,11 @@ theorem twGood_of_tied {eps : ℝ} (Fm : FamP eps) (N0 : ∀ x, Fm.x1 < x → �
     twGoodAt_of_tied hT hconds (fun w hw' => (hw w hw').1) (fun w hw' => (hw w hw').2.1)
       (fun w hw' => (hw w hw').2.2)⟩
 
+/- English proof (translation)
+Unfold `TwGood TwGoodE`. Use `⟨x0, fun x hx0 hx i => ?_⟩` and prove the remaining obligations. Take `⟨hE, hT, hconds, hw⟩` from `h x hx0 hx i`. Use `⟨twConjAt_of_tied hT, (I x hx i).N0, (I x hx i).S, ?_⟩` and prove the remaining obligations. Establish `hg` using `twGoodAt_of_tied hT hconds (fun w hw' => (hw w hw').1) (fun w hw' => (hw w hw').2.1) (fun w hw' => (hw w hw').2.2)`.
+
+Rewrite using `[← hE]`. Conclude with `hg`.
+-/
 theorem twGood_of_tied_gen {eps : ℝ} (Fm : FamP eps) (I : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TwIn (Fm.D x i))
     (x0 : ℝ) (h : ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (i : Fm.Ix x),
       (I x hx i).E = twE Fm x hx i ∧
@@ -497,6 +675,13 @@ section Vac
 
 variable (D : D7)
 
+/- English proof (translation)
+Use `⟨fun P hP => by simp at hP, Finset.disjoint_empty_left _, ?_, ?_, fun g => Subgroup.one_mem _, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `first`. Consider the case `(simp [IntegralHeckeForms.AntiHom])`. Consider the case `(simp [AntiHom])`.
+
+Consider the case `simp`. Introduce `v A _`. Simplify using the standard rewrite rules. Use `first`. Consider the case `(simp [BlochKatoReduction.Gen.TrivAbove])`.
+
+Consider the case `simp`.
+-/
 theorem twOK_triv (i : D.ntw.Tw) (k : ℕ) : IntegralHeckeForms.TwOK (X := D.ntw) i k ∅ 1 := by
   refine ⟨fun P hP => by simp at hP, Finset.disjoint_empty_left _, ?_, ?_,
     fun g => Subgroup.one_mem _, ?_, ?_⟩
@@ -511,6 +696,9 @@ theorem twOK_triv (i : D.ntw.Tw) (k : ℕ) : IntegralHeckeForms.TwOK (X := D.ntw
       | (simp [BlochKatoReduction.Gen.TrivAbove])
       | simp
 
+/- English proof (translation)
+Establish `h` using `ha.2.2.2 0 ∅ 1 (twOK_triv D i 0)`. Rewrite `h` using `[D.nexp.thPsi_one]`. Conclude with `Set.singleton_subset_iff.1 h`.
+-/
 theorem th_mem_thP (i : D.ntw.Tw) (j : ℕ) (b : Bool) (a : D.nexp.Dat i j b)
     (ha : a ∈ (IntegralHeckeForms.ExpDat.all D.nexp).Dat0 i j b) :
     (1 : D.ntw.Ok i 0) ⊗ₜ[D.ntw.O i] D.nexp.th i j b a ∈
@@ -519,6 +707,11 @@ theorem th_mem_thP (i : D.ntw.Tw) (j : ℕ) (b : Bool) (a : D.nexp.Dat i j b)
   rw [D.nexp.thPsi_one] at h
   exact Set.singleton_subset_iff.1 h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `r hr x y hxy`. Establish `hne : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hr.ne_zero`. Establish `h2 : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) r • x = algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) r • y`. Rewrite using `[algebraMap_smul, algebraMap_smul]`.
+
+Conclude with `hxy`. Conclude with `smul_right_injective _ hne h2`.
+-/
 theorem fm_torsionFree (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     Module.IsTorsionFree (D.ntw.O i) (D.nexp.Fm i j b) := by
   constructor
@@ -531,6 +724,13 @@ theorem fm_torsionFree (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     exact hxy
   exact smul_right_injective _ hne h2
 
+/- English proof (translation)
+Use `D.ntw.Ok_fin i 0` as an intermediate fact. Use `fm_torsionFree D i j b` as an intermediate fact. Establish `hN : (((D.nexp.MtLat i j b 0 ∅ 1).map (D.nexp.thP i j b 0 ∅ 1)).restrictScalars (D.ntw.O i)).FG` using `((D.nexp.MtLat_fg i j b 0 ∅ 1).map _).restrictScalars`. Set `ι : D.nexp.Fm i j b →ₗ[D.ntw.O i] D.ntw.Ok i 0 ⊗[D.ntw.O i] D.nexp.Fm i j b` to `TensorProduct.mk (D.ntw.O i) (D.ntw.Ok i 0) (D.nexp.Fm i j b) 1`. Establish `hιe : ι = ((Algebra.linearMap (D.ntw.O i) (D.ntw.Ok i 0)).rTensor (D.nexp.Fm i j b)) ∘ₗ (TensorProduct.lid (D.ntw.O i) (D.nexp.Fm i j b)).symm.toLinearMap`.
+
+Use extensionality with `x`. Simplify using `[ι]`. Establish `hι : Function.Injective ι`. Rewrite using `[hιe]`. Conclude with `(Module.Flat.rTensor_preserves_injective_linearMap _ (D.ntw.Ok_inj i 0)).comp (TensorProduct.lid (D.ntw.O i) (D.nexp.Fm i j b)).symm.injective`.
+
+Use `Submodule.fg_of_fg_map_injective ι hι (Submodule.FG.of_le hN ?_)` and prove the remaining obligations. Rewrite using `[IntegralHeckeForms.Th, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `th_mem_thP D i j b a ha`.
+-/
 theorem th_all_fg (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     (IntegralHeckeForms.Th D.nexp i j b ((IntegralHeckeForms.ExpDat.all D.nexp).Dat0 i j b)).FG := by
   have := D.ntw.Ok_fin i 0
@@ -551,6 +751,23 @@ theorem th_all_fg (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
   rintro _ ⟨_, ⟨a, ha, rfl⟩, rfl⟩
   exact th_mem_thP D i j b a ha
 
+/- English proof (translation)
+Use `fm_torsionFree D i j b` as an intermediate fact. Set `g : D.nexp.Dat i j b → D.nexp.Fm i j b` to `fun a => IntegralHeckeForms.AO D.nexp i j b (D.nexp.th i j b a)`. Set `M : Submodule (D.ntw.O i) (D.nexp.Fm i j b)` to `(IntegralHeckeForms.Th D.nexp i j b Sg).map (IntegralHeckeForms.AO D.nexp i j b)`. Establish `hM : M = Submodule.span (D.ntw.O i) (g '' Sg)`. Simplify using `only [M, IntegralHeckeForms.Th, Submodule.map_span, Set.image_image, g]`.
+
+Establish `hMfg : M.FG` using `hfg.map _`. Establish `: Module.Finite (D.ntw.O i) M` using `Module.Finite.iff_fg.2 hMfg`. Establish `: Module.FinitePresentation (D.ntw.O i) M` using `Module.finitePresentation_of_finite _ _`. Set `v : Sg → M` to `fun a => ⟨g a, by rw [hM]; exact Submodule.subset_span ⟨a, a.2, rfl⟩⟩`. Establish `hv : Submodule.span (D.ntw.O i) (Set.range v) = ⊤`.
+
+Apply `Submodule.map_injective_of_injective M.injective_subtype` to reduce the goal to its premises. Establish `hr : Set.range (M.subtype ∘ v) = g '' Sg` using `by rw [Set.image_eq_range]; rfl`. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp, hr]`. Conclude with `hM.symm`. Take `⟨κ, a, bs, hb⟩` from `Module.exists_basis_of_span_of_flat v hv`.
+
+Establish `: Finite κ` using `Module.Finite.finite_basis bs`. Set `_ : Fintype κ` to `Fintype.ofFinite κ`. Set `f : κ → D.nexp.Dat i j b` to `fun k => ((a k : Sg) : D.nexp.Dat i j b)`. Establish `hf : Function.Injective f`. Introduce `k k' h`.
+
+Apply `bs.injective` to reduce the goal to its premises. Rewrite using `[hb, hb]`. Conclude with `congrArg v (Subtype.ext h)`. Establish `hgf : g ∘ f = M.subtype ∘ bs`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[f, hb, v]`. Establish `hS : ((Finset.univ.image f : Finset (D.nexp.Dat i j b)) : Set (D.nexp.Dat i j b)) = Set.range f`. Simplify using the standard rewrite rules. Use `⟨Finset.univ.image f, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hS]`.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(a k).2`. Establish `h1 : LinearIndepOn (D.ntw.O i) g (Set.range f)`. Rewrite using `[linearIndepOn_range_iff hf, hgf]`. Conclude with `bs.linearIndependent.map' M.subtype M.ker_subtype`.
+
+Rewrite `h1` using `[← hS]`. Conclude with `h1`. Express the relevant statement in the definitionally equal form `Submodule.span (D.ntw.O i) (g '' _) = M`. Rewrite using `[hS, ← Set.range_comp, hgf, Set.range_comp, ← Submodule.map_span, bs.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem exists_basisOf_of_fg (i : D.ntw.Tw) (j : ℕ) (b : Bool) (Sg : Set (D.nexp.Dat i j b))
     (hfg : (IntegralHeckeForms.Th D.nexp i j b Sg).FG) : ∃ S, IntegralHeckeForms.BasisOf D.nexp i j b Sg S := by
   classical
@@ -593,9 +810,15 @@ theorem exists_basisOf_of_fg (i : D.ntw.Tw) (j : ℕ) (b : Bool) (Sg : Set (D.ne
     rw [hS, ← Set.range_comp, hgf, Set.range_comp, ← Submodule.map_span, bs.span_eq, Submodule.map_top,
       Submodule.range_subtype]
 
+/- English proof (translation)
+The claim follows from `exists_basisOf_of_fg D i j b _ (th_all_fg D i j b)`.
+-/
 theorem exists_basisOf_all (i : D.ntw.Tw) (j : ℕ) (b : Bool) :
     ∃ S, IntegralHeckeForms.BasisOf D.nexp i j b ((IntegralHeckeForms.ExpDat.all D.nexp).Dat0 i j b) S := exists_basisOf_of_fg D i j b _ (th_all_fg D i j b)
 
+/- English proof (translation)
+Use `h7 i hi j hj b 0 ∅ 1 (twOK_triv D i 0) {a} (Set.singleton_subset_iff.2 ha) (Submodule.subset_span ?_)` and prove the remaining obligations. Use `Set.mem_iUnion₂.2 ⟨a, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[D.nexp.thPsi_one]`. Conclude with `Set.mem_singleton _`.
+-/
 theorem theta_mem_image_lattice (E : IntegralHeckeForms.XD D) (h7 : IntegralHeckeForms.adm7 D E) (i : D.ntw.Tw) (hi : D.ntw.NonzeroIndexPlace i) (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.m)
     (b : Bool) (a : D.nexp.Dat i j b) (ha : a ∈ E.Dat0 i j b) :
     (1 : D.ntw.Ok i 0) ⊗ₜ[D.ntw.O i] D.nexp.th i j b a ∈
@@ -605,6 +828,13 @@ theorem theta_mem_image_lattice (E : IntegralHeckeForms.XD D) (h7 : IntegralHeck
   rw [D.nexp.thPsi_one]
   exact Set.mem_singleton _
 
+/- English proof (translation)
+Use `D.ntw.Ok_fin i 0` as an intermediate fact. Use `fm_torsionFree D i j b` as an intermediate fact. Establish `hN : (((D.nexp.MtLat i j b 0 ∅ 1).map (D.nexp.thP i j b 0 ∅ 1)).restrictScalars (D.ntw.O i)).FG` using `((D.nexp.MtLat_fg i j b 0 ∅ 1).map _).restrictScalars`. Set `ι : D.nexp.Fm i j b →ₗ[D.ntw.O i] D.ntw.Ok i 0 ⊗[D.ntw.O i] D.nexp.Fm i j b` to `TensorProduct.mk (D.ntw.O i) (D.ntw.Ok i 0) (D.nexp.Fm i j b) 1`. Establish `hιe : ι = ((Algebra.linearMap (D.ntw.O i) (D.ntw.Ok i 0)).rTensor (D.nexp.Fm i j b)) ∘ₗ (TensorProduct.lid (D.ntw.O i) (D.nexp.Fm i j b)).symm.toLinearMap`.
+
+Use extensionality with `x`. Simplify using `[ι]`. Establish `hι : Function.Injective ι`. Rewrite using `[hιe]`. Conclude with `(Module.Flat.rTensor_preserves_injective_linearMap _ (D.ntw.Ok_inj i 0)).comp (TensorProduct.lid (D.ntw.O i) (D.nexp.Fm i j b)).symm.injective`.
+
+Use `Submodule.fg_of_fg_map_injective ι hι (Submodule.FG.of_le hN ?_)` and prove the remaining obligations. Rewrite using `[IntegralHeckeForms.Th, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Conclude with `theta_mem_image_lattice D E h7 i hi j hj b a ha`.
+-/
 theorem theta_span_fg (E : IntegralHeckeForms.XD D) (h7 : IntegralHeckeForms.adm7 D E) (i : D.ntw.Tw) (hi : D.ntw.NonzeroIndexPlace i) (j : ℕ) (hj : j ∈ Finset.Icc 1 D.R.m)
     (b : Bool) : (IntegralHeckeForms.Th D.nexp i j b (E.Dat0 i j b)).FG := by
   have := D.ntw.Ok_fin i 0
@@ -625,6 +855,9 @@ theorem theta_span_fg (E : IntegralHeckeForms.XD D) (h7 : IntegralHeckeForms.adm
   rintro _ ⟨_, ⟨a, ha, rfl⟩, rfl⟩
   exact theta_mem_image_lattice D E h7 i hi j hj b a ha
 
+/- English proof (translation)
+Rewrite using `[twInOf_ok_iff]`. Conclude with `⟨fun h j hj b => (h j hj b).1, fun h j hj b => ⟨h j hj b, exists_basisOf_of_fg D i j b _ (theta_span_fg D E h7 i hi j hj b)⟩⟩`.
+-/
 theorem twInOf_ok_iff_fullRk (E : IntegralHeckeForms.XD D) (h7 : IntegralHeckeForms.adm7 D E) (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw)
     (hi : D.ntw.NonzeroIndexPlace i) :
     (twInOf D E N0).Ok i ↔ ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool,
@@ -633,11 +866,17 @@ theorem twInOf_ok_iff_fullRk (E : IntegralHeckeForms.XD D) (h7 : IntegralHeckeFo
   exact ⟨fun h j hj b => (h j hj b).1,
     fun h j hj b => ⟨h j hj b, exists_basisOf_of_fg D i j b _ (theta_span_fg D E h7 i hi j hj b)⟩⟩
 
+/- English proof (translation)
+The claim follows from `twInOf_ok_iff_fullRk D (twEOf T) h7 N0 i hi`.
+-/
 theorem twInRec_ok_iff_fullRk (T : ThData D) (h7 : IntegralHeckeForms.adm7 D (twEOf T)) (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw)
     (hi : D.ntw.NonzeroIndexPlace i) :
     (twInRec D T N0).Ok i ↔ ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool,
       IntegralHeckeForms.FullRk D.nexp (twEOf T) i j b (IntegralHeckeForms.SgJ D.nexp (twEOf T) i j b) := twInOf_ok_iff_fullRk D (twEOf T) h7 N0 i hi
 
+/- English proof (translation)
+Rewrite using `[twInAll_ok_iff]`. Conclude with `⟨fun h j hj b => (h j hj b).1, fun h j hj b => ⟨h j hj b, exists_basisOf_all D i j b⟩⟩`.
+-/
 theorem twInAll_ok_iff_fullRk (N0 : D.ntw.Tw → ℕ) (i : D.ntw.Tw) :
     (twInAll D N0).Ok i ↔ ∀ j ∈ Finset.Icc 1 D.R.m, ∀ b : Bool,
       IntegralHeckeForms.FullRk D.nexp (IntegralHeckeForms.ExpDat.all D.nexp) i j b ((IntegralHeckeForms.ExpDat.all D.nexp).Dat0 i j b) := by

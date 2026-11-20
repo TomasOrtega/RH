@@ -9,6 +9,27 @@ namespace GlobalTheory.RootEx
 open MeasureTheory ValuativeRel Matrix in
 open scoped Topology Pointwise in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hcs.elim_finite_subcover (fun c : ℂ => {x | Φ x = c}) (fun c => hlc.isOpen_fiber c) (fun x _ => Set.mem_iUnion.2 ⟨Φ x, rfl⟩)`. Establish `hV : ∀ c : ℂ, ∃ V ∈ 𝓝 (0 : X), c ≠ 0 → {x | Φ x = c} + V ⊆ {x | Φ x = c}`. Introduce `c`. Distinguish the cases in `hc : c = 0`. Conclude with `⟨Set.univ, Filter.univ_mem, fun h => (h hc).elim⟩`.
+
+Establish `hsub : {x | Φ x = c} ⊆ tsupport Φ` using `fun x hx => subset_tsupport Φ (by`. Rewrite using `[Function.mem_support]`. Rewrite `hx` using `[Set.mem_setOf_eq]`. Rewrite using `[hx]`. Conclude with `hc)`.
+
+Take `⟨V, hV0, hVs⟩` from `compact_open_separated_add_right (hcs.of_isClosed_subset (hlc.isClosed_fiber c) hsub) (hlc.isOpen_fiber c) le_rfl`. Conclude with `⟨V, hV0, fun _ => hVs⟩`. Use `choose V hV0 hVsub using hV`. Establish `hW : (⋂ c ∈ t, (V c ∩ -V c)) ∈ 𝓝 (0 : X)` using `(Filter.biInter_finset_mem t).2 fun c _ => Filter.inter_mem (hV0 c) (neg_mem_nhds_zero X (hV0 c))`. Establish `hstep : ∀ x, ∀ v ∈ (⋂ c ∈ t, (V c ∩ -V c)), Φ (x + v) = Φ x`.
+
+Introduce `x v hv`. Establish `hv' : ∀ c ∈ t, v ∈ V c ∧ -v ∈ V c`. Introduce `c hc`. Establish `h` using `Set.mem_iInter₂.1 hv c hc`. Conclude with `⟨h.1, Set.mem_neg.1 h.2⟩`.
+
+Distinguish the cases in `h0 : Φ x = 0`. Assume the negation of the conclusion as `hne`. Establish `hne' : Φ (x + v) ≠ 0` using `by rwa [h0] at hne`. Establish `hxK : x + v ∈ tsupport Φ` using `subset_tsupport Φ hne'`. Take `⟨c, hct, hc⟩` from `Set.mem_iUnion₂.1 (ht hxK)`.
+
+Establish `hc' : Φ (x + v) = c` using `hc`. Establish `hc0 : c ≠ 0` using `hc' ▸ hne'`. Establish `h` using `hVsub c hc0 (Set.add_mem_add hc (hv' c hct).2)`. Establish `h' : Φ (x + v + -v) = c` using `h`. Rewrite `h'` using `[add_neg_cancel_right]`.
+
+Conclude with `hc0 (h'.symm.trans h0)`. Establish `hxK : x ∈ tsupport Φ` using `subset_tsupport Φ h0`. Take `⟨c, hct, hc⟩` from `Set.mem_iUnion₂.1 (ht hxK)`. Establish `hc' : Φ x = c` using `hc`. Establish `hc0 : c ≠ 0` using `hc' ▸ h0`.
+
+Establish `h` using `hVsub c hc0 (Set.add_mem_add hc (hv' c hct).1)`. Establish `h' : Φ (x + v) = c` using `h`. Conclude with `h'.trans hc'.symm`. Use `⟨AddSubgroup.closure (⋂ c ∈ t, (V c ∩ -V c)), AddSubgroup.isOpen_of_mem_nhds _ (g := 0) (Filter.mem_of_superset hW AddSubgroup.subset_closure), ?_⟩` and prove the remaining obligations. Introduce `x y hy`.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction generalizing x with`. Consider the case `mem y hy => exact hstep x y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [← add_assoc, hz, hy]`. Consider the case `neg y _ hy`.
+
+Establish `h` using `hy (x + -y)`. Rewrite `h` using `[neg_add_cancel_right]`. Conclude with `h.symm`.
+-/
 theorem _root_.GlobalTheory.RootEx.exists_isOpen_addSubgroup_add_eq {X : Type*}
     [AddCommGroup X] [TopologicalSpace X]
     [IsTopologicalAddGroup X] {Φ : X → ℂ} (hlc : IsLocallyConstant Φ) (hcs : IsCompact (tsupport Φ)) :
@@ -73,6 +94,9 @@ theorem _root_.GlobalTheory.RootEx.exists_isOpen_addSubgroup_add_eq {X : Type*}
 open MeasureTheory ValuativeRel Matrix in
 open scoped Topology Pointwise in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a b _ _ Φ hΦ`. Take `⟨hlc, hcs⟩` from `hΦ`. Conclude with `_root_.GlobalTheory.RootEx.exists_isOpen_addSubgroup_add_eq hlc hcs`.
+-/
 theorem _root_.GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       (a b : Type) [Fintype a] [Fintype b], ∀ Φ ∈ _root_.GlobalTheory.SplitWeil.SB (Matrix a b k),

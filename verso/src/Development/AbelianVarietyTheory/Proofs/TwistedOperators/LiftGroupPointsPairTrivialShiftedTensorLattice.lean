@@ -12,10 +12,18 @@ namespace GlobalTheory.LiftLevel.PairTriv
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem partAt_eq_smul {S T : HSp D} (a : AE D) (w : WO S T) : GlobalTheory.LiftLevel.partAt a w = a • w := by
   ext i j
   rfl
 
+/- English proof (translation)
+Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, y, hy, rfl⟩`. Use `⟨α, hα, y, ?_, rfl⟩` and prove the remaining obligations. Use `(AddSubgroup.closure_mono ?_) hy` and prove the remaining obligations. Introduce and unpack `z ⟨v, hv, u, hu, rfl⟩`.
+
+Conclude with `⟨v, hv, u, h hu, rfl⟩`.
+-/
 theorem hatA_tens_mono {S T : HSp D} (Λ : Lt D.host.E S.rank) {L L' : Lt D.host.E T.rank} (h : L ≤ L') :
     hatA S T (tens Λ L) ≤ hatA S T (tens Λ L') := by
   refine AddSubgroup.closure_mono ?_
@@ -25,10 +33,24 @@ theorem hatA_tens_mono {S T : HSp D} (Λ : Lt D.host.E S.rank) {L L' : Lt D.host
   rintro z ⟨v, hv, u, hu, rfl⟩
   exact ⟨v, hv, u, h hu, rfl⟩
 
+/- English proof (translation)
+Use `GlobalTheory.WeilVacMove.actO_inv_actO (S := S) (T := T) k⁻¹ (1 : GA D T) x` as an intermediate fact. Simplify using `using this`.
+-/
 theorem actO_back {S T : HSp D} (k : GA D S) (x : WO S T) : actO S T k 1 (actO S T k⁻¹ 1 x) = x := by
   have := GlobalTheory.WeilVacMove.actO_inv_actO (S := S) (T := T) k⁻¹ (1 : GA D T) x
   simpa using this
 
+/- English proof (translation)
+Introduce `D S T C hn ΛT hΛT hAA βS βT hβS hβT Pg Q ξ hPg hodd e he a k₀ Λ' hab hmov hgen hmv Lv hLv u hu t ht`. Establish `hsd : SelfD C.X (Lv.sh C.X.Λ)` using `GlobalTheory.SW.Lev.selfD_idq Lv.ne_bot Lv.proper Lv.cop (GlobalTheory.SW.Lev.selfD_of_sympl C.sympl)`. Establish `hV` using `GlobalTheory.SW.Base.stdL_mem_Vset (E := D.host.E) S.rank 1`. Establish `hw : actO S T k₀⁻¹ 1 u ∈ hatA S T (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ))` using `(GlobalTheory.TensLatMove.mem_hatA_iff S T C.m.gS k₀⁻¹ 1 Λ' (stdL D.host.E S.rank) (Lv.sh C.X.Λ) (Lv.sh C.X.Λ) hmv (GlobalTheory.OneMapRef.Term.isMov_fmt_one _) _).2 ⟨u, hu, rfl⟩`. Take `⟨ht1, ht2, ht3⟩` from `ht`.
+
+Establish `hh0 : IsHalf (cA D e) (actO S T k₀⁻¹ 1 t)` using `GlobalTheory.WeilVacMove.isHalf_actO _ _ _ ht1`. Establish `hfr` using `hmov.2.2 _ hh0`. Rewrite `hfr` using `[actO_back]`. Establish `ht0 : actO S T k₀⁻¹ 1 t ∈ hatA S T (tens (stdL D.host.E S.rank) (GlobalTheory.LiftLevel.liftI Pg Q • C.X.Λ))` using `((hgen _ hh0).2).1 ⟨hfr ▸ ht2, fun PP hPP => hfr ▸ ht3 PP hPP⟩`. Rewrite `ht0` using `[← hLv]`.
+
+Establish `ht0'` using `hatA_tens_mono (stdL D.host.E S.rank) (GlobalTheory.SW.Lev.smul_le_idq Lv.𝔪 (conjI Lv.𝔪) C.X.Λ) ht0`. Establish `hF` using `GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C`. Use `set t₀ := actO S T k₀⁻¹ 1 t with ht₀`. Use `set w := actO S T k₀⁻¹ 1 u with hw₀`. Establish `et : t = actO S T k₀ 1 t₀` using `(actO_back k₀ t).symm`.
+
+Establish `eu : GlobalTheory.LiftLevel.partAt e u = actO S T k₀ 1 (e • w)`. Rewrite using `[partAt_eq_smul, GlobalTheory.OneMapRef.Term.actO_smul, actO_back]`. Establish `hhalf : cA D e • t₀ = t₀`. Use extensionality with `i j`. Conclude with `hh0 i j`.
+
+Establish `key : symplO S T t (GlobalTheory.LiftLevel.partAt e u) = symplO S T t₀ w`. Rewrite using `[et, eu, hF.2.2.2.2.2.2.1, (hF.2.2.2.2.2.1 t₀ (e • w) 0).2, GlobalTheory.SplitScalar.symplO_smul, hhalf, ← (hF.2.2.2.2.2.1 t₀ w 0).2]`. Rewrite using `[key]`. Conclude with `GlobalTheory.OneMapRef.Term.char_hatA C hV hsd t₀ ht0' w hw`.
+-/
 theorem pair_trivial : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (hn : T.rank ≤ S.rank) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ e : AE D, IsIdemSum e (Pg ∪ Q) → ∀ (a : AE D) (k₀ : GA D S) (Λ' : Lt D.host.E S.rank), (∃ b : AE D, a * b = e) → GlobalTheory.LiftLevel.IsMover S T βS βT e a k₀ → GlobalTheory.LiftLevel.IsGen C βS βT Pg Q e a → IsMov (fmtC S k₀⁻¹) Λ' (stdL D.host.E S.rank) → ∀ Lv : GlobalTheory.SW.Level C.X, Lv.𝔪 = GlobalTheory.LiftLevel.liftI Pg Q → ∀ u ∈ hatA S T (tens Λ' (Lv.sh C.X.Λ)), ∀ t ∈ GlobalTheory.LiftLevel.liftL S T βS βT Pg Q e, C.ψ (symplO S T t (GlobalTheory.LiftLevel.partAt e u)) = 1 := by
   intro D S T C hn ΛT hΛT hAA βS βT hβS hβT Pg Q ξ hPg hodd e he a k₀ Λ' hab hmov hgen hmv Lv hLv u hu t ht
   have hsd : SelfD C.X (Lv.sh C.X.Λ) :=

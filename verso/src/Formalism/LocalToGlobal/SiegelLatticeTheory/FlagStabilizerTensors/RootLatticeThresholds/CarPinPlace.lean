@@ -20,14 +20,23 @@ abbrev gB (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) : 
 abbrev muRB (τ : D.what₂.Tau) (μRv : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))) : Measure (Mt D.R.k D.R.rS) :=
   μRv.map (fun x => Matrix.of.symm (trG (C.Q τ) (C.Qi τ) x))
 
+/- English proof (translation)
+The claim follows from `X.pl.apply_symm_apply τ`.
+-/
 theorem pl_vOf (τ : D.what₂.Tau) : X.pl (vOf X τ) = τ := X.pl.apply_symm_apply τ
 
+/- English proof (translation)
+Rewrite using `[torS_muT_inv, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, tTi_mulVec_Wb hz, Matrix.mulVec_smul, dMi_mulVec_wb hz, smul_smul, Complex.star_def, map_pow, Complex.conj_I, ← mul_pow, mul_neg, Complex.I_mul_I, neg_neg, one_pow, one_smul]`.
+-/
 theorem torS_inv_mulVec_Wb {z : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} (hz : inWb D.R.k D.R.rS z) :
     Formalism.L2.SG.LocWSOf.torS (Formalism.L2.SG.LocWSOf.muT D)⁻¹ D.R.k D.R.rS *ᵥ z = z := by
   rw [torS_muT_inv, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, tTi_mulVec_Wb hz, Matrix.mulVec_smul,
     dMi_mulVec_wb hz, smul_smul, Complex.star_def, map_pow, Complex.conj_I, ← mul_pow, mul_neg, Complex.I_mul_I,
     neg_neg, one_pow, one_smul]
 
+/- English proof (translation)
+Unfold `zB at hz`. Unfold `zc Qic Qics zB`. Rewrite using `[pl_vOf, ← Matrix.mulVec_mulVec]`. Rewrite using `[torS_inv_mulVec_Wb hz]`. Simplify using the standard rewrite rules.
+-/
 theorem zc_vOf_eq_zB_of_inWb (u u' : D.what₂.Word) (τ : D.what₂.Tau) (hz : inWb D.R.k D.R.rS (zB X (C.Qi τ) u τ)) :
     zc X C u (vOf X τ) = ((1 : ℝ) : ℂ) • zB X (C.Qi τ) u τ := by
   unfold zB at hz
@@ -36,6 +45,9 @@ theorem zc_vOf_eq_zB_of_inWb (u u' : D.what₂.Word) (τ : D.what₂.Tau) (hz : 
   rw [torS_inv_mulVec_Wb hz]
   simp
 
+/- English proof (translation)
+Unfold `πc piB Qc Qic Qcs Qics`. Rewrite using `[pl_vOf, ← torS_conjI]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem baseOf_pi (u : D.what₂.Word) (τ : D.what₂.Tau) (m : MatKR D.R.k D.R.rS) :
     πc X C u (vOf X τ) m = piB X (C.Q τ) (C.Qi τ) u τ (tT D.R.k D.R.rS * cjI D.R.k D.R.rS (kaB D)⁻¹ 1 m *
       tTi D.R.k D.R.rS) := by
@@ -48,6 +60,11 @@ def tN (D : D7) (θ : ℝ) (κ₀ : ENNReal) : ENNReal := κ₀ / (kapN D θ * E
 def lamPl (cO : ℝ) (scl κ : ℂ) (D : D7) (θ : ℝ) (κ₀ : ENNReal) : ℂ :=
   ((cO : ℂ)⁻¹ * scl * κ * ((tN D θ κ₀ * tN D θ κ₀).toReal : ℂ))⁻¹
 
+/- English proof (translation)
+Establish `hd : ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1) ≠ 0` using `(ENNReal.ofReal_pos.mpr (deltaN_pos (inv_pos.mpr (kaB_pos D)) one_pos)).ne'`. Establish `hs0 : kapN D θ * ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1) ≠ 0` using `mul_ne_zero hk0 hd`. Establish `hs1 : kapN D θ * ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top`. Establish `ht0 : tN D θ κ₀ ≠ 0` using `by unfold tN; exact ENNReal.div_ne_zero.mpr ⟨h0, hs1⟩`. Establish `ht1 : tN D θ κ₀ ≠ ⊤` using `by unfold tN; exact ENNReal.div_ne_top h1 hs0`.
+
+Conclude with `ENNReal.toReal_ne_zero.mpr ⟨mul_ne_zero ht0 ht0, ENNReal.mul_ne_top ht1 ht1⟩`.
+-/
 theorem tN_toReal_ne (D : D7) (θ : ℝ) (κ₀ : ENNReal) (h0 : κ₀ ≠ 0) (h1 : κ₀ ≠ ⊤) (hk0 : kapN D θ ≠ 0) :
     (tN D θ κ₀ * tN D θ κ₀).toReal ≠ 0 := by
   have hd : ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1) ≠ 0 :=
@@ -59,6 +76,21 @@ theorem tN_toReal_ne (D : D7) (θ : ℝ) (κ₀ : ENNReal) (h0 : κ₀ ≠ 0) (h
   have ht1 : tN D θ κ₀ ≠ ⊤ := by unfold tN; exact ENNReal.div_ne_top h1 hs0
   exact ENNReal.toReal_ne_zero.mpr ⟨mul_ne_zero ht0 ht0, ENNReal.mul_ne_top ht1 ht1⟩
 
+/- English proof (translation)
+Establish `e2` using `hAmp (gB C τ γ) (muRB C τ μRv) (ν.map (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ)) νB hcell`. Take `⟨hgU, -, -, hrel, hH, hq, -⟩` from `hcell`. Establish `hk0 : kapN D θ ≠ 0` using `Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW`. Establish `hc : (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').c = ((2 * kaB D : ℝ) : ℂ)` using `by show ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) = _`. Unfold `kaB`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hBz : (baseOf X C u u' (vOf X τ)).z = (stdL (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D)).z` using `zc_vOf_eq_zB_of_inWb C u u' τ (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').hz.1`. Establish `hBz' : (baseOf X C u u' (vOf X τ)).z' = (stdL (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D)).z'` using `zc_vOf_eq_zB_of_inWb C u' u τ (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').hz'.1`. Establish `hBπ : (baseOf X C u u' (vOf X τ)).π = (stdL (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D)).π`.
+
+Use function extensionality and compare the values at `m`. Conclude with `baseOf_pi C u τ m`. Establish `hBπ' : (baseOf X C u u' (vOf X τ)).π' = (stdL (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D)).π'`. Use function extensionality and compare the values at `m`. Conclude with `baseOf_pi C u' τ m`.
+
+Establish `hBW : (baseOf X C u u' (vOf X τ)).μW = (stdL (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D)).μW` using `hWc`. Establish `hBW' : (baseOf X C u u' (vOf X τ)).μW' = (stdL (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D)).μW'` using `hWc'`. Establish `hBN : (baseOf X C u u' (vOf X τ)).μN = haarLie (Nset D.R.k D.R.rS) κ₀` using `hN`. Establish `: SFinite (muRB C τ μRv)` using `by have := hH.1; infer_instance`. Establish `e3` using `orbJ_std (k_pos D) (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (kaB D) (kaB_pos D) hc hk0 ENNReal.ofReal_ne_top κ₀ h0 h1 (baseOf X C u u' (vOf X τ)) hBz hBz' hBπ hBπ' hBW hBW' hBN (gB C τ γ) hgU hrel (muRB C τ μRv) hH.2.2.1 hH.2.1 νB hq F hcut`.
+
+Establish `e1` using `Formalism.L2.SG.Pf.LocJEq.locJ_map_eq C hB u u' τ γ ν hG`. Establish `hs : (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').κN = kapN D θ` using `rfl`. Rewrite `e3` using `[hs]`. Use `e3.trans ?_` and prove the remaining obligations. Use `(congrArg (fun Y => ((κ₀ / (kapN D θ * ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1)) * (κ₀ / (kapN D θ * ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1)))).toReal : ℂ) • Y) e2).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg (fun Y => ((κ₀ / (kapN D θ * ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1)) * (κ₀ / (kapN D θ * ENNReal.ofReal (deltaN D.R.k D.R.rS (kaB D)⁻¹ 1)))).toReal : ℂ) • κ • Y) e1).trans ?_` and prove the remaining obligations. Establish `key : ∀ (a b c : ℂ) (Y : X.Vloc u' (vOf X τ) →L[ℂ] X.Vloc u (vOf X τ)), a • b • c • Y = (a * b * c) • Y` using `fun a b c Y => by rw [smul_smul, smul_smul]`. Use `(key _ _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[lamPl, inv_inv]`.
+
+Unfold `tN`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pinPlace (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hW : GoodW D τ u u' θ (locW C u u' τ)) (hA : GoodS D (lamD D τ) (locS hB u u' τ))
     (hT : 0 < Tr D u) (hT' : 0 < Tr D u')

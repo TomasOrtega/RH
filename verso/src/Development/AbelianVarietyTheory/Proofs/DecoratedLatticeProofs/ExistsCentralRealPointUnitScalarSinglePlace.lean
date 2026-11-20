@@ -19,6 +19,15 @@ namespace GlobalTheory.CentralUnit
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Set `v : D.what₂.Tau → ℂ` to `fun ρ => if ρ = τ then ζ - 1 else 0`. Set `a : AE D` to `1 + σ v`. Establish `a1 : finPart D a = 1`. Simplify using `only [a]`.
+
+Rewrite using `[RingHom.map_add, hσ.fin, RingHom.map_one, add_zero]`. Establish `a2 : ∀ ρ, θ ρ (infPart D a) = if ρ = τ then ζ else 1`. Introduce `ρ`. Simplify using `only [a]`. Rewrite using `[RingHom.map_add, RingHom.map_add, hσ.comp, RingHom.map_one, RingHom.map_one]`.
+
+Simplify using `only [v]`. Apply the tactic sequence `split_ifs <;> ring`. Use `⟨a, a1, a2, sub_eq_zero.1 (hσ.ext _ ?_ fun ρ => ?_)⟩` and prove the remaining obligations. Establish `e : finPart D (cA D a) = sigR (Af D.host.F) D.sp.cm.sig (finPart D a)` using `GlobalTheory.FockCompare.LiftUnitary.snd_sigR D.sp.cm.sig a`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, RingHom.map_one, e, a1, RingHom.map_one, one_mul, sub_self]`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_sub, RingHom.map_mul, RingHom.map_mul, RingHom.map_one, RingHom.map_one, GlobalTheory.FockCompare.comp_cA hθ, a2] split_ifs`. Rewrite using `[Complex.conj_mul', hζ, Complex.ofReal_one, one_pow, sub_self]`. Rewrite using `[RingHom.map_one, one_mul, sub_self]`.
+-/
 theorem exists_unit {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {ζ : ℂ} (hζ : ‖ζ‖ = 1) :
     ∃ a : AE D, finPart D a = 1 ∧ (∀ ρ, θ ρ (infPart D a) = if ρ = τ then ζ else 1) ∧ cA D a * a = 1 := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.FockCompare.exists_chart hθ
@@ -41,6 +50,9 @@ theorem exists_unit {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) {ζ
     · rw [Complex.conj_mul', hζ, Complex.ofReal_one, one_pow, sub_self]
     · rw [RingHom.map_one, one_mul, sub_self]
 
+/- English proof (translation)
+Rewrite using `[Formalism.UG.cT, Matrix.diagonal_map (RingHom.map_zero _), Matrix.diagonal_transpose]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Take the linear combination `(JR (AF D.host.F) S.gram i j) * ha`.
+-/
 theorem scalar_mem (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     Formalism.UG.cT (cA D) (Matrix.diagonal fun _ : Fin S.rank => a) * JR (AF D.host.F) S.gram *
       (Matrix.diagonal fun _ : Fin S.rank => a) = JR (AF D.host.F) S.gram := by
@@ -54,9 +66,17 @@ noncomputable def scalarElt (S : HSp D) {a : AE D} (ha : cA D a * a = 1) : GA D 
     by rw [Matrix.diagonal_mul_diagonal, mul_comm, ha, Matrix.diagonal_one],
     by rw [Matrix.diagonal_mul_diagonal, ha, Matrix.diagonal_one]⟩, scalar_mem S ha⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_scalarElt (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     Formalism.L2.Theta.mt S (scalarElt S ha) = Matrix.diagonal fun _ => a := rfl
 
+/- English proof (translation)
+Rewrite using `[GinfC, MonoidHom.mem_ker]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((Matrix.diagonal fun _ : Fin S.rank => a).map (finPart D)) i j = (1 : Matrix (Fin S.rank) (Fin S.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) i j`. Rewrite using `[Matrix.map_apply, Matrix.diagonal_apply, Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `h1`. Conclude with `RingHom.map_zero _`.
+-/
 theorem scalarElt_mem_GinfC (S : HSp D) {a : AE D} (ha : cA D a * a = 1) (h1 : finPart D a = 1) :
     scalarElt S ha ∈ GinfC S := by
   rw [GinfC, MonoidHom.mem_ker]
@@ -69,6 +89,9 @@ theorem scalarElt_mem_GinfC (S : HSp D) {a : AE D} (ha : cA D a * a = 1) (h1 : f
   · exact h1
   · exact RingHom.map_zero _
 
+/- English proof (translation)
+Use `Subgroup.mem_center_iff.2 fun k => Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(k.1.val * Matrix.diagonal fun _ : Fin S.rank => a) i j = ((Matrix.diagonal fun _ : Fin S.rank => a) * k.1.val) i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]`.
+-/
 theorem scalarElt_mem_center (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     scalarElt S ha ∈ Subgroup.center (GA D S) := by
   refine Subgroup.mem_center_iff.2 fun k => Subtype.ext (Units.ext ?_)
@@ -76,6 +99,9 @@ theorem scalarElt_mem_center (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
   change (k.1.val * Matrix.diagonal fun _ : Fin S.rank => a) i j = ((Matrix.diagonal fun _ : Fin S.rank => a) * k.1.val) i j
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[mt_scalarElt]`. Use extensionality with `i j`. Rewrite using `[compAt, Matrix.map_apply, Matrix.smul_apply, Matrix.diagonal_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem compAt_scalarElt (θ : InfFam D) (τ : D.what₂.Tau) (S : HSp D) {a : AE D} (ha : cA D a * a = 1) :
     compAt θ τ (Formalism.L2.Theta.mt S (scalarElt S ha)) = θ τ (infPart D a) • (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ) := by
   rw [mt_scalarElt]
@@ -83,6 +109,9 @@ theorem compAt_scalarElt (θ : InfFam D) (τ : D.what₂.Tau) (S : HSp D) {a : A
   rw [compAt, Matrix.map_apply, Matrix.smul_apply, Matrix.diagonal_apply, Matrix.one_apply, smul_eq_mul]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `D θ hθ S τ ζ hζ`. Take `⟨a, a1, a2, ac⟩` from `exists_unit hθ τ hζ`. Use `⟨scalarElt S ac, scalarElt_mem_GinfC S ac a1, scalarElt_mem_center S ac, ?_, fun ρ hρ => ?_⟩` and prove the remaining obligations. Rewrite using `[compAt_scalarElt, a2, if_pos rfl]`. Rewrite using `[compAt_scalarElt, a2, if_neg hρ, one_smul]`.
+-/
 theorem exists_central_of_norm_one : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (S : HSp D) (τ : D.what₂.Tau) (ζ : ℂ), ‖ζ‖ = 1 → ∃ z ∈ GinfC S, z ∈ Subgroup.center (GA D S) ∧ compAt θ τ (Formalism.L2.Theta.mt S z) = ζ • (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ) ∧ ∀ ρ : D.what₂.Tau, ρ ≠ τ → compAt θ ρ (Formalism.L2.Theta.mt S z) = 1 := by
   intro D θ hθ S τ ζ hζ
   obtain ⟨a, a1, a2, ac⟩ := exists_unit hθ τ hζ

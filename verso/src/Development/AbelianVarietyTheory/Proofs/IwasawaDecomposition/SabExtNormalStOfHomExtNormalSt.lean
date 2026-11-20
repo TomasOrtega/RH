@@ -21,6 +21,21 @@ open GlobalTheory.TorRef
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `hext E _ _ _ H X U _ j hX hoi hdom t₀ t t' a a' hp`. Establish `hj₁ : IsPreimmersion j` using `inferInstance`. Establish `hj₂ : Flat j` using `inferInstance`. Establish `hj₄ : QuasiCompact j` using `inferInstance`. Take `⟨hgen, -, hsd, -⟩` from `densePart_basic X U j hj₁ hj₂ hdom hj₄`.
+
+Establish `hred : IsReduced X`. Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`. Use `(hX x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`.
+
+Use `hsd hred` as an intermediate fact. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian t.G t.semi`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian t'.G t'.semi`. Take `⟨F, hF, hφ⟩` from `TripleExt.exists_hom a.cart a'.cart (hext X U j hX hoi hdom t.G t'.G t.semi t'.semi)`. Take `⟨F', -, hφ'⟩` from `TripleExt.exists_hom a'.cart a.cart (hext X U j hX hoi hdom t'.G t.G t'.semi t.semi)`.
+
+Establish `hiso : IsIso F` using `ExtUnique.isIso_of_isPullback a.cart.1 a'.cart.1 (Iso.refl _) F F' ((Category.id_comp _).trans hφ.symm) ((Category.id_comp _).trans hφ'.symm)`. Establish `gp : IsGrpPullback t.G t'.G (𝟙 X) F.left` using `haveI : IsMonHom (asIso F).hom := hF isGrpPullback_of_iso (asIso F)`. Establish `hact : ∀ x, (t.act.act x).left ≫ F.left = F.left ≫ (t'.act.act x).left` using `fun x => by`. Establish `: t.act.act x ≫ F = F ≫ t'.act.act x` using `ExtUnique.over_hom_ext_of_isPullback a.cart.1 (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, ← a.act, Category.assoc, hφ, ← Category.assoc, hφ, a'.act])`.
+
+Conclude with `congrArg (fun z => z.left) this`. Establish `hlb : LBIso t.PP.L (t'.PP.L.pull F.left)`. Take `⟨w, hw, -⟩` from `(isPullCubical_iff _ _ _).1 a.lin`. Take `⟨w', hw', -⟩` from `(isPullCubical_iff _ _ _).1 a'.lin`. Establish `hw'' : ∃ w'' : LB.Iso t₀.PP.L (t'.PP.L.pull (a.cm.F ≫ F.left)), PGen w''`.
+
+Rewrite using `[hφ]`. Conclude with `⟨w', hw'⟩`. Take `⟨w'', hw''⟩` from `hw''`. Take `⟨r, hr, -⟩` from `Exist.CubicalExtension.exists_quot_of_isos t'.PP.isLB t.PP.isLB t₀.PP.isLB w w'' hw hw'' a.cart.1.isoPullback.inv (pullback.fst t.G.hom j) a.cart.1.isoPullback_inv_fst`. Take `⟨ρ, hρ, -⟩` from `Exist.CubicalExtension.exists_quot_of_gens (CubeMap.ofHom F).e_comm t'.PP.rig t.PP.rig t'.PP.rigGen t.PP.rigGen`.
+
+Establish `sm` using `t.semi.smooth`. Establish `gc` using `t.semi.geomConnected`. Conclude with `GlobalTheory.T.exists_lineBundleGenerator_extending_densePart X U j hX hj₁ hj₂ hdom hj₄ t.G (eSec t.G) (LB.div (t'.PP.L.pull F.left) t.PP.L) (Over.w η[t.G]) sm (grpObj_geometricallyIntegral_of_smooth X t.G) (LB.isLB_div (pull_isLB t'.PP.isLB _) t.PP.isLB) ⟨ρ, hρ⟩ ⟨r, hr⟩`. Take `⟨b, hb⟩` from `exists_sabMap_of_lbIso E H X X t' t (𝟙 X) F.left ⟨hred, hgen.trans (range_subset_abLocus_of_isProper t.semi a.cart.1)⟩ gp hact hlb`. Conclude with `⟨b, by rw [hb]; exact hφ⟩`.
+-/
 theorem sabExtNormalSt_of_homExtNormalSt : HomExtNormalSt → SabExtNormalSt := by
   intro hext E _ _ _ H X U _ j hX hoi hdom t₀ t t' a a' hp
   have hj₁ : IsPreimmersion j := inferInstance

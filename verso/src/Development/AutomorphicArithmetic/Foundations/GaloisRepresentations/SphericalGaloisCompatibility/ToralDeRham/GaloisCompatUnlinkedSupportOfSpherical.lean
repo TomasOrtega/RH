@@ -24,6 +24,19 @@ noncomputable section
 
 namespace GlobalTheory.DeRhamOfPlainTorus
 
+/- English proof (translation)
+Introduce `P AI hT A hA O _ _ _ Bw hj`. Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars (w.adicCompletion E) (algNorm σ) hp`. Take `⟨a, ha⟩` from `GlobalTheory.localArtinExists_holds E Ω A w hA`. Take `⟨M, _, _, _, _, _, _, _, u, h', PM, χ', hsc', hlift, -, B, hB, -⟩` from `GlobalTheory.RoadU.exists_sph_lift_of_toral hI Ω E l ι n hn π χ hsc r hw w A hA σ hσ ξ hξ hs hu a ha (frob hA) (by rw [deg_frob]; exact one_ne_zero)`.
+
+Establish `hwM : Weak PM ι (resTo M r)` using `GlobalTheory.GalCut.weak_comp_res E M Ω l ι n π PM hlift r hw`. Establish `hcl : ClauseAt .dR PM ι (resTo M r) u` using `hS M Ω l ι n hn PM χ' hsc' (resTo M r) hwM u trivial B hB`. Take `⟨O', _, _, _, Bw', hj', hjj, hdesc⟩` from `GlobalTheory.DRDescent.deRham_descends E M Ω A w u hA h' l P AI hT n r hw.1 O Bw hj`. Take `⟨hdR, hjump⟩` from `hcl P AI hT A h' O' Bw' hj'`. Use `⟨hdesc hdR, ?_⟩` and prove the remaining obligations.
+
+Introduce `τ LL' τ' hind J hJ`. Take `⟨φ, hφ⟩` from `IntermediateField.exists_algHom_of_splits (fun s : Om l => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) ((IntermediateField.val LL'.1).comp τ')`. Establish `hφx : ∀ x : E, φ (Bw.j (algebraMap E Ω x)) = τ x`. Introduce `x`. Use `congrArg (fun f => f ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩) hφ` as an intermediate fact.
+
+Simplify using `only [AlgHom.comp_apply, IntermediateField.val_mk] at this`. Rewrite using `[this, hind x]`. Both sides reduce to the same expression. Set `LL'' : FinExt l` to `⟨Bw'.Kw.1.map φ, inferInstance⟩`. Set `τ'' : ↥Bw'.Kw.1 →ₐ[ℚ_[l]] ↥LL''.1` to `(IntermediateField.equivMap Bw'.Kw.1 φ).toAlgHom`.
+
+Set `τL : M →+* Om l` to `φ.toRingHom.comp (Bw'.j.comp (algebraMap M Ω))`. Establish `hτL : τL.comp (algebraMap E M) = τ`. Use extensionality with `x`. Use `show φ (Bw'.j (algebraMap M Ω (algebraMap E M x))) = τ x`. Rewrite using `[← IsScalarTower.algebraMap_apply E M Ω, hjj, hφx]`.
+
+Establish `hind' : IsInduced Bw' τL τ''` using `fun x => rfl`. Establish `hJ' : J.map (fun n : ℤ => (n : ℂ)) = ((CG.mk PM).infChar (ι.toRingHom.comp τL)).map (fun z => ((n : ℂ) - 1) / 2 - z)`. Rewrite using `[hlift.inf, RingHom.comp_assoc, hτL, hJ]`. Conclude with `GlobalTheory.JumpsDescend.jumps_descend E M Ω A w u hA h' l P AI hT n r hw.1 O Bw O' Bw' hj hj' hjj τ τL hτL J (hjump τL LL'' τ'' hind' J hJ')`.
+-/
 theorem deRham_of_plainTor (hI : UpperTheory.Gal.ToralGalois.Inq) (hS : SphericalLevelCondition .all .dR) (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (hn : 1 ≤ n) (π : CuspSub E n)
     (χ : HChar (maximalRealSubfield E)) (hsc : InScope .all l π χ) (r : G E Ω →* GL (Fin n) (Qbar l)) (hw : Weak π ι r)
@@ -66,6 +79,11 @@ theorem deRham_of_plainTor (hI : UpperTheory.Gal.ToralGalois.Inq) (hS : Spherica
   exact GlobalTheory.JumpsDescend.jumps_descend E M Ω A w u hA h' l P AI hT n r hw.1 O Bw O' Bw' hj hj' hjj τ τL hτL J
     (hjump τL LL'' τ'' hind' J hJ')
 
+/- English proof (translation)
+Introduce `hI hC E Ω _ _ _ _ _ _ l _ ι n hn π χ hπ r hr w σ hσ hp`. Use `⟨fun hl A h => GlobalTheory.RoadU.away_eq_of_plainTor hI (GlobalTheory.RoadU.toralGal_of_holds hI (hC.2 .unr)) E Ω l ι n hn π χ hπ r hr w hl A h σ hσ hp, fun hl => ⟨deRham_of_plainTor hI (hC.2 .dR) E Ω l ι n hn π χ hπ r hr w σ hσ hp, fun P AI hT A h O _ _ _ Bw hj => ?_⟩⟩` and prove the remaining obligations. Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨ξ, hξ, hs, hu⟩` from `GlobalTheory.RoadU.plainTor_exists_chars (w.adicCompletion E) (algNorm σ) hp`. Establish `key` using `fun a ha => GlobalTheory.RoadU.toralAbove_of_holds hI (hC.2 .crys) (hC.2 .phi) E Ω l ι n hn π χ hπ r hr w hl A h σ hσ ξ hξ hs hu a ha P AI hT O Bw hj`.
+
+Take `⟨a0, ha0⟩` from `GlobalTheory.localArtinExists_holds E Ω A w h`. Use `⟨(key a0 ha0).1, (key a0 ha0).2.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `rc ⟨a, ha, H⟩ g`. Conclude with `((key a ha).2.2 g).trans ((GlobalTheory.RoadU.UnlinkedChars.rc_unlinked_chars hI Ω E w A h a ha rc H (algNorm σ) n ξ hξ hs hu).2 g).symm`.
+-/
 theorem galoisCompat_unlinkedSupport_of_spherical : UpperTheory.Gal.ToralGalois.Inq → GlobalTheory.RoadU.CoreAll → GlobalTheory.DeRhamOfPlainTorus.R1 := by
   intro hI hC E Ω _ _ _ _ _ _ l _ ι n hn π χ hπ r hr w σ hσ hp
   refine ⟨fun hl A h => GlobalTheory.RoadU.away_eq_of_plainTor hI (GlobalTheory.RoadU.toralGal_of_holds hI (hC.2 .unr))

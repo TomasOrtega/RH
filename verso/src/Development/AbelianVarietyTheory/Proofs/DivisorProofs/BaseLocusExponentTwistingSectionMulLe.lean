@@ -15,6 +15,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.RefTwist
 
+/- English proof (translation)
+Establish `h1 : w.valuation K (algebraMap (𝓞 K) K q) < 1` using `(w.valuation_lt_one_iff_mem _).2 hw`. Rewrite `h1` using `[map_natCast]`. Establish `h0 : w.valuation K (q : K) ≠ 0` using `(w.valuation K).ne_zero_iff.2 (Nat.cast_ne_zero.2 hq)`. Establish `h2` using `(WithZero.log_lt_log h0 one_ne_zero).2 h1`. Rewrite `h2` using `[WithZero.log_one]`.
+
+Unfold `vAdd`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vAdd_natCast_pos {K : Type} [Field K] [NumberField K] {q : ℕ} (hq : q ≠ 0) {w : HeightOneSpectrum (𝓞 K)}
     (hw : ((q : ℕ) : 𝓞 K) ∈ w.asIdeal) : 0 < vAdd w (q : K) := by
   have h1 : w.valuation K (algebraMap (𝓞 K) K q) < 1 := (w.valuation_lt_one_iff_mem _).2 hw
@@ -25,6 +30,13 @@ theorem vAdd_natCast_pos {K : Type} [Field K] [NumberField K] {q : ℕ} (hq : q 
   unfold vAdd
   omega
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, nval_zero, EReal.top_add_coe]`. Conclude with `le_top`. Rewrite `h`, the goal using `[nval_of_ne ha, ← EReal.coe_add]`. Distinguish the cases in `hb : b = 0`.
+
+Rewrite `h` using `[hb, nval_zero]`. Conclude with `absurd h (not_le.2 (EReal.coe_lt_top _))`. Rewrite `h`, the goal using `[nval_of_ne hb, EReal.coe_le_coe_iff]`. Establish `he' : (0 : ℝ) < e` using `Nat.cast_pos.2 he`. Rewrite using `[hn, ← div_div, ← div_div, div_le_iff₀ hm, add_mul, div_mul_cancel₀ _ hm.ne']`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nval_le_add_of_mul {T : CDVR} {e n : ℕ} {m s k : ℝ} (he : 0 < e) (hm : 0 < m) (hn : (n : ℝ) = e * m)
     (hs : s ≤ k * m) {a b : T.Fr} (h : nval T.V e b ≤ nval T.V e a + (s : EReal)) :
     nval T.V n b ≤ nval T.V n a + (k : EReal) := by
@@ -38,6 +50,17 @@ theorem nval_le_add_of_mul {T : CDVR} {e n : ℕ} {m s k : ℝ} (he : 0 < e) (hm
   rw [hn, ← div_div, ← div_div, div_le_iff₀ hm, add_mul, div_mul_cancel₀ _ hm.ne']
   linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U hU x G G₀ hG cst k q hq t ht`. Use `(refExp_vp_le_iff U).2 fun la T io e ho y hy φ hφ => ?_` and prove the remaining obligations. Establish `h0` using `(refExp_vp_le_iff U).1 (le_refl (refExp_vp U cst G q)) la T io e ho y hy φ hφ`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.exists_component_integral_framedPoint_liesOn E H Dw l Xo c T io y`. Establish `hv : (fun f => nval T.V e (evI y f)) ∈ valOn Z la.1` using `⟨PtV.mk la.1 ho y ⟨hy, hZ⟩ () trivial, rfl⟩`.
+
+Establish `hm : 0 < vAdd la.1 (q : c.F)` using `vAdd_natCast_pos hq.ne_zero la.2`. Establish `hq' : vV T.V (q : T.Fr) = (e : ℤ) * vAdd la.1 (q : c.F)`. Rewrite using `[← map_natCast io q]`. Conclude with `ho.2 _`. Establish `hn : (((vV T.V (q : T.Fr)).toNat : ℕ) : ℝ) = e * (vAdd la.1 (q : c.F) : ℝ)`.
+
+Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (hq' ▸ mul_nonneg (Int.natCast_nonneg e) hm.le), hq']`. Use `push_cast`. Both sides reduce to the same expression. Establish `hd : depthAt_vp U (G + G₀) q y ≤ depthAt_vp U G q y + (k : EReal)`. Rewrite using `[← EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _))]`.
+
+Use `le_iInf₂ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[EReal.sub_le_iff_le_add (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _))]`. Take `⟨g, hg, hle⟩` from `GlobalTheory.T.exists_twistingSection_mul_lattice_value_le E H Dw l Xo c r U hU x G G₀ hG Z (t Z) la.1 _ hv f hf`. Conclude with `(iInf₂_le g hg).trans (nval_le_add_of_mul ho.1 (Int.cast_pos.2 hm) hn (ht Z la.1 la.2) hle)`. Rewrite using `[add_right_comm]`.
+
+Conclude with `hd.trans (add_le_add h0 le_rfl)`.
+-/
 theorem refExp_vp_add_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → ∀ (x : ℝ) (G G₀ : WTZ E), Even G.2 → ∀ (cst k : ℝ) (q : ℕ), q.Prime → ∀ t : ∀ Z : Comp Xo c, TwSec U x Z G₀, (∀ Z (w : HeightOneSpectrum (𝓞 c.F)), ((q : ℕ) : 𝓞 c.F) ∈ w.asIdeal → (t Z).hi w - (⌊(t Z).lo w⌋ : ℝ) ≤ k * (vAdd w (q : c.F) : ℝ)) → refExp_vp U cst (G + G₀) q ≤ refExp_vp U cst G q + (k : EReal) := by
   intro E _ _ _ H Dw l Xo c r U hU x G G₀ hG cst k q hq t ht
   refine (refExp_vp_le_iff U).2 fun la T io e ho y hy φ hφ => ?_

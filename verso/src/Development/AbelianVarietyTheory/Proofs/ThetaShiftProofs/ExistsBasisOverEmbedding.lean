@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : Algebra K ℂ := σ₀.toAlgebra`. Establish `hs : ∀ (k : K) (z : ℂ), k • z = σ₀ k * z` using `fun k z => rfl`. Set `V : Submodule K ℂ` to `Submodule.span K (Set.range a)`. Use `haveI : FiniteDimensional K V := FiniteDimensional.span_of_finite K (Set.finite_range a)`. Set `B` to `Module.finBasis K V`.
+
+Establish `ha : ∀ i, a i ∈ V` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Use `⟨Module.finrank K V, fun b => (B b : ℂ), fun i b => B.repr ⟨a i, ha i⟩ b, ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `hli` using `Fintype.linearIndependent_iff.1 B.linearIndependent t`. Use function extensionality and compare the values at `b`.
+
+Use `hli ?_ b` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hs, Submodule.coe_zero]`. Conclude with `ht`. Introduce `i`.
+
+Establish `h` using `congrArg (Subtype.val : V → ℂ) (B.sum_repr ⟨a i, ha i⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hs] at h`. Conclude with `h.symm`.
+-/
 theorem exists_basis_over_embedding (K : Type) [Field K] (σ₀ : K →+* ℂ) (m : ℕ)
     (a : Fin m → ℂ) :
     ∃ (n : ℕ) (e : Fin n → ℂ) (c : Fin m → Fin n → K),

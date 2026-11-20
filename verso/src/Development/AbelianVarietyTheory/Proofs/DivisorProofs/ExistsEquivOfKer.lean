@@ -20,6 +20,17 @@ noncomputable section
 
 namespace GlobalTheory.BotUniq
 
+/- English proof (translation)
+Establish `s₀ : Function.Surjective (p₀.domRestrict S)`. Introduce `y`. Establish `hy : y ∈ S.map p₀` using `h₀ ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Establish `s : Function.Surjective (p.domRestrict S)`. Introduce `y`. Establish `hy : y ∈ S.map p` using `h ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+
+Establish `hker : LinearMap.ker (p₀.domRestrict S) = LinearMap.ker (p.domRestrict S)`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.domRestrict_apply]`. Conclude with `hk x.1 x.2`. Set `E : P₀ ≃ₗ[ℂ] P` to `((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans ((p.domRestrict S).quotKerEquivOfSurjective s))`.
+
+Use `⟨E, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e1 : ((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm (p₀ x) = Submodule.Quotient.mk ⟨x, hx⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show p x = ((p.domRestrict S).quotKerEquivOfSurjective s) ((Submodule.quotEquivOfEq _ _ hker) (((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm (p₀ x)))`.
+
+Rewrite using `[e1]`. Both sides reduce to the same expression.
+-/
 theorem exists_equiv_of_ker {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀]
     [AddCommGroup P] [Module ℂ P] (S : Submodule ℂ V) (p₀ : V →ₗ[ℂ] P₀) (p : V →ₗ[ℂ] P)
     (h₀ : S.map p₀ = ⊤) (h : S.map p = ⊤) (hk : ∀ x ∈ S, p₀ x = 0 ↔ p x = 0) :
@@ -48,6 +59,9 @@ theorem exists_equiv_of_ker {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [A
   rw [e1]
   rfl
 
+/- English proof (translation)
+Establish `hx : x ∈ S.map p₀` using `h₀ ▸ Submodule.mem_top`. Take `⟨Φ, hΦ, rfl⟩` from `hx`. Take `⟨Φ', hΦ', h1, h2⟩` from `H Φ hΦ`. Rewrite using `[← h1, ← hE Φ' hΦ', h2, hE Φ hΦ]`.
+-/
 theorem intertwine {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀]
     [AddCommGroup P] [Module ℂ P] (S : Submodule ℂ V) (p₀ : V →ₗ[ℂ] P₀) (p : V →ₗ[ℂ] P) (E : P₀ ≃ₗ[ℂ] P)
     (hE : ∀ x ∈ S, p x = E (p₀ x)) (h₀ : S.map p₀ = ⊤) (a : Module.End ℂ P₀) (b : Module.End ℂ P)
@@ -57,6 +71,9 @@ theorem intertwine {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGro
   obtain ⟨Φ', hΦ', h1, h2⟩ := H Φ hΦ
   rw [← h1, ← hE Φ' hΦ', h2, hE Φ hΦ]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Module.End.mul_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply]`. Rewrite using `[hE, LinearEquiv.symm_apply_eq, hE', LinearEquiv.apply_symm_apply]`.
+-/
 theorem comm_of_intertwine {P₀ P : Type} [AddCommGroup P₀] [Module ℂ P₀] [AddCommGroup P] [Module ℂ P]
     (E E' : P₀ ≃ₗ[ℂ] P) (a : Module.End ℂ P₀) (b : Module.End ℂ P) (hE : ∀ x, E (a x) = b (E x))
     (hE' : ∀ x, E' (a x) = b (E' x)) :

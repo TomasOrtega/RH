@@ -7,6 +7,9 @@ noncomputable def UpperTheory.Reformulated.B.Qf22.biHom :
         MvPolynomial.coeff n (MvPolynomial.coeff β F) ≠ (0 : K) →
           (Finsupp.degree : (ι →₀ ℕ) → ℕ) n + (Finsupp.degree : (κ →₀ ℕ) → ℕ) β = d
 
+/- English proof (translation)
+Introduce `K ι κ _ _ α d s F h β n hne`. Rewrite `hne` using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_sum]`. Take `⟨a, ha, hna⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Conclude with `h a ha β n hna`.
+-/
 theorem UpperTheory.Reformulated.B.Qf22.biHom_sum.{u_1} :
     ∀ {K ι κ : Type} [inst : Field K] [Fintype κ] {α : Type u_1} {d : ℕ} (s : Finset α)
       (F : α → MvPolynomial κ (MvPolynomial ι K)),

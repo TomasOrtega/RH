@@ -8,18 +8,33 @@ open UpperTheory.V.Lit.Geo
 open NumberField Matrix MeasureTheory GlobalTheory.CuspRep UpperTheory.V.Af GlobalTheory.UnitaryBC
 open scoped GlobalTheory.CuspRep.CuspidalL2GL
 
+/- English proof (translation)
+Introduce `g` and use `(contDiffOn_const (c := (1 : ℂ))).congr fun x hx => by have hx' : IsUnit (Matrix.of x) := hx simp [chart, hx']`.
+-/
 private theorem one_mem {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} :
     (fun _ => (1 : ℂ)) ∈ Sm E a := fun g =>
   (contDiffOn_const (c := (1 : ℂ))).congr fun x hx => by
     have hx' : IsUnit (Matrix.of x) := hx
     simp [chart, hx']
 
+/- English proof (translation)
+Take `⟨c, c0, -, -, cder, -⟩` from `UpperTheory.V.Lit.Bor.oneParam E a X`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Conclude with `(hasDerivAt_curve (⟨fun _ => (1 : ℂ), one_mem⟩ : Sm E a) g c X c0 cder).unique (hasDerivAt_const (0 : ℝ) (1 : ℂ))`.
+-/
 private theorem lie_one {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (X : Lie E a) :
     lie E a X ⟨fun _ => (1 : ℂ), one_mem⟩ = 0 := by
   obtain ⟨c, c0, -, -, cder, -⟩ := UpperTheory.V.Lit.Bor.oneParam E a X
   refine Subtype.ext (funext fun g => ?_)
   exact (hasDerivAt_curve (⟨fun _ => (1 : ℂ), one_mem⟩ : Sm E a) g c X c0 cder).unique (hasDerivAt_const (0 : ℝ) (1 : ℂ))
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ θ X hθ hc`. Set `u : Sm E a` to `⟨fun _ => (1 : ℂ), one_mem⟩`. Establish `hu : IsOpen {k | act (.fin k) u = u}`. Establish `e : {k | act (.fin k) u = u} = Set.univ` using `Set.eq_univ_of_forall fun k => rfl`. Rewrite using `[e]`.
+
+Conclude with `isOpen_univ`. Take `⟨h1, h2⟩` from `Pf.invLie E a θ hθ`. Establish `h3` using `(Pf.invLie E a _ (h2 X)).1`. Establish `m1` using `(Pf.bddInt E a μ _ h1 (Pf.csBdd E a _ h1 (.inl hc))).2`. Establish `m2` using `(Pf.bddInt E a μ _ h3 (Pf.csBdd E a _ h3 (.inl (Pf.csLie E a θ X hc)))).2`.
+
+Establish `m3` using `(Pf.bddInt E a μ u.1 ⟨continuous_const, fun _ _ => rfl, fun _ _ => rfl⟩ ⟨1, fun _ => norm_one.le⟩).2`. Establish `e0 : (lie E a X u).1 = fun _ => 0` using `congrArg Subtype.val (lie_one X)`. Establish `m4 : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (latticeGL E a) μ (lie E a X u).1`. Rewrite using `[e0]`. Conclude with `(Pf.bddInt E a μ _ ⟨continuous_const, fun _ _ => rfl, fun _ _ => rfl⟩ ⟨0, fun _ => norm_zero.le⟩).2`.
+
+Establish `h` using `UpperTheory.V.Lit.Bor.skew_lie_action_L2 E a μ X u θ hu hθ.level m3 m1 m4 m2`. Rewrite `h` using `[GlobalTheory.AutomorphicL2Unitary.MemL2Quotient.inner_toL2_eq_theta_pairing, GlobalTheory.AutomorphicL2Unitary.MemL2Quotient.inner_toL2_eq_theta_pairing, e0]`. Simplify `h` using `[GlobalTheory.AutomorphicL2Unitary.pet, GlobalTheory.AutomorphicL2Unitary.descend, Pf.qint, u]`.
+-/
 theorem UpperTheory.V.Lit.Geo.Pf.stokesFn :
     UpperTheory.V.Lit.Geo.Pf.StokesFn := by
   intro E _ _ _ a μ _ θ X hθ hc

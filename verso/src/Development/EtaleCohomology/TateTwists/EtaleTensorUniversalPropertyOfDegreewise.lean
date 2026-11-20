@@ -4,11 +4,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations.TensUnivPf
 
+/- English proof (translation)
+Establish `h1 : (𝟙 F : F ⟶ F) = 0` using `hF.eq_of_src _ _`. Use `congrArg (fun φ : F ⟶ F => (φ.hom.app (op U)).hom x) h1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem sec_eq_zero_of_isZero {R : Type} [CommRing R] {F : Shv R} (hF : IsZero F) {U : Scheme.{0}} (x : Sec F U) : x = 0 := by
   have h1 : (𝟙 F : F ⟶ F) = 0 := hF.eq_of_src _ _
   have := congrArg (fun φ : F ⟶ F => (φ.hom.app (op U)).hom x) h1
   simpa using this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secMap_comp {R : Type} [CommRing R] {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
@@ -26,26 +32,45 @@ def postPair {R : Type} [CommRing R] {I J K K' : Cx R} (μ : Pair I J K) (u : K 
     rw [hc, μ.leibniz]
     simp [map_add]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨postPair τ u, fun U s t w h a b => rfl⟩`.
+-/
 theorem part3 {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) {K' : Cx R} (u : K ⟶ K') :
     ∃ ν : Pair I J K', τ.Compat ν (𝟙 I) (𝟙 J) u :=
   ⟨postPair τ u, fun U s t w h a b => rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `(isSheaf_iff_isSheaf_of_type _ _).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ F.obj (forget (ModuleCat.{1} (ULift.{1} R)))).1 F.cond)`. Conclude with `(h1 S hS).isSeparatedFor.ext (fun V g hg => h V g hg)`.
+-/
 theorem sep {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (S : Sieve U) (hS : S ∈ Scheme.etaleTopology U)
     (y z : Sec F U) (h : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec.res g y = Sec.res g z) : y = z := by
   have h1 := (isSheaf_iff_isSheaf_of_type _ _).1
     ((Presheaf.isSheaf_iff_isSheaf_forget _ F.obj (forget (ModuleCat.{1} (ULift.{1} R)))).1 F.cond)
   exact (h1 S hS).isSeparatedFor.ext (fun V g hg => h V g hg)
 
+/- English proof (translation)
+Take `⟨S, hS, hh⟩` from `h`. Conclude with `sep S hS y z hh`.
+-/
 theorem sep_loc {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (y z : Sec F U)
     (h : Loc U fun V g => Sec.res g y = Sec.res g z) : y = z := by
   obtain ⟨S, hS, hh⟩ := h
   exact sep S hS y z hh
 
+/- English proof (translation)
+Rewrite using `[IsZero.iff_id_eq_zero]`. Use extensionality with `U x`. Conclude with `(h _ _).trans (h _ _).symm`.
+-/
 theorem isZero_of_sec {R : Type} [CommRing R] {F : Shv R} (h : ∀ (U : Scheme.{0}) (x : Sec F U), x = 0) : IsZero F := by
   rw [IsZero.iff_id_eq_zero]
   ext U x
   exact (h _ _).trans (h _ _).symm
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `of p t`. Simplify using `only [Pair.lift]`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R), DirectSum.toModule_lof]`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `tmul a b => simpa using hm p.1.1 p.1.2 p.2 a b`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `hadd _ _ ha hb`.
+
+Consider the case `add a b ha hb => rw [map_add]`. Conclude with `hadd _ _ ha hb`.
+-/
 theorem lift_ind {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (V : Scheme.{0}) (w : ℤ)
     (P : Sec (K.X w) V → Prop) (h0 : P 0) (hadd : ∀ a b, P a → P b → P (a + b))
     (hm : ∀ (s t : ℤ) (h : s + t = w) (a : Sec (I.X s) V) (b : Sec (J.X t) V), P (μ.mul V s t w h a b))
@@ -62,6 +87,15 @@ theorem lift_ind {R : Type} [CommRing R] {I J K : Cx R} (μ : Pair I J K) (V : S
     | add a b ha hb => rw [map_add]; exact hadd _ _ ha hb
   | add a b ha hb => rw [map_add]; exact hadd _ _ ha hb
 
+/- English proof (translation)
+Introduce `hI hJ`. Rewrite using `[CochainComplex.isStrictlyGE_iff]`. Introduce `w hw`. Apply `isZero_of_sec` to reduce the goal to its premises. Introduce `U y`.
+
+Apply `sep_loc` to reduce the goal to its premises. Take `⟨S, hS, hh⟩` from `hτ.1 U w y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hh V g hg`. Rewrite using `[← hx]`.
+
+Simplify using `only [map_zero]`. Use `lift_ind τ V w (fun z => z = 0) rfl (fun a b ha hb => by rw [ha, hb]; simp) ?_ x` and prove the remaining obligations. Introduce `s t h a b`. Break down `(show s < 0 ∨ t < 0 by omega) with hs | ht` into its components or cases. Rewrite using `[sec_eq_zero_of_isZero (I.isZero_of_isStrictlyGE 0 s hs) a]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[sec_eq_zero_of_isZero (J.isZero_of_isStrictlyGE 0 t ht) b]`. Simplify using the standard rewrite rules.
+-/
 theorem part2 {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor) :
     I.IsStrictlyGE 0 → J.IsStrictlyGE 0 → K.IsStrictlyGE 0 := by
   intro hI hJ
@@ -81,6 +115,13 @@ theorem part2 {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) (hτ : τ
   · rw [sec_eq_zero_of_isZero (I.isZero_of_isStrictlyGE 0 s hs) a]; simp
   · rw [sec_eq_zero_of_isZero (J.isZero_of_isStrictlyGE 0 t ht) b]; simp
 
+/- English proof (translation)
+Use extensionality with `w U y`. Take `⟨U⟩` from `U`. Express the relevant statement in the definitionally equal form `Sec.map (u.f w) y = Sec.map (v.f w) y`. Apply `sep_loc` to reduce the goal to its premises. Take `⟨S, hS, hh⟩` from `hτ.1 U w y`.
+
+Use `⟨S, hS, fun V e he => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hh V e he`. Establish `nu : ∀ (φ : K ⟶ K') (z : Sec (K.X w) U), Sec.res e (Sec.map (φ.f w) z) = Sec.map (φ.f w) (Sec.res e z)` using `fun φ z => (congrArg (fun ψ => (ModuleCat.Hom.hom ψ) z) ((φ.f w).hom.naturality e.op)).symm`. Rewrite using `[nu, nu, ← hx]`. Use `lift_ind τ V w (fun z => Sec.map (u.f w) z = Sec.map (v.f w) z) (by simp) ?_ ?_ x` and prove the remaining obligations.
+
+Introduce `a b ha hb`. Simplify using `only [Sec.map, map_add] at ha hb ⊢`. Rewrite using `[ha, hb]`. Introduce `s t h a b`. Rewrite using `[hu, hv]`.
+-/
 theorem uniq {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor)
     {I' J' K' : Cx R} (ν : Pair I' J' K') (f : I ⟶ I') (g : J ⟶ J') (u v : K ⟶ K')
     (hu : τ.Compat ν f g u) (hv : τ.Compat ν f g v) : u = v := by
@@ -101,17 +142,35 @@ theorem uniq {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) (hτ : τ.
   · intro s t h a b
     rw [hu, hv]
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun ψ => (ModuleCat.Hom.hom ψ) z) (φ.hom.naturality e.op)).symm`.
+-/
 theorem nat_sec {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (e : V ⟶ U) (z : Sec F U) :
     Sec.res e (Sec.map φ z) = Sec.map φ (Sec.res e z) :=
   (congrArg (fun ψ => (ModuleCat.Hom.hom ψ) z) (φ.hom.naturality e.op)).symm
 
+/- English proof (translation)
+The claim follows from `map_add _ a b`.
+-/
 theorem secMap_add {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add _ a b
 
+/- English proof (translation)
+Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ a`.
+-/
 theorem secMap_zsmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (n : ℤˣ) (a : Sec F U) :
     Sec.map φ (n • a) = n • Sec.map φ a := by
   rw [Units.smul_def, Units.smul_def]; exact map_zsmul _ _ a
 
+/- English proof (translation)
+Use `⟨{ f := m, comm' := ?_ }, fun U s t w h a b => hm U s t w h a b⟩` and prove the remaining obligations. Introduce and unpack `w _ rfl`. Use extensionality with `U y`. Take `⟨U⟩` from `U`. Express the relevant statement in the definitionally equal form `Sec.map (K'.d w (w+1)) (Sec.map (m w) y) = Sec.map (m (w+1)) (Sec.map (K.d w (w+1)) y)`.
+
+Apply `sep_loc` to reduce the goal to its premises. Take `⟨S, hS, hh⟩` from `hτ.1 U w y`. Use `⟨S, hS, fun V e he => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hh V e he`. Rewrite using `[nat_sec, nat_sec, nat_sec, nat_sec, ← hx]`.
+
+Use `lift_ind τ V w (fun z => Sec.map (K'.d w (w+1)) (Sec.map (m w) z) = Sec.map (m (w+1)) (Sec.map (K.d w (w+1)) z)) (by simp [Sec.map]) ?_ ?_ x` and prove the remaining obligations. Introduce `a b ha hb`. Simplify using `only [secMap_add] at ha hb ⊢`. Rewrite using `[ha, hb]`. Introduce `s t h a b`.
+
+Establish `cf : Sec.map (f.f (s+1)) (Sec.map (I.d s (s+1)) a) = Sec.map (I'.d s (s+1)) (Sec.map (f.f s) a)`. Rewrite using `[← secMap_comp, ← secMap_comp, f.comm]`. Establish `cg : Sec.map (g.f (t+1)) (Sec.map (J.d t (t+1)) b) = Sec.map (J'.d t (t+1)) (Sec.map (g.f t) b)`. Rewrite using `[← secMap_comp, ← secMap_comp, g.comm]`. Rewrite using `[hm, τ.leibniz, secMap_add, secMap_zsmul, hm, hm, ν.leibniz, cf, cg]`.
+-/
 theorem exists_of_degreewise {R : Type} [CommRing R] {I J K : Cx R} (τ : Pair I J K) (hτ : τ.IsTensor)
     {I' J' K' : Cx R} (ν : Pair I' J' K') (f : I ⟶ I') (g : J ⟶ J') (m : ∀ w, K.X w ⟶ K'.X w)
     (hm : ∀ (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U),
@@ -147,6 +206,9 @@ def LateralTheory.EtaleFoundations.EtaleTensorDegreewiseMapExists : Prop :=
       ∃ m : K.X w ⟶ K'.X w, ∀ (U : Scheme.{0}) (s t : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U),
         Sec.map m (τ.mul U s t w h a b) = ν.mul U s t w h (Sec.map (f.f s) a) (Sec.map (g.f t) b)
 
+/- English proof (translation)
+Introduce `R _ I J K τ hτ`. Use `⟨fun {I' J' K'} ν f g => ?_, LateralTheory.EtaleFoundations.TensUnivPf.part2 τ hτ, fun u => LateralTheory.EtaleFoundations.TensUnivPf.part3 τ u⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `LateralTheory.EtaleFoundations.TensUnivPf.exists_of_degreewise τ hτ ν f g (fun w => (hdeg R τ hτ ν f g w).choose) (fun U s t w h a b => (hdeg R τ hτ ν f g w).choose_spec U s t h a b)`. Conclude with `⟨u, hu, fun v hv => LateralTheory.EtaleFoundations.TensUnivPf.uniq τ hτ ν f g v u hv hu⟩`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tensor_universal_property_of_degreewise (hdeg : LateralTheory.EtaleFoundations.EtaleTensorDegreewiseMapExists) :
     LateralTheory.EtaleFoundations.EtaleTensorPairUniversalProperty := by
   intro R _ I J K τ hτ

@@ -10,6 +10,11 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace PresentedSmoothChart
 
+/- English proof (translation)
+Establish `hs : RingHom.Smooth (CommRingCat.Hom.hom σ)`. Set `` to `(CommRingCat.Hom.hom σ).toAlgebra`. Establish `: Algebra.IsStandardSmooth ↥Γ(A, ⊤) ↥B'` using `hσ`. Conclude with `⟨inferInstance, inferInstance⟩`. Establish `h1 : AlgebraicGeometry.Smooth (Spec.map σ)` using `(AlgebraicGeometry.HasRingHomProperty.Spec_iff (P := @AlgebraicGeometry.Smooth)).mpr hs`.
+
+Establish `h2 : AlgebraicGeometry.Smooth A.isoSpec.inv` using `inferInstance`. Conclude with `MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) _ _ h1 h2`.
+-/
 theorem smooth_specMap_comp_isoSpec_inv {A : Scheme.{u}} [AlgebraicGeometry.IsAffine A]
     {B' : CommRingCat.{u}} (σ : Γ(A, ⊤) ⟶ B')
     (hσ : RingHom.IsStandardSmooth (CommRingCat.Hom.hom σ)) :
@@ -24,6 +29,15 @@ theorem smooth_specMap_comp_isoSpec_inv {A : Scheme.{u}} [AlgebraicGeometry.IsAf
   have h2 : AlgebraicGeometry.Smooth A.isoSpec.inv := inferInstance
   exact MorphismProperty.comp_mem (@AlgebraicGeometry.Smooth) _ _ h1 h2
 
+/- English proof (translation)
+Take `⟨V, hyV, hV, hsm⟩` from `SmoothChartRelativeDimension.exists_affineOpen_isStandardSmoothOfRelativeDimension r h y`. Establish `: AlgebraicGeometry.IsAffine (V : Scheme.{u})` using `hV`. Take `⟨B', σ, ψ, hσ, hψ, hpo⟩` from `SmoothChartRelativeDimension.exists_lift_isPushout_of_isStandardSmoothOfRelativeDimension (Scheme.Hom.appTop i) (AlgebraicGeometry.IsClosedImmersion.isAffine_surjective_of_isAffine i).2 (Scheme.Hom.appTop (V.ι ≫ h)) r hsm`. Establish `S1 : CategoryTheory.IsPullback (Spec.map ψ) (Spec.map (Scheme.Hom.appTop (V.ι ≫ h))) (Spec.map σ) (Spec.map (Scheme.Hom.appTop i))` using `hpo.op.map Scheme.Spec`. Establish `L : CategoryTheory.IsPullback (V : Scheme.{u}).isoSpec.hom (V.ι ≫ h) (Spec.map (Scheme.Hom.appTop (V.ι ≫ h))) X.isoSpec.hom` using `CategoryTheory.IsPullback.of_horiz_isIso ⟨Scheme.isoSpec_hom_naturality (V.ι ≫ h)⟩`.
+
+Establish `C1` using `L.paste_horiz S1`. Rewrite `C1` using `[Scheme.isoSpec_hom_naturality i]`. Use `⟨V, hyV, hV, B', σ, (V : Scheme.{u}).isoSpec.hom ≫ Spec.map ψ, hσ, ?_, ?_⟩` and prove the remaining obligations. Use `AlgebraicGeometry.IsClosedImmersion.spec_of_surjective ψ hψ infer_instance` as an intermediate fact. Establish `t : CategoryTheory.IsPullback (𝟙 (Spec B')) (Spec.map σ ≫ A.isoSpec.inv) (Spec.map σ) A.isoSpec.hom` using `CategoryTheory.IsPullback.of_horiz_isIso ⟨by simp⟩`.
+
+Establish `p : ((V : Scheme.{u}).isoSpec.hom ≫ Spec.map ψ) ≫ (Spec.map σ ≫ A.isoSpec.inv) = (V.ι ≫ h) ≫ i`. Rewrite using `[← Category.assoc, C1.w]`. Simplify using the standard rewrite rules. Establish `s : CategoryTheory.IsPullback (((V : Scheme.{u}).isoSpec.hom ≫ Spec.map ψ) ≫ 𝟙 (Spec B')) (V.ι ≫ h) (Spec.map σ) (i ≫ A.isoSpec.hom)`. Rewrite using `[Category.comp_id]`.
+
+Conclude with `C1`. Conclude with `CategoryTheory.IsPullback.of_right s p t`.
+-/
 theorem exists_affineOpen_isPullback_specMap {A X Y : Scheme.{u}}
     [AlgebraicGeometry.IsAffine A] [AlgebraicGeometry.IsAffine X]
     (i : X ⟶ A) [AlgebraicGeometry.IsClosedImmersion i] (r : ℕ) (h : Y ⟶ X)

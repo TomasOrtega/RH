@@ -6,6 +6,35 @@ open scoped IntermediateField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hA0 : A ≠ 0` using `fun h => hnc ⟨0, by simp [h]⟩`. Take `⟨A₁, D₁, hA₁, hD₁, hu⟩` from `extract_gcd A D`. Establish `hcop : IsCoprime A₁ D₁` using `(gcd_isUnit_iff A₁ D₁).1 hu`. Generalize the expression as in `gcd A D = g at hA₁ hD₁`.
+
+Substitute `hA₁ hD₁` using the available equality. Establish `hg : g ≠ 0` using `left_ne_zero_of_mul hD`. Establish `hD1 : D₁ ≠ 0` using `right_ne_zero_of_mul hD`. Establish `hA1 : A₁ ≠ 0` using `right_ne_zero_of_mul hA0`. Establish `h1 : derivative A₁ * D₁ = A₁ * derivative D₁`.
+
+Establish `h2 : g ^ 2 * (derivative A₁ * D₁) = g ^ 2 * (A₁ * derivative D₁)`. Simplify using `only [derivative_mul] at hder`. Take the linear combination `hder`. Conclude with `mul_left_cancel₀ (pow_ne_zero 2 hg) h2`. Establish `hdvd : D₁ ∣ derivative D₁` using `hcop.symm.dvd_of_dvd_mul_left ⟨derivative A₁, by rw [← h1, mul_comm]⟩`.
+
+Establish `hD' : derivative D₁ = 0`. Assume the negation of the conclusion as `hne`. Conclude with `absurd (degree_le_of_dvd hdvd hne) (not_le.2 (degree_derivative_lt hD1))`. Establish `hA' : derivative A₁ = 0`. Rewrite `h1` using `[hD', mul_zero]`.
+
+Conclude with `(mul_eq_zero.1 h1).resolve_right hD1`. Rewrite `hA` using `[natDegree_mul hg hA1]`. Rewrite `hDp` using `[natDegree_mul hg hD1]`. Establish `eD` using `expand_contract p hD' hp.ne_zero`. Establish `eA` using `expand_contract p hA' hp.ne_zero`.
+
+Establish `nD` using `natDegree_expand p (contract p D₁)`. Establish `nA` using `natDegree_expand p (contract p A₁)`. Rewrite `nD` using `[eD]`. Rewrite `nA` using `[eA]`. Establish `hD0 : D₁.natDegree = 0`.
+
+Break down `Nat.eq_zero_or_pos (contract p D₁).natDegree with h | h` into its components or cases. Rewrite using `[nD, h, zero_mul]`. Use `Nat.le_mul_of_pos_left p h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨d, rfl⟩` from `natDegree_eq_zero.1 hD0`.
+
+Establish `hd : d ≠ 0`. Introduce and unpack `rfl`. Conclude with `hD1 (map_zero _)`. Establish `hm : (contract p A₁).natDegree = 1`. Break down `Nat.lt_trichotomy (contract p A₁).natDegree 1 with h | h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `h0 : (contract p A₁).natDegree = 0` using `by omega`. Rewrite `nA` using `[h0, zero_mul]`. Take `⟨a, rfl⟩` from `natDegree_eq_zero.1 nA`. Use `hnc ⟨a * d⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `: (C a : k[X]) = C (a * d⁻¹) * C d`. Rewrite using `[← map_mul, inv_mul_cancel_right₀ hd]`. Rewrite using `[this]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `h2 : 2 * p ≤ (contract p A₁).natDegree * p` using `Nat.mul_le_mul_right p h`. Use `hp.pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `nA` using `[hm, one_mul]`. Establish `hg0 : g.natDegree = 0` using `by omega`. Take `⟨γ, rfl⟩` from `natDegree_eq_zero.1 hg0`. Establish `hγ : γ ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hg (map_zero _)`. Take `⟨a, ha, b, hab⟩` from `natDegree_eq_one.1 hm`. Use `⟨a * d⁻¹, b * d⁻¹, γ * d, mul_ne_zero ha (inv_ne_zero hd), mul_ne_zero hγ hd, (map_mul _ _ _).symm, ?_⟩` and prove the remaining obligations. Establish `hdd : (C d : k[X]) * C d⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hd, map_one]`. Rewrite using `[← eA, ← hab]`.
+
+Simplify using `only [map_add, map_mul, expand_C, expand_X]`. Take the linear combination `(-(C γ * (C a * X ^ p + C b))) * hdd`.
+-/
 theorem quotient_eq_linear_pow_char_of_derivative_eq_zero
     (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (A D : k[X]) (hD : D ≠ 0)
     (hA : A.natDegree ≤ p) (hDp : D.natDegree < p)

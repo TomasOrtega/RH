@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ A _ hA L hL c V hc hV hloc T _ n a hcov hrel`. Use `haveI : IsProper A.hom := hA.proper`. Establish `hL' : (L.pull (fst A T).left).IsLB` using `LB.isLB_pull hL _`. Establish `h2 : (lbPow (L.pull (fst A T).left) 2).IsLB` using `GlobalTheory.isLB_lbPow hL' 2`. Establish `hcls : cls _ h2 = 2 • CechPic.pull (fst A T).left c`.
+
+Rewrite using `[cls_lbPow hL' 2 h2, cls_pull hL _ hL', hc]`. Establish `hsec : ∀ i, ∃ s : (lbPow (L.pull (fst A T).left) 2).Sec, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s = (fst A T * (snd A T ≫ a i)).left ⁻¹ᵁ V ⊓ (fst A T * (snd A T ≫ a i)⁻¹).left ⁻¹ᵁ V` using `fun i => IsLocus.exists_sec h2 (hcls ▸ GlobalTheory.T.translate_mul_inv_isNonvanishingLocus_square (Sp R) A hA c V hloc T (a i) (hrel i))`. Use `choose s hs using hsec`. Conclude with `isAmpleLB_of_cover hL' (by norm_num) s (by simp only [hs]; exact hcov) fun i => (hs i).symm ▸ GlobalTheory.T.isAffineOpen_preimage_add_inf_preimage_sub_grpScheme R A V hV T (a i)`.
+-/
 theorem isAmpleLB_pull_fst_of_translates : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (L : LB A.left) (hL : L.IsLB) (c : Pic A.left) (V : A.left.Opens), cls L hL = c → IsAffineOpen V → IsLocus c V → ∀ (T : Over (Sp R)) [IsAffine T.left] (n : ℕ) (a : Fin n → (T ⟶ A)), ⨆ i, ((fst A T * (snd A T ≫ a i)).left ⁻¹ᵁ V ⊓ (fst A T * (snd A T ≫ a i)⁻¹).left ⁻¹ᵁ V) = ⊤ → (∀ i, GlobalTheory.CechPic.pull (a i).left c + GlobalTheory.CechPic.pull ((a i)⁻¹).left c - 2 • GlobalTheory.CechPic.pull (1 : T ⟶ A).left c = 0) → GlobalTheory.IsAmpleLB (L.pull (fst A T).left) := by
   intro R _ _ A _ hA L hL c V hc hV hloc T _ n a hcov hrel
   haveI : IsProper A.hom := hA.proper

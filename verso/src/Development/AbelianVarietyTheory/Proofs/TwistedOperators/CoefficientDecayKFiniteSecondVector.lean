@@ -23,6 +23,11 @@ variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Compa
   [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [μ.IsHaarMeasure]
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `hin : ∀ g x y, ⟪π g x, π g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g x y => LinearIsometry.inner_map_map (𝕜 := ℂ) ⟨(π g : H →ₗ[ℂ] H), hiso g⟩ x y`. Establish `hF : Continuous fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u)` using `GlobalTheory.CompactRep.continuous_rankOne_self.comp (hc u)`. Establish `hFi : Integrable (fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u)) μ` using `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Rewrite using `[ContinuousLinearMap.integral_apply hFi, ContinuousLinearMap.integral_apply hFi, ← (π g).integral_comp_comm (hFi.apply_continuousLinearMap x), ← integral_mul_left_eq_self (fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u) (π g x)) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+
+Simplify using `only [InnerProductSpace.rankOne_apply, map_mul, ContinuousLinearMap.mul_apply, hin, map_smul]`.
+-/
 theorem avg_comm (π : K →* (H →L[ℂ] H)) (hiso : ∀ k x, ‖π k x‖ = ‖x‖)
     (hc : ∀ x, Continuous fun k => π k x) (u : H) (g : K) (x : H) :
     (∫ k, InnerProductSpace.rankOne ℂ (π k u) (π k u) ∂μ) (π g x) =
@@ -39,6 +44,21 @@ theorem avg_comm (π : K →* (H →L[ℂ] H)) (hiso : ∀ k x, ‖π k x‖ = �
   refine integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)
   simp only [InnerProductSpace.rankOne_apply, map_mul, ContinuousLinearMap.mul_apply, hin, map_smul]
 
+/- English proof (translation)
+Introduce `a ha`. Set `Z : Submodule ℂ H` to `Ds ⊓ Y`. Use `haveI : FiniteDimensional ℂ Z := Submodule.finiteDimensional_of_le (inf_le_right : Z ≤ Y)`. Establish `hwZ : a - Z.starProjection a ∈ Zᗮ` using `Z.sub_starProjection_mem_orthogonal a`. Establish `hwY : a - Z.starProjection a ∈ Y` using `Y.sub_mem ha (inf_le_right (a := Ds) (Z.starProjection_apply_mem a))`.
+
+Establish `hperp : Dsᗮ = ⊥` using `Submodule.topologicalClosure_eq_top_iff.1 (Submodule.dense_iff_topologicalClosure_eq_top.1 hD)`. Establish `hw0 : a - Z.starProjection a = 0` using `by set w := a - Z.starProjection a with hw`. Establish `hmem : w ∈ Dsᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `u hu`.
+
+Establish `hF : Continuous fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u)` using `GlobalTheory.CompactRep.continuous_rankOne_self.comp (hc u)`. Establish `hFi : Integrable (fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u)) μ` using `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hTw : (∫ k, InnerProductSpace.rankOne ℂ (π k u) (π k u) ∂μ) w ∈ Z` using `⟨hT u hu w, hY _ (fun k x => avg_comm μ π hiso hc u k x) w hwY⟩`. Establish `h0` using `Submodule.inner_right_of_mem_orthogonal hTw hwZ`. Establish `h1` using `GlobalTheory.CompactRep.inner_integral_rankOne hFi w w`.
+
+Establish `h2 : ⟪w, (∫ k, InnerProductSpace.rankOne ℂ (π k u) (π k u) ∂μ) w⟫_ℂ = 0`. Rewrite using `[← inner_conj_symm, h0, map_zero]`. Establish `h3 : ∀ k, ⟪π k u, w⟫_ℂ * ⟪w, π k u⟫_ℂ = ((‖⟪w, π k u⟫_ℂ‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`. Rewrite using `[← inner_conj_symm w (π k u), RCLike.norm_conj, Complex.mul_conj']`.
+
+Use `norm_cast`. Simplify using `only [h3] at h1`. Rewrite `h1` using `[integral_complex_ofReal, h2]`. Establish `hcont : Continuous fun k => ‖⟪w, π k u⟫_ℂ‖ ^ 2` using `((continuous_const.inner (hc u)).norm).pow 2`. Assume the negation of the conclusion as `hne`.
+
+Establish `hwu : ⟪w, u⟫_ℂ ≠ 0` using `fun h => hne (by rw [← inner_conj_symm, h, map_zero])`. Establish `hpos : 0 < ∫ k, ‖⟪w, π k u⟫_ℂ‖ ^ 2 ∂μ` using `hcont.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (HasCompactSupport.of_compactSpace _) (fun k => by positivity) (by rw [map_one, ContinuousLinearMap.one_apply]; exact pow_ne_zero 2 (norm_ne_zero_iff.2 hwu))`. Conclude with `hpos.ne' (by exact_mod_cast h1.symm)`. Rewrite `hmem` using `[hperp]`. Conclude with `(Submodule.mem_bot ℂ).1 hmem`.
+
+Establish `hmem` using `Z.starProjection_apply_mem a`. Rewrite `hmem` using `[← sub_eq_zero.1 hw0]`. Conclude with `hmem.1`.
+-/
 theorem le_of_dense (π : K →* (H →L[ℂ] H)) (hiso : ∀ k x, ‖π k x‖ = ‖x‖)
     (hc : ∀ x, Continuous fun k => π k x) (Ds : Submodule ℂ H) (hD : Dense (Ds : Set H))
     (hT : ∀ u ∈ Ds, ∀ w, (∫ k, InnerProductSpace.rankOne ℂ (π k u) (π k u) ∂μ) w ∈ Ds)
@@ -94,8 +114,16 @@ section Norms
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem hsn_nonneg (X : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hsn X := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Use `letI : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := Matrix.frobeniusNormedAddCommGroup`. Establish `e : ∀ X : Matrix (Fin n) (Fin n) ℂ, hsn X = ‖X‖` using `fun X => by`. Rewrite using `[Matrix.frobenius_norm_def, hsn, Real.sqrt_eq_rpow]`. Use `norm_cast`. Rewrite using `[e, e, e]`.
+
+Conclude with `Matrix.frobenius_norm_mul A B`.
+-/
 theorem hsn_mul_le (A B : Matrix (Fin n) (Fin n) ℂ) : hsn (A * B) ≤ hsn A * hsn B := by
   letI : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := Matrix.frobeniusNormedAddCommGroup
   have e : ∀ X : Matrix (Fin n) (Fin n) ℂ, hsn X = ‖X‖ := fun X => by
@@ -104,6 +132,13 @@ theorem hsn_mul_le (A B : Matrix (Fin n) (Fin n) ℂ) : hsn (A * B) ≤ hsn A * 
   rw [e, e, e]
   exact Matrix.frobenius_norm_mul A B
 
+/- English proof (translation)
+Establish `e : g = g * h * h'` using `by rw [Matrix.mul_assoc, hh, Matrix.mul_one]`. Establish `hB0 : 0 ≤ B` using `(hsn_nonneg _).trans hB`. Establish `h1 : hsn g ≤ hsn (g * h) * B`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 + hsn g ≤ (1 + hsn (g * h)) * (1 + B)`.
+
+Use polynomial arithmetic with `[hsn_nonneg (g * h), hsn_nonneg g]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [hsn_nonneg g]) h2 N) (norm_nonneg _)`. Use `_ = (‖f (g * h)‖ * (1 + hsn (g * h)) ^ N) * (1 + B) ^ N := by ring`.
+
+Use `_ ≤ C * (1 + B) ^ N := mul_le_mul_of_nonneg_right hC (pow_nonneg (by linarith) _)`.
+-/
 theorem decay_shift {N : ℕ} {C B : ℝ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {g h h' : Matrix (Fin n) (Fin n) ℂ}
     (hC : ‖f (g * h)‖ * (1 + hsn (g * h)) ^ N ≤ C) (hh : h * h' = 1) (hB : hsn h' ≤ B) :
     ‖f (g * h)‖ * (1 + hsn g) ^ N ≤ C * (1 + B) ^ N := by
@@ -121,6 +156,9 @@ theorem decay_shift {N : ℕ} {C B : ℝ} {f : Matrix (Fin n) (Fin n) ℂ → �
     _ = (‖f (g * h)‖ * (1 + hsn (g * h)) ^ N) * (1 + B) ^ N := by ring
     _ ≤ C * (1 + B) ^ N := mul_le_mul_of_nonneg_right hC (pow_nonneg (by linarith) _)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [hg, hg']`.
+-/
 theorem mul_mem_of_form {G g g' : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * G * g = G) (hg' : g'ᴴ * G * g' = G) :
     (g * g')ᴴ * G * (g * g') = G := by
   calc (g * g')ᴴ * G * (g * g') = g'ᴴ * (gᴴ * G * g) * g' := by
@@ -133,6 +171,11 @@ section Model
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hy' : yᴴ * Formalism.REAL.Jm (M.ε τ) * y = Formalism.REAL.Jm (M.ε τ)` using `hy`. Establish `e1 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one]`. Use `show ((M.fr τ)⁻¹ * y * M.fr τ)ᴴ * gramAt D V τ * ((M.fr τ)⁻¹ * y * M.fr τ) = gramAt D V τ`.
+
+Rewrite using `[← M.fr_gram τ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [e1, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one, hy']`.
+-/
 theorem conj_mem_UH {y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hy : y ∈ Formalism.MainNotions.S.UJset (M.ε τ)) :
     (M.fr τ)⁻¹ * y * M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -147,11 +190,17 @@ theorem conj_mem_UH {y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hy : y ∈ Forma
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = _ := by rw [e1, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one, hy']
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Simplify using `only [DSModel.rep, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`.
+-/
 theorem rep_conj (y : Matrix (Fin V.rank) (Fin V.rank) ℂ) : M.rep τ ((M.fr τ)⁻¹ * y * M.fr τ) = M.σ τ y := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
   simp only [DSModel.rep, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd,
     Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Use `(M.ds τ).2.2.1.1.2 _ (GlobalTheory.GardingVec.conj_mem (M.fr_unit τ) (M.fr_gram τ) hg) _ (GlobalTheory.GardingVec.conj_mem (M.fr_unit τ) (M.fr_gram τ) hg')` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd] at this`. Simplify using `only [DSModel.rep, Matrix.mul_assoc, this, ContinuousLinearMap.comp_apply]`.
+-/
 theorem rep_mul' {g g' : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hg' : g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (x : M.H τ) :
     M.rep τ (g * g') x = M.rep τ g (M.rep τ g' x) := by
@@ -178,6 +227,11 @@ def decSet (v : M.H τ) (N : ℕ) : Submodule ℂ (M.H τ) where
     rw [map_smul, inner_smul_right, norm_mul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hC g hg) (norm_nonneg _)
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hh` using `conj_mem_UH M τ hy`. Establish `e : M.rep τ g (M.σ τ y u) = M.rep τ (g * ((M.fr τ)⁻¹ * y * M.fr τ)) u`. Rewrite using `[rep_mul' M τ hg hh, rep_conj]`. Establish `hhh : ((M.fr τ)⁻¹ * y * M.fr τ) * ((M.fr τ)⁻¹ * y' * M.fr τ) = 1`.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`. Rewrite using `[← Matrix.mul_assoc y y', hyy, Matrix.one_mul, Matrix.nonsing_inv_mul _ hd]`. Rewrite using `[e]`. Conclude with `decay_shift (f := fun x => ⟪v, M.rep τ x u⟫_ℂ) (hC _ (GlobalTheory.KFinDecay.mul_mem_of_form hg hh)) hhh hB`.
+-/
 theorem coef_sigma_le {v u : M.H τ} {N : ℕ} {C : ℝ}
     (hC : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ‖⟪v, M.rep τ g u⟫_ℂ‖ * (1 + hsn g) ^ N ≤ C)
     {y y' : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hy : y ∈ Formalism.MainNotions.S.UJset (M.ε τ)) (hyy : y * y' = 1) {B : ℝ}
@@ -201,6 +255,43 @@ end GlobalTheory.KFinDecay
 
 namespace GlobalTheory.KFinDecay
 
+/- English proof (translation)
+Introduce `_ D V S M τ v N _ hvv a ha`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Take `⟨_, _, hU, hI, -⟩` from `M.ds τ`. Distinguish the cases in `hv0 : v = 0`. Substitute `hv0` using the available equality.
+
+Conclude with `⟨0, fun g _ => by simp⟩`. Take `⟨⟨h1, hmul⟩, hiso, hcont⟩` from `hU`. Establish `hJJ : Formalism.REAL.Jm (M.ε τ) * Formalism.REAL.Jm (M.ε τ) = 1` using `Formalism.REAL.Jm_mul_self _`. Establish `hinvUJ : ∀ y ∈ Formalism.MainNotions.S.UJset (M.ε τ), y * (Formalism.REAL.Jm (M.ε τ) * yᴴ * Formalism.REAL.Jm (M.ε τ)) = 1`. Introduce `y hy`.
+
+Establish `hy' : yᴴ * Formalism.REAL.Jm (M.ε τ) * y = Formalism.REAL.Jm (M.ε τ)` using `hy`. Rewrite using `[mul_eq_one_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdense : Dense (decSet M τ v N : Set (M.H τ))`. Set `S0 : Submodule ℂ (M.H τ)` to `Submodule.span ℂ {x | ∃ y ∈ Formalism.MainNotions.S.UJset (M.ε τ), x = M.σ τ y v}`.
+
+Establish `hS0 : S0 ≤ decSet M τ v N`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, hy, rfl⟩`. Take `⟨C, hC⟩` from `hvv`. Conclude with `⟨C * (1 + hsn ((M.fr τ)⁻¹ * (Formalism.REAL.Jm (M.ε τ) * yᴴ * Formalism.REAL.Jm (M.ε τ)) * M.fr τ)) ^ N, fun g hg => coef_sigma_le M τ hC hy (hinvUJ y hy) le_rfl hg⟩`.
+
+Establish `hst : ∀ y ∈ Formalism.MainNotions.S.UJset (M.ε τ), ∀ x ∈ S0, M.σ τ y x ∈ S0`. Introduce `y hy x hx`. Use `Submodule.span_induction (p := fun x _ => M.σ τ y x ∈ S0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨y', hy', rfl⟩`. Use `Submodule.subset_span ⟨y * y', mul_mem_of_form hy hy', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmul y hy y' hy']`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Introduce `x x' _ _ h h'`. Rewrite using `[map_add]`.
+
+Conclude with `S0.add_mem h h'`. Introduce `c x _ h`. Rewrite using `[map_smul]`. Conclude with `S0.smul_mem c h`. Establish `hcl : ∀ y ∈ Formalism.MainNotions.S.UJset (M.ε τ), ∀ x ∈ S0.topologicalClosure, M.σ τ y x ∈ S0.topologicalClosure`.
+
+Introduce `y hy`. Establish `: S0.topologicalClosure ≤ S0.topologicalClosure.comap (M.σ τ y : M.H τ →ₗ[ℂ] M.H τ)` using `Submodule.topologicalClosure_minimal S0 (fun x hx => S0.le_topologicalClosure (hst y hy x hx)) (S0.isClosed_topologicalClosure.preimage (M.σ τ y).continuous)`. Conclude with `fun x hx => this hx`. Establish `h1mem : (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `by show (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᴴ * Formalism.REAL.Jm (M.ε τ) * 1 = Formalism.REAL.Jm (M.ε τ)`. Simplify using the standard rewrite rules.
+
+Break down `hI S0.topologicalClosure S0.isClosed_topologicalClosure hcl with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hvS : v ∈ S0.topologicalClosure` using `S0.le_topologicalClosure (Submodule.subset_span ⟨1, h1mem, by rw [h1]; rfl⟩)`. Rewrite `hvS` using `[h]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hvS)`.
+
+Conclude with `Dense.mono (fun x hx => hS0 hx) (Submodule.dense_iff_topologicalClosure_eq_top.2 h)`. Set `π : Formalism.REAL.KG (M.ε τ) →* (M.H τ →L[ℂ] M.H τ)` to `{ toFun := fun k => M.σ τ (Formalism.REAL.toMK k) map_one' := h1 map_mul' := fun k l => hmul _ k.1.2 _ l.1.2 }`. Establish `hemb : Continuous fun k : Formalism.REAL.KG (M.ε τ) => Formalism.REAL.toMK k` using `((Formalism.REAL.isClosedEmbeddingMatrix _ (M.ε τ)).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal).continuous`. Establish `hUk : ∀ k : Formalism.REAL.KG (M.ε τ), Formalism.REAL.toMK k ∈ Formalism.MainNotions.S.UJset (M.ε τ)` using `fun k => k.1.2`. Establish `hπc : ∀ x, Continuous fun k => π k x` using `fun x => (hcont x).comp_continuous hemb hUk`.
+
+Establish `hπiso : ∀ k x, ‖π k x‖ = ‖x‖` using `fun k x => hiso _ (hUk k) x`. Establish `hBc : Continuous fun k : Formalism.REAL.KG (M.ε τ) => hsn ((M.fr τ)⁻¹ * (Formalism.REAL.toMK k)ᴴ * M.fr τ)`. Establish `hm : Continuous fun k : Formalism.REAL.KG (M.ε τ) => (M.fr τ)⁻¹ * (Formalism.REAL.toMK k)ᴴ * M.fr τ` using `(continuous_const.mul hemb.matrix_conjTranspose).mul continuous_const`. Unfold `hsn`. Conclude with `Real.continuous_sqrt.comp (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => (hm.matrix_elem i j).norm.pow 2)`.
+
+Take `⟨B, hB⟩` from `(isCompact_range hBc).bddAbove`. Establish `hT : ∀ u ∈ decSet M τ v N, ∀ w, (∫ k, InnerProductSpace.rankOne ℂ (π k u) (π k u) ∂(Formalism.REAL.muK (M.ε τ))) w ∈ decSet M τ v N`. Introduce `u hu w`. Take `⟨C, hC⟩` from `hu`. Establish `hF : Continuous fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u)` using `GlobalTheory.CompactRep.continuous_rankOne_self.comp (hπc u)`.
+
+Establish `hFi : Integrable (fun k => InnerProductSpace.rankOne ℂ (π k u) (π k u)) (Formalism.REAL.muK (M.ε τ))` using `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hGi` using `hFi.apply_continuousLinearMap w`. Use `⟨‖u‖ * ‖w‖ * (C * (1 + B) ^ N) * (Formalism.REAL.muK (M.ε τ)).real Set.univ, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < (1 + hsn g) ^ N` using `pow_pos (by linarith [hsn_nonneg g]) N`. Rewrite using `[ContinuousLinearMap.integral_apply hFi w]`.
+
+Establish `hL : ⟪v, M.rep τ g (∫ k, InnerProductSpace.rankOne ℂ (π k u) (π k u) w ∂(Formalism.REAL.muK (M.ε τ)))⟫_ℂ = ∫ k, ⟪v, M.rep τ g (InnerProductSpace.rankOne ℂ (π k u) (π k u) w)⟫_ℂ ∂(Formalism.REAL.muK (M.ε τ))`. Use `((innerSL ℂ v).comp (M.rep τ g)).integral_comp_comm hGi` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hL, ← le_div_iff₀ hpos]`. Use `(norm_integral_le_of_norm_le_const (C := ‖u‖ * ‖w‖ * (C * (1 + B) ^ N) / (1 + hsn g) ^ N) (Filter.Eventually.of_forall fun k => ?_)).trans_eq (by ring)` and prove the remaining obligations.
+
+Rewrite using `[le_div_iff₀ hpos, InnerProductSpace.rankOne_apply, map_smul, inner_smul_right, norm_mul, mul_assoc]`. Establish `hkK : Formalism.REAL.toMK k ∈ Formalism.REAL.Kset (M.ε τ)` using `k.2`. Establish `hkk : Formalism.REAL.toMK k * (Formalism.REAL.toMK k)ᴴ = 1`. Use `Unitary.mul_star_self_of_mem hkK.1` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+
+Establish `h1' : ‖⟪v, M.rep τ g (π k u)⟫_ℂ‖ * (1 + hsn g) ^ N ≤ C * (1 + B) ^ N` using `coef_sigma_le M τ hC (hUk k) hkk (hB ⟨k, rfl⟩) hg`. Establish `h2' : ‖⟪π k u, w⟫_ℂ‖ ≤ ‖u‖ * ‖w‖` using `(norm_inner_le_norm _ _).trans (by rw [hπiso])`. Combine the equalities or inequalities in the displayed calculation. Take `⟨Sf, hSf, haS, hSst⟩` from `ha`. Take `⟨Y, hYf, haY, hYB⟩` from `(GlobalTheory.AdmUnitary.admissible_and_kFin_smooth _ (M.ε τ) (M.H τ) (M.σ τ) ⟨⟨h1, hmul⟩, hiso, hcont⟩ hI).1 Sf hSf hSst a haS`.
+
+Establish `hYst : ∀ Bo : M.H τ →L[ℂ] M.H τ, (∀ k x, Bo (π k x) = π k (Bo x)) → ∀ y ∈ Y, Bo y ∈ Y`. Introduce `Bo hBo`. Use `hYB Bo fun k hk x => ?_` and prove the remaining obligations. Rewrite `hk` using `[← Formalism.REAL.range_toMK]`. Take `⟨k', rfl⟩` from `hk`.
+
+Conclude with `hBo k' x`. Conclude with `le_of_dense (Formalism.REAL.muK (M.ε τ)) π hπiso hπc (decSet M τ v N) hdense hT Y hYf hYst haY`.
+-/
 theorem decayAt_of_kFin : GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (v : M.H τ) (N : ℕ), v ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ → DecayAt M τ v v N → ∀ a ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ, DecayAt M τ v a N := by
   intro _ D V S M τ v N _ hvv a ha
   haveI : CompleteSpace (M.H τ) := (M.ds τ).1

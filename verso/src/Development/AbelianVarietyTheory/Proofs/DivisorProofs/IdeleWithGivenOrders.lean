@@ -16,6 +16,19 @@ namespace GlobalTheory.TateUnr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨π, hπ, hπ2⟩ : ∃ π ∈ w.asIdeal, π ∉ w.asIdeal ^ 2 := by`. Use `Ideal.pow_right_strictAnti w.asIdeal w.ne_bot w.isPrime.ne_top (show 1 < 2 by norm_num)` as an intermediate fact. Simplify using `only [pow_one] at this`. Take `⟨π, h1, h2⟩` from `Set.exists_of_ssubset this`. Conclude with `⟨π, h1, h2⟩`.
+
+Set `s : Finset (HeightOneSpectrum (𝓞 E))` to `insert w (Formalism.L2.Host.finite_aboveF (L := E) F v).toFinset`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := s) (fun i => i.asIdeal) (fun i => if i = w then 2 else 1) (fun i _ => i.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun i => if i.1 = w then π else 1)`. Establish `hw` using `hy w (Finset.mem_insert_self _ _)`. Simplify using `only [if_pos rfl] at hw`. Establish `hyw : y ∈ w.asIdeal`.
+
+Use `Ideal.pow_le_self two_ne_zero hw` as an intermediate fact. Simplify using `using w.asIdeal.add_mem this hπ`. Establish `hyw2 : y ∉ w.asIdeal ^ 2` using `fun h => hπ2 (by simpa using (w.asIdeal ^ 2).sub_mem h hw)`. Use `⟨y, ?_, fun w' hw' hne => ?_⟩` and prove the remaining obligations. Establish `h1` using `(w.intValuation_le_pow_iff_mem y 1).2 (by simpa using hyw)`.
+
+Establish `h2 : ¬ w.intValuation y ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `fun h => hyw2 ((w.intValuation_le_pow_iff_mem y 2).1 h)`. Establish `h0 : w.intValuation y ≠ 0`. Introduce `h; exact h2 (by rw [h]; exact zero_le')`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`.
+
+Use `congr 1`. Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers. Establish `h'` using `hy w' (Finset.mem_insert_of_mem ((Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.2 hw'))`. Simplify using `only [if_neg hne, pow_one] at h'`.
+
+Use `(HeightOneSpectrum.intValuation_eq_one_iff).mpr fun hyw' => ?_` and prove the remaining obligations. Conclude with `w'.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using w'.asIdeal.sub_mem hyw' h'))`.
+-/
 theorem exists_unif_above (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) :
     ∃ a : 𝓞 E, w.intValuation a = WithZero.exp (-1) ∧
       ∀ w' : HeightOneSpectrum (𝓞 E), w'.under (𝓞 F) = v → w' ≠ w → w'.intValuation a = 1 := by
@@ -52,6 +65,19 @@ theorem exists_unif_above (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectru
 
 open Classical in
 
+/- English proof (translation)
+Use `choose a ha ha' using fun w : aboveF (L := E) F v => exists_unif_above v w.1`. Establish `ha0 : ∀ w, ((a w : 𝓞 E) : E) ≠ 0` using `fun w h => by`. Establish `h1` using `ha w`. Rewrite `h1` using `[show a w = 0 from by exact_mod_cast h, map_zero]`. Conclude with `WithZero.exp_ne_zero h1.symm`.
+
+Set `c : Eˣ` to `∏ w, (Units.mk0 _ (ha0 w)) ^ (k w)`. Set `x : (Fv F v ⊗[F] E)ˣ` to `Units.map (inclR (F := F) (Fv F v)).toMonoidHom c`. Use `⟨⟨GlobalTheory.Doubling.ideleAt F E v x, ideleAt_mem v x⟩, funext fun w => ?_⟩` and prove the remaining obligations. Establish `hw : w.1.under (𝓞 F) = v` using `mem_aboveF.1 w.2`. Establish `hcomp : ((compW hw ⟨GlobalTheory.Doubling.ideleAt F E v x, ideleAt_mem v x⟩ : (w.1.adicCompletion E)ˣ) : w.1.adicCompletion E) = algebraMap E _ (c : E)`.
+
+Rewrite using `[compW_apply]`. Establish `e : compFin F E v ((GlobalTheory.Doubling.ideleAt F E v x : (AE F E)ˣ) : AE F E) = (x : Fv F v ⊗[F] E)` using `congrArg Units.val (GlobalTheory.Doubling.unitFin_ideleAt_self v x)`. Rewrite using `[e]`. Use `show toCompl hw ((1 : Fv F v) ⊗ₜ[F] (c : E)) = _`. Rewrite using `[toCompl_tmul, map_one, one_mul]`.
+
+Establish `hval : w.1.valuation E (c : E) = WithZero.exp (-k w)`. Simplify using `only [c, Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.val_mk0, map_prod, map_zpow₀]`. Rewrite using `[Finset.prod_eq_single w (fun b _ hb => ?_) (fun h => absurd (Finset.mem_univ w) h)]`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, ha, ← WithZero.exp_zsmul]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, ha' b w.1 hw (fun e => hb (Subtype.ext e.symm)), one_zpow]`. Use `show ordW hw _ = k w`. Rewrite using `[ordW, hcomp]`. Use `show -WithZero.log (Valued.v (((c : E)) : w.1.adicCompletion E)) = _`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hval, WithZero.log_exp, neg_neg]`.
+-/
 theorem ordV_surjective (v : Pl F) (k : aboveF (L := E) F v → ℤ) : ∃ l : idelesAt E (evFin F v), ordV v l = k := by
   choose a ha ha' using fun w : aboveF (L := E) F v => exists_unif_above v w.1
   have ha0 : ∀ w, ((a w : 𝓞 E) : E) ≠ 0 := fun w h => by

@@ -20,6 +20,33 @@ open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 namespace GlobalTheory.TempKFin
 
+/- English proof (translation)
+Introduce `hadm n ε μ _ U _ _ _ π hπ hirr ⟨v, hv0, hv⟩ S hS hSK s hs s' hs' e he`. Take `⟨φ, hφc, hφS, hφR⟩` from `GlobalTheory.T.exists_K_projector_finite_dim hadm n ε U π hπ hirr S hS hSK`. Use `set D : Submodule ℂ U := Submodule.span ℂ (Set.range fun g => π g v) with hD`. Establish `hDdense : D.topologicalClosure = ⊤`. Establish `hinv : ∀ g, ∀ w ∈ D.topologicalClosure, π g w ∈ D.topologicalClosure`.
+
+Introduce `g w hw`. Establish `hmap : ∀ x ∈ (D : Set U), π g x ∈ (D : Set U)`. Introduce `x hx`. Establish `hle : D ≤ D.comap ((π g : U →L[ℂ] U) : U →ₗ[ℂ] U)`. Rewrite using `[hD, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp [map_mul]⟩`. Conclude with `hle hx`. Establish `hw' : w ∈ closure (D : Set U)` using `by rwa [← Submodule.topologicalClosure_coe]`. Rewrite using `[← SetLike.mem_coe, Submodule.topologicalClosure_coe]`.
+
+Conclude with `map_mem_closure (π g).continuous hw' hmap`. Break down `hirr.2 D.topologicalClosure ⟨D.isClosed_topologicalClosure, hinv⟩ with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv0` to reduce the goal to its premises. Establish `: v ∈ D.topologicalClosure` using `D.le_topologicalClosure (Submodule.subset_span ⟨1, by simp⟩)`.
+
+Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Conclude with `h`. Establish `hint : ∀ u : U, Integrable (fun k : KG ε => φ k • π k u) (muK ε)` using `fun u => (hφc.smul ((hπ.continuous_apply u).comp continuous_subtype_val)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Set `T : U →ₗ[ℂ] U` to `{ toFun := fun u => ∫ k, φ k • π k u ∂(muK ε) map_add' := fun a b => by`.
+
+Simplify using `only [map_add, smul_add]`. Conclude with `integral_add (hint a) (hint b)`. Use the proof step `map_smul' := fun c a => by`. Simplify using `only [map_smul, RingHom.id_apply]`. Simplify using `only [smul_comm (φ _) c]`.
+
+Conclude with `integral_smul c _ }`. Establish `hTapp : ∀ u, T u = ∫ k, φ k • π k u ∂(muK ε)` using `fun u => rfl`. Establish `hTc : Continuous T`. Use `AddMonoidHomClass.continuous_of_bound T (∫ k, ‖φ k‖ ∂(muK ε)) fun u => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `haveI hR : FiniteDimensional ℂ (LinearMap.range T) := by`. Rewrite using `[← Submodule.span_eq (LinearMap.range T), LinearMap.coe_range]`. Conclude with `hφR`. Establish `hsurj : ∀ x : U, ∃ u ∈ D, T u = T x`. Introduce `x`.
+
+Use `haveI : FiniteDimensional ℂ (D.map T) := Submodule.finiteDimensional_of_le (LinearMap.map_le_range)`. Establish `hcl : IsClosed ((D.map T : Submodule ℂ U) : Set U)` using `Submodule.closed_of_finiteDimensional _`. Establish `hx : x ∈ closure (D : Set U)`. Rewrite using `[← Submodule.topologicalClosure_coe, hDdense]`. Discharge the goal by the elementary cases of `trivial`.
+
+Establish `: T x ∈ closure ((D.map T : Submodule ℂ U) : Set U)`. Rewrite using `[Submodule.map_coe]`. Conclude with `image_closure_subset_closure_image hTc ⟨x, hx, rfl⟩`. Rewrite `this` using `[hcl.closure_eq]`. Take `⟨u, hu, hTu⟩` from `this`.
+
+Conclude with `⟨u, hu, hTu⟩`. Take `⟨u, hu, hTu⟩` from `hsurj s`. Take `⟨u', hu', hTu'⟩` from `hsurj s'`. Rewrite `hTu` using `[hTapp, hTapp, hφS s hs]`. Rewrite `hTu'` using `[hTapp, hTapp, hφS s' hs']`.
+
+Establish `hp : (1 : ℝ) ≤ 2 + e` using `by linarith`. Establish `h0` using `GlobalTheory.T.integrable_matrixCoeff_cyclic_span n ε μ U π hπ (2 + e) hp v (hv e he) u hu u' hu'`. Establish `h1` using `GlobalTheory.T.integrable_matrixCoeff_K_average_right n ε μ U π hπ (2 + e) hp φ hφc u u' h0`. Establish `h2` using `GlobalTheory.T.integrable_matrixCoeff_K_average_left n ε μ U π hπ (2 + e) hp φ hφc (∫ k, φ k • π k u ∂(muK ε)) u' h1`. Rewrite `h2` using `[hTu, hTu']`.
+
+Conclude with `h2`.
+-/
 theorem isTemperedKFin_of_isTempered : GlobalTheory.Published.IrreducibleUnitaryAdmissible → ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (U : Type) [NormedAddCommGroup U] [InnerProductSpace ℂ U] [CompleteSpace U] (π : UJ ε →* (U →L[ℂ] U)), IsUnitaryRep π → IsTopIrreducible π → GlobalTheory.Orb.IsTempered μ π → IsTemperedKFin ε μ π := by
   intro hadm n ε μ _ U _ _ _ π hπ hirr ⟨v, hv0, hv⟩ S hS hSK s hs s' hs' e he
   obtain ⟨φ, hφc, hφS, hφR⟩ := GlobalTheory.T.exists_K_projector_finite_dim hadm n ε U π hπ hirr S hS hSK

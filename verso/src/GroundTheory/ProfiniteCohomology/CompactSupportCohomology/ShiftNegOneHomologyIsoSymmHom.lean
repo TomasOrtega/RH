@@ -20,6 +20,9 @@ noncomputable def shiftNegOneSuccHom (n : ℕ) : L.X n ⟶ (shiftNegOne L).X (n 
 instance (n : ℕ) : IsIso (shiftNegOneSuccHom L n) :=
   (ConcreteCategory.isIso_iff_bijective _).2 ⟨fun _ _ h => h, fun y => ⟨y, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[shiftNegOne_d]`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem shiftNegOne_d_succ_hom_apply (n : ℕ) (y : L.X n) :
     ((shiftNegOne L).d (n + 1) (n + 1 + 1)).hom (shiftNegOneSucc L n y) =
       shiftNegOneSucc L (n + 1) (-(L.d n (n + 1)).hom y) := by
@@ -27,6 +30,9 @@ theorem shiftNegOne_d_succ_hom_apply (n : ℕ) (y : L.X n) :
   rfl
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `ModuleCat.hom_ext (LinearMap.ext fun y => shiftNegOne_d_succ_hom_apply L n y)`.
+-/
 theorem shiftNegOneSuccHom_d (n : ℕ) :
     shiftNegOneSuccHom L n ≫ (shiftNegOne L).d (n + 1) (n + 1 + 1) =
       -(L.d n (n + 1) ≫ shiftNegOneSuccHom L (n + 1)) :=
@@ -36,6 +42,9 @@ def prevNat : ℕ → ℕ
   | 0 => 0
   | n + 1 => n
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact CochainComplex.prev_nat_zero`. Consider the case `succ n => exact CochainComplex.prev_nat_succ n`.
+-/
 theorem up_prev_eq_prevNat (n : ℕ) : (ComplexShape.up ℕ).prev n = prevNat n := by
   cases n with
   | zero => exact CochainComplex.prev_nat_zero
@@ -65,6 +74,11 @@ noncomputable def shiftNegOneψ (n : ℕ) :
       L.d n (n + 1) ≫ (-shiftNegOneSuccHom L (n + 1))
     rw [shiftNegOneSuccHom_d, Preadditive.comp_neg]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact (ModuleCat.epi_iff_surjective _).2 fun (_ : PUnit) => ⟨0, rfl⟩`. Consider the case `succ n`. Use `(ModuleCat.epi_iff_surjective _).2 fun (y : L.X n) => ⟨-y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(-y) = y`.
+
+Conclude with `neg_neg y`.
+-/
 theorem epi_shiftNegOneτ₁ (n : ℕ) : Epi (shiftNegOneτ₁ L n) := by
   cases n with
   | zero => exact (ModuleCat.epi_iff_surjective _).2 fun (_ : PUnit) => ⟨0, rfl⟩
@@ -73,6 +87,9 @@ theorem epi_shiftNegOneτ₁ (n : ℕ) : Epi (shiftNegOneτ₁ L n) := by
     change -(-y) = y
     exact neg_neg y
 
+/- English proof (translation)
+The claim follows from `(ModuleCat.mono_iff_injective _).2 fun (a b : L.X n) h => by have h' : -a = -b := h exact neg_injective h'`.
+-/
 theorem mono_neg_shiftNegOneSuccHom (n : ℕ) : Mono (-shiftNegOneSuccHom L n) :=
   (ModuleCat.mono_iff_injective _).2 fun (a b : L.X n) h => by
     have h' : -a = -b := h
@@ -97,21 +114,35 @@ noncomputable def shiftNegOneHomologyIso (n : ℕ) :
   (asIso (shiftNegOneHomologyHom L n)).symm
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem shiftNegOneHomologyIso_inv (n : ℕ) :
     (shiftNegOneHomologyIso L n).inv = shiftNegOneHomologyHom L n :=
   rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shiftNegOneHomologyIso_symm_hom (n : ℕ) :
     (shiftNegOneHomologyIso L n).symm.hom = shiftNegOneHomologyHom L n :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, shiftNegOneSuccHom_d, Preadditive.comp_neg, L.iCycles_d_assoc, zero_comp, neg_zero]`. Use the proof step `@[reassoc]`.
+-/
 theorem iCycles_shiftNegOneSuccHom_d (n : ℕ) :
     (L.iCycles n ≫ shiftNegOneSuccHom L n) ≫ (shiftNegOne L).d (n + 1) (n + 1 + 1) = 0 := by
   rw [Category.assoc, shiftNegOneSuccHom_d, Preadditive.comp_neg, L.iCycles_d_assoc, zero_comp,
     neg_zero]
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[shiftNegOneHomologyHom, HomologicalComplex.π_homologyIsoSc'_hom_assoc, ShortComplex.homologyπ_naturality_assoc, HomologicalComplex.π_homologyIsoSc'_inv]`. Simplify using `only [← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono ((shiftNegOne L).iCycles (n + 1))]`. Simplify using `only [Category.assoc, HomologicalComplex.cyclesIsoSc'_inv_iCycles, HomologicalComplex.liftCycles_i]`.
+
+Rewrite using `[← HomologicalComplex.cyclesIsoSc'_hom_iCycles L (prevNat n) n (n + 1) (up_prev_eq_prevNat n) (CochainComplex.next ℕ n)]`. Conclude with `(congrArg (_ ≫ ·) (ShortComplex.cyclesMap_i (shiftNegOneψ L n))).trans (Category.assoc _ _ _).symm`.
+-/
 theorem homologyπ_shiftNegOneHomologyHom (n : ℕ) :
     L.homologyπ n ≫ shiftNegOneHomologyHom L n =
       (shiftNegOne L).liftCycles (L.iCycles n ≫ shiftNegOneSuccHom L n) (n + 1 + 1)
@@ -136,12 +167,18 @@ namespace mappingCoconeNat
 variable {K L : CochainComplex (ModuleCat.{u} k) ℕ} (f : K ⟶ L)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem inr_fst : inr f ≫ fst f = 0 :=
   HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
 noncomputable abbrev shortComplex : ShortComplex (CochainComplex (ModuleCat.{u} k) ℕ) :=
   ShortComplex.mk (inr f) (fst f) (inr_fst f)
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => { exact := by rw [ShortComplex.moduleCat_exact_iff] intro (p : K.X n × shiftNegOneX L n) hp exact ⟨p.2, Prod.ext hp.symm rfl⟩ mono_f := (ModuleCat.mono_iff_injective _).2 fun _ _ h => congrArg Prod.snd h epi_g := ( …`.
+-/
 theorem shortExact : (shortComplex f).ShortExact :=
   HomologicalComplex.shortExact_of_degreewise_shortExact _ fun n => {
     exact := by
@@ -155,9 +192,17 @@ noncomputable def inlX (n : ℕ) : K.X n ⟶ (mappingCoconeNat f).X n :=
   ModuleCat.ofHom (LinearMap.inl k (K.X n) (shiftNegOneX L n))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem inlX_fst (n : ℕ) : inlX f n ≫ (fst f).f n = 𝟙 _ :=
   ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
+/- English proof (translation)
+Rewrite using `[mappingCoconeNat_d]`. Use `ModuleCat.hom_ext (LinearMap.ext fun x => Prod.ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(K.d n (n + 1)).hom x = (K.d n (n + 1)).hom x + 0`. Rewrite using `[add_zero]`. Express the relevant statement in the definitionally equal form `shiftNegOneSucc L n ((f.f n).hom x) + (shiftNegOneD L n).hom 0 = 0 + shiftNegOneSucc L n ((f.f n).hom x)`.
+
+Rewrite using `[map_zero, add_zero, zero_add]`.
+-/
 theorem inlX_d (n : ℕ) :
     inlX f n ≫ (mappingCoconeNat f).d n (n + 1) =
       K.d n (n + 1) ≫ inlX f (n + 1) + f.f n ≫ shiftNegOneSuccHom L n ≫ (inr f).f (n + 1) := by
@@ -169,6 +214,15 @@ theorem inlX_d (n : ℕ) :
       0 + shiftNegOneSucc L n ((f.f n).hom x)
     rw [map_zero, add_zero, zero_add]
 
+/- English proof (translation)
+Use `(cancel_epi (K.homologyπ n)).1 ?_` and prove the remaining obligations. Establish `h` using `(shortExact f).δ_eq n (n + 1) rfl (K.iCycles n) (K.iCycles_d n (n + 1)) (K.iCycles n ≫ inlX f n) (by`. Express the relevant statement in the definitionally equal form `(K.iCycles n ≫ inlX f n) ≫ (fst f).f n = K.iCycles n`. Rewrite using `[Category.assoc, inlX_fst, Category.comp_id])`. Use the proof step `(K.iCycles n ≫ f.f n ≫ shiftNegOneSuccHom L n) (by`.
+
+Express the relevant statement in the definitionally equal form `(K.iCycles n ≫ f.f n ≫ shiftNegOneSuccHom L n) ≫ (inr f).f (n + 1) = (K.iCycles n ≫ inlX f n) ≫ (mappingCoconeNat f).d n (n + 1)`. Simplify using `only [Category.assoc]`. Rewrite using `[inlX_d, Preadditive.comp_add, K.iCycles_d_assoc, zero_comp, zero_add])`. Use the proof step `(n + 1 + 1) (CochainComplex.next ℕ (n + 1))`. Establish `hl : K.liftCycles (K.iCycles n) (n + 1) (CochainComplex.next ℕ n) (K.iCycles_d n (n + 1)) = 𝟙 _`.
+
+Rewrite using `[← cancel_mono (K.iCycles n), HomologicalComplex.liftCycles_i, Category.id_comp]`. Establish `h2 : K.homologyπ n ≫ (shortExact f).δ n (n + 1) rfl = (shiftNegOne L).liftCycles (K.iCycles n ≫ f.f n ≫ shiftNegOneSuccHom L n) (n + 1 + 1) (CochainComplex.next ℕ (n + 1)) (by`. Rewrite using `[← HomologicalComplex.cyclesMap_i_assoc, Category.assoc, iCycles_shiftNegOneSuccHom_d, comp_zero]) ≫`. Use the proof step `(shiftNegOne L).homologyπ (n + 1) := by`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h2, HomologicalComplex.homologyπ_naturality_assoc, homologyπ_shiftNegOneHomologyHom]`. Simplify using `only [← Category.assoc]`. Use `congr 1`. Rewrite using `[← cancel_mono ((shiftNegOne L).iCycles (n + 1))]`. Simplify using `only [Category.assoc, HomologicalComplex.liftCycles_i, HomologicalComplex.cyclesMap_i_assoc]`.
+-/
 theorem δ_eq (n : ℕ) :
     (shortExact f).δ n (n + 1) rfl =
       HomologicalComplex.homologyMap f n ≫ shiftNegOneHomologyHom L n := by
@@ -206,41 +260,62 @@ noncomputable def homologyδ (n : ℕ) : L.homology n ⟶ (mappingCoconeNat f).h
   shiftNegOneHomologyHom L n ≫ HomologicalComplex.homologyMap (inr f) (n + 1)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[homologyδ, ← Category.assoc, ← δ_eq]`. Conclude with `(shortExact f).δ_comp n (n + 1) rfl`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem homologyMap_homologyδ (n : ℕ) :
     HomologicalComplex.homologyMap f n ≫ homologyδ f n = 0 := by
   rw [homologyδ, ← Category.assoc, ← δ_eq]
   exact (shortExact f).δ_comp n (n + 1) rfl
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[homologyδ, Category.assoc, ← HomologicalComplex.homologyMap_comp, inr_fst, HomologicalComplex.homologyMap_zero, comp_zero]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem homologyδ_homologyMap_fst (n : ℕ) :
     homologyδ f n ≫ HomologicalComplex.homologyMap (fst f) (n + 1) = 0 := by
   rw [homologyδ, Category.assoc, ← HomologicalComplex.homologyMap_comp, inr_fst,
     HomologicalComplex.homologyMap_zero, comp_zero]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[← cancel_mono (shiftNegOneHomologyHom L n), Category.assoc, ← δ_eq, zero_comp]`. Conclude with `(shortExact f).comp_δ n (n + 1) rfl`.
+-/
 theorem homologyMap_fst_homologyMap (n : ℕ) :
     HomologicalComplex.homologyMap (fst f) n ≫ HomologicalComplex.homologyMap f n = 0 := by
   rw [← cancel_mono (shiftNegOneHomologyHom L n), Category.assoc, ← δ_eq, zero_comp]
   exact (shortExact f).comp_δ n (n + 1) rfl
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).2 ((shortExact f).homology_exact₁ n (n + 1) rfl)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (shiftNegOneHomologyIso L n).symm (Iso.refl _) (by simp [δ_eq]) (by simp [homologyδ])`.
+-/
 theorem homology_exact₁ (n : ℕ) :
     (ShortComplex.mk _ _ (homologyMap_homologyδ f n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).2 ((shortExact f).homology_exact₁ n (n + 1) rfl)
   exact ShortComplex.isoMk (Iso.refl _) (shiftNegOneHomologyIso L n).symm (Iso.refl _)
     (by simp [δ_eq]) (by simp [homologyδ])
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).2 ((shortExact f).homology_exact₂ (n + 1))` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (shiftNegOneHomologyIso L n).symm (Iso.refl _) (Iso.refl _) (by simp [homologyδ]) (by simp)`.
+-/
 theorem homology_exact₂ (n : ℕ) :
     (ShortComplex.mk _ _ (homologyδ_homologyMap_fst f n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).2 ((shortExact f).homology_exact₂ (n + 1))
   exact ShortComplex.isoMk (shiftNegOneHomologyIso L n).symm (Iso.refl _) (Iso.refl _)
     (by simp [homologyδ]) (by simp)
 
+/- English proof (translation)
+Use `(ShortComplex.exact_iff_of_iso ?_).2 ((shortExact f).homology_exact₃ n (n + 1) rfl)` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (shiftNegOneHomologyIso L n).symm (by simp) (by simp [δ_eq])`.
+-/
 theorem homology_exact₃ (n : ℕ) :
     (ShortComplex.mk _ _ (homologyMap_fst_homologyMap f n)).Exact := by
   refine (ShortComplex.exact_iff_of_iso ?_).2 ((shortExact f).homology_exact₃ n (n + 1) rfl)
   exact ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (shiftNegOneHomologyIso L n).symm
     (by simp) (by simp [δ_eq])
 
+/- English proof (translation)
+Establish `hz : IsZero ((shiftNegOne L).homology 0)` using `ShortComplex.isZero_homology_of_isZero_X₂ _ (ModuleCat.isZero_of_subsingleton (ModuleCat.of k PUnit))`. Conclude with `((shortExact f).homology_exact₂ 0).mono_g (hz.eq_of_src _ _)`.
+-/
 theorem mono_homologyMap_fst_zero : Mono (HomologicalComplex.homologyMap (fst f) 0) := by
   have hz : IsZero ((shiftNegOne L).homology 0) :=
     ShortComplex.isZero_homology_of_isZero_X₂ _ (ModuleCat.isZero_of_subsingleton

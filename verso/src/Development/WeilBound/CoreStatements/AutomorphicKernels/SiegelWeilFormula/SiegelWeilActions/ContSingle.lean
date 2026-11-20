@@ -25,6 +25,9 @@ def CLawEx : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
     ∃ δ : E, δ ≠ 0 ∧ ∀ c, ∃ A', inFrame d.b (cM c) = Matrix.fromBlocks (1 + ∑ j, Matrix.single L.i₀ (L.em j) (c.1 j))
       (Matrix.single L.i₀ L.i₀ (c.2 • inclR (F := F) (AF F) δ)) 0 A'
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun a => continuous_pi fun b => by simp only [Matrix.single_apply] split_ifs exacts [hf, continuous_const]`.
+-/
 theorem cont_single {X α : Type} [TopologicalSpace X] [TopologicalSpace α] [Zero α] {m p : Type} [DecidableEq m]
     [DecidableEq p] (i : m) (j : p) {f : X → α} (hf : Continuous f) : Continuous fun x => Matrix.single i j (f x) :=
   continuous_pi fun a => continuous_pi fun b => by
@@ -32,6 +35,41 @@ theorem cont_single {X α : Type} [TopologicalSpace X] [TopologicalSpace α] [Ze
     split_ifs
     exacts [hf, continuous_const]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d R L`. Establish `hε` using `R.hε`. Establish `hem : ∀ j, L.em j ≠ L.i₀` using `fun j => (L.rng (L.em j)).2 ⟨j, rfl⟩`. Use `set e : AE F E := ((R.ε : ℤ) : AE F E) with he_def`. Establish `hee : e * e = 1`.
+
+Rewrite using `[he_def, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Take `⟨δ, hδ0, hδ⟩` from `CL.deltaEx' d.cm R.ε`. Take `⟨κ, hκ, hsc⟩` from `CL.measEx' (F := F) (E := E) L.n d.bs`. Set `M₀ : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E` to `CL.wM L.i₀ (1 : E) ((R.ε : ℤ) : E)`. Set `M₀' : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) E` to `CL.wM L.i₀ ((R.ε : ℤ) : E) (1 : E)`.
+
+Establish `hW : incM F M₀ = CL.wM L.i₀ (1 : AE F E) e` using `by show M₀.map _ = _`. Rewrite using `[CL.wM_map, map_one, map_intCast]`. Establish `hW' : incM F M₀' = CL.wM L.i₀ e (1 : AE F E)` using `by show M₀'.map _ = _`. Rewrite using `[CL.wM_map, map_one, map_intCast]`. Establish `hWW : incM F M₀ * incM F M₀' = 1`.
+
+Rewrite using `[hW, hW']`. Conclude with `CL.wM_mul L.i₀ _ _ _ _ (one_mul 1) hee`. Establish `hWu : (incM F M₀)ᵀ * kunf.jw d.n e * (incM F M₀).map (cA σ) = kunf.jw d.n e`. Rewrite using `[hW]`. Use `CL.wM_unitary L.i₀ (cA σ).toRingHom 1 e e ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_one, mul_one, hee]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, he_def, map_intCast, one_mul]`. Take `⟨w₁, hw₁⟩` from `kunf.exists_of_frame hε (incM F M₀) (incM F M₀') hWW hWu`. Establish `hw₁' : inFrame d.b w₁ = CL.wM L.i₀ (1 : AE F E) e` using `hw₁.trans hW`. Use `set δ' : AE F E := inclR (F := F) (AF F) δ with hδ'`.
+
+Set `Mc : (Fin L.n → AE F E) × AF F → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)` to `fun c => CL.cB L.i₀ L.em c.1 (fun j => cA σ (c.1 j)) (c.2 • δ')`. Set `Mc' : (Fin L.n → AE F E) × AF F → Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)` to `fun c => CL.cB L.i₀ L.em (-c.1) (-fun j => cA σ (c.1 j)) (-(c.2 • δ'))`. Establish `hcont : ∀ s : AF F → AF F, Continuous s → ∀ t : (Fin L.n → AE F E) → (Fin L.n → AE F E), Continuous t → Continuous fun c : (Fin L.n → AE F E) × AF F => CL.cB L.i₀ L.em (t c.1) (fun j => cA σ (t c.1 j)) (s c.2 • δ')`. Introduce `s hs t ht`. Use `Continuous.matrix_fromBlocks ?_ ?_ continuous_const ?_` and prove the remaining obligations.
+
+Conclude with `continuous_const.add (continuous_finsetSum _ fun j _ => cont_single _ _ ((continuous_apply j).comp (ht.comp continuous_fst)))`. Conclude with `cont_single _ _ (Continuous.smul (f := fun c : (Fin L.n → AE F E) × AF F => s c.2) (g := fun _ => δ') (hs.comp continuous_snd) continuous_const)`. Conclude with `continuous_const.sub (continuous_finsetSum _ fun j _ => cont_single _ _ ((GlobalTheory.EisBL.DoubledGroupTopology.continuous_cA σ).comp ((continuous_apply j).comp (ht.comp continuous_fst))))`. Establish `hMc : Continuous Mc` using `hcont id continuous_id id continuous_id`. Establish `hMc' : Continuous Mc'`.
+
+Use `hcont (fun a => -a) continuous_neg (fun u => -u) continuous_neg` as an intermediate fact. Use `this using 2 with c` and compare the differences between its conclusion and the goal. Simplify using `only [Mc', neg_smul, Pi.neg_apply, map_neg]`. Both sides reduce to the same expression. Establish `hcA_z : ∀ a : AF F, cA σ (a • δ') = -(e * (a • δ'))`.
+
+Introduce `a`. Rewrite using `[map_smul, hδ', GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR σ δ, hδ, map_neg, map_mul, map_intCast, smul_neg, mul_smul_comm]`. Take `⟨cM, hcMc, hcM⟩` from `CL.ptEx' d hε Mc Mc' hMc hMc' (fun c => CL.cB_mul hem c.1 _ _) (fun c => CL.cB_unitary hem (cA σ).toRingHom (fun a => GlobalTheory.EisBL.DoubledUnipotentRadical.cA_cA σ (CL.sigma_sigma_cm d.cm) a) e hee c.1 (c.2 • δ') (hcA_z c.2))`. Establish `hfr` using `fun x y => GlobalTheory.EisBL.DoubledParabolic.inFrame_mul (σ := σ) (Y := d.Y) d.b x y`. Use `⟨w₁, cM, κ, ⟨?_, ?_, ?_⟩, kunf.rat_of_inFrame hw₁, ⟨1, (R.ε : ℤ), one_ne_zero, ?_, ?_⟩, hcMc, hκ, ⟨δ, hδ0, fun c => ⟨_, hcM c⟩⟩⟩` and prove the remaining obligations.
+
+Introduce `w τ y g hy`. Take `⟨r, hr0, hr1, -, hrw, hro, hrf⟩` from `CL.rEx d w`. Apply `kunf.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[hfr, hfr, CL.frame_dil d R w r hrw hro hrf L.i₀ hy]`. Conclude with `CL.comm_dM L.i₀ _ (L.j_out g) _ _`.
+
+Introduce `w τ y hy`. Take `⟨r, hr0, hr1, -, hrw, hro, hrf⟩` from `CL.rEx d w`. Establish `hy'` using `CL.isDil_inv hy`. Take `⟨t, ht, ha, hχ⟩` from `CL.par_dil d R w L.i₀ hy'`. Use `⟨R.ι w y⁻¹, t, ht, by rw [ha]; ring_nf, hχ, ?_⟩` and prove the remaining obligations.
+
+Apply `kunf.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[hfr, hfr, hw₁', CL.frame_dil d R w r hrw hro hrf L.i₀ hy, CL.frame_dil d R w r hrw hro hrf L.i₀ hy', neg_neg]`. Conclude with `CL.wM_dM L.i₀ _ _ _ _`. Introduce `w τ y hy`. Take `⟨r, hr0, hr1, hrm, hrw, hro, hrf⟩` from `CL.rEx d w`.
+
+Take `⟨sc, hsc1, hsc2⟩` from `hsc (r (-τ))`. Use `⟨sc, fun c => ?_, ?_⟩` and prove the remaining obligations. Apply `kunf.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[hfr, hfr, hcM, hcM, CL.frame_dil d R w r hrw hro hrf L.i₀ hy]`. Establish `hxy : ((r τ : AF F) • (1 : AE F E)) * ((r (-τ) : AF F) • (1 : AE F E)) = 1`.
+
+Rewrite using `[smul_mul_smul_comm, one_mul, ← Units.val_mul, ← hr0, add_neg_cancel, hr1]`. Simplify using the standard rewrite rules. Rewrite using `[CL.cB_dM hem _ _ _ _ _ hxy, hsc1]`. Use `congr 1`. Simplify using `only [Mc]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `smul_one_mul _ _`. Use function extensionality and compare the values at `j`. Rewrite using `[map_smul, smul_one_mul]`.
+
+Rewrite using `[mul_assoc, smul_one_mul, smul_one_mul, smul_assoc, mul_smul]`. Rewrite using `[hsc2, hrm, ← Real.exp_neg, neg_neg, ← Real.exp_nat_mul, ← Atop.LD.n_succ L]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[map_intCast]`. Rewrite using `[hw₁']`. Simplify using `[CL.wM, map_intCast, map_one, he_def]`.
+-/
 theorem cLawEx : CLawEx := by
   intro F E _ _ _ _ _ σ d R L
   have hε := R.hε

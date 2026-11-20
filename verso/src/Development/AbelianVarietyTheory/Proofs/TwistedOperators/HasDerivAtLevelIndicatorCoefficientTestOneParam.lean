@@ -18,6 +18,25 @@ noncomputable section
 
 namespace GlobalTheory.TermDeriv
 
+/- English proof (translation)
+Introduce `D hHC θ hθ V S M K v b τ hb X hX x`. Establish `hfin : ∀ s : ℝ, Lev.finE V (x * oneP θ V τ X s) = Lev.finE V x`. Introduce `s`. Establish `h : finHom V (oneP θ V τ X s) = 1` using `GlobalTheory.PointAtPlaceHom.atTau_mem V τ _`. Use `show (Formalism.UG.bc (Lev.swapAE D)).comp (finHom V) (x * oneP θ V τ X s) = _`.
+
+Rewrite using `[map_mul, MonoidHom.comp_apply (Formalism.UG.bc (Lev.swapAE D)) (finHom V) (oneP θ V τ X s), h, map_one, mul_one]`. Both sides reduce to the same expression. Distinguish the cases in `hK : Lev.finE V x ∈ K`. Use `swap`. Establish `e : (fun s : ℝ => coef θ M K v b (x * oneP θ V τ X s)) = fun _ => 0`.
+
+Use function extensionality and compare the values at `s`. Simplify using `only [coef, hfin s, hK, if_false]`. Rewrite using `[e]`. Establish `e2 : coef θ M K v (Function.update b τ (dRep (M.rep τ) X (b τ))) x = 0`. Simplify using `only [coef, hK, if_false]`.
+
+Rewrite using `[e2]`. Conclude with `hasDerivAt_const _ _`. Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hstd` using `GlobalTheory.TypeSum.std_of_isDS hHC (M.ds τ)`. Establish `hsv : SmoothVec (lieAt V τ) (M.rep τ) (b τ)` using `hHC.smoothVec hstd.1 hstd.2.1 hb (M.fr_unit τ) (M.fr_gram τ)`.
+
+Establish `hd0` using `Formalism.IndefR.SchurOrthogonalityAlt.gp_sv_hasDerivAt hsv hX 0`. Rewrite `hd0` using `[zero_smul, NormedSpace.exp_zero, Formalism.IndefR.SchurOrthogonalityAlt.gp_rep_one, ContinuousLinearMap.one_apply]`. Use `set c : ℂ := ∏ τ' ∈ Finset.univ.erase τ, ⟪v τ', M.rep τ' (cmp θ τ' x) (b τ')⟫_ℂ with hc`. Establish `hfun : ∀ s : ℝ, coef θ M K v b (x * oneP θ V τ X s) = c * ⟪v τ, M.rep τ (cmp θ τ x) (M.rep τ (NormedSpace.exp (s • X)) (b τ))⟫_ℂ`. Introduce `s`.
+
+Simplify using `only [coef, hfin s, hK, if_true, coefR]`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ τ)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ' hτ' => ?_` and prove the remaining obligations. Establish `hne` using `Finset.ne_of_mem_erase hτ'`.
+
+Establish `h` using `(GlobalTheory.Mem.Lift.isAtTau_oneP hθ hX s).2.2 τ' hne`. Use `show ⟪v τ', M.rep τ' (infMat D.sp.cm.sig V.gram (θ τ') (x * oneP θ V τ X s)) (b τ')⟫_ℂ = _`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, h, Matrix.mul_one]`. Use `show ⟪v τ, M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) (x * oneP θ V τ X s)) (b τ)⟫_ℂ = _`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, (GlobalTheory.Mem.Lift.isAtTau_oneP hθ hX s).2.1, Formalism.IndefR.SchurOrthogonalityAlt.rep_mul M τ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V x τ) (GlobalTheory.Mem.Lift.exp_mem hX s)]`.
+
+Both sides reduce to the same expression. Establish `hval : coef θ M K v (Function.update b τ (dRep (M.rep τ) X (b τ))) x = c * ⟪v τ, M.rep τ (cmp θ τ x) (dRep (M.rep τ) X (b τ))⟫_ℂ`. Simplify using `only [coef, hK, if_true, coefR]`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ τ), Function.update_self]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun τ' hτ' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hτ')]`. Rewrite using `[hval, show (fun s : ℝ => coef θ M K v b (x * oneP θ V τ X s)) = fun s : ℝ => c * ⟪v τ, M.rep τ (cmp θ τ x) (M.rep τ (NormedSpace.exp (s • X)) (b τ))⟫_ℂ from funext hfun]`. Use `HasDerivAt.const_mul c ?_` and prove the remaining obligations. Conclude with `(((innerSL ℂ (v τ)).comp (M.rep τ (cmp θ τ x))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd0`.
+-/
 theorem hasDerivAt_coef_oneP : ∀ (D : D7), GlobalTheory.Published.HarishChandraModules → ∀ (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (v b : ∀ τ, M.H τ) (τ : D.what₂.Tau), b τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ → ∀ X ∈ lieAt V τ, ∀ x : GA D V, HasDerivAt (fun s : ℝ => coef θ M K v b (x * oneP θ V τ X s)) (coef θ M K v (Function.update b τ (dRep (M.rep τ) X (b τ))) x) 0 := by
   intro D hHC θ hθ V S M K v b τ hb X hX x
   have hfin : ∀ s : ℝ, Lev.finE V (x * oneP θ V τ X s) = Lev.finE V x := by

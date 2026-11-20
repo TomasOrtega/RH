@@ -20,21 +20,33 @@ open scoped Classical
 noncomputable section
 namespace GlobalTheory.ThetaGlue
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.scaled_integral_indicator_schwartz_bruhat`.
+-/
 theorem coset_mem_SB : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F)
     (r : κ → FiniteAdeleRing (𝓞 F) F), a ≠ 0 →
     Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ a} (fun _ => (1 : ℂ)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) :=
   GlobalTheory.T.scaled_integral_indicator_schwartz_bruhat
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.theta_sum_ne_zero_indicator F κ a ha (coset_mem_SB F κ a 0 ha)`.
+-/
 theorem exists_thetaSum_coset_ne_zero (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F) (ha : a ≠ 0) :
     ∃ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,
       thetaSum F (pureA F f (Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a} fun _ => (1 : ℂ))) ≠ 0 :=
   GlobalTheory.T.theta_sum_ne_zero_indicator F κ a ha (coset_mem_SB F κ a 0 ha)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.schwartz_bruhat_invariant_scaled_lattice`.
+-/
 theorem exists_scaledInt_invariant : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ), g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) →
     ∃ d : F, d ≠ 0 ∧ ∀ y, ∀ u ∈ GlobalTheory.EvAdm.scaledInt F κ d, g (y + u) = g y :=
   GlobalTheory.T.schwartz_bruhat_invariant_scaled_lattice
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.periodic_compact_support_finite_sum`.
+-/
 theorem eq_sum_coset : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (d : F), d ≠ 0 →
     ∀ g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ, HasCompactSupport g →
     (∀ y, ∀ u ∈ GlobalTheory.EvAdm.scaledInt F κ d, g (y + u) = g y) →
@@ -42,6 +54,15 @@ theorem eq_sum_coset : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fin
       g = ∑ r ∈ R, g r • Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ d} (fun _ => (1 : ℂ)) :=
   GlobalTheory.T.periodic_compact_support_finite_sum
 
+/- English proof (translation)
+Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero`. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations.
+
+Establish `h0` using `hsmul 0 0 (zero_mem _)`. Rewrite `h0` using `[zero_smul, zero_mul]`. Rewrite using `[h0]`. Simplify using `[thetaSum]`. Consider the case `add x y _ _ hx hy`.
+
+Use `⟨add_mem hx.1 hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hadd x hx.1 y hy.1, thetaSum_add F hx.1 hy.1, hx.2, hy.2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ hx`. Use `⟨Submodule.smul_mem _ a hx.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsmul a x hx.1, thetaSum_smul F a x, hx.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem span_eq_mul_thetaSum {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (L : ((κ → AF F) → ℂ) → ℂ) (hadd : ∀ Ψ ∈ schA F κ, ∀ Ψ' ∈ schA F κ, L (Ψ + Ψ') = L Ψ + L Ψ')
     (hsmul : ∀ c : ℂ, ∀ Ψ ∈ schA F κ, L (c • Ψ) = c * L Ψ) (c : ℂ) (S : Set ((κ → AF F) → ℂ))
@@ -65,6 +86,41 @@ theorem span_eq_mul_thetaSum {F : Type} [Field F] [NumberField F] {κ : Type} [F
     rw [hsmul a x hx.1, thetaSum_smul F a x, hx.2]
     ring
 
+/- English proof (translation)
+Introduce `F _ _ κ _ L hadd hsmul htr hloc`. Establish `hloc0` using `fun (a : F) (ha : a ≠ 0) => hloc a ha 0`. Use `choose! cst hcst using hloc0`. Establish `hcoset : ∀ b : F, b ≠ 0 → ∀ r : κ → FiniteAdeleRing (𝓞 F) F, ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, L (pureA F f (Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ))) = cst b * thetaSum F (pureA F f (Set.indicator {y | y - r ∈ GlobalTh …`. Introduce `b hb r f`.
+
+Establish `hd : DenseRange (Pi.map fun (_ : κ) => algebraMap F (FiniteAdeleRing (𝓞 F) F))` using `DenseRange.piMap fun _ => GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F`. Establish `hop : IsOpen {y : κ → FiniteAdeleRing (𝓞 F) F | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ b}` using `(GlobalTheory.EvAdm.isOpen_scaledInt b).preimage (continuous_id.sub continuous_const)`. Take `⟨ρ, hρ⟩` from `hd.exists_mem_open hop ⟨r, by simp [zero_mem]⟩`. Use `set ρ' : κ → FiniteAdeleRing (𝓞 F) F := fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ρ i) with hρ'`. Establish `hρ'm : ρ' - r ∈ GlobalTheory.EvAdm.scaledInt F κ b` using `hρ`.
+
+Establish `hind : (Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ)) = Set.indicator {y | y - ρ' ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ)`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `sub_mem h hρ'm` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `h`. Use `add_mem h hρ'm` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[hind]`. Use `set Ψ := pureA F f (Set.indicator {y | y - ρ' ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ)) with hΨ`. Establish `hΨm : Ψ ∈ schA F κ` using `Submodule.subset_span ⟨f, _, coset_mem_SB F κ b ρ' hb, rfl⟩`. Establish `htrans` using `GlobalTheory.SchwartzTranslate.pureA_translate F (fun i => algebraMap F (AF F) (ρ i)) f (Set.indicator {y | y - ρ' ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ))`.
+
+Establish `hshift : (fun y : κ → FiniteAdeleRing (𝓞 F) F => (Set.indicator {y | y - ρ' ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ)) (y + fun i => (algebraMap F (AF F) (ρ i)).2)) = Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `y`. Establish `e : (y + fun i => (algebraMap F (AF F) (ρ i)).2) - ρ' = y - 0`. Rewrite using `[sub_zero]`. Conclude with `add_sub_cancel_right y ρ'`.
+
+Simplify using `only [Set.indicator, Set.mem_setOf_eq, e]`. Rewrite `htrans` using `[hshift]`. Establish `hT : (fun x => Ψ (x + fun i => algebraMap F (AF F) (ρ i))) = pureA F ⇑((SchwartzMap.compSubConstCLM ℂ (-fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F) ((algebraMap F (AF F) (ρ i)).1))) f) (Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ b} fun _ => (1 : ℂ))` using `htrans`. Establish `hθ : thetaSum F (fun x => Ψ (x + fun i => algebraMap F (AF F) (ρ i))) = thetaSum F Ψ`. Unfold `thetaSum`.
+
+Establish `e : ∀ ξ : κ → F, ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + fun i => algebraMap F (AF F) (ρ i)) = fun i => algebraMap F (AdeleRing (𝓞 F) F) ((Equiv.addRight ρ ξ) i)`. Introduce `ξ`. Use function extensionality and compare the values at `i`. Simplify using `[map_add]`. Simplify using `only [e]`.
+
+Conclude with `(Equiv.addRight ρ).tsum_eq (fun ξ => Ψ fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i))`. Rewrite using `[← htr ρ Ψ hΨm, ← hθ, hT]`. Conclude with `hcst b hb _`. Establish `hinv : ∀ d : F, d ≠ 0 → ∀ g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ, HasCompactSupport g → (∀ y, ∀ u ∈ GlobalTheory.EvAdm.scaledInt F κ d, g (y + u) = g y) → ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, L (pureA F f g) = cst d * thetaSum F (pureA F f g)`. Introduce `d hd g hg hgi f`.
+
+Take `⟨R, hR⟩` from `eq_sum_coset F κ d hd g hg hgi`. Set `S : Set ((κ → AF F) → ℂ)` to `{Ψ | ∃ r, Ψ = pureA F f (Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ d} fun _ => (1 : ℂ))}`. Establish `hS : ∀ Ψ ∈ S, Ψ ∈ schA F κ ∧ L Ψ = cst d * thetaSum F Ψ`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `⟨Submodule.subset_span ⟨f, _, coset_mem_SB F κ d r hd, rfl⟩, hcoset d hd r f⟩`.
+
+Establish `hsum : pureA F f g = ∑ r ∈ R, g r • pureA F f (Set.indicator {y | y - r ∈ GlobalTheory.EvAdm.scaledInt F κ d} fun _ => (1 : ℂ))` using `by conv_lhs => rw [hR]`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => by ring` and prove the remaining obligations. Establish `hmem : pureA F f g ∈ Submodule.span ℂ S`.
+
+Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun r _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨r, rfl⟩)`. Conclude with `(span_eq_mul_thetaSum L hadd hsmul (cst d) S hS _ hmem).2`. Establish `hcmp : ∀ a : F, a ≠ 0 → ∀ d : F, d ≠ 0 → (GlobalTheory.EvAdm.scaledInt F κ d : Set (κ → FiniteAdeleRing (𝓞 F) F)) ⊆ GlobalTheory.EvAdm.scaledInt F κ a → cst a = cst d`. Introduce `a ha d hd hsub`.
+
+Take `⟨f, hf⟩` from `exists_thetaSum_coset_ne_zero F κ a ha`. Establish `h1` using `hcst a ha f`. Establish `h2` using `hinv d hd _ (coset_mem_SB F κ a 0 ha).2 (fun y u hu => by`. Simplify using `only [Set.indicator, Set.mem_setOf_eq, sub_zero]`. Establish `hu' : u ∈ GlobalTheory.EvAdm.scaledInt F κ a` using `hsub hu`.
+
+Distinguish the cases in `hy : y ∈ GlobalTheory.EvAdm.scaledInt F κ a`. Rewrite using `[if_pos (add_mem hy hu'), if_pos hy]`. Rewrite using `[if_neg hy, if_neg]`. Introduce `h`. Conclude with `hy (by simpa using sub_mem h hu')) f`.
+
+Conclude with `mul_right_cancel₀ hf (h1.symm.trans h2)`. Establish `hall : ∀ d : F, d ≠ 0 → cst d = cst 1`. Introduce `d hd`. Establish `hn : ((GlobalTheory.EvAdm.scaledInt F κ d : Set _) ∩ GlobalTheory.EvAdm.scaledInt F κ 1) ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `Filter.inter_mem ((GlobalTheory.EvAdm.isOpen_scaledInt d).mem_nhds (zero_mem _)) ((GlobalTheory.EvAdm.isOpen_scaledInt 1).mem_nhds (zero_mem _))`. Take `⟨e, he, hsub⟩` from `GlobalTheory.EvAdm.exists_scaledInt_subset_of_mem_nhds F κ _ hn`.
+
+Rewrite using `[hcmp d hd e he (hsub.trans Set.inter_subset_left), hcmp 1 one_ne_zero e he (hsub.trans Set.inter_subset_right)]`. Use `⟨cst 1, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Use `(span_eq_mul_thetaSum L hadd hsmul (cst 1) _ ?_ Ψ hΨ).2` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `⟨Submodule.subset_span ⟨f, g, hg, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨d, hd, hgi⟩` from `exists_scaledInt_invariant F κ g hg`. Rewrite using `[hinv d hd g hg.2 hgi f, hall d hd]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (L : ((κ → AF F) → ℂ) → ℂ), (∀ Ψ ∈ schA F κ, ∀ Ψ' ∈ schA F κ, L (Ψ + Ψ') = L Ψ + L Ψ') →
       (∀ c : ℂ, ∀ Ψ ∈ schA F κ, L (c • Ψ) = c * L Ψ) →

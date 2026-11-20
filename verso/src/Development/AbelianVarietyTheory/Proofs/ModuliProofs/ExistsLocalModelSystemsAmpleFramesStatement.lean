@@ -18,5 +18,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Models.exists_localSystems_ample | exact GlobalTheory.Models.exists_localSystems_ample | (intros; apply GlobalTheory.Models.exists_localSystems_ample <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_localModelSystems_ampleFrames : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → Out.Laws3 → TopAmpExists → N1 → GlobalTheory.LN.ModelsSt := by
   first | exact @GlobalTheory.Models.exists_localSystems_ample | exact GlobalTheory.Models.exists_localSystems_ample | (intros; apply GlobalTheory.Models.exists_localSystems_ample <;> assumption)

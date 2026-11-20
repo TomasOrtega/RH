@@ -20,6 +20,15 @@ def TwoAt : Prop :=
     IsSmooth π₁ → π₁.IsIrreducible → IsUnitarisable π₁ → IsSmooth π₂ → π₂.IsIrreducible → IsUnitarisable π₂ →
     (prod₂ π₁ π₂).IsIrreducible
 
+/- English proof (translation)
+Set `ea` to `Fintype.equivFin a`. Set `eb` to `Fintype.equivFin b`. Set `f₁ : GL (Fin (Fintype.card a)) k →* GL a k` to `(relabel k ea).symm.toMonoidHom`. Set `f₂ : GL (Fin (Fintype.card b)) k →* GL b k` to `(relabel k eb).symm.toMonoidHom`. Establish `c₁ : Continuous f₁` using `continuous_relabel ea.symm`.
+
+Establish `c₂ : Continuous f₂` using `continuous_relabel eb.symm`. Establish `i₁' : Representation.IsIrreducible (π₁.comp f₁ : Representation ℂ _ V)`. Use `(isIrreducible_iff_of_linearEquiv (ρ := π₁) (σ := π₁.comp f₁) (relabel k ea) (relabel k ea).surjective (LinearEquiv.refl ℂ V) ?_).mp i₁` and prove the remaining obligations. Introduce `g v`. Simplify using `[f₁]`.
+
+Establish `i₂' : Representation.IsIrreducible (π₂.comp f₂ : Representation ℂ _ W)`. Use `(isIrreducible_iff_of_linearEquiv (ρ := π₂) (σ := π₂.comp f₂) (relabel k eb) (relabel k eb).surjective (LinearEquiv.refl ℂ W) ?_).mp i₂` and prove the remaining obligations. Introduce `g v`. Simplify using `[f₂]`. Establish `h` using `H _ _ V W (π₁.comp f₁) (π₂.comp f₂) (isSmooth_comp s₁ f₁ c₁) i₁' (UnitInd.isUnitarisable_comp u₁ f₁) (isSmooth_comp s₂ f₂ c₂) i₂' (UnitInd.isUnitarisable_comp u₂ f₂)`.
+
+Unfold `prod₂ at h`. Use `(isIrreducible_ind₂_iff e _ ea eb (LinearEquiv.refl ℂ _) ?_).mpr h` and prove the remaining obligations. Introduce `g v`. Simplify using `[extTensor, f₁, f₂]`.
+-/
 theorem ind₂_at (H : TwoAt k) (e : a ⊕ b ≃ n)
     {π₁ : Representation ℂ (GL a k) V} {π₂ : Representation ℂ (GL b k) W}
     (s₁ : IsSmooth π₁) (i₁ : π₁.IsIrreducible) (u₁ : IsUnitarisable π₁)
@@ -49,6 +58,11 @@ theorem ind₂_at (H : TwoAt k) (e : a ⊕ b ≃ n)
   intro g v
   simp [extTensor, f₁, f₂]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => exact fun e _ _ _ σ _ _ _ => isIrreducible_multiProd_zero e σ`. Consider the case `succ s ih`. Introduce `m _ _ n _ _ e X _ _ σ hs hi hu`. Take `⟨E⟩` from `multiProd_succ_equiv e σ`.
+
+Conclude with `(isIrreducible_iff_of_equiv E).1 (ind₂_at H _ (hs 0) (hi 0) (hu 0) (isSmooth_parInd _ _) (ih _ (fun i => hs i.succ) (fun i => hi i.succ) fun i => hu i.succ) (UnitInd.isUnitarisable_multiProd _ fun i => hu i.succ))`.
+-/
 theorem multiProd_at (H : TwoAt k) {s : ℕ} :
     ∀ {m : Fin s → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {n : Type} [Fintype n] [DecidableEq n]
     (e : (Σ i, m i) ≃ n) {X : Fin s → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]

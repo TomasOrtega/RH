@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Use `⟨Module.finrank (ZMod l) M, fun i => ((Module.finBasis (ZMod l) M).coord i).toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Use `letI : Fintype M := Fintype.ofFinite M`. Rewrite using `[Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := ZMod l), ZMod.card]`. Introduce `x y h`. Apply `(Module.finBasis (ZMod l) M).ext_elem` to reduce the goal to its premises.
+
+Introduce `i`. Simplify `h i` using `[Module.Basis.coord_apply]`.
+-/
 private theorem exists_natCard_eq_pow_and_separating_zmod_forms (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod l) M]
     [Finite M] : ∃ (d : ℕ) (c : Fin d → M →+ ZMod l), Nat.card M = l ^ d ∧
       ∀ x y : M, (∀ i, c i x = c i y) → x = y := by
@@ -16,6 +21,11 @@ private theorem exists_natCard_eq_pow_and_separating_zmod_forms (l : ℕ) [Fact 
     intro i
     simpa [Module.Basis.coord_apply] using h i
 
+/- English proof (translation)
+Establish `hcop : Nat.Coprime n l` using `Nat.coprime_comm.mp ((Fact.out : l.Prime).coprime_iff_not_dvd.mpr hn)`. Establish `h` using `Nat.gcd_eq_gcd_ab n l`. Rewrite `h` using `[hcop.gcd_eq_one, Nat.cast_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_smul, mul_comm (n : ℤ), mul_comm (l : ℤ), mul_smul, mul_smul, natCast_zsmul, natCast_zsmul]`.
+
+Use `_ = 0 := by rw [hx, htor, smul_zero, smul_zero, add_zero]`.
+-/
 private theorem eq_zero_of_nsmul_eq_zero_of_coprime_torsion (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M]
     (htor : ∀ m : M, l • m = 0) (n : ℕ) (hn : ¬ l ∣ n) (x : M) (hx : n • x = 0) : x = 0 := by
   have hcop : Nat.Coprime n l :=
@@ -29,6 +39,39 @@ private theorem eq_zero_of_nsmul_eq_zero_of_coprime_torsion (l : ℕ) [Fact l.Pr
         natCast_zsmul]
     _ = 0 := by rw [hx, htor, smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ R M _ _ _ _ htor ρ K r hdvd hK hX`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `hidx : K.index ≠ 0` using `fun h => hdvd (h ▸ dvd_zero l)`. Use `haveI : K.FiniteIndex := ⟨hidx⟩`. Use `letI : Fintype (G F Ω ⧸ K) := Fintype.ofFinite _`.
+
+Establish `hn : ¬ l ∣ Fintype.card (G F Ω ⧸ K)`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `hdvd`. Establish `key : ∀ w : G F Ω → M, (∀ g h, w (g * h) = w g + ρ g (w h)) → (∀ k ∈ K, w k = 0) → (∑ q : G F Ω ⧸ K, w q.out) = 0 → w = 0`. Introduce `w hw hwK hS`.
+
+Use function extensionality and compare the values at `h`. Use `show w h = 0`. Establish `e1 : ∀ q : G F Ω ⧸ K, w (h * q.out) = w (h • q).out`. Introduce `q`. Establish `hq : ((h * q.out : G F Ω) : G F Ω ⧸ K) = h • q` using `by show ((h • q.out : G F Ω) : G F Ω ⧸ K) = h • q`.
+
+Rewrite using `[← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`. Establish `hk : (h * q.out)⁻¹ * (h • q).out ∈ K` using `QuotientGroup.eq.mp (hq.trans (QuotientGroup.out_eq' _).symm)`. Use `hw (h * q.out) ((h * q.out)⁻¹ * (h • q).out)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, hwK _ hk, map_zero, add_zero]`. Conclude with `this.symm`.
+
+Establish `hsum : ∑ q : G F Ω ⧸ K, w (h * q.out) = ∑ q : G F Ω ⧸ K, w q.out`. Rewrite using `[Finset.sum_congr rfl (fun q _ => e1 q)]`. Conclude with `Equiv.sum_comp (MulAction.toPerm h) (fun q : G F Ω ⧸ K => w q.out)`. Establish `hexp : ∑ q : G F Ω ⧸ K, w (h * q.out) = Fintype.card (G F Ω ⧸ K) • w h + ρ h (∑ q : G F Ω ⧸ K, w q.out)`. Simplify using `only [hw, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, map_sum]`.
+
+Rewrite `hexp` using `[hsum, hS, map_zero, add_zero]`. Conclude with `eq_zero_of_nsmul_eq_zero_of_coprime_torsion l M htor _ hn (w h) hexp.symm`. Take `⟨hXfin, hXcard⟩` from `hX`. Take `⟨d, c, hM, hc⟩` from `@exists_natCard_eq_pow_and_separating_zmod_forms l _ M _ (AddCommGroup.zmodModule htor) _`. Establish `mem : ∀ z : ↥(cocOff ρ (ineOff F Ω 1 ∩ (K : Set (G F Ω)))), IsLocallyConstant z.1 ∧ (∀ g h, z.1 (g * h) = z.1 g + ρ g (z.1 h)) ∧ ∀ g ∈ ineOff F Ω 1 ∩ (K : Set (G F Ω)), z.1 g = 0` using `fun z => z.2`.
+
+Establish `hone : ∀ A : ValuationSubring Ω, ¬ A.valuation ((1 : ℕ) : Ω) < 1`. Introduce `A`. Simplify using the standard rewrite rules. Establish `coordMem : ∀ (z : ↥(cocOff ρ (ineOff F Ω 1 ∩ (K : Set (G F Ω))))) (i : Fin d), (fun u : K => c i (z.1 u)) ∈ UpperTheory.V.Kum.XDual (F` using `F) (Ω := Ω) 1 K (ZMod l) (ZMod l) := by`. Introduce `z i`.
+
+Take `⟨hlc, hcoc, hvan⟩` from `mem z`. Establish `hφ : IsLocallyConstant (fun u : K => c i (z.1 u)) ∧ (∀ a e : K, c i (z.1 ↑(a * e)) = c i (z.1 a) + c i (z.1 e)) ∧ (∀ (A : ValuationSubring Ω) (u : K), (u : G F Ω) ∈ Ine A → c i (z.1 u) = 0) ∧ ∀ (A : ValuationSubring Ω), A.valuation ((1 : ℕ) : Ω) < 1 → ∀ u : K, (u : G F Ω) ∈ Dec A …`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hlc.comp_continuous continuous_subtype_val).comp (fun m => c i m)`. Introduce `a e`.
+
+Rewrite using `[Subgroup.coe_mul, hcoc, hK a a.2, map_add]`. Introduce `A u hu`. Establish `hin : (u : G F Ω) ∈ ineOff F Ω 1` using `by show ∃ A, _`. Conclude with `⟨A, hone A, hu⟩`. Rewrite using `[hvan u ⟨hin, u.2⟩, map_zero]`.
+
+Introduce `A hA`. Conclude with `absurd hA (hone A)`. Conclude with `hφ`. Set `Φ : ↥(cocOff ρ (ineOff F Ω 1 ∩ (K : Set (G F Ω)))) → (Fin d → ↥(UpperTheory.V.Kum.XDual (F` to `F) (Ω := Ω) 1 K (ZMod l) (ZMod l))) × M := fun z => (fun i => ⟨_, coordMem z i⟩, ∑ q : G F Ω ⧸ K, z.1 q.out)`. Establish `hinj : Function.Injective Φ`.
+
+Introduce `z z' hzz`. Establish `h2 : (∑ q : G F Ω ⧸ K, z.1 q.out) = ∑ q : G F Ω ⧸ K, z'.1 q.out` using `congrArg Prod.snd hzz`. Establish `hKeq : ∀ k ∈ K, z.1 k = z'.1 k`. Introduce `k hk`. Conclude with `hc _ _ (fun i => congrArg (fun p => (p.1 i).1 ⟨k, hk⟩) hzz)`.
+
+Take `⟨_, hcoc, -⟩` from `mem z`. Take `⟨_, hcoc', -⟩` from `mem z'`. Establish `hw` using `key (fun g => z.1 g - z'.1 g) (by`. Introduce `g h`. Simplify using `only [hcoc, hcoc', map_sub]`.
+
+Use the proof step `abel)`. Use the proof step `(by`. Introduce `k hk`. Simplify using `[hKeq k hk])`. Use the proof step `(by simp only [Finset.sum_sub_distrib, h2, sub_self])`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `sub_eq_zero.mp (congrFun hw g)`. Use `haveI : Finite ↥(UpperTheory.V.Kum.XDual (F := F) (Ω := Ω) 1 K (ZMod l) (ZMod l)) := hXfin`. Use `(show Finite _ ∧ Nat.card _ ≤ _ from ⟨Finite.of_injective Φ hinj, ?_⟩)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_prod, Nat.card_fun, Nat.card_fin]`. Use `_ ≤ (l ^ r) ^ d * Nat.card M := Nat.mul_le_mul_right _ (Nat.pow_le_pow_left hXcard _)`. Use `_ = Nat.card M ^ (r + 1) := by`. Rewrite using `[hM]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.card_cocycles_vanishing_on_inertia_le_pow :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Finite M], (∀ m : M, l • m = 0) → ∀ (ρ : Representation R (G F Ω) M) (K : Subgroup (G F Ω)) (r : ℕ), ¬ l ∣ K.index → (∀ g ∈ K, ∀ m, ρ g m = m) → XRk l 1 K r → CardLe (cocOff ρ (ineOff F Ω 1 ∩ K)) (Nat.card M ^ (r + 1)) := by
   intro F Ω _ _ _ _ _ l _ R M _ _ _ _ htor ρ K r hdvd hK hX

@@ -29,17 +29,26 @@ def ResIso : Prop :=
       A.valuation (algebraMap L Ω (y : L) - algebraMap E' Ω (x : E')) < 1 →
       κ (IsLocalRing.residue 𝒪[v.adicCompletion L] u) = red x
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem lpOfChar_congr {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) {χ χ' : Weil h →* ℂˣ} (e : χ = χ')
     (hχ : IsSmooth χ) (hχ' : IsSmooth χ') : WD.lpOfChar h χ hχ = WD.lpOfChar h χ' hχ' := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `h1`. Use `hξ 0 1 (by omega) (by omega) (by rw [h1, one_pow, one_pow])` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem regular_ne_one {g n : ℕ} (hn : 2 ≤ n) {K : Type} [Field K] {ξ : Kˣ →* ℂˣ}
     (hξ : GlobalTheory.Published.IsRegularChar g n ξ) : ξ ≠ 1 := by
   intro h1
   have := hξ 0 1 (by omega) (by omega) (by rw [h1, one_pow, one_pow])
   omega
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [MonoidHom.pow_apply, nmChar, MonoidHom.comp_apply, ← map_pow]`. Use `congr 2`. Use `ext`. Simplify using `[ZMod.pow_card]`.
+-/
 theorem nmChar_pow {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod g) K] (χ₀ : (ZMod g)ˣ →* ℂˣ) :
     nmChar K χ₀ ^ g = nmChar K χ₀ := by
   ext z
@@ -48,6 +57,9 @@ theorem nmChar_pow {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod 
   ext
   simp [ZMod.pow_card]
 
+/- English proof (translation)
+Introduce `h1`. Establish `hξe : ξ = (nmChar K χ₀)⁻¹` using `eq_inv_of_mul_eq_one_left h1`. Use `hξ 0 1 (by omega) (by omega) (by rw [hξe, pow_zero, pow_one, pow_one, inv_pow, nmChar_pow])` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem regular_mul_nm_ne_one {g n : ℕ} [Fact g.Prime] (hn : 2 ≤ n) {K : Type} [Field K] [Algebra (ZMod g) K]
     {ξ : Kˣ →* ℂˣ} (hξ : GlobalTheory.Published.IsRegularChar g n ξ) (χ₀ : (ZMod g)ˣ →* ℂˣ) : ξ * nmChar K χ₀ ≠ 1 := by
   intro h1

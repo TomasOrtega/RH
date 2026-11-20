@@ -16,6 +16,9 @@ namespace GlobalTheory.BKGal.CrisTensDR
 variable {l : ℕ} [Fact l.Prime] {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : LocTied l Pl AI)
   {LL : FinExt l} (T : QLat LL)
 
+/- English proof (translation)
+Rewrite using `[Submodule.coe_smul]`. Conclude with `(algebraMap_smul (↥LL.1) o (x : T.V)).symm`.
+-/
 theorem coe_smul_lat (o : ↥(OL LL)) (x : ↥T.L.T) :
     ((o • x : ↥T.L.T) : T.V) = (o : ↥LL.1) • (x : T.V) := by
   rw [Submodule.coe_smul]
@@ -39,15 +42,24 @@ def g : ↥(OL LL) →+ Per.Bcris l →+ (↥T.L.T →+ T.V ⊗[ℚ_[l]] Pl.R.Bd
       simp only [gb, gx, AddMonoidHom.mk'_apply, AddMonoidHom.add_apply, Subalgebra.coe_add, add_smul,
         TensorProduct.add_tmul])
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, GlobalTheory.BKGal.JumpDR.cB_algebraMap, ← Algebra.smul_def]`.
+-/
 theorem cB_smul (z : ℤ_[l]) (b : Per.Bcris l) :
     GlobalTheory.BKGal.JumpDR.cB Td (z • b) = (z : ℚ_[l]) • GlobalTheory.BKGal.JumpDR.cB Td b := by
   rw [Algebra.smul_def, map_mul, GlobalTheory.BKGal.JumpDR.cB_algebraMap, ← Algebra.smul_def]
 
+/- English proof (translation)
+Use `show ((z : ℚ_[l]) • (o : ↥LL.1)) • (x : T.V) = _`. Conclude with `smul_assoc _ _ _`.
+-/
 theorem zsmul_lat (z : ℤ_[l]) (o : ↥(OL LL)) (x : ↥T.L.T) :
     (((z • o : ↥(OL LL)) : ↥LL.1) • (x : T.V)) = (z : ℚ_[l]) • ((o : ↥LL.1) • (x : T.V)) := by
   show ((z : ℚ_[l]) • (o : ↥LL.1)) • (x : T.V) = _
   exact smul_assoc _ _ _
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h1` using `congrArg (fun v => v ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) (zsmul_lat T z o x)`. Establish `h2` using `congrArg (fun w => ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] w) (cB_smul Td z b)`. Conclude with `h1.trans ((TensorProduct.smul_tmul _ _ _).trans h2.symm)`.
+-/
 theorem g_balanced (z : ℤ_[l]) (o : ↥(OL LL)) (b : Per.Bcris l) : g Td T (z • o) b = g Td T o (z • b) := by
   ext x
   have h1 := congrArg (fun v => v ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) (zsmul_lat T z o x)
@@ -57,10 +69,18 @@ theorem g_balanced (z : ℤ_[l]) (o : ↥(OL LL)) (b : Per.Bcris l) : g Td T (z 
 def f1 : OB l ↥(OL LL) →+ (↥T.L.T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR) :=
   TensorProduct.liftAddHom (g Td T) (g_balanced Td T)
 
+/- English proof (translation)
+Rewrite using `[coe_smul_lat, smul_smul, Subalgebra.coe_mul, mul_comm]`.
+-/
 theorem mul_smul_lat (o o' : ↥(OL LL)) (x : ↥T.L.T) :
     (((o * o' : ↥(OL LL)) : ↥LL.1) • (x : T.V)) = (o' : ↥LL.1) • ((o • x : ↥T.L.T) : T.V) := by
   rw [coe_smul_lat, smul_smul, Subalgebra.coe_mul, mul_comm]
 
+/- English proof (translation)
+Use `AddMonoidHom.ext fun u => ?_` and prove the remaining obligations. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans (map_zero _).symm`. Consider the case `tmul o' b`. Use `AddMonoidHom.ext fun x => ?_` and prove the remaining obligations.
+
+Use `show g Td T (o * o') b x = g Td T o' b (o • x)`. Conclude with `congrArg (fun v => v ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) (mul_smul_lat T o o' x)`. Consider the case `add u v hu hv => exact (map_add _ u v).trans ((congrArg₂ (· + ·) hu hv).trans (map_add _ u v).symm)`.
+-/
 theorem crisTensorDRLiftFromCoeffBcris_smul_comm (o : ↥(OL LL)) :
     (f1 Td T).comp (DistribMulAction.toAddMonoidHom (OB l ↥(OL LL)) o) =
       (AddMonoidHom.compHom' (DistribMulAction.toAddMonoidHom (↥T.L.T) o)).comp (f1 Td T) := by
@@ -73,6 +93,9 @@ theorem crisTensorDRLiftFromCoeffBcris_smul_comm (o : ↥(OL LL)) :
     exact congrArg (fun v => v ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) (mul_smul_lat T o o' x)
   | add u v hu hv => exact (map_add _ u v).trans ((congrArg₂ (· + ·) hu hv).trans (map_add _ u v).symm)
 
+/- English proof (translation)
+Introduce `l _ Pl AI Td LL T`. Conclude with `⟨TensorProduct.liftAddHom (f1 Td T) fun o u x => DFunLike.congr_fun (DFunLike.congr_fun (crisTensorDRLiftFromCoeffBcris_smul_comm Td T o) u) x, fun o b x => rfl⟩`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (LL : FinExt l) (T : QLat LL), ∃ X : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR, ∀ (o : ↥(OL LL)) (b : Per.Bcris l) (x : ↥T.L.T), X ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b := by
   intro l _ Pl AI Td LL T
   exact ⟨TensorProduct.liftAddHom (f1 Td T) fun o u x =>

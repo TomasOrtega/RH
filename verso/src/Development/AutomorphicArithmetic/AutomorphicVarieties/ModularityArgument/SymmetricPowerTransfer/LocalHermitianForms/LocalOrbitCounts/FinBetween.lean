@@ -6,6 +6,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra Matrix UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Use `haveI := L.frac`. Take `⟨N, hN, hden⟩` from `int_denom L hτ`. Take `⟨r, hr⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) ({-x.re / x.im, 1 / x.im} : Finset K)`. Take `⟨p, hp⟩` from `hr _ (Finset.mem_insert_self _ _)`. Take `⟨q, hq⟩` from `hr _ (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))`.
+
+Rewrite `hp`, `hq` using `[Algebra.smul_def]`. Use `haveI := finite_quot_span L (mul_ne_zero hN (nonZeroDivisors.coe_ne_zero r))`. Set `M` to `integralClosure O (Etau K τ)`. Use `haveI : Module.Finite O M := Module.Finite.iff_fg (N := Subalgebra.toSubmodule M).2 (intE_fg L hτ)`. Set `I : Submodule O M` to `Ideal.span {N * r} • ⊤`.
+
+Use `haveI : Finite (M ⧸ I) := Submodule.finite_quotient_smul _ Module.Finite.fg_top`. Set `f : Set (M ⧸ I) → Set (Etau K τ)` to `fun A => Subtype.val '' (I.mkQ ⁻¹' A)`. Use `(Set.finite_range f).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨g, rfl⟩, -⟩, h1, h2, h3⟩`. Use `set T := Submodule.span O (g : Set (Etau K τ))`.
+
+Use `⟨I.mkQ '' (Subtype.val ⁻¹' (T : Set (Etau K τ))), ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨z, hz, e⟩, rfl⟩`. Establish `h4 : y - z ∈ (Ideal.span {N * r} • ⊤ : Submodule O M)` using `(Submodule.Quotient.eq _).1 e.symm`.
+
+Rewrite `h4` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨m, -, hm⟩` from `h4`. Establish `hm' : (N * r) • (m : Etau K τ) = y - z` using `congrArg Subtype.val hm`. Take `⟨a, b, ha, hb⟩` from `hden _ m.2`. Establish `e2 : (y : Etau K τ) = z + ((r * a + b * p) • (1 : Etau K τ) + (b * q) • x)`.
+
+Rewrite using `[← sub_eq_iff_eq_add', ← hm', ← algebraMap_smul K (N * r), ← algebraMap_smul K (r * a + b * p), ← algebraMap_smul K (b * q)]`. Simplify using `only [map_mul, map_add, hp, hq, ← ha, ← hb]`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, - algebraMap_smul] <;> field_simp <;> ring`. Rewrite using `[e2]`. Conclude with `T.add_mem hz (T.add_mem (T.smul_mem _ h1) (T.smul_mem _ h2))`.
+
+Introduce `hw`. Conclude with `⟨⟨w, h3 w hw⟩, ⟨⟨w, h3 w hw⟩, hw, rfl⟩, rfl⟩`.
+-/
 private theorem fin_between {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
     (L : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) (x : Etau K τ) (hx : x.im ≠ 0) :
     {S : Set (Etau K τ) | IsLat O τ S ∧ 1 ∈ S ∧ x ∈ S ∧ ∀ w ∈ S, IsIntegral O w}.Finite := by
@@ -44,6 +59,29 @@ private theorem fin_between {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteVa
     exact ⟨⟨w, h3 w hw⟩, ⟨⟨w, h3 w hw⟩, hw, rfl⟩, rfl⟩
 
 open UpperTheory.V.Z.Sym.Loc.GL in
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ L hτ j hj z hz`. Use `haveI := L.frac`. Take `⟨g, hg⟩` from `(gConj O K Δ τ L hτ (j0 τ) j leftMulMatrixEmbedding_omega_trace hj).1`. Establish `det : ∀ (y : GL (Fin 2) K) (s : Kˣ) (k : GL (Fin 2) K), k ∈ KG O K → y⁻¹ * jU j z * y = sc s * k → ∃ e : Oˣ, QuadraticAlgebra.norm (z : Etau K τ) = algebraMap O K e * (s : K) ^ 2` using `fun y s k hk e => by`. Take `⟨u, hu⟩` from `kg_det hk`.
+
+Use `congrArg (fun g : GL (Fin 2) K => (g : Matrix (Fin 2) (Fin 2) K).det) e` as an intermediate fact. Simplify using `only [Units.val_mul] at this`. Rewrite `this` using `[Matrix.det_units_conj', Matrix.det_mul, hu, sc_val, Matrix.det_smul]`. Conclude with `⟨u, by rw [← j_det j hj]; exact this.trans (by simp [mul_comm])⟩`. Distinguish the cases in `h0 : ∃ y₀ : GL (Fin 2) K, y₀⁻¹ * jU j z * y₀ ∈ ZK O K`.
+
+Use `swap`. Conclude with `⟨∅, fun y hy => absurd ⟨y, hy⟩ h0⟩`. Take `⟨y₀, hy₀⟩` from `h0`. Take `⟨s, k₀, hk₀, e₀⟩` from `zk_iff.1 hy₀`. Take `⟨ε, hε⟩` from `det y₀ s k₀ hk₀ e₀`.
+
+Set `u : (Etau K τ)ˣ` to `su τ s⁻¹ * z`. Establish `hun : QuadraticAlgebra.norm (u : Etau K τ) = algebraMap O K ε`. Rewrite using `[Units.val_mul, su_mul, Algebra.smul_def, map_mul, QuadraticAlgebra.norm_algebraMap, hε, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Establish `hui : (u : Etau K τ).im ≠ 0`.
+
+Rewrite using `[Units.val_mul, su_mul]`. Simplify using `using hz`. Establish `fin` using `fin_between L hτ u hui`. Use `choose! rep hrep using fun S (h : IsLat O τ S) => isLat_lat h`. Use `⟨fin.toFinset.image fun S => g⁻¹ * rep S, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (g * y)⁻¹ * (jU (j0 τ) u * (g * y)) ∈ ZK O K`. Establish `: (g * y)⁻¹ * (jU (j0 τ) u * (g * y)) = sc s⁻¹ * (y⁻¹ * jU j z * y)`. Rewrite using `[map_mul, jU_su, hg, mul_assoc (sc s⁻¹), ← mul_assoc, ← sc_comm]`. Use `group`. Rewrite using `[this]`.
+
+Conclude with `mul_mem (Subgroup.mem_sup_left ⟨_, rfl⟩) hy`. Establish `h2` using `ent_of_zk ε (by`. Rewrite using `[← mul_assoc, Units.val_mul, Units.val_mul, Matrix.det_units_conj', ← hun]`. Conclude with `leftMulMatrixEmbedding_det_eq_norm _) h1`. Establish `h3` using `lat_le (τ := τ).2 h2`.
+
+Rewrite `h3` using `[lat_mul]`. Take `⟨t, ht⟩` from `PS.gen_ex L hτ (lat_isLat (O := O) (g * y))`. Establish `hl` using `PS.lat_ml (lat_isLat (O := O) (τ := τ) (g * y)) t⁻¹`. Establish `hm : PS.ml t⁻¹ (LL O τ (g * y)) ∈ fin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`.
+
+Use `⟨hl, PS.mem_ml.2 (by simpa using ht.1), PS.mem_ml.2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv, mul_comm]`. Conclude with `h3 ⟨_, ht.1, rfl⟩`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `ht.2 w hw`.
+
+Use `⟨t, _, Finset.mem_image_of_mem _ hm, (jU j t * (g⁻¹ * rep (PS.ml t⁻¹ (LL O τ (g * y)))))⁻¹ * y, ?_, by group⟩` and prove the remaining obligations. Establish `: cls τ (LL O τ (jU (j0 τ) t * rep (PS.ml t⁻¹ (LL O τ (g * y))))) = cls τ (LL O τ (g * y))`. Rewrite using `[lat_mul, ← hrep _ hl]`. Express the relevant statement in the definitionally equal form `cls τ (PS.ml _ _) = _`. Rewrite using `[← PS.ml_mul, mul_inv_cancel, PS.ml_one]`.
+
+Rewrite `this` using `[cls_lat]`. Rewrite using `[hg]`. Simplify `this` using `[mul_assoc]`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.finG : UpperTheory.V.Z.Sym.Loc.FinG := by
   intro O K _ _ _ _ _ Δ τ L hτ j hj z hz
   haveI := L.frac

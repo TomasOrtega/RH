@@ -23,6 +23,11 @@ open GlobalTheory.Cartier GlobalTheory.Discrepancy GlobalTheory.QCoh
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ X q _ U y hy`. Use `haveI : JacobsonSpace X := LocallyOfFiniteType.jacobsonSpace q`. Establish `hne : (closure ({y} : Set X) ∩ (U : Set X)).Nonempty` using `⟨y, subset_closure rfl, hy⟩`. Establish `hlc : IsLocallyClosed (closure ({y} : Set X) ∩ (U : Set X))` using `⟨U, closure {y}, U.isOpen, isClosed_closure, Set.inter_comm _ _⟩`. Take `⟨x, ⟨hxc, hxU⟩, hx⟩` from `nonempty_inter_closedPoints hne hlc`.
+
+Conclude with `⟨x, (mem_closedPoints_iff).1 hx, specializes_iff_mem_closure.2 hxc, hxU⟩`.
+-/
 theorem closedPoint_specializing_in_open : ∀ (k : Type) [Field k] (X : Scheme.{0}) (q : X ⟶ Sp k) [LocallyOfFiniteType q] (U : X.Opens) (y : X), y ∈ U → ∃ x : X, IsClosed ({x} : Set X) ∧ y ⤳ x ∧ x ∈ U := by
   intro k _ X q _ U y hy
   haveI : JacobsonSpace X := LocallyOfFiniteType.jacobsonSpace q

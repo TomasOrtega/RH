@@ -10,6 +10,15 @@ namespace UpperTheory.FourierBlockTranspose
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Establish `hϖ0 : (ϖ : k) ≠ 0` using `ϖ.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Establish `hc' : (c : k) * (ϖ : k) ^ e = (a : k) - b`.
+
+Simplify using `using congrArg Subtype.val hc`. Rewrite using `[← hc', Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`. Establish `: ((ϖ : k) ^ e)⁻¹ * ((c : k) * (ϖ : k) ^ e) = c`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+
+Conclude with `c.2`. Introduce `h`. Use `⟨⟨_, h⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, AddSubgroupClass.coe_sub, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem mk_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (a b : 𝒪[k]) :
     (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ e) a = Ideal.Quotient.mk _ b) ↔
       (((ϖ ^ e)⁻¹ : kˣ) : k) * ((a : k) - b) ∈ 𝒪[k] := by
@@ -31,11 +40,27 @@ private theorem mk_eq_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (e : ℕ) (a b : 𝒪[k])
       Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val]
     field_simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun c _ => mul_mem (hX i c) (hY c j)`.
+-/
 private theorem mul_mem_int {A C B : Type} [Fintype C] {X : Matrix A C k} {Y : Matrix C B k}
     (hX : ∀ i j, X i j ∈ 𝒪[k]) (hY : ∀ i j, Y i j ∈ 𝒪[k]) (i : A) (j : B) : (X * Y) i j ∈ 𝒪[k] := by
   rw [Matrix.mul_apply]
   exact sum_mem fun c _ => mul_mem (hX i c) (hY c j)
 
+/- English proof (translation)
+Take `⟨hMi, hMinv⟩` from `(mem_KO_iff M).1 hM`. Establish `hint : ∀ (S : A → B → Res k e) (i : A) (j : B), (M.val * liftRes S) i j ∈ 𝒪[k]` using `fun S i j => mul_mem_int hMi (liftRes_mem S) i j`. Set `σ : (A → B → Res k e) → (A → B → Res k e)` to `fun S i j => Ideal.Quotient.mk _ ⟨(M.val * liftRes S) i j, hint S i j⟩`. Establish `hclose : ∀ (S : A → B → Res k e) (i : A) (j : B), (((ϖ ^ e)⁻¹ : kˣ) : k) * (liftRes (σ S) i j - (M.val * liftRes S) i j) ∈ 𝒪[k]`. Introduce `S i j`.
+
+Establish `h` using `(mk_eq_iff hϖ e (Quotient.out (σ S i j)) ⟨_, hint S i j⟩).1 (by rw [Ideal.Quotient.mk_out])`. Simplify `h` using `[liftRes]`. Establish `hinj : Function.Injective σ`. Introduce `S S' h`. Use function extensionality and compare the values at `i j`.
+
+Establish `hd : ∀ a b, ((((ϖ ^ e)⁻¹ : kˣ) : k) • (M.val * (liftRes S - liftRes S'))) a b ∈ 𝒪[k]`. Introduce `a b`. Establish `h1` using `(mk_eq_iff hϖ e _ _).1 (congrFun (congrFun h a) b)`. Simplify `h1` using `[Matrix.mul_sub, Matrix.sub_apply, Matrix.smul_apply]`. Establish `h2` using `mul_mem_int hMinv hd i j`.
+
+Rewrite `h2` using `[Matrix.mul_smul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `h3` using `(mk_eq_iff hϖ e (Quotient.out (S i j)) (Quotient.out (S' i j))).2 (by simpa [liftRes, Matrix.sub_apply, Matrix.smul_apply] using h2)`. Rewrite `h3` using `[Ideal.Quotient.mk_out, Ideal.Quotient.mk_out]`. Then use the resulting hypothesis. Use `Fintype.sum_bijective σ (Finite.injective_iff_bijective.1 hinj) _ _ ?_` and prove the remaining obligations. Introduce `S`.
+
+Establish `hsplit : (ϖ ^ e)⁻¹ • liftRes (σ S) = M.val * ((ϖ ^ e)⁻¹ • liftRes S) + ((ϖ ^ e)⁻¹ • liftRes (σ S) - M.val * ((ϖ ^ e)⁻¹ • liftRes S))` using `by abel`. Rewrite using `[hsplit, hf]`. Introduce `i j`. Rewrite using `[Matrix.mul_smul]`. Simplify using `only [Units.smul_def, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, ← mul_sub]`.
+
+Conclude with `hclose S i j`.
+-/
 private theorem sum_res_mul_left {A B : Type} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B]
     (ϖ : kˣ) (e : ℕ) (hϖ : IsUnif ϖ) (f : Matrix A B k → ℂ)
     (hf : ∀ Z Z' : Matrix A B k, (∀ i j, Z' i j ∈ 𝒪[k]) → f (Z + Z') = f Z)
@@ -78,6 +103,39 @@ private theorem sum_res_mul_left {A B : Type} [Fintype A] [DecidableEq A] [Finty
 end UpperTheory.FourierBlockTranspose
 
 open UpperTheory.FourierBlockTranspose in
+/- English proof (translation)
+Introduce `k _ _ _ _ A D₁ D₂ _ _ _ _ _ _ ψ ϖ e hϖ hψ Φ hΦ u hu Y`. Take `⟨huI, huinvI⟩` from `(mem_KO_iff u).1 hu`. Establish `hmulcond : ∀ g : Matrix A A k, (∀ i j, g i j ∈ 𝒪[k]) → ∀ Z : Matrix A (D₁ ⊕ D₂) k, (∀ i, ∀ j ∈ Assignment.one.block D₁ D₂, ((ϖ ^ e : kˣ) : k) * Z i j ∈ 𝒪[k]) → (∀ i, ∀ j ∈ Assignment.one.block D₁ D₂, ((ϖ ^ e : kˣ) : k) * (g * Z) i j ∈ 𝒪[k])`. Introduce `g hg Z hZ i j hj`. Establish `h` using `mul_mem_int hg (Y := Matrix.of fun (a : A) (b : Assignment.one.block D₁ D₂) => ((ϖ ^ e : kˣ) : k) * Z a b) (fun a b => hZ a b b.2) i ⟨j, hj⟩`.
+
+Rewrite `h` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `h using 2 with l` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hcond : (∀ i, ∀ j ∈ Assignment.one.block D₁ D₂, ((ϖ ^ e : kˣ) : k) * Y i j ∈ 𝒪[k]) ↔ (∀ i, ∀ j ∈ Assignment.one.block D₁ D₂, ((ϖ ^ e : kˣ) : k) * ((u⁻¹).val * Y) i j ∈ 𝒪[k])`. Prove the components needed by the constructor for the conclusion. Conclude with `hmulcond _ huinvI Y`. Introduce `h`. Establish `h2` using `hmulcond _ huI _ h`.
+
+Rewrite `h2` using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Then use the resulting hypothesis. Rewrite using `[fourierSum_apply, fourierSum_apply]`. Distinguish the cases in `hc : ∀ i, ∀ j ∈ Assignment.one.block D₁ D₂, ((ϖ ^ e : kˣ) : k) * Y i j ∈ 𝒪[k]`. Use `swap`. Rewrite using `[if_neg hc, if_neg (mt hcond.2 hc)]`.
+
+Rewrite using `[if_pos hc, if_pos (hcond.1 hc)]`. Establish `hc'` using `hcond.1 hc`. Use `congr 1`. Establish `hψ1 : ∀ y : k, y ∈ 𝒪[k] → ψ y = 1`. Introduce `y hy`.
+
+Establish `h` using `(hψ (1 : k)).2 (by simp)`. Apply `h` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `(Valuation.mem_integer_iff _ _).1 hy`. Establish `hmat : ∀ L : Matrix A (Assignment.one.block D₁ D₂) k, fromCols (u.valᵀ * (setCols (Assignment.one.block D₁ D₂) Y L).toCols₁) ((u⁻¹).val * (setCols (Assignment.one.block D₁ D₂) Y L).toCols₂) = setCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) (u.valᵀ * L)`.
+
+Introduce `L`. Use extensionality with `i j`. Break down `j with d | d` into its components or cases. Simplify using `[setCols, Assignment.block, Matrix.mul_apply]`. Both sides reduce to the same expression.
+
+Simplify using `[setCols, Assignment.block, Matrix.mul_apply]`. Establish `hpair : ∀ L : Matrix A (Assignment.one.block D₁ D₂) k, pairCols (Assignment.one.block D₁ D₂) Y L = pairCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) (u.valᵀ * L)`. Introduce `L`. Rewrite using `[pairCols_eq_trace, pairCols_eq_trace]`. Establish `hs : ((u⁻¹).val * Y).submatrix id Subtype.val = (u⁻¹).val * Y.submatrix id (Subtype.val : Assignment.one.block D₁ D₂ → D₁ ⊕ D₂)`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[hs, Matrix.transpose_mul, ← Matrix.mul_assoc, Matrix.trace_mul_comm (u.valᵀ * L * (Y.submatrix id Subtype.val)ᵀ), ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`. Set `f : Matrix A (Assignment.one.block D₁ D₂) k → ℂ` to `fun W => Φ (setCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • W)) * (ψ (pairCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • W)) : ℂ)`. Establish `hΦ' : HasDepth ϖ e (stdLat k (D₁ ⊕ D₂)) Φ` using `hΦ`.
+
+Take `⟨_, hΦinv⟩` from `hΦ'`. Establish `hf : ∀ Z Z' : Matrix A (Assignment.one.block D₁ D₂) k, (∀ i j, Z' i j ∈ 𝒪[k]) → f (Z + Z') = f Z`. Introduce `Z Z' hZ'`. Simplify using `only [f]`. Rewrite using `[smul_add]`.
+
+Establish `hset : setCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • Z + (ϖ ^ e) • Z') = setCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • Z) + setCols (Assignment.one.block D₁ D₂) 0 ((ϖ ^ e) • Z')`. Use extensionality with `i j`. Simplify using `only [setCols, Matrix.of_apply, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hlat : setCols (Assignment.one.block D₁ D₂) 0 ((ϖ ^ e) • Z') ∈ matLat A (ϖ ^ e • stdLat k (D₁ ⊕ D₂))`.
+
+Rewrite using `[FourierDepth.mem_matLat_smul_stdLat]`. Introduce `i j`. Simplify using `only [setCols, Matrix.of_apply]`. Use `split_ifs with h`. Rewrite using `[Matrix.smul_apply, Units.smul_def, smul_eq_mul, map_mul]`.
+
+Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hZ' i ⟨j, h⟩))`. Simplify using the standard rewrite rules. Establish `hpadd : pairCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • Z + (ϖ ^ e) • Z') = pairCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • Z) + pairCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • Z')`. Simplify using `only [pairCols, Matrix.add_apply, add_mul, Finset.sum_add_distrib]`. Establish `hmemb : pairCols (Assignment.one.block D₁ D₂) ((u⁻¹).val * Y) ((ϖ ^ e) • Z') ∈ 𝒪[k]`.
+
+Simplify using `only [pairCols]`. Use `sum_mem fun i _ => sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, Units.smul_def, smul_eq_mul, mul_comm ((ϖ ^ e : kˣ) : k) _, mul_assoc]`. Conclude with `mul_mem (hZ' i j) (hc' i j j.2)`. Rewrite using `[hset, hΦinv _ _ hlat, hpadd, AddChar.map_add_eq_mul, hψ1 _ hmemb, mul_one]`.
+
+Establish `key` using `sum_res_mul_left ϖ e hϖ f hf (invT u⁻¹) (invT_mem_KO (inv_mem hu))`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `only [f]`. Rewrite using `[invT_val, inv_inv, Matrix.mul_smul, smul_inv_smul, ← hmat, ← hpair]`.
+
+Use `_ = ∑ T : A → Assignment.one.block D₁ D₂ → Res k e, f ((ϖ ^ e)⁻¹ • liftRes T) := key`. Use `_ = _ := by`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `only [f, smul_inv_smul]`.
+-/
 theorem UpperTheory.fourierSum_block_transpose_inv_eq :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {A D₁ D₂ : Type} [Fintype A] [DecidableEq A] [Fintype D₁] [DecidableEq D₁] [Fintype D₂] [DecidableEq D₂] (ψ : AddChar k Circle) (ϖ : kˣ) (e : ℕ), IsUnif ϖ → HasConductor ψ 1 → ∀ Φ : Matrix A (D₁ ⊕ D₂) k → ℂ, IsNatDatum ϖ e Φ → ∀ u ∈ KO k A, ∀ Y : Matrix A (D₁ ⊕ D₂) k, fourierSum ψ ϖ e (Assignment.one.block D₁ D₂) (fun Z => Φ (fromCols (u.valᵀ * Z.toCols₁) ((u⁻¹).val * Z.toCols₂))) Y = fourierSum ψ ϖ e (Assignment.one.block D₁ D₂) Φ ((u⁻¹).val * Y) := by
   intro k _ _ _ _ A D₁ D₂ _ _ _ _ _ _ ψ ϖ e hϖ hψ Φ hΦ u hu Y

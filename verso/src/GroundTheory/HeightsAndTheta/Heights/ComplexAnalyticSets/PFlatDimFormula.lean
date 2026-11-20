@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ hA hB hloc hflat`. Use `set I : Ideal B := (maximalIdeal A).map (algebraMap A B) with hI`. Establish `: (maximalIdeal B).LiesOver (maximalIdeal A)` using `⟨(IsLocalRing.maximalIdeal_comap (algebraMap A B)).symm⟩`. Establish `hIle : I ≤ maximalIdeal B` using `IsLocalRing.map_maximalIdeal_le (algebraMap A B)`. Establish `: Nontrivial (B ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (maximalIdeal.isMaximal B).ne_top hIle)`.
+
+Establish `: IsLocalRing (B ⧸ I)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Establish `hmap : (maximalIdeal B).map (Ideal.Quotient.mk I) = maximalIdeal (B ⧸ I)` using `IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `key` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal A) (maximalIdeal B)`. Rewrite `key` using `[← hI, hmap]`. Rewrite using `[← IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := B), ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := A), ← IsLocalRing.maximalIdeal_height_eq_ringKrullDim (R := B ⧸ I), key, WithBot.coe_add]`.
+-/
 theorem FlatDimFormula.proof : FlatDimFormula.Statement := by
   intro A B _ _ _ _ _ hA hB hloc hflat
   set I : Ideal B := (maximalIdeal A).map (algebraMap A B) with hI

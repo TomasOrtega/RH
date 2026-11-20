@@ -40,19 +40,37 @@ section Pull
 
 variable {m : ℕ} (ε : Fin m → Bool) {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+-/
 theorem ujMat_injective : Function.Injective (ujMat ε) := fun _ _ h => Subtype.ext (Units.ext h)
 
 def matRep (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (x : Matrix (Fin m) (Fin m) ℂ) : X →L[ℂ] X := by
   classical exact if h : ∃ g, ujMat ε g = x then π h.choose else 1
 
+/- English proof (translation)
+Establish `h : ∃ g', ujMat ε g' = ujMat ε g` using `⟨g, rfl⟩`. Rewrite using `[matRep, dif_pos h, ujMat_injective ε h.choose_spec]`.
+-/
 theorem matRep_ujMat (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (g : Formalism.REAL.UJ ε) : matRep ε π (ujMat ε g) = π g := by
   have h : ∃ g', ujMat ε g' = ujMat ε g := ⟨g, rfl⟩
   rw [matRep, dif_pos h, ujMat_injective ε h.choose_spec]
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 theorem ujMat_mem_UJset (g : Formalism.REAL.UJ ε) : ujMat ε g ∈ UJset ε := g.2
 
 variable {ε}
 
+/- English proof (translation)
+Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun a ha v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_one (ujMat ε), matRep_ujMat, map_one]`. Take `⟨g, rfl⟩` from `hs a ha`. Take `⟨h, rfl⟩` from `hs b hb`. Rewrite using `[← map_mul, matRep_ujMat, matRep_ujMat, matRep_ujMat, map_mul]`.
+
+Both sides reduce to the same expression. Take `⟨g, rfl⟩` from `hs a ha`. Rewrite using `[matRep_ujMat]`. Conclude with `hπ.norm_apply g v`. Establish `hr : UJset ε = Set.range (ujMat ε)` using `Set.ext fun x => ⟨fun hx => hs x hx, by rintro ⟨g, rfl⟩; exact ujMat_mem_UJset ε g⟩`.
+
+Rewrite using `[hr, continuousOn_iff_continuous_domRestrict]`. Set `E` to `(GlobalTheory.Orb.isEmbedding_ujMat ε).toHomeomorph`. Establish `hE : ∀ y, (fun g => π g v) (E.symm y) = matRep ε π (y : Matrix (Fin m) (Fin m) ℂ) v`. Introduce `y`. Take `⟨g, rfl⟩` from `E.surjective y`.
+
+Use `show π (E.symm (E g)) v = matRep ε π (ujMat ε g) v`. Rewrite using `[E.symm_apply_apply, matRep_ujMat]`. Conclude with `((hπ.continuous_apply v).comp E.symm.continuous).congr hE`.
+-/
 theorem matRep_isURepOn (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (hπ : GlobalTheory.OpTrace.IsUnitaryRep π)
     (hs : ∀ x ∈ UJset ε, ∃ g, ujMat ε g = x) : IsURepOn (UJset ε) (matRep ε π) := by
   refine ⟨⟨?_, fun a ha b hb => ?_⟩, fun a ha v => ?_, fun v => ?_⟩
@@ -75,15 +93,26 @@ theorem matRep_isURepOn (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (hπ : 
       rw [E.symm_apply_apply, matRep_ujMat]
     exact ((hπ.continuous_apply v).comp E.symm.continuous).congr hE
 
+/- English proof (translation)
+Introduce `S hS hinv` and use `hπ.2 S ⟨hS, fun g v hv => by simpa [matRep_ujMat] using hinv _ (ujMat_mem_UJset ε g) v hv⟩`.
+-/
 theorem matRep_isIrredOn (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (hπ : GlobalTheory.AutomorphicL2Unitary.IsTopIrreducible π) :
     IsIrredOn (UJset ε) (matRep ε π) := fun S hS hinv =>
   hπ.2 S ⟨hS, fun g v hv => by simpa [matRep_ujMat] using hinv _ (ujMat_mem_UJset ε g) v hv⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun g => matRep_ujMat ε π g`.
+-/
 theorem groupRep_matRep (π : Formalism.REAL.UJ ε →* (X →L[ℂ] X)) (h : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) (matRep ε π)) :
     groupRep ε h = π := MonoidHom.ext fun g => matRep_ujMat ε π g
 
 end Pull
 
+/- English proof (translation)
+Use `⟨?_, h⟩` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, r = k + 1` from `⟨r - 1, by omega⟩`. Use `Fin.strictAnti_iff_succ_lt.2 fun i => ?_` and prove the remaining obligations. Use `h i.castSucc i.succ (by simp)` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem hasWideGaps_of_gap {r : ℕ} (hr : 0 < r) {lam : Fin r → ℤ} (h : Gap lam) :
     GlobalTheory.IndefiniteRowSideFullHecke.PseudoCoefficientSeparation.HasWideGaps lam := by
   refine ⟨?_, h⟩
@@ -93,6 +122,11 @@ theorem hasWideGaps_of_gap {r : ℕ} (hr : 0 < r) {lam : Fin r → ℤ} (h : Gap
   push_cast at this
   omega
 
+/- English proof (translation)
+Use `⟨Int.cast_strictMono.comp_strictAnti (hasWideGaps_of_gap hr.pos h).1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hr`. Substitute `hk` using the available equality. Use `⟨lam a - k, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isHCParam_of_gap {r : ℕ} (hr : Odd r) {lam : Fin r → ℤ} (h : Gap lam) :
     Formalism.QuantumDeterminants.IsHCParam (fun i => (lam i : ℝ)) := by
   refine ⟨Int.cast_strictMono.comp_strictAnti (hasWideGaps_of_gap hr.pos h).1, fun a => ?_⟩
@@ -110,6 +144,23 @@ open Formalism.MainNotions.S (IsURepOn UJset IsIrredOn)
 open GlobalTheory.Orb (ujMat ujRep frameEquiv IsPseudoCoeff isPseudoCoeff_dsRep_iff exists_frameMat_eq repOp_map)
 open GlobalTheory.RealInd (IsIrrAdm groupRep)
 
+/- English proof (translation)
+Introduce `hDS hHC hSep D V lam S M T U μa μf μ _ _ fa ff hT ρ X _ _ _ δ hδ`. Take `⟨hodd, hgap, hlam, -, hprod, harch, -⟩` from `hT`. Use `haveI : (μa (placeOf D ρ)).IsHaarMeasure := hprod.1 (placeOf D ρ)`. Use `haveI := (M.ds ρ).1`. Use `haveI : Nontrivial X := hδ.irred.1`.
+
+Establish `hs : ∀ x ∈ UJset (M.ε ρ), ∃ g, ujMat (M.ε ρ) g = x` using `fun x hx => by`. Take `⟨g, hg⟩` from `exists_frameMat_eq M ρ hx`. Conclude with `⟨frameEquiv M ρ g, hg⟩`. Use `haveI : ((μa (placeOf D ρ)).map (frameEquiv M ρ)).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ (frameEquiv M ρ)`. Establish `hfe : (fa (placeOf D ρ) ∘ (frameEquiv M ρ).symm) ∘ frameEquiv M ρ = fa (placeOf D ρ)`.
+
+Use function extensionality and compare the values at `fun g => by simp`. Establish `hpc : IsPseudoCoeff (ujMat (M.ε ρ)) ((μa (placeOf D ρ)).map (frameEquiv M ρ)) (ujRep (M.ds ρ).2.2.1) (fa (placeOf D ρ) ∘ (frameEquiv M ρ).symm)` using `(isPseudoCoeff_dsRep_iff M ρ _ _).2 (by rw [hfe]; exact harch ρ)`. Set `π` to `δ.comp ((frameEquiv M ρ).symm : Formalism.REAL.UJ (M.ε ρ) →* _)`. Establish `hπu : GlobalTheory.OpTrace.IsUnitaryRep π` using `⟨fun g v => hδ.unitary.norm_apply _ v, fun v => (hδ.unitary.continuous_apply v).comp (frameEquiv M ρ).symm.continuous⟩`. Establish `hπi : GlobalTheory.AutomorphicL2Unitary.IsTopIrreducible π` using `⟨hδ.irred.1, fun W hW => hδ.irred.2 W ⟨hW.1, fun h v hv => by simpa [π] using hW.2 (frameEquiv M ρ h) v hv⟩⟩`.
+
+Establish `hU` using `matRep_isURepOn π hπu hs`. Establish `hadm : IsIrrAdm (M.ε ρ) (matRep (M.ε ρ) π)` using `GlobalTheory.T.unitary_irreducible_is_admissible _ _ X _ hU (matRep_isIrredOn π hπi)`. Take `⟨Θ, hΘ⟩` from `hHC.1 V.rank (M.ε ρ) ((μa (placeOf D ρ)).map (frameEquiv M ρ)) X (matRep (M.ε ρ) π) hadm`. Take `⟨c, htr⟩ : ∃ c, HasTrace (repOp (groupRep (M.ε ρ) hadm.2.1.1) ((μa (placeOf D ρ)).map (frameEquiv M ρ)) (fa (placeOf D ρ) ∘ (frameEquiv M ρ).symm)) c` from `⟨_, hΘ.1.2.2 _ hpc.mem⟩`. Establish `hδe : π.comp ((frameEquiv M ρ) : _ →* Formalism.REAL.UJ (M.ε ρ)) = δ` using `MonoidHom.ext fun g => by simp [π]`.
+
+Use `⟨c, ?_, fun hc => ?_⟩` and prove the remaining obligations. Establish `h2` using `htr`. Rewrite `h2` using `[groupRep_matRep, repOp_map, hδe, hfe]`. Conclude with `h2`. Establish `hML : M.lam ρ = fun i => (lam ρ i : ℝ)` using `funext (hlam ρ)`.
+
+Establish `hHCp : Formalism.QuantumDeterminants.IsHCParam (M.lam ρ)`. Rewrite using `[hML]`. Conclude with `isHCParam_of_gap hodd (hgap ρ)`. Establish `hinf` using `(GlobalTheory.DiscreteSeriesConsequences.of_classification hDS).2.1 V.rank (M.ε ρ) (M.lam ρ) (M.H ρ) (M.σ ρ) hHCp (M.ds ρ)`. Simplify using `only [hlam ρ, Complex.ofReal_intCast] at hinf`.
+
+Establish `hD : GlobalTheory.IndefiniteRowSideFullHecke.PseudoCoefficientSeparation.IsDiscreteWithInfChar (M.ε ρ) (lam ρ) (M.σ ρ)` using `⟨⟨(M.ds ρ).1, (M.ds ρ).2.1, (M.ds ρ).2.2.1, (M.ds ρ).2.2.2.1, (M.ds ρ).2.2.2.2.1⟩, hinf⟩`. Take `⟨-, hb⟩` from `hSep V.rank hodd (M.ε ρ) (lam ρ) (hasWideGaps_of_gap hodd.pos (hgap ρ)) (M.H ρ) (M.σ ρ) hD ((μa (placeOf D ρ)).map (frameEquiv M ρ)) _ hpc X (matRep (M.ε ρ) π) hadm _ htr hc`. Take `⟨⟨A, hA⟩, -⟩` from `hb hU`. Use `⟨A, fun g v => ?_⟩` and prove the remaining obligations. Establish `h3` using `hA (ujMat (M.ε ρ) (frameEquiv M ρ g)) (ujMat_mem_UJset _ _) v`.
+
+Rewrite `h3` using `[matRep_ujMat]`. Simplify using `only [π, MonoidHom.comp_apply, MonoidHom.coe_coe, ContinuousMulEquiv.symm_apply_apply] at h3`. Conclude with `h3`.
+-/
 theorem trace_pseudoCoeff_arch : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.HarishChandraCharacters → GlobalTheory.IndefiniteRowSideFullHecke.PseudoCoefficientSeparation.PseudoCoeffSeparation → ∀ (D : D7) (V : HSp D) (lam : D.what₂.Tau → Fin V.rank → ℤ) (S : D.what₂.Tau → SPar) (M : DSModel V S) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsTestData V lam M T U μa μf μ fa ff → ∀ (ρ : D.what₂.Tau) (X : Type) [NormedAddCommGroup X] [InnerProductSpace ℂ X] [CompleteSpace X] (δ : GArch D.sp.cm.sig V.gram (placeOf D ρ) →* (X →L[ℂ] X)), IsIrrUnitary δ → ∃ c, HasTrace (repOp δ (μa (placeOf D ρ)) (fa (placeOf D ρ))) c ∧ (c ≠ 0 → IsUnitEquiv δ (dsRep M ρ)) := by
   intro hDS hHC hSep D V lam S M T U μa μf μ _ _ fa ff hT ρ X _ _ _ δ hδ
   obtain ⟨hodd, hgap, hlam, -, hprod, harch, -⟩ := hT

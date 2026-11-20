@@ -5,6 +5,15 @@ open scoped NNReal TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R Ω _ _ _ _ _ _ _ hinj`. Use `haveI : FaithfulSMul R Ω := (faithfulSMul_iff_algebraMap_injective R Ω).mpr hinj`. Use `letI : Algebra (FractionRing R) Ω := FractionRing.liftAlgebra R Ω`. Use `haveI : IsScalarTower R (FractionRing R) Ω := FractionRing.isScalarTower_liftAlgebra R Ω`. Use `haveI : Algebra.IsAlgebraic (FractionRing R) Ω := Algebra.IsAlgebraic.extendScalars (IsFractionRing.injective R (FractionRing R))`.
+
+Take `⟨f, hna, hnt, hball, hcomp⟩` from `GlobalTheory.T.exists_absoluteValue_completeSpace_of_dvr R (FractionRing R)`. Take `⟨v, -, hv⟩` from `GlobalTheory.T.exists_spectral_valuation_algebraic_extension (FractionRing R) Ω f hna hnt hcomp`. Use `⟨v, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Simplify using `only [hball]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hl : minpoly (FractionRing R) x ∈ Polynomial.lifts (algebraMap R (FractionRing R))` using `(Polynomial.lifts_iff_coeff_lifts _).mpr h`. Take `⟨q, hq, -, hmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (minpoly.monic (Algebra.IsIntegral.isIntegral x))`. Use `⟨q, hmon, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap (FractionRing R), hq]`. Conclude with `minpoly.aeval _ _`. Introduce `h i`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' (FractionRing R) h, Polynomial.coeff_map]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem valuation_le_one_iff_isIntegral_of_complete_dvr :
     ∀ (R Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
       [IsAdicComplete (IsLocalRing.maximalIdeal R) R] [Field Ω] [Algebra R Ω]

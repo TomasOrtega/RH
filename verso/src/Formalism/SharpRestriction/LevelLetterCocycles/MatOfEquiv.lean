@@ -26,6 +26,9 @@ def matOf {k : ℕ} (b : Module.Basis (Fin k) LL V) (ρ : Representation LL G V)
     G →* Matrix (Fin k) (Fin k) LL :=
   (LinearMap.toMatrixAlgEquiv b).toAlgHom.toRingHom.toMonoidHom.comp ρ
 
+/- English proof (translation)
+Simplify using `only [matOf, MonoidHom.coe_comp, Function.comp_apply, Module.Basis.equivFun_apply]`. Express the relevant statement in the definitionally equal form `⇑(b.repr ((ρ g) x)) = (Matrix.toLinAlgEquiv' (LinearMap.toMatrix b b (ρ g))) ⇑(b.repr x)`. Rewrite using `[Matrix.toLinAlgEquiv'_apply, LinearMap.toMatrix_mulVec_repr]`.
+-/
 theorem matOf_equiv {k : ℕ} (b : Module.Basis (Fin k) LL V) (ρ : Representation LL G V) (g : G) (x : V) :
     b.equivFun (ρ g x) =
       ((Matrix.toLinAlgEquiv' : Matrix (Fin k) (Fin k) LL ≃ₐ[LL] _).toAlgHom.toRingHom.toMonoidHom.comp
@@ -34,6 +37,15 @@ theorem matOf_equiv {k : ℕ} (b : Module.Basis (Fin k) LL V) (ρ : Representati
   change ⇑(b.repr ((ρ g) x)) = (Matrix.toLinAlgEquiv' (LinearMap.toMatrix b b (ρ g))) ⇑(b.repr x)
   rw [Matrix.toLinAlgEquiv'_apply, LinearMap.toMatrix_mulVec_repr]
 
+/- English proof (translation)
+Establish `h1` using `Formalism.MainNotions.N.K.Norm.isCrys_congr PD b.equivFun (matOf_equiv b ρ) h`. Establish `h2` using `coefficient_crystal_generation PD (IsScalarTower.toAlgHom Qp LL LL') (matOf b ρ) h1`. Set `b' : Module.Basis (Fin k) LL' (LL' ⊗[LL] V)` to `Algebra.TensorProduct.basis LL' b`. Use `Formalism.MainNotions.N.K.Norm.isCrys_congr PD b'.equivFun.symm (fun g y => ?_) h2` and prove the remaining obligations. Establish `hm : ∀ g, matOf b' (bρ LL' ρ) g = (IsScalarTower.toAlgHom Qp LL LL').mapMatrix (matOf b ρ g)`.
+
+Introduce `g`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix b' b' ((ρ g).baseChange LL') = (LinearMap.toMatrix b b (ρ g)).map _`. Rewrite using `[LinearMap.toMatrix_baseChange]`. Both sides reduce to the same expression. Apply `b'.equivFun.injective` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `e1` using `matOf_equiv b' (bρ LL' ρ) g (b'.equivFun.symm y)`. Rewrite `e1` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[e1]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, hm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isCrys_bρ {k : ℕ} (b : Module.Basis (Fin k) LL V) (ρ : Representation LL G V)
     (h : IsCrys PD ρ) : IsCrys PD (bρ LL' ρ) := by
   have h1 := Formalism.MainNotions.N.K.Norm.isCrys_congr PD b.equivFun (matOf_equiv b ρ) h
@@ -69,12 +81,18 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O LL] [IsFractionRing O LL] [CommRing O'] [Algebra O' LL'] [Algebra O O'] [Algebra O LL']
     [IsScalarTower O O' LL'] [IsScalarTower O LL LL']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(bLoc (O' := O') hc hO' T).fdim, (bLoc (O' := O') hc hO' T).mtop, (bLoc (O' := O') hc hO' T).cont, isCrys_bρ PD (Module.finBasis LL T.V) T.ρ hT.2.2.2⟩`.
+-/
 theorem crysLat_b (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebraMap O' LL'))
     (T : LocLat G Qp LL O) (hT : Formalism.MainNotions.WachCoordinates.CrysLat PD T) :
     Formalism.MainNotions.WachCoordinates.CrysLat PD (bLoc (O' := O') hc hO' T) :=
   ⟨(bLoc (O' := O') hc hO' T).fdim, (bLoc (O' := O') hc hO' T).mtop, (bLoc (O' := O') hc hO' T).cont,
     isCrys_bρ PD (Module.finBasis LL T.V) T.ρ hT.2.2.2⟩
 
+/- English proof (translation)
+The claim follows from `Module.finrank_baseChange`.
+-/
 theorem finrank_b (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebraMap O' LL'))
     (T : LocLat G Qp LL O) :
     Module.finrank LL' (bLoc (O' := O') hc hO' T).V = Module.finrank LL T.V :=
@@ -93,6 +111,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra Qp LL'] [Algebra LL LL'] [IsScalarTower Qp LL LL']
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
+/- English proof (translation)
+Set `b' : Module.Basis (Fin k) LL' (LL' ⊗[LL] V)` to `Algebra.TensorProduct.basis LL' b`. Establish `hm : ∀ g, matOf b' (bρ LL' ρ) g = (IsScalarTower.toAlgHom Qp LL LL').mapMatrix (matOf b ρ g)`. Introduce `g`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix b' b' ((ρ g).baseChange LL') = (LinearMap.toMatrix b b (ρ g)).map _`. Rewrite using `[LinearMap.toMatrix_baseChange]`.
+
+Both sides reduce to the same expression. Establish `e1` using `Formalism.MainNotions.N.K.Norm.isJumpV_congr PD b.equivFun (matOf_equiv b ρ) τ a`. Establish `e2` using `hJ PD (IsScalarTower.toAlgHom Qp LL LL') (matOf b ρ) τ a`. Establish `he' : ∀ g x, b'.equivFun (bρ LL' ρ g x) = ((Matrix.toLinAlgEquiv' : Matrix (Fin k) (Fin k) LL' ≃ₐ[LL'] _).toAlgHom.toRingHom.toMonoidHom.comp ((IsScalarTower.toAlgHom Qp LL LL').mapMatrix.toRingHom.toMonoidHom.comp (matOf b ρ))) g (b'.equivFun x)`. Introduce `g x`.
+
+Rewrite using `[matOf_equiv b' (bρ LL' ρ) g x]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, hm]`. Both sides reduce to the same expression. Establish `e3` using `Formalism.MainNotions.N.K.Norm.isJumpV_congr PD b'.equivFun he' ((IsScalarTower.toAlgHom Qp LL LL').comp τ) a`. Rewrite using `[e3, ← e2, ← e1]`.
+-/
 theorem isJumpV_bρ (hJ : Formalism.MainNotions.N.GlobalTheory.CoefJumpGen) {k : ℕ} (b : Module.Basis (Fin k) LL V)
     (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (a : ℤ) :
     IsJumpV PD (bρ LL' ρ) ((IsScalarTower.toAlgHom Qp LL LL').comp τ) a ↔ IsJumpV PD ρ τ a := by
@@ -131,6 +156,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O LL] [IsFractionRing O LL] [CommRing O'] [Algebra O' LL'] [Algebra O O'] [Algebra O LL']
     [IsScalarTower O O' LL'] [IsScalarTower O LL LL']
 
+/- English proof (translation)
+Introduce `T₁ T₂ F h₁ h₂ hF`. Use `⟨bLoc hc hO' T₁, bLoc hc hO' T₂, bHom hc hO' F, crysLat_b PD hc hO' T₁ h₁, crysLat_b PD hc hO' T₂ h₂, bHom_onto hc hO' F hF, fun τ a => ⟨?_, ?_⟩, finrank_b hc hO' T₂, hL T₁ T₂ F h₁ h₂ hF, hC T₁ T₂ F h₁ h₂ hF⟩` and prove the remaining obligations. Conclude with `isJumpV_bρ PD hJ (Module.finBasis LL T₁.V) T₁.ρ τ a`. Conclude with `isJumpV_bρ PD hJ (Module.finBasis LL T₂.V) T₂.ρ τ a`.
+-/
 theorem bcAt_of (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebraMap O' LL'))
     (hJ : Formalism.MainNotions.N.GlobalTheory.CoefJumpGen)
     (hL : ∀ (T₁ T₂ : LocLat G Qp LL O) (F : LatHom T₁.L T₂.L), Formalism.MainNotions.WachCoordinates.CrysLat PD T₁ →

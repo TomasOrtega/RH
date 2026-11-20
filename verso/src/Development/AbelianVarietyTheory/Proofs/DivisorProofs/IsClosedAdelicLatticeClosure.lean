@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F)) := fun v => GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Establish `h` using `isCompact_range (RestrictedProduct.isEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (𝓕 := Filter.cofinite)).continuous`. Rewrite `h` using `[RestrictedProduct.range_structureMap]`. Conclude with `h`.
+-/
 theorem isCompact_integralFinite :
     IsCompact {b : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), b.1 v ∈ v.adicCompletionIntegers F} := by
   haveI : ∀ v : HeightOneSpectrum (𝓞 F), CompactSpace (v.adicCompletionIntegers F : Set (v.adicCompletion F)) :=
@@ -38,6 +41,13 @@ def intAd : AddSubgroup (AF F) where
       rw [show (-a).1 = -a.1 from rfl, map_neg, ha, neg_zero]
     · rw [map_neg]; exact neg_mem (ha' v)
 
+/- English proof (translation)
+Establish `e : (intAd F : Set (AF F)) = (({0} : Set (InfiniteAdeleRing F)) ×ˢ {b : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), b.1 v ∈ v.adicCompletionIntegers F} : Set _)`. Use extensionality with `a`. Simplify using `only [SetLike.mem_coe, Set.mem_prod, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Use `show (evI F a = 0 ∧ ∀ v, evFin F v a ∈ v.adicCompletionIntegers F) ↔ _`. Establish `h1 : evI F a = 0 ↔ a.1 = 0`.
+
+Simplify using `only [evI]`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff`. Rewrite using `[h1]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `isCompact_singleton.prod (isCompact_integralFinite F)`.
+-/
 theorem isCompact_intAd : IsCompact (intAd F : Set (AF F)) := by
   have e : (intAd F : Set (AF F)) = (({0} : Set (InfiniteAdeleRing F)) ×ˢ
       {b : FiniteAdeleRing (𝓞 F) F | ∀ v : HeightOneSpectrum (𝓞 F), b.1 v ∈ v.adicCompletionIntegers F} : Set _) := by
@@ -51,18 +61,52 @@ theorem isCompact_intAd : IsCompact (intAd F : Set (AF F)) := by
   rw [e]
   exact isCompact_singleton.prod (isCompact_integralFinite F)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV, map_add]`.
+-/
 theorem incV_add {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ} (x y : Fin n → E) :
     incV F (x + y) = incV F x + incV F y := by
   funext i; simp [incV, map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+-/
 theorem incV_zero {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ} :
     incV F (0 : Fin n → E) = 0 := by
   funext i; simp [incV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV, map_zsmul]`.
+-/
 theorem incV_zsmul {E : Type} [Field E] [NumberField E] [Algebra F E] {n : ℕ} (m : ℤ) (x : Fin n → E) :
     incV F (m • x) = m • incV F x := by
   funext i; simp [incV, map_zsmul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n X hL`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
+
+Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Take `⟨s, hs⟩` from `Submodule.FG.restrictScalars (R := ℤ) hL.fg`. Set `ψ : (s → AF F) →+ (Fin n → AE F E)` to `{ toFun := fun c => ∑ i, c i • incV F (i : Fin n → E) map_zero' := by simp map_add' := fun c d => by simp [add_smul, Finset.sum_add_distrib] }`. Set `P : AddSubgroup (s → AF F)` to `AddSubgroup.pi Set.univ (fun _ => intAd F)`.
+
+Establish `hψc : Continuous ψ` using `continuous_finset_sum _ fun i _ => by show Continuous fun c : s → AF F => c i • incV F (i : Fin n → E)`. Conclude with `(continuous_apply i : Continuous fun c : s → AF F => c i).smul (continuous_const : Continuous fun _ : s → AF F => incV F (i : Fin n → E))`. Establish `hPc : IsCompact (P : Set (s → AF F))`. Establish `: (P : Set (s → AF F)) = Set.pi Set.univ (fun _ => (intAd F : Set (AF F)))`. Use extensionality with `c`.
+
+Simplify using `[P, AddSubgroup.mem_pi]`. Rewrite using `[this]`. Conclude with `isCompact_univ_pi fun _ => isCompact_intAd F`. Establish `hsL : ∀ i ∈ s, i ∈ X.L` using `fun i hi => by`. Establish `: i ∈ Submodule.span ℤ (s : Set (Fin n → E))` using `Submodule.subset_span hi`.
+
+Rewrite `this` using `[hs]`. Conclude with `this`. Establish `key : ∀ x ∈ Submodule.span ℤ (s : Set (Fin n → E)), ∀ a ∈ intAd F, a • incV F x ∈ P.map ψ`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Introduce `a ha`. Use `⟨Pi.single ⟨y, hy⟩ a, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _`. Distinguish the cases in `h : i = ⟨y, hy⟩`.
+
+Substitute `h` using the available equality. Simplify using `using ha`. Simplify using `[Pi.single_apply, h, zero_mem]`. Simplify using `[ψ, Pi.single_apply, ite_smul]`. Consider the case `zero`.
+
+Introduce `a _`. Rewrite using `[incV_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y y' _ _ ih ih'`. Introduce `a ha`.
+
+Rewrite using `[incV_add, smul_add]`. Conclude with `add_mem (ih a ha) (ih' a ha)`. Consider the case `smul m y _ ih`. Introduce `a ha`. Rewrite using `[incV_zsmul, smul_comm, ← smul_assoc]`.
+
+Conclude with `ih (m • a) (zsmul_mem ha m)`. Establish `heq : latHat X = P.map ψ`. Apply `le_antisymm` to reduce the goal to its premises. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha0, hav, x, hx, rfl⟩`.
+
+Establish `hx' : x ∈ Submodule.span ℤ (s : Set (Fin n → E))` using `by rw [hs]; exact hx`. Conclude with `key x hx' a ⟨ha0, hav⟩`. Introduce and unpack `z ⟨c, hc, rfl⟩`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨c i, (hc i trivial).1, (hc i trivial).2, i, hsL i i.2, rfl⟩`. Rewrite using `[heq, AddSubgroup.coe_map]`.
+
+Conclude with `(hPc.image hψc).isClosed`.
+-/
 theorem isClosed_latHat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (X : Spc F E n), X.L.IsLattice E → IsClosed ((latHat X : AddSubgroup (Fin n → AE F E)) : Set (Fin n → AE F E)) := by
   intro F E _ _ _ _ _ n X hL

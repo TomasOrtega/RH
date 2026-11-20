@@ -19,6 +19,13 @@ def DensVLC : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
       DensOn (IsLCcOn {X | LinearIndependent (Fv F v ⊗[F] E) X}) μv (gramR (Fv F v) σ J)
         Subtype.val νv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν`. Take `⟨t1, t2, t3, t4, _t5, _t6, t7⟩` from `(hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`. Establish `: LocallyCompactSpace (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (LocallyCompactSpace (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: LocallyCompactSpace (HermR (Fv F v) σ a)` using `t4.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`.
+
+Conclude with `(densAll_iff _ _ _ _ _).2 (densApprox_lc μv _ _ νv _ t7 (hNA F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet v) (hLC F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν))`.
+-/
 theorem densV_of (hT : TensAll) (hNA : TensNA) (hLC : DensVLC) : DensV := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν
   obtain ⟨t1, t2, t3, t4, _t5, _t6, t7⟩ := (hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v
@@ -44,6 +51,11 @@ def DensVCs : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
     ∀ νv, SdHerm F E σ (Fv F v) (psiV F ψ v) a νv →
       DensCos μv (gramR (Fv F v) σ J) Subtype.val νv {X | LinearIndependent (Fv F v ⊗[F] E) X}
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν`. Take `⟨_t1, t2, _t3, _t4, _t5, _t6, _t7⟩` from `(hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+
+Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`. Establish `: T2Space (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (T2Space (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Conclude with `densLC_of_cos _ (hNA F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet v) (hC F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν)`.
+-/
 theorem densVLC_of (hT : TensAll) (hNA : TensNA) (hC : DensVCs) : DensVLC := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν
   obtain ⟨_t1, t2, _t3, _t4, _t5, _t6, _t7⟩ := (hT F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet).2 v
@@ -58,6 +70,9 @@ theorem densVLC_of (hT : TensAll) (hNA : TensNA) (hC : DensVCs) : DensVLC := by
   exact densLC_of_cos _ (hNA F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet v)
     (hC F E σ hCM M J hJ ha hc a h1 h2 X0 hT0 hdet ψ hψ v μv hμ νv hν)
 
+/- English proof (translation)
+The claim follows from `densV_of hT hNA (densVLC_of hT hNA hC)`.
+-/
 theorem densV_of_cos (hT : TensAll) (hNA : TensNA) (hC : DensVCs) : DensV :=
   densV_of hT hNA (densVLC_of hT hNA hC)
 

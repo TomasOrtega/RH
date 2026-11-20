@@ -25,6 +25,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons
 
 namespace GlobalTheory.PhiTie
 
+/- English proof (translation)
+Establish `hpr` using `resCh_prime la`. Establish `h0 : ((WeightAlgebra.resCh la : ℕ) : S.V) ≠ 0` using `by exact_mod_cast hpr.ne_zero`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Establish `h1` using `ho.2 ((WeightAlgebra.resCh la : ℕ) : K)`. Rewrite `h1` using `[map_natCast, show vLa la ((WeightAlgebra.resCh la : ℕ) : K) = ramOverZ la from Crude.crv_vLa_char la, ← map_natCast (algebraMap S.V S.Fr), hu]`.
+
+Establish `hmax : (IsDiscreteValuationRing.maximalIdeal S.V).asIdeal = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Establish `h2 : vV S.V (algebraMap S.V S.Fr (u * ϖ ^ n)) = n`. Establish `hu1 : (IsDiscreteValuationRing.maximalIdeal S.V).intValuation (u : S.V) = 1` using `(HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl _ _).2 fun hm => (IsDiscreteValuationRing.maximalIdeal S.V).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hm u.isUnit)`. Rewrite using `[vV, valV, HeightOneSpectrum.valuation_of_algebraMap, map_mul, map_pow, hu1, HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hmax, _root_.one_mul, ← WithZero.exp_nsmul, WithZero.log_exp]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : (n : ℝ) = (e : ℝ) * ramOverZ la` using `by exact_mod_cast h2.symm.trans h1`. Establish `h4` using `congrArg (fun a => Real.logb (WeightAlgebra.resCh la : ℕ) ‖f a‖) hu`. Establish `hp1 : (1 : ℝ) < (WeightAlgebra.resCh la : ℕ)` using `by exact_mod_cast hpr.one_lt`. Simplify using `only [map_natCast, hp, map_mul, norm_mul, GlobalTheory.PeriodBalance.norm_unit f hf u, _root_.one_mul, map_pow, norm_pow, Real.logb_pow, Real.logb_inv, Real.logb_self_eq_one hp1] at h4`. Rewrite using `[← h3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logb_uniformiser {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (S : CDVR)
     (io : K →+* S.Fr) (e : ℕ) (ho : OverLa la S.V io e) {ϖ : S.V} (hϖ : Irreducible ϖ)
     {C : Type} [NormedField C] (f : S.V →+* C) (hf : ∀ a, ‖f a‖ ≤ 1)
@@ -53,6 +62,15 @@ theorem logb_uniformiser {K : Type} [Field K] [NumberField K] (la : HeightOneSpe
   rw [← h3]
   linarith
 
+/- English proof (translation)
+Establish `hprop : IsProper I.t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) I.m1.cart.1 Xo.univ.proper`. Take `⟨ψ, -⟩` from `GlobalTheory.semiAbelian_model_determined_by_generic_fibre E H S.V inferInstance G G I.t' hprop I.m2 I.m2`. Set `mI : SABMap G G (spMap (RingHom.id S.V))` to `PullbackSections.sabMapCast ψ (by simp [spMap])`. Take `⟨hLL, k2, k3, k4, k5⟩` from `GlobalTheory.lawsAndExpansions`. Establish `hA : AdmBase S.V (maximalIdeal S.V)` using `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+
+Establish `htors` using `GlobalTheory.UT.torsionIso_of_pelUnif hLL k2 k3 k4 k5 E H S.V _ hA G P`. Establish `hadm : GlobalTheory.LN.admitted S.V (maximalIdeal S.V)`. Use `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field (maximalIdeal S.V)`. Use `infer_instance`.
+
+Establish `hop : IsOpen (abLocus G.G)`. Use `GlobalTheory.UnifAfterExt.isOpen_of_range_generic_subset S.V _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(abLocus_pullback abLocusOne G.semi I.m2.cart.1 x).2 fun _ _ _ _ _ => inferInstance`. Take `⟨L₁, L₂, L₃, L₄, L₅⟩` from `hLL`.
+
+Establish `hU` using `GlobalTheory.PsiAbelian.psiUnitOn_abLocus L₁ L₂ L₃ L₄ L₅ S.V _ hadm P.D P.A G.G G.semi P.U hop`. Conclude with `⟨⟨mI⟩, hU, htors⟩`.
+-/
 theorem unif_clauses {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} (S : CDVR) (x : Sp S.Fr ⟶ Xo.X) (s : LB.Sec (PPx x)) (G : SAB H (Sp S.V))
     (I : GlobalTheory.EtaVal.IntSec Xo S.V x s G) (P : PELUnif (maximalIdeal S.V) G) :
@@ -77,6 +95,13 @@ theorem unif_clauses {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo
   have hU := GlobalTheory.PsiAbelian.psiUnitOn_abLocus L₁ L₂ L₃ L₄ L₅ S.V _ hadm P.D P.A G.G G.semi P.U hop
   exact ⟨⟨mI⟩, hU, htors⟩
 
+/- English proof (translation)
+Take `⟨⟨mI⟩, hU, htors⟩` from `unif_clauses S x s G I P`. Set `f : S.V →+* intO ↥C.S` to `(eF.comp (algebraMap S.V S.Fr)).codRestrict _ h2`. Take `⟨A, g, hg⟩` from `GlobalTheory.EtaVal.datAt_of_uniformisation E H Dw l Xo c _ _ Y la hB S io e ho x s G I hx S (RingHom.id _) G mI P hU htors _ C Pc eF f h1 h4 (fun _ => rfl) h3`. Take `⟨Q', β, hQ', -, hβ, hβ2, hb⟩` from `GlobalTheory.ValForm.main E H S.V G P ϖ hϖ _ fun _ => rfl`. Take `rfl : Q = Q'` from `funext fun χ => by`.
+
+Take `⟨r, hr, -⟩` from `(GlobalTheory.PsiCoordLocal.main S.V P.D inferInstance χ).1`. Conclude with `hasVal_unique hϖ (GlobalTheory.ValForm.hasVal_coord (hQ χ) hr) (GlobalTheory.ValForm.hasVal_coord (hQ' χ) hr)`. Establish `hinj : Function.Injective ((intO ↥C.S).subtype.comp f)` using `eF.injective.comp (IsFractionRing.injective S.V S.Fr)`. Establish `hlog` using `logb_uniformiser la S io e ho hϖ ((intO ↥C.S).subtype.comp f) h2 C.norm_p`. Establish `key : ∀ a b, (e : ℝ) * ramOverZ la * A.beta a b = (β : _ →ₗ[ℤ] _ →ₗ[ℤ] ℝ) (g a) (g b)` using `fun a b => by`.
+
+Rewrite using `[hg, hb _ _ _ hinj h2, ← _root_.mul_assoc, hlog, _root_.one_mul]`. Use `⟨A, g.toAddEquiv, fun a b => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `((key a b).trans (hβ _ _)).symm`. Rewrite using `[← mul_div_assoc, key, hβ2]`. Conclude with `(mul_div_cancel_left₀ _ two_ne_zero).symm`.
+-/
 theorem exists_datAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β₀ : O →+* c.F} (Y : Model Xo c β₀)
     (la : HeightOneSpectrum (𝓞 c.F)) (hB : PointsOfFlagModel.BaseAt la β₀) (S : CDVR) (io : c.F →+* S.Fr) (e : ℕ)
@@ -111,6 +136,13 @@ theorem exists_datAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo
   · rw [← mul_div_assoc, key, hβ2]
     exact (mul_div_cancel_left₀ _ two_ne_zero).symm
 
+/- English proof (translation)
+Unfold `ModuliIntegralCharts.Loc.phiCy ModuliIntegralCharts.phiC`. Use `Real.sInf_nonneg ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, -, h2, rfl⟩`. Distinguish the cases in `hb : L.beS y = 0`. Rewrite using `[hb]`.
+
+Simplify using the standard rewrite rules. Use `(h2 _ ?_ hb).le` and prove the remaining obligations. Introduce `a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality.
+
+Simplify using the standard rewrite rules. Conclude with `(L.be_pos y a ha).le`.
+-/
 theorem phiCy_nonneg {D : D7} {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) {Z : L.Mdl} (y : L.Pt Z) : 0 ≤ L.phiCy y := by
   unfold ModuliIntegralCharts.Loc.phiCy ModuliIntegralCharts.phiC
   refine Real.sInf_nonneg ?_
@@ -123,6 +155,13 @@ theorem phiCy_nonneg {D : D7} {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j 
     · subst ha; simp
     · exact (L.be_pos y a ha).le
 
+/- English proof (translation)
+Take `⟨w₀, hw⟩` from `ConjugateMinimaInstance.scalar_frame_w_zero_exists D`. Take `⟨κ, hκ, b₀, -⟩` from `L.be_posDef y`. Take `⟨b, h1, h2⟩` from `gram_form_phi_holds D.host.E (fun z => D.host.conj z) (fun φ z => WeightFamilies.emb_conj D φ z) (ConjugateMinimaInstance.conj_ne D) w₀ hw (L.Ylat y) (L.beS y) ⟨κ, hκ, b₀, L.gram_posDef y b₀⟩`. Use `⟨b, fun i => (h1 i).trans (le_of_eq ?_), h2⟩` and prove the remaining obligations. Establish `e1 : |(NumberField.discr D.host.E : ℝ)| ^ ((2 : ℝ) / Module.finrank ℚ D.host.E) = D.host.rdE ^ 2`.
+
+Rewrite using `[Formalism.BasicNotions.Host.rdE, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hostSize_finrank]`.
+
+Use `push_cast`. Use `show _ * (L.dP y : ℝ) ^ 3 * L.phiCy y = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_reduced_basis {D : D7} {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) {Z : L.Mdl} (y : L.Pt Z) :
     ∃ b : Module.Basis (Fin (L.dP y)) ℤ (L.Ylat y),
       (∀ i, L.be y (b i) (b i) / 2 ≤ D.host.rdE ^ 2 / (4 * D.R.f) * (L.dP y : ℝ) ^ 3 * L.phiCy y) ∧
@@ -142,6 +181,15 @@ theorem exists_reduced_basis {D : D7} {r j p : ℕ} (L : ModuliIntegralCharts.Lo
   show _ * (L.dP y : ℝ) ^ 3 * L.phiCy y = _
   ring
 
+/- English proof (translation)
+Take `⟨b, hb1, hb2⟩` from `exists_reduced_basis L y`. Establish `hv : (0 : ℝ) ≤ (e : ℝ) * m` using `by positivity`. Use `⟨_, b.map (g'.trans g).toIntLinearEquiv, hrk, fun i => ?_, fun i x => ?_⟩` and prove the remaining obligations. Use `show (Q (g (g' (b i))) : ℝ) ≤ _`. Rewrite using `[hg2, hg']`.
+
+Conclude with `(mul_le_mul_of_nonneg_left (hb1 i) hv).trans (le_of_eq (by ring))`. Take `⟨x₀, rfl⟩` from `g.surjective x`. Take `⟨x', rfl⟩` from `g'.surjective x₀`. Use `show |((Q (g (g' (b i)) + g (g' x')) - Q (g (g' (b i))) - Q (g (g' x')) : ℤ) : ℝ)| ≤ _ * (Q (g (g' x')) : ℝ)`. Rewrite using `[hg1, hg2, hg', hg', abs_mul, abs_of_nonneg hv]`.
+
+Use `(mul_le_mul_of_nonneg_left (hb2 i x') hv).trans ?_` and prove the remaining obligations. Establish `hs : Real.sqrt (L.dP y) ≤ Real.sqrt (N : ℝ)` using `Real.sqrt_le_sqrt (by exact_mod_cast hrk)`. Establish `h0 : 0 ≤ L.be y x' x' / 2`. Distinguish the cases in `ha : x' = 0`. Substitute `ha` using the available equality.
+
+Simplify using the standard rewrite rules. Conclude with `(half_pos (L.be_pos y x' ha)).le`. Use `mul_le_mul_of_nonneg_right hs (mul_nonneg hv h0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem transfer_basis {D : D7} {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r j p) {Z : L.Mdl} (y : L.Pt Z) {X X' : Type}
     [AddCommGroup X] [AddCommGroup X'] (g' : L.Ylat y ≃+ X') (g : X' ≃+ X) (β : X' → X' → ℝ) (Q : X → ℤ) (e m N : ℕ)
     (hrk : L.dP y ≤ N) (hg' : ∀ a b, β (g' a) (g' b) = L.be y a b)
@@ -169,6 +217,15 @@ theorem transfer_basis {D : D7} {r j p : ℕ} (L : ModuliIntegralCharts.Loc D r 
     have := mul_le_mul_of_nonneg_right hs (mul_nonneg hv h0)
     linarith
 
+/- English proof (translation)
+Introduce `D T h j hj hm la S io e y ho hy eta heta C P ϖ hϖ Q hQ`. Use `letI := T.Q.H.starRing`. Use `letI := io.toAlgebra`. Take `⟨z, hrel, hz⟩` from `heta hm`. Establish `hl` using `h.lattice_condition j hj.1 hm la z ⟨S, io, e, y, ho, hy, hz⟩ eta hrel`.
+
+Take `⟨hv, eF, h1, h2, h3, h4, -⟩` from `hz`. Establish `hB : PointsOfFlagModel.BaseAt la ((T.G.Tw j (WeightAlgebra.resCh la)).β z.1)`. Use `((h.tower j hj.1 hm _ (resCh_prime la)).1 z.1).1` as an intermediate fact. Rewrite `this` using `[show z.1.1 = la from congrArg Subtype.val hv]`. Then use the resulting hypothesis. Establish `hd` using `exists_datAt _ la hB S io e ho y.1.x y.1.s C.I.G (GlobalTheory.EtaVal.IntSec.ofIntData C.I) y.1.x_over z.2.1 z.2.2.1 eF h1 h2 h3 h4 P ϖ hϖ Q hQ`.
+
+Take `⟨hr, hjj⟩` from `h.datum_condition j hj.1 hm`. Establish `hrk : (T.G.P.loc (T.G.dat j) (WeightAlgebra.resCh la)).dP eta ≤ 2 * D.R.f * D.R.m`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hj1` using `hj.1`. Apply the tactic sequence `refine ((T.G.P.loc (T.G.dat j) (WeightAlgebra.resCh la)).dP_le ?_ ?_ eta).trans (Nat.mul_le_mul_left _ ((min_le_right _ _).trans ?_)) <;>`.
+
+Simplify using `only [hr, hjj, Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Use `⟨phiCy_nonneg _ _, hd.elim fun A hA => hA.elim fun g hg => (hl A).elim fun g' hg' => ?_⟩` and prove the remaining obligations. Conclude with `transfer_basis _ eta g'.toAddEquiv g A.beta Q e _ _ hrk hg' hg.1 hg.2`.
+-/
 theorem exists_reduced_basis_le_phiCy : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), j < D.R.m → ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (S : CDVR) (io : T.Q.c.F →+* S.Fr) (e : ℕ) (y : IntFr (T.Q.Xo j) T.Q.c S io), OverLa la S.V io e → y.IsAlg → ∀ eta, T.G.lies j la S io y eta →
  letI := T.Q.H.starRing
  ∀ (C : IntegralChartA3 (T.Q.Xo j) T.Q.c S io y) (P : PELUnif (maximalIdeal S.V) C.I.G) (ϖ : S.V), Irreducible ϖ → ∀ (Q : P.D.toPre.X → ℤ), IsQ P.D.toPre ϖ Q → 0 ≤ (T.G.P.loc (T.G.dat j) (WeightAlgebra.resCh la)).phiCy eta ∧ ∃ (r : ℕ) (b : Module.Basis (Fin r) ℤ P.D.toPre.X), r ≤ 2 * D.R.f * D.R.m ∧ (∀ i, (Q (b i) : ℝ) ≤ (e : ℝ) * (D.host.rdE ^ 2 / (4 * D.R.f) * (r : ℝ) ^ 3 * ((ramOverZ la : ℝ) * (T.G.P.loc (T.G.dat j) (WeightAlgebra.resCh la)).phiCy eta))) ∧ ∀ i z, |((Q (b i + z) - Q (b i) - Q z : ℤ) : ℝ)| ≤ 2 * Real.sqrt ((2 * D.R.f * D.R.m : ℕ) : ℝ) * Q z := by

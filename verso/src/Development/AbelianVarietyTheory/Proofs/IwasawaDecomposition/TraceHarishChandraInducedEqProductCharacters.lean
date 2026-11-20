@@ -13,6 +13,25 @@ namespace GlobalTheory.HCChar
 
 open Formalism.IrreducibleCountingLemmas.TYPES
 
+/- English proof (translation)
+Introduce `g _ r s b lam _ x`. Establish `h1 : LinearMap.trace ℂ (hcSpace (ZMod g) b lam) (hcRep (ZMod g) b lam x) = (Representation.coind (parab (ZMod g) b).subtype (PI.SerBridgeGLW.inflRep (ZMod g) b lam)).character x` using `rfl`. Rewrite using `[h1, GlobalTheory.GoodTypeGeneric.character_coind_eq_ind]`. Set `d : Fin s → ℕ` to `fun c => Fintype.card {i // b i = c}`. Set `α : ∀ c, GlobalTheory.GLq.Gn g (d c) → ℂ` to `fun c y => (transp (Fintype.equivFin {i // b i = c}) (lam c)).character y`.
+
+Set `j : ∀ c, Fin (d c) → Fin r` to `fun c t => ((Fintype.equivFin {i // b i = c}).symm t).1`. Take `⟨σ, hσ1, -, hσ3, hσ4⟩` from `GlobalTheory.TypeCharProduct.exists_enum b d α j (fun c => Subtype.val_injective.comp (Equiv.injective _)) (fun c t => ((Fintype.equivFin {i // b i = c}).symm t).2) (fun i => ⟨Fintype.equivFin {k // b k = b i} ⟨i, rfl⟩, by simp [j]⟩) (List.finRange s) (List.pairwise_lt_finRange s …`. Establish `hL : GlobalTheory.SerCmp.canonList b lam = (List.finRange s).map fun c => (⟨d c, α c⟩ : GlobalTheory.GLq.Pc g)` using `rfl`. Rewrite using `[hL, ← GlobalTheory.TypeCharProduct.ind_eq_hcL _ ?_ r σ ⟨hσ1, fun i => hσ3 i (List.mem_finRange _)⟩ (fun y => y ∈ parab (ZMod g) b) (fun y => if h : y ∈ parab (ZMod g) b then (PI.SerBridgeGLW.inflRep (ZMod g) b lam).character ⟨y, h⟩ else 0) ?_ ?_]`. Unfold `GlobalTheory.BI.ind GlobalTheory.TypeCharProduct.ind`.
+
+Rewrite using `[finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Unfold `GlobalTheory.BI.ext0`. Use `beta_reduce`.
+
+Distinguish the cases in `h : y⁻¹ * x * y ∈ parab (ZMod g) b`. Rewrite using `[dif_pos h, if_pos h]`. Rewrite using `[dif_neg h, if_neg h]`. Introduce `q hq`. Take `⟨c, -, rfl⟩` from `List.mem_map.1 hq`.
+
+Introduce `y z`. Conclude with `FDRep.char_conj _ y z`. Introduce `y`. Rewrite using `[(hσ4 _).1, GlobalTheory.HCInduction.parab_eq_blockTri]`. Use `show Matrix.BlockTriangular _ _ ↔ _`.
+
+Simplify using `only [List.mem_finRange, true_implies]`. Conclude with `⟨fun h i k hik => h hik, fun h i k hik => h i k hik⟩`. Introduce `y hy`. Rewrite using `[dif_pos hy, (hσ4 _).2, ← Fin.prod_univ_def]`. Use `show LinearMap.trace ℂ _ (PiTensorProduct.map fun c => (lam c).ρ (levi (ZMod g) b c ⟨y, hy⟩)) = _`.
+
+Rewrite using `[PI.SerBridgeGLW.trace_piTensorMap]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hu : (y : Matrix (Fin r) (Fin r) (ZMod g)).submatrix (j c) (j c) = ((glEquiv (ZMod g) (Fintype.equivFin {i // b i = c}) (levi (ZMod g) b c ⟨y, hy⟩) : GL _ (ZMod g)) : Matrix _ _ (ZMod g))`. Use extensionality with `t t'`. Simplify using `[glEquiv, levi, blk, j, Matrix.reindexAlgEquiv]`.
+
+Establish `hg : GlobalTheory.GLq.toG ((y : Matrix (Fin r) (Fin r) (ZMod g)).submatrix (j c) (j c)) = glEquiv (ZMod g) (Fintype.equivFin {i // b i = c}) (levi (ZMod g) b c ⟨y, hy⟩)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.TypeCharProduct.coe_toG (by rw [hu]; exact Units.isUnit _), hu]`. Use `show _ = (transp (Fintype.equivFin {i // b i = c}) (lam c)).character _`. Rewrite using `[hg]`.
+
+Use `show _ = LinearMap.trace ℂ _ ((lam c).ρ ((glEquiv (ZMod g) (Fintype.equivFin {i // b i = c})).symm _))`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+-/
 theorem trace_hcRep_eq_hcL : ∀ (g : ℕ) [Fact g.Prime] (r s : ℕ) (b : Fin r → Fin s)
     (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} (ZMod g))), Function.Surjective b →
     ∀ x : GL (Fin r) (ZMod g), LinearMap.trace ℂ (Formalism.IrreducibleCountingLemmas.TYPES.hcSpace (ZMod g) b lam)

@@ -3,6 +3,19 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.LiftApplyOfMemAd
 
 namespace GlobalTheory.AdjoinStableCommutes
 
+/- English proof (translation)
+Introduce `Q hQ`. Proceed by induction on `hQ using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨T, hT, rfl⟩` from `hy`. Introduce `x hx`.
+
+Rewrite using `[FreeAlgebra.lift_ι_apply]`. Conclude with `⟨hW T hT x hx, fun s => (hg T hT s x hx).symm⟩`. Consider the case `algebraMap r`. Introduce `x hx`. Rewrite using `[AlgHom.commutes]`.
+
+Use `⟨?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `W.smul_mem r hx`. Rewrite using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, map_smul]`. Consider the case `add a b _ _ ha hb`.
+
+Introduce `x hx`. Rewrite using `[map_add]`. Use `⟨?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply]`. Conclude with `W.add_mem (ha x hx).1 (hb x hx).1`.
+
+Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, map_add, (ha x hx).2 s, (hb x hx).2 s]`. Consider the case `mul a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[map_mul]`. Use `⟨?_, fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.End.mul_apply]`. Conclude with `(ha _ (hb x hx).1).1`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, (ha _ (hb x hx).1).2 s, (hb x hx).2 s]`.
+-/
 theorem adjoin_stable_and_commutes {E V G : Type} [Field E] [AddCommGroup V] [Module E V]
     (A : Set GlobalTheory.KZ.Letter) (f : GlobalTheory.KZ.Letter → Module.End E V) (W : Submodule E V)
     (g : G → Module.End E V)

@@ -57,6 +57,17 @@ import Formalism.RealPlaceAnalysis.StatementC
 
 namespace Bl.general_b_fact_left_further
 
+/- English proof (translation)
+Introduce `n mu hd c m`. Establish `ha : Antitone mu` using `hd`. Unfold `Formalism.MainNotions.G.colH`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hsub : Finset.Iic m ⊆ Finset.univ.filter (fun k => c ≤ mu k)`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Iic]`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ k, le_trans h (ha hk)⟩`.
+
+Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Assume the negation of the conclusion as `hc`.
+
+Establish `hsub : Finset.univ.filter (fun k => c ≤ mu k) ⊆ Finset.Iio m`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hkm`.
+
+Establish `hmk : m ≤ k` using `not_lt.mp hkm`. Conclude with `hc (le_trans hk.2 (ha hmk))`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem goal1 :
   ∀ {n : Nat} {mu : Fin n → Int},
   Formalism.MainNotions.G.Dominant mu → ∀ (c : Int) (m : Fin n), Iff (LE.le.{0} c (mu m)) (LT.lt.{0} m.val (Formalism.MainNotions.G.colH mu c)) := by

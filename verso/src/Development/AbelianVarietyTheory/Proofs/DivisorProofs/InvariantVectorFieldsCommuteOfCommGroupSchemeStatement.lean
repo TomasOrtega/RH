@@ -11,5 +11,8 @@ open GlobalTheory.LogKS (IsField)
 open GlobalTheory.Heat GlobalTheory.FormalOrigin
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InvFieldComm.invField_comm | exact GlobalTheory.InvFieldComm.invField_comm | (intros; apply GlobalTheory.InvFieldComm.invField_comm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.invariantVectorFields_commute_of_commGroupScheme : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (v v' : TanM (𝟙 (Sp R)) G) (dd dd' : Fld G.left), IsInv G v dd → IsInv G v' dd' → ∀ O f, dd O (dd' O f) = dd' O (dd O f) := by
   first | exact @GlobalTheory.InvFieldComm.invField_comm | exact GlobalTheory.InvFieldComm.invField_comm | (intros; apply GlobalTheory.InvFieldComm.invField_comm <;> assumption)

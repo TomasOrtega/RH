@@ -13,6 +13,23 @@ open GlobalTheory.OrbitSep
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c TF Z _ _ x U hx hnot`. Take `⟨hreg, V, hyV, n, f', J, hrsp, hV⟩` from `TF.snc ((barComp TF.Y Z).ι x)`. Set `φ : TF.Y.X.presheaf.stalk ((barComp TF.Y Z).ι x) ≃+* (X₀ TF.Y Z).presheaf.stalk x` to `(asIso ((barComp TF.Y Z).ι.stalkMap x)).commRingCatIsoToRingEquiv`. Establish `hφ : ∀ a, φ a = ((barComp TF.Y Z).ι.stalkMap x).hom a` using `fun _ => rfl`. Use `⟨IsRegularLocalRing.of_ringEquiv φ, n, fun i => φ (TF.Y.X.presheaf.germ V.1 _ hyV (f' i)), J, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hspan, hdim⟩` from `hrsp`. Use `⟨?_, hdim.trans (ringKrullDim_eq_of_ringEquiv φ)⟩` and prove the remaining obligations. Establish `hr : Set.range (fun i => φ (TF.Y.X.presheaf.germ V.1 _ hyV (f' i))) = φ '' Set.range (fun i => TF.Y.X.presheaf.germ V.1 _ hyV (f' i))` using `Set.range_comp _ _`. Rewrite using `[hr, ← Ideal.map_span, hspan]`. Conclude with `(IsLocalRing.eq_maximalIdeal (Ideal.map_isMaximal_of_equiv φ))`.
+
+Rewrite using `[Finset.nonempty_iff_ne_empty]`. Introduce and unpack `rfl`. Apply `hnot` to reduce the goal to its premises. Rewrite `hV` using `[Finset.prod_empty, Ideal.span_singleton_one]`. Establish `hst : ReciprocityTheory.AnForm.R.FinalTheorems.stalkId (LogKS.boundary TF.Y) ((barComp TF.Y Z).ι x) = ⊤`.
+
+Rewrite using `[ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ V _ hyV, hV, Ideal.map_top]`. Establish `hns` using `(ReciprocityTheory.AnForm.R.mem_support_iff_stalkId (LogKS.boundary TF.Y) ((barComp TF.Y Z).ι x)).not.mpr (not_not.mpr hst)`. Rewrite `hns` using `[LogKS.boundary, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Establish `hin : (barComp TF.Y Z).ι x ∈ LogKS.interior TF.Y`. Simplify using `using hns`.
+
+Rewrite `hin` using `[LogKS.interior]`. Take `⟨z, hz⟩` from `hin`. Establish `hzB : z ∈ TF.Y.j ⁻¹ᵁ barComp TF.Y Z` using `by show TF.Y.j z ∈ barComp TF.Y Z`. Rewrite using `[hz]`. Apply the tactic sequence `first | exact x.2 | simp | exact (barComp TF.Y Z).range_ι.le ⟨x, rfl⟩`.
+
+Use `⟨⟨z, hzB⟩, (barComp TF.Y Z).ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun f => f.base ⟨z, hzB⟩) (j₀_ι TF.Y Z)`. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at h2`. Apply the tactic sequence `first | exact h2.trans hz | (refine Eq.trans ?_ hz; exact h2) | (rw [Scheme.Hom.comp_apply] at h2; exact h2.trans hz)`. Establish `e1 : Ideal.map (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx) ((Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl).ideal U) = Ideal.map (φ : _ →+* _) (Ideal.map (TF.Y.X.presheaf.germ U.1 _ hx).hom ((Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl).id …`.
+
+Rewrite using `[Ideal.map_map]`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [GlobalTheory.LogKSDiv.stalkHom, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, hφ]`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`.
+
+Establish `hVb : (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl).ideal V = Ideal.span {∏ i ∈ J, f' i}` using `hV`. Rewrite using `[e1, ← ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ U _ hx, ReciprocityTheory.AnForm.R.ds_stalkId_eq_map _ V _ hyV, hVb, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, map_prod]`. Rewrite using `[map_prod]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.LogKSDiv.boundary_germ_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens), ∀ (hx : (barComp TF.Y Z).ι x ∈ U.1), x ∉ (j₀ TF.Y Z).opensRange → IsRegularLocalRing ((X₀ TF.Y Z).presheaf.stalk x) ∧ ∃ (n : ℕ) (f : Fin n → (X₀ TF.Y Z).presheaf.stalk x) (J : Finset (Fin n)), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp ((X₀ TF.Y Z).presheaf.stalk x) n f ∧ J.Nonempty ∧ Ideal.map (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx) ((Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl).ideal U) = Ideal.span {∏ i ∈ J, f i} := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ x U hx hnot
   classical

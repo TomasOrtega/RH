@@ -12,12 +12,20 @@ namespace GlobalTheory.KSp.Homog
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Rewrite using `[← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]`. Introduce `t ht`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset ht`. Conclude with `⟨s, hs (show valuation F (s : F) ≤ valuation F (s : F) from le_refl _), s.ne_zero⟩`.
+-/
 theorem nhdsNE_neBot : (𝓝[≠] (0 : F)).NeBot := by
   rw [← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]
   intro t ht
   obtain ⟨s, hs⟩ := GlobalTheory.SplitWeil.exists_cball_subset ht
   exact ⟨s, hs (show valuation F (s : F) ≤ valuation F (s : F) from le_refl _), s.ne_zero⟩
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 γ hγ, fun z hz ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Units.val_mk0] at hz hy ⊢`.
+
+Establish `: z = y + (z - y)` using `by ring`. Rewrite using `[this, (valuation F).map_add_eq_of_lt_left (by rw [hy]; exact hz), hy]`.
+-/
 theorem isOpen_sphere {γ : ValueGroupWithZero F} (hγ : γ ≠ 0) :
     IsOpen {y : F | valuation F y = γ} := by
   rw [isOpen_iff_mem_nhds]
@@ -32,25 +40,44 @@ open Classical in
 
 def absE (x : F) : ℝ≥0∞ := if h : x = 0 then 0 else (distribHaarChar F (Units.mk0 x h) : ℝ≥0∞)
 
+/- English proof (translation)
+Simplify using `only [absE, dif_neg hx, ne_eq, ENNReal.coe_eq_zero]`. Conclude with `(distribHaarChar_pos (A := F) (g := Units.mk0 x hx)).ne'`.
+-/
 theorem absE_ne_zero {x : F} (hx : x ≠ 0) : absE x ≠ 0 := by
   simp only [absE, dif_neg hx, ne_eq, ENNReal.coe_eq_zero]
   exact (distribHaarChar_pos (A := F) (g := Units.mk0 x hx)).ne'
 
+/- English proof (translation)
+Apply the tactic sequence `unfold absE; split_ifs <;> simp`.
+-/
 theorem absE_ne_top (x : F) : absE x ≠ ∞ := by
   unfold absE; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [absE, dif_neg hx, dif_neg (inv_ne_zero hx)]`. Rewrite using `[← ENNReal.coe_inv (distribHaarChar_pos (A := F) (g := Units.mk0 x hx)).ne', ← map_inv]`. Use `congr 3`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem absE_inv {x : F} (hx : x ≠ 0) : absE x⁻¹ = (absE x)⁻¹ := by
   simp only [absE, dif_neg hx, dif_neg (inv_ne_zero hx)]
   rw [← ENNReal.coe_inv (distribHaarChar_pos (A := F) (g := Units.mk0 x hx)).ne', ← map_inv]
   congr 3
   ext; simp
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hx`. Establish `h` using `GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one (x := Units.mk0 x hx0) (by simpa using hx)`. Simplify using `only [GlobalTheory.SplitWeil.nabs, NNReal.coe_eq_one] at h`. Simplify using `[absE, hx0, h]`.
+-/
 theorem absE_eq_one {x : F} (hx : valuation F x = 1) : absE x = 1 := by
   have hx0 : x ≠ 0 := by rintro rfl; simp at hx
   have h := GlobalTheory.SplitWeil.nabs_eq_one_of_valuation_eq_one (x := Units.mk0 x hx0) (by simpa using hx)
   simp only [GlobalTheory.SplitWeil.nabs, NNReal.coe_eq_one] at h
   simp [absE, hx0, h]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `: y = 0` using `by simpa using h`. Rewrite using `[this]`. Establish `hy : y ≠ 0` using `by rintro rfl; exact hx (by simpa using h.symm)`.
+
+Establish `hu : valuation F (y / x) = 1`. Rewrite using `[map_div₀, h, div_self (by simpa using hx)]`. Establish `e1` using `absE_eq_one hu`. Establish `hyx : Units.mk0 y hy = Units.mk0 x hx * Units.mk0 (y / x) (div_ne_zero hy hx)` using `by ext; simp [mul_div_cancel₀ _ hx]`. Simplify using `only [absE, dif_neg hy, dif_neg hx, dif_neg (div_ne_zero hy hx)] at e1 ⊢`.
+
+Rewrite using `[hyx, map_mul, ENNReal.coe_mul, e1, mul_one]`.
+-/
 theorem absE_eq_of_val_eq {x y : F} (h : valuation F y = valuation F x) : absE y = absE x := by
   by_cases hx : x = 0
   · subst hx
@@ -68,6 +95,17 @@ theorem absE_eq_of_val_eq {x y : F} (h : valuation F y = valuation F x) : absE y
 section Meas
 variable [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space F`. Establish `e : valuation F ⁻¹' S = valuation F ⁻¹' (S \ {0}) ∪ valuation F ⁻¹' (S ∩ {0})`. Rewrite using `[← Set.preimage_union, Set.diff_union_inter]`. Rewrite using `[e]`. Use `MeasurableSet.union (IsOpen.measurableSet ?_) ?_` and prove the remaining obligations.
+
+Establish `: valuation F ⁻¹' (S \ {0}) = ⋃ γ ∈ S \ {0}, {y : F | valuation F y = γ}`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isOpen_biUnion fun γ hγ ↦ isOpen_sphere hγ.2`.
+
+Distinguish the cases in `h0 : (0 : ValueGroupWithZero F) ∈ S`. Establish `: valuation F ⁻¹' (S ∩ {0}) = {0}`. Use extensionality with `y`. Simplify using `[h0]`. Rewrite using `[this]`.
+
+Conclude with `measurableSet_singleton 0`. Establish `: valuation F ⁻¹' (S ∩ {0}) = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hy h'`.
+
+Conclude with `h0 (h' ▸ hy)`. Rewrite using `[this]`. Conclude with `MeasurableSet.empty`.
+-/
 theorem measurableSet_preimage_valuation (S : Set (ValueGroupWithZero F)) :
     MeasurableSet (valuation F ⁻¹' S) := by
   haveI := GlobalTheory.SplitWeil.t2Space F
@@ -89,6 +127,13 @@ theorem measurableSet_preimage_valuation (S : Set (ValueGroupWithZero F)) :
         intro hy h'; exact h0 (h' ▸ hy)
       rw [this]; exact MeasurableSet.empty
 
+/- English proof (translation)
+Introduce `T _`. Establish `: absE ⁻¹' T = valuation F ⁻¹' (valuation F '' (absE ⁻¹' T))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨y, hy, hxy⟩`. Simplify using `only [Set.mem_preimage] at hy ⊢`. Rewrite using `[← absE_eq_of_val_eq hxy]` and apply the resulting hypothesis. Rewrite using `[this]`.
+
+Conclude with `measurableSet_preimage_valuation _`.
+-/
 theorem measurable_absE : Measurable (absE : F → ℝ≥0∞) := by
   intro T _
   have : absE ⁻¹' T = valuation F ⁻¹' (valuation F '' (absE ⁻¹' T)) := by
@@ -99,6 +144,9 @@ theorem measurable_absE : Measurable (absE : F → ℝ≥0∞) := by
       rwa [← absE_eq_of_val_eq hxy]
   rw [this]; exact measurableSet_preimage_valuation _
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_comp_mul_left (μ : Measure F)
     (hμ : ∀ x : F, x ≠ 0 → μ.map (fun y ↦ x * y) = (absE x)⁻¹ • μ) {f : F → ℝ≥0∞}
     (hf : Measurable f) {x : F} (hx : x ≠ 0) :
@@ -107,6 +155,11 @@ theorem lintegral_comp_mul_left (μ : Measure F)
         (lintegral_map hf (measurable_const_mul x)).symm
     _ = _ := by rw [hμ x hx, lintegral_smul_measure]; rfl
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.secondCountable F`. Use `haveI := GlobalTheory.SplitWeil.t2Space F`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_const_mul x) hs, Measure.smul_apply, smul_eq_mul]`. Establish `hset : (fun y ↦ x * y) ⁻¹' s = (Units.mk0 x hx)⁻¹ • s`.
+
+Use extensionality with `y`. Rewrite using `[Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, inv_inv, Units.smul_def, Units.val_mk0, smul_eq_mul]`. Rewrite using `[hset, ← distribHaarChar_mul, absE, dif_neg hx, map_inv, ENNReal.coe_inv (distribHaarChar_pos (A := F) (g := Units.mk0 x hx)).ne']`.
+-/
 theorem map_mul_haar (lam : Measure F) [lam.IsAddHaarMeasure] {x : F} (hx : x ≠ 0) :
     lam.map (fun y ↦ x * y) = (absE x)⁻¹ • lam := by
   haveI := GlobalTheory.SplitWeil.secondCountable F
@@ -122,13 +175,46 @@ theorem map_mul_haar (lam : Measure F) [lam.IsAddHaarMeasure] {x : F} (hx : x �
 
 def U : Set F := {y | valuation F y = 1}
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.t2Space F`. Conclude with `(isOpen_sphere one_ne_zero).measurableSet`.
+-/
 theorem measurableSet_U : MeasurableSet (U : Set F) := by
   haveI := GlobalTheory.SplitWeil.t2Space F
   exact (isOpen_sphere one_ne_zero).measurableSet
 
+/- English proof (translation)
+Simplify using `[U, map_inv₀]`.
+-/
 theorem inv_mem_U_iff (t : F) : t⁻¹ ∈ (U : Set F) ↔ t ∈ U := by
   simp [U, map_inv₀]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SplitWeil.secondCountable F`. Use `haveI := GlobalTheory.SplitWeil.t2Space F`. Use `haveI := nhdsNE_neBot (F := F)`. Establish `hU` using `measurableSet_U (F := F)`. Establish `hl` using `fun x (hx : x ≠ 0) ↦ map_mul_haar lam (x := x) hx`.
+
+Establish `hlam0 : lam {0} = 0` using `measure_singleton 0`. Set `K : F → F → ℝ≥0∞` to `fun x y ↦ A.indicator 1 x * (absE x)⁻¹ * U.indicator 1 (x⁻¹ * y)`. Set `G : F → F → ℝ≥0∞` to `fun y t ↦ U.indicator 1 t * A.indicator 1 (y * t)`. Establish `hIA : Measurable (A.indicator (1 : F → ℝ≥0∞))` using `measurable_one.indicator hA`. Establish `hIU : Measurable (U.indicator (1 : F → ℝ≥0∞))` using `measurable_one.indicator hU`.
+
+Establish `hK : Measurable (Function.uncurry K)`. Use `((hIA.comp measurable_fst).mul (measurable_absE.comp measurable_fst).inv).mul (hIU.comp (measurable_fst.inv.mul measurable_snd))` and prove the remaining obligations. Establish `hG : Measurable (Function.uncurry G)` using `(hIU.comp measurable_snd).mul (hIA.comp (measurable_fst.mul measurable_snd))`. Establish `h1 : ∫⁻ x, ∫⁻ y, K x y ∂lam ∂n = n A * lam U`. Establish `h0 : ∀ᵐ x ∂n, x ≠ 0`.
+
+Rewrite using `[ae_iff]`. Simplify using `using hn0`. Establish `: ∀ᵐ x ∂n, ∫⁻ y, K x y ∂lam = A.indicator 1 x * lam U` using `by filter_upwards [h0] with x hx`. Simplify using `only [K]`. Rewrite using `[lintegral_const_mul, lintegral_comp_mul_left lam hl hIU (inv_ne_zero hx), absE_inv hx, inv_inv, lintegral_indicator_one hU, mul_assoc, ← mul_assoc (absE x)⁻¹, ENNReal.inv_mul_cancel (absE_ne_zero hx) (absE_ne_top x), one_mul]`.
+
+Conclude with `hIU.comp (measurable_const_mul _)`. Rewrite using `[lintegral_congr_ae this, lintegral_mul_const _ hIA, lintegral_indicator_one hA]`. Establish `h2 : ∫⁻ y, ∫⁻ x, K x y ∂n ∂lam = ∫⁻ y, ∫⁻ t, G y t ∂n ∂lam`. Establish `h0 : ∀ᵐ y ∂lam, y ≠ 0`. Rewrite using `[ae_iff]`.
+
+Simplify using `using hlam0`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [h0] with y hy`. Establish `hf : Measurable fun x ↦ K x y` using `hK.comp (measurable_id.prodMk measurable_const)`. Establish `hsub` using `lintegral_comp_mul_left n hn hf hy`.
+
+Establish `hpt : ∀ t, K (y * t) y = (absE y)⁻¹ * G y t`. Introduce `t`. Simplify using `only [K, G]`. Establish `e : (y * t)⁻¹ * y = t⁻¹` using `by rw [_root_.mul_inv_rev, inv_mul_cancel_right₀ hy]`. Rewrite using `[e]`.
+
+Distinguish the cases in `ht : t ∈ (U : Set F)`. Establish `hv : valuation F (y * t) = valuation F y`. Rewrite using `[map_mul, show valuation F t = 1 from ht, mul_one]`. Rewrite using `[absE_eq_of_val_eq hv, Set.indicator_of_mem ((inv_mem_U_iff t).mpr ht), Set.indicator_of_mem ht]`. Simplify using `only [Pi.one_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (fun h ↦ ht ((inv_mem_U_iff t).mp h)), Set.indicator_of_notMem ht]`. Simplify using the standard rewrite rules. Simplify using `only [hpt] at hsub`. Rewrite `hsub` using `[lintegral_const_mul _ (show Measurable fun t ↦ G y t from hG.comp (measurable_const.prodMk measurable_id))]`.
+
+Establish `hne` using `absE_ne_zero hy`. Establish `hnt` using `absE_ne_top y`. Use `congrArg (fun z ↦ absE y * z) hsub` as an intermediate fact. Simplify using `only [← mul_assoc, ENNReal.mul_inv_cancel hne hnt, one_mul] at this`. Conclude with `this.symm`.
+
+Establish `h3 : ∫⁻ t, ∫⁻ y, G y t ∂lam ∂n = n U * lam A`. Establish `: ∀ t, ∫⁻ y, G y t ∂lam = U.indicator 1 t * lam A`. Introduce `t`. Simplify using `only [G]`. Rewrite using `[lintegral_const_mul]`.
+
+Use `swap`. Use the proof step `· exact hIA.comp (measurable_mul_const t)`. Distinguish the cases in `ht : t ∈ (U : Set F)`. Establish `ht0 : t ≠ 0` using `by rintro rfl; simp [U] at ht`. Repeatedly rewrite using `[mul_comm _ t]`.
+
+Rewrite using `[lintegral_comp_mul_left lam hl hIA ht0, absE_eq_one ht, inv_one, one_mul, lintegral_indicator_one hA]`. Simplify using `[Set.indicator_of_notMem ht]`. Repeatedly rewrite using `[this]`. Rewrite using `[lintegral_mul_const _ hIU, lintegral_indicator_one hU]`. Rewrite using `[← h1, lintegral_lintegral_swap hK.aemeasurable, h2, lintegral_lintegral_swap hG.aemeasurable, h3]`.
+-/
 theorem measure_mul_measure_units_eq (lam : Measure F) [lam.IsAddHaarMeasure] (n : Measure F) [SFinite n]
     (hn0 : n {0} = 0) (hn : ∀ x : F, x ≠ 0 → n.map (fun y ↦ x * y) = (absE x)⁻¹ • n)
     {A : Set F} (hA : MeasurableSet A) :
@@ -211,6 +297,15 @@ theorem measure_mul_measure_units_eq (lam : Measure F) [lam.IsAddHaarMeasure] (n
 
 end Meas
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ lam _ n _ hn0 hn`. Use `haveI := GlobalTheory.SplitWeil.secondCountable F`. Use `haveI := GlobalTheory.SplitWeil.t2Space F`. Establish `hn' : ∀ x : F, x ≠ 0 → n.map (fun y ↦ x * y) = (absE x)⁻¹ • n`. Introduce `x hx`.
+
+Establish `h` using `hn (Units.mk0 x hx)`. Simplify using `only [Units.val_mk0] at h`. Rewrite using `[h, absE, dif_neg hx, ← ENNReal.coe_inv (distribHaarChar_pos (A := F) (g := Units.mk0 x hx)).ne']`. Use extensionality with `s`. Rewrite using `[Measure.smul_apply, Measure.smul_apply, ENNReal.smul_def]`.
+
+Establish `hUO : (U : Set F) ⊆ (𝒪[F] : Set F)` using `fun y hy ↦ (Valuation.mem_integer_iff _ _).mpr (le_of_eq hy)`. Establish `hnU : n U ≠ ∞` using `((measure_mono hUO).trans_lt (GlobalTheory.SplitWeil.isCompact_int F).measure_lt_top).ne`. Establish `hlU : lam U ≠ ∞` using `((measure_mono hUO).trans_lt (GlobalTheory.SplitWeil.isCompact_int F).measure_lt_top).ne`. Establish `hlU0 : lam U ≠ 0` using `((isOpen_sphere (F := F) one_ne_zero).measure_pos lam ⟨1, by simp⟩).ne'`. Use `⟨(n U / lam U).toNNReal, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `s hs`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, ENNReal.coe_toNNReal (ENNReal.div_ne_top hnU hlU0), smul_eq_mul]`. Establish `hk` using `measure_mul_measure_units_eq lam n hn0 hn' hs`. Rewrite using `[div_eq_mul_inv, mul_right_comm, ← hk, mul_assoc, ENNReal.mul_inv_cancel hlU0 hlU, mul_one]`.
+-/
 theorem eq_smul_haar_of_homog : ∀ (F : Type) [Field F] [CharZero F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
     (lam : Measure F) [lam.IsAddHaarMeasure] (n : Measure F) [IsFiniteMeasureOnCompacts n],

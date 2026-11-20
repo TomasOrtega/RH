@@ -26,6 +26,9 @@ def imLine (σ : E →ₐ[F] E) : AddSubgroup (AE F E) where
     simp only [Set.mem_ofPred_eq, map_neg] at *
     rw [← neg_add, ha, neg_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_imLine {σ : E →ₐ[F] E} {t : AE F E} : t ∈ imLine σ ↔ t + cA σ t = 0 := Iff.rfl
 
 def betaOf (σ : E →ₐ[F] E) {b : ℕ} (J₁ : Matrix (Fin b) (Fin b) E) (a : Fin b → AE F E) : Fin b → AE F E :=

@@ -11,6 +11,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `loc : ∀ s : S, ∃ U : S.Opens, s ∈ U ∧ ∃ t : LB.Gen (LB.LinComb L (fun i => (p ⁻¹ᵁ U).ι ≫ φ i) ε), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (p ⁻¹ᵁ U).toScheme) (b : Z ⟶ S) (z : Z) (J), Good L z J → r ≫ (p ⁻¹ᵁ U).ι = b ≫ e → val t r z J = 1`. Introduce `s`. Take `⟨U, hs, t, ht⟩` from `h s`. Take `⟨n, n₁⟩ : ∃ n : (p ⁻¹ᵁ U).toScheme ⟶ (p ⁻¹ᵁ U).toScheme, n ≫ (p ⁻¹ᵁ U).ι = (p ⁻¹ᵁ U).ι ≫ p ≫ e` from `⟨IsOpenImmersion.lift (p ⁻¹ᵁ U).ι ((p ⁻¹ᵁ U).ι ≫ p ≫ e) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Establish `e'` using `congrArg (fun q => q (p y.1)) he`. Conclude with `(congrArg (· ∈ U) e').mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := fun i => (p ⁻¹ᵁ U).ι ≫ φ i) (ε' := ε) (fun V _ k => by`. Establish `q` using `h0 V (fun χ => k ((p ⁻¹ᵁ U).ι ≫ p ≫ χ))`.
+
+Use `Eq.trans (DVR.prod_sum₂ (K := K) (K' := K) (U := V) _ (c := ∏ i, k ((p ⁻¹ᵁ U).ι ≫ φ i) ^ ε i) rfl (DVR.prod_neg _ _ ((Finset.prod_congr rfl fun i _ => by show k (n ≫ _ ≫ _) ^ _ = _` and prove the remaining obligations. Rewrite using `[← Category.assoc n, n₁]`. Simplify using `only [Category.assoc]).trans q))) ?_`. Use the proof step `simp)`. Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.pullGen L _ _ t n)))`.
+
+Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht n)))`. Use `⟨U, hs, t', ht', fun Z r b z J hJ hr => ?_⟩` and prove the remaining obligations. Establish `: r ≫ n = r`. Rewrite using `[← cancel_mono (p ⁻¹ᵁ U).ι, Category.assoc, n₁, ← Category.assoc, hr, Category.assoc, ← Category.assoc e, he, Category.id_comp]`. Rewrite using `[hv Z r z J hJ, val_mul hJ, val_inv, val_pull hJ, this, mul_inv_cancel]`.
+
+Use `choose U hU t ht hn using loc`. Establish `agree : ∀ (s s' : S) (Z : Scheme.{0}) (r : Z ⟶ (p ⁻¹ᵁ U s).toScheme) (r' : Z ⟶ (p ⁻¹ᵁ U s').toScheme) (z : Z) (J), Good L z J → r ≫ (p ⁻¹ᵁ U s).ι = r' ≫ (p ⁻¹ᵁ U s').ι → val (t s) r z J = val (t s') r' z J`. Introduce `s s' Z r r' z J hJ hr`. Set `V : S.Opens` to `U s ⊓ U s'`. Establish `mk : ∀ W : S.Opens, V ≤ W → ∃ m : pullback p V.ι ⟶ (p ⁻¹ᵁ W).toScheme, m ≫ (p ⁻¹ᵁ W).ι = pullback.fst p V.ι` using `fun W hW => ⟨IsOpenImmersion.lift (p ⁻¹ᵁ W).ι (pullback.fst p V.ι) (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `e'` using `congrArg (fun q => q y) (pullback.condition (f := p) (g := V.ι))`. Conclude with `(congrArg (· ∈ W) e').mpr (hW (pullback.snd p V.ι y).2)), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨m, hm⟩` from `mk (U s) inf_le_left`.
+
+Take `⟨m', hm'⟩` from `mk (U s') inf_le_right`. Set `e' : V.toScheme ⟶ pullback p V.ι` to `pullback.lift (V.ι ≫ e) (𝟙 _) (by simp [he])`. Establish `he' : e' ≫ pullback.fst p V.ι = V.ι ≫ e` using `pullback.lift_fst _ _ _`. Take `⟨v, hv⟩ : ∃ v : Z ⟶ V.toScheme, v ≫ V.ι = (r ≫ (p ⁻¹ᵁ U s).ι) ≫ p` from `⟨IsOpenImmersion.lift V.ι ((r ≫ (p ⁻¹ᵁ U s).ι) ≫ p) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `⟨(r y).2, (congrArg (fun q => p (q y) ∈ U s') hr).mpr (r' y).2⟩), IsOpenImmersion.lift_fac _ _ _⟩`. Set `ρ : Z ⟶ pullback p V.ι` to `pullback.lift (r ≫ (p ⁻¹ᵁ U s).ι) v hv.symm`. Establish `hρ : ρ ≫ pullback.fst p V.ι = r ≫ (p ⁻¹ᵁ U s).ι` using `pullback.lift_fst _ _ _`. Establish `r₁ : ρ ≫ m = r` using `by rw [← cancel_mono (p ⁻¹ᵁ U s).ι, Category.assoc, hm, hρ]`.
+
+Establish `r₂ : ρ ≫ m' = r'` using `by rw [← cancel_mono (p ⁻¹ᵁ U s').ι, Category.assoc, hm', hρ, hr]`. Establish `key` using `gen_unique' hL (φ := fun i => m ≫ (p ⁻¹ᵁ U s).ι ≫ φ i) (ε := ε) (φ' := fun i => m' ≫ (p ⁻¹ᵁ U s').ι ≫ φ i) (ε' := ε) (fun W _ k => Finset.prod_congr rfl fun i _ => by show k (m' ≫ _ ≫ _) ^ _ = k (m ≫ _ ≫ _) ^ _`. Rewrite using `[← Category.assoc, ← Category.assoc m, hm, hm'])`. Use the proof step `(pullback.snd p V.ι) e' (pullback.lift_snd _ _ _) (hp V) (DVR.pullGen_isGen _ _ _ _ (ht s) m)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ (ht s') m') (fun y I hI => by`.
+
+Rewrite using `[val_pull hI, val_pull hI, hn s _ _ V.ι y I hI (by rw [Category.assoc, hm, he']), hn s' _ _ V.ι y I hI (by rw [Category.assoc, hm', he'])]) Z ρ z J hJ`. Rewrite `key` using `[val_pull hJ, val_pull hJ, r₁, r₂]`. Then use the resulting hypothesis. Take `⟨u, hu, -⟩` from `glue_gen hL φ ε (fun s => p ⁻¹ᵁ U s) (fun y => ⟨p y, hU _⟩) t ht agree`. Conclude with `⟨u, hu⟩`.
+-/
 theorem exists_gen_of_local_on_base {X Y S : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Y ⟶ S) (e : S ⟶ Y) (he : e ≫ p = 𝟙 S)
     (hp : ∀ V : S.Opens, Function.Surjective (pullback.snd p V.ι).appTop.hom)
@@ -85,6 +106,11 @@ theorem exists_gen_of_local_on_base {X Y S : Scheme.{0}} {L : LB X} (hL : L.IsLB
   obtain ⟨u, hu, -⟩ := glue_gen hL φ ε (fun s => p ⁻¹ᵁ U s) (fun y => ⟨p y, hU _⟩) t ht agree
   exact ⟨u, hu⟩
 
+/- English proof (translation)
+Use `⟨⟨fun j => t.s j ^ k⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (· ^ k) (ht i j)`. Simplify using `only [mul_zpow, ← map_zpow] at h`. Use `h.trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Use `(Finset.prod_zpow _ _ _).symm.trans (Finset.prod_congr rfl fun a _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(zpow_mul _ _ _).symm.trans (congrArg _ (mul_comm _ _))`.
+-/
 theorem exists_gen_zsmul {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (k : ℤ) :
     ∃ u : LB.Gen (LB.LinComb L φ (fun i => k * ε i)), u.IsGen := by
@@ -95,6 +121,11 @@ theorem exists_gen_zsmul {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {�
   refine (Finset.prod_zpow _ _ _).symm.trans (Finset.prod_congr rfl fun a _ => ?_)
   exact (zpow_mul _ _ _).symm.trans (congrArg _ (mul_comm _ _))
 
+/- English proof (translation)
+Use `exists_gen_of_local_on_base hL _ _ A.hom η[A].left (Over.w η[A]) (fun V => surj_snd hG hA (Over.mk V.ι)) (fun U _ h => ?_) (fun s => ?_)` and prove the remaining obligations. Establish `e : η[A].left ≫ (GrpObj.inv : A ⟶ A).left = η[A].left` using `congrArg (fun q => q.left) (show η[A] ≫ (GrpObj.inv : A ⟶ A) = η[A] from GrpObj.one_inv)`. Rewrite using `[Fin.prod_univ_two]`. Use `show h (η[A].left ≫ (GrpObj.inv : A ⟶ A).left) ^ (1 : ℤ) * h (η[A].left ≫ 𝟙 _) ^ (-1 : ℤ) = 1`. Rewrite using `[e, Category.comp_id]`.
+
+Simplify using the standard rewrite rules. Take `⟨U, hU, t, ht⟩` from `hs s`. Take `⟨t', ht', -⟩` from `exists_gen hL (φ' := fun k => (A.hom ⁻¹ᵁ U).ι ≫ (![(GrpObj.inv : A ⟶ A).left, 𝟙 A.left] : Fin 2 → _) k) (ε' := ![1, -1]) (fun V _ h => by simp [Fin.prod_univ_two]) t ht`. Conclude with `⟨U, hU, t', ht'⟩`.
+-/
 theorem exists_gen_neg_of_sym (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} (hL : L.IsLB) (hs : Out.Sym A L) :
     ∃ u : LB.Gen (LB.LinComb L (K := Fin 2) ![(GrpObj.inv : A ⟶ A).left, 𝟙 A.left] ![1, -1]), u.IsGen := by
@@ -111,6 +142,9 @@ theorem exists_gen_neg_of_sym (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [
       (fun V _ h => by simp [Fin.prod_univ_two]) t ht
     exact ⟨U, hU, t', ht'⟩
 
+/- English proof (translation)
+Introduce `hG S P k T`. Take `⟨u, hu⟩` from `exists_gen_neg_of_sym hG P.isAb P.isLB P.sym`. Take `⟨w, hw⟩` from `exists_gen_zsmul _ (DVR.pullGen_isGen _ _ _ _ hu (snd T P.A).left) (-k)`. Take `⟨t, ht, -⟩` from `exists_gen P.isLB (K' := Fin 2) (φ' := ![(snd T P.A).left, (snd T P.A ≫ (GrpObj.inv : P.A ⟶ P.A)).left]) (ε' := ![k, -k]) (fun V _ h => by simp [Fin.prod_univ_two, mul_comm]) w hw`. Conclude with `⟨t, ht⟩`.
+-/
 theorem exists_gen_negLB : GlobalFnsSt → ∀ (S : Scheme.{0}) (P : PolAV S) (k : ℤ) (T : Over S),
     ∃ nu : LB.Gen (negLB P.A P.L k T), nu.IsGen := by
   intro hG S P k T

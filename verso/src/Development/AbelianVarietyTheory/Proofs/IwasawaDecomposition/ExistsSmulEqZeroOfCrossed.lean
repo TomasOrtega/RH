@@ -6,6 +6,29 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TransferCommutator
 
+/- English proof (translation)
+Use `Fintype.ofFinite G` as an intermediate fact. Set `J : Submodule R X` to `(Submodule.pi Set.univ fun _ : G => RingHom.ker ε).map (Fintype.linearCombination R d)`. Set `ψ : G →* Multiplicative (X ⧸ J)` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (J.mkQ (d g))) fun g h => by`. Rewrite using `[← ofAdd_add, ← map_add]`. Use `congr 1`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, hd]`. Use `⟨Pi.single h (ρ g - 1), fun i _ => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = h`. Substitute `hi` using the available equality. Simplify using `[RingHom.mem_ker, hρ]`.
+
+Simplify using `[hi]`. Rewrite using `[Fintype.linearCombination_apply_single, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Set `ψ' : Additive (Abelianization G) →ₗ[ℤ] X ⧸ J` to `(MonoidHom.toAdditiveLeft (Abelianization.lift ψ)).toIntLinearMap`. Establish `hψ' : ∀ g, ψ' (Additive.ofMul (Abelianization.of g)) = J.mkQ (d g)` using `fun g => rfl`.
+
+Set `L : (G → ℤ) →ₗ[ℤ] Additive (Abelianization G)` to `Fintype.linearCombination ℤ fun g => Additive.ofMul (Abelianization.of g)`. Establish `hL : Function.Surjective L` using `fun q => by`. Take `⟨g, hg⟩` from `QuotientGroup.mk_surjective (s := commutator G) q.toMul`. Conclude with `⟨Pi.single g 1, by rw [Fintype.linearCombination_apply_single, one_smul]; exact congrArg Additive.ofMul hg⟩`. Establish `eq` using `L.quotKerEquivOfSurjective hL`.
+
+Establish `hfin : Finite (Abelianization G)` using `inferInstanceAs (Finite (G ⧸ commutator G))`. Establish `: Finite ((G → ℤ) ⧸ LinearMap.ker L)` using `Finite.of_equiv _ eq.symm.toEquiv`. Set `e : (G → ℤ) ≃ₗ[ℤ] LinearMap.ker L` to `LinearEquiv.ofFinrankEq _ _ ((Submodule.finiteQuotient_iff _).1 this).symm`. Establish `hdet` using `Submodule.natAbs_det_equiv (LinearMap.ker L) e`. Establish `hrel : ∀ n : LinearMap.ker L, ∃ ν : G → R, (∀ i, ε (ν i) = n.1 i) ∧ ∑ i, ν i • d i = 0` using `fun n => by`.
+
+Establish `h0 : ∑ i, n.1 i • d i ∈ J`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, map_sum]`. Use `congrArg ψ' n.2` as an intermediate fact. Rewrite `this` using `[map_zero, Fintype.linearCombination_apply, map_sum]`. Simplify `this` using `only [map_zsmul, hψ']`.
+
+Take `⟨ν, hν, hs⟩` from `h0`. Use `⟨fun i => (n.1 i : R) - ν i, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, (RingHom.mem_ker).1 (hν i trivial)]`. Simplify using the standard rewrite rules. Simplify using `only [sub_smul, Finset.sum_sub_distrib, Int.cast_smul_eq_zsmul]`.
+
+Rewrite using `[← hs, Fintype.linearCombination_apply, sub_self]`. Use `choose ν hν hs using hrel`. Set `M : Matrix G G R` to `Matrix.of fun j i => ν (e (Pi.single j 1)) i`. Use `⟨M.det, ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, ← Matrix.det_transpose, ← Nat.card_congr (eq.toEquiv.trans Additive.toMul), ← hdet, ← LinearMap.det_toMatrix']`.
+
+Use `congr 2`. Use extensionality with `i j`. Simplify using `[M, hν, LinearMap.toMatrix'_apply]`. Establish `h1 : M.det • d k = ∑ i, (M.adjugate * M) k i • d i`. Rewrite using `[Matrix.adjugate_mul]`.
+
+Simplify using `[Matrix.one_apply]`. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.smul_sum]`. Conclude with `(congrArg _ (hs _)).trans (smul_zero _)`.
+-/
 theorem exists_smul_eq_zero_of_crossed {G : Type} [Group G] [Finite G] {R : Type} [CommRing R] (ε : R →+* ℤ)
     (ρ : G → R) (hρ : ∀ g, ε (ρ g) = 1) {X : Type} [AddCommGroup X] [Module R X] (d : G → X)
     (hd : ∀ g h, d (g * h) = d g + ρ g • d h) :
@@ -65,6 +88,31 @@ theorem exists_smul_eq_zero_of_crossed {G : Type} [Group G] [Finite G] {R : Type
     rw [← Finset.smul_sum]
     exact (congrArg _ (hs _)).trans (smul_zero _)
 
+/- English proof (translation)
+Set `Q` to `Abelianization G`. Establish `hfin : Finite Q` using `inferInstanceAs (Finite (G ⧸ commutator G))`. Set `: Fintype Q` to `(commutator G).fintypeQuotientOfFiniteIndex`. Set `R` to `MonoidAlgebra ℤ Q`. Set `T : (commutator G).LeftTransversal` to `default`.
+
+Set `α : Q → G` to `fun q => (T.2.leftQuotientEquiv q : G)`. Establish `hα : ∀ q, Abelianization.of (α q) = q` using `fun q => T.2.leftQuotientEquiv.symm_apply_apply q`. Establish `hmem : ∀ g q, (α q)⁻¹ * g * α ((Abelianization.of g)⁻¹ * q) ∈ commutator G` using `fun g q => by`. Rewrite using `[← Abelianization.ker_of, MonoidHom.mem_ker]`. Simplify using `[hα]`.
+
+Set `b : G → Q → Additive B` to `fun g q => Additive.ofMul (φ ⟨_, hmem g q⟩)`. Establish `hb : ∀ g h q, b (g * h) q = b g q + b h ((Abelianization.of g)⁻¹ * q)` using `fun g h q => by`. Simplify using `only [b]`. Rewrite using `[← ofMul_mul, ← map_mul]`. Use `congr 2`.
+
+Use `ext`. Simplify using `[mul_assoc]`. Set `s : Q →* R` to `MonoidAlgebra.of ℤ Q`. Set `ε : R →ₐ[ℤ] ℤ` to `MonoidAlgebra.lift ℤ ℤ Q 1`. Set `d : G → (R ⊗[ℤ] Additive B) × R` to `fun g => (∑ q, s q ⊗ₜ b g q, s (Abelianization.of g) - 1)`.
+
+Take `⟨μ, hμ, h0⟩` from `exists_smul_eq_zero_of_crossed (ε : R →+* ℤ) (fun g => s (Abelianization.of g)) (fun g => MonoidAlgebra.lift_of _ _) d fun g h => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [d, Prod.fst_add, Prod.smul_fst, hb, TensorProduct.tmul_add, Finset.sum_add_distrib, Finset.smul_sum, TensorProduct.smul_tmul', smul_eq_mul, ← map_mul]`. Use `congr 1`. Conclude with `(Fintype.sum_equiv (Equiv.mulLeft (Abelianization.of g)) _ _ fun q => by simp).symm`.
+
+Simplify using `only [d, Prod.snd_add, Prod.smul_snd, map_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ q, μ * s q = μ` using `fun q => by`. Use `congrArg Prod.snd (h0 (α q))` as an intermediate fact. Simplify using `only [d, Prod.smul_snd, hα, smul_eq_mul, mul_sub, mul_one, Prod.snd_zero] at this`.
+
+Conclude with `sub_eq_zero.1 this`. Establish `hc : ∀ q, μ.coeff q = μ.coeff 1` using `fun q => by`. Use `MonoidAlgebra.coeff_mul_single_apply μ 1 q⁻¹ 1` as an intermediate fact. Rewrite `this` using `[show μ * MonoidAlgebra.single q⁻¹ 1 = μ from hinv q⁻¹]`. Rewrite `this` using `[inv_inv, one_mul, mul_one]`.
+
+Conclude with `this.symm`. Establish `hε : ε μ = (Nat.card Q : ℤ) * μ.coeff 1`. Simplify using `only [ε]`. Rewrite using `[MonoidAlgebra.lift_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[hc]`.
+
+Establish `hu : (μ.coeff 1).natAbs = 1`. Rewrite `hμ` using `[show (ε : R →+* ℤ) μ = _ from hε, Int.natAbs_mul, Int.natAbs_natCast]`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.card_pos (α := Q)) (hμ.trans (mul_one _).symm)`. Set `c : R →ₗ[ℤ] ℤ` to `Finsupp.lapply (1 : Q) ∘ₗ (MonoidAlgebra.coeffLinearEquiv ℤ (S := ℤ) (M := Q)).toLinearMap`. Use extensionality with `g`.
+
+Establish `h1` using `congrArg Prod.fst (h0 g)`. Simplify using `only [d, Prod.smul_fst, Finset.smul_sum, TensorProduct.smul_tmul', smul_eq_mul, hinv, Prod.fst_zero, ← TensorProduct.tmul_sum] at h1`. Establish `h2` using `congrArg (fun x => TensorProduct.lid ℤ _ (c.rTensor _ x)) h1`. Simplify using `only [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, map_zero] at h2`. Establish `h3 : ∑ q, b g q = 0`.
+
+Break down `Int.natAbs_eq_iff.1 hu with h | h` into its components or cases. Rewrite `h2` using `[show c μ = _ from h]`. Simplify using `using h2`. Rewrite `h2` using `[show c μ = _ from h]`. Simplify using `using h2`.
+
+Rewrite using `[MonoidHom.transfer_def φ T, MonoidHom.one_apply]`. Establish `h4 : ∏ q, (b g q).toMul = 1` using `by rw [← toMul_sum, h3, toMul_zero]`. Use `Eq.trans (Finset.prod_congr rfl fun q _ => congrArg φ (Subtype.ext ?_)) h4` and prove the remaining obligations. Simplify using `only [Subgroup.smul_apply_eq_smul_apply_inv_smul, smul_eq_mul, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem transfer_eq_one (G : Type) [Group G] [Finite G] (B : Type) [CommGroup B] (φ : commutator G →* B) :
     MonoidHom.transfer φ = 1 := by
   classical

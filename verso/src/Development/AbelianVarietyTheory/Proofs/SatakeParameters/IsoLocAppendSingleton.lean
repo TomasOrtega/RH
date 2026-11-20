@@ -11,6 +11,11 @@ open Formalism.BasicNotions Formalism.MainNotions.N GlobalTheory.ThetaExh Global
 
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 
+/- English proof (translation)
+Take `⟨hsum, hzero, htw, -, -⟩` from `hL w`. Establish `hχ` using `A.locG_dim χ w`. Unfold `spehLoc`. Simplify using `only`. Generalize the expression as in `(List.range p.d >>= fun a : ℕ => (pure (a : ℝ) : List ℝ)) = l`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact (hzero _ hχ).symm`. Consider the case `cons k l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih, hsum _ _ _ hχ, htw _ _ _ hχ, A.locG_tw]`.
+-/
 theorem spehLoc_twist (hL : ParamLaws N A) (p : Part A.CG) (χ : A.CG 1) (w : PlE H) :
     spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w = A.lpChar (spehLoc N A p w) (A.locG χ w) := by
   obtain ⟨hsum, hzero, htw, -, -⟩ := hL w
@@ -23,6 +28,11 @@ theorem spehLoc_twist (hL : ParamLaws N A) (p : Part A.CG) (χ : A.CG 1) (w : Pl
   | cons k l ih =>
     rw [List.foldr_cons, List.foldr_cons, ih, hsum _ _ _ hχ, htw _ _ _ hχ, A.locG_tw]
 
+/- English proof (translation)
+Establish `hχ` using `A.locG_dim χ w`. Proceed by induction on `S with`. Consider the case `nil => exact ((hL w).2.1 _ hχ).symm`. Consider the case `cons p S ih`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A ⟨p.a, A.tw p.π χ, p.d⟩ w) (isoLoc N A (twistIso N A S χ) w) = A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)`.
+
+Rewrite using `[ih, spehLoc_twist N A hL, (hL w).1 _ _ _ hχ]`.
+-/
 theorem isoLoc_twist (hL : ParamLaws N A) (S : List (Part A.CG)) (χ : A.CG 1) (w : PlE H) :
     isoLoc N A (twistIso N A S χ) w = A.lpChar (isoLoc N A S w) (A.locG χ w) := by
   have hχ := A.locG_dim χ w
@@ -33,6 +43,11 @@ theorem isoLoc_twist (hL : ParamLaws N A) (S : List (Part A.CG)) (χ : A.CG 1) (
       A.lpChar (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (A.locG χ w)
     rw [ih, spehLoc_twist N A hL, (hL w).1 _ _ _ hχ]
 
+/- English proof (translation)
+Proceed by induction on `S with`. Consider the case `nil`. Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A q w) (A.lpZero w) = A.lpSum (A.lpZero w) (spehLoc N A q w)`. Conclude with `A.lpSum_comm _ _`. Consider the case `cons p S ih`.
+
+Express the relevant statement in the definitionally equal form `A.lpSum (spehLoc N A p w) (isoLoc N A (S ++ [q]) w) = A.lpSum (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (spehLoc N A q w)`. Rewrite using `[ih, A.lpSum_assoc]`.
+-/
 theorem isoLoc_append_singleton (S : List (Part A.CG)) (q : Part A.CG) (w : PlE H) :
     isoLoc N A (S ++ [q]) w = A.lpSum (isoLoc N A S w) (spehLoc N A q w) := by
   induction S with
@@ -44,12 +59,18 @@ theorem isoLoc_append_singleton (S : List (Part A.CG)) (q : Part A.CG) (w : PlE 
       A.lpSum (A.lpSum (spehLoc N A p w) (isoLoc N A S w)) (spehLoc N A q w)
     rw [ih, A.lpSum_assoc]
 
+/- English proof (translation)
+Rewrite using `[isoLoc_twist N A hL, isoLoc_append_singleton]`. Both sides reduce to the same expression.
+-/
 theorem isoLoc_lift (hL : ParamLaws N A) (i : N.Loc) (Sig : List (Part A.CG)) (w : PlE H) :
     isoLoc N A (twistIso N A (Sig ++ [muPart N A i]) A.etaTinv) w =
       liftPar N A i w (isoLoc N A Sig w) := by
   rw [isoLoc_twist N A hL, isoLoc_append_singleton]
   rfl
 
+/- English proof (translation)
+Take `⟨P', hP', hbc⟩` from `hx`. Use `hP P P' x hP' fun w hw => ?_` and prove the remaining obligations. Rewrite using `[hS σ P hθ w hw.1, ← hσ w hw, ← isoLoc_lift N A hL, hbc.2.2.2.1 w hw.1]`.
+-/
 theorem ptV_of_thetaOf (hL : ParamLaws N A) {i : N.Loc} (hS : SplitLift N A i) (hP : PtOfLoc N A i)
     {x : N.X i} {Sig : List (Part A.CG)} (hx : HasParamX N A i x Sig) {σ : what₂.FT}
     (hσ : ∀ w, SplitOut N i w → isoLoc N A Sig w = A.locW i σ w) {P : A.AV i}
@@ -58,6 +79,13 @@ theorem ptV_of_thetaOf (hL : ParamLaws N A) {i : N.Loc} (hS : SplitLift N A i) (
   refine hP P P' x hP' fun w hw => ?_
   rw [hS σ P hθ w hw.1, ← hσ w hw, ← isoLoc_lift N A hL, hbc.2.2.2.1 w hw.1]
 
+/- English proof (translation)
+Introduce `i x Sig _ hx`. Establish `key : MjSigOut N A i Sig ≤ (eigC N A i x).comap (what₂.thetaT (N.mu i) (N.j i))`. Unfold `MjSigOut`. Use `iSup₂_le fun σ hσ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : what₂.isot (N.j i) σ = ⊥`.
+
+Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨P, hPθ⟩` from `hθ i σ h0`. Establish `hpt : A.ptV i P = some x` using `ptV_of_thetaOf N A hL (hS i) (hP i) hx hσ hPθ`. Rewrite using `[← Submodule.map_le_iff_le_comap]`.
+
+Use `hPθ.2.trans ?_` and prove the remaining obligations. Unfold `eigC`. Conclude with `le_iSup₂_of_le (f := fun P (_ : P ∈ {P | A.ptV i P = some x}) => A.typeV i P) P hpt le_rfl`. Conclude with `fun f hf => key hf`.
+-/
 theorem thetaTMapsIntoEigOut (hθ : EachRowHasThetaLift N A) (hL : ParamLaws N A)
     (hS : ∀ i, SplitLift N A i) (hP : ∀ i, PtOfLoc N A i) : ThetaTMapsIntoEigOut N A := by
   intro i x Sig _ hx
@@ -74,6 +102,9 @@ theorem thetaTMapsIntoEigOut (hθ : EachRowHasThetaLift N A) (hL : ParamLaws N A
     exact le_iSup₂_of_le (f := fun P (_ : P ∈ {P | A.ptV i P = some x}) => A.typeV i P) P hpt le_rfl
   exact fun f hf => key hf
 
+/- English proof (translation)
+Introduce `_ _ _ N A hθ hL hS hP` and use `thetaTMapsIntoEig_of_out N A (thetaTMapsIntoEigOut N A hθ hL hS hP)`.
+-/
 theorem main : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N),
     EachRowHasThetaLift N A → ParamLaws N A → (∀ i, SplitLift N A i) → (∀ i, PtOfLoc N A i) →
       ThetaTMapsIntoEig N A :=

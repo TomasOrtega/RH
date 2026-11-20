@@ -15,6 +15,13 @@ variable {X X' Y Y' Z : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K : 
 
 def scaleGen {M : LB X} (t : LB.Gen M) (c : Γ(X, ⊤)ˣ) : LB.Gen M := ⟨fun i => res le_top c * t.s i⟩
 
+/- English proof (translation)
+Establish `hT : r z ∈ (⊤ : X.Opens)` using `trivial`. Establish `e : X.presheaf.map (homOfLE (le_top : M.U i ≤ ⊤)).op ≫ r.app (M.U i) ≫ Z.presheaf.germ (r ⁻¹ᵁ M.U i) z h = r.app ⊤ ≫ Z.presheaf.germ (r ⁻¹ᵁ ⊤) z hT` using `by first`. Consider the case `(rw [Scheme.Hom.naturality_assoc]; congr 1; exact TopCat.Presheaf.germ_res _ _ _ _)`. Consider the case `(simp only [Scheme.Hom.naturality_assoc]; congr 1; exact TopCat.Presheaf.germ_res _ _ _ _)`. Consider the case `(simp [Scheme.Hom.naturality_assoc]; congr 1; exact TopCat.Presheaf.germ_res _ _ _ _)`.
+
+Consider the case `(simp [Scheme.Hom.naturality_assoc]; erw [TopCat.Presheaf.germ_res]; rfl)`. Establish `key : gm r z (M.U i) (res le_top c) = gm r z ⊤ c`. Unfold `gm`. Rewrite using `[dif_pos h, dif_pos hT]`. Use `ext`.
+
+Conclude with `congrArg (fun f => f.hom (c : Γ(X, ⊤))) e`. Use `show gm r z (M.U i) (res le_top c * t.s i) = _`. Rewrite using `[map_mul, key]`.
+-/
 theorem gm_scaleGen {M : LB X} (t : LB.Gen M) (c : Γ(X, ⊤)ˣ) (r : Z ⟶ X) (z : Z) (i : M.ι) (h : r z ∈ M.U i) :
     gm r z (M.U i) ((scaleGen t c).s i) = gm r z ⊤ c * gm r z (M.U i) (t.s i) := by
   have hT : r z ∈ (⊤ : X.Opens) := trivial
@@ -33,6 +40,13 @@ theorem gm_scaleGen {M : LB X} (t : LB.Gen M) (c : Γ(X, ⊤)ˣ) (r : Z ⟶ X) (
   show gm r z (M.U i) (res le_top c * t.s i) = _
   rw [map_mul, key]
 
+/- English proof (translation)
+Establish `rr : ∀ {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Y, U)ˣ), res h2 (res h1 x) = res (h2.trans h1) x`. Introduce `U V W h1 h2 x`. Use `ext`. Use `show (Y.presheaf.map (homOfLE h2).op).hom ((Y.presheaf.map (homOfLE h1).op).hom (x : Γ(Y, U))) = (Y.presheaf.map (homOfLE (h2.trans h1)).op).hom (x : Γ(Y, U))`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`.
+
+Both sides reduce to the same expression. Unfold `LB.Gen.IsGen`. Introduce `i j`. Use `show res _ (res le_top c * t.s i) = _ * res _ (res le_top c * t.s j)`. Rewrite using `[map_mul, map_mul, rr, rr, ht i j]`.
+
+Conclude with `mul_left_comm _ _ _`.
+-/
 theorem scaleGen_isGen {M : LB X} (hM : M.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb M φ ε))
     (ht : t.IsGen) (c : Γ(Y, ⊤)ˣ) : (scaleGen t c).IsGen := by
   have rr : ∀ {U V W : Y.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Y, U)ˣ),

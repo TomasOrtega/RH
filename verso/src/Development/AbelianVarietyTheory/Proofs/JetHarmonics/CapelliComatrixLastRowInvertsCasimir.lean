@@ -6,6 +6,23 @@ open Formalism.REAL
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `Q : ℂ → Fin (n + 1) → Module.End ℂ V` to `fun u l => (((-1 : ℤ) ^ (n + (l : ℕ)) : ℤ) : Module.End ℂ V) * qminor E Fin.castSucc (Fin.succAbove l) (u - 1)`. Set `K : ℂ → ((PiLp 2 (fun _ : Fin (n + 1) => V)) →ₗ[ℂ] V)` to `fun u => ∑ l, (Q u l) ∘ₗ (PiLp.projₗ 2 (fun _ : Fin (n + 1) => V) l)`. Establish `hK : ∀ u x, K u x = ∑ l, Q u l (x l)`. Introduce `u x`. Simplify using `only [K, LinearMap.sum_apply, LinearMap.comp_apply, PiLp.projₗ_apply]`.
+
+Use `⟨K, fun u x => ?_, fun u v => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ l, ((u - 0) • x + Om x) l = ∑ c, Tm E u c l (x c)`. Introduce `l`. Simplify using `only [Tm, sub_zero, PiLp.add_apply, PiLp.smul_apply, hOm, LinearMap.add_apply, Finset.sum_add_distrib]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_eq_single l]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hK]`. Simplify using `only [h1, map_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h2 : ∀ c, ∑ l, Q u l (Tm E u c l (x c)) = (if c = Fin.last n then qdet E u else 0 : Module.End ℂ V) (x c)`. Introduce `c`.
+
+Rewrite using `[← capelli_comatrix_last_row _ n E hE u c, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Q, Module.End.mul_apply]`. Simplify using `only [h2]`. Rewrite using `[Finset.sum_eq_single (Fin.last n)]`.
+
+Simplify using `[hdet]`. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules. Rewrite using `[hK, Finset.sum_eq_single (Fin.last n)]`.
+
+Establish `h3 : qminor E Fin.castSucc Fin.castSucc (u - 1) = qdet (fun a b : Fin n => E a.castSucc b.castSucc) (u - 1)`. Simplify using `only [qdet, qminor, Tm, id, Fin.castSucc_inj]`. Establish `h4 : ((-1 : ℤ) ^ (n + n)) = 1`. Rewrite using `[← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [Q, Fin.succAbove_last, h3, Fin.val_last, h4, Int.cast_one, one_mul, PiLp.single_eq_same]`. Introduce `c _ hc`. Simplify using `[PiLp.single_eq_of_ne, hc]`. Simplify using the standard rewrite rules.
+-/
 theorem comatrix_last_row_inverts_casimir
     (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (n : ℕ)
     (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V)

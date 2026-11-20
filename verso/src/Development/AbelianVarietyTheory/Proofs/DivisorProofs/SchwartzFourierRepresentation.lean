@@ -5,6 +5,15 @@ namespace GlobalTheory
 
 open Real in
 
+/- English proof (translation)
+Introduce `V _ _ _ m`. Set `e : V ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ V))` to `toEuclidean`. Set `m' : SchwartzMap (EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) ℂ` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℂ e.symm m`. Set `A : EuclideanSpace ℝ (Fin (Module.finrank ℝ V)) →L[ℝ] V →L[ℝ] ℝ` to `(2 * π) • (((ContinuousLinearMap.compL ℝ V _ ℝ).flip (e : V →L[ℝ] _)).comp (innerSL ℝ))`. Establish `hA : ∀ ξ x, A ξ x = 2 * π * inner ℝ ξ (e x)`.
+
+Introduce `ξ x`. Simplify using `[A]`. Use `⟨Module.finrank ℝ V, A, (FourierTransform.fourier m' : SchwartzMap (EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) ℂ), fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : m x = m' (e x)`. Simplify using `[m']`.
+
+Establish `h2` using `congrArg (fun f : SchwartzMap _ ℂ => f (e x)) (FourierTransform.fourierInv_fourier_eq (F := SchwartzMap (EuclideanSpace ℝ (Fin (Module.finrank ℝ V))) ℂ) m')`. Rewrite using `[h1, ← h2, SchwartzMap.fourierInv_coe, Real.fourierInv_eq']`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[hA, smul_eq_mul, mul_comm]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schwartz_eq_fourier_synthesis :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (m : SchwartzMap V ℂ),
     ∃ (d : ℕ) (A : EuclideanSpace ℝ (Fin d) →L[ℝ] V →L[ℝ] ℝ) (h : SchwartzMap (EuclideanSpace ℝ (Fin d)) ℂ),

@@ -10,6 +10,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar.XR
 
+/- English proof (translation)
+Introduce `o _ _ X s hs`. Establish `hfin : IsFinite (spMap (Int.castRingHom o))`. Establish `he : Int.castRingHom o = algebraMap ℤ o` using `RingHom.ext_int _ _`. Rewrite using `[he]`. Use `show IsFinite (Spec.map (CommRingCat.ofHom (algebraMap ℤ o)))`.
+
+Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.mpr inferInstance`. Conclude with `GlobalTheory.QuotModel.isProjOver_comp_spMap _ s hfin hs`.
+-/
 theorem isProjOver_comp_spMap_int : ∀ (o : Type) [CommRing o] [Module.Finite ℤ o] (X : Scheme.{0}) (s : X ⟶ Sp o),
     IsProjOver s → IsProjOver (s ≫ spMap (Int.castRingHom o)) := by
   intro o _ _ X s hs

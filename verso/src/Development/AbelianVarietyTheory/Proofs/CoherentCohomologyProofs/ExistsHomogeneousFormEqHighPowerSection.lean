@@ -16,6 +16,19 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `y using Decomposition.inductionOn 𝒢 with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b ha hb`. Take `⟨p, hp⟩` from `ha`. Take `⟨q, hq⟩` from `hb`.
+
+Use `⟨p + q, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `K.smul_mem _ hp`.
+
+Rewrite using `[pow_add, mul_smul]`. Conclude with `K.smul_mem _ hq`. Consider the case `@homogeneous n y`. Take `⟨b, hb⟩` from `hgen (ε y)`. Take `⟨F, rfl⟩` from `hπ b`.
+
+Take `⟨n₀, hn₀⟩` from `exists_homogeneous_add_X_sub_one_smul (polyGrading ι R) i F`. Take `⟨F', hF', w, e⟩` from `hn₀ (n + ((n₀ - n).toNat : ℕ)) (by omega)`. Establish `hX : (MvPolynomial.X i : MvPolynomial ι R) ^ (n₀ - n).toNat ∈ polyGrading ι R ((n₀ - n).toNat : ℕ)` using `mem_polyGrading_natCast.2 (MvPolynomial.isHomogeneous_X_pow i _)`. Establish `h₁` using `grSMul_mem 𝒢 hX y.2`. Establish `h₂` using `grSMul_mem 𝒢 hF' hg`.
+
+Rewrite `h₂` using `[zero_add]`. Establish `hFF : π F = π F'`. Rewrite using `[e, map_add, smul_eq_mul, map_mul, map_sub, hi, map_one, sub_self, zero_mul, add_zero]`. Take `⟨k, hk⟩` from `hker _ _ (sub_mem h₁ h₂) (by`. Rewrite using `[map_sub, map_smulₛₗ, map_smulₛₗ, map_pow, hi, one_pow, one_smul, hb, hFF, sub_self])`.
+
+Use `⟨k + (n₀ - n).toNat, ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[smul_sub, sub_eq_zero]`. Rewrite using `[pow_add, mul_smul, hk]`. Conclude with `K.smul_mem _ (K.smul_mem _ hK)`.
+-/
 theorem exists_X_pow_smul_mem_span_of_dehomogenisation {ι : Type} {R : Type} [CommRing R]
     {G : Type} [AddCommGroup G] [Module R G] [Module (MvPolynomial ι R) G]
     [IsScalarTower R (MvPolynomial ι R) G] (𝒢 : ℤ → Submodule R G) [PolyGradedSMul ι 𝒢]
@@ -64,11 +77,21 @@ namespace AbLaw
 variable {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Spec (CommRingCat.of R)) {H : LB Y}
   {m : ℕ} (s : Fin (m + 1) → LB.Sec H) (M : LB Y)
 
+/- English proof (translation)
+Introduce `i j _ a` and use `SecOn.mulSec_comm (s i) (s j) a`.
+-/
 theorem operatorsCommute_mulSec (V : Y.Opens) :
     OperatorsCommute (ι := Fin (m + 1)) (A := fun t => SecOnR f (tw M H t) V)
       fun i t => SecOnR.mulSec f M t (s i) V :=
   fun i j _ a => SecOn.mulSec_comm (s i) (s j) a
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `n a h`. Rewrite `h` using `[pow_zero, one_smul, map_eq_zero_iff _ (GrSum.of_injective _ n)]`. Rewrite using `[h, map_zero]`.
+
+Consider the case `succ k ih`. Introduce `n a h`. Rewrite `h` using `[pow_succ, mul_smul, GrSum.X_smul_of]`. Establish `e` using `ih _ _ h`. Use `(map_eq_zero_iff _ (SecOnR.mulSec_bijective f (M := M) n (s i) le_rfl).1).1 ?_` and prove the remaining obligations.
+
+Conclude with `(SecOn.mulSec_restrict (s i) le_top a).trans e`.
+-/
 theorem restrict_eq_zero_of_X_pow_smul (i : Fin (m + 1)) (k : ℕ) : ∀ (n : ℤ)
     (a : SecOnR f (tw M H n) ⊤), (MvPolynomial.X i : MvPolynomial (Fin (m + 1)) R) ^ k •
       GrSum.of (operatorsCommute_mulSec f s M ⊤) n a = 0 →
@@ -85,6 +108,11 @@ theorem restrict_eq_zero_of_X_pow_smul (i : Fin (m + 1)) (k : ℕ) : ∀ (n : �
     refine (map_eq_zero_iff _ (SecOnR.mulSec_bijective f (M := M) n (s i) le_rfl).1).1 ?_
     exact (SecOn.mulSec_restrict (s i) le_top a).trans e
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_sum_grProj (GrSum.grading _) y`. Rewrite using `[← hT]`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations. Rewrite using `[GrSum.proj_grading, map_eq_zero_iff _ (GrSum.of_injective _ n)]`. Use `SecOnR.ext_of_cover f (fun i => nonzeroLocus (s i)) (fun _ => le_top) hs.ge fun i => ?_` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `h i`. Rewrite using `[map_zero]`. Use `restrict_eq_zero_of_X_pow_smul f s M i k n _ ?_` and prove the remaining obligations. Establish `hX : (MvPolynomial.X i : MvPolynomial (Fin (m + 1)) R) ^ k ∈ polyGrading _ R (k : ℕ)` using `mem_polyGrading_natCast.2 (MvPolynomial.isHomogeneous_X_pow i _)`. Rewrite using `[← GrSum.proj_grading, ← proj_smul_of_mem (GrSum.grading _) hX, hk, map_zero]`.
+-/
 theorem grSum_eq_zero_of_X_pow_smul (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
     (y : GrSum (operatorsCommute_mulSec f s M ⊤))
     (h : ∀ i, ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial (Fin (m + 1)) R) ^ k • y = 0) : y = 0 := by
@@ -104,6 +132,9 @@ def twZeroTrivEquiv (hH : H.IsLB) (V : Y.Opens) :
     Γ(Y, V) ≃ₗ[Γ(Y, V)] SecOn (tw (Inh.trivLB Y) H 0) V :=
   (secOnTrivEquiv V).symm ≪≫ₗ SecOn.twZeroEquiv (Inh.trivLB_isLB Y) hH V
 
+/- English proof (translation)
+Use `(SecOn.twCoord_twZeroEquiv (Inh.trivLB_isLB Y) hH _ p k).trans ?_` and prove the remaining obligations. Establish `e` using `SecOn.coord_chart_symm (Inh.trivLB_isLB Y) PUnit.unit p (le_top : V ≤ ⊤) 1`. Establish `e₂ : rs Y (inf_le_left : V ⊓ ⊤ ≤ V) 1 * rs Y (le_inf le_top le_top : V ⊓ ⊤ ≤ ⊤ ⊓ ⊤) 1 = 1`. Rewrite using `[map_one, map_one, _root_.one_mul]`. Conclude with `(congrArg _ (e.trans e₂)).trans (map_one _)`.
+-/
 theorem twCoord_twZeroTrivEquiv_one (hH : H.IsLB) (V : Y.Opens) (p : (Inh.trivLB Y).ι) (k : H.ι) :
     SecOn.twCoord (twZeroTrivEquiv hH V 1) p k = 1 := by
   refine (SecOn.twCoord_twZeroEquiv (Inh.trivLB_isLB Y) hH _ p k).trans ?_
@@ -113,6 +144,9 @@ theorem twCoord_twZeroTrivEquiv_one (hH : H.IsLB) (V : Y.Opens) (p : (Inh.trivLB
     rw [map_one, map_one, _root_.one_mul]
   exact (congrArg _ (e.trans e₂)).trans (map_one _)
 
+/- English proof (translation)
+Establish `e : SecOn.restrict _ (le_top : V ≤ ⊤) (twZeroTrivEquiv hH ⊤ 1) = twZeroTrivEquiv hH V 1` using `SecOn.tw_ext fun p k => by`. Rewrite using `[SecOn.twCoord_restrict, twCoord_twZeroTrivEquiv_one, twCoord_twZeroTrivEquiv_one, map_one]`. Take `⟨b, rfl⟩` from `(twZeroTrivEquiv hH V).surjective z`. Conclude with `⟨b, by rw [e, ← map_smul, smul_eq_mul, _root_.mul_one]⟩`.
+-/
 theorem exists_eq_smul_restrict_one (hH : H.IsLB) (V : Y.Opens)
     (z : SecOn (tw (Inh.trivLB Y) H 0) V) :
     ∃ b : Γ(Y, V), z = b • SecOn.restrict _ (le_top : V ≤ ⊤) (twZeroTrivEquiv hH ⊤ 1) := by
@@ -131,6 +165,17 @@ def twTrivOfSec {t : ℤ} (σ : LB.Sec (pw H t)) : SecOn (tw (Inh.trivLB Y) H t)
       exact ((rs_rs _ _ _).trans (rs_rs _ _ _).symm).trans
         (e.trans (congrArg₂ (· * ·) rfl ((rs_rs _ _ _).trans (rs_rs _ _ _).symm)))
 
+/- English proof (translation)
+Introduce `R _ Y f _ H m s hH hs`. Set `hx` to `operatorsCommute_mulSec f s (Inh.trivLB Y)`. Set `g : GrSum (hx ⊤)` to `GrSum.of (hx ⊤) 0 (SecOnR.of f _ ⊤ (twZeroTrivEquiv hH ⊤ 1))`. Establish `hg : g ∈ GrSum.grading (hx ⊤) 0` using `GrSum.of_mem_grading _ _ _`. Take `⟨n₀, hn₀⟩` from `mem_span_of_saturating_of_le (Fin (m + 1)) R (GrSum (hx ⊤)) (GrSum.grading (hx ⊤)) 1 (fun _ => 0) (fun _ => g) (fun _ => hg) (fun i y => by`.
+
+Take `⟨-, r, hr, hπ⟩` from `hs.2 i`. Take `⟨hi, ε, -, hker, hε⟩` from `GlobalTheory.T.exists_dehomogenisation_twisted_chart R Y f H m s _ hH (Inh.trivLB_isLB Y) hs hx i r hr`. Conclude with `exists_X_pow_smul_mem_span_of_dehomogenisation (GrSum.grading (hx ⊤)) i hπ ((MvPolynomial.eval₂Hom_X' _ _ i).trans hi) ε hker hg (fun z => by rw [hε]; exact exists_eq_smul_restrict_one hH _ z) _ (Submodule.subset_span (Set.mem_range_self (f := fun _ : Fin 1 => g) 0)) y)`. Use the proof step `(grSum_eq_zero_of_X_pow_smul f s _ hs.1)`. Use `⟨n₀.toNat, fun t ht σ => ?_⟩` and prove the remaining obligations.
+
+Establish `hσ` using `GrSum.of_mem_grading (hx ⊤) t (SecOnR.of f _ ⊤ (twTrivOfSec σ))`. Establish `hm` using `hn₀ t (by omega) _ hσ`. Rewrite `hm` using `[Set.range_const, LinearMap.span_singleton_eq_range]`. Establish `hgr : IsGradedMap (polyGrading (Fin (m + 1)) R) (GrSum.grading (hx ⊤)) (LinearMap.toSpanSingleton (MvPolynomial (Fin (m + 1)) R) _ g)` using `fun n p hp => by`. Use `grSMul_mem (GrSum.grading (hx ⊤)) hp hg` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Take `⟨F, hF, e⟩` from `hgr.exists_mem_of_mem_range hσ hm`. Use `⟨F, mem_polyGrading_natCast.1 hF, fun k => ?_⟩` and prove the remaining obligations. Take `⟨y', hy', hc⟩` from `exists_smul_of_twCoord R Y f H m s _ hx ⊤ F t 0 t (twZeroTrivEquiv hH ⊤ 1) hF (zero_add _).symm`. Establish `hyy : twTrivOfSec σ = y'` using `GrSum.of_injective (hx ⊤) t (e.symm.trans hy')`.
+
+Establish `h` using `hc PUnit.unit k`. Rewrite `h` using `[← hyy, twCoord_twZeroTrivEquiv_one hH ⊤ PUnit.unit k, _root_.mul_one]`. Establish `h'` using `congrArg (rs Y (le_inf le_top (le_inf le_top le_rfl) : H.U k ≤ ⊤ ⊓ (⊤ ⊓ H.U k))) h`. Conclude with `((rs_rs _ _ _).trans (rs_self _ _)).symm.trans (h'.trans ((rs_rs _ _ _).trans (rs_self _ _)))`.
+-/
 theorem exists_form_eq_sec_pw : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t → ∀ σ : LB.Sec (pw H t), ∃ F : MvPolynomial (Fin (m + 1)) R, F.IsHomogeneous t ∧ ∀ k : H.ι, σ.f k = MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) F := by
   intro R _ Y f _ H m s hH hs
   let hx := operatorsCommute_mulSec f s (Inh.trivLB Y)

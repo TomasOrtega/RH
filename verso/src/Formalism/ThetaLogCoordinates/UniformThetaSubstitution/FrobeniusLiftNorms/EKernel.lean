@@ -15,6 +15,11 @@ open Formalism.GrowthSums (gamP rhoP gainG excessGain)
 
 namespace DeterminantJetScaling
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun π _ => ?_` and prove the remaining obligations. Establish `hp : (∏ i : Fin h, M (π i) i).IsHomogeneous h`. Use `MvPolynomial.IsHomogeneous.prod (Finset.univ : Finset (Fin h)) (fun i => M (π i) i) (fun _ => 1) (fun i _ => hM _ _)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[Units.smul_def]`. Conclude with `(MvPolynomial.homogeneousSubmodule _ R h).toAddSubgroup.zsmul_mem hp _`.
+-/
 theorem det_hom {R σ : Type} [CommRing R] {h : ℕ}
     (M : Matrix (Fin h) (Fin h) (MvPolynomial σ R)) (hM : ∀ i j, (M i j).IsHomogeneous 1) :
     M.det.IsHomogeneous h := by
@@ -27,6 +32,9 @@ theorem det_hom {R σ : Type} [CommRing R] {h : ℕ}
   rw [Units.smul_def]
   exact (MvPolynomial.homogeneousSubmodule _ R h).toAddSubgroup.zsmul_mem hp _
 
+/- English proof (translation)
+Unfold `minorProd`. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun c _ => ?_` and prove the remaining obligations. Use `det_hom _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply]`. Conclude with `hrow _ _`.
+-/
 theorem minorProd_hom {R σ : Type} [CommRing R] {N0 N1 C : ℕ}
     (row : Fin N0 → Fin N1 → MvPolynomial σ R) (hrow : ∀ i b, (row i b).IsHomogeneous 1)
     (q : Fin C → ℕ) (hq : ∀ c, q c ≤ N0) (I : ∀ c, Fin (q c) → Fin N1) :
@@ -37,6 +45,11 @@ theorem minorProd_hom {R σ : Type} [CommRing R] {N0 N1 C : ℕ}
   rw [Matrix.of_apply]
   exact hrow _ _
 
+/- English proof (translation)
+Unfold `jetPairPoly`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun κ hκ => ?_` and prove the remaining obligations. Establish `hd : κ.degree = d`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `(MvPolynomial.mem_support_iff.mp hκ) (hP.coeff_eq_zero hne)`. Rewrite using `[MinorFormHomogeneity.coeff_subst_scale, hd, mul_left_comm (((mfact κ : ℕ) : K)), map_mul, mul_left_comm]`.
+-/
 theorem jetPairPoly_scale {K σ ι : Type} [Field K] (ϖ : K) (d : ℕ)
     (P : MvPolynomial ι (MvPolynomial σ K)) (hP : P.IsHomogeneous d) (Th : MvPowerSeries ι K) :
     jetPairPoly P (MvPowerSeries.subst
@@ -50,6 +63,9 @@ theorem jetPairPoly_scale {K σ ι : Type} [Field K] (ϖ : K) (d : ℕ)
     exact (MvPolynomial.mem_support_iff.mp hκ) (hP.coeff_eq_zero hne)
   rw [MinorFormHomogeneity.coeff_subst_scale, hd, mul_left_comm (((mfact κ : ℕ) : K)), map_mul, mul_left_comm]
 
+/- English proof (translation)
+Unfold `frameJet`. Use `jetPairPoly_scale ϖ _ _ ?_ Th` and prove the remaining obligations. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun s _ => ?_` and prove the remaining obligations. Use `minorProd_hom _ (fun i b => ?_) _ _ _` and prove the remaining obligations. Conclude with `MvPolynomial.IsHomogeneous.sum _ _ _ fun _ _ => MvPolynomial.isHomogeneous_C_mul_X _ _`.
+-/
 theorem frameJet_scale {K : Type} [Field K] {d N0 N1 : ℕ} [NeZero d] (ϖ : K) (colN : ZMod d → ℕ)
     (q : ∀ s, Fin (colN s) → ℕ) (hq : ∀ s c, q s c ≤ N0) (I : ∀ s c, Fin (q s c) → Fin N1)
     (Th : MvPowerSeries (ZMod d × Fin N0 × Fin N1) K) :
@@ -62,6 +78,11 @@ theorem frameJet_scale {K : Type} [Field K] {d N0 N1 : ℕ} [NeZero d] (ϖ : K) 
   refine minorProd_hom _ (fun i b => ?_) _ _ _
   exact MvPolynomial.IsHomogeneous.sum _ _ _ fun _ _ => MvPolynomial.isHomogeneous_C_mul_X _ _
 
+/- English proof (translation)
+Unfold `alG`. Use `split_ifs`. Rewrite using `[Finset.card_eq_sum_ones, Finset.sum_filter]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `h.ge`. Conclude with `Nat.zero_le _`. Conclude with `Nat.zero_le _`.
+-/
 theorem alG_le {ν : ℕ} (TT : Finset (ZMod (2 * ν))) (colN : ZMod (2 * ν) → ℕ)
     (hts : ∀ s, Fin (colN s) → ℕ) (s : ZMod (2 * ν)) : alG TT colN hts s ≤ ∑ c, hts s c := by
   unfold alG
@@ -73,6 +94,11 @@ theorem alG_le {ν : ℕ} (TT : Finset (ZMod (2 * ν))) (colN : ZMod (2 * ν) �
     · exact Nat.zero_le _
   · exact Nat.zero_le _
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_add]`. Use `congr 1`. Unfold `lsG`.
+
+Conclude with `Nat.add_sub_cancel' (alG_le TT colN hts s)`.
+-/
 theorem deg_eq {ν : ℕ} [NeZero ν] (TT : Finset (ZMod (2 * ν))) (colN : ZMod (2 * ν) → ℕ)
     (hts : ∀ s, Fin (colN s) → ℕ) :
     ∑ s, ((alG TT colN hts s : ℝ) + lsG TT colN hts s) = ((∑ s, ∑ c, hts s c : ℕ) : ℝ) := by
@@ -83,6 +109,11 @@ theorem deg_eq {ν : ℕ} [NeZero ν] (TT : Finset (ZMod (2 * ν))) (colN : ZMod
   unfold lsG
   exact Nat.add_sub_cancel' (alG_le TT colN hts s)
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Establish `hn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Establish `h : ‖(((p : ℚ_[p]) : ℚ_[p]) : ℂ_[p])‖ = ‖(p : ℚ_[p])‖` using `PadicComplex.norm_extends' p _`. Establish `h2 : (((p : ℚ_[p]) : ℚ_[p]) : ℂ_[p]) = (p : ℂ_[p])` using `by simp`. Rewrite `h` using `[h2]`.
+
+Rewrite using `[h, Padic.norm_p]`. Rewrite using `[norm_pow, norm_unif hp.out hn hϖ, Real.inv_rpow hpos.le, ← Real.rpow_neg hpos.le, ← Real.rpow_natCast, ← Real.rpow_mul hpos.le]`. Unfold `rhoP`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_unif_pow {p : ℕ} [hp : Fact p.Prime] {ϖ : ℂ_[p]} (hϖ : ϖ ^ (p ^ 2 - 1) = (p : ℂ_[p]))
     (d : ℕ) : ‖ϖ ^ d‖ = (p : ℝ) ^ (-(rhoP p * d)) := by
   have hpos : (0 : ℝ) < p := by exact_mod_cast hp.out.pos
@@ -97,6 +128,9 @@ theorem norm_unif_pow {p : ℕ} [hp : Fact p.Prime] {ϖ : ℂ_[p]} (hϖ : ϖ ^ (
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < p` using `by exact_mod_cast hp.out.pos`. Rewrite `hx` using `[hxy, norm_mul, norm_unif_pow hϖ, neg_add, add_comm, Real.rpow_add hpos]`. Conclude with `le_of_mul_le_mul_left hx (Real.rpow_pos_of_pos hpos _)`.
+-/
 theorem descend {p : ℕ} [hp : Fact p.Prime] {ϖ : ℂ_[p]} (hϖ : ϖ ^ (p ^ 2 - 1) = (p : ℂ_[p]))
     (d : ℕ) (g : ℝ) (x y : ℂ_[p]) (hxy : x = ϖ ^ d * y)
     (hx : ‖x‖ ≤ (p : ℝ) ^ (-(g + rhoP p * d))) : ‖y‖ ≤ (p : ℝ) ^ (-g) := by

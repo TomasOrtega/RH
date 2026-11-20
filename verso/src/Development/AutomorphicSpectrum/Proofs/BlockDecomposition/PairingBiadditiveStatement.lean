@@ -22,6 +22,9 @@ open NumberField
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheory.SW.Core
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd.pairB_add | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd.pairB_add | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl.PairAdd.pairB_add <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pairing_biadditive : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ)
     (b : HermR (Af F) σ n),

@@ -12,6 +12,21 @@ namespace GlobalTheory.AffGlue
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 
+/- English proof (translation)
+Introduce `Z R _ φ hφ`. Establish `hcomp : ∀ {A B C : Z.Opens} (f : A ⟶ B) (g : B ⟶ C) (s : Γ(Z, C)), (Z.presheaf.map f.op).hom ((Z.presheaf.map g.op).hom s) = (Z.presheaf.map (f ≫ g).op).hom s`. Introduce `A B C f g s`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+
+Establish `hφ' : ∀ (U V : Z.affineOpens) (f : (U : Z.Opens) ⟶ V) (r : R), (Z.presheaf.map f.op).hom (φ V r) = φ U r`. Introduce `U V f r`. Rewrite using `[show f = homOfLE (leOfHom f) from Subsingleton.elim _ _]`. Conclude with `RingHom.congr_fun (hφ U V (leOfHom f)) r`. Establish `hcov : ∀ V : Z.Opens, V ≤ ⨆ W : {W : Z.affineOpens // (W : Z.Opens) ≤ V}, (W.1 : Z.Opens)`.
+
+Introduce `V x hx`. Take `⟨W, hW, hxW, hWle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Z.isBasis_affineOpens hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨⟨W, hW⟩, hWle⟩, hxW⟩`. Establish `hglue : ∀ r : R, ∃! s : Γ(Z, ⊤), ∀ W : Z.affineOpens, (Z.presheaf.map (homOfLE (le_top : (W : Z.Opens) ≤ ⊤)).op).hom s = φ W r`. Introduce `r`.
+
+Establish `htop : (⊤ : Z.Opens) ≤ ⨆ W : Z.affineOpens, (W : Z.Opens)`. Introduce `x hx`. Take `⟨W, hW, hxW, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp Z.isBasis_affineOpens hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨W, hW⟩, hxW⟩`. Use `Z.sheaf.existsUnique_gluing' (fun W : Z.affineOpens => (W : Z.Opens)) ⊤ (fun W => homOfLE le_top) htop (fun W => φ W r) ?_` and prove the remaining obligations.
+
+Introduce `i j`. Use `Z.sheaf.eq_of_locally_eq' (fun k : {W : Z.affineOpens // (W : Z.Opens) ≤ (i : Z.Opens) ⊓ j} => (k.1 : Z.Opens)) _ (fun k => homOfLE k.2) (hcov _) _ _ fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Z.presheaf.map _).hom ((Z.presheaf.map _).hom (φ i r)) = (Z.presheaf.map _).hom ((Z.presheaf.map _).hom (φ j r))`. Rewrite using `[hcomp, hcomp, hφ', hφ']`. Use `choose s hs hu using hglue`.
+
+Set `Φ : R →+* Γ(Z, ⊤)` to `{ toFun := s map_one' := (hu 1 1 fun W => by rw [map_one, map_one]).symm map_mul' := fun a b => (hu (a * b) (s a * s b) fun W => by`. Rewrite using `[map_mul, hs a W, hs b W, map_mul]).symm`. Use the proof step `map_zero' := (hu 0 0 fun W => by rw [map_zero, map_zero]).symm`. Use the proof step `map_add' := fun a b => (hu (a + b) (s a + s b) fun W => by`. Rewrite using `[map_add, hs a W, hs b W, map_add]).symm }`.
+
+Use `⟨Φ, fun W => RingHom.ext fun r => hs r W, fun Ψ hΨ => RingHom.ext fun r => hu r (Ψ r) fun W => ?_⟩` and prove the remaining obligations. Conclude with `RingHom.congr_fun (hΨ W) r`.
+-/
 theorem _root_.GlobalTheory.AffGlue.existsUnique_ringHom_of_affineOpens : ∀ (Z : Scheme.{0}) (R : Type) [CommRing R] (φ : ∀ U : Z.affineOpens, R →+* Γ(Z, U)), (∀ (U V : Z.affineOpens) (h : (U : Z.Opens) ≤ V), (Z.presheaf.map (homOfLE h).op).hom.comp (φ V) = φ U) → ∃! Φ : R →+* Γ(Z, ⊤), ∀ U : Z.affineOpens, (Z.presheaf.map (homOfLE (le_top : (U : Z.Opens) ≤ ⊤)).op).hom.comp Φ = φ U := by
   intro Z R _ φ hφ
   have hcomp : ∀ {A B C : Z.Opens} (f : A ⟶ B) (g : B ⟶ C) (s : Γ(Z, C)),

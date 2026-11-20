@@ -6,6 +6,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL Zc.Cos GlobalTheory.
 
 namespace GlobalTheory.CompanionTheory.JacTheta
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h N d hd hd' V _ _ π`. Conclude with `⟨GlobalTheory.CompanionTheory.JmThetaInv.jacCompThetaW d hd hd' π⟩`.
+-/
 theorem nonempty_jac_comp_thetaW : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N)
     (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V),
     Nonempty ((jac (stdBlocks d hd) (π.comp (thetaW k N))).Equiv

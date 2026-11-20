@@ -3,6 +3,15 @@ import Formalism.ThetaLiftIndependence.Statement
 namespace Formalism.ThetaLiftIndependence
 
 open MulAction in
+/- English proof (translation)
+Introduce `H X _ _ _ _ k _ _ F hF`. Rewrite using `[finsum_eq_sum_of_fintype]`. Rewrite using `[← Fintype.sum_equiv (selfEquivSigmaOrbits H X).symm (fun p => F p.2) F (fun p => rfl), Fintype.sum_sigma, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Establish `hconst : ∀ y : orbit H (Quotient.out o), F y = F (Quotient.out o)`.
+
+Introduce and unpack `⟨y, a, rfl⟩`. Conclude with `hF a _`. Rewrite using `[Finset.sum_congr rfl (fun y _ => hconst y), Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hcard` using `card_orbit_mul_card_stabilizer_eq_card_group H (Quotient.out o)`. Rewrite using `[Nat.card_eq_fintype_card, ← hcard]`.
+
+Establish `h1 : (Fintype.card (orbit H (Quotient.out o)) : k) ≠ 0`. Conclude with `(Fintype.card_pos_iff.mpr ⟨⟨_, mem_orbit_self (Quotient.out o)⟩⟩ : 0 < Fintype.card (orbit H (Quotient.out o))).ne'` after adjusting the coercions. Establish `h2 : (Fintype.card (stabilizer H (Quotient.out o)) : k) ≠ 0`. Conclude with `(Fintype.card_pos (α := stabilizer H (Quotient.out o))).ne'` after adjusting the coercions. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem orbitSum : OrbitSum := by
   classical
   intro H X _ _ _ _ k _ _ F hF

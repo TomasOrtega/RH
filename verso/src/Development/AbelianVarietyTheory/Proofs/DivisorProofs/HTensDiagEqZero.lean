@@ -8,6 +8,9 @@ open Formalism.IndefR.DatumF
 
 namespace GlobalTheory.WeilDiagIso
 
+/- English proof (translation)
+Unfold `hTens`. Simplify using `only [Fin.sum_univ_add, hx, hy, h1, h2, h3, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_neg, neg_mul, Finset.sum_neg_distrib, add_neg_cancel]`.
+-/
 theorem hTens_diag_eq_zero {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {n m : ℕ}
     (c : A →ₐ[R] A) (JA : Matrix (Fin (n + n)) (Fin (n + n)) A) (JB : Matrix (Fin m) (Fin m) A)
     (x y : Matrix (Fin (n + n)) (Fin m) A)
@@ -21,6 +24,13 @@ theorem hTens_diag_eq_zero {R A : Type} [CommRing R] [CommRing A] [Algebra R A] 
   simp only [Fin.sum_univ_add, hx, hy, h1, h2, h3, mul_zero, zero_mul, Finset.sum_const_zero,
     add_zero, zero_add, mul_neg, neg_mul, Finset.sum_neg_distrib, add_neg_cancel]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ nS nT JT JB ξ u u'`. Unfold `symp`. Rewrite using `[hTens_diag_eq_zero]`. Simplify using the standard rewrite rules. Introduce `i j`.
+
+Simplify using `[Matrix.mul_apply, diagCols, -Fin.natAdd_eq_addNat]`. Introduce `i j`. Simplify using `[Matrix.mul_apply, diagCols, -Fin.natAdd_eq_addNat]`. Introduce `i k`. Simplify using `[incM, GlobalTheory.WeilSchrodinger.DblTargetF.dblG, dbl, -Fin.natAdd_eq_addNat]`.
+
+Introduce `i k`. Simplify using `[incM, GlobalTheory.WeilSchrodinger.DblTargetF.dblG, dbl, -Fin.natAdd_eq_addNat]`. Introduce `i k`. Simplify using `[incM, GlobalTheory.WeilSchrodinger.DblTargetF.dblG, dbl, -Fin.natAdd_eq_addNat]`.
+-/
 theorem symp_diag_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (nS nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)
     (u u' : Matrix (Fin nT) (Fin nS) (AF F ⊗[F] E)),

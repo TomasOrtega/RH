@@ -16,6 +16,23 @@ open scoped TensorProduct
 
 namespace PositivityTheory.Xgn.AnalyticTypeDefinition
 
+/- English proof (translation)
+Set `j : La →ₗ[𝓞 E] E ⊗[𝓞 E] La` to `TensorProduct.mk (𝓞 E) E La 1`. Use `haveI : IsLocalizedModule (nonZeroDivisors (𝓞 E)) j := (isLocalizedModule_iff_isBaseChange (nonZeroDivisors (𝓞 E)) E j).2 (TensorProduct.isBaseChange _ _ _)`. Establish `hli : LinearIndependent E (j ∘ e)` using `he.of_isLocalizedModule E (nonZeroDivisors (𝓞 E)) j`. Establish `hr : Fintype.card I = Module.finrank E (E ⊗[𝓞 E] La)`. Rewrite using `[hc]`.
+
+Conclude with `((TensorProduct.isBaseChange (𝓞 E) La E).finrank_eq).symm`. Use `haveI : FiniteDimensional E (E ⊗[𝓞 E] La) := inferInstance`. Set `b : Module.Basis I E (E ⊗[𝓞 E] La)` to `basisOfLinearIndependentOfCardEqFinrank' _ hli hr`. Establish `hb : ∀ n, b n = j (e n)` using `fun n => by simp [b]`. Use `⟨(LinearMap.toMatrix b b (gam.baseChange E))ᵀ, by rw [det_transpose, LinearMap.det_toMatrix], ?_⟩` and prove the remaining obligations.
+
+Introduce `M _ _ τ φ hφ m`. Establish `h1 : j (gam (e m)) = ∑ n, (LinearMap.toMatrix b b (gam.baseChange E)) n m • j (e n)`. Use `(b.sum_repr (gam.baseChange E (b m))).symm` as an intermediate fact. Simplify using `only [LinearMap.toMatrix_apply, ← hb]`. Rewrite using `[← this, hb]`.
+
+Both sides reduce to the same expression. Take `⟨N, hN⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 E)) (fun n => (LinearMap.toMatrix b b (gam.baseChange E)) n m)`. Use `choose a ha using hN`. Establish `h2 : j ((N : 𝓞 E) • gam (e m)) = j (∑ n, a n • e n)`. Rewrite using `[map_smul, h1, map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_assoc, ← ha n, algebraMap_smul]`. Take `⟨s, hs⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors (𝓞 E)) (f := j) h2`. Establish `h3` using `congrArg φ hs`. Simplify using `only [Submonoid.smul_def, hφ, map_sum] at h3`.
+
+Establish `hs0 : τ ((s : 𝓞 E) : E) ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero s.2`. Establish `hN0 : τ ((N : 𝓞 E) : E) ≠ 0`. Simplify using `using nonZeroDivisors.ne_zero N.2`. Establish `h4` using `smul_right_injective M hs0 h3`.
+
+Apply `smul_right_injective M hN0` to reduce the goal to its premises. Simplify using `only []`. Rewrite using `[h4, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← map_mul, transpose_apply]`.
+
+Use `congr 2`. Conclude with `(ha n).trans (Algebra.smul_def _ _)`.
+-/
 theorem exists_matrix {E : Type} [Field E] [NumberField E] {La : Type} [AddCommGroup La] [Module (𝓞 E) La]
     [Module.Finite (𝓞 E) La] [Module.Projective (𝓞 E) La] {I : Type} [Fintype I] [DecidableEq I] (e : I → La)
     (he : LinearIndependent (𝓞 E) e) (hc : Fintype.card I = Module.finrank (𝓞 E) La) (gam : La →ₗ[𝓞 E] La) :
@@ -62,6 +79,17 @@ theorem exists_matrix {E : Type} [Field E] [NumberField E] {La : Type} [AddCommG
   congr 2
   exact (ha n).trans (Algebra.smul_def _ _)
 
+/- English proof (translation)
+Establish `hu : IsUnit A'.det` using `by rw [hA']; exact isUnit_one`. Establish `hu' : IsUnit A'ᵀ.det` using `by rw [det_transpose]; exact hu`. Use `⟨C * A, Fm * A, B * A'ᵀ⁻¹, fun a => ?_, fun n => ?_, fun j n => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hC a]`. Simplify using `only [map_sum, map_smul, h1, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`.
+
+Conclude with `Finset.sum_comm`. Establish `e1 : (Matrix.of fun m k => T' (πf m) k) = A' * Matrix.of fun m k => T' (πe m) k`. Use extensionality with `m k`. Simplify using `[h2, Matrix.mul_apply, Finset.sum_apply]`. Establish `e2 : (Matrix.of fun m k => T' (πf m) k) = Bᵀ * Matrix.of W`.
+
+Use extensionality with `m k`. Simplify using `[hB, Matrix.mul_apply, Finset.sum_apply]`. Establish `e3 : (Matrix.of fun m k => T' (πe m) k) = (B * A'ᵀ⁻¹)ᵀ * Matrix.of W`. Rewrite using `[transpose_mul, ← transpose_nonsing_inv, transpose_transpose, Matrix.mul_assoc, ← e2, e1, ← Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.one_mul]`. Use function extensionality and compare the values at `k`.
+
+Use `congrFun (congrFun e3 n) k` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Simplify `this` using `[Finset.sum_apply]`. Establish `e1 : Fm * Sf = B` using `by ext j n; exact hF j n`. Establish `e2 : Fm * A * Se = B * A'ᵀ⁻¹`.
+
+Rewrite using `[← e1, hS, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hu', Matrix.mul_one]`. Conclude with `congrFun (congrFun e2 j) n`. Rewrite using `[← fromRows_mul, det_mul, hA, mul_one]`.
+-/
 theorem change_basis {p q g : ℕ} (T T' : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (V : Fin p → Fin g → ℂ)
     (W : Fin q → Fin g → ℂ) (πe πf : Fin p ⊕ Fin q → Fin g → ℂ)
     (Se Sf A A' : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (hA : A.det = 1) (hA' : A'.det = 1)
@@ -95,6 +123,13 @@ theorem change_basis {p q g : ℕ} (T T' : (Fin g → ℂ) →ₗ[ℂ] (Fin g �
     exact congrFun (congrFun e2 j) n
   · rw [← fromRows_mul, det_mul, hA, mul_one]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Apply `hjk` to reduce the goal to its premises. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Establish `e1 : (fun i => ty i (a : E) * (Pi.single k (1 : ℂ) : Fin g → ℂ) i) = ty k (a : E) • Pi.single k (1 : ℂ)`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Use `congrFun (hh a (Pi.single k 1)) j` as an intermediate fact.
+
+Rewrite `this` using `[e1, map_smul]`. Conclude with `(mul_right_cancel₀ h0 this).symm`.
+-/
 theorem entry_zero {E : Type} [Field E] [NumberField E] {g : ℕ} (ty : Fin g → (E →+* ℂ))
     (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hh : ∀ (a : 𝓞 E) z, h (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * h z k) (j k : Fin g)
@@ -126,6 +161,21 @@ noncomputable def tyLin {g : ℕ} (ty : Fin g → (E →+* ℂ)) (τ : E →+* �
   map_add' a b := by funext k; simp only [tyPart, Pi.add_apply]; split_ifs <;> simp
   map_smul' a b := by funext k; simp only [tyPart, Pi.smul_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `: tyLin ty τ ∘ₗ h = h ∘ₗ tyLin ty τ`. Use `LinearMap.pi_ext' fun k => LinearMap.ext_ring ?_` and prove the remaining obligations. Use `show tyPart ty τ (h (Pi.single k 1)) = h (tyPart ty τ (Pi.single k 1))`. Distinguish the cases in `hk : ty k = τ`. Establish `e1 : tyPart ty τ (Pi.single k (1 : ℂ)) = Pi.single k 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [tyPart]`. Use `split_ifs with hi`. Both sides reduce to the same expression. Rewrite using `[Pi.single_eq_of_ne]`.
+
+Introduce and unpack `rfl`. Conclude with `hi hk`. Rewrite using `[e1]`. Use function extensionality and compare the values at `j`. Simplify using `only [tyPart]`.
+
+Use `split_ifs with hj`. Both sides reduce to the same expression. Conclude with `(entry_zero ty h hh j k (by rw [hk]; exact hj)).symm`. Establish `e1 : tyPart ty τ (Pi.single k (1 : ℂ)) = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [tyPart]`. Use `split_ifs with hi`. Rewrite using `[Pi.single_eq_of_ne]`. Use the proof step `· rfl`. Introduce and unpack `rfl`.
+
+Conclude with `hk hi`. Both sides reduce to the same expression. Rewrite using `[e1, map_zero]`. Use function extensionality and compare the values at `j`. Simplify using `only [tyPart]`.
+
+Use `split_ifs with hj`. Conclude with `entry_zero ty h hh j k (by rw [hj]; exact fun h' => hk h'.symm)`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun this z`.
+-/
 theorem tyPart_comm {g : ℕ} (ty : Fin g → (E →+* ℂ)) (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hh : ∀ (a : 𝓞 E) z, h (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * h z k) (τ : E →+* ℂ)
     (z : Fin g → ℂ) : tyPart ty τ (h z) = h (tyPart ty τ z) := by
@@ -160,6 +210,11 @@ theorem tyPart_comm {g : ℕ} (ty : Fin g → (E →+* ℂ)) (h : (Fin g → ℂ
       · rfl
   exact LinearMap.congr_fun this z
 
+/- English proof (translation)
+Set `d : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `LinearMap.pi fun k => ty k (a : E) • LinearMap.proj k`. Establish `: (h ∘ₗ d).restrictScalars ℝ = (d ∘ₗ h).restrictScalars ℝ`. Use `LinearMap.ext_on_range hP.2.2.2.1 fun x => ?_` and prove the remaining obligations. Use `show h (d (P x)) = d (h (P x))`. Establish `e1 : d (P x) = P (a • x)` using `funext fun i => (hP.1 a x i).symm`.
+
+Establish `e2 : d (P' (gam x)) = P' (a • gam x)` using `funext fun i => (hP'.1 a _ i).symm`. Rewrite using `[e1, ← hgam, ← hgam, e2, map_smul]`. Conclude with `LinearMap.congr_fun this z`.
+-/
 theorem comm_of_period (D₁ D₂ : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D₁.La →+ (Fin g → ℂ))
     (P' : D₂.La →+ (Fin g → ℂ)) (hP : IsPeriod D₁ ty P) (hP' : IsPeriod D₂ ty P')
     (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (gam : D₁.La →ₗ[𝓞 E] D₂.La) (hgam : ∀ a, P' (gam a) = h (P a))
@@ -173,6 +228,11 @@ theorem comm_of_period (D₁ D₂ : Datum H) {g : ℕ} (ty : Fin g → (E →+* 
     rw [e1, ← hgam, ← hgam, e2, map_smul]
   exact LinearMap.congr_fun this z
 
+/- English proof (translation)
+Use `⟨by rw [hv.1, ← he, map_zero], fun U hU f => ?_⟩` and prove the remaining obligations. Rewrite using `[hv.2 U hU f]`. Establish `e1 : (fun z => valAt' (e z) U f) = (fun z => valAt' (e' z) U f) ∘ h.toContinuousLinearEquiv`. Use function extensionality and compare the values at `z`. Simplify using `[he]`.
+
+Rewrite using `[e1, ContinuousLinearEquiv.comp_right_fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem deriv_transport {g : ℕ} {X : Scheme.{0}} (e e' : (Fin g → ℂ) → (Sp ℂ ⟶ X))
     (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (he : ∀ z, e' (h z) = e z) (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ X)
     (hv : IsDerivAt0 e w v) : IsDerivAt0 e' (h w) v := by
@@ -183,6 +243,11 @@ theorem deriv_transport {g : ℕ} {X : Scheme.{0}} (e e' : (Fin g → ℂ) → (
   rw [e1, ContinuousLinearEquiv.comp_right_fderiv]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [tyPart, Pi.smul_apply, hP.1]`. Use `split_ifs with hk`. Rewrite using `[hk]`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tyPart_smul (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P)
     (τ : E →+* ℂ) (a : 𝓞 E) (x : D.La) : tyPart ty τ (P (a • x)) = τ (a : E) • tyPart ty τ (P x) := by
   funext k
@@ -206,6 +271,21 @@ def Cond (D : Datum H) {g p q : ℕ} (ty : Fin g → (E →+* ℂ)) (τ' : E →
     (∀ n, tyPart ty (ComplexEmbedding.conjugate τ') (P (e n)) = ∑ j, B j n • W j) ∧
     (∀ j n, ∑ m, Fm j m * τ' (sesq D (e m) (e n)) = B j n)
 
+/- English proof (translation)
+Use `haveI := D.fin`. Use `haveI := D.proj`. Take `⟨A, hA, hφ⟩` from `exists_matrix e he (by rw [D.rank, ← hc]; simp) gam`. Rewrite `hA` using `[hdet]`. Establish `hcomm` using `tyPart_comm ty h (comm_of_period D D ty P P' hP hP' h gam hgam)`.
+
+Establish `hT : ∀ (τ : E →+* ℂ) m, tyLin ty τ (P' (gam (e m))) = ∑ n, (A.map τ) m n • tyLin ty τ (P' (e n))` using `fun τ m => hφ _ τ ((tyLin ty τ).toAddMonoidHom.comp P') (tyPart_smul D ty P' hP' τ) m`. Establish `hd : ∀ τ : E →+* ℂ, (A.map τ).det = 1` using `fun τ => by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, hA, map_one]`. Establish `hs : ∀ x y, sesq D (gam x) (gam y) = sesq D x y` using `fun x y => by`. Simplify using `only [sesq, ← map_smul, hiso]`.
+
+Establish `hL : ∀ y m, τ' (sesq D (gam (e m)) y) = ∑ n, τ' (A m n) • τ' (sesq D (e n) y)` using `fun y m => hφ _ τ' (sesqL D τ' y) (fun a x => by show τ' (sesq D (a • x) y) = τ' a * τ' (sesq D x y)`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Fl.Test.sesq_smul_left, map_mul]) m`. Establish `hR : ∀ x m, τ' (sesq D x (gam (e m))) = ∑ n, ComplexEmbedding.conjugate τ' (A m n) • τ' (sesq D x (e n))` using `fun x m => hφ _ (ComplexEmbedding.conjugate τ') (sesqR D τ' x) (fun a y => by show τ' (sesq D x (a • y)) = ComplexEmbedding.conjugate τ' a * τ' (sesq D x y)`. Take `⟨b, rfl⟩` from `H.bar.surjective a`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Fl.Test.sesq_smul_right, map_mul, H.bar_eq]`.
+
+Use `congr 1`. Use `show _ = starRingEnd ℂ (τ' _)`. Rewrite using `[IsCMField.complexEmbedding_complexConj, Complex.conj_conj]) m`. Take `⟨C', Fm', B', k1, k2, k3, k4⟩` from `change_basis (tyLin ty τ') (tyLin ty (ComplexEmbedding.conjugate τ')) (fun a => h (V a)) (fun j => h (W j)) (fun m => P' (e m)) (fun m => P' (gam (e m))) (Matrix.of fun m n => τ' (sesq D (e m) (e n))) (Matrix.of fun m n => τ' (sesq D (e m) (e n))) (A.map τ') (A.map (ComplexEmbedd …`. Use extensionality with `m n`.
+
+Rewrite using `[Matrix.of_apply, ← hs, hR, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hL, Matrix.mul_apply, smul_eq_mul, mul_comm]`. Use the proof step `rfl) C Fm B`. Use the proof step `(fun a => by show tyPart ty τ' _ = _`.
+
+Rewrite using `[← hC.1 a, ← hcomm]`. Simplify using `only [hgam, map_sum, map_smul])`. Use the proof step `(fun n => by show tyPart ty _ _ = _`. Rewrite using `[hgam, hcomm, hC.2.1]`. Simplify using `only [map_sum, map_smul])`.
+
+Use the proof step `hC.2.2`. Conclude with `⟨C', Fm', B', ⟨k1, k2, k3⟩, k4⟩`.
+-/
 theorem cond_transport (D : Datum H) {g p q : ℕ} (ty : Fin g → (E →+* ℂ)) (τ' : E →+* ℂ) (e : Fin p ⊕ Fin q → D.La)
     (he : LinearIndependent (𝓞 E) e) (hc : p + q = D.p + D.q)
     (P P' : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P) (hP' : IsPeriod D ty P')
@@ -261,6 +341,23 @@ theorem cond_transport (D : Datum H) {g p q : ℕ} (ty : Fin g → (E →+* ℂ)
     hC.2.2
   exact ⟨C', Fm', B', ⟨k1, k2, k3⟩, k4⟩
 
+/- English proof (translation)
+Take `⟨⟨V₀, W₀, F₀, B₀, d⟩, ⟨k1, k2, k3, k4, k5, -, k7⟩, -⟩` from `anSolve E H D l Xo c τ τ' σ g ty FU hty hrt hτ i e P y v w he hP hy hfr`. Take `⟨-, -, hv, hw⟩` from `hfr`. Establish `hc : ∀ a : 𝓞 E, (σ.comp (tauIn c (ComplexEmbedding.conjugate τ))) a = ComplexEmbedding.conjugate τ' (a : E)`. Introduce `a`. Establish `h1 : tauIn c (ComplexEmbedding.conjugate τ) a = tauIn c τ (H.bar a)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ComplexEmbedding.conjugate τ (a : E) = τ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Use `show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _`.
+
+Rewrite using `[h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Take `⟨V₁, hVd, -, -⟩` from `GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv`. Take `⟨W₁, hWd, hWl, -⟩` from `GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw`. Take `⟨Hm, hHh, -, hHi⟩` from `id hP.2.2.2.2`.
+
+Take `⟨-, -, hd⟩` from `GlobalTheory.T.period_hermitian_type_compatibility E H (FU.Di i) g ty P Hm hP hHh hHi`. Establish `hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q`. Rewrite using `[(FU.sig i).1, (FU.sig i).2]`. Simplify using the standard rewrite rules. Establish `hS : (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))).det ≠ 0`.
+
+Use `hd 0 _ e hcard he` as an intermediate fact. Establish `h2 : (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))) = (Matrix.of fun m n => sesq (FU.Di i) (e m) (e n)).map τ'` using `rfl`. Rewrite using `[h2, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ').2 this`. Use `⟨d, k5, fun V W C Fm B a1 a2 a3 => ?_⟩` and prove the remaining obligations.
+
+Establish `eV : V = V₀` using `funext fun a => ((hVd a _).1 (a1 a)).trans ((hVd a _).1 (k1 a)).symm`. Establish `eW : W = W₁` using `funext fun a => (hWd a _).1 (a2 a)`. Establish `eW₀ : W₀ = W₁` using `funext fun a => (hWd a _).1 (k2 a)`. Substitute `eV eW eW₀` using the available equality. Establish `eB : B = B₀`.
+
+Use extensionality with `j n`. Conclude with `(Fintype.linearIndependent_iffₛ.1 hWl) (fun j => B j n) (fun j => B₀ j n) ((a3.2.1 n).symm.trans (k3 n)) j`. Establish `eF : Fm = F₀`. Establish `e1 : Fm * (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))) = F₀ * (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n)))`. Use extensionality with `j n`.
+
+Conclude with `((a3.2.2 j n).trans (congrFun (congrFun eB j) n)).trans (k4 j n).symm`. Use `congrArg (· * (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n)))⁻¹) e1` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (Ne.isUnit hS), Matrix.mul_one]`. Rewrite using `[eF]`. Conclude with `k7 C a3.1`.
+-/
 theorem solve (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ' : E →+* ℂ) (σ : c.F →+* ℂ) (g : ℕ)
     (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty)
     (hty : IsTypeFn H D.p D.q ty) (hrt : τ' (H.rt : E) = H.rt0) (hτ : ∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E))
@@ -314,6 +411,11 @@ theorem solve (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ
   rw [eF]
   exact k7 C a3.1
 
+/- English proof (translation)
+Introduce `a ha`. Use `Submodule.smul_induction_on ha (fun r hr b _ => ?_) ?_` and prove the remaining obligations. Take `⟨a', e', rfl⟩` from `U.t_surj i b`. Take `⟨e, he⟩` from `hgam (r • a') (Submodule.smul_mem_smul hr Submodule.mem_top)`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`.
+
+Use `⟨e + k • r • (gam e' - e'), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← map_smul, map_add, he, hk, smul_comm r, map_nsmul, map_smul gam, mul_smul, mul_smul, smul_add, smul_sub, smul_sub, smul_sub]`. Normalize the expressions using the abelian group laws. Introduce and unpack `x y ⟨e, he⟩ ⟨e', he'⟩`. Conclude with `⟨e + e', by rw [map_add, he, he', smul_add]; abel⟩`.
+-/
 theorem level_of_marking {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (U : FamilyUnif Xo σ ty) (i : Fin U.n) (gam : (U.Di i).La ≃ₗ[𝓞 E] (U.Di i).La)
     (hgam : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∃ e, gam (U.t i a) = U.t i a + l.M • e) :
@@ -332,6 +434,15 @@ theorem level_of_marking {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA 
 
 end PositivityTheory.Xgn.AnalyticTypeDefinition
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c τ τ' σ g ty FU hty hrt hτ e ρ he`. Establish `key : ∀ (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), ∃ φ : ℂ, ∀ i P V W C Fm B, IsPeriod (FU.Di i) ty P → under y = FU.u i P → IsFramed Set.univ τ σ y v w → (∀ a, IsDerivAt0 (fun z => (FU.ex i P z).left) (V a) (v a).left) → (∀ j, IsDerivAt0 (fun z => (FU.ex i P z).left …`. Introduce `y v w`. Distinguish the cases in `hex : ∃ i P, IsPeriod (FU.Di i) ty P ∧ under y = FU.u i P ∧ IsFramed Set.univ τ σ y v w`. Take `⟨i₀, P₀, hP₀, hy₀, hfr⟩` from `hex`.
+
+Take `⟨d, hd0, hd⟩` from `PositivityTheory.Xgn.AnalyticTypeDefinition.solve D l Xo c τ τ' σ g ty FU hty hrt hτ i₀ (e i₀) P₀ y v w (he i₀) hP₀ hy₀ hfr`. Use `⟨ρ i₀ / d, fun i P V W C Fm B hP hy _ a1 a2 a3 => ?_⟩` and prove the remaining obligations. Take `rfl : i = i₀` from `FU.disj i i₀ P P₀ hP hP₀ (hy.symm.trans hy₀)`. Take `⟨h, gam, b1, b2, b3, b4, -⟩` from `GlobalTheory.familyUnif_exp_unique E H D l Xo _ g ty FU i i P P₀ hP hP₀ (hy.symm.trans hy₀)`. Establish `hdet` using `per_det_one E H (FU.Di i) l gam b3 (PositivityTheory.Xgn.AnalyticTypeDefinition.level_of_marking FU i gam b4)`.
+
+Take `⟨C', Fm', B', k1, k2⟩` from `PositivityTheory.Xgn.AnalyticTypeDefinition.cond_transport (FU.Di i) ty τ' (e i) (he i) (by rw [(FU.sig i).1, (FU.sig i).2]) P P₀ hP hP₀ h.toLinearMap gam.toLinearMap b2 b3 hdet V W C Fm B a3`. Rewrite using `[← k2, hd _ _ C' Fm' B' (fun a => PositivityTheory.Xgn.AnalyticTypeDefinition.deriv_transport _ _ h b1 _ _ (a1 a)) (fun j => PositivityTheory.Xgn.AnalyticTypeDefinition.deriv_transport _ _ h b1 _ _ (a2 j)) k1]`. Conclude with `div_mul_cancel₀ _ hd0`. Conclude with `⟨0, fun i P V W C Fm B hP hy hfr _ _ _ => absurd ⟨i, P, hP, hy, hfr⟩ hex⟩`. Use `choose Φ hΦ using key`.
+
+Conclude with `⟨Φ, fun i P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8 => hΦ y v w i P V W C Fm B h1 h2 h3 h4 h5 ⟨h6, h7, h8⟩⟩`.
+-/
 theorem PositivityTheory.Xgn.analytic_type_definition : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ' : E →+* ℂ) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty → τ' (H.rt : E) = H.rt0 → (∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E)) → ∀ (e : ∀ i : Fin FU.n, Fin D.p ⊕ Fin D.q → (FU.Di i).La) (ρ : Fin FU.n → ℂ), (∀ i, LinearIndependent (𝓞 E) (e i)) → ∃ Φ : CFn Xo c, ∀ i, IsFlatAn Set.univ τ τ' σ Φ FU i (e i) (ρ i) := by
   intro E _ _ _ H D l Xo c τ τ' σ g ty FU hty hrt hτ e ρ he
   have key : ∀ (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), ∃ φ : ℂ, ∀ i P V W C Fm B,

@@ -10,6 +10,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.SkewGramDet
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d W r s hW`. Conclude with `GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B d r s W hW`.
+-/
 theorem det_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d : ℕ) (W : Spc F E d) (r s : ℕ), W.IsSkew σ B r s → W.J.det ≠ 0 := by
   intro F E _ _ _ _ _ σ B d W r s hW
   exact GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B d r s W hW

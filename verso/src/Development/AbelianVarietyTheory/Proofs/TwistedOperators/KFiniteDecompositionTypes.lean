@@ -39,6 +39,17 @@ open GlobalTheory.Grow GlobalTheory.Size
 open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.SeriesToClosure GlobalTheory.PlaceDecomp GlobalTheory.KFinDecomp Matrix
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `D θ hθ hp N U W _ _ _ ρ hρ τ`. Use `haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1`. Establish `hσ : Std (N.M.ε τ) (N.M.σ τ)` using `std_of_isDS hp.harishChandraModules (N.M.ds τ)`. Take `⟨e, he, he1⟩` from `GlobalTheory.T.exists_K_finite_reproducing_function _ (N.M.ε τ) (W τ) (ρ τ) (hρ τ)`. Establish `hcl` using `GlobalTheory.T.K_type_class_submodule D θ hθ hp N U W ρ τ (fun f f' hf hf' => GlobalTheory.T.K_type_class_add_mem D θ hθ hp N U f f' hf hf') (GlobalTheory.T.cuspFormsOfVertexType_zero_mem_and_smul_mem D θ hθ N U).1 (GlobalTheory.T.cuspFormsOfVertexType_zero_mem_and_smul_mem D θ h …`.
+
+Take `⟨m, a, c, haK, hQ, hA⟩` from `GlobalTheory.T.rankOneOperator_mem_of_translation_average_closed _ (N.M.ε τ) (N.M.H τ) (N.M.σ τ) hσ (HasCtp θ N U (TyOf θ N ρ) τ) (GlobalTheory.T.K_type_class_translate D θ hθ hp N U W ρ τ) hcl.1 hcl.2.1 (GlobalTheory.T.K_average_has_type D θ hθ hp N U W ρ τ) hcl.2.2 e he`. Use `choose A hAop hAmv using fun j (u : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ) => hA j u u.2`. Establish `hexp` using `fun (f : GA D N.V → ℂ) (hf : f ∈ Cls θ N U) => GlobalTheory.T.exists_lie_word_expansion D θ hθ hp N τ f hf.1.1 (hf.1.2.2 τ)`. Use `⟨m, fun j => ⟨a j, haK j⟩, A, hAop, fun j f hf => ?_, fun f hf hTy => ?_⟩` and prove the remaining obligations. Use `choose S v ℓ C hW hc h using hexp f hf`.
+
+Conclude with `(GlobalTheory.T.lie_word_expansion_uniform D θ hθ hp N τ f S v ℓ C hW hc h (c j) (fun u => A j u f) fun u => hAmv j u f hf).2`. Use `choose S v ℓ C hW hc h using hexp f hf`. Establish `hform` using `fun j => (GlobalTheory.T.lie_word_expansion_uniform D θ hθ hp N τ f S v ℓ C hW hc h (c j) (fun u => A j u f) fun u => hAmv j u f hf).1`. Use function extensionality and compare the values at `x`. Establish `h1` using `(moves_avg hθ (N.M.fr_unit τ) (N.M.fr_gram τ) hσ he f x _ _ _ _ (hW x) (hc x) (h x)).1.2.2.2.2 1 (one_mem_UJ _)`.
+
+Simplify using `only [res_one hθ (N.M.fr_unit τ), sigma_one hσ.1, hQ, map_sum, map_smul, smul_eq_mul] at h1`. Establish `h2` using `h1.unique (hasSum_sum fun j _ => (Expn.summable_term (h x) (c j) (hσ.2.2.1 _ (haK j))).hasSum)`. Establish `h3 : avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e f x = f x`. Use `he1 _ (hTy x)` as an intermediate fact. Establish `h4 : f (x * atTau θ N.V τ ((N.M.fr τ)⁻¹ * toMK (1 : KG (N.M.ε τ)) * N.M.fr τ)) = f x` using `res_one hθ (N.M.fr_unit τ) f x`.
+
+Conclude with `this.trans h4`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [hform]`. Rewrite using `[← h2, h3]`.
+-/
 theorem GlobalTheory.PlaceDecomp.decompAt_place : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (N.M.ε τ)) (W τ)), (∀ τ, GlobalTheory.Published.AutFin.IsContRep (ρ τ)) → ∀ τ, GlobalTheory.KFinDecomp.DecompAt θ N (GlobalTheory.KFinDecomp.Cls θ N U) (fun τ f => GlobalTheory.Published.AutFin.HasTypeAt θ N.V τ (N.M.ε τ) (N.M.fr τ) (ρ τ) f) τ := by
   intro D θ hθ hp N U W _ _ _ ρ hρ τ
   haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1

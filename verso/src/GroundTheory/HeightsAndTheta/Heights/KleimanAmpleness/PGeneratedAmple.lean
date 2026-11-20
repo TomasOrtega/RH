@@ -9,6 +9,13 @@ noncomputable section
 
 universe u w
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x H A Q`. Use `choose n₀ hn₀ using fun (b : Fin A.m) (j : Fin (A.r + 1)) => hLocal S Ω N x H A Q b j`. Set `M : ℕ` to `Finset.univ.sup fun p : Fin A.m × Fin (A.r + 1) => n₀ p.1 p.2`. Use `⟨A.m * M, fun c hc => hCover S Ω N x H A _ fun j I y hy => ?_⟩` and prove the remaining obligations. Establish `hm` using `A.m_pos`.
+
+Establish `hc' : c % A.m + A.m * (c / A.m) = c` using `Nat.mod_add_div c A.m`. Establish `hM : M ≤ c / A.m` using `(Nat.le_div_iff_mul_le hm).mpr (by rw [mul_comm]; exact hc)`. Establish `hn : n₀ ⟨c % A.m, Nat.mod_lt c hm⟩ j ≤ c / A.m` using `le_trans (Finset.le_sup (f := fun p : Fin A.m × Fin (A.r + 1) => n₀ p.1 p.2) (Finset.mem_univ (⟨c % A.m, Nat.mod_lt c hm⟩, j))) hM`. Establish `key` using `hn₀ ⟨c % A.m, Nat.mod_lt c hm⟩ j (c / A.m) hn I y`. Simplify using `only [hc'] at key`.
+
+Conclude with `key hy`.
+-/
 theorem GeneratedAmple.proof (hCover : AmpleCover.Statement.{u, w})
     (hLocal : AmpleTwistLocal.Statement.{u, w}) : GeneratedAmple.Statement.{u, w} := by
   intro S _ _ Ω _ _ N x H A Q

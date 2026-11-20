@@ -8,6 +8,11 @@ open scoped TensorProduct
 section
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add, Finset.sum_add_distrib]`. Consider the case `tmul φ v`. Simplify using `only [LinearMap.lTensor_tmul, cmp_tmul, smul_smul, ← Finset.sum_smul]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem cmp_lT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (Q : Matrix (Fin d) (Fin d) ℂ)
     (y : W ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) :
     cmp j ((Matrix.toLin' Q).lTensor W y) = ∑ k, Q j k • cmp k y := by
@@ -18,6 +23,9 @@ private theorem cmp_lT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (Q :
     simp only [LinearMap.lTensor_tmul, cmp_tmul, smul_smul, ← Finset.sum_smul]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp only [LinearMap.rTensor_tmul, cmp_tmul, map_smul]`.
+-/
 private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (S : Module.End ℂ W)
     (y : W ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) :
     cmp j (S.rTensor (Fin d → ℂ) y) = S (cmp j y) := by
@@ -44,6 +52,11 @@ private def csSub : Submodule ℂ (Sm E a) where
     show c • φ.1 g = 0
     rw [hR g hg, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[mem_tens]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨R, hR⟩ j`. Conclude with `⟨R, fun g hg => by rw [Pf.cmp_ev, hR g hg]; rfl⟩`. Introduce `h choose R hR using h`.
+
+Use `⟨∑ j, |R j|, fun g hg => funext fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Pf.cmp_ev]`. Use `hR j g (lt_of_le_of_lt ?_ hg)` and prove the remaining obligations. Conclude with `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |R j|) (fun i _ => abs_nonneg _) (Finset.mem_univ j))`.
+-/
 private theorem cs_iff {d : ℕ} (x : Sm E a ⊗[ℂ] (Fin d → ℂ)) : Pf.Cs (ev x) ↔ x ∈ tens d (csSub E a) := by
   rw [mem_tens]
   constructor
@@ -58,6 +71,15 @@ private theorem cs_iff {d : ℕ} (x : Sm E a ⊗[ℂ] (Fin d → ℂ)) : Pf.Cs (
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ξ r X x hx`. Rewrite `hx` using `[cs_iff]`. Rewrite using `[cs_iff, cs_iff]`. Establish `hA : smA Ξ X x ∈ tens Ξ.d (csSub E a)` using `mem_tens.2 fun j => by`. Rewrite using `[smA_apply, cmp_rT]`.
+
+Conclude with `Pf.csLie E a _ X (mem_tens.1 hx j)`. Establish `hB : smB Ξ X x ∈ tens Ξ.d (csSub E a)` using `mem_tens.2 fun j => by`. Rewrite using `[smB_apply, cmp_lT]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (mem_tens.1 hx k)`. Prove the components needed by the constructor for the conclusion.
+
+Establish `: smLie Ξ X x = smA Ξ X x + smB Ξ X x`. Simplify using `only [smB, LinearMap.sub_apply, add_sub_cancel]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hA hB`. Rewrite using `[smAdj, adj_apply]`.
+
+Use `Submodule.sub_mem _ (Submodule.sub_mem _ hB hA) ?_` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem _ _ hx`.
+-/
 theorem UpperTheory.V.Lit.Geo.Pf.csTens :
     UpperTheory.V.Lit.Geo.Pf.CsTens := by
   intro E _ _ _ a Ξ r X x hx

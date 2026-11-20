@@ -11,6 +11,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Establish `E` using `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F`. Set `e : Arrow.mk (yoneda.map g) ≅ Arrow.mk (yoneda.map (g ≫ t))` to `Arrow.isoMk (Iso.refl _) (yoneda.mapIso (asIso t)) (by simp)`. Set `φ` to `SimplicialObject.augmentedCechNerve.mapIso e`. Establish `hw : φ.hom.left ≫ cechAug (g ≫ t) = cechAug g ≫ (SimplicialObject.const _).map φ.hom.right` using `φ.hom.w`. Establish `hl : IsIso φ.hom.left` using `(SimplicialObject.Augmented.drop.mapIso φ).isIso_hom`.
+
+Establish `hr : IsIso ((SimplicialObject.const _).map φ.hom.right)`. Establish `: IsIso φ.hom.right` using `(SimplicialObject.Augmented.point.mapIso φ).isIso_hom`. Use `infer_instance`. Establish `h1 : Eqv R (φ.hom.left ≫ cechAug (g ≫ t)) F` using `((E.2.1 _ _ _ _ _).1 (E.1 _ _ _ hl)) h`. Rewrite `h1` using `[hw]`.
+
+Conclude with `(E.2.1 _ _ _ _ _).2.2 (E.1 _ _ _ hr) h1`.
+-/
 theorem eqv_cechAug_of_comp_iso (R : Type) [CommRing R] (F : Shv R) {V W T : Scheme.{0}} (g : V ⟶ W) (t : W ⟶ T) [IsIso t]
     (h : Eqv R (cechAug (g ≫ t)) F) : Eqv R (cechAug g) F := by
   have E := GlobalTheory.T.etaleCohomologyEquivalence_basic_properties R F
@@ -26,6 +33,17 @@ theorem eqv_cechAug_of_comp_iso (R : Type) [CommRing R] (F : Shv R) {V W T : Sch
   rw [hw] at h1
   exact (E.2.1 _ _ _ _ _).2.2 (E.1 _ _ _ hr) h1
 
+/- English proof (translation)
+Introduce `q Y X f _ _ hq i`. Establish `E` using `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Use `GlobalTheory.T.equiv_of_stalkwise_base_change (ZMod q) (tw q i) X (cech f) (sch.obj X) (cechAug f) (sch.map (𝟙 X)) (GlobalTheory.T.tateTwist_finitary q i) ?_ ?_ ?_` and prove the remaining obligations. Introduce `k`. Take `⟨Z, π, e, hπ, he⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable @IsIntegralHom Y X f ‹_› k`.
+
+Use `haveI := hπ`. Use `⟨Z, π ≫ f, e, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[CategoryTheory.Functor.map_id, Category.comp_id, he]`. Introduce `k`. Use `⟨X, 𝟙 X, Iso.refl _, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[sch]`. Introduce `O _ s hs`. Take `⟨e₁, e₂, h⟩` from `GlobalTheory.T.baseChange_cechNerveAugmentation_iso X X Y (𝟙 X) f (Over.mk s)`. Establish `hqO : IsUnit ((q : ℕ) : O)`. Use `hq.map (s.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of O)).hom).hom` as an intermediate fact.
+
+Simplify using `using this`. Establish `hg : Eqv _ (cechAug (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom))) (tw q i)` using `eqv_cechAug_of_comp_iso _ _ _ (pullback.snd (𝟙 X) s) (GlobalTheory.T.eqv_cechAug_of_isIntegralHom_of_surjective_of_sh q i O hs.1 hqO _ _ inferInstance inferInstance)`. Establish `hm : (bcMap (cechAug f) (sch.map (𝟙 X))).app (Over.mk s) = e₁.inv ≫ cechAug (pullback.snd f (pullback.fst (𝟙 X) (Over.mk s).hom)) ≫ e₂.hom`. Rewrite using `[← h, Iso.inv_hom_id_assoc]`. Rewrite using `[hm]`.
+
+Conclude with `(E.2.1 _ _ _ _ _).1 (E.1 _ _ _ inferInstance) ((E.2.1 _ _ _ _ _).1 hg (E.1 _ _ _ inferInstance))`.
+-/
 theorem b4 : B4 := by
   intro q Y X f _ _ hq i
   have E := GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)

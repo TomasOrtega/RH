@@ -26,6 +26,21 @@ open GlobalTheory.LamT (CMPt)
 
 namespace GlobalTheory.LatFull.CMInt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ z f La hz y hy la _hla`. Use `set e : Formalism.L2.Pj.Ix Dw → ℤ := GlobalTheory.AllWt.exOf Dw la 0 with he`. Establish `he0 : e none = 0`. Simplify using `[he, GlobalTheory.AllWt.exOf, GlobalTheory.AllWt.wtOf, exZ]`. Set `k : (E →+* ℂ) → ℕ` to `fun b => ∑ i : Fin (Dw.mult b), (-(e (some ⟨b, i⟩))).toNat`.
+
+Set `a : ∀ b : E →+* ℂ, Fin (Dw.mult b) → ℕ` to `fun b i => (e (some ⟨b, i⟩) + (k b : ℤ)).toNat`. Establish `hak : ∀ (b : E →+* ℂ) (i : Fin (Dw.mult b)), e (some ⟨b, i⟩) + (k b : ℤ) = (a b i : ℤ)`. Introduce `b i`. Establish `h1 : (-(e (some ⟨b, i⟩))).toNat ≤ k b` using `Finset.single_le_sum (f := fun i : Fin (Dw.mult b) => (-(e (some ⟨b, i⟩))).toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Simplify using `only [a]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨t, ht0, ht⟩` from `GlobalTheory.T.exists_commonDenom_framePolynomials_cmPoint E H Dw l Xo c z f La hz e k he0`. Take `⟨g, s, hg, hgs⟩` from `(GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c z.K z.y y).1 (hy.trans hz.2.2.2.1.symm)`. Set `Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) z.K` to `fun b => (g b).transpose`. Establish `hYd : ∀ b, (Y b).det ≠ 0` using `fun b => by`.
+
+Simplify using `only [Y, Matrix.det_transpose]`. Conclude with `(hg b).ne_zero`. Establish `hgY : (fun b => (Y b).transpose) = g` using `funext fun b => Matrix.transpose_transpose _`. Establish `htK : (t : z.K) ≠ 0` using `fun h => ht0 (RingOfIntegers.coe_eq_zero_iff.1 h)`. Take `⟨N₀, hN₀, hint⟩` from `GlobalTheory.LatFull.CMInt.exists_denom_eval (fun _ : Formalism.L2.LamCM.FrVar Dw.mult →₀ ℕ => FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 z.K)) ((t : z.K)⁻¹)) (fun v : Formalism.L2.LamCM.FrVar Dw.mult => Y v.1 v.2.2 v.2.1) (∑ b, ∑ i, a b i)`.
+
+Use `⟨N₀ * ∏ b, (Y b).det ^ k b, mul_ne_zero hN₀ (Finset.prod_ne_zero_iff.2 fun b _ => pow_ne_zero _ (hYd b)), fun F hF hv => ?_⟩` and prove the remaining obligations. Take `⟨G, hGh, hG⟩` from `GlobalTheory.T.weighted_section_exponent_shift E H Dw l Xo c z.K z.y e k a he0 hak F hF`. Establish `h1` using `hG y Y s hYd (by rw [hgY]; exact hgs)`. Establish `h2 : N₀ * (∏ b, (Y b).det ^ k b) * evR Xo c F y = N₀ * Formalism.L2.LamCM.evalFr G Y`. Rewrite using `[mul_assoc, h1]`.
+
+Rewrite using `[h2]`. Use `hint G hGh fun μ => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_spanSingleton]`. Use `⟨⟨_, ht F hF hv G (fun y' Y' s' hY' h' => hG y' Y' s' hY' h') μ⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(t : z.K) * MvPolynomial.coeff μ G * (t : z.K)⁻¹ = _`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_frame_denom_intWt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ)
     (La : ℝ), z.Good f La → ∀ y : FrPt Xo c z.K, y.x = z.x → ∀ la : GlobalTheory.AllWt.Weight Dw, GapGe 1 la →

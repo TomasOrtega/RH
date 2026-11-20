@@ -5,6 +5,9 @@ open scoped Matrix
 
 namespace GlobalTheory.HilbertThetaSeries.GeneratorMatrix
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Simplify using `only [Matrix.mul_fin_two]`. Apply the tactic sequence `ext i j <;> fin_cases i <;> fin_cases j <;> simp <;> field_simp`. Apply the tactic sequence `all_goals first | ring1 | linear_combination -hdet | linear_combination δ * τ * hdet`.
+-/
 theorem matId {F : Type} [Field F] (a b c d δ τ e s : F) (hδ : δ ≠ 0) (hs : s ≠ 0) (he : e ≠ 0)
     (hc : c = s - τ * δ * a) (hdet : a * d - b * c = e) :
     !![a, b; c, d] = !![0, -δ⁻¹; δ, 0] * !![1, τ / δ; 0, 1] * !![0, -(-δ)⁻¹; -δ, 0] * !![1, a / s; 0, 1]
@@ -16,17 +19,29 @@ theorem matId {F : Type} [Field F] (a b c d δ τ e s : F) (hδ : δ ≠ 0) (hs 
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk8.exists_place p hp`.
+-/
 theorem exists_place (p : ℕ) (hp : p.Prime) :
     ∃ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal :=
   _root_.UpperTheory.Reformulated.B.Qk8.exists_place p hp
 
+/- English proof (translation)
+Introduce `hx`. Use `h w hw` as an intermediate fact. Rewrite `this` using `[hx, map_zero]`. Conclude with `zero_ne_one this`.
+-/
 theorem ne_zero_of_pUnit {p : ℕ} {w : HeightOneSpectrum (𝓞 F)} (hw : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal) {x : F}
     (h : PUnit p x) : x ≠ 0 := by
   intro hx; have := h w hw; rw [hx, map_zero] at this; exact zero_ne_one this
 
+/- English proof (translation)
+Simplify using `[wm]`.
+-/
 theorem val_wm (c : Fˣ) : ((wm c : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![0, -(c : F)⁻¹; (c : F), 0] := by
   simp [wm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_aff (y : Fˣ) (x : F) : ((aff y x : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![(y : F), x; 0, 1] := rfl
 
 end GlobalTheory.HilbertThetaSeries.GeneratorMatrix
@@ -35,6 +50,45 @@ namespace GlobalTheory.HilbertThetaSeries
 
 open GlobalTheory.HilbertThetaSeries.GeneratorMatrix in
 
+/- English proof (translation)
+Introduce `F _ _ _ p hp δ hδ γ hγ`. Take `⟨hA, hB, hC, hD, hE, hT⟩` from `hγ`. Take `⟨w₀, hw₀⟩` from `exists_place (F := F) p hp`. Establish `hδ0 : δ ≠ 0`. Introduce `h`.
+
+Use `hδ w₀ hw₀` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`. Establish `hdet : γ.val 0 0 * γ.val 1 1 - γ.val 0 1 * γ.val 1 0 = γ.val.det` using `(Matrix.det_fin_two _).symm`. Establish `he0 : γ.val.det ≠ 0` using `ne_zero_of_pUnit hw₀ hE`.
+
+Establish `hI : Ideal.span {((p : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Use `set S := (Ideal.finite_factors hI).toFinset with hS`. Establish `hmem : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal → w ∈ S`.
+
+Introduce `w hw`. Rewrite using `[hS, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_span_singleton]`. Conclude with `hw`. Take `⟨τ, hτ⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun w => w.asIdeal) (fun _ => 1) (fun w _ => w.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun w => if w.1.valuation F (γ.val 1 0 / δ) = 1 then 0 else 1)`. Use `set a := γ.val 0 0 with ha`.
+
+Use `set b := γ.val 0 1 with hb`. Use `set c := γ.val 1 0 with hc`. Use `set d := γ.val 1 1 with hd`. Use `set e := γ.val.det with he`. Use `set t : F := algebraMap (𝓞 F) F τ with ht`.
+
+Use `set s := c + t * δ * a with hs`. Establish `hsd : s / δ = c / δ + t * a` using `by rw [hs]; field_simp`. Establish `hu : PUnit p (s / δ)`. Introduce `w hw`. Establish `hτw` using `hτ w (hmem w hw)`.
+
+Simplify using `only [pow_one] at hτw`. Rewrite using `[hsd]`. Distinguish the cases in `h1 : w.valuation F (c / δ) = 1`. Rewrite `hτw` using `[if_pos h1, sub_zero]`. Establish `htlt : w.valuation F t < 1` using `(w.valuation_lt_one_iff_mem τ).mpr hτw`.
+
+Establish `: w.valuation F (t * a) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Valuation.map_add_eq_of_lt_left _ (h1 ▸ this), h1]`. Rewrite `hτw` using `[if_neg h1]`.
+
+Establish `hclt : w.valuation F (c / δ) < 1` using `lt_of_le_of_ne (hC w hw) h1`. Establish `hav : w.valuation F a = 1`. Assume the negation of the conclusion as `hne`. Establish `halt : w.valuation F a < 1` using `lt_of_le_of_ne (hA w hw) hne`. Establish `hE'` using `hE w hw`.
+
+Establish `hx : e = a * d - (δ * b) * (c / δ)` using `by rw [← hdet]; field_simp`. Establish `h1' : w.valuation F (a * d) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2' : w.valuation F ((δ * b) * (c / δ)) < 1`.
+
+Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `: w.valuation F e < 1`. Rewrite using `[hx]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h1' h2')`.
+
+Rewrite `this` using `[hE']`. Conclude with `lt_irrefl _ this`. Establish `htm : w.valuation F (t - 1) < 1`. Use `(w.valuation_lt_one_iff_mem (K := F) (τ - 1)).mpr hτw` as an intermediate fact. Simplify `this` using `[ht]`.
+
+Establish `htv : w.valuation F t = 1`. Establish `: t = 1 + (t - 1)` using `by ring`. Rewrite using `[this, Valuation.map_add_eq_of_lt_left _ (by rw [map_one]; exact htm), map_one]`. Establish `hta : w.valuation F (t * a) = 1` using `by rw [map_mul, htv, hav, mul_one]`. Rewrite using `[Valuation.map_add_eq_of_lt_right _ (hta ▸ hclt), hta]`.
+
+Establish `hs0 : s ≠ 0`. Introduce `h0; exact ne_zero_of_pUnit hw₀ hu (by rw [h0, zero_div])`. Use `⟨t / δ, a / s, (d + t * δ * b) * e / s, Units.mk0 δ hδ0, -Units.mk0 δ hδ0, Units.mk0 (s / e) (div_ne_zero hs0 he0), Units.mk0 e he0, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[mul_div_cancel₀ _ hδ0]`.
+
+Conclude with `w.valuation_le_one τ`. Introduce `w hw`. Establish `: δ * (a / s) = a / (s / δ)` using `by field_simp`. Rewrite using `[this, map_div₀, hu w hw, div_one]`. Conclude with `hA w hw`.
+
+Introduce `w hw`. Establish `: δ * ((d + t * δ * b) * e / s) = (d + t * (δ * b)) * e / (s / δ)` using `by field_simp`. Rewrite using `[this, map_div₀, hu w hw, div_one, map_mul, hE w hw, mul_one]`. Use `Valuation.map_add_le _ (hD w hw) ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `w hw`. Rewrite using `[Units.val_mk0, div_self hδ0, map_one]`. Introduce `w hw`. Rewrite using `[Units.val_neg, Units.val_mk0, neg_div, div_self hδ0, Valuation.map_neg, map_one]`.
+
+Introduce `w hw`. Establish `: s / e / δ = s / δ / e` using `by ring`. Rewrite using `[Units.val_mk0, this, map_div₀, hu w hw, hE w hw, div_one]`. Rewrite using `[Units.val_mk0]`. Conclude with `hT`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul, val_wm, val_aff, Units.val_neg, Units.val_mk0, Units.val_one]`. Rewrite using `[Matrix.eta_fin_two (γ : Matrix (Fin 2) (Fin 2) F)]`. Conclude with `matId a b c d δ t e s hδ0 hs0 he0 (by rw [hs]; ring) hdet`.
+-/
 theorem gen_by_translations_inversions : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ), p.Prime → ∀ δ : F, IsDel p δ → ∀ γ : GL (Fin 2) F, InG p δ γ → ∃ (b₁ b₂ b₃ : F) (c₁ c₂ c₃ ε : Fˣ), PInt p (δ * b₁) ∧ PInt p (δ * b₂) ∧ PInt p (δ * b₃) ∧ PUnit p (c₁ / δ) ∧ PUnit p (c₂ / δ) ∧ PUnit p (c₃ / δ) ∧ TP (ε : F) ∧ γ = wm c₁ * aff 1 b₁ * wm c₂ * aff 1 b₂ * wm c₃ * aff 1 b₃ * aff ε 0 := by
   intro F _ _ _ p hp δ hδ γ hγ
   classical

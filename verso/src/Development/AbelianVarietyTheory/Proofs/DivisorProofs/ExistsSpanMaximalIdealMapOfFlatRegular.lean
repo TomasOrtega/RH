@@ -11,6 +11,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `O' O _ _ _ _ _ σ hloc hflat hart g hg`. Use `letI := σ.toAlgebra`. Use `haveI : Module.Flat O' O := hflat`. Use `haveI : Algebra.HasGoingDown O' O := Algebra.HasGoingDown.of_flat`. Use `haveI : IsLocalHom (algebraMap O' O) := hloc`.
+
+Use `haveI : IsLocalHom σ := hloc`. Use `set I : Ideal O := (maximalIdeal O').map σ with hI`. Establish `hIle : I ≤ maximalIdeal O` using `IsLocalRing.map_maximalIdeal_le _`. Use `haveI : Nontrivial (O ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr (ne_top_of_le_ne_top (maximalIdeal.isMaximal O).ne_top hIle)`. Use `haveI : IsLocalRing (O ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`.
+
+Establish `hmap : (maximalIdeal O).map (Ideal.Quotient.mk I) = maximalIdeal (O ⧸ I)` using `IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`. Establish `hF : (maximalIdeal (O ⧸ I)).height = 0`. Rewrite using `[Ideal.height_eq_zero_iff]`. Use `⟨⟨inferInstance, bot_le⟩, fun q ⟨hq, _⟩ hle => ?_⟩` and prove the remaining obligations. Conclude with `((IsArtinianRing.isMaximal_of_isPrime q).eq_of_le (maximalIdeal.isMaximal _).ne_top hle).ge`.
+
+Establish `H` using `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (maximalIdeal O') (maximalIdeal O)`. Establish `hIalg : (maximalIdeal O').map (algebraMap O' O) = I` using `rfl`. Rewrite `H` using `[hIalg, hmap, hF, add_zero]`. Establish `hdim : ((maximalIdeal O').spanFinrank : WithBot ℕ∞) = g`. Rewrite using `[IsRegularLocalRing.spanFinrank_maximalIdeal, ← maximalIdeal_height_eq_ringKrullDim, ← H, maximalIdeal_height_eq_ringKrullDim, hg]`.
+
+Establish `hg' : (maximalIdeal O').spanFinrank = g` using `by exact_mod_cast hdim`. Establish `hfg : (maximalIdeal O').FG` using `IsNoetherian.noetherian _`. Take `⟨t, htcard, htspan⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hfg`. Rewrite `htcard` using `[hg']`. Set `u : Fin g → O'` to `fun i => (t.equivFin.symm (Fin.cast htcard.symm i) : O')`.
+
+Establish `hu : Set.range u = (t : Set O')`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(t.equivFin.symm _).2`.
+
+Introduce `hx; exact ⟨Fin.cast htcard (t.equivFin ⟨x, hx⟩), by simp [u]⟩`. Use `⟨fun i => σ (u i), ?_⟩` and prove the remaining obligations. Rewrite using `[hI, ← htspan, Ideal.map_span, ← hu, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem maximalIdeal_map_span_of_flat_of_isArtinianRing_fibre :
     ∀ (O' O : Type) [CommRing O'] [IsRegularLocalRing O'] [CommRing O] [IsLocalRing O]
       [IsNoetherianRing O] (σ : O' →+* O), IsLocalHom σ → σ.Flat →

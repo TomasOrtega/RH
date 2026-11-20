@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DefU UpperTheory.Gal.CertificateRingHomMap UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Establish `h` using `congrArg (RingHom.mapMatrix (pLoc E u)) (mem_Sim.1 k.2)`. Rewrite `h` using `[map_mul]`. Use `Eq.trans ?_ (h.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]`.
+-/
 private theorem comp_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (k : GUf E n) (u : Plc E) :
     ((comp (cj u) k).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) u))ᵀ * (comp u k).val =
       pLoc E u (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim k : AfQˣ) : AfQ)) •
@@ -15,6 +20,15 @@ private theorem comp_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   · ext i j
     by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]
 
+/- English proof (translation)
+Introduce `_ E _ _ _ n N w g hs hc i k`. Establish `hrel` using `comp_rel g w`. Rewrite `hrel` using `[hs, Units.val_one, map_one, map_one, one_smul]`. Establish `hG : ((comp (UpperTheory.Gal.CertificateRingHomMap.cj w) g).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) w))ᵀ = ((comp w g)⁻¹).val`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Units.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hrel, Matrix.one_mul]`. Establish `hv` using `(conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.2`. Establish `hent : conjLoc (GlobalTheory.SplitPts.conjE E) w (((comp (UpperTheory.Gal.CertificateRingHomMap.cj w) g).val - 1) i k) = (((comp w g)⁻¹).val - 1) k i`. Rewrite using `[← hG]`.
+
+Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[Matrix.sub_apply]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, hik, Ne.symm hik]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_natCast (conjLoc (GlobalTheory.SplitPts.conjE E) w) N]`. Use `_ = Valued.v (N : (UpperTheory.Gal.CertificateRingHomMap.cj w).adicCompletion E) := hv _`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pCongConj :
     UpperTheory.Gal.CertificateRingHomMap.LocComm → CongConj := by
   intro _ E _ _ _ n N w g hs hc i k

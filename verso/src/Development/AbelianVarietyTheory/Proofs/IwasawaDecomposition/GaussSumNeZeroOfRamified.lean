@@ -12,14 +12,25 @@ namespace GlobalTheory.LocLanglands
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[ord, ord, neg_le_neg_iff, WithZero.log_le_log (by simp) (by simp)]`. Conclude with `(map_le_map_iff (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k)).symm`.
+-/
 theorem valuation_le_iff_ord {x y : kˣ} : valuation k (x : k) ≤ valuation k (y : k) ↔ ord k y ≤ ord k x := by
   rw [ord, ord, neg_le_neg_iff, WithZero.log_le_log (by simp) (by simp)]
   exact (map_le_map_iff (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k)).symm
 
+/- English proof (translation)
+Rewrite using `[le_antisymm_iff, valuation_le_iff_ord, valuation_le_iff_ord]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_eq_iff_ord {x y : kˣ} : valuation k (x : k) = valuation k (y : k) ↔ ord k x = ord k y := by
   rw [le_antisymm_iff, valuation_le_iff_ord, valuation_le_iff_ord]; omega
 
 variable (k) in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (uniformizer k)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `uniformizer_ne_zero (R := k) (by simpa using hy.symm)`. Establish `h1 : ord k (Units.mk0 y hy0) = 1` using `ord_eq_one hy`.
+
+Use `⟨Units.mk0 y hy0 ^ a, by simp [hy], ?_⟩` and prove the remaining obligations. Proceed by induction on `a with`. Consider the case `zero => simpa using ord_eq_zero (k := k) (x := 1) (by simp)`. Consider the case `succ n ih => rw [pow_succ, ord_mul, ih, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_unit_pow (a : ℕ) : ∃ p : kˣ, valuation k (p : k) = uniformizer k ^ a ∧ ord k p = a := by
   obtain ⟨y, hy⟩ := ValuativeRel.valuation_surjective (uniformizer k)
   have hy0 : y ≠ 0 := by
@@ -31,11 +42,17 @@ theorem exists_unit_pow (a : ℕ) : ∃ p : kˣ, valuation k (p : k) = uniformiz
   | zero => simpa using ord_eq_zero (k := k) (x := 1) (by simp)
   | succ n ih => rw [pow_succ, ord_mul, ih, h1]; simp
 
+/- English proof (translation)
+Take `⟨p, hp, hp'⟩` from `exists_unit_pow k a`. Rewrite using `[← hp, ← map_mul, ← Units.val_mul, valuation_eq_iff_ord, ord_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_of_shell {c r : kˣ} {a : ℕ} (hr : ord k r = ord k c - a) :
     valuation k (c : k) = uniformizer k ^ a * valuation k (r : k) := by
   obtain ⟨p, hp, hp'⟩ := exists_unit_pow k a
   rw [← hp, ← map_mul, ← Units.val_mul, valuation_eq_iff_ord, ord_mul]; omega
 
+/- English proof (translation)
+Take `⟨p, -, hp'⟩` from `exists_unit_pow k a`. Use `⟨c * p⁻¹, ?_⟩` and prove the remaining obligations. Use `ord_mul k (c * p⁻¹) p` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_shell (c : kˣ) (a : ℕ) : ∃ d : kˣ, ord k d = ord k c - a := by
   obtain ⟨p, -, hp'⟩ := exists_unit_pow k a
   refine ⟨c * p⁻¹, ?_⟩
@@ -43,6 +60,15 @@ theorem exists_shell (c : kˣ) (a : ℕ) : ∃ d : kˣ, ord k d = ord k c - a :=
   rw [inv_mul_cancel_right] at this
   omega
 
+/- English proof (translation)
+Establish `h : ∃ a, ∀ x ∈ unitFilt k a, χ x = 1`. Take `⟨V, hV, hV'⟩` from `(Units.isEmbedding_val₀ (G₀ := k)).isInducing.isOpen_iff.1 hχ`. Establish `h1 : (1 : k) ∈ V`. Establish `: (1 : kˣ) ∈ Units.val ⁻¹' V` using `by rw [hV']; exact χ.ker.one_mem`. Simplify using `using this`.
+
+Establish `h2 : (fun z : k => z + 1) ⁻¹' V ∈ 𝓝 (0 : k)` using `(hV.preimage (by fun_prop)).mem_nhds (by simpa using h1)`. Take `⟨s, hs⟩` from `exists_cball_subset h2`. Take `⟨p, hp, hp'⟩` from `exists_unit_pow k (ord k s).toNat`. Use `⟨(ord k s).toNat, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h3 : (x : k) - 1 ∈ cball s` using `hx.2.trans (show _ ≤ valuation k (s : k) by rw [← hp, valuation_le_iff_ord]; omega)`.
+
+Establish `h4 : x ∈ Units.val ⁻¹' V` using `by simpa using hs h3`. Rewrite `h4` using `[hV']`. Conclude with `h4`. Use `⟨Nat.find h, Nat.find_spec h, fun b hb => ?_⟩` and prove the remaining obligations. Use `Nat.find_min h hb` as an intermediate fact.
+
+Use `push Not at this`. Conclude with `this`.
+-/
 theorem exists_hasExponent {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) : ∃ a, HasExponent χ a := by
   classical
   have h : ∃ a, ∀ x ∈ unitFilt k a, χ x = 1 := by
@@ -65,6 +91,15 @@ theorem exists_hasExponent {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) : ∃ a
   push Not at this
   exact this
 
+/- English proof (translation)
+Take `⟨d, hd⟩` from `exists_shell c a`. Set `B : AddSubgroup k` to `{ carrier := cball c add_mem' := add_mem_cball zero_mem' := by simp [cball] neg_mem' := neg_mem_cball }`. Establish `: DiscreteTopology (k ⧸ B)` using `QuotientAddGroup.discreteTopology (isOpen_cball c)`. Set `S : Set kˣ` to `{y | ord k y = ord k c - a}`. Set `q : kˣ → k ⧸ B` to `fun y => QuotientAddGroup.mk (y : k)`.
+
+Establish `hq : ∀ y r : kˣ, q r = q y ↔ valuation k ((y : k) - r) ≤ valuation k (c : k)` using `fun y r => by`. Simplify using `only [q]`. Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Both sides reduce to the same expression. Establish `hfin : (q '' S).Finite`.
+
+Use `(((isCompact_cball d).image QuotientAddGroup.continuous_mk).finite_of_discrete).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y, (valuation_eq_iff_ord.2 (hy.trans hd.symm)).le, rfl⟩`. Take `⟨T, hTS, hT⟩` from `Set.exists_subset_bijOn S q`. Establish `hTfin : T.Finite` using `Set.Finite.of_finite_image (hT.image_eq ▸ hfin) hT.injOn`.
+
+Use `⟨hTfin.toFinset, fun r hr => hTS (by simpa using hr), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hry⟩` from `hT.surjOn ⟨y, hy, rfl⟩`. Use `⟨r, ⟨by simpa using hr, (hq y r).1 hry⟩, fun r' hr' => ?_⟩` and prove the remaining obligations. Conclude with `hT.injOn (by simpa using hr'.1) hr (((hq y r').2 hr'.2).trans hry.symm)`.
+-/
 theorem exists_isShellReps (c : kˣ) (a : ℕ) : ∃ R, IsShellReps c a R := by
   classical
   obtain ⟨d, hd⟩ := exists_shell c a
@@ -90,6 +125,11 @@ theorem exists_isShellReps (c : kˣ) (a : ℕ) : ∃ R, IsShellReps c a R := by
   refine ⟨r, ⟨by simpa using hr, (hq y r).1 hry⟩, fun r' hr' => ?_⟩
   exact hT.injOn (by simpa using hr'.1) hr (((hq y r').2 hr'.2).trans hry.symm)
 
+/- English proof (translation)
+Use `choose i hi hi' using fun r hr => h'.2 r (h.1 r hr)`. Use `Finset.sum_bij i (fun r hr => (hi r hr).1) (fun r₁ h₁ r₂ h₂ e => ?_) (fun r' hr' => ?_) (fun r hr => hg _ _ (h.1 r hr) (h'.1 _ (hi r hr).1) (hi r hr).2)` and prove the remaining obligations. Use `(h.2 _ (h'.1 _ (hi r₁ h₁).1)).unique ⟨h₁, ?_⟩ ⟨h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `(hi r₁ h₁).2`.
+
+Rewrite using `[Valuation.map_sub_swap, e]`. Conclude with `(hi r₂ h₂).2`. Take `⟨r, hr, -⟩` from `h.2 r' (h'.1 r' hr')`. Conclude with `⟨r, hr.1, (hi' r hr.1 r' ⟨hr', by rw [Valuation.map_sub_swap]; exact hr.2⟩).symm⟩`.
+-/
 theorem IsShellReps.sum_eq {c : kˣ} {a : ℕ} {R R' : Finset kˣ} (h : IsShellReps c a R) (h' : IsShellReps c a R')
     {g : kˣ → ℂ} (hg : ∀ y r : kˣ, ord k y = ord k c - a → ord k r = ord k c - a →
       valuation k ((y : k) - r) ≤ valuation k (c : k) → g y = g r) :
@@ -105,6 +145,15 @@ theorem IsShellReps.sum_eq {c : kˣ} {a : ℕ} {R R' : Finset kˣ} (h : IsShellR
 
 open Classical in
 
+/- English proof (translation)
+Establish `h0` using `ord_eq_zero hu`. Use `⟨fun r hr => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hr`. Rewrite using `[ord_mul, h0, zero_add, h.1 s hs]`. Establish `h1 : ord k (u⁻¹ * y) = ord k c - a`.
+
+Use `ord_mul k u (u⁻¹ * y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : ∀ r : kˣ, valuation k ((y : k) - (u * r : kˣ)) = valuation k (((u⁻¹ * y : kˣ) : k) - r)` using `fun r => by`. Establish `: (y : k) - (u * r : kˣ) = u * (((u⁻¹ * y : kˣ) : k) - r)` using `by simp [mul_sub]`.
+
+Rewrite using `[this, map_mul, hu, one_mul]`. Take `⟨r, hr, hr'⟩` from `h.2 _ h1`. Use `⟨u * r, ⟨Finset.mem_image_of_mem _ hr.1, (h2 r).trans_le hr.2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨hm, hv⟩`. Take `⟨r', hm', rfl⟩` from `Finset.mem_image.1 hm`.
+
+Rewrite using `[hr' r' ⟨hm', (h2 r').symm.trans_le hv⟩]`.
+-/
 theorem IsShellReps.image_mul {c : kˣ} {a : ℕ} {R : Finset kˣ} (h : IsShellReps c a R) {u : kˣ}
     (hu : valuation k (u : k) = 1) : IsShellReps c a (R.image (u * ·)) := by
   have h0 := ord_eq_zero hu
@@ -126,11 +175,21 @@ theorem IsShellReps.image_mul {c : kˣ} {a : ℕ} {R : Finset kˣ} (h : IsShellR
 
 variable {ψ : AddChar k Circle} {χ : kˣ →* ℂˣ} {c : kˣ} {a : ℕ} {R R' : Finset kˣ}
 
+/- English proof (translation)
+Establish `: y = z + (y - z)` using `by ring`. Rewrite using `[this, AddChar.map_add_eq_mul, hψ.eq_one h, mul_one]`.
+-/
 theorem addChar_eq_of_sub (hψ : HasConductor ψ c) {y z : k} (h : valuation k (y - z) ≤ valuation k (c : k)) :
     ψ y = ψ z := by
   have : y = z + (y - z) := by ring
   rw [this, AddChar.map_add_eq_mul, hψ.eq_one h, mul_one]
 
+/- English proof (translation)
+Establish `h1 : ψ (x * y) = ψ (x * r)` using `addChar_eq_of_sub hψ (by`. Rewrite using `[← mul_sub, map_mul]`. Conclude with `(mul_le_mul' hx h).trans_eq (one_mul _))`. Establish `hr0 : 0 < valuation k (r : k)` using `by simp [zero_lt_iff]`. Establish `h2 : χ (y * r⁻¹) = 1` using `hχ.1 _ ⟨by`.
+
+Rewrite using `[Units.val_mul, map_mul, valuation_eq_iff_ord.2 (hy.trans hr.symm), ← map_mul]; simp, by`. Establish `: ((y * r⁻¹ : kˣ) : k) - 1 = ((y : k) - r) * (r : k)⁻¹` using `by simp [sub_mul]`. Rewrite using `[this, map_mul, map_inv₀, mul_inv_le_iff₀ hr0, ← valuation_of_shell hr]`. Conclude with `h⟩`. Rewrite `h2` using `[map_mul, map_inv, mul_inv_eq_one]`.
+
+Rewrite using `[h1, h2]`.
+-/
 theorem gaussTerm_eq (hψ : HasConductor ψ c) (hχ : HasExponent χ a) {x : k} (hx : valuation k x ≤ 1) (y r : kˣ)
     (hy : ord k y = ord k c - a) (hr : ord k r = ord k c - a)
     (h : valuation k ((y : k) - r) ≤ valuation k (c : k)) :
@@ -147,6 +206,9 @@ theorem gaussTerm_eq (hψ : HasConductor ψ c) (hχ : HasExponent χ a) {x : k} 
   rw [map_mul, map_inv, mul_inv_eq_one] at h2
   rw [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[h.sum_eq (h.image_mul hu) (gaussTerm_eq hψ hχ hx), Finset.sum_image (fun _ _ _ _ e => mul_left_cancel e), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, mul_inv, Units.val_mul, mul_assoc, Units.mul_inv_cancel_left]`.
+-/
 theorem gaussSum_mul_unit (hψ : HasConductor ψ c) (hχ : HasExponent χ a) (h : IsShellReps c a R) {x : k}
     (hx : valuation k x ≤ 1) {u : kˣ} (hu : valuation k (u : k) = 1) :
     ∑ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (x * u * r) : ℂ) =
@@ -157,6 +219,13 @@ theorem gaussSum_mul_unit (hψ : HasConductor ψ c) (hχ : HasExponent χ a) (h 
   refine Finset.sum_congr rfl fun r _ => ?_
   simp only [map_mul, mul_inv, Units.val_mul, mul_assoc, Units.mul_inv_cancel_left]
 
+/- English proof (translation)
+Take `⟨u, hu, hu'⟩` from `hχ.2 a (Nat.lt_succ_self a)`. Establish `h1` using `gaussSum_mul_unit hψ hχ h hx.le hu.1`. Establish `h2 : ∀ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (x * u * r) : ℂ) = (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (x * r) : ℂ)`. Introduce `r hr`. Rewrite using `[addChar_eq_of_sub hψ (y := x * u * r) (z := x * r)]`.
+
+Establish `: x * u * r - x * r = ((u : k) - 1) * x * r` using `by ring`. Rewrite using `[this, map_mul, map_mul, valuation_of_shell (h.1 r hr), pow_succ]`. Conclude with `mul_le_mul' (mul_le_mul' hu.2 (le_uniformizer_iff.2 hx)) le_rfl`. Rewrite `h1` using `[Finset.sum_congr rfl h2]`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hu' (Units.ext (by simpa using ((mul_eq_right₀ h0).1 h1.symm)))`.
+-/
 theorem gaussSum_eq_zero (hψ : HasConductor ψ c) (hχ : HasExponent χ (a + 1)) (h : IsShellReps c (a + 1) R) {x : k}
     (hx : valuation k x < 1) : ∑ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (x * r) : ℂ) = 0 := by
   obtain ⟨u, hu, hu'⟩ := hχ.2 a (Nat.lt_succ_self a)
@@ -171,6 +240,21 @@ theorem gaussSum_eq_zero (hψ : HasConductor ψ c) (hχ : HasExponent χ (a + 1)
   by_contra h0
   exact hu' (Units.ext (by simpa using ((mul_eq_right₀ h0).1 h1.symm)))
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : ∀ x : k, valuation k x ≤ 1 → ∑ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (x * r) : ℂ) = 0`. Introduce `x hx`. Break down `hx.lt_or_eq with hx | hx` into its components or cases. Conclude with `gaussSum_eq_zero hψ hχ h hx`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`. Use `gaussSum_mul_unit hψ hχ h (x := 1) (by simp) (u := Units.mk0 x hx0) hx` as an intermediate fact. Simplify using `only [one_mul, Units.val_mk0] at this`.
+
+Rewrite using `[this, h0, mul_zero]`. Set `φ : R → Multiplicative 𝒪[k] →* ℂ` to `fun r => { toFun := fun x => ψ ((x.toAdd : k) * (r.1 : k)) map_one' := by simp map_mul' := fun x y => by simp [add_mul, AddChar.map_add_eq_mul] }`. Establish `hφ : Function.Injective φ`. Introduce `r r' e`. Use `Subtype.ext ((h.2 r (h.1 r r.2)).unique ⟨r.2, by simp⟩ ⟨r'.2, ?_⟩)` and prove the remaining obligations.
+
+Use `(hψ _).1 fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `h2 : (r.1 : k) - r'.1 = 0`. Rewrite `hy` using `[h2, map_zero, le_zero_iff, map_eq_zero]`. Simplify using `[hy]`. Establish `h3 : valuation k (y / ((r.1 : k) - r'.1)) ≤ 1`.
+
+Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ hy zero_le`. Establish `h4 : ψ (y / ((r.1 : k) - r'.1) * r.1) = ψ (y / ((r.1 : k) - r'.1) * r'.1)` using `Circle.ext (DFunLike.congr_fun e (Multiplicative.ofAdd (⟨y / ((r.1 : k) - r'.1), h3⟩ : 𝒪[k])))`. Rewrite using `[← div_mul_cancel₀ y h2, mul_sub, AddChar.map_sub_eq_div, h4, div_self']`. Establish `hli` using `(linearIndependent_monoidHom (Multiplicative 𝒪[k]) ℂ).comp φ hφ`.
+
+Take `⟨d, hd⟩` from `exists_shell c (a + 1)`. Take `⟨r, hr, -⟩` from `h.2 d hd`. Use `Units.ne_zero (χ r)⁻¹ (Fintype.linearIndependent_iff.1 hli (fun r => (((χ r)⁻¹ : ℂˣ) : ℂ)) ?_ ⟨r, hr.1⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← h1 x.toAdd x.toAdd.2, ← Finset.sum_coe_sort R]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gaussSum_ne_zero_of_ramified (hψ : HasConductor ψ c) (hχ : HasExponent χ (a + 1))
     (h : IsShellReps c (a + 1) R) : ∑ r ∈ R, (((χ r)⁻¹ : ℂˣ) : ℂ) * (ψ (r : k) : ℂ) ≠ 0 := by
   intro h0
@@ -208,6 +292,11 @@ theorem gaussSum_ne_zero_of_ramified (hψ : HasConductor ψ c) (hχ : HasExponen
   rw [Finset.sum_apply, Pi.zero_apply, ← h1 x.toAdd x.toAdd.2, ← Finset.sum_coe_sort R]
   rfl
 
+/- English proof (translation)
+Take `⟨c, a, R, hc, ha, hR, rfl⟩` from `h`. Take `⟨c', a', R', hc', ha', hR', rfl⟩` from `h'`. Take `rfl` from `ha.unique ha'`. Establish `h1 : valuation k (c' : k) = valuation k (c : k)` using `le_antisymm ((hc _).1 ((hc' _).2 le_rfl)) ((hc' _).1 ((hc _).2 le_rfl))`. Rewrite `hR'` using `[IsShellReps, valuation_eq_iff_ord.1 h1, h1]`.
+
+Use `hR.sum_eq hR' (gaussTerm_eq hc ha (x := 1) (by simp))` as an intermediate fact. Simplify using `only [one_mul] at this`. Rewrite using `[this]`.
+-/
 theorem IsTateEps.unique {e e' : ℂ} (h : IsTateEps ψ χ e) (h' : IsTateEps ψ χ e') : e = e' := by
   obtain ⟨c, a, R, hc, ha, hR, rfl⟩ := h
   obtain ⟨c', a', R', hc', ha', hR', rfl⟩ := h'
@@ -219,6 +308,11 @@ theorem IsTateEps.unique {e e' : ℂ} (h : IsTateEps ψ χ e) (h' : IsTateEps ψ
   simp only [one_mul] at this
   rw [this]
 
+/- English proof (translation)
+Take `⟨c, a, R, hc, ha, hR, he⟩` from `id h`. Consider the cases of `a with`. Consider the case `zero`. Rewrite using `[h.unique (isTateEps_of_isUnram hc (hasExponent_zero_iff.1 ha))]`. Conclude with `Units.ne_zero _`.
+
+Consider the case `succ a`. Rewrite using `[he]`. Use `mul_ne_zero ?_ (gaussSum_ne_zero_of_ramified hc ha hR)` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff, not_and_or]`. Conclude with `Or.inl (Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne')`.
+-/
 theorem IsTateEps.ne_zero {e : ℂ} (h : IsTateEps ψ χ e) : e ≠ 0 := by
   obtain ⟨c, a, R, hc, ha, hR, he⟩ := id h
   cases a with
@@ -231,6 +325,9 @@ theorem IsTateEps.ne_zero {e : ℂ} (h : IsTateEps ψ χ e) : e ≠ 0 := by
     rw [Ne, Complex.cpow_eq_zero_iff, not_and_or]
     exact Or.inl (Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne')
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Take `⟨a, ha⟩` from `exists_hasExponent hχ`. Take `⟨R, hR⟩` from `exists_isShellReps c a`. Conclude with `⟨existsUnique_of_exists_of_unique ⟨_, c, a, R, hc, ha, hR, rfl⟩ fun _ _ => IsTateEps.unique, fun _ => IsTateEps.ne_zero⟩`.
+-/
 theorem existsUnique_isTateEps (ψ : AddChar k Circle) (hψ : Continuous ψ) (h1 : ψ ≠ 1) (χ : kˣ →* ℂˣ)
     (hχ : IsSmoothChar χ) : (∃! e : ℂ, IsTateEps ψ χ e) ∧ ∀ e : ℂ, IsTateEps ψ χ e → e ≠ 0 := by
   obtain ⟨c, hc⟩ := exists_hasConductor_of_continuous ψ hψ h1

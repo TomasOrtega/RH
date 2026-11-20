@@ -10,6 +10,39 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.BoxTail
 
+/- English proof (translation)
+Introduce `ε hε hε1`. Take `⟨K, hK0, hK⟩` from `tail_contour (ε / 1600) (by positivity) (by linarith)`. Take `⟨CM, hCM0, hCM⟩` from `tail_mertens`. Take `⟨x₀, hx₀3, hnum⟩` from `tail_num ε K hε hε1 hK0`. Use `⟨400 * CM + 1, x₀, ?_⟩` and prove the remaining obligations.
+
+Introduce `x Q N _ χ hx hQlo hQhi hχ hgood`. Take `⟨_, _, hNQ, hbox⟩` from `hgood`. Establish `hx3 : 3 ≤ x` using `le_trans hx₀3 hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`.
+
+Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hlogQ1 : 1 ≤ Real.log Q` using `le_trans (Real.one_le_rpow (by linarith) (by positivity)) hQlo`. Establish `hQ2 : 2 ≤ Q`. Establish `: Real.exp 1 ≤ Q`. Rewrite using `[← Real.exp_log hQ0]`.
+
+Conclude with `Real.exp_le_exp.mpr hlogQ1`. Combine the linear relations using `[Real.exp_one_gt_d9]`. Establish `hnum'` using `hnum x Q hx hQ0 hQlo hQhi`. Use `set z : ℝ := x ^ 400 with hz`. Use `set η : ℝ := 1 / x ^ 2 with hη`.
+
+Establish `hz1 : 1 ≤ z` using `one_le_pow₀ (by linarith)`. Establish `hη0 : 0 < η` using `by positivity`. Establish `hη1 : η ≤ 1`. Rewrite using `[hη, div_le_one (by positivity)]; nlinarith`. Establish `hzη : 0 < z * η` using `by positivity`.
+
+Establish `hC` using `hK N χ Q z η hχ hQ2 hNQ hbox hz1 hη0 hη1`. Establish `hD` using `tail_diff_schi χ z (z * η) hz1 hzη`. Use `set P : ℂ := ∑ n ∈ Icc 1 ⌊z⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod N) / (n : ℂ) with hP`. Establish `htail : Formalism.HermitianLattices.ZeroFreeRegionGL2.tailL χ z = Formalism.ZeroFreeDirichlet.negLD χ 1 - P`. Simplify using `only [Formalism.HermitianLattices.ZeroFreeRegionGL2.tailL, Formalism.HermitianLattices.ZeroFreeRegionGL2.logDerivLAtOne, Formalism.ZeroFreeDirichlet.negLD, hP]`.
+
+Establish `hkey : ((z * η : ℝ) : ℂ) * (Formalism.ZeroFreeDirichlet.negLD χ 1 - P) = -(Formalism.ZeroFreeDirichlet.Schi χ (z + z * η) - Formalism.ZeroFreeDirichlet.Schi χ z - ((z * η : ℝ) : ℂ) * Formalism.ZeroFreeDirichlet.negLD χ 1) + (Formalism.ZeroFreeDirichlet.Schi χ (z + z * η) - Formal …` using `by ring`. Establish `hnorm : ‖Formalism.ZeroFreeDirichlet.negLD χ 1 - P‖ ≤ (K * Real.log Q * (Real.log Q * η * z ^ (1 - 1 / 400 + ε / 1600) + z ^ 2 / Q) + z * η * (z * η + 1) * Real.log (z + z * η) / z) / (z * η)`. Rewrite using `[le_div_iff₀ hzη]`. Establish `h1` using `congrArg norm hkey`. Rewrite `h1` using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hzη.le]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `add_le_add hC hD`. Establish `hfirst : ‖(x : ℂ) * Formalism.HermitianLattices.ZeroFreeRegionGL2.tailL χ z‖ ≤ x ^ ε`.
+
+Rewrite using `[htail, norm_mul, Complex.norm_real, Real.norm_of_nonneg hx0.le]`. Use `le_trans ?_ hnum'` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left hnorm hx0.le`. Use `⟨hfirst, ?_⟩` and prove the remaining obligations. Establish `hz2 : 2 ≤ z`.
+
+Establish `: (3 : ℝ) ≤ z`. Rewrite using `[hz]; calc (3 : ℝ) ≤ x := hx3 _ ≤ x ^ 400 := le_self_pow₀ (by linarith) (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPle : ‖P‖ ≤ CM * Real.log z`. Use `le_trans (norm_sum_le _ _) (le_trans ?_ (hCM z hz2))` and prove the remaining obligations.
+
+Use `Finset.sum_le_sum (fun n hn => ?_)` and prove the remaining obligations. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (Finset.mem_Icc.mp hn).1`. Rewrite using `[norm_div, norm_mul, Complex.norm_real, Complex.norm_natCast, Real.norm_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`. Establish `hχn : ‖χ (n : ZMod N)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`. Establish `hΛ : 0 ≤ (Λ n : ℝ)` using `ArithmeticFunction.vonMangoldt_nonneg`.
+
+Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hlogz : Real.log z = 400 * Real.log x`. Rewrite using `[hz, Real.log_pow]`. Evaluate the numerical expressions.
+
+Establish `htail1 : ‖Formalism.ZeroFreeDirichlet.negLD χ 1 - P‖ ≤ 1`. Establish `h2 : x * ‖Formalism.ZeroFreeDirichlet.negLD χ 1 - P‖ ≤ x ^ ε`. Use `hfirst` as an intermediate fact. Rewrite `this` using `[htail, norm_mul, Complex.norm_real, Real.norm_of_nonneg hx0.le]`. Conclude with `this`.
+
+Establish `h3 : x ^ ε ≤ x`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : x * ‖Formalism.ZeroFreeDirichlet.negLD χ 1 - P‖ ≤ x * 1` using `by linarith`. Conclude with `le_of_mul_le_mul_left h4 hx0`. Establish `hlogx : 1 ≤ Real.log x`.
+
+Rewrite using `[Real.le_log_iff_exp_le hx0]`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hLD : Formalism.HermitianLattices.ZeroFreeRegionGL2.logDerivLAtOne χ = -(Formalism.ZeroFreeDirichlet.negLD χ 1)`. Simplify using `only [Formalism.HermitianLattices.ZeroFreeRegionGL2.logDerivLAtOne, Formalism.ZeroFreeDirichlet.negLD, neg_neg]`. Rewrite using `[hLD, norm_neg]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem box_tail_bound : ∀ ε : ℝ, 0 < ε → ε ≤ 1 → ∃ C x₀ : ℝ, Formalism.HermitianLattices.ZeroFreeRegionGL2.BoxTailHyp ε C x₀ := by
   intro ε hε hε1
   obtain ⟨K, hK0, hK⟩ := tail_contour (ε / 1600) (by positivity) (by linarith)

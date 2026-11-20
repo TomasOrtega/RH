@@ -88,17 +88,29 @@ def modelOfEq {N M : ℕ} (h : N = M) (X : GenModel gb N) : GenModel gb M where
     subst h
     exact X.rep S s' o
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc, hN, hS, fun x => ⟨t • x, by simp [add_smul, mul_smul, smul_comm t N x]⟩⟩`.
+-/
 example (N : ℕ) (S : Finset ℕ) (c t : ℕ) (hc : 0 < c) (hN : c.Coprime N) (hS : ∀ q ∈ S, c.Coprime q) :
     IsHeckeIdx (G := G) N S ((c + N * t) • LinearMap.id) c :=
   ⟨hc, hN, hS, fun x => ⟨t • x, by simp [add_smul, mul_smul, smul_comm t N x]⟩⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h.2.2.2 x`. Conclude with `⟨y, by rw [← hy, one_nsmul, add_sub_cancel]⟩`.
+-/
 example (N : ℕ) (S : Finset ℕ) (g : G.La →ₗ[G.O] G.La) (h : IsHeckeIdx N S g 1) (x : G.La) :
     ∃ y, g x = x + N • y := by
   obtain ⟨y, hy⟩ := h.2.2.2 x
   exact ⟨y, by rw [← hy, one_nsmul, add_sub_cancel]⟩
 
+/- English proof (translation)
+Introduce `h` and use `lt_irrefl 0 h.1`.
+-/
 example (N : ℕ) (g : G.La →ₗ[G.O] G.La) : ¬ IsHeckeIdx N ∅ g 0 := fun h => lt_irrefl 0 h.1
 
+/- English proof (translation)
+Unfold `altPoly`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun a ha => ?_` and prove the remaining obligations. Conclude with `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp ha))`.
+-/
 example {N : ℕ} (X : GenModel gb N) (k : ℕ) (S : Finset ℕ) (θ : (G.La →ₗ[G.O] G.La) → ℕ → ℂ) (d : ℕ) :
     (altPoly X k S θ d).natDegree ≤ d := by
   unfold altPoly

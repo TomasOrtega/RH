@@ -15,6 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SpecialPoints
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `hq b`. Take `⟨t, ht⟩` from `hker (x ^ n) (by rw [map_pow, hb])`. Take `⟨s, rfl⟩` from `hT t`. Use `⟨x * (i s)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, inv_pow, ← map_pow, ht, mul_inv_cancel]`.
+
+Rewrite using `[map_mul, map_inv, hqi, inv_one, _root_.mul_one]`.
+-/
 theorem exists_torsion_lift {T M N : Type} [CommGroup T] [CommGroup M] [Group N] (i : T →* M) (q : M →* N) (n : ℕ)
     (hqi : ∀ t, q (i t) = 1) (hker : ∀ x, q x = 1 → ∃ t, i t = x) (hq : Function.Surjective q)
     (hT : ∀ t : T, ∃ s : T, s ^ n = t) (b : N) (hb : b ^ n = 1) : ∃ x, x ^ n = 1 ∧ q x = b := by
@@ -25,6 +30,25 @@ theorem exists_torsion_lift {T M N : Type} [CommGroup T] [CommGroup M] [Group N]
   · rw [mul_pow, inv_pow, ← map_pow, ht, mul_inv_cancel]
   · rw [map_mul, map_inv, hqi, inv_one, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `V _ _ _ D G _ _ _ c K _ _ f hf`. Choose the witnesses or unpack the hypotheses as in `⟨r₀, hr₀⟩ : ∃ r₀ : Sp K ⟶ Sp (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)), r₀ ≫ thick V (IsLocalRing.maximalIdeal V) 0 = spMap f := by`. Establish `h₂ : ∀ a ∈ IsLocalRing.maximalIdeal V ^ (0 + 1), f a = 0` using `fun a ha => by`. Rewrite `ha` using `[zero_add, pow_one]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `ha (hf.map_nonunit a (Ne.isUnit h))`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift _ f h₂)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Use `c.q_hom` as an intermediate fact.
+
+Use `c.i_hom` as an intermediate fact. Use `c.q_surj` as an intermediate fact. Establish `hk` using `c.isKernel`. Set `T : Over (Sp (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1)))` to `Over.mk r₀`. Set `eG` to `TorsionLift.ptsEquiv (thick V (IsLocalRing.maximalIdeal V) 0) G T _ hr₀`.
+
+Set `eB` to `TorsionLift.ptsEquiv (thick V (IsLocalRing.maximalIdeal V) 0) D.P.A T _ hr₀`. Set `q` to `IsMonHom.monoidHom c.q T`. Set `i` to `IsMonHom.monoidHom c.i T`. Set `e` to `splitTorusPointsEquiv _ D.X T`. Establish `hqi : ∀ t, q (i t) = 1` using `fun t => by`.
+
+Express the relevant statement in the definitionally equal form `(t ≫ c.i) ≫ c.q = 1`. Rewrite using `[Category.assoc, hk.w, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression. Establish `hker : ∀ x, q x = 1 → ∃ t, i t = x` using `fun x hx => ⟨hk.lift x (toUnit _) (by rw [show x ≫ c.q = 1 from hx, Hom.one_def]), hk.lift_fst _ _ _⟩`. Establish `hq : Function.Surjective q` using `fun b => by`.
+
+Establish `: LocallyOfFiniteType (c.q.left ≫ (thickObj V (IsLocalRing.maximalIdeal V) 0 D.P.A).hom)`. Rewrite using `[Over.w c.q]`. Conclude with `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom (thick V (IsLocalRing.maximalIdeal V) 0)))`. Establish `: LocallyOfFiniteType c.q.left` using `locallyOfFiniteType_of_comp _ (thickObj V (IsLocalRing.maximalIdeal V) 0 D.P.A).hom`. Take `⟨x, hx⟩` from `GeomSurj.exists_lift_of_surjective c.q.left b.left`.
+
+Conclude with `⟨Over.homMk x (by rw [← Over.w c.q, ← Category.assoc, ← hx]; exact Over.w b), Over.OverMorphism.ext hx.symm⟩`. Use `⟨eB.toMonoidHom.comp (q.comp eG.symm.toMonoidHom), fun x => ?_, fun n hn b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `eG.surjective x`. Use `⟨x.left, (TorsionLift.ptsEquiv_left _ _ _ _ _ x).symm, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (eB (q (eG.symm (eG x)))).left`.
+
+Rewrite using `[eG.symm_apply_apply]`. Conclude with `(Category.assoc _ _ _).symm.trans (TorsionLift.ptsEquiv_left _ _ _ _ _ (q x)).symm`. Take `⟨x, hx, hxb⟩` from `exists_torsion_lift ((i.comp e.symm.toMonoidHom) : (Multiplicative D.X →* Γ(T.left, ⊤)ˣ) →* _) q n (fun t => hqi _) (fun x hx => by`. Take `⟨t, ht⟩` from `hker x hx`. Conclude with `⟨e t, (congrArg i (e.symm_apply_apply t)).trans ht⟩) hq`.
+
+Use the proof step `(TorsLift.exists_pow_eq_hom (M := Γ(T.left, ⊤)ˣ) n (TorsLift.exists_pow_eq_unit K n hn))`. Use the proof step `(eB.symm b) (by rw [← map_pow, hb, map_one])`. Use `⟨eG x, by rw [← map_pow, hx, map_one], ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eB (q (eG.symm (eG x))) = b`. Rewrite using `[eG.symm_apply_apply, hxb, eB.apply_symm_apply]`.
+-/
 theorem exists_projection :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegPre V) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (g : GtCoord (IsLocalRing.maximalIdeal V) D 0 G) (κ : Type) [Field κ] [IsAlgClosed κ] (f : V →+* κ), IsLocalHom f → ∃ π : (Over.mk (spMap f) ⟶ G) →* (Over.mk (spMap f) ⟶ D.P.A), (∀ x, ∃ y : Sp κ ⟶ (thickObj V (IsLocalRing.maximalIdeal V) 0 G).left, y ≫ (fstG (IsLocalRing.maximalIdeal V) 0 G).left = x.left ∧ y ≫ g.pG.left = (π x).left) ∧ ∀ n : ℕ, 1 ≤ n → ∀ b, b ^ n = 1 → ∃ x, x ^ n = 1 ∧ π x = b := by
   intro V _ _ _ D G _ _ _ c K _ _ f hf

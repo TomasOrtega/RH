@@ -21,6 +21,9 @@ def adm (mm : (E →+* ℂ) → Multiset ℂ) (n : ℕ) : Finset ((E →+* ℂ) 
   classical
   exact Fintype.piFinset fun τ => ((mm τ).powerset.filter fun σ => Multiset.card σ = n).toFinset
 
+/- English proof (translation)
+Unfold `adm`. Rewrite using `[Fintype.mem_piFinset]`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Multiset.mem_filter, Multiset.mem_powerset]`.
+-/
 theorem mem_adm {mm : (E →+* ℂ) → Multiset ℂ} {n : ℕ} {σ : (E →+* ℂ) → Multiset ℂ} :
     σ ∈ adm mm n ↔ ∀ τ, σ τ ≤ mm τ ∧ Multiset.card (σ τ) = n := by
   classical
@@ -31,12 +34,23 @@ theorem mem_adm {mm : (E →+* ℂ) → Multiset ℂ} {n : ℕ} {σ : (E →+* �
 
 variable {r s : ℕ} {U : Submodule ℂ (Sm E (r + s))} {c : ℂ} {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)}
 
+/- English proof (translation)
+Introduce `_ hz φ hφ` and use `Zalg_stable (fun X => BlockSlices.LS_stable hU hT (.lie X)) hz φ hφ`.
+-/
 theorem LS_zalg (hU : IsAutSt U) (hT : IsSliceMap U c T) : ∀ z ∈ Zalg E r, ∀ φ ∈ LS U T, z φ ∈ LS U T :=
   fun _ hz φ hφ => Zalg_stable (fun X => BlockSlices.LS_stable hU hT (.lie X)) hz φ hφ
 
+/- English proof (translation)
+Introduce `_ hz φ hφ` and use `Zalg_stable (fun X => BlockSlices.RS_stable hU hT (.lie X)) hz φ hφ`.
+-/
 theorem RS_zalg (hU : IsAutSt U) (hT : IsSliceMap U c T) : ∀ z ∈ Zalg E s, ∀ φ ∈ RS U T, z φ ∈ RS U T :=
   fun _ hz φ hφ => Zalg_stable (fun X => BlockSlices.RS_stable hU hT (.lie X)) hz φ hφ
 
+/- English proof (translation)
+Use `⟨fun τ u => ?_, ?_⟩` and prove the remaining obligations. Establish `hI : ∀ X, ∀ φ ∈ U, lie E (r + s) X φ ∈ U` using `fun X φ hφ => hU.1 (.lie X) φ hφ`. Rewrite using `[← (BlockSlices.zalg_comm hI T hT.equiv (cap_mem_Zalg τ u) ψ hψ).2, (hinf τ).2 u ψ hψ, map_smul]`. Take `⟨n, b, q, hb, hq, he⟩` from `BlockSlices.expand hU hT ψ hψ 1 1`. Use `⟨n, b, q, fun i => ?_, fun i => rsF_sub_RS hψ 1 1 (hq i), fun p => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Submodule.span_le.2 (lsF_sub_LS hψ 1 1)) (hb i)`. Rewrite using `[← he p, BlockSlices.yp_one, mul_one]`.
+-/
 theorem data_one (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) → Multiset ℂ)
     (hinf : ∀ τ, HasInfCharGL U τ (mm τ)) {ψ : Sm E (r + s)} (hψ : ψ ∈ U) :
     (∀ τ u, cap τ u (T ψ) = ((mm τ).map (u + ·)).prod • T ψ) ∧
@@ -50,6 +64,13 @@ theorem data_one (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) �
     · exact (Submodule.span_le.2 (lsF_sub_LS hψ 1 1)) (hb i)
     · rw [← he p, BlockSlices.yp_one, mul_one]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `ℓ ⟨ψ, hψ, k, g, m₂, hℓ⟩`. Take `⟨ψ', hψ', e⟩` from `BlockSlices.base_one hU hT hψ k g`. Take `⟨hcap, n, b, q, hb, hq, hG⟩` from `data_one hU hT mm hinf hψ'`. Take `⟨S, x, hsum, hS⟩` from `decomp_G (T ψ') (hT.unipInv ψ' hψ') mm hmm hcap b q (fun i => BlockSlices.LS_aut hT _ (hb i)) (fun i => BlockSlices.RS_aut hT _ (hq i)) hG`.
+
+Establish `hz` using `zspan_le b hb (LS_zalg hU hT)`. Use `choose θ hθ hθx hθe using fun σ (hσ : σ ∈ S) => (hS σ hσ).2.1 m₂`. Establish `hℓ' : ℓ = ∑ σ ∈ S.attach, θ σ.1 σ.2`. Use `Subtype.ext (funext fun m₁ => ?_)` and prove the remaining obligations. Rewrite using `[hℓ, ← e, hsum, Submodule.coe_sum, Finset.sum_apply, ← Finset.sum_attach S]`.
+
+Conclude with `Finset.sum_congr rfl fun σ _ => hθx σ.1 σ.2 m₁`. Rewrite using `[SetLike.mem_coe, hℓ']`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `hadm : σ.1 ∈ adm mm r` using `mem_adm.2 (hS σ.1 σ.2).1`. Conclude with `Submodule.mem_iSup_of_mem σ.1 (Submodule.mem_iSup_of_mem hadm ⟨hz (hθ σ.1 σ.2), hθe σ.1 σ.2⟩)`.
+-/
 theorem LS_le_iSup (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) → Multiset ℂ) (hmm : ∀ τ, (mm τ).Nodup)
     (hinf : ∀ τ, HasInfCharGL U τ (mm τ)) :
     LS U T ≤ ⨆ σ ∈ adm mm r, Eig (LS U T) σ ((s : ℂ) / 2) := by
@@ -70,6 +91,17 @@ theorem LS_le_iSup (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) 
   have hadm : σ.1 ∈ adm mm r := mem_adm.2 (hS σ.1 σ.2).1
   exact Submodule.mem_iSup_of_mem σ.1 (Submodule.mem_iSup_of_mem hadm ⟨hz (hθ σ.1 σ.2), hθe σ.1 σ.2⟩)
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `ℓ ⟨ψ, hψ, k, g, m₁, hℓ⟩`. Take `⟨ψ', hψ', e⟩` from `BlockSlices.base_one hU hT hψ k g`. Take `⟨hcap, n, b, q, hb, hq, hG⟩` from `data_one hU hT mm hinf hψ'`. Take `⟨S, x, hsum, hS⟩` from `decomp_G (T ψ') (hT.unipInv ψ' hψ') mm hmm hcap b q (fun i => BlockSlices.LS_aut hT _ (hb i)) (fun i => BlockSlices.RS_aut hT _ (hq i)) hG`.
+
+Establish `hz` using `zspan_le q hq (RS_zalg hU hT)`. Use `choose θ hθ hθx hθe using fun σ (hσ : σ ∈ S) => (hS σ hσ).2.2 m₁`. Establish `hℓ' : ℓ = ∑ σ ∈ S.attach, θ σ.1 σ.2`. Use `Subtype.ext (funext fun m₂ => ?_)` and prove the remaining obligations. Rewrite using `[hℓ, ← e, hsum, Submodule.coe_sum, Finset.sum_apply, ← Finset.sum_attach S]`.
+
+Conclude with `Finset.sum_congr rfl fun σ _ => hθx σ.1 σ.2 m₂`. Rewrite using `[SetLike.mem_coe, hℓ']`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `hadm : (fun τ => mm τ - σ.1 τ) ∈ adm mm s` using `mem_adm.2 fun τ => by`. Use `⟨Multiset.sub_le_self _ _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Multiset.card_sub ((hS σ.1 σ.2).1 τ).1, (hinf τ).1, ((hS σ.1 σ.2).1 τ).2]`. Use linear arithmetic over natural numbers and integers. Use `Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem hadm ⟨hz (hθ σ.1 σ.2), fun τ w => ?_⟩)` and prove the remaining obligations. Rewrite using `[hθe σ.1 σ.2 τ w]`. Use `congr 3`.
+
+Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RS_le_iSup (hU : IsAutSt U) (hT : IsSliceMap U c T) (mm : (E →+* ℂ) → Multiset ℂ) (hmm : ∀ τ, (mm τ).Nodup)
     (hinf : ∀ τ, HasInfCharGL U τ (mm τ)) :
     RS U T ≤ ⨆ ρ ∈ adm mm s, Eig (RS U T) ρ (-(r : ℂ) / 2) := by

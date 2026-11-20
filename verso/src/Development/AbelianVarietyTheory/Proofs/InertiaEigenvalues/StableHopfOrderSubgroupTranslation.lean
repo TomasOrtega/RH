@@ -24,6 +24,13 @@ namespace GlobalTheory.RSnm
 open GroundTheory.Automorphic.FourierWhittaker (partialCoeff_self partialCoeff_of_lt stepCoeff
   colGL_eq_blockGL whittaker_eq_partialCoeff continuous_partialCoeff)
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj h`. Take `rfl : j = a` from `by omega`.
+
+Rewrite using `[partialCoeff_self]`. Consider the case `succ d ih`. Introduce `j hj h`. Establish `hja : j < a` using `by omega`. Rewrite using `[partialCoeff_of_lt _ hja, partialCoeff_of_lt φ (hja.trans_le han)]`.
+
+Unfold `stepCoeff`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[ih (j + 1) (by omega), map_mul, ← colGL_eq_blockGL hja han]`.
+-/
 theorem partialCoeff_partialCoeff_comp_blockGL {E : Type} [Field E] [NumberField E] {a n : ℕ}
     (han : a ≤ n) (φ : GA E n → ℂ) :
     ∀ (d j : ℕ), j + d = a → ∀ h : GA E a,
@@ -44,6 +51,11 @@ theorem partialCoeff_partialCoeff_comp_blockGL {E : Type} [Field E] [NumberField
     funext x
     rw [ih (j + 1) (by omega), map_mul, ← colGL_eq_blockGL hja han]
 
+/- English proof (translation)
+Introduce `E _ _ k m hmk φ hφ h`. Establish `hb : m + 1 ≤ k + 1` using `by omega`. Establish `hQ : Continuous fun h : GA E (m + 1) => partialCoeff φ (m + 1) (blockGL hb h)` using `(continuous_partialCoeff hφ (m + 1)).comp (GlobalTheory.RSnm.continuous_blockGL hb)`. Unfold `GlobalTheory.JSW.whit`. Rewrite using `[whittaker_eq_partialCoeff hQ (Nat.succ_pos m), whittaker_eq_partialCoeff hφ (Nat.succ_pos k)]`.
+
+Conclude with `partialCoeff_partialCoeff_comp_blockGL hb φ m 1 (by omega) h`.
+-/
 theorem whit_partialCoeff_comp_blockGL : ∀ (E : Type) [Field E] [NumberField E] (k m : ℕ) (hmk : m + 1 ≤ k) (φ : GA E (k + 1) → ℂ),
     Continuous φ → ∀ h : GA E (m + 1),
     GlobalTheory.JSW.whit (fun h => partialCoeff φ (m + 1) (blockGL (by omega : m + 1 ≤ k + 1) h)) h =

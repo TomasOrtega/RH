@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : ((m : P.adicCompletion L)) = ((algebraMap (𝓞 L) L (m : 𝓞 L) : L) : P.adicCompletion L)`. Rewrite using `[map_natCast]`. Conclude with `(map_natCast (algebraMap L (P.adicCompletion L)) m).symm`. Rewrite using `[h1, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Use `(P.intValuation_le_pow_iff_mem (m : 𝓞 L) 1).2 (by simpa using hm)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem valued_natCast_le_of_mem_asIdeal {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (m : ℕ)
     (hm : (m : 𝓞 L) ∈ P.asIdeal) : Valued.v ((m : P.adicCompletion L)) ≤ WithZero.exp (-1 : ℤ) := by
   have h1 : ((m : P.adicCompletion L)) = ((algebraMap (𝓞 L) L (m : 𝓞 L) : L) : P.adicCompletion L) := by
@@ -20,6 +25,9 @@ theorem valued_natCast_le_of_mem_asIdeal {L : Type} [Field L] [NumberField L] (P
   have := (P.intValuation_le_pow_iff_mem (m : 𝓞 L) 1).2 (by simpa using hm)
   simpa using this
 
+/- English proof (translation)
+Set `ev : FiniteAdeleRing (𝓞 L) L →+* P.adicCompletion L` to `RestrictedProduct.evalRingHom (fun v : HeightOneSpectrum (𝓞 L) => v.adicCompletion L) P`. Establish `e3 : ev (a - 1) = ev ((m : FiniteAdeleRing (𝓞 L) L) * b)` using `congrArg ev e`. Rewrite `e3` using `[ev.map_sub, ev.map_mul, ev.map_one, map_natCast ev m]`. Conclude with `e3`.
+-/
 theorem finiteAdele_apply_sub_one_of_eq {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (m : ℕ)
     (a b : FiniteAdeleRing (𝓞 L) L) (e : a - 1 = (m : FiniteAdeleRing (𝓞 L) L) * b) :
     a P - 1 = (m : P.adicCompletion L) * b P := by
@@ -29,6 +37,25 @@ theorem finiteAdele_apply_sub_one_of_eq {L : Type} [Field L] [NumberField L] (P 
   rw [ev.map_sub, ev.map_mul, ev.map_one, map_natCast ev m] at e3
   exact e3
 
+/- English proof (translation)
+Introduce `D c χ hc ht m hu x hx ⟨y, hy, hxy⟩`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.T.exists_baseChangeFiniteAdele_ringEquiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.T.heckeChar_eq_prod_localComponents_approximating D ι h1 h2 (GlobalTheory.T.exists_finitePlaceIdempotent_baseChangeAdeles D ι h1 h2 h3) c χ hc`. Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.T.finiteIdele_exists_local_approx' D.host.E N hN (Units.map ((ι : _ →+* _).comp (finPart D)).toMonoidHom x)`. Take `⟨hx1, hx2, hx3⟩` from `hx`.
+
+Establish `hv : ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι (finPart D (x : AE D)) P) = 1`. Introduce `P`. Establish `a` using `(h2 _).1 hx2 P`. Establish `b` using `(h2 _).1 hx3 P`. Establish `e : ι (finPart D (x : AE D)) * ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `e' : Valued.v (ι (finPart D (x : AE D)) P) * Valued.v (ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) P) = 1`. Rewrite using `[← map_mul]`. Establish `: ι (finPart D (x : AE D)) P * ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) P = 1` using `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z P) e`. Rewrite using `[this, map_one]`.
+
+Use `le_antisymm a ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `hprod x hx1 S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `key.trans (Finset.prod_eq_one fun P hP => ?_)` and prove the remaining obligations.
+
+Take `⟨a, -, b⟩` from `hS P hP`. Establish `a' : Valued.v (ι (finPart D (x : AE D)) P) = P.valuation D.host.E (k P : D.host.E)` using `a`. Establish `b' : Valued.v (ι (finPart D (x : AE D)) P - algebraMap D.host.E _ (k P : D.host.E)) ≤ WithZero.exp (-1 : ℤ) * P.valuation D.host.E (k P : D.host.E)` using `b`. Rewrite `a'` using `[hv P]`. Rewrite `b'` using `[← a', mul_one]`.
+
+Establish `hun : IsUnitAt P (atFin P (k P))` using `by show Valued.v (((k P : D.host.E)) : P.adicCompletion D.host.E) = _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← a']`. Establish `: χ.loc P (atFin P (k P)) = 1`. Distinguish the cases in `hm : (m : 𝓞 D.host.E) ∈ P.asIdeal`. Use `ht P _ hun ?_` and prove the remaining obligations.
+
+Establish `e : ι (finPart D (x : AE D)) - 1 = (m : FiniteAdeleRing (𝓞 D.host.E) D.host.E) * ι y`. Rewrite using `[← map_one ι, ← map_sub, hxy, map_nsmul, nsmul_eq_mul]`. Establish `e2 : ι (finPart D (x : AE D)) P - 1 = (m : P.adicCompletion D.host.E) * ι y P` using `finiteAdele_apply_sub_one_of_eq P m _ _ e`. Establish `c1 : Valued.v (ι (finPart D (x : AE D)) P - 1) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[e2, map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e4 : ((atFin P (k P) : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) - 1 = (ι (finPart D (x : AE D)) P - 1) - (ι (finPart D (x : AE D)) P - algebraMap D.host.E _ (k P : D.host.E))` using `by show algebraMap D.host.E _ (k P : D.host.E) - 1 = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4]`. Conclude with `Valuation.map_sub_le _ c1 b'`.
+
+Conclude with `hu P hm _ hun`. Use `show ((χ.loc P (atFin P (k P)) : ℂˣ) : ℂ) = 1`. Rewrite using `[this, Units.val_one]`.
+-/
 theorem tame_heckeChar_eq_one_of_finUnit : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : HChar D.host.E), ChrEq c χ → (∀ P, χ.TameAt P) → ∀ m : ℕ, (∀ P : HeightOneSpectrum (𝓞 D.host.E), (m : 𝓞 D.host.E) ∉ P.asIdeal → χ.UnrAt P) → ∀ x : (AE D)ˣ, FinUnit x → (∃ y ∈ intAE D, finPart D (x : AE D) - 1 = m • y) → c x = 1 := by
   intro D c χ hc ht m hu x hx ⟨y, hy, hxy⟩
   obtain ⟨ι, h1, h2, h3⟩ := GlobalTheory.T.exists_baseChangeFiniteAdele_ringEquiv D

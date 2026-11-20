@@ -15,14 +15,25 @@ variable {X : Scheme.{u}}
 def annihilatorIdeal (F : X.Modules) (U : X.Opens) : Ideal Γ(X, U) :=
   Module.annihilator Γ(X, U) Γ(F, U)
 
+/- English proof (translation)
+The claim follows from `Module.mem_annihilator`.
+-/
 lemma mem_annihilatorIdeal {F : X.Modules} {U : X.Opens} {a : Γ(X, U)} :
     a ∈ annihilatorIdeal F U ↔ ∀ m : Γ(F, U), a • m = 0 :=
   Module.mem_annihilator
 
+/- English proof (translation)
+Rewrite using `[← one_smul R m, ← ha.unit.inv_mul, mul_smul, IsUnit.unit_spec, h, smul_zero]`.
+-/
 lemma eq_zero_of_isUnit_smul {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M] {a : R}
     (ha : IsUnit a) {m : M} (h : a • m = 0) : m = 0 := by
   rw [← one_smul R m, ← ha.unit.inv_mul, mul_smul, IsUnit.unit_spec, h, smul_zero]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := Γ(X, U)) (M := Γ(F, U))`. Establish `: ∀ m ∈ s, ∃ e : ℕ, f ^ e • (a • m) = 0` using `fun m _ => qcoh_exists_pow_smul_eq_zero F hU f (a • m) (h m)`. Use `choose! e he using this`. Use `⟨s.sup e, ?_⟩` and prove the remaining obligations. Rewrite using `[annihilatorIdeal, ← Submodule.annihilator_top, ← hs, Submodule.mem_annihilator_span]`.
+
+Introduce and unpack `⟨m, hm⟩`. Establish `hle : e m ≤ s.sup e` using `Finset.le_sup hm`. Express the relevant statement in the definitionally equal form `(f ^ s.sup e * a) • m = 0`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc, mul_smul, mul_smul, he m hm, smul_zero]`.
+-/
 lemma exists_pow_mul_mem_annihilatorIdeal (F : X.Modules) [F.IsQuasicoherent] {U : X.Opens}
     (hU : IsAffineOpen U) [Module.Finite Γ(X, U) Γ(F, U)] (f a : Γ(X, U))
     (h : ∀ m : Γ(F, U), resF F (X.basicOpen_le f) (a • m) = 0) :
@@ -39,6 +50,17 @@ lemma exists_pow_mul_mem_annihilatorIdeal (F : X.Modules) [F.IsQuasicoherent] {U
   change (f ^ s.sup e * a) • m = 0
   rw [← Nat.sub_add_cancel hle, pow_add, mul_assoc, mul_smul, mul_smul, he m hm, smul_zero]
 
+/- English proof (translation)
+Establish `hunit : IsUnit (resO (X.basicOpen_le f) f)` using `X.toRingedSpace.isUnit_res_basicOpen f`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, mem_annihilatorIdeal]`.
+
+Introduce `m`. Take `⟨e, m', hm'⟩` from `qcoh_exists_res_eq F hU f m`. Use `eq_zero_of_isUnit_smul (hunit.pow e) ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_comm, ← smul_smul, ← hm', ← resF_smul, mem_annihilatorIdeal.1 ha m', map_zero]`. Introduce `b hb`.
+
+Rewrite `hb` using `[mem_annihilatorIdeal]`. Use `hU.isLocalization_basicOpen f` as an intermediate fact. Take `⟨⟨a, ⟨_, k, rfl⟩⟩, hab⟩` from `IsLocalization.surj (Submonoid.powers f) b`. Express the relevant statement in the definitionally equal form `b * resO (X.basicOpen_le f) (f ^ k) = resO (X.basicOpen_le f) a at hab`. Take `⟨E, hE⟩` from `exists_pow_mul_mem_annihilatorIdeal F hU f a (fun m => by`.
+
+Rewrite using `[resF_smul, ← hab, mul_smul, hb])`. Establish `hmem : resO (X.basicOpen_le f) (f ^ E * a) ∈ (annihilatorIdeal F U).map (resO (X.basicOpen_le f))` using `Ideal.mem_map_of_mem _ hE`. Establish `hu : IsUnit (resO (X.basicOpen_le f) (f ^ (E + k)))`. Rewrite using `[map_pow]`. Conclude with `hunit.pow _`.
+
+Establish `hb' : b = resO (X.basicOpen_le f) (f ^ E * a) * ↑hu.unit⁻¹`. Rewrite using `[Units.eq_mul_inv_iff_mul_eq, IsUnit.unit_spec, pow_add, map_mul, map_mul, ← hab]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hb']`. Conclude with `Ideal.mul_mem_right _ _ hmem`.
+-/
 theorem map_annihilatorIdeal_basicOpen (F : X.Modules) [F.IsQuasicoherent] {U : X.Opens}
     (hU : IsAffineOpen U) [Module.Finite Γ(X, U) Γ(F, U)] (f : Γ(X, U)) :
     (annihilatorIdeal F U).map (resO (X.basicOpen_le f)) = annihilatorIdeal F (X.basicOpen f) := by
@@ -76,6 +98,15 @@ def annihilatorIdealSheaf (F : X.Modules) (hF : IsCoherent F) : X.IdealSheafData
     have := hF.2 U U.2
     exact map_annihilatorIdeal_basicOpen F U.2 f
 
+/- English proof (translation)
+Introduce `x hx`. Assume the negation of the conclusion as `hxT`. Use `hF.1` as an intermediate fact. Take `⟨_, ⟨U₀, hU₀, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Set `U : X.affineOpens` to `⟨U₀, hU₀⟩`.
+
+Use `hF.2 U U.2` as an intermediate fact. Set `V : X.Opens` to `⟨Tᶜ, hT.isOpen_compl⟩`. Take `⟨f, hfV, hxf⟩` from `U.2.exists_basicOpen_le (V := V) ⟨x, hxT⟩ hxU`. Take `⟨E, hE⟩` from `exists_pow_mul_mem_annihilatorIdeal F U.2 f 1 (fun m => hFT _ (Set.disjoint_left.2 fun y hy hyT => hfV hy hyT) _)`. Rewrite `hE` using `[mul_one]`.
+
+Establish `hE' : f ^ (E + 1) ∈ (annihilatorIdealSheaf F hF).ideal U`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ hE`. Establish `hx' : x ∈ (annihilatorIdealSheaf F hF).support` using `hx`. Rewrite `hx'` using `[Scheme.IdealSheafData.mem_support_iff_of_mem (show x ∈ U.1 from hxU), Scheme.mem_zeroLocus_iff]`.
+
+Conclude with `hx' _ hE' (by rwa [Scheme.basicOpen_pow _ _ (Nat.succ_pos E)])`.
+-/
 theorem support_annihilatorIdealSheaf_subset (F : X.Modules) (hF : IsCoherent F) {T : Set X}
     (hT : IsClosed T) (hFT : Scheme.Modules.SupportedIn F T) :
     ((annihilatorIdealSheaf F hF).support : Set X) ⊆ T := by

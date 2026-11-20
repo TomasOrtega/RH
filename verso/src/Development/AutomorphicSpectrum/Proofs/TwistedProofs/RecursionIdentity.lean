@@ -10,6 +10,13 @@ namespace GlobalTheory.CompanionTheory.InertLevi
 def aTerm (q N : ℕ) (X α : ℂ) (a : ℤ) : ℂ :=
   (q : ℂ) ^ ((2 * N + 2) * a.toNat) * X ^ a.natAbs * (α ^ a * (q : ℂ) ^ (-a * ((N : ℤ) + 1)))
 
+/- English proof (translation)
+Establish `h : (q : ℂ) ^ (-(k : ℤ) * ((N : ℤ) + 1)) = ((q : ℂ) ^ ((N + 1) * k))⁻¹`. Rewrite using `[← zpow_natCast, ← zpow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : (q : ℂ) ^ ((2 * N + 2) * k) = (q : ℂ) ^ ((N + 1) * k) * (q : ℂ) ^ ((N + 1) * k)`. Rewrite using `[← pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (q : ℂ) ^ ((N + 1) * k) ≠ 0` using `pow_ne_zero _ hq`.
+
+Rewrite using `[aTerm, h, Int.toNat_natCast, Int.natAbs_natCast, zpow_natCast, h2, mul_pow, mul_pow, ← pow_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem aTerm_nat {q N : ℕ} {X α : ℂ} (hq : (q : ℂ) ≠ 0) (k : ℕ) :
     aTerm q N X α (k : ℤ) = ((q : ℂ) ^ (N + 1) * X * α) ^ k := by
   have h : (q : ℂ) ^ (-(k : ℤ) * ((N : ℤ) + 1)) = ((q : ℂ) ^ ((N + 1) * k))⁻¹ := by
@@ -25,6 +32,13 @@ theorem aTerm_nat {q N : ℕ} {X α : ℂ} (hq : (q : ℂ) ≠ 0) (k : ℕ) :
   rw [aTerm, h, Int.toNat_natCast, Int.natAbs_natCast, zpow_natCast, h2, mul_pow, mul_pow, ← pow_mul]
   field_simp
 
+/- English proof (translation)
+Establish `h : (q : ℂ) ^ (-(-((k : ℤ) + 1)) * ((N : ℤ) + 1)) = (q : ℂ) ^ ((N + 1) * (k + 1))`. Rewrite using `[← zpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1 : (-((k : ℤ) + 1)).toNat = 0` using `by omega`. Establish `h2 : (-((k : ℤ) + 1)).natAbs = k + 1` using `by omega`. Establish `h3 : α ^ (-((k : ℤ) + 1)) = (α ^ (k + 1))⁻¹`. Rewrite using `[zpow_neg]`. Use `norm_cast`.
+
+Rewrite using `[aTerm, h, h1, h2, h3, ← pow_succ', div_pow, mul_pow, ← pow_mul]`. Simplify using `only [mul_zero, pow_zero, one_mul, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aTerm_neg {q N : ℕ} {X α : ℂ} (k : ℕ) :
     aTerm q N X α (-((k : ℤ) + 1)) = ((q : ℂ) ^ (N + 1) * X / α) * ((q : ℂ) ^ (N + 1) * X / α) ^ k := by
   have h : (q : ℂ) ^ (-(-((k : ℤ) + 1)) * ((N : ℤ) + 1)) = (q : ℂ) ^ ((N + 1) * (k + 1)) := by
@@ -41,6 +55,9 @@ theorem aTerm_neg {q N : ℕ} {X α : ℂ} (k : ℕ) :
   simp only [mul_zero, pow_zero, one_mul, div_eq_mul_inv]
   ring
 
+/- English proof (translation)
+Use `HasSum.of_nat_of_neg_add_one ?_ ?_` and prove the remaining obligations. Simplify using `only [aTerm_nat hq]`. Conclude with `hasSum_geometric_of_norm_lt_one h1`. Simplify using `only [aTerm_neg]`. Conclude with `(hasSum_geometric_of_norm_lt_one h2).mul_left _`.
+-/
 theorem hasSum_aTerm {q N : ℕ} {X α : ℂ} (hq : (q : ℂ) ≠ 0) (h1 : ‖(q : ℂ) ^ (N + 1) * X * α‖ < 1)
     (h2 : ‖(q : ℂ) ^ (N + 1) * X / α‖ < 1) :
     HasSum (aTerm q N X α) ((1 - (q : ℂ) ^ (N + 1) * X * α)⁻¹ +
@@ -51,6 +68,41 @@ theorem hasSum_aTerm {q N : ℕ} {X α : ℂ} (hq : (q : ℂ) ≠ 0) (h1 : ‖(q
   · simp only [aTerm_neg]
     exact (hasSum_geometric_of_norm_lt_one h2).mul_left _
 
+/- English proof (translation)
+Introduce `Y C q N ℓ l φ₀ α X y Z hq hα hy hy1 hya hyb H hZ`. Establish `hq0 : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hy' : ‖(q : ℂ) ^ (N + 1) * X‖ < 1` using `hy ▸ hy1`. Establish `h1 : ‖y * α‖ < 1` using `by rwa [norm_mul]`. Establish `h2 : ‖y / α‖ < 1` using `by rwa [norm_div, div_eq_mul_inv]`.
+
+Establish `hA` using `hasSum_aTerm (N := N) (X := X) (α := α) hq0 (hy ▸ h1) (hy ▸ h2)`. Rewrite `hA` using `[← hy]`. Use `set A := aTerm q N X α with hAdef`. Use `set B : Y → ℂ := fun b => ((q : ℂ) ^ 2 * X) ^ l b * φ₀ b with hBdef`. Use `set w : ℤ × Y → ℂ := fun p => α ^ p.1 * (q : ℂ) ^ (-p.1 * ((N : ℤ) + 1)) * φ₀ p.2 with hw`.
+
+Use `set f : (ℤ × Y) × C → ℂ := fun p => X ^ ℓ p.1.1 p.1.2 p.2 * (α ^ p.1.1 * (q : ℂ) ^ (-p.1.1 * ((N : ℤ) + 1)) * φ₀ p.1.2) with hf`. Establish `hAn : Summable fun a => ‖A a‖` using `hA.summable.norm`. Establish `hBn : Summable fun b => ‖B b‖` using `hZ.summable.norm`. Establish `hABn : Summable fun p : ℤ × Y => ‖A p.1‖ * ‖B p.2‖` using `hAn.mul_of_nonneg hBn (fun _ => norm_nonneg _) (fun _ => norm_nonneg _)`. Establish `hAB : Summable fun p : ℤ × Y => A p.1 * B p.2` using `Summable.of_norm (by simpa only [norm_mul] using hABn)`.
+
+Establish `key : ∀ (X' : ℂ) (p : ℤ × Y), (q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * X' ^ (p.1.natAbs + l p.2) * (α ^ p.1 * (q : ℂ) ^ (-p.1 * ((N : ℤ) + 1)) * φ₀ p.2) = aTerm q N X' α p.1 * (((q : ℂ) ^ 2 * X') ^ l p.2 * φ₀ p.2)`. Introduce `X' p`. Rewrite using `[aTerm]`. Generalize the expression as in `α ^ p.1 * (q : ℂ) ^ (-p.1 * ((N : ℤ) + 1)) = t`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hin : ∀ p : ℤ × Y, HasSum (fun c => f (p, c)) (jFac q N X * (A p.1 * B p.2))`. Introduce `p`. Use `(H X hy' p.1 p.2).mul_right (w p)` as an intermediate fact. Establish `e : (q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * X ^ (p.1.natAbs + l p.2) * w p = A p.1 * B p.2` using `key X p`. Establish `e' : jFac q N X * (A p.1 * B p.2) = (q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * X ^ (p.1.natAbs + l p.2) * jFac q N X * w p`.
+
+Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Conclude with `this`. Establish `hX' : ‖(q : ℂ) ^ (N + 1) * ((‖X‖ : ℝ) : ℂ)‖ < 1`.
+
+Simplify `hy'` using `only [norm_mul, Complex.norm_real, norm_norm]`. Establish `hR : ∀ p : ℤ × Y, ∃ v : ℝ, HasSum (fun c => ‖f (p, c)‖) v ∧ v ≤ ‖jFac q N (‖X‖ : ℝ)‖ * (‖A p.1‖ * ‖B p.2‖)`. Introduce `p`. Establish `h3` using `Complex.hasSum_re (H _ hX' p.1 p.2)`. Establish `h4` using `h3.mul_right ‖w p‖`.
+
+Use `⟨((q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * ((‖X‖ : ℝ) : ℂ) ^ (p.1.natAbs + l p.2) * jFac q N (‖X‖ : ℝ)).re * ‖w p‖, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (fun c => ‖f (p, c)‖) = fun c => (((‖X‖ : ℝ) : ℂ) ^ ℓ p.1 p.2 c).re * ‖w p‖` using `funext fun c => by`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`. Express the relevant statement in the definitionally equal form `‖X ^ ℓ p.1 p.2 c * w p‖ = _`. Rewrite using `[norm_mul, norm_pow]`.
+
+Rewrite using `[e]`. Conclude with `h4`. Establish `e : ‖(q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * X ^ (p.1.natAbs + l p.2)‖ * ‖w p‖ = ‖A p.1‖ * ‖B p.2‖`. Rewrite using `[← norm_mul, ← norm_mul]`. Conclude with `congrArg norm (key X p)`.
+
+Establish `e2 : ‖(q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * ((‖X‖ : ℝ) : ℂ) ^ (p.1.natAbs + l p.2) * jFac q N (‖X‖ : ℝ)‖ = ‖(q : ℂ) ^ (2 * l p.2 + (2 * N + 2) * p.1.toNat) * X ^ (p.1.natAbs + l p.2)‖ * ‖jFac q N (‖X‖ : ℝ)‖`. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, norm_norm]`. Use `(mul_le_mul_of_nonneg_right (Complex.re_le_norm _) (norm_nonneg _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[e2, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `choose v hv1 hv2 using hR`. Establish `hfs : Summable f`. Use `Summable.of_norm ((summable_prod_of_nonneg (fun _ => norm_nonneg _)).2 ⟨fun p => (hv1 p).summable, ?_⟩)` and prove the remaining obligations. Establish `e : (fun p => ∑' c, ‖f (p, c)‖) = v` using `funext fun p => (hv1 p).tsum_eq`. Rewrite using `[e]`.
+
+Conclude with `Summable.of_nonneg_of_le (fun p => (hv1 p).nonneg fun _ => norm_nonneg _) hv2 (hABn.mul_left _)`. Establish `h5` using `hfs.hasSum.prod_fiberwise hin`. Establish `h6` using `(hA.mul hZ hAB).mul_left (jFac q N X)`. Establish `h7` using `h5.unique h6`. Establish `hy2 : 1 - y ^ 2 ≠ 0` using `fun h => by`.
+
+Establish `e : y ^ 2 = 1` using `by linear_combination -h`. Establish `e2 : ‖y‖ ^ 2 = 1` using `by rw [← norm_pow, e, norm_one]`. Establish `: ‖y‖ ^ 2 < 1` using `pow_lt_one₀ (norm_nonneg _) hy1 two_ne_zero`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd1 : 1 - y * α ≠ 0` using `fun h => by`.
+
+Establish `e : y * α = 1` using `by linear_combination -h`. Rewrite `h1` using `[e, norm_one]`. Conclude with `lt_irrefl _ h1`. Establish `hd2 : 1 - y / α ≠ 0` using `fun h => by`. Establish `e : y / α = 1` using `by linear_combination -h`.
+
+Rewrite `h2` using `[e, norm_one]`. Conclude with `lt_irrefl _ h2`. Establish `hval : (1 - X) * (1 + q * X) * ((1 - y * α)⁻¹ * (1 - y / α)⁻¹) * Z = jFac q N X * (((1 - y * α)⁻¹ + y / α * (1 - y / α)⁻¹) * Z)`. Take `⟨t, ht⟩ : ∃ t, t = y / α` from `⟨_, rfl⟩`. Establish `htα : t * α = y` using `by rw [ht]; field_simp`.
+
+Rewrite `hd2`, the goal using `[← ht]`. Establish `e : (1 - y * α)⁻¹ + t * (1 - t)⁻¹ = (1 - y ^ 2) * ((1 - y * α)⁻¹ * (1 - t)⁻¹)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-y) * htα`. Rewrite using `[e, jFac, ← hy]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hval, ← h7]`. Conclude with `hfs.hasSum`.
+-/
 theorem step : Step := by
   intro Y C q N ℓ l φ₀ α X y Z hq hα hy hy1 hya hyb H hZ
   have hq0 : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.2 (by omega)

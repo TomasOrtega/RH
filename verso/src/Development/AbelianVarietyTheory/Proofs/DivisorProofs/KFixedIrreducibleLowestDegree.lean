@@ -28,6 +28,9 @@ namespace GlobalTheory.KFixIrr
 
 open Formalism.BasicNotions.TH
 
+/- English proof (translation)
+Rewrite using `[mem_chiPart]`. Introduce `w X hX`. Rewrite using `[GlobalTheory.TensIrr.atPl_tprod, (mem_chiOne _ _).1 (hg w) X hX, MultilinearMap.map_update_smul, Function.update_eq_self]`.
+-/
 theorem tprod_mem_chiPart {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : ℕ} (x : ι → ℚ)
     (g : ι → Pol P Q R S) (hg : ∀ w, g w ∈ chiOne P Q R S (x w)) :
     PiTensorProduct.tprod ℂ g ∈ chiPart ι P Q R S x := by
@@ -36,6 +39,9 @@ theorem tprod_mem_chiPart {ι : Type} [Fintype ι] [DecidableEq ι] {P Q R S : �
   rw [GlobalTheory.TensIrr.atPl_tprod, (mem_chiOne _ _).1 (hg w) X hX, MultilinearMap.map_update_smul,
     Function.update_eq_self]
 
+/- English proof (translation)
+Use `choose ℓ hℓ using fun i => Module.Projective.exists_dual_eq_one ℂ (hv i)`. Introduce `h`. Use `congrArg (GlobalTheory.TensIrr.prodForm (V := fun _ : ι => V) ℓ) h` as an intermediate fact. Rewrite `this` using `[GlobalTheory.TensIrr.prodForm_tprod, map_zero]`. Simplify using `[hℓ] at this`.
+-/
 theorem tprod_ne_zero' {ι V : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [Module ℂ V] (v : ι → V)
     (hv : ∀ w, v w ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
   choose ℓ hℓ using fun i => Module.Projective.exists_dual_eq_one ℂ (hv i)
@@ -44,6 +50,29 @@ theorem tprod_ne_zero' {ι V : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup
   rw [GlobalTheory.TensIrr.prodForm_tprod, map_zero] at this
   simp [hℓ] at this
 
+/- English proof (translation)
+Introduce `ι _ _ P Q R S x hPR hQS hx m hm N hN hNst`. Use `choose k k' hk hk' ek ek' using hx`. Set `d : ι → ℕ` to `fun w => P * k w + Q * k' w`. Set `H : ι → Submodule ℂ (Pol P Q R S)` to `fun w => lowOne P Q R S (x w) (d w)`. Establish `low : ∀ n (g : ι → Pol P Q R S), (∀ w, g w ∈ chiOne P Q R S (x w)) → ∑ w, (g w).totalDegree ≤ n → PiTensorProduct.tprod ℂ g = 0 ∨ (∑ w, d w ≤ n ∧ (n = ∑ w, d w → ∀ w, g w ∈ H w))`.
+
+Introduce `n g hg hs`. Distinguish the cases in `h0 : ∃ w, g w = 0`. Take `⟨w, hw⟩` from `h0`. Conclude with `Or.inl (MultilinearMap.map_coord_zero _ w hw)`. Use `push_neg at h0`.
+
+Establish `hle : ∀ w, d w ≤ (g w).totalDegree` using `fun w => GlobalTheory.T.character_component_degree_lower_bound P Q R S (x w) (k w) (k' w) (ek w) (ek' w) (g w) (hg w) (h0 w)`. Establish `hsum : ∑ w, d w ≤ ∑ w, (g w).totalDegree` using `Finset.sum_le_sum fun w _ => hle w`. Use `Or.inr ⟨hsum.trans hs, fun hn w => ?_⟩` and prove the remaining obligations. Establish `heq : ∑ w, d w = ∑ w, (g w).totalDegree` using `le_antisymm hsum (hn ▸ hs)`. Use `(Finset.sum_eq_sum_iff_of_le (fun w _ => hle w)).1 heq w (Finset.mem_univ w)` as an intermediate fact.
+
+Conclude with `(mem_lowOne _ _ _).2 ⟨hg w, this.symm.le⟩`. Establish `below : ∀ n < ∑ w, d w, chiPart ι P Q R S x ⊓ degLE ι P Q R S n = ⊥`. Introduce `n hn`. Rewrite using `[eq_bot_iff]`. Introduce `T hT`.
+
+Use `GlobalTheory.T.character_part_tensor_span ι P Q R S x n T hT` as an intermediate fact. Rewrite using `[Submodule.mem_bot]`. Use `(Submodule.span_le.2 ?_ : _ ≤ ⊥) this` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, hs, rfl⟩`. Break down `low n g hg hs with h | h` into its components or cases.
+
+Simplify using `[h]`. Conclude with `absurd h.1 (not_le.2 hn)`. Establish `atD : chiPart ι P Q R S x ⊓ degLE ι P Q R S (∑ w, d w) = tensSpan H`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `T hT`.
+
+Use `(Submodule.span_le.2 ?_) (GlobalTheory.T.character_part_tensor_span ι P Q R S x _ T hT)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, hs, rfl⟩`. Break down `low _ g hg hs with h | h` into its components or cases. Simplify using `[h]`. Conclude with `tprod_mem_tensSpan H g (h.2 rfl)`.
+
+Rewrite using `[tensSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨tprod_mem_chiPart x g fun w => ((mem_lowOne _ _ _).1 (hg w)).1, tprod_mem_degLE g ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun w _ => ((mem_lowOne _ _ _).1 (hg w)).2`. Establish `hne : ∀ w, H w ≠ ⊥` using `fun w => GlobalTheory.T.lowest_degree_component_nonzero P Q R S (x w) (k w) (k' w) hPR hQS (hk w) (hk' w) (ek w) (ek' w)`.
+
+Establish `spanne : tensSpan H ≠ ⊥` using `by choose v hv hv0 using fun w => Submodule.exists_mem_ne_zero_of_ne_bot (hne w)`. Introduce `h`. Use `tprod_mem_tensSpan H v hv` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `tprod_ne_zero' v hv0 this`.
+
+Break down `lt_trichotomy m (∑ w, d w) with hlt | heq | hgt` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Conclude with `hN.trans (below m hlt).le`. Substitute `heq` using the available equality.
+
+Rewrite `hN`, the goal using `[atD]`. Use `haveI : ∀ w, FiniteDimensional ℂ (H w) := fun w => Submodule.finiteDimensional_of_le (inf_le_right : H w ≤ MvPolynomial.restrictTotalDegree (Ln P Q R S) ℂ (d w))`. Conclude with `GlobalTheory.T.irreducible_tensor_invariant_subspace ι (Pol P Q R S) {Z : Mat R S // IsKC Z} (fun _ z => fockAct2 P Q R S z.1) H (fun w => inferInstance) hne (fun w z v hv => GlobalTheory.T.lowest_degree_component_invariant P Q R S (x w) (d w) z.1 z.2 v hv) (fun w N' hN' hst => G …`. Conclude with `absurd (atD ▸ hm _ hgt) spanne`.
+-/
 theorem lowest_irr : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (x : ι → ℚ), P ≤ R → Q ≤ S →
     (∀ w, ∃ k k' : ℕ, 0 < k ∧ 0 < k' ∧ x w - Formalism.BasicNotions.TH.cPair R S = k ∧ x w + Formalism.BasicNotions.TH.cPair R S = k') →
     ∀ m : ℕ, (∀ m' < m, GlobalTheory.KFixIrr.chiPart ι P Q R S x ⊓ GlobalTheory.KFixIrr.degLE ι P Q R S m' = ⊥) →

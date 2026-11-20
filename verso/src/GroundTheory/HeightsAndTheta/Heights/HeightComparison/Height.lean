@@ -26,6 +26,15 @@ def standardPow (m : ι → ℕ) : HermLine n where
 
 end HermLine
 
+/- English proof (translation)
+Establish `hA` using `finite_support_height A x hx`. Establish `hB` using `finite_support_height B x hx`. Establish `hfin : (∑ᶠ v : FinitePlace (coordField x), ∑ k, ((A.mul B).deg k : ℝ) * Real.log (⨆ i, v (coordVec x k i))) = (∑ᶠ v : FinitePlace (coordField x), ∑ k, (A.deg k : ℝ) * Real.log (⨆ i, v (coordVec x k i))) + ∑ᶠ v : FinitePlace (coordField x), ∑ k, (B.deg k : ℝ) * Real.log (⨆ i, v (c …`. Rewrite using `[← finsum_add_distrib hA hB]`. Use `finsum_congr fun v ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Simplify using `only [HermLine.mul, Pi.add_apply, Int.cast_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinf : (∑ σ : coordField x →+* ℂ, Real.log ((A.mul B).metric fun k i ↦ σ (coordVec x k i))) = (∑ σ : coordField x →+* ℂ, Real.log (A.metric fun k i ↦ σ (coordVec x k i))) + ∑ σ : coordField x →+* ℂ, Real.log (B.metric fun k i ↦ σ (coordVec x k i))`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ ↦ ?_` and prove the remaining obligations. Conclude with `Real.log_mul (A.metric_pos _ (blockNonzero_sigma hx σ)).ne' (B.metric_pos _ (blockNonzero_sigma hx σ)).ne'`. Unfold `height`. Rewrite using `[hfin, hinf]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem height_mul (A B : HermLine n) {x : Cone n (AlgebraicClosure ℚ)} (hx : BlockNonzero x) :
     height (A.mul B) x = height A x + height B x := by
   have hA := finite_support_height A x hx
@@ -61,6 +70,19 @@ def HeightAsIntersection.Statement : Prop :=
     BlockNonzero x →
     height A x = II (orbitIdeal x) 1 ![A.toGeo] / Geo.degC (ι := blockIdx n) (orbitIdeal x)
 
+/- English proof (translation)
+Introduce `ι _ _ _ n II hII A x hx`. Take `⟨-, hAdd, hR⟩` from `hII`. Establish `hW : Geo.IsArithVar (ι` using `blockIdx n) (orbitIdeal x) (0 + 1) := h₁ ι n x hx`. Establish `hdeg : (0 : ℝ) < Geo.degC (ι` using `blockIdx n) (orbitIdeal x) := by`. Conclude with `h₂ ι n x hx` after adjusting the coercions.
+
+Take `⟨c, hc⟩` from `exists_chart hx`. Establish `hsnoc : ∀ B : Geo.HermLine (blockIdx n), (Fin.snoc (Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) B : Fin 1 → _) = ![B]`. Introduce `B`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Both sides reduce to the same expression. Establish `hL : ∀ j : Fin 0, Geo.IsSmoothHerm ((Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) j)` using `fun j ↦ j.elim0`. Establish `key : ∀ (B : HermLine n) (d : ι → ℕ), (∀ k, B.deg k = d k) → II (orbitIdeal x) 1 ![B.toGeo] = Geo.degC (ι` using `blockIdx n) (orbitIdeal x) * height B x := by`. Introduce `B d hd`. Establish `h` using `hR (orbitIdeal x) 0 Fin.elim0 B.toGeo (chartMonomial c d) d hW hL B.isSmoothHerm_toGeo hd ((geoMultiHomog_iff _ d).mpr (isWeightedHomogeneous_chartMonomial c d)) (chartMonomial_notMem_orbitIdeal x c hc d)`.
+
+Rewrite `h` using `[hsnoc]`. Conclude with `h.trans (h₃ ι n II B x _ hx (isSectionOn_chartMonomial B x c hc d hd))`. Set `m : ι → ℕ` to `fun k ↦ (A.deg k).natAbs`. Establish `hB` using `key (HermLine.standardPow m) m fun k ↦ rfl`. Establish `hAB` using `key (A.mul (HermLine.standardPow m)) (fun k ↦ (A.deg k + m k).toNat) fun k ↦ by`.
+
+Simplify using `only [HermLine.mul, HermLine.standardPow, Pi.add_apply, m]`. Use linear arithmetic over natural numbers and integers. Establish `hadd` using `hAdd (orbitIdeal x) 0 Fin.elim0 A.toGeo (HermLine.standardPow m).toGeo hW hL A.isSmoothHerm_toGeo (HermLine.standardPow m).isSmoothHerm_toGeo`. Rewrite `hadd` using `[hsnoc, hsnoc, hsnoc, ← HermLine.toGeo_mul]`. Establish `hadd' : II (orbitIdeal x) 1 ![(A.mul (HermLine.standardPow m)).toGeo] = II (orbitIdeal x) 1 ![A.toGeo] + II (orbitIdeal x) 1 ![(HermLine.standardPow m).toGeo]` using `hadd`.
+
+Rewrite `hadd'` using `[hAB, hB, height_mul A _ hx]`. Rewrite using `[eq_div_iff hdeg.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HeightAsIntersection.proof (h₁ : OrbitCurve.Statement) (h₂ : OrbitDegree.Statement)
     (h₃ : HeightRecR.Statement) : HeightAsIntersection.Statement := by
   intro ι _ _ _ n II hII A x hx

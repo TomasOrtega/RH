@@ -15,6 +15,11 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.LB GlobalTheory.CechPic GlobalTheory.TangentOrigin
 open H0
 
+/- English proof (translation)
+Use `Algebra.FormallyUnramified.finite_of_free E A` as an intermediate fact. Establish `: IsReduced A` using `Algebra.FormallyUnramified.isReduced_of_field E A`. Establish `: IsArtinianRing A` using `.of_finite E A`. Use `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.2 fun J hJ => ?_)` and prove the remaining obligations. Establish `hm : J.IsMaximal` using `IsArtinianRing.isMaximal_of_isPrime J`.
+
+Set `` to `Ideal.Quotient.field J`. Set `ψ : (A ⧸ J) →ₐ[E] Ω` to `IsAlgClosed.lift`. Use `h (ψ.comp (Ideal.Quotient.mkₐ E J))` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, map_eq_zero_iff ψ ψ.toRingHom.injective]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`.
+-/
 theorem eq_zero_of_forall_algHom_eq_zero {E A : Type} (Ω : Type) [Field E] [CommRing A]
     [Algebra E A] [Algebra.Etale E A] [Field Ω] [IsAlgClosed Ω] [Algebra E Ω] {a : A}
     (h : ∀ φ : A →ₐ[E] Ω, φ a = 0) : a = 0 := by
@@ -33,6 +38,9 @@ section Points
 
 variable {k R : Type} [CommRing k] [CommRing R] {S : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g => (g ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c)) (Scheme.Hom.appLE_comp_appLE x q ⊤ U ⊤ le_top h)`.
+-/
 theorem evalPt_algX (q : S ⟶ Sp k) (x : Sp R ⟶ S) (U : S.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (c : k) :
     evalPt x U h (algX q U c) =
       evalPt (x ≫ q) ⊤ le_rfl ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c) :=
@@ -40,10 +48,16 @@ theorem evalPt_algX (q : S ⟶ Sp k) (x : Sp R ⟶ S) (U : S.Opens) (h : ⊤ ≤
     ((Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom c))
     (Scheme.Hom.appLE_comp_appLE x q ⊤ U ⊤ le_top h)
 
+/- English proof (translation)
+Rewrite using `[evalPt_algX, hx, evalPt_spMap]`.
+-/
 theorem evalPt_algX_of_eq (q : S ⟶ Sp k) (x : Sp R ⟶ S) {φ : k →+* R} (hx : x ≫ q = spMap φ)
     (U : S.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (c : k) : evalPt x U h (algX q U c) = φ c := by
   rw [evalPt_algX, hx, evalPt_spMap]
 
+/- English proof (translation)
+Rewrite using `[base_smul, val_fun_smul, evalPt_algX_of_eq q x hx]`.
+-/
 theorem H0.val_smul {q : S ⟶ Sp k} {N : LB S} {O : S.Opens} (x : Sp R ⟶ S) {φ : k →+* R}
     (hx : x ≫ q = spMap φ) (i : N.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ N.U i) (c : k)
     (f : H0 q N O) : val x i hO hi (c • f) = φ c * val x i hO hi f := by
@@ -73,12 +87,20 @@ section FiniteEtale
 
 variable {E : Type} [Field E] {S : Scheme.{0}} (q : S ⟶ Sp E)
 
+/- English proof (translation)
+The claim follows from `RingHom.Etale.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of E)).symm.commRingCatIsoToRingEquiv (HasRingHomProperty.appLE @Etale q ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨⊤, isAffineOpen_top _⟩ le_top)`.
+-/
 theorem etale_algX [IsAffine S] [Etale q] : (algX q ⊤).Etale :=
   RingHom.Etale.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of E)).symm.commRingCatIsoToRingEquiv
     (HasRingHomProperty.appLE @Etale q ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨⊤, isAffineOpen_top _⟩ le_top)
 
 variable {N : LB S}
 
+/- English proof (translation)
+Establish `: IsAffine S` using `isAffine_of_isAffineHom q`. Set `` to `(algX q ⊤).toAlgebra`. Establish `: Algebra.Etale E Γ(S, ⊤)` using `etale_algX q`. Use `Algebra.FormallyUnramified.finite_of_free E Γ(S, ⊤)` as an intermediate fact. Establish `: IsArtinianRing Γ(S, ⊤)` using `.of_finite E _`.
+
+Take `⟨t, ht⟩` from `exists_isGen_of_subsingleton_pic_top hN`. Use `⟨H0.ofSec q ⊤ (DVR.genSec t ht), ?_, fun i => (Units.isUnit (t.s i)).map (resG S inf_le_right)⟩` and prove the remaining obligations. Use `isQuasicoherent_toMod hN` as an intermediate fact. Conclude with `(isFrame_iff_bijective (isAffineOpen_top S) _).1 (isFrame_genSec hN ht ⊤)`.
+-/
 theorem exists_generator [IsFinite q] [Etale q] (hN : N.IsLB) : ∃ e : H0 q N ⊤,
     (Function.Bijective fun a : Γ(S, ⊤) => a • e) ∧ ∀ i, IsUnit (e.loc i) := by
   have : IsAffine S := isAffine_of_isAffineHom q
@@ -95,6 +117,9 @@ variable (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra E Ω] [IsFinite q] [Et
 
 omit [IsAlgClosed Ω] in
 
+/- English proof (translation)
+Establish `: IsAffine S` using `isAffine_of_isAffineHom q`. Set `` to `(algX q ⊤).toAlgebra`. Establish `: Algebra.Etale E Γ(S, ⊤)` using `etale_algX q`. Use `Algebra.FormallyUnramified.finite_of_free E Γ(S, ⊤)` as an intermediate fact. Conclude with `Finite.of_equiv _ (ptsOverEquiv q).symm`.
+-/
 theorem finite_ptsOver : Finite (PtsOver Ω q) := by
   have : IsAffine S := isAffine_of_isAffineHom q
   let := (algX q ⊤).toAlgebra
@@ -102,6 +127,11 @@ theorem finite_ptsOver : Finite (PtsOver Ω q) := by
   have := Algebra.FormallyUnramified.finite_of_free E Γ(S, ⊤)
   exact Finite.of_equiv _ (ptsOverEquiv q).symm
 
+/- English proof (translation)
+Establish `: IsAffine S` using `isAffine_of_isAffineHom q`. Set `` to `(algX q ⊤).toAlgebra`. Establish `: Algebra.Etale E Γ(S, ⊤)` using `etale_algX q`. Use `Algebra.FormallyUnramified.finite_of_free E Γ(S, ⊤)` as an intermediate fact. Take `⟨e, he, -⟩` from `exists_generator q hN`.
+
+Set `ψ : Γ(S, ⊤) →ₗ[E] H0 q N ⊤` to `{ toFun a := a • e map_add' a b := add_smul a b e map_smul' c a := mul_smul (algX q ⊤ c) a e }`. Set `φ` to `LinearEquiv.ofBijective ψ he`. Conclude with `⟨.equiv φ, by`. Rewrite using `[← φ.finrank_eq, Nat.card_congr (ptsOverEquiv q), natCard_algHom_eq_finrank_of_etale]⟩`.
+-/
 theorem finite_finrank_lineBundleSections_finiteEtale (hN : N.IsLB) :
     Module.Finite E (H0 q N ⊤) ∧ Module.finrank E (H0 q N ⊤) = Nat.card (PtsOver Ω q) := by
   have : IsAffine S := isAffine_of_isAffineHom q
@@ -119,6 +149,11 @@ theorem finite_finrank_lineBundleSections_finiteEtale (hN : N.IsLB) :
 
 variable {q Ω}
 
+/- English proof (translation)
+Establish `: IsAffine S` using `isAffine_of_isAffineHom q`. Set `` to `(algX q ⊤).toAlgebra`. Establish `: Algebra.Etale E Γ(S, ⊤)` using `etale_algX q`. Take `⟨e, he, hu⟩` from `exists_generator q hN`. Take `⟨a, rfl⟩` from `he.2 g`.
+
+Establish `: a = 0` using `eq_zero_of_forall_algHom_eq_zero (E := E) Ω fun ψ => by`. Take `⟨x, rfl⟩` from `(ptsOverEquiv q).surjective ψ`. Use `(val_fun_smul x.1 (i x) le_top (hi x) a e).symm.trans (h x)` as an intermediate fact. Conclude with `(((hu (i x)).map (evalPt x.1 _ _)).mul_left_eq_zero).1 this`. Simplify using `only [this, zero_smul]`.
+-/
 theorem H0.eq_zero_of_forall_val_eq_zero (hN : N.IsLB) (i : PtsOver Ω q → N.ι)
     (hi : ∀ x : PtsOver Ω q, ⊤ ≤ x.1 ⁻¹ᵁ N.U (i x)) {g : H0 q N ⊤}
     (h : ∀ x : PtsOver Ω q, val x.1 (i x) le_top (hi x) g = 0) : g = 0 := by
@@ -139,11 +174,17 @@ section Subscheme
 
 variable {E : Type} [Field E] {Y : Scheme.{0}} {p : Y ⟶ Sp E} {I : Y.IdealSheafData} {B : LB Y}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_chart hB (x (default : PrimeSpectrum F))`. Conclude with `⟨i, fun z _ => (Subsingleton.elim (α := PrimeSpectrum F) default z) ▸ hi⟩`.
+-/
 theorem exists_chart_of_field {F : Type} [Field F] (hB : B.IsLB) (x : Sp F ⟶ Y) :
     ∃ i, ⊤ ≤ x ⁻¹ᵁ B.U i := by
   obtain ⟨i, hi⟩ := exists_chart hB (x (default : PrimeSpectrum F))
   exact ⟨i, fun z _ => (Subsingleton.elim (α := PrimeSpectrum F) default z) ▸ hi⟩
 
+/- English proof (translation)
+The claim follows from `H0.val_smul x hx _ _ _ c g`.
+-/
 theorem valOn_smul {k R : Type} [CommRing k] [CommRing R] {p : Y ⟶ Sp k}
     (x : Sp R ⟶ I.subscheme) {φ : k →+* R} (hx : x ≫ I.subschemeι ≫ p = spMap φ) (i : B.ι)
     (hi : ⊤ ≤ (x ≫ I.subschemeι) ⁻¹ᵁ B.U i) (c : k) (g : sectionsOnClosedSubscheme p B I) :
@@ -155,15 +196,24 @@ variable [IsFinite (I.subschemeι ≫ p)] [Etale (I.subschemeι ≫ p)] (hB : B.
 
 include hB
 
+/- English proof (translation)
+The claim follows from `(finite_finrank_lineBundleSections_finiteEtale _ (AlgebraicClosure E) (LB.isLB_pull hB _)).1`.
+-/
 theorem finite_H0On : Module.Finite E (sectionsOnClosedSubscheme p B I) :=
   (finite_finrank_lineBundleSections_finiteEtale _ (AlgebraicClosure E) (LB.isLB_pull hB _)).1
 
+/- English proof (translation)
+The claim follows from `(finite_finrank_lineBundleSections_finiteEtale _ Ω (LB.isLB_pull hB _)).2`.
+-/
 theorem finrank_H0On :
     Module.finrank E (sectionsOnClosedSubscheme p B I) = Nat.card (PtsOver Ω (I.subschemeι ≫ p)) :=
   (finite_finrank_lineBundleSections_finiteEtale _ Ω (LB.isLB_pull hB _)).2
 
 variable {Ω} in
 
+/- English proof (translation)
+The claim follows from `H0.eq_zero_of_forall_val_eq_zero (LB.isLB_pull hB _) (fun x _ => i x) _ h`.
+-/
 theorem eq_zero_of_forall_valOn_eq_zero (i : PtsOver Ω (I.subschemeι ≫ p) → B.ι)
     (hi : ∀ x : PtsOver Ω (I.subschemeι ≫ p), ⊤ ≤ (x.1 ≫ I.subschemeι) ⁻¹ᵁ B.U (i x))
     {g : sectionsOnClosedSubscheme p B I} (h : ∀ x : PtsOver Ω (I.subschemeι ≫ p), valOn x.1 (i x) (hi x) g = 0) : g = 0 :=
@@ -171,6 +221,9 @@ theorem eq_zero_of_forall_valOn_eq_zero (i : PtsOver Ω (I.subschemeι ≫ p) �
 
 end Subscheme
 
+/- English proof (translation)
+Use `AffineExample.isIso_of_span (k := ℚ) (D := D) (g := MvPolynomial.X) rfl` as an intermediate fact. Rewrite using `[finrank_H0On AffineExample.isLB_triv ℂ, Nat.card_eq_one_iff_exists]`. Conclude with `⟨⟨spMap (algebraMap ℚ ℂ) ≫ inv _, by simp⟩, fun x => Subtype.ext ((IsIso.eq_comp_inv _).2 x.2)⟩`.
+-/
 example (D : ℕ) : Module.finrank ℚ (sectionsOnClosedSubscheme (CanonLB.affStr ℚ D) (AffineExample.triv ℚ D)
     (AffineExample.ideal MvPolynomial.X)) = 1 := by
   have := AffineExample.isIso_of_span (k := ℚ) (D := D) (g := MvPolynomial.X) rfl

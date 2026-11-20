@@ -55,6 +55,9 @@ def SameAt (R R' : RealDat D A Ks) (t : T) : Prop := ∀ i : Fin D.R.m,
   R'.ωP i t = R.ωP i t ∧ R'.vP i t = R.vP i t ∧ HEq (R'.HV i t) (R.HV i t) ∧ HEq (R'.thF i t) (R.thF i t) ∧
     HEq (R'.thG i t) (R.thG i t) ∧ R'.νV i t = R.νV i t ∧ R'.fdV i t = R.fdV i t
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.lev, h.red_R, h.red_L, h.levels, h.record, ⟨h.fam.tie, h.fam.Sb, h.fam.roots, h.fam.pl_onto, h.fam.degR, h.fam.degL, h.fam.muVal, h.fam.etaVal⟩, h.inf, h.vpos, h.cX, h.cV, h.prX, h.order, h.std⟩`.
+-/
 theorem realDatum_prerequisites_update_models {R : RealDat D A Ks} {F : Face D A} (h : R.Pre0 F)
     (HX HV HE gE jX jV νY fdY ν0 fd0 νX fdX νV fdV ωP vP thF thG) :
     (updM R HX HV HE gE jX jV νY fdY ν0 fd0 νX fdX νV fdV ωP vP thF thG).Pre0 F :=
@@ -79,6 +82,9 @@ def PG (R : RealDat D A Ks) (i : Fin D.R.m) {H : Type} [AddCommGroup H] [Module 
 def IsUpd (R R' : RealDat D A Ks) : Prop := R' = R ∨ ∃ HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV,
   R' = R.upd1 HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV
 
+/- English proof (translation)
+Introduce and unpack `R' HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV (rfl | ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, rfl⟩)`. Conclude with `Or.inr ⟨HX, HV, HE, HW, gE, gW, jX, jV, νY, fdY, ν0, fd0, νX, fdX, νV, fdV, νW, fdW, BV, rfl⟩`. Use `Or.inr ⟨HX, HV, HE, HW, gE, gW, jX, jV, νY, fdY, ν0, fd0, νX, fdX, νV, fdV, νW, fdW, BV, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((Eq.refl (R.upd1 HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV)) :))`.
+-/
 theorem realDatum_isUpdate_first_models (R : RealDat D A Ks) : ∀ R' HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV, IsUpd R R' →
     IsUpd R (R'.upd1 HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV) := by
   rintro R' HX HV HE HW gE gW jX jV νY fdY ν0 fd0 νX fdX νV fdV νW fdW BV
@@ -89,6 +95,11 @@ theorem realDatum_isUpdate_first_models (R : RealDat D A Ks) : ∀ R' HX HV HE H
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `obt ⟨R1, p1, q1⟩ := models_args hI.measFD hI.measDef hI.fund hI.sp hI.lev hI.hc hI.schur hI.pet hI.sm hI.dim hI.act hX (IsUpd R) (realDatum_isUpdate_first_models R) R F h (Or.inl rfl) (hL R h)`. Establish `m` using `p1.2`. Establish `m' : R1.models_HX ∧ R1.models_HV ∧ R1.models_HE ∧ R1.models_gE ∧ R1.models_jX ∧ R1.models_jV ∧ R1.models_νY ∧ R1.models_νY' ∧ R1.models_ν0 ∧ R1.models_νX ∧ R1.models_νV` using `⟨m.HX, m.HV, m.HE, m.gE, m.jX, m.jV, m.νY, m.νY', m.ν0, m.νX, m.νV⟩`. Break down `q1 with rfl | ⟨HX, HV, HE, HW, gE, gW, jX, jV, νY, fdY, ν0, fd0, νX, fdX, νV, fdV, νW, fdW, BV, rfl⟩` into its components or cases. Use `⟨R1.HX, R1.HV, R1.HE, R1.gE, R1.jX, R1.jV, R1.νY, R1.fdY, R1.ν0, R1.fd0, R1.νX, R1.fdX, R1.νV, R1.fdV, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ rfl`. Conclude with `(by with_unfolding_all exact (m' :))`. Use `⟨HX, HV, HE, gE, jX, jV, νY, fdY, ν0, fd0, νX, fdX, νV, fdV, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `(by with_unfolding_all exact (m' :))`.
+-/
 theorem exists_models (hI : Inputs D) (hX : IdemClass A) {F : Face D A} (hL : LiftsAt D A Ks F) (R : RealDat D A Ks) (h : R.Pre0 F) :
     ∃ HX HV HE gE jX jV νY fdY ν0 fd0 νX fdX νV fdV, ∀ R2 : RealDat D A Ks,
       R2 = updM R HX HV HE gE jX jV νY fdY ν0 fd0 νX fdX νV fdV R.ωP R.vP (fun _ _ => 0) (fun _ _ => 0) →
@@ -109,6 +120,13 @@ theorem exists_models (hI : Inputs D) (hX : IdemClass A) {F : Face D A} (hL : Li
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `obt ⟨hsp, hid⟩ := hF R h`. Establish `sdV : IsSelfDualC (Vc D i) (R.ΛV i) ∧ IsFrame (R.βV i) (R.ΛV i)` using `by obt ⟨c, hc⟩ := h.lev.βV i`. Conclude with `⟨hI.selfDual _ _ _ _ hc, hc.1⟩`. Establish `sdW : IsSelfDualC (Wc D i) (R.ΛW i) ∧ IsFrame (R.βW i) (R.ΛW i)` using `by obt ⟨c, hc⟩ := h.lev.βW i`. Conclude with `⟨hI.selfDual _ _ _ _ hc, hc.1⟩`.
+
+Distinguish the cases in `ht : t = A.μ0`. Substitute `ht obt ⟨j, hj⟩ := hMod_lift (hV i).1 (R.B.jL i A.μ0) (fun x => by exact (R.B.L i A.μ0).pres.extMem_holds x)` using the available equality. Establish `l1 : PF R i (R.HV i A.μ0) (R.νV i A.μ0) (R.fdV i A.μ0) (R.ωP i A.μ0) (R.vP i A.μ0) (R.thF i A.μ0)` using `(by with_unfolding_all exact ((hl i).1 :))`. Establish `l2 : PG R i (R.thF i A.μ0) (R.thG i A.μ0)` using `(hl i).2`. Conclude with `⟨R.ωP i _, R.vP i _, R.HV i _, j, R.νV i _, R.fdV i _, R.thF i _, R.thG i _, (hω i).1, (hω i).2.1, (hV i).1, hj, (hV i).2, ⟨fun _ => l1, fun hn => absurd ⟨_, l1⟩ hn⟩, ⟨fun _ => l2, fun hn => absurd ⟨_, l2⟩ hn⟩, fun _ => ⟨rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, rfl, rfl, fun x => hr …`.
+
+Use `obt ⟨ω, hω'⟩ := hI.weil R.ψ (Vc D i) (Wc D i) _ _ h.std ((hsp t).2.2 i).1 ((hsp t).2.2 i).2.1 ((hsp t).2.2 i).2.2.1 ((hsp t).2.2 i).2.2.2 obt ⟨v, hv⟩ := hI.thPVec R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) R.Pg (R.Q t) (R. …`. Conclude with `⟨ω, v, H₀, j₀, ν₀, fd₀, th, g, hω', hv, m1, m2, m3, hth, hg, fun e => absurd e ht⟩`.
+-/
 theorem exists_at (hI : Inputs D) {F : Face D A} (hF : SeedFacts D A Ks F) (R : RealDat D A Ks) (h : R.Pre0 F)
     (hω : WeilAt R A.μ0) (hV : ModVAt R A.μ0) (hl : LiftAt R A.μ0) (hr : RatAt R A.μ0) (i : Fin D.R.m) (t : T)
     (H₀ : HMod (Bridge.Gf (Vc D i) → (R.cV i).W)) (j₀ : A.fam.amb.FL i t →ₛₗ[D.what₂.embLL] H₀.H)
@@ -159,6 +177,25 @@ theorem exists_at (hI : Inputs D) {F : Face D A} (hF : SeedFacts D A Ks F) (R : 
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `obt ⟨HX, HV, HE, gE, jX, jV, νY, fdY, ν0, fd0, νX, fdX, νV, fdV, m⟩ := exists_models hI hX hL R h`. Use `obt ⟨mHX, mHV, mHE, mgE, mjX, mjV, mνY, mνY', mν0, mνX, mνV⟩ := m _ rfl`. Establish `key` using `fun i t => exists_at hI hF R h hω hV hl hr i t (HV i t) (jV i t) (νV i t) (fdV i t) ((by with_unfolding_all exact (mHV i t :))) ((by with_unfolding_all exact (mjV i t :))) ((by with_unfolding_all exact (mνV i t :)))`. Use `choose ωP vP HV' jV' νV' fdV' thF thG k1 k2 k3 k4 k5 k6 k7 k8 using key`. Use `⟨HX, HV', HE, gE, jX, jV', νY, fdY, ν0, fd0, νX, fdX, νV', fdV', ωP, vP, thF, thG, fun R2 e => ?_⟩` and prove the remaining obligations.
+
+Establish `p0 : R2.Pre0 F` using `e ▸ realDatum_prerequisites_update_models h _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _`. Establish `p2 : R2.IsModels`. Substitute `e` using the available equality. Use `⟨p0.inf, p0.vpos, p0.cX, p0.cV, p0.prX, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, p0.order⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (mHX :))`.
+
+Conclude with `(by with_unfolding_all exact (k3 :))`. Conclude with `(by with_unfolding_all exact (mHE :))`. Conclude with `(by with_unfolding_all exact (hW.1 :))`. Use `kexactB mgE`. Conclude with `(by with_unfolding_all exact (hW.2.1 :))`.
+
+Conclude with `(by with_unfolding_all exact (mjX :))`. Conclude with `(by with_unfolding_all exact (k4 :))`. Conclude with `(by with_unfolding_all exact (mνY :))`. Conclude with `(by with_unfolding_all exact (mνY' :))`. Conclude with `(by with_unfolding_all exact (mν0 :))`.
+
+Conclude with `(by with_unfolding_all exact (mνX :))`. Conclude with `(by with_unfolding_all exact (k5 :))`. Conclude with `(by with_unfolding_all exact (hW.2.2.1 :))`. Conclude with `(by with_unfolding_all exact (hW.2.2.2 :))`. Establish `f2 : R2.FullP` using `by subst e; exact (by with_unfolding_all exact (k1 :))`.
+
+Establish `v2 : R2.thP_vP` using `by subst e; exact (by with_unfolding_all exact (k2 :))`. Establish `i0 : ∀ i, IsIoW R2.θ (R2.MW i (sg0 D A)) (R2.cV i) (R2.ωP i A.μ0) (R2.ptP i A.μ0) (RealDat.Delta i) (R2.ioP i)` using `fun i => by`. Establish `e'` using `(hω i).2.2`. Unfold `RealDat.ptP at e'`. Rewrite `e'` using `[← (k8 i _ rfl).1, ← (k8 i _ rfl).2.1]`.
+
+Substitute `e` using the available equality. Conclude with `(by with_unfolding_all exact (e' :))`. Establish `hio : ∀ i, R2.PIoP i (R2.ioP i)` using `fun i => GlobalTheory.IoAllTuples.ioP_of_isIoW_at D G Pl0 T A Ks R2 p0.lev p0.fam p2 (fun i t => (f2 i t).datum) v2 i A.μ0 _ (i0 i)`. Establish `pt` using `(GlobalTheory.JointHarm.exists_ioP D G Pl0 T A Ks R2 p0.lev p0.fam p2 (fun i t => (f2 i t).datum) v2).1`. Establish `a6 : R2.tw_thF` using `by subst e; exact (by with_unfolding_all exact (k6 :))`.
+
+Establish `a7 : R2.tw_thG` using `by subst e; exact (by with_unfolding_all exact (k7 :))`. Use `⟨⟨p0, p2⟩, ⟨fun i t => (f2 i t).datum, v2, pt, fun i => ⟨fun _ => hio i, fun hn => absurd ⟨_, hio i⟩ hn⟩, a6, a7⟩, f2, ?_, ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality. Introduce `i`. Use `obt ⟨b1, b2, b3, b4, b5, b6, b7, -⟩ := k8 i _ rfl`.
+
+Conclude with `⟨b1, b2, b3, b4, b5, b6, b7⟩`. Substitute `e` using the available equality. Introduce `i`. Conclude with `(by with_unfolding_all exact ((k8 i _ rfl).2.2.2.2.2.2.2 :))`.
+-/
 theorem exists_thPW_keep (hI : Inputs D) (hX : IdemClass A) {F : Face D A} (hL : LiftsAt D A Ks F) (hF : SeedFacts D A Ks F)
     (R : RealDat D A Ks) (h : R.Pre0 F) (hW : ModW R) (hω : WeilAt R A.μ0) (hV : ModVAt R A.μ0) (hl : LiftAt R A.μ0)
     (hr : RatAt R A.μ0) :
@@ -213,12 +250,20 @@ theorem exists_thPW_keep (hI : Inputs D) (hX : IdemClass A) {F : Face D A} (hL :
     intro i
     exact (by with_unfolding_all exact ((k8 i _ rfl).2.2.2.2.2.2.2 :))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a.ωP, a.vP, a.pt_theta, a.ioP, a.thF, a.thG⟩`.
+-/
 theorem realDatum_thetaPairWeil_update_third {R : RealDat D A Ks} (a : R.IsThPW) (ωY ωX vac vacX vY vX ItY ItX ioY ioX Th) :
     (R.upd3 ωY ωX vac vacX vY vX ItY ItX ioY ioX Th).IsThPW :=
   ⟨a.ωP, a.vP, a.pt_theta, a.ioP, a.thF, a.thG⟩
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `obt ⟨HX, HV, HE, gE, jX, jV, νY, fdY, ν0, fd0, νX, fdX, νV, fdV, ωP, vP, thF, thG, m⟩ := exists_thPW_keep hI hX hL hF R h hW hω hV hl hr`. Use `obt ⟨p2, t2, f2, s2, r2⟩ := m _ rfl`. Set `Q' : RealDat D A Ks → Prop` to `fun R' => Q R' ∧ R'.IsThPW ∧ R'.FullP ∧ SameAt R R' A.μ0 ∧ ∀ i x, ∃ y, (R'.FW i).j (sg0 D A) y = R'.thG i A.μ0 (R'.jV i A.μ0 x)`. Establish `hQ' : ∀ R' ωY ωX vac vacX vY vX ItY ItX ioY ioX Th, Q' R' → Q' (R'.upd3 ωY ωX vac vacX vY vX ItY ItX ioY ioX Th)` using `fun R' _ _ _ _ _ _ _ _ _ _ _ a => ⟨hQ3 _ _ _ _ _ _ _ _ _ _ _ _ a.1, realDatum_thetaPairWeil_update_third a.2.1 _ _ _ _ _ _ _ _ _ _ _, (by with_unfolding_all exact (a.2.2 :))⟩`. Use `obt ⟨R3, p3, k3', q3⟩ := kerYQ_exists hI hF Q' hQ' _ p2 ⟨hQM _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hq, t2, f2, s2, r2⟩`.
+
+Use `obt ⟨R4, p4, c4, f4, q4⟩ := chainW_exists Q' hQ' R3 p3 k3' q3`. Conclude with `⟨R4, p4, c4, q4.2.1, f4, q4.2.2.1, q4.1, q4.2.2.2⟩`.
+-/
 theorem exists_weak_keep (hI : Inputs D) (hX : IdemClass A) {F : Face D A} (hL : LiftsAt D A Ks F) (hF : SeedFacts D A Ks F)
     (Q : RealDat D A Ks → Prop)
     (hQM : ∀ R HX HV HE gE jX jV νY fdY ν0 fd0 νX fdX νV fdV ωP vP thF thG, Q R →

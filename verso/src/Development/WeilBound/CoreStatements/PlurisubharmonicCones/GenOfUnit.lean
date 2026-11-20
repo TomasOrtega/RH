@@ -11,9 +11,17 @@ namespace LevelTowerAlt
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : Cpt ξ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩`.
+-/
 theorem uMul {a b : Ω} (ha : unitAt ξ p a) (hb : unitAt ξ p b) : unitAt ξ p (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `ha`. Use `⟨zpow_ne_zero n h0, ?_, ?_⟩` and prove the remaining obligations. Break down `n with m | m` into its components or cases. Simplify using `using pow_mem h1 m`. Simplify `pow_mem h2 (m + 1)` using `[zpow_negSucc]`.
+
+Break down `n with m | m` into its components or cases. Simplify using `using pow_mem h2 m`. Simplify `pow_mem h1 (m + 1)` using `[zpow_negSucc]`.
+-/
 theorem uZpow {a : Ω} (ha : unitAt ξ p a) (n : ℤ) : unitAt ξ p (a ^ n) := by
   obtain ⟨h0, h1, h2⟩ := ha
   refine ⟨zpow_ne_zero n h0, ?_, ?_⟩
@@ -24,10 +32,22 @@ theorem uZpow {a : Ω} (ha : unitAt ξ p a) (n : ℤ) : unitAt ξ p (a ^ n) := b
     · simpa using pow_mem h2 m
     · simpa [zpow_negSucc] using pow_mem h1 (m + 1)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Finset.prod_ne_zero_iff.2 fun i _ => (h i).1, prod_mem fun i _ => (h i).2.1, by rw [← Finset.prod_inv_distrib]; exact prod_mem fun i _ => (h i).2.2⟩`.
+-/
 theorem uProd {I : Type} [Fintype I] {f : I → Ω} (h : ∀ i, unitAt ξ p (f i)) : unitAt ξ p (∏ i, f i) :=
   ⟨Finset.prod_ne_zero_iff.2 fun i _ => (h i).1, prod_mem fun i _ => (h i).2.1, by
     rw [← Finset.prod_inv_distrib]; exact prod_mem fun i _ => (h i).2.2⟩
 
+/- English proof (translation)
+Take `⟨hs0, hs⟩` from `hs`. Take `⟨ht0, ht⟩` from `ht`. Establish `h1 : s ∈ Submodule.span (regAt ξ p) {t}`. Rewrite using `[← ht, hs]`. Conclude with `Submodule.mem_span_singleton_self s`.
+
+Establish `h2 : t ∈ Submodule.span (regAt ξ p) {s}`. Rewrite using `[← hs, ht]`. Conclude with `Submodule.mem_span_singleton_self t`. Take `⟨u, hu⟩` from `Submodule.mem_span_singleton.mp h1`. Take `⟨w, hw⟩` from `Submodule.mem_span_singleton.mp h2`.
+
+Use `⟨div_ne_zero hs0 ht0, ?_, ?_⟩` and prove the remaining obligations. Establish `e : s / t = (u : Ω)`. Rewrite using `[← hu, Subring.smul_def, smul_eq_mul, mul_div_assoc, div_self ht0, mul_one]`. Rewrite using `[e]`. Conclude with `u.2`.
+
+Establish `e : (s / t)⁻¹ = (w : Ω)`. Rewrite using `[inv_div, ← hw, Subring.smul_def, smul_eq_mul, mul_div_assoc, div_self hs0, mul_one]`. Rewrite using `[e]`. Conclude with `w.2`.
+-/
 theorem gen_unit {Λ : Lat ξ Ω} {s t : Ω} (hs : Λ.IsGenAt p s) (ht : Λ.IsGenAt p t) : unitAt ξ p (s / t) := by
   obtain ⟨hs0, hs⟩ := hs
   obtain ⟨ht0, ht⟩ := ht
@@ -49,6 +69,13 @@ theorem gen_unit {Λ : Lat ξ Ω} {s t : Ω} (hs : Λ.IsGenAt p s) (ht : Λ.IsGe
     rw [e]
     exact w.2
 
+/- English proof (translation)
+Take `⟨ht0, ht⟩` from `ht`. Take `⟨hu0, hu1, hu2⟩` from `hu`. Establish `hs0 : s ≠ 0`. Introduce `h`. Apply `hu0` to reduce the goal to its premises.
+
+Rewrite using `[h, zero_div]`. Use `⟨hs0, ?_⟩` and prove the remaining obligations. Establish `hunit : IsUnit (⟨s / t, hu1⟩ : regAt ξ p)` using `⟨⟨⟨s / t, hu1⟩, ⟨(s / t)⁻¹, hu2⟩, Subtype.ext (mul_inv_cancel₀ hu0), Subtype.ext (inv_mul_cancel₀ hu0)⟩, rfl⟩`. Establish `hst : (⟨s / t, hu1⟩ : regAt ξ p) • t = s`. Rewrite using `[Subring.smul_def, smul_eq_mul]`.
+
+Conclude with `div_mul_cancel₀ s ht0`. Rewrite using `[ht, ← hst, Submodule.span_singleton_smul_eq hunit]`.
+-/
 theorem gen_of_unit {Λ : Lat ξ Ω} {s t : Ω} (ht : Λ.IsGenAt p t) (hu : unitAt ξ p (s / t)) : Λ.IsGenAt p s := by
   obtain ⟨ht0, ht⟩ := ht
   obtain ⟨hu0, hu1, hu2⟩ := hu
@@ -65,6 +92,23 @@ theorem gen_of_unit {Λ : Lat ξ Ω} {s t : Ω} (ht : Λ.IsGenAt p t) (hu : unit
     exact div_mul_cancel₀ s ht0
   rw [ht, ← hst, Submodule.span_singleton_smul_eq hunit]
 
+/- English proof (translation)
+Take `⟨ht0, htl⟩` from `h`. Establish `hg : ∃ g, Λ.IsGenAt p g`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hmem : t ∈ (Lat.tens (fun _ : Unit => Λ) fun _ => σ) p`.
+
+Rewrite using `[htl]`. Conclude with `Submodule.mem_span_singleton_self t`. Establish `hbot : (Lat.tens (fun _ : Unit => Λ) fun _ => σ) p = ⊥`. Unfold `Lat.tens`. Rewrite using `[Submodule.span_eq_bot]`.
+
+Introduce and unpack `x ⟨s, hs, -⟩`. Conclude with `absurd (hs ()) (hno (s ()))`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `ht0 hmem`. Take `⟨g, hg⟩` from `hg`.
+
+Establish `hg0 : g ≠ 0` using `hg.1`. Establish `hT : (Lat.tens (fun _ : Unit => Λ) fun _ => σ).IsGenAt p (g ^ σ)`. Use `⟨zpow_ne_zero σ hg0, ?_⟩` and prove the remaining obligations. Unfold `Lat.tens`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨s, hs, rfl⟩`. Establish `hu` using `uZpow (gen_unit (hs ()) hg) σ`. Establish `e : ∏ i : Unit, s i ^ σ = (⟨(s () / g) ^ σ, hu.2.1⟩ : regAt ξ p) • g ^ σ`. Rewrite using `[Subring.smul_def, smul_eq_mul, Fintype.prod_unique]`.
+
+Use `show s () ^ σ = (s () / g) ^ σ * g ^ σ`. Rewrite using `[div_zpow, div_mul_cancel₀ _ (zpow_ne_zero σ hg0)]`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+
+Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨fun _ => g, fun _ => hg, by simp⟩`. Establish `hu` using `gen_unit ⟨ht0, htl⟩ hT`. Establish `hu2` using `uZpow hu σ`. Establish `heq : (t / g ^ σ) ^ σ = t ^ σ / g`.
+
+Rewrite using `[div_zpow, ← zpow_mul, hσ, zpow_one]`. Rewrite `hu2` using `[heq]`. Conclude with `gen_of_unit hg hu2`.
+-/
 theorem gen_untens {Λ : Lat ξ Ω} {σ : ℤ} (hσ : σ * σ = 1) {t : Ω}
     (h : (Lat.tens (fun _ : Unit => Λ) fun _ => σ).IsGenAt p t) : Λ.IsGenAt p (t ^ σ) := by
   obtain ⟨ht0, htl⟩ := h
@@ -106,6 +150,9 @@ theorem gen_untens {Λ : Lat ξ Ω} {σ : ℤ} (hσ : σ * σ = 1) {t : Ω}
   rw [heq] at hu2
   exact gen_of_unit hg hu2
 
+/- English proof (translation)
+Use `⟨mul_ne_zero hu h.1, ?_⟩` and prove the remaining obligations. Use `show (Λ p).map _ = _`. Rewrite using `[h.2, Submodule.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem gen_scale {Λ : Lat ξ Ω} {t u : Ω} (hu : u ≠ 0) (h : Λ.IsGenAt p t) : (Λ.scale u).IsGenAt p (u * t) := by
   refine ⟨mul_ne_zero hu h.1, ?_⟩
   show (Λ p).map _ = _
@@ -114,12 +161,20 @@ theorem gen_scale {Λ : Lat ξ Ω} {t u : Ω} (hu : u ≠ 0) (h : Λ.IsGenAt p t
 
 variable {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `h0 : ∏ k, y ⟨k, c k⟩ ≠ 0` using `h.1`. Rewrite `h0` using `[Finset.prod_ne_zero_iff]`. Conclude with `h0 k (Finset.mem_univ k)`.
+-/
 theorem chart_ne {c : (k : K) → J k} (h : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p) (k : K) :
     y ⟨k, c k⟩ ≠ 0 := by
   have h0 : ∏ k, y ⟨k, c k⟩ ≠ 0 := h.1
   rw [Finset.prod_ne_zero_iff] at h0
   exact h0 k (Finset.mem_univ k)
 
+/- English proof (translation)
+Establish `h1` using `h.2 (Function.update c k x)`. Simplify using `only at h1`. Rewrite `h1` using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using `using h1`. Introduce `b _ hb`.
+
+Rewrite using `[Function.update_of_ne hb, div_self (chart_ne h b)]`. Simplify using the standard rewrite rules.
+-/
 theorem chart_ratio {c : (k : K) → J k} (h : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p) (k : K)
     (x : J k) : y ⟨k, x⟩ / y ⟨k, c k⟩ ∈ regAt ξ p := by
   classical
@@ -131,6 +186,9 @@ theorem chart_ratio {c : (k : K) → J k} (h : InChart ξ (fun c' : (k : K) → 
     rw [Function.update_of_ne hb, div_self (chart_ne h b)]
   · simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (chart_ne hc k)) h.1, h.2 p trivial c hc⟩`.
+-/
 theorem deg_gen {Λ : Lat ξ Ω} {a : K → ℤ} {e : Ω} (h : Λ.IsDegOn Set.univ y a e) {c : (k : K) → J k}
     (hc : InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p) :
     Λ.IsGenAt p ((∏ k, y ⟨k, c k⟩ ^ a k) * e) :=
@@ -140,6 +198,9 @@ variable {V : Type} [AddCommGroup V] [Module Ω V] {X' : Scheme.{0}} {Ω' : Type
   {ξ' : Spec (CommRingCat.of Ω') ⟶ X'} {f : X' ⟶ X} {i : Ω →+* Ω'} {V' : Type} [AddCommGroup V'] [Module Ω' V']
   {j : V →+ V'}
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `h`. Use `⟨(map_ne_zero i).mpr h0, hreg a h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv₀]`. Conclude with `hreg _ h2`.
+-/
 theorem uMap {q : Cpt ξ'} (hreg : ∀ a ∈ regAt ξ p, i a ∈ regAt ξ' q) {a : Ω} (h : unitAt ξ p a) :
     unitAt ξ' q (i a) := by
   obtain ⟨h0, h1, h2⟩ := h
@@ -147,6 +208,17 @@ theorem uMap {q : Cpt ξ'} (hreg : ∀ a ∈ regAt ξ p, i a ∈ regAt ξ' q) {a
   rw [← map_inv₀]
   exact hreg _ h2
 
+/- English proof (translation)
+Use `⟨hli, ?_⟩` and prove the remaining obligations. Establish `hL` using `hb.2`. Establish `key' : ∀ e ∈ Submodule.span (regAt ξ ⟨f q.1, h⟩) (Set.range b), j e ∈ Submodule.span (regAt ξ' q) (Set.range fun k => j (b k))`. Introduce `e he`. Proceed by induction on `he using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `e1 : j (a • x) = (⟨i a, hreg a a.2⟩ : regAt ξ' q) • j x` using `hj a x`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h3, e, he, rfl⟩`. Conclude with `key' e (by rw [← hL]; exact he)`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.subset_span ⟨h, b k, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hL]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`.
+-/
 theorem frame_pull {L : Lat ξ V} {r : ℕ} {b : Fin r → V} (hj : ∀ (a : Ω) e, j (a • e) = i a • j e)
     (hli : LinearIndependent Ω' fun k => j (b k)) {q : Cpt ξ'} (h : genPt ξ ⤳ f q.1)
     (hreg : ∀ a ∈ regAt ξ ⟨f q.1, h⟩, i a ∈ regAt ξ' q) (hb : L.IsFrameAt b ⟨f q.1, h⟩) :
@@ -178,11 +250,27 @@ theorem frame_pull {L : Lat ξ V} {r : ℕ} {b : Fin r → V} (hj : ∀ (a : Ω)
     rw [hL]
     exact Submodule.subset_span ⟨k, rfl⟩
 
+/- English proof (translation)
+Use `choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (h k)`. Conclude with `⟨fun k' k => c k k', fun k => (hc k).symm⟩`.
+-/
 theorem exists_mat {r m : ℕ} {b : Fin r → V} {s : Fin m → V} (h : ∀ k, b k ∈ Submodule.span Ω (Set.range s)) :
     ∃ T : Matrix (Fin m) (Fin r) Ω, ∀ k, b k = ∑ k', T k' k • s k' := by
   choose c hc using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (h k)
   exact ⟨fun k' k => c k k', fun k => (hc k).symm⟩
 
+/- English proof (translation)
+Use `⟨(map_ne_zero i).2 h.1, fun q _ c' hc' => ?_⟩` and prove the remaining obligations. Take `⟨hq, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' f i hd q`. Take `⟨c, hc⟩` from `hcov ⟨f q.1, hq⟩`. Use `choose t ht ht' using fun τ => hΛ τ q hq`. Establish `g1` using `uMap hreg (gen_unit (deg_gen h hc) (Flag.tens_gen Λ (fun _ => -1) _ t ht))`.
+
+Establish `g2` using `gen_scale (Finset.prod_ne_zero_iff.2 fun τ _ => hu τ : ∏ τ, u τ ≠ 0) (Flag.tens_gen Λ' (fun _ => -1) q _ ht')`. Establish `g3 : ∀ k, unitAt ξ' q (y' ⟨bk k, c' (bk k)⟩ / i (y ⟨k, c k⟩))` using `fun k => by`. Use `⟨div_ne_zero (chart_ne hc' _) ((map_ne_zero i).2 (chart_ne hc k)), ?_, ?_⟩` and prove the remaining obligations. Use `hreg _ (chart_ratio hc k ((bx k).symm (c' (bk k))))` as an intermediate fact. Rewrite `this` using `[map_div₀, ← hy, Equiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Rewrite using `[inv_div, ← hy]`. Conclude with `chart_ratio hc' _ _`. Establish `g4` using `uMul (uProd fun k => uZpow (g3 k) (a k)) g1`. Establish `e1 : ∏ k', y' ⟨k', c' k'⟩ ^ a' k' = ∏ k, y' ⟨bk k, c' (bk k)⟩ ^ a k`. Use `symm`.
+
+Use `Fintype.prod_of_injective bk hbk _ _ (fun k' hk' => ?_) fun k => by rw [ha]` and prove the remaining obligations. Rewrite using `[ha' k' hk', zpow_zero]`. Establish `e2 : (∏ τ, u τ) * ∏ τ, (u τ * i (t τ)) ^ (-1 : ℤ) = i (∏ τ, t τ ^ (-1 : ℤ))`. Rewrite using `[← Finset.prod_mul_distrib, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Use `hu τ` as an intermediate fact. Rewrite using `[map_zpow₀, zpow_neg_one, zpow_neg_one, mul_inv, mul_inv_cancel_left₀ this]`. Rewrite `g2` using `[e2]`. Use `(gen_of_unit (s := (∏ k', y' ⟨k', c' k'⟩ ^ a' k') * i e₀) g2 ?_).2` and prove the remaining obligations. Use `g4 using 1` and compare the differences between its conclusion and the goal.
+
+Establish `e3 : i (∏ k, y ⟨k, c k⟩ ^ a k) ≠ 0` using `(map_ne_zero i).2 (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (chart_ne hc k))`. Establish `e4 : ∏ k, (y' ⟨bk k, c' (bk k)⟩ / i (y ⟨k, c k⟩)) ^ a k = (∏ k, y' ⟨bk k, c' (bk k)⟩ ^ a k) / i (∏ k, y ⟨k, c k⟩ ^ a k)`. Rewrite using `[map_prod, ← Finset.prod_div_distrib]`. Simplify using `only [div_zpow, map_zpow₀]`. Rewrite using `[e1, e4, map_div₀, map_mul, ← mul_div_assoc, ← _root_.mul_assoc, div_mul_cancel₀ _ e3]`.
+-/
 theorem deg_pull {I : Type} [Fintype I] {Λ : I → Lat ξ Ω} {Λ' : I → Lat ξ' Ω'} {u : I → Ω'} (hu : ∀ τ, u τ ≠ 0)
     (hd : Dominates ξ' ξ f i)
     (hcov : ∀ p : Cpt ξ, ∃ c, InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c p)

@@ -33,8 +33,14 @@ def hermLin (n : ℕ) : Vr n →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ where
 
 def hermL (n : ℕ) : Vr n →L[ℝ] Matrix (Fin n) (Fin n) ℂ := LinearMap.toContinuousLinearMap (hermLin n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermL_apply (x : Vr n) : hermL n x = herm x := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[herm]`.
+-/
 theorem herm_zero : herm (0 : Vr n) = 0 := by
   ext i j; simp [herm]
 
@@ -44,6 +50,15 @@ def v1 (r c : Fin n) : Vr n := fun i j =>
 def v2 (r c : Fin n) : Vr n := fun i j =>
   ((if i = c ∧ j = r then 1 else 0) - (if i = r ∧ j = c then 1 else 0)) / 2
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e1 : (if j = r ∧ i = c then (1:ℝ) else 0) = if i = c ∧ j = r then 1 else 0`. Simplify using `only [and_comm]`. Establish `e2 : (if j = c ∧ i = r then (1:ℝ) else 0) = if i = r ∧ j = c then 1 else 0`. Simplify using `only [and_comm]`.
+
+Establish `e3 : (Matrix.single r c (1:ℂ)) i j = (((if i = r ∧ j = c then (1:ℝ) else 0 : ℝ)) : ℂ)`. Rewrite using `[Matrix.single_apply]`. Distinguish the cases in `h : i = r ∧ j = c`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[e3]`. Simplify using `only [herm, v1, v2, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, e1, e2]`. Generalize the expression as in `(if i = r ∧ j = c then (1:ℝ) else 0) = a`.
+
+Generalize the expression as in `(if i = c ∧ j = r then (1:ℝ) else 0) = b`. Use `push_cast`. Take the linear combination `((b:ℂ) - a) / 2 * Complex.I_sq`.
+-/
 theorem herm_v (r c : Fin n) : herm (v1 r c) + Complex.I • herm (v2 r c) = Matrix.single r c 1 := by
   ext i j
   have e1 : (if j = r ∧ i = c then (1:ℝ) else 0) = if i = c ∧ j = r then 1 else 0 := by

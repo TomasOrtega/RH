@@ -20,6 +20,11 @@ def dM {n : ℕ} (a : Fin n → ℝ) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E) :=
 def nxt {r : ℕ} (t : Fin r → ℝ) (i : Fin r) : ℝ := if h : i.val + 1 < r then t ⟨i.val + 1, h⟩ else 1
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[rE, rE, rE, ← map_mul]`. Use `congr 1`. Use `Prod.ext ?_ (mul_one _).symm` and prove the remaining obligations. Use `show _ = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _`. Rewrite using `[← map_mul, ← map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rE_mul (a b : ℝ) : rE F E (a * b) = rE F E a * rE F E b := by
   rw [rE, rE, rE, ← map_mul]
   congr 1
@@ -29,6 +34,9 @@ theorem rE_mul (a b : ℝ) : rE F E (a * b) = rE F E a * rE F E b := by
   rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[rE, ← map_one (algebraMap (AF F) (AF F ⊗[F] E))]`. Use `congr 1`. Simplify using `only [GlobalTheory.TorusTheta.infScale, map_one]`. Both sides reduce to the same expression.
+-/
 theorem rE_one : rE F E 1 = 1 := by
   rw [rE, ← map_one (algebraMap (AF F) (AF F ⊗[F] E))]
   congr 1

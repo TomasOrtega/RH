@@ -15,11 +15,17 @@ def sc1 {R : Type} [CommRing R] : Rˣ →* GL (Fin 1) R :=
   Units.map (Matrix.scalar (Fin 1) : R →+* Matrix (Fin 1) (Fin 1) R).toMonoidHom
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Use `ext`. Simplify using `[sc1, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]`.
+-/
 theorem det_sc1 {R : Type} [CommRing R] (x : Rˣ) : Matrix.GeneralLinearGroup.det (sc1 x) = x := by
   ext
   simp [sc1, Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_unique]
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Use `ext`. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem map_det_bc {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (γ : GL (Fin 1) R) :
     Units.map f.toMonoidHom (Matrix.GeneralLinearGroup.det γ) = Matrix.GeneralLinearGroup.det (Formalism.UG.bc f γ) := by
   ext
@@ -27,6 +33,37 @@ theorem map_det_bc {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (γ : 
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `hB.cm`. Take `⟨ξ, hξ, hσξ⟩` from `UnitA.exists_xi hc`. Take `⟨S, hS⟩` from `UnitA.exists_S (F := F) ξ`. Use `choose u hu1 hu2 hu3 using UnitA.exists_locUnit hB hξ hσξ`. Set `xv : ∀ v : Pl F, (Fv F v ⊗[F] E)ˣ` to `fun v => ⟨inclR (F := F) (Fv F v) ξ, inclR (F := F) (Fv F v) ξ⁻¹, by rw [← map_mul, mul_inv_cancel₀ hξ, map_one], by rw [← map_mul, inv_mul_cancel₀ hξ, map_one]⟩`.
+
+Set `b : ∀ v : Pl F, GL (Fin 1) (Fv F v ⊗[F] E)` to `fun v => if v ∈ S then sc1 (u v * (xv v)⁻¹) else 1`. Establish `hb : ∀ v ∉ S, b v = 1` using `fun v hv => if_neg hv`. Set `e : ∀ w : InfinitePlace F, w.Completion ⊗[F] E ≃+* ℂ` to `fun w => RingEquiv.ofBijective (infEmb (B.emb w)) (infEmb_bijective hc (B.emb w))`. Establish `hτ : ∀ w : InfinitePlace F, (B.emb w).1 ξ ≠ 0` using `fun w => (map_ne_zero _).2 hξ`. Set `c : ∀ w : InfinitePlace F, GL (Fin 1) (w.Completion ⊗[F] E)` to `fun w => sc1 (Units.map (e w).symm.toMonoidHom (Units.mk0 (Complex.I / (B.emb w).1 ξ) (div_ne_zero Complex.I_ne_zero (hτ w))))`.
+
+Take `⟨γ, hγf, hγi⟩` from `Frames.exists_GL_of_components S b hb c`. Set `X : (AE F E)ˣ` to `⟨inclR (F := F) (AF F) ξ, inclR (F := F) (AF F) ξ⁻¹, by rw [← map_mul, mul_inv_cancel₀ hξ, map_one], by rw [← map_mul, inv_mul_cancel₀ hξ, map_one]⟩`. Set `r : (AE F E)ˣ` to `Matrix.GeneralLinearGroup.det γ * X`. Establish `hf : ∀ v, Units.map (compFin F E v).toMonoidHom r = if v ∈ S then u v else xv v`. Introduce `v`.
+
+Establish `hX : Units.map (compFin F E v).toMonoidHom X = xv v` using `Units.ext (UnitA.compFin_inclR v ξ)`. Rewrite using `[map_mul, map_det_bc, hγf v, hX]`. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [b, if_pos hv, det_sc1, inv_mul_cancel_right]`. Simplify using `only [b, if_neg hv, map_one, one_mul]`.
+
+Establish `hfv : ∀ v, compFin F E v (r : AE F E) = ((if v ∈ S then u v else xv v : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)`. Introduce `v`. Rewrite using `[← hf v]`. Both sides reduce to the same expression. Establish `hfi : ∀ v, compFin F E v ((r⁻¹ : (AE F E)ˣ) : AE F E) = (((if v ∈ S then u v else xv v : (Fv F v ⊗[F] E)ˣ)⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)`.
+
+Introduce `v`. Rewrite using `[← hf v, ← map_inv]`. Both sides reduce to the same expression. Establish `hi : ∀ w, infEmb (B.emb w) (compInf F E w (r : AE F E)) = Complex.I`. Introduce `w`.
+
+Establish `hX : Units.map (compInf F E w).toMonoidHom X = Units.map (inclR (F` using `F) w.Completion).toMonoidHom (Units.mk0 ξ hξ) := Units.ext (UnitA.compInf_inclR w ξ)`. Establish `h1 : Units.map (compInf F E w).toMonoidHom r = Matrix.GeneralLinearGroup.det (c w) * Units.map (inclR (F` using `F) w.Completion).toMonoidHom (Units.mk0 ξ hξ) := by`. Rewrite using `[map_mul, map_det_bc, hγi w, hX]`. Establish `h2 : compInf F E w (r : AE F E) = (e w).symm (Complex.I / (B.emb w).1 ξ) * inclR (F` using `F) w.Completion ξ := by`. Use `congrArg Units.val h1` as an intermediate fact.
+
+Simplify `this` using `[c, det_sc1]`. Rewrite using `[h2, map_mul]`. Establish `h3 : infEmb (B.emb w) ((e w).symm (Complex.I / (B.emb w).1 ξ)) = Complex.I / (B.emb w).1 ξ` using `(e w).apply_symm_apply _`. Establish `h4 : infEmb (B.emb w) (inclR (F` using `F) w.Completion ξ) = (B.emb w).1 ξ := by`. Express the relevant statement in the definitionally equal form `infEmb (B.emb w) ((1 : w.Completion) ⊗ₜ[F] ξ) = _`.
+
+Rewrite using `[infEmb_tmul, map_one, one_mul]`. Rewrite using `[h3, h4, div_mul_cancel₀ _ (hτ w)]`. Use `⟨r, ?_, fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `key : -(cA σ (r : AE F E) * ((r⁻¹ : (AE F E)ˣ) : AE F E)) = 1`. Use `GlobalTheory.AdelicU.Supp.adTens_eq_one' (fun w => ?_) (fun v => ?_)` and prove the remaining obligations.
+
+Establish `hz : sigR w.Completion σ (compInf F E w (r : AE F E)) = -compInf F E w (r : AE F E)`. Apply `(e w).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `infEmb (B.emb w) _ = infEmb (B.emb w) _`. Rewrite using `[← infEmb_sigR hc, hi w, map_neg, hi w, Complex.conj_I]`. Establish `hu : compInf F E w (r : AE F E) * compInf F E w ((r⁻¹ : (AE F E)ˣ) : AE F E) = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_neg, map_mul, UnitA.compInf_cA, hz, neg_mul, neg_neg, hu]`. Establish `hz : sigR (Fv F v) σ (compFin F E v (r : AE F E)) = -compFin F E v (r : AE F E)`. Rewrite using `[hfv v]`. Distinguish the cases in `hv : v ∈ S`.
+
+Simplify using `only [if_pos hv]`. Conclude with `hu3 v`. Simplify using `only [if_neg hv, xv]`. Rewrite using `[UnitA.sigR_inclR, hσξ, map_neg]`. Establish `hu : compFin F E v (r : AE F E) * compFin F E v ((r⁻¹ : (AE F E)ˣ) : AE F E) = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[map_neg, map_mul, UnitA.compFin_cA, hz, neg_mul, neg_neg, hu]`. Establish `: cA σ (r : AE F E) * ((r⁻¹ : (AE F E)ˣ) : AE F E) = -1`. Rewrite using `[← neg_neg (cA σ (r : AE F E) * _), key]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, Units.inv_mul, mul_one]`. Use `_ = -(r : AE F E) := by rw [this, neg_one_mul]`. Rewrite using `[hfv v, hfi v]`. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [if_pos hv]`.
+
+Conclude with `⟨hu1 v, hu2 v⟩`. Simplify using `only [if_neg hv]`. Conclude with `hS v hv`. Express the relevant statement in the definitionally equal form `‖infEmb (B.emb w) (compInf F E w (r : AE F E))‖ = 1`. Rewrite using `[hi w, Complex.norm_I]`.
+-/
 theorem exists_skewUnit {B : Base F E} (hB : B.IsGood σ) :
     ∃ r : (AE F E)ˣ, cA σ (r : AE F E) = -(r : AE F E) ∧
       (∀ v, compFin F E v (r : AE F E) ∈ intLoc F E v ∧ compFin F E v ((r⁻¹ : (AE F E)ˣ) : AE F E) ∈ intLoc F E v) ∧

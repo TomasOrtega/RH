@@ -3,6 +3,9 @@ import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.HermitianFo
 
 namespace PositivityTheory.RgUd.Form.Final
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgUd.Form.Asm.asmForm k (PositivityTheory.RgUd.Form.LeviSmoothness.Final.stepForm k)`.
+-/
 theorem besselSum (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     PositivityTheory.RgUd.BesselSum k :=
   PositivityTheory.RgUd.Form.Asm.asmForm k (PositivityTheory.RgUd.Form.LeviSmoothness.Final.stepForm k)

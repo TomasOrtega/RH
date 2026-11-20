@@ -13,6 +13,15 @@ open GlobalTheory.SeeSaw GlobalTheory.Unf
 
 namespace GlobalTheory.AdForm.StdStepsT
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z ψ θ hψ hθ`. Take `⟨hs, hX, hX', -⟩` from `hI.spaces`. Establish `oX : ∀ j, GlobalTheory.Mem.Col2.Crd.Ortho (B.sp.X j)` using `fun j => by rw [hX]; exact GlobalTheory.Mem.Col2.Crd.ortho_pos hs _`. Establish `oX' : GlobalTheory.Mem.Col2.Crd.Ortho B.sp.X'` using `by rw [hX']; exact GlobalTheory.Mem.Col2.Crd.ortho_pos hs _`. Establish `gX : ∀ j, (B.sp.X j).gram = 1` using `fun j => by`.
+
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Conclude with `(oX j).1 a b`. Establish `gX' : B.sp.X'.gram = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_apply]`. Conclude with `oX'.1 a b`. Establish `hcc : (I.rec7 l Z).host.ccK = ⊤` using `B.toPre.ccK_top`. Use `⟨fun i hi => ?_, gX', fun τ => B.fields_embC τ, GlobalTheory.Mem.Col2.DgenNe.dgen_ne_zero B.host I.J.cD hI.amb_ok.dgen, fun V g => GlobalTheory.RecDict.exists_isDetRoot _ V g⟩` and prove the remaining obligations. Establish `r1` using `rankN (I.rec7 l Z) i (Nat.le_of_succ_le hi)`.
+
+Establish `r2` using `rankN (I.rec7 l Z) (i + 1) hi`. Use `⟨hψ, hθ, gX i, gX (i + 1), (I.rec7 l Z).sp.X_sig i, (I.rec7 l Z).sp.X_sig (i + 1), ?_, hcc, I.J.δ_ne_zero, GlobalTheory.AdForm.StdSteps.realPlace_cmTrace_zero_element_eq_I_mul_abs _ hcc, GlobalTheory.AdForm.StdSteps.scale_eq (I.rec7 l Z) I.J.δ_ne_zero⟩` and prove the remaining obligations. Rewrite using `[r1, r2]`. Conclude with `⟨Ranks.N_pos _ _, GlobalTheory.AdForm.StdSteps.N_lt_succ _ _, GlobalTheory.AdForm.StdSteps.even_N _ _, GlobalTheory.AdForm.StdSteps.even_N _ _⟩`.
+-/
 theorem stdPair_steps_all : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ ψ θ, IsStdChar (I.rec7 l Z) ψ (-1) → IsInfFam θ → (∀ (i : ℕ), i + 1 ≤ B.R.m → StdPair θ ((I.rec7 l Z).sp.X i) ((I.rec7 l Z).sp.X (i + 1)) I.A.δ I.A.sc ψ) ∧ (I.rec7 l Z).sp.X'.gram = 1 ∧ (∀ τ, B.fields.embC I.A.σ₀ τ = tauE (I.rec7 l Z) τ) ∧ (∀ τ, I.J.cD τ ≠ 0) ∧ ∀ (V : HSp (I.rec7 l Z)) (g : GA (I.rec7 l Z) V), ∃ x, IsDetRoot V g x := by
   intro B X I hI hP l Z ψ θ hψ hθ
   obtain ⟨hs, hX, hX', -⟩ := hI.spaces

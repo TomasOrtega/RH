@@ -22,10 +22,16 @@ def rest (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) : PolF D b a :=
 def ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) : LPol b a →ₗ[ℂ] PolF D b a :=
   LinearMap.mulRight ℂ (rest τ P) ∘ₗ (MvPolynomial.rename (fun s => (τ, s))).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ins_apply (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (p : LPol b a) :
     ins τ P p = MvPolynomial.rename (fun s => (τ, s)) p * rest τ P := rfl
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[ins_apply, glue, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), rest]`. Use `congr 1`. Rewrite using `[Function.update_self]`. Use `Finset.prod_congr rfl fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`.
+-/
 theorem glue_update (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (p : LPol b a) :
     glue (Function.update P τ p) = ins τ P p := by
   rw [ins_apply, glue, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), rest]
@@ -34,10 +40,18 @@ theorem glue_update (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (p : L
   · refine Finset.prod_congr rfl fun ρ hρ => ?_
     rw [Function.update_of_ne (Finset.ne_of_mem_erase hρ)]
 
+/- English proof (translation)
+Rewrite using `[← glue_update, Function.update_eq_self]`.
+-/
 theorem glue_eq (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) : glue P = ins τ P (P τ) := by
   classical
   rw [← glue_update, Function.update_eq_self]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p t hp`. Rewrite using `[map_mul, Derivation.leibniz, hp, MvPolynomial.rename_X, MvPolynomial.pderiv_X_of_ne]`.
+
+Simplify using the standard rewrite rules. Introduce `e`. Conclude with `h (congrArg Prod.fst e)`.
+-/
 theorem pderiv_other {τ ρ : D.what₂.Tau} (h : ρ ≠ τ) (s : Fin b × Fin a) (p : LPol b a) :
     MvPolynomial.pderiv (τ, s) (MvPolynomial.rename (fun s => (ρ, s)) p : PolF D b a) = 0 := by
   classical
@@ -50,6 +64,11 @@ theorem pderiv_other {τ ρ : D.what₂.Tau} (h : ρ ≠ τ) (s : Fin b × Fin a
     · intro e
       exact h (congrArg Prod.fst e)
 
+/- English proof (translation)
+Unfold `rest`. Use `Finset.prod_induction _ (fun q : PolF D b a => MvPolynomial.pderiv (τ, s) q = 0) ?_ ?_ ?_` and prove the remaining obligations. Introduce `x y hx hy`. Rewrite using `[Derivation.leibniz, hx, hy]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Introduce `ρ hρ`. Conclude with `pderiv_other (Finset.ne_of_mem_erase hρ) s _`.
+-/
 theorem pderiv_rest (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (s : Fin b × Fin a) :
     MvPolynomial.pderiv (τ, s) (rest τ P) = 0 := by
   classical
@@ -61,6 +80,9 @@ theorem pderiv_rest (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (s : F
   · intro ρ hρ
     exact pderiv_other (Finset.ne_of_mem_erase hρ) s _
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun s : Fin b × Fin a => (τ, s))` using `fun x y e => congrArg Prod.snd e`. Use `MvPolynomial.pderiv_rename hinj s p` as an intermediate fact. Rewrite using `[ins_apply, ins_apply, Derivation.leibniz, pderiv_rest, ← this]`. Simplify using `[mul_comm]`.
+-/
 theorem pderiv_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (s : Fin b × Fin a) (p : LPol b a) :
     MvPolynomial.pderiv (τ, s) (ins τ P p) = ins τ P (MvPolynomial.pderiv s p) := by
   classical
@@ -69,10 +91,18 @@ theorem pderiv_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (s : Fi
   rw [ins_apply, ins_apply, Derivation.leibniz, pderiv_rest, ← this]
   simp [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[ins_apply, ins_apply, map_mul, MvPolynomial.rename_X, mul_assoc]`.
+-/
 theorem mul_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (s : Fin b × Fin a) (p : LPol b a) :
     MvPolynomial.X (τ, s) * ins τ P p = ins τ P (MvPolynomial.X s * p) := by
   rw [ins_apply, ins_apply, map_mul, MvPolynomial.rename_X, mul_assoc]
 
+/- English proof (translation)
+Unfold `raiO rai`. Distinguish the cases in `h : ε' i = ε j`. Simplify using `only [h, if_true, LinearMap.smul_apply, LinearMap.mulLeft_apply, map_smul]`. Rewrite using `[← mul_ins]`. Simplify using `only [h, if_false, LinearMap.smul_apply, LinearMap.neg_apply, map_smul, map_neg, Derivation.coeFn_coe]`.
+
+Rewrite using `[← pderiv_ins]`.
+-/
 theorem rai_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fin a → Bool) (ε' : Fin b → Bool)
     (i : Fin b) (j : Fin a) (p : LPol b a) : raiO τ ε ε' i j (ins τ P p) = ins τ P (rai ε ε' i j p) := by
   unfold raiO rai
@@ -82,6 +112,11 @@ theorem rai_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fin 
   · simp only [h, if_false, LinearMap.smul_apply, LinearMap.neg_apply, map_smul, map_neg, Derivation.coeFn_coe]
     rw [← pderiv_ins]
 
+/- English proof (translation)
+Unfold `lowO low`. Distinguish the cases in `h : ε' i = ε j`. Simplify using `only [h, if_true, LinearMap.smul_apply, map_smul, Derivation.coeFn_coe]`. Rewrite using `[← pderiv_ins]`. Simplify using `only [h, if_false, LinearMap.smul_apply, LinearMap.mulLeft_apply, map_smul]`.
+
+Rewrite using `[← mul_ins]`.
+-/
 theorem low_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fin a → Bool) (ε' : Fin b → Bool)
     (i : Fin b) (j : Fin a) (p : LPol b a) : lowO τ ε ε' i j (ins τ P p) = ins τ P (low ε ε' i j p) := by
   unfold lowO low
@@ -91,6 +126,9 @@ theorem low_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fin 
   · simp only [h, if_false, LinearMap.smul_apply, LinearMap.mulLeft_apply, map_smul]
     rw [← mul_ins]
 
+/- English proof (translation)
+Unfold `fockS locS`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply, map_sum, map_smul, map_add, Module.End.mul_apply, low_ins, rai_ins]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`.
+-/
 theorem fockS_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fin a → Bool) (ε' : Fin b → Bool)
     (X : Matrix (Fin a) (Fin a) ℂ) (p : LPol b a) :
     fockS τ ε ε' X (ins τ P p) = ins τ P (locS ε ε' X p) := by
@@ -100,6 +138,9 @@ theorem fockS_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fi
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
   by_cases h : j = k <;> simp [h]
 
+/- English proof (translation)
+Unfold `fockT locT`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.add_apply, map_sum, map_smul, map_add, Module.End.mul_apply, low_ins, rai_ins]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`.
+-/
 theorem fockT_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fin a → Bool) (ε' : Fin b → Bool)
     (Y : Matrix (Fin b) (Fin b) ℂ) (p : LPol b a) :
     fockT τ ε ε' Y (ins τ P p) = ins τ P (locT ε ε' Y p) := by
@@ -109,6 +150,11 @@ theorem fockT_ins (τ : D.what₂.Tau) (P : D.what₂.Tau → LPol b a) (ε : Fi
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
   by_cases h : j = k <;> simp [h]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.MonomialRangeMembership.span_range_glue`. Consider the case `exact _root_.GlobalTheory.MonomialRangeMembership.span_range_glue`. Consider the case `(apply _root_.GlobalTheory.MonomialRangeMembership.span_range_glue <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MonomialRangeMembership.span_range_glue <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.MonomialRangeMembership.span_range_glue <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MonomialRangeMembership.span_range_glue ..)`.
+-/
 theorem glue_span :
     Submodule.span ℂ (Set.range (glue : (D.what₂.Tau → LPol b a) → PolF D b a)) = ⊤ := by
   first
@@ -119,6 +165,9 @@ theorem glue_span :
   | (intros; apply @_root_.GlobalTheory.MonomialRangeMembership.span_range_glue <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.MonomialRangeMembership.span_range_glue ..)
 
+/- English proof (translation)
+Introduce `D a b`. Use `⟨glue_span, fun τ ε ε' P => ⟨fun X => ?_, fun Y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[glue_update, glue_eq τ P, fockS_ins]`. Rewrite using `[glue_update, glue_eq τ P, fockT_ins]`.
+-/
 theorem glueLaw : ∀ (D : D7) (a b : ℕ), GlueLaw D a b := by
   intro D a b
   refine ⟨glue_span, fun τ ε ε' P => ⟨fun X => ?_, fun Y => ?_⟩⟩

@@ -13,6 +13,13 @@ namespace GlobalTheory.ExpImage
 open Formalism Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.MemLoc GlobalTheory.ThetaTie
 open scoped Formalism.Per
 
+/- English proof (translation)
+Introduce `l _ P AI T`. Take `⟨-, -, hun, hth, -⟩` from `thetaD_props l`. Establish `hθ : Per.θ l AI.π₁ ≠ 0`. Establish `h : Per.θ l AI.π₁ = PreTilt.untilt AI.ε1 - 1`. Rewrite using `[LocAinf.π₁, map_sub, WittVector.fontaineTheta_teichmuller, map_one]`.
+
+Rewrite using `[h]`. Conclude with `sub_ne_zero.2 (isEps AI).2`. Establish `hne : Per.θD l (aDp l AI.π₁) ≠ 0`. Rewrite using `[hth]`. Conclude with `fun h0 => hθ (Subtype.ext h0)`.
+
+Take `⟨v, hv⟩` from `(hun _ hne).exists_right_inv`. Use `⟨T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) v), (fil_zero T _).2 ⟨v, (T.eD.apply_symm_apply _).symm⟩, T.eD.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, io_apply, eD_ιA, T.eD.apply_symm_apply, ← map_mul, hv, map_one, map_one]`.
+-/
 theorem exists_inv_io_pi : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∃ u ∈ FilB P 0, io AI AI.π₁ * u = 1 := by
   intro l _ P AI T

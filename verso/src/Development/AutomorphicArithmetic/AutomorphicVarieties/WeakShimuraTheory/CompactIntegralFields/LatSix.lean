@@ -11,6 +11,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Lat
 
+/- English proof (translation)
+Break down `h with h | ⟨a, -, b⟩ | ⟨a, -, b⟩ | ⟨a, -, b⟩ | ⟨a, -, b⟩ | ⟨a, -, b⟩` into its components or cases. Conclude with `h`. Conclude with `absurd a (h2 (fun x => absurd (Finset.mem_coe.1 (b x)) (by decide)) fun x => absurd (Finset.mem_coe.1 (b x)) (by decide))`. Conclude with `absurd a (h1 fun x => by simpa [wAl, wTh, wPs, wBe] using b x)`. Conclude with `absurd a (h2 (fun x => absurd (Finset.mem_coe.1 (b x)) (by decide)) fun x => absurd (Finset.mem_coe.1 (b x)) (by decide))`.
+
+Conclude with `absurd a (h1 fun x => by simpa [wAl, wTh, wPs, wBe] using b x)`. Conclude with `absurd a (h1 fun x => by simpa [wAl, wTh, wPs, wBe] using b x)`.
+-/
 private theorem lat_six {Si : Set (ℤ × ℤ)} (h : CompanionTheory Si) (h1 : -wAl ∉ Si → -wTh ∉ Si) (h2 : wBe ∉ Si → wPs ∉ Si → -wAl ∉ Si) :
     wBe ∈ Si ∧ -wPs ∈ Si ∧ Si ⊆ nP := by
   rcases h with h | ⟨a, -, b⟩ | ⟨a, -, b⟩ | ⟨a, -, b⟩ | ⟨a, -, b⟩ | ⟨a, -, b⟩
@@ -21,6 +26,19 @@ private theorem lat_six {Si : Set (ℤ × ℤ)} (h : CompanionTheory Si) (h1 : -
   · exact absurd a (h1 fun x => by simpa [wAl, wTh, wPs, wBe] using b x)
   · exact absurd a (h1 fun x => by simpa [wAl, wTh, wPs, wBe] using b x)
 
+/- English proof (translation)
+Introduce `hP Ω _ _ _ l _ c D hD 𝔞 pr g0 _ hd P hQ hN hS`. Take `⟨t, P', hT, h6⟩` from `vertex 𝔞 P hQ.small (hQ.pair.low ()) (fun g i j hij => by simpa [diagRep, Matrix.diagonal_apply_ne _ hij] using hN.red g i j) hN.flag hS`. Take `⟨hp, hdg, hψ, hc⟩` from `tcPair (frQ D pr g0) (𝔞.a c) 𝔞.toK Subtype.val_injective t P P' hT hQ.pair`. Establish `hsm` using `tcSmall 𝔞 t P P' hT hQ.small`. Establish `hred : ∀ x ∈ maximalIdeal c.O, 𝔞.red c x = 0` using `fun x hx => (residue_eq_zero_iff _).2 (map_nonunit (𝔞.a c) x hx)`.
+
+Establish `hpre : PreRes (frQ D pr g0) (𝔞.red c) (P'.map (residue 𝔞.V))`. Use `⟨hp.map _, fun g i => ?_, fun v s hs i => ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Rewrite using `[hdg]`. Simplify `hN.red g i i` using `[diagRep, frQ]`.
+
+Use `(PD.map_ψ P' _ v i s).trans (Ideal.Quotient.eq.2 ?_)` and prove the remaining obligations. Conclude with `(hψ v i s).symm ▸ hN.char s hs i`. Take `⟨A, _, _, _, f, P₁, hf, hcont, rfl⟩` from `hsm haveI := hf.loc`. Conclude with `hcont.map ((residue 𝔞.V).comp f) fun x hx => (residue_eq_zero_iff _).2 (map_nonunit f x hx)`. Establish `hmul : ∀ i g, (frQ D pr g0).χ i g * (frQ D pr g0).χ i.rev g = (frQ D pr g0).ν g`.
+
+Introduce `i g`. Apply the tactic sequence `cases pr <;> fin_cases i <;> simp [frQ, chi, lab, Raw.ps, Raw.th, Fin.rev, mul_comm]`. Establish `hE` using `entVan _ _ _ hpre hmul (oddVan D hD hP.loc _ _ hred pr g0 hd)`. Take `⟨n1, n2⟩` from `noNeg _ _ _ hpre hE`. Take `⟨s1, s2, s3⟩` from `lat_six h6 n1 n2`.
+
+Take `⟨u1, u2, u3, u4⟩` from `shape _ _ _ hpre hE s1 s2 s3`. Use `⟨P', ⟨hsm, hp, fun s hs i => (hψ () i s).trans (hQ.inert s hs i)⟩, hc, ⟨hpre.pair, ⟨hpre.diag, hpre.char, .inl ⟨u1, u2⟩⟩, hpre.cont⟩, u1, u2 (), u3, u4.imp id ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨v1, ⟨v, v2, v3⟩, v4⟩`. Use `⟨v1, v2, fun s hs => ?_, fun ⟨m, hm⟩ => v4 ⟨fun _ => m, fun _ => hm⟩⟩` and prove the remaining obligations. Establish `e : Raw.bar (chi D pr 0) s = Raw.bar (chi D pr 2) s` using `(𝔞.j c).injective (v3 s hs)`.
+
+Establish `hu : Raw.bar D.al s ≠ 0` using `((D.al s).isUnit.map (residue c.O)).ne_zero`. Establish `ht : Raw.bar D.th s = Raw.bar D.al s * Raw.bar D.Psi s` using `map_mul (residue c.O) (D.al s : c.O) (D.Psi s : c.O)`. Consider the cases of `pr`. Conclude with `(mul_eq_left₀ hu).1 (ht.symm.trans e)`. Conclude with `(mul_eq_left₀ hu).1 (ht.symm.trans e.symm)`.
+-/
 theorem UpperTheory.V.Ws.lat :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) (pr : Bool) (g0 : G ℚ Ω), LabOk D pr →
       (∀ i j, i ≠ j → Raw.bar (chi D pr i) g0 ≠ Raw.bar (chi D pr j) g0) → ∀ P : PD Unit (G ℚ Ω) 𝔞.V, QPair D pr g0 𝔞 P → NearSplit D pr 𝔞 P → StarE P.r →

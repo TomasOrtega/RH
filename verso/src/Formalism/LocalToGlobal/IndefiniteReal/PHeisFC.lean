@@ -28,6 +28,9 @@ def cE (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDim
     continuous_toFun := IsModuleTopology.continuous_of_linearMap (bA F E).equivFun.toLinearMap
     continuous_invFun := IsModuleTopology.continuous_of_linearMap (bA F E).equivFun.symm.toLinearMap }
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(bA F E).equivFun ((1 : AF F) ⊗ₜ[F] e) k = _`. Rewrite using `[Module.Basis.equivFun_apply, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+-/
 theorem cE_tmul (e : E) (k : Fin (Module.finrank F E)) :
     cE F E ((1 : AF F) ⊗ₜ[F] e) k = algebraMap F (AF F) ((Module.finBasis F E).repr e k) := by
   change (bA F E).equivFun ((1 : AF F) ⊗ₜ[F] e) k = _
@@ -50,13 +53,22 @@ abbrev nE (D : D7) : ℕ := Module.finrank D.host.F D.host.E
 def Phi (V W : HSp D) (x : WA V W) : Fin V.rank → Fin W.rank → Fin (nE D) → AF D.host.F :=
   fun i j => cE D.host.F D.host.E (x i j)
 
+/- English proof (translation)
+Simplify using `only [Phi, Matrix.add_apply, map_add, Pi.add_apply]`.
+-/
 theorem Phi_add (V W : HSp D) (x y : WA V W) (i j k) : Phi V W (x + y) i j k = Phi V W x i j k + Phi V W y i j k := by
   simp only [Phi, Matrix.add_apply, map_add, Pi.add_apply]
 
+/- English proof (translation)
+Conclude with `cE_tmul (e i j) k`.
+-/
 theorem Phi_rat (V W : HSp D) (e : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (i j k) :
     Phi V W (e.map (incA D)) i j k = algebraMap D.host.F (AF D.host.F) ((Module.finBasis D.host.F D.host.E).repr (e i j) k) := by
   exact cE_tmul (e i j) k
 
+/- English proof (translation)
+Unfold `Phi`. Conclude with `(continuous_apply k).comp ((cE D.host.F D.host.E).continuous.comp ((continuous_apply j).comp (continuous_apply i)))`.
+-/
 theorem cont_Phi (V W : HSp D) (i j k) : Continuous fun x : WA V W => Phi V W x i j k := by
   unfold Phi
   exact (continuous_apply k).comp ((cE D.host.F D.host.E).continuous.comp
@@ -64,6 +76,17 @@ theorem cont_Phi (V W : HSp D) (i j k) : Continuous fun x : WA V W => Phi V W x 
 
 def FD (V W : HSp D) : Set (WA V W) := {x | ∀ i j k, Phi V W x i j k ∈ F0 D.host.F}
 
+/- English proof (translation)
+Use `choose q hq using fun i j k => PHeisFC.ad_exU (F := D.host.F) (Phi V W x i j k)`. Set `b` to `Module.finBasis D.host.F D.host.E`. Set `e : Matrix (Fin V.rank) (Fin W.rank) D.host.E` to `fun i j => b.equivFun.symm (q i j)`. Establish `hrep : ∀ i j k, b.repr (e i j) k = q i j k`. Introduce `i j k`.
+
+Rewrite using `[← b.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hshift : ∀ (e' : Matrix (Fin V.rank) (Fin W.rank) D.host.E) i j k, Phi V W (e'.map (incA D) + x) i j k = algebraMap D.host.F (AF D.host.F) (b.repr (e' i j) k) + Phi V W x i j k`. Introduce `e' i j k`. Rewrite using `[Phi_add, Phi_rat]`. Use `⟨⟨e.map (incA D), ⟨e, rfl⟩⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j k show Phi V W (e.map (incA D) + x) i j k ∈ F0 D.host.F`. Rewrite using `[hshift, hrep]`. Conclude with `(hq i j k).1`. Introduce and unpack `⟨g, e', rfl⟩ hg`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show e'.map (incA D) = e.map (incA D)`. Establish `he : e' = e`. Use extensionality with `i j`. Use `b.ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[hrep]`.
+
+Establish `h1` using `hg i j k`. Express the relevant statement in the definitionally equal form `Phi V W (e'.map (incA D) + x) i j k ∈ F0 D.host.F at h1`. Rewrite `h1` using `[hshift]`. Conclude with `(hq i j k).2 _ h1`. Rewrite using `[he]`.
+-/
 theorem exU (V W : HSp D) (x : WA V W) : ∃! g : ratL V W, g +ᵥ x ∈ FD V W := by
   classical
   choose q hq using fun i j k => PHeisFC.ad_exU (F := D.host.F) (Phi V W x i j k)
@@ -99,6 +122,13 @@ theorem exU (V W : HSp D) (x : WA V W) : ∃! g : ratL V W, g +ᵥ x ∈ FD V W 
 instance borelWA (V W : HSp D) : BorelSpace (WA V W) := ⟨rfl⟩
 
 open scoped Classical in
+/- English proof (translation)
+Establish `heM : Continuous (eM D.host.F)`. Rewrite using `[show (⇑(eM D.host.F)) = _ from funext (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace_apply D.host.F)]`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(NumberField.InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal _).continuous.comp (continuous_apply _)`. Conclude with `(NumberField.InfinitePlace.Completion.isometry_extensionEmbedding _).continuous.comp (continuous_apply _)`.
+
+Establish `hset : FD V W = ⋂ i, ⋂ j, ⋂ k, ((fun x => eM D.host.F (Phi V W x i j k).1) ⁻¹' ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis D.host.F) ∩ (fun x => (Phi V W x i j k).2) ⁻¹' Ohat D.host.F)`. Use extensionality with `x`. Simplify using `[FD, F0, Pinf, Set.mem_iInter, Set.mem_preimage, Set.mem_inter_iff]`. Rewrite using `[hset]`. Use `MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => MeasurableSet.iInter fun k => ?_` and prove the remaining obligations.
+
+Use `MeasurableSet.inter ?_ ?_` and prove the remaining obligations. Conclude with `(heM.comp (continuous_fst.comp (cont_Phi V W i j k))).measurable (measurableSet_Pinf D.host.F)`. Conclude with `((isOpen_Ohat D.host.F).preimage (continuous_snd.comp (cont_Phi V W i j k))).measurableSet`.
+-/
 theorem meas_FD (V W : HSp D) : MeasurableSet (FD V W) := by
   classical
   have heM : Continuous (eM D.host.F) := by
@@ -119,6 +149,13 @@ theorem meas_FD (V W : HSp D) : MeasurableSet (FD V W) := by
   · exact (heM.comp (continuous_fst.comp (cont_Phi V W i j k))).measurable (measurableSet_Pinf D.host.F)
   · exact ((isOpen_Ohat D.host.F).preimage (continuous_snd.comp (cont_Phi V W i j k))).measurableSet
 
+/- English proof (translation)
+Take `⟨K0, hK0, hF0⟩` from `fundamental_set_subset_compact (F := D.host.F)`. Set `g : (Fin V.rank → Fin W.rank → Fin (nE D) → AF D.host.F) → WA V W` to `fun φ i j => (cE D.host.F D.host.E).symm (φ i j)`. Establish `hg : Continuous g` using `continuous_pi fun i => continuous_pi fun j => (cE D.host.F D.host.E).symm.continuous.comp ((continuous_apply j).comp (continuous_apply i))`. Use `⟨g '' Set.univ.pi (fun _ => Set.univ.pi fun _ => Set.univ.pi fun _ => K0), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK0).image hg`.
+
+Introduce `x hx`. Use `⟨fun i j => cE D.host.F D.host.E (x i j), ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ j _ k _`. Conclude with `hF0 (hx i j k)`. Use function extensionality and compare the values at `i j`.
+
+Conclude with `(cE D.host.F D.host.E).symm_apply_apply (x i j)`.
+-/
 theorem FD_sub_compact (V W : HSp D) : ∃ K : Set (WA V W), IsCompact K ∧ FD V W ⊆ K := by
   obtain ⟨K0, hK0, hF0⟩ := fundamental_set_subset_compact (F := D.host.F)
   let g : (Fin V.rank → Fin W.rank → Fin (nE D) → AF D.host.F) → WA V W :=
@@ -147,6 +184,11 @@ instance t2WA (V W : HSp D) : T2Space (WA V W) :=
 instance measAddWA (V W : HSp D) : MeasurableAdd (WA V W) :=
   ⟨fun _ => (continuous_const.add continuous_id).measurable, fun _ => (continuous_id.add continuous_const).measurable⟩
 
+/- English proof (translation)
+Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin W.rank) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin W.rank → D.host.E))`. Establish `h : (ratL V W : Set (WA V W)).Countable`. Unfold `ratL`. Rewrite using `[AddMonoidHom.coe_range]`.
+
+Conclude with `Set.countable_range _`. Conclude with `h.to_subtype`.
+-/
 theorem countable_ratL (V W : HSp D) : Countable (ratL V W) := by
   haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable
   haveI : Countable (Matrix (Fin V.rank) (Fin W.rank) D.host.E) :=
@@ -157,6 +199,11 @@ theorem countable_ratL (V W : HSp D) : Countable (ratL V W) := by
     exact Set.countable_range _
   exact h.to_subtype
 
+/- English proof (translation)
+Use `haveI := countable_ratL V W`. Take `⟨K, hK, hFK⟩` from `FD_sub_compact V W`. Establish `hfd : ∀ μ : Measure (WA V W), IsAddFundamentalDomain (ratL V W) (FD V W) μ` using `fun μ => IsAddFundamentalDomain.mk' (meas_FD V W).nullMeasurableSet (exU V W)`. Use `⟨⟨Measure.addHaar, FD V W, inferInstance, hfd _⟩, fun μ 𝓕 hμ h𝓕 => ?_⟩` and prove the remaining obligations. Rewrite using `[h𝓕.measure_eq (hfd μ)]`.
+
+Conclude with `(measure_mono hFK).trans_lt hK.measure_lt_top`.
+-/
 theorem finCovol {D : D7} (V W : HSp D) : Formalism.IndefR.Heis.FinCovol V W := by
   haveI := countable_ratL V W
   obtain ⟨K, hK, hFK⟩ := FD_sub_compact V W

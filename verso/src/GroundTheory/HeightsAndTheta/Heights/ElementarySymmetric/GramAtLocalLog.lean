@@ -18,6 +18,9 @@ section Values
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ v, IsValueAt y s z v`. Take `⟨v, hv⟩` from `h`. Rewrite using `[LowerBoundFree.valAt_eq hz hv, IndefiniteRowSideFullHecke.LowerBoundFree.valAt_eq hz (HermMetricEq.isValueAt_iff.1 hv)]`. Establish `h' : ¬ IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y s z` using `fun ⟨v, hv⟩ => h ⟨v, HermMetricEq.isValueAt_iff.2 hv⟩`. Rewrite using `[LowerBoundFree.valAt, dif_neg h, IndefiniteRowSideFullHecke.LowerBoundFree.valAt, dif_neg h']`.
+-/
 theorem valAt_eq_complexPoint_reading {y : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) :
     LowerBoundFree.valAt y s z = IndefiniteRowSideFullHecke.LowerBoundFree.valAt y s z := by
@@ -30,6 +33,13 @@ theorem valAt_eq_complexPoint_reading {y : (Σ k, ι k) → Ω} {s : Ω} {z : (�
       h ⟨v, HermMetricEq.isValueAt_iff.2 hv⟩
     rw [LowerBoundFree.valAt, dif_neg h, IndefiniteRowSideFullHecke.LowerBoundFree.valAt, dif_neg h']
 
+/- English proof (translation)
+Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Take `⟨v, hv, hv0⟩` from `hd.2`. Conclude with `hv0 (isValueAt_unique hz hv (HermMetricEq.isValueAt_iff.2 IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_zero))`. Establish `hfi` using `HermMetricEq.regularAt_inv hf0 hd.2`.
+
+Establish `hloc : ∀ s : Ω, (∃ n : ℕ, f ^ n * s ∈ chartRing ℤ (segreCoord y) c) → IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y s z`. Introduce and unpack `s ⟨n, hn⟩`. Establish `h1` using `(HermMetricEq.regularAt_pow hfi n).mul (IndefiniteRowSideFullHecke.LowerBoundFree.regularAt_of_mem_chartRing hz hd.1 hn)`. Rewrite `h1` using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hf0, one_pow, one_mul]`. Then use the resulting hypothesis. Establish `h1` using `hloc u hu.2.1`.
+
+Establish `h2` using `hloc u⁻¹ hu.2.2`. Use `⟨h1, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hm` using `(h1.isValueAt hz).mul (h2.isValueAt hz)`. Rewrite `hm` using `[mul_inv_cancel₀ hu.1, h0, zero_mul]`. Conclude with `one_ne_zero (IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt.unique hz IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_one hm)`.
+-/
 theorem regularAt_of_isUnitOn {y : (Σ k, ι k) → Ω} {c : (k : K) → ι k} {f u : Ω}
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) (hd : InFrameDomain y c f z)
     (hu : IsUnitOn y c f u) :
@@ -62,6 +72,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
   {W : ChartBundle ℤ (segreCoord y) N E} {Xo : Set ((Σ k, ι k) → ℂ)}
   {P : Ideal (MRing ι)} {n nc : ℕ} {Bd : Set ((Σ k, ι k) → ℂ)} {χ : Fin nc → SncChart P n Bd}
 
+/- English proof (translation)
+Rewrite using `[← hA.gramMatrix_change_of_frame hXo hz hd hS hb]`. Establish `hv : ∀ s : Ω, LowerBoundFree.valAt y s z = IndefiniteRowSideFullHecke.LowerBoundFree.valAt y s z` using `fun s => valAt_eq_complexPoint_reading (hXo hz)`. Unfold `LowerBoundFree.gramAt HermMetric.gramMatrixInFamily HermMetricEq.valM`. Simplify using `only [hv]`.
+-/
 theorem gramAt_eq_of_frame (hA : HermMetric y W Xo χ) (hXo : Xo ⊆ mcPts (mCoordIdeal y))
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ Xo) {l : Fin hA.m}
     (hd : InFrameDomain y (hA.chart l) (hA.fr l) z) {b : Fin N → E}

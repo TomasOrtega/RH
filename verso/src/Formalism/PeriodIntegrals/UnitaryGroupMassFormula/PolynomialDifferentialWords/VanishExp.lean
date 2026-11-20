@@ -11,18 +11,32 @@ variable {K : Type} [Field K] [CharZero K] {k : ℕ}
 def shiftPt (a b : Fin k) (s : K) (p : Fin k ⊕ Fin k → K) : Fin k ⊕ Fin k → K :=
   fun i => p i + s * eval p (Rop K k a b (X i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rop_apply (a b : Fin k) (f : Pol K k) :
     Rop K k a b f = X (Sum.inl a) * pderiv (Sum.inl b) f - X (Sum.inr b) * pderiv (Sum.inr a) f := rfl
 
+/- English proof (translation)
+Simplify using `[rop_apply]`.
+-/
 lemma rop_C (a b : Fin k) (r : K) : Rop K k a b (C r) = 0 := by
   simp [rop_apply]
 
+/- English proof (translation)
+Rewrite using `[rop_apply, rop_apply, rop_apply]`. Simplify using `only [Derivation.leibniz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma rop_mul (a b : Fin k) (f g : Pol K k) :
     Rop K k a b (f * g) = Rop K k a b f * g + f * Rop K k a b g := by
   rw [rop_apply, rop_apply, rop_apply]
   simp only [Derivation.leibniz, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Break down `i with j | j` into its components or cases. Distinguish the cases in `h : j = b`. Substitute `h` using the available equality. Simplify using `[rop_apply, pderiv_X, Pi.single_apply, hab, Ne.symm hab]`. Simplify using `[rop_apply, pderiv_X, Pi.single_apply, h, Ne.symm h]`.
+
+Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Simplify using `[rop_apply, pderiv_X, Pi.single_apply, hab, Ne.symm hab]`. Simplify using `[rop_apply, pderiv_X, Pi.single_apply, h, Ne.symm h]`.
+-/
 lemma rop_rop_X (a b : Fin k) (hab : a ≠ b) (i : Fin k ⊕ Fin k) :
     Rop K k a b (Rop K k a b (X i)) = 0 := by
   rcases i with j | j
@@ -35,6 +49,11 @@ lemma rop_rop_X (a b : Fin k) (hab : a ≠ b) (i : Fin k ⊕ Fin k) :
       simp [rop_apply, pderiv_X, Pi.single_apply, hab, Ne.symm hab]
     · simp [rop_apply, pderiv_X, Pi.single_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [rop_mul]`. Consider the case `succ n ih`. Establish `e1 : (Rop K k a b)^[n + 1 + 1] (g * X i) = Rop K k a b ((Rop K k a b)^[n + 1] (g * X i))` using `Function.iterate_succ_apply' _ _ _`. Establish `e2 : (Rop K k a b)^[n + 1 + 1] g = Rop K k a b ((Rop K k a b)^[n + 1] g)` using `Function.iterate_succ_apply' _ _ _`.
+
+Establish `e3 : (Rop K k a b)^[n + 1] g = Rop K k a b ((Rop K k a b)^[n] g)` using `Function.iterate_succ_apply' _ _ _`. Rewrite using `[e1, ih, map_add, map_nsmul, rop_mul, rop_mul, rop_rop_X a b hab i, e2, ← e3]`. Rewrite using `[mul_zero, add_zero, succ_nsmul _ (n + 1)]`. Normalize the expressions using the abelian group laws.
+-/
 lemma rop_iter_mul_X (a b : Fin k) (hab : a ≠ b) (g : Pol K k) (i : Fin k ⊕ Fin k) (n : ℕ) :
     (Rop K k a b)^[n + 1] (g * X i) = (Rop K k a b)^[n + 1] g * X i
       + (n + 1) • ((Rop K k a b)^[n] g * Rop K k a b (X i)) := by
@@ -57,6 +76,33 @@ def ExpFormula (a b : Fin k) (s : K) (g : Pol K k) : Prop :=
       eval (shiftPt a b s p) g =
         ∑ n ∈ Finset.range (M + 1), s ^ n / (n.factorial : K) * eval p ((Rop K k a b)^[n] g)
 
+/- English proof (translation)
+Unfold `ExpFormula`. Proceed by induction on `g using MvPolynomial.induction_on`. Use `next r =>`. Establish `hz : ∀ n, (Rop K k a b)^[n + 1] (C r) = 0`. Introduce `n`.
+
+Rewrite using `[Function.iterate_succ_apply, rop_C]`. Conclude with `Function.iterate_fixed (map_zero _) n`. Use `⟨0, fun n hn => ?_, fun M _ x => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Conclude with `hz m`.
+
+Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `n _ hn`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[hz m]`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Simplify using `at h`. Use `next p q hp hq =>`. Take `⟨N1, hz1, hs1⟩` from `hp`.
+
+Take `⟨N2, hz2, hs2⟩` from `hq`. Use `⟨max N1 N2, fun n hn => ?_, fun M hM x => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.coe_pow, map_add, Module.End.coe_pow, hz1 n (by omega), hz2 n (by omega), add_zero]`. Rewrite using `[map_add, hs1 M (by omega) x, hs2 M (by omega) x, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Module.End.coe_pow, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `next p i hp =>`. Take `⟨N, hz, hsum⟩` from `hp`. Use `⟨N + 1, fun n hn => ?_, fun M hM x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[rop_iter_mul_X a b hab p i m, hz (m + 1) (by omega), hz m (by omega)]`. Simplify using the standard rewrite rules. Establish `hterm : ∀ m : ℕ, eval x ((Rop K k a b)^[m + 1] (p * X i)) = eval x ((Rop K k a b)^[m + 1] p) * x i + ((m : K) + 1) * (eval x ((Rop K k a b)^[m] p) * eval x (Rop K k a b (X i)))`. Introduce `m`.
+
+Rewrite using `[rop_iter_mul_X a b hab p i m, map_add, eval_mul, eval_X, map_nsmul, eval_mul, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hTM : s ^ M / (M.factorial : K) * eval x ((Rop K k a b)^[M] p) = 0`. Rewrite using `[hz M (by omega), map_zero, mul_zero]`.
+
+Establish `hfac : ∀ m : ℕ, s ^ (m + 1) / ((m + 1).factorial : K) * ((m : K) + 1) = s * (s ^ m / (m.factorial : K))`. Introduce `m`. Establish `h1 : ((m : K) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero m`. Establish `h2 : (m.factorial : K) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero m`. Rewrite using `[Nat.factorial_succ, Nat.cast_mul]`.
+
+Use `push_cast`. Apply the tactic sequence `(try field_simp)`. Apply the tactic sequence `(try ring)`. Establish `hR : ∑ n ∈ Finset.range (M + 1), s ^ n / (n.factorial : K) * eval x ((Rop K k a b)^[n] (p * X i)) = ∑ m ∈ Finset.range M, (s ^ (m + 1) / ((m + 1).factorial : K) * eval x ((Rop K k a b)^[m + 1] p) * x i + s * eval x (Rop K k a b (X i)) * (s ^ m / (m.factorial : K) * eval x ((Rop K …`. Rewrite using `[Finset.sum_range_succ']`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [hterm]`. Take the linear combination `(eval x ((Rop K k a b)^[m] p) * eval x (Rop K k a b (X i))) * hfac m`. Simplify using the standard rewrite rules.
+
+Establish `hS1 : ∑ n ∈ Finset.range (M + 1), s ^ n / (n.factorial : K) * eval x ((Rop K k a b)^[n] p) = ∑ m ∈ Finset.range M, s ^ (m + 1) / ((m + 1).factorial : K) * eval x ((Rop K k a b)^[m + 1] p) + s ^ 0 / ((0 : ℕ).factorial : K) * eval x ((Rop K k a b)^[0] p)` using `Finset.sum_range_succ' _ _`. Establish `hS2 : ∑ n ∈ Finset.range (M + 1), s ^ n / (n.factorial : K) * eval x ((Rop K k a b)^[n] p) = ∑ m ∈ Finset.range M, s ^ m / (m.factorial : K) * eval x ((Rop K k a b)^[m] p)`. Rewrite using `[Finset.sum_range_succ, hTM, add_zero]`. Establish `hxi : shiftPt a b s x i = x i + s * eval x (Rop K k a b (X i))` using `rfl`. Rewrite using `[hR, Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.mul_sum, ← hS2, eval_mul, eval_X, hsum M (by omega) x, hxi, hS1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expFormula (a b : Fin k) (hab : a ≠ b) (s : K) (g : Pol K k) : ExpFormula a b s g := by
   unfold ExpFormula
   induction g using MvPolynomial.induction_on

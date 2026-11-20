@@ -27,6 +27,13 @@ def idealTransform (S : Type) [CommRing S] (I : Ideal S) (A : Type) [CommRing A]
     refine ⟨0, fun a _ => ?_⟩
     exact ⟨algebraMap S A (a * r), by simp [Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def, smul_tmul', mul_smul]⟩
 
+/- English proof (translation)
+Set `R` to `(Algebra.TensorProduct.includeRight : A →ₐ[S] FractionRing S ⊗[S] A).range`. Set `Q : Ideal S` to `Submodule.comap (LinearMap.toSpanSingleton S _ z) (Subalgebra.toSubmodule R)`. Establish `hQ : ∀ a, a ∈ Q ↔ a • z ∈ R` using `fun a => by simp [Q]`. Establish `hrad : I ≤ Q.radical`. Introduce `a ha`.
+
+Take `⟨k, hk⟩` from `h a ha`. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, pow_succ, mul_smul]`. Conclude with `hk _ (Ideal.pow_mem_pow ha k)`. Take `⟨n, hn⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian I)`.
+
+Conclude with `⟨n, fun a ha => (hQ a).1 (hn ha)⟩`.
+-/
 theorem mem_idealTransform_of_forall_smul_mem {S : Type} [CommRing S] [IsNoetherianRing S]
     {I : Ideal S} {A : Type} [CommRing A] [Algebra S A] (z : FractionRing S ⊗[S] A)
     (h : ∀ a ∈ I, a • z ∈ idealTransform S I A) : z ∈ idealTransform S I A := by

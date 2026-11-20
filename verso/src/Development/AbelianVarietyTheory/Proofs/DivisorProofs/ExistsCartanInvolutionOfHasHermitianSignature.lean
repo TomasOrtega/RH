@@ -8,20 +8,53 @@ namespace GlobalTheory.CartanEx
 
 open scoped ComplexOrder
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum]`.
+-/
 private lemma map_star_mul' {l m k : Type} [Fintype m] (X : Matrix l m ℂ) (Y : Matrix m k ℂ) :
     (X * Y).map star = X.map star * Y.map star := by
   ext i j; simp [Matrix.mul_apply, star_sum]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 private lemma map_star_star {l m : Type} (X : Matrix l m ℂ) : (X.map star).map star = X := by
   ext i j; simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 private lemma map_star_one {m : Type} [DecidableEq m] : (1 : Matrix m m ℂ).map star = 1 := by
   ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`.
+-/
 private lemma star_mulVec_map {l m : Type} [Fintype m] (X : Matrix l m ℂ) (v : m → ℂ) :
     star (X *ᵥ v) = X.map star *ᵥ star v := by
   ext i; simp [Matrix.mulVec, dotProduct, star_sum]
 
+/- English proof (translation)
+Introduce `n M r s ⟨hn, A, hA⟩`. Use `set D : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hD`. Establish `hDD : D * D = 1` using `by simp [hD, Matrix.fromBlocks_multiply]`. Establish `hDT : Dᵀ = D` using `by simp [hD, Matrix.fromBlocks_transpose]`. Establish `hDs : D.map star = D`.
+
+Simplify using `only [hD, Matrix.fromBlocks_map]`. Apply the tactic sequence `congr 1 <;> ext i j <;> simp [Matrix.one_apply] <;> split_ifs <;> simp`. Use `clear_value D`. Use `set L := D * Aᵀ * M with hLdef`. Use `clear_value L`.
+
+Establish `hL : L * A.map star = 1`. Rewrite using `[hLdef, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Aᵀ, hA, hDD]`. Establish `e : Fin n ≃ Fin r ⊕ Fin s` using `(finSumFinEquiv.trans (finCongr hn)).symm`. Establish `hR : A.map star * L = 1` using `(Matrix.mul_eq_one_comm_of_equiv e.symm).mp hL`. Establish `hR' : A * L.map star = 1`.
+
+Use `congrArg (fun X => Matrix.map X star) hR` as an intermediate fact. Simplify `this` using `only [map_star_mul', map_star_star, map_star_one]`. Establish `hL' : L.map star * A = 1`. Use `congrArg (fun X => Matrix.map X star) hL` as an intermediate fact. Simplify `this` using `only [map_star_mul', map_star_star, map_star_one]`.
+
+Use `⟨A * D * L.map star, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (L.map star) A, hL', Matrix.one_mul, ← Matrix.mul_assoc D D, hDD, Matrix.one_mul, hR']`. Establish `hDL : D * L = Aᵀ * M`. Rewrite using `[hLdef, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, map_star_mul', map_star_mul', map_star_star, hDs, hDT]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (A * L.map star)ᵀ * M := by`. Rewrite using `[hA, hDL, Matrix.mul_assoc (L.map star)ᵀ D D, hDD, Matrix.mul_one, Matrix.transpose_mul, Matrix.mul_assoc]`.
+
+Use `_ = M := by rw [hR', Matrix.transpose_one, Matrix.one_mul]`. Introduce `x hx set a := L.map star *ᵥ x with ha_def`. Establish `hxa : x = A *ᵥ a` using `by rw [ha_def, Matrix.mulVec_mulVec, hR', Matrix.one_mulVec]`. Establish `ha : a ≠ 0`. Introduce `h`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[hxa, h, Matrix.mulVec_zero]`. Establish `hθx : (A * D * L.map star) *ᵥ x = A *ᵥ (D *ᵥ a)`. Rewrite using `[ha_def, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Establish `key : ∀ b c : Fin r ⊕ Fin s → ℂ, (A *ᵥ b) ⬝ᵥ M *ᵥ (A.map star *ᵥ c) = b ⬝ᵥ (Aᵀ * M * A.map star) *ᵥ c`.
+
+Introduce `b c`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, Matrix.mul_assoc]`. Establish `hval : ((A * D * L.map star) *ᵥ x) ⬝ᵥ M *ᵥ star x = a ⬝ᵥ star a`. Rewrite using `[hθx]`. Use `conv_lhs => rw [hxa, star_mulVec_map]`.
+
+Rewrite using `[key, hA, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, hDT, hDD, Matrix.vecMul_one]`. Rewrite using `[hval]`. Conclude with `(Complex.pos_iff.mp (Matrix.dotProduct_self_star_pos_iff.mpr ha)).1`.
+-/
 theorem exists_isCartan : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ), HasSig M r s → ∃ θ, IsCartan M θ := by
   intro n M r s ⟨hn, A, hA⟩
   set D : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hD

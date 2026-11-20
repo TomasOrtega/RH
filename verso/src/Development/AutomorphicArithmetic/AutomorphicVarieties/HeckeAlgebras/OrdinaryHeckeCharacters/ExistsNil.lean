@@ -18,6 +18,9 @@ section General
 
 variable {G V : Type} [CommGroup G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hc : Commute (ρ t) (ρ g)` using `by show ρ t * ρ g = ρ g * ρ t`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `h2 : Commute (ρ t - c • (1 : Module.End ℂ V)) (ρ g)` using `hc.sub_left ((Commute.one_left _).smul_left c)`. Conclude with `LinearMap.congr_fun ((h2.pow_left m).eq) v`.
+-/
 private theorem pow_comm (ρ : Representation ℂ G V) (t g : G) (c : ℂ) (m : ℕ) (v : V) :
     ((ρ t - c • (1 : Module.End ℂ V)) ^ m) (ρ g v) = ρ g (((ρ t - c • (1 : Module.End ℂ V)) ^ m) v) := by
   have hc : Commute (ρ t) (ρ g) := by
@@ -27,6 +30,11 @@ private theorem pow_comm (ρ : Representation ℂ G V) (t g : G) (c : ℂ) (m : 
     hc.sub_left ((Commute.one_left _).smul_left c)
   exact LinearMap.congr_fun ((h2.pow_left m).eq) v
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hv`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+
+Conclude with `N.toSubmodule.sub_mem (N.apply_mem_toSubmodule t ih) (N.toSubmodule.smul_mem c ih)`.
+-/
 private theorem pow_mem (ρ : Representation ℂ G V) (N : Subrepresentation ρ) (t : G) (c : ℂ) (m : ℕ)
     (v : V) (hv : v ∈ N.toSubmodule) : ((ρ t - c • (1 : Module.End ℂ V)) ^ m) v ∈ N.toSubmodule := by
   induction m with
@@ -36,6 +44,29 @@ private theorem pow_mem (ρ : Representation ℂ G V) (N : Subrepresentation ρ)
     simp only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]
     exact N.toSubmodule.sub_mem (N.apply_mem_toSubmodule t ih) (N.toSubmodule.smul_mem c ih)
 
+/- English proof (translation)
+Establish `hwf` using `((hasFiniteLength_iff_wellFounded ρ).1 hl).1`. Take `⟨N, hxN, hmax⟩` from `(wellFounded_gt (α := Subrepresentation ρ)).has_min {N | x ∉ N.toSubmodule} ⟨⊥, fun h => hx ((Submodule.mem_bot ℂ).1 h)⟩`. Establish `hxN' : x ∉ N.toSubmodule` using `hxN`. Use `⟨N, fun h => hxN' (by rw [h]; exact Submodule.mem_top), fun t c hx1 => ?_⟩` and prove the remaining obligations. Take `⟨E, hE⟩ : ∃ E : Module.End ℂ V, E = ρ t - c • (1 : Module.End ℂ V)` from `⟨_, rfl⟩`.
+
+Establish `hc : ∀ m g w, (E ^ m) (ρ g w) = ρ g ((E ^ m) w)`. Substitute `hE` using the available equality. Conclude with `fun m g w => pow_comm ρ t g c m w`. Establish `hm : ∀ m w, w ∈ N.toSubmodule → (E ^ m) w ∈ N.toSubmodule`. Substitute `hE` using the available equality.
+
+Conclude with `fun m w hw => pow_mem ρ N t c m w hw`. Establish `hEx : E x = 0`. Rewrite using `[hE, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hx1, sub_self]`. Rewrite using `[← hE]`. Set `M : ℕ →o Subrepresentation ρ` to `⟨fun j => ⟨N.toSubmodule.comap (E ^ j), fun g v hv => by show (E ^ j) (ρ g v) ∈ N.toSubmodule`.
+
+Rewrite using `[hc]`. Conclude with `N.apply_mem_toSubmodule g hv⟩, fun i j hij v hv => by`. Use `show (E ^ j) v ∈ N.toSubmodule`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hij`. Rewrite using `[add_comm, pow_add, Module.End.mul_apply]`.
+
+Conclude with `hm d _ hv⟩`. Take `⟨J, hJ⟩` from `WellFoundedGT.monotone_chain_condition M`. Use `⟨J + 1, fun v => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Set `L : Subrepresentation ρ` to `⟨N.toSubmodule ⊔ LinearMap.range (E ^ (J + 1)), fun g w hw => by`.
+
+Take `⟨n, hn, y, ⟨u, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[map_add, ← hc]`. Conclude with `Submodule.add_mem_sup (N.apply_mem_toSubmodule g hn) ⟨ρ g u, rfl⟩⟩`. Establish `hlt : N < L` using `lt_of_le_of_ne (le_sup_left : N.toSubmodule ≤ _) (fun h => hv (by`. Establish `h5 : (E ^ (J + 1)) v ∈ L.toSubmodule` using `Submodule.mem_sup_right ⟨v, rfl⟩`.
+
+Rewrite `h5` using `[← h]`. Conclude with `h5))`. Establish `hxL : x ∈ L.toSubmodule`. Assume the negation of the conclusion as `hxL`. Conclude with `hmax L hxL hlt`.
+
+Take `⟨n, hn, y, ⟨u, rfl⟩, hxe⟩` from `Submodule.mem_sup.1 hxL`. Establish `h1 : (E ^ (J + 1)) x = 0`. Rewrite using `[pow_succ, Module.End.mul_apply, hEx, map_zero]`. Establish `h2 : (E ^ (J + 1)) ((E ^ (J + 1)) u) ∈ N.toSubmodule`. Establish `h6` using `congrArg (E ^ (J + 1)) hxe`.
+
+Rewrite `h6` using `[map_add, h1]`. Rewrite using `[eq_neg_of_add_eq_zero_right h6]`. Conclude with `N.toSubmodule.neg_mem (hm _ n hn)`. Establish `h3 : u ∈ (M (2 * J + 2)).toSubmodule` using `by show (E ^ (2 * J + 2)) u ∈ N.toSubmodule`. Rewrite using `[show 2 * J + 2 = (J + 1) + (J + 1) by omega, pow_add, Module.End.mul_apply]`.
+
+Conclude with `h2`. Rewrite `h3` using `[← hJ (2 * J + 2) (by omega)]`. Express the relevant statement in the definitionally equal form `(E ^ J) u ∈ N.toSubmodule at h3`. Establish `h4 : (E ^ (J + 1)) u ∈ N.toSubmodule`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+
+Simplify using `using hm 1 _ h3`. Conclude with `hxN' (hxe ▸ N.toSubmodule.add_mem hn h4)`.
+-/
 private theorem exists_nil {ρ : Representation ℂ G V} (hl : HasFiniteLength ρ) {x : V} (hx : x ≠ 0) :
     ∃ N : Subrepresentation ρ, N ≠ ⊤ ∧ ∀ (t : G) (c : ℂ), ρ t x = c • x →
       ∃ m : ℕ, ∀ v, ((ρ t - c • (1 : Module.End ℂ V)) ^ m) v ∈ N.toSubmodule := by
@@ -96,6 +127,9 @@ private theorem exists_nil {ρ : Representation ℂ G V} (hl : HasFiniteLength �
     simpa using hm 1 _ h3
   exact hxN' (hxe ▸ N.toSubmodule.add_mem hn h4)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, h, pow_succ, mul_smul, sub_smul]`. Both sides reduce to the same expression.
+-/
 private theorem pow_eig {f : Module.End ℂ V} {v : V} {a : ℂ} (h : f v = a • v) (c : ℂ) (m : ℕ) :
     ((f - c • (1 : Module.End ℂ V)) ^ m) v = (a - c) ^ m • v := by
   induction m with
@@ -104,12 +138,28 @@ private theorem pow_eig {f : Module.End ℂ V} {v : V} {a : ℂ} (h : f v = a �
     rw [pow_succ', Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, h, pow_succ, mul_smul, sub_smul]
     rfl
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hv`. Rewrite `hm` using `[pow_eig h]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff'.1 ((smul_eq_zero.1 hm).resolve_right h0)).1`.
+-/
 private theorem eq_of_gen {f : Module.End ℂ V} {v : V} {a c : ℂ} (h : f v = a • v) (h0 : v ≠ 0)
     (hv : v ∈ f.maxGenEigenspace c) : a = c := by
   obtain ⟨m, hm⟩ := (Module.End.mem_maxGenEigenspace _ _ _).1 hv
   rw [pow_eig h] at hm
   exact sub_eq_zero.1 (pow_eq_zero_iff'.1 ((smul_eq_zero.1 hm).resolve_right h0)).1
 
+/- English proof (translation)
+Take `⟨S, ⟨hS0, hSE, hS⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ V)).has_min {S | S ≠ ⊥ ∧ S ≤ E ∧ ∀ t, ∀ v ∈ S, ρ t v ∈ S} ⟨E, hE0, le_rfl, hE⟩`. Establish `: Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.2 hS0`. Establish `key : ∀ t, ∃ c : ℂ, ∀ v ∈ S, ρ t v = c • v` using `fun t => by`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue ((ρ t).restrict (hS t))`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`.
+
+Establish `hw1 : ρ t w = c • (w : V)` using `congrArg Subtype.val hw.apply_eq_smul`. Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : S ⊓ Module.End.eigenspace (ρ t) c = S`. Assume the negation of the conclusion as `hne`. Use `hmin _ ⟨?_, inf_le_left.trans hSE, ?_⟩ (lt_of_le_of_ne inf_le_left hne)` and prove the remaining obligations.
+
+Conclude with `(Submodule.ne_bot_iff _).2 ⟨w, ⟨w.2, Module.End.mem_eigenspace_iff.2 hw1⟩, fun h => hw.2 (Subtype.ext h)⟩`. Introduce and unpack `s x ⟨hx, hx'⟩`. Use `⟨hS s x hx, Module.End.mem_eigenspace_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply, Module.End.mem_eigenspace_iff.1 hx', map_smul]`. Rewrite `hv` using `[← h1]`.
+
+Conclude with `Module.End.mem_eigenspace_iff.1 hv.2`. Use `choose c hc using key`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hS0`. Set `c' : G →* ℂ` to `{ toFun := c map_one' := by`. Use `hc 1 v hv` as an intermediate fact.
+
+Rewrite `this` using `[map_one, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hv0 (this.symm.trans (one_smul _ _).symm)`. Use the proof step `map_mul' := fun s t => by`. Use `hc (s * t) v hv` as an intermediate fact. Rewrite `this` using `[map_mul, Module.End.mul_apply, hc t v hv, map_smul, hc s v hv, smul_smul, mul_comm]`.
+
+Conclude with `smul_left_injective ℂ hv0 this.symm }`. Conclude with `⟨c'.toHomUnits, v, hSE hv, hv0, fun t => hc t v hv⟩`.
+-/
 private theorem exists_eig [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) (E : Submodule ℂ V) (hE0 : E ≠ ⊥)
     (hE : ∀ t, ∀ v ∈ E, ρ t v ∈ E) : ∃ χ : G →* ℂˣ, ∃ v ∈ E, v ≠ 0 ∧ ∀ t, ρ t v = (χ t : ℂ) • v := by
   obtain ⟨S, ⟨hS0, hSE, hS⟩, hmin⟩ := (wellFounded_lt (α := Submodule ℂ V)).has_min
@@ -145,6 +195,11 @@ private theorem exists_eig [FiniteDimensional ℂ V] (ρ : Representation ℂ G 
         exact smul_left_injective ℂ hv0 this.symm }
   exact ⟨c'.toHomUnits, v, hSE hv, hv0, fun t => hc t v hv⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.eq_iSup_inf_genEigenspace (p := E) (f := ρ t) ⊤ (hE t) (Module.End.iSup_maxGenEigenspace_eq_top (ρ t))]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : E ⊓ Module.End.genEigenspace (ρ t) c ⊤ = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`.
+
+Take `⟨χ, v, hv, hv0, hχ⟩` from `exists_eig ρ _ h0 fun s v hv => ⟨hE s v hv.1, by`. Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 hv.2`. Conclude with `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨m, by rw [pow_comm, hm, map_zero]⟩⟩`. Rewrite using `[← h χ v hv.1 hv0 hχ, eq_of_gen (hχ t) hv0 hv.2]`. Conclude with `inf_le_right`.
+-/
 private theorem le_gen [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) (E : Submodule ℂ V)
     (hE : ∀ t, ∀ v ∈ E, ρ t v ∈ E) (μ : G →* ℂˣ)
     (h : ∀ χ : G →* ℂˣ, ∀ v ∈ E, v ≠ 0 → (∀ t, ρ t v = (χ t : ℂ) • v) → χ = μ) (t : G) :
@@ -162,6 +217,31 @@ private theorem le_gen [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) (
 
 variable [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace.SeparableSpace G]
 
+/- English proof (translation)
+Take `⟨N, hNtop, hnil⟩` from `exists_nil hl hx`. Establish `hwf` using `((hasFiniteLength_iff_wellFounded ρ).1 hl).1`. Take `⟨P, ⟨hNP, hPtop⟩, hPmax⟩` from `(wellFounded_gt (α := Subrepresentation ρ)).has_min {P | N ≤ P ∧ P ≠ ⊤} ⟨N, le_rfl, hNtop⟩`. Establish `hcov : P ⋖ ⊤` using `covBy_iff_lt_and_eq_or_eq.2 ⟨lt_top_iff_ne_top.2 hPtop, fun c hPc _ => by`. Distinguish the cases in `hc : c = ⊤`.
+
+Conclude with `Or.inr hc`. Conclude with `Or.inl (by_contra fun hne => hPmax c ⟨hNP.trans hPc, hc⟩ (lt_of_le_of_ne hPc (Ne.symm hne)))⟩`. Establish `hirr` using `isIrreducible_subQuot hcov`. Establish `hsub : IsSubquotient (subQuot ⊤ P) ρ` using `⟨⊤, ⟨Submodule.mkQ _, fun g => LinearMap.ext fun w => rfl⟩, Submodule.mkQ_surjective _⟩`. Establish `hsm` using `hsub.isSmooth hρ`.
+
+Take `⟨μ, hμ⟩` from `GlobalTheory.TorusEigenform.exists_char_of_isIrreducible hsm hirr`. Set `π0 : V →ₗ[ℂ] (↥(⊤ : Subrepresentation ρ).toSubmodule ⧸ Submodule.comap (⊤ : Subrepresentation ρ).toSubmodule.subtype P.toSubmodule)` to `(Submodule.mkQ _) ∘ₗ (LinearMap.codRestrict _ LinearMap.id fun v => Submodule.mem_top)`. Establish `hπ0 : ∀ g v, π0 (ρ g v) = (μ g : ℂ) • π0 v` using `fun g v => by`. Rewrite using `[← hμ]`. Both sides reduce to the same expression.
+
+Establish `hz : ∀ v, π0 v = 0 ↔ v ∈ P.toSubmodule` using `fun v => by show Submodule.Quotient.mk (⟨v, Submodule.mem_top⟩ : ↥(⊤ : Subrepresentation ρ).toSubmodule) = 0 ↔ _`. Conclude with `Submodule.Quotient.mk_eq_zero _`. Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v, v ∉ P.toSubmodule := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Conclude with `hPtop (Subrepresentation.ext (eq_top_iff.2 fun v _ => hall v))`. Establish `hq0 : π0 v0 ≠ 0` using `fun h => hv0 ((hz v0).1 h)`. Establish `hpow : ∀ (t : G) (c : ℂ) (m : ℕ) (v : V), π0 (((ρ t - c • (1 : Module.End ℂ V)) ^ m) v) = (((μ t : ℂ) - c) ^ m) • π0 v`. Introduce `t c m`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro v`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `v`. Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, hπ0, ih, pow_succ', mul_smul, sub_smul]`.
+
+Use `⟨μ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hker : (μ.ker : Set G) = {g | subQuot ⊤ P g (π0 v0) = π0 v0}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_setOf_eq, hμ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Introduce `h`. Establish `h7 : ((μ g : ℂ) - 1) • π0 v0 = 0` using `by rw [sub_smul, h, one_smul, sub_self]`.
+
+Break down `smul_eq_zero.1 h7 with h' | h'` into its components or cases. Conclude with `Units.ext (by simpa [sub_eq_zero] using h')`. Conclude with `absurd h' hq0`. Use `show IsOpen (μ.ker : Set G)`. Rewrite using `[hker]`.
+
+Conclude with `hsm _`. Introduce `t c htc`. Take `⟨m, hm⟩` from `hnil t c htc`. Establish `h8` using `hpow t c m v0`. Rewrite `h8` using `[(hz _).2 (hNP (hm v0))]`.
+
+Break down `smul_eq_zero.1 h8.symm with h' | h'` into its components or cases. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff'.1 h').1`. Conclude with `absurd h' hq0`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ _, φ (π0 v0) ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Conclude with `hq0 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hall)`. Use `⟨φ ∘ₗ π0, fun h => hφ (by simpa using LinearMap.congr_fun h v0), fun g v => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hπ0, map_smul, smul_eq_mul]`.
+-/
 private theorem exists_form {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) (hl : HasFiniteLength ρ)
     {x : V} (hx : x ≠ 0) : ∃ μ : G →* ℂˣ, IsSmoothChar μ ∧ (∀ (t : G) (c : ℂ), ρ t x = c • x → (μ t : ℂ) = c) ∧
       ∃ l : V →ₗ[ℂ] ℂ, l ≠ 0 ∧ ∀ g v, l (ρ g v) = (μ g : ℂ) * l v := by
@@ -238,6 +318,13 @@ section Abs
 variable {G M : Type} [Group G] (I : Iwa G) [AddCommGroup M] [Module ℂ M] (π : Representation ℂ G M) (c : ℕ)
   (φ : I.T →* ℂˣ)
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨hN, hNm, hT⟩` from `hv`. Use `show ∀ g ∈ I.I1 c, π g v = v`. Introduce `g hg`. Take `⟨x, hx, t, ht, y, hy, rfl⟩` from `((iwMem G I c g).2.1).1 hg`.
+
+Establish `htT : t ∈ I.T` using `I.Tc_le c ht`. Establish `h1` using `hT ⟨t, htT⟩`. Rewrite `h1` using `[hφ ⟨t, htT⟩ ht, inv_one, Units.val_one, one_smul]`. Establish `h2 : π t v = v` using `h1`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hNm y hy, h2]`.
+
+Conclude with `hN x hx`.
+-/
 private theorem eig_le (hφ : ∀ t : I.T, (t : G) ∈ I.Tc c → φ t = 1) : I.eig π c φ ≤ fixd π (I.I1 c) := by
   intro v hv
   obtain ⟨hN, hNm, hT⟩ := hv
@@ -251,6 +338,13 @@ private theorem eig_le (hφ : ∀ t : I.T, (t : G) ∈ I.Tc c → φ t = 1) : I.
   rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hNm y hy, h2]
   exact hN x hx
 
+/- English proof (translation)
+Establish `st` using `((uOpLevel G I ℂ M π c).2.2 φ hφ).1`. Establish `key : ∀ (j : ℕ), ∀ w ∈ I.eig π c φ, I.uOp π a ((I.uOp π I.z ^ j) w) = (I.uOp π I.z ^ j) (I.uOp π a w)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro w _`.
+
+Simplify using the standard rewrite rules. Consider the case `succ j ih`. Introduce `w hw`. Rewrite using `[pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih _ (st _ I.z_mem w hw), (uOpMul G I ℂ M π _ _ ha I.z_mem w hw.1).2.1, (uOpMul G I ℂ M π _ _ I.z_mem ha w hw.1).2.1, I.comm a (I.P_le a ha) I.z (I.P_le _ I.z_mem)]`. Use `(Submodule.mem_iInf _).2 fun j => ?_` and prove the remaining obligations.
+
+Take `⟨w, hw, rfl⟩` from `(Submodule.mem_iInf _).1 hv j`. Conclude with `⟨_, st a ha w hw, (key j w hw).symm⟩`.
+-/
 private theorem inv_stab (hφ : ∀ t : I.T, (t : G) ∈ I.Tc c → φ t = 1) {a : G} (ha : a ∈ I.P) {v : M}
     (hv : v ∈ ⨅ j : ℕ, (I.eig π c φ).map (I.uOp π I.z ^ j)) :
     I.uOp π a v ∈ ⨅ j : ℕ, (I.eig π c φ).map (I.uOp π I.z ^ j) := by
@@ -268,6 +362,17 @@ private theorem inv_stab (hφ : ∀ t : I.T, (t : G) ∈ I.Tc c → φ t = 1) {a
   obtain ⟨w, hw, rfl⟩ := (Submodule.mem_iInf _).1 hv j
   exact ⟨_, st a ha w hw, (key j w hw).symm⟩
 
+/- English proof (translation)
+Establish `hE5` using `eig_le I π c φ hφ`. Use `haveI : FiniteDimensional ℂ (I.eig π c φ) := Submodule.finiteDimensional_of_le hE5`. Establish `hst : ∀ w ∈ I.eig π c φ, I.uOp π I.z w ∈ I.eig π c φ` using `((uOpLevel G I ℂ M π c).2.2 φ hφ).1 I.z I.z_mem`. Set `f : I.eig π c φ →ₗ[ℂ] I.eig π c φ` to `(I.uOp π I.z).restrict hst`. Establish `hvE : v ∈ I.eig π c φ`.
+
+Take `⟨w, hw, hwv⟩` from `(Submodule.mem_iInf _).1 hv 0`. Rewrite `hwv` using `[pow_zero, Module.End.one_apply]`. Conclude with `hwv ▸ hw`. Establish `hvE'` using `hvE`. Take `⟨hvN, -⟩` from `hvE'`.
+
+Take `⟨j, hj⟩` from `(propCker G I ℂ M π hs v hvN).1 h0`. Establish `key` using `LinearMap.isCompl_iSup_ker_pow_iInf_range_pow f`. Establish `h1 : (⟨v, hvE⟩ : I.eig π c φ) ∈ ⨆ n, (f ^ n).ker` using `Submodule.mem_iSup_of_mem j (by`. Rewrite using `[LinearMap.mem_ker, Module.End.pow_restrict, LinearMap.restrict_apply]`. Conclude with `Subtype.ext hj)`.
+
+Establish `h2 : (⟨v, hvE⟩ : I.eig π c φ) ∈ ⨅ n, (f ^ n).range` using `(Submodule.mem_iInf _).2 fun n => by`. Take `⟨w, hw, hwv⟩` from `(Submodule.mem_iInf _).1 hv n`. Use `⟨⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.pow_restrict, LinearMap.restrict_apply]`. Conclude with `Subtype.ext hwv`.
+
+Establish `h3 : (⟨v, hvE⟩ : I.eig π c φ) ∈ (⨆ n, (f ^ n).ker) ⊓ (⨅ n, (f ^ n).range)` using `Submodule.mem_inf.2 ⟨h1, h2⟩`. Rewrite `h3` using `[key.inf_eq_bot]`. Conclude with `congrArg Subtype.val ((Submodule.mem_bot ℂ).1 h3)`.
+-/
 private theorem inv_inj (hφ : ∀ t : I.T, (t : G) ∈ I.Tc c → φ t = 1) (hs : I.Smooth π)
     [FiniteDimensional ℂ (fixd π (I.I1 c))] {v : M}
     (hv : v ∈ ⨅ j : ℕ, (I.eig π c φ).map (I.uOp π I.z ^ j)) (h0 : v ∈ I.jacKer π) : v = 0 := by
@@ -303,10 +408,36 @@ section Num
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[torusChar_apply, Finset.prod_eq_single i (fun j _ hj => by rw [Pi.mulSingle_eq_of_ne hj, map_one]) (fun h => absurd (Finset.mem_univ i) h), Pi.mulSingle_eq_same]`.
+-/
 private theorem tc_single (ψ : Fin n → kˣ →* ℂˣ) (i : Fin n) (x : kˣ) : torusChar ψ (Pi.mulSingle i x) = ψ i x := by
   rw [torusChar_apply, Finset.prod_eq_single i (fun j _ hj => by rw [Pi.mulSingle_eq_of_ne hj, map_one])
     (fun h => absurd (Finset.mem_univ i) h), Pi.mulSingle_eq_same]
 
+/- English proof (translation)
+Establish `hQ0 : (Nat.card 𝓀[k] : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `harg : (Nat.card 𝓀[k] : ℂ).arg ≠ Real.pi`. Rewrite using `[Complex.natCast_arg]`. Conclude with `Real.pi_pos.ne`. Establish `hu : ∀ s : ℂ, ((absPow k s (unif k) : ℂˣ) : ℂ) = ((Nat.card 𝓀[k] : ℂ) ^ s)⁻¹`.
+
+Introduce `s`. Rewrite using `[val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, ord_eq_one UpperTheory.V.Hi.GlAx.unif_spec]`. Simplify using `only [Complex.ofReal_zpow, zpow_neg, zpow_one, Complex.ofReal_inv, Complex.ofReal_natCast, resCard]`. Conclude with `Complex.inv_cpow _ _ harg`. Establish `he : ∀ (s : ℂ) (i : Fin n), ((absPow k s (unif k ^ (if (i : ℕ) < j then 1 else 0 : ℤ)) : ℂˣ) : ℂ) = if (i : ℕ) < j then ((Nat.card 𝓀[k] : ℂ) ^ s)⁻¹ else 1`.
+
+Introduce `s i`. Apply the tactic sequence `split_ifs <;> simp [hu]`. Establish `hω : ∀ i : Fin n, ((ω i (unif k ^ (if (i : ℕ) < j then 1 else 0 : ℤ)) : ℂˣ) : ℂ) = if (i : ℕ) < j then ((ω i (unif k) : ℂˣ) : ℂ) else 1`. Introduce `i`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hdet : ∀ (t : Fin n → kˣ) (i : Fin n), Matrix.GeneralLinearGroup.det ((leviTorus k (Fin n) t) i) = t i` using `fun t i => by`. Establish `h` using `congrFun ((leviTorus k (Fin n)).symm_apply_apply t) i`. Conclude with `h`. Establish `alg : ∀ (a b w : ℂ) (i : ℕ), i < n → a + b = (n : ℂ) - 1 - (i : ℂ) → ((Nat.card 𝓀[k] : ℂ) ^ a)⁻¹ * (w * ((Nat.card 𝓀[k] : ℂ) ^ b)⁻¹) = w * ((Nat.card 𝓀[k] : ℂ) ^ i / (Nat.card 𝓀[k] : ℂ) ^ (n - 1))`. Introduce `a b w i hi hab`.
+
+Establish `h1 : (Nat.card 𝓀[k] : ℂ) ^ a * (Nat.card 𝓀[k] : ℂ) ^ b = (Nat.card 𝓀[k] : ℂ) ^ (n - 1) / (Nat.card 𝓀[k] : ℂ) ^ i`. Rewrite using `[← Complex.cpow_add _ _ hQ0, hab, Complex.cpow_sub _ _ hQ0, Complex.cpow_natCast, ← Complex.cpow_natCast _ (n - 1), Nat.cast_sub (by omega : 1 ≤ n), Nat.cast_one]`. Rewrite using `[show ((Nat.card 𝓀[k] : ℂ) ^ a)⁻¹ * (w * ((Nat.card 𝓀[k] : ℂ) ^ b)⁻¹) = w * ((Nat.card 𝓀[k] : ℂ) ^ a * (Nat.card 𝓀[k] : ℂ) ^ b)⁻¹ by ring, h1, inv_div]`. Establish `hsum : ∀ f : ℕ → ℕ, ∑ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < j), f i = ∑ i ∈ Finset.range j, f i`. Introduce `f`.
+
+Rewrite using `[Finset.sum_filter, Fin.sum_univ_eq_sum_range (fun i => if i < j then f i else 0) n]`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hj`. Rewrite using `[Finset.sum_range_add, Finset.sum_congr rfl (fun i hi => if_pos (Finset.mem_range.1 hi)), Finset.sum_eq_zero (fun x _ => if_neg (by omega)), add_zero]`. Establish `hsumid : ∑ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < j), (i : ℕ) = ∑ i ∈ Finset.range j, i` using `hsum (fun i => i)`. Establish `hcard : (Finset.univ.filter (fun i : Fin n => (i : ℕ) < j)).card = j`.
+
+Rewrite using `[Finset.card_eq_sum_ones, hsum (fun _ => 1)]`. Simplify using the standard rewrite rules. Establish `hexp : j * (n - j) + (∑ i ∈ Finset.range j, i) + (∑ i ∈ Finset.range j, i) = (n - 1) * j`. Establish `h2` using `Finset.sum_range_id_mul_two j`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hj`.
+
+Break down `j with _ | j` into its components or cases. Simplify using the standard rewrite rules. Rewrite `*` using `[show j + 1 + d - (j + 1) = d by omega, show j + 1 + d - 1 = j + d by omega]`. Rewrite `h2` using `[show j + 1 - 1 = j by omega]`. Use polynomial arithmetic with `[h2]`.
+
+Rewrite using `[deltaHalf_apply, torusChar_apply, Units.coe_prod, Units.coe_prod]`. Simplify using `only [hdet, modExp_fin _ (fun _ => Fintype.card_unit), MonoidHom.mul_apply, Units.val_mul, he, hω]`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `hprod : (∏ x : Fin n, (if (x : ℕ) < j then ((Nat.card 𝓀[k] : ℂ) ^ ((((n : ℤ) - 1 - 2 * ((x : ℕ) : ℤ) : ℤ) : ℂ) / 2))⁻¹ else 1) * ((if (x : ℕ) < j then ((ω x (unif k) : ℂˣ) : ℂ) else 1) * if (x : ℕ) < j then ((Nat.card 𝓀[k] : ℂ) ^ (((n : ℂ) - 1) / 2))⁻¹ else 1)) = ∏ x : Fin n, if …` using `Finset.prod_congr rfl fun x _ => by split_ifs with h`. Conclude with `alg _ _ _ x x.isLt (by push_cast; ring)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hprod, ← Finset.prod_filter]`. Unfold `psEig`. Rewrite using `[Nat.cast_pow, Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_div_distrib, Finset.prod_inv_distrib, Finset.prod_const, Finset.prod_pow_eq_pow_sum, hcard, hsumid]`. Rewrite using `[show ((Nat.card 𝓀[k] : ℂ) ^ (n - 1)) ^ j = (Nat.card 𝓀[k] : ℂ) ^ (j * (n - j)) * (Nat.card 𝓀[k] : ℂ) ^ (∑ i ∈ Finset.range j, i) * (Nat.card 𝓀[k] : ℂ) ^ (∑ i ∈ Finset.range j, i) by`.
+
+Rewrite using `[← pow_mul, ← pow_add, ← pow_add, hexp]]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem num (ω : Fin n → kˣ →* ℂˣ) {j : ℕ} (hj : j ≤ n) :
     ((Nat.card 𝓀[k] ^ (j * (n - j)) : ℕ) : ℂ) *
       ((deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) fun i => unif k ^ (if (i : ℕ) < j then 1 else 0 : ℤ)) : ℂ) *
@@ -390,6 +521,49 @@ end Num
 end UpperTheory.V.Hi.OrdB
 
 open GlobalTheory.PRep in
+/- English proof (translation)
+Introduce `H k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 hD hne`. Take `⟨hker, hsm, hI, -, -, -, -, hidx, -, hT⟩` from `glBridge k n V π`. Establish `hφ : ∀ t : (glIwa k n).T, (t : GL (Fin n) k) ∈ (glIwa k n).Tc c → φ t = 1` using `fun t ht => by`. Take `⟨y, hy, hy'⟩` from `hT t`. Establish `e : (t : GL (Fin n) k) ∈ φ.ker.map (glIwa k n).T.subtype`.
+
+Rewrite using `[hy]`. Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `⟨eT k n i (y i), hφ0 i _ (hy' c ht i), rfl⟩`. Take `⟨s, hs, e⟩` from `e`.
+
+Conclude with `(Subtype.ext e : s = t) ▸ hs`. Use `haveI : FiniteDimensional ℂ (fixd π ((glIwa k n).I1 c)) := by`. Establish `hfix : fixd π ((glIwa k n).I1 c) = fixed π ((glIwa k n).I1 c)`. Use extensionality with `v`. Conclude with `⟨fun h u => by simpa using h u u.2, fun h u hu => by simpa using h ⟨u, hu⟩⟩`.
+
+Rewrite using `[hfix]`. Conclude with `((H.loc.bz k).1 _ V π hπ hirr).2 _ (hI c).1 (hI c).2`. Set `p : V →ₗ[ℂ] Jacquet π (unipB k (Fin n))` to `Submodule.mkQ _`. Establish `hinj : ∀ v ∈ invPart π c φ, p v = 0 → v = 0` using `fun v hv h => OrdB.inv_inj _ π c φ hφ (hsm hπ) hv (hker ▸ (Submodule.Quotient.mk_eq_zero _).1 h)`. Establish `heig : invPart π c φ ≤ (glIwa k n).eig π c φ` using `fun v hv => by simpa using (Submodule.mem_iInf _).1 hv 0`.
+
+Establish `hp : ∀ t v, jacB π t (p v) = (((deltaHalf k (fun _ : Fin n => Unit) (leviTorus k (Fin n) t))⁻¹ : ℂˣ) : ℂ) • p (π (diagT k (Fin n) t) v)` using `fun t v => UnramFixed.jacB_apply π t _`. Set `E : Submodule ℂ (Jacquet π (unipB k (Fin n)))` to `⨅ (i : Fin n) (u : Uo k), Module.End.eigenspace (jacB π (Pi.mulSingle i (u : kˣ))) (((φ (eT k n i u))⁻¹ : ℂˣ) : ℂ)`. Establish `hE : ∀ y, y ∈ E ↔ ∀ (i : Fin n) (u : Uo k), jacB π (Pi.mulSingle i (u : kˣ)) y = (((φ (eT k n i u))⁻¹ : ℂˣ) : ℂ) • y` using `fun y => by`. Simplify using `only [E, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Establish `hEs : ∀ t, ∀ y ∈ E, jacB π t y ∈ E` using `fun t y hy => (hE _).2 fun i u => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_comm, map_mul, Module.End.mul_apply, (hE _).1 hy, map_smul]`. Establish `hpE : ∀ v ∈ invPart π c φ, p v ∈ E` using `fun v hv => (hE _).2 fun i u => by`. Establish `hO : (Pi.mulSingle i (u : kˣ) : Fin n → kˣ) ∈ torusO k (Fin n)` using `fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `u.2`. Simplify using `[Pi.mulSingle_eq_of_ne h]`. Rewrite using `[hp, UnramFixed.deltaHalf_torusO k hO, inv_one, Units.val_one, one_smul, ← map_smul]`. Conclude with `congrArg p ((heig hv).2.2 (eT k n i u))`.
+
+Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hl : HasFiniteLength (jacB π)` using `(hasFiniteLength_comp_iff _ _ (leviTorus k (Fin n)).surjective).2 ((H.loc.bz k).2.1 _ _ _ (points (Fin n)) _ π hπ (hasFiniteLength_of_isIrreducible hirr))`. Use `haveI := GlobalTheory.TorusEigenform.secondCountableTopology_units k`. Take `⟨μ, hμs, hμ, l, hl0, hle⟩` from `OrdB.exists_form (isSmooth_jacB hπ) hl fun h => hx0 (hinj x hx h)`. Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψ, rfl⟩ : ∃ ψ : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ψ i)) ∧ torusChar ψ = μ := by`.
+
+Use `⟨fun i => μ.comp (MonoidHom.mulSingle (fun _ => kˣ) i), fun i => hμs.comp _ (continuous_mulSingle (A := fun _ => kˣ) i), MonoidHom.ext fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[torusChar_apply]`. Use `conv_rhs => rw [← Finset.univ_prod_mulSingle t, map_prod]`. Both sides reduce to the same expression. Establish `hsq : IsSubquotient π (prinSeries ψ)` using `GlobalTheory.SatakeExists.isSubquotient_of_eigenform hπ hirr _ l hl0 hle`.
+
+Establish `hψφ : ∀ i (u : Uo k), ψ i u = (φ (eT k n i u))⁻¹` using `fun i u => by`. Rewrite using `[← OrdB.tc_single]`. Conclude with `Units.ext (hμ _ _ ((hE _).1 (hpE x hx) i u))`. Take `⟨hfd, -, hmult⟩` from `UpperTheory.V.AlgebraTools.jqMult H.loc.geo H.loc.bz k n V π ψ hπ hψ hsq`. Establish `hw : ∀ w : Equiv.Perm (Fin n), (∀ i (u : Uo k), ψ (w i) u = ψ i u) → w = 1` using `fun w h => by`.
+
+Use `Equiv.ext fun i => by_contra fun hi => ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hD _ _ hi`. Conclude with `hu (inv_injective ((hψφ _ u).symm.trans ((h i u).trans (hψφ i u))))`. Establish `hgen : E ≤ ⨅ t, Module.End.maxGenEigenspace (jacB π t) (torusChar ψ t : ℂ)`. Use `le_iInf (OrdB.le_gen _ E hEs _ fun χ y hy hy0 hχ => ?_)` and prove the remaining obligations.
+
+Establish `h1 : (⨅ t, Module.End.maxGenEigenspace (jacB π t) (χ t : ℂ) : Submodule ℂ _) ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨y, (Submodule.mem_iInf _).2 fun t => (Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, by rw [OrdB.pow_eig (hχ t)]; simp⟩, hy0⟩`. Establish `h2` using `(Nat.pos_of_ne_zero fun h => h1 (Submodule.finrank_eq_zero.1 h)).trans_le (hmult χ)`. Take `⟨⟨w, rfl⟩⟩` from `(Nat.card_pos_iff.1 h2).1`. Rewrite using `[hw w fun i u => ?_]`. Both sides reduce to the same expression.
+
+Establish `h3` using `(hχ _).symm.trans ((hE _).1 hy i u)`. Rewrite `h3` using `[OrdB.tc_single, ← hψφ]`. Conclude with `Units.ext (smul_left_injective ℂ hy0 h3)`. Establish `hE1 : Module.finrank ℂ E ≤ 1`. Use `(Submodule.finrank_mono hgen).trans ((hmult _).trans ?_)` and prove the remaining obligations.
+
+Establish `key : ∀ a : {w : Equiv.Perm (Fin n) // torusChar ψ = torusChar (ψ ∘ w)}, a.1 = 1` using `fun a => hw _ fun i u => by`. Use `DFunLike.congr_fun a.2 (Pi.mulSingle i (u : kˣ))` as an intermediate fact. Rewrite `this` using `[OrdB.tc_single, OrdB.tc_single]`. Conclude with `this.symm`. Conclude with `Finite.card_le_one_iff_subsingleton.2 ⟨fun a b => Subtype.ext ((key a).trans (key b).symm)⟩`.
+
+Establish `hact : ∀ t, ∀ y ∈ E, jacB π t y = (torusChar ψ t : ℂ) • y` using `fun t y hy => by`. Distinguish the cases in `hy0 : y = 0`. Simplify using `[hy0]`. Establish `hy1 : (⟨y, hy⟩ : E) ≠ 0` using `fun h => hy0 (congrArg Subtype.val h)`. Establish `: Nontrivial E` using `nontrivial_of_ne _ _ hy1`.
+
+Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hy1).1 (le_antisymm hE1 Module.finrank_pos) ⟨_, hEs t y hy⟩`. Establish `ha' : jacB π t y = a • y` using `(congrArg Subtype.val ha).symm`. Rewrite using `[ha', OrdB.eq_of_gen ha' hy0 ((Submodule.mem_iInf _).1 (hgen hy) t)]`. Take `⟨ω, rfl⟩ : ∃ ω : Fin n → kˣ →* ℂˣ, (fun i => ω i * absPow k (((n : ℂ) - 1) / 2)) = ψ` from `⟨fun i => ψ i * (absPow k (((n : ℂ) - 1) / 2))⁻¹, funext fun i => inv_mul_cancel_right _ _⟩`. Establish `hω : ∀ i, IsSmoothChar (ω i)` using `fun i => by`.
+
+Use `(hψ i).mul (isSmoothChar_of_isUnram (isUnram_absPow k (-(((n : ℂ) - 1) / 2))))` as an intermediate fact. Rewrite `this` using `[absPow_neg, mul_inv_cancel_right]`. Then use the resulting hypothesis. Establish `hinv : IsInvOn φ ω` using `fun i u => by`. Use `hψφ i u` as an intermediate fact. Rewrite `this` using `[MonoidHom.mul_apply, isUnram_absPow k _ _ u.2, mul_one]`.
+
+Rewrite using `[this, inv_inv]`. Use `⟨ω, hω, hinv, (psIrr H k n ω hω fun i j hij => ?_).2 V π hirr hsq, le_antisymm ?_ ?_, fun v hv j hj => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hD i j hij`. Rewrite `hu` using `[hinv, hinv]`. Use `⟨fun h => hu (by rw [h]), fun h => hu ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h, MonoidHom.mul_apply, isUnram_absPow k _ _ u.2, mul_one]`. Use `le_trans (LinearMap.finrank_le_finrank_of_injective (f := p.restrict hpE) ?_) hE1` and prove the remaining obligations. Conclude with `(injective_iff_map_eq_zero _).2 fun v h => Subtype.ext (hinj v v.2 (congrArg Subtype.val h))`. Use `haveI : FiniteDimensional ℂ (invPart π c φ) := Submodule.finiteDimensional_of_le (heig.trans (OrdB.eig_le _ π c φ hφ))`. Conclude with `Nat.pos_of_ne_zero fun h => hne (Submodule.finrank_eq_zero.1 h)`.
+
+Rewrite using `[← sub_eq_zero]`. Use `hinj _ (sub_mem (OrdB.inv_stab _ π c φ hφ (al_mem k n j) hv) (Submodule.smul_mem _ _ hv)) ?_` and prove the remaining obligations. Establish `h1` using `propCp _ (glIwa k n) ℂ V π _ (al_mem k n j) v (heig hv).1`. Rewrite `h1` using `[hker, hidx j hj]`. Establish `h2 : p _ = 0` using `(Submodule.Quotient.mk_eq_zero _).2 h1`.
+
+Establish `h3` using `(hp (fun i => unif k ^ (if (i : ℕ) < j then 1 else 0 : ℤ)) v).symm.trans (hact _ _ (hpE v hv))`. Rewrite `h3` using `[← Units.smul_def, inv_smul_eq_iff, Units.smul_def, smul_smul]`. Rewrite `h2`, the goal using `[map_sub, map_smul, sub_eq_zero]`. Rewrite using `[h2, ← OrdB.num ω hj, mul_smul, ← h3]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Hi.ordB :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π → π.IsIrreducible → ∀ (c : ℕ) (φ : (glIwa k n).T →* ℂˣ), (∀ i (y : Uo k), (y : kˣ) ∈ Uc k (c + 1) → φ (eT k n i y) = 1) → Distinct φ → invPart π c φ ≠ ⊥ → ∃ ω : Fin n → kˣ →* ℂˣ, (∀ i, IsSmoothChar (ω i)) ∧ IsInvOn φ ω ∧ Nonempty (π.Equiv (PS ω)) ∧ Module.finrank ℂ (invPart π c φ) = 1 ∧ ∀ v ∈ invPart π c φ, ∀ j ≤ n, (glIwa k n).uOp π (al k n j) v = psEig ω j • v := by
   intro H k _ _ _ _ n V _ _ π hπ hirr c φ hφ0 hD hne

@@ -21,17 +21,29 @@ variable {K ι : Type} [NormedField K] [IsUltrametricDist K]
 
 def Bd (c : ℝ) (f : MvPowerSeries ι K) : Prop := ∀ n, ‖MvPowerSeries.coeff n f‖ ≤ c
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_add] exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) (hg n))`.
+-/
 theorem bd_add {c : ℝ} {f g : MvPowerSeries ι K} (hf : Bd c f) (hg : Bd c g) : Bd c (f + g) :=
   fun n => by
     rw [map_add]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hf n) (hg n))
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_neg, norm_neg]; exact hf n`.
+-/
 theorem bd_neg {c : ℝ} {f : MvPowerSeries ι K} (hf : Bd c f) : Bd c (-f) := fun n => by
   rw [map_neg, norm_neg]; exact hf n
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `bd_add hf (bd_neg hg)`.
+-/
 theorem bd_sub {c : ℝ} {f g : MvPowerSeries ι K} (hf : Bd c f) (hg : Bd c g) : Bd c (f - g) := by
   rw [sub_eq_add_neg]; exact bd_add hf (bd_neg hg)
 
+/- English proof (translation)
+Introduce `n` and use `by classical rw [MvPowerSeries.coeff_mul] refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) fun x _ => ?_ rw [norm_mul] exact mul_le_mul (hf _) (hg _) (norm_nonneg _) ha`.
+-/
 theorem bd_mul {a b : ℝ} {f g : MvPowerSeries ι K} (ha : 0 ≤ a) (hb : 0 ≤ b) (hf : Bd a f)
     (hg : Bd b g) : Bd (a * b) (f * g) := fun n => by
   classical
@@ -40,6 +52,9 @@ theorem bd_mul {a b : ℝ} {f g : MvPowerSeries ι K} (ha : 0 ≤ a) (hb : 0 ≤
   rw [norm_mul]
   exact mul_le_mul (hf _) (hg _) (norm_nonneg _) ha
 
+/- English proof (translation)
+Introduce `n` and use `by classical rw [MvPowerSeries.coeff_C] split_ifs · exact ha · simpa using hc`.
+-/
 theorem bd_C {c : ℝ} (hc : 0 ≤ c) {a : K} (ha : ‖a‖ ≤ c) :
     Bd c (MvPowerSeries.C a : MvPowerSeries ι K) := fun n => by
   classical
@@ -48,31 +63,52 @@ theorem bd_C {c : ℝ} (hc : 0 ≤ c) {a : K} (ha : ‖a‖ ≤ c) :
   · exact ha
   · simpa using hc
 
+/- English proof (translation)
+Use `bd_C (ι := ι) (K := K) zero_le_one (a := 1) (by simp)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem bd_one : Bd 1 (1 : MvPowerSeries ι K) := by
   have := bd_C (ι := ι) (K := K) zero_le_one (a := 1) (by simp)
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using bd_one`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `bd_mul (pow_nonneg ha k) ha ih hf`.
+-/
 theorem bd_pow {a : ℝ} {f : MvPowerSeries ι K} (ha : 0 ≤ a) (hf : Bd a f) (k : ℕ) :
     Bd (a ^ k) (f ^ k) := by
   induction k with
   | zero => simpa using bd_one
   | succ k ih => rw [pow_succ, pow_succ]; exact bd_mul (pow_nonneg ha k) ha ih hf
 
+/- English proof (translation)
+Introduce `n` and use `by rw [map_sum] exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc fun a ha => h a ha n`.
+-/
 theorem bd_sum {α : Type} {c : ℝ} (hc : 0 ≤ c) (s : Finset α) (F : α → MvPowerSeries ι K)
     (h : ∀ a ∈ s, Bd c (F a)) : Bd c (∑ a ∈ s, F a) := fun n => by
   rw [map_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc fun a ha => h a ha n
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (MvPowerSeries.C : K →+* MvPowerSeries ι K)]`. Conclude with `bd_C zero_le_one (IsUltrametricDist.norm_natCast_le_one K k)`.
+-/
 theorem bd_natCast (k : ℕ) : Bd 1 ((k : ℕ) : MvPowerSeries ι K) := by
   rw [← map_natCast (MvPowerSeries.C : K →+* MvPowerSeries ι K)]
   exact bd_C zero_le_one (IsUltrametricDist.norm_natCast_le_one K k)
 
+/- English proof (translation)
+Simplify using `using bd_mul zero_le_one zero_le_one hf hg`.
+-/
 theorem int_mul {f g : MvPowerSeries ι K} (hf : Bd 1 f) (hg : Bd 1 g) : Bd 1 (f * g) := by
   simpa using bd_mul zero_le_one zero_le_one hf hg
 
+/- English proof (translation)
+Simplify using `using bd_pow zero_le_one hf k`.
+-/
 theorem int_pow {f : MvPowerSeries ι K} (hf : Bd 1 f) (k : ℕ) : Bd 1 (f ^ k) := by
   simpa using bd_pow zero_le_one hf k
 
+/- English proof (translation)
+Simplify using `using bd_mul hc zero_le_one hf hg`.
+-/
 theorem sm_mul {c : ℝ} (hc : 0 ≤ c) {f g : MvPowerSeries ι K} (hf : Bd c f) (hg : Bd 1 g) :
     Bd c (f * g) := by
   simpa using bd_mul hc zero_le_one hf hg
@@ -87,6 +123,9 @@ def truncD (d : ℕ) (f : MvPowerSeries ι K) : MvPowerSeries ι K :=
   ∑ m ∈ (Finsupp.finite_of_degree_lt (σ := ι) d).toFinset,
     MvPowerSeries.monomial m (MvPowerSeries.coeff m f)
 
+/- English proof (translation)
+Unfold `truncD`. Rewrite using `[map_sum]`. Simplify using `only [MvPowerSeries.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_truncD (d : ℕ) (f : MvPowerSeries ι K) (n : ι →₀ ℕ) :
     MvPowerSeries.coeff n (truncD d f) = if n.degree < d then MvPowerSeries.coeff n f else 0 := by
   classical
@@ -96,20 +135,32 @@ theorem coeff_truncD (d : ℕ) (f : MvPowerSeries ι K) (n : ι →₀ ℕ) :
   rw [Finset.sum_ite_eq]
   simp
 
+/- English proof (translation)
+Introduce `n hn`. Rewrite using `[map_sub, coeff_truncD, if_pos hn, sub_self]`.
+-/
 theorem low_sub_truncD (d : ℕ) (f : MvPowerSeries ι K) : Low d (f - truncD d f) := by
   intro n hn
   rw [map_sub, coeff_truncD, if_pos hn, sub_self]
 
+/- English proof (translation)
+Rewrite using `[coeff_truncD, if_neg (by omega)]`.
+-/
 theorem coeff_truncD_self {d : ℕ} (f : MvPowerSeries ι K) {n : ι →₀ ℕ} (hn : n.degree = d) :
     MvPowerSeries.coeff n (truncD d f) = 0 := by
   rw [coeff_truncD, if_neg (by omega)]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_truncD, if_pos (by simpa using hd), MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+-/
 theorem constantCoeff_truncD {d : ℕ} (hd : 0 < d) (f : MvPowerSeries ι K) :
     MvPowerSeries.constantCoeff (truncD d f) = MvPowerSeries.constantCoeff f := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_truncD, if_pos (by simpa using hd),
     MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
 
 omit [Finite ι] in
+/- English proof (translation)
+Use `h m (by omega)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem coeff_eq_of_low {X Y : MvPowerSeries ι K} {d : ℕ} (h : Low (d + 1) (X - Y))
     {m : ι →₀ ℕ} (hm : m.degree = d) : MvPowerSeries.coeff m X = MvPowerSeries.coeff m Y := by
   have := h m (by omega)
@@ -121,6 +172,13 @@ section Induct
 
 variable {K ι : Type} [NormedField K] [Finite ι]
 
+/- English proof (translation)
+Establish `key : ∀ d, ∀ m : ι →₀ ℕ, m.degree = d → ‖MvPowerSeries.coeff m X‖ ≤ c`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Use `h d ?_` and prove the remaining obligations.
+
+Introduce `n`. Rewrite using `[coeff_truncD]`. Use `split_ifs with hn`. Conclude with `ih _ hn n rfl`. Simplify using `using hc`.
+
+Conclude with `fun n => key _ n rfl`.
+-/
 theorem bd_induct {c : ℝ} (hc : 0 ≤ c) (X : MvPowerSeries ι K)
     (h : ∀ d, Bd c (truncD d X) → ∀ m : ι →₀ ℕ, m.degree = d → ‖MvPowerSeries.coeff m X‖ ≤ c) :
     Bd c X := by
@@ -138,6 +196,11 @@ theorem bd_induct {c : ℝ} (hc : 0 ≤ c) (X : MvPowerSeries ι K)
 
 variable [IsUltrametricDist K]
 
+/- English proof (translation)
+Use `bd_induct hc X fun d hl m hm => ?_` and prove the remaining obligations. Establish `hXh` using `low_sub_truncD d X`. Establish `hU' : Low 1 (U - 1)` using `(low_one_iff _).2 (by simp [hU1])`. Establish `hlow : Low (d + 1) (X - (X * U - truncD d X * U + truncD d X))`. Establish `e : X - (X * U - truncD d X * U + truncD d X) = -((X - truncD d X) * (U - 1))` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `low_neg (low_mul hXh hU')`. Rewrite using `[coeff_eq_of_low hlow hm, map_add, coeff_truncD_self X hm, add_zero]`. Conclude with `bd_sub h (sm_mul hc hl hU) m`.
+-/
 theorem bd_of_mul {c : ℝ} (hc : 0 ≤ c) {X U : MvPowerSeries ι K} (hU : Bd 1 U)
     (hU1 : MvPowerSeries.constantCoeff U = 1) (h : Bd c (X * U)) : Bd c X := by
   refine bd_induct hc X fun d hl m hm => ?_
@@ -160,11 +223,19 @@ def PhiH {p : ℕ} (hp : p ≠ 0) (σ : K →+* K) : MvPowerSeries ι K →+* Mv
   ((MvPowerSeries.expand p hp : MvPowerSeries ι K →ₐ[K] MvPowerSeries ι K) :
     MvPowerSeries ι K →+* MvPowerSeries ι K).comp (MvPowerSeries.map σ)
 
+/- English proof (translation)
+Rewrite using `[frobVar_eq_expand hp]`. Both sides reduce to the same expression.
+-/
 theorem PhiH_apply {p : ℕ} (hp : p ≠ 0) (σ : K →+* K) (f : MvPowerSeries ι K) :
     PhiH hp σ f = frobVar p (MvPowerSeries.map σ f) := by
   rw [frobVar_eq_expand hp]
   rfl
 
+/- English proof (translation)
+Introduce `n hn`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[PhiH_apply]`. Take `⟨m, rfl, hm⟩` from `coeff_frobVar_ne_zero hp hne`. Apply `hm` to reduce the goal to its premises.
+
+Establish `hdeg : (p • m).degree = p * m.degree`. Rewrite using `[map_nsmul, smul_eq_mul]`. Rewrite `hn` using `[hdeg]`. Rewrite using `[MvPowerSeries.coeff_map, hh m (lt_of_mul_lt_mul_left hn (Nat.zero_le _)), map_zero]`.
+-/
 theorem low_PhiH {p : ℕ} (hp : p ≠ 0) (σ : K →+* K) {d : ℕ} {h : MvPowerSeries ι K}
     (hh : Low d h) : Low (p * d) (PhiH hp σ h) := by
   intro n hn
@@ -183,6 +254,11 @@ section Congr
 
 variable {K ι : Type} [NormedField K] [IsUltrametricDist K] {p : ℕ} {σ : K →+* K}
 
+/- English proof (translation)
+Establish `e : (MvPowerSeries.monomial a c) ^ p - PhiH hp σ (MvPowerSeries.monomial a c) = MvPowerSeries.monomial (p • a) (c ^ p - σ c)`. Rewrite using `[MvPowerSeries.monomial_pow, PhiH_apply, frobVar_eq_expand hp, MvPowerSeries.map_monomial, MvPowerSeries.expand_monomial, map_sub]`. Rewrite using `[e]`. Introduce `n`. Rewrite using `[MvPowerSeries.coeff_monomial]`.
+
+Use `split_ifs`. Rewrite using `[norm_sub_rev]`. Conclude with `hσ c hc`. Simplify using the standard rewrite rules.
+-/
 theorem frob_monomial (hp : p ≠ 0) (hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a - a ^ p‖ ≤ (p : ℝ)⁻¹)
     (a : ι →₀ ℕ) {c : K} (hc : ‖c‖ ≤ 1) :
     Bd (p : ℝ)⁻¹ ((MvPowerSeries.monomial a c) ^ p - PhiH hp σ (MvPowerSeries.monomial a c)) := by
@@ -198,6 +274,11 @@ theorem frob_monomial (hp : p ≠ 0) (hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a
   · rw [norm_sub_rev]; exact hσ c hc
   · simp
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Establish `e : (x + y) ^ p - PhiH hp.ne_zero σ (x + y) = (x ^ p - PhiH hp.ne_zero σ x) + (y ^ p - PhiH hp.ne_zero σ y) + MvPowerSeries.C (p : K) * (x * y * ∑ k ∈ Ioo 0 p, x ^ (k - 1) * y ^ (p - k - 1) * ((p.choose k / p : ℕ) : MvPowerSeries ι K))`. Rewrite using `[add_pow_prime_eq hp, map_add, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `bd_add (bd_add hx' hy') (sm_mul hpos (bd_C hpos hnp.le) (int_mul (int_mul hx hy) ?_))` and prove the remaining obligations. Conclude with `bd_sum zero_le_one _ _ fun k _ => int_mul (int_mul (int_pow hx _) (int_pow hy _)) (bd_natCast _)`.
+-/
 theorem frob_add (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) {x y : MvPowerSeries ι K}
     (hx : Bd 1 x) (hy : Bd 1 y) (hx' : Bd (p : ℝ)⁻¹ (x ^ p - PhiH hp.ne_zero σ x))
     (hy' : Bd (p : ℝ)⁻¹ (y ^ p - PhiH hp.ne_zero σ y)) :
@@ -214,6 +295,13 @@ theorem frob_add (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) {x y : Mv
   exact bd_sum zero_le_one _ _ fun k _ =>
     int_mul (int_mul (int_pow hx _) (int_pow hy _)) (bd_natCast _)
 
+/- English proof (translation)
+Establish `hmon : ∀ a, Bd 1 (MvPowerSeries.monomial a (c a) : MvPowerSeries ι K)`. Introduce `a n`. Rewrite using `[MvPowerSeries.coeff_monomial]`. Use `split_ifs`. Conclude with `hc a`.
+
+Simplify using the standard rewrite rules. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun n => by simp, fun n => ?_⟩` and prove the remaining obligations. Simplify using `[zero_pow hp.ne_zero]`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `⟨bd_add (hmon a) ih.1, frob_add hp hnp (hmon a) ih.1 (frob_monomial hp.ne_zero hσ a (hc a)) ih.2⟩`.
+-/
 theorem frob_finset (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹)
     (hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a - a ^ p‖ ≤ (p : ℝ)⁻¹) (c : (ι →₀ ℕ) → K) (hc : ∀ m, ‖c m‖ ≤ 1)
     (s : Finset (ι →₀ ℕ)) :
@@ -236,6 +324,13 @@ theorem frob_finset (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹)
     exact ⟨bd_add (hmon a) ih.1,
       frob_add hp hnp (hmon a) ih.1 (frob_monomial hp.ne_zero hσ a (hc a)) ih.2⟩
 
+/- English proof (translation)
+Introduce `n`. Establish `hg : Bd (p : ℝ)⁻¹ ((truncD (n.degree + 1) f) ^ p - PhiH hp.ne_zero σ (truncD (n.degree + 1) f))` using `(frob_finset hp hnp hσ (fun m => MvPowerSeries.coeff m f) hf _).2`. Establish `hl` using `low_sub_truncD (n.degree + 1) f`. Establish `h1 : Low (n.degree + 1) (f ^ p - (truncD (n.degree + 1) f) ^ p)`. Take `⟨r, hr⟩` from `sub_dvd_pow_sub_pow f (truncD (n.degree + 1) f) p`.
+
+Rewrite using `[hr]`. Simplify using `using low_mul hl (low_zero r)`. Establish `h2 : Low (n.degree + 1) (PhiH hp.ne_zero σ (f - truncD (n.degree + 1) f))` using `low_mono (Nat.le_mul_of_pos_left _ hp.pos) (low_PhiH hp.ne_zero σ hl)`. Establish `e : f ^ p - PhiH hp.ne_zero σ f = ((truncD (n.degree + 1) f) ^ p - PhiH hp.ne_zero σ (truncD (n.degree + 1) f)) + (f ^ p - (truncD (n.degree + 1) f) ^ p) - PhiH hp.ne_zero σ (f - truncD (n.degree + 1) f)`. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, map_add, h1 n (by omega), h2 n (by omega), add_zero, sub_zero]`. Conclude with `hg n`.
+-/
 theorem frob_congr [Finite ι] (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹)
     (hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a - a ^ p‖ ≤ (p : ℝ)⁻¹) {f : MvPowerSeries ι K} (hf : Bd 1 f) :
     Bd (p : ℝ)⁻¹ (f ^ p - PhiH hp.ne_zero σ f) := by
@@ -264,11 +359,23 @@ section ExpS
 
 variable {K ι : Type} [NormedField K] [CharZero K]
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_mvExp hf]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_mvExp {f : MvPowerSeries ι K} (hf : MvPowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (mvExp f) = 1 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_mvExp hf]
   simp
 
+/- English proof (translation)
+Establish `hf0 : MvPowerSeries.constantCoeff f = 0` using `(low_one_iff _).1 (low_mono hd hf)`. Establish `h1` using `low_mvExp_sub hf0 (d + 1)`. Take `⟨e, rfl⟩ : ∃ e, d = e + 1` from `⟨d - 1, by omega⟩`. Establish `h2 : expSum f (e + 1 + 1) = (∑ k ∈ range e, MvPowerSeries.C (((k + 1 + 1).factorial : K)⁻¹) * f ^ (k + 1 + 1)) + f + 1`. Unfold `expSum`.
+
+Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ']`. Simplify using the standard rewrite rules. Establish `h3 : Low (e + 1 + 1) (∑ k ∈ range e, MvPowerSeries.C (((k + 1 + 1).factorial : K)⁻¹) * f ^ (k + 1 + 1))` using `low_sum _ _ _ fun k _ => by`. Use `low_mul (low_zero (MvPowerSeries.C (((k + 1 + 1).factorial : K)⁻¹))) (low_mul (low_mul hf hf) (low_zero (f ^ k)))` as an intermediate fact. Rewrite using `[show f ^ (k + 1 + 1) = f * f * f ^ k by ring]`.
+
+Conclude with `low_mono (by omega) this`. Establish `e' : mvExp f - 1 - f = (mvExp f - expSum f (e + 1 + 1)) + ∑ k ∈ range e, MvPowerSeries.C (((k + 1 + 1).factorial : K)⁻¹) * f ^ (k + 1 + 1)`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`.
+
+Conclude with `low_add h1 h3`.
+-/
 theorem low_exp_sub {f : MvPowerSeries ι K} {d : ℕ} (hd : 1 ≤ d) (hf : Low d f) :
     Low (d + 1) (mvExp f - 1 - f) := by
   have hf0 : MvPowerSeries.constantCoeff f = 0 := (low_one_iff _).1 (low_mono hd hf)
@@ -294,6 +401,13 @@ theorem low_exp_sub {f : MvPowerSeries ι K} {d : ℕ} (hd : 1 ≤ d) (hf : Low 
 
 variable [IsUltrametricDist K] {p : ℕ}
 
+/- English proof (translation)
+Use `Fact.mk hp` as an intermediate fact. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `hlt : ‖(p : K)‖ < 1` using `by rw [hnp]; exact inv_lt_one_of_one_lt₀ hp1`. Establish `hv : padicValNat p (k + 1).factorial ≤ k`. Establish `h` using `sub_one_mul_padicValNat_factorial_lt_of_ne_zero (p := p) (n := k + 1) (by omega)`.
+
+Establish `h2 : 1 ≤ p - 1` using `by have := hp.two_le; omega`. Establish `h3 : 1 * padicValNat p (k + 1).factorial ≤ (p - 1) * padicValNat p (k + 1).factorial` using `Nat.mul_le_mul_right _ h2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[norm_inv, Formalism.DworkPowerSeriesWeights.norm_natCast_eq_pow_padicValNat hp hlt (Nat.factorial_ne_zero _), hnp]`. Generalize the expression as in `padicValNat p (k + 1).factorial = v at hv`.
+
+Take `⟨j, rfl⟩ : ∃ j, k = v + j` from `⟨k - v, by omega⟩`. Establish `hpos : (0 : ℝ) < (p : ℝ)⁻¹` using `by positivity`. Rewrite using `[add_assoc, pow_add, ← mul_assoc, inv_mul_cancel₀ (pow_pos hpos v).ne', one_mul, pow_succ]`. Conclude with `mul_le_of_le_one_left hpos.le (pow_le_one₀ hpos.le (inv_le_one_of_one_le₀ hp1.le))`.
+-/
 theorem norm_fact_bound (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) (k : ℕ) :
     ‖(((k + 1).factorial : ℕ) : K)⁻¹‖ * ((p : ℝ)⁻¹) ^ (k + 1) ≤ (p : ℝ)⁻¹ := by
   have := Fact.mk hp
@@ -312,6 +426,11 @@ theorem norm_fact_bound (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) (k
   rw [add_assoc, pow_add, ← mul_assoc, inv_mul_cancel₀ (pow_pos hpos v).ne', one_mul, pow_succ]
   exact mul_le_of_le_one_left hpos.le (pow_le_one₀ hpos.le (inv_le_one_of_one_le₀ hp1.le))
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Introduce `n`. Rewrite using `[map_sub, coeff_mvExp hu0, Finset.sum_range_succ']`. Establish `e0 : ((Nat.factorial 0 : ℕ) : K)⁻¹ * MvPowerSeries.coeff n (u ^ 0) = MvPowerSeries.coeff n (1 : MvPowerSeries ι K)` using `by simp`. Rewrite using `[e0, add_sub_cancel_right]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hpos fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left (bd_pow hpos hu (k + 1) n) (norm_nonneg _)).trans (norm_fact_bound hp hnp k)`.
+-/
 theorem exp_small (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) {u : MvPowerSeries ι K}
     (hu0 : MvPowerSeries.constantCoeff u = 0) (hu : Bd (p : ℝ)⁻¹ u) :
     Bd (p : ℝ)⁻¹ (mvExp u - 1) := by
@@ -326,6 +445,19 @@ theorem exp_small (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹) {u : MvP
   exact (mul_le_mul_of_nonneg_left (bd_pow hpos hu (k + 1) n) (norm_nonneg _)).trans
     (norm_fact_bound hp hnp k)
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Use `bd_induct hpos D fun d hl m hm => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Establish `hm0 : m = 0` using `(Finsupp.degree_eq_zero_iff m).1 hm`. Rewrite using `[hm0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hD0]`.
+
+Simplify using the standard rewrite rules. Establish `hDh : Low d (D - truncD d D)` using `low_sub_truncD d D`. Establish `hDl0 : MvPowerSeries.constantCoeff (truncD d D) = 0`. Rewrite using `[constantCoeff_truncD hd, hD0]`. Establish `hDh0 : MvPowerSeries.constantCoeff (D - truncD d D) = 0`.
+
+Rewrite using `[map_sub, hD0, hDl0, sub_zero]`. Establish `hEl` using `exp_small hp hnp hDl0 hl`. Establish `hEl1 : Low 1 (mvExp (truncD d D) - 1)` using `(low_one_iff _).2 (by rw [map_sub, constantCoeff_mvExp hDl0]; simp)`. Establish `hEh` using `low_exp_sub hd hDh`. Establish `hadd : mvExp D = mvExp (truncD d D) * mvExp (D - truncD d D)`.
+
+Rewrite using `[← mvExp_add hDl0 hDh0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hlow : Low (d + 1) (D - ((mvExp D - 1) - (mvExp (truncD d D) - 1) + truncD d D))`. Establish `e : D - ((mvExp D - 1) - (mvExp (truncD d D) - 1) + truncD d D) = -((mvExp (D - truncD d D) - 1 - (D - truncD d D)) * mvExp (truncD d D) + (mvExp (truncD d D) - 1) * (D - truncD d D))`.
+
+Rewrite using `[hadd]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `low_neg (low_add ?_ ?_)` and prove the remaining obligations. Simplify using `using low_mul hEh (low_zero (mvExp (truncD d D)))`.
+
+Use `low_mul hEl1 hDh` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Rewrite using `[coeff_eq_of_low hlow hm, map_add, coeff_truncD_self D hm, add_zero]`. Conclude with `bd_sub hD hEl m`.
+-/
 theorem small_of_exp [Finite ι] (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹)
     {D : MvPowerSeries ι K} (hD0 : MvPowerSeries.constantCoeff D = 0)
     (hD : Bd (p : ℝ)⁻¹ (mvExp D - 1)) : Bd (p : ℝ)⁻¹ D := by
@@ -365,6 +497,21 @@ section Mult
 
 variable {K ι : Type} [NormedField K] [IsUltrametricDist K] [Finite ι] {p : ℕ} {σ : K →+* K}
 
+/- English proof (translation)
+Establish `hpos : (0 : ℝ) < (p : ℝ)⁻¹` using `by have := hp.pos; positivity`. Use `bd_induct zero_le_one Fo fun d hl m hm => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Establish `hm0 : m = 0` using `(Finsupp.degree_eq_zero_iff m).1 hm`. Rewrite using `[hm0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hF]`.
+
+Simplify using the standard rewrite rules. Establish `hFh : Low d (Fo - truncD d Fo)` using `low_sub_truncD d Fo`. Establish `hFl1 : MvPowerSeries.constantCoeff (truncD d Fo) = 1`. Rewrite using `[constantCoeff_truncD hd, hF]`. Establish `hFlm : MvPowerSeries.coeff m (truncD d Fo) = 0` using `coeff_truncD_self Fo hm`.
+
+Generalize the expression as in `truncD d Fo = Fl at hl hFh hFl1 hFlm`. Take `⟨k, hk⟩` from `Polynomial.powAddExpansion Fl (Fo - Fl) p`. Rewrite `hk` using `[add_sub_cancel]`. Take `⟨r, hr⟩` from `sub_dvd_pow_sub_pow Fo Fl p`. Establish `hB` using `frob_congr hp hnp hσ hl`.
+
+Establish `hY : Bd (p : ℝ)⁻¹ (-(Fl ^ p - PhiH hp.ne_zero σ Fl) - (Ga - 1) * Fl ^ p)` using `bd_sub (bd_neg hB) (sm_mul hpos.le hG (int_pow hl p))`. Establish `hG1 : Low 1 (Ga - 1)` using `(low_one_iff _).2 (by rw [map_sub, hG0]; simp)`. Establish `hFp : Low 1 (Fl ^ (p - 1) - 1)` using `(low_one_iff _).2 (by rw [map_sub, map_pow, hFl1]; simp)`. Establish `hlow : Low (d + 1) (MvPowerSeries.C (p : K) * Fo - (-(Fl ^ p - PhiH hp.ne_zero σ Fl) - (Ga - 1) * Fl ^ p + MvPowerSeries.C (p : K) * Fl))`. Establish `e : MvPowerSeries.C (p : K) * Fo - (-(Fl ^ p - PhiH hp.ne_zero σ Fl) - (Ga - 1) * Fl ^ p + MvPowerSeries.C (p : K) * Fl) = PhiH hp.ne_zero σ (Fo - Fl) - MvPowerSeries.C (p : K) * ((Fl ^ (p - 1) - 1) * (Fo - Fl)) - k * ((Fo - Fl) * (Fo - Fl)) - (Fo - Fl) * r * (Ga - 1)`.
+
+Rewrite using `[map_sub, map_natCast]`. Take the linear combination `-hrel - hk - (Ga - 1) * hr`. Rewrite using `[e]`. Establish `h2` using `hp.two_le`. Use `low_sub (low_sub (low_sub ?_ ?_) ?_) ?_` and prove the remaining obligations.
+
+Conclude with `low_mono (by nlinarith) (low_PhiH hp.ne_zero σ hFh)`. Conclude with `low_mono (by omega) (low_mul (low_zero (MvPowerSeries.C (p : K))) (low_mul hFp hFh))`. Conclude with `low_mono (by omega) (low_mul (low_zero k) (low_mul hFh hFh))`. Conclude with `low_mono (by omega) (low_mul (low_mul hFh (low_zero r)) hG1)`. Establish `h1` using `coeff_eq_of_low hlow hm`.
+
+Rewrite `h1` using `[map_add, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_C_mul, hFlm, mul_zero, add_zero]`. Establish `h2` using `hY m`. Rewrite `h2` using `[← h1, norm_mul, hnp]`. Conclude with `le_of_mul_le_mul_left (by simpa using h2) hpos`.
+-/
 theorem int_of_frob (hp : p.Prime) (hnp : ‖(p : K)‖ = (p : ℝ)⁻¹)
     (hσ : ∀ a : K, ‖a‖ ≤ 1 → ‖σ a - a ^ p‖ ≤ (p : ℝ)⁻¹) {Fo Ga : MvPowerSeries ι K}
     (hF : MvPowerSeries.constantCoeff Fo = 1) (hG0 : MvPowerSeries.constantCoeff Ga = 1)
@@ -415,6 +562,11 @@ section Rel
 
 variable {K ι : Type} [NormedField K] [CharZero K]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : MvPowerSeries.C ((n + 1 + 1 : ℕ) : K) * Ψ = MvPowerSeries.C ((n + 1 : ℕ) : K) * Ψ + Ψ`. Rewrite using `[Nat.cast_succ (n + 1), map_add, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mvExp_add (by simp [h0]) h0, ih, pow_succ (mvExp Ψ) (n + 1)]`.
+-/
 theorem mvExp_natMul {Ψ : MvPowerSeries ι K} (h0 : MvPowerSeries.constantCoeff Ψ = 0) (n : ℕ) :
     mvExp (MvPowerSeries.C ((n + 1 : ℕ) : K) * Ψ) = (mvExp Ψ) ^ (n + 1) := by
   induction n with
@@ -425,6 +577,11 @@ theorem mvExp_natMul {Ψ : MvPowerSeries ι K} (h0 : MvPowerSeries.constantCoeff
       rw [Nat.cast_succ (n + 1), map_add, map_one]; ring
     rw [e, mvExp_add (by simp [h0]) h0, ih, pow_succ (mvExp Ψ) (n + 1)]
 
+/- English proof (translation)
+Establish `h1 : MvPowerSeries.map σ (mvExp Ψ) = mvExp (MvPowerSeries.map σ Ψ)`. Unfold `mvExp`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero h0), PowerSeries.map_exp]`. Establish `h0' : MvPowerSeries.constantCoeff (MvPowerSeries.map σ Ψ) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, h0, map_zero]`.
+
+Rewrite using `[PhiH_apply, PhiH_apply, h1]`. Unfold `frobVar mvExp`. Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def, MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero h0').const (MvPowerSeries.HasSubst.X_pow hp)]`.
+-/
 theorem PhiH_mvExp {p : ℕ} (hp : p ≠ 0) (σ : K →+* K) {Ψ : MvPowerSeries ι K}
     (h0 : MvPowerSeries.constantCoeff Ψ = 0) :
     PhiH hp σ (mvExp Ψ) = mvExp (PhiH hp σ Ψ) := by
@@ -445,6 +602,19 @@ end DworkIntegrality
 
 open DworkIntegrality in
 
+/- English proof (translation)
+Introduce `K ι _ _ _ _ p σ hp hnp hσ Ψ h0`. Establish `hpos : (0 : ℝ) ≤ (p : ℝ)⁻¹` using `by positivity`. Rewrite using `[← PhiH_apply hp.ne_zero]`. Establish `hΦ0 : MvPowerSeries.constantCoeff (PhiH hp.ne_zero σ Ψ) = 0`. Rewrite using `[PhiH_apply, frobVar_eq_expand hp.ne_zero, MvPowerSeries.constantCoeff_expand, MvPowerSeries.constantCoeff_map, h0, map_zero]`.
+
+Establish `hpΨ0 : MvPowerSeries.constantCoeff (MvPowerSeries.C (p : K) * Ψ) = 0` using `by simp [h0]`. Establish `hDe0 : MvPowerSeries.constantCoeff (PhiH hp.ne_zero σ Ψ - MvPowerSeries.C (p : K) * Ψ) = 0`. Rewrite using `[map_sub, hΦ0, hpΨ0, sub_zero]`. Establish `hpow : mvExp (MvPowerSeries.C (p : K) * Ψ) = (mvExp Ψ) ^ p`. Take `⟨n, rfl⟩ : ∃ n, p = n + 1` from `⟨p - 1, by have := hp.pos; omega⟩`.
+
+Conclude with `mvExp_natMul h0 n`. Establish `hid : PhiH hp.ne_zero σ (mvExp Ψ) = (mvExp Ψ) ^ p * mvExp (PhiH hp.ne_zero σ Ψ - MvPowerSeries.C (p : K) * Ψ)`. Rewrite using `[PhiH_mvExp hp.ne_zero σ h0, ← hpow, ← mvExp_add hpΨ0 hDe0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hF1` using `constantCoeff_mvExp h0`. Establish `hG1` using `constantCoeff_mvExp hDe0`. Prove the components needed by the constructor for the conclusion. Introduce `hint`. Establish `hB` using `frob_congr hp hnp hσ (f := mvExp Ψ) hint`.
+
+Use `small_of_exp hp hnp hDe0 (bd_of_mul hpos (U := (mvExp Ψ) ^ p) (int_pow hint p) (by rw [map_pow, hF1, one_pow]) ?_)` and prove the remaining obligations. Establish `e : (mvExp (PhiH hp.ne_zero σ Ψ - MvPowerSeries.C (p : K) * Ψ) - 1) * (mvExp Ψ) ^ p = -((mvExp Ψ) ^ p - PhiH hp.ne_zero σ (mvExp Ψ))`. Rewrite using `[hid]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `bd_neg hB`. Introduce `hsm`. Conclude with `int_of_frob hp hnp hσ hF1 hG1 (exp_small hp hnp hDe0 hsm) hid`.
+-/
 theorem dwork_multivariable : DworkMv := by
   intro K ι _ _ _ _ p σ hp hnp hσ Ψ h0
   have hpos : (0 : ℝ) ≤ (p : ℝ)⁻¹ := by positivity

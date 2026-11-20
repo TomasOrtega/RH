@@ -13,12 +13,20 @@ section Unfold
 variable {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] {Γ : Subgroup G} [Countable Γ]
   {μ : Measure G} [μ.IsMulLeftInvariant] {𝓕 : Set G}
 
+/- English proof (translation)
+Rewrite using `[h.lintegral_eq_tsum'' f, lintegral_tsum (f := fun (γ : Γ) x => f (γ * x)) fun γ : Γ => (hf.comp_quasiMeasurePreserving (measurePreserving_mul_left μ (γ : G)).quasiMeasurePreserving).restrict]`. Both sides reduce to the same expression.
+-/
 theorem lintegral_tsum_eq (h : IsFundamentalDomain Γ 𝓕 μ) {f : G → ℝ≥0∞} (hf : AEMeasurable f μ) :
     ∫⁻ x in 𝓕, ∑' γ : Γ, f (γ * x) ∂μ = ∫⁻ x, f x ∂μ := by
   rw [h.lintegral_eq_tsum'' f, lintegral_tsum (f := fun (γ : Γ) x => f (γ * x)) fun γ : Γ =>
     (hf.comp_quasiMeasurePreserving (measurePreserving_mul_left μ (γ : G)).quasiMeasurePreserving).restrict]
   rfl
 
+/- English proof (translation)
+Establish `hm : ∀ γ : Γ, AEStronglyMeasurable (fun x => f (γ * x)) (μ.restrict 𝓕)` using `fun γ => (hf.1.comp_quasiMeasurePreserving (measurePreserving_mul_left μ (γ : G)).quasiMeasurePreserving).restrict`. Establish `hl : ∑' γ : Γ, ∫⁻ x in 𝓕, ‖f (γ * x)‖ₑ ∂μ = ∫⁻ x, ‖f x‖ₑ ∂μ`. Rewrite using `[← lintegral_tsum fun γ => (hm γ).enorm, lintegral_tsum_eq h hf.1.enorm]`. Use `⟨⟨AEStronglyMeasurable.tsum hm, ?_⟩, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun x => enorm_tsum_le_tsum_enorm) ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_tsum fun γ => (hm γ).enorm, hl]`. Conclude with `hf.2`. Rewrite using `[integral_tsum hm (hl ▸ hf.2.ne), h.integral_eq_tsum'' f hf]`. Both sides reduce to the same expression.
+-/
 theorem integral_tsum_eq (h : IsFundamentalDomain Γ 𝓕 μ) {f : G → ℂ} (hf : Integrable f μ) :
     IntegrableOn (fun x => ∑' γ : Γ, f (γ * x)) 𝓕 μ ∧ ∫ x in 𝓕, ∑' γ : Γ, f (γ * x) ∂μ = ∫ x, f x ∂μ := by
   have hm : ∀ γ : Γ, AEStronglyMeasurable (fun x => f (γ * x)) (μ.restrict 𝓕) := fun γ =>
@@ -38,6 +46,9 @@ section Dbl
 
 variable {G G₂ : Type} [Group G] [Group G₂] (i : G × G →* G₂) {P Γ₂ : Subgroup G₂} {Γ : Subgroup G} {r : Γ → Γ₂}
 
+/- English proof (translation)
+Establish `e : ∀ δ : Γ, (r δ : G₂) * i (h, x) = i (h, δ * x)` using `fun δ => by`. Rewrite using `[hri, ← map_mul, Prod.mk_mul_mk, one_mul]`. Use `⟨(cosetSum_eq_tsum hΦ hr _).trans (tsum_congr fun δ => by rw [e]), ?_⟩` and prove the remaining obligations. Rewrite using `[cosetConv_iff hΦ hr]`. Conclude with `summable_congr fun δ => by rw [e]`.
+-/
 theorem cosetSum_io {Φ : G₂ → ℂ} (hΦ : LeftInv (P ⊓ Γ₂) Φ) (hri : ∀ δ, (r δ : G₂) = i (1, δ))
     (hr : Function.Bijective fun δ => mk (P.subgroupOf Γ₂) (r δ)) (h x : G) :
     cosetSum P Γ₂ Φ (i (h, x)) = ∑' δ : Γ, Φ (i (h, δ * x)) ∧
@@ -50,6 +61,21 @@ theorem cosetSum_io {Φ : G₂ → ℂ} (hΦ : LeftInv (P ⊓ Γ₂) Φ) (hri : 
 
 variable [MeasurableSpace G] [MeasurableMul G] [Countable Γ] {μ : Measure G} [μ.IsMulLeftInvariant] {𝓕 : Set G}
 
+/- English proof (translation)
+Use `set F : G → ℂ := fun x => Φ (i (h, x)) * w x with hF`. Establish `hFm : AEStronglyMeasurable F μ` using `(hm h).mul hwm`. Establish `hFn : ∀ x, ‖F x‖ₑ = ‖Φ (i (h, x))‖ₑ` using `fun x => by`. Rewrite using `[hF, enorm_mul, ← ofReal_norm_eq_enorm (w x), hw1, ENNReal.ofReal_one, mul_one]`. Establish `hFi : Integrable F μ`.
+
+Use `⟨hFm, ?_⟩` and prove the remaining obligations. Rewrite using `[HasFiniteIntegral, lintegral_congr (fun x => hFn x), ← lintegral_tsum_eq h𝓕 (hm h).enorm]`. Conclude with `lt_top_iff_ne_top.2 hfin`. Establish `hδ : ∀ x, ∑' δ : Γ, F (δ * x) = cosetSum P Γ₂ Φ (i (h, x)) * w x` using `fun x => by`. Rewrite using `[(cosetSum_io i hΦ hri hr h x).1, ← tsum_mul_right]`.
+
+Conclude with `tsum_congr fun δ => by show Φ _ * w (δ * x) = _`. Rewrite using `[hw, hwΓ _ δ.2, one_mul]`. Establish `hsh : ∀ x, F (h * x) = c h * w h * (Φ (i (1, x)) * w x)` using `fun x => by`. Establish `: i (h, h * x) = i (h, h) * i (1, x)` using `by rw [← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[hF]`.
+
+Simplify using `only [this, hlaw, hw]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsh' : ∀ x, Φ (i (1, x)) * w x = c h⁻¹ * w h⁻¹ * F (h * x)` using `fun x => by`. Establish `: i (1, x) = i (h⁻¹, h⁻¹) * i (h, h * x)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel_left]`.
+
+Establish `hx : w x = w h⁻¹ * w (h * x)` using `by rw [← hw, inv_mul_cancel_left]`. Rewrite using `[hF]`. Simplify using `only [this, hlaw, hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFh : Integrable (fun x => F (h * x)) μ` using `hFi.comp_mul_left h`.
+
+Take `⟨h1, h2⟩` from `integral_tsum_eq h𝓕 hFi`. Use `⟨(hFh.const_mul (c h⁻¹ * w h⁻¹)).congr (Eventually.of_forall fun x => (hsh' x).symm), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.congr h1 (Eventually.of_forall hδ)`. Rewrite using `[← setIntegral_congr_fun₀ ?_ (fun x _ => hδ x), h2, ← integral_mul_left_eq_self F h]`. Simplify using `only [hsh]`.
+
+Rewrite using `[integral_const_mul]`. Conclude with `h𝓕.nullMeasurableSet`.
+-/
 theorem unfold_core (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {Φ : G₂ → ℂ} (hΦ : LeftInv (P ⊓ Γ₂) Φ)
     (hri : ∀ δ, (r δ : G₂) = i (1, δ)) (hr : Function.Bijective fun δ => mk (P.subgroupOf Γ₂) (r δ))
     {c : G → ℂ} (hlaw : ∀ h y, Φ (i (h, h) * y) = c h * Φ y) {w : G → ℂ} (hw : ∀ x y, w (x * y) = w x * w y)
@@ -93,6 +119,9 @@ section Passage
 
 variable {s₀ : ℂ}
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using holValueAt_const 0 s₀`. Consider the case `insert a T ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem holValueAt_sum {ι : Type} (T : Finset ι) {f : ι → ℂ → ℂ} {z : ι → ℂ}
     (h : ∀ j ∈ T, HolValueAt (f j) s₀ (z j)) : HolValueAt (fun s => ∑ j ∈ T, f j s) s₀ (∑ j ∈ T, z j) := by
   classical
@@ -102,6 +131,13 @@ theorem holValueAt_sum {ι : Type} (T : Finset ι) {f : ι → ℂ → ℂ} {z :
     simp only [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Establish `hΨe : ∀ x, Ψ x = ∑ j, c j x * w j` using `fun x => (hΨ x).unique ((holValueAt_sum Finset.univ fun j _ => (holValueAt_const (c j x) s₀).mul (hv j)).congr ⟨σ, fun s hs => (hexp s hs x).symm⟩)`. Establish `hΨi : Integrable Ψ ν`. Rewrite using `[funext hΨe]`. Conclude with `integrable_finset_sum _ fun j _ => (hc j).mul_const (w j)`. Use `⟨hΨe, hΨi, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ∫ x, Ψ x ∂ν = ∑ j, (∫ x, c j x ∂ν) * w j`. Rewrite using `[funext hΨe, integral_finset_sum _ fun j _ => (hc j).mul_const (w j)]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Rewrite using `[e1]`. Use `(holValueAt_sum Finset.univ fun j _ => (holValueAt_const (∫ x, c j x ∂ν) s₀).mul (hv j)).congr ⟨σ, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[integral_congr_ae (Eventually.of_forall (hexp s hs)), integral_finset_sum _ fun j _ => (hc j).mul_const (v j s)]`. Conclude with `Finset.sum_congr rfl fun j _ => (integral_mul_const _ _).symm`.
+-/
 theorem holValueAt_integral_of_expansion {X ι : Type} [MeasurableSpace X] {ν : Measure X} [Fintype ι]
     {Φ : ℂ → X → ℂ} {Ψ : X → ℂ} {c : ι → X → ℂ} {v : ι → ℂ → ℂ} {w : ι → ℂ} {σ : ℝ}
     (hc : ∀ j, Integrable (c j) ν) (hexp : ∀ s : ℂ, σ < s.re → ∀ x, Φ s x = ∑ j, c j x * v j s)
@@ -131,11 +167,17 @@ section Expansion
 
 variable {G₂ : Type} [Group G₂] {P Γ₂ K : Subgroup G₂} {ι : Type} [Fintype ι] {kk : ι → G₂} {c : ι → G₂ → ℂ}
 
+/- English proof (translation)
+Simplify using `only [flatSec, hI.iwAbs_right g hk, hI.iwAbs_right g (hkk _), hexp g k hk, Finset.sum_mul, mul_assoc]`.
+-/
 theorem flatSec_expansion {δ : P →* ℝ≥0} (hI : IsIwasawa δ K) {f : G₂ → ℂ} (hkk : ∀ j, kk j ∈ K)
     (hexp : ∀ g, ∀ k ∈ K, f (g * k) = ∑ j, c j k * f (g * kk j)) (s₀ s : ℂ) (g : G₂) {k : G₂} (hk : k ∈ K) :
     flatSec δ K f s₀ s (g * k) = ∑ j, c j k * flatSec δ K f s₀ s (g * kk j) := by
   simp only [flatSec, hI.iwAbs_right g hk, hI.iwAbs_right g (hkk _), hexp g k hk, Finset.sum_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `e : ∀ q, term P Γ₂ Φ (y * k) q = ∑ j, c j k * term P Γ₂ Φ (y * kk j) q` using `fun q => by`. Simplify using `only [term, ← mul_assoc]`. Conclude with `hexp _ k hk`. Rewrite using `[cosetSum, tsum_congr e, Summable.tsum_finsetSum fun j _ => ((hconv j).of_norm).mul_left (c j k)]`. Conclude with `Finset.sum_congr rfl fun j _ => tsum_mul_left`.
+-/
 theorem cosetSum_expansion {Φ : G₂ → ℂ} (hexp : ∀ g, ∀ k ∈ K, Φ (g * k) = ∑ j, c j k * Φ (g * kk j)) (y : G₂)
     (hconv : ∀ j, CosetConv P Γ₂ Φ (y * kk j)) {k : G₂} (hk : k ∈ K) :
     cosetSum P Γ₂ Φ (y * k) = ∑ j, c j k * cosetSum P Γ₂ Φ (y * kk j) := by
@@ -145,6 +187,11 @@ theorem cosetSum_expansion {Φ : G₂ → ℂ} (hexp : ∀ g, ∀ k ∈ K, Φ (g
   rw [cosetSum, tsum_congr e, Summable.tsum_finsetSum fun j _ => ((hconv j).of_norm).mul_left (c j k)]
   exact Finset.sum_congr rfl fun j _ => tsum_mul_left
 
+/- English proof (translation)
+Establish `e : ∀ q, ‖term P Γ₂ Φ (y * k) q‖ₑ ≤ ∑ j, ‖c j k‖ₑ * ‖term P Γ₂ Φ (y * kk j) q‖ₑ` using `fun q => by`. Simplify using `only [term, ← mul_assoc]`. Rewrite using `[hexp _ k hk]`. Use `(enorm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => (enorm_mul _ _).le)` and prove the remaining obligations. Use `(ENNReal.tsum_le_tsum e).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Summable.tsum_finsetSum fun j _ => ENNReal.summable]`. Conclude with `le_of_eq (Finset.sum_congr rfl fun j _ => ENNReal.tsum_mul_left)`.
+-/
 theorem cosetSum_norm_expansion {Φ : G₂ → ℂ} (hexp : ∀ g, ∀ k ∈ K, Φ (g * k) = ∑ j, c j k * Φ (g * kk j))
     (y : G₂) {k : G₂} (hk : k ∈ K) :
     ∑' q, ‖term P Γ₂ Φ (y * k) q‖ₑ ≤ ∑ j, ‖c j k‖ₑ * ∑' q, ‖term P Γ₂ Φ (y * kk j) q‖ₑ := by
@@ -160,6 +207,9 @@ end Expansion
 
 section Cover
 
+/- English proof (translation)
+Rewrite using `[h𝓕.measure_eq_tsum C]`. Use `le_trans (measure_mono fun x hx => ?_) (measure_iUnion_le _)` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hcov x`. Conclude with `mem_iUnion.2 ⟨γ⁻¹, Set.mem_smul_set_iff_inv_smul_mem.2 (by simpa [Subgroup.smul_def] using hγ), hx⟩`.
+-/
 theorem measure_le_of_cover {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] {Γ : Subgroup G} [Countable Γ]
     {μ : Measure G} [μ.IsMulLeftInvariant] {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {C : Set G}
     (hcov : ∀ x, ∃ γ : Γ, (γ : G) * x ∈ C) : μ 𝓕 ≤ μ C := by
@@ -171,6 +221,9 @@ theorem measure_le_of_cover {G : Type} [Group G] [MeasurableSpace G] [Measurable
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   {Γ K : Subgroup G} [Countable Γ]
 
+/- English proof (translation)
+Use `lt_of_le_of_lt (measure_le_of_cover h𝓕 (C := ⋃ a ∈ A, (a * ·) '' (K : Set G)) fun x => ?_) ((A.isCompact_biUnion fun a _ => hKc.image (continuous_mul_left a)).measure_lt_top)` and prove the remaining obligations. Take `⟨a, ha, γ, hγ, k, hk, rfl⟩` from `hcov x`. Conclude with `⟨⟨γ⁻¹, inv_mem hγ⟩, mem_biUnion ha ⟨k, hk, by simp [mul_assoc]⟩⟩`.
+-/
 theorem measure_lt_top_of_cover {μ : Measure G} [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ] {𝓕 : Set G}
     (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (hKc : IsCompact (K : Set G)) (A : Finset G)
     (hcov : ∀ x, ∃ a ∈ A, ∃ γ ∈ Γ, ∃ k ∈ K, x = γ * a * k) : μ 𝓕 < ⊤ := by
@@ -181,6 +234,17 @@ theorem measure_lt_top_of_cover {μ : Measure G} [μ.IsMulLeftInvariant] [IsFini
 
 open Classical in
 
+/- English proof (translation)
+Use `haveI : Nonempty (Γ × A) := by`. Take `⟨a, ha, γ, hγ, -⟩` from `hcov 1`. Conclude with `⟨(⟨γ, hγ⟩, ⟨a, ha⟩)⟩`. Take `⟨e, he⟩` from `exists_surjective_nat (Γ × A)`. Use `set y : ℕ → G → G := fun n x => ((e n).2 : G)⁻¹ * ((e n).1 : G)⁻¹ * x with hy`.
+
+Establish `hyc : ∀ n, Continuous (y n)` using `fun n => continuous_const.mul continuous_id`. Establish `hex : ∀ x, ∃ n, y n x ∈ K` using `fun x => by`. Take `⟨a, ha, γ, hγ, k, hk, rfl⟩` from `hcov x`. Take `⟨n, hn⟩` from `he (⟨γ, hγ⟩, ⟨a, ha⟩)`. Conclude with `⟨n, by simpa [hy, hn, mul_assoc] using hk⟩`.
+
+Establish `hM : ∀ j, ∃ M, ∀ x ∈ K, ‖c j x‖ ≤ M` using `fun j => hKc.exists_bound_of_continuousOn (hc j).continuousOn`. Use `choose M hM using hM`. Use `⟨fun a' j x => if a' = ((e (Nat.find (hex x))).2 : G) then c j (y (Nat.find (hex x)) x) else 0, fun a' j => ?_, ⟨∑ j, |M j|, fun a' j x => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use `Measurable.find (f := fun n x => if a' = ((e n).2 : G) then c j (y n x) else 0) (p := fun n x => y n x ∈ K) (fun n => ?_) (fun n => (hK.preimage (hyc n)).measurableSet) hex` and prove the remaining obligations. Distinguish the cases in `h : a' = ((e n).2 : G)`.
+
+Simplify using `only [h, ite_true]`. Conclude with `((hc j).comp (hyc n)).measurable`. Simplify `measurable_const` using `[h]`. Simplify using `only split_ifs`. Conclude with `(hM j _ (Nat.find_spec (hex x))).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun j => |M j|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)))`.
+
+Rewrite using `[norm_zero]`. Conclude with `Finset.sum_nonneg fun j _ => abs_nonneg _`. Use `⟨((e (Nat.find (hex x))).2 : G), (e (Nat.find (hex x))).2.2, ((e (Nat.find (hex x))).1 : G), (e (Nat.find (hex x))).1.2, y (Nat.find (hex x)) x, Nat.find_spec (hex x), by simp [hy, mul_assoc], fun a' j => rfl⟩` and prove the remaining obligations.
+-/
 theorem exists_coeff (hK : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (A : Finset G)
     (hcov : ∀ x, ∃ a ∈ A, ∃ γ ∈ Γ, ∃ k ∈ K, x = γ * a * k) {ι : Type} [Fintype ι] (c : ι → G → ℂ)
     (hc : ∀ j, Continuous (c j)) :

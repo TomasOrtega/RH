@@ -13,14 +13,41 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExComp
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.WeilDeligne GlobalTheory.GalOfCusp GlobalTheory.HeckeGal GlobalTheory.LocLanglands GlobalTheory.Published UpperTheory.V.W
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qj6.ex_lift j f`.
+-/
 private theorem ex_lift {M Ω C : Type} [Field M] [NumberField M] [Field Ω] [CharZero Ω] [IsAlgClosed Ω] [Field C] [CharZero C]
     (j : Ω →+* C) (f : M →+* C) : ∃ g : M →+* Ω, ∀ x, j (g x) = f x :=
   _root_.UpperTheory.Reformulated.B.Qj6.ex_lift j f
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qh44.ex_comp g`.
+-/
 private theorem ex_comp {F M Ω : Type} [Field F] [NumberField F] [Field M] [NumberField M] [Field Ω] [Algebra F Ω]
     [Algebra.IsAlgebraic F Ω] (g : M →+* Ω) : FiniteDimensional F (IntermediateField.adjoin F (Set.range g)) :=
   _root_.UpperTheory.Reformulated.B.Qh44.ex_comp g
 
+/- English proof (translation)
+Introduce `hG hH hD hW hP F Ω _ _ _ _ _ l _ A w h O _ _ _ Bw hj ι wt a ha`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Take `⟨M, _, _, _, f, hf, δ, d, hδ, hd, hc⟩` from `UpperTheory.exists_totally_imaginary_generator_of_isCMField l Bw.Kw`.
+
+Take `⟨g, hg⟩` from `ex_lift Bw.j f`. Set `K` to `IntermediateField.adjoin F (Set.range g)`. Use `haveI : FiniteDimensional F K := ex_comp g`. Use `haveI : NumberField K := NumberField.of_module_finite F K`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, inferInstance⟩`.
+
+Use `letI : Algebra M Ω := g.toAlgebra`. Use `letI : Algebra M K := (g.codRestrict K fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩).toAlgebra`. Use `haveI : IsScalarTower M K Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsAlgClosure M Ω := ⟨inferInstance, haveI : Algebra.IsAlgebraic ℚ Ω := Algebra.IsAlgebraic.trans ℚ F Ω Algebra.IsAlgebraic.tower_top (K := ℚ) M⟩`. Establish `hK : ∀ x : K, Bw.j (algebraMap K Ω x) ∈ Bw.Kw.1` using `fun x => by`.
+
+Take `⟨x, hx⟩` from `x`. Express the relevant statement in the definitionally equal form `Bw.j x ∈ _`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => obtain ⟨x, rfl⟩ := hy`. Rewrite using `[hg, ← hf]`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩`. Consider the case `algebraMap y => exact Bw.j_E y`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `inv a _ ha => rw [map_inv₀]`.
+
+Conclude with `inv_mem ha`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`. Establish `hfj : (fun x : M => Bw.j (algebraMap M Ω x)) = f` using `funext hg`. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := M) hj Bw.Kw (by rw [hfj, hf])`.
+
+Set `BM : LocBridge l M Ω (Dec (F` to `M) A) O := { Kw := Bw.Kw, j := Bw.j, j_E := fun x => hK (algebraMap M K x) j_dense := by rw [hfj, ← hf]; exact GlobalTheory.PlaceBridge.adjoin_range_subset_closure f e := e, e_cont := he, e_symm_cont := he', e_comm := hec LL := Bw.LL, LL_split := Bw.LL_split, eO := Bw.eO, eO_alg …`. Establish `hjM : GlobalTheory.Pst.Induces BM` using `hj`. Take `⟨BK, e1, e2, e3⟩` from `UpperTheory.V.Af.Cq.exBridge F K Ω l A O Bw hK`. Establish `hjK : GlobalTheory.Pst.Induces BK` using `fun x => by rw [e2]; exact hj x`. Take `⟨t, ht, i, hi⟩` from `UpperTheory.V.Af.Cq.exPlaceIso F K Ω l A w h O Bw hj hK`.
+
+Establish `hu : IsPlaceOver A (t.under (𝓞 M))` using `fun x => ht (algebraMap (𝓞 M) (𝓞 K) x)`. Take `⟨t', ht', i', hi'⟩` from `UpperTheory.V.Af.Cq.exPlaceIso M K Ω l A _ hu O BM hjM hK`. Take `rfl : t' = t` from `HeightOneSpectrum.ext (Ideal.ext fun x => (ht' x).symm.trans (ht x))`. Take `⟨aK, haK⟩` from `UpperTheory.V.Loc.laArtin hG ht`. Take `⟨aM, haM⟩` from `UpperTheory.V.Loc.laArtin hG hu`.
+
+Set `wK : Emb l t' → ℤ` to `fun τ => wt ⟨τ.1.comp i.toRingHom, τ.2.comp hi.cont⟩`. Establish `hs : Continuous i'.symm` using `(GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation _ _ i' hi'.cont).1`. Set `wM : Emb l (t'.under (𝓞 M)) → ℤ` to `fun τ => wK ⟨τ.1.comp i'.symm.toRingHom, τ.2.comp hs⟩`. Use `(UpperTheory.hasLocalLanglands_iff_of_placeIso h ht Bw BK hj hjK e1 e2 e3 _ i hi ι wt wK (fun τ τ' e => congrArg wt (Subtype.ext e)) a aK (isLocalArtin_transport hG chevalleyUnits' _ _ _ _ h _ _ _ _ ht _ _ i hi a aK ha haK)).2 ?_` and prove the remaining obligations. Use `(UpperTheory.hasLocalLanglands_iff_of_placeIso hu ht BM BK hjM hjK e1 e2 e3 _ i' hi' ι wM wK (fun τ τ' e => congrArg wK (Subtype.ext ?_)) aM aK (isLocalArtin_transport hG chevalleyUnits' _ _ _ _ hu _ _ _ _ ht _ _ i' hi' aM aK haM haK)).1 ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `τ.1.comp i'.symm.toRingHom = τ'.1`. Rewrite using `[e]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Conclude with `UpperTheory.hasLocalLanglands_of_isLocalArtin_of_CMDatum hH hD hW hP hu BM hjM ι δ d hδ ((hg δ).trans hd) hc wM aM haM`.
+-/
 theorem UpperTheory.V.Loc.ltAll :
     GlobalArtinReciprocity → HeckeLAdicCharacter → HeckeLAdicCharacterDeRham → AlgebraicCharacterWD → DeRhamPotSemistable → ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw) (ι : Qbar l ≃+* ℂ) (wt : Emb l w → ℤ) (a : Weil h →* (w.adicCompletion F)ˣ), IsLocalArtin h a → UpperTheory.V.Loc.HasLT h Bw hj ι wt a := by
   intro hG hH hD hW hP F Ω _ _ _ _ _ l _ A w h O _ _ _ Bw hj ι wt a ha

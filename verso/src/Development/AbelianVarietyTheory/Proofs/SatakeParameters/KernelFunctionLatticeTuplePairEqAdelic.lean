@@ -6,22 +6,34 @@ noncomputable section
 
 namespace GlobalTheory.TwV.DelB
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use function extensionality and compare the values at `i`. Simplify using `[homRe]`.
+-/
 theorem homRe_rfl {E : Type} [Field E] {a b : ℕ} (x : Formalism.L2.Col.HomE E a b) : homRe (rfl : a = a) (rfl : b = b) x = x := by
   apply LinearMap.ext
   intro v
   funext i
   simp [homRe]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[reV]`.
+-/
 theorem reV_rfl {D : D7} {a b : ℕ} (G : TaylorLogMetric.VC D a b → ℂ) : reV (rfl : a = a) (rfl : b = b) G = G := by
   funext z
   simp [reV]
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[Formalism.L2.Col.inFr]`.
+-/
 theorem inFr_symm_inFr {E : Type} [Field E] {a b : ℕ} (g : Formalism.L2.Col.Sp E a ≃ₗ[E] Formalism.L2.Col.Sp E a) (g' : Formalism.L2.Col.Sp E b ≃ₗ[E] Formalism.L2.Col.Sp E b) (x : Formalism.L2.Col.HomE E a b) :
     Formalism.L2.Col.inFr g.symm g'.symm (Formalism.L2.Col.inFr g g' x) = x := by
   apply LinearMap.ext
   intro v
   simp [Formalism.L2.Col.inFr]
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Consider the cases of `eq_of_heq hM`. Consider the cases of `eq_of_heq hM'`. Simplify using `only [homRe_rfl, reV_rfl]`.
+-/
 theorem kerTh_homRe {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ)
     (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (c : ℕ) {a b N N' : ℕ} (ha : a = N) (hb : b = N')
     {M : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E a)} {M' : Submodule (𝓞 D.host.E) (Formalism.L2.Col.Sp D.host.E b)}
@@ -35,6 +47,11 @@ theorem kerTh_homRe {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD j hj hr hr' La La' hLa hLa'`. Take `⟨-, -, h1, -⟩` from `hD j (Nat.le_of_succ_le hj) La hLa`. Take `⟨-, -, h2, -⟩` from `hD (j + 1) hj La' hLa'`. Establish `hx : xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j La La' = fun x => S.Xi j hj (J.chart std j (Nat.le_of_succ_le hj) La) (J.chart std (j + 1) hj La') (J.pt std j (Nat.le_of_succ_le hj) La) (J.pt std (j + 1) hj La') (homRe hr hr' x)`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [xiM, movD, Joint.xi0]`. Rewrite using `[dif_pos ⟨hj, hr, hr'⟩, inFr_symm_inFr]`. Rewrite using `[hx]`. Conclude with `kerTh_homRe _ _ _ _ hr hr' h1 h2 _`.
+-/
 theorem kerTh_pair_eq : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → ∀ j (hj : j + 1 ≤ D.R.m) (hr : ((sysS H X std).Pj j).m + 1 = D.R.N j) (hr' : ((sysS H X std).Pj (j + 1)).m + 1 = D.R.N (j + 1)), ∀ (La : (sysS H X std).Lt j) (La' : (sysS H X std).Lt (j + 1)), ((sysS H X std).Pj j).IsLatTup La.2 → ((sysS H X std).Pj (j + 1)).IsLatTup La'.2 → kerTh t.B t.χ (ssRec t u μ) (t.rd u μ).lev ((J.fd std).kerN j La) ((J.fd std).kerN (j + 1) La') (xiM (sysS H X std) (J.fd std) (J.xi0 std S.Xi) j La La') = reV hr hr' (kerTh t.B t.χ (ssRec t u μ) (t.rd u μ).lev (latK D.sp (gramN D j (Nat.le_of_succ_le hj)) J.a (J.pt std j (Nat.le_of_succ_le hj) La).1 ((J.St j (Nat.le_of_succ_le hj)).K (J.chart std j (Nat.le_of_succ_le hj) La)).lev.Lb) (latK D.sp (gramN D (j + 1) hj) J.a (J.pt std (j + 1) hj La').1 ((J.St (j + 1) hj).K (J.chart std (j + 1) hj La')).lev.Lb) (S.Xi j hj (J.chart std j (Nat.le_of_succ_le hj) La) (J.chart std (j + 1) hj La') (J.pt std j (Nat.le_of_succ_le hj) La) (J.pt std (j + 1) hj La')))) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD j hj hr hr' La La' hLa hLa'
   obtain ⟨-, -, h1, -⟩ := hD j (Nat.le_of_succ_le hj) La hLa

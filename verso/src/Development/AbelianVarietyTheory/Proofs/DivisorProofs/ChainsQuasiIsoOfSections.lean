@@ -5,6 +5,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 noncomputable section
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ E E' f hf`. Set `g` to `((SimplicialObject.whiskering _ _).obj (freeP R)).map f`. Set `φ` to `(AlgebraicTopology.alternatingFaceMapComplex _).map g`. Establish `hφ : QuasiIso φ`. Rewrite using `[HomologicalComplex.quasiIso_iff_evaluation]`.
+
+Introduce `t`. Establish `e` using `Arrow.isoOfNatIso (eqToIso (AlgebraicTopology.map_alternatingFaceMapComplex ((evaluation Scheme.{0}ᵒᵖ (ModuleCat.{1} (ULift.{1} R))).obj t))) (Arrow.mk g)`. Conclude with `(quasiIso_iff_of_arrow_mk_iso _ _ e).2 (hf t.unop)`. Establish `e` using `Arrow.isoOfNatIso (eqToIso (AlgebraicTopology.map_alternatingFaceMapComplex (presheafToSheaf (Scheme.etaleTopology.{0}) (ModuleCat.{1} (ULift.{1} R))))) (Arrow.mk g)`. Establish `h2 : QuasiIso ((chainsN R).map f)`.
+
+Establish `: QuasiIso (((presheafToSheaf (Scheme.etaleTopology.{0}) (ModuleCat.{1} (ULift.{1} R))).mapHomologicalComplex _).map φ)` using `inferInstance`. Conclude with `(quasiIso_iff_of_arrow_mk_iso _ _ e).1 this`. Express the relevant statement in the definitionally equal form `QuasiIso (HomologicalComplex.extendMap ((chainsN R).map f) ComplexShape.embeddingDownNat)`. Use `infer_instance`.
+-/
 theorem chains_quasiIso_of_sections : ∀ (R : Type) [CommRing R] {E E' : Spc} (f : E ⟶ E'), (∀ U : Scheme.{0}, QuasiIso ((AlgebraicTopology.alternatingFaceMapComplex (ModuleCat.{1} (ULift.{1} R))).map (((SimplicialObject.whiskering _ _).obj ((evaluation _ _).obj (op U) ⋙ uliftFunctor.{1} ⋙ ModuleCat.free (ULift.{1} R))).map f))) → QuasiIso ((chains R).map f) := by
   intro R _ E E' f hf
   let g := ((SimplicialObject.whiskering _ _).obj (freeP R)).map f

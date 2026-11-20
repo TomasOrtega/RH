@@ -22,6 +22,17 @@ section Generic
 
 variable {G H : Type} [AddCommGroup G] [AddCommGroup H] [MeasurableSpace G] [MeasurableSpace H]
 
+/- English proof (translation)
+Set `eA : G →+ H × H` to `AddMonoidHom.mk' e he`. Establish `hneg : ∀ g, e (-g) = -e g` using `fun g => eA.map_neg g`. Establish `hqmp : Measure.QuasiMeasurePreserving e ((μ₁.prod μ₁).map e.symm) (μ₁.prod μ₁)` using `⟨e.measurable, by rw [MeasurableEquiv.map_map_symm]⟩`. Establish `hvadd : ∀ (g : Γ) (x : G), e (g +ᵥ x) = e g + e x` using `fun g x => he _ _`. Use `⟨(h.nullMeasurableSet.prod h.nullMeasurableSet).preimage hqmp, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e.symm.measurableEmbedding.ae_map_iff] filter_upwards [Measure.quasiMeasurePreserving_fst.ae h.ae_covers, Measure.quasiMeasurePreserving_snd.ae h.ae_covers] with p ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨⟨e.symm (a, b), h3 _ a.2 _ b.2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, hvadd, MeasurableEquiv.apply_symm_apply]`. Conclude with `⟨ha, hb⟩`. Introduce `g g' hgg'`.
+
+Establish `hset : ∀ g : Γ, g +ᵥ e ⁻¹' (𝓕₁ ×ˢ 𝓕₁) = e ⁻¹' (((⟨(e g).1, h1 _ g.2⟩ : Λ) +ᵥ 𝓕₁) ×ˢ ((⟨(e g).2, h2 _ g.2⟩ : Λ) +ᵥ 𝓕₁))`. Introduce `g`. Use extensionality with `x`. Simplify using `only [Set.mem_vadd_set_iff_neg_vadd_mem, Set.mem_preimage, Set.mem_prod, hvadd]`. Simplify using `only [AddSubgroup.vadd_def, NegMemClass.coe_neg, hneg, Prod.fst_add, Prod.snd_add, Prod.fst_neg, Prod.snd_neg, vadd_eq_add]`.
+
+Use `show ((μ₁.prod μ₁).map e.symm) ((g +ᵥ e ⁻¹' (𝓕₁ ×ˢ 𝓕₁)) ∩ (g' +ᵥ e ⁻¹' (𝓕₁ ×ˢ 𝓕₁))) = 0`. Rewrite using `[hset, hset, ← Set.preimage_inter, Set.prod_inter_prod, MeasurableEquiv.map_apply, MeasurableEquiv.symm_preimage_preimage, Measure.prod_prod]`. Distinguish the cases in `hfst : (e g).1 = (e g').1`. Establish `hsnd : (e g).2 ≠ (e g').2` using `fun hs => hgg' (Subtype.ext (e.injective (Prod.ext hfst hs)))`. Use `h.aedisjoint (i := ⟨(e g).2, h2 _ g.2⟩) (j := ⟨(e g').2, h2 _ g'.2⟩) (fun hh => hsnd (congrArg Subtype.val hh))` as an intermediate fact.
+
+Rewrite using `[show μ₁ _ = 0 from this, mul_zero]`. Use `h.aedisjoint (i := ⟨(e g).1, h1 _ g.2⟩) (j := ⟨(e g').1, h1 _ g'.2⟩) (fun hh => hfst (congrArg Subtype.val hh))` as an intermediate fact. Rewrite using `[show μ₁ _ = 0 from this, zero_mul]`.
+-/
 theorem isAddFundamentalDomain_blocks (e : G ≃ᵐ H × H) (he : ∀ x y, e (x + y) = e x + e y)
     (Γ : AddSubgroup G) (Λ : AddSubgroup H) (h1 : ∀ g ∈ Γ, (e g).1 ∈ Λ) (h2 : ∀ g ∈ Γ, (e g).2 ∈ Λ)
     (h3 : ∀ a ∈ Λ, ∀ b ∈ Λ, e.symm (a, b) ∈ Γ) (μ₁ : Measure H) [SigmaFinite μ₁] (𝓕₁ : Set H)
@@ -55,6 +66,9 @@ theorem isAddFundamentalDomain_blocks (e : G ≃ᵐ H × H) (he : ∀ x y, e (x 
     · have := h.aedisjoint (i := ⟨(e g).1, h1 _ g.2⟩) (j := ⟨(e g').1, h1 _ g'.2⟩) (fun hh => hfst (congrArg Subtype.val hh))
       rw [show μ₁ _ = 0 from this, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[MeasurableEquiv.restrict_map, MeasurableEquiv.symm_preimage_preimage, e.symm.measurableEmbedding.integral_map, ← Measure.prod_restrict]`. Simplify using `only [MeasurableEquiv.apply_symm_apply, Complex.star_def]`. Rewrite using `[integral_prod_mul (f := f) (g := fun v => starRingEnd ℂ (g v)), integral_conj]`.
+-/
 theorem setIntegral_blocks (e : G ≃ᵐ H × H) (μ₁ : Measure H) [SigmaFinite μ₁] (𝓕₁ : Set H) (f g : H → ℂ) :
     ∫ w in e ⁻¹' (𝓕₁ ×ˢ 𝓕₁), f (e w).1 * star (g (e w).2) ∂((μ₁.prod μ₁).map e.symm) =
       (∫ u in 𝓕₁, f u ∂μ₁) * star (∫ u in 𝓕₁, g u ∂μ₁) := by
@@ -73,6 +87,9 @@ open MeasureTheory GlobalTheory.DblBox
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `: Continuous fun p : WO S T × WO S T => Matrix.fromRows p.1 p.2` using `continuous_pi fun i => match i with`. Consider the case `Sum.inl k => (continuous_apply k).comp continuous_fst`. Consider the case `Sum.inr k => (continuous_apply k).comp continuous_snd`. Conclude with `this.matrix_submatrix _ _`.
+-/
 theorem continuous_join : Continuous fun p : WO S T × WO S T => join p.1 p.2 := by
   have : Continuous fun p : WO S T × WO S T => Matrix.fromRows p.1 p.2 :=
     continuous_pi fun i => match i with
@@ -89,14 +106,25 @@ def blocks (S T : HSp D) : WO S (GlobalTheory.Doubling.dblSp T) ≃ₜ+ WO S T �
   continuous_toFun := (continuous_id.matrix_submatrix _ _).prodMk (continuous_id.matrix_submatrix _ _)
   continuous_invFun := continuous_join
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hg`. Conclude with `⟨γ.submatrix (finSumFinEquiv ∘ Sum.inl) id, by ext i j; rfl⟩`.
+-/
 theorem top_mem {g : WO S (GlobalTheory.Doubling.dblSp T)} (hg : g ∈ ratL (GlobalTheory.Doubling.dblSp T) S) : top g ∈ ratL T S := by
   obtain ⟨γ, rfl⟩ := hg
   exact ⟨γ.submatrix (finSumFinEquiv ∘ Sum.inl) id, by ext i j; rfl⟩
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hg`. Conclude with `⟨γ.submatrix (finSumFinEquiv ∘ Sum.inr) id, by ext i j; rfl⟩`.
+-/
 theorem bot_mem {g : WO S (GlobalTheory.Doubling.dblSp T)} (hg : g ∈ ratL (GlobalTheory.Doubling.dblSp T) S) : bot g ∈ ratL T S := by
   obtain ⟨γ, rfl⟩ := hg
   exact ⟨γ.submatrix (finSumFinEquiv ∘ Sum.inr) id, by ext i j; rfl⟩
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hu`. Take `⟨δ, rfl⟩` from `hv`. Use `⟨(Matrix.fromRows γ δ).submatrix finSumFinEquiv.symm id, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [join, Matrix.submatrix_apply, AddMonoidHom.mapMatrix_apply, Matrix.map_apply, id]`.
+
+Generalize the expression as in `finSumFinEquiv.symm i = s`. Apply the tactic sequence `rcases s with k | k <;> rfl`.
+-/
 theorem join_mem {u v : WO S T} (hu : u ∈ ratL T S) (hv : v ∈ ratL T S) : join u v ∈ ratL (GlobalTheory.Doubling.dblSp T) S := by
   obtain ⟨γ, rfl⟩ := hu
   obtain ⟨δ, rfl⟩ := hv
@@ -110,6 +138,15 @@ end GlobalTheory.DblBoxHaar
 
 open MeasureTheory in
 
+/- English proof (translation)
+Introduce `D ψ hψ S T`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Take `⟨j1, j2, j3, j4, -, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D (GlobalTheory.Doubling.dblSp T) S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : BorelSpace (WO S (GlobalTheory.Doubling.dblSp T)) := ⟨rfl⟩`.
+
+Take `⟨μ₁, 𝓕₁, hμ₁, h𝓕₁, -⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1`. Use `haveI := hμ₁`. Set `e` to `GlobalTheory.DblBoxHaar.blocks S T`. Set `eM : WO S (GlobalTheory.Doubling.dblSp T) ≃ᵐ WO S T × WO S T` to `e.toHomeomorph.toMeasurableEquiv`. Use `⟨(μ₁.prod μ₁).map eM.symm, eM ⁻¹' (𝓕₁ ×ˢ 𝓕₁), μ₁, 𝓕₁, ?_, ?_, hμ₁, h𝓕₁, ?_⟩` and prove the remaining obligations.
+
+Conclude with `ContinuousAddEquiv.isAddHaarMeasure_map (μ₁.prod μ₁) e.symm`. Conclude with `GlobalTheory.DblBoxHaar.isAddFundamentalDomain_blocks eM (fun x y => e.map_add x y) _ _ (fun g hg => GlobalTheory.DblBoxHaar.top_mem hg) (fun g hg => GlobalTheory.DblBoxHaar.bot_mem hg) (fun a ha b hb => GlobalTheory.DblBoxHaar.join_mem ha hb) μ₁ 𝓕₁ h𝓕₁`. Introduce `a a' b b' _ _ _ _`. Rewrite using `[← GlobalTheory.DblBoxHaar.setIntegral_blocks eM μ₁ 𝓕₁ (fun u => a u * star (a' u)) (fun v => b v * star (b' v))]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Simplify using `only [GlobalTheory.DblBox.box, star_mul', star_star]`. Use `show _ = a (GlobalTheory.DblBox.top w) * star (a' (GlobalTheory.DblBox.top w)) * (star (b (GlobalTheory.DblBox.bot w)) * b' (GlobalTheory.DblBox.bot w))`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.DblBoxHaar.box_integral : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D),
     ∃ (μ : MeasureTheory.Measure (Formalism.IndefR.Datum.WO S (GlobalTheory.Doubling.dblSp T))) (𝓕 : Set (Formalism.IndefR.Datum.WO S (GlobalTheory.Doubling.dblSp T)))
       (μ₁ : MeasureTheory.Measure (Formalism.IndefR.Datum.WO S T)) (𝓕₁ : Set (Formalism.IndefR.Datum.WO S T)),

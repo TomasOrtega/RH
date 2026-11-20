@@ -23,14 +23,23 @@ def vcThV (lam : Fin n → ℝ) : ℕ → ℂ := fun k => if h : k < n then ((th
 def vcThVd (lam : Fin n → ℝ) : ℕ → ℂ :=
   fun k => if h : k < n then ((thVd lam (Fin.rev ⟨k, h⟩) : ℝ) : ℂ) else 0
 
+/- English proof (translation)
+Simplify using `[vcThV, vcRV, t.isLt]`.
+-/
 theorem vcThV_rV (lam : Fin n → ℝ) (t : Fin n) : vcThV lam (vcRV n t) = ((thV lam t : ℝ) : ℂ) := by
   simp [vcThV, vcRV, t.isLt]
 
+/- English proof (translation)
+Unfold `vcThVd vcRVd`. Rewrite using `[dif_pos (Fin.rev t).isLt]`. Simplify using `only [Fin.eta, Fin.rev_rev]`.
+-/
 theorem vcThVd_rVd (lam : Fin n → ℝ) (t : Fin n) : vcThVd lam (vcRVd n t) = ((thVd lam t : ℝ) : ℂ) := by
   unfold vcThVd vcRVd
   rw [dif_pos (Fin.rev t).isLt]
   simp only [Fin.eta, Fin.rev_rev]
 
+/- English proof (translation)
+Introduce `k hk hks heq`. Rewrite `heq` using `[vcThV_rV, show vcThV lam k = ((thV lam ⟨k, hk⟩ : ℝ) : ℂ) by simp [vcThV, hk]]`. Establish `h1 : thV lam ⟨k, hk⟩ = thV lam s` using `by exact_mod_cast heq`. Establish `h2 : lam ⟨k, hk⟩ = lam s` using `by unfold thV at h1; linarith`. Conclude with `hks (congrArg Fin.val (hanti.injective h2))`.
+-/
 theorem vcThV_ne (lam : Fin n → ℝ) (hanti : StrictAnti lam) (s : Fin n) :
     ∀ k < n, k ≠ vcRV n s → vcThV lam k ≠ vcThV lam (vcRV n s) := by
   intro k hk hks heq
@@ -39,6 +48,11 @@ theorem vcThV_ne (lam : Fin n → ℝ) (hanti : StrictAnti lam) (s : Fin n) :
   have h2 : lam ⟨k, hk⟩ = lam s := by unfold thV at h1; linarith
   exact hks (congrArg Fin.val (hanti.injective h2))
 
+/- English proof (translation)
+Introduce `k hk hks heq`. Rewrite `heq` using `[vcThVd_rVd, show vcThVd lam k = ((thVd lam (Fin.rev ⟨k, hk⟩) : ℝ) : ℂ) by simp [vcThVd, hk]]`. Establish `h1 : thVd lam (Fin.rev ⟨k, hk⟩) = thVd lam s` using `by exact_mod_cast heq`. Establish `h2 : lam (Fin.rev ⟨k, hk⟩) = lam s` using `by unfold thVd at h1; linarith`. Establish `h3` using `hanti.injective h2`.
+
+Apply `hks` to reduce the goal to its premises. Rewrite using `[← h3]`. Simplify using `[vcRVd]`.
+-/
 theorem vcThVd_ne (lam : Fin n → ℝ) (hanti : StrictAnti lam) (s : Fin n) :
     ∀ k < n, k ≠ vcRVd n s → vcThVd lam k ≠ vcThVd lam (vcRVd n s) := by
   intro k hk hks heq
@@ -50,6 +64,9 @@ theorem vcThVd_ne (lam : Fin n → ℝ) (hanti : StrictAnti lam) (s : Fin n) :
   rw [← h3]
   simp [vcRVd]
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_inf.mp hf).2`. Rewrite `h` using `[LinearMap.mem_ker]`. Simplify `h` using `[sub_eq_zero]`.
+-/
 theorem vc_xs {A : Module.End ℂ (Fin n → M)} {S : Submodule ℂ M} {θ : ℝ} {f : Fin n → M}
     (hf : f ∈ Xs A S θ) : A f = ((θ : ℝ) : ℂ) • f := by
   have h := (Submodule.mem_inf.mp hf).2
@@ -58,6 +75,41 @@ theorem vc_xs {A : Module.End ℂ (Fin n → M)} {S : Submodule ℂ M} {θ : ℝ
 
 end Inst3
 
+/- English proof (translation)
+Introduce `M _ _ E lam φ s hE hlow hd hgen hanti`. Take `⟨hTV, hTVd, -, -⟩` from `tens_statement n M E hE`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hgenV : ∀ t, eeV E (vcSgl φ t) - vcThV lam (vcRV n t) • vcSgl φ t ∈ vcFlag (tensV E) (vcSgl φ) (vcRV n) (vcRV n t + 1)`. Introduce `t`.
+
+Rewrite using `[vcThV_rV]`. Use `show eeV E (Pi.single t φ : Fin n → M) - ((thV lam t : ℝ) : ℂ) • (Pi.single t φ : Fin n → M) ∈ _`. Rewrite using `[vc_genV E lam φ hlow hd t]`. Use `Submodule.sum_mem _ fun d hd' => vcFlag_stable _ _ _ _ _ _ _ (vcFlag_gen _ _ _ ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hd'`.
+
+Conclude with `hd'`. Establish `h0 : vcFlag (tensV E) (vcSgl φ) (vcRV n) 0 = ⊤`. Use `vc_gen_top E φ hgen (tensV E) ?_ _ (vcFlag_stable _ _ _ 0) (fun c => vcFlag_gen (tensV E) (vcSgl φ) (vcRV n) (Nat.zero_le _))` and prove the remaining obligations. Introduce `a b c m`. Rewrite using `[vc_tensV_single]`.
+
+Use `split_ifs`. Establish `hx : (Pi.single a m : Fin n → M) ∈ Submodule.span ℂ (Set.range fun x : Fin n => (Pi.single x m : Fin n → M))` using `Submodule.subset_span ⟨a, rfl⟩`. Simplify using `using Submodule.neg_mem _ hx`. Simplify using the standard rewrite rules. Establish `hlowV : ∀ a b, b < a → tensV E a b (vcSgl φ s) ∈ vcFlag (tensV E) (vcSgl φ) (vcRV n) (vcRV n s + 1)`.
+
+Introduce `a b hab`. Use `show tensV E a b (Pi.single s φ) ∈ _`. Rewrite using `[vc_tensV_single, hlow a b hab, Pi.single_zero, zero_add]`. Use `split_ifs with hbs`. Substitute `hbs` using the available equality.
+
+Conclude with `vcFlag_gen _ _ _ hab`. Conclude with `Submodule.zero_mem _`. Establish `hdiagV : ∀ a, tensV E a a (vcSgl φ s) = (((lam + rho n + Pi.single s 1 : Fin n → ℝ) a : ℝ) : ℂ) • vcSgl φ s`. Introduce `a`. Use `show tensV E a a (Pi.single s φ) = _ • (Pi.single s φ : Fin n → M)`.
+
+Rewrite using `[vc_tensV_single, hd a, Pi.single_smul']`. Distinguish the cases in `has : a = s`. Substitute `has` using the available equality. Simplify using `[add_smul]`. Simplify using `[has, Pi.single_apply]`.
+
+Establish `hrinj : Function.Injective (vcRV n)` using `fun a b h => Fin.ext h`. Take `⟨h1, h2⟩` from `vc_cone_core (tensV E) hTV (eeV E) (vc_commV E hE) (vcFlag (tensV E) (vcSgl φ) (vcRV n)) (vcThV lam) (vcFlag_stable _ _ _) (vcFlag_step _ _ _ (eeV E) (vc_commV E hE) (vcThV lam) hgenV) n (vcRV n s) h0 (vcFlag_eq_bot _ _ _ (fun t => t.isLt)) s.isLt (vcThV_ne lam hanti s) (vcSgl φ …`. Use `⟨fun μ f hf hf0 hμ => h1 μ f (by rw [vcThV_rV]; exact vc_xs hf) hf0 hμ, ?_⟩` and prove the remaining obligations. Introduce `f₁ f₂ hf₁ hf₂ hw₁ hw₂`. Conclude with `h2 f₁ f₂ (by rw [vcThV_rV]; exact vc_xs hf₁) (by rw [vcThV_rV]; exact vc_xs hf₂) hw₁ hw₂`.
+
+Establish `hgenVd : ∀ t, eeVd E (vcSgl φ t) - vcThVd lam (vcRVd n t) • vcSgl φ t ∈ vcFlag (tensVd E) (vcSgl φ) (vcRVd n) (vcRVd n t + 1)`. Introduce `t`. Rewrite using `[vcThVd_rVd]`. Use `show eeVd E (Pi.single t φ : Fin n → M) - ((thVd lam t : ℝ) : ℂ) • (Pi.single t φ : Fin n → M) ∈ _`. Rewrite using `[vc_genVd E lam φ hlow hd t]`.
+
+Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun d hd' => vcFlag_stable _ _ _ _ _ _ _ (vcFlag_gen _ _ _ ?_))` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hd'`. Use `Fin.lt_def.mp hd'` as an intermediate fact. Simplify using `only [vcRVd, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h0 : vcFlag (tensVd E) (vcSgl φ) (vcRVd n) 0 = ⊤`. Use `vc_gen_top E φ hgen (tensVd E) ?_ _ (vcFlag_stable _ _ _ 0) (fun c => vcFlag_gen (tensVd E) (vcSgl φ) (vcRVd n) (Nat.zero_le _))` and prove the remaining obligations. Introduce `a b c m`. Rewrite using `[vc_tensVd_single]`. Use `split_ifs`.
+
+Establish `hx : (Pi.single b m : Fin n → M) ∈ Submodule.span ℂ (Set.range fun x : Fin n => (Pi.single x m : Fin n → M))` using `Submodule.subset_span ⟨b, rfl⟩`. Simplify using `using hx`. Simplify using the standard rewrite rules. Establish `hlowVd : ∀ a b, b < a → tensVd E a b (vcSgl φ s) ∈ vcFlag (tensVd E) (vcSgl φ) (vcRVd n) (vcRVd n s + 1)`. Introduce `a b hab`.
+
+Use `show tensVd E a b (Pi.single s φ) ∈ _`. Rewrite using `[vc_tensVd_single, hlow a b hab, Pi.single_zero, zero_sub]`. Use `split_ifs with has`. Substitute `has` using the available equality. Use `Submodule.neg_mem _ (vcFlag_gen _ _ _ ?_)` and prove the remaining obligations.
+
+Use `Fin.lt_def.mp hab` as an intermediate fact. Simplify using `only [vcRVd, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hdiagVd : ∀ a, tensVd E a a (vcSgl φ s) = (((lam + rho n - Pi.single s 1 : Fin n → ℝ) a : ℝ) : ℂ) • vcSgl φ s`.
+
+Introduce `a`. Use `show tensVd E a a (Pi.single s φ) = _ • (Pi.single s φ : Fin n → M)`. Rewrite using `[vc_tensVd_single, hd a, Pi.single_smul']`. Distinguish the cases in `has : a = s`. Substitute `has` using the available equality.
+
+Simplify using `[add_smul, sub_smul]`. Simplify using `[has, Pi.single_apply]`. Establish `hrinj : Function.Injective (vcRVd n)` using `fun a b h => Fin.rev_injective (Fin.ext h)`. Take `⟨h1, h2⟩` from `vc_cone_core (tensVd E) hTVd (eeVd E) (vc_commVd E hE) (vcFlag (tensVd E) (vcSgl φ) (vcRVd n)) (vcThVd lam) (vcFlag_stable _ _ _) (vcFlag_step _ _ _ (eeVd E) (vc_commVd E hE) (vcThVd lam) hgenVd) n (vcRVd n s) h0 (vcFlag_eq_bot _ _ _ (fun t => (Fin.rev t).isLt)) (Fin.rev s).isLt …`. Use `⟨fun μ f hf hf0 hμ => h1 μ f (by rw [vcThVd_rVd]; exact vc_xs hf) hf0 hμ, ?_⟩` and prove the remaining obligations.
+
+Introduce `f₁ f₂ hf₁ hf₂ hw₁ hw₂`. Conclude with `h2 f₁ f₂ (by rw [vcThVd_rVd]; exact vc_xs hf₁) (by rw [vcThVd_rVd]; exact vc_xs hf₂) hw₁ hw₂`.
+-/
 theorem verma_cone (n : ℕ) : VermaConeStatement n := by
   intro M _ _ E lam φ s hE hlow hd hgen hanti
   obtain ⟨hTV, hTVd, -, -⟩ := tens_statement n M E hE

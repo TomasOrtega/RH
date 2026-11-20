@@ -10,6 +10,9 @@ namespace GlobalTheory.UpperArith
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U] [MulAction U C]
 
+/- English proof (translation)
+Establish `h` using `M.tr_mul 1 1 c`. Simplify using `only [mul_one, one_smul, mul_inv_rev, ← mul_assoc, mul_inv_cancel, one_mul] at h`. Simplify using `using (M.comp c).Γ.inv_mem h`.
+-/
 theorem tr_one_mem (M : TwoLevels E r U C) (c : C) : M.tr 1 c ∈ (M.comp c).Γ := by
   have h := M.tr_mul 1 1 c
   simp only [mul_one, one_smul, mul_inv_rev, ← mul_assoc, mul_inv_cancel, one_mul] at h
@@ -44,6 +47,11 @@ def upperSub (M : TwoLevels E r U C) (c : C) : Subgroup (GL (Fin r) E) where
       (M.comp c).Γ.mul_mem hc ((M.comp c).Γ.inv_mem hε), ?_⟩
     group
 
+/- English proof (translation)
+Take `⟨hp, hl⟩` from `hP`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Establish `hg : (g : ℤ) ∈ P.under ℤ`. Rewrite using `[← hl.over]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Rewrite `hg` using `[Ideal.mem_comap]`. Simplify using `using hg`.
+-/
 theorem prime_and_mem_of_primesOver {g : ℕ} {P : Ideal (𝓞 E)}
     (hP : P ∈ (Ideal.span {(g : ℤ)}).primesOver (𝓞 E)) : P.IsPrime ∧ (g : 𝓞 E) ∈ P := by
   obtain ⟨hp, hl⟩ := hP
@@ -54,6 +62,13 @@ theorem prime_and_mem_of_primesOver {g : ℕ} {P : Ideal (𝓞 E)}
   rw [Ideal.mem_comap] at hg
   simpa using hg
 
+/- English proof (translation)
+Use `⟨upperSub M c, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, δ, hδ, rfl⟩`. Establish `hs` using `(M.comp c).Γ_stab δ hδ`. Use `⟨fun v w => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hs.1, M.comp_Gm, M.tr_herm]`.
+
+Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, M.tr_L' u c v, hu]`. Conclude with `M.Γ_L' c δ hδ _`. Introduce `γ hγ P hP`. Take `⟨hp, hg⟩` from `prime_and_mem_of_primesOver hP`. Conclude with `⟨r, fun v hv => hU c γ hγ P hp hg v hv⟩`.
+
+Introduce `u hu`. Conclude with `⟨u, hu, 1, (M.comp c).Γ.one_mem, (one_mul _).symm⟩`.
+-/
 theorem upper_subgroup (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U]
     [MulAction U C] (M : TwoLevels E r U C) (c : C) (g : ℕ) (hU : M.UnipotentOver g) :
     ∃ Γo : Subgroup (GL (Fin r) E), (∀ γ ∈ Γo, IsUStab (M.comp c).Gm (M.comp c).L' γ) ∧

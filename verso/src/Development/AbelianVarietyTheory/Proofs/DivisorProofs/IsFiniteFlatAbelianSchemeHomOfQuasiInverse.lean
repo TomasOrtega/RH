@@ -16,6 +16,13 @@ namespace GlobalTheory.IsogFiniteFlat
 
 open GlobalTheory.UnramifiedEndFlat GlobalTheory.FiniteEndFlat
 
+/- English proof (translation)
+Establish `hs` using `strictMono_of_locallyQuasiFinite g`. Establish `h1 : genericPoint Y ⤳ f (genericPoint X)` using `genericPoint_specializes _`. Establish `h2 : g (genericPoint Y) ⤳ genericPoint X`. Rewrite using `[← h]`. Conclude with `h1.map g.continuous`.
+
+Establish `h3 : g (genericPoint Y) = genericPoint X` using `(h2.antisymm (genericPoint_specializes _)).eq`. Assume the negation of the conclusion as `hne`. Establish `hlt : f (genericPoint X) < genericPoint Y` using `lt_of_le_not_ge h1 fun h' => hne (h1.antisymm (show f (genericPoint X) ⤳ genericPoint Y from h')).eq.symm`. Use `hs hlt` as an intermediate fact. Rewrite `this` using `[h3, h]`.
+
+Conclude with `lt_irrefl _ this`.
+-/
 theorem apply_genericPoint_of_comp {X Y : Scheme.{0}} [IrreducibleSpace X] [IrreducibleSpace Y]
     (f : X ⟶ Y) (g : Y ⟶ X) [LocallyQuasiFinite g]
     (h : g (f (genericPoint X)) = genericPoint X) : f (genericPoint X) = genericPoint Y := by
@@ -32,6 +39,23 @@ theorem apply_genericPoint_of_comp {X Y : Scheme.{0}} [IrreducibleSpace X] [Irre
   rw [h3, h] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Use `LocallyOfFiniteType.jacobsonSpace G.hom` as an intermediate fact. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: IsLocallyNoetherian G'.left` using `LocallyOfFiniteType.isLocallyNoetherian G'.hom`. Set `o : G.left` to `η[G].left (IsLocalRing.closedPoint K)`. Establish `hfo : (φ.left ≫ φ'.left) o = o`.
+
+Establish `: η[G] ≫ (φ ≫ φ') = η[G]` using `IsMonHom.one_hom (φ ≫ φ')`. Rewrite using `[← Over.comp_left]`. Conclude with `congr(($this).left (IsLocalRing.closedPoint K))`. Establish `hξ0` using `apply_genericPoint (φ.left ≫ φ'.left) hfo`. Establish `hξ : φ.left (genericPoint G.left) = genericPoint G'.left` using `apply_genericPoint_of_comp φ.left φ'.left (by simpa using hξ0)`.
+
+Take `⟨W, hW, H⟩` from `exists_open_flat φ.left hξ`. Take `⟨y, hy, hyc⟩` from `nonempty_inter_closedPoints hW W.2.isLocallyClosed`. Use `flat_of_closedPoints _ fun x hx => ?_` and prove the remaining obligations. Set `x' : 𝟙_ _ ⟶ G` to `Over.homMk _ ((pointEquivClosedPoint G.hom).symm ⟨x, hx⟩).2`. Set `y' : 𝟙_ _ ⟶ G` to `Over.homMk _ ((pointEquivClosedPoint G.hom).symm ⟨y, hyc⟩).2`.
+
+Set `α` to `GrpObj.mulRight (A := G) (y'⁻¹ * x')`. Set `β` to `GrpObj.mulRight (A := G') ((y'⁻¹ * x') ≫ φ)`. Establish `hαβ : α.hom ≫ φ = φ ≫ β.hom`. Simplify using `only [α, β]`. Generalize the expression as in `y'⁻¹ * x' = z`.
+
+Simplify using `[comp_lift_assoc]`. Establish `hα : y' ≫ α.hom = x'`. Establish `: y' ≫ α.hom = y' * (y'⁻¹ * x')`. Simplify using `[α, comp_lift_assoc, Hom.mul_def]`. Rewrite using `[this, mul_inv_cancel_left]`.
+
+Establish `hα' : α.hom.left y = x`. Establish `h` using `congr(($hα).left (IsLocalRing.closedPoint K))`. Rewrite using `[← pointOfClosedPoint_apply G.hom x hx (IsLocalRing.closedPoint K), ← pointOfClosedPoint_apply G.hom y hyc (IsLocalRing.closedPoint K)]`. Conclude with `h`. Establish `: IsIso α.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map α.hom))`.
+
+Establish `: IsIso β.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map β.hom))`. Establish `h1 : ((φ.left ≫ β.hom.left).stalkMap y).hom.Flat`. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Conclude with `(Flat.stalkMap β.hom.left _).comp (H y hy)`. Rewrite `h1` using `[← Over.comp_left, ← hαβ, Over.comp_left, Scheme.Hom.stalkMap_comp]`.
+
+Rewrite using `[← hα']`. Conclude with `(RingHom.Flat.respectsIso.cancel_right_isIso (φ.left.stalkMap (α.hom.left y)) (α.hom.left.stalkMap y)).mp h1`.
+-/
 theorem flat_of_isFinite_grpHom (K : Type) [Field K] [IsAlgClosed K]
     (G G' : Over (Spec (CommRingCat.of K))) [GrpObj G] [GrpObj G'] [IsIntegral G.left] [IsIntegral G'.left]
     [LocallyOfFiniteType G.hom] [LocallyOfFiniteType G'.hom] (φ : G ⟶ G') (φ' : G' ⟶ G)
@@ -82,6 +106,19 @@ end GlobalTheory.IsogFiniteFlat
 
 namespace GlobalTheory.IsogFiniteFlat
 
+/- English proof (translation)
+Introduce `S _ A A' _ _ _ _ hA hA' ψ ψ' c hc _ _ h1 h2`. Establish `hc1 : 1 ≤ c` using `Nat.one_le_iff_ne_zero.2 hc`. Take `⟨hfA, -⟩` from `GlobalTheory.MulFiniteFlat.isFinite_and_flat_mul S A hA c hc1`. Take `⟨hfA', -⟩` from `GlobalTheory.MulFiniteFlat.isFinite_and_flat_mul S A' hA' c hc1`. Use `hA.proper` as an intermediate fact.
+
+Use `hA.smooth` as an intermediate fact. Use `hA'.proper` as an intermediate fact. Use `hA'.smooth` as an intermediate fact. Use `haveI : IsSeparated (ψ'.left ≫ A.hom) := by rw [Over.w]; infer_instance`. Use `haveI : IsSeparated ψ'.left := IsSeparated.of_comp _ A.hom`.
+
+Use `haveI : IsSeparated (ψ.left ≫ A'.hom) := by rw [Over.w]; infer_instance`. Use `haveI : IsSeparated ψ.left := IsSeparated.of_comp _ A'.hom`. Use `haveI : IsFinite (ψ.left ≫ ψ'.left) := by rw [← Over.comp_left, h1]; exact hfA`. Use `haveI : IsFinite (ψ'.left ≫ ψ.left) := by rw [← Over.comp_left, h2]; exact hfA'`. Establish `hf : IsFinite ψ.left` using `IsFinite.of_comp _ ψ'.left`.
+
+Establish `hf' : IsFinite ψ'.left` using `IsFinite.of_comp _ ψ.left`. Use `⟨hf, GlobalTheory.flat_of_isFinite_of_flat_geometric_fibres S A A' ψ inferInstance inferInstance hf fun K _ _ t => ?_⟩` and prove the remaining obligations. Establish `hB` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A hA`. Establish `hB'` using `ReciprocityTheory.ChartRestriction.G.Out.TLinPf.isAb_pullback t A' hA'`. Use `hB.smooth` as an intermediate fact.
+
+Use `hB'.smooth` as an intermediate fact. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ ((Over.pullback t).obj A).hom hB.smooth hB.geomConnected` as an intermediate fact. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ ((Over.pullback t).obj A').hom hB'.smooth hB'.geomConnected` as an intermediate fact. Establish `: IsIntegral ((Over.pullback t).obj A).left` using `GeometricallyIntegral.isIntegral_of_subsingleton ((Over.pullback t).obj A).hom`. Establish `: IsIntegral ((Over.pullback t).obj A').left` using `GeometricallyIntegral.isIntegral_of_subsingleton ((Over.pullback t).obj A').hom`.
+
+Use `haveI : IsFinite ((Over.pullback t).map ψ).left := MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t ψ) hf`. Use `haveI : IsFinite ((Over.pullback t).map ψ').left := MorphismProperty.of_isPullback (P := @IsFinite) (GlobalTheory.AbLaw.MulN.isPullback_baseChange t ψ') hf'`. Conclude with `flat_of_isFinite_grpHom K _ _ ((Over.pullback t).map ψ) ((Over.pullback t).map ψ')`.
+-/
 theorem isFinite_and_flat_of_quasiInverse : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A A' : Over S) [GrpObj A]
     [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'], IsAbelianScheme A → IsAbelianScheme A' →
     ∀ (ψ : A ⟶ A') (ψ' : A' ⟶ A) (c : ℕ), c ≠ 0 → IsMonHom ψ → IsMonHom ψ' → ψ ≫ ψ' = (𝟙 A) ^ c →

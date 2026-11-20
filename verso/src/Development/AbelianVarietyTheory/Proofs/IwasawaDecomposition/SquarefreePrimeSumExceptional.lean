@@ -14,6 +14,9 @@ namespace GlobalTheory.Mem.An.JacobiMean
 
 open Formalism.HermitianLattices.GL2PrimeSums (Li Emain PP)
 
+/- English proof (translation)
+Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Rewrite using `[Set.uIcc_of_le hab]`. Introduce `t ht`. Establish `h1 : 1 < t` using `lt_of_lt_of_le ha ht.1`. Conclude with `(continuousAt_const.div (Real.continuousAt_log (by linarith)) (Real.log_pos h1).ne').continuousWithinAt`.
+-/
 theorem inv_log_integrable {a b : ℝ} (ha : 1 < a) (hab : a ≤ b) :
     IntervalIntegrable (fun t : ℝ => 1 / Real.log t) MeasureTheory.volume a b := by
   apply ContinuousOn.intervalIntegrable
@@ -22,6 +25,9 @@ theorem inv_log_integrable {a b : ℝ} (ha : 1 < a) (hab : a ≤ b) :
   have h1 : 1 < t := lt_of_lt_of_le ha ht.1
   exact (continuousAt_const.div (Real.continuousAt_log (by linarith)) (Real.log_pos h1).ne').continuousWithinAt
 
+/- English proof (translation)
+Establish `h` using `intervalIntegral.integral_mono_on hab (inv_log_integrable ha hab) (intervalIntegrable_const (c := 1 / Real.log a)) (fun t ht => one_div_le_one_div_of_le (Real.log_pos ha) (Real.log_le_log (by linarith) ht.1))`. Simplify `h` using `[div_eq_mul_inv]`.
+-/
 theorem integral_inv_log_le {a b : ℝ} (ha : 1 < a) (hab : a ≤ b) :
     ∫ t in a..b, 1 / Real.log t ≤ (b - a) / Real.log a := by
   have h := intervalIntegral.integral_mono_on hab (inv_log_integrable ha hab)
@@ -29,6 +35,9 @@ theorem integral_inv_log_le {a b : ℝ} (ha : 1 < a) (hab : a ≤ b) :
       one_div_le_one_div_of_le (Real.log_pos ha) (Real.log_le_log (by linarith) ht.1))
   simpa [div_eq_mul_inv] using h
 
+/- English proof (translation)
+Establish `h` using `intervalIntegral.integral_mono_on hab (intervalIntegrable_const (c := 1 / Real.log b)) (inv_log_integrable ha hab) (fun t ht => one_div_le_one_div_of_le (Real.log_pos (lt_of_lt_of_le ha ht.1)) (Real.log_le_log (by linarith [ht.1]) ht.2))`. Simplify `h` using `[div_eq_mul_inv]`.
+-/
 theorem le_integral_inv_log {a b : ℝ} (ha : 1 < a) (hab : a ≤ b) :
     (b - a) / Real.log b ≤ ∫ t in a..b, 1 / Real.log t := by
   have h := intervalIntegral.integral_mono_on hab
@@ -37,6 +46,21 @@ theorem le_integral_inv_log {a b : ℝ} (ha : 1 < a) (hab : a ≤ b) :
         (Real.log_le_log (by linarith [ht.1]) ht.2))
   simpa [div_eq_mul_inv] using h
 
+/- English proof (translation)
+Use `set s := Real.sqrt Y with hs`. Establish `hs2 : 2 ≤ s`. Rewrite using `[hs]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Evaluate the numerical expressions.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hss : s * s = Y` using `Real.mul_self_sqrt (by linarith)`. Establish `hsY : s ≤ Y` using `by nlinarith`. Establish `hs0 : 0 < s` using `by linarith`. Establish `hlogY : Real.log Y = 2 * Real.log s`.
+
+Rewrite using `[← hss, Real.log_mul hs0.ne' hs0.ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `hls : 0 < Real.log s` using `Real.log_pos (by linarith)`. Establish `b1` using `integral_inv_log_le (a := 2) (b := s) (by norm_num) hs2`. Establish `b2` using `integral_inv_log_le (a := s) (b := Y) (by linarith) hsY`.
+
+Establish `b3` using `intervalIntegral.integral_add_adjacent_intervals (inv_log_integrable (a := 2) (b := s) (by norm_num) hs2) (inv_log_integrable (a := s) (b := Y) (by linarith) hsY)`. Establish `hr : Real.log s ≤ s - 1` using `Real.log_le_sub_one_of_pos hs0`. Establish `h2 : (0.6931471803 : ℝ) < Real.log 2` using `Real.log_two_gt_d9`. Establish `c1 : (s - 2) / Real.log 2 ≤ 2 * s`. Rewrite using `[div_le_iff₀ (by linarith)]; nlinarith`.
+
+Establish `c2 : (Y - s) / Real.log s ≤ Y / Real.log s` using `div_le_div_of_nonneg_right (by linarith) hls.le`. Establish `c3 : 2 * s ≤ 2 * (Y / Real.log s)`. Establish `: s ≤ Y / Real.log s` using `by rw [le_div_iff₀ hls]; nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : 6 * Y / Real.log Y = 3 * (Y / Real.log s)`.
+
+Rewrite using `[hlogY]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `Formalism.HermitianLattices.GL2PrimeSums.Li`. Rewrite using `[e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem li_le {Y : ℝ} (hY : 4 ≤ Y) : Li Y ≤ 6 * Y / Real.log Y := by
   set s := Real.sqrt Y with hs
   have hs2 : 2 ≤ s := by
@@ -66,6 +90,19 @@ theorem li_le {Y : ℝ} (hY : 4 ≤ Y) : Li Y ≤ 6 * Y / Real.log Y := by
   unfold Formalism.HermitianLattices.GL2PrimeSums.Li
   rw [e]; linarith
 
+/- English proof (translation)
+Establish `hX0 : 0 < X` using `by linarith`. Establish `hl : 0 < Real.log X` using `Real.log_pos (by linarith)`. Establish `h4 : 4 ≤ X ^ β`. Establish `h3 : X ^ (1 / 2 : ℝ) ≤ X ^ β` using `Real.rpow_le_rpow_of_exponent_le (by linarith) hβ`. Establish `e : (4 : ℝ) ≤ X ^ (1 / 2 : ℝ)`.
+
+Rewrite using `[← Real.sqrt_eq_rpow]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1` using `le_integral_inv_log (a := 2) (b := X ^ β) (by norm_num) (by linarith)`.
+
+Establish `a2` using `le_integral_inv_log (a := 2) (b := X) (by norm_num) (by linarith)`. Establish `hl' : 0 < Real.log (X ^ β)` using `Real.log_pos (by linarith)`. Establish `a3 : X / Real.log X ≤ 2 * Li X`. Establish `: X / Real.log X ≤ 2 * ((X - 2) / Real.log X)`. Rewrite using `[← mul_div_assoc]; exact div_le_div_of_nonneg_right (by linarith) hl.le`.
+
+Unfold `Formalism.HermitianLattices.GL2PrimeSums.Li`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a4 : 0 ≤ X / Real.log X` using `by positivity`. Use `⟨le_trans (div_nonneg (by linarith) hl'.le) a1, by linarith, (li_le h4).trans ?_⟩` and prove the remaining obligations. Establish `hp : 0 < X ^ (β - 1)` using `Real.rpow_pos_of_pos hX0 _`.
+
+Establish `e : X ^ β = X ^ (β - 1) * X` using `by rw [Real.rpow_sub_one hX0.ne']; field_simp`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_left (by positivity) (by positivity)` to reduce the goal to its premises. Rewrite using `[Real.log_rpow hX0]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `_ = 12 * X ^ (β - 1) * (X / Real.log X) := by rw [e]; field_simp; ring`. Use `_ ≤ 12 * X ^ (β - 1) * (2 * Li X) := by gcongr`. Use `_ = _ := by ring`.
+-/
 theorem li_rpow_le {X β : ℝ} (hX : 16 ≤ X) (hβ : 1 / 2 ≤ β) :
     0 ≤ Li (X ^ β) ∧ 0 ≤ Li X ∧ Li (X ^ β) ≤ 24 * X ^ (β - 1) * Li X := by
   have hX0 : 0 < X := by linarith
@@ -93,6 +130,9 @@ theorem li_rpow_le {X β : ℝ} (hX : 16 ≤ X) (hβ : 1 / 2 ≤ β) :
     _ ≤ 12 * X ^ (β - 1) * (2 * Li X) := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `|∑ b ∈ F, lam b * N b| ≤ (2 * ρ + 4 * δ) * ∑ b ∈ F, N b := by have hE : ∀ b ∈ F, 0 ≤ L - θ b * L' := fun b hb => (mul_nonneg_iff_of_pos_left hρ0).1 (le_trans (abs_nonneg _) (hN b hb)) have hE2 : ∀ b ∈ F, L - θ b * L' ≤ 2 * (φ * N b) := fun b hb => by have h1 := (abs_le.1 (hN b hb …`.
+-/
 theorem finite_core (F : Finset ℕ) (lam N θ : ℕ → ℝ) (φ L L' ρ δ : ℝ) (hφ : 0 < φ) (hρ0 : 0 < ρ) (hρ : ρ ≤ 1 / 2)
     (hδ0 : 0 ≤ δ) (hδ : δ ≤ 1 / 2) (hL : 0 ≤ L) (hL' : 0 ≤ L') (hl : ∀ b ∈ F, |lam b| ≤ 1) (hθ : ∀ b ∈ F, |θ b| ≤ 1)
     (hs : ∑ b ∈ F, lam b = 0) (hN : ∀ b ∈ F, |φ * N b - (L - θ b * L')| ≤ ρ * (L - θ b * L'))
@@ -138,10 +178,18 @@ theorem finite_core (F : Finset ℕ) (lam N θ : ℕ → ℝ) (φ L L' ρ δ : �
 
 def cls (m₀ s a₀ : ℕ) : Finset ℕ := (range (m₀ * s)).filter (fun b => b ≡ a₀ [MOD m₀] ∧ Nat.Coprime b s)
 
+/- English proof (translation)
+Apply `jacobiSym.mod_left'` to reduce the goal to its premises. Conclude with `Int.natCast_modEq_iff.mpr ((Nat.mod_modEq b (m₀ * s)).of_mul_left m₀)`.
+-/
 theorem jacobi_mod (m₀ s b : ℕ) : jacobiSym ((b % (m₀ * s) : ℕ) : ℤ) s = jacobiSym (b : ℤ) s := by
   apply jacobiSym.mod_left'
   exact Int.natCast_modEq_iff.mpr ((Nat.mod_modEq b (m₀ * s)).of_mul_left m₀)
 
+/- English proof (translation)
+Unfold `cls`. Rewrite using `[Finset.mem_filter, Finset.mem_range]`. Use `⟨Nat.mod_lt _ hM, ((Nat.mod_modEq p (m₀ * s)).of_mul_right s).trans h1, ?_⟩` and prove the remaining obligations. Use `((Nat.mod_modEq p (m₀ * s)).of_mul_left m₀).gcd_eq` as an intermediate fact. Unfold `Nat.Coprime at h2 ⊢`.
+
+Rewrite using `[this, h2]`.
+-/
 theorem mod_mem_cls {m₀ s a₀ p : ℕ} (hM : 0 < m₀ * s) (h1 : p ≡ a₀ [MOD m₀]) (h2 : Nat.Coprime p s) :
     p % (m₀ * s) ∈ cls m₀ s a₀ := by
   unfold cls
@@ -151,13 +199,36 @@ theorem mod_mem_cls {m₀ s a₀ p : ℕ} (hM : 0 < m₀ * s) (h1 : p ≡ a₀ [
   unfold Nat.Coprime at h2 ⊢
   rw [this, h2]
 
+/- English proof (translation)
+Use `haveI : NeZero s := ⟨hs.ne'⟩`. Conclude with `jacobiSym.eq_zero_iff_not_coprime.mpr (by simpa [Int.gcd_natCast_natCast] using h)`.
+-/
 theorem jacobi_eq_zero {s b : ℕ} (hs : 0 < s) (h : ¬ Nat.Coprime b s) : jacobiSym (b : ℤ) s = 0 := by
   haveI : NeZero s := ⟨hs.ne'⟩
   exact jacobiSym.eq_zero_iff_not_coprime.mpr (by simpa [Int.gcd_natCast_natCast] using h)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases jacobiSym.trichotomy b s with h | h | h <;> simp [h]`.
+-/
 theorem abs_jacobi_le (b : ℤ) (s : ℕ) : |(jacobiSym b s : ℝ)| ≤ 1 := by
   rcases jacobiSym.trichotomy b s with h | h | h <;> simp [h]
 
+/- English proof (translation)
+Establish `hM : 0 < m₀ * s` using `Nat.mul_pos hm hs`. Use `set A := (Icc 1 n).filter (fun p => p.Prime ∧ p ≡ a₀ [MOD m₀]) with hA`. Establish `hmap : ∀ p ∈ A.filter (fun p => Nat.Coprime p s), p % (m₀ * s) ∈ cls m₀ s a₀`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter, hA, Finset.mem_filter]`.
+
+Conclude with `mod_mem_cls hM hp.1.2.2 hp.2`. Establish `hfib : ∀ b ∈ cls m₀ s a₀, (A.filter (fun p => Nat.Coprime p s)).filter (fun p => p % (m₀ * s) = b) = (Icc 1 n).filter (fun p => p.Prime ∧ p ≡ b [MOD m₀ * s])`. Introduce `b hb`. Unfold `cls at hb`. Rewrite `hb` using `[Finset.mem_filter, Finset.mem_range]`.
+
+Use extensionality with `p`. Simplify using `only [hA, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2, -⟩, -⟩, h3⟩`. Conclude with `⟨h1, h2, h3 ▸ (Nat.mod_modEq p _).symm⟩`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨⟨⟨h1, h2, (h3.of_mul_right s).trans hb.2.1⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(h3.of_mul_left m₀).gcd_eq` as an intermediate fact. Unfold `Nat.Coprime`. Rewrite using `[this]`.
+
+Conclude with `hb.2.2`. Unfold `Nat.ModEq at h3`. Rewrite using `[h3, Nat.mod_eq_of_lt hb.1]`. Prove the components needed by the constructor for the conclusion. Establish `e : ∑ p ∈ A, (jacobiSym (p : ℤ) s : ℝ) = ∑ p ∈ A.filter (fun p => Nat.Coprime p s), (jacobiSym (p : ℤ) s : ℝ)`.
+
+Rewrite using `[Finset.sum_filter (fun p => Nat.Coprime p s)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[jacobi_eq_zero hs h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, ← Finset.sum_fiberwise_of_maps_to hmap]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[← hfib b hb, mul_comm (jacobiSym (b : ℤ) s : ℝ), ← nsmul_eq_mul, ← Finset.sum_const]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[← (Finset.mem_filter.1 hp).2, jacobi_mod]`. Establish `h` using `Finset.card_eq_sum_card_fiberwise (f := fun p => p % (m₀ * s)) hmap`. Rewrite `h` using `[Finset.sum_congr rfl (fun b hb => congrArg Finset.card (hfib b hb))]`. Rewrite using `[← Nat.cast_sum, ← h]`. Conclude with `Finset.card_filter_le _ _` after adjusting the coercions.
+-/
 theorem sum_primes_fiber (m₀ s a₀ n : ℕ) (hm : 0 < m₀) (hs : 0 < s) :
     ∑ p ∈ (Icc 1 n).filter (fun p => p.Prime ∧ p ≡ a₀ [MOD m₀]), (jacobiSym (p : ℤ) s : ℝ) =
       ∑ b ∈ cls m₀ s a₀, (jacobiSym (b : ℤ) s : ℝ) *
@@ -205,6 +276,11 @@ theorem sum_primes_fiber (m₀ s a₀ n : ℕ) (hm : 0 < m₀) (hs : 0 < s) :
     rw [← Nat.cast_sum, ← h]
     exact_mod_cast Finset.card_filter_le _ _
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.JacobiClassSum.lamSumZero m₀ s a₀ hm h1 ho hsq hc`. Unfold `cls`. Establish `h'` using `congrArg (Int.cast : ℤ → ℝ) h`. Rewrite `h'` using `[Int.cast_sum, Int.cast_zero]`. Use `Eq.trans ?_ h'` and prove the remaining obligations.
+
+Rewrite using `[← Finset.filter_filter, Finset.sum_filter (fun p => Nat.Coprime p s)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[jacobi_eq_zero (by omega) h]; simp`.
+-/
 theorem sum_cls_jacobi {m₀ s a₀ : ℕ} (hm : 0 < m₀) (h1 : 1 < s) (ho : Odd s) (hsq : Squarefree s)
     (hc : Nat.Coprime s m₀) : ∑ b ∈ cls m₀ s a₀, (jacobiSym (b : ℤ) s : ℝ) = 0 := by
   have h := GlobalTheory.JacobiClassSum.lamSumZero m₀ s a₀ hm h1 ho hsq hc
@@ -218,6 +294,17 @@ theorem sum_cls_jacobi {m₀ s a₀ : ℕ} (hm : 0 < m₀) (h1 : 1 < s) (ho : Od
   · rfl
   · rw [jacobi_eq_zero (by omega) h]; simp
 
+/- English proof (translation)
+Establish `hum : Nat.Coprime u (m₀ * s)`. Use `Nat.Coprime.mul_right ?_ hu2` and prove the remaining obligations. Unfold `Nat.Coprime`. Rewrite using `[hu1.gcd_eq]`. Simplify using the standard rewrite rules.
+
+Establish `hinj : Set.InjOn (fun b => (u * b) % (m₀ * s)) (cls m₀ s a₀ : Set ℕ)`. Introduce `b hb b' hb' e`. Establish `hb1` using `Finset.mem_range.1 (Finset.mem_filter.1 (Finset.mem_coe.1 hb)).1`. Establish `hb2` using `Finset.mem_range.1 (Finset.mem_filter.1 (Finset.mem_coe.1 hb')).1`. Conclude with `Nat.ModEq.eq_of_lt_of_lt (Nat.ModEq.cancel_left_of_coprime hum.symm e) hb1 hb2`.
+
+Establish `himg : (cls m₀ s a₀).image (fun b => (u * b) % (m₀ * s)) = cls m₀ s a₀`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `c hc`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hc`. Establish `hb'` using `(Finset.mem_filter.1 hb).2`.
+
+Conclude with `mod_mem_cls hM (by simpa using hu1.mul hb'.1) (Nat.Coprime.mul_left hu2 hb'.2)`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Establish `e : ∑ b ∈ cls m₀ s a₀, (jacobiSym (b : ℤ) s : ℂ) * χ (b : ZMod (m₀ * s)) = ((jacobiSym (u : ℤ) s : ℂ) * χ (u : ZMod (m₀ * s))) * ∑ b ∈ cls m₀ s a₀, (jacobiSym (b : ℤ) s : ℂ) * χ (b : ZMod (m₀ * s))` using `by conv_lhs => rw [← himg, Finset.sum_image hinj]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[jacobi_mod, ZMod.natCast_mod, Nat.cast_mul, Nat.cast_mul, jacobiSym.mul_left, map_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ h (by rw [one_mul]; exact e.symm)`.
+-/
 theorem jacobi_mul_char_eq_one {m₀ s a₀ : ℕ} (hM : 0 < m₀ * s) (χ : DirichletCharacter ℂ (m₀ * s))
     (h : ∑ b ∈ cls m₀ s a₀, (jacobiSym (b : ℤ) s : ℂ) * χ (b : ZMod (m₀ * s)) ≠ 0)
     {u : ℕ} (hu1 : u ≡ 1 [MOD m₀]) (hu2 : Nat.Coprime u s) :
@@ -248,6 +335,15 @@ theorem jacobi_mul_char_eq_one {m₀ s a₀ : ℕ} (hM : 0 < m₀ * s) (χ : Dir
     push_cast; ring
   exact mul_right_cancel₀ h (by rw [one_mul]; exact e.symm)
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hps`. Establish `hpt : Nat.Coprime p t` using `Nat.coprime_of_squarefree_mul hsq`. Take `⟨c, hc1⟩` from `GlobalTheory.JacobiClassSum.exists_jacobiSym_eq_neg_one hp.one_lt (Nat.odd_mul.1 ho).1 hp.squarefree`. Establish `hcop : Nat.Coprime p (m₀ * t * s')` using `Nat.Coprime.mul_right (Nat.Coprime.mul_right (Nat.Coprime.coprime_mul_right hc) hpt) ((Nat.Prime.coprime_iff_not_dvd hp).2 hps')`. Take `⟨u, hu1, hu2⟩` from `Nat.chineseRemainder hcop c 1`.
+
+Establish `one : ∀ d, d ∣ m₀ * t * s' → jacobiSym (u : ℤ) d = 1` using `fun d hd => by`. Rewrite using `[jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast (Int.natCast_modEq_iff.mpr (hu2.of_dvd hd))), jacobiSym.one_left]`. Establish `hup : jacobiSym (u : ℤ) p = -1`. Rewrite using `[jacobiSym.mod_left' (a₂ := c) (Int.natCast_modEq_iff.mpr hu1), hc1]`. Establish `ht : t ≠ 0` using `by rintro rfl; simp at ho`.
+
+Establish `e : jacobiSym (u : ℤ) (p * t) = -1`. Rewrite using `[jacobiSym.mul_right' _ hp.ne_zero ht, hup, one t ⟨m₀ * s', by ring⟩]; norm_num`. Use `⟨u, hu2.of_dvd ⟨t * s', by ring⟩, ?_, ?_, e, one s' (Dvd.intro_left _ rfl)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `e` using `[jacobi_eq_zero (Nat.mul_pos hp.pos (Nat.pos_of_ne_zero ht)) h]`.
+
+Evaluate the numerical expressions using `at e`. Unfold `Nat.Coprime`. Rewrite using `[(hu2.of_dvd (Dvd.intro_left _ rfl)).gcd_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_sep_of_prime {m₀ s s' p : ℕ} (hp : p.Prime) (hps : p ∣ s) (hps' : ¬ p ∣ s') (ho : Odd s)
     (hsq : Squarefree s) (hc : Nat.Coprime s m₀) :
     ∃ u : ℕ, u ≡ 1 [MOD m₀] ∧ Nat.Coprime u s ∧ Nat.Coprime u s' ∧ jacobiSym (u : ℤ) s = -1 ∧ jacobiSym (u : ℤ) s' = 1 := by
@@ -273,6 +369,11 @@ theorem exists_sep_of_prime {m₀ s s' p : ℕ} (hp : p.Prime) (hps : p ∣ s) (
   · unfold Nat.Coprime
     rw [(hu2.of_dvd (Dvd.intro_left _ rfl)).gcd_eq]; simp
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ p : ℕ, p.Prime → (p ∣ s ↔ p ∣ s')`. Conclude with `absurd ((Nat.Squarefree.ext_iff hsq hsq').2 h) hne`. Use `push Not at h`. Take `⟨p, hp, h | h⟩` from `h`. Take `⟨u, a, b, c, d, e⟩` from `exists_sep_of_prime hp h.1 h.2 ho hsq hc`.
+
+Conclude with `⟨u, a, b, c, by rw [d, e]; norm_num⟩`. Take `⟨u, a, b, c, d, e⟩` from `exists_sep_of_prime hp h.2 h.1 ho' hsq' hc'`. Conclude with `⟨u, a, c, b, by rw [d, e]; norm_num⟩`.
+-/
 theorem exists_sep {m₀ s s' : ℕ} (ho : Odd s) (hsq : Squarefree s) (hc : Nat.Coprime s m₀)
     (ho' : Odd s') (hsq' : Squarefree s') (hc' : Nat.Coprime s' m₀) (hne : s ≠ s') :
     ∃ u : ℕ, u ≡ 1 [MOD m₀] ∧ Nat.Coprime u s ∧ Nat.Coprime u s' ∧
@@ -286,16 +387,25 @@ theorem exists_sep {m₀ s s' : ℕ} (ho : Odd s) (hsq : Squarefree s) (hc : Nat
     · obtain ⟨u, a, b, c, d, e⟩ := exists_sep_of_prime hp h.2 h.1 ho' hsq' hc'
       exact ⟨u, a, c, b, by rw [d, e]; norm_num⟩
 
+/- English proof (translation)
+Apply `DirichletCharacter.changeLevel_injective χ.conductor_dvd_level` to reduce the goal to its premises. Rewrite using `[map_pow, DirichletCharacter.changeLevel_primitiveCharacter, h, map_one]`.
+-/
 theorem primitive_sq {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) (h : χ ^ 2 = 1) :
     χ.primitiveCharacter ^ 2 = 1 := by
   apply DirichletCharacter.changeLevel_injective χ.conductor_dvd_level
   rw [map_pow, DirichletCharacter.changeLevel_primitiveCharacter, h, map_one]
 
+/- English proof (translation)
+Use `χ.primitiveCharacter_apply_of_isCoprime (a := (u : ℤ)) (Nat.isCoprime_iff_coprime.2 h)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem primitive_apply {M : ℕ} [NeZero M] (χ : DirichletCharacter ℂ M) {u : ℕ} (h : Nat.Coprime u M) :
     χ.primitiveCharacter (u : ZMod χ.conductor) = χ (u : ZMod M) := by
   have := χ.primitiveCharacter_apply_of_isCoprime (a := (u : ℤ)) (Nat.isCoprime_iff_coprime.2 h)
   simpa using this
 
+/- English proof (translation)
+Establish `h1 : (χ ^ 2) (u : ZMod M) = 1`. Rewrite using `[h]`. Conclude with `MulChar.one_apply ((ZMod.isUnit_iff_coprime u M).2 hu)`. Rewrite `h1` using `[MulChar.pow_apply' χ (by norm_num)]`. Then use the resulting hypothesis.
+-/
 theorem sq_apply {M : ℕ} (χ : DirichletCharacter ℂ M) (h : χ ^ 2 = 1) {u : ℕ} (hu : Nat.Coprime u M) :
     χ (u : ZMod M) ^ 2 = 1 := by
   have h1 : (χ ^ 2) (u : ZMod M) = 1 := by
@@ -306,6 +416,17 @@ def Exc (m₀ a₀ : ℕ) (lo : ℝ) (s : ℕ) : Prop :=
   ∃ (_ : NeZero (m₀ * s)) (χ : DirichletCharacter ℂ (m₀ * s)) (β : ℝ), IsExcRat χ β ∧ lo < β ∧
     ∑ b ∈ cls m₀ s a₀, (jacobiSym (b : ℤ) s : ℂ) * χ (b : ZMod (m₀ * s)) ≠ 0
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨u, hu, hus, hus', hJ⟩` from `exists_sep ho hsq hc ho' hsq' hc' hne`. Take `⟨i, χ, β, hχ, hlo, hsum⟩` from `h`. Take `⟨i', χ', β', hχ', hlo', hsum'⟩` from `h'`. Establish `hM` using `NeZero.pos (m₀ * s)`.
+
+Establish `hM'` using `NeZero.pos (m₀ * s')`. Use `haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩`. Use `haveI : NeZero χ'.conductor := ⟨χ'.conductor_ne_zero⟩`. Establish `key` using `(hP χ.conductor χ'.conductor χ.primitiveCharacter χ'.primitiveCharacter β β' χ.primitiveCharacter_isPrimitive χ'.primitiveCharacter_isPrimitive (primitive_sq χ hχ.1) (primitive_sq χ' hχ'.1) (le_trans (by exact_mod_cast Nat.le_of_dvd hM χ.conductor_dvd_level) hQ) (le_trans (by exa …`. Establish `hum : Nat.Coprime u m₀`.
+
+Unfold `Nat.Coprime`. Rewrite using `[hu.gcd_eq]`. Simplify using the standard rewrite rules. Rewrite `key` using `[primitive_apply χ (hum.mul_right hus), primitive_apply χ' (hum.mul_right hus')]`. Establish `e1` using `jacobi_mul_char_eq_one hM χ hsum hu hus`.
+
+Establish `e2` using `jacobi_mul_char_eq_one hM' χ' hsum' hu hus'`. Establish `e3` using `sq_apply χ hχ.1 (hum.mul_right hus)`. Establish `e4 : (jacobiSym (u : ℤ) s : ℂ) * (jacobiSym (u : ℤ) s' : ℂ) = -1` using `by exact_mod_cast hJ`. Rewrite `e2` using `[← key]`. Establish `: (2 : ℂ) = 0`.
+
+Take the linear combination `(-(jacobiSym (u : ℤ) s' : ℂ) * χ (u : ZMod (m₀ * s))) * e1 - e2 + χ (u : ZMod (m₀ * s)) ^ 2 * e4 - e3`. Evaluate the numerical expressions using `at this`.
+-/
 theorem exc_unique {m₀ a₀ s s' : ℕ} {lo Q : ℝ}
     (hP : ∀ (q₁ q₂ : ℕ) [NeZero q₁] [NeZero q₂]
       (χ₁ : DirichletCharacter ℂ q₁) (χ₂ : DirichletCharacter ℂ q₂) (β₁ β₂ : ℝ),
@@ -343,6 +464,9 @@ theorem exc_unique {m₀ a₀ s s' : ℕ} {lo Q : ℝ}
       χ (u : ZMod (m₀ * s)) ^ 2 * e4 - e3
   norm_num at this
 
+/- English proof (translation)
+The claim follows from `|∑ p ∈ (Icc 1 ⌊X⌋₊).filter (fun p => p.Prime ∧ p ≡ a₀ [MOD m₀]), (jacobiSym (p : ℤ) s : ℝ)| ≤ (2 * ρ + 4 * δ) * (((Icc 1 ⌊X⌋₊).filter (fun p => p.Prime ∧ p ≡ a₀ [MOD m₀])).card : ℝ) := by classical have hM := NeZero.pos (m₀ * s) obtain ⟨k1, k2⟩ := sum_primes_fiber m₀ s a₀ ⌊X⌋₊ (b …`.
+-/
 theorem twisted_sum_le {m₀ a₀ s : ℕ} [NeZero (m₀ * s)] {lo X ρ δ : ℝ} (hm : 8 ≤ m₀) (ha : Nat.Coprime a₀ m₀)
     (h1 : 1 < s) (ho : Odd s) (hsq : Squarefree s) (hc : Nat.Coprime s m₀)
     (hρ0 : 0 < ρ) (hρ : ρ ≤ 1 / 2) (hδ : δ ≤ 1 / 2) (hX : 16 ≤ X) (hlo : 24 * X ^ (lo - 1) ≤ δ)
@@ -407,6 +531,9 @@ theorem twisted_sum_le {m₀ a₀ s : ℕ} [NeZero (m₀ * s)] {lo X ρ δ : ℝ
       (fun b _ => abs_jacobi_le _ _) (fun b _ => by simp) hs0
       (fun b hb => hT b 0 1 (hcop b hb) (Or.inl ⟨rfl, hex⟩)) (Or.inl (by simp))
 
+/- English proof (translation)
+The claim follows from `|(∑ p ∈ PP m₀ a₀ X, f p) / (PP m₀ a₀ X).card| ≤ η + 4 * X ^ (-(2 : ℝ) / 5) := by set A := (Icc 1 ⌊X⌋₊).filter (fun p => p.Prime ∧ p ≡ a₀ [MOD m₀]) with hA have hX0 : 0 < X := by linarith have hsub : PP m₀ a₀ X ⊆ A := by intro p hp unfold Formalism.HermitianLattices.GL2PrimeSums.P …`.
+-/
 theorem mean_PP_le {m₀ a₀ : ℕ} {X η : ℝ} (f : ℕ → ℝ) (hf : ∀ p, |f p| ≤ 1) (hX : 1 ≤ X) (hη0 : 0 ≤ η) (hη : η ≤ 3)
     (hcard : X ^ ((9 : ℝ) / 10) ≤ ((PP m₀ a₀ X).card : ℝ))
     (h : |∑ p ∈ (Icc 1 ⌊X⌋₊).filter (fun p => p.Prime ∧ p ≡ a₀ [MOD m₀]), f p| ≤
@@ -455,6 +582,11 @@ theorem mean_PP_le {m₀ a₀ : ℕ} {X η : ℝ} (f : ℕ → ℝ) (hf : ∀ p,
   rw [hc] at h
   nlinarith
 
+/- English proof (translation)
+Establish `h1` using `(isLittleO_log_rpow_rpow_atTop (4 : ℝ) ha).bound (inv_pos.2 hK)`. Establish `h2 : Tendsto (fun x : ℝ => Real.exp (-c * Real.log x ^ 2)) atTop (𝓝 0)`. Apply `Real.tendsto_exp_atBot.comp` to reduce the goal to its premises. Conclude with `((tendsto_pow_atTop (by norm_num)).comp Real.tendsto_log_atTop).const_mul_atTop_of_neg (by linarith)`. Use `filter_upwards [h1, h2.eventually (eventually_le_nhds hκ), eventually_ge_atTop 1, Real.tendsto_log_atTop.eventually_ge_atTop 1, Real.tendsto_log_atTop.eventually_ge_atTop B] with x k1 k2 k3 k4 k5`.
+
+Use `⟨k3, k4, k5, ?_, k2⟩` and prove the remaining obligations. Rewrite `k1` using `[Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (by positivity), show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite using `[← le_inv_mul_iff₀ hK]` and apply the resulting hypothesis.
+-/
 theorem eventually_sizes {a K c κ B : ℝ} (ha : 0 < a) (hK : 0 < K) (hc : 0 < c) (hκ : 0 < κ) :
     ∀ᶠ x : ℝ in atTop, 1 ≤ x ∧ 1 ≤ Real.log x ∧ B ≤ Real.log x ∧ K * Real.log x ^ 4 ≤ x ^ a ∧
       Real.exp (-c * Real.log x ^ 2) ≤ κ := by
@@ -475,6 +607,49 @@ namespace GlobalTheory.Mem.An
 
 open JacobiMean
 
+/- English proof (translation)
+Introduce `hTZ hPage _ eps h0 h1`. Take `⟨x₁, hcount⟩` from `card_primes_residue_ge_rpow hTZ eps h0 h1`. Take `⟨c₂, c₃, CA, cS, h2, h3, hA, -, H⟩` from `hTZ`. Take `⟨cP, hcP, HP⟩` from `hPage`. Use `set c' : ℝ := min 1 (min (c₃ / 8) (cP / 8)) with hc'`.
+
+Establish `hc'0 : 0 < c'` using `lt_min one_pos (lt_min (by positivity) (by positivity))`. Establish `hc'1 : c' ≤ 1` using `min_le_left _ _`. Establish `hc'2 : c' ≤ c₃ / 8` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `hc'3 : c' ≤ cP / 8` using `(min_le_right _ _).trans (min_le_right _ _)`. Take `⟨x₂, hx₂⟩` from `eventually_atTop.1 (eventually_sizes (a := eps / 6) (K := 200 + 1 / c₃) (c := c') (κ := 1 / (4 * CA + 48)) (B := 8 * c₂) (by positivity) (by positivity) hc'0 (by positivity))`.
+
+Use `⟨max x₁ x₂, 4 * CA + 100, c', by positivity, hc'0, ?_⟩` and prove the remaining obligations. Introduce `x hx m₀ a₀ h8 hm0 ha X hX0 hH1 hH2`. Take `⟨k1, k2, k3, k4, k5⟩` from `hx₂ x (le_trans (le_max_right _ _) hx)`. Establish `hm8 : 8 ≤ m₀` using `Nat.le_of_dvd hm0 h8`. Establish `hm8' : (8 : ℝ) ≤ m₀` using `by exact_mod_cast hm8`.
+
+Establish `hcard` using `hcount x (le_trans (le_max_left _ _) hx) m₀ a₀ (by omega) ha X hX0 hH1 hH2`. Use `set l := Real.log x with hl`. Use `set e := Real.exp (-c' * l ^ 2) with he`. Establish `he0 : 0 < e` using `Real.exp_pos _`. Use `set Z : ℝ := m₀ * x ^ (800 : ℝ) with hZ`.
+
+Establish `hx800 : 1 ≤ x ^ (800 : ℝ)` using `Real.one_le_rpow k1 (by norm_num)`. Establish `hZ8 : 8 ≤ Z` using `by rw [hZ]; exact le_trans hm8' (le_mul_of_one_le_right (by positivity) hx800)`. Establish `hlZ : Real.log Z = Real.log m₀ + 800 * l`. Rewrite using `[hZ, Real.log_mul (by positivity) (by positivity), Real.log_rpow (by linarith)]`. Establish `hlZ0 : 0 < Real.log Z` using `Real.log_pos (by linarith)`.
+
+Establish `hl2 : 1 ≤ l ^ 2` using `one_le_pow₀ k2`. Establish `hl4 : l ^ 2 ≤ l ^ 4` using `pow_le_pow_right₀ k2 (by norm_num)`. Establish `hl3 : l ^ 3 ≤ l ^ 4` using `pow_le_pow_right₀ k2 (by norm_num)`. Establish `hl1 : l ≤ l ^ 2` using `le_self_pow₀ k2 (by norm_num)`. Establish `hK : 200 * l ^ 4 + l ^ 4 / c₃ ≤ Real.log X`.
+
+Use `le_trans (le_of_eq ?_) (k4.trans hH2)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hK0 : 0 ≤ l ^ 4 / c₃` using `by positivity`. Establish `hK1 : l ^ 4 ≤ c₃ * Real.log X`. Establish `: l ^ 4 / c₃ ≤ Real.log X` using `by linarith`.
+
+Rewrite `this` using `[div_le_iff₀' h3]`. Then use the resulting hypothesis. Establish `hmain : l ^ 2 * Real.log Z ≤ 8 * Real.log X`. Establish `: l ^ 2 * (Real.log m₀ + 800 * l) = l ^ 2 * Real.log m₀ + 800 * l ^ 3` using `by ring`. Rewrite using `[hlZ, this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hX16 : 16 ≤ X`. Use `Real.log_le_sub_one_of_pos hX0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlX0 : 0 < Real.log X` using `Real.log_pos (by linarith)`. Rewrite `k5` using `[le_div_iff₀ (by positivity)]`.
+
+Establish `hcl : c' * l ^ 2 ≤ l ^ 2` using `mul_le_of_le_one_left (by positivity) hc'1`. Establish `k6 : 4 * (CA * e) + 48 * e ≤ 1` using `by linarith`. Establish `hAe : 0 < CA * e` using `by positivity`. Establish `hexp : ∀ c L : ℝ, c' ≤ c / 8 → 0 < L → L ≤ Real.log Z → Real.exp (-c * Real.log X / L) ≤ e`. Introduce `c L hc hL hLZ`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[div_le_iff₀ hL]`. Establish `a1 : l ^ 2 * L ≤ 8 * Real.log X` using `le_trans (by gcongr) hmain`. Establish `a2 : c' * (l ^ 2 * L) ≤ c / 8 * (8 * Real.log X)` using `mul_le_mul hc a1 (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set lo := 1 - cP / Real.log Z with hlo`. Establish `hδ : 24 * X ^ (lo - 1) ≤ 24 * e`. Use `hexp cP (Real.log Z) hc'3 hlZ0 le_rfl` as an intermediate fact. Establish `e2 : X ^ (lo - 1) = Real.exp (-cP * Real.log X / Real.log Z)`. Rewrite using `[Real.rpow_def_of_pos hX0, hlo]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h25 : X ^ (-(2 : ℝ) / 5) ≤ e`.
+
+Rewrite using `[Real.rpow_def_of_pos hX0]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hodd : ∀ s : ℕ, Nat.Coprime s m₀ → Odd s` using `fun s hs => Nat.coprime_two_right.1 (Nat.Coprime.coprime_dvd_right (Dvd.dvd.trans (by norm_num) h8) hs)`. Establish `hMZ : ∀ s : ℕ, (s : ℝ) ≤ x ^ (800 : ℝ) → ((m₀ * s : ℕ) : ℝ) ≤ Z` using `fun s hs => by`.
+
+Rewrite using `[hZ, Nat.cast_mul]`. Use `gcongr`. Establish `hgood : ∀ s : ℕ, 1 < s → Squarefree s → Nat.Coprime s m₀ → (s : ℝ) ≤ x ^ (800 : ℝ) → ¬ Exc m₀ a₀ lo s → |(∑ p ∈ Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X, (jacobiSym (p : ℤ) s : ℝ)) / (Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X).card| ≤ (4 * CA + 100) * e`. Introduce `s hs1 hsq hc hsx hE`. Establish `hM8 : 8 ≤ m₀ * s` using `le_trans hm8 (Nat.le_mul_of_pos_right _ (by omega))`.
+
+Use `haveI : NeZero (m₀ * s) := ⟨by omega⟩`. Establish `hM4 : (m₀ * s) % 4 ≠ 2`. Establish `: 8 ∣ m₀ * s` using `h8.mul_right s`. Use linear arithmetic over natural numbers and integers. Take `⟨-, -, HC⟩` from `H (m₀ * s) (by omega) hM4`.
+
+Establish `hM8' : (8 : ℝ) ≤ ((m₀ * s : ℕ) : ℝ)` using `by exact_mod_cast hM8`. Establish `hlM0 : 0 < Real.log ((m₀ * s : ℕ) : ℝ)` using `Real.log_pos (by linarith)`. Establish `hlM : Real.log ((m₀ * s : ℕ) : ℝ) ≤ Real.log Z` using `Real.log_le_log (by linarith) (hMZ s hsx)`. Establish `hrange : ((m₀ * s : ℕ) : ℝ) ^ c₂ ≤ X`. Rewrite using `[← Real.log_le_log_iff (by positivity) hX0, Real.log_rpow (by linarith)]`.
+
+Establish `a1 : 8 * c₂ * Real.log ((m₀ * s : ℕ) : ℝ) ≤ l ^ 2 * Real.log Z` using `mul_le_mul (by linarith) hlM hlM0.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq3 : Real.exp (-Real.sqrt (c₃ * Real.log X)) ≤ e`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `: l ^ 2 ≤ Real.sqrt (c₃ * Real.log X)` using `Real.le_sqrt_of_sq_le (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb` using `twisted_sum_le (lo := lo) (X := X) (ρ := 2 * (CA * e)) (δ := 24 * e) hm8 ha hs1 (hodd s hc) hsq hc (by positivity) (by linarith) (by linarith) hX16 hδ (fun b θ β hb hθ => by`. Establish `hq` using `HC b θ β hb hθ X hrange`. Establish `hE0 : 0 ≤ Formalism.HermitianLattices.GL2PrimeSums.Emain θ β X` using `(mul_nonneg_iff_of_pos_left (by positivity)).1 (le_trans (abs_nonneg _) hq)`. Use `hq.trans (mul_le_mul_of_nonneg_right ?_ hE0)` and prove the remaining obligations.
+
+Use `mul_le_mul_of_nonneg_left (add_le_add (hexp c₃ _ hc'2 hlM0 hlM) hsq3) hA.le` as an intermediate fact. Use the proof step `linarith) hE`. Use `mean_PP_le (fun p => (jacobiSym (p : ℤ) s : ℝ)) (fun p => abs_jacobi_le _ _) (by linarith) (by positivity) (by linarith) hcard hb` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hex : ∃ s : ℕ, Squarefree s ∧ Nat.Coprime s m₀ ∧ (s : ℝ) ≤ x ^ (800 : ℝ) ∧ Exc m₀ a₀ lo s`.
+
+Take `⟨n, n1, n2, n3, n4⟩` from `hex`. Use `⟨n, fun s hs1 hsq hc hsx hne => hgood s hs1 hsq hc hsx fun hE => hne ?_⟩` and prove the remaining obligations. Conclude with `exc_unique (HP Z (by linarith)) (hodd s hc) hsq hc (hMZ s hsx) (hodd n n2) n1 n2 (hMZ n n3) hE n4`. Conclude with `⟨0, fun s hs1 hsq hc hsx _ => hgood s hs1 hsq hc hsx fun hE => hex ⟨s, hsq, hc, hsx, hE⟩⟩`.
+-/
 theorem jacobi_mean_small :
     GlobalTheory.Mem.An.TZRat → GlobalTheory.Mem.An.PageThm → Formalism.ZeroFreeDirichlet.ZFRDirichlet → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x₀ C' c' : ℝ, 0 < C' ∧ 0 < c' ∧ ∀ x : ℝ, x₀ ≤ x → ∀ m₀ a₀ : ℕ, 8 ∣ m₀ → 0 < m₀ → Nat.Coprime a₀ m₀ → ∀ X : ℝ, 0 < X → (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X → x ^ (eps / 6) ≤ Real.log X → ∃ nStar : ℕ, ∀ s : ℕ, 1 < s → Squarefree s → Nat.Coprime s m₀ → (s : ℝ) ≤ x ^ (800 : ℝ) → s ≠ nStar → |(∑ p ∈ Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X, (jacobiSym (p : ℤ) s : ℝ)) / (Formalism.HermitianLattices.GL2PrimeSums.PP m₀ a₀ X).card| ≤ C' * Real.exp (-c' * Real.log x ^ 2) := by
   intro hTZ hPage _ eps h0 h1

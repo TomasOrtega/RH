@@ -18,6 +18,15 @@ open GlobalTheory.KeyCl
 
 namespace GlobalTheory.KeyCl
 
+/- English proof (translation)
+Introduce `κ hH hF hT K _ _ x y j hp`. Establish `hj : 1 ≤ j`. Take `⟨_, hg, -⟩` from `hp`. Use `y.g_pos` as an intermediate fact. Break down `Nat.eq_zero_or_pos j with rfl | h` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Take `⟨K₀, x₀, hK₀, hx₀⟩` from `(GlobalTheory.T.keyData_descend_countable_subrings GlobalTheory.firstFiveLaws.1).2 K x`. Take `⟨σ⟩` from `GlobalTheory.KeyHouse.nonempty_ringHom_complex K₀`. Take `⟨y₀, hy₀⟩` from `GlobalTheory.KeyPow.exists_isKeyPow _ x₀ j hj`.
+
+Take `⟨x₁, hx₁⟩` from `GlobalTheory.KeyPow.exists_keyPB_ring x₀ σ`. Take `⟨y₁, hy₁⟩` from `GlobalTheory.KeyPow.exists_isKeyPow _ x₁ j hj`. Establish `e₀` using `GlobalTheory.KeyPow.keyPB_of_isKeyPow _ _ _ x₀ y₀ x y j hx₀ hy₀ hp`. Establish `e₁` using `GlobalTheory.KeyPow.keyPB_of_isKeyPow _ _ _ x₀ y₀ x₁ y₁ j hx₁ hy₀ hy₁`. Establish `e` using `congrArg Units.val (GlobalTheory.T.thetaKeyRule_pow_complex κ hH hT x₁ y₁ j hy₁)`.
+
+Rewrite `e` using `[Units.val_pow_eq_pow_val, hF _ _ σ y₀ y₁ e₁, hF _ _ σ x₀ x₁ hx₁, ← map_pow]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, hF _ _ _ y₀ y e₀, hF _ _ _ x₀ x hx₀, ← map_pow, σ.injective e]`.
+-/
 theorem rule_pow : ∀ κ : Rule, Homog (fun _ => 1) κ → Funct κ → ThetaOne κ → ∀ (K : Type) [Field K] [CharZero K]
     (x y : KeyIn K) (j : ℕ), GlobalTheory.KeyPow.IsKeyPow y x j → κ K y = κ K x ^ j := by
   intro κ hH hF hT K _ _ x y j hp

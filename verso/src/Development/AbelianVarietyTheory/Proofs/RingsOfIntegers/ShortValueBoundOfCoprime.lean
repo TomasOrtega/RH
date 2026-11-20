@@ -34,21 +34,39 @@ variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
 def Un (V : Type) {K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] (x : K) : Prop := valV V x = 1
 
+/- English proof (translation)
+Unfold `Un at *`. Rewrite using `[map_mul, hx, hy, _root_.one_mul]`.
+-/
 theorem Un.mul {x y : K} (hx : Un V x) (hy : Un V y) : Un V (x * y) := by
   unfold Un at *; rw [map_mul, hx, hy, _root_.one_mul]
 
+/- English proof (translation)
+Unfold `Un at *`. Rewrite using `[map_inv₀, hx, inv_one]`.
+-/
 theorem Un.inv {x : K} (hx : Un V x) : Un V x⁻¹ := by
   unfold Un at *; rw [map_inv₀, hx, inv_one]
 
+/- English proof (translation)
+Unfold `Un at *`. Rewrite using `[map_pow, hx, one_pow]`.
+-/
 theorem Un.pow {x : K} (hx : Un V x) (n : ℕ) : Un V (x ^ n) := by
   unfold Un at *; rw [map_pow, hx, one_pow]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `[Un] at hx`.
+-/
 theorem Un.ne {x : K} (hx : Un V x) : x ≠ 0 := by
   rintro rfl; simp [Un] at hx
 
+/- English proof (translation)
+The claim follows from `nval_mul_unit e hx.ne (by unfold Un at hx; simp [vV, hx]) z`.
+-/
 theorem Un.nval {x : K} (hx : Un V x) (e : ℕ) (z : K) : nval V e (x * z) = nval V e z :=
   nval_mul_unit e hx.ne (by unfold Un at hx; simp [vV, hx]) z
 
+/- English proof (translation)
+Unfold `Un`. Establish `h1 : WithZero.log (valV V x) = WithZero.log (valV V y)` using `neg_injective h`. Establish `h2 : valV V x = valV V y`. Rewrite using `[← WithZero.exp_log (valV_ne_zero (V := V) hx), h1, WithZero.exp_log (valV_ne_zero (V := V) hy)]`. Rewrite using `[map_mul, map_inv₀, h2, mul_inv_cancel₀ (valV_ne_zero hy)]`.
+-/
 theorem un_of_vV {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) (h : vV V x = vV V y) : Un V (x * y⁻¹) := by
   unfold Un
   have h1 : WithZero.log (valV V x) = WithZero.log (valV V y) := neg_injective h
@@ -56,18 +74,29 @@ theorem un_of_vV {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) (h : vV V x = vV V y) :
     rw [← WithZero.exp_log (valV_ne_zero (V := V) hx), h1, WithZero.exp_log (valV_ne_zero (V := V) hy)]
   rw [map_mul, map_inv₀, h2, mul_inv_cancel₀ (valV_ne_zero hy)]
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩ : IsCoprime (k : V) (ℓ : V)` from `h.cast`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hab with h1 | h1` into its components or cases. Conclude with `isUnit_of_mul_isUnit_right h1`. Conclude with `absurd (isUnit_of_mul_isUnit_right h1) hl`.
+-/
 theorem isUnit_of_coprime {ℓ k : ℕ} (hl : ¬ IsUnit (ℓ : V)) (h : Nat.Coprime k ℓ) : IsUnit (k : V) := by
   obtain ⟨a, b, hab⟩ : IsCoprime (k : V) (ℓ : V) := h.cast
   rcases IsLocalRing.isUnit_or_isUnit_of_add_one hab with h1 | h1
   · exact isUnit_of_mul_isUnit_right h1
   · exact absurd (isUnit_of_mul_isUnit_right h1) hl
 
+/- English proof (translation)
+Unfold `Un valV`. Rewrite using `[← map_natCast (algebraMap V K), IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm (isUnit_of_coprime hl h)`.
+-/
 theorem un_of_coprime {ℓ k : ℕ} (hl : ¬ IsUnit (ℓ : V)) (h : Nat.Coprime k ℓ) : Un V (k : K) := by
   unfold Un valV
   rw [← map_natCast (algebraMap V K), IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap,
     IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff]
   exact fun hm => (IsLocalRing.mem_maximalIdeal _).1 hm (isUnit_of_coprime hl h)
 
+/- English proof (translation)
+Establish `h` using `(un_of_coprime (K := K) hl (Nat.coprime_ordCompl hp hm).symm).inv`. Use `h using 1` and compare the differences between its conclusion and the goal. Establish `h1 : (m : K) = ((ℓ ^ m.factorization ℓ : ℕ) : K) * ((m / ℓ ^ m.factorization ℓ : ℕ) : K)`. Rewrite using `[← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self]`. Establish `h2 : ((ℓ ^ m.factorization ℓ : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne_zero)`.
+
+Generalize the expression as in `((m / ℓ ^ m.factorization ℓ : ℕ) : K) = t at *`. Rewrite using `[h1, mul_inv, ← _root_.mul_assoc, mul_inv_cancel₀ h2, _root_.one_mul]`.
+-/
 theorem un_ordProj [CharZero K] {ℓ m : ℕ} (hp : ℓ.Prime) (hl : ¬ IsUnit (ℓ : V)) (hm : m ≠ 0) :
     Un V (((ℓ ^ m.factorization ℓ : ℕ) : K) * (m : K)⁻¹) := by
   have h := (un_of_coprime (K := K) hl (Nat.coprime_ordCompl hp hm).symm).inv
@@ -78,6 +107,11 @@ theorem un_ordProj [CharZero K] {ℓ m : ℕ} (hp : ℓ.Prime) (hl : ¬ IsUnit (
   generalize ((m / ℓ ^ m.factorization ℓ : ℕ) : K) = t at *
   rw [h1, mul_inv, ← _root_.mul_assoc, mul_inv_cancel₀ h2, _root_.one_mul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, nval_zero]`. Conclude with `le_top`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `(le_min (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))).trans (nval_add e _ _)`.
+-/
 theorem le_nval_sum {J : Type} (s : Finset J) (e : ℕ) (r : EReal) (f : J → K) (h : ∀ i ∈ s, r ≤ nval V e (f i)) :
     r ≤ nval V e (∑ i ∈ s, f i) := by
   classical
@@ -89,6 +123,9 @@ theorem le_nval_sum {J : Type} (s : Finset J) (e : ℕ) (r : EReal) (f : J → K
       (nval_add e _ _)
 end Val
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h2`. Rewrite using `[← orderOf_eq_one_iff]`. Conclude with `Nat.eq_one_of_dvd_coprimes (h.pow_right j) (orderOf_dvd_of_pow_eq_one h1) (orderOf_dvd_of_pow_eq_one hj)`.
+-/
 theorem eq_one_of_coprime {G : Type} [Monoid G] {u : G} {k ℓ : ℕ} (h : Nat.Coprime k ℓ) (h1 : u ^ k = 1)
     (h2 : ∃ j : ℕ, u ^ (ℓ ^ j) = 1) : u = 1 := by
   obtain ⟨j, hj⟩ := h2
@@ -99,9 +136,15 @@ section Pts
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   (Xo : Moduli Dw l)
 
+/- English proof (translation)
+Rewrite using `[ZhStable.act_natCast, MonObj.comp_pow, Category.comp_id]`.
+-/
 theorem comp_act_nat {T : Over Xo.X} (u : T ⟶ Xo.univ.t.G) (k : ℕ) : u ≫ Xo.univ.t.act.act (k : 𝓞 E) = u ^ k := by
   rw [ZhStable.act_natCast, MonObj.comp_pow, Category.comp_id]
 
+/- English proof (translation)
+Use `letI := ZPart.ptMod Xo T`. Rewrite `h`, the goal using `[ZPart.kills_iff]`. Introduce `i`. Simplify using `only [ofMul_pow, smul_comm (mu i _) k]`. Rewrite using `[← Finset.smul_sum, h i, smul_zero]`.
+-/
 theorem kills_pow {T : Over Xo.X} {n : ℕ} {mu : Matrix (Fin n) (Fin n) (𝓞 E)} {u : Fin n → (T ⟶ Xo.univ.t.G)}
     (h : Kills Xo mu u) (k : ℕ) : Kills Xo mu (fun b => u b ^ k) := by
   letI := ZPart.ptMod Xo T
@@ -110,17 +153,26 @@ theorem kills_pow {T : Over Xo.X} {n : ℕ} {mu : Matrix (Fin n) (Fin n) (𝓞 E
   simp only [ofMul_pow, smul_comm (mu i _) k]
   rw [← Finset.smul_sum, h i, smul_zero]
 
+/- English proof (translation)
+Use `letI := ZPart.ptMod Xo T`. Rewrite `h`, the goal using `[ZPart.kills_iff]`. Conclude with `h.mul nu`.
+-/
 theorem kills_mul {T : Over Xo.X} {n : ℕ} {mu : Matrix (Fin n) (Fin n) (𝓞 E)} {u : Fin n → (T ⟶ Xo.univ.t.G)}
     (h : Kills Xo mu u) (nu : Matrix (Fin n) (Fin n) (𝓞 E)) : Kills Xo (nu * mu) u := by
   letI := ZPart.ptMod Xo T
   rw [ZPart.kills_iff] at h ⊢
   exact h.mul nu
 
+/- English proof (translation)
+Rewrite using `[map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nat_mul_bar (k : ℕ) : (k : 𝓞 E) * H.bar (k : 𝓞 E) = ((k ^ 2 : ℕ) : 𝓞 E) := by
   rw [map_natCast]; push_cast; ring
 
 variable {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X}
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hul`. Establish `h4` using `(GlobalTheory.T.symmetricTranslate_mul_of_coprime_orders E H Dw l Xo S x k hk t u m (ℓ ^ j) ht hu (hc.pow_right j) htm hj A A' B' h1).1 h3`. Rewrite `h4` using `[_root_.mul_comm]`. Conclude with `(GlobalTheory.T.symmetricTranslate_mul_of_coprime_orders E H Dw l Xo S x k hk u t (ℓ ^ j) m hu ht (hc.pow_right j).symm hj htm A B B' h2).2 h4`.
+-/
 theorem moves_comm {k : ℕ} (hk : Odd k) {u t : ptO Xo x ⟶ Xo.univ.t.G} {m ℓ : ℕ} (hu : u ^ k = 1) (ht : t ^ k = 1)
     (hc : Nat.Coprime m ℓ) (hul : ∃ j : ℕ, u ^ (ℓ ^ j) = 1) (htm : t ^ m = 1) {A A' B B' : SecN Xo x k}
     (h1 : Moves Xo u A A') (h2 : Moves Xo t A B) (h3 : Moves Xo t A' B') : Moves Xo u B B' := by
@@ -134,6 +186,13 @@ section Base
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   (Xo : Moduli Dw l) {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X}
 
+/- English proof (translation)
+Establish `hN2 : Odd (N ^ 2)` using `hN.pow`. Take `⟨G₀, hG₀, hG₀u⟩` from `GlobalTheory.existsUnique_pulls E H Dw l Xo S x (N : 𝓞 E) (N ^ 2) 1 (N ^ 2) (nat_mul_bar N) (Nat.one_mul _).symm s`. Take `⟨F₁, hF₁, -⟩` from `(GlobalTheory.existsUnique_moves E H Dw l Xo S x (N ^ 2) hN2 a' ha' G₀).1`. Take `⟨F₀, hF₀, -⟩` from `(GlobalTheory.existsUnique_moves E H Dw l Xo S x (N ^ 2) hN2 t ht F₁).1`. Use `⟨F₀, ?_, fun u hu huN => ?_, fun a F ha haN hF => ?_⟩` and prove the remaining obligations.
+
+Conclude with `.move _ _ _ _ (.move _ _ _ _ (.pull 1 (N ^ 2) (N ^ 2) (N : 𝓞 E) s G₀ .base (Or.inl rfl) hN2 (nat_mul_bar N) (Nat.one_mul _).symm hG₀) hF₁) hF₀`. Establish `hu2 : u ^ (N ^ 2) = 1` using `by rw [pow_two, pow_mul, huN, one_pow]`. Establish `h0 : Moves Xo u G₀ G₀` using `moves_of_pulls E H Dw l Xo S x (N : 𝓞 E) (N ^ 2) 1 (N ^ 2) (nat_mul_bar N) (Nat.one_mul _).symm hN2 1 u ((comp_act_nat Xo u N).trans huN) hu2 s s G₀ G₀ (GlobalTheory.existsUnique_moves E H Dw l Xo S x 1 odd_one 1 (one_pow _) s).2 hG₀ hG₀`. Conclude with `moves_comm Xo hN2 hu2 ht hm' hu htm (moves_comm Xo hN2 hu2 ha' hm hu ham h0 hF₁ hF₁) hF₀ hF₀`. Take `⟨G, F₂, hG, h2, h3⟩` from `((uu_through_moves E H Dw l Xo S x N hN s).1 (a * a') t F (by rw [mul_pow, haN, ha', _root_.one_mul]) ht).1 hF`.
+
+Take `rfl` from `hG₀u G hG`. Take `⟨j, hj⟩` from `ha`. Establish `h4` using `(GlobalTheory.T.symmetricTranslate_mul_of_coprime_orders E H Dw l Xo S x _ hN2 a a' (ℓ ^ j) m haN ha' (hm.pow_right j).symm hj ham G F₁ F₂ hF₁).2 h2`. Conclude with `moves_comm Xo hN2 haN ht hm' ⟨j, hj⟩ htm h4 hF₀ h3`.
+-/
 theorem exists_base {N ℓ m m' : ℕ} (hN : Odd N) (s : SecN Xo x 1) (a' t : ptO Xo x ⟶ Xo.univ.t.G)
     (ha' : a' ^ (N ^ 2) = 1) (ht : t ^ (N ^ 2) = 1) (hm : Nat.Coprime m ℓ) (hm' : Nat.Coprime m' ℓ)
     (ham : a' ^ m = 1) (htm : t ^ m' = 1) :
@@ -162,6 +221,13 @@ theorem exists_base {N ℓ m m' : ℕ} (hN : Odd N) (s : SecN Xo x 1) (a' t : pt
       G F₁ F₂ hF₁).2 h2
     exact moves_comm Xo hN2 haN ht hm' ⟨j, hj⟩ htm h4 hF₀ h3
 
+/- English proof (translation)
+Establish `h1 : ∀ i, ∃ i', a i' = fun b => a i b ^ k` using `fun i => by`. Take `⟨h1, h2⟩` from `(ha _).1 ⟨i, rfl⟩`. Conclude with `(ha _).2 ⟨kills_pow Xo h1 k, fun b => (h2 b).imp fun j hj => by rw [pow_right_comm, hj, one_pow]⟩`. Use `choose π hπ using h1`. Establish `h2 : Function.Injective π` using `fun i i' h => hinj <| funext fun b => by`.
+
+Establish `h3 : a i b ^ k = a i' b ^ k`. Use `hπ i` as an intermediate fact. Rewrite `this` using `[h, hπ i']`. Conclude with `(congrFun this b).symm`. Take `⟨j, hj⟩` from `((ha _).1 ⟨i, rfl⟩).2 b`.
+
+Take `⟨j', hj'⟩` from `((ha _).1 ⟨i', rfl⟩).2 b`. Use `div_eq_one.1 (eq_one_of_coprime hk (by rw [div_pow, h3, div_self']) ⟨j + j', ?_⟩)` and prove the remaining obligations. Rewrite using `[div_pow, pow_add, pow_mul, hj, one_pow, _root_.mul_comm, pow_mul, hj', one_pow, div_self']`. Conclude with `⟨Equiv.ofBijective π (Finite.injective_iff_bijective.1 h2), fun i b => congrFun (hπ i) b⟩`.
+-/
 theorem exists_perm {T : Over Xo.X} {n k ℓ : ℕ} (hk : Nat.Coprime k ℓ) (mu : Matrix (Fin n) (Fin n) (𝓞 E))
     {J : Type} [Fintype J] (a : J → Fin n → (T ⟶ Xo.univ.t.G)) (hinj : Function.Injective a)
     (ha : ∀ u, (∃ i, a i = u) ↔ (Kills Xo mu u ∧ ∀ b, ∃ j : ℕ, u b ^ (ℓ ^ j) = 1)) :
@@ -181,6 +247,9 @@ theorem exists_perm {T : Over Xo.X} {n k ℓ : ℕ} (hk : Nat.Coprime k ℓ) (mu
     rw [div_pow, pow_add, pow_mul, hj, one_pow, _root_.mul_comm, pow_mul, hj', one_pow, div_self']
   exact ⟨Equiv.ofBijective π (Finite.injective_iff_bijective.1 h2), fun i b => congrFun (hπ i) b⟩
 
+/- English proof (translation)
+Use `Nat.card_eq_of_bijective (fun i => ⟨a i.1, i.2, ((ha _).1 ⟨i.1, rfl⟩).2⟩) ⟨fun i i' h => ?_, fun u => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (hinj (congrArg Subtype.val h))`. Take `⟨i, hi⟩` from `(ha u.1).2 ⟨kills_mul Xo u.2.1 p, u.2.2⟩`. Conclude with `⟨⟨i, hi ▸ u.2.1⟩, Subtype.ext hi⟩`.
+-/
 theorem card_kills {T : Over Xo.X} {n ℓ : ℕ} (p q : Matrix (Fin n) (Fin n) (𝓞 E))
     {J : Type} (a : J → Fin n → (T ⟶ Xo.univ.t.G)) (hinj : Function.Injective a)
     (ha : ∀ u, (∃ i, a i = u) ↔ (Kills Xo (p * q) u ∧ ∀ b, ∃ j : ℕ, u b ^ (ℓ ^ j) = 1)) :
@@ -195,17 +264,44 @@ end Base
 section Core
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hN`. Break down `r with _ | r` into its components or cases. Conclude with `Or.inl rfl`. Conclude with `Or.inr (le_trans (by norm_num : 4 ≤ 3 ^ 2) (Nat.pow_le_pow_left (by omega) 2))`.
+-/
 theorem one_or_four_le {N : ℕ} (hN : Odd N) : N ^ 2 = 1 ∨ 4 ≤ N ^ 2 := by
   obtain ⟨r, rfl⟩ := hN
   rcases r with _ | r
   · exact Or.inl rfl
   · exact Or.inr (le_trans (by norm_num : 4 ≤ 3 ^ 2) (Nat.pow_le_pow_left (by omega) 2))
 
+/- English proof (translation)
+Simplify using `only [nrm, map_natCast, Finset.prod_pow_eq_pow_sum, map_pow]`. Conclude with `(un_of_coprime hl hk).pow _`.
+-/
 theorem un_nrm (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) {k ℓ : ℕ} (hl : ¬ IsUnit (ℓ : T.V)) (hk : Nat.Coprime k ℓ)
     (w : (E →+* ℂ) × ℕ → ℕ) : Un T.V (io (nrm Dw c w (k : 𝓞 E))) := by
   simp only [nrm, map_natCast, Finset.prod_pow_eq_pow_sum, map_pow]
   exact (un_of_coprime hl hk).pow _
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨A, hsim⟩` from `GlobalTheory.T.exists_adapted_similitude_data_at_prime E H n Λ N M ℓ hU hL hp`. Establish `hN : Odd N` using `hL.1`. Establish `hkN : Odd (A.k * N)` using `A.odd.mul hN`. Establish `hlev : (A.k * N) ^ 2 = N ^ 2 * A.k ^ 2` using `by ring`.
+
+Establish `hz` using `fun u hu => GlobalTheory.inZh_iff_kills_adapted E H Dw l Xo n Λ N ℓ hp hN.pos A (ptO Xo (xOf y)) u hu`. Establish `ha' : ∀ u, (∃ i, a i = u) ↔ (Kills Xo (A.p * A.q) u ∧ ∀ b, ∃ j : ℕ, u b ^ (ℓ ^ j) = 1)` using `fun u => (ha u).trans (and_congr_left fun hu => (hz u hu).1)`. Establish `hZ : ∀ i, InZh Xo Λ (A.k * N) (a i)` using `fun i =>`. Establish `h` using `(ha' _).1 ⟨i, rfl⟩`. Use the proof step `(hz _ h.2).2.2 h.1`.
+
+Take `⟨π, hπ⟩` from `exists_perm Xo A.cop _ a hinj ha'`. Establish `hpull` using `fun G => (GlobalTheory.existsUnique_pulls E H Dw l Xo _ (xOf y) (A.k : 𝓞 E) (A.k ^ 2) (N ^ 2) ((A.k * N) ^ 2) (nat_mul_bar A.k) hlev G).exists`. Use `choose pl hpl using hpull`. Establish `hmv : ∀ (u : ptO Xo (xOf y) ⟶ Xo.univ.t.G) G G', u ^ ((A.k * N) ^ 2) = 1 → Moves Xo (u ^ A.k) G G' → Moves Xo u (pl G) (pl G')` using `fun u G G' hu h => moves_of_pulls E H Dw l Xo _ (xOf y) (A.k : 𝓞 E) (A.k ^ 2) (N ^ 2) ((A.k * N) ^ 2) (nat_mul_bar A.k) hlev hkN.pow _ u (comp_act_nat Xo u A.k) hu G G' _ _ h (hpl G) (hpl G')`. Establish `hsub : Ideal.span {((A.k * N : ℕ) : 𝓞 E)} • stdLat E n ≤ Λ.La`.
+
+Use `le_trans (Submodule.smul_mono_left ?_) (hL.2.2.trans inf_le_left)` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.span_singleton_le_span_singleton.2 (dvd_mul_left _ _)`. Establish `hiso` using `(GlobalTheory.zh_isotropic_and_half_isotropic GlobalTheory.firstFiveLaws.1 E H Dw l Xo _ (xOf y) n Λ (A.k * N) hU hkN.pos hsub).1`. Take `⟨hff, -, hhom⟩` from `GlobalTheory.PushIntegral.map_pushL_mem_FFV E H Dw l c n Λ w P hP T io A.k A.ga (isUnit_of_coprime hl A.cop) A.unitary A.into`.
+
+Establish `hkN0 : ((A.k * N : ℕ) : c.F) ^ P.totalDegree ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hkN.pos.ne')`. Take `⟨z, hz1, hz2⟩` from `GlobalTheory.T.sum_hv_primary_kernel_alt E H Dw l Xo c hst T io y C hC nab hnab e ρ w n he hB ℓ hp hl (A.k * N) (A.k ^ 2) (N ^ 2) A.k₁ A.p A.q ((A.k : 𝓞 E) • A.g) hkN hsim (mul_pow _ _ _) (A.cop.pow_left 2) hR A.cop₁ (by rw [Matrix.smul_mul, A.gq, smul_smul]; congr 1; push_cast; …`. Establish `hch : ∀ i, hv Xo c nab y.1 ((A.k * N) ^ 2) (fun b => pl (F (π i) b)) P = io (nrm Dw c w (A.k : 𝓞 E)) * hv Xo c nab y.1 (N ^ 2) (F (π i)) P` using `fun i => GlobalTheory.T.harmonic_value_chain_rule_normalized_pullback E H Dw l Xo c hst nab hnab T.Fr y.1 (A.k : 𝓞 E) (A.k ^ 2) (N ^ 2) _ (nat_mul_bar A.k) hlev n (F (π i)) _ (fun b => hpl _) w P hP.1`. Take `⟨hi1, hi2, hi3⟩` from `GlobalTheory.LatticeIndex.latidx E H Dw l c n Λ N M ℓ hU hL hp A`. Take `⟨hi4, hi5⟩` from `hi3 β hβ0 hβ T io hl`.
+
+Establish `hcnt` using `GlobalTheory.T.card_primaryTorsionTuples_killed_by_matrix E H Dw l Xo T.Fr (xOf y) ℓ hp n A.q ((N : 𝓞 E) • A.g) A.k₁ (N ^ 2) A.cop₁ (pow_pos hN.pos 2) (by rw [Matrix.smul_mul, A.gq, smul_smul]; congr 1; push_cast; ring) hR`. Rewrite `hz2` using `[card_kills Xo A.p A.q a hinj ha', hcnt, hi1, Finset.sum_congr rfl fun i _ => hch i, ← Finset.mul_sum, Equiv.sum_comp π fun i => hv Xo c nab y.1 (N ^ 2) (F i) P]`. Establish `hδ : io (∏ τ : E →+* ℂ, embK c τ A.p.det ^ Dw.mult τ) ≠ 0`. Use `(map_ne_zero io).2 (Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ ?_)` and prove the remaining obligations. Conclude with `(map_ne_zero (embF c τ)).2 ((map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)).2 hi5)`.
+
+Establish `u1` using `un_of_vV hδ ((map_ne_zero io).2 hβ0) hi4`. Establish `u2` using `un_ordProj (K := T.Fr) hp hl hi2`. Establish `u3` using `un_nrm (Dw := Dw) c T io hl A.cop w`. Establish `u4` using `(un_of_coprime (K := T.Fr) hl A.cop).pow P.totalDegree`. Rewrite `hz1` using `[← (((u1.mul u2).mul u3.inv).mul u4).nval e z]`.
+
+Use `hz1 using 2` and compare the differences between its conclusion and the goal. Establish `h3` using `u3.ne`. Establish `h4` using `u4.ne`. Establish `h5 : (N : T.Fr) ^ P.totalDegree ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hN.pos.ne')`. Simplify using `only [map_mul, map_inv₀, map_pow io, map_natCast, Nat.cast_mul, mul_pow] at hz2 ⊢`.
+
+Generalize the expression as in `(∑ i, hv Xo c nab y.1 (N ^ 2) (F i) P) = Sm at *`. Generalize the expression as in `io (nrm Dw c w (A.k : 𝓞 E)) = ν at *`. Generalize the expression as in `(A.k : T.Fr) ^ P.totalDegree = κ at *`. Generalize the expression as in `(N : T.Fr) ^ P.totalDegree = ξ at *`. Establish `h6 : Sm = κ * ξ * ν⁻¹ * ((κ * ξ)⁻¹ * (ν * Sm))` using `by field_simp`.
+
+Rewrite using `[h6, hz2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ell_part (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (hst : ∀ a : 𝓞 E, star a = H.bar a) (T : CDVR)
     (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (hC : Good3 C) (nab : NabV Xo c)
     (hnab : IsNab Xo c nab) (e : ℕ) (ρ : ℝ) (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (he : 0 < e) (hB : ChBound C e ρ w n)
@@ -295,6 +391,11 @@ end Core
 
 end GlobalTheory.ShortPrime
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ hst T io y C hC nab hnab e ρ w n he hB ℓ hp hl Λ N M hU hL β hβ0 hβ P hP z tp F hz hg htp hF hR ⟨m', hm', htm⟩`. Use `letI := io.toAlgebra`. Take `⟨J, J', _, _, a, a', σ, hinj, ha, ⟨m, hm, ham⟩, hσ, -⟩` from `GlobalTheory.T.isotropic_group_primary_decomposition E H Dw l Xo T.Fr (xOf y) n Λ N M ℓ hU hL hp z hz hg`. Rewrite using `[← Equiv.sum_comp σ, Fintype.sum_prod_type_right, Finset.mul_sum]`. Use `GlobalTheory.ShortPrime.le_nval_sum _ _ _ _ fun i' _ => ?_` and prove the remaining obligations.
+
+Use `choose F₀ h1 h2 h3 using fun b => GlobalTheory.ShortPrime.exists_base Xo hL.1 (sOf1 y) (a' i' b) (tp b) (ham i' b).2 (htp b) hm hm' (ham i' b).1 (htm b)`. Use `GlobalTheory.ShortPrime.ell_part Xo c hst T io y C hC nab hnab e ρ w n he hB ℓ hp hl Λ N M hU hL β hβ0 hβ P hP hR J a hinj ha F₀ (fun i b => sqN Xo N (F (σ (i, i')) b)) h1 h2 fun i b => ?_` and prove the remaining obligations. Take `⟨h4, h5⟩` from `(ha _).1 ⟨i, rfl⟩`. Conclude with `h3 b _ _ (h5 b) (h4.1 b) (hσ i i' b ▸ hF _ b)`.
+-/
 theorem GlobalTheory.short_value_bound_of_coprime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), Good3 C → ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (e : ℕ) (ρ : ℝ) (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), 0 < e → ChBound C e ρ w n → ∀ (ℓ : ℕ), ℓ.Prime → ¬ IsUnit (ℓ : T.V) → ∀ (Λ : GenLat E n) (N M : ℕ), Λ.Unimod → Λ.LevOK N M → ∀ (β : c.F), β ≠ 0 → BetaIs (Dw := Dw) c Λ β → ∀ P : MvPolynomial (LtN Dw n) c.F, P ∈ harmL c Λ w → ∀ (z : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo (xOf y) ⟶ Xo.univ.t.G)) (tp : Fin n → (ptO Xo (xOf y) ⟶ Xo.univ.t.G)) (F : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo (xOf y)))), (∀ i, InZh Xo Λ N (z i)) → GeoInj Xo (xOf y) z → (∀ b, tp b ^ (N ^ 2) = 1) → (∀ i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N (sOf1 y) (z i b) (tp b) (F i b)) → AllRat Xo (xOf y) (N ^ 2) → (∃ m : ℕ, Nat.Coprime m ℓ ∧ ∀ b, tp b ^ m = 1) → letI := io.toAlgebra; ((-ρ : ℝ) : EReal) ≤ nval T.V e (io (β⁻¹ * ((Λ.mIdx N (Dw.p + Dw.q) : c.F))⁻¹ * ((N : c.F) ^ P.totalDegree)⁻¹) * ∑ i, hv Xo c nab y.1 (N ^ 2) (fun b => sqN Xo N (F i b)) P) := by
   intro E _ _ _ H Dw l Xo c _ hst T io y C hC nab hnab e ρ w n he hB ℓ hp hl Λ N M hU hL β hβ0 hβ P hP z tp F hz hg
     htp hF hR ⟨m', hm', htm⟩

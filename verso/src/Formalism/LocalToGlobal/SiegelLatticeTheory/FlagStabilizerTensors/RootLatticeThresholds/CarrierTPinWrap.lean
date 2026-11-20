@@ -16,6 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ)
 
+/- English proof (translation)
+Use `choose lam hlam hJ using Hj`. Use `⟨fun v => lam ((tauE X e).symm v), fun v => hlam _, ?_⟩` and prove the remaining obligations. Introduce `v γ μRv ν hH`. Take `⟨j, rfl⟩` from `(tauE X e).surjective v`. Establish `key : ∀ (j' : Fin (nfE D)) (h' : X.pl.symm (e (plE D j')) = tauE X e j), (haveI` using `FiniteDimensional.complete ℂ (X.Vloc u (tauE X e j)); Jv ν (X.Wloc u (tauE X e j)) (X.Wloc u' (tauE X e j)) γ) = lam j' • ((castLoc X u h').toContinuousLinearEquiv.toContinuousLinearMap : X.Vloc u (tauE X e j') →L[ℂ] X.Vloc u (tauE X e j)).comp ((Formalism.FourierDecayAlt.D.orbJ …`.
+
+Introduce `j' h'`. Establish `hj : j' = j` using `(tauE X e).injective h'`. Substitute `hj` using the available equality. Rewrite using `[towersOf_base, hJ j' γ μRv ν hH]`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Conclude with `key _ (tauE_symm X e (tauE X e j))`.
+-/
 theorem pinCovE_carrierInTc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)
@@ -61,6 +68,11 @@ theorem pinCovE_carrierInTc (u u' : D.what₂.Word) (e : InfinitePlace D.host.E 
     rfl
   exact key _ (tauE_symm X e (tauE X e j))
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5⟩` from `hH`. Use `⟨h1, h2, ?_, h4, h5⟩` and prove the remaining obligations. Establish `key : ∀ j' : Fin (nfE D), j' = (tauE X e).symm (tauE X e j) → Formalism.FourierDecayAlt.C6.IsRelevant (towersOf X C u u' e j').base (trG (Qc X C (tauE X e j)) (Qic X C (tauE X e j)) γ) → Formalism.FourierDecayAlt.C6.IsRelevant (baseOf X C u u' (tauE X e j)) (trG (Qc X C (tauE X e …`. Introduce `j' hj' h`. Rewrite `hj'` using `[Equiv.symm_apply_apply]`.
+
+Substitute `hj'` using the available equality. Rewrite `h` using `[towersOf_base]`. Conclude with `h`. Conclude with `key _ rfl h3`.
+-/
 theorem pinHyp_at (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

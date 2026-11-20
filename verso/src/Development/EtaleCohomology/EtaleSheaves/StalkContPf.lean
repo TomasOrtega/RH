@@ -10,28 +10,56 @@ set_option backward.isDefEq.respectTransparency false
 
 variable {X S : Scheme.{0}}
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp [diagram, resO]`.
+-/
 theorem diagram_map_eq (p : X ⟶ S) (s : S) {V W : AffNhd s} (i : V ⟶ W) :
     (diagram s p).map i = resO p i.le := by
   apply pullback.hom_ext <;> simp [diagram, resO]
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp [cone, toO]`.
+-/
 theorem cone_app_eq (p : X ⟶ S) (s : S) (V : AffNhd s) :
     (cone (IsPullback.of_hasPullback p (S.fromSpecStalk s))).π.app V = toO p s V.1 V.2.1 := by
   apply pullback.hom_ext <;> simp [cone, toO]
 
+/- English proof (translation)
+Rewrite using `[cone_app_eq]`. Both sides reduce to the same expression.
+-/
 theorem pull_cone {q : ℕ} {n i : ℤ} (p : X ⟶ S) (s : S) (V : AffNhd s) (y : Ht q (sch.obj (overO p V.1)) n i) :
     pull _ (sch.map ((cone (IsPullback.of_hasPullback p (S.fromSpecStalk s))).π.app V)) (tw q i) n y =
       pull _ (sch.map (toO p s V.1 V.2.1)) (tw q i) n y := by
   rw [cone_app_eq]; rfl
 
+/- English proof (translation)
+Rewrite using `[diagram_map_eq]`. Both sides reduce to the same expression.
+-/
 theorem pull_diag {q : ℕ} {n i : ℤ} (p : X ⟶ S) (s : S) {V W : AffNhd s} (f : V ⟶ W)
     (y : Ht q (sch.obj (overO p W.1)) n i) :
     pull _ (sch.map ((diagram s p).map f)) (tw q i) n y = pull _ (sch.map (resO p f.le)) (tw q i) n y := by
   rw [diagram_map_eq]; rfl
 
+/- English proof (translation)
+Take `⟨W, h₁, h₂, h₃⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens hs`. Conclude with `⟨⟨W, h₂, h₁⟩, h₃⟩`.
+-/
 theorem exists_aff (s : S) (U : S.Opens) (hs : s ∈ U) : ∃ V : AffNhd s, V.1 ≤ U := by
   obtain ⟨W, h₁, h₂, h₃⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens hs
   exact ⟨⟨W, h₂, h₁⟩, h₃⟩
 
+/- English proof (translation)
+Introduce `hC hH q X S p _ _ _ _ hq i n s`. Establish `hc` using `(nonempty_isLimit (IsPullback.of_hasPullback p (S.fromSpecStalk s))).some`. Establish `hcpt : ∀ V : AffNhd s, CompactSpace ((diagram s p).obj V)` using `fun V => by`. Establish `: IsAffine V.1.toScheme` using `V.2.2`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p V.1.ι)`.
+
+Establish `hqs : ∀ V : AffNhd s, QuasiSeparatedSpace ((diagram s p).obj V)` using `fun V => by`. Establish `: IsAffine V.1.toScheme` using `V.2.2`. Conclude with `quasiSeparatedSpace_of_quasiSeparated (pullback.snd p V.1.ι)`. Establish `hu : ∀ V : AffNhd s, IsUnit (q : Γ((diagram s p).obj V, ⊤))` using `fun V => by`. Use `hq.map ((pullback.fst p V.1.ι ≫ p).appTop).hom` as an intermediate fact.
+
+Simplify using `only [map_natCast] at this`. Conclude with `this`. Take `⟨hsurj, hkill⟩` from `hC hH q (diagram s p) _ hc (fun f => inferInstance) hcpt hqs hu n i`. Prove the components needed by the constructor for the conclusion. Introduce `U hs x hx`.
+
+Take `⟨V0, hV0⟩` from `exists_aff s U hs`. Establish `h0 : pull _ (sch.map ((cone (IsPullback.of_hasPullback p (S.fromSpecStalk s))).π.app V0)) _ _ (pull _ (sch.map (resO p hV0)) _ _ x) = 0`. Rewrite using `[pull_cone, ← pull_mc, toO_res]`. Conclude with `hx`. Take `⟨k, f, hf⟩` from `hkill V0 _ h0`.
+
+Establish `hkV : k.1 ≤ V0.1` using `f.le`. Use `⟨k.1, hkV.trans hV0, k.2.1, ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[pull_diag, ← pull_mc, res_res]`. Conclude with `hf`. Introduce `z`.
+
+Take `⟨j, y, hy⟩` from `hsurj z`. Conclude with `⟨j.1, j.2.1, y, (pull_cone p s j y).symm.trans hy⟩`.
+-/
 theorem StalkCont_of : StalkCont := by
   intro hC hH q X S p _ _ _ _ hq i n s
   have hc := (nonempty_isLimit (IsPullback.of_hasPullback p (S.fromSpecStalk s))).some

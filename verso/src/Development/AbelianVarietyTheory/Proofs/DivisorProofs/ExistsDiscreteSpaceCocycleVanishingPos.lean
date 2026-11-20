@@ -11,10 +11,18 @@ variable {R : Type} [CommRing R]
 
 def asum (m : ℕ) : ℤ := ∑ i : Fin (m + 1), (-1 : ℤ) ^ (i : ℕ)
 
+/- English proof (translation)
+Rewrite using `[asum, Fin.sum_univ_castSucc]`. Simplify using `[asum]`.
+-/
 theorem asum_succ (k : ℕ) : asum (k + 1) = asum k + (-1) ^ (k + 1) := by
   rw [asum, Fin.sum_univ_castSucc]
   simp [asum]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [asum]`. Consider the case `succ k ih`. Rewrite using `[asum_succ, ih]`. Break down `Nat.even_or_odd k with h | h` into its components or cases.
+
+Establish `h' : ¬ Even (k + 1)` using `by simpa [Nat.even_add_one] using h`. Simplify using `[h, h', (h.add_one).neg_one_pow]`. Establish `h' : Even (k + 1)` using `h.add_one`. Establish `h'' : ¬ Even k` using `Nat.not_even_iff_odd.mpr h`. Simplify using `[h', h'', h'.neg_one_pow]`.
+-/
 theorem asum_even (m : ℕ) : asum m = if Even m then 1 else 0 := by
   induction m with
   | zero => simp [asum]
@@ -30,6 +38,9 @@ theorem asum_even (m : ℕ) : asum m = if Even m then 1 else 0 := by
 variable (R) in
 abbrev C (F : PSh) : ChainComplex (Shv R) ℕ := (chainsN R).obj (disc.obj F)
 
+/- English proof (translation)
+Rewrite using `[show (C R F).d (p + 1) p = ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map ((disc.obj F).δ i) from AlgebraicTopology.alternatingFaceMapComplex_obj_d _ p]`. Simplify using `only [asum, Finset.sum_smul, SimplicialObject.δ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show (disc.obj F).map (SimplexCategory.δ i).op = 𝟙 F from rfl]`. Conclude with `congrArg (fun f => (-1 : ℤ) ^ (i : ℕ) • f) ((free R).map_id F)`.
+-/
 theorem C_d (F : PSh) (p : ℕ) :
     (C R F).d (p + 1) p = (asum (p + 1)) • (𝟙 ((free R).obj F) : (C R F).X (p + 1) ⟶ (C R F).X p) := by
   rw [show (C R F).d (p + 1) p = ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map ((disc.obj F).δ i) from
@@ -41,8 +52,14 @@ theorem C_d (F : PSh) (p : ℕ) :
 
 def idX (F : PSh) (i j : ℕ) : (C R F).X i ⟶ (C R F).X j := 𝟙 ((free R).obj F)
 
+/- English proof (translation)
+The claim follows from `Category.id_comp _`.
+-/
 theorem idX_comp (F : PSh) (i j k : ℕ) : idX (R := R) F i j ≫ idX F j k = idX F i k := Category.id_comp _
 
+/- English proof (translation)
+The claim follows from `C_d F p`.
+-/
 theorem C_d' (F : PSh) (p : ℕ) : (C R F).d (p + 1) p = (asum (p + 1)) • idX F (p + 1) p := C_d F p
 
 def piC (F : PSh) : C R F ⟶ C R F where
@@ -85,6 +102,9 @@ def htpZ (F : PSh) : Homotopy (𝟙 ((chains R).obj (disc.obj F))) (piZ F) :=
   (Homotopy.ofEq (HomologicalComplex.extendMap_id (C R F) ComplexShape.embeddingDownNat).symm).trans
     ((htpC F).extend ComplexShape.embeddingDownNat)
 
+/- English proof (translation)
+Establish `h1` using `HomologicalComplex.extendMap_f (piC (R := R) F) ComplexShape.embeddingDownNat (i := p) (i' := -(p : ℤ)) rfl`. Simplify using `only [piC, if_neg hp.ne', zero_comp, comp_zero] at h1`. Conclude with `h1`.
+-/
 theorem piZ_f (F : PSh) (p : ℕ) (hp : 0 < p) : (piZ (R := R) F).f (-(p : ℤ)) = 0 := by
   have h1 := HomologicalComplex.extendMap_f (piC (R := R) F) ComplexShape.embeddingDownNat (i := p) (i' := -(p : ℤ)) rfl
   simp only [piC, if_neg hp.ne', zero_comp, comp_zero] at h1
@@ -94,6 +114,11 @@ end GlobalTheory.EtC.DiscRep
 
 open GlobalTheory.EtC.DiscRep in
 
+/- English proof (translation)
+Introduce `R _ F I n x`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Use `⟨zcomp (Cocycle.ofHom (piZ F)) α (zero_add n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨-(n.negOnePow • (Cochain.ofHomotopy (htpZ F)).comp α.1 (by omega)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[δ_neg, δ_units_smul, δ_comp _ _ _ 0 (n + 1) n (by omega) (by omega) (by omega), Cocycle.δ_eq_zero, δ_ofHomotopy]`. Use extensionality with `p q hpq`. Simplify using `[zcomp, Cochain.comp_v _ _ (zero_add n) p p q (add_zero p) hpq, smul_smul]`. Introduce `p hp s h`. Simplify using `[zcomp, Cochain.comp_v _ _ (zero_add n) _ _ s (add_zero _) h, piZ_f F p hp]`.
+-/
 theorem GlobalTheory.EtC.discRep : ∀ (R : Type) [CommRing R] (F : PSh) (I : Cx R) (n : ℤ)
     (x : CohomologyClass ((chains R).obj (disc.obj F)) I n), ∃ α : Cocycle ((chains R).obj (disc.obj F)) I n,
       CohomologyClass.mk α = x ∧ ∀ (p : ℕ), 0 < p → ∀ (s : ℤ) (h : -(p : ℤ) + n = s), α.1.v (-(p : ℤ)) s h = 0 := by

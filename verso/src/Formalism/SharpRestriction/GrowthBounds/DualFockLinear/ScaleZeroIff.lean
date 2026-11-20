@@ -12,6 +12,11 @@ open Formalism.L2.G.Model (Lin Th0 Aa Lin_Pol dE invT_mul_D dual_edgeBasis dual_
   kapR kapR_alg pol_iff inWj_iff pol_of_map)
 open Formalism.L2.G.Model.TS
 
+/- English proof (translation)
+Rewrite using `[mem_scale]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`.
+
+Conclude with `⟨x, h, by simp⟩`.
+-/
 theorem scale_zero_iff {O Kf X : Type} [CommRing O] [Field Kf] [Algebra O Kf] [AddCommGroup X] [Module Kf X] [Module O X]
     [IsScalarTower O Kf X] (c : Kf) (M : Submodule O X) (x : X) : x ∈ scale (c ^ (0 : ℤ)) M ↔ x ∈ M := by
   rw [mem_scale]
@@ -29,6 +34,45 @@ variable {p n' : ℕ} [Fact p.Prime] [NeZero n'] {W Qq O Kf : Type} [CommRing W]
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `hw` using `w_ne hS`. Establish `h1d : IsUnit (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq).det` using `by simp`. Establish `h1T : ((1 : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq)⁻¹).transpose = 1` using `by simp`. Use `set b := hm * ((matQ φ g)⁻¹).transpose with hbdef`.
+
+Establish `htg : e.tgt = colSpan W (b * lb_D (m + 1) r ((p : ℕ) : Qq))` using `hbasis.2.2`. Take `⟨gv, hgv, hgvX⟩` from `exists_gv hS φ (b * lb_D (m + 1) r ((p : ℕ) : Qq)) (by rw [← htg, htgt])`. Establish `hrel : ((matQ φ gv)⁻¹).transpose = (b⁻¹).transpose * dE (m + 1) r ((p : ℕ) : Qq)`. Rewrite using `[hgvX]`. Conclude with `invT_mul_D b hbasis.1 r _ (pQ_ne hS)`.
+
+Establish `hbv : IsEdgeBasis p r e.dual (1 * ((matQ φ gv)⁻¹).transpose)`. Rewrite using `[Matrix.one_mul, hrel]`. Conclude with `dual_edgeBasis p r (pQ_ne hS) e b hbasis`. Take `⟨Θv, ⟨hv1, hv2⟩, hv3⟩` from `theta_exists p n' W Qq O Kf ι σ j w hS φ hφ m r (vecE n') d (flW d) hr1 hr2 (isFlat_flW d) 1 h1d`. Take `⟨Θ', ⟨_, h2'⟩, h3'⟩` from `theta_exists p n' W Qq O Kf ι σ j w hS φ hφ m r (vecE n') d (flW d) hr1 hr2 (isFlat_flW d) hm hhm`.
+
+Establish `hΘeq : Θ = Θ'` using `LinearEquiv.ext fun F => Subtype.ext ((hΘ F).trans (h3' F).symm)`. Substitute `hΘeq` using the available equality. Take `⟨thK, hthK⟩` from `exists_thK Kf hm1 d`. Take `⟨hE1, _, hE3⟩` from `edgePlane p n' W Qq O Kf ι σ j w hS φ hφ m r 1 h1d`. Use `⟨gv, hgv, ?_⟩` and prove the remaining obligations.
+
+Introduce `o sig hmd hint hreal`. Take `⟨Ff, hA, hmdF, hsym, hoth⟩` from `hreal`. Set `F' : ↥((Pol (KK O) (ι` to `Fin n') (m + 1) d).restrictScalars O) := ⟨Ff, hmdF d hmd⟩`. Use `set cc : Kf := (p : Kf) ^ κ / (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf) with hcc`. Use `⟨TY thK cc ((algebraMap O Kf w ^ (-(o : ℤ))) • Θv F'), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[htgt]`. Apply `FD_HL thK hS hm1 hthK κ hMD 1 h1d` to reduce the goal to its premises. Rewrite using `[h1T]`. Conclude with `mem_scale.2 ⟨Θv F', (hv1 F').1 hA, rfl⟩`. Rewrite using `[← scale_zero_iff (algebraMap O Kf w)]`.
+
+Apply `FD_edge thK hS hm1 hthK κ hMD r e b hbasis` to reduce the goal to its premises. Establish `h1 : InWjRg p n' O w r (flatLetters (vecE n')) gv (F' : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) (o + 0)`. Introduce `mm`. Take `⟨c1, hc1⟩` from `hsym mm`. Take `⟨c2, hc2⟩` from `hint mm`.
+
+Use `⟨c2 + w ^ cP * c1, ?_⟩` and prove the remaining obligations. Establish `e1 : coeff mm (subst p n' O w n' r gv Ff) = coeff mm (subst p n' O w n' r gv Ff - C (algebraMap O (KK O) (w ^ o)) * sig) + algebraMap O (KK O) (w ^ o) * coeff mm sig`. Rewrite using `[coeff_sub, coeff_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `show coeff mm (subst p n' O w n' r gv Ff) = _`.
+
+Rewrite using `[e1, hc1, hc2, ← map_mul, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `(hv2 gv hgv e.dual hbv F' (o + 0)).1 h1`. Conclude with `scale_shift (algebraMap O Kf w) hw o 0 _ h2`.
+
+Introduce `e' he' htg' hne`. Take `⟨b', hb'⟩` from `edgeBasis hS m r e' he'`. Apply `FD_edge thK hS hm1 hthK κ hMD r e' b' hb'` to reduce the goal to its premises. Establish `hd'` using `dual_edge hS m r e' he'`. Establish `hd` using `dual_edge hS m r e he`.
+
+Establish `hsrc : e'.dual.src = colSpan W (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq)` using `by show latDual e'.tgt = _`. Rewrite using `[htg', htgt, latDual_colSpan _ h1d, h1T]`. Take `⟨g', hg', hbg'⟩` from `hE1 e'.dual hd'.1 hsrc`. Establish `hpl : ratPlane p n' r g' ≠ ratPlane p n' r gv`. Introduce `hEq`.
+
+Establish `h5 : e'.dual = e.dual` using `(hE3 g' gv e'.dual e.dual hg' hgv hbg' hbv).2 hEq`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hd'.2, h5, hd.2]`. Establish `h1 : InWjRg p n' O w r (flatLetters (vecE n')) g' (F' : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) (o + cP)` using `hoth g' hg' hpl`. Establish `h2` using `(hv2 g' hg' e'.dual hbg' F' (o + cP)).1 h1`.
+
+Conclude with `scale_shift (algebraMap O Kf w) hw o cP _ h2`. Introduce `F hF`. Establish `hpf` using `pair_formula thK hS φ hφ r hr1 hr2 hthK κ hm hhm g gv hg hgv hbasis.1 hrel Θ Θv hΘ hv3 F F'`. Establish `hF0 : InWjRg p n' O w r (flatLetters (vecE n')) g (F : MvPolynomial (Fin n' × Fin (m + 1)) (KK O)) 0` using `(h2' g hg e hbasis F 0).2 (by`. Establish `: ((0 : ℕ) : ℤ) = 0` using `rfl`.
+
+Rewrite using `[this, scale_zero_iff]`. Conclude with `hF)`. Take `⟨G0, hG0⟩` from `(inWj_iff hS _ 0).1 hF0`. Rewrite `hG0` using `[pow_zero, one_smul]`. Establish `hG0' : map (kapR hS) (subst p n' O w n' r g (F : MvPolynomial (TV n' (m + 1)) (KK O))) = map (algebraMap O Kf) G0` using `hG0`.
+
+Establish `hG0P : G0 ∈ Pol O (m + 1) d`. Apply `pol_of_map hS` to reduce the goal to its premises. Rewrite using `[← hG0', subst_Lin hS φ hφ r hm hhm g hg F.1 F.2]`. Conclude with `Submodule.smul_mem _ _ (Lin_Pol _ _ (Lin_Pol _ _ ((pol_iff hS _ _ _).1 F.2)))`. Take `⟨E, hE⟩` from `(inWj_iff hS _ (o + cP)).1 hsym`.
+
+Take `⟨z, hz⟩` from `int_pair (Kf := Kf) p κ hMD G0 hG0P E`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `set SF := subst p n' O w n' r g (F : MvPolynomial (TV n' (m + 1)) (KK O)) with hSF`. Use `set Rr := subst p n' O w n' r gv Ff - C (algebraMap O (KK O) (w ^ o)) * sig with hRr`. Establish `e1 : subst p n' O w n' r gv (F' : MvPolynomial (TV n' (m + 1)) (KK O)) = algebraMap O (KK O) (w ^ o) • sig + Rr`.
+
+Rewrite using `[hRr, smul_eq_C_mul]`. Use `show subst p n' O w n' r gv Ff = _`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : be p r (flW d) (Θ F) (TY thK cc ((algebraMap O Kf w ^ (-(o : ℤ))) • Θv F')) = algebraMap O Kf w ^ (-(o : ℤ)) * be p r (flW d) (Θ F) (TY thK cc (Θv F'))`. Simplify using `only [be, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e3 : kapR hS (fock SF Rr) = algebraMap O Kf w ^ (o + cP) * fockR (map (algebraMap O Kf) G0) (map (algebraMap O Kf) E)`. Rewrite using `[fock_eq_fockR, ← fockR_map, hG0', hE, tsact_smul_right]`. Rewrite using `[e2, hpf, e1, fock_eq_fockR, fockR_add_right, tsact_smul_right, ← fock_eq_fockR, ← fock_eq_fockR]`. Establish `e4 : kapR hS ((p : KK O) ^ κ * (algebraMap O (KK O) (w ^ o) * fock SF sig + fock SF Rr) / (((∏ s, (d s).factorial : ℕ) : ℕ) : KK O)) = algebraMap O Kf w ^ o * kapR hS ((p : KK O) ^ κ * fock SF sig / (((∏ s, (d s).factorial : ℕ) : ℕ) : KK O)) + algebraMap O Kf w ^ (o + cP) * algeb …`.
+
+Rewrite using `[← hz]`. Simplify using `only [map_div₀, map_mul, map_add, map_pow, map_natCast, kapR_alg, e3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4, zpow_neg, zpow_natCast, map_mul, map_pow, pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem realAt_gen (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ)
     (hm1 : 1 ≤ m) (r : ℕ) (hr1 : 1 ≤ r) (hr2 : r < m + 1) (d : Fin n' → ℕ) (cP κ : ℕ)
     (hMD : MultDiv O p κ (k := m + 1) d)
@@ -166,6 +210,9 @@ theorem realAt_gen (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃
 
 end
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ`. Establish `hkr : orbitWindowCount r de h x + 2 * r ≤ (m + 1) - r` using `H.2.2.2.2.2.2.2.1`. Establish `hr2 : 2 ≤ r` using `H.2.1`. Conclude with `realAt_gen hSet.1 φ hφ (by omega) r (by omega) (by omega) (dT TT lam0) _ _ (multDiv_kapFl O p (dvrOfStd hSet).p_mem (dT TT lam0)) e he htgt hm g hhm hg hbasis Θ hΘ`.
+-/
 theorem realStep (C CLa : ℝ) : RealStep C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K
     _ _ hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ
@@ -174,9 +221,15 @@ theorem realStep (C CLa : ℝ) : RealStep C CLa := by
   exact realAt_gen hSet.1 φ hφ (by omega) r (by omega) (by omega) (dT TT lam0) _ _
     (multDiv_kapFl O p (dvrOfStd hSet).p_mem (dT TT lam0)) e he htgt hm g hhm hg hbasis Θ hΘ
 
+/- English proof (translation)
+Introduce `_` and use `⟨1, one_pos, fun C _ => realStep C CLa⟩`.
+-/
 theorem restReal (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : RestReal D CLa Ck Crk Cdeg :=
   fun _ => ⟨1, one_pos, fun C _ => realStep C CLa⟩
 
+/- English proof (translation)
+The claim follows from `restFlat_of D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 hXi (restReal D CLa Ck Crk Cdeg)`.
+-/
 theorem restFlat_of_Xi (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ)
     (hXi : RestXi D CLa Ck Crk Cdeg CH CE C6 C18) : RestFlat D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 :=
   restFlat_of D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 hXi (restReal D CLa Ck Crk Cdeg)

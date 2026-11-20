@@ -13,6 +13,13 @@ namespace GlobalTheory.HTGlue
 
 variable {k : Type} [Field k] {d : ℕ}
 
+/- English proof (translation)
+Establish `hm` using `GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k (Fin d → k) A₀ hA (GlobalTheory.FODef.sqZero k (Fin d → k)) (GlobalTheory.FODef.constMorV k (Fin d → k) A₀)`. Set `eqv` to `LinearEquiv.ofBijective _ hm`. Establish `h1 : ∀ c, (GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c = eqv (1 ⊗ₜ c)` using `fun c => (one_smul (TrivSqZeroExt k (Fin d → k)) ((GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c)).symm`. Establish `key : e ∘ₗ eqv.toLinearMap = e' ∘ₗ eqv.toLinearMap`. Use `TensorProduct.AlgebraTensorModule.ext fun r c => ?_` and prove the remaining obligations.
+
+Establish `hr : (r ⊗ₜ c : TrivSqZeroExt k (Fin d → k) ⊗[k] primDR A₀) = r • (1 ⊗ₜ c)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hr, map_smul, ← h1, h c]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `eqv.surjective y`.
+
+Conclude with `LinearMap.congr_fun key t`.
+-/
 theorem crys_ext (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     {e e' : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀}
     (h : ∀ c, e ((GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c) =
@@ -31,6 +38,9 @@ theorem crys_ext (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
   obtain ⟨t, rfl⟩ := eqv.surjective y
   exact LinearMap.congr_fun key t
 
+/- English proof (translation)
+Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `e.map_smul (algebraMap k (TrivSqZeroExt k (Fin d → k)) a) ((GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c)`.
+-/
 theorem crys_pull_smul (A₀ : Over (Sp k)) [GrpObj A₀]
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀)
     (a : k) (c : primDR A₀) :
@@ -39,6 +49,9 @@ theorem crys_pull_smul (A₀ : Over (Sp k)) [GrpObj A₀]
   rw [LinearMap.map_smulₛₗ]
   exact e.map_smul (algebraMap k (TrivSqZeroExt k (Fin d → k)) a) ((GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c)
 
+/- English proof (translation)
+Rewrite using `[LinearMap.map_add]`. Conclude with `e.map_add _ _`.
+-/
 theorem crys_pull_add (A₀ : Over (Sp k)) [GrpObj A₀]
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀)
     (a b : primDR A₀) :
@@ -98,6 +111,13 @@ def constSub (A₀ : Over (Sp k)) [GrpObj A₀] (S : Submodule k (HdR A₀)) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_coords (Fin d → k) A₀ hA ((Algebra.linearMap k (TrivSqZeroExt k (Fin d → k))) ∘ₗ x₁ + (TrivSqZeroExt.inrHom k (Fin d → k)) ∘ₗ LinearMap.pi fun j => f j x₁ + z j)`. Establish `hgv : ∀ c, g ((GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c) = TrivSqZeroExt.inl (x₁ c) + TrivSqZeroExt.inr (fun j => (f j x₁ + z j) c)` using `fun c => by`. Apply the tactic sequence `rw [hg c]; ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hgm : g ∈ glueFil A₀ f` using `⟨x₁, hx₁, z, hz, hgv⟩`. Take `⟨h, hh⟩` from `exists_coords (Fin d → k) A₀ hA ((Algebra.linearMap k (TrivSqZeroExt k (Fin d → k))) ∘ₗ m + (TrivSqZeroExt.inrHom k (Fin d → k)) ∘ₗ LinearMap.pi fun j => w j)`.
+
+Establish `hhv : ∀ c, h ((GlobalTheory.FODef.constMorV k (Fin d → k) A₀).pull c) = TrivSqZeroExt.inl (m c) + TrivSqZeroExt.inr (fun j => w j c)` using `fun c => by`. Apply the tactic sequence `rw [hh c]; ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hhm : h ∈ constSub A₀ M₀` using `⟨m, hm, w, hw, hhv⟩`. Use `Submodule.mem_sup.2 ⟨g, hgm, h, hhm, crys_ext A₀ hA fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hgv c, hhv c]`.
+
+Use `ext`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, hxm c]`. Name the introduced variables `j`. Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, Pi.add_apply, zero_add, LinearMap.add_apply]`. Take the linear combination `(hzw j c)`.
+-/
 theorem mem_sup_of_coords (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     (f : Fin d → (HdR A₀ →ₗ[k] HdR A₀)) (M₀ : Submodule k (HdR A₀))
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀)
@@ -128,6 +148,19 @@ theorem mem_sup_of_coords (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianSche
       Pi.add_apply, zero_add, LinearMap.add_apply]
     linear_combination (hzw j c)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `e ⟨x, hx, z, hz, he⟩ ⟨m, hm, w, hw, he'⟩`. Establish `hxm : x = m` using `LinearMap.ext fun c => by`. Use `congrArg TrivSqZeroExt.fst ((he c).symm.trans (he' c))` as an intermediate fact.
+
+Simplify using `using this`. Establish `hx0 : x = 0`. Rewrite using `[← Submodule.mem_bot k, ← hM.inf_eq_bot]`. Conclude with `⟨hx, hxm ▸ hm⟩`. Establish `hzw : ∀ j, z j = w j` using `fun j => LinearMap.ext fun c => by`.
+
+Use `congrFun (congrArg TrivSqZeroExt.snd ((he c).symm.trans (he' c))) j` as an intermediate fact. Simplify `this` using `[hx0]`. Establish `hz0 : ∀ j, z j = 0` using `fun j => by`. Rewrite using `[← Submodule.mem_bot k, ← hM.inf_eq_bot]`. Conclude with `⟨hz j, (hzw j) ▸ hw j⟩`.
+
+Use `crys_ext A₀ hA fun c => ?_` and prove the remaining obligations. Rewrite using `[he c, LinearMap.zero_apply]`. Apply the tactic sequence `ext <;> simp [hx0, hz0]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce and unpack `e -`.
+
+Establish `hdec : ∀ u : HdR A₀, ∃ a ∈ Fil A₀, ∃ b ∈ M₀, a + b = u` using `fun u => by`. Establish `hu : u ∈ Fil A₀ ⊔ M₀` using `by rw [hM.sup_eq_top]; trivial`. Rewrite `hu` using `[Submodule.mem_sup]`. Conclude with `hu`. Use `choose pa hpa pb hpb hpab using hdec`.
+
+Conclude with `mem_sup_of_coords A₀ hA f M₀ e _ _ (hpa _) (hpb _) (fun c => LinearMap.congr_fun (hpab (fstVal A₀ e)) c) (fun j => pa (sndVal A₀ e j - f j (pa (fstVal A₀ e)))) (fun j => pb (sndVal A₀ e j - f j (pa (fstVal A₀ e)))) (fun _ => hpa _) (fun _ => hpb _) (fun j c => LinearMap.congr_fun …`.
+-/
 theorem isCompl_glueFil (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     (f : Fin d → (HdR A₀ →ₗ[k] HdR A₀)) (M₀ : Submodule k (HdR A₀)) (hM : IsCompl (Fil A₀) M₀) :
     IsCompl (glueFil A₀ f) (constSub (d := d) A₀ M₀) := by
@@ -165,6 +198,9 @@ end GlobalTheory.HTGlue
 
 open GlobalTheory.HTGlue in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N _ _ k _ _ t o₀ β _ φ _ d f _`. Take `⟨M₀, hM⟩` from `Submodule.exists_isCompl (Fil o₀.A)`. Conclude with `⟨_, isCompl_glueFil o₀.A o₀.ab f M₀ hM⟩`.
+-/
 theorem GlobalTheory.HTGlue.glueFil_hasCompl : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t) (β : R →+* k), t = spMap β → ∀ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ → ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), (∀ j, IsKS (GlobalTheory.HTCount.crysAct o₀) φ (Fil o₀.A) (GlobalTheory.HTCount.lieZ o₀ β) (f j)) → (∃ M : Submodule (TrivSqZeroExt k (Fin d → k)) (Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A), IsCompl (GlobalTheory.HTGlue.glueFil o₀.A f) M) := by
   intro p _ D R _ b N _ _ k _ _ t o₀ β _ φ _ d f _
   obtain ⟨M₀, hM⟩ := Submodule.exists_isCompl (Fil o₀.A)

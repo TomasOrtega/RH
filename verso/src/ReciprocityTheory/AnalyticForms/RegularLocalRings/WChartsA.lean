@@ -6,6 +6,11 @@ open MvPolynomial AlgebraicGeometry CategoryTheory
 
 noncomputable section
 
+/- English proof (translation)
+Establish `key : ∀ x : S, x * φ a = 0 → x = 0`. Introduce `x hx`. Take `⟨z, rfl⟩` from `hb.2 x`. Establish `hz : z * a = 0` using `hb.1 (by rw [map_mul, map_zero]; exact hx)`. Rewrite using `[(mem_nonZeroDivisors_iff.mp ha).2 z hz, map_zero]`.
+
+Conclude with `mem_nonZeroDivisors_iff.mpr ⟨fun x hx => key x (by rwa [mul_comm] at hx), key⟩`.
+-/
 theorem mem_nonZeroDivisors_of_bijective {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S)
     (hb : Function.Bijective φ) {a : R} (ha : a ∈ nonZeroDivisors R) : φ a ∈ nonZeroDivisors S := by
   have key : ∀ x : S, x * φ a = 0 → x = 0 := by
@@ -15,10 +20,16 @@ theorem mem_nonZeroDivisors_of_bijective {R S : Type*} [CommRing R] [CommRing S]
     rw [(mem_nonZeroDivisors_iff.mp ha).2 z hz, map_zero]
   exact mem_nonZeroDivisors_iff.mpr ⟨fun x hx => key x (by rwa [mul_comm] at hx), key⟩
 
+/- English proof (translation)
+The claim follows from `IsAffine.of_isIso e.hom`.
+-/
 theorem isAffineOpen_of_iso {W : Scheme.{0}} (V : W.Opens) {A : CommRingCat.{0}}
     (e : V.toScheme ≅ Spec A) : IsAffineOpen V :=
   IsAffine.of_isIso e.hom
 
+/- English proof (translation)
+Establish `: IsIso e.hom.appTop` using `inferInstanceAs (IsIso (e.hom.app ⊤))`. Establish `hb : Function.Bijective ((V.topIso.hom.hom).comp ((e.hom.appTop).hom.comp (Scheme.ΓSpecIso A).inv.hom))` using `(ConcreteCategory.bijective_of_isIso V.topIso.hom).comp ((ConcreteCategory.bijective_of_isIso e.hom.appTop).comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso A).inv))`. Conclude with `mem_nonZeroDivisors_of_bijective _ hb ha`.
+-/
 theorem sec_mem_nonZeroDivisors {W : Scheme.{0}} (V : W.Opens) {A : CommRingCat.{0}}
     (e : V.toScheme ≅ Spec A) {a : A} (ha : a ∈ nonZeroDivisors A) :
     V.topIso.hom (e.hom.appTop ((Scheme.ΓSpecIso A).inv a)) ∈ nonZeroDivisors Γ(W, V) := by
@@ -30,6 +41,17 @@ theorem sec_mem_nonZeroDivisors {W : Scheme.{0}} (V : W.Opens) {A : CommRingCat.
         (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso A).inv))
   exact mem_nonZeroDivisors_of_bijective _ hb ha
 
+/- English proof (translation)
+Establish `hVa` using `isAffineOpen_of_iso V e`. Establish `h1` using `IsAffineOpen.SpecMap_appLE_fromSpec π U.2 hVa hV`. Establish `: IsOpenImmersion U.2.fromSpec` using `IsAffineOpen.isOpenImmersion_fromSpec U.2`. Establish `: Mono U.2.fromSpec` using `IsOpenImmersion.mono _`. Establish `h3 : e.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U.1) A)) = hVa.isoSpec.hom ≫ Spec.map (π.appLE _ V hV)`.
+
+Rewrite using `[← cancel_mono U.2.fromSpec, Category.assoc, he, Category.assoc, h1, ← Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec]`. Establish `n1 : (Spec.map (CommRingCat.ofHom (algebraMap Γ(X, U.1) A))).appTop ((Scheme.ΓSpecIso _).inv r) = (Scheme.ΓSpecIso (.of A)).inv (algebraMap _ A r)`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality, CommRingCat.comp_apply]`. Both sides reduce to the same expression. Establish `n2 : (Spec.map (π.appLE _ V hV)).appTop ((Scheme.ΓSpecIso _).inv r) = (Scheme.ΓSpecIso _).inv (π.appLE _ V hV r)`.
+
+Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality, CommRingCat.comp_apply]`. Establish `n3 : ∀ x : Γ(W, V), hVa.isoSpec.hom.appTop ((Scheme.ΓSpecIso _).inv x) = V.topIso.inv x`. Introduce `x`. Rewrite using `[IsAffineOpen.isoSpec_hom_appTop, CommRingCat.comp_apply, ← CommRingCat.comp_apply (Scheme.ΓSpecIso _).inv, Iso.inv_hom_id, CommRingCat.id_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply, n1]`. Use `_ = V.topIso.hom ((hVa.isoSpec.hom ≫ Spec.map (π.appLE _ V hV)).appTop ((Scheme.ΓSpecIso _).inv r)) := by rw [h3]; rfl`. Use `_ = π.appLE _ V hV r := by`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Use `erw [n2, n3]`.
+
+Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`.
+-/
 theorem sec_algebraMap_of_iso {X W : Scheme.{0}} (π : W ⟶ X) (U : X.affineOpens) (V : W.Opens)
     (hV : V ≤ π ⁻¹ᵁ U.1) (A : Type) [CommRing A] [Algebra Γ(X, U.1) A]
     (e : V.toScheme ≅ Spec (.of A))
@@ -66,6 +88,9 @@ theorem sec_algebraMap_of_iso {X W : Scheme.{0}} (π : W ⟶ X) (U : X.affineOpe
         erw [n2, n3]
         rw [← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]
 
+/- English proof (translation)
+Set `` to `TopCat.Presheaf.algebra_section_stalk W.presheaf ⟨w, hw⟩`. Use `hV.isLocalization_stalk ⟨w, hw⟩` as an intermediate fact. Establish `h` using `IsLocalization.map_nonZeroDivisors_le (hV.primeIdealOf ⟨w, hw⟩).asIdeal.primeCompl (W.presheaf.stalk w) (Submonoid.mem_map_of_mem (algebraMap Γ(W, V) (W.presheaf.stalk w)) ha)`. Conclude with `h`.
+-/
 theorem germ_mem_nonZeroDivisors {W : Scheme.{0}} {V : W.Opens} (hV : IsAffineOpen V) {a : Γ(W, V)}
     (ha : a ∈ nonZeroDivisors Γ(W, V)) (w : W) (hw : w ∈ V) :
     W.presheaf.germ V w hw a ∈ nonZeroDivisors (W.presheaf.stalk w) := by
@@ -75,6 +100,11 @@ theorem germ_mem_nonZeroDivisors {W : Scheme.{0}} {V : W.Opens} (hV : IsAffineOp
     (W.presheaf.stalk w) (Submonoid.mem_map_of_mem (algebraMap Γ(W, V) (W.presheaf.stalk w)) ha)
   exact h
 
+/- English proof (translation)
+Establish `key : ∀ x : Γ(W, O), x * W.presheaf.map (homOfLE h).op a = 0 → x = 0`. Introduce `x hx`. Use `TopCat.Presheaf.section_ext W.sheaf O x 0 (fun w hw => ?_)` and prove the remaining obligations. Establish `hg` using `germ_mem_nonZeroDivisors hV ha w (h hw)`. Establish `h1 : W.presheaf.germ O w hw x * W.presheaf.germ V w (h hw) a = 0`.
+
+Rewrite using `[← W.presheaf.germ_res_apply (homOfLE h) w hw a, ← map_mul, hx, map_zero]`. Express the relevant statement in the definitionally equal form `W.presheaf.germ O w hw x = W.presheaf.germ O w hw 0`. Rewrite using `[(mem_nonZeroDivisors_iff.mp hg).2 _ h1, map_zero]`. Conclude with `mem_nonZeroDivisors_iff.mpr ⟨fun x hx => key x (by rwa [mul_comm] at hx), key⟩`.
+-/
 theorem res_mem_nonZeroDivisors {W : Scheme.{0}} {V O : W.Opens} (h : O ≤ V) (hV : IsAffineOpen V)
     {a : Γ(W, V)} (ha : a ∈ nonZeroDivisors Γ(W, V)) :
     W.presheaf.map (homOfLE h).op a ∈ nonZeroDivisors Γ(W, O) := by

@@ -16,6 +16,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RowSphSmall
 
+/- English proof (translation)
+Introduce `hP hL`. Use `EvG.imp (GlobalTheory.T.spherical_away_from_types hP) fun K _ _ _ _ hK => large₂.imp hK fun B f T _ H => ?_` and prove the remaining obligations. Introduce `hKP w hpin Z Wt hX z p0 Y hH hEx hGeo hGrp hGA Rw hPar σ w' hsplit hoff`. Establish `H'` using `H hKP w hpin Z Wt hX z p0 Y hH hEx hGeo hGrp hGA σ`. Take `⟨s, rfl⟩` from `GlobalTheory.OffBad.splitPlace_of_isSplitPl _ w' hsplit`.
+
+Take `⟨τ, hloc, hsph⟩` from `H' s hoff`. Take `⟨Bf, k1, k2, k3, k4⟩` from `exists_form_rowRepR hP.hc hP.decay _ _ _ _ _ _ _ z.R z.F z.cG p0 Y z.pins σ`. Establish `hunit` using `isUnitarisable_of_isLocS (repOf Y σ) Bf k1 k2 k3 k4 s τ hloc`. Establish `he` using `hPar.row.1 σ s τ hloc`. Take `⟨hu, hb⟩` from `locRec_unr_frobEig_le hL ((w.st Z).toD7.nd.plOm.2 s.w) τ hsph hunit`.
+
+Rewrite `hu`, `hb` using `[← he]`. Establish `hu'` using `(hPar.T.unr _ _).2 hu`. Use `⟨hu', fun α hα => ?_⟩` and prove the remaining obligations. Rewrite `hα` using `[hPar.T.frobEig _ _ hu']`. Establish `h1` using `hb α hα`.
+
+Establish `hq : (1 : ℝ) < ((Formalism.ConjugateSelfDual.normV s.w : ℕ) : ℝ)` using `by exact_mod_cast GlobalTheory.WeilDeligne.one_lt_normV s.w`. Establish `hrt : (((w.st Z).toD7.R.r : ℝ) - 1) / 2 < (((w.st Z).toD7.R.t : ℝ) - 1) / 2`. Use `(w.st Z).toD7.R.rank_add_five_le` as an intermediate fact. Establish `h2 : (w.st Z).toD7.R.r < (w.st Z).toD7.R.t` using `by unfold Ranks.r; omega`. Establish `h3 : ((w.st Z).toD7.R.r : ℝ) < ((w.st Z).toD7.R.t : ℝ)` using `by exact_mod_cast h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rowLoc_overRows : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, OverRows fun _ _ _ _ w Z _ _ z _ Y =>
     ∀ Rw, ParIn hL (w.st Z).toD7 (TC.cf w.I w.l Z) (repOf Y) Rw → ∀ σ, RowLoc (w.st Z).toD7 Rw σ := by
   intro hP hL

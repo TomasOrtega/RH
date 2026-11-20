@@ -13,6 +13,15 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.Equi
 
+/- English proof (translation)
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `η hη`. Establish `hK1 : 0 < K + 1` using `by linarith`. Use `set δ := η / (4 * (K + 1)) with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`.
+
+Establish `hδK : δ * (K + 1) = η / 4` using `by rw [hδ]; field_simp`. Take `⟨B, E, b, e, hB, hE, hAB, hb, he⟩` from `h δ hδ0`. Establish `h1` using `(Metric.tendsto_nhds.1 hB) (η / 4) (by linarith)`. Establish `h2 : ∀ᶠ t in l, E t < K + 1` using `hE.eventually (gt_mem_nhds (by linarith))`. Use `filter_upwards [h1, h2, hAB] with t t1 t2 t3`.
+
+Rewrite `t1`, the goal using `[Real.dist_eq]`. Establish `t4 : δ * E t ≤ δ * (K + 1)` using `by gcongr`. Establish `t5 : δ * K ≤ δ * (K + 1)` using `by gcongr; linarith`. Establish `e1 : A t - a = (A t - B t) + (B t - b) + (b - a)` using `by ring`. Rewrite using `[e1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem squeeze_of_approx {α : Type} {l : Filter α} {A : α → ℝ} {a K : ℝ} (hK : 0 ≤ K)
     (h : ∀ δ : ℝ, 0 < δ → ∃ (B E : α → ℝ) (b e : ℝ), Tendsto B l (𝓝 b) ∧ Tendsto E l (𝓝 e) ∧
       (∀ᶠ t in l, |A t - B t| ≤ δ * E t) ∧ |b - a| ≤ δ * K ∧ e ≤ K) : Tendsto A l (𝓝 a) := by
@@ -34,6 +43,13 @@ theorem squeeze_of_approx {α : Type} {l : Filter α} {A : α → ℝ} {a K : �
   calc _ ≤ |A t - B t| + |B t - b| + |b - a| := abs_add_three _ _ _
     _ < η := by linarith
 
+/- English proof (translation)
+Establish `hsw : Summable fun x => δ * ∑ c ∈ C, w c x` using `(summable_sum hw).mul_left δ`. Establish `hsu : Summable fun x => ∑ c ∈ C, a c * u c x` using `summable_sum fun c hc => (hu c hc).mul_left (a c)`. Establish `hsh : Summable fun x => g x - ∑ c ∈ C, a c * u c x` using `Summable.of_norm_bounded hsw fun x => by simpa using h x`. Establish `hg : Summable g` using `by simpa using hsh.add hsu`. Use `⟨hg, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (∑' x, g x) - ∑ c ∈ C, a c * ∑' x, u c x = ∑' x, (g x - ∑ c ∈ C, a c * u c x)`. Rewrite using `[hg.tsum_sub hsu, Summable.tsum_finsetSum fun c hc => (hu c hc).mul_left (a c)]`. Simplify using `only [tsum_mul_left]`. Establish `e2 : δ * ∑ c ∈ C, ∑' x, w c x = ∑' x, δ * ∑ c ∈ C, w c x`. Rewrite using `[tsum_mul_left, Summable.tsum_finsetSum hw]`.
+
+Rewrite using `[e1, e2]`. Establish `hn : Summable fun x => ‖g x - ∑ c ∈ C, a c * u c x‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun x => by simpa using h x) hsw`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem summable_of_close {X γ : Type} {g : X → ℝ} (C : Finset γ) (a : γ → ℝ) (u w : γ → X → ℝ) {δ : ℝ} (hδ : 0 ≤ δ)
     (hu : ∀ c ∈ C, Summable (u c)) (hw : ∀ c ∈ C, Summable (w c))
     (h : ∀ x, |g x - ∑ c ∈ C, a c * u c x| ≤ δ * ∑ c ∈ C, w c x) :
@@ -67,6 +83,9 @@ def Claim (θ : ℝ →+* Ainf F) (li : Measure (Ainf F)) (lam : ∀ v : HeightO
       (𝓝[>] 0) (𝓝 (((Ideal.absNorm I : ℝ) ^ Fintype.card ι)⁻¹ *
         ((∫ y, φ y ∂(Measure.pi fun _ => li)) * ∏ v ∈ S, ∫ y, ψ v y ∂(Measure.pi fun _ => lam v))))
 
+/- English proof (translation)
+Introduce `I hI _ x0 φ ψ hφ hc _`. Rewrite using `[GlobalTheory.T.coset_empty_places_lattice]`. Use `GlobalTheory.T.lattice_coset_scaled_riemann_sum F hF θ hθ li hli ι I hI x0 φ hφ hc` as an intermediate fact. Simplify `this` using `[term]`.
+-/
 theorem claim_empty (hF : IsTotallyReal F) (θ : ℝ →+* Ainf F) (hθ : Continuous θ) (li : Measure (Ainf F)) (hli : IsStdInf li)
     (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)) (ι : Type) [Fintype ι] : Claim θ li lam ι ∅ := by
   intro I hI _ x0 φ ψ hφ hc _
@@ -74,6 +93,11 @@ theorem claim_empty (hF : IsTotallyReal F) (θ : ℝ →+* Ainf F) (hθ : Contin
   have := GlobalTheory.T.lattice_coset_scaled_riemann_sum F hF θ hθ li hli ι I hI x0 φ hφ hc
   simpa [term] using this
 
+/- English proof (translation)
+Use `⟨mul_ne_zero hI (pow_ne_zero _ v.ne_bot), fun w hw h => ?_⟩` and prove the remaining obligations. Break down `w.isPrime.mul_le.1 h with h | h` into its components or cases. Conclude with `hc w hw h`. Establish `h1` using `w.isPrime.le_of_pow_le h`. Establish `h2 : v.asIdeal = w.asIdeal` using `v.isMaximal.eq_of_le w.isPrime.ne_top h1`.
+
+Conclude with `hv ((HeightOneSpectrum.ext h2) ▸ hw)`.
+-/
 theorem mul_pow_prime {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) {I : Ideal (𝓞 F)}
     (hI : I ≠ ⊥) (hc : ∀ w ∈ S, ¬ I ≤ w.asIdeal) (k : ℕ) :
     I * v.asIdeal ^ k ≠ ⊥ ∧ ∀ w ∈ S, ¬ I * v.asIdeal ^ k ≤ w.asIdeal := by
@@ -86,17 +110,28 @@ theorem mul_pow_prime {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSp
 
 abbrev yV {ι : Type} (v : HeightOneSpectrum (𝓞 F)) (x : ι → F) : ι → Fv F v := fun i => algebraMap F (Fv F v) (x i)
 
+/- English proof (translation)
+Simplify using `only [term, Finset.prod_insert hv, yV]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_insert {ι : Type} (θ : ℝ →+* Ainf F) {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S)
     (φ : (ι → Ainf F) → ℝ) (ψ : ∀ v : HeightOneSpectrum (𝓞 F), (ι → Fv F v) → ℝ) (ε : ℝ) (x : ι → F) :
     term θ (insert v S) φ ψ ε x = ψ v (yV v x) * term θ S φ ψ ε x := by
   simp only [term, Finset.prod_insert hv, yV]
   ring
 
+/- English proof (translation)
+Simplify using `only [term, abs_mul, Finset.abs_prod]`.
+-/
 theorem term_abs {ι : Type} (θ : ℝ →+* Ainf F) (S : Finset (HeightOneSpectrum (𝓞 F)))
     (φ : (ι → Ainf F) → ℝ) (ψ : ∀ v : HeightOneSpectrum (𝓞 F), (ι → Fv F v) → ℝ) (ε : ℝ) (x : ι → F) :
     term θ S (fun y => |φ y|) (fun w y => |ψ w y|) ε x = |term θ S φ ψ ε x| := by
   simp only [term, abs_mul, Finset.abs_prod]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hb : ∀ i, algebraMap F (Fv F v) (x i) - c i ∈ ballV v k`. Distinguish the cases in `hA : x ∈ A`. Establish `hA'` using `(h x).1 ⟨hA, hb⟩`. Simplify using `[Set.indicator, hA, hA', boxInd, yV, hb]`.
+
+Establish `hA' : x ∉ A'` using `fun e => hA ((h x).2 e).1`. Simplify using `[Set.indicator, hA, hA']`. Establish `hA' : x ∉ A'` using `fun e => hb ((h x).2 e).2`. Establish `hz : boxInd v k c (yV v x) = 0` using `by simp only [boxInd, yV]; rw [if_neg hb]`. Simplify using `[Set.indicator, hA', hz]`.
+-/
 theorem indicator_box {ι : Type} {A A' : Set (ι → F)} {v : HeightOneSpectrum (𝓞 F)} {k : ℕ} {c : ι → Fv F v}
     (h : ∀ x : ι → F, (x ∈ A ∧ ∀ i, algebraMap F (Fv F v) (x i) - c i ∈ ballV v k) ↔ x ∈ A') (f : (ι → F) → ℝ) :
     (A.indicator fun x => boxInd v k c (yV v x) * f x) = A'.indicator f := by
@@ -111,6 +146,9 @@ theorem indicator_box {ι : Type} {A A' : Set (ι → F)} {v : HeightOneSpectrum
     have hz : boxInd v k c (yV v x) = 0 := by simp only [boxInd, yV]; rw [if_neg hb]
     simp [Set.indicator, hA', hz]
 
+/- English proof (translation)
+The claim follows from `|(∑' x : A, term θ (insert v S) φ ψ ε x.1) - ∑ c ∈ C, ψ v c * ∑' x : A' c, term θ S φ ψ ε x.1| ≤ δ * ∑ c ∈ C, ∑' x : A' c, term θ S (fun y => |φ y|) (fun w y => |ψ w y|) ε x.1 := by set f : (ι → F) → ℝ := term θ S φ ψ ε with hf set f' : (ι → F) → ℝ := term θ S (fun y => |φ y|) (f …`.
+-/
 theorem est {ι : Type} (θ : ℝ →+* Ainf F) {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S)
     (φ : (ι → Ainf F) → ℝ) (ψ : ∀ v : HeightOneSpectrum (𝓞 F), (ι → Fv F v) → ℝ) (ε δ : ℝ) (hδ : 0 ≤ δ) {A : Set (ι → F)}
     {k : ℕ} (C : Finset (ι → Fv F v)) (A' : (ι → Fv F v) → Set (ι → F))
@@ -154,6 +192,35 @@ theorem est {ι : Type} (θ : ℝ →+* Ainf F) {S : Finset (HeightOneSpectrum (
   simp only [t1, t2, t3]
   exact h2
 
+/- English proof (translation)
+Introduce `I hI hcop x0 φ ψ hφ hφc hψ`. Establish `hcopS : ∀ w ∈ S, ¬ I ≤ w.asIdeal` using `fun w hw => hcop w (Finset.mem_insert_of_mem hw)`. Establish `hcopv : ¬ I ≤ v.asIdeal` using `hcop v (Finset.mem_insert_self _ _)`. Establish `hψS : ∀ w ∈ S, Continuous (ψ w) ∧ HasCompactSupport (ψ w)` using `fun w hw => hψ w (Finset.mem_insert_of_mem hw)`. Take `⟨hψc, hψs⟩` from `hψ v (Finset.mem_insert_self _ _)`.
+
+Establish `hφa : Continuous fun y => |φ y|` using `hφ.abs`. Establish `hφca : HasCompactSupport fun y => |φ y|` using `hφc.comp_left (g := fun t : ℝ => |t|) abs_zero`. Establish `hψa : ∀ w ∈ S, Continuous (fun y => |ψ w y|) ∧ HasCompactSupport (fun y => |ψ w y|)` using `fun w hw => ⟨(hψS w hw).1.abs, (hψS w hw).2.comp_left (g := fun t : ℝ => |t|) abs_zero⟩`. Take `⟨B, hB0, hB⟩` from `GlobalTheory.T.locally_constant_box_approximation F v (lam v) (hlam v) ι (ψ v) hψc hψs`. Establish `hcell : ∀ (k : ℕ) (c : ι → Fv F v), ∃ x1 : ι → F, ∀ x : ι → F, (x ∈ cosetOff (insert v S) I x0 ∧ ∀ i, algebraMap F (Fv F v) (x i) - c i ∈ ballV v k) ↔ x ∈ cosetOff S (I * v.asIdeal ^ k) x1` using `fun k c => GlobalTheory.T.coset_congruence_refinement F ι S v hv I hI hcopv k x0 c`.
+
+Use `choose x1 hx1 using hcell`. Establish `hJ` using `fun k => mul_pow_prime hv hI hcopS k`. Establish `hP` using `fun (k : ℕ) (c : ι → Fv F v) => hS _ (hJ k).1 (hJ k).2 (x1 k c) φ ψ hφ hφc hψS`. Establish `hQ` using `fun (k : ℕ) (c : ι → Fv F v) => hS _ (hJ k).1 (hJ k).2 (x1 k c) (fun y => |φ y|) (fun w y => |ψ w y|) hφa hφca hψa`. Establish `hest` using `fun (δ : ℝ) (hδ : 0 ≤ δ) (k : ℕ) (C : Finset (ι → Fv F v)) (hap : ∀ y, |ψ v y - ∑ c ∈ C, ψ v c * boxInd v k c y| ≤ δ * ∑ c ∈ C, boxInd v k c y) (ε : ℝ) (hε : 0 < ε) => est θ hv φ ψ ε δ hδ C (fun c => cosetOff S (I * v.asIdeal ^ k) (x1 k c)) (fun c _ => hx1 k c) hap (fun c _ => (h …`.
+
+Use `⟨fun ε hε => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, C, h1, -, -⟩` from `hB 1 one_pos`. Conclude with `(hest 1 zero_le_one k C h1 ε hε).1`. Use `set N := Fintype.card ι`. Use `set D := Module.finrank ℚ F * N`.
+
+Use `set Nf : ℝ := ((Ideal.absNorm I : ℝ) ^ N)⁻¹ with hNf`. Establish `hNf0 : 0 ≤ Nf` using `by positivity`. Use `set M : ℝ := (∫ y, φ y ∂(Measure.pi fun _ => li)) * ∏ w ∈ S, ∫ y, ψ w y ∂(Measure.pi fun _ => lam w) with hM`. Use `set M' : ℝ := (∫ y, |φ y| ∂(Measure.pi fun _ => li)) * ∏ w ∈ S, ∫ y, |ψ w y| ∂(Measure.pi fun _ => lam w) with hM'`. Establish `hM'0 : 0 ≤ M'` using `mul_nonneg (integral_nonneg fun _ => abs_nonneg _) (Finset.prod_nonneg fun _ _ => integral_nonneg fun _ => abs_nonneg _)`.
+
+Establish `hnorm : ∀ k : ℕ, ((Ideal.absNorm (I * v.asIdeal ^ k) : ℝ) ^ N)⁻¹ = Nf * (((Ideal.absNorm v.asIdeal : ℝ) ^ k) ^ N)⁻¹` using `fun k => by`. Rewrite using `[map_mul, map_pow, hNf]`. Use `push_cast`. Rewrite using `[mul_pow, mul_inv]`. Establish `htarget : ((Ideal.absNorm I : ℝ) ^ N)⁻¹ * ((∫ y, φ y ∂(Measure.pi fun _ => li)) * ∏ w ∈ insert v S, ∫ y, ψ w y ∂(Measure.pi fun _ => lam w)) = Nf * M * ∫ y, ψ v y ∂(Measure.pi fun _ => lam v)`.
+
+Rewrite using `[Finset.prod_insert hv, hM]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[htarget]`. Use `squeeze_of_approx (K := Nf * M' * B + Nf * |M| * B) (by positivity) fun δ hδ => ?_` and prove the remaining obligations. Take `⟨k, C, h1, h2, h3⟩` from `hB δ hδ`.
+
+Use `set q : ℝ := (((Ideal.absNorm v.asIdeal : ℝ) ^ k) ^ N)⁻¹ with hq`. Use `⟨fun ε => ∑ c ∈ C, ψ v c * (ε ^ D * ∑' x : cosetOff S (I * v.asIdeal ^ k) (x1 k c), term θ S φ ψ ε x.1), fun ε => ∑ c ∈ C, ε ^ D * ∑' x : cosetOff S (I * v.asIdeal ^ k) (x1 k c), term θ S (fun y => |φ y|) (fun w y => |ψ w y|) ε x.1, ∑ c ∈ C, ψ v c * (Nf * q * M), ∑ c ∈ C, Nf * q …` and prove the remaining obligations. Use `tendsto_finset_sum _ fun c _ => Tendsto.const_mul _ ?_` and prove the remaining obligations. Use `(hP k c).2` as an intermediate fact. Rewrite `this` using `[hnorm]`. Then use the resulting hypothesis.
+
+Use `tendsto_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Use `(hQ k c).2` as an intermediate fact. Rewrite `this` using `[hnorm]`. Then use the resulting hypothesis. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Establish `hε0 : (0 : ℝ) < ε` using `hε`.
+
+Establish `h4` using `(hest δ hδ.le k C h1 ε hε0).2`. Establish `hp : 0 ≤ ε ^ D` using `by positivity`. Establish `e1 : ε ^ D * (∑' x : cosetOff (insert v S) I x0, term θ (insert v S) φ ψ ε x.1) - ∑ c ∈ C, ψ v c * (ε ^ D * ∑' x : cosetOff S (I * v.asIdeal ^ k) (x1 k c), term θ S φ ψ ε x.1) = ε ^ D * ((∑' x : cosetOff (insert v S) I x0, term θ (insert v S) φ ψ ε x.1) - ∑ c ∈ C, ψ v c * ∑' x : …`. Rewrite using `[mul_sub, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[e1, abs_mul, abs_of_nonneg hp, ← Finset.mul_sum, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left h4 hp`. Establish `e1 : ∑ c ∈ C, ψ v c * (Nf * q * M) = Nf * M * ∑ c ∈ C, ψ v c * q`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[e1, ← mul_sub, abs_mul, abs_mul, abs_of_nonneg hNf0, abs_sub_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ δ * (Nf * M' * B)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Establish `e1 : (C.card : ℝ) * (Nf * q * M') = Nf * M' * ((C.card : ℝ) * q)` using `by ring`. Rewrite using `[e1]`. Establish `h5 : Nf * M' * ((C.card : ℝ) * q) ≤ Nf * M' * B` using `by gcongr`. Establish `h6 : 0 ≤ Nf * |M| * B` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem claim_insert {θ : ℝ →+* Ainf F} {li : Measure (Ainf F)} {lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)}
     (hlam : ∀ v, IsStdV v (lam v)) {ι : Type} [Fintype ι] {S : Finset (HeightOneSpectrum (𝓞 F))} {v : HeightOneSpectrum (𝓞 F)}
     (hv : v ∉ S) (hS : Claim θ li lam ι S) : Claim θ li lam ι (insert v S) := by
@@ -241,6 +308,11 @@ theorem claim_insert {θ : ℝ →+* Ainf F} {li : Measure (Ainf F)} {lam : ∀ 
     have h6 : 0 ≤ Nf * |M| * B := by positivity
     linarith
 
+/- English proof (translation)
+Introduce `F _ _ hF θ hθ li lam hli hlam ι _ S φ ψ hφ hφc hψ`. Establish `hc : Claim θ li lam ι S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact claim_empty hF θ hθ li hli lam ι`. Consider the case `insert v S hv ih => exact claim_insert hlam hv (ih fun w hw => hψ w (Finset.mem_insert_of_mem hw))`.
+
+Establish `h` using `(hc ⊤ top_ne_bot (fun w _ h => w.isPrime.ne_top (top_le_iff.1 h)) 0 φ ψ hφ hφc hψ).2`. Rewrite `h` using `[GlobalTheory.T.coset_unit_ideal_integral]`. Simplify using `only [term, Ideal.absNorm_top, Nat.cast_one, one_pow, inv_one, one_mul] at h`. Conclude with `h`.
+-/
 theorem equi : PositivityTheory.Rg.Mass.Equi := by
   intro F _ _ hF θ hθ li lam hli hlam ι _ S φ ψ hφ hφc hψ
   have hc : Claim θ li lam ι S := by

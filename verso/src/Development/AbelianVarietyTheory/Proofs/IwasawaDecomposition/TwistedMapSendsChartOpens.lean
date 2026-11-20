@@ -14,33 +14,51 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.LiePull
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]) (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR])`.
+-/
 theorem dualMapR_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (g.comp f) =
       (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR g).comp (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR])
     (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR])
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]) (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])`.
+-/
 theorem dualMapR_algebraMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f).comp (algebraMap A (DualNumber A)) = (algebraMap B (DualNumber B)).comp f :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])
     (by simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `only [spMap]`. Conclude with `Spec.map_id _`.
+-/
 theorem spMap_id (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap]
   exact Spec.map_id _
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨m, rfl⟩`.
+-/
 theorem exists_sabMap_of_eq {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S}
     (m : SABMap t' t f) (h : f = f') : ∃ m' : SABMap t' t f', m'.φ = m.φ := by
   subst h
   exact ⟨m, rfl⟩
 
+/- English proof (translation)
+Set `m₁ : SABMap (FiniteStable.twist σ.symm hσ t'') (FiniteStable.twist σ.symm hσ t') g` to `⟨m.cm, m.cart, m.base, fun a => m.act (σ.symm a), m.lin⟩`. Set `mu₁ : SABMap (FiniteStable.twist σ.symm hσ t') t π` to `⟨mu.cm, mu.cart, mu.base, fun a => by simpa using mu.act (σ.symm a), mu.lin⟩`. Take `⟨n, hn⟩` from `ObjMaps.exists_sab_comp mu₁ m₁`. Conclude with `⟨n, hn⟩`.
+-/
 theorem exists_twComp (σ : 𝓞 E ≃+* 𝓞 E) (hσ : σ.symm H.w0 = H.w0) {S S' S'' : Scheme.{0}} {t : SAB H S}
     {t' : SAB H S'} {t'' : SAB H S''} {π : S' ⟶ S} {g : S'' ⟶ S'} (mu : TwMap σ t' t π) (m : SABMap t'' t' g) :
     ∃ n : SABMap (FiniteStable.twist σ.symm hσ t'') t (g ≫ π), n.φ = m.φ ≫ mu.cm.F := by
@@ -55,6 +73,21 @@ end GlobalTheory.LiePull
 
 namespace GlobalTheory.LiePull
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l l' Xo Xo' c c' O O' _ _ β β' Z Z' σ π mu hσ M U' hU' hle`. Establish `hσ' : σ.symm H.w0 = H.w0` using `σ.symm_apply_eq.mpr hσ.symm`. Set `res : Γ(Z.X, M.U) ⟶ Γ(Z'.X, U')` to `π.appLE M.U U' hle`. Establish `hsq : spMap res.hom ≫ M.hU.fromSpec = hU'.fromSpec ≫ π` using `IsAffineOpen.SpecMap_appLE_fromSpec π M.hU hU' hle`. Establish `key : ∀ (R' : Type) [CommRing R'] (f : Γ(Z'.X, U') →+* R') (t' : SAB H (Sp R')) (m : SABMap t' Z'.t (spMap f ≫ hU'.fromSpec)), ∃ v' : Fin M.n → (epsR R' ⟶ t'.G), (∀ j, (v' j).left ≫ m.φ ≫ mu.cm.F = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR (f.comp res.hom)) ≫ M.v …`.
+
+Introduce `R' _ f t' m`. Take `⟨n, hn⟩` from `exists_twComp σ hσ' mu m`. Establish `e : (spMap f ≫ hU'.fromSpec) ≫ π = spMap (f.comp res.hom) ≫ M.hU.fromSpec`. Rewrite using `[spMap_comp, Category.assoc, Category.assoc, hsq]`. Take `⟨n', hn'⟩` from `exists_sabMap_of_eq n e`.
+
+Take `⟨v', h1, h2, h3⟩` from `M.lie R' (f.comp res.hom) _ n'`. Use `⟨v', fun j => ?_, h2, fun a j => ?_⟩` and prove the remaining obligations. Use `h1 j` as an intermediate fact. Rewrite `this` using `[hn', hn]`. Conclude with `this`.
+
+Use `h3 (σ a) j` as an intermediate fact. Establish `e2 : (FiniteStable.twist σ.symm hσ' t').act.act (σ a) = t'.act.act a` using `by show t'.act.act (σ.symm (σ a)) = _`. Rewrite using `[σ.symm_apply_apply]`. Rewrite `this` using `[e2]`. Conclude with `this`.
+
+Take `⟨_, _, _, _, _, n₀, -⟩` from `sabPull Out.CubePf.cubePull hU'.fromSpec Z'.t`. Establish `eid : hU'.fromSpec = spMap (RingHom.id Γ(Z'.X, U')) ≫ hU'.fromSpec`. Rewrite using `[spMap_id, Category.id_comp]`. Take `⟨n₁, -⟩` from `exists_sabMap_of_eq n₀ eid`. Take `⟨u, hu, -, -⟩` from `key _ (RingHom.id _) _ n₁`.
+
+Use `⟨fun j => (u j).left ≫ n₁.φ, fun a => (M.ρ (σ a)).map res.hom, ?_⟩` and prove the remaining obligations. Introduce `R' _ f t' m`. Take `⟨v', h1, h2, h3⟩` from `key R' f t' m`. Use `⟨v', fun j => ?_, h2, h3⟩` and prove the remaining obligations. Apply `mu.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, h1 j, Category.assoc, Category.assoc, hu j, RingHom.id_comp, ← Category.assoc, ← spMap_comp, ← dualMapR_comp]`. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w (v' j), Category.assoc, Category.assoc, n₁.cart.1.w, ← Category.assoc (u j).left, Over.w (u j), spMap_id, Category.id_comp] show (spMap (algebraMap R' (DualNumber R')) ≫ spMap f) ≫ hU'.fromSpec = spMap (ReciprocityTheory.Chart …`. Rewrite using `[← Category.assoc, ← spMap_comp, ← spMap_comp, dualMapR_algebraMap]`.
+-/
 theorem lie_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l' : Level H) (Xo : Moduli D l)
     (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (O O' : Type) [CommRing O] [CommRing O'] (β : O →+* c.F)
     (β' : O' →+* c'.F) (Z : Model Xo c β) (Z' : Model Xo' c' β') (σ : 𝓞 E ≃+* 𝓞 E) (π : Z'.X ⟶ Z.X)

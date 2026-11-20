@@ -40,10 +40,16 @@ noncomputable def cohomologyCoindCokernelIso (n : ℕ) :
   asIso (coindδ A (n + 1))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyCoindCokernelIso_hom (n : ℕ) :
     (cohomologyCoindCokernelIso A n).hom = coindδ A (n + 1) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `cohomology_exact₃ (coindShortComplex_shortExact A) 0 1 rfl`.
+-/
 theorem coindδ_zero_exact :
     (ShortComplex.mk (cohomologyMap (coindCokernelπ A) 0) (coindδ A 0)
       (comp_δ (coindShortComplex_shortExact A) 0 1 rfl)).Exact :=
@@ -54,6 +60,9 @@ noncomputable def cokernelCohomologyMapCoindCokernelπIso :
   IsColimit.coconePointUniqueUpToIso (cokernelIsCokernel _) (coindδ_zero_exact A).gIsCokernel
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `IsColimit.comp_coconePointUniqueUpToIso_hom (cokernelIsCokernel _) (coindδ_zero_exact A).gIsCokernel WalkingParallelPair.one`.
+-/
 theorem cokernel_π_cokernelCohomologyMapCoindCokernelπIso_hom :
     cokernel.π (cohomologyMap (coindCokernelπ A) 0) ≫
       (cokernelCohomologyMapCoindCokernelπIso A).hom = coindδ A 0 :=

@@ -13,15 +13,26 @@ open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.Indef.Tree GlobalT
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+The claim follows from `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem lw_nonneg (w : HeightOneSpectrum (𝓞 K)) : 0 ≤ lw w :=
   div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
 omit [NumberField K] in
+/- English proof (translation)
+Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨s, hs, h hx⟩`.
+-/
 theorem localization_mono' {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (p : Ideal (𝓞 K)) [p.IsPrime]
     {L L' : Submodule (𝓞 K) W} (h : L ≤ L') : Formalism.HermitianLatticesTheory.localization₂ p L ≤ Formalism.HermitianLatticesTheory.localization₂ p L' := by
   rintro x ⟨s, hs, hx⟩
   exact ⟨s, hs, h hx⟩
 
+/- English proof (translation)
+Establish `hP : (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr w.ne_bot`. Take `⟨k, rfl⟩` from `Int.le.dest h`. Establish `h1 : (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ k ≤ 1`. Rewrite using `[← FractionalIdeal.coeIdeal_pow]`. Conclude with `FractionalIdeal.coeIdeal_le_one`.
+
+Establish `h2 : (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ (n' + (k : ℤ)) ≤ (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ n'`. Rewrite using `[zpow_add₀ hP, zpow_natCast]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `FractionalIdeal.coe_le_coe.mpr h2`.
+-/
 theorem primePow_anti (w : HeightOneSpectrum (𝓞 K)) {n n' : ℤ} (h : n' ≤ n) : primePow w n ≤ primePow w n' := by
   have hP : (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ≠ 0 := FractionalIdeal.coeIdeal_ne_zero.mpr w.ne_bot
   obtain ⟨k, rfl⟩ := Int.le.dest h
@@ -34,6 +45,9 @@ theorem primePow_anti (w : HeightOneSpectrum (𝓞 K)) {n n' : ℤ} (h : n' ≤ 
       _ = _ := mul_one _
   exact FractionalIdeal.coe_le_coe.mpr h2
 
+/- English proof (translation)
+Use `localization_mono' _ (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, primePow_anti w h ha, x, hx, rfl⟩`.
+-/
 theorem scaledAt_anti {d : ℕ} (w : HeightOneSpectrum (𝓞 K)) (B : Submodule (𝓞 K) (Fin d → K)) {n n' : ℤ}
     (h : n' ≤ n) : scaledAt w n B ≤ scaledAt w n' B := by
   refine localization_mono' _ (Submodule.span_mono ?_)

@@ -32,6 +32,9 @@ section Torus
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[act, cj_apply, hσ]`.
+-/
 theorem act_cj (X : PT E) {dim : (E →+* ℂ) → ℕ} (σ : Idx dim ≃ Idx X.dim)
     (hσ : ∀ i, (σ i).1 = ComplexEmbedding.conjugate i.1) (α : 𝓞 E) (y : Vsp X.dim) :
     act α (cj X σ y) = cj X σ (act α y) := by
@@ -42,6 +45,9 @@ def conjBasis (X : PT E) {dim : (E →+* ℂ) → ℕ} (σ : Idx dim ≃ Idx X.d
     Module.Basis (Fin (2 * Fintype.card (Idx dim))) ℝ (Vsp dim) :=
   (X.b.map (cj X σ)).reindex (finCongr (by rw [Fintype.card_congr σ]))
 
+/- English proof (translation)
+Simplify using `only [lat, Module.Basis.mem_span_iff_repr_mem, conjBasis, Module.Basis.repr_reindex_apply, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `⟨fun h i => h (finCongr (by rw [Fintype.card_congr σ]) i), fun h i => h _⟩`.
+-/
 theorem mem_conjBasis (X : PT E) {dim : (E →+* ℂ) → ℕ} (σ : Idx dim ≃ Idx X.dim) (y : Vsp X.dim) :
     cj X σ y ∈ lat (conjBasis X σ) ↔ y ∈ lat X.b := by
   simp only [lat, Module.Basis.mem_span_iff_repr_mem, conjBasis, Module.Basis.repr_reindex_apply,

@@ -12,6 +12,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 namespace GlobalTheory.CrysFromGTwo
+/- English proof (translation)
+Establish `hc` using `(_root_.UpperTheory.GalS.g2a' hG w hw h0 h1 x).1`. Conclude with `((D.loc_tie i w hw).2.1 D.R.nV (r x) (hr x).1).1.mp hc`.
+-/
 theorem crys_loc_alt_alt (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hr : GoodR D.nd i r) (hG : _root_.UpperTheory.GalS.G2a D.nd D.naut i r) (h0 : D.nd.l i ≠ D.host.g 0)
     (h1 : D.nd.l i ≠ D.host.g 1) (w : HeightOneSpectrum (𝓞 D.host.E))

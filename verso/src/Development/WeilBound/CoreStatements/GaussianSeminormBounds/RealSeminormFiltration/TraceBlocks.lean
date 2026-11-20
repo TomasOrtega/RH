@@ -18,6 +18,11 @@ section Mat
 variable {β ι : Type} [Fintype β] [DecidableEq β] [Fintype ι] [DecidableEq ι]
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `: CompleteSpace (Matrix ι ι ℂ)` using `FiniteDimensional.complete ℝ _`. Set `φ : Matrix ι ι ℂ →+* Matrix β β ℂ` to `{ toFun := fun X => C * X * C' map_one' := by rw [Matrix.mul_one, h1] map_mul' := fun X X' => by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc C', h2, Matrix.one_mul]`. Use the proof step `map_zero' := by simp`.
+
+Use the proof step `map_add' := fun X X' => by rw [Matrix.mul_add, Matrix.add_mul] }`. Conclude with `(NormedSpace.map_exp φ ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) Y).symm`.
+-/
 theorem exp_conj' (C : Matrix β ι ℂ) (C' : Matrix ι β ℂ) (h1 : C * C' = 1) (h2 : C' * C = 1) (Y : Matrix ι ι ℂ) :
     NormedSpace.exp (C * Y * C') = C * NormedSpace.exp Y * C' := by
   have : CompleteSpace (Matrix ι ι ℂ) := FiniteDimensional.complete ℝ _
@@ -32,6 +37,11 @@ theorem exp_conj' (C : Matrix β ι ℂ) (C' : Matrix ι β ℂ) (h1 : C * C' = 
   exact (NormedSpace.map_exp φ ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const) Y).symm
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Establish `: CompleteSpace (Matrix β β ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `: @CompleteSpace (Matrix β β ℂ × Matrix β β ℂ) PseudoMetricSpace.toUniformSpace` using `FiniteDimensional.complete ℝ _`. Set `φ : Matrix β β ℂ × Matrix β β ℂ →+* Matrix (β ⊕ β) (β ⊕ β) ℂ` to `{ toFun := fun X => Matrix.fromBlocks X.1 0 0 X.2 map_one' := Matrix.fromBlocks_one map_mul' := fun X X' => by simp [Matrix.fromBlocks_multiply] map_zero' := Matrix.fromBlocks_zero map_add' := fun X X' => by simp [Matrix.fromBlocks_add] }`. Use `NormedSpace.map_exp φ (continuous_fst.matrix_fromBlocks continuous_const continuous_const continuous_snd) (Z, Z')` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations.
+
+Use `show Matrix.fromBlocks _ 0 0 _ = _`. Rewrite using `[Prod.fst_exp, Prod.snd_exp]`. Both sides reduce to the same expression.
+-/
 theorem exp_blocks (Z Z' : Matrix β β ℂ) :
     NormedSpace.exp (Matrix.fromBlocks Z 0 0 Z') = Matrix.fromBlocks (NormedSpace.exp Z) 0 0 (NormedSpace.exp Z') := by
   have : CompleteSpace (Matrix β β ℂ) := FiniteDimensional.complete ℝ _
@@ -48,9 +58,19 @@ theorem exp_blocks (Z Z' : Matrix β β ℂ) :
   rw [Prod.fst_exp, Prod.snd_exp]
   rfl
 
+/- English proof (translation)
+Simplify using `[Matrix.trace]`.
+-/
 theorem trace_blocks (Z Z' : Matrix β β ℂ) : (Matrix.fromBlocks Z 0 0 Z').trace = Z.trace + Z'.trace := by
   simp [Matrix.trace]
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty β with h | h` into its components or cases. Conclude with `iff_of_true (Subsingleton.elim _ _) (Subsingleton.elim _ _)`. Establish `hb : b ≠ 0` using `fun e => by`. Rewrite `hu` using `[e, zero_smul, Matrix.map_zero _ (star_zero _), Matrix.det_zero]`. Conclude with `not_isUnit_zero hu`.
+
+Establish `e : gᴴ * (b • M).map star * g = (b • (gᵀ * M * g.map star)).map star`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, map_star_mul, map_star_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, (Matrix.map_injective star_injective).eq_iff, (smul_right_injective _ hb).eq_iff]`.
+-/
 theorem iff_K {b : ℂ} {M : Matrix β β ℂ} (hu : IsUnit ((b • M).map star).det) (g : Matrix β β ℂ) :
     gᴴ * (b • M).map star * g = (b • M).map star ↔ gᵀ * M * g.map star = M := by
   rcases isEmpty_or_nonempty β with h | h
@@ -65,6 +85,11 @@ theorem iff_K {b : ℂ} {M : Matrix β β ℂ} (hu : IsUnit ((b • M).map star)
     simp
   rw [e, (Matrix.map_injective star_injective).eq_iff, (smul_right_injective _ hb).eq_iff]
 
+/- English proof (translation)
+Take `⟨C', h1, h2⟩` from `frame_inv h`. Establish `e : H.map star = C'ᴴ * Jm R S * C'`. Rewrite using `[← Jm_map_star, ← h.1, map_star_mul, map_star_mul, show Cᵀ.map star = Cᴴ from rfl, show (C.map star).map star = C by ext; simp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+
+Use `⟨by simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Jm_conjTranspose, Matrix.mul_assoc], Matrix.isUnit_det_of_left_inverse (B := C * Jm R S * Cᴴ) ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_K {R S : ℕ} {H : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} (h : IsFrame H C) :
     (H.map star)ᴴ = H.map star ∧ IsUnit (H.map star).det := by
   obtain ⟨C', h1, h2⟩ := frame_inv h
@@ -87,6 +112,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ} {a b : ℂ} {A : InfinitePlace F → Matrix α (Ix P Q) ℂ}
   {C : InfinitePlace F → Matrix β (Ix R S) ℂ}
 
+/- English proof (translation)
+Rewrite using `[sB, symp, Fock.trace_trace h τ, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e2` using `Fock.herm_frame (MA := JA.map (piInf (τ w))) (MB := JB.map (piInf (τ w))) hfr.1 (hfr.2.1 w) (hfr.2.2 w) (c w) (c' w)`. Simplify using `only [← hc, ← hc', Matrix.map_apply] at e2`. Rewrite using `[← e2, hTens, neg_one_mul, map_neg, neg_re]`.
+
+Simplify using `only [map_sum, map_mul, piInf_cA h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sB_frame (h : IsCMExt F E σ) (hfr : Framed τ JA JB a b A C) {u u' : Matrix α β (AE F E)}
     {c c' : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ} (hc : ∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ)
     (hc' : ∀ w, u'.map (piInf (τ w)) = A w * c' w * (C w)ᵀ) :
@@ -100,6 +130,23 @@ theorem sB_frame (h : IsCMExt F E σ) (hfr : Framed τ JA JB a b A C) {u u' : Ma
   simp only [map_sum, map_mul, piInf_cA h]
   ring
 
+/- English proof (translation)
+Use `choose C' h1 h2 using fun w => frame_inv (hfr.2.2 w)`. Use `choose A' a1 a2 using fun w => frame_inv (hfr.2.1 w)`. Establish `hg : ∀ (t : ℝ) w, ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf (τ w)) = C w * NormedSpace.exp (t • Y w) * C' w` using `fun t w => by rw [← hY, Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `hu : ∀ w, Y w ∈ upq R S` using `fun w => lie_of_exp _ _ fun t => (frame_iff_smul (hfr.2.2 w) (hY t w)).1 (by`. Use `congrArg (fun X : Matrix β β (AE F E) => X.map (piInf (τ w))) (γ (Multiplicative.ofAdd t)).2` as an intermediate fact.
+
+Simplify using `only [map_form h] at this`. Conclude with `this)`. Take `⟨L, -, hL, hL'⟩` from `exists_lf h τ α β`. Set `U : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ → Matrix α β (AE F E)` to `fun w c => L fun w' => A w' * (Pi.single w c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ) w' * (C w')ᵀ`. Establish `hU : ∀ w c T, D (U w c) (Φ T) = Φ (atL w (heisOp c) T)` using `fun w c T => by`.
+
+Rewrite using `[(actsLaws F κ _ _ (Φ _)).2.2.2.2 _ (hD _ (hL _) (Φ T)) (hΦ.2 _ (hL _) _ (hL' _) T)]`. Use `congr 2`. Rewrite using `[sumPl, Finset.sum_eq_single w (fun w' _ hw => by simp [atL_eq, hw, heisOp]) (by simp), atL_eq, Pi.single_eq_same]`. Use `⟨fun w => C w * Y w * C' w, fun w => by rw [Matrix.trace_mul_cycle, h2, Matrix.one_mul], fun t w => ?_, fun t w => ?_, fun w => ?_, fun j => U j.1 (cu (Y j.1) j.2), fun j => U j.1 (cv j.2), fun j => hL _, fun j => hL _, fun x hx w => ?_, fun T => ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← exp_conj' _ _ (h1 w) (h2 w), Matrix.mul_smul, Matrix.smul_mul]`.
+
+Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hg, Matrix.det_conj_of_mul_eq_one (h1 w) (h2 w), GlobalTheory.DetSqrtCover.det_exp, Matrix.trace_smul, real_smul]`. Rewrite using `[Matrix.trace, re_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have := congrArg Complex.re (upq_entry (hu w) i i)`. Rewrite `this` using `[eps_sq]`.
+
+Simplify using `at this`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Set `c : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ` to `fun w => A' w * x.map (piInf (τ w)) * (C' w)ᵀ`. Establish `hc : ∀ w, x.map (piInf (τ w)) = A w * c w * (C w)ᵀ` using `fun w => by`.
+
+Simplify using `only [c, ← Matrix.mul_assoc, a1, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, h1, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single w (fun w' _ hw => by simp [U, hL', hw.symm]) (by simp)]`. Establish `e : ∀ j, sB σ JA JB (U w (cv j)) x = 2 * (∑ l, Fock.tw1 (cv j) l * star (Fock.tw1 (c w) l)).im` using `fun j => by`. Rewrite using `[sB_frame h hfr (hL' _) hc, Finset.sum_eq_single w (fun w' _ hw => by simp [hw, Fock.tw1]) (by simp), Pi.single_eq_same]`.
+
+Simplify using `only [e, U, hL', Pi.single_eq_same]`. Rewrite using `[Finset.sum_congr rfl fun j _ => (by rw [Matrix.mul_smul, Matrix.smul_mul] : (2 * (∑ l, Fock.tw1 (cv j) l * star (Fock.tw1 (c w) l)).im) • (A w * cu (Y w) j * (C w)ᵀ) = A w * ((2 * (∑ l, Fock.tw1 (cv j) l * star (Fock.tw1 (c w) l)).im) • cu (Y w) j) * (C w)ᵀ), ← Matrix.sum_mul, ← …`. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C w)ᵀ, ← Matrix.transpose_mul, h2, Matrix.transpose_one, Matrix.one_mul]`. Simplify using `only [hU, ← map_add, ← map_sum, ← map_smul]`.
+
+Use `congr 1`. Rewrite using `[Fintype.sum_prod_type, sumPl, LinearMap.sum_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[atL_eq, ← fock_eq (hu w)]`. Simplify using `only [map_smul, map_sum, map_add, atL_mul, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.add_apply, Module.End.mul_apply]`.
+-/
 theorem fock_data (h : IsCMExt F E σ) (hfr : Framed τ JA JB a b A C) {Φ : Tens F P Q R S →ₗ[ℂ] SInf F κ}
     (hΦ : IsFockMap ψ τ d A C Φ) {D : Matrix α β (AE F E) → (SInf F κ →L[ℂ] SInf F κ)}
     (hD : ∀ u, At (evI F) u → ∀ f, SD (fun t => d.rho ψ (realAd F t • u)) f (D u f))
@@ -163,12 +210,24 @@ theorem fock_data (h : IsCMExt F E σ) (hfr : Framed τ JA JB a b A C) {Φ : Ten
     simp only [map_smul, map_sum, map_add, atL_mul, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.add_apply,
       Module.End.mul_apply]
 
+/- English proof (translation)
+Simplify using `only [sumPl, atL_eq, map_add, map_smul, atL_one, Finset.sum_add_distrib, ← Finset.sum_smul, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]`.
+-/
 theorem sumPl_add (Φ : Tens F P Q R S →ₗ[ℂ] SInf F κ) (L : InfinitePlace F → Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S))
     (s : InfinitePlace F → ℂ) (T : Tens F P Q R S) :
     Φ (sumPl (fun w => L w + s w • 1) T) = Φ (sumPl L T) + (∑ w, s w) • Φ T := by
   simp only [sumPl, atL_eq, map_add, map_smul, atL_one, Finset.sum_add_distrib, ← Finset.sum_smul, LinearMap.add_apply,
     LinearMap.smul_apply, Module.End.one_apply]
 
+/- English proof (translation)
+Set `φ : Matrix β β (AE F E) × Matrix β β (AE F E) →* Matrix (β ⊕ β) (β ⊕ β) (AE F E)` to `{ toFun := fun X => Matrix.fromBlocks X.1 0 0 X.2 map_one' := Matrix.fromBlocks_one map_mul' := fun X X' => by simp [Matrix.fromBlocks_multiply] }`. Set `δ0 : Multiplicative ℝ →* GL (β ⊕ β) (AE F E)` to `(Units.map φ).comp (MulEquiv.prodUnits.symm.toMonoidHom.comp (((UG (cA σ) JB).subtype.comp γ).prod ((UG (cA σ) JB).subtype.comp γ')))`. Establish `c1 : Continuous fun t => (γ t).1` using `continuous_subtype_val.comp h.1`. Establish `c2 : Continuous fun t => (γ' t).1` using `continuous_subtype_val.comp h'.1`. Establish `hc : Continuous δ0` using `Units.continuous_iff.2 ⟨(Units.continuous_val.comp c1).matrix_fromBlocks continuous_const continuous_const (Units.continuous_val.comp c2), (Units.continuous_coe_inv.comp c1).matrix_fromBlocks continuous_const continuous_const (Units.continuous_coe_inv.comp c2)⟩`.
+
+Use `⟨δ0.codRestrict _ fun t => ?_, ⟨hc.subtype_mk _, fun t u hu => ?_⟩, fun t => rfl⟩` and prove the remaining obligations. Establish `e1 : ((γ t).1 : Matrix β β (AE F E))ᵀ * JB * ((γ t).1 : Matrix β β (AE F E)).map (cA σ) = JB` using `(γ t).2`. Establish `e2 : ((γ' t).1 : Matrix β β (AE F E))ᵀ * JB * ((γ' t).1 : Matrix β β (AE F E)).map (cA σ) = JB` using `(γ' t).2`. Use `show (Matrix.fromBlocks ((γ t).1 : Matrix β β (AE F E)) 0 0 ((γ' t).1 : Matrix β β (AE F E)))ᵀ * dbl JB * (Matrix.fromBlocks ((γ t).1 : Matrix β β (AE F E)) 0 0 ((γ' t).1 : Matrix β β (AE F E))).map (cA σ) = dbl JB`. Rewrite using `[dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `[e1, e2]`. Use `show u • (Matrix.fromBlocks ((γ t).1 : Matrix β β (AE F E)) 0 0 ((γ' t).1 : Matrix β β (AE F E)) - 1) = 0`. Establish `e1` using `h.2 t u hu`. Establish `e2` using `h'.2 t u hu`. Rewrite `e1`, `e2`, the goal using `[smul_sub, sub_eq_zero]`.
+
+Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_smul, e1, e2]`.
+-/
 theorem exists_dbl {γ γ' : Multiplicative ℝ →* UG (cA σ) JB} (h : γ ∈ RLines σ JB) (h' : γ' ∈ RLines σ JB) :
     ∃ δ ∈ RLines σ (dbl JB), ∀ t, ((δ t).1 : Matrix (β ⊕ β) (β ⊕ β) (AE F E)) =
       Matrix.fromBlocks ((γ t).1 : Matrix β β (AE F E)) 0 0 ((γ' t).1 : Matrix β β (AE F E)) := by
@@ -197,6 +256,9 @@ theorem exists_dbl {γ γ' : Multiplicative ℝ →* UG (cA σ) JB} (h : γ ∈ 
     rw [smul_sub, sub_eq_zero] at e1 e2 ⊢
     rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_smul, e1, e2]
 
+/- English proof (translation)
+Introduce `u hu` and use `by let J : Ideal (AE F E) := LinearMap.ker (LinearMap.mul (AE F E) (AE F E) (algebraMap (AF F) (AE F E) u)) have hJ : ∀ x, x ∈ J ↔ u • x = 0 := fun x => by rw [Algebra.smul_def]; rfl rw [← hJ, ← Ideal.Quotient.eq, RingHom.map_det, map_one, ← Matrix.det_one (n := β), ← map_one (Id …`.
+-/
 theorem at_det {g : Matrix β β (AE F E)} (hg : At (evI F) (g - 1)) : At (evI F) (g.det - 1) := fun u hu => by
   let J : Ideal (AE F E) := LinearMap.ker (LinearMap.mul (AE F E) (AE F E) (algebraMap (AF F) (AE F E) u))
   have hJ : ∀ x, x ∈ J ↔ u • x = 0 := fun x => by rw [Algebra.smul_def]; rfl
@@ -206,6 +268,15 @@ theorem at_det {g : Matrix β β (AE F E)} (hg : At (evI F) (g - 1)) : At (evI F
   ext i j
   exact Ideal.Quotient.eq.2 ((hJ _).2 (congrFun (congrFun (hg u hu) i) j))
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_moved h`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨ρ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `ρ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`. Establish `hy : σ (x - σ x) = -(x - σ x)` using `by rw [map_sub, hσ, neg_sub]`.
+
+Establish `hy0 : x - σ x ≠ 0` using `sub_ne_zero.2 hx.symm`. Take `⟨B, b0, b1⟩` from `exists_basis h (β := x - σ x) (by`. Rewrite using `[hy]`. Conclude with `fun e => hy0 (by linear_combination (-1 / 2 : E) * e))`. Establish `hq : IsQuad (cA σ) ((1 : AF F) ⊗ₜ[F] (x - σ x))` using `⟨(IsUnit.mk0 _ hy0).map (Algebra.TensorProduct.includeRight (R := F) (A := AF F)), by rw [← TensorProduct.tmul_neg, ← hy]; rfl, Algebra.TensorProduct.basis (AF F) B, by rw [Algebra.TensorProduct.basis_apply, b0]; rfl, by rw [Algebra.TensorProduct.basis_apply, b1]⟩`.
+
+Use `hq.algebraMap_injective ?_` and prove the remaining obligations. Rewrite using `[hq.algebraMap_norm, map_one, ← sub_eq_zero]`. Use `eq_zero_of_piInf h τ _ (fun u hu => ?_) fun w => ?_` and prove the remaining obligations. Establish `e : z * cA σ z - 1 = (z - 1) * cA σ z + cA σ (z - 1)` using `by rw [map_sub, map_one]; ring`. Rewrite using `[e, smul_add, ← smul_mul_assoc, ← map_smul, hz u hu, zero_mul, map_zero, add_zero]`.
+
+Rewrite using `[map_sub, map_mul, piInf_cA h, map_one, star_def, mul_conj, normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_eq_one (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {z : AE F E} (hz : At (evI F) (z - 1))
     (h1 : ∀ w, ‖piInf (τ w) z‖ = 1) : Algebra.norm (AF F) z = 1 := by
   obtain ⟨x, hx⟩ := exists_moved h
@@ -230,17 +301,26 @@ theorem norm_eq_one (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver 
   · rw [map_sub, map_mul, piInf_cA h, map_one, star_def, mul_conj, normSq_eq_norm_sq, h1]
     simp
 
+/- English proof (translation)
+Rewrite using `[sB, sB, d.form, d.form, ← Fock.evIh_apply, ← Fock.evIh_apply, ← map_neg, ← map_neg, ← map_neg, ← map_neg, neg_neg, neg_sub]`.
+-/
 theorem sB_anti (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ) (u v : Matrix α β (AE F E)) :
     sB σ JA JB u v = -sB σ JA JB v u := by
   rw [sB, sB, d.form, d.form, ← Fock.evIh_apply, ← Fock.evIh_apply, ← map_neg, ← map_neg, ← map_neg, ← map_neg, neg_neg,
     neg_sub]
 
+/- English proof (translation)
+Rewrite using `[sB, sB, d.form, d.form, ← Fock.evIh_apply, ← Fock.evIh_apply]`. Simplify using `only [map_neg, Prod.fst_neg, Prod.snd_neg, neg_dotProduct, dotProduct_neg, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sB_neg (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ) (u v : Matrix α β (AE F E)) :
     sB σ JA JB (-u) v = -sB σ JA JB u v := by
   rw [sB, sB, d.form, d.form, ← Fock.evIh_apply, ← Fock.evIh_apply]
   simp only [map_neg, Prod.fst_neg, Prod.snd_neg, neg_dotProduct, dotProduct_neg, map_sub]
   ring
 
+/- English proof (translation)
+Use `sB_neg d 0 v` as an intermediate fact. Rewrite `this` using `[neg_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sB_zero (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ) (v : Matrix α β (AE F E)) :
     sB σ JA JB 0 v = 0 := by
   have := sB_neg d 0 v
@@ -249,6 +329,9 @@ theorem sB_zero (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ) (v : Matr
 
 variable {dd : Darboux (symp (R := AF F) (cA σ) (-1) JA (dbl JB)) (κ ⊕ κ)}
 
+/- English proof (translation)
+Rewrite using `[sB, sB, sB, dd.form, d.form, d.form, hdd, hdd, sumElim_dotProduct_sumElim, sumElim_dotProduct_sumElim, ← Fock.evIh_apply, ← Fock.evIh_apply, ← Fock.evIh_apply]`. Simplify using `only [dotProduct_neg, map_sub, map_add, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sB_dbl (hdd : IsDblCoord (cA σ) (-1) JA JB d dd) (u u' v v' : Matrix α β (AE F E)) :
     sB σ JA (dbl JB) (Matrix.fromCols u u') (Matrix.fromCols v v') = sB σ JA JB u v - sB σ JA JB u' v' := by
   rw [sB, sB, sB, dd.form, d.form, d.form, hdd, hdd, sumElim_dotProduct_sumElim, sumElim_dotProduct_sumElim,
@@ -257,6 +340,9 @@ theorem sB_dbl (hdd : IsDblCoord (cA σ) (-1) JA JB d dd) (u u' v v' : Matrix α
   ring
 
 omit [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
+/- English proof (translation)
+Introduce `s hs` and use `by ext i j rcases j with j | j · exact congrFun (congrFun (h s hs) i) j · exact congrFun (congrFun (h' s hs) i) j`.
+-/
 theorem at_cols {u u' : Matrix α β (AE F E)} (h : At (evI F) u) (h' : At (evI F) u') : At (evI F) (Matrix.fromCols u u') :=
   fun s hs => by
     ext i j
@@ -264,6 +350,11 @@ theorem at_cols {u u' : Matrix α β (AE F E)} (h : At (evI F) u) (h' : At (evI 
     · exact congrFun (congrFun (h s hs) i) j
     · exact congrFun (congrFun (h' s hs) i) j
 
+/- English proof (translation)
+Set `L1 : (κ ⊕ κ → mixedEmbedding.mixedSpace F) →L[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (Sum.inl i)`. Set `L2 : (κ ⊕ κ → mixedEmbedding.mixedSpace F) →L[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (Sum.inr i)`. Establish `h1` using `((f.hasFDerivAt (L1 x)).comp x L1.hasFDerivAt).mul ((f'.hasFDerivAt (L2 x)).comp x L2.hasFDerivAt)`. Establish `h2 : fderiv ℝ B x = _` using `(congrArg (fderiv ℝ · x) (funext hB)).trans h1.fderiv`. Establish `e1 : L1 (fun i => evI F ((Sum.elim (d.e u).1 0 : κ ⊕ κ → AF F) i)) = fun i => evI F ((d.e u).1 i)` using `rfl`.
+
+Establish `e2 : L2 (fun i => evI F ((Sum.elim (d.e u).1 0 : κ ⊕ κ → AF F) i)) = 0` using `funext fun _ => Der.evI_zero`. Rewrite using `[hDd _ (at_cols hu fun _ _ => smul_zero _), hD u hu, hdd, h2, hB, map_zero]`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, neg_zero, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, e1, e2, map_zero, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, Der.evI_zero, mul_zero, Finset.sum_const_zero, add_zero, …`. Use `show _ + f' (x ∘ Sum.inr) * fderiv ℝ f (x ∘ Sum.inl) _ - _ = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem box_D (hdd : IsDblCoord (cA σ) (-1) JA JB d dd) {D Dd} (hD : IsD d D) (hDd : IsD dd Dd) {u : Matrix α β (AE F E)}
     (hu : At (evI F) u) {B : SInf F (κ ⊕ κ)} {f f' : SInf F κ} (hB : ∀ x, B x = f (x ∘ Sum.inl) * f' (x ∘ Sum.inr)) (x) :
     Dd (Matrix.fromCols u 0) B x = D u f (x ∘ Sum.inl) * f' (x ∘ Sum.inr) := by
@@ -288,6 +379,11 @@ namespace PositivityTheory.RL
 
 open Up
 
+/- English proof (translation)
+Introduce `hD F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hcm hψ hfr hΦ hom`. Take `⟨D, hD⟩` from `hD F E σ α β κ ψ JA JB d hψ`. Take `⟨c, hc⟩` from `main hM hcm hψ τ (fun w => (b • JB.map (piInf (τ w))).map star) (fun w => (frame_K (hfr.2.2 w)).1) (fun w => (frame_K (hfr.2.2 w)).2) (fun w => iff_K (frame_K (hfr.2.2 w)).2) hom (D := D) fun u hu f => (hD u hu f).2`. Use `⟨c, fun γ hγ Y hY T => ?_⟩` and prove the remaining obligations. Take `⟨Z, tr, hZ, -, -, u, v, hu, hv, huv, hq⟩` from `fock_data hcm hfr hΦ (fun u hu f => (hD u hu f).1) hY`.
+
+Use `hc γ hγ Z hZ _ u v hu hv huv (Φ T)` as an intermediate fact. Simplify using `only [tr, hq] at this`. Rewrite using `[sumPl_add]`. Conclude with `this`.
+-/
 theorem lieScalar' (hM : GlobalTheory.Published.RealMetaplecticRepresentation) : GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.LieScalar := by
   intro hD F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hcm hψ hfr hΦ hom
   obtain ⟨D, hD⟩ := hD F E σ α β κ ψ JA JB d hψ
@@ -301,6 +397,55 @@ theorem lieScalar' (hM : GlobalTheory.Published.RealMetaplecticRepresentation) :
   rw [sumPl_add]
   exact this
 
+/- English proof (translation)
+Introduce `hD0 F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om χ m hcm hψ hfr hΦ hW hm γ hγ Y hY T`. Take `⟨hom, dd, omd, hdd, ⟨-, homd, hS⟩, hres⟩` from `hW`. Take `⟨D, hD⟩` from `hD0 F E σ α β κ ψ JA JB d hψ`. Take `⟨Dd, hDd⟩` from `hD0 F E σ α (β ⊕ β) (κ ⊕ κ) ψ JA (dbl JB) dd hψ`. Establish `iD : IsD d D` using `fun u hu f => (hD u hu f).2`.
+
+Establish `iDd : IsD dd Dd` using `fun u hu f => (hDd u hu f).2`. Take `⟨c, hc⟩` from `main hM hcm hψ τ (fun w => (b • JB.map (piInf (τ w))).map star) (fun w => (frame_K (hfr.2.2 w)).1) (fun w => (frame_K (hfr.2.2 w)).2) (fun w => iff_K (frame_K (hfr.2.2 w)).2) hom iD`. Establish `eK : ∀ w, (b • (dbl JB).map (piInf (τ w))).map star = Matrix.fromBlocks ((b • JB.map (piInf (τ w))).map star) 0 0 (-(b • JB.map (piInf (τ w))).map star)` using `fun w => by`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [dbl]`.
+
+Establish `uK : ∀ w, IsUnit ((b • (dbl JB).map (piInf (τ w))).map star).det` using `fun w => by`. Rewrite using `[eK, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`. Conclude with `(frame_K (hfr.2.2 w)).2.mul ((isUnit_one.neg.pow _).mul (frame_K (hfr.2.2 w)).2)`. Take `⟨c', hc'⟩` from `main hM hcm hψ τ (fun w => (b • (dbl JB).map (piInf (τ w))).map star) (fun w => by`. Simplify using `only [eK, Matrix.fromBlocks_conjTranspose, Matrix.conjTranspose_neg, Matrix.conjTranspose_zero, (frame_K (hfr.2.2 w)).1]) uK (fun w => iff_K (uK w)) homd iDd`.
+
+Take `⟨Z, tr, hZ, hdet, hre, u, v, hu, hv, huv, hq⟩` from `fock_data hcm hfr hΦ (fun u hu f => (hD u hu f).1) hY`. Establish `split : ∀ x : Matrix α (β ⊕ β) (AE F E), At (evI F) x → ∃ x₁ x₂, At (evI F) x₁ ∧ At (evI F) x₂ ∧ x = Matrix.fromCols x₁ x₂` using `fun x hx => ⟨x.toCols₁, x.toCols₂, fun s hs => congrArg Matrix.toCols₁ (hx s hs), fun s hs => congrArg Matrix.toCols₂ (hx s hs), (Matrix.fromCols_toCols x).symm⟩`. Establish `z0 : At (evI F) (0 : Matrix α β (AE F E))` using `fun _ _ => smul_zero _`. Establish `step2 : ∑ w, c w * (Y w).trace = ∑ w, c' w * (Y w).trace`. Take `⟨δ, hδ, hδ'⟩` from `exists_dbl hγ (γ' := 1) ⟨continuous_const, fun t s _ => by simp⟩`.
+
+Take `⟨f, B, r, hB, hf, -, -, hr0⟩` from `exists_box F κ`. Take `⟨g, hg, y, hy⟩` from `SeminormBoundRestriction.exists_SB (F := F) (κ := κ)`. Set `x` to `SeminormBoundRestriction.pt (0 : κ → mixedEmbedding.mixedSpace F) y`. Establish `h1` using `hc' δ hδ (fun w => Matrix.fromBlocks (Z w) 0 0 0) (fun t w => by`. Rewrite using `[hδ', Matrix.fromBlocks_map, hZ, Matrix.fromBlocks_smul, smul_zero, exp_blocks, NormedSpace.exp_zero]`.
+
+Use the proof step `simp) _ (fun j => Matrix.fromCols (u j) 0) (fun j => Matrix.fromCols (v j) 0) (fun j => at_cols (hu j) z0)`. Use the proof step `(fun j => at_cols (hv j) z0) (fun x hx w => by`. Take `⟨x₁, x₂, h₁, h₂, rfl⟩` from `split x hx`. Simplify using `only [sB_dbl hdd, sB_zero d, sub_zero, Matrix.fromBlocks_transpose, Matrix.fromCols_map, Matrix.fromCols_mul_fromBlocks, Matrix.transpose_zero, Matrix.mul_zero, add_zero, huv x₁ h₁]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `rcases j with j | j <;> simp [Matrix.sum_apply]) B _ (box_SB hg hg) _ (SeminormBoundRestriction.eval_adm (Sum.elim x x))`. Establish `h2` using `(hc γ hγ Z hZ _ u v hu hv huv f g hg _ (SeminormBoundRestriction.eval_adm x)).mul_const (pureA F f g x)`. Establish `eB : ∀ (B : SInf F (κ ⊕ κ)), pureA F B (boxFun g g) (Sum.elim x x) = B 0` using `fun B => by`. Apply the tactic sequence `have : Sum.elim x x = SeminormBoundRestriction.pt 0 (Sum.elim y y) := funext fun i => by rcases i with i | i <;> rfl`. Rewrite using `[this, SeminormBoundRestriction.pureA_pt]`.
+
+Use `show _ * (g y * g y) = _`. Rewrite using `[hy, mul_one, mul_one]`. Establish `ef : ∀ f : SInf F κ, pureA F f g x = f 0` using `fun f => by rw [SeminormBoundRestriction.pureA_pt, hy, mul_one]`. Establish `e3 : pureA F B (boxFun g g) = boxFun (pureA F f g) (pureA F f g)`. Use function extensionality and compare the values at `p`.
+
+Simplify using `only [pureA, boxFun, hB]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `h3` using `h1.unique (h2.congr_of_eventuallyEq (.of_forall fun t => by show omd _ _ _ = _`. Rewrite using `[e3, hres (γ (Multiplicative.ofAdd t)) _ (hδ' _) _ (pure_mem f hg) _ (pure_mem f hg)]`. Use the proof step `rfl))`.
+
+Establish `f0 : f 0 = 1` using `by rw [hf, hr0, ofReal_one]`. Establish `bb : ∀ p q : Matrix α β (AE F E), At (evI F) p → At (evI F) q → Dd (Matrix.fromCols p 0) (Dd (Matrix.fromCols q 0) B) 0 = D p (D q f) 0` using `fun p q hp hq => (box_D hdd iD iDd hp (box_D hdd iD iDd hq hB) 0).trans (by show D p (D q f) 0 * f 0 = _`. Rewrite using `[f0, mul_one])`. Establish `B0 : B 0 = 1` using `(hB 0).trans (by show f 0 * f 0 = 1`. Rewrite using `[f0, mul_one])`.
+
+Simplify using `only [LinearMap.proj_apply, eB, ef, SchwartzMap.add_apply, SchwartzMap.smul_apply, SchwartzMap.sum_apply, bb _ _ (hu _) (hv _), bb _ _ (hv _) (hu _), f0, B0, mul_one, smul_eq_mul, add_right_inj, trace_blocks, Matrix.trace_zero, add_zero, tr] at h3`. Conclude with `h3.symm`. Establish `step1 : ∑ w, c' w * (Y w).trace = ∑ w, (m w : ℂ) / 2 * (Y w).trace`. Take `⟨δ, hδ, hδ'⟩` from `exists_dbl hγ hγ`. Take `⟨l, hl, hinv, B, G, hG, hne⟩` from `exists_form F κ ψ`.
+
+Take `⟨T0, hT0⟩` from `hl G hG`. Establish `kill : ∀ y, At (evI F) y → ∀ B', T0 (Dd (Matrix.fromCols y y) B') = 0` using `fun y hy B' => by`. Establish `h1` using `(hDd _ (at_cols hy hy) B').1 G hG l hl`. Establish `e : ∀ t : ℝ, l (dd.rho ψ (realAd F t • Matrix.fromCols y y) (pureA F B' G)) = l (pureA F B' G)` using `fun t => by`. Rewrite using `[show realAd F t • Matrix.fromCols y y = Matrix.fromCols (realAd F t • y) (realAd F t • y) by`.
+
+Use extensionality with `i j`. Apply the tactic sequence `rcases j with j | j <;> rfl, Darboux.rho, hdd, hinv _ _ _ (pure_mem B' hG)]`. Simplify using `only [e] at h1`. Rewrite using `[← hT0]`. Conclude with `h1.unique (hasDerivAt_const _ _)`.
+
+Set `hf : AF F` to `realAd F (1 / 2)`. Establish `hh : ∀ j, At (evI F) (hf • u j)` using `fun j s hs => by rw [smul_comm, hu j s hs, smul_zero]`. Establish `ng : ∀ {p : Matrix α β (AE F E)}, At (evI F) p → At (evI F) (-p)` using `fun hp s hs => by`. Rewrite using `[smul_neg, hp s hs, neg_zero]`. Establish `h1` using `hc' δ hδ (fun w => Matrix.fromBlocks (Z w) 0 0 (Z w)) (fun t w => by`.
+
+Rewrite using `[hδ', Matrix.fromBlocks_map, hZ, Matrix.fromBlocks_smul, smul_zero, exp_blocks]`. Use the proof step `simp) _`. Use the proof step `(Sum.elim (fun j => Matrix.fromCols (hf • u j) (hf • u j)) fun j => Matrix.fromCols (hf • u j) (-(hf • u j)))`. Use the proof step `(Sum.elim (fun j => Matrix.fromCols (v j) (-v j)) fun j => Matrix.fromCols (v j) (v j))`. Use the proof step `(by rintro (j | j); exacts [at_cols (hh j) (hh j), at_cols (hh j) (ng (hh j))])`.
+
+Use the proof step `(by rintro (j | j); exacts [at_cols (hv j) (ng (hv j)), at_cols (hv j) (hv j)]) (fun x hx w => by`. Take `⟨x₁, x₂, h₁, h₂, rfl⟩` from `split x hx`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, sB_dbl hdd, sB_neg d, Matrix.fromBlocks_transpose, Matrix.fromCols_map, Matrix.fromCols_mul_fromBlocks, Matrix.transpose_zero, Matrix.mul_zero, add_zero, zero_add, huv x₁ h₁, huv x₂ h₂, ← Finset.sum_add_distrib]`. Use extensionality with `i k`. Apply the tactic sequence `rcases k with k | k <;>`.
+
+Simplify using `only [Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.sum_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.neg_apply, map_neg, hf, Fock.piInf_realAd hcm.1, real_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Use the proof step `ring) B G hG l hl`. Establish `h2 : ∀ t : ℝ, l (omd (δ (Multiplicative.ofAdd t)) (pureA F B G)) = cexp (t * ∑ w, (m w : ℂ) * (Y w).trace) * l (pureA F B G)` using `fun t => by`.
+
+Establish `n1 : ∀ w, ‖cexp (t * (Y w).trace)‖ = 1` using `fun w => by simp [norm_exp, hre]`. Establish `ad` using `at_det (hγ.2 (Multiplicative.ofAdd t))`. Rewrite using `[hS l hl (fun z φ hφ => by`. Rewrite using `[show z * (diagCols β : Matrix (β ⊕ β) β (AE F E))ᵀ = Matrix.fromCols z z by`. Simplify using `[diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols], Darboux.rho, hdd, hinv _ _ _ hφ])`.
+
+Use the proof step `(δ (Multiplicative.ofAdd t)) (γ (Multiplicative.ofAdd t)).1 (by`. Rewrite using `[hδ']`. Simplify using `[diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]) _ (pure_mem B hG),`. Use `show Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det (γ (Multiplicative.ofAdd t)).1) = 1 from Units.ext (norm_eq_one hcm τ ad fun w => (congrArg norm (hdet t w)).trans (n1 w)),`. Use `hm _ ad]`.
+
+Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, hdet, n1, map_one, NNReal.coe_one, Real.one_rpow, ofReal_one, mul_one, div_one, ← Complex.exp_int_mul, ← Complex.exp_sum, Finset.mul_sum]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`. Simplify using `only [h2] at h1`. Establish `h3` using `h1.unique ((((hasDerivAt_id (0 : ℝ)).ofReal_comp.mul_const (∑ w, (m w : ℂ) * (Y w).trace)).cexp).mul_const (l (pureA F B G)))`.
+
+Establish `t1 : ∀ j, T0 (Dd (Matrix.fromCols (v j) (-v j)) (Dd (Matrix.fromCols (hf • u j) (hf • u j)) B)) = 2 * π * I * (2 * sB σ JA JB (v j) (hf • u j) : ℝ) * T0 B` using `fun j => by`. Rewrite using `[iDd.comm (at_cols (hv j) (ng (hv j))) (at_cols (hh j) (hh j)), map_add, kill _ (hh j), map_smul, sB_dbl hdd, sB_neg d, zero_add, smul_eq_mul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Establish `t2 : ∀ j, T0 (Dd (Matrix.fromCols (hf • u j) (-(hf • u j))) (Dd (Matrix.fromCols (v j) (v j)) B)) = -(2 * π * I * (2 * sB σ JA JB (v j) (hf • u j) : ℝ) * T0 B)` using `fun j => by`.
+
+Rewrite using `[iDd.comm (at_cols (hh j) (ng (hh j))) (at_cols (hv j) (hv j)), map_add, kill _ (hv j), map_smul, sB_dbl hdd, sB_neg d, zero_add, smul_eq_mul, sB_anti d]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hne` using `[hT0]`. Simplify using `only [hT0, map_add, map_smul, map_sum, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, kill _ (hh _), kill _ (hv _), t1, t2, zero_add, add_zero, Finset.sum_neg_distrib, add_neg_cancel, smul_zero, smul_eq_mul, trace_blocks, tr, id, ofReal_zero, zero_mul, Complex.exp_zero, one_mu …`.
+
+Establish `h4` using `mul_right_cancel₀ hne h3`. Simplify using `only [mul_add, Finset.sum_add_distrib] at h4`. Simplify using `only [div_mul_eq_mul_div, ← Finset.sum_div, ← h4]`. Expand and normalize the polynomial expressions, which then agree. Use `hc γ hγ Z hZ _ u v hu hv huv (Φ T)` as an intermediate fact.
+
+Simplify using `only [tr, hq, step2, step1] at this`. Rewrite using `[sumPl_add]`. Conclude with `this`.
+-/
 theorem lieSecond' (hM : GlobalTheory.Published.RealMetaplecticRepresentation) : GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.LieSecond := by
   intro hD0 F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om χ m hcm hψ hfr hΦ hW hm γ hγ Y hY T
   obtain ⟨hom, dd, omd, hdd, ⟨-, homd, hS⟩, hres⟩ := hW
@@ -449,13 +594,22 @@ theorem lieSecond' (hM : GlobalTheory.Published.RealMetaplecticRepresentation) :
   rw [sumPl_add]
   exact this
 
+/- English proof (translation)
+Introduce `hP hD _` and use `lieScalar' hP.realMetaplecticRepresentation hD`.
+-/
 theorem lieScalar : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.LieScalar :=
   fun hP hD _ => lieScalar' hP.realMetaplecticRepresentation hD
 
+/- English proof (translation)
+Introduce `hP hD _ _ _` and use `lieSecond' hP.realMetaplecticRepresentation hD`.
+-/
 theorem lieSecond : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.FockEx → GlobalTheory.RealLift.VacLine →
     GlobalTheory.RealLift.LieScalar → GlobalTheory.RealLift.LieSecond :=
   fun hP hD _ _ _ => lieSecond' hP.realMetaplecticRepresentation hD
 
+/- English proof (translation)
+The claim follows from `lieFirst`.
+-/
 example : GlobalTheory.RealLift.LieSecond → GlobalTheory.RealLift.LieFirst := lieFirst
 
 end PositivityTheory.RL

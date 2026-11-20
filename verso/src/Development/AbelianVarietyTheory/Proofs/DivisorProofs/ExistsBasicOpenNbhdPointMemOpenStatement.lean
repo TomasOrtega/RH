@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.nbhd_basicOpen_of_mem | exact GlobalTheory.nbhd_basicOpen_of_mem | (intros; apply GlobalTheory.nbhd_basicOpen_of_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_basicOpen_nbhd_point_mem_open : ∀ (S : Type) [CommRing S] (X : Scheme.{0}) (x : Sp S ⟶ X) (V : X.Opens) (q : PrimeSpectrum S), x q ∈ V → ∃ f₀ : S, f₀ ∉ q.asIdeal ∧ ⊤ ≤ (spMap (algebraMap S (Localization.Away f₀)) ≫ x) ⁻¹ᵁ V := by
   first | exact @GlobalTheory.nbhd_basicOpen_of_mem | exact GlobalTheory.nbhd_basicOpen_of_mem | (intros; apply GlobalTheory.nbhd_basicOpen_of_mem <;> assumption)

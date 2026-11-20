@@ -18,13 +18,22 @@ section Nsg
 
 variable {F : Type} [Field F] {E : Type} [Field E] [Algebra F E]
 
+/- English proof (translation)
+Unfold `nsg`. Conclude with `if_pos ⟨t, rfl⟩`.
+-/
 theorem nsg_norm (t : Eˣ) : nsg E (Algebra.norm F (t : E)) = 1 := by
   unfold nsg
   exact if_pos ⟨t, rfl⟩
 
+/- English proof (translation)
+Simplify using `using nsg_norm (F := F) (1 : Eˣ)`.
+-/
 theorem nsg_one : nsg E (1 : F) = 1 := by
   simpa using nsg_norm (F := F) (1 : Eˣ)
 
+/- English proof (translation)
+Establish `h1 : nsg E x⁻¹ * nsg E x = 1`. Rewrite using `[← hm _ _ (inv_ne_zero hx) hx, inv_mul_cancel₀ hx, nsg_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nsg_inv (hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → nsg E (x * y) = nsg E x * nsg E y)
     (hs : ∀ x : F, x ≠ 0 → nsg E x * nsg E x = 1) {x : F} (hx : x ≠ 0) :
     nsg E x⁻¹ = nsg E x := by
@@ -42,12 +51,24 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E]
   [Fact (Module.finrank F E = 2)]
 
+/- English proof (translation)
+Unfold `intInd`. Simplify using `only [← modulus_le_one_iff, modulus_conj]`.
+-/
 theorem intInd_conj (x : E) : intInd (conj F E x) = intInd x := by
   unfold intInd
   simp only [← modulus_le_one_iff, modulus_conj]
 
 variable [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Establish `hD : Algebra.norm F (t : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 t.ne_zero`. Use `set f : E → ℂ := fun u => (χ (d / c * Algebra.norm F u - Algebra.trace F E (conj F E (t : E) * algebraMap F E c⁻¹ * u)) : ℂ) * intInd u with hf`. Establish `key : ∀ u : E, (χ ((a / Algebra.norm F (t : E) * Algebra.norm F (1 : E) + d * Algebra.norm F u - Algebra.trace F E (σ 1 * u)) / (c / Algebra.norm F (t : E))) : ℂ) * intInd (u * (t : E)) = (χ (a / c) : ℂ) * f ((t : E) * u)`. Introduce `u`. Establish `hy : conj F E (t : E) * algebraMap F E c⁻¹ * ((t : E) * u) = algebraMap F E (Algebra.norm F (t : E) * c⁻¹) * u`.
+
+Rewrite using `[map_mul, algebraMap_norm_eq_mul_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `harg : (a / Algebra.norm F (t : E) * Algebra.norm F (1 : E) + d * Algebra.norm F u - Algebra.trace F E (σ 1 * u)) / (c / Algebra.norm F (t : E)) = a / c + (d / c * Algebra.norm F ((t : E) * u) - Algebra.trace F E (conj F E (t : E) * algebraMap F E c⁻¹ * ((t : E) * u)))`. Establish `hN1 : Algebra.norm F (1 : E) = 1` using `map_one _`. Establish `hNtu : Algebra.norm F ((t : E) * u) = Algebra.norm F (t : E) * Algebra.norm F u` using `map_mul _ _ _`.
+
+Establish `hs1 : σ (1 : E) = 1` using `map_one σ`. Rewrite using `[hy, ← Algebra.smul_def, map_smul, smul_eq_mul, hNtu, hN1, hs1, one_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf]`.
+
+Rewrite using `[harg, AddChar.map_add_eq_mul, Circle.coe_mul, mul_comm u, mul_assoc]`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key), integral_const_mul, integral_comp_mul_left μ t.ne_zero f]`. Rewrite using `[Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_subst (μ : Measure E) [μ.IsAddHaarMeasure] (χ : AddChar F Circle)
     (σ : E ≃ₐ[F] E) (a c d : F) (hc : c ≠ 0) (t : Eˣ) :
     ∫ u : E, (χ ((a / Algebra.norm F (t : E) * Algebra.norm F (1 : E) + d * Algebra.norm F u
@@ -87,6 +108,15 @@ theorem integral_subst (μ : Measure E) [μ.IsAddHaarMeasure] (χ : AddChar F Ci
 
 variable (μ : Measure E) [μ.IsAddHaarMeasure] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E)
 
+/- English proof (translation)
+Establish `hD : Algebra.norm F (t : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 t.ne_zero`. Establish `hC : c / Algebra.norm F (t : E) ≠ 0` using `div_ne_zero hc hD`. Establish `hnsg : nsg E (-(c / Algebra.norm F (t : E))) = nsg E c`. Establish `h : -(c / Algebra.norm F (t : E)) = (-1) * (c * (Algebra.norm F (t : E))⁻¹)` using `by ring`. Rewrite using `[h, hm _ _ (by norm_num) (mul_ne_zero hc (inv_ne_zero hD)), hm _ _ hc (inv_ne_zero hD), hn1, nsg_inv hm hs hD, nsg_norm, one_mul, mul_one]`.
+
+Establish `hDr : (modulus (Algebra.norm F (t : E)) : ℝ) ≠ 0`. Conclude with `modulus_ne_zero hD` after adjusting the coercions. Establish `hcr : (modulus c : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hc`. Establish `hconst : (((modulus (c / Algebra.norm F (t : E)) : ℝ)⁻¹ : ℝ) : ℂ) * (((modulus (t : E) : ℝ)⁻¹ : ℝ) : ℂ) = (((modulus c : ℝ)⁻¹ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul]`.
+
+Use `congr 1`. Rewrite using `[← modulus_norm (K := F) (t : E), div_eq_mul_inv, modulus_mul, modulus_inv]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Unfold `rW`.
+
+Rewrite using `[if_neg hC]`. Use `beta_reduce`. Rewrite using `[integral_subst μ χ σ a c d hc t, hnsg, one_mul]`. Take the linear combination `(nsg E c * ((χ (a / c) : ℂ) * ∫ u : E, (χ (d / c * Algebra.norm F u - Algebra.trace F E (conj F E (t : E) * algebraMap F E c⁻¹ * u)) : ℂ) * intInd u ∂μ)) * hconst`.
+-/
 theorem rW_of_ne (hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → nsg E (x * y) = nsg E x * nsg E y)
     (hs : ∀ x : F, x ≠ 0 → nsg E x * nsg E x = 1) (hn1 : nsg E (-1 : F) = 1)
     (a b c d : F) (hc : c ≠ 0) (t : Eˣ) :
@@ -119,6 +149,13 @@ theorem rW_of_ne (hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → nsg E (x * y) = nsg 
         ∫ u : E, (χ (d / c * Algebra.norm F u
           - Algebra.trace F E (conj F E (t : E) * algebraMap F E c⁻¹ * u)) : ℂ) * intInd u ∂μ)) * hconst
 
+/- English proof (translation)
+Establish `hA : a / Algebra.norm F (t : E) = d⁻¹`. Rewrite using `[hdet]`. Clear the denominators using the available nonvanishing facts. Establish `hN1 : Algebra.norm F (1 : E) = 1` using `map_one _`. Establish `hb : d⁻¹ * b * 1 = b / d`.
+
+Rewrite using `[mul_one, div_eq_mul_inv, mul_comm]`. Unfold `rW`. Rewrite using `[zero_div, if_pos rfl, hA, nsg_inv hm hs hd, modulus_inv, hN1, hb]`. Use `beta_reduce`. Rewrite using `[mul_one, mul_comm (algebraMap F E d⁻¹)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rW_of_eq (hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → nsg E (x * y) = nsg E x * nsg E y)
     (hs : ∀ x : F, x ≠ 0 → nsg E x * nsg E x = 1)
     (a b d : F) (ha : a ≠ 0) (hd : d ≠ 0) (t : Eˣ) (hdet : Algebra.norm F (t : E) = a * d) :
@@ -139,6 +176,35 @@ theorem rW_of_eq (hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → nsg E (x * y) = nsg 
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hD : Algebra.norm F (t : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 t.ne_zero`. Establish `hdet2 : Algebra.norm F (t : E) = g.val 0 0 * g.val 1 1 - g.val 0 1 * g.val 1 0`. Rewrite using `[hdet, Matrix.det_fin_two]`. Rewrite using `[← hdet]`. Unfold `mRow xRow`.
+
+Generalize the expression as in `g.val 0 0 = a at *`. Generalize the expression as in `g.val 0 1 = b at *`. Generalize the expression as in `g.val 1 0 = c at *`. Generalize the expression as in `g.val 1 1 = d at *`. Distinguish the cases in `hc : c = 0`.
+
+Substitute `hc` using the available equality. Establish `hdet3 : Algebra.norm F (t : E) = a * d` using `by rw [hdet2]; ring`. Establish `ha : a ≠ 0` using `fun h => hD (by rw [hdet3, h, zero_mul])`. Establish `hd : d ≠ 0` using `fun h => hD (by rw [hdet3, h, mul_zero])`. Establish `hlt : modulus (0 : F) < modulus d`.
+
+Rewrite using `[modulus_zero]`. Conclude with `modulus_pos hd`. Rewrite using `[if_pos hlt, if_pos hlt]`. Conclude with `rW_of_eq μ χ σ hm hs a b d ha hd t hdet3`. Rewrite using `[rW_of_ne μ χ σ hm hs hn1 a b c d hc t]`.
+
+Establish `hcr : (modulus c : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hc`. Distinguish the cases in `hlt : modulus c < modulus d`. Establish `hd : d ≠ 0`. Introduce and unpack `rfl`. Rewrite `hlt` using `[modulus_zero]`.
+
+Conclude with `not_lt_zero hlt`. Establish `hdr : (modulus d : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero hd`. Establish `hδ : d / c ∉ 𝒪[F]`. Rewrite using `[← modulus_le_one_iff, div_eq_mul_inv, modulus_mul, modulus_inv, not_le]`. Rewrite using `[← div_eq_mul_inv]`.
+
+Conclude with `(one_lt_div (modulus_pos hc)).2 hlt`. Establish `hδ0 : d / c ≠ 0` using `div_ne_zero hd hc`. Rewrite using `[if_pos hlt, if_pos hlt, (hint _ _).2 hδ]`. Establish `hNy : Algebra.norm F (conj F E (t : E) * algebraMap F E c⁻¹) = Algebra.norm F (t : E) * c⁻¹ ^ 2`. Rewrite using `[map_mul, norm_conj, norm_algebraMap_eq_sq]`.
+
+Establish `hyδ : conj F E (t : E) * algebraMap F E c⁻¹ * algebraMap F E (d / c)⁻¹ = conj F E ((t : E) * algebraMap F E d⁻¹)`. Establish `h : algebraMap F E c⁻¹ * algebraMap F E (d / c)⁻¹ = algebraMap F E d⁻¹`. Rewrite using `[← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[mul_assoc, h, map_mul, conj_algebraMap]`. Establish `hχ : (χ (a / c) : ℂ) * (χ (-(Algebra.norm F (conj F E (t : E) * algebraMap F E c⁻¹)) / (d / c)) : ℂ) = (χ (b / d) : ℂ)`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Rewrite using `[hNy, hdet2]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hnsg : nsg E c * nsg E (d / c) = nsg E d`. Rewrite using `[← hm _ _ hc hδ0]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hmod : (((modulus c : ℝ)⁻¹ : ℝ) : ℂ) * (((modulus (d / c) : ℝ)⁻¹ : ℝ) : ℂ) = (((modulus d : ℝ)⁻¹ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul]`. Use `congr 1`. Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hyδ, intInd_conj, ← hχ, ← hnsg, ← hmod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδ : d / c ∈ 𝒪[F]`.
+
+Rewrite using `[← modulus_le_one_iff, div_eq_mul_inv, modulus_mul, modulus_inv, ← div_eq_mul_inv]`. Conclude with `(div_le_one (modulus_pos hc)).2 (not_lt.1 hlt)`. Rewrite using `[if_neg hlt, if_neg hlt, (hint _ _).1 hδ]`. Establish `hy : conj F E (t : E) * algebraMap F E c⁻¹ = conj F E ((t : E) * algebraMap F E c⁻¹)`. Rewrite using `[map_mul, conj_algebraMap]`.
+
+Rewrite using `[hy, intInd_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rW_row (hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → nsg E (x * y) = nsg E x * nsg E y)
     (hs : ∀ x : F, x ≠ 0 → nsg E x * nsg E x = 1) (hn1 : nsg E (-1 : F) = 1)
     (hint : ∀ (δ : F) (y : E),
@@ -233,6 +299,13 @@ namespace GlobalTheory.CompanionTheory.SphTheta
 
 open GlobalTheory.CompanionTheory.SphTheta.InertRw in
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hfin _ _ χ η σ _ _ _ hη hint g t hdet`. Take `⟨hval, -, hsq, hn1⟩` from `hη`. Establish `: Fact (Module.finrank F E = 2)` using `⟨hfin⟩`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by omega)`. Establish `hm : ∀ x y : F, x ≠ 0 → y ≠ 0 → Ad3.K.GL2LocalData.nsg E (x * y) = Ad3.K.GL2LocalData.nsg E x * Ad3.K.GL2LocalData.nsg E y`.
+
+Introduce `x y hx hy`. Establish `h` using `hval (Units.mk0 x hx * Units.mk0 y hy)`. Rewrite `h` using `[map_mul, Units.val_mul, hval, hval]`. Simplify using `using h.symm`. Establish `hs : ∀ x : F, x ≠ 0 → Ad3.K.GL2LocalData.nsg E x * Ad3.K.GL2LocalData.nsg E x = 1`.
+
+Introduce `x hx`. Establish `h` using `congrArg (fun f : Fˣ →* ℂˣ => ((f (Units.mk0 x hx) : ℂˣ) : ℂ)) hsq`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, hval, MonoidHom.one_apply, Units.val_one] at h`. Simplify using `using h`. Conclude with `rW_row _ χ σ hm hs hn1 hint g t hdet`.
+-/
 theorem inert_rw : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 → ∀ (χ : AddChar F Circle) (η : Fˣ →* ℂˣ) (σ : E ≃ₐ[F] E), σ ≠ AlgEquiv.refl → Ad3.IsStd χ → Ad3.IsStd (Ad3.K.GL2LocalData.chE E χ) → ((∀ a, ((η a : ℂˣ) : ℂ) = Ad3.K.GL2LocalData.nsg E (a : F)) ∧ IsUnramifiedChar η ∧ η * η = 1 ∧ Ad3.K.GL2LocalData.nsg E (-1 : F) = 1) → (∀ (δ : F) (y : E), (δ ∈ 𝒪[F] → ∫ u : E, (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u ∂selfDualMeasure (Ad3.K.GL2LocalData.chE E χ) = intInd y) ∧ (δ ∉ 𝒪[F] → ∫ u : E, (χ (δ * Algebra.norm F u - Algebra.trace F E (y * u)) : ℂ) * intInd u ∂selfDualMeasure (Ad3.K.GL2LocalData.chE E χ) = Ad3.K.GL2LocalData.nsg E δ * (((modulus δ : ℝ)⁻¹ : ℝ) : ℂ) * (χ (-(Algebra.norm F y) / δ) : ℂ) * intInd (y * algebraMap F E δ⁻¹))) → ∀ (g : GL (Fin 2) F) (t : Eˣ), Algebra.norm F (t : E) = (g.val).det → Ad3.K.GL2LocalData.rW χ σ (selfDualMeasure (Ad3.K.GL2LocalData.chE E χ)) 1 (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => intInd (x * (t : E))) 1 = (((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * Ad3.K.GL2LocalData.nsg E (mRow g) * (χ (xRow g) : ℂ) * intInd ((t : E) * algebraMap F E (mRow g)⁻¹) := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hfin _ _ χ η σ _ _ _ hη hint g t hdet
   obtain ⟨hval, -, hsq, hn1⟩ := hη

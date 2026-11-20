@@ -39,6 +39,9 @@ def fixedBy (K : Subgroup (UA σ X.J)) : Submodule ℂ (UA σ X.J → ℂ) where
     simp only [Pi.smul_apply, smul_eq_mul]
     rw [congrFun (hx k hk) g]
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 example (K : Subgroup (UA σ X.J)) (c : ℂ) : (fun _ => c) ∈ fixedBy σ X K := fun _ _ => rfl
 
 end GlobalTheory.ThK.LiftSemis

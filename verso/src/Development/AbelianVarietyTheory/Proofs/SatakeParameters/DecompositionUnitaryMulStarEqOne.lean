@@ -6,6 +6,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.DelB
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S d j La`. Unfold `Dec.eM`. Use `split_ifs with h`. Establish `hu` using `GlobalTheory.T.rationalIsometry_orthonormal_matrix_unitary J.A J.dtU J.a J.pins J.tie j h.1 (d.gam j h.1 La) (d.mem j h.1 La)`. Establish `hc : (Fin.cast h.2 : Fin (((sysS H X std).Pj j).m + 1) → Fin (D.R.N j)) = ⇑(finCongr h.2)` using `rfl`.
+
+Rewrite using `[hc, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, ← Matrix.star_eq_conjTranspose]`. Establish `hu' : gMat J j h.1 (d.gam j h.1 La) * star (gMat J j h.1 (d.gam j h.1 La)) = 1` using `hu`. Rewrite using `[hu', Matrix.submatrix_one_equiv]`. Simplify using the standard rewrite rules.
+-/
 theorem Dec.eM_mul_star : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     ∀ (d : Dec J std) j La, d.eM j La * star (d.eM j La) = 1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S d j La

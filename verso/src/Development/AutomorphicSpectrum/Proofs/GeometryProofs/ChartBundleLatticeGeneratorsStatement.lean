@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GlobalTheory.CompanionTheory.Ar.Num (dotDual)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.dotDual_overlap | exact GlobalTheory.CompanionTheory.Ar.Num.dotDual_overlap | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.dotDual_overlap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chart_bundle_lattice_generators : ∀ (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (ι : Type) (x : ι → Ω) (r : ℕ)
     (L : ι → AddSubgroup (Fin r → Ω)),
     (∀ c, ∀ a ∈ chartRing O x c, ∀ e ∈ L c, a • e ∈ L c) →

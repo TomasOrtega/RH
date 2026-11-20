@@ -10,5 +10,8 @@ set_option synthInstance.maxHeartbeats 200000
 
 section
 open UpperTheory.V.Z.Desc.V0
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.V.Z.Desc.V0.unramified_at_of_dense_purity_num_e_power_series (unrAlgE unrAlgW muRange)`.
+-/
 theorem UpperTheory.V.J.unramified_algebraic_weights : _root_.UpperTheory.V.J.UnramifiedEndsStatement := _root_.UpperTheory.V.Z.Desc.V0.unramified_at_of_dense_purity_num_e_power_series (unrAlgE unrAlgW muRange)
 end

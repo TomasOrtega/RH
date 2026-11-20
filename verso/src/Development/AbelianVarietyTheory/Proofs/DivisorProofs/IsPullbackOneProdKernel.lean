@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.RigDesc
 
+/- English proof (translation)
+Establish `hT : IsPullback (fst A V).left (snd A V).left A.hom V.hom` using `IsPullback.of_hasPullback _ _`. Establish `hY : IsPullback (fst A V').left (snd A V').left A.hom V'.hom` using `IsPullback.of_hasPullback _ _`. Establish `m₁ : (lift (fst A V) (snd A V ≫ v)).left ≫ (fst A V').left = (fst A V).left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `m₂ : (lift (fst A V) (snd A V ≫ v)).left ≫ (snd A V').left = (snd A V).left ≫ v.left`.
+
+Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `hT' : IsPullback ((lift (fst A V) (snd A V ≫ v)).left ≫ (fst A V').left) (snd A V).left A.hom (v.left ≫ V'.hom)`. Rewrite using `[m₁, Over.w v]`. Conclude with `hT`. Conclude with `IsPullback.of_right hT' m₂ hY`.
+-/
 theorem isPullback_one_prod {S : Scheme.{0}} (A : Over S) {V V' : Over S} (v : V ⟶ V') :
     IsPullback (lift (fst A V) (snd A V ≫ v)).left (snd A V).left (snd A V').left v.left := by
   have hT : IsPullback (fst A V).left (snd A V).left A.hom V.hom := IsPullback.of_hasPullback _ _
@@ -29,6 +34,13 @@ theorem isPullback_one_prod {S : Scheme.{0}} (A : Over S) {V V' : Over S} (v : V
     rw [m₁, Over.w v]; exact hT
   exact IsPullback.of_right hT' m₂ hY
 
+/- English proof (translation)
+Establish `Hc` using `isPullback_one_prod A c`. Establish `H₂` using `isPullback_one_prod A w₂`. Establish `outer` using `H₂.flip.paste_horiz hK`. Establish `e₁ : (lift (fst A W) (snd A W ≫ w₁)).left ≫ (snd A Y').left = (snd A W).left ≫ w₁.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`.
+
+Establish `e₂ : (lift (fst A Y') (snd A Y' ≫ c)).left ≫ (snd A Y).left = (snd A Y').left ≫ c.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `hw : w₁ ≫ c = w₂ ≫ c` using `Over.OverMorphism.ext hK.w`. Use `IsPullback.of_right (h₁₂ := (snd A Y').left) (h₂₂ := (snd A Y).left) ?_ ?_ Hc.flip` and prove the remaining obligations. Rewrite using `[e₁, e₂]`.
+
+Conclude with `outer`. Rewrite using `[← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift, lift_fst, lift_fst, lift_snd_assoc, lift_snd_assoc, Category.assoc, Category.assoc, hw]`.
+-/
 theorem isPullback_one_prod_kernel {S : Scheme.{0}} (A Y Y' W : Over S) (c : Y' ⟶ Y) (w₁ w₂ : W ⟶ Y')
     (hK : IsPullback w₁.left w₂.left c.left c.left) :
     IsPullback (lift (fst A W) (snd A W ≫ w₁)).left (lift (fst A W) (snd A W ≫ w₂)).left
@@ -46,6 +58,29 @@ theorem isPullback_one_prod_kernel {S : Scheme.{0}} (A Y Y' W : Over S) (c : Y' 
   · rw [← Over.comp_left, ← Over.comp_left, comp_lift, comp_lift, lift_fst, lift_fst, lift_snd_assoc,
       lift_snd_assoc, Category.assoc, Category.assoc, hw]
 
+/- English proof (translation)
+Introduce `S X Y Y' _ hA c hfl hsu hqc L hL h0 h1`. Set `F : X ⊗ Y' ⟶ X ⊗ Y` to `lift (fst X Y') (snd X Y' ≫ c)`. Set `e : Y ⟶ X ⊗ Y` to `lift 1 (𝟙 Y)`. Set `e' : Y' ⟶ X ⊗ Y'` to `lift 1 (𝟙 Y')`. Express the relevant statement in the definitionally equal form `Triv (L.pull e.left) at h0`.
+
+Express the relevant statement in the definitionally equal form `Triv (L.pull F.left) at h1`. Establish `hEF : e' ≫ F = c ≫ e`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [e, e', F]`. Establish `hep : e' ≫ snd X Y' = 𝟙 Y'` using `lift_snd _ _`. Establish `H : IsPullback F.left (snd X Y').left (snd X Y).left c.left` using `isPullback_one_prod X c`.
+
+Establish `hF₁ : Flat F.left` using `MorphismProperty.of_isPullback H.flip hfl`. Establish `hF₂ : Surjective F.left` using `MorphismProperty.of_isPullback H.flip hsu`. Establish `hF₃ : QuasiCompact F.left` using `MorphismProperty.of_isPullback H.flip hqc`. Set `W : Over S` to `Over.mk (pullback.fst c.left c.left ≫ Y'.hom)`. Set `w₁ : W ⟶ Y'` to `Over.homMk (pullback.fst c.left c.left) rfl`.
+
+Set `w₂ : W ⟶ Y'` to `Over.homMk (pullback.snd c.left c.left) (by show pullback.snd c.left c.left ≫ Y'.hom = pullback.fst c.left c.left ≫ Y'.hom`. Rewrite using `[← Over.w c, ← Category.assoc, ← pullback.condition, Category.assoc])`. Establish `hw : w₁ ≫ c = w₂ ≫ c` using `Over.OverMorphism.ext pullback.condition`. Establish `hK : IsPullback w₁.left w₂.left c.left c.left` using `IsPullback.of_hasPullback c.left c.left`. Set `g₁ : X ⊗ W ⟶ X ⊗ Y'` to `lift (fst X W) (snd X W ≫ w₁)`.
+
+Set `g₂ : X ⊗ W ⟶ X ⊗ Y'` to `lift (fst X W) (snd X W ≫ w₂)`. Establish `hKP : IsPullback g₁.left g₂.left F.left F.left` using `isPullback_one_prod_kernel X Y Y' W c w₁ w₂ hK`. Establish `hg : g₁.left ≫ F.left = g₂.left ≫ F.left` using `hKP.w`. Take `⟨g, hgg⟩` from `h0`. Take `⟨t, ht⟩` from `h1`.
+
+Establish `n₁ : (snd X Y' ≫ e').left ≫ F.left = (snd X Y' ≫ c).left ≫ e.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, Category.assoc, hEF, Category.assoc]`. Take `⟨t', ht', hv⟩` from `exists_gen hL (K' := PUnit) (φ' := fun _ => F.left) (ε' := fun _ => 1) (fun U _ k => by`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, Sum.elim_inl, Sum.elim_inr, n₁]`. Use the proof step `simp)`.
+
+Use the proof step `(LB.mulGen L _ _ _ _ (LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.pullGen L _ _ t (snd X Y' ≫ e').left))) (LB.pullGen L _ _ g (snd X Y' ≫ c).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _))) (DVR.pullGen_isGen _ _ _ _ hgg _))`. Establish `norm : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y'.left) (z : Z) (J), Geo.Tor.Good L z J → val t' (r ≫ e'.left) z J = val g (r ≫ c.left) z J`. Introduce `Z r z J hJ`. Establish `a₁ : (r ≫ e'.left) ≫ (snd X Y' ≫ e').left = r ≫ e'.left`.
+
+Rewrite using `[Category.assoc, ← Over.comp_left, ← Category.assoc e', hep, Category.id_comp]`. Establish `a₂ : (r ≫ e'.left) ≫ (snd X Y' ≫ c).left = r ≫ c.left`. Rewrite using `[Category.assoc, ← Over.comp_left, ← Category.assoc e', hep, Category.id_comp]`. Rewrite using `[hv Z _ z J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ, val_pull hJ, a₁, a₂, mul_inv_cancel, _root_.one_mul]`. Use `GlobalTheory.FlatDescent.triv_of_gen_descent L hL F.left hF₁ hF₂ hF₃ g₁.left g₂.left hKP t' ht' (fun z J hJ => ?_)` and prove the remaining obligations.
+
+Set `o : W ⟶ X ⊗ W` to `lift 1 (𝟙 W)`. Establish `hg1 : o.left ≫ g₁.left = w₁.left ≫ e'.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [o, g₁, e']`.
+
+Establish `hg2 : o.left ≫ g₂.left = w₂.left ≫ e'.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [o, g₂, e']`. Establish `ho : o.left ≫ (snd X W).left = 𝟙 _` using `by rw [← Over.comp_left, lift_snd, Over.id_left]`.
+
+Establish `hwc : w₁.left ≫ c.left = w₂.left ≫ c.left` using `by rw [← Over.comp_left, ← Over.comp_left, hw]`. Establish `key2` using `gen_unique' hL (φ := fun _ : PUnit => g₁.left ≫ F.left) (ε := fun _ => (1 : ℤ)) (φ' := fun _ : PUnit => g₂.left ≫ F.left) (ε' := fun _ => 1) (fun U _ k => by simp only [hg]) (snd X W).left o.left ho (surj_snd GlobalTheory.SemiRigid.globalFns hA W) (u := LB.pullGen L _ _ t' g₁.lef …`. Rewrite `key2` using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem triv_of_triv_zero_of_fpqc : ∀ (S : Scheme.{0}) (X Y Y' : Over S) [GrpObj X], IsAbelianScheme X →
     ∀ (c : Y' ⟶ Y), Flat c.left → Surjective c.left → QuasiCompact c.left → ∀ D : LB (X ⊗ Y).left, D.IsLB →
     Triv (ev D (1 : Y ⟶ X) (𝟙 Y)) → Triv (ev D (fst X Y') (snd X Y' ≫ c)) → Triv D := by

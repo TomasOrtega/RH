@@ -18,6 +18,17 @@ section Generic
 
 variable {Γ H : Type} [Group Γ] [Group H]
 
+/- English proof (translation)
+Distinguish the cases in `hne : ∃ w₀ : Γ, (QuotientGroup.mk (x⁻¹ * ι w₀ * x) : H ⧸ K) = c`. Take `⟨w₀, hw₀⟩` from `hne`. Establish `hfin : ((GlobalTheory.LKLoc.locPart ι.range K x : Subgroup H) : Set H).Finite` using `Set.toFinite _`. Establish `hpre : (ι ⁻¹' (GlobalTheory.LKLoc.locPart ι.range K x : Set H)).Finite` using `hfin.preimage hι.injOn`. Use `(hpre.image (fun u => w₀ * u)).subset ?_` and prove the remaining obligations.
+
+Introduce `w hw`. Use `⟨w₀⁻¹ * w, ?_, by simp⟩` and prove the remaining obligations. Establish `h1 : (QuotientGroup.mk (x⁻¹ * ι w * x) : H ⧸ K) = QuotientGroup.mk (x⁻¹ * ι w₀ * x)`. Rewrite using `[hw, hw₀]`. Rewrite `h1` using `[QuotientGroup.eq]`.
+
+Simplify using `only [Set.mem_preimage, SetLike.mem_coe, GlobalTheory.LKLoc.locPart, Subgroup.mem_inf, MonoidHom.mem_range]`. Use `⟨⟨w₀⁻¹ * w, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LKCountPoint.mem_map_conj]`. Establish `e : x⁻¹ * ι (w₀⁻¹ * w) * x = (x⁻¹ * ι w₀ * x)⁻¹ * (x⁻¹ * ι w * x)`. Simplify using `only [map_mul, map_inv]`.
+
+Use `group`. Rewrite using `[e]`. Establish `h2` using `K.inv_mem h1`. Rewrite `h2` using `[_root_.mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Use `push_neg at hne`.
+
+Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using `[hne w]`.
+-/
 theorem finite_coset_preimage (ι : Γ →* H) (hι : Function.Injective ι) (K : Subgroup H) (x : H) (c : H ⧸ K)
     (hstab : Finite (GlobalTheory.LKLoc.locPart ι.range K x)) :
     {w : Γ | (QuotientGroup.mk (x⁻¹ * ι w * x) : H ⧸ K) = c}.Finite := by
@@ -43,6 +54,29 @@ theorem finite_coset_preimage (ι : Γ →* H) (hι : Function.Injective ι) (K 
     convert Set.finite_empty
     ext w; simp [hne w]
 
+/- English proof (translation)
+Use `set D := DoubleCoset.Quotient (ι.range : Set H) (K : Set H)`. Use `set W : Set Γ := ⋃ d : D, ⋃ c ∈ Function.support (fun c : H ⧸ K => F₀ c.out), {w : Γ | (QuotientGroup.mk ((Quotient.out d)⁻¹ * ι w * Quotient.out d) : H ⧸ K) = c}`. Establish `hW : W.Finite` using `Set.finite_iUnion fun d => hsupp.biUnion fun c _ => finite_coset_preimage ι hι K _ c (hstab _)`. Set `cj : Γ → Γ` to `fun w => if h : ∃ γ : Γ, γ⁻¹ * y * γ = w then h.choose else 1`. Set `g : Γ × D → DoubleCoset.Quotient (((Subgroup.centralizer {y}).map ι : Subgroup H) : Set H) (K : Set H)` to `fun wd => DoubleCoset.mk _ K (ι (cj wd.1) * Quotient.out wd.2)`.
+
+Use `((hW.prod (Set.finite_univ (α := D))).image g).subset ?_` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [Set.mem_setOf_eq] at hq`. Use `set x := Quotient.out q`. Take `⟨h, k, hh, hk, hd⟩` from `DoubleCoset.mk_out_eq_mul ι.range K x`.
+
+Take `⟨γ₀, rfl⟩` from `hh`. Use `set d : D := DoubleCoset.mk ι.range K x`. Establish `hx : x = ι γ₀⁻¹ * Quotient.out d * k⁻¹`. Rewrite using `[hd, map_inv]`. Use `group`.
+
+Use `set w := γ₀ * y * γ₀⁻¹`. Establish `hconj : x⁻¹ * ι y * x = k * ((Quotient.out d)⁻¹ * ι w * Quotient.out d) * k⁻¹`. Rewrite using `[hx]`. Simplify using `only [w, map_mul, map_inv]`. Use `group`.
+
+Establish `hF : F₀ ((Quotient.out d)⁻¹ * ι w * Quotient.out d) ≠ 0`. Rewrite `hq` using `[hconj, hbi k hk _ (K.inv_mem hk)]`. Conclude with `hq`. Establish `hwW : w ∈ W`. Simplify using `only [W, Set.mem_iUnion, Set.mem_setOf_eq]`.
+
+Use `⟨d, QuotientGroup.mk ((Quotient.out d)⁻¹ * ι w * Quotient.out d), ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Function.mem_support]`. Take `⟨k', hk'⟩` from `QuotientGroup.mk_out_eq_mul K ((Quotient.out d)⁻¹ * ι w * Quotient.out d)`. Rewrite using `[hk']`. Use `hbi 1 K.one_mem k' k'.2 ((Quotient.out d)⁻¹ * ι w * Quotient.out d)` as an intermediate fact.
+
+Rewrite `this` using `[one_mul]`. Rewrite using `[this]`. Conclude with `hF`. Use `⟨(w, d), ⟨hwW, Set.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Establish `hex : ∃ γ : Γ, γ⁻¹ * y * γ = w` using `⟨γ₀⁻¹, by simp [w]⟩`.
+
+Establish `hcj : cj w = hex.choose` using `dif_pos hex`. Establish `hcs` using `hex.choose_spec`. Use `set γw := hex.choose`. Establish `hz : γ₀⁻¹ * γw⁻¹ ∈ Subgroup.centralizer {y}`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`.
+
+Establish `e : y * γw = γw * w` using `by rw [← hcs]; group`. Establish `e2 : w = γ₀ * y * γ₀⁻¹` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Use `show DoubleCoset.mk _ K (ι (cj w) * Quotient.out d) = q`. Rewrite using `[← DoubleCoset.out_eq' _ K q]`.
+
+Rewrite using `[DoubleCoset.eq]`. Use `⟨ι (γ₀⁻¹ * γw⁻¹), ⟨_, hz, rfl⟩, k⁻¹, K.inv_mem hk, ?_⟩` and prove the remaining obligations. Use `show x = _`. Rewrite using `[hx, hcj]`. Simplify using `only [map_mul, map_inv]`.
+
+Use `group`.
+-/
 theorem finite_supp_cent (ι : Γ →* H) (hι : Function.Injective ι) (K : Subgroup H) (F₀ : H → ℂ) (y : Γ)
     (hbi : ∀ k ∈ K, ∀ k' ∈ K, ∀ g, F₀ (k * g * k') = F₀ g)
     (hcls : Finite (DoubleCoset.Quotient (ι.range : Set H) (K : Set H)))
@@ -111,6 +145,15 @@ namespace GlobalTheory.DefVanish
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.LKMid.finiteAdeleRingAway_nontrivial p`. Introduce `a b h`. Establish `h0` using `congrArg Subtype.val h`. Establish `h1` using `congrArg Prod.fst h0`. Establish `h2` using `congrArg Prod.snd h0`.
+
+Simplify using `only [GlobalTheory.LKCx.toAfF, MonoidHom.codRestrict_apply, MonoidHom.comp_apply, MonoidHom.prodMap, MonoidHom.prod_apply, Prod.map_fst, Prod.map_snd, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, mul_left_inj, mul_right_inj] at h1 h2`. Establish `e1 : (a : G.Cˣ × ℚˣ).1 = (b : G.Cˣ × ℚˣ).1`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Units.val h1` as an intermediate fact. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at this`.
+
+Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap ℚ (AfP p)).injective this`. Establish `e2 : (a : G.Cˣ × ℚˣ).2 = (b : G.Cˣ × ℚˣ).2`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg Units.val h2` as an intermediate fact. Simplify using `only [Units.coe_map, MonoidHom.coe_coe] at this`.
+
+Conclude with `(algebraMap ℚ (AfP p)).injective this`. Conclude with `Subtype.ext (Prod.ext e1 e2)`.
+-/
 theorem toAfF_injective (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
     (hx : Triv G (AfP p) β x t) : Function.Injective (GlobalTheory.LKCx.toAfF G β x t hx) := by
   haveI := GlobalTheory.LKMid.finiteAdeleRingAway_nontrivial p
@@ -133,6 +176,9 @@ theorem toAfF_injective (G : HTGroup p) (β : G.Cˣ) (x : (AfP p ⊗[ℚ] G.C)ˣ
     exact (algebraMap ℚ (AfP p)).injective this
   exact Subtype.ext (Prod.ext e1 e2)
 
+/- English proof (translation)
+Introduce `a b h` and use `toAfF_injective G B.β _ _ _ (congrArg Prod.fst h)`.
+-/
 theorem emb_injective (G : HTGroup p) (B : GlobalTheory.LKDef.DForm G) : Function.Injective B.emb := fun a b h =>
   toAfF_injective G B.β _ _ _ (congrArg Prod.fst h)
 
@@ -141,6 +187,9 @@ end GlobalTheory.DefVanish
 open scoped Pointwise
 
 namespace GlobalTheory.DefVanish
+/- English proof (translation)
+Rewrite using `[Subgroup.pointwise_smul_def]`. Both sides reduce to the same expression.
+-/
 theorem conjAct_smul_eq_map' {H : Type} [Group H] (g : H) (S : Subgroup H) :
     (ConjAct.toConjAct g • S) = S.map (MulAut.conj g).toMonoidHom := by
   rw [Subgroup.pointwise_smul_def]
@@ -149,6 +198,31 @@ end GlobalTheory.DefVanish
 
 open GlobalTheory.DefVanish in
 
+/- English proof (translation)
+Introduce `p _ G ha L f hf hfb K' f' hf' hf'b B y horb`. Establish `hι : Function.Injective B.emb` using `emb_injective G B`. Establish `hemb : (GlobalTheory.LKCx.toAfF G B.β B.trivAf.choose B.trivAf.choose_spec.choose B.trivAf.choose_spec.choose_spec).prod (GlobalTheory.LKCx.toP1 G B.β) = B.emb` using `rfl`. Use `set K : Subgroup (G.GAf × Gr G 1) := L.K.toSubgroup.prod K' with hKdef`. Use `set F₀ : G.GAf × Gr G 1 → ℂ := fun h => f h.1 * f' h.2 with hF₀`.
+
+Use `set Γ' : Subgroup (G.GAf × Gr G 1) := (Subgroup.centralizer {y}).map B.emb with hΓ'`. Use `set T : Subgroup (G.GAf × Gr G 1) := GlobalTheory.BCT.twCent (MonoidHom.id _) (B.emb y) with hT`. Establish `hK'c : ∀ g : Gr G 1, (K'.map (MulAut.conj g).toMonoidHom).Commensurable K'`. Introduce `g`. Establish `h1 : (K'.map (MulAut.conj g).toMonoidHom).Commensurable ((KHT p G.m G.n 1 G.Fw).map (MulAut.conj g).toMonoidHom)`.
+
+Rewrite using `[← conjAct_smul_eq_map', ← conjAct_smul_eq_map']`. Conclude with `(Subgroup.Commensurable.commensurable_conj _).1 hf'.1`. Conclude with `(h1.trans ((GlobalTheory.T.unitarySimilitudeIntegralSubgroup_commensurated_frobenius p G 1 one_pos).1 g)).trans hf'.1.symm`. Establish `hK : ∀ x : G.GAf × Gr G 1, (K.map (MulAut.conj x).toMonoidHom).Commensurable K` using `GlobalTheory.LKCountComm.commensurable_prod _ _ (GlobalTheory.T.compactOpenLevel_conj_commensurable p G L) hK'c`. Establish `hbi : ∀ k ∈ K, ∀ k' ∈ K, ∀ g, F₀ (k * g * k') = F₀ g`.
+
+Introduce `k hk k' hk' g`. Take `⟨hk1, hk2⟩` from `Subgroup.mem_prod.1 hk`. Take `⟨hk1', hk2'⟩` from `Subgroup.mem_prod.1 hk'`. Simplify using `only [hF₀, Prod.fst_mul, Prod.snd_mul]`. Rewrite using `[hfb _ hk1 _ hk1', hf'b _ hk2 _ hk2']`.
+
+Establish `hrange : Γ' ≤ B.emb.range`. Introduce and unpack `_ ⟨c, -, rfl⟩`. Conclude with `⟨c, rfl⟩`. Establish `hΓT : Γ' ≤ T`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Use `show B.emb c * B.emb y = B.emb y * (MonoidHom.id _) (B.emb c)`. Rewrite using `[MonoidHom.id_apply, ← map_mul, ← map_mul, Subgroup.mem_centralizer_singleton_iff.1 hc]`. Establish `hF : ∀ t ∈ T, ∀ x, ∀ k ∈ K, F₀ ((t * x * k)⁻¹ * B.emb y * (t * x * k)) = F₀ (x⁻¹ * B.emb y * x)`. Introduce `t ht x k hk`. Establish `ht' : t * B.emb y = B.emb y * t` using `ht`.
+
+Establish `e : (t * x * k)⁻¹ * B.emb y * (t * x * k) = k⁻¹ * (x⁻¹ * B.emb y * x) * k`. Establish `e0 : t⁻¹ * B.emb y * t = B.emb y` using `by rw [mul_assoc, ← ht', inv_mul_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, hbi _ (K.inv_mem hk) _ hk]`. Establish `hstab` using `GlobalTheory.T.definiteForm_stabilizer_finite_away_from_p p G ha L K' hf'.1 B`.
+
+Establish `hfin : ∀ x : G.GAf × Gr G 1, ((Γ' ⊓ K.map (MulAut.conj x).toMonoidHom : Subgroup (G.GAf × Gr G 1)) : Set (G.GAf × Gr G 1)).Finite`. Introduce `x`. Use `haveI := hstab x`. Conclude with `(Set.toFinite ((GlobalTheory.LKLoc.locPart B.emb.range K x : Subgroup (G.GAf × Gr G 1)) : Set (G.GAf × Gr G 1))).subset (SetLike.coe_subset_coe.2 (inf_le_inf_right _ hrange))`. Establish `hsupp` using `finite_supp_cent B.emb hι K F₀ y hbi (GlobalTheory.T.finite_doubleCoset_definiteHermitianForm_level p G ha L K' hf'.1 B) hstab (GlobalTheory.T.heckeTestProduct_support_finite_leftCosets p G L f hf hfb K' f' hf' hf'b)`.
+
+Establish `hcore` using `(GlobalTheory.LKCountComm.core_count_of_commensurable Γ' T K (fun x => F₀ (x⁻¹ * B.emb y * x)) hΓT hK hF hfin hsupp).1`. Establish `horb' : (∑ᶠ q : DoubleCoset.Quotient (T : Set (G.GAf × Gr G 1)) (K : Set (G.GAf × Gr G 1)), ((vol (T ⊓ K) (T ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom) : ℚ) : ℂ)⁻¹ * F₀ ((Quotient.out q)⁻¹ * B.emb y * Quotient.out q)) = 0` using `horb`. Rewrite `hcore` using `[horb', mul_zero]`. Establish `hcard : ∀ x : G.GAf × Gr G 1, Nat.card (GlobalTheory.LKCount.stab (GlobalTheory.LKCx.toAfF G B.β B.trivAf.choose B.trivAf.choose_spec.choose B.trivAf.choose_spec.choose_spec) (GlobalTheory.LKCx.toP1 G B.β) L.K.toSubgroup K' x ⊓ Subgroup.centralizer {y} : Subgroup (GlobalTheory.LK …`. Introduce `x`.
+
+Rewrite using `[GlobalTheory.LKCountPoint.stab_eq]`. Express the relevant statement in the definitionally equal form `Nat.card (((K.map (MulAut.conj x).toMonoidHom).comap B.emb ⊓ Subgroup.centralizer {y} : Subgroup (GlobalTheory.LKCx.grp G B.β))) = _`. Use `Nat.card_congr ((Subgroup.equivMapOfInjective _ _ hι).toEquiv.trans (Equiv.setCongr ?_))` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Subgroup.map_inf_eq _ _ _ hι, Subgroup.map_comap_eq, inf_comm B.emb.range, inf_assoc, inf_eq_right.2 hrange, inf_comm]`.
+
+Rewrite using `[← hcore]`. Unfold `centSum`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[hcard]`. Use `congr 1`.
+
+Simplify using `only [term, hF₀, hemb, Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv, mul_one, MonoidHom.id_apply]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.LKDef.DForm.centSum_eq_zero_of_orbK : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 →
     ∀ (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →
       (∀ k ∈ L.K.toSubgroup, ∀ k' ∈ L.K.toSubgroup, ∀ g, f (k * g * k') = f g) →

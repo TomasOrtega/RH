@@ -8,6 +8,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 
+/- English proof (translation)
+Proceed by induction on `M using Finset.induction_on with`. Consider the case `empty`. Introduce `y _ _ hs`. Establish `: {z : V | ∃ μ ∈ (∅ : Finset (ι → K)), ∀ t, p t → T t z = μ t • z} = ∅`. Use extensionality with `z`.
+
+Simplify using the standard rewrite rules. Rewrite `hs` using `[this, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `hs`. Consider the case `insert μ0 M _ ih`. Introduce `y hne hy hs`.
+
+Take `⟨t0, hp0, hμ0⟩` from `hne μ0 (Finset.mem_insert_self _ _)`. Set `L : V →ₗ[K] V` to `T t0 - μ0 t0 • LinearMap.id`. Establish `hL : Submodule.span K {z | ∃ μ ∈ insert μ0 M, ∀ t, p t → T t z = μ t • z} ≤ (Submodule.span K {z | ∃ μ ∈ M, ∀ t, p t → T t z = μ t • z}).comap L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨μ, hμ, hz⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Break down `Finset.mem_insert.1 hμ with rfl | hμ` into its components or cases. Establish `: L z = 0`. Simplify using `only [L, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hz t0 hp0, sub_self]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `: L z = (μ t0 - μ0 t0) • z`. Simplify using `only [L, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hz t0 hp0, sub_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨μ, hμ, hz⟩)`.
+
+Establish `hLy : L y = (ev t0 - μ0 t0) • y`. Simplify using `only [L, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hy t0 hp0, sub_smul]`. Establish `h0` using `ih ((ev t0 - μ0 t0) • y) (fun μ hμ => hne μ (Finset.mem_insert_of_mem hμ)) (fun t ht => by rw [map_smul, hy t ht, smul_comm]) (hLy ▸ hL hs)`. Break down `smul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h).symm hμ0`.
+
+Conclude with `h`.
+-/
 private theorem joint_zero {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V]
     (T : ι → V →ₗ[K] V) (p : ι → Prop) (ev : ι → K) (M : Finset (ι → K)) :
     ∀ y : V, (∀ μ ∈ M, ∃ t, p t ∧ μ t ≠ ev t) → (∀ t, p t → T t y = ev t • y) →
@@ -46,6 +61,13 @@ private theorem joint_zero {K V ι : Type*} [Field K] [AddCommGroup V] [Module K
     · exact h
 
 open scoped TensorProduct in
+/- English proof (translation)
+Take `⟨n, bs, hb, -, hKs, hLi, hLs⟩` from `In.ks j h1 h2`. Take `⟨Φ, hc, hf, hw⟩` from `GlobalTheory.T.exists_semilinear_descent_to_baseChange_of_form D.LL0 S.kKs S.kKs_spec (S.A j).WK bs hb hKs hLi hLs (KT := KB S i b) (readLL0 S i b) (fun s => rfl)`. Use `⟨readLL0 S i b, Φ, fun _ => rfl, hc, fun g x => ?_, fun k P x => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : actL D S j g x = (((chiL S j (In.chi j h1 h2) (S.eG.symm g))⁻¹ : ↥D.LL0) : D.what₂.LL) • (S.A j).ρ (S.eG.symm g) x`. Simplify using `only [actL, chiL, IntermediateField.coe_inv, LinearMap.smul_apply]`.
+
+Establish `e2` using `hc ((chiL S j (In.chi j h1 h2) (S.eG.symm g))⁻¹) ((S.A j).ρ (S.eG.symm g) x)`. Rewrite `e2` using `[← e1, hf ((S.A j).ρ (S.eG.symm g)) (rhoKG S j (In.rho j h1 h2) (S.eG.symm g)) (fun w => rfl), map_inv₀]`. Conclude with `e2`. Conclude with `hf (In.hL j k P) _ (fun w => rfl) x`. Use `top_le_iff.1 ?_` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.HeightCounting.FormsSpan.span_one_tmul (R := S.Ks) (A := KB S i b) (M := ↥(S.A j).WK)`. Use `(le_of_eq h.symm).trans (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨(w : S.WL j), hw w⟩`.
+-/
 private theorem desc_exists (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     ∃ (rd : ↥D.LL0 →+* FractionRing (D.ntw.O i)) (Φ : S.WL j →+ Fm S i j b), (∀ c, rd c = readLL0 S i b c) ∧
@@ -71,6 +93,25 @@ private theorem desc_exists (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (i : D.
     exact ⟨(w : S.WL j), hw w⟩
 
 open GlobalTheory.HeightCounting.FormsSpan Formalism.MainNotions.IntegralHeckeForms in
+/- English proof (translation)
+Use `letI : Fintype (G0g D.nd) := finiteLevelGroupFintype D`. Use `letI : Fintype ↥(Formalism.IndefR.NX.U D.nd) := fintypeU`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hy`. Set `pr : Module.End (FractionRing (D.ntw.O i)) (D.nexp.Fm i j b)` to `∑ u : ↥(Formalism.IndefR.NX.U D.nd), rd (cU D In.θ u) • (D.nexp.actG i j b u).toLinearMap`.
+
+Establish `hpr : ∀ w, pr (Ψ w) = Ψ (projL (S` using `S) In.θ j w) := fun w => by`. Simplify using `only [pr, projL, LinearMap.sum_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, map_sum, hc, ha]`. Establish `hE : ∀ x, eG D.nexp i j b (Ψ x) = Ψ (opL D S j (GlobalTheory.HeightCounting.FormsStep.eL D) x)` using `fun x => by`. Rewrite using `[opL_eL, finsum_eq_sum_of_fintype, LinearMap.sum_apply, map_sum, eG, MonoidAlgebra.lift_apply, Finsupp.sum_fintype _ _ (by intros; simp), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hc, ha, D.nexp.eAlg_def, hrd]`. Both sides reduce to the same expression. Establish `hfix : pr z = z`. Establish `hu : ∀ u : ↥(Formalism.IndefR.NX.U D.nd), D.nexp.actG i j b u z = rd ((psiUOf D.nd (NX.xiRed D) In.θ u : (↥D.LL0)ˣ) : ↥D.LL0) • z`. Introduce `u`.
+
+Establish `hu' : (u : G0g D.nd) ∈ D.nexp.U` using `by rw [hU]; exact u.2`. Establish `h` using `(Submodule.mem_iInf _).mp hz ⟨u, hu'⟩`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, hψ i b u hu' u.2, ← hrd]`. Conclude with `h`. Simplify using `only [pr, LinearMap.sum_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, hu, smul_smul, ← map_mul]`.
+
+Establish `hcu : ∀ u : ↥(Formalism.IndefR.NX.U D.nd), cU D In.θ u * ((psiUOf D.nd (NX.xiRed D) In.θ u : (↥D.LL0)ˣ) : ↥D.LL0) = (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0)⁻¹`. Introduce `u`. Unfold `cU`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Establish `h0 : ((psiUOf D.nd (NX.xiRed D) In.θ u : (↥D.LL0)ˣ) : ↥D.LL0) ≠ 0` using `Units.ne_zero _`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `only [hcu, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul (FractionRing (D.ntw.O i)), smul_smul]`. Establish `hne : rd (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0) ≠ 0`. Use `(map_ne_zero rd).mpr fun h => ?_` and prove the remaining obligations. Establish `h'` using `congrArg (fun x : ↥D.LL0 => (x : D.what₂.LL)) h`.
+
+Conclude with `Fintype.card_ne_zero (by exact_mod_cast h')`. Establish `h1 : ((Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ℕ) : FractionRing (D.ntw.O i)) * rd (Fintype.card ↥(Formalism.IndefR.NX.U D.nd) : ↥D.LL0)⁻¹ = 1`. Rewrite using `[map_inv₀, ← map_natCast rd]`. Conclude with `mul_inv_cancel₀ hne`. Rewrite using `[h1, one_smul]`.
+
+Rewrite using `[← hfix]`. Establish `key : Submodule.span (FractionRing (D.ntw.O i)) (Set.range Ψ) ≤ (Submodule.span (FractionRing (D.ntw.O i)) (Ψ '' (goodL D S In.θ j : Set (S.WL j)))).comap (eG D.nexp i j b ∘ₗ pr)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Express the relevant statement in the definitionally equal form `eG D.nexp i j b (pr (Ψ w)) ∈ Submodule.span (FractionRing (D.ntw.O i)) (Ψ '' (goodL D S In.θ j : Set (S.WL j)))`.
+
+Rewrite using `[hpr, hE]`. Conclude with `Submodule.subset_span ⟨_, goodL_of (GlobalTheory.HeightCounting.FormsStep.eIdem_all D) In.θ j w, rfl⟩`. Conclude with `key (Submodule.eq_top_iff'.mp hs z)`.
+-/
 private theorem hermFramePairNormalForm_frameSpan_le_of_generators (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (hU : D.nexp.U = Formalism.IndefR.NX.U D.nd)
     (hψ : PsiLaw D S In.θ) (i : D.ntw.Tw) (j : ℕ) (b : Bool)
     (rd : ↥D.LL0 →+* FractionRing (D.ntw.O i)) (Ψ : S.WL j →+ D.nexp.Fm i j b) (hrd : ∀ c, rd c = readLL0 S i b c)
@@ -131,6 +172,31 @@ private theorem hermFramePairNormalForm_frameSpan_le_of_generators (D : D7) (S :
     exact Submodule.subset_span ⟨_, goodL_of (GlobalTheory.HeightCounting.FormsStep.eIdem_all D) In.θ j w, rfl⟩
   exact key (Submodule.eq_top_iff'.mp hs z)
 
+/- English proof (translation)
+Introduce `D S In hU hψ hSb c eF hact hhk i j b h1 h2 ev hev`. Take `⟨y, hyV, hy0, hyE⟩` from `hev`. Take `⟨rd, Φ, hrd, hc, ha, hh, hs⟩` from `desc_exists D S In i j b h1 h2`. Use `set e := eF i j b h1 h2 with he`. Set `Ψ : S.WL j →+ D.nexp.Fm i j b` to `e.symm.toLinearMap.toAddMonoidHom.comp Φ`.
+
+Establish `hΨ : ∀ x, e (Ψ x) = Φ x` using `fun x => e.apply_symm_apply _`. Establish `hc' : ∀ (c : ↥D.LL0) (x : S.WL j), Ψ ((c : D.what₂.LL) • x) = rd c • Ψ x` using `fun c x => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hΨ, hc, map_smul, hΨ]`. Establish `ha' : ∀ (g : G0g D.nd) (x : S.WL j), Ψ (actL D S j g x) = D.nexp.actG i j b g (Ψ x)` using `fun g x => by`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hact i j b h1 h2, hΨ, hΨ, ha]`. Establish `hs' : Submodule.span (FractionRing (D.ntw.O i)) (Set.range Ψ) = ⊤`. Establish `: Set.range Ψ = e.symm.toLinearMap '' Set.range Φ`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, ← Submodule.map_span, hs, Submodule.map_top, LinearEquiv.range]`. Establish `hle` using `hermFramePairNormalForm_frameSpan_le_of_generators D S In hU hψ i j b rd Ψ hrd hc' ha' hs' hyV`. Assume the negation of the conclusion as `hno`. Apply `hy0` to reduce the goal to its premises.
+
+Set `sys : D.what₂.FT → ℕ × PlE D.host → FractionRing (D.ntw.O i)` to `fun σ t => algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (c i b t.2) ^ t.1 * rd (In.eig j σ t.1 t.2)`. Establish `hfin : {σ : D.what₂.FT | D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ}.Finite` using `Set.toFinite _`. Use `joint_zero (fun t : ℕ × PlE D.host => D.nexp.hkF i j b t.1 t.2) (fun t => Formalism.MainNotions.IntegralHeckeForms.HkIdx i t.1 t.2) (fun t => ev t.1 t.2) (hfin.toFinset.image sys) y ?_ (fun t ht => hyE t.1 t.2 ht) (Submodule.span_le.mpr ?_ hle)` and prove the remaining obligations. Introduce `μ hμ`. Take `⟨σ, hσ, rfl⟩` from `Finset.mem_image.1 hμ`.
+
+Rewrite `hσ` using `[Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `hno ⟨σ, hσ.1, hσ.2, fun k P a1 a2 a3 a4 => ?_⟩` and prove the remaining obligations. Use `hne (k, P) ⟨a1, a2, a3, a4⟩` as an intermediate fact.
+
+Simplify using `only [sys, hrd] at this`. Conclude with `this.symm`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Use `Submodule.iSup_induction (motive := fun y => Ψ y ∈ _) _ (In.span j h1 h2 hx) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `σ w hw`. Use `Submodule.iSup_induction (motive := fun y => Ψ y ∈ _) _ hw ?_ ?_ ?_` and prove the remaining obligations. Introduce `hσ z hz`. Use `Submodule.subset_span ⟨sys σ, Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 hσ), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, P⟩ ⟨a1, a2, a3, a4⟩`.
+
+Establish `hz2` using `(Submodule.mem_inf.1 hz).2`. Simplify using `only [Submodule.mem_iInf] at hz2`. Establish `h3` using `Module.End.mem_eigenspace_iff.1 (hz2 k P ⟨a1, a2, a3, fun h => a4 (hSb i h)⟩)`. Apply `e.injective` to reduce the goal to its premises. Simplify using `only [sys]`.
+
+Rewrite using `[hhk i j b h1 h2 k P _ a4 a3 a2, map_smul, hΨ, ← hh, h3, hc, mul_smul]`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z hy hz`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hy hz`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `y z hy hz`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem hy hz`.
+-/
 theorem UpperTheory.heckeEigenspace_descent_of_equivariant_equiv :
     ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S), D.nexp.U = Formalism.IndefR.NX.U D.nd → PsiLaw D S In.θ → (∀ i, In.Sb ⊆ D.ntw.S0 i) → ∀ (c : ∀ (i : D.ntw.Tw) (_b : Bool) (_P : PlE D.host), (D.ntw.O i)ˣ) (eF : ∀ i j b, 1 ≤ j → j ≤ D.R.m → D.nexp.Fm i j b ≃ₗ[FractionRing (D.ntw.O i)] Fm S i j b), (∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (g : G0g D.nd) (y : D.nexp.Fm i j b), eF i j b h1 h2 (D.nexp.actG i j b g y) = actG S i j b (In.rho j h1 h2) (In.chi j h1 h2) g (eF i j b h1 h2 y)) → (∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (k : ℕ) (P : PlE D.host) (y : D.nexp.Fm i j b), P ∉ D.ntw.S0 i → IsSplitPl D.host P → k ≤ D.R.r → eF i j b h1 h2 (D.nexp.hkF i j b k P y) = algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (c i b P) ^ k • hkF D S i j b (In.hL j) (In.hs j h1 h2) k P (eF i j b h1 h2 y)) → ∀ (i : D.ntw.Tw) (j : ℕ) (b : Bool), 1 ≤ j → j ≤ D.R.m → ∀ ev : ℕ → PlE D.host → FractionRing (D.ntw.O i), GlobalTheory.EigTie.IsEigSys D.nexp i j b ev → ∃ σ : D.what₂.FT, D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ ∧ ∀ k P, 1 ≤ k → k ≤ D.R.r → IsSplitPl D.host P → P ∉ D.ntw.S0 i → ev k P = algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) (c i b P) ^ k * (show FractionRing (D.ntw.O i) from readLL0 S i b (In.eig j σ k P)) := by
   intro D S In hU hψ hSb c eF hact hhk i j b h1 h2 ev hev

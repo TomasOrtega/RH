@@ -16,6 +16,11 @@ open GlobalTheory.HeightCounting.Up (PrN)
 
 namespace GlobalTheory.PlaceClassSum
 
+/- English proof (translation)
+Introduce `D X j B hB ψ ψ' hψ hψ' hadm hT u cc κ hu hc hκ τ hτ hfd hcc ω ω' hω hω'`. Take `⟨T0', A', R', F', v₀', O', h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, t, t', ht, ht'⟩` from `hT`. Take `⟨c', u', hc', hu', hio⟩` from `h11 cc u hc hu`. Take `⟨ζ, hζ, H⟩` from `GlobalTheory.T.conjugate_thetaSeries_flatVectors_twistedWeil GlobalTheory.chartIndependence_unconditional D _ _ T0' A' X.core R' F' X.geo.κ v₀' O' (fun _ => 1) X.size h1 h2 h3 h4 h5 j h6 h7 c' hc' u' hu' B hB h8 τ (h9 τ hτ) hfd ω ω' ψ ψ' t t' hω hω' hψ hψ' hadm ht ht' hcc`. Establish `hz : GlobalTheory.ConjSpan.RelConj (O' j) (X.geo.κ j) τ` using `GlobalTheory.ConjRelation.expands_zero_conj D _ _ T0' A' X.core R' F' X.geo.κ v₀' h1 h3 j Unit _ (O' j) h6.2 τ hτ.core`.
+
+Use `⟨ζ, hζ, fun I _ rep hrep F F' hF => h10 _ _ _ _ ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ConjSpan.classSum_conj (R'.ioP j (PiTensorProduct.tprod ℂ u')) c' hz hκ hcc.1 H I rep hrep F F' fun h => by` as an intermediate fact. Take `⟨x, x', hx, e, e'⟩` from `hF h`. Conclude with `⟨x, x', hx, e.trans (hio x).symm, e'.trans (hio _).symm⟩`. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem classSum_conj_place : ∀ (D : D7) (X : RealSide D) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), B.Good → ∀ ψ ψ' : Twist D Circle, ψ.Good → ψ'.Good → B.admitted ψ.Q →
   GlobalTheory.BigOn.Exp.TwConj.HasTuples X.core X.R.toRealDat X.geo.κ X.geo.v₀ X.geo.O (fun _ => 1) j B ψ ψ' →
   ∀ (u : ∀ τ, lowT (X.R.MW j (sg0 D X.A3.A)) τ) (cc : VsV D j ℂ →ₗ[ℂ] (X.R.cV j).W) (κ : ℂ), IsLow X j u → ExtC X.R.toRealDat j (inC (X.geo.O j).c') (X.geo.O j).c0' cc → κ ≠ 0 →

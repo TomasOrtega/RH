@@ -17,6 +17,15 @@ open GlobalTheory.BigDat
 
 namespace GlobalTheory.InductLagr
 
+/- English proof (translation)
+Introduce `φ hφ`. Use `set c : K := ⅟(2 : K) * (a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) with hc`. Establish `law : GlobalTheory.WeilM.schr ψ a (GlobalTheory.WeilM.schr ψ b φ) = ψ c • GlobalTheory.WeilM.schr ψ (a + b) φ`. Use function extensionality and compare the values at `x`. Establish `key : (x ⬝ᵥ a.2 + ⅟(2 : K) * (a.1 ⬝ᵥ a.2)) + ((x + a.1) ⬝ᵥ b.2 + ⅟(2 : K) * (b.1 ⬝ᵥ b.2)) = c + (x ⬝ᵥ (a + b).2 + ⅟(2 : K) * ((a + b).1 ⬝ᵥ (a + b).2))`.
+
+Establish `h2 : ⅟(2 : K) * 2 = 1` using `invOf_mul_self 2`. Simplify using `only [hc, Prod.fst_add, Prod.snd_add, dotProduct_add, add_dotProduct]`. Take the linear combination `(-(a.1 ⬝ᵥ b.2)) * h2`. Use `show ψ _ * (ψ _ * φ (x + a.1 + b.1)) = ψ c * (ψ _ * φ (x + (a + b).1))`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, key, Prod.fst_add, add_assoc]`.
+
+Establish `hne : ψ c ≠ 0`. Establish `h1 : ψ c * ψ (-c) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Conclude with `left_ne_zero_of_mul_eq_one h1`. Establish `e : GlobalTheory.WeilM.schr ψ (a + b) φ = (ψ c)⁻¹ • GlobalTheory.WeilM.schr ψ a (GlobalTheory.WeilM.schr ψ b φ)`.
+
+Rewrite using `[law, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Rewrite using `[e]`. Conclude with `N.smul_mem _ (ha _ (hb _ hφ))`.
+-/
 theorem schr_add_mem {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar K ℂ) {κ : Type} [Fintype κ]
     (N : Submodule ℂ ((κ → K) → ℂ)) (a b : (κ → K) × (κ → K))
     (ha : ∀ φ ∈ N, GlobalTheory.WeilM.schr ψ a φ ∈ N) (hb : ∀ φ ∈ N, GlobalTheory.WeilM.schr ψ b φ ∈ N) :
@@ -41,6 +50,13 @@ theorem schr_add_mem {K : Type} [CommRing K] [Invertible (2 : K)] (ψ : AddChar 
   rw [e]
   exact N.smul_mem _ (ha _ (hb _ hφ))
 
+/- English proof (translation)
+Use `⟨co.e.symm (fun k => GlobalTheory.LatVac.liftV v (p.1 k), fun k => GlobalTheory.LatVac.liftV v (p.2 k)), ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Rewrite using `[← LinearEquiv.map_smul]`. Establish `h0 : r • ((fun k => GlobalTheory.LatVac.liftV v (p.1 k), fun k => GlobalTheory.LatVac.liftV v (p.2 k)) : (κ → AF F) × (κ → AF F)) = 0`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.LatVac.at_liftV v (p.1 k) r hr`. Conclude with `GlobalTheory.LatVac.at_liftV v (p.2 k) r hr`. Rewrite using `[h0, map_zero]`. Use `show ((fun k => evFin F v ((co.e _).1 k)), fun k => evFin F v ((co.e _).2 k)) = p`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `Prod.ext (funext fun k => GlobalTheory.LatVac.evFin_liftV v _) (funext fun k => GlobalTheory.LatVac.evFin_liftV v _)`.
+-/
 theorem exists_at_locCo {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup W] [Module (AF F) W]
     {B : W → W → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (p : (κ → Fv F v) × (κ → Fv F v)) :
@@ -62,6 +78,51 @@ end GlobalTheory.InductLagr
 
 namespace GlobalTheory.InductLagr
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X Y M ψ hstd hM ι P pl hpl Z _ _ A A' co I H R f hL hA hA' hdec hadd hloc hrep hRA hRA' hvac`. It suffices to establish `key : ∀ S : Finset ι, S ⊆ P → ∀ φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n × Fin d → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ v, (∀ w ∈ S, pl w ≠ v) → φ v = M.vac v) → (Set.indicator (H : Set _) fun u => ∏ w ∈ P, I w (φ (pl w)) (co w u), GlobalTheory.IndefiniteRowSid …`. Introduce `φ h1 h2`. Conclude with `key P subset_rfl φ h1 h2`. Introduce `S`.
+
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `_ φ _ h2`. Establish `e : φ = M.vac` using `funext fun v => h2 v (by simp)`. Substitute `e` using the available equality.
+
+Conclude with `hvac`. Consider the case `insert w S hwS ih`. Introduce `hsub φ hφ1 hφ2`. Establish `hwP : w ∈ P` using `hsub (Finset.mem_insert_self _ _)`. Establish `hSP : S ⊆ P` using `(Finset.subset_insert _ _).trans hsub`.
+
+Establish `hfam : GlobalTheory.BigNZ.Fam M φ`. Use `⟨hφ1, Filter.eventually_cofinite.2 (((insert w S).image pl).finite_toSet.subset fun v hv => ?_)⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hv (hφ2 v fun w' hw' e => hc (Finset.mem_coe.2 (Finset.mem_image.2 ⟨w', hw', e⟩)))`. Take `⟨r, -, er⟩` from `GlobalTheory.PureFactor.exists_rest_factor (pl w) f φ (hfam.std hM)`.
+
+Set `C : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → ℂ` to `fun u => ∏ w' ∈ P.erase w, I w' (φ (pl w')) (co w' u)`. Establish `hne : ∀ w' ∈ P.erase w, pl w' ≠ pl w` using `fun w' hw' e => (Finset.mem_erase.1 hw').1 (hpl (Finset.mem_erase.1 hw').2 hwP e)`. Establish `hprod : ∀ (χ : (Fin n × Fin d → Fv F (pl w)) → ℂ) u, ∏ w' ∈ P, I w' (Function.update φ (pl w) χ (pl w')) (co w' u) = I w χ (co w u) * C u`. Introduce `χ u`. Rewrite using `[← Finset.mul_prod_erase P _ hwP, Function.update_self]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w' hw' => by rw [Function.update_of_ne (hne w' hw')]`. Set `L : ((Fin n × Fin d → Fv F (pl w)) → ℂ) →ₗ[ℂ] ((Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → ℂ) × ((Fin n × Fin d → AF F) → ℂ))` to `{ toFun := fun χ => (Set.indicator (H : Set _) fun u => I w χ (co w u) * C u, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F (pl w)) χ r) map_add' := fun a b => Prod.ext (funext fun u => by`. Distinguish the cases in `hu : u ∈ (H : Set _)`. Simplify using `only [Set.indicator_of_mem hu, map_add, Pi.add_apply, Prod.fst_add, add_mul]`.
+
+Simplify using `only [Set.indicator_of_notMem hu, Prod.fst_add, Pi.add_apply, add_zero])`. Use the proof step `(funext fun _ => add_mul _ _ _)`. Use the proof step `map_smul' := fun c a => Prod.ext (funext fun u => by`. Distinguish the cases in `hu : u ∈ (H : Set _)`. Simplify using `only [Set.indicator_of_mem hu, map_smul, Pi.smul_apply, Prod.smul_fst, smul_eq_mul, RingHom.id_apply, mul_assoc]`.
+
+Simplify using `only [Set.indicator_of_notMem hu, Prod.smul_fst, Pi.smul_apply, smul_zero, RingHom.id_apply])`. Use the proof step `(funext fun _ => mul_assoc _ _ _) }`. Establish `hLe : ∀ χ, (Set.indicator (H : Set _) fun u => ∏ w' ∈ P, I w' (Function.update φ (pl w) χ (pl w')) (co w' u), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ (pl w) χ)) = L χ` using `fun χ => Prod.ext (by simp only [hprod]; rfl) (er χ).symm`. Set `N : Submodule ℂ ((Fin n × Fin d → Fv F (pl w)) → ℂ)` to `GlobalTheory.WeilM.SB _ ⊓ R.comap L`. Establish `hvacN : M.vac (pl w) ∈ N`.
+
+Use `⟨(hM.vac _).1, ?_⟩` and prove the remaining obligations. Use `show L _ ∈ R`. Rewrite using `[← hLe]`. Use `ih hSP _ (fun v => ?_) (fun v hv => ?_)` and prove the remaining obligations. Distinguish the cases in `e : v = pl w`.
+
+Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(hM.vac _).1`. Rewrite using `[Function.update_of_ne e]`. Conclude with `hφ1 v`.
+
+Distinguish the cases in `e : v = pl w`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne e]`. Use `hφ2 v fun w' hw' => ?_` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hw' with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `fun e' => e e'.symm`. Conclude with `hv w' h`. Establish `hstA : ∀ x ∈ A w, ∀ χ ∈ N, GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt ψ (pl w)) (GlobalTheory.LatVac.locCo M.co (pl w) x) χ ∈ N`.
+
+Introduce `x hx χ hχ`. Take `⟨hxat, hxH⟩` from `hA w hwP x hx`. Establish `hsb` using `GlobalTheory.SchrSB.schr_mem_SB ψ hstd.1 (pl w) (GlobalTheory.LatVac.locCo M.co (pl w) x) χ hχ.1`. Establish `hact` using `GlobalTheory.VacBridge.rho_acts_locCo M.co ψ (pl w) x hxat χ`. Use `⟨hsb, ?_⟩` and prove the remaining obligations.
+
+Use `show L _ ∈ R`. Establish `hR` using `hRA w hwP x hx (L χ) hχ.2`. Use `hR using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext (funext fun u => ?_) ?_` and prove the remaining obligations. Use `show Set.indicator (H : Set _) (fun u => I w _ (co w u) * C u) u = Set.indicator (H : Set _) (fun u => I w χ (co w u) * C u) (u + x)`.
+
+Establish `hC : C (u + x) = C u` using `Finset.prod_congr rfl fun w' hw' => by`. Rewrite using `[hloc w hwP w' (Finset.mem_of_mem_erase hw') (Finset.ne_of_mem_erase hw') x hx u]`. Distinguish the cases in `hu : u ∈ (H : Set _)`. Establish `hu' : u + x ∈ (H : Set _)` using `H.add_mem hu hxH`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem hu', hC, hadd w hwP x hx u, (hL w hwP).2.1 x hx χ hχ.1 _ hsb hact (co w u)]`.
+
+Establish `hu' : u + x ∉ (H : Set _)` using `fun h => hu (by simpa using H.sub_mem h hxH)`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem hu']`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F (pl w)) _ r = M.co.rho ψ x (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F (pl w)) χ r)`. Rewrite using `[er, er, GlobalTheory.BigNZ.Fam.acts hM hfam f hχ.1 hact]`. Establish `hstA' : ∀ y ∈ A' w, ∀ χ ∈ N, GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt ψ (pl w)) (GlobalTheory.LatVac.locCo M.co (pl w) y) χ ∈ N`.
+
+Introduce `y hy χ hχ`. Establish `hyat` using `hA' w hwP y hy`. Establish `hsb` using `GlobalTheory.SchrSB.schr_mem_SB ψ hstd.1 (pl w) (GlobalTheory.LatVac.locCo M.co (pl w) y) χ hχ.1`. Establish `hact` using `GlobalTheory.VacBridge.rho_acts_locCo M.co ψ (pl w) y hyat χ`. Use `⟨hsb, ?_⟩` and prove the remaining obligations.
+
+Use `show L _ ∈ R`. Establish `hR` using `hRA' w hwP y hy (L χ) hχ.2`. Use `hR using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext (funext fun u => ?_) ?_` and prove the remaining obligations. Use `show Set.indicator (H : Set _) (fun u => I w _ (co w u) * C u) u = ψ (symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod …`.
+
+Distinguish the cases in `hu : u ∈ (H : Set _)`. Take `⟨x, hx, hcx, hsx⟩` from `hrep w hwP u`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem hu, ← hcx, (hL w hwP).2.2 y hy χ hχ.1 _ hsb hact x hx, hsx y hy, mul_assoc]`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem hu, mul_zero]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F (pl w)) _ r = M.co.rho ψ y (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F (pl w)) χ r)`.
+
+Rewrite using `[er, er, GlobalTheory.BigNZ.Fam.acts hM hfam f hχ.1 hact]`. Establish `hst : ∀ p, ∀ χ ∈ N, GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt ψ (pl w)) p χ ∈ N`. Introduce `p χ hχ`. Take `⟨u, hu, rfl⟩` from `exists_at_locCo M.co (pl w) p`. Take `⟨x, hx, y, hy, rfl⟩` from `hdec w hwP u hu`.
+
+Rewrite using `[map_add]`. Conclude with `schr_add_mem _ N _ _ (hstA x hx) (hstA' y hy) χ hχ`. Establish `hN : N = GlobalTheory.WeilM.SB _` using `GlobalTheory.T.schroedinger_irreducible_finitePlaceCompletion (pl w) (GlobalTheory.LatVac.psiAt ψ (pl w)) (GlobalTheory.SchrSB.continuous_psiAt ψ hstd.1 _) (GlobalTheory.PsiNontriv.psiAt_ne_one ψ hstd _) N inf_le_left hst (M.vac (pl w)) hvacN (hM.vac _).2.1`. Establish `hmem : φ (pl w) ∈ N` using `hN ▸ hφ1 (pl w)`. Establish `h2 : L (φ (pl w)) ∈ R` using `hmem.2`.
+
+Rewrite `h2` using `[← hLe, Function.update_eq_self]`. Conclude with `h2`.
+-/
 theorem rel_of_vac : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {Y : Spc F E d} (M : Model σ X Y) (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → M.IsGood ψ →
     ∀ {ι : Type} (P : Finset ι) (pl : ι → HeightOneSpectrum (𝓞 F)), Set.InjOn pl P →

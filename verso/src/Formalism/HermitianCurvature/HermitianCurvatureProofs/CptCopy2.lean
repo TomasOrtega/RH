@@ -8,6 +8,11 @@ open scoped ENNReal
 noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Take `⟨C₂, hC₂, hPt⟩` from `ptBound_dec_allCpt hA`. Take `⟨c₃, hc₃⟩` from `limTopN_cut_of_inCC`. Take `⟨Cc, hCc⟩` from `limZeroN_of_formLimit Cb`. Take `⟨Cc', hE⟩` from `limE_of_limEvTCpt hA Cb`. Use `⟨C₂, c₃, Cc, Cc', hC₂, ?_⟩` and prove the remaining obligations.
+
+Introduce `Wp Wq _ _ _ _ _ _ P q F Λ A χ nn Y K N hΛ hK hKN hχ hnn hCb hF hFA hth1 hth2 hth3 hWG hLG hI5 hLim hBd`. Conclude with `hPt Wp Wq P q F Λ 1 χ nn Y K N Cb hΛ one_pos hK hKN hχ hnn hCb hF hWG hLG hI5 (hc₃ Wp Wq P q nn χ F A hth1 hχ hFA hF) (fun ε hε => hCc Wp Wq P q F χ ε A N nn Y hCb hχ hε hF hFA hth2) (hE Wp Wq P q F χ nn A N Y hCb hχ (fun y => (hnn y).le) hF hFA hth3 hLim hBd) (lemB_one q F)`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.CutBPEq.ptBound_main_limEvTCpt (hA : P5.ThmPActualCpt) (Cb : ℝ) : ∃ C₂ c₃ Cc Cc' : ℝ, 0 < C₂ ∧
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
       [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (q : KB.Pl P Wp Wq)
@@ -43,6 +48,11 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Take `⟨C₂, c₃, Cc, Cc', hC₂, hPt⟩` from `ptBound_main_limEvTCpt hA Cb`. Take `⟨C₄, hC₄⟩` from `thmBpOfPartsSh C₃ CΛ C₀ C₂ 0 hC₃ hCΛ hC₀ hC₂`. Use `⟨C₄, c₃, Cc, Cc', ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq Wqp Wqm _ _ _ _ _ _ _ _ _ _ _ _ up up' um um' p pp pm f Ap Am ApPt AmPt b Λ A₁ n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hzp hzp' hzm hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf hAp hAm hdp hdm hth1 hth2 hth3 hAms hexp hWGp hLGp hWGm hLGm hI5p hI5m hDp hDm hBdp hBdm`. Establish `hNorm` using `hN P Wp Wq Wqp Wqm up up' um um' p pp pm f Ap Am ApPt AmPt b n₀ p₀ hzp hzp' hzm hzm' hAms`.
+
+Establish `hReg` using `Formalism.FourierDecayAlt.P.regularity_at_place p f b C₃ (2 * p₀ + n₀) (by linarith) hexp`. Establish `hPp` using `hPt Wp Wqp (shP P up up') pp (fpmSh pp f Ap p₀) Λ A₁ χ nnp Yp K N hΛ hK hKN hχ hnnp hDDp (ckOn_fpmSh pp p₀ hf hAp) hdp hth1 hth2 hth3 hWGp hLGp hI5p hDp hBdp`. Establish `hPm` using `hPt Wp Wqm (shP P um um') pm (fpmSh pm f Am p₀) Λ A₁ χ nnm Ym K N hΛ hK hKN hχ hnnm hDDm (ckOn_fpmSh pm p₀ hf hAm) hdm hth1 hth2 hth3 hWGm hLGm hI5m hDm hBdm`. Conclude with `hC₄ P Wp Wq Wqp Wqm up up' um um' p pp pm f _ _ b Λ 1 n₀ p₀ hb hΛ hΛb one_pos (by simp) hT hn₀ hp₀ (ttp_eq p pp hzp hzp') (ttp_eq p pm hzm hzm') hNorm hPp hPm hReg`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.CutBPEq.thmBpAt_eq_limEvTCpt (hA : P5.ThmPActualCpt) (hN : NormAtShOfAmaps) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ)
     (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' : ℝ, ∀ (P : M.Par) (Wp Wq Wqp Wqm : Type)
@@ -99,6 +109,13 @@ open scoped ENNReal
 noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Take `⟨C₄, c₃, Cc, Cc', h⟩` from `thmBpAt_eq_limEvTCpt hA Formalism.FourierDecayAlt.P.CutBP2.normaliser_across_places Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cn, hn⟩` from `limEvT_fpm_of_NFCpt hA h1 h2 h3 h4 Cb`. Use `⟨C₄, c₃, Cc, Cc', Cn, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWGp hLGp hWGm hLGm hI5p hI5m hBdp hBdm`. Establish `hth4' : Cn * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ (A₀ - ((n₀ * (P.r + 1) : ℕ) : ℝ)) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `by linarith`.
+
+Establish `hLp : LimEvT S.pp χ (fpmSh S.pp f S.Ap p₀) Yp N`. Establish `e` using `fpmSh_eq_fpm S.pp f S.Ap p₀`. Establish `k` using `hn Wp S.Wqp (shP P S.up S.up') S.pp (fun g => (f g).comp (S.Ap g)) (A₀ - ((n₀ * (P.r + 1) : ℕ) : ℝ)) p₀ χ Yp N ⟨hχ, hDDp, ckOn_compSh hf (ckOn_of_polyOp S.polyP), inCC_compSh S.pp hfA S.polyP, hth4', hN2⟩`. Conclude with `Eq.mpr (congrArg (fun F => LimEvT S.pp χ F Yp N) e) k`. Establish `hLm : LimEvT S.pm χ (fpmSh S.pm f S.Am p₀) Ym N`.
+
+Establish `e` using `fpmSh_eq_fpm S.pm f S.Am p₀`. Establish `k` using `hn Wp S.Wqm (shP P S.um S.um') S.pm (fun g => (f g).comp (S.Am g)) (A₀ - ((n₀ * (P.r + 1) : ℕ) : ℝ)) p₀ χ Ym N ⟨hχ, hDDm, ckOn_compSh hf (ckOn_of_polyOp S.polyM), inCC_compSh S.pm hfA S.polyM, hth4', hN2⟩`. Conclude with `Eq.mpr (congrArg (fun F => LimEvT S.pm χ F Ym N) e) k`. Conclude with `h P Wp Wq S.Wqp S.Wqm S.up S.up' S.um S.um' p S.pp S.pm f S.Ap S.Am S.ApPt S.AmPt b Λ (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - ((n₀ * (P.r + 1) : ℕ) : ℝ)) n₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ S.hzp S.hzp' S.hzm S.hzm' hK hKN hχ hnnp hnnm hDDp hDDm hf (ckOn_of_polyOp S.pol …`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.CutBPEq.thmBpAt_eq_NFRCpt (hA : P5.ThmPActualCpt) (h1 : NFTopFormAllCpt) (h2 : NFTopPtwAll) (h3 : NFTopDomAll)
     (h4 : NFTopIdAll) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' Cc'' : ℝ, ∀ (P : M.Par) (Wp Wq : Type)

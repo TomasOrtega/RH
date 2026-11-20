@@ -11,6 +11,9 @@ def IsLogA (ε : PreTilt ↥(PadicComplexInt l) l) (y : Reformulated.AutPerF.BdR
     (algebraMap (Reformulated.AutPerF.Ainf l (OC l)) (Reformulated.AutPerF.BdRPlus l (OC l))
       (WittVector.teichmuller l ε) - 1) ^ i ∈ RingHom.ker (Reformulated.AutPerF.BdRPlus.thetaC l (PadicComplexInt l)) ^ n
 
+/- English proof (translation)
+Establish `hk : RingHom.ker g = (RingHom.ker f).map c`. Use extensionality with `z`. Take `⟨x, rfl⟩` from `c.surjective z`. Rewrite using `[Ideal.apply_mem_of_equiv_iff, RingHom.mem_ker, RingHom.mem_ker, h]`. Rewrite using `[hk, ← Ideal.map_pow, Ideal.apply_mem_of_equiv_iff]`.
+-/
 theorem mem_ker_pow_iff_of_equiv {A B C : Type*} [CommRing A] [CommRing B] [CommRing C]
     (c : A ≃+* B) (f : A →+* C) (g : B →+* C) (h : ∀ y, g (c y) = f y) (n : ℕ) (y : A) :
     y ∈ RingHom.ker f ^ n ↔ c y ∈ RingHom.ker g ^ n := by
@@ -20,10 +23,16 @@ theorem mem_ker_pow_iff_of_equiv {A B C : Type*} [CommRing A] [CommRing B] [Comm
     rw [Ideal.apply_mem_of_equiv_iff, RingHom.mem_ker, RingHom.mem_ker, h]
   rw [hk, ← Ideal.map_pow, Ideal.apply_mem_of_equiv_iff]
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (RingHom.ext_rat (c.toRingHom.comp (algebraMap ℚ A)) (algebraMap ℚ B)) q`.
+-/
 theorem ringEquiv_algebraMap_rat {A B : Type*} [CommRing A] [CommRing B] [Algebra ℚ A] [Algebra ℚ B]
     (c : A ≃+* B) (q : ℚ) : c (algebraMap ℚ A q) = algebraMap ℚ B q :=
   RingHom.congr_fun (RingHom.ext_rat (c.toRingHom.comp (algebraMap ℚ A)) (algebraMap ℚ B)) q
 
+/- English proof (translation)
+Use `forall_congr' fun n => ?_` and prove the remaining obligations. Rewrite using `[mem_ker_pow_iff_of_equiv c _ _ hθ, map_sub, map_sum]`. Simplify using `only [map_mul, map_pow, map_sub, map_one, ringEquiv_algebraMap_rat, ha]`.
+-/
 theorem isLogA_iff_of_compat (c : Reformulated.AutPerF.BdRPlus l (OC l) ≃+* Formalism.Per6.BdRp l)
     (ha : ∀ a : Reformulated.AutPerF.Ainf l (OC l), c (algebraMap _ _ a) = Formalism.Per6.aD l a)
     (hθ : ∀ y, Formalism.Per6.θD l (c y) = Reformulated.AutPerF.BdRPlus.thetaC l (PadicComplexInt l) y)

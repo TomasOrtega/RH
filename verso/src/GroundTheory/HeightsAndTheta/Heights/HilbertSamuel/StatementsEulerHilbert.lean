@@ -19,6 +19,9 @@ def EulerHilbert.Statement : Prop :=
     ∀ b : K → ℤ, (∀ i : ℕ, 1 ≤ i → Subsingleton (KH.cechHc ι (KH.quotPart F Q) b i)) →
       (Module.finrank F (KH.cechHc ι (KH.quotPart F Q) b 0) : ℚ) = MvPolynomial.eval (fun k => (b k : ℚ)) p
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+-/
 theorem ringKrullDim_point :
     ringKrullDim (MRingOver ℚ pointIdx ⧸ (⊥ : Ideal (MRingOver ℚ pointIdx))) =
       ((0 + Fintype.card Unit : ℕ) : WithBot ℕ∞) := by
@@ -26,6 +29,11 @@ theorem ringKrullDim_point :
     MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
   simp
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Use `cell_succ_isEmpty (K := Unit) (ι := pointIdx) n` as an intermediate fact. Establish `: Subsingleton (KH.CechC ℚ pointIdx M (n + 1))` using `⟨fun f g => funext fun I => (IsEmpty.false I).elim⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[Subsingleton.elim x y]`.
+-/
 theorem cechHc_point_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver ℚ pointIdx) M] [Module ℚ M]
     [IsScalarTower ℚ (MRingOver ℚ pointIdx) M] (𝓜 : (Unit → ℤ) → Submodule ℚ M) (b : Unit → ℤ) (i : ℕ)
     (hi : 1 ≤ i) : Subsingleton (KH.cechHc pointIdx 𝓜 b i) := by
@@ -38,6 +46,9 @@ theorem cechHc_point_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   rw [Subsingleton.elim x y]
 
+/- English proof (translation)
+Take `⟨p, a₀, -, hp⟩` from `MultigradedHilbertPolynomial.proof EventualPolynomial.proof ℚ Unit pointIdx ⊥ 0 NumbersDVR.isMultiProjPrime_bot ringKrullDim_point`. Conclude with `⟨p, a₀, NumbersDVR.isMultiProjPrime_bot, hp, fun i hi => cechHc_point_subsingleton _ _ i hi⟩`.
+-/
 theorem EulerHilbert.hyps_inhabited :
     ∃ (p : MvPolynomial Unit ℚ) (a₀ : ℕ), NumbersDVR.IsMultiProjPrime (⊥ : Ideal (MRingOver ℚ pointIdx)) ∧
       (∀ a : Unit → ℕ, (∀ k, a₀ ≤ a k) →

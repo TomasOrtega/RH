@@ -21,6 +21,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Reg
 
+/- English proof (translation)
+Establish `hmem : ∀ a : (la.valuation K).valuationSubring, io a ∈ (algebraMap T.V T.Fr).range`. Introduce `a`. Apply `Formalism.L2.PjFree.mem_range_of_vV_nonneg` to reduce the goal to its premises. Rewrite using `[ho.2]`. Use `mul_nonneg (by positivity) ?_` and prove the remaining obligations.
+
+Distinguish the cases in `ha : (a : K) = 0`. Simplify using `[vLa, ha]`. Establish `hv : la.valuation K (a : K) ≤ 1` using `a.2`. Establish `hn : la.valuation K (a : K) ≠ 0` using `(la.valuation K).ne_zero_iff.2 ha`. Use `(WithZero.log_le_log hn one_ne_zero).2 hv` as an intermediate fact.
+
+Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vLa]`. Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`. Set `eq : T.V ≃+* (algebraMap T.V T.Fr).range` to `RingEquiv.ofBijective (algebraMap T.V T.Fr).rangeRestrict ⟨fun x y h => hinj (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`.
+
+Use `⟨eq.symm.toRingHom.comp ((io.comp (la.valuation K).valuationSubring.subtype).codRestrict _ hmem), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `congrArg Subtype.val (eq.apply_symm_apply ⟨io a, hmem a⟩)`.
+-/
 theorem exists_valuationSubring_hom_of_overLa {K : Type} [Field K] [NumberField K]
     (la : HeightOneSpectrum (𝓞 K)) (T : CDVR) (io : K →+* T.Fr) (e : ℕ) (ho : OverLa la T.V io e) :
     ∃ b : (la.valuation K).valuationSubring →+* T.V,
@@ -46,6 +55,23 @@ theorem exists_valuationSubring_hom_of_overLa {K : Type} [Field K] [NumberField 
   ext a
   exact congrArg Subtype.val (eq.apply_symm_apply ⟨io a, hmem a⟩)
 
+/- English proof (translation)
+Introduce `hST E _ _ _ H Dw l Xo c hL la hM a n m ws hws hv k _ _ _ y`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨p, φ, y', hy'⟩` from `hL.test k y`. Establish `: IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad`.
+
+Establish `hker : ∀ i, evR Xo c (ws i) y' ∈ RingHom.ker φ.toRingHom`. Introduce `i`. Use `GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n (ws i) (hws i) p.R k φ y' y hy'` as an intermediate fact. Rewrite `this` using `[hcon i]`. Conclude with `this.symm`.
+
+Take `⟨M, hMmax, hle⟩` from `Ideal.exists_le_maximal _ (RingHom.ker_ne_top φ.toRingHom)`. Set `_ : Field (p.R ⧸ M)` to `Ideal.Quotient.field M`. Establish `: Module.Finite c.F (p.R ⧸ M)` using `finite_of_finite_type_of_isJacobsonRing c.F (p.R ⧸ M)`. Establish `: NumberField (p.R ⧸ M)` using `NumberField.of_module_finite c.F (p.R ⧸ M)`. Take `⟨T, κ, e, ho, hfin⟩` from `GlobalTheory.locFld c.F (p.R ⧸ M) (algebraMap c.F (p.R ⧸ M)) la`.
+
+Use `set io : c.F →+* T.Fr := κ.comp (algebraMap c.F (p.R ⧸ M)) with hio`. Set `_ : Algebra c.F T.Fr` to `io.toAlgebra`. Set `ψ : p.R →ₐ[c.F] T.Fr` to `{ κ.comp (Ideal.Quotient.mk M) with commutes' := fun _ => rfl }`. Take `⟨z, hz⟩` from `hL.bc p.R T.Fr ψ y'`. Establish `hz0 : ∀ i, evR Xo c (ws i) z = 0`.
+
+Introduce `i`. Rewrite using `[GlobalTheory.Reg.evR_baseChange_of_isReduced E H Dw l Xo c hL a n (ws i) (hws i) p.R T.Fr ψ y' z hz]`. Use `show κ (Ideal.Quotient.mk M _) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (hle (hker i)), map_zero]`. Take `⟨Y, hPI⟩` from `hM`.
+
+Take `⟨b, hb⟩` from `exists_valuationSubring_hom_of_overLa la T io e ho`. Establish `hIF : IntFramesSt Xo c` using `intFrames Xo c Out.CubePf.cubePull (lieFree Xo c) (thetaFrame_of Xo c hST) (fun S _ _ y => hL.test S y)`. Take `⟨w, t, hw⟩` from `intFr_of_model hIF T io Y hPI b hb z`. Take `⟨i, hi⟩` from `hv _ ⟨PtV.mk la ho w hfin () trivial, rfl⟩`. Apply `hi` to reduce the goal to its premises.
+
+Use `show nval T.V e (evI w (ws i)) = ⊤`. Establish `h0 : evI w (ws i) = 0`. Use `hL.wt a n (ws i) (hws i) T.Fr t z w.1 ⟨p, ψ, y', hz⟩ w.2.1 hw` as an intermediate fact. Rewrite `this` using `[hz0 i, mul_zero]`. Conclude with `this`.
+
+Rewrite using `[h0, nval_zero]`.
+-/
 theorem noCommonZero_of_finite_values : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c → ∀ la : HeightOneSpectrum (𝓞 c.F), ModelAt Xo c la → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n m : ℕ) (ws : Fin m → Rul Xo c), (∀ i, ws i ∈ sec Xo c a n) → (∀ v ∈ Formalism.L2.PjFree.valSet Xo c (Formalism.L2.PjFree.algCls Xo c) la, ∃ i, v (ws i) ≠ ⊤) → Formalism.L2.PjFree.NoCommonZero Xo c ws := by
   intro hST E _ _ _ H Dw l Xo c hL la hM a n m ws hws hv k _ _ _ y
   by_contra hcon

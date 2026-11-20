@@ -10,6 +10,9 @@ namespace GlobalTheory.DominantRootSums
 
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
+/- English proof (translation)
+Simplify using `[_root_.PI.UpqRep.root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 private lemma sum_index_mul_root_eq_sub' {n : ℕ} (a b : Fin n) :
     ∑ i : Fin n, ((i : ℕ) : ℝ) * _root_.PI.UpqRep.root a b i = ((a : ℕ) : ℝ) - ((b : ℕ) : ℝ) := by
   simp [_root_.PI.UpqRep.root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]
@@ -17,6 +20,17 @@ private lemma sum_index_mul_root_eq_sub' {n : ℕ} (a b : Fin n) :
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
+/- English proof (translation)
+Introduce `n ε Λ a b hab hdom`. Unfold `_root_.PI.UpqRep.CDom at hdom`. Take `⟨c, hc, hsum⟩` from `hdom`. Rewrite `hsum` using `[show Λ - (Λ + _root_.PI.UpqRep.root a b) = -_root_.PI.UpqRep.root a b by abel]`. Establish `h1` using `congrArg (fun v : Fin n → ℝ => ∑ i : Fin n, ((i : ℕ) : ℝ) * v i) hsum`.
+
+Simplify using `only [Pi.neg_apply, mul_neg, Finset.sum_neg_distrib, sum_index_mul_root_eq_sub'] at h1`. Establish `hR : ∑ i : Fin n, ((i : ℕ) : ℝ) * (∑ a', ∑ b', (c a' b' : ℝ) • _root_.PI.UpqRep.root a' b') i = ∑ a', ∑ b', (c a' b' : ℝ) * (((a' : ℕ) : ℝ) - ((b' : ℕ) : ℝ))`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_index_mul_root_eq_sub', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `h1` using `[hR]`.
+
+Establish `hle : ∑ a', ∑ b', (c a' b' : ℝ) * (((a' : ℕ) : ℝ) - ((b' : ℕ) : ℝ)) ≤ 0`. Use `Finset.sum_nonpos fun a' _ => Finset.sum_nonpos fun b' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : c a' b' = 0`. Simplify using `[h0]`. Establish `hlt : ((a' : ℕ) : ℝ) < ((b' : ℕ) : ℝ)` using `by exact_mod_cast (hc a' b' h0).1`.
+
+Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)`. Establish `hab' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.DominantRootSums.not_cDom_add_root : ∀ (n : ℕ) (ε : Fin n → Bool) (Λ : Fin n → ℝ) (a b : Fin n), a < b →
     ¬ _root_.PI.UpqRep.CDom ε (Λ + _root_.PI.UpqRep.root a b) Λ := by
   intro n ε Λ a b hab hdom

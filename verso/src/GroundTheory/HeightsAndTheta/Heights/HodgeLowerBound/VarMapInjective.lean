@@ -19,6 +19,9 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {K 
 
 def stepTw {N : ℕ} (i : Fin (N - 1)) : Fin N := Fin.castLE (Nat.sub_le N 1) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem stepTw_val {N : ℕ} (i : Fin (N - 1)) : ((stepTw i : Fin N) : ℕ) = i := rfl
 
 structure Match {D : ComponentDataHodge II Ψ K ι Ω E} (Pl : PlueckerData D.toComponentData)

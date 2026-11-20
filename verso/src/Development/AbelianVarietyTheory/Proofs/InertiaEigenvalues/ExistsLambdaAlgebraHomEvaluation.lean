@@ -12,6 +12,11 @@ namespace GlobalTheory.NewPrime.LamHom
 def chr {B ι : Type} [CommRing B] [Fintype ι] {n : ℕ} [NeZero n] (u : ι → B) (hu : ∀ q, u q ^ n = 1) :
     Multiplicative (ι → ZMod n) →* B := GlobalTheory.RootCharacter.rootChar u hu
 
+/- English proof (translation)
+Use `haveI : Fact (1 < n) := ⟨hn⟩`. Express the relevant statement in the definitionally equal form `∏ p, u p ^ ((Pi.single q (1 : ZMod n) : ι → ZMod n) p).val = u q`. Rewrite using `[Finset.prod_eq_single q]`. Simplify using `[ZMod.val_one]`. Introduce `p _ hp`.
+
+Simplify using `[Pi.single_eq_of_ne hp]`. Simplify using the standard rewrite rules.
+-/
 theorem chr_single {B ι : Type} [CommRing B] [Fintype ι] [DecidableEq ι] {n : ℕ} [NeZero n] (hn : 1 < n) (u : ι → B)
     (hu : ∀ q, u q ^ n = 1) (q : ι) : chr u hu (Multiplicative.ofAdd (Pi.single q 1)) = u q := by
   haveI : Fact (1 < n) := ⟨hn⟩
@@ -22,6 +27,17 @@ theorem chr_single {B ι : Type} [CommRing B] [Fintype ι] [DecidableEq ι] {n :
     simp [Pi.single_eq_of_ne hp]
   · simp
 
+/- English proof (translation)
+Introduce `D N X i M ι _ B _ _ ξ _ hM hK hξ`. Establish `hp : (X.l i).Prime` using `(X.lPrime i).out`. Establish `hm : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i)` using `fun hu => X.O_l i (by simpa using hu.map (algebraMap (X.O0 i) (X.O i)))`. Establish `h4 : ((X.l i : ℕ) : B) ^ (nu X i + 1) = 0`. Establish `h` using `hK _ (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) hm)`.
+
+Rewrite `h` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[pow_succ]`. Conclude with `h`. Establish `hn : 1 < X.l i ^ M` using `Nat.one_lt_pow (by omega) hp.one_lt`. Use `haveI : NeZero (X.l i ^ M) := ⟨by omega⟩`.
+
+Establish `hu : ∀ q, (1 + ξ q) ^ (X.l i ^ M) = 1` using `fun q => KStar.Tree.one_add_pow_prime_pow_eq_one hp h4 hM (hξ q)`. Set `φ : abelian₂ X i M ι →ₐ[X.O0 i] B` to `MonoidAlgebra.lift (X.O0 i) B (Del X i M ι) (chr (fun q => 1 + ξ q) hu)`. Establish `hφ : ∀ x, φ (MonoidAlgebra.of (X.O0 i) (Del X i M ι) x) = chr (fun q => 1 + ξ q) hu x` using `fun x => MonoidAlgebra.lift_of _ x`. Use `⟨φ, fun F => ?_, fun d => ⟨(Units.map (φ : abelian₂ X i M ι →* B)).comp (delInv i M d), fun g => rfl, fun g => ?_⟩⟩` and prove the remaining obligations. Establish `: φ.comp (toLam X i M ι) = MvPolynomial.aeval ξ`.
+
+Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, toLam, MvPolynomial.aeval_X, MvPolynomial.aeval_X, map_sub, map_one, hφ]`. Use `chr_single hn (fun q => 1 + ξ q) hu q` as an intermediate fact. Rewrite using `[sub_eq_iff_eq_add']`. Use `this` and compare the differences between its conclusion and the goal.
+
+Conclude with `DFunLike.congr_fun this F`. Establish `h1 : ((delInv i M d g : (abelian₂ X i M ι)ˣ) : abelian₂ X i M ι) * MonoidAlgebra.of (X.O0 i) (Del X i M ι) (delAll X i M d g) = 1` using `Units.inv_mul ((MonoidAlgebra.of (X.O0 i) (Del X i M ι)).toHomUnits (delAll X i M d g))`. Establish `h2` using `congrArg φ h1`. Rewrite `h2` using `[map_mul, map_one, hφ]`. Conclude with `h2`.
+-/
 theorem exists_lamHom : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw) (M : ℕ) (ι : Type) [Fintype ι] (B : Type) [CommRing B] [Algebra (X.O0 i) B] (ξ : ι → B), 0 < nu X i → nu X i + 1 ≤ M → Kills i B → (∀ q, ξ q ^ X.l i ^ (M - nu X i - 1) = 0) → ∃ φ : abelian₂ X i M ι →ₐ[X.O0 i] B, (∀ F, φ (toLam X i M ι F) = MvPolynomial.aeval ξ F) ∧ ∀ d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M))), ∃ κ : GE N →* Bˣ, (∀ g, ((κ g : Bˣ) : B) = φ (delInv i M d g : (abelian₂ X i M ι)ˣ)) ∧ IsChar i κ ξ d := by
   intro D N X i M ι _ B _ _ ξ _ hM hK hξ
   classical

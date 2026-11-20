@@ -4,6 +4,23 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory.EtC.Tr
 
+/- English proof (translation)
+Introduce `Z X V T f y m s ⟨hs, hiso⟩ w`. Establish `hs' : ∀ j, (w ≫ s j) ≫ f = w ≫ y` using `fun j => by rw [Category.assoc, hs j]`. Use `⟨hs', ?_⟩` and prove the remaining obligations. Set `c : Cofan (fun _ : Fin m => V)` to `Cofan.mk (pullback f y) (fun j => pullback.lift (s j) (𝟙 V) (by rw [hs j, Category.id_comp]))`. Establish `hc : IsColimit c` using `by haveI : IsIso ((coproductIsCoproduct (fun _ : Fin m => V)).desc c) := hiso`.
+
+Conclude with `IsColimit.ofPointIso (coproductIsCoproduct (fun _ : Fin m => V))`. Set `c' : Cofan (fun _ : Fin m => T)` to `Cofan.mk (pullback f (w ≫ y)) (fun j => pullback.lift (w ≫ s j) (𝟙 T) (by rw [hs' j, Category.id_comp]))`. Set `g : pullback f (w ≫ y) ⟶ pullback f y` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ w) (by rw [pullback.condition, Category.assoc])`. Establish `hg1 : g ≫ pullback.fst f y = pullback.fst f (w ≫ y)` using `pullback.lift_fst _ _ _`. Establish `hg2 : g ≫ pullback.snd f y = pullback.snd f (w ≫ y) ≫ w` using `pullback.lift_snd _ _ _`.
+
+Establish `hA : IsPullback (pullback.snd f (w ≫ y)) g w (pullback.snd f y)`. Use `IsPullback.of_bot (v₂₁ := pullback.fst f y) (v₂₂ := y) (h₃₁ := f) ?_ hg2.symm (IsPullback.of_hasPullback f y).flip` and prove the remaining obligations. Rewrite using `[hg1]`. Conclude with `(IsPullback.of_hasPullback f (w ≫ y)).flip`. Set `α : Discrete.functor (fun _ : Fin m => T) ⟶ Discrete.functor (fun _ : Fin m => V)` to `Discrete.natTrans (fun _ => w)`.
+
+Establish `hsq : ∀ j, w ≫ c.ι.app ⟨j⟩ = c'.ι.app ⟨j⟩ ≫ g`. Introduce `j`. Use `show w ≫ pullback.lift (s j) (𝟙 V) _ = pullback.lift (w ≫ s j) (𝟙 T) _ ≫ g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst, hg1, pullback.lift_fst]`.
+
+Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, hg2, ← Category.assoc, pullback.lift_snd, Category.comp_id, Category.id_comp]`. Establish `hcc : α ≫ c.ι = c'.ι ≫ (Functor.const _).map g`. Use extensionality with `⟨j⟩`. Conclude with `hsq j`. Establish `hpb : ∀ j, IsPullback (c'.ι.app j) (α.app j) g (c.ι.app j)`.
+
+Introduce and unpack `⟨j⟩`. Use `IsPullback.of_right (h₁₂ := pullback.snd f (w ≫ y)) (v₁₃ := w) (h₂₂ := pullback.snd f y) ?_ (hsq j).symm hA` and prove the remaining obligations. Establish `e1 : c'.ι.app ⟨j⟩ ≫ pullback.snd f (w ≫ y) = 𝟙 T` using `pullback.lift_snd _ _ _`. Establish `e2 : c.ι.app ⟨j⟩ ≫ pullback.snd f y = 𝟙 V` using `pullback.lift_snd _ _ _`. Rewrite using `[e1, e2]`.
+
+Use `show IsPullback (𝟙 T) w w (𝟙 V)`. Conclude with `IsPullback.id_horiz w`. Take `⟨hc'⟩` from `FinitaryPreExtensive.isUniversal_finiteCoproducts hc c' α g hcc (NatTrans.Equifibered.of_discrete _) hpb`. Establish `: Sigma.desc (fun j => pullback.lift (w ≫ s j) (𝟙 T) (by rw [hs' j, Category.id_comp])) = ((coproductIsCoproduct (fun _ : Fin m => T)).coconePointUniqueUpToIso hc').hom`. Apply `Sigma.hom_ext` to reduce the goal to its premises.
+
+Introduce `j`. Rewrite using `[Sigma.ι_desc]`. Conclude with `((coproductIsCoproduct (fun _ : Fin m => T)).comp_coconePointUniqueUpToIso_hom hc' ⟨j⟩).symm`. Rewrite using `[this]`. Use `infer_instance`.
+-/
 theorem splitBy_baseChange : ∀ {Z X V T : Scheme.{0}} {f : Z ⟶ X} {y : V ⟶ X} {m : ℕ} {s : Fin m → (V ⟶ Z)},
     GlobalTheory.EtC.Tr.SplitBy f y s → ∀ (w : T ⟶ V), GlobalTheory.EtC.Tr.SplitBy f (w ≫ y) (fun j => w ≫ s j) := by
   intro Z X V T f y m s ⟨hs, hiso⟩ w

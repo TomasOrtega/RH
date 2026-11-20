@@ -4,6 +4,9 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 
 namespace GlobalTheory.PDA
 
+/- English proof (translation)
+Introduce `B _ J δ N hN`. Use `⟨GlobalTheory.Cris.ExpBij.dpFil_le δ hN, fun n hn j hj ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.Cris.ExpBij.dpow_mem_dpFil_mul δ hN hj n`. Conclude with `GlobalTheory.Cris.ExpBij.dpFil_anti δ (Nat.le_mul_of_pos_left N (Nat.pos_of_ne_zero hn)) h`.
+-/
 theorem fil_isSubDPIdeal : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (N : ℕ), 1 ≤ N →
     δ.IsSubDPIdeal (fil δ N) := by
   intro B _ J δ N hN

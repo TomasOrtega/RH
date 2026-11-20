@@ -21,6 +21,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.AdjCodimTwo
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `[Place.ord] at hx`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible P.ring`. Take `⟨n, v, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hπ`.
+
+Establish `hπ0 : (π : K) ≠ 0` using `fun h => hπ.ne_zero (Subtype.ext h)`. Establish `hv0 : ((v : P.ring) : K) ≠ 0` using `fun h => v.ne_zero (Subtype.ext h)`. Establish `e : P.ord (((v : P.ring) * π ^ n : P.ring) : K) = n`. Use `push_cast`. Rewrite using `[P.ord_mul hv0 (pow_ne_zero _ hπ0), P.ord_eq_zero v.isUnit, P.ord_pow, P.ord_irreducible hπ]`.
+
+Simplify using the standard rewrite rules. Rewrite `hx` using `[e]`. Take `rfl : n = 1` from `by exact_mod_cast hx`. Rewrite using `[pow_one]`. Conclude with `(irreducible_isUnit_mul v.isUnit).2 hπ`.
+-/
 theorem irreducible_of_ord_one {k K : Type} [Field k] [Field K] {c : k →+* K} (P : Place c)
     (x : P.ring) (hx : P.ord (x : K) = 1) : Irreducible x := by
   have hx0 : x ≠ 0 := by
@@ -39,6 +46,53 @@ theorem irreducible_of_ord_one {k K : Type} [Field k] [Field K] {c : k →+* K} 
   rw [pow_one]
   exact (irreducible_isUnit_mul v.isUnit).2 hπ
 
+/- English proof (translation)
+Introduce `L K _ _ cL cK n Q hQ t u S E ψ f w θ hm hd hS hE hSt hEu hψ hc hf hw hθ hP`. Take `⟨hA1, hA2⟩` from `GlobalTheory.T.twoDimLocalModel_primePlaces_along_parameters cL Q hQ t u hm hd`. Take `⟨m, z, hzU, hzG⟩` from `GlobalTheory.T.isFreeModuleGenerator_kaehlerWedge_regularPair_cons cL Q hQ t u hm hd`. Establish `hxe : (fun i => ((Fin.cons t (Fin.cons u z : Fin (m + 1) → Q) : Fin (m + 2) → Q) i : L)) = (Fin.cons (t : L) (Fin.cons (u : L) (fun i => (z i : L)) : Fin (m + 1) → L) : Fin (m + 2) → L)`. Use function extensionality and compare the values at `i`.
+
+Use `Fin.cases rfl (fun j => ?_) i` and prove the remaining obligations. Use `Fin.cases rfl (fun k => rfl) j` and prove the remaining obligations. Establish `hzT` using `GlobalTheory.T.isTranscendenceBasis_of_kaehlerWedge_freeGenerator cL Q hQ _ _ (by omega) hzG`. Establish `hzO` using `GlobalTheory.T.formOrd_freeTopForm_eq_zero_of_isPrimeOf cL Q hQ _ _ hzG`. Rewrite `hzT`, `hzO` using `[hxe]`.
+
+Take `⟨F, hFr, hFu⟩` from `GlobalTheory.T.exists_residuePlace_of_twoDimLocalModel cL cK Q hQ t u hm hd S ψ hS hSt hψ hc`. Establish `hQS : ∀ q : Q, (q : L) ∈ S.ring` using `fun q => hS.1 q q.2`. Set `us : S.ring` to `⟨u, hQS u⟩`. Set `ts : S.ring` to `⟨t, hQS t⟩`. Set `zs : Fin m → S.ring` to `fun i => ⟨z i, hQS (z i)⟩`.
+
+Establish `hF1 : F.ord (ψ us) = 1` using `hFu us rfl`. Establish `hB4` using `GlobalTheory.T.residuePlace_eval_ne_zero_inv_mem_of_isUnit cL cK Q hQ S ψ F hS.1 hc hFr m z zs (fun _ => rfl) hzU`. Establish `hzF : ∀ i, ψ (zs i) ∈ F.ring` using `fun i => (hFr _).2 ⟨zs i, (z i).2, rfl⟩`. Establish `hTK` using `GlobalTheory.T.isTranscendenceBasis_residueField_uniformiser_cons cL cK S ψ hψ hc F m (ψ us) (fun i => ψ (zs i)) ⟨_, hzT⟩ hF1 hzF hB4`. Establish `hFO` using `GlobalTheory.T.formOrd_kaehlerWedge_uniformiser_residueIndependent_eq_zero cK F m (ψ us) (fun i => ψ (zs i)) hF1 hzF hB4 hTK`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : n = m + 1 := by`. Use `letI := cK.toAlgebra`. Establish `h1` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hw`. Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hTK`. Rewrite `h1`, `h2` using `[Cardinal.mk_fin]`.
+
+Conclude with `h1.trans h2.symm` after adjusting the coercions. Set `v : Fin (m + 1) → S.ring` to `Fin.cons us zs`. Establish `hv : (fun i => ψ (v i)) = (Fin.cons (ψ us) (fun i => ψ (zs i)) : Fin (m + 1) → K)`. Use function extensionality and compare the values at `i`. Conclude with `Fin.cases rfl (fun _ => rfl) i`.
+
+Establish `htv : (Fin.cons (ts : L) (fun i => (v i : L)) : Fin (m + 2) → L) = (Fin.cons (t : L) (Fin.cons (u : L) (fun i => (z i : L)) : Fin (m + 1) → L) : Fin (m + 2) → L)`. Use function extensionality and compare the values at `i`. Use `Fin.cases rfl (fun j => ?_) i` and prove the remaining obligations. Conclude with `Fin.cases rfl (fun _ => rfl) j`. Use `set Ω0 := (dForm cL (Fin.cons (t : L) (Fin.cons (u : L) (fun i => (z i : L)) : Fin (m + 1) → L) : Fin (m + 2) → L)) with hΩ0`.
+
+Use `set η := dForm cL (Fin.cons (f : L) (fun i => (w i : L)) : Fin (m + 1 + 1) → L) with hη`. Establish `hfreeL` using `(GlobalTheory.T.dvrPlace_topForm_orders_api cL (m + 2) _ hzT).1`. Take `⟨H, hH⟩` from `hfreeL.2 η`. Establish `ht_irr : Irreducible ts` using `irreducible_of_ord_one S ts hSt`. Take `⟨h, hhf, hhw⟩` from `GlobalTheory.T.residue_topForm_along_primeDivisor_adjunction cL cK (m + 1) S ψ hψ hc ts f v w H ht_irr hf (hv ▸ hTK) (htv ▸ hzT) (by rw [htv]; exact hH.symm)`.
+
+Rewrite `hhw` using `[hv]`. Establish `hne : ∀ {A M : Type} [CommRing A] [Nontrivial A] [AddCommGroup M] [Module A M] {ω : M}, IsFreeGen A ω → ω ≠ 0` using `fun hω h0 => one_ne_zero (hω.1 (a₁ := 1) (a₂ := 0) (by simp [h0]))`. Establish `hIK` using `GlobalTheory.T.dvrPlace_topForm_orders_api cK (m + 1) _ hTK`. Establish `hIL` using `GlobalTheory.T.dvrPlace_topForm_orders_api cL (m + 2) _ hzT`. Establish `hwne` using `hne (GlobalTheory.T.dvrPlace_topForm_orders_api cK (m + 1) _ hw).1`.
+
+Establish `hvne` using `hne hIK.1`. Establish `hΩne : Ω0 ≠ 0` using `hne hfreeL`. Establish `hψh : ψ h ≠ 0`. Introduce `h0`. Rewrite `hhw` using `[h0, zero_smul]`.
+
+Conclude with `hwne hhw`. Establish `hh0 : (h : L) ≠ 0` using `fun h0 => hψh (by rw [show h = 0 from Subtype.ext h0, map_zero])`. Establish `hf0 : (f : L) ≠ 0` using `fun h0 => hf.ne_zero (Subtype.ext h0)`. Establish `ht0 : (t : L) ≠ 0` using `fun h0 => ht_irr.ne_zero (Subtype.ext h0)`. Establish `hH0 : H ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hhf` using `[zero_mul]`. Conclude with `mul_ne_zero hh0 hf0 hhf`. Establish `hFw : F.formOrd (dForm cK (fun i => ψ (w i))) = F.ord (ψ h)`. Rewrite using `[hhw, (hIK.2 F).2.2.1 _ _ hvne hψh, hFO, add_zero]`.
+
+Establish `hPη : ∀ P : Place cL, P.IsPrimeOf Q → P.formOrd η = P.ord H`. Introduce `P hPQ`. Rewrite using `[← hH, (hIL.2 P).2.2.1 Ω0 H hΩne hH0, hzO P hPQ, add_zero]`. Establish `hPo : ∀ P : Place cL, P.ord (h : L) + P.ord (f : L) = P.ord H + P.ord (t : L)`. Introduce `P`.
+
+Rewrite using `[← P.ord_mul hh0 hf0, ← P.ord_mul hH0 ht0, hhf]`. Establish `hEt : E.ord (t : L) = 0` using `(hA2 E hE).resolve_right (by rw [hEu]; norm_num)`. Establish `hSu : S.ord (u : L) = 0` using `(hA2 S hS).resolve_left (by rw [hSt]; norm_num)`. Establish `hu0 : (u : L) ≠ 0`. Introduce `h0`.
+
+Rewrite `hEu` using `[h0]`. Simplify using `[Place.ord] at hEu`. Establish `hE1` using `GlobalTheory.T.eq_unit_mul_zpow_regularLocalModel_dimTwo cL Q hQ t u hm hd E hE hEu`. Use `set θ' := Finsupp.mapDomain (fun g : S.ring => (g : L)) θ with hθ'`. Establish `hφs : ∀ g ∈ (Finsupp.single h 1 - θ).support, ψ g ≠ 0`.
+
+Introduce `g hg`. Break down `Finset.mem_union.1 (Finsupp.support_sub hg) with hg | hg` into its components or cases. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg)]`. Conclude with `hψh`. Conclude with `hθ g hg`.
+
+Establish `hmc : Finsupp.mapDomain (fun g : S.ring => (g : L)) (Finsupp.single h 1 - θ) = Finsupp.single (h : L) 1 - θ'`. Rewrite using `[Finsupp.mapDomain_sub, Finsupp.mapDomain_single]`. Establish `hmψ : Finsupp.mapDomain ψ (Finsupp.single h 1 - θ) = Finsupp.single (ψ h) 1 - Finsupp.mapDomain ψ θ`. Rewrite using `[Finsupp.mapDomain_sub, Finsupp.mapDomain_single]`. Establish `hφP : ∀ P : Place cL, P.IsPrimeOf Q → P.ring ≠ S.ring → P.ring ≠ E.ring → P.ordQ (Finsupp.mapDomain (fun g : S.ring => (g : L)) (Finsupp.single h 1 - θ)) = 0`.
+
+Introduce `P hPQ hPS hPE`. Establish `h1` using `hP P hPQ hPS hPE`. Rewrite `h1` using `[Place.disc, map_add, Place.ordQ_single, hPη P hPQ]`. Establish `hPt : P.ord (t : L) = 0`. Assume the negation of the conclusion as `hne'`.
+
+Establish `h0 : 0 ≤ P.ord (t : L)` using `(P.ord_nonneg_iff ht0).2 (hPQ.1 t t.2)`. Conclude with `hPS (hA1 P S hPQ hS (lt_of_le_of_ne h0 (Ne.symm hne')) (by rw [hSt]; norm_num))`. Establish `h2` using `hPo P`. Rewrite `h2` using `[hPt, add_zero]`. Rewrite using `[hmc, map_sub, Place.ordQ_single]`.
+
+Establish `h3 : ((P.ord (h : L) : ℤ) : ℚ) = (P.ord H : ℚ) - (P.ord (f : L) : ℚ)`. Rewrite using `[← h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE2` using `GlobalTheory.T.ordQ_mapDomain_residuePlace_transport cL cK Q u S E ψ F hS.1 hSu hu0 hψ hFr hFu hE1 _ hφs hφP`. Rewrite `hE2` using `[hmc, hmψ, map_sub, map_sub, Place.ordQ_single, Place.ordQ_single]`. Use `⟨F, hFr, ?_⟩` and prove the remaining obligations. Rewrite using `[Place.disc, Place.disc, hFw, map_add, Place.ordQ_single, hPη E hE]`.
+
+Establish `h2` using `hPo E`. Rewrite `h2` using `[hEt, add_zero]`. Establish `h3 : ((E.ord H : ℤ) : ℚ) = (E.ord (h : L) : ℚ) + (E.ord (f : L) : ℚ)`. Rewrite using `[← h2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem disc_residue_eq : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (n : ℕ) (Q : Subring L) (hQ : IsLocModel cL Q) (t u : Q)
   (S E : Place cL) (ψ : S.ring →+* K) (f : S.ring) (w : Fin n → S.ring) (θ : S.ring →₀ ℚ),
   Ideal.span {t, u} = (letI := hQ.isLocalRing; IsLocalRing.maximalIdeal Q) →

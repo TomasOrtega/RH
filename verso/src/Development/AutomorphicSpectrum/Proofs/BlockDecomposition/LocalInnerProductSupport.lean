@@ -14,6 +14,9 @@ section
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Simplify using `only [Units.val_mul, coe_torusPow, Matrix.mul_diagonal, Fin.forall_fin_succ, Fin.forall_fin_two, Ad3.LFS.blk]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Fin.sum_univ_three, Matrix.diagonal_apply]`. Establish `e : ∀ a b c d t : F, t * a * b + t * c * d = (a * b + c * d) * t` using `fun a b c d t => by ring`. Simplify using `only [e]`. The claim follows by propositional logic.
+-/
 theorem entries_iff (h : GL (Fin 2) F) (l : Fin 3 → ℤ) (x : Fin 2 → F) :
     (∀ i j, ((h : Matrix (Fin 2) (Fin 2) F) * Ad3.LFS.blk x *
         ((torusPow F 3 l : GL (Fin 3) F) : Matrix (Fin 3) (Fin 3) F)) i j ∈ 𝒪[F]) ↔
@@ -28,6 +31,15 @@ theorem entries_iff (h : GL (Fin 2) F) (l : Fin 3 → ℤ) (x : Fin 2 → F) :
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ h l`. Establish `h1 : ∀ X : Matrix (Fin 2) (Fin 3) F, (∀ i j, X i j ∈ 𝒪[F]) → Ad3.LFS.Φ0 F X = 1` using `fun X hX => Set.indicator_of_mem (s := {X : Matrix (Fin 2) (Fin 3) F | ∀ i j, X i j ∈ 𝒪[F]}) hX 1`. Establish `h0 : ∀ X : Matrix (Fin 2) (Fin 3) F, (¬ ∀ i j, X i j ∈ 𝒪[F]) → Ad3.LFS.Φ0 F X = 0` using `fun X hX => Set.indicator_of_notMem (s := {X : Matrix (Fin 2) (Fin 3) F | ∀ i j, X i j ∈ 𝒪[F]}) hX 1`. Use `⟨fun hn => ?_, fun hy => ?_⟩` and prove the remaining obligations. Unfold `Ad3.LFS.inn`.
+
+Establish `hz : ∀ x : Fin 2 → F, Ad3.LFS.Φ0 F ((h : Matrix (Fin 2) (Fin 2) F) * Ad3.LFS.blk x * ((torusPow F 3 l : GL (Fin 3) F) : Matrix (Fin 3) (Fin 3) F)) = 0` using `fun x => h0 _ fun q => hn ((entries_iff h l x).1 q).1`. Simplify using `[hz]`. Unfold `Ad3.LFS.inn`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : ∀ i, (((torusPow F 2 ![l 2, l 2] * h : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]`.
+
+Use `beta_reduce`. Rewrite using `[h1 _ ((entries_iff h l x).2 ⟨hy, hx⟩), one_mul]`. Conclude with `(Set.indicator_of_mem (s := {x : Fin 2 → F | ∀ i, (((torusPow F 2 ![l 2, l 2] * h : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]}) (a := x) hx (fun x : Fin 2 → F => ((ψ (-x 1) : Circle) : ℂ))).symm`. Use `beta_reduce`. Rewrite using `[h0 _ fun q => hx ((entries_iff h l x).1 q).2, zero_mul]`.
+
+Conclude with `(Set.indicator_of_notMem (s := {x : Fin 2 → F | ∀ i, (((torusPow F 2 ![l 2, l 2] * h : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]}) (a := x) hx (fun x : Fin 2 → F => ((ψ (-x 1) : Circle) : ℂ))).symm`.
+-/
 theorem innred : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle) (h : GL (Fin 2) F) (l : Fin 3 → ℤ),
   ((¬ ∀ a b, ((h * torusPow F 2 ![l 0, l 1] : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) a b ∈ 𝒪[F]) →
     Ad3.LFS.inn ψ (Ad3.LFS.Φ0 F) h (torusPow F 3 l) = 0) ∧

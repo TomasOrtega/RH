@@ -44,15 +44,24 @@ def smoothAll (G : Matrix (Fin n) (Fin n) ℂ) (ρ : Matrix (Fin n) (Fin n) ℂ 
   zero_mem' := fun k x hx hG => by simpa only [map_zero] using contDiff_const
   smul_mem' := fun c _ h k x hx hG => by simpa only [map_smul] using (h k x hx hG).const_smul c
 
+/- English proof (translation)
+Use `list_prod_mem _ fun g hg => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hg`. Conclude with `exp_mem hG (hX i) _`.
+-/
 theorem expProd_mem (hG : IsUnit G) {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hX : ∀ i, Xs i ∈ lie G)
     (t : Fin k → ℝ) : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ Formalism.QuantumDeterminants.UH G := by
   refine list_prod_mem _ fun g hg => ?_
   obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hg
   exact exp_mem hG (hX i) _
 
+/- English proof (translation)
+Introduce `_ h k Xs hX` and use `h k _ (contDiff_expProd Xs) (expProd_mem hG hX)`.
+-/
 theorem smoothAll_le (hG : IsUnit G) : smoothAll G ρ ≤ smooth G ρ :=
   fun _ h k Xs hX => h k _ (contDiff_expProd Xs) (expProd_mem hG hX)
 
+/- English proof (translation)
+Establish `h1` using `(hw 1 (fun _ => X) (fun _ => hX)).differentiable (by simp)`. Establish `h2 : Differentiable ℝ fun t : ℝ => (fun _ : Fin 1 => t)` using `by fun_prop`. Establish `h3 : Differentiable ℝ fun t : ℝ => ρ (NormedSpace.exp (t • X)) w`. Simplify `h1.comp h2` using `[Function.comp_def]`. Conclude with `(h3 0).hasDerivAt`.
+-/
 theorem hasDerivAt_dRep {w : H} (hw : w ∈ smooth G ρ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lie G) :
     HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • X)) w) (dRep ρ X w) 0 := by
   have h1 := (hw 1 (fun _ => X) (fun _ => hX)).differentiable (by simp)
@@ -61,6 +70,11 @@ theorem hasDerivAt_dRep {w : H} (hw : w ∈ smooth G ρ) {X : Matrix (Fin n) (Fi
     simpa [Function.comp_def] using h1.comp h2
   exact (h3 0).hasDerivAt
 
+/- English proof (translation)
+Establish `hs : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (k + 1) → ℝ)`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using contDiff_snd`. Simplify using `only [Fin.snoc_castSucc] fun_prop`.
+
+Establish `h1 : ContDiff ℝ ∞ (Function.uncurry fun (t : Fin k → ℝ) (s : ℝ) => F (Fin.snoc t s))` using `hF.comp hs`. Establish `h2` using `ContDiff.fderiv (𝕜 := ℝ) (m := ∞) (n := ∞) (g := fun _ : Fin k → ℝ => (0 : ℝ)) h1 contDiff_const (le_of_eq rfl)`. Conclude with `h2.clm_apply (contDiff_const (c := (1 : ℝ)))`.
+-/
 theorem contDiff_deriv_snoc {k : ℕ} {F : (Fin (k + 1) → ℝ) → H} (hF : ContDiff ℝ ∞ F) :
     ContDiff ℝ ∞ fun t : Fin k → ℝ => deriv (fun s : ℝ => F (Fin.snoc t s)) 0 := by
   have hs : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (k + 1) → ℝ) := by
@@ -74,10 +88,20 @@ theorem contDiff_deriv_snoc {k : ℕ} {F : (Fin (k + 1) → ℝ) → H} (hF : Co
     (le_of_eq rfl)
   exact h2.clm_apply (contDiff_const (c := (1 : ℝ)))
 
+/- English proof (translation)
+The claim follows from `((A.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h).deriv`.
+-/
 theorem deriv_map (A : H →L[ℂ] H) {f : ℝ → H} {f' : H} (h : HasDerivAt f f' 0) :
     deriv (fun t => A (f t)) 0 = A f' :=
   ((A.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h).deriv
 
+/- English proof (translation)
+Introduce `k Xs hXs`. Establish `h1` using `hw (k + 1) (Fin.snoc Xs X) (fun i => by`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hXs j)`.
+
+Use `contDiff_deriv_snoc h1 using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[← deriv_map _ (hasDerivAt_dRep hw hX)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Establish `e` using `hρ.1.2 _ (expProd_mem hG hXs t) _ (exp_mem hG hX s)`.
+
+Simplify using `only [List.ofFn_succ', Fin.snoc_castSucc, Fin.snoc_last, List.concat_eq_append, List.prod_append, List.prod_cons, List.prod_nil, mul_one]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem dRep_mem (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {w : H} (hw : w ∈ smooth G ρ)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lie G) : dRep ρ X w ∈ smooth G ρ := by
   intro k Xs hXs
@@ -106,6 +130,9 @@ def dOp (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ)
     show dRep ρ X (c • (w : H)) = c • dRep ρ X w
     rw [← this]; unfold dRep; simp only [map_smul]; rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨LinearMap.id, fun _ => rfl⟩`. Consider the case `cons X l ih`. Take `⟨L, hL⟩` from `ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Conclude with `⟨dOp hG hρ (hl X List.mem_cons_self) ∘ₗ L, fun w => by rw [List.foldr_cons, ← hL]; rfl⟩`.
+-/
 theorem exists_word (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) (l : List (Matrix (Fin n) (Fin n) ℂ))
     (hl : ∀ X ∈ l, X ∈ lie G) :
     ∃ L : smooth G ρ →ₗ[ℂ] smooth G ρ, ∀ w : smooth G ρ, (L w : H) = l.foldr (dRep ρ) w := by
@@ -115,11 +142,19 @@ theorem exists_word (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminan
     obtain ⟨L, hL⟩ := ih fun Y hY => hl Y (List.mem_cons_of_mem _ hY)
     exact ⟨dOp hG hρ (hl X List.mem_cons_self) ∘ₗ L, fun w => by rw [List.foldr_cons, ← hL]; rfl⟩
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_word hG hρ l hl`. Rewrite using `[← hL ⟨w, hw⟩]`. Conclude with `(L _).2`.
+-/
 theorem word_mem (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) (l : List (Matrix (Fin n) (Fin n) ℂ))
     (hl : ∀ X ∈ l, X ∈ lie G) {w : H} (hw : w ∈ smooth G ρ) : l.foldr (dRep ρ) w ∈ smooth G ρ := by
   obtain ⟨L, hL⟩ := exists_word hG hρ l hl
   rw [← hL ⟨w, hw⟩]; exact (L _).2
 
+/- English proof (translation)
+Establish `h` using `(hasDerivAt_dRep hy hX).inner ℂ (hasDerivAt_dRep hw hX)`. Establish `e : (fun t : ℝ => ⟪ρ (NormedSpace.exp (t • X)) y, ρ (NormedSpace.exp (t • X)) w⟫_ℂ) = fun _ => ⟪y, w⟫_ℂ`. Use function extensionality and compare the values at `t`. Conclude with `LinearIsometry.inner_map_map ⟨(ρ (NormedSpace.exp (t • X)) : H →ₗ[ℂ] H), hρ.2.1 _ (exp_mem hG hX t)⟩ y w`. Rewrite `h` using `[e]`.
+
+Establish `h0` using `h.unique (hasDerivAt_const _ _)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, hρ.1.1, ContinuousLinearMap.one_apply] at h0`. Conclude with `eq_neg_of_add_eq_zero_left h0`.
+-/
 theorem inner_dRep (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {y w : H} (hy : y ∈ smooth G ρ)
     (hw : w ∈ smooth G ρ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lie G) :
     ⟪y, dRep ρ X w⟫_ℂ = -⟪dRep ρ X y, w⟫_ℂ := by
@@ -133,6 +168,11 @@ theorem inner_dRep (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminant
   simp only [zero_smul, NormedSpace.exp_zero, hρ.1.1, ContinuousLinearMap.one_apply] at h0
   exact eq_neg_of_add_eq_zero_left h0
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact fun y _ => ⟨y, fun _ _ => rfl⟩`. Consider the case `cons X l ih`. Introduce `y hy`. Establish `hX` using `hl X List.mem_cons_self`.
+
+Establish `hl'` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Take `⟨y', h⟩` from `ih hl' _ (dRep_mem hG hρ hy hX)`. Use `⟨-y', fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[List.foldr_cons, inner_dRep hG hρ hy (word_mem hG hρ l hl' hv) hX, h v hv, inner_neg_left]`.
+-/
 theorem exists_adjoint (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) (l : List (Matrix (Fin n) (Fin n) ℂ))
     (hl : ∀ X ∈ l, X ∈ lie G) : ∀ y ∈ smooth G ρ, ∃ y' : H, ∀ v ∈ smooth G ρ,
       ⟪y, l.foldr (dRep ρ) v⟫_ℂ = ⟪y', v⟫_ℂ := by
@@ -146,17 +186,30 @@ theorem exists_adjoint (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDetermi
     refine ⟨-y', fun v hv => ?_⟩
     rw [List.foldr_cons, inner_dRep hG hρ hy (word_mem hG hρ l hl' hv) hX, h v hv, inner_neg_left]
 
+/- English proof (translation)
+Establish `e : hᴴ * G * h = G` using `hh`. Rewrite `hG` using `[← e]`. Conclude with `isUnit_of_mul_isUnit_right hG`.
+-/
 theorem isUnit_of_mem (hG : IsUnit G) {h : Matrix (Fin n) (Fin n) ℂ} (hh : h ∈ Formalism.QuantumDeterminants.UH G) : IsUnit h := by
   have e : hᴴ * G * h = G := hh
   rw [← e] at hG
   exact isUnit_of_mul_isUnit_right hG
 
+/- English proof (translation)
+Establish `e : hᴴ * G * h = G` using `hh`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc hᴴ, e, Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hG)]`.
+-/
 theorem inv_eq_of_mem (hG : IsUnit G) {h : Matrix (Fin n) (Fin n) ℂ} (hh : h ∈ Formalism.QuantumDeterminants.UH G) :
     h⁻¹ = G⁻¹ * hᴴ * G := by
   have e : hᴴ * G * h = G := hh
   refine Matrix.inv_eq_left_inv ?_
   rw [mul_assoc, mul_assoc, ← mul_assoc hᴴ, e, Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 hG)]
 
+/- English proof (translation)
+Establish `e : hᴴ * G * h = G` using `hh`. Establish `hd` using `(isUnit_iff_isUnit_det _).1 (isUnit_of_mem hG hh)`. Establish `h1 : Xᴴ * G + G * X = 0` using `hX`. Establish `e1 : G * h⁻¹ = hᴴ * G` using `by conv_lhs => rw [← e]`. Rewrite using `[mul_assoc, Matrix.mul_nonsing_inv _ hd, mul_one]`.
+
+Establish `e2 : (h⁻¹)ᴴ * G = G * h` using `by conv_lhs => rw [← e]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, conjTranspose_one, one_mul]`. Use `show (h⁻¹ * X * h)ᴴ * G + G * (h⁻¹ * X * h) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, mul_assoc]`.
+
+Use `_ = hᴴ * (Xᴴ * G + G * X) * h := by rw [e1, e2]; simp only [mul_add, add_mul, mul_assoc]`. Use `_ = 0 := by rw [h1, mul_zero, zero_mul]`.
+-/
 theorem conj_mem_lie (hG : IsUnit G) {h X : Matrix (Fin n) (Fin n) ℂ} (hh : h ∈ Formalism.QuantumDeterminants.UH G) (hX : X ∈ lie G) :
     h⁻¹ * X * h ∈ lie G := by
   have e : hᴴ * G * h = G := hh
@@ -174,12 +227,18 @@ theorem conj_mem_lie (hG : IsUnit G) {h X : Matrix (Fin n) (Fin n) ℂ} (hh : h 
     _ = hᴴ * (Xᴴ * G + G * X) * h := by rw [e1, e2]; simp only [mul_add, add_mul, mul_assoc]
     _ = 0 := by rw [h1, mul_zero, zero_mul]
 
+/- English proof (translation)
+Establish `hd` using `(isUnit_iff_isUnit_det _).1 hu`. Rewrite using `[← smul_mul_assoc, ← mul_smul_comm, Matrix.exp_conj' _ _ hu, ← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul]`.
+-/
 theorem exp_mul_eq {h : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit h) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp (t • X) * h = h * NormedSpace.exp (t • (h⁻¹ * X * h)) := by
   have hd := (isUnit_iff_isUnit_det _).1 hu
   rw [← smul_mul_assoc, ← mul_smul_comm, Matrix.exp_conj' _ _ hu, ← mul_assoc, ← mul_assoc,
     Matrix.mul_nonsing_inv _ hd, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[mul_assoc, ih _ _ fun i => e i.succ, ← mul_assoc, e 0, mul_assoc]`.
+-/
 theorem prod_mul_eq {k : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (a b : Fin k → Matrix (Fin n) (Fin n) ℂ)
     (e : ∀ i, a i * h = h * b i) : (List.ofFn a).prod * h = h * (List.ofFn b).prod := by
   induction k with
@@ -188,6 +247,11 @@ theorem prod_mul_eq {k : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (a b : Fin k → 
     simp only [List.ofFn_succ, List.prod_cons]
     rw [mul_assoc, ih _ _ fun i => e i.succ, ← mul_assoc, e 0, mul_assoc]
 
+/- English proof (translation)
+Introduce `k Xs hX`. Establish `hX'` using `fun i => conj_mem_lie hG hh (hX i)`. Establish `h1` using `((ρ h).restrictScalars ℝ).contDiff.comp (hw k _ hX')`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Establish `e1` using `hρ.1.2 _ (expProd_mem hG hX t) _ hh`.
+
+Establish `e2` using `hρ.1.2 _ hh _ (expProd_mem hG hX' t)`. Rewrite `e1` using `[prod_mul_eq h _ _ fun i => exp_mul_eq (isUnit_of_mem hG hh) (Xs i) (t i), e2]`. Conclude with `(congrArg (fun A : H →L[ℂ] H => A w) e1).symm`.
+-/
 theorem translate_mem (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {h : Matrix (Fin n) (Fin n) ℂ}
     (hh : h ∈ Formalism.QuantumDeterminants.UH G) {w : H} (hw : w ∈ smooth G ρ) : ρ h w ∈ smooth G ρ := by
   intro k Xs hX
@@ -199,6 +263,15 @@ theorem translate_mem (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDetermin
   rw [prod_mul_eq h _ _ fun i => exp_mul_eq (isUnit_of_mem hG hh) (Xs i) (t i), e2] at e1
   exact (congrArg (fun A : H →L[ℂ] H => A w) e1).symm
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Establish `hX` using `hl X List.mem_cons_self`. Establish `hl'` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`.
+
+Establish `hX'` using `conj_mem_lie hG hh hX`. Establish `hm : l.foldr (fun X => dRep ρ (h⁻¹ * X * h)) w ∈ smooth G ρ`. Rewrite using `[← List.foldr_map (f := fun X => h⁻¹ * X * h) (g := dRep ρ)]`. Use `word_mem hG hρ _ (fun Y hY => ?_) hw` and prove the remaining obligations. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.1 hY`.
+
+Conclude with `conj_mem_lie hG hh (hl' Z hZ)`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih hl', ← deriv_map _ (hasDerivAt_dRep hm hX')]`. Unfold `dRep`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Establish `e1` using `hρ.1.2 _ (exp_mem hG hX t) _ hh`. Establish `e2` using `hρ.1.2 _ hh _ (exp_mem hG hX' t)`. Rewrite `e1` using `[exp_mul_eq (isUnit_of_mem hG hh), e2]`. Conclude with `(congrArg (fun A : H →L[ℂ] H => A _) e1).symm`.
+-/
 theorem word_translate (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {h : Matrix (Fin n) (Fin n) ℂ}
     (hh : h ∈ Formalism.QuantumDeterminants.UH G) {w : H} (hw : w ∈ smooth G ρ) (l : List (Matrix (Fin n) (Fin n) ℂ))
     (hl : ∀ X ∈ l, X ∈ lie G) :
@@ -223,6 +296,13 @@ theorem word_translate (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDetermi
     rw [exp_mul_eq (isUnit_of_mem hG hh), e2] at e1
     exact (congrArg (fun A : H →L[ℂ] H => A _) e1).symm
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _)` using `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt`. Establish `h2 : ContDiff ℝ ∞ fun t : Fin k → ℝ => ∑ i, t i • B i` using `ContDiff.sum fun i _ => (contDiff_apply ℝ ℝ i).smul contDiff_const`. Establish `h3` using `hy k _ (h1.comp h2) fun t => by`. Use `exp_mem hG ((lie G).sum_mem (t := Finset.univ) fun i _ => (lie G).smul_mem (t i) (hB i)) 1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+
+Establish `h4` using `(h3.differentiable (by simp) 0).hasFDerivAt`. Establish `h5 : ∀ c : Fin k → ℝ, HasDerivAt (fun s : ℝ => s • c) c 0` using `fun c => by`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const c`. Use `⟨_, fun c => Eq.trans ?_ (h4.comp_hasDerivAt_of_eq 0 (h5 c) (by simp)).deriv⟩` and prove the remaining obligations. Unfold `dRep`.
+
+Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp, Finset.smul_sum, Pi.smul_apply, smul_eq_mul, mul_smul]`.
+-/
 theorem dRep_eq_fderiv (hG : IsUnit G) {k : ℕ} {B : Fin k → Matrix (Fin n) (Fin n) ℂ} (hB : ∀ i, B i ∈ lie G)
     {y : H} (hy : y ∈ smoothAll G ρ) :
     ∃ A : (Fin k → ℝ) →L[ℝ] H, ∀ c : Fin k → ℝ, dRep ρ (∑ i, c i • B i) y = A c := by
@@ -242,6 +322,11 @@ theorem dRep_eq_fderiv (hG : IsUnit G) {k : ℕ} {B : Fin k → Matrix (Fin n) (
   funext s
   simp only [Function.comp, Finset.smul_sum, Pi.smul_apply, smul_eq_mul, mul_smul]
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `dRep_eq_fderiv hG hB hy`. Establish `e : ∀ i, dRep ρ (B i) y = A (Pi.single i 1)` using `fun i => by`. Rewrite using `[← hA]`. Use `congr 1`. Simplify using `[Pi.single_apply]`.
+
+Simplify using `only [hA, e, ← map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply]`.
+-/
 theorem dRep_sum_all (hG : IsUnit G) {k : ℕ} {B : Fin k → Matrix (Fin n) (Fin n) ℂ} (hB : ∀ i, B i ∈ lie G)
     {y : H} (hy : y ∈ smoothAll G ρ) (c : Fin k → ℝ) :
     dRep ρ (∑ i, c i • B i) y = ∑ i, c i • dRep ρ (B i) y := by
@@ -255,6 +340,9 @@ theorem dRep_sum_all (hG : IsUnit G) {k : ℕ} {B : Fin k → Matrix (Fin n) (Fi
   funext j
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Use `hd.eq_of_inner_right (𝕜 := ℂ) fun y hy => ?_` and prove the remaining obligations. Establish `hy'` using `smoothAll_le hG hy`. Rewrite using `[inner_dRep hG hρ hy' hw ((lie G).sum_mem fun i _ => (lie G).smul_mem (c i) (hB i)), dRep_sum_all hG hB hy, inner_sum, sum_inner, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, inner_dRep hG hρ hy' hw (hB i), ← Complex.coe_smul, inner_smul_left, Complex.conj_ofReal, mul_neg]`.
+-/
 theorem dRep_sum (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) (hd : Dense (smoothAll G ρ : Set H)) {k : ℕ}
     {B : Fin k → Matrix (Fin n) (Fin n) ℂ} (hB : ∀ i, B i ∈ lie G) {w : H} (hw : w ∈ smooth G ρ) (c : Fin k → ℝ) :
     dRep ρ (∑ i, c i • B i) w = ∑ i, (c i : ℂ) • dRep ρ (B i) w := by
@@ -266,6 +354,17 @@ theorem dRep_sum (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.
   rw [inner_smul_right, inner_dRep hG hρ hy' hw (hB i), ← Complex.coe_smul, inner_smul_left, Complex.conj_ofReal,
     mul_neg]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨fun _ => ⟨w, hw⟩, fun _ => rfl, fun _ => continuous_const⟩`. Consider the case `cons a l ih`. Take `⟨v, hv, hc⟩` from `ih fun b hb => hY b (List.mem_cons_of_mem _ hb)`. Take `⟨h1, h2⟩` from `hY a List.mem_cons_self`.
+
+Use `⟨fun t => dOp hG hρ (h2 t) (v t), fun t => by rw [List.foldr_cons, ← hv]; rfl, fun f => ?_⟩` and prove the remaining obligations. Set `b` to `Module.finBasis ℝ (lie G)`. Establish `e : ∀ t, dOp hG hρ (h2 t) (v t) = ∑ i, (b.coord i ⟨Y a t, h2 t⟩ : ℂ) • dOp hG hρ (b i).2 (v t)`. Introduce `t`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e1 : Y a t = ∑ i, b.coord i ⟨Y a t, h2 t⟩ • (b i : Matrix (Fin n) (Fin n) ℂ)`. Use `congrArg Subtype.val (b.sum_repr ⟨Y a t, h2 t⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Establish `e2` using `dRep_sum hG hρ hd (fun i => (b i).2) (v t).2 fun i => b.coord i ⟨Y a t, h2 t⟩`.
+
+Rewrite `e2` using `[← e1]`. Rewrite using `[Submodule.coe_sum]`. Conclude with `e2`. Simplify using `only [e, map_sum, map_smul]`. Use `continuous_finset_sum _ fun i _ => Continuous.smul ?_ (hc (f ∘ₗ dOp hG hρ (b i).2))` and prove the remaining obligations.
+
+Conclude with `Complex.continuous_ofReal.comp ((b.coord i).continuous_of_finiteDimensional.comp (h1.subtype_mk h2))`.
+-/
 theorem continuous_word (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) (hd : Dense (smoothAll G ρ : Set H))
     {T α : Type} [TopologicalSpace T] (Y : α → T → Matrix (Fin n) (Fin n) ℂ) (l : List α)
     (hY : ∀ a ∈ l, Continuous (Y a) ∧ ∀ t, Y a t ∈ lie G) {w : H} (hw : w ∈ smooth G ρ) :
@@ -293,6 +392,13 @@ theorem continuous_word (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterm
     refine continuous_finset_sum _ fun i _ => Continuous.smul ?_ (hc (f ∘ₗ dOp hG hρ (b i).2))
     exact Complex.continuous_ofReal.comp ((b.coord i).continuous_of_finiteDimensional.comp (h1.subtype_mk h2))
 
+/- English proof (translation)
+Establish `hi : Continuous fun t => (a t)⁻¹`. Simplify using `only [fun t => inv_eq_of_mem hG (haG t)]`. Conclude with `(continuous_const.mul ha.matrix_conjTranspose).mul continuous_const`. Take `⟨v, hv, hc⟩` from `continuous_word hG hρ hd (fun X t => (a t)⁻¹ * X * a t) l (fun X hX => ⟨(hi.mul continuous_const).mul ha, fun t => conj_mem_lie hG (haG t) (hl X hX)⟩) hw`. Establish `hv' : Continuous fun t => (v t : H)` using `hc (smooth G ρ).subtype`.
+
+Simplify using `only [fun t => word_translate hG hρ (haG t) hw l hl, ← hv]`. Use `continuous_iff_continuousAt.2 fun t₀ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun t => ρ (a t) (v t₀)` using `(hρ.2.2 _).comp_continuous ha haG`. Establish `h2 : Filter.Tendsto (fun t => ρ (a t) (v t - v t₀)) (𝓝 t₀) (𝓝 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`.
+
+Simplify using `only [fun t => hρ.2.1 _ (haG t)]`. Conclude with `tendsto_iff_norm_sub_tendsto_zero.1 (hv'.tendsto t₀)`. Establish `h3` using `h2.add (h1.tendsto t₀)`. Simplify `h3` using `[ContinuousAt]`.
+-/
 theorem continuous_word_orbit (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ)
     (hd : Dense (smoothAll G ρ : Set H)) {T : Type} [TopologicalSpace T] {a : T → Matrix (Fin n) (Fin n) ℂ}
     (ha : Continuous a) (haG : ∀ t, a t ∈ Formalism.QuantumDeterminants.UH G) (l : List (Matrix (Fin n) (Fin n) ℂ))
@@ -314,6 +420,21 @@ theorem continuous_word_orbit (hG : IsUnit G) (hρ : IsURepOn (Formalism.Quantum
   have h3 := h2.add (h1.tendsto t₀)
   simpa [ContinuousAt] using h3
 
+/- English proof (translation)
+Take `⟨S, C, hS, hC⟩` from `hℓ`. Set `S' : Fin (S.length + 1) → List (Matrix (Fin n) (Fin n) ℂ)` to `Fin.cons [] S.get`. Establish `hS' : ∀ i, ∀ X ∈ S' i, X ∈ lie G` using `fun i => by`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[S']`.
+
+Conclude with `hS _ (List.get_mem _ _)`. Use `choose L hL using fun i => exists_word hG hρ (S' i) (hS' i)`. Set `Φ : smooth G ρ →ₗ[ℂ] (Fin (S.length + 1) → H)` to `LinearMap.pi fun i => (smooth G ρ).subtype ∘ₗ L i`. Establish `hΦ : ∀ w i, Φ w i = (S' i).foldr (dRep ρ) w` using `fun w i => hL i w`. Set `f : LinearMap.range Φ →ₗ[ℂ] ℂ` to `ℓ ∘ₗ LinearMap.proj 0 ∘ₗ (LinearMap.range Φ).subtype`.
+
+Establish `hf : ∀ w, f ⟨Φ w, ⟨w, rfl⟩⟩ = ℓ w` using `fun w => congrArg ℓ (hΦ w 0)`. Establish `hb : ∀ z, ‖f z‖ ≤ (|C| * S.length) * ‖z‖`. Introduce and unpack `⟨_, w, rfl⟩`. Rewrite using `[hf]`. Establish `h1 : (S.map fun l => ‖l.foldr (dRep ρ) (w : H)‖).sum ≤ S.length * ‖Φ w‖`.
+
+Use `List.sum_le_card_nsmul (S.map fun l => ‖l.foldr (dRep ρ) (w : H)‖) ‖Φ w‖ fun x hx => by` as an intermediate fact. Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hx`. Take `⟨j, rfl⟩` from `List.get_of_mem hl`. Use `norm_le_pi_norm (Φ w) j.succ` as an intermediate fact. Rewrite `this` using `[hΦ]`. Then use the resulting hypothesis.
+
+Simplify using `using this`. Establish `h0 : 0 ≤ (S.map fun l => ‖l.foldr (dRep ρ) (w : H)‖).sum` using `List.sum_nonneg fun x hx => by`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨g, hg, -⟩` from `exists_extension_norm_eq (LinearMap.range Φ) (f.mkContinuous _ hb)`. Use `⟨_, S', fun i => g ∘L ContinuousLinearMap.single ℂ (fun _ => H) i, hS', fun w hw => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg ⟨Φ ⟨w, hw⟩, ⟨_, rfl⟩⟩`. Rewrite `h1` using `[LinearMap.mkContinuous_apply, hf]`. Simplify using `only [ContinuousLinearMap.comp_apply, ← map_sum, ContinuousLinearMap.single_apply]`.
+
+Use `h1.symm.trans (congrArg g ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[hΦ, Pi.single_apply]`.
+-/
 theorem exists_factor (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {ℓ : H →ₗ[ℂ] ℂ}
     (hℓ : Sobolev₂ (lie G) ρ ℓ) :
     ∃ (m : ℕ) (S : Fin m → List (Matrix (Fin n) (Fin n) ℂ)) (Λ : Fin m → H →L[ℂ] ℂ),
@@ -354,6 +475,9 @@ theorem exists_factor (hG : IsUnit G) (hρ : IsURepOn (Formalism.QuantumDetermin
   funext j
   simp [hΦ, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top]`. Use `(hi S.topologicalClosure S.isClosed_topologicalClosure fun g hg v hv => map_mem_closure (ρ g).continuous hv (hS g hg)).resolve_left fun h => h0 ?_` and prove the remaining obligations. Conclude with `le_bot_iff.1 (h ▸ S.le_topologicalClosure)`.
+-/
 theorem dense_of_irred {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hi : IsIrredOn U ρ) {S : Submodule ℂ H}
     (hS : ∀ g ∈ U, ∀ v ∈ S, ρ g v ∈ S) (h0 : S ≠ ⊥) : Dense (S : Set H) := by
   rw [Submodule.dense_iff_topologicalClosure_eq_top]
@@ -363,6 +487,11 @@ theorem dense_of_irred {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hi : IsIrredOn U 
 
 variable {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {P : Matrix (Fin n) (Fin n) ℂ}
 
+/- English proof (translation)
+Take `⟨hemb, -⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Establish `hψi : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g)) (Formalism.REAL.muG ε)` using `(hφ.comp hemb.continuous).integrable_of_hasCompactSupport (hφc.comp_isClosedEmbedding hemb)`. Use `AddMonoidHomClass.continuous_of_bound _ (∫ g : Formalism.REAL.UJ ε, ‖φ (umat g)‖ ∂(Formalism.REAL.muG ε)) fun w => ?_` and prove the remaining obligations. Rewrite using `[garding_apply, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hψi.norm.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, hσ.2.1 _ g.2]`.
+-/
 theorem continuous_garding (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (Fin n) ℂ → ℝ} (hφ : Continuous φ)
     (hφc : HasCompactSupport φ) : Continuous (garding hσ hφ hφc) := by
   obtain ⟨hemb, -⟩ := Formalism.REAL.isClosedEmbeddingMatrix n ε
@@ -373,6 +502,17 @@ theorem continuous_garding (hσ : IsURepOn (UJset ε) σ) {φ : Matrix (Fin n) (
   refine norm_integral_le_of_norm_le (hψi.norm.mul_const _) (Filter.Eventually.of_forall fun g => ?_)
   rw [norm_smul, hσ.2.1 _ g.2]
 
+/- English proof (translation)
+Take `⟨hemb, -⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Assume the negation of the conclusion as `hw`. Establish `hwpos : 0 < ‖F 1‖` using `norm_pos_iff.2 hw`. Establish `hnb` using `(hF.tendsto 1) (Metric.ball_mem_nhds _ (half_pos hwpos))`. Rewrite `hnb` using `[Filter.mem_map, hemb.isInducing.nhds_eq_comap, Filter.mem_comap]`.
+
+Take `⟨U, hU, hUs⟩` from `hnb`. Take `⟨φ, hφ, hφc, hφU, hφ0, hφ1, -⟩` from `exists_bump hU`. Establish `h0` using `h φ hφ hφc`. Use `set μ := Formalism.REAL.muG ε`. Establish `hψ : Continuous fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφ.continuous.comp hemb.continuous`.
+
+Establish `hψc : HasCompactSupport fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφc.comp_isClosedEmbedding hemb`. Establish `hψi : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g)) μ` using `hψ.integrable_of_hasCompactSupport hψc`. Establish `hint : Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g) • F g) μ` using `(hψ.smul hF).integrable_of_hasCompactSupport hψc.smul_right`. Establish `hpos : 0 < ∫ g : Formalism.REAL.UJ ε, φ (umat g) ∂μ` using `hψ.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) hψc (fun g => hφ0 _) (by show φ 1 ≠ 0; rw [hφ1]; exact one_ne_zero)`. Establish `e1 : ∫ g : Formalism.REAL.UJ ε, (φ (umat g) • F g - φ (umat g) • F 1) ∂μ = -((∫ g : Formalism.REAL.UJ ε, φ (umat g) ∂μ) • F 1)`.
+
+Rewrite using `[integral_sub hint (hψi.smul_const _), h0, integral_smul_const, zero_sub]`. Establish `e2 : ‖∫ g : Formalism.REAL.UJ ε, (φ (umat g) • F g - φ (umat g) • F 1) ∂μ‖ ≤ ∫ g : Formalism.REAL.UJ ε, φ (umat g) * (‖F 1‖ / 2) ∂μ`. Use `norm_integral_le_of_norm_le (hψi.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[← smul_sub, norm_smul, Real.norm_of_nonneg (hφ0 _)]`. Distinguish the cases in `hg : φ (umat g) = 0`.
+
+Simplify using `[hg]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (mem_ball_iff_norm.1 (hUs (hφU _ hg)))) (hφ0 _)`. Rewrite `e2` using `[e1, norm_neg, norm_smul, Real.norm_of_nonneg hpos.le, integral_mul_const]`. Use polynomial arithmetic with `[mul_pos hpos hwpos]`.
+-/
 theorem eq_zero_of_bumps {F : Formalism.REAL.UJ ε → ℂ} (hF : Continuous F)
     (h : ∀ φ : Matrix (Fin n) (Fin n) ℂ → ℝ, ContDiff ℝ ∞ φ → HasCompactSupport φ →
       ∫ g, φ (umat g) • F g ∂(Formalism.REAL.muG ε) = 0) : F 1 = 0 := by
@@ -406,10 +546,18 @@ theorem eq_zero_of_bumps {F : Formalism.REAL.UJ ε → ℂ} (hF : Continuous F)
   rw [e1, norm_neg, norm_smul, Real.norm_of_nonneg hpos.le, integral_mul_const] at e2
   nlinarith [mul_pos hpos hwpos]
 
+/- English proof (translation)
+Rewrite using `[← h]`. Conclude with `(((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP`.
+-/
 theorem isUnit_gram (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) : IsUnit G := by
   rw [← h]
   exact (((Matrix.isUnit_conjTranspose _).2 hP).mul (IsUnit.of_mul_eq_one _ (Formalism.REAL.Jm_mul_self ε))).mul hP
 
+/- English proof (translation)
+Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `e : gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε` using `hg`. Use `show (P⁻¹ * g * P)ᴴ * G * (P⁻¹ * g * P) = G`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h]`.
+
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [Matrix.mul_nonsing_inv _ hd, conjTranspose_one, one_mul, mul_one, e, h]`.
+-/
 theorem conj_inv_mem (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ UJset ε) : P⁻¹ * g * P ∈ Formalism.QuantumDeterminants.UH G := by
   have hd := (isUnit_iff_isUnit_det _).1 hP
@@ -420,11 +568,21 @@ theorem conj_inv_mem (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {
         rw [← h]; simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = G := by rw [Matrix.mul_nonsing_inv _ hd, conjTranspose_one, one_mul, mul_one, e, h]
 
+/- English proof (translation)
+Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_conj (hP : IsUnit P) (g : Matrix (Fin n) (Fin n) ℂ) : P * (P⁻¹ * g * P) * P⁻¹ = g := by
   have hd := (isUnit_iff_isUnit_det _).1 hP
   calc P * (P⁻¹ * g * P) * P⁻¹ = (P * P⁻¹) * g * (P * P⁻¹) := by simp only [Matrix.mul_assoc]
     _ = g := by rw [Matrix.mul_nonsing_inv _ hd, one_mul, mul_one]
 
+/- English proof (translation)
+Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg => hσ.2.1 _ (conj_mem hP h hg), fun v => ?_⟩` and prove the remaining obligations. Use `show σ (P * 1 * P⁻¹) = 1`. Rewrite using `[mul_one, Matrix.mul_nonsing_inv _ hd, hσ.1.1]`. Establish `e : P * (a * b) * P⁻¹ = P * a * P⁻¹ * (P * b * P⁻¹)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hd, mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Use `show σ (P * (a * b) * P⁻¹) = _`.
+
+Rewrite using `[e]`. Conclude with `hσ.1.2 _ (conj_mem hP h ha) _ (conj_mem hP h hb)`. Conclude with `(hσ.2.2 v).comp ((continuous_const.mul continuous_id).mul continuous_const).continuousOn fun g hg => conj_mem hP h hg`.
+-/
 theorem isURepOn_conj (hσ : IsURepOn (UJset ε) σ) (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) :
     IsURepOn (Formalism.QuantumDeterminants.UH G) fun g => σ (P * g * P⁻¹) := by
   have hd := (isUnit_iff_isUnit_det _).1 hP
@@ -441,6 +599,47 @@ theorem isURepOn_conj (hσ : IsURepOn (UJset ε) σ) (hP : IsUnit P) (h : Pᴴ *
   · exact (hσ.2.2 v).comp ((continuous_const.mul continuous_id).mul continuous_const).continuousOn
       fun g hg => conj_mem hP h hg
 
+/- English proof (translation)
+Take `⟨hemb, -⟩` from `Formalism.REAL.isClosedEmbeddingMatrix n ε`. Establish `hG` using `isUnit_gram hP h`. Establish `hρ` using `isURepOn_conj hσ hP h`. Use `set ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H) := fun g => σ (P * g * P⁻¹) with hρdef`. Establish `hσρ : ∀ g, ρ (P⁻¹ * g * P) = σ g` using `fun g => congrArg σ (conj_conj hP g)`.
+
+Use `haveI : Nontrivial H := ⟨u, 0, hu0⟩`. Establish `hd : Dense (smoothAll G ρ : Set H)`. Use `dense_of_irred hi (fun g hg v hv k x hx hxG => ?_) ?_` and prove the remaining obligations. Establish `hg'` using `conj_inv_mem hP h hg`. Establish `h1` using `hv k (fun t => x t * (P⁻¹ * g * P)) (hx.mul contDiff_const) fun t => by`.
+
+Use `list_prod_mem (G := G) [x t, P⁻¹ * g * P] (by` as an intermediate fact. Introduce `y hy`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hy`. Break down `hy with rfl | rfl` into its components or cases. Use `exacts [hxG t, hg'])`.
+
+Rewrite `this` using `[List.prod_cons, List.prod_singleton]`. Then use the resulting hypothesis. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[hρ.1.2 _ (hxG t) _ hg', hσρ]`. Both sides reduce to the same expression. Take `⟨v, hv, hs⟩` from `exists_garding hσ`.
+
+Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, fun k x hx hxG => hs k _ ((contDiff_const.mul hx).mul contDiff_const) fun t => conj_mem hP h (hxG t), hv⟩`. Establish `hd' : Dense (smooth G ρ : Set H)` using `hd.mono (smoothAll_le hG)`. Establish `htr : ∀ v ∈ smooth G ρ, ∀ g ∈ UJset ε, σ g v ∈ smooth G ρ` using `fun v hv g hg => by`. Rewrite using `[← hσρ]`. Conclude with `translate_mem hG hρ (conj_inv_mem hP h hg) hv`.
+
+Establish `hcont : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, X ∈ lie G) → ∀ v ∈ smooth G ρ, Continuous fun g : Formalism.REAL.UJ ε => l.foldr (dRep ρ) (σ (umat g) v)` using `fun l hl v hv => by`. Simplify using `only [← hσρ]`. Conclude with `continuous_word_orbit hG hρ hd ((continuous_const.mul hemb.continuous).mul continuous_const) (fun g => conj_inv_mem hP h g.2) l hl hv`. Take `⟨m, S, Λ, hS, hΛ⟩` from `exists_factor hG hρ hℓ`. Establish `hF : Continuous fun g : Formalism.REAL.UJ ε => ℓ (σ (umat g) w)`.
+
+Simplify using `only [fun g : Formalism.REAL.UJ ε => hΛ _ (htr w hw (umat g) g.2)]`. Conclude with `continuous_finset_sum _ fun i _ => (Λ i).continuous.comp (hcont _ (hS i) w hw)`. Establish `key` using `eq_zero_of_bumps hF fun φ hφ hφc => ?_`. Establish `e : σ (umat (1 : Formalism.REAL.UJ ε)) = 1` using `hσ.1.1`. Rewrite `key` using `[e]`. Then use the resulting hypothesis.
+
+Establish `hψ : Continuous fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφ.continuous.comp hemb.continuous`. Establish `hψc : HasCompactSupport fun g : Formalism.REAL.UJ ε => φ (umat g)` using `hφc.comp_isClosedEmbedding hemb`. Use `set γ := garding hσ hφ.continuous hφc with hγ`. Establish `hγs : ∀ x, γ x ∈ smooth G ρ` using `fun x => smoothAll_le hG fun k y hy hyG => contDiff_garding hσ hφ hφc x k _ ((contDiff_const.mul hy).mul contDiff_const) fun t => conj_mem hP h (hyG t)`. Establish `hint : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, X ∈ lie G) → ∀ v ∈ smooth G ρ, Integrable (fun g : Formalism.REAL.UJ ε => φ (umat g) • l.foldr (dRep ρ) (σ (umat g) v)) (Formalism.REAL.muG ε)` using `fun l hl v hv => (hψ.smul (hcont l hl v hv)).integrable_of_hasCompactSupport hψc.smul_right`.
+
+Establish `hex : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ l, X ∈ lie G) → ∀ v ∈ smooth G ρ, l.foldr (dRep ρ) (γ v) = ∫ g : Formalism.REAL.UJ ε, φ (umat g) • l.foldr (dRep ρ) (σ (umat g) v) ∂(Formalism.REAL.muG ε)`. Introduce `l hl v hv`. Use `hd'.eq_of_inner_right ℂ fun y hy => ?_` and prove the remaining obligations. Take `⟨y', hy'⟩` from `exists_adjoint hG hρ l hl y hy`. Rewrite using `[hy' _ (hγs v), show γ v = _ from garding_apply hσ hφ.continuous hφc v, ← integral_inner (integrable_garding hσ hφ.continuous hφc v), ← integral_inner (hint l hl v hv)]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [← Complex.coe_smul, inner_smul_right]`. Rewrite using `[hy' _ (htr v hv _ g.2)]`. Establish `hform : ∀ v ∈ smooth G ρ, ℓ (γ v) = ∫ g : Formalism.REAL.UJ ε, φ (umat g) • ℓ (σ (umat g) v) ∂(Formalism.REAL.muG ε)`. Introduce `v hv`.
+
+Rewrite using `[hΛ _ (hγs v)]`. Simplify using `only [fun i => hex _ (hS i) v hv, fun i => ((Λ i).integral_comp_comm (hint _ (hS i) v hv)).symm]`. Rewrite using `[← integral_finset_sum _ fun i _ => (Λ i).integrable_comp (hint _ (hS i) v hv)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [hΛ _ (htr v hv (umat g) g.2), Finset.smul_sum, ContinuousLinearMap.map_smul_of_tower]`.
+
+Establish `hbd : Continuous fun x => ℓ (γ x)`. Simplify using `only [fun x => hΛ _ (hγs x)]`. Use `continuous_finset_sum _ fun i _ => (Λ i).continuous.comp ?_` and prove the remaining obligations. Take `⟨L, hL⟩` from `exists_word hG hρ (S i) (hS i)`. Set `A : H →ₗ[ℂ] H` to `(smooth G ρ).subtype ∘ₗ L ∘ₗ γ.codRestrict _ hγs`.
+
+Establish `hA : ∀ x, A x = (S i).foldr (dRep ρ) (γ x)` using `fun x => hL _`. Simplify using `only [← hA]`. Use `A.continuous_of_seq_closed_graph fun s x z hs hz => hd'.eq_of_inner_right ℂ fun y hy => ?_` and prove the remaining obligations. Take `⟨y', hy'⟩` from `exists_adjoint hG hρ _ (hS i) y hy`. Establish `h1 : Filter.Tendsto (fun j => ⟪y, A (s j)⟫_ℂ) Filter.atTop (𝓝 ⟪y, z⟫_ℂ)` using `tendsto_const_nhds.inner hz`.
+
+Simplify using `only [hA, fun x => hy' _ (hγs x)] at h1 ⊢`. Conclude with `tendsto_nhds_unique h1 (tendsto_const_nhds.inner (((continuous_garding hσ hφ.continuous hφc).tendsto x).comp hs))`. Establish `hmul : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, a * b ∈ UJset ε` using `fun a ha b hb => by`. Establish `e1 : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `e2 : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`.
+
+Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [e1, e2]`. Establish `hact : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, σ a (σ b u) = σ (a * b) u` using `fun a ha b hb => by`.
+
+Rewrite using `[hσ.1.2 a ha b hb]`. Both sides reduce to the same expression. Establish `hdu : Dense (Submodule.span ℂ ((fun g => σ g u) '' UJset ε) : Set H)`. Use `dense_of_irred hi (fun g hg v hv => ?_) ?_` and prove the remaining obligations. Use `(Submodule.map_span_le (σ g : H →ₗ[ℂ] H) _ _).2 ?_ ⟨v, hv, rfl⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * b, hmul g hg b hb, (hact g hg b hb).symm⟩`. Use `(Submodule.ne_bot_iff _).2 ⟨u, Submodule.subset_span ⟨1, (1 : Formalism.REAL.UJ ε).2, ?_⟩, hu0⟩ show σ 1 u = u` and prove the remaining obligations. Rewrite using `[hσ.1.1]`. Both sides reduce to the same expression.
+
+Establish `hz : (fun x => ℓ (γ x)) = fun _ => 0`. Use `Continuous.ext_on hdu hbd continuous_const fun v hv => ?_` and prove the remaining obligations. Establish `: Submodule.span ℂ ((fun g => σ g u) '' UJset ε) ≤ LinearMap.ker (ℓ ∘ₗ γ)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Use `show ℓ (γ (σ b u)) = 0`. Rewrite using `[hform _ (htr u hu b hb)]`. Simplify using `only [fun g : Formalism.REAL.UJ ε => (congrArg ℓ (hact (umat g) g.2 b hb)).trans (h0 _ (hmul _ g.2 b hb)), smul_zero, integral_zero]`. Conclude with `this hv`. Rewrite using `[← hform w hw]`.
+
+Conclude with `congrFun hz w`.
+-/
 theorem eq_zero_of_translates [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn (UJset ε) σ)
     (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {ℓ : H →ₗ[ℂ] ℂ}
     (hℓ : Sobolev₂ (lie G) (fun g => σ (P * g * P⁻¹)) ℓ) {u : H} (hu : u ∈ smooth G fun g => σ (P * g * P⁻¹))
@@ -562,6 +761,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `ℓ hℓ h0 w`. Take `⟨u, hu, hu0⟩` from `(Submodule.ne_bot_iff _).1 (lowT_ne_bot M τ)`. Take `⟨_, -, hσ, hi, -⟩` from `M.ds τ`. Establish `hs : M.sm τ = smooth (gramAt D V τ) (M.rep τ)` using `Submodule.span_eq (smooth (gramAt D V τ) (M.rep τ))`. Establish `hP` using `M.fr_unit τ`.
+
+Establish `h` using `M.fr_gram τ`. Establish `hu' : (u : M.H τ) ∈ smooth (gramAt D V τ) (M.rep τ)` using `hs ▸ u.2`. Establish `hw' : (w : M.H τ) ∈ smooth (gramAt D V τ) (M.rep τ)` using `hs ▸ w.2`. Use `eq_zero_of_translates hσ hi hP h hℓ hu' (fun e => hu0 (Subtype.ext e)) (fun g hg => ?_) hw'` and prove the remaining obligations. Establish `hg'` using `conj_inv_mem hP h hg`.
+
+Establish `e : M.rep τ ((M.fr τ)⁻¹ * g * M.fr τ) = M.σ τ g` using `congrArg (M.σ τ) (conj_conj hP g)`. Establish `hm : M.rep τ ((M.fr τ)⁻¹ * g * M.fr τ) u ∈ M.sm τ` using `hs.ge (translate_mem (isUnit_gram hP h) (isURepOn_conj hσ hP h) hg' hu')`. Rewrite using `[← e]`. Conclude with `h0 u hu _ hg' ⟨_, hm⟩ rfl`.
+-/
 theorem lowGenerates {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) :
     GlobalTheory.Survey.SobolevContinuityLowGeneration.LowGenerates M τ := by
   intro ℓ hℓ h0 w
@@ -580,6 +786,9 @@ theorem lowGenerates {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSMo
   rw [← e]
   exact h0 u hu _ hg' ⟨_, hm⟩ rfl
 
+/- English proof (translation)
+Introduce `_ _ _ M _ _ _ _ _ _ hT h0` and use `GlobalTheory.Survey.SobolevContinuityLowGeneration.eq_zero_of_lowGenerates (lowGenerates M) hT h0`.
+-/
 theorem eq_zero_of_lowT : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (θ : InfFam D),
     IsInfFam θ → (∀ τ, lowT M τ ≠ ⊥) → ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ T ∈ Mult θ M J χ,
       (∀ v : ∀ ρ, lowT M ρ, T (fun ρ => v ρ) = 0) → T = 0 :=

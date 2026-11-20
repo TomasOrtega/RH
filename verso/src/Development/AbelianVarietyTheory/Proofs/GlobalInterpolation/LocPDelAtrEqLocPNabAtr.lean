@@ -12,6 +12,11 @@ namespace GlobalTheory.KerT
 
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker
 
+/- English proof (translation)
+Establish `hp0` using `hp.pos`. Unfold `DomWeight.spread`. Use `split_ifs with hn`. Use `h ⟨0, hn⟩ ⟨n - 1, by omega⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem spread_lt_of_two_mul_lt {n p : ℕ} (hp : p.Prime) (lam : DomWeight n)
     (h : ∀ a b : Fin n, 2 * (lam.w a - lam.w b + (n : ℤ)) < (p : ℤ)) : lam.spread < p := by
   have hp0 := hp.pos
@@ -21,6 +26,9 @@ theorem spread_lt_of_two_mul_lt {n p : ℕ} (hp : p.Prime) (lam : DomWeight n)
     omega
   · omega
 
+/- English proof (translation)
+Introduce `h X n p lam hp hl w hw L hL`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨s, hs, delLeNab X.K X.Tau n lam _ hx⟩`. Conclude with `GlobalTheory.ColPeriod.WeylLoc.nabLeDel_of_local (GlobalTheory.Published.weylDualWeylLatticesAgree_of_lowest_alcove h) X.K X.Tau n lam _ (fun τ => GlobalTheory.DualLat.isLattice_dualFr _ (GlobalTheory.TauLat.tauLatLattice X.E X.K X.Tau n X.emb τ L hL)) p w hp hw fun τ => spread_l …`.
+-/
 theorem localization_delAtr_eq_localization_nabAtr : GlobalTheory.Published.InducedSimpleLowestAlcove →
     ∀ (X : Fields) (n p : ℕ) (lam : X.Tau → DomWeight n), p.Prime →
       (∀ τ (a b : Fin n), 2 * ((lam τ).w a - (lam τ).w b + (n : ℤ)) < (p : ℤ)) →

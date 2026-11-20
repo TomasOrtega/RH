@@ -20,6 +20,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BaseCM
 
 namespace PositivityTheory.RgEis.So
 
+/- English proof (translation)
+Introduce `sl _ sc sg dict _ cg gt bl el pl mg` and use `have jt := GlobalTheory.CompanionTheory.EisSo.jtop have jc := GlobalTheory.CompanionTheory.RgEisSo.jcpt sg gt jt have ji := GlobalTheory.CompanionTheory.RgEisSo.JIwaAd.jiwa sg have jch := GlobalTheory.CompanionTheory.EisSo.jCh sg bl jt sgOne_of_parts (GlobalTheory.CompanionTheory …`.
+-/
 theorem sgOne_hd : SecLaw → WallLaw → Scale → StdGood → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw →
     MirGen → SgOne := fun sl _ sc sg dict _ cg gt bl el pl mg =>
   have jt := GlobalTheory.CompanionTheory.EisSo.jtop

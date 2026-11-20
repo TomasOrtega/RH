@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.TypesAtPin
 
+/- English proof (translation)
+Introduce `hk`. Establish `hS : w ∈ D.nd.S i` using `(D.nd.S_def i w).2 ⟨by fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk), D.nd.SQ_l i w (Or.inr hw)⟩`. Conclude with `Finset.disjoint_left.1 (D.nd.SQ_disj i) hS hw`.
+-/
 theorem not_over_g_of_mem_Q (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ D.nd.Q i)
     (k : Fin 2) : w ∉ placesOver D.host.E (D.host.g k) := by
   intro hk
@@ -25,6 +28,21 @@ theorem not_over_g_of_mem_Q (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞
     · exact Or.inr (Or.inl hk), D.nd.SQ_l i w (Or.inr hw)⟩
   exact Finset.disjoint_left.1 (D.nd.SQ_disj i) hS hw
 
+/- English proof (translation)
+Introduce `pr hL D P hrow rA`. Take `⟨S, hTrue, hLaws, hSupp⟩` from `GlobalTheory.T.exists_true_reading_with_laws pr.fin hL D P hrow`. Establish `hTS : TameSplitAll D.host.E` using `fun w => GlobalTheory.T.tameParahoricRep_splits_as_product pr.bz pr.geo pr.unl pr.mp _`. Establish `hBS : BlockSplitAll D.host.E` using `fun w => GlobalTheory.T.blockTypeVector_irreducible_splits_as_product pr.bz pr.geo pr.unl pr.mp _`. Establish `hchi : ChiIne D.nd D.naut` using `GlobalTheory.SplitRead.chiIne_main D rA.tie0 rA.a2 rA.a5 (GlobalTheory.MuIntegral.muInt_of_charTied D P.cf P.C P.tp P.chr)`.
+
+Establish `hTT : ∀ i w hw, (w ∈ D.nd.Q i ∨ (w ∈ D.nd.S i ∧ ∀ k, w ∉ placesOver D.host.E (D.host.g k))) → TypeTame S i w hw`. Introduce `i w hw h`. Establish `hng : ∀ k, w ∉ placesOver D.host.E (D.host.g k)`. Break down `h with hQ | ⟨-, hg⟩` into its components or cases. Conclude with `not_over_g_of_mem_Q D i w hQ`.
+
+Conclude with `hg`. Establish `hSQ : w ∈ D.nd.S i ∨ w ∈ D.nd.Q i`. Break down `h with hQ | ⟨hS, -⟩` into its components or cases. Conclude with `Or.inr hQ`. Conclude with `Or.inl hS`.
+
+Establish `ht` using `GlobalTheory.MuTameQS.main hL D P S hTrue i w hw hSQ`. Conclude with `GlobalTheory.T.tame_ramified_type_at_place hL D P S hTrue i w hw hng ht.1 (ht.2 hng)`. Establish `hTB : ∀ i w hw, (w ∈ D.nd.S i ∨ w ∈ D.nd.Q i) → TypeBlock S i w hw`. Introduce `i w hw hSQ`. Establish `ht` using `GlobalTheory.MuTameQS.main hL D P S hTrue i w hw hSQ`.
+
+Distinguish the cases in `hg : ∃ k, w ∈ placesOver D.host.E (D.host.g k)`. Conclude with `GlobalTheory.T.tame_block_type_at_split_place hL D P S hTrue i w hw hg ht.1`. Establish `hng : ∀ k, w ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hg ⟨k, hk⟩`. Establish `hT : TypeTame S i w hw` using `hTT i w hw (by`. Break down `hSQ with hS | hQ` into its components or cases.
+
+Conclude with `Or.inr ⟨hS, hng⟩`. Conclude with `Or.inl hQ)`. Use `⟨hT.1, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨v, hv0, hv⟩` from `hT.2.2 Q`. Conclude with `⟨v, hv0, fun h hK h1 _ u hu => hv h hK h1 u hu⟩`.
+
+Conclude with `GlobalTheory.InertialTypes.main D P.T S hTS hBS hLaws hSupp hchi hTT hTB`.
+-/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → GlobalTheory.NRows.RowsA D → Formalism.MainNotions.SumRepresentations.ArchimedeanSignatureMatching D := by
   intro pr hL D P hrow rA
   obtain ⟨S, hTrue, hLaws, hSupp⟩ := GlobalTheory.T.exists_true_reading_with_laws pr.fin hL D P hrow

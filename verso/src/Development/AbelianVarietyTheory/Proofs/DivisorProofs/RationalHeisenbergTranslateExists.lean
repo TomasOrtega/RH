@@ -12,6 +12,17 @@ namespace GlobalTheory.LiftHeisW
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : ∑ x, ∑ y, σ (w x) * σ (J₁ x y) * σ (σ (w y)) = -∑ j, ∑ k, w j * J₁ j k * σ (w k)`. Simplify using `only [hσ, hJ]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∑ a, (∑ b, w b * J₁ b a) * σ (w a) = ∑ j, ∑ k, w j * J₁ j k * σ (w k)`. Simplify using `only [Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+
+Establish `h3 : ∀ j, ∑ x, σ (J₁ j x) * σ (σ (w x)) = -∑ a, w a * J₁ a j`. Introduce `j`. Simplify using `only [hσ, hJ, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hs2 : σ 2 = 2` using `map_ofNat σ 2`. Apply the tactic sequence `ext ((i|i)|i) ((j|j)|j) <;> (try obtain rfl := Subsingleton.elim i 0) <;> (try obtain rfl := Subsingleton.elim j 0) <;>`. Simplify using `[Heisenberg₂, gI, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.fromBlocks, Matrix.one_apply, Matrix.transpose_apply]`. Apply the tactic sequence `all_goals first`. Consider the case `(rw [h3]; ring)`.
+
+Consider the case `(rw [h1, h2, hs2]; field_simp; ring)`. Consider the case `done`.
+-/
 theorem heis_unitary [CharZero E] (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {m : ℕ} (J₁ : Matrix (Fin m) (Fin m) E)
     (hJ : ∀ i j, σ (J₁ j i) = -J₁ i j) (w : Fin m → E) :
     (Heisenberg₂ (fun k => -∑ j, J₁ k j * σ (w j)) w (-(2 : E)⁻¹ * ∑ j, ∑ k, w j * J₁ j k * σ (w k)))ᵀ * gI J₁ *
@@ -39,6 +50,9 @@ theorem heis_unitary [CharZero E] (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) =
     | (rw [h1, h2, hs2]; field_simp; ring)
     | done
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_skew (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin n → E) : σ (form σ J x y) = -form σ J y x := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]
@@ -46,6 +60,9 @@ theorem form_skew (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {n : ℕ} {J
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem mul_apply_form (σ : E →ₐ[F] E) {n : ℕ} {ι : Type} [Fintype ι] (J : Matrix (Fin n) (Fin n) E)
     (A B : Matrix (Fin n) ι E) (i j : ι) :
     (Aᵀ * J * B.map σ) i j = form σ J (fun r => A r i) (fun r => B r j) := by
@@ -53,6 +70,9 @@ theorem mul_apply_form (σ : E →ₐ[F] E) {n : ℕ} {ι : Type} [Fintype ι] (
     Finset.sum_mul, Finset.mul_sum, mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Apply the tactic sequence `ext ((i|i)|i) ((j|j)|j) <;> (try obtain rfl := Subsingleton.elim i 0) <;> (try obtain rfl := Subsingleton.elim j 0) <;>`. Simplify using `[Heisenberg₂, Matrix.fromBlocks, Matrix.one_apply, apply_ite f]`.
+-/
 theorem heis_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {m : ℕ} (a w : Fin m → R) (α : R) :
     (Heisenberg₂ a w α).map f = Heisenberg₂ (fun k => f (a k)) (fun k => f (w k)) (f α) := by
   ext ((i|i)|i) ((j|j)|j) <;> (try obtain rfl := Subsingleton.elim i 0) <;> (try obtain rfl := Subsingleton.elim j 0) <;>
@@ -62,6 +82,33 @@ end GlobalTheory.LiftHeisW
 
 open GlobalTheory.LiftHeisW in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hH w₀`. Establish `hgram` using `GlobalTheory.T.adapted_basis_gram_eq F E σ hσ B W r s hW W₁ H i₀ i₁ hH`. Establish `hP : IsUnit (basQ H).det` using `GlobalTheory.T.isUnit_det_adapted_basis F E σ B W r s hW W₁ H i₀ i₁ hH`. Establish `hJ₁ : ∀ i j, σ (W₁.J j i) = -W₁.J i j`. Introduce `i j`.
+
+Establish `a` using `hgram (Sum.inl (Sum.inr j)) (Sum.inl (Sum.inr i))`. Establish `b` using `hgram (Sum.inl (Sum.inr i)) (Sum.inl (Sum.inr j))`. Simplify using `only [gI, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₂] at a b`. Rewrite using `[← a, ← b]`. Conclude with `form_skew σ hσ hW.skew _ _`.
+
+Establish `mσ : ∀ A C : Matrix (Fin (m + 2)) (Fin (m + 2)) E, (A * C).map σ = A.map σ * C.map σ` using `fun A C => Matrix.map_mul (f := σ.toRingHom)`. Use `set a₀ : Fin m → E := fun k => -∑ j, W₁.J k j * σ (w₀ j) with ha₀`. Use `set α₀ : E := -(2 : E)⁻¹ * ∑ j, ∑ k, w₀ j * W₁.J j k * σ (w₀ k) with hα₀`. Use `set N := Heisenberg₂ a₀ w₀ α₀ with hNdef`. Establish `hN : Nᵀ * gI W₁.J * N.map σ = gI W₁.J` using `heis_unitary σ hσ W₁.J hJ₁ w₀`.
+
+Use `set P := basQ H with hPdef`. Use `set N' := N.submatrix (ixE m) (ixE m) with hN'def`. Use `set G' := (gI W₁.J).submatrix (ixE m) (ixE m) with hG'def`. Establish `hPJ : Pᵀ * W.J * P.map σ = G'`. Use extensionality with `i j`.
+
+Rewrite using `[mul_apply_form]`. Conclude with `hgram _ _`. Establish `hN' : N'ᵀ * G' * N'.map σ = G'`. Rewrite using `[hN'def, hG'def, Matrix.transpose_submatrix, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hN]`. Establish `hdetN : IsUnit N'.det`.
+
+Rewrite using `[hN'def, Matrix.det_submatrix_equiv_self, hNdef, Heisenberg₂, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules. Establish `e1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `e2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`. Use `set M := P * N' * P⁻¹ with hMdef`.
+
+Establish `hM : Mᵀ * W.J * M.map σ = W.J`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hMdef, Matrix.transpose_mul, mσ, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᵀ * (Pᵀ * W.J * P.map σ) * P⁻¹.map σ := by rw [hPJ, hN']`. Use `_ = (P * P⁻¹)ᵀ * W.J * (P * P⁻¹).map σ := by`.
+
+Simplify using `only [Matrix.transpose_mul, mσ, Matrix.mul_assoc]`. Use `_ = W.J := by`. Rewrite using `[e1, Matrix.transpose_one, Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.one_mul, Matrix.mul_one]`. Establish `hdetM : IsUnit M.det`. Rewrite using `[hMdef, Matrix.det_mul, Matrix.det_mul]`.
+
+Conclude with `(hP.mul hdetN).mul ((Matrix.isUnit_nonsing_inv_det_iff).mpr hP)`. Set `γE : GL (Fin (m + 2)) E` to `Matrix.nonsingInvUnit M hdetM`. Set `γA` to `Matrix.GeneralLinearGroup.map (inclR (F := F) (E := E) (AF F)) γE`. Establish `hcoe : (γA : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E)) = M.map (inclR (F` using `F) (AF F)) := rfl`. Establish `hcA : ∀ e : E, cA σ (inclR (F` using `F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by`.
+
+Introduce `e`. Simplify using `[cA, inclR]`. Establish `hmem : γA ∈ UG (cA σ) (incM F W.J)` using `by show (γA : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E))ᵀ * incM F W.J * (γA : Matrix (Fin (m + 2)) (Fin (m + 2)) (AE F E)).map (cA σ) = incM F W.J`. Rewrite using `[hcoe, incM, Matrix.map_map]`. Establish `: (cA σ ∘ inclR (F` using `F) (AF F)) = (inclR (F := F) (AF F)) ∘ σ := funext hcA`.
+
+Rewrite using `[this, ← Matrix.map_map, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hM]`. Use `⟨⟨γA, hmem⟩, ?_, fun k => inclR (F := F) (AF F) (a₀ k), inclR (F := F) (AF F) α₀, ?_⟩` and prove the remaining obligations. Rewrite using `[ratU, Subgroup.mem_subgroupOf]`. Conclude with `⟨γE, rfl⟩`. Establish `hinv : (incM F P)⁻¹ = incM F P⁻¹`.
+
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[incM, incM, ← Matrix.map_mul, e2, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hmat : mat (⟨γA, hmem⟩ : UA σ W.J) = M.map (inclR (F` using `F) (AF F)) := rfl`. Establish `hPMP : P⁻¹ * M * P = N'`. Rewrite using `[hMdef, Matrix.mul_assoc, Matrix.mul_assoc, e2, Matrix.mul_one, ← Matrix.mul_assoc, e2, Matrix.one_mul]`.
+
+Rewrite using `[crd, hinv, hmat, ← hPdef, incM, incM, ← Matrix.map_mul, ← Matrix.map_mul, hPMP, hN'def, ← Matrix.submatrix_map, Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id, hNdef, heis_map]`.
+-/
 theorem GlobalTheory.LiftHeisW.exists_ratU_heis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ w₀ : Fin m → E, ∃ γ ∈ ratU σ W.J, ∃ (a : Fin m → AE F E) (α : AE F E),
       crd H γ = Heisenberg₂ a (fun k => inclR (F := F) (AF F) (w₀ k)) α := by

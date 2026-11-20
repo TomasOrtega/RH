@@ -50,15 +50,24 @@ def Wm (A : Matrix (Fin n) (Fin n) ℂ) : Submodule ℂ (Fin n → ℂ) := Linea
 
 def Keeps (g : Matrix (Fin n) (Fin n) ℂ) (S : Submodule ℂ (Fin n → ℂ)) : Prop := S.map (Matrix.toLin' g) = S
 
+/- English proof (translation)
+Unfold `Keeps at *`. Rewrite using `[Matrix.toLin'_mul, Submodule.map_comp, hh, hg]`.
+-/
 theorem keeps_mul {g h : Matrix (Fin n) (Fin n) ℂ} {S : Submodule ℂ (Fin n → ℂ)} (hg : Keeps g S) (hh : Keeps h S) :
     Keeps (g * h) S := by
   unfold Keeps at *
   rw [Matrix.toLin'_mul, Submodule.map_comp, hh, hg]
 
+/- English proof (translation)
+Unfold `Keeps`. Rewrite using `[Matrix.toLin'_one, Submodule.map_id]`.
+-/
 theorem keeps_one (S : Submodule ℂ (Fin n → ℂ)) : Keeps 1 S := by
   unfold Keeps
   rw [Matrix.toLin'_one, Submodule.map_id]
 
+/- English proof (translation)
+Unfold `Keeps at *`. Use `conv_lhs => rw [← hg]`. Rewrite using `[← Submodule.map_comp, ← Matrix.toLin'_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.toLin'_one, Submodule.map_id]`.
+-/
 theorem keeps_inv (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) {S : Submodule ℂ (Fin n → ℂ)} (hg : Keeps (g : Matrix (Fin n) (Fin n) ℂ) S) :
     Keeps ((g⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) S := by
   unfold Keeps at *

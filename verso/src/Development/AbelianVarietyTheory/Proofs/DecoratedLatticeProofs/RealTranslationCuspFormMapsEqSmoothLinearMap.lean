@@ -23,6 +23,9 @@ open Formalism.MainNotions.StandardLattice
 
 variable {D : D7} {θ : InfFam D} {V : HSp D}
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simpa using GlobalTheory.PointAtPlaceHom.infMat_one V (θ ρ) | a :: l, hl => by rw [List.nodup_cons] at hl rw [List.map_cons, List.prod_cons, GlobalTheory.PointAtPlaceHom.infMat_mul, infMat_list_prod hθ u hu ρ l hl.2] have hs := GlobalTheory.PointAtPlaceHom.atTau_spe …`.
+-/
 theorem infMat_list_prod (hθ : IsInfFam θ) (u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hu : ∀ τ, u τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (ρ : D.what₂.Tau) :
     ∀ l : List D.what₂.Tau, l.Nodup →
@@ -41,6 +44,13 @@ theorem infMat_list_prod (hθ : IsInfFam θ) (u : D.what₂.Tau → Matrix (Fin 
       · rw [if_neg d, if_neg]
         simp [c, d]
 
+/- English proof (translation)
+Use `set u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ => infMat D.sp.cm.sig V.gram (θ τ) g with hu_def`. Establish `hu : ∀ τ, u τ ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`. Use `set P := GlobalTheory.AdelicScalar.realElt θ V u with hP`. Establish `hPm : P ∈ GinfC V`. Use `list_prod_mem fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem V τ (u τ)`. Establish `e : ∀ ρ, infMat D.sp.cm.sig V.gram (θ ρ) P = infMat D.sp.cm.sig V.gram (θ ρ) g` using `fun ρ => by`. Rewrite using `[hP, GlobalTheory.AdelicScalar.realElt, infMat_list_prod hθ u hu ρ _ (Finset.nodup_toList _), if_pos (Finset.mem_toList.2 (Finset.mem_univ ρ))]`. Use `mul_inv_eq_one.1 (GlobalTheory.PointAtPlace.eq_one_of_mem V _ ((GlobalTheory.SmoothForms.RealPts.glue θ hθ V).1 _ fun ρ => ?_) (mul_mem hg (inv_mem hPm)))` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, ← e, ← GlobalTheory.PointAtPlaceHom.infMat_mul, mul_inv_cancel, GlobalTheory.PointAtPlaceHom.infMat_one]`.
+-/
 theorem eq_realElt (hθ : IsInfFam θ) {g : GA D V} (hg : g ∈ GinfC V) :
     g = GlobalTheory.AdelicScalar.realElt θ V (fun τ => infMat D.sp.cm.sig V.gram (θ τ) g) := by
   set u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ => infMat D.sp.cm.sig V.gram (θ τ) g with hu_def
@@ -64,6 +74,15 @@ def smAct (hθ : IsInfFam θ) {S : D.what₂.Tau → SPar} (M : DSModel V S) (g 
   (M.rep τ (infMat D.sp.cm.sig V.gram (θ τ) g)).toLinearMap.restrict fun _ hw =>
     GlobalTheory.UnifEvery.rep_mem_sm M τ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ) hw
 
+/- English proof (translation)
+Introduce `D θ V S M hθ g hg`. Use `⟨PiTensorProduct.map (smAct hθ M g), fun J χ T hT x => ?_⟩` and prove the remaining obligations. Establish `hU : PiTensorProduct.lift.symm T ∈ Mult θ M J χ` using `(mem_multT θ M J χ T).1 hT`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c v`.
+
+Rewrite using `[map_smul, map_smul, PiTensorProduct.map_tprod]`. Establish `key` using `GlobalTheory.RealEquiv.mult_realElt D V S θ M J χ _ hU (fun τ => infMat D.sp.cm.sig V.gram (θ τ) g) (fun τ => GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ) v (fun τ => smAct hθ M g τ (v τ)) (fun τ => rfl)`. Rewrite `key` using `[← eq_realElt hθ hg]`. Establish `e1 : ∀ w : M.Vec, PiTensorProduct.lift.symm T w = T (PiTensorProduct.tprod ℂ w)` using `fun w => by`. Simplify using the standard rewrite rules.
+
+Rewrite `key` using `[e1, e1]`. Use function extensionality and compare the values at `h`. Simplify using `only [rTrans, map_smul, Pi.smul_apply, key, rTr]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy]`.
+
+Use function extensionality and compare the values at `h`. Simplify using `[rTrans]`.
+-/
 theorem rTrans_eq_map : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S), IsInfFam θ → ∀ g ∈ GinfC V, ∃ σ : SmT M →ₗ[ℂ] SmT M, ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ T ∈ MultT θ M J χ, ∀ x, T (σ x) = rTrans g (T x) := by
   intro D θ V S M hθ g hg
   refine ⟨PiTensorProduct.map (smAct hθ M g), fun J χ T hT x => ?_⟩

@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.StepW
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GlobalTheory.CompanionTheory.Ar.PB.StepW GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p z c hc hz`. Establish `hpos : 0 < ∏ k, ‖c k‖ ^ M.dy p k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hc k)) _`. Establish `h1` using `(BM.hom p).smul c z hc`. Rewrite `h1` using `[BM.hom_deg p]`. Establish `h2 : (fsHerm ι (M.dy p)).h (fun q => c q.1 * z q) = (∏ k, ‖c k‖ ^ M.dy p k) * (fsHerm ι (M.dy p)).h z` using `(fsHerm ι (M.dy p)).smul c z hc`.
+
+Unfold `stepGap`. Rewrite using `[h1, h2, Real.log_mul hpos.ne' ((BM.hom p).pos z hz).ne', Real.log_mul hpos.ne' ((fsHerm ι (M.dy p)).pos z hz).ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stepGap_torus : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ)
     (BM : BaseMetric M n) (p : Ψ × Fin N) (z : (Σ k, ι k) → ℂ) (c : K → ℂ), (∀ k, c k ≠ 0) →

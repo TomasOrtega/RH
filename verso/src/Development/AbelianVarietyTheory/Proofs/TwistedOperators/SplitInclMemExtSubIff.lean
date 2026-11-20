@@ -26,21 +26,33 @@ def wPart (τ : E →ₐ[F] Fv F v) (W : Submodule E V.V) : Submodule (Fv F v) (
     rw [splitVec_smul, AlgHom.commutes]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨y, hy, rfl⟩`.
+-/
 theorem splitVec_mem_wPart (τ : E →ₐ[F] Fv F v) {W : Submodule E V.V} {y : Fin V.rank → Fv F v ⊗[F] E}
     (hy : y ∈ extSub (F := F) V (Fv F v) W) : splitVec τ y ∈ wPart τ W := ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y, GlobalTheory.Cusp.extSub_mono V _ h hy, rfl⟩`.
+-/
 theorem wPart_mono (τ : E →ₐ[F] Fv F v) {A B : Submodule E V.V} (h : A ≤ B) : wPart τ A ≤ wPart τ B := by
   rintro _ ⟨y, hy, rfl⟩
   exact ⟨y, GlobalTheory.Cusp.extSub_mono V _ h hy, rfl⟩
 
 section Perp
 
+/- English proof (translation)
+Introduce `y hy` and use `GlobalTheory.Cusp.mem_perp.2 fun x hx => by have := GlobalTheory.Cusp.mem_perp.1 hx y hy simp only [HSpace.hD] at this ⊢ rw [← V.herm.eq, this, map_zero]`.
+-/
 theorem le_perp_perp (W : Submodule E V.V) : W ≤ perp V (perp V W) := fun y hy =>
   GlobalTheory.Cusp.mem_perp.2 fun x hx => by
     have := GlobalTheory.Cusp.mem_perp.1 hx y hy
     simp only [HSpace.hD] at this ⊢
     rw [← V.herm.eq, this, map_zero]
 
+/- English proof (translation)
+Use `(Submodule.eq_of_le_of_finrank_eq (le_perp_perp W) ?_).symm` and prove the remaining obligations. Establish `h1` using `GlobalTheory.IsoDim.finrank_perp_add V W`. Establish `h2` using `GlobalTheory.IsoDim.finrank_perp_add V (perp V W)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem perp_perp (W : Submodule E V.V) : perp V (perp V W) = W := by
   refine (Submodule.eq_of_le_of_finrank_eq (le_perp_perp W) ?_).symm
   have h1 := GlobalTheory.IsoDim.finrank_perp_add V W
@@ -55,6 +67,9 @@ variable (hc : CMData F E) (h : IsCMExt F E hc.sig) (τ : E →ₐ[F] Fv F v)
 
 include h in
 
+/- English proof (translation)
+Use `⟨fun hy => ⟨⟨y, hy, rfl⟩, ⟨y, hy, rfl⟩⟩, fun ⟨⟨y₁, h₁, e₁⟩, ⟨y₂, h₂, e₂⟩⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[← (splitVecEquiv h τ).symm_apply_apply y]`. Express the relevant statement in the definitionally equal form `splitIncl h τ (splitVec τ y) + splitIncl h (τ.comp hc.sig) (splitVec (τ.comp hc.sig) y) ∈ _`. Rewrite using `[← e₁, ← e₂, splitIncl_splitVec, splitIncl_splitVec]`. Conclude with `add_mem (Submodule.smul_mem _ _ h₁) (Submodule.smul_mem _ _ h₂)`.
+-/
 theorem mem_extSub_iff_split {W : Submodule E V.V} {y : Fin V.rank → Fv F v ⊗[F] E} :
     y ∈ extSub (F := F) V (Fv F v) W ↔
       splitVec τ y ∈ wPart τ W ∧ splitVec (τ.comp hc.sig) y ∈ wPart (τ.comp hc.sig) W := by
@@ -65,6 +80,9 @@ theorem mem_extSub_iff_split {W : Submodule E V.V} {y : Fin V.rank → Fv F v �
   exact add_mem (Submodule.smul_mem _ _ h₁) (Submodule.smul_mem _ _ h₂)
 
 include h in
+/- English proof (translation)
+Rewrite using `[mem_extSub_iff_split hc h τ, splitVec_splitIncl, splitVec_comp_splitIncl]`. Conclude with `and_iff_left (zero_mem _)`.
+-/
 theorem splitIncl_mem_extSub_iff {W : Submodule E V.V} {u : Fin V.rank → Fv F v} :
     splitIncl h τ u ∈ extSub (F := F) V (Fv F v) W ↔ u ∈ wPart τ W := by
   rw [mem_extSub_iff_split hc h τ, splitVec_splitIncl, splitVec_comp_splitIncl]
@@ -78,6 +96,13 @@ variable (hc : CMData F E) (h : IsCMExt F E hc.sig) (hJ : IsHermND hc.sig V.gram
 
 include h hJ in
 
+/- English proof (translation)
+Rewrite using `[← splitIncl_mem_extSub_iff hc h (τ.comp hc.sig)]`. Use `conv_lhs => rw [← perp_perp W]`. Rewrite using `[GlobalTheory.Cusp.mem_extSub_perp hc V]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H _ ⟨x, hx, rfl⟩`.
+
+Use `congrArg (splitProj (τ.comp hc.sig)) (H x hx)` as an intermediate fact. Express the relevant statement in the definitionally equal form `splitProj (τ.comp hc.sig) (hLin hc.sig V.gram (Fv F v) (splitIncl h (τ.comp hc.sig) u') x) = _ at this`. Rewrite `this` using `[splitProj_comp_hLin h hJ, splitVec_splitIncl, map_zero]`. Then use the resulting hypothesis. Introduce `H x hx`. Express the relevant statement in the definitionally equal form `hLin hc.sig V.gram (Fv F v) (splitIncl h (τ.comp hc.sig) u') x = 0`.
+
+Use `split_ext h τ ?_ ?_` and prove the remaining obligations. Rewrite using `[splitProj_hLin, splitVec_splitIncl_comp, map_zero, Matrix.mulVec_zero, dotProduct_zero]`. Rewrite using `[splitProj_comp_hLin h hJ, splitVec_splitIncl, map_zero]`. Conclude with `H _ ⟨x, hx, rfl⟩`.
+-/
 theorem mem_wPart_comp_iff {W : Submodule E V.V} {u' : Fin V.rank → Fv F v} :
     u' ∈ wPart (τ.comp hc.sig) W ↔ ∀ u ∈ wPart τ (perp V W), u' ⬝ᵥ V.gram.map τ *ᵥ u = 0 := by
   rw [← splitIncl_mem_extSub_iff hc h (τ.comp hc.sig)]
@@ -106,12 +131,23 @@ def flagChain (𝔉 : IsoFlag V) (τ : E →ₐ[F] Fv F v) (j : Fin (2 * 𝔉.k 
 
 variable (𝔉 : IsoFlag V) (τ : E →ₐ[F] Fv F v)
 
+/- English proof (translation)
+The claim follows from `dif_pos hj`.
+-/
 theorem flagChain_of_le {j : Fin (2 * 𝔉.k + 2)} (hj : (j : ℕ) ≤ 𝔉.k) :
     flagChain 𝔉 τ j = wPart τ (𝔉.X ⟨j, by omega⟩) := dif_pos hj
 
+/- English proof (translation)
+The claim follows from `dif_neg (not_le.2 hj)`.
+-/
 theorem flagChain_of_lt {j : Fin (2 * 𝔉.k + 2)} (hj : 𝔉.k < (j : ℕ)) :
     flagChain 𝔉 τ j = wPart τ (perp V (𝔉.X ⟨2 * 𝔉.k + 1 - j, by omega⟩)) := dif_neg (not_le.2 hj)
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Apply the tactic sequence `rcases le_or_gt (i : ℕ) 𝔉.k with hi | hi <;> rcases le_or_gt (j : ℕ) 𝔉.k with hj | hj`. Rewrite using `[flagChain_of_le 𝔉 τ hi, flagChain_of_le 𝔉 τ hj]`. Conclude with `wPart_mono τ (𝔉.strictMono.monotone (Fin.mk_le_mk.2 hij'))`.
+
+Rewrite using `[flagChain_of_le 𝔉 τ hi, flagChain_of_lt 𝔉 τ hj]`. Conclude with `wPart_mono τ (𝔉.le_perp _ _)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[flagChain_of_lt 𝔉 τ hi, flagChain_of_lt 𝔉 τ hj]`. Conclude with `wPart_mono τ (GlobalTheory.Cusp.perp_anti (𝔉.strictMono.monotone (Fin.mk_le_mk.2 (by omega))))`.
+-/
 theorem flagChain_mono : Monotone (flagChain 𝔉 τ) := by
   intro i j hij
   have hij' : (i : ℕ) ≤ j := hij
@@ -124,6 +160,9 @@ theorem flagChain_mono : Monotone (flagChain 𝔉 τ) := by
   · rw [flagChain_of_lt 𝔉 τ hi, flagChain_of_lt 𝔉 τ hj]
     exact wPart_mono τ (GlobalTheory.Cusp.perp_anti (𝔉.strictMono.monotone (Fin.mk_le_mk.2 (by omega))))
 
+/- English proof (translation)
+Use `eq_bot_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy` using `[SetLike.mem_coe, GlobalTheory.Cusp.extSub_bot, Submodule.mem_bot]`. Rewrite using `[hy, Submodule.mem_bot]`. Conclude with `funext fun _ => map_zero _`.
+-/
 theorem wPart_bot : wPart τ (⊥ : Submodule E V.V) = ⊥ := by
   refine eq_bot_iff.2 ?_
   rintro _ ⟨y, hy, rfl⟩
@@ -131,14 +170,23 @@ theorem wPart_bot : wPart τ (⊥ : Submodule E V.V) = ⊥ := by
   rw [hy, Submodule.mem_bot]
   exact funext fun _ => map_zero _
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun u _ => ⟨splitIncl h τ u, by rw [GlobalTheory.Cusp.extSub_top]; trivial, splitVec_splitIncl h τ u⟩`.
+-/
 theorem wPart_top {hc : CMData F E} (h : IsCMExt F E hc.sig) : wPart τ (⊤ : Submodule E V.V) = ⊤ :=
   eq_top_iff.2 fun u _ => ⟨splitIncl h τ u, by rw [GlobalTheory.Cusp.extSub_top]; trivial, splitVec_splitIncl h τ u⟩
 
+/- English proof (translation)
+Rewrite using `[flagChain_of_le 𝔉 τ (Nat.zero_le _)]`. Use `wPart_bot τ` and compare the differences between its conclusion and the goal. Conclude with `𝔉.zero`.
+-/
 theorem flagChain_zero : flagChain 𝔉 τ 0 = ⊥ := by
   rw [flagChain_of_le 𝔉 τ (Nat.zero_le _)]
   convert wPart_bot τ
   exact 𝔉.zero
 
+/- English proof (translation)
+Rewrite using `[flagChain_of_lt 𝔉 τ (by simp; omega)]`. Use `wPart_top τ h` and compare the differences between its conclusion and the goal. Establish `: (⟨2 * 𝔉.k + 1 - (Fin.last (2 * 𝔉.k + 1) : ℕ), by simp⟩ : Fin (𝔉.k + 1)) = 0` using `Fin.ext (by simp)`. Rewrite using `[this, 𝔉.zero, GlobalTheory.Cusp.perp_bot]`.
+-/
 theorem flagChain_last {hc : CMData F E} (h : IsCMExt F E hc.sig) : flagChain 𝔉 τ (Fin.last _) = ⊤ := by
   rw [flagChain_of_lt 𝔉 τ (by simp; omega)]
   convert wPart_top τ h

@@ -18,6 +18,11 @@ section General
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hev` using `hγ.choose_spec.2`. Establish `hy : hγ.choose y ∈ mcPts P` using `hev.self_of_nhds.2.1`. Rewrite using `[hg _ hy]`.
+
+Use `congr 1`. Apply `maDensity_congr_of_eventuallyEq` to reduce the goal to its premises. Introduce `j`. Use `filter_upwards [hev] with y' hy' using hφ j _ hy'.2.1`. Both sides reduce to the same expression.
+-/
 theorem sheetDensity_congr_mcPts (P : Ideal (MRing ι)) {e : ℕ}
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     {g g' : ((Σ k, ι k) → ℂ) → ℝ} (hφ : ∀ j, ∀ z ∈ mcPts P, φ j z = φ' j z)
@@ -34,6 +39,9 @@ theorem sheetDensity_congr_mcPts (P : Ideal (MRing ι)) {e : ℕ}
     filter_upwards [hev] with y' hy' using hφ j _ hy'.2.1
   · rfl
 
+/- English proof (translation)
+Unfold `ptsIntegral ptsIntegralAt`. Use `split_ifs with hΨ`. Simplify using `only [sheetDensity_congr_mcPts P _ hφ hg]`. Both sides reduce to the same expression.
+-/
 theorem ptsIntegral_congr_mcPts (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     {g g' : ((Σ k, ι k) → ℂ) → ℝ} (hφ : ∀ j, ∀ z ∈ mcPts P, φ j z = φ' j z)
     (hg : ∀ z ∈ mcPts P, g z = g' z) : ptsIntegral P φ g = ptsIntegral P φ' g' := by
@@ -42,11 +50,23 @@ theorem ptsIntegral_congr_mcPts (P : Ideal (MRing ι)) {e : ℕ} {φ φ' : Fin e
   · simp only [sheetDensity_congr_mcPts P _ hφ hg]
   · rfl
 
+/- English proof (translation)
+Unfold `ptsIntegral ptsIntegralAt sheetDensity`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem ptsIntegral_zero (P : Ideal (MRing ι)) {e : ℕ} (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) :
     ptsIntegral P φ (fun _ => 0) = 0 := by
   unfold ptsIntegral ptsIntegralAt sheetDensity
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hhom : IsMultiHomog (1 : MRing ι) 0`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hnot : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Rewrite using `[hI.2.2 P n L A 1 0 hP hL hA (fun k => by simp [ha]) hhom hnot]`. Establish `hsupp : divSupp P (1 : MRing ι) = ∅`. Use extensionality with `W`. Use `⟨fun hW => ?_, fun h => h.elim⟩` and prove the remaining obligations.
+
+Establish `h1 : P ⊔ Ideal.span {(1 : MRing ι)} = ⊤` using `by simp`. Establish `hp : W.IsPrime` using `hW.1.1.1`. Establish `hle : P ⊔ Ideal.span {(1 : MRing ι)} ≤ W` using `hW.1.1.2`. Rewrite `hle` using `[h1]`. Conclude with `hp.ne_top (top_le_iff.1 hle)`.
+
+Unfold `recR arInt`. Simplify using `only [hsupp, finsum_mem_empty, zero_sub, neg_eq_zero]`. Rewrite using `[ptsIntegral_congr_mcPts P (φ' := fun j z => Real.log ((L j).h z)) (g' := fun _ => 0) (fun _ _ _ => rfl) (fun z hz => by simp [logNorm, h1 z hz])]`. Conclude with `ptsIntegral_zero P _`.
+-/
 theorem I_snoc_triv {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} (hI : IsIntersectionFamily I)
     {P : Ideal (MRing ι)} {n : ℕ} {L : Fin n → HermLine ι} {A : HermLine ι} (hP : IsArithVar P (n + 1))
     (hL : ∀ j, IsSmoothHerm (L j)) (hA : IsSmoothHerm A) (ha : A.a = 0) (h1 : ∀ z ∈ mcPts P, A.h z = 1) :
@@ -103,11 +123,17 @@ def halfInvLine (A B : HermLine ι) (c : K → ℤ) (hc : ∀ k, 2 * c k = -(A.a
     have h2 : ((c k : ℤ) : ℝ) * 2 = -((A.a k : ℝ) + B.a k) := by exact_mod_cast (by linarith)
     linarith
 
+/- English proof (translation)
+Simplify using `only [halfInvLine, abs_of_pos (mul_pos (A.pos z hz) (B.pos z hz))]`.
+-/
 theorem halfInvLine_h_of_pos (A B : HermLine ι) (c : K → ℤ) (hc : ∀ k, 2 * c k = -(A.a k + B.a k))
     (z : (Σ k, ι k) → ℂ) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     (halfInvLine A B c hc).h z = (A.h z * B.h z) ^ (-(1 / 2 : ℝ)) := by
   simp only [halfInvLine, abs_of_pos (mul_pos (A.pos z hz) (B.pos z hz))]
 
+/- English proof (translation)
+Establish `hs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (A.h z * B.h z) ^ (-(1 / 2 : ℝ))) {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(hA.mul hB).rpow_const_of_ne fun z hz => (mul_pos (A.pos z hz) (B.pos z hz)).ne'`. Conclude with `hs.congr fun z hz => halfInvLine_h_of_pos A B c hc z hz`.
+-/
 theorem isSmoothHerm_halfInvLine {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) (c : K → ℤ)
     (hc : ∀ k, 2 * c k = -(A.a k + B.a k)) : IsSmoothHerm (halfInvLine A B c hc) := by
   have hs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (A.h z * B.h z) ^ (-(1 / 2 : ℝ)))
@@ -115,10 +141,16 @@ theorem isSmoothHerm_halfInvLine {A B : HermLine ι} (hA : IsSmoothHerm A) (hB :
     (hA.mul hB).rpow_const_of_ne fun z hz => (mul_pos (A.pos z hz) (B.pos z hz)).ne'
   exact hs.congr fun z hz => halfInvLine_h_of_pos A B c hc z hz
 
+/- English proof (translation)
+The claim follows from `hA.mul hB`.
+-/
 theorem isSmoothHerm_tensor {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) :=
   hA.mul hB
 
+/- English proof (translation)
+Establish `hs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (A.h z)⁻¹) {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `hA.inv fun z hz => (A.pos z hz).ne'`. Use `hs.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `[hermZpow]`.
+-/
 theorem isSmoothHerm_inv {A : HermLine ι} (hA : IsSmoothHerm A) : IsSmoothHerm (hermZpow A (-1)) := by
   have hs : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (A.h z)⁻¹)
       {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} :=
@@ -126,9 +158,15 @@ theorem isSmoothHerm_inv {A : HermLine ι} (hA : IsSmoothHerm A) : IsSmoothHerm 
   refine hs.congr fun z _ => ?_
   simp [hermZpow]
 
+/- English proof (translation)
+Simplify using `[hermZpow]`.
+-/
 theorem hermZpow_neg_one_h (A : HermLine ι) (z : (Σ k, ι k) → ℂ) : (hermZpow A (-1)).h z = (A.h z)⁻¹ := by
   simp [hermZpow]
 
+/- English proof (translation)
+Simplify using `[hermZpow]`.
+-/
 theorem hermZpow_neg_one_a (A : HermLine ι) : (hermZpow A (-1)).a = -A.a := by
   simp [hermZpow]
 
@@ -144,6 +182,11 @@ def cycTerm (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → 
     (W : Ideal (MRing ι)) : ℝ :=
   if IsHorizontal W then I W n L else (geoNum n W (fun j => (L j).a) : ℝ) * Real.log (charOf W)
 
+/- English proof (translation)
+Unfold `cycR cycTerm`. Rewrite using `[finsum_mem_def]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Distinguish the cases in `hW : W ∈ divSupp P s`. Simplify using `[divCycle, Finsupp.ofSupportFinite_coe, hW]`.
+
+Simplify using `[divCycle, Finsupp.ofSupportFinite_coe, hW]`.
+-/
 theorem cycR_eq_finsum (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (P : Ideal (MRing ι)) {n : ℕ}
     (L : Fin n → HermLine ι) (s : MRing ι) :
     cycR I P L s = ∑ᶠ W, (divCycle P s W : ℝ) * cycTerm I L W := by
@@ -155,6 +198,15 @@ theorem cycR_eq_finsum (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLi
   · simp [divCycle, Finsupp.ofSupportFinite_coe, hW]
   · simp [divCycle, Finsupp.ofSupportFinite_coe, hW]
 
+/- English proof (translation)
+Rewrite using `[cycR_eq_finsum, cycR_eq_finsum, ← finsum_sub_distrib]`. Establish `hW : ∀ W, (divCycle P f W : ℝ) - divCycle P g W = ((Finsupp.single W₀ (1 : ℤ) W : ℤ) : ℝ)`. Introduce `W`. Use `congrArg (fun z => z W) hdiv` as an intermediate fact. Simplify using `only [Finsupp.coe_sub, Pi.sub_apply, T.toZCycle, Finsupp.mapRange_apply] at this`.
+
+Rewrite using `[← this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∀ W, (divCycle P f W : ℝ) * cycTerm I L W - divCycle P g W * cycTerm I L W = ((Finsupp.single W₀ (1 : ℤ) W : ℤ) : ℝ) * cycTerm I L W` using `fun W => by`. Rewrite using `[← hW W]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e]`. Rewrite using `[finsum_eq_single _ W₀ (fun W hW => by simp [Ne.symm hW])]`. Simplify using `[cycTerm, hW₀]`. Conclude with `(divCycle P f).hasFiniteSupport.subset fun W hW h0 => hW (by simp [h0])`.
+
+Conclude with `(divCycle P g).hasFiniteSupport.subset fun W hW h0 => hW (by simp [h0])`.
+-/
 theorem cycR_sub_eq (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ) (P : Ideal (MRing ι)) {n : ℕ}
     (L : Fin n → HermLine ι) (f g : MRing ι) (W₀ : Ideal (MRing ι))
     (hdiv : T.toZCycle (divCycle P f) - T.toZCycle (divCycle P g) = Finsupp.single W₀ 1)
@@ -176,6 +228,9 @@ theorem cycR_sub_eq (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine 
   · exact (divCycle P f).hasFiniteSupport.subset fun W hW h0 => hW (by simp [h0])
   · exact (divCycle P g).hasFiniteSupport.subset fun W hW h0 => hW (by simp [h0])
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hW`. Conclude with `h (by simp [divCycle, Finsupp.ofSupportFinite_coe, hW])`.
+-/
 theorem mem_divSupp_of_divCycle_ne_zero {P : Ideal (MRing ι)} {s : MRing ι} {W : Ideal (MRing ι)}
     (h : divCycle P s W ≠ 0) : W ∈ divSupp P s := by
   classical
@@ -188,6 +243,13 @@ section Cone
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ]
 
+/- English proof (translation)
+Use `conv_lhs => rw [s.as_sum]`. Use `conv_rhs => rw [s.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hX : (m.prod fun p e => (X p.1 : MvPolynomial K Φ) ^ e) = ∏ k, X k ^ β k`.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ y, (X k : MvPolynomial K Φ) ^ m ⟨k, y⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs m hm k]`. Simplify using `only [T.multiConeMap, coe_eval₂Hom, eval₂_monomial, aeval_monomial, mul_pow, Finsupp.prod_mul, ← hX, map_mul, eq_intCast, algebraMap_int_eq, map_intCast]`.
+
+Rewrite using `[show (m.prod fun p e => (C (c p) : MvPolynomial K Φ) ^ e) = C (m.prod fun p e => c p ^ e) by`. Simplify using `[Finsupp.prod, map_prod, map_pow]]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem multiConeMap_of_homog (c : (Σ k, ι k) → Φ) (s : MRing ι) (β : K → ℕ) (hs : IsMultiHomog s β) :
     T.multiConeMap c s = C (aeval c s) * ∏ k, X k ^ β k := by
   conv_lhs => rw [s.as_sum]
@@ -205,6 +267,11 @@ theorem multiConeMap_of_homog (c : (Σ k, ι k) → Φ) (s : MRing ι) (β : K �
     simp [Finsupp.prod, map_prod, map_pow]]
   ring
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, multiConeMap_of_homog c s β hs, not_iff_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm : (∏ k, (X k : MvPolynomial K Φ) ^ β k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)`. Conclude with `C_eq_zero.1 ((mul_eq_zero.1 h).resolve_right hm)`.
+
+Introduce `h`. Simplify using `[h]`.
+-/
 theorem not_mem_ker_iff_aeval_ne (c : (Σ k, ι k) → Φ) (s : MRing ι) (β : K → ℕ) (hs : IsMultiHomog s β) :
     s ∉ RingHom.ker (T.multiConeMap c) ↔ aeval c s ≠ 0 := by
   rw [RingHom.mem_ker, multiConeMap_of_homog c s β hs, not_iff_not]
@@ -221,6 +288,13 @@ section Tuples
 
 variable {α : Type*}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality. Rewrite using `[Equiv.swap_apply_left, ← Fin.castSucc_zero, Fin.snoc_last, Fin.snoc_castSucc, Fin.cons_zero]`.
+
+Distinguish the cases in `hl : i = Fin.last (n + 1)`. Substitute `hl` using the available equality. Rewrite using `[Equiv.swap_apply_right, Fin.snoc_last, ← Fin.castSucc_zero, Fin.snoc_castSucc, Fin.cons_zero]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne h0 hl]`. Take `⟨i', rfl⟩` from `Fin.exists_castSucc_eq.2 hl`.
+
+Establish `hi' : i' ≠ 0` using `fun h => h0 (by rw [h, Fin.castSucc_zero])`. Take `⟨j, rfl⟩` from `Fin.exists_succ_eq.2 hi'`. Rewrite using `[Fin.snoc_castSucc, Fin.snoc_castSucc, Fin.cons_succ, Fin.cons_succ]`.
+-/
 theorem snoc_cons_comp_swap {n : ℕ} (A B : α) (L : Fin n → α) :
     (Fin.snoc (Fin.cons A L : Fin (n + 1) → α) B : Fin (n + 2) → α) ∘ Equiv.swap 0 (Fin.last (n + 1)) =
       Fin.snoc (Fin.cons B L : Fin (n + 1) → α) A := by
@@ -238,6 +312,9 @@ theorem snoc_cons_comp_swap {n : ℕ} (A B : α) (L : Fin n → α) :
   obtain ⟨j, rfl⟩ := Fin.exists_succ_eq.2 hi'
   rw [Fin.snoc_castSucc, Fin.snoc_castSucc, Fin.cons_succ, Fin.cons_succ]
 
+/- English proof (translation)
+Establish `e : (![A, B] : Fin 2 → α) = Fin.snoc (![A] : Fin 1 → α) B`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[e, Fin.append_snoc, Fin.append_right_eq_snoc]`. Both sides reduce to the same expression.
+-/
 theorem append_pair_eq {n : ℕ} (L : Fin n → α) (A B : α) :
     (Fin.append L ![A, B] : Fin (n + 2) → α) = Fin.snoc (Fin.snoc L A : Fin (n + 1) → α) B := by
   have e : (![A, B] : Fin 2 → α) = Fin.snoc (![A] : Fin 1 → α) B := by
@@ -252,6 +329,9 @@ section Smooth
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `j`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => simpa using hA`. Consider the case `succ i => simpa using hL i`.
+-/
 theorem smooth_cons {n : ℕ} {A : HermLine ι} {L : Fin n → HermLine ι} (hA : IsSmoothHerm A)
     (hL : ∀ j, IsSmoothHerm (L j)) : ∀ j, IsSmoothHerm ((Fin.cons A L : Fin (n + 1) → HermLine ι) j) := by
   intro j
@@ -259,6 +339,9 @@ theorem smooth_cons {n : ℕ} {A : HermLine ι} {L : Fin n → HermLine ι} (hA 
   | zero => simpa using hA
   | succ i => simpa using hL i
 
+/- English proof (translation)
+Introduce `j`. Consider the cases of `j using Fin.lastCases with`. Consider the case `last => simpa using hA`. Consider the case `cast i => simpa using hL i`.
+-/
 theorem smooth_snoc {n : ℕ} {A : HermLine ι} {L : Fin n → HermLine ι} (hA : IsSmoothHerm A)
     (hL : ∀ j, IsSmoothHerm (L j)) : ∀ j, IsSmoothHerm ((Fin.snoc L A : Fin (n + 1) → HermLine ι) j) := by
   intro j
@@ -272,6 +355,15 @@ section FibreSquare
 
 variable {ι ν κ : Type} [Fintype ι] [Fintype ν] [Fintype κ]
 
+/- English proof (translation)
+Establish `hfun : X'.h = fun z => X.h (fun p => z (T.yyEmb j p))` using `funext hp.2`. Unfold `IsSmoothHerm`. Rewrite using `[hfun]`. Establish `hlin : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, T.wwIdx ι ν κ k) → ℂ => fun p => z (T.yyEmb j p))` using `contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (T.yyEmb j p)`. Use `hX.comp hlin.contDiffOn ?_` and prove the remaining obligations.
+
+Introduce `z hz k`. Apply the tactic sequence `fin_cases j <;> cases k`. Take `⟨i, hi⟩` from `hz .base`. Conclude with `⟨i, hi⟩`. Take `⟨i, hi⟩` from `hz .det`.
+
+Conclude with `⟨i, hi⟩`. Take `⟨i, hi⟩` from `hz .line0; exact ⟨i, by simpa [T.yyEmb] using hi⟩`. Take `⟨i, hi⟩` from `hz .base`. Conclude with `⟨i, hi⟩`. Take `⟨i, hi⟩` from `hz .det`.
+
+Conclude with `⟨i, hi⟩`. Take `⟨i, hi⟩` from `hz .line1; exact ⟨i, by simpa [T.yyEmb] using hi⟩`.
+-/
 theorem isSmoothHerm_pull (j : Fin 2) {X : HermLine (T.yyIdx ι ν κ)} {X' : HermLine (T.wwIdx ι ν κ)}
     (hX : IsSmoothHerm X) (hp : IsPullHerm (diagonalBlockIndex j) (T.yyEmb j) X X') : IsSmoothHerm X' := by
   have hfun : X'.h = fun z => X.h (fun p => z (T.yyEmb j p)) := funext hp.2
@@ -290,6 +382,9 @@ theorem isSmoothHerm_pull (j : Fin 2) {X : HermLine (T.yyIdx ι ν κ)} {X' : He
   · obtain ⟨i, hi⟩ := hz .det; exact ⟨i, hi⟩
   · obtain ⟨i, hi⟩ := hz .line1; exact ⟨i, by simpa [T.yyEmb] using hi⟩
 
+/- English proof (translation)
+Rewrite using `[RingHom.comap_ker, RingHom.comap_ker, RingHom.ext_int ((T.multiConeMap c).comp C) ((T.multiConeMap c').comp C)]`.
+-/
 theorem comap_C_ker_multiConeMap {K : Type} {ι : K → Type} {Φ : Type} [Field Φ] (c c' : (Σ k, ι k) → Φ) :
     (RingHom.ker (T.multiConeMap c)).comap (C : ℤ →+* MRing ι) =
       (RingHom.ker (T.multiConeMap c')).comap (C : ℤ →+* MRing ι) := by
@@ -304,6 +399,65 @@ open DiagRAux
 
 section Main
 
+/- English proof (translation)
+Introduce `I hI D S X X₀ X₁ L hXa hX hp0 hp1 hL`. Establish `hF : IsIntersectionFamily (I T.WBlk S.WIdx)` using `hI T.WBlk S.WIdx`. Establish `hW : IsArithVar S.WW (D + 2)` using `S.arithWW`. Establish `hWp : S.WW.IsPrime` using `hW.2.1.1`. Establish `hs0 : IsSmoothHerm X₀` using `isSmoothHerm_pull 0 hX hp0`.
+
+Establish `hs1 : IsSmoothHerm X₁` using `isSmoothHerm_pull 1 hX hp1`. Establish `hdeg : ∀ k, 2 * T.llDeg k = -(X₀.a k + X₁.a k)`. Establish `a0 : ∀ k, X₀.a k = I1.pullDeg (diagonalBlockIndex 0) T.twoXiDegY k` using `fun k => by rw [hp0.1, hXa]`. Establish `a1 : ∀ k, X₁.a k = I1.pullDeg (diagonalBlockIndex 1) T.twoXiDegY k` using `fun k => by rw [hp1.1, hXa]`. Establish `p0b : I1.pullDeg (diagonalBlockIndex 0) T.twoXiDegY .base = 3` using `pullDeg_segreBlockEmbedding 0 T.twoXiDegY .base`.
+
+Establish `p0d : I1.pullDeg (diagonalBlockIndex 0) T.twoXiDegY .det = -1` using `pullDeg_segreBlockEmbedding 0 T.twoXiDegY .det`. Establish `p0l0 : I1.pullDeg (diagonalBlockIndex 0) T.twoXiDegY .line0 = -2` using `pullDeg_segreBlockEmbedding 0 T.twoXiDegY .line`. Establish `p0l1 : I1.pullDeg (diagonalBlockIndex 0) T.twoXiDegY .line1 = 0` using `pullDeg_otherLine 0 T.twoXiDegY`. Establish `p1b : I1.pullDeg (diagonalBlockIndex 1) T.twoXiDegY .base = 3` using `pullDeg_segreBlockEmbedding 1 T.twoXiDegY .base`. Establish `p1d : I1.pullDeg (diagonalBlockIndex 1) T.twoXiDegY .det = -1` using `pullDeg_segreBlockEmbedding 1 T.twoXiDegY .det`.
+
+Establish `p1l0 : I1.pullDeg (diagonalBlockIndex 1) T.twoXiDegY .line0 = 0` using `pullDeg_otherLine 1 T.twoXiDegY`. Establish `p1l1 : I1.pullDeg (diagonalBlockIndex 1) T.twoXiDegY .line1 = -2` using `pullDeg_segreBlockEmbedding 1 T.twoXiDegY .line`. Introduce `k`. Rewrite using `[a0, a1]`. Consider the cases of `k`.
+
+Rewrite using `[p0b, p1b]`. Simplify using `[T.llDeg, T.unitDeg]`. Rewrite using `[p0d, p1d]`. Simplify using `[T.llDeg, T.unitDeg]`. Rewrite using `[p0l0, p1l0]`.
+
+Simplify using `[T.llDeg, T.unitDeg]`. Rewrite using `[p0l1, p1l1]`. Simplify using `[T.llDeg, T.unitDeg]`. Use `set X₁i := hermZpow X₁ (-1) with hX₁i`. Use `set M := X₀.tensor X₁i with hM`.
+
+Use `set Q := X₀.tensor X₁ with hQ`. Use `set LL := halfInvLine X₀ X₁ T.llDeg hdeg with hLL`. Establish `hs1i : IsSmoothHerm X₁i` using `isSmoothHerm_inv hs1`. Establish `hsM : IsSmoothHerm M` using `isSmoothHerm_tensor hs0 hs1i`. Establish `hsQ : IsSmoothHerm Q` using `isSmoothHerm_tensor hs0 hs1`.
+
+Establish `hsLL : IsSmoothHerm LL` using `isSmoothHerm_halfInvLine hs0 hs1 _ hdeg`. Use `set T1 := X₁.tensor X₁i with hT1`. Use `set T2 := Q.tensor (LL.tensor LL) with hT2`. Establish `hsT1 : IsSmoothHerm T1` using `isSmoothHerm_tensor hs1 hs1i`. Establish `hsT2 : IsSmoothHerm T2` using `isSmoothHerm_tensor hsQ (isSmoothHerm_tensor hsLL hsLL)`.
+
+Establish `aT1 : T1.a = 0`. Simplify using `only [hT1, HermLine.tensor, hX₁i, hermZpow_neg_one_a, add_neg_cancel]`. Establish `hT1h : ∀ z : (Σ k, S.WIdx k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → T1.h z = 1`. Introduce `z hz`. Simplify using `only [hT1, HermLine.tensor, hX₁i, hermZpow_neg_one_h]`.
+
+Conclude with `mul_inv_cancel₀ (X₁.pos z hz).ne'`. Establish `aT2 : T2.a = 0`. Use function extensionality and compare the values at `k`. Use `hdeg k` as an intermediate fact. Simplify using `only [hT2, hQ, hLL, HermLine.tensor, halfInvLine, Pi.add_apply, Pi.zero_apply]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT2h : ∀ z : (Σ k, S.WIdx k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → T2.h z = 1`. Introduce `z hz`. Establish `hpos : 0 < X₀.h z * X₁.h z` using `mul_pos (X₀.pos z hz) (X₁.pos z hz)`. Simplify using `only [hT2, hQ, hLL, HermLine.tensor]`.
+
+Rewrite using `[halfInvLine_h_of_pos _ _ _ _ z hz, ← Real.rpow_add hpos]`. Evaluate the numerical expressions. Rewrite using `[Real.rpow_neg_one]`. Conclude with `mul_inv_cancel₀ hpos.ne'`. Use `set G : HermLine S.WIdx → HermLine S.WIdx → ℝ := fun A B => I T.WBlk S.WIdx S.WW (D + 2) (Fin.snoc (Fin.cons A L : Fin (D + 1) → HermLine S.WIdx) B) with hG`.
+
+Establish `G_add : ∀ {A B C'}, IsSmoothHerm A → IsSmoothHerm B → IsSmoothHerm C' → G A (B.tensor C') = G A B + G A C'` using `fun hA hB hC => hF.2.1 S.WW (D + 1) _ _ _ hW (smooth_cons hA hL) hB hC`. Establish `G_symm : ∀ {A B}, IsSmoothHerm A → IsSmoothHerm B → G A B = G B A`. Introduce `A B hA hB`. Use `hF.1 S.WW (D + 2) (Fin.snoc (Fin.cons B L : Fin (D + 1) → HermLine S.WIdx) A) (Equiv.swap 0 (Fin.last (D + 1))) hW (smooth_snoc hA (smooth_cons hB hL))` as an intermediate fact. Rewrite `this` using `[snoc_cons_comp_swap]`.
+
+Conclude with `this`. Establish `G_triv : ∀ {A B}, IsSmoothHerm A → IsSmoothHerm B → B.a = 0 → (∀ z : (Σ k, S.WIdx k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → B.h z = 1) → G A B = 0` using `fun hA hB ha h1 => I_snoc_triv hF hW (smooth_cons hA hL) hB ha fun z hz => h1 z hz.1`. Establish `e1 : G M Q = G Q X₀ + G Q X₁i` using `by rw [G_symm hsM hsQ]; exact G_add hsQ hs0 hs1i`. Establish `e2 : G Q X₁ + G Q X₁i = 0` using `by rw [← G_add hsQ hs1 hs1i]; exact G_triv hsQ hsT1 aT1 hT1h`. Establish `e3 : G Q X₀ = G X₀ X₀ + G X₀ X₁` using `by rw [G_symm hsQ hs0]; exact G_add hs0 hs0 hs1`.
+
+Establish `e4 : G Q X₁ = G X₁ X₀ + G X₁ X₁` using `by rw [G_symm hsQ hs1]; exact G_add hs1 hs0 hs1`. Establish `e5 : G X₀ X₁ = G X₁ X₀` using `G_symm hs0 hs1`. Establish `e6 : G M Q + G M LL + G M LL = 0`. Rewrite using `[add_assoc, ← G_add hsM hsLL hsLL, ← G_add hsM hsQ (isSmoothHerm_tensor hsLL hsLL)]`. Conclude with `G_triv hsM hsT2 aT2 hT2h`.
+
+Establish `hgW : S.g ∉ S.WW`. Establish `hh : aeval (T.wwCoord S.x S.δ S.e S.φ (S.a 0) (S.a 1)) S.h ≠ 0` using `(not_mem_ker_iff_aeval_ne _ S.h _ S.h_deg).1 S.h_nmem`. Use `(not_mem_ker_iff_aeval_ne _ S.g _ S.g_deg).2 ?_` and prove the remaining obligations. Rewrite using `[S.quot]`. Use `mul_ne_zero ?_ hh` and prove the remaining obligations.
+
+Conclude with `sub_ne_zero.2 (S.indep.injective.ne (by decide))`. Establish `hrat : IsRatSectionOn S.WW LL S.g S.h` using `⟨_, _, S.g_deg, S.h_deg, hgW, S.h_nmem, fun k => by`. Apply the tactic sequence `cases k <;> simp [T.wwDeg, T.llDeg, T.unitDeg, hLL, halfInvLine]⟩`. Establish `e7 : G M LL = recRRat (I T.WBlk S.WIdx) S.WW (Fin.cons M L : Fin (D + 1) → HermLine S.WIdx) LL S.g S.h` using `hR T.WBlk S.WIdx (I T.WBlk S.WIdx) hF S.WW (D + 1) _ LL S.g S.h hW (smooth_cons hsM hL) hsLL hrat`. Establish `hdiv` using `(hDD S.Ω S.ι S.ν S.κ S.E S.Φ S.x S.B S.e S.φ S.δ S.dualSec S.dualGen S.detGen S.chart S.a S.indep).2 S.n S.g S.h S.g_deg S.h_deg S.h_nmem S.quot`.
+
+Establish `hΔhor : IsHorizontal S.Diag`. Establish `h` using `hW.2.2.1`. Unfold `IsHorizontal at h ⊢`. Rewrite using `[← h]`. Conclude with `comap_C_ker_multiConeMap _ _`.
+
+Establish `hΔmem : S.Diag ∈ divSupp S.WW S.g`. Use `mem_divSupp_of_divCycle_ne_zero fun h0 => ?_` and prove the remaining obligations. Use `congrArg (fun z => z S.Diag) hdiv` as an intermediate fact. Simplify using `only [Finsupp.coe_sub, Pi.sub_apply, T.toZCycle, Finsupp.mapRange_apply, h0, Finsupp.single_eq_same] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hΔ : IsArithVar S.Diag (D + 1)` using `(divSuppArith T.WBlk S.WIdx S.WW (D + 1) (HermLine.ofMetrics (fun k => maxMetric ℂ (S.WIdx k)) (fun k => (T.wwDeg S.n 1 k : ℤ))) S.g S.Diag hW ⟨T.wwDeg S.n 1, fun _ => rfl, S.g_deg, hgW⟩ hΔmem).1 hΔhor`. Establish `e8 : cycR (I T.WBlk S.WIdx) S.WW (Fin.cons M L : Fin (D + 1) → HermLine S.WIdx) S.g - cycR (I T.WBlk S.WIdx) S.WW (Fin.cons M L : Fin (D + 1) → HermLine S.WIdx) S.h = I T.WBlk S.WIdx S.Diag (D + 1) (Fin.cons M L)` using `cycR_sub_eq _ _ _ _ _ _ hdiv hΔhor`. Establish `e9 : I T.WBlk S.WIdx S.Diag (D + 1) (Fin.cons M L) = 0`. Establish `hrot` using `hF.1 S.Diag (D + 1) (Fin.cons M L) (finRotate (D + 1)) hΔ (smooth_cons hsM hL)`. Establish `hsnoc : (Fin.cons M L : Fin (D + 1) → HermLine S.WIdx) ∘ finRotate (D + 1) = Fin.snoc L M` using `(Fin.snoc_eq_cons_rotate L M).symm`.
+
+Rewrite `hrot` using `[hsnoc]`. Rewrite using `[← hrot]`. Establish `a1` using `hF.2.1 S.Diag D L X₀ X₁i hΔ hL hs0 hs1i`. Establish `a2` using `hF.2.1 S.Diag D L X₁ X₁i hΔ hL hs1 hs1i`. Establish `a3` using `I_snoc_triv hF hΔ hL hsT1 aT1 fun z hz => hT1h z hz.1`.
+
+Establish `a4` using `hPI I hI D S X X₀ X₁ L hX hp0 hp1 hL`. Rewrite using `[hM, a1]`. Rewrite `a3` using `[hT1]`. Rewrite `a2` using `[a3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e10 : ptsIntegral S.WW (pot (Fin.cons M L : Fin (D + 1) → HermLine S.WIdx)) (logNormRat LL S.g S.h) = diagInt S.WW S.g S.h X₀ X₁ L`. Unfold `diagInt`. Rewrite using `[ptsIntegral_congr_mcPts S.WW (φ' := Fin.cons (α := fun _ => ((Σ k, T.wwIdx S.ι S.ν S.κ k) → ℂ) → ℝ) (fun z => Real.log (X₀.h z) - Real.log (X₁.h z)) (pot L)) (g' := logNormRat LL S.g S.h) ?_ (fun _ _ => rfl)]`. Use `hZ T.WBlk S.WIdx S.WW (D + 1) (S.g * S.h) _ _ _ _ hW (exHomog_mul S.g_deg S.h_deg) (fun hm => (hWp.mem_or_mem hm).elim hgW S.h_nmem) ?_` and prove the remaining obligations. Introduce `z hz hne`.
+
+Establish `hz'` using `hz.1`. Rewrite `hne` using `[map_mul, eval_mul]`. Establish `hgz : ‖eval z (map (Int.castRingHom ℂ) S.g)‖ ≠ 0` using `norm_ne_zero_iff.2 (left_ne_zero_of_mul hne)`. Establish `hhz : ‖eval z (map (Int.castRingHom ℂ) S.h)‖ ≠ 0` using `norm_ne_zero_iff.2 (right_ne_zero_of_mul hne)`. Establish `h0` using `X₀.pos z hz'`.
+
+Establish `h1` using `X₁.pos z hz'`. Unfold `logNormRat diagLogNorm`. Rewrite using `[hLL, halfInvLine_h_of_pos _ _ _ _ z hz', Real.log_div (div_ne_zero hgz hhz) (Real.rpow_pos_of_pos (mul_pos h0 h1) _).ne', Real.log_rpow (mul_pos h0 h1), Real.log_mul h0.ne' h1.ne']`. Expand and normalize the polynomial expressions, which then agree. Introduce `j z hz`.
+
+Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [pot, Fin.cons_zero, hM, HermLine.tensor, hX₁i, hermZpow_neg_one_h]`. Rewrite using `[Real.log_mul (X₀.pos z hz.1).ne' (inv_ne_zero (X₁.pos z hz.1).ne'), Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `succ i => simp [pot]`. Establish `hrotG : ∀ A, IsSmoothHerm A → I T.WBlk S.WIdx S.WW (D + 2) (Fin.append L ![A, A]) = G A A`. Introduce `A hA`. Rewrite using `[append_pair_eq]`. Establish `hrot` using `hF.1 S.WW (D + 2) (Fin.cons A (Fin.snoc L A : Fin (D + 1) → HermLine S.WIdx)) (finRotate (D + 2)) hW (smooth_cons hA (smooth_snoc hA hL))`.
+
+Establish `hs : (Fin.cons A (Fin.snoc L A : Fin (D + 1) → HermLine S.WIdx) : Fin (D + 2) → HermLine S.WIdx) ∘ finRotate (D + 2) = Fin.snoc (Fin.snoc L A : Fin (D + 1) → HermLine S.WIdx) A` using `(Fin.snoc_eq_cons_rotate _ A).symm`. Rewrite `hrot` using `[hs, Fin.cons_snoc_eq_snoc_cons]`. Conclude with `hrot`. Rewrite using `[hrotG X₀ hs0, hrotG X₁ hs1]`. Establish `e11 : G M LL = I T.WBlk S.WIdx S.Diag (D + 1) (Fin.cons M L) - ptsIntegral S.WW (pot (Fin.cons M L : Fin (D + 1) → HermLine S.WIdx)) (logNormRat LL S.g S.h)`.
+
+Rewrite using `[e7, recRRat, e8]`. Rewrite `e11` using `[e9, e10]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem DiagR.proof (hR : RatR.Statement) (hDD : DiagDiv.Statement) (hPI : DiagPullI.Statement)
     (hZ : ZeroSetNull.Statement) : DiagR.Statement := by
   intro I hI D S X X₀ X₁ L hXa hX hp0 hp1 hL

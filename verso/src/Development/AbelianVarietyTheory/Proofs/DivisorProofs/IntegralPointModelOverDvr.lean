@@ -23,6 +23,11 @@ namespace GlobalTheory.ModelFrameCompare
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `GlobalTheory.Exist.FlagBaseChange.exists_pointEquiv mm.cart (spMap (algebraMap R (DualNumber R)) ≫ x) (spMap (algebraMap R (DualNumber R)) ≫ x ≫ f) (Category.assoc _ _ _)`. Take `⟨u, hu, hw⟩` from `h`. Use `⟨fun i => B (u i), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hu, Category.assoc]`. Establish `e : B (List.ofFn u).prod = (List.ofFn fun i => B (u i)).prod`.
+
+Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[← e, hB, hw]`.
+-/
 theorem isCombAtG_push {S₀ S₁ : Scheme.{0}} {t' : SAB H S₁} {t : SAB H S₀} {f : S₁ ⟶ S₀} (mm : SABMap t' t f)
     {R : Type} [CommRing R] (x : Sp R ⟶ S₁) {n : ℕ} {v : Fin n → (Sp (DualNumber R) ⟶ t'.G.left)} {a : Fin n → R}
     {w : Sp (DualNumber R) ⟶ t'.G.left} (h : IsCombAtG t' x v a w) :
@@ -37,6 +42,11 @@ theorem isCombAtG_push {S₀ S₁ : Scheme.{0}} {t' : SAB H S₁} {t : SAB H S�
       rfl
     rw [← e, hB, hw]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `GlobalTheory.Exist.FlagBaseChange.exists_pointEquiv mm.cart (spMap (algebraMap R (DualNumber R)) ≫ x) (spMap (algebraMap R (DualNumber R)) ≫ x ≫ f) (Category.assoc _ _ _)`. Take `⟨u, hu, hw⟩` from `h`. Establish `hBs : ∀ z, (B.symm z).left ≫ mm.φ = z.left` using `fun z => by rw [← hB, B.apply_symm_apply]`. Use `⟨(B.symm (List.ofFn u).prod).left, by rw [hBs, hw], fun i => B.symm (u i), fun i => ?_, ?_⟩` and prove the remaining obligations. Use `mm.cart.1.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hBs, hu, Category.assoc]`. Rewrite using `[Over.w (B.symm (u i)), Category.assoc, hv, ← Category.assoc, GlobalTheory.Exist.FlagBaseChange.epsMul_over]`. Both sides reduce to the same expression. Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem isCombAtG_reflect {S₀ S₁ : Scheme.{0}} {t' : SAB H S₁} {t : SAB H S₀} {f : S₁ ⟶ S₀} (mm : SABMap t' t f)
     {R : Type} [CommRing R] (x : Sp R ⟶ S₁) {n : ℕ} (v : Fin n → (Sp (DualNumber R) ⟶ t'.G.left))
     (hv : ∀ i, v i ≫ t'.G.hom = spMap (algebraMap R (DualNumber R)) ≫ x) {a : Fin n → R}
@@ -54,6 +64,9 @@ theorem isCombAtG_reflect {S₀ S₁ : Scheme.{0}} {t' : SAB H S₁} {t : SAB H 
   · rw [map_list_prod, List.map_ofFn]
     rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨mm, rfl⟩`.
+-/
 theorem exists_sabMap_congr {S₀ S₁ : Scheme.{0}} {t' : SAB H S₁} {t : SAB H S₀} {f f' : S₁ ⟶ S₀} (mm : SABMap t' t f)
     (h : f = f') : ∃ mm' : SABMap t' t f', mm'.φ = mm.φ := by
   subst h
@@ -65,6 +78,37 @@ namespace GlobalTheory.ModelFrameCompare
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν σ T io y₀ xV yy hxV hpt`. Set `_` to `io.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨m⟩⟩ : ∃ G : SAB H (Sp T.V), Nonempty (SABMap G Y.t xV) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull xV Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+
+Take `⟨t₂, n₀, n₂, m', -, h2⟩` from `GlobalTheory.ThetaFrameCheck.genFibre_tied Xo' c' T _ _ Y xV yy hxV G₂ m`. Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t Y.oF.t t₂ _ yy ν m'`. Take `⟨G, t', m1, m2, ⟨ub, ht, he, hb, hl⟩, -⟩` from `y₀.2.2`. Establish `hx : y₀.1.x = yy ≫ r ≫ pullback.fst _ _`. Rewrite using `[← Category.assoc, ← hpt]`.
+
+Conclude with `(pullback.lift_fst _ _ _).symm`. Take `⟨m1', hm1'⟩` from `exists_sabMap_congr m1 hx`. Take `⟨k, n, hk1, hk2⟩` from `GlobalTheory.sab_extensions_iso E H Dw l Xo T.V T.Fr _ G G₂ t' t₂ m1' m2 n₁ n₂`. Take `⟨nm, hnm⟩` from `sabComp pullCubComp E H _ _ _ Y.t G₂ G xV (𝟙 _) m n`. Take `⟨q₀, hq₀⟩` from `exists_sabMap_congr nm (Category.id_comp xV)`.
+
+Rewrite `hq₀` using `[hnm]`. Take `⟨B, hB, hBt, hBe, hBc⟩` from `GlobalTheory.FactorDepth.Extension.exists_tanEquiv q₀`. Use `⟨fun j => (B (ub σ j)).left, fun j => (hBt _).2 (ht σ j), ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu hue`. Take `⟨w', hw'⟩` from `B.surjective (ovT hu)`.
+
+Establish `e : u = (B w').left` using `by rw [hw']; rfl`. Substitute `e` using the available equality. Take `⟨cf, hcf, -⟩` from `hb σ w' ((hBt _).1 hu) fun a z hz => (hBe _ a z).1 (hue a z hz)`. Conclude with `⟨cf, (hBc _ _ cf w').2 hcf⟩`. Introduce `cf u w hc hw`.
+
+Establish `h3` using `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t (algebraMap T.V T.Fr) hc`. Take `⟨q, hq⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t t₂ _ yy Y.m m'`. Use `choose u' hu1 hu2 using hl σ`. Establish `hov : ∀ j, u' j ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))`. Introduce `j`.
+
+Apply `spMap_frac_cancel (V := T.V)` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← m2.cart.1.w, ← Category.assoc, hu2, Category.assoc, Over.w (ub σ j), spMap_comp', ← dualMap_comp_alg, ← spMap_comp']`. Both sides reduce to the same expression. Establish `hov' : ∀ j, (u' j ≫ k.φ) ≫ t₂.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ 𝟙 _`. Introduce `j`.
+
+Rewrite using `[Category.assoc, k.cart.1.w, ← Category.assoc, hov]`. Establish `hvec : ∀ j, spMap (dualMap (algebraMap T.V T.Fr)) ≫ (B (ub σ j)).left = (u' j ≫ k.φ) ≫ q.φ`. Introduce `j`. Rewrite using `[hB, hq₀, hq, ← Category.assoc, ← hu2, Category.assoc, ← Category.assoc m2.φ, hk2]`. Simplify using `only [Category.assoc, h2]`.
+
+Establish `hpt' : spMap (algebraMap T.V T.Fr) ≫ xV = 𝟙 _ ≫ yy ≫ Y.jQ ≫ pullback.fst _ _`. Rewrite using `[Category.id_comp, ← hxV]`. Both sides reduce to the same expression. Establish `h4 : IsCombAtG Y.t (𝟙 _ ≫ yy ≫ Y.jQ ≫ pullback.fst _ _) (fun j => (u' j ≫ k.φ) ≫ q.φ) (fun j => algebraMap T.V T.Fr (cf j)) (w ≫ Y.m.φ)`. Rewrite using `[← hpt', hw]`.
+
+Simplify `h3` using `only [hvec]`. Take `⟨w₂, hw₂, hc₂⟩` from `isCombAtG_reflect q (𝟙 _) (fun j => u' j ≫ k.φ) hov' h4`. Establish `hw₂' : w₂ ≫ m'.φ = w`. Use `Y.m.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hq, hw₂]`.
+
+Use `GlobalTheory.TriplesAlong.isOpenImmersion_j W Y` as an intermediate fact. Establish `hmono : Mono Y.j` using `inferInstance`. Establish `e2 : w₂ ≫ t₂.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ 𝟙 _`. Take `⟨uu, -, hh⟩` from `hc₂`. Rewrite using `[← hh]`.
+
+Conclude with `Over.w _`. Establish `e1 : u ≫ Y.t.G.hom = spMap (algebraMap T.V (DualNumber T.V)) ≫ xV`. Take `⟨uu, -, hh⟩` from `hc`. Rewrite using `[← hh]`. Conclude with `Over.w _`.
+
+Rewrite using `[Category.assoc, m'.cart.1.w, ← Category.assoc, e2, Category.comp_id]`. Apply `hmono.right_cancellation` to reduce the goal to its premises. Establish `e3 : spMap (dualMap (algebraMap T.V T.Fr)) ≫ spMap (algebraMap T.V (DualNumber T.V)) ≫ xV = spMap (algebraMap T.Fr (DualNumber T.Fr)) ≫ yy ≫ Y.j`. Rewrite using `[← Category.assoc, spMap_comp', dualMap_comp_alg, ← spMap_comp', Category.assoc, hxV]`. Use `show (spMap _ ≫ yy) ≫ Y.j = w ≫ Y.oF.t.G.hom ≫ Y.jQ ≫ pullback.fst _ _`.
+
+Rewrite using `[← Y.m.cart.1.w, ← Category.assoc w, hw, Category.assoc (spMap _) u, e1, e3, Category.assoc]`. Establish `h5` using `isCombAtG_push n₁ (𝟙 _) hc₂`. Establish `hv5 : (fun j => (u' j ≫ k.φ) ≫ n₁.φ) = y₀.1.u σ`. Use function extensionality and compare the values at `j`. Rewrite using `[Category.assoc, hk1, hm1', hu1]`.
+
+Rewrite `h5` using `[hv5, hn₁, ← Category.assoc w₂, hw₂', Category.id_comp, ← hx]`. Conclude with `h5`.
+-/
 theorem images_eigenBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c) (ν : SABMap Y.oF.t Xo.univ.t (r ≫ pullback.fst _ _)) (σ : E →+* ℂ) (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (xV : Sp T.V ⟶ Y.X) (yy : Sp T.Fr ⟶ Xo'.XF c'), yy ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ xV → (letI := io.toAlgebra; GlobalTheory.AllWt.ptF y₀.1 = yy ≫ r) → ∃ v : Fin (Dw.mult σ) → (Sp (DualNumber T.V) ⟶ Y.t.G.left), (∀ j, IsTanAtG Y.t xV (v j)) ∧ (∀ u : Sp (DualNumber T.V) ⟶ Y.t.G.left, IsTanAtG Y.t xV u → (∀ (a : 𝓞 E) (z : T.V), algebraMap T.V T.Fr z = io (embK c σ a) → u ≫ (Y.t.act.act a).left = spMap (epsMul z) ≫ u) → ∃ cf : Fin (Dw.mult σ) → T.V, IsCombAtG Y.t xV v cf u) ∧ ∀ (cf : Fin (Dw.mult σ) → T.V) (u : Sp (DualNumber T.V) ⟶ Y.t.G.left) (w : Sp (DualNumber T.Fr) ⟶ Y.oF.t.G.left), IsCombAtG Y.t xV v cf u → w ≫ Y.m.φ = spMap (dualMap (algebraMap T.V T.Fr)) ≫ u → (letI := io.toAlgebra; IsCombAt y₀.1.x (y₀.1.u σ) (fun j => algebraMap T.V T.Fr (cf j)) (w ≫ ν.φ)) := by
   intro E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν σ T io y₀ xV yy hxV hpt
   let _ := io.toAlgebra

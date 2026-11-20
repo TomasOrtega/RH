@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.IdemOffOrth
 
+/- English proof (translation)
+Introduce `D S T P e he w x hx`. Establish `h1 : e * e = e` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem`. Establish `h2 : e * cA D e = 0` using `he.2`. Establish `c1 : cA D e * cA D e = cA D e` using `by rw [← map_mul, h1]`. Establish `hz : symplO S T (0 : WO S T) x = 0`.
+
+Use `GlobalTheory.BigDat.symplO_cA_smul S T (0 : AE D) w x` as an intermediate fact. Rewrite `this` using `[map_zero, zero_smul, zero_smul, GlobalTheory.BigDat.symplO_zero_right']`. Conclude with `this.symm`. Break down `hx with hx | hx` into its components or cases. Establish `hxe : x = cA D (cA D e) • x`.
+
+Rewrite using `[GlobalTheory.DualPairCheck.cA_cA]`. Conclude with `(GlobalTheory.BigDat.smul_of_isHalf hx).symm`. Rewrite using `[hxe, GlobalTheory.BigDat.symplO_cA_smul, smul_smul]`. Establish `: cA D e * (1 - e - cA D e) = 0` using `by linear_combination -c1 - (mul_comm e (cA D e) ▸ h2 : cA D e * e = 0)`. Rewrite using `[this, zero_smul]`.
+
+Conclude with `hz`. Rewrite using `[← GlobalTheory.BigDat.smul_of_isHalf hx, GlobalTheory.BigDat.symplO_cA_smul, smul_smul]`. Establish `: e * (1 - e - cA D e) = 0` using `by linear_combination -h1 - h2`. Rewrite using `[this, zero_smul]`. Conclude with `hz`.
+-/
 theorem symplO_compl_half : ∀ (D : D7) (S T : HSp D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → ∀ w x : WO S T, (IsHalf e x ∨ IsHalf (cA D e) x) → symplO S T ((1 - e - cA D e) • w) x = 0 := by
   intro D S T P e he w x hx
   have h1 : e * e = e := (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem

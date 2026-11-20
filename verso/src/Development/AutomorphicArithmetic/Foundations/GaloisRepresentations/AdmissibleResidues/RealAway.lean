@@ -15,16 +15,34 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {l : ℕ} [Fact l.Prime] {n : ℕ}
   {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin n) (Qbar l)} {y : WD h}
 
+/- English proof (translation)
+The claim follows from `.of_isWDOf k`.
+-/
 theorem wn (k : Lev.WO ι r y) : WDN ι r y := .of_isWDOf k
+/- English proof (translation)
+The claim follows from `k`.
+-/
 theorem woOf (k : IsWDOf ι r y) : Lev.WO ι r y := k
+/- English proof (translation)
+The claim follows from `IsWDOf.of_conj hl P hP k`.
+-/
 theorem woConj (k : Lev.WO ι r y) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {r' : G E Ω →* GL (Fin n) (Qbar l)}
     (P : GL (Fin n) (Qbar l)) (hP : ∀ g : ↥(Weil h), P * r g = r' g * P) : Lev.WO ι r' y := IsWDOf.of_conj hl P hP k
+/- English proof (translation)
+The claim follows from `hA E Ω l ι n m r r' hc hc' w hl A h _ _ k k'`.
+-/
 theorem woSum (hA : Gu.SumAway) {m : ℕ} {r' : G E Ω →* GL (Fin m) (Qbar l)} (hc : Continuous r) (hc' : Continuous r')
     (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {y' : WD h} (k : Lev.WO ι r y) (k' : Lev.WO ι r' y') :
     Lev.WO ι (Formalism.MainNotions.SumRepresentations.At.sumRep r r') (y.lpSum y') := hA E Ω l ι n m r r' hc hc' w hl A h _ _ k k'
+/- English proof (translation)
+Rewrite `e` using `[IsWDOf.wdOf_eq hl k]`. Then use the resulting hypothesis.
+-/
 theorem woChar (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {r' : G E Ω →* GL (Fin n) (Qbar l)} {z : WD h} (hz : z.lpDim = 1)
     (e : IsWDOf ι r' ((wdOf h hl ι r).lpChar z)) (k : Lev.WO ι r y) : Lev.WO ι r' (y.lpChar z) := by
   rwa [IsWDOf.wdOf_eq hl k] at e
+/- English proof (translation)
+Take `⟨r, wt, HT, k⟩` from `H E Ω l ι a ha π χ hr hp`. Conclude with `⟨r, wt, HT, .of_old k, k.away⟩`.
+-/
 theorem galEx (H : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (ha : 1 ≤ a) (π : CuspSub E a) (χ : HChar (maximalRealSubfield E))
     (hr : (CG.mk π).IsRegAlg) (hp : IsPolarized π χ) :
@@ -34,6 +52,9 @@ theorem galEx (H : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal) (E Ω : 
   obtain ⟨r, wt, HT, k⟩ := H E Ω l ι a ha π χ hr hp
   exact ⟨r, wt, HT, .of_old k, k.away⟩
 
+/- English proof (translation)
+Take `⟨-, wt, HT, -, -, hG⟩` from `H F Ω l ι n hn π χ hreg hpol`. Conclude with `(hG r hr hatt).away v hv A h rc hrc σ hσ`.
+-/
 theorem realAway (H : ExR) (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) [Fact (n = 2)] (hn : 1 ≤ n) (π : TR.CuspSub F n) (χ : HChar F)
     (hreg : π.IsRegAlg) (hpol : π.Polarized χ) (r : G F Ω →* GL (Fin n) (Qbar l)) (hr : Continuous r) (hatt : AttR ι r π)
@@ -42,6 +63,9 @@ theorem realAway (H : ExR) (F Ω : Type) [Field F] [NumberField F] [IsTotallyRea
   obtain ⟨-, wt, HT, -, -, hG⟩ := H F Ω l ι n hn π χ hreg hpol
   exact (hG r hr hatt).away v hv A h rc hrc σ hσ
 
+/- English proof (translation)
+Take `⟨-, wt, HT, -, -, hG⟩` from `H F Ω l ι n hn π χ hreg hpol`. Conclude with `.of_aw hv hr ⟨((hG r hr hatt).away v hv A h rc hrc σ hσ).pol, ((hG r hr hatt).away v hv A h rc hrc σ hσ).n0⟩`.
+-/
 theorem realAway' (H : ExRN) (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) [Fact (n = 2)] (hn : 1 ≤ n) (π : TR.CuspSub F n) (χ : HChar F)
     (hreg : π.IsRegAlg) (hpol : π.Polarized χ) (r : G F Ω →* GL (Fin n) (Qbar l)) (hr : Continuous r) (hatt : AttR ι r π)
@@ -50,6 +74,9 @@ theorem realAway' (H : ExRN) (F Ω : Type) [Field F] [NumberField F] [IsTotallyR
   obtain ⟨-, wt, HT, -, -, hG⟩ := H F Ω l ι n hn π χ hreg hpol
   exact .of_aw hv hr ⟨((hG r hr hatt).away v hv A h rc hrc σ hσ).pol, ((hG r hr hatt).away v hv A h rc hrc σ hσ).n0⟩
 
+/- English proof (translation)
+The claim follows from `satFrob P F Ω l ι n r hc w hw σ B hB fun A h rc hrc => (wn (H A h rc hrc)).of_hasSat hrc hB`.
+-/
 theorem satFrobW (P : Hypotheses₂) (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime]
     (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (hc : Continuous r) (w : HeightOneSpectrum (𝓞 F))
     (hw : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) (σ : SmIrr (GL (Fin n) (w.adicCompletion F))) (B : Multiset ℂˣ)

@@ -22,11 +22,20 @@ abbrev sig (τ : K ≃ₐ[ℚ] K) : Av K v →ₐ[ℚ] Av K v :=
 
 variable {K v}
 
+/- English proof (translation)
+Introduce `i` and use `by simp`.
+-/
 theorem isInt_zero : IsInt K v 0 := fun i => by simp
 
+/- English proof (translation)
+Introduce `i` and use `by simpa only [map_add, Finsupp.add_apply] using add_mem (hx i) (hy i)`.
+-/
 theorem isInt_add {x y : Av K v} (hx : IsInt K v x) (hy : IsInt K v y) : IsInt K v (x + y) :=
   fun i => by simpa only [map_add, Finsupp.add_apply] using add_mem (hx i) (hy i)
 
+/- English proof (translation)
+Introduce `i` and use `by simpa only [map_neg, Finsupp.neg_apply] using neg_mem (hx i)`.
+-/
 theorem isInt_neg {x : Av K v} (hx : IsInt K v x) : IsInt K v (-x) :=
   fun i => by simpa only [map_neg, Finsupp.neg_apply] using neg_mem (hx i)
 

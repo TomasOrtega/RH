@@ -25,6 +25,37 @@ open ValuativeRel
 open scoped GlobalTheory.VacAny
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' Bs Γ X om om' hTr K hK S h1 hlin h2 h3 h4 h5`. Take `⟨hψc, hψ1, wT, wM, hA⟩` from `GlobalTheory.T.linearModel_heisenbergOperators_translation_char Bs Γ X om om' hTr K hK S h1 h4`. Distinguish the cases in `hex : ∃ ι, Γ.M'.IsLinBar Bs.ψ Bs.τ₁ 1 1 ι`. Use `swap`. Conclude with `⟨1, 1, fun x => by simp, fun ι hι => absurd ⟨ι, hι⟩ hex⟩`.
+
+Take `⟨ι₀, hι₀⟩` from `hex`. Take `⟨hT0, hM0, hST0, hSM0⟩` from `hA ι₀ hι₀`. Establish `hbij0` using `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLin.bij hι₀`. Establish `hU0 : ∀ (w : (Fin a' × Fin (a + a') → Fv F Bs.v₁) × (Fin a' × Fin (a + a') → Fv F Bs.v₁)), ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F Bs.v₁), GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) w φ ∈ GlobalTheory.WeilM.SB _` using `fun w => GlobalTheory.T.schroedingerOperatorHeisenberg_preserves_schwartzBruhat (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) hψc w`. Establish `key1 : ∀ (h : GL (Fin a') (Fv F Bs.v₁)) (Y : Matrix (Fin a') (Fin (a + a')) (Fv F Bs.v₁)), h.valᵀ * (((h⁻¹ : GL (Fin a') (Fv F Bs.v₁)).val)ᵀ * Y) = Y`.
+
+Introduce `h Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one, Matrix.one_mul]`. Establish `key2 : ∀ (h : GL (Fin a') (Fv F Bs.v₁)) (Y : Matrix (Fin a') (Fin (a + a')) (Fv F Bs.v₁)), ((h⁻¹ : GL (Fin a') (Fv F Bs.v₁)).val)ᵀ * (h.valᵀ * Y) = Y`. Introduce `h Y`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`.
+
+Establish `hc : ∀ g : GL (Fin a') (Fv F Bs.v₁), ∃ c : ℂ, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F Bs.v₁), (fun Y => ι₀ (S g φ) (((g⁻¹ : GL (Fin a') (Fv F Bs.v₁)).val)ᵀ * Y)) = c • ι₀ φ`. Introduce `g`. Use `GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F Bs.v₁)) (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) hψc hψ1 ι₀ (fun φ Y => ι₀ (S g φ) (((g⁻¹ : GL (Fin a') (Fv F Bs.v₁)).val)ᵀ * Y)) hbij0 ?_ (fun C => GlobalTh …` and prove the remaining obligations. Introduce `x hx y hy c`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [hlin g x hx y hy c, map_add, map_smul, Pi.add_apply, Pi.smul_apply]`. Introduce `C x hx`. Use `⟨hU0 _ x hx, hT0 C x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Y`. Simplify using `only [hST0 g C x hx, Matrix.mul_add]`.
+
+Introduce `l x hx`. Use `⟨hU0 _ x hx, hM0 l x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Y`. Simplify using `only [hSM0 g l x hx, key1]`. Use `choose c hc using hc`.
+
+Establish `hrel : ∀ g, ∀ φ ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F Bs.v₁), ι₀ (S g φ) = fun Y => c g * ι₀ φ (g.valᵀ * Y)`. Introduce `g φ hφ`. Use function extensionality and compare the values at `Y`. Use `congrFun (hc g φ hφ) (g.valᵀ * Y)` as an intermediate fact. Simplify using `only [key2, Pi.smul_apply, smul_eq_mul] at this`.
+
+Conclude with `this`. Establish `hvac` using `(hTr.geo.hM'.vac Bs.v₁)`. Use `set φv := Γ.M'.vac Bs.v₁`. Establish `hφv : φv ∈ GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F Bs.v₁)` using `hvac.1`. Establish `hιv : ι₀ φv ≠ 0`.
+
+Introduce `h0`. Conclude with `hvac.2.1 (hbij0.injOn hφv (Submodule.zero_mem _) (by rw [h0, map_zero]))`. Take `⟨Y₀, hY₀⟩` from `Function.ne_iff.mp hιv`. Establish `hmul : ∀ g g', c (g * g') = c g * c g'`. Introduce `g g'`.
+
+Establish `e` using `congrFun (congrArg ι₀ (h2 g g' φv hφv)) ((((g * g')⁻¹ : GL (Fin a') (Fv F Bs.v₁)).val)ᵀ * Y₀)`. Rewrite `e` using `[hrel (g * g') φv hφv, hrel g (S g' φv) (h1 g' φv hφv), hrel g' φv hφv]`. Use `beta_reduce at e`. Establish `e2 : (g'.val)ᵀ * ((g.val)ᵀ * ((((g * g')⁻¹ : GL (Fin a') (Fv F Bs.v₁)).val)ᵀ * Y₀)) = Y₀`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, key1]`.
+
+Rewrite `e` using `[key1 (g * g') Y₀, e2]`. Conclude with `mul_right_cancel₀ hY₀ (e.trans (mul_assoc _ _ _).symm)`. Establish `hone : c 1 = 1`. Establish `e` using `congrFun (congrArg ι₀ (h3 φv hφv)) Y₀`. Rewrite `e` using `[hrel _ _ hφv]`.
+
+Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul] at e`. Conclude with `(mul_eq_right₀ hY₀).mp e`. Set `cH : GL (Fin a') (Fv F Bs.v₁) →* ℂ` to `⟨⟨c, hone⟩, hmul⟩`. Establish `h2ne : (2 : Fv F Bs.v₁) ≠ 0` using `(isUnit_of_invertible (2 : Fv F Bs.v₁)).ne_zero`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.glCharacter_factors_through_det_of_two_ne_zero h2ne cH.toHomUnits`.
+
+Establish `hcχ : ∀ g, c g = (χ (Matrix.GeneralLinearGroup.det g) : ℂ)` using `fun g => by`. Rewrite using `[← hχ g]`. Both sides reduce to the same expression. Take `⟨ν, hν1, hν⟩` from `GlobalTheory.T.abs_weilCharacter_det_eq_abs_det_pow (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) hψc hψ1 ι₀ hbij0 (fun C => GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (wT C)) (fun l => GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (wM l)) (fun C φ h …`. Use `⟨ν, 1, hν1, ?_⟩` and prove the remaining obligations.
+
+Introduce `ι hι g φ hφ`. Take `⟨hT, hM, -, -⟩` from `hA ι hι`. Take `⟨c', hc'⟩` from `GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (GlobalTheory.WeilM.SB (Fin a' × Fin (a + a') → Fv F Bs.v₁)) (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) hψc hψ1 ι₀ ι hbij0 (fun x _ y _ c => by rw [map_add, map_smul]) (fun C => GlobalTheory.WeilM.schr (GlobalThe …`. Rewrite using `[hc' _ (h1 g φ hφ), hc' φ hφ, hrel g φ hφ, hcχ g, hν g]`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [omB, Pi.smul_apply, smul_eq_mul, map_one, Units.val_one, Matrix.mul_one, Fintype.card_fin, gdet, MonoidHom.one_apply, apow_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.LinModelLocal.exists_omB_of_linBar : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V Γ.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V' Γ.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om' →

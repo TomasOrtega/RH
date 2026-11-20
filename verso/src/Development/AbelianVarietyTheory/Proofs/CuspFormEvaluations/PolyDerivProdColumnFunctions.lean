@@ -14,6 +14,15 @@ namespace GlobalTheory.AnVal
 
 open scoped ContDiff
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun ℓ : (Σ τ : T, Fin (r τ)) => (⟨ℓ.1, ℓ.2, b⟩ : Formalism.L2.Pj.Letter T r n))`. Introduce `x y h`. Conclude with `congrArg (fun ℓ : Formalism.L2.Pj.Letter T r n => (⟨ℓ.1, ℓ.2.1⟩ : Σ τ : T, Fin (r τ))) h`. Use extensionality with `⟨τ, i, c⟩`. Rewrite using `[Multiset.count_filter]`.
+
+Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Use `Multiset.count_map_eq_count' _ (Finsupp.toMultiset (Finsupp.equivFunOnFinite.symm fun ℓ : (Σ τ : T, Fin (r τ)) => m ⟨ℓ.1, ℓ.2, c⟩)) hinj ⟨τ, i⟩` as an intermediate fact. Rewrite using `[this]`.
+
+Simplify using `[Finsupp.count_toMultiset]`. Rewrite using `[if_neg h]`. Use `symm`. Rewrite using `[Multiset.count_eq_zero, Multiset.mem_map]`. Introduce and unpack `⟨x, -, hx⟩`.
+
+Conclude with `h (congrArg (fun ℓ : Formalism.L2.Pj.Letter T r n => ℓ.2.2) hx).symm`.
+-/
 theorem filter_col_toMultiset {T : Type} [Fintype T] {r : T → ℕ} {n : ℕ}
     (m : Formalism.L2.Pj.Letter T r n →₀ ℕ) (b : Fin n) :
     (Finsupp.toMultiset m).filter (fun ℓ => ℓ.2.2 = b) =
@@ -40,6 +49,17 @@ theorem filter_col_toMultiset {T : Type} [Fintype T] {r : T → ℕ} {n : ℕ}
     rintro ⟨x, -, hx⟩
     exact h (congrArg (fun ℓ : Formalism.L2.Pj.Letter T r n => ℓ.2.2) hx).symm
 
+/- English proof (translation)
+Introduce `V _ _ _ T _ r n u θ hθ P`. Establish `hω : ∀ b x, ContDiffAt ℂ ω (θ b) x` using `fun b x => GlobalTheory.SCV.contDiffAt_of_differentiableOn (hθ b).differentiableOn Filter.univ_mem ω`. Establish `hs : ∀ b, ContDiff ℂ (⊤ : ℕ∞) (θ b)` using `fun b => contDiff_iff_contDiffAt.2 fun x => (hω b x).of_le le_top`. Rewrite using `[I2.polyDeriv_eq_of_subset P _ _ _ (Finset.Subset.refl _)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[I2.pdTerm_eq_itD]`. Establish `e : (Finsupp.toMultiset m).toList.map (fun ℓ : Formalism.L2.Pj.Letter T r n => (Pi.single ℓ.2.2 (u ⟨ℓ.1, ℓ.2.1⟩) : Fin n → V)) = ((Finsupp.toMultiset m).toList.map (fun ℓ : Formalism.L2.Pj.Letter T r n => ((ℓ.2.2, u ⟨ℓ.1, ℓ.2.1⟩) : Fin n × V))).map (fun p => Pi.single p.1 p.2)`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, I2.itD_prod hs]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[I2.polyDeriv_monomial_one, I2.pdTerm_eq_itD]`. Use `lD_perm (hω b 0) ?_` and prove the remaining obligations. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.map_coe u, Multiset.coe_toList]`.
+
+Establish `h` using `congrArg (Multiset.map fun ℓ : Formalism.L2.Pj.Letter T r n => u ⟨ℓ.1, ℓ.2.1⟩) (filter_col_toMultiset m b)`. Rewrite `h` using `[Multiset.map_map]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `conv_rhs => rw [← Multiset.coe_toList (Finsupp.toMultiset m)]`. Rewrite using `[Multiset.filter_coe, Multiset.map_coe]`.
+
+Unfold `I2.colL`. Rewrite using `[List.filter_map, List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem polyDeriv_prod_cols : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (T : Type) [Fintype T] (r : T → ℕ) (n : ℕ) (u : (Σ τ : T, Fin (r τ)) → V) (θ : Fin n → V → ℂ), (∀ b, Differentiable ℂ (θ b)) → ∀ P : MvPolynomial (Formalism.L2.Pj.Letter T r n) ℂ, I2.polyDeriv P (fun ℓ => (Pi.single ℓ.2.2 (u ⟨ℓ.1, ℓ.2.1⟩) : Fin n → V)) (fun z => ∏ b, θ b (z b)) 0 = ∑ m ∈ P.support, P.coeff m * ∏ b, I2.polyDeriv (MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm fun ℓ : (Σ τ : T, Fin (r τ)) => m ⟨ℓ.1, ℓ.2, b⟩) (1 : ℂ)) u (θ b) 0 := by
   intro V _ _ _ T _ r n u θ hθ P
   classical

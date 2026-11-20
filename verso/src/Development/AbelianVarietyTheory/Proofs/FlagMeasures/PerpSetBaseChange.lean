@@ -7,6 +7,11 @@ open GlobalTheory.Count GlobalTheory.IndefiniteRowSideFullHecke.CenteredPerpendi
 
 namespace GlobalTheory.PerpBaseChange
 
+/- English proof (translation)
+Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx => exact hu x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+
+Simplify using `only [LinearMap.add_apply, map_add, add_mul, Finset.sum_add_distrib, hx, hy, add_zero]`. Consider the case `smul c x _ hx`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, map_mul, mul_assoc]`. Rewrite using `[← Finset.mul_sum, hx, mul_zero]`.
+-/
 private theorem dual_span_sum_eq_zero {E A : Type} [Field E] [CommRing A] (ι : E →+* A) {n : ℕ}
     (S : Set (Module.Dual E (Fin n → E))) (u : Fin n → A)
     (hu : ∀ φ ∈ S, ∑ j, ι (φ (Pi.single j 1)) * u j = 0) :
@@ -21,6 +26,25 @@ private theorem dual_span_sum_eq_zero {E A : Type} [Field E] [CommRing A] (ι : 
     simp only [LinearMap.smul_apply, smul_eq_mul, map_mul, mul_assoc]
     rw [← Finset.mul_sum, hx, mul_zero]
 
+/- English proof (translation)
+Use `set D : Submodule E (Module.Dual E (Fin n → E)) := Submodule.span E S with hD`. Use `set K : Submodule E (Fin n → E) := D.dualCoannihilator with hK`. Establish `hKset : ∀ y, y ∈ K ↔ ∀ φ ∈ S, φ y = 0`. Introduce `y`. Rewrite using `[hK, Submodule.mem_dualCoannihilator]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ`. Conclude with `h φ (Submodule.subset_span hφ)`. Introduce `h φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simp [hx, hz]`. Consider the case `smul c x _ hx => simp [hx]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective K.subtype K.ker_subtype`.
+
+Use `set P : (Fin n → E) →ₗ[E] (Fin n → E) := K.subtype ∘ₗ g with hP`. Establish `hPK : ∀ y, P y ∈ K` using `fun y => (g y).2`. Establish `hPid : ∀ k ∈ K, P k = k`. Introduce `k hk`. Establish `h1` using `LinearMap.congr_fun hg ⟨k, hk⟩`.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.id_apply] at h1`. Simplify using `[hP, h1]`. Establish `hrow : ∀ i, (LinearMap.proj i - LinearMap.proj i ∘ₗ P : Module.Dual E (Fin n → E)) ∈ D`. Introduce `i`. Establish `hmem : (LinearMap.proj i - LinearMap.proj i ∘ₗ P : Module.Dual E (Fin n → E)) ∈ K.dualAnnihilator`.
+
+Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `k hk`. Simplify using `[hPid k hk]`. Rewrite `hmem` using `[hK, Subspace.dualCoannihilator_dualAnnihilator_eq]`. Then use the resulting hypothesis. Establish `hcoord : ∀ i, u i = ∑ j, ι (P (Pi.single j 1) i) * u j`.
+
+Introduce `i`. Establish `h0` using `dual_span_sum_eq_zero ι S u hu _ (hrow i)`. Simplify using `only [LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.comp_apply, map_sub, sub_mul, Finset.sum_sub_distrib, sub_eq_zero] at h0`. Rewrite using `[← h0]`. Simplify using `[Pi.single_apply]`.
+
+Establish `hu' : u = ∑ j, u j • (fun i => ι (P (Pi.single j 1) i))`. Use function extensionality and compare the values at `i`. Rewrite using `[hcoord i]`. Simplify using `[Finset.sum_apply, mul_comm]`. Rewrite using `[hu']`.
+
+Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨P (Pi.single j 1), ?_, rfl⟩)` and prove the remaining obligations. Conclude with `(hKset _).1 (hPK _)`.
+-/
 theorem mem_span_of_forms {E A : Type} [Field E] [CommRing A] (ι : E →+* A) {n : ℕ}
     (S : Set (Module.Dual E (Fin n → E))) (u : Fin n → A)
     (hu : ∀ φ ∈ S, ∑ j, ι (φ (Pi.single j 1)) * u j = 0) :
@@ -82,31 +106,63 @@ def formRight {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} (J : Matrix (Fi
     simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formRight_apply {E : Type} [CommRing E] (σ : E →+* E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (w y : Fin n → E) : formRight σ J w y = Formalism.UG.hform σ J w y := rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 private theorem hform_add_right_flag_measures {A : Type} [CommRing A] (s : A →+* A) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) A) (x y z : Fin n → A) :
     Formalism.UG.hform s J x (y + z) = Formalism.UG.hform s J x y + Formalism.UG.hform s J x z := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem hform_smul_right_flag_measures {A : Type} [CommRing A] (s : A →+* A) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) A) (c : A) (x y : Fin n → A) :
     Formalism.UG.hform s J x (c • y) = c * Formalism.UG.hform s J x y := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 private theorem hform_add_left_flag_measures' {A : Type} [CommRing A] (s : A →+* A) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) A) (x x' y : Fin n → A) :
     Formalism.UG.hform s J (x + x') y = Formalism.UG.hform s J x y + Formalism.UG.hform s J x' y := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem hform_smul_left_flag_measures {A : Type} [CommRing A] (s : A →+* A) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) A) (c : A) (x y : Fin n → A) :
     Formalism.UG.hform s J (c • x) y = s c * Formalism.UG.hform s J x y := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `E A _ _ σ s ι n J W hs`. Establish `key : ∀ w z : Fin n → E, Formalism.UG.hform s (J.map ι) (fun i => ι (w i)) (fun i => ι (z i)) = ι (Formalism.UG.hform σ J w z)`. Introduce `w z`. Simplify using `only [Formalism.UG.hform, Matrix.map_apply, hs, map_sum, map_mul]`. Establish `pair : ∀ (w : Fin n → E) (y : Fin n → A), Formalism.UG.hform s (J.map ι) (fun i => ι (w i)) y = ∑ j, ι (formRight σ J w (Pi.single j 1)) * y j`.
+
+Introduce `w y`. Simplify using `only [formRight_apply, Formalism.UG.hform, Matrix.map_apply, hs, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hset : {z : Fin n → E | ∀ φ ∈ formRight σ J '' (W : Set (Fin n → E)), φ z = 0} = perpSet σ J W`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_image, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, perpSet, formRight_apply, SetLike.mem_coe]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Rewrite using `[SetLike.mem_coe, ← hset]`.
+
+Apply `mem_span_of_forms ι _ y` to reduce the goal to its premises. Introduce and unpack `φ ⟨w, hw, rfl⟩`. Rewrite using `[← pair]`. Conclude with `hy _ (Submodule.subset_span ⟨w, hw, rfl⟩)`. Introduce `hy`.
+
+Rewrite `hy` using `[SetLike.mem_coe]`. Establish `hgen : ∀ w ∈ W, Formalism.UG.hform s (J.map ι) (fun i => ι (w i)) y = 0`. Introduce `w hw`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨z, hz, rfl⟩` from `hx`. Rewrite using `[key, hz w hw, map_zero]`. Consider the case `zero => simp [Formalism.UG.hform]`. Consider the case `add x x' _ _ hx hx' => rw [hform_add_right_flag_measures, hx, hx', add_zero]`. Consider the case `smul c x _ hx => rw [hform_smul_right_flag_measures, hx, mul_zero]`.
+
+Simplify using `only [perpSet, Set.mem_setOf_eq]`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`.
+
+Conclude with `hgen w hw`. Consider the case `zero => simp [Formalism.UG.hform]`. Consider the case `add x x' _ _ hx hx' => rw [hform_add_left_flag_measures', hx, hx', add_zero]`. Consider the case `smul c x _ hx => rw [hform_smul_left_flag_measures, hx, mul_zero]`.
+-/
 theorem perpSet_baseChange : ∀ (E A : Type) [Field E] [CommRing A] (σ : E →+* E) (s : A →+* A) (ι : E →+* A) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (W : Submodule E (Fin n → E)), (∀ e, s (ι e) = ι (σ e)) → perpSet s (J.map ι) (Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' (W : Set (Fin n → E)))) = (Submodule.span A ((fun w : Fin n → E => fun i => ι (w i)) '' perpSet σ J W) : Set (Fin n → A)) := by
   intro E A _ _ σ s ι n J W hs
   classical

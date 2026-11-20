@@ -3,6 +3,11 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x', hx'⟩` from `(Ideal.bijective_algebraMap_quotient_residueField q).2 y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x'`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx', Ideal.algebraMap_quotient_residueField_mk]`.
+
+Both sides reduce to the same expression.
+-/
 theorem residue_localization_surjective_of_isMaximal {S : Type} [CommRing S] (q : Ideal S) [q.IsMaximal] :
     Function.Surjective ((IsLocalRing.residue (Localization.AtPrime q)).comp (algebraMap S (Localization.AtPrime q))) := by
   intro y
@@ -12,6 +17,15 @@ theorem residue_localization_surjective_of_isMaximal {S : Type} [CommRing S] (q 
   rw [← hx', Ideal.algebraMap_quotient_residueField_mk]
   rfl
 
+/- English proof (translation)
+Introduce `B S _ _ _ J q _ hJ hfu hfin`. Use `set f : S →+* ResidueField (Localization.AtPrime q) := (IsLocalRing.residue (Localization.AtPrime q)).comp (algebraMap S (Localization.AtPrime q)) with hf`. Establish `hfs : Function.Surjective f` using `residue_localization_surjective_of_isMaximal q`. Establish `hker : ∀ a ∈ J, f a = 0`. Introduce `a ha`.
+
+Rewrite using `[hf, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime q) q a).2 (hJ ha)`. Set `g : S ⧸ J →+* ResidueField (Localization.AtPrime q)` to `Ideal.Quotient.lift J f hker`. Establish `hgs : Function.Surjective g`. Introduce `y`.
+
+Take `⟨x, rfl⟩` from `hfs y`. Conclude with `⟨Ideal.Quotient.mk J x, rfl⟩`. Establish `heq : (IsLocalRing.residue (Localization.AtPrime q)).comp ((algebraMap S (Localization.AtPrime q)).comp (algebraMap B S)) = g.comp (algebraMap B (S ⧸ J))`. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply B S (S ⧸ J)]`. Both sides reduce to the same expression. Rewrite using `[heq]`. Use `⟨RingHom.Finite.comp (RingHom.Finite.of_surjective g hgs) (RingHom.finite_algebraMap.2 hfin), ?_⟩` and prove the remaining obligations. Conclude with `RingHom.FormallyUnramified.comp (RingHom.formallyUnramified_algebraMap.2 hfu) (RingHom.FormallyUnramified.of_surjective hgs)`.
+-/
 theorem residue_atMaximal_finite_formallyUnramified :
     ∀ (B S : Type) [CommRing B] [CommRing S] [Algebra B S] (J q : Ideal S) [q.IsMaximal], J ≤ q → Algebra.FormallyUnramified B (S ⧸ J) → Module.Finite B (S ⧸ J) → ((IsLocalRing.residue (Localization.AtPrime q)).comp ((algebraMap S (Localization.AtPrime q)).comp (algebraMap B S))).Finite ∧ ((IsLocalRing.residue (Localization.AtPrime q)).comp ((algebraMap S (Localization.AtPrime q)).comp (algebraMap B S))).FormallyUnramified := by
   intro B S _ _ _ J q _ hJ hfu hfin

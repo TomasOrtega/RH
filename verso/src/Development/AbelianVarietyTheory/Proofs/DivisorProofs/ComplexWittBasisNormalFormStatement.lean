@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComplexWittBasisNormalForm
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MajPosCpx.exists_unip_conj_unitary | exact GlobalTheory.MajPosCpx.exists_unip_conj_unitary | (intros; apply GlobalTheory.MajPosCpx.exists_unip_conj_unitary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.complex_witt_basis_normal_form : ∀ (n r : ℕ) (J : Matrix (Fin n) (Fin n) ℂ), J.conjTranspose = J →
     ∀ (X Y : Matrix (Fin n) (Fin r) ℂ), X.conjTranspose * J * X = 0 → Y.conjTranspose * J * Y = 0 → X.conjTranspose * J * Y = 1 →
     ∀ (c : GL (Fin n) ℂ) (ε : Fin n → Bool), (c.1).conjTranspose * J * c.1 = Matrix.diagonal (fun i => if ε i then 1 else -1) →

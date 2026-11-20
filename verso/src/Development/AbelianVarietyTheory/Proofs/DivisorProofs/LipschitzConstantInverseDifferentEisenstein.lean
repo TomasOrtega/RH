@@ -9,6 +9,9 @@ namespace GlobalTheory.LipEisConst
 
 open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent
 
+/- English proof (translation)
+Rewrite using `[latM, map_mul, map_inv₀, Units.val_inv_eq_inv_val, map_inv₀, FractionalIdeal.coeIdeal_absNorm, absNorm_differentIdeal F (𝓞 F), dF, nrm]`. Use `push_cast`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs, mul_inv]`.
+-/
 theorem absNorm_latM {F : Type} [Field F] [NumberField F] (𝔞 : Frac F) :
     ((FractionalIdeal.absNorm (latM 𝔞) : ℚ) : ℝ) = (dF F * nrm 𝔞)⁻¹ := by
   rw [latM, map_mul, map_inv₀, Units.val_inv_eq_inv_val, map_inv₀, FractionalIdeal.coeIdeal_absNorm,
@@ -16,6 +19,25 @@ theorem absNorm_latM {F : Type} [Field F] [NumberField F] (𝔞 : Frac F) :
   push_cast
   rw [Nat.cast_natAbs, Int.cast_abs, mul_inv]
 
+/- English proof (translation)
+Introduce `F _ _ 𝔞 k hk`. Establish `hd : 0 < dF F` using `abs_pos.2 (by exact_mod_cast discr_ne_zero F)`. Establish `hn : 0 < nrm 𝔞`. Establish `h2 : FractionalIdeal.absNorm (𝔞 : FractionalIdeal (𝓞 F)⁰ F) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.absNorm_eq_zero_iff]`.
+
+Conclude with `𝔞.ne_zero`. Establish `h3` using `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg (𝔞 : FractionalIdeal (𝓞 F)⁰ F)) h2.symm`. Unfold `nrm`. Conclude with `h3` after adjusting the coercions. Establish `hπ : (2 * (Real.pi : ℂ) * Complex.I) ^ (k * Module.finrank ℚ F) ≠ 0`.
+
+Apply `pow_ne_zero` to reduce the goal to its premises. Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Conclude with `mul_ne_zero (mul_ne_zero two_ne_zero this) Complex.I_ne_zero`. Establish `hcov : covol (latM 𝔞) = (Real.sqrt (dF F) * nrm 𝔞)⁻¹`. Rewrite using `[covol, absNorm_latM, ← dF]`.
+
+Establish `hs : Real.sqrt (dF F) * Real.sqrt (dF F) = dF F` using `Real.mul_self_sqrt hd.le`. Establish `hs0 : 0 < Real.sqrt (dF F)` using `Real.sqrt_pos.2 hd`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Real.sq_sqrt hd.le]`. Use `set fac : ℝ := ((k - 1).factorial : ℝ) ^ Module.finrank ℚ F with hfac`.
+
+Establish `hfac0 : 0 < fac` using `by positivity`. Establish `hreal : nrm 𝔞 ^ (k - 1) / (fac * covol (latM 𝔞)) = omegaFactor 𝔞 ^ k / cK F k`. Rewrite using `[hcov, omegaFactor, cK, ← hfac, mul_pow, ← Real.rpow_natCast (dF F ^ ((1:ℝ)/2)), ← Real.rpow_mul hd.le, Real.sqrt_eq_rpow]`. Establish `hk' : ((k : ℝ) - 1) / 2 = (1:ℝ)/2 * k - 1/2` using `by ring`. Rewrite using `[hk', Real.rpow_sub hd]`.
+
+Establish `hA : 0 < dF F ^ ((1:ℝ)/2 * k)` using `Real.rpow_pos_of_pos hd _`. Establish `hB : 0 < dF F ^ ((1:ℝ)/2)` using `Real.rpow_pos_of_pos hd _`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hc : (covol (latM 𝔞) : ℂ) ≠ 0`. Rewrite using `[hcov]`. Conclude with `(inv_pos.2 (mul_pos (Real.sqrt_pos.2 hd) hn)).ne'` after adjusting the coercions. Establish `hf : (fac : ℂ) ≠ 0` using `by exact_mod_cast hfac0.ne'`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lipConst, hfac]`. Use `push_cast`. Rewrite `hf` using `[hfac]`. Move the coercions through the operations in `at hf`.
+
+Clear the denominators using the available nonvanishing facts. Use `_ = _ := by rw [hreal]; push_cast; rfl`.
+-/
 theorem lip_const_eis : ∀ (F : Type) [Field F] [NumberField F] (𝔞 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (k : ℕ), 1 ≤ k →
     ((2 * (Real.pi : ℂ) * Complex.I) ^ (k * Module.finrank ℚ F))⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent.lipConst k (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM 𝔞) *
       (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.nrm 𝔞 : ℂ) ^ (k - 1) = (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.omegaFactor 𝔞 : ℂ) ^ k / (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK F k : ℂ) := by

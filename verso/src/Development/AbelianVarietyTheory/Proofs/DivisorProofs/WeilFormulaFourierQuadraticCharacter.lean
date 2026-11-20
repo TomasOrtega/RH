@@ -8,6 +8,11 @@ open GlobalTheory.SplitWeil (SB nabs)
 
 namespace GlobalTheory.KSp.WeilFormula
 
+/- English proof (translation)
+Repeatedly rewrite using `[add_comm _ t]`. Rewrite using `[← integral_indicator hLo.measurableSet, ← integral_indicator hLo.measurableSet, ← integral_add_left_eq_self (μ := μ) ((L : Set V).indicator g) t]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ L`.
+
+Rewrite using `[Set.indicator_of_mem (show z ∈ (L : Set V) from hz), Set.indicator_of_mem (show t + z ∈ (L : Set V) from L.add_mem ht hz)]`. Establish `hz' : t + z ∉ L` using `fun h => hz ((L.add_mem_cancel_left ht).1 h)`. Rewrite using `[Set.indicator_of_notMem (show z ∉ (L : Set V) from hz), Set.indicator_of_notMem (show t + z ∉ (L : Set V) from hz')]`.
+-/
 theorem setIntegral_addSubgroup_add_right {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
     [μ.IsAddLeftInvariant] (L : AddSubgroup V) (hLo : IsOpen (L : Set V)) (g : V → ℂ)
@@ -25,6 +30,29 @@ theorem setIntegral_addSubgroup_add_right {V : Type} [AddCommGroup V] [Topologic
     rw [Set.indicator_of_notMem (show z ∉ (L : Set V) from hz),
       Set.indicator_of_notMem (show t + z ∉ (L : Set V) from hz')]
 
+/- English proof (translation)
+Introduce `X _ _ _ _ hG μ _ e he f g s γ hf hs hfg hga φ hφ x`. Use `haveI := hG.grp`. Use `haveI := hG.t2`. Use `haveI := hG.lc`. Use `haveI := hG.sc`.
+
+Establish `hφ4 : four μ e φ ∈ SB X` using `GlobalTheory.T.bicharacterFourierTransform_mem_schwartzBruhat X hG μ e he φ hφ`. Establish `hK1 : IsCompact (tsupport (four μ e φ))` using `hφ4.2`. Establish `hφc : IsCompact (tsupport φ)` using `hφ.2`. Establish `hK2 : IsCompact (s '' ((fun z => x + z) '' tsupport φ))` using `(hφc.image (continuous_const.add continuous_id)).image hs`. Take `⟨L, hLc, hLo, hKL, hLγ⟩` from `hga _ (hK1.union hK2)`.
+
+Establish `hLm : MeasurableSet (L : Set X)` using `hLo.measurableSet`. Establish `he_cont : Continuous (fun p : X × X => e p.1 p.2)` using `he.lc.continuous`. Establish `hφcont : Continuous φ` using `hφ.1.continuous`. Establish `h0 : ∀ y, y ∉ (L : Set X) → e x y * (f y * four μ e φ y) = 0`. Introduce `y hy`.
+
+Establish `: four μ e φ y = 0` using `image_eq_zero_of_notMem_tsupport (fun h => hy (hKL (Or.inl h)))`. Simplify using `[this]`. Establish `h1 : four μ e (fun y => f y * four μ e φ y) x = ∫ y in (L : Set X), ∫ z, e x y * f y * (e y z * φ z) ∂μ ∂μ`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [four]`. Rewrite using `[← mul_assoc, ← integral_const_mul]`. Establish `hint : Integrable (Function.uncurry fun y z => e x y * f y * (e y z * φ z)) ((μ.restrict (L : Set X)).prod μ)`. Rewrite using `[Measure.restrict_prod_eq_prod_univ]`.
+
+Establish `hc : Continuous (Function.uncurry fun y z => e x y * f y * (e y z * φ z))`. Establish `h1' : Continuous fun p : X × X => e x p.1` using `he_cont.comp (continuous_const.prodMk continuous_fst)`. Conclude with `(h1'.mul (hf.comp continuous_fst)).mul (he_cont.mul (hφcont.comp continuous_snd))`. Establish `hon : IntegrableOn (Function.uncurry fun y z => e x y * f y * (e y z * φ z)) ((L : Set X) ×ˢ tsupport φ) (μ.prod μ)` using `hc.continuousOn.integrableOn_compact (hLc.prod hφc)`. Use `hon.of_forall_sdiff_eq_zero (hLm.prod MeasurableSet.univ) ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨y, z⟩ ⟨⟨hy, -⟩, hn⟩`. Establish `hz : z ∉ tsupport φ` using `fun h => hn ⟨hy, h⟩`. Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport hz]`. Establish `h3 : ∀ z, ∫ y in (L : Set X), e x y * f y * (e y z * φ z) ∂μ = γ * (g (x + z) * φ z)`. Introduce `z`.
+
+Distinguish the cases in `hz : φ z = 0`. Simplify using `[hz]`. Establish `hzt : z ∈ tsupport φ` using `subset_tsupport _ hz`. Establish `hsL : s (x + z) ∈ L` using `hKL (Or.inr ⟨x + z, ⟨z, hzt, rfl⟩, rfl⟩)`. Establish `hpt : ∀ y, e x y * f y * (e y z * φ z) = φ z * g (x + z) * f (y + s (x + z))`.
+
+Introduce `y`. Establish `hexy : e x y * e y z = e y (x + z)`. Rewrite using `[he.symm y (x + z), he.add, he.symm z y]`. Rewrite using `[mul_assoc (φ z), ← hfg y (x + z), ← hexy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, setIntegral_addSubgroup_add_right μ L hLo f hsL, hLγ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, integral_integral_swap hint]`. Repeatedly rewrite using `[h3]`.
+
+Rewrite using `[integral_const_mul]`.
+-/
 theorem weil_formula : ∀ (X : Type) [AddCommGroup X] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     (_ : Good X) (μ : Measure X) [μ.IsAddHaarMeasure] (e : X → X → ℂ), IsPair e →
     ∀ (f g : X → ℂ) (s : X → X) (γ : ℂ), Continuous f → Continuous s →

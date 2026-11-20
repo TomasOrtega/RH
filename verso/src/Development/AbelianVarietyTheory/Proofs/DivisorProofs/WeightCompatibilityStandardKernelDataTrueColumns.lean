@@ -21,6 +21,15 @@ namespace GlobalTheory.ColRows
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z L hT Gi Gl K Y cX ex t W Del h0 hS hW hDel hEta`. Take `⟨hX, -, hPr, -, -, -, hword, -, -, -, -, -, -, -, -⟩` from `hS`. Consider the cases of `t`. Substitute `hX` using the available equality. Consider the cases of `hPr`.
+
+Consider the cases of `hword`. Consider the cases of `hW`. Establish `hN` using `GlobalTheory.T.columnNormParameters_eq_natStepGap (I.rec7 l Z) L Del h0 hDel hEta`. Use `⟨plRec (I.rec7 l Z), fun u => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.CoreHt.weightTie_trueCols I hOk l Z L ⟨Del, hDel⟩ u`.
+
+Establish `gen : ∀ N : NumDatum, numDatumOfParameters (I.rec7 l Z) L = N → ∀ (W' : Wts B.fields (B.primes X).Word N.R), HEq B.wts W' → ∀ (pl' : RPl N.R ≃ B.fields.Tau), HEq (plRec (I.rec7 l Z)) pl' → ∀ δ : Code N, HEq (codeRec L u) δ → GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBo …` using `B.fields) (Pr := B.primes X) W' pl' u δ := by`. Introduce `N hN W' hW' pl' hpl δ hδ`. Substitute `hN` using the available equality. Consider the cases of `hW'`. Consider the cases of `hpl`.
+
+Consider the cases of `hδ`. Conclude with `key`. Conclude with `gen _ hN _ HEq.rfl _ HEq.rfl _ HEq.rfl`.
+-/
 theorem weightTie_of_stdKer : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex) (W : Formalism.L2.Col.Wts t.X t.Pr.Word (I.rec7 l Z).R) (Del h0 : ℕ), I.StdKer l Z t → HEq W B.wts → (I.rec7 l Z).s.Del = (Del : ℚ) → L.etaSz = ((I.rec7 l Z).R.m : ℝ) * (h0 : ℝ) → ∃ pl : RPl (I.rec7 l Z).R ≃ t.X.Tau, ∀ u, GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds.WeightTie (ofRecord (I.rec7 l Z) L Del h0) W pl (t.word u) (letterOf (I.rec7 l Z) L Del h0 u) := by
   intro B X I hOk hPins l Z L hT Gi Gl K Y cX ex t W Del h0 hS hW hDel hEta
   obtain ⟨hX, -, hPr, -, -, -, hword, -, -, -, -, -, -, -, -⟩ := hS

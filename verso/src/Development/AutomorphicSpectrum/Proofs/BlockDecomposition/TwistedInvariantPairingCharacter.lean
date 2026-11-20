@@ -11,6 +11,9 @@ namespace GlobalTheory.CompanionTheory.MirPair.Descend
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `MonoidHom.mem_range.mp (Subgroup.mem_subgroupOf.mp u.2)`. Use `⟨Multiplicative.toAdd w, Subtype.ext hw.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.BZMir.mirChar_eq k ψ n u w hw.symm, Circle.toUnits_apply, Units.val_mk0]`.
+-/
 theorem exists_uM (ψ : AddChar k Circle) (n : ℕ) (u : MirUin k (n + 1)) :
     ∃ y : Fin (n + 1) → k, (u : Mir k (n + 1)) = uM (n + 1) y ∧
       ((mirChar k ψ n u : ℂˣ) : ℂ) = ((ψ (y (Fin.last n)) : Circle) : ℂ) := by
@@ -18,6 +21,9 @@ theorem exists_uM (ψ : AddChar k Circle) (n : ℕ) (u : MirUin k (n + 1)) :
   refine ⟨Multiplicative.toAdd w, Subtype.ext hw.symm, ?_⟩
   rw [GlobalTheory.BZMir.mirChar_eq k ψ n u w hw.symm, Circle.toUnits_apply, Units.val_mk0]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PRep.twKer, Submodule.span_le]`. Introduce and unpack `w ⟨u, v, rfl⟩`. Take `⟨y, hu, hχ⟩` from `GlobalTheory.CompanionTheory.MirPair.Descend.exists_uM ψ n u`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, hu, h, hχ, sub_self]`.
+-/
 theorem left_kill (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (T : Representation ℂ (Mir k (n + 1)) V) (f : V →ₗ[ℂ] ℂ)
     (h : ∀ (y : Fin (n + 1) → k) v, f (T (uM (n + 1) y) v) = ((ψ (y (Fin.last n)) : Circle) : ℂ) * f v) :
@@ -27,11 +33,29 @@ theorem left_kill (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] 
   obtain ⟨y, hu, hχ⟩ := GlobalTheory.CompanionTheory.MirPair.Descend.exists_uM ψ n u
   simp only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, hu, h, hχ, sub_self]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiMinus_mk (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (T : Representation ℂ (Mir k (n + 1)) V) (p : Mir k n) (v : V) :
     phiMinus k ψ T p (Submodule.Quotient.mk v) =
       Submodule.Quotient.mk (T (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v) := rfl
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ n s V V' _ _ _ _ T T' B₀ hT hT' hL hnd`. Establish `hleft : ∀ v' : V', GlobalTheory.PRep.twKer T (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ n) ≤ LinearMap.ker (B₀.flip v')` using `fun v' => GlobalTheory.CompanionTheory.MirPair.Descend.left_kill ψ T (B₀.flip v') fun y v => by`. Rewrite using `[LinearMap.flip_apply, LinearMap.flip_apply]`. Conclude with `hT y v v'`. Establish `hright : ∀ v : V, GlobalTheory.PRep.twKer T' (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ⁻¹ n) ≤ LinearMap.ker (B₀ v)` using `fun v => GlobalTheory.CompanionTheory.MirPair.Descend.left_kill ψ⁻¹ T' (B₀ v) fun y v' => by`.
+
+Rewrite using `[AddChar.inv_apply]`. Conclude with `hT' y v v'`. Establish `h₁ : GlobalTheory.PRep.twKer T (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ n) ≤ LinearMap.ker B₀`. Introduce `v hv`. Rewrite using `[LinearMap.mem_ker]`.
+
+Use `LinearMap.ext fun v' => ?_` and prove the remaining obligations. Establish `h` using `LinearMap.mem_ker.mp (hleft v' hv)`. Rewrite `h` using `[LinearMap.flip_apply]`. Rewrite using `[h, LinearMap.zero_apply]`. Set `B₁ : GlobalTheory.PRep.TwJacquet T (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ n) →ₗ[ℂ] V' →ₗ[ℂ] ℂ` to `Submodule.liftQ _ B₀ h₁`.
+
+Establish `h₂ : GlobalTheory.PRep.twKer T' (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ⁻¹ n) ≤ LinearMap.ker B₁.flip`. Introduce `v' hv'`. Rewrite using `[LinearMap.mem_ker]`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`.
+
+Conclude with `LinearMap.mem_ker.mp (hright v hv')`. Set `B' : GlobalTheory.PRep.TwJacquet T (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ n) →ₗ[ℂ] GlobalTheory.PRep.TwJacquet T' (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ⁻¹ n) →ₗ[ℂ] ℂ` to `(Submodule.liftQ _ B₁.flip h₂).flip`. Establish `hB' : ∀ (v : V) (v' : V'), B' (Submodule.Quotient.mk v) (Submodule.Quotient.mk v') = B₀ v v'` using `fun _ _ => rfl`. Use `⟨B', ?_, ?_⟩` and prove the remaining obligations. Introduce `p w w'`.
+
+Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Take `⟨v', rfl⟩` from `Submodule.Quotient.mk_surjective _ w'`. Rewrite using `[GlobalTheory.CompanionTheory.MirPair.Descend.phiMinus_mk, GlobalTheory.CompanionTheory.MirPair.Descend.phiMinus_mk, hB', hB', hL]`. Introduce `w hw`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`.
+
+Establish `hv : v ∉ GlobalTheory.PRep.twKer T (GlobalTheory.BZMir.MirUin k (n + 1)) (GlobalTheory.BZMir.mirChar k ψ n)` using `fun h => hw ((Submodule.Quotient.mk_eq_zero _).mpr h)`. Take `⟨v', hv'⟩` from `hnd v hv`. Conclude with `⟨Submodule.Quotient.mk v', by rw [hB']; exact hv'⟩`.
+-/
 theorem descend : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n s : ℕ) (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (T : Representation ℂ (Mir k (n + 1)) V) (T' : Representation ℂ (Mir k (n + 1)) V') (B₀ : V →ₗ[ℂ] V' →ₗ[ℂ] ℂ), (∀ (y : Fin (n + 1) → k) v v', B₀ (T (uM (n + 1) y) v) v' = ((ψ (y (Fin.last n)) : Circle) : ℂ) * B₀ v v') → (∀ (y : Fin (n + 1) → k) v v', B₀ v (T' (uM (n + 1) y) v') = ((ψ (-y (Fin.last n)) : Circle) : ℂ) * B₀ v v') → (∀ (p : Mir k n) v v', B₀ (T (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v) (T' (levi k (n + 1) (p : GL (Fin (n + 1)) k)) v') = ((detChar (Fin (n + 1)) (absPow k ((s + 1 : ℕ) : ℂ)) (p : GL (Fin (n + 1)) k) : ℂˣ) : ℂ) * B₀ v v') → (∀ v, v ∉ twKer T (MirUin k (n + 1)) (mirChar k ψ n) → ∃ v', B₀ v v' ≠ 0) → ∃ B' : TwJacquet T (MirUin k (n + 1)) (mirChar k ψ n) →ₗ[ℂ] TwJacquet T' (MirUin k (n + 1)) (mirChar k ψ⁻¹ n) →ₗ[ℂ] ℂ, (∀ (p : Mir k n) w w', B' (phiMinus k ψ T p w) (phiMinus k ψ⁻¹ T' p w') = ((detChar (Fin (n + 1)) (absPow k ((s + 1 : ℕ) : ℂ)) (p : GL (Fin (n + 1)) k) : ℂˣ) : ℂ) * B' w w') ∧ (∀ w, w ≠ 0 → ∃ w', B' w w' ≠ 0) := by
   intro k _ _ _ _ ψ n s V V' _ _ _ _ T T' B₀ hT hT' hL hnd
   have hleft : ∀ v' : V', GlobalTheory.PRep.twKer T (GlobalTheory.BZMir.MirUin k (n + 1))

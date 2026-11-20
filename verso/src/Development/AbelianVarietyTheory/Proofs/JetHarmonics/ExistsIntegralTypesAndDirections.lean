@@ -20,6 +20,11 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.PowGerm
 
+/- English proof (translation)
+Establish `hint : ∀ a, ∃ x : V, algebraMap V K x = φ a`. Introduce `a`. Establish `h1 : IsIntegral ℤ a` using `Algebra.IsIntegral.isIntegral a`. Establish `h2 : IsIntegral ℤ (φ a)` using `map_isIntegral_int φ h1`. Conclude with `IsIntegrallyClosed.isIntegral_iff.1 h2.tower_top`.
+
+Use `choose f hf using hint`. Establish `hinj` using `IsFractionRing.injective V K`. Use `⟨{ toFun := f map_one' := hinj (by rw [hf, map_one, map_one]) map_mul' := fun a b => hinj (by rw [map_mul, hf, hf, hf, map_mul]) map_zero' := hinj (by rw [hf, map_zero, map_zero]) map_add' := fun a b => hinj (by rw [map_add, hf, hf, hf, map_add]) }, hf⟩` and prove the remaining obligations.
+-/
 theorem exists_lift_ringOfIntegers {E : Type} [Field E] [NumberField E] {V K : Type} [CommRing V] [IsDomain V]
     [IsIntegrallyClosed V] [Field K] [Algebra V K] [IsFractionRing V K] (φ : 𝓞 E →+* K) :
     ∃ ψ : 𝓞 E →+* V, ∀ a, algebraMap V K (ψ a) = φ a := by
@@ -36,6 +41,13 @@ theorem exists_lift_ringOfIntegers {E : Type} [Field E] [NumberField E] {V K : T
             map_zero' := hinj (by rw [hf, map_zero, map_zero])
             map_add' := fun a b => hinj (by rw [map_add, hf, hf, hf, map_add]) }, hf⟩
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (Matrix.of w).vecMul`. Introduce `x`. Take `⟨a, ha, -⟩` from `hb x`. Conclude with `⟨a, funext fun j => by simpa [Matrix.vecMul, dotProduct] using ha j⟩`. Establish `hU : IsUnit (Matrix.of w)` using `Matrix.vecMul_surjective_iff_isUnit.1 hsurj`.
+
+Take `⟨N, hN⟩` from `hU.exists_right_inv`. Use `⟨fun i s => N s (emb i), fun i i' => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun hN (emb i')) (emb i)`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply, hw, EmbeddingLike.apply_eq_iff_eq] at h`.
+
+Simplify using `only [mul_comm (N _ _), h, eq_comm]`.
+-/
 theorem exists_dual_of_extends {V : Type} [CommRing V] {d r : ℕ} (u : Fin r → Fin d → V)
     (w : Fin d → Fin d → V) (emb : Fin r ↪ Fin d) (hw : ∀ i, w (emb i) = u i)
     (hb : ∀ x : Fin d → V, ∃! a : Fin d → V, ∀ j, ∑ k, a k * w k j = x j) :
@@ -52,6 +64,13 @@ theorem exists_dual_of_extends {V : Type} [CommRing V] {d r : ℕ} (u : Fin r �
   simp only [Matrix.of_apply, hw, EmbeddingLike.apply_eq_iff_eq] at h
   simp only [mul_comm (N _ _), h, eq_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Rewrite using `[TWO.v_unit]`. Conclude with `lt_irrefl _`. Introduce `h`.
+
+Establish `hx : (x : F) ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.coe_lt_top (0 : ℚ)`.
+
+Establish `hi : (x : F)⁻¹ ∈ TWO.Ov v`. Use `TWO.exists_weight_basis_filtration (a := v (x : F)) ?_ (not_lt.1 h)` and prove the remaining obligations. Rewrite using `[← AddValuation.map_mul, mul_inv_cancel₀ hx, AddValuation.map_one]`. Conclude with `IsUnit.of_mul_eq_one (⟨_, hi⟩ : TWO.Ov v) (Subtype.ext (mul_inv_cancel₀ hx))`.
+-/
 theorem isUnit_Ov_iff {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (x : TWO.Ov v) :
     IsUnit x ↔ ¬ 0 < v (x : F) := by
   constructor
@@ -69,6 +88,37 @@ theorem isUnit_Ov_iff {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (x
       rw [← AddValuation.map_mul, mul_inv_cancel₀ hx, AddValuation.map_one]
     exact IsUnit.of_mul_eq_one (⟨_, hi⟩ : TWO.Ov v) (Subtype.ext (mul_inv_cancel₀ hx))
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C ϖ hϖ g hg hgu hcard hnd F _ _ _ _ _ v hv`. Use `letI := io.toAlgebra`. Establish `hfrob` using `GlobalTheory.pow_sub_self_mem_span_of_splits_completely E g hg hcard hnd`.
+
+Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Use `choose σV hσV using fun τ : E →+* ℂ => exists_lift_ringOfIntegers (V := T.V) (io.comp (embK c τ))`. Establish `hσV' : ∀ τ a, algebraMap T.V T.Fr (σV τ a) = io (embK c τ a)` using `hσV`. Establish `huv : ∀ ℓ i, C.ch.uvec ℓ i = algebraMap T.V T.Fr (C.uvecT ℓ i)` using `C.gen.1.2.2.2.2.2.2`. Establish `hact : ∀ a j, C.ch.B.A.act a j = MvPowerSeries.map (algebraMap T.V T.Fr) (C.actT a j)` using `C.gen.1.2.1`.
+
+Establish `hσinj : Function.Injective σV`. Introduce `τ τ' h`. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun a => ?_` and prove the remaining obligations. Establish `h1 : embK c τ a = embK c τ' a` using `io.injective (by rw [← hσV', ← hσV', h])`. Establish `h2` using `congrArg (fun z : c.F => (z : ℂ)) h1`.
+
+Conclude with `h2`. Set `ρ : 𝓞 E → Matrix (Fin (chD C.ch)) (Fin (chD C.ch)) T.V` to `fun a i j => MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (C.actT a i)`. Establish `hρK : ∀ a i j, dAct T.Fr C.ch.B a i j = algebraMap T.V T.Fr (ρ a i j)`. Introduce `a i j`. Simplify using `only [dAct, FB.actK, hact, MvPowerSeries.coeff_map, ρ]`.
+
+Both sides reduce to the same expression. Establish `hρF : ∀ a i j, dAct F C.ch.B a i j = algebraMap T.V F (ρ a i j)`. Introduce `a i j`. Simplify using `only [dAct, FB.actK, hact, MvPowerSeries.coeff_map, ρ]`. Conclude with `(IsScalarTower.algebraMap_apply T.V T.Fr F _).symm`.
+
+Establish `heig : ∀ (a : 𝓞 E) (ℓ : Lt1 Dw), (ρ a).mulVec (C.uvecT ℓ) = σV ℓ.1 a • C.uvecT ℓ`. Introduce `a ℓ`. Use function extensionality and compare the values at `i`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `congrFun (GlobalTheory.T.integral_chart_directions_are_eigenvectors E H Dw l Xo c T io y C a ℓ) i`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, hρK, huv, ← hσV'] at h`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`. Conclude with `h`. Take `⟨lam, hlam⟩` from `GlobalTheory.exists_dual_forms_of_separated_types T.V (𝓞 E) (chD C.ch) ρ (E →+* ℂ) Dw.mult (fun τ a => σV τ a) C.uvecT (fun τ τ' hne => GlobalTheory.exists_isUnit_sub_of_ringHom_ne (𝓞 E) T.V g hg hgu hfrob _ _ (fun h => hne (hσinj h))) heig (fun τ => by`. Take `⟨⟨w, emb, hw, hb⟩, -⟩` from `Formalism.L2.Pj.SaturatedCharts.saturation_charts_holds Xo c T io y C τ`.
+
+Conclude with `exists_dual_of_extends (fun i => C.uvecT ⟨τ, i⟩) w emb hw hb)`. Use `choose ε hε using fun τ => GlobalTheory.exists_separating_mod_prime_pow (𝓞 E) T.V g hg hgu hfrob (E →+* ℂ) σV hσinj 1 τ`. Set `f : T.V →+* TWO.Ov v` to `TWO.fO v hϖ hv`. Establish `hf : ∀ x, (f x : F) = algebraMap T.V F x` using `fun x => (IsScalarTower.algebraMap_apply T.V T.Fr F x).symm`. Establish `hgO : ¬ IsUnit ((g : ℕ) : TWO.Ov v)`.
+
+Introduce `h`. Rewrite `h` using `[← map_natCast f]`. Conclude with `hgu ((isUnit_map_iff f _).1 h)`. Use `⟨fun τ => f.comp (σV τ), fun ℓ i => f (C.uvecT ℓ i), fun τ a => ?_, fun ℓ i => hf _, fun ℓ i => ?_, fun a ℓ => ?_, fun τ a => ⟨fun h => ?_, fun h => (isUnit_Ov_iff v _).2 h⟩, fun τ a => ?_, ⟨fun ℓ s => f (lam ℓ s), fun ℓ ℓ' => ?_⟩, ⟨ε, fun τ τ' => ?_⟩, hgO⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hf, ← hσV', ← IsScalarTower.algebraMap_apply]`.
+
+Rewrite using `[hf, huv, ← IsScalarTower.algebraMap_apply]`. Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (algebraMap T.V F) (congrFun (heig a ℓ) i)`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, map_sum, map_mul] at h`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul, hρF, hf, RingHom.comp_apply]`.
+
+Conclude with `h`. Conclude with `(GlobalTheory.hom_value_congruent_int_mod_prime (𝓞 E) (TWO.Ov v) g hg hgO hfrob _ a).2 (fun hu => (isUnit_Ov_iff v _).1 hu h)`. Establish `h : embK c (ComplexEmbedding.conjugate τ) a = embK c τ (H.bar a)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, ComplexEmbedding.conjugate_coe_eq, H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+
+Establish `h2 : σV (ComplexEmbedding.conjugate τ) a = σV τ (H.bar a)` using `hinj (by rw [hσV', hσV', h])`. Conclude with `congrArg f h2`. Establish `h` using `congrArg f (hlam ℓ ℓ')`. Simplify using `only [map_sum, map_mul] at h`. Rewrite using `[h]`.
+
+Distinguish the cases in `hl : ℓ = ℓ'`. Rewrite using `[if_pos hl, if_pos hl, map_one]`. Rewrite using `[if_neg hl, if_neg hl, map_zero]`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (hε τ τ')`. Use `Ideal.mem_span_singleton'.2 ⟨f b, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg f hb`. Rewrite `h` using `[pow_one, map_mul, map_natCast, map_sub]`. Rewrite using `[h, RingHom.comp_apply]`. Distinguish the cases in `ht : τ = τ'`. Rewrite using `[if_pos ht, if_pos ht.symm, map_one]`.
+
+Rewrite using `[if_neg ht, if_neg (Ne.symm ht), map_zero]`.
+-/
 theorem exists_integral_types_and_directions : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (ϖ : T.V), Irreducible ϖ → ∀ (g : ℕ), g.Prime → ¬ IsUnit ((g : ℕ) : T.V) → (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {(g : 𝓞 E)})).card = Module.finrank ℚ E → (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {(g : 𝓞 E)})).Nodup → ∀ (F : Type) [Field F] [CharZero F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → letI := io.toAlgebra; ∃ (σ : (E →+* ℂ) → 𝓞 E →+* TWO.Ov v) (e : Lt1 Dw → Fin (chD C.ch) → TWO.Ov v), (∀ τ a, (σ τ a : F) = algebraMap T.Fr F (io (embK c τ a))) ∧ (∀ ℓ i, (e ℓ i : F) = algebraMap T.V F (C.uvecT ℓ i)) ∧ (∀ ℓ i, (e ℓ i : F) = algebraMap T.Fr F (C.ch.uvec ℓ i)) ∧ (∀ (a : 𝓞 E) ℓ, (dAct F C.ch.B a).mulVec (fun i => (e ℓ i : F)) = (σ ℓ.1 a : F) • fun i => (e ℓ i : F)) ∧ (∀ τ a, (0 < v (σ τ a : F) → σ τ a ∈ Ideal.span {((g : ℕ) : TWO.Ov v)}) ∧ (¬ 0 < v (σ τ a : F) → IsUnit (σ τ a))) ∧ (∀ τ a, σ (ComplexEmbedding.conjugate τ) a = σ τ (star a)) ∧ (open Classical in ∃ lam : Lt1 Dw → Fin (chD C.ch) → TWO.Ov v, ∀ l l', ∑ s, lam l s * e l' s = if l = l' then 1 else 0) ∧ (open Classical in ∃ ε : (E →+* ℂ) → 𝓞 E, ∀ τ τ', σ τ' (ε τ) - (if τ = τ' then 1 else 0) ∈ Ideal.span {((g : ℕ) : TWO.Ov v)}) ∧ ¬ IsUnit ((g : ℕ) : TWO.Ov v) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

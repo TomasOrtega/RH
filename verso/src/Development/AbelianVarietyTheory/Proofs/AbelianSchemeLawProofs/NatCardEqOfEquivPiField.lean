@@ -11,6 +11,11 @@ namespace GlobalTheory
 
 namespace MulLaw
 
+/- English proof (translation)
+Use `haveI : Module.Finite R U := Module.finite_of_finrank_pos (hU ▸ hm)`. Use `haveI : Module.Finite R V := Module.finite_of_finrank_pos (hV ▸ Nat.one_pos)`. Establish `e₁ : V ≃ₗ[R] R` using `LinearEquiv.ofFinrankEq V R (by rw [hV, Module.finrank_self])`. Establish `e₂ : U ≃ₗ[R] (X → R)` using `e.trans (LinearEquiv.piCongrRight fun _ => e₁)`. Use `haveI : Module.Finite R (X → R) := Module.Finite.equiv e₂`.
+
+Use `haveI : Finite X := (Pi.linearIndependent_single_one X R).finite`. Use `haveI := Fintype.ofFinite X`. Rewrite using `[← hU, e₂.finrank_eq, Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+-/
 theorem natCard_eq_of_equiv_pi_field {R : Type} [Field R] {U V : Type} [AddCommGroup U]
     [Module R U] [AddCommGroup V] [Module R V] {X : Type} (e : U ≃ₗ[R] (X → V)) {m : ℕ}
     (hm : 0 < m) (hU : Module.finrank R U = m) (hV : Module.finrank R V = 1) :
@@ -25,6 +30,9 @@ theorem natCard_eq_of_equiv_pi_field {R : Type} [Field R] {U V : Type} [AddCommG
   haveI := Fintype.ofFinite X
   rw [← hU, e₂.finrank_eq, Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Use `letI := hR.toField`. Conclude with `natCard_eq_of_equiv_pi_field e hm hU hV`.
+-/
 theorem natCard_eq_of_equiv_pi {R : Type} [CommRing R] (hR : IsField R) {U V : Type}
     [AddCommGroup U] [Module R U] [AddCommGroup V] [Module R V] {X : Type}
     (e : U ≃ₗ[R] (X → V)) {m : ℕ}
@@ -52,6 +60,15 @@ noncomputable def basePointsEquiv {S S' : Scheme.{0}} {f : S' ⟶ S} {A : Over S
 
 end MulLaw
 
+/- English proof (translation)
+Introduce `hQ hRel hH hBC S _ P n hn`. Take `⟨h1, h2, h3, h4⟩` from `hQ S P n hn`. Use `⟨h1, h2, h3, h4, fun k _ _ t hk => ?_⟩` and prove the remaining obligations. Take `⟨P', g, hg, hdim, hmul, -⟩` from `hBC S _ t P`. Take `⟨e⟩` from `hRel k P' n 1 hk le_rfl`.
+
+Establish `hn2 : 1 ≤ n ^ 2 * 1`. Rewrite using `[Nat.mul_one]`. Conclude with `Nat.one_le_pow _ _ hn`. Establish `hU` using `hH k P' (n ^ 2 * 1) hn2`. Establish `hV` using `hH k P' 1 le_rfl`.
+
+Rewrite `hV` using `[one_pow]`. Establish `hF : IsField Γ((baseOver (Spec (CommRingCat.of k))).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField k)`. Establish `hcard` using `MulLaw.natCard_eq_of_equiv_pi hF e (Nat.pow_pos hn2) hU hV`. Establish `φ : (baseOver (Spec (CommRingCat.of k)) ⟶ P'.A) ≃* (Over.mk t ⟶ P.A)`. Establish `ψ` using `MulLaw.basePointsEquiv hg hmul (baseOver (Spec (CommRingCat.of k)))`.
+
+Establish `ht : (baseOver (Spec (CommRingCat.of k))).hom ≫ t = t` using `Category.id_comp t`. Rewrite `ψ` using `[ht]`. Conclude with `ψ`. Rewrite using `[← Nat.card_congr (φ.toEquiv.subtypeEquiv (p := fun x => x ^ n = 1) (q := fun x => x ^ n = 1) (fun x => by show x ^ n = 1 ↔ φ x ^ n = 1`. Rewrite using `[← map_pow, map_eq_one_iff φ φ.injective])), hcard, hdim, Nat.mul_one, ← pow_mul]`.
+-/
 theorem mulN_of_decomposition :
     (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left)) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (n j : ℕ), (n : K) ≠ 0 → 1 ≤ j → Nonempty (SecM P.A P.L ((n ^ 2 * j : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K))) ≃ₗ[Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)] ({x : baseOver (Spec (CommRingCat.of K)) ⟶ P.A // x ^ n = 1} → SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K)))))) → GlobalSectionsRankAlgClosed → PolBaseChangeSt → MulNSt := by
   intro hQ hRel hH hBC S _ P n hn

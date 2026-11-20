@@ -11,6 +11,19 @@ noncomputable section
 
 namespace GlobalTheory.KerBaseChange
 
+/- English proof (translation)
+Use `letI : Algebra F ℂ := σ.toAlgebra`. Establish `hsm : ∀ (a : F) (x : ℂ), a • x = σ a * x` using `fun a x => by rw [Algebra.smul_def]; rfl`. Set `W : Submodule F ℂ` to `Submodule.span F (Set.range z)`. Establish `hzW : ∀ k, z k ∈ W` using `fun k => Submodule.subset_span ⟨k, rfl⟩`. Use `haveI : FiniteDimensional F W := FiniteDimensional.span_of_finite F (Set.finite_range z)`.
+
+Set `ζ` to `Module.finBasis F W`. Set `β : κ → Fin (Module.finrank F W) → F` to `fun k m => ζ.repr ⟨z k, hzW k⟩ m`. Establish `hzexp : ∀ k, z k = ∑ m, σ (β k m) * (ζ m : ℂ)`. Introduce `k`. Establish `h2` using `congrArg Subtype.val (ζ.sum_repr ⟨z k, hzW k⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hsm] at h2`. Conclude with `h2.symm`. Establish `hlin : LinearIndependent F (fun m => (ζ m : ℂ))` using `ζ.linearIndependent.map' W.subtype (Submodule.ker_subtype _)`. Establish `hsol : ∀ m j, ∑ k, β k m * α k j = 0`. Introduce `m j`.
+
+Establish `hs : ∑ m, (∑ k, β k m * α k j) • (ζ m : ℂ) = 0`. Repeatedly rewrite using `[hsm, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, ← hz j]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hzexp k, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Conclude with `(Fintype.linearIndependent_iff.1 hlin) _ hs m`. Establish `hz2 : z = ∑ m, (ζ m : ℂ) • (fun k => σ (β k m))`. Use function extensionality and compare the values at `k`. Rewrite using `[hzexp k, Finset.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => by rw [Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[hz2]`. Conclude with `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun k => β k m, hsol m, rfl⟩)`.
+-/
 theorem mem_span_of_sum_mul {F : Type} [Field F] (σ : F →+* ℂ) {κ J : Type} [Fintype κ]
     (α : κ → J → F) (z : κ → ℂ) (hz : ∀ j, ∑ k, z k * σ (α k j) = 0) :
     z ∈ Submodule.span ℂ ((fun c : κ → F => fun k => σ (c k)) '' {c | ∀ j, ∑ k, c k * α k j = 0}) := by
@@ -45,6 +58,19 @@ theorem mem_span_of_sum_mul {F : Type} [Field F] (σ : F →+* ℂ) {κ J : Type
   exact Submodule.sum_mem _ fun m _ =>
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun k => β k m, hsol m, rfl⟩)
 
+/- English proof (translation)
+Set `V' : Submodule F V` to `Submodule.span F (Set.range fun p : κ × ι => A p.1 p.2)`. Establish `hAV : ∀ k i, A k i ∈ V'` using `fun k i => Submodule.subset_span ⟨(k, i), rfl⟩`. Establish `hV'S : V' ≤ S` using `Submodule.span_le.2 (by rintro _ ⟨p, rfl⟩; exact hA p.1 p.2)`. Use `haveI : FiniteDimensional F V' := FiniteDimensional.span_of_finite F (Set.finite_range _)`. Set `b` to `Module.finBasis F V'`.
+
+Set `bv : Fin (Module.finrank F V') → V` to `fun m => (b m : V)`. Establish `hbS : ∀ m, bv m ∈ S` using `fun m => hV'S (b m).2`. Establish `hbli : LinearIndependent F bv` using `b.linearIndependent.map' V'.subtype (Submodule.ker_subtype _)`. Establish `hrli` using `hI _ bv hbS hbli`. Set `α : κ → ι × Fin (Module.finrank F V') → F` to `fun k p => b.repr ⟨A k p.1, hAV k p.1⟩ p.2`.
+
+Establish `hAexp : ∀ k i, A k i = ∑ m, α k (i, m) • bv m`. Introduce `k i`. Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨A k i, hAV k i⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Conclude with `h2.symm`.
+
+Establish `hz' : ∀ p : ι × Fin (Module.finrank F V'), ∑ k, z k * σ (α k p) = 0`. Introduce and unpack `⟨i, m⟩`. Establish `h` using `hz i`. Rewrite `h` using `[hAexp, map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul]`. Rewrite `h` using `[Finset.sum_comm]`.
+
+Rewrite `h` using `[← Finset.sum_smul]`. Conclude with `(Fintype.linearIndependent_iff.1 hrli) _ h m`. Use `Submodule.span_mono ?_ (mem_span_of_sum_mul σ α z hz')` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `⟨c, fun i => ?_, rfl⟩` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hAexp, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Conclude with `Finset.sum_eq_zero fun m _ => by rw [hc (i, m), zero_smul]`.
+-/
 theorem mem_span_of_sum_smul {F V Y : Type} [Field F] [AddCommGroup V] [Module F V] [AddCommGroup Y] [Module ℂ Y]
     (σ : F →+* ℂ) (r : V →ₛₗ[σ] Y) (S : Submodule F V)
     (hI : ∀ (n : ℕ) (b : Fin n → V), (∀ i, b i ∈ S) → LinearIndependent F b →
@@ -86,6 +112,9 @@ end GlobalTheory.KerBaseChange
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D T j σ hI w n hd κ ι _ _ A hA z hz`. Conclude with `KerBaseChange.mem_span_of_sum_smul σ (rdU (T.U j σ)) (sec (T.Q.Xo j) T.Q.c w n) (hI w n hd) A hA z hz`.
+-/
 theorem kerC_span_rat : ∀ (D : D7) (T : CoreJ D) (j : ℕ) (σ : T.Q.c.F →+* ℂ), Formalism.L2.Pj.RdIndep (T.Q.Xo j) T.Q.c (T.U j) σ → ∀ (w : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom w n → ∀ (κ ι : Type) [Fintype κ] [Fintype ι] (A : κ → ι → Rul (T.Q.Xo j) T.Q.c), (∀ k i, A k i ∈ sec (T.Q.Xo j) T.Q.c w n) → ∀ z : κ → ℂ, (∀ i, ∑ k, z k • rdU (T.U j σ) (A k i) = 0) → z ∈ Submodule.span ℂ ((fun c : κ → T.Q.c.F => fun k => σ (c k)) '' {c | ∀ i, ∑ k, c k • A k i = 0}) := by
   intro D T j σ hI w n hd κ ι _ _ A hA z hz
   exact KerBaseChange.mem_span_of_sum_smul σ (rdU (T.U j σ)) (sec (T.Q.Xo j) T.Q.c w n) (hI w n hd) A hA z hz

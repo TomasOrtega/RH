@@ -14,6 +14,45 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.QLog
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hmap k e hbas hadp U hU`. Use `set M := U * blk d k (p : F.B) 1 with hM`. Set `T : (Fin d ⊕ Fin k → F.B) → (Fin d ⊕ Fin k → F.B)` to `fun w => M.mulVec fun j => F.σ (w j)`. Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Establish `hθp : F.θ (p : F.B) = (p : O)` using `map_natCast _ _`.
+
+Establish `nu_iff : ∀ x : O, ¬IsUnit x ↔ v (algebraMap O C x) < 1` using `fun x => by`. Rewrite using `[hv.isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne (hv.map_le_one x) h, fun h => h.ne⟩`. Establish `nu_add : ∀ x y : O, ¬IsUnit x → ¬IsUnit y → ¬IsUnit (x + y)`. Introduce `x y hx hy`.
+
+Rewrite `hx`, `hy`, the goal using `[nu_iff]`. Rewrite using `[map_add]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hx hy)`. Establish `nu_sum : ∀ (s : Finset (Fin d ⊕ Fin k)) (f : Fin d ⊕ Fin k → O), (∀ i ∈ s, ¬IsUnit (f i)) → ¬IsUnit (∑ i ∈ s, f i)`. Introduce `s f hf`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using not_isUnit_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `nu_add _ _ (hf a (Finset.mem_insert_self _ _)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+
+Establish `stepA : ∀ w : Fin d ⊕ Fin k → F.B, (∀ j, ¬IsUnit (F.θ (w (Sum.inr j)))) → ∀ i, ¬IsUnit (F.θ (T w i))`. Introduce `w hw i`. Use `show ¬IsUnit (F.θ (∑ l, M i l * F.σ (w l)))`. Rewrite using `[map_sum]`. Apply `nu_sum` to reduce the goal to its premises.
+
+Introduce `l _`. Rewrite using `[hM, blk, Matrix.mul_diagonal]`. Consider the cases of `l with`. Consider the case `inl l`. Simplify using `only [Sum.elim_inl, map_mul, hθp]`.
+
+Conclude with `fun h => hp (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left h))`. Consider the case `inr j`. Simplify using `only [Sum.elim_inr, mul_one, map_mul]`. Take `⟨c', hc'⟩` from `F.σ_pow (w (Sum.inr j))`. Establish `hs : F.θ (F.σ (w (Sum.inr j))) = F.θ (w (Sum.inr j)) ^ p + p * F.θ c'`.
+
+Use `congrArg F.θ hc'` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_pow, hθp]`. Take the linear combination `this`. Rewrite using `[hs]`. Use `fun h => nu_add _ _ ?_ ?_ (isUnit_of_mul_isUnit_right h)` and prove the remaining obligations.
+
+Conclude with `fun h' => hw j ((isUnit_pow_iff (Fact.out : p.Prime).ne_zero).1 h')`. Conclude with `fun h' => hp (isUnit_of_mul_isUnit_left h')`. Establish `hQL : ∀ w : Fin d ⊕ Fin k → F.B, QL μ' ⊤ (comb w e)` using `fun w => GlobalTheory.T.isQuasiLogarithmModIdeal_top_linearCombination _ _ _ F.θ d μ' hlift _ e hbas.1 w`. Establish `hstep : ∀ w : Fin d ⊕ Fin k → F.B, In (⊤ : Ideal F.B) (frob p F.s (comb w e) - comb (T w) e)` using `fun w => GlobalTheory.T.powerSeriesFrobeniusTwist_linearCombination_mod_integral p F.B F.Q F.σ F.s F.s_alg d _ e M hU w`. Establish `hlf : ∀ w : Fin d ⊕ Fin k → F.B, ∃ a : MvPowerSeries (Fin d) F.B, map (algebraMap F.B F.Q) a = defect μ' p (comb w e)`.
+
+Introduce `w`. Establish `h` using `(QLogDefect.main p F.B O F.Q F.θ F.frame d μ' hlift ⊤ _ (hQL w) p).1`. Use `choose b _ hb using h`. Use `⟨(fun α => b α : MvPowerSeries (Fin d) F.B), MvPowerSeries.ext fun α => ?_⟩` and prove the remaining obligations. Conclude with `(hb α).symm`.
+
+Use `choose A hA using hlf`. Set `δ : (Fin d ⊕ Fin k → F.B) → G.A 1` to `fun w => c.ev 1 (map F.θ (A w))`. Use `set I := Ideal.span (algebraMap O (G.A 1) '' {o | ¬IsUnit o}) with hI`. Establish `hδstep : ∀ w : Fin d ⊕ Fin k → F.B, δ (T w) - δ w ^ p ∈ I` using `fun w => GlobalTheory.T.quasiLogarithm_levelOne_defect_frobenius_pow p C v O hv ε hε F G d c μ' hlift hmap _ _ _ _ (hQL w) (hQL (T w)) (hstep w) (hA w) (hA (T w))`. Establish `hδit : ∀ n w, δ (T^[n] w) - δ w ^ (p ^ n) ∈ I`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+
+Introduce `w`. Rewrite using `[Function.iterate_succ_apply', pow_succ, pow_mul]`. Establish `h1` using `hδstep (T^[n] w)`. Establish `h2 : δ (T^[n] w) ^ p - (δ w ^ p ^ n) ^ p ∈ I` using `I.mem_of_dvd (sub_dvd_pow_sub_pow _ _ p) (ih w)`. Use `I.add_mem h1 h2` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hconst : ∀ w : Fin d ⊕ Fin k → F.B, constantCoeff (map F.θ (A w)) = 0`. Introduce `w`. Establish `h0` using `GlobalTheory.T.constantCoeff_quasiLogarithmMultiplicationDefect p F.B O F.Q F.θ F.frame d μ' hlift _ (hQL w) p`. Rewrite `h0` using `[← hA w, MvPowerSeries.constantCoeff_map]`.
+
+Establish `h2 : constantCoeff (A w) = 0` using `F.frame.inj (by rw [h0, map_zero])`. Rewrite using `[MvPowerSeries.constantCoeff_map, h2, map_zero]`. Take `⟨N0, hN0⟩` from `GlobalTheory.T.exists_pDivGroupChart_level_one_nilpotent_mod_p p O G d c`. Establish `hsmallp : ∀ x : G.A 1, (p : G.A 1) ∣ x → x ∈ I`. Introduce and unpack `x ⟨y, rfl⟩`.
+
+Apply `I.mul_mem_right` to reduce the goal to its premises. Apply `Ideal.subset_span` to reduce the goal to its premises. Conclude with `⟨(p : O), hp, map_natCast _ _⟩`. Establish `hδ0 : ∀ w : Fin d ⊕ Fin k → F.B, δ w ^ (p ^ N0) ∈ I`. Introduce `w`.
+
+Apply `hsmallp` to reduce the goal to its premises. Establish `hle : N0 ≤ p ^ N0` using `(Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add]`. Conclude with `Dvd.dvd.mul_left (hN0 _ (hconst w)) _`. Use `⟨N0 + 1, fun w i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Function.iterate_succ_apply']`. Apply `stepA` to reduce the goal to its premises. Introduce `j`. Apply `GlobalTheory.T.levelOne_defects_independent_mod_maximal p C v O hv ε hε F G d c μ' hlift hmap k e hbas hadp _ (A _) (hA _)` to reduce the goal to its premises. Use `I.add_mem (hδit N0 w) (hδ0 w)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem isNil_frobenius_chart : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ F : BFrame ε, ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (μ' : Fin d → MvPowerSeries (Fin d ⊕ Fin d) F.B), IsLift F.θ μ' → (∀ i, map F.θ (μ' i) = c.μ i) → ∀ (k : ℕ) (e : Fin d ⊕ Fin k → MvPowerSeries (Fin d) F.Q), IsBasis μ' e → IsAdapted F.θ μ' e → ∀ U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) F.B, (∀ i, In (⊤ : Ideal F.B) (frob p F.s (e i) - comb (fun l => (U * blk d k (p : F.B) 1) l i) e)) → IsNil F.θ F.σ (U * blk d k (p : F.B) 1) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε F G d c μ' hlift hmap k e hbas hadp U hU
   set M := U * blk d k (p : F.B) 1 with hM

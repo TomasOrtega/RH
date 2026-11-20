@@ -14,6 +14,9 @@ namespace GlobalTheory.GroupBplus.Aff
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ} {q : PrimeSpectrum R}
 
+/- English proof (translation)
+Introduce `h` and use `c.hr (h ▸ q.asIdeal.zero_mem)`.
+-/
 theorem PreChart.r_ne_zero (c : PreChart G N q) : c.r ≠ 0 := fun h => c.hr (h ▸ q.asIdeal.zero_mem)
 
 def PreChart.toK (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (c : PreChart G N q) :
@@ -21,14 +24,23 @@ def PreChart.toK (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (c : Pr
   IsLocalization.Away.liftAlgHom (A := R) c.r (f := Algebra.ofId R K)
     (isUnit_iff_ne_zero.2 fun h => c.r_ne_zero (IsFractionRing.injective R K (h.trans (map_zero _).symm)))
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (MonObj.comp_mul _ _ _)`.
+-/
 theorem torsMap_mul {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C)
     (x y : Tors G N B) : torsMap φ (x * y) = torsMap φ x * torsMap φ y :=
   Subtype.ext (MonObj.comp_mul _ _ _)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (MonObj.comp_one _)`.
+-/
 theorem torsMap_one {B C : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) :
     torsMap φ (1 : Tors G N B) = 1 :=
   Subtype.ext (MonObj.comp_one _)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp only [torsMap_val, ← Category.assoc, spOver_comp])`.
+-/
 theorem torsMap_comp {B C D : Type} [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] [CommRing D] [Algebra R D]
     (φ : B →ₐ[R] C) (ψ : C →ₐ[R] D) (z : Tors G N B) : torsMap ψ (torsMap φ z) = torsMap (ψ.comp φ) z :=
   Subtype.ext (by simp only [torsMap_val, ← Category.assoc, spOver_comp])

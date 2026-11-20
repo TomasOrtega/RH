@@ -33,6 +33,11 @@ namespace GlobalTheory.Mem.R3.LiftsAt
 
 open GlobalTheory.Mem.Top.GroupRetwisting
 
+/- English proof (translation)
+Introduce `k`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hζ : Formalism.L2.NT.IsGenSys (GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen`. Introduce `d hd`. Use `⟨(GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen_order d hd, fun d' hdd hd' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e, rfl⟩` from `hdd`. Conclude with `(GlobalTheory.Mem.TypePl.labDat (D.host.g k)).gen_norm d e hd (Nat.pos_of_mul_pos_left hd')`. Take `⟨O, -, -, hO⟩` from `GlobalTheory.CuspTwist.exists_labelMap_twist_cuspLabel (ZMod (D.host.g k)) _ (GlobalTheory.T.cuspParam_of_greenParametrisation hG (D.host.g k) (D.ntypes.teichC k) (D.ntypes.teichC_inj k) _ hζ)`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Conclude with `⟨_, O, fun f => (h.ser k f).trans (GlobalTheory.T.greenSeriesIdempotent_eq_classFunctionIdempotent hG _ _ _ _ _ (h.teich k) O hO D.R.r f hr)⟩`.
+-/
 theorem serClause_of_typesTrue (hG : GlobalTheory.Published.GreenCuspidal) (D : D7) {P W} (h : TypesTrue D.ntypes P W) : SerClause D := by
   intro k
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -51,6 +56,9 @@ def Closes (X : Stages) : Prop :=
     TiesB z.R z.F → TiesG z.core z.R z.geo.κ z.geo.v₀ z.geo.O → GlobalTheory.CuspMult.MultEq z.R.toRealDat → z.R.toRealDat.LIntegral →
       HoldsL z.R z.F
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps _ h0 _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ?_⟩⟩⟩⟩` and prove the remaining obligations. Take `⟨x₀, h⟩` from `GlobalTheory.LiftsOnly.holdsL_of_ties P hRSW hHL eps h0`. Conclude with `⟨x₀, fun K _ _ _ hs hx X L e hS hP px I hX Tw Wt z => h z.core z.R z.F z.geo.κ z.geo.v₀ z.geo.O L (by rw [e]; exact hs) (by rw [e]; exact hx) hS hP⟩`.
+-/
 theorem ev_closes (P : Hypotheses3) (hRSW : GlobalTheory.Published.RegularisedSiegelWeilFirstTerm) (hHL : GlobalTheory.Published.HeckeLPartialContinuation) :
     Ev fun K => ∀ (X : Stages) (L : SizeData₂ X.toD7), L.sc = K.s → SizesAt L → Nonempty (ParameterChoice' X.toD7 L) → Closes X := by
   refine ⟨1, one_pos, fun eps _ h0 _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ?_⟩⟩⟩⟩
@@ -60,6 +68,11 @@ theorem ev_closes (P : Hypotheses3) (hRSW : GlobalTheory.Published.RegularisedSi
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `ty : TypesTrue (w.st Z).toD7.ntypes z.R.C.P z.R.C.W`. Establish `e : z.R.toLevCh.C = Fr.at (w.st Z) f` using `z.lev.C.trans (congrArg (Fr.at (w.st Z)) w.C_eq)`. Establish `e' : z.R.C = Fr.at (w.st Z) f` using `e`. Rewrite using `[e']`. Conclude with `hN`.
+
+Establish `hch` using `z.pins.char`. Use `⟨⟨ok, hch, hEx, host, par, B.ccK_top, z.pins.keep.guard, GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue hch.base.lev ty, serClause_of_typesTrue hG _ ty, GlobalTheory.Hk3.inertJunk_colIn3 _ _ _ hX _ _ _ _ _ _, z.pins.trSem, z.pins.keep.std, z.pins.phs, hn⟩, TiesG.of_dat z hU hI …` and prove the remaining obligations. Conclude with `GlobalTheory.OneMapRow3.oneFormMapRow_threeLevel_of_characterisation _ _ _ _ _ _ z.core z.R z.F z.geo.κ z.geo.v₀ z.geo.O (fun _ => 1) hn hch hEx ⟨z.geo.fw⟩ hI i (z.geo.pins i) (z.geo.phase i hU)`.
+-/
 theorem ties_at (hG : GlobalTheory.Published.GreenCuspidal) {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z : w.Lt) (hX : B.fields.Ok)
     (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (hN : GrpTrue Z.N f)
     (ok : (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).fam3.Ok3 1) (hEx : z.R.toRealDat.ExAt)
@@ -82,6 +95,13 @@ theorem ties_at (hG : GlobalTheory.Published.GreenCuspidal) {B : Base} {f : Fr B
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `P hRSW hHL hM`. Establish `hE : Step KPx (fun _ _ _ _ => True) fun K B f T => (∀ X : Stages, X.B = B → (∀ L : SizeData₂ X.toD7, L.sc = K.s → SizesAt L → Nonempty (ParameterChoice' X.toD7 L) → Closes X) ∧ (X.V.div.etaF = 6 * K.s.x ^ (-K.C.P.CF) → (∀ w j, X.toD7.what₂.Aj j w = 0) → ∃ L : SizeData₂ X.toD7, L. …` using `Step.of_evG ((((evG_of_ev (ev_closes P hRSW hHL)).inter (evG_of_ev LedRec.ev_exists_sizeData)).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)).imp fun K _ _ _ _ H B f T hO _ _ _ X e => by`. Substitute `e` using the available equality. Conclude with `⟨H.1.1 X, H.1.2 X hO, (H.2 X hO).1, (H.2 X hO).2.2.2.2.2.2.1⟩)`. Use `((((hE.and (Step.of_evLgG (evLgG_of_evLg GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField))).and (Step.of_evLgG (q := fun _ => CoverAt.WeberLev) (evG_all CoverAt.lg_weberLev))).and hM).and (Step.and (lUnif_atDat P.q3 P.q2 P.q1) (atDat_lIntegral P.q3 P.q2 P.q1))).trans (Step. …` and prove the remaining obligations.
+
+Take `⟨⟨⟨⟨h1, hOk⟩, hW⟩, hM⟩, hU, hI⟩` from `H`. Take `⟨b, hb, heta, hA⟩` from `LedRec.exists_bare P.q12 (C := w.C) Z f (6 * K.s.x ^ (-K.C.P.CF))`. Take `⟨hcl, hled, hhost, hV⟩` from `h1 (w.st b) rfl`. Take `⟨L, hL, hS, hP, hn⟩` from `hled heta hA`. Establish `s : SameGrp (C` using `w.C) Z b := LedRec.sameGrp g1 hb`.
+
+Establish `hEx'` using `DatCopy.copy_exAt b s hEx`. Establish `hU'` using `DatCopy.copy_lUnif b s (hU w hw Z hX Wt z g1 g2 hEx g4)`. Establish `hT` using `ties_at P.q12 w b hX Wt (DatCopy.copy b s z) hb ((hOk w.px w.I hX w.ok w.C_eq w.xi_range).2 _ _ _ (DatCopy.copy b s z).good.irr) hEx' hhost ⟨L, hP⟩ hn (GlobalTheory.T.ioExt_of_weakCharacterisation_of_orthonormal_frames _ _ _ _ _ _ _ (DatCopy.copy b s z).R (DatCopy.copy b s z).F ( …`. Conclude with `LiftCopy.holdsL_of_copy b s (hcl L hL hS hP w.px w.I hX T Wt (DatCopy.copy b s z) hT.1 hT.2 (DatCopy.copy_multEq b s (hM w hw Z hX Wt z g1 g2 hEx g4)) (DatCopy.copy_lIntegral b s (hI w hw Z hX Wt z g1 g2 hEx g4)))`.
+-/
 theorem holdsLU : Hypotheses3 → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → GlobalTheory.Published.HeckeLPartialContinuation → (StepW Pinned fun _ B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : GlobalTheory.Mem.R3.Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GlobalTheory.Mem.R3.GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo → GlobalTheory.CuspMult.MultEq z.R.toRealDat) → LowerUnitaryCaseCondition := by
   intro P hRSW hHL hM
   have hE : Step KPx (fun _ _ _ _ => True) fun K B f T => (∀ X : Stages, X.B = B →

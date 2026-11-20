@@ -19,11 +19,17 @@ local notation "φi" => RingEquiv.symm (_root_.frobeniusEquiv (PreTilt (normInte
 
 local instance instNeZeroPowPrime (n : ℕ) : NeZero (p ^ n) := ⟨pow_ne_zero n hp.out.ne_zero⟩
 
+/- English proof (translation)
+The claim follows from `IsPerfectoidField.preTilt_ext p fun n => by rw [← IsPerfectoidField.mk_untilt_iterate, h, IsPerfectoidField.mk_untilt_iterate]`.
+-/
 theorem tilt_ext_untilt {x y : 𝒪♭}
     (h : ∀ n, PreTilt.untilt (φi^[n] x) = PreTilt.untilt (φi^[n] y)) : x = y :=
   IsPerfectoidField.preTilt_ext p fun n => by
     rw [← IsPerfectoidField.mk_untilt_iterate, h, IsPerfectoidField.mk_untilt_iterate]
 
+/- English proof (translation)
+Establish `e : φi^[n] (IsPerfectoidField.ofCompatible p y hy) = IsPerfectoidField.ofCompatible p (fun m => y (m + n)) (fun m => by`. Rewrite using `[show m + 1 + n = (m + n) + 1 by omega]; exact hy (m + n)) := by`. Use `IsPerfectoidField.preTilt_ext p fun m => ?_` and prove the remaining obligations. Rewrite using `[PreTilt.coeff_iterate_frobeniusEquiv_symm, IsPerfectoidField.coeff_ofCompatible, IsPerfectoidField.coeff_ofCompatible]`. Rewrite using `[e, IsPerfectoidField.untilt_ofCompatible, zero_add]`.
+-/
 theorem untilt_iterate_ofCompatible (y : ℕ → 𝒪) (hy : ∀ n, y (n + 1) ^ p = y n) (n : ℕ) :
     PreTilt.untilt (φi^[n] (IsPerfectoidField.ofCompatible p y hy)) = y n := by
   have e : φi^[n] (IsPerfectoidField.ofCompatible p y hy) =
@@ -36,20 +42,32 @@ theorem untilt_iterate_ofCompatible (y : ℕ → 𝒪) (hy : ∀ n, y (n + 1) ^ 
 
 omit hp in
 
+/- English proof (translation)
+Rewrite using `[← Nat.mod_add_div u N, ← Nat.mod_add_div v N, pow_add, pow_add, pow_mul, pow_mul, hζ, one_pow, one_pow, h]`.
+-/
 theorem pow_eq_pow_of_mod_eq {M : Type*} [Monoid M] {ζ : M} {N u v : ℕ} (hζ : ζ ^ N = 1)
     (h : u % N = v % N) : ζ ^ u = ζ ^ v := by
   rw [← Nat.mod_add_div u N, ← Nat.mod_add_div v N, pow_add, pow_add, pow_mul, pow_mul, hζ, one_pow,
     one_pow, h]
 
+/- English proof (translation)
+Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow m n h, RingHom.comp_apply, ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]`.
+-/
 theorem val_toZModPow_mod (a : ℤ_[p]) {m n : ℕ} (h : m ≤ n) :
     (PadicInt.toZModPow n a).val % p ^ m = (PadicInt.toZModPow m a).val := by
   rw [← PadicInt.zmod_cast_comp_toZModPow m n h, RingHom.comp_apply, ZMod.castHom_apply,
     ZMod.cast_eq_val, ZMod.val_natCast]
 
+/- English proof (translation)
+Rewrite using `[PreTilt.untilt_iterate_frobeniusEquiv_symm_pow, hε]`.
+-/
 theorem untilt_iterate_pow_eq_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : ℕ) :
     PreTilt.untilt (φi^[n] ε) ^ p ^ n = 1 := by
   rw [PreTilt.untilt_iterate_frobeniusEquiv_symm_pow, hε]
 
+/- English proof (translation)
+Rewrite using `[← SubmonoidClass.coe_pow, untilt_iterate_pow_eq_one hε, OneMemClass.coe_one]`.
+-/
 theorem coe_untilt_iterate_pow_eq_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : ℕ) :
     ((PreTilt.untilt (φi^[n] ε) : 𝒪) : ℂ_[p]) ^ p ^ n = 1 := by
   rw [← SubmonoidClass.coe_pow, untilt_iterate_pow_eq_one hε, OneMemClass.coe_one]
@@ -57,6 +75,9 @@ theorem coe_untilt_iterate_pow_eq_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 
 def epsSeq (ε : 𝒪♭) (a : ℤ_[p]) (n : ℕ) : 𝒪 :=
   PreTilt.untilt (φi^[n] ε) ^ (PadicInt.toZModPow n a).val
 
+/- English proof (translation)
+Rewrite using `[epsSeq, epsSeq, ← pow_mul, mul_comm, pow_mul, IsPerfectoidField.untilt_iterate_succ_pow]`. Conclude with `pow_eq_pow_of_mod_eq (untilt_iterate_pow_eq_one hε n) ((val_toZModPow_mod a (Nat.le_succ n)).trans (Nat.mod_eq_of_lt (ZMod.val_lt _)).symm)`.
+-/
 theorem epsSeq_succ_pow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a : ℤ_[p]) (n : ℕ) :
     epsSeq ε a (n + 1) ^ p = epsSeq ε a n := by
   rw [epsSeq, epsSeq, ← pow_mul, mul_comm, pow_mul, IsPerfectoidField.untilt_iterate_succ_pow]
@@ -66,19 +87,31 @@ theorem epsSeq_succ_pow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a : ℤ_[p
 def epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a : ℤ_[p]) : 𝒪♭ :=
   IsPerfectoidField.ofCompatible p (epsSeq ε a) (epsSeq_succ_pow hε a)
 
+/- English proof (translation)
+The claim follows from `untilt_iterate_ofCompatible _ _ n`.
+-/
 theorem untilt_iterate_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a : ℤ_[p]) (n : ℕ) :
     PreTilt.untilt (φi^[n] (epsPow hε a)) =
       PreTilt.untilt (φi^[n] ε) ^ (PadicInt.toZModPow n a).val :=
   untilt_iterate_ofCompatible _ _ n
 
+/- English proof (translation)
+The claim follows from `Nat.lt_one_iff.1 (by simpa using ZMod.val_lt (PadicInt.toZModPow 0 a))`.
+-/
 theorem val_toZModPow_zero (a : ℤ_[p]) : (PadicInt.toZModPow 0 a).val = 0 :=
   Nat.lt_one_iff.1 (by simpa using ZMod.val_lt (PadicInt.toZModPow 0 a))
 
+/- English proof (translation)
+Establish `h` using `untilt_iterate_epsPow hε a 0`. Rewrite `h` using `[Function.iterate_zero, id, val_toZModPow_zero, pow_zero]`. Conclude with `h`.
+-/
 theorem untilt_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a : ℤ_[p]) : PreTilt.untilt (epsPow hε a) = 1 := by
   have h := untilt_iterate_epsPow hε a 0
   rw [Function.iterate_zero, id, val_toZModPow_zero, pow_zero] at h
   exact h
 
+/- English proof (translation)
+Use `tilt_ext_untilt fun n => ?_` and prove the remaining obligations. Rewrite using `[iterate_frobSymm_mul, map_mul, untilt_iterate_epsPow, untilt_iterate_epsPow, untilt_iterate_epsPow, ← pow_add, map_add]`. Use `pow_eq_pow_of_mod_eq (untilt_iterate_pow_eq_one hε n) ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_add, Nat.mod_mod]`.
+-/
 theorem epsPow_add {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a b : ℤ_[p]) :
     epsPow hε (a + b) = epsPow hε a * epsPow hε b := by
   refine tilt_ext_untilt fun n => ?_
@@ -87,18 +120,32 @@ theorem epsPow_add {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a b : ℤ_[p]) 
   refine pow_eq_pow_of_mod_eq (untilt_iterate_pow_eq_one hε n) ?_
   rw [ZMod.val_add, Nat.mod_mod]
 
+/- English proof (translation)
+Use `tilt_ext_untilt fun n => ?_` and prove the remaining obligations. Rewrite using `[untilt_iterate_epsPow, iterate_frobSymm_pow, map_pow, map_natCast]`. Use `pow_eq_pow_of_mod_eq (untilt_iterate_pow_eq_one hε n) ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, Nat.mod_mod]`.
+-/
 theorem epsPow_natCast {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (m : ℕ) : epsPow hε (m : ℤ_[p]) = ε ^ m := by
   refine tilt_ext_untilt fun n => ?_
   rw [untilt_iterate_epsPow, iterate_frobSymm_pow, map_pow, map_natCast]
   refine pow_eq_pow_of_mod_eq (untilt_iterate_pow_eq_one hε n) ?_
   rw [ZMod.val_natCast, Nat.mod_mod]
 
+/- English proof (translation)
+Simplify using `using epsPow_natCast hε 1`.
+-/
 theorem epsPow_one {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : epsPow hε 1 = ε := by
   simpa using epsPow_natCast hε 1
 
+/- English proof (translation)
+Simplify using `using epsPow_natCast hε 0`.
+-/
 theorem epsPow_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) : epsPow hε 0 = 1 := by
   simpa using epsPow_natCast hε 0
 
+/- English proof (translation)
+Break down `n with _ | m` into its components or cases. Rewrite using `[Function.iterate_zero, id, hε, pow_zero]`. Conclude with `IsPrimitiveRoot.one`. Establish `hord : orderOf (PreTilt.untilt (φi^[m + 1] ε)) = p ^ (m + 1)`. Use `orderOf_eq_prime_pow ?_ (untilt_iterate_pow_eq_one hε (m + 1))` and prove the remaining obligations.
+
+Rewrite using `[Function.iterate_succ_apply, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow]`. Conclude with `hζ`. Rewrite using `[← hord]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+-/
 theorem isPrimitiveRoot_untilt_iterate {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt (φi ε) ≠ 1) (n : ℕ) :
     IsPrimitiveRoot (PreTilt.untilt (φi^[n] ε)) (p ^ n) := by
@@ -112,6 +159,9 @@ theorem isPrimitiveRoot_untilt_iterate {ε : 𝒪♭} (hε : PreTilt.untilt ε =
     rw [← hord]
     exact IsPrimitiveRoot.orderOf _
 
+/- English proof (translation)
+Use `PadicInt.ext_of_toZModPow.1 fun n => ZMod.val_injective _ ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun x => PreTilt.untilt (φi^[n] x)) h`. Simplify using `only [untilt_iterate_epsPow] at h1`. Conclude with `(isPrimitiveRoot_untilt_iterate hε hζ n).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h1`.
+-/
 theorem epsPow_injective {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1) {a b : ℤ_[p]}
     (h : epsPow hε a = epsPow hε b) : a = b := by
   refine PadicInt.ext_of_toZModPow.1 fun n => ZMod.val_injective _ ?_
@@ -119,6 +169,13 @@ theorem epsPow_injective {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : Pre
   simp only [untilt_iterate_epsPow] at h1
   exact (isPrimitiveRoot_untilt_iterate hε hζ n).pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h1
 
+/- English proof (translation)
+Establish `hex : ∀ n, ∃ i < p ^ n, PreTilt.untilt (φi^[n] ε) ^ i = PreTilt.untilt (φi^[n] η)` using `fun n => (isPrimitiveRoot_untilt_iterate hε hζ n).eq_pow_of_pow_eq_one (untilt_iterate_pow_eq_one hη n)`. Use `choose k hk hkη using hex`. Establish `hi : ∀ n, (p : ℤ) ^ n ∣ (k (n + 1) : ℤ) - (k n : ℤ)`. Introduce `n`. Establish `e : PreTilt.untilt (φi^[n] ε) ^ (k (n + 1) % p ^ n) = PreTilt.untilt (φi^[n] ε) ^ k n`.
+
+Rewrite using `[pow_eq_pow_of_mod_eq (untilt_iterate_pow_eq_one hε n) (Nat.mod_mod _ _), hkη n, ← IsPerfectoidField.untilt_iterate_succ_pow (x := ε), pow_right_comm, hkη (n + 1), IsPerfectoidField.untilt_iterate_succ_pow]`. Establish `hm : k n % p ^ n = k (n + 1) % p ^ n`. Rewrite using `[Nat.mod_eq_of_lt (hk n)]`. Conclude with `((isPrimitiveRoot_untilt_iterate hε hζ n).pow_inj (Nat.mod_lt _ (NeZero.pos _)) (hk n) e).symm`. Use `(Nat.modEq_iff_dvd.1 hm)` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Use `⟨PadicInt.ofIntSeq _ (PadicInt.isCauSeq_padicNorm_of_pow_dvd_sub (fun n => (k n : ℤ)) p hi), tilt_ext_untilt fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[untilt_iterate_epsPow, PadicInt.toZModPow_ofIntSeq_of_pow_dvd_sub _ p hi, Int.cast_natCast, ZMod.val_cast_of_lt (hk n), hkη n]`.
+-/
 theorem exists_epsPow_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1) {η : 𝒪♭}
     (hη : PreTilt.untilt η = 1) : ∃ a : ℤ_[p], epsPow hε a = η := by
   have hex : ∀ n, ∃ i < p ^ n, PreTilt.untilt (φi^[n] ε) ^ i = PreTilt.untilt (φi^[n] η) :=
@@ -146,16 +203,25 @@ variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 abbrev tiltGal (σ : Gal(PadicAlgCl p/K)) : 𝒪♭ →+* 𝒪♭ :=
   preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ)
 
+/- English proof (translation)
+Rewrite using `[tiltGal, ← preTiltMap_iterate_frobSymm, AInf.coe_untilt_gal]`.
+-/
 theorem coe_untilt_iterate_tiltGal (σ : Gal(PadicAlgCl p/K)) (x : 𝒪♭) (n : ℕ) :
     ((PreTilt.untilt (φi^[n] (tiltGal σ x)) : 𝒪) : ℂ_[p]) =
       σ • ((PreTilt.untilt (φi^[n] x) : 𝒪) : ℂ_[p]) := by
   rw [tiltGal, ← preTiltMap_iterate_frobSymm, AInf.coe_untilt_gal]
 
+/- English proof (translation)
+Use `tilt_ext_untilt fun n => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_untilt_iterate_tiltGal, coe_untilt_iterate_tiltGal, coe_untilt_iterate_tiltGal, mul_smul]`.
+-/
 theorem tiltGal_mul (σ τ : Gal(PadicAlgCl p/K)) (x : 𝒪♭) :
     tiltGal (σ * τ) x = tiltGal σ (tiltGal τ x) := by
   refine tilt_ext_untilt fun n => Subtype.ext ?_
   rw [coe_untilt_iterate_tiltGal, coe_untilt_iterate_tiltGal, coe_untilt_iterate_tiltGal, mul_smul]
 
+/- English proof (translation)
+Use `tilt_ext_untilt fun n => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_untilt_iterate_tiltGal, untilt_iterate_epsPow, untilt_iterate_epsPow, SubmonoidClass.coe_pow, SubmonoidClass.coe_pow, smul_pow', gal_smul_eq_pow_of_pow_eq_one σ (coe_untilt_iterate_pow_eq_one hε n), ← pow_mul, map_mul]`. Use `pow_eq_pow_of_mod_eq (coe_untilt_iterate_pow_eq_one hε n) ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_mul, Nat.mod_mod]`.
+-/
 theorem tiltGal_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (σ : Gal(PadicAlgCl p/K)) (a : ℤ_[p]) :
     tiltGal σ (epsPow hε a) = epsPow hε ((cycloChar K σ : ℤ_[p]) * a) := by
   refine tilt_ext_untilt fun n => Subtype.ext ?_
@@ -165,6 +231,11 @@ theorem tiltGal_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (σ : Gal(Pa
   refine pow_eq_pow_of_mod_eq (coe_untilt_iterate_pow_eq_one hε n) ?_
   rw [ZMod.val_mul, Nat.mod_mod]
 
+/- English proof (translation)
+Use `tilt_ext_untilt fun n => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun y => PreTilt.untilt (φi^[n] y)) h`. Simplify using `only [iterate_frobSymm_mul, map_mul] at h1`. Establish `hx0 : PreTilt.untilt (φi^[n] x) ≠ 0`. Introduce `h0`.
+
+Rewrite `h0` using `[IsPerfectoidField.untilt_eq_zero_iff]`. Apply `hx` to reduce the goal to its premises. Establish `h2` using `congrArg (fun y => (_root_.frobeniusEquiv 𝒪♭ p)^[n] y) h0`. Rewrite `h2` using `[Function.LeftInverse.iterate (fun y => RingEquiv.apply_symm_apply _ y) n x, Function.iterate_fixed (map_zero _) n]`. Then use the resulting hypothesis. Conclude with `mul_left_cancel₀ hx0 h1`.
+-/
 theorem tilt_mul_left_cancel {x a b : 𝒪♭} (hx : x ≠ 0) (h : x * a = x * b) : a = b := by
   refine tilt_ext_untilt fun n => ?_
   have h1 := congrArg (fun y => PreTilt.untilt (φi^[n] y)) h
@@ -178,6 +249,13 @@ theorem tilt_mul_left_cancel {x a b : 𝒪♭} (hx : x ≠ 0) (h : x * a = x * b
       Function.iterate_fixed (map_zero _) n] at h2
   exact mul_left_cancel₀ hx0 h1
 
+/- English proof (translation)
+Establish `hcoe : ((PreTilt.untilt (tiltGal σ x) : 𝒪) : ℂ_[p]) = ((PreTilt.untilt x : 𝒪) : ℂ_[p])`. Rewrite using `[tiltGal, AInf.coe_untilt_gal, hσ]`. Take `⟨η, hη⟩ : x ∣ tiltGal σ x` from `preTilt_dvd_iff_norm_le.2 (le_of_eq (by rw [preTilt_norm_def, preTilt_norm_def, hcoe]))`. Use `⟨η, ?_, hη⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun y => ((PreTilt.untilt y : 𝒪) : ℂ_[p])) hη`.
+
+Simplify using `only [map_mul, MulMemClass.coe_mul] at h`. Rewrite `h` using `[hcoe]`. Establish `hx0 : ((PreTilt.untilt x : 𝒪) : ℂ_[p]) ≠ 0`. Introduce `h0`. Conclude with `hx ((IsPerfectoidField.untilt_eq_zero_iff (p := p)).1 (Subtype.ext (by simpa using h0)))`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[OneMemClass.coe_one]`. Conclude with `(mul_eq_left₀ hx0).1 h.symm`.
+-/
 theorem exists_tiltGal_eq_mul {x : 𝒪♭} (hx : x ≠ 0) {σ : Gal(PadicAlgCl p/K)}
     (hσ : σ • ((PreTilt.untilt x : 𝒪) : ℂ_[p]) = ((PreTilt.untilt x : 𝒪) : ℂ_[p])) :
     ∃ η : 𝒪♭, PreTilt.untilt η = 1 ∧ tiltGal σ x = x * η := by
@@ -203,6 +281,9 @@ def kummerCocycle {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.un
     (σ : Gal(PadicAlgCl p/K)) : ℤ_[p] :=
   (exists_epsPow_eq hε hζ (exists_tiltGal_eq_mul hx (hfix σ)).choose_spec.1).choose
 
+/- English proof (translation)
+Rewrite using `[kummerCocycle, (exists_epsPow_eq hε hζ (exists_tiltGal_eq_mul hx (hfix σ)).choose_spec.1).choose_spec]`. Conclude with `(exists_tiltGal_eq_mul hx (hfix σ)).choose_spec.2`.
+-/
 theorem tiltGal_eq_mul_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1) {x : 𝒪♭} (hx : x ≠ 0)
     (hfix : ∀ σ : Gal(PadicAlgCl p/K),
       σ • ((PreTilt.untilt x : 𝒪) : ℂ_[p]) = ((PreTilt.untilt x : 𝒪) : ℂ_[p])) (σ : Gal(PadicAlgCl p/K)) :
@@ -211,12 +292,18 @@ theorem tiltGal_eq_mul_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ 
     (exists_epsPow_eq hε hζ (exists_tiltGal_eq_mul hx (hfix σ)).choose_spec.1).choose_spec]
   exact (exists_tiltGal_eq_mul hx (hfix σ)).choose_spec.2
 
+/- English proof (translation)
+The claim follows from `epsPow_injective hε hζ (tilt_mul_left_cancel hx ((tiltGal_eq_mul_epsPow hε hζ hx hfix σ).symm.trans h))`.
+-/
 theorem kummerCocycle_eq_of_tiltGal_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1) {x : 𝒪♭} (hx : x ≠ 0)
     (hfix : ∀ σ : Gal(PadicAlgCl p/K),
       σ • ((PreTilt.untilt x : 𝒪) : ℂ_[p]) = ((PreTilt.untilt x : 𝒪) : ℂ_[p])) {σ : Gal(PadicAlgCl p/K)} {a : ℤ_[p]}
     (h : tiltGal σ x = x * epsPow hε a) : kummerCocycle hε hζ hx hfix σ = a :=
   epsPow_injective hε hζ (tilt_mul_left_cancel hx ((tiltGal_eq_mul_epsPow hε hζ hx hfix σ).symm.trans h))
 
+/- English proof (translation)
+Apply `kummerCocycle_eq_of_tiltGal_eq` to reduce the goal to its premises. Rewrite using `[tiltGal_mul, tiltGal_eq_mul_epsPow hε hζ hx hfix τ, map_mul, tiltGal_eq_mul_epsPow hε hζ hx hfix σ, tiltGal_epsPow, epsPow_add, mul_assoc]`.
+-/
 theorem kummerCocycle_mul {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1) {x : 𝒪♭} (hx : x ≠ 0)
     (hfix : ∀ σ : Gal(PadicAlgCl p/K),
       σ • ((PreTilt.untilt x : 𝒪) : ℂ_[p]) = ((PreTilt.untilt x : 𝒪) : ℂ_[p])) (σ τ : Gal(PadicAlgCl p/K)) :
@@ -226,11 +313,17 @@ theorem kummerCocycle_mul {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : Pr
   rw [tiltGal_mul, tiltGal_eq_mul_epsPow hε hζ hx hfix τ, map_mul,
     tiltGal_eq_mul_epsPow hε hζ hx hfix σ, tiltGal_epsPow, epsPow_add, mul_assoc]
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 := coe_untilt_pFlat (p := p) rw [h, IsPerfectoidField.untilt_zero] at h1 exact natCast_p_ne_zero_cp (p := p) (by simpa using h1.symm)`.
+-/
 theorem pFlat_ne_zero : pFlat p ≠ 0 := fun h => by
   have h1 := coe_untilt_pFlat (p := p)
   rw [h, IsPerfectoidField.untilt_zero] at h1
   exact natCast_p_ne_zero_cp (p := p) (by simpa using h1.symm)
 
+/- English proof (translation)
+Rewrite using `[coe_untilt_pFlat, ← galCp_apply, map_natCast]`.
+-/
 theorem gal_smul_coe_untilt_pFlat (σ : Gal(PadicAlgCl p/K)) :
     σ • ((PreTilt.untilt (pFlat p) : 𝒪) : ℂ_[p]) = ((PreTilt.untilt (pFlat p) : 𝒪) : ℂ_[p]) := by
   rw [coe_untilt_pFlat, ← galCp_apply, map_natCast]
@@ -239,11 +332,17 @@ def kummerC {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (
     (σ : Gal(PadicAlgCl p/K)) : ℤ_[p] :=
   kummerCocycle hε hζ pFlat_ne_zero gal_smul_coe_untilt_pFlat σ
 
+/- English proof (translation)
+The claim follows from `tilt_mul_left_cancel pFlat_ne_zero ((pFlat_mul_kummerEta σ).symm.trans (tiltGal_eq_mul_epsPow hε hζ pFlat_ne_zero gal_smul_coe_untilt_pFlat σ))`.
+-/
 theorem kummerEta_eq_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1)
     (σ : Gal(PadicAlgCl p/K)) : kummerEta σ = epsPow hε (kummerC hε hζ σ) :=
   tilt_mul_left_cancel pFlat_ne_zero ((pFlat_mul_kummerEta σ).symm.trans
     (tiltGal_eq_mul_epsPow hε hζ pFlat_ne_zero gal_smul_coe_untilt_pFlat σ))
 
+/- English proof (translation)
+The claim follows from `kummerCocycle_mul hε hζ pFlat_ne_zero gal_smul_coe_untilt_pFlat σ τ`.
+-/
 theorem kummerC_mul {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1)
     (σ τ : Gal(PadicAlgCl p/K)) :
     kummerC hε hζ (σ * τ) = kummerC hε hζ σ + (cycloChar K σ : ℤ_[p]) * kummerC hε hζ τ :=
@@ -253,10 +352,50 @@ local notation "𝕎𝒪♭" => WittVector p (PreTilt (normInteger ℂ_[p]) p)
 local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 local notation "𝔪" => maximalIdeal (BDeRhamPlus (normInteger ℂ_[p]) p)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem fontaineT_congr {η η' : 𝒪♭} (h : η = η') (hη : PreTilt.untilt η = 1)
     (hη' : PreTilt.untilt η' = 1) : fontaineT η hη = fontaineT η' hη' := by
   subst h; rfl
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `IsPerfectoidField.eq_zero_of_forall_mem_maximalIdeal_pow fun k => ?_` and prove the remaining obligations. Establish `hD : IsUnit ((k.factorial : ℕ) : 𝔹)`. Establish `h` using `(isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero k) : ((k.factorial : ℕ) : ℚ) ≠ 0)).map (algebraMap ℚ 𝔹)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Use `(Ideal.unit_mul_mem_iff_mem _ hD).1 ?_` and prove the remaining obligations. Use `IsPerfectoidField.mem_maximalIdeal_pow_of_forall_sub_mem fun M => ?_` and prove the remaining obligations. Use `set aN : ℕ := (PadicInt.toZModPow (M + k) a).val with haN`. Establish `hεu : IsUnit ε` using `(IsPerfectoidField.isUnit_iff_norm_untilt p).2 (by rw [hε]; simp)`. Use `set η := ε' * ((hεu.unit⁻¹ : 𝒪♭ˣ) : 𝒪♭) ^ aN with hη_def`.
+
+Use `set ν := φi^[M + k] η with hν_def`. Establish `hη : ε' = ε ^ aN * η`. Rewrite using `[hη_def, ← mul_assoc, mul_comm (ε ^ aN), mul_assoc, ← mul_pow, IsUnit.mul_val_inv, one_pow, mul_one]`. Establish `hνη : ν ^ p ^ (M + k) = η` using `iterate_frobSymm_pow_p_pow η (M + k)`. Establish `hν : PreTilt.untilt ν = 1`.
+
+Establish `h2 : PreTilt.untilt (φi^[M + k] ((hεu.unit⁻¹ : 𝒪♭ˣ) : 𝒪♭)) * PreTilt.untilt (φi^[M + k] ε) = 1`. Rewrite using `[← map_mul, ← iterate_frobSymm_mul, IsUnit.val_inv_mul, iterate_frobSymm_one, map_one]`. Rewrite using `[hν_def, hη_def, iterate_frobSymm_mul, iterate_frobSymm_pow, map_mul, map_pow, h (M + k), ← haN, ← mul_pow, mul_comm, h2, one_pow]`. Establish `hξ` using `IsPerfectoidField.ker_fontaineTheta_eq_span_kerThetaGenerator ℂ_[p] p`. Use `set ξ := IsPerfectoidField.kerThetaGenerator ℂ_[p] p`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ξ ∣ teichmuller p ν - 1 := by`. Establish `h' : teichmuller p ν - 1 ∈ RingHom.ker (fontaineTheta 𝒪 p)`. Rewrite using `[RingHom.mem_ker, map_sub, map_one, fontaineTheta_teichmuller, hν, sub_self]`. Rewrite `h'` using `[hξ, mem_span_singleton]`. Then use the resulting hypothesis. Establish `hT : (teichmuller p ε' : 𝕎𝒪♭) = teichmuller p ε ^ aN * (1 + ξ * c) ^ p ^ (M + k)`.
+
+Rewrite using `[hη, ← hνη, map_mul, map_pow, map_pow, ← hc]`. Expand and normalize the polynomial expressions, which then agree. Use `set Z1 : 𝕎𝒪♭ := teichmuller p ε' - 1 with hZ1`. Use `set Z0 : 𝕎𝒪♭ := teichmuller p ε ^ aN - 1 with hZ0`. Use `set Zμ : 𝕎𝒪♭ := teichmuller p ε - 1 with hZμ`.
+
+Establish `hJ : logPoly k Z1 - logPoly k Z0 ∈ span {(p : 𝕎𝒪♭) ^ M} ⊔ span {ξ ^ k}`. Apply `logPoly_sub_mem` to reduce the goal to its premises. Establish `h3` using `one_add_pow_prime_pow_sub_one_mem (Fact.out : p.Prime) (ξ * c) (M + k) k k (Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le`. Rewrite `h3` using `[show M + k - k = M by omega]`. Establish `h4 : span {(ξ * c) ^ k} ≤ span {ξ ^ k}` using `span_singleton_le_span_singleton.2 (by rw [mul_pow]; exact dvd_mul_right _ _)`.
+
+Establish `h5 : Z1 - Z0 = teichmuller p ε ^ aN * ((1 + ξ * c) ^ p ^ (M + k) - 1)`. Rewrite using `[hZ1, hZ0, hT]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Conclude with `Ideal.mul_mem_left _ _ (sup_le_sup_left h4 _ h3)`.
+
+Take `⟨α, hα, β, hβ, hαβ⟩` from `Submodule.mem_sup.1 hJ`. Take `⟨α', rfl⟩` from `mem_span_singleton.1 hα`. Take `⟨β', rfl⟩` from `mem_span_singleton.1 hβ`. Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ⟩ : (p : ℤ_[p]) ^ (M + k) ∣ (aN : ℤ_[p]) - a := by`. Establish `h' : (aN : ℤ_[p]) - a ∈ RingHom.ker (PadicInt.toZModPow (M + k))`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, haN, ZMod.natCast_zmod_val, sub_self]`. Rewrite `h'` using `[PadicInt.ker_toZModPow, mem_span_singleton]`. Then use the resulting hypothesis. Use `set W := wittToBDeRhamPlus 𝒪 p with hW`. Use `set μ := muBdR p ε with hμ_def`. Establish `hμ : μ = W Zμ` using `by rw [hμ_def, muBdR_eq, hW, hZμ, map_sub, map_one]`.
+
+Establish `hσμ : muBdR p ε' = W Z1` using `by rw [muBdR_eq, hW, hZ1, map_sub, map_one]`. Establish `hz0mem : (1 + μ) ^ aN - 1 ∈ 𝔪`. Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow (1 + μ) 1 aN`. Rewrite `hd` using `[one_pow, add_sub_cancel_left]`. Rewrite using `[hd]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (muBdR_mem hε)`. Establish `hz0 : (1 + μ) ^ aN - 1 = W Z0`. Rewrite using `[hμ, hZ0, hZμ]`. Simplify using `only [map_sub, map_pow, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hσmem : muBdR p ε' ∈ 𝔪` using `muBdR_mem hε'`. Use `set t := fontaineT ε hε with ht`. Use `set L1 := logOnePlus 𝔪 (muBdR p ε') hσmem with hL1`. Use `set tN := logOnePlus 𝔪 ((1 + μ) ^ aN - 1) hz0mem with htN`. Establish `E_σ : fontaineT ε' hε' = L1` using `rfl`.
+
+Establish `E_N : tN = (aN : 𝔹) * t` using `logOnePlus_pow (muBdR_mem hε) aN hz0mem`. Establish `X1` using `factorial_mul_logOnePlus_sub_logPoly_mem hσmem k`. Establish `X0` using `factorial_mul_logOnePlus_sub_logPoly_mem hz0mem k`. Establish `X2` using `factorial_mul_logOnePlus_sub_logPoly_mem (muBdR_mem hε) k`. Establish `E_P1 : logPoly k (muBdR p ε') = W (logPoly k Z1)` using `by rw [hσμ, map_logPoly]`.
+
+Establish `E_P0 : logPoly k ((1 + μ) ^ aN - 1) = W (logPoly k Z0)` using `by rw [hz0, map_logPoly]`. Establish `E_Pμ : logPoly k μ = W (logPoly k Zμ)` using `by rw [hμ, map_logPoly]`. Establish `E_αβ : W (logPoly k Z1) - W (logPoly k Z0) = (p : 𝔹) ^ M * W α' + W ξ ^ k * W β'`. Rewrite using `[← map_sub, ← hαβ, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast]`. Establish `E_a : algebraMap ℚ_[p] 𝔹 (a : ℚ_[p]) = (aN : 𝔹) - (p : 𝔹) ^ (M + k) * W (IsPerfectoidField.padicIntToWitt (K` using `ℂ_[p]) p γ) := by`.
+
+Establish `h' : a = (aN : ℤ_[p]) - (p : ℤ_[p]) ^ (M + k) * γ` using `by rw [← hγ]; ring`. Rewrite using `[h', PadicInt.coe_sub, map_sub, PadicInt.coe_natCast, map_natCast, IsPerfectoidField.algebraMap_padic_coe, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Establish `hξk : W ξ ^ k * W β' ∈ 𝔪 ^ k`. Establish `h1 : W ξ ∈ 𝔪`. Rewrite using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span hξ]`.
+
+Conclude with `mem_span_singleton_self _`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow h1 k)`. Use `⟨α' + (p : 𝕎𝒪♭) ^ k * IsPerfectoidField.padicIntToWitt (K := ℂ_[p]) p γ * logPoly k Zμ, ?_⟩` and prove the remaining obligations. Establish `key : (k.factorial : 𝔹) * (fontaineT ε' hε' - algebraMap ℚ_[p] 𝔹 (a : ℚ_[p]) * t) - (p : 𝔹) ^ M * W (α' + (p : 𝕎𝒪♭) ^ k * IsPerfectoidField.padicIntToWitt (K` using `ℂ_[p]) p γ * logPoly k Zμ) = ((k.factorial : 𝔹) * L1 - logPoly k (muBdR p ε')) - ((k.factorial : 𝔹) * tN - logPoly k ((1 + μ) ^ aN - 1)) + W ξ ^ k * W β' + (p : 𝔹) ^ (M + k) * W (IsPerfectoidField.padicIntToWitt (K := ℂ_[p]) p γ) * ((k.factorial : 𝔹) * t - logPoly k μ) := by`. Rewrite using `[map_add, map_mul, map_mul, map_pow, map_natCast]`.
+
+Take the linear combination `(k.factorial : 𝔹) * E_σ + (k.factorial : 𝔹) * E_N - (k.factorial : 𝔹) * t * E_a + E_P1 - E_P0 + E_αβ + (p : 𝔹) ^ (M + k) * W (IsPerfectoidField.padicIntToWitt (K := ℂ_[p]) p γ) * E_Pμ`. Rewrite using `[key]`. Conclude with `add_mem (add_mem (sub_mem X1 X0) hξk) (Ideal.mul_mem_left _ _ X2)`.
+-/
 theorem fontaineT_eq_of_forall_untilt {ε ε' : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hε' : PreTilt.untilt ε' = 1) (a : ℤ_[p])
     (h : ∀ N, PreTilt.untilt (φi^[N] ε') =
@@ -368,10 +507,16 @@ theorem fontaineT_eq_of_forall_untilt {ε ε' : 𝒪♭} (hε : PreTilt.untilt �
   rw [key]
   exact add_mem (add_mem (sub_mem X1 X0) hξk) (Ideal.mul_mem_left _ _ X2)
 
+/- English proof (translation)
+The claim follows from `fontaineT_eq_of_forall_untilt hε _ a (untilt_iterate_epsPow hε a)`.
+-/
 theorem fontaineT_epsPow {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (a : ℤ_[p]) :
     fontaineT (epsPow hε a) (untilt_epsPow hε a) = algebraMap ℚ_[p] 𝔹 (a : ℚ_[p]) * fontaineT ε hε :=
   fontaineT_eq_of_forall_untilt hε _ a (untilt_iterate_epsPow hε a)
 
+/- English proof (translation)
+Rewrite using `[gal_smul_uBdR, fontaineT_congr (kummerEta_eq_epsPow hε hζ σ) _ (untilt_epsPow hε _), fontaineT_epsPow]`.
+-/
 theorem gal_smul_uBdR_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (hζ : PreTilt.untilt (φi ε) ≠ 1)
     (σ : Gal(PadicAlgCl p/K)) :
     σ • uBdR p = uBdR p + algebraMap ℚ_[p] 𝔹 (kummerC hε hζ σ : ℚ_[p]) * fontaineT ε hε := by

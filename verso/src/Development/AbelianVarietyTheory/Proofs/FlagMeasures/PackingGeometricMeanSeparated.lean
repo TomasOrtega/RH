@@ -6,6 +6,23 @@ namespace GlobalTheory
 
 open MeasureTheory Metric in
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Establish `h1 : T.card ≤ 1` using `Finset.card_le_one_of_subsingleton T`. Rewrite using `[Module.finrank_zero_of_subsingleton, pow_zero]`. Conclude with `h1` after adjusting the coercions. Set `_ : MeasurableSpace E` to `borel E`.
+
+Establish `_ : BorelSpace E` using `⟨rfl⟩`. Take `⟨μ, hμ⟩ : ∃ μ : Measure E, μ.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Establish `hr : 0 < la / 2` using `by positivity`. Establish `hdisj : (T : Set E).PairwiseDisjoint (fun x => ball x (la / 2))`. Introduce `x hx y hy hxy`.
+
+Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `z hzx hzy`. Rewrite `hzx`, `hzy` using `[mem_ball, dist_eq_norm]`. Establish `h1` using `hsep x hx y hy hxy`. Establish `h2 : ‖x - y‖ < la`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : (⋃ x ∈ T, ball x (la / 2)) ⊆ ball (0 : E) (R + la / 2)`. Introduce `z hz`. Simplify using `only [Set.mem_iUnion] at hz`.
+
+Take `⟨x, hx, hzx⟩` from `hz`. Rewrite `hzx`, the goal using `[mem_ball, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hle` using `measure_mono (μ := μ) hsub`. Rewrite `hle` using `[measure_biUnion_finset hdisj (fun x _ => measurableSet_ball)]`.
+
+Simplify using `only [Measure.addHaar_ball_center, Finset.sum_const, nsmul_eq_mul] at hle`. Rewrite `hle` using `[Measure.addHaar_ball μ 0 hr.le, Measure.addHaar_ball μ 0 (by positivity : (0 : ℝ) ≤ R + la / 2), ← mul_assoc]`. Establish `hm0 : μ (ball (0 : E) 1) ≠ 0` using `(measure_ball_pos μ 0 one_pos).ne'`. Establish `hmtop : μ (ball (0 : E) 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Rewrite `hle` using `[ENNReal.mul_le_mul_iff_left hm0 hmtop, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_le_ofReal_iff (by positivity)]`.
+
+Establish `hpos : 0 < (la / 2) ^ Module.finrank ℝ E` using `by positivity`. Establish `hq : (1 + 2 * R / la) ^ Module.finrank ℝ E = (R + la / 2) ^ Module.finrank ℝ E / (la / 2) ^ Module.finrank ℝ E`. Rewrite using `[← div_pow]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq, le_div_iff₀ hpos]`. Conclude with `hle`.
+-/
 theorem card_le_of_separated_in_ball {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (T : Finset E) (R la : ℝ) (hR : 0 ≤ R) (hla : 0 < la)
     (hT : ∀ x ∈ T, ‖x‖ ≤ R) (hsep : ∀ x ∈ T, ∀ y ∈ T, x ≠ y → la ≤ ‖x - y‖) :
@@ -59,6 +76,33 @@ theorem card_le_of_separated_in_ball {E : Type*} [NormedAddCommGroup E] [NormedS
   rw [hq, le_div_iff₀ hpos]
   exact hle
 
+/- English proof (translation)
+Introduce `ι _ _ W _ _ _ N hN hdim la S X hla hX hsep`. Use `set k := Fintype.card ι with hk`. Establish `hkpos : 0 < k` using `Fintype.card_pos`. Use `set P := ∏ v, X v with hP`. Establish `hPpos : 0 < P` using `Finset.prod_pos (fun v _ => hX v)`.
+
+Use `set G := P ^ ((1 : ℝ) / k) with hG`. Establish `hGpos : 0 < G` using `Real.rpow_pos_of_pos hPpos _`. Establish `hGk : G ^ k = P`. Rewrite using `[hG, one_div]`. Conclude with `Real.rpow_inv_natCast_pow hPpos.le hkpos.ne'`.
+
+Use `set c : ι → ℝ := fun v => G / X v with hc`. Establish `hcpos : ∀ v, 0 < c v` using `fun v => div_pos hGpos (hX v)`. Establish `hcprod : ∏ v, c v = 1`. Rewrite using `[hc, Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, ← hk, hGk]`. Conclude with `div_self hPpos.ne'`.
+
+Set `φ : (∀ v, W v) → (∀ v, W v)` to `fun s v => c v • s v`. Establish `hφinj : Function.Injective φ`. Introduce `s s' h`. Use function extensionality and compare the values at `v`. Conclude with `smul_right_injective _ (hcpos v).ne' (congrFun h v)`.
+
+Use `set A := {s ∈ S | ∀ v, ‖s v‖ ≤ X v} with hA`. Establish `hdimPi : Module.finrank ℝ (∀ v, W v) = N * k`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[hdim, hk, mul_comm]`. Establish `key : ∀ F : Finset (∀ v, W v), (↑F : Set (∀ v, W v)) ⊆ A → (F.card : ℝ) ≤ (1 + 2 * G / la) ^ (N * k)`.
+
+Introduce `F hF`. Establish `hbound` using `card_le_of_separated_in_ball (F.image φ) G la hGpos.le hla ?_ ?_`. Rewrite `hbound` using `[Finset.card_image_of_injective _ hφinj, hdimPi]`. Conclude with `hbound`. Introduce `y hy`.
+
+Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hy`. Establish `hsA` using `hF hs`. Use `(pi_norm_le_iff_of_nonneg hGpos.le).mpr (fun v => ?_)` and prove the remaining obligations. Simplify using `only [φ, norm_smul, Real.norm_eq_abs, abs_of_pos (hcpos v)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [hc]`. Clear denominators, using `[(hX v).ne']` for the nonvanishing conditions. Introduce `y hy y' hy' hne`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.mp hy`. Take `⟨s', hs', rfl⟩` from `Finset.mem_image.mp hy'`.
+
+Establish `hss : s ≠ s'` using `fun h => hne (by rw [h])`. Establish `h1` using `hsep s (hF hs).1 s' (hF hs').1 hss`. Establish `hprod : ∏ v, ‖(φ s - φ s') v‖ = ∏ v, ‖s v - s' v‖`. Simplify using `only [φ, Pi.sub_apply, ← smul_sub, norm_smul, Real.norm_eq_abs, abs_of_pos (hcpos _), Finset.prod_mul_distrib, hcprod, one_mul]`. Establish `hgm : (∏ v, ‖(φ s - φ s') v‖) ^ ((1 : ℝ) / k) ≤ ‖φ s - φ s'‖`.
+
+Establish `hle : ∏ v, ‖(φ s - φ s') v‖ ≤ ‖φ s - φ s'‖ ^ k`. Rewrite using `[hk, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_le_prod (fun v _ => norm_nonneg _) (fun v _ => norm_le_pi_norm _ v)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _), mul_one_div_cancel (by exact_mod_cast hkpos.ne'), Real.rpow_one]`.
+
+Rewrite `hgm` using `[hprod]`. Conclude with `h1.trans hgm`. Establish `hfin : A.Finite`. Assume the negation of the conclusion as `hinf`. Take `⟨F, hF, hcard⟩` from `Set.Infinite.exists_subset_card_eq hinf (⌈(1 + 2 * G / la) ^ (N * k)⌉₊ + 1)`.
+
+Establish `h3` using `key F hF`. Rewrite `h3` using `[hcard]`. Move the coercions through the operations in `at h3`. Combine the linear relations using `[Nat.le_ceil ((1 + 2 * G / la) ^ (N * k))]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.ncard_eq_toFinset_card A hfin]`. Conclude with `key _ (by simp)`.
+-/
 theorem packing_geometric_mean_separated : ∀ (ι : Type) [Fintype ι] [Nonempty ι] (W : ι → Type) [∀ v, NormedAddCommGroup (W v)] [∀ v, NormedSpace ℝ (W v)] [∀ v, FiniteDimensional ℝ (W v)] (N : ℕ), 1 ≤ N → (∀ v, Module.finrank ℝ (W v) = N) → ∀ (la : ℝ) (S : Set (∀ v, W v)) (X : ι → ℝ), 0 < la → (∀ v, 0 < X v) → (∀ s ∈ S, ∀ s' ∈ S, s ≠ s' → la ≤ (∏ v, ‖s v - s' v‖) ^ ((1 : ℝ) / Fintype.card ι)) → {s ∈ S | ∀ v, ‖s v‖ ≤ X v}.Finite ∧ (({s ∈ S | ∀ v, ‖s v‖ ≤ X v}.ncard : ℕ) : ℝ) ≤ (1 + 2 * (∏ v, X v) ^ ((1 : ℝ) / Fintype.card ι) / la) ^ (N * Fintype.card ι) := by
   intro ι _ _ W _ _ _ N hN hdim la S X hla hX hsep
   classical

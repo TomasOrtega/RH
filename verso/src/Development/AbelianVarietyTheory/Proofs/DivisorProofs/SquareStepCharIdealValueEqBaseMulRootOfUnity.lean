@@ -26,6 +26,11 @@ namespace GlobalTheory.SqStepIdeal
 
 open GlobalTheory.LFun
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (χ.1 : _ →* ℂˣ) ^ n = 1`. Use `congrArg Subtype.val h1` as an intermediate fact. Simplify using `using this`. Establish `e2 : ∀ y, χ.1 y ^ n = 1` using `fun y => by`.
+
+Use `DFunLike.congr_fun e1 y` as an intermediate fact. Simplify `this` using `[MonoidHom.pow_apply]`. Conclude with `e2 _`. Take `⟨y, hy⟩` from `h2 w (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))`. Conclude with `⟨y, hy⟩`.
+-/
 theorem val_mem {D : D7} {χ : HChar D.host.E} {n : ℕ} (h1 : χ.OrderDvd n) (h2 : LocIn D.what₂.embLL χ)
     (w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)) :
     χ.val w ^ n = 1 ∧ ((χ.val w : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange := by
@@ -40,6 +45,9 @@ theorem val_mem {D : D7} {χ : HChar D.host.E} {n : ℕ} (h1 : χ.OrderDvd n) (h
   · obtain ⟨y, hy⟩ := h2 w (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))
     exact ⟨y, hy⟩
 
+/- English proof (translation)
+Use `(Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors 𝔞)).subset fun w hw => ?_` and prove the remaining obligations. Introduce `h`. Apply `hw` to reduce the goal to its premises. Simplify using `only [h, zpow_zero]`.
+-/
 theorem mulSupport_finite {E : Type} [Field E] [NumberField E] (f : IsDedekindDomain.HeightOneSpectrum (𝓞 E) → ℂˣ)
     (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     (Function.mulSupport fun w => f w ^ FractionalIdeal.count E w 𝔞).Finite := by
@@ -48,6 +56,19 @@ theorem mulSupport_finite {E : Type} [Field E] [NumberField E] (f : IsDedekindDo
   apply hw
   simp only [h, zpow_zero]
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL W S hN i j t 𝔞`. Establish `e : ∀ s, (GlobalTheory.SqStep.chs G i j s).ν = G.nu s i (j + 1)` using `fun s => by show (Lc.mu s (j + 1) * Lc.eta ^ _) / (G.ch.chi _ * Lc.eta ^ _) = _`. Rewrite using `[mul_div_mul_right_eq_div]`. Both sides reduce to the same expression. Establish `hν : (GlobalTheory.SqStep.chs G i j μ₀).ν = (GlobalTheory.SqStep.chs G i j t).ν * ((Lc.xi t)⁻¹ * Lc.xi μ₀)`.
+
+Rewrite using `[e, e]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Use `show Lc.mu0 (j + 1) x * Lc.xi μ₀ x / G.ch.chi (D.R.m - i) x = Lc.mu0 (j + 1) x * Lc.xi t x / G.ch.chi (D.R.m - i) x * ((Lc.xi t x)⁻¹ * Lc.xi μ₀ x)`. Rewrite using `[div_mul_eq_mul_div, mul_assoc (Lc.mu0 (j + 1) x) (Lc.xi t x), mul_inv_cancel_left]`. Take `⟨n, hn, hfin⟩` from `hL.xi_fin t`.
+
+Set `c : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E) → ℂˣ` to `fun w => ((Lc.xiH t).val w)⁻¹`. Establish `hw : ∀ w, val (GlobalTheory.SqStep.chs G i j μ₀).ν w = val (GlobalTheory.SqStep.chs G i j t).ν w * c w` using `fun w => by`. Rewrite using `[hν, val_mul, val_mul, val_inv, val_eq_of_chrEq (hL.xi t) w, val_eq_of_chrEq (hL.xi μ₀) w, hL.xi_base]`. Rewrite using `[show (1 : HChar D.host.E).val w = 1 from rfl, mul_one]`. Set `H : Subgroup ℂˣ` to `{ carrier := {z | z ^ n = 1 ∧ (z : ℂ) ∈ D.what₂.embLL.fieldRange} mul_mem' := fun ha hb => ⟨by rw [mul_pow, ha.1, hb.1, one_mul], by rw [Units.val_mul]; exact mul_mem ha.2 hb.2⟩ one_mem' := ⟨one_pow _, by rw [Units.val_one]; exact one_mem _⟩ inv_mem' := fun ha => ⟨by rw [inv_pow, …`.
+
+Establish `hc : ∀ w, c w ∈ H` using `fun w => H.inv_mem (val_mem hfin (hN.chars.xi t) w)`. Establish `hprod : idealVal (GlobalTheory.SqStep.chs G i j μ₀).ν 𝔞 = idealVal (GlobalTheory.SqStep.chs G i j t).ν 𝔞 * ∏ᶠ w, c w ^ FractionalIdeal.count D.host.E w 𝔞`. Unfold `idealVal`. Repeatedly rewrite using `[hw, mul_zpow]`. Conclude with `finprod_mul_distrib (mulSupport_finite _ 𝔞) (mulSupport_finite _ 𝔞)`.
+
+Establish `hz : ∏ᶠ w, c w ^ FractionalIdeal.count D.host.E w 𝔞 ∈ H`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := (mulSupport_finite c 𝔞).toFinset) (by simp)]`. Conclude with `H.prod_mem fun w _ => H.zpow_mem (hc w) _`. Take `⟨hzn, hzr⟩` from `hz`. Take `⟨b, hb⟩` from `RingHom.mem_fieldRange.1 hzr`.
+
+Use `⟨b, ⟨n, hn, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hb, map_one, ← Units.val_pow_eq_pow_val, hzn, Units.val_one]`. Rewrite using `[hprod, Units.val_mul, hb, mul_comm]`.
+-/
 theorem idealVal_chs_base : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ →
     ∀ (W : G.Weil) (S : GridChoice W Set.univ), NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (t : T)
     (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E), ∃ b : D.what₂.LL, (∃ n : ℕ, 0 < n ∧ b ^ n = 1) ∧

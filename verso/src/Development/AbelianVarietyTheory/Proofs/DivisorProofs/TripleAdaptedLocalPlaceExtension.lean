@@ -15,6 +15,15 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT h d₁ W₁ H' i₀ i₁ hA v hv w hw`. Establish `hB` using `hT.base`. Take `⟨τ⟩` from `GlobalTheory.SplitEmbed.exists_algHom_of_splitsFully F E σ hB.cm v hv.2`. Take `⟨t, rfl⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq hB.cm (GlobalTheory.LFun.SplitChart.isSplit_of_algHom hB.cm τ) hw`. Take `⟨hP, hJ⟩` from `GlobalTheory.T.adapted_frame_det_ne_zero F E σ B _ _ _ _ i₀ i₁ G.W W₁ H' hB hT.geo.hW hA`.
+
+Use `⟨t, GlobalTheory.LineFrame.frameGL t H' hA.rank, fun n hn => ?_, fun x => ⟨GlobalTheory.LineFrame.locY t x, ?_, ?_, fun m hm _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨Xm, Ym, hXY⟩` from `GlobalTheory.T.line_parabolic_unipotent_blocks (Fv F v) _ _ hA.rank h n hn`. Conclude with `GlobalTheory.T.adapted_frame_local_determinant F E σ B _ _ _ _ i₀ i₁ G.W W₁ H' hB hT.geo.hW hA hP hJ v t n Xm Ym hXY`. Rewrite using `[GlobalTheory.LineFrame.twAbs_locIdele hB.cm]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[GlobalTheory.LineFrame.twAbs_locIdele hB.cm]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `hm` using `[GlobalTheory.LineFrame.locIdele_eq_idl hB.cm t x]`.
+
+Conclude with `GlobalTheory.T.adapted_frame_local_torus_action F E σ B _ _ i₀ i₁ G.W W₁ H' hB.cm hA hP v t h _ m hm`.
+-/
 theorem GlobalTheory.LineFrame.geom_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ (h : 2 ≤ a + a') (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ),

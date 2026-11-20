@@ -54,6 +54,15 @@ def LocalLevelIsKOneAtT : Prop :=
 
 include hc hPr in
 
+/- English proof (translation)
+Establish `key : ∀ (i : Fin 2), v ∈ plUnder X.F (Pr.vG i) ↔ (Pr.g i : 𝓞 X.F) ∈ v.asIdeal`. Introduce `i`. Establish `h0 : X.conjO (Pr.piG i) ≠ 0`. Introduce `h`. Establish `h1` using `hPr.piG_norm i`.
+
+Rewrite `h1` using `[h, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (hPr.g_prime i).ne_zero) h1.symm`. Use `mem_plUnder_iff_norm hc (fun P => mem_divs h0 P) (Pr.g i) ?_ v` and prove the remaining obligations. Establish `h2 : cO X.E (X.conjO (Pr.piG i)) = Pr.piG i` using `cO_cO _`. Rewrite using `[h2, mul_comm]`.
+
+Conclude with `hPr.piG_norm i`. Rewrite using `[← key 0, ← key 1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, h⟩`. Break down `Finset.mem_union.1 hP with h' | h'` into its components or cases.
+
+Conclude with `Or.inl ⟨P, h', h⟩`. Conclude with `Or.inr ⟨P, h', h⟩`. Introduce and unpack `(⟨P, hP, h⟩ | ⟨P, hP, h⟩)`. Conclude with `⟨P, Finset.mem_union_left _ hP, h⟩`. Conclude with `⟨P, Finset.mem_union_right _ hP, h⟩`.
+-/
 theorem th_plUnder_vGs (v : HeightOneSpectrum (𝓞 X.F)) :
     v ∈ plUnder X.F Pr.vGs ↔ ((Pr.g 0 : 𝓞 X.F) ∈ v.asIdeal ∨ (Pr.g 1 : 𝓞 X.F) ∈ v.asIdeal) := by
   classical

@@ -21,6 +21,9 @@ def tmulLeft (l : L) : 𝔸[K] →ₗ[𝔸[K]] L ⊗[K] 𝔸[K] where
     change l ⊗ₜ (c * x) = (1 ⊗ₜ c) * (l ⊗ₜ x)
     rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[map_mul, adeleTensorEquiv_tmul, map_one, one_mul]`.
+-/
 theorem adeleTensorEquiv_one_tmul_mul (a : 𝔸[K]) (t : L ⊗[K] 𝔸[K]) :
     adeleTensorEquiv K L ((1 ⊗ₜ a) * t) = adeleMap K L a * adeleTensorEquiv K L t := by
   rw [map_mul, adeleTensorEquiv_tmul, map_one, one_mul]
@@ -54,6 +57,9 @@ def adeleTensorHomeomorph :
           (continuous_coord _ i) }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adeleTensorHomeomorph_apply (t : L ⊗[K] 𝔸[K]) :
     adeleTensorHomeomorph K L t = adeleTensorEquiv K L t :=
   rfl
@@ -69,6 +75,9 @@ def adeleTensorContinuousAlgEquiv :
     continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adeleTensorContinuousAlgEquiv_apply (t : L ⊗[K] 𝔸[K]) :
     adeleTensorContinuousAlgEquiv K L t = adeleTensorEquiv K L t :=
   rfl
@@ -76,6 +85,9 @@ theorem adeleTensorContinuousAlgEquiv_apply (t : L ⊗[K] 𝔸[K]) :
 scoped instance algebraAdeleRing : Algebra 𝔸[K] 𝔸[L] :=
   (adeleMap K L).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_adeleRing : algebraMap 𝔸[K] 𝔸[L] = adeleMap K L :=
   rfl
 
@@ -90,6 +102,9 @@ def adeleTensorAlgEquivAdele : L ⊗[K] 𝔸[K] ≃ₐ[𝔸[K]] 𝔸[L] :=
     rw [adeleTensorEquiv_tmul, map_one, one_mul]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adeleTensorAlgEquivAdele_apply (t : L ⊗[K] 𝔸[K]) :
     adeleTensorAlgEquivAdele K L t = adeleTensorEquiv K L t :=
   rfl
@@ -104,6 +119,9 @@ def adeleTensorContinuousAlgEquivAdele :
     continuous_toFun := (adeleTensorHomeomorph K L).continuous_toFun
     continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }
 
+/- English proof (translation)
+Set `` to `moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])`. Establish `: IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K])` using `⟨rfl⟩`. Conclude with `IsModuleTopology.iso { (adeleTensorAlgEquivAdele K L).toLinearEquiv with continuous_toFun := (adeleTensorHomeomorph K L).continuous_toFun continuous_invFun := (adeleTensorHomeomorph K L).continuous_invFun }`.
+-/
 theorem isModuleTopology_adeleRing : IsModuleTopology 𝔸[K] 𝔸[L] := by
   let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
   have : IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K]) := ⟨rfl⟩
@@ -117,6 +135,9 @@ variable (K L) in
 def normalizedTrace : L →ₗ[K] K :=
   (finrank K L : K)⁻¹ • Algebra.trace K L
 
+/- English proof (translation)
+Rewrite using `[normalizedTrace, LinearMap.smul_apply, ← map_one (algebraMap K L), Algebra.trace_algebraMap, nsmul_eq_mul, mul_one, smul_eq_mul, inv_mul_cancel₀]`. Conclude with `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+-/
 theorem normalizedTrace_one : normalizedTrace K L 1 = 1 := by
   rw [normalizedTrace, LinearMap.smul_apply, ← map_one (algebraMap K L), Algebra.trace_algebraMap,
     nsmul_eq_mul, mul_one, smul_eq_mul, inv_mul_cancel₀]
@@ -138,6 +159,9 @@ def traceRetraction : L ⊗[K] 𝔸[K] →ₗ[𝔸[K]] 𝔸[K] where
         LinearMap.rTensor_tmul, TensorProduct.lid_tmul, TensorProduct.lid_tmul, mul_smul_comm]
     | add s t hs ht => simp only [smul_add, map_add, hs, ht, mul_add]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) (1 ⊗ₜ a)) = a`. Rewrite using `[LinearMap.rTensor_tmul, TensorProduct.lid_tmul, normalizedTrace_one, one_smul]`.
+-/
 theorem traceRetraction_one_tmul (a : 𝔸[K]) : traceRetraction K L (1 ⊗ₜ a) = a := by
   change TensorProduct.lid K 𝔸[K] (LinearMap.rTensor 𝔸[K] (normalizedTrace K L) (1 ⊗ₜ a)) = a
   rw [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, normalizedTrace_one, one_smul]
@@ -147,20 +171,32 @@ variable (K L) in
 def adeleRetraction (y : 𝔸[L]) : 𝔸[K] :=
   traceRetraction K L ((adeleTensorEquiv K L).symm y)
 
+/- English proof (translation)
+Establish `: (adeleTensorEquiv K L).symm (adeleMap K L a) = 1 ⊗ₜ a`. Rewrite using `[AlgEquiv.symm_apply_eq, adeleTensorEquiv_tmul, map_one, one_mul]`. Rewrite using `[adeleRetraction, this, traceRetraction_one_tmul]`.
+-/
 theorem adeleRetraction_adeleMap (a : 𝔸[K]) : adeleRetraction K L (adeleMap K L a) = a := by
   have : (adeleTensorEquiv K L).symm (adeleMap K L a) = 1 ⊗ₜ a := by
     rw [AlgEquiv.symm_apply_eq, adeleTensorEquiv_tmul, map_one, one_mul]
   rw [adeleRetraction, this, traceRetraction_one_tmul]
 
+/- English proof (translation)
+Set `` to `moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])`. Establish `: IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K])` using `⟨rfl⟩`. Conclude with `(IsModuleTopology.continuous_of_linearMap (traceRetraction K L)).comp (adeleTensorHomeomorph K L).symm.continuous`.
+-/
 theorem continuous_adeleRetraction : Continuous (adeleRetraction K L) := by
   let := moduleTopology 𝔸[K] (L ⊗[K] 𝔸[K])
   have : IsModuleTopology 𝔸[K] (L ⊗[K] 𝔸[K]) := ⟨rfl⟩
   exact (IsModuleTopology.continuous_of_linearMap (traceRetraction K L)).comp
     (adeleTensorHomeomorph K L).symm.continuous
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (g := adeleRetraction K L) adeleRetraction_adeleMap`.
+-/
 theorem adeleMap_injective : Function.Injective (adeleMap K L) :=
   Function.LeftInverse.injective (g := adeleRetraction K L) adeleRetraction_adeleMap
 
+/- English proof (translation)
+The claim follows from `haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L])) haveI : T2Space (InfiniteAdeleRing L) := inferInstanceAs (T2Space ((w : NumberField.InfinitePlace L) → w.Completion)) haveI : …`.
+-/
 theorem isClosedEmbedding_adeleMap : IsClosedEmbedding (adeleMap K L) :=
   haveI : T2Space (FiniteAdeleRing (𝓞 L) L) := inferInstanceAs (T2Space
     (Πʳ w : HeightOneSpectrum (𝓞 L), [w.adicCompletion L, w.adicCompletionIntegers L]))
@@ -207,6 +243,9 @@ def finiteTensorHomeomorph :
           (continuous_finiteCoord _ i) }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finiteTensorHomeomorph_apply (t : L ⊗[K] FiniteAdeleRing (𝓞 K) K) :
     finiteTensorHomeomorph K L t = finiteTensorEquiv K L t :=
   rfl

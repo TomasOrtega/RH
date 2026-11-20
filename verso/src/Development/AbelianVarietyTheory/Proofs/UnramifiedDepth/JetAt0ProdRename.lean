@@ -20,6 +20,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk, Finset.prod_insert hk, ih, MvPolynomial.monomial_mul]`.
+-/
 private lemma prod_monomial_eq_monomial_sum_prod' {α κ : Type} (s : Finset κ) (D : κ → α →₀ ℕ) (a : κ → C) :
     ∏ k ∈ s, MvPolynomial.monomial (D k) (a k) =
       MvPolynomial.monomial (∑ k ∈ s, D k) (∏ k ∈ s, a k) := by
@@ -34,6 +37,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Unfold `_root_.Formalism.IncomingBounds.jetAt0`. Simplify using the standard rewrite rules.
+-/
 private lemma jetAt0_zero_left_unramified_depth {α : Type} (G : MvPowerSeries α C) :
     _root_.Formalism.IncomingBounds.jetAt0 (0 : MvPolynomial α C) G = 0 := by
   unfold _root_.Formalism.IncomingBounds.jetAt0
@@ -43,6 +49,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Unfold `_root_.Formalism.IncomingBounds.jetAt0`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.mem_support_iff, not_not]`. Rewrite using `[hm, zero_mul, zero_mul]`.
+-/
 private lemma jetAt0_eq_sum_coeff_mul_mfact_of_support_subset {α : Type} (P : MvPolynomial α C) (G : MvPowerSeries α C)
     {s : Finset (α →₀ ℕ)} (hs : P.support ⊆ s) :
     _root_.Formalism.IncomingBounds.jetAt0 P G = ∑ m ∈ s, MvPolynomial.coeff m P * (_root_.Formalism.IncomingBounds.mfact m : C) * MvPowerSeries.coeff m G := by
@@ -55,6 +64,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Rewrite using `[jetAt0_eq_sum_coeff_mul_mfact_of_support_subset (P + Q) G (MvPolynomial.support_add (p := P) (q := Q)), jetAt0_eq_sum_coeff_mul_mfact_of_support_subset P G Finset.subset_union_left, jetAt0_eq_sum_coeff_mul_mfact_of_support_subset Q G Finset.subset_union_right, ← Finset.sum_add_d …`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma jetAt0_add_left' {α : Type} (P Q : MvPolynomial α C) (G : MvPowerSeries α C) :
     _root_.Formalism.IncomingBounds.jetAt0 (P + Q) G = _root_.Formalism.IncomingBounds.jetAt0 P G + _root_.Formalism.IncomingBounds.jetAt0 Q G := by
   classical
@@ -69,6 +81,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Rewrite using `[jetAt0_eq_sum_coeff_mul_mfact_of_support_subset _ G (MvPolynomial.support_monomial_subset (s := D) (a := a)), Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+-/
 private lemma jetAt0_monomial_eq_mul_mfact_mul_coeff {α : Type} (D : α →₀ ℕ) (a : C) (G : MvPowerSeries α C) :
     _root_.Formalism.IncomingBounds.jetAt0 (MvPolynomial.monomial D a) G = a * (_root_.Formalism.IncomingBounds.mfact D : C) * MvPowerSeries.coeff D G := by
   classical
@@ -79,6 +94,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp [jetAt0_zero_left_unramified_depth]`. Consider the case `insert f F hf ih => rw [Finset.sum_insert hf, Finset.sum_insert hf, jetAt0_add_left', ih, jetAt0_monomial_eq_mul_mfact_mul_coeff]`.
+-/
 private lemma jetAt0_sum_monomial_eq_sum_mul_mfact_mul_coeff {α κ : Type} (F : Finset κ) (D : κ → α →₀ ℕ) (a : κ → C)
     (G : MvPowerSeries α C) :
     _root_.Formalism.IncomingBounds.jetAt0 (∑ f ∈ F, MvPolynomial.monomial (D f) (a f)) G =
@@ -92,6 +110,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_rename]`. Use `Finset.sum_eq_zero fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[Set.Finite.mem_toFinset]`. Conclude with `absurd ⟨y, by rw [Finsupp.embDomain_eq_mapDomain]; simpa using hy⟩ hx`.
+-/
 private lemma coeff_rename_eq_zero_of_not_mem_range_embDomain {α β : Type} (f : α ↪ β) (p : MvPowerSeries α C)
     {x : β →₀ ℕ} (hx : x ∉ Set.range (Finsupp.embDomain f)) :
     MvPowerSeries.coeff x (MvPowerSeries.rename f p) = 0 := by
@@ -104,6 +125,11 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single j]`. Conclude with `Finsupp.embDomain_apply_self (e j) (z j) x`. Introduce `k _ hk`. Apply `Finsupp.embDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨w, hw⟩`.
+
+Conclude with `hk (hd k j w x hw)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+-/
 private lemma sum_embDomain_apply_eq_of_disjoint (hd : ∀ i j x y, e i x = e j y → i = j)
     (z : ∀ i, σ i →₀ ℕ) (j : ι) (x : σ j) :
     (∑ k, Finsupp.embDomain (e k) (z k)) (e j x) = z j x := by
@@ -121,6 +147,19 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_prod]`. Use `set l0 : ι →₀ (τ →₀ ℕ) := Finsupp.equivFunOnFinite.symm fun k => Finsupp.embDomain (e k) (m k) with hl0`. Establish `hl0j : ∀ j, l0 j = Finsupp.embDomain (e j) (m j)` using `fun j => by simp [hl0]`. Rewrite using `[Finset.sum_eq_single l0]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hl0j]`. Conclude with `MvPowerSeries.coeff_embDomain_rename (e j) (G j) (m j)`. Introduce `b hb hne`. Assume the negation of the conclusion as `hprod`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite `hb` using `[Finset.mem_finsuppAntidiag]`. Establish `hz : ∀ j, ∃ z, Finsupp.embDomain (e j) z = b j` using `fun j => by`. Assume the negation of the conclusion as `h`. Conclude with `Finset.prod_ne_zero_iff.mp hprod j (Finset.mem_univ j) (coeff_rename_eq_zero_of_not_mem_range_embDomain (e j) (G j) (by rintro ⟨z, hz⟩; exact h ⟨z, hz⟩))`. Use `choose z hz using hz`.
+
+Establish `hsum : ∑ k, Finsupp.embDomain (e k) (z k) = ∑ k, Finsupp.embDomain (e k) (m k)`. Rewrite using `[← hb.1]`. Conclude with `Finset.sum_congr rfl fun k _ => hz k`. Establish `hzm : z = m`. Use function extensionality and compare the values at `j`.
+
+Use extensionality with `x`. Rewrite using `[← sum_embDomain_apply_eq_of_disjoint e hd z j x, hsum, sum_embDomain_apply_eq_of_disjoint e hd m j x]`. Use extensionality with `j : 1`. Rewrite using `[← hz j, hzm, hl0j]`. Introduce `h`.
+
+It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_finsuppAntidiag]`. Use `⟨?_, by simp⟩` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun j _ => hl0j j`.
+-/
 private lemma coeff_sum_embDomain_prod_rename_eq_prod_coeff (hd : ∀ i j x y, e i x = e j y → i = j)
     (G : ∀ i, MvPowerSeries (σ i) C) (m : ∀ i, σ i →₀ ℕ) :
     MvPowerSeries.coeff (∑ k, Finsupp.embDomain (e k) (m k))
@@ -164,6 +203,13 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Establish `hsub : (∑ k, Finsupp.embDomain (e k) (m k)).support ⊆ Finset.univ.biUnion fun j => (m j).support.map (e j)`. Use `(Finsupp.support_finset_sum).trans ?_` and prove the remaining obligations. Simplify using `[Finsupp.support_embDomain]`. Establish `hdisj : ((Finset.univ : Finset ι) : Set ι).PairwiseDisjoint fun j => (m j).support.map (e j)`. Introduce `j _ k _ hjk`.
+
+Use `Finset.disjoint_left.mpr fun y hy hy' => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_map] at hy hy'`. Take `⟨x, _, rfl⟩` from `hy`. Take `⟨x', _, hx'⟩` from `hy'`. Conclude with `hjk (hd k j x' x hx').symm`.
+
+Rewrite using `[Finsupp.prod_of_support_subset _ hsub _ (fun _ _ => rfl), Finset.prod_biUnion hdisj]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_map, Finsupp.prod]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[sum_embDomain_apply_eq_of_disjoint e hd m j x]`.
+-/
 private lemma prod_factorial_sum_embDomain_eq_prod_prod_factorial (hd : ∀ i j x y, e i x = e j y → i = j)
     (m : ∀ i, σ i →₀ ℕ) :
     ((∑ k, Finsupp.embDomain (e k) (m k)).prod fun _ n => n.factorial) =
@@ -191,6 +237,13 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {ι τ : Type} [Fintype ι] {σ : ι → Type} (e : ∀ i, σ i ↪ τ) in
+/- English proof (translation)
+Establish `hP : ∏ j, MvPolynomial.rename (e j) (P j) = ∑ f ∈ Fintype.piFinset fun j => (P j).support, MvPolynomial.monomial (∑ k, Finsupp.embDomain (e k) (f k)) (∏ k, MvPolynomial.coeff (f k) (P k))` using `by conv_lhs => rw [show P = fun j => ∑ v ∈ (P j).support, MvPolynomial.monomial v (MvPolynomial.coeff v (P j)) from`. Use function extensionality and compare the values at `fun j => MvPolynomial.as_sum (P j)]`. Simplify using `only [map_sum, MvPolynomial.rename_monomial]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[prod_monomial_eq_monomial_sum_prod']`. Simplify using `only [Finsupp.embDomain_eq_mapDomain]`. Rewrite using `[hP, jetAt0_sum_monomial_eq_sum_mul_mfact_mul_coeff]`. Simplify using `only [jetAt0_eq_sum_coeff_mul_mfact_of_support_subset _ _ (subset_refl _)]`. Rewrite using `[Finset.prod_univ_sum]`.
+
+Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_sum_embDomain_prod_rename_eq_prod_coeff e hd, _root_.Formalism.IncomingBounds.mfact, prod_factorial_sum_embDomain_eq_prod_prod_factorial e hd, Nat.cast_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.JetProd.jetAt0_prod_rename (hd : ∀ i j x y, e i x = e j y → i = j)
     (P : ∀ i, MvPolynomial (σ i) C) (G : ∀ i, MvPowerSeries (σ i) C) :
     _root_.Formalism.IncomingBounds.jetAt0 (∏ j, MvPolynomial.rename (e j) (P j)) (∏ j, MvPowerSeries.rename (e j) (G j)) =
@@ -216,6 +269,11 @@ theorem _root_.GlobalTheory.JetProd.jetAt0_prod_rename (hd : ∀ i j x y, e i x 
     Nat.cast_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
   rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Use `show (∑ k ∈ Finset.range (m.degree + 1), MvPowerSeries.coeff m ((0 : MvPowerSeries σ C) ^ k) / (k.factorial : C)) = _`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Simplify using `[zero_pow hk]`. Simplify using the standard rewrite rules.
+-/
 theorem mvExp_zero' {σ : Type} : mvExp (0 : MvPowerSeries σ C) = 1 := by
   classical
   ext m
@@ -246,6 +304,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] in
+/- English proof (translation)
+Use extensionality with `m`. Use `show (∑ k ∈ Finset.range (m.degree + 1), MvPowerSeries.coeff m ((0 : MvPowerSeries α C) ^ k) / (k.factorial : C)) = MvPowerSeries.coeff m 1`. Rewrite using `[Finset.sum_range_succ']`. Simplify using the standard rewrite rules.
+-/
 private lemma mvExp_zero_eq_one' {α : Type} : _root_.Formalism.IncomingBounds.mvExp (0 : MvPowerSeries α C) = 1 := by
   ext m
   show (∑ k ∈ Finset.range (m.degree + 1),
@@ -258,6 +319,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] in
+/- English proof (translation)
+Unfold `_root_.Formalism.L2.FormalSeriesBounds.rowCopy`. Rewrite using `[MvPowerSeries.rename_eq_subst]`. Both sides reduce to the same expression.
+-/
 private lemma rowCopy_eq_rename_rowEmb {N : ℕ} (ρ : Fin N) (g : MvPowerSeries (_root_.Formalism.L2.FormalSeriesBounds.WV I) C) :
     _root_.Formalism.L2.FormalSeriesBounds.rowCopy ρ g = MvPowerSeries.rename (_root_.GlobalTheory.JetProd.rowEmb ρ) g := by
   unfold _root_.Formalism.L2.FormalSeriesBounds.rowCopy
@@ -268,6 +332,9 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] in
+/- English proof (translation)
+Use `show ∑ i ∈ (Finsupp.embDomain f y).support, (Finsupp.embDomain f y) i = ∑ i ∈ y.support, y i`. Rewrite using `[Finsupp.support_embDomain, Finset.sum_map]`. Simplify using the standard rewrite rules.
+-/
 private lemma degree_embDomain_eq_degree {α β : Type} (f : α ↪ β) (y : α →₀ ℕ) :
     (Finsupp.embDomain f y).degree = y.degree := by
   classical
@@ -279,6 +346,13 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] in
+/- English proof (translation)
+Use extensionality with `x`. Distinguish the cases in `hx : x ∈ Set.range (Finsupp.embDomain f)`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[MvPowerSeries.coeff_embDomain_rename]`. Use `show (∑ k ∈ Finset.range (y.degree + 1), MvPowerSeries.coeff y (g ^ k) / (k.factorial : C)) = ∑ k ∈ Finset.range ((Finsupp.embDomain f y).degree + 1), MvPowerSeries.coeff (Finsupp.embDomain f y) (MvPowerSeries.rename f g ^ k) / (k.factorial : C)`.
+
+Rewrite using `[degree_embDomain_eq_degree]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, MvPowerSeries.coeff_embDomain_rename]`. Rewrite using `[coeff_rename_eq_zero_of_not_mem_range_embDomain f _ hx] show (0 : C) = ∑ k ∈ Finset.range (x.degree + 1), MvPowerSeries.coeff x (MvPowerSeries.rename f g ^ k) / (k.factorial : C)`. Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, coeff_rename_eq_zero_of_not_mem_range_embDomain f _ hx, zero_div]`.
+-/
 private lemma rename_mvExp_eq_mvExp_rename {α β : Type} (f : α ↪ β) (g : MvPowerSeries α C) :
     MvPowerSeries.rename f (_root_.Formalism.IncomingBounds.mvExp g) = _root_.Formalism.IncomingBounds.mvExp (MvPowerSeries.rename f g) := by
   ext x
@@ -302,6 +376,11 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] in
+/- English proof (translation)
+Unfold `_root_.Formalism.L2.FormalSeriesBounds.ValOf`. Use `congr 1`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `only [rowCopy_eq_rename_rowEmb]`. Rewrite using `[← rename_mvExp_eq_mvExp_rename, ← map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 private lemma valOf_eq_jetAt0_prod_rename_rowSer
     (hL : Fin 2 → ZMod d → ZMod d → MvPowerSeries (_root_.Formalism.L2.FormalSeriesBounds.WV I) C)
     {N : ℕ} (P : MvPolynomial (Fin N × _root_.Formalism.L2.FormalSeriesBounds.WV I) C) (kd : Fin N → _root_.Formalism.L2.FormalSeriesBounds.Knd d)
@@ -319,6 +398,21 @@ open scoped BigOperators in
 open NumberField in
 open Finsupp in
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] in
+/- English proof (translation)
+Introduce `C _ d I _ hL N K what₂ pl hpl P kind gr`. Set `emb : ∀ i, Fin (what₂ i) × _root_.Formalism.L2.FormalSeriesBounds.WV I ↪ Fin N × _root_.Formalism.L2.FormalSeriesBounds.WV I` to `fun i => ⟨fun x => (pl ⟨i, x.1⟩, x.2), fun x y h => by`. Simplify using `only [Prod.mk.injEq] at h`. Establish `h1` using `hpl h.1`. Simplify using `only [Sigma.mk.inj_iff, heq_eq_eq, true_and] at h1`.
+
+Conclude with `Prod.ext h1 h.2⟩`. Establish `hdisj : ∀ i j (x : Fin (what₂ i) × _root_.Formalism.L2.FormalSeriesBounds.WV I) (y : Fin (what₂ j) × _root_.Formalism.L2.FormalSeriesBounds.WV I), emb i x = emb j y → i = j` using `fun i j x y h => congrArg Sigma.fst (hpl (congrArg Prod.fst h))`. Establish `hZ : ∀ s, _root_.Formalism.L2.FormalSeriesBounds.grAll pl gr (pl s) = gr s.1 s.2` using `fun s => by`. Unfold `_root_.Formalism.L2.FormalSeriesBounds.grAll`. Use `split_ifs with h`.
+
+Rewrite using `[hpl h.choose_spec]`. Conclude with `absurd ⟨s, rfl⟩ h`. Establish `hT : ∏ ρ, MvPowerSeries.rename (_root_.GlobalTheory.JetProd.rowEmb ρ) (_root_.GlobalTheory.JetProd.rowSer hL (_root_.Formalism.L2.FormalSeriesBounds.kindAll pl kind ρ) (_root_.Formalism.L2.FormalSeriesBounds.grAll pl gr ρ)) = ∏ i, MvPowerSeries.rename (emb i) (∏ r, MvPowerSeries. …`. Rewrite using `[← Fintype.prod_of_injective pl hpl (fun s => MvPowerSeries.rename (_root_.GlobalTheory.JetProd.rowEmb (pl s)) (_root_.GlobalTheory.JetProd.rowSer hL (kind s.1 s.2) (gr s.1 s.2)))]`. Rewrite using `[Fintype.prod_sigma]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.rename_rename]`. Both sides reduce to the same expression.
+
+Introduce `ρ hρ`. Establish `hn : ¬ ∃ s, pl s = ρ` using `fun ⟨s, hs⟩ => hρ ⟨s, hs⟩`. Establish `hZ1 : _root_.Formalism.L2.FormalSeriesBounds.grAll pl gr ρ = 1` using `by unfold _root_.Formalism.L2.FormalSeriesBounds.grAll; rw [dif_neg hn]`. Establish `hK : _root_.Formalism.L2.FormalSeriesBounds.kindAll pl kind ρ = none` using `by unfold _root_.Formalism.L2.FormalSeriesBounds.kindAll; rw [dif_neg hn]`. Rewrite using `[hZ1, hK]`.
+
+Use `show MvPowerSeries.rename _ (1 * _root_.Formalism.IncomingBounds.mvExp 0) = 1`. Rewrite using `[mvExp_zero_eq_one', mul_one, map_one]`. Introduce `s`. Rewrite using `[hZ, _root_.Formalism.L2.FormalSeriesBounds.kindAll_pl hpl]`. Simplify using `only [valOf_eq_jetAt0_prod_rename_rowSer]`.
+
+Rewrite using `[hT]`. Conclude with `_root_.GlobalTheory.JetProd.jetAt0_prod_rename emb hdisj P _`.
+-/
 theorem _root_.GlobalTheory.JetProd.jetProd : _root_.Formalism.L2.FormalSeriesBounds.JetProdSt := by
   intro C _ d I _ hL N K what₂ pl hpl P kind gr
   classical

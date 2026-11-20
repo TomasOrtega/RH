@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.JetMap
 
+/- English proof (translation)
+Use `⟨fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Use `show spMap _ ≫ y (m + 1) ≫ f = y m ≫ f`. Rewrite using `[← Category.assoc, hy.1 m]`. Use `show spMap _ ≫ y m ≫ f = 1`. Rewrite using `[← Category.assoc, hy.2 m, Hom.one_def, Hom.one_def, Category.assoc, hf]`.
+-/
 theorem isFPt_comp {R : Type} [CommRing R] {G G' : Over (Spec (CommRingCat.of R))} [GrpObj G] [GrpObj G']
     {κ : Type} {y : Fam G κ} (hy : IsFPt y) (f : G ⟶ G') (hf : η[G] ≫ f = η[G']) :
     IsFPt (fun m => y m ≫ f : Fam G' κ) := by
@@ -18,6 +21,17 @@ theorem isFPt_comp {R : Type} [CommRing R] {G G' : Over (Spec (CommRingCat.of R)
   · show spMap _ ≫ y m ≫ f = 1
     rw [← Category.assoc, hy.2 m, Hom.one_def, Hom.one_def, Category.assoc, hf]
 
+/- English proof (translation)
+Introduce `R _ G _ G' _ d x x' hx hx' f hf`. Take `⟨hex, -, hfp, -, hsub⟩` from `hR R G d x hx (Fin 1 × Fin d)`. Take `⟨-, hco', -, -, hsub'⟩` from `hR R G' d x' hx' (Fin 1 × Fin d)`. Take `⟨y₀, hy₀, -⟩` from `hex (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt R (n := 1) d 0) (gp_pt 0)`. Take `⟨φ, hφ, hu⟩` from `hco' _ (isFPt_comp (hfp _ _ hy₀) f hf)`.
+
+Use `⟨φ, ⟨hφ.1, fun n a y hy => ?_⟩, fun φ' hφ' => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ p : Fin 1 × Fin d, constantCoeff ((![a] : Fin 1 → Pt R n d) p.1 p.2) = 0` using `fun p => single_point_zero_constant (a := a) hy.1 p.1 p.2`. Establish `hψ` using `fun m => ((hJ R (Fin n × Fin d)).2.2.2.2 (Fin 1 × Fin d) _ hb m).1`. Use `choose ψ hψ using hψ`. Establish `h1` using `hsub (Fin n × Fin d) _ ψ hb hψ _ _ hy₀`.
+
+Establish `h2` using `hsub' (Fin n × Fin d) _ ψ hb hψ _ _ hφ`. Establish `h1' : Rep x a (fun m => spMap (ψ m) ≫ y₀ m)`. Use `gt_comp1_pt a hy.1` as an intermediate fact. Rewrite using `[← this]`. Conclude with `h1`.
+
+Establish `e : y = fun m => spMap (ψ m) ≫ y₀ m` using `((hR R G d x hx (Fin n × Fin d)).1 a hy.1).unique hy h1'`. Substitute `e` using the available equality. Simplify using `only [Category.assoc]`. Conclude with `h2`. Use `hφ'.2 1 _ _ hy₀` as an intermediate fact.
+
+Rewrite `this` using `[gt_comp1_pt_right]`. Conclude with `hu _ this`.
+-/
 theorem mapSt (hJ : JetAlgSt) (hR : RepSt) : MapSt := by
   intro R _ G _ G' _ d x x' hx hx' f hf
   obtain ⟨hex, -, hfp, -, hsub⟩ := hR R G d x hx (Fin 1 × Fin d)
@@ -44,6 +58,17 @@ theorem mapSt (hJ : JetAlgSt) (hR : RepSt) : MapSt := by
     rw [gt_comp1_pt_right] at this
     exact hu _ this
 
+/- English proof (translation)
+Establish `h : truncTotal (1 + 1) g = ∑ p, coeff (Finsupp.single p 1) g • (MvPolynomial.X p : MvPolynomial κ R)`. Use extensionality with `e`. Rewrite using `[coeff_truncTotal_eq_ite, MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_smul, MvPolynomial.coeff_X', smul_eq_mul, mul_ite, _root_.mul_one, mul_zero]`. Distinguish the cases in `he : ∃ p, Finsupp.single p 1 = e`.
+
+Take `⟨p, rfl⟩` from `he`. Rewrite using `[if_pos (by simp), Finset.sum_eq_single p (fun q _ hq => if_neg fun h => hq (Finsupp.single_left_injective one_ne_zero h)) (by simp), if_pos rfl]`. Rewrite using `[Finset.sum_eq_zero fun p _ => if_neg fun h => he ⟨p, h⟩] split_ifs with hd`. Establish `h0 : e.degree = 0`. Assume the negation of the conclusion as `h0`.
+
+Establish `h1 : e.degree = 1` using `by omega`. Establish `: e ∈ Set.range (fun a : κ => Finsupp.single a 1)`. Rewrite using `[Finsupp.range_single_one]`. Conclude with `h1`. Conclude with `he this`.
+
+Rewrite using `[(Finsupp.degree_eq_zero_iff e).1 h0]`. Simplify using `using hg`. Both sides reduce to the same expression. Unfold `toJet`. Rewrite using `[h]`.
+
+Conclude with `(map_sum (Ideal.Quotient.mkₐ R _) _ _).trans (Finset.sum_congr rfl fun p _ => map_smul (Ideal.Quotient.mkₐ R _) _ _)`.
+-/
 theorem toJet_one_eq_sum {R : Type} [CommRing R] {κ : Type} [Fintype κ] (g : MvPowerSeries κ R)
     (hg : constantCoeff g = 0) :
     toJet 1 g = ∑ p, coeff (Finsupp.single p 1) g • zR (R := R) 1 p := by
@@ -72,6 +97,15 @@ theorem toJet_one_eq_sum {R : Type} [CommRing R] {κ : Type} [Fintype κ] (g : M
   exact (map_sum (Ideal.Quotient.mkₐ R _) _ _).trans
     (Finset.sum_congr rfl fun p _ => map_smul (Ideal.Quotient.mkₐ R _) _ _)
 
+/- English proof (translation)
+Introduce `R _ G _ G' _ d x x' hx hx' f φ hφ w hw hw'`. Take `⟨y₀, hy₀, -⟩` from `(hR R G d x hx (Fin 1 × Fin d)).1 (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt R (n := 1) d 0) (gp_pt 0)`. Establish `h'` using `hφ.2 1 _ _ hy₀`. Rewrite `h'` using `[gt_comp1_pt_right]`. Take `⟨ψ₀, hψ₀, e₀⟩` from `hy₀.2 1`.
+
+Take `⟨ψ', hψ', e'⟩` from `h'.2 1`. Use `set c := tcoord hx w hw with hc`. Set `l : JetR R (Fin 1 × Fin d) 1 →ₐ[R] DualNumber R` to `jetLift R (RingHom.ker (fstD R)) kerD_sq (fun p => TrivSqZeroExt.inr (c p.2)) (fun _ => inr_mem_kerD _)`. Establish `hl : ∀ p, l (zR 1 p) = TrivSqZeroExt.inr (c p.2)` using `fun p => jetLift_zR _ _ _ _ p`. Establish `e1 : l.comp ψ₀ = dualLift c` using `jet_ext fun j => by`.
+
+Rewrite using `[AlgHom.comp_apply, hψ₀, dualLift_zR]`. Conclude with `(congrArg l (toJet_X 1 _)).trans (hl _)`. Establish `e2 : l.comp ψ' = dualLift ((dLin φ).mulVec c)` using `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, hψ', dualLift_zR, toJet_one_eq_sum _ (hφ.1 j), map_sum]`. Simplify using `only [map_smul, hl, ← TrivSqZeroExt.inr_smul, smul_eq_mul]`.
+
+Rewrite using `[← TrivSqZeroExt.inr_sum, Fintype.sum_prod_type, Fin.sum_univ_one]`. Both sides reduce to the same expression. Apply `tcoord_eq` to reduce the goal to its premises. Establish `e'' : y₀ 1 ≫ f = spMap ψ' ≫ x' 1` using `e'`. Rewrite using `[← e2, ← spMap_comp, Category.assoc, ← e'', e₀, ← Category.assoc, ← Category.assoc, spMap_comp, e1, ← tcoord_spec hx w hw]`.
+-/
 theorem dLinSt (hR : RepSt) : DLinSt := by
   intro R _ G _ G' _ d x x' hx hx' f φ hφ w hw hw'
   obtain ⟨y₀, hy₀, -⟩ := (hR R G d x hx (Fin 1 × Fin d)).1
@@ -97,6 +131,9 @@ theorem dLinSt (hR : RepSt) : DLinSt := by
   rw [← e2, ← spMap_comp, Category.assoc, ← e'', e₀, ← Category.assoc, ← Category.assoc, spMap_comp, e1,
     ← tcoord_spec hx w hw]
 
+/- English proof (translation)
+Introduce `hJ hR` and use `⟨mapSt hJ hR, dLinSt hR⟩`.
+-/
 theorem mapSt_and_dLinSt : JetAlgSt → RepSt → MapSt ∧ DLinSt :=
   fun hJ hR => ⟨mapSt hJ hR, dLinSt hR⟩
 

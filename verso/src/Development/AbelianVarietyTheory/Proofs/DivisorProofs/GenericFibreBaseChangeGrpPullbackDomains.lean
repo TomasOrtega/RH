@@ -11,6 +11,15 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 namespace GlobalTheory.GenFibreBaseChange
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ ρ a ha G _`. Establish `hsq : jK R' ≫ spMap ρ = spMap a ≫ jK R`. Simplify using `only [jK, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ha]`. Establish `hw : (pullback.fst (pullback.snd G.hom (spMap ρ)) (jK R') ≫ pullback.fst G.hom (spMap ρ)) ≫ G.hom = (pullback.snd (pullback.snd G.hom (spMap ρ)) (jK R') ≫ spMap a) ≫ jK R`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pullback.condition, Category.assoc, hsq, Category.assoc]`.
+
+Set `π₀ : pullback (pullback.snd G.hom (spMap ρ)) (jK R') ⟶ pullback G.hom (jK R)` to `pullback.lift _ _ hw`. Establish `e₁ : π₀ ≫ pullback.fst G.hom (jK R) = pullback.fst (pullback.snd G.hom (spMap ρ)) (jK R') ≫ pullback.fst G.hom (spMap ρ)` using `pullback.lift_fst _ _ _`. Establish `e₂ : π₀ ≫ pullback.snd G.hom (jK R) = pullback.snd (pullback.snd G.hom (spMap ρ)) (jK R') ≫ spMap a` using `pullback.lift_snd _ _ _`. Use `⟨π₀, ?_, fun L hL => ?_⟩` and prove the remaining obligations. Establish `n` using `(isGrpPullback_pullback ((Over.pullback (spMap ρ)).obj G) (jK R')).comp (isGrpPullback_pullback G (spMap ρ))`.
+
+Rewrite `n` using `[hsq]`. Establish `n' : IsGrpPullback ((Over.pullback (jK R')).obj ((Over.pullback (spMap ρ)).obj G)) G (spMap a ≫ jK R) (π₀ ≫ pullback.fst G.hom (jK R))`. Rewrite using `[e₁]`. Conclude with `n`. Conclude with `IsGrpPullback.cancel (isGrpPullback_pullback G (jK R)) n' e₂`.
+
+Establish `h₁` using `GlobalTheory.Spread.lbIso_pull_pull hL (a := pullback.fst G.hom (spMap ρ)) (pullback.fst (pullback.snd G.hom (spMap ρ)) (jK R')) rfl`. Establish `h₂` using `GlobalTheory.Spread.lbIso_pull_pull hL (a := pullback.fst G.hom (jK R)) π₀ e₁.symm`. Conclude with `LBIso.trans (pull_isLB (pull_isLB hL _) _) (pull_isLB hL _) (pull_isLB (pull_isLB hL _) _) (LBIso.symm h₁) h₂`.
+-/
 theorem genFibre_pull : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (ρ : R →+* R') (a : FractionRing R →+* FractionRing R'), a.comp (algebraMap R (FractionRing R)) = (algebraMap R' (FractionRing R')).comp ρ → ∀ (G : Over (Sp R)) [GrpObj G], ∃ π₀ : ((Over.pullback (jK R')).obj ((Over.pullback (spMap ρ)).obj G)).left ⟶ ((Over.pullback (jK R)).obj G).left, IsGrpPullback ((Over.pullback (jK R')).obj ((Over.pullback (spMap ρ)).obj G)) ((Over.pullback (jK R)).obj G) (spMap a) π₀ ∧ ∀ L : LB G.left, L.IsLB → LBIso ((L.pull (pullback.fst G.hom (spMap ρ))).pull (pullback.fst (pullback.snd G.hom (spMap ρ)) (jK R'))) ((L.pull (pullback.fst G.hom (jK R))).pull π₀) := by
   intro R R' _ _ _ _ ρ a ha G _
   have hsq : jK R' ≫ spMap ρ = spMap a ≫ jK R := by

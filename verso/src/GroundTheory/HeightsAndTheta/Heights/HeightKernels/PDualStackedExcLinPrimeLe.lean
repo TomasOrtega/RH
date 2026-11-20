@@ -20,24 +20,45 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [
 
 def linS (m : T → ℤ) : MRing (stackedBlocks T) := ∑ t, C (m t) * graphSecond t
 
+/- English proof (translation)
+Simplify using `[linD, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem linD_add (m n : T → ℤ) : linD (m + n) = linD m + linD n := by
   simp [linD, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[linD, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem linD_sub (m n : T → ℤ) : linD (m - n) = linD m - linD n := by
   simp [linD, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `[linD]`.
+-/
 theorem linD_zero : linD (0 : T → ℤ) = 0 := by
   simp [linD]
 
+/- English proof (translation)
+Simplify using `[linD, Pi.single_apply]`.
+-/
 theorem linD_single (c : T) : linD (Pi.single c 1 : T → ℤ) = X ⟨(), c⟩ := by
   simp [linD, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `[linS, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem linS_add (m n : T → ℤ) : linS (m + n) = linS m + linS n := by
   simp [linS, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[linS, Pi.single_apply]`.
+-/
 theorem linS_single (c : T) : linS (Pi.single c 1 : T → ℤ) = graphSecond c := by
   simp [linS, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[linS, linD, map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, graphSecond, graphMap, eval₂Hom_C, eval₂Hom_X']`. Simplify using `[linForm, stackedDiag, mul_assoc]`.
+-/
 theorem graphMap_linS {F' : HermLattice K i} (b' : Module.Basis T ℤ (dualLattice F')) (a : T → ℤ) (m : T → ℤ) :
     graphMap (dualIdeal b') (linForm (stackedDiag a)) (linS m) =
       C (Ideal.Quotient.mk (dualIdeal b') (linD fun s => m s * a s)) * X () := by
@@ -46,6 +67,13 @@ theorem graphMap_linS {F' : HermLattice K i} (b' : Module.Basis T ℤ (dualLatti
   rw [map_mul, graphSecond, graphMap, eval₂Hom_C, eval₂Hom_X']
   simp [linForm, stackedDiag, mul_assoc]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_coeff_stacked hab hn`. Establish `hlin : IsLinAt b' (linD n - linD fun s => m s * a s) 0`. Use `(isLinAt_linD b' n).sub (isLinAt_linD b' fun s => m s * a s)` as an intermediate fact. Rewrite `this` using `[hm, sub_self]`. Then use the resulting hypothesis. Establish `hle : stackedGraph b' a ≤ stackedBase b' a` using `le_sup_left`.
+
+Establish `hsp : Ideal.span (Set.range fun t => C (a t) * graphFirst t) ≤ stackedBase b' a` using `le_sup_right`. Establish `h1` using `hle (fstEmb_mem a (mem_dualIdeal_of_isLinAt_zero hlin))`. Establish `h2 : fstEmb (linD fun s => m s * a s) ∈ stackedBase b' a`. Rewrite using `[fstEmb_linD]`. Use `Ideal.sum_mem _ fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[C_mul, mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hsp (Ideal.subset_span ⟨s, rfl⟩))`. Use `Ideal.add_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem linD_mem_base {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLattice F)}
     {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
     (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (n : T → ℤ)
@@ -65,6 +93,9 @@ theorem linD_mem_base {F F' : HermLattice K i} {b : Module.Basis T ℤ (dualLatt
   have := Ideal.add_mem _ h1 h2
   rwa [map_sub, sub_add_cancel] at this
 
+/- English proof (translation)
+Use `fstEmb_mem a (mem_dualIdeal_of_isLinAt_quad (isLinAt_linD b' n₁) (isLinAt_linD b' n₂) (isLinAt_linD b' n₃) (isLinAt_linD b' n₄) hq)` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul]`. Then use the resulting hypothesis.
+-/
 theorem quad_mem_graph {F' : HermLattice K i} {b' : Module.Basis T ℤ (dualLattice F')} (a : T → ℤ)
     (n₁ n₂ n₃ n₄ : T → ℤ)
     (hq : formCoord (∑ s, n₁ s • (b' s : Fin i → K)) * formCoord (∑ s, n₂ s • (b' s : Fin i → K)) =
@@ -74,6 +105,11 @@ theorem quad_mem_graph {F' : HermLattice K i} {b' : Module.Basis T ℤ (dualLatt
     (isLinAt_linD b' n₃) (isLinAt_linD b' n₄) hq)
   rwa [map_sub, map_mul, map_mul] at this
 
+/- English proof (translation)
+Establish `h` using `Ideal.Quotient.eq.mpr (mem_dualIdeal_of_isLinAt_quad (isLinAt_linD b' fun s => m s * a s) (isLinAt_linD b' n) (isLinAt_linD b' fun s => m' s * a s) (isLinAt_linD b' n') hq)`. Rewrite `h` using `[map_mul, map_mul]`. Establish `hC` using `congrArg (C : MRing (dualBlocks T) ⧸ dualIdeal b' →+* MvPolynomial Unit _) h`. Rewrite `hC` using `[C_mul, C_mul]`. Use `show _ ∈ RingHom.ker _`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_mul, graphMap_linS, graphMap_linS, graphMap_fstEmb, graphMap_fstEmb]`. Take the linear combination `(X () : MvPolynomial Unit (MRing (dualBlocks T) ⧸ dualIdeal b')) * hC`.
+-/
 theorem mixed_mem_graph {F' : HermLattice K i} {b' : Module.Basis T ℤ (dualLattice F')} (a : T → ℤ)
     (m n m' n' : T → ℤ)
     (hq : formCoord (∑ s, (m s * a s) • (b' s : Fin i → K)) * formCoord (∑ s, n s • (b' s : Fin i → K)) =
@@ -97,9 +133,15 @@ abbrev FracP := FractionRing (MRing (stackedBlocks T) ⧸ P)
 def toFrac : MRing (stackedBlocks T) →+* FracP P :=
   (algebraMap (MRing (stackedBlocks T) ⧸ P) (FracP P)).comp (Ideal.Quotient.mk P)
 
+/- English proof (translation)
+Rewrite using `[toFrac, RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem toFrac_eq_zero {f : MRing (stackedBlocks T)} : toFrac P f = 0 ↔ f ∈ P := by
   rw [toFrac, RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, toFrac_eq_zero]`. Conclude with `h`.
+-/
 theorem toFrac_eq_of_sub_mem {f g : MRing (stackedBlocks T)} (h : f - g ∈ P) : toFrac P f = toFrac P g := by
   rw [← sub_eq_zero, ← map_sub, toFrac_eq_zero]
   exact h
@@ -107,10 +149,16 @@ theorem toFrac_eq_of_sub_mem {f g : MRing (stackedBlocks T)} (h : f - g ∈ P) :
 def coef (b' : Module.Basis T ℤ (dualLattice F')) (c : T) (μ : 𝓞 K) : T → ℤ :=
   (exists_coeff b' (smul_mem_dual F' μ (b' c).2)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_coeff b' (smul_mem_dual F' μ (b' c).2)).choose_spec`.
+-/
 theorem coef_spec (b' : Module.Basis T ℤ (dualLattice F')) (c : T) (μ : 𝓞 K) :
     ∑ s, coef b' c μ s • (b' s : Fin i → K) = algebraMap (𝓞 K) K μ • (b' c : Fin i → K) :=
   (exists_coeff b' (smul_mem_dual F' μ (b' c).2)).choose_spec
 
+/- English proof (translation)
+Simplify using `[Pi.single_apply]`.
+-/
 theorem sum_single_smul (b' : Module.Basis T ℤ (dualLattice F')) (c : T) :
     ∑ s, (Pi.single c 1 : T → ℤ) s • (b' s : Fin i → K) = b' c := by
   simp [Pi.single_apply]
@@ -120,9 +168,17 @@ def theta (b' : Module.Basis T ℤ (dualLattice F')) (c : T) (μ : 𝓞 K) : Fra
 
 variable {P}
 
+/- English proof (translation)
+Introduce `h` and use `hc ((toFrac_eq_zero P).mp h)`.
+-/
 theorem toFrac_graphFirst_ne {c : T} (hc : graphFirst c ∉ P) : toFrac P (graphFirst c) ≠ 0 :=
   fun h => hc ((toFrac_eq_zero P).mp h)
 
+/- English proof (translation)
+Rewrite using `[theta, div_mul_cancel₀ _ (toFrac_graphFirst_ne hc)]`. Apply `toFrac_eq_of_sub_mem` to reduce the goal to its premises. Rewrite using `[← map_sub, ← linD_sub]`. Apply `hP` to reduce the goal to its premises. Apply `linD_mem_base hab` to reduce the goal to its premises.
+
+Establish `: ∑ s, (coef b' c μ - n) s • (b' s : Fin i → K) = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, coef_spec, hn, sub_self]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+-/
 theorem theta_mul {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
     (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (hP : stackedBase b' a ≤ P) {c : T}
     (hc : graphFirst c ∉ P) (μ : 𝓞 K) (n : T → ℤ)
@@ -173,10 +229,16 @@ def thetaHom {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (
       add_mul, theta_mul hab hP hc μ _ (coef_spec b' c μ), theta_mul hab hP hc ν _ (coef_spec b' c ν),
       linD_add, map_add, map_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaHom_apply {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (hP : stackedBase b' a ≤ P) {c : T}
     (hc : graphFirst c ∉ P) (μ : 𝓞 K) : thetaHom hab hP hc μ = theta P b' c μ := rfl
 
+/- English proof (translation)
+Rewrite using `[theta, (toFrac_eq_zero P).mpr (hP (linD_mem_base hab _ (by rw [coef_spec]; exact h))), zero_div]`.
+-/
 theorem theta_eq_zero {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (hP : stackedBase b' a ≤ P) {c : T}
     (μ : 𝓞 K) (h : algebraMap (𝓞 K) K μ • (b' c : Fin i → K) ∈ dualLattice F) : theta P b' c μ = 0 := by
@@ -199,9 +261,15 @@ def secVal (b : Module.Basis T ℤ (dualLattice F)) : dualLattice F →+ FracP P
     funext t
     simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secVal_apply (b : Module.Basis T ℤ (dualLattice F)) (ψ : dualLattice F) :
     secVal P b ψ = toFrac P (linS fun t => b.repr ψ t) := rfl
 
+/- English proof (translation)
+Establish `h : (fun s => b.repr (b t) s) = (Pi.single t 1 : T → ℤ)`. Use function extensionality and compare the values at `s`. Simplify using `[Finsupp.single_apply, Pi.single_apply, eq_comm]`. Rewrite using `[secVal_apply, h, linS_single]`.
+-/
 theorem secVal_basis (b : Module.Basis T ℤ (dualLattice F)) (t : T) :
     secVal P b (b t) = toFrac P (graphSecond t) := by
   have h : (fun s => b.repr (b t) s) = (Pi.single t 1 : T → ℤ) := by
@@ -209,6 +277,9 @@ theorem secVal_basis (b : Module.Basis T ℤ (dualLattice F)) (t : T) :
     simp [Finsupp.single_apply, Pi.single_apply, eq_comm]
   rw [secVal_apply, h, linS_single]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun x : dualLattice F => (x : Fin i → K)) (b.sum_repr ψ)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul_of_tower] at h`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hab, mul_smul]`.
+-/
 theorem sum_repr_stacked {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (ψ : dualLattice F) :
     ∑ s, (b.repr ψ s * a s) • (b' s : Fin i → K) = ψ := by
@@ -218,6 +289,11 @@ theorem sum_repr_stacked {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.B
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [hab, mul_smul]
 
+/- English proof (translation)
+Apply `mul_right_cancel₀ (toFrac_graphFirst_ne hc)` to reduce the goal to its premises. Establish `hform : formCoord (∑ s, (b.repr ψ s * a s) • (b' s : Fin i → K)) * formCoord (∑ s, (Pi.single c 1 : T → ℤ) s • (b' s : Fin i → K)) = formCoord (∑ s, (b.repr φ s * a s) • (b' s : Fin i → K)) * formCoord (∑ s, coef b' c μ s • (b' s : Fin i → K))`. Rewrite using `[sum_repr_stacked hab, sum_repr_stacked hab, sum_single_smul, coef_spec, h, formCoord_smul, formCoord_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq` using `toFrac_eq_of_sub_mem P (hP ((le_sup_left : stackedGraph b' a ≤ stackedBase b' a) (mixed_mem_graph a _ _ _ _ hform)))`.
+
+Rewrite `hq` using `[map_mul, map_mul, linD_single, fstEmb_X, ← theta_mul hab hP hc μ _ (coef_spec b' c μ)]`. Rewrite using `[secVal_apply, secVal_apply, thetaHom_apply, hq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secVal_smul {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')}
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (hP : stackedBase b' a ≤ P) {c : T}
     (hc : graphFirst c ∉ P) (μ : 𝓞 K) (φ ψ : dualLattice F)
@@ -237,6 +313,11 @@ theorem secVal_smul {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis 
   rw [secVal_apply, secVal_apply, thetaHom_apply, hq]
   ring
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℤ {v : dualLattice F | ∃ (μ : 𝓞 K) (φ : dualLattice F), ρ μ = 0 ∧ (v : Fin i → K) = algebraMap (𝓞 K) K μ • (φ : Fin i → K)} ≤ LinearMap.ker (secVal P b).toIntLinearMap`. Use `Submodule.span_le.mpr fun v hv => ?_` and prove the remaining obligations. Take `⟨μ, φ, hμ, hv⟩` from `hv`. Use `show secVal P b v = 0`. Rewrite using `[secVal_smul hab hP hc μ φ v hv, thetaHom_apply, theta_eq_zero hab hP μ (hz μ hμ), zero_mul]`.
+
+Conclude with `hle hv`.
+-/
 theorem secVal_eq_zero_of_mem_span {b : Module.Basis T ℤ (dualLattice F)}
     {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
     (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (hP : stackedBase b' a ≤ P) {c : T}
@@ -258,6 +339,37 @@ end StackedExceptionalLinearPrimeBound
 
 open StackedExceptionalLinearPrimeBound StackedExceptionalFirstGeometric in
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a _ hlt hcov hab k _ α M hdata P hPp hP hrel`. Use `haveI := hPp`. Take `⟨ρ, ρ', σ, hρ, -, hσ, hker, hsl', hsl, hα, hM⟩` from `hdata`. Take `⟨c, hc⟩ : ∃ c : T, graphFirst c ∉ P` from `hrel (Sum.inl ())`. Establish `hnd : (b' c : Fin i → K) ∉ dualLattice F`.
+
+Introduce `h`. Apply `hc` to reduce the goal to its premises. Use `hP (linD_mem_base hab (Pi.single c 1) (by rwa [sum_single_smul]))` as an intermediate fact. Rewrite `this` using `[linD_single, fstEmb_X]`. Then use the resulting hypothesis. Establish `hz : ∀ μ : 𝓞 K, ρ μ = 0 → algebraMap (𝓞 K) K μ • (b' c : Fin i → K) ∈ dualLattice F`.
+
+Introduce `μ hμ`. Use `hsl' μ (b' c) ⟨_, smul_mem_dual F' μ (b' c).2⟩ rfl` as an intermediate fact. Rewrite `this` using `[hμ, zero_mul]`. Conclude with `(hker _).mp this`. Set `ι : k →+* FracP P` to `ρ.liftOfSurjective hρ ⟨thetaHom hab hP hc, fun μ hμ => by`.
+
+Rewrite `hμ`, the goal using `[RingHom.mem_ker]`. Conclude with `theta_eq_zero hab hP μ (hz μ hμ)⟩`. Establish `hι : ∀ μ, ι (ρ μ) = theta P b' c μ` using `fun μ => RingHom.liftOfSurjective_comp_apply ρ hρ _ μ`. Establish `hxc` using `toFrac_graphFirst_ne hc`. Establish `hαc : ι (α c) ≠ 0`.
+
+Use `(map_ne_zero ι).mpr ?_` and prove the remaining obligations. Rewrite using `[hα]`. Introduce `h`. Conclude with `hnd ((hker _).mp h)`. Establish `hA : ∀ t, ι (α t) * toFrac P (graphFirst c) = ι (α c) * toFrac P (graphFirst t)`.
+
+Introduce `t`. Take `⟨l, hl⟩` from `exists_sub_mem_dual hlt hcov (b' c).2 hnd (b' t).2`. Establish `hαt : α t = ρ l * α c`. Rewrite using `[hα, hα]`. Establish `h1 : ρ' (b' t - ⟨_, smul_mem_dual F' l (b' c).2⟩) = 0` using `(hker _).mpr hl`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1, hsl' l (b' c) _ rfl]`. Establish `hxt : toFrac P (graphFirst t) = theta P b' c l * toFrac P (graphFirst c)`. Rewrite using `[theta_mul hab hP hc l _ (coef_spec b' c l)]`. Apply `toFrac_eq_of_sub_mem` to reduce the goal to its premises.
+
+Establish `hmem` using `hP (linD_mem_base hab (Pi.single t 1 - coef b' c l) (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, coef_spec, sum_single_smul]`. Conclude with `hl))`. Rewrite `hmem` using `[linD_sub, map_sub, linD_single, fstEmb_X]`. Then use the resulting hypothesis. Rewrite using `[hαt, map_mul, hι, hxt]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose χ hχ using fun j : Fin i => hσ (Pi.single j 1)`. Use `choose μ hμ using fun (t : T) (j : Fin i) => hρ (M t j)`. Establish `hB : ∀ t, toFrac P (graphSecond t) = ∑ j, ι (M t j) * secVal P b (χ j)`. Introduce `t`.
+
+Set `ψ : dualLattice F` to `∑ j, ⟨algebraMap (𝓞 K) K (μ t j) • (χ j : Fin i → K), smul_mem_dual F _ (χ j).2⟩`. Establish `hσψ : σ ψ = σ (b t)`. Establish `hs : ∀ j, σ ⟨algebraMap (𝓞 K) K (μ t j) • (χ j : Fin i → K), smul_mem_dual F _ (χ j).2⟩ = M t j • (Pi.single j 1 : Fin i → k)` using `fun j => by`. Rewrite using `[hsl (μ t j) (χ j) _ rfl, hμ, hχ]`. Rewrite using `[map_sum, Finset.sum_congr rfl fun j _ => hs j, ← hM t]`.
+
+Use function extensionality and compare the values at `j'`. Simplify using `[Pi.single_apply]`. Establish `h0` using `secVal_eq_zero_of_mem_span (P := P) (b := b) hab hP hc ρ hz (hK K i F T b k ρ σ hρ hσ hsl (b t - ψ) (by rw [map_sub, hσψ, sub_self]))`. Rewrite `h0` using `[map_sub, sub_eq_zero, secVal_basis]`. Rewrite using `[h0, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[secVal_smul hab hP hc (μ t j) (χ j) _ rfl, ← hμ t j, hι, thetaHom_apply]`. Establish `hg : (eval₂Hom ι fun o => Option.elim o (toFrac P (graphFirst c) / ι (α c)) fun j => secVal P b (χ j)).comp (linPointMap α M) = toFrac P`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Conclude with `RingHom.congr_fun (RingHom.ext_int (((eval₂Hom ι fun o => Option.elim o (toFrac P (graphFirst c) / ι (α c)) fun j => secVal P b (χ j)).comp (linPointMap α M)).comp C) ((toFrac P).comp C)) r`. Introduce and unpack `⟨(⟨⟩ | ⟨⟩), (t : T)⟩`. Use `show eval₂Hom _ _ (linPointMap α M (graphFirst t)) = toFrac P (graphFirst t)`. Rewrite using `[LinPrimeExample.linPointMap_first, map_mul, eval₂Hom_C, eval₂Hom_X']`. Simplify using `only [Option.elim]`.
+
+Rewrite using `[← mul_div_assoc, hA t, mul_div_cancel_left₀ _ hαc]`. Use `show eval₂Hom _ _ (linPointMap α M (graphSecond t)) = toFrac P (graphSecond t)`. Rewrite using `[LinPrimeExample.linPointMap_second, map_sum, hB t]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, eval₂Hom_C, eval₂Hom_X']`.
+
+Both sides reduce to the same expression. Introduce `f hf`. Rewrite `hf` using `[linPrime, RingHom.mem_ker]`. Rewrite using `[← toFrac_eq_zero P, ← hg, RingHom.comp_apply, hf, map_zero]`.
+-/
 theorem DualStackedExcLinPrimeLe.proof (hK : DualCotangentKer.Statement) : DualStackedExcLinPrimeLe.Statement := by
   intro K _ _ i F F' T _ _ b b' a _ hlt hcov hab k _ α M hdata P hPp hP hrel
   haveI := hPp

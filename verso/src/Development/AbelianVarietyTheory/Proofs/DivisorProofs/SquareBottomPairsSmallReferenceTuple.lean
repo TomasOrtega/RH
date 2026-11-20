@@ -8,6 +8,29 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTh
 
 namespace GlobalTheory.BotSmall
 
+/- English proof (translation)
+Introduce `D T L sc μ₀ hL G δ t0 Q P P' i j 𝔪 hB`. Take `⟨hr1, hr2, hr3, hr4⟩` from `hB.rank`. Establish `hd : P.d ≤ 2 * bigN D`. Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`.
+
+Establish `hj` using `j.2`. Take `⟨e1, e2, -⟩` from `ranks_exact D i j`. Establish `h1 : rankV D (i + 1) (j + 1) ≤ bigN D - 1`. Simplify using `only [rankV, bigN, Ranks.r]`. Establish `: (↑i + 1) * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ (by omega)`.
+
+Establish `: (↑j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ (by omega)`. Establish `: D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`. Use linear arithmetic over natural numbers and integers. Establish `h2 : rankV D i j ≤ rankV D (i + 1) (j + 1)`. Simplify using `only [rankV]`.
+
+Establish `: (↑i) * sLen D ≤ (↑i + 1) * sLen D` using `Nat.mul_le_mul_right _ (by omega)`. Establish `: (↑j) * D.R.t ≤ (↑j + 1) * D.R.t` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ (R : Pair D ⊤ δ t0 Q) (χ : Formalism.L2.Host.HChar D.host.E), HasChars R χ (nuH G μ₀ i j)⁻¹ → R.d = botBig D i j + botSmall D i j → ∀ τ, (R.n τ : ℝ) ≤ 2 * (maxWt D sc.cGap : ℝ)`.
+
+Introduce `R χ hc hRd τ`. Establish `habs` using `GlobalTheory.SplitWeight.abs_weight_eq_abs_infType R.W.chV' R.W.ep' (nuH G μ₀ i j)⁻¹ _ R.W.ep_pm.2 hc.2 (nuH_inv_hasInf hL G i j) τ`. Establish `hw` using `R.wt τ`. Establish `hsub` using `two_mul_wtA_sub D sc.cGap i j τ`. Use `set E := (num D sc.cGap τ).e (↑j + 1) + cen D sc.cGap τ (D.R.m - ↑i)`.
+
+Establish `hA : (wtA D sc.cGap i j τ).natAbs ≤ maxWt D sc.cGap ∧ (wtA' D sc.cGap i j τ).natAbs ≤ maxWt D sc.cGap`. Use `Finset.le_sup (f := fun x : Fin D.R.m × Fin D.R.m × D.what₂.Tau => max (wtA D sc.cGap x.1 x.2.1 x.2.2).natAbs (wtA' D sc.cGap x.1 x.2.1 x.2.2).natAbs) (Finset.mem_univ (i, j, τ))` as an intermediate fact. Establish `h2` using `le_max_right 1 (Finset.univ.sup fun x : Fin D.R.m × Fin D.R.m × D.what₂.Tau => max (wtA D sc.cGap x.1 x.2.1 x.2.2).natAbs (wtA' D sc.cGap x.1 x.2.1 x.2.2).natAbs)`. Simplify using `only at this`. Conclude with `⟨le_trans (le_max_left _ _) (this.trans h2), le_trans (le_max_right _ _) (this.trans h2)⟩`.
+
+Establish `hA1 : |wtA D sc.cGap i j τ| ≤ (maxWt D sc.cGap : ℤ)`. Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `hA.1` after adjusting the coercions. Establish `hA2 : |wtA' D sc.cGap i j τ| ≤ (maxWt D sc.cGap : ℤ)`. Rewrite using `[Int.abs_eq_natAbs]`.
+
+Conclude with `hA.2` after adjusting the coercions. Establish `hep : |(R.W.ep' : ℤ) * R.W.chV'.n τ| = |2 * E|`. Rewrite using `[abs_mul, ← habs]`. Apply the tactic sequence `rcases R.W.ep_pm.2 with h | h <;> rw [h] <;> simp`. Establish `hdz : (R.d : ℤ) = (botBig D i j : ℤ) + (botSmall D i j : ℤ)` using `by rw [hRd]; push_cast; ring`.
+
+Establish `hn : (R.n τ : ℤ) ≤ 2 * (maxWt D sc.cGap : ℤ)`. Establish `hnn : (0 : ℤ) ≤ R.n τ` using `Nat.cast_nonneg _`. Establish `hpos : 0 ≤ (R.W.ep' : ℤ) * R.W.chV'.n τ` using `by push_cast at hw; omega`. Rewrite `hep` using `[abs_of_nonneg hpos]`. Establish `h1` using `abs_le.1 hA1`.
+
+Establish `h2` using `abs_le.1 hA2`. Break down `le_or_gt 0 E with hE | hE` into its components or cases. Rewrite `hep` using `[abs_of_nonneg (by omega)]`. Move the coercions through the operations in `at hw hsub`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hep` using `[abs_of_neg (by omega)]`. Move the coercions through the operations in `at hw hsub`. Use linear arithmetic over natural numbers and integers. Conclude with `hn` after adjusting the coercions. Conclude with `⟨⟨hd, key P _ hB.chars hr3⟩, ⟨hr4 ▸ hd, key P' _ hB.chars' (hr4.trans hr3)⟩⟩`.
+-/
 theorem bottom_small : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (δ t0 : ℂ) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q) (i j : Fin D.R.m) 𝔪, IsBottom G μ₀ i j 𝔪 P P' → P.Small (bigN D) (maxWt D sc.cGap) ∧ P'.Small (bigN D) (maxWt D sc.cGap) := by
   intro D T L sc μ₀ hL G δ t0 Q P P' i j 𝔪 hB
   obtain ⟨hr1, hr2, hr3, hr4⟩ := hB.rank

@@ -10,6 +10,9 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5
 open NumberField Classical
 open scoped Pointwise
 
+/- English proof (translation)
+Rewrite using `[coeIdeal_differentIdeal (𝓞 K) K E (𝓞 E), FractionalIdeal.dual_eq_mul_inv (𝓞 K) K I, mul_inv, inv_inv, mul_comm]`.
+-/
 theorem dual_eq_inv_mul_different (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) :
     (FractionalIdeal.dual (𝓞 K) K I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) =
@@ -17,11 +20,27 @@ theorem dual_eq_inv_mul_different (K E : Type) [Field K] [Field E] [NumberField 
   rw [coeIdeal_differentIdeal (𝓞 K) K E (𝓞 E), FractionalIdeal.dual_eq_mul_inv (𝓞 K) K I, mul_inv,
     inv_inv, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[coeIdeal_differentIdeal (𝓞 K) K E (𝓞 E)]`. Conclude with `inv_ne_zero (FractionalIdeal.dual_ne_zero (𝓞 K) K one_ne_zero)`.
+-/
 theorem coeIdeal_different_ne_zero (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E] :
     ((differentIdeal (𝓞 K) (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0 := by
   rw [coeIdeal_differentIdeal (𝓞 K) K E (𝓞 E)]
   exact inv_ne_zero (FractionalIdeal.dual_ne_zero (𝓞 K) K one_ne_zero)
 
+/- English proof (translation)
+Establish `h0 : liftM M 0 = 0`. Rewrite using `[liftM, dif_pos (zero_mem M)]`. Both sides reduce to the same expression. Distinguish the cases in `hI : I = 0`. Substitute `hI` using the available equality.
+
+Rewrite using `[zero_mul]`. Establish `hm : mmR M emb (0 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = ⊥`. Rewrite using `[mmR, Submodule.span_eq_bot]`. Introduce and unpack `v ⟨a, ha, rfl⟩`. Establish `ha0 : a = 0` using `by simpa using ha`.
+
+Substitute `ha0` using the available equality. Use function extensionality and compare the values at `k`. Simplify using `[h0]`. Establish `hR : imI M (emb i) (0 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = ⊥`. Rewrite using `[imI, Submodule.span_eq_bot]`.
+
+Introduce and unpack `y ⟨a, ha, rfl⟩`. Establish `ha0 : a = 0` using `by simpa using ha`. Substitute `ha0` using the available equality. Simplify using `[h0]`. Rewrite using `[hR, lineR, hm]`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hJ : I * ((differentIdeal (𝓞 K) (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `mul_ne_zero hI (coeIdeal_different_ne_zero K E)`. Use extensionality with `x`. Rewrite using `[lineR, Submodule.mem_comap, mem_mmR_iff K E φ₀ M ι emb hinj hres hcard hM I hI, mem_imI_iff M (emb i) (hM i) _ hJ, ← dual_eq_inv_mul_different K E I]`.
+
+Use `forall₂_congr fun b _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+-/
 theorem lineR_eq (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (φ₀ : K →+* ℂ) (M : IntermediateField ℚ ℂ) [NumberField M] (ι : Type) [Fintype ι] [DecidableEq ι]
     (emb : ι → E →+* ℂ) (hinj : Function.Injective emb)
@@ -59,6 +78,9 @@ theorem lineR_eq (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E
     refine forall₂_congr fun b _ => ?_
     simp [Pi.single_apply]
 
+/- English proof (translation)
+The claim follows from `|((Algebra.norm ℚ s : ℚ) : ℝ)| ^ Module.finrank ℚ E := by have hJ : I * ((differentIdeal (𝓞 K) (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0 := mul_ne_zero hI (coeIdeal_different_ne_zero K E) have heq := lineR_eq K E φ₀ M ι emb hinj hres hcard hM I i rw [h …`.
+-/
 theorem index_lineR (K E : Type) [Field K] [Field E] [NumberField K] [NumberField E] [Algebra K E]
     (φ₀ : K →+* ℂ) (M : IntermediateField ℚ ℂ) [NumberField M] (ι : Type) [Fintype ι] [DecidableEq ι]
     (emb : ι → E →+* ℂ) (hinj : Function.Injective emb)

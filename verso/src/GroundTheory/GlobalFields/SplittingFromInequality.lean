@@ -14,11 +14,17 @@ section Approximation
 
 variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+The claim follows from `Units.ext (IdeleGroup.coe_finiteProj_diagonal v a)`.
+-/
 theorem IdeleGroup.finiteProj_diagonal (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) :
     IdeleGroup.finiteProj v (IdeleGroup.diagonal K a) =
       Units.map (algebraMap K (v.adicCompletion K)).toMonoidHom a :=
   Units.ext (IdeleGroup.coe_finiteProj_diagonal v a)
 
+/- English proof (translation)
+The claim follows from `Units.ext (IdeleGroup.coe_infiniteProj_diagonal w a)`.
+-/
 theorem IdeleGroup.infiniteProj_diagonal (w : InfinitePlace K) (a : Kˣ) :
     IdeleGroup.infiniteProj w (IdeleGroup.diagonal K a) =
       Units.map (algebraMap K w.Completion).toMonoidHom a :=
@@ -26,6 +32,15 @@ theorem IdeleGroup.infiniteProj_diagonal (w : InfinitePlace K) (a : Kˣ) :
 
 variable (L) in
 
+/- English proof (translation)
+Set `U : Set (((v : S) → (v.1.adicCompletion K)ˣ) × ((w : (Finset.univ : Finset (InfinitePlace K))) → (w.1.Completion)ˣ))` to `{p | (∀ v : S, p.1 v * IdeleGroup.finiteProj v.1 x ∈ (finiteLocalNorm L v.1).range) ∧ ∀ w : (Finset.univ : Finset (InfinitePlace K)), p.2 w * IdeleGroup.infiniteProj w.1 x ∈ (infiniteLocalNorm L w.1).range}`. Establish `hU : IsOpen U`. Simplify using `only [U, Set.ofPred_and, Set.ofPred_forall]`. Conclude with `(isOpen_iInter_of_finite fun v : S ↦ (isOpen_range_finiteLocalNorm v.1).preimage (((continuous_apply v).comp continuous_fst).mul continuous_const)).inter (isOpen_iInter_of_finite fun w ↦ (isOpen_range_infiniteLocalNorm w.1).preimage (((continuous_apply w).comp continuous_snd).mul …`. Establish `hne : U.Nonempty`.
+
+Use `⟨(fun v ↦ (IdeleGroup.finiteProj v.1 x)⁻¹, fun w ↦ (IdeleGroup.infiniteProj w.1 x)⁻¹), fun v ↦ ?_, fun w ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`. Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`.
+
+Take `⟨a, ha⟩` from `(denseRange_units_prod_pi S Finset.univ).exists_mem_open hU hne`. Use `⟨a, fun v hv ↦ ?_, fun w ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, IdeleGroup.finiteProj_diagonal]`. Conclude with `ha.1 ⟨v, hv⟩`. Rewrite using `[map_mul, IdeleGroup.infiniteProj_diagonal]`.
+
+Conclude with `ha.2 ⟨w, Finset.mem_univ w⟩`.
+-/
 theorem exists_diagonal_mul_mem_localNorms (S : Finset (HeightOneSpectrum (𝓞 K)))
     (x : IdeleGroup K) :
     ∃ a : Kˣ, (∀ v ∈ S, IdeleGroup.finiteProj v (IdeleGroup.diagonal K a * x) ∈
@@ -58,6 +73,13 @@ theorem exists_diagonal_mul_mem_localNorms (S : Finset (HeightOneSpectrum (𝓞 
   · rw [map_mul, IdeleGroup.infiniteProj_diagonal]
     exact ha.2 ⟨w, Finset.mem_univ w⟩
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations. Use `set S := (eventually_cofinite.1 h).toFinset`. Take `⟨a, hfin, hinf⟩` from `exists_diagonal_mul_mem_localNorms L S x`. Establish `hmem : IdeleGroup.diagonal K a * x ∈ (ideleNorm K L).range`. Use `mem_range_ideleNorm_of_forall _ (fun v ↦ ?_) hinf` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ S`. Conclude with `hfin v hv`. Establish `hv' : SplitsCompletely L v` using `by simpa [S] using hv`. Rewrite using `[range_finiteLocalNorm_eq_top_of_isFiniteSplit v ((splitsCompletely_iff_isFiniteSplit v).1 hv')]`. Conclude with `Subgroup.mem_top _`.
+
+Establish `hx : x = (IdeleGroup.diagonal K a * x) * (IdeleGroup.diagonal K a)⁻¹`. Rewrite using `[mul_comm, inv_mul_cancel_left]`. Rewrite using `[hx]`. Conclude with `Subgroup.mul_mem_sup hmem (inv_mem ⟨a, rfl⟩)`.
+-/
 theorem ideleNorm_range_sup_eq_top_of_eventually_splitsCompletely
     (h : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, SplitsCompletely L v) :
     (ideleNorm K L).range ⊔ (IdeleGroup.diagonal K).range = ⊤ := by
@@ -87,11 +109,17 @@ universe u
 variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
   [IsGalois K L] [IsCyclic Gal(L/K)]
 
+/- English proof (translation)
+The claim follows from `hFI.finrank_eq_one_of_sup_eq_top (ideleNorm_range_sup_eq_top_of_eventually_splitsCompletely h)`.
+-/
 theorem FirstInequality.finrank_eq_one_of_eventually_splitsCompletely (hFI : FirstInequality.{u})
     (h : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, SplitsCompletely L v) :
     Module.finrank K L = 1 :=
   hFI.finrank_eq_one_of_sup_eq_top (ideleNorm_range_sup_eq_top_of_eventually_splitsCompletely h)
 
+/- English proof (translation)
+The claim follows from `hFI.finrank_eq_one_of_eventually_splitsCompletely (eventually_cofinite.2 (hT.subset fun v hv ↦ by_contra fun hvT ↦ hv (h v hvT)))`.
+-/
 theorem FirstInequality.finrank_eq_one_of_splitsCompletely_of_finite (hFI : FirstInequality.{u})
     {T : Set (HeightOneSpectrum (𝓞 K))} (hT : T.Finite) (h : ∀ v ∉ T, SplitsCompletely L v) :
     Module.finrank K L = 1 :=

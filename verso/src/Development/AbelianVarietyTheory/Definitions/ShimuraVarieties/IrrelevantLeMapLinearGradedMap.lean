@@ -20,9 +20,15 @@ def specOverMap (g : A →ₐ[R] B) : specOver R B ⟶ specOver R A :=
     change Spec.map _ ≫ Spec.map _ = Spec.map _
     rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, g.comp_algebraMap])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem specOverMap_left (g : A →ₐ[R] B) :
     (specOverMap g).left = Spec.map (CommRingCat.ofHom (g : A →+* B)) := rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Spec.map_surjective x.left`. Establish `h : Spec.map g ≫ Spec.map (CommRingCat.ofHom (algebraMap R A)) = Spec.map (CommRingCat.ofHom (algebraMap R B))` using `hg ▸ Over.w x`. Rewrite `h` using `[← Spec.map_comp]`. Conclude with `⟨⟨g.hom, RingHom.congr_fun (congrArg (·.hom) (Spec.map_injective h))⟩, Over.OverMorphism.ext hg.symm⟩`.
+-/
 theorem exists_eq_specOverMap (x : specOver R B ⟶ specOver R A) :
     ∃ g : A →ₐ[R] B, x = specOverMap g := by
   obtain ⟨g, hg⟩ := Spec.map_surjective x.left
@@ -32,6 +38,9 @@ theorem exists_eq_specOverMap (x : specOver R B ⟶ specOver R A) :
   exact ⟨⟨g.hom, RingHom.congr_fun (congrArg (·.hom) (Spec.map_injective h))⟩,
     Over.OverMorphism.ext hg.symm⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, htU, hUV⟩` from `T.left.isBasis_affineOpens.exists_subset_of_mem_open ht V.2`. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (hU.fromSpec ≫ T.hom)`. Use `letI : Algebra R Γ(T.left, U) := ρ.hom.toAlgebra`. Use `⟨Γ(T.left, U), inferInstance, inferInstance, Over.homMk hU.fromSpec hρ.symm, IsAffineOpen.isOpenImmersion_fromSpec hU, hU.range_fromSpec.ge htU, ?_⟩` and prove the remaining obligations. Conclude with `top_le_iff.mp fun y _ => hUV (hU.range_fromSpec.le ⟨y, rfl⟩)`.
+-/
 theorem exists_specOver_nhds (T : Over (Spec (.of R))) {t : T.left} {V : T.left.Opens}
     (ht : t ∈ V) : ∃ (A : Type u) (_ : CommRing A) (_ : Algebra R A) (j : specOver R A ⟶ T),
       IsOpenImmersion j.left ∧ t ∈ Set.range j.left ∧ j.left ⁻¹ᵁ V = ⊤ := by
@@ -52,6 +61,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (SpecMap_pt W P h g)`.
+-/
 theorem specOverMap_ptOver {A B : Type u} [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
     (g : A →ₐ[R] B) (P : Fin 3 → A) (h : IsUnimodularSol (W.baseChange A) P) :
     specOverMap g ≫ ptOver W P h = ptOver W (g ∘ P) (h.baseChange g) :=
@@ -77,6 +89,11 @@ variable (hs : ∀ i, coord W' i ∈ Ideal.span (Set.range L))
 
 include hs in
 
+/- English proof (translation)
+Rewrite using `[← toIdeal_le_toIdeal_iff, irrelevant_eq_span_coord, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `(Ideal.span_le.mpr ?_ : Ideal.span (Set.range L) ≤ _) (hs i)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[← evalHom_coord W (algebraMap R (HomRing W')) L h j]`.
+
+Conclude with `Ideal.mem_map_of_mem (linearGradedMap W L hL h) (mem_irrelevant_of_mem _ one_pos (coord_mem W j))`.
+-/
 theorem irrelevant_le_map_linearGradedMap :
     irrelevant (grading W') ≤ (irrelevant (grading W)).map (linearGradedMap W L hL h) := by
   rw [← toIdeal_le_toIdeal_iff, irrelevant_eq_span_coord, Ideal.span_le]
@@ -95,6 +112,11 @@ variable {A : Type u} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
 
 include h hs in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `e : (evalHom W' ρ P hP.equation).comp (algebraMap R (HomRing W')) = ρ` using `RingHom.ext (evalHom_algebraMap W' ρ P hP.equation)`. Use `h.map (evalHom W' ρ P hP.equation)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(W.map ((evalHom W' ρ P hP.equation).comp (algebraMap R (HomRing W')))).toProjective.Equation _ at this`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+
+Rewrite using `[Set.range_comp, ← Ideal.map_span, _root_.eq_top_iff, ← hP.span_eq_top, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[← evalHom_coord W' ρ P hP.equation i]`. Conclude with `Ideal.mem_map_of_mem _ (hs i)`. Use the proof step `@[reassoc]`.
+-/
 theorem isUnimodularSol_linear :
     IsUnimodularSol (W.map ρ) (evalHom W' ρ P hP.equation ∘ L) := by
   constructor
@@ -110,6 +132,9 @@ theorem isUnimodularSol_linear :
     exact Ideal.mem_map_of_mem _ (hs i)
 
 @[reassoc]
+/- English proof (translation)
+Use `(ProjPoint.ofHom_map (linearGradedMap W L hL h) (irrelevant_le_map_linearGradedMap W L hL h hs) _ (map_irrelevant_evalHom W' hP)).trans ?_` and prove the remaining obligations. Establish `: (evalHom W' ρ P hP.equation).comp (linearGradedMap W L hL h).toRingHom = evalHom W ρ _ (isUnimodularSol_linear W L h hs ρ P hP).equation` using `homRing_hom_ext W (fun r => ((congrArg (evalHom W' ρ P hP.equation) (evalHom_algebraMap W (algebraMap R (HomRing W')) L h r)).trans (evalHom_algebraMap ..)).trans (evalHom_algebraMap ..).symm) (fun i => (congrArg (evalHom W' ρ P hP.equation) (evalHom_coord W (algebraMap R (HomRin …`. Simplify using `only [this]`. Both sides reduce to the same expression. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem ptHom_linearHom : ptHom W' ρ P hP ≫ linearHom W L hL h hs =
     ptHom W ρ (evalHom W' ρ P hP.equation ∘ L) (isUnimodularSol_linear W L h hs ρ P hP) := by
   refine (ProjPoint.ofHom_map (linearGradedMap W L hL h)
@@ -128,6 +153,9 @@ theorem ptHom_linearHom : ptHom W' ρ P hP ≫ linearHom W L hL h hs =
   rfl
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY, pt_toSpec, pt_eq_ptHom, ptHom_linearHom_assoc, ptHom_toSpec]`. Rewrite using `[chartZ, pt_toSpec, pt_eq_ptHom, ptHom_linearHom_assoc, ptHom_toSpec]`.
+-/
 theorem linearHom_toSpec : linearHom W L hL h hs ≫ toSpec W = toSpec W' := by
   apply scheme_hom_ext
   · rw [chartY, pt_toSpec, pt_eq_ptHom, ptHom_linearHom_assoc, ptHom_toSpec]
@@ -139,6 +167,9 @@ section Neg
 
 variable {A : Type*} [CommRing A]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[WeierstrassCurve.Projective.equation_iff]`. Simplify using `only [WeierstrassCurve.Projective.neg_X, WeierstrassCurve.Projective.neg_Y, WeierstrassCurve.Projective.neg_Z, WeierstrassCurve.Projective.negY]`. Take the linear combination `h`.
+-/
 theorem equation_neg {V : WeierstrassCurve A} {P : Fin 3 → A} (h : V.toProjective.Equation P) :
     V.toProjective.Equation (V.toProjective.neg P) := by
   rw [WeierstrassCurve.Projective.equation_iff] at h ⊢
@@ -146,6 +177,11 @@ theorem equation_neg {V : WeierstrassCurve A} {P : Fin 3 → A} (h : V.toProject
     WeierstrassCurve.Projective.neg_Z, WeierstrassCurve.Projective.negY]
   linear_combination h
 
+/- English proof (translation)
+Establish `h : ∀ j, V.toProjective.neg P j ∈ Ideal.span (Set.range (V.toProjective.neg P))` using `fun j => Ideal.subset_span ⟨j, rfl⟩`. Use `fin_cases i`. Conclude with `h 0`. Establish `e : P 1 = -V.toProjective.neg P 1 - V.a₁ * V.toProjective.neg P 0 - V.a₃ * V.toProjective.neg P 2`. Simplify using `only [WeierstrassCurve.Projective.neg_X, WeierstrassCurve.Projective.neg_Y, WeierstrassCurve.Projective.neg_Z, WeierstrassCurve.Projective.negY]`.
+
+Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `P 1 ∈ _`. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem (neg_mem (h 1)) (Ideal.mul_mem_left _ _ (h 0))) (Ideal.mul_mem_left _ _ (h 2))`. Conclude with `h 2`.
+-/
 theorem mem_span_neg (V : WeierstrassCurve A) (P : Fin 3 → A) (i : Fin 3) :
     P i ∈ Ideal.span (Set.range (V.toProjective.neg P)) := by
   have h : ∀ j, V.toProjective.neg P j ∈ Ideal.span (Set.range (V.toProjective.neg P)) :=
@@ -163,6 +199,9 @@ theorem mem_span_neg (V : WeierstrassCurve A) (P : Fin 3 → A) (i : Fin 3) :
       (Ideal.mul_mem_left _ _ (h 2))
   · exact h 2
 
+/- English proof (translation)
+Use `⟨equation_neg h.equation, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.eq_top_iff, ← h.span_eq_top, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_span_neg V P i`.
+-/
 theorem IsUnimodularSol.neg {V : WeierstrassCurve A} {P : Fin 3 → A} (h : IsUnimodularSol V P) :
     IsUnimodularSol V (V.toProjective.neg P) := by
   refine ⟨equation_neg h.equation, ?_⟩
@@ -170,6 +209,11 @@ theorem IsUnimodularSol.neg {V : WeierstrassCurve A} {P : Fin 3 → A} (h : IsUn
   rintro _ ⟨i, rfl⟩
   exact mem_span_neg V P i
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `coord_mem W 0`. Express the relevant statement in the definitionally equal form `-coord W 1 - algebraMap R _ W.a₁ * coord W 0 - algebraMap R _ W.a₃ * coord W 2 ∈ _`. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def]`. Conclude with `sub_mem (sub_mem (neg_mem (coord_mem W 1)) (Submodule.smul_mem _ _ (coord_mem W 0))) (Submodule.smul_mem _ _ (coord_mem W 2))`.
+
+Conclude with `coord_mem W 2`.
+-/
 theorem neg_coord_mem (i : Fin 3) :
     (W.baseChange (HomRing W)).toProjective.neg (coord W) i ∈ grading W 1 := by
   fin_cases i
@@ -184,6 +228,11 @@ def negHom : scheme W ⟶ scheme W :=
   linearHom W _ (neg_coord_mem W) (equation_neg (equation_coord W)) (mem_span_neg _ _)
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[negHom, ptHom_linearHom]`. Use `ptHom_congr W _ _ _ rfl ?_ _` and prove the remaining obligations. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;>`. Simplify using `[WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY, WeierstrassCurve.baseChange]`.
+
+Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem ptHom_negHom {A : Type u} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.map ρ) P) :
     ptHom W ρ P hP ≫ negHom W = ptHom W ρ ((W.map ρ).toProjective.neg P) hP.neg := by
@@ -195,19 +244,33 @@ theorem ptHom_negHom {A : Type u} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A
       WeierstrassCurve.baseChange]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `linearHom_toSpec ..`.
+-/
 theorem negHom_toSpec : negHom W ≫ toSpec W = toSpec W := linearHom_toSpec ..
 
 def negOver : schemeOver W ⟶ schemeOver W := Over.homMk (negHom W) (negHom_toSpec W)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 @[simp] theorem negOver_left : (negOver W).left = negHom W := rfl
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (ptHom_negHom W _ P hP) @[reassoc]`.
+-/
 theorem ptOver_negOver {A : Type u} [CommRing A] [Algebra R A] (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.baseChange A) P) :
     ptOver W P hP ≫ negOver W = ptOver W ((W.baseChange A).toProjective.neg P) hP.neg :=
   Over.OverMorphism.ext (ptHom_negHom W _ P hP)
 
 @[reassoc]
+/- English proof (translation)
+Substitute `h` using the available equality. Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY, pt_eq_ptHom, ptHom_negHom_assoc, ptHom_mapHom, ptHom_mapHom_assoc, ptHom_negHom]`. Both sides reduce to the same expression. Rewrite using `[chartZ, pt_eq_ptHom, ptHom_negHom_assoc, ptHom_mapHom, ptHom_mapHom_assoc, ptHom_negHom]`.
+
+Both sides reduce to the same expression.
+-/
 theorem negHom_mapHom {R' : Type u} [CommRing R'] {W' : WeierstrassCurve R'} (f : R →+* R')
     (h : W.map f = W') : negHom W' ≫ mapHom W f h = mapHom W f h ≫ negHom W := by
   subst h
@@ -219,8 +282,14 @@ theorem negHom_mapHom {R' : Type u} [CommRing R'] {W' : WeierstrassCurve R'} (f 
 
 def zeroUnit : 𝟙_ (Over (Spec (.of R))) ⟶ schemeOver W := Over.homMk (zero W) (zero_toSpec W)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zeroUnit_left : (zeroUnit W).left = zero W := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toUnit_zeroUnit (A : Type u) [CommRing A] [Algebra R A] :
     toUnit (specOver R A) ≫ zeroUnit W = zeroOver W A := rfl
 
@@ -240,14 +309,25 @@ structure IsSumTriple (V : WeierstrassCurve A) (P Q T : Fin 3 → A) : Prop wher
 
 variable {V : WeierstrassCurve A} {P Q T : Fin 3 → A}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => mul_comm _ _, (proportional_diagXYZ_addXYZ hP hQ).symm⟩`.
+-/
 theorem isSumTriple_addXYZ (hP : V.toProjective.Equation P) (hQ : V.toProjective.Equation Q) :
     IsSumTriple V P Q (V.toProjective.addXYZ P Q) :=
   ⟨fun _ _ => mul_comm _ _, (proportional_diagXYZ_addXYZ hP hQ).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨proportional_diagXYZ_addXYZ hP hQ, fun _ _ => mul_comm _ _⟩`.
+-/
 theorem isSumTriple_diagXYZ (hP : V.toProjective.Equation P) (hQ : V.toProjective.Equation Q) :
     IsSumTriple V P Q (diagXYZ V.toProjective P Q) :=
   ⟨proportional_diagXYZ_addXYZ hP hQ, fun _ _ => mul_comm _ _⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `e : (V.map g).toProjective.addXYZ (g ∘ P) (g ∘ Q) = g ∘ V.toProjective.addXYZ P Q` using `WeierstrassCurve.Projective.map_addXYZ ..`. Rewrite using `[e]`. Conclude with `fun i j => by simpa using congrArg g (h.add i j)`. Establish `e : diagXYZ (V.map g).toProjective (g ∘ P) (g ∘ Q) = g ∘ diagXYZ V.toProjective P Q` using `map_diagXYZ ..`.
+
+Rewrite using `[e]`. Conclude with `fun i j => by simpa using congrArg g (h.diag i j)`.
+-/
 theorem IsSumTriple.map (h : IsSumTriple V P Q T) (g : A →+* B) :
     IsSumTriple (V.map g) (g ∘ P) (g ∘ Q) (g ∘ T) := by
   constructor
@@ -260,6 +340,9 @@ theorem IsSumTriple.map (h : IsSumTriple V P Q T) (g : A →+* B) :
     rw [e]
     exact fun i j => by simpa using congrArg g (h.diag i j)
 
+/- English proof (translation)
+Use `h.map (g : A →+* B)` as an intermediate fact. Rewrite `this` using `[WeierstrassCurve.map_baseChange]`. Then use the resulting hypothesis.
+-/
 theorem IsSumTriple.baseChange {R : Type*} [CommRing R] [Algebra R A] [Algebra R B]
     {W : WeierstrassCurve R} (h : IsSumTriple (W.baseChange A) P Q T) (g : A →ₐ[R] B) :
     IsSumTriple (W.baseChange B) (g ∘ P) (g ∘ Q) (g ∘ T) := by
@@ -268,11 +351,19 @@ theorem IsSumTriple.baseChange {R : Type*} [CommRing R] [Algebra R A] [Algebra R
 
 open WeierstrassCurve.Projective in
 
+/- English proof (translation)
+The claim follows from `equiv_add_of_proportional hP hQ h.add h.diag hT`.
+-/
 theorem IsSumTriple.equiv_add {k : Type*} [Field k] {V : WeierstrassCurve k} {P Q T : Fin 3 → k}
     (h : IsSumTriple V P Q T) (hP : V.toProjective.Nonsingular P)
     (hQ : V.toProjective.Nonsingular Q) (hT : T ≠ 0) : T ≈ V.toProjective.add P Q :=
   equiv_add_of_proportional hP hQ h.add h.diag hT
 
+/- English proof (translation)
+Set `g` to `algebraMap A p.ResidueField`. Establish `e₁ : (V.map g).toProjective.addXYZ (g ∘ P) (g ∘ Q) = g ∘ V.toProjective.addXYZ P Q` using `WeierstrassCurve.Projective.map_addXYZ ..`. Establish `e₂ : diagXYZ (V.map g).toProjective (g ∘ P) (g ∘ Q) = g ∘ diagXYZ V.toProjective P Q` using `map_diagXYZ ..`. Establish `h` using `addXYZ_ne_zero_or_diagXYZ_ne_zero (hP.map g).nonsingular (hQ.map g).nonsingular`. Rewrite `h` using `[e₁, e₂]`.
+
+Apply the tactic sequence `refine h.imp (fun h => ?_) (fun h => ?_) <;>`. Conclude with `(Function.ne_iff.mp h).imp fun i hi hp => hi (Ideal.algebraMap_residueField_eq_zero.mpr hp)`.
+-/
 theorem exists_law_notMem [V.IsElliptic] (hP : IsUnimodularSol V P) (hQ : IsUnimodularSol V Q)
     (p : Ideal A) [p.IsPrime] :
     (∃ i, V.toProjective.addXYZ P Q i ∉ p) ∨ ∃ i, diagXYZ V.toProjective P Q i ∉ p := by
@@ -287,6 +378,11 @@ theorem exists_law_notMem [V.IsElliptic] (hP : IsUnimodularSol V P) (hQ : IsUnim
     exact (Function.ne_iff.mp h).imp fun i hi hp =>
       hi (Ideal.algebraMap_residueField_eq_zero.mpr hp)
 
+/- English proof (translation)
+Use `equation_of_forall_field fun k _ φ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : φ ∘ T = 0`. Rewrite using `[h0, WeierstrassCurve.Projective.equation_iff]`. Simplify using the standard rewrite rules. Establish `hP'` using `(hP.map φ).nonsingular`.
+
+Establish `hQ'` using `(hQ.map φ).nonsingular`. Conclude with `(WeierstrassCurve.Projective.equation_of_equiv ((h.map φ).equiv_add hP' hQ' h0)).mpr (WeierstrassCurve.Projective.nonsingular_add hP' hQ').left`.
+-/
 theorem IsSumTriple.equation_of_isReduced {A : Type u} [CommRing A] [_root_.IsReduced A]
     {V : WeierstrassCurve A} [V.IsElliptic] {P Q T : Fin 3 → A} (h : IsSumTriple V P Q T)
     (hP : IsUnimodularSol V P) (hQ : IsUnimodularSol V Q) : V.toProjective.Equation T := by
@@ -309,6 +405,9 @@ def fieldAdd (k : Type u) [Field k] [Algebra R k] (a b : specOver R k ⟶ scheme
     specOver R k ⟶ schemeOver W :=
   projectivePointEquiv W k ((projectivePointEquiv W k).symm a + (projectivePointEquiv W k).symm b)
 
+/- English proof (translation)
+Rewrite using `[fieldAdd, projectivePointEquiv_symm_ptOver, projectivePointEquiv_symm_ptOver]`. Take `⟨v, hv⟩` from `h.equiv_add hP.nonsingular hQ.nonsingular (isUnimodularSol_iff_ne_zero.mp hT).right`. Conclude with `(ptOver_eq_ptOver_iff W (.of_nonsingular (WeierstrassCurve.Projective.nonsingular_add hP.nonsingular hQ.nonsingular)) hT).mpr ⟨v, hv.symm⟩`.
+-/
 theorem fieldAdd_ptOver {k : Type u} [Field k] [Algebra R k] {P Q T : Fin 3 → k}
     (hP : IsUnimodularSol (W.baseChange k) P) (hQ : IsUnimodularSol (W.baseChange k) Q)
     (hT : IsUnimodularSol (W.baseChange k) T) (h : IsSumTriple (W.baseChange k) P Q T) :
@@ -320,6 +419,9 @@ theorem fieldAdd_ptOver {k : Type u} [Field k] [Algebra R k] {P Q T : Fin 3 → 
     (WeierstrassCurve.Projective.nonsingular_add hP.nonsingular hQ.nonsingular)) hT).mpr
     ⟨v, hv.symm⟩
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_eq_specOverMap x`. Rewrite using `[specOverMap_ptOver, specOverMap_ptOver, specOverMap_ptOver]`. Conclude with `(fieldAdd_ptOver W _ _ _ (h.baseChange g)).symm`.
+-/
 theorem comp_ptOver_eq_fieldAdd {A : Type u} [CommRing A] [Algebra R A] {P Q T : Fin 3 → A}
     (hP : IsUnimodularSol (W.baseChange A) P) (hQ : IsUnimodularSol (W.baseChange A) Q)
     (hT : IsUnimodularSol (W.baseChange A) T) (h : IsSumTriple (W.baseChange A) P Q T)
@@ -331,6 +433,11 @@ theorem comp_ptOver_eq_fieldAdd {A : Type u} [CommRing A] [Algebra R A] {P Q T :
 
 omit [W.IsElliptic] in
 
+/- English proof (translation)
+Establish `hc : ∀ x : scheme W, ∃ i, x ∈ coordOpen W i` using `fun x => by`. Break down `(coordOpen_one_sup_coordOpen_two W).ge (Set.mem_univ x) with h | h` into its components or cases. Use `exacts [⟨_, h⟩, ⟨_, h⟩]`. Take `⟨a, ha⟩` from `hc (p.left t)`. Take `⟨b, hb⟩` from `hc (q.left t)`.
+
+Take `⟨A, _, _, j, hj, ht, hV⟩` from `exists_specOver_nhds T (V := p.left ⁻¹ᵁ coordOpen W a ⊓ q.left ⁻¹ᵁ coordOpen W b) ⟨ha, hb⟩`. Take `⟨P, hP, -, eP⟩` from `exists_eq_ptHom_of_preimage_eq_top W (algebraMap R A) (j ≫ p).left (Over.w (j ≫ p)) a (top_le_iff.mp fun y hy => (hV.ge hy).left)`. Take `⟨Q, hQ, -, eQ⟩` from `exists_eq_ptHom_of_preimage_eq_top W (algebraMap R A) (j ≫ q).left (Over.w (j ≫ q)) b (top_le_iff.mp fun y hy => (hV.ge hy).right)`. Conclude with `⟨A, _, _, j, P, Q, hP, hQ, hj, ht, Over.OverMorphism.ext eP, Over.OverMorphism.ext eQ⟩`.
+-/
 theorem exists_nhds_eq_ptOver {T : Over (Spec (.of R))} (p q : T ⟶ schemeOver W) (t : T.left) :
     ∃ (A : Type u) (_ : CommRing A) (_ : Algebra R A) (j : specOver R A ⟶ T) (P Q : Fin 3 → A)
       (hP : IsUnimodularSol (W.baseChange A) P) (hQ : IsUnimodularSol (W.baseChange A) Q),
@@ -349,6 +456,13 @@ theorem exists_nhds_eq_ptOver {T : Over (Spec (.of R))} (p q : T ⟶ schemeOver 
     (Over.w (j ≫ q)) b (top_le_iff.mp fun y hy => (hV.ge hy).right)
   exact ⟨A, _, _, j, P, Q, hP, hQ, hj, ht, Over.OverMorphism.ext eP, Over.OverMorphism.ext eQ⟩
 
+/- English proof (translation)
+Establish `: IsSeparated (schemeOver W).hom` using `inferInstanceAs (IsSeparated (toSpec W))`. Use `exists_over_hom_of_locally (fun k _ _ x => fieldAdd W k (x ≫ p) (x ≫ q)) fun t => ?_` and prove the remaining obligations. Take `⟨A, _, _, j, P, Q, hP, hQ, hj, ⟨y, rfl⟩, eP, eQ⟩` from `exists_nhds_eq_ptOver W p q t`. Establish `: _root_.IsReduced A` using `(affine_isReduced_iff (.of A)).mp (isReduced_of_isOpenImmersion j.left)`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS, i, hi⟩ : ∃ S, IsSumTriple (W.baseChange A) P Q S ∧ ∃ i, S i ∉ y.asIdeal := by`.
+
+Break down `@exists_law_notMem _ _ _ _ _ _ hP hQ y.asIdeal y.isPrime with h | h` into its components or cases. Use `exacts [⟨_, isSumTriple_addXYZ hP.equation hQ.equation, h⟩, ⟨_, isSumTriple_diagXYZ hP.equation hQ.equation, h⟩]`. Set `g : A →ₐ[R] Localization.Away (S i)` to `IsScalarTower.toAlgHom R A _`. Establish `hS' : IsUnimodularSol (W.baseChange (Localization.Away (S i))) (g ∘ S)` using `.of_isUnit ((hS.baseChange g).equation_of_isReduced (hP.baseChange g) (hQ.baseChange g)) i (IsLocalization.Away.algebraMap_isUnit (S i))`. Establish `hg : IsOpenImmersion (specOverMap g).left` using `IsOpenImmersion.of_isLocalization (S i)`.
+
+Use `⟨_, specOverMap g ≫ j, inferInstanceAs (IsOpenImmersion ((specOverMap g).left ≫ j.left)), ptOver W _ hS', ?_, fun k _ _ x => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(PrimeSpectrum.localization_away_comap_range (Localization.Away (S i)) (S i)).ge hi`. Conclude with `⟨z, congrArg j.left hz⟩`. Simplify using `only [Category.assoc, eP, eQ, specOverMap_ptOver]`. Conclude with `comp_ptOver_eq_fieldAdd W _ _ _ (hS.baseChange g) k x`.
+-/
 theorem exists_sum {T : Over (Spec (.of R))} [IsReduced T.left] (p q : T ⟶ schemeOver W) :
     ∃ s : T ⟶ schemeOver W, ∀ (k : Type u) [Field k] [Algebra R k] (x : specOver R k ⟶ T),
       x ≫ s = fieldAdd W k (x ≫ p) (x ≫ q) := by

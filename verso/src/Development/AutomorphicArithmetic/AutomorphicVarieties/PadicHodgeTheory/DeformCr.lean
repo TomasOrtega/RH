@@ -20,10 +20,16 @@ private def extRep {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Modul
     refine LinearMap.ext fun x => ?_
     simp [hc, add_assoc, add_comm, add_left_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem extRep_apply {G A V : Type} [Group G] [CommRing A] [AddCommGroup V] [Module A V]
     (ρ : Representation A G V) (c : G → V) (hc : ∀ g h, c (g * h) = c g + ρ g (c h)) (g : G) (x : V × A) :
     extRep ρ c hc g x = (ρ g x.1 + x.2 • c g, x.2) := rfl
 
+/- English proof (translation)
+The claim follows from `h.comp (f := fun p : H × V => ((p.1 : G), p.2)) ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`.
+-/
 private theorem contAction_sub {G A V : Type} [Group G] [TopologicalSpace G] [CommRing A] [AddCommGroup V]
     [Module A V] [TopologicalSpace V] (ρ : Representation A G V) (h : ContAction ρ) (H : Subgroup G) :
     ContAction (ρ.comp H.subtype : Representation A H V) :=
@@ -42,13 +48,22 @@ private noncomputable def pair (Q : Type) {E : Type} [Field Q] [Field E] [Algebr
     (fun c w v => by
       funext i; refine TrivSqZeroExt.ext ?_ ?_ <;> simp [Matrix.mulVec_smul] <;> rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pair_fst (Q : Type) {E : Type} [Field Q] [Field E] [Algebra Q E] (n : ℕ)
     (w : Matrix (Fin n) (Fin n) E × E) (v : Fin n → E) (i : Fin n) : (pair Q n w v i).fst = w.2 * v i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pair_snd (Q : Type) {E : Type} [Field Q] [Field E] [Algebra Q E] (n : ℕ)
     (w : Matrix (Fin n) (Fin n) E × E) (v : Fin n → E) (i : Fin n) :
     (pair Q n w v i).snd = (w.1.mulVec v) i := rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ i j, (R' i j).fst = R i j` using `fun i j => by rw [h]; rfl`. Simplify using `[Matrix.mulVec, dotProduct, TrivSqZeroExt.fst_sum, h1]`.
+-/
 private theorem mulVec_fst {E : Type} [Field E] {n : ℕ} (R S : Matrix (Fin n) (Fin n) E)
     (R' : Matrix (Fin n) (Fin n) (DualNumber E)) (h : ∀ i j, R' i j = ⟨R i j, S i j⟩)
     (w : Fin n → DualNumber E) (i : Fin n) :
@@ -56,6 +71,9 @@ private theorem mulVec_fst {E : Type} [Field E] {n : ℕ} (R S : Matrix (Fin n) 
   have h1 : ∀ i j, (R' i j).fst = R i j := fun i j => by rw [h]; rfl
   simp [Matrix.mulVec, dotProduct, TrivSqZeroExt.fst_sum, h1]
 
+/- English proof (translation)
+Establish `h1 : ∀ i j, (R' i j).fst = R i j` using `fun i j => by rw [h]; rfl`. Establish `h2 : ∀ i j, (R' i j).snd = S i j` using `fun i j => by rw [h]; rfl`. Simplify using `[Matrix.mulVec, dotProduct, TrivSqZeroExt.snd_sum, h1, h2, Finset.sum_add_distrib]`.
+-/
 private theorem mulVec_snd {E : Type} [Field E] {n : ℕ} (R S : Matrix (Fin n) (Fin n) E)
     (R' : Matrix (Fin n) (Fin n) (DualNumber E)) (h : ∀ i j, R' i j = ⟨R i j, S i j⟩)
     (w : Fin n → DualNumber E) (i : Fin n) :
@@ -64,6 +82,9 @@ private theorem mulVec_snd {E : Type} [Field E] {n : ℕ} (R S : Matrix (Fin n) 
   have h2 : ∀ i j, (R' i j).snd = S i j := fun i j => by rw [h]; rfl
   simp [Matrix.mulVec, dotProduct, TrivSqZeroExt.snd_sum, h1, h2, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((r g : Matrix (Fin n) (Fin n) E) * X * ((r g)⁻¹ : GL (Fin n) E)).mulVec (Matrix.toLin' (r g : Matrix (Fin n) (Fin n) E) v) = Matrix.toLin' (r g : Matrix (Fin n) (Fin n) E) _`. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
+-/
 private theorem ad_mulVec {G E : Type} [Group G] [Field E] {n : ℕ} (r : G →* GL (Fin n) E) (g : G)
     (X : Matrix (Fin n) (Fin n) E) (v : Fin n → E) :
     (adGL r g X).mulVec (colRep r g v) = colRep r g (X.mulVec v) := by
@@ -74,6 +95,37 @@ private theorem ad_mulVec {G E : Type} [Group G] [Field E] {n : ℕ} (r : G →*
 end UpperTheory.V.Loc.DeformationPairing
 
 open UpperTheory.V.Loc.DeformationPairing in
+/- English proof (translation)
+Introduce `l _ G _ _ _ φ hφ E _ _ _ _ _ _ n r hr y hy r' hr' H _ hH`. Use `haveI : IsModuleTopology ℚ_[l] (DualNumber E) := inferInstanceAs (IsModuleTopology ℚ_[l] (E × E))`. Use `haveI : FiniteDimensional ℚ_[l] (DualNumber E) := inferInstanceAs (FiniteDimensional ℚ_[l] (E × E))`. Use `haveI : IsModuleTopology ℚ_[l] (Matrix (Fin n) (Fin n) E) := inferInstanceAs (IsModuleTopology ℚ_[l] (Fin n → Fin n → E))`. Establish `hψ : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`.
+
+Establish `cV : ContAction (colRep r)` using `Continuous.matrix_mulVec (hr.comp continuous_fst) continuous_snd`. Establish `hr'c : Continuous (fun g => (r' g : Matrix (Fin n) (Fin n) (DualNumber E)))`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [hr']`. Conclude with `(hr.matrix_elem i j).prodMk ((hy.1.matrix_mul hr).matrix_elem i j)`.
+
+Establish `cW : ContAction (colRep r')` using `Continuous.matrix_mulVec (hr'c.comp continuous_fst) continuous_snd`. Establish `cM : ContAction (adGL r)`. Establish `hi : Continuous (fun g => (((r g)⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E))`. Simplify using `only [← map_inv]`. Conclude with `hr.comp continuous_inv`.
+
+Conclude with `((hr.comp continuous_fst).matrix_mul continuous_snd).matrix_mul (hi.comp continuous_fst)`. Establish `cH : ContAction (extRep (adGL r) y hy.2)`. Unfold `ReciprocityTheory.Gal.ContAction`. Simplify using `only [extRep_apply]`. Use `Continuous.prodMk (Continuous.add ?_ ?_) (continuous_snd.comp continuous_snd)` and prove the remaining obligations.
+
+Conclude with `Continuous.comp (f := fun p : G × (Matrix (Fin n) (Fin n) E × E) => (p.1, p.2.1)) cM (by fun_prop)`. Conclude with `(continuous_snd.comp continuous_snd).smul (hy.1.comp continuous_fst)`. Establish `hb : ∀ g w v, pair ℚ_[l] n (extRep (adGL r) y hy.2 g w) (colRep r g v) = colRep r' g (pair ℚ_[l] n w v)`. Introduce `g w v`. Use function extensionality and compare the values at `i`.
+
+Establish `e' : colRep r' g (pair ℚ_[l] n w v) = (r' g : Matrix (Fin n) (Fin n) (DualNumber E)).mulVec (pair ℚ_[l] n w v)` using `rfl`. Establish `e : ∀ u, colRep r g u = (r g : Matrix (Fin n) (Fin n) E).mulVec u` using `fun _ => rfl`. Establish `e1 : (fun j => (pair ℚ_[l] n w v j).fst) = w.2 • v` using `rfl`. Establish `e2 : (fun j => (pair ℚ_[l] n w v j).snd) = w.1.mulVec v` using `rfl`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[e', mulVec_fst _ _ _ (hr' g), e1, pair_fst, extRep_apply, Matrix.mulVec_smul, e]`. Both sides reduce to the same expression. Rewrite using `[e', mulVec_snd _ _ _ (hr' g), e1, e2, pair_snd, extRep_apply, Matrix.add_mulVec, ad_mulVec, e, e, Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `crM : CrOn φ (colRep r) H → CrOn φ (adGL r) H` using `fun h => (isCrys_isDR_internalHom (φ.comp H.subtype) hψ _ _ _ (contAction_sub _ cV H) (contAction_sub _ cV H) (contAction_sub _ cM H) (LinearMap.mk₂ ℚ_[l] (fun (X : Matrix (Fin n) (Fin n) E) (v : Fin n → E) => X.mulVec v) (fun _ _ _ => Matrix.add_mulVec _ _ _) (fun _ _ _ => Matri …`.
+
+Establish `cr1 : CrOn φ (chRep (1 : G →* Eˣ)) H` using `crUnr (A := ℚ_[l]) (φ.comp H.subtype) hψ (resCoef ℚ_[l] ((chRep (1 : G →* Eˣ)).comp H.subtype : Representation E H E)) (by`. Unfold `ReciprocityTheory.Gal.ContAction`. Simplify `continuous_snd) 0` using `[resCoef, chRep]`. Use the proof step `(fun g _ x => by simp [resCoef, chRep])`. Establish `htw : twist (1 : G →* Eˣ)⁻¹ (adGL r) = adGL r`.
+
+Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[twist]`. Establish `key : CrOn φ (colRep r) H → (CrOn φ (extRep (adGL r) y hy.2) H ↔ y ∈ UpperTheory.V.Loc.finiteCocycles φ (adGL r))` using `fun h => by`. Use `crExt φ hφ (adGL r) (extRep (adGL r) y hy.2) cM cH 1 (LinearMap.inl E _ E) (LinearMap.snd E _ E) (0, 1) y LinearMap.inl_injective (Function.Exact.inl_snd) rfl (fun g x => by simp [extRep_apply]) (fun g => by simp [extRep_apply]) H hH (crM h) cr1` as an intermediate fact. Rewrite `this` using `[htw]`. Then use the resulting hypothesis.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hW`. Establish `hV : CrOn φ (colRep r) H`. Use `((isCrys_isDR_sub_quot (φ.comp H.subtype) hψ _ _ (contAction_sub _ cW H) (contAction_sub _ cV H) (((TrivSqZeroExt.fstHom ℚ_[l] E E).toLinearMap).compLeft (Fin n)) (fun g x => ?_)).2 (fun v => ?_)).1 hW` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Conclude with `mulVec_fst _ _ _ (hr' g) x i`. Conclude with `⟨fun i => TrivSqZeroExt.inl (v i), rfl⟩`. Use `⟨hV, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: y = 0` using `Subsingleton.elim _ _`.
+
+Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Use `(key hV).1 ?_` and prove the remaining obligations. Use `(isCrys_isDR_internalHom (A := ℚ_[l]) (φ.comp H.subtype) hψ (resCoef ℚ_[l] ((colRep r).comp H.subtype : Representation E H _)) (resCoef ℚ_[l] ((colRep r').comp H.subtype : Representation (DualNumber E) H _)) (resCoef ℚ_[l] ((extRep (adGL r) y hy.2).comp H.subtype : Representation …` and prove the remaining obligations. Use `Prod.ext (Matrix.ext_iff_mulVec.2 fun v => funext fun i => ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[← pair_snd ℚ_[l], ← pair_snd ℚ_[l], h]`. Use `pair_fst ℚ_[l] n w 1 ⟨0, hn⟩` as an intermediate fact. Rewrite `this` using `[h, pair_fst]`. Simplify using `using this.symm`. Introduce and unpack `⟨hV, hy'⟩`.
+
+Use `(admissible_of_bilinear_openSubgroup_galois (A := ℚ_[l]) (φ.comp H.subtype) hψ (resCoef ℚ_[l] ((extRep (adGL r) y hy.2).comp H.subtype : Representation E H _)) (resCoef ℚ_[l] ((colRep r).comp H.subtype : Representation E H _)) (resCoef ℚ_[l] ((colRep r').comp H.subtype : Represen …` and prove the remaining obligations. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `: x = pair ℚ_[l] n (0, 1) (fun i => (x i).fst) + pair ℚ_[l] n (1, 0) (fun i => (x i).snd)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [pair_fst, pair_snd]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨(_, _), rfl⟩) (Submodule.subset_span ⟨(_, _), rfl⟩)`.
+-/
 theorem UpperTheory.V.Loc.deformCr :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E] {n : ℕ} (r : G →* GL (Fin n) E), Continuous (fun g => (r g : Matrix (Fin n) (Fin n) E)) → ∀ y ∈ Z1 (adGL r), ∀ r' : G →* GL (Fin n) (DualNumber E), (∀ g i j, (r' g : Matrix (Fin n) (Fin n) (DualNumber E)) i j = ⟨(r g : Matrix (Fin n) (Fin n) E) i j, (y g * (r g : Matrix (Fin n) (Fin n) E)) i j⟩) → ∀ (H : Subgroup G) [H.Normal], IsOpen (H : Set G) → (CrOn φ (colRep r') H ↔ CrOn φ (colRep r) H ∧ y ∈ UpperTheory.V.Loc.finiteCocycles φ (adGL r)) := by
   intro l _ G _ _ _ φ hφ E _ _ _ _ _ _ n r hr y hy r' hr' H _ hH

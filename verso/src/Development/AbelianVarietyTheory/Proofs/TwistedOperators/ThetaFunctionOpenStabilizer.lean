@@ -14,10 +14,44 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.WeilLevel
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_lattice_level_open_stabilizer_unitary`.
+-/
 theorem stab : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∃ (N : AddSubgroup (WO S T)) (K : Subgroup (GA D T)), N ≤ U ∧ IsOpen (K : Set (GA D T)) ∧ (∀ x : WO S T, ∃ γ ∈ ratL T S, ∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T (x - γ) l) = 1) ∧ (∀ k ∈ K, k ∈ GfC T → ∀ u ∈ N, u.map (infPart D) = 0 → actO S T 1 k u ∈ N ∧ (actO S T 1 k u).map (infPart D) = 0) ∧ (∀ k ∈ K, k ∈ GfC T → ∀ w : WO S T, (∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T w l) = 1) → actO S T 1 k w - w ∈ N ∧ (actO S T 1 k w - w).map (infPart D) = 0 ∧ ψ (symplOH S T w (actO S T 1 k w - w)) = 1) := GlobalTheory.T.exists_lattice_level_open_stabilizer_unitary
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.thetaFunction_prod_conj_eq_of_heisenbergFixed`.
+-/
 theorem prodId : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) → ∀ (N : AddSubgroup (WO S T)) (M : Module.End ℂ (WO S T → ℂ)), (∀ f, IsThetaFunO ψ S T f → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u f = f) → IsThetaFunO ψ S T (M f) ∧ ∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u (M f) = M f) → (∀ w f, IsThetaFunO ψ S T f → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u f = f) → (∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T w l) = 1) → M (heisO ψ S T w f) = heisO ψ S T w (M f)) → (∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f, IsThetaFunO ψ S T f → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u f = f) → ∫⁻ w in 𝓕, ‖M f w‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ) → ∀ f g, IsThetaFunO ψ S T f → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u f = f) → IsThetaFunO ψ S T g → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u g = g) → ∀ x, M f x * star (M g x) = f x * star (g x) := GlobalTheory.T.thetaFunction_prod_conj_eq_of_heisenbergFixed
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_open_eq_one_of_continuous_mul_finitePoints`.
+-/
 theorem openKer : ∀ {D : D7} (T : HSp D) (K : Subgroup (GA D T)), IsOpen (K : Set (GA D T)) → ∀ F : GA D T → ℂ, Continuous F → F 1 = 1 → (∀ a ∈ K, a ∈ GfC T → ∀ b ∈ K, b ∈ GfC T → F (a * b) = F a * F b) → ∃ U : Subgroup (GA D T), IsOpen (U : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC T → F k = 1 := GlobalTheory.T.exists_open_eq_one_of_continuous_mul_finitePoints
 
+/- English proof (translation)
+Take `⟨hth, hcomp, -⟩` from `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Take `⟨l1, l2, l3, l4, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `hunit : ∀ a, ψ a * star (ψ a) = 1` using `fun a => by`. Establish `h : ‖ψ a‖ = 1` using `hψ.1.2.1 a`. Rewrite using `[Complex.star_def, Complex.mul_conj', h]`.
+
+Simplify using the standard rewrite rules. Establish `skew : ∀ x y : WO S T, symplOH S T y x = -symplOH S T x y` using `fun x y => by`. Use `l3 (x + y)` as an intermediate fact. Rewrite `this` using `[l1, l2, l2, l3, l3]`. Take the linear combination `this`.
+
+Establish `hfix : ∀ w g, (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u g = g) → (∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T w l) = 1) → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u (heisO ψ S T w g) = (heisO ψ S T w g))`. Introduce `w g hg hw u hu hu0`. Establish `e1` using `hcomp u w g`. Establish `e2` using `hcomp w u g`. Rewrite `e2` using `[hg u hu hu0]`.
+
+Rewrite using `[e1, add_comm u w]`. Establish `hs : ψ (symplOH S T u w) = ψ (symplOH S T w u)`. Establish `h1` using `hw u hu hu0`. Rewrite `h1` using `[← l4]`. Establish `h2 : ψ (symplOH S T w u) * ψ (symplOH S T w u) = 1`.
+
+Rewrite using `[← AddChar.map_add_eq_mul]`. Conclude with `h1`. Rewrite using `[skew w u, AddChar.map_neg_eq_inv]`. Conclude with `inv_eq_of_mul_eq_one_right h2`. Rewrite using `[hs, e2]`.
+
+Distinguish the cases in `h0 : ∃ f₀ x₀, IsThetaFunO ψ S T f₀ ∧ (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u f₀ = f₀) ∧ f₀ x₀ ≠ 0`. Take `⟨f₀, x₀, hf₀, hf₀N, hx₀⟩` from `h0`. Establish `h1` using `hp f₀ f₀ hf₀ hf₀N hf₀ hf₀N x₀`. Establish `hn1 : ‖M f₀ x₀‖ = ‖f₀ x₀‖`. Use `congrArg norm h1` as an intermediate fact.
+
+Rewrite `this` using `[norm_mul, norm_mul, norm_star, norm_star]`. Conclude with `(mul_self_inj_of_nonneg (norm_nonneg _) (norm_nonneg _)).1 this`. Establish `hy' : M f₀ x₀ ≠ 0`. Rewrite using `[← norm_ne_zero_iff, hn1]`. Conclude with `norm_ne_zero_iff.2 hx₀`.
+
+Establish `hs : star (M f₀ x₀) ≠ 0` using `star_ne_zero.2 hy'`. Use `⟨star (f₀ x₀) / star (M f₀ x₀), fun f hf hfN => funext fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hA⟩` from `hAR (x₀ - x)`. Use `set w := x₀ - x - γ with hw`. Establish `hg` using `hth w f₀ hf₀`.
+
+Establish `hgN` using `hfix w f₀ hf₀N hA`. Establish `h2` using `hp f (heisO ψ S T w f₀) hf hfN hg hgN x`. Rewrite `h2` using `[hc w f₀ hf₀ hf₀N hA]`. Take `⟨δ, hδ⟩` from `(ratL T S).neg_mem hγ`. Establish `hxw : x + w = ratW T S δ + x₀`.
+
+Establish `hδ' : ratW T S δ = -γ` using `hδ`. Rewrite using `[hδ', hw]`. Normalize the expressions using the abelian group laws. Simplify using `only [heisO, hxw] at h2`. Rewrite `h2` using `[hf₀.quasi δ x₀, (hM f₀ hf₀ hf₀N).quasi δ x₀]`.
+
+Rewrite `h2` using `[star_mul', star_mul', star_mul', star_mul']`. Establish `h3 : M f x * star (M f₀ x₀) = f x * star (f₀ x₀)`. Take the linear combination `(ψ (symplOH S T x w) * ψ (-symplOH S T (ratW T S δ) x₀)) * h2 - (M f x * star (M f₀ x₀) - f x * star (f₀ x₀)) * hunit (symplOH S T x w) - (M f x * star (M f₀ x₀) - f x * star (f₀ x₀)) * ψ (symplOH S T x w) * star (ψ (symplOH S T x w)) * hunit (-symplOH S T (ratW T S δ) x₀)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hs, h3, mul_comm]`. Use `⟨0, fun f hf hfN => ?_⟩` and prove the remaining obligations.
+
+Establish `: f = 0` using `funext fun y => by`. Assume the negation of the conclusion as `hy`. Conclude with `h0 ⟨f, y, hf, hfN, hy⟩`. Rewrite using `[this, map_zero, smul_zero]`.
+-/
 theorem scalar_of_prod {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (hψ : IsStdChar D ψ (-1))
     (N : AddSubgroup (WO S T)) (M : Module.End ℂ (WO S T → ℂ))
     (hAR : ∀ x : WO S T, ∃ γ ∈ ratL T S, ∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T (x - γ) l) = 1)
@@ -88,6 +122,27 @@ theorem scalar_of_prod {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} (
       exact h0 ⟨f, y, hf, hfN, hy⟩
     rw [this, map_zero, smul_zero]
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om f _ hW hf`. Establish `hψ` using `hW.std`. Take `⟨U, hUo, hU⟩` from `hf.level`. Take `⟨N, K, hNU, hKo, hAR, hKN, hKA⟩` from `stab ψ S T hψ U hUo`. Establish `hfN : ∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u f = f` using `fun u hu h0 => hU u (hNU hu) h0`.
+
+Take `⟨-, hcomp, -⟩` from `GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T`. Establish `hMV : ∀ k ∈ K, k ∈ GfC T → ∀ g, IsThetaFunO ψ S T g → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u g = g) → IsThetaFunO ψ S T (om (1, k) g) ∧ ∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u (om (1, k) g) = om (1, k) g`. Introduce `k hk hkf g hg hgN`. Use `⟨hW.om_pres _ g hg, fun u hu hu0 => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hKN k⁻¹ (K.inv_mem hk) ((GfC T).inv_mem hkf) u hu hu0`.
+
+Establish `e` using `hW.om_heis 1 k (actO S T 1 k⁻¹ u) g hg`. Establish `e2` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T 1 k u`. Rewrite `e2` using `[inv_one]`. Rewrite `e` using `[e2, hgN _ h1 h2]`. Conclude with `e.symm`.
+
+Establish `hMC : ∀ k ∈ K, k ∈ GfC T → ∀ w g, IsThetaFunO ψ S T g → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u g = g) → (∀ l ∈ N, l.map (infPart D) = 0 → ψ (symplO S T w l) = 1) → om (1, k) (heisO ψ S T w g) = heisO ψ S T w (om (1, k) g)`. Introduce `k hk hkf w g hg hgN hw`. Take `⟨d1, d2, d3⟩` from `hKA k hk hkf w hw`. Establish `e` using `hcomp w (actO S T 1 k w - w) (om (1, k) g)`. Rewrite `e` using `[(hMV k hk hkf g hg hgN).2 _ d1 d2, d3, one_smul, add_sub_cancel]`.
+
+Rewrite using `[hW.om_heis 1 k w g hg, e]`. Establish `hsc : ∀ k ∈ K, k ∈ GfC T → ∃ c : ℂ, ∀ g, IsThetaFunO ψ S T g → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u g = g) → om (1, k) g = c • g`. Introduce `k hk hkf`. Conclude with `scalar_of_prod hψ N (om (1, k)) hAR (fun g hg hgN => (hMV k hk hkf g hg hgN).1) (hMC k hk hkf) (prodId ψ S T hψ N (om (1, k)) (hMV k hk hkf) (hMC k hk hkf) (fun μ 𝓕 hμ h𝓕 g hg _ => hW.om_unit μ 𝓕 hμ h𝓕 (1, k) g hg))`. Distinguish the cases in `hf0 : ∃ x₀, f x₀ ≠ 0`.
+
+Take `⟨x₀, hx₀⟩` from `hf0`. Set `F : GA D T → ℂ` to `fun k => om (1, k) f x₀ / f x₀`. Establish `hFc : Continuous F` using `((hW.om_cont f hf x₀).comp (continuous_const.prodMk continuous_id)).div_const _`. Establish `hF1 : F 1 = 1` using `by show om (1, 1) f x₀ / f x₀ = 1`. Rewrite using `[show ((1, 1) : GA D S × GA D T) = 1 from rfl, map_one, Module.End.one_apply, div_self hx₀]`.
+
+Establish `hFc' : ∀ k ∈ K, k ∈ GfC T → ∀ c : ℂ, (∀ g, IsThetaFunO ψ S T g → (∀ u ∈ N, u.map (infPart D) = 0 → heisO ψ S T u g = g) → om (1, k) g = c • g) → F k = c`. Introduce `k hk hkf c hc`. Use `show om (1, k) f x₀ / f x₀ = c`. Rewrite using `[hc f hf hfN, Pi.smul_apply, smul_eq_mul, mul_div_assoc, div_self hx₀, mul_one]`. Establish `hFm : ∀ a ∈ K, a ∈ GfC T → ∀ b ∈ K, b ∈ GfC T → F (a * b) = F a * F b`.
+
+Introduce `a ha haf b hb hbf`. Take `⟨ca, hca⟩` from `hsc a ha haf`. Take `⟨cb, hcb⟩` from `hsc b hb hbf`. Rewrite using `[hFc' a ha haf ca hca, hFc' b hb hbf cb hcb]`. Use `show om (1, a * b) f x₀ / f x₀ = ca * cb`.
+
+Rewrite using `[show ((1, a * b) : GA D S × GA D T) = (1, a) * (1, b) by simp, map_mul, Module.End.mul_apply, hcb f hf hfN, map_smul, hca f hf hfN, smul_smul, Pi.smul_apply, smul_eq_mul, mul_div_assoc, div_self hx₀, mul_one, mul_comm]`. Take `⟨V, hVo, hV⟩` from `openKer T K hKo F hFc hF1 hFm`. Use `⟨V ⊓ K, hVo.inter hKo, fun k hk hkf => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hsc k hk.2 hkf`. Establish `h1 : c = 1` using `by rw [← hFc' k hk.2 hkf c hc]; exact hV k hk.1 hkf`.
+
+Rewrite using `[hc f hf hfN, h1, one_smul]`. Use `push_neg at hf0`. Establish `: f = 0` using `funext hf0`. Use `⟨⊤, isOpen_univ, fun k _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[this, map_zero]`.
+-/
 theorem weil_level : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (f : WO S T → ℂ), GlobalTheory.FunPr.Hypotheses₂ → IsWeilDatumO ψ S T χS χT om → IsThetaFunO ψ S T f → ∃ U : Subgroup (GA D T), IsOpen (U : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC T → om (1, k) f = f := by
   intro D ψ S T χS χT om f _ hW hf
   have hψ := hW.std

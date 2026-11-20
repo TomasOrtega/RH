@@ -8,6 +8,11 @@ open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ KS Mem FEt KSEx KSNice)
 open scoped TensorProduct
 universe u
 
+/- English proof (translation)
+Take `⟨f, -, e⟩` from `GlobalTheory.HomDescent.exists_desc S o'.A o.A o'.A (gHeckeSub o' (k • (LinearMap.id : G.La →ₗ[G.O] G.La)) N) ψ h.isMonHom h.cover (𝟙 _) inferInstance (fun a ha => by rw [gHeckeSub_smul_id_eq_one o' a ha, Category.comp_id])`. Establish `: Epi ψ.left` using `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover h.cover`. Use `⟨f, e, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_epi ψ.left, ← Over.comp_left, ← Over.comp_left, ← Category.assoc, e]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem isIso_hecke {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBase G R} {N k : ℕ} {S : Scheme.{0}}
     {s : S ⟶ Sp R} {o' : GObj gb (N * k) s} {o : GObj gb N s} {ψ : o'.A ⟶ o.A}
     (h : IsGHecke (k • (LinearMap.id : G.La →ₗ[G.O] G.La)) (k ^ 2) k N o' o ψ) : IsIso ψ := by
@@ -20,6 +25,11 @@ private theorem isIso_hecke {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R]
   rw [← cancel_epi ψ.left, ← Over.comp_left, ← Over.comp_left, ← Category.assoc, e]
   simp
 
+/- English proof (translation)
+Establish `h0` using `h.pol`. Rewrite `h0` using `[Nat.div_self (pow_pos hk 2)]`. Take `⟨h0⟩` from `h0`. Establish `l1 : (Hecke.lbPow o'.P 1).IsLB` using `LB.isLB_linComb o'.isLB _ _`. Establish `l2 : (o'.P.pull (𝟙 _)).IsLB` using `pull_isLB o'.isLB _`.
+
+Establish `i1 : LBIso (o'.P.pull (𝟙 _)) (Hecke.lbPow o'.P 1)`. Use `(GlobalTheory.PrimNorm.lbIso_iff o'.isLB _ _ _ _).2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `LBIso.trans o'.isLB l2 (pull_isLB o.isLB _) (GlobalTheory.SiegLower.lbIso_pull_id o'.isLB) (LBIso.trans l2 l1 (pull_isLB o.isLB _) i1 h0)`.
+-/
 private theorem pol_hecke {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {gb : GBase G R} {N k : ℕ} {S : Scheme.{0}}
     {s : S ⟶ Sp R} (hk : 0 < k) {o' : GObj gb (N * k) s} {o : GObj gb N s} {ψ : o'.A ⟶ o.A}
     (h : IsGHecke (k • (LinearMap.id : G.La →ₗ[G.O] G.La)) (k ^ 2) k N o' o ψ) :
@@ -35,6 +45,11 @@ private theorem pol_hecke {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R] {
   exact LBIso.trans o'.isLB l2 (pull_isLB o.isLB _) (GlobalTheory.SiegLower.lbIso_pull_id o'.isLB)
     (LBIso.trans l2 l1 (pull_isLB o.isLB _) i1 h0)
 
+/- English proof (translation)
+Establish `hp1 : 1 < p` using `(Fact.out : p.Prime).one_lt`. Establish `cpos : 0 < c` using `Nat.pos_of_ne_zero fun h => by subst h; rw [Nat.coprime_zero_left] at hc; omega`. Establish `hN : 0 < N.1` using `by have := N.2.1; omega`. Take `⟨π, ⟨hπ, o', ψ, hG, ⟨m'⟩⟩, hf, he, hs⟩` from `HeckeGen.exists_gHeckeMap_finite_etale_surjective p D R gb (c • LinearMap.id) (c ^ 2) c N.1 (hc.pow_left 2) hc N.2.1 N.2.2 (fun x y => by simp [LinearMap.smul_apply]; ring) (fun x => ⟨x, rfl⟩) dvd_rfl X X'`. Establish `hI : IsIso ψ` using `isIso_hecke hG`.
+
+Take `⟨m, -⟩` from `hMap D.toG R gb X'.X X'.s N.1 (X'.univ.forgetMul hN cpos) o' ψ hI hG.isMonHom hG.act (pol_hecke cpos hG) (fun y => (hG.eta y).symm)`. Take `⟨φ⟩` from `Unique.gObjMap_comp m m'`. Rewrite `φ` using `[Category.id_comp]`. Conclude with `⟨π, (𝟙 X'.univ.A : X'.univ.A ⟶ X'.univ.A).left ≫ φ.φ, ⟨hπ, X'.univ.forgetMul hN cpos, 𝟙 _, φ, (hSelf p D G L R gb X'.X X'.s N).2 c hN cpos X'.univ, rfl⟩, hf, he, hs⟩`.
+-/
 private theorem aux (hMap : MapOfIso) (hSelf : TransSelf) (p : ℕ) [Fact p.Prime] (D : Datum p) (G : HTGroup p) (L : Link D G)
     (R : Type) [Field R] [Algebra ℚ R] (gb : GBase D.toG R) (N : Lv p) (c : ℕ) (hc : c.Coprime p)
     (X : GenModel gb N.1) (X' : GenModel gb (N.1 * c)) :
@@ -53,6 +68,9 @@ private theorem aux (hMap : MapOfIso) (hSelf : TransSelf) (p : ℕ) [Fact p.Prim
   exact ⟨π, (𝟙 X'.univ.A : X'.univ.A ⟶ X'.univ.A).left ≫ φ.φ,
     ⟨hπ, X'.univ.forgetMul hN cpos, 𝟙 _, φ, (hSelf p D G L R gb X'.X X'.s N).2 c hN cpos X'.univ, rfl⟩, hf, he, hs⟩
 
+/- English proof (translation)
+Introduce `hMap hSelf p _ D G L R _ _ gb N M hdiv X X'`. Take `⟨M, hM⟩` from `M`. Take `⟨c, rfl⟩` from `hdiv`. Conclude with `aux hMap hSelf p D G L R gb N c (Nat.Coprime.coprime_mul_left hM.2) X X'`.
+-/
 theorem UpperTheory.Gal.G3.pWitForget :
     MapOfIso → TransSelf → WitForget := by
   intro hMap hSelf p _ D G L R _ _ gb N M hdiv X X'

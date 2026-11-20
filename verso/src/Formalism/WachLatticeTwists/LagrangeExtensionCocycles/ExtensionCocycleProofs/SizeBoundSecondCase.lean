@@ -4,6 +4,11 @@ namespace Formalism.RepresentationBoundsCohomology.N2.Size
 
 open Finset
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [JSet, eigSet, Finset.mem_union, Finset.mem_erase, Finset.mem_image, Finset.mem_product, Finset.mem_Icc] at hx`. Rewrite using `[Finset.mem_Icc]`. Break down `hx with ⟨-, ⟨⟨a, t⟩, ⟨ha, ht1, ht2⟩, rfl⟩⟩ | ⟨h1, h2⟩` into its components or cases. Establish `h3` using `hj a ha`.
+
+Apply the tactic sequence `constructor <;> omega`. Apply the tactic sequence `constructor <;> omega`.
+-/
 lemma JSet_subset (M h : ℕ) (jumps : Finset ℤ) (hj : ∀ a ∈ jumps, -(M : ℤ) ≤ a ∧ a ≤ h) :
     JSet jumps M ⊆ Icc (1 - (M : ℤ)) ((h : ℤ) + M) := by
   intro x hx
@@ -15,6 +20,9 @@ lemma JSet_subset (M h : ℕ) (jumps : Finset ℤ) (hj : ∀ a ∈ jumps, -(M : 
     constructor <;> omega
   · constructor <;> omega
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Int.card_Icc]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma JSet_card (M h : ℕ) (jumps : Finset ℤ) (hj : ∀ a ∈ jumps, -(M : ℤ) ≤ a ∧ a ≤ h) :
     (JSet jumps M).card ≤ h + 2 * M := by
   calc (JSet jumps M).card ≤ (Icc (1 - (M : ℤ)) ((h : ℤ) + M)).card :=
@@ -25,6 +33,9 @@ lemma JSet_card (M h : ℕ) (jumps : Finset ℤ) (hj : ∀ a ∈ jumps, -(M : �
 
 variable (ℓ : ℕ) [Fact ℓ.Prime]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ, ih, Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero n)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sum_range_val (n : ℕ) :
     (∑ k ∈ range (n + 1), padicValNat ℓ k) = padicValNat ℓ n.factorial := by
   induction n with
@@ -34,6 +45,17 @@ lemma sum_range_val (n : ℕ) :
       padicValNat.mul (by omega) (Nat.factorial_ne_zero n)]
     ring
 
+/- English proof (translation)
+Establish `hinj : Set.InjOn Int.natAbs (T : Set ℤ)`. Introduce `x hx y hy hxy`. Break down `Int.natAbs_eq_natAbs_iff.1 hxy with h' | h'` into its components or cases. Conclude with `h'`. Break down `hs with h | h` into its components or cases.
+
+Establish `h1` using `h x hx`. Establish `h2` using `h y hy`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `h x hx`. Establish `h2` using `h y hy`.
+
+Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `k hk`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hk`.
+
+Rewrite using `[Finset.mem_range]`. Use `hT j hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `_ _ _`. Conclude with `Nat.zero_le _`.
+
+Use `_ = padicValNat ℓ n.factorial := sum_range_val ℓ n`.
+-/
 lemma sum_val_half (n : ℕ) (T : Finset ℤ) (hT : ∀ j ∈ T, j.natAbs ≤ n)
     (hs : (∀ j ∈ T, j < 0) ∨ (∀ j ∈ T, 0 ≤ j)) :
     (∑ j ∈ T, padicValInt ℓ j) ≤ padicValNat ℓ n.factorial := by
@@ -61,6 +83,15 @@ lemma sum_val_half (n : ℕ) (T : Finset ℤ) (hT : ∀ j ∈ T, j.natAbs ≤ n)
           exact Nat.zero_le _
     _ = padicValNat ℓ n.factorial := sum_range_val ℓ n
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not T (fun j => j < 0)]`. Apply `add_le_add` to reduce the goal to its premises. Apply `sum_val_half ℓ a` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_filter]`.
+
+Establish `h1` using `Finset.mem_Icc.1 (hT hj.1)`. Use linear arithmetic over natural numbers and integers. Use `left`. Introduce `j hj`. Conclude with `(Finset.mem_filter.1 hj).2`.
+
+Apply `sum_val_half ℓ b` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_filter]`. Establish `h1` using `Finset.mem_Icc.1 (hT hj.1)`. Use linear arithmetic over natural numbers and integers.
+
+Use `right`. Introduce `j hj`. Establish `h1` using `(Finset.mem_filter.1 hj).2`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma sum_val_le (a b : ℕ) (T : Finset ℤ) (hT : T ⊆ Icc (-(a : ℤ)) b) :
     (∑ j ∈ T, padicValInt ℓ j) ≤ padicValNat ℓ a.factorial + padicValNat ℓ b.factorial := by
   rw [← Finset.sum_filter_add_sum_filter_not T (fun j => j < 0)]
@@ -83,6 +114,11 @@ lemma sum_val_le (a b : ℕ) (T : Finset ℤ) (hT : T ⊆ Icc (-(a : ℤ)) b) :
       have h1 := (Finset.mem_filter.1 hj).2
       omega
 
+/- English proof (translation)
+Apply `sum_val_le ℓ M (h + M) (JSet jumps M)` to reduce the goal to its premises. Introduce `x hx`. Establish `h1` using `Finset.mem_Icc.1 (JSet_subset M h jumps hj hx)`. Rewrite using `[Finset.mem_Icc]`. Use `push_cast`.
+
+Apply the tactic sequence `constructor <;> omega`.
+-/
 lemma JSet_sum (M h : ℕ) (jumps : Finset ℤ) (hj : ∀ a ∈ jumps, -(M : ℤ) ≤ a ∧ a ≤ h) :
     (∑ j ∈ JSet jumps M, padicValInt ℓ j) ≤
       padicValNat ℓ M.factorial + padicValNat ℓ (h + M).factorial := by
@@ -93,14 +129,27 @@ lemma JSet_sum (M h : ℕ) (jumps : Finset ℤ) (hj : ∀ a ∈ jumps, -(M : ℤ
   push_cast
   constructor <;> omega
 
+/- English proof (translation)
+Rewrite using `[sub_one_mul_padicValNat_factorial]`. Conclude with `Nat.sub_le _ _`.
+-/
 lemma legendre (n : ℕ) : (ℓ - 1) * padicValNat ℓ n.factorial ≤ n := by
   rw [sub_one_mul_padicValNat_factorial]
   exact Nat.sub_le _ _
 
+/- English proof (translation)
+Establish `h2` using `(Fact.out : ℓ.Prime).two_le`. Conclude with `le_trans (Nat.le_mul_of_pos_left _ (by omega)) (legendre ℓ n)`.
+-/
 lemma val_factorial_le_self (n : ℕ) : padicValNat ℓ n.factorial ≤ n := by
   have h2 := (Fact.out : ℓ.Prime).two_le
   exact le_trans (Nat.le_mul_of_pos_left _ (by omega)) (legendre ℓ n)
 
+/- English proof (translation)
+Establish `h2` using `(Fact.out : ℓ.Prime).two_le`. Establish `hpos : (0 : ℝ) < (ℓ : ℝ) - 1`. Establish `: (2 : ℝ) ≤ ℓ` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ hpos]`.
+
+Establish `h` using `legendre ℓ n`. Establish `hc : ((ℓ - 1 : ℕ) : ℝ) = (ℓ : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one]`. Establish `h' : (((ℓ - 1) * padicValNat ℓ n.factorial : ℕ) : ℝ) ≤ (n : ℝ)` using `by exact_mod_cast h`. Move the coercions through the operations in `[Nat.cast_mul] at h'`.
+
+Rewrite `h'` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma val_factorial_le_div (n : ℕ) :
     (padicValNat ℓ n.factorial : ℝ) ≤ (n : ℝ) / ((ℓ : ℝ) - 1) := by
   have h2 := (Fact.out : ℓ.Prime).two_le
@@ -122,6 +171,13 @@ namespace Formalism.RepresentationBoundsCohomology.N2
 
 open Finset
 
+/- English proof (translation)
+Introduce `ℓ _ M h H s jumps hs hMH hj`. Unfold `eWB eUB`. Establish `h1` using `Size.JSet_card M h jumps hj`. Establish `h2` using `Size.JSet_sum ℓ M h jumps hj`. Establish `h3` using `Size.val_factorial_le_self ℓ (2 * H)`.
+
+Establish `h4` using `Size.val_factorial_le_self ℓ M`. Establish `h5` using `Size.val_factorial_le_self ℓ (h + M)`. Establish `hsum : ∑ j ∈ JSet jumps M, (s + padicValInt ℓ j) = (JSet jumps M).card * s + ∑ j ∈ JSet jumps M, padicValInt ℓ j`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul]`. Rewrite using `[hsum]`.
+
+Establish `h6 : (JSet jumps M).card * s ≤ (h + 2 * M) * s` using `Nat.mul_le_mul_right s h1`. Establish `h7 : (h + 2 * M) * s ≤ 2 * H * s` using `Nat.mul_le_mul_right s (by omega)`. Establish `h8 : M * s ≤ H * s` using `Nat.mul_le_mul_right s (by omega)`. Establish `h9 : H ≤ H * s` using `Nat.le_mul_of_pos_right H hs`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem size_bound_second_case : StatSizeB := by
   intro ℓ _ M h H s jumps hs hMH hj
   unfold eWB eUB
@@ -140,6 +196,29 @@ theorem size_bound_second_case : StatSizeB := by
   have h9 : H ≤ H * s := Nat.le_mul_of_pos_right H hs
   nlinarith
 
+/- English proof (translation)
+Introduce `ℓ _ hℓ M h H jumps hMH hj`. Establish `hp : ℓ.Prime` using `Fact.out`. Establish `h3 : 3 ≤ ℓ`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3r : (3 : ℝ) ≤ (ℓ : ℝ)` using `by exact_mod_cast h3`. Use `set t : ℝ := (ℓ : ℝ) - 1 with ht`. Establish `ht2 : (2 : ℝ) ≤ t` using `by rw [ht]; linarith`. Establish `htpos : (0 : ℝ) < t` using `by linarith`. Establish `hH0 : (0 : ℝ) ≤ (H : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hM0 : (0 : ℝ) ≤ (M : ℝ)` using `Nat.cast_nonneg _`. Establish `hMHr : (M : ℝ) + (h : ℝ) ≤ (H : ℝ)` using `by exact_mod_cast hMH`. Establish `hh0 : (0 : ℝ) ≤ (h : ℝ)` using `Nat.cast_nonneg _`. Establish `hlog : 0 ≤ Real.logb ℓ ((H : ℝ) + 1)` using `Real.logb_nonneg (by linarith) (by linarith)`. Establish `hW0 : 0 ≤ (H : ℝ) * ℓ / t ^ 2 + 3 + Real.logb ℓ ((H : ℝ) + 1)` using `by positivity`.
+
+Establish `hW : (eWA ℓ H : ℝ) ≤ (H : ℝ) * ℓ / t ^ 2 + 3 + Real.logb ℓ ((H : ℝ) + 1)` using `Nat.floor_le hW0`. Establish `hW2 : (H : ℝ) * ℓ / t ^ 2 ≤ 3 / 2 * ((H : ℝ) / t)`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `e : 3 / 2 * ((H : ℝ) / t) * t ^ 2 = 3 / 2 * (H : ℝ) * t`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Establish `: (ℓ : ℝ) = t + 1` using `by rw [ht]; ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hv` using `Size.JSet_sum ℓ M h jumps hj`.
+
+Establish `hvr : ((∑ j ∈ JSet jumps M, padicValInt ℓ j : ℕ) : ℝ) ≤ (padicValNat ℓ M.factorial : ℝ) + (padicValNat ℓ (h + M).factorial : ℝ)`. Conclude with `hv` after adjusting the coercions. Establish `f2` using `Size.val_factorial_le_div ℓ M`. Establish `f3` using `Size.val_factorial_le_div ℓ (h + M)`. Rewrite `f2`, `f3` using `[← ht]`.
+
+Move the coercions through the operations in `at f3`. Establish `ha : (aStar ℓ M : ℝ) ≤ (M : ℝ) / t + 1`. Unfold `aStar`. Use `push_cast`. Use `@Nat.cast_div_le ℝ _ _ _ M (ℓ - 1)` as an intermediate fact.
+
+Rewrite `this` using `[Nat.cast_sub (by omega), Nat.cast_one, ← ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `f4` using `Size.val_factorial_le_div ℓ (aStar ℓ M)`. Rewrite `f4` using `[← ht]`. Establish `f5 : (aStar ℓ M : ℝ) / t ≤ ((M : ℝ) / t + 1) / 2`.
+
+Establish `h0 : (0 : ℝ) ≤ (aStar ℓ M : ℝ)` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Establish `d1 : (M : ℝ) / t ≤ (H : ℝ) / t` using `div_le_div_of_nonneg_right (by linarith) htpos.le`. Establish `d2 : (M : ℝ) / t + ((h : ℝ) + (M : ℝ)) / t ≤ 2 * ((H : ℝ) / t)`. Rewrite using `[← add_div, ← mul_div_assoc]`.
+
+Conclude with `div_le_div_of_nonneg_right (by linarith) htpos.le`. Establish `e0 : 15 / 2 * (H : ℝ) / t = 15 / 2 * ((H : ℝ) / t)` using `by ring`. Establish `hHt : 0 ≤ (H : ℝ) / t` using `by positivity`. Unfold `eUA`. Move the coercions through the operations in `at hvr ⊢`.
+
+Rewrite using `[e0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem size_bound_first_case : StatSizeA := by
   intro ℓ _ hℓ M h H jumps hMH hj
   have hp : ℓ.Prime := Fact.out

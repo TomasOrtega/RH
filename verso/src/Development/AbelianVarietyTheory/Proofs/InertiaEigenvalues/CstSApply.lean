@@ -14,6 +14,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {O : Type} [CommRing
 def cstS : Wq l a →+* (ZMod a → K⟦X⟧) :=
   Pi.ringHom fun τ => (C : K →+* K⟦X⟧).comp ((algebraMap O K).comp (emb t τ).toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cstS_apply (w : Wq l a) (τ : ZMod a) : cstS t K w τ = C (algebraMap O K (emb t τ w)) := rfl
 
 variable (a) {K} in

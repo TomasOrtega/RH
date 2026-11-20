@@ -15,9 +15,15 @@ abbrev uniqueInfinitePlaceRat : Unique (InfinitePlace ℚ) :=
 
 attribute [local instance] uniqueInfinitePlaceRat
 
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.isometryEquivRealOfIsReal wR_isReal).continuous`.
+-/
 theorem continuous_eR : Continuous eR :=
   (InfinitePlace.Completion.isometryEquivRealOfIsReal wR_isReal).continuous
 
+/- English proof (translation)
+The claim follows from `(InfinitePlace.Completion.isometryEquivRealOfIsReal wR_isReal).symm.continuous`.
+-/
 theorem continuous_eR_symm : Continuous eR.symm :=
   (InfinitePlace.Completion.isometryEquivRealOfIsReal wR_isReal).symm.continuous
 
@@ -33,17 +39,37 @@ def aRh : (InfiniteAdeleRing ℚ)ˣ ≃ₜ ℝˣ :=
   (infiniteUnitsEquiv ℚ).toHomeomorph.trans
     ((Homeomorph.piUnique fun w : InfinitePlace ℚ => (w.Completion)ˣ).trans eRu)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Conclude with `Units.ext rfl`.
+-/
 theorem coe_aRh : (aRh : (InfiniteAdeleRing ℚ)ˣ → ℝˣ) = aR := by
   funext a
   exact Units.ext rfl
 
+/- English proof (translation)
+Rewrite using `[← coe_aRh]`. Conclude with `aRh.measurableEmbedding`.
+-/
 theorem measurableEmbedding_aR : MeasurableEmbedding aR := by
   rw [← coe_aRh]
   exact aRh.measurableEmbedding
 
+/- English proof (translation)
+Rewrite using `[InfinitePlace.mult, if_pos wR_isReal]`.
+-/
 theorem mult_wR : wR.mult = 1 := by
   rw [InfinitePlace.mult, if_pos wR_isReal]
 
+/- English proof (translation)
+Use `set e := InfinitePlace.Completion.isometryEquivRealOfIsReal wR_isReal`. Establish `he : ∀ y : ℝ, ‖e.symm y‖ = |y|` using `fun y => by`. Establish `h0 : e.symm 0 = 0` using `map_zero (InfinitePlace.Completion.ringEquivRealOfIsReal wR_isReal).symm`. Rewrite using `[e.symm.isometry.norm_map_of_map_zero h0, Real.norm_eq_abs]`. Use extensionality with `A hA`.
+
+Establish `hpre : MeasurableSet (eRu ⁻¹' A)` using `eRu.continuous.measurable hA`. Rewrite using `[Measure.map_apply eRu.continuous.measurable hA, infinitePlaceUnitsMeasure, unitsMeasure_apply _ _ hpre, infinitePlaceMeasure_of_isReal wR_isReal, mult_wR, MeasureTheory.setLIntegral_map (GroundTheory.Global.measurableEmbedding_units_val.measurableSet_image' hpre) (measurable_den …`. Establish `hset : e.symm ⁻¹' (Units.val '' (eRu ⁻¹' A)) = Units.val '' A`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨u, hu, huy⟩`. Use `⟨eRu u, hu, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `eR (u : wR.Completion) = y`. Rewrite using `[huy]`. Conclude with `e.apply_symm_apply y`.
+
+Introduce and unpack `⟨r, hr, rfl⟩`. Use `⟨eRu.symm r, by simpa using hr, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[hset]`. Use `setLIntegral_congr_fun (GroundTheory.Global.measurableEmbedding_units_val.measurableSet_image' hA) fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pow_one, he]`.
+-/
 theorem map_eRu : Measure.map eRu (infinitePlaceUnitsMeasure wR) = mulR := by
   set e := InfinitePlace.Completion.isometryEquivRealOfIsReal wR_isReal
   have he : ∀ y : ℝ, ‖e.symm y‖ = |y| := fun y => by
@@ -72,6 +98,11 @@ theorem map_eRu : Measure.map eRu (infinitePlaceUnitsMeasure wR) = mulR := by
   refine setLIntegral_congr_fun (GroundTheory.Global.measurableEmbedding_units_val.measurableSet_image' hA) fun y _ => ?_
   rw [pow_one, he]
 
+/- English proof (translation)
+Establish `h1 : Measurable aR` using `measurableEmbedding_aR.measurable`. Establish `h2 : Measurable (infiniteUnitsEquiv ℚ).symm` using `(infiniteUnitsEquiv ℚ).symm.continuous.measurable`. Rewrite using `[infiniteIdeleMeasure, Measure.map_map h1 h2]`. Establish `hc : aR ∘ (infiniteUnitsEquiv ℚ).symm = eRu ∘ (MeasurableEquiv.piUnique fun w : InfinitePlace ℚ => (w.Completion)ˣ)`. Use function extensionality and compare the values at `p`.
+
+Conclude with `Units.ext rfl`. Rewrite using `[hc, ← Measure.map_map eRu.continuous.measurable (MeasurableEquiv.measurable _)]`. Establish `hp` using `(measurePreserving_piUnique fun w : InfinitePlace ℚ => infinitePlaceUnitsMeasure w).map_eq`. Use `congrArg (Measure.map eRu) hp using 2` and compare the differences between its conclusion and the goal. Conclude with `(map_eRu).symm`.
+-/
 theorem map_aR : Measure.map aR (infiniteIdeleMeasure ℚ) = mulR := by
   have h1 : Measurable aR := measurableEmbedding_aR.measurable
   have h2 : Measurable (infiniteUnitsEquiv ℚ).symm := (infiniteUnitsEquiv ℚ).symm.continuous.measurable

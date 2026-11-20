@@ -11,6 +11,11 @@ open scoped ContDiff
 
 variable {g : ℕ} {Y Y' : Scheme.{0}}
 
+/- English proof (translation)
+Unfold `valAt'`. Establish `e : x ⁻¹ᵁ φ ⁻¹ᵁ U = (x ≫ φ) ⁻¹ᵁ U` using `rfl`. Distinguish the cases in `h : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U`. Rewrite using `[dif_pos (e ▸ h), dif_pos h]`. Unfold `valAt`.
+
+Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Rewrite using `[dif_neg (e ▸ h), dif_neg h]`.
+-/
 theorem valAt'_comp (x : Sp ℂ ⟶ Y) (φ : Y ⟶ Y') (U : Y'.Opens) (f : Γ(Y', U)) :
     valAt' x (φ ⁻¹ᵁ U) (φ.app U f) = valAt' (x ≫ φ) U f := by
   unfold valAt'
@@ -22,6 +27,9 @@ theorem valAt'_comp (x : Sp ℂ ⟶ Y) (φ : Y ⟶ Y') (U : Y'.Opens) (f : Γ(Y'
     rfl
   · rw [dif_neg (e ▸ h), dif_neg h]
 
+/- English proof (translation)
+Introduce `U f`. Use `hol (φ ⁻¹ᵁ U) (φ.app U f)` as an intermediate fact. Simplify using `only [valAt'_comp] at this`. Conclude with `this`.
+-/
 theorem isHolFam_comp (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e) (φ : Y ⟶ Y') :
     IsHolFam (fun z => e z ≫ φ) := by
   intro U f
@@ -31,6 +39,15 @@ theorem isHolFam_comp (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hpt : (jetPt e hol m ≫ φ) (IsLocalRing.closedPoint _) = jetPt e' hol' m (IsLocalRing.closedPoint _)`. Rewrite using `[Scheme.Hom.comp_apply, jetPt_closedPoint, jetPt_closedPoint, ← he 0, Scheme.Hom.comp_apply]`. Use `hom_ext_of_local hpt fun U h₁ h₂ => ?_` and prove the remaining obligations. Establish `hU : e' 0 cpt ∈ U`. Establish `: jetPt e' hol' m (IsLocalRing.closedPoint _) ∈ U` using `h₂ (show IsLocalRing.closedPoint _ ∈ (⊤ : (Spec _).Opens) from trivial)`.
+
+Rewrite `this` using `[jetPt_closedPoint]`. Then use the resulting hypothesis. Establish `hU' : φ (e 0 cpt) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, he 0]`. Conclude with `hU`. Establish `k` using `nbhdPt_comp_appLE (y₀ := e 0 cpt) φ (jetψ e hol m) (jetψ_res e hol m) (jetψ_loc e hol m) U hU' h₁`.
+
+Use `(k : (jetPt e hol m ≫ φ).appLE U ⊤ h₁ = _).trans ?_` and prove the remaining obligations. Rewrite using `[jetPt_appLE e' hol' m U hU h₂, ← Category.assoc]`. Use `congr 1`. Use extensionality with `f`. Rewrite using `[CommRingCat.comp_apply, jetψ_apply, jetψ_apply]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[valAt'_comp, he z]`.
+-/
 theorem jetPt_comp (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e) (φ : Y ⟶ Y')
     (e' : (Fin g → ℂ) → (Sp ℂ ⟶ Y')) (hol' : IsHolFam e') (he : ∀ z, e z ≫ φ = e' z) (m : ℕ) :
     jetPt e hol m ≫ φ = jetPt e' hol' m := by
@@ -55,6 +72,15 @@ theorem jetPt_comp (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e) (
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Unfold `jetPt`. Rewrite using `[spMap, spec_comp_nbhdPt]`. Establish `hloc : ∀ (U : Y.Opens) (hU : e 0 cpt ∈ U) (f : Γ(Y, U)), IsUnit ((jetψ e hol m U hU ≫ CommRingCat.ofHom ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) m →+* ℂ)) f) → e 0 cpt ∈ Y.basicOpen f`. Introduce `U hU f hf`. Rewrite `hf` using `[CommRingCat.comp_apply, jetψ_apply]`.
+
+Express the relevant statement in the definitionally equal form `IsUnit ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) _) at hf`. Rewrite `hf` using `[jetAug_jetOf]`. Conclude with `(valAt'_ne_zero_iff (e 0) U (top_le_of_mem hU) f cpt).mp hf.ne_zero`. Establish `hres : ∀ (U V : Y.Opens) (hU : e 0 cpt ∈ U) (hV : e 0 cpt ∈ V) (h : V ≤ U), Y.presheaf.map (homOfLE h).op ≫ (jetψ e hol m V hV ≫ CommRingCat.ofHom ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) m →+* ℂ)) = jetψ e hol m U hU ≫ CommRingCat.ofHom ((jetAug : Jet …` using `fun U V hU hV h => by rw [← Category.assoc, jetψ_res]`. Establish `hpt` using `nbhdPt_closedPoint _ hres hloc`.
+
+Use `hom_ext_of_local (hpt.trans rfl) fun U h₁ h₂ => ?_` and prove the remaining obligations. Establish `hU : e 0 cpt ∈ U`. Establish `: nbhdPt _ hres (IsLocalRing.closedPoint _) ∈ U` using `h₁ (show IsLocalRing.closedPoint _ ∈ (⊤ : (Spec _).Opens) from trivial)`. Rewrite `this` using `[hpt]`. Then use the resulting hypothesis. Rewrite using `[nbhdPt_appLE _ hres hloc U hU h₁, Iso.comp_inv_eq]`.
+
+Use extensionality with `f`. Rewrite using `[CommRingCat.comp_apply, CommRingCat.comp_apply, jetψ_apply]`. Express the relevant statement in the definitionally equal form `(jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) _ = _`. Rewrite using `[jetAug_jetOf, valAt'_of _ _ h₂]`. Both sides reduce to the same expression.
+-/
 theorem jetPt_aug (e : (Fin g → ℂ) → (Sp ℂ ⟶ Y)) (hol : IsHolFam e) (m : ℕ) :
     spMap ((jetAug : Jet ℂ (Fin 1 × Fin g) m →ₐ[ℂ] ℂ) : Jet ℂ (Fin 1 × Fin g) m →+* ℂ) ≫ jetPt e hol m = e 0 := by
   unfold jetPt

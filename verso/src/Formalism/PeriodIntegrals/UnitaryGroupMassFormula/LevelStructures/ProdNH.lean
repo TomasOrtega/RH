@@ -14,6 +14,11 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun g : HA R σ J => g • ratTup (F` using `F) R X0 := by show Continuous fun g : HA R σ J => actTup R (HA.mat R σ J g) (ratTup (F := F) R X0)`. Unfold `actTup HA.mat`. Use `continuous_pi fun b => Continuous.matrix_mulVec ?_ continuous_const` and prove the remaining obligations. Conclude with `Units.continuous_val.comp (continuous_subtype_val : Continuous fun g : HR R σ J => (g : GL (Fin n) (R ⊗[F] E)))`. Establish `: ((stabT R σ J X0 : Subgroup (HA R σ J)) : Set (HA R σ J)) = {g | g • ratTup (F` using `F) R X0 = ratTup (F := F) R X0} := by`.
+
+Use extensionality with `g`. Conclude with `MulAction.mem_stabilizer_iff`. Rewrite using `[this]`. Conclude with `isClosed_eq hcont continuous_const`.
+-/
 theorem isClosed_stabT (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [T2Space R]
     {a : ℕ} (X0 : Fin a → Fin n → E) :
@@ -34,6 +39,15 @@ theorem isClosed_stabT (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R
 instance secondCountable_HAf : SecondCountableTopology (HA (Af F) σ J) :=
   PI.VolStabSW.TopoAF.secondCountable_HA_of (Af F) σ J
 
+/- English proof (translation)
+Take `⟨-, -, hH, -, -, -, -, -, -, -, hS⟩` from `hM`. Establish `hcl : IsClosed ((Hsub (Af F) σ J P : Subgroup (HA (Af F) σ J)) : Set (HA (Af F) σ J))` using `isClosed_stabT σ J (Af F) (tupH P)`. Establish `: LocallyCompactSpace (Hsub (Af F) σ J P)` using `hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `hH` as an intermediate fact. Establish `: SecondCountableTopology (HA (Af F) σ J)` using `secondCountable_HAf σ J`.
+
+Establish `: SecondCountableTopology (Hsub (Af F) σ J P)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Establish `: WeaklyLocallyCompactSpace (Hsub (Af F) σ J P)` using `inferInstance`. Establish `: IsFiniteMeasureOnCompacts M.μHf` using `inferInstance`. Establish `: IsLocallyFiniteMeasure M.μHf` using `isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Establish `: SigmaFinite M.μHf` using `sigmaFinite_of_locallyFinite`.
+
+Establish `: SFinite (amb M.μHf)` using `inferInstance`. Establish `hmul : Measurable fun p : HA (Af F) σ J × HA (Af F) σ J => p.1 * p.2` using `measurable_mul`. Introduce `f hf`. Establish `e1 : ∫⁻ k, f (k : HA (Af F) σ J) ∂M.μSf = ∫⁻ x, f x ∂(amb M.μSf)` using `(lintegral_map hf measurable_subtype_coe).symm`. Rewrite using `[e1, hS, lintegral_map hf hmul, lintegral_prod (fun p : HA (Af F) σ J × HA (Af F) σ J => f (p.1 * p.2)) (hf.comp hmul).aemeasurable]`.
+
+Establish `hin : Measurable fun x : HA (Af F) σ J => ∫⁻ y, f (x * y) ∂(amb M.μHf)` using `Measurable.lintegral_prod_right' (f := fun p : HA (Af F) σ J × HA (Af F) σ J => f (p.1 * p.2)) (hf.comp hmul)`. Rewrite using `[lintegral_map hin measurable_subtype_coe]`. Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Conclude with `lintegral_map (hf.comp (measurable_const_mul _)) measurable_subtype_coe`.
+-/
 theorem prodNH_of {r : ℕ} (P : Frame E n r) (M : MeasW σ J P) (hM : M.IsTextNorm) :
     IsProdNH F E σ n J (Ssub (Af F) σ J P) (Nsub (Af F) σ J P) (Hsub (Af F) σ J P) M.μSf M.μNf M.μHf := by
   obtain ⟨-, -, hH, -, -, -, -, -, -, -, hS⟩ := hM
@@ -66,6 +80,9 @@ namespace MassDataLevelSSteps
 
 open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.TypedSets
 
+/- English proof (translation)
+Introduce `D X w`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.finite_of_finrank_pos (by rw [X.B.I.cm.deg2]; norm_num)`. Conclude with `ProdW.prodNH_of X.B.I.cm.sig X.B.I.J _ (X.measW w) (X.measW_norm w)`.
+-/
 theorem prodNH_holds : ProdNH := by
   intro D X w
   have : FiniteDimensional X.B.I.F X.B.I.E :=

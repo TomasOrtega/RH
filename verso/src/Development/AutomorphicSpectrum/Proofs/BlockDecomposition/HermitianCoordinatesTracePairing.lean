@@ -46,6 +46,9 @@ def hermF (σ : E →ₐ[F] E) (r : ℕ) : Submodule F (Matrix (Fin r) (Fin r) E
 def tF (a b : Matrix (Fin r) (Fin r) E) : F :=
   (1 / 2) * Algebra.trace F E (Matrix.trace (a * b))
 
+/- English proof (translation)
+Rewrite using `[tF, tF, Matrix.trace_mul_comm]`.
+-/
 theorem tF_comm (a b : Matrix (Fin r) (Fin r) E) : (tF a b : F) = tF b a := by
   rw [tF, tF, Matrix.trace_mul_comm]
 
@@ -62,10 +65,28 @@ def tB (σ : E →ₐ[F] E) : LinearMap.BilinForm F (hermF σ r) :=
       simp only [tF, Submodule.coe_smul, Matrix.mul_smul, Matrix.trace_smul, map_smul, smul_eq_mul]
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tB_apply (σ : E →ₐ[F] E) (a b : hermF σ r) : tB σ a b = tF a.1 b.1 := rfl
 
 variable [FiniteDimensional F E] [Algebra.IsSeparable F E] [CharZero F]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, h i j ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h0 (Matrix.ext hc)`. Take `⟨z, hz⟩` from `Algebra.trace_surjective F E 1`.
+
+Set `s : E ≃ₐ[F] E` to `AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ)`. Establish `hs : Algebra.trace F E (σ z) = Algebra.trace F E z` using `Algebra.trace_eq_of_algEquiv s z`. Use `set m : Matrix (Fin r) (Fin r) E := Matrix.single j i (z * (h i j)⁻¹) with hm`. Establish `hct : ct σ (ct σ m) = m`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Simplify using `[ct, hσ]`. Establish `hk : m + ct σ m ∈ hermF σ r`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `e : ct σ (m + ct σ m) a b = σ (m b a) + σ (ct σ m b a)`. Simplify using `[ct]`.
+
+Rewrite using `[e, Matrix.add_apply]`. Establish `e2 : σ (ct σ m b a) = m a b` using `congrFun (congrFun hct a) b`. Establish `e3 : σ (m b a) = ct σ m a b` using `rfl`. Rewrite using `[e2, e3, add_comm]`. Use `⟨m + ct σ m, hk, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Matrix.trace (h * m) = z`. Rewrite using `[hm, Matrix.trace_mul_single, op_smul_eq_mul, mul_comm z, ← mul_assoc, mul_inv_cancel₀ hij, one_mul]`. Establish `h2 : Matrix.trace (h * ct σ m) = σ z`. Establish `ht : ∀ X : Matrix (Fin r) (Fin r) E, Matrix.trace (ct σ X) = σ (Matrix.trace X)` using `fun X => by`. Simplify using `[ct, Matrix.trace, map_sum]`.
+
+Establish `hmul : ct σ (m * h) = ct σ h * ct σ m`. Simplify using `only [ct]`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Establish `h3 : h * ct σ m = ct σ (m * h)` using `by rw [hmul, hh]`. Rewrite using `[h3, ht, Matrix.trace_mul_comm, h1]`.
+
+Rewrite using `[tF, Matrix.mul_add, Matrix.trace_add, h1, h2, map_add, hs, hz]`. Evaluate the numerical expressions.
+-/
 theorem exists_tF_ne (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {h : Matrix (Fin r) (Fin r) E}
     (hh : ct σ h = h) (h0 : h ≠ 0) : ∃ k ∈ hermF σ r, (tF h k : F) ≠ 0 := by
   classical
@@ -102,16 +123,35 @@ theorem exists_tF_ne (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {h : Matr
   rw [tF, Matrix.mul_add, Matrix.trace_add, h1, h2, map_add, hs, hz]
   norm_num
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Take `⟨k, hk, hne⟩` from `exists_tF_ne σ hσ (r := r) a.2 (fun e => h0 (Subtype.ext e))`. Conclude with `hne (h ⟨k, hk⟩)`.
+-/
 theorem tB_sep (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (a : hermF σ r)
     (h : ∀ b : hermF σ r, (tF a.1 b.1 : F) = 0) : a = 0 := by
   by_contra h0
   obtain ⟨k, hk, hne⟩ := exists_tF_ne σ hσ (r := r) a.2 (fun e => h0 (Subtype.ext e))
   exact hne (h ⟨k, hk⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a h => tB_sep σ hσ a h, fun a h => tB_sep σ hσ a fun b => (tF_comm _ _).trans (h b)⟩`.
+-/
 theorem tB_nondegenerate (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) :
     (tB σ : LinearMap.BilinForm F (hermF σ r)).Nondegenerate :=
   ⟨fun a h => tB_sep σ hσ a h, fun a h => tB_sep σ hσ a fun b => (tF_comm _ _).trans (h b)⟩
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F (hermF σ r)`. Establish `hB` using `tB_nondegenerate (r := r) σ hσ`. Set `b'` to `(tB σ : LinearMap.BilinForm F (hermF σ r)).dualBasis hB b`. Establish `hd : ∀ i j, (tF (b' i).1 (b j).1 : F) = if j = i then 1 else 0` using `fun i j => LinearMap.BilinForm.apply_dualBasis_left hB b i j`. Establish `hrep : ∀ x : hermF σ r, ∀ i, b.repr x i = tF (b' i).1 x.1`.
+
+Introduce `x i`. Use `conv_rhs => rw [← b.sum_repr x]`. Establish `: (tF (b' i).1 (∑ j, b.repr x j • b j : hermF σ r).1 : F) = tB σ (b' i) (∑ j, b.repr x j • b j)` using `rfl`. Rewrite using `[this, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Use `hd i i` as an intermediate fact. Rewrite using `[tB_apply, this]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+
+Rewrite using `[tB_apply, hd, if_neg hj, mul_zero]`. Simplify using the standard rewrite rules. Use `⟨_, fun i => (b i).1, fun i => (b' i).1, fun i => (b i).2, fun i => (b' i).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[tF_comm, hd]`.
+
+Introduce `h hh`. Establish `hx : (⟨h, hh⟩ : hermF σ r) = ∑ i, (tF (b' i).1 h : F) • b i` using `by conv_lhs => rw [← b.sum_repr ⟨h, hh⟩]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hrep]`. Simplify using `using congrArg Subtype.val hx.symm`. Introduce `h hh`.
+
+Establish `hx : (⟨h, hh⟩ : hermF σ r) = ∑ i, (tF (b i).1 h : F) • b' i` using `by conv_lhs => rw [← b'.sum_repr ⟨h, hh⟩]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, tB_apply, tF_comm]`. Simplify using `using congrArg Subtype.val hx.symm`.
+-/
 theorem exists_dual (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (r : ℕ) :
     ∃ (n : ℕ) (e e' : Fin n → Matrix (Fin r) (Fin r) E),
     (∀ i, ct σ (e i) = e i) ∧ (∀ i, ct σ (e' i) = e' i) ∧
@@ -162,20 +202,32 @@ section Gen
 
 variable {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, TensorProduct.smul_tmul']`. Consider the case `add x y h1 h2 => rw [smul_add, map_add, h1, h2, map_add, smul_add]`.
+-/
 theorem sigR_smul_gen (σ : E →ₐ[F] E) (c : R) (x : R ⊗[F] E) : sigR R σ (c • x) = c • sigR R σ x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a e => simp [sigR, TensorProduct.smul_tmul']
   | add x y h1 h2 => rw [smul_add, map_add, h1, h2, map_add, smul_add]
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul']`.
+-/
 theorem alg_smul_tmul (c : F) (e : E) :
     algebraMap F R c • ((1 : R) ⊗ₜ[F] e) = (1 : R) ⊗ₜ[F] (c • e) := by
   rw [TensorProduct.smul_tmul', TensorProduct.tmul_smul, smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one,
     TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem smul_one_tmul (a : R) (e : E) : a • ((1 : R) ⊗ₜ[F] e) = a ⊗ₜ[F] e := by
   rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h2 : σ (2 : E) = 2` using `map_ofNat σ 2`. Simplify using `[ct, hσ, add_comm, h2, mul_add]`.
+-/
 theorem hmid_herm {r : ℕ} (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (m : Matrix (Fin r) (Fin r) E) :
     ct σ ((1 / 2 : E) • (m + ct σ m)) = (1 / 2 : E) • (m + ct σ m) := by
   refine Matrix.ext fun i j => ?_
@@ -191,44 +243,76 @@ variable {D : D7} {r : ℕ}
 def halfTrL (D : D7) : AE D →ₗ[AF D.host.F] AF D.host.F :=
   (algebraMap D.host.F (AF D.host.F) (1 / 2)) • Algebra.trace (AF D.host.F) (AE D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem halfTrL_apply (z : AE D) : halfTrL D z = halfTr z := rfl
 
 def uL (m : Matrix (Fin r) (Fin r) D.host.E) : Mx D r r →ₗ[AF D.host.F] AF D.host.F :=
   (halfTrL D) ∘ₗ (Matrix.traceLinearMap (Fin r) (AF D.host.F) (AE D)) ∘ₗ
     (LinearMap.mulLeft (AF D.host.F) (rat m : Mx D r r))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uL_apply (m : Matrix (Fin r) (Fin r) D.host.E) (x : Mx D r r) :
     uL m x = halfTr (Matrix.trace (HMul.hMul (rat m) x : Mx D r r)) := rfl
 
+/- English proof (translation)
+Simplify using `only [rat, Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+-/
 theorem trace_rat (M : Matrix (Fin r) (Fin r) D.host.E) :
     Matrix.trace (rat M : Mx D r r) = incA D (Matrix.trace M) := by
   simp only [rat, Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
+/- English proof (translation)
+Rewrite using `[uL_apply, ← rat_mul, trace_rat, GlobalTheory.CompanionTheory.ThetaInv.halfTr_incA, tF]`.
+-/
 theorem uL_rat (m h : Matrix (Fin r) (Fin r) D.host.E) :
     uL m (rat h) = algebraMap D.host.F (AF D.host.F) (tF m h) := by
   rw [uL_apply, ← rat_mul, trace_rat, GlobalTheory.CompanionTheory.ThetaInv.halfTr_incA, tF]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => alg_smul_tmul (R := AF D.host.F) c (M i j)`.
+-/
 theorem algebraMap_smul_rat (c : D.host.F) (M : Matrix (Fin r) (Fin r) D.host.E) :
     algebraMap D.host.F (AF D.host.F) c • (rat M : Mx D r r) = rat (c • M) :=
   Matrix.ext fun i j => alg_smul_tmul (R := AF D.host.F) c (M i j)
 
+/- English proof (translation)
+The claim follows from `map_sum ((incA D).toAddMonoidHom.mapMatrix (m := Fin r) (n := Fin r)) f s`.
+-/
 theorem rat_sum {ι : Type} (s : Finset ι) (f : ι → Matrix (Fin r) (Fin r) D.host.E) :
     (rat (∑ i ∈ s, f i) : Mx D r r) = ∑ i ∈ s, rat (f i) :=
   map_sum ((incA D).toAddMonoidHom.mapMatrix (m := Fin r) (n := Fin r)) f s
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => sigR_smul_gen (R := AF D.host.F) D.sp.cm.sig a (x j i)`.
+-/
 theorem adj_rsmul (a : AF D.host.F) (x : Mx D r r) : adj (a • x) = a • adj x :=
   Matrix.ext fun i j => sigR_smul_gen (R := AF D.host.F) D.sp.cm.sig a (x j i)
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.HermVol.hermPart, GlobalTheory.CompanionTheory.HermVol.hermPart, adj_rsmul, ← smul_add]`. Conclude with `Matrix.ext fun i j => mul_smul_comm a (half D) _`.
+-/
 theorem hermPart_smul (a : AF D.host.F) (x : Mx D r r) :
     GlobalTheory.CompanionTheory.HermVol.hermPart D r (a • x) = a • GlobalTheory.CompanionTheory.HermVol.hermPart D r x := by
   rw [GlobalTheory.CompanionTheory.HermVol.hermPart, GlobalTheory.CompanionTheory.HermVol.hermPart, adj_rsmul, ← smul_add]
   exact Matrix.ext fun i j => mul_smul_comm a (half D) _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.HermVol.hermPart, rat_smul, rat_add]`. Both sides reduce to the same expression.
+-/
 theorem hermPart_ratm (m : Matrix (Fin r) (Fin r) D.host.E) :
     GlobalTheory.CompanionTheory.HermVol.hermPart D r (rat m) = rat ((1 / 2 : D.host.E) • (m + ct D.sp.cm.sig m)) := by
   rw [GlobalTheory.CompanionTheory.HermVol.hermPart, rat_smul, rat_add]; rfl
 
+/- English proof (translation)
+Use `Matrix.ext fun k l => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = k ∧ j = l`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [Matrix.single_apply_same]`. Conclude with `(smul_one_tmul (R := AF D.host.F) a e).symm.trans (congrArg (a • ·) (by simp [rat]; rfl))`.
+
+Use `show Matrix.single i j (a ⊗ₜ[D.host.F] e) k l = a • incA D (Matrix.single i j e k l)`. Rewrite using `[Matrix.single_apply_of_ne _ _ _ _ _ h, Matrix.single_apply_of_ne _ _ _ _ _ h, map_zero, smul_zero]`.
+-/
 theorem single_tmul (i j : Fin r) (a : AF D.host.F) (e : D.host.E) :
     (Matrix.single i j (a ⊗ₜ[D.host.F] e) : Mx D r r) = a • rat (Matrix.single i j e) := by
   refine Matrix.ext fun k l => ?_
@@ -239,6 +323,15 @@ theorem single_tmul (i j : Fin r) (a : AF D.host.F) (e : D.host.E) :
   · show Matrix.single i j (a ⊗ₜ[D.host.F] e) k l = a • incA D (Matrix.single i j e k l)
     rw [Matrix.single_apply_of_ne _ _ _ _ _ h, Matrix.single_apply_of_ne _ _ _ _ _ h, map_zero, smul_zero]
 
+/- English proof (translation)
+Establish `hs : ∀ {ι : Type} (s : Finset ι) (f : ι → Mx D r r), (∀ i, P (f i)) → P (∑ i ∈ s, f i)` using `by classical`. Introduce `ι s f hf`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha]`.
+
+Conclude with `hadd _ _ (hf a) ih`. Establish `h1 : ∀ (i j : Fin r) (z : AE D), P (Matrix.single i j z)`. Introduce `i j z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simpa using h0`.
+
+Consider the case `tmul a e => rw [single_tmul]`. Conclude with `hgen a _`. Consider the case `add z w hz hw => rw [Matrix.single_add]`. Conclude with `hadd _ _ hz hw`. Rewrite using `[Matrix.matrix_eq_sum_single x]`.
+
+Conclude with `hs _ _ fun i => hs _ _ fun j => h1 i j _`.
+-/
 theorem mx_induction {P : Mx D r r → Prop} (h0 : P 0) (hadd : ∀ x y, P x → P y → P (x + y))
     (hgen : ∀ (a : AF D.host.F) (m : Matrix (Fin r) (Fin r) D.host.E), P (a • rat m)) (x : Mx D r r) : P x := by
   have hs : ∀ {ι : Type} (s : Finset ι) (f : ι → Mx D r r), (∀ i, P (f i)) → P (∑ i ∈ s, f i) := by
@@ -256,6 +349,15 @@ theorem mx_induction {P : Mx D r r → Prop} (h0 : P 0) (hadd : ∀ x y, P x →
   rw [Matrix.matrix_eq_sum_single x]
   exact hs _ _ fun i => hs _ _ fun j => h1 i j _
 
+/- English proof (translation)
+Establish `key : ∀ y : Mx D r r, ∑ i, uL (m' i) (GlobalTheory.CompanionTheory.HermVol.hermPart D r y) • (rat (m i) : Mx D r r) = GlobalTheory.CompanionTheory.HermVol.hermPart D r y`. Use `mx_induction ?_ ?_ ?_` and prove the remaining obligations. Establish `h0 : GlobalTheory.CompanionTheory.HermVol.hermPart D r (0 : Mx D r r) = 0`. Simplify using `[GlobalTheory.CompanionTheory.HermVol.hermPart]`. Simplify using `[h0]`.
+
+Introduce `x y hx hy`. Rewrite using `[GlobalTheory.CompanionTheory.HermVol.hermPart_add]`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib, hx, hy]`. Introduce `a g`. Rewrite using `[hermPart_smul, hermPart_ratm]`.
+
+Simplify using `only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Use `congr 1`. Simplify using `only [uL_rat, algebraMap_smul_rat]`. Rewrite using `[← rat_sum, hm _ (hmid_herm _ (fun x => star_star x) g)]`. Use `key x` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.CompanionTheory.HermVol.hermPart_of_mem hx]`. Then use the resulting hypothesis.
+-/
 theorem sum_uL_smul {n : ℕ} (m m' : Fin n → Matrix (Fin r) (Fin r) D.host.E)
     (hm : ∀ h : Matrix (Fin r) (Fin r) D.host.E, ct D.sp.cm.sig h = h → ∑ i, (tF (m' i) h : D.host.F) • m i = h)
     {x : Mx D r r} (hx : x ∈ hermA D r) : ∑ i, uL (m' i) x • (rat (m i) : Mx D r r) = x := by
@@ -287,22 +389,37 @@ section Main
 
 variable {D : D7} {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (R := AF D.host.F) (halfTrL D)`.
+-/
 theorem continuous_halfTrL : Continuous (halfTrL D) :=
   IsModuleTopology.continuous_of_linearMap (R := AF D.host.F) (halfTrL D)
 
+/- English proof (translation)
+The claim follows from `continuous_halfTrL.comp (Continuous.matrix_trace (continuous_const.matrix_mul continuous_id))`.
+-/
 theorem continuous_uL (m : Matrix (Fin r) (Fin r) D.host.E) : Continuous (uL m) :=
   continuous_halfTrL.comp (Continuous.matrix_trace (continuous_const.matrix_mul continuous_id))
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (R := AF D.host.F) (LinearMap.toSpanSingleton (AF D.host.F) (AE D) z)`.
+-/
 theorem continuous_smul_const (z : AE D) : Continuous fun a : AF D.host.F => a • z :=
   IsModuleTopology.continuous_of_linearMap (R := AF D.host.F)
     (LinearMap.toSpanSingleton (AF D.host.F) (AE D) z)
 
+/- English proof (translation)
+Use `continuous_matrix fun k l => ?_` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply]`. Conclude with `continuous_smul_const _`.
+-/
 theorem continuous_smul_rat (M : Matrix (Fin r) (Fin r) D.host.E) :
     Continuous fun a : AF D.host.F => a • (rat M : Mx D r r) := by
   refine continuous_matrix fun k l => ?_
   simp only [Matrix.smul_apply]
   exact continuous_smul_const _
 
+/- English proof (translation)
+Set `p : Mx D r r →ₗ[AF D.host.F] AF D.host.F` to `(halfTrL D) ∘ₗ (Matrix.traceLinearMap (Fin r) (AF D.host.F) (AE D)) ∘ₗ (LinearMap.mulRight (AF D.host.F) x)`. Establish `h` using `map_sum p (fun i => v i • (rat (m i) : Mx D r r)) Finset.univ`. Simplify using `only [map_smul, smul_eq_mul] at h`. Conclude with `h`.
+-/
 theorem pairing_comb {n : ℕ} (m : Fin n → Matrix (Fin r) (Fin r) D.host.E) (v : Fin n → AF D.host.F)
     (x : Mx D r r) :
     halfTr (Matrix.trace (HMul.hMul (∑ i, v i • (rat (m i) : Mx D r r)) x : Mx D r r)) =
@@ -314,11 +431,17 @@ theorem pairing_comb {n : ℕ} (m : Fin n → Matrix (Fin r) (Fin r) D.host.E) (
   simp only [map_smul, smul_eq_mul] at h
   exact h
 
+/- English proof (translation)
+Use `haveI : IsTopologicalAddGroup (Mx D r r) := (lattice_Mx D r r).1`. Conclude with `continuous_finset_sum _ fun i _ => (continuous_smul_rat (m i)).comp (continuous_apply i)`.
+-/
 theorem continuous_comb {n : ℕ} (m : Fin n → Matrix (Fin r) (Fin r) D.host.E) :
     Continuous fun v : Fin n → AF D.host.F => ∑ i, v i • (rat (m i) : Mx D r r) := by
   haveI : IsTopologicalAddGroup (Mx D r r) := (lattice_Mx D r r).1
   exact continuous_finset_sum _ fun i _ => (continuous_smul_rat (m i)).comp (continuous_apply i)
 
+/- English proof (translation)
+Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `show adj (v i • (rat (m i) : Mx D r r)) = _`. Rewrite using `[adj_rsmul, ← rat_conjTranspose]`. Conclude with `congrArg (fun M => v i • (rat M : Mx D r r)) (hm i)`.
+-/
 theorem comb_mem {n : ℕ} (m : Fin n → Matrix (Fin r) (Fin r) D.host.E)
     (hm : ∀ i, ct D.sp.cm.sig (m i) = m i) (v : Fin n → AF D.host.F) :
     ∑ i, v i • (rat (m i) : Mx D r r) ∈ hermA D r := by
@@ -354,6 +477,23 @@ section Measure
 
 variable {D : D7} {r : ℕ}
 
+/- English proof (translation)
+Take `⟨t2, -, t3⟩` from `Formalism.IndefR.Eqv.G5.af_facts D.host.F`. Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI : IsTopologicalAddGroup (Mx D r r) := i1`. Use `haveI : SecondCountableTopology (Mx D r r) := i3`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`.
+
+Use `haveI : BorelSpace (AF D.host.F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin n → AF D.host.F) := Pi.borelSpace`. Use `haveI : BorelSpace (hermA D r) := Subtype.borelSpace _`. Take `⟨hH, hF, hm⟩` from `h`. Use `haveI := hH`.
+
+Establish `hc : Measurable c` using `c.continuous.measurable`. Establish `hcs : Measurable c.symm` using `c.symm.continuous.measurable`. Set `me : hermA D r ≃ᵐ (Fin n → AF D.host.F)` to `c.symm.toHomeomorph.toMeasurableEquiv`. Use `⟨ContinuousAddEquiv.isAddHaarMeasure_map lam c.symm, c.symm '' 𝓖, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : lam.map c.symm (c.symm '' 𝓖) = lam (me ⁻¹' (c.symm '' 𝓖))` using `me.map_apply _`.
+
+Rewrite using `[e1, show me ⁻¹' (c.symm '' 𝓖) = 𝓖 from Set.preimage_image_eq _ c.symm.injective, hm]`. Set `f : hermA D r ≃ (Fin n → AF D.host.F)` to `c.symm.toEquiv`. Establish `hq : Measure.QuasiMeasurePreserving f.symm (lam.map c.symm) lam`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `: (lam.map c.symm).map f.symm = lam` using `by show (lam.map c.symm).map c = lam`.
+
+Rewrite using `[Measure.map_map hc hcs]`. Establish `: (c ∘ c.symm) = id` using `funext fun x => c.apply_symm_apply x`. Rewrite using `[this, Measure.map_id]`. Rewrite using `[this]`. Set `eq : (AddMonoidHom.compLeft (algebraMap D.host.F (AF D.host.F)).toAddMonoidHom (Fin n)).range ≃ ratHerm D r` to `{ toFun := fun g => ⟨c g.1, by`.
+
+Take `⟨w, hw⟩` from `g.2`. Rewrite using `[← hw]`. Conclude with `h1 w⟩`. Use `invFun := fun b => ⟨c.symm b.1, by`. Take `⟨w, hw⟩` from `h2 b.1 b.2`.
+
+Conclude with `⟨w, hw.symm⟩⟩`. Use `left_inv := fun g => Subtype.ext (c.symm_apply_apply g.1)`. Use `right_inv := fun b => Subtype.ext (c.apply_symm_apply b.1) }`. Use `hF.image_of_equiv f hq eq fun g x => ?_` and prove the remaining obligations. Use `show c.symm (c g.1 + x) = g.1 + c.symm x`.
+
+Conclude with `(c.symm.toAddEquiv.map_add (c g.1) x).trans (congrArg (· + c.symm x) (c.symm_apply_apply g.1))`.
+-/
 theorem isTamagawa_map {lam : Measure (hermA D r)} {𝓖 : Set (hermA D r)} (h : IsCovolOneH lam 𝓖) {n : ℕ}
     (c : (Fin n → AF D.host.F) ≃ₜ+ hermA D r)
     (h1 : ∀ w : Fin n → D.host.F, (c fun i => algebraMap D.host.F (AF D.host.F) (w i)).1 ∈ ratMx D r r)
@@ -404,9 +544,19 @@ end Measure
 
 section Target
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_restrictScalars_finite ℚ D.host.F D.host.E`.
+-/
 theorem finEF (D : D7) : FiniteDimensional D.host.F D.host.E :=
   Module.Finite.of_restrictScalars_finite ℚ D.host.F D.host.E
 
+/- English proof (translation)
+Introduce `D r lam 𝓖 h`. Use `haveI := finEF D`. Take `⟨n, e, e', he, he', hd, hrec, hrec'⟩` from `exists_dual (F := D.host.F) D.sp.cm.sig (fun x => star_star x) r`. Use `⟨n, cEquiv e e' he' hd hrec', fun x i => uL (e' i) x, fun w => ∑ i, w i • (rat (e i) : Mx D r r), continuous_pi fun i => continuous_uL (e' i), continuous_comb e, fun x hx => sum_uL_smul e e' hrec hx, ?_, ?_⟩` and prove the remaining obligations. Introduce `v x`.
+
+Conclude with `pairing_comb e' v x`. Use `isTamagawa_map h _ ?_ ?_` and prove the remaining obligations. Introduce `w show ∑ i, algebraMap D.host.F (AF D.host.F) (w i) • (rat (e' i) : Mx D r r) ∈ ratMx D r r`. Simplify using `only [algebraMap_smul_rat]`. Rewrite using `[← rat_sum]`.
+
+Conclude with `rat_mem _`. Introduce and unpack `b ⟨γ, hγ⟩ replace hγ : rat γ = b.1 := hγ`. Use `⟨fun i => tF (e i) γ, funext fun i => ?_⟩` and prove the remaining obligations. Use `show uL (e i) b.1 = _`. Rewrite using `[← hγ, uL_rat]`.
+-/
 theorem coords : ∀ (D : D7) (r : ℕ) (lam : Measure (hermA D r)) (𝓖 : Set (hermA D r)), IsCovolOneH lam 𝓖 → ∃ (n : ℕ) (c : (Fin n → AF D.host.F) ≃ₜ+ hermA D r) (u : Mx D r r → Fin n → AF D.host.F) (R : (Fin n → AF D.host.F) → Mx D r r), Continuous u ∧ Continuous R ∧ (∀ x : Mx D r r, x ∈ hermA D r → R (u x) = x) ∧ (∀ (v : Fin n → AF D.host.F) (x : Mx D r r), halfTr (Matrix.trace (HMul.hMul (c v).1 x : Mx D r r)) = v ⬝ᵥ u x) ∧ GlobalTheory.SWLit.IsTamagawa D.host.F (Fin n) (lam.map c.symm) := by
   intro D r lam 𝓖 h
   haveI := finEF D

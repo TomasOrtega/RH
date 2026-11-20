@@ -26,6 +26,15 @@ open PowerSeries Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Fo
 
 namespace GlobalTheory.WachTie
 
+/- English proof (translation)
+Establish `key : ∀ {B : Type} [CommRing B] (k : ℕ) (x y : B), x ≡ y [SMOD (Ideal.span {(p : B)}) ^ k • (⊤ : Submodule B B)] ↔ (p : B) ^ k ∣ x - y`. Introduce `B _ k x y`. Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`. Establish `pi : ∀ (k : ℕ) (x : ι → E), (p : ι → E) ^ k ∣ x ↔ ∀ i, (p : E) ^ k ∣ x i`. Introduce `k x`.
+
+Rewrite using `[pi_dvd_iff]`. Both sides reduce to the same expression. Use `{ haus' := fun x hx => ?_, prec' := fun f hf => ?_ }` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `IsHausdorff.haus' (I := Ideal.span {(p : E)}) (x i) fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[key]`. Conclude with `(pi k _).1 ((key k _ _).1 (hx k)) i`. Establish `: ∀ i, ∃ L : E, ∀ k, f k i ≡ L [SMOD (Ideal.span {(p : E)}) ^ k • (⊤ : Submodule E E)]` using `fun i => IsPrecomplete.prec' (fun k => f k i) fun {m k} h => by`. Rewrite using `[key]`. Conclude with `(pi m _).1 ((key m _ _).1 (hf h)) i`.
+
+Use `choose L hL using this`. Conclude with `⟨L, fun k => (key k _ _).2 ((pi k _).2 fun i => (key k _ _).1 (hL i k))⟩`.
+-/
 theorem isAdicComplete_pi {ι E : Type} [CommRing E] (p : ℕ)
     [IsAdicComplete (Ideal.span {(p : E)}) E] :
     IsAdicComplete (Ideal.span {(p : ι → E)}) (ι → E) := by
@@ -58,9 +67,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) {l : ℕ}
 
+/- English proof (translation)
+Rewrite using `[W.DelF_def, isOfFinOrder_iff_pow_eq_one]`.
+-/
 theorem mem_DelF_iff (g : W.Gam) : g ∈ W.DelF ↔ IsOfFinOrder g := by
   rw [W.DelF_def, isOfFinOrder_iff_pow_eq_one]
 
+/- English proof (translation)
+Use `Finset.sum_equiv (Equiv.mulLeft d) (fun δ => ?_) fun _ _ => rfl` and prove the remaining obligations. Rewrite `hd` using `[mem_DelF_iff]`. Rewrite using `[mem_DelF_iff, mem_DelF_iff]`. Conclude with `⟨fun h => hd.mul h, fun h => by simpa using hd.inv.mul h⟩`.
+-/
 theorem sum_DelF_mul {M : Type} [AddCommMonoid M] (F : W.Gam → M) (d : W.Gam) (hd : d ∈ W.DelF) :
     ∑ δ ∈ W.DelF, F (d * δ) = ∑ δ ∈ W.DelF, F δ := by
   refine Finset.sum_equiv (Equiv.mulLeft d) (fun δ => ?_) fun _ _ => rfl
@@ -68,6 +83,9 @@ theorem sum_DelF_mul {M : Type} [AddCommMonoid M] (F : W.Gam → M) (d : W.Gam) 
   rw [mem_DelF_iff, mem_DelF_iff]
   exact ⟨fun h => hd.mul h, fun h => by simpa using hd.inv.mul h⟩
 
+/- English proof (translation)
+Use `Finset.prod_equiv (Equiv.mulLeft d) (fun δ => ?_) fun _ _ => rfl` and prove the remaining obligations. Rewrite `hd` using `[mem_DelF_iff]`. Rewrite using `[mem_DelF_iff, mem_DelF_iff]`. Conclude with `⟨fun h => hd.mul h, fun h => by simpa using hd.inv.mul h⟩`.
+-/
 theorem prod_DelF_mul {M : Type} [CommMonoid M] (F : W.Gam → M) (d : W.Gam) (hd : d ∈ W.DelF) :
     ∏ δ ∈ W.DelF, F (d * δ) = ∏ δ ∈ W.DelF, F δ := by
   refine Finset.prod_equiv (Equiv.mulLeft d) (fun δ => ?_) fun _ _ => rfl
@@ -75,6 +93,39 @@ theorem prod_DelF_mul {M : Type} [CommMonoid M] (F : W.Gam → M) (d : W.Gam) (h
   rw [mem_DelF_iff, mem_DelF_iff]
   exact ⟨fun h => hd.mul h, fun h => by simpa using hd.inv.mul h⟩
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Take `⟨hinj, hr, hφ, hγ, -, -, hX, -⟩` from `h`. Establish `hs0 : R.s ≠ 0` using `fun h0 => by`. Establish `h1` using `R.es`. Use `R.prime.two_le` as an intermediate fact.
+
+Rewrite `h1` using `[h0]`. Use linear arithmetic over natural numbers and integers. Set `ι : LetA O n →ₐ[O] (ZMod n → R.EE)` to `AlgHom.pi fun i => (IsScalarTower.toAlgHom O O⟦X⟧ R.EE).comp (Pi.evalAlgHom O (fun _ : ZMod n => O⟦X⟧) i)`. Set `ι' : LetA O n →ₐ[O] W.EE` to `IsScalarTower.toAlgHom O _ _`. Establish `hι : IsUnit (ι letπ)` using `Pi.isUnit_iff.2 fun _ => R.EE_X`.
+
+Establish `hf : IsUnit (ι' (letγ j letπ))`. Take `⟨w, hw⟩` from `hX.symm`. Establish `: (letγ j letπ : LetA O n) = letπ ^ R.s * fun _ => (w : O⟦X⟧)` using `funext fun _ => hw.symm`. Rewrite using `[this, map_mul, map_pow]`. Conclude with `(W.EE_π.pow _).mul (IsUnit.map _ (Pi.isUnit_iff.2 fun _ => w.isUnit))`.
+
+Use `haveI := R.EE_complete`. Establish `hcomp` using `isAdicComplete_pi (ι := ZMod n) (E := R.EE) PD.p`. Establish `hdense : ∀ (y : ZMod n → R.EE) (k : ℕ), ∃ (a : LetA O n) (m : ℕ), (PD.p : ZMod n → R.EE) ^ k ∣ y * ι (letπ ^ m) - ι a`. Introduce `y k`. Use `choose a m ham using fun i => R.EE_dense (y i) k`.
+
+Use `⟨fun i => a i * X ^ (Finset.univ.sup m - m i), Finset.univ.sup m, ?_⟩` and prove the remaining obligations. Rewrite using `[pi_dvd_iff]`. Introduce `i`. Establish `h1` using `(ham i).mul_right (algebraMap O⟦X⟧ R.EE (X ^ (Finset.univ.sup m - m i)))`. Rewrite `h1` using `[sub_mul, mul_assoc, ← map_mul, ← map_mul, ← pow_add, Nat.add_sub_cancel' (Finset.le_sup (f := m) (Finset.mem_univ i))]`.
+
+Conclude with `h1`. Establish `hsat : ∀ (a : LetA O n) (k : ℕ), (PD.p : ZMod n → R.EE) ^ k ∣ ι a → (PD.p : LetA O n) ^ k ∣ a`. Introduce `a k h`. Rewrite `h`, the goal using `[pi_dvd_iff]`. Conclude with `fun i => R.EE_sat (a i) k (h i)`.
+
+Establish `up` using `fun (f : LetA O n →ₐ[O] W.EE) (hf : IsUnit (f letπ)) => GlobalTheory.existsUnique_algHom_of_padic_localization PD.p letπ ι f hι hf W.EE_complete hdense hsat`. Take `⟨jE, hjE, -⟩` from `up (ι'.comp (letγ j)) hf`. Establish `hjsat : ∀ (a : O⟦X⟧) (k : ℕ), (PD.p : O⟦X⟧) ^ k ∣ j a → (PD.p : O⟦X⟧) ^ k ∣ a`. Introduce and unpack `a k ⟨c, hc⟩`. Establish `h0 : (PD.p : O⟦X⟧) ^ k ≠ 0` using `pow_ne_zero _ (by`.
+
+Rewrite using `[← map_natCast (C : O →+* O⟦X⟧), Ne, map_eq_zero_iff _ C_injective]`. Conclude with `Nat.cast_ne_zero.2 R.prime.ne_zero)`. Take `⟨c', rfl⟩` from `(hr c).2 fun δ hδ => by`. Establish `h1` using `(hr (j a)).1 ⟨a, rfl⟩ δ hδ`. Rewrite `h1` using `[hc, map_mul, map_pow, map_natCast]`.
+
+Conclude with `mul_left_cancel₀ h0 h1`. Conclude with `⟨c', hinj (by rw [map_mul, map_pow, map_natCast, hc])⟩`. Take `⟨e1, e2⟩` from `GlobalTheory.completed_localisation_invariants PD.p letπ letπ ι ι' (letγ j) jE W.DelF W.γA (fun g => W.γE g) hjE (fun d a => W.γE_ext d a) hι hcomp W.EE_complete hdense (fun y k => by`. Take `⟨a, m, h⟩` from `W.EE_dense y k`. Conclude with `⟨a, m, Ideal.mem_span_singleton.1 h⟩)`.
+
+Use the proof step `(fun a k h => W.EE_sat a k (Ideal.mem_span_singleton.2 h))`. Use the proof step `(fun a k h => by`. Rewrite `h`, the goal using `[pi_dvd_iff]`. Conclude with `fun i => hjsat (a i) k (h i))`. Use the proof step `(by`.
+
+Rewrite using `[pi_dvd_iff]`. Conclude with `fun _ => (dvd_pow_self X hs0).trans hX.symm.dvd)`. Use `hc`. Use the proof step `(fun a' => by`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩ d hd`. Conclude with `funext fun i => (hr _).1 ⟨a i, rfl⟩ d hd`. Introduce `h choose a ha using fun i => (hr (a' i)).2 fun d hd => congrFun (h d hd) i`. Conclude with `⟨a, funext ha⟩)`. Use the proof step `(fun a' d hd => by`.
+
+Rewrite using `[map_sum, ← sum_DelF_mul W (fun δ => W.γA δ a') d hd]`. Use `Finset.sum_congr rfl fun δ _ => funext fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `W.γ₀ d (W.γ₀ δ (a' i)) = W.γ₀ (d * δ) (a' i)`. Rewrite using `[map_mul]`. Use the proof step `rfl)`.
+
+Use `⟨jE, hjE, e1, e2, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Set `sh : (ZMod n → R.EE) →ₐ[O] (ZMod n → R.EE)` to `AlgHom.pi fun i => R.φE.comp (Pi.evalAlgHom O (fun _ : ZMod n => R.EE) (i - 1))`. Use `(up (W.φE.comp (ι'.comp (letγ j))) (hf.map W.φE)).unique (y₁ := jE.comp sh) (y₂ := W.φE.comp jE) (fun a => by` as an intermediate fact. Establish `h1 : sh (ι a) = ι (letφ R.φ a)` using `funext fun i => R.φE_ext _`. Establish `h2 : letγ j (letφ R.φ a) = letφ W.φ₀ (letγ j a)` using `funext fun i => hφ _`.
+
+Rewrite using `[AlgHom.comp_apply, h1, hjE, AlgHom.comp_apply, h2]`. Conclude with `(W.φE_ext _).symm) (fun a => by rw [AlgHom.comp_apply, hjE]; rfl)`. Conclude with `DFunLike.congr_fun this x`. Set `sh : (ZMod n → R.EE) →ₐ[O] (ZMod n → R.EE)` to `AlgHom.pi fun i => R.γE.comp (Pi.evalAlgHom O (fun _ : ZMod n => R.EE) i)`. Use `(up ((W.γE W.gam).comp (ι'.comp (letγ j))) (hf.map (W.γE W.gam))).unique (y₁ := jE.comp sh) (y₂ := (W.γE W.gam).comp jE) (fun a => by` as an intermediate fact.
+
+Establish `h1 : sh (ι a) = ι (letγ R.γ a)` using `funext fun i => R.γE_ext _`. Establish `h2 : letγ j (letγ R.γ a) = letγ (W.γ₀ W.gam) (letγ j a)` using `funext fun i => hγ _`. Rewrite using `[AlgHom.comp_apply, h1, hjE, AlgHom.comp_apply, h2]`. Conclude with `(W.γE_ext _ _).symm) (fun a => by rw [AlgHom.comp_apply, hjE]; rfl)`. Conclude with `DFunLike.congr_fun this x`.
+-/
 theorem exists_eeTie [IsDomain O] [CharZero O] [NeZero n] (hp : PD.p = l) (R : Fr l O)
     (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (h : FrTie W R j) (hc : IsUnit (W.DelF.card : O)) :
     ∃ jE, EETie W R j jE := by
@@ -168,6 +219,19 @@ theorem exists_eeTie [IsDomain O] [CharZero O] [NeZero n] (hp : PD.p = l) (R : F
         exact (W.γE_ext _ _).symm) (fun a => by rw [AlgHom.comp_apply, hjE]; rfl)
     exact DFunLike.congr_fun this x
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `GlobalTheory.WachTie.exists_invariant_basis W T hc hb`. Take `⟨t1, t2, t3⟩` from `GlobalTheory.WachTie.coord_injective_range_mem W R j jE T b h hE hb hT`. Take `⟨Gm, g1, g2⟩` from `GlobalTheory.WachTie.exists_matrix_gamma W R j jE T b h hE hb`. Take `⟨M, Φ, f1, f2⟩` from `GlobalTheory.WachTie.MatF.exists_matrix_frobenius W R j jE T b h hE hb hs hc`. Set `S : Sys R n r` to `⟨M, Φ, Gm, g1, f1, GlobalTheory.WachTie.matrices_comm W R j jE T b h hE hb M Φ Gm g2 f2⟩`.
+
+Take `⟨s1, s2⟩` from `GlobalTheory.WachTie.coord_comm_φ_γ W R j jE T b h hE hb S g2 f2`. Establish `hK` using `W.gamK_eq_one hs hp`. Use `⟨b, S, hb, t1, t2, t3, s1, s2, ?_, ?_⟩` and prove the remaining obligations. Use `set Θ := coord W R jE T (fun k => (b k : W.DD T))`. Establish `hm : ∀ y, (∃ x, Θ x = y) ↔ ∀ δ ∈ W.DelF, W.γD T δ y = y` using `fun y => show y ∈ LinearMap.range Θ ↔ y ∈ DDinv W T by rw [t2]`.
+
+Establish `hz : ∀ x y, (x, y) ∈ S.Z1 ↔ (Θ x, Θ y) ∈ herrCocycles (W.γD T W.gam) (W.φD T)`. Introduce `x y`. Simplify using `only [Sys.Z1, herrCocycles, LinearMap.mem_ker, LinearMap.coprod_apply, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.id_apply]`. Rewrite using `[← s1, ← s2, ← map_sub, ← map_sub, ← map_neg, ← map_add, map_eq_zero_iff _ t1]`. Use extensionality with `⟨y, z⟩`.
+
+Simplify using `only [LocWach.wachCocyclesDelta, herrZ1Δ, hK, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.prodMap_apply, LinearMap.id_apply, sub_eq_zero, Prod.mk.injEq, Submodule.mem_map, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, x', hx, rfl, rfl⟩`. Conclude with `⟨(hz _ _).1 hx, fun d hd => ⟨(hm _).1 ⟨x, rfl⟩ d hd, (hm _).1 ⟨x', rfl⟩ d hd⟩⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Take `⟨x, rfl⟩` from `(hm y).2 fun d hd => (h2 d hd).1`. Take `⟨x', rfl⟩` from `(hm z).2 fun d hd => (h2 d hd).2`. Conclude with `⟨x, x', (hz _ _).2 h1, rfl, rfl⟩`. Rewrite using `[wachDeltaInvariantCoboundaries, ← t2, hK, Sys.B1, ← LinearMap.range_comp, ← LinearMap.range_comp]`. Use `congr 1`.
+
+Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(map_sub _ _ _).trans (congrArg₂ (· - ·) (s1 x) rfl)`. Conclude with `(map_sub _ _ _).trans (congrArg₂ (· - ·) (s2 x) rfl)`.
+-/
 theorem exists_sysTie (R : Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (jE : (ZMod n → R.EE) →ₐ[O] W.EE)
     (h : FrTie W R j) (hE : EETie W R j jE) (hs : W.s = 1) (hp : PD.p ≠ 2)
     (hc : IsUnit (W.DelF.card : O)) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {r : ℕ}
@@ -207,6 +271,13 @@ theorem exists_sysTie (R : Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧) (jE : (ZMod
     · exact (map_sub _ _ _).trans (congrArg₂ (· - ·) (s1 x) rfl)
     · exact (map_sub _ _ _).trans (congrArg₂ (· - ·) (s2 x) rfl)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[piNorm, ← Finset.prod_const]`. Use `Associated.prod _ _ _ fun δ _ => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `X_dvd_iff.2 (W.γ₀_X δ).1`. Establish `h1` using `(W.γ₀_X δ).2`.
+
+Rewrite `h1` using `[hw, coeff_succ_X_mul, coeff_zero_eq_constantCoeff]`. Rewrite using `[hw]`. Conclude with `associated_mul_unit_left _ _ (isUnit_iff_constantCoeff.2 (h1 ▸ (W.χΓ δ).isUnit))`. Introduce `d hd`. Rewrite using `[piNorm, map_prod, ← prod_DelF_mul W (fun δ => W.γ₀ δ X) d hd]`.
+
+Conclude with `Finset.prod_congr rfl fun δ _ => by rw [map_mul]; rfl`.
+-/
 theorem piNorm_spec : Associated (piNorm W) (X ^ W.DelF.card) ∧
     ∀ δ ∈ W.DelF, W.γ₀ δ (piNorm W) = piNorm W := by
   constructor
@@ -225,6 +296,9 @@ variable [Fact l.Prime] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] (hp : PD.p
 include hp
 
 omit [CharZero O] in
+/- English proof (translation)
+Establish `h1` using `W.q₀_def`. Rewrite `h1` using `[hp]`. Use `⟨algHom_ext_X _ _ ⟨_, W.φ₀_X⟩ (by rw [W.φ₀_X, h1, act_nat_X]), ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ (X_ne_zero (R := O))` to reduce the goal to its premises. Rewrite using `[h1, ← act_l_X, act_nat_X]`.
+-/
 theorem φ₀_eq : W.φ₀ = act O (l : ℤ_[l]) ∧ W.q₀ = lvl l O 0 := by
   have h1 := W.q₀_def
   rw [hp] at h1
@@ -235,10 +309,28 @@ theorem φ₀_eq : W.φ₀ = act O (l : ℤ_[l]) ∧ W.q₀ = lvl l O 0 := by
 variable (χ : W.Gam →* ℤ_[l]ˣ) (hχ : ∀ g, algebraMap ℤ_[l] O (χ g : ℤ_[l]) = (W.χΓ g : O))
 include hχ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CycFr.eq_act_of_comm W.φ₀ _ _ (by rw [(φ₀_eq W hp).1, act_nat_X]) (W.γ₀_comm g) (W.γ₀_X g).1 (by rw [(W.γ₀_X g).2, hχ])`.
+-/
 theorem γ₀_eq (g : W.Gam) : W.γ₀ g = act O (χ g : ℤ_[l]) :=
   GlobalTheory.CycFr.eq_act_of_comm W.φ₀ _ _ (by rw [(φ₀_eq W hp).1, act_nat_X]) (W.γ₀_comm g) (W.γ₀_X g).1
     (by rw [(W.γ₀_X g).2, hχ])
 
+/- English proof (translation)
+Take `⟨hφ, hq⟩` from `φ₀_eq W hp`. Establish `hγ` using `γ₀_eq W hp χ hχ`. Establish `hχi : Function.Injective χ` using `fun a b hab => W.χΓ_inj (Units.ext (by rw [← hχ, ← hχ, hab]))`. Set `Δ : Subgroup ℤ_[l]ˣ` to `(CommGroup.torsion W.Gam).map χ`. Establish `hΔ : (Δ : Set ℤ_[l]ˣ) = ↑(W.DelF.image χ)`.
+
+Use extensionality with `x`. Simplify using `only [Δ, Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, CommGroup.mem_torsion, Finset.coe_image, Finset.mem_coe, mem_DelF_iff]`. Establish `hfa : ∀ p : ℤ_[l]ˣ → Prop, (∀ δ ∈ Δ, p δ) ↔ ∀ δ ∈ W.DelF, p (χ δ)`. Introduce `p`. Simplify using `only [← SetLike.mem_coe, hΔ, Finset.coe_image, Set.forall_mem_image]`.
+
+Use `haveI : Finite Δ := by`. Express the relevant statement in the definitionally equal form `Finite (Δ : Set ℤ_[l]ˣ)`. Rewrite using `[hΔ]`. Use `infer_instance`. Establish `hcard : Nat.card Δ = W.DelF.card`.
+
+Express the relevant statement in the definitionally equal form `Nat.card (Δ : Set ℤ_[l]ˣ) = _`. Rewrite using `[hΔ, Nat.card_coe_set_eq, Set.ncard_coe_finset, Finset.card_image_of_injective _ hχi]`. Take `⟨R, j, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `exists_frame Δ (χ W.gam) ξ hl hu hζ (hcard ▸ hξ) ((hfa _).2 fun δ hδ => by rw [← hγ]; exact hinv δ hδ) hχ1`. Establish `hes` using `R.es`. Rewrite `hes` using `[h7, hcard]`.
+
+Establish `h2l` using `(Fact.out : l.Prime).two_le`. Use `⟨R, j, h1, ⟨h2, fun a => ?_, by rw [hφ]; exact h4, by rw [hγ]; exact h5, Units.ext (h6.trans (hχ _)), h7.trans hcard, ?_, hq ▸ h8⟩, ?_, h9⟩` and prove the remaining obligations. Rewrite using `[h3, hfa]`. Simplify using `only [hγ]`. Rewrite using `[h1, h7, hcard]`.
+
+Conclude with `hξ`. Establish `h10 : IsUnit (W.DelF.card : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Use `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 fun hd => ?_` and prove the remaining obligations. Establish `h11 : l ∣ l - 1` using `hes ▸ hd.mul_left _`.
+
+Use `Nat.le_of_dvd (by omega) h11` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `using h10.map (algebraMap ℤ_[l] O)`.
+-/
 theorem exists_frTie [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hl : l ≠ 2) (hu : ¬ IsUnit (l : O)) (hζ : ∃ ζ : O, IsPrimitiveRoot ζ l)
     (hχ1 : Associated ((χ W.gam : ℤ_[l]) - 1) (l : ℤ_[l])) (ξ : O⟦X⟧)
@@ -281,6 +373,13 @@ theorem exists_frTie [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.ma
       omega
     simpa using h10.map (algebraMap ℤ_[l] O)
 
+/- English proof (translation)
+Establish `hγ` using `γ₀_eq W hp χ hχ`. Establish `hχi : Function.Injective χ` using `fun a b hab => W.χΓ_inj (Units.ext (by rw [← hχ, ← hχ, hab]))`. Take `⟨a1, a2⟩` from `GlobalTheory.CycFr.associated_trace_and_lvl_dvd (O := O) (W.DelF.image χ) hl (by rw [Finset.card_image_of_injective _ hχi, hc]) (fun δ hδ => by`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hδ`. Conclude with `χ.isOfFinOrder ((mem_DelF_iff W g).1 hg))`.
+
+Rewrite `a1`, `a2` using `[Finset.sum_image (fun a _ b _ hab => hχi hab)]`. Simplify using `only [← hγ] at a1 a2`. Establish `e : W.π₀₁ = 1 - (l : O⟦X⟧) + ∑ δ ∈ W.DelF, W.γ₀ δ (1 + X)`. Rewrite using `[LocWach.π₀₁, hp]`. Use `⟨by rw [e, hc]; exact a1, fun d hd => ?_, by rw [e]; convert a2 using 1; ring⟩` and prove the remaining obligations.
+
+Establish `h2 : W.γ₀ d (∑ δ ∈ W.DelF, W.γ₀ δ (1 + X)) = ∑ δ ∈ W.DelF, W.γ₀ δ (1 + X)`. Rewrite using `[map_sum, ← sum_DelF_mul W (fun δ => W.γ₀ δ (1 + X)) d hd]`. Conclude with `Finset.sum_congr rfl fun δ _ => by rw [map_mul]; rfl`. Rewrite using `[e, map_add, h2, map_sub, map_one, map_natCast]`.
+-/
 theorem π₀₁_spec (hl : l ≠ 2) (hc : W.DelF.card = l - 1) :
     Associated W.π₀₁ (X ^ W.DelF.card) ∧
       (∀ δ ∈ W.DelF, W.γ₀ δ W.π₀₁ = W.π₀₁) ∧ lvl l O 0 ∣ W.π₀₁ + (l : O⟦X⟧) := by
@@ -304,6 +403,15 @@ theorem π₀₁_spec (hl : l ≠ 2) (hc : W.DelF.card = l - 1) :
 
 end Generic
 
+/- English proof (translation)
+Establish `h4 : X - C (ζ - 1) ∣ lvl l O 0`. Establish `h5 : lvl l O 0 = ∑ i ∈ Finset.range l, ((1 + X) ^ i - C ζ ^ i)`. Rewrite using `[Finset.sum_sub_distrib]`. Simplify using `only [← map_pow]`. Rewrite using `[← map_sum, hζ.geom_sum_eq_zero (Fact.out : l.Prime).one_lt]`.
+
+Simplify using `[lvl]`. Rewrite using `[h5]`. Use `Finset.dvd_sum fun i _ => ?_` and prove the remaining obligations. Use `sub_dvd_pow_sub_pow (1 + X) (C ζ) i using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `(prime_X_sub_C _ (sub_one_mem_max hu ζ hζ.pow_eq_one)).2 (x + l) (by`. Use `(h4.trans hq).sub hd using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add, map_natCast]`. Use the proof step `ring)`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h6`.
+-/
 theorem eq_neg_of_root {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (hu : ¬ IsUnit (l : O)) (ξ : O⟦X⟧) (x ζ : O)
     (hζ : IsPrimitiveRoot ζ l) (hd : X - C (ζ - 1) ∣ ξ - C x) (hq : lvl l O 0 ∣ ξ + (l : O⟦X⟧)) :
@@ -332,6 +440,15 @@ def Attached {l : ℕ} [Fact l.Prime] {P : LocPrime l} {K LL : FinExt l} {n : �
       ∃ (b : Module.Basis (Fin (Module.finrank ↥(OL LL) ↥T.L.T)) (LetA ↥(OL LL) n) ↥(W.N T))
         (S : Sys R n (Module.finrank ↥(OL LL) ↥T.L.T)), SysTie W R jE T b S
 
+/- English proof (translation)
+Establish `hs` using `H.W_s K 1 LL h`. Take `⟨_, _, hu⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Take `⟨χ, hχ, hχ1⟩` from `GlobalTheory.exists_cyclotomicChar_padicInt_units P K LL (H.W K 1 LL h)`. Take `⟨R, j, rfl, h2, h4, h5⟩` from `exists_frTie (H.W K 1 LL h) (P.PD_p K) χ hχ hl hu (GlobalTheory.exists_primitiveRoot_coeffRing_of_good K LL h) (hχ1 hs) ξ hξ hinv`. Establish `h3 : R.e = Module.finrank ↥(K0 K) ↥K.1`.
+
+Establish `hes` using `R.es`. Establish `hc` using `GlobalTheory.TorsionCard.card_torsion_mul_finrank P K LL (H.W K 1 LL h) hl h.2.2.1`. Establish `h2l` using `(Fact.out : l.Prime).two_le`. Rewrite `hes` using `[h2.2.2.2.2.2.1]`. Establish `h0 : (H.W K 1 LL h).DelF.card ≠ 0` using `fun h0 => by rw [h0] at hes; omega`.
+
+Apply `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero h0)` to reduce the goal to its premises. Rewrite using `[hc, mul_comm, hes]`. Use `haveI := (P.PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Take `⟨jE, hE⟩` from `exists_eeTie (H.W K 1 LL h) (P.PD_p K) R j h2 h4`.
+
+Conclude with `⟨R, j, jE, rfl, h3, h2, hE, h5, fun T hT => exists_sysTie _ R j jE h2 hE hs (by rwa [P.PD_p]) h4 T hT (GlobalTheory.WachFree.wach_free P H K 1 LL h T hT)⟩`.
+-/
 theorem exists_attached {l : ℕ} [Fact l.Prime] {P : LocPrime l} (H : LocHW l P) {K LL : FinExt l}
     (h : Good K 1 LL) (hl : l ≠ 2) (ξ : (↥(OL LL))⟦X⟧)
     (hξ : Associated ξ (X ^ (H.W K 1 LL h).DelF.card))

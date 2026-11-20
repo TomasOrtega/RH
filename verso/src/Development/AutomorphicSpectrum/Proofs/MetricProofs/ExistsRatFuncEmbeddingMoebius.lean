@@ -5,6 +5,15 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.Moebius
 
+/- English proof (translation)
+Introduce `ht`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx isAlgebraic_zero`. Establish `ht0 : t ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `h` using `[zero_mul]`. Conclude with `mul_ne_zero hx0 hr h.symm`. Establish `hE : algebraMap S K r - t * algebraMap S K q ≠ 0`. Introduce `hE`.
+
+Establish `h2 : t * algebraMap S K p = x * (algebraMap S K r - t * algebraMap S K q)`. Take the linear combination `h`. Rewrite `h2` using `[hE, mul_zero]`. Conclude with `mul_ne_zero ht0 hp h2`. Establish `hxe : x = t * algebraMap S K p * (algebraMap S K r - t * algebraMap S K q)⁻¹`.
+
+Rewrite using `[eq_mul_inv_iff_mul_eq₀ hE]`. Take the linear combination `-h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hxe]`. Conclude with `(ht.mul (isAlgebraic_algebraMap p)).mul ((isAlgebraic_algebraMap r).sub (ht.mul (isAlgebraic_algebraMap q))).inv`.
+-/
 private theorem transcendental_of_mul_add_eq_mul {S K : Type*} [CommRing S] [IsDomain S] [Field K]
     [Algebra S K] {x t : K} {p q r : S} (hx : Transcendental S x)
     (hp : algebraMap S K p ≠ 0) (hr : algebraMap S K r ≠ 0)
@@ -32,6 +41,21 @@ private theorem transcendental_of_mul_add_eq_mul {S K : Type*} [CommRing S] [IsD
   exact (ht.mul (isAlgebraic_algebraMap p)).mul
     ((isAlgebraic_algebraMap r).sub (ht.mul (isAlgebraic_algebraMap q))).inv
 
+/- English proof (translation)
+Introduce `Φ S _ _ _ _ p q r hp hr`. Establish `hinj : Function.Injective (algebraMap (Polynomial S) (FractionRing (Polynomial S)))` using `IsFractionRing.injective _ _`. Establish `hs : ∀ s : S, algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C s) = algebraMap S (FractionRing (Polynomial S)) s` using `fun s => by`. Rewrite using `[IsScalarTower.algebraMap_apply S (Polynomial S) (FractionRing (Polynomial S)), Polynomial.algebraMap_eq]`. Establish `hpoly : Polynomial.C p + Polynomial.X * Polynomial.C q ≠ 0` using `fun h => hp (by simpa using congrArg (fun f => Polynomial.coeff f 0) h)`.
+
+Establish `hD : algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C p) + algebraMap (Polynomial S) (FractionRing (Polynomial S)) Polynomial.X * algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C q) ≠ 0`. Rewrite using `[← map_mul, ← map_add]`. Conclude with `(map_ne_zero_iff _ hinj).2 hpoly`. Take `⟨t, ht⟩ : ∃ t, t = algebraMap (Polynomial S) (FractionRing (Polynomial S)) Polynomial.X * algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C r) / (algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C p) + algebraMap (Polynomial S) (FractionRing …` from `⟨_, rfl⟩`. Establish `htD : t * (algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C p) + algebraMap (Polynomial S) (FractionRing (Polynomial S)) Polynomial.X * algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C q)) = algebraMap (Polynomial S) (FractionRing (Polyno …`.
+
+Rewrite using `[ht]`. Conclude with `div_mul_cancel₀ _ hD`. Establish `htr : Transcendental S t`. Use `transcendental_of_mul_add_eq_mul (p := p) (q := q) (r := r) ((transcendental_algebraMap_iff hinj).2 (Polynomial.transcendental_X S)) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hs]`.
+
+Conclude with `(map_ne_zero_iff _ hinj).2 (Polynomial.C_ne_zero.2 hp)`. Rewrite using `[← hs]`. Conclude with `(map_ne_zero_iff _ hinj).2 (Polynomial.C_ne_zero.2 hr)`. Simplify `htD` using `only [hs]`. Set `φ : Polynomial Φ →+* FractionRing (Polynomial S)` to `(Polynomial.aeval t).toRingHom.comp (Polynomial.mapRingHom (algebraMap Φ S))`.
+
+Establish `hφinj : Function.Injective φ`. Introduce `P Q hPQ`. Apply `Polynomial.map_injective _ (algebraMap Φ S).injective` to reduce the goal to its premises. Conclude with `(transcendental_iff_injective.1 htr) hPQ`. Establish `hφC : ∀ a : Φ, φ (Polynomial.C a) = algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C (algebraMap Φ S a))`.
+
+Introduce `a`. Rewrite using `[hs]`. Simplify using `[φ]`. Establish `hφX : φ Polynomial.X = t`. Simplify using `[φ]`.
+
+Use `⟨RatFunc.liftRingHom φ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective φ hφinj), fun a => ?_, hD, ?_⟩` and prove the remaining obligations. Rewrite using `[RatFunc.algebraMap_eq_C, ← RatFunc.algebraMap_C, RatFunc.liftRingHom_algebraMap, hφC]`. Rewrite using `[← RatFunc.algebraMap_X, RatFunc.liftRingHom_algebraMap, hφX, htD]`.
+-/
 theorem exists_ratFunc_embedding_moebius : ∀ (Φ S : Type) [Field Φ] [CommRing S] [IsDomain S] [Algebra Φ S] (p q r : S), p ≠ 0 → r ≠ 0 → ∃ θ : RatFunc Φ →+* FractionRing (Polynomial S), (∀ a, θ (algebraMap Φ (RatFunc Φ) a) = algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C (algebraMap Φ S a))) ∧ algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C p) + algebraMap (Polynomial S) (FractionRing (Polynomial S)) Polynomial.X * algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C q) ≠ 0 ∧ θ RatFunc.X * (algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C p) + algebraMap (Polynomial S) (FractionRing (Polynomial S)) Polynomial.X * algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C q)) = algebraMap (Polynomial S) (FractionRing (Polynomial S)) Polynomial.X * algebraMap (Polynomial S) (FractionRing (Polynomial S)) (Polynomial.C r) := by
   intro Φ S _ _ _ _ p q r hp hr
   have hinj : Function.Injective (algebraMap (Polynomial S) (FractionRing (Polynomial S))) :=

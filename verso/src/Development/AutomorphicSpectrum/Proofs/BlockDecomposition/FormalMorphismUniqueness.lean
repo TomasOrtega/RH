@@ -8,6 +8,15 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 
 namespace GlobalTheory.CompanionTheory.FormalUniq
 
+/- English proof (translation)
+Introduce `R _ _ I hI X Z hX hZ Y b hpb g g' hb`. Establish `hw : g.left ≫ Z.hom = g'.left ≫ Z.hom` using `by rw [Over.w g, Over.w g']`. Take `⟨L, hL1, hL2⟩ : ∃ L : X.left ⟶ pullback Z.hom Z.hom, L ≫ pullback.fst _ _ = g.left ∧ L ≫ pullback.snd _ _ = g'.left` from `⟨pullback.lift _ _ hw, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hfac : ∀ e : ℕ, ∃ h, h ≫ pullback.snd (pullback.diagonal Z.hom) L = pullback.fst X.hom (thick R I e)`. Introduce `e`.
+
+Establish `hfe : pullback.fst X.hom (thick R I e) ≫ g.left = pullback.fst X.hom (thick R I e) ≫ g'.left`. Rewrite using `[← (hpb e).isoPullback_inv_fst, Category.assoc, Category.assoc, hb e]`. Use `⟨pullback.lift (pullback.fst X.hom (thick R I e) ≫ g.left) (pullback.fst X.hom (thick R I e)) ?_, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.diagonal_fst, Category.comp_id, hL1]`.
+
+Simplify using `only [Category.assoc, pullback.diagonal_snd, Category.comp_id, hL2, hfe]`. Use `haveI : IsIso (pullback.snd (pullback.diagonal Z.hom) L) := GlobalTheory.CompanionTheory.FormalClosed.isIso_of_isClosedImmersion_of_thickenings R I hI X hX _ _ inferInstance hfac`. Establish `hc` using `pullback.condition (f := pullback.diagonal Z.hom) (g := L)`. Establish `e1` using `congrArg (· ≫ pullback.fst Z.hom Z.hom) hc`. Establish `e2` using `congrArg (· ≫ pullback.snd Z.hom Z.hom) hc`.
+
+Simplify using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id, hL1, hL2] at e1 e2`. Conclude with `Over.OverMorphism.ext ((cancel_epi (pullback.snd (pullback.diagonal Z.hom) L)).mp (e1.symm.trans e2))`.
+-/
 theorem eq_of_comp_thickenings_eq :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R →
     ∀ (X Z : Over (Spec (CommRingCat.of R))), IsProper X.hom → IsSeparated Z.hom →

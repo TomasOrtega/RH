@@ -13,6 +13,11 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `b1` using `l_enorm_le (c := c) hds hT hπ hW hN hbe hv hlv hw0DD hz`. Use `b1.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [prod_ae hW hN] with p hp`.
+
+Use `show ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * Matrix.of zz) w0⟫_ℂ‖ₑ = ‖e1 (Matrix.of p.1 * Matrix.of p.2 * Matrix.of zz)‖ₑ`. Rewrite using `[hee1 _ (DDSmoothness.uh_mul (DDSmoothness.uh_mul hp.1.1 hp.2.1) hz)]`.
+-/
 theorem l_le_I {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp]
@@ -39,6 +44,11 @@ theorem l_le_I {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) �
     ‖e1 (Matrix.of p.1 * Matrix.of p.2 * Matrix.of zz)‖ₑ
   rw [hee1 _ (DDSmoothness.uh_mul (DDSmoothness.uh_mul hp.1.1 hp.2.1) hz)]
 
+/- English proof (translation)
+Establish `h1` using `hb x hx`. Establish `h2 : ‖e x‖ * B.gN x ^ b ≤ |C| * B.gN x ^ (-(a - b))`. Establish `e2 : B.gN x ^ (-(a - b)) = B.gN x ^ (-a) * B.gN x ^ b`. Rewrite using `[← Real.rpow_add hpos]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[e2, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (h1.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (Real.rpow_nonneg hpos.le _))) (Real.rpow_nonneg hpos.le _)`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Real.norm_of_nonneg (Real.rpow_nonneg hpos.le _), ← ENNReal.ofReal_mul (norm_nonneg _), ← ENNReal.ofReal_mul (abs_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal h2`.
+-/
 theorem e_weight {e : Mx k r → ℂ} {C a b : ℝ}
     (hb : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ‖e y‖ ≤ C * B.gN y ^ (-a))
     {x : Mx k r} (hx : x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (hpos : 0 < B.gN x) :
@@ -62,10 +72,16 @@ def Iint (A : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) (μ : Measure
 
 def Aext (e : Mx k r → ℂ) (m : Formalism.QuantumDeterminants.Mt k r) : ℝ≥0∞ := ‖e (Matrix.of m)‖ₑ
 
+/- English proof (translation)
+Unfold `Aext`. Conclude with `(Continuous.enorm (he.comp (show Continuous (fun m : Formalism.QuantumDeterminants.Mt k r => Matrix.of m) from continuous_id))).measurable`.
+-/
 theorem Aext_meas {e : Mx k r → ℂ} (he : Continuous e) : Measurable (Aext e) := by
   unfold Aext
   exact (Continuous.enorm (he.comp (show Continuous (fun m : Formalism.QuantumDeterminants.Mt k r => Matrix.of m) from continuous_id))).measurable
 
+/- English proof (translation)
+Unfold `Iint`. Use `Measurable.lintegral_prod_right' (f := fun q : Formalism.QuantumDeterminants.Mt k r × (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r) => A (fun i j => (Matrix.of q.2.1 * Matrix.of q.2.2 * Matrix.of q.1) i j)) ?_` and prove the remaining obligations. Use `hA.comp (Continuous.measurable ?_)` and prove the remaining obligations. Conclude with `((continuous_snd.fst.matrix_mul continuous_snd.snd).matrix_mul continuous_fst)`.
+-/
 theorem Iint_meas {A : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hA : Measurable A)
     (μ : Measure (Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r)) [SFinite μ] : Measurable (Iint A μ) := by
   unfold Iint
@@ -74,6 +90,13 @@ theorem Iint_meas {A : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hA 
   refine hA.comp (Continuous.measurable ?_)
   exact ((continuous_snd.fst.matrix_mul continuous_snd.snd).matrix_mul continuous_fst)
 
+/- English proof (translation)
+Establish `hcont : ∀ z : Formalism.QuantumDeterminants.Mt k r, Continuous (fun s : Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of s * Matrix.of z) i j : Formalism.QuantumDeterminants.Mt k r))` using `fun z => Continuous.matrix_mul continuous_id continuous_const`. Establish `hg : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))` using `(show Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r)) from Continuous.matrix_mul continuous_fst continuous_snd).measurable`. Rewrite using `[hq (fun x => A x * Ψ x) (hA.mul hΨ)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hinv] with z hz`.
+
+Unfold `Iint Formalism.FourierDecayAlt.ThreeDimData.muSof`. Rewrite using `[lintegral_map (f := fun s : Formalism.QuantumDeterminants.Mt k r => A (fun i j => (Matrix.of s * Matrix.of z) i j) * Ψ (fun i j => (Matrix.of s * Matrix.of z) i j)) (by exact (hA.comp (hcont z).measurable).mul (hΨ.comp (hcont z).measurable)) hg]`. Establish `hmA : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => A (fun i j => (Matrix.of p.1 * Matrix.of p.2 * Matrix.of z) i j))` using `hA.comp ((show Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2 * Matrix.of z) i j : Formalism.QuantumDeterminants.Mt k r)) from Continuous.matrix_mul (Continuous.matrix_mul continuous_fs …`. Rewrite using `[← lintegral_mul_const _ hmA]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hz] with p hp`. Conclude with `congrArg _ hp.symm`.
+-/
 theorem unfold_Iint {μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)} [SigmaFinite μW] [SigmaFinite μN]
     (hq : PI.BesselPeriodGGP.IsQuotMeas μG (muSof μW μN) νq)
     {A Ψ : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞} (hA : Measurable A) (hΨ : Measurable Ψ)
@@ -105,6 +128,11 @@ theorem unfold_Iint {μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt
   filter_upwards [hz] with p hp
   exact congrArg _ hp.symm
 
+/- English proof (translation)
+Establish `h1 : ∀ z, ∫⁻ z', K * (F z * (G z' * M z z')) ∂νq' = K * (F z * ∫⁻ z', G z' * M z z' ∂νq')`. Introduce `z`. Establish `e1 : (fun z' => K * (F z * (G z' * M z z'))) = fun z' => (K * F z) * (G z' * M z z')`. Use function extensionality and compare the values at `z'`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, lintegral_const_mul _ (hm z), mul_assoc]`. Repeatedly rewrite using `[h1]`. Conclude with `lintegral_const_mul' K _ hK`.
+-/
 theorem pull2 {νq νq' : Measure (Formalism.QuantumDeterminants.Mt k r)} (F G : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞)
     (M : Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) {K : ℝ≥0∞} (hK : K ≠ ⊤)
     (hm : ∀ z, Measurable fun z' => G z' * M z z') :
@@ -118,6 +146,11 @@ theorem pull2 {νq νq' : Measure (Formalism.QuantumDeterminants.Mt k r)} (F G :
   simp_rw [h1]
   exact lintegral_const_mul' K _ hK
 
+/- English proof (translation)
+Establish `h1 : ∀ x, ∫⁻ y, c * (Fx x * Fx y) ∂μG = (c * Fx x) * ∫⁻ y, Fx y ∂μG`. Introduce `x`. Repeatedly rewrite using `[← mul_assoc]`. Conclude with `lintegral_const_mul _ hF`. Repeatedly rewrite using `[h1]`.
+
+Rewrite using `[lintegral_mul_const _ (hF.const_mul c), lintegral_const_mul _ hF, mul_assoc]`.
+-/
 theorem final2 {μG : Measure (Formalism.QuantumDeterminants.Mt k r)} (Fx : Formalism.QuantumDeterminants.Mt k r → ℝ≥0∞) (hF : Measurable Fx)
     {c : ℝ≥0∞} (hc : c ≠ ⊤) :
     ∫⁻ x, ∫⁻ y, c * (Fx x * Fx y) ∂μG ∂μG = c * ((∫⁻ x, Fx x ∂μG) * ∫⁻ y, Fx y ∂μG) := by

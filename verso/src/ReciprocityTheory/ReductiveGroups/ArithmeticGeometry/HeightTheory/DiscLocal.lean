@@ -16,12 +16,46 @@ variable {R F : Type} [CommRing R] [IsDomain R] [UniqueFactorizationMonoid R] [F
   [∀ c, FiniteDimensional F (L c)] [∀ c, Algebra.IsSeparable F (L c)]
 
 omit [IsDomain R] [UniqueFactorizationMonoid R] [IsFractionRing R F] in
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hx]`.
+-/
 theorem prod_zpow {κ G : Type*} [CommGroupWithZero G] {x : G} (hx : x ≠ 0) (s : Finset κ)
     (f : κ → ℤ) : ∏ i ∈ s, x ^ f i = x ^ ∑ i ∈ s, f i := by
   induction s using Finset.cons_induction with
   | empty => simp
   | cons a s ha ih => rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hx]
 
+/- English proof (translation)
+Set `O` to `Localization.AtPrime p`. Use `letI : Algebra O F := IsLocalization.localizationAlgebraOfSubmonoidLe O F p.primeCompl (nonZeroDivisors R) (Ideal.primeCompl_le_nonZeroDivisors p)`. Use `haveI : IsScalarTower R O F := IsLocalization.localization_isScalarTower_of_submonoid_le O F p.primeCompl (nonZeroDivisors R) (Ideal.primeCompl_le_nonZeroDivisors p)`. Use `haveI : IsFractionRing O F := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization p.primeCompl O F`. Take `⟨hdvr, hirr⟩` from `ValUFD.loc_dvr p hp g hg`.
+
+Use `haveI := hdvr`. Use `letI : ∀ c, Algebra O (L c) := fun c => ((algebraMap F (L c)).comp (algebraMap O F)).toAlgebra`. Use `haveI : ∀ c, IsScalarTower O F (L c) := fun c => IsScalarTower.of_algebraMap_eq' rfl`. Use `letI : ∀ c, Algebra R (L c) := fun c => ((algebraMap F (L c)).comp (algebraMap R F)).toAlgebra`. Use `haveI : ∀ c, IsScalarTower R O (L c) := fun c => IsScalarTower.of_algebraMap_eq (fun x => by show algebraMap F (L c) (algebraMap R F x) = algebraMap F (L c) (algebraMap O F (algebraMap R O x))`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply R O F x])`. Establish `hded : ∀ c, IsDedekindDomain (integralClosure O (L c))` using `fun c => (ReciprocityTheory.MultiplicativeHeights.Closed.dedekindRank O F (L c)).1`. Establish `hfr : ∀ c, IsFractionRing (integralClosure O (L c)) (L c)` using `fun c => integralClosure.isFractionRing_of_finite_extension F (L c)`. Establish `hset : ∀ c, ValPl.PlacesOver O (L c) = HNm.OverR R F (L c) p` using `fun c => by`. Use extensionality with `w`.
+
+Simplify using `only [ValPl.PlacesOver, HNm.OverR, Set.mem_ofPred_eq]`. Rewrite using `[← ValPl.placesOver_iff_loc (R := R) p w]`. Both sides reduce to the same expression. Establish `hG : ∀ c, ∃ gc : L c, gc ≠ 0 ∧ (∀ w ∈ ValPl.PlacesOver O (L c), w gc = n c w) ∧ ∀ y, (∀ w ∈ ValPl.PlacesOver O (L c), 0 ≤ w y + (n c w : WithTop ℤ)) ↔ gc * y ∈ integralClosure O (L c)` using `fun c => by haveI := hded c haveI := hfr c`. Take `⟨gc, hg0, hgv⟩` from `HDiscVal.exists_val_eq O F (n c)`.
+
+Use `⟨gc, hg0, hgv, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[HDiscVal.mem_integralClosure_iff O F]`. Use `forall₂_congr fun w hw => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul, hgv w hw, add_comm]`. Use `choose gc hgc0 hgcv hgciff using hG`.
+
+Establish `hbI : ∀ k c, gc c * b k c ∈ integralClosure O (L c)` using `fun k c => (hgciff c _).mp (fun w hw => hb k c w (hset c ▸ hw))`. Take `⟨nn, t, u, -, hdisc⟩` from `HDiscLat.lattice_main (R := O) (F := F) hirr gc hgc0 hm b hbI hli`. Use `set Nc : ι → ℤ := fun c => ∑ᶠ (w : AddValuation (L c) (WithTop ℤ)) (_ : w ∈ HNm.OverR R F (L c) p), (HNm.fz F w : ℤ) * n c w with hNc`. Establish `hN : ∀ c, ∃ uc : O, IsUnit uc ∧ Algebra.norm F (gc c) = algebraMap R F g ^ Nc c * algebraMap O F uc` using `fun c => by haveI := hded c haveI := hfr c`. Take `⟨uc, huc, hn⟩` from `ValPl.norm_eq_places (O := O) (F := F) (gc c) (hgc0 c) hirr`.
+
+Use `⟨uc, huc, ?_⟩` and prove the remaining obligations. Rewrite using `[hn, ← IsScalarTower.algebraMap_apply R O F g, hset c]`. Use `congr 2`. Use `finsum_congr fun w => finsum_congr fun hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[← hset c]`.
+
+Rewrite using `[hgcv c w hw, WithTop.untopD_coe]`. Both sides reduce to the same expression. Use `choose uc huc hNe using hN`. Use `set X := algebraMap R F g with hX`. Establish `hX0 : X ≠ 0`.
+
+Rewrite using `[hX, map_ne_zero_iff _ (IsFractionRing.injective R F)]`. Introduce and unpack `rfl`. Establish `: p = ⊥` using `by rw [hg, Ideal.span_singleton_eq_bot]`. Substitute `this` using the available equality. Simplify using `at hp`.
+
+Set `U : Oˣ` to `∏ c, (huc c).unit`. Establish `hprod : ∏ c, Algebra.norm F (gc c) = X ^ (∑ c, Nc c) * algebraMap O F (U : O)`. Rewrite using `[Finset.prod_congr rfl fun c _ => hNe c, Finset.prod_mul_distrib, HDiscOmL.prod_zpow hX0, ← map_prod]`. Use `congr 2`. Simplify using `only [U, Units.coe_prod, IsUnit.unit_spec]`.
+
+Rewrite `hdisc` using `[hprod]`. Use `set Dt := (Matrix.of fun k l : Fin m => ∑ c, Algebra.trace F (L c) (b k c * b l c)).det with hDt`. Take `⟨⟨a, s⟩, has⟩` from `IsLocalization.mk'_surjective p.primeCompl ((u : O) * ((algebraMap R O g) ^ (2 * nn + t)) * ((U⁻¹ : Oˣ) : O) * ((U⁻¹ : Oˣ) : O))`. Use `⟨a, s, s.2, ?_⟩` and prove the remaining obligations. Establish `hsF : algebraMap O F (IsLocalization.mk' O a s) * algebraMap R F s = algebraMap R F a`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply R O F s, IsScalarTower.algebraMap_apply R O F a, ← map_mul, IsLocalization.mk'_spec]`. Simplify using `only at has`. Rewrite using `[← hsF, has]`. Use `congr 1`. Use `set V := algebraMap O F (U : O)`.
+
+Use `set V' := algebraMap O F ((U⁻¹ : Oˣ) : O)`. Establish `hU : V * V' = 1`. Simplify using `only [V, V']`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2 : X ^ (2 * ∑ c, Nc c) = (X ^ (∑ c, Nc c)) ^ 2`.
+
+Rewrite using `[mul_comm, zpow_mul]`. Use `norm_cast`. Establish `e1 : algebraMap O F ((u : O) * (algebraMap R O g) ^ (2 * nn + t) * ((U⁻¹ : Oˣ) : O) * ((U⁻¹ : Oˣ) : O)) = algebraMap O F ((u : O) * (algebraMap R O g) ^ (2 * nn + t)) * V' * V'`. Simplify using `only [V', map_mul]`. Rewrite using `[h2, e1, ← hdisc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Dt * ((X ^ ∑ c, Nc c) * V) ^ 2 * V' * V' := by ring`.
+-/
 theorem disc_local (p : Ideal R) [p.IsPrime] (hp : p.height = 1) (g : R) (hg : p = Ideal.span {g})
     (n : ∀ c, AddValuation (L c) (WithTop ℤ) → ℤ)
     {m : ℕ} (hm : m = ∑ c, finrank F (L c)) (b : Fin m → ∀ c, L c) (hli : LinearIndependent F b)

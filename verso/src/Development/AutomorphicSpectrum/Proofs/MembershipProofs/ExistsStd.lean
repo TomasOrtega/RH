@@ -8,6 +8,11 @@ open GlobalTheory.CompanionTheory.VacLoc GlobalTheory.CompanionTheory.FinHeis Gl
 
 namespace GlobalTheory.CompanionTheory.StdLattice
 
+/- English proof (translation)
+Establish `hf' : IsLocallyConstant f ∧ HasCompactSupport f` using `hf`. Take `⟨hlc, hcs⟩` from `hf'`. Establish `hg : IsLocallyConstant (fun z : G × G => f (z.2 + z.1))` using `hlc.comp_continuous (continuous_snd.add continuous_fst)`. Establish `hg2 : IsLocallyConstant (fun z : G × G => f z.2)` using `hlc.comp_continuous continuous_snd`. Use `hcs.isCompact.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hg.eventually_eq (0, y), hg2.eventually_eq (0, y)] with z hz1 hz2`. Conclude with `hz1.trans ((congrArg f (add_zero y)).trans hz2.symm)`.
+-/
 theorem exists_nhds_invariant {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] {f : G → ℂ}
     (hf : f ∈ SB G) : ∀ᶠ u in 𝓝 (0 : G), ∀ y ∈ tsupport f, f (y + u) = f y := by
   have hf' : IsLocallyConstant f ∧ HasCompactSupport f := hf
@@ -19,6 +24,21 @@ theorem exists_nhds_invariant {G : Type} [AddCommGroup G] [TopologicalSpace G] [
   filter_upwards [hg.eventually_eq (0, y), hg2.eventually_eq (0, y)] with z hz1 hz2
   exact hz1.trans ((congrArg f (add_zero y)).trans hz2.symm)
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ H) := QuotientAddGroup.discreteTopology hH`. Establish `hfin : ((QuotientAddGroup.mk : G → G ⧸ H) '' tsupport f).Finite` using `(hf.isCompact.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Establish `key : ∀ c ∈ hfin.toFinset, ∀ x : G, (QuotientAddGroup.mk x : G ⧸ H) = c → f x = f (Quotient.out c)`. Introduce `c hc x hx`. Rewrite `hc` using `[Set.Finite.mem_toFinset]`.
+
+Take `⟨k, hk, rfl⟩` from `hc`. Establish `h1 : ∀ z : G, (QuotientAddGroup.mk z : G ⧸ H) = QuotientAddGroup.mk k → f z = f k`. Introduce `z hz`. Establish `hm : -k + z ∈ H` using `QuotientAddGroup.eq.1 hz.symm`. Establish `h2` using `hinv k hk (-k + z) hm`.
+
+Rewrite `h2` using `[add_neg_cancel_left]`. Then use the resulting hypothesis. Rewrite using `[h1 x hx, h1 _ (QuotientAddGroup.out_eq' _)]`. Establish `hfeq : f = ∑ c ∈ hfin.toFinset, f (Quotient.out c) • (fun x : G => (H : Set G).indicator (fun _ => (1 : ℂ)) (x + -Quotient.out c))`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `hind : ∀ c : G ⧸ H, (H : Set G).indicator (fun _ => (1 : ℂ)) (x + -Quotient.out c) = if c = (QuotientAddGroup.mk x : G ⧸ H) then 1 else 0`. Introduce `c`. Establish `hiff : x + -Quotient.out c ∈ H ↔ c = (QuotientAddGroup.mk x : G ⧸ H)`. Rewrite using `[add_comm, ← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`.
+
+Simplify using `only [Set.indicator_apply, SetLike.mem_coe, hiff]`. Simplify using `only [hind, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hx`. Conclude with `key _ hx x rfl`.
+
+Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hxK`. Apply `hx` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨x, hxK, rfl⟩`.
+
+Rewrite using `[hfeq]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨-Quotient.out c, rfl⟩)`.
+-/
 theorem mem_span_cosets {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] {f : G → ℂ}
     (hf : HasCompactSupport f) (H : AddSubgroup G) (hH : IsOpen (H : Set G))
     (hinv : ∀ y ∈ tsupport f, ∀ u ∈ H, f (y + u) = f y) :
@@ -74,6 +94,15 @@ def ind (O : Subring R) (κ : Type) : (κ → R) → ℂ := Set.indicator {x : �
 
 variable [TopologicalSpace R]
 
+/- English proof (translation)
+Establish `hO : IsClosed (O : Set R)` using `hc.isClosed`. Establish `hset : {x : κ → R | ∀ i, x i ∈ O} = Set.univ.pi (fun _ => (O : Set R))`. Use extensionality with `x`. Simplify using `[Set.mem_pi]`. Establish `hS : IsOpen {x : κ → R | ∀ i, x i ∈ O}`.
+
+Rewrite using `[hset]`. Conclude with `isOpen_set_pi Set.finite_univ (fun _ _ => ho)`. Establish `hS' : IsClosed {x : κ → R | ∀ i, x i ∈ O}`. Rewrite using `[hset]`. Conclude with `isClosed_set_pi (fun _ _ => hO)`.
+
+Use `show IsLocallyConstant (ind O κ) ∧ HasCompactSupport (ind O κ)`. Use `⟨fun t => ?_, ?_⟩` and prove the remaining obligations. Use `show IsOpen (Set.indicator {x : κ → R | ∀ i, x i ∈ O} (fun _ => (1 : ℂ)) ⁻¹' t)`. Rewrite using `[Set.indicator_preimage]`. Conclude with `((IsLocallyConstant.const (1 : ℂ) t).inter hS).union ((IsLocallyConstant.const (0 : ℂ) t).sdiff hS')`.
+
+Conclude with `HasCompactSupport.of_support_subset_isCompact (by rw [hset]; exact isCompact_univ_pi fun _ => hc) Set.support_indicator_subset`.
+-/
 theorem ind_mem_SB [T2Space R] {O : Subring R} (hc : IsCompact (O : Set R)) (ho : IsOpen (O : Set R)) :
     ind O κ ∈ SB (κ → R) := by
   have hO : IsClosed (O : Set R) := hc.isClosed
@@ -95,6 +124,11 @@ theorem ind_mem_SB [T2Space R] {O : Subring R} (hc : IsCompact (O : Set R)) (ho 
   · exact HasCompactSupport.of_support_subset_isCompact
       (by rw [hset]; exact isCompact_univ_pi fun _ => hc) Set.support_indicator_subset
 
+/- English proof (translation)
+Establish `hy' : ∀ i, ((u⁻¹ : Rˣ) : R) * y i ∈ O` using `hy`. Establish `hxy : ∀ i, ψ (x i * y i) = 1` using `fun i => by`. Rewrite using `[mul_comm]`. Conclude with `(h.ann (y i)).2 (hy' i) (x i) (hx i)`. Use `show ψ (∑ i, x i * y i) = 1`.
+
+Conclude with `Finset.sum_induction _ (fun z => ψ z = 1) (fun a b ha hb => by rw [AddChar.map_add_eq_mul, ha, hb, one_mul]) (AddChar.map_zero_eq_one ψ) (fun i _ => hxy i)`.
+-/
 theorem psi_dot {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ O u) {x y : κ → R} (hx : ∀ i, x i ∈ O)
     (hy : y ∈ box O u κ) : ψ (x ⬝ᵥ y) = 1 := by
   have hy' : ∀ i, ((u⁻¹ : Rˣ) : R) * y i ∈ O := hy
@@ -108,6 +142,23 @@ theorem psi_dot {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ} (h : GoodChar ψ 
 
 variable [IsTopologicalRing R] [Invertible (2 : R)]
 
+/- English proof (translation)
+Use `set V := Submodule.span ℂ (Set.range fun w => schr ψ w (ind O κ)) with hV`. Establish `htr : ∀ g ∈ Submodule.span ℂ {g : (κ → R) → ℂ | ∃ y, g = schr ψ (0, y) (ind O κ)}, ∀ a : κ → R, (fun x => g (x + a)) ∈ V`. Introduce `g hg a`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`.
+
+Take `⟨y, rfl⟩` from `hg`. Establish `heq : (fun x => schr ψ (0, y) (ind O κ) (x + a)) = ψ (a ⬝ᵥ y - ⅟2 * (a ⬝ᵥ y)) • schr ψ (a, y) (ind O κ)`. Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, add_zero, zero_dotProduct, mul_zero]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, show x ⬝ᵥ y + a ⬝ᵥ y = a ⬝ᵥ y - ⅟2 * (a ⬝ᵥ y) + (x ⬝ᵥ y + ⅟2 * (a ⬝ᵥ y)) by ring]`.
+
+Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨(a, y), rfl⟩)`. Consider the case `zero => exact V.zero_mem`. Consider the case `add g1 g2 _ _ h1 h2 => exact V.add_mem h1 h2`. Consider the case `smul c g _ h => exact V.smul_mem c h`.
+
+Establish `hsb : IsLocallyConstant f ∧ HasCompactSupport f` using `hf`. Establish `hA` using `exists_nhds_invariant hf`. Rewrite `hA` using `[nhds_pi]`. Take `⟨I, t, ht, hIt⟩` from `Filter.mem_pi'.1 hA`. Establish `hU' : (⋂ i, t i) ∈ 𝓝 (0 : R)` using `Filter.iInter_mem.2 fun i => ht i`.
+
+Take `⟨v, hv⟩` from `h.basis _ (Filter.inter_mem hU' (h.isOpen.mem_nhds O.zero_mem))`. Establish `hvO : ((v : Rˣ) : R) ∈ O`. Establish `h1` using `(hv 1 O.one_mem).2`. Rewrite `h1` using `[mul_one]`. Then use the resulting hypothesis. Establish `hboxU : ∀ w ∈ box O v κ, ∀ y ∈ tsupport f, f (y + w) = f y`.
+
+Introduce `w hw`. Establish `hw' : ∀ i, ((v⁻¹ : Rˣ) : R) * w i ∈ O` using `hw`. Establish `hwI : w ∈ (↑I : Set κ).pi t` using `fun i _ => by`. Establish `h2` using `(hv _ (hw' i)).1`. Rewrite `h2` using `[Units.mul_inv_cancel_left]`.
+
+Conclude with `Set.mem_iInter.1 h2 i`. Conclude with `hIt hwI`. Establish `hbox_open : IsOpen ((box O v κ : AddSubgroup (κ → R)) : Set (κ → R))` using `by show IsOpen {x : κ → R | ∀ i, ((v⁻¹ : Rˣ) : R) * x i ∈ O}`. Rewrite using `[Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => h.isOpen.preimage (continuous_const.mul (continuous_apply i))`.
+
+Establish `hmem` using `mem_span_cosets hsb.2 (box O v κ) hbox_open (fun y hy w hw => hboxU w hw y hy)`. Use `Submodule.span_le.2 ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `htr _ (GlobalTheory.T.indicator_in_schrodinger_span ψ O u v h hvO) a`.
+-/
 theorem mem_span_schr [LocallyCompactSpace R] [T2Space R] {ψ : AddChar R ℂ} {O : Subring R} {u : Rˣ}
     (h : GoodChar ψ O u) {f : (κ → R) → ℂ} (hf : f ∈ SB (κ → R)) :
     f ∈ Submodule.span ℂ (Set.range fun w => schr ψ w (ind O κ)) := by
@@ -157,6 +208,47 @@ theorem mem_span_schr [LocallyCompactSpace R] [T2Space R] {ψ : AddChar R ℂ} {
   rintro _ ⟨a, rfl⟩
   exact htr _ (GlobalTheory.T.indicator_in_schrodinger_span ψ O u v h hvO) a
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ _ ψ O u W _ _ B κ _ d μ S h hM`. Take `⟨hrho, -, hc⟩` from `hM`. Set `Γ : AddSubgroup W` to `AddSubgroup.comap d.e.toLinearMap.toAddMonoidHom ((box O 1 κ).prod (box O u κ))`. Establish `hΓ : ∀ w, w ∈ Γ ↔ (∀ i, (d.e w).1 i ∈ O) ∧ (∀ i, ((u⁻¹ : Rˣ) : R) * (d.e w).2 i ∈ O)`. Introduce `w`.
+
+Use `show ((∀ i, ((1⁻¹ : Rˣ) : R) * (d.e w).1 i ∈ O) ∧ (∀ i, ((u⁻¹ : Rˣ) : R) * (d.e w).2 i ∈ O)) ↔ _`. Simplify using `only [inv_one, Units.val_one, one_mul]`. Establish `hsq : ∀ z : R, ψ (⅟2 * z) ^ 2 = ψ z`. Introduce `z`. Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, Nat.cast_ofNat, ← mul_assoc, mul_invOf_self, one_mul]`.
+
+Establish `hB1 : ∀ γ x, S.c γ x ^ 2 = ψ ((d.e γ).1 ⬝ᵥ (d.e x).2 - (d.e x).1 ⬝ᵥ (d.e γ).2)`. Introduce `γ x`. Rewrite using `[hc, hsq, d.form]`. Use `⟨Γ, fun x => ψ (-(⅟2 * ((d.e x).1 ⬝ᵥ (d.e x).2))), ⟨ind O κ, ind_mem_SB h.compact h.isOpen⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx γ hγ`. Take `⟨hxa, hxb⟩` from `(hΓ x).1 hx`. Take `⟨hga, hgb⟩` from `(hΓ γ).1 hγ`. Rewrite using `[hB1, AddChar.map_sub_eq_div, psi_dot h hga hxb, psi_dot h hxa hgb, div_one]`.
+
+Introduce `hall`. Rewrite using `[hΓ]`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Establish `key : ∀ z ∈ O, ψ (((u : Rˣ) : R) * (d.e x).1 i * z) = 1`.
+
+Introduce `z hz`. Establish `hγ : d.e.symm (0, Pi.single i (((u : Rˣ) : R) * z)) ∈ Γ`. Rewrite using `[hΓ, LinearEquiv.apply_symm_apply]`. Use `⟨fun j => by simp, fun j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hj : j = i <;> simp [Pi.single_apply, hj, hz]`.
+
+Establish `h3` using `hall _ hγ`. Rewrite `h3` using `[hB1, LinearEquiv.apply_symm_apply]`. Simplify using `only [zero_dotProduct, dotProduct_single, zero_sub] at h3`. Rewrite `h3` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Rewrite using `[mul_comm ((u : Rˣ) : R) _, mul_assoc]`.
+
+Conclude with `h3`. Establish `h4` using `(h.ann _).1 key`. Rewrite `h4` using `[← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Introduce `i`. Apply `(h.ann _).1` to reduce the goal to its premises.
+
+Introduce `z hz`. Establish `hγ : d.e.symm (Pi.single i z, 0) ∈ Γ`. Rewrite using `[hΓ, LinearEquiv.apply_symm_apply]`. Use `⟨fun j => ?_, fun j => by simp⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hj : j = i <;> simp [Pi.single_apply, hj, hz]`.
+
+Establish `h3` using `hall _ hγ`. Rewrite `h3` using `[hB1, LinearEquiv.apply_symm_apply]`. Simplify using `only [single_dotProduct, dotProduct_zero, sub_zero] at h3`. Rewrite using `[mul_comm]`. Conclude with `h3`.
+
+Use `⟨fun x hx => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Take `⟨hxa, hxb⟩` from `(hΓ x).1 hx`. Establish `h2 : ψ (-(⅟2 * ((d.e x).1 ⬝ᵥ (d.e x).2))) * ψ (-(⅟2 * ((d.e x).1 ⬝ᵥ (d.e x).2))) = 1`. Rewrite using `[← pow_two, ← mul_neg, hsq, AddChar.map_neg_eq_inv, psi_dot h hxa hxb, inv_one]`. Conclude with `mul_self_eq_one_iff.1 h2`.
+
+Take `⟨hxa, hxb⟩` from `(hΓ x).1 hx`. Take `⟨hya, hyb⟩` from `(hΓ y).1 hy`. Use `show ψ (-(⅟2 * ((d.e (x + y)).1 ⬝ᵥ (d.e (x + y)).2))) = ψ (-(⅟2 * ((d.e x).1 ⬝ᵥ (d.e x).2))) * ψ (-(⅟2 * ((d.e y).1 ⬝ᵥ (d.e y).2))) * S.c x y`. Establish `h0 : ψ (-(2 * ⅟2 * ((d.e x).1 ⬝ᵥ (d.e y).2))) = 1`. Rewrite using `[mul_invOf_self, one_mul, AddChar.map_neg_eq_inv, psi_dot h hxa hyb, inv_one]`.
+
+Establish `hX : -(⅟2 * ((d.e x + d.e y).1 ⬝ᵥ (d.e x + d.e y).2)) = (-(⅟2 * ((d.e x).1 ⬝ᵥ (d.e x).2)) + -(⅟2 * ((d.e y).1 ⬝ᵥ (d.e y).2)) + ⅟2 * ((d.e x).1 ⬝ᵥ (d.e y).2 - (d.e y).1 ⬝ᵥ (d.e x).2)) + -(2 * ⅟2 * ((d.e x).1 ⬝ᵥ (d.e y).2))`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, d.form, map_add, hX, AddChar.map_add_eq_mul, h0, mul_one, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`. Introduce `γ hγ`.
+
+Take `⟨ha, hb⟩` from `(hΓ γ).1 hγ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hrho, Submodule.coe_smul]`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, ind, Set.indicator_apply, Set.mem_setOf_eq, AddChar.map_neg_eq_inv, inv_inv]`.
+
+Distinguish the cases in `hx : ∀ i, x i ∈ O`. Establish `hxa : ∀ i, (x + (d.e γ).1) i ∈ O` using `fun i => O.add_mem (hx i) (ha i)`. Rewrite using `[if_pos hxa, if_pos hx, AddChar.map_add_eq_mul, psi_dot h hx hb, one_mul]`. Establish `hxa : ¬ ∀ i, (x + (d.e γ).1) i ∈ O` using `fun h' => hx fun i => by`. Simplify using `using O.sub_mem (h' i) (ha i)`.
+
+Rewrite using `[if_neg hxa, if_neg hx, mul_zero, mul_zero]`. Use `show Submodule.span ℂ (Set.range fun x => S.rho x ⟨ind O κ, ind_mem_SB h.compact h.isOpen⟩) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `g -`. Establish `hg` using `mem_span_schr h g.2`.
+
+Establish `hmap : Submodule.span ℂ (Set.range fun w => schr ψ w (ind O κ)) = (Submodule.span ℂ (Set.range fun x => S.rho x ⟨ind O κ, ind_mem_SB h.compact h.isOpen⟩)).map (GlobalTheory.WeilM.SB (κ → R)).subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, rfl⟩`. Use `⟨d.e.symm w, ?_⟩` and prove the remaining obligations. Simplify using `[hrho, GlobalTheory.WeilM.Darboux.rho]`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨d.e x, by simp [hrho, GlobalTheory.WeilM.Darboux.rho]⟩`.
+
+Rewrite `hg` using `[hmap]`. Take `⟨y, hy, hyg⟩` from `Submodule.mem_map.1 hg`. Establish `hyg' : y = g` using `Subtype.ext hyg`. Rewrite using `[← hyg']` and apply the resulting hypothesis. Introduce `h0`.
+
+Establish `h5` using `congrArg (fun g : GlobalTheory.WeilM.SB (κ → R) => (g : (κ → R) → ℂ) 0) h0`. Simplify using `[ind, Set.indicator_apply] at h5`.
+-/
 theorem exists_std : ∀ {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [T2Space R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (O : Subring R) (u : Rˣ) {W : Type} [AddCommGroup W] [Module R W] {B : W → W → R} {κ : Type} [Fintype κ] (d : Darboux B κ) (μ : @Measure (κ → R) (borel _)) (S : Sys W (SB (κ → R))), GoodChar ψ O u → IsModel ψ d μ S → ∃ (Γ : AddSubgroup W) (al : W → ℂ) (φ : SB (κ → R)), SelfDual S Γ ∧ IsSemi S al Γ ∧ Law S al Γ φ ∧ Cyclic S φ ∧ φ ≠ 0 := by
   intro R _ _ _ _ _ _ ψ O u W _ _ B κ _ d μ S h hM
   classical

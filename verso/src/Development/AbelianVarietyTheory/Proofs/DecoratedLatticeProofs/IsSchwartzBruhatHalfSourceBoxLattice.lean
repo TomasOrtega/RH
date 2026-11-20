@@ -10,25 +10,40 @@ namespace GlobalTheory.FinPl.ExtZero.SBBox
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.add_apply, mul_add, hu, ht]`.
+-/
 theorem half_add {m n : ℕ} {e : AE D} {u t : Mx D m n} (hu : IsHalf e u) (ht : IsHalf e t) : IsHalf e (u + t) := by
   intro i j
   rw [Matrix.add_apply, mul_add, hu, ht]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.sub_apply, mul_sub, hu, ht]`.
+-/
 theorem half_sub {m n : ℕ} {e : AE D} {u t : Mx D m n} (hu : IsHalf e u) (ht : IsHalf e t) : IsHalf e (u - t) := by
   intro i j
   rw [Matrix.sub_apply, mul_sub, hu, ht]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => intro i j`. Rewrite using `[zero_smul, Matrix.zero_apply, mul_zero]`. Consider the case `succ N ih => rw [succ_nsmul]`. Conclude with `half_add ih hu`.
+-/
 theorem half_nsmul {m n : ℕ} {e : AE D} {u : Mx D m n} (hu : IsHalf e u) (N : ℕ) : IsHalf e (N • u) := by
   induction N with
   | zero => intro i j; rw [zero_smul, Matrix.zero_apply, mul_zero]
   | succ N ih => rw [succ_nsmul]; exact half_add ih hu
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun y _ => by rw [← mul_assoc, hu]`.
+-/
 theorem half_mul {m n l : ℕ} {e : AE D} {u : Mx D m n} (hu : IsHalf e u) (x : Mx D n l) :
     IsHalf e (u * x : Mx D m l) := by
   intro i j
   simp only [Matrix.mul_apply, Finset.mul_sum]
   exact Finset.sum_congr rfl fun y _ => by rw [← mul_assoc, hu]
 
+/- English proof (translation)
+Rewrite using `[← (o.resS T).symm_apply_apply t]`. Conclude with `half_add (half_mul h1 _) (half_mul h2 _)`.
+-/
 theorem half_of_res {S A L T : HSp D} (o : OrthDec S A L) {e : AE D} {t : WO S T}
     (h1 : IsHalf e (o.resS T t).1) (h2 : IsHalf e (o.resS T t).2) : IsHalf e t := by
   rw [← (o.resS T).symm_apply_apply t]
@@ -37,6 +52,11 @@ theorem half_of_res {S A L T : HSp D} (o : OrthDec S A L) {e : AE D} {t : WO S T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {p : SplitPt D k} {T L : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Unfold `zcol`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.add_mulVec, Pi.add_apply, map_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem zcol_add (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (y y' : WO L T) :
     zcol β ζ (y + y') = zcol β ζ y + zcol β ζ y' := by
   unfold zcol
@@ -45,22 +65,36 @@ theorem zcol_add (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (y y' : WO L 
   funext i
   rw [Matrix.add_mulVec, Pi.add_apply, map_add]; rfl
 
+/- English proof (translation)
+Use `zcol_add β ζ 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 theorem zcol_zero (β : Frame p T n) (ζ : Fin L.rank → D.host.E) : zcol β ζ 0 = 0 := by
   have := zcol_add β ζ 0 0
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => rw [zero_smul, zero_smul, zcol_zero]`. Consider the case `succ N ih => rw [succ_nsmul, succ_nsmul, zcol_add, ih]`.
+-/
 theorem zcol_nsmul (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (y : WO L T) (N : ℕ) :
     zcol β ζ (N • y) = N • zcol β ζ y := by
   induction N with
   | zero => rw [zero_smul, zero_smul, zcol_zero]
   | succ N ih => rw [succ_nsmul, succ_nsmul, zcol_add, ih]
 
+/- English proof (translation)
+Unfold `colFun vecInd`. Apply the tactic sequence `by_cases h : IsHalf p.e y <;> by_cases h' : zcol β ζ y ∈ Λ <;> simp [h, h']`.
+-/
 theorem colFun_ne_zero (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (Λ : Submodule 𝒪[k] (n → k)) (y : WO L T) :
     colFun β ζ (vecInd Λ) y ≠ 0 ↔ IsHalf p.e y ∧ zcol β ζ y ∈ Λ := by
   unfold colFun vecInd
   by_cases h : IsHalf p.e y <;> by_cases h' : zcol β ζ y ∈ Λ <;> simp [h, h']
 
+/- English proof (translation)
+Establish `h1 : IsHalf p.e (y + u) ↔ IsHalf p.e y` using `⟨fun h => by simpa using half_sub h hu, fun h => half_add h hu⟩`. Establish `h2 : zcol β ζ (y + u) ∈ Λ ↔ zcol β ζ y ∈ Λ`. Rewrite using `[zcol_add]`. Conclude with `Λ.add_mem_iff_left hu'`. Unfold `colFun vecInd`.
+
+Rewrite using `[propext h1, propext h2]`.
+-/
 theorem colFun_add (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (Λ : Submodule 𝒪[k] (n → k)) (y u : WO L T)
     (hu : IsHalf p.e u) (hu' : zcol β ζ u ∈ Λ) :
     colFun β ζ (vecInd Λ) (y + u) = colFun β ζ (vecInd Λ) y := by
@@ -71,11 +105,23 @@ theorem colFun_add (β : Frame p T n) (ζ : Fin L.rank → D.host.E) (Λ : Submo
   unfold colFun vecInd
   rw [propext h1, propext h2]
 
+/- English proof (translation)
+Unfold `halfInd`. Apply the tactic sequence `by_cases h : t ∈ Λ ∧ IsHalf e t <;> simp [h]`.
+-/
 theorem halfInd_ne_zero {m l : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D m l)) (t : Mx D m l) :
     halfInd e Λ t ≠ 0 ↔ t ∈ Λ ∧ IsHalf e t := by
   unfold halfInd
   by_cases h : t ∈ Λ ∧ IsHalf e t <;> simp [h]
 
+/- English proof (translation)
+Establish `key : ∀ u : WO S T, (u ∈ ΛS ∧ IsHalf p.e u) ↔ (((o.resS T u).1 ∈ ΛA ∧ IsHalf p.e (o.resS T u).1) ∧ (IsHalf p.e (o.resS T u).2 ∧ zcol β ζ (o.resS T u).2 ∈ ΛT))`. Introduce `u`. Rewrite using `[← halfInd_ne_zero, ← halfInd_ne_zero, ← colFun_ne_zero, hf, ← mul_ne_zero_iff]`. Both sides reduce to the same expression. Take `⟨hs, N, hN, hinv, hsup⟩` from `hΦ`.
+
+Establish `hne : ∀ t, o.boxS T Φ (colFun β ζ (vecInd ΛT)) t ≠ 0 → Φ (o.resS T t).1 ≠ 0 ∧ IsHalf p.e (o.resS T t).2 ∧ zcol β ζ (o.resS T t).2 ∈ ΛT`. Introduce `t ht`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 ht`. Conclude with `⟨h1, (colFun_ne_zero β ζ ΛT _).1 h2⟩`. Use `⟨fun t ht => half_of_res o (hs _ (hne t ht).1) (hne t ht).2.1, N, hN, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨h1, h2⟩, h3, h4⟩` from `(key u).1 ⟨hu, hu'⟩`. Unfold `OrthDec.boxS`. Rewrite using `[map_add, map_nsmul, Prod.fst_add, Prod.snd_add, Prod.smul_fst, Prod.smul_snd, hinv _ h1 h2, colFun_add β ζ ΛT _ _ (half_nsmul h3 N) (by rw [zcol_nsmul]; exact nsmul_mem h4 N)]`. Take `⟨h1, h2, h3⟩` from `hne t ht`. Use `((key (N • t)).2 ?_).1` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul, Prod.smul_fst, Prod.smul_snd]`. Conclude with `⟨⟨hsup _ h1, half_nsmul (hs _ h1) N⟩, half_nsmul h2 N, by rw [zcol_nsmul]; exact nsmul_mem h3 N⟩`.
+-/
 theorem isSBHalf_boxS_gen {S A : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (β : Frame p T n)
     (ΛA : AddSubgroup (WO A T)) (ΛS : AddSubgroup (WO S T)) (ΛT : Submodule 𝒪[k] (n → k))
     (hf : halfInd p.e ΛS = o.boxS T (halfInd p.e ΛA) (colFun β ζ (vecInd ΛT)))
@@ -103,6 +149,9 @@ theorem isSBHalf_boxS_gen {S A : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank →
     rw [map_nsmul, Prod.smul_fst, Prod.smul_snd]
     exact ⟨⟨hsup _ h1, half_nsmul (hs _ h1) N⟩, half_nsmul h2 N, by rw [zcol_nsmul]; exact nsmul_mem h3 N⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ o ζ β _ _ _ ΛT hf Φ hΦ` and use `isSBHalf_boxS_gen o ζ β _ _ ΛT hf Φ hΦ`.
+-/
 theorem isSBHalf_boxS : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n : Type) [Fintype n] [DecidableEq n] (S A L T : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (β : Frame p T n) (LA : Lat A) (LS : Lat S) (LT : Lat T) (ΛT : Submodule 𝒪[k] (n → k)), halfInd p.e (latO S T (LS : Set _) (LT : Set _) (· = p.v)) = o.boxS T (halfInd p.e (latO A T (LA : Set _) (LT : Set _) (· = p.v))) (GlobalTheory.FinPl.ExtZero.colFun β ζ (vecInd ΛT)) → ∀ Φ, IsSBHalf p.e (latO A T (LA : Set _) (LT : Set _) (· = p.v)) Φ → IsSBHalf p.e (latO S T (LS : Set _) (LT : Set _) (· = p.v)) (o.boxS T Φ (GlobalTheory.FinPl.ExtZero.colFun β ζ (vecInd ΛT))) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ o ζ β _ _ _ ΛT hf Φ hΦ => isSBHalf_boxS_gen o ζ β _ _ ΛT hf Φ hΦ
 

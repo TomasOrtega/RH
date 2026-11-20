@@ -27,6 +27,17 @@ open scoped Real
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `hl' : l = (fun i => (((m i : ℝ)) : ℂ)) + τ *ᵥ fun i => (((n i : ℝ)) : ℂ)`. Simplify using `using hl`. Establish `h1` using `dot_imInv_eq_hermForm_add hp (fun i => (n i : ℝ)) (fun i => (m i : ℝ)) ζ`. Establish `h2` using `dot_imInv_eq_hermForm_add hp (fun i => (n i : ℝ)) (fun i => (m i : ℝ)) l`. Rewrite `h1`, `h2` using `[← hl']`.
+
+Establish `h3` using `dot_mulVec_symm (isSymm_imInv hs) ζ l`. Establish `e0 : (fun i => (((n i : ℝ)) : ℂ)) = ofIntVec n`. Use function extensionality and compare the values at `i`. Simplify using `[ofIntVec]`. Establish `h5 : (l ⬝ᵥ ofIntVec n) = ((m ⬝ᵥ n : ℤ) : ℂ) + ofIntVec n ⬝ᵥ τ *ᵥ ofIntVec n`.
+
+Rewrite using `[hl, add_dotProduct, dotProduct_comm (τ *ᵥ _)]`. Use `congr 1`. Simplify using `[dotProduct, ofIntVec]`. Establish `e1 : ((a ⬝ᵥ (fun i => (m i : ℝ)) : ℝ) : ℂ) = ofRealVec a ⬝ᵥ ofIntVec m`. Simplify using `[dotProduct, ofRealVec, ofIntVec]`.
+
+Establish `e2 : ((c ⬝ᵥ (fun i => (n i : ℝ)) : ℝ) : ℂ) = ofRealVec c ⬝ᵥ ofIntVec n`. Simplify using `[dotProduct, ofRealVec, ofIntVec]`. Rewrite `h1`, `h2` using `[e0]`. Rewrite using `[canMult, e1, e2]`. Simplify using `only [eC, ← Complex.exp_add]`.
+
+Use `congr 1`. Rewrite using `[mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, h3, h1, h2, h5, dotProduct_comm (ofIntVec n) ζ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussian_mul_factor {τ : Matrix (Fin g) (Fin g) ℂ} (hs : τ.IsSymm)
     (hp : (τ.map Complex.im).PosDef) (a c : Fin g → ℝ) (m n : Fin g → ℤ) {l : Fin g → ℂ}
     (hl : l = (fun i => (m i : ℂ)) + τ *ᵥ fun i => (n i : ℂ)) (ζ : Fin g → ℂ) :
@@ -70,6 +81,15 @@ open scoped Real
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `hhi : h * h⁻¹ = 1` using `mul_nonsing_inv _ hh`. Establish `hback : ∀ v : Fin g → ℂ, h *ᵥ (h⁻¹ *ᵥ v) = v` using `fun v => by`. Rewrite using `[mulVec_mulVec, hhi, one_mulVec]`. Establish `hd : Differentiable ℂ (fun ζ : Fin g → ℂ => h⁻¹ *ᵥ ζ)` using `differentiable_pi.2 fun i => by`. Simplify using `only [mulVec, dotProduct]`.
+
+Use `fun_prop`. Use `GlobalTheory.mem_thetaLevelChar.2 ⟨?_, fun n n' z => ?_⟩` and prove the remaining obligations. Use `Differentiable.mul ?_ (hθ.comp hd)` and prove the remaining obligations. Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`.
+
+Use `set l : Fin g → ℂ := (fun i => (n' i : ℂ)) + τ *ᵥ fun i => (n i : ℂ) with hl`. Establish `e : z + τ *ᵥ ofIntVec n + ofIntVec n' = z + l`. Rewrite using `[hl, add_assoc, add_comm (τ *ᵥ _)]`. Both sides reduce to the same expression. Establish `hL` using `hlaw n' n (h⁻¹ *ᵥ l) (hback l) (h⁻¹ *ᵥ z)`.
+
+Rewrite `hL` using `[hH, hH, hback, hback]`. Establish `hG` using `gaussian_mul_factor hs hp a c n' n hl z`. Simplify using `only [e]`. Rewrite using `[show h⁻¹ *ᵥ (z + l) = h⁻¹ *ᵥ z + h⁻¹ *ᵥ l from mulVec_add _ _ _, hL]`. Take the linear combination `θ (h⁻¹ *ᵥ z) * hG`.
+-/
 theorem gaussian_mul_mem_thetaLevelChar {τ h Hm : Matrix (Fin g) (Fin g) ℂ} {a c : Fin g → ℝ}
     {θ : (Fin g → ℂ) → ℂ} (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (hh : IsUnit h.det)
     (hH : ∀ z w, hermForm Hm z w = hermForm (imInv τ) (h *ᵥ z) (h *ᵥ w))
@@ -102,6 +122,13 @@ theorem gaussian_mul_mem_thetaLevelChar {τ h Hm : Matrix (Fin g) (Fin g) ℂ} {
     rw [show h⁻¹ *ᵥ (z + l) = h⁻¹ *ᵥ z + h⁻¹ *ᵥ l from mulVec_add _ _ _, hL]
     linear_combination θ (h⁻¹ *ᵥ z) * hG
 
+/- English proof (translation)
+Establish `hmem` using `gaussian_mul_mem_thetaLevelChar hs hp hh hH hθ hlaw`. Rewrite `hmem` using `[GlobalTheory.thetaLevelChar_one (a := a) (b := c) (τ := τ) ⟨hs, hp⟩, Submodule.mem_span_singleton]`. Take `⟨κ, hκ⟩` from `hmem`. Use `⟨κ, fun z => ?_⟩` and prove the remaining obligations. Establish `hback : h⁻¹ *ᵥ (h *ᵥ z) = z`.
+
+Rewrite using `[mulVec_mulVec, nonsing_inv_mul _ hh, one_mulVec]`. Establish `hz` using `congrFun hκ (h *ᵥ z)`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at hz`. Rewrite `hz` using `[hback]`. Rewrite using `[canTh, thetaChar_eq_theta, mul_left_comm, hz, ← _root_.mul_assoc, ← Complex.exp_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem eq_const_mul_canTh {τ h Hm : Matrix (Fin g) (Fin g) ℂ} {a c : Fin g → ℝ}
     {θ : (Fin g → ℂ) → ℂ} (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) (hh : IsUnit h.det)
     (hH : ∀ z w, hermForm Hm z w = hermForm (imInv τ) (h *ᵥ z) (h *ᵥ w))
@@ -125,6 +152,9 @@ theorem eq_const_mul_canTh {τ h Hm : Matrix (Fin g) (Fin g) ℂ} {a c : Fin g �
 
 end Main
 
+/- English proof (translation)
+Introduce `g τ h Hm a c θ hs hp hh hH hθ hlaw`. Conclude with `eq_const_mul_canTh hs hp hh hH hθ hlaw`.
+-/
 theorem level_one_line : ∀ (g : ℕ) (τ h Hm : Matrix (Fin g) (Fin g) ℂ) (a c : Fin g → ℝ) (θ : (Fin g → ℂ) → ℂ),
     τ.IsSymm → (τ.map Complex.im).PosDef → IsUnit h.det →
     (∀ z w, hermForm Hm z w = hermForm (GlobalTheory.CanTh.imInv τ) (h.mulVec z) (h.mulVec w)) →

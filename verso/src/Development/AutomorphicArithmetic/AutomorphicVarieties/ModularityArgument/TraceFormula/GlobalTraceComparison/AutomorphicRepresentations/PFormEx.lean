@@ -12,6 +12,11 @@ attribute [local instance] PositivityTheory.Rg.BcB.E.borelH
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.FE
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : ℝ)` to `⟨1 / 2, 1, by norm_num, by norm_num⟩`. Use `⟨b.normed volume, b.continuous_normed, b.hasCompactSupport_normed, b.nonneg_normed, ?_, b.integral_normed⟩` and prove the remaining obligations. Introduce `s hs`. Establish `h : s ∈ Function.support (b.normed volume)`. Rewrite using `[b.support_normed_eq, Metric.mem_ball, Real.dist_eq, sub_zero]`.
+
+Conclude with `abs_lt.2 hs`. Conclude with `h`.
+-/
 private theorem weight_ex : ∃ w : ℝ → ℝ, Continuous w ∧ HasCompactSupport w ∧ (∀ s, 0 ≤ w s) ∧
     (∀ s ∈ Set.Ioo (-1 : ℝ) 1, w s ≠ 0) ∧ ∫ s, w s = 1 := by
   let b : ContDiffBump (0 : ℝ) := ⟨1 / 2, 1, by norm_num, by norm_num⟩
@@ -47,6 +52,11 @@ private def slabSp (D : Dom E n 0) : Submodule ℂ (GA E n → ℂ) where
       refine (memLp_congr_ae (Filter.Eventually.of_forall fun x => ?_)).1 h
       simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨hl, hm, -⟩` from `hB E n hn`. Establish `hinv : Inv (fun x : H E n 0 => f x.1)`. Introduce and unpack `⟨_, ⟨p, q⟩, rfl⟩ x`. Conclude with `hf.2.1 p x.1`. Establish `key` using `hA E n D (fun x => f x.1) (fun _ => 0) _ (hf.1.comp continuous_fst) continuous_const hinv (fun _ _ => rfl) isOpen_Ioo h`.
+
+Use function extensionality and compare the values at `g`. Establish `h0 : ldet (ac E n (-ldet ((g, 1) : H E n 0)) * (g, 1)) ∈ Set.Ioo (-1 : ℝ) 1`. Rewrite using `[hm, hl, neg_add_cancel]`. Apply the tactic sequence `constructor <;> norm_num`. Conclude with `(hf.2.2.1 _ g).symm.trans (key _ h0)`.
+-/
 private theorem zero_of_ae (hB : Basic) (hA : AeEq) (hn : 1 ≤ n) (D : Dom E n 0) {f : GA E n → ℂ} (hf : Slab D f)
     (h : ∀ᵐ x ∂D.ν, ldet x ∈ Set.Ioo (-1 : ℝ) 1 → f x.1 = 0) : f = 0 := by
   obtain ⟨hl, hm, -⟩ := hB E n hn
@@ -64,6 +74,29 @@ private theorem zero_of_ae (hB : Basic) (hA : AeEq) (hn : 1 ≤ n) (D : Dom E n 
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.FE
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.FE in
+/- English proof (translation)
+Introduce `hB hA hW E _ _ _ n hn D`. Take `⟨w, wc, ws, w0, wp, w1⟩` from `weight_ex`. Establish `uc : Continuous fun s => (w s : ℂ)` using `Complex.continuous_ofReal.comp wc`. Establish `us : HasCompactSupport fun s => (w s : ℂ)` using `ws.comp_left (g := fun r : ℝ => (r : ℂ)) Complex.ofReal_zero`. Establish `u1 : ∫ s, (w s : ℂ) = 1` using `by rw [integral_complex_ofReal, w1, Complex.ofReal_one]`.
+
+Establish `hI : ∀ a b : slabSp D, Integrable (fun x : H E n 0 => starRingEnd ℂ (a.1 x.1) * b.1 x.1 * (w (ldet x) : ℂ)) D.ν` using `fun a b => (hW E n hn D a.1 b.1 a.2 b.2 _ uc us).1`. Set `B : slabSp D →ₗ⋆[ℂ] slabSp D →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun a b => prW D (fun s => (w s : ℂ)) a.1 b.1) (fun a a' b => by`. Simplify using `only [prW]`. Rewrite using `[← integral_add (hI a b) (hI a' b)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply, map_add]`. Use the proof step `ring)`. Use the proof step `(fun c a b => by`. Simplify using `only [prW, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, map_mul]`. Use the proof step `ring)`. Use the proof step `(fun a b b' => by`. Simplify using `only [prW]`.
+
+Rewrite using `[← integral_add (hI a b) (hI a b')]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Use the proof step `ring)`. Use the proof step `(fun c a b => by`.
+
+Simplify using `only [prW, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Use the proof step `ring)`.
+
+Establish `hBv : ∀ a b, B a b = prW D (fun s => (w s : ℂ)) a.1 b.1` using `fun _ _ => rfl`. Use `⟨slabSp D, B, fun _ => Iff.rfl, fun a b => ?_, fun a ha => ?_, fun a b u hu hc => ?_, fun g hg a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hBv, hBv, prW, prW, ← integral_conj]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `he : ∀ x : H E n 0, starRingEnd ℂ (a.1 x.1) * a.1 x.1 * (w (ldet x) : ℂ) = ((Complex.normSq (a.1 x.1) * w (ldet x) : ℝ) : ℂ)` using `fun x => by`. Rewrite using `[Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Establish `hi : Integrable (fun x : H E n 0 => Complex.normSq (a.1 x.1) * w (ldet x)) D.ν`. Establish `h` using `(hI a a).re`.
+
+Simplify using `only [he, RCLike.re_to_complex, Complex.ofReal_re] at h`. Conclude with `h`. Establish `hnn : 0 ≤ fun x : H E n 0 => Complex.normSq (a.1 x.1) * w (ldet x)` using `fun x => mul_nonneg (Complex.normSq_nonneg _) (w0 _)`. Rewrite using `[hBv, prW]`. Simplify using `only [he]`.
+
+Rewrite using `[integral_complex_ofReal, Complex.ofReal_re]`. Use `lt_of_le_of_ne (integral_nonneg hnn) fun h0 => ha (Subtype.ext ?_)` and prove the remaining obligations. Use `zero_of_ae hB hA hn D a.2 ?_` and prove the remaining obligations. Use `filter_upwards [(integral_eq_zero_iff_of_nonneg hnn hi).1 h0.symm] with x hx hI'`. Conclude with `Complex.normSq_eq_zero.1 ((mul_eq_zero.1 hx).resolve_right (wp _ hI'))`.
+
+Conclude with `(hW E n hn D a.1 b.1 a.2 b.2 u hu hc).2.1 _ uc us u1`. Conclude with `((hW E n hn D a.1 a.1 a.2 a.2 _ uc us).2.2 g hg).1`. Introduce `a' b b' h1 h2`. Rewrite using `[hBv, hBv, funext h1, funext h2]`. Conclude with `((hW E n hn D a.1 b.1 a.2 b.2 _ uc us).2.2 g hg).2`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.formEx_pf :
     Basic → AeEq → WtInd → FormEx := by
   intro hB hA hW E _ _ _ n hn D

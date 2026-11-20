@@ -17,13 +17,22 @@ def curvTh0 : A := d.L.ζ * d.L.nab + d.L.ζb * d.L.nabs
 def curvK : A := d.κ (fun ρ => ((absTy P ρ : ℝ) : ℂ)) +
     algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ))
 
+/- English proof (translation)
+Unfold `ThetaC curvTh0 curvK`. Normalize the expressions using the abelian group laws.
+-/
 theorem curv_theta_split : ThetaC d = curvTh0 d + curvK d := by
   unfold ThetaC curvTh0 curvK; abel
 
+/- English proof (translation)
+The claim follows from `d.L.fns_comm x (Or.inr hx) y (Or.inr hy)`.
+-/
 theorem curv_fc {x y : A} (hx : x ∈ ({d.L.ζ, d.L.ζi, d.L.ζb, d.L.ζbi, d.L.GG, d.L.GGi} : Set A))
     (hy : y ∈ ({d.L.ζ, d.L.ζi, d.L.ζb, d.L.ζbi, d.L.GG, d.L.GGi} : Set A)) : Commute x y :=
   d.L.fns_comm x (Or.inr hx) y (Or.inr hy)
 
+/- English proof (translation)
+Establish `h1 : Commute d.L.ζ d.L.ζb` using `curv_fc d (by simp) (by simp)`. Unfold `curvTh0`. Simplify using `only [add_mul, mul_add, mul_assoc, d.L.nab_ζb, d.L.nabs_ζb, mul_sub, mul_one]`. Rewrite using `[h1.left_comm]`. Normalize the expressions using the abelian group laws.
+-/
 theorem curvature_theta_commutator_zeta : curvTh0 d * d.L.ζb = d.L.ζb * curvTh0 d - d.L.ζb := by
   have h1 : Commute d.L.ζ d.L.ζb := curv_fc d (by simp) (by simp)
   unfold curvTh0
@@ -31,6 +40,11 @@ theorem curvature_theta_commutator_zeta : curvTh0 d * d.L.ζb = d.L.ζb * curvTh
   rw [h1.left_comm]
   abel
 
+/- English proof (translation)
+Establish `h1 : Commute d.L.ζ d.L.ζb` using `curv_fc d (by simp) (by simp)`. Establish `h2 : Commute d.L.ζ d.L.GG` using `curv_fc d (by simp) (by simp)`. Establish `h3 : Commute d.L.ζb d.L.GG` using `curv_fc d (by simp) (by simp)`. Unfold `curvTh0`. Simplify using `only [add_mul, mul_add, mul_assoc, d.L.nab_GG, d.L.nabs_GG, mul_sub]`.
+
+Rewrite using `[h2.left_comm, h3.left_comm, h1.eq]`. Normalize the expressions using the abelian group laws.
+-/
 theorem curvature_theta_commutes_G : curvTh0 d * d.L.GG = d.L.GG * curvTh0 d := by
   have h1 : Commute d.L.ζ d.L.ζb := curv_fc d (by simp) (by simp)
   have h2 : Commute d.L.ζ d.L.GG := curv_fc d (by simp) (by simp)
@@ -40,6 +54,11 @@ theorem curvature_theta_commutes_G : curvTh0 d * d.L.GG = d.L.GG * curvTh0 d := 
   rw [h2.left_comm, h3.left_comm, h1.eq]
   abel
 
+/- English proof (translation)
+Establish `e1 : ∀ X : A, d.L.nab * (d.L.ζ * X) = d.L.ζ * (d.L.nab * X) + X` using `fun X => by`. Rewrite using `[← mul_assoc, d.L.nab_ζ, add_mul, one_mul, mul_assoc]`. Establish `e2 : ∀ X : A, d.L.nab * (d.L.ζb * X) = d.L.ζb * (d.L.nab * X)` using `fun X => by`. Rewrite using `[← mul_assoc, d.L.nab_ζb, mul_assoc]`. Unfold `curvTh0`.
+
+Simplify using `only [add_mul, mul_add, mul_assoc, e1, e2, mul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem curvature_theta_commutator_nabla : curvTh0 d * d.L.nab =
     d.L.nab * curvTh0 d - d.L.nab + d.L.ζb * (d.L.nabs * d.L.nab - d.L.nab * d.L.nabs) := by
   have e1 : ∀ X : A, d.L.nab * (d.L.ζ * X) = d.L.ζ * (d.L.nab * X) + X := fun X => by
@@ -50,6 +69,11 @@ theorem curvature_theta_commutator_nabla : curvTh0 d * d.L.nab =
   simp only [add_mul, mul_add, mul_assoc, e1, e2, mul_sub]
   abel
 
+/- English proof (translation)
+Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Apply the tactic sequence `have hg' : g ∈ ({d.L.ζ, d.L.ζi, d.L.ζb, d.L.ζbi, d.L.GG, d.L.GGi} : Set A) := by rcases hg with rfl | rfl <;> simp`. Establish `hk : ∀ f : M.Ty P → ℂ, Commute (d.κ f) g` using `fun f => kap_comm_fn hRel f (Or.inl (Or.inr hg'))`. Establish `hGi : Commute d.L.GGi g` using `curv_fc d (by simp) hg'`. Establish `ha : Commute (algebraMap ℂ A (P.TT : ℂ)) g` using `Algebra.commute_algebraMap_left _ _`.
+
+Conclude with `((hk _).add_left ((ha.mul_left hGi).mul_left (hk _))).eq`.
+-/
 theorem curv_K_comm (hRel : d.Rel) {g : A} (hg : g ∈ ({d.L.ζb, d.L.GG} : Set A)) : curvK d * g = g * curvK d := by
   simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hg
   have hg' : g ∈ ({d.L.ζ, d.L.ζi, d.L.ζb, d.L.ζbi, d.L.GG, d.L.GGi} : Set A) := by rcases hg with rfl | rfl <;> simp
@@ -58,6 +82,15 @@ theorem curv_K_comm (hRel : d.Rel) {g : A} (hg : g ∈ ({d.L.ζb, d.L.GG} : Set 
   have ha : Commute (algebraMap ℂ A (P.TT : ℂ)) g := Algebra.commute_algebraMap_left _ _
   exact ((hk _).add_left ((ha.mul_left hGi).mul_left (hk _))).eq
 
+/- English proof (translation)
+Establish `hk : ∀ f : M.Ty P → ℂ, Commute (d.κ f) d.L.nab` using `fun f => kap_comm_fn hRel f (Or.inr (by simp))`. Establish `ha : Commute (algebraMap ℂ A (P.TT : ℂ)) d.L.nab` using `Algebra.commute_algebraMap_left _ _`. Establish `hζ : Commute (algebraMap ℂ A (P.TT : ℂ)) d.L.ζb` using `Algebra.commute_algebraMap_left _ _`. Unfold `curvK`. Rewrite using `[add_mul, mul_add, (hk _).eq]`.
+
+Establish `: algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) * d.L.nab = d.L.nab * (algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ))) + algebraMap ℂ A (P.TT : ℂ) * d.L.ζb * d.L.GGi * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : …`. Rewrite using `[mul_assoc _ _ d.L.nab, (hk _).eq, ← mul_assoc, mul_assoc _ d.L.GGi d.L.nab]`. Rewrite using `[show d.L.nab * (algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ))) = algebraMap ℂ A (P.TT : ℂ) * (d.L.nab * d.L.GGi) * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) by`. Rewrite using `[← mul_assoc, ← mul_assoc, ← ha.eq]`. Simplify using `only [mul_assoc]]`.
+
+Rewrite using `[d.L.nab_GGi]`. Rewrite using `[show d.L.GGi * d.L.nab = (d.L.GGi * d.L.nab - d.L.ζb * d.L.GGi * d.L.GGi) + d.L.ζb * d.L.GGi * d.L.GGi by abel]`. Simplify using `only [mul_add, add_mul, mul_assoc]`. Rewrite using `[← mul_assoc (algebraMap ℂ A (P.TT : ℂ)) d.L.ζb, hζ.eq]`. Simplify using `only [mul_assoc]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem curv_K_nab (hRel : d.Rel) : curvK d * d.L.nab = d.L.nab * curvK d +
     algebraMap ℂ A (P.TT : ℂ) * d.L.ζb * d.L.GGi * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) := by
   have hk : ∀ f : M.Ty P → ℂ, Commute (d.κ f) d.L.nab := fun f => kap_comm_fn hRel f (Or.inr (by simp))
@@ -81,6 +114,11 @@ theorem curv_K_nab (hRel : d.Rel) : curvK d * d.L.nab = d.L.nab * curvK d +
   rw [this]
   abel
 
+/- English proof (translation)
+Establish `hf : ∀ g ∈ d.L.fns ∪ {d.L.nab, d.L.nabs}, Commute (d.κ f) g` using `fun g hg => kap_comm_fn hRel f hg`. Establish `hz : Commute (d.κ f) d.L.ζ` using `hf _ (Or.inl (by simp [R.LevelData.fns]))`. Establish `hzb : Commute (d.κ f) d.L.ζb` using `hf _ (Or.inl (by simp [R.LevelData.fns]))`. Establish `hGi : Commute (d.κ f) d.L.GGi` using `hf _ (Or.inl (by simp [R.LevelData.fns]))`. Establish `hn : Commute (d.κ f) d.L.nab` using `hf _ (Or.inr (by simp))`.
+
+Establish `hns : Commute (d.κ f) d.L.nabs` using `hf _ (Or.inr (by simp))`. Establish `hkk : ∀ h : M.Ty P → ℂ, Commute (d.κ f) (d.κ h)` using `fun h => by show d.κ f * d.κ h = d.κ h * d.κ f`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Unfold `ThetaC`. Conclude with `(((hz.mul_right hn).add_right (hzb.mul_right hns)).add_right (hkk _)).add_right (((Algebra.commute_algebraMap_right _ _).mul_right hGi).mul_right (hkk _))`.
+-/
 theorem curv_kap_theta (hRel : d.Rel) (f : M.Ty P → ℂ) : Commute (d.κ f) (ThetaC d) := by
   have hf : ∀ g ∈ d.L.fns ∪ {d.L.nab, d.L.nabs}, Commute (d.κ f) g := fun g hg => kap_comm_fn hRel f hg
   have hz : Commute (d.κ f) d.L.ζ := hf _ (Or.inl (by simp [R.LevelData.fns]))
@@ -95,23 +133,42 @@ theorem curv_kap_theta (hRel : d.Rel) (f : M.Ty P → ℂ) : Commute (d.κ f) (T
   exact (((hz.mul_right hn).add_right (hzb.mul_right hns)).add_right (hkk _)).add_right
     (((Algebra.commute_algebraMap_right _ _).mul_right hGi).mul_right (hkk _))
 
+/- English proof (translation)
+Rewrite using `[curv_theta_split, add_mul, curvature_theta_commutator_zeta, curv_K_comm d hRel (by simp), mul_add]; abel`.
+-/
 theorem curv_theta_zb (hRel : d.Rel) : ThetaC d * d.L.ζb = d.L.ζb * ThetaC d - d.L.ζb := by
   rw [curv_theta_split, add_mul, curvature_theta_commutator_zeta, curv_K_comm d hRel (by simp), mul_add]; abel
 
+/- English proof (translation)
+Rewrite using `[curv_theta_split, add_mul, curvature_theta_commutes_G, curv_K_comm d hRel (by simp), mul_add]`.
+-/
 theorem curv_theta_GG (hRel : d.Rel) : ThetaC d * d.L.GG = d.L.GG * ThetaC d := by
   rw [curv_theta_split, add_mul, curvature_theta_commutes_G, curv_K_comm d hRel (by simp), mul_add]
 
+/- English proof (translation)
+Rewrite using `[curv_theta_split, add_mul, curvature_theta_commutator_nabla, curv_K_nab d hRel, mul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem curv_theta_nab (hRel : d.Rel) : ThetaC d * d.L.nab = d.L.nab * ThetaC d - d.L.nab +
     d.L.ζb * (d.L.nabs * d.L.nab - d.L.nab * d.L.nabs) +
     algebraMap ℂ A (P.TT : ℂ) * d.L.ζb * d.L.GGi * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) := by
   rw [curv_theta_split, add_mul, curvature_theta_commutator_nabla, curv_K_nab d hRel, mul_add]; abel
 
+/- English proof (translation)
+Establish `h3 : Commute d.L.GG d.L.ζb` using `curv_fc d (by simp) (by simp)`. Establish `ha : Commute d.L.GG (algebraMap ℂ A (Y + 1 / 2))` using `Algebra.commute_algebraMap_right _ _`. Unfold `R.LevelData.l0`. Rewrite using `[mul_sub, mul_neg, ← mul_assoc, ha.eq, mul_assoc, ← mul_assoc d.L.GG, h3.eq, mul_assoc, d.L.GG_GGi, mul_one]`.
+-/
 theorem GG_mul_l0_eq (Y : ℂ) : d.L.GG * d.L.l0 Y = -(d.L.GG * d.L.nab) - algebraMap ℂ A (Y + 1 / 2) * d.L.ζb := by
   have h3 : Commute d.L.GG d.L.ζb := curv_fc d (by simp) (by simp)
   have ha : Commute d.L.GG (algebraMap ℂ A (Y + 1 / 2)) := Algebra.commute_algebraMap_right _ _
   unfold R.LevelData.l0
   rw [mul_sub, mul_neg, ← mul_assoc, ha.eq, mul_assoc, ← mul_assoc d.L.GG, h3.eq, mul_assoc, d.L.GG_GGi, mul_one]
 
+/- English proof (translation)
+Establish `hzbT : Commute d.L.ζb (algebraMap ℂ A (P.TT : ℂ))` using `Algebra.commute_algebraMap_right _ _`. Establish `r1 : ThetaC d * (d.L.GG * d.L.nab) = d.L.GG * (ThetaC d * d.L.nab)`. Rewrite using `[← mul_assoc, curv_theta_GG d hRel, mul_assoc]`. Establish `r2 : ThetaC d * (algebraMap ℂ A (Y + 1 / 2) * d.L.ζb) = algebraMap ℂ A (Y + 1 / 2) * (ThetaC d * d.L.ζb)`. Rewrite using `[← mul_assoc, (Algebra.commute_algebraMap_right (Y + 1 / 2) (ThetaC d)).eq, mul_assoc]`.
+
+Rewrite using `[GG_mul_l0_eq]`. Simplify using `only [mul_neg, neg_mul, mul_sub, sub_mul, r1, r2, curv_theta_nab d hRel, curv_theta_zb d hRel]`. Simplify using `only [mul_add, mul_sub, mul_assoc]`. Rewrite using `[← mul_assoc d.L.ζb (algebraMap ℂ A (P.TT : ℂ)), hzbT.eq]`. Simplify using `only [mul_assoc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem curv_key (hRel : d.Rel) (Y : ℂ) :
     ThetaC d * (d.L.GG * d.L.l0 Y) - d.L.GG * d.L.l0 Y * ThetaC d + d.L.GG * d.L.l0 Y =
       -(d.L.GG * (d.L.ζb * ((d.L.nabs * d.L.nab - d.L.nab * d.L.nabs) +
@@ -129,6 +186,31 @@ theorem curv_key (hRel : d.Rel) (Y : ℂ) :
   simp only [mul_assoc]
   abel
 
+/- English proof (translation)
+Introduce `P A _ _ _ d hRel hc ρ`. Establish `hκ : d.κ (dTy P ρ) = Pj d ρ` using `rfl`. Rewrite using `[hκ]`. Use `set Pp := Pj d ρ with hPp`. Establish `hΘ : Pp * ThetaC d = ThetaC d * Pp` using `comm_Pj_of d (curv_kap_theta d hRel) ρ`.
+
+Establish `hGGP : Pp * d.L.GG = d.L.GG * Pp` using `comm_Pj_of d (fun f => kap_GG hRel f) ρ`. Establish `hl0P : Pp * d.L.l0 Complex.I = d.L.l0 Complex.I * Pp` using `comm_Pj_of d (fun f => kappa_commute_l0 hRel f _) ρ`. Establish `hPP : Pp * Pp = Pp` using `Pj_idem d ρ`. Establish `hx : M.xC P ρ Complex.I ≠ 0`. Unfold `M.xC`.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _ h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`. Establish `hPt : Pp * d.QQ Complex.I 1 0 * Pp = M.xC P ρ Complex.I • (d.L.GG * d.L.l0 Complex.I * Pp)`.
+
+Rewrite using `[normal_form_lower_left, mul_add, add_mul, lower_sum_diagonal_zero hRel, add_zero]`. Rewrite using `[← mul_assoc Pp, ← mul_assoc Pp, hGGP, mul_assoc d.L.GG Pp, Q.NFData.x, hPp, Pj_kap, ← hPp]`. Rewrite using `[mul_smul_comm, smul_mul_assoc, smul_mul_assoc]`. Use `congr 1`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← mul_assoc Pp, hl0P, mul_assoc, hPP]`. Use `set W := d.L.GG * d.L.l0 Complex.I with hW`. Establish `hv : Pp * (ThetaC d * d.QQ Complex.I 1 0 - d.QQ Complex.I 1 0 * ThetaC d) * Pp = Pp * (-d.QQ Complex.I 1 0) * Pp` using `by rw [hc]`. Establish `e1 : Pp * (ThetaC d * d.QQ Complex.I 1 0 - d.QQ Complex.I 1 0 * ThetaC d) * Pp = ThetaC d * (Pp * d.QQ Complex.I 1 0 * Pp) - (Pp * d.QQ Complex.I 1 0 * Pp) * ThetaC d`. Rewrite using `[mul_sub, sub_mul]`.
+
+Use `congr 1`. Rewrite using `[← mul_assoc, hΘ]`. Simplify using `only [mul_assoc]`. Simplify using `only [mul_assoc]`. Rewrite using `[← hΘ]`.
+
+Rewrite `hv` using `[e1, mul_neg, neg_mul, hPt]`. Establish `hv2 : M.xC P ρ Complex.I • ((ThetaC d * W - W * ThetaC d + W) * Pp) = 0`. Establish `: (ThetaC d * W - W * ThetaC d + W) * Pp = ThetaC d * (W * Pp) - W * Pp * ThetaC d + W * Pp`. Rewrite using `[add_mul, sub_mul, mul_assoc, mul_assoc W, mul_assoc W, ← hΘ]`. Rewrite `hv` using `[mul_smul_comm, smul_mul_assoc]`.
+
+Rewrite using `[this, smul_add, smul_sub, hv]`. Normalize the expressions using the abelian group laws. Establish `hv3 : (ThetaC d * W - W * ThetaC d + W) * Pp = 0`. Use `congrArg (fun z => (M.xC P ρ Complex.I)⁻¹ • z) hv2` as an intermediate fact. Simplify `this` using `only [smul_smul, inv_mul_cancel₀ hx, one_smul, smul_zero]`.
+
+Rewrite `hv3` using `[hW, curv_key d hRel, neg_mul, neg_eq_zero]`. Use `set C := d.L.nabs * d.L.nab - d.L.nab * d.L.nabs`. Establish `hκP : d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)) * Pp = ((-2 * M.aC P ρ : ℝ) : ℂ) • Pp`. Rewrite using `[hPp, kap_Pj]`. Establish `hv4 : C * Pp + algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.L.GGi * (((-2 * M.aC P ρ : ℝ) : ℂ) • Pp) = 0`.
+
+Establish `e : d.L.ζbi * (d.L.GGi * (d.L.GG * (d.L.ζb * (C + algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.L.GGi * d.κ (fun ρ => ((-2 * M.aC P ρ : ℝ) : ℂ)))) * Pp)) = 0`. Rewrite using `[hv3, mul_zero, mul_zero]`. Rewrite using `[← e]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc d.L.GGi d.L.GG, d.L.GGi_GG, one_mul, ← mul_assoc d.L.ζbi d.L.ζb, d.L.ζbi_ζb, one_mul]`.
+
+Rewrite using `[add_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[hκP]`. Establish `hfin : C * Pp = -(algebraMap ℂ A (P.TT : ℂ) * d.L.GGi * d.L.GGi * (((-2 * M.aC P ρ : ℝ) : ℂ) • Pp))` using `eq_neg_of_add_eq_zero_left hv4`. Rewrite using `[hfin, mul_smul_comm]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, smul_smul, ← neg_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem curvature_block_form_holds : GTCCurvBlock := by
   intro P A _ _ _ d hRel hc ρ
   have hκ : d.κ (dTy P ρ) = Pj d ρ := rfl

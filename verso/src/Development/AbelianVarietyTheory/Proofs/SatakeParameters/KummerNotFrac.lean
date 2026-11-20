@@ -22,6 +22,27 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.Pst
 
+/- English proof (translation)
+Introduce `h`. Take `⟨hdom, hdvr, hmax, hmaxθ, -, hfilt, hfr⟩` from `BdRDVR.core_dvr l Co`. Establish `hker` using `GlobalTheory.T.kerP_eq_span_beta_of_untilt_eq l ϖ hϖ`. Establish `hfil` using `GlobalTheory.T.filP_eq_span_betaD_pow_of_kerP_eq_span_beta l Co ϖ hker`. Establish `hinjD : Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l))` using `IsFractionRing.injective _ _`.
+
+Establish `hβ0 : betaD ϖ ≠ 0`. Introduce `h0`. Apply `IsDiscreteValuationRing.not_a_field (Per.BdRp l)` to reduce the goal to its premises. Rewrite using `[hmax, ← pow_one (Co.j Co.t), ← hfilt 1, hfil 1, h0, pow_one, Ideal.span_singleton_eq_bot]`. Establish `hsep : ∀ z : Per.BdRp l, (∀ n : ℕ, betaD ϖ ^ n ∣ z) → z = 0`.
+
+Introduce `z hz`. Establish `hne : Ideal.span {betaD ϖ} ≠ ⊤`. Rewrite using `[← pow_one (betaD ϖ), ← hfil 1, hfilt 1, pow_one, ← hmax]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal (Per.BdRp l)).ne_top`. Establish `h1 : z ∈ ⨅ n : ℕ, Ideal.span {betaD ϖ} ^ n`.
+
+Use `(Submodule.mem_iInf _).2 fun n => ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton.2 (hz n)`. Rewrite `h1` using `[Ideal.iInf_pow_eq_bot_of_isDomain _ hne, Ideal.mem_bot]`. Then use the resulting hypothesis. Take `⟨r, ax, hax⟩` from `bcris_eq_acris_localization_periodT_alt l Co x`.
+
+Take `⟨r', ay, hay⟩` from `bcris_eq_acris_localization_periodT_alt l Co y`. Use `set tt := algebraMap (Per.Acris l) (Per.Bcris l) Co.t with htt`. Establish `e1 : algebraMap (Per.Acris l) (Per.Bcris l) (ax * Co.t ^ r') = x * tt ^ (r + r')`. Rewrite using `[map_mul, map_pow, ← hax, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : algebraMap (Per.Acris l) (Per.Bcris l) (ay * Co.t ^ r) = y * tt ^ (r + r')`. Rewrite using `[map_mul, map_pow, ← hay, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : Co.j (ay * Co.t ^ r) = Co.j (ax * Co.t ^ r') * u`. Apply `hinjD` to reduce the goal to its premises.
+
+Rewrite using `[map_mul (algebraMap (Per.BdRp l) (Per.BdR l)), ← Co.ι_j, ← Co.ι_j, e1, e2, map_mul Co.ι, map_mul Co.ι, h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA` using `GlobalTheory.T.acris_mem_betaAdicClosure_ainfAdjoinBeta l Co.j Co.j_cris ϖ (GlobalTheory.T.divPowerEnvelope_mem_ainfAdjoinBeta l ϖ hϖ) hfil`. Establish `hz` using `GlobalTheory.T.eq_zero_of_mem_clos_of_pow_mul_mul_mem_clos l (Fact.out : l.Prime) (isUnit_l_BdRp l) (betaD ϖ) hβ0 hsep (Sg ϖ) (GlobalTheory.T.ainfAdjoinBetaImage_div_beta_pow l ϖ hϖ hker hfil) (GlobalTheory.T.betaImageDeRhamPlus_dvd_of_lAdic_residues l ϖ hker hfil) u (GlobalTheor …`. Rewrite using `[pow_zero, one_mul, ← e3]`.
+
+Conclude with `hA _)`. Establish `hz2 : Co.ι (x * tt ^ (r + r')) = 0`. Rewrite using `[← e1, Co.ι_j, hz, map_zero]`. Establish `htne : Co.ι tt ≠ 0`. Rewrite using `[htt, Co.ι_j]`.
+
+Introduce `h0`. Establish `h3 : Co.j Co.t = 0` using `hinjD (h0.trans (map_zero _).symm)`. Apply `IsDiscreteValuationRing.not_a_field (Per.BdRp l)` to reduce the goal to its premises. Rewrite using `[hmax, h3, Ideal.span_singleton_eq_bot]`. Use `haveI : IsDomain (Per.BdR l) := IsFractionRing.isDomain (Per.BdRp l)`.
+
+Rewrite `hz2` using `[map_mul, map_pow]`. Conclude with `mul_ne_zero hx (pow_ne_zero _ htne) hz2`.
+-/
 theorem StLat.not_frac (l : ℕ) [Fact l.Prime] (Co : Core l) (ϖ : Per.Fl l)
     (hϖ : ϖ.untilt = ((l : ℕ) : Per.OC l)) (u : Per.BdRp l) (hu : IsLogP (beta ϖ) u) (x y : Per.Bcris l)
     (hx : Co.ι x ≠ 0) : Co.ι y ≠ Co.ι x * algebraMap (Per.BdRp l) (Per.BdR l) u := by
@@ -72,6 +93,29 @@ theorem StLat.not_frac (l : ℕ) [Fact l.Prime] (Co : Core l) (ϖ : Per.Fl l)
   rw [map_mul, map_pow] at hz2
   exact mul_ne_zero hx (pow_ne_zero _ htne) hz2
 
+/- English proof (translation)
+Introduce `l _ P AI T K b b' hb h`. Use `haveI : IsDomain P.R.B := GlobalTheory.RegularRing.isDomain_of_tied T (botExt l)`. Take `⟨x, y, hx, hxy⟩` from `GlobalTheory.T.exists_kummerFracCoboundary_full_galois l P K b b' hb h`. Take `⟨Co, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Take `⟨ϖ, hr⟩` from `exists_tilt (lRoot l) (lRoot_succ l) l (lRoot_zero l)`.
+
+Establish `hϖ : ϖ.untilt = ((l : ℕ) : Per.OC l)` using `Subtype.ext (by`. Use `hr 0` as an intermediate fact. Rewrite `this` using `[lRoot_zero, map_natCast]`. Conclude with `this.trans (SubringClass.coe_natCast _ _).symm)`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_logOnePlus_kerTheta_deRhamPlus l (beta ϖ) (by`.
+
+Rewrite using `[GlobalTheory.T.kerP_eq_span_beta_of_untilt_eq l ϖ hϖ]`. Conclude with `Ideal.mem_span_singleton_self _)`. Establish `hg` using `GlobalTheory.T.galois_logTeichmullerRatio_eq_add_kummer l P Co hC.ζ ϖ hr hϖ u hu`. Use `letI : Field P.R.BdR := (GlobalTheory.RegularRing.isField_of_tied T).toField`. Use `set U := T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) u) with hUdef`.
+
+Establish `hct : ∀ g : GQ l, T.eD (P.ιB ((kummer P g : ℚ_[l]) • P.tB)) = algebraMap (Per.BdRp l) (Per.BdR l) (Co.j (algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l (kummer P g)) * Co.t))`. Introduce `g`. Rewrite using `[hC.ι, Algebra.smul_def, map_mul, T.zB, hC.t, ← Co.ι_j]`. Simplify using `only [Core.tB, GlobalTheory.RingIface.zB_alg, map_mul]`. Establish `hU : ∀ g : GQ l, P.actQdR g U = U + P.ιB ((kummer P g : ℚ_[l]) • P.tB)`.
+
+Introduce `g`. Apply `T.eD.injective` to reduce the goal to its premises. Rewrite using `[T.actD, hUdef, RingEquiv.apply_symm_apply, map_add, RingEquiv.apply_symm_apply, hct]`. Rewrite using `[show Per.σD g (algebraMap (Per.BdRp l) (Per.BdR l) u) = algebraMap (Per.BdRp l) (Per.BdR l) (Per.σDp g u) from GlobalTheory.RingIface.sigD_alg l g u, hg, map_add]`. Establish `hcomm : ∀ (g : GQ l) (z : P.R.B), P.ιB (P.actQ g z) = P.actQdR g (P.ιB z)`.
+
+Introduce `g z`. Use `(P.PD (botExt l)).ι_comm ⟨g, mem_GK_botExt g⟩ z` as an intermediate fact. Rewrite `this` using `[P.PD_ι, P.PD_actB, P.PD_ι, P.PD_actdR]`. Then use the resulting hypothesis. Establish `hX : P.ιB x ≠ 0` using `fun h0 => hx ((P.PD (botExt l)).ι_inj (by rw [P.PD_ι, h0, map_zero]))`. Establish `hgX : ∀ g : GQ l, P.actQdR g (P.ιB x) ≠ 0` using `fun g h0 => hX ((P.actQdR g).injective (h0.trans (map_zero _).symm))`.
+
+Establish `hW : ∀ g : GQ l, P.actQdR g (P.ιB y * (P.ιB x)⁻¹ - U) = P.ιB y * (P.ιB x)⁻¹ - U`. Introduce `g`. Establish `h1` using `congrArg P.ιB (hxy g)`. Simplify using `only [map_sub, map_mul, hcomm] at h1`. Rewrite using `[map_sub, map_mul, map_inv₀, hU]`.
+
+Establish `hx1` using `mul_inv_cancel₀ hX`. Establish `hx2` using `mul_inv_cancel₀ (hgX g)`. Take the linear combination `((P.ιB x)⁻¹ * (P.actQdR g (P.ιB x))⁻¹) * h1 - (P.actQdR g (P.ιB y) * (P.actQdR g (P.ιB x))⁻¹) * hx1 + (P.ιB y * (P.ιB x)⁻¹) * hx2 + (P.ιB ((kummer P g : ℚ_[l]) • P.tB) * P.actQdR g (P.ιB x) * (P.actQdR g (P.ιB x))⁻¹) * hx1 + P.ιB ((kummer P g : ℚ_[l]) • P.tB) * hx2`. Take `⟨c, hc⟩` from `(P.PD (botExt l)).invdR (P.ιB y * (P.ιB x)⁻¹ - U) fun g => by`. Rewrite using `[P.PD_actdR]`.
+
+Conclude with `hW g`. Take `⟨a, ha⟩` from `IntermediateField.mem_bot.1 c.2`. Establish `hca : algebraMap ↥(botExt l).1 P.R.BdR c = algebraMap ℚ_[l] P.R.BdR a`. Establish `e : c = algebraMap ℚ_[l] ↥(botExt l).1 a` using `Subtype.ext ha.symm`. Rewrite using `[e, ← IsScalarTower.algebraMap_apply]`.
+
+Rewrite `hc` using `[hca]`. Establish `hY : P.ιB (y - a • x) = P.ιB x * U`. Rewrite using `[map_sub, map_smul, Algebra.smul_def]`. Establish `hx1` using `mul_inv_cancel₀ hX`. Take the linear combination `(-P.ιB x) * hc - P.ιB y * hx1`.
+
+Apply `StLat.not_frac l Co ϖ hϖ u hu (T.eB x) (T.eB (y - a • x))` to reduce the goal to its premises. Rewrite using `[← hC.ι]`. Conclude with `fun h0 => hX (T.eD.injective (h0.trans (map_zero _).symm))`. Rewrite using `[← hC.ι, ← hC.ι, hY, map_mul, hUdef, RingEquiv.apply_symm_apply]`.
+-/
 theorem StLat.kummer_not_frac : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (b b' : P.R.B), b ≠ 0 →
   ¬ ∀ g ∈ GK K, b * P.actQ g b' - P.actQ g b * b' = b * P.actQ g b * ((kummer P g : ℚ_[l]) • P.tB) := by
   intro l _ P AI T K b b' hb h
@@ -135,6 +179,17 @@ theorem StLat.kummer_not_frac : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A
     exact fun h0 => hX (T.eD.injective (h0.trans (map_zero _).symm))
   · rw [← hC.ι, ← hC.ι, hY, map_mul, hUdef, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `l _ P AI ⟨T⟩`. Use `haveI : IsDomain P.R.B := GlobalTheory.RegularRing.isDomain_of_tied T (botExt l)`. Take `⟨Co, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Establish `hinj : Co.TensorInj` using `GlobalTheory.Published.FontaineBcris_holds.tensorInj Co`. Establish `hreg : Co.Regular` using `GlobalTheory.Published.FontaineBcris_holds.regular Co`.
+
+Use `⟨inferInstance, fun K b b' hb h => ?_, fun K b hb h => ?_⟩` and prove the remaining obligations. Use `haveI : CharZero P.R.B := by`. Use `(algebraMap ℚ_[l] P.R.B).injective` as an intermediate fact. Conclude with `charZero_of_injective_algebraMap this`. Establish `hA : ∀ (g : GQ l) (p : Bst P), actSt P g p = (p.map ((P.actQ g).toRingEquiv : P.R.B →+* P.R.B)).comp (X + C ((kummer P g : ℚ_[l]) • P.tB))` using `fun g p => stHom_apply P (P.actQ g) _ p`.
+
+Take `⟨d, d', hd, e, hf⟩` from `GlobalTheory.T.twistedShift_fixed_ratio_const_domain (fun g : ↥(GK K) => (P.actQ (g : GQ l)).toRingEquiv) (fun g => (kummer P (g : GQ l) : ℚ_[l]) • P.tB) (fun d d' hd hh => StLat.kummer_not_frac l P AI T K d d' hd fun g hg => hh ⟨g, hg⟩) b' b hb (fun g => by`. Rewrite using `[← hA, ← hA]`. Conclude with `h g)`. Take `⟨c, hc⟩` from `GlobalTheory.RegularRing.fracInv hC hinj K d d' hd fun g => by`. Rewrite using `[P.PD_actB, P.PD_actB]`.
+
+Conclude with `hf g`. Use `⟨⟨c, c.2.2⟩, c.2.1, ?_⟩` and prove the remaining obligations. Establish `hd' : (C d : Bst P) ≠ 0` using `C_ne_zero.2 hd`. Apply `mul_left_cancel₀ hd'` to reduce the goal to its premises. Establish `hK0 : algebraMap ↥(K0 K) P.R.B c = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B ⟨c, c.2.2⟩` using `rfl`.
+
+Rewrite using `[e, hc, Polynomial.algebraMap_apply, C_mul, hK0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK : ∀ b : P.R.B, ¬ ∀ g ∈ GK K, P.actQ g b - b = (kummer P g : ℚ_[l]) • P.tB` using `GlobalTheory.Pst.NoLog.kummer_not_coboundary l P AI T K`. Conclude with `GlobalTheory.T.isUnit_of_stable_line' l P K hK (GlobalTheory.RegularRing.lineUnit hC hreg K) b hb h`.
+-/
 theorem stRegular : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     IsDomain (Bst P) ∧
     (∀ (K : FinExt l) (b b' : Bst P), b ≠ 0 →

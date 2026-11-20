@@ -20,6 +20,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BigTop.Fun
 
+/- English proof (translation)
+Establish `hF : ∀ z : ℂ, z ∈ Set.range D.what₂.embLL ↔ z ∈ D.what₂.embLL.fieldRange` using `fun z => Iff.rfl`. Take `⟨A₀, A₀', WW₀, X₀, -, hX₀, -⟩` from `hTX i j`. Take `⟨A, A', WW, X, hX, hS⟩` from `hN.bottom i j ⟨A₀, A₀', WW₀, X₀, hX₀⟩`. Take `⟨lam, hlam⟩` from `hBF i j A A' WW X hX`. Establish `hI` using `hX.is`.
+
+Establish `hi' : ∀ t P g, MeasureTheory.IntegrableOn (X.ker' W.ψ W.θ t P g) X.fd' X.m'` using `fun t P g => (GlobalTheory.T.thetaIntegral_definiteSource_converges_continuous_invariant D W.ψ false A' WW _ _ (X.ω' t) X.m' X.fd' _ (hI.weil' t) (GlobalTheory.ConstRatio.posDef_of_std hX.std') hI.meas'.1 hI.meas'.2 (GlobalTheory.Chain.InnerSteps.theta_pureTensorO hI.isVac.1 hI.i …`. Establish `hr` using `hS.rationalSums (fun t P g => hlam.2.choose_spec.choose_spec.choose_spec.choose_spec.2.2.1 t P g) hi'`. Establish `hrat` using `GlobalTheory.ConstRatio.ratIn_of_definite hI (GlobalTheory.ConstRatio.posDef_of_std hX.std) (GlobalTheory.ConstRatio.posDef_of_std hX.std') (GlobalTheory.ConstRatio.posDef_of_std hX.stdW) hlam hr μ₀`. Use `haveI : Nonempty T := ⟨μ₀⟩`. Establish `hcst : X.IsConst W.ψ W.θ lam` using `hlam.isConst`.
+
+Take `⟨Λ, hΛ, hΛne⟩` from `hLN i j t`. Take `⟨Λ₀, hΛ₀, hΛ₀ne⟩` from `hLN i j μ₀`. Take `⟨u, hu, ζ, -, heq⟩` from `hTW i j t (c i j t) (c i j μ₀) A A' WW X lam Λ Λ₀ (hC i j t).1 (hK i j t) (hC i j μ₀).1 (hK i j μ₀) hX hcst hΛ hΛ₀`. Rewrite using `[hF]`. Take `⟨hn1, -, -, hn4, -, -, -, hn8, hn9⟩` from `Model.tower_numbers (D := D) i j`.
+
+Establish `hne : ∀ L : ℂ → ℂ, (∀ s : ℤ, 1 - (e0 D i j : ℤ) ≤ s → s ≤ halfRank D i j → L s ≠ 0) → ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D i j → L (n : ℂ) ≠ 0` using `fun L h n h1 h2 => by`. Use `h n (by omega) (by exact_mod_cast h2)` as an intermediate fact. Simplify using `using this`. Establish `hs : ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D i j → Λ (n : ℂ) / Λ₀ (n : ℂ) ∈ D.what₂.embLL.fieldRange ∧ Λ (n : ℂ) / Λ₀ (n : ℂ) ≠ 0` using `fun n h1 h2 => ⟨(hF _).1 (hN.ratios i j t Λ Λ₀ hΛ hΛ₀ n h1 (by omega) (hne Λ₀ hΛ₀ne n h1 h2)), div_ne_zero (hne Λ hΛne n h1 h2) (hne Λ₀ hΛ₀ne n h1 h2)⟩`. Establish `hP1 : ∀ k ∈ range (qq D j), Λ ((eTop D i j + k + 1 : ℕ) : ℂ) / Λ₀ ((eTop D i j + k + 1 : ℕ) : ℂ) ∈ D.what₂.embLL.fieldRange ∧ Λ ((eTop D i j + k + 1 : ℕ) : ℂ) / Λ₀ ((eTop D i j + k + 1 : ℕ) : ℂ) ≠ 0` using `fun k hk => hs _ (by omega) (by have := mem_range.1 hk; omega)`.
+
+Establish `hP2 : ∀ k ∈ range (pp D j), Λ ((eTop D i j + qq D j - k : ℕ) : ℂ) / Λ₀ ((eTop D i j + qq D j - k : ℕ) : ℂ) ∈ D.what₂.embLL.fieldRange` using `fun k hk => (hs _ (by have := mem_range.1 hk; omega) (by omega)).1`. Establish `hU : (∏ k, u k) ∈ D.what₂.embLL.fieldRange` using `prod_mem fun k _ => by`. Take `⟨b, g, g', -, -, h⟩` from `hu k`. Rewrite using `[h, mul_one]`. Conclude with `RingHom.mem_fieldRange.2 ⟨_, rfl⟩`.
+
+Establish `hl : lam t / lam μ₀ ∈ D.what₂.embLL.fieldRange`. Take `⟨-, y, hy⟩` from `hrat t`. Conclude with `RingHom.mem_fieldRange.2 ⟨_, hy⟩`. Rewrite using `[eq_div_of_mul_eq (prod_ne_zero_iff.2 fun k hk => (hP1 k hk).2) heq]`. Conclude with `div_mem (mul_mem (mul_mem (mul_mem (RingHom.mem_fieldRange.2 ⟨ζ, rfl⟩) hU) hl) (prod_mem hP2)) (prod_mem fun k hk => (hP1 k hk).1)`.
+-/
 theorem sqRatio_mem_of {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T)
     (W : G.Weil) (S : GridChoice W Set.univ) (ρ : RealMatch W) (c : Fin D.R.m → Fin D.R.m → T → ℂ)
     (hstd : IsStdChar D W.ψ (-1)) (hN : NumbersIn D.what₂.embLL S μ₀)
@@ -88,6 +101,17 @@ theorem sqRatio_mem_of {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.C
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hP hAg hMa hSet hdl hC hLN hTX hTW`. Establish `hBF` using `GlobalTheory.T.bottom_triangle_constant_ratio hP hAg hMa hLN`. Take `⟨c3, h3⟩` from `hSet.atPt hC`. Take `⟨c5, h5⟩` from `Model.gBig_and (Model.gBig_and hLN hTX) (Model.gBig_and hTW hBF)`. Use `⟨max c3 c5, fun CF hCF => ?_⟩` and prove the remaining obligations.
+
+Establish `k3 : c3 ≤ CF` using `le_trans (by simp) hCF`. Establish `k5 : c5 ≤ CF` using `le_trans (by simp) hCF`. Take `⟨e0, he0, H⟩` from `(h3 CF k3).and (hdl.and hSet)`. Use `⟨e0, he0, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps he hle`.
+
+Take `⟨C0, x₀, hg⟩` from `h5 eps CF k5`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨⟨y3, g3⟩, ⟨y5, g5⟩, ⟨y6, g6⟩⟩` from `hK Fm CH hc hL`. Use `⟨max (max y3 y5) (max y6 x₀), fun x hx hle i p hp G W n a ha => ?_⟩` and prove the remaining obligations. Establish `l3 : y3 ≤ x` using `le_trans (by simp) hle`.
+
+Establish `l5 : y5 ≤ x` using `le_trans (by simp) hle`. Establish `l6 : y6 ≤ x` using `le_trans (by simp) hle`. Establish `l7 : x₀ ≤ x` using `le_trans (by simp) hle`. Establish `hset` using `g6 x hx l6 i p hp ha.eser`. Establish `hrec : Rec (Fm.L x i)` using `⟨hset.size, hset.host, hset.hF, g5 x hx l5 i p hp⟩`.
+
+Take `⟨⟨hLN', hTX'⟩, hTW', hBF'⟩` from `hg C0 le_rfl _ (Fm.L x i) (Fm.L_eps x i) (by rw [Fm.L_x x i hx]; exact l7) hrec _ _ _ hset.core.lev G`. Establish `hc` using `g3 x hx l3 i p hp G W n a ha`. Establish `hstd : IsStdChar (Fm.D x i) W.ψ (-1)` using `(ha.is.weil.ψ : a.ch.W.ψ = _) ▸ hset.std`. Conclude with `fun i' j' t => sqRatio_mem_of G _ W a.S.toGridChoice a.rm a.c hstd ha.field hc ha.is.const (fun i j => (hLN' i j).1) (hTX' W hstd) (hTW' W a.S.toGridChoice a.rm hstd ha.field) (hBF' W hstd) i' j' t`.
+-/
 theorem sqRatio_atPt : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → SetAt → (Closed FamHyp fun Fm _ => EvPt Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → GlobalTheory.RowClaim.ConstK → LNe → TriEx → Tower → (AtPt fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ i j t, GlobalTheory.RowTest.sqRatio ch i j t ∈ Set.range D.what₂.embLL) := by
   intro hP hAg hMa hSet hdl hC hLN hTX hTW
   have hBF := GlobalTheory.T.bottom_triangle_constant_ratio hP hAg hMa hLN

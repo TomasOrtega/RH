@@ -39,6 +39,9 @@ def germOf {ι : Type} [Fintype ι] (w : ι → ℂ) : analyticAtRing w →+* ho
   ((Germ.coeRingHom (𝓝 w)).comp (analyticAtRing w).subtype).codRestrict (holGerms w)
     fun f => ⟨f.1, f.2, rfl⟩
 
+/- English proof (translation)
+Introduce `φ`. Take `⟨f, hf, hφ⟩` from `φ.2`. Conclude with `⟨⟨f, hf⟩, Subtype.ext hφ⟩`.
+-/
 theorem germOf_surjective {ι : Type} [Fintype ι] (w : ι → ℂ) : Function.Surjective (germOf w) := by
   intro φ
   obtain ⟨f, hf, hφ⟩ := φ.2
@@ -47,9 +50,15 @@ theorem germOf_surjective {ι : Type} [Fintype ι] (w : ι → ℂ) : Function.S
 def germRep {ι : Type} [Fintype ι] (w : ι → ℂ) : holGerms w → analyticAtRing w :=
   Function.surjInv (germOf_surjective w)
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq (germOf_surjective w) φ`.
+-/
 theorem germOf_germRep {ι : Type} [Fintype ι] (w : ι → ℂ) (φ : holGerms w) : germOf w (germRep w φ) = φ :=
   Function.surjInv_eq (germOf_surjective w) φ
 
+/- English proof (translation)
+Rewrite using `[← Subtype.coe_inj]`. Conclude with `Germ.coe_eq`.
+-/
 theorem germOf_eq_zero {ι : Type} [Fintype ι] (w : ι → ℂ) (f : analyticAtRing w) :
     germOf w f = 0 ↔ ∀ᶠ y in 𝓝 w, f.1 y = 0 := by
   rw [← Subtype.coe_inj]
@@ -67,6 +76,9 @@ def germCompHom {α β : Type} {l : Filter β} {l' : Filter α} (g : α → β) 
   map_zero' := rfl
   map_add' φ ψ := Germ.inductionOn₂ φ ψ fun _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `(A.continuous.tendsto x).mono_left nhdsWithin_le_nhds`.
+-/
 theorem tendsto_nhdsWithin_linear {σ : Type} [Fintype σ] {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ))
     (X : Set (σ → ℂ)) (x : σ → ℂ) : Tendsto A (𝓝[X] x) (𝓝 (A x)) :=
   (A.continuous.tendsto x).mono_left nhdsWithin_le_nhds
@@ -84,10 +96,16 @@ def preLinear {σ : Type} [Fintype σ] (x : σ → ℂ) {d : ℕ} (A : (σ → �
     analyticAtRing (A x) →+* ((σ → ℂ) → ℂ) :=
   (RingHom.pi fun z => Pi.evalRingHom (fun _ : Fin d → ℂ => ℂ) (A z)).comp (analyticAtRing (A x)).subtype
 
+/- English proof (translation)
+The claim follows from `eventually_nhdsWithin_iff.1 (Germ.coe_eq.1 h)`.
+-/
 theorem eventually_of_germ_eq {σ : Type} [Fintype σ] {X : Set (σ → ℂ)} {x : σ → ℂ} {f g : (σ → ℂ) → ℂ}
     (h : (f : Germ (𝓝[X] x) ℂ) = g) : ∀ᶠ z in 𝓝 x, z ∈ X → f z = g z :=
   eventually_nhdsWithin_iff.1 (Germ.coe_eq.1 h)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(germsAlong X x).subtype _ = Germ.coeRingHom _ _`. Rewrite using `[eval₂_map, hom_eval₂, hom_eval₂]`. Both sides reduce to the same expression.
+-/
 theorem coe_eval₂_map {σ : Type} [Fintype σ] (X : Set (σ → ℂ)) (x : σ → ℂ) {d : ℕ}
     (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (P : (analyticAtRing (A x))[X]) (v : analyticAtRing x) :
     ((eval₂ (alongPull X x A) (alongOf X x v) (P.map (germOf (A x))) : germsAlong X x) : Germ (𝓝[X] x) ℂ) =
@@ -96,12 +114,56 @@ theorem coe_eval₂_map {σ : Type} [Fintype σ] (X : Set (σ → ℂ)) (x : σ 
   rw [eval₂_map, hom_eval₂, hom_eval₂]
   rfl
 
+/- English proof (translation)
+Simplify using `[eval₂_finsetSum, Finset.sum_apply, preLinear]`.
+-/
 theorem eval₂_monic_apply {σ : Type} [Fintype σ] (x : σ → ℂ) {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ))
     (g : (σ → ℂ) → ℂ) {M : ℕ} (b : Fin M → analyticAtRing (A x)) (z : σ → ℂ) :
     eval₂ (preLinear x A) g (Polynomial.X ^ M + ∑ j, C (b j) * Polynomial.X ^ (j : ℕ)) z =
       g z ^ M + ∑ j, (b j).1 (A z) * g z ^ (j : ℕ) := by
   simp [eval₂_finsetSum, Finset.sum_apply, preLinear]
 
+/- English proof (translation)
+Introduce `σ _ X w d A hXan hirr hiso hinj g hg`. Take `⟨hdom, hic⟩` from `hH d (A w)`. Establish `: (𝓝[X] w).NeBot` using `mem_closure_iff_nhdsWithin_neBot.1 (subset_closure hirr.1)`. Establish `germ_zero : ∀ f : (σ → ℂ) → ℂ, (∀ᶠ z in 𝓝 w, z ∈ X → f z = 0) → (f : Germ (𝓝[X] w) ℂ) = ((0 : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ)` using `fun f h => Germ.coe_eq.2 (eventually_nhdsWithin_iff.2 h)`. Establish `: NoZeroDivisors (germsAlong X w)`.
+
+Use `⟨fun {a b} hab => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hfa⟩` from `a.2`. Take `⟨g, hg, hgb⟩` from `b.2`. Establish `h0 : ((f * g : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ) = ((0 : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ)`. Rewrite using `[Germ.coe_mul, hfa, hgb]`.
+
+Conclude with `congrArg Subtype.val hab`. Break down `hirr.2 f g hf hg ((eventually_of_germ_eq h0).mono fun z hz hzX => by simpa using hz hzX) with h | h` into its components or cases. Conclude with `Or.inl (Subtype.ext (hfa ▸ germ_zero f h))`. Conclude with `Or.inr (Subtype.ext (hgb ▸ germ_zero g h))`. Establish `: IsDomain (germsAlong X w)` using `NoZeroDivisors.to_isDomain _`.
+
+Set `_ : Algebra (holGerms (A w)) (germsAlong X w)` to `(alongPull X w A).toAlgebra`. Establish `hα : Function.Injective (algebraMap (holGerms (A w)) (germsAlong X w))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ hφ`. Take `⟨h, hh, hφh⟩` from `φ.2`.
+
+Establish `h1 : ((h ∘ A : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ) = ((0 : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ)`. Establish `h2` using `congrArg Subtype.val hφ`. Express the relevant statement in the definitionally equal form `(φ.1 : Germ (𝓝 (A w)) ℂ).compTendsto A (tendsto_nhdsWithin_linear A X w) = (0 : Germ (𝓝[X] w) ℂ) at h2`. Rewrite `h2` using `[← hφh]`. Conclude with `h2`.
+
+Establish `h3` using `hinj h hh ((eventually_of_germ_eq h1).mono fun z hz hzX => hz hzX)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hφh]`. Conclude with `Germ.coe_eq.2 h3`. Establish `: FaithfulSMul (holGerms (A w)) (germsAlong X w)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hα`.
+
+Use `set s : germsAlong X w := alongOf X w ⟨g, hg⟩ with hs`. Establish `aeval_zero : ∀ P : (analyticAtRing (A w))[X], (∀ᶠ z in 𝓝 w, z ∈ X → eval₂ (preLinear w A) g P z = 0) → aeval s (P.map (germOf (A w))) = 0`. Introduce `P hP`. Rewrite using `[aeval_def]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `((eval₂ (alongPull X w A) (alongOf X w ⟨g, hg⟩) (P.map (germOf (A w))) : germsAlong X w) : Germ (𝓝[X] w) ℂ) = ((0 : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ)`. Rewrite using `[coe_eval₂_map]`. Conclude with `germ_zero _ hP`. Establish `hint : IsIntegral (holGerms (A w)) s`. Take `⟨M, b, hb, hev⟩` from `hF σ X w d A hXan hiso g hg`.
+
+Set `bt : Fin M → analyticAtRing (A w)` to `fun j => ⟨b j, hb j⟩`. Use `⟨(Polynomial.X ^ M + ∑ j, C (bt j) * Polynomial.X ^ (j : ℕ)).map (germOf (A w)), (monic_X_pow_add (degree_sum_fin_lt _)).map _, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def]`. Conclude with `aeval_zero _ (hev.mono fun z hz hzX => by rw [eval₂_monic_apply]; exact hz hzX)`. Use `set m := minpoly (holGerms (A w)) s with hm`.
+
+Establish `hmon : m.Monic` using `minpoly.monic hint`. Set `bt : Fin m.natDegree → analyticAtRing (A w)` to `fun j => germRep (A w) (m.coeff j)`. Set `P : (analyticAtRing (A w))[X]` to `Polynomial.X ^ m.natDegree + ∑ j, C (bt j) * Polynomial.X ^ (j : ℕ)`. Establish `hPm : P.map (germOf (A w)) = m`. Establish `h1` using `hmon.as_sum`.
+
+Rewrite `h1` using `[← Fin.sum_univ_eq_sum_range (fun i => C (m.coeff i) * Polynomial.X ^ i)]`. Use `conv_rhs => rw [h1]`. Simplify using `only [P, bt, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_C, germOf_germRep]`. Establish `hPz : ∀ z, eval₂ (preLinear w A) g P z = g z ^ m.natDegree + ∑ j, (bt j).1 (A z) * g z ^ (j : ℕ)` using `fun z => eval₂_monic_apply w A g bt z`. Use `⟨m.natDegree, fun j => (bt j).1, fun j => (bt j).2, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : aeval s m = 0` using `minpoly.aeval _ _`. Rewrite `h0` using `[← hPm, aeval_def]`. Establish `h1` using `congrArg Subtype.val h0`. Express the relevant statement in the definitionally equal form `((eval₂ (alongPull X w A) (alongOf X w ⟨g, hg⟩) (P.map (germOf (A w))) : germsAlong X w) : Germ (𝓝[X] w) ℂ) = ((0 : (σ → ℂ) → ℂ) : Germ (𝓝[X] w) ℂ) at h1`. Rewrite `h1` using `[coe_eval₂_map]`.
+
+Conclude with `(eventually_of_germ_eq h1).mono fun z hz hzX => (hPz z).symm.trans (hz hzX)`. Introduce `E hE hEz`. Establish `hcoeffs : (↑E.coeffs : Set ((Fin d → ℂ) → ℂ)) ⊆ analyticAtRing (A w)`. Introduce `c hc`. Take `⟨k, -, rfl⟩` from `mem_coeffs_iff.1 hc`.
+
+Conclude with `hE k`. Set `Et` to `E.toSubring (analyticAtRing (A w)) hcoeffs`. Establish `hEval : ∀ z, eval₂ (preLinear w A) g Et z = E.eval₂ (Pi.evalRingHom (fun _ : Fin d → ℂ => ℂ) (A z)) (g z)`. Introduce `z`. Establish `hmap : Et.map (analyticAtRing (A w)).subtype = E` using `map_toSubring _ _ _`.
+
+Establish `h1 : eval₂ (preLinear w A) g Et = eval₂ (RingHom.pi fun z => Pi.evalRingHom (fun _ : Fin d → ℂ => ℂ) (A z)) g E`. Rewrite using `[← hmap, eval₂_map]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hom_eval₂ E _ (Pi.evalRingHom (fun _ : σ → ℂ => ℂ) z) g`.
+
+Establish `hEt0 : aeval s (Et.map (germOf (A w))) = 0` using `aeval_zero Et (hEz.mono fun z hz hzX => (hEval z).trans (hz hzX))`. Take `⟨q, hq⟩` from `minpoly.isIntegrallyClosed_dvd hint hEt0`. Take `⟨Q, rfl⟩` from `Polynomial.map_surjective _ (germOf_surjective (A w)) q`. Establish `hDz : (Et - P * Q).map (germOf (A w)) = 0`. Rewrite using `[Polynomial.map_sub, Polynomial.map_mul, hPm, hq, sub_self]`.
+
+Establish `hDev : ∀ᶠ y in 𝓝 (A w), ∀ k ∈ (Et - P * Q).support, ((Et - P * Q).coeff k).1 y = 0`. Rewrite using `[eventually_all_finset]`. Introduce `k _`. Establish `: germOf (A w) ((Et - P * Q).coeff k) = 0` using `by rw [← coeff_map, hDz, coeff_zero]`. Conclude with `(germOf_eq_zero _ _).1 this`.
+
+Use `filter_upwards [hDev] with y hy`. Set `ev : analyticAtRing (A w) →+* ℂ` to `(Pi.evalRingHom (fun _ : Fin d → ℂ => ℂ) y).comp (analyticAtRing (A w)).subtype`. Establish `hD0 : (Et - P * Q).map ev = 0`. Use extensionality with `k`. Rewrite using `[coeff_map, coeff_zero]`.
+
+Distinguish the cases in `hk : k ∈ (Et - P * Q).support`. Conclude with `hy k hk`. Rewrite using `[notMem_support_iff.1 hk, map_zero]`. Establish `hE' : Et.map ev = E.map (Pi.evalRingHom (fun _ : Fin d → ℂ => ℂ) y)`. Rewrite using `[← map_toSubring E (analyticAtRing (A w)) hcoeffs, Polynomial.map_map]`.
+
+Establish `hP' : P.map ev = Polynomial.X ^ m.natDegree + ∑ j, C ((bt j).1 y) * Polynomial.X ^ (j : ℕ)`. Simplify using `[P, ev, Polynomial.map_sum]`. Use `⟨Q.map ev, ?_⟩` and prove the remaining obligations. Rewrite using `[← hE', ← hP', ← Polynomial.map_mul, ← sub_eq_zero, ← Polynomial.map_sub]`. Conclude with `hD0`.
+-/
 theorem proof (hF : FiniteFibreGermIntegral.Statement) (hH : HolGermsIntegrallyClosed.Statement) :
     GermMinimalPolynomialDivides.Statement := by
   intro σ _ X w d A hXan hirr hiso hinj g hg

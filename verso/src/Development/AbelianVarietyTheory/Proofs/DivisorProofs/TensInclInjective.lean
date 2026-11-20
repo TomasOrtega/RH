@@ -19,6 +19,9 @@ def skipIx (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) : Ix R S → Ix (R + 1) (S 
   | .inl i => .inl (r₀.succAbove i)
   | .inr j => .inr (s₀.succAbove j)
 
+/- English proof (translation)
+Apply the tactic sequence `rintro (i | i) (j | j) h <;> simp_all [skipIx, Fin.succAbove_right_inj]`.
+-/
 theorem skipIx_injective (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) : Function.Injective (skipIx r₀ s₀) := by
   rintro (i | i) (j | j) h <;> simp_all [skipIx, Fin.succAbove_right_inj]
 
@@ -88,6 +91,13 @@ end GlobalTheory.FockIncl
 namespace GlobalTheory.FockIncl
 variable (F : Type) [Field F] [NumberField F] (P Q : ℕ) {R S : ℕ}
 
+/- English proof (translation)
+Establish `hi : Function.Injective (Prod.map (id : Ix P Q → Ix P Q) (skipIx r₀ s₀))` using `Function.Injective.prodMap Function.injective_id (skipIx_injective r₀ s₀)`. Establish `hc : (PiTensorProduct.map fun _ : InfinitePlace F => (MvPolynomial.killCompl (R` using `ℂ) hi).toLinearMap) ∘ₗ tensIncl F P Q r₀ s₀ = LinearMap.id := by`. Rewrite using `[tensIncl, ← PiTensorProduct.map_comp]`. Establish `: ∀ _ : InfinitePlace F, (MvPolynomial.killCompl (R` using `ℂ) hi).toLinearMap ∘ₗ (polIncl P Q r₀ s₀).toLinearMap = LinearMap.id := fun _ => by`. Rewrite using `[← AlgHom.comp_toLinearMap, polIncl, MvPolynomial.killCompl_comp_rename]`.
+
+Both sides reduce to the same expression. Rewrite using `[show (fun i : InfinitePlace F => (MvPolynomial.killCompl (R := ℂ) hi).toLinearMap ∘ₗ (polIncl P Q r₀ s₀).toLinearMap) = fun _ => LinearMap.id from funext this]`. Conclude with `PiTensorProduct.map_id`. Introduce `a b hab`. Use `congrArg (PiTensorProduct.map fun _ : InfinitePlace F => (MvPolynomial.killCompl (R := ℂ) hi).toLinearMap) hab` as an intermediate fact.
+
+Simplify `this` using `[← LinearMap.comp_apply, hc]`.
+-/
 theorem tensIncl_injective (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) : Function.Injective (tensIncl F P Q r₀ s₀) := by
   have hi : Function.Injective (Prod.map (id : Ix P Q → Ix P Q) (skipIx r₀ s₀)) :=
     Function.Injective.prodMap Function.injective_id (skipIx_injective r₀ s₀)

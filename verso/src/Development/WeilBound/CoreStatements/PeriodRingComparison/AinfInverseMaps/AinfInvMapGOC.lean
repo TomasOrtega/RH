@@ -17,6 +17,9 @@ namespace Cmp6
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Use `RingHom.congr_fun (Reformulated.AutPerF.AinfInv.hom_ext (f := Reformulated.AutPerF.AinfInv.map l ((e l).toRingHom.comp (gOC l g))) (g := (galAway (Formalism.Per6.toBot g)).comp (Reformulated.AutPerF.AinfInv.map l (e l).toRingHom)) fun w => ?_) a` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, Reformulated.AutPerF.AinfInv.map_algebraMap, Reformulated.AutPerF.AinfInv.map_algebraMap, galAway_algebraMap, ← Reformulated.AutPerF.Ainf.map_map, ainfMap_eq, ainfMap_gOC]`.
+-/
 theorem ainfInv_map_gOC (g : GQ l) (a : Reformulated.AutPerF.AinfInv l (OC l)) :
     Reformulated.AutPerF.AinfInv.map l ((e l).toRingHom.comp (gOC l g)) a =
       galAway (Formalism.Per6.toBot g) (Reformulated.AutPerF.AinfInv.map l (e l).toRingHom a) := by
@@ -27,6 +30,11 @@ theorem ainfInv_map_gOC (g : GQ l) (a : Reformulated.AutPerF.AinfInv l (OC l)) :
   rw [RingHom.comp_apply, Reformulated.AutPerF.AinfInv.map_algebraMap, Reformulated.AutPerF.AinfInv.map_algebraMap,
     galAway_algebraMap, ← Reformulated.AutPerF.Ainf.map_map, ainfMap_eq, ainfMap_gOC]
 
+/- English proof (translation)
+Rewrite using `[gal_smul_bdR_def]`. Use `IsPerfectoidField.evalB_ext (K := ℂ_[l]) (p := l) fun n => ?_` and prove the remaining obligations. Rewrite using `[evalB_galBdRHom]`. Express the relevant statement in the definitionally equal form `Reformulated.AutPerF.BdRPlus.eval l (NC l) n (Reformulated.AutPerF.BdRPlus.map l (e l).toRingHom (Reformulated.AutPerF.BdRPlus.map l (gOC l g) y)) = galQuot (Formalism.Per6.toBot g) n (Reformulated.AutPerF.BdRPlus.eval l (NC l) n (Reformulated.AutPerF.BdRPlus.map l (e l).toRingHo …`. Rewrite using `[Reformulated.AutPerF.BdRPlus.map_map, Reformulated.AutPerF.BdRPlus.eval_map, Reformulated.AutPerF.BdRPlus.eval_map]`.
+
+Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (Reformulated.AutPerF.BdRPlus.eval l (OC l) n y)`. Rewrite using `[← ha, Ideal.quotientMap_mk, Ideal.quotientMap_mk, ainfInv_map_gOC]`. Use `erw [galQuot_mk]`.
+-/
 theorem comparison_map_galois (g : GQ l) (y : Reformulated.AutPerF.BdRPlus l (OC l)) :
     cP l (Reformulated.AutPerF.BdRPlus.map l (gOC l g) y) = Formalism.Per6.toBot g • cP l y := by
   rw [gal_smul_bdR_def]
@@ -40,10 +48,18 @@ theorem comparison_map_galois (g : GQ l) (y : Reformulated.AutPerF.BdRPlus l (OC
   rw [← ha, Ideal.quotientMap_mk, Ideal.quotientMap_mk, ainfInv_map_gOC]
   erw [galQuot_mk]
 
+/- English proof (translation)
+The claim follows from `comparison_map_galois l g y`.
+-/
 theorem cPoint_smul (g : GQ l) (y : Reformulated.AutPerF.BdRPlus l (OC l)) :
     cP l (g • y) = Formalism.Per6.toBot g • cP l y :=
   comparison_map_galois l g y
 
+/- English proof (translation)
+Establish `key : (cD l).toRingHom.comp (MulSemiringAction.toRingHom (GQ l) (Reformulated.AutPerF.BdR l (OC l)) g) = (Formalism.Per6.σD g).toRingHom.comp (cD l).toRingHom`. Use `Reformulated.AutPerF.BdR.hom_ext fun y => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, MulSemiringAction.toRingHom_apply]`. Rewrite using `[Reformulated.AutPerF.BdR.smul_algebraMap, cD_algebraMap, cD_algebraMap, PositivityTheory.LocInh.GaloisCommutant.σD_algebraMap]`. Conclude with `congrArg (algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l)) (cPoint_smul l g y)`.
+
+Conclude with `RingHom.congr_fun key x`.
+-/
 theorem cD_gal (g : GQ l) (x : Reformulated.AutPerF.BdR l (OC l)) :
     cD l (g • x) = Formalism.Per6.σD g (cD l x) := by
   have key : (cD l).toRingHom.comp (MulSemiringAction.toRingHom (GQ l) (Reformulated.AutPerF.BdR l (OC l)) g) =

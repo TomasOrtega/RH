@@ -6,6 +6,15 @@ namespace GlobalTheory.GaloisDescent
 
 open MvPolynomial Cardinal in
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial ι F) L := (aeval v).toRingHom.toAlgebra`. Use `letI : Algebra (MvPolynomial κ F') L' := (aeval w).toRingHom.toAlgebra`. Establish `: Module.IsTorsionFree (MvPolynomial ι F) L` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hv.1`. Establish `: Module.IsTorsionFree (MvPolynomial κ F') L'` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hw.1`. Establish `: IsAlgClosure (MvPolynomial ι F) L`.
+
+Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `hv.isAlgebraic` as an intermediate fact. Use `Algebra.IsAlgebraic.ringHom_of_comp_eq hv.1.aevalEquiv.symm (RingHom.id L) hv.1.aevalEquiv.symm.injective Function.surjective_id ?_` and prove the remaining obligations. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `aeval v (hv.1.aevalEquiv.symm a) = algebraMap _ L a`.
+
+Rewrite using `[← hv.1.algebraMap_aevalEquiv, AlgEquiv.apply_symm_apply]`. Establish `: IsAlgClosure (MvPolynomial κ F') L'`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `hw.isAlgebraic` as an intermediate fact. Use `Algebra.IsAlgebraic.ringHom_of_comp_eq hw.1.aevalEquiv.symm (RingHom.id L') hw.1.aevalEquiv.symm.injective Function.surjective_id ?_` and prove the remaining obligations.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `aeval w (hw.1.aevalEquiv.symm a) = algebraMap _ L' a`. Rewrite using `[← hw.1.algebraMap_aevalEquiv, AlgEquiv.apply_symm_apply]`. Conclude with `⟨IsAlgClosure.equivOfEquiv L L' e, fun p => IsAlgClosure.equivOfEquiv_algebraMap L L' e p⟩`.
+-/
 theorem _root_.GlobalTheory.GaloisDescent.exists_ringEquiv_of_isTranscendenceBasis {F F' L L' ι κ : Type*} [Field F] [Field F']
     [Field L] [Field L'] [Algebra F L] [Algebra F' L'] [IsAlgClosed L] [IsAlgClosed L']
     {v : ι → L} {w : κ → L'} (hv : IsTranscendenceBasis F v) (hw : IsTranscendenceBasis F' w)
@@ -35,6 +44,9 @@ theorem _root_.GlobalTheory.GaloisDescent.exists_ringEquiv_of_isTranscendenceBas
     rw [← hw.1.algebraMap_aevalEquiv, AlgEquiv.apply_symm_apply]
   exact ⟨IsAlgClosure.equivOfEquiv L L' e, fun p => IsAlgClosure.equivOfEquiv_algebraMap L L' e p⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F L`. Take `⟨σ, hσ⟩` from `exists_ringEquiv_of_isTranscendenceBasis hs hs (mapEquiv s τ)`. Use `⟨σ, fun a => ?_⟩` and prove the remaining obligations. Simplify using `using hσ (C a)`.
+-/
 theorem exists_ringEquiv_extend {F L : Type*} [Field F] [Field L] [Algebra F L] [IsAlgClosed L]
     (τ : F ≃+* F) : ∃ σ : L ≃+* L, ∀ a, σ (algebraMap F L a) = algebraMap F L (τ a) := by
   obtain ⟨s, hs⟩ := exists_isTranscendenceBasis F L
@@ -42,6 +54,9 @@ theorem exists_ringEquiv_extend {F L : Type*} [Field F] [Field L] [Algebra F L] 
   refine ⟨σ, fun a => ?_⟩
   simpa using hσ (C a)
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_ringEquiv_extend (L := L) τ.toRingEquiv`. Use `⟨AlgEquiv.ofRingEquiv (f := σ) fun k => ?_, hσ⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply K F L, hσ]`. Use `congr 1`. Conclude with `τ.commutes k`.
+-/
 theorem exists_algEquiv_extend {K F L : Type*} [Field K] [Field F] [Field L] [Algebra K F]
     [Algebra F L] [Algebra K L] [IsScalarTower K F L] [IsAlgClosed L]
     (τ : F ≃ₐ[K] F) : ∃ σ : L ≃ₐ[K] L, ∀ a, σ (algebraMap F L a) = algebraMap F L (τ a) := by
@@ -51,6 +66,11 @@ theorem exists_algEquiv_extend {K F L : Type*} [Field K] [Field F] [Field L] [Al
   congr 1
   exact τ.commutes k
 
+/- English proof (translation)
+Establish `h1 : AlgebraicIndepOn K id ({x} : Set L)` using `algebraicIndependent_unique_type_iff.2 hx`. Take `⟨s, hxs, hs⟩` from `exists_isTranscendenceBasis_superset h1`. Set `e : MvPolynomial s K ≃ₐ[K] MvPolynomial s K` to `AlgEquiv.ofAlgHom (aeval fun i => X i + 1) (aeval fun i => X i - 1) (by ext i : 1; simp) (by ext i : 1; simp)`. Take `⟨σ, hσ⟩` from `exists_ringEquiv_of_isTranscendenceBasis hs hs e.toRingEquiv`. Use `⟨AlgEquiv.ofRingEquiv (f := σ) fun k => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `hσ (C k)` using `[e]`. Simplify `hσ (X ⟨x, hxs rfl⟩)` using `[e]`.
+-/
 theorem exists_algEquiv_apply_eq_add_one {K L : Type*} [Field K] [Field L] [Algebra K L]
     [IsAlgClosed L] {x : L} (hx : Transcendental K x) : ∃ σ : L ≃ₐ[K] L, σ x = x + 1 := by
   have h1 : AlgebraicIndepOn K id ({x} : Set L) :=
@@ -66,6 +86,19 @@ theorem exists_algEquiv_apply_eq_add_one {K L : Type*} [Field K] [Field L] [Alge
 
 open MvPolynomial Cardinal in
 
+/- English proof (translation)
+Distinguish the cases in `halg : IsAlgebraic K x`. Establish `hxA : x ∈ algebraicClosure K L` using `mem_algebraicClosure_iff.2 halg`. Establish `hfix : ∀ f : Gal(algebraicClosure K L/K), f ⟨x, hxA⟩ = ⟨x, hxA⟩`. Introduce `f`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis (algebraicClosure K L) L`.
+
+Take `⟨τ, hτ⟩` from `_root_.GlobalTheory.GaloisDescent.exists_ringEquiv_of_isTranscendenceBasis hs hs (MvPolynomial.mapEquiv s (f : algebraicClosure K L ≃+* algebraicClosure K L))`. Establish `hτA : ∀ a : algebraicClosure K L, τ (a : L) = (f a : L)` using `fun a => by`. Simplify using `using hτ (MvPolynomial.C a)`. Set `σ : L ≃ₐ[K] L` to `AlgEquiv.ofRingEquiv (f := τ) (fun k => by`. Simplify using `using hτA (algebraMap K (algebraicClosure K L) k))`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hτA]`. Conclude with `hx σ`. Take `⟨k, hk⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed _).2 hfix`. Conclude with `⟨k, congrArg Subtype.val hk⟩`.
+
+Establish `hind : AlgebraicIndepOn K id {x}` using `(algebraicIndependent_singleton_iff (⟨x, rfl⟩ : ({x} : Set L))).2 halg`. Take `⟨t, hxt, ht⟩` from `exists_isTranscendenceBasis_superset hind`. Set `i : t` to `⟨x, hxt rfl⟩`. Apply the tactic sequence `let φ : MvPolynomial t K ≃ₐ[K] MvPolynomial t K := AlgEquiv.ofAlgHom (aeval fun j => if j = i then X j + 1 else X j) (aeval fun j => if j = i then X j - 1 else X j) (MvPolynomial.algHom_ext fun j => by by_cases h : j = i <;> simp [h]) (MvPolynomial.algHom_ext fun j => by by_cases …`. Take `⟨τ, hτ⟩` from `_root_.GlobalTheory.GaloisDescent.exists_ringEquiv_of_isTranscendenceBasis ht ht φ.toRingEquiv`.
+
+Establish `hτx : τ x = x + 1` using `by simpa [φ, i] using hτ (X i)`. Set `σ : L ≃ₐ[K] L` to `AlgEquiv.ofRingEquiv (f := τ) (fun k => by simpa [φ] using hτ (C k))`. Establish `h1` using `hx σ`. Establish `h2 : τ x = x` using `h1`. Rewrite `h2` using `[hτx]`.
+
+Simplify using `at h2`.
+-/
 theorem _root_.GlobalTheory.GaloisDescent.mem_range_algebraMap_of_forall_algEquiv {K L : Type*} [Field K] [Field L] [Algebra K L]
     [PerfectField K] [IsAlgClosed L] (x : L) (hx : ∀ σ : L ≃ₐ[K] L, σ x = x) :
     x ∈ Set.range (algebraMap K L) := by
@@ -104,6 +137,9 @@ theorem _root_.GlobalTheory.GaloisDescent.mem_range_algebraMap_of_forall_algEqui
 
 open MvPolynomial Cardinal in
 
+/- English proof (translation)
+Use `haveI : CharZero K := RingHom.charZero (algebraMap K ℂ)`. Conclude with `_root_.GlobalTheory.GaloisDescent.mem_range_algebraMap_of_forall_algEquiv x hx`.
+-/
 theorem _root_.GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv {K : Type*} [Field K] [Algebra K ℂ] (x : ℂ)
     (hx : ∀ σ : ℂ ≃ₐ[K] ℂ, σ x = x) : x ∈ Set.range (algebraMap K ℂ) := by
   haveI : CharZero K := RingHom.charZero (algebraMap K ℂ)
@@ -111,6 +147,13 @@ theorem _root_.GlobalTheory.GaloisDescent.complex_mem_range_of_forall_algEquiv {
 
 open MvPolynomial Cardinal in
 
+/- English proof (translation)
+Establish `hK : Cardinal.mk K ≤ Cardinal.aleph0` using `Cardinal.mk_le_aleph0`. Establish `hC : Cardinal.aleph0 < Cardinal.mk ℂ`. Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Use `letI Af : Algebra K ℂ := f.toAlgebra`.
+
+Take `⟨s, hs⟩` from `exists_isTranscendenceBasis K ℂ`. Establish `hsc` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ hs hK hC`. Use `letI Ag : Algebra K ℂ := g.toAlgebra`. Take `⟨t, ht⟩` from `exists_isTranscendenceBasis K ℂ`. Establish `htc` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hK hC`.
+
+Take `⟨eqv⟩` from `Cardinal.eq.1 (hsc.symm.trans htc)`. Take `⟨σ, hσ⟩` from `@_root_.GlobalTheory.GaloisDescent.exists_ringEquiv_of_isTranscendenceBasis K K ℂ ℂ s t _ _ _ _ Af Ag _ _ _ _ hs ht (MvPolynomial.renameEquiv K eqv).toRingEquiv`. Use `⟨σ, fun a => ?_⟩` and prove the remaining obligations. Simplify `hσ (MvPolynomial.C a)` using `[RingHom.algebraMap_toAlgebra]`.
+-/
 theorem _root_.GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq {K : Type} [Field K] [Countable K] (f g : K →+* ℂ) :
     ∃ σ : ℂ ≃+* ℂ, ∀ a, σ (f a) = g a := by
   have hK : Cardinal.mk K ≤ Cardinal.aleph0 := Cardinal.mk_le_aleph0

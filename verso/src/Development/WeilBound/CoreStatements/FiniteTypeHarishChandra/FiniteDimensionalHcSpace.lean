@@ -24,6 +24,9 @@ def centralIdem [Fintype Γ] {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Re
   ∑ γ : Γ, MonoidAlgebra.single γ
     ((Module.finrank ℂ V : ℂ) / Fintype.card Γ * LinearMap.trace ℂ V (ρ γ⁻¹))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zIdem_eq_centralIdem [Fintype Γ] (τ : FDRep ℂ Γ) : zIdem τ = centralIdem τ.ρ := rfl
 
 def Mk.piTensorRep {ι : Type} {G : ι → Type} [∀ i, Group (G i)] (V : ∀ i, FDRep ℂ (G i)) :
@@ -44,6 +47,9 @@ def indF [Fintype Γ] (H : Subgroup Γ) (φ : Γ → ℂ) (g : Γ) : ℂ :=
 
 def cj (x : Γ) (B : Subgroup Γ) : Subgroup Γ := B.comap (MulAut.conj x).toMonoidHom
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cj {x h : Γ} {B : Subgroup Γ} : h ∈ cj x B ↔ x * h * x⁻¹ ∈ B := Iff.rfl
 
 def IsClassOn (A : Subgroup Γ) (a : Γ → ℂ) : Prop := ∀ x ∈ A, ∀ h ∈ A, a (x * h * x⁻¹) = a h
@@ -61,6 +67,9 @@ def glReindex {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [Decidab
     GL α K ≃* GL β K := glEquiv K e
 
 omit [Fintype K] [DecidableEq K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glReindex_val {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (e : α ≃ β)
     (g : GL α K) : ((glReindex K e g : GL β K) : Matrix β β K) = (g : Matrix α α K).submatrix e.symm e.symm := rfl
 

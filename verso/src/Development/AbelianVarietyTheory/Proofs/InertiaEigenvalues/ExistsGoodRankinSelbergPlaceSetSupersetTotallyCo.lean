@@ -9,6 +9,11 @@ namespace GlobalTheory.RSNonvan.GoodSet
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `key : (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ ∀ a ∈ w.adicCompletionIntegers E, GroundTheory.Global.localAdelicChar E w (a * x) = 1`. Use `forall_congr' fun y => imp_congr Iff.rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.StdCharConductor.psi E (sFin E (sLoc E w (x * y))) = 1 ↔ _`. Rewrite using `[GlobalTheory.StdCharConductor.psi_loc_eq_one_iff, mul_comm]`. Rewrite using `[key, GroundTheory.Global.forall_localAdelicChar_mul_eq_one_iff, GroundTheory.Global.mem_localInvDifferent_iff_valued, hw]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ x ∈ w.adicCompletionIntegers E`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Both sides reduce to the same expression.
+-/
 theorem psiLoc_cond (w : HeightOneSpectrum (𝓞 E))
     (hw : FractionalIdeal.count E w ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) :
       FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = 0) (x : w.adicCompletion E) :
@@ -23,6 +28,13 @@ theorem psiLoc_cond (w : HeightOneSpectrum (𝓞 E))
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
   rfl
 
+/- English proof (translation)
+Use `set N : ℕ := Ideal.absNorm u.asIdeal`. Establish `hN : N ≠ 0`. Use `NumberField.HeightOneSpectrum.one_lt_absNorm u` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hI : Ideal.span {(N : 𝓞 E)} ≠ 0`.
+
+Rewrite using `[Ne, Submodule.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hN` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset fun w' hw' => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hw' ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`.
+
+Establish `h1 : ((N : ℤ)) ∈ Ideal.comap (algebraMap ℤ (𝓞 E)) u.asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem u.asIdeal`. Rewrite `h1` using `[← hw', Ideal.mem_comap, map_natCast]`. Conclude with `h1`.
+-/
 theorem finite_sameBelow (u : HeightOneSpectrum (𝓞 E)) :
     {w' : HeightOneSpectrum (𝓞 E) | Ideal.comap (algebraMap ℤ (𝓞 E)) w'.asIdeal =
       Ideal.comap (algebraMap ℤ (𝓞 E)) u.asIdeal}.Finite := by
@@ -44,6 +56,17 @@ theorem finite_sameBelow (u : HeightOneSpectrum (𝓞 E)) :
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `hD : {w : HeightOneSpectrum (𝓞 E) | FractionalIdeal.count E w ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0}.Finite` using `FractionalIdeal.finite_factors (K := E) ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Use `set T₁ : Finset (HeightOneSpectrum (𝓞 E)) := T ∪ hD.toFinset`. Use `set S : Set (HeightOneSpectrum (𝓞 E)) := {w' | ∃ u ∈ T₁, Ideal.comap (algebraMap ℤ (𝓞 E)) w'.asIdeal = Ideal.comap (algebraMap ℤ (𝓞 E)) u.asIdeal}`. Establish `hS : S.Finite`. Establish `: S = ⋃ u ∈ T₁, {w' : HeightOneSpectrum (𝓞 E) | Ideal.comap (algebraMap ℤ (𝓞 E)) w'.asIdeal = Ideal.comap (algebraMap ℤ (𝓞 E)) u.asIdeal}`.
+
+Use extensionality with `w'`. Simplify using `[S]`. Rewrite using `[this]`. Conclude with `T₁.finite_toSet.biUnion fun u _ => finite_sameBelow u`. Establish `hT₁ : ∀ w ∈ T₁, w ∈ hS.toFinset` using `fun w hw => by`.
+
+Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨w, hw, rfl⟩`. Use `⟨hS.toFinset, fun w hw => hT₁ w (Finset.mem_union_left _ hw), ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw w' hw'`. Rewrite `hw`, the goal using `[Set.Finite.mem_toFinset]`.
+
+Take `⟨u, hu, hwu⟩` from `hw`. Conclude with `⟨u, hu, hw'.trans hwu⟩`. Introduce `w hw x`. Use `psiLoc_cond w ?_ x` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hw (hT₁ w (Finset.mem_union_right _ (by simpa using h)))`.
+-/
 theorem exists_isGood_superset (T : Finset (HeightOneSpectrum (𝓞 E))) :
     ∃ T' : Finset (HeightOneSpectrum (𝓞 E)), T ⊆ T' ∧ IsGood T' := by
   classical
@@ -76,6 +99,9 @@ theorem exists_isGood_superset (T : Finset (HeightOneSpectrum (𝓞 E))) :
 
 end GlobalTheory.RSNonvan.GoodSet
 
+/- English proof (translation)
+Introduce `_ _ _ _ T` and use `GlobalTheory.RSNonvan.GoodSet.exists_isGood_superset T`.
+-/
 theorem GlobalTheory.RSNonvan.exists_isGood_superset_all : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (T : Finset (HeightOneSpectrum (𝓞 E))), ∃ T' : Finset (HeightOneSpectrum (𝓞 E)), T ⊆ T' ∧ IsGood T' :=
   fun _ _ _ _ T => GlobalTheory.RSNonvan.GoodSet.exists_isGood_superset T

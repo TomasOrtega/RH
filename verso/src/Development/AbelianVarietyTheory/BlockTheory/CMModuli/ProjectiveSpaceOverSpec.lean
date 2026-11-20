@@ -45,6 +45,11 @@ def IsCompletedStrictHenselisation {A R : Type} [CommRing A] [IsLocalRing A] [Co
       ∃ e : AdicCompletion (maximalIdeal S) S ≃+* R,
         ∀ a : A, e (algebraMap S (AdicCompletion (maximalIdeal S) S) (ψ a)) = φ a
 
+/- English proof (translation)
+Use `⟨inferInstance, ?_, inferInstance, ?_⟩` and prove the remaining obligations. Establish `e : ℂ ≃+* ResidueField ℂ` using `RingEquiv.ofBijective (residue ℂ) ⟨(residue ℂ).injective, residue_surjective⟩ haveI : IsAlgClosed (ResidueField ℂ) := IsAlgClosed.of_ringEquiv ℂ _ e infer_instance`. Use `MorphismProperty.le_ind _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap ℝ ℂ).Etale`. Rewrite using `[RingHom.etale_algebraMap]`.
+
+Use `haveI : Algebra.FormallyEtale ℝ ℂ := Algebra.FormallyEtale.of_isSeparable ℝ ℂ`. Use `haveI : Algebra.FinitePresentation ℝ ℂ := (Algebra.FinitePresentation.of_finiteType).1 inferInstance`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem isStrictHenselisation_real_complex : IsStrictHenselisation (algebraMap ℝ ℂ) := by
   refine ⟨inferInstance, ?_, inferInstance, ?_⟩
   · have e : ℂ ≃+* ResidueField ℂ := RingEquiv.ofBijective (residue ℂ)

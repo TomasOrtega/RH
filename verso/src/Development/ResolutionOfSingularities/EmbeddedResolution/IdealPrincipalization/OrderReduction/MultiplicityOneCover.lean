@@ -46,6 +46,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Conclude with `balancedTunedSheaf_one k pp I`.
+-/
 private theorem balancedTunedSheaf_eq_self_of_mult_eq_one (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (pp : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth pp]
     [AlgebraicGeometry.LocallyOfFiniteType pp] (I : X.IdealSheafData) (m : ℕ) (hm : m = 1) :
@@ -53,6 +56,9 @@ private theorem balancedTunedSheaf_eq_self_of_mult_eq_one (k : Type u) [Field k]
   subst hm
   exact balancedTunedSheaf_one k pp I
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {X : Scheme.{u}}
     {p p' : X ⟶ Spec (CommRingCat.of k)} {I I' : X.IdealSheafData} {m m' : ℕ}
     {E E' : List X.IdealSheafData}
@@ -64,12 +70,18 @@ private theorem markedIdealWithBoundary_mk_congr {k : Type u} [Field k] {X : Sch
   subst hE
   rfl
 
+/- English proof (translation)
+The claim follows from `Category.id_comp S.structMap`.
+-/
 private theorem projectionToBase_emptyMarkedBlowupSequenceData_comp (S : MarkedIdealWithBoundary.{u}) :
     (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).proj
         (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length ≫ S.structMap
       = S.structMap :=
   Category.id_comp S.structMap
 
+/- English proof (translation)
+Rewrite using `[MaxContactCoverData.derivedTriple_structureMorphism]`. Conclude with `projectionToBase_emptyMarkedBlowupSequenceData_comp S`.
+-/
 private theorem structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u})
     (hft : AlgebraicGeometry.LocallyOfFiniteType
       ((emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).proj
@@ -82,6 +94,9 @@ private theorem structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData (S
   rw [MaxContactCoverData.derivedTriple_structureMorphism]
   exact projectionToBase_emptyMarkedBlowupSequenceData_comp S
 
+/- English proof (translation)
+Use `hcz` as an intermediate fact. Use `hft` as an intermediate fact. Use `hsm` as an intermediate fact. Rewrite using `[LowerDimReductionPullback.ideal_derivedTriple]`. Conclude with `Eq.trans (balancedTunedSheaf_eq_self_of_mult_eq_one S.base ((emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).proj (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length ≫ S.structMap) ((emptyMarkedBlowupSequenceData S.structMap S.ideal S …`.
+-/
 private theorem ideal_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u}) (hcz : CharZero S.base)
     (h1 : S.mult = 1)
     (hft : AlgebraicGeometry.LocallyOfFiniteType
@@ -108,6 +123,9 @@ private theorem ideal_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIde
     (emptyMarkedBlowupSequenceData_ideal S.structMap S.ideal S.mult S.boundary
       (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length)
 
+/- English proof (translation)
+Rewrite using `[MaxContactCoverData.derivedTriple_mult, h1]`. Conclude with `tuningExponent_one`.
+-/
 private theorem mult_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u}) (h1 : S.mult = 1)
     (hft : AlgebraicGeometry.LocallyOfFiniteType
       ((emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).proj
@@ -120,6 +138,11 @@ private theorem mult_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdea
   rw [MaxContactCoverData.derivedTriple_mult, h1]
   exact tuningExponent_one
 
+/- English proof (translation)
+Establish `hB : (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).boundary (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length = S.boundary` using `emptyMarkedBlowupSequenceData_boundary S.structMap S.ideal S.mult S.boundary (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length`. Establish `hdrop : List.drop S.boundary.length ((emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).boundary (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).length) = []`. Rewrite using `[hB]`. Simplify using the standard rewrite rules. Rewrite using `[MaxContactCoverData.derivedTriple_boundary, hdrop]`.
+
+Conclude with `List.append_nil extra`.
+-/
 private theorem boundary_derivedTriple_emptyMarkedBlowupSequenceData (S : MarkedIdealWithBoundary.{u})
     (hft : AlgebraicGeometry.LocallyOfFiniteType
       ((emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary).proj
@@ -140,6 +163,9 @@ private theorem boundary_derivedTriple_emptyMarkedBlowupSequenceData (S : Marked
   rw [MaxContactCoverData.derivedTriple_boundary, hdrop]
   exact List.append_nil extra
 
+/- English proof (translation)
+Establish `hmain` using `MarkedBlowupSequenceData.emptyMarkedBlowupSequenceData_append_isomorphic p I m E t hinv`. Establish `e1` using `MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups ((emptyMarkedBlowupSequenceData p I m E).append t hinv)`. Establish `e2` using `MarkedBlowupSequenceData.toMarkedSequence_toSequenceOfBlowups t`. Rewrite `hmain` using `[e1, e2]`. Conclude with `hmain`.
+-/
 private theorem isomorphic_of_emptyMarkedBlowupSequenceData_append {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
     (E : List X.IdealSheafData)
@@ -155,6 +181,15 @@ private theorem isomorphic_of_emptyMarkedBlowupSequenceData_append {k : Type u} 
   rw [e1, e2] at hmain
   exact hmain
 
+/- English proof (translation)
+Establish `hempty : orderAtLeastLocus A 2 = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hx`. Establish `h2 : ((2 : ℕ) : ℕ∞) ≤ orderAt A x` using `(mem_orderAtLeastLocus_iff A 2 x).1 hx`.
+
+Establish `h21 : ((2 : ℕ) : ℕ∞) ≤ ((1 : ℕ) : ℕ∞)` using `le_trans h2 (hord x)`. Establish `h21' : (2 : ℕ) ≤ 1` using `by exact_mod_cast h21`. Use linear arithmetic over natural numbers and integers. Establish `h` using `orderAtLeastLocus_derivIdealSheafIterate k p A (r := 1) (m := 2) (by norm_num)`. Rewrite `h` using `[hempty]`.
+
+Establish `h1 : orderAtLeastLocus (derivIdealSheafIterate k p 1 A) 1 = ∅` using `h`. Establish `hiter : derivIdealSheaf k p A = derivIdealSheafIterate k p 1 A` using `rfl`. Rewrite using `[hiter]`. Use `(AlgebraicGeometry.Scheme.IdealSheafData.eq_top_iff_support_eq_empty _).2 ?_` and prove the remaining obligations. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hy`. Establish `hy1 : y ∈ orderAtLeastLocus (derivIdealSheafIterate k p 1 A) 1` using `(mem_orderAtLeastLocus_one_iff _ y).2 hy`. Rewrite `hy1` using `[h1]`. Conclude with `hy1`.
+-/
 private theorem derivIdealSheaf_eq_top_of_orderAt_le_one (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     [AlgebraicGeometry.LocallyOfFiniteType p] (A : P.IdealSheafData)
@@ -182,6 +217,11 @@ private theorem derivIdealSheaf_eq_top_of_orderAt_le_one (k : Type u) [Field k] 
   rw [h1] at hy1
   exact hy1
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Unfold `FunctorialResolution.EmbeddedResolution.IsMaxContactInvariant`. Rewrite using `[derivIdealSheaf_eq_top_of_orderAt_le_one k p A hord]`. Establish `hmc : maxContactIdeal k p A 1 = A` using `rfl`. Rewrite using `[hmc]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem isMaxContactInvariant_of_mult_eq_one (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     [AlgebraicGeometry.LocallyOfFiniteType p] (A : P.IdealSheafData) (m : ℕ) (hm : m = 1)
@@ -194,6 +234,9 @@ private theorem isMaxContactInvariant_of_mult_eq_one (k : Type u) [Field k] [Cha
   rw [hmc]
   simp
 
+/- English proof (translation)
+Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Use `show (coordSubspaceIdeal k n S).comap (φ ≫ c.map) = ((coordSubspaceIdeal k n S).comap c.map).comap φ`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
+-/
 private theorem coordIdeal_comp_map_eq_comap {X Y : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {q : Y ⟶ Spec (CommRingCat.of k)}
     {U : X.Opens} {V : Y.Opens} {n : ℕ} (c : EtaleChart p U n)
@@ -206,6 +249,15 @@ private theorem coordIdeal_comp_map_eq_comap {X Y : Scheme.{u}} {k : Type u} [Fi
       = ((coordSubspaceIdeal k n S).comap c.map).comap φ
   rw [Scheme.IdealSheafData.comap_comp]
 
+/- English proof (translation)
+Introduce `x`. Distinguish the cases in `hx : x ∈ D.support`. Take `⟨U, n, c, j, hxU, hcoord⟩` from `hchart x hx`. Take `⟨V, hVaff, hxV, hVU⟩ : ∃ V : P.Opens, AlgebraicGeometry.IsAffineOpen V ∧ x ∈ V ∧ V ≤ U` from `exists_isAffineOpen_mem_and_subset hxU`. Use `⟨V, hVaff, hxV, Or.inr ⟨n, c.restrict hVU, j, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `restrictIdeal_eq_restrict_coordIdeal_of_le hVU c D ({j} : Finset (Fin n)) hcoord`. Rewrite using `[isMaxContactCoord_one_iff, ← restrictIdeal_eq_restrict_coordIdeal_of_le hVU c D ({j} : Finset (Fin n)) hcoord, restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι]`. Conclude with `Scheme.IdealSheafData.comap_mono _ hDle`. Establish `hclosed : IsClosed ((D.support : Set ↥P))` using `D.support.isClosed`. Take `⟨V, hVaff, hxV, hVW⟩ : ∃ V : P.Opens, AlgebraicGeometry.IsAffineOpen V ∧ x ∈ V ∧ V ≤ (⟨((D.support : Set ↥P))ᶜ, hclosed.isOpen_compl⟩ : P.Opens)` from `exists_isAffineOpen_mem_and_subset hx`.
+
+Establish `hdisj : Disjoint ((D.support : Set ↥P)) ((V : Set ↥P))`. Rewrite using `[Set.disjoint_right]`. Introduce `y hyV hyD`. Conclude with `(hVW hyV) hyD`. Establish `htop : restrictIdeal D V = ⊤` using `(FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_top_iff_forall_notMem_support _ _).mpr (fun y hyV hyD => Set.disjoint_left.mp hdisj hyD hyV)`.
+
+Use `⟨V, hVaff, hxV, Or.inl ⟨?_, htop⟩⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `y hy hyV`. Establish `h1 : y ∈ D.support` using `(one_le_orderAt_iff_mem_support D y).1 (le_trans ((one_le_orderAt_iff_mem_support A y).2 ((mem_orderAtLeastLocus_one_iff A y).1 hy)) (orderAt_le_of_le hDle y))`. Conclude with `(Set.disjoint_left.mp hdisj h1) hyV`.
+-/
 theorem isMaxContactHypersurface_one_of_etaleChart {k : Type u} [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     [AlgebraicGeometry.LocallyOfFiniteType p] (A D : P.IdealSheafData)
@@ -247,6 +299,25 @@ theorem isMaxContactHypersurface_one_of_etaleChart {k : Type u} [Field k] [CharZ
           (orderAt_le_of_le hDle y))
     exact (Set.disjoint_left.mp hdisj h1) hyV
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Smooth (g ≫ p)` using `inferInstance`. Introduce `x'`. Take `⟨U₀, hxU₀, hoi⟩` from `hg x'`. Use `hoi` as an intermediate fact. Take `⟨U, _, hxU, hcase⟩` from `hH (g.base x')`.
+
+Establish `hxpre : x' ∈ (g ⁻¹ᵁ U)` using `hxU`. Take `⟨V, hVaff, hxV, hVW⟩ : ∃ V : P'.Opens, AlgebraicGeometry.IsAffineOpen V ∧ x' ∈ V ∧ V ≤ U₀ ⊓ (g ⁻¹ᵁ U)` from `exists_isAffineOpen_mem_and_subset (⟨hxU₀, hxpre⟩ : x' ∈ U₀ ⊓ (g ⁻¹ᵁ U))`. Establish `hVU₀ : V ≤ U₀` using `le_trans hVW inf_le_left`. Establish `hVpre : V ≤ (g ⁻¹ᵁ U)` using `le_trans hVW inf_le_right`. Take `⟨φ, hφ⟩ : ∃ φ, φ = P'.homOfLE hVpre ≫ (g ∣_ U)` from `⟨_, rfl⟩`.
+
+Establish `hfac : V.ι ≫ g = φ ≫ U.ι`. Rewrite using `[hφ, Category.assoc, morphismRestrict_ι, ← Category.assoc, P'.homOfLE_ι]`. Establish `hoiV : AlgebraicGeometry.IsOpenImmersion (V.ι ≫ g)`. Establish `hrw : V.ι ≫ g = P'.homOfLE hVU₀ ≫ (U₀.ι ≫ g)`. Rewrite using `[← Category.assoc, P'.homOfLE_ι]`.
+
+Rewrite using `[hrw]`. Use `infer_instance`. Establish `: AlgebraicGeometry.IsOpenImmersion (φ ≫ U.ι)`. Rewrite using `[← hfac]`. Conclude with `hoiV`.
+
+Establish `: AlgebraicGeometry.IsOpenImmersion φ` using `AlgebraicGeometry.IsOpenImmersion.of_comp φ U.ι`. Establish `: AlgebraicGeometry.Etale φ` using `inferInstance`. Establish `hcomapres : ∀ J : P.IdealSheafData, restrictIdeal (J.comap g) V = (restrictIdeal J U).comap φ`. Introduce `J`. Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hfac]`.
+
+Use `⟨V, hVaff, hxV, ?_⟩` and prove the remaining obligations. Break down `hcase with ⟨hdisj, htop⟩ | ⟨n, c, j, hcoord, hmc⟩` into its components or cases. Use `Or.inl ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[orderAtLeastLocus_comap k p g A 1, Set.disjoint_left]`. Introduce `y hy hyV`.
+
+Conclude with `(Set.disjoint_left.mp hdisj hy) (hVpre hyV)`. Rewrite using `[hcomapres H, htop]`. Simplify using the standard rewrite rules. Use `c.isEtale` as an intermediate fact. Establish `hcs : (φ ≫ c.map) ≫ affineSpaceFinToSpec k n = V.ι ≫ (g ≫ p)`.
+
+Rewrite using `[Category.assoc, c.comp_struct, ← Category.assoc, ← hfac, Category.assoc]`. Establish `he : AlgebraicGeometry.Etale (φ ≫ c.map)` using `inferInstance`. Use `Or.inr ⟨n, ⟨φ ≫ c.map, hcs, he⟩, j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomapres H, hcoord, coordIdeal_comp_map_eq_comap c φ hcs he]`. Rewrite using `[isMaxContactCoord_one_iff, coordIdeal_comp_map_eq_comap c φ hcs he, hcomapres A]`.
+
+Conclude with `Scheme.IdealSheafData.comap_mono _ ((isMaxContactCoord_one_iff k p A c j).1 hmc)`.
+-/
 theorem IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource {k : Type u} [Field k] [CharZero k]
     {P P' : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     [AlgebraicGeometry.LocallyOfFiniteType p] {A H : P.IdealSheafData}
@@ -301,6 +372,9 @@ theorem IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource {k : Type u} [
     · rw [isMaxContactCoord_one_iff, coordIdeal_comp_map_eq_comap c φ hcs he, hcomapres A]
       exact Scheme.IdealSheafData.comap_mono _ ((isMaxContactCoord_one_iff k p A c j).1 hmc)
 
+/- English proof (translation)
+Substitute `hDeq` using the available equality. Introduce `hft2`. Conclude with `LowerDimReductionPullback.isBalanced_derivedTriple hstar S hSV hSV.one_le_mult hord (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) hft L keep hVD`.
+-/
 private theorem isBalanced_of_eq_derivedTriple_emptyMarkedBlowupSequenceData (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hSV : S.IsAdmissible)
     (hord : ∀ x : ↥S.scheme, orderAt S.ideal x ≤ ((S.mult : ℕ) : ℕ∞))
@@ -319,6 +393,11 @@ private theorem isBalanced_of_eq_derivedTriple_emptyMarkedBlowupSequenceData (hs
   exact LowerDimReductionPullback.isBalanced_derivedTriple hstar S hSV hSV.one_le_mult hord
     (emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) hft L keep hVD
 
+/- English proof (translation)
+Establish `hMC : ∀ [AlgebraicGeometry.LocallyOfFiniteType S.structMap], IsMaxContactInvariant S.base S.structMap S.ideal S.mult`. Introduce `_i`. Use `isMaxContactInvariant_of_mult_eq_one S.base S.structMap S.ideal S.mult hm1 ?_` and prove the remaining obligations. Introduce `x`. Establish `hx` using `hord x`.
+
+Rewrite `hx` using `[hm1]`. Conclude with `hx`. Conclude with `DivisorReductionIndependence.isomorphic_withBoundary_cons_of_isMaxContactHypersurface hin P hmono A0 B hspec0 S hSV hP hord hD hMC [] H₁ H₂ hbd hV₂ (by intro _i; exact hH₁) (by intro _i; exact hH₂)`.
+-/
 private theorem isomorphic_of_isMaxContactHypersurface_singleton_boundary (hin : OrderReduction.OrderReductionHypotheses.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a) (A0 B : PrincipalizationAssignment.{u})
     (hspec0 : IsBoundaryDivisorReduction P 0 A0 B) (S : MarkedIdealWithBoundary.{u})
@@ -345,6 +424,41 @@ private theorem isomorphic_of_isMaxContactHypersurface_singleton_boundary (hin :
 
 namespace MaxContactCoverData
 
+/- English proof (translation)
+Use `h.valid.locallyOfFiniteType` as an intermediate fact. Use `h.valid.smooth` as an intermediate fact. Establish `: CharZero T.base` using `h.valid.charZero`. Substitute `hs` using the available equality. Use `hft` as an intermediate fact.
+
+Establish `hVcover : (coverTriple T h.valid).IsAdmissible` using `BoundarySeparationByMaxContact.isAdmissible_coverTriple hstar P T h`. Establish `hftC : AlgebraicGeometry.LocallyOfFiniteType (coverTriple T h.valid).structMap` using `hVcover.locallyOfFiniteType`. Establish `hsmC : AlgebraicGeometry.Smooth (coverTriple T h.valid).structMap` using `hVcover.smooth`. Establish `hczC : CharZero (coverTriple T h.valid).base` using `hVcover.charZero`. Establish `hczPB : CharZero ((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).base` using `h.valid.charZero`.
+
+Establish `hsmPB : AlgebraicGeometry.Smooth ((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).structMap` using `hVcover.smooth`. Establish `hftPB : AlgebraicGeometry.LocallyOfFiniteType ((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).structMap` using `hVcover.locallyOfFiniteType`. Establish `hOcover` using `BoundarySeparationByMaxContact.orderAt_coverTriple_ideal_le_mult hstar P T h`. Establish `hsm : AlgebraicGeometry.Smooth ((emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary).proj (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.val …` using `BoundarySeparationByMaxContact.smooth_projectionToBase_comp hstar (coverTriple T h.valid) hVcover (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary) (emptyMarkedBlowupSequen …`. Use `hsm` as an intermediate fact.
+
+Establish `htunedIdeal : balancedTunedIdeal T h.valid = T.ideal` using `balancedTunedSheaf_eq_self_of_mult_eq_one T.base T.structMap T.ideal T.mult hmult`. Establish `hcoverMult : (coverTriple T h.valid).mult = 1`. Rewrite using `[coverTriple_mult]`. Use `show FunctorialResolution.EmbeddedResolution.tuningExponent T.mult = 1`. Rewrite using `[hmult]`.
+
+Conclude with `tuningExponent_one`. Establish `hcoverIdeal : (coverTriple T h.valid).ideal = T.ideal.comap (coverMap T h.valid)`. Rewrite using `[coverTriple_ideal, htunedIdeal]`. Establish `hqc : AlgebraicGeometry.QuasiCompact (coverTriple T h.valid).structMap` using `hVcover.quasiCompact`. Establish `hsurj : AlgebraicGeometry.Surjective (coverMap T h.valid)` using `surjective_coverMap T h.valid (hstar.exists_goodCover T h.valid h.orderLE)`.
+
+Establish `hftE : AlgebraicGeometry.LocallyOfFiniteType ((emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).proj (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).length ≫ T.structMap)`. Establish `hx : AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `h.valid.locallyOfFiniteType`. Rewrite using `[projectionToBase_emptyMarkedBlowupSequenceData_comp T]`. Conclude with `hx`. Establish `hsmE : AlgebraicGeometry.Smooth ((emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).proj (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).length ≫ T.structMap)`.
+
+Establish `hx : AlgebraicGeometry.Smooth T.structMap` using `h.valid.smooth`. Rewrite using `[projectionToBase_emptyMarkedBlowupSequenceData_comp T]`. Conclude with `hx`. Establish `hdrop0 : List.drop 0 ((emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).boundary (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).length) = []` using `(congrArg (List.drop 0) (emptyMarkedBlowupSequenceData_boundary T.structMap T.ideal T.mult T.boundary (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).length)).trans ((congrArg (List.drop 0) hbd).trans rfl)`. Establish `hbdE : (derivedTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hftE [AlgebraicGeometry.Scheme.Hom.ker e] 0).boundary = [AlgebraicGeometry.Scheme.Hom.ker e]`.
+
+Rewrite using `[derivedTriple_boundary, hdrop0]`. Conclude with `List.append_nil [AlgebraicGeometry.Scheme.Hom.ker e]`. Establish `hEqT : derivedTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hftE [AlgebraicGeometry.Scheme.Hom.ker e] 0 = T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]` using `markedIdealWithBoundary_mk_congr (structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData T hftE [AlgebraicGeometry.Scheme.Hom.ker e] 0) (ideal_derivedTriple_emptyMarkedBlowupSequenceData T h.valid.charZero hmult hftE hsmE [AlgebraicGeometry.Scheme.Hom.ker e] 0) ((mult_deri …`. Establish `hbalanced` using `isBalanced_of_eq_derivedTriple_emptyMarkedBlowupSequenceData hstar T h.valid h.orderLE hftE [AlgebraicGeometry.Scheme.Hom.ker e] 0 (T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]) hEqT hV`. Establish `hpb` using `DivisorReductionIndependence.isAdmissible_and_isStrictPullbackBlowupSeq_of_etale hin P hmono (A 0) B (hspec 0) (T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]) hV h.dim_prop h.orderLE hbalanced (Nat.succ_pos 0) (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap …`.
+
+Establish `hbdU : (derivedTriple (coverTriple T h.valid) (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary) hft [(AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid)] (cover …` using `boundary_derivedTriple_emptyMarkedBlowupSequenceData (coverTriple T h.valid) hft [(AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid)]`. Establish `hEqU : derivedTriple (coverTriple T h.valid) (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary) hft [(AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid)] (coverT …` using `markedIdealWithBoundary_mk_congr (structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData (coverTriple T h.valid) hft [(AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid)] (coverTriple T h.valid).boundary.length) ((ideal_derivedTriple_emptyMarkedBlowupSequenceDa …`. Establish `hDU` using `isBalanced_of_eq_derivedTriple_emptyMarkedBlowupSequenceData hstar (coverTriple T h.valid) hVcover hOcover hft [(AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid)] (coverTriple T h.valid).boundary.length ((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullback …`. Establish `hbdU2 : (derivedTriple (coverTriple T h.valid) (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary) hft [MaxContactReduction.strictTransformAtLength (emptyMarkedBlowupSequence …` using `boundary_derivedTriple_emptyMarkedBlowupSequenceData (coverTriple T h.valid) hft [MaxContactReduction.strictTransformAtLength (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).bounda …`. Establish `htri : derivedTriple (coverTriple T h.valid) (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary) hft [MaxContactReduction.strictTransformAtLength (emptyMarkedBlowupSequenceDa …` using `markedIdealWithBoundary_mk_congr (structureMorphism_derivedTriple_emptyMarkedBlowupSequenceData (coverTriple T h.valid) hft [MaxContactReduction.strictTransformAtLength (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h …`.
+
+Establish `hV₂ : ((((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).withBoundary [MaxContactReduction.strictTransformAtLength (emptyMarkedBlowupSequenceData (coverTriple T h.valid).str …`. Rewrite using `[← htri]`. Conclude with `hVc`. Establish `hcmp : AlgebraicGeometry.LocallyOfFiniteType (coverMap T h.valid ≫ T.structMap)`. Rewrite using `[← coverTriple_structureMorphism T h.valid]`.
+
+Conclude with `hftC`. Establish `hadm1 : IsMaxContactHypersurface T.base T.structMap T.ideal 1 (AlgebraicGeometry.Scheme.Hom.ker e)`. Establish `hx` using `hadm`. Rewrite `hx` using `[hmult]`. Conclude with `hx`.
+
+Establish `hkey` using `IsMaxContactHypersurface.comap_of_isOpenImmersionAtSource T.structMap hadm1 (coverMap T h.valid) (MaxContactOpenCover.isLocalIsomorphism_coverMap T h.valid)`. Establish `hA1 : ∀ m : ℕ, m = 1 → @IsMaxContactHypersurface T.base _ (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap hftC (T.ideal.comap (coverMap T h.valid)) m ((AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid))`. Introduce and unpack `m rfl`. Conclude with `@isMaxContactHypersurface_of_eq_of_eq_of_eq T.base _ (coverTriple T h.valid).scheme (coverMap T h.valid ≫ T.structMap) (coverTriple T h.valid).structMap hcmp hftC (T.ideal.comap (coverMap T h.valid)) (T.ideal.comap (coverMap T h.valid)) ((AlgebraicGeometry.Scheme.Hom.ker e).comap …`. Establish `hbase` using `BoundarySeparationByMaxContact.isMaxContactHypersurface_coverMaxContactIdeal hstar P T h`.
+
+Establish `htrm : ∀ m : ℕ, (coverTriple T h.valid).mult = m → IsMaxContactHypersurface (coverTriple T h.valid).base ((emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary).proj (emptyMarke …`. Introduce and unpack `m rfl`. Conclude with `isMaxContactHypersurface_iteratedStrictTransform hstar (coverTriple T h.valid) hVcover hOcover (coverMaxContactIdeal T h.valid) hbase (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid …`. Establish `hA2 : ∀ m : ℕ, m = 1 → @IsMaxContactHypersurface T.base _ (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap hftC (T.ideal.comap (coverMap T h.valid)) m (MaxContactReduction.strictTransformAtLength (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (co …`. Introduce and unpack `m rfl`.
+
+Conclude with `@isMaxContactHypersurface_of_eq_of_eq_of_eq T.base _ (coverTriple T h.valid).scheme ((emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary).proj (emptyMarkedBlowupSequenceData ( …`. Use `rfl (htrm 1 hcoverMult)`. Establish `hTdim : P ((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).krullDimSucc` using `hmono _ _ (hstar.coverTriple_dim_le T h.valid) h.dim_prop`. Establish `hTO : ∀ x : ↥(((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).scheme), orderAt (((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid) …`. Introduce `x`.
+
+Use `show orderAt (T.ideal.comap (coverMap T h.valid)) x ≤ ((T.mult : ℕ) : ℕ∞)`. Rewrite using `[orderAt_comap T.base T.structMap (coverMap T h.valid) T.ideal x]`. Conclude with `h.orderLE _`. Establish `hmultPB : (((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).mult) = 1` using `hmult`. Establish `hbdPB : (((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)).boundary) = [(AlgebraicGeometry.Scheme.Hom.ker e).comap (coverMap T h.valid)]` using `rfl`.
+
+Establish `hAdmEq` using `isomorphic_of_isMaxContactHypersurface_singleton_boundary hin P hmono (A 0) B (hspec 0) ((T.withBoundary [AlgebraicGeometry.Scheme.Hom.ker e]).pullbackAlong (coverTriple T h.valid).scheme (coverTriple T h.valid).structMap (coverMap T h.valid)) hpb.1 hTdim hTO hmultPB ((AlgebraicG …`. Establish `hEq : (coverMarkedBlowupData T h.valid hinv (MaxContactFunctoriality.lowerDimensionalFamily A T)).toSequenceOfBlowups.Isomorphic (A 0 (derivedTriple (coverTriple T h.valid) (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple …`. Rewrite using `[heq]`. Use `SequenceOfBlowups.Isomorphic.trans (isomorphic_of_emptyMarkedBlowupSequenceData_append (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary ((BlowupSequenceData.ofSequenceOfBlowups (A 0 (derivedTriple (cover …` and prove the remaining obligations. Conclude with `BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic _`.
+
+Establish `hheq : HEq ((A 0 (derivedTriple (coverTriple T h.valid) (emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary) hft [MaxContactReduction.strictTransformAtLength (emptyMarkedBlowu …`. Rewrite using `[htri]`. Establish `hcast` using `eq_of_heq hheq`. Rewrite `hEq` using `[hcast]`. Conclude with `hpb.2.of_isomorphic_pullback (hAdmEq.trans hEq.symm)`.
+-/
 private theorem isStrictPullbackBlowupSeq_cover_of_eq_append (hstar : MaxContactCoverProperties.{u})
     (hin : OrderReduction.OrderReductionHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)
@@ -740,6 +854,11 @@ private theorem isStrictPullbackBlowupSeq_cover_of_eq_append (hstar : MaxContact
   rw [hcast] at hEq
   exact hpb.2.of_isomorphic_pullback (hAdmEq.trans hEq.symm)
 
+/- English proof (translation)
+Establish `hSb : (coverTriple T h.valid).boundary = []` using `(coverTriple_boundary T h.valid).trans ((congrArg (List.map (fun D : T.scheme.IdealSheafData => D.comap (coverMap T h.valid))) hbd).trans List.map_nil)`. Establish `hSlen : (coverTriple T h.valid).boundary.length = 0` using `congrArg List.length hSb`. Establish `hs : BoundarySeparationByMaxContact.separateAllBoundary T h.valid hinv A = emptyMarkedBlowupSequenceData (coverTriple T h.valid).structMap (coverTriple T h.valid).ideal (coverTriple T h.valid).mult (coverTriple T h.valid).boundary` using `by show MaxContactReduction.separateBoundary hinv T (MaxContactFunctoriality.lowerDimensionalFamily A T) (coverTriple T h.valid) ((coverTriple T h.valid).boundary.length) = _`. Rewrite using `[hSlen]`. Conclude with `separateBoundary_zero hinv T (MaxContactFunctoriality.lowerDimensionalFamily A T) _`.
+
+Take `⟨hft, hVc, _, hmk, heq, _⟩` from `BoundarySeparationByMaxContact.exists_cover_eq_separateAllBoundary_append hstar hinv P hmono A B hspec T h`. Conclude with `isStrictPullbackBlowupSeq_cover_of_eq_append hstar hin hinv P hmono A B hspec T h hbd hmult e hadm hV (BoundarySeparationByMaxContact.separateAllBoundary T h.valid hinv A) hs hft hVc hmk heq`.
+-/
 theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isMaxContactHypersurface
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)
@@ -773,6 +892,11 @@ theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isMaxContactHypersurf
   exact isStrictPullbackBlowupSeq_cover_of_eq_append hstar hin hinv P hmono A B hspec T h hbd hmult
     e hadm hV (BoundarySeparationByMaxContact.separateAllBoundary T h.valid hinv A) hs hft hVc hmk heq
 
+/- English proof (translation)
+Use `h.valid.locallyOfFiniteType` as an intermediate fact. Use `h.valid.smooth` as an intermediate fact. Establish `: CharZero T.base` using `h.valid.charZero`. Use `isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isMaxContactHypersurface hstar hin hinv P hmono A B hspec T h hbd hmult e ?_ hV` and prove the remaining obligations. Introduce `hftinst`.
+
+Establish `: AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hftinst`. Rewrite using `[hmult]`. Conclude with `isMaxContactHypersurface_one_of_etaleChart T.structMap T.ideal (AlgebraicGeometry.Scheme.Hom.ker e) hchart hle`.
+-/
 theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_etaleChart
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)
@@ -801,6 +925,11 @@ theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_etaleChart
   exact isMaxContactHypersurface_one_of_etaleChart T.structMap T.ideal
     (AlgebraicGeometry.Scheme.Hom.ker e) hchart hle
 
+/- English proof (translation)
+Use `h.valid.locallyOfFiniteType` as an intermediate fact. Use `h.valid.smooth` as an intermediate fact. Establish `: CharZero T.base` using `h.valid.charZero`. Use `isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_etaleChart hstar hin hinv P hmono A B hspec T h hbd hmult e ?_ ?_ hV` and prove the remaining obligations. Introduce `x hx`.
+
+Conclude with `exists_etaleChart_restrictIdeal_eq_coordIdeal_singleton T.structMap (AlgebraicGeometry.Scheme.Hom.ker e) hdiv x hx`. Rewrite using `[hJ, imageIdealSheaf_eq_ker]`. Introduce `U`. Conclude with `AlgebraicGeometry.Scheme.Hom.le_ker_comp ..`.
+-/
 theorem isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isSmoothDivisor
     (hstar : MaxContactCoverProperties.{u}) (hin : OrderReduction.OrderReductionHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (P : ℕ → Prop) (hmono : ∀ a b : ℕ, a ≤ b → P b → P a)

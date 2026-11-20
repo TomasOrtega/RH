@@ -25,6 +25,15 @@ noncomputable section
 
 namespace GlobalTheory.EqHalf
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c`. Take `⟨b⟩` from `nonempty_basis O`. Use `⟨O.A.H.bar, cmSet O, fun l => letterEmb O l, chiAct O.S.Dw b, dualForm O.S.Dw b, fun σ τ h => mem_cmSet_iff O σ τ h, isUnit_det_dualForm O.S.Dw b, chiAct_adj O.S.Dw b, fun k => ?_⟩` and prove the remaining obligations. Take `⟨V, W, Ch, U, H, T', hW, hcov, hT, hL, hL', hreg, hpt⟩` from `GlobalTheory.T.exists_cover_charts_height h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c b (k + 3) (by omega)`. Use `⟨V, W, Ch, U, H, dgOf O c, T', hW, hcov, hT, hL, hL', fun a => ⟨hreg a, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v hv e y hy z yt hz hyt ha`. Establish `hpv : (resP v).Prime` using `hv ▸ hp`. Conclude with `GlobalTheory.T.local_height_prime_bound h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c b (k + 3) (by omega) v hpv e y Ch _ _ hv (hpt v hv e y hy z yt hz hyt hpv) a ha`. Introduce `v hv e y hy z yt hz hyt ha`. Establish `hpv : (resP v).Prime` using `hv ▸ hp`.
+
+Conclude with `GlobalTheory.T.local_height_prime_comparison h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c b (k + 3) (by omega) v hpv e y Ch _ _ hv (hpt v hv e y hy z yt hz hyt hpv) a ha`. Introduce `v hv e y hy z yt hz hyt a ha`. Establish `hpv : (resP v).Prime` using `hv ▸ hp`. Establish `hP` using `hpt v hv e y hy z yt hz hyt hpv`. Conclude with `⟨GlobalTheory.T.local_height_prime_vanishing h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c b (k + 3) (by omega) v hpv e y Ch _ _ hv hP k (by omega) a ha, fun a' ha' => GlobalTheory.T.local_height_prime_integrality h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c b (k + 3) (by omega) v hpv e y C …`.
+
+Introduce `v hv e y hy z yt hz hyt a ha`. Establish `hpv : (resP v).Prime` using `hv ▸ hp`. Conclude with `GlobalTheory.T.local_height_prime_sum h1 h2 h3 h4 h5 D O hO T R hR p hp hpT c b (k + 3) (by omega) v hpv e y Ch _ _ hv (hpt v hv e y hy z yt hz hyt hpv) k (by omega) a ha`.
+-/
 theorem eqData_geo : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ c : O.s.Comp,
     ∃ (bar : 𝓞 D.host.E ≃+* 𝓞 D.host.E) (Φ : Set (D.host.E →+* D.what₂.LL))

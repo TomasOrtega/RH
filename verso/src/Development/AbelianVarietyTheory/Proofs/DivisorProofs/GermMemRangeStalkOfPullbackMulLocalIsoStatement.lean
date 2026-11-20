@@ -15,6 +15,9 @@ open GlobalTheory.LevDesc (TypeFrame grpHR grpGHR levDet secRing move)
 open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelAut)
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.germToFunctionField_mem_range_stalk_of_mul_pull | exact GlobalTheory.germToFunctionField_mem_range_stalk_of_mul_pull | (intros; apply GlobalTheory.germToFunctionField_mem_range_stalk_of_mul_pull <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.germ_mem_range_stalk_of_pullback_mul_localIso : ∀ (k : Type) [CommRing k] (Y X : Scheme.{0}) [IsIntegral Y] [IsIntegral X]
     (p : Y ⟶ Sp k) (σ : X ⟶ Y) (U : Y.Opens) [IsIso (σ ∣_ U)] [Nonempty U] (L : LB Y) (P N : LB X)
     (C : ProdChart P (L.pull σ) N) (J : H0 (σ ≫ p) P ⊤) (g : H0 (σ ≫ p) N ⊤) (s : H0 p L U),

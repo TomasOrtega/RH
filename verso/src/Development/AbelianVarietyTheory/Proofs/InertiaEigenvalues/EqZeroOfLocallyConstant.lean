@@ -9,6 +9,15 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.UnramifiedClasses
 
+/- English proof (translation)
+Establish `h1 : c 1 = 0`. Use `hc 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `left_eq_add.mp this`. Set `H : Subgroup G` to `{ carrier := {g | c g = 0} mul_mem' := fun {a b} ha hb => by`.
+
+Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[hc, ha, hb, add_zero]`. Use the proof step `one_mem' := h1`. Use the proof step `inv_mem' := fun {a} ha => by`. Simplify using `only [Set.mem_ofPred_eq] at ha ⊢`.
+
+Use `hc a a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, ha, zero_add]`. Conclude with `this.symm }`. Establish `hle : Subgroup.zpowers φ ⊔ I ≤ H` using `sup_le ((Subgroup.zpowers_le (G := G)).mpr hφ) (fun g hg => hI g hg)`. Establish `hcl : (Subgroup.zpowers φ ⊔ I).topologicalClosure ≤ H` using `Subgroup.topologicalClosure_minimal _ hle (hlc.isClosed_fiber 0)`.
+
+Rewrite `hcl` using `[hgen]`. Conclude with `hcl (Subgroup.mem_top g)`.
+-/
 theorem eq_zero_of_locallyConstant {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {A : Type} [AddCommGroup A] (I : Subgroup G) (φ : G)
     (hgen : (Subgroup.zpowers φ ⊔ I).topologicalClosure = ⊤) (c : G → A)
@@ -36,6 +45,11 @@ theorem eq_zero_of_locallyConstant {G : Type} [Group G] [TopologicalSpace G] [Is
   rw [hgen] at hcl
   exact hcl (Subgroup.mem_top g)
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨(fun y => f y + (-f x)) ⁻¹' (T : Set V), hT.preimage (hf.add continuous_const), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq, sub_eq_add_neg]`.
+
+Conclude with `hy`.
+-/
 theorem isLocallyConstant_mkQ {X : Type} [TopologicalSpace X] {O V : Type} [CommRing O]
     [AddCommGroup V] [Module O V] [TopologicalSpace V] [ContinuousAdd V] (T : Submodule O V)
     (hT : IsOpen (T : Set V)) (f : X → V) (hf : Continuous f) :
@@ -48,6 +62,9 @@ theorem isLocallyConstant_mkQ {X : Type} [TopologicalSpace X] {O V : Type} [Comm
   rw [Submodule.Quotient.eq, sub_eq_add_neg]
   exact hy
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `IsDiscreteValuationRing.not_isField O` to reduce the goal to its premises. Conclude with `(RingEquiv.ofBijective (algebraMap O LL) ⟨IsFractionRing.injective O LL, h⟩).toMulEquiv.isField (Field.toIsField LL)`.
+-/
 theorem exists_not_mem_range {O LL : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Field LL] [Algebra O LL] [IsFractionRing O LL] :
     ∃ y : LL, y ∉ Set.range (algebraMap O LL) := by
@@ -57,6 +74,49 @@ theorem exists_not_mem_range {O LL : Type} [CommRing O] [IsDomain O] [IsDiscrete
   exact (RingEquiv.ofBijective (algebraMap O LL)
     ⟨IsFractionRing.injective O LL, h⟩).toMulEquiv.isField (Field.toIsField LL)
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD _ _ LL _ _ _ O _ _ _ hO T hV hρ hH I φ hgen δ hδ hδI hδ0`. Establish `hopen` using `GlobalTheory.Cyc.locLat_isOpen hO T`. Take `⟨⟨hdom, hdvr, hfr⟩, -⟩` from `hO`. Take `⟨⟨e, he⟩, -⟩` from `GlobalTheory.LineLattice.lattice_rank_one T.L hV`. Take `⟨y₀, hy₀⟩` from `exists_not_mem_range (O := O) (LL := LL)`.
+
+Take `⟨⟨hδc, hδh⟩, x₀, hx₀⟩` from `hδ`. Establish `hδadd : ∀ g h, δ (g * h) = δ g + δ h` using `fun g h => by simpa using hδh g h`. Establish `hact : ∀ g (x : T.V ⧸ T.L.T), actD T.L g x = x`. Introduce `g x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Conclude with `congrArg (Submodule.Quotient.mk (p := T.L.T)) (hρ g x)`. Establish `hBD : BD T.L = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use extensionality with `g`.
+
+Simplify using `[hact]`. Establish `hB1 : B1 T.ρ = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use extensionality with `g`.
+
+Simplify using `[cob, hρ]`. Establish `: ContinuousSMul LL T.V` using `IsModuleTopology.toContinuousSMul LL T.V`. Establish `hc₀c : Continuous fun g => e (δ g)`. Establish `: (fun g => e (δ g)) = fun g => δ g • e 1`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[← map_smul, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `hδc.smul continuous_const`. Establish `hc₀ : (fun g => e (δ g)) ∈ finiteCocycles PD T.ρ`. Set `m` to `AlgebraTensorModule.map (e : LL →ₗ[LL] T.V) (LinearMap.id : B →ₗ[Qp] B)`.
+
+Establish `hm : ∀ g y, m (actVB PD (1 : Representation LL G LL) g y) = actVB PD T.ρ g (m y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [m, actVB, hρ]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `⟨⟨hc₀c, fun g h => by simp only [hδadd, map_add, hρ]⟩, m x₀, fun g => ?_⟩` and prove the remaining obligations. Use `congrArg m (hx₀ g)` as an intermediate fact. Simplify using `only [m, AlgebraTensorModule.map_tmul, LinearMap.id_apply, map_sub] at this`. Rewrite using `[← hm]`.
+
+Conclude with `this`. Take `⟨g₀, hg₀⟩ : ∃ g, δ g ≠ 0` from `Function.ne_iff.mp hδ0`. Establish `hdim : Module.finrank LL ↥(finiteCocycles PD T.ρ) = 1`. Rewrite using `[← hH]`. Use `(Submodule.quotEquivOfEqBot _ ?_).finrank_eq.symm` and prove the remaining obligations.
+
+Rewrite using `[hB1, Submodule.comap_bot, Submodule.ker_subtype]`. Establish `hspan : ∀ z ∈ finiteCocycles PD T.ρ, ∃ a : LL, ∀ g, z g = e (a * δ g)`. Introduce `z hz`. Establish `hne : (⟨_, hc₀⟩ : ↥(finiteCocycles PD T.ρ)) ≠ 0`. Introduce `h`.
+
+Use `congrFun (congrArg Subtype.val h) g₀` as an intermediate fact. Conclude with `hg₀ (by simpa using this)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hne).mp hdim ⟨z, hz⟩`. Use `⟨a, fun g => ?_⟩` and prove the remaining obligations. Use `congrFun (congrArg Subtype.val ha) g` as an intermediate fact.
+
+Rewrite using `[← smul_eq_mul, map_smul]`. Conclude with `this.symm`. Set `r : LL → G → T.V ⧸ T.L.T` to `fun a g => T.L.T.mkQ (e (a * δ g))`. Establish `hHf : ∀ c, c ∈ HfD PD T.L ↔ ∃ a, c = r a`. Introduce `c`.
+
+Unfold `HfD`. Rewrite using `[hBD, sup_bot_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨a, ha⟩` from `hspan z hz`.
+
+Conclude with `⟨a, funext fun g => by simp [r, ha]⟩`. Introduce and unpack `⟨a, rfl⟩`. Use `⟨a • fun g => e (δ g), (finiteCocycles PD T.ρ).smul_mem a hc₀, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `[r, ← map_smul]`.
+
+Establish `hrlc : ∀ a, IsLocallyConstant (r a)` using `fun a => by`. Use `isLocallyConstant_mkQ T.L.T hopen (fun g => e (a * δ g)) ?_` and prove the remaining obligations. Establish `: (fun g => e (a * δ g)) = fun g => a • e (δ g)`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_smul, smul_eq_mul]`.
+
+Rewrite using `[this]`. Conclude with `hc₀c.const_smul a`. Establish `hradd : ∀ a g h, r a (g * h) = r a g + r a h` using `fun a g h => by`. Simplify using `only [r, hδadd, mul_add, map_add]`. Establish `hrI : ∀ a, ∀ g ∈ I, r a g = 0` using `fun a g hg => by`.
+
+Simplify using `only [r, hδI g hg, mul_zero, map_zero]`. Establish `hr₀ : r (y₀ / δ g₀) g₀ ≠ 0`. Introduce `h`. Simplify using `only [r, div_mul_cancel₀ _ hg₀, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h`. Conclude with `hy₀ ((he _).mp h)`.
+
+Establish `hφ : δ φ ≠ 0`. Introduce `h`. Conclude with `hr₀ (eq_zero_of_locallyConstant I φ hgen _ (hrlc _) (hradd _) (by simp only [r, h, mul_zero, map_zero]) (hrI _) g₀)`. Use `⟨fun h => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `: r (y₀ / δ g₀) ∈ HfD PD T.L` using `(hHf _).mpr ⟨_, rfl⟩`.
+
+Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hr₀ (congrFun this g₀)`. Rewrite using `[hHf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `⟨⟨hrlc a, fun g h => by rw [hact, hradd]⟩, 0, fun g hg => by`. Rewrite using `[hrI a g hg, hact, sub_zero]⟩`. Introduce and unpack `⟨⟨hlc, hcoc⟩, x, hx⟩`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (c φ)`. Use `⟨e.symm v / δ φ, funext fun g => sub_eq_zero.mp ?_⟩` and prove the remaining obligations.
+
+Use `eq_zero_of_locallyConstant I φ hgen (fun g => c g - r (e.symm v / δ φ) g) (hlc.sub (hrlc _)) (fun g h => ?_) ?_ (fun g hg => ?_) g` and prove the remaining obligations. Simplify using `only [hcoc, hact, hradd]`. Normalize the expressions using the abelian group laws. Simplify using `only [r, div_mul_cancel₀ _ hφ, LinearEquiv.apply_symm_apply, Submodule.mkQ_apply, hv, sub_self]`. Simplify using `only [hx g hg, hact, hrI _ g hg, sub_self]`.
+-/
 theorem HfD_eq_unramified : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) [IsTopologicalGroup G] [TopologicalSpace Qp] {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL] [IsTopologicalRing LL], GoodO (Qp := Qp) LL O → ∀ (T : LocLat G Qp LL O), Module.finrank LL T.V = 1 → (∀ g x, T.ρ g x = x) → Module.finrank LL (FiniteCohomology PD T.ρ) = 1 → ∀ (I : Subgroup G) (φ : G), (Subgroup.zpowers φ ⊔ I).topologicalClosure = ⊤ → ∀ δ : G → LL, δ ∈ finiteCocycles PD (1 : Representation LL G LL) → (∀ g ∈ I, δ g = 0) → δ ≠ 0 → HfD PD T.L ≠ ⊥ ∧ ∀ c : G → T.V ⧸ T.L.T, c ∈ HfD PD T.L ↔ (c ∈ divisibleCocycles T.L ∧ ∃ x, ∀ g ∈ I, c g = actD T.L g x - x) := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD _ _ LL _ _ _ O _ _ _ hO T hV hρ
     hH I φ hgen δ hδ hδI hδ0

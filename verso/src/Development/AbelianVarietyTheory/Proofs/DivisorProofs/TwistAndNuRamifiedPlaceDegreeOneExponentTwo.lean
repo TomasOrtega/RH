@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal Formalism.BasicNotions Form
 
 namespace GlobalTheory.BadPlaceExp
 
+/- English proof (translation)
+Establish `le : (w.under (𝓞 D.host.F)).asIdeal ≤ (w'.under (𝓞 D.host.F)).asIdeal`. Introduce `c hc`. Take `⟨c', h1, h2⟩` from `h _ hc`. Establish `hs : star ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c : 𝓞 D.host.E) : D.host.E) = ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c : 𝓞 D.host.E) : D.host.E)`. Use `letI := D.host.isCMField_hostE`.
+
+Conclude with `IsCMField.complexConj_apply_eq_self D.host.E (c : D.host.F)`. Establish `: c' = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c` using `RingOfIntegers.ext (h2.trans hs)`. Use `show algebraMap _ _ c ∈ w'.asIdeal`. Rewrite using `[← this]` and apply the resulting hypothesis. Conclude with `HeightOneSpectrum.ext ((w.under (𝓞 D.host.F)).isMaximal.eq_of_le (w'.under (𝓞 D.host.F)).isPrime.ne_top le)`.
+-/
 theorem under_eq_of_isConjPl {D : D7} {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : Formalism.IndefR.Lev.IsConjPl w w') :
     w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) := by
   have le : (w.under (𝓞 D.host.F)).asIdeal ≤ (w'.under (𝓞 D.host.F)).asIdeal := by
@@ -19,6 +24,23 @@ theorem under_eq_of_isConjPl {D : D7} {w w' : HeightOneSpectrum (𝓞 D.host.E)}
     rwa [← this]
   exact HeightOneSpectrum.ext ((w.under (𝓞 D.host.F)).isMaximal.eq_of_le (w'.under (𝓞 D.host.F)).isPrime.ne_top le)
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL hB i j t w hx hn`. Establish `hm` using `Lc.C.isMu0 j`. Establish `a1 : 1 ≤ D.R.m - i` using `by have := i.2; omega`. Establish `a2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `e : nuH G μ₀ i j = Lc.C.mu0 j / G.ch.chiH (D.R.m - i)`.
+
+Rewrite using `[nuH, hL.xi_base, mul_one]`. Establish `hE : ExpAt (nuH G μ₀ i j) w (expIn (condF G.pl) (w.under (𝓞 D.host.F)))`. Rewrite using `[e]`. Use `Model.expAt_div G a1 a2 hm.tame (fun Q hQ => hm.unr Q fun k hk => hQ ((S1_mem_OmF D).2 ?_)) w` and prove the remaining obligations. Establish `: ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (Q.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ Q.asIdeal`.
+
+Rewrite using `[map_natCast]`. Conclude with `hk`. Use `fin_cases k`. Conclude with `Or.inl this`. Conclude with `Or.inr (Or.inl this)`.
+
+Establish `hS0 : w.under (𝓞 D.host.F) ∈ G.pl.S0`. Assume the negation of the conclusion as `h`. Rewrite `hE` using `[Model.expIn_condF, if_neg h]`. Conclude with `hn ((Formalism.L2.Host.HChar.unrAt_iff _ _).2 ((hE 0).2 le_rfl))`. Establish `hv0 : w.under (𝓞 D.host.F) ≠ G.pl.v0`.
+
+Break down `(hL.Q_ram t w).1 hx with h | ⟨PP', hP', hc⟩` into its components or cases. Conclude with `G.pl.levelPlace_ne_basePlace t w h`. Rewrite using `[← under_eq_of_isConjPl hc]`. Conclude with `G.pl.levelPlace_ne_basePlace t PP' hP'`. Establish `hc2 : condExp G.pl (w.under (𝓞 D.host.F)) = 2` using `by rw [condExp, if_neg hv0]`.
+
+Establish `h2 : expIn (condF G.pl) (w.under (𝓞 D.host.F)) = 2`. Rewrite using `[Model.expIn_condF, if_pos hS0, hc2]`. Rewrite `hE` using `[h2]`. Establish `hdvd : (w.under (𝓞 D.host.F)).asIdeal ∣ condF G.pl` using `(dvd_pow_self _ (by rw [hc2]; norm_num)).trans (Finset.dvd_prod_of_mem _ hS0)`. Take `⟨-, -, hb⟩` from `hB`.
+
+Take `⟨-, -, l, hl, -, hlv, hdisc, hnorm⟩` from `hb _ hdvd`. Establish `hlw : (l : 𝓞 D.host.E) ∈ w.asIdeal`. Establish `: algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (l : 𝓞 D.host.F) ∈ w.asIdeal` using `hlv`. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `⟨l, hl, ?_, ?_, hE⟩` and prove the remaining obligations.
+
+Rewrite using `[← hnorm w hlw, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `GlobalTheory.Mem.RaySplit.not_mem_sq hl hlw ((GlobalTheory.Mem.RaySplit.not_dvd_discr_iff_ramificationIdx D.host.E hl).1 hdisc _ w.isPrime hlw)`.
+-/
 theorem main : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ → IsBaseCond (condF G.pl) → ∀ (i j : Fin D.R.m) (t : T) (w : HeightOneSpectrum (𝓞 D.host.E)), ¬ (Lc.xiH t).UnrAt w → ¬ (nuH G μ₀ i j).UnrAt w → ∃ q : ℕ, q.Prime ∧ Nat.card (𝓞 D.host.E ⧸ w.asIdeal) = q ∧ (q : 𝓞 D.host.E) ∉ w.asIdeal ^ 2 ∧ ExpAt (nuH G μ₀ i j) w 2 := by
   intro D T Lc sc G μ₀ hL hB i j t w hx hn
   have hm := Lc.C.isMu0 j

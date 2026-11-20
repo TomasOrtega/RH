@@ -28,6 +28,9 @@ instance nontrivial_level : Nontrivial (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 
 instance isLocalRing_level : IsLocalRing (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1)) :=
   IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Use `⟨e + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk (IsLocalRing.maximalIdeal V ^ (e + 1))) Ideal.Quotient.mk_surjective, ← Ideal.map_pow, Ideal.map_quotient_self, Ideal.zero_eq_bot]`.
+-/
 theorem isNilpotent_max : IsNilpotent (IsLocalRing.maximalIdeal (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1))) := by
   refine ⟨e + 1, ?_⟩
   rw [← IsLocalRing.map_maximalIdeal_of_surjective (Ideal.Quotient.mk (IsLocalRing.maximalIdeal V ^ (e + 1)))
@@ -35,16 +38,25 @@ theorem isNilpotent_max : IsNilpotent (IsLocalRing.maximalIdeal (V ⧸ IsLocalRi
 
 end Levels
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem thickMap_w {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.of R))) :
     thickMap R I e G ≫ (thickObj R I (e + 1) G).hom = (thickObj R I e G).hom ≫ thickTrans R I e :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `(isGrpPullback_pullback G (thick R I (e + 1))).cancel ((isGrpPullback_pullback G (thick R I e)).congr (thickTrans_comp R I e).symm ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm) (pullback.lift_snd _ _ _)`.
+-/
 theorem isGrpPullback_thickMap {R : Type} [CommRing R] (I : Ideal R) (e : ℕ) (G : Over (Spec (CommRingCat.of R)))
     [GrpObj G] : IsGrpPullback (thickObj R I e G) (thickObj R I (e + 1) G) (thickTrans R I e) (thickMap R I e G) :=
   (isGrpPullback_pullback G (thick R I (e + 1))).cancel
     ((isGrpPullback_pullback G (thick R I e)).congr (thickTrans_comp R I e).symm
       ((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+Take `⟨_, h₀⟩` from `h₀`. Take `⟨_, h₁⟩` from `h₁`. Conclude with `exists_cancel h₁ h₀ (isGrpPullback_thickMap I e G) (thickTrans_comp R I e) ((pullback.lift_fst _ _ _).trans (Category.comp_id _))`.
+-/
 theorem exists_isCPMap_thickMap {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {e : ℕ}
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {P : CP G} {P₀ : CP (thickObj R I e G)}
     {P₁ : CP (thickObj R I (e + 1) G)} (h₀ : IsLevelCP I e P₀ P) (h₁ : IsLevelCP I (e + 1) P₁ P) :
@@ -54,6 +66,11 @@ theorem exists_isCPMap_thickMap {R : Type} [CommRing R] [IsDomain R] {I : Ideal 
   exact exists_cancel h₁ h₀ (isGrpPullback_thickMap I e G) (thickTrans_comp R I e)
     ((pullback.lift_fst _ _ _).trans (Category.comp_id _))
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: Smooth (thickObj V (IsLocalRing.maximalIdeal V) e G).hom` using `by show Smooth (pullback.snd _ _); infer_instance`. Establish `: GeometricallyConnected (thickObj V (IsLocalRing.maximalIdeal V) e G).hom` using `by show GeometricallyConnected (pullback.snd _ _); infer_instance`. Establish `: ConnectedSpace (Spec (CommRingCat.of (V ⧸ IsLocalRing.maximalIdeal V ^ (e + 1))))` using `SplitTorus.connectedSpace_of_isLocalRing _`.
+
+Use `(GroupConn.connectedSpace_group _ (thickObj V (IsLocalRing.maximalIdeal V) e G)).1` as an intermediate fact. Take `⟨_, hP⟩` from `exists_isCPMap_thickMap l.lev l'.lev`. Conclude with `exists_transition (isGrpPullback_thickMap _ e G) hP h l'.D l.D`.
+-/
 theorem exists_levelMap {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {G : Over (Spec (CommRingCat.of V))}
     [GrpObj G] [IsCommMonObj G] (hG : IsSemiAbelian G) {P : CP G} {X : Type} [AddCommGroup X] [Module.Free ℤ X] {e : ℕ}
     (l : Lev (IsLocalRing.maximalIdeal V) P X e) (l' : Lev (IsLocalRing.maximalIdeal V) P X (e + 1))
@@ -72,6 +89,15 @@ theorem exists_levelMap {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {G 
   obtain ⟨_, hP⟩ := exists_isCPMap_thickMap l.lev l'.lev
   exact exists_transition (isGrpPullback_thickMap _ e G) hP h l'.D l.D
 
+/- English proof (translation)
+Introduce `V _ _ _ A G _ _ s`. Use `s.semi.smooth` as an intermediate fact. Use `s.semi.geomConnected` as an intermediate fact. Establish `hs : ∀ e, Smooth (thickObj V (IsLocalRing.maximalIdeal V) e G).hom` using `fun e => by show Smooth (pullback.snd _ _); infer_instance`. Establish `hc : ∀ e, GeometricallyConnected (thickObj V (IsLocalRing.maximalIdeal V) e G).hom` using `fun e => by show GeometricallyConnected (pullback.snd _ _); infer_instance`.
+
+Set `L : ℕ → Type 1` to `fun e => {l : Lev (IsLocalRing.maximalIdeal V) s.P s.X e // ∃ σ : CubTriv l.Pe.c l.Q.i, σ.Even}`. Establish `step : ∀ (e : ℕ) (l : L e), ∃ l' : L (e + 1), TorusCompat (thickTrans V _ e) (thickMap V _ e G) l.1.Q.i l'.1.Q.i` using `fun e l => by`. Take `⟨P₁, h₁⟩` from `exists_isLevelCP (IsLocalRing.maximalIdeal V) (e + 1) s.P`. Take `⟨_, hP⟩` from `exists_isCPMap_thickMap l.1.lev h₁`. Take `⟨Q, hQ, hσ⟩` from `exists_lift (isNilpotent_max (e + 1)) _ (Ideal.Quotient.factor_surjective _) _ _ (isGrpPullback_thickMap _ e G) hP l.1.Q l.2`.
+
+Take `⟨D⟩` from `nonempty_desc _ (isNilpotent_max (e + 1)) _ P₁ Q hσ`. Conclude with `⟨⟨⟨Q, P₁, h₁, D⟩, hσ⟩, hQ⟩`. Use `choose nxt hnxt using step`. Take `⟨D₀⟩` from `nonempty_desc _ (isNilpotent_max 0) _ s.P₀ s.Q₀ s.even₀`. Set `l : ∀ e, L e` to `fun e => Nat.rec (motive := L) ⟨⟨s.Q₀, s.P₀, s.lev₀, D₀⟩, s.even₀⟩ nxt e`.
+
+Establish `tor : ∀ e, TorusCompat (thickTrans V _ e) (thickMap V _ e G) (l e).1.Q.i (l (e + 1)).1.Q.i` using `fun e => hnxt e (l e)`. Use `choose β hβ hq using fun e => exists_levelMap s.semi (l e).1 (l (e + 1)).1 (tor e)`. Conclude with `⟨⟨fun e => (l e).1, tor, β, hβ, hq⟩⟩`.
+-/
 theorem nonempty_tower : (AllSet fun s => Nonempty (Tower s)) := by
   intro V _ _ _ A G _ _ s
   have := s.semi.smooth

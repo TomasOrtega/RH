@@ -18,6 +18,11 @@ namespace GlobalTheory.MiTop.LComm
 
 variable {D : D7}
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨a, -, e⟩` from `GlobalTheory.DefFree.AdelCls.exists_fin V ⟨y.1, y.2⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg Subtype.val e`. Establish `e3` using `congrArg Units.val e2`.
+
+Conclude with `e3`.
+-/
 theorem exists_finM (V : HSp D) {n : ℕ} (hn : V.rank = n)
     (y : Formalism.UG.UPts (Formalism.L2.Forms.sigD D) (V.gram.reindex (finCongr hn) (finCongr hn))
       (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
@@ -31,6 +36,23 @@ theorem exists_finM (V : HSp D) {n : ℕ} (hn : V.rank = n)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c z`. Take `⟨g, hg⟩` from `exists_finM V hn (yc c)`. Establish `hex : ∃ p, IsDec S yc (finM V hn g) p`. Use `⟨(c, 1, 1), Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[hg]`.
+
+Establish `hp` using `hex.choose_spec`. Establish `hc : hex.choose.1 = c`. Apply `hbij.1` to reduce the goal to its premises. Use `(DoubleCoset.eq _ _ _ _).mpr ?_` and prove the remaining obligations. Establish `hr : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) hex.choose.2.1 ∈ ratPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := Subgroup.mem_map.mpr ⟨_, hp.1, rfl⟩`.
+
+Establish `hk : hex.choose.2.2.1 ∈ UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)` using `((S.U_eq _).1 hex.choose.2.2.2).1`. Establish `he : (yc c).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) hex.choose.2.1 * (yc hex.choose.1).1 * hex.choose.2.2.1 := Units.ext (hg.symm.trans hp.2)`. Establish `hγ : bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) hex.choose.2.1 ∈ UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by`. Establish `: bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) hex.choose.2.1 = (yc c).1 * (hex.choose.2.2.1)⁻¹ * ((yc hex.choose.1).1)⁻¹ := by rw [he]; group`. Rewrite using `[this]`.
+
+Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (yc c).2 (Subgroup.inv_mem _ hk)) (Subgroup.inv_mem _ (yc _).2)`. Conclude with `⟨⟨_, hγ⟩, Subgroup.mem_subgroupOf.mpr hr, ⟨_, hk⟩, Subgroup.mem_subgroupOf.mpr hex.choose.2.2.2, Subtype.ext he⟩`. Use `set A : D.what₂.Tau → Matrix (Fin n) (Fin n) ℂ := fun τ => atInf (embT D) ((hex.choose.2.1)⁻¹ : GL (Fin n) D.host.E).1 τ * infM θ V hn g τ with hA`. Establish `hAu : ∀ τ, IsUnit (A τ).det`. Introduce `τ`.
+
+Rewrite using `[hA, Matrix.det_mul]`. Conclude with `(Matrix.isUnit_det_of_left_inverse (atInf_mul_inv hex.choose.2.1 τ)).mul (infM_unit θ V hn g τ)`. Establish `hy : ∀ τ, IsUnit ((A τ)⁻¹ * z.1 τ).det`. Introduce `τ`. Rewrite using `[Matrix.det_mul]`.
+
+Conclude with `(Matrix.isUnit_nonsing_inv_det _ (hAu τ)).mul (z.2 τ)`. Establish `key` using `congrFun (h ⟨fun τ => (A τ)⁻¹ * z.1 τ, hy⟩) g`. Establish `hz : (fun τ => atInf (embT D) ((hex.choose.2.1)⁻¹ : GL (Fin n) D.host.E).1 τ * infM θ V hn g τ * ((A τ)⁻¹ * z.1 τ)) = z.1`. Use function extensionality and compare the values at `τ`. Use `show A τ * ((A τ)⁻¹ * z.1 τ) = _`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hAu τ), Matrix.one_mul]`. Unfold `rdS at key`. Rewrite `key` using `[dif_pos hex, dif_pos hex]`. Simplify using `only at key`. Rewrite `key` using `[hz, atFr, atFr, dif_pos z.2, dif_pos z.2, hc]`.
+
+Conclude with `mul_left_cancel₀ (Units.ne_zero _) key`.
+-/
 theorem rdS_inj (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (S : StepLevel D.host.F D.host.E (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) T f bad) {cl : Type}
     (yc : cl → UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -81,6 +103,11 @@ theorem rdS_inj (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) {T f : �
   rw [hz, atFr, atFr, dif_pos z.2, dif_pos z.2, hc] at key
   exact mul_left_cancel₀ (Units.ne_zero _) key
 
+/- English proof (translation)
+Use `rdS_inj θ (D.sp.X 0) (rankN D 0 (Nat.zero_le _)) F.cls0.lev F.cls0.y F.cls0.y_bij (fun c z => ψ c (F.val0.eY.symm z)) (fun c z => ψ' c (F.val0.eY.symm z)) (fun y => by` as an intermediate fact. Use `h (F.val0.eY.symm y)` as an intermediate fact. Unfold `Chart.rd at this`. Rewrite `this` using `[show (GlobalTheory.Core.Mi.chart0 F).eY (F.val0.eY.symm y) = y from F.val0.eY.apply_symm_apply y]`. Conclude with `this)`.
+
+Use function extensionality and compare the values at `c y`. Establish `h2` using `congrFun (congrFun this c) (F.val0.eY y)`. Simplify using `using h2`.
+-/
 theorem chart0_inj {u : D.what₂.Word} (F : Forms0 D u) (θ : InfFam D) (ψ ψ' : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ)
     (h : ∀ y, (GlobalTheory.Core.Mi.chart0 F).rd θ ψ y = (GlobalTheory.Core.Mi.chart0 F).rd θ ψ' y) : ψ = ψ' := by
   have := rdS_inj θ (D.sp.X 0) (rankN D 0 (Nat.zero_le _)) F.cls0.lev F.cls0.y F.cls0.y_bij
@@ -93,6 +120,11 @@ theorem chart0_inj {u : D.what₂.Word} (F : Forms0 D u) (θ : InfFam D) (ψ ψ'
   have h2 := congrFun (congrFun this c) (F.val0.eY y)
   simpa using h2
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨LinearEquiv.refl ℂ M, 1, one_pos, fun φ => by simp, fun φ => rfl⟩`. Consider the case `succ n ih`. Take `⟨A, a, ha, h1, h2⟩` from `ih`. Use `⟨A.trans (S (ε (2 * n))), r (ε (2 * n)) * a, mul_pos (hr _) ha, fun φ => ?_, fun φ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.trans_apply, hS, h1, mul_assoc]`. Rewrite using `[LinearEquiv.trans_apply, h2]`. Both sides reduce to the same expression.
+-/
 theorem iter_equiv {M β : Type} [NormedAddCommGroup M] [Module ℂ M] (S : β → M ≃ₗ[ℂ] M) (r : β → ℝ) (hr : ∀ b, 0 < r b)
     (hS : ∀ b φ, ‖S b φ‖ = r b * ‖φ‖) (ε : ℕ → β) (n : ℕ) :
     ∃ (A : M ≃ₗ[ℂ] M) (a : ℝ), 0 < a ∧ (∀ φ, ‖A φ‖ = a * ‖φ‖) ∧ ∀ φ, A φ = GlobalTheory.SeeSaw.iterS (fun b => S b) ε n φ := by
@@ -104,6 +136,9 @@ theorem iter_equiv {M β : Type} [NormedAddCommGroup M] [Module ℂ M] (S : β �
     · rw [LinearEquiv.trans_apply, hS, h1, mul_assoc]
     · rw [LinearEquiv.trans_apply, h2]; rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => show S' _ (GlobalTheory.SeeSaw.iterS S' ε n (j x)) = j (S _ (GlobalTheory.SeeSaw.iterS S ε n x))`. Rewrite using `[ih, h]`.
+-/
 theorem iterS_comm {α α' β : Type} (S : β → α → α) (S' : β → α' → α') (j : α → α') (h : ∀ b x, S' b (j x) = j (S b x))
     (ε : ℕ → β) (n : ℕ) (x : α) : GlobalTheory.SeeSaw.iterS S' ε n (j x) = j (GlobalTheory.SeeSaw.iterS S ε n x) := by
   induction n with
@@ -125,6 +160,23 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f k _ _ _ _ ι o ε S₀ hU hc ht hnd _ hinj hne h0 hsur n h`. Establish `hall : ∀ η : ι → 𝓀[k]ˣ, ∃ (S : D.what₂.Mu u ≃ₗ[ℂ] D.what₂.Mu u) (r : ℝ), 0 < r ∧ (∀ φ, ‖S φ‖ = r * ‖φ‖) ∧ ∀ φ y, (chart0 (F0 W u)).rd W.Q.Rl.θ (D.eMu u (S φ)).1 y = o.S (fun _ => η) 0 ((chart0 (F0 W u)).rd W.Q.Rl.θ (D.eMu u φ).1 y)`. Introduce `η`. Take `⟨α⟩` from `hne W.P.A3.A.μ0`. Establish `hR` using `(ht W.P.A3.A.μ0).2.2.2.2`.
+
+Use `GlobalTheory.T.levelPrime_operators_stepZero_scale_norms D u (F0 W u) W.Q.Rl.θ hc.inf hU (hc.x 0 (Nat.zero_le _)).cpt k ι o.p o.I o.q o.χ o.hχ (o.β 0) (o.Q 0) hnd hinj (fun φ y i => ?_) η (fun φ => ?_)` and prove the remaining obligations. Use `(hR.ram 0 (Nat.zero_le _) _ (h0 _ φ).1 α y).2 i` as an intermediate fact. Rewrite `this` using `[(h0 _ φ).2 α y]`. Conclude with `this`. Take `⟨h1, h2⟩` from `hR.S₀ η _ (h0 _ φ).1`.
+
+Take `⟨φ', e⟩` from `hsur _ _ h1`. Use `⟨φ', fun y => ?_⟩` and prove the remaining obligations. Use `h2 α y` as an intermediate fact. Rewrite `this` using `[e, (h0 _ φ').2 α y, (h0 _ φ).2 α y]`. Conclude with `this`.
+
+Use `choose S r hr hS hrd using hall`. Establish `hS0 : ∀ t η φ, S₀ t η (col0 f t φ) = col0 f t (S η φ)`. Introduce `t η φ`. Take `⟨α⟩` from `hne t`. Take `⟨h1, h2⟩` from `(ht t).2.2.2.2.S₀ η _ (h0 t φ).1`.
+
+Take `⟨φ', e⟩` from `hsur _ _ h1`. Rewrite using `[e]`. Use `congr 1`. Apply `(D.eMu u).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `LComm.chart0_inj (F0 W u) W.Q.Rl.θ _ _ (fun y => ?_)` and prove the remaining obligations. Use `h2 α y` as an intermediate fact. Rewrite `this` using `[e, (h0 _ φ').2 α y, (h0 _ φ).2 α y]`. Rewrite using `[this, hrd]`. Take `⟨A, a, ha, hA, hA'⟩` from `LComm.iter_equiv S r hr hS ε n`.
+
+Use `⟨A, a, o.cS n, ha, hA, ?_, fun t φ F => ?_⟩` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.2 fun i _ => Finset.prod_ne_zero_iff.2 fun j _ => pow_ne_zero _ ?_` and prove the remaining obligations. Use `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos ?_ _).ne'` and prove the remaining obligations. Conclude with `Nat.cast_pos.2 Nat.card_pos`. Take `⟨t1, t2, t3, t4, t5⟩` from `ht t`.
+
+Rewrite using `[GlobalTheory.T.seeSawKernelChain_levelPrimeOperator_to_step_zero D f.c k ι o (f.t t) ε (S₀ t) t1 t2 t3 t4 t5 n h _ (h0 t φ).1 F, LComm.iterS_comm (fun η φ => S η φ) (S₀ t) (col0 f t) (hS0 t) ε n φ, hA']`.
+-/
 theorem GlobalTheory.MiTop.linkComm_of_laws : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), ∀ u (f : FamCh W u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat f.c k ι) (ε : ℕ → ι → 𝓀[k]ˣ) (S₀ : ∀ t, (ι → 𝓀[k]ˣ) → (f.t t).Col 0 → (f.t t).Col 0), RamUnitary D → f.c.Is → (∀ t, (f.t t).Is ∧ (f.t t).KBack ∧ (f.t t).TailRd ∧ LiftS o (f.t t) ∧ ReadS o (f.t t) ε (S₀ t)) → o.I.Nodup → (∀ i, i ∈ o.I) → (Function.Injective fun i => (o.p i).v) → (∀ t, Nonempty ((f.t t).Ch 0)) → (∀ t φ, col0 f t φ ∈ (f.t t).Ram 0 ∧ ∀ α y, (f.t t).rd 0 α (col0 f t φ) y = (chart0 (F0 W u)).rd W.Q.Rl.θ (D.eMu u φ).1 y) → (∀ t, ∀ ψ ∈ (f.t t).Ram 0, ∃ φ, ψ = col0 f t φ) → LinkComm f := by
   intro D L hT Gi Gl Kc Yd cX ex W u f k _ _ _ _ ι o ε S₀ hU hc ht hnd _ hinj hne h0 hsur n h
   have hall : ∀ η : ι → 𝓀[k]ˣ, ∃ (S : D.what₂.Mu u ≃ₗ[ℂ] D.what₂.Mu u) (r : ℝ), 0 < r ∧ (∀ φ, ‖S φ‖ = r * ‖φ‖) ∧

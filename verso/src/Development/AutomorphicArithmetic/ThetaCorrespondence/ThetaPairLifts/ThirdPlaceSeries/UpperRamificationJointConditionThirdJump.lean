@@ -13,6 +13,11 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.IndefR.NX ReciprocityTheory.Aut Formalism.AUTREP NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.Up.JointConditionThird
+/- English proof (translation)
+Introduce `hL _`. Use `StepW.of_all fun K B f T w _ _ _ P x l => ?_` and prove the remaining obligations. Use `⟨fun _ => ∅, fun L _ _ => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.DesignBC.jointCond_of_definite _ fun j h1 h2 => ?_` and prove the remaining obligations. Establish `h` using `(w.st x.o.Z).B.toPre.V_posDef j h1 h2`.
+
+Introduce `τ`. Conclude with `Or.inl (h τ)`.
+-/
 theorem upper_ramification_joint_condition_third_jump_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalDatumCompatibility D' := by
   intro hL _
   refine StepW.of_all fun K B f T w _ _ _ P x l => ?_

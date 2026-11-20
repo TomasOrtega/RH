@@ -12,6 +12,9 @@ open GlobalTheory GlobalTheory.LieHt GlobalTheory.Cartier GlobalTheory.ThetaOnto
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KeyScalarNe.scalar_ne_zero | exact GlobalTheory.KeyScalarNe.scalar_ne_zero | (intros; apply GlobalTheory.KeyScalarNe.scalar_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.genericThetaExpansion_scalar_ne_zero : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],
     IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (D : DegData V (IsLocalRing.maximalIdeal V))
     (x : KeyIn (FractionRing V)) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G →

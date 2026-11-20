@@ -8,6 +8,21 @@ namespace GlobalTheory.BK
 
 open PowerSeries Filter Topology Matrix
 
+/- English proof (translation)
+Establish `hS (n : ℕ) (x y : R) : x ≡ y [SMOD (Ideal.span {t} ^ n • ⊤ : Ideal R)] ↔ t ^ n ∣ x - y`. Simplify using `[SModEq.sub_mem, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `hd (n : ℕ) (x : R) (h : t ^ n ∣ x) : t ^ (n + 1) ∣ t * T x`. Take `⟨y, rfl⟩` from `h`. Establish `: T (t ^ n * y) = t ^ n * T y`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', mul_assoc, hT, ih, mul_assoc]`. Conclude with `⟨T y, by rw [this]; ring⟩`. Set `f : ℕ → R` to `fun n => (fun x => t * T x + w)^[n] 0`.
+
+Establish `hf (n : ℕ) : f (n + 1) = t * T (f n) + w` using `Function.iterate_succ_apply' _ _ _`. Establish `h1 (n : ℕ) : t ^ n ∣ f (n + 1) - f n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[hf (n + 1), hf n, add_sub_add_right_eq_sub, ← mul_sub, ← map_sub, ← hf]`. Conclude with `hd _ _ ih`. Take `⟨x, hx⟩` from `IsPrecomplete.prec' (I := Ideal.span {t}) f (fun {m n} hmn => by`. Rewrite using `[hS]`. Proceed by induction on `hmn with`.
+
+Consider the case `refl => simp`. Consider the case `step h ih`. Use `dvd_sub ih ((pow_dvd_pow t h).trans (h1 _))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use the proof step `simp)`.
+
+Use `⟨x, sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {t}) _ fun n => ?_)⟩` and prove the remaining obligations. Rewrite using `[hS, sub_zero]`. Use `dvd_sub (hd n _ ((hS _ _ _).1 (hx n))) ((hS _ _ _).1 (hx (n + 1)))` as an intermediate fact. Use `(pow_dvd_pow t n.le_succ).trans ?_` and prove the remaining obligations. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hf, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eq_mul_add_of_isAdicComplete {R : Type} [CommRing R] (t : R)
     [IsAdicComplete (Ideal.span {t}) R] (T : R →+ R) (hT : ∀ x, T (t * x) = t * T x) (w : R) :
     ∃ x, x = t * T x + w := by
@@ -44,6 +59,11 @@ theorem exists_eq_mul_add_of_isAdicComplete {R : Type} [CommRing R] (t : R)
   rw [hf, map_sub]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Take `⟨m, hm⟩ : ∃ m, l * (k + 1) = m + 1` from `⟨l * (k + 1) - 1, by`. Establish `: 0 < l * (k + 1)` using `by positivity`.
+
+Use the proof step `omega⟩`. Establish `h : (l * k).factorial ∣ m.factorial` using `Nat.factorial_dvd_factorial (by nlinarith)`. Rewrite using `[hm, Nat.factorial_succ m, ← hm, Nat.factorial_succ, pow_succ]`. Use `Dvd.dvd.trans (dvd_of_eq ?_) (mul_dvd_mul_left (l * (k + 1)) (ih.trans h))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_mul_factorial_dvd (l k : ℕ) (hl : 0 < l) : l ^ k * k.factorial ∣ (l * k).factorial := by
   induction k with
   | zero => simp
@@ -59,6 +79,15 @@ theorem pow_mul_factorial_dvd (l k : ℕ) (hl : 0 < l) : l ^ k * k.factorial ∣
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
   [IsUnitBall O K] (l e : ℕ) {a : ℕ} [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e]
 
+/- English proof (translation)
+Establish `hl` using `(Fact.out : l.Prime).pos`. Establish `: NeZero (e * l)` using `⟨(Nat.mul_pos (NeZero.pos e) hl).ne'⟩`. Establish `hl0` using `l_ne_zero (K := K) l`. Set `c : K⟦X⟧` to `expand (e * l) (NeZero.ne _) (rescale (-(l : K)⁻¹) (PowerSeries.mk 1))`. Establish `hc (n : ℕ) : ‖coeff n c‖ * wS K e n ≤ wS K (e * l) n`.
+
+Rewrite using `[coeff_expand]`. Use `split_ifs with h`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[wS, wS, Nat.mul_div_cancel_left _ (NeZero.pos (e * l)), mul_assoc e l, Nat.mul_div_cancel_left _ (NeZero.pos e), coeff_rescale, coeff_mk, Pi.one_apply, mul_one, norm_pow, norm_neg, norm_inv, inv_pow, inv_mul_le_iff₀ (pow_pos (norm_pos_iff.2 hl0) k), ← norm_pow, ← norm_mul]`. Conclude with `norm_natCast_le_of_dvd (K := K) (pow_mul_factorial_dvd l k hl)` after adjusting the coercions.
+
+Simplify using `using wS_nonneg _ _`. Use `⟨c, ⟨fun n => (hc n).trans (wS_le_one _ _), squeeze_zero (fun n => mul_nonneg (norm_nonneg _) (wS_nonneg e n)) hc (tendsto_wS l (e * l))⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f => expand (e * l) (NeZero.ne _) (rescale (-(l : K)⁻¹) f)) (mk_one_mul_one_sub_eq_one K)`. Simplify using `only [map_mul, map_sub, map_one, rescale_X, expand_X, expand_C, map_neg] at h`. Establish `h2 : (C (l : K)⁻¹ : K⟦X⟧) * l = 1`.
+
+Rewrite using `[← map_natCast (C : K →+* K⟦X⟧), ← map_mul, inv_mul_cancel₀ hl0, map_one]`. Rewrite using `[E, map_add, map_pow, frob_X, map_natCast, ← pow_mul, mul_comm l e]`. Take the linear combination `(l : K⟦X⟧) * h - c * X ^ (e * l) * h2`.
+-/
 theorem exists_mul_frob_E : ∃ c ∈ S O K e, c * frob K l (E K l e) = l := by
   have hl := (Fact.out : l.Prime).pos
   have : NeZero (e * l) := ⟨(Nat.mul_pos (NeZero.pos e) hl).ne'⟩
@@ -85,6 +114,15 @@ theorem exists_mul_frob_E : ∃ c ∈ S O K e, c * frob K l (E K l e) = l := by
   linear_combination (l : K⟦X⟧) * h - c * X ^ (e * l) * h2
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Establish `key (i : ℤ) : N K (Ezpow K l e (i + 1)) = Ezpow K l e i * N K (E K l e) + E K l e * N K (Ezpow K l e i)`. Rewrite using `[Ezpow_add, show Ezpow K l e 1 = E K l e from (Ezpow_natCast l e 1).trans (pow_one _), Derivation.leibniz]`. Both sides reduce to the same expression. Establish `h1 (i : ℤ) : Ezpow K l e (i + 1) = Ezpow K l e i * E K l e`. Rewrite using `[Ezpow_add, show Ezpow K l e 1 = E K l e from (Ezpow_natCast l e 1).trans (pow_one _)]`.
+
+Proceed by induction on `j using Int.induction_on with`. Consider the case `zero => simp [Ezpow]`. Consider the case `succ i ih`. Rewrite using `[key, ih, h1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `pred i ih`. Establish `h` using `key (-i - 1)`. Establish `h'` using `h1 (-i - 1)`. Rewrite `h`, `h'` using `[sub_add_cancel]`.
+
+Rewrite `ih` using `[h, h']`. Use `(isUnit_E (K := K) l e).mul_left_cancel ?_` and prove the remaining obligations. Move the coercions through the operations in `at ih ⊢`. Take the linear combination `ih`.
+-/
 theorem E_mul_N_Ezpow (j : ℤ) :
     E K l e * N K (Ezpow K l e j) = (j : K⟦X⟧) * N K (E K l e) * Ezpow K l e j := by
   have key (i : ℤ) : N K (Ezpow K l e (i + 1)) =
@@ -110,6 +148,9 @@ theorem E_mul_N_Ezpow (j : ℤ) :
     linear_combination ih
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Establish `h : Units.map (f : K⟦X⟧ →* K⟦X⟧) (isUnit_E (K` using `K) l e).unit = (isUnit_E l e).unit := Units.ext hf`. Use `conv_rhs => rw [Ezpow, ← h, ← map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem map_Ezpow (f : K⟦X⟧ →+* K⟦X⟧) (hf : f (E K l e) = E K l e) (j : ℤ) :
     f (Ezpow K l e j) = Ezpow K l e j := by
   have h : Units.map (f : K⟦X⟧ →* K⟦X⟧) (isUnit_E (K := K) l e).unit = (isUnit_E l e).unit :=
@@ -118,12 +159,20 @@ theorem map_Ezpow (f : K⟦X⟧ →+* K⟦X⟧) (hf : f (E K l e) = E K l e) (j 
   rfl
 
 omit [IsUltrametricDist K] in
+/- English proof (translation)
+Rewrite using `[← Ezpow_add]`. Simplify using `[Ezpow]`.
+-/
 theorem Ezpow_neg_mul (j : ℤ) : Ezpow K l e (-j) * Ezpow K l e j = 1 := by
   rw [← Ezpow_add]
   simp [Ezpow]
 
 variable {l e}
 
+/- English proof (translation)
+Establish `h : Units.map ((invE l e (A O K)).val : invE l e (A O K) →* K⟦X⟧) (Eunit O K l e) = (isUnit_E l e).unit` using `Units.ext rfl`. Rewrite using `[Ezpow, ← h, ← map_zpow]`. Rewrite using `[PhiMod.mx, rankOne]`. Simplify using `only`. Generalize the expression as in `Eunit O K l e ^ j τ = u`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mx_rankOne_eq (j : ZMod a → ℤ) (τ : ZMod a) (i k : Unit) :
     (rankOne O K l e j).mx τ i k = Ezpow K l e (j τ) := by
   have h : Units.map ((invE l e (A O K)).val : invE l e (A O K) →* K⟦X⟧) (Eunit O K l e) =
@@ -134,6 +183,9 @@ theorem mx_rankOne_eq (j : ZMod a → ℤ) (τ : ZMod a) (i k : Unit) :
   generalize Eunit O K l e ^ j τ = u
   simp
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun ((rankOne O K l e j).mxInv_mul_mx τ) ()) ()`. Rewrite `h` using `[Matrix.mul_apply, Fintype.sum_unique, mx_rankOne_eq, Matrix.one_apply_eq, ← Ezpow_neg_mul l e (j τ)]`. Conclude with `mul_right_cancel₀ (Units.ne_zero _) h`.
+-/
 theorem mxInv_rankOne_eq (j : ZMod a → ℤ) (τ : ZMod a) (i k : Unit) :
     (rankOne O K l e j).mxInv τ i k = Ezpow K l e (-j τ) := by
   have h := congrFun (congrFun ((rankOne O K l e j).mxInv_mul_mx τ) ()) ()
@@ -141,11 +193,17 @@ theorem mxInv_rankOne_eq (j : ZMod a → ℤ) (τ : ZMod a) (i k : Unit) :
     ← Ezpow_neg_mul l e (j τ)] at h
   exact mul_right_cancel₀ (Units.ne_zero _) h
 
+/- English proof (translation)
+Use extensionality with `τ i : 2`. Simplify using `[PhiMod.phi_bas, mx_rankOne_eq, bas]`.
+-/
 theorem phi_bas_rankOne (j : ℤ) : (rankOne O K l e fun _ : ZMod a => j).phi (bas ()) =
     Ezpow K l e j • bas () := by
   ext τ i : 2
   simp [PhiMod.phi_bas, mx_rankOne_eq, bas]
 
+/- English proof (translation)
+Simplify using `[PhiMod.ext, mem_tot, PhiMod.mem_extc_iff, mem_vecs, Matrix.mulVec, dotProduct, mxInv_rankOne_eq]`.
+-/
 theorem mem_ext_rankOne (j : ℤ) {B : Subalgebra O K⟦X⟧} {v : Vec K a Unit} :
     v ∈ (rankOne O K l e fun _ : ZMod a => j).ext B ↔ ∀ τ, Ezpow K l e (-j) * v τ () ∈ B := by
   simp [PhiMod.ext, mem_tot, PhiMod.mem_extc_iff, mem_vecs, Matrix.mulVec, dotProduct,
@@ -153,6 +211,21 @@ theorem mem_ext_rankOne (j : ℤ) {B : Subalgebra O K⟦X⟧} {v : Vec K a Unit}
 
 variable [CompleteSpace K]
 
+/- English proof (translation)
+Use `set P := rankOne O K l e fun _ : ZMod a => j`. Take `⟨c, hc, hcE⟩` from `exists_mul_frob_E (O := O) (K := K) l e`. Take `⟨m, hm⟩ : ∃ m, l = m + 1` from `Nat.exists_eq_succ_of_ne_zero (Fact.out : l.Prime).ne_zero`. Take `⟨n, hn⟩ : ∃ n, l * e = n + 1` from `Nat.exists_eq_succ_of_ne_zero (mul_ne_zero (Fact.out : l.Prime).ne_zero (NeZero.ne e))`. Use `isAdicComplete_S O K l e` as an intermediate fact.
+
+Take `⟨γ, hγ⟩` from `exists_eq_mul_add_of_isAdicComplete (l : S O K e) { toFun := fun x => uIn _ ^ m * ⟨_, frob_mem_S l x.2⟩ map_zero' := Subtype.ext (by simp) map_add' := fun x y => Subtype.ext (by simp [mul_add]) } (fun x => Subtype.ext (by simp [mul_left_comm])) (-((j : S O K e) * (e : S O K e) * …`. Establish `hγ' : (γ : K⟦X⟧) = (l : K⟦X⟧) * (X ^ m * frob K l γ) + -((j : K⟦X⟧) * (e : K⟦X⟧) * (X : K⟦X⟧) ^ n * c)`. Simplify using `using congrArg Subtype.val hγ`. Use `⟨γ, γ.2, smul_right_injective _ (X_ne_zero (R := K)) ?_⟩` and prove the remaining obligations. Establish `hq : (l : K⟦X⟧) * frob K l (N K (Ezpow K l e (-j)) * Ezpow K l e j) = -((j : K⟦X⟧) * (e : K⟦X⟧) * (X : K⟦X⟧) ^ (n + 1) * c)`.
+
+Establish `h1 : E K l e * (N K (Ezpow K l e (-j)) * Ezpow K l e j) = -((j : K⟦X⟧) * (e : K⟦X⟧) * (X : K⟦X⟧) ^ e)`. Rewrite using `[← mul_assoc, E_mul_N_Ezpow, mul_assoc, Ezpow_neg_mul, N_E]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (frob K l) h1`.
+
+Simplify using `only [map_mul, map_neg, map_pow, frob_X, map_natCast, map_intCast, ← pow_mul, hn] at h2 ⊢`. Rewrite using `[← hcE]`. Take the linear combination `c * h2`. Establish `hb : (bas () : Vec K a Unit) = Ezpow K l e (-j) • Ezpow K l e j • bas ()`. Rewrite using `[smul_smul, Ezpow_neg_mul, one_smul]`.
+
+Establish `hl (v : Vec K a Unit) : (l : K) • v = (l : K⟦X⟧) • v`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `hR : Raises (P.lphi * mulV K a Unit (Ezpow K l e (-j)))` using `fun k v hv => P.raises_lphi k _ ((uPow K a Unit _).smul_mem _ hv)`. Express the relevant statement in the definitionally equal form `P.conn _ = (X : K⟦X⟧) • (γ : K⟦X⟧) • Ezpow K l e j • bas ()`. Rewrite using `[← sub_eq_zero, smul_smul X]`.
+
+Use `hR.eq_zero (σ := (id : Unit → Unit)) Function.surjective_id (δ := fun _ => P.conn (Ezpow K l e j • bas ()) - (X * (γ : K⟦X⟧)) • Ezpow K l e j • bas ()) (fun _ => sub_mem (P.conn_mem_uPow _) (by rw [mul_smul]; exact X_smul_mem_uPow _)) (fun _ => ?_) ()` and prove the remaining obligations. Establish `h3 : Ezpow K l e (-j) • P.conn (Ezpow K l e j • bas ()) = P.conn (bas ()) - (N K (Ezpow K l e (-j)) * Ezpow K l e j) • bas ()` using `by conv_rhs => rw [hb, P.conn_smul, ← hb, mul_smul, add_sub_cancel_left]`. Rewrite using `[Module.End.mul_apply, mulV_apply, smul_sub, h3, smul_comm _ (X * (γ : K⟦X⟧)), ← hb, map_sub, map_sub, P.lphi_apply, ← P.conn_phi, P.lphi_apply, P.lphi_apply, P.phi_smul, P.phi_smul, phi_bas_rankOne, hl, hl, smul_smul (l : K⟦X⟧), smul_smul (l : K⟦X⟧), hq, sub_sub, ← add_smul, map …`. Use `congr 2`. Establish `hX : (X : K⟦X⟧) ^ l = X ^ (m + 1)` using `by rw [← hm]`.
+
+Take the linear combination `X * hγ' - l * frob K l γ * hX`.
+-/
 theorem exists_nabla_rankOne (j : ℤ) : ∃ γ ∈ S O K e,
     (rankOne O K l e fun _ : ZMod a => j).nabla (Ezpow K l e j • bas ()) =
       γ • Ezpow K l e j • bas () := by

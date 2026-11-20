@@ -15,10 +15,16 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Conclude with `gram_function_polynomial k r z z'`.
+-/
 lemma gf_pd (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) :
     U.IsPolyDeg (2 * r + 2) (fun g : Mat k r => ((Gf k r z z' g : ℝ) : ℂ)) := by
   exact gram_function_polynomial k r z z'
 
+/- English proof (translation)
+Take `⟨q, hq, he⟩` from `minor_polynomial_property k r z z' l`. Conclude with `⟨q, hq.trans (by have := l.isLt; omega), he⟩`.
+-/
 lemma dmin_pd (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     U.IsPolyDeg (2 * r + 2) (fun g : Mat k r => Dmin k r z z' g l) := by
   obtain ⟨q, hq, he⟩ := minor_polynomial_property k r z z' l
@@ -29,6 +35,15 @@ section fac
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `hfac : ∀ l ∈ (Finset.univ : Finset (Fin (r + 2))), UBL (fun g => (Dmin k r D.z D.z' g l)⁻¹ ^ a l * (star (Dmin k r D.z D.z' g l))⁻¹ ^ b l) S n 0 (2 * r + 2)`. Introduce `l _`. Distinguish the cases in `hl : l ∈ L ∨ l = Fin.last (r + 1)`. Establish `hl' : l.val ≤ 2 * r + 2` using `by have := l.isLt; omega`. Establish `h1 : UBL (fun g => (Dmin k r D.z D.z' g l)⁻¹ ^ a l) S n 0 (2 * r + 2)` using `ubl_mono hSG (ubl_invpow (minor_polynomial_property k r D.z D.z' l) hSG hc₀ (fun g hg => hSD g hg l hl) (a l) n) le_rfl hl'`.
+
+Establish `h2 : UBL (fun g => (star (Dmin k r D.z D.z' g l))⁻¹ ^ b l) S n 0 (2 * r + 2)` using `ubl_mono hSG (ubl_invpow (dmin_star_pd k r D.z D.z' l) hSG hc₀ (fun g hg => by rw [Complex.star_def, Complex.normSq_conj]; exact hSD g hg l hl) (b l) n) le_rfl hl'`. Conclude with `ubl_mul hSG h1 h2`. Use `push_neg at hl`. Take `⟨ha, hb⟩` from `hab l hl.1 hl.2`. Establish `e : (fun g => (Dmin k r D.z D.z' g l)⁻¹ ^ a l * (star (Dmin k r D.z D.z' g l))⁻¹ ^ b l) = fun _ => (1 : ℂ)`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[ha, hb]`. Rewrite using `[e]`. Conclude with `ubl_const 1 hSG n _`. Establish `hP` using `ubl_prod hSG Finset.univ (fun l g => (Dmin k r D.z D.z' g l)⁻¹ ^ a l * (star (Dmin k r D.z D.z' g l))⁻¹ ^ b l) hfac`.
+
+Establish `hG` using `ubl_invpow (gram_function_polynomial k r D.z D.z') hSG hc₀ hSGf c n`. Conclude with `ubl_mul hSG hP hG`.
+-/
 lemma ubl_monoM (D : RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2))) (a b : Fin (r + 2) → ℕ) (c : ℕ)
     (hab : ∀ l, l ∉ L → l ≠ Fin.last (r + 1) → a l = 0 ∧ b l = 0) {S : Set (Mat k r)} (hSG : S ⊆ GV k r)
     {c₀ : ℝ} (hc₀ : 0 < c₀)
@@ -62,6 +77,13 @@ lemma ubl_monoM (D : RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2))) (a b : 
   have hG := ubl_invpow (gram_function_polynomial k r D.z D.z') hSG hc₀ hSGf c n
   exact ubl_mul hSG hP hG
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ g hg hgV`. Conclude with `he g hg hgV`. Consider the case `cons X w ih`.
+
+Introduce `hw g hg hgV`. Establish `ih'` using `ih (fun Y hY => hw Y (List.mem_cons_of_mem _ hY))`. Use `show Dx (false, X) (Rw w f) g = Dx (false, X) (Rw w f') g`. Rewrite using `[Dx_eq, Dx_eq]`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises.
+
+Use `filter_upwards [crv_ev (x := (false, X)) hV hgV] with t ht`. Conclude with `ih' _ (crv_mem (x := (false, X)) (hw X (by simp)) hg t) ht`.
+-/
 private lemma rw_congr_on_open_of_eq_on_GV {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] {V : Set (Mat k r)}
     (hV : IsOpen V) {f f' : Mat k r → F} (he : ∀ g ∈ GV k r, g ∈ V → f g = f' g) :
     ∀ (w : List (Mat k r)), (∀ X ∈ w, inLie k r X) → ∀ g ∈ GV k r, g ∈ V → Rw w f g = Rw w f' g := by
@@ -77,6 +99,13 @@ private lemma rw_congr_on_open_of_eq_on_GV {F : Type*} [NormedAddCommGroup F] [N
     filter_upwards [crv_ev (x := (false, X)) hV hgV] with t ht
     exact ih' _ (crv_mem (x := (false, X)) (hw X (by simp)) hg t) ht
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Use function extensionality and compare the values at `g`.
+
+Use `show Dx x (Dw w (fun g => c • f g)) g = c • Dx x (Dw w f) g`. Rewrite using `[ih, Dx_eq, Dx_eq]`. Use `first`. Consider the case `exact deriv_const_smul' c (f := fun t => Dw w f (crv x g t))`. Consider the case `exact deriv_const_smul' (f := fun t => Dw w f (crv x g t)) c`.
+
+Consider the case `simp [deriv_const_smul']`.
+-/
 private lemma dw_const_smul {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] (c : ℂ) (f : Mat k r → F) :
     ∀ w : List (Bool × Mat k r), Dw w (fun g => c • f g) = fun g => c • Dw w f g := by
   intro w
@@ -91,6 +120,25 @@ private lemma dw_const_smul {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ 
     | exact deriv_const_smul' (f := fun t => Dw w f (crv x g t)) c
     | simp [deriv_const_smul']
 
+/- English proof (translation)
+Take `⟨hE1, hE2⟩` from `hE`. Establish `hSsub : S ⊆ GPos D` using `fun g hg => ⟨(hS g hg).1, lt_of_lt_of_le hε (hS g hg).2⟩`. Use `choose Cf hCf using fun i => hE2 ε hε i`. Use `⟨⟨|(v.map nz).prod| * ∑ j ∈ Finset.range (n + v.length + 1), |Cf j|, by positivity, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `w hw g hg`.
+
+Take `⟨u, v', hu, hv', hlen, rfl⟩` from `hw`. Establish `hgGV` using `(hS g hg).1`. Establish `hgε` using `(hS g hg).2`. Establish `hX : 0 ≤ gN g` using `by first`. Consider the case `positivity`.
+
+Consider the case `(unfold gN; positivity)`. Consider the case `(simp only [gN]; positivity)`. Rewrite using `[Rw_scale v E, dw_const_smul, norm_smul]`. Establish `hsplit : Dw (wL u ++ wR v') (Rw (v.map nrm) E) g = dLR u (v' ++ v.map nrm) E g`. Rewrite using `[dLR_eq, Dw_append, Dw_append, Dw_wR, Dw_wR]`.
+
+Rewrite using `[show Rw (v' ++ v.map nrm) E = Rw v' (Rw (v.map nrm) E) by simp only [Rw, List.foldr_append]]`. Rewrite using `[hsplit]`. Establish `hU : C6.UnitWords k r u (v' ++ v.map nrm) (u.length + (v' ++ v.map nrm).length)`. Use `⟨hu, fun X hX => ?_, rfl⟩` and prove the remaining obligations. Break down `List.mem_append.1 hX with h | h` into its components or cases.
+
+Conclude with `hv' X h`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 h`. Conclude with `nrm_unit (hv Y hY)`. Establish `hb` using `hCf (u.length + (v' ++ v.map nrm).length) u (v' ++ v.map nrm) hU g hgGV hgε`. Establish `hlenw : (wL u ++ wR v').length = u.length + v'.length` using `by simp [wL, wR]`.
+
+Establish `hexp : 3 * (r + 1) * (u.length + (v' ++ v.map nrm).length) = 3 * (r + 1) * v.length + 3 * (r + 1) * (wL u ++ wR v').length`. Rewrite using `[hlenw, List.length_append, List.length_map]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hb` using `[hexp]`. Establish `hX' : 0 ≤ gN g ^ (3 * (r + 1) * v.length + 3 * (r + 1) * (wL u ++ wR v').length)` using `pow_nonneg hX _`.
+
+Establish `hi : u.length + (v' ++ v.map nrm).length < n + v.length + 1`. Rewrite using `[List.length_append, List.length_map]`. Use linear arithmetic over natural numbers and integers. Establish `hCi : Cf (u.length + (v' ++ v.map nrm).length) ≤ ∑ j ∈ Finset.range (n + v.length + 1), |Cf j|` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |Cf j|) (fun j _ => abs_nonneg _) (Finset.mem_range.2 hi))`. Establish `hnorm : ‖(((v.map nz).prod : ℝ) : ℂ)‖ = |(v.map nz).prod|` using `by first`.
+
+Consider the case `simp`. Consider the case `rw [Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation. Introduce `g₀ hg₀`.
+
+Take `⟨f', hf', V, hV, hgV, he⟩` from `lss_of_ckOn hE1 hSsub g₀ hg₀`. Use `⟨Rw v f', ?_, V, hV, hgV, fun g' hg' hg'V => rw_congr_on_open_of_eq_on_GV hV he v hv g' hg' hg'V⟩` and prove the remaining obligations. Rewrite using `[← Dw_wR]`. Conclude with `cdw _ hf'`.
+-/
 lemma ubl_fib (D : RealPlaceData k r Wp Wq) (E : Mat k r → C6.EndH Wp Wq) (hE : C6.FibBound D E) {ε : ℝ} (hε : 0 < ε)
     {S : Set (Mat k r)} (hS : ∀ g ∈ S, g ∈ GV k r ∧ ε ≤ Gf k r D.z D.z' g) (v : List (Mat k r))
     (hv : ∀ X ∈ v, inLie k r X) (n : ℕ) :

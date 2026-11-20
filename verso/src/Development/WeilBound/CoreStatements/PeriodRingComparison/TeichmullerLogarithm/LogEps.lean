@@ -10,6 +10,9 @@ namespace Cmp6
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `cA_logTeich_eps l (untilt_epsilon_eq_one l)`.
+-/
 theorem acris_log_teichmuller_epsilon : cA l (Reformulated.AutPerF.Acris.logTeich (eps0 l)) = Formalism.Per6.tA l :=
   cA_logTeich_eps l (untilt_epsilon_eq_one l)
 

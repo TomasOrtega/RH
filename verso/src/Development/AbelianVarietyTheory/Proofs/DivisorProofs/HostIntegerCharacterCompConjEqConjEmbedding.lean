@@ -5,6 +5,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 set_option autoImplicit false
 namespace GlobalTheory.ConjHostChar
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[embK_coe, embK_coe, H.bar_eq, conjEmb, RingHom.comp_apply]`. Rewrite using `[← ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj]`. Simplify using the standard rewrite rules.
+-/
 theorem embK_bar {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     {l : Level H} (c : Coeff l) (τ : E →+* ℂ) (a : 𝓞 E) :
     embK c τ (H.bar a) = embK c (conjEmb τ) a := by
@@ -13,6 +16,9 @@ theorem embK_bar {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Recipro
   rw [← ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj]
   simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c τ K _ _ _ t ht a`. Rewrite using `[RingHom.comp_apply, ht]`. Conclude with `congrArg _ (embK_bar H c τ.1 a)`.
+-/
 theorem conj_char : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (τ : Psi H) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (t : 𝓞 E →+* 𝓞 K), (∀ a, ((t a : 𝓞 K) : K) = algebraMap c.F K (embK c τ.1 a)) → ∀ a, ((t.comp (H.bar : 𝓞 E →+* 𝓞 E) a : 𝓞 K) : K) = algebraMap c.F K (embK c (conjEmb τ.1) a) := by
   intro E _ _ _ H Dw l Xo c τ K _ _ _ t ht a
   rw [RingHom.comp_apply, ht]

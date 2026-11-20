@@ -7,6 +7,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GramAdapted.gram_adapted | exact GlobalTheory.GramAdapted.gram_adapted | (intros; apply GlobalTheory.GramAdapted.gram_adapted <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hyperbolic_pair_splitting_matrix : ∀ {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n₁ : ℕ) (J : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E)
     (J₁ : Matrix (Fin n₁) (Fin n₁) E) (x y : Fin (n₁ + 2) → E) (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) E)
     (P : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E),

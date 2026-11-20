@@ -9,6 +9,9 @@ open GlobalTheory.HeckeGal GlobalTheory.Pst GlobalTheory.TripleGal GlobalTheory.
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LTPer.cycloChar_inertia_image_infinite | exact GlobalTheory.CompanionTheory.LTPer.cycloChar_inertia_image_infinite | (intros; apply GlobalTheory.CompanionTheory.LTPer.cycloChar_inertia_image_infinite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sen_period_finite_extension : ∀ {l : ℕ} [Fact l.Prime],
     (∀ (E : IntermediateField ℚ_[l] (Om l)) [FiniteDimensional ℚ_[l] ↥E] (ψ : Gal(Om l/↥E) →* ℤ_[l]ˣ), Continuous ψ →
       (∀ σ, GroundTheory.LocalField.unramifiedDegree ↥E (Om l) σ = 1 → ψ σ = 1) →

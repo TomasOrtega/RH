@@ -20,6 +20,17 @@ open GlobalTheory.Algebraise GlobalTheory.SectionRingIso ReciprocityTheory.Chart
 
 variable {R : Type} [CommRing R] [IsLocalRing R] (I : Ideal R) [IsAdicComplete I R]
 
+/- English proof (translation)
+Use `choose s hs using fun e => exists_down hL hM (g e) (fstG I e P.A).left (v e) (hv e) b`. Establish `cancel : ∀ {T : Type} [CommRing T] (u : Tˣ) {x y : T}, u.val ^ n * x = u.val ^ n * y → x = y` using `fun u _ _ h => (u.isUnit.pow n).mul_left_cancel h`. Establish `sv : ∀ (a : H0 M n) (Z : Scheme.{0}) (q : Z ⟶ P.A.left) (z : Z) (J), sval a q z J = vl a q z (fun _ => J q)` using `fun a Z q z J => sval_of a q z J (fun _ => J q) fun _ => by rw [Category.comp_id]`. Take `⟨a, ha, hu⟩` from `hlim n hn s fun e Z r z J hJ => by`. Take `⟨j, hj⟩` from `exists_chart hL (g e (r z))`.
+
+Establish `hj' : (fstG I e P.A).left (r z) ∈ M.U (J (r ≫ (fstG I e P.A).left))` using `hJ _`. Establish `e₁ : (r ≫ thickMap R I e P.A) ≫ g (e + 1) = r ≫ g e` using `by rw [Category.assoc, hg]`. Establish `e₂ : (r ≫ thickMap R I e P.A) ≫ (fstG I (e + 1) P.A).left = r ≫ (fstG I e P.A).left`. Rewrite using `[Category.assoc, thickMap_fstG]`. Establish `h₁` using `hs (e + 1) Z (r ≫ thickMap R I e P.A) z j (J (r ≫ (fstG I e P.A).left)) ((congrArg (fun q : Z ⟶ X => q z ∈ L.U j) e₁).mpr hj) ((congrArg (fun q : Z ⟶ P.A.left => q z ∈ M.U _) e₂).mpr hj')`.
+
+Rewrite `h₁` using `[e₁, hc e Z r z j _ hj hj', hs e Z r z j _ hj hj']`. Conclude with `(sval_of (s (e + 1)) _ z J (fun _ => J (r ≫ (fstG I e P.A).left)) fun _ => congrArg J e₂).trans (cancel _ h₁).symm`. Use `⟨a, fun e Z r z j j' hj hj' => ?_, fun a' ha' => hu a' fun e Z r z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ, eJ⟩` from `exists_good M hM z (K := Fin 1) (fun _ => r ≫ (fstG I e P.A).left) (fun _ => j') (fun _ _ _ => rfl) (fun _ => hj')`. Use `ha e Z r z J hJ` as an intermediate fact.
+
+Rewrite `this` using `[sv, eJ 0, sval_of (s e) r z J (fun _ => j') fun _ => eJ 0]`. Rewrite using `[this]`. Conclude with `hs e Z r z j j' hj hj'`. Take `⟨j, hj⟩` from `exists_chart hL (g e (r z))`. Establish `hj' : (fstG I e P.A).left (r z) ∈ M.U (J (r ≫ (fstG I e P.A).left))` using `hJ _`.
+
+Rewrite using `[sv]`. Conclude with `cancel _ ((ha' e Z r z j _ hj hj').symm.trans (hs e Z r z j _ hj hj'))`.
+-/
 theorem existsUnique_rel_of_lim (P : PolAV (Spec (CommRingCat.of R))) {M : LB P.A.left} (hM : M.IsLB)
     (hlim : ∀ n : ℕ, 1 ≤ n → ∀ s : ∀ e : ℕ, LB.Sec (LB.LinComb M (K := Fin 1) (fun _ => (fstG I e P.A).left)
       (fun _ => (n : ℤ))), (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e P.A).left) (z : Z)
@@ -71,6 +82,59 @@ namespace GlobalTheory.AlgebraiseGen
 
 open GlobalTheory.Algebraise GlobalTheory.SectionRingIso ReciprocityTheory.ChartRestriction.G.Geo.Tor TopologicalSpace
 
+/- English proof (translation)
+Establish `prop : ∀ Q : PolAV (Spec (CommRingCat.of R)), IsProper Q.A.hom` using `fun Q => Q.isAb.proper`. Establish `cpt : ∀ Q : PolAV (Spec (CommRingCat.of R)), CompactSpace Q.A.left` using `fun Q =>`. Use `prop Q` as an intermediate fact. Use the proof step `QuasiCompact.compactSpace_of_compactSpace Q.A.hom`. Establish `qs : ∀ Q : PolAV (Spec (CommRingCat.of R)), QuasiSeparatedSpace Q.A.left` using `fun Q =>`.
+
+Use `prop Q` as an intermediate fact. Use `quasiSeparatedSpace_of_quasiSeparated Q.A.hom`. Use `prop P` as an intermediate fact. Use `prop P'` as an intermediate fact. Use `cpt P` as an intermediate fact.
+
+Use `cpt P'` as an intermediate fact. Use `qs P` as an intermediate fact. Use `qs P'` as an intermediate fact. Establish `hi : ∀ e, (β e).hom.left ≫ (β e).inv.left = 𝟙 _` using `fun e => by rw [← Over.comp_left, Iso.hom_inv_id]; rfl`. Establish `ih : ∀ e, (β e).inv.left ≫ (β e).hom.left = 𝟙 _` using `fun e => by rw [← Over.comp_left, Iso.inv_hom_id]; rfl`.
+
+Establish `hβ' : ∀ e, thickMap R I e P.A ≫ (β (e + 1)).inv.left = (β e).inv.left ≫ thickMap R I e P'.A` using `fun e => by`. Establish `: (β e).inv.left ≫ (thickMap R I e P'.A ≫ (β (e + 1)).hom.left) ≫ (β (e + 1)).inv.left = (β e).inv.left ≫ ((β e).hom.left ≫ thickMap R I e P.A) ≫ (β (e + 1)).inv.left` using `by rw [hβ]`. Rewrite `this` using `[Category.assoc, hi, Category.comp_id, Category.assoc, ← Category.assoc (β e).inv.left, ih, Category.id_comp]`. Conclude with `this.symm`. Establish `eA : ∀ e, (β e).inv.left ≫ (β e).hom.left ≫ (fstG I e P.A).left = (fstG I e P.A).left` using `fun e => by`.
+
+Rewrite using `[← Category.assoc, ih, Category.id_comp]`. Establish `eB : ∀ e, (β e).hom.left ≫ (β e).inv.left ≫ (fstG I e P'.A).left = (fstG I e P'.A).left` using `fun e => by`. Rewrite using `[← Category.assoc, hi, Category.id_comp]`. Use `choose u hu hu' using fun e => exists_swap _ _ (v e) (hv e) (β e).inv.left (fstG I e P.A).left ((β e).inv.left ≫ (fstG I e P'.A).left) (eA e) rfl`. Set `Rl : ∀ n : ℕ, H0 M' n → H0 M n → Prop` to `fun n a b => Rel (T := fun e => (thickObj R I e P'.A).left) (fun e => (β e).hom.left ≫ (fstG I e P.A).left) (fun e => (fstG I e P'.A).left) v a b`.
+
+Establish `E₁ : ∀ n, 1 ≤ n → ∀ b, ∃! a, Rl n a b` using `fun n hn b => existsUnique_rel_of_lim I P' hM' hlim' hM _ v hv (fun e => by rw [← Category.assoc, hβ, Category.assoc, thickMap_fstG]) hc hn b`. Establish `E₂ : ∀ n, 1 ≤ n → ∀ a, ∃! b, Rl n a b` using `fun n hn a => by`. Establish `H` using `existsUnique_rel_of_lim I P hM hlim hM' (fun e => (β e).inv.left ≫ (fstG I e P'.A).left) u hu (fun e => by rw [← Category.assoc, hβ', Category.assoc, thickMap_fstG]) (fun e Z r z j' j hj' hj => by`. Establish `e₁ : (r ≫ thickMap R I e P.A) ≫ (fstG I (e + 1) P.A).left = r ≫ (fstG I e P.A).left`. Rewrite using `[Category.assoc, thickMap_fstG]`.
+
+Establish `e₂ : (r ≫ thickMap R I e P.A) ≫ (β (e + 1)).inv.left ≫ (fstG I (e + 1) P'.A).left = r ≫ (β e).inv.left ≫ (fstG I e P'.A).left`. Rewrite using `[Category.assoc, ← Category.assoc (thickMap R I e P.A), hβ', Category.assoc, thickMap_fstG]`. Rewrite using `[hu' (e + 1) Z _ z j j' ((congrArg (fun q : Z ⟶ P.A.left => q z ∈ M.U j) e₁).mpr hj) ((congrArg (fun q : Z ⟶ P'.A.left => q z ∈ M'.U j') e₂).mpr hj'), hu' e Z r z j j' hj hj', Category.assoc, hβ', ← Category.assoc]`. Conclude with `congrArg (·⁻¹) (hc e Z (r ≫ (β e).inv.left) z j j' ((congrArg (fun q : Z ⟶ P.A.left => q z ∈ M.U j) (congrArg (r ≫ ·) (eA e))).mpr hj) hj')) hn a`. Use `(existsUnique_congr fun b => ⟨fun h e Z r z j j' hj hj' => ?_, fun h e Z r z j' j hj' hj => ?_⟩).1 H` and prove the remaining obligations.
+
+Establish `m'` using `(congrArg (fun q : Z ⟶ P'.A.left => q z ∈ M'.U j') (congrArg (r ≫ ·) (eB e))).mpr hj'`. Use `h e Z (r ≫ (β e).hom.left) z j' j m' hj` as an intermediate fact. Rewrite `this` using `[hu' e Z (r ≫ (β e).hom.left) z j j' hj m']`. Simplify using `only [Category.assoc] at this`. Rewrite `this` using `[eB, hi, Category.comp_id]`.
+
+Use `beta_reduce`. Rewrite using `[this, ← _root_.mul_assoc, ← mul_pow, Units.mul_inv, one_pow, _root_.one_mul]`. Establish `m` using `(congrArg (fun q : Z ⟶ P.A.left => q z ∈ M.U j) (congrArg (r ≫ ·) (eA e))).mpr hj`. Use `h e Z (r ≫ (β e).inv.left) z j j' m hj'` as an intermediate fact. Simplify using `only [Category.assoc] at this`.
+
+Rewrite `this` using `[eA]`. Use `beta_reduce`. Rewrite using `[hu' e Z r z j j' hj hj', this, ← _root_.mul_assoc, ← mul_pow, Units.inv_mul, one_pow, _root_.one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨θ, hθ⟩ : ∃ θ : ∀ n : ℕ, 1 ≤ n → (H0 M' n ≃ H0 M n), ∀ n hn a, Rl n a (θ n hn a) := by`. Use `⟨fun n hn => ⟨fun a => (E₂ n hn a).exists.choose, fun b => (E₁ n hn b).exists.choose, fun a => ?_, fun b => ?_⟩, fun n hn a => (E₂ n hn a).exists.choose_spec⟩` and prove the remaining obligations.
+
+Conclude with `(E₁ n hn _).unique (E₁ n hn _).exists.choose_spec (E₂ n hn a).exists.choose_spec`. Conclude with `(E₂ n hn _).unique (E₂ n hn _).exists.choose_spec (E₁ n hn b).exists.choose_spec`. Establish `hbase : ∀ e, ((β e).hom.left ≫ (fstG I e P.A).left) ≫ P.A.hom = (fstG I e P'.A).left ≫ P'.A.hom` using `fun e => by`. Rewrite using `[Category.assoc, fstG_hom, fstG_hom, ← Category.assoc, Over.w]`. Establish `hlin : ∀ (n : ℕ) (hn : 1 ≤ n) (c : R) (a b d : H0 M' n), (∀ j, d.f j = a.f j + resTop _ (scal P'.A.hom c) * b.f j) → ∀ j, (θ n hn d).f j = (θ n hn a).f j + resTop _ (scal P.A.hom c) * (θ n hn b).f j`.
+
+Introduce `n hn c a b d h`. Establish `: Rl n d (DVR.SecOps.secAdd (θ n hn a) (DVR.SecOps.secScale (scal P.A.hom c) (θ n hn b)))`. Introduce `e Z r z j j' hj hj'`. Rewrite using `[vl_add_scale (a := θ n hn a) (b := θ n hn b) (c := scal P.A.hom c) (fun _ => rfl) _ z hj, vl_add_scale h _ z hj', hθ n hn a e Z r z j j' hj hj', hθ n hn b e Z r z j j' hj hj', gs_scal, gs_scal, Category.assoc r, Category.assoc r, hbase]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[(E₂ n hn d).unique (hθ n hn d) this]`. Conclude with `fun _ => rfl`. Establish `hmul : ∀ (n m : ℕ) (hn : 1 ≤ n) (hm : 1 ≤ m) (a : H0 M' n) (b : H0 M' m) (d : H0 M' (n + m)), (∀ j : Fin 1 → M'.ι, (show Γ(P'.A.left, ch M' j) from d.f j) = (show Γ(P'.A.left, ch M' j) from a.f j) * (show Γ(P'.A.left, ch M' j) from b.f j)) → ∀ j : Fin 1 → M.ι, (show Γ(P.A.left, c …`. Introduce `n m hn hm a b d h`. Take `⟨d', hd'⟩` from `exists_mul (θ n hn a) (θ m hm b)`.
+
+Establish `: Rl (n + m) d d'`. Introduce `e Z r z j j' hj hj'`. Rewrite using `[vl_mul hd' _ z hj, vl_mul h _ z hj', hθ n hn a e Z r z j j' hj hj', hθ m hm b e Z r z j j' hj hj']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(E₂ _ (hn.trans (Nat.le_add_right n m)) d).unique (hθ _ _ d) this]`.
+
+Conclude with `hd'`. Establish `h4 : 1 ≤ n₀` using `hn₀`. Take `⟨κ, t, ht, hta⟩` from `hcov n₀ le_rfl`. Take `⟨κ', s, hs, hsa⟩` from `hcov' n₀ le_rfl`. Take `⟨κ'', s₅, hs₅, -⟩` from `hcov' (n₀ + 1) (Nat.le_succ n₀)`.
+
+Establish `mt : ∀ x, ∃ i, x ∈ nonzeroLocus (t i)` using `fun x => Opens.mem_iSup.1 (by rw [ht]; trivial)`. Establish `ms : ∀ x, ∃ i, x ∈ nonzeroLocus (s i)` using `fun x => Opens.mem_iSup.1 (by rw [hs]; trivial)`. Establish `ms₅ : ∀ x, ∃ i, x ∈ nonzeroLocus (s₅ i)` using `fun x => Opens.mem_iSup.1 (by rw [hs₅]; trivial)`. Use `choose d hd using fun p : κ' × κ => exists_mul (s p.1) ((θ n₀ h4).symm (t p.2))`. Establish `l'` using `fun p => locus_mul hM' (hd p)`.
+
+Establish `l : ∀ p, nonzeroLocus (θ (n₀ + n₀) (h4.trans (Nat.le_add_right n₀ n₀)) (d p)) = nonzeroLocus (θ n₀ h4 (s p.1)) ⊓ nonzeroLocus (t p.2)` using `fun p => by`. Rewrite using `[locus_mul hM (hmul n₀ n₀ h4 h4 _ _ _ (hd p)), Equiv.apply_symm_apply]`. Establish `mem : ∀ z, ∃ p, (fstG I 0 P'.A).left z ∈ nonzeroLocus (d p)` using `fun z => by`. Take `⟨i, hi⟩` from `ms ((fstG I 0 P'.A).left z)`. Take `⟨k, hk⟩` from `mt (((β 0).hom.left ≫ (fstG I 0 P.A).left) z)`.
+
+Use `⟨(i, k), (l' _).ge ⟨hi, (Rel.mem_iff hM hM' (hθ n₀ h4 _) 0 z).1 ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `hk`. Take `⟨Ψ, hΨ⟩` from `GlobalTheory.T.exists_iso_of_sectionRing_equiv_alt R P.A P'.A M M' hM hM' θ hlin hmul ⟨n₀ + n₀, h4.trans (Nat.le_add_right n₀ n₀), κ' × κ, d, eq_top_of_thick I P'.A _ fun z => Opens.mem_iSup.2 (mem z), eq_top_of_thick I P.A _ fun z => by`. Take `⟨p, hp⟩` from `mem ((β 0).inv.left z)`.
+
+Use `(Rel.mem_iff hM hM' (hθ _ (h4.trans (Nat.le_add_right n₀ n₀)) (d p)) 0 _).2 hp` as an intermediate fact. Conclude with `Opens.mem_iSup.2 ⟨p, (congrArg (fun q : (thickObj R I 0 P.A).left ⟶ P.A.left => q z ∈ _) (eA 0)).mp this⟩,`. Use `fun p => ⟨by`. Rewrite using `[l', inf_comm]; exact isAffineOpen_nonzeroLocus_inf (LB.isLB_linComb hM' _ _) _ (hsa _), by`. Rewrite using `[l]`.
+
+Conclude with `isAffineOpen_nonzeroLocus_inf (LB.isLB_linComb hM _ _) _ (hta _)⟩⟩`. Take `⟨w, hw, H⟩` from `GlobalTheory.exists_iso_of_sectionRing R P.A P'.A M M' hM hM' θ hlin hmul Ψ.hom.left hΨ fun x => by`. Take `⟨i, hi⟩` from `ms x`. Take `⟨k, hk⟩` from `ms₅ x`. Conclude with `⟨n₀, h4, s i, s₅ k, hi, hk⟩`.
+
+Establish `H' : ∀ (n : ℕ) (hn : 1 ≤ n) (a : H0 M' n) (Z : Scheme.{0}) (r : Z ⟶ P'.A.left) (z : Z) (j : M.ι) (j' : M'.ι), Ψ.hom.left (r z) ∈ M.U j → r z ∈ M'.U j' → vl (θ n hn a) (r ≫ Ψ.hom.left) z (fun _ => j) = (gw w r z j j').val ^ n * vl a r z (fun _ => j')`. Introduce `n hn a Z r z j j' hj hj'`. Use `(H n hn a Z r z (fun _ => j) (fun _ => j') (fun _ => hj) (fun _ => hj')).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one, Category.comp_id, zpow_natCast, Units.val_pow_eq_pow_val]`. Use `⟨Ψ, w, hw, fun e => ?_⟩` and prove the remaining obligations.
+
+Establish `key : (β e).hom.left ≫ (fstG I e P.A).left = (fstG I e P'.A).left ≫ Ψ.hom.left`. Take `⟨y, hy, hy'⟩` from `exists_swap _ _ (v e) (hv e) (𝟙 _) _ _ (Category.id_comp _) (Category.id_comp _)`. Take `⟨y', T⟩` from `exists_comp hM' w y ((isGen_iff w).1 hw) ((isGen_iff y).1 hy) hM (LB.isLB_pull hM _)`. Use `hom_ext_of_sec_pull_eq _ _ M hM ⟨n₀, h4, κ, t, ht, hta⟩ _ _ y' ((isGen_iff y').2 (T.pgen_comp hM' ((isGen_iff w).1 hw) ((isGen_iff y).1 hy))) fun n hn b z j j' hj hj' => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(θ n hn).surjective b`.
+
+Take `⟨k, hk⟩` from `exists_chart hM' ((fstG I e P'.A).left z)`. Establish `h₁` using `H' n hn a _ (fstG I e P'.A).left z j k hj hk`. Establish `h₂` using `hθ n hn a e _ (𝟙 ((Over.map (thick R I e)).obj (thickObj R I e P'.A)).left) z j' k hj' hk`. Establish `h₃` using `T _ (𝟙 _) z j k (fun _ => j') hj hk (mem_pull.2 hj')`. Rewrite `h₃` using `[hy' _ (𝟙 _) z j' k hj' hk]`.
+
+Simplify using `only [Category.id_comp] at h₂ h₃`. Use `h₁.trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg (fun t => (t ^ n).val) h₃) h₂).symm)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← _root_.mul_assoc, ← mul_pow, ← Units.val_mul, inv_mul_cancel_right]`. Use `⟨key.symm, fun Z r z j j' hj hj' => ?_⟩` and prove the remaining obligations. Establish `hj₂` using `(congrArg (fun q : (thickObj R I e P'.A).left ⟶ P.A.left => q (r z) ∈ M.U j) key).mp hj`.
+
+Establish `pw : ∀ (n : ℕ) (hn : 1 ≤ n) (a : H0 M' n), (fstG I e P'.A).left (r z) ∈ nonzeroLocus a → gw w (r ≫ (fstG I e P'.A).left) z j j' ^ n = gw (v e) r z j (fun _ => j') ^ n` using `fun n hn a ha => by`. Establish `h₁` using `H' n hn a _ (r ≫ (fstG I e P'.A).left) z j j' hj₂ hj'`. Establish `h₂` using `hθ n hn a e _ r z j j' hj hj'`. Rewrite `h₁` using `[Category.assoc, ← key]`. Conclude with `Units.ext (((mem_iff_isUnit a (r ≫ (fstG I e P'.A).left) z (j := fun _ => j') hj').1 ha).mul_right_cancel (h₁.symm.trans h₂))`.
+
+Take `⟨i, hi⟩` from `ms ((fstG I e P'.A).left (r z))`. Take `⟨k, hk⟩` from `ms₅ ((fstG I e P'.A).left (r z))`. Establish `a₅` using `pw (n₀ + 1) (Nat.le_add_left 1 n₀) _ hk`. Rewrite `a₅` using `[pow_succ, pow_succ _ n₀, pw n₀ h4 _ hi]`. Conclude with `mul_left_cancel a₅`.
+-/
 theorem exists_iso_of_compatible_thickenings_gen {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (I : Ideal R) [IsAdicComplete I R] (P P' : PolAV (Spec (CommRingCat.of R))) (M : LB P.A.left) (M' : LB P'.A.left)
     (hM : M.IsLB) (hM' : M'.IsLB)
@@ -260,6 +324,11 @@ end GlobalTheory.AlgebraiseGen
 
 open GlobalTheory.Algebraise GlobalTheory.SectionRingIso ReciprocityTheory.ChartRestriction.G.Geo.Tor TopologicalSpace in
 
+/- English proof (translation)
+Introduce `hS hA R _ _ _ I _ P P' β v hv hβ hc`. Take `⟨Φ, w, hw, H⟩` from `GlobalTheory.AlgebraiseGen.exists_iso_of_compatible_thickenings_gen I P P' _ _ (LB.isLB_linComb P.isLB _ _) (LB.isLB_linComb P'.isLB _ _) (GlobalTheory.T.existsUnique_section_compatible_square_thickening hS R I P) (GlobalTheory.T.existsUnique_section_compatible_square_thickening …`. Take `⟨a, rfl⟩ : ∃ a, j = fun _ => a` from `⟨j 0, fin_one_const j⟩`. Take `⟨a', rfl⟩ : ∃ a', j' = fun _ => a'` from `⟨j' 0, fin_one_const j'⟩`. Conclude with `hc e Z r z a a' (mem_ch.1 hj) (mem_ch.1 hj'))`.
+
+Conclude with `⟨Φ, w, hw, fun e => ⟨(H e).1, fun Z r z j j' hj hj' => (H e).2 Z r z (fun _ => j) (fun _ => j') (mem_ch.2 hj) (mem_ch.2 hj')⟩⟩`.
+-/
 theorem GlobalTheory.exists_iso_of_compatible_thickenings_sq : SecBaseChangeSt → AmpleSt → ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R)
     [IsAdicComplete I R] (P P' : PolAV (Spec (CommRingCat.of R))) (β : ∀ e : ℕ, thickObj R I e P'.A ≅ thickObj R I e P.A)
     (v : ∀ e : ℕ, LB.Iso ((LB.LinComb P'.L (K := Fin 1) (fun _ => 𝟙 P'.A.left) (fun _ => 2)).pull (fstG I e P'.A).left)

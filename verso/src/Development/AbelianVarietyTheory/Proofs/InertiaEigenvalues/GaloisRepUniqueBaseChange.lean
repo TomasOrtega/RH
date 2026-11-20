@@ -8,6 +8,11 @@ namespace GlobalTheory.BaseChangeConj
 
 open Formalism.MainNotions.SumRepresentations Polynomial
 
+/- English proof (translation)
+Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `t`. Rewrite using `[Matrix.eval_charpoly, Matrix.eval_charpoly]`. Establish `hc : IsClosed {g : Γ | (Matrix.scalar (Fin a) t - ((ρ₁ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)).det = (Matrix.scalar (Fin a) t - ((ρ₂ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)).det}` using `isClosed_eq (continuous_const.sub h1).matrix_det (continuous_const.sub h2).matrix_det`. Establish `hsub : closure S ⊆ _` using `hc.closure_subset_iff.mpr fun g hg => by show _ = _`.
+
+Rewrite using `[← Matrix.eval_charpoly, ← Matrix.eval_charpoly, hE g hg]`. Rewrite `hsub` using `[hS]`. Conclude with `hsub (Set.mem_univ g)`.
+-/
 theorem charpoly_eq_of_dense' {Γ : Type} [Group Γ] [TopologicalSpace Γ] {k : Type} [Field k]
     [TopologicalSpace k] [IsTopologicalRing k] [T2Space k] [Infinite k] {a : ℕ} (ρ₁ ρ₂ : Γ →* GL (Fin a) k)
     (h1 : Continuous fun g => ((ρ₁ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k))
@@ -29,6 +34,23 @@ theorem charpoly_eq_of_dense' {Γ : Type} [Group Γ] [TopologicalSpace Γ] {k : 
   rw [hS] at hsub
   exact hsub (Set.mem_univ g)
 
+/- English proof (translation)
+Introduce `D hAN i r hr x P Pa hP hB ρ hρc hρs hwd`. Take `⟨-, -, hCheb, hBN⟩` from `hAN`. Establish `hl : (D.nd.l i).Prime` using `Fact.out`. Establish `hfin : (((placesOver D.host.E (D.nd.l i)) ∪ (D.nd.S i : Set _)) ∪ (D.nd.Q i : Set _)).Finite` using `((placesOver_finite D.host.E (D.nd.l i) hl.ne_zero).union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet`. Establish `hdense` using `hCheb _ hfin`.
+
+Establish `hfrob : ∀ g ∈ {σ : G D.host.E D.nd.Om | ∃ w ∉ (((placesOver D.host.E (D.nd.l i)) ∪ (D.nd.S i : Set _)) ∪ (D.nd.Q i : Set _)), IsSplitPl D.host w ∧ ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F` using `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ}, ((ρ g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))).charpoly = ((mapRep (iotaOQ D.nd D.naut i) (r x) g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))).charpoly := by`. Introduce and unpack `σ ⟨w, hw, hsp, B, hB', hσ⟩`. Simplify using `only [Set.mem_union, not_or] at hw`. Take `⟨⟨hwl, hwS⟩, hwQ⟩` from `hw`. Use `replace hwS : w ∉ D.nd.S i := by simpa using hwS`.
+
+Use `replace hwQ : w ∉ D.nd.Q i := by simpa using hwQ`. Establish `hso : SplitOut D.nd i w` using `⟨hsp, hwl, hwS, hwQ⟩`. Establish `hS` using `hwS`. Rewrite `hS` using `[D.nd.S_def]`. Establish `hS'` using `fun h => hS ⟨h, hwl⟩`.
+
+Establish `hu : D.naut.unr (D.naut.locV i P w)` using `D.naut.locV_unr i P w hsp hwQ (Fin.forall_fin_two.2 ⟨fun h => hS' (Or.inl h), fun h => hS' (Or.inr (Or.inl h))⟩) fun h => hS' (Or.inr (Or.inr h))`. Establish `hloc` using `hB.2.2.2.1 w hsp`. Establish `hwd'` using `hwd w hwl`. Rewrite `hwd'` using `[hloc]`. Establish `hun : D.naut.unr (D.naut.wdOf i ρ w)` using `by rw [hwd']; exact (D.naut.unr_tw _ _).2 hu`.
+
+Establish `e1` using `D.naut.wdOf_frob i ρ w hwl hρc hun B σ hB' hσ`. Rewrite `e1` using `[hwd', ← D.naut.pt_loc i P x hP w hso]`. Establish `e2` using `(hr x).2.2 w hso B σ hB' hσ`. Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises. Establish `e3 : ((mapRep (iotaOQ D.nd D.naut i) (r x) σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (Qbar (D.nd.l i))) = ((r x σ : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).map (iotaOQ D.nd D.naut i)` using `rfl`.
+
+Rewrite using `[e1, e3, Matrix.charpoly_map, e2, Polynomial.map_map]`. Both sides reduce to the same expression. Establish `hc2 : SumRepresentations.At.ContQ D.nd i (mapRep (iotaOQ D.nd D.naut i) (r x))` using `contQ_of_continuous D.nd D.naut i (r x) (hr x).1`. Establish `hall` using `charpoly_eq_of_dense' ρ (mapRep (iotaOQ D.nd D.naut i) (r x)) hρc hc2 _ hdense hfrob`. Establish `: CharZero (Kf D.nd i)` using `RingHom.charZero (D.naut.iotaQ i)`.
+
+Establish `hss : IsSSRep (mapRep (iotaOQ D.nd D.naut i) (r x))`. Establish `h` using `GlobalTheory.TraceSemisimple.isSSRep_mapRep _ _ _ (D.naut.iotaQ i) _ _ (hr x).2.1`. Establish `e : mapRep (iotaOQ D.nd D.naut i) (r x) = mapRep (D.naut.iotaQ i) (mapRep (algebraMap (D.nd.O i) (Kf D.nd i)) (r x))`. Use extensionality with `g a b`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `h`. Conclude with `hBN _ _ ρ _ hρs hss hall`.
+-/
 theorem rep_conj_of_baseChange : ∀ D : D7, SumRepresentations.adm5 D → ∀ (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r → ∀ (x : D.nd.X i) (P : D.naut.AV i) (Pa : List (Formalism.BasicNotions.Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa → ∀ ρ : GE D.nd →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.ContQ D.nd i ρ → IsSSRep ρ → (∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.wdOf i ρ w = D.naut.lpTw (isoLoc D.nd D.naut Pa w) ((1 - (D.R.nV : ℝ)) / 2)) → ∃ Pm : GL (Fin D.R.nV) (Qbar (D.nd.l i)), ∀ g, mapRep (iotaOQ D.nd D.naut i) (r x) g = Pm⁻¹ * ρ g * Pm := by
   intro D hAN i r hr x P Pa hP hB ρ hρc hρs hwd
   obtain ⟨-, -, hCheb, hBN⟩ := hAN

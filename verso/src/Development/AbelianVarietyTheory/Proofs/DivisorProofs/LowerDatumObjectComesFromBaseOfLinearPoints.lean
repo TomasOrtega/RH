@@ -12,6 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UCanon
 
+/- English proof (translation)
+Introduce `E _ _ _ H D' l c V _ _ _ bV o' X _ _ _ _ x hadd hlin`. Take `⟨W, _, _, _, b, o, x₀, θ₀, m, hft, hadd₀, hlin₀, hloc, hcomp, hx, ⟨fR, fE⟩, hdim⟩` from `GlobalTheory.T.exists_localRing_linearHomScheme_lowerObject D' c V bV o' X x hadd hlin`. Use `haveI : IsProper o.t.G.hom := o.proper`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim W o.t.G (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_of_proper _ o.t.semi)`. Take `⟨D, hmod, oa, φB, e, hev, hbi, hgen, hw0, hab, hc⟩` from `GlobalTheory.T.exists_generating_degenerationData_principalTriple W o.t o.proper o.ample o.ktriv ⟨g, hg⟩ X x₀ hadd₀ hlin₀`.
+
+Use `letI := hmod`. Use `haveI hiso : IsIso φB := hab.1.1.isIso_fst_of_isIso`. Use `⟨⟨W, b, hft, o, D, oa, hev, hbi, hgen, hw0, φB, hab, ?_, ?_, ?_⟩, θ₀, e, m, hloc, hcomp, ?_⟩` and prove the remaining obligations. Introduce `A _ _ f₁ f₂ hf o'' m₁ m₂ z h₁ h₂ hz`. Use `fR A f₁ f₂ hf o'' m₁ m₂ (fun y => z (e y)) (fun y => ?_) (fun y => ?_) (fun y => hz (e y))` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono φB, Category.assoc, Category.assoc, hc y]`. Conclude with `h₁ (e y)`. Rewrite using `[← cancel_mono φB, Category.assoc, Category.assoc, hc y]`. Conclude with `h₂ (e y)`. Introduce `k _ f o'' m₁ m₂ z h₁ h₂ hz`.
+
+Use `fE k f o'' m₁ m₂ (fun y => z (e y)) (fun y => ?_) (fun y => ?_) (fun y => hz (e y))` and prove the remaining obligations. Rewrite using `[← cancel_mono φB, Category.assoc, Category.assoc, hc y]`. Conclude with `h₁ (e y)`. Rewrite using `[← cancel_mono φB, Category.assoc, Category.assoc, hc y]`. Conclude with `h₂ (e y)`.
+
+Take `⟨a, t, h1, h2, h3⟩` from `hdim`. Conclude with `⟨a, t, h1, h2, by rw [h3, LinearEquiv.finrank_eq e]⟩`. Introduce `y show (x y).left ≫ m.toSABMap.φ ≫ φB = spMap θ₀ ≫ (D.c (e y)).left`. Rewrite using `[← hc y, ← Category.assoc, hx y, Category.assoc]`.
+-/
 theorem lowBase_of_linearPoints : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D' : Datum H) {l : Geo.Tor.Level H} (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (bV : c.F →+* V) (o' : LowObj D' c bV) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X] (x : X → (𝟙_ (Over (Sp V)) ⟶ o'.t.G)), (∀ y z, x (y + z) = x y * x z) → (∀ (a : 𝓞 E) y, x (a • y) = x y ≫ o'.t.act.act a) → ∃ (L : LowBase D' c) (θ₀ : L.W →+* V) (e : X ≃ₗ[𝓞 E] L.D.X) (m : ObjMap o' L.o (spMap θ₀)), IsLocalHom θ₀ ∧ θ₀.comp L.b = bV ∧ ∀ y, (x y).left ≫ m.toSABMap.φ ≫ L.φB = spMap θ₀ ≫ (L.D.c (e y)).left := by
   intro E _ _ _ H D' l c V _ _ _ bV o' X _ _ _ _ x hadd hlin
   obtain ⟨W, _, _, _, b, o, x₀, θ₀, m, hft, hadd₀, hlin₀, hloc, hcomp, hx, ⟨fR, fE⟩, hdim⟩ :=

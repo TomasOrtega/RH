@@ -13,6 +13,15 @@ open IsLocalRing GlobalTheory.AbDual
 
 namespace GlobalTheory.HTLiftIso
 
+/- English proof (translation)
+Introduce `p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR s s₀ o₀ o m _ _ φ hφ x hx y hy`. Set `κ` to `GlobalTheory.Cris.divided₂ hsq`. Establish `hκ : GlobalTheory.Cris.IsNilDP κ` using `GlobalTheory.Cris.isDPNilpotent_squareZero hsq`. Establish `ADR : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.abelianDeRham`. Establish `ADC : GlobalTheory.Published.AbelianDualCrystal` using `GlobalTheory.abelianDualCrystal`.
+
+Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim C o.A o.ab`. Establish `CS` using `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod ADR.1 ADC.2 hκ hπ rfl o.ab hg o.ab hg m.cart m.cart`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `CD` using `cupSquare_of_free ADR.1 hAB (smooth_prod hg hg)`. Take `⟨φd, hφd⟩` from `exists_isCorrForm CD o.isLB o.rig₁ o.rig₂`.
+
+Take `⟨φ₀, hφ₀, e₀⟩` from `GlobalTheory.Published.AbelianDualCrystal.exists_crystal_pairing κ m.cart m.cart m.sq.1 m.sq.2 o.isLB o₀.isLB (LBIso.symm m.pol) hφd`. Take `rfl` from `hφ.unique CS o₀.isLB hφ₀`. Rewrite using `[e₀]`. Take `⟨ψ, hψ, eψ⟩` from `hφd.isPolForm`. Establish `iso` using `(ADR.2.2.2.2 C _ _ hAB (smooth_prod hg hg) o.P o.isLB ψ hψ).1`.
+
+Establish `hx' : crysToDR κ m.cart x ∈ Fil o.A` using `hx`. Establish `hy' : crysToDR κ m.cart y ∈ Fil o.A` using `hy`. Establish `h` using `iso _ (push_mem_Fil (inl o.A o.A) hx') _ (push_mem_Fil (inr o.A o.A) hy')`. Rewrite `h` using `[eψ, push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _)]`. Simplify `h` using `[push_id, push_one]`.
+-/
 theorem liftFil_isotropic : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → ∀ (hsq : RingHom.ker π ^ 2 = 0) (tR : R →+* C) (s : Sp C ⟶ Sp R) (s₀ : Sp C₀ ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N s₀) (o : GlobalTheory.UPel.HT.Obj b N s) (m : GlobalTheory.UPel.HT.ObjMap o₀ o (spMap π)), s = spMap tR → s₀ = spMap π ≫ spMap tR → ∀ φ : Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] C, GlobalTheory.AbDual.IsCorrForm (divided₂ hsq) (spMap π) o₀.A o₀.A o₀.P φ → ∀ x ∈ liftFil (divided₂ hsq) m.cart, ∀ y ∈ liftFil (divided₂ hsq) m.cart, φ x y = 0 := by
   intro p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR s s₀ o₀ o m _ _ φ hφ x hx y hy
   let κ := GlobalTheory.Cris.divided₂ hsq

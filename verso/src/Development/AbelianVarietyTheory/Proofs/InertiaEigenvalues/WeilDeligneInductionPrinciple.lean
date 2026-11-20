@@ -25,6 +25,11 @@ def WDRep.resZero {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional 
   nilpotent := IsNilpotent.zero
   comm σ := by simp
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_prodMap, ← LinearEquiv.charpoly_conj (Submodule.prodEquivOfIsCompl U U' hc)]`. Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(Submodule.prodEquivOfIsCompl U U' hc).surjective v`. Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`.
+
+Simplify using `[Submodule.coe_prodEquivOfIsCompl', WDRep.resZero]`.
+-/
 theorem WDRep.charpoly_eq_mul_of_isCompl {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (a : WDRep h V) (U U' : Submodule ℂ V)
     (hU : ∀ σ, ∀ v ∈ U, a.ρ σ v ∈ U) (hU' : ∀ σ, ∀ v ∈ U', a.ρ σ v ∈ U') (hc : IsCompl U U')
@@ -37,6 +42,13 @@ theorem WDRep.charpoly_eq_mul_of_isCompl {V : Type} [AddCommGroup V] [Module ℂ
   rw [LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]
   simp [Submodule.coe_prodEquivOfIsCompl', WDRep.resZero]
 
+/- English proof (translation)
+Use `(Set.Finite.image2 (· * ·) (Set.finite_range fun j : Fin m => ρ (frob h) ^ (j : ℕ)) hρ.finite_range).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨σ, rfl⟩`. Take `⟨τ, hτ⟩` from `exists_eq_zpow_mul (h := h) deg_frob σ`. Establish `hker : frob h ^ m ∈ ρ.ker` using `by rw [MonoidHom.mem_ker, map_pow, h1]`. Use `set k := deg σ`.
+
+Establish `hk : frob h ^ k = frob h ^ ((k % m).toNat) * (frob h ^ m) ^ (k / m)`. Rewrite using `[← zpow_natCast (frob h) m, ← zpow_mul, ← zpow_natCast (frob h) ((k % m).toNat), ← zpow_add, Int.toNat_of_nonneg (Int.emod_nonneg _ (by exact_mod_cast hm.ne')), add_comm, Int.mul_ediv_add_emod]`. Establish `hlt : (k % m).toNat < m`. Use `Int.emod_lt_of_pos k (by exact_mod_cast hm : (0 : ℤ) < m)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨ρ (frob h) ^ ((k % m).toNat), ⟨⟨_, hlt⟩, rfl⟩, ρ (ineIncl h τ), ⟨τ, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : ρ ((frob h ^ m) ^ (k / m)) = 1` using `(ρ.ker.zpow_mem hker _)`. Use `show _ = ρ σ`. Rewrite using `[hτ, hk, map_mul, map_mul, h2, mul_one, map_pow]`.
+-/
 theorem finite_range_of_frob_pow_eq_one {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Weil h) V) (hρ : IsSmooth ρ) {m : ℕ} (hm : 0 < m)
     (h1 : ρ (frob h) ^ m = 1) : (Set.range ρ).Finite := by
@@ -58,6 +70,39 @@ theorem finite_range_of_frob_pow_eq_one {V : Type} [AddCommGroup V] [Module ℂ 
   show _ = ρ σ
   rw [hτ, hk, map_mul, map_mul, h2, mul_one, map_pow]
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `V _ _ _ hd ρ hρ hs`. Set `a0 : WDRep h V` to `⟨ρ, 0, hρ, hs, IsNilpotent.zero, by simp⟩`.
+
+Take `⟨m, hm, hcomm⟩` from `exists_pow_frob_commute ρ hρ`. Establish `hsm : ρ (frob h) ^ m = ρ (frob h ^ m)` using `(map_pow _ _ _).symm`. Distinguish the cases in `hsc : ∃ c : ℂ, c ≠ 0 ∧ ρ (frob h) ^ m = c • (1 : Module.End ℂ V)`. Take `⟨c, hc0, hsc⟩` from `hsc`. Take `⟨c', hc'⟩` from `IsAlgClosed.exists_pow_nat_eq c hm`.
+
+Establish `hc'0 : c' ≠ 0` using `by rintro rfl; exact hc0 (by rw [← hc', zero_pow hm.ne'])`. Use `set u : ℂˣ := Units.mk0 c' hc'0`. Set `b : WDRep h V` to `a0.twist (unrChar h u⁻¹) (isSmooth_unrChar h _)`. Establish `hb1 : b.ρ (frob h) ^ m = 1` using `by show ((((unrChar h u⁻¹) (frob h) : ℂˣ) : ℂ) • ρ (frob h)) ^ m = 1`. Rewrite using `[_root_.smul_pow, hsc, smul_smul, unrChar_apply, deg_frob, zpow_one, ← Units.val_pow_eq_pow_val, inv_pow]`.
+
+Establish `: u ^ m = Units.mk0 c hc0` using `Units.ext (by simp [u, hc'])`. Rewrite using `[this]`. Simplify using `[hc0]`. Establish `hfinb` using `finite_range_of_frob_pow_eq_one b.ρ b.smooth hm hb1`. Establish `hfins : (Set.range (WD.std b).2.ρ).Finite` using `(hfinb.image ((finBasis ℂ V).equivFun.conjAlgEquiv ℂ)).subset (by rintro _ ⟨σ, rfl⟩; exact ⟨_, ⟨σ, rfl⟩, rfl⟩)`.
+
+Use `⟨WD.mk ((WD.std b).2.twist (unrChar h u) (isSmooth_unrChar h _)), hfin _ _ _ _ hfins, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← WD.sound ((WD.iso_std b).twist _ _), WD.charPol_mk]`. Use `show ((((unrChar h u) σ : ℂˣ) : ℂ) • ((((unrChar h u⁻¹) σ : ℂˣ) : ℂ) • ρ σ)).charpoly = _`. Rewrite using `[smul_smul, ← Units.val_mul, unrChar_apply, unrChar_apply, ← mul_zpow, mul_inv_cancel, one_zpow, Units.val_one, one_smul]`. Establish `hnt : Nontrivial V`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hsc ⟨1, one_ne_zero, LinearMap.ext fun v => Subsingleton.elim _ _⟩`. Use `set s := ρ (frob h) ^ m with hs_def`. Establish `hss : End.IsSemisimple s` using `by rw [hsm]; exact hs _`.
+
+Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue s`. Establish `hinv : ∀ σ α, ∀ v ∈ End.eigenspace s α, ρ σ v ∈ End.eigenspace s α`. Introduce `σ α v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← Module.End.mul_apply, (hcomm σ).eq, Module.End.mul_apply, hv, map_smul]`.
+
+Use `set U := End.eigenspace s c`. Use `set U' := ⨆ α ∈ ({c}ᶜ : Set ℂ), End.eigenspace s α`. Establish `hU : ∀ σ, ∀ v ∈ U, ρ σ v ∈ U` using `fun σ => hinv σ c`. Establish `hU' : ∀ σ, ∀ v ∈ U', ρ σ v ∈ U'`. Introduce `σ v hv`.
+
+Establish `: U' ≤ U'.comap (ρ σ)` using `iSup₂_le fun α hα w hw => (le_iSup₂_of_le α hα le_rfl : End.eigenspace s α ≤ U') (hinv σ α w hw)`. Conclude with `this hv`. Establish `hcompl : IsCompl U U'`. Use `⟨(Module.End.eigenspaces_iSupIndep s).disjoint_biSup (by simp), ?_⟩` and prove the remaining obligations. Rewrite using `[codisjoint_iff, eq_top_iff, ← hss.iSup_eigenspace_eq_top]`.
+
+Use `iSup_le fun α => ?_` and prove the remaining obligations. Distinguish the cases in `hα : α = c`. Substitute `hα` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le α hα le_rfl)`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Take `⟨v, hv, hv0⟩` from `hc.exists_hasEigenvector`. Apply `hv0` to reduce the goal to its premises. Establish `h1` using `Module.End.mem_eigenspace_iff.mp hv`.
+
+Rewrite `h1` using `[zero_smul]`. Establish `h1' : ρ (frob h ^ m) v = 0` using `by rw [← hsm]; exact h1`. Use `congrArg (ρ (frob h ^ m)⁻¹) h1'` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis. Establish `hUb : U ≠ ⊥` using `hc`.
+
+Establish `hU'b : U' ≠ ⊥`. Introduce `hb`. Apply `hsc` to reduce the goal to its premises. Use `⟨c, hc0, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `hv : v ∈ U`.
+
+Use `hcompl.sup_eq_top` as an intermediate fact. Rewrite `this` using `[hb, sup_bot_eq]`. Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[Module.End.mem_eigenspace_iff.mp hv]`.
+
+Simplify using the standard rewrite rules. Establish `hrk` using `Submodule.finrank_add_eq_of_isCompl hcompl`. Establish `h1 : 0 < finrank ℂ U` using `Module.finrank_pos_iff.mpr (Submodule.nontrivial_iff_ne_bot.mpr hUb)`. Establish `h2 : 0 < finrank ℂ U'` using `Module.finrank_pos_iff.mpr (Submodule.nontrivial_iff_ne_bot.mpr hU'b)`. Take `⟨y1, hS1, hy1⟩` from `ih (finrank ℂ U) (by omega) U rfl (a0.resZero U hU).ρ (a0.resZero U hU).smooth (a0.resZero U hU).semisimple`.
+
+Take `⟨y2, hS2, hy2⟩` from `ih (finrank ℂ U') (by omega) U' rfl (a0.resZero U' hU').ρ (a0.resZero U' hU').smooth (a0.resZero U' hU').semisimple`. Use `⟨y1.lpSum y2, hsum _ _ hS1 hS2, fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[WD.charPol_lpSum, hy1, hy2]`. Conclude with `(a0.charpoly_eq_mul_of_isCompl U U' hU hU' hcompl σ).symm`.
+-/
 theorem exists_of_lpSum_twist_finite (S : WD h → Prop)
     (hsum : ∀ x y, S x → S y → S (x.lpSum y))
     (hfin : ∀ (n : ℕ) (a : WDRep h (Fin n → ℂ)) (μ : Weil h →* ℂˣ) (hμ : IsSmooth μ),
@@ -155,6 +200,9 @@ theorem exists_of_lpSum_twist_finite (S : WD h → Prop)
 
 end Reduction
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h S hsum hchar hfin x`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Take `⟨y, hy, hyc⟩` from `exists_of_lpSum_twist_finite S hsum hfin _ (Fin n → ℂ) rfl a.ρ a.smooth a.semisimple`. Conclude with `hchar y _ (fun σ => by rw [hyc, WD.charPol_mk]) hy`.
+-/
 theorem WD.induction_lpSum_twist_finite : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (S : WD h → Prop), (∀ x y, S x → S y → S (x.lpSum y)) → (∀ x y, (∀ σ, x.charPol σ = y.charPol σ) → S x → S y) → (∀ (n : ℕ) (a : WDRep h (Fin n → ℂ)) (μ : Weil h →* ℂˣ) (hμ : IsSmooth μ), (Set.range a.ρ).Finite → S (WD.mk (a.twist μ hμ))) → ∀ x, S x := by
   intro E Ω _ _ _ _ _ A w h S hsum hchar hfin x
   induction x using WD.ind with

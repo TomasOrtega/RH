@@ -47,9 +47,17 @@ def bcMap (C C' : Submodule K Rl) (f : Rl →ₗ[K] Rl) : (Fin (finrank K C) →
 def bcLat (C : Submodule K Rl) (M : Set Rl) : Submodule (𝓞 L) (Fin (finrank K C) → L) :=
   Submodule.span (𝓞 L) (bcVec φ C '' {x : C | (x : Rl) ∈ M})
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono fun _ hx => h hx)`.
+-/
 theorem bcLat_mono (C : Submodule K Rl) {M M' : Set Rl} (h : M ⊆ M') : bcLat φ C M ≤ bcLat φ C M' :=
   Submodule.span_mono (Set.image_mono fun _ hx => h hx)
 
+/- English proof (translation)
+Establish `hC : Module.Finite K C` using `inferInstance`. Establish `hx : x = ∑ i, crdV C x i • basV C i`. Simplify using `only [crdV, basV, dif_pos hC]`. Conclude with `((Module.finBasis K C).sum_equivFun x).symm`. Use function extensionality and compare the values at `k`.
+
+Use `conv_rhs => rw [hx]`. Simplify using `only [bcMap, bcVec, matV, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem bcMap_bcVec (C C' : Submodule K Rl) [Module.Finite K C] (f : Rl →ₗ[K] Rl) (x : C) :
     bcMap φ C C' f (bcVec φ C x) = bcVec φ C' (resL C C' f x) := by
   have hC : Module.Finite K C := inferInstance
@@ -66,6 +74,9 @@ open Classical in
 
 def preF (z : L) : K := if h : ∃ a, φ a = z then h.choose else 0
 
+/- English proof (translation)
+Unfold `preF`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem preF_spec {z : L} (h : ∃ a, φ a = z) : φ (preF φ z) = z := by
   unfold preF; rw [dif_pos h]; exact h.choose_spec
 
@@ -79,6 +90,9 @@ def supLat (C : Submodule K Rl) (Vs : HeightOneSpectrum (𝓞 K) → Set (Rl →
     Submodule (𝓞 K) Rl :=
   (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x.2, hx⟩`. Introduce and unpack `⟨hf, h⟩`. Conclude with `⟨⟨f, hf⟩, h, rfl⟩`.
+-/
 theorem mem_supLat (C : Submodule K Rl) (Vs : HeightOneSpectrum (𝓞 K) → Set (Rl → EReal)) (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v)
     (f : Rl) : f ∈ supLat C Vs hV ↔ f ∈ C ∧ ∀ la, ∀ v ∈ Vs la, 0 ≤ v f := by
   constructor
@@ -108,6 +122,11 @@ def secWZ (e : ι → ℤ) : Submodule K (Rules pts) where
     ⟨fun p q φ y z h => by simp [hf.1 p q φ y z h],
      fun p t y y' h => by simp [hf.2 p t y y' h]⟩
 
+/- English proof (translation)
+Establish `hw : ∀ (p : TRing K) (t : ι → (p.R)ˣ), ((∏ i, t i ^ (e i : ℤ) : (p.R)ˣ) : p.R) = wchar e t` using `fun p t => by`. Simplify using `[wchar]`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, fun p t y y' h => by rw [h2 p t y y' h, hw]⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun p t y y' h => by rw [h2 p t y y' h, hw]⟩`.
+-/
 theorem secWZ_nat (e : ι → ℕ) : secWZ pts mapR borR (fun i => (e i : ℤ)) = secW pts mapR borR e := by
   have hw : ∀ (p : TRing K) (t : ι → (p.R)ˣ), ((∏ i, t i ^ (e i : ℤ) : (p.R)ˣ) : p.R) = wchar e t := fun p t => by
     simp [wchar]
@@ -135,6 +154,9 @@ variable (Xo : Moduli Dw l) (c : Coeff l)
 def secZ (a : ExZ E) (n : ℕ) : Submodule c.F (Rul Xo c) :=
   secWZ (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (exZ Dw a n)
 
+/- English proof (translation)
+Apply the tactic sequence `have he : exZ Dw (fun x => (a x : ℤ)) n = fun i => (ex Dw a n i : ℤ) := funext fun i => by cases i <;> rfl`. Unfold `secZ sec`. Rewrite using `[he, secWZ_nat]`.
+-/
 theorem secZ_nat (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : secZ Xo c (fun x => (a x : ℤ)) n = sec Xo c a n := by
   have he : exZ Dw (fun x => (a x : ℤ)) n = fun i => (ex Dw a n i : ℤ) := funext fun i => by cases i <;> rfl
   unfold secZ sec
@@ -149,6 +171,9 @@ def laZ {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : ExZ E) (n : ℕ) (k : U.Co
       a (Function.invFun (relab c σ) τ.1, (j : ℕ) - (U.X k).p0) + ((n / 2 : ℕ) : ℤ)
     else -a (Function.invFun (relab c σ) (conjEmb τ.1), (U.X k).p0 - 1 - (j : ℕ)) - ((n / 2 : ℕ) : ℤ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem laZ_nat {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     laZ U (fun x => (a x : ℤ)) n = laU U a n := rfl
 
@@ -157,6 +182,9 @@ variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 def cuspZ (a : ExZ E) (n : ℕ) : Submodule c.F (Rul Xo c) :=
   secZ Xo c a n ⊓ ⨅ (σ : c.F →+* ℂ) (_ : GoodEmb c σ), (holSub (U σ).X (laZ (U σ) a n)).comap (rdU (U σ))
 
+/- English proof (translation)
+Unfold `cuspZ cusp`. Rewrite using `[secZ_nat]`. Both sides reduce to the same expression.
+-/
 theorem cuspZ_nat (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : cuspZ U (fun x => (a x : ℤ)) n = cusp Xo c U a n := by
   unfold cuspZ cusp
   rw [secZ_nat]
@@ -165,6 +193,9 @@ theorem cuspZ_nat (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : cuspZ U (fun x 
 def latZ (a : ExZ E) (n : ℕ) : Submodule (𝓞 c.F) (Rul Xo c) :=
   supLat (cuspZ U a n) (valSet Xo c (algCls Xo c)) fun la => isVal_valSet la
 
+/- English proof (translation)
+The claim follows from `mem_supLat _ _ _ f`.
+-/
 theorem mem_latZ (a : ExZ E) (n : ℕ) (f : Rul Xo c) :
     f ∈ latZ U a n ↔ f ∈ cuspZ U a n ∧ ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f :=
   mem_supLat _ _ _ f
@@ -172,6 +203,9 @@ theorem mem_latZ (a : ExZ E) (n : ℕ) (f : Rul Xo c) :
 def lieZ (Dw : Datum H) (x : ℝ) (a : ExZ E) : ℝ :=
   Real.exp (-((∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), (a (τ, i) : ℝ)) / 2) * Real.log (2 * Real.pi * x))
 
+/- English proof (translation)
+Simplify using `[lieZ, lieFac]`.
+-/
 theorem lieZ_nat (Dw : Datum H) (x : ℝ) (a : (E →+* ℂ) × ℕ → ℕ) : lieZ Dw x (fun y => (a y : ℤ)) = lieFac Dw x a := by
   simp [lieZ, lieFac]
 

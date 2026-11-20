@@ -35,6 +35,9 @@ variable {V V' W W' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional �
   [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
   [AddCommGroup W'] [Module ℂ W'] [FiniteDimensional ℂ W']
 
+/- English proof (translation)
+Introduce `σ v`. Establish `: LinearMap.inl ℂ V V2 ((((normV w : ℕ) : ℂ) ^ deg σ) • a1.ρ σ v) = (((normV w : ℕ) : ℂ) ^ deg σ) • (a1.sum a2).ρ σ (LinearMap.inl ℂ V V2 v)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[LinearMap.comp_apply, this, hg]`. Both sides reduce to the same expression.
+-/
 theorem IsTw.inl {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a1 : WDRep h V} {a2 : WDRep h V2} {b : WDRep h V'} {g : V × V2 →ₗ[ℂ] V'}
     (hg : IsTw (a1.sum a2) b g) : IsTw a1 b (g ∘ₗ LinearMap.inl ℂ V V2) := by
@@ -44,6 +47,9 @@ theorem IsTw.inl {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensiona
     ext <;> simp
   rw [LinearMap.comp_apply, this, hg]; rfl
 
+/- English proof (translation)
+Introduce `σ v`. Establish `: LinearMap.inr ℂ V V2 ((((normV w : ℕ) : ℂ) ^ deg σ) • a2.ρ σ v) = (((normV w : ℕ) : ℂ) ^ deg σ) • (a1.sum a2).ρ σ (LinearMap.inr ℂ V V2 v)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[LinearMap.comp_apply, this, hg]`. Both sides reduce to the same expression.
+-/
 theorem IsTw.inr {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a1 : WDRep h V} {a2 : WDRep h V2} {b : WDRep h V'} {g : V × V2 →ₗ[ℂ] V'}
     (hg : IsTw (a1.sum a2) b g) : IsTw a2 b (g ∘ₗ LinearMap.inr ℂ V V2) := by
@@ -53,12 +59,18 @@ theorem IsTw.inr {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensiona
     ext <;> simp
   rw [LinearMap.comp_apply, this, hg]; rfl
 
+/- English proof (translation)
+Introduce `σ v`. Rewrite using `[LinearMap.comp_apply, hg]`. Both sides reduce to the same expression.
+-/
 theorem IsTw.fst {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a : WDRep h W} {b1 : WDRep h V} {b2 : WDRep h V2} {g : W →ₗ[ℂ] V × V2}
     (hg : IsTw a (b1.sum b2) g) : IsTw a b1 (LinearMap.fst ℂ V V2 ∘ₗ g) := by
   intro σ v
   rw [LinearMap.comp_apply, hg]; rfl
 
+/- English proof (translation)
+Introduce `σ v`. Rewrite using `[LinearMap.comp_apply, hg]`. Both sides reduce to the same expression.
+-/
 theorem IsTw.snd {V2 : Type} [AddCommGroup V2] [Module ℂ V2] [FiniteDimensional ℂ V2]
     {a : WDRep h W} {b1 : WDRep h V} {b2 : WDRep h V2} {g : W →ₗ[ℂ] V × V2}
     (hg : IsTw a (b1.sum b2) g) : IsTw a b2 (LinearMap.snd ℂ V V2 ∘ₗ g) := by

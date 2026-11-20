@@ -7,6 +7,9 @@ open Formalism.BasicNotions
 
 namespace GlobalTheory.TwArch
 
+/- English proof (translation)
+Introduce `hDS hHC D` and use `GlobalTheory.ArchRec.archOnRecord hDS hHC D`.
+-/
 theorem archOnRecord_closed : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules →
     ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ArchOnRecord D :=
   fun hDS hHC D => GlobalTheory.ArchRec.archOnRecord hDS hHC D

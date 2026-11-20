@@ -44,6 +44,19 @@ open Classical
 
 namespace GlobalTheory.LevAssembly
 
+/- English proof (translation)
+Introduce `D S βS L hH g PP hPP huniq hQ hSt hred hr`. Establish `hone : ∀ PP' : Pl D.host.E, PP'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F) → Formalism.L2.DIV.redFn βS PP' (Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g)) = 1`. Introduce `PP' hne`. Conclude with `GlobalTheory.T.latticeReduction_eq_one_of_local_component_one D S βS _ PP' hSt (GlobalTheory.AdelicU.proj_emb_ne _ _ hne _)`. Use `⟨GlobalTheory.ChainOnto.LevelFacts.emb_mem_GfC S _ _, ?_⟩` and prove the remaining obligations.
+
+Use `show Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g) ∈ Formalism.L2.DIV.lev D.sp.cm S.gram βS L`. Use `⟨⟨⟨⟨GlobalTheory.LevSplit.finE_mem_UA S _, hSt⟩, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun PP' => Subgroup.mem_iInf.2 fun hPP' => ?_` and prove the remaining obligations. Use `Formalism.L2.DIV.mem_parah.2 ⟨hSt, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : PP'.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)`.
+
+Rewrite using `[huniq PP' hPP' h]`. Conclude with `hred`. Rewrite using `[hone PP' h]`. Conclude with `Subgroup.one_mem _`. Use `Subgroup.mem_iInf.2 fun PP' => Subgroup.mem_iInf.2 fun hPP' => ?_` and prove the remaining obligations.
+
+Use `Formalism.L2.DIV.mem_parah.2 ⟨hSt, ?_⟩` and prove the remaining obligations. Rewrite using `[hone PP' (hQ PP' hPP')]`. Conclude with `Subgroup.one_mem _`. Use `show Formalism.L2.DIV.rTup βS L _ ∈ L.P.H`. Rewrite using `[hH, Subgroup.mem_bot]`.
+
+Use function extensionality and compare the values at `PP'`. Use `show Formalism.L2.DIV.upperLeftBlock L.hr (Formalism.L2.DIV.redFn βS PP'.1 _) = 1`. Distinguish the cases in `h : PP'.1.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)`. Rewrite using `[huniq PP'.1 PP'.2 h]`. Conclude with `hr`.
+
+Rewrite using `[hone PP'.1 h]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`.
+-/
 theorem gAt_mem_levG_of_red : ∀ (D : D7) (S : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ S.rank), L.P.H = ⊥ → ∀ (g : GA D S), ∀ PP ∈ L.Pg, (∀ PP' ∈ L.Pg, PP'.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F) → PP' = PP) → (∀ PP' ∈ L.Q, PP'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F)) → Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g) ∈ Formalism.L2.DIV.St βS → Formalism.L2.DIV.redFn βS PP (Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf L.r L.t) → Formalism.L2.DIV.upperLeftBlock L.hr (Formalism.L2.DIV.redFn βS PP (Lev.finE S (gAt S (.inl (PP.under (𝓞 D.host.F))) g))) = 1 → gAt S (.inl (PP.under (𝓞 D.host.F))) g ∈ Lev.levG S βS L := by
   intro D S βS L hH g PP hPP huniq hQ hSt hred hr
   have hone : ∀ PP' : Pl D.host.E, PP'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F) →

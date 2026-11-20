@@ -20,12 +20,20 @@ def logOmCurve (H : Host E) : ℝ := Real.eulerMascheroniConstant + Real.log (2 
 
 def logOm (H : Host E) : ℝ := Real.eulerMascheroniConstant + Real.log (2 * Real.pi / rootDiscr E) - dlogL H
 
+/- English proof (translation)
+Establish `h2 : ringChar (ZMod H.d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use `H.d_mod` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[chi, MulChar.ringHomComp_ne_one_iff (RingHom.injective_int _)]`.
+
+Conclude with `quadraticChar_ne_one h2`.
+-/
 theorem chi_ne_one (H : Host E) : chi H ≠ 1 := by
   have h2 : ringChar (ZMod H.d) ≠ 2 := by
     rw [ZMod.ringChar_zmod_n]; have := H.d_mod; omega
   rw [chi, MulChar.ringHomComp_ne_one_iff (RingHom.injective_int _)]
   exact quadraticChar_ne_one h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨DirichletCharacter.LFunction_apply_one_ne_zero (chi_ne_one H), (chi H).differentiableAt_LFunction 1 (Or.inr (chi_ne_one H))⟩`.
+-/
 theorem LFunction_ne_zero (H : Host E) :
     (chi H).LFunction 1 ≠ 0 ∧ DifferentiableAt ℂ (chi H).LFunction 1 :=
   ⟨DirichletCharacter.LFunction_apply_one_ne_zero (chi_ne_one H),
@@ -62,6 +70,9 @@ def HasPeriod {M : Type} [Field M] [NumberField M] {ω : 𝓞 M} (C : Ell H (�
   ∃ n : (M →+* ℂ) → ℝ, (∀ s, 0 < n s ∧ ∀ r, IsLieNormSq C.P C.v (s.comp (algebraMap (𝓞 M) M)) r ↔ r = n s) ∧
     x = -meanLog M n
 
+/- English proof (translation)
+Take `⟨n, hn, rfl⟩` from `hx`. Take `⟨n', hn', rfl⟩` from `hy`. Rewrite using `[show n = n' from funext fun s => ((hn' s).2 _).1 (((hn s).2 _).2 rfl)]`.
+-/
 theorem HasPeriod.unique {M : Type} [Field M] [NumberField M] {ω : 𝓞 M} {C : Ell H (𝓞 M) ω} {x y : ℝ}
     (hx : HasPeriod C x) (hy : HasPeriod C y) : x = y := by
   obtain ⟨n, hn, rfl⟩ := hx
@@ -83,6 +94,9 @@ structure IsPolFam (C : Ell H R ω) (t : SAB H (Sp R)) {D : Datum H} (L : Submod
     (φ : L → (C.P.A ⟶ t.G)) : Prop extends IsHomFam C t L φ where
   lam : ∃ h, IsKForm D ε h ∧ ∀ a b : L, LamEq t.PP.L (φ a) (φ b) C.P.L (C.act.act (h a b)) (𝟙 C.P.A)
 
+/- English proof (translation)
+The claim follows from `{ hom := fun _ => inferInstance add := fun a b => X.ten.tmul_add a.1 b.1 smul := fun s a => X.lin s a.1 lin := fun k a => (X.ten.isLinearHom_tmul a.1).comm k lam := ⟨h, hh, fun a b => X.lam a.1 b.1⟩ }`.
+-/
 theorem isPolFam_of_isTen {C : Ell H R ω} {D : Datum H} {ε : ℤˣ} {h : D.La → D.La → OK H} (hh : IsKForm D ε h)
     {T : PAT H (Sp R)} (X : IsTen C D h T) : IsPolFam C T.t (⊤ : Submodule (𝓞 E) D.La) ε fun a => X.ten.tmul a.1 :=
   { hom := fun _ => inferInstance
@@ -105,6 +119,9 @@ structure IsExp {S : Scheme.{0}} (t : SAB H S) (y : Sp ℂ ⟶ S) (D : Datum H) 
     (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D.EF a b : ℂ) / k) →
     Out.WeilIs t.G t.PP.L k (ex ((k : ℂ)⁻¹ • Pe a)) (ex ((k : ℂ)⁻¹ • Pe b)) (unitOn c)
 
+/- English proof (translation)
+Introduce `U f` and use `by obtain ⟨h₁, h₂⟩ := h U f refine ⟨?_, h₂.comp hc.differentiableOn fun z hz => ⟨hB z, hz.2⟩⟩ convert h₁.preimage hc.continuous using 1 ext z exact ⟨fun hz => ⟨hB z, hz.2⟩, fun hz => ⟨trivial, hz.2⟩⟩`.
+-/
 theorem isHolTo_comp {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]
     {X : Scheme.{0}} {B : Set W} {y : W → (Sp ℂ ⟶ X)} {c : V → W} (hc : Differentiable ℂ c) (hB : ∀ z, c z ∈ B)
     (h : IsHolTo B y) : IsHolTo Set.univ fun z => y (c z) := fun U f => by
@@ -114,6 +131,11 @@ theorem isHolTo_comp {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [No
   ext z
   exact ⟨fun hz => ⟨hB z, hz.2⟩, fun hz => ⟨trivial, hz.2⟩⟩
 
+/- English proof (translation)
+Establish `h₀ : IsHolPeriods (FU.Di i) ty (Set.univ : Set (Fin 0 → ℂ)) (fun _ => Pe)` using `⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩`. Establish `h₁` using `(FU.hol i 0 Set.univ (fun _ => Pe) isOpen_univ h₀).2`. Establish `hc : Differentiable ℂ fun z : Fin g → ℂ => ((0 : Fin 0 → ℂ), z)` using `by fun_prop`. Establish `h₂` using `isHolTo_comp hc (B := Set.univ ×ˢ Set.univ) (fun _ => Set.mk_mem_prod trivial trivial) h₁`. Use `⟨hP, FU.ex_add i Pe hP, FU.ex_onto i Pe hP, FU.ex_ker i Pe hP, FU.ex_lin i Pe hP, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `h₂` using `only []`. Conclude with `FU.ex_weil i Pe hP`.
+-/
 theorem isExp_of_familyUnif {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) {Pe : (FU.Di i).La →+ (Fin g → ℂ)}
     (hP : IsPeriod (FU.Di i) ty Pe) : IsExp Xo.univ.t (FU.u i Pe) (FU.Di i) ty Pe (FU.ex i Pe) := by
@@ -166,6 +188,13 @@ def IsRealisedBy (X : LatData hP Λ) {K : Type} [Field K] [NumberField K] {ρ : 
 
 end LatData
 
+/- English proof (translation)
+Establish `he : IsEmpty (Fin D.q)` using `hq ▸ inferInstanceAs (IsEmpty (Fin 0))`. Use `⟨⟨fun b => match b with | true => D | false => D', ⟨hp, hq⟩, h', fun j => match j with | .inl _ => LinearMap.id | .inr k => he.elim k, fun _ => 1, ?_, ?_, ?_, le_rfl, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `(j | k) a`. Use `show _ ∈ PureType.lat hP H.rt0`. Rewrite using `[PureType.lat_eq_top hP hty]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `he.elim k`. Introduce and unpack `(j | k) a b`. Rewrite using `[one_smul]`. Both sides reduce to the same expression.
+
+Conclude with `he.elim k`. Introduce `x`. Use `⟨1, one_pos, Submodule.mem_iSup_of_mem (.inl ⟨0, by omega⟩) ⟨x, (one_smul _ x).symm⟩⟩` and prove the remaining obligations.
+-/
 theorem nonempty_latData {D D' : Datum H} (hp : D.p = 1) (hq : D.q = 0) (h' : D'.p = 0 ∧ D'.q = 1) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (hty : IsTypeFn H 1 0 ty) {Pe : D.La →+ (Fin g → ℂ)} (hP : IsPeriod D ty Pe) :
     Nonempty (LatData hP 1) := by
@@ -197,6 +226,13 @@ def IsDegDe (x : KeyIn K) (δ : ℝ) : Prop :=
 def IsDegDeOf (P : Out.PolAV (Sp (𝓞 K))) (δ : ℝ) : Prop :=
   ∃ (x : KeyIn K) (φ : x.P.A.left ⟶ P.A.left), IsPolFibre (algebraMap (𝓞 K) K) P x.P φ ∧ IsDegDe x δ
 
+/- English proof (translation)
+Take `⟨hpos, -, e⟩` from `h K x oa od nth nη h₁ h₂`. Use `⟨oa, nth, fun 𝔭 => ?_, ha, fun σ => ⟨(hpos σ).1, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, M, p, q, -⟩` from `h₁ 𝔭`. Conclude with `⟨a, M, p, q⟩`. Take `⟨x', p, q⟩` from `h₂ σ`.
+
+Conclude with `⟨x', _, p, q⟩`. Establish `hf : ∀ (c : HeightOneSpectrum (𝓞 K) → ℤ) (r : ℝ), (Function.support c).Finite → (Function.support fun 𝔭 : HeightOneSpectrum (𝓞 K) => r * ((c 𝔭 : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal))).Finite` using `fun c r hc => hc.subset fun 𝔭 h𝔭 h0 => h𝔭 (by simp [h0])`. Establish `e2 : ∑ᶠ 𝔭 : HeightOneSpectrum (𝓞 K), ((8 * oa 𝔭 - 4 * od 𝔭 : ℤ) : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal) = 8 * ∑ᶠ 𝔭 : HeightOneSpectrum (𝓞 K), (oa 𝔭 : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal) - 4 * ∑ᶠ 𝔭 : HeightOneSpectrum (𝓞 K), (od 𝔭 : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal)`. Rewrite using `[mul_finsum, mul_finsum, ← finsum_sub_distrib (hf oa 8 ha) (hf od 4 hd)]`. Conclude with `finsum_congr fun 𝔭 => by push_cast; ring`.
+
+Rewrite `e` using `[e2, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `hn : (Module.finrank ℚ K : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deg_formula (h : KeyDegreeSt) (x : KeyIn K) (oa od : HeightOneSpectrum (𝓞 K) → ℤ) (nth nη : (K →+* ℂ) → ℝ)
     (h₁ : ∀ 𝔭, ∃ a M, KeyPow.IsLocalModel x 𝔭 a M ∧
       𝔭.valuation K a = WithZero.exp (-oa 𝔭) ∧ 𝔭.valuation K M.det = WithZero.exp (-od 𝔭))

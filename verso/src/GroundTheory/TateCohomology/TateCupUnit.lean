@@ -25,16 +25,25 @@ noncomputable def rightUnitorSCIso : E.map (tensorRight (𝟙_ (Rep.{u} k G))) �
 
 variable {E}
 
+/- English proof (translation)
+The claim follows from `ShortComplex.shortExact_of_iso (leftUnitorSCIso E).symm hE`.
+-/
 theorem shortExact_tensorLeft_unit (hE : E.ShortExact) :
     (E.map (tensorLeft (𝟙_ (Rep.{u} k G)))).ShortExact :=
   ShortComplex.shortExact_of_iso (leftUnitorSCIso E).symm hE
 
+/- English proof (translation)
+The claim follows from `ShortComplex.shortExact_of_iso (rightUnitorSCIso E).symm hE`.
+-/
 theorem shortExact_tensorRight_unit (hE : E.ShortExact) :
     (E.map (tensorRight (𝟙_ (Rep.{u} k G)))).ShortExact :=
   ShortComplex.shortExact_of_iso (rightUnitorSCIso E).symm hE
 
 variable [Fintype G]
 
+/- English proof (translation)
+The claim follows from `congr(($(TateCohomology.δ_naturality hE' hE (leftUnitorSCIso E).hom i)).hom x).symm`.
+-/
 theorem δ_leftUnitor_apply (hE : E.ShortExact)
     (hE' : (E.map (tensorLeft (𝟙_ (Rep.{u} k G)))).ShortExact) (i : ℤ)
     (x : tateCohomology (𝟙_ (Rep.{u} k G) ⊗ E.X₃) i) :
@@ -42,6 +51,9 @@ theorem δ_leftUnitor_apply (hE : E.ShortExact)
       ((tateCohomologyFunctor (i + 1)).map (λ_ E.X₁).hom).hom ((TateCohomology.δ hE' i).hom x) :=
   congr(($(TateCohomology.δ_naturality hE' hE (leftUnitorSCIso E).hom i)).hom x).symm
 
+/- English proof (translation)
+The claim follows from `congr(($(TateCohomology.δ_naturality hE' hE (rightUnitorSCIso E).hom i)).hom x).symm`.
+-/
 theorem δ_rightUnitor_apply (hE : E.ShortExact)
     (hE' : (E.map (tensorRight (𝟙_ (Rep.{u} k G)))).ShortExact) (i : ℤ)
     (x : tateCohomology (E.X₃ ⊗ 𝟙_ (Rep.{u} k G)) i) :
@@ -61,6 +73,13 @@ noncomputable def tateOne : tateCohomology (𝟙_ (Rep.{u} k G)) 0 :=
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (((tateCohomologyZeroIso k G).app B).hom.hom b)`. Establish `hb : b = ((tateCohomologyZeroIso k G).app B).inv.hom (Submodule.Quotient.mk y)`. Rewrite using `[hy]`. Conclude with `(((tateCohomologyZeroIso k G).app B).hom_inv_id_apply b).symm`. Substitute `hb` using the available equality.
+
+Establish `h0` using `tateCup_zero_zero (𝟙_ (Rep.{u} k G)) B ⟨(1 : k), fun _ => rfl⟩ y`. Use `(congrArg (((tateCohomologyFunctor 0).map (λ_ B).hom).hom) h0).trans ?_` and prove the remaining obligations. Establish `hn` using `congr(($((tateCohomologyZeroIso k G).inv.naturality (λ_ B).hom)).hom (Submodule.Quotient.mk (tensorInvariants (⟨(1 : k), fun _ => rfl⟩ : (𝟙_ (Rep.{u} k G)).ρ.invariants) y)))`. Use `hn.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((tateCohomologyZeroIso k G).inv.app B).hom (Submodule.Quotient.mk _) = _`.
+
+Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(λ_ B).hom.hom ((1 : k) ⊗ₜ[k] (y : B)) = y`. Rewrite using `[leftUnitor_hom_tmul, one_smul]`.
+-/
 theorem leftUnitor_tateCup_tateOne_zero (B : Rep.{u} k G) (b : tateCohomology B 0) :
     ((tateCohomologyFunctor 0).map (λ_ B).hom).hom
       (tateCup 0 0 (𝟙_ (Rep.{u} k G)) B 0 (zero_add 0) (tateOne k G) b) = b := by
@@ -82,6 +101,11 @@ theorem leftUnitor_tateCup_tateOne_zero (B : Rep.{u} k G) (b : tateCohomology B 
   change (λ_ B).hom.hom ((1 : k) ⊗ₜ[k] (y : B)) = y
   rw [leftUnitor_hom_tmul, one_smul]
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Establish `hE` using `augSES_shortExact B`. Establish `hAE` using `augSES_tensorLeft_shortExact (𝟙_ (Rep.{u} k G)) B`. Establish `hiso : IsIso (TateCohomology.δ hE q)` using `isIso_δ_of_tateAcyclic hE (tateAcyclic_leftRegular_tensor B) q`. Apply `moduleIso_hom_injective (@asIso _ _ _ _ _ hiso)` to reduce the goal to its premises.
+
+Use `(δ_leftUnitor_apply hE hAE q _).trans ?_` and prove the remaining obligations. Establish `hr` using `tateCup_δ_right hE (𝟙_ (Rep.{u} k G)) hAE 0 q q (zero_add q) (tateOne k G) b`. Rewrite `hr` using `[Int.negOnePow_zero, one_smul]`. Use `(congrArg (((tateCohomologyFunctor (q + 1)).map (λ_ _).hom).hom) hr).trans ?_` and prove the remaining obligations. Conclude with `h _ _`.
+-/
 theorem leftUnitor_tateCup_tateOne_down (q q' : ℤ) (hq : q + 1 = q')
     (h : ∀ (B : Rep.{u} k G) (b : tateCohomology B q'),
       ((tateCohomologyFunctor q').map (λ_ B).hom).hom
@@ -101,6 +125,11 @@ theorem leftUnitor_tateCup_tateOne_down (q q' : ℤ) (hq : q + 1 = q')
   refine (congrArg (((tateCohomologyFunctor (q + 1)).map (λ_ _).hom).hom) hr).trans ?_
   exact h _ _
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Establish `hE` using `coindSES_shortExact B`. Establish `hAE` using `shortExact_tensorLeft_unit hE`. Establish `hiso : IsIso (TateCohomology.δ hE q)` using `isIso_δ_coindSES B q`. Take `⟨c, rfl⟩ : ∃ c, (TateCohomology.δ hE q).hom c = b` from `⟨(@asIso _ _ _ _ _ hiso).inv.hom b, (@asIso _ _ _ _ _ hiso).inv_hom_id_apply b⟩`.
+
+Establish `hr` using `tateCup_δ_right hE (𝟙_ (Rep.{u} k G)) hAE 0 q q (zero_add q) (tateOne k G) c`. Rewrite `hr` using `[Int.negOnePow_zero, one_smul]`. Use `(congrArg (((tateCohomologyFunctor (q + 1)).map (λ_ _).hom).hom) hr.symm).trans ?_` and prove the remaining obligations. Use `(δ_leftUnitor_apply hE hAE q _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (TateCohomology.δ hE q).hom (h _ _)`.
+-/
 theorem leftUnitor_tateCup_tateOne_up (q q' : ℤ) (hq : q + 1 = q')
     (h : ∀ (B : Rep.{u} k G) (b : tateCohomology B q),
       ((tateCohomologyFunctor q).map (λ_ B).hom).hom
@@ -120,6 +149,9 @@ theorem leftUnitor_tateCup_tateOne_up (q q' : ℤ) (hq : q + 1 = q')
   refine (δ_leftUnitor_apply hE hAE q _).symm.trans ?_
   exact congrArg (TateCohomology.δ hE q).hom (h _ _)
 
+/- English proof (translation)
+Proceed by induction on `q using Int.induction_on generalizing B with`. Consider the case `zero => exact leftUnitor_tateCup_tateOne_zero B b`. Consider the case `succ i ih => exact leftUnitor_tateCup_tateOne_up (i : ℤ) _ rfl ih B b`. Consider the case `pred i ih => exact leftUnitor_tateCup_tateOne_down _ (-(i : ℤ)) (by ring) ih B b`.
+-/
 theorem leftUnitor_tateCup_tateOne (q : ℤ) (B : Rep.{u} k G) (b : tateCohomology B q) :
     ((tateCohomologyFunctor q).map (λ_ B).hom).hom
         (tateCup 0 q (𝟙_ (Rep.{u} k G)) B q (zero_add _) (tateOne k G) b) = b := by

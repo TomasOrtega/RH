@@ -19,6 +19,9 @@ def trF {E' : Type} [Field E'] [NumberField E'] [IsCMField E'] (X : Data E r) (X
     (y : Frame X.Ψ r) : Frame X'.Ψ r :=
   fun τ' => (mat (baseFr X') τ' * (mat (baseFr X) (e.symm τ'))⁻¹ * mat y (e.symm τ') : Matrix (Fin r) (Fin r) ℂ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show mat (baseFr X) τ * (mat (baseFr X) τ)⁻¹ * mat y τ = mat y τ`. Establish `h : (mat (baseFr X) τ).det ≠ 0` using `(X.signature τ).choose_spec.1`. Rewrite using `[Matrix.mul_nonsing_inv _ h.isUnit, Matrix.one_mul]`.
+-/
 example (X : Data E r) (y : Frame X.Ψ r) : trF X X (Equiv.refl _) y = y := by
   funext τ
   show mat (baseFr X) τ * (mat (baseFr X) τ)⁻¹ * mat y τ = mat y τ

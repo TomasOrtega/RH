@@ -14,6 +14,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullH
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Af F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `haveI := nonarch_finiteAdeleRing (F := F)`. Use `haveI : NonarchimedeanAddGroup (κ → Af F) := nonarch_pi`. Take `⟨K, hK, hK0⟩` from `exists_compact_mem_nhds (0 : κ → Af F)`.
+
+Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean K hK0`. Establish `hc : IsCompact (V : Set (κ → Af F))` using `hK.of_isClosed_subset V.isClosed hV`. Use `⟨(V : Set (κ → Af F)).indicator fun _ => 1, ⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) V.isClopen).isLocallyConstant, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩, Set.indicator_of_mem V.zero_mem _⟩` and prove the remaining obligations.
+-/
 theorem exists_sb_one : ∃ g ∈ SB (κ → Af F), g 0 = 1 := by
   haveI : LocallyCompactSpace (Af F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F
   haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F
@@ -26,6 +31,13 @@ theorem exists_sb_one : ∃ g ∈ SB (κ → Af F), g 0 = 1 := by
     V.isClopen).isLocallyConstant, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩,
     Set.indicator_of_mem V.zero_mem _⟩
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hz`. Establish `: ∃ v, evalV F v (z i) ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hi (af_ext fun u => by rw [h u]; simp)`.
+
+Take `⟨v, hv⟩` from `this`. Take `⟨t, ht⟩` from `DFunLike.ne_iff.1 (GlobalTheory.PsiNontriv.psiAt_ne_one ψ hψ v)`. Use `⟨Pi.single i (singleFin v (t / evalV F v (z i))), ?_⟩` and prove the remaining obligations. Establish `e : z i * singleFin v (t / evalV F v (z i)) = singleFin v t` using `af_ext fun u => by`. Distinguish the cases in `h : u = v`.
+
+Substitute `h` using the available equality. Rewrite using `[map_mul, evalV_singleFin_self, evalV_singleFin_self, mul_div_cancel₀ _ hv]`. Rewrite using `[map_mul, evalV_singleFin_ne h, evalV_singleFin_ne h, mul_zero]`. Rewrite using `[dotProduct_single, e]`. Conclude with `ht`.
+-/
 theorem exists_char_ne {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {z : κ → Af F} (hz : z ≠ 0) :
     ∃ w : κ → Af F, finChar ψ (z ⬝ᵥ w) ≠ 1 := by
   classical
@@ -45,12 +57,18 @@ theorem exists_char_ne {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {z : κ → Af
   rw [dotProduct_single, e]
   exact ht
 
+/- English proof (translation)
+Simplify using `only [dotProduct, finE]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(map_sum (p1 (F := F)) _ _).trans (Finset.sum_eq_zero fun i _ => mul_zero (x i).1)`. Conclude with `map_sum (p2 (F := F)) _ _`.
+-/
 theorem finE_dot (x : κ → AF F) (w : κ → Af F) : x ⬝ᵥ finE F w = ((0, (fun i => (x i).2) ⬝ᵥ w) : AF F) := by
   simp only [dotProduct, finE]
   refine Prod.ext ?_ ?_
   · exact (map_sum (p1 (F := F)) _ _).trans (Finset.sum_eq_zero fun i _ => mul_zero (x i).1)
   · exact map_sum (p2 (F := F)) _ _
 
+/- English proof (translation)
+Establish `: finE F (0 : κ → Af F) = 0` using `rfl`. Simplify using `only [schr, finE2, this, zero_dotProduct, mul_zero, add_zero]`. Rewrite using `[finE_dot]`. Both sides reduce to the same expression.
+-/
 theorem schr_mod (ψ : AddChar (AF F) ℂ) (w : κ → Af F) (Φ : (κ → AF F) → ℂ) (x : κ → AF F) :
     schr ψ (finE2 F (0, w)) Φ x = finChar ψ ((fun i => (x i).2) ⬝ᵥ w) * Φ x := by
   have : finE F (0 : κ → Af F) = 0 := rfl
@@ -58,14 +76,49 @@ theorem schr_mod (ψ : AddChar (AF F) ℂ) (w : κ → Af F) (Φ : (κ → AF F)
   rw [finE_dot]
   rfl
 
+/- English proof (translation)
+Establish `: finE F (0 : κ → Af F) = 0` using `rfl`. Simplify using `[schr, finE2, this]`.
+-/
 theorem schr_tr (ψ : AddChar (AF F) ℂ) (z : κ → Af F) (Φ : (κ → AF F) → ℂ) (x : κ → AF F) :
     schr ψ (finE2 F (z, 0)) Φ x = Φ (x + finE F z) := by
   have : finE F (0 : κ → Af F) = 0 := rfl
   simp [schr, finE2, this]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+-/
 theorem pureA_mem (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
+/- English proof (translation)
+Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Set `L : ((κ → Af F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)` to `{ toFun := fun g => pureA F f g map_add' := fun a b => funext fun x => by simp [pureA, mul_add] map_smul' := fun c a => funext fun x => by simp [pureA, mul_left_comm] }`. Establish `key : ∀ φ ∈ SB (κ → Af F), φ 0 = 0 → ∀ y, S (pureA F f φ) (infE F y) = 0` using `fun φ hφ h0 y => by`. Set `e : (κ → Af F) → (κ → Af F) → ℂ` to `fun w z => finChar ψ (z ⬝ᵥ w) - 1`. Establish `he : ∀ w, IsLocallyConstant (e w)` using `fun w => ((finChar_isLocallyConstant ψ hψ.1).comp_continuous (continuous_id.dotProduct continuous_const)).comp (· - 1)`.
+
+Establish `hts : tsupport φ = Function.support φ`. Use `IsClosed.closure_eq ⟨?_⟩` and prove the remaining obligations. Use `hφ.1.isOpen_fiber 0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Establish `hex : ∀ z : tsupport φ, ∃ w, e w z ≠ 0` using `fun z => by`. Establish `hz : (z : κ → Af F) ≠ 0` using `fun h => by`. Establish `: (z : κ → Af F) ∈ Function.support φ` using `hts ▸ z.2`. Conclude with `this (h ▸ h0)`.
+
+Take `⟨w, hw⟩` from `exists_char_ne hψ hz`. Conclude with `⟨w, sub_ne_zero.2 hw⟩`. Use `choose w hw using hex`. Take `⟨t, ht⟩` from `(hφ.2 : IsCompact (tsupport φ)).elim_nhds_subcover' (fun z hz => {x | e (w ⟨z, hz⟩) x ≠ 0}) fun z hz => ((he _).continuous.isOpen_preimage _ isOpen_ne).mem_nhds (hw ⟨z, hz⟩)`. Set `G : (κ → Af F) → ℂ` to `fun x => ∑ z ∈ t, e (w z) x * (starRingEnd ℂ) (e (w z) x)`.
+
+Establish `hG : IsLocallyConstant G`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [(Filter.eventually_all_finset t).2 fun z _ => (he (w z)).eventually_eq x] with y hy`. Conclude with `Finset.sum_congr rfl fun z hz => by rw [hy z hz]`.
+
+Establish `hG0 : ∀ x, φ x ≠ 0 → G x ≠ 0` using `fun x hx => by`. Take `⟨z, hz, hzx⟩ : ∃ z ∈ t, e (w z) x ≠ 0` from `by simpa using ht (subset_tsupport _ hx)`. Simplify using `only [G, Complex.mul_conj]`. Rewrite using `[← Complex.ofReal_sum, Complex.ofReal_ne_zero]`. Conclude with `(Finset.sum_pos' (f := fun i => Complex.normSq (e (w i) x)) (fun _ _ => Complex.normSq_nonneg _) ⟨z, hz, Complex.normSq_pos.2 hzx⟩).ne'`.
+
+Set `φ' : tsupport φ → (κ → Af F) → ℂ` to `fun z x => (starRingEnd ℂ) (e (w z) x) * (G x)⁻¹ * φ x`. Establish `hφ' : ∀ z, φ' z ∈ SB (κ → Af F)` using `fun z => ⟨((((he (w z)).comp (starRingEnd ℂ)).mul (hG.comp (·⁻¹))).mul hφ.1), hφ.2.mul_left⟩`. Establish `hsum : pureA F f φ = ∑ z ∈ t, (schr ψ (finE2 F (0, w z)) (pureA F f (φ' z)) - pureA F f (φ' z))`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.sub_apply, schr_mod, pureA, φ']`.
+
+Distinguish the cases in `hx : φ (fun i => (x i).2) = 0`. Simplify using `[hx]`. Use `hG0 _ hx` as an intermediate fact. Establish `e2 : ∀ (a b c d k : ℂ), a * (k * (b * c * d)) - k * (b * c * d) = ((a - 1) * b) * (k * c * d)` using `fun _ _ _ _ _ => by`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [e2, ← Finset.sum_mul]`. Express the relevant statement in the definitionally equal form `_ = G _ * _`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hsum, map_sum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, hS _ _ (pureA_mem f (hφ' z)), Pi.sub_apply, schr_mod]`. Establish `: (fun i => (infE F y i).2) = 0` using `rfl`. Rewrite using `[this, zero_dotProduct, AddChar.map_zero_eq_one, one_mul, sub_self]`. Use function extensionality and compare the values at `x`. Use `set z : κ → Af F := fun i => (x i).2 with hz`.
+
+Use `set y := infPart x with hy`. Establish `hx : x = infE F y + finE F z` using `funext fun i => Prod.ext (by show _ = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ + 0`. Rewrite using `[add_zero]`. Conclude with `(RingEquiv.symm_apply_apply _ _).symm) (zero_add (x i).2).symm`. Establish `hg' : (fun u => g (u + z)) ∈ SB (κ → Af F)` using `⟨hg.1.comp_continuous (continuous_add_right z), hg.2.comp_homeomorph (Homeomorph.addRight z)⟩`.
+
+Establish `e1 : schr ψ (finE2 F (z, 0)) (pureA F f g) = pureA F f fun u => g (u + z)` using `funext fun a => by`. Rewrite using `[schr_tr]`. Simplify using `only [pureA]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Conclude with `congrArg _ (add_zero _)`. Establish `e2` using `key _ (sub_mem hg' (Submodule.smul_mem _ (g z) h₀)) (by simp [h₁]) y`. Establish `e3 : pureA F f ((fun u => g (u + z)) - g z • g₀) = pureA F f (fun u => g (u + z)) - g z • pureA F f g₀`. Use `map_sub L (fun u => g (u + z)) (g z • g₀)` as an intermediate fact. Rewrite `this` using `[map_smul]`.
+
+Conclude with `this`. Rewrite `e2` using `[e3, map_sub, map_smul, ← e1, hS _ _ (pureA_mem f hg), Pi.sub_apply, schr_tr, ← hx, sub_eq_zero]`. Rewrite using `[e2, Pi.smul_apply, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem apply_pure {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (S : Module.End ℂ ((κ → AF F) → ℂ))
     (hS : ∀ m, ∀ Φ ∈ schA F κ, S (schr ψ (finE2 F m) Φ) = schr ψ (finE2 F m) (S Φ)) (f : SInf F κ)
     {g₀ : (κ → Af F) → ℂ} (h₀ : g₀ ∈ SB (κ → Af F)) (h₁ : g₀ 0 = 1) {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
@@ -148,6 +201,9 @@ theorem apply_pure {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (S : Module.End �
   rw [e2, Pi.smul_apply, smul_eq_mul, mul_comm]
   rfl
 
+/- English proof (translation)
+The claim follows from `funext fun y => by have := congrFun h (infE F y) have e : (fun i => (infE F y i).2) = 0 := rfl have e' : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (infE F y i).1) = y := infPart_infE y simpa only [pureA, e, e', hg, mul_one] using this`.
+-/
 theorem pureA_inj {f f' : (κ → mixedEmbedding.mixedSpace F) → ℂ} {g : (κ → Af F) → ℂ} (hg : g 0 = 1)
     (h : pureA F f g = pureA F f' g) : f = f' := funext fun y => by
   have := congrFun h (infE F y)
@@ -155,6 +211,11 @@ theorem pureA_inj {f f' : (κ → mixedEmbedding.mixedSpace F) → ℂ} {g : (κ
   have e' : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (infE F y i).1) = y := infPart_infE y
   simpa only [pureA, e, e', hg, mul_one] using this
 
+/- English proof (translation)
+Take `⟨g₀, h₀, h₁⟩` from `exists_sb_one (F := F) (κ := κ)`. Use `choose T hT using fun f : SInf F κ => exists_schwartz_slice _ (hp _ (pureA_mem f h₀)) 0`. Establish `h : ∀ f : SInf F κ, ∀ g ∈ SB (κ → Af F), S (pureA F f g) = pureA F (T f) g` using `fun f g hg => by`. Rewrite using `[apply_pure hψ S hS f h₀ h₁ hg, show ⇑(T f) = _ from funext (hT f)]`. Use `⟨⟨⟨T, fun a b => DFunLike.coe_injective (pureA_inj h₁ ?_)⟩, fun c a => DFunLike.coe_injective (pureA_inj h₁ ?_)⟩, h⟩` and prove the remaining obligations.
+
+Rewrite using `[← h _ _ h₀, show ⇑(a + b) = ⇑a + ⇑b from rfl, pureA_add, map_add, h _ _ h₀, h _ _ h₀, ← pureA_add]`. Both sides reduce to the same expression. Rewrite using `[← h _ _ h₀, show ⇑(c • a) = c • ⇑a from rfl, pureA_smul, map_smul, h _ _ h₀, ← pureA_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_lin {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (S : Module.End ℂ ((κ → AF F) → ℂ))
     (hp : ∀ Φ ∈ schA F κ, S Φ ∈ schA F κ)
     (hS : ∀ m, ∀ Φ ∈ schA F κ, S (schr ψ (finE2 F m) Φ) = schr ψ (finE2 F m) (S Φ)) :
@@ -169,6 +230,23 @@ theorem exists_lin {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (S : Module.End �
   · rw [← h _ _ h₀, show ⇑(c • a) = c • ⇑a from rfl, pureA_smul, map_smul, h _ _ h₀, ← pureA_smul]
     rfl
 
+/- English proof (translation)
+Take `⟨g, hg, h₁⟩` from `exists_sb_one (F := F) (κ := κ)`. Use `haveI := HaarSplit.volume_isAddHaar F κ`. Use `haveI : OpensMeasurableSpace (κ → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI : LocallyCompactSpace (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`.
+
+Use `haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Use `letI mY : MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `letI mA : MeasurableSpace (κ → AdeleRing (𝓞 F) F) := borel _`. Use `haveI : BorelSpace (κ → AdeleRing (𝓞 F) F) := ⟨rfl⟩`.
+
+Use `haveI : SigmaCompactSpace (κ → FiniteAdeleRing (𝓞 F) F) := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `set ν : Measure (κ → FiniteAdeleRing (𝓞 F) F) := Measure.addHaar with hν`. Use `haveI : SFinite ν := inferInstance`. Use `haveI : MeasurableAdd (κ → mixedEmbedding.mixedSpace F) := ContinuousAdd.measurableAdd`. Use `haveI : MeasurableAdd (κ → FiniteAdeleRing (𝓞 F) F) := ContinuousAdd.measurableAdd`.
+
+Use `haveI : ν.IsAddHaarMeasure := by rw [hν]; infer_instance`. Use `haveI : ((volume : Measure (κ → mixedEmbedding.mixedSpace F)).prod ν).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure (volume : Measure (κ → mixedEmbedding.mixedSpace F)) ν`. Establish `hμH : Measure.IsAddHaarMeasure ((volume.prod ν).map (HaarSplit.splitE F κ))` using `(HaarSplit.splitE F κ).isAddHaarMeasure_map _ (HaarSplit.continuous_splitE F κ) (HaarSplit.continuous_splitE_symm F κ)`. Set `em : ((κ → mixedEmbedding.mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F)) ≃ᵐ (κ → AdeleRing (𝓞 F) F)` to `(Homeomorph.mk (HaarSplit.splitE F κ).toEquiv (HaarSplit.continuous_splitE F κ) (HaarSplit.continuous_splitE_symm F κ)).toMeasurableEquiv`. Establish `hint : ∀ h : (κ → AdeleRing (𝓞 F) F) → ℝ≥0∞, ∫⁻ x, h x ∂((volume.prod ν).map (HaarSplit.splitE F κ)) = ∫⁻ p, h (HaarSplit.splitE F κ p) ∂(volume.prod ν)` using `fun h => lintegral_map_equiv h em`.
+
+Establish `hgc : Continuous g` using `hg.1.continuous`. Establish `hC : ∫⁻ y, ‖g y‖ₑ ^ 2 ∂ν ≠ ⊤`. Establish `h1 : ∫⁻ y, ‖g y * g y‖ₑ ∂ν < ⊤` using `((hgc.mul hgc).integrable_of_hasCompactSupport (hg.2.mul_left (f := g))).2`. Use `ne_of_lt (lt_of_le_of_lt (le_of_eq (lintegral_congr fun y => ?_)) h1)` and prove the remaining obligations. Rewrite using `[enorm_mul, sq]`.
+
+Establish `hC0 : ∫⁻ y, ‖g y‖ₑ ^ 2 ∂ν ≠ 0` using `fun h0 => by`. Rewrite `h0` using `[lintegral_eq_zero_iff (hgc.measurable.enorm.pow_const 2)]`. Establish `h2 : g =ᵐ[ν] 0` using `h0.mono fun y hy => by simpa using hy`. Use `congrFun ((hgc.ae_eq_iff_eq ν continuous_zero).1 h2) 0` as an intermediate fact. Simplify using `[h₁] at this`.
+
+Establish `hp : ∀ a : SInf F κ, ∫⁻ x, ‖pureA F a g x‖ₑ ^ 2 ∂((volume.prod ν).map (HaarSplit.splitE F κ)) = (∫⁻ x, ‖a x‖ₑ ^ 2) * ∫⁻ y, ‖g y‖ₑ ^ 2 ∂ν` using `fun a => by`. Rewrite using `[hint]`. Establish `e1 : ∀ p, ‖pureA F a g (HaarSplit.splitE F κ p)‖ₑ ^ 2 = ‖a p.1‖ₑ ^ 2 * ‖g p.2‖ₑ ^ 2`. Introduce `p`. Rewrite using `[HaarSplit.pureA_splitE, enorm_mul, mul_pow]`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[lintegral_prod_mul (a.continuous.measurable.enorm.pow_const 2).aemeasurable (hgc.measurable.enorm.pow_const 2).aemeasurable]`. Use `hU _ hμH _ (pureA_mem f hg)` as an intermediate fact. Rewrite `this` using `[h g hg, hp, hp]`. Conclude with `(ENNReal.mul_left_inj hC0 hC).1 this`.
+-/
 theorem lintegral_eq {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ}
     (hU : ∀ μ : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
       ∀ φ ∈ schA F κ, ∫⁻ x, ‖S φ x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ) {f f' : SInf F κ}
@@ -223,6 +301,13 @@ theorem lintegral_eq {S : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ}
   rw [h g hg, hp, hp] at this
   exact (ENNReal.mul_left_inj hC0 hC).1 this
 
+/- English proof (translation)
+Use `choose s hs using fun Φ : schA F κ => exists_schwartz_slice Φ.1 Φ.2 0`. Set `s' : schA F κ →ₗ[ℂ] SInf F κ` to `{ toFun := s map_add' := fun a b => SchwartzMap.ext fun z => by rw [SchwartzMap.add_apply, hs, hs, hs]; rfl map_smul' := fun c a => SchwartzMap.ext fun z => by rw [SchwartzMap.smul_apply, hs, hs]; rfl }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend (L.toLinearMap ∘ₗ s')`. Establish `h : ∀ f : SInf F κ, ∀ g ∈ SB (κ → Af F), l (pureA F f g) = g 0 * L f` using `fun f g hg => by`. Establish `h1` using `LinearMap.congr_fun hl ⟨_, pureA_mem f hg⟩`.
+
+Establish `h2 : s ⟨_, pureA_mem f hg⟩ = g 0 • f` using `SchwartzMap.ext fun z => by`. Rewrite using `[hs]`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, slice, pureA, RingEquiv.apply_symm_apply]`. Conclude with `mul_comm _ _`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Use `show L (s _) = _`. Rewrite using `[h2, map_smul, smul_eq_mul]`. Conclude with `⟨l, fun g hg => ⟨g 0 • L, fun f => h f g hg⟩, h⟩`.
+-/
 theorem exists_adm (L : SInf F κ →L[ℂ] ℂ) : ∃ l ∈ (adeleClass F).adm κ, ∀ f : SInf F κ, ∀ g ∈ SB (κ → Af F),
     l (pureA F f g) = g 0 * L f := by
   choose s hs using fun Φ : schA F κ => exists_schwartz_slice Φ.1 Φ.2 0

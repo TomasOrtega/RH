@@ -14,6 +14,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LieFilt
 
+/- English proof (translation)
+Use `hE.isQuasicoherent` as an intermediate fact. Establish `hle : π ⁻¹ᵁ c.U ⊓ π ⁻¹ᵁ c'.U ≤ π ⁻¹ᵁ (c.U ⊓ c'.U)` using `fun _ hx => hx`. Establish `e` using `c.isFrame.pullback_basis_repr π inf_le_left hle (Twist.resM E inf_le_right (c'.e a)) b`. Use `Eq.trans ?_ e` and prove the remaining obligations. Conclude with `congrArg (fun t => ((c.isFrame.pullback π).basis inf_le_left).repr t b) ((QCoh.res_pullbackSections π E le_rfl inf_le_right (c'.e a)).trans (QCoh.pullbackSections_res π E hle inf_le_right (c'.e a)).symm)`.
+-/
 theorem trCo_chart_pull {X Y : Scheme.{0}} {E : X.Modules} {r : ℕ} (hE : IsVB E r) (π : Y ⟶ X) (c c' : VB.Chart E r)
     (b a : Fin r) : trCo (c.pull hE π).isFrame (c'.pull hE π).e b a =
       π.appLE (c.U ⊓ c'.U) (π ⁻¹ᵁ c.U ⊓ π ⁻¹ᵁ c'.U) (fun _ hx => hx) (trCo c.isFrame c'.e b a) := by
@@ -25,6 +28,9 @@ theorem trCo_chart_pull {X Y : Scheme.{0}} {E : X.Modules} {r : ℕ} (hE : IsVB 
     ((QCoh.res_pullbackSections π E le_rfl inf_le_right (c'.e a)).trans
       (QCoh.pullbackSections_res π E hle inf_le_right (c'.e a)).symm)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(c.isFrame.dual.basis inf_le_left).repr (Twist.resM (VB.dual E) inf_le_right (c'.isFrame.coord a)) b = _`. Rewrite using `[VB.IsFrame.dual_basis_repr, VB.dualApp_res, VB.IsFrame.dualApp_coord]`. Establish `e` using `c'.isFrame.repr_resM (inf_le_left : c'.U ⊓ c.U ≤ c'.U) (show c.U ⊓ c'.U ≤ c'.U ⊓ c.U from fun _ hx => ⟨hx.2, hx.1⟩) (Twist.resM E inf_le_right (c.e b)) a`. Rewrite `e` using `[Twist.resM_resM]`. Conclude with `e`.
+-/
 theorem trCo_chart_dual {X : Scheme.{0}} {E : X.Modules} {r : ℕ} (c c' : VB.Chart E r) (b a : Fin r) :
     trCo c.dual.isFrame c'.dual.e b a =
       X.presheaf.map (homOfLE (show c.U ⊓ c'.U ≤ c'.U ⊓ c.U from fun _ hx => ⟨hx.2, hx.1⟩)).op
@@ -37,11 +43,23 @@ theorem trCo_chart_dual {X : Scheme.{0}} {E : X.Modules} {r : ℕ} (c c' : VB.Ch
   rw [Twist.resM_resM] at e
   exact e
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem appLE_map_appLE {X Y Z : Scheme.{0}} (β : X ⟶ Y) (b : Y ⟶ Z) {U : Z.Opens} {V V' : Y.Opens} {T : X.Opens}
     (h₁ : V ≤ b ⁻¹ᵁ U) (h₂ : V' ≤ V) (h₃ : T ≤ β ⁻¹ᵁ V') (h₄ : T ≤ (β ≫ b) ⁻¹ᵁ U) (x : Γ(Z, U)) :
     β.appLE V' T h₃ (Y.presheaf.map (homOfLE h₂).op (b.appLE U V h₁ x)) = (β ≫ b).appLE U T h₄ x := by
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map_assoc, Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Introduce `k k' _ _ φ X Y Y' F g p' h b p h₀ hs β q w`. Use `⟨fun c => ((c.pull h.isVB b).dual.pull h₀.isVB.dual β).e, fun c => ((c.pull h.isVB b).dual.pull h₀.isVB.dual β).isFrame, fun c c' j i => ?_, ?_⟩` and prove the remaining obligations. Use `(trCo_chart_pull h₀.isVB.dual β (c.pull h.isVB b).dual (c'.pull h.isVB b).dual j i).trans ?_` and prove the remaining obligations. Rewrite using `[trCo_chart_dual, trCo_chart_pull]`. Conclude with `appLE_map_appLE β b _ _ _ _ _`.
+
+Introduce and unpack `σ σ' rfl z y hy c hc`. Set `y₀ : CxPts p σ` to `Points.PtsOver.map β w _ z`. Set `y₁ : CxPts (b ≫ p') (σ.comp φ.symm.toRingHom)` to `⟨z.1 ≫ β, by`. Rewrite using `[← y.2, hy, Category.assoc, Category.assoc, Category.assoc]⟩`. Establish `e : Points.PtsOver.map b rfl _ y₁ = y` using `Subtype.ext ((Category.assoc _ _ _).trans hy.symm)`.
+
+Establish `hc₁ : Points.PtsOver.map b rfl _ y₁ ∈ CxPts.ptsIn p' _ c.U` using `e ▸ hc`. Establish `hc₀ : y₀ ∈ CxPts.ptsIn p σ (c.pull h.isVB b).U` using `hc₁`. Use `(((h₀.met σ).dual).pull_G β w (c.pull h.isVB b).dual hc₀).trans ?_` and prove the remaining obligations. Use `((h₀.met σ).dual_G (c.pull h.isVB b) hc₀).trans (congrArg _ ?_)` and prove the remaining obligations. Use `(hs σ y₀ y₁ rfl _ hc₀).trans ?_` and prove the remaining obligations.
+
+Conclude with `((h.met _).pull_G b rfl c hc₁).trans (congrArg _ e)`.
+-/
 theorem exists_dualCharts_pull_dual_pull : ∀ {k k' : Type} [CommRing k] [CommRing k'] (φ : k ≃+* k') {X Y Y' : Scheme.{0}} {F : Y'.Modules} {g : ℕ}
     {p' : Y' ⟶ Sp k'} (h : VMetric p' F g) (b : Y ⟶ Y') {p : Y ⟶ Sp k}
     (h₀ : VMetric p ((Scheme.Modules.pullback b).obj F) g), SameMet φ (h.pull b rfl) h₀ →

@@ -16,6 +16,9 @@ open scoped Classical
 open GlobalTheory.BoxLattice GlobalTheory.EvAdm
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BoxLattice.boxLat_discrete | exact GlobalTheory.BoxLattice.boxLat_discrete | (intros; apply GlobalTheory.BoxLattice.boxLat_discrete <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.box_lattice_discrete : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F),
     DiscreteTopology (boxLat F κ a) := by
   first | exact @GlobalTheory.BoxLattice.boxLat_discrete | exact GlobalTheory.BoxLattice.boxLat_discrete | (intros; apply GlobalTheory.BoxLattice.boxLat_discrete <;> assumption)

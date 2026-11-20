@@ -13,10 +13,16 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 lemma sigR_inclR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (e : E) :
     sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Unfold `Formalism.UG.IsHerm Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, JR, sigR_inclR, hJ]`.
+-/
 lemma isHerm_JR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : ∀ i j, σ (J j i) = J i j) :
     Formalism.UG.IsHerm (sigR R σ) (JR R J) := by
@@ -24,6 +30,9 @@ lemma isHerm_JR (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : 
   ext i j
   simp only [Matrix.transpose_apply, Matrix.map_apply, JR, sigR_inclR, hJ]
 
+/- English proof (translation)
+Establish `h : (JR (F` using `F) R J).det = inclR (F := F) R J.det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `(isUnit_iff_ne_zero.mpr hJ).map _`.
+-/
 lemma isUnit_det_JR (R : Type) [CommRing R] [Algebra F R] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : J.det ≠ 0) : IsUnit (JR (F := F) R J).det := by
   have h : (JR (F := F) R J).det = inclR (F := F) R J.det := by
@@ -31,6 +40,9 @@ lemma isUnit_det_JR (R : Type) [CommRing R] [Algebra F R] {n : ℕ}
   rw [h]
   exact (isUnit_iff_ne_zero.mpr hJ).map _
 
+/- English proof (translation)
+Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, JR, Matrix.map_apply, sigR_inclR]`. Both sides reduce to the same expression.
+-/
 lemma hform_incl (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     Formalism.UG.hform (sigR R σ) (JR R J) (fun i => inclR R (v i)) (fun i => inclR R (w i)) =
@@ -38,6 +50,9 @@ lemma hform_incl (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {n :
   simp only [hE, Formalism.UG.hform, map_sum, map_mul, JR, Matrix.map_apply, sigR_inclR]
   rfl
 
+/- English proof (translation)
+The claim follows from `(Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes b`.
+-/
 lemma inclR_algebraMap (R : Type) [CommRing R] [Algebra F R] (b : F) :
     inclR R (algebraMap F E b) = algebraMap F (R ⊗[F] E) b :=
   (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes b

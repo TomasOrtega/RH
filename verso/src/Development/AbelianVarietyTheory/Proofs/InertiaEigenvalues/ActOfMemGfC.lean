@@ -20,6 +20,13 @@ section Gen
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+Establish `hθ` using `hB.frame.vac.2.inf`. Establish `hBS` using `fun τ => GlobalTheory.RealFockAction.onb_posDef (hB.frame.onbS τ)`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `eu : ∀ τ, (inBasis B.F.BS (realGL B.F.θ S u) τ).val = (B.F.BS τ).val⁻¹ * compAt B.F.θ τ (Formalism.L2.Theta.mt S u) * (B.F.BS τ).val` using `fun τ => by`. Rewrite using `[← Matrix.coe_units_inv]`.
+
+Both sides reduce to the same expression. Establish `hle : ∀ τ, B.w.p τ ≤ T.rank` using `fun τ => by`. Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact.
+
+Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers. Unfold `Frame.fock`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D _ _ S T _ _ ω hω hθ (fun _ => 1) (fun _ => 1) (fun τ => (B.F.BS τ).val) (fun τ => (B.F.BS τ).val * (inBasis B.F.BS (realGL B.F.θ S u) τ).val) B.F.sT B.F.sT B.F.BT B.F.BT u 1 (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => b …`.
+-/
 theorem om_fock_of_vac {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hB : B.Good) (hψ : ψ.Good)
     (hω : B.IsWeil ψ.chi ω) {f : WO S T → ℂ} (hf : IsThetaFunO B.F.ψ S T f)
     (hv : ∀ τ, IsFockVacAt (heisO B.F.ψ S T) B.F.θ τ (cplxO 1 (B.F.sT τ)) f) {u : GA D S} (hu : u ∈ GinfC S)
@@ -50,6 +57,9 @@ theorem om_fock_of_vac {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (
       (fun τ => by rw [eu]; exact GlobalTheory.RealFockAction.conj_unitary (hBS τ) (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ S u τ)) hf,
     Base.act, MonoidHom.comp_apply, fockGL_apply, LinearMap.map_smul]
 
+/- English proof (translation)
+Establish `e : realGL B.F.θ S k = 1`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(Formalism.UG.bc (B.F.θ τ)) (infHom S k) = 1`. Rewrite using `[show infHom S k = 1 from hk, map_one]`. Rewrite using `[Base.act, MonoidHom.comp_apply, e, map_one]`.
+-/
 theorem act_of_mem_GfC (B : Base S T) {k : GA D S} (hk : k ∈ GfC S) : B.act k = 1 := by
   have e : realGL B.F.θ S k = 1 := by
     funext τ
@@ -62,6 +72,13 @@ end Gen
 variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {i : Fin D.R.m}
 
+/- English proof (translation)
+Establish `hP` using `hC.thP`. Establish `hM` using `hC.models`. Establish `hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Establish `h` using `hP.pt_theta i t 1`. Establish `e : R.ptP i t 1 = R.vP i t`.
+
+Unfold `RealDat.ptP pureTensorO pureTensorL`. Rewrite using `[show (1 : PolF D (Wc D i).rank (Vc D i).rank) = MvPolynomial.basisMonomials _ ℂ 0 from rfl, Module.Basis.constr_basis]`. Simplify using `[opPow]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hv` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (hP.vP i t) hf`.
+
+Establish `hne : R.vP i t ≠ 0` using `GlobalTheory.AdTh.VecNe.thPVec_ne_zero (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βW i)) ((D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)) (hP.vP i t)`. Conclude with `⟨hf, hv, GlobalTheory.FockIndep.pureTensorO_injective D R.ψ R.θ _ _ _ (R.MW i (sg0 D A)) (R.BV i) _ (hP.ωP i t).std hM.inf (fun τ => GlobalTheory.OneMapRef.VecP.isCartanInv_one_of_onb (hM.BV i τ)) (hM.BV i) hf hne hv⟩`.
+-/
 theorem thetaVector_laws (hC : GlobalTheory.Hk3.Core R F) (t : T0) :
     IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t) ∧
       (∀ ρ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ ρ (cplxO 1 (cart (R.MW i (sg0 D A)) ρ)) (R.vP i t)) ∧
@@ -84,6 +101,13 @@ theorem thetaVector_laws (hC : GlobalTheory.Hk3.Core R F) (t : T0) :
   exact ⟨hf, hv, GlobalTheory.FockIndep.pureTensorO_injective D R.ψ R.θ _ _ _ (R.MW i (sg0 D A)) (R.BV i) _
     (hP.ωP i t).std hM.inf (fun τ => GlobalTheory.OneMapRef.VecP.isCartanInv_one_of_onb (hM.BV i τ)) (hM.BV i) hf hne hv⟩
 
+/- English proof (translation)
+Introduce `u hu x w`. Take `⟨hf, hv, hinj⟩` from `thetaVector_laws (i := i) hC t`. Establish `hω` using `h.isWeil hC.thP.ωP ht`. Establish `hpt : ∀ P, R.ptP i t P = B.F.fock (R.vP i t) P` using `fun P => by rw [h.fock_eq]; rfl`. Establish `hf' : IsThetaFunO B.F.ψ (Vc D i) (Wc D i) (R.vP i t)` using `by rw [h.ψ]; exact hf`.
+
+Establish `hv' : ∀ τ, IsFockVacAt (heisO B.F.ψ (Vc D i) (Wc D i)) B.F.θ τ (cplxO 1 (B.F.sT τ)) (R.vP i t)`. Rewrite using `[h.ψ, h.θ, h.sT]`. Conclude with `hv`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hpt, hpt, ← om_fock_of_vac hB hψ hω hf' hv' hu, ← hpt, ← hpt]`.
+
+Conclude with `(hC.thP.ioP i t).1 u hu x w`.
+-/
 theorem act_ioP_inf (hC : GlobalTheory.Hk3.Core R F) {B : Base (Vc D i) (Wc D i)} (hB : B.Good) (h : BaseOf R i B)
     {ψ : Twist D Circle} (hψ : ψ.Good) {t : T0} (ht : IsTupOf R B ψ t) :
     ∀ u ∈ GinfC (Vc D i), ∀ x w, B.act u (R.ioP i x w) = R.ioP i x ((R.cV i).ρ u w) := by
@@ -98,6 +122,11 @@ theorem act_ioP_inf (hC : GlobalTheory.Hk3.Core R F) {B : Base (Vc D i) (Wc D i)
   rw [hpt, hpt, ← om_fock_of_vac hB hψ hω hf' hv' hu, ← hpt, ← hpt]
   exact (hC.thP.ioP i t).1 u hu x w
 
+/- English proof (translation)
+Use `⟨act_ioP_inf hC hB h hψ ht, fun u x w => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.AutMult.toInf_mul_toFin u`. Use `set a := GlobalTheory.AutMult.toInf (Vc D i) u`. Use `set k := GlobalTheory.AutMult.toFin (Vc D i) u`. Rewrite using `[← e, map_mul, map_mul, act_of_mem_GfC B k.2, (hC.models.cV i).1 _ k.2, mul_one, mul_one]`.
+
+Conclude with `act_ioP_inf hC hB h hψ ht _ a.2 x w`.
+-/
 theorem act_ioP (hC : GlobalTheory.Hk3.Core R F) {B : Base (Vc D i) (Wc D i)} (hB : B.Good) (h : BaseOf R i B)
     {ψ : Twist D Circle} (hψ : ψ.Good) {t : T0} (ht : IsTupOf R B ψ t) :
     (∀ u ∈ GinfC (Vc D i), ∀ x w, B.act u (R.ioP i x w) = R.ioP i x ((R.cV i).ρ u w)) ∧

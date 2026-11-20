@@ -13,10 +13,16 @@ private noncomputable def bu {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure 
     (L : IntermediateField ℚ Ω) (γ : G ℚ Ω →* c.Oˣ) : G L Ω →* (ResidueField c.O)ˣ :=
   ((Units.map (residue c.O).toMonoidHom).comp γ).comp (resQ L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem bu_val {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (L : IntermediateField ℚ Ω) (γ : G ℚ Ω →* c.Oˣ) (g : G L Ω) :
     (bu L γ g : ResidueField c.O) = Raw.bar γ (resQ L g) := rfl
 
+/- English proof (translation)
+Establish `hk : ((bu L γ).ker : Set (G L Ω)) = resQ L ⁻¹' {g | Raw.bar γ g = 1}`. Use extensionality with `g`. Simplify using `[MonoidHom.mem_ker, Units.ext_iff, bu_val]`. Rewrite using `[hk]`. Conclude with `h.preimage (Af.continuous_restrictScalarsHom ℚ L Ω)`.
+-/
 private theorem bu_open {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (L : IntermediateField ℚ Ω) [NumberField L] (γ : G ℚ Ω →* c.Oˣ) (h : IsOpen {g : G ℚ Ω | Raw.bar γ g = 1}) :
     IsOpen ((bu L γ).ker : Set (G L Ω)) := by
@@ -26,10 +32,16 @@ private theorem bu_open {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   rw [hk]
   exact h.preimage (Af.continuous_restrictScalarsHom ℚ L Ω)
 
+/- English proof (translation)
+Rewrite `h` using `[MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h`.
+-/
 private theorem eq_of_ker {Γ Δ : Type} [Group Γ] [Group Δ] {f : Γ →* Δ} {a b : Γ} (h : a⁻¹ * b ∈ f.ker) : f a = f b := by
   rw [MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one] at h
   exact h
 
+/- English proof (translation)
+Establish `h2` using `apply_mem_iff_of_mem_Dec hσ`. Rewrite using `[mem_Dec]`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← h2 (τ⁻¹ x), ← h]`. Simplify using the standard rewrite rules.
+-/
 private theorem dec_of {Ω F F' : Type} [Field Ω] [Field F] [Field F'] [NumberField F] [NumberField F'] [Algebra F Ω] [Algebra F' Ω] {A : ValuationSubring Ω}
     {σ : G F Ω} {τ : G F' Ω} (h : ∀ x, τ x = σ x) (hσ : σ ∈ Dec (F := F) A) : τ ∈ Dec (F := F') A := by
   have h2 := apply_mem_iff_of_mem_Dec hσ
@@ -38,6 +50,31 @@ private theorem dec_of {Ω F F' : Type} [Field Ω] [Field F] [Field F'] [NumberF
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← h2 (τ⁻¹ x), ← h]
   simp
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T hG hT`. Take `⟨hps, hom, -⟩` from `barFacts hG`. Take `⟨g0, hg0eq, hg0om⟩` from `gEx T hT`. Set `U : Subgroup (G T.L Ω)` to `(bu T.L (D.ps 0)).ker ⊓ (bu T.L (D.ps 1)).ker ⊓ (bu T.L (D.ps 2)).ker ⊓ (bu T.L (D.ps 3)).ker ⊓ (bu T.L D.om).ker`. Establish `hU : IsOpen (U : Set (G T.L Ω))`.
+
+Simplify using `only [U, Subgroup.coe_inf]`. Conclude with `((((bu_open _ _ (hps 0)).inter (bu_open _ _ (hps 1))).inter (bu_open _ _ (hps 2))).inter (bu_open _ _ (hps 3))).inter (bu_open _ _ hom)`. Establish `hM0 : 2 * (∏ q ∈ D.S, q) * (NumberField.discr T.L).natAbs ≠ 0`. Establish `h1 : (∏ q ∈ D.S, q) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun q hq => (hG.S_prime q hq).ne_zero`. Establish `h2 : (NumberField.discr T.L).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)`.
+
+Conclude with `mul_ne_zero (mul_ne_zero two_ne_zero h1) h2`. Take `⟨v, B, p, hp, hpM, hpv, hnorm, hB, hBdec, hBpow, hBone⟩` from `v0Ex T.L Ω U hU g0 _ hM0`. Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`. Conclude with `hpM (dvd_mul_of_dvd_left (dvd_mul_right 2 _) _)`.
+
+Establish `hpS : p ∉ D.S` using `fun h => hpM (dvd_mul_of_dvd_left (dvd_mul_of_dvd_right (Finset.dvd_prod_of_mem _ h) 2) _)`. Establish `hpd : ¬ (p : ℤ) ∣ NumberField.discr T.L`. Introduce `h`. Apply `hpM` to reduce the goal to its premises. Apply `dvd_mul_of_dvd_right` to reduce the goal to its premises.
+
+Simplify using `using Int.natAbs_dvd_natAbs.mpr h`. Take `⟨e, he⟩` from `placesEq T`. Take `⟨-, ⟨φ, hφ, hφL⟩, -⟩` from `galEq T`. Establish `hIne : ∀ A : ValuationSubring Ω, Ine (F` using `W.Lp T.L) A ≤ (W.resP T.L Ω).range := by`. Introduce `A σ hσ`.
+
+Apply `(hφL σ).1` to reduce the goal to its premises. Apply `hT.unr A` to reduce the goal to its premises. Conclude with `⟨dec_of (hφ σ) hσ.1, fun x hx => by rw [hφ]; exact hσ.2 x hx⟩`. Establish `hSdec : ∀ q ∈ D.S, ∀ A : ValuationSubring Ω, A.valuation q < 1 → Dec (F` using `W.Lp T.L) A ≤ (W.resP T.L Ω).range := by`. Introduce `q hq A hA σ hσ`.
+
+Apply `(hφL σ).1` to reduce the goal to its premises. Use `show resQ T.F (φ σ) ∈ T.K.fixingSubgroup`. Apply `hT.split q hq A hA` to reduce the goal to its premises. Conclude with `dec_of (fun x => by simp [resQ, hφ]) hσ`. Take `⟨s, hsA, hs0, hsfin, hsB, hsaway⟩` from `mkSet l T.L Ω hG.l_odd hIne D.S hG.S_prime hG.l_mem hSdec (fun v => T.pl (e v)) he v B p hp hp2 hpS hpd hpv hnorm hB hBdec`.
+
+Use `⟨SetD.mk s e hsA hsfin hsaway ?_ ?_ ?_ (ccOf T s)⟩` and prove the remaining obligations. Rewrite using `[hs0]`. Conclude with `hsB`. Introduce `g hg i j`. Rewrite `hg` using `[hs0]`.
+
+Take `⟨n, hn⟩` from `hBpow g hg`. Simplify using `only [U, Subgroup.mem_inf] at hn`. Take `⟨⟨⟨⟨h0, h1⟩, h2⟩, h3⟩, -⟩` from `hn`. Establish `key : ∀ k, bu T.L (D.ps k) g = bu T.L (D.ps k) (g0 ^ n)`. Introduce `k`.
+
+Use `fin_cases k`. Use `exacts [eq_of_ker h0, eq_of_ker h1, eq_of_ker h2, eq_of_ker h3]`. Establish `hg0' : bu T.L (chi D T.pr i) g0 = bu T.L (chi D T.pr j) g0` using `Units.ext (by rw [bu_val, bu_val]; exact hg0eq i j)`. Rewrite using `[← bu_val, ← bu_val]`. Express the relevant statement in the definitionally equal form `((bu T.L (D.ps (lab T.pr i)) g : ResidueField c.O)) = (bu T.L (D.ps (lab T.pr j)) g : ResidueField c.O)`.
+
+Rewrite using `[key, key]`. Use `congr 1`. Simplify using `only [map_pow, map_zpow]`. Conclude with `congrArg (· ^ n) hg0'`. Take `⟨d, hd, hdU⟩` from `hBone`.
+
+Use `⟨d, by rw [hs0]; exact hd, ?_⟩` and prove the remaining obligations. Establish `h4 : d⁻¹ * g0 ∈ (bu T.L D.om).ker` using `(Subgroup.mem_inf.1 hdU).2`. Rewrite using `[← bu_val, eq_of_ker h4, bu_val]`. Conclude with `hg0om`.
+-/
 theorem UpperTheory.V.Ws.Lk.setEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} (T : Tower D), D.Good → T.Ok → Nonempty (SetD T) := by
   intro Ω _ _ _ l _ c D T hG hT

@@ -16,6 +16,23 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' v hv w hw Λ hΛaug hΛN ψ hψ`. Take `⟨ι, ν₀, e, hsm, hun, hbij, hrank, hV', hN, hLevi, hchar⟩` from `GlobalTheory.T.triple_local_good_place_intertwiner hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' v hv w hw`. Use `set S := SB (Fin a' × Fin (a + a') → Fv F v)`. Use `set Sm := SB (Matrix (Fin a') (Fin (a + a')) (Fv F v))`. Set `ιR : S →ₗ[ℂ] Sm` to `(ι.domRestrict S).codRestrict Sm (fun φ => hbij.mapsTo φ.2)`.
+
+Establish `hιR : Function.Bijective ιR`. Use `⟨fun φ φ' h => Subtype.ext (hbij.injOn φ.2 φ'.2 (congrArg Subtype.val h)), fun Ψ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hφΨ⟩` from `hbij.surjOn Ψ.2`. Conclude with `⟨⟨φ, hφ⟩, Subtype.ext hφΨ⟩`. Set `eR` to `LinearEquiv.ofBijective ιR hιR`.
+
+Take `⟨Λ₀, hΛ₀⟩` from `LinearMap.exists_extend ((Λ.comp S.subtype).comp eR.symm.toLinearMap)`. Establish `key : ∀ φ ∈ S, Λ₀ (ι φ) = Λ φ`. Introduce `φ hφ`. Establish `h1` using `congrArg (fun f => f (ιR ⟨φ, hφ⟩)) hΛ₀`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`.
+
+Establish `h2 : eR.symm (ιR ⟨φ, hφ⟩) = ⟨φ, hφ⟩` using `eR.symm_apply_apply ⟨φ, hφ⟩`. Rewrite `h1` using `[show (ιR ⟨φ, hφ⟩ : Matrix (Fin a') (Fin (a + a')) (Fv F v) → ℂ) = ι φ from rfl]`. Rewrite using `[h1]`. Simplify using `only [LinearEquiv.coe_coe, h2]`. Establish `hlt : a' < a` using `hT.geo.lt`.
+
+Establish `ha' : 1 ≤ a'` using `by have := hT.geo.aBig; omega`. Establish `hB` using `GlobalTheory.T.unipotent_invariant_functional_two_dim GlobalTheory.T.unipotent_invariant_functional_induced hKP (Fv F v) a' (a + a') ν₀ ha' (by omega) hsm hun Λ₀ (by`. Introduce `g₀ Ψ hΨ`. Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hΨ`. Take `⟨g, hg, hgact⟩` from `hV' g₀`.
+
+Take `⟨φ₁, hφ₁, hact, heq⟩` from `hgact φ hφ`. Rewrite using `[← heq, map_sub, key φ₁ hφ₁, key φ hφ, ← map_sub]`. Conclude with `hΛaug _ (Submodule.subset_span ⟨g, hg, φ, hφ, φ₁, hφ₁, hact, rfl⟩))`. Use the proof step `(by`. Introduce `u hu Ψ hΨ`.
+
+Take `⟨φ, hφ, rfl⟩` from `hbij.surjOn hΨ`. Take `⟨n, hn, hnU, hnact⟩` from `hN u hu`. Take `⟨φ₁, hφ₁, hact, heq⟩` from `hnact φ hφ`. Rewrite using `[← heq, key φ₁ hφ₁, key φ hφ]`. Conclude with `hΛN n hn hnU φ hφ φ₁ hφ₁ hact)`.
+
+Use `hrank`. Take `⟨p, q, hpq⟩` from `hB (ι ψ) (hbij.mapsTo hψ)`. Use `⟨p, q, fun x m hm ψ₁ hψ₁ hact => ?_⟩` and prove the remaining obligations. Rewrite using `[← key ψ₁ hψ₁, hLevi x m hm ψ hψ ψ₁ hψ₁ hact, map_smul, hpq (e x), smul_eq_mul, ← hchar x]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jacquet_position_coeff : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ v, X.Good v → ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → ∀ Λ : ((Fin a' × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] ℂ, (∀ z ∈ augAt om' v, Λ z = 0) → (∀ n ∈ unip σ G.W H', n ∈ UAt σ G.W (evFin F v) → ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, n)) φ φ₁ → Λ φ₁ = Λ φ) → ∀ ψ ∈ SB (Fin a' × Fin (a + a') → Fv F v), ∃ p q : ℂ, ∀ (x : (w.adicCompletion E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' (locIdele F w x) 1 m → ∀ ψ₁ ∈ SB (Fin a' × Fin (a + a') → Fv F v), Acts (evFin F v) (om' (1, m)) ψ ψ₁ → Λ ψ₁ = p * ((GlobalTheory.CtTyp.twAbs X.α ((a' : ℝ) / 2) (locIdele F w x) : ℂˣ) : ℂ) + q * ((GlobalTheory.CtTyp.twAbs X.β ((a : ℝ) / 2) (locIdele F w x) : ℂˣ) : ℂ) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' v hv w hw Λ hΛaug hΛN ψ hψ
   obtain ⟨ι, ν₀, e, hsm, hun, hbij, hrank, hV', hN, hLevi, hchar⟩ := GlobalTheory.T.triple_local_good_place_intertwiner hKP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH' v hv w hw

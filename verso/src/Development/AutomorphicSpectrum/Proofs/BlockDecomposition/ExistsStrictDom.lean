@@ -10,6 +10,15 @@ namespace GlobalTheory.CompanionTheory.KUFactsU
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Establish `hk` using `(Subgroup.mem_iInf.1 hx) (Fin.last n)`. Rewrite `hk` using `[Subgroup.mem_comap, MulAction.mem_stabilizer_iff]`. Establish `hmem : (Pi.single j 1 : Fin n → L) ∈ latK L n (Fin.last n)`. Introduce `l`. Simplify using `only [Fin.val_last, l.isLt, if_true]`.
+
+Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hl]`. Establish `h2 : (Matrix.GeneralLinearGroup.toLin : GL (Fin n) L ≃* _).toMonoidHom x • (Pi.single j 1 : Fin n → L) ∈ latK L n (Fin.last n)`.
+
+Rewrite using `[← hk]`. Conclude with `Set.smul_mem_smul_set hmem`. Establish `h3` using `h2 i`. Simplify using `only [Fin.val_last, i.isLt, if_true] at h3`. Use `show (x : Matrix (Fin n) (Fin n) L) i j ∈ Valued.v.integer`.
+
+Rewrite using `[Valuation.mem_integer_iff]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Simplify using `[Units.smul_def, Matrix.GeneralLinearGroup.toLin, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem iwGL_entries {n : ℕ} {x : GL (Fin n) L} (hx : x ∈ IwGL L n) (i j : Fin n) :
     (x : Matrix (Fin n) (Fin n) L) i j ∈ intL L := by
   have hk := (Subgroup.mem_iInf.1 hx) (Fin.last n)
@@ -32,6 +41,11 @@ theorem iwGL_entries {n : ℕ} {x : GL (Fin n) L} (hx : x ∈ IwGL L n) (i j : F
   convert h3 using 2
   simp [Units.smul_def, Matrix.GeneralLinearGroup.toLin, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : (x : GL (Fin n) L) ∈ IwGL L n` using `Subgroup.mem_subgroupOf.1 hx`. Establish `hxi : ((x : GL (Fin n) L))⁻¹ ∈ IwGL L n` using `inv_mem hx'`. Establish `hmem : x ∈ ((KU σ n : Subgroup (GU σ n)) : Set (GU σ n))`. Rewrite using `[GlobalTheory.LFun.IntPtsUnitary.coe_KU, Set.mem_preimage, GlobalTheory.LFun.IntPtsUnitary.coe_GLint]`.
+
+Conclude with `⟨fun i j => iwGL_entries hx' i j, fun i j => iwGL_entries hxi i j⟩`. Conclude with `hmem`.
+-/
 theorem iwU_le_KU (σ : L →+* L) (n : ℕ) : IwU σ n ≤ KU σ n := by
   intro x hx
   have hx' : (x : GL (Fin n) L) ∈ IwGL L n := Subgroup.mem_subgroupOf.1 hx
@@ -41,6 +55,11 @@ theorem iwU_le_KU (σ : L →+* L) (n : ℕ) : IwU σ n ≤ KU σ n := by
     exact ⟨fun i j => iwGL_entries hx' i j, fun i j => iwGL_entries hxi i j⟩
   exact hmem
 
+/- English proof (translation)
+Establish `h1 : Valued.v (ϖ ^ d) = ((Multiplicative.ofAdd (-d) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[map_zpow₀, hϖ, ← WithZero.coe_zpow, ← ofAdd_zsmul, smul_neg, smul_eq_mul, mul_one]`. Establish `hne : Valued.v (ϖ ^ d) ≠ 0`. Rewrite using `[h1]`. Conclude with `WithZero.coe_ne_zero`.
+
+Unfold `ordL`. Rewrite using `[dif_neg hne]`. Establish `key : WithZero.unzero hne = Multiplicative.ofAdd (-d)` using `WithZero.coe_injective (by rw [WithZero.coe_unzero, h1])`. Rewrite using `[key, toAdd_ofAdd, neg_neg]`.
+-/
 theorem ordL_zpow {ϖ : L}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
     (d : ℤ) : ordL (ϖ ^ d) = d := by
@@ -70,6 +89,15 @@ def tGL {ϖ : L} (h0 : ϖ ≠ 0) (n : ℕ) : GL (Fin n) L where
     congr 1; funext i
     rw [← zpow_add₀ h0]; simp
 
+/- English proof (translation)
+Use `show cT σ ((tGL h0 n : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * antiJ L n * ((tGL h0 n : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = antiJ L n`. Establish `hc : cT σ ((tGL h0 n : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i => ϖ ^ expo n i`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[cT, tGL, map_zpow₀, hσ]`. Simplify using `[cT, tGL, hab, Ne.symm hab]`. Rewrite using `[hc]`. Use extensionality with `a b`. Simplify using `only [tGL, Matrix.diagonal_mul, Matrix.mul_diagonal, antiJ]`.
+
+Use `split_ifs with hab`. Establish `he : expo n a + expo n b = 0`. Unfold `expo`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_one, ← zpow_add₀ h0, he, zpow_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tGL_mem {ϖ : L} (h0 : ϖ ≠ 0) {σ : L →+* L} (hσ : σ ϖ = ϖ) (n : ℕ) : tGL h0 n ∈ GU σ n := by
   show cT σ ((tGL h0 n : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * antiJ L n *
     ((tGL h0 n : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = antiJ L n
@@ -90,6 +118,13 @@ theorem tGL_mem {ϖ : L} (h0 : ϖ ≠ 0) {σ : L →+* L} (hσ : σ ϖ = ϖ) (n 
     rw [mul_one, ← zpow_add₀ h0, he, zpow_zero]
   · simp
 
+/- English proof (translation)
+Take `⟨-, -, hσ, hϖ, -⟩` from `h`. Establish `h0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `hϖ` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+
+Use `⟨⟨tGL h0 n, tGL_mem h0 hσ n⟩, fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show (Matrix.diagonal fun i => ϖ ^ expo n i) i j = 0`. Conclude with `Matrix.diagonal_apply_ne _ hij`. Use `show ordL ((Matrix.diagonal fun i => ϖ ^ expo n i) j j) < ordL ((Matrix.diagonal fun i => ϖ ^ expo n i) i i)`. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, ordL_zpow hϖ, ordL_zpow hϖ]`.
+
+Unfold `expo`. Establish `hlt : (i : ℕ) < j` using `hij`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_strictDom {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (n : ℕ) :
     ∃ t : GU σ n, IsDiagM (t : GL (Fin n) L) ∧ IsStrictDom (t : GL (Fin n) L) := by
   obtain ⟨-, -, hσ, hϖ, -⟩ := h
@@ -107,6 +142,9 @@ theorem exists_strictDom {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ 
     have hlt : (i : ℕ) < j := hij
     omega
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q n h`. Take `⟨ho, hc⟩` from `GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n h`. Conclude with `⟨ho, hc, iwU_le_KU σ n, exists_strictDom h n⟩`.
+-/
 theorem kuFacts : PositivityTheory.SphericalProduct.KUFacts := by
   intro L _ _ _ ϖ σ q n h
   obtain ⟨ho, hc⟩ := GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L ϖ σ q n h

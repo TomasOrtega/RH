@@ -7,6 +7,9 @@ open Formalism.BasicNotions.TH GlobalTheory.IndefiniteRowSideFullHecke.WeilTenso
 
 namespace PositivityTheory.RL.Frame
 
+/- English proof (translation)
+Rewrite using `[dotProduct, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_diagonal, Complex.ofReal_mul, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Pi.star_apply, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_diag {α : Type} [Fintype α] [DecidableEq α] (d : α → ℝ) (v : α → ℂ) :
     star v ⬝ᵥ (Matrix.diagonal (fun a => (d a : ℂ))) *ᵥ v = ((∑ a, d a * Complex.normSq (v a) : ℝ) : ℂ) := by
   rw [dotProduct, Complex.ofReal_sum]
@@ -15,6 +18,19 @@ theorem quad_diag {α : Type} [Fintype α] [DecidableEq α] (d : α → ℝ) (v 
   simp only [Pi.star_apply, RCLike.star_def]
   ring
 
+/- English proof (translation)
+Set `ext : ({a // 0 < d a} → ℂ) →ₗ[ℂ] (α → ℂ)` to `{ toFun := fun v a => if h : 0 < d a then v ⟨a, h⟩ else 0 map_add' := by`. Apply the tactic sequence `intro v w; funext a; by_cases h : 0 < d a <;> simp [h]`. Use the proof step `map_smul' := by`. Apply the tactic sequence `intro c v; funext a; by_cases h : 0 < d a <;> simp [h] }`. Set `f : ({a // 0 < d a} → ℂ) →ₗ[ℂ] ({b // 0 < e b} → ℂ)` to `(LinearMap.funLeft ℂ ℂ Subtype.val) ∘ₗ G.mulVecLin ∘ₗ ext`.
+
+Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `hw : ∀ b, 0 < e b → (G *ᵥ ext v) b = 0` using `fun b hb => congrFun hv ⟨b, hb⟩`. Establish `h1 : star (ext v) ⬝ᵥ (Matrix.diagonal (fun a => (d a : ℂ))) *ᵥ ext v = star (G *ᵥ ext v) ⬝ᵥ (Matrix.diagonal (fun b => (e b : ℂ))) *ᵥ (G *ᵥ ext v)`.
+
+Rewrite using `[← h, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Rewrite `h1` using `[quad_diag, quad_diag, Complex.ofReal_inj]`. Establish `h2 : ∑ b, e b * Complex.normSq ((G *ᵥ ext v) b) ≤ 0`. Use `Finset.sum_nonpos fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : 0 < e b`.
+
+Simplify using `[hw b hb]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.mp hb) (Complex.normSq_nonneg _)`. Establish `h3 : ∀ a ∈ Finset.univ, 0 ≤ d a * Complex.normSq (ext v a)`. Introduce `a _`. Distinguish the cases in `ha : 0 < d a`.
+
+Conclude with `mul_nonneg ha.le (Complex.normSq_nonneg _)`. Simplify using `[ext, ha]`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg h3).mp (le_antisymm (h1 ▸ h2) (Finset.sum_nonneg h3))`. Use function extensionality and compare the values at `a`. Establish `h5` using `h4 a.1 (Finset.mem_univ _)`.
+
+Break down `mul_eq_zero.mp h5 with h6 | h6` into its components or cases. Conclude with `absurd h6 a.2.ne'`. Establish `h7` using `Complex.normSq_eq_zero.mp h6`. Simplify `h7` using `[ext, a.2]`. Simplify using `using LinearMap.finrank_le_finrank_of_injective hf`.
+-/
 theorem inertia_le {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (d : α → ℝ) (e : β → ℝ)
     (G : Matrix β α ℂ) (h : Gᴴ * Matrix.diagonal (fun b => (e b : ℂ)) * G = Matrix.diagonal (fun a => (d a : ℂ))) :
     Fintype.card {a // 0 < d a} ≤ Fintype.card {b // 0 < e b} := by
@@ -56,14 +72,23 @@ theorem inertia_le {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [De
 
 def sg (r s : ℕ) : Fin r ⊕ Fin s → ℝ := Sum.elim (fun _ => 1) (fun _ => -1)
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [sg, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem blocks_eq (r s : ℕ) :
     (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ) = Matrix.diagonal (fun a => (sg r s a : ℂ)) := by
   ext (i | i) (j | j) <;> simp [sg, Matrix.diagonal_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← blocks_eq]`. Both sides reduce to the same expression.
+-/
 theorem Jm_eq (r s : ℕ) : Jm r s = Matrix.diagonal (fun a => (sg r s a : ℂ)) := by
   rw [← blocks_eq]; rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `rcases a with a | a <;> simp [sg]`.
+-/
 theorem sg_sq (r s : ℕ) :
     Matrix.diagonal (fun a => (sg r s a : ℂ)) * Matrix.diagonal (fun a => (sg r s a : ℂ)) = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -71,6 +96,11 @@ theorem sg_sq (r s : ℕ) :
   funext a
   rcases a with a | a <;> simp [sg]
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (fun a : Fin r => (⟨Sum.inl a, by simp [sg]⟩ : {a // 0 < sg r s a}))`. Introduce and unpack `⟨a | a, ha⟩`. Conclude with `⟨a, rfl⟩`. Simplify using `[sg] at ha`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `using Fintype.card_le_of_surjective _ hs`.
+-/
 theorem card_pos (r s : ℕ) : Fintype.card {a // 0 < sg r s a} ≤ r := by
   have hs : Function.Surjective (fun a : Fin r => (⟨Sum.inl a, by simp [sg]⟩ : {a // 0 < sg r s a})) := by
     rintro ⟨a | a, ha⟩
@@ -78,6 +108,11 @@ theorem card_pos (r s : ℕ) : Fintype.card {a // 0 < sg r s a} ≤ r := by
     · simp [sg] at ha; linarith
   simpa using Fintype.card_le_of_surjective _ hs
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (fun a : Fin s => (⟨Sum.inr a, by simp [sg]⟩ : {a // 0 < -sg r s a}))`. Introduce and unpack `⟨a | a, ha⟩`. Simplify using `[sg] at ha`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨a, rfl⟩`.
+
+Simplify using `using Fintype.card_le_of_surjective _ hs`.
+-/
 theorem card_neg (r s : ℕ) : Fintype.card {a // 0 < -sg r s a} ≤ s := by
   have hs : Function.Surjective (fun a : Fin s => (⟨Sum.inr a, by simp [sg]⟩ : {a // 0 < -sg r s a})) := by
     rintro ⟨a | a, ha⟩
@@ -85,6 +120,23 @@ theorem card_neg (r s : ℕ) : Fintype.card {a // 0 < -sg r s a} ≤ s := by
     · exact ⟨a, rfl⟩
   simpa using Fintype.card_le_of_surjective _ hs
 
+/- English proof (translation)
+Take `⟨P, hP, hPN⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp hN.isStrictlyPositive`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hPQ, hQP⟩ : ∃ Q, P * Q = 1 ∧ Q * P = 1 := by`. Take `⟨u, rfl⟩` from `hP`. Conclude with `⟨↑u⁻¹, u.mul_inv, u.inv_mul⟩`. Establish `hK : (Qᴴ * M * Q).IsHermitian` using `Matrix.isHermitian_conjTranspose_mul_mul Q hM`.
+
+Establish `hMe : M = Pᴴ * P * φ`. Rewrite using `[← Matrix.star_eq_conjTranspose, ← hPN, Matrix.mul_assoc, hφ, Matrix.mul_one]`. Establish `hKe : Qᴴ * M * Q = P * φ * Q`. Establish `h1 : Qᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Use `conv_lhs => rw [hMe]`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Use `set U : Matrix (Fin n) (Fin n) ℂ := hK.eigenvectorUnitary.1 with hU`. Establish `hU1 : star U * U = 1` using `hK.eigenvectorUnitary.2.1`. Establish `hU2 : U * star U = 1` using `hK.eigenvectorUnitary.2.2`. Establish `hD : star U * (Qᴴ * M * Q) * U = Matrix.diagonal (fun i => (hK.eigenvalues i : ℂ))`.
+
+Use `hK.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Rewrite `this` using `[Unitary.coe_star, star_star]`. Conclude with `this`. Establish `hφC : φ * (Q * U) = Q * U * Matrix.diagonal (fun i => (hK.eigenvalues i : ℂ))`.
+
+Rewrite using `[← hD, hKe]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU2, Matrix.mul_one, hQP, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Use `⟨Q * U, hK.eigenvalues, ?_, ?_, hφC⟩` and prove the remaining obligations.
+
+Establish `hsq : Matrix.diagonal (fun i => (hK.eigenvalues i : ℂ)) * Matrix.diagonal (fun i => (hK.eigenvalues i : ℂ)) = 1`. Rewrite using `[← hD, hKe]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU2, Matrix.mul_one, hQP, Matrix.mul_one, hφ, Matrix.mul_one, hPQ, Matrix.mul_one, hU1]`. Introduce `i`.
+
+Establish `h1` using `congrFun (congrFun hsq i) i`. Rewrite `h1` using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq, Matrix.one_apply_eq]`. Establish `h2 : hK.eigenvalues i * hK.eigenvalues i = 1` using `by exact_mod_cast h1`. Conclude with `mul_self_eq_one_iff.mp h2`. Rewrite using `[← hD, Matrix.conjTranspose_mul, Matrix.star_eq_conjTranspose]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem diag_ex {n : ℕ} (M φ : Matrix (Fin n) (Fin n) ℂ) (hM : M.IsHermitian) (hφ : φ * φ = 1) (hN : (M * φ).PosDef) :
     ∃ (C : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ), (∀ i, d i = 1 ∨ d i = -1) ∧
       Cᴴ * M * C = Matrix.diagonal (fun i => (d i : ℂ)) ∧ φ * C = C * Matrix.diagonal (fun i => (d i : ℂ)) := by
@@ -127,6 +179,39 @@ theorem diag_ex {n : ℕ} (M φ : Matrix (Fin n) (Fin n) ℂ) (hM : M.IsHermitia
   · rw [← hD, Matrix.conjTranspose_mul, Matrix.star_eq_conjTranspose]
     simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hcard : Fintype.card (Fin r ⊕ Fin s) = Fintype.card (Fin n)` using `by simp [hn]`. Establish `hinv : ∀ C : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ, Cᴴ * M * C = Matrix.diagonal (fun a => (sg r s a : ℂ)) → ∃ C' : Matrix (Fin r ⊕ Fin s) (Fin n) ℂ, C * C' = 1`. Introduce `C hC`. Use `⟨Matrix.diagonal (fun a => (sg r s a : ℂ)) * Cᴴ * M, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_eq_one_comm_of_card_eq _ _ _ hcard]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨B', hB'⟩` from `hinv B hB`. Establish `hMe : M = B'ᴴ * Matrix.diagonal (fun a => (sg r s a : ℂ)) * B'`. Rewrite using `[← hB]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hM : M.IsHermitian`. Rewrite using `[hMe]`. Use `Matrix.isHermitian_conjTranspose_mul_mul _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.isHermitian_diagonal_iff]`. Introduce `a`.
+
+Simplify using `[IsSelfAdjoint]`. Establish `hN : φᴴ * M = M * φ`. Combine the equalities or inequalities in the displayed calculation. Establish `hNH : (M * φ).IsHermitian`. Rewrite using `[Matrix.IsHermitian, Matrix.conjTranspose_mul, hM.eq, hN]`.
+
+Establish `hPD : (M * φ).PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hNH fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `hpos x hx`. Rewrite `h1` using `[hN]`. Rewrite using `[Complex.pos_iff]`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hNH.im_star_dotProduct_mulVec_self x`. Simplify using `using h2.symm`. Take `⟨C, d, hd, hC, hφC⟩` from `diag_ex M φ hM hφ hPD`. Establish `hG : (B' * C)ᴴ * Matrix.diagonal (fun a => (sg r s a : ℂ)) * (B' * C) = Matrix.diagonal (fun i => (d i : ℂ))`.
+
+Rewrite using `[← hC, Matrix.conjTranspose_mul]`. Use `conv_rhs => rw [hMe]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hp : Fintype.card {i // 0 < d i} ≤ r` using `(inertia_le d _ _ hG).trans (card_pos r s)`. Establish `hG' : (B' * C)ᴴ * Matrix.diagonal (fun a => ((-sg r s a : ℝ) : ℂ)) * (B' * C) = Matrix.diagonal (fun i => ((-d i : ℝ) : ℂ))`.
+
+Establish `e1 : Matrix.diagonal (fun a => ((-sg r s a : ℝ) : ℂ)) = -Matrix.diagonal (fun a => (sg r s a : ℂ))`. Rewrite using `[Matrix.diagonal_neg]`. Simplify using the standard rewrite rules. Establish `e2 : Matrix.diagonal (fun i => ((-d i : ℝ) : ℂ)) = -Matrix.diagonal (fun i => (d i : ℂ))`. Rewrite using `[Matrix.diagonal_neg]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1, e2, Matrix.mul_neg, Matrix.neg_mul, hG]`. Establish `hq0 : Fintype.card {i // 0 < -d i} ≤ s` using `(inertia_le (fun i => -d i) (fun a => -sg r s a) _ hG').trans (card_neg r s)`. Establish `hq : Fintype.card {i // ¬ 0 < d i} ≤ s`. Use `le_trans (le_of_eq (Fintype.card_congr (Equiv.subtypeEquivRight fun i => ?_))) hq0` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases hd i with h | h <;> simp [h]`. Establish `hsum : Fintype.card {i // 0 < d i} + Fintype.card {i // ¬ 0 < d i} = n`. Rewrite using `[← Fintype.card_sum, Fintype.card_congr (Equiv.sumCompl fun i => 0 < d i), Fintype.card_fin]`. Establish `hp' : Fintype.card (Fin r) = Fintype.card {i // 0 < d i}` using `by rw [Fintype.card_fin]; omega`. Establish `hq' : Fintype.card (Fin s) = Fintype.card {i // ¬ 0 < d i}` using `by rw [Fintype.card_fin]; omega`.
+
+Set `e : Fin r ⊕ Fin s ≃ Fin n` to `(Equiv.sumCongr (Fintype.equivOfCardEq hp') (Fintype.equivOfCardEq hq')).trans (Equiv.sumCompl fun i => 0 < d i)`. Establish `he : ∀ a, d (e a) = sg r s a`. Introduce and unpack `(a | a)`. Establish `h1 : 0 < d (e (.inl a))` using `(Fintype.equivOfCardEq hp' a).2`. Break down `hd (e (.inl a)) with h | h` into its components or cases.
+
+Simplify `h` using `[sg]`. Rewrite `h1` using `[h]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ¬ 0 < d (e (.inr a))` using `(Fintype.equivOfCardEq hq' a).2`. Break down `hd (e (.inr a)) with h | h` into its components or cases.
+
+Rewrite `h1` using `[h]`. Simplify using `at h1`. Simplify `h` using `[sg]`. Establish `hde : (Matrix.diagonal (fun i => (d i : ℂ))).submatrix e e = Matrix.diagonal (fun a => (sg r s a : ℂ))`. Rewrite using `[Matrix.submatrix_diagonal_equiv]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `[he]`. Establish `hC2 : (C.submatrix id e)ᴴ * M * C.submatrix id e = Matrix.diagonal (fun a => (sg r s a : ℂ))`. Rewrite using `[← hde, ← hC]`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Use `⟨C.submatrix id e, hC2, hinv _ hC2, ?_⟩` and prove the remaining obligations. Use extensionality with `i a`. Establish `h1` using `congrFun (congrFun hφC i) (e a)`.
+
+Rewrite `h1`, the goal using `[Matrix.mul_diagonal]`. Rewrite using `[← he]`. Conclude with `h1`.
+-/
 theorem frame_conj {n r s : ℕ} (hn : r + s = n) (M φ : Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin n) (Fin r ⊕ Fin s) ℂ)
     (hB : Bᴴ * M * B = Matrix.diagonal (fun a => (sg r s a : ℂ))) (hφ : φ * φ = 1) (hiso : φᴴ * M * φ = M)
     (hpos : ∀ x : Fin n → ℂ, x ≠ 0 → 0 < (star x ⬝ᵥ (φᴴ * M) *ᵥ x).re) :
@@ -220,6 +305,19 @@ namespace PositivityTheory.RL
 
 open _root_.PositivityTheory.RL.Frame
 
+/- English proof (translation)
+Introduce and unpack `n r s M θ ⟨hn, B, hB⟩ ⟨hθ, hiso, hpos⟩`. Establish `ct : ∀ {α β : Type} (X : Matrix α β ℂ), (X.map star)ᴴ = Xᵀ`. Introduce `α β X`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Establish `mm : ∀ {α β : Type} (X : Matrix α β ℂ), (X.map star).map star = X`. Introduce `α β X`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `mul : ∀ {α β γ : Type} [Fintype β] (X : Matrix α β ℂ) (Y : Matrix β γ ℂ), (X * Y).map star = X.map star * Y.map star`.
+
+Introduce `α β γ _ X Y`. Conclude with `Matrix.map_mul (f := starRingEnd ℂ)`. Establish `one : (1 : Matrix (Fin n) (Fin n) ℂ).map star = 1` using `Matrix.map_one _ (star_zero _) (star_one _)`. Take `⟨C, hC, ⟨C', hC'⟩, hφ⟩` from `frame_conj hn M (θ.map star) (B.map star) (by rw [ct, hB, blocks_eq]) (by rw [← mul, hθ, one]) (by rw [ct, hiso]) (by`. Introduce `x hx`.
+
+Establish `h1` using `hpos (star x) (by simpa using hx)`. Rewrite `h1` using `[star_star, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[ct]`. Conclude with `h1)`. Use `⟨C.map star, ⟨?_, C'.map star, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ct, mm, hC, Jm_eq]`. Rewrite using `[← mul, hC', one]`. Establish `h1` using `congrArg (fun X => Matrix.map X star) hφ`. Simplify using `only [mul, mm] at h1`. Rewrite using `[h1, Jm_eq]`.
+
+Use `congr 1`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [h]`.
+-/
 theorem frameEx : GlobalTheory.RealLift.FrameEx := by
   rintro n r s M θ ⟨hn, B, hB⟩ ⟨hθ, hiso, hpos⟩
   have ct : ∀ {α β : Type} (X : Matrix α β ℂ), (X.map star)ᴴ = Xᵀ := by

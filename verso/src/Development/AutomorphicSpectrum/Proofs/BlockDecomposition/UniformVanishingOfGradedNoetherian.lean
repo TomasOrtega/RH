@@ -16,6 +16,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 
 namespace GlobalTheory.CompanionTheory.GE.UV
 
+/- English proof (translation)
+Use `letI := algebraOfOver X A`. Use `haveI : GlobalTheory.QCoh.IsFiniteQC F := ⟨hF.1, hF.2⟩`. Conclude with `Filter.eventually_atTop.1 (GlobalTheory.IsAmpleLB.eventually_subsingleton_coh_twistZ (R := A) (f := X ↘ Spec (.of A)) (fun _ => rfl) F hH)`.
+-/
 theorem serre_one {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X)
     (hH : GlobalTheory.IsAmpleLB H) (F : X.Modules) (hF : IsCoherent F) :
@@ -25,6 +28,13 @@ theorem serre_one {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
   exact Filter.eventually_atTop.1 (GlobalTheory.IsAmpleLB.eventually_subsingleton_coh_twistZ (R := A)
     (f := X ↘ Spec (.of A)) (fun _ => rfl) F hH)
 
+/- English proof (translation)
+Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Use `choose D hD using fun U : X.affineOpens => GlobalTheory.T.kernel_operators_eventually_generate hG hM U`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => ((U : X.Opens) : Set X)) (fun U => U.1.isOpen) (fun x _ => by`. Establish `hx : x ∈ (⊤ : X.Opens)` using `trivial`.
+
+Rewrite `hx` using `[← iSup_affineOpens_eq_top X]`. Take `⟨U, hU⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `Set.mem_iUnion.2 ⟨U, hU⟩)`. Establish `hcoh : ∀ e, IsCoherent (kerSeq M T e)` using `fun e => by haveI := (hM.coherent (e + 1)).1`. Conclude with `isCoherent_kernel _ (hM.coherent e)`.
+
+Use `⟨t.sup D, ⟨hcoh, kerOps_comm hM.comm, fun e he => ?_⟩⟩` and prove the remaining obligations. Use `GlobalTheory.T.span_sections_all_affines_of_cover (fun i => (hcoh e).1) (hcoh (e + 1)).1 _ (fun x => ?_)` and prove the remaining obligations. Take `⟨U, hUt, hxU⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `⟨U, hxU, hD U e ((Finset.le_sup hUt).trans he)⟩`.
+-/
 theorem kerOpSeq (hG : GradedNoeth) {A : Type} [CommRing A] [IsNoetherianRing A] {X : Scheme.{0}}
     [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] {k : ℕ} {M : ℕ → X.Modules}
     {T : Fin (k + 1) → ∀ e, M e ⟶ M (e + 1)} {d : ℕ} (hM : OpSeq (k + 1) M T d) :
@@ -46,6 +56,17 @@ theorem kerOpSeq (hG : GradedNoeth) {A : Type} [CommRing A] [IsNoetherianRing A]
   obtain ⟨U, hUt, hxU⟩ := Set.mem_iUnion₂.1 (ht (Set.mem_univ x))
   exact ⟨U, hxU, hD U e ((Finset.le_sup hUt).trans he)⟩
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => exact h0`. Consider the case `succ e ih`. Introduce `q hq`.
+
+Establish `hL` using `GlobalTheory.Twist.isLB_lbZPow hH n`. Set `f` to `τ e`. Set `S₁ : ShortComplex X.Modules` to `ShortComplex.mk (kernel.ι f) (Abelian.factorThruImage f) (by`. Rewrite using `[← cancel_mono (Abelian.image.ι f)]`. Use the proof step `simp)`.
+
+Establish `hS₁ : S₁.ShortExact`. Use `{ exact := ?_ }` and prove the remaining obligations. Conclude with `ShortComplex.exact_of_f_is_kernel _ (isKernelOfComp (Abelian.image.ι f) f (kernelIsKernel f) _ (Abelian.image.fac f))`. Set `S₂ : ShortComplex X.Modules` to `ShortComplex.mk (Abelian.image.ι f) (cokernel.π f) (by`. Simplify using `[Abelian.image.ι])`.
+
+Establish `hS₂ : S₂.ShortExact`. Use `{ exact := ?_ }` and prove the remaining obligations. Conclude with `ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel (cokernel.π f))`. Establish `h₁` using `GlobalTheory.Twist.shortExact_map hL hS₁`. Establish `h₂` using `GlobalTheory.Twist.shortExact_map hL hS₂`.
+
+Establish `hIm` using `GlobalTheory.cohOn.subsingleton₃ h₁ ⊤ q (ih q hq) (hK e (q + 1) (by omega))`. Conclude with `GlobalTheory.cohOn.subsingleton₂ h₂ ⊤ q hIm (hC e q hq)`.
+-/
 theorem vanish_of_ker_cok {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (hH : H.IsLB)
     {M : ℕ → X.Modules} (τ : ∀ e, M e ⟶ M (e + 1)) (n : ℤ)
     (h0 : ∀ q, 0 < q → Subsingleton (GlobalTheory.coh (GlobalTheory.twistZ (M 0) H n) q))
@@ -75,6 +96,9 @@ theorem vanish_of_ker_cok {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestricti
     have hIm := GlobalTheory.cohOn.subsingleton₃ h₁ ⊤ q (ih q hq) (hK e (q + 1) (by omega))
     exact GlobalTheory.cohOn.subsingleton₂ h₂ ⊤ q hIm (hC e q hq)
 
+/- English proof (translation)
+Establish `hz : IsZero F` using `(GlobalTheory.QCoh.isZero_iff_forall_affine).2 fun U hU => h ⟨U, hU⟩`. Establish `hz' : IsZero (GlobalTheory.twistZ F H n)` using `(GlobalTheory.twistFunctor (GlobalTheory.lbZPow H n)).map_isZero hz`. Conclude with `GlobalTheory.cohOn.subsingleton_of_isZero hz' ⊤ q`.
+-/
 theorem coh_twistZ_of_sections {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (hH : H.IsLB)
     (F : X.Modules) [F.IsQuasicoherent] (h : ∀ U : X.affineOpens, Subsingleton Γ(F, U)) (n : ℤ) (q : ℕ) :
     Subsingleton (GlobalTheory.coh (GlobalTheory.twistZ F H n) q) := by
@@ -82,6 +106,19 @@ theorem coh_twistZ_of_sections {X : Scheme.{0}} (H : ReciprocityTheory.ChartRest
   have hz' : IsZero (GlobalTheory.twistZ F H n) := (GlobalTheory.twistFunctor (GlobalTheory.lbZPow H n)).map_isZero hz
   exact GlobalTheory.cohOn.subsingleton_of_isZero hz' ⊤ q
 
+/- English proof (translation)
+Introduce `A _ _ X _ _ H hH k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `M T d hM`. Establish `hz : ∀ e, d < e → ∀ (n : ℤ) q, Subsingleton (GlobalTheory.coh (GlobalTheory.twistZ (M e) H n) q)`.
+
+Introduce `e he n q`. Take `⟨e', rfl⟩ : ∃ e', e = e' + 1` from `⟨e - 1, by omega⟩`. Use `haveI := (hM.coherent (e' + 1)).1`. Use `coh_twistZ_of_sections H hH.isLB _ (fun U => ?_) n q` and prove the remaining obligations. Use `hM.gen e' (by omega) U` as an intermediate fact.
+
+Simplify using `only [Set.iUnion_of_empty, Submodule.span_empty] at this`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `ha : a ∈ (⊥ : Submodule Γ(X, U) _)` using `this ▸ Submodule.mem_top`. Establish `hb : b ∈ (⊥ : Submodule Γ(X, U) _)` using `this ▸ Submodule.mem_top`. Rewrite `ha`, `hb` using `[Submodule.mem_bot]`.
+
+Rewrite using `[ha, hb]`. Use `choose N hN using fun e => serre_one (A := A) H hH (M e) (hM.coherent e)`. Take `⟨B, hB⟩` from `Finite.exists_le (fun i : Fin (d + 1) => N i)`. Use `⟨B, fun n hn e q hq => ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : e ≤ d`.
+
+Conclude with `hN e n ((hB ⟨e, by omega⟩).trans hn) q hq`. Conclude with `hz e (by omega) n q`. Consider the case `succ k ih`. Introduce `M T d hM`. Take `⟨d₁, hK⟩` from `kerOpSeq hG (A := A) hM`.
+
+Take `⟨a, ha⟩` from `ih _ _ _ hK`. Take `⟨b, hb⟩` from `ih _ _ _ (GlobalTheory.T.cokernel_sequence_operator_sequence hM)`. Take `⟨c, hc⟩` from `serre_one (A := A) H hH (M 0) (hM.coherent 0)`. Use `⟨max a (max b c), fun n hn => ?_⟩` and prove the remaining obligations. Conclude with `vanish_of_ker_cok H hH.isLB (T (Fin.last k)) n (hc n (by omega)) (fun e q hq => ha n (by omega) e q hq) (fun e q hq => hb n (by omega) e q hq)`.
+-/
 theorem uniformVanishing (hG : GradedNoeth) : UniformVanishing := by
   intro A _ _ X _ _ H hH k
   induction k with

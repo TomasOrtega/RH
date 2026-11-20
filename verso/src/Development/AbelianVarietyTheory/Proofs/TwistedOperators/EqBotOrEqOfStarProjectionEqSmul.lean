@@ -22,6 +22,13 @@ noncomputable section
 
 namespace GlobalTheory.TrCopy
 
+/- English proof (translation)
+Establish `haa : a * a = a`. Establish `h1 : U'.starProjection (U'.starProjection u0) = U'.starProjection u0` using `(Submodule.starProjection_eq_self_iff (K := U')).2 (U'.starProjection_apply_mem _)`. Rewrite `h1` using `[hPU _ hu0, map_smul, hPU _ hu0, smul_smul]`. Conclude with `smul_left_injective ℂ hne h1`. Break down `mul_eq_zero.1 (show a * (a - 1) = 0 by rw [mul_sub, haa, mul_one, sub_self]) with h0 | h1` into its components or cases.
+
+Use `left`. Use `(Submodule.eq_bot_iff U').2 fun v hv => ?_` and prove the remaining obligations. Rewrite using `[← (Submodule.starProjection_eq_self_iff (K := U')).2 hv, hPU v (hle hv), h0, zero_smul]`. Use `right`. Use `le_antisymm hle fun v hv => ?_` and prove the remaining obligations.
+
+Establish `hv' : U'.starProjection v = v` using `by rw [hPU v hv, sub_eq_zero.1 h1, one_smul]`. Conclude with `hv' ▸ U'.starProjection_apply_mem v`.
+-/
 theorem eq_bot_or_eq_of_starProjection_eq_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {U U' : Submodule ℂ H} [U'.HasOrthogonalProjection] (hle : U' ≤ U) (a : ℂ)
     (hPU : ∀ v ∈ U, U'.starProjection v = a • v) {u0 : H} (hu0 : u0 ∈ U) (hne : u0 ≠ 0) : U' = ⊥ ∨ U' = U := by
@@ -39,6 +46,17 @@ theorem eq_bot_or_eq_of_starProjection_eq_smul {H : Type} [NormedAddCommGroup H]
     have hv' : U'.starProjection v = v := by rw [hPU v hv, sub_eq_zero.1 h1, one_smul]
     exact hv' ▸ U'.starProjection_apply_mem v
 
+/- English proof (translation)
+Use `set A := Submodule.span ℂ s with hA`. Set `Q : H →L[ℂ] H` to `P - a • ContinuousLinearMap.id ℂ H`. Establish `hQ : ∀ v, Q v = P v - a • v` using `fun v => rfl`. Establish `hQA : ∀ v ∈ A, Q v ∈ Aᗮ`. Introduce `v hv`.
+
+Use `(Submodule.span_le (p := Aᗮ.comap (Q : H →ₗ[ℂ] H))).2 ?_ hv` and prove the remaining obligations. Introduce `u hu`. Use `show Q u ∈ Aᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce `x hx`.
+
+Establish `hle : A ≤ (ℂ ∙ Q u)ᗮ` using `Submodule.span_le.2 (by`. Introduce `u' hu'`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right, inner_eq_zero_symm, hQ]`. Conclude with `h u hu u' hu')`. Conclude with `inner_eq_zero_symm.1 ((Submodule.mem_orthogonal_singleton_iff_inner_right).1 (hle hx))`.
+
+Establish `hQcl : ∀ v ∈ A.topologicalClosure, Q v ∈ Aᗮ` using `fun v hv => (Submodule.topologicalClosure_minimal (s := A) (t := Aᗮ.comap (Q : H →ₗ[ℂ] H)) (fun u hu => hQA u hu) ((Submodule.isClosed_orthogonal A).preimage Q.continuous)) hv`. Establish `hcl : A.topologicalClosure ≤ Aᗮᗮ` using `Submodule.topologicalClosure_minimal _ A.le_orthogonal_orthogonal (Submodule.isClosed_orthogonal _)`. Introduce `v hv`. Establish `h1 : Q v ∈ A.topologicalClosure`. Rewrite using `[hQ]`.
+
+Conclude with `sub_mem (hP v hv) (Submodule.smul_mem _ _ hv)`. Establish `h2 : ⟪Q v, Q v⟫_ℂ = 0` using `Submodule.inner_right_of_mem_orthogonal (hQcl v hv) (hcl h1)`. Rewrite `h2` using `[inner_self_eq_zero, hQ, sub_eq_zero]`. Conclude with `h2`.
+-/
 theorem eq_smul_on_closure_span {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (s : Set H) (P : H →L[ℂ] H) (a : ℂ)
     (hP : ∀ v ∈ (Submodule.span ℂ s).topologicalClosure, P v ∈ (Submodule.span ℂ s).topologicalClosure)
@@ -72,6 +90,31 @@ theorem eq_smul_on_closure_span {H : Type} [NormedAddCommGroup H] [InnerProductS
   rw [inner_self_eq_zero, hQ, sub_eq_zero] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `D V S M W _ _ σ hirr hadm H _ _ _ ρ hρ U hU`. Take `⟨T, hT, hinj, rfl⟩` from `hU`. Establish `hTm` using `mem_homTensorPi.1 hT`. Establish `hδ : ∀ τ, IsIrrUnitary (dsRep M τ)` using `isIrrUnitary_dsRep M`. Establish `hgen : ∀ g w y, ρ g (T w y) ∈ Submodule.span ℂ {v | ∃ w y, v = T w y}`.
+
+Introduce `g w y`. Establish `e1` using `GlobalTheory.TrAct.toInf_apply_homDS D V S M H ρ ⊤ (T (σ (toFin V g) w)) (hT.1 _) g y`. Rewrite `e1` using `[hTm.2.1]`. Establish `e2 : ρ g (T w y) = ρ (toInf V g : GA D V) (ρ ((GfC V).subtype (toFin V g)) (T w y))` using `by conv_lhs => rw [← toInf_mul_toFin g]`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2, e1]`. Conclude with `Submodule.subset_span ⟨_, _, rfl⟩`. Establish `hsub : IsSubrep ρ (Submodule.span ℂ {v | ∃ w y, v = T w y}).topologicalClosure` using `isSubrep_topologicalClosure fun g v hv => Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap (ρ g : H →ₗ[ℂ] H) _)).2 (by rintro _ ⟨w, y, rfl⟩; exact hgen g w y) hv)`. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w : W, w ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hne : (⊥ : Subrepresentation σ) ≠ ⊤` using `bot_ne_top`. Conclude with `hne (by ext v; simp [h v])`. Establish `hTw0 : T w0 ≠ 0` using `fun h => hw0 (hinj (h.trans (map_zero T).symm))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y0, hy0⟩ : ∃ y, T w0 y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hTw0 (ContinuousMultilinearMap.ext h)`. Establish `hu0 : T w0 y0 ∈ (Submodule.span ℂ {v | ∃ w y, v = T w y}).topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨w0, y0, rfl⟩)`.
+
+Use `⟨hsub, fun h => hy0 ((Submodule.mem_bot ℂ).1 (h ▸ hu0)), fun U' hU'le hU' => ?_⟩` and prove the remaining obligations. Use `haveI : CompleteSpace U' := hU'.1.completeSpace_coe`. Establish `hPc : ∀ g v, U'.starProjection (ρ g v) = ρ g (U'.starProjection v)`. Introduce `g v`. Establish `h1 : ρ g (U'.starProjection v) ∈ U'` using `hU'.2 g _ (U'.starProjection_apply_mem v)`.
+
+Establish `h2 : ρ g (v - U'.starProjection v) ∈ U'ᗮ` using `(hU'.orthogonal hρ).2 g _ (Submodule.sub_starProjection_mem_orthogonal (K := U') v)`. Establish `e : ρ g v = ρ g (U'.starProjection v) + ρ g (v - U'.starProjection v)`. Rewrite using `[← map_add, add_sub_cancel]`. Rewrite using `[e, map_add, (Submodule.starProjection_eq_self_iff (K := U')).2 h1, (Submodule.starProjection_apply_eq_zero_iff U').2 h2, add_zero]`. Take `⟨T', hT'a⟩ : ∃ T' : W →ₗ[ℂ] ContinuousMultilinearMap ℂ M.H H, ∀ w y, T' w y = U'.starProjection (T w y)` from `⟨(ContinuousLinearMap.compContinuousMultilinearMapL ℂ M.H H H U'.starProjection).toLinearMap ∘ₗ T, fun _ _ => rfl⟩`.
+
+Establish `hΦ' : ∀ w, T' w ∈ homDS M ρ ⊤` using `fun w => mem_homPi.2 ⟨fun _ => trivial, fun τ g y => by`. Rewrite using `[hT'a, hT'a, (hT.1 w).2 τ g y, hPc]⟩`. Set `B : W →ₗ[ℂ] W →ₛₗ[starRingEnd ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => bePi (T v) (T w)) (fun _ _ _ => by simp [bePi, inner_add_right]) (fun _ _ _ => by simp [bePi]) (fun _ _ _ => by simp [bePi, inner_add_left]) (fun _ _ _ => by simp [bePi, inner_smul_left, mul_comm])`. Set `C : W →ₗ[ℂ] W →ₛₗ[starRingEnd ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => bePi (T' v) (T w)) (fun _ _ _ => by simp [bePi, inner_add_right]) (fun _ _ _ => by simp [bePi]) (fun _ _ _ => by simp [bePi, inner_add_left]) (fun _ _ _ => by simp [bePi, inner_smul_left, mul_comm])`. Establish `hBpos : ∀ x, x ≠ 0 → 0 < (B x x).re` using `fun x hx => bePi_self_pos hδ hρ (hT.1 x) ((map_ne_zero_iff T hinj).2 hx)`.
+
+Establish `hBinv : ∀ g x y, B (σ g x) (σ g y) = B x y` using `fun g v w => by`. Express the relevant statement in the definitionally equal form `⟪T (σ g w) _, T (σ g v) _⟫_ℂ = _`. Rewrite using `[hTm.2.1, hTm.2.1, inner_map_map hρ]`. Both sides reduce to the same expression. Establish `hCinv : ∀ g x y, C (σ g x) (σ g y) = C x y` using `fun g v w => by`.
+
+Express the relevant statement in the definitionally equal form `⟪T (σ g w) _, T' (σ g v) _⟫_ℂ = _`. Rewrite using `[hT'a, hTm.2.1, hTm.2.1, hPc, inner_map_map hρ, ← hT'a]`. Both sides reduce to the same expression. Take `⟨K, hKo, hKc⟩` from `GlobalTheory.CuspDec.exists_compact_open V`. Take `⟨φ, hφ, hC⟩` from `GlobalTheory.InvPairing.exists_intertwiner (GfC V) K hKo hKc W W σ σ hadm hadm.1 B C hBpos hBinv hCinv`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.SchurAdm.schur_admissible (GfC V) K hKo hKc W σ hirr hadm φ hφ`. Establish `key : ∀ x y, bePi (T' x) (T y) = conj c * bePi (T x) (T y)` using `fun x y => by`. Use `hC x y` as an intermediate fact. Rewrite `this` using `[hc, LinearMap.smul_apply, LinearMap.id_apply, map_smulₛₗ, smul_eq_mul]`. Conclude with `this`.
+
+Establish `hgen2 : ∀ u ∈ {v | ∃ w y, v = T w y}, ∀ u' ∈ {v | ∃ w y, v = T w y}, ⟪u', U'.starProjection u - conj c • u⟫_ℂ = 0`. Introduce and unpack `_ ⟨w, z, rfl⟩ _ ⟨w', z', rfl⟩`. Rewrite using `[inner_sub_right, inner_smul_right, ← hT'a, inner_eq_bePi hδ hρ (hΦ' w) (hT.1 w'), inner_eq_bePi hδ hρ (hT.1 w) (hT.1 w'), key, mul_assoc, sub_self]`. Conclude with `eq_bot_or_eq_of_starProjection_eq_smul hU'le (conj c) (eq_smul_on_closure_span _ U'.starProjection (conj c) (fun v _ => hU'le (U'.starProjection_apply_mem v)) hgen2) hu0 hy0`.
+-/
 theorem isIrredSubrep_of_isCopyFinDS : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (W : Type)
     [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), σ.IsIrreducible → IsAdmissible σ →
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : GA D V →* (H →L[ℂ] H)),

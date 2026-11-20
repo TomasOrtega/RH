@@ -14,6 +14,11 @@ section Core
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {N : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simpa using intCast_mem (chartQ x c) a`. Consider the case `add a b ha hb => simpa using (chartQ x c).add_mem ha hb`. Consider the case `mul_X a i ha`. Establish `hi : x i.2 / x c ∈ chartQ x c` using `Algebra.subset_adjoin ⟨i.2, rfl⟩`.
+
+Simplify using `using (chartQ x c).mul_mem ha hi`.
+-/
 theorem chartQ_ratEval_mem (x : Fin (N + 1) → Ω) (c : Fin (N + 1))
     (g : MRing (fun _ : Unit => Fin (N + 1))) : ratEval x c g ∈ chartQ x c := by
   induction g using MvPolynomial.induction_on with
@@ -23,6 +28,9 @@ theorem chartQ_ratEval_mem (x : Fin (N + 1) → Ω) (c : Fin (N + 1))
     have hi : x i.2 / x c ∈ chartQ x c := Algebra.subset_adjoin ⟨i.2, rfl⟩
     simpa using (chartQ x c).mul_mem ha hi
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Algebra.adjoin_mono (Set.insert_subset_insert Algebra.subset_adjoin)`. Use `Algebra.adjoin_le (Set.insert_subset (Algebra.subset_adjoin (Set.mem_insert _ _)) ?_)` and prove the remaining obligations. Conclude with `fun _ hs => Algebra.adjoin_mono (Set.subset_insert _ _) hs`.
+-/
 theorem adjoin_insert_eq_invAdj (R : Set Ω) (h : Ω) :
     Algebra.adjoin ℚ (insert h⁻¹ R) = invAdj (Algebra.adjoin ℚ R) h := by
   apply le_antisymm
@@ -30,6 +38,11 @@ theorem adjoin_insert_eq_invAdj (R : Set Ω) (h : Ω) :
   · refine Algebra.adjoin_le (Set.insert_subset (Algebra.subset_adjoin (Set.mem_insert _ _)) ?_)
     exact fun _ hs => Algebra.adjoin_mono (Set.subset_insert _ _) hs
 
+/- English proof (translation)
+Establish `h1 : (1 : R) ∈ Ideal.span T` using `hT ▸ Submodule.mem_top`. Take `⟨w, hw, hs⟩` from `Submodule.mem_span_set.1 h1`. Set `ε` to `w.support.equivFin`. Use `⟨w.support.card, fun l => (ε.symm l : R), fun l => w (ε.symm l), fun l => hw (ε.symm l).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs, Finsupp.sum, ← Finset.sum_coe_sort w.support (fun i => w i • i)]`.
+
+Conclude with `Equiv.sum_comp ε.symm (fun i : w.support => w i • (i : R))`.
+-/
 theorem exists_sum_eq_one_of_span_eq_top {R : Type} [CommRing R] (T : Set R) (hT : Ideal.span T = ⊤) :
     ∃ (m : ℕ) (f a : Fin m → R), (∀ l, f l ∈ T) ∧ ∑ l, a l * f l = 1 := by
   classical
@@ -40,6 +53,17 @@ theorem exists_sum_eq_one_of_span_eq_top {R : Type} [CommRing R] (T : Set R) (hT
   rw [← hs, Finsupp.sum, ← Finset.sum_coe_sort w.support (fun i => w i • i)]
   exact Equiv.sum_comp ε.symm (fun i : w.support => w i • (i : R))
 
+/- English proof (translation)
+Set `T : Set (chartQ x c)` to `{t | (t : Ω) ≠ 0 ∧ ∃ (z : Fin e → invAdj (chartQ x c) (t : Ω)) (n : ℕ), IsSncPatch Pt Bd e (invAdj (chartQ x c) (t : Ω)) z n}`. Establish `hT : Ideal.span T = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨I, hI, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨p, hp, hs⟩` from `h2 I hI.isPrime`.
+
+Take `⟨h, hh, hu, z, n, hz⟩` from `h1 p hp`. Establish `hmem : (⟨h, hh⟩ : chartQ x c) ∈ T` using `⟨hu0 p h hu, z, n, hz⟩`. Conclude with `(hs ⟨h, hh⟩).2 hu (hle (Ideal.subset_span hmem))`. Take `⟨m, f, a, hf, hsum⟩` from `exists_sum_eq_one_of_span_eq_top T hT`. Use `⟨m, fun l => f l, fun l => a l, fun l => (f l).2, fun l => (a l).2, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (Subtype.val) hsum` as an intermediate fact. Simplify using `using this`. Introduce `l hl S hS`. Rewrite `hS` using `[adjoin_insert_eq_invAdj]`. Substitute `hS` using the available equality.
+
+Take `⟨-, z, n, hz⟩` from `hf l`. Use `⟨hz.smooth, z, n, hz.le, hz.li, hz.span, fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hs, hb⟩` from `h3 _ (f l).2 hl q hq`. Rewrite using `[← hb z n hz, h4 p hp]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H g hg hu`. Conclude with `(hs ⟨ratEval x c g, le_invAdj _ _ (chartQ_ratEval_mem x c g)⟩).2 hu (H g hg _ rfl)`. Introduce `H g hg s hsg`. Assume the negation of the conclusion as `hn`. Conclude with `H g hg (hsg ▸ (hs s).1 hn)`.
+-/
 theorem chart_cover_core {P : Type} (u : P → Ω → Prop) (hu0 : ∀ p h, u p h → h ≠ 0) (C B : Set P)
     (Pt Bd : Set (Subring Ω)) (x : Fin (N + 1) → Ω) (c : Fin (N + 1)) (e : ℕ)
     (bd : Ideal (MRing (fun _ : Unit => Fin (N + 1))))
@@ -89,6 +113,11 @@ theorem chart_cover_core {P : Type} (u : P → Ω → Prop) (hu0 : ∀ p h, u p 
 
 end Core
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, j⟩, rfl⟩`. Conclude with `⟨j, rfl⟩`. Introduce and unpack `⟨j, rfl⟩`.
+
+Conclude with `⟨⟨(), j⟩, rfl⟩`.
+-/
 theorem range_ratios_unit {Ω : Type} [Field Ω] {N : ℕ} (x : Fin (N + 1) → Ω) (c : Unit → Fin (N + 1)) :
     (Set.range fun p : (Σ _ : Unit, Fin (N + 1)) => x p.2 / x (c p.1)) =
       Set.range fun j => x j / x (c ()) := by
@@ -99,6 +128,13 @@ theorem range_ratios_unit {Ω : Type} [Field Ω] {N : ℕ} (x : Fin (N + 1) → 
   · rintro ⟨j, rfl⟩
     exact ⟨⟨(), j⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `Ω _ _ X ξ N x e B bd h1 h2 h3 h4`. Unfold `Cmp.IsSncModel`. Introduce `c hc`. Establish `hx : x (c ()) ≠ 0` using `hc ()`. Establish `key` using `chart_cover_core (P := Cpt ξ) (fun p h => unitAt ξ p h) (fun p h hh => hh.1) {p | Char0 ξ p ∧ InChart ξ x (c ()) p} B (Pts ξ) (regAt ξ '' B) x (c ()) e bd (fun p hp => h1 _ p hp.1 hp.2) (fun I hI => by`.
+
+Take `⟨p, a, b, d⟩` from `h2 _ hx I hI`. Conclude with `⟨p, ⟨a, b⟩, d⟩)`. Use the proof step `(fun h hh h0 q hq => by`. Take `⟨p, a, b, d, f⟩` from `h3 _ h hx hh h0 q hq`. Conclude with `⟨p, ⟨a, b⟩, d, f⟩)`.
+
+Use the proof step `(fun p hp => h4 _ p hp.1 hp.2)`. Use `beta_reduce`. Rewrite using `[range_ratios_unit x c]`. Conclude with `key`.
+-/
 theorem isSncModel_of_chart_patches : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (N : ℕ) (x : Fin (N + 1) → Ω) (e : ℕ) (B : Set (Cpt ξ)) (bd : Ideal (MRing (fun _ : Unit => Fin (N + 1)))), (∀ c (p : Cpt ξ), Char0 ξ p → InChart ξ x c p → ∃ h ∈ Mdl.chartQ x c, unitAt ξ p h ∧ ∃ (z : Fin e → Mdl.invAdj (Mdl.chartQ x c) h) (n : ℕ), IsSncPatch (Pts ξ) (regAt ξ '' B) e (Mdl.invAdj (Mdl.chartQ x c) h) z n) → (∀ c, x c ≠ 0 → ∀ I : Ideal (Mdl.chartQ x c), I.IsPrime → ∃ p : Cpt ξ, Char0 ξ p ∧ InChart ξ x c p ∧ ∀ s : Mdl.chartQ x c, s ∉ I ↔ unitAt ξ p (s : Ω)) → (∀ c h, x c ≠ 0 → h ∈ Mdl.chartQ x c → h ≠ 0 → ∀ q : Ideal (Mdl.invAdj (Mdl.chartQ x c) h), q.IsPrime → ∃ p : Cpt ξ, Char0 ξ p ∧ InChart ξ x c p ∧ (∀ s : Mdl.invAdj (Mdl.chartQ x c) h, s ∉ q ↔ unitAt ξ p (s : Ω)) ∧ ∀ (z : Fin e → Mdl.invAdj (Mdl.chartQ x c) h) (n : ℕ), IsSncPatch (Pts ξ) (regAt ξ '' B) e (Mdl.invAdj (Mdl.chartQ x c) h) z n → (p ∈ B ↔ ∃ i : Fin e, (i : ℕ) < n ∧ z i ∈ q)) → (∀ c (p : Cpt ξ), Char0 ξ p → InChart ξ x c p → (p ∈ B ↔ ∀ g ∈ bd, ¬ unitAt ξ p (Mdl.ratEval x c g))) → Cmp.IsSncModel (fun p : (Σ _ : Unit, Fin (N + 1)) => x p.2) e bd := by
   intro Ω _ _ X ξ N x e B bd h1 h2 h3 h4
   unfold Cmp.IsSncModel

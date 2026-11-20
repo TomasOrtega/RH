@@ -8,6 +8,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.GlueDesc
 
+/- English proof (translation)
+Introduce `X Y P J e g he hcov hcomp`. Set `𝒰 : X.OpenCover` to `Scheme.Cover.mkOfCovers J (fun _ => P) e (fun x => by`. Take `⟨j, y, hy⟩` from `hcov x`. Conclude with `⟨j, y, hy⟩)`. Establish `hm : ∀ i j : 𝒰.I₀, pullback.fst (𝒰.f i) (𝒰.f j) ≫ g i = pullback.snd (𝒰.f i) (𝒰.f j) ≫ g j` using `fun i j => hcomp i j _ _ _ pullback.condition`.
+
+Use `⟨𝒰.glueMorphisms g hm, fun j => 𝒰.ι_glueMorphisms g hm j, fun β' hβ' => ?_⟩` and prove the remaining obligations. Use `𝒰.hom_ext _ _ fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e j ≫ β' = e j ≫ _`. Rewrite using `[hβ' j]`. Conclude with `(𝒰.ι_glueMorphisms g hm j).symm`.
+-/
 theorem exists_unique_glue : ∀ (X Y P : Scheme.{0}) (J : Type) (e : J → (P ⟶ X)) (g : J → (P ⟶ Y)), (∀ j, IsOpenImmersion (e j)) → (∀ x : X, ∃ j, x ∈ Set.range (e j)) → (∀ (i j : J) (T : Scheme.{0}) (a b : T ⟶ P), a ≫ e i = b ≫ e j → a ≫ g i = b ≫ g j) → ∃ β : X ⟶ Y, (∀ j, e j ≫ β = g j) ∧ ∀ β' : X ⟶ Y, (∀ j, e j ≫ β' = g j) → β' = β := by
   intro X Y P J e g he hcov hcomp
   let 𝒰 : X.OpenCover := Scheme.Cover.mkOfCovers J (fun _ => P) e (fun x => by

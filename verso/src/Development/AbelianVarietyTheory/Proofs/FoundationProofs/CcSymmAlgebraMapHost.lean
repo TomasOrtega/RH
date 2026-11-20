@@ -12,9 +12,15 @@ variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
 def moveVal (c : Ω ≃+* Ω) (B : ValuationSubring Ω) : ValuationSubring Ω :=
   B.comap (c.symm : Ω →+* Ω)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_moveVal (c : Ω ≃+* Ω) (B : ValuationSubring Ω) (y : Ω) :
     y ∈ moveVal c B ↔ c.symm y ∈ B := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', mem_moveVal, mem_moveVal, map_inv₀, map_eq_zero_iff _ c.symm.injective]`.
+-/
 theorem moveVal_lt_one (c : Ω ≃+* Ω) (B : ValuationSubring Ω) (y : Ω) :
     (moveVal c B).valuation y < 1 ↔ B.valuation (c.symm y) < 1 := by
   rw [valuation_lt_one_iff', valuation_lt_one_iff', mem_moveVal, mem_moveVal, map_inv₀,
@@ -28,10 +34,20 @@ def conjAut (c : Ω ≃+* Ω) (hc : ∀ x : E, ∃ y : E, c.symm (algebraMap E �
       show c (σ (c.symm (algebraMap E Ω x))) = algebraMap E Ω x
       rw [hy, σ.commutes, ← hy, RingEquiv.apply_symm_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjAut_apply (c : Ω ≃+* Ω)
     (hc : ∀ x : E, ∃ y : E, c.symm (algebraMap E Ω x) = algebraMap E Ω y) (σ : G E Ω) (x : Ω) :
     conjAut c hc σ x = c (σ (c.symm x)) := rfl
 
+/- English proof (translation)
+Establish `hd : σ ∈ Dec (F` using `E) B := hσ.1`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show conjAut c hc σ ∈ Dec (F := E) (moveVal c B)`. Rewrite using `[mem_Dec]`. Use extensionality with `x`.
+
+Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`. Take `⟨z, rfl⟩` from `(conjAut c hc σ).surjective x`. Establish `h1 : ((conjAut c hc σ)⁻¹ : G E Ω) (conjAut c hc σ z) = z` using `(conjAut c hc σ).symm_apply_apply z`. Rewrite using `[h1, mem_moveVal, mem_moveVal, conjAut_apply, RingEquiv.symm_apply_apply, apply_mem_iff_of_mem_Dec hd]`. Rewrite using `[moveVal_lt_one, map_sub, conjAut_apply, RingEquiv.symm_apply_apply]`.
+
+Apply `hσ.2` to reduce the goal to its premises. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `hx`.
+-/
 theorem conjAut_mem_ine [NumberField E] (c : Ω ≃+* Ω)
     (hc : ∀ x : E, ∃ y : E, c.symm (algebraMap E Ω x) = algebraMap E Ω y) {B : ValuationSubring Ω}
     {σ : G E Ω} (hσ : σ ∈ Ine (F := E) B) : conjAut c hc σ ∈ Ine (F := E) (moveVal c B) := by
@@ -52,12 +68,18 @@ theorem conjAut_mem_ine [NumberField E] (c : Ω ≃+* Ω)
 
 end General
 
+/- English proof (translation)
+Set `φ : D.host.E →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Establish `h` using `fun y => D.host.conjE_apply φ y`. Conclude with `(h _).trans ((congrArg (starRingEnd ℂ) (h x)).trans (Complex.conj_conj _))`.
+-/
 theorem host_conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   let φ : D.host.E →+* ℂ := Classical.choice inferInstance
   apply φ.injective
   have h := fun y => D.host.conjE_apply φ y
   exact (h _).trans ((congrArg (starRingEnd ℂ) (h x)).trans (Complex.conj_conj _))
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `D.ntw.cc_cm.1`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `(D.host.conjE_apply (j.comp (algebraMap D.host.E D.nd.Om)) x).symm`.
+-/
 theorem cc_algebraMap_host (D : D7) (x : D.host.E) :
     D.ntw.cc (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x) := by
   obtain ⟨j, hj⟩ := D.ntw.cc_cm.1
@@ -66,10 +88,18 @@ theorem cc_algebraMap_host (D : D7) (x : D.host.E) :
   exact (D.host.conjE_apply
     (j.comp (algebraMap D.host.E D.nd.Om)) x).symm
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, cc_algebraMap_host, host_conj_conj]`.
+-/
 theorem cc_symm_algebraMap_host (D : D7) (x : D.host.E) :
     D.ntw.cc.symm (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x) := by
   rw [RingEquiv.symm_apply_eq, cc_algebraMap_host, host_conj_conj]
 
+/- English proof (translation)
+Introduce `y`. Establish `hi : IsIntegral ℤ (D.host.conj (y : D.host.E))` using `(y.isIntegral_coe).map_of_comp_eq (RingHom.id ℤ) (D.host.conj : D.host.E →+* D.host.E) (by ext; simp)`. Set `x : 𝓞 D.host.E` to `⟨_, hi⟩`. Establish `hx : (x : D.host.E) = D.host.conj (y : D.host.E)` using `rfl`. Rewrite using `[moveVal_lt_one, cc_symm_algebraMap_host, ← hx, hB x]`.
+
+Conclude with `h x y (by rw [hx, host_conj_conj])`.
+-/
 theorem isPlaceOver_moveVal (D : D7) {P P' : HeightOneSpectrum (𝓞 D.host.E)}
     (h : IsConjPl D.host P P') {B : ValuationSubring D.nd.Om} (hB : IsPlaceOver B P) :
     IsPlaceOver (moveVal D.ntw.cc B) P' := by

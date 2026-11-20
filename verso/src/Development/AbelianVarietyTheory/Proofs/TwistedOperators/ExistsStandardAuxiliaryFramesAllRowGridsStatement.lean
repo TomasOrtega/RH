@@ -9,5 +9,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.exists_std_frames | exact GlobalTheory.AscFin.exists_std_frames | (intros; apply GlobalTheory.AscFin.exists_std_frames <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_standardAuxiliaryFrames_allRowGrids : All fun {_} _ _ _ {G} _ _ => ∃ F : Frames G, Std F := by
   first | exact @GlobalTheory.AscFin.exists_std_frames | exact GlobalTheory.AscFin.exists_std_frames | (intros; apply GlobalTheory.AscFin.exists_std_frames <;> assumption)

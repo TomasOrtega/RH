@@ -21,6 +21,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l}
 variable {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ r}
 
+/- English proof (translation)
+Take `⟨T, hT, hmv⟩` from `exists_marking_tri hU`. Use `⟨T, hT, fun ρ ν gM gA hν k k' x x' y' t hm hb => ?_⟩` and prove the remaining obligations. Take `⟨gam, A, htr, hA0, hA, hmk⟩` from `hmv ρ ν gM gA hν k k' x x' y' t hm hb`. Apply the tactic sequence `obtain ⟨a, ε, hε, hξ, hav, hlat, hiso⟩ := GlobalTheory.TraceIsometry.exists_gl_of_trace_isometry E r (U.X k) (U.X k') (hxi k k') gam htr`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`.
+
+Take `⟨hrr, hty, -, -, -⟩` from `hU`. Establish `hΨ : (U.X k).Ψ = (U.X k').Ψ` using `Finset.ext fun τ => ((hty k).2 τ).trans ((hty k').2 τ).symm`. Establish `hp : (U.X k).p0 = (U.X k').p0` using `(hty k).1.trans (hty k').1.symm`. Set `e` to `Equiv.ofBijective _ hbij`. Establish `he : ∀ τ, Formalism.L2.PjFree.relab c σ (e.symm τ) = τ` using `e.apply_symm_apply`.
+
+Establish `m1 : ∀ τ ∈ (U.X k).Ψ, Dw.mult (e.symm τ) = r - (U.X k).p0` using `fun τ hτ => by`. Unfold `Datum.mult`. Rewrite using `[if_pos ((hrt _).1 (by rw [he]; exact ((hty k).2 τ).1 hτ)), (hty k).1]`. Use linear arithmetic over natural numbers and integers. Establish `m2 : ∀ τ ∉ (U.X k).Ψ, Dw.mult (e.symm τ) = (U.X k).p0` using `fun τ hτ => by`.
+
+Unfold `Datum.mult`. Rewrite using `[if_neg (fun h => hτ (((hty k).2 τ).2 (by rw [← he τ]; exact (hrt _).2 h))), (hty k).1]`. Establish `hrel : ∀ τ, ∀ i < Dw.mult (e.symm τ), ∀ v ∈ (U.X k).Λ, Formalism.L2.PjFree.perFr (U.X k') x'.1 ((a : Matrix (Fin r) (Fin r) E) *ᵥ v) τ i = ∑ j ∈ Finset.range (Dw.mult (e.symm τ)), A (e.symm τ) i j * Formalism.L2.PjFree.perFr (U.X k) x.1 v τ j` using `fun τ i hi v hv => by`. Use `hA (e.symm τ) i hi ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[he, ← hav]`. Then use the resulting hypothesis.
+
+Break down `hε with rfl | rfl` into its components or cases. Establish `h : IsMatch (U.X k) (U.X k') a` using `⟨hΨ, hp, by rw [hξ, _root_.one_mul], fun u v => by rw [hiso, _root_.one_mul], hlat⟩`. Take `⟨b, hbB, hxb, -⟩` from `GlobalTheory.PeriodBorel.borel_of_periods E r _ _ a h (fun τ => Dw.mult (e.symm τ)) m1 m2 x.1 x.2 x'.1 x'.2 (fun τ => A (e.symm τ)) (fun τ => hA0 _) hrel`. Conclude with `⟨a, h, gam, hav, hmk, b, hbB, hxb⟩`. Apply the tactic sequence `exact (GlobalTheory.AntiIsom.not_antiIsometry E r _ _ hΨ hp hr a hiso (fun τ => Dw.mult (e.symm τ)) m1 m2 x.1 x.2 x'.1 x'.2 (fun τ => A (e.symm τ)) (fun τ => hA0 _) hrel).elim`.
+-/
 theorem exists_marking_match_at (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) (hr : 1 ≤ r)
     (hxi : ∀ k k' (τ : E →+* ℂ), ‖τ (U.X k).ξ0‖ = ‖τ (U.X k').ξ0‖) :
     ∃ T : ∀ k, Dw.La →ₗ[𝓞 E] (U.X k).Λ, (∀ k, BijMod l.Mb (T k)) ∧
@@ -73,6 +84,9 @@ open scoped Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Introduce `τ` and use `⟨by show (1 : Matrix (Fin r) (Fin r) ℂ).det ≠ 0 simp, fun a c hac => by show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0 exact Matrix.one_apply_ne hac.ne'⟩`.
+-/
 theorem unit_mem_Bor (Ψ : Finset (E →+* ℂ)) :
     ((fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) : Frame Ψ r) ∈ Bor Ψ r := fun τ =>
   ⟨by
@@ -81,11 +95,19 @@ theorem unit_mem_Bor (Ψ : Finset (E →+* ℂ)) :
     show (1 : Matrix (Fin r) (Fin r) ℂ) a c = 0
     exact Matrix.one_apply_ne hac.ne'⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_one (mat x τ)`.
+-/
 theorem rmul_unit {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) :
     rmul x ((fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) : Frame Ψ r) = x := by
   funext τ
   exact Matrix.mul_one (mat x τ)
 
+/- English proof (translation)
+Establish `h1` using `X.Γ_free (a⁻¹ * g) (X.Γ.mul_mem (X.Γ.inv_mem ha) hg) x hx b hb (by`. Use function extensionality and compare the values at `τ`. Establish `e1 : (g : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ * mat b τ` using `congrFun e τ`. Use `show ((a⁻¹ * g : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ * mat b τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc, e1, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul])`.
+
+Conclude with `(inv_mul_eq_one.1 h1).symm`.
+-/
 theorem eq_of_lact_eq_rmul (X : Data E r) {g a : GL (Fin r) E} (hg : g ∈ X.Γ) (ha : a ∈ X.Γ) {x b : Frame X.Ψ r}
     (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r) (e : lact g x = rmul (lact a x) b) : g = a := by
   have h1 := X.Γ_free (a⁻¹ * g) (X.Γ.mul_mem (X.Γ.inv_mem ha) hg) x hx b hb (by
@@ -112,6 +134,13 @@ open scoped Matrix
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Take `⟨Xx, ⟨e1, e2, e3⟩, -⟩` from `GlobalTheory.ModelLatticeCheck.holds_by_value D (r.used v).full.toCore (h.laws v).p.toLawsCore ((i : ℕ) + 1) hj (r.used v).full.σ₀ (r.used v).full.toCore.good_σ₀ k`. Establish `eL : Xx.L' = lattice₂ D ((uAt r v i).X k).Λ`. Rewrite using `[GlobalTheory.ModelLatExamples.eq_latP D Xx.Λ Xx.L' e3]`. Use `show lattice₂ D Xx.toData.Λ = _`.
+
+Rewrite using `[e1]`. Establish `hGm : Xx.Gm = ((uAt r v i).X k).Gm` using `congrArg Data.Gm e1`. Establish `hΛ : Xx.Λ = ((uAt r v i).X k).Λ` using `congrArg Data.Λ e1`. Establish `hΓ : Xx.Γ = ((uAt r v i).X k).Γ` using `congrArg Data.Γ e1`. Establish `hlatL` using `mem_localLattice_iff_mulVec D _ ha.lat`.
+
+Establish `hM` using `sub_mem_natSMul_of_unitary Xx.Gm Xx.L' Xx.L'_int Xx.L'_dual p.T.Q.H.bar (fun a => p.T.Q.H.bar_eq a) p.T.Q.l.Mb p.T.Q.l.M (by have := p.T.Q.l.three_le; omega) p.T.Q.l.prod p.T.Q.l.coprime a (by rw [hGm]; exact ha.iso) (by rw [eL]; exact hlatL) (by rw [eL]; exact hcong)`. Establish `hMΛ` using `sub_mem_natSMul_span D.host.AA Xx.L' Xx.Λ e3 _ p.T.Q.l.M hM`. Establish `hin` using `Xx.cong a ⟨by rw [hGm]; exact ha.iso, by rw [hΛ]; exact ha.lat⟩ (by rw [e2]; exact hMΛ)`. Rewrite using `[← hΓ]`. Conclude with `hin`.
+-/
 theorem mem_Γ_of_cong_half {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L}
     {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
     {Csz : ℝ} (p : PtAt ex Csz) (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r) (i : Fin D.R.m)
@@ -142,6 +171,31 @@ theorem mem_Γ_of_cong_half {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : 
 open GlobalTheory.ShareOn.OneFrame in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ r h _ i v ψ k γ₀ hγ₀`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hp` using `(h.laws v).p`. Establish `hpin` using `hp.pins`. Establish `hσ` using `(r.used v).full.toCore.good_σ₀`.
+
+Establish `hpq : 1 ≤ ((r.used v).full.Q.Dw ((i : ℕ) + 1)).p + ((r.used v).full.Q.Dw ((i : ℕ) + 1)).q`. Rewrite using `[(hpin.2.2.2 _ hj).1, (hpin.2.2.2 _ hj).2.1]`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hL` using `GlobalTheory.FullLevelAction.actLev_levFull D (r.used v).full.Q _ hpq hpin.2.1.2`. Establish `hU : IsUnf (uAt r v i)` using `hp.unf _ hj _ hσ`. Establish `hm₀` using `GlobalTheory.LevelCusp.isMatch_of_isUStab _ (((uAt r v i).X k).Γ_stab γ₀ hγ₀)`.
+
+Take `⟨-, -, hsy, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid D.host.E _ _ _ ((r.used v).full.Q.Xo ((i : ℕ) + 1)) (r.used v).full.Q.c (CAt (r.used v).full.σ₀)`. Establish `hfr : ∀ (x : Frame ((uAt r v i).X k).Ψ D.R.r) (hx : x ∈ ((uAt r v i).X k).dom), ∃ (hy : lact γ₀ x ∈ ((uAt r v i).X k).dom) (t : _), FrBor t ((uAt r v i).un k ⟨lact γ₀ x, hy⟩) (mvLev ((r.used v).full.Q.Xo ((i : ℕ) + 1)) (r.used v).full.Q.c 1 ((uAt r v i).un k ⟨x, hx⟩))`. Introduce `x hx`. Establish `hy : lact γ₀ x ∈ ((uAt r v i).X k).dom` using `hm₀.mem_dom hx`. Take `⟨t, ht⟩` from `(hU.2.2.2.1 k k ⟨x, hx⟩ ⟨lact γ₀ x, hy⟩).2 ⟨γ₀, hγ₀, _, unit_mem_Bor _, by rw [rmul_unit]⟩`.
+
+Establish `hf` using `hL.func 1 _ ((uAt r v i).un k ⟨x, hx⟩) ((uAt r v i).un k ⟨x, hx⟩) (mvLev ((r.used v).full.Q.Xo ((i : ℕ) + 1)) (r.used v).full.Q.c 1 ((uAt r v i).un k ⟨x, hx⟩)) (hL.one _ _) (Formalism.L2.Pj.mvPt_spec hL.total 1 _)`. Establish `he : (uAt r v i).un k ⟨x, hx⟩ = mvLev ((r.used v).full.Q.Xo ((i : ℕ) + 1)) (r.used v).full.Q.c 1 ((uAt r v i).un k ⟨x, hx⟩)` using `(GlobalTheory.LevelLawsCompare.frMap_id_iff _ _).1 hf`. Conclude with `⟨hy, _, (congrArg (FrBor _ ((uAt r v i).un k ⟨lact γ₀ x, hy⟩)) he).mp (hsy _ _ _ ht)⟩`. Use `⟨hm₀, hfr, ?_⟩` and prove the remaining obligations. Take `⟨T, hTb, hmv⟩` from `exists_marking_match_at (U := Formalism.L2.PjFree.Unf.ofPj (uAt r v i)) hσ hU (hU.1 ▸ hpq) (fun k k' τ => (hp.xiAbs _ hj _ hσ k τ).trans (hp.xiAbs _ hj _ hσ k' τ).symm)`.
+
+Establish `hI : p.T.Q.l.Mb ≠ ⊥` using `fun e => by`. Establish `h1` using `natCast_M_mem p.T.Q.l`. Rewrite `h1` using `[e, Ideal.mem_bot, Nat.cast_eq_zero]`. Use `p.T.Q.l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨s, f, hf, hfs⟩` from `exists_scale D hI D.R.r`. Establish `hb : BijMod p.T.Q.l.Mb (f ((uAt r v i).X k).Λ ∘ₗ T k)` using `(hTb k).comp (hf _)`. Take `⟨x, hx⟩` from `(GlobalTheory.frames_isConnected _ _ ((uAt r v i).X k)).nonempty`. Take `⟨hy, t, ht⟩` from `hfr x hx`. Take `⟨ρ, ν, -, hν, hm⟩` from `mvPt_spec hL.total 1 ((uAt r v i).un k ⟨x, hx⟩)`.
+
+Take `⟨a, ha, gam, hav, hmk, b, hbB, hxb⟩` from `hmv ρ ν _ _ hν k k ⟨x, hx⟩ ⟨lact γ₀ x, hy⟩ _ t hm ht`. Establish `hrd : ∀ w : lattice₂ D ((uAt r v i).X k).Λ, Submodule.Quotient.mk (p` using `p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (lattice₂ D ((uAt r v i).X k).Λ))) (latPMap D _ ha.lat w) = Submodule.Quotient.mk w := fun w => by`. Use `(hb.reads hb 1 (liftLa 1) (liftLa_spec 1) (latPMap D _ ha.lat) (fun u => ?_) w).trans (hb.equiv.apply_symm_apply _)` and prove the remaining obligations. Establish `h1` using `map_mem_smul_top _ (f ((uAt r v i).X k).Λ) (hmk u)`. Establish `h2 : latPMap D _ ha.lat (f ((uAt r v i).X k).Λ (T k (liftLa (l` using `p.T.Q.l) 1 u))) = f ((uAt r v i).X k).Λ (gam (T k (liftLa (l := p.T.Q.l) 1 u))) := by`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Use `(congrArg (Matrix.mulVec _) (hfs _ _)).trans (Eq.trans ?_ (hfs _ _).symm)` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `congrArg _ (hav _)`. Establish `h3` using `(f ((uAt r v i).X k).Λ).map_sub (gam (T k (liftLa (l := p.T.Q.l) 1 u))) (T k u)`.
+
+Rewrite `h3` using `[← h2]`. Conclude with `h3 ▸ h1`. Establish `haΓ : a ∈ ((uAt r v i).X k).Γ` using `mem_Γ_of_cong_half p r h i v k a ha fun w hw => by`. Establish `hq` using `(Submodule.Quotient.eq _).1 (hrd ⟨w, hw⟩)`. Establish `hmem` using `Submodule.mem_map_of_mem (f := (lattice₂ D ((uAt r v i).X k).Λ).subtype) hq`.
+
+Rewrite `hmem` using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Conclude with `hmem`. Establish `hga : γ₀ = a` using `eq_of_lact_eq_rmul _ hγ₀ haΓ hx hbB hxb`. Substitute `hga` using the available equality. Introduce `w`.
+
+Conclude with `⟨(mem_localLattice_iff_mulVec D _ ha.lat _).1 w.2, (hrd w).trans ((ψ k).apply_symm_apply _).symm⟩`.
+-/
 theorem isTransp_one_of_mem_Γ : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), More p → ∀ (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r), OwnPin r → ∀ (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (ψ : ∀ k : (uAt r v i).Comp, LaMod (p.T.Q.Dw ((i : ℕ) + 1)) p.T.Q.l ≃ₗ[𝓞 D.host.E] latQ p r i v k) (k : (uAt r v i).Comp) (γ₀ : GL (Fin D.R.r) D.host.E), γ₀ ∈ ((uAt r v i).X k).Γ → IsTransp p r i v ψ 1 k k γ₀ := by
   intro D L hT Gi Gl Kc Y cX ex Csz p _ r h _ i v ψ k γ₀ hγ₀
   have hj : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩

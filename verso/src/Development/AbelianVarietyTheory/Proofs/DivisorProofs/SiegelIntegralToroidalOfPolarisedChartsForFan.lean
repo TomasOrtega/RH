@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.siegelIntegralToroidal_of_polarisedCharts GlobalTheory.T.exists_invariant_smoothProjFan_noSelfIntersections`.
+-/
 theorem siegelToroidalIntegral_of_polCharts :
     GlobalTheory.Published.SiegelToroidalPolCharts → GlobalTheory.Published.SiegelToroidalIntegral :=
   GlobalTheory.T.siegelIntegralToroidal_of_polarisedCharts GlobalTheory.T.exists_invariant_smoothProjFan_noSelfIntersections

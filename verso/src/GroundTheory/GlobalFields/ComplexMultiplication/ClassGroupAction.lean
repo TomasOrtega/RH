@@ -10,6 +10,11 @@ noncomputable section
 namespace GroundTheory.Global
 namespace Elliptic
 
+/- English proof (translation)
+Rewrite using `[← weierstrassCurve_j_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC⟩`. Take `⟨h₂, h₃⟩` from `g₂_g₃_of_variableChange hC`. Conclude with `weierstrassCurve_j_eq_of_g₂_g₃ (C.u⁻¹).ne_zero h₂ h₃`.
+
+Introduce `h`. Conclude with `exists_variableChange_of_j_eq _ _ h`.
+-/
 theorem exists_variableChange_iff_homothetic (L L' : PeriodPair) :
     (∃ C : VariableChange ℂ, C • weierstrassCurve L = weierstrassCurve L') ↔
       ∃ c : ℂ, c ≠ 0 ∧ (L'.lattice : Set ℂ) = (c * ·) '' L.lattice := by
@@ -21,6 +26,13 @@ theorem exists_variableChange_iff_homothetic (L L' : PeriodPair) :
   · intro h
     exact exists_variableChange_of_j_eq _ _ h
 
+/- English proof (translation)
+Establish `hmem : ∀ z, z ∈ L'.lattice ↔ ∃ l ∈ L.lattice, c * l = z` using `fun z ↦ by`. Rewrite using `[← SetLike.mem_coe, h]`. Both sides reduce to the same expression. Use extensionality with `α`. Use `show (∀ l ∈ L'.lattice, α * l ∈ L'.lattice) ↔ (∀ l ∈ L.lattice, α * l ∈ L.lattice)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hα l hl`. Take `⟨l', hl', e⟩` from `(hmem _).1 (hα (c * l) ((hmem _).2 ⟨l, hl, rfl⟩))`. Establish `: l' = α * l` using `mul_left_cancel₀ hc (by rw [e]; ring)`. Rewrite using `[← this]` and apply the resulting hypothesis.
+
+Introduce `hα l hl`. Take `⟨l', hl', rfl⟩` from `(hmem l).1 hl`. Conclude with `(hmem _).2 ⟨α * l', hα l' hl', by ring⟩`.
+-/
 theorem latticeEnd_eq_of_homothetic {L L' : PeriodPair} {c : ℂ} (hc : c ≠ 0)
     (h : (L'.lattice : Set ℂ) = (c * ·) '' L.lattice) : latticeEnd L' = latticeEnd L := by
   have hmem : ∀ z, z ∈ L'.lattice ↔ ∃ l ∈ L.lattice, c * l = z := fun z ↦ by
@@ -38,6 +50,15 @@ theorem latticeEnd_eq_of_homothetic {L L' : PeriodPair} {c : ℂ} (hc : c ≠ 0)
 
 variable {K : Type*} [Field K] [NumberField K] (σ : K →+* ℂ)
 
+/- English proof (translation)
+Establish `hΛ : Λ = (idealLattice σ I).map (LinearMap.mulLeft ℤ c)`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_coe]`. Both sides reduce to the same expression. Establish `key : idealLattice σ J * (idealLattice σ I).map (LinearMap.mulLeft ℤ c) = (idealLattice σ J * idealLattice σ I).map (LinearMap.mulLeft ℤ c)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.mul_le]`. Introduce `m hm x hx`. Take `⟨n, hn, rfl⟩` from `Submodule.mem_map.1 hx`. Use `Submodule.mem_map.2 ⟨m * n, Submodule.mul_mem_mul hm hn, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.mulLeft_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.mul_le]`. Introduce `m hm n hn`. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply, show c * (m * n) = m * (c * n) by ring]`.
+
+Conclude with `Submodule.mul_mem_mul hm (Submodule.mem_map.2 ⟨n, hn, rfl⟩)`. Rewrite using `[hΛ, key, idealLattice_mul, Submodule.map_coe]`. Both sides reduce to the same expression.
+-/
 theorem idealLattice_mul_homothetic (I J : FractionalIdeal (𝓞 K)⁰ K) {c : ℂ} {Λ : Submodule ℤ ℂ}
     (h : (Λ : Set ℂ) = (c * ·) '' idealLattice σ I) :
     ((idealLattice σ J * Λ : Submodule ℤ ℂ) : Set ℂ) = (c * ·) '' idealLattice σ (J * I) := by
@@ -85,10 +106,16 @@ variable {K}
 
 def CMCurve.toEll (E : CMCurve K) : ELL K := Quotient.mk (CMCurve.setoid K) E
 
+/- English proof (translation)
+The claim follows from `Quotient.eq (r := CMCurve.setoid K)`.
+-/
 theorem CMCurve.toEll_eq_iff (E E' : CMCurve K) :
     E.toEll = E'.toEll ↔ ∃ C : VariableChange ℂ, C • E.curve = E'.curve :=
   Quotient.eq (r := CMCurve.setoid K)
 
+/- English proof (translation)
+The claim follows from `Quotient.exists_rep x`.
+-/
 theorem ELL.exists_eq (x : ELL K) : ∃ E : CMCurve K, E.toEll = x :=
   Quotient.exists_rep x
 
@@ -98,6 +125,9 @@ def CMCurve.ofLattice (L : PeriodPair) (hL : latticeEnd L = cmRing σ) : CMCurve
 
 def ellOf (L : PeriodPair) (hL : latticeEnd L = cmRing σ) : ELL K := (CMCurve.ofLattice σ L hL).toEll
 
+/- English proof (translation)
+Rewrite using `[ellOf, ellOf, CMCurve.toEll_eq_iff]`. Conclude with `exists_variableChange_iff_homothetic L L'`.
+-/
 theorem ellOf_eq_ellOf_iff {L L' : PeriodPair} (hL : latticeEnd L = cmRing σ)
     (hL' : latticeEnd L' = cmRing σ) :
     ellOf σ L hL = ellOf σ L' hL' ↔ ∃ c : ℂ, c ≠ 0 ∧ (L'.lattice : Set ℂ) = (c * ·) '' L.lattice := by
@@ -109,11 +139,17 @@ section Quadratic
 variable (hK : finrank ℚ K = 2) [IsTotallyComplex K]
 include hK
 
+/- English proof (translation)
+The claim follows from `exists_idealLattice_of_latticeEnd_eq σ hK L (latticeEnd_eq_cmRing_of_ringEquiv σ hK L e)`.
+-/
 theorem exists_idealLattice_of_ringEquiv (L : PeriodPair) (e : latticeEnd L ≃+* 𝓞 K) :
     ∃ (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (c : ℂ), c ≠ 0 ∧
       (L.lattice : Set ℂ) = (c * ·) '' idealLattice σ I :=
   exists_idealLattice_of_latticeEnd_eq σ hK L (latticeEnd_eq_cmRing_of_ringEquiv σ hK L e)
 
+/- English proof (translation)
+Take `⟨L, C, hC⟩` from `exists_variableChange_eq_weierstrassCurve E.curve`. Establish `hL : latticeEnd L = cmRing σ` using `latticeEnd_eq_cmRing_of_ringEquiv σ hK L ((latticeEndEquiv L).trans ((vcEndEquiv C hC).symm.trans E.endIso.some))`. Use `⟨L, C, hL, hC, ?_⟩` and prove the remaining obligations. Rewrite using `[CMCurve.toEll_eq_iff]`. Conclude with `⟨C⁻¹, inv_smul_eq_of_smul_eq C hC⟩`.
+-/
 theorem CMCurve.exists_lattice (E : CMCurve K) :
     ∃ (L : PeriodPair) (C : VariableChange ℂ) (hL : latticeEnd L = cmRing σ),
       C • E.curve = weierstrassCurve L ∧ (CMCurve.ofLattice σ L hL).toEll = E.toEll := by
@@ -124,6 +160,9 @@ theorem CMCurve.exists_lattice (E : CMCurve K) :
   rw [CMCurve.toEll_eq_iff]
   exact ⟨C⁻¹, inv_smul_eq_of_smul_eq C hC⟩
 
+/- English proof (translation)
+The claim follows from `latticeEnd_idealPeriodPair σ hK I`.
+-/
 theorem latticeEnd_ideal (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     latticeEnd (idealPeriodPair σ hK I) = cmRing σ :=
   latticeEnd_idealPeriodPair σ hK I
@@ -131,11 +170,17 @@ theorem latticeEnd_ideal (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
 def ellOfIdeal (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : ELL K :=
   ellOf σ (idealPeriodPair σ hK I⁻¹) (latticeEnd_ideal σ hK I⁻¹)
 
+/- English proof (translation)
+Rewrite using `[ellOfIdeal, ellOfIdeal, ellOf_eq_ellOf_iff, lattice_idealPeriodPair, lattice_idealPeriodPair, ← classGroup_mk_eq_iff σ hK, map_inv, map_inv, inv_inj]`.
+-/
 theorem ellOfIdeal_eq_iff (I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ellOfIdeal σ hK I = ellOfIdeal σ hK J ↔ ClassGroup.mk K I = ClassGroup.mk K J := by
   rw [ellOfIdeal, ellOfIdeal, ellOf_eq_ellOf_iff, lattice_idealPeriodPair, lattice_idealPeriodPair,
     ← classGroup_mk_eq_iff σ hK, map_inv, map_inv, inv_inj]
 
+/- English proof (translation)
+Rewrite using `[ellOfIdeal, ellOf_eq_ellOf_iff, inv_inv, lattice_idealPeriodPair]`. Use `⟨c⁻¹, inv_ne_zero hc, ?_⟩` and prove the remaining obligations. Rewrite using `[h, Set.image_image]`. Simplify using `[inv_mul_cancel_left₀ hc]`.
+-/
 theorem ellOf_eq_ellOfIdeal {L : PeriodPair} (hL : latticeEnd L = cmRing σ)
     {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {c : ℂ} (hc : c ≠ 0)
     (h : (L.lattice : Set ℂ) = (c * ·) '' idealLattice σ I) :
@@ -145,12 +190,18 @@ theorem ellOf_eq_ellOfIdeal {L : PeriodPair} (hL : latticeEnd L = cmRing σ)
   rw [h, Set.image_image]
   simp [inv_mul_cancel_left₀ hc]
 
+/- English proof (translation)
+Take `⟨E, rfl⟩` from `ELL.exists_eq x`. Take `⟨L, C, hL, -, hE⟩` from `E.exists_lattice σ hK`. Take `⟨I, c, hc, h⟩` from `exists_idealLattice_of_latticeEnd_eq σ hK L hL`. Conclude with `⟨I⁻¹, by rw [← hE, ← ellOf, ellOf_eq_ellOfIdeal σ hK hL hc h]⟩`.
+-/
 theorem ellOfIdeal_surjective (x : ELL K) : ∃ I, ellOfIdeal σ hK I = x := by
   obtain ⟨E, rfl⟩ := ELL.exists_eq x
   obtain ⟨L, C, hL, -, hE⟩ := E.exists_lattice σ hK
   obtain ⟨I, c, hc, h⟩ := exists_idealLattice_of_latticeEnd_eq σ hK L hL
   exact ⟨I⁻¹, by rw [← hE, ← ellOf, ellOf_eq_ellOfIdeal σ hK hL hc h]⟩
 
+/- English proof (translation)
+The claim follows from `ClassGroup.induction (K := K) (P := fun a ↦ ∃ I, ClassGroup.mk K I = a) (fun I ↦ ⟨I, rfl⟩) a`.
+-/
 theorem classGroup_mk_surjective (a : ClassGroup (𝓞 K)) :
     ∃ I : (FractionalIdeal (𝓞 K)⁰ K)ˣ, ClassGroup.mk K I = a :=
   ClassGroup.induction (K := K) (P := fun a ↦ ∃ I, ClassGroup.mk K I = a) (fun I ↦ ⟨I, rfl⟩) a
@@ -158,6 +209,9 @@ theorem classGroup_mk_surjective (a : ClassGroup (𝓞 K)) :
 def classToEll (a : ClassGroup (𝓞 K)) : ELL K :=
   ellOfIdeal σ hK (classGroup_mk_surjective hK a).choose
 
+/- English proof (translation)
+The claim follows from `(ellOfIdeal_eq_iff σ hK _ _).2 (classGroup_mk_surjective hK _).choose_spec`.
+-/
 theorem classToEll_mk (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     classToEll σ hK (ClassGroup.mk K I) = ellOfIdeal σ hK I :=
   (ellOfIdeal_eq_iff σ hK _ _).2 (classGroup_mk_surjective hK _).choose_spec
@@ -172,6 +226,9 @@ def ellEquiv : ClassGroup (𝓞 K) ≃ ELL K :=
       obtain ⟨I, rfl⟩ := ellOfIdeal_surjective σ hK x
       exact ⟨ClassGroup.mk K I, classToEll_mk σ hK I⟩⟩
 
+/- English proof (translation)
+The claim follows from `classToEll_mk σ hK I`.
+-/
 theorem ellEquiv_mk (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ellEquiv σ hK (ClassGroup.mk K I) = ellOfIdeal σ hK I :=
   classToEll_mk σ hK I
@@ -179,10 +236,26 @@ theorem ellEquiv_mk (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
 def ellMulAction : MulAction (ClassGroup (𝓞 K)) (ELL K) :=
   (ellEquiv σ hK).symm.mulAction (ClassGroup (𝓞 K))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ellMulAction_smul (a : ClassGroup (𝓞 K)) (x : ELL K) :
     (ellMulAction σ hK).smul a x = ellEquiv σ hK (a * (ellEquiv σ hK).symm x) :=
   rfl
 
+/- English proof (translation)
+Take `⟨I, c, hc, h⟩` from `exists_idealLattice_of_latticeEnd_eq σ hK L hL`. Establish `h'` using `idealLattice_mul_homothetic σ (I : FractionalIdeal (𝓞 K)⁰ K) (↑𝔞⁻¹) h`. Set `P` to `idealPeriodPair σ hK (𝔞⁻¹ * I)`. Set `L' : PeriodPair` to `{ ω₁ := c * P.ω₁ ω₂ := c * P.ω₂ indep := by`. Use `P.indep` as an intermediate fact.
+
+Rewrite `this`, the goal using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Apply `this s t` to reduce the goal to its premises. Establish `hst' : c * (s • P.ω₁ + t • P.ω₂) = 0`. Rewrite using `[← hst]`.
+
+Simplify using `only [Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 hst').resolve_left hc }`. Establish `hlat : (L'.lattice : Set ℂ) = (c * ·) '' P.lattice`. Use extensionality with `z`.
+
+Simplify using `only [SetLike.mem_coe, PeriodPair.mem_lattice, Set.mem_image, L']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨m * P.ω₁ + n * P.ω₂, ⟨m, n, rfl⟩, by ring⟩`. Introduce and unpack `⟨w, ⟨m, n, rfl⟩, rfl⟩`.
+
+Conclude with `⟨m, n, by ring⟩`. Use `⟨L', ?_, ?_⟩` and prove the remaining obligations. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[hlat, h', lattice_idealPeriodPair, Units.val_mul]`. Rewrite using `[latticeEnd_eq_of_homothetic hc hlat]`.
+
+Conclude with `latticeEnd_ideal σ hK _`.
+-/
 theorem exists_lattice_mul (L : PeriodPair) (hL : latticeEnd L = cmRing σ)
     (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ∃ L' : PeriodPair, L'.lattice = idealLattice σ ↑𝔞⁻¹ * L.lattice ∧ latticeEnd L' = cmRing σ := by
@@ -214,6 +287,13 @@ theorem exists_lattice_mul (L : PeriodPair) (hL : latticeEnd L = cmRing σ)
   · rw [latticeEnd_eq_of_homothetic hc hlat]
     exact latticeEnd_ideal σ hK _
 
+/- English proof (translation)
+Take `⟨I, c, hc, hI⟩` from `exists_idealLattice_of_latticeEnd_eq σ hK L hL`. Establish `h'` using `idealLattice_mul_homothetic σ (I : FractionalIdeal (𝓞 K)⁰ K) (↑𝔞⁻¹) hI`. Rewrite `h'` using `[← h, ← Units.val_mul]`. Establish `e1 : ellOf σ L hL = ellEquiv σ hK (ClassGroup.mk K I⁻¹)`. Rewrite using `[ellEquiv_mk]`.
+
+Conclude with `ellOf_eq_ellOfIdeal σ hK hL hc hI`. Establish `e2 : ellOf σ L' hL' = ellEquiv σ hK (ClassGroup.mk K (𝔞⁻¹ * I)⁻¹)`. Rewrite using `[ellEquiv_mk]`. Conclude with `ellOf_eq_ellOfIdeal σ hK hL' hc h'`. Rewrite using `[ellMulAction_smul, e1, e2, Equiv.symm_apply_apply]`.
+
+Use `congr 1`. Rewrite using `[mul_inv_rev, inv_inv, map_mul, mul_comm]`.
+-/
 theorem classGroup_smul_ellOf (L L' : PeriodPair) (hL : latticeEnd L = cmRing σ)
     (hL' : latticeEnd L' = cmRing σ) (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (h : L'.lattice = idealLattice σ ↑𝔞⁻¹ * L.lattice) :
@@ -229,6 +309,9 @@ theorem classGroup_smul_ellOf (L L' : PeriodPair) (hL : latticeEnd L = cmRing σ
   congr 1
   rw [mul_inv_rev, inv_inv, map_mul, mul_comm]
 
+/- English proof (translation)
+Use `⟨(ellEquiv σ hK).symm y * ((ellEquiv σ hK).symm x)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ellMulAction_smul, inv_mul_cancel_right, Equiv.apply_symm_apply]`. Introduce `a ha`. Rewrite `ha` using `[ellMulAction_smul]`. Rewrite using `[← ha, Equiv.symm_apply_apply, mul_inv_cancel_right]`.
+-/
 theorem existsUnique_smul_eq (x y : ELL K) :
     ∃! a : ClassGroup (𝓞 K), (ellMulAction σ hK).smul a x = y := by
   refine ⟨(ellEquiv σ hK).symm y * ((ellEquiv σ hK).symm x)⁻¹, ?_, ?_⟩
@@ -237,12 +320,18 @@ theorem existsUnique_smul_eq (x y : ELL K) :
     rw [ellMulAction_smul] at ha
     rw [← ha, Equiv.symm_apply_apply, mul_inv_cancel_right]
 
+/- English proof (translation)
+Use `letI := ellMulAction σ hK`. Conclude with `⟨fun x y ↦ (existsUnique_smul_eq σ hK x y).exists⟩`.
+-/
 theorem ell_isPretransitive :
     letI := ellMulAction σ hK
     MulAction.IsPretransitive (ClassGroup (𝓞 K)) (ELL K) := by
   letI := ellMulAction σ hK
   exact ⟨fun x y ↦ (existsUnique_smul_eq σ hK x y).exists⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(existsUnique_smul_eq σ hK x x).unique h (by rw [ellMulAction_smul, one_mul, Equiv.apply_symm_apply])`. Introduce and unpack `rfl`. Rewrite using `[ellMulAction_smul, one_mul, Equiv.apply_symm_apply]`.
+-/
 theorem ell_smul_eq_self_iff (a : ClassGroup (𝓞 K)) (x : ELL K) :
     (ellMulAction σ hK).smul a x = x ↔ a = 1 := by
   constructor
@@ -252,13 +341,24 @@ theorem ell_smul_eq_self_iff (a : ClassGroup (𝓞 K)) (x : ELL K) :
   · rintro rfl
     rw [ellMulAction_smul, one_mul, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Set `τ : K →+* ℂ` to `(IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom`. Rewrite using `[← Nat.card_congr (ellEquiv τ hK), classNumber, Nat.card_eq_fintype_card]`.
+-/
 theorem card_ell : Nat.card (ELL K) = classNumber K := by
   let τ : K →+* ℂ := (IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom
   rw [← Nat.card_congr (ellEquiv τ hK), classNumber, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+The claim follows from `Finite.of_equiv _ (ellEquiv (IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom hK)`.
+-/
 theorem finite_ell : Finite (ELL K) :=
   Finite.of_equiv _ (ellEquiv (IsAlgClosed.lift : K →ₐ[ℚ] ℂ).toRingHom hK)
 
+/- English proof (translation)
+Take `⟨L, C, hL, hC, -⟩` from `E.exists_lattice σ hK`. Establish `hrange : (endConst E.curve).range = cmRing σ` using `by rw [range_endConst hC, hL]`. Set `e₀ : isogEnd E.curve ≃+* (endConst E.curve).range` to `RingEquiv.ofBijective (endConst E.curve).rangeRestrict ⟨fun f g h ↦ endConst_injective (congrArg Subtype.val h), (endConst E.curve).rangeRestrict_surjective⟩`. Establish `he₀ : ∀ f, (e₀ f : ℂ) = endConst E.curve f` using `fun _ ↦ rfl`. Set `ι : 𝓞 K ≃+* isogEnd E.curve` to `(cmRingEquiv σ).trans ((RingEquiv.subringCongr hrange).symm.trans e₀.symm)`.
+
+Establish `hι : ∀ a : 𝓞 K, endConst E.curve (ι a) = σ (algebraMap (𝓞 K) K a)`. Introduce `a`. Rewrite using `[← he₀, ← cmRingEquiv_apply]`. Simplify using `[ι]`. Conclude with `⟨ι, hι, fun ι' hι' ↦ RingEquiv.ext fun a ↦ endConst_injective ((hι' a).trans (hι a).symm)⟩`.
+-/
 theorem existsUnique_normalized (E : CMCurve K) :
     ∃! ι : 𝓞 K ≃+* isogEnd E.curve,
       ∀ a : 𝓞 K, endConst E.curve (ι a) = σ (algebraMap (𝓞 K) K a) := by
@@ -277,6 +377,9 @@ theorem existsUnique_normalized (E : CMCurve K) :
     simp [ι]
   exact ⟨ι, hι, fun ι' hι' ↦ RingEquiv.ext fun a ↦ endConst_injective ((hι' a).trans (hι a).symm)⟩
 
+/- English proof (translation)
+The claim follows from `endConst_latticeEndEquiv L _`.
+-/
 theorem normalized_ofLattice (L : PeriodPair) (hL : latticeEnd L = cmRing σ) (a : 𝓞 K) :
     endConst (weierstrassCurve L)
       (latticeEndEquiv L ⟨σ (algebraMap (𝓞 K) K a), hL ▸ ⟨a, rfl⟩⟩) = σ (algebraMap (𝓞 K) K a) :=

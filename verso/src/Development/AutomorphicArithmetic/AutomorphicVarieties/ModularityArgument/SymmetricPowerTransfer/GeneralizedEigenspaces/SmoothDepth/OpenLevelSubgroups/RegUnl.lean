@@ -7,13 +7,24 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h₁ (by rw [h, div_self']), fun h => h₂ (by rw [h, mul_div_cancel_left])⟩`.
+-/
 private theorem ne_of_div {G : Type*} [CommGroup G] {p x y : G} (h₁ : x / y ≠ 1) (h₂ : x / y ≠ p) :
     x ≠ y ∧ x ≠ y * p :=
   ⟨fun h => h₁ (by rw [h, div_self']), fun h => h₂ (by rw [h, mul_div_cancel_left])⟩
 
+/- English proof (translation)
+Introduce `e` and use `h (by rw [← e, inv_inv])`.
+-/
 private theorem inv_ne_of {G : Type*} [CommGroup G] {p x : G} (h : x ≠ p⁻¹) : x⁻¹ ≠ p :=
   fun e => h (by rw [← e, inv_inv])
 
+/- English proof (translation)
+Establish `e02 : a / a⁻¹ = a ^ 2` using `by rw [div_inv_eq_mul, pow_two]`. Establish `e20 : a⁻¹ / a = (a ^ 2)⁻¹` using `by rw [← e02, inv_div]`. Apply the tactic sequence `fin_cases i <;> fin_cases i' <;> first`. Consider the case `exact absurd rfl hne`. Consider the case `(apply ne_of_div <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Matrix.cons_val, div_one, one_div, inv_inv, e02, e20] <;> first`.
+
+Consider the case `exact h1 | exact hp | exact s1 | exact sp`. Consider the case `exact inv_ne_one.2 h1 | exact inv_ne_one.2 s1`. Consider the case `exact inv_ne_of hm | exact inv_ne_of sm)`.
+-/
 private theorem triple {G : Type*} [CommGroup G] {a p : G} (h1 : a ≠ 1) (hp : a ≠ p) (hm : a ≠ p⁻¹)
     (s1 : a ^ 2 ≠ 1) (sp : a ^ 2 ≠ p) (sm : a ^ 2 ≠ p⁻¹) (i i' : Fin 3) (hne : i ≠ i') :
     (![a, 1, a⁻¹] : Fin 3 → G) i ≠ ![a, 1, a⁻¹] i' ∧ (![a, 1, a⁻¹] : Fin 3 → G) i ≠ ![a, 1, a⁻¹] i' * p := by
@@ -27,6 +38,23 @@ private theorem triple {G : Type*} [CommGroup G] {a p : G} (h1 : a ≠ 1) (hp : 
          | exact inv_ne_one.2 h1 | exact inv_ne_one.2 s1
          | exact inv_ne_of hm | exact inv_ne_of sm)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a ⟨hu, hr⟩`. Establish `two : absPow k 2 = absPow k 1 ^ 2`. Rewrite using `[pow_two, ← absPow_add]`. Evaluate the numerical expressions. Establish `s1 : a ^ 2 ≠ 1`.
+
+Use `hr 0 (by norm_num)` as an intermediate fact. Simplify using `using this`. Establish `sp : a ^ 2 ≠ absPow k 1`. Use `hr 1 (by norm_num)` as an intermediate fact. Simplify using `using this`.
+
+Establish `sm : a ^ 2 ≠ (absPow k 1)⁻¹`. Use `hr (-1) (by norm_num)` as an intermediate fact. Simplify `this` using `[absPow_neg]`. Establish `h1 : a ≠ 1` using `fun h => s1 (by rw [h, one_pow])`. Establish `hp : a ≠ absPow k 1` using `fun h => hr 2 (by norm_num) (by`.
+
+Rewrite using `[h]`. Use `push_cast`. Conclude with `two.symm)`. Establish `hm : a ≠ (absPow k 1)⁻¹` using `fun h => hr (-2) (by norm_num) (by`. Rewrite using `[h]`.
+
+Use `push_cast`. Rewrite using `[absPow_neg, two, inv_pow])`. Use `⟨⟨fun i u hu' => ?_, triple h1 hp hm s1 sp sm⟩, fun ψ hψ i i' hne => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `hu u hu'`.
+
+Both sides reduce to the same expression. Use `show (a u)⁻¹ = 1`. Rewrite using `[hu u hu', inv_one]`. Apply the tactic sequence `have e : ψ 1 / ψ 0 = (a ^ 2)⁻¹ := by rw [← hψ, inv_div] fin_cases i <;> fin_cases i'`. Conclude with `absurd rfl hne`.
+
+Apply `ne_of_div` to reduce the goal to its premises. Conclude with `hψ ▸ s1`. Conclude with `hψ ▸ sp`. Apply `ne_of_div` to reduce the goal to its premises. Conclude with `e ▸ inv_ne_one.2 s1`.
+
+Conclude with `e ▸ inv_ne_of sm`. Conclude with `absurd rfl hne`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.regUnl :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a : kˣ →* ℂˣ), Reg a →
         ((∀ i, ∀ u ∈ Hi.Uo k, (![a, 1, a⁻¹] : Fin 3 → kˣ →* ℂˣ) i u = 1) ∧

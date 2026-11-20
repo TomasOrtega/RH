@@ -21,27 +21,51 @@ def actExtL (g : G) : ((↥L.T ⊗[O] X) × O) →ₗ[O] ((↥L.T ⊗[O] X) × O
       (LinearMap.id : O →ₗ[O] O).smulRight (((χ₁ g : Oˣ) : O) • z g) ∘ₗ LinearMap.snd O _ O)
     ((((χ₁ g : Oˣ) : O) • (LinearMap.id : O →ₗ[O] O)) ∘ₗ LinearMap.snd O _ O)
 
+/- English proof (translation)
+Simplify using `[actExtL, tableLineDegreeTwo.actExt, mul_comm]`.
+-/
 theorem actExtL_apply (g : G) (p : (↥L.T ⊗[O] X) × O) : actExtL L X χ₁ z g p = tableLineDegreeTwo.actExt L X χ₁ z g p := by
   simp [actExtL, tableLineDegreeTwo.actExt, mul_comm]
 
+/- English proof (translation)
+The claim follows from `(latRep L).map_one`.
+-/
 theorem actT_one' : actT L 1 = LinearMap.id := (latRep L).map_one
 
+/- English proof (translation)
+The claim follows from `(latRep L).map_mul g h`.
+-/
 theorem actT_mul' (g h : G) : actT L (g * h) = actT L g ∘ₗ actT L h := (latRep L).map_mul g h
 
 variable {L X χ₁ z}
 
+/- English proof (translation)
+Establish `h` using `hz.2 1 1`. Simplify using `only [mul_one, tableLineDegreeTwo.actTw, map_one, inv_one, Units.val_one, one_smul, actT_one', LinearMap.rTensor_id, LinearMap.id_apply] at h`. Simplify using `using h`.
+-/
 theorem coc_one (hz : tableLineDegreeTwo.IsCoc L X χ₁ z) : z 1 = 0 := by
   have h := hz.2 1 1
   simp only [mul_one, tableLineDegreeTwo.actTw, map_one, inv_one, Units.val_one, one_smul, actT_one', LinearMap.rTensor_id,
     LinearMap.id_apply] at h
   simpa using h
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[actExtL_apply]`. Simplify using `[tableLineDegreeTwo.actExt, coc_one hz, actT_one']`.
+-/
 theorem actExtL_one (hz : tableLineDegreeTwo.IsCoc L X χ₁ z) : actExtL L X χ₁ z 1 = LinearMap.id := by
   apply LinearMap.ext
   intro p
   rw [actExtL_apply]
   simp [tableLineDegreeTwo.actExt, coc_one hz, actT_one']
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[LinearMap.comp_apply, actExtL_apply, actExtL_apply, actExtL_apply]`. Establish `hc` using `hz.2 g h`. Simplify using `only [tableLineDegreeTwo.actExt, hc, tableLineDegreeTwo.actTw, actT_mul', LinearMap.rTensor_comp, LinearMap.comp_apply, map_mul, Units.val_mul, map_add, map_smul, LinearMap.smul_apply]`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [smul_add, smul_smul, add_assoc]`. Use `congr 1`. Rewrite using `[add_comm]`. Use `congr 1`.
+
+Use `congr 1`. Establish `: ((χ₁ g : Oˣ) : O) * ((χ₁ g)⁻¹ : Oˣ) = 1` using `Units.mul_inv _`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem actExtL_mul (hz : tableLineDegreeTwo.IsCoc L X χ₁ z) (g h : G) :
     actExtL L X χ₁ z (g * h) = actExtL L X χ₁ z g ∘ₗ actExtL L X χ₁ z h := by
   apply LinearMap.ext
@@ -66,6 +90,15 @@ theorem actExtL_mul (hz : tableLineDegreeTwo.IsCoc L X χ₁ z) (g h : G) :
 
 variable (L X χ₁ z)
 
+/- English proof (translation)
+Establish `hT : ∀ m : ↥L.T ⊗[O] X, lam ^ a • m = 0`. Introduce `m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t x => rw [TensorProduct.smul_tmul', TensorProduct.smul_tmul, hX, TensorProduct.tmul_zero]`.
+
+Consider the case `add u v hu hv => rw [smul_add, hu, hv, add_zero]`. Introduce and unpack `⟨m, y⟩ ⟨hm, hy⟩`. Simplify using `only [Submodule.mem_bot] at hm`. Substitute `hm` using the available equality. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`.
+
+Rewrite using `[Submodule.mem_comap, actExtL_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ (⊥ : Submodule O (↥L.T ⊗[O] X))`. Rewrite using `[Submodule.mem_bot]`. Simplify using `only [tableLineDegreeTwo.actExt, map_zero, zero_add]`.
+
+Rewrite using `[mul_smul, hT, smul_zero]`. Use `show _ ∈ Ideal.span {lam ^ a}`. Simplify using `only [tableLineDegreeTwo.actExt]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+-/
 theorem actExtL_ker (lam : O) (a : ℕ) (hX : ∀ x : X, lam ^ a • x = 0) (g : G) :
     tableLineDegreeTwo.kerExt L X lam a ≤ (tableLineDegreeTwo.kerExt L X lam a).comap (actExtL L X χ₁ z g) := by
   have hT : ∀ m : ↥L.T ⊗[O] X, lam ^ a • m = 0 := by
@@ -88,6 +121,13 @@ theorem actExtL_ker (lam : O) (a : ℕ) (hX : ∀ x : X, lam ^ a • x = 0) (g :
     simp only [tableLineDegreeTwo.actExt]
     exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
 
+/- English proof (translation)
+Establish `hT : ∀ m : ↥L.T ⊗[O] X, lam ^ a • m = 0`. Introduce `m`. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul t x => rw [TensorProduct.smul_tmul', TensorProduct.smul_tmul, hX, TensorProduct.tmul_zero]`.
+
+Consider the case `add u v hu hv => rw [smul_add, hu, hv, add_zero]`. Take `⟨p, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ (⊥ : Submodule O (↥L.T ⊗[O] X))`.
+
+Rewrite using `[Submodule.mem_bot]`. Conclude with `hT p.1`. Use `show _ ∈ Ideal.span {lam ^ a}`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem kerExt_kill (lam : O) (a : ℕ) (hX : ∀ x : X, lam ^ a • x = 0)
     (m : ((↥L.T ⊗[O] X) × O) ⧸ tableLineDegreeTwo.kerExt L X lam a) : lam ^ a • m = 0 := by
   have hT : ∀ m : ↥L.T ⊗[O] X, lam ^ a • m = 0 := by
@@ -119,6 +159,9 @@ def extRep (hz : tableLineDegreeTwo.IsCoc L X χ₁ z) (lam : O) (a : ℕ) (hX :
     intro p
     simp [actExtL_mul hz, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[← actExtL_apply]`. Both sides reduce to the same expression.
+-/
 theorem extRep_mk (hz : tableLineDegreeTwo.IsCoc L X χ₁ z) (lam : O) (a : ℕ) (hX : ∀ x : X, lam ^ a • x = 0) (g : G)
     (p : (↥L.T ⊗[O] X) × O) :
     extRep L X χ₁ z hz lam a hX g (Submodule.Quotient.mk p) = Submodule.Quotient.mk (tableLineDegreeTwo.actExt L X χ₁ z g p) := by

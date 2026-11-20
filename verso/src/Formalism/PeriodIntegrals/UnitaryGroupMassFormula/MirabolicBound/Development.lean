@@ -34,6 +34,11 @@ def colM {n : ℕ} (x : Fin n → F) : Matrix (Fin (n + 1)) (Fin (n + 1)) F :=
   (Matrix.fromBlocks 1 (Matrix.of fun i (_ : Fin 1) => x i) 0 (1 : Matrix (Fin 1) (Fin 1) F)).submatrix
     finSumFinEquiv.symm finSumFinEquiv.symm
 
+/- English proof (translation)
+Simplify using `only [colM]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Use `congr 2`. Simplify using the standard rewrite rules. Use extensionality with `i j`.
+
+Simplify using `[add_comm]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem colM_mul {n : ℕ} (x y : Fin n → F) : colM x * colM y = colM (x + y) := by
   simp only [colM]
   rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
@@ -43,6 +48,9 @@ theorem colM_mul {n : ℕ} (x y : Fin n → F) : colM x * colM y = colM (x + y) 
   · simp
   · simp
 
+/- English proof (translation)
+Simplify using `only [colM]`. Establish `: (Matrix.of fun i (_ : Fin 1) => (0 : Fin n → F) i) = 0` using `by ext; simp`. Rewrite using `[this, Matrix.fromBlocks_one]`. Conclude with `Matrix.submatrix_one_equiv _`.
+-/
 theorem colM_zero {n : ℕ} : colM (0 : Fin n → F) = 1 := by
   simp only [colM]
   have : (Matrix.of fun i (_ : Fin 1) => (0 : Fin n → F) i) = 0 := by ext; simp
@@ -103,12 +111,22 @@ def SepLemma : Prop :=
 
 def StepOf : Prop := UnitriangularBlockExtension → ColFacts → ConjCol → RowExists → CharOrth → SepLemma → StepProp
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hb F`. Consider the case `succ n ih => exact hs F n ih`.
+-/
 theorem claim_all (hb : BaseProp) (hs : StepProp) (F : Type) [Field F] [Fintype F] : ∀ n, Claim F n := by
   intro n
   induction n with
   | zero => exact hb F
   | succ n ih => exact hs F n ih
 
+/- English proof (translation)
+Introduce `F _ _ k ψ₀ hψ V _ _ _ π _ hgen`. Take `⟨ℓ, hℓ, hW⟩` from `hgen`. Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[Finset.Ico_eq_empty_of_le (by norm_num), Finset.prod_empty]`.
+
+Establish `: Nontrivial V`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hℓ (by ext v; simp [Subsingleton.elim v 0])`. Conclude with `Module.finrank_pos`.
+
+Consider the case `succ n`. Take `⟨p, -, hli⟩` from `claim_all hb hs F n ψ₀ hψ V π ℓ hℓ hW`. Establish `h1` using `hli.fintype_card_le_finrank`. Rewrite `h1` using `[Fintype.card_fin, Subspace.dual_finrank_eq]`. Conclude with `h1`.
+-/
 theorem mirabolicBound_of (hb : BaseProp) (hs : StepProp) : MirabolicBound := by
   intro F _ _ k ψ₀ hψ V _ _ _ π _ hgen
   obtain ⟨ℓ, hℓ, hW⟩ := hgen
@@ -126,6 +144,9 @@ theorem mirabolicBound_of (hb : BaseProp) (hs : StepProp) : MirabolicBound := by
     rw [Fintype.card_fin, Subspace.dual_finrank_eq] at h1
     exact h1
 
+/- English proof (translation)
+The claim follows from `mirabolicBound_of hb (hst h1 h2 h3 h4 h5 h6)`.
+-/
 theorem mirabolicBound_of_steps (hb : BaseProp) (hst : StepOf) (h1 : UnitriangularBlockExtension) (h2 : ColFacts) (h3 : ConjCol)
     (h4 : RowExists) (h5 : CharOrth) (h6 : SepLemma) : MirabolicBound :=
   mirabolicBound_of hb (hst h1 h2 h3 h4 h5 h6)

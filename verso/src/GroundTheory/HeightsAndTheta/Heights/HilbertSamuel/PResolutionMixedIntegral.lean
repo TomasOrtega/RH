@@ -10,6 +10,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace ResolutionMixedIntegral
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d m₁ hm₁`. Rewrite using `[hI D Ω κ d m₁ hm₁]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hM : ∀ j : Fin D, IsSmoothMetric (if j.val < i then m₁ else d.m)` using `fun j => by split_ifs`. Conclude with `hm₁`.
+
+Conclude with `d.smooth`. Establish `hpot : mixPot d.m m₁ D i = fun j z => Real.log ((if j.val < i then m₁ else d.m).ρ z)`. Use function extensionality and compare the values at `j z`. Unfold `mixPot`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Establish `hres : (fun j : Fin D => resPot d (if j.val < i then m₁ else d.m)) = fun j : Fin D => if j.val < i then resPot d m₁ else resPot d d.m`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[hpot, hB D Ω κ d (fun j => if j.val < i then m₁ else d.m) m₁ hM hm₁, hres]`.
+-/
 theorem proof (hB : ResolutionMixedBridge.Statement) (hI : ResolutionInterpIntegral.Statement) :
     ResolutionMixedIntegral.Statement := by
   intro D Ω _ _ κ _ d m₁ hm₁

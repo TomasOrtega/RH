@@ -22,6 +22,9 @@ namespace GlobalTheory.TopFrameEt
 
 open GlobalTheory.TopForm
 
+/- English proof (translation)
+Establish `e` using `Scheme.Hom.appLE_comp_appLE q p ⊤ U W le_top h`. Conclude with `congrArg (fun f ↦ (CommRingCat.Hom.hom f).comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom) e`.
+-/
 theorem appLE_comp_algX' {k : Type} [CommRing k] {X Y : Scheme.{0}} (p : X ⟶ Sp k) (q : Y ⟶ X)
     {U : X.Opens} {W : Y.Opens} (h : W ≤ q ⁻¹ᵁ U) :
     (q.appLE U W h).hom.comp (algX p U) = algX (q ≫ p) W := by
@@ -29,6 +32,13 @@ theorem appLE_comp_algX' {k : Type} [CommRing k] {X Y : Scheme.{0}} (p : X ⟶ S
   exact congrArg (fun f ↦ (CommRingCat.Hom.hom f).comp
     (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom) e
 
+/- English proof (translation)
+Set `S : ShortComplex (ModuleCat R)` to `ShortComplex.mk (ModuleCat.ofHom f) (ModuleCat.ofHom g) (by ext x; exact hex.apply_apply_eq_zero x)`. Establish `hS : S.Exact` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact S).2 hex`. Establish `hm : Mono S.f` using `(ModuleCat.mono_iff_injective _).2 hf`. Set `u' : ι ⊕ ι' → M₂` to `Sum.elim (fun i ↦ f (v i)) u`. Establish `hw : (S.g ∘ u' ∘ Sum.inr) = w` using `funext fun a ↦ hu a`.
+
+Establish `hli : LinearIndependent R u'`. Use `ModuleCat.linearIndependent_leftExact (S := S) (v := v) hS v.linearIndependent ?_ hm ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `w.linearIndependent`. Both sides reduce to the same expression.
+
+Establish `hsp : ⊤ ≤ Submodule.span R (Set.range u')`. Use `ModuleCat.span_exact (S := S) (v := v) hS rfl (by rw [v.span_eq]) ?_` and prove the remaining obligations. Rewrite using `[hw, w.span_eq]`. Conclude with `⟨Module.Basis.mk hli hsp, fun j ↦ by simp [u']⟩`.
+-/
 theorem exists_basis_of_exact {R M₁ M₂ M₃ ι ι' : Type} [CommRing R] [AddCommGroup M₁] [Module R M₁]
     [AddCommGroup M₂] [Module R M₂] [AddCommGroup M₃] [Module R M₃]
     (f : M₁ →ₗ[R] M₂) (g : M₂ →ₗ[R] M₃) (hf : Function.Injective f) (hex : Function.Exact f g)
@@ -49,6 +59,21 @@ theorem exists_basis_of_exact {R M₁ M₂ M₃ ι ι' : Type} [CommRing R] [Add
     rw [hw, w.span_eq]
   exact ⟨Module.Basis.mk hli hsp, fun j ↦ by simp [u']⟩
 
+/- English proof (translation)
+Introduce `k _ X Y p q p' hp m D _ ι o U U' hU' hU W W' hW' hW hW'a hWU hW'U' N hN x hx`. Substitute `hp` using the available equality. Establish `hU'a : IsAffineOpen U'` using `hx.affine`. Establish `hC` using `GlobalTheory.T.etale_mvPolynomial_eval2Hom_restrict_smaller_affines X Y q ι U U' hU' hU hU'a W W' hW' hW hW'a hWU hW'U' N hN`. Take `⟨bR, hbR⟩` from `GlobalTheory.T.exists_kaehlerBasis_differentials_of_topFormFrame k X p m ‹_› U' _ hx`.
+
+Use `haveI : Finite ι := Finite.of_injective (fun a ↦ o.symm (Sum.inr a)) (fun a b h ↦ Sum.inr_injective (o.symm.injective h))`. Use `letI : Algebra k Γ(X, U') := (algX p U').toAlgebra`. Use `letI : Algebra k Γ(Y, W') := (algX (q ≫ p) W').toAlgebra`. Use `letI : Algebra Γ(X, U') Γ(Y, W') := (q.appLE U' W' hW'U').hom.toAlgebra`. Use `haveI : IsScalarTower k Γ(X, U') Γ(Y, W') := IsScalarTower.of_algebraMap_eq' (appLE_comp_algX' p q hW'U').symm`.
+
+Set `φ` to `MvPolynomial.eval₂Hom (q.appLE U' W' hW'U').hom (fun a ↦ resG Y hW' (N a))`. Use `letI : Algebra (MvPolynomial ι Γ(X, U')) Γ(Y, W') := φ.toAlgebra`. Use `haveI : IsScalarTower Γ(X, U') (MvPolynomial ι Γ(X, U')) Γ(Y, W') := IsScalarTower.of_algebraMap_eq fun r ↦ by`. Express the relevant statement in the definitionally equal form `_ = φ (MvPolynomial.C r)`. Simplify using `[φ]`.
+
+Both sides reduce to the same expression. Use `haveI : Algebra.Etale (MvPolynomial ι Γ(X, U')) Γ(Y, W') := hC`. Take `⟨⟨bT, hbT⟩, hsm⟩` from `GlobalTheory.EtaleCoordJacobian.exists_basis_of_etale Γ(X, U') Γ(Y, W') ι`. Use `haveI := hsm`. Use `haveI : Subsingleton (Algebra.H1Cotangent Γ(X, U') Γ(Y, W')) := Algebra.FormallySmooth.subsingleton_h1Cotangent`.
+
+Establish `hinj : Function.Injective (KaehlerDifferential.mapBaseChange k Γ(X, U') Γ(Y, W'))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨z, rfl⟩` from `(Algebra.H1Cotangent.exact_δ_mapBaseChange k Γ(X, U') Γ(Y, W') y).1 hy`. Rewrite using `[Subsingleton.elim z 0, map_zero]`.
+
+Take `⟨b, hb⟩` from `exists_basis_of_exact (KaehlerDifferential.mapBaseChange k Γ(X, U') Γ(Y, W')) (KaehlerDifferential.map k Γ(X, U') Γ(Y, W') Γ(Y, W')) hinj (KaehlerDifferential.exact_mapBaseChange_map k Γ(X, U') Γ(Y, W')) (bR.baseChange Γ(Y, W')) bT (fun a ↦ KaehlerDifferential.D k Γ(Y, W') (resG …`. Use `⟨hW'a, isFreeGen_dForm _ (b.reindex o.symm) fun a ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, hb]`. Break down `o a with i | i` into its components or cases. Simplify using `only [Sum.elim_inl, Module.Basis.baseChange_apply, KaehlerDifferential.mapBaseChange_tmul, one_smul, hbR, dFun, KaehlerDifferential.map_D]`.
+
+Use `congrArg (KaehlerDifferential.D k Γ(Y, W')) ?_` and prove the remaining obligations. Rewrite using `[RingHom.algebraMap_toAlgebra, GlobalTheory.LB.appLE_resG, GlobalTheory.LB.resG_appLE]`. Both sides reduce to the same expression.
+-/
 theorem isFrame_etale : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ X) (p' : Y ⟶ Sp k), q ≫ p = p' → ∀ (m D : ℕ), SmoothOfRelativeDimension m p → ∀ (ι : Type) (o : Fin D ≃ Fin m ⊕ ι) (U U' : X.Opens) (hU' : U' ≤ U), IsAffineOpen U → ∀ (W W' : Y.Opens) (hW' : W' ≤ W), IsAffineOpen W → IsAffineOpen W' → ∀ (hWU : W ≤ q ⁻¹ᵁ U), W' ≤ q ⁻¹ᵁ U' → ∀ (N : ι → Γ(Y, W)), (MvPolynomial.eval₂Hom (q.appLE U W hWU).hom N).Etale → ∀ (x : Fin m → Γ(X, U)), TopForm.IsFrame (TopForm.dOn p fun i => resG X hU' (x i)) → TopForm.IsFrame (TopForm.dOn p' fun a => resG Y hW' (Sum.elim (fun i => (q.appLE U W hWU).hom (x i)) N (o a))) := by
   intro k _ X Y p q p' hp m D _ ι o U U' hU' hU W W' hW' hW hW'a hWU hW'U' N hN x hx
   subst hp

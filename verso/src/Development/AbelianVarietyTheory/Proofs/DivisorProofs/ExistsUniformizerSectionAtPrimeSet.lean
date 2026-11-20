@@ -21,14 +21,23 @@ namespace GlobalTheory.QResChar
 
 open Formalism.IndefR.Fin.LevelGroupLemmas.Lat (liftE lift lift_add lift_zero toEAf_liftE eq_lift_of_infPart)
 
+/- English proof (translation)
+Unfold `liftE`. Rewrite using `[map_add, lift_add]`.
+-/
 theorem liftE_add {D : D7} (a b : EAf D) : liftE (a + b) = liftE a + liftE b := by
   unfold liftE
   rw [map_add, lift_add]
 
+/- English proof (translation)
+Unfold `liftE`. Rewrite using `[map_zero, lift_zero]`.
+-/
 theorem liftE_zero {D : D7} : liftE (0 : EAf D) = 0 := by
   unfold liftE
   rw [map_zero, lift_zero]
 
+/- English proof (translation)
+Use `conv_rhs => rw [eq_lift_of_infPart z hz]`. Unfold `liftE`. Use `congr 1`. Conclude with `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm_apply_apply (finPart D z)`.
+-/
 theorem liftE_toEAf {D : D7} {z : AE D} (hz : infPart D z = 0) : liftE (toEAf D z) = z := by
   conv_rhs => rw [eq_lift_of_infPart z hz]
   unfold liftE
@@ -42,6 +51,11 @@ def psiE {D : D7} (ψ : AddChar (AF D.host.F) ℂ) : AddChar (EAf D) ℂ where
   map_add_eq_mul' a b := by
     rw [liftE_add, mul_add, map_add, neg_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Establish `hinf : infPart D (hO S T y t) = 0`. Simplify using `only [hO, map_sum, map_mul, hy, mul_zero, Finset.sum_const_zero]`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew y t, ← GlobalTheory.HalfDuality.trace_id]`. Express the relevant statement in the definitionally equal form `_ = ψ (-Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * liftE (toEAf D (hO S T y t))))`. Rewrite using `[liftE_toEAf hinf]`.
+
+Both sides reduce to the same expression.
+-/
 theorem psi_sympl {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D))
     (βT : GL (Fin T.rank) (EAf D)) (t y : WO S T) (hy : ∀ i j, infPart D (y i j) = 0) :
     ψ (symplO S T t y) = psiE ψ (Matrix.trace (frMapAdj S T βS βT t * frMapO S T βS βT y)) := by
@@ -52,11 +66,27 @@ theorem psi_sympl {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (βS :
   rw [liftE_toEAf hinf]
   rfl
 
+/- English proof (translation)
+Introduce `q`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Conclude with `⟨_, resS_oToS PP a⟩`.
+-/
 theorem resS_surj {D : D7} (PP : Pl D.host.E) : Function.Surjective (resS D.host.F PP) := by
   intro q
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective q
   exact ⟨_, resS_oToS PP a⟩
 
+/- English proof (translation)
+Establish `hcong : ∀ PP ∈ Q, ∀ w w' : Formalism.L2.Herm.intAf D.host.F D.host.E, resS D.host.F PP w = resS D.host.F PP w' → Φ (a PP * w) = Φ (a PP * w')`. Introduce `PP hPP w w' h`. Establish `e : a PP * (w : EAf D) = a PP * (w' : EAf D) + a PP * ((w - w' : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)` using `by push_cast; ring`. Rewrite using `[e, AddChar.map_add_eq_mul, h1 PP hPP _ (w - w').2 (by rw [map_sub, h, sub_self]), mul_one]`. Set `L : ∀ PP : Pl D.host.E, kP PP → Formalism.L2.Herm.intAf D.host.F D.host.E` to `fun PP => Function.surjInv (resS_surj PP)`.
+
+Establish `hL : ∀ PP x, resS D.host.F PP (L PP x) = x` using `fun PP => Function.surjInv_eq (resS_surj PP)`. Set `ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ` to `fun PP => if hPP : PP ∈ Q then { toFun := fun x => Φ (a PP * (L PP x : EAf D)) map_zero_eq_one' := h1 PP hPP _ (L PP 0).2 (hL PP 0) map_add_eq_mul' := fun x y => by`. Rewrite using `[← AddChar.map_add_eq_mul, ← mul_add]`. Conclude with `hcong PP hPP (L PP (x + y)) (L PP x + L PP y) (by rw [map_add, hL, hL, hL]) }`. Use `else 1`.
+
+Establish `hψ : ∀ PP ∈ Q, ∀ w (hw : w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), ψP PP (resS D.host.F PP ⟨w, hw⟩) = Φ (a PP * w)`. Introduce `PP hPP w hw`. Simplify using `only [ψP, dif_pos hPP]`. Conclude with `hcong PP hPP _ ⟨w, hw⟩ (hL PP _)`. Use `⟨ψP, fun PP hPP => ?_, hψ⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, hne⟩` from `h2 PP hPP`. Establish `hnt : ψP PP ≠ 1` using `fun h => hne (by rw [← hψ PP hPP w hw, h, AddChar.one_apply])`. Introduce `c hc`. Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`. Use `letI := Ideal.Quotient.field PP.asIdeal`.
+
+Introduce `h`. Apply `hnt` to reduce the goal to its premises. Use extensionality with `x`. Use `DFunLike.congr_fun h (c⁻¹ * x)` as an intermediate fact. Rewrite `this` using `[AddChar.mulShift_apply, ← mul_assoc, mul_inv_cancel₀ hc, one_mul]`.
+
+Simplify using `using this`.
+-/
 theorem fac {D : D7} (Φ : AddChar (EAf D) ℂ) (Q : Finset (Pl D.host.E)) (a : Pl D.host.E → EAf D)
     (h1 : ∀ PP ∈ Q, ∀ w (hw : w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), resS D.host.F PP ⟨w, hw⟩ = 0 → Φ (a PP * w) = 1)
     (h2 : ∀ PP ∈ Q, ∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, Φ (a PP * w) ≠ 1) :
@@ -97,6 +127,15 @@ theorem fac {D : D7} (Φ : AddChar (EAf D) ℂ) (Q : Finset (Pl D.host.E)) (a : 
 
 open GlobalTheory.StdFrames (cpt) in
 
+/- English proof (translation)
+Use `(GlobalTheory.AdIsom.mem_OA m).2 fun P => ?_` and prove the remaining obligations. Distinguish the cases in `hP : P = PP`. Substitute `hP` using the available equality. Establish `hv : Valued.v (cpt P (eToEAf D (ϖ : D.host.E))) = P.valuation D.host.E (ϖ : D.host.E)`. Establish `: eToEAf D (ϖ : D.host.E) = GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.inc D (ϖ : D.host.E)` using `rfl`.
+
+Rewrite using `[this, GlobalTheory.AdIsom.cpt_inc, Formalism.UG.P.levelaf_valued_algebraMap]`. Rewrite `hr` using `[RingHom.map_mul, Valuation.map_mul, hv, GlobalTheory.HeckeDetChar.val_unif hϖ.1 hϖ.2]`. Distinguish the cases in `h0 : Valued.v (cpt P m) = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`.
+
+Take `⟨k, hk⟩ : ∃ k : ℤ, Valued.v (cpt P m) = WithZero.exp k` from `⟨_, (WithZero.exp_log h0).symm⟩`. Rewrite `hr`, the goal using `[hk]`. Rewrite `hr` using `[← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h0 : cpt P (toEAf D e) = 0` using `(GlobalTheory.StdFrames.cpt_of_isIdemAt he).2 P hP`. Use `congrArg (cpt P) hm` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, h0, zero_mul]`. Rewrite using `[← this, Valuation.map_zero]`. Conclude with `zero_le'`.
+-/
 theorem mem_int_of_mul {D : D7} {PP : Pl D.host.E} {e : AE D} (he : Formalism.L2.NTheta.IsIdemAt e PP) {ϖ : 𝓞 D.host.E}
     (hϖ : ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) {m : EAf D} (hm : toEAf D e * m = m)
     (hr : Valued.v (cpt PP (eToEAf D (ϖ : D.host.E) * m)) < 1) :
@@ -121,9 +160,15 @@ theorem mem_int_of_mul {D : D7} {PP : Pl D.host.E} {e : AE D} (he : Formalism.L2
     rw [← this, Valuation.map_zero]
     exact zero_le'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => e, fun P hP => by rw [Finset.mem_singleton.1 hP]; exact he, by rw [Finset.sum_singleton]⟩, he.1.2.1⟩`.
+-/
 theorem idemSum_single {D : D7} {PP : Pl D.host.E} {e : AE D} (he : Formalism.L2.NTheta.IsIdemAt e PP) : IsIdemSum e {PP} :=
   ⟨⟨fun _ => e, fun P hP => by rw [Finset.mem_singleton.1 hP]; exact he, by rw [Finset.sum_singleton]⟩, he.1.2.1⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.mul_assoc ((S.gram⁻¹).map (eToEAf D)), mul_eq_one_comm.1 (GlobalTheory.PlaceVec.gram_map_mul_ …`.
+-/
 theorem frMapAdj_one {D : D7} (S : HSp D) (β : GL (Fin S.rank) (EAf D)) : frMapAdj S S β β 1 = 1 := by
   rw [GlobalTheory.PlaceVec.frMapAdj_eq, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _),
     Matrix.transpose_one, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.mul_assoc ((S.gram⁻¹).map (eToEAf D)),
@@ -134,6 +179,9 @@ section Local
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
   {β : GL (Fin S.rank) (EAf D)} {PP : Pl D.host.E} {e : AE D}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HalfDuality.exists_half_frMapO S S β β e he.1.1 _ fun i j => by rw [Matrix.single_apply] split_ifs · exact hm · rw [mul_zero]`.
+-/
 theorem single_half (he : Formalism.L2.NTheta.IsIdemAt e PP) (a : Fin S.rank) {m : EAf D} (hm : toEAf D e * m = m) :
     ∃ y : WO S S, IsHalf e y ∧ (∀ i j, infPart D (y i j) = 0) ∧ frMapO S S β β y = Matrix.single a a m :=
   GlobalTheory.HalfDuality.exists_half_frMapO S S β β e he.1.1 _ fun i j => by
@@ -142,6 +190,11 @@ theorem single_half (he : Formalism.L2.NTheta.IsIdemAt e PP) (a : Fin S.rank) {m
     · exact hm
     · rw [mul_zero]
 
+/- English proof (translation)
+Introduce `P hP' hm`. Take `⟨P', hP', rfl⟩` from `Finset.mem_image.1 hP'`. Rewrite `hm` using `[Finset.mem_singleton.1 hP']`. Establish `h2 : Formalism.L2.DIV.starOHom ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` using `hm`. Rewrite `h2` using `[map_natCast]`.
+
+Conclude with `hP h2`.
+-/
 theorem not_mem_conj (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) :
     ∀ P ∈ ({PP} : Finset (Pl D.host.E)).image Formalism.L2.DIV.conjPl,
       ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
@@ -152,6 +205,17 @@ theorem not_mem_conj (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : �
   rw [map_natCast] at h2
   exact hP h2
 
+/- English proof (translation)
+Take `⟨y, hyh, hy0, hy⟩` from `single_half (β := β) he a hm`. Establish `hP1 : ∀ P ∈ ({PP} : Finset (Pl D.host.E)), ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun P h => by`. Rewrite using `[Finset.mem_singleton.1 h]`. Conclude with `hP`. Establish `hyL` using `GlobalTheory.HalfLatInt.mem_of_isIntM hS hS fS fS (idemSum_single he) hP1 hyh (by`.
+
+Rewrite using `[hy]`. Introduce `i j`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`. Use `exacts [hi, zero_mem _])`.
+
+Establish `ht : frMapAdj S S β β (cA D e • (1 : WO S S)) = toEAf D e • (1 : Matrix (Fin S.rank) (Fin S.rank) (EAf D))`. Rewrite using `[GlobalTheory.AdjVecLocal.frMapAdj_smul, frMapAdj_one]`. Establish `hN : Ideal.absNorm D.host.ccK ≠ 0` using `fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `htL` using `GlobalTheory.DatumFourier.mem_latO_of_int hS hS fS fS (idemSum_single he) hN (ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA.normCc_mem_AA D) (fun P h hm => hP1 P h (GlobalTheory.HalfCompare.mem_of_dvd hm (Dvd.intro_left _ rfl))) (x := cA D e • (1 : WO S S)) (f …`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, ← map_mul, he.1.1]) (by`.
+
+Rewrite using `[ht]`. Introduce `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.one_apply]`. Use `mul_mem (GlobalTheory.IdemRes.resS_idem_eq_one D _ _ he).1 ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Use `exacts [one_mem _, zero_mem _])`. Establish `h` using `GlobalTheory.LatVac.char_sympl_eq_one hψ hS hS htL hyL`. Rewrite `h` using `[psi_sympl ψ S S β β _ y hy0, hy, GlobalTheory.HalfDuality.trace_mul_single, ht, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, hm]`. Then use the resulting hypothesis.
+-/
 theorem psiE_int (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S Λ) (fS : Formalism.L2.DIV.IsFrame β Λ) (a : Fin S.rank)
     (he : Formalism.L2.NTheta.IsIdemAt e PP)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal)
@@ -184,6 +248,17 @@ theorem psiE_int (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S Λ) (fS : Forma
   rwa [psi_sympl ψ S S β β _ y hy0, hy, GlobalTheory.HalfDuality.trace_mul_single, ht, Matrix.smul_apply, Matrix.one_apply_eq,
     smul_eq_mul, mul_one, hm] at h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hee : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, he.1.1]`. Establish `hm : toEAf D e * (eToEAf D (ϖ : D.host.E)⁻¹ * toEAf D e) = eToEAf D (ϖ : D.host.E)⁻¹ * toEAf D e`. Rewrite using `[mul_left_comm, hee]`.
+
+Take `⟨y, hyh, hy0, hy⟩` from `single_half (β := β) he a hm`. Establish `hP1 : ∀ P ∈ ({PP} : Finset (Pl D.host.E)), ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun P h => by`. Rewrite using `[Finset.mem_singleton.1 h]`. Conclude with `hP`. Establish `hyL` using `GlobalTheory.LatVac.mem_of_char hψ hS hS (u := y) (Matrix.ext hy0) fun u hu => by`.
+
+Establish `hu'` using `GlobalTheory.PlaceModelSum.idem_smul_latO (e := cA D e) (by rw [← map_mul, he.1.1]) hu`. Establish `hint : IsIntM (frMapAdj S S β β (cA D e • u))` using `GlobalTheory.HalfLatInt.isIntM_adj hS hS fS fS (GlobalTheory.HalfLatInt.isIntM_of_mem hS fS fS (Formalism.IndefR.Fin.LevelGroupLemmas.isIdemSum_conj (idemSum_single he)) (not_mem_conj hP) (fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, ← map_mul, he.1.1]) hu')`. Establish `h1` using `hn _ (hint a a)`. Rewrite `h1` using `[GlobalTheory.AdjVecLocal.frMapAdj_smul, Matrix.smul_apply, smul_eq_mul]`.
+
+Establish `h3 : ∀ x p : EAf D, x * (p * toEAf D e) = p * toEAf D e * (toEAf D e * x)` using `fun x p => by`. Take the linear combination `(-(x * p)) * hee`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew u y, AddChar.map_neg_eq_inv, psi_sympl ψ S S β β u y hy0, hy, GlobalTheory.HalfDuality.trace_mul_single, h3, h1, inv_one]`. Establish `h2` using `GlobalTheory.HalfLatInt.isIntM_of_mem hS fS fS (idemSum_single he) hP1 hyh hyL a a`. Rewrite `h2` using `[hy, Matrix.single_apply_same]`.
+
+Use `(he.2 ϖ h0).1 hϖ (GlobalTheory.PlaceVec.finPart_mem_intAE ?_)` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm]`. Conclude with `h2`.
+-/
 theorem psiE_ne (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S Λ) (fS : Formalism.L2.DIV.IsFrame β Λ) (a : Fin S.rank)
     (he : Formalism.L2.NTheta.IsIdemAt e PP)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal)
@@ -216,6 +291,13 @@ theorem psiE_ne (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S Λ) (fS : Formal
   rw [map_mul, mul_comm]
   exact h2
 
+/- English proof (translation)
+Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by simpa using h0`. Establish `hinv : eToEAf D (ϖ : D.host.E) * eToEAf D (ϖ : D.host.E)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hϖE, map_one]`. Establish `hee : toEAf D e * toEAf D e = toEAf D e` using `by rw [← map_mul, he.1.1]`. Establish `hm : toEAf D e * (eToEAf D (ϖ : D.host.E)⁻¹ * toEAf D e * w) = eToEAf D (ϖ : D.host.E)⁻¹ * toEAf D e * w`.
+
+Take the linear combination `(eToEAf D (ϖ : D.host.E)⁻¹ * w) * hee`. Establish `h2 : eToEAf D (ϖ : D.host.E) * (eToEAf D (ϖ : D.host.E)⁻¹ * toEAf D e * w) = toEAf D e * w`. Take the linear combination `(toEAf D e * w) * hinv`. Use `psiE_int hψ hS fS a he hP hm (mem_int_of_mul he hϖ hm (h2.symm ▸ ?_))` and prove the remaining obligations. Take `⟨h1, -⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ _ he`.
+
+Establish `h3 : toEAf D e * w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `mul_mem h1 hw`. Establish `h4 : (⟨toEAf D e * w, h3⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ⟨toEAf D e, h1⟩ * ⟨w, hw⟩` using `Subtype.ext rfl`. Establish `h5 : resS D.host.F PP ⟨toEAf D e * w, h3⟩ = 0` using `by rw [h4, RingHom.map_mul, hr, mul_zero]`. Conclude with `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt PP ⟨_, h3⟩).1 h5`.
+-/
 theorem psiE_max (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S Λ) (fS : Formalism.L2.DIV.IsFrame β Λ) (a : Fin S.rank)
     (he : Formalism.L2.NTheta.IsIdemAt e PP)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal)
@@ -239,6 +321,11 @@ theorem psiE_max (hψ : IsStdChar D ψ (-1)) (hS : IsSelfDualC S Λ) (fS : Forma
 
 end Local
 
+/- English proof (translation)
+Establish `e : Matrix.trace (A * B) = ((∑ i, ∑ j, (⟨A i j, hA i j⟩ * ⟨B j i, hB j i⟩) : Formalism.L2.Herm.intAf D.host.F D.host.E) : EAf D)`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul]`. Use `⟨e ▸ Subtype.prop _, ?_⟩` and prove the remaining obligations. Rewrite using `[show (⟨Matrix.trace (A * B), e ▸ Subtype.prop _⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = ∑ i, ∑ j, (⟨A i j, hA i j⟩ * ⟨B j i, hB j i⟩) from Subtype.ext e]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, map_sum, map_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.HalfDuality.redM_apply_of_mem PP A i j (hA i j), GlobalTheory.HalfDuality.redM_apply_of_mem PP B j i (hB j i)]`.
+-/
 theorem trace_redM {D : D7} (PP : Pl D.host.E) {a b : ℕ} {A : Matrix (Fin a) (Fin b) (EAf D)} {B : Matrix (Fin b) (Fin a) (EAf D)}
     (hA : IsIntM A) (hB : IsIntM B) :
     ∃ h : Matrix.trace (A * B) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E,
@@ -253,12 +340,18 @@ theorem trace_redM {D : D7} (PP : Pl D.host.E) {a b : ℕ} {A : Matrix (Fin a) (
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [GlobalTheory.HalfDuality.redM_apply_of_mem PP A i j (hA i j), GlobalTheory.HalfDuality.redM_apply_of_mem PP B j i (hB j i)]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+-/
 theorem addChar_sum {A ι : Type} [AddCommMonoid A] (Φ : AddChar A ℂ) (s : Finset ι) (f : ι → A) :
     Φ (∑ i ∈ s, f i) = ∏ i ∈ s, Φ (f i) := by
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_mul, ← Finset.mul_sum, Matrix.smul_mul, Matrix.trace_smul, Matrix.trace_mul_comm C B, smul_eq_mul]`. Use `conv_lhs => rw [← hB, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Take the linear combination `(-((∑ i ∈ s, f i) * Matrix.trace (B * C))) * hpq`.
+-/
 theorem sum_divisible_eq_sum_mul {A ι : Type} [CommRing A] {m n : ℕ} (s : Finset ι) (f : ι → A) {p q : A} (hpq : p * q = 1)
     (B : Matrix (Fin m) (Fin n) A) (C : Matrix (Fin n) (Fin m) A) (hB : (∑ i ∈ s, f i) • B = B) :
     Matrix.trace (B * C) = ∑ i ∈ s, q * f i * Matrix.trace (p • C * B) := by
@@ -266,6 +359,13 @@ theorem sum_divisible_eq_sum_mul {A ι : Type} [CommRing A] {m n : ℕ} (s : Fin
   conv_lhs => rw [← hB, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]
   linear_combination (-((∑ i ∈ s, f i) * Matrix.trace (B * C))) * hpq
 
+/- English proof (translation)
+Establish `hinv : eToEAf D ϖ * eToEAf D ϖ⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ h0, map_one]`. Establish `hdil : frMapO S T βS βT (Matrix.map y fun w => incA D ϖ * w) = eToEAf D ϖ • frMapO S T βS βT y`. Establish `h : (Matrix.map y fun w => incA D ϖ * w).map (toEAf D) = eToEAf D ϖ • y.map (toEAf D)` using `Matrix.ext fun k l => (toEAf D).map_mul _ _`. Simplify using `only [frMapO, h, Matrix.mul_smul, Matrix.smul_mul]`.
+
+Establish `hhalf : (∑ PP ∈ Q, toEAf D (es PP)) • frMapAdj S T βS βT t = frMapAdj S T βS βT t`. Rewrite using `[← map_sum]`. Conclude with `Matrix.ext fun k l => GlobalTheory.AdjVecLocal.frMapAdj_half _ _ _ _ ht k l`. Rewrite using `[psi_sympl ψ S T βS βT t y hy, sum_divisible_eq_sum_mul Q _ hinv _ _ hhalf, addChar_sum, ← hdil]`. Use `Finset.prod_congr rfl fun PP hPP => ?_` and prove the remaining obligations.
+
+Take `⟨h, e⟩` from `trace_redM PP hA hB`. Rewrite using `[e, hψP PP hPP]`.
+-/
 theorem assemble {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (βS : GL (Fin S.rank) (EAf D))
     (βT : GL (Fin T.rank) (EAf D)) (Q : Finset (Pl D.host.E)) (es : Pl D.host.E → AE D) {ϖ : D.host.E} (h0 : ϖ ≠ 0)
     (ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ)
@@ -289,6 +389,15 @@ theorem assemble {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (βS : 
   obtain ⟨h, e⟩ := trace_redM PP hA hB
   rw [e, hψP PP hPP]
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i hV Q hQ eQ hIS ϖ hϖ0 hϖ`. Establish `hI` using `GlobalTheory.HalfLatInt.isIntM_iff_mem_latP D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ hIS`. Establish `hJ` using `GlobalTheory.QHalfLat.isIntM_adj_iff_mem_latP D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ hIS`. Establish `hinf : infPart D eQ = 0` using `GlobalTheory.PlaceVec.idemSum_infPart hIS`. Take `⟨t0, hQt⟩` from `hQ`.
+
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `hIS`. Establish `hψ : IsStdChar D R.ψ (-1)` using `(hC.thP.ωP i A.μ0).std`. Establish `hSV` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)`. Take `⟨cV, hBV⟩` from `hC.lev.βV i`. Establish `rV : (Vc D i).rank = D.R.r + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`.
+
+Establish `a : Fin (Vc D i).rank` using `⟨0, by rw [rV]; have := D.R.t_odd.pos; omega⟩`. Establish `hϖE : (ϖ : D.host.E) ≠ 0` using `by simpa using hϖ0`. Take `⟨ψP, hprim, hψP⟩` from `fac (psiE R.ψ) Q (fun PP => eToEAf D (ϖ : D.host.E)⁻¹ * toEAf D (es PP)) (fun PP hPP => psiE_max hψ hSV hBV.1 a (hes PP hPP) (hG.2 t0 PP (hQt hPP)) hϖ0 (hϖ PP hPP)) fun PP hPP => psiE_ne hψ hSV hBV.1 a (hes PP hPP) (hG.2 t0 PP (hQt hPP)) hϖ0 (hϖ PP hPP).1`. Use `⟨ψP, hprim, fun t y ht htL hy hyL => ?_⟩` and prove the remaining obligations. Establish `hA` using `(hI _ (fun k l => by simp only [dil, Matrix.map_apply]; rw [mul_left_comm, hy k l])).2 hyL`.
+
+Conclude with `assemble R.ψ _ _ (R.βV i) (R.βW i) Q es hϖE ψP hψP t y ht (fun k l => by rw [← hy k l, RingHom.map_mul, hinf, zero_mul]) hA ((hJ t ht).2 htL)`.
+-/
 theorem char_eq_prod : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m), VStd D i → ∀ (Q : Finset (Pl D.host.E)), (∃ t, Q ⊆ R.Q t) → ∀ eQ : AE D, IsIdemSum eQ Q → ∀ ϖ : 𝓞 D.host.E, ϖ ≠ 0 → (∀ PP ∈ Q, ϖ ∈ PP.asIdeal ∧ ϖ ∉ PP.asIdeal ^ 2) → ∃ ψP : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ, (∀ PP ∈ Q, (ψP PP).IsPrimitive) ∧ ∀ t y : WO (Vc D i) (Wc D i), IsHalf (cA D eQ) t → t ∈ lattice₂ R i → IsHalf eQ y → dil i (ϖ : D.host.E) y ∈ lattice₂ R i → R.ψ (symplO (Vc D i) (Wc D i) t y) = ∏ PP ∈ Q, ψP PP (Matrix.trace (redM PP (frMapO (Vc D i) (Wc D i) (R.βV i) (R.βW i) (dil i (ϖ : D.host.E) y)) * redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) (t)))) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hG i hV Q hQ eQ hIS ϖ hϖ0 hϖ
   have hI := GlobalTheory.HalfLatInt.isIntM_iff_mem_latP D G Pl0 T0 A Ks R F hC hG i hV Q hQ eQ hIS

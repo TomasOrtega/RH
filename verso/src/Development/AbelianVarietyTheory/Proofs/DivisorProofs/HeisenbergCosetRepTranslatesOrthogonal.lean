@@ -14,6 +14,13 @@ def entryForm (c : k) (i0 : Fin n) (j : Fin d) : Matrix (Fin n) (Fin d) k →ₗ
   map_add' Y Y' := by simp [mul_add]
   map_smul' a Y := by simp only [Matrix.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Take `⟨hT, hTι⟩` from `hTr C φ0 hφ0`. Take `⟨hM, hMι⟩` from `hMu l _ hT`. Use `hι hM ((GlobalTheory.WeilM.SB _).smul_mem _ hT) ?_` and prove the remaining obligations. Rewrite using `[map_smul, hMι, hTι, hι0]`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, intInd]`. Distinguish the cases in `h : ∀ i j, (Y + C) i j ∈ 𝒪[k]`. Establish `e : ψ0 (l Y) = ψ0 (l (-C))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+
+Rewrite using `[Set.indicator_of_notMem (show Y + C ∉ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ 𝒪[k]} from h)]`. Simplify using the standard rewrite rules.
+-/
 theorem mu_tr_eq_smul (ψ0 : AddChar k ℂ)
     (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ))
     (hι : Set.InjOn ι (GlobalTheory.WeilM.SB (Fin n × Fin d → k) : Set _))
@@ -40,6 +47,9 @@ theorem mu_tr_eq_smul (ψ0 : AddChar k ℂ)
   · rw [Set.indicator_of_notMem (show Y + C ∉ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ 𝒪[k]} from h)]
     simp
 
+/- English proof (translation)
+Rewrite using `[← integral_const_mul, ← hMuI μ hμ l f hf f' hf', ha, hb]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_eq_mul_inner (ψ0 : AddChar k ℂ)
     (Mu : (Matrix (Fin n) (Fin d) k →ₗ[k] k) → ((Fin n × Fin d → k) → ℂ) → (Fin n × Fin d → k) → ℂ)
     (hMuI : ∀ μ : @Measure (Fin n × Fin d → k) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
@@ -57,12 +67,20 @@ end GlobalTheory.HeisUnit
 
 namespace GlobalTheory.HeisUnit
 
+/- English proof (translation)
+Simplify using `[cosetRep]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cosetRep_sub_apply {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n d : ℕ} (ϖ : kˣ) (i0 : Fin n) (T T' : Fin d → SplitFlip.Res k 1) (j : Fin d) :
     (cosetRep ϖ i0 T' - cosetRep ϖ i0 T) i0 j =
       (ϖ : k)⁻¹ * (((Quotient.out (T j) : 𝒪[k]) : k) - ((Quotient.out (T' j) : 𝒪[k]) : k)) := by
   simp [cosetRep]; ring
 
+/- English proof (translation)
+Introduce `ha`. Apply `h` to reduce the goal to its premises. Rewrite using `[← Ideal.Quotient.mk_out t, ← Ideal.Quotient.mk_out t', Ideal.Quotient.eq]`. Establish `hs : Quotient.out t - Quotient.out t' ∈ Ideal.span {(⟨ϖ, hϖ.mem⟩ : 𝒪[k])}`. Use `Ideal.mem_span_singleton'.2 ⟨⟨_, ha⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MulMemClass.coe_mul, AddSubgroupClass.coe_sub]`. Clear the denominators using the available nonvanishing facts. Use `hs using 1` and compare the differences between its conclusion and the goal. Conclude with `(pow_one _).trans hϖ.maximalIdeal_eq`.
+-/
 theorem not_mem_int_of_ne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ϖ : kˣ) (hϖ : SplitFlip.IsUnif ϖ) (t t' : SplitFlip.Res k 1) (h : t ≠ t') :
     (ϖ : k)⁻¹ * (((Quotient.out t : 𝒪[k]) : k) - ((Quotient.out t' : 𝒪[k]) : k)) ∉ 𝒪[k] := by
@@ -76,6 +94,15 @@ theorem not_mem_int_of_ne {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   convert hs using 1
   exact (pow_one _).trans hϖ.maximalIdeal_eq
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Function.ne_iff.1 hTT`. Use `set C := cosetRep ϖ i0 T`. Use `set C' := cosetRep ϖ i0 T'`. Establish `hna` using `not_mem_int_of_ne ϖ hϖ (T j) (T' j) hj`. Rewrite `hna` using `[← cosetRep_sub_apply ϖ i0 T T' j]`.
+
+Take `⟨c, hc1, hc2⟩` from `hcs.2 _ hna`. Establish `hl : ∀ Y : Matrix (Fin n) (Fin d) k, (∀ i j, Y i j ∈ 𝒪[k]) → ψ0 (entryForm c i0 j Y) = 1` using `fun Y hY => hc1 _ (hY i0 j)`. Establish `e1` using `mu_tr_eq_smul ψ0 ι hι Tr hTr Mu hMu φ0 hφ0 hι0 _ hl C`. Establish `e2` using `mu_tr_eq_smul ψ0 ι hι Tr hTr Mu hMu φ0 hφ0 hι0 _ hl C'`. Establish `hI` using `inner_eq_mul_inner ψ0 Mu hMuI μ hμ (entryForm c i0 j) _ _ (hTr C φ0 hφ0).1 (hTr C' φ0 hφ0).1 _ _ e1 e2`.
+
+Establish `hA : ψ0 (entryForm c i0 j (-C)) * (starRingEnd ℂ) (ψ0 (entryForm c i0 j (-C'))) ≠ 1`. Rewrite using `[← Complex.inv_eq_conj (hcs.1 _), ← AddChar.map_neg_eq_inv, ← AddChar.map_add_eq_mul, ← map_neg, ← map_add, neg_neg, neg_add_eq_sub]`. Conclude with `hc2`. Use `set I := ∫ y, Tr C φ0 y * (starRingEnd ℂ) (Tr C' φ0 y) ∂μ`. Establish `h0 : (1 - ψ0 (entryForm c i0 j (-C)) * (starRingEnd ℂ) (ψ0 (entryForm c i0 j (-C')))) * I = 0`.
+
+Take the linear combination `hI`. Conclude with `(mul_eq_zero.1 h0).resolve_left (sub_ne_zero.2 (Ne.symm hA))`.
+-/
 theorem orth_of_charsep {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ)
     (hcs : (∀ x, ‖ψ0 x‖ = 1) ∧ ∀ a : k, a ∉ 𝒪[k] → ∃ c : k, (∀ y ∈ 𝒪[k], ψ0 (c * y) = 1) ∧ ψ0 (c * a) ≠ 1)
     (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ))
@@ -115,6 +142,9 @@ end GlobalTheory.HeisUnit
 
 namespace GlobalTheory.HeisUnit
 
+/- English proof (translation)
+The claim follows from `orth_of_charsep ψ0 (GlobalTheory.CharSep.unitary_and_separates ψ0 hψc hψ1) ι hι Tr hTr Mu hMu hMuI φ0 hφ0 hι0 ϖ hϖ i0 T T' hTT μ hμ`.
+-/
 theorem tr_cosetRep_orth {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ) (hψc : Continuous ψ0) (hψ1 : ψ0 ≠ 1)
     (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ))
     (hι : Set.InjOn ι (GlobalTheory.WeilM.SB (Fin n × Fin d → k) : Set _))

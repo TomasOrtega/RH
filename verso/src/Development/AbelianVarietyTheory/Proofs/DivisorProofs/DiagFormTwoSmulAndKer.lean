@@ -21,6 +21,47 @@ open GlobalTheory.UPel.HT
 
 open GlobalTheory.CechPic in
 
+/- English proof (translation)
+Introduce `A _ _ g hA hg P hP h1 h2 hsym hamp e La _ Q EF hexp hQ hker hW`. Take `⟨M, hM, hPM⟩` from `GlobalTheory.T.exists_mumford_bundle_iso_symmetric_birigidified_complex A g hA hg P hP h1 h2 hsym`. Establish `hPM' : LBIso P (abelian₂ A M)` using `hPM`. Take `⟨u, Hm, χ, hue, hF⟩` from `GlobalTheory.T.exists_appellHumbertFrame_of_complexExponential A g hA hg M hM e hexp`. Take `⟨u', χ', hue', hF'⟩` from `GlobalTheory.TorusRM.exists_isFactorAH_lam_diag g A hA M u Hm χ hM hF`.
+
+Establish `hlam : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hD` using `GlobalTheory.GenSpread.lbIso_pullback hPM' (lift (𝟙 A) (𝟙 A)).left`. Take `⟨v, ψ, hve, hFv⟩` from `GlobalTheory.T.exists_appellHumbertFrame_of_lineBundleIso A g _ _ u' _ χ' (pull_isLB hP _) (pull_isLB hlam _) hD hF'`. Establish `hpos` using `GlobalTheory.AmpleHermPos.re_form_pos_of_relAmple A hA _ (pull_isLB hP _) hamp g v _ ψ hFv.1 hFv.2.1 hFv.2.2`. Establish `hAH` using `GlobalTheory.TorusRM.isAH_of_isFactorAH hFv hpos`.
+
+Establish `hmemu : ∀ z, z ∈ u.Λ ↔ z ∈ Q.range` using `fun z => by rw [← u.ker, hue]; exact hker z`. Establish `hmemv : ∀ z, z ∈ v.Λ ↔ z ∈ Q.range` using `fun z => by rw [← v.ker, hve, hue', hue]; exact hker z`. Establish `hvx : ∀ z, v.ex z = e z` using `fun z => by rw [hve, hue', hue]`. Establish `hNex : ∀ a b : La, ∃ n : ℤ, (hermForm Hm (Q a) (Q b)).im = n` using `fun a b => GlobalTheory.RiemInt.im_hermForm_int hM u hF ⟨Q a, (hmemu _).2 ⟨a, rfl⟩⟩ ⟨Q b, (hmemu _).2 ⟨b, rfl⟩⟩`. Use `choose N hN using hNex`.
+
+Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `key : ∀ a b : La, EF a b = 2 * N a b`. Introduce `a b`. Establish `hk : ∀ k : ℕ, 0 < k → ∃ n : ℤ, ((EF a b : ℂ) - 2 * N a b) / k = n`. Introduce `k hk`.
+
+Set `c₁ : ℂˣ` to `Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (EF a b : ℂ) / k)) (Complex.exp_ne_zero _)`. Set `c₂ : ℂˣ` to `Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (((Q a ⬝ᵥ ((2 : ℂ) • Hm) *ᵥ star (Q b)).im : ℝ) : ℂ) / k)) (Complex.exp_ne_zero _)`. Establish `w1` using `hW k a b c₁ hk rfl`. Establish `w2` using `GlobalTheory.AHWeilAny.weilIs_exp_riemannForm A hA _ (pull_isLB hP _) g v _ ψ hAH k (Q a) (Q b) c₂ hk ((hmemv _).2 ⟨a, rfl⟩) ((hmemv _).2 ⟨b, rfl⟩) rfl`. Rewrite `w2` using `[hvx, hvx]`.
+
+Establish `h3` using `congrArg (fun c : ℂˣ => (c : ℂ)) (GlobalTheory.T.weilPairing_complex_value_unique (Sp ℂ) A g hA hg _ (pull_isLB hP _) (𝟙 (Sp ℂ)) k _ _ c₁ c₂ w1 w2)`. Simplify using `only [c₁, c₂, Units.val_mk0] at h3`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h3`. Establish `h2 : ((Q a ⬝ᵥ ((2 : ℂ) • Hm) *ᵥ star (Q b)).im) = 2 * (N a b : ℝ)`. Establish `h4` using `hN a b`.
+
+Unfold `hermForm at h4`. Establish `h5 : ((2 : ℂ) • Hm) *ᵥ star (Q b) = (2 : ℂ) • (Hm *ᵥ star (Q b))`. Rewrite using `[Matrix.smul_mulVec]`. Rewrite using `[h5, dotProduct_smul, smul_eq_mul, Complex.mul_im, h4]`. Simplify using the standard rewrite rules.
+
+Rewrite `hn` using `[h2]`. Use `⟨-n, mul_left_cancel₀ hpi ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hn ⊢`. Take the linear combination `(-1 : ℂ) * hn`. Take `⟨K, hK⟩ : ∃ K : ℕ, K = (EF a b - 2 * N a b).natAbs + 1` from `⟨_, rfl⟩`.
+
+Take `⟨n, hn⟩` from `hk K (by omega)`. Establish `hK0 : (K : ℂ) ≠ 0` using `by exact_mod_cast (show K ≠ 0 by omega)`. Rewrite `hn` using `[div_eq_iff hK0]`. Establish `e2 : EF a b - 2 * N a b = (K : ℤ) * n` using `Int.cast_injective (α := ℂ) (by push_cast; rw [hn]; ring)`. Establish `e3` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs ⟨n, e2⟩ (by rw [Int.natAbs_natCast]; omega)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hadd : ∀ a a' b, N (a + a') b = N a b + N a' b`. Introduce `a a' b`. Establish `h` using `key (a + a') b`. Rewrite `h` using `[map_add, LinearMap.add_apply, key, key]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hadd' : ∀ a b b', N a (b + b') = N a b + N a b'`. Introduce `a b b'`. Establish `h` using `key a (b + b')`. Rewrite `h` using `[map_add, key, key]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hsm : ∀ (c : ℤ) a b, N (c • a) b = c * N a b`. Introduce `c a b`. Establish `h` using `key (c • a) b`. Rewrite `h` using `[map_zsmul, LinearMap.smul_apply, smul_eq_mul, key]`.
+
+Establish `h' : 2 * (N (c • a) b - c * N a b) = 0` using `by linear_combination -h`. Take the linear combination `(mul_eq_zero.1 h').resolve_left two_ne_zero`. Establish `hsm' : ∀ (c : ℤ) a b, N a (c • b) = c * N a b`. Introduce `c a b`. Establish `h` using `key a (c • b)`.
+
+Rewrite `h` using `[map_zsmul, smul_eq_mul, key]`. Establish `h' : 2 * (N a (c • b) - c * N a b) = 0` using `by linear_combination -h`. Take the linear combination `(mul_eq_zero.1 h').resolve_left two_ne_zero`. Use `⟨LinearMap.mk₂ ℤ N hadd (fun c a b => by rw [hsm, smul_eq_mul]) hadd' (fun c a b => by rw [hsm', smul_eq_mul]), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+
+Simplify using `[key]`. Introduce `k a hk`. Simplify using `only [LinearMap.mk₂_apply]`. Establish `hk0 : (k : ℝ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `hwl : ∀ y, (((k : ℂ)⁻¹ • Q a) ⬝ᵥ Hm *ᵥ star (Q y)).im = (N a y : ℝ) / k`.
+
+Introduce `y`. Establish `h4` using `hN a y`. Unfold `hermForm at h4`. Rewrite using `[smul_dotProduct, smul_eq_mul, show ((k : ℂ)⁻¹) = (((k : ℝ)⁻¹ : ℝ) : ℂ) by push_cast; rfl, Complex.im_ofReal_mul, h4, div_eq_inv_mul]`. Establish `stepA : (∀ y, (k : ℤ) ∣ N a y) ↔ ∀ l ∈ u.Λ, ∃ n : ℤ, (((k : ℂ)⁻¹ • Q a) ⬝ᵥ Hm.mulVec (star l)).im = n`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `h l hl`. Take `⟨y, rfl⟩` from `(hmemu l).1 hl`. Take `⟨n, hn⟩` from `h y`. Conclude with `⟨n, by rw [hwl, hn]; push_cast; field_simp⟩`.
+
+Introduce `h y`. Take `⟨n, hn⟩` from `h (Q y) ((hmemu _).2 ⟨y, rfl⟩)`. Rewrite `hn` using `[hwl, div_eq_iff hk0]`. Conclude with `⟨n, by exact_mod_cast (show (N a y : ℝ) = (k : ℝ) * n by rw [hn]; ring)⟩`. Establish `stepB` using `(show _ ↔ _ from ⟨GlobalTheory.T.mumfordBundle_pullback_trivial_of_im_form_int A g hA M u Hm χ hM hF ((k : ℂ)⁻¹ • Q a), fun h => by`.
+
+Take `⟨θ, hθ, h0, hp⟩` from `GlobalTheory.TorusRM.exists_theta_of_hasGen_lam_pull g A hA M u Hm χ hM hF _ h`. Conclude with `GlobalTheory.ThetaLiouville.im_form_mem_int g u.Λ u.full Hm hF.1 _ θ hθ h0 hp⟩)`. Use `stepA.trans (stepB.trans ?_)` and prove the remaining obligations. Establish `c1` using `GlobalTheory.RealMult.Elliptic.cls_pull_lam hM (fst A (𝟙_ (Over (Sp ℂ)))) (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex ((k : ℂ)⁻¹ • Q a)) (pull_isLB hlam _)`. Establish `c2` using `GlobalTheory.RealMult.Elliptic.cls_pull_lam hM (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex ((k : ℂ)⁻¹ • Q a)) (fst A (𝟙_ (Over (Sp ℂ)))) (pull_isLB hlam _)`.
+
+Establish `c3 : cls (P.pull (lift (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex ((k : ℂ)⁻¹ • Q a)) (fst A (𝟙_ (Over (Sp ℂ))))).left) (pull_isLB hP _) = cls ((abelian₂ A M).pull (lift (snd A (𝟙_ (Over (Sp ℂ))) ≫ u.ex ((k : ℂ)⁻¹ • Q a)) (fst A (𝟙_ (Over (Sp ℂ))))).left) (pull_isLB hlam _)`. Rewrite using `[cls_pull hP, cls_pull hlam, (cls_eq_iff hP hlam).2 hPM']`. Rewrite using `[← cls_eq_zero_iff (pull_isLB hlam _), c1, lam_comm, ← c2, ← c3, cls_eq_zero_iff, hue]`. Conclude with `Iff.rfl`.
+-/
 theorem GlobalTheory.SymBirig.diag_form_two_smul_and_ker : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ P : LB (G2 A).left, P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (e : (Fin g → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A)) (La : Type) [AddCommGroup La] (Q : La →+ (Fin g → ℂ)) (EF : LinearMap.BilinForm ℤ La), IsExp (𝟙 (Sp ℂ)) e → Function.Injective Q → (∀ z, e z = 1 ↔ z ∈ Q.range) → (∀ (k : ℕ) (a b : La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (EF a b : ℂ) / k) → Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) k (e ((k : ℂ)⁻¹ • Q a)) (e ((k : ℂ)⁻¹ • Q b)) (unitOn c)) → ∃ E₁ : LinearMap.BilinForm ℤ La, EF = (2 : ℤ) • E₁ ∧ ∀ (k : ℕ) (a : La), 0 < k → ((∀ y, (k : ℤ) ∣ E₁ a y) ↔ ∃ t : (P.pull (lift (snd A (Over.mk (𝟙 (Sp ℂ))) ≫ e ((k : ℂ)⁻¹ • Q a)) (fst A (Over.mk (𝟙 (Sp ℂ))))).left).Gen, t.IsGen) := by
   intro A _ _ g hA hg P hP h1 h2 hsym hamp e La _ Q EF hexp hQ hker hW
   obtain ⟨M, hM, hPM⟩ := GlobalTheory.T.exists_mumford_bundle_iso_symmetric_birigidified_complex A g hA hg P hP h1 h2 hsym

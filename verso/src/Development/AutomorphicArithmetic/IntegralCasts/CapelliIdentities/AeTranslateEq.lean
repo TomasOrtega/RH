@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `G X _ _ _ _ μ _ ν q ρ g v v' φ hq hρ hv hφ`. Establish `h1 : ∀ᵐ y ∂μ, v' (q y) = v (ρ (q y))` using `hq.ae hv`. Establish `h2 : ∀ᵐ y ∂μ, v (q (y * g)) = φ (y * g)` using `(MeasureTheory.measurePreserving_mul_right μ g).quasiMeasurePreserving.ae hφ`. Use `filter_upwards [h1, h2] with y a b`. Rewrite using `[a, hρ, b]`.
+-/
 theorem UpperTheory.ae_translate_eq :
     ∀ {G X : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] [MeasurableSpace X]
         (μ : MeasureTheory.Measure G) [μ.IsMulRightInvariant] (ν : MeasureTheory.Measure X) (q : G → X) (ρ : X → X) (g : G)

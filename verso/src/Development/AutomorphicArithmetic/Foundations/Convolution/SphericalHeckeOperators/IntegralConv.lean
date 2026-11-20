@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
+/- English proof (translation)
+Establish `key` using `integral_integral_swap_of_coset μ K hK (F := fun y z => f₁ y * f₂ (y⁻¹ * z)) h₁ (h₁.mul h₂) ?_ ?_ ?_`. Simplify using `only [groupConv]`. Rewrite using `[← key, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[integral_const_mul, integral_mul_left_eq_self f₂ y⁻¹]`. Introduce `y z h`. Establish `h'` using `mul_ne_zero_iff.1 h`. Conclude with `⟨subset_tsupport _ h'.1, y, subset_tsupport _ h'.1, y⁻¹ * z, subset_tsupport _ h'.2, mul_inv_cancel_left y z⟩`. Introduce `y z k hk`.
+
+Simplify using `only [r₁ y k hk, mul_inv_rev, mul_assoc, l₂ _ _ (inv_mem hk)]`. Introduce `y z k hk`. Simplify using `only [← mul_assoc, r₂ _ k hk]`.
+-/
 private theorem integral_conv {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
     (K : OpenSubgroup G) (hK : IsCompact (K : Set G)) {f₁ f₂ : G → ℂ}
@@ -27,6 +34,9 @@ private theorem integral_conv {G : Type*} [Group G] [TopologicalSpace G] [IsTopo
   · intro y z k hk
     simp only [← mul_assoc, r₂ _ k hk]
 
+/- English proof (translation)
+Establish `h` using `((dcoShape F n a ha).2.2.1.1.isOpen_fiber 1).measurableSet`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Apply the tactic sequence `by_cases hg : g ∈ dco F a <;> simp [uFn, hg]`.
+-/
 private theorem meas_dco {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
     [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] {a : Fin n → ℤ} (ha : Antitone a) :
     MeasurableSet (dco F a) := by
@@ -35,6 +45,9 @@ private theorem meas_dco {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace
   ext g
   by_cases hg : g ∈ dco F a <;> simp [uFn, hg]
 
+/- English proof (translation)
+Use `integral_indicator_const (μ := μ) (1 : ℂ) (meas_dco (F := F) ha)` as an intermediate fact. Rewrite `this` using `[Complex.real_smul, mul_one]`. Conclude with `this`.
+-/
 private theorem int_uFn {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
     [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F)) {a : Fin n → ℤ}
     (ha : Antitone a) : ∫ x, uFn F a x ∂μ = (μ.real (dco F a) : ℂ) := by
@@ -42,6 +55,31 @@ private theorem int_uFn {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace 
   rw [Complex.real_smul, mul_one] at this
   exact this
 
+/- English proof (translation)
+Introduce `F _ _ _ _ n _ _ μ _ a b ha hb`. Establish `hab : Antitone (a + b)` using `ha.add hb`. Take `⟨-, hmul, hca, hIa⟩` from `dcoShape F n a ha`. Take `⟨-, -, hcb, hIb⟩` from `dcoShape F n b hb`. Set `K : OpenSubgroup (GL (Fin n) F)` to `⟨iwahori F n, isOpen_iwahori F n⟩`.
+
+Establish `hKc : IsCompact (K : Set (GL (Fin n) F))` using `isCompact_iwahori F n`. Establish `hI : (μ.real (iwahori F n : Set (GL (Fin n) F)) : ℂ) ≠ 0`. Establish `h1 : μ (K : Set (GL (Fin n) F)) ≠ 0` using `K.isOpen.measure_ne_zero μ ⟨1, K.one_mem⟩`. Conclude with `Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨h1, hKc.measure_lt_top.ne⟩)`. Use `set φ := groupConv μ (uFn F a) (uFn F b) with hφ`.
+
+Establish `hl : ∀ g, ∀ y ∈ iwahori F n, φ (y * g) = φ g`. Introduce `g y hy`. Simplify using `only [hφ, groupConv]`. Rewrite using `[← integral_mul_left_eq_self _ y]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[(hIa x y hy).1, mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Establish `hr : ∀ g, ∀ y ∈ iwahori F n, φ (g * y) = φ g` using `fun g y hy => groupConv_mul_right (fun g => (hIb g y hy).2) g`. Establish `hφe : φ = φ (torusPow F n (a + b)) • uFn F (a + b)`. Use function extensionality and compare the values at `g`.
+
+Distinguish the cases in `hg : g ∈ dco F (a + b)`. Rewrite using `[Pi.smul_apply, uFn, Set.indicator_of_mem hg, Pi.one_apply, smul_eq_mul, mul_one]`. Take `⟨x, hx, y, hy, rfl⟩` from `hg`. Rewrite using `[hr _ y hy, hl _ x hx]`. Rewrite using `[Pi.smul_apply, uFn, Set.indicator_of_notMem hg, smul_zero]`.
+
+Establish `: ∀ y, uFn F a y * uFn F b (y⁻¹ * g) = 0`. Introduce `y`. Assume the negation of the conclusion as `h`. Establish `h'` using `mul_ne_zero_iff.1 h`. Use `hmul b hb _ (Set.mem_of_indicator_ne_zero h'.1) _ (Set.mem_of_indicator_ne_zero h'.2)` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `hg this`. Simplify using `only [hφ, groupConv, this, integral_zero]`. Use `set c := φ (torusPow F n (a + b)) with hc`. Establish `hint : c * (μ.real (dco F (a + b)) : ℂ) = (μ.real (dco F a) : ℂ) * (μ.real (dco F b) : ℂ)`.
+
+Establish `h` using `integral_conv μ K hKc hca.2 hcb.2 (fun g k hk => (hIa g k hk).2) (fun g k hk => (hIb g k hk).1) (fun g k hk => (hIb g k hk).2)`. Rewrite `h` using `[int_uFn μ ha, int_uFn μ hb, ← hφ]`. Rewrite using `[← h, ← int_uFn μ hab, ← integral_const_mul, hφe]`. Both sides reduce to the same expression. Establish `va` using `dcoVol F n μ a ha`.
+
+Establish `vb` using `dcoVol F n μ b hb`. Establish `vab` using `dcoVol F n μ (a + b) hab`. Rewrite `vab` using `[halfModulus_add]`. Establish `hcI : c = (μ.real (iwahori F n : Set (GL (Fin n) F)) : ℂ)`. Apply `mul_right_cancel₀ hI` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hint]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [va, vb]`. Use function extensionality and compare the values at `g`.
+
+Establish `e : groupConv μ (th μ a) (th μ b) g = (halfModulus F a / (μ.real (iwahori F n : Set (GL (Fin n) F)) : ℂ)) * (halfModulus F b / (μ.real (iwahori F n : Set (GL (Fin n) F)) : ℂ)) * φ g`. Simplify using `only [hφ, groupConv, th, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hφe, hcI, th, halfModulus_add]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.ConvolutionTheory.H.thMul :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)
       [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] (a b : Fin n → ℤ), Antitone a → Antitone b →

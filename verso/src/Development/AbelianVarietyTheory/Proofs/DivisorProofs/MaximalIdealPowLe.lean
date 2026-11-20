@@ -14,6 +14,23 @@ open GlobalTheory.IwLevel
 
 namespace GlobalTheory.KerIdeal
 
+/- English proof (translation)
+Introduce `k _ _ A B _ _ _ _ π d hA hB hπ hiso x₀ hx₀ J hJ`. Use `hA.smooth` as an intermediate fact. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Use `hiso.fin` as an intermediate fact. Take `⟨s, rfl⟩` from `hx₀`.
+
+Establish `key : ∀ P : Ideal (A.left.presheaf.stalk ((η[A]).left.base s)), P.IsPrime → J ≤ P → P = IsLocalRing.maximalIdeal _`. Introduce `P hP hJP`. Use `haveI := hP`. Take `⟨z, hz⟩` from `(hJ (A.left.presheaf.stalk ((η[A]).left.base s) ⧸ P) (Ideal.Quotient.mk P)).2 (by rw [Ideal.mk_ker]; exact hJP)`. Set `q : Sp (A.left.presheaf.stalk ((η[A]).left.base s) ⧸ P)` to `⟨⊥, Ideal.bot_prime⟩`.
+
+Use `set g := Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk P)) with hg`. Establish `hgq : g q = ⟨P, hP⟩`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (Ideal.Quotient.mk P) ⊥ = P`. Rewrite using `[← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`.
+
+Use `set x₀ := (η[A]).left.base s with hx₀`. Establish `hy : A.left.fromSpecStalk x₀ (g q) ⤳ x₀`. Establish `: A.left.fromSpecStalk x₀ (g q) ∈ Set.range (A.left.fromSpecStalk x₀)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `h1 : π.left.base (A.left.fromSpecStalk x₀ (g q)) = (η[B]).left.base (z q)`.
+
+Use `congrArg (fun m => m.base q) hz` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at this`. Conclude with `this.symm`. Establish `h2 : π.left.base x₀ = (η[B]).left.base s`. Establish `e : (η[A] ≫ π).left = (η[B]).left` using `by rw [IsMonHom.one_hom]`.
+
+Use `congrArg (fun m => m.base s) e` as an intermediate fact. Simplify `this` using `only [Over.comp_left, Scheme.Hom.comp_base, TopCat.comp_app]`. Establish `hzs : z q = s` using `Subsingleton.elim _ _`. Establish `hyx : A.left.fromSpecStalk x₀ (g q) = x₀` using `GlobalTheory.eq_of_specializes_of_isIntegralHom π.left hy (by rw [h1, h2, hzs])`. Establish `hgc : g q = IsLocalRing.closedPoint _`.
+
+Apply `(A.left.fromSpecStalk x₀).isEmbedding.injective` to reduce the goal to its premises. Rewrite using `[hyx, Scheme.fromSpecStalk_closedPoint]`. Use `congrArg PrimeSpectrum.asIdeal (hgq.symm.trans hgc)` as an intermediate fact. Conclude with `this`. Establish `hrad : IsLocalRing.maximalIdeal _ ≤ J.radical`.
+
+Rewrite using `[Ideal.radical_eq_sInf]`. Conclude with `le_sInf fun P ⟨hJP, hP⟩ => (key P hP hJP).ge`. Conclude with `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`.
+-/
 theorem maximalIdeal_pow_le : ∀ (k : Type) [Field k] [IsAlgClosed k] (A B : Over (Sp k)) [GrpObj A] [IsCommMonObj A] [GrpObj B]
     [IsCommMonObj B] (π : A ⟶ B) (d : ℕ), IsAbelianScheme A → IsAbelianScheme B → IsMonHom π → IsIsogDeg π d →
     ∀ x₀ : A.left, x₀ ∈ Set.range (η[A]).left.base → ∀ J : Ideal (A.left.presheaf.stalk x₀),

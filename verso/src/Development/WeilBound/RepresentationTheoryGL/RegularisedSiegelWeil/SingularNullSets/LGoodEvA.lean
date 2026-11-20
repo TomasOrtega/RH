@@ -15,6 +15,9 @@ namespace PositivityTheory.Rg.Rsw.L.LGoodEv
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`.
+-/
 theorem repr_map' {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R']
     [Algebra F R'] (φ : R →ₐ[F] R') (b : Module.Basis ι F E) (z : R ⊗[F] E) (k : ι) :
     (Algebra.TensorProduct.basis R' b).repr (Algebra.TensorProduct.map φ (AlgHom.id F E) z) k =
@@ -24,6 +27,13 @@ theorem repr_map' {F E R R' ι : Type} [Field F] [Field E] [Algebra F E] [CommRi
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
   | tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace D.host.F D.host.E`. Apply `(Algebra.TensorProduct.basis (AF D.host.F) b).repr.injective` to reduce the goal to its premises. Use `Finsupp.ext fun k => Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `h1` using `repr_map' (evInf D.host.F w) b z k`.
+
+Establish `h2` using `repr_map' (evInf D.host.F w) b z' k`. Establish `h : Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evInf D.host.F w) (AlgHom.id D.host.F D.host.E) z'` using `hi w`. Rewrite `h1` using `[h, h2]`. Conclude with `h1.symm`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations.
+
+Establish `h1` using `repr_map' (evFin D.host.F v) b z k`. Establish `h2` using `repr_map' (evFin D.host.F v) b z' k`. Establish `h : Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) z = Algebra.TensorProduct.map (evFin D.host.F v) (AlgHom.id D.host.F D.host.E) z'` using `hf v`. Rewrite `h1` using `[h, h2]`. Conclude with `h1.symm`.
+-/
 theorem ae_ext (z z' : AE D) (hi : ∀ w, compInf D.host.F D.host.E w z = compInf D.host.F D.host.E w z')
     (hf : ∀ v, cv D v z = cv D v z') : z = z' := by
   let b := Module.Basis.ofVectorSpace D.host.F D.host.E
@@ -53,10 +63,18 @@ def indS (S : Finset (Pl D)) : Af D.host.F :=
     · simp only [if_neg h]; exact zero_mem (v.adicCompletionIntegers D.host.F)⟩
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem indS_apply (S : Finset (Pl D)) (v : Pl D) : (indS S) v = if v ∈ S then 1 else 0 := rfl
 
 def eS (S : Finset (Pl D)) : AE D := ((1, indS S) : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)
 
+/- English proof (translation)
+Use `⟨fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(evInf D.host.F w (1, indS S)) ⊗ₜ[D.host.F] (1 : D.host.E) = 1`. Rewrite using `[show evInf D.host.F w (1, indS S) = 1 from rfl]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(evFin D.host.F v (1, indS S)) ⊗ₜ[D.host.F] (1 : D.host.E) = _`.
+
+Rewrite using `[show evFin D.host.F v (1, indS S) = if v ∈ S then 1 else 0 from rfl]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem isIdem_eS (S : Finset (Pl D)) : IsIdem S (eS S) := by
   classical
   refine ⟨fun w => ?_, fun v => ?_⟩
@@ -69,16 +87,25 @@ theorem isIdem_eS (S : Finset (Pl D)) : IsIdem S (eS S) := by
     · rfl
     · exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Simplify using `only [infPart, eS, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Both sides reduce to the same expression.
+-/
 theorem infPart_eS (S : Finset (Pl D)) : infPart D (eS S) = 1 := by
   simp only [infPart, eS, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]
   rfl
 
+/- English proof (translation)
+Simplify using `only [finPart, eS, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem finPart_eS (S : Finset (Pl D)) :
     finPart D (eS S) = algebraMap (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) (indS S) := by
   simp only [finPart, eS, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
     Algebra.TensorProduct.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [RingHom.map_add, hx, hy, RingHom.map_add, map_add]`. Consider the case `tmul a x => rfl`.
+-/
 theorem cv_eq (v : Pl D) (z : AE D) :
     cv D v z = Algebra.TensorProduct.map (evalV D.host.F v) (AlgHom.id D.host.F D.host.E) (finPart D z) := by
   induction z using TensorProduct.induction_on with

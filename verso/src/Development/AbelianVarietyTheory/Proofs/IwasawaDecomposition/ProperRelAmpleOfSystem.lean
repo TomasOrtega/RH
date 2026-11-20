@@ -21,6 +21,9 @@ open GlobalTheory.CechPic
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Rewrite using `[relAmple_iff_isAmpleLB A hL, relAmple_iff_isAmpleLB A hM]`. Use `forall_congr' fun U => forall_congr' fun hU => ?_` and prove the remaining obligations. Use `Iff.trans (isAmpleLB_congr (pull_isLB hM _) (isLB_lbPow (pull_isLB hL _) d) ((cls_eq_iff (pull_isLB hM _) (isLB_lbPow (pull_isLB hL _) d)).1 ?_)) (isAmpleLB_pow_iff (pull_isLB hL _) hd)` and prove the remaining obligations. Rewrite using `[cls_lbPow (pull_isLB hL _), cls_pull hL, cls_pull hM, e, map_nsmul]`.
+-/
 theorem relAmple_iff_of_cls {S : Scheme.{0}} {A : Over S} [IsProper A.hom] {L M : LB A.left} (hL : L.IsLB)
     (hM : M.IsLB) {d : ℕ} (hd : 1 ≤ d) (e : cls M hM = d • cls L hL) : Out.RelAmple A M ↔ Out.RelAmple A L := by
   rw [relAmple_iff_isAmpleLB A hL, relAmple_iff_isAmpleLB A hM]
@@ -34,6 +37,15 @@ section OneModel
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Y : Model Xo c β}
 
+/- English proof (translation)
+Take `⟨w, θ, ⟨hw, hr⟩, hθ, hne⟩` from `exists_sec_pull_nonzero_on_fibres E H _ _ Y.t t z m M.U hz M.θ M.θ_mem M.θ_ne`. Establish `cast : ∀ (p q : Sp R ⟶ Y.X) (_ : p = q) (n : SABMap t Y.t p), ∃ n' : SABMap t Y.t q, n'.φ = n.φ`. Introduce and unpack `p q rfl n`. Conclude with `⟨n, rfl⟩`. Take `⟨m', hm'⟩` from `cast _ _ (FlagMod.spMap_ev z M.hU hz).symm m`.
+
+Take `⟨v, hv, hb, -⟩` from `M.lie R (ev z M.U hz) t m'`. Take `⟨-, ws, gs', -⟩` from `t.sym`. Set `P : Out.PolAV (Sp R)` to `{ A := t.G, g := M.n, smoothDim := hd, L := t.PP.L, isLB := t.PP.isLB, ample := hA, ktriv := hK isAb := ⟨inferInstance, t.semi.smooth, hp, t.semi.geomConnected⟩ rigid := ⟨t.PP.rig, t.PP.rigGen⟩ sym := fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff ws).1 gs') _⟩ }`. Establish `he : eSec t.G ≫ m.φ = z ≫ eSec Y.t.G` using `m.cm.e_comm.trans (congrArg (· ≫ _) m.base)`. Establish `hrig : ∀ (e : Sp R ⟶ Y.X) (_ : m.cm.e = e) (he : eSec t.G ≫ m.φ = e ≫ eSec Y.t.G), rigPullOf m.φ e he Y.t.PP.L Y.t.PP.rig = m.cm.rigPull Y.t.PP.L Y.t.PP.rig`.
+
+Introduce and unpack `_ rfl _`. Both sides reduce to the same expression. Use `⟨⟨P, hn, t.PP.rig, t.PP.rigGen, θ, fun s => ?_, v, hb⟩, rfl, m.φ, he, w, rfl, m.cart, hw, ?_, fun j i h => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨g, i, hg, hi⟩` from `hne s`. Conclude with `⟨g, hg, Opens.mem_iSup.2 ⟨i, hi⟩⟩`.
+
+Rewrite using `[hrig z m.base he]`. Conclude with `hr`. Conclude with `(hθ (j PUnit.unit) i _ h le_rfl).trans (congrArg (· * _) (GlobalTheory.LB.resG_self _ _))`. Rewrite using `[← hm']`. Conclude with `hv i`.
+-/
 theorem exists_keyAt (M : GChart Y) {R : Type} [CommRing R] {z : Sp R ⟶ Y.X} (hz : ⊤ ≤ z ⁻¹ᵁ M.U)
     {t : SAB H (Sp R)} (m : SABMap t Y.t z) (hp : IsProper t.G.hom) (hA : Out.RelAmple t.G t.PP.L)
     (hK : Out.KTriv t.G t.PP.L) (hd : SmoothOfRelativeDimension M.n t.G.hom) (hn : 1 ≤ M.n) :
@@ -66,6 +78,15 @@ theorem exists_keyAt (M : GChart Y) {R : Type} [CommRing R] {z : Sp R ⟶ Y.X} (
   · rw [← hm']
     exact hv i
 
+/- English proof (translation)
+Take `⟨φ, -, w, hg, hc, hw, -⟩` from `h₀`. Take `⟨ψ, h₁, h₂⟩ : ∃ ψ : x₀.P.A.left ⟶ t.G.left, ψ ≫ m.φ = φ ∧ ψ ≫ t.G.hom = x₀.P.A.hom ≫ spMap f` from `⟨m.cart.1.lift φ (x₀.P.A.hom ≫ spMap f) (by rw [hc.1.w, Category.assoc]), m.cart.1.lift_fst _ _ _, m.cart.1.lift_snd _ _ _⟩`. Substitute `h₁` using the available equality. Establish `g : IsGrpPullback x₀.P.A t.G (spMap f) ψ` using `m.cart.cancel hc h₂`. Establish `e : LBIso x₀.P.L (t.PP.L.pull ψ)` using `LBIso.trans x₀.P.isLB (pull_isLB Y.t.PP.isLB _) (pull_isLB t.PP.isLB _) ⟨w, hw⟩ (GlobalTheory.LN.GenericPoint.lbIso_pull (GlobalTheory.LN.GenericPoint.lbIso_of_sabMap m) _ rfl).symm`.
+
+Establish `hG : IsAbelianScheme t.G` using `⟨inferInstance, t.semi.smooth, hp, t.semi.geomConnected⟩`. Establish `q : Sp K` using `(default : PrimeSpectrum K)`. Take `⟨U, hU, hK⟩` from `KTrivGlob.exists_open t.PP.isLB x₀.P.isLB hG hA g e x₀.P.ktriv q`. Establish `: CharZero R` using `f.charZero`. Establish `: CharZero Γ(Sp R, ⊤)` using `charZero_of_injective_ringHom (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1`.
+
+Establish `kt` using `KTrivSpread.kTriv_of_open_integral GlobalTheory.firstFiveLaws.1 (Sp R) (fun n hn => Nat.cast_ne_zero.2 hn) U ⟨_, hU⟩ t.G t.PP t.cub hG hA hK`. Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace t.G.left` using `GeometricallyConnected.connectedSpace t.G.hom t.G.hom.isOpenMap`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t.G.hom (eSec t.G (spMap f q))`.
+
+Take `rfl : d = M.n` from `(H1.dim_unique _ ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback g.1 hd) x₀.P.smoothDim (eSec x₀.P.A q)).trans hg`. Take `⟨x, hx, h⟩` from `exists_keyAt M hz m hp hA kt hd (hg ▸ x₀.g_pos)`. Conclude with `⟨x, hx.trans hg.symm, h⟩`.
+-/
 theorem exists_keyAt_of_point (M : GChart Y) {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     {z : Sp R ⟶ Y.X} (hz : ⊤ ≤ z ⁻¹ᵁ M.U) {t : SAB H (Sp R)} (m : SABMap t Y.t z) (hp : IsProper t.G.hom)
     (hA : Out.RelAmple t.G t.PP.L) {K : Type} [Field K] [CharZero K] (f : R →+* K) {x₀ : KeyIn K}

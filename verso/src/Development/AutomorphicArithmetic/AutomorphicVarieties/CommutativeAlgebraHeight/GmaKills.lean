@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D e hn hG x`. Use `⟨fun hx y => (d_ker D x).2.2 hx y 1 le_rfl hn, fun hx => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ j, x * e j ∈ D.ker`. Introduce `j`. Use `(d_ker D _).1.2 fun S _ _ h => ?_` and prove the remaining obligations.
+
+Establish `hz : ∀ y, e j * (y * x) * e j = 0` using `fun y => by`. Rewrite using `[(d_corner D (e j) hG.ch (hG.idem.idem j) (hG.rank j) hn).1, ← mul_assoc, hx, zero_smul]`. Establish `h0 : ∀ w : S ⊗[A] E, ((1 : S) ⊗ₜ[A] e j) * (w * ((1 : S) ⊗ₜ[A] (x * e j))) = 0`. Introduce `w`. Proceed by induction on `w with`.
+
+Consider the case `zero => simp`. Consider the case `tmul s y`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, ← mul_assoc y, ← mul_assoc (e j), hz, tmul_zero]`. Consider the case `add a b ha hb => rw [add_mul, mul_add, ha, hb, add_zero]`. Establish `h1 : h * ((1 : S) ⊗ₜ[A] (x * e j)) = (h * ((1 : S) ⊗ₜ[A] (x * e j))) * ((1 : S) ⊗ₜ[A] e j)`.
+
+Rewrite using `[mul_assoc h, Algebra.TensorProduct.tmul_mul_tmul, mul_assoc x, (hG.idem.idem j).eq, one_mul]`. Rewrite using `[h1, d_comm, h0, add_zero, map_one]`. Establish `: x = ∑ j, x * e j` using `by rw [← Finset.mul_sum, hG.idem.complete, mul_one]`. Rewrite using `[this]`. Conclude with `sum_mem fun j _ => hj j`.
+-/
 theorem UpperTheory.V.CA.gma_kills :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : Fin n → E), 1 ≤ n → IsGMA D e → ∀ x, x ∈ D.ker ↔ ∀ y, D.tr (y * x) = 0 := by
   intro n A E _ _ _ D e hn hG x

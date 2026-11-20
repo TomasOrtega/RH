@@ -8,6 +8,17 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Introduce `X Y p hp y a`. Take `⟨U, hU', hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := p y) trivial`. Establish `hV : IsAffineOpen (p ⁻¹ᵁ U)` using `hU'.preimage p`. Establish `hyV : y ∈ p ⁻¹ᵁ U` using `hyU`. Use `letI : Algebra Γ(Y, p ⁻¹ᵁ U) (Y.presheaf.stalk y) := Y.presheaf.algebra_section_stalk ⟨y, hyV⟩`.
+
+Use `haveI := hV.isLocalization_stalk ⟨y, hyV⟩`. Take `⟨⟨c, t⟩, hct⟩` from `IsLocalization.mk'_surjective (hV.primeIdealOf ⟨y, hyV⟩).asIdeal.primeCompl a`. Establish `hfin : (p.app U).hom.Finite` using `p.finite_app U hU'`. Establish `hint` using `hfin.to_isIntegral`. Establish `key : ∀ z : Γ(Y, p ⁻¹ᵁ U), ∃ P : Polynomial (X.presheaf.stalk (p y)), P.Monic ∧ P.eval₂ (p.stalkMap y).hom (algebraMap Γ(Y, p ⁻¹ᵁ U) (Y.presheaf.stalk y) z) = 0`.
+
+Introduce `z`. Take `⟨P', hm, hP'⟩` from `hint z`. Use `⟨P'.map (X.presheaf.germ U (p y) hyU).hom, hm.map _, ?_⟩` and prove the remaining obligations. Establish `hc : (p.stalkMap y).hom.comp (X.presheaf.germ U (p y) hyU).hom = (Y.presheaf.germ (p ⁻¹ᵁ U) y hyV).hom.comp (p.app U).hom`. Rewrite using `[← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.germ_stalkMap]`.
+
+Rewrite using `[Polynomial.eval₂_map, hc]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ _ ((Y.presheaf.germ (p ⁻¹ᵁ U) y hyV).hom z) P' = 0`. Rewrite using `[← Polynomial.hom_eval₂, hP', map_zero]`. Use `⟨algebraMap _ _ c, algebraMap _ _ (t : Γ(Y, p ⁻¹ᵁ U)), IsLocalization.map_units _ t, ?_, key c, key t⟩` and prove the remaining obligations. Rewrite using `[← hct]`.
+
+Conclude with `IsLocalization.mk'_spec _ c t`.
+-/
 theorem GlobalTheory.Poinc.finite_stalk_quot_integral : ∀ (X Y : Scheme.{0}) (p : Y ⟶ X), IsFinite p → ∀ (y : Y) (a : Y.presheaf.stalk y), ∃ b s : Y.presheaf.stalk y, IsUnit s ∧ a * s = b ∧ (∃ P : Polynomial (X.presheaf.stalk (p y)), P.Monic ∧ P.eval₂ (p.stalkMap y).hom b = 0) ∧ ∃ Q : Polynomial (X.presheaf.stalk (p y)), Q.Monic ∧ Q.eval₂ (p.stalkMap y).hom s = 0 := by
   intro X Y p hp y a
   obtain ⟨U, hU', hyU, -⟩ := exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := p y) trivial

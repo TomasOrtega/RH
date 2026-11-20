@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.NiceIrr
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.NiceTypeE
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ F n T x L y j hj hp h1 h2`. Use `⟨UpperTheory.V.Pr.nice_specialization_twist_satisfies_first_condition l O F n T x L y j hj hp h1 h2, UpperTheory.V.Pr.nice_specialization_twist_satisfies_third_condition l O F n T x L y j hj hp h1 h2, fun hI => ?_, fun hE => ?_⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.V.Pr.niceIrr l O F n T x L y j hj hp h1 h2 hI ⊤ (by simp)`. Rewrite `h` using `[top_inf_eq]`. Conclude with `h`.
+
+Take `rfl : n = 3` from `hE.2.1`. Conclude with `UpperTheory.V.Pr.niceTypeE l O F T x L y j hj hp h1 h2 hE`.
+-/
 theorem UpperTheory.V.Pr.niceOf :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n), T.NiceOf := by
   intro l _ O _ _ _ _ _ F n T x L y j hj hp h1 h2

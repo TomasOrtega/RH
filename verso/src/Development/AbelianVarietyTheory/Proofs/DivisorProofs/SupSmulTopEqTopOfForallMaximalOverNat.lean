@@ -7,6 +7,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hn0 : (n : 𝓞 E) ≠ 0` using `by exact_mod_cast hn.ne'`. It suffices to establish `key : ∀ I : Ideal (𝓞 E), Ideal.span {(n : 𝓞 E)} ≤ I → N ⊔ I • (⊤ : Submodule (𝓞 E) X) = ⊤ from key _ le_rfl`. Introduce `I`. Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁`.
+
+Introduce `hI`. It suffices to derive a contradiction. Apply `hn0` to reduce the goal to its premises. Establish `: (n : 𝓞 E) ∈ (0 : Ideal (𝓞 E))` using `hI (Ideal.mem_span_singleton_self _)`. Simplify using `using this`.
+
+Consider the case `h₂ x hx`. Introduce `_`. Rewrite using `[Ideal.isUnit_iff.mp hx, Submodule.top_smul, sup_top_eq]`. Consider the case `h₃ a p ha hp ih`. Introduce `hI`.
+
+Establish `hpI : (p : Ideal (𝓞 E)).IsPrime` using `Ideal.isPrime_of_prime hp`. Establish `hpmax : p.IsMaximal` using `hpI.isMaximal hp.ne_zero`. Establish `hnpa : (n : 𝓞 E) ∈ p * a` using `hI (Ideal.mem_span_singleton_self _)`. Establish `hnp : (n : 𝓞 E) ∈ p` using `(Ideal.mul_le_left : p * a ≤ p) hnpa`. Establish `h1` using `h p hpmax hnp`.
+
+Establish `h2` using `ih (hI.trans (Ideal.mul_le_right : p * a ≤ a))`. Apply `top_unique` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Submodule.mul_smul, ← sup_assoc]`. Conclude with `sup_le_sup_right (sup_le le_rfl (Submodule.smul_le_right)) _`.
+-/
 theorem sup_smul_top_eq_top_of_maximal {E : Type} [Field E] [NumberField E] {X : Type} [AddCommGroup X] [Module (𝓞 E) X]
     (N : Submodule (𝓞 E) X) (n : ℕ) (hn : 0 < n)
     (h : ∀ 𝔮 : Ideal (𝓞 E), 𝔮.IsMaximal → (n : 𝓞 E) ∈ 𝔮 → N ⊔ 𝔮 • (⊤ : Submodule (𝓞 E) X) = ⊤) :

@@ -9,6 +9,25 @@ open scoped TensorProduct
 
 namespace GlobalTheory.KeyOriginCut
 
+/- English proof (translation)
+Introduce `B₁ B₂ D₁ _ _ _ _ _ q hq act₁ h`. Use `haveI : NeZero q := ⟨hq.ne'⟩`. Take `⟨hfin, hproj, hff, hbij⟩` from `h`. Set `act₂ : Multiplicative (ZMod q) →* (B₂ ⊗[B₁] D₁ ≃ₐ[B₂] B₂ ⊗[B₁] D₁)` to `{ toFun := fun g => Algebra.TensorProduct.congr AlgEquiv.refl (act₁ g) map_one' := by`. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b d => simp [Algebra.TensorProduct.congr_apply]`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+
+Use the proof step `map_mul' := by`. Introduce `g h`. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul b d => simp [Algebra.TensorProduct.congr_apply]`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`. Rewrite using `[hx, hy] }`. Use `⟨act₂, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Set `e₀` to `LinearEquiv.ofBijective (Algebra.TensorProduct.productMap (Pi.algHom B₁ (fun _ : Multiplicative (ZMod q) => D₁) (fun _ => AlgHom.id B₁ D₁)) (Pi.algHom B₁ (fun _ : Multiplicative (ZMod q) => D₁) (fun g => (act₁ g).toAlgHom))).toLinearMap hbij`.
+
+Establish `key : ∀ z : B₂ ⊗[B₁] (D₁ ⊗[B₁] D₁), Algebra.TensorProduct.productMap (Pi.algHom B₂ (fun _ : Multiplicative (ZMod q) => B₂ ⊗[B₁] D₁) (fun _ => AlgHom.id B₂ _)) (Pi.algHom B₂ (fun _ : Multiplicative (ZMod q) => B₂ ⊗[B₁] D₁) (fun g => (act₂ g).toAlgHom)) (TensorProduct.AlgebraTensor …`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add] at hx hy ⊢`.
+
+Rewrite using `[hx, hy]`. Consider the case `tmul b w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [TensorProduct.tmul_add, map_add] at hx hy ⊢`.
+
+Rewrite using `[hx, hy]`. Consider the case `tmul x y`. Use function extensionality and compare the values at `g`. Simplify using `[act₂, e₀, TensorProduct.AlgebraTensorModule.distribBaseChange_tmul, Algebra.TensorProduct.productMap_apply_tmul, TensorProduct.piRight_apply, Algebra.TensorProduct.congr_apply]`. Use `congr 1`.
+
+Establish `hfun : ⇑(Algebra.TensorProduct.productMap (Pi.algHom B₂ (fun _ : Multiplicative (ZMod q) => B₂ ⊗[B₁] D₁) (fun _ => AlgHom.id B₂ _)) (Pi.algHom B₂ (fun _ : Multiplicative (ZMod q) => B₂ ⊗[B₁] D₁) (fun g => (act₂ g).toAlgHom))) = ⇑(TensorProduct.piRight B₁ B₂ B₂ (fun _ : Multiplica …`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← key, LinearEquiv.apply_symm_apply]`. Rewrite using `[hfun]`.
+
+Conclude with `(TensorProduct.piRight B₁ B₂ B₂ _).bijective.comp ((LinearEquiv.baseChange B₁ B₂ _ _ e₀).bijective.comp (TensorProduct.AlgebraTensorModule.distribBaseChange B₁ B₂ D₁ D₁).symm.bijective)`.
+-/
 theorem torsor_baseChange : ∀ (B₁ B₂ D₁ : Type) [CommRing B₁] [CommRing B₂] [CommRing D₁] [Algebra B₁ B₂] [Algebra B₁ D₁]
     (q : ℕ), 0 < q → ∀ (act₁ : Multiplicative (ZMod q) →* (D₁ ≃ₐ[B₁] D₁)),
     GlobalTheory.KeyOriginCut.IsZTorsor B₁ D₁ q act₁ →
@@ -72,6 +91,27 @@ theorem torsor_baseChange : ∀ (B₁ B₂ D₁ : Type) [CommRing B₁] [CommRin
     ((LinearEquiv.baseChange B₁ B₂ _ _ e₀).bijective.comp
       (TensorProduct.AlgebraTensorModule.distribBaseChange B₁ B₂ D₁ D₁).symm.bijective)
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ _ _ _ hAIC P _ φ hφ hSH hPeq q hq hqu D _ _ act hD`. Take `⟨E, _, _, _, _, _, ψ, DE, _, _, actE, hDE, hred⟩` from `GlobalTheory.T.spread_torsor_to_etale_algebra T O P φ hφ hSH.2.2.2 q hq D act hD`. Use `set Q : Ideal E := (maximalIdeal O).comap ψ.toRingHom with hQdef`. Use `haveI : Q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hloc : (maximalIdeal O).comap φ = maximalIdeal (Localization.AtPrime P)` using `by haveI := hSH.2.2.1`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `IsLocalRing.le_maximalIdeal (Ideal.comap_ne_top _ (Ideal.IsMaximal.ne_top inferInstance))`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ x hu)`. Establish `hQP : Q.comap (algebraMap (Polynomial T) E) = P`. Rewrite using `[hQdef, Ideal.comap_comap]`. Establish `h1 : ψ.toRingHom.comp (algebraMap (Polynomial T) E) = φ.comp (algebraMap (Polynomial T) _)`. Rewrite using `[hφ]`.
+
+Conclude with `ψ.comp_algebraMap`. Rewrite using `[h1, ← Ideal.comap_comap, hloc]`. Conclude with `Localization.AtPrime.comap_maximalIdeal (R := Polynomial T) (I := P)`. Establish `hunit : ∀ y : Q.primeCompl, IsUnit (ψ.toRingHom (y : E))`. Introduce `y`.
+
+Assume the negation of the conclusion as `hy`. Conclude with `y.2 (show (y : E) ∈ Q from (IsLocalRing.mem_maximalIdeal _).2 hy)`. Set `j : Localization.AtPrime Q →+* O` to `IsLocalization.lift (M := Q.primeCompl) hunit`. Establish `hjE : j.comp (algebraMap E (Localization.AtPrime Q)) = ψ.toRingHom` using `IsLocalization.lift_comp hunit`. Establish `hjR : j.comp (algebraMap (Polynomial T) (Localization.AtPrime Q)) = algebraMap (Polynomial T) O`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq (Polynomial T) E (Localization.AtPrime Q), ← RingHom.comp_assoc, hjE]`. Conclude with `ψ.comp_algebraMap`. Establish `hjT : ∀ t : T, j (algebraMap T (Localization.AtPrime Q) t) = algebraMap T O t`. Introduce `t`. Rewrite using `[IsScalarTower.algebraMap_apply T (Polynomial T) (Localization.AtPrime Q), IsScalarTower.algebraMap_apply T (Polynomial T) O, ← RingHom.comp_apply, hjR]`.
+
+Establish `hM : Algebra.algebraMapSubmonoid (Localization.AtPrime Q) (nonZeroDivisors T) ≤ (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)).comap j`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `⟨t, ht, (hjT t).symm⟩`. Set `ψ' : GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q) →+* GlobalTheory.LocAcyc.GenFib T O` to `IsLocalization.map (GlobalTheory.LocAcyc.GenFib T O) j hM`. Establish `hψ' : ψ'.comp (algebraMap (Localization.AtPrime Q) (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q))) = (algebraMap O (GlobalTheory.LocAcyc.GenFib T O)).comp j` using `IsLocalization.map_comp hM`.
+
+Establish `hM' : Algebra.algebraMapSubmonoid E (nonZeroDivisors T) ≤ (Algebra.algebraMapSubmonoid (Localization.AtPrime Q) (nonZeroDivisors T)).comap (algebraMap E (Localization.AtPrime Q))`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `⟨t, ht, (IsScalarTower.algebraMap_apply T E (Localization.AtPrime Q) t).symm⟩`. Set `m : GlobalTheory.LocAcyc.GenFib T E →+* GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)` to `IsLocalization.map _ (algebraMap E (Localization.AtPrime Q)) hM'`. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) := m.toAlgebra`.
+
+Take `⟨act₂, h₂⟩` from `torsor_baseChange (GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) DE q hq actE hDE`. Use `⟨E, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, Q, inferInstance, hQP.trans hPeq, j, hjR, ψ', hψ', _, inferInstance, inferInstance, act₂, h₂, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Use `hred (σ.comp (Algebra.TensorProduct.includeRight (R := GlobalTheory.LocAcyc.GenFib T E) (A := GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)) (B := DE)).toRingHom) fun e => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom]`.
+
+Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply (GlobalTheory.LocAcyc.GenFib T E) (GlobalTheory.LocAcyc.GenFib T (Localization.AtPrime Q)), ← RingHom.comp_apply σ, hσ]`. Express the relevant statement in the definitionally equal form `ψ' (m (algebraMap E _ e)) = _`. Simplify using `only [m, IsLocalization.map_eq]`. Rewrite using `[← RingHom.comp_apply ψ', hψ', RingHom.comp_apply, ← RingHom.comp_apply j, hjE]`. Both sides reduce to the same expression.
+-/
 theorem exists_stage_torsor : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (P : Ideal (Polynomial T)) [P.IsPrime] (φ : Localization.AtPrime P →+* O),

@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.KFinIrr
 
+/- English proof (translation)
+Introduce `Z y hy`. Establish `hre` using `h _ (GlobalTheory.AdjDescent.re_mem_upq Z) y hy`. Establish `him` using `h _ (GlobalTheory.AdjDescent.im_mem_upq Z) y hy`. Establish `hZ` using `GlobalTheory.AdjDescent.decomp Z`. Generalize the expression as in `Z + conjR Z = A at hZ hre`.
+
+Generalize the expression as in `Complex.I • (Z - conjR Z) = B at hZ him`. Rewrite using `[hZ, map_add, map_smul, map_smul, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply]`. Conclude with `W.add_mem (W.smul_mem _ hre) (W.smul_mem _ him)`.
+-/
 private lemma act_mem_of_forall_upq_act_mem {p q : ℕ} (N : GKMod p q) (W : Submodule ℂ N.V)
     (h : ∀ Z ∈ upq p q, ∀ y ∈ W, N.act Z y ∈ W) : ∀ Z, ∀ y ∈ W, N.act Z y ∈ W := by
   intro Z y hy
@@ -25,6 +30,11 @@ private lemma act_mem_of_forall_upq_act_mem {p q : ℕ} (N : GKMod p q) (W : Sub
   rw [hZ, map_add, map_smul, map_smul, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply]
   exact W.add_mem (W.smul_mem _ hre) (W.smul_mem _ him)
 
+/- English proof (translation)
+Introduce `Z`. Establish `hre` using `h _ (GlobalTheory.AdjDescent.re_mem_upq Z)`. Establish `him` using `h _ (GlobalTheory.AdjDescent.im_mem_upq Z)`. Establish `hZ` using `GlobalTheory.AdjDescent.decomp Z`. Generalize the expression as in `Z + conjR Z = A at hZ hre`.
+
+Generalize the expression as in `Complex.I • (Z - conjR Z) = B at hZ him`. Rewrite using `[hZ, map_add, map_smul, map_smul, LinearMap.comp_add, LinearMap.add_comp, LinearMap.comp_smul, LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.smul_comp, hre, him]`.
+-/
 private lemma comm_act_of_comm_act_upq {p q : ℕ} (N : GKMod p q) (T : N.V →ₗ[ℂ] N.V)
     (h : ∀ Z ∈ upq p q, T ∘ₗ N.act Z = N.act Z ∘ₗ T) : ∀ Z, T ∘ₗ N.act Z = N.act Z ∘ₗ T := by
   intro Z
@@ -36,6 +46,23 @@ private lemma comm_act_of_comm_act_upq {p q : ℕ} (N : GKMod p q) (T : N.V →�
   rw [hZ, map_add, map_smul, map_smul, LinearMap.comp_add, LinearMap.add_comp,
     LinearMap.comp_smul, LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.smul_comp, hre, him]
 
+/- English proof (translation)
+Establish `hy : ∀ Z ∈ upq p q, ∃ (g : G) (c : ℂ), ∀ x, N.act Z (e x) = e (a g x - c • x)`. Introduce `Z hZ`. Take `⟨g, c, hg⟩` from `h Z hZ`. Use `⟨g, c, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hg, add_sub_cancel_right]`.
+
+Use `⟨fun W hW => ?_, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hst : ∀ Z ∈ upq p q, ∀ y ∈ W.map (e : K →ₗ[ℂ] N.V), N.act Z y ∈ W.map (e : K →ₗ[ℂ] N.V)`. Introduce and unpack `Z hZ _ ⟨x, hx, rfl⟩`. Take `⟨g, c, hg⟩` from `hy Z hZ`. Establish `hmem : a g x - c • x ∈ W` using `W.sub_mem (hW g x hx) (W.smul_mem c hx)`.
+
+Establish `hout` using `Submodule.mem_map_of_mem (f := (e : K →ₗ[ℂ] N.V)) hmem`. Simplify `hout` using `[hg]`. Break down `hI.2 _ (act_mem_of_forall_upq_act_mem N _ hst) with h0 | h1` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Establish `hx' : (e : K →ₗ[ℂ] N.V) x ∈ W.map (e : K →ₗ[ℂ] N.V)` using `Submodule.mem_map_of_mem hx`. Rewrite `hx'` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Simplify using `using hx'`.
+
+Use `right`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx' : (e : K →ₗ[ℂ] N.V) x ∈ W.map (e : K →ₗ[ℂ] N.V)` using `by rw [h1]; trivial`. Take `⟨y, hyW, hyx⟩` from `Submodule.mem_map.mp hx'`.
+
+Establish `hxy : y = x` using `e.injective hyx`. Conclude with `hxy ▸ hyW`. Establish `hc : ∀ Z ∈ upq p q, ((e : K →ₗ[ℂ] N.V) ∘ₗ T ∘ₗ (e.symm : N.V →ₗ[ℂ] K)) ∘ₗ N.act Z = N.act Z ∘ₗ ((e : K →ₗ[ℂ] N.V) ∘ₗ T ∘ₗ (e.symm : N.V →ₗ[ℂ] K))`. Introduce `Z hZ`. Take `⟨g, c, hg⟩` from `hy Z hZ`.
+
+Establish `hTg : ∀ x, T (a g x) = a g (T x)` using `fun x => LinearMap.congr_fun (hT g) x`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hg, LinearEquiv.symm_apply_apply, map_sub, map_smul, hTg]`. Take `⟨c, hc'⟩` from `GlobalTheory.IrrTensor.schur N hI hA _ (comm_act_of_comm_act_upq N _ hc)`.
+
+Use `⟨c, LinearMap.ext fun x => e.injective ?_⟩` and prove the remaining obligations. Establish `hx` using `LinearMap.congr_fun hc' (e x)`. Simplify using `using hx`.
+-/
 theorem absIrr_of_equiv {p q : ℕ} (N : GKMod p q) (hI : Formalism.MainNotions.SchurIrreducible.IrrGK N) (hA : Formalism.MainNotions.SchurIrreducible.AdmGK N)
     {G K : Type} [AddCommGroup K] [Module ℂ K] (a : G → Module.End ℂ K) (e : K ≃ₗ[ℂ] N.V)
     (h : ∀ Z ∈ upq p q, ∃ (g : G) (c : ℂ), ∀ x, e (a g x) = N.act Z (e x) + c • e x) : AbsIrr a := by
@@ -79,6 +106,21 @@ theorem absIrr_of_equiv {p q : ℕ} (N : GKMod p q) (hI : Formalism.MainNotions.
     have hx := LinearMap.congr_fun hc' (e x)
     simpa using hx
 
+/- English proof (translation)
+Introduce `D V S M τ p q T R φ m U a hM hI hA hK`. Establish `hfin : ∀ x : kFin M τ, U x ∈ LinearMap.range R.ι` using `fun x => LinearMap.mem_range.mpr ((hM.kfin x.1).mp x.2)`. Establish `hequiv : ∃ e : kFin M τ ≃ₗ[ℂ] R.HK.V, ∀ y, R.ι (e y) = U y`. Set `f : kFin M τ →ₗ[ℂ] LinearMap.range R.ι` to `LinearMap.codRestrict (LinearMap.range R.ι) ((U : M.H τ →ₗ[ℂ] R.U.H) ∘ₗ (kFin M τ).subtype) hfin`. Establish `hf : ∀ y, (f y : R.U.H) = U y` using `fun y => rfl`.
+
+Establish `hbij : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `hv : U x = U y` using `by rw [← hf, ← hf, hxy]`. Conclude with `Subtype.ext (U.injective hv)`.
+
+Introduce and unpack `⟨y, hy⟩`. Establish `hk : U.symm y ∈ kFin M τ`. Use `(hM.kfin _).mpr ?_` and prove the remaining obligations. Rewrite using `[U.apply_symm_apply]`. Conclude with `LinearMap.mem_range.mp hy`.
+
+Use `⟨⟨U.symm y, hk⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `U.apply_symm_apply y`. Set `e2` to `LinearEquiv.ofInjective R.ι R.ι_inj`. Use `⟨(LinearEquiv.ofBijective f hbij).trans e2.symm, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrArg Subtype.val (e2.apply_symm_apply (f y))`. Rewrite `h3` using `[LinearEquiv.ofInjective_apply, hf]`. Conclude with `h3`. Take `⟨e, hιe⟩` from `hequiv`. Use `absIrr_of_equiv R.HK hI hA (fun X : lieAt V τ => a X) e ?_` and prove the remaining obligations.
+
+Introduce `Z hZ`. Establish `hX : IndefiniteRowSideFullHecke.BarMatrix.toFrame M τ (φ Z) ∈ lieAt V τ`. Rewrite using `[← hM.lie]`. Conclude with `⟨Z, hZ, rfl⟩`. Establish `hd : ∀ x : kFin M τ, dRep (M.rep τ) (IndefiniteRowSideFullHecke.BarMatrix.toFrame M τ (φ Z)) (x : M.H τ) = (a (IndefiniteRowSideFullHecke.BarMatrix.toFrame M τ (φ Z)) x : M.H τ)` using `fun x => (hK.der _ hX x).deriv`.
+
+Use `⟨⟨_, hX⟩, (m : ℂ) / 2 * Z.trace, fun x => R.ι_inj ?_⟩` and prove the remaining obligations. Use `show R.ι (e (a (IndefiniteRowSideFullHecke.BarMatrix.toFrame M τ (φ Z)) x)) = R.ι (R.HK.act Z (e x) + ((m : ℂ) / 2 * Z.trace) • e x)`. Rewrite using `[hιe, ← hM.der Z hZ (e x) x (hιe x).symm, hd x]`.
+-/
 theorem absIrr_kFin : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (p q : ℕ) (T : GrpData p q) (R : DSRep T) (φ : Mat p q → Matrix (Fin V.rank) (Fin V.rank) ℂ) (m : ℤ) (U : M.H τ ≃ₗ[ℂ] R.U.H) (a : Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (kFin M τ)), GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.Matches R M τ φ m U → Formalism.MainNotions.SchurIrreducible.IrrGK R.HK → Formalism.MainNotions.SchurIrreducible.AdmGK R.HK → IsKAct M τ a → AbsIrr fun X : lieAt V τ => a X := by
   intro D V S M τ p q T R φ m U a hM hI hA hK
   have hfin : ∀ x : kFin M τ, U x ∈ LinearMap.range R.ι := fun x =>

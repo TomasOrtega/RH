@@ -10,6 +10,11 @@ namespace Formalism.L2.DIV
 
 open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Indef Formalism.DworkPowerSeriesWeights Formalism.DworkPowerSeriesWeights.OddLevelGainBounds Formalism.IncomingBounds
 
+/- English proof (translation)
+Introduce `φ hφ F hF`. Distinguish the cases in `h0 : Dc.Pt u t φ F = 0`. Conclude with `Or.inl h0`. Use `right`. Establish `hb` using `path_height_bound K l Bs.J _ _ X ι D j1 s φ F (fun π => embeddingIntegral_holds K w l ι hι _ (hc π φ hφ)) (fun π => embeddingIntegral_holds K w l ι hι _ (hr π F hF)) hl hu hD he`.
+
+Rewrite `hb` using `[← hX φ hφ F hF]`. Conclude with `hs.trans (embedding_lower_bound K w l ι hι _ _ h0 hb)`.
+-/
 theorem valuation_of_entry_bounds {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df1 : DefSide Bs}
     (Dc : DefCols Df1) (u : Dc.Mem) (t : Bs.Tup) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K))
     (w : HeightOneSpectrum (𝓞 K)) (sgw : ℝ) (l : ℕ) [Fact l.Prime] (ι : K →+* ℂ_[l])

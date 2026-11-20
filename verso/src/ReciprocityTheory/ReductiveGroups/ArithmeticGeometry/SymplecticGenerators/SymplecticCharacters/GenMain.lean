@@ -6,6 +6,35 @@ namespace ReciprocityTheory.ChartRestriction.G.Key.Chi
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Establish `hrow : ∀ q, M (Sum.inr k) q = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (Sum.inr k) q` using `row_inr_of_col_inl hM hk`. Establish `hck : M (Sum.inr k) (Sum.inr k) = 1` using `by rw [hrow]; simp`. Establish `hlow : ∀ i : Fin g, (i : ℕ) < k → M (Sum.inr i) (Sum.inr k) = 0`. Introduce `i hi`. Establish `hik : i ≠ k` using `by intro h; subst h; omega`.
+
+Rewrite using `[row_inr_of_col_inl hM (hF i hi).1]`. Simplify using `[Matrix.one_apply, hik]`. Use `set c' : Fin g → ℤ := fun l => if (k : ℕ) < l then M (Sum.inr l) (Sum.inr k) else 0 with hc'`. Establish `hdot : c' ⬝ᵥ Pi.single k 1 = 0` using `by rw [dotProduct_single]; simp [hc']`. Establish `hDmem : spDiag (rkU _ _ hdot) ∈ spH g` using `spDiag_mem _`.
+
+Establish `hDF : ColsFixed k (spDiag (rkU _ _ hdot))`. Use `colsFixed_spDiag_rk hdot (fun i hi => ?_) (fun i hi => ?_)` and prove the remaining obligations. Establish `hik : i ≠ k` using `by intro h; subst h; omega`. Simplify using `[Pi.single_apply, hik]`. Simplify using `only [hc']`.
+
+Rewrite using `[if_neg (by omega)]`. Establish `hDk : ∀ r, spDiag (rkU _ _ hdot) r (Sum.inl k) = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r (Sum.inl k)`. Introduce `r`. Break down `r with l | l` into its components or cases. Rewrite using `[spDiag, fromBlocks_apply₁₁, rkU_val]`.
+
+Simplify using `[vecMulVec_apply, hc', Matrix.one_apply]`. Simplify using `[spDiag]`. Use `set M1 := spDiag (rkU _ _ hdot) * M with hM1`. Establish `hM1sp : M1 ∈ symplecticGroup (Fin g) ℤ` using `(symplecticGroup (Fin g) ℤ).mul_mem (spH_le g hDmem) hM`. Establish `hM1F : ColsFixed k M1` using `colsFixed_mul hDF hF`.
+
+Establish `hc1 : ∀ l, M1 (Sum.inr l) (Sum.inr k) = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (Sum.inr l) (Sum.inr k)`. Introduce `l`. Rewrite using `[hM1, spDiag_rk_mul_inr]`. Simplify using `only [Pi.single_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, hck, mul_one, hc']`. Break down `lt_trichotomy (l : ℕ) k with h | h | h` into its components or cases.
+
+Establish `hlk : l ≠ k` using `by intro e; subst e; omega`. Rewrite using `[if_neg (by omega), hlow l h]; simp [Matrix.one_apply, hlk]`. Establish `e : l = k` using `Fin.ext h`. Substitute `e` using the available equality. Rewrite using `[if_neg (lt_irrefl _), hck]`.
+
+Simplify using the standard rewrite rules. Establish `hlk : l ≠ k` using `by intro e; subst e; omega`. Rewrite using `[if_pos h]`. Simplify using `[Matrix.one_apply, hlk]`. Establish `ha1 : ∀ i : Fin g, (i : ℕ) < k → M1 (Sum.inl i) (Sum.inr k) = 0`.
+
+Introduce `i hi`. Rewrite using `[row_inl_of_col_inr hM1sp (hM1F i hi).2]`. Simplify using `[Matrix.one_apply]`. Use `set S : Matrix (Fin g) (Fin g) ℤ := Matrix.of fun l m => if m = k then (if l = k then -M1 (Sum.inl k) (Sum.inr k) else -M1 (Sum.inl l) (Sum.inr k)) else (if l = k then -M1 (Sum.inl m) (Sum.inr k) else 0) with hS`. Establish `hSsym : S.IsSymm`.
+
+Use `Matrix.IsSymm.ext (fun l m => ?_)` and prove the remaining obligations. Simplify using `only [hS, of_apply]`. Apply the tactic sequence `by_cases hl : l = k <;> by_cases hm : m = k <;> simp [hl, hm]`. Establish `hSmem : spTransl S ∈ spH g` using `spTransl_mem hSsym`. Establish `hSF : ColsFixed k (spTransl S)`.
+
+Use `colsFixed_spTransl (fun i hi l => ?_)` and prove the remaining obligations. Establish `hik : i ≠ k` using `by intro h; subst h; omega`. Simplify using `[hS, hik, ha1 i hi]`. Establish `hSk : ∀ r, spTransl S r (Sum.inl k) = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r (Sum.inl k)`. Apply the tactic sequence `intro r; rcases r with l | l <;> simp [spTransl, Matrix.one_apply]`.
+
+Use `⟨spTransl S * spDiag (rkU _ _ hdot), (spH g).mul_mem hSmem hDmem, colsFixed_mul hSF hDF, fun r => by rw [mul_col_of_unit hDk]; exact hSk r, ?_⟩` and prove the remaining obligations. Introduce `r`. Rewrite using `[Matrix.mul_assoc]`. Use `show (spTransl S * M1) r (Sum.inr k) = _`. Break down `r with l | l` into its components or cases.
+
+Rewrite using `[spTransl_mul_inl]`. Establish `hsum : ∑ m, S l m * M1 (Sum.inr m) (Sum.inr k) = S l k`. Simplify using `only [hc1, Matrix.one_apply, Sum.inr.injEq, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hsum]`. Simplify using `only [hS, of_apply, if_true]`.
+
+Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hl]`. Rewrite using `[spTransl_mul_inr, hc1]`.
+-/
 theorem col_inr_step (k : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hM : M ∈ symplecticGroup (Fin g) ℤ) (hF : ColsFixed k M)
     (hk : ∀ r, M r (Sum.inl k) = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r (Sum.inl k)) :
@@ -87,6 +116,19 @@ theorem col_inr_step (k : Fin g) (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g)
     · simp [hl]
   · rw [spTransl_mul_inr, hc1]
 
+/- English proof (translation)
+Introduce `O hO`. Establish `hle : Submonoid.closure (spGens g) ≤ symplecticGroup (Fin g) ℤ`. Rewrite using `[Submonoid.closure_le]`. Introduce `M hM'`. Rewrite using `[SetLike.mem_coe]`.
+
+Break down `hM' with ((⟨S, hS, rfl⟩ | ⟨U, rfl⟩) | hJ)` into its components or cases. Apply the tactic sequence `(first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])`. Rewrite using `[spTransl, Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hS.eq]`. Establish `hU2 : (U : Matrix (Fin g) (Fin g) ℤ) * (↑U⁻¹ : Matrix (Fin g) (Fin g) ℤ) = 1` using `by first`.
+
+Consider the case `exact Units.mul_inv U`. Consider the case `exact Matrix.mul_nonsing_inv _ (Matrix.isUnits_det_units U)`. Establish `hU : ((↑U⁻¹ : Matrix (Fin g) (Fin g) ℤ)ᵀ) * (U : Matrix (Fin g) (Fin g) ℤ)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, hU2, Matrix.transpose_one]`. Apply the tactic sequence `(first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])`.
+
+Rewrite using `[spDiag, Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hU, hU2]`. Rewrite using `[← Matrix.transpose_mul]`. Use `first`. Consider the case `rw [Matrix.mul_nonsing_inv _ (Matrix.isUnits_det_units U), Matrix.transpose_one]`.
+
+Consider the case `rw [← Matrix.coe_units_inv, Units.mul_inv, Matrix.transpose_one]`. Rewrite `hJ` using `[Set.mem_singleton_iff]`. Rewrite using `[hJ]`. Use `first`. Consider the case `exact SymplecticGroup.J_mem`.
+
+Consider the case `exact Matrix.J_mem`. Consider the case `((first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])`. Rewrite using `[Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Use the proof step `simp)`. Conclude with `hle hO`.
+-/
 private theorem mem_symplecticGroup_of_mem_spH (g : ℕ) :
     ∀ O ∈ spH g, O ∈ symplecticGroup (Fin g) ℤ := by
   intro O hO
@@ -125,6 +167,19 @@ private theorem mem_symplecticGroup_of_mem_spH (g : ℕ) :
 
   exact hle hO
 
+/- English proof (translation)
+Establish `colmul : ∀ (A N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (c : Fin g ⊕ Fin g), (∀ r, N r c = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r c) → (∀ r, A r c = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) r c) → ∀ r, (A * N) r c = (1 : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) …`. Introduce `A N c hN hA r`. Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[hN]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one, hA]`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_`. Conclude with `⟨1, one_mem _, fun i hi => absurd hi (Nat.not_lt_zero _)⟩`.
+
+Consider the case `succ k ih`. Introduce `hk`. Take `⟨O1, hO1, hF1⟩` from `ih (by omega)`. Set `kk : Fin g` to `⟨k, by omega⟩`. Establish `hS1 : O1 * M ∈ symplecticGroup (Fin g) ℤ` using `mul_mem (mem_symplecticGroup_of_mem_spH g O1 hO1) hM`.
+
+Take `⟨O2, hO2, hF2, h2⟩` from `col_inl_step kk (O1 * M) hS1 hF1`. Establish `hS2 : O2 * (O1 * M) ∈ symplecticGroup (Fin g) ℤ` using `mul_mem (mem_symplecticGroup_of_mem_spH g O2 hO2) hS1`. Establish `hF2' : ColsFixed k (O2 * (O1 * M))` using `fun i hi => ⟨colmul _ _ _ (hF1 i hi).1 (hF2 i hi).1, colmul _ _ _ (hF1 i hi).2 (hF2 i hi).2⟩`. Take `⟨O3, hO3, hF3, h3inl, h3⟩` from `col_inr_step kk (O2 * (O1 * M)) hS2 hF2' h2`. Use `⟨O3 * (O2 * O1), mul_mem hO3 (mul_mem hO2 hO1), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show O3 * (O2 * O1) * M = O3 * (O2 * (O1 * M)) by simp only [Matrix.mul_assoc]]`. Introduce `i hi`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hi with hi | hi` into its components or cases. Conclude with `⟨colmul _ _ _ (hF2' i hi).1 (hF3 i hi).1, colmul _ _ _ (hF2' i hi).2 (hF3 i hi).2⟩`. Establish `hik : i = kk` using `Fin.ext hi`.
+
+Rewrite using `[hik]`. Conclude with `⟨colmul _ _ _ h2 h3inl, h3⟩`.
+-/
 theorem exists_colsFixed (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
     (hM : M ∈ symplecticGroup (Fin g) ℤ) : ∀ k : ℕ, k ≤ g → ∃ O ∈ spH g, ColsFixed k (O * M) := by
   have colmul : ∀ (A N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (c : Fin g ⊕ Fin g),
@@ -159,6 +214,13 @@ theorem exists_colsFixed (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)
       rw [hik]
       exact ⟨colmul _ _ _ h2 h3inl, h3⟩
 
+/- English proof (translation)
+Introduce `g M hM`. Take `⟨A, rfl⟩ : ∃ A : symplecticGroup (Fin g) ℤ, (A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) = M` from `⟨⟨M, hM⟩, rfl⟩`. Take `⟨O, hO, hF⟩` from `exists_colsFixed ((A⁻¹ : symplecticGroup (Fin g) ℤ) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) (A⁻¹).2 g le_rfl`. Establish `h1 : O * ((A⁻¹ : symplecticGroup (Fin g) ℤ) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) = 1`. Use extensionality with `r c`.
+
+Break down `c with i | i` into its components or cases. Conclude with `(hF i i.isLt).1 r`. Conclude with `(hF i i.isLt).2 r`. Establish `h2 : ((A⁻¹ : symplecticGroup (Fin g) ℤ) : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) * (A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ) = 1` using `congrArg Subtype.val (inv_mul_cancel A)`. Establish `hOM : O = (A : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[← hOM]`. Conclude with `hO`.
+-/
 theorem spGen : SpGenStatement := by
   intro g M hM
   obtain ⟨A, rfl⟩ : ∃ A : symplecticGroup (Fin g) ℤ,
@@ -181,6 +243,19 @@ theorem spGen : SpGenStatement := by
   rw [← hOM]
   exact hO
 
+/- English proof (translation)
+Use `le_antisymm ?_ (fun M hM => spGen g M hM)` and prove the remaining obligations. Rewrite using `[Submonoid.closure_le]`. Introduce `M hM'`. Rewrite using `[SetLike.mem_coe]`. Break down `hM' with ((⟨S, hS, rfl⟩ | ⟨U, rfl⟩) | hJ)` into its components or cases.
+
+Apply the tactic sequence `(first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])`. Rewrite using `[spTransl, Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hS.eq]`. Establish `hU2 : (U : Matrix (Fin g) (Fin g) ℤ) * (↑U⁻¹ : Matrix (Fin g) (Fin g) ℤ) = 1` using `by first`. Consider the case `exact Units.mul_inv U`.
+
+Consider the case `exact Matrix.mul_nonsing_inv _ (Matrix.isUnits_det_units U)`. Establish `hU : ((↑U⁻¹ : Matrix (Fin g) (Fin g) ℤ)ᵀ) * (U : Matrix (Fin g) (Fin g) ℤ)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, hU2, Matrix.transpose_one]`. Apply the tactic sequence `(first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])`. Rewrite using `[spDiag, Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`.
+
+Simplify using `[hU, hU2]`. Rewrite using `[← Matrix.transpose_mul]`. Use `first`. Consider the case `rw [Matrix.mul_nonsing_inv _ (Matrix.isUnits_det_units U), Matrix.transpose_one]`. Consider the case `rw [← Matrix.coe_units_inv, Units.mul_inv, Matrix.transpose_one]`.
+
+Rewrite `hJ` using `[Set.mem_singleton_iff]`. Rewrite using `[hJ]`. Use `first`. Consider the case `exact SymplecticGroup.J_mem`. Consider the case `exact Matrix.J_mem`.
+
+Consider the case `((first | rw [SymplecticGroup.mem_iff] | rw [Matrix.mem_symplecticGroup_iff])`. Rewrite using `[Matrix.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Use the proof step `simp)`.
+-/
 theorem closure_spGens_eq (g : ℕ) :
     Submonoid.closure (spGens g) = symplecticGroup (Fin g) ℤ := by
   refine le_antisymm ?_ (fun M hM => spGen g M hM)

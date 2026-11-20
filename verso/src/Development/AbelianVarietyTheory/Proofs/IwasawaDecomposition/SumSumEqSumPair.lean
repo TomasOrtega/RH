@@ -49,40 +49,73 @@ section Laws
 
 variable {M N : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blockSum, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with x | x <;> rcases finSumFinEquiv.symm j with y | y <;> simp`.
+-/
 theorem blockSum_map {S : Type} [CommRing S] (f : R →+* S) (a : Matrix (Fin M) (Fin M) R)
     (b : Matrix (Fin N) (Fin N) R) : (blockSum a b).map f = blockSum (a.map f) (b.map f) := by
   ext i j
   simp only [blockSum, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]
   rcases finSumFinEquiv.symm i with x | x <;> rcases finSumFinEquiv.symm j with y | y <;> simp
 
+/- English proof (translation)
+Simplify using `[blockSum, Matrix.fromBlocks_one]`.
+-/
 theorem blockSum_one : blockSum (1 : Matrix (Fin M) (Fin M) R) (1 : Matrix (Fin N) (Fin N) R) = 1 := by
   simp [blockSum, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Simplify using `[blockSum, Matrix.fromBlocks_multiply, Matrix.submatrix_mul_equiv]`.
+-/
 theorem blockSum_mul (a a' : Matrix (Fin M) (Fin M) R) (b b' : Matrix (Fin N) (Fin N) R) :
     blockSum (a * a') (b * b') = blockSum a b * blockSum a' b' := by
   simp [blockSum, Matrix.fromBlocks_multiply, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Simplify using `[blockSum, Matrix.fromBlocks_transpose, Matrix.transpose_submatrix]`.
+-/
 theorem blockSum_transpose (a : Matrix (Fin M) (Fin M) R) (b : Matrix (Fin N) (Fin N) R) :
     blockSum aᵀ bᵀ = (blockSum a b)ᵀ := by
   simp [blockSum, Matrix.fromBlocks_transpose, Matrix.transpose_submatrix]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[kron]`.
+-/
 theorem kron_map {S : Type} [CommRing S] (f : R →+* S) (a : Matrix (Fin M) (Fin M) R)
     (b : Matrix (Fin N) (Fin N) R) : (kron a b).map f = kron (a.map f) (b.map f) := by
   ext i j
   simp [kron]
 
+/- English proof (translation)
+Simplify using `[kron, Matrix.one_kronecker_one]`.
+-/
 theorem kron_one : kron (1 : Matrix (Fin M) (Fin M) R) (1 : Matrix (Fin N) (Fin N) R) = 1 := by
   simp [kron, Matrix.one_kronecker_one]
 
+/- English proof (translation)
+Simplify using `[kron, Matrix.mul_kronecker_mul, Matrix.submatrix_mul_equiv]`.
+-/
 theorem kron_mul (a a' : Matrix (Fin M) (Fin M) R) (b b' : Matrix (Fin N) (Fin N) R) :
     kron (a * a') (b * b') = kron a b * kron a' b' := by
   simp [kron, Matrix.mul_kronecker_mul, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[kron]`.
+-/
 theorem kron_transpose (a : Matrix (Fin M) (Fin M) R) (b : Matrix (Fin N) (Fin N) R) :
     kron aᵀ bᵀ = (kron a b)ᵀ := by
   ext i j
   simp [kron]
 
+/- English proof (translation)
+Establish `key : ∀ G : Fin M → Fin M → R, ∑ r : Pair M, G r.1.1 r.1.2 = ∑ x, ∑ y, if x < y then G x y else 0`. Introduce `G`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun p : Fin M × Fin M => p.1 < p.2) (fun x => by simp) (fun p => G p.1 p.2), Finset.sum_filter, Fintype.sum_prod_type]`. Establish `key'` using `key (fun x y => F y x)`. Rewrite using `[Finset.sum_add_distrib, key, key']`.
+
+Establish `h : ∀ x y, F x y = (if x < y then F x y else 0) + (if y < x then F x y else 0) + (if x = y then F x y else 0)`. Introduce `x y`. Break down `lt_trichotomy x y with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.2 h.le]`. Simplify using `[h]`.
+
+Simplify using `[h, h.ne', not_lt.2 h.le]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib]`. Use `congr 1`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[eq_comm]`.
+-/
 theorem sum_sum_eq_sum_pair (F : Fin M → Fin M → R) :
     ∑ x, ∑ y, F x y = ∑ r : Pair M, (F r.1.1 r.1.2 + F r.1.2 r.1.1) + ∑ x, F x x := by
   have key : ∀ G : Fin M → Fin M → R, ∑ r : Pair M, G r.1.1 r.1.2 = ∑ x, ∑ y, if x < y then G x y else 0 := by
@@ -108,11 +141,21 @@ theorem sum_sum_eq_sum_pair (F : Fin M → Fin M → R) :
         · refine Finset.sum_congr rfl fun x _ => ?_
           simp [eq_comm]
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `[wedge2, wedgeRaw]`.
+-/
 theorem wedge2_map {S : Type} [CommRing S] (f : R →+* S) (a : Matrix (Fin M) (Fin M) R) :
     (wedge2 a).map f = wedge2 (a.map f) := by
   ext p q
   simp [wedge2, wedgeRaw]
 
+/- English proof (translation)
+Use extensionality with `⟨⟨i, j⟩, hij⟩ ⟨⟨k, l⟩, hkl⟩`. Simplify using `only [wedgeRaw, Matrix.of_apply, Matrix.one_apply, Subtype.mk.injEq, Prod.mk.injEq]`. Establish `h0 : (if j = k then (1 : R) else 0) * (if i = l then 1 else 0) = 0`. Distinguish the cases in `h3 : j = k`. Distinguish the cases in `h4 : i = l`.
+
+Substitute `h3` using the available equality. Substitute `h4` using the available equality. Conclude with `absurd (hij.trans hkl) (lt_irrefl _)`. Simplify using `[h4]`. Simplify using `[h3]`.
+
+Rewrite using `[h0, sub_zero]`. Apply the tactic sequence `by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2]`.
+-/
 theorem wedgeRaw_one : wedgeRaw (1 : Matrix (Fin M) (Fin M) R) = 1 := by
   ext ⟨⟨i, j⟩, hij⟩ ⟨⟨k, l⟩, hkl⟩
   simp only [wedgeRaw, Matrix.of_apply, Matrix.one_apply, Subtype.mk.injEq, Prod.mk.injEq]
@@ -125,6 +168,13 @@ theorem wedgeRaw_one : wedgeRaw (1 : Matrix (Fin M) (Fin M) R) = 1 := by
   rw [h0, sub_zero]
   by_cases h1 : i = k <;> by_cases h2 : j = l <;> simp [h1, h2]
 
+/- English proof (translation)
+Use extensionality with `⟨⟨i, j⟩, hij⟩ ⟨⟨k, l⟩, hkl⟩`. Rewrite using `[Matrix.mul_apply]`. Use `show (a * b) i k * (a * b) j l - (a * b) j k * (a * b) i l = ∑ r : Pair M, (a i r.1.1 * a j r.1.2 - a j r.1.1 * a i r.1.2) * (b r.1.1 k * b r.1.2 l - b r.1.2 k * b r.1.1 l)`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Establish `e : ∀ x y, a i x * b x k * (a j y * b y l) - a j x * b x k * (a i y * b y l) = (a i x * a j y - a j x * a i y) * (b x k * b y l)` using `fun x y => by ring`.
+
+Simplify using `only [e]`. Rewrite using `[sum_sum_eq_sum_pair]`. Establish `hz : ∑ x, (a i x * a j x - a j x * a i x) * (b x k * b x l) = 0` using `Finset.sum_eq_zero fun x _ => by ring`. Rewrite using `[hz, add_zero]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wedgeRaw_mul (a b : Matrix (Fin M) (Fin M) R) : wedgeRaw (a * b) = wedgeRaw a * wedgeRaw b := by
   ext ⟨⟨i, j⟩, hij⟩ ⟨⟨k, l⟩, hkl⟩
   rw [Matrix.mul_apply]
@@ -141,17 +191,29 @@ theorem wedgeRaw_mul (a b : Matrix (Fin M) (Fin M) R) : wedgeRaw (a * b) = wedge
   refine Finset.sum_congr rfl fun r _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `only [wedgeRaw, Matrix.of_apply, Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wedgeRaw_transpose (a : Matrix (Fin M) (Fin M) R) : wedgeRaw aᵀ = (wedgeRaw a)ᵀ := by
   ext p q
   simp only [wedgeRaw, Matrix.of_apply, Matrix.transpose_apply]
   ring
 
+/- English proof (translation)
+Simplify using `[wedge2, wedgeRaw_one]`.
+-/
 theorem wedge2_one : wedge2 (1 : Matrix (Fin M) (Fin M) R) = 1 := by
   simp [wedge2, wedgeRaw_one]
 
+/- English proof (translation)
+Simplify using `[wedge2, wedgeRaw_mul, Matrix.submatrix_mul_equiv]`.
+-/
 theorem wedge2_mul (a b : Matrix (Fin M) (Fin M) R) : wedge2 (a * b) = wedge2 a * wedge2 b := by
   simp [wedge2, wedgeRaw_mul, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Simplify using `[wedge2, wedgeRaw_transpose, Matrix.transpose_submatrix]`.
+-/
 theorem wedge2_transpose (a : Matrix (Fin M) (Fin M) R) : wedge2 aᵀ = (wedge2 a)ᵀ := by
   simp [wedge2, wedgeRaw_transpose, Matrix.transpose_submatrix]
 
@@ -165,18 +227,27 @@ variable {ι : Type} {m : ι → ℕ}
 
 open ChernSpan
 
+/- English proof (translation)
+Establish `h` using `blockSum_map (aeval fun v : EntIx m => A v.1 v.2.1 v.2.2).toRingHom P Q`. Simplify `h` using `[evEnt]`.
+-/
 theorem evEnt_blockSum {M N : ℕ} (P : Matrix (Fin M) (Fin M) (MvPolynomial (EntIx m) ℤ))
     (Q : Matrix (Fin N) (Fin N) (MvPolynomial (EntIx m) ℤ)) {R : Type} [CommRing R] (A : Mat m R) :
     evEnt (blockSum P Q) A = blockSum (evEnt P A) (evEnt Q A) := by
   have h := blockSum_map (aeval fun v : EntIx m => A v.1 v.2.1 v.2.2).toRingHom P Q
   simpa [evEnt] using h
 
+/- English proof (translation)
+Establish `h` using `kron_map (aeval fun v : EntIx m => A v.1 v.2.1 v.2.2).toRingHom P Q`. Simplify `h` using `[evEnt]`.
+-/
 theorem evEnt_kron {M N : ℕ} (P : Matrix (Fin M) (Fin M) (MvPolynomial (EntIx m) ℤ))
     (Q : Matrix (Fin N) (Fin N) (MvPolynomial (EntIx m) ℤ)) {R : Type} [CommRing R] (A : Mat m R) :
     evEnt (kron P Q) A = kron (evEnt P A) (evEnt Q A) := by
   have h := kron_map (aeval fun v : EntIx m => A v.1 v.2.1 v.2.2).toRingHom P Q
   simpa [evEnt] using h
 
+/- English proof (translation)
+Establish `h` using `wedge2_map (aeval fun v : EntIx m => A v.1 v.2.1 v.2.2).toRingHom P`. Simplify `h` using `[evEnt]`.
+-/
 theorem evEnt_wedge2 {M : ℕ} (P : Matrix (Fin M) (Fin M) (MvPolynomial (EntIx m) ℤ))
     {R : Type} [CommRing R] (A : Mat m R) :
     evEnt (ChernSpan.wedge2 P) A = ChernSpan.wedge2 (evEnt P A) := by

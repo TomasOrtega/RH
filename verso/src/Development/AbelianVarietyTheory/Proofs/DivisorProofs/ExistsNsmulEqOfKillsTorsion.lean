@@ -11,12 +11,22 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [pow_zero, MonObj.comp_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih, Category.comp_id]`.
+-/
 theorem comp_id_pow_eq {K : Type} [Field K] (A : AbVar K) {T : Over (Sp K)} (x : T ⟶ A.X) (n : ℕ) :
     x ≫ (𝟙 A.X) ^ n = x ^ n := by
   induction n with
   | zero => simp [pow_zero, MonObj.comp_one]
   | succ k ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih, Category.comp_id]
 
+/- English proof (translation)
+Introduce `K _ A C f n hn hf`. Establish `hn0 : (n : ℤ) ≠ 0`. Introduce `h`. Apply `hn` to reduce the goal to its premises. Establish `: n = 0` using `by exact_mod_cast h`.
+
+Simplify using `[this]`. Take `⟨hiso, -⟩` from `GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hn0`. Establish `hiso' : IsIsogeny (n • 𝟙 A)` using `by rwa [natCast_zsmul] at hiso`. Establish `hkill` using `GlobalTheory.T.comp_eq_one_of_kills_geometric_torsionPoints K A C f n hn hf`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_factor_through_isogeny_of_kills_kernel K A A C (n • 𝟙 A) f hiso' (fun T x hx => by`.
+
+Apply `hkill T x` to reduce the goal to its premises. Rewrite `hx` using `[nsmul_hom, id_hom, comp_id_pow_eq]`. Conclude with `hx)`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, Preadditive.nsmul_comp, Category.id_comp]`.
+-/
 theorem exists_nsmul_eq_of_kills_torsion : ∀ (K : Type) [Field K] (A C : AbVar K) (f : A ⟶ C) (n : ℕ),
     (n : K) ≠ 0 → (∀ x : A.Pt, x ^ n = 1 → x ≫ f.hom = 1) → ∃ g : A ⟶ C, f = n • g := by
   intro K _ A C f n hn hf

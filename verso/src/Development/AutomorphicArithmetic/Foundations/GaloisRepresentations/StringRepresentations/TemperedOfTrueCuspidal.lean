@@ -18,11 +18,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 def TempCSDo (D : D7) : Prop := AllCuspidalOpenBound D.nd D.naut
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RowTie.admissible_of_rank_one_unitary D X.T (rankOneUnitary X.T X.cg X.chr) (fun a π ha hc hr w => rankTwo hP.what₂.fin hP.what₂.temp hP.what₂.clo X.T X.cg a π ha hc hr w)`.
+-/
 theorem bareTemp (hP : PrN) {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {rep Rw}
     (X : ParIn hL D cf rep Rw) : Formalism.MainNotions.SumRepresentations.adm7 D :=
   GlobalTheory.RowTie.admissible_of_rank_one_unitary D X.T (rankOneUnitary X.T X.cg X.chr)
     (fun a π ha hc hr w => rankTwo hP.what₂.fin hP.what₂.temp hP.what₂.clo X.T X.cg a π ha hc hr w)
 
+/- English proof (translation)
+Introduce `hP hL D cf rep Rw hE X`. Establish `hrig : IsobaricRigid D.nd D.naut`. Use `GlobalTheory.CuspRep.host_isCMField D.host` as an intermediate fact. Conclude with `GlobalTheory.RowPar.isobaricRigid_of_jacquetShalika hP.what₂.js.1 (GlobalTheory.HeightCounting.Blocks.readsCusp hP.what₂.fin X.cg)`. Establish `han1` using `GlobalTheory.RowClose.isobaricCuspidalMultiplicityOne_of_twisted _ _ _ D.nd D.naut hrig`.
+
+Establish `han2` using `GlobalTheory.SpehRigid.isobaricDiscreteSelfDualMultOne_of_isobaricSumMultOne _ _ _ D.nd D.naut hrig`. Establish `hcheb` using `GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb D`. Establish `ha5 : Formalism.MainNotions.SumRepresentations.adm5 D` using `(Formalism.MainNotions.SumRepresentations.condition_iff_additive_maps D).2 ⟨han1, han2, fun Sg hSg => by`. Establish `hd` using `(hcheb hSg.toFinset).closure_eq`. Use `hd using 4 with σ` and compare the differences between its conclusion and the goal.
+
+Simplify using `[Set.Finite.mem_toFinset]⟩`. Establish `htie0 : Formalism.MainNotions.SumRepresentations.tie0 D` using `⟨GlobalTheory.RowTieLP.main D X.T, tieAut_of_side X.chr hE, tieGal_bare hE⟩`. Conclude with `⟨htie0, ha5, bareTemp hP X, tieLab_of_lab X.T X.lab, heckeSplitOne_of_side X.chr, cancel_of_tie X.T, fun k v => GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v⟩`.
+-/
 theorem parLawsBare : type_of% @GlobalTheory.ParLawsBare.main := by
   intro hP hL D cf rep Rw hE X
   have hrig : IsobaricRigid D.nd D.naut := by
@@ -40,6 +50,9 @@ theorem parLawsBare : type_of% @GlobalTheory.ParLawsBare.main := by
   exact ⟨htie0, ha5, bareTemp hP X, tieLab_of_lab X.T X.lab, heckeSplitOne_of_side X.chr, cancel_of_tie X.T,
     fun k v => GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v⟩
 
+/- English proof (translation)
+The claim follows from `parLawsBare`.
+-/
 example : type_of% @GlobalTheory.T.parameter_laws_empty := parLawsBare
 
 end UpperTheory.GalN

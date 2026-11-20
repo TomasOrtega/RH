@@ -30,6 +30,9 @@ def IsPair (N : ℕ) {K : Type} [CommRing K] {x x' : Sp K ⟶ Xo.X} (f : Fib Xo 
     (f' : Fib Xo x' ⟶ Fib Xo x) : Prop :=
   IsMonHom f ∧ IsMonHom f' ∧ f ≫ f' = 𝟙 _ ^ N ∧ f' ≫ f = 𝟙 _ ^ N ∧ Lin f ∧ Lin f'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, by simp, by simp, fun _ => by simp, fun _ => by simp⟩`.
+-/
 example {K : Type} [CommRing K] (x : Sp K ⟶ Xo.X) : IsPair 1 (𝟙 (Fib Xo x)) (𝟙 _) :=
   ⟨inferInstance, inferInstance, by simp, by simp, fun _ => by simp, fun _ => by simp⟩
 

@@ -21,6 +21,11 @@ namespace GlobalTheory.MSpanDecay.ColConvGrowth
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `hM : ∀ i k, ‖M i k‖ ≤ ‖toL M‖` using `fun i k => (norm_le_pi_norm (toL M i) k).trans (norm_le_pi_norm (toL M) i)`. Establish `hP : ∀ i k, ‖P i k‖ ≤ ‖toL P‖` using `fun i k => (norm_le_pi_norm (toL P i) k).trans (norm_le_pi_norm (toL P) i)`. Use `pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun i => pi_norm_le_iff_of_nonneg (by positivity) |>.2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(M * P) i j‖ ≤ _`. Rewrite using `[Matrix.mul_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`.
+-/
 theorem norm_toL_mul_le (M P : Matrix (Fin a) (Fin a) (Cinf E)) :
     ‖toL (M * P)‖ ≤ (a : ℝ) * ‖toL M‖ * ‖toL P‖ := by
   have hM : ∀ i k, ‖M i k‖ ≤ ‖toL M‖ := fun i k =>
@@ -37,6 +42,13 @@ theorem norm_toL_mul_le (M P : Matrix (Fin a) (Fin a) (Cinf E)) :
     _ = (a : ℝ) * ‖toL M‖ * ‖toL P‖ := by
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `h1` using `norm_toL_mul_le y.val u.val`. Establish `h2` using `norm_toL_mul_le (u⁻¹).val (y⁻¹).val`. Establish `e1 : (y * u).val = y.val * u.val` using `rfl`. Establish `e2 : ((y * u)⁻¹).val = (u⁻¹).val * (y⁻¹).val` using `by rw [_root_.mul_inv_rev]; rfl`. Establish `n1` using `norm_nonneg (toL y.val)`.
+
+Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (toL u.val)`. Establish `n4` using `norm_nonneg (toL (u⁻¹).val)`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Unfold `height`.
+
+Rewrite using `[e1, e2]`. Use polynomial arithmetic with `[mul_nonneg n1 n3, mul_nonneg n2 n4, mul_nonneg n1 n4, mul_nonneg n2 n3, mul_nonneg ha (mul_nonneg n1 n3), mul_nonneg ha (mul_nonneg n2 n4), mul_nonneg ha n1, mul_nonneg ha n2, mul_nonneg ha n3, mul_nonneg ha n4, mul_nonneg ha (mul_nonneg n1 n4), mul_nonneg ha (mul_nonneg n2 n3)]`.
+-/
 theorem height_mul_le (y u : GL (Fin a) (Cinf E)) :
     height (y * u) ≤ ((a : ℝ) + 1) * height y * height u := by
   have h1 := norm_toL_mul_le y.val u.val

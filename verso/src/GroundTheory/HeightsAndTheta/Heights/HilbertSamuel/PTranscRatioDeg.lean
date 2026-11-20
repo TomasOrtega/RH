@@ -7,6 +7,37 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
+/- English proof (translation)
+Introduce `ι E _ _ u D e w i₀ Φ _ _ hi₀ he hw ht hΦ`. Establish `ht0 : w 0 ≠ 0`. Introduce `h0`. Apply `ht` to reduce the goal to its premises. Rewrite using `[h0]`.
+
+Conclude with `isAlgebraic_zero`. Establish `hwk : ∀ k, w k = w 0 * (u (e k) / u (e 0))` using `fun k => by`. Rewrite using `[mul_div_assoc', ← hw k, mul_div_cancel_right₀ _ (he 0)]`. Establish `hfn : ∀ {κ : Type} (v : κ → E) (K : Subfield E), (∀ i j, v i / v j ∈ K) → ∀ x ∈ fnField v, x ∈ K`. Introduce `κ v K hK x hx`.
+
+Establish `: (fnField v).toSubfield ≤ K`. Unfold `fnField`. Rewrite using `[IntermediateField.adjoin_toSubfield, Subfield.closure_le]`. Introduce and unpack `_ (⟨q, rfl⟩ | ⟨i, j, rfl⟩)`. Rewrite using `[eq_ratCast]`.
+
+Conclude with `SubfieldClass.ratCast_mem K q`. Conclude with `hK i j`. Conclude with `this hx`. Establish `hrat : ∀ i j, u i / u j ∈ fnField u` using `fun i j => IntermediateField.subset_adjoin ℚ _ ⟨i, j, rfl⟩`. Establish `hle : fnField (u ∘ e) ≤ fnField u` using `fun x hx => hfn (u ∘ e) (fnField u).toSubfield (fun k l => hrat (e k) (e l)) x hx`.
+
+Use `set F₀ := fnField (u ∘ e)`. Use `set A := IntermediateField.extendScalars hle`. Use `set L := IntermediateField.adjoin F₀ {w 0}`. Establish `hL : ∀ x, x ∈ L ↔ x ∈ Subfield.closure (Set.range w)`. Establish `h1 : L.toSubfield ≤ Subfield.closure (Set.range w)`.
+
+Rewrite using `[IntermediateField.adjoin_toSubfield, Subfield.closure_le]`. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | h)`. Use `hfn (u ∘ e) _ (fun k l => ?_) x hx` and prove the remaining obligations. Establish `: (u ∘ e) k / (u ∘ e) l = w k / w l`. Rewrite using `[hwk k, hwk l]`.
+
+Clear denominators, using `[ht0, he 0, he l]` for the nonvanishing conditions. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `div_mem (Subfield.subset_closure ⟨k, rfl⟩) (Subfield.subset_closure ⟨l, rfl⟩)`.
+
+Rewrite using `[Set.mem_singleton_iff.1 h]`. Conclude with `Subfield.subset_closure ⟨0, rfl⟩`. Establish `h2 : Subfield.closure (Set.range w) ≤ L.toSubfield`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Rewrite using `[hwk k]`. Establish `hr : u (e k) / u (e 0) ∈ F₀` using `IntermediateField.subset_adjoin ℚ _ ⟨k, 0, rfl⟩`. Conclude with `mul_mem (IntermediateField.mem_adjoin_simple_self F₀ (w 0)) (IntermediateField.algebraMap_mem L (⟨_, hr⟩ : F₀))`. Conclude with `fun x => ⟨fun hx => h1 hx, fun hx => h2 hx⟩`. Establish `hLset : Set.range (algebraMap L E) = (Subfield.closure (Set.range w) : Set E)`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(hL _).1 y.2`. Introduce `hx`.
+
+Conclude with `⟨⟨x, (hL x).2 hx⟩, rfl⟩`. Establish `hQ : ∀ x ∈ fnField u, x ∈ Subfield.closure (Set.range u)` using `hfn u _ fun i j => div_mem (Subfield.subset_closure ⟨i, rfl⟩) (Subfield.subset_closure ⟨j, rfl⟩)`. Establish `htA : Transcendental A (w 0)` using `TranscRatioDeg.transcendental_of_subfield (Subfield.closure (Set.range u)) (fun x => hQ _ x.2) (algebraMap A E).injective (TranscRatioDeg.transcendental_subfieldClosure u (w 0) ht)`. Establish `key` using `TranscRatioDeg.finrank_adjoin_eq_of_transcendental A htA`. Establish `hproj : projDeg u e = Module.finrank F₀ A` using `IntermediateField.relfinrank_eq_finrank_of_le hle`.
+
+Rewrite using `[hproj, ← key]`. Apply `TranscRatioDeg.finrank_adjoin_congr` to reduce the goal to its premises. Rewrite using `[hΦ]`. Apply `SetLike.ext'` to reduce the goal to its premises. Rewrite using `[RingHom.coe_fieldRange, hLset]`.
+
+Rewrite using `[← RingHom.coe_fieldRange, hΦ, hLset]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `_ (h | ⟨i, rfl⟩)`. Conclude with `Subfield.subset_closure (Or.inl h)`.
+
+Conclude with `Subfield.subset_closure (Or.inr (hrat i i₀))`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `x (h | h)`. Conclude with `Subfield.subset_closure (Or.inl h)`. Use `hfn u _ (fun i j => ?_) x h` and prove the remaining obligations.
+
+Establish `: u i / u j = (u i / u i₀) / (u j / u i₀)`. Rewrite using `[div_div_div_cancel_right₀ hi₀]`. Rewrite using `[this]`. Conclude with `div_mem (Subfield.subset_closure (Or.inr ⟨i, rfl⟩)) (Subfield.subset_closure (Or.inr ⟨j, rfl⟩))`.
+-/
 theorem TranscRatioDeg.proof : TranscRatioDeg.Statement := by
   intro ι E _ _ u D e w i₀ Φ _ _ hi₀ he hw ht hΦ
   have ht0 : w 0 ≠ 0 := by

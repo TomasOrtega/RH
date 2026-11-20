@@ -9,5 +9,8 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt GlobalTheory.BlockPoint
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BlockPoint.swapReg_swapG | exact GlobalTheory.BlockPoint.swapReg_swapG | (intros; apply GlobalTheory.BlockPoint.swapReg_swapG <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arith_calc_swap_regular : ArCalc → SwapReg swapG := by
   first | exact @GlobalTheory.BlockPoint.swapReg_swapG | exact GlobalTheory.BlockPoint.swapReg_swapG | (intros; apply GlobalTheory.BlockPoint.swapReg_swapG <;> assumption)

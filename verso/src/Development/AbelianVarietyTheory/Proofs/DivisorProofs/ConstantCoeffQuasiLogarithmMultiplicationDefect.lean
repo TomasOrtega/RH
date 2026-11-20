@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.QLogDefect
 
+/- English proof (translation)
+Introduce `p _ B O Q _ _ _ _ θ _ d μ hμ f hf n`. Establish `hU : ∀ j, constantCoeff (up Q (nmul μ n) j) = 0`. Introduce `j`. Simplify using `only [up]`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, constantCoeff_nmul hμ.const n j, map_zero]`.
+
+Unfold `defect`. Rewrite using `[map_sub, constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hU) hU hf.1, sub_zero]`. Simplify using `[hf.1]`.
+-/
 theorem constantCoeff_defect : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q] [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), IsLift θ μ → ∀ f : MvPowerSeries (Fin d) Q, QL μ ⊤ f → ∀ n : ℕ, constantCoeff (defect μ n f) = 0 := by
   intro p _ B O Q _ _ _ _ θ _ d μ hμ f hf n
   have hU : ∀ j, constantCoeff (up Q (nmul μ n) j) = 0 := by

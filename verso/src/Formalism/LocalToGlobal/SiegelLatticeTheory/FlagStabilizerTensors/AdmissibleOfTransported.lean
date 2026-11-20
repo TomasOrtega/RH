@@ -24,6 +24,39 @@ variable {D : D7} (X : HidaSetting D) (G : GoodOp X) (j : D.what₂.EE ≃ₗᵢ
   (cF : (Fin ((fc P.zs).Df1.nV Bs.μ0) → ℂ) →ₗ[ℂ] D.what₂.Amb D.what₂.mu0)
   (eR : D.what₂.EE →ₛₗ[Formalism.IndefR.Links.cj s] P.EE)
 
+/- English proof (translation)
+Take `⟨d, hUn, hI, hA⟩` from `hM`. Take `⟨V1, hV1⟩` from `exists_conj_op (P := P) (fc := fc) (eV := eV) (s := s) (σ := σ) (cF := cF) (eR := eR) hR d.V (fun e he => (hUn.1 e he).1)`. Take `⟨hRin, -, ⟨c, hc, hcn⟩, lam, hlam, hRΘ⟩` from `hR`. Establish `hV1n : ∀ F, ‖V1 F‖ = ‖F‖`. Introduce `F`.
+
+Establish `h1 : c * ‖V1 F‖ = c * ‖F‖`. Rewrite using `[← hcn, ← hcn, hV1]`. Conclude with `(hUn.1 _ (hRin F)).2`. Conclude with `mul_left_cancel₀ hc.ne' h1`. Set `V1i : D.what₂.EE →ₗᵢ[ℂ] D.what₂.EE` to `{ toLinearMap := V1, norm_map' := hV1n }`.
+
+Use `⟨V1i.toLinearIsometryEquiv rfl, fun u => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ, hPu⟩` from `hP u`. Take `⟨cu, hcu, hcun⟩` from `hN u`. Set `Mu` to `d.U (m u)`. Set `U1 : D.what₂.Mu u →ₗ[ℂ] D.what₂.Mu u` to `{ toFun := fun φ => (cφ u).symm (cjv s (Mu.mulVec (cjv s (cφ u φ)))) map_add' := fun φ ψ => by`.
+
+Simplify using `only [map_add, cjv_add, Matrix.mulVec_add]`. Use the proof step `map_smul' := fun r φ => by`. Simplify using `only [map_smul, cjv_smul, Matrix.mulVec_smul, Formalism.IndefR.Links.cj_cj, RingHom.id_apply] }`. Establish `hU1 : ∀ φ, cjv s (cφ u (U1 φ)) = Mu.mulVec (cjv s (cφ u φ))`. Introduce `φ`.
+
+Use `show cjv s (cφ u ((cφ u).symm _)) = _`. Rewrite using `[LinearEquiv.apply_symm_apply, cjv_cjv]`. Establish `hU1n : ∀ φ, ‖U1 φ‖ = ‖φ‖`. Introduce `φ`. Establish `h1 : cu * ‖U1 φ‖ = cu * ‖φ‖`.
+
+Rewrite using `[← hcun, ← hcun, hU1]`. Conclude with `hUn.2.1 (m u) (cjv s (cφ u φ))`. Conclude with `mul_left_cancel₀ hcu.ne' h1`. Set `U1i : D.what₂.Mu u →ₗᵢ[ℂ] D.what₂.Mu u` to `{ toLinearMap := U1, norm_map' := hU1n }`. Establish `hcjne : Formalism.IndefR.Links.cj s (d.a (m u) * lam) ≠ 0` using `(map_ne_zero _).2 (mul_ne_zero (hA (m u)) hlam)`.
+
+Use `⟨Formalism.IndefR.Links.cj s (d.a (m u) * lam) * κ, mul_ne_zero hcjne hκ, U1i.toLinearIsometryEquiv rfl, fun φ F hF T hT => ?_⟩` and prove the remaining obligations. Set `S : (Fin ((fc P.zs).Df1.nV Bs.μ0) → ℂ) → (fc P.zs).Sp.HH` to `fun y => sEE (d.V (eR (D.what₂.iota D.what₂.mu0 (cF y))))`. Set `Q : (Fin ((fc P.zs).Dc.a (m u)) → ℂ) → (fc P.zs).Sp.HH` to `fun x => (fc P.zs).Sp.Pu (m u) (Mu.mulVec (cjv s x))`. Set `B2 : (Fin ((fc P.zs).Dc.a (m u)) → ℂ) →ₗ[ℂ] (Fin ((fc P.zs).Df1.nV Bs.μ0) → ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun x y => Formalism.IndefR.Links.cj s (d.a (m u) * lam * ⟪S y, Q x⟫_ℂ)) (fun x x' y => by`. Simplify using `only [Q, cjv_add, Matrix.mulVec_add, map_add, inner_add_right, mul_add])`.
+
+Use the proof step `(fun r x y => by`. Simplify using `only [Q, cjv_smul, Matrix.mulVec_smul, map_smul, inner_smul_right, smul_eq_mul, map_mul, Formalism.IndefR.Links.cj_cj]`. Use the proof step `ring)`. Use the proof step `(fun x y y' => by`. Simplify using `only [S, map_add, inner_add_left, mul_add])`.
+
+Use the proof step `(fun r x y => by`. Simplify using `only [S, map_smul, LinearMap.map_smulₛₗ, inner_smul_left, smul_eq_mul, map_mul, Formalism.IndefR.Links.cj_cj, starRingEnd_self_apply]`. Use the proof step `ring)`. Set `B1 : (Fin ((fc P.zs).Dc.a (m u)) → ℂ) →ₗ[ℂ] (Fin ((fc P.zs).Df1.nV Bs.μ0) → ℂ) →ₗ[ℂ] ℂ` to `(perColL D u).compl₁₂ (cφ u).symm.toLinearMap cF`. Establish `hbas : ∀ (i : Fin ((fc P.zs).Dc.a (m u))) (k : Fin ((fc P.zs).Df1.nV Bs.μ0)), B1 (Pi.single i 1) (Pi.single k 1) = B2 (Pi.single i 1) (Pi.single k 1)`.
+
+Introduce `i k`. Establish `hx` using `Formalism.IndefR.Cx.cpt_single σ i`. Establish `hy` using `Formalism.IndefR.Cx.cpt_single σ k`. Establish `hx0` using `Formalism.IndefR.Cx.cpt_single Bs.v0.embedding i`. Use `show perColL D u ((cφ u).symm (Pi.single i 1)) (cF (Pi.single k 1)) = Formalism.IndefR.Links.cj s (d.a (m u) * lam * ⟪sEE (d.V (eR (D.what₂.iota D.what₂.mu0 (cF (Pi.single k 1))))), (fc P.zs).Sp.Pu (m u) (Mu.mulVec (cjv s (Pi.single i 1)))⟫_ℂ)`.
+
+Establish `L : perColL D u ((cφ u).symm (Pi.single i 1)) (cF (Pi.single k 1)) = σ ((fc P.zs).Dc.Pt (m u) Bs.μ0 (Pi.single i 1) (Pi.single k 1))`. Rewrite using `[perColL_apply]`. Establish `h0` using `hC u (Pi.single i 1) (Pi.single k 1)`. Rewrite `h0` using `[hx, hy]`. Then use the resulting hypothesis. Establish `Rr : eR (D.what₂.iota D.what₂.mu0 (cF (Pi.single k 1))) = lam⁻¹ • P.Θ Bs.μ0 (P.jR Bs.μ0 (eV Bs.μ0 (Pi.single k 1)))`.
+
+Establish `h0` using `hRΘ (Pi.single k 1)`. Rewrite `h0` using `[hy]`. Rewrite using `[h0, smul_smul, inv_mul_cancel₀ hlam, one_smul]`. Establish `hin : ∀ (z : P.EE) (w : (fc P.zs).Sp.HH), ⟪sEE (d.V (lam⁻¹ • z)), w⟫_ℂ = lam⁻¹ * ⟪sEE (d.V z), w⟫_ℂ`. Introduce `z w`.
+
+Rewrite using `[map_smul, LinearMap.map_smulₛₗ, inner_smul_left, starRingEnd_self_apply]`. Rewrite using `[L, Rr, hin, mul_assoc (d.a (m u)), mul_inv_cancel_left₀ hlam, cjv_single, ← hx0]`. Establish `h` using `hI (m u) Bs.μ0 (Pi.single i 1) (Pi.single k 1)`. Rewrite `h` using `[hUn.2.2.2 (m u), one_mul]`. Rewrite using `[← h, hs, Formalism.IndefR.Links.cj_cj]`.
+
+Establish `hall : ∀ x y, B1 x y = B2 x y`. Introduce `x y`. Rewrite using `[Formalism.IndefR.Cx.bil_expand B1, Formalism.IndefR.Cx.bil_expand B2]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hbas i k]`.
+
+Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 (hV hF)`. Establish `hT'` using `hPu (V1 (D.what₂.iota D.what₂.mu0 (cF y))) (U1 φ) T hT`. Establish `e1 : D.what₂.perCol u D.what₂.mu0 φ (cF y) = B2 (cφ u φ) y`. Rewrite using `[← hall]`. Use `show _ = perColL D u ((cφ u).symm (cφ u φ)) (cF y)`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply, perColL_apply]`. Rewrite using `[e1]`. Use `show Formalism.IndefR.Links.cj s (d.a (m u) * lam * ⟪sEE (d.V (eR (D.what₂.iota D.what₂.mu0 (cF y)))), (fc P.zs).Sp.Pu (m u) (Mu.mulVec (cjv s (cφ u φ)))⟫_ℂ) = _`. Rewrite using `[← hV1, ← hU1, hT', map_mul (Formalism.IndefR.Links.cj s) (d.a (m u) * lam), Formalism.IndefR.Links.cj_cj, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem kernelJoin_of_multiplicity (hs : ∀ a, Bs.v0.embedding a = Formalism.IndefR.Links.cj s (σ a)) (hM : P.MIstar2 eV sEE)
     (hC : ChainTieT (P := P) (σ := σ) (m := m) (cφ := cφ) (cF := cF))
     (hV : GoodPartHasComplexCoordinates (P := P) (fc := fc) (cF := cF))
@@ -142,11 +175,17 @@ variable {X : HidaSetting D} {G : GoodOp X} {Y : Formalism.L2.SG.Full.Full X} {j
   {eV : ∀ t, (Fin ((fc P.zs).Df1.nV t) → K) →ₗ[K] A.FR t} {sEE : P.EE →ₗ⋆[ℂ] (fc P.zs).Sp.HH}
   {s : Bool} {σ : K →+* ℂ}
 
+/- English proof (translation)
+The claim follows from `kernelJoin_of_multiplicity X G (j hF) Tr Y.hK Y.Dt P eV sEE s σ J.m J.cφ J.cF J.eR J.twist hM J.chainTie J.v0Surjective J.rowTie J.colNorm (J.pairTie hF)`.
+-/
 theorem kerJoinS_of_joinAt2 (hM : P.MIstar2 eV sEE) (J : JoinAt X G Y j Tr P fc eV sEE s σ) (hF : FinX Y) :
     KerJoinS X G (j hF) Tr Y.hK Y.Dt :=
   kernelJoin_of_multiplicity X G (j hF) Tr Y.hK Y.Dt P eV sEE s σ J.m J.cφ J.cF J.eR J.twist hM
     J.chainTie J.v0Surjective J.rowTie J.colNorm (J.pairTie hF)
 
+/- English proof (translation)
+The claim follows from `besselId_of_joins hF I Tr G (j hF) hRow hCol (kerJoinS_of_joinAt2 hM J hF) hB hon`.
+-/
 theorem adm13_of_colJoin (hM : P.MIstar2 eV sEE) (J : JoinAt X G Y j Tr P fc eV sEE s σ) (hF : FinX Y)
     (I : SIso D.s (Formalism.L2.SG.PackageTie2.sOf hF))
     (hRow : ∀ F, I.eHH (D.sEE F) = conjHH X G (j hF F)) (hCol : ColJoinS hF I Tr) (hB : Formalism.BasicNotions.Rows.BuDefQ D.what₂)
@@ -160,6 +199,9 @@ section Ties
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {R : Formalism.L2.RecT ex}
 
+/- English proof (translation)
+The claim follows from `adm13_of_colJoin hM J hF (S.hI hF) (jOf_spec S hF) (colJoinS_of_sTiesR S hF) R.pin.buDef hon`.
+-/
 theorem adm13_of_joinAt (S : Formalism.L2.SG.SpectralTiesReal.STiesR R)
     {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs}
     {P' : CxData A} {fc : DefSub A → DefFace Bs}
@@ -180,6 +222,9 @@ variable {R : Formalism.L2.RecT ex} {S : Formalism.L2.SG.SpectralTiesReal.STiesR
   {Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
   {Q : Formalism.IndefR.RealT R P Dcf Spf Zscf S Ks}
 
+/- English proof (translation)
+The claim follows from `adm13_of_joinAt S hM J.toJoinAt hF hon`.
+-/
 theorem adm13_of_joinSI (hM : (cx Q).MIstar2 (Q.F.eV (cx Q).zs) Q.sEE) (J : JoinSI R S Q) (hF : FinX S.Y)
     (hon : (D.what₂.V0 D.what₂.mu0).map (D.what₂.iota D.what₂.mu0) = ⊤) : Formalism.MainNotions.LocalQuadraticParts.adm13 D :=
   adm13_of_joinAt S hM J.toJoinAt hF hon

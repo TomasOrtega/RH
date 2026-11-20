@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeNZ.absE_eq_one_of_eigen | exact GlobalTheory.ConeNZ.absE_eq_one_of_eigen | (intros; apply GlobalTheory.ConeNZ.absE_eq_one_of_eigen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_stabilizer_line_norm_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (X : Spc F E n) (x₀ : Fin n → E) (K : Subgroup (UA σ X.J)), IsCompact (K : Set (UA σ X.J)) → x₀ ≠ 0 →
     ∀ (v : Pl F) (k : UA σ X.J), k ∈ KAt K (evFin F v) → ∀ l : (AE F E)ˣ,

@@ -41,14 +41,26 @@ structure IsLevel (T : HSp D) (L : Submodule (NumberField.RingOfIntegers D.host.
   dual : ∀ v, AdelicU.IsSelfDualAt D.sp.cm.sig T.gram L v
   maj : AdelicU.IsMajorantFrame D.sp.cm.sig T.gram a
 
+/- English proof (translation)
+Introduce `_ h` and use `h`.
+-/
 theorem Dominated.refl {G : Type} [Group G] (K : Subgroup G) (φ : G → ℂ) : Dominated K φ φ := fun _ h => h
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha⟩ := GlobalTheory.Doubling.exists_isMaj T ⟨a, AdelicU.SelfDual.isLattice_frameLat T, AdelicU.SelfDual.isSelfDualAt_frameLat D T, ha⟩`.
+-/
 theorem exists_isLevel (T : HSp D) : ∃ a, IsLevel T (AdelicU.frameLat T) a :=
   let ⟨a, ha⟩ := GlobalTheory.Doubling.exists_isMaj T
   ⟨a, AdelicU.SelfDual.isLattice_frameLat T, AdelicU.SelfDual.isSelfDualAt_frameLat D T, ha⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lev_frameLat (T : HSp D) (a : GL (Fin T.rank) (AE D)) : lev T (AdelicU.frameLat T) a = Kmax T a := rfl
 
+/- English proof (translation)
+Introduce `c h g` and use `by have := congrArg (a * ·) (h g) simp only [Finsupp.sum, Finset.mul_sum, mul_zero] at this ⊢ rw [← this] exact Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem Dominated.const_mul {G : Type} [Group G] (K : Subgroup G) (φ : G → ℂ) (a : ℂ) :
     Dominated K φ fun g => a * φ g := fun c h g => by
   have := congrArg (a * ·) (h g)
@@ -56,6 +68,9 @@ theorem Dominated.const_mul {G : Type} [Group G] (K : Subgroup G) (φ : G → �
   rw [← this]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use `h (Finsupp.single 1 1) (fun _ => by simp) g` as an intermediate fact. Simplify using `using this`.
+-/
 theorem Dominated.eq_zero {G : Type} [Group G] {K : Subgroup G} {ψ : G → ℂ} (h : Dominated K (fun _ => 0) ψ) (g : G) :
     ψ g = 0 := by
   have := h (Finsupp.single 1 1) (fun _ => by simp) g

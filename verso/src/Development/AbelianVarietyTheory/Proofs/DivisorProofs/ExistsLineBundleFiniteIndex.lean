@@ -18,6 +18,9 @@ section General
 
 variable {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z]
 
+/- English proof (translation)
+Establish `h0 : f ≠ 0` using `fun e => h.ne_zero (by rw [e, zero_pow hn.ne'])`. Use `(unitAt_iff h0).2 ⟨regAt_of_pow hx hn h.regAt, regAt_of_pow hx hn ?_⟩` and prove the remaining obligations. Rewrite using `[inv_pow]`. Conclude with `h.inv.regAt`.
+-/
 theorem unitAt_of_pow {x : X} (hx : IsIntegrallyClosed (X.presheaf.stalk x)) {n : ℕ} (hn : 0 < n)
     {f : X.functionField} (h : UnitAt x (f ^ n)) : UnitAt x f := by
   have h0 : f ≠ 0 := fun e => h.ne_zero (by rw [e, zero_pow hn.ne'])
@@ -25,11 +28,17 @@ theorem unitAt_of_pow {x : X} (hx : IsIntegrallyClosed (X.presheaf.stalk x)) {n 
   rw [inv_pow]
   exact h.inv.regAt
 
+/- English proof (translation)
+Rewrite using `[unitAt_iff ((map_ne_zero _).2 h.ne_zero), ← map_inv₀]`. Conclude with `⟨ProjSpace.regAt_fnMap_of j hη h.regAt, ProjSpace.regAt_fnMap_of j hη h.inv.regAt⟩`.
+-/
 theorem unitAt_fnMap (j : Z ⟶ X) (hη : j (genericPoint Z) ⤳ genericPoint X) {z : Z} {t : X.functionField}
     (h : UnitAt (j z) t) : UnitAt z (fnMap j hη t) := by
   rw [unitAt_iff ((map_ne_zero _).2 h.ne_zero), ← map_inv₀]
   exact ⟨ProjSpace.regAt_fnMap_of j hη h.regAt, ProjSpace.regAt_fnMap_of j hη h.inv.regAt⟩
 
+/- English proof (translation)
+Establish `h0 : t ≠ 0` using `(map_ne_zero _).1 h.ne_zero`. Use `(unitAt_iff h0).2 ⟨(regAt_fnMap_iff j hη).1 h.regAt, (regAt_fnMap_iff j hη).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀]`. Conclude with `h.inv.regAt`.
+-/
 theorem unitAt_of_fnMap (j : Z ⟶ X) [IsPreimmersion j] (hη : j (genericPoint Z) ⤳ genericPoint X) {z : Z}
     {t : X.functionField} (h : UnitAt z (fnMap j hη t)) : UnitAt (j z) t := by
   have h0 : t ≠ 0 := (map_ne_zero _).1 h.ne_zero
@@ -37,6 +46,9 @@ theorem unitAt_of_fnMap (j : Z ⟶ X) [IsPreimmersion j] (hη : j (genericPoint 
   rw [map_inv₀]
   exact h.inv.regAt
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `fnMap_surjective j hη f`. Rewrite `h` using `[← map_pow]`. Conclude with `unitAt_fnMap j hη (unitAt_of_pow (hX _).2 hn (unitAt_of_fnMap j hη h))`.
+-/
 theorem unitAt_of_pow_of_preimmersion (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (j : Z ⟶ X) [IsPreimmersion j]
     (hη : j (genericPoint Z) ⤳ genericPoint X) {n : ℕ} (hn : 0 < n) {z : Z} {f : Z.functionField}
     (h : UnitAt z (f ^ n)) : UnitAt z f := by
@@ -44,6 +56,9 @@ theorem unitAt_of_pow_of_preimmersion (hX : ReciprocityTheory.ChartRestriction.G
   rw [← map_pow] at h
   exact unitAt_fnMap j hη (unitAt_of_pow (hX _).2 hn (unitAt_of_fnMap j hη h))
 
+/- English proof (translation)
+Rewrite using `[InducedPull.val_pull_g B j i i' (InducedPull.inf_le B j i i')]`. Conclude with `ProjSpace.fnOf_appLE j hη _ h' h _`.
+-/
 theorem fnOf_pull_g (B : LB X) (j : Z ⟶ X) (hη : j (genericPoint Z) ⤳ genericPoint X) (i i' : (B.pull j).ι)
     (h : genericPoint Z ∈ (B.pull j).U i ⊓ (B.pull j).U i')
     (h' : genericPoint X ∈ B.U (i PUnit.unit) ⊓ B.U (i' PUnit.unit)) :
@@ -51,6 +66,13 @@ theorem fnOf_pull_g (B : LB X) (j : Z ⟶ X) (hη : j (genericPoint Z) ⤳ gener
   rw [InducedPull.val_pull_g B j i i' (InducedPull.inf_le B j i i')]
   exact ProjSpace.fnOf_appLE j hη _ h' h _
 
+/- English proof (translation)
+Use `choose a ha using fun i i' => exists_unit_fnOf_eq (h i i')`. Establish `h0 (i) : G i ≠ 0` using `fun e => (g i).ne_zero (by rw [← hg, e, map_zero])`. Use `⟨a, ⟨hU, fun i => Units.ext (Cartier.fn_ext fun h => ?_), fun i j k => Units.ext (Cartier.fn_ext fun h => ?_)⟩, fun i i' hi => ?_⟩` and prove the remaining obligations. Rewrite using `[LB.val_res, fnOf_resG]`. Use `(ha _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[div_self (h0 _), Units.val_one, map_one]`. Simplify using `only [Units.val_mul, map_mul, LB.val_res, fnOf_resG, ha]`. Conclude with `div_mul_div_cancel₀ (h0 _)`. Establish `h' : genericPoint X ∈ U (i PUnit.unit) ⊓ U (i' PUnit.unit)` using `gen_mem (x := j (genericPoint Z)) (InducedPull.inf_le (LB.mk ι U a) j i i' hi)`. Rewrite using `[fnOf_pull_g (LB.mk ι U a) j hη i i' hi h']`.
+
+Use `Eq.trans ?_ (congrArg (fun t => fnMap j hη t * _) (ha _ _ h')).symm` and prove the remaining obligations. Rewrite using `[map_div₀, hg, hg, div_mul_cancel₀ _ (Units.ne_zero _)]`.
+-/
 theorem exists_lb (j : Z ⟶ X) (hη : j (genericPoint Z) ⤳ genericPoint X) {ι : Type} (U : ι → X.Opens)
     (hU : ⨆ i, U i = ⊤) (G : ι → X.functionField) (g : ι → Z.functionFieldˣ) (hg : ∀ i, fnMap j hη (G i) = g i)
     (h : ∀ i i', ∀ x ∈ U i ⊓ U i', UnitAt x (G i / G i')) :
@@ -75,6 +97,9 @@ end General
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Establish `h : Flat (spMap (algebraMap (𝓞 F) F))` using `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 (IsLocalization.flat F (nonZeroDivisors (𝓞 F))))`. Establish `: Flat V.j` using `MorphismProperty.of_isPullback (P := @Flat) V.pb.flip h`. Take `⟨y, -, hy⟩` from `Flat.generalizingMap V.j (genericPoint_specializes (V.j (genericPoint V.G)))`. Conclude with `hy ▸ (genericPoint_specializes y).map V.j.continuous`.
+-/
 theorem j_gen_specializes (V : Cover Y) : V.j (genericPoint V.G) ⤳ genericPoint V.X := by
   have h : Flat (spMap (algebraMap (𝓞 F) F)) :=
     (HasRingHomProperty.Spec_iff (P := @Flat)).2
@@ -83,10 +108,40 @@ theorem j_gen_specializes (V : Cover Y) : V.j (genericPoint V.G) ⤳ genericPoin
   obtain ⟨y, -, hy⟩ := Flat.generalizingMap V.j (genericPoint_specializes (V.j (genericPoint V.G)))
   exact hy ▸ (genericPoint_specializes y).map V.j.continuous
 
+/- English proof (translation)
+The claim follows from `have h : IsPreimmersion (spMap (algebraMap (𝓞 F) F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F)) MorphismProperty.of_isPullback (P := @IsPreimmersion) V.pb.flip h`.
+-/
 theorem isPreimmersion_j (V : Cover Y) : IsPreimmersion V.j :=
   have h : IsPreimmersion (spMap (algebraMap (𝓞 F) F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))
   MorphismProperty.of_isPullback (P := @IsPreimmersion) V.pb.flip h
 
+/- English proof (translation)
+Introduce `F _ _ C Y A M L m hm ⟨r, hL, hr, hfin⟩`. Use `M.ar.isNoetherian` as an intermediate fact. Use `M.ar.isIntegral` as an intermediate fact. Establish `hcov : (Set.univ : Set M.X) ⊆ ⋃ i, (L.U i : Set M.X)` using `fun x _ =>`. Establish `⟨i, hi⟩` using `Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ x))`.
+
+Use the proof step `Set.mem_iUnion.mpr ⟨i, hi⟩`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun i => (L.U i : Set M.X)) (fun i => (L.U i).isOpen) hcov`. Use `⟨T.image fun i => (r fun _ => i : Y.Fn), fun V ρ hρ hS => ?_⟩` and prove the remaining obligations. Take `⟨hπ, hφ⟩` from `V.φ_eq_fnMap`. Establish `hj` using `j_gen_specializes V`.
+
+Establish `hM` using `SmallSec.j_gen_specializes M`. Use `isPreimmersion_j V` as an intermediate fact. Establish `hpt (x : V.G) : ρ (V.j x) = M.j (V.π x)` using `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun f : V.G ⟶ M.X => f x) hρ).trans (Scheme.Hom.comp_apply _ _ _))`. Establish `hρη : ρ (genericPoint V.X) ⤳ genericPoint M.X`. Use `((genericPoint_specializes (V.j (genericPoint V.G))).map ρ.continuous).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hpt]`. Conclude with `(hπ.map M.j.continuous).trans hM`. Establish `hcomp (t : M.X.functionField) : fnMap V.j hj (fnMap ρ hρη t) = V.φ (fnMap M.j hM t)`. Rewrite using `[hφ, ← ProjSpace.fnMap_comp V.j ρ hj hρη (ProjSpace.comp_genericPoint_specializes _ _ hj hρη), ← ProjSpace.fnMap_comp V.π M.j hπ hM (ProjSpace.comp_genericPoint_specializes _ _ hπ hM)]`. Conclude with `ProjSpace.fnMap_congr hρ _ _ t`.
+
+Use `choose g₀ hg₀ using fun i : T => hS _ (Finset.mem_image_of_mem _ i.2)`. Establish `h0 (i : T) : g₀ i ≠ 0` using `fun e => (map_ne_zero V.φ).2 (Units.ne_zero _) ((hg₀ i).symm.trans (by rw [e, zero_pow hm.ne']))`. Use `choose G hG using fun i => fnMap_surjective V.j hj (g₀ i)`. Take `⟨a, hB, hrat⟩` from `exists_lb V.j hj (fun i : T => ρ ⁻¹ᵁ L.U i) (eq_top_iff.2 fun x _ => by`. Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ (ρ x)))`.
+
+Conclude with `Opens.mem_iSup.2 ⟨⟨i, hi⟩, hx⟩) G (fun i => Units.mk0 (g₀ i) (h0 i)) hG (fun i i' x hx => by`. Establish `hx' : ρ x ∈ L.U i ⊓ L.U i'` using `hx`. Establish `h'` using `gen_mem hx'`. Establish `h'' : genericPoint Y.X ∈ (L.pull M.j).U (fun _ => i) ⊓ (L.pull M.j).U fun _ => i'` using `⟨Set.mem_iInter.2 fun _ => hM.mem_open (L.U i).isOpen h'.1, Set.mem_iInter.2 fun _ => hM.mem_open (L.U i').isOpen h'.2⟩`. Use `unitAt_of_pow (V.normal x).2 hm ?_` and prove the remaining obligations.
+
+Establish `e : (G i / G i') ^ m = fnMap ρ hρη (fnOf _ h' (L.g i i').val)`. Apply `(fnMap V.j hj).injective` to reduce the goal to its premises. Rewrite using `[hcomp, ← fnOf_pull_g L M.j hM (fun _ => i) (fun _ => i') h'' h', map_pow, map_div₀, hG, hG, div_pow, hg₀, hg₀, ← map_div₀, hr.isRatSec _ _ h'', mul_div_cancel_right₀ _ (Units.ne_zero _)]`. Rewrite using `[e]`. Conclude with `unitAt_fnMap ρ hρη (unitAt_fnOf hx' _ _))`.
+
+Establish `hpow (i : T) (y : Y.X) : (V.φ (genAt A.D y) * g₀ i) ^ m = V.φ (((eqn A.D y)⁻¹ ^ m * r (fun _ => i) : Y.Fnˣ) : Y.Fn)`. Rewrite using `[mul_pow, hg₀, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Establish `hu (i : T) (x : V.G) (hx : ρ (V.j x) ∈ L.U i) : UnitAt (V.π x) (((eqn A.D (V.π x))⁻¹ ^ m * r (fun _ => i) : Y.Fnˣ) : Y.Fn)`. Rewrite `hx` using `[hpt]`. Use `((Base.isEqn_eqn A.D (V.π x)).nsmul m).iff_unitAt.1 (hr.isEqn (fun _ => i) (V.π x) (Set.mem_iInter.2 fun _ => hx))` as an intermediate fact.
+
+Rewrite `this` using `[div_eq_inv_mul, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← inv_pow]`. Then use the resulting hypothesis. Establish `hu' (i : T) (x : V.G) (hx : ρ (V.j x) ∈ L.U i) : UnitAt x (V.φ (genAt A.D (V.π x)) * g₀ i)`. Use `unitAt_of_pow_of_preimmersion V.normal V.j hj hm ?_` and prove the remaining obligations. Rewrite using `[hpow, hφ]`. Conclude with `unitAt_fnMap V.π hπ (hu i x hx)`.
+
+Use `⟨_, hB, _, hrat, fun i x hx => hu' _ x (Set.mem_iInter.1 hx PUnit.unit), fun v e y z yt i e₁ e₂ hi => ?_⟩` and prove the remaining obligations. Establish `H` using `hfin v e y (yt ≫ ρ) (fun _ => (i PUnit.unit).1) (by rw [← Category.assoc, e₂, Category.assoc, hρ, ← Category.assoc, e₁]) hi`. Establish `hmem : ρ (V.j (below z)) ∈ L.U (i PUnit.unit).1`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ ρ ⁻¹ᵁ L.U (i PUnit.unit).1`. Rewrite using `[← e₂]`.
+
+Conclude with `hi (Set.mem_univ _)`. Conclude with `h1`. Establish `hb : V.π (below z) = below y.1`. Rewrite using `[← e₁]`. Both sides reduce to the same expression.
+
+Establish `k₁` using `hu _ _ hmem`. Establish `k₂` using `hu' _ _ hmem`. Establish `k₃` using `valAt_fnMap V.π hπ z k₁.regAt`. Rewrite `k₃` using `[← hφ, ← hpow, valAt_pow k₂.regAt, e₁, hb]`. Rewrite `H` using `[← k₃, map_pow, Real.log_pow]`.
+
+Conclude with `mul_left_cancel₀ (Nat.cast_ne_zero.2 hm.ne') H`.
+-/
 theorem exists_root : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (M : TrueGeo.Model Y) (L : LB M.X) (m : ℕ), 0 < m → LineNorm.Add.GivenBy A.D (eqn A.D) A.lg M L m → ∃ S : Finset Y.Fn, ∀ (V : Cover Y) (ρ : V.X ⟶ M.X), V.j ≫ ρ = V.π ≫ M.j → (∀ a ∈ S, ∃ g : V.G.functionField, g ^ m = V.φ a) → ∃ B : LB V.X, B.IsLB ∧ ∃ r, V.FinInd A B r := by
   classical
   intro F _ _ C Y A M L m hm ⟨r, hL, hr, hfin⟩

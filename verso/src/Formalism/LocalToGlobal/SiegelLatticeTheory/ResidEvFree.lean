@@ -18,6 +18,13 @@ section Cyc
 
 open NumberField Ideal
 
+/- English proof (translation)
+Introduce `hd`. Establish `hle : p ≤ N` using `Nat.le_of_dvd hN hd`. Break down `Nat.lt_or_ge N 2 with h2 | h2` into its components or cases. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1 : 1 % N = 1` using `Nat.mod_eq_of_lt h2`. Break down `Nat.lt_or_ge p N with hl | hl` into its components or cases. Rewrite `h` using `[Nat.mod_eq_of_lt hl, h1]`. Conclude with `hp.one_lt.ne' h`. Establish `hpN : p = N` using `le_antisymm hle hl`.
+
+Rewrite `h` using `[hpN, Nat.mod_self, h1]`. Conclude with `absurd h (by norm_num)`.
+-/
 theorem not_dvd_of_mod {N p : ℕ} (hN : 0 < N) (hp : p.Prime) (h : p % N = 1 % N) : ¬ p ∣ N := by
   intro hd
   have hle : p ≤ N := Nat.le_of_dvd hN hd
@@ -32,6 +39,19 @@ theorem not_dvd_of_mod {N p : ℕ} (hN : 0 < N) (hp : p.Prime) (h : p % N = 1 % 
       rw [hpN, Nat.mod_self, h1] at h
       exact absurd h (by norm_num)
 
+/- English proof (translation)
+Establish `: NeZero N` using `⟨hN.ne'⟩`. Establish `hpF : Fact p.Prime` using `⟨hp⟩`. Establish `hm : ¬ p ∣ N` using `not_dvd_of_mod hN hp h`. Establish `hord : orderOf (p : ZMod N) = 1`. Rewrite using `[orderOf_eq_one_iff]`.
+
+Use `(ZMod.natCast_eq_natCast_iff' p 1 N).mpr h` as an intermediate fact. Simplify using `using this`. Establish `hCyc : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ)`. Establish `: NeZero ((N : ℕ) : ℚ)` using `⟨by exact_mod_cast hN.ne'⟩`. Use `CyclotomicField.isCyclotomicExtension N ℚ` and compare the differences between its conclusion and the goal.
+
+Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`. Establish `hL : ∀ (Q : Ideal (𝓞 (CyclotomicField N ℚ))) [Q.IsPrime] [Q.LiesOver (span {(p : ℤ)})], Q.ramificationIdx ℤ = 1 ∧ Q.inertiaDeg ℤ = 1`. Introduce `Q _ _`. Conclude with `⟨IsCyclotomicExtension.Rat.ramificationIdx_eq_of_not_dvd p (CyclotomicField N ℚ) Q hm, (IsCyclotomicExtension.Rat.inertiaDeg_eq_of_not_dvd p (CyclotomicField N ℚ) Q hm).trans hord⟩`.
+
+Establish `hK : ∀ P : (span {(p : ℤ)}).primesOver (𝓞 K), P.1.ramificationIdx ℤ = 1 ∧ P.1.inertiaDeg ℤ = 1`. Introduce and unpack `⟨P, hP1, hP2⟩`. Take `⟨Q, hQ1, hQ2⟩` from `(inferInstance : Nonempty (P.primesOver (𝓞 (CyclotomicField N ℚ)))).some`. Establish `: Q.LiesOver (span {(p : ℤ)})` using `LiesOver.trans Q P _`. Establish `he` using `ramificationIdx_tower (R := ℤ) P Q`.
+
+Establish `hf` using `inertiaDeg_tower (R := ℤ) P Q`. Take `⟨h1, h2⟩` from `hL Q`. Rewrite `he` using `[h1]`. Rewrite `hf` using `[h2]`. Conclude with `⟨Nat.eq_one_of_mul_eq_one_right he.symm, Nat.eq_one_of_mul_eq_one_right hf.symm⟩`.
+
+Establish `: Fintype ((span {(p : ℤ)}).primesOver (𝓞 K))` using `(Algebra.QuasiFinite.finite_primesOver (span {(p : ℤ)})).fintype`. Establish `hs` using `sum_ramification_inertia_eq_finrank (span {(p : ℤ)}) (𝓞 K)`. Establish `hs1 : ∑ q : (span {(p : ℤ)}).primesOver (𝓞 K), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ = ∑ _q : (span {(p : ℤ)}).primesOver (𝓞 K), 1` using `Finset.sum_congr rfl (fun q _ => by rw [(hK q).1, (hK q).2])`. Rewrite `hs` using `[hs1, Finset.sum_const, smul_eq_mul, mul_one, Finset.card_univ]`. Rewrite using `[← Nat.card_coe_set_eq, Nat.card_eq_fintype_card, hs, RingOfIntegers.rank]`.
+-/
 theorem cycSplit (N p : ℕ) (K : Type) [Field K] [NumberField K] [Algebra K (CyclotomicField N ℚ)]
     (hN : 0 < N) (hp : p.Prime) (h : p % N = 1 % N) :
     (Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 K)).ncard = Module.finrank ℚ K := by
@@ -71,6 +91,9 @@ theorem cycSplit (N p : ℕ) (K : Type) [Field K] [NumberField K] [Algebra K (Cy
   rw [hs1, Finset.sum_const, smul_eq_mul, mul_one, Finset.card_univ] at hs
   rw [← Nat.card_coe_set_eq, Nat.card_eq_fintype_card, hs, RingOfIntegers.rank]
 
+/- English proof (translation)
+Introduce `N p K _ _ _ hN hp h` and use `cycSplit N p K hN hp h`.
+-/
 theorem cycSplit_holds : CycSplit := fun N p K _ _ _ hN hp h => cycSplit N p K hN hp h
 
 end Cyc
@@ -79,6 +102,11 @@ end
 
 open Ideal NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Establish `hp` using `D.host.g_prime i`. Use `S.splitsCompl_of_ncard _ _ hp ?_` and prove the remaining obligations. Establish `h` using `D.nd.g_split i`. Establish `e` using `Formalism.MainNotions.J.ncard_places D.host.E (D.host.g i) hp`. Use `Formalism.MainNotions.J.pI_max (D.host.g i) hp` as an intermediate fact.
+
+Rewrite using `[← IsDedekindDomain.coe_primesOverFinset (Formalism.MainNotions.J.pI_ne_bot _ hp) (𝓞 D.host.E), Set.ncard_coe_finset, ← e]`. Conclude with `h`.
+-/
 theorem splitsE_g (D : D7) (i : Fin 2) : S.SplitsCompl D.host.E (D.host.g i) := by
   have hp := D.host.g_prime i
   refine S.splitsCompl_of_ncard _ _ hp ?_
@@ -88,12 +116,18 @@ theorem splitsE_g (D : D7) (i : Fin 2) : S.SplitsCompl D.host.E (D.host.g i) := 
   rw [← IsDedekindDomain.coe_primesOverFinset (Formalism.MainNotions.J.pI_ne_bot _ hp) (𝓞 D.host.E), Set.ncard_coe_finset, ← e]
   exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun x _ i => ⟨S.root_discriminant_ge_two _ (UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _), fun u => S.splitsCompl_of_ncard _ _ ((Fm.D x i).mem u).A.T_prime (Formalism.L2.GlobalTheoryTheory.FiltrationCocycleLiftCriterion.split_clause _ cycSplit_holds _ ((Fm.D x i …`.
+-/
 theorem residEv_free {eps : ℝ} (Fm : FamP eps) : S.ResidEv Fm :=
   ⟨0, fun x _ i => ⟨S.root_discriminant_ge_two _ (UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _),
     fun u => S.splitsCompl_of_ncard _ _ ((Fm.D x i).mem u).A.T_prime
       (Formalism.L2.GlobalTheoryTheory.FiltrationCocycleLiftCriterion.split_clause _ cycSplit_holds _ ((Fm.D x i).mem u).A.T_prime (S.level_norm_one_mod_conductor _ u)).2,
     splitsE_g _ 0, splitsE_g _ 1, S.discriminant_eq_base_sq _ (UnusedSlot33.ramification_two_and_conjugation_at_q_and_d _)⟩⟩
 
+/- English proof (translation)
+The claim follows from `Closed.of_class fun Fm _ _ => residEv_free Fm`.
+-/
 theorem residEv_closed_free (𝒞 : FamClass) : Closed 𝒞 fun Fm _ => S.ResidEv Fm :=
   Closed.of_class fun Fm _ _ => residEv_free Fm
 

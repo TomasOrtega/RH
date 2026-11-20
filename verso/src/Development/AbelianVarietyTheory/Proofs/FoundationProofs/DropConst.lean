@@ -8,6 +8,11 @@ namespace GlobalTheory.KummerEisensteinGalois.UnitPieceMu
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Rewrite using `[sum_antidiag s (fun A d => if ¬ (p : ℤ) ∣ A ∧ ¬ (p : ℤ) ∣ d ∧ A ≡ a₀ [ZMOD N] then (d.sign : K) * (ψ (A : ZMod (p ^ m)) * (A : K) ^ (k - 2)) else 0)]`. Unfold `ffMu`. Use `sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd0 : (0 : ℤ) < d` using `by exact_mod_cast Nat.pos_of_mem_divisors hd`. Rewrite using `[Int.sign_neg, Int.sign_eq_one_of_pos hd0]`.
+
+Simplify using `only [dvd_neg, Int.natCast_dvd_natCast, Int.cast_neg, Int.cast_natCast, Int.cast_one]`. Apply the tactic sequence `by_cases h1 : p ∣ d <;> by_cases h2 : p ∣ s / d <;>`. Apply the tactic sequence `by_cases h3 : ((s / d : ℕ) : ℤ) ≡ a₀ [ZMOD N] <;> by_cases h4 : -((s / d : ℕ) : ℤ) ≡ a₀ [ZMOD N] <;>`. Simplify using `[h1, h2, h3, h4, sub_eq_add_neg, -Nat.cast_div_charZero, -Int.natCast_div, -Int.natCast_ediv]`.
+-/
 theorem ffMu_eq (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (a₀ : ℤ) (s : ℕ) :
     ffMu N p m k ψ a₀ s = ∑ q ∈ (s : ℤ).divisorsAntidiag,
       if ¬ (p : ℤ) ∣ q.1 ∧ ¬ (p : ℤ) ∣ q.2 ∧ q.1 ≡ a₀ [ZMOD N] then
@@ -23,6 +28,11 @@ theorem ffMu_eq (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (a₀ : ℤ)
     by_cases h3 : ((s / d : ℕ) : ℤ) ≡ a₀ [ZMOD N] <;> by_cases h4 : -((s / d : ℕ) : ℤ) ≡ a₀ [ZMOD N] <;>
     simp [h1, h2, h3, h4, sub_eq_add_neg, -Nat.cast_div_charZero, -Int.natCast_div, -Int.natCast_ediv]
 
+/- English proof (translation)
+Rewrite using `[sum_antidiag s (fun A d => if ¬ (p : ℤ) ∣ A ∧ ¬ (p : ℤ) ∣ d ∧ A ≡ b₀ [ZMOD N] then (d.sign : K) * ψ⁻¹ (d : ZMod (p ^ m)) else 0)]`. Unfold `eeMu`. Use `sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd0 : (0 : ℤ) < d` using `by exact_mod_cast Nat.pos_of_mem_divisors hd`. Rewrite using `[Int.sign_neg, Int.sign_eq_one_of_pos hd0]`.
+
+Simplify using `only [dvd_neg, Int.natCast_dvd_natCast, Int.cast_neg, Int.cast_natCast, Int.cast_one]`. Apply the tactic sequence `by_cases h1 : p ∣ d <;> by_cases h2 : p ∣ s / d <;>`. Apply the tactic sequence `by_cases h3 : ((s / d : ℕ) : ℤ) ≡ b₀ [ZMOD N] <;> by_cases h4 : -((s / d : ℕ) : ℤ) ≡ b₀ [ZMOD N] <;>`. Simplify using `[h1, h2, h3, h4, sub_eq_add_neg, -Nat.cast_div_charZero, -Int.natCast_div, -Int.natCast_ediv]`.
+-/
 theorem eeMu_eq (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) (b₀ : ℤ) (s : ℕ) :
     eeMu N p m ψ b₀ s = ∑ q ∈ (s : ℤ).divisorsAntidiag,
       if ¬ (p : ℤ) ∣ q.1 ∧ ¬ (p : ℤ) ∣ q.2 ∧ q.1 ≡ b₀ [ZMOD N] then
@@ -38,6 +48,19 @@ theorem eeMu_eq (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) (b₀ : ℤ) (
     by_cases h3 : ((s / d : ℕ) : ℤ) ≡ b₀ [ZMOD N] <;> by_cases h4 : -((s / d : ℕ) : ℤ) ≡ b₀ [ZMOD N] <;>
     simp [h1, h2, h3, h4, sub_eq_add_neg, -Nat.cast_div_charZero, -Int.natCast_div, -Int.natCast_ediv]
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Establish `hk1 : k - 1 ≠ 1` using `by omega`. Simplify using `only [eisF, const0, if_true, if_neg hk1]`.
+
+Rewrite using `[sum_zero_left p m hm ψ hψ]`. Simplify using `[coefPos]`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `e : ∀ v ∈ primeTo p m, ∀ z : ℤ, eisF 1 (N * p ^ m) ζ (N * v.val + (p : ℤ) ^ m * y) z 0 = ((1 / 2 - frc (N * p ^ m) (N * v.val + (p : ℤ) ^ m * y) : ℚ) : K)`.
+
+Introduce `v hv z`. Establish `: ¬ ((N * p ^ m : ℕ) : ℤ) ∣ N * v.val + (p : ℤ) ^ m * y`. Introduce `h`. Establish `h1 : (p : ℤ) ^ m ∣ N * v.val + (p : ℤ) ^ m * y` using `(show (p : ℤ) ^ m ∣ ((N * p ^ m : ℕ) : ℤ) by push_cast; exact dvd_mul_left _ _).trans h`. Establish `h2 : (p : ℤ) ∣ (N : ℤ) * v.val`.
+
+Use `dvd_sub h1 (dvd_mul_right ((p : ℤ) ^ m) y)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Conclude with `(dvd_pow_self (p : ℤ) (by omega)).trans this`. Break down `(Nat.prime_iff_prime_int.mp hp).dvd_or_dvd h2 with h3 | h3` into its components or cases. Conclude with `hpN (Int.natCast_dvd_natCast.mp h3)`.
+
+Conclude with `(mem_filter.mp hv).2 (Int.natCast_dvd_natCast.mp h3)`. Simplify using `only [eisF, const0, if_true, if_neg this]`. Rewrite using `[sum_congr rfl fun u _ => sum_congr rfl fun a _ => sum_congr rfl fun v hv => sum_congr rfl fun b _ => by`. Rewrite using `[e v hv], sum_zero_right p m hm ψ hψ]`. Simplify using `[coefPos]`.
+
+Simplify using `only [eisF, if_neg hi, if_neg hj]`.
+-/
 theorem drop_const (p m N k : ℕ) [Fact p.Prime] (hm : 1 ≤ m) (hpN : ¬ p ∣ N) (hk : 3 ≤ k)
     (ψ : DirichletCharacter K (p ^ m)) (hψ : ψ.IsPrimitive) (ζ : K) (x y y₁ y₂ : ℤ) (i j : ℕ) :
     ∑ u ∈ primeTo p m, ∑ a : ZMod (p ^ m), ∑ v ∈ primeTo p m, ∑ b : ZMod (p ^ m), ψ (u * b - a * v) *

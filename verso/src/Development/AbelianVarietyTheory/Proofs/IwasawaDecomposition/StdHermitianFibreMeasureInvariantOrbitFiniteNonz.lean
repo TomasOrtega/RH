@@ -18,11 +18,17 @@ section Local
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Use `IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.map (AlgHom.id R R) σ).toLinearMap` as an intermediate fact. Conclude with `this`.
+-/
 theorem continuous_sigR [TopologicalSpace R] [IsTopologicalRing R] : Continuous (sigR R σ) := by
   have := IsModuleTopology.continuous_of_linearMap
     (Algebra.TensorProduct.map (AlgHom.id R R) σ).toLinearMap
   exact this
 
+/- English proof (translation)
+Establish `h1 : Continuous (Algebra.trace R (R ⊗[F] E))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2` using `continuous_sigR R σ`. Unfold `qR hR Formalism.UG.hform`. Use `continuous_const.mul (h1.comp ?_)` and prove the remaining obligations. Use `fun_prop`.
+-/
 theorem continuous_qR [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous fun X : Fin 1 → Fin M → R ⊗[F] E => qR R σ J (X 0) := by
   have h1 : Continuous (Algebra.trace R (R ⊗[F] E)) := IsModuleTopology.continuous_of_linearMap _
@@ -31,12 +37,18 @@ theorem continuous_qR [TopologicalSpace R] [IsTopologicalRing R] :
   refine continuous_const.mul (h1.comp ?_)
   fun_prop
 
+/- English proof (translation)
+The claim follows from `(isClosed_eq (continuous_qR R σ J) continuous_const).measurableSet`.
+-/
 theorem measurableSet_fibre [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     [SecondCountableTopology R] (c : R) :
     MeasurableSet {X : Fin 1 → Fin M → R ⊗[F] E | qR R σ J (X 0) = c} :=
   (isClosed_eq (continuous_qR R σ J) continuous_const).measurableSet
 
 omit [FiniteDimensional F E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `X a`. Use `show (HA.mat R σ J g).val.mulVec (X a) = _`. Simplify using `[lrAct, Matrix.one_apply]`.
+-/
 theorem smul_eq_lrAct {n : ℕ} (g : HA R σ J) :
     (fun X : Fin n → Fin M → R ⊗[F] E => g • X) = lrAct (HA.mat R σ J g).val 1 := by
   funext X a
@@ -45,6 +57,19 @@ theorem smul_eq_lrAct {n : ℕ} (g : HA R σ J) :
 
 end Local
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM d b s M J x β ν hJ hβ hx ⟨mi, mv, hi, hv, hP⟩`. Take `⟨nI, nV⟩` from `nice_ainf_fv F`. Take `⟨qloc, gloc⟩` from `q_and_unitary_local_components F E σ M J`. Establish `hβu : IsUnit β` using `Ne.isUnit hβ`. Establish `bI` using `GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ (Ainf F) nI M J _ _ _ mi s.haar_nuI (hβu.map _) hi`.
+
+Establish `bV` using `fun v => GlobalTheory.T.fibreFamily_hermitian_quadratic_form_at_unit_props F E σ (Fv F v) (nV v) M J _ _ _ (mv v) (s.haar_nuV v) (hβu.map _) (hv v)`. Establish `pI` using `GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hCM (Ainf F) nI M J x β _ _ mi hJ hβ hx s.haar_lamI s.haar_nuI hi`. Establish `pV` using `fun v => GlobalTheory.T.fibreMeasure_invariant_supported_orbit_ne_zero F E σ hCM (Fv F v) (nV v) M J x β _ _ (mv v) hJ hβ hx (s.haar_lamV v) (s.haar_nuV v) (hv v)`. Take `⟨hfin, hne, huniq, hsupp⟩` from `GlobalTheory.T.restrictedProductMeasure_basic_properties F E d b 1 M ν mi mv hP`. Establish `h1 : ν {X | qR (AF F) σ J (X 0) ≠ algebraMap F (AF F) β} = 0`.
+
+Use `hsupp {X | qR (Ainf F) σ J (X 0) = algebraMap F _ β} (fun v => {X | qR (Fv F v) σ J (X 0) = algebraMap F _ β}) (measurableSet_fibre _ σ J _) (fun v => measurableSet_fibre _ σ J _) bI.1 (fun v => (bV v).1)` as an intermediate fact. Use `measure_mono_null (fun X hX => ?_) this` and prove the remaining obligations. Conclude with `fun h => hX ((qloc (X 0) β).2 h)`. Use `⟨h1, ?_, ?_, hfin, hne pI.2.2 fun v => (pV v).2.2⟩` and prove the remaining obligations. Introduce `g`.
+
+Take `⟨⟨gi, hgi⟩, hgv⟩` from `gloc g`. Establish `hT` using `GlobalTheory.T.isRestrictedProductTupleMeasure_map_leftRightAction F E d b 1 M ν mi mv (HA.mat (AF F) σ J g) 1 hP`. Establish `e1 : mi.map (lrAct ((HA.mat (AF F) σ J g).val.map prInf) ((1 : GL (Fin 1) (AF F ⊗[F] E)).val.map prInf)) = mi`. Rewrite using `[← hgi, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), ← smul_eq_lrAct]`. Conclude with `pI.1 gi`.
+
+Establish `e2 : (fun v => (mv v).map (lrAct ((HA.mat (AF F) σ J g).val.map (prV v)) ((1 : GL (Fin 1) (AF F ⊗[F] E)).val.map (prV v)))) = mv`. Use function extensionality and compare the values at `v`. Take `⟨gv, hgv⟩` from `hgv v`. Rewrite using `[← hgv, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), ← smul_eq_lrAct]`. Conclude with `(pV v).1 gv`.
+
+Rewrite `hT` using `[e1, e2, Units.val_one, ← smul_eq_lrAct]`. Conclude with `huniq _ hT`. Use `measure_mono_null (fun X hX => ?_) h1` and prove the remaining obligations. Conclude with `fun h => hX (GlobalTheory.T.witt_theorem_adelic_one_vector F E σ hCM M J x β hJ hβ hx X h)`.
+-/
 theorem stdX_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (β : F) (ν : Measure (Fin 1 → Fin M → AF F ⊗[F] E)), IsHermND σ J → β ≠ 0 → hE σ J (x 0) (x 0) = algebraMap F E β → IsStdX s σ J β ν → ν {X | qR (AF F) σ J (X 0) ≠ algebraMap F (AF F) β} = 0 ∧ IsInvTup (AF F) σ J ν ∧ OnOrbit (AF F) σ J x ν ∧ IsFiniteMeasureOnCompacts ν ∧ ν ≠ 0 := by
   intro F E _ _ _ _ _ σ hCM d b s M J x β ν hJ hβ hx ⟨mi, mv, hi, hv, hP⟩
   obtain ⟨nI, nV⟩ := nice_ainf_fv F

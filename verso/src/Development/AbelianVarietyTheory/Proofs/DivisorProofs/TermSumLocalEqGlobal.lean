@@ -32,6 +32,17 @@ section Cover
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Use `haveI : IsLocallyNoetherian V.X := V.ar.isLocallyNoetherian`. Use `haveI : IsNoetherian V.X := V.ar.isNoetherian`. Take `⟨r, hr, h1, hmult⟩` from `GlobalTheory.T.local_height_bounded_by_prime_weights F Y V M lg hM S b hb hlg`. Establish `key (z : V.X) : ∃ (p : ℕ) (d : T → ℝ), ∑ t, d t = 0 ∧ ((M.div hr).mult z ≠ 0 → ∀ t, ∃ (_ : Fact p.Prime) (Z : Scheme.{0}) (i : Z ⟶ V.X) (_ : IsClosedImmersion i) (_ : IsIntegral Z) (_ : Algebra (ZMod p) Γ(Z, ⊤)), i (genericPoint Z) = z ∧ topologicalKrullDim Z = Y.dim ∧ d t = inte …`. Distinguish the cases in `hz : (M.div hr).mult z = 0`.
+
+Conclude with `⟨0, 0, by simp, fun h => absurd hz h⟩`. Choose the witnesses or unpack the hypotheses as in `⟨p, hpS, hpos⟩ : ∃ p ∈ S, 0 < Scheme.ord ((p : V.X.functionField)) z := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `hz ?_` and prove the remaining obligations.
+
+Use `hmult z` as an intermediate fact. Rewrite using `[Finset.sum_eq_zero fun l hl => by`. Rewrite `this` using `[le_antisymm (hc l hl) ((GlobalTheory.T.prime_divisors_effective_finite_disjoint _ V.X V.p _ V.ar l (hb l hl).1).1 z), Int.cast_zero, mul_zero]]`. Conclude with `abs_nonpos_iff.1 this` after adjusting the coercions. Use `haveI := Fact.mk (hb p hpS).1`.
+
+Take `⟨Z, i, hi, hZ, hA, e₁, e₂⟩` from `GlobalTheory.T.exists_integral_subscheme_prime_fibre _ V.X V.p _ V.ar p z hpos`. Conclude with `⟨p, fun t => interNum (ZMod p) (structureModule Z) fun j => (N t j).B.pull i, by beta_reduce; exact_mod_cast h p hpS Z i e₂, fun _ t => ⟨‹_›, Z, i, hi, hZ, hA, e₁, e₂, rfl⟩⟩`. Use `choose q d hd₀ hd using key`. Establish `hfin : (Function.support (M.div hr).mult).Finite` using `(M.div hr).finite_support_mult`. Establish `e (t : T) : num (Fin.cons (cl M) fun j => cl (N t j)) = ∑ z ∈ hfin.toFinset, ((M.div hr).mult z : ℝ) * d z t * Real.log (q z)`.
+
+Rewrite using `[GlobalTheory.T.height_of_rational_section_via_divisor hP _ V.X V.p _ V.ar num hn M r hr h1 (N t) q (fun z => d z t) fun z hz => hd z hz t]`. Conclude with `finsum_eq_sum_of_support_subset _ fun z hz => hfin.mem_toFinset.2 fun h0 => hz (by simp [h0])`. Rewrite using `[Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun z _ => by rw [← Finset.sum_mul, ← Finset.mul_sum, hd₀, mul_zero, zero_mul]`.
+-/
 theorem sum_num_cons_eq_zero (hP : Hypotheses2) (V : Cover Y) (num : Form (Cl V.p) Y.dim) (hn : IsArForm Y.dim num)
     (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ)
     (hM : Norms V M (fun _ => 1) (fun _ _ => 0) lg) (S : Finset ℕ) (b : ℕ → ℝ) (hb : ∀ p ∈ S, p.Prime ∧ 0 ≤ b p)
@@ -70,6 +81,13 @@ theorem sum_num_cons_eq_zero (hP : Hypotheses2) (V : Cover Y) (num : Form (Cl V.
   rw [Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]
   exact Finset.sum_eq_zero fun z _ => by rw [← Finset.sum_mul, ← Finset.mul_sum, hd₀, mul_zero, zero_mul]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨V₀, fun _ _ _ _ p hp => absurd hp (Finset.notMem_empty p)⟩`. Consider the case `insert p S hp ih`. Take `⟨V₁, h₁⟩` from `h p (Finset.mem_insert_self _ _)`. Take `⟨V₂, h₂⟩` from `ih fun q hq => h q (Finset.mem_insert_of_mem hq)`.
+
+Take `⟨V, π₁, π₂, e₁, e₂, l₁, l₂⟩` from `GlobalTheory.T.common_refinement_covers F Y V₁ V₂`. Establish `tr : ∀ (V' W : Cover Y) (π : V'.X ⟶ V.X) (ρ : V.X ⟶ W.X), Lies V' V π → Lies V W ρ → Lies V' W (π ≫ ρ)`. Introduce and unpack `V' W π ρ ⟨g, a, b⟩ ⟨g', a', b'⟩`. Conclude with `⟨g ≫ g', by rw [Category.assoc, a', ← Category.assoc, a, Category.assoc], by rw [Category.assoc, b', b]⟩`. Use `⟨V, fun V' π e l q hq => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases. Conclude with `h₁ V' (π ≫ π₁) (by rw [Category.assoc, e₁, e]) (tr _ _ _ _ l l₁)`. Conclude with `h₂ V' (π ≫ π₂) (by rw [Category.assoc, e₂, e]) (tr _ _ _ _ l l₂) q hq`.
+-/
 theorem exists_cover_forall (V₀ : Cover Y) (S : Finset ℕ)
     (Q : ℕ → ∀ V' : Cover Y, Prop)
     (h : ∀ p ∈ S, ∃ V : Cover Y, ∀ (V' : Cover Y) (π : V'.X ⟶ V.X), π ≫ V.p = V'.p → Lies V' V π → Q p V') :
@@ -88,6 +106,29 @@ theorem exists_cover_forall (V₀ : Cover Y) (S : Finset ℕ)
     · exact h₁ V' (π ≫ π₁) (by rw [Category.assoc, e₁, e]) (tr _ _ _ _ l l₁)
     · exact h₂ V' (π ≫ π₂) (by rw [Category.assoc, e₂, e]) (tr _ _ _ _ l l₂) q hq
 
+/- English proof (translation)
+Establish `hC` using `hP.p4`. Take `⟨Q₀, -, -, hQ₀, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M`. Take `⟨V, hF⟩` from `exists_cover_forall (Cover.ofModel Q₀ hQ₀) S (fun p V' => ∃ (N : ℕ) (ε : Fin N ≃ κ), ∀ (L : Fin N → LB V'.X) (hL : ∀ i, (L i).IsLB) (m : ℕ), (∀ i, NormsAt V' (L i) p ⊤ (fun x => genAt (A (s (ε i))).D x ^ m) fun v e y => m * (A (s (ε i))).lg v e y) → ∀ (Z : Scheme.{0}) [IsIntegral …`. Take `⟨N, ε, V, hV⟩` from `hfl p hp`. Conclude with `⟨V, fun V' π h₁ h₂ => ⟨N, ε, hV V' π h₁ h₂⟩⟩`.
+
+Take `⟨V', π, L', d, hπ, hl, hd, hL', hΦ⟩` from `GlobalTheory.T.exists_cover_induced_metrics_arith hC F Y M V ι A L m Ψ hI hΨ`. Use `(mul_eq_zero.1 (show d * _ = 0 from ?_)).resolve_left hd` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(d • Ψ) _ = 0`. Generalize the expression as in `d • Ψ = Φ at hΦ`. Take `⟨num, hn, -⟩` from `GlobalTheory.T.arith_intersection_form_exists hC _ _ V'.p _ V'.ar`.
+
+Take `⟨rt, rd, -, -⟩` from `GlobalTheory.T.arith_class_form_properties hC _ _ V'.p _ V'.ar num hn`. Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `add P Q hP hQ => rw [mul_add, mul_add, map_add, hP, hQ, add_zero]`. Consider the case `monomial u a`. Take `⟨n, ν, hν⟩` from `exists_monomial_eq_prod u`.
+
+Establish `e₁ : (monomial u a : MvPolynomial ι ℝ) = a • ∏ j, X (ν j)` using `by rw [← hν, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e₁, mul_smul_comm, mul_smul_comm, map_smul, smul_eq_zero]`. Use `.inr ?_` and prove the remaining obligations. Distinguish the cases in `hD : Y.dim = k + n`. Use `swap`.
+
+Use `hΦ.2 _ (k + (1 + ∑ _j : Fin n, 1)) (by simp; omega) ?_` and prove the remaining obligations. Conclude with `(IsHomogeneous.sum _ _ _ fun a _ => isHomogeneous_X_pow _ _).mul (((isHomogeneous_X _ _).sub (isHomogeneous_X _ _)).mul (IsHomogeneous.prod _ _ _ fun j _ => isHomogeneous_X _ _))`. Take `⟨ν', hν'⟩` from `exists_prod_ite hD i₀ ν`. Establish `hv` using `sum_num_cons_eq_zero hP V' num hn _ _ (norms_div e (hL' i₀) (hL' i₁)) S (fun p => (m : ℕ) * b p) (fun p hp => ⟨(hb p hp).1, mul_nonneg (Nat.cast_nonneg _) (hb p hp).2⟩) (fun v ε y => by`. Rewrite using `[abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]`.
+
+Use `(mul_le_mul_of_nonneg_left (hlg v ε y) (Nat.cast_nonneg _)).trans_eq ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring)`. Use the proof step `(fun a j => L' (if (j : ℕ) < k then s a else ν' j)) (fun p hp _ Z i _ _ _ hZ => by`. Establish `h0 : (p : Γ(Z, ⊤)) = 0` using `by rw [← map_natCast (algebraMap (ZMod p) Γ(Z, ⊤)), ZMod.natCast_self, map_zero]`. Take `⟨N, ε, hF'⟩` from `hF V' π hπ hl p hp`.
+
+Take `⟨g, hg, hg'⟩` from `hF' (fun a => (L' (s (ε a))).B) (fun a => (L' (s (ε a))).isLB) m (fun a => normsAt_of_norms (hL' (s (ε a))) p ⊤) Z i h0`. Rewrite using `[← ε.sum_comp]`. Use `sum_interNum_eq_zero p Z (GlobalTheory.T.closed_subscheme_proj_over_mod_l _ _ _ _ V'.ar Z i p) hZ hg m (Finset.univ.filter fun j => (j : ℕ) < k) ⟨⟨0, by omega⟩, by simpa using Nat.lt_of_succ_le hk⟩ _ (fun a j => LB.isLB_pull (L' _).isLB i) (fun j => CechPic.pull i (cls _ (L' (ν' …` and prove the remaining obligations. Rewrite using `[cls_pull (L' _).isLB i]`. Distinguish the cases in `hj : (j : ℕ) < k`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hj, if_true, hg']`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, hj, if_false])`. Rewrite using `[← hv, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `hn ι L' Φ hΦ (Fin.cons (Pi.single i₀ 1 - Pi.single i₁ 1) fun j => Pi.single (if (j : ℕ) < k then s a else ν' j) 1)` as an intermediate fact.
+
+Establish `e₂ : lin (Pi.single i₀ 1 - Pi.single i₁ 1 : ι → ℝ) = X i₀ - X i₁`. Rewrite using `[← TrivFlag.lin_single, ← TrivFlag.lin_single]`. Simplify using `only [lin, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`. Rewrite `this` using `[Fin.prod_univ_succ, Fin.cons_zero, e₂]`. Simplify using `only [Fin.cons_succ, TrivFlag.lin_single, hν'] at this`.
+
+Rewrite using `[mul_left_comm, this]`. Use `map_congr_rad num fun j => Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Establish `h₁` using `neg_mem (add_mem (rt (L' i₀) (L' i₁).dual) (rd (L' i₁)))`. Use `h₁ using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Fin.cons_zero, Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[Pi.single_apply]`.
+-/
 theorem powerSum_mul_vertical (hP : Hypotheses2) (M : TrueGeo.Model Y) {ι : Type} [Fintype ι]
     (A : ι → Adl (cxSt F) Y) (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ)
     (hI : ∀ i, (A i).Induced M (L i) m 0) (hΨ : haveI := M.ar.isIntegral; IsArFun L Y.dim Ψ) (S : Finset ℕ)
@@ -175,17 +216,26 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Unfold `parOf`. Establish `h : (Finsupp.single a n).support.Nonempty` using `⟨a, by simp [hn]⟩`. Rewrite using `[dif_pos h, Finset.mem_singleton.1 (Finsupp.support_single_subset h.choose_spec)]`.
+-/
 theorem parOf_single (a : Sym E) {n : ℤ} (hn : n ≠ 0) : parOf (Finsupp.single a n) = a.2.1 := by
   unfold parOf
   have h : (Finsupp.single a n).support.Nonempty := ⟨a, by simp [hn]⟩
   rw [dif_pos h, Finset.mem_singleton.1 (Finsupp.support_single_subset h.choose_spec)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `expo`. Rewrite using `[Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp), h]`.
+-/
 theorem expo_single_eq {a a' : Sym E} (h : letterOf Dw a.2.2 = letterOf Dw a'.2.2) (n : ℤ) :
     expo Dw (Finsupp.single a n) = expo Dw (Finsupp.single a' n) := by
   funext x
   unfold expo
   rw [Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp), h]
 
+/- English proof (translation)
+Establish `key (n n' : Letter Dw → ℤ) (h : n = n') (r r' : Option ℝ) (h' : r = r') (lg) : (⟨divOf Y n, 1, fun σ => hm r σ n, 0, lg⟩ : Adl C Y.Y) = ⟨divOf Y n', 1, fun σ => hm r' σ n', 0, lg⟩`. Rewrite using `[h, h']`. Conclude with `key _ _ (expo_single_eq h n).symm _ _ (by rw [parOf_single _ hn, parOf_single _ hn, h']) _`.
+-/
 theorem adlOf_single_eq {C : CxSt F} (hm : Mets Y C) {a a' : Sym E} (h : letterOf Dw a.2.2 = letterOf Dw a'.2.2)
     (h' : a.2.1 = a'.2.1) {n : ℤ} (hn : n ≠ 0) :
     adlOf Y hm (Finsupp.single a' n) =
@@ -195,6 +245,9 @@ theorem adlOf_single_eq {C : CxSt F} (hm : Mets Y C) {a a' : Sym E} (h : letterO
     rw [h, h']
   exact key _ _ (expo_single_eq h n).symm _ _ (by rw [parOf_single _ hn, parOf_single _ hn, h']) _
 
+/- English proof (translation)
+The claim follows from `|lgOf Y (Finsupp.single a n) v ε y - lgOf Y (Finsupp.single a' n) v ε y| ≤ (|(n : ℝ)| * B / Real.log (resP v)) * (-Real.log (ε.w (resP v : AlgebraicClosure F))) := by have hw : 0 ≤ -Real.log (ε.w (resP v : AlgebraicClosure F)) := neg_nonneg.2 (Real.log_nonpos (ε.w.nonneg _) ((ε.m …`.
+-/
 theorem abs_lgOf_single_sub_le {a a' : Sym E} (he : letterOf Dw a.2.2 = letterOf Dw a'.2.2) (n : ℤ)
     (v : HeightOneSpectrum (𝓞 F)) (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) (B : ℝ)
     (h : ∀ (_ : Fact (resP v).Prime) (R : Type) [CommRing R] (φ : c.F →+* R) (x₀ : Sp R ⟶ Z.X) (f : EigFrame Z φ x₀)
@@ -219,6 +272,9 @@ theorem abs_lgOf_single_sub_le {a a' : Sym E} (he : letterOf Dw a.2.2 = letterOf
   rewrite [expo_single_eq he, hs, hs]
   exact key _ _ _ _ hw (h _ _ _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `|lnStep Z.t (spMap ψ ≫ x₀) (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) p b st - lnStep Z.t (spMap ψ ≫ x₀) (fun τ i => spMap (dualMap ψ) ≫ f.v τ i) p false (.inl (z.1, (z.2 : ℕ)))| ≤ B := by obtain ⟨N, -, hN⟩ := GlobalTheory.ConcatStep.abs_lnStep_bc_le Dw c refine ⟨|Real.log p / ((p …`.
+-/
 theorem exists_lnStep_bound (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (p : ℕ) : ∃ B : ℝ, 0 ≤ B ∧
     ∀ (_ : Fact p.Prime) (R : Type) [CommRing R] (φ : c.F →+* R) (x₀ : Sp R ⟶ Z.X) (f : EigFrame Z φ x₀)
       (ψ : R →+* ℂ_[p]) (b : Bool) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (z : Letter Dw), letterOf Dw st = some z →
@@ -256,6 +312,9 @@ theorem exists_lnStep_bound (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Mo
       refine (abs_sub_le _ _ _).trans ((add_le_add (h₅.trans (le_abs_self _)) (h₃.trans h₄)).trans ?_)
       linarith
 
+/- English proof (translation)
+The claim follows from `|lgOf Y (Finsupp.single a n) v ε y - lgOf Y (Finsupp.single a' n) v ε y| ≤ (if resP v ∈ S then b (resP v) else 0) * (-Real.log (ε.w (resP v : AlgebraicClosure F))) := by choose B hB₀ hB using exists_lnStep_bound Z refine ⟨fun p => |(n : ℝ)| * (B p + B p) / Real.log p, fun p => di …`.
+-/
 theorem exists_lgOf_bound {a a' : Sym E} {z : Letter Dw} (h : letterOf Dw a.2.2 = some z) (h' : letterOf Dw a'.2.2 = some z)
     (n : ℤ) (S : Finset ℕ)
     (hS : ∀ q ∉ S, q.Prime → (a.1 q = a'.1 q ∧ (a.2.2 = a'.2.2 ∨ ¬ q ∣ (NumberField.discr E).natAbs))) :
@@ -296,6 +355,17 @@ def Good {E : Type} [Field E] (R : ℝ) (w : Sym E →₀ ℤ) : Prop :=
 
 variable {D : D7} {O : Setup D}
 
+/- English proof (translation)
+Establish `hfl (p : ℕ) (hp : p ∈ S)` using `GlobalTheory.T.flag_at_whole_symbol_reindexed h2 hH hRA hSW D O hO T R hR p (hS p hp).1 c`. Take `⟨x, P, hW⟩` from `hO`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `(GlobalTheory.ArTopTrue.arTop_true h2.p4 hH.deg HTBound.htBound D _ _ _ _ _ O.s x O.Φ c R hR).2 ι w hw`. Take `⟨b, hb, hlg⟩` from `exists_lgOf_bound (O.Φ.C c) h h' n S hq`. Rewrite using `[cNum, hW.hm_eq, ← O.dim_eq c]`.
+
+Rewrite `hfl` using `[hW.hm_eq]`. Use `(numL_rename w _ _ Ψ _ hΨ.2 hnum _).trans (div_eq_zero_iff.2 (.inl ?_))` and prove the remaining obligations. Use `powerSum_mul_vertical h2 M _ L m Ψ hI hΨ S b (fun p hp => ⟨(hS p hp).1, hb p⟩) s (fun p hp => ?_) i₀ i₁ ?_ ?_ 2 (by norm_num) G` and prove the remaining obligations. Take `⟨e, he⟩` from `hfl p hp`. Establish `eT : Function.update (ArIn.ind T) p true = ArIn.ind T`.
+
+Rewrite using `[Function.update_eq_self_iff]`. Simplify using `[ArIn.ind, (hS p hp).2]`. Use `⟨_, e, ?_⟩` and prove the remaining obligations. Simplify using `only [hs]`. Rewrite `he` using `[eT]`. Then use the resulting hypothesis.
+
+Use `beta_reduce`. Rewrite using `[h₀, h₁]`. Use `adlOf_single_eq _ _ (h.trans h'.symm) ?_ hn` and prove the remaining obligations. Rewrite using `[(hw i₀ a (by simp [h₀, hn])).2, (hw i₁ a' (by simp [h₁, hn])).2]`. Use `beta_reduce`.
+
+Rewrite using `[h₀, h₁]`. Conclude with `hlg`.
+-/
 theorem kill (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) (hSW : ScholzeWeinsteinB) (hO : O.Core)
     (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp) {ι : Type} [Fintype ι] (w : ι → Sym D.host.E →₀ ℤ) (hw : ∀ i, Good R (w i))
     (T S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime ∧ p ∈ T) (s : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N) → ι)
@@ -330,6 +400,23 @@ theorem kill (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) (hS
     rw [h₀, h₁]
     exact hlg
 
+/- English proof (translation)
+Take `⟨x, P, hW⟩` from `hO`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `(GlobalTheory.ArTopTrue.arTop_true h2.p4 hH.deg HTBound.htBound D _ _ _ _ _ O.s x O.Φ c R hR).2 ι w hw`. Use `haveI := M.ar.isIntegral`. Establish `hsum : ∀ n : ι → ℤ, (adlOf (O.Φ.C c) (metsOf x O.Φ c) (∑ i, n i • w i)).arTop = Ψ (lin (fun i => (n i : ℝ)) ^ ((O.Φ.C c).Y.dim + 1)) / ((m : ℕ) : ℝ) ^ ((O.Φ.C c).Y.dim + 1) / (Module.finrank ℚ D.what₂.LL : ℝ)`. Introduce `n`.
+
+Establish `hI'` using `GlobalTheory.T.adelic_divisor_induced_linear D _ _ _ _ _ O.s x O.Φ c R M ι w L m (fun i a ha => (hw i a ha).2) hI n`. Establish `ht : (adlOf (O.Φ.C c) (metsOf x O.Φ c) (∑ i, n i • w i)).IsArTop (Ψ (lin (fun i => (n i : ℝ)) ^ ((O.Φ.C c).Y.dim + 1)) / ((m : ℕ) : ℝ) ^ ((O.Φ.C c).Y.dim + 1) / (Module.finrank ℚ D.what₂.LL : ℝ))`. Use `⟨M, _, m, 0, _, hI', hΨ.1 n, ?_⟩` and prove the remaining obligations. Establish `hn : (adlOf (O.Φ.C c) (metsOf x O.Φ c) (∑ i, n i • w i)).n = 1` using `rfl`. Simplify using `[hn]`.
+
+Establish `hex : ∃ t, (adlOf (O.Φ.C c) (metsOf x O.Φ c) (∑ i, n i • w i)).IsArTop t` using `⟨_, ht⟩`. Rewrite using `[Adl.arTop, dif_pos hex]`. Conclude with `GlobalTheory.TrueGeo.ArUniq.isArTop_unique h2.p4 hH.deg _ _ _ _ _ _ hex.choose_spec ht`. Set `σ : MvPolynomial ι ℝ →ₐ[ℝ] MvPolynomial ι ℝ` to `aeval fun i => if i = i₁ then -X i₀ else X i`. Establish `hσ (n : ι → ℤ) : σ (lin fun i => (n i : ℝ)) = lin fun i => ((n - n i₁ • Pi.single i₁ 1 - n i₁ • Pi.single i₀ 1 : ι → ℤ) i : ℝ)`.
+
+Establish `e (i : ι) : σ (C (n i : ℝ) * X i) = C (n i : ℝ) * X i - (if i = i₁ then C (n i₁ : ℝ) * X i₁ + C (n i₁ : ℝ) * X i₀ else 0)`. Simplify using `only [σ, map_mul, aeval_X, algHom_C, algebraMap_eq]`. Use `split_ifs with hi`. Substitute `hi` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [lin, map_sum, e, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.sub_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Int.cast_sub, Int.cast_ite, Int.cast_zero, map_sub, sub_mul, apply_ite C, ite_mul, map_zero, zero_mu …`. Expand and normalize the polynomial expressions, which then agree. Establish `hw' (n : ι → ℤ) : ∑ i, (n - n i₁ • Pi.single i₁ 1 - n i₁ • Pi.single i₀ 1 : ι → ℤ) i • w i = ∑ i, n i • w i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, sub_smul, Finset.sum_sub_distrib, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, h, smul_neg]`.
+
+Normalize the expressions using the abelian group laws. Establish `hnum'` using `GlobalTheory.T.polarization_of_homogeneous ι (Sym D.host.E →₀ ℤ) w (fun v => (adlOf (O.Φ.C c) (metsOf x O.Φ c) v).arTop) ((O.Φ.C c).Y.dim + 1) (Ψ ∘ₗ σ.toLinearMap) (1 / ((((m : ℕ) : ℝ)) ^ ((O.Φ.C c).Y.dim + 1) * (Module.finrank ℚ D.what₂.LL : ℝ))) (fun n => by`. Rewrite using `[← hw', hsum, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow σ, hσ]`. Use the proof step `ring)`. Rewrite using `[cNum, hW.hm_eq, ← O.dim_eq c]`.
+
+Use `(numL_rename w _ _ (Ψ ∘ₗ σ.toLinearMap) ((((m : ℕ) : ℝ)) ^ ((O.Φ.C c).Y.dim + 1) * (Module.finrank ℚ D.what₂.LL : ℝ)) (fun Q e he hQ => ?_) (fun μ hμ => (hnum' μ hμ).trans (by ring)) _).trans (div_eq_zero_iff.2 (.inl ?_))` and prove the remaining obligations. Use `hΨ.2 _ e he ?_` and prove the remaining obligations. Use `hQ.aeval (fun i => if i = i₁ then -X i₀ else X i : ι → MvPolynomial ι ℝ) (n := 1) fun i => by split_ifs` as an intermediate fact. Conclude with `(isHomogeneous_X _ _).neg`. Conclude with `isHomogeneous_X _ _`.
+
+Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, map_add]`. Simplify using `[σ, hne]`.
+-/
 theorem neg_cancel (h2 : Hypotheses2) (hH : HypothesesH) (hO : O.Core)
     (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp) {ι : Type} [Fintype ι] (w : ι → Sym D.host.E →₀ ℤ) (hw : ∀ i, Good R (w i))
     (i₀ i₁ : ι) (hne : i₀ ≠ i₁) (h : w i₁ = -w i₀) (G : MvPolynomial ι ℝ) :
@@ -390,6 +477,11 @@ end Comp
 
 section Alg
 
+/- English proof (translation)
+Proceed by induction on `u using Finsupp.induction_linear with`. Consider the case `zero => exact ⟨0, Fin.elim0, by simp, by simp⟩`. Consider the case `add u v hu hv`. Take `⟨n, ν, e, h⟩` from `hu`. Take `⟨n', ν', e', h'⟩` from `hv`.
+
+Use `⟨n + n', Fin.append ν ν', by rw [map_add, e, e'], ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, ← h, ← h', monomial_mul, mul_one]`. Consider the case `single a n => exact ⟨n, fun _ => a, by simp, by simp [X_pow_eq_monomial]⟩`.
+-/
 theorem exists_monomial_eq_prod' {K α : Type} [CommSemiring K] (u : α →₀ ℕ) :
     ∃ (n : ℕ) (ν : Fin n → α), n = u.degree ∧ (monomial u 1 : MvPolynomial α K) = ∏ j, X (ν j) := by
   induction u using Finsupp.induction_linear with
@@ -402,6 +494,11 @@ theorem exists_monomial_eq_prod' {K α : Type} [CommSemiring K] (u : α →₀ �
     simp only [Fin.append_left, Fin.append_right, ← h, ← h', monomial_mul, mul_one]
   | single a n => exact ⟨n, fun _ => a, by simp, by simp [X_pow_eq_monomial]⟩
 
+/- English proof (translation)
+Establish `e : (X a * ∏ j, X (b j) : MvPolynomial A ℝ) = ((Finsupp.toMultiset (Multiset.toFinsupp (a ::ₘ Finset.univ.val.map b))).map X).prod`. Rewrite using `[Multiset.toFinsupp_toMultiset, Multiset.map_cons, Multiset.prod_cons, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[e, NumLRename.prod_map_X_toMultiset, NumLRename.numL_monomial, if_pos, one_mul, Multiset.toFinsupp_toMultiset]`. Use `Finsupp.card_toMultiset (Multiset.toFinsupp (a ::ₘ Finset.univ.val.map b))` as an intermediate fact.
+
+Rewrite `this` using `[Multiset.toFinsupp_toMultiset]`. Use `Eq.trans (this.symm) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem numL_X_mul_prod {A : Type} (num : Multiset A → ℝ) {n : ℕ} (a : A) (b : Fin n → A) :
     numL num (n + 1) (X a * ∏ j, X (b j)) = num (a ::ₘ Finset.univ.val.map b) := by
   have e : (X a * ∏ j, X (b j) : MvPolynomial A ℝ) =
@@ -414,6 +511,11 @@ theorem numL_X_mul_prod {A : Type} (num : Multiset A → ℝ) {n : ℕ} (a : A) 
   refine Eq.trans (this.symm) ?_
   simp
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on generalizing G with`. Consider the case `C a => simp`. Consider the case `add P Q hP hQ => rw [map_add, map_add, add_sub_add_comm, add_mul, map_add, hP, hQ, add_zero]`. Consider the case `mul_X P v hP`. Establish `e : (rename f (P * X v) - rename g (P * X v)) * G = (rename f P - rename g P) * (X (f v) * G) + (X (f v) - X (g v)) * (rename g P * G)`.
+
+Simplify using `only [map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_add, hP, h, add_zero]`.
+-/
 theorem map_rename_sub {α β : Type} (f g : α → β) (φ : MvPolynomial β ℝ →ₗ[ℝ] ℝ)
     (h : ∀ v G, φ ((X (f v) - X (g v)) * G) = 0) (P : MvPolynomial α ℝ) (G : MvPolynomial β ℝ) :
     φ ((rename f P - rename g P) * G) = 0 := by
@@ -428,6 +530,11 @@ theorem map_rename_sub {α β : Type} (f g : α → β) (φ : MvPolynomial β �
 
 open Formalism.DegreeFormula Formalism.BasicNotions.DV GlobalTheory.MixedLocalChains GlobalTheory.BundleChernComparison in
 
+/- English proof (translation)
+Establish `h` using `hL 2 (by norm_num) m hm Q hQ`. Establish `h0 : chDiv M.lieW.x (2 - 1) (evQ _ Q) = 0`. Rewrite using `[chDiv, e, mul_left_comm, hc, M.Z.cD_divP, zero_mul, map_zero, Rat.cast_zero, zero_div]`. Rewrite `h` using `[h0, mul_zero, chk, chk, ← add_div, div_eq_zero_iff]`. Break down `h with h | h` into its components or cases.
+
+Conclude with `h` after adjusting the coercions. Evaluate the numerical expressions using `at h`.
+-/
 theorem ck_add_ck_eq_zero {D : D7} {p : ℕ} [Fact p.Prime] {N : ℕ} {rk : Emb D p → ℕ} (M : DV.Mdl D p N rk)
     (hL : LocalW M) (hc : Comm M) {m : ℕ} (hm : m + 2 = dimFl D.what₂.Tau N + 1) (Q : MvPolynomial M.Z.LB ℚ)
     (hQ : Q.IsHomogeneous m) (V : M.Z.VDiv) (a : M.Z.Ch) (e : evQ _ Q = M.Z.cD V * a) :
@@ -440,6 +547,17 @@ theorem ck_add_ck_eq_zero {D : D7} {p : ℕ} [Fact p.Prime] {N : ℕ} {rk : Emb 
   · exact_mod_cast h
   · norm_num at h
 
+/- English proof (translation)
+Establish `key (d : ι →₀ ℕ) (hd : d.degree = n) (q : ℚ) : ∑ c, numL (num c) (n + 1) (rename w ((X i₀ - X i₁) * map (algebraMap ℚ ℝ) (monomial d q))) = t * ∑ la, wt la * ((((Z la).capDeg (V la) (aeval (ev la) (monomial d q)) : ℚ) : ℝ) / cv la)`. Take `⟨k, ν, hn, hν⟩` from `exists_monomial_eq_prod' (K := ℚ) d`. Rewrite `hn` using `[hd]`. Substitute `hn` using the available equality. Establish `e : (monomial d q : MvPolynomial ι ℚ) = C q * ∏ j, X (ν j)` using `by rw [← hν, C_mul_monomial, mul_one]`.
+
+Establish `e₁ (c : Comp) : numL (num c) (k + 1) (rename w ((X i₀ - X i₁) * map (algebraMap ℚ ℝ) (monomial d q))) = q * (num c (w i₀ ::ₘ Finset.univ.val.map fun j => w (ν j)) - num c (w i₁ ::ₘ Finset.univ.val.map fun j => w (ν j)))`. Rewrite using `[e, map_mul (map (algebraMap ℚ ℝ)), map_C, mul_left_comm, C_mul', map_smul, map_smul, smul_eq_mul]`. Simplify using `only [map_mul, map_sub, map_prod, map_X, rename_X, sub_mul, numL_X_mul_prod]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun c _ => e₁ c, ← Finset.mul_sum, h, mul_left_comm, Finset.mul_sum]`.
+
+Use `congrArg _ (Finset.sum_congr rfl fun la _ => ?_)` and prove the remaining obligations. Rewrite using `[e, C_mul', map_smul, map_smul, map_prod (aeval (R := ℚ) (ev la)), smul_eq_mul, Rat.cast_mul]`. Simplify using `only [aeval_X]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [Q.as_sum]`.
+
+Use `conv_rhs => rw [Q.as_sum]`. Simplify using `only [map_sum, Finset.mul_sum, Rat.cast_sum, Finset.sum_div]`. Rewrite using `[Finset.sum_comm]`. Use `Eq.trans ?_ Finset.sum_comm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+
+Rewrite using `[key d (by rw [Finsupp.degree_eq_weight_one]; exact hQ (mem_support_iff.1 hd)), Finset.mul_sum]`.
+-/
 theorem pair_abstract {Comp A ι La : Type} [Fintype Comp] [Fintype La] (num : Comp → Multiset A → ℝ) (n : ℕ) (w : ι → A)
     (i₀ i₁ : ι) (t : ℝ) (Z : La → DV.ITh) (V : ∀ la, (Z la).VDiv) (ev : ∀ la, ι → (Z la).Ch) (wt cv : La → ℝ)
     (h : ∀ ν : Fin n → ι, ∑ c, (num c (w i₀ ::ₘ Finset.univ.val.map fun j => w (ν j)) -
@@ -481,6 +599,9 @@ open Formalism.DegreeFormula Formalism.BasicNotions.DV GlobalTheory.VdmRec Globa
 
 variable {D : D7} (O : Setup D)
 
+/- English proof (translation)
+Use `letI := Formalism.L2.Geo.finPl D p`. Use `pair_abstract (fun c => (arIn O.s O.Φ O.met.hm).num c) _ _ i₀ i₁ _ (fun la => ithOf Fact.out (hW la) (z la).Z (dimFl D.what₂.Tau O.N)) _ _ _ _ (fun ν => ?_) Q hQ` and prove the remaining obligations. Establish `h` using `hP D O hO p W hW hWL z Sx R hR l fun j => u (ν j)`. Simplify using `only [h₀, h₁]`. Conclude with `h`.
+-/
 theorem pair_poly (hP : PairSt) (hO : O.Core) (p : ℕ) [Fact p.Prime]
     (W : Formalism.L2.Geo.PlL D p → ValuationSubring ℂ) (hW : ∀ la, (p : ℂ) ∈ (W la).nonunits)
     (hWL : ∀ la (x : D.what₂.LL), D.what₂.embLL x ∈ W la ↔ IsDedekindDomain.HeightOneSpectrum.valuation D.what₂.LL la.1 x ≤ 1)
@@ -519,15 +640,24 @@ def ln : Vr O → Ln O.S.Dw
 
 def fa (a : ℕ → Bool) (R : ℝ) (v : Vr O) : Sym D.host.E →₀ ℤ := lnSym a (some R) (ln O v)
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨_ | _, st⟩ := l <;> rfl`.
+-/
 theorem lnSym_eq (a : ℕ → Bool) (R : Option ℝ) (l : Ln O.S.Dw) :
     lnSym a R l = Finsupp.single (a, R, l.2.1) (if l.1 then -1 else 1) := by
   obtain ⟨_ | _, st⟩ := l <;> rfl
 
+/- English proof (translation)
+Unfold `rootLetter`. Rewrite using `[dif_pos h]`.
+-/
 theorem rootLetter_lt {r : Rt D.what₂.Tau O.N} (h : (r.2 : ℕ) < O.j) :
     ((rootLetter O.S r).1, ((rootLetter O.S r).2 : ℕ)) = (tauEmb D r.1, (r.2 : ℕ)) := by
   unfold rootLetter
   rw [dif_pos h]
 
+/- English proof (translation)
+Establish `hq` using `O.S.rank_eq`. Unfold `rootLetter`. Rewrite using `[dif_neg h]`. Simplify using `only [Prod.mk.injEq, true_and]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rootLetter_ge {r : Rt D.what₂.Tau O.N} (h : ¬ (r.2 : ℕ) < O.j) :
     ((rootLetter O.S r).1, ((rootLetter O.S r).2 : ℕ)) = (conjEmb (tauEmb D r.1), O.S.Dw.p + O.S.Dw.q - 1 - (r.2 : ℕ)) := by
   have hq := O.S.rank_eq
@@ -536,6 +666,11 @@ theorem rootLetter_ge {r : Rt D.what₂.Tau O.N} (h : ¬ (r.2 : ℕ) < O.j) :
   simp only [Prod.mk.injEq, true_and]
   omega
 
+/- English proof (translation)
+Establish `hp` using `O.S.p_eq`. Rewrite using `[fa, lnSym_eq, rootSym]`. Distinguish the cases in `h : (r.2 : ℕ) < O.j`. Rewrite using `[if_pos (show (r.2 : ℕ) < O.S.Dw.p by omega)]`. Simplify using `only [ln, rootLetter_lt O h, h]`.
+
+Both sides reduce to the same expression. Rewrite using `[if_neg (show ¬ (r.2 : ℕ) < O.S.Dw.p by omega)]`. Simplify using `only [ln, rootLetter_ge O h, h]`. Both sides reduce to the same expression.
+-/
 theorem fa_inl (a : ℕ → Bool) (R : ℝ) (r : Rt D.what₂.Tau O.N) :
     fa O a R (.inl r) = rootSym O.S.Dw a (some R) (tauEmb D r.1) r.2 := by
   have hp := O.S.p_eq
@@ -548,10 +683,16 @@ theorem fa_inl (a : ℕ → Bool) (R : ℝ) (r : Rt D.what₂.Tau O.N) :
     simp only [ln, rootLetter_ge O h, h]
     rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with k | k <;> rfl`.
+-/
 theorem fa_inr (a : ℕ → Bool) (R : ℝ) (l : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) :
     fa O a R (.inr l) = wholeSym a (some R) l := by
   rcases l with k | k <;> rfl
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite `ha` using `[fa, lnSym_eq]`. Take `rfl` from `Finset.mem_singleton.1 (Finsupp.support_single_subset ha)`. Conclude with `⟨by simpa [ArIn.ind] using T.finite_toSet, rfl⟩`.
+-/
 theorem good_fa (T : Finset ℕ) (R : ℝ) (v : Vr O) : Good R (fa O (ArIn.ind T) R v) := by
   intro a ha
   rw [fa, lnSym_eq] at ha
@@ -561,12 +702,18 @@ theorem good_fa (T : Finset ℕ) (R : ℝ) (v : Vr O) : Good R (fa O (ArIn.ind T
 def dl (K : Type) [CommRing K] : MvPolynomial (Vr O) K :=
   ∑ r : Rt D.what₂.Tau O.N, (if (r.2 : ℕ) < O.j then -X (.inl r) else X (.inl r)) - ∑ k, X (.inr (.inr k))
 
+/- English proof (translation)
+The claim follows from `(IsHomogeneous.sum _ _ _ fun r _ => by split_ifs · exact (isHomogeneous_X _ _).neg · exact isHomogeneous_X _ _).sub (IsHomogeneous.sum _ _ _ fun _ _ => isHomogeneous_X _ _)`.
+-/
 theorem dl_isHomogeneous (K : Type) [CommRing K] : (dl O K).IsHomogeneous 1 :=
   (IsHomogeneous.sum _ _ _ fun r _ => by
     split_ifs
     · exact (isHomogeneous_X _ _).neg
     · exact isHomogeneous_X _ _).sub (IsHomogeneous.sum _ _ _ fun _ _ => isHomogeneous_X _ _)
 
+/- English proof (translation)
+Simplify using `only [dl, map_sub, map_sum, apply_ite (map (algebraMap ℚ ℝ)), map_neg, map_X]`.
+-/
 theorem map_dl : map (algebraMap ℚ ℝ) (dl O ℚ) = dl O ℝ := by
   simp only [dl, map_sub, map_sum, apply_ite (map (algebraMap ℚ ℝ)), map_neg, map_X]
 
@@ -577,6 +724,11 @@ variable {p : ℕ} [Fact p.Prime] {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈
 
 def lb (x : Bool × Vr O) : (mdlOf z jc).Z.LB := lnLB z x.1 (ln O x.2)
 
+/- English proof (translation)
+Establish `hp` using `O.S.p_eq`. Unfold `lb rootOf admitted.rootLB`. Distinguish the cases in `h : (r.2 : ℕ) < O.j`. Rewrite using `[if_pos (show (r.2 : ℕ) < O.S.Dw.p by omega), ← rootLetter_lt O h]`. Establish `e : ln O (.inl r) = (false, (ln O (.inl r)).2)` using `Prod.ext (by simp [ln, h]) rfl`.
+
+Conclude with `(congrArg (lnLB z false) e).trans (lnLB_false _ _ _)`. Rewrite using `[if_neg (show ¬ (r.2 : ℕ) < O.S.Dw.p by omega), ← rootLetter_ge O h]`. Establish `e : ln O (.inl r) = (true, (ln O (.inl r)).2)` using `Prod.ext (by simpa [ln] using h) rfl`. Conclude with `(congrArg (lnLB z false) e).trans (lnLB_true _ _ _)`.
+-/
 theorem lb_root (r : Rt D.what₂.Tau O.N) : lb O z jc (false, .inl r) = rootOf z jc (false, r) := by
   have hp := O.S.p_eq
   unfold lb rootOf admitted.rootLB
@@ -588,10 +740,16 @@ theorem lb_root (r : Rt D.what₂.Tau O.N) : lb O z jc (false, .inl r) = rootOf 
     have e : ln O (.inl r) = (true, (ln O (.inl r)).2) := Prod.ext (by simpa [ln] using h) rfl
     exact (congrArg (lnLB z false) e).trans (lnLB_true _ _ _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(lnLB_false _ _ _).trans (mdlOf_lieW z jc k).1.symm, (lnLB_false _ _ _).trans (mdlOf_lieW z jc k).2.symm⟩`.
+-/
 theorem lb_lie (k : Fin (D.R.f * O.N)) : lb O z jc (false, .inr (.inl k)) = (mdlOf z jc).lieW.x k ∧
     lb O z jc (true, .inr (.inl k)) = (mdlOf z jc).lieW.x' k :=
   ⟨(lnLB_false _ _ _).trans (mdlOf_lieW z jc k).1.symm, (lnLB_false _ _ _).trans (mdlOf_lieW z jc k).2.symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(lnLB_true _ _ _).trans (mdlOf_omW z jc k).1.symm, (lnLB_true _ _ _).trans (mdlOf_omW z jc k).2.symm⟩`.
+-/
 theorem lb_om (k : Fin (D.R.f * O.N)) : lb O z jc (false, .inr (.inr k)) = (mdlOf z jc).omW.x k ∧
     lb O z jc (true, .inr (.inr k)) = (mdlOf z jc).omW.x' k :=
   ⟨(lnLB_true _ _ _).trans (mdlOf_omW z jc k).1.symm, (lnLB_true _ _ _).trans (mdlOf_omW z jc k).2.symm⟩
@@ -599,12 +757,23 @@ theorem lb_om (k : Fin (D.R.f * O.N)) : lb O z jc (false, .inr (.inr k)) = (mdlO
 def dv (l : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) : (mdlOf z jc).Z.VDiv :=
   vdiv Fact.out hW (dimFl D.what₂.Tau O.N) _ _ (lnId z Fact.out hW (ln O (.inr l)))
 
+/- English proof (translation)
+The claim follows from `vdiv_lnId_false z _ hW _ _ (letterOf_whole O.S k)`.
+-/
 theorem dv_lie (k : Fin (D.R.f * O.N)) : dv O z jc (.inl k) = (mdlOf z jc).lieW.Dv k :=
   vdiv_lnId_false z _ hW _ _ (letterOf_whole O.S k)
 
+/- English proof (translation)
+The claim follows from `(vdiv_lnId_true z _ hW _ _ (letterOf_whole O.S k.rev)).trans (mdlOf_omW_Dv z jc k).symm`.
+-/
 theorem dv_om (k : Fin (D.R.f * O.N)) : dv O z jc (.inr k) = (mdlOf z jc).omW.Dv k :=
   (vdiv_lnId_true z _ hW _ _ (letterOf_whole O.S k.rev)).trans (mdlOf_omW_Dv z jc k).symm
 
+/- English proof (translation)
+Take `⟨e, V, h⟩` from `lieW_gen D O.A O.N O.j O.S O.κ p Fact.out W hW z jc`. Take `⟨e', h'⟩` from `(mdlOf z jc).omW_dual`. Use `⟨∑ k, V k, ?_⟩` and prove the remaining obligations. Simplify using `only [dl, map_sub, map_sum, apply_ite (aeval fun v => (mdlOf z jc).Z.c1 (lb O z jc (false, v))), map_neg, aeval_X, lb_root, fun k => (lb_om O z jc k).1, h']`. Rewrite using `[e'.sum_comp fun k => -(mdlOf z jc).Z.c1 ((mdlOf z jc).lieW.x k), ← e.sum_comp, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h k]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_dl_eq : ∃ V : (mdlOf z jc).Z.VDiv,
     aeval (fun v => (mdlOf z jc).Z.c1 (lb O z jc (false, v))) (dl O ℚ) = (mdlOf z jc).Z.cD V := by
   obtain ⟨e, V, h⟩ := lieW_gen D O.A O.N O.j O.S O.κ p Fact.out W hW z jc
@@ -617,6 +786,13 @@ theorem exists_dl_eq : ∃ V : (mdlOf z jc).Z.VDiv,
   rw [h k]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨V, hV⟩` from `exists_dl_eq O z jc`. Establish `e : evQ _ (rename (fun v => lb O z jc (false, v)) (dl O ℚ * G)) = aeval (fun v => (mdlOf z jc).Z.c1 (lb O z jc (false, v))) (dl O ℚ * G)`. Rewrite using `[evQ, aeval_rename]`. Both sides reduce to the same expression. Establish `h` using `ck_add_ck_eq_zero (mdlOf z jc) hL (GlobalTheory.VertCommAdm.comm_mdlOf D O.A O.N O.j O.S O.κ p Fact.out W hW z jc) hm (rename (fun v => lb O z jc (false, v)) (dl O ℚ * G)) ((dl_isHomogeneous O ℚ).mul hG).rename_isHomogeneous V _ (by rw [e, map_mul, hV])`.
+
+Rewrite `h` using `[e]`. Rewrite using `[← h, Fintype.sum_sum_type, ck, ck]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun k _ => ?_) (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[dv_lie, map_mul, aeval_rename, map_add, aeval_X, aeval_X, (lb_lie O z jc k).1, (lb_lie O z jc k).2]`. Simplify using `[Gk, Finset.sum_range_succ, add_comm, Function.comp_def]`.
+
+Rewrite using `[dv_om, map_mul, aeval_rename, map_add, aeval_X, aeval_X, (lb_om O z jc k).1, (lb_om O z jc k).2]`. Simplify using `[Gk, Finset.sum_range_succ, add_comm, Function.comp_def]`.
+-/
 theorem sum_capDeg_eq_zero (hL : LocalW (mdlOf z jc)) {m : ℕ} (hm : 1 + m + 2 = dimFl D.what₂.Tau O.N + 1)
     (G : MvPolynomial (Vr O) ℚ) (hG : G.IsHomogeneous m) :
     ∑ l, (mdlOf z jc).Z.capDeg (dv O z jc l) (aeval (fun x => (mdlOf z jc).Z.c1 (lb O z jc x))
@@ -655,6 +831,21 @@ def fb (S : Finset ℕ) (p : ℕ) (R : ℝ) (x : Bool × Vr O) : Sym D.host.E �
 
 variable {O}
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `add P Q hP hQ => simp only [mul_add, map_add, Finset.sum_add_distrib, hP, hQ, add_zero]`. Consider the case `monomial u a`. Establish `e₁ : (monomial u a : MvPolynomial (Vr O) ℝ) = a • map (algebraMap ℚ ℝ) (monomial u 1)`. Rewrite using `[map_monomial, map_one, smul_monomial, smul_eq_mul, mul_one]`.
+
+Simplify using `only [e₁, mul_smul_comm, map_smul, ← Finset.smul_sum]`. Use `smul_eq_zero_of_right _ ?_` and prove the remaining obligations. Establish `hu : (monomial u 1 : MvPolynomial (Vr O) ℚ).IsHomogeneous u.degree` using `isHomogeneous_monomial _ rfl`. Generalize the expression as in `(monomial u 1 : MvPolynomial (Vr O) ℚ) = G at hu`. Generalize the expression as in `u.degree = m at hu`.
+
+Establish `e₂ : (rename (Prod.mk false) (pw O) - rename (Prod.mk true) (pw O)) * rename (Prod.mk false) (dl O ℝ * map (algebraMap ℚ ℝ) G) = ∑ l, (X (false, .inr l) - X (true, .inr l)) * map (algebraMap ℚ ℝ) ((X (false, .inr l) + X (true, .inr l)) * rename (Prod.mk false) (dl O ℚ * G))`. Simplify using `only [pw, map_sum, map_pow, rename_X, map_mul, map_add, map_X, map_rename, map_dl, ← Finset.sum_sub_distrib, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Establish `hQ (l : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) : ((X (false, .inr l) + X (true, .inr l)) * rename (Prod.mk false) (dl O ℚ * G) : MvPolynomial (Bool × Vr O) ℚ).IsHomogeneous (1 + (1 + m))` using `((isHomogeneous_X _ _).add (isHomogeneous_X _ _)).mul ((dl_isHomogeneous O ℚ).mul hu).rename_isHomogeneous`. Simplify using `only [e₂, map_sum]`.
+
+Distinguish the cases in `hm : 1 + (1 + m) = dimFl D.what₂.Tau O.N`. Use `swap`. Use `Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun l _ => numL_homog _ _ (1 + (1 + (1 + m))) (by omega) _ ?_` and prove the remaining obligations. Conclude with `(((isHomogeneous_X _ _).sub (isHomogeneous_X _ _)).mul ((hQ l).map _)).rename_isHomogeneous`. Use `haveI := Fact.mk hp`.
+
+Use `letI := Formalism.L2.Geo.finPl D p`. Use `choose jc hjc hW using fun la => AdmTest.exists_placeW_nonunit D p la`. Use `choose z _ using fun la => admEx O.S O.κ p hp _ (hW la) 3 (one_add_lt_three hp)`. Establish `hL (la) : LocalW (mdlOf (z la) (jc la))` using `GlobalTheory.T.local_of_has_chain_at_prime D _ _ _ _ _ p Fact.out _ (hW la) (z la) (jc la) (GlobalTheory.T.chainW_of_alteration_prismatic hX h2 hH hRA hSW hX.y.perfd D O hO p _ (hW la) (jc la) (AdmTest.placeW_spec (hjc la)).2 (z la))`. Establish `key (l : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))` using `pair_poly O (GlobalTheory.T.pair_statement_of_height_alteration h2 hH hRA) hO p _ hW (fun la => (AdmTest.placeW_spec (hjc la)).1) z S R hR (fun x : Bool × Vr O => (x.1, ln O x.2)) (ln O (.inr l)) (false, .inr l) (true, .inr l) rfl rfl _ (hm ▸ hQ l)`.
+
+Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun l _ => key l).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun la _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← Finset.sum_div, ← Rat.cast_sum]`.
+
+Establish `h0` using `sum_capDeg_eq_zero O (z la) (jc la) (hL la) (by omega) G hu`. Conclude with `mul_eq_zero_of_right _ (div_eq_zero_iff.2 (.inl (Rat.cast_eq_zero.2 h0)))`.
+-/
 theorem dr_sub_ht (hX : HypothesesXH) (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) (hSW : ScholzeWeinsteinB)
     (hO : O.Core) (R : ℝ) (hR : 2 ≤ R) (S : Finset ℕ) (p : ℕ) (hp : p.Prime) (G : MvPolynomial (Vr O) ℝ) :
     ∑ c, cNum O c (rename (fb O S p R) ((rename (Prod.mk false) (pw O) - rename (Prod.mk true) (pw O)) *
@@ -700,14 +891,27 @@ theorem dr_sub_ht (hX : HypothesesXH) (h2 : Hypotheses2) (hH : HypothesesH) (hRA
     have h0 := sum_capDeg_eq_zero O (z la) (jc la) (hL la) (by omega) G hu
     exact mul_eq_zero_of_right _ (div_eq_zero_iff.2 (.inl (Rat.cast_eq_zero.2 h0)))
 
+/- English proof (translation)
+Rewrite using `[Function.update_eq_self_iff]`. Simplify using `[ArIn.ind, h]`.
+-/
 theorem update_false {S : Finset ℕ} {q : ℕ} (h : q ∉ S) : Function.update (ArIn.ind S) q false = ArIn.ind S := by
   rw [Function.update_eq_self_iff]
   simp [ArIn.ind, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Apply the tactic sequence `by_cases hr : r = q <;> simp [ArIn.ind, hr]`.
+-/
 theorem update_true (S : Finset ℕ) (q : ℕ) : Function.update (ArIn.ind S) q true = ArIn.ind (insert q S) := by
   funext r
   by_cases hr : r = q <;> simp [ArIn.ind, hr]
 
+/- English proof (translation)
+Establish `h` using `map_rename_sub (Prod.mk false) (Prod.mk true) (cNum O c ∘ₗ (rename (fb O S p R)).toLinearMap ∘ₗ LinearMap.mulLeft ℝ (rename (Prod.mk true) (pw O))) (fun v G => ?_) P 1`. Rewrite `h` using `[mul_one]`. Then use the resulting hypothesis. Take `⟨z, hz⟩` from `Option.isSome_iff_exists.1 (ln O v).2.2`. Establish `hg (x : Bool × Vr O) : Good R (fb O S p R x)`. Take `⟨_ | _, v⟩` from `x`.
+
+Rewrite using `[fb, update_false hpS]`. Conclude with `good_fa O _ _ _`. Rewrite using `[fb, update_true]`. Conclude with `good_fa O _ _ _`. Apply the tactic sequence `have := kill h2 hH hRA hSW hO R hR c (fb O S p R) hg (insert p S) {p} (by simpa using hp) (fun l => (true, .inr l)) (fun l => by rw [fb, update_true, fa_inr]) (false, v) (true, v) (n := if (ln O v).1 then -1 else 1) (by split_ifs <;> simp) (lnSym_eq O _ _ _) (lnSym_eq O _ _ _) hz …`.
+
+Establish `hq' : q ≠ p` using `by simpa using hq`. Simplify using `only [Function.update_of_ne hq'], .inl rfl⟩) G`. Establish `e : rename (Prod.mk true) (pw O) = ∑ l, X (true, .inr l) ^ 2` using `by simp only [pw, map_sum, map_pow, rename_X]`. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem ht_kill (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) (hSW : ScholzeWeinsteinB)
     (hO : O.Core) (R : ℝ) (hR : 2 ≤ R) (S : Finset ℕ) (p : ℕ) (hp : p.Prime) (hpS : p ∉ S) (c : O.s.Comp)
     (P : MvPolynomial (Vr O) ℝ) :
@@ -731,6 +935,13 @@ theorem ht_kill (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) 
   rw [e]
   exact this
 
+/- English proof (translation)
+Establish `hd : (NumberField.discr D.host.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)`. Establish `K (k : Fin (D.R.f * O.N)) (l : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N)) (n : ℤ) (hn : n ≠ 0) (h₀ : (if (ln O (.inl (rootEquiv O.S k))).1 then -1 else 1) = n) (h₁ : fa O (ArIn.ind T) R (.inr l) = Finsupp.single (ArIn.ind T, some R, .inr k) n) : cNum O c (rename (fa O (ArIn.ind T) R) …` using `kill h2 hH hRA hSW hO R hR c (fa O (ArIn.ind T) R) (good_fa O T R) T _ (fun p hp => ⟨Nat.prime_of_mem_primeFactors hp, hT hp⟩) .inr (fa_inr O _ _) (.inl (rootEquiv O.S k)) (.inr l) hn ((lnSym_eq O _ _ _).trans (congrArg _ h₀)) h₁ (AdmTest.letterOf_inl _) (letterOf_rootEquiv O.S k …`. Rewrite using `[dl, ← (rootEquiv O.S).sum_comp, ← Equiv.sum_comp Fin.revPerm fun k => (X (.inr (.inr k)) : MvPolynomial (Vr O) ℝ), ← Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Establish `h₁` using `K k (.inl k) 1 one_ne_zero (by simp [ln, h]) rfl`. Establish `h₂` using `neg_cancel h2 hH hO R hR c (fa O (ArIn.ind T) R) (good_fa O T R) (.inr (.inl k)) (.inr (.inr k.rev)) (by simp) (by simp [fa_inr, wholeSym]) (pw O * G)`. Establish `e : pw O * ((-X (.inl (rootEquiv O.S k)) - X (.inr (.inr (Fin.revPerm k)))) * G) = -(pw O * ((X (.inl (rootEquiv O.S k)) - X (.inr (.inl k))) * G)) - (X (.inr (.inl k)) + X (.inr (.inr k.rev))) * (pw O * G)`. Rewrite using `[Fin.revPerm_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, map_sub, map_sub, map_neg, map_neg, h₁, h₂, neg_zero, sub_zero]`. Conclude with `K k (.inr k.rev) (-1) (by simp) (by simpa [ln] using h) (by simp [fa_inr, wholeSym])`.
+-/
 theorem ram_kill (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) (hSW : ScholzeWeinsteinB)
     (hO : O.Core) (R : ℝ) (hR : 2 ≤ R) (T : Finset ℕ) (hT : (NumberField.discr D.host.E).natAbs.primeFactors ⊆ T)
     (c : O.s.Comp) (G : MvPolynomial (Vr O) ℝ) : cNum O c (rename (fa O (ArIn.ind T) R) (pw O * (dl O ℝ * G))) = 0 := by
@@ -757,6 +968,19 @@ theorem ram_kill (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration)
     rw [e, map_sub, map_sub, map_neg, map_neg, h₁, h₂, neg_zero, sub_zero]
   · exact K k (.inr k.rev) (-1) (by simp) (by simpa [ln] using h) (by simp [fa_inr, wholeSym])
 
+/- English proof (translation)
+Establish `step (S : Finset ℕ) (p : ℕ) (hp : p.Prime) (h : ∑ c, cNum O c (rename (fa O (ArIn.ind (insert p S)) R) (pw O * (dl O ℝ * G))) = 0) : ∑ c, cNum O c (rename (fa O (ArIn.ind S) R) (pw O * (dl O ℝ * G))) = 0`. Distinguish the cases in `hpS : p ∈ S`. Rewrite `h` using `[Finset.insert_eq_of_mem hpS]`. Then use the resulting hypothesis. Establish `e₀ : fa O (ArIn.ind S) R = fb O S p R ∘ Prod.mk false` using `funext fun v => by`. Rewrite using `[Function.comp_apply, fb, update_false hpS]`.
+
+Establish `e₁ : fa O (ArIn.ind (insert p S)) R = fb O S p R ∘ Prod.mk true` using `funext fun v => by`. Rewrite using `[Function.comp_apply, fb, update_true]`. Establish `hA` using `dr_sub_ht hX h2 hH hRA hSW hO R hR S p hp G`. Establish `hB` using `Finset.sum_eq_zero (s := Finset.univ) fun c _ => ht_kill h2 hH hRA hSW hO R hR S p hp hpS c (dl O ℝ * G)`. Rewrite `h` using `[e₁]`.
+
+Rewrite using `[e₀]`. Simplify using `only [← rename_rename] at h ⊢`. Rewrite using `[← add_zero (0 : ℝ), ← add_zero (0 + 0 : ℝ)]`. Use `nth_rewrite 3 [← h]`. Use `nth_rewrite 2 [← hB]`.
+
+Use `nth_rewrite 1 [← hA]`. Simplify using `only [← Finset.sum_add_distrib, ← map_add]`. Use `Finset.sum_congr rfl fun c _ => congrArg _ (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[map_mul (rename (Prod.mk false)) (pw O), map_mul (rename (Prod.mk true)) (pw O)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `all (U : Finset ℕ) (hU : ∀ p ∈ U, p.Prime) (h : ∑ c, cNum O c (rename (fa O (ArIn.ind (U ∪ S)) R) (pw O * (dl O ℝ * G))) = 0) : ∑ c, cNum O c (rename (fa O (ArIn.ind S) R) (pw O * (dl O ℝ * G))) = 0`. Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => rwa [Finset.empty_union] at h`. Consider the case `insert p U _ ih`. Rewrite `h` using `[Finset.insert_union]`.
+
+Conclude with `ih (fun q hq => hU q (Finset.mem_insert_of_mem hq)) (step _ p (hU p (Finset.mem_insert_self _ _)) h)`. Conclude with `all _ (fun p hp => Nat.prime_of_mem_primeFactors hp) (Finset.sum_eq_zero fun c _ => ram_kill h2 hH hRA hSW hO R hR _ Finset.subset_union_left c G)`.
+-/
 theorem sum_kill (hX : HypothesesXH) (h2 : Hypotheses2) (hH : HypothesesH) (hRA : RegularAlteration) (hSW : ScholzeWeinsteinB)
     (hO : O.Core) (R : ℝ) (hR : 2 ≤ R) (G : MvPolynomial (Vr O) ℝ) (S : Finset ℕ) :
     ∑ c, cNum O c (rename (fa O (ArIn.ind S) R) (pw O * (dl O ℝ * G))) = 0 := by
@@ -793,6 +1017,11 @@ theorem sum_kill (hX : HypothesesXH) (h2 : Hypotheses2) (hH : HypothesesH) (hRA 
   exact all _ (fun p hp => Nat.prime_of_mem_primeFactors hp)
     (Finset.sum_eq_zero fun c _ => ram_kill h2 hH hRA hSW hO R hR _ Finset.subset_union_left c G)
 
+/- English proof (translation)
+Rewrite using `[dl, sub_add_cancel, lamA, map_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [pHigh, pLow, map_sub, map_sum, pow_one, rename_X, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) < O.j`.
+
+Simplify using `[h, not_le.2 h]`. Simplify using `[h, not_lt.1 h]`.
+-/
 theorem rename_lamA : rename (Sum.inl : _ → Vr O) (lamA D.what₂.Tau O.N O.j) = dl O ℝ + ∑ k, X (.inr (.inr k)) := by
   rw [dl, sub_add_cancel, lamA, map_sum, Fintype.sum_prod_type]
   refine Finset.sum_congr rfl fun τ _ => ?_
@@ -802,6 +1031,13 @@ theorem rename_lamA : rename (Sum.inl : _ → Vr O) (lamA D.what₂.Tau O.N O.j)
   · simp [h, not_le.2 h]
   · simp [h, not_lt.1 h]
 
+/- English proof (translation)
+Establish `hT` using `update_false (Finset.notMem_empty 1)`. Establish `e1 : ((arIn O.s O.Φ O.met.hm).mixEv ∅ R 1 c).comp (DV.tagDR D.what₂.Tau O.N) = rename (fa O (ArIn.ind ∅) R ∘ Sum.inl)`. Use extensionality with `x : 1`. Simplify using `[ArIn.mixEv, DV.tagDR, hT]`. Conclude with `(congrArg X (fa_inl O _ R x).symm).trans (rename_X (R := ℝ) (fa O (ArIn.ind ∅) R ∘ Sum.inl) x).symm`.
+
+Establish `e2` using `congrArg (fun f => f P) e1`. Simplify using `only [AlgHom.comp_apply] at e2`. Rewrite using `[map_mul, e2, map_mul, map_mul, rename_rename]`. Use `congr 1`. Simplify using `only [ArIn.mixEv, aeval_X, hT, pw, map_sum, map_pow, rename_X, map_mul, algHom_C, fa_inr]`.
+
+Evaluate the numerical expressions. Both sides reduce to the same expression.
+-/
 theorem mixEv_empty (R : ℝ) (c : O.s.Comp) (P : Pol D.what₂.Tau O.N) :
     (arIn O.s O.Φ O.met.hm).mixEv ∅ R 1 c (X (Sum.inr (false, 2)) * DV.tagDR D.what₂.Tau O.N P) =
       rename (fa O (ArIn.ind ∅) R) (C (1 / 2 : ℝ) * pw O * rename Sum.inl P) := by
@@ -823,6 +1059,15 @@ end Main
 
 open Formalism.DegreeFormula Formalism.BasicNotions.DV GlobalTheory.VdmRec GlobalTheory.Published GlobalTheory.FlagPoly GlobalTheory.CovTestDR in
 
+/- English proof (translation)
+Introduce `hSW hX h2 hH hRA D O hO _ _ _ _ _ R hR`. Take `⟨G, hG⟩` from `sub_dvd_pow_sub_pow (rename (Sum.inl : _ → Vr O) (lamA D.what₂.Tau O.N O.j)) (∑ k, X (.inr (.inr k))) (dimGr D.what₂.Tau O.N O.j - 1)`. Rewrite using `[show rename (Sum.inl : _ → Vr O) (lamA D.what₂.Tau O.N O.j) - ∑ k, X (.inr (.inr k)) = dl O ℝ by`. Rewrite `hG` using `[rename_lamA, add_sub_cancel_right]]`. Establish `h` using `sum_kill hX h2 hH hRA hSW hO R hR (C (1 / 2 : ℝ) * rename Sum.inl (vdmCl D.what₂.Tau O.N O.j) * G) ∅`.
+
+Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib, ← h]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e : (∑ i : Fin (D.R.f * O.N), X (wholeSym (fun _ => false) (some R) (.inr i : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) : MvPolynomial (Sym D.host.E →₀ ℤ) ℝ) = rename (fa O (ArIn.ind ∅) R) (∑ k, X (.inr (.inr k)))`. Simplify using `only [map_sum, rename_X, fa_inr]`. Both sides reduce to the same expression.
+
+Establish `e₁ : termL O c R = cNum O c (rename (fa O (ArIn.ind ∅) R) (C (1 / 2 : ℝ) * pw O * rename Sum.inl (curveV D.what₂.Tau O.N O.j)))` using `congrArg (cNum O c) (mixEv_empty R c _)`. Establish `e₂ : termW O c R = cNum O c (rename (fa O (ArIn.ind ∅) R) (C (1 / 2 : ℝ) * pw O * rename Sum.inl (vdmCl D.what₂.Tau O.N O.j)) * rename (fa O (ArIn.ind ∅) R) (∑ k, X (.inr (.inr k))) ^ (dimGr D.what₂.Tau O.N O.j - 1))` using `congrArg (cNum O c) (congrArg₂ (fun a b : MvPolynomial (Sym D.host.E →₀ ℤ) ℝ => a * b) (mixEv_empty R c _) (congrArg (· ^ _) e))`. Rewrite using `[e₁, e₂, ← map_pow, ← map_mul, ← map_sub, ← map_sub]`. Use `congr 2`. Rewrite using `[curveV, map_mul, map_pow]`.
+
+Take the linear combination `(C (1 / 2 : ℝ) * pw O * rename Sum.inl (vdmCl D.what₂.Tau O.N O.j)) * hG`.
+-/
 theorem sum_termL_eq_sum_termW : ScholzeWeinsteinB → HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration →
     OnObj fun _ O _ _ _ _ => ∀ R : ℝ, 2 ≤ R → ∑ c, termL O c R = ∑ c, termW O c R := by
   intro hSW hX h2 hH hRA D O hO _ _ _ _ _ R hR

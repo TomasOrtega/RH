@@ -10,6 +10,11 @@ namespace RestTerms
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `f N H hH`. Take `⟨e, he⟩` from `h1 f N (antisymmetrize f N H) (isBlockAlternating_antisymmetrize f N H) (h2 f N H _ hH)`. Establish `hI` using `h3 f N H (C e) (by rw [he, mul_comm])`. Rewrite `hI` using `[constantCoeff_C]`. Establish `hΔ : algebraMap (RootRing f N) (FractionRing (RootRing f N)) (blockVandermonde f N) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (RootRing f N) (FractionRing (RootRing f N)))).mpr (Flag.blockVandermonde_ne_zero f N)`.
+
+Establish `hdd : dividedDifference f N H = algebraMap ℚ (FractionRing (RootRing f N)) e`. Rewrite using `[dividedDifference, he, map_mul, mul_div_assoc, div_self hΔ, mul_one, IsScalarTower.algebraMap_apply ℚ (RootRing f N) (FractionRing (RootRing f N)), MvPolynomial.algebraMap_eq]`. Rewrite using `[hdd, ← map_mul, hI]`.
+-/
 theorem FlagIntegralTopDegree.proof (h1 : FlagAltTopDegree.Statement)
     (h2 : FlagAntisymHomogeneous.Statement) (h3 : FlagIntegralViaQuotient.Statement) :
     FlagIntegralTopDegree.Statement := by

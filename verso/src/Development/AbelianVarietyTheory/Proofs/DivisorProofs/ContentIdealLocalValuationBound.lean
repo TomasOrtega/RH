@@ -19,6 +19,19 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.LatLine
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n L _ u _ I hI hIu v c hc`. Use `set U : Fin n → Fv F v ⊗[F] E := fun i => (1 : Fv F v) ⊗ₜ[F] u i with hU`. Establish `key : ∀ z ∈ I * I⁻¹, (c * (1 : Fv F v) ⊗ₜ[F] z) • U ∈ latLoc F L v`. Introduce `z hz`. Use `FractionalIdeal.mul_induction_on hz (fun i hi j hj => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations.
+
+Establish `hint : c * (1 : Fv F v) ⊗ₜ[F] j ∈ GlobalTheory.AdelicU.intLoc F E v`. Use `GlobalTheory.TateUnr.mem_intLoc_of_toCompl fun w hw => ?_` and prove the remaining obligations. Establish `h2 : Valued.v (algebraMap E (w.adicCompletion E) j) = w.valuation E j` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w j`. Establish `h3` using `hc w hw`. Rewrite `h3` using `[GlobalTheory.UnrTate.valAt_of_under hw]`.
+
+Rewrite using `[map_mul, map_mul, GlobalTheory.LFun.toCompl_tmul, map_one, one_mul, h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[FractionalIdeal.count_inv, neg_neg, ← WithZero.exp_add, neg_add_cancel, WithZero.exp_zero]`. Establish `hiu : (i • u) ∈ L` using `(hIu i).1 hi`. Establish `hmem : (fun k => (1 : Fv F v) ⊗ₜ[F] (i • u) k) ∈ latLoc F L v` using `GlobalTheory.AdelicU.tmul_mem_latLoc (one_mem _) hiu`.
+
+Establish `hs` using `(latLoc F L v).smul_mem (⟨_, hint⟩ : GlobalTheory.AdelicU.intLoc F E v) hmem`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `only [hU, Pi.smul_apply, smul_eq_mul, Submodule.coe_smul]`. Express the relevant statement in the definitionally equal form `c * (1 : Fv F v) ⊗ₜ[F] (i * j) * (1 : Fv F v) ⊗ₜ[F] u k = c * (1 : Fv F v) ⊗ₜ[F] j * (1 : Fv F v) ⊗ₜ[F] (i * u k)`.
+
+Rewrite using `[mul_assoc, mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_comm i j, mul_assoc]`. Rewrite using `[TensorProduct.tmul_add, mul_add, add_smul]`. Conclude with `add_mem hx hy`. Establish `h1 : (1 : E) ∈ I * I⁻¹`. Rewrite using `[mul_inv_cancel₀ hI]`.
+
+Conclude with `FractionalIdeal.one_mem_one _`. Use `key 1 h1` as an intermediate fact. Rewrite `this` using `[← Algebra.TensorProduct.one_def, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem smul_one_tmul_mem_latLoc : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →
     ∀ I : FractionalIdeal (𝓞 E)⁰ E, I ≠ 0 → (∀ c : E, c ∈ I ↔ c • u ∈ L) →

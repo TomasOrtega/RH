@@ -24,15 +24,29 @@ namespace GlobalTheory.LineDual
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_mem _, by rw [RingHom.map_zero]; exact zero_mem _⟩`.
+-/
 theorem intAt_zero' (P : Pl D → Prop) : (0 : AE D) ∈ intAt D P :=
   ⟨zero_mem _, by rw [RingHom.map_zero]; exact zero_mem _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, by rw [RingHom.map_add]; exact add_mem ha.2 hb.2⟩`.
+-/
 theorem intAt_add' {P : Pl D → Prop} {a b : AE D} (ha : a ∈ intAt D P) (hb : b ∈ intAt D P) : a + b ∈ intAt D P :=
   ⟨add_mem ha.1 hb.1, by rw [RingHom.map_add]; exact add_mem ha.2 hb.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨neg_mem ha.1, by rw [RingHom.map_neg]; exact neg_mem ha.2⟩`.
+-/
 theorem intAt_neg' {P : Pl D → Prop} {a : AE D} (ha : a ∈ intAt D P) : -a ∈ intAt D P :=
   ⟨neg_mem ha.1, by rw [RingHom.map_neg]; exact neg_mem ha.2⟩
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, -, hα, a, -, x, -, rfl⟩` from `hw`. Conclude with `LatMem.tmul_mem_idAt hα _`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`.
+-/
 theorem latV_entry_mem_idAt {S : HSp D} {M : Lat S} {P : Pl D → Prop} {y : Fin S.rank → AE D}
     (hy : y ∈ latV S M P) (i : Fin S.rank) : y i ∈ idAt D P := by
   induction hy using AddSubgroup.closure_induction with
@@ -43,6 +57,11 @@ theorem latV_entry_mem_idAt {S : HSp D} {M : Lat S} {P : Pl D → Prop} {y : Fin
   | add x y _ _ hx hy => exact add_mem hx hy
   | neg x _ hx => exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, -, hα, a, -, rfl⟩` from `hw`. Conclude with `LatMem.tmul_mem_idAt (fun w hw => hα w hw) _`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`.
+-/
 theorem idV_mem_idAt {𝔞 : FI D} {v : Pl D} {t : AE D} (ht : t ∈ idV 𝔞 v) : t ∈ idAt D (· = v) := by
   induction ht using AddSubgroup.closure_induction with
   | mem w hw =>
@@ -52,6 +71,9 @@ theorem idV_mem_idAt {𝔞 : FI D} {v : Pl D} {t : AE D} (ht : t ∈ idV 𝔞 v)
   | add x y _ _ hx hy => exact add_mem hx hy
   | neg x _ hx => exact neg_mem hx
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[GlobalTheory.FinPl.Model.mem_idAt_iff]`. Rewrite `h`, the goal using `[← Algebra.smul_def]`. Use `conv_rhs => rw [← h]`. Rewrite using `[GlobalTheory.HeisDisj.cA_smul]`.
+-/
 theorem cA_mem_idAt {v : Pl D} {a : AE D} (h : a ∈ idAt D (· = v)) : cA D a ∈ idAt D (· = v) := by
   rw [GlobalTheory.FinPl.Model.mem_idAt_iff] at h ⊢
   rw [← Algebra.smul_def] at h ⊢
@@ -60,17 +82,40 @@ theorem cA_mem_idAt {v : Pl D} {a : AE D} (h : a ∈ idAt D (· = v)) : cA D a �
 
 def pr (S : HSp D) (w y : Fin S.rank → AE D) : AE D := ∑ l, (∑ m, cA D (w m) * gA S m l) * y l
 
+/- English proof (translation)
+Simplify using `[pr]`.
+-/
 theorem pr_zero_left (S : HSp D) (y : Fin S.rank → AE D) : pr S 0 y = 0 := by simp [pr]
+/- English proof (translation)
+Simplify using `[pr]`.
+-/
 theorem pr_zero_right (S : HSp D) (w : Fin S.rank → AE D) : pr S w 0 = 0 := by simp [pr]
+/- English proof (translation)
+Simplify using `[pr, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem pr_add_left (S : HSp D) (w w' y : Fin S.rank → AE D) : pr S (w + w') y = pr S w y + pr S w' y := by
   simp [pr, add_mul, Finset.sum_add_distrib]
+/- English proof (translation)
+Simplify using `[pr, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem pr_add_right (S : HSp D) (w y y' : Fin S.rank → AE D) : pr S w (y + y') = pr S w y + pr S w y' := by
   simp [pr, mul_add, Finset.sum_add_distrib]
+/- English proof (translation)
+Simplify using `[pr]`.
+-/
 theorem pr_neg_left (S : HSp D) (w y : Fin S.rank → AE D) : pr S (-w) y = -pr S w y := by
   simp [pr]
+/- English proof (translation)
+Simplify using `[pr]`.
+-/
 theorem pr_neg_right (S : HSp D) (w y : Fin S.rank → AE D) : pr S w (-y) = -pr S w y := by
   simp [pr]
 
+/- English proof (translation)
+Establish `hc : ∀ m, cA D (pairA D.host.F 0 α ⊗ₜ[D.host.F] x m) = pairA D.host.F 0 α ⊗ₜ[D.host.F] star (x m)` using `fun _ => rfl`. Establish `hg : ∀ m l, gA S m l = (1 : AF D.host.F) ⊗ₜ[D.host.F] S.gram m l` using `fun _ _ => rfl`. Establish `hp : pairA D.host.F 0 α * pairA D.host.F 0 β = pairA D.host.F 0 (α * β)` using `Prod.ext (zero_mul _) rfl`. Simplify using `only [pr, one_mul]`. Simplify using `only [hc, hg, Finset.sum_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, hp]`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [← TensorProduct.tmul_sum]`.
+-/
 theorem pr_gen (S : HSp D) (α β : Af D.host.F) (x x' : Fin S.rank → D.host.E) :
     pr S (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i)) (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x' i)) =
       pairA D.host.F 0 (α * β) ⊗ₜ[D.host.F] (∑ m, ∑ l, star (x m) * S.gram m l * x' l) := by
@@ -83,6 +128,19 @@ theorem pr_gen (S : HSp D) (α β : Af D.host.F) (x x' : Fin S.rank → D.host.E
   rw [Finset.sum_comm]
   simp only [← TensorProduct.tmul_sum]
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hαi, hα, a, ha, x, hx, rfl⟩` from `hw`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, c, hc, x', hx', rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+
+Rewrite using `[pr_gen]`. Take `⟨b, hb⟩` from `(hM.2 x').1 hx' x hx`. Use `⟨LatMem.tmul_mem_idAt (fun v hv => by rw [map_mul, hα v hv, zero_mul]) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb]`. Conclude with `AddSubgroup.subset_closure ⟨α * β, LatMem.intAf_mul' hαi hβi, b, rfl⟩`.
+
+Consider the case `zero => rw [pr_zero_right]`. Conclude with `intAt_zero' _`. Consider the case `add z z' _ _ hz hz' => rw [pr_add_right]`. Conclude with `intAt_add' hz hz'`. Consider the case `neg z _ hz => rw [pr_neg_right]`.
+
+Conclude with `intAt_neg' hz`. Consider the case `zero => rw [pr_zero_left]`. Conclude with `intAt_zero' _`. Consider the case `add w w' _ _ hw hw' => rw [pr_add_left]`. Conclude with `intAt_add' hw hw'`.
+
+Consider the case `neg w _ hw => rw [pr_neg_left]`. Conclude with `intAt_neg' hw`.
+-/
 theorem pr_mem_intAt {S : HSp D} {M : Lat S} (hM : IsSelfDualC S M) {P : Pl D → Prop} {w y : Fin S.rank → AE D}
     (hw : w ∈ latV S M P) (hy : y ∈ latV S M P) : pr S w y ∈ intAt D P := by
   induction hw using AddSubgroup.closure_induction with
@@ -107,6 +165,17 @@ theorem pr_mem_intAt {S : HSp D} {M : Lat S} (hM : IsSelfDualC S M) {P : Pl D �
   | add w w' _ _ hw hw' => rw [pr_add_left]; exact intAt_add' hw hw'
   | neg w _ hw => rw [pr_neg_left]; exact intAt_neg' hw
 
+/- English proof (translation)
+Introduce `D ψ hψ S A L o ζ M 𝔠 v hM hline h𝔠 y hy`. Take `⟨h1, h2, -, h4, -⟩` from `GlobalTheory.SeeSaw.idV_props D ψ hψ v`. Establish `hX : (∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l) ∈ idAt D (· = v)` using `sum_mem fun l _ => Ideal.mul_mem_left _ _ (latV_entry_mem_idAt hy l)`. Establish `hcX` using `cA_mem_idAt hX`. Establish `hcint : ∀ s, s ∈ intAt D (· = v) → cA D s ∈ intAt D (· = v)`.
+
+Introduce `s hs`. Establish `e2 : s ∈ idV (D.host.AA ^ (0 : ℤ)) v` using `by rw [zpow_zero]; exact (h1 s).2 hs`. Establish `e3` using `(h4 0 s).1 e2`. Rewrite `e3` using `[zpow_zero]`. Conclude with `(h1 _).1 e3`.
+
+Establish `key` using `(h2 𝔠 1 h𝔠 one_ne_zero _ hcX).1 (fun t ht => ?_)`. Rewrite `key` using `[one_mul]`. Then use the resulting hypothesis. Establish `htI : t ∈ idAt D (· = v)` using `idV_mem_idAt ht`. Establish `htz : t • ratV (vecB o ζ) ∈ latV S M (· = v)` using `(hline t htI).2 ht`. Establish `hp` using `pr_mem_intAt hM htz hy`.
+
+Establish `he : pr S (t • ratV (vecB o ζ)) y = cA D t * ∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l`. Simplify using `only [pr, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite `hp` using `[he]`. Establish `h5` using `hcint _ hp`. Rewrite `h5` using `[map_mul, Formalism.L2.Theta.cA_cA, mul_comm]`.
+
+Conclude with `(h1 _).2 h5`.
+-/
 theorem line_pair_mem_idV : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A L : HSp D) (o : OrthDec S A L)
     (ζ : Fin L.rank → D.host.E) (M : Lat S) (𝔠 : FI D) (v : Pl D), IsSelfDualC S M → LineId o ζ M 𝔠 v → 𝔠 ≠ 0 →
       ∀ y ∈ latV S M (· = v), cA D (∑ l, (∑ m, cA D (ratV (vecB o ζ) m) * gA S m l) * y l) ∈ idV 𝔠⁻¹ v := by

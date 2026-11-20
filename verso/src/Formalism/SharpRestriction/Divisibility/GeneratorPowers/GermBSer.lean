@@ -16,6 +16,15 @@ section JetSubst
 
 variable {S : Type} [CommRing S] {κ κ' : Type}
 
+/- English proof (translation)
+Unfold `jetSubstP jetMap`. Use `congr 1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, MvPolynomial.aeval_X, Ideal.Quotient.mkₐ_eq_mk]`.
+
+Rewrite using `[Ideal.Quotient.eq]`. Establish `hc : MvPolynomial.constantCoeff (φ i) = MvPolynomial.constantCoeff (ψ i)`. Establish `h1 : φ i - ψ i ∈ orig S κ'` using `Ideal.pow_le_self (Nat.succ_ne_zero m) (h i)`. Establish `h2 : orig S κ' ≤ RingHom.ker (MvPolynomial.constantCoeff (R` using `S) (σ := κ')) := by`. Unfold `orig`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using the standard rewrite rules. Establish `h3` using `h2 h1`. Rewrite `h3` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`.
+
+Conclude with `h3`. Rewrite using `[hc]`. Use `h i using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jetSubstP_congr (m : ℕ) (φ ψ : κ → MvPolynomial κ' S) (h : ∀ i, φ i - ψ i ∈ orig S κ' ^ (m + 1)) :
     (jetSubstP m φ : Jet S κ m →ₐ[S] Jet S κ' m) = jetSubstP m ψ := by
   unfold jetSubstP jetMap
@@ -38,6 +47,9 @@ theorem jetSubstP_congr (m : ℕ) (φ ψ : κ → MvPolynomial κ' S) (h : ∀ i
   convert h i using 1
   ring
 
+/- English proof (translation)
+Unfold `jetSubstP jetMap jetTrunc liftJet`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Both sides reduce to the same expression.
+-/
 theorem jetSubstP_trunc (m : ℕ) (φ : κ → MvPolynomial κ' S) :
     (jetTrunc : Jet S κ' (m + 1) →ₐ[S] Jet S κ' m).comp (jetSubstP (m + 1) φ) =
       (jetSubstP m φ).comp (jetTrunc : Jet S κ (m + 1) →ₐ[S] Jet S κ m) := by
@@ -47,6 +59,11 @@ theorem jetSubstP_trunc (m : ℕ) (φ : κ → MvPolynomial κ' S) :
   intro i
   rfl
 
+/- English proof (translation)
+Establish `hle : Ideal.map (MvPolynomial.rename f : MvPolynomial κ' S →ₐ[S] MvPolynomial κ'' S) (orig S κ') ≤ orig S κ''`. Unfold `orig`. Rewrite using `[Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `Ideal.subset_span ⟨f j, (MvPolynomial.rename_X f j).symm⟩`.
+
+Establish `hm` using `Ideal.mem_map_of_mem (MvPolynomial.rename f : MvPolynomial κ' S →ₐ[S] MvPolynomial κ'' S) hp`. Rewrite `hm` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle n hm`.
+-/
 theorem rename_mem_orig_pow {κ'' : Type} (f : κ' → κ'') (n : ℕ) {p : MvPolynomial κ' S} (hp : p ∈ orig S κ' ^ n) :
     MvPolynomial.rename f p ∈ orig S κ'' ^ n := by
   have hle : Ideal.map (MvPolynomial.rename f : MvPolynomial κ' S →ₐ[S] MvPolynomial κ'' S) (orig S κ') ≤
@@ -59,6 +76,25 @@ theorem rename_mem_orig_pow {κ'' : Type} (f : κ' → κ'') (n : ℕ) {p : MvPo
   rw [Ideal.map_pow] at hm
   exact Ideal.pow_right_mono hle n hm
 
+/- English proof (translation)
+Unfold `psIn`. Rewrite using `[← map_sub]`. Apply `rename_mem_orig_pow` to reduce the goal to its premises. Unfold `psTrunc`. Establish `memD : ∀ (k : ℕ) (e : (Fin n × Fin d) →₀ ℕ), e ∈ (degLE k : Finset ((Fin n × Fin d) →₀ ℕ)) ↔ (e.sum fun _ a => a) ≤ k`.
+
+Introduce `k e`. Unfold `degLE`. Simplify using `only [Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`.
+
+Conclude with `h`. Introduce `h`. Use `⟨⟨fun i => ⟨e i, ?_⟩, ?_⟩, h⟩` and prove the remaining obligations. Establish `hle : e i ≤ e.sum fun _ a => a`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`.
+
+Conclude with `Finset.single_le_sum (f := fun j => e j) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `monoMem : ∀ (k : ℕ) (e : (Fin n × Fin d) →₀ ℕ) (c : S), k ≤ (e.sum fun _ a => a) → MvPolynomial.monomial e c ∈ orig S (Fin n × Fin d) ^ k`.
+
+Introduce `k e c hk`. Establish `hmem : (e.prod fun i a => MvPolynomial.X i ^ a) ∈ orig S (Fin n × Fin d) ^ (e.sum fun _ a => a)`. Simplify using `only [Finsupp.prod, Finsupp.sum]`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Apply `Ideal.prod_mem_prod` to reduce the goal to its premises.
+
+Introduce `i _`. Apply `Ideal.pow_mem_pow` to reduce the goal to its premises. Unfold `orig`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Rewrite using `[MvPolynomial.monomial_eq]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_le_pow_right hk hmem)`. Establish `hsub : (degLE m : Finset ((Fin n × Fin d) →₀ ℕ)) ⊆ degLE (m + 1)`. Introduce `e he`. Rewrite `he`, the goal using `[memD]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[← Finset.sum_sdiff hsub, add_sub_cancel_right]`. Apply `Ideal.sum_mem` to reduce the goal to its premises. Introduce `e he`. Rewrite `he` using `[Finset.mem_sdiff, memD, memD]`. Apply `monoMem` to reduce the goal to its premises.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem psIn_succ_sub {d n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (g : MvPowerSeries (Fin n × Fin d) S) :
     psIn d (m + 1) r g - psIn d m r g ∈ orig S (Fin n' × Fin d) ^ (m + 1) := by
   unfold psIn
@@ -112,6 +148,17 @@ section Series
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
 variable {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (d : ℕ)
 
+/- English proof (translation)
+Unfold `scaleGenG val gm`. Establish `hz : r z ∈ t.PP.L.wchart φ fun k => J (r ≫ φ k)`. Unfold `Good at hJ`. Unfold `LB.wchart`. Use `show r z ∈ (⋂ k, ⇑(φ k) ⁻¹' ↑(t.PP.L.U (J (r ≫ φ k))) : Set _)`.
+
+Rewrite using `[Set.mem_iInter]`. Introduce `k`. Establish `hk` using `hJ (r ≫ φ k)`. Simplify using `using hk`. Rewrite using `[dif_pos hz, dif_pos (show r z ∈ (⊤ : Y.Opens) from trivial)]`.
+
+Simplify using `only`. Use `(MonoidHom.map_mul _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Unfold `pullU res`.
+
+Establish `hz' : z ∈ r ⁻¹ᵁ (t.PP.L.wchart φ fun k => J (r ≫ φ k))` using `hz`. Establish `ht : z ∈ r ⁻¹ᵁ (⊤ : Y.Opens)` using `trivial`. Establish `key` using `congrArg (fun f => CommRingCat.Hom.hom f (u : Γ(Y, ⊤))) (show Y.presheaf.map (homOfLE (le_top : t.PP.L.wchart φ (fun k => J (r ≫ φ k)) ≤ ⊤)).op ≫ Scheme.Hom.app r (t.PP.L.wchart φ fun k => J (r ≫ φ k)) ≫ Z.presheaf.germ (r ⁻¹ᵁ t.PP.L.wchart φ fun k => J (r ≫ φ k)) z hz' = Scheme. …`. Rewrite using `[Scheme.Hom.naturality_assoc, TopCat.Presheaf.germ_res]`. Apply the tactic sequence `all_goals rfl)`.
+
+Use `first`. Consider the case `exact key`. Consider the case `(simp only [CommRingCat.hom_comp, RingHom.comp_apply] at key`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `key)`.
+-/
 theorem val_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t.G.left)) (ε : K → ℤ) (u : Γ(Y, ⊤)ˣ)
     (g : LB.Gen (LB.LinComb t.PP.L φ ε)) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ t.G.left) → t.PP.L.ι)
     (hJ : Good t.PP.L z J) : val (scaleGenG t φ ε u g) r z J = gm r z ⊤ u * val g r z J := by
@@ -148,6 +195,19 @@ theorem val_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t
 abbrev ρn (n m : ℕ) : jOG x0 d m n ⟶ jOG x0 d (m + 1) n :=
   homAt x0 (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] Jet S (Fin n × Fin d) m)
 
+/- English proof (translation)
+Establish `hL` using `t.PP.isLB`. Use `choose U hU using fun m => exists_ratio t.PP.L hL (hF m) (A m) (hA m) (B m) (hB m)`. Establish `hv : ∀ m, ∃ v : (Jet S (Fin n × Fin d) m)ˣ, unitΓ v = U m` using `fun m => ⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of (Jet S (Fin n × Fin d) m))).hom.hom.toMonoidHom (U m), Units.ext (congrArg (fun f => CommRingCat.Hom.hom f (U m).val) (Iso.hom_inv_id (Scheme.ΓSpecIso (CommRingCat.of (Jet S (Fin n × Fin d) m)))))⟩`. Use `choose v hv using hv`. Establish `hUc : ∀ m, U m = pullU (ρn x0 d n m).left ⊤ (U (m + 1))`.
+
+Introduce `m`. Use `unit_ext (V := ⊤) fun y _ => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : (jOG x0 d m n).left ⟶ t.G.left => exists_chart hL (χ y)`. Establish `e1` using `hU m _ (𝟙 _) y I hI`. Establish `e2` using `hU (m + 1) _ (ρn x0 d n m).left y I hI`.
+
+Establish `e3` using `gm_pull (𝟙 _) (ρn x0 d n m).left y ⊤ trivial (U (m + 1))`. Rewrite `e3` using `[Category.id_comp]`. Use `Eq.trans ?_ e3.symm` and prove the remaining obligations. Conclude with `(mul_inv_eq_iff_eq_mul.2 e1).symm.trans ((congrArg₂ (fun a b => a * b⁻¹) (hAt m y I hI).symm (hBt m y I hI).symm).trans (mul_inv_eq_iff_eq_mul.2 e2))`. Establish `hac : ∀ m, (jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _) (v (m + 1)) = v m`.
+
+Introduce `m`. Apply `toΓ_injective` to reduce the goal to its premises. Establish `e1` using `congrArg Units.val (hv m)`. Establish `e2` using `congrArg Units.val (hv (m + 1))`. Establish `nat` using `congrArg (fun f => CommRingCat.Hom.hom f ((v (m + 1) : Jet S (Fin n × Fin d) (m + 1)))) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ((jetTrunc : Jet S (Fin n × Fin d) (m + 1) →ₐ[S] _) : Jet S (Fin n × Fin d) (m + 1) →+* Jet S (Fin n × Fin d) m)))`.
+
+Use `nat.trans (Eq.trans ?_ e1.symm)` and prove the remaining obligations. Use `(congrArg (fun a => ((ρn x0 d n m).left.appTop).hom a) e2).trans ?_` and prove the remaining obligations. Rewrite using `[hUc m]`. Both sides reduce to the same expression. Take `⟨ph, hph⟩` from `exists_ps_of_jets (fun m => (v m : Jet S (Fin n × Fin d) m)) hac`.
+
+Use `⟨ph, fun m => ⟨v m, (hph m).symm, corr_of_val hL fun y J hJ => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hU m _ (𝟙 _) y J hJ).trans ((congrArg (fun u => gm (𝟙 _) y ⊤ u * val (B m) (𝟙 _) y J) (hv m).symm).trans (val_scale t _ _ _ _ _ y J hJ).symm)`.
+-/
 theorem exists_series {n : ℕ} {K K' : Type} [Fintype K] [Fintype K']
     (φ : ∀ m, K → ((jOG x0 d m n).left ⟶ t.G.left)) (ε : K → ℤ)
     (φ' : ∀ m, K' → ((jOG x0 d m n).left ⟶ t.G.left)) (ε' : K' → ℤ)
@@ -194,6 +254,15 @@ theorem exists_series {n : ℕ} {K K' : Type} [Fintype K] [Fintype K']
   exact (hU m _ (𝟙 _) y J hJ).trans ((congrArg (fun u => gm (𝟙 _) y ⊤ u * val (B m) (𝟙 _) y J) (hv m).symm).trans
     (val_scale t _ _ _ _ _ y J hJ).symm)
 
+/- English proof (translation)
+Establish `hc : (jetSubstP m fun p : Fin 2 × Fin d => φ (m + 1) p.1 p.2 : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin n × Fin d) m) = jetSubstP m fun p => φ m p.1 p.2` using `jetSubstP_congr m _ _ (fun p => hφ m p.1 p.2)`. Establish `hcomp : (ρn x0 d n m).left ≫ (homAt x0 (jetSubstP (m + 1) fun p : Fin 2 × Fin d => φ (m + 1) p.1 p.2)).left = (homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ (m + 1) p.1 p.2)).left ≫ (homAt x0 (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, homAt_comp, homAt_comp, jetSubstP_trunc]`. Unfold `peG`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_pull hJ (e (m + 1)) (homAt x0 (jetSubstP (m + 1) fun p : Fin 2 × Fin d => φ (m + 1) p.1 p.2)).left (ρn x0 d n m).left (z := y) (J := J)`.
+
+Establish `h2` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_pull hJ (e m) (homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ m p.1 p.2)).left (𝟙 _) (z := y) (J := J)`. Establish `h3` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_pull hJ (e (m + 1)) (homAt x0 (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m)).left (homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ m p.1 p.2)).left (z := y) (J := J)`. Establish `h4 : val (LB.pullGen t.PP.L _ _ (e (m + 1)) (homAt x0 (jetTrunc : Jet S (Fin 2 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 2 × Fin d) m)).left) (homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ m p.1 p.2)).left y J = val (e m) (homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ m p.1 p.2)).l …` using `by first`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_corr (htr m) _`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_corr hJ (htr m) _`.
+
+Consider the case `exact ReciprocityTheory.ChartRestriction.G.Geo.Tor.val_corr (htr m) _ hJ`. Apply the tactic sequence `try unfold peG`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[hcomp, hc]`. Use `h3.symm.trans (h4.trans ?_)` and prove the remaining obligations.
+
+Use `(h2.trans ?_).symm` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+-/
 theorem pe_trunc {x : ∀ m, jOG x0 d m 1 ⟶ t.G} {e : ∀ m, FrTyG t x0 d x m} (htr : FrTrunc t x0 d x e) {n : ℕ}
     (φ : ℕ → Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S)
     (hφ : ∀ m i j, φ (m + 1) i j - φ m i j ∈ orig S (Fin n × Fin d) ^ (m + 1))

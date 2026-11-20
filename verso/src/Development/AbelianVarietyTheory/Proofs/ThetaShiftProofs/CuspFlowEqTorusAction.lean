@@ -13,6 +13,15 @@ namespace GlobalTheory.CuspFlow
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
+/- English proof (translation)
+Establish `h : herm X.Gm (∑ a, η a • cu.e a) (∑ a, η a • cu.e a) = ∑ a, ∑ b, η a * cc (η b) * herm X.Gm (cu.e a) (cu.e b)`. Simplify using `only [herm, maxCuspsA_vec_apply, cc, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ b, ∑ a, ∑ k, ∑ l, η a * cu.e a k * X.Gm k l * (IsCMField.complexConj E (η b) * IsCMField.complexConj E (cu.e b l)) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h]`. Simplify using `[cu.iso]`.
+-/
 theorem herm_comb_eq_zero (X : Data E r) (cu : CuspFD X ρ) (η : Fin ρ → E) :
     herm X.Gm (∑ a, η a • cu.e a) (∑ a, η a • cu.e a) = 0 := by
   have h : herm X.Gm (∑ a, η a • cu.e a) (∑ a, η a • cu.e a) =
@@ -39,6 +48,11 @@ theorem herm_comb_eq_zero (X : Data E r) (cu : CuspFD X ρ) (η : Fin ρ → E) 
   rw [h]
   simp [cu.iso]
 
+/- English proof (translation)
+Take `⟨γ, hγ, hγe⟩` from `X.transv _ hη (herm_comb_eq_zero X cu η) a ha hai`. Establish `hmem : ((X.m : E) * a * X.κ0) • mcMη η ∈ zGam X cu`. Use `⟨fun i j => ?_, γ, hγ, by rw [hγe, maxCuspsA_transv]⟩` and prove the remaining obligations. Establish `hk` using `maxCuspsA_kappa_cc X`. Simplify using `only [cc] at hk ha`.
+
+Simplify using `only [mcMη, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, cc, map_mul, map_natCast, hk, ha, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ).mp ((hb.2 _).mp hmem)`.
+-/
 theorem exists_int_coords (X : Data E r) (cu : CuspFD X ρ) (hb : IsZBasis X cu (zBas X cu))
     (η : Fin ρ → E) (hη : (∑ a, η a • cu.e a) ∈ X.Λ) (a : E) (ha : cc a = a)
     (hai : IsIntegral ℤ a) :
@@ -53,6 +67,31 @@ theorem exists_int_coords (X : Data E r) (cu : CuspFD X ρ) (hb : IsZBasis X cu 
     ring
   exact (Submodule.mem_span_range_iff_exists_fun ℤ).mp ((hb.2 _).mp hmem)
 
+/- English proof (translation)
+Take `⟨ω, hω⟩` from `FlowMeanContinuity.exists_basis X 0`. Establish `hωp : ∀ j, ω j ∈ X.periods 0` using `fun j => by`. Establish `: ω j ∈ RealEmbeddingCharacters.perL X 0` using `hω ▸ Submodule.subset_span ⟨j, rfl⟩`. Conclude with `this`. Use `choose a ha hai hae using fun j => (RealEmbeddingCharacters.mem_periods_iff X 0 _).mp (hωp j)`.
+
+Use `choose c hc using fun j => exists_int_coords X cu hb η hη (a j) (ha j) (hai j)`. Use `set n0 : ℕ := X.chiOrd 0 with hn0`. Establish `hn0pos : (n0 : ℝ) ≠ 0`. Use `RealEmbeddingCharacters.chiOrd_pos X 0` as an intermediate fact. Check the signs of the components of the expression.
+
+Set `L : (X.Ψ → ℝ) →ₗ[ℝ] (Fin (nZ X ρ) → ℝ)` to `ω.constr ℝ fun j k => (n0 : ℝ) * (c j k : ℝ)`. Establish `hL : ∀ j k, L (ω j) k = (n0 : ℝ) * (c j k : ℝ)` using `fun j k => by`. Simplify using `only [L, Module.Basis.constr_basis]`. Use `⟨L, fun s τ i i' => ?_, fun la p hp k => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ j, ∑ k, (L (ω j) k : ℂ) * τ.1 (zBas X cu k i i') = τ.1 X.κ0 * (ω j τ : ℂ) * (τ.1 (η i) * conj (τ.1 (η i')))`.
+
+Introduce `j`. Establish `h1` using `congrArg (fun M : Matrix (Fin ρ) (Fin ρ) E => τ.1 (M i i')) (hc j)`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply] at h1`. Simplify using `only [map_sum, mcMη, Matrix.of_apply, smul_eq_mul, zsmul_eq_mul, map_mul, map_intCast, map_natCast, Formalism.L2.Pj.FJ.emb_cc'] at h1`. Establish `h2 : (ω j τ : ℂ) = (X.m : ℂ) * (n0 : ℂ) * τ.1 (a j)`.
+
+Rewrite using `[hae j, RealEmbeddingCharacters.emb_real (ha j)]`. Simplify using `only [RealEmbeddingCharacters.per]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [hL]`.
+
+Use `push_cast`. Simplify using `only [mul_assoc (n0 : ℂ)]`. Rewrite using `[← Finset.mul_sum, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : s = ∑ j, ω.repr s j • ω j` using `(ω.sum_repr s).symm`.
+
+Generalize the expression as in `ω.repr s = t at hs`. Substitute `hs` using the available equality. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc ((t j : ℝ) : ℂ)]`. Rewrite using `[← Finset.mul_sum, hj]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨b, hb1, hb2, rfl⟩` from `(RealEmbeddingCharacters.mem_periods_iff X la p).mp hp`. Establish `h0 : RealEmbeddingCharacters.per X 0 b ∈ Submodule.span ℤ (Set.range ω)`. Rewrite using `[hω]`. Conclude with `(RealEmbeddingCharacters.mem_periods_iff X 0 _).mpr ⟨b, hb1, hb2, rfl⟩`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp h0`.
+
+Establish `h1 : RealEmbeddingCharacters.per X la b = ((X.chiOrd la : ℝ) / (n0 : ℝ)) • RealEmbeddingCharacters.per X 0 b`. Use function extensionality and compare the values at `τ`. Simplify using `only [RealEmbeddingCharacters.per, Pi.smul_apply, smul_eq_mul, ← hn0]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨X.chiOrd la * ∑ j, d j * c j k, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ← hd]`. Simplify using `only [map_smul, map_sum, map_zsmul, Pi.smul_apply, Finset.sum_apply, hL]`. Simplify using `only [smul_eq_mul, zsmul_eq_mul]`. Use `push_cast`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_linear (X : Data E r) (cu : CuspFD X ρ) (hb : IsZBasis X cu (zBas X cu))
     (η : Fin ρ → E) (hη : (∑ a, η a • cu.e a) ∈ X.Λ) :
     ∃ L : (X.Ψ → ℝ) →ₗ[ℝ] (Fin (nZ X ρ) → ℝ),
@@ -122,6 +161,21 @@ theorem exists_linear (X : Data E r) (cu : CuspFD X ρ) (hb : IsZBasis X cu (zBa
     refine Finset.sum_congr rfl fun j _ => ?_
     field_simp
 
+/- English proof (translation)
+Introduce `E _ _ _ r ρ X cu hb η hη`. Take `⟨L, hL, hZ⟩` from `exists_linear X cu hb η hη`. Use `⟨L, fun s x => ?_, fun χ _ s => ?_, hZ⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ show X.flowMat (∑ a, η a • cu.e a) τ (s τ : ℂ) * mat x τ = zMatC X cu.e τ.1 (∑ k, (L s k : ℂ) • (zBas X cu k).map τ.1) * mat x τ`. Rewrite using `[maxCuspsA_flowMat, ← TransvectionPeriodicity.emb_kappa]`.
+
+Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, mcMηc, Matrix.of_apply]`. Conclude with `(hL s τ a b).symm`. Simplify using `only [phZ, prE, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hκ : τ.1 X.κ0 ≠ 0` using `fun h => by`. Use `X.κ0_sign τ` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Simplify using `at this`. Establish `key : ∑ k, τ.1 (Matrix.trace (χ.transpose * zBas X cu k) / (X.κ0 / 2)) * (L s k : ℂ) = 2 * (τ.1 (hq χ η) * (s τ : ℂ))`. Establish `e1 : ∀ k, τ.1 (Matrix.trace (χ.transpose * zBas X cu k) / (X.κ0 / 2)) * (L s k : ℂ) = ∑ b, ∑ a, 2 / τ.1 X.κ0 * τ.1 (χ a b) * ((L s k : ℂ) * τ.1 (zBas X cu k a b))`. Introduce `k`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.transpose_apply, map_div₀, map_sum, map_mul, map_ofNat, Finset.sum_div, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Simplify using `only [e1]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [hq, map_sum, map_mul, Formalism.L2.Pj.FJ.emb_cc', Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm (f := fun a b => 2 * (τ.1 (η a) * τ.1 (χ a b) * conj (τ.1 (η b)) * (s τ : ℂ)))]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, hL]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h` using `congrArg Complex.re key`. Simplify `h` using `[Complex.re_sum]`.
+-/
 theorem flow_eq_zAct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu : CuspFD X ρ), IsZBasis X cu (zBas X cu) → ∀ η : Fin ρ → E, (∑ a, η a • cu.e a) ∈ X.Λ → ∃ L : (X.Ψ → ℝ) →ₗ[ℝ] (Fin (nZ X ρ) → ℝ), (∀ s x, X.flow (∑ a, η a • cu.e a) (fun τ => (s τ : ℂ)) x = zAct X cu (L s) x) ∧ (∀ χ : Matrix (Fin ρ) (Fin ρ) E, IsHermE χ → ∀ s, ∑ k, phZ X cu χ k * L s k = 2 * ∑ τ : X.Ψ, (τ.1 (hq χ η)).re * s τ) ∧ ∀ (la : Wt X.Ψ r), ∀ p ∈ X.periods la, ∀ k, ∃ z : ℤ, L p k = z := by
   intro E _ _ _ r ρ X cu hb η hη
   obtain ⟨L, hL, hZ⟩ := exists_linear X cu hb η hη

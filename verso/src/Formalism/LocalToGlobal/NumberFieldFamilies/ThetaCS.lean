@@ -20,6 +20,13 @@ def Smo (φ : GA D V → ℂ) : Prop :=
 
 variable {θ V}
 
+/- English proof (translation)
+Establish `h1` using `h (k + 1) (Fin.snoc (α := fun _ => D.what₂.Tau) τs τ) (Fin.snoc (α := fun _ => Matrix (Fin V.rank) (Fin V.rank) ℂ) Xs X) (fun i => by`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hτ`. Simplify using `using hX j) g`. Establish `h2 : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc (α` using `fun _ => ℝ) p.1 p.2 : Fin (k + 1) → ℝ) := by`.
+
+Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using contDiff_snd`. Simplify `(contDiff_apply ℝ ℝ j).comp contDiff_fst` using `[Function.comp_def]`. Use `h1.comp h2 using 2 with p` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Function.comp_apply, List.ofFn_succ', List.prod_concat, mul_assoc]`. Simplify using the standard rewrite rules.
+-/
 theorem Smo.two {φ : GA D V → ℂ} (h : Smo θ V φ) (k : ℕ) (τs : Fin k → D.what₂.Tau)
     (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hX : ∀ i, Xs i ∈ lieAt V (τs i)) (τ : D.what₂.Tau)
     (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hτ : X ∈ lieAt V τ) (g : GA D V) :
@@ -40,14 +47,26 @@ theorem Smo.two {φ : GA D V → ℂ} (h : Smo θ V φ) (k : ℕ) (τs : Fin k �
   rw [Function.comp_apply, List.ofFn_succ', List.prod_concat, mul_assoc]
   simp
 
+/- English proof (translation)
+Introduce `k τs Xs hX g` and use `(h k τs Xs hX g).add (h' k τs Xs hX g)`.
+-/
 theorem Smo.add {φ φ' : GA D V → ℂ} (h : Smo θ V φ) (h' : Smo θ V φ') : Smo θ V (φ + φ') :=
   fun k τs Xs hX g => (h k τs Xs hX g).add (h' k τs Xs hX g)
 
+/- English proof (translation)
+Introduce `k τs Xs hX g` and use `(h k τs Xs hX g).const_smul c`.
+-/
 theorem Smo.smul {φ : GA D V → ℂ} (h : Smo θ V φ) (c : ℂ) : Smo θ V (c • φ) :=
   fun k τs Xs hX g => (h k τs Xs hX g).const_smul c
 
+/- English proof (translation)
+The claim follows from `gram_herm V (tauE D τ)`.
+-/
 theorem gramAt_herm (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ)ᴴ = gramAt D V τ := gram_herm V (tauE D τ)
 
+/- English proof (translation)
+Establish `: (gramAt D V τ).det = tauE D τ V.gram.det` using `((tauE D τ).map_det V.gram).symm`. Rewrite using `[this]`. Conclude with `((map_ne_zero _).2 (gram_det_ne V)).isUnit`.
+-/
 theorem gramAt_unit (V : HSp D) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ).det := by
   have : (gramAt D V τ).det = tauE D τ V.gram.det := ((tauE D τ).map_det V.gram).symm
   rw [this]

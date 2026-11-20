@@ -17,6 +17,21 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 
 namespace GlobalTheory.FrameNorm
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r U _ xR fn _ hpin h yP hcb`. Establish `hWD` using `GlobalTheory.TransferCompare.evalWD_framed Xo c`. Establish `hgt : GenFromTest Xo c h` using `(GlobalTheory.Reg.genFrEx_and_genFromTest E H Dw l Xo c).2 h`. Establish `hcx : ValAtCx h yP`. Introduce `Z P a n f hf`.
+
+Establish `hT1` using `hgt Z`. Establish `hm` using `hcb Z P`. Establish `hT2 : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (yP Z P) := by`. Take `⟨p, ψ, y', hy'⟩` from `hT1`. Conclude with `⟨p, (PAlg P).comp ψ, y', frMap_trans (Xo := Xo) (c := c) _ _ _ ψ (PAlg P) y' _ _ hy' hm⟩`.
+
+Establish `key : evR Xo c f (yP Z P) = PAlg P (evR Xo c f (genFr h Z))`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT2, dif_pos hT1]`. Conclude with `hWD f hf.1 _ _ _ _ _ _ _ (yP Z P) hT2.choose_spec.choose_spec.choose_spec (frMap_trans (Xo := Xo) (c := c) _ _ _ _ (PAlg P) _ _ _ hT1.choose_spec.choose_spec.choose_spec hm)`. Rewrite using `[key]`.
+
+Both sides reduce to the same expression. Use `⟨?_, hcx, ?_⟩` and prove the remaining obligations. Introduce `Z G x P`. Establish `hm : FrMap (conjAlg (sgOf P)) (yP Z P) (yP Z ((starRingEnd ℂ).comp P))` using `frMap_cancel (Xo := Xo) (c := c) _ _ _ (PAlg P) (conjAlg (sgOf P)) (genFr h Z) _ _ (hcb Z P) (hcb Z ((starRingEnd ℂ).comp P))`. Unfold `nrmC`.
+
+Use `congr 1`. Conclude with `Complex.norm_conj _`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun t : ℝ => t ^ (-exZ Dw G i)) (hpin.2 (sgOf P) (yP Z P) _ hm i)`. Introduce `Z P a n f hf show nrmC fn (yP Z) (wtZ a n) (AddMonoidAlgebra.single (wtZ a n) (evC h Z f)) P = _`.
+
+Rewrite using `[nrmC_single, hcx Z P a n f hf]`. Unfold `ptNorm`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have e : exZ Dw (wtZ a n) i = (ex Dw a n i : ℤ) := by cases i <;> rfl`.
+
+Rewrite using `[e, zpow_neg, zpow_natCast, inv_pow]`.
+-/
 theorem fnConj_valAtCx_nrmC_eq_ptNorm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ (xR : ℝ) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ), 0 < xR → FnPin U xR fn → ∀ (h : GenFrEx Xo c) (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))), (∀ Z, CBase h Z (yP Z)) → FnConj Xo c fn yP ∧ ValAtCx h yP ∧ ∀ (Z : Comp Xo c) (P : Om Z →+* ℂ) a n, ∀ f ∈ sec Xo c a n, nrmC fn (yP Z) (wtZ a n) (valC h a n f Z) P = ptNorm (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (sgOf P) (fn (sgOf P)) (ex Dw a n) f (yP Z P) := by
   intro E _ _ _ H Dw l Xo c r U _ xR fn _ hpin h yP hcb
   have hWD := GlobalTheory.TransferCompare.evalWD_framed Xo c

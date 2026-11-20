@@ -10,6 +10,9 @@ open Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.Symmetrizat
 
 def idx (p q : ℕ) : Fin p ⊕ Fin q → Fin (p + q) := Sum.elim (Fin.castAdd q) (Fin.natAdd p)
 
+/- English proof (translation)
+The claim follows from `finSumFinEquiv.injective`.
+-/
 theorem idx_inj (p q : ℕ) : Function.Injective (idx p q) := finSumFinEquiv.injective
 
 abbrev VQ (p q w : ℕ) (lam2 : Fin q → ℕ) : Type :=
@@ -19,10 +22,18 @@ def EV (p q w : ℕ) (lam2 : Fin q → ℕ) (a b : Fin p ⊕ Fin q) : Module.End
   LinearMap.restrict (der (p + q) (p + q) (idx p q a) (idx p q b) : Module.End ℚ _)
     (fun f hf => der_mem _ _ _ f hf)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EV_coe (p q w : ℕ) (lam2 : Fin q → ℕ) (a b : Fin p ⊕ Fin q) (x : VQ p q w lam2) :
     ((EV p q w lam2 a b x : VQ p q w lam2) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) =
       der (p + q) (p + q) (idx p q a) (idx p q b) x := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `h` using `der_comm (idx p q a) (idx p q b) (idx p q c) (idx p q d) (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ)`. Simplify using `only [(idx_inj p q).eq_iff] at h`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, EV_coe]`. Rewrite using `[h]`.
+
+Apply the tactic sequence `split_ifs <;> simp [EV_coe]`.
+-/
 theorem EV_comm (p q w : ℕ) (lam2 : Fin q → ℕ) (a b c d : Fin p ⊕ Fin q) :
     EV p q w lam2 a b * EV p q w lam2 c d - EV p q w lam2 c d * EV p q w lam2 a b =
       (if b = c then EV p q w lam2 a d else 0) - (if d = a then EV p q w lam2 c b else 0) := by
@@ -39,6 +50,9 @@ def W0 (p q w : ℕ) (lam2 : Fin q → ℕ) : Submodule ℚ (VQ p q w lam2) :=
     ⨅ (α : Fin p) (β : Fin p), LinearMap.ker (EV p q w lam2 (Sum.inl α) (Sum.inl β) -
       if α = β then (w : ℚ) • (1 : Module.End ℚ (VQ p q w lam2)) else 0)
 
+/- English proof (translation)
+Simplify using `only [W0, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Use `and_congr Iff.rfl (forall_congr' fun α => forall_congr' fun β => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mem_orthogonal_frame_iff (p q w : ℕ) (lam2 : Fin q → ℕ) (u : VQ p q w lam2) :
     u ∈ W0 p q w lam2 ↔ (∀ (α : Fin p) (a : Fin q), EV p q w lam2 (Sum.inl α) (Sum.inr a) u = 0) ∧
       ∀ α β : Fin p, EV p q w lam2 (Sum.inl α) (Sum.inl β) u = if α = β then (w : ℚ) • u else 0 := by
@@ -46,6 +60,11 @@ theorem mem_orthogonal_frame_iff (p q w : ℕ) (lam2 : Fin q → ℕ) (u : VQ p 
   refine and_congr Iff.rfl (forall_congr' fun α => forall_congr' fun β => ?_)
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_orthogonal_frame_iff]`. Use `⟨fun α a => ?_, fun α β => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun T => T u) (EV_comm p q w lam2 (Sum.inl α) (Sum.inr a) (Sum.inr b) (Sum.inr b'))`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hu.1, map_zero, sub_zero, reduceCtorEq, if_false] at h`. Rewrite using `[h]`.
+
+Apply the tactic sequence `split_ifs <;> simp [hu.1]`. Establish `h` using `congrArg (fun T => T u) (EV_comm p q w lam2 (Sum.inl α) (Sum.inl β) (Sum.inr b) (Sum.inr b'))`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, reduceCtorEq, if_false, sub_zero, LinearMap.zero_apply, sub_eq_zero] at h`. Rewrite using `[h, hu.2]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem w_zero_stable_right_block (p q w : ℕ) (lam2 : Fin q → ℕ) (b b' : Fin q) (u : VQ p q w lam2) (hu : u ∈ W0 p q w lam2) :
     EV p q w lam2 (Sum.inr b) (Sum.inr b') u ∈ W0 p q w lam2 := by
   rw [mem_orthogonal_frame_iff] at hu ⊢

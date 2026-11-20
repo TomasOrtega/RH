@@ -10,6 +10,11 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 
 namespace GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `hE b`. Use `Fintype.ofFinite ι` as an intermediate fact. Use `choose V e hb he using fun a => hE a b`. Use `⟨Finset.univ.inf V, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_finset_inf]`.
+
+Simplify using `using hb`. Establish `hle : Finset.univ.inf V ≤ V a` using `Finset.inf_le (Finset.mem_univ a) set U := Finset.univ.inf V`. Establish `hU : U.ι ''ᵁ ⊤ ≤ V a` using `(U.ι_image_le ⊤).trans hle`. Conclude with `⟨((Scheme.Modules.restrictFunctorIsoPullback U.ι).app (E a)).symm ≪≫ ((GlobalTheory.VB.isFrame_freeFrame U.toScheme (Fin (r a))).iso ((GlobalTheory.VB.isFrame_restrict_iff U.ι _).2 ((he a).res hU))).symm⟩`.
+-/
 theorem exists_open_isVB_free_finite (B : Scheme.{0}) (ι : Type) [Finite ι] (E : ι → B.Modules) (r : ι → ℕ) :
     (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → ∀ b : B, ∃ U : B.Opens, b ∈ U ∧ ∀ a,
       Nonempty ((Scheme.Modules.pullback U.ι).obj (E a) ≅

@@ -14,6 +14,25 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 open GlobalTheory.TameEig
 noncomputable section
 namespace UpperTheory.GalS
+/- English proof (translation)
+Introduce `D hA hLGC _ i _ w hS hw rb hrb hroot`. Establish `hC : Formalism.MainNotions.SumRepresentations.Cheb D.nd` using `hA.2.2.2.2.2.2.2.2.1`. Establish `hDel` using `Formalism.MainNotions.SumRepresentations.Del_holds D i`. Establish `hq : (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde).Prime` using `by split_ifs`. Conclude with `D.host.pde'_prime`.
+
+Conclude with `D.host.pde_prime`. Establish `hq15 : (if D.nd.l i = D.host.pde then D.host.pde' else D.host.pde) % 15 = 1` using `by split_ifs`. Conclude with `D.host.pde_mod.2`. Conclude with `D.host.pde_mod.1`. Establish `hne` using `residue_ne_one D.nd i w hS _ hq hq15 hw (hDel w hS hw)`.
+
+Establish `hcond : w ∈ D.nd.Q i ∨ (Formalism.MainNotions.SumRepresentations.At.Del D.nd i ∧ (w ∈ placesOver D.host.E D.host.pde ∨ (D.nd.l i = D.host.pde ∧ w ∈ placesOver D.host.E D.host.pde')))`. Use `Or.inr ⟨hDel, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hlp : D.nd.l i = D.host.pde`. Rewrite `hw` using `[if_pos hlp]`. Conclude with `Or.inr ⟨hlp, hw⟩`.
+
+Rewrite `hw` using `[if_neg hlp]`. Conclude with `Or.inl hw`. Establish `x : D.nd.X i` using `Classical.choice (D.nd.neX i)`. Establish `hQ : ∀ x, ∃ ρ, Formalism.MainNotions.SumRepresentations.At.IsHeckeGaloisQ D.nd D.naut i x ρ` using `fun x => by`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`.
+
+Take `⟨Pa, hPa⟩` from `hA.2.2.1 i P`. Take `⟨ρ, h1, h2, h3, -⟩` from `isoRep D hA.1 (_root_.UpperTheory.GalS.weak' hA.2.2.2.1) i P Pa hPa`. Conclude with `⟨ρ, heckeQ D i x P Pa hP hPa ρ h1 h2 h3⟩`. Use `choose rq hrq using hQ`. Take `⟨r, hr⟩` from `Formalism.MainNotions.SumRepresentations.exists_GoodR D.nd D.naut hA.2.1 i ⟨rq, hrq⟩`.
+
+Establish `hL` using `hLGC i r hr w (Or.inl hS)`. Establish `hs` using `_root_.Formalism.MainNotions.SumRepresentations.splitI_of_monodromyInertiaType_of_lgCatN D.nd r D.naut hr hA.2.2.2.2.2.1 w (Or.inl hS) hcond hL x`. Establish `hg` using `D.nd.locNd_chebotarevPlace_mem i w`. Establish `hwl` using `D.nd.SQ_l i w (Or.inl hS)`. Establish `fac` using `Formalism.MainNotions.SumRepresentations.rhobar_fac D.nd r hC hr rb hrb x (D.nd.gam0 i w)`.
+
+Rewrite `fac` using `[charpoly_red D.nd r hs _ hg]`. Establish `hprod : ∏ c ∈ Finset.Icc 1 D.R.t, (X - C (IsLocalRing.residue (D.nd.O i) ((D.nd.chi i c (D.nd.gam0 i w) : (D.nd.O i)ˣ) : D.nd.O i))) = ∏ _c ∈ Finset.Icc 1 D.R.t, (X - C (IsLocalRing.residue (D.nd.O i) (chi1 D.nd i (D.nd.gam0 i w))))` using `Finset.prod_congr rfl fun c hc => by`. Rewrite using `[Formalism.MainNotions.SumRepresentations.character_eq_first_off_l D.nd w hwl c (Finset.mem_Icc.1 hc).1 (Finset.mem_Icc.1 hc).2 _ hg]`. Both sides reduce to the same expression. Rewrite `fac` using `[hprod, Finset.prod_const, Nat.card_Icc, Nat.add_sub_cancel]`.
+
+Establish `hcp` using `mul_right_cancel₀ (pow_ne_zero _ (X_sub_C_ne_zero _)) fac`. Establish `h0 : ((X - 1 : Polynomial (IsLocalRing.ResidueField (D.nd.O i))) ^ D.R.r).eval (IsLocalRing.residue (D.nd.O i) (chi1 D.nd i (D.nd.gam0 i w))) = 0`. Rewrite using `[← hcp]`. Conclude with `hroot`. Rewrite `h0` using `[eval_pow, eval_sub, eval_X, eval_one]`.
+
+Conclude with `pow_ne_zero _ (sub_ne_zero.2 hne) h0`.
+-/
 theorem eigPd_holds_alt : _root_.GlobalTheory.TameEig.eigPd_holds_tyz := by
   intro D hA hLGC _ i _ w hS hw rb hrb hroot
   have hC : Formalism.MainNotions.SumRepresentations.Cheb D.nd := hA.2.2.2.2.2.2.2.2.1

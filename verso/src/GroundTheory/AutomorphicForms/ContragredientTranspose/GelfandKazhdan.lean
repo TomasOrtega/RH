@@ -15,8 +15,14 @@ variable {G : Type*} [Group G] [TopologicalSpace G]
 
 scoped instance conjActTopology : TopologicalSpace (ConjAct G) := ‹TopologicalSpace G›
 
+/- English proof (translation)
+The claim follows from `continuous_id`.
+-/
 theorem continuous_ofConjAct : Continuous (ConjAct.ofConjAct : ConjAct G → G) := continuous_id
 
+/- English proof (translation)
+The claim follows from `continuous_id`.
+-/
 theorem continuous_toConjAct : Continuous (ConjAct.toConjAct : G → ConjAct G) := continuous_id
 
 scoped instance [IsTopologicalGroup G] : IsTopologicalGroup (ConjAct G) :=
@@ -56,21 +62,36 @@ def transposeGL (g : GL (Fin n) F) : GL (Fin n) F :=
     by rw [← transpose_mul, Units.mul_inv, transpose_one]⟩
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem coe_transposeGL (g : GL (Fin n) F) :
     (transposeGL g : Matrix (Fin n) (Fin n) F) = (g : Matrix (Fin n) (Fin n) F)ᵀ := rfl
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (transpose_transpose _)`.
+-/
 theorem transposeGL_transposeGL (g : GL (Fin n) F) : transposeGL (transposeGL g) = g :=
   Units.ext (transpose_transpose _)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp [transpose_mul]) @[simp]`.
+-/
 theorem transposeGL_mul (g h : GL (Fin n) F) :
     transposeGL (g * h) = transposeGL h * transposeGL g :=
   Units.ext (by simp [transpose_mul])
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (by simp)`.
+-/
 theorem transposeGL_one : transposeGL (1 : GL (Fin n) F) = 1 :=
   Units.ext (by simp)
 
+/- English proof (translation)
+Rewrite using `[eq_inv_iff_mul_eq_one, ← transposeGL_mul, mul_inv_cancel, transposeGL_one]`.
+-/
 theorem transposeGL_inv (g : GL (Fin n) F) : transposeGL g⁻¹ = (transposeGL g)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← transposeGL_mul, mul_inv_cancel, transposeGL_one]
 
@@ -81,8 +102,14 @@ def thetaT : GL (Fin n) F ≃* GL (Fin n) F where
   right_inv g := by simp [← transposeGL_inv]
   map_mul' g h := by rw [transposeGL_mul, _root_.mul_inv_rev]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaT_apply (g : GL (Fin n) F) : thetaT g = (transposeGL g)⁻¹ := rfl
 
+/- English proof (translation)
+Rewrite using `[ConjAct.smul_def, ConjAct.toConjAct_smul, thetaT_apply, transposeGL_mul, transposeGL_mul, transposeGL_inv, inv_inv, mul_assoc]`.
+-/
 theorem transposeGL_smul (h : ConjAct (GL (Fin n) F)) (x : GL (Fin n) F) :
     transposeGL (h • x) = ConjAct.toConjAct (thetaT (ConjAct.ofConjAct h)) • transposeGL x := by
   rw [ConjAct.smul_def, ConjAct.toConjAct_smul, thetaT_apply, transposeGL_mul, transposeGL_mul,
@@ -90,6 +117,9 @@ theorem transposeGL_smul (h : ConjAct (GL (Fin n) F)) (x : GL (Fin n) F) :
 
 variable [TopologicalSpace F]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_transpose, Units.continuous_coe_inv.matrix_transpose⟩`.
+-/
 theorem continuous_transposeGL :
     Continuous (transposeGL : GL (Fin n) F → GL (Fin n) F) :=
   Units.continuous_iff.2 ⟨Units.continuous_val.matrix_transpose,
@@ -104,8 +134,14 @@ def transposeHomeo : GL (Fin n) F ≃ₜ GL (Fin n) F where
   continuous_invFun := continuous_transposeGL
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transposeHomeo_apply (g : GL (Fin n) F) : transposeHomeo g = transposeGL g := rfl
 
+/- English proof (translation)
+The claim follows from `continuous_transposeGL.inv`.
+-/
 theorem continuous_thetaT [IsTopologicalRing F] : Continuous (thetaT : GL (Fin n) F → GL (Fin n) F) :=
   continuous_transposeGL.inv
 
@@ -116,6 +152,29 @@ section Baire
 variable {H X : Type*} [Group H] [TopologicalSpace H] [SigmaCompactSpace H] [TopologicalSpace X]
   [T2Space X] [LocallyCompactSpace X] [MulAction H X] [ContinuousSMul H X]
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace Z` using `hZ.locallyCompactSpace`. Establish `: Nonempty Z` using `hZne.to_subtype`. Establish `hsc : (s ∩ Z).Countable` using `hs.mono inter_subset_left`. Establish `: Countable ↥(s ∩ Z)` using `hsc.to_subtype`. Set `f : (s ∩ Z : Set X) × ℕ → Set Z` to `fun i => Subtype.val ⁻¹' ((fun h : H => h • (i.1 : X)) '' compactCovering H i.2)`.
+
+Establish `hfc : ∀ i, IsClosed (f i)` using `fun i => (((isCompact_compactCovering H i.2).image (continuous_id.smul continuous_const)).isClosed).preimage continuous_subtype_val`. Establish `hfU : ⋃ i, f i = univ`. Use `eq_univ_of_forall fun z => ?_` and prove the remaining obligations. Take `⟨x, hxs, hzx⟩` from `mem_iUnion₂.1 (hcov z.2)`. Take `⟨h, hh⟩` from `hzx`.
+
+Establish `hxZ : x ∈ Z`. Use `hZinv h⁻¹ _ z.2` as an intermediate fact. Rewrite `this` using `[← hh, inv_smul_smul]`. Then use the resulting hypothesis. Take `⟨k, hk⟩` from `mem_iUnion.1 ((iUnion_compactCovering H).symm ▸ mem_univ h : h ∈ ⋃ k, compactCovering H k)`. Conclude with `mem_iUnion.2 ⟨(⟨x, hxs, hxZ⟩, k), ⟨h, hk, hh⟩⟩`.
+
+Take `⟨⟨⟨x, hxs, hxZ⟩, k⟩, hint⟩` from `nonempty_interior_of_iUnion_of_closed hfc hfU`. Take `⟨W, hWo, hW⟩` from `isOpen_induced_iff.1 (isOpen_interior (s := f (⟨x, hxs, hxZ⟩, k)))`. Take `⟨w, hw⟩` from `hint`. Establish `hwW : (w : X) ∈ W`. Establish `: w ∈ Subtype.val ⁻¹' W` using `hW ▸ hw`.
+
+Conclude with `this`. Establish `hsub : ∀ z : Z, (z : X) ∈ W → (z : X) ∈ orbit H x`. Introduce `z hz`. Establish `: z ∈ interior (f (⟨x, hxs, hxZ⟩, k))` using `hW ▸ (show z ∈ Subtype.val ⁻¹' W from hz)`. Take `⟨h, -, hh⟩` from `interior_subset this`.
+
+Conclude with `⟨h, hh⟩`. Use `⟨x, hxZ, ?_⟩` and prove the remaining obligations. Establish `hwO : (w : X) ∈ orbit H x` using `hsub w hwW`. Establish `key : Z \ orbit H x = Z ∩ ⋂ h : H, (fun z => h • z) ⁻¹' Wᶜ`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_sdiff, mem_inter_iff, mem_iInter, mem_preimage, mem_compl_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hzZ, hzO⟩`. Use `⟨hzZ, fun h hhz => hzO ?_⟩` and prove the remaining obligations. Use `hsub ⟨h • z, hZinv h z hzZ⟩ hhz` as an intermediate fact.
+
+Take `⟨k', hk'⟩` from `this`. Establish `hk'' : k' • x = h • z` using `hk'`. Use `⟨h⁻¹ * k', ?_⟩` and prove the remaining obligations. Use `show (h⁻¹ * k') • x = z`. Rewrite using `[mul_smul, hk'', inv_smul_smul]`.
+
+Introduce and unpack `⟨hzZ, hzW⟩`. Use `⟨hzZ, fun hzO => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hzO`. Take `⟨b, hb⟩` from `hwO`. Establish `ha' : a • x = z` using `ha`.
+
+Establish `hb' : b • x = (w : X)` using `hb`. Apply `hzW (b * a⁻¹)` to reduce the goal to its premises. Rewrite using `[mul_smul, ← ha', inv_smul_smul, hb']`. Conclude with `hwW`. Rewrite using `[key]`.
+
+Conclude with `hZ.inter (isClosed_iInter fun h => hWo.isClosed_compl.preimage (continuous_const_smul h))`.
+-/
 theorem exists_isClosed_diff_orbit {Z : Set X} (hZ : IsClosed Z) (hZne : Z.Nonempty)
     (hZinv : ∀ h : H, ∀ x ∈ Z, h • x ∈ Z) {s : Set X} (hs : s.Countable)
     (hcov : Z ⊆ ⋃ x ∈ s, orbit H x) :
@@ -190,6 +249,9 @@ def relT (U : Set (GL (Fin n) F)) : Submodule ℂ (GL (Fin n) F → ℂ) :=
   relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) U ⊔ tauSpan U
 
 omit [IsTopologicalRing F] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨hf.1.1.comp_continuous continuous_transposeGL, hf.1.2.comp_homeomorph transposeHomeo⟩, fun x hx => (hUτ x).1 (hf.2 hx)⟩`.
+-/
 theorem comp_transposeGL_mem {U : Set (GL (Fin n) F)}
     (hUτ : ∀ x, transposeGL x ∈ U ↔ x ∈ U) {f : GL (Fin n) F → ℂ} (hf : f ∈ supportedIn U) :
     (fun x => f (transposeGL x)) ∈ supportedIn U :=
@@ -197,17 +259,26 @@ theorem comp_transposeGL_mem {U : Set (GL (Fin n) F)}
     fun x hx => (hUτ x).1 (hf.2 hx)⟩
 
 omit [IsTopologicalRing F] in
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `(supportedIn U).add_mem hf (comp_transposeGL_mem hUτ hf)`.
+-/
 theorem tauSpan_le {U : Set (GL (Fin n) F)} (hUτ : ∀ x, transposeGL x ∈ U ↔ x ∈ U) :
     tauSpan U ≤ supportedIn U := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, hf, rfl⟩
   exact (supportedIn U).add_mem hf (comp_transposeGL_mem hUτ hf)
 
+/- English proof (translation)
+The claim follows from `sup_le (relSpan_le_supportedIn _ hUinv) (tauSpan_le hUτ)`.
+-/
 theorem relT_le {U : Set (GL (Fin n) F)} (hUinv : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ U, h • x ∈ U)
     (hUτ : ∀ x, transposeGL x ∈ U ↔ x ∈ U) : relT U ≤ supportedIn U :=
   sup_le (relSpan_le_supportedIn _ hUinv) (tauSpan_le hUτ)
 
 omit [IsTopologicalRing F] in
+/- English proof (translation)
+Use `sup_le_sup (Submodule.span_mono ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨h, f, hf, rfl⟩`. Conclude with `⟨h, f, supportedIn_mono hUV hf, rfl⟩`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨f, supportedIn_mono hUV hf, rfl⟩`.
+-/
 theorem relT_mono {U V : Set (GL (Fin n) F)} (hUV : U ⊆ V) : relT U ≤ relT V := by
   refine sup_le_sup (Submodule.span_mono ?_) (Submodule.span_mono ?_)
   · rintro _ ⟨h, f, hf, rfl⟩
@@ -222,6 +293,51 @@ section OneClass
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ}
 
+/- English proof (translation)
+Set `Φ : GL (Fin n) F → GL (Fin n) F` to `fun g => S⁻¹ * thetaT g * S`. Establish `hθS : thetaT S = S⁻¹` using `by rw [thetaT_apply, hS]`. Establish `hθS' : thetaT S⁻¹ = S` using `by rw [map_inv, hθS, inv_inv]`. Establish `hθθ : ∀ g : GL (Fin n) F, thetaT (thetaT g) = g` using `fun g => by`. Rewrite using `[thetaT_apply, thetaT_apply, transposeGL_inv, transposeGL_transposeGL, inv_inv]`.
+
+Establish `hΦΦ : ∀ g, Φ (Φ g) = g` using `fun g => by`. Simplify using `only [Φ, map_mul, hθS, hθS', hθθ]`. Use `group`. Establish `hΦc : Continuous Φ` using `(continuous_const.mul continuous_thetaT).mul continuous_const`. Establish `hτk : ∀ k : GL (Fin n) F, transposeGL (ConjAct.toConjAct k • x₀) = ConjAct.toConjAct (S * Φ k) • x₀`.
+
+Introduce `k`. Rewrite using `[transposeGL_smul, ConjAct.ofConjAct_toConjAct, ← hSx, ← ConjAct.toConjAct_smul, ← mul_smul, ← map_mul]`. Use `congr 2`. Simplify using `only [Φ]`. Use `group`.
+
+Set `ΦH : ConjAct (GL (Fin n) F) → ConjAct (GL (Fin n) F)` to `fun l => ConjAct.toConjAct (Φ (ConjAct.ofConjAct l))`. Establish `hΦHc : Continuous ΦH` using `continuous_toConjAct.comp (hΦc.comp continuous_ofConjAct)`. Establish `hΦHmul : ∀ a b, ΦH (a * b) = ΦH a * ΦH b` using `fun a b => by`. Simplify using `only [ΦH]`. Rewrite using `[← map_mul]`.
+
+Use `congr 1`. Simplify using `only [Φ, map_mul]`. Use `group`. Establish `hΦHinv : ∀ a, ΦH a⁻¹ = (ΦH a)⁻¹` using `fun a => by`. Simplify using `only [ΦH]`.
+
+Rewrite using `[← map_inv]`. Use `congr 1`. Simplify using `only [Φ, map_inv]`. Use `group`. Establish `hΦHone : ΦH 1 = 1`.
+
+Simplify using `only [ΦH, Φ, map_one, mul_one, inv_mul_cancel]`. Take `⟨L, hLc⟩` from `exists_compactOpenSubgroup (G := ConjAct (GL (Fin n) F))`. Set `L₀ : Subgroup (ConjAct (GL (Fin n) F))` to `{ carrier := {l | l ∈ L ∧ ΦH l ∈ L} mul_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨L.mul_mem ha hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΦHmul]`. Conclude with `L.mul_mem ha' hb'`. Use the proof step `one_mem' := by`. Use `⟨L.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦHone]`.
+
+Conclude with `L.one_mem`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, ha'⟩`. Use `⟨L.inv_mem ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦHinv]`.
+
+Conclude with `L.inv_mem ha' }`. Establish `hL₀o : IsOpen (L₀ : Set (ConjAct (GL (Fin n) F)))` using `L.isOpen.inter (L.isOpen.preimage hΦHc)`. Establish `hL₀c : IsCompact (L₀ : Set (ConjAct (GL (Fin n) F)))` using `hLc.of_isClosed_subset (Subgroup.isClosed_of_isOpen L₀ hL₀o) (fun l hl => hl.1)`. Establish `hΦL₀ : ∀ l ∈ L₀, ΦH l ∈ L₀`. Introduce and unpack `l ⟨hl, hl'⟩`.
+
+Use `⟨hl', ?_⟩` and prove the remaining obligations. Establish `: ΦH (ΦH l) = l`. Simplify using `only [ΦH, ConjAct.ofConjAct_toConjAct, hΦΦ, ConjAct.toConjAct_ofConjAct]`. Rewrite using `[this]`. Conclude with `hl`.
+
+Establish `hP : ∀ x, transposeGL x ∈ orbitPiece L₀ x₀ ↔ (ConjAct.toConjAct S)⁻¹ • x ∈ orbitPiece L₀ x₀`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, hlx⟩`. Establish `hlx' : l • x₀ = transposeGL x` using `hlx`.
+
+Establish `hx : x = ConjAct.toConjAct (S * Φ (ConjAct.ofConjAct l)) • x₀`. Rewrite using `[← hτk, ConjAct.toConjAct_ofConjAct, hlx', transposeGL_transposeGL]`. Use `⟨ΦH l, hΦL₀ l hl, ?_⟩` and prove the remaining obligations. Use `show ΦH l • x₀ = _`. Rewrite using `[hx, ← mul_smul, ← ConjAct.toConjAct_inv, ← ConjAct.toConjAct_mul, inv_mul_cancel_left]`.
+
+Introduce and unpack `⟨l, hl, hlx⟩`. Establish `hlx' : l • x₀ = (ConjAct.toConjAct S)⁻¹ • x` using `hlx`. Establish `hx : x = ConjAct.toConjAct (S * ConjAct.ofConjAct l) • x₀`. Rewrite using `[ConjAct.toConjAct_mul, mul_smul, ConjAct.toConjAct_ofConjAct, hlx', smul_inv_smul]`. Establish `e : S * Φ (S * ConjAct.ofConjAct l) = Φ (ConjAct.ofConjAct l)`.
+
+Simplify using `only [Φ, map_mul, hθS]`. Use `group`. Use `⟨ΦH l, hΦL₀ l hl, ?_⟩` and prove the remaining obligations. Use `show ΦH l • x₀ = transposeGL x`. Rewrite using `[hx, hτk, e]`.
+
+Establish `hx₀ : x₀ ∈ orbit (ConjAct (GL (Fin n) F)) x₀` using `mem_orbit_self x₀`. Take `⟨f₀, hf₀, hf₀O⟩` from `exists_lift_orbit_piece hU hC hO hL₀c hL₀o hx₀`. Use `set T := relT U ⊔ (supportedIn U ⊓ vanishingOn C)`. Establish `hτO : ∀ x ∈ orbit (ConjAct (GL (Fin n) F)) x₀, transposeGL x ∈ orbit (ConjAct (GL (Fin n) F)) x₀`. Introduce and unpack `_ ⟨h, rfl⟩`.
+
+Establish `e : h • x₀ = ConjAct.toConjAct (ConjAct.ofConjAct h) • x₀`. Rewrite using `[ConjAct.toConjAct_ofConjAct]`. Express the relevant statement in the definitionally equal form `transposeGL (h • x₀) ∈ _`. Rewrite using `[e, hτk]`. Conclude with `mem_orbit _ _`.
+
+Establish `ha : (f₀ + fun x => f₀ (transposeGL x)) ∈ T` using `le_sup_left (b := supportedIn U ⊓ vanishingOn C) (le_sup_right (a := relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) U) (Submodule.subset_span ⟨f₀, hf₀, rfl⟩))`. Establish `hb : transl (ConjAct.toConjAct S) f₀ - f₀ ∈ T`. Use `sub_mem_relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) (ConjAct.toConjAct S) hf₀` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply, one_smul]`. Conclude with `le_sup_left (b := supportedIn U ⊓ vanishingOn C) (le_sup_left (b := tauSpan U) this)`.
+
+Establish `hc : (fun x => f₀ (transposeGL x)) - transl (ConjAct.toConjAct S) f₀ ∈ T`. Use `le_sup_right (a := relT U) (sub_mem_of_eqOn_orbit hO (comp_transposeGL_mem hUτ hf₀) (transl_mem_supportedIn hUinv _ hf₀) fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[transl_apply, hf₀O _ (hτO x hx), hf₀O _ (mem_orbit_of_mem_orbit _ hx)]`. Distinguish the cases in `h : transposeGL x ∈ orbitPiece L₀ x₀`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((hP x).1 h)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((hP x).2 h'))]`. Establish `h2 : (2 : ℂ) • f₀ ∈ T`. Establish `e : (2 : ℂ) • f₀ = (f₀ + fun x => f₀ (transposeGL x)) - ((fun x => f₀ (transposeGL x)) - transl (ConjAct.toConjAct S) f₀) - (transl (ConjAct.toConjAct S) f₀ - f₀)`. Rewrite using `[two_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `T.sub_mem (T.sub_mem ha hc) hb`. Establish `hbase : f₀ ∈ T`. Use `T.smul_mem (1 / 2 : ℂ) h2` as an intermediate fact.
+
+Rewrite `this` using `[smul_smul, one_div, inv_mul_cancel₀ two_ne_zero, one_smul]`. Then use the resulting hypothesis. Conclude with `supportedIn_le_of_base hU hC hO hUinv (1 : ConjAct (GL (Fin n) F) →* ℂ) (relT_le hUinv hUτ) le_sup_left L₀ hL₀c hL₀o (fun l _ => MonoidHom.one_apply l) f₀ hf₀O hbase`.
+-/
 theorem supportedIn_le_relT_sup {U C : Set (GL (Fin n) F)} (hU : IsOpen U) (hC : IsClosed C)
     {x₀ : GL (Fin n) F} (hO : U ∩ C = orbit (ConjAct (GL (Fin n) F)) x₀)
     (hUinv : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ U, h • x ∈ U)
@@ -368,30 +484,58 @@ def thetaC (h : ConjAct (GL (Fin n) F)) : ConjAct (GL (Fin n) F) :=
   ConjAct.toConjAct (thetaT (ConjAct.ofConjAct h))
 
 omit [TopologicalSpace F] [IsTopologicalRing F] in
+/- English proof (translation)
+Simplify using `only [thetaC, ConjAct.ofConjAct_toConjAct, thetaT_apply, transposeGL_inv, transposeGL_transposeGL, inv_inv, ConjAct.toConjAct_ofConjAct]`.
+-/
 theorem thetaC_thetaC (h : ConjAct (GL (Fin n) F)) : thetaC (thetaC h) = h := by
   simp only [thetaC, ConjAct.ofConjAct_toConjAct, thetaT_apply, transposeGL_inv,
     transposeGL_transposeGL, inv_inv, ConjAct.toConjAct_ofConjAct]
 
 omit [TopologicalSpace F] [IsTopologicalRing F] in
+/- English proof (translation)
+Simplify using `only [thetaC, map_inv]`.
+-/
 theorem thetaC_inv (h : ConjAct (GL (Fin n) F)) : thetaC h⁻¹ = (thetaC h)⁻¹ := by
   simp only [thetaC, map_inv]
 
 omit [TopologicalSpace F] [IsTopologicalRing F] in
+/- English proof (translation)
+The claim follows from `transposeGL_smul h x`.
+-/
 theorem transposeGL_smul' (h : ConjAct (GL (Fin n) F)) (x : GL (Fin n) F) :
     transposeGL (h • x) = thetaC h • transposeGL x :=
   transposeGL_smul h x
 
 omit [TopologicalSpace F] [IsTopologicalRing F] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[transl_apply, transl_apply, transposeGL_smul', thetaC_inv, thetaC_thetaC]`.
+-/
 theorem transl_comp_transposeGL (h : ConjAct (GL (Fin n) F)) (f : GL (Fin n) F → ℂ) :
     (fun x => transl h f (transposeGL x)) = transl (thetaC h) (fun x => f (transposeGL x)) := by
   funext x
   rw [transl_apply, transl_apply, transposeGL_smul', thetaC_inv, thetaC_thetaC]
 
 omit [TopologicalSpace F] [IsTopologicalRing F] in
+/- English proof (translation)
+Introduce `_ _ _` and use `mem_univ _`.
+-/
 theorem univ_conj_stable : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ (univ : Set (GL (Fin n) F)),
     h • x ∈ (univ : Set (GL (Fin n) F)) := fun _ _ _ => mem_univ _
 
+/- English proof (translation)
+Set `m : (GL (Fin n) F → ℂ) →ₗ[ℂ] (GL (Fin n) F → ℂ)` to `{ toFun := transl h map_add' := transl_add h map_smul' := fun c f => transl_smul h c f }`. Establish `hτrel : ∀ k : ConjAct (GL (Fin n) F), ∀ f ∈ supportedIn (univ : Set (GL (Fin n) F)), (fun x => (transl k f - f) (transposeGL x)) ∈ relT (univ : Set (GL (Fin n) F))`. Introduce `k f hf`. Establish `e : (fun x => (transl k f - f) (transposeGL x)) = transl (thetaC k) (fun x => f (transposeGL x)) - (fun x => f (transposeGL x))`. Rewrite using `[← transl_comp_transposeGL]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `sub_mem_relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) (thetaC k) (comp_transposeGL_mem (fun _ => Iff.rfl) hf)` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply, one_smul]`. Conclude with `le_sup_left (b := tauSpan univ) this`.
+
+It suffices to establish `relT (univ : Set (GL (Fin n) F)) ≤ (relT univ).comap m from this hf`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, f, hf, rfl⟩ show transl h (transl k f - (1 : ConjAct (GL (Fin n) F) →* ℂ) k • f) ∈ relT univ`. Rewrite using `[MonoidHom.one_apply, one_smul, transl_sub, ← transl_mul]`. Establish `e : h * k = (h * k * h⁻¹) * h` using `by group`.
+
+Rewrite using `[e, transl_mul]`. Use `sub_mem_relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) (h * k * h⁻¹) (transl_mem_supportedIn univ_conj_stable h hf)` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply, one_smul]`. Conclude with `le_sup_left (b := tauSpan univ) this`. Introduce and unpack `_ ⟨f, hf, rfl⟩ show transl h (f + fun x => f (transposeGL x)) ∈ relT univ`.
+
+Establish `hf'` using `transl_mem_supportedIn univ_conj_stable h hf`. Establish `e : transl h (f + fun x => f (transposeGL x)) = (transl h f + fun x => transl h f (transposeGL x)) + ((fun x => (transl (thetaC h) f - f) (transposeGL x)) - (fun x => (transl h f - f) (transposeGL x)))`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.sub_apply, transl_apply, transposeGL_smul', thetaC_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Use `add_mem (le_sup_right (a := relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) univ) (Submodule.subset_span ⟨transl h f, hf', rfl⟩)) (sub_mem (hτrel _ f hf) (hτrel h f hf))` and prove the remaining obligations.
+-/
 theorem transl_mem_relT_univ (h : ConjAct (GL (Fin n) F)) {f : GL (Fin n) F → ℂ}
     (hf : f ∈ relT (univ : Set (GL (Fin n) F))) : transl h f ∈ relT (univ : Set (GL (Fin n) F)) := by
   let m : (GL (Fin n) F → ℂ) →ₗ[ℂ] (GL (Fin n) F → ℂ) :=
@@ -437,6 +581,15 @@ theorem transl_mem_relT_univ (h : ConjAct (GL (Fin n) F)) {f : GL (Fin n) F → 
 
 omit [IsTopologicalRing F] in
 
+/- English proof (translation)
+Set `m : (GL (Fin n) F → ℂ) →ₗ[ℂ] (GL (Fin n) F → ℂ)` to `LinearMap.funLeft ℂ ℂ transposeGL`. It suffices to establish `relT (univ : Set (GL (Fin n) F)) ≤ (relT univ).comap m from this hf`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, f, hf, rfl⟩ show (fun x => (transl k f - (1 : ConjAct (GL (Fin n) F) →* ℂ) k • f) (transposeGL x)) ∈ relT univ`. Rewrite using `[MonoidHom.one_apply, one_smul]`.
+
+Establish `e : (fun x => (transl k f - f) (transposeGL x)) = transl (thetaC k) (fun x => f (transposeGL x)) - (fun x => f (transposeGL x))`. Rewrite using `[← transl_comp_transposeGL]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `sub_mem_relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) (thetaC k) (comp_transposeGL_mem (fun _ => Iff.rfl) hf)` as an intermediate fact.
+
+Rewrite `this` using `[MonoidHom.one_apply, one_smul]`. Conclude with `le_sup_left (b := tauSpan univ) this`. Introduce and unpack `_ ⟨f, hf, rfl⟩ show (fun x => (f + fun x => f (transposeGL x)) (transposeGL x)) ∈ relT univ`. Establish `e : (fun x => (f + fun x => f (transposeGL x)) (transposeGL x)) = (fun x => f (transposeGL x)) + fun x => (fun x => f (transposeGL x)) (transposeGL x)`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Pi.add_apply, transposeGL_transposeGL]`. Rewrite using `[e]`. Conclude with `le_sup_right (a := relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) univ) (Submodule.subset_span ⟨_, comp_transposeGL_mem (fun _ => Iff.rfl) hf, rfl⟩)`.
+-/
 theorem comp_transposeGL_mem_relT_univ {f : GL (Fin n) F → ℂ}
     (hf : f ∈ relT (univ : Set (GL (Fin n) F))) :
     (fun x => f (transposeGL x)) ∈ relT (univ : Set (GL (Fin n) F)) := by
@@ -474,6 +627,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
+/- English proof (translation)
+Take `⟨S, hS, hSx⟩` from `exists_isSymm_mul_eq_transpose_mul (x : Matrix (Fin n) (Fin n) F)`. Use `⟨S, Units.ext hS.eq, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, coe_transposeGL]`. Rewrite using `[hSx, mul_assoc, Units.mul_inv, mul_one]`.
+-/
 theorem exists_symm_conj_transposeGL (x : GL (Fin n) F) :
     ∃ S : GL (Fin n) F, transposeGL S = S ∧ S * x * S⁻¹ = transposeGL x := by
   obtain ⟨S, hS, hSx⟩ := exists_isSymm_mul_eq_transpose_mul (x : Matrix (Fin n) (Fin n) F)
@@ -481,6 +637,51 @@ theorem exists_symm_conj_transposeGL (x : GL (Fin n) F) :
   simp only [Units.val_mul, coe_transposeGL]
   rw [hSx, mul_assoc, Units.mul_inv, mul_one]
 
+/- English proof (translation)
+Use `set M := relT (univ : Set (GL (Fin n) F)) ⊔ (supportedIn univ ⊓ vanishingOn Z) with hMdef`. Establish `hMt : ∀ h : ConjAct (GL (Fin n) F), ∀ f ∈ M, transl h f ∈ M`. Introduce `h f hf`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[transl_add]`.
+
+Use `add_mem (le_sup_left (b := supportedIn univ ⊓ vanishingOn Z) (transl_mem_relT_univ h ha)) (le_sup_right (a := relT univ) ⟨transl_mem_supportedIn univ_conj_stable h hb.1, fun x hxZ => ?_⟩)` and prove the remaining obligations. Rewrite using `[transl_apply]`. Conclude with `hb.2 _ (hZinv _ _ hxZ)`. Establish `hMτ : ∀ f ∈ M, (fun x => f (transposeGL x)) ∈ M`. Introduce `f hf`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hf`. Use `add_mem (le_sup_left (b := supportedIn univ ⊓ vanishingOn Z) (comp_transposeGL_mem_relT_univ ha)) (le_sup_right (a := relT univ) ⟨comp_transposeGL_mem (fun _ => Iff.rfl) hb.1, fun x hxZ => hb.2 _ ((hZτ x).2 hxZ)⟩)` and prove the remaining obligations. Use `set U := ⋃₀ {V : Set (GL (Fin n) F) | IsOpen V ∧ supportedIn V ≤ M} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_sUnion fun V hV => hV.1`. Establish `hUM : supportedIn U ≤ M` using `supportedIn_le_of_local fun x hx => by`.
+
+Take `⟨V, hV, hxV⟩` from `mem_sUnion.1 hx`. Conclude with `⟨V, hV.1, hxV, hV.2⟩`. Establish `hUt : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ U, h • x ∈ U`. Introduce `h x hx`. Take `⟨V, ⟨hVo, hVM⟩, hxV⟩` from `mem_sUnion.1 hx`.
+
+Use `mem_sUnion.2 ⟨(fun y => h⁻¹ • y) ⁻¹' V, ⟨hVo.preimage (continuous_const_smul _), fun f hf => ?_⟩, by simpa using hxV⟩` and prove the remaining obligations. Establish `h1 : transl h⁻¹ f ∈ supportedIn V`. Use `⟨(transl_mem_supportedIn univ_conj_stable h⁻¹ ⟨hf.1, subset_univ _⟩).1, fun y hy => ?_⟩` and prove the remaining obligations. Use `hf.2 hy` as an intermediate fact. Simplify `this` using `[transl_apply]`.
+
+Use `hMt h _ (hVM h1)` as an intermediate fact. Rewrite `this` using `[← transl_mul, mul_inv_cancel, transl_one]`. Then use the resulting hypothesis. Establish `hUτ : ∀ x, transposeGL x ∈ U ↔ x ∈ U`. Establish `key : ∀ x ∈ U, transposeGL x ∈ U`. Introduce `x hx`.
+
+Take `⟨V, ⟨hVo, hVM⟩, hxV⟩` from `mem_sUnion.1 hx`. Use `mem_sUnion.2 ⟨transposeGL ⁻¹' V, ⟨hVo.preimage continuous_transposeGL, fun f hf => ?_⟩, by simpa using hxV⟩` and prove the remaining obligations. Establish `h1 : (fun x => f (transposeGL x)) ∈ supportedIn V`. Use `⟨(comp_transposeGL_mem (fun _ => Iff.rfl) ⟨hf.1, subset_univ _⟩).1, fun y hy => ?_⟩` and prove the remaining obligations. Use `hf.2 hy` as an intermediate fact.
+
+Simplify using `using this`. Use `hMτ _ (hVM h1)` as an intermediate fact. Simplify using `using this`. Conclude with `fun x => ⟨fun h => by simpa using key _ h, key x⟩`. Establish `hsplit : ∀ j ∈ supportedIn (univ : Set (GL (Fin n) F)), (∀ x ∈ Z, j x ≠ 0 → x ∈ U) → j ∈ M`.
+
+Introduce `j hj hjZ`. Establish `hA : IsCompact (Z ∩ Function.support j)` using `(isCompact_support hj.1).inter_left hZ`. Take `⟨B, hBc, hBo, hAB, hBU⟩` from `exists_isCompact_isOpen_between hA hUo (fun x hx => hjZ x hx.1 hx.2)`. Establish `hBcl : IsClopen B` using `⟨hBc.isClosed, hBo⟩`. Establish `e : j = (fun x => B.indicator 1 x * j x) + (fun x => Bᶜ.indicator 1 x * j x)`.
+
+Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ B <;> simp [hx]`. Rewrite using `[e]`. Use `M.add_mem (hUM ⟨(indicator_mul_mem hBcl hj).1, fun x hx => hBU (support_indicator_mul_subset hx).1⟩) ?_` and prove the remaining obligations. Use `le_sup_right (a := relT univ) ⟨indicator_mul_mem hBcl.compl hj, fun x hxZ => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hxB : x ∈ B`. Simplify using `[hxB]`. Establish `: j x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hxB (hAB ⟨hxZ, h⟩)`.
+
+Simplify using `[this]`. Distinguish the cases in `hZ' : (Z \ U).Nonempty`. It suffices to derive a contradiction. Establish `hZ'c : IsClosed (Z \ U)` using `hZ.sdiff hUo`. Establish `hZ'inv : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ Z \ U, h • x ∈ Z \ U`.
+
+Introduce and unpack `h x ⟨hxZ, hxU⟩`. Use `⟨hZinv h x hxZ, fun hU' => hxU ?_⟩` and prove the remaining obligations. Use `hUt h⁻¹ _ hU'` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis. Establish `hZ'τ : ∀ x, transposeGL x ∈ Z \ U ↔ x ∈ Z \ U` using `fun x => by`.
+
+Simplify using `only [Set.mem_sdiff, hZτ, hUτ]`. Take `⟨x₀, hx₀, hcl⟩` from `exists_isClosed_diff_orbit hZ'c hZ' hZ'inv hs (Set.sdiff_subset.trans hcov)`. Use `set O := orbit (ConjAct (GL (Fin n) F)) x₀ with hOdef`. Establish `hOZ' : O ⊆ Z \ U`. Introduce and unpack `_ ⟨h, rfl⟩`.
+
+Conclude with `hZ'inv h x₀ hx₀`. Take `⟨S, hS, hSx⟩` from `exists_symm_conj_transposeGL x₀`. Establish `hOτ : ∀ x ∈ O, transposeGL x ∈ O`. Introduce and unpack `_ ⟨h, rfl⟩`. Use `⟨thetaC h * ConjAct.toConjAct S, ?_⟩` and prove the remaining obligations.
+
+Use `show (thetaC h * ConjAct.toConjAct S) • x₀ = transposeGL (h • x₀)`. Rewrite using `[transposeGL_smul', mul_smul, ConjAct.toConjAct_smul, hSx]`. Use `set U' := ((Z \ U) \ O)ᶜ with hU'def`. Establish `hU'o : IsOpen U'` using `hcl.isOpen_compl`. Establish `hU'inv : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ U', h • x ∈ U'`.
+
+Introduce `h x hx hhx`. Apply `hx` to reduce the goal to its premises. Use `⟨?_, fun hxO => hhx.2 (mem_orbit_of_mem_orbit h hxO)⟩` and prove the remaining obligations. Use `hZ'inv h⁻¹ _ hhx.1` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis.
+
+Establish `hU'τ : ∀ x, transposeGL x ∈ U' ↔ x ∈ U'`. Introduce `x`. Simplify using `only [hU'def, mem_compl_iff, Set.mem_sdiff, hZ'τ, not_and, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h hx`.
+
+Use `hOτ _ (h hx)` as an intermediate fact. Rewrite `this` using `[transposeGL_transposeGL]`. Then use the resulting hypothesis. Introduce `h hx`. Conclude with `hOτ _ (h hx)`. Establish `hU'O : U' ∩ (Z \ U) = O`.
+
+Use extensionality with `x`. Simplify using `only [hU'def, mem_inter_iff, mem_compl_iff, Set.mem_sdiff, not_and, not_not]`. Conclude with `⟨fun ⟨h1, h2⟩ => h1 h2, fun hx => ⟨fun _ => hx, hOZ' hx⟩⟩`. Establish `horb` using `supportedIn_le_relT_sup hU'o hZ'c hU'O hU'inv hU'τ hS hSx`. Establish `hgood : supportedIn U' ≤ M`.
+
+Use `horb.trans (sup_le (le_sup_left.trans' (relT_mono (subset_univ _))) ?_)` and prove the remaining obligations. Introduce and unpack `j ⟨hj, hjv⟩`. Use `hsplit j (supportedIn_mono (subset_univ _) hj) fun x hxZ hjx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxU`. Conclude with `hjx (hjv x ⟨hxZ, hxU⟩)`.
+
+Establish `hx₀U' : x₀ ∈ U'` using `fun h => h.2 (mem_orbit_self x₀)`. Conclude with `hx₀.2 (mem_sUnion.2 ⟨U', ⟨hU'o, hgood⟩, hx₀U'⟩)`. Use `hsplit g hg fun x hxZ _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxU`. Conclude with `hZ' ⟨x, hxZ, hxU⟩`.
+-/
 theorem mem_relT_sup_vanishingOn {Z : Set (GL (Fin n) F)} (hZ : IsClosed Z)
     (hZinv : ∀ h : ConjAct (GL (Fin n) F), ∀ x ∈ Z, h • x ∈ Z)
     (hZτ : ∀ x, transposeGL x ∈ Z ↔ x ∈ Z) {s : Set (GL (Fin n) F)} (hs : s.Countable)
@@ -625,10 +826,16 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 noncomputable def charCoeffs (x : GL (Fin n) F) : Fin (n + 1) → F :=
   fun k => (x : Matrix (Fin n) (Fin n) F).charpoly.coeff k
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun k => (continuous_charpoly_coeff (k : ℕ)).comp Units.continuous_val`.
+-/
 theorem continuous_charCoeffs : Continuous (charCoeffs : GL (Fin n) F → Fin (n + 1) → F) :=
   continuous_pi fun k => (continuous_charpoly_coeff (k : ℕ)).comp Units.continuous_val
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [charCoeffs, ConjAct.smul_def, Units.val_mul]`. Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 theorem charCoeffs_smul (h : ConjAct (GL (Fin n) F)) (x : GL (Fin n) F) :
     charCoeffs (h • x) = charCoeffs x := by
   funext k
@@ -636,11 +843,19 @@ theorem charCoeffs_smul (h : ConjAct (GL (Fin n) F)) (x : GL (Fin n) F) :
   rw [Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [charCoeffs, coe_transposeGL, Matrix.charpoly_transpose]`.
+-/
 theorem charCoeffs_transposeGL (x : GL (Fin n) F) : charCoeffs (transposeGL x) = charCoeffs x := by
   funext k
   simp only [charCoeffs, coe_transposeGL, Matrix.charpoly_transpose]
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
+/- English proof (translation)
+Use extensionality with `k`. Distinguish the cases in `hk : k ≤ n`. Conclude with `congrFun h ⟨k, Nat.lt_succ_of_le hk⟩`. Use `push Not at hk`. Apply the tactic sequence `rw [Polynomial.coeff_eq_zero_of_natDegree_lt, Polynomial.coeff_eq_zero_of_natDegree_lt] <;>`.
+
+Simplify using `using hk`.
+-/
 theorem charpoly_eq_of_charCoeffs_eq {x y : GL (Fin n) F} (h : charCoeffs x = charCoeffs y) :
     (x : Matrix (Fin n) (Fin n) F).charpoly = (y : Matrix (Fin n) (Fin n) F).charpoly := by
   ext k
@@ -650,6 +865,29 @@ theorem charpoly_eq_of_charCoeffs_eq {x y : GL (Fin n) F} (h : charCoeffs x = ch
     rw [Polynomial.coeff_eq_zero_of_natDegree_lt, Polynomial.coeff_eq_zero_of_natDegree_lt] <;>
       simpa using hk
 
+/- English proof (translation)
+Establish `: TotallyDisconnectedSpace F` using `totallyDisconnectedSpace_localField`. Use `mem_of_forall_fiber isClosed_univ continuous_charCoeffs ?_ ?_ ⟨hg, subset_univ _⟩ ?_` and prove the remaining obligations. Introduce and unpack `j ⟨-, hj⟩`. Establish `: j = 0` using `funext fun x => hj x (mem_univ x)`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Introduce `V hV w hw set φ : GL (Fin n) F → ℂ := (charCoeffs ⁻¹' V).indicator 1 with hφ`. Establish `hφc : IsClopen (charCoeffs ⁻¹' V : Set (GL (Fin n) F))` using `hV.preimage continuous_charCoeffs`. Set `m : (GL (Fin n) F → ℂ) →ₗ[ℂ] (GL (Fin n) F → ℂ)` to `{ toFun := fun w x => φ x * w x map_add' := fun a b => funext fun x => mul_add _ _ _ map_smul' := fun c a => by`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `hφs : ∀ (h : ConjAct (GL (Fin n) F)) x, φ (h • x) = φ x` using `fun h x => by`. Simplify using `only [hφ, Set.indicator, mem_preimage, charCoeffs_smul, Pi.one_apply]`. Establish `hφτ : ∀ x, φ (transposeGL x) = φ x` using `fun x => by`.
+
+Simplify using `only [hφ, Set.indicator, mem_preimage, charCoeffs_transposeGL, Pi.one_apply]`. It suffices to establish `relT (univ : Set (GL (Fin n) F)) ≤ (relT univ).comap m from this hw`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, f, hf, rfl⟩`. Establish `hf' : (fun x => φ x * f x) ∈ supportedIn (univ : Set (GL (Fin n) F))` using `indicator_mul_mem hφc hf`.
+
+Establish `e : m (transl k f - (1 : ConjAct (GL (Fin n) F) →* ℂ) k • f) = transl k (fun x => φ x * f x) - (1 : ConjAct (GL (Fin n) F) →* ℂ) k • (fun x => φ x * f x)`. Use function extensionality and compare the values at `x`. Simplify using `only [m, LinearMap.coe_mk, AddHom.coe_mk, Pi.sub_apply, transl_apply, MonoidHom.one_apply, one_smul, hφs]`. Expand and normalize the polynomial expressions, which then agree. Use `show m _ ∈ relT univ`.
+
+Rewrite using `[e]`. Conclude with `le_sup_left (b := tauSpan univ) (sub_mem_relSpan _ k hf')`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `hf' : (fun x => φ x * f x) ∈ supportedIn (univ : Set (GL (Fin n) F))` using `indicator_mul_mem hφc hf`. Establish `e : m (f + fun x => f (transposeGL x)) = (fun x => φ x * f x) + fun x => (fun x => φ x * f x) (transposeGL x)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [m, LinearMap.coe_mk, AddHom.coe_mk, Pi.add_apply, hφτ]`. Expand and normalize the polynomial expressions, which then agree. Use `show m _ ∈ relT univ`. Rewrite using `[e]`.
+
+Conclude with `le_sup_right (a := relSpan (1 : ConjAct (GL (Fin n) F) →* ℂ) univ) (Submodule.subset_span ⟨_, hf', rfl⟩)`. Introduce `y`. Establish `hZ : IsClosed ((univ : Set (GL (Fin n) F)) ∩ charCoeffs ⁻¹' {y})` using `isClosed_univ.inter (isClosed_singleton.preimage continuous_charCoeffs)`. Distinguish the cases in `hne : ((univ : Set (GL (Fin n) F)) ∩ charCoeffs ⁻¹' {y}).Nonempty`. Take `⟨x₁, -, hx₁⟩` from `hne`.
+
+Take `⟨s, hs, hsx⟩` from `exists_countable_conj_charpoly (n := n) (x₁ : Matrix (Fin n) (Fin n) F).charpoly`. Use `mem_relT_sup_vanishingOn hZ (fun h x hx => ⟨mem_univ _, ?_⟩) (fun x => ?_) hs ?_ ⟨hg, subset_univ _⟩` and prove the remaining obligations. Establish `: charCoeffs (h • x) = y` using `(charCoeffs_smul h x).trans hx.2`. Conclude with `this`. Simplify using `only [mem_inter_iff, mem_univ, true_and, mem_preimage, mem_singleton_iff, charCoeffs_transposeGL]`.
+
+Introduce and unpack `x ⟨-, hx⟩`. Establish `hxy : charCoeffs x = charCoeffs x₁` using `(hx : charCoeffs x = y).trans hx₁.symm`. Take `⟨y', hy's, g', hg'⟩` from `hsx x (charpoly_eq_of_charCoeffs_eq hxy)`. Use `mem_iUnion₂.2 ⟨y', hy's, ConjAct.toConjAct g', ?_⟩` and prove the remaining obligations. Use `show ConjAct.toConjAct g' • y' = x`.
+
+Rewrite using `[ConjAct.toConjAct_smul, hg']`. Rewrite `hne` using `[not_nonempty_iff_eq_empty]`. Rewrite using `[hne]`. Use `mem_relT_sup_vanishingOn isClosed_empty (fun _ _ hx => hx.elim) (fun x => ?_) countable_empty (empty_subset _) ⟨hg, subset_univ _⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem mem_relT_univ {g : GL (Fin n) F → ℂ}
     (hg : g ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ) :
     g ∈ relT (univ : Set (GL (Fin n) F)) := by
@@ -726,6 +964,19 @@ theorem mem_relT_univ {g : GL (Fin n) F → ℂ}
         countable_empty (empty_subset _) ⟨hg, subset_univ _⟩
       simp
 
+/- English proof (translation)
+Use `set E : Module.Dual ℂ (locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ) := D - D ∘ₗ compHomeoL transposeHomeo with hE`. Establish `hττ : ∀ f : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ, compHomeoL transposeHomeo (compHomeoL transposeHomeo f) = f` using `fun f => Subtype.ext (funext fun x => by simp [compHomeoL])`. Establish `hτbi : ∀ (g : GL (Fin n) F) (f : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ), compHomeoL transposeHomeo (biTranslL g g f) = biTranslL (thetaT g) (thetaT g) (compHomeoL transposeHomeo f)` using `fun g f => Subtype.ext (funext fun x => by`. Simplify using `only [compHomeoL, LinearMap.coe_mk, AddHom.coe_mk, Function.comp_apply, transposeHomeo_apply, coe_biTranslL, thetaT_apply, inv_inv, transposeGL_mul, transposeGL_inv, transposeGL_transposeGL]`. Simplify using `only [mul_assoc])`.
+
+Use `set K : Submodule ℂ (GL (Fin n) F → ℂ) := (LinearMap.ker E).map (locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ).subtype`. Establish `hK : relT (univ : Set (GL (Fin n) F)) ≤ K`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, f, hf, rfl⟩`. Set `f' : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` to `⟨f, hf.1⟩`.
+
+Set `g` to `ConjAct.ofConjAct k`. Use `⟨biTranslL g g f' - f', ?_, ?_⟩` and prove the remaining obligations. Use `show E _ = 0`. Rewrite using `[map_sub, hE, LinearMap.sub_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.comp_apply, hτbi, hD, hD]`. Normalize the expressions using the abelian group laws.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_sub, coe_biTranslL, Pi.sub_apply, transl_apply, MonoidHom.one_apply, one_smul, ConjAct.smul_def, ConjAct.ofConjAct_inv, inv_inv, f', g]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Set `f' : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` to `⟨f, hf.1⟩`. Use `⟨f' + compHomeoL transposeHomeo f', ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show E _ = 0`. Rewrite using `[map_add, hE, LinearMap.sub_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.comp_apply, hττ]`. Normalize the expressions using the abelian group laws. Both sides reduce to the same expression. Take `⟨k, hk, hkf⟩` from `hK (mem_relT_univ f.2)`.
+
+Establish `hkf' : k = f` using `Subtype.ext hkf`. Rewrite `hk` using `[hkf']`. Establish `: E f = 0` using `hk`. Rewrite `this` using `[hE, LinearMap.sub_apply, LinearMap.comp_apply, sub_eq_zero]`. Conclude with `this.symm`.
+-/
 theorem distribution_transpose_invariant
     (D : Module.Dual ℂ (locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ))
     (hD : ∀ (g : GL (Fin n) F) (f : locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ),

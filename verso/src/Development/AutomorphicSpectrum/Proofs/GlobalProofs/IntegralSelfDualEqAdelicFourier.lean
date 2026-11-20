@@ -18,6 +18,21 @@ set_option maxSynthPendingDepth 1
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Set `β : ContDiffBump (0 : ι → mixedSpace K)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hs : HasCompactSupport fun z => ((β z : ℝ) : ℂ)` using `β.hasCompactSupport.comp_left Complex.ofReal_zero`. Set `φ : 𝓢(ι → mixedSpace K, ℂ)` to `hs.toSchwartzMap (Complex.ofRealCLM.contDiff.comp β.contDiff)`. Set `g : (ι → 𝔸ᶠ[K]) → ℂ` to `finiteTensor fun _ ↦ cosetIndicator (1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) 0`. Establish `hg : g ∈ finiteSchwartzBruhatPi K` using `finiteTensor_mem fun _ ↦ cosetIndicator_mem_finiteSchwartzBruhat _ _`.
+
+Establish `hφ : HasCompactSupport φ` using `hs`. Establish `hgc : HasCompactSupport g` using `((mem_finiteSchwartzBruhatPi K).1 hg).2`. Use `⟨schwartzBruhatTensorPi φ g, schwartzBruhatTensorPi_mem φ hg, ?_, ?_⟩` and prove the remaining obligations. Set `T : (ι → mixedSpace K) × (ι → 𝔸ᶠ[K]) → (ι → 𝔸[K])` to `fun p i => ((homeomorphMixedSpace K).symm (p.1 i), p.2 i)`. Establish `hT : Continuous T` using `continuous_pi fun i => ((homeomorphMixedSpace K).symm.continuous.comp ((continuous_apply i).comp continuous_fst)).prodMk ((continuous_apply i).comp continuous_snd)`.
+
+Use `HasCompactSupport.intro ((hφ.isCompact.prod hgc.isCompact).image hT) fun x hx => ?_` and prove the remaining obligations. Establish `hx' : T (infPartPi x, finPartPi x) = x`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Conclude with `(homeomorphMixedSpace K).symm_apply_apply _`.
+
+Use `show φ (infPartPi x) * g (finPartPi x) = 0`. Distinguish the cases in `h1 : infPartPi x ∈ tsupport φ`. Distinguish the cases in `h2 : finPartPi x ∈ tsupport g`. Conclude with `absurd ⟨(infPartPi x, finPartPi x), ⟨h1, h2⟩, hx'⟩ hx`. Rewrite using `[image_eq_zero_of_notMem_tsupport h2, mul_zero]`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport h1, zero_mul]`. Establish `hinf : infPartPi (0 : ι → 𝔸[K]) = 0`. Rewrite using `[infPartPi_eq_adeleInfHom]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Establish `hfin : finPartPi (0 : ι → 𝔸[K]) = 0`. Rewrite using `[finPartPi_eq_adeleFinHom]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `show φ (infPartPi 0) * g (finPartPi 0) = 1`.
+
+Rewrite using `[hinf, hfin]`. Establish `h1 : φ 0 = 1` using `by show ((β 0 : ℝ) : ℂ) = 1`. Rewrite using `[β.one_of_mem_closedBall (Metric.mem_closedBall_self β.rIn_pos.le), Complex.ofReal_one]`. Rewrite using `[h1, one_mul]`. Simplify using `[g, finiteTensor, cosetIndicator_apply]`.
+-/
 theorem exists_test (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι] :
     ∃ f ∈ schwartzBruhatPi K ι, HasCompactSupport f ∧ f 0 = 1 := by
   let β : ContDiffBump (0 : ι → mixedSpace K) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -67,11 +82,17 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 
 def mu0 : Measure V := (adeleMeasurePi K).map e.symm
 
+/- English proof (translation)
+The claim follows from `e.symm.toHomeomorph.measurableEmbedding`.
+-/
 theorem measurableEmbedding_symm : MeasurableEmbedding e.symm :=
   e.symm.toHomeomorph.measurableEmbedding
 
 variable (G N : Matrix ι ι K) (χ : V → V → ℂ)
 
+/- English proof (translation)
+Rewrite using `[mu0, (measurableEmbedding_symm e).integral_map, adelicFourierPi]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hχ, Function.comp_apply, ContinuousAddEquiv.apply_symm_apply]`.
+-/
 theorem integral_selfDual_eq_adelic_fourier
     (hχ : ∀ x y, χ x y = (adelicChar K (∑ i, e x i * (G.map (algebraMap K 𝔸[K]) *ᵥ e y) i) : ℂ))
     (f : V → ℂ) (y : V) :
@@ -82,6 +103,9 @@ theorem integral_selfDual_eq_adelic_fourier
 
 variable {G N χ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Simplify using `only [Function.comp_apply, integral_selfDual_eq_adelic_fourier e G χ hχ, ContinuousAddEquiv.apply_symm_apply]`.
+-/
 theorem fourier_selfDual_coordinates
     (hχ : ∀ x y, χ x y = (adelicChar K (∑ i, e x i * (G.map (algebraMap K 𝔸[K]) *ᵥ e y) i) : ℂ))
     (f : V → ℂ) :
@@ -90,6 +114,9 @@ theorem fourier_selfDual_coordinates
   funext u
   simp only [Function.comp_apply, integral_selfDual_eq_adelic_fourier e G χ hχ, ContinuousAddEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[fourier_selfDual_coordinates e hχ]`. Conclude with `comp_mulVec_mem_schwartzBruhatPi G N hNG hGN (adelicFourierPi_mem_schwartzBruhatPi hf)`.
+-/
 theorem fourier_selfDual_mem_schwartzBruhat (hNG : N * G = 1) (hGN : G * N = 1)
     (hχ : ∀ x y, χ x y = (adelicChar K (∑ i, e x i * (G.map (algebraMap K 𝔸[K]) *ᵥ e y) i) : ℂ))
     {f : V → ℂ} (hf : f ∘ e.symm ∈ schwartzBruhatPi K ι) :
@@ -97,6 +124,11 @@ theorem fourier_selfDual_mem_schwartzBruhat (hNG : N * G = 1) (hGN : G * N = 1)
   rw [fourier_selfDual_coordinates e hχ]
   exact comp_mulVec_mem_schwartzBruhatPi G N hNG hGN (adelicFourierPi_mem_schwartzBruhatPi hf)
 
+/- English proof (translation)
+Establish `hT : (N.map (algebraMap K 𝔸[K]))ᵀ * G.map (algebraMap K 𝔸[K]) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_map]`. Use `_ = (G.map (algebraMap K 𝔸[K]) * N.map (algebraMap K 𝔸[K]))ᵀ := by`. Rewrite using `[Matrix.transpose_mul]`.
+
+Use `_ = 1 := by rw [map_mul_map_eq_one _ hGN, Matrix.transpose_one]`. Rewrite using `[integral_selfDual_eq_adelic_fourier e G χ hχ (fun y => ∫ x, f x * χ x y ∂(mu0 e)) z, fourier_selfDual_coordinates e hχ, adelicFourierPi_comp_mulVec G N hNG hGN, Matrix.mulVec_mulVec, hT, Matrix.one_mulVec, adelicFourierPi_adelicFourierPi hf]`. Simplify using `only [Function.comp_apply, ← map_neg, ContinuousAddEquiv.symm_apply_apply]`.
+-/
 theorem fourier_selfDual_inversion (hNG : N * G = 1) (hGN : G * N = 1) (hs : Gᵀ = G)
     (hχ : ∀ x y, χ x y = (adelicChar K (∑ i, e x i * (G.map (algebraMap K 𝔸[K]) *ᵥ e y) i) : ℂ))
     {f : V → ℂ} (hf : f ∘ e.symm ∈ schwartzBruhatPi K ι) (z : V) :
@@ -118,6 +150,23 @@ instance isAddHaar_selfDualMeasure : (mu0 e).IsAddHaarMeasure :=
   Measure.isAddHaarMeasure_map _ (e.symm : (ι → 𝔸[K]) ≃+ V).toAddMonoidHom e.symm.continuous
     e.symm.surjective e.symm.toHomeomorph.isClosedEmbedding.tendsto_cocompact
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace V := e.toHomeomorph.isOpenEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology V := e.toHomeomorph.secondCountableTopology`. Establish `hH` using `hdx.1`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, dx = c • mu0 e` from `⟨_, Measure.isAddLeftInvariant_eq_smul dx (mu0 e)⟩`. Take `⟨f₀, hf₀, hcs, h1⟩` from `exists_test K ι`.
+
+Use `set Φ : V → ℂ := f₀ ∘ e with hΦ`. Establish `hΦ' : Φ ∘ e.symm = f₀`. Use function extensionality and compare the values at `u`. Simplify using `[hΦ]`. Establish `hm : Φ ∘ e.symm ∈ schwartzBruhatPi K ι` using `hΦ' ▸ hf₀`.
+
+Establish `hcont : Continuous Φ` using `(continuous_of_mem_schwartzBruhatPi hf₀).comp e.continuous`. Establish `hsupp : HasCompactSupport Φ` using `hcs.comp_homeomorph e.toHomeomorph`. Establish `hT : ∀ y, ∫ x, Φ x * χ x y ∂dx = (c : ℂ) * ∫ x, Φ x * χ x y ∂(mu0 e)`. Introduce `y`. Rewrite using `[hc, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+
+Establish `hI0 : Integrable (fun y => ∫ x, Φ x * χ x y ∂(mu0 e)) (mu0 e)`. Rewrite using `[mu0, (measurableEmbedding_symm e).integrable_map_iff]`. Conclude with `integrable_of_mem_schwartzBruhatPi (fourier_selfDual_mem_schwartzBruhat e hNG hGN hχ hm)`. Establish `hI : Integrable (fun y => ∫ x, Φ x * χ x y ∂dx) dx`. Simplify using `only [hT]`.
+
+Rewrite using `[hc]`. Conclude with `(hI0.const_mul (c : ℂ)).smul_measure_nnreal`. Establish `h2` using `hdx.2 Φ hcont hsupp hI 0`. Establish `h3` using `fourier_selfDual_inversion e hNG hGN hs hχ hm 0`. Establish `hval : Φ (-0) = 1`.
+
+Simplify using `[hΦ, h1]`. Simplify using `only [hT] at h2`. Rewrite `h2` using `[hc, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `h4 : ∫ y, ((c : ℂ) * ∫ x, Φ x * χ x y ∂(mu0 e)) * χ y 0 ∂(mu0 e) = (c : ℂ) * ∫ y, (∫ x, Φ x * χ x y ∂(mu0 e)) * χ y 0 ∂(mu0 e)`. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun y => by ring)`. Rewrite `h2` using `[h4, h3, hval, mul_one]`. Establish `h5 : (c : ℝ) * c = 1` using `by exact_mod_cast h2`. Establish `h6 : (c : ℝ) = 1` using `by nlinarith [c.coe_nonneg]`. Establish `h7 : c = 1` using `by exact_mod_cast h6`.
+
+Rewrite using `[hc, h7, one_smul]`.
+-/
 theorem joinEquiv_eq_at_reference (hNG : N * G = 1) (hGN : G * N = 1) (hs : Gᵀ = G)
     (hχ : ∀ x y, χ x y = (adelicChar K (∑ i, e x i * (G.map (algebraMap K 𝔸[K]) *ᵥ e y) i) : ℂ))
     (dx : Measure V) (hdx : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.SelfDual dx χ) : dx = mu0 e := by
@@ -159,6 +208,9 @@ theorem joinEquiv_eq_at_reference (hNG : N * G = 1) (hGN : G * N = 1) (hs : Gᵀ
   have h7 : c = 1 := by exact_mod_cast h6
   rw [hc, h7, one_smul]
 
+/- English proof (translation)
+Take `rfl` from `joinEquiv_eq_at_reference e hNG hGN hs hχ dx hdx`. Conclude with `⟨fourier_selfDual_mem_schwartzBruhat e hNG hGN hχ hf, fourier_selfDual_inversion e hNG hGN hs hχ hf⟩`.
+-/
 theorem fou_of_coord (hNG : N * G = 1) (hGN : G * N = 1) (hs : Gᵀ = G)
     (hχ : ∀ x y, χ x y = (adelicChar K (∑ i, e x i * (G.map (algebraMap K 𝔸[K]) *ᵥ e y) i) : ℂ))
     (dx : Measure V) (hdx : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.SelfDual dx χ)
@@ -202,10 +254,16 @@ def crd (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologica
     exact (GlobalTheory.CompanionTheory.SW.TopK.coordHomeo R b).symm.continuous.comp
       (continuous_pi fun k => continuous_apply (i, k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_apply (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] {d : ℕ}
     (b : Module.Basis (Fin d) F E) (M : ℕ) (X : Fin 1 → Fin M → R ⊗[F] E) (p : Fin M × Fin d) :
     crd R b M X p = (Algebra.TensorProduct.basis R b).repr (X 0 p.1) p.2 := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem repr_map {R S : Type} [CommRing R] [Algebra F R] [CommRing S] [Algebra F S] (f : R →ₐ[F] S) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (y : R ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis S b).repr (Algebra.TensorProduct.map f (AlgHom.id F E) y) k =
@@ -238,6 +296,9 @@ def crdInf {d : ℕ} (b : Module.Basis (Fin d) F E) (M : ℕ) :
     (Fin 1 → Fin M → Ainf F ⊗[F] E) ≃ₜ+ (Fin M × Fin d → mixedSpace F) :=
   (crd (Ainf F) b M).trans (mx _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Use `show homeomorphMixedSpace F ((crd (AF F) b M X p).1) = homeomorphMixedSpace F (crd (Ainf F) b M (projInf X) p)`. Rewrite using `[crd_apply, crd_apply]`. Conclude with `congrArg _ (repr_map (fstA F) b (X 0 p.1) p.2).symm`.
+-/
 theorem infPartPi_crd {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     (X : Fin 1 → Fin M → AF F ⊗[F] E) :
     infPartPi (crd (AF F) b M X) = crdInf b M (projInf X) := by
@@ -247,6 +308,9 @@ theorem infPartPi_crd {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
   rw [crd_apply, crd_apply]
   exact congrArg _ (repr_map (fstA F) b (X 0 p.1) p.2).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[crd_apply]`. Conclude with `(repr_map (sndA F) b (X 0 p.1) p.2).symm`.
+-/
 theorem finPartPi_crd {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     (X : Fin 1 → Fin M → AF F ⊗[F] E) :
     finPartPi (crd (AF F) b M X) = crd (Af F) b M (projFin X) := by
@@ -254,6 +318,11 @@ theorem finPartPi_crd {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
   rw [crd_apply]
   exact (repr_map (sndA F) b (X 0 p.1) p.2).symm
 
+/- English proof (translation)
+Take `⟨N, e', c1, c2, f, hf⟩` from `hP`. Set `L : (Fin M × Fin d → mixedSpace F) ≃+ (Fin N → ℝ)` to `((crdInf b M).symm : (Fin M × Fin d → mixedSpace F) ≃+ _).trans e'`. Establish `hL : Continuous L` using `c1.comp (crdInf b M).symm.continuous`. Establish `hL' : Continuous L.symm` using `(crdInf b M).continuous.comp c2`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (L.toRealLinearEquiv hL hL') f, fun X => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hf X]`. Use `show f (e' ((crdInf b M).symm (crdInf b M X))) = _`. Rewrite using `[ContinuousAddEquiv.symm_apply_apply]`.
+-/
 theorem exists_schwartz_of_arch {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     {P : (Fin 1 → Fin M → Ainf F ⊗[F] E) → ℂ} (hP : IsSchwartzArch P) :
     ∃ φ : 𝓢(Fin M × Fin d → mixedSpace F, ℂ), ∀ X, φ (crdInf b M X) = P X := by
@@ -267,6 +336,9 @@ theorem exists_schwartz_of_arch {d : ℕ} (b : Module.Basis (Fin d) F E) {M : �
   show f (e' ((crdInf b M).symm (crdInf b M X))) = _
   rw [ContinuousAddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Set `eB` to `(Module.finBasis ℝ (Fin M × Fin d → mixedSpace F)).equivFunL`. Set `e' : (Fin 1 → Fin M → Ainf F ⊗[F] E) ≃+ _` to `((crdInf b M : _ ≃+ (Fin M × Fin d → mixedSpace F))).trans eB.toLinearEquiv.toAddEquiv`. Use `⟨_, e', eB.continuous.comp (crdInf b M).continuous, (crdInf b M).symm.continuous.comp eB.symm.continuous, SchwartzMap.compCLMOfContinuousLinearEquiv ℂ eB.symm φ, fun X => ?_⟩` and prove the remaining obligations. Use `show _ = φ (eB.symm (eB (crdInf b M X)))`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply]`.
+-/
 theorem isSchwartzArch_of_schwartz {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     (φ : 𝓢(Fin M × Fin d → mixedSpace F, ℂ)) : IsSchwartzArch fun X => φ (crdInf b M X) := by
   let eB := (Module.finBasis ℝ (Fin M × Fin d → mixedSpace F)).equivFunL
@@ -280,9 +352,19 @@ theorem isSchwartzArch_of_schwartz {d : ℕ} (b : Module.Basis (Fin d) F E) {M :
 
 variable {M n : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun X => by simp⟩`.
+-/
 theorem sb_zero : IsSchwartzBruhat (0 : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) :=
   ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun X => by simp⟩
 
+/- English proof (translation)
+Take `⟨k, a, c, ha, hc, hs⟩` from `h`. Take `⟨k', a', c', ha', hc', hs'⟩` from `h'`. Use `⟨k + k', Fin.append a a', Fin.append c c', fun i => ?_, fun i => ?_, fun X => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `ha i`. Rewrite using `[Fin.append_right]`. Conclude with `ha' i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `hc i`. Rewrite using `[Fin.append_right]`. Conclude with `hc' i`. Simplify using `only [Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply, hs, hs']`.
+-/
 theorem sb_add {Φ Ψ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ} (h : IsSchwartzBruhat Φ)
     (h' : IsSchwartzBruhat Ψ) : IsSchwartzBruhat (Φ + Ψ) := by
   obtain ⟨k, a, c, ha, hc, hs⟩ := h
@@ -296,6 +378,9 @@ theorem sb_add {Φ Ψ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ} (h : IsSchw
     · rw [Fin.append_right]; exact hc' i
   · simp only [Fin.sum_univ_add, Fin.append_left, Fin.append_right, Pi.add_apply, hs, hs']
 
+/- English proof (translation)
+Take `⟨k, a, g, ha, hg, hs⟩` from `h`. Use `⟨k, a, fun i => c • g i, ha, fun i => ⟨(hg i).1.comp (c • ·), (hg i).2.comp_left (smul_zero c)⟩, fun X => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hs, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem sb_smul (c : ℂ) {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ} (h : IsSchwartzBruhat Φ) :
     IsSchwartzBruhat (c • Φ) := by
   obtain ⟨k, a, g, ha, hg, hs⟩ := h
@@ -306,6 +391,17 @@ theorem sb_smul (c : ℂ) {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ} (h 
 
 variable [NumberField E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, Φinf, Φf, hi, hf, hs⟩ choose φ hφ using fun i => exists_schwartz_of_arch b (hi i)`. Establish `hg : ∀ i, Φf i ∘ (crd (Af F) b M).symm ∈ finiteSchwartzBruhatPi F` using `fun i => (mem_finiteSchwartzBruhatPi F).2 ⟨(hf i).1.comp_continuous (crd (Af F) b M).symm.continuous, (hf i).2.comp_homeomorph (crd (Af F) b M).symm.toHomeomorph⟩`. Establish `key : Φ ∘ (crd (AF F) b M).symm = ∑ i, schwartzBruhatTensorPi (φ i) (Φf i ∘ (crd (Af F) b M).symm)`. Use function extensionality and compare the values at `x`.
+
+Take `⟨X, rfl⟩` from `(crd (AF F) b M).surjective x`. Simplify using `only [Function.comp_apply, ContinuousAddEquiv.symm_apply_apply, Finset.sum_apply, schwartzBruhatTensorPi, infPartPi_crd, finPartPi_crd, hφ, hs]`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun i _ => schwartzBruhatTensorPi_mem _ (hg i)`. Introduce `h`.
+
+Establish `main : ∀ f ∈ schwartzBruhatPi F (Fin M × Fin d), IsSchwartzBruhat (f ∘ crd (AF F) b M)`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`.
+
+Take `⟨g1, g2⟩` from `(mem_finiteSchwartzBruhatPi F).1 hg`. Use `isSchwartzBruhat_of_prod (isSchwartzArch_of_schwartz b φ) (Φf := g ∘ crd (Af F) b M) ⟨g1.comp_continuous (crd (Af F) b M).continuous, g2.comp_homeomorph (crd (Af F) b M).toHomeomorph⟩ fun X => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, schwartzBruhatTensorPi, infPartPi_crd, finPartPi_crd]`. Consider the case `zero => exact sb_zero`. Consider the case `add G H _ _ hG hH => exact sb_add hG hH`.
+
+Consider the case `smul c G _ hG => exact sb_smul c hG`. Use `main _ h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules.
+-/
 theorem isSchwartzBruhat_iff {d : ℕ} (b : Module.Basis (Fin d) F E)
     (Φ : (Fin 1 → Fin M → AF F ⊗[F] E) → ℂ) :
     IsSchwartzBruhat Φ ↔ Φ ∘ (crd (AF F) b M).symm ∈ schwartzBruhatPi F (Fin M × Fin d) := by
@@ -350,6 +446,21 @@ section Main
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.Published.SiegelOneVector GlobalTheory.CompanionTheory.Hypotheses₂.OneV
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ _ ψ hψ dx hdx Φ hΦ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨B, hsym, hdet, -, hR'⟩` from `GlobalTheory.CompanionTheory.SW.TraceCoord.exists_trace_coord F E σ hCM M J hJ _ b`. Take `⟨ξ, hξ, hψξ⟩` from `GlobalTheory.CompanionTheory.SW.CharDual.exists_eq_adelicChar_mul ψ hψ`.
+
+Take `⟨h1, -, -, -, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := h1`. Use `haveI := hBor 1 M`. Establish `hu : IsUnit B.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `hNG : (ξ⁻¹ • B⁻¹) * (ξ • B) = 1`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hξ, one_smul, Matrix.nonsing_inv_mul B hu]`. Establish `hGN : (ξ • B) * (ξ⁻¹ • B⁻¹) = 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hξ, one_smul, Matrix.mul_nonsing_inv B hu]`. Establish `hs : (ξ • B)ᵀ = ξ • B`. Rewrite using `[Matrix.transpose_smul, hsym.eq]`.
+
+Establish `hχ : ∀ X Y : Fin 1 → Fin M → AF F ⊗[F] E, ψ (BR (AF F) σ J X Y) = (adelicChar F (∑ i, crd (AF F) b M X i * ((ξ • B).map (algebraMap F (AF F)) *ᵥ crd (AF F) b M Y) i) : ℂ)`. Introduce `X Y`. Rewrite using `[hψξ]`. Use `congr 2`. Establish `e1 : (ξ • B).map (algebraMap F (AF F)) = algebraMap F (AF F) ξ • B.map (algebraMap F (AF F))`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[e1, Matrix.smul_mulVec]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `hh : Algebra.trace (AF F) (AF F ⊗[F] E) (hR (AF F) σ J (X 0) (Y 0)) = crd (AF F) b M X ⬝ᵥ (B.map (algebraMap F (AF F)) *ᵥ crd (AF F) b M Y)` using `(hR' (AF F)).1 (X 0) (Y 0)`.
+
+Rewrite using `[BR, Fin.sum_univ_one, hh, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hf` using `(isSchwartzBruhat_iff b Φ).1 hΦ`. Take `⟨c1, c2⟩` from `fou_of_coord (crd (AF F) b M) hNG hGN hs hχ dx hdx hf`.
+
+Conclude with `⟨(isSchwartzBruhat_iff b _).2 c1, c2⟩`.
+-/
 theorem fouV_schwartzBruhat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 2 < M →
     ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ dx : Measure (Fin 1 → Fin M → AF F ⊗[F] E),

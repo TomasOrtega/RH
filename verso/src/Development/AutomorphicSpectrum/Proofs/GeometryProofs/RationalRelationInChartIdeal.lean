@@ -18,12 +18,42 @@ open MvPolynomial
 
 namespace GlobalTheory.CompanionTheory.Ar.ChartDehom
 
+/- English proof (translation)
+Establish `hd : (q.den : F) ≠ 0` using `by exact_mod_cast q.den_nz`. Rewrite using `[eq_ratCast, Rat.cast_def]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem den_mul_algebraMap {F : Type} [Field F] [CharZero F] (q : ℚ) :
     (q.den : F) * algebraMap ℚ F q = (q.num : F) := by
   have hd : (q.den : F) ≠ 0 := by exact_mod_cast q.den_nz
   rw [eq_ratCast, Rat.cast_def]
   field_simp
 
+/- English proof (translation)
+Use `set u : (Σ k, J k) → Ω := fun p => y p / y ⟨p.1, c p.1⟩ with hu`. Use `set w : K → MvPolynomial K Ω := fun k => MvPolynomial.C (y ⟨k, c k⟩) * X k with hw`. Set `M : (K → ℕ) → MvPolynomial (Σ k, J k) ℤ` to `fun D => ∏ k, X ⟨k, c k⟩ ^ D k`. Establish `hXc : ∀ p, mConeMap y (X p) = MvPolynomial.C (y p) * X p.1`. Introduce `p`.
+
+Simplify using `[mConeMap]`. Establish `hMc : ∀ D, mConeMap y (M D) = ∏ k, w k ^ D k`. Introduce `D`. Simplify using `only [M, map_prod, map_pow, hXc, hw]`. Establish `hMρ : ∀ D, ρ (M D) = 1`.
+
+Introduce `D`. Simplify using `only [M, map_prod, map_pow, hρ, one_pow, Finset.prod_const_one]`. Establish `hW : ∀ D E : K → ℕ, (∏ k, w k ^ D k) * ∏ k, w k ^ E k = ∏ k, w k ^ (D + E) k`. Introduce `D E`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun k _ => by rw [Pi.add_apply, pow_add]`. Establish `hS : ∀ a, ∏ k, w k ^ (Pi.single a 1 : K → ℕ) k = w a`. Introduce `a`. Rewrite using `[Finset.prod_eq_single a (fun b _ hb => by simp [Pi.single_apply, hb]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Establish `hCc : ∀ n : ℤ, mConeMap y (MvPolynomial.C n) = MvPolynomial.C (n : Ω)`. Introduce `n`. Establish `h` using `(mConeMap y).commutes n`. Simplify `h` using `[MvPolynomial.algebraMap_eq]`. Establish `hCρ : ∀ n : ℤ, ρ (MvPolynomial.C n) = (n : Q)` using `fun n => eq_intCast (ρ.comp MvPolynomial.C) n`.
+
+Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C q`. Use `⟨q.den, 0, MvPolynomial.C q.num, by exact_mod_cast q.den_nz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hCc, aeval_C]`. Simplify using `only [Pi.zero_apply, pow_zero, Finset.prod_const_one]`.
+
+Rewrite using `[_root_.mul_one, ← map_mul]`. Use `congr 1`. Use `den_mul_algebraMap (F := Ω) q` as an intermediate fact. Use `push_cast`. Conclude with `this.symm`.
+
+Rewrite using `[hCρ]`. Use `hQ q` as an intermediate fact. Use `push_cast`. Conclude with `this.symm`. Consider the case `add f g hf hg`.
+
+Take `⟨N₁, D₁, H₁, h₁, c₁, r₁⟩` from `hf`. Take `⟨N₂, D₂, H₂, h₂, c₂, r₂⟩` from `hg`. Use `⟨N₁ * N₂, D₁ + D₂, MvPolynomial.C N₂ * H₁ * M D₂ + MvPolynomial.C N₁ * H₂ * M D₁, mul_ne_zero h₁ h₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_mul, map_mul, c₁, c₂, hMc, hMc, hCc, hCc, ← hW, map_add, map_add]`. Use `push_cast`.
+
+Rewrite using `[MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_mul, map_mul, map_mul, map_mul, r₁, r₂, hMρ, hMρ, hCρ, hCρ, map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X f p hf`. Take `⟨N, D, H, h, c₁, r₁⟩` from `hf`. Use `⟨N, D + Pi.single p.1 1, H * X p, h, ?_, ?_⟩` and prove the remaining obligations. Establish `hp : MvPolynomial.C (y p) * X p.1 = MvPolynomial.C (u p) * w p.1`. Rewrite using `[hw]`.
+
+Simplify using `only`. Rewrite using `[← _root_.mul_assoc, ← MvPolynomial.C_mul, hu]`. Simplify using `only`. Rewrite using `[div_mul_cancel₀ _ (hy p.1)]`. Rewrite using `[map_mul, c₁, hXc, hp, ← hW, hS, map_mul, aeval_X, MvPolynomial.C_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, r₁, hX]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_homog {K : Type} [Fintype K] {J : K → Type} {Ω : Type} [Field Ω] [CharZero Ω]
     (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (hy : ∀ k, y ⟨k, c k⟩ ≠ 0)
     {Q : Type} [CommRing Q] (ρ : MvPolynomial (Σ k, J k) ℤ →+* Q)
@@ -103,6 +133,21 @@ theorem exists_homog {K : Type} [Fintype K] {J : K → Type} {Ω : Type} [Field 
     · rw [map_mul, map_mul, r₁, hX]
       ring
 
+/- English proof (translation)
+Introduce `K _ J _ Ω _ _ y c hy G hG`. Use `set A : Ideal (MvPolynomial (Σ k, J k) ℂ) := Ideal.span (Set.range fun k => (X ⟨k, c k⟩ - 1 : MvPolynomial (Σ k, J k) ℂ)) with hA`. Set `π` to `Ideal.Quotient.mk A`. Set `ρ : MvPolynomial (Σ k, J k) ℤ →+* (MvPolynomial (Σ k, J k) ℂ ⧸ A)` to `π.comp (MvPolynomial.map (Int.castRingHom ℂ))`. Set `τ : MvPolynomial (Σ k, J k) ℚ →+* (MvPolynomial (Σ k, J k) ℂ ⧸ A)` to `π.comp (MvPolynomial.map (algebraMap ℚ ℂ))`.
+
+Establish `hρ : ∀ k, ρ (X ⟨k, c k⟩) = 1`. Introduce `k`. Establish `h : π (X ⟨k, c k⟩) = π 1` using `Ideal.Quotient.eq.mpr (Ideal.subset_span ⟨k, rfl⟩)`. Simplify `h` using `[ρ]`. Establish `hX : ∀ p, ρ (X p) = τ (X p)`.
+
+Introduce `p`. Simplify using `[ρ, τ]`. Establish `hQ : ∀ q : ℚ, (q.den : MvPolynomial (Σ k, J k) ℂ ⧸ A) * τ (MvPolynomial.C q) = (q.num : MvPolynomial (Σ k, J k) ℂ ⧸ A)`. Introduce `q`. Establish `h` using `congrArg (fun a : ℂ => π (MvPolynomial.C a)) (den_mul_algebraMap (F := ℂ) q)`.
+
+Simplify `h` using `[τ]`. Take `⟨N, D, H, hN, hc, hr⟩` from `exists_homog y c hy ρ τ hρ hX hQ G`. Establish `hHP : H ∈ mCoordIdeal y`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, hc, hG]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : MvPolynomial.map (Int.castRingHom ℂ) H ∈ pC (mCoordIdeal y)` using `Ideal.subset_span ⟨H, hHP, rfl⟩`. Establish `h2 : MvPolynomial.map (Int.castRingHom ℂ) H - MvPolynomial.C (N : ℂ) * MvPolynomial.map (algebraMap ℚ ℂ) G ∈ A`. Use `Ideal.Quotient.eq.mp ?_` and prove the remaining obligations. Establish `: π (MvPolynomial.C (N : ℂ)) = (N : MvPolynomial (Σ k, J k) ℂ ⧸ A)` using `by simp`. Rewrite using `[map_mul, this]`.
+
+Conclude with `hr`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN`. Establish `h3 : MvPolynomial.C (N : ℂ) * MvPolynomial.map (algebraMap ℚ ℂ) G ∈ ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c`. Establish `ha : MvPolynomial.map (Int.castRingHom ℂ) H ∈ ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c` using `Ideal.mem_sup_left h1`. Establish `hb : MvPolynomial.map (Int.castRingHom ℂ) H - MvPolynomial.C (N : ℂ) * MvPolynomial.map (algebraMap ℚ ℂ) G ∈ ReciprocityTheory.AnForm.R.chartIdeal (pC (mCoordIdeal y)) c` using `Ideal.mem_sup_right h2`.
+
+Simplify using `using Ideal.sub_mem _ ha hb`. Establish `h4` using `Ideal.mul_mem_left _ (MvPolynomial.C (N : ℂ)⁻¹) h3`. Rewrite `h4` using `[← _root_.mul_assoc, ← MvPolynomial.C_mul, inv_mul_cancel₀ hN', MvPolynomial.C_1, _root_.one_mul]`. Then use the resulting hypothesis.
+-/
 theorem map_mem_chartIdeal : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [CharZero Ω]
     (y : (Σ k, J k) → Ω) (c : (k : K) → J k), (∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ G : MvPolynomial (Σ k, J k) ℚ,
     aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) G = (0 : Ω) →

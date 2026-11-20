@@ -7,6 +7,13 @@ open Formalism.AUTREP (GAf)
 
 namespace GlobalTheory.LocRelIndex
 
+/- English proof (translation)
+Introduce `L _ _ _ n s J H hJH`. Use `set K := GlobalTheory.HeckeScalarSph.locK (L := L) n s.v with hK`. Use `set O := Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring with hO`. Set `φ : K →* O` to `((s.loc n).comp K.subtype).codRestrict O (fun κ => (GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s κ.2.2).2 κ.2.1)`. Establish `hsurj : Function.Surjective φ`.
+
+Introduce `A`. Take `⟨x, hx, -⟩` from `(GlobalTheory.T.unitaryFiniteAdeles_splitPlace_decomposition L n s).2.2 A.1`. Use `⟨⟨x, ?_, hx.1⟩, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s hx.1).1 (hx.2 ▸ A.2)`. Conclude with `Subtype.ext hx.2`.
+
+Establish `hcomap : J.subgroupOf K = (H.subgroupOf O).comap φ`. Use extensionality with `κ`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_comap]`. Conclude with `hJH κ κ.2.2`. Rewrite using `[Subgroup.relIndex, Subgroup.relIndex, hcomap, Subgroup.index_comap_of_surjective _ hsurj]`.
+-/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (J : Subgroup (GAf L n)) (H : Subgroup (GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)))), (∀ κ, TrivOutside {s.v} κ → (κ ∈ J ↔ s.loc n κ ∈ H)) → J.relIndex (GlobalTheory.HeckeScalarSph.locK n s.v) = H.relIndex (Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) := by
   intro L _ _ _ n s J H hJH
   set K := GlobalTheory.HeckeScalarSph.locK (L := L) n s.v with hK

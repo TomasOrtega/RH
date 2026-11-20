@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 
 open MvPolynomial
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h ι _ _ n P D G c c' j`. Conclude with `h ι n P (AddBlockData.toObjects D) G.d G.g G.isFormSystem c c' j`. Introduce `h ι _ _ n P D d g hg c c' j`. Conclude with `h ι n P (AddBlockData.ofObjects D) (ChartForms.ofFormSystem hg) c c' j`.
+-/
 theorem ChartCrossRatio.equiv :
     GroundTheory.Heights₂.Heights.ChartCrossRatio.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ChartCrossRatio.Statement := by
   constructor

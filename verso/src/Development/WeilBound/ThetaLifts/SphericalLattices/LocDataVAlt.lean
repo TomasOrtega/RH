@@ -18,6 +18,15 @@ namespace PositivityTheory.Sph
 open scoped Matrix TensorProduct
 open NumberField IsDedekindDomain Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.KFinLoc
 
+/- English proof (translation)
+Take `⟨ϖ, σL, q, δ, JS, JT, ψL, κ, ιS, ιT, hC⟩` from `GlobalTheory.T.exists_localChart_inertPlace_unitaryPair F E σ B a a' G X om om' hTr v w hw hv`. Establish `hC'` using `hC`. Take `⟨unr, hodd, intS, intT, hS, hT, hδ, p1, p2, -, -, -, -, -, hιS, hιT, hKS, hKT⟩` from `hC'`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_inertPlace_local_heisenbergEndomorphism F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC`. Take `⟨ω, hω⟩` from `GlobalTheory.T.exists_localWeilHom_finitePlace F E σ B a a' G X om om' hTr v w hw hv σL JS JT ιS ιT hιS hιT`.
+
+Take `⟨r0, rmul⟩` from `GlobalTheory.T.inertPlace_localHeisenbergOperators_law F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ`. Take `⟨s, hs, hs0, hsv⟩` from `GlobalTheory.T.inertPlace_vacuum_isLocalVacuum_chart F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ`. Establish `hline` using `GlobalTheory.T.exists_smul_vac_eq_of_localVacuum_linearModel F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s`. Establish `hspan` using `GlobalTheory.T.span_heisenbergTranslates_vacuum_inertPlace F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s hs`. Establish `hnorm` using `GlobalTheory.T.inertPlace_weil_normalises_heisenberg F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ ω hω`.
+
+Establish `hfix` using `GlobalTheory.T.inertPlace_integralUnitaryPoints_fix_vacuum F E σ B a a' G X om om' hTr v w hw hv ϖ σL q δ JS JT ψL κ ιS ιT hC ω hω s hs`. Use `⟨w.adicCompletion E, inferInstance, inferInstance, inferInstance, inferInstance, ϖ, σL, q, δ, JS, JT, ψL, ρ, ω, ιS, ιT, s, ⟨unr, hodd, intS, intT, hS, hT, hδ, p1, p2, r0, rmul, ?_, hnorm, ?_⟩, hs0, hsv, hspan, hs, hιS, hιT, hKS, hKT, fun g h m φ₁ hφ₁ => hω g h m φ₁ hφ₁⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Submodule.span_mono (by rintro _ ⟨x, rfl⟩; exact ⟨x, s, hsv, rfl⟩)`. Introduce `g h hg hh t ht`.
+
+Take `⟨c, rfl⟩` from `hline t hs ht`. Rewrite using `[map_smul, hfix g h hg hh]`.
+-/
 theorem locDataV' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (hTr : IsTriple B G X om om') {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : Formalism.UG.IsInertAt F E v w)

@@ -15,6 +15,13 @@ open MvPowerSeries
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Unfold `degLE`. Rewrite using `[Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+
+Use `⟨?_, h⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_image]`. Use `⟨fun i => ⟨e i, ?_⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hi : e i ≤ e.sum fun _ k => k`. Distinguish the cases in `hi0 : e i = 0`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Finset.single_le_sum (f := fun j => e j) (fun _ _ => Nat.zero_le _) (Finsupp.mem_support_iff.2 hi0)`. Use linear arithmetic over natural numbers and integers. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 private lemma mem_degLE_lemma {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (e : κ →₀ ℕ) :
     e ∈ degLE m ↔ (e.sum fun _ k => k) ≤ m := by
   unfold degLE
@@ -34,6 +41,11 @@ private lemma mem_degLE_lemma {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ
     · ext i
       simp
 
+/- English proof (translation)
+Unfold `psTrunc`. Rewrite using `[MvPolynomial.coeff_sum, Finset.sum_eq_single e]`. Simplify using `[MvPolynomial.coeff_monomial]`. Introduce `b _ hb`. Simplify using `[MvPolynomial.coeff_monomial, hb]`.
+
+Introduce `h`. Conclude with `absurd ((mem_degLE_lemma m e).2 he) h`.
+-/
 private lemma coeff_psTrunc_lemma_2 {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ)
     (f : MvPowerSeries κ R) (e : κ →₀ ℕ) (he : (e.sum fun _ k => k) ≤ m) :
     MvPolynomial.coeff e (psTrunc m f) = MvPowerSeries.coeff e f := by
@@ -45,6 +57,13 @@ private lemma coeff_psTrunc_lemma_2 {R κ : Type} [CommRing R] [Fintype κ] [Dec
   · intro h
     exact absurd ((mem_degLE_lemma m e).2 he) h
 
+/- English proof (translation)
+Rewrite using `[p.as_sum]`. Use `Ideal.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : (e.sum fun _ k => k) ≤ m`. Rewrite using `[hp e he, map_zero]`. Conclude with `Ideal.zero_mem _`.
+
+Establish `h1 : MvPolynomial.monomial e (MvPolynomial.coeff e p) ∈ orig R κ ^ (e.sum fun _ k => k)`. Rewrite using `[MvPolynomial.monomial_eq]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self i)) _`.
+
+Conclude with `Ideal.pow_le_pow_right (by omega) h1`.
+-/
 private lemma mem_orig_pow_lemma_3 {R κ : Type} [CommRing R] (m : ℕ) (p : MvPolynomial κ R)
     (hp : ∀ e : κ →₀ ℕ, (e.sum fun _ k => k) ≤ m → MvPolynomial.coeff e p = 0) :
     p ∈ orig R κ ^ (m + 1) := by
@@ -61,6 +80,11 @@ private lemma mem_orig_pow_lemma_3 {R κ : Type} [CommRing R] (m : ℕ) (p : MvP
       exact Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self i)) _
     exact Ideal.pow_le_pow_right (by omega) h1
 
+/- English proof (translation)
+Unfold `psJet`. Rewrite using `[← map_mul, Ideal.Quotient.eq]`. Apply `mem_orig_pow_lemma_3` to reduce the goal to its premises. Introduce `e he`. Rewrite using `[MvPolynomial.coeff_sub, MvPolynomial.coeff_mul, coeff_psTrunc_lemma_2 m _ e he, MvPowerSeries.coeff_mul, sub_eq_zero]`.
+
+Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hpe : p.1 + p.2 = e` using `by simpa using hp`. Establish `hd : (p.1.sum fun _ k => k) + (p.2.sum fun _ k => k) = e.sum fun _ k => k`. Rewrite using `[← hpe, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]`. Rewrite using `[coeff_psTrunc_lemma_2 m f p.1 (by omega), coeff_psTrunc_lemma_2 m g p.2 (by omega)]`.
+-/
 private lemma psJet_mul_lemma_4 {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ)
     (f g : MvPowerSeries κ R) : psJet m (f * g) = psJet m f * psJet m g := by
   unfold psJet
@@ -75,6 +99,11 @@ private lemma psJet_mul_lemma_4 {R κ : Type} [CommRing R] [Fintype κ] [Decidab
     rw [← hpe, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]
   rw [coeff_psTrunc_lemma_2 m f p.1 (by omega), coeff_psTrunc_lemma_2 m g p.2 (by omega)]
 
+/- English proof (translation)
+Unfold `psJet`. Rewrite using `[← map_one (Ideal.Quotient.mk (orig R κ ^ (m + 1))), Ideal.Quotient.eq]`. Apply `mem_orig_pow_lemma_3` to reduce the goal to its premises. Introduce `e he`. Rewrite using `[MvPolynomial.coeff_sub, coeff_psTrunc_lemma_2 m _ e he, MvPowerSeries.coeff_one, MvPolynomial.coeff_one]`.
+
+Distinguish the cases in `h0 : e = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h0, Ne.symm h0]`.
+-/
 private lemma psJet_one_lemma_5 {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ) :
     psJet m (1 : MvPowerSeries κ R) = 1 := by
   unfold psJet
@@ -88,6 +117,11 @@ private lemma psJet_one_lemma_5 {R κ : Type} [CommRing R] [Fintype κ] [Decidab
     simp
   · simp [h0, Ne.symm h0]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `psJet_one_lemma_5 m`. Consider the case `succ k ih`. Rewrite using `[pow_succ, psJet_mul_lemma_4, ih]`.
+
+Conclude with `(pow_succ _ _).symm`.
+-/
 theorem psJet_pow {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ) (f : MvPowerSeries κ R) (k : ℕ) :
     psJet m (f ^ k) = psJet m f ^ k := by
   induction k with
@@ -96,6 +130,9 @@ theorem psJet_pow {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : 
     rw [pow_succ, psJet_mul_lemma_4, ih]
     exact (pow_succ _ _).symm
 
+/- English proof (translation)
+Unfold `psJet`. Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_orig_pow_lemma_3` to reduce the goal to its premises. Introduce `e he`. Rewrite using `[MvPolynomial.coeff_sub, coeff_psTrunc_lemma_2 m _ e he, h e he, sub_self]`.
+-/
 private lemma mk_eq_psJet_lemma_6 {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ)
     (p : MvPolynomial κ R) (g : MvPowerSeries κ R)
     (h : ∀ e : κ →₀ ℕ, (e.sum fun _ k => k) ≤ m → MvPolynomial.coeff e p = MvPowerSeries.coeff e g) :
@@ -106,6 +143,9 @@ private lemma mk_eq_psJet_lemma_6 {R κ : Type} [CommRing R] [Fintype κ] [Decid
   intro e he
   rw [MvPolynomial.coeff_sub, coeff_psTrunc_lemma_2 m _ e he, h e he, sub_self]
 
+/- English proof (translation)
+Establish `h` using `mk_eq_psJet_lemma_6 m (psTrunc m f + psTrunc m g) (f + g) (by`. Introduce `e he`. Rewrite using `[MvPolynomial.coeff_add, coeff_psTrunc_lemma_2 m f e he, coeff_psTrunc_lemma_2 m g e he, map_add])`. Rewrite using `[← h, map_add]`. Apply the tactic sequence `all_goals rfl`.
+-/
 private lemma psJet_add_lemma_7 {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ)
     (f g : MvPowerSeries κ R) : psJet m (f + g) = psJet m f + psJet m g := by
   have h := mk_eq_psJet_lemma_6 m (psTrunc m f + psTrunc m g) (f + g) (by
@@ -114,12 +154,20 @@ private lemma psJet_add_lemma_7 {R κ : Type} [CommRing R] [Fintype κ] [Decidab
   rw [← h, map_add]
   all_goals rfl
 
+/- English proof (translation)
+Rewrite using `[← mk_eq_psJet_lemma_6 m 0 g (fun e he => by rw [h e he, MvPolynomial.coeff_zero]), map_zero]`.
+-/
 private lemma psJet_eq_zero_lemma_8 {R κ : Type} [CommRing R] [Fintype κ] [DecidableEq κ] (m : ℕ)
     (g : MvPowerSeries κ R)
     (h : ∀ e : κ →₀ ℕ, (e.sum fun _ k => k) ≤ m → MvPowerSeries.coeff e g = 0) :
     psJet m g = 0 := by
   rw [← mk_eq_psJet_lemma_6 m 0 g (fun e he => by rw [h e he, MvPolynomial.coeff_zero]), map_zero]
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun p hp => ?_` and prove the remaining obligations. Establish `hpe : p.1 + p.2 = e` using `by simpa using hp`. Establish `hd : (p.1.sum fun _ j => j) + (p.2.sum fun _ j => j) = e.sum fun _ j => j`.
+
+Rewrite using `[← hpe, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]`. Distinguish the cases in `h1 : (p.1.sum fun _ j => j) < k`. Rewrite using `[ha p.1 h1, zero_mul]`. Rewrite using `[hb p.2 (by omega), mul_zero]`.
+-/
 private lemma vanish_mul_lemma_9 {R τ : Type} [CommRing R] [DecidableEq τ] (a b : MvPowerSeries τ R)
     (k l : ℕ)
     (ha : ∀ e : τ →₀ ℕ, (e.sum fun _ j => j) < k → MvPowerSeries.coeff e a = 0)
@@ -135,6 +183,11 @@ private lemma vanish_mul_lemma_9 {R τ : Type} [CommRing R] [DecidableEq τ] (a 
   · rw [ha p.1 h1, zero_mul]
   · rw [hb p.2 (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `e he`. Establish `he0 : e = 0`. Use extensionality with `i`. Assume the negation of the conclusion as `hi`. Establish `hi' : e i ≠ 0` using `by simpa using hi`.
+
+Establish `hle : e i ≤ e.sum fun _ j => j` using `Finset.single_le_sum (f := fun j => e j) (fun _ _ => Nat.zero_le _) (Finsupp.mem_support_iff.2 hi')`. Use linear arithmetic over natural numbers and integers. Substitute `he0` using the available equality. Simplify using `using ha`.
+-/
 private lemma vanish_one_lemma_10 {R τ : Type} [CommRing R] (a : MvPowerSeries τ R)
     (ha : MvPowerSeries.constantCoeff a = 0) :
     ∀ e : τ →₀ ℕ, (e.sum fun _ j => j) < 1 → MvPowerSeries.coeff e a = 0 := by
@@ -150,6 +203,15 @@ private lemma vanish_one_lemma_10 {R τ : Type} [CommRing R] (a : MvPowerSeries 
   subst he0
   simpa using ha
 
+/- English proof (translation)
+Establish `hpow : ∀ (s : τ') (n : ℕ) (e : τ →₀ ℕ), (e.sum fun _ j => j) < n → MvPowerSeries.coeff e (a s ^ n) = 0`. Introduce `s n`. Proceed by induction on `n with`. Consider the case `zero => intro e he`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `vanish_mul_lemma_9 _ _ n 1 ih (vanish_one_lemma_10 _ (ha s))`. Establish `key : ∀ T : Finset τ', ∀ e : τ →₀ ℕ, (e.sum fun _ j => j) < ∑ s ∈ T, d s → MvPowerSeries.coeff e (∏ s ∈ T, a s ^ d s) = 0`. Introduce `T`.
+
+Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Introduce `e he`. Simplify using `at he`. Introduce `s T hs ih`. Rewrite using `[Finset.prod_insert hs, Finset.sum_insert hs]`.
+
+Conclude with `vanish_mul_lemma_9 _ _ _ _ (hpow s (d s)) ih`. Conclude with `key d.support`.
+-/
 private lemma vanish_prod_lemma_11 {R τ τ' : Type} [CommRing R] [DecidableEq τ]
     (a : τ' → MvPowerSeries τ R) (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     (d : τ' →₀ ℕ) :
@@ -175,6 +237,11 @@ private lemma vanish_prod_lemma_11 {R τ τ' : Type} [CommRing R] [DecidableEq �
       exact vanish_mul_lemma_9 _ _ _ _ (hpow s (d s)) ih
   exact key d.support
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [MvPolynomial.coe_C, Algebra.algebraMap_eq_smul_one, MvPowerSeries.smul_eq_C_mul, mul_one])`. Consider the case `(ext e`. Simplify using `[Algebra.algebraMap_eq_smul_one, MvPowerSeries.coeff_C, MvPowerSeries.coeff_one])`. Consider the case `(ext e`.
+
+Rewrite using `[MvPolynomial.coeff_coe, MvPolynomial.coeff_C, Algebra.algebraMap_eq_smul_one, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_one]`. Distinguish the cases in `h : e = 0`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h])`.
+-/
 private lemma coe_C_lemma_12 {R κ : Type} [CommRing R] (c : R) :
     ((MvPolynomial.C c : MvPolynomial κ R) : MvPowerSeries κ R) = algebraMap R _ c := by
   first
@@ -188,6 +255,29 @@ private lemma coe_C_lemma_12 {R κ : Type} [CommRing R] (c : R) :
        · subst h; simp
        · simp [h, Ne.symm h])
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => φ p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => h0 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun p => h0 p.2)`. Consider the case `exact ⟨fun p => by simp [h0 p.2], by simp [Filter.cofinite_eq_bot, Filter.tendsto_bot]⟩`. Consider the case `exact ⟨by simp [Filter.cofinite_eq_bot, Filter.tendsto_bot], fun p => by simp [h0 p.2]⟩`.
+
+Establish `hpoly : ∀ P : MvPolynomial (Fin 1 × Fin d) S, (jetSubstPS (m` using `m) (fun p : Fin 1 × Fin d => φ p.2)) (Ideal.Quotient.mk (orig S (Fin 1 × Fin d) ^ (m + 1)) P) = psJet m (MvPowerSeries.substAlgHom hs (P : MvPowerSeries (Fin 1 × Fin d) S)) := by`. Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c =>`. Establish `e1 : (MvPolynomial.C c : MvPolynomial (Fin 1 × Fin d) S) = algebraMap S _ c`.
+
+Rewrite using `[MvPolynomial.algebraMap_eq]`. Rewrite using `[coe_C_lemma_12, AlgHom.commutes, e1, Ideal.Quotient.mk_algebraMap, AlgHom.commutes, ← mk_eq_psJet_lemma_6 m (MvPolynomial.C c)]`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]`. Introduce `e _`. Rewrite using `[← coe_C_lemma_12, MvPolynomial.coeff_coe]`.
+
+Use `next p q hp hq =>`. Rewrite using `[map_add, map_add, hp, hq, MvPolynomial.coe_add, map_add, psJet_add_lemma_7]`. Use `next p n hp =>`. Rewrite using `[map_mul, map_mul, hp, MvPolynomial.coe_mul, map_mul, psJet_mul_lemma_4]`. Use `congr 1`.
+
+Rewrite using `[MvPolynomial.coe_X, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hs]`. Establish `hc : MvPolynomial.constantCoeff (psTrunc m (φ n.2)) = 0`. Rewrite using `[show MvPolynomial.constantCoeff (psTrunc m (φ n.2)) = MvPolynomial.coeff 0 (psTrunc m (φ n.2)) from rfl, coeff_psTrunc_lemma_2 m _ 0 (by simp)]`. Use `first`. Consider the case `(rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply]; exact h0 n.2)`.
+
+Consider the case `simpa using h0 n.2`. Establish `hX : (jetSubstPS (m` using `m) (fun p : Fin 1 × Fin d => φ p.2)) (Ideal.Quotient.mk (orig S (Fin 1 × Fin d) ^ (m + 1)) (MvPolynomial.X n)) = Ideal.Quotient.mk (orig S (Fin 1 × Fin N) ^ (m + 1)) (psTrunc m (φ n.2) - MvPolynomial.C (MvPolynomial.constantCoeff (psTrunc m (φ n.2)))) := by first`. Consider the case `(simp only [jetSubstPS, jetMap, liftJet, Ideal.Quotient.liftₐ_apply] erw [Ideal.Quotient.lift_mk] simp)`. Consider the case `(simp [jetSubstPS, jetMap, liftJet] erw [Ideal.Quotient.lift_mk] simp)`. Consider the case `rfl`.
+
+Rewrite using `[hX, hc, map_zero, sub_zero]`. Apply the tactic sequence `all_goals rfl`. Establish `hvan : ∀ e : Fin 1 × Fin N →₀ ℕ, (e.sum fun _ j => j) ≤ m → MvPowerSeries.coeff e (MvPowerSeries.substAlgHom hs (f - ((psTrunc m f : MvPolynomial (Fin 1 × Fin d) S) : MvPowerSeries (Fin 1 × Fin d) S))) = 0`. Introduce `e he`. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.coeff_subst hs]`.
+
+Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `u`. Distinguish the cases in `hu : (u.sum fun _ j => j) ≤ m`. Rewrite using `[map_sub, MvPolynomial.coeff_coe, coeff_psTrunc_lemma_2 m f u hu, sub_self, zero_smul]`. Establish `hz` using `vanish_prod_lemma_11 (fun p : Fin 1 × Fin d => φ p.2) (fun p => h0 p.2) u e (by omega) first`.
+
+Consider the case `exact (congrArg (fun x => MvPowerSeries.coeff u (f - ((psTrunc m f : MvPolynomial (Fin 1 × Fin d) S) : MvPowerSeries (Fin 1 × Fin d) S)) • x) hz).trans (smul_zero _)`. Consider the case `(rw [show MvPowerSeries.coeff e (u.prod fun s n => φ s.2 ^ n) = 0 from hz, smul_zero])`. Consider the case `(simp only [hz, smul_zero])`. Establish `e3 : subst (fun p : Fin 1 × Fin d => φ p.2) f = MvPowerSeries.substAlgHom hs f`. Rewrite using `[MvPowerSeries.coe_substAlgHom]`.
+
+Establish `e4 : MvPowerSeries.substAlgHom hs f = MvPowerSeries.substAlgHom hs ((psTrunc m f : MvPolynomial (Fin 1 × Fin d) S) : MvPowerSeries (Fin 1 × Fin d) S) + MvPowerSeries.substAlgHom hs (f - ((psTrunc m f : MvPolynomial (Fin 1 × Fin d) S) : MvPowerSeries (Fin 1 × Fin d) S))`. Rewrite using `[← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, e4, psJet_add_lemma_7, psJet_eq_zero_lemma_8 m _ hvan, add_zero, ← hpoly]`.
+
+Apply the tactic sequence `all_goals rfl`.
+-/
 theorem jetSubstPS_psJet {S : Type} [CommRing S] {d N : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin N) S)
     (h0 : ∀ j, constantCoeff (φ j) = 0) (m : ℕ) (f : MvPowerSeries (Fin 1 × Fin d) S) :
     (jetSubstPS (m := m) (fun p : Fin 1 × Fin d => φ p.2)) (psJet m f) =
@@ -266,6 +356,15 @@ theorem jetSubstPS_psJet {S : Type} [CommRing S] {d N : ℕ} (φ : Fin d → MvP
   rw [e3, e4, psJet_add_lemma_7, psJet_eq_zero_lemma_8 m _ hvan, add_zero, ← hpoly]
   all_goals rfl
 
+/- English proof (translation)
+Establish `hs : PowerSeries.HasSubst b` using `PowerSeries.HasSubst.of_constantCoeff_zero hb`. Establish `key : ∀ r : S, PowerSeries.subst (r • b) (PowerSeries.exp S) = PowerSeries.subst b (PowerSeries.rescale r (PowerSeries.exp S))`. Introduce `r`. Rewrite using `[PowerSeries.rescale_eq_subst, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero (by exact (congrArg (r * ·) PowerSeries.constantCoeff_X).trans (mul_zero r))) hs]`. Use `congr 1`.
+
+Rewrite using `[PowerSeries.subst_smul hs, PowerSeries.subst_X hs]`. Establish `hneg : -b = (-1 : S) • b` using `by simp`. Rewrite using `[hneg, key, key, ← PowerSeries.subst_pow hs, ← PowerSeries.subst_mul hs]`. Rewrite using `[← PowerSeries.exp_pow_eq_rescale_exp, ← mul_pow]`. Establish `h1 : PowerSeries.exp S * PowerSeries.rescale (-1 : S) (PowerSeries.exp S) = 1`.
+
+Establish `h2` using `PowerSeries.exp_mul_exp_eq_exp_add (A := S) 1 (-1)`. Rewrite `h2` using `[add_neg_cancel, PowerSeries.rescale_one, RingHom.id_apply]`. Rewrite using `[h2, PowerSeries.rescale_zero, RingHom.comp_apply, PowerSeries.constantCoeff_exp, map_one]`. Rewrite using `[h1, one_pow]`. Use `first`.
+
+Consider the case `exact PowerSeries.subst_one hs`. Consider the case `exact (PowerSeries.substAlgHom hs).map_one`. Consider the case `simp [← PowerSeries.coe_substAlgHom hs]`.
+-/
 theorem exp_pow_inv {S : Type} [CommRing S] [Algebra ℚ S] {σ : Type} (b : MvPowerSeries σ S)
     (hb : constantCoeff b = 0) (k : ℕ) :
     PowerSeries.subst ((k : S) • b) (PowerSeries.exp S) * (PowerSeries.subst (-b) (PowerSeries.exp S)) ^ k = 1 := by
@@ -291,6 +390,9 @@ theorem exp_pow_inv {S : Type} [CommRing S] [Algebra ℚ S] {σ : Type} (b : MvP
     | exact (PowerSeries.substAlgHom hs).map_one
     | simp [← PowerSeries.coe_substAlgHom hs]
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem isValueAt_of_eq {S0 : Scheme.{0}} (A : Over S0) [GrpObj A] (L : LB A.left) (a : ℤ) {T : Over S0}
     {s : LB.Sec (LPow A L a T)} {z : T ⟶ A}
     {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => a))} {v v' : Γ(T.left, ⊤)}
@@ -301,12 +403,18 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `spMap_comp_alg (jφ φ m)`.
+-/
 theorem homAt_jφ_jBase {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] [StarRing (𝓞 E)]
     (y : FrPt Xo c S) (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S) (m : ℕ) :
     Formalism.L2.Pj.homAt y.x (jφ φ m) ≫ jBase y C.d m 1 = jBase y (dL Dw) m 1 := by
   apply Over.OverMorphism.ext
   exact spMap_comp_alg (jφ φ m)
 
+/- English proof (translation)
+Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (f : A →+* B))`. Conclude with `(congrArg (fun g => g.hom a) h).symm`.
+-/
 theorem appTop_toΓ {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {A B : Type} [CommRing A] [Algebra S A] [CommRing B]
     [Algebra S B] (f : A →ₐ[S] B) (a : A) :
     ((Formalism.L2.Pj.homAt x0 f).left.appTop).hom (toΓ A a) = toΓ B (f a) := by
@@ -325,6 +433,29 @@ open MvPowerSeries ExpTieAlg ExpTieGerm ExpTiePf
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ _ S _ _ _ y C φ hφ e he k F f hf`. Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hs0 : HasSubst (famL φ)` using `hasSubst0 fun p => hφ.const p.2`. Establish `hhL : constantCoeff (C.B.hL S C.h H.w0) = 0` using `CIndBCNab.const_hL C.B C.h C.gauge H.w0`. Use `⟨compL φ (f * Germ.FB.expS S ((k : S) • C.B.hL S C.h H.w0)), fun m => ?_, fun α => ?_⟩` and prove the remaining obligations.
+
+Take `⟨F₁, τ₁, hP₁, hC₁, hV₁⟩` from `hf m`. Take `⟨u, hu, hCe⟩` from `he m`. Take `⟨F₂, hP₂⟩` from `GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (Formalism.L2.Pj.homAt y.x (jφ φ m) ▷ Xo.univ.t.G) (whiskerRight_snd _ _) F₁`. Set `τ₂ : LB.Gen (LB.LinComb Xo.univ.t.PP.L (K` to `Fin 1) (fun _ => (xExp y C φ m).left) fun _ => (k : ℤ)) := ⟨fun j => (e m).s j ^ k⟩`. Establish `hG : LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ τ₂ (scaleGen _ _ (unitΓ u ^ k) (LB.pullGen Xo.univ.t.PP.L _ _ (genPow _ _ (eL y C.d C.x C.B.A.act C.e C.wP m) k) (Formalism.L2.Pj.homAt y.x (jφ φ m)).left))`.
+
+Use `corr_genPow hCe k` as an intermediate fact. Rewrite `this` using `[genPow_scale_pull]`. Conclude with `this`. Establish `h1 : LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (scaleGen _ _ (unitΓ u ^ k) (LB.pullGen Xo.univ.t.PP.L _ _ τ₁ (Formalism.L2.Pj.homAt y.x (jφ φ m)).left)) (scaleGen _ _ (unitΓ u ^ k) (LB.pullGen Xo.univ.t.PP.L _ _ (genPow _ _ (eL y C.d C.x C.B.A.act C.e C.wP m) k) (Formalism.L2.Pj.homAt y …` using `corr_scale (corr_pullGen _ hC₁ _) _`. Establish `heq` using `GermFun.gen_eq_of_corr _ hL _ _ _ _ _ τ₂ _ h1 hG`.
+
+Use `⟨F₂, τ₂, isPullSec_congr _ _ _ (homAt_jφ_jBase y C φ m) (isPullSec_comp _ _ _ _ _ hP₁ hP₂), ?_, ?_⟩` and prove the remaining obligations. Introduce `j j' _ _ c3`. Establish `: j = j'` using `funext fun i => c3 i i rfl`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Rewrite using `[← heq]`. Establish `hval` using `isValueAt_pullScale hL (k : ℤ) (Formalism.L2.Pj.homAt y.x (jφ φ m)) hP₂ hV₁ (unitΓ u ^ k)`. Establish `hb : constantCoeff (compL φ (C.B.hL S C.h H.w0)) = 0`. Unfold `compL`. Rewrite using `[const_subst0 (a := famL φ) (fun p => hφ.const p.2)]`.
+
+Conclude with `hhL`. Establish `hsub : subst (famL φ) (Germ.FB.expS S ((k : S) • C.B.hL S C.h H.w0)) = PowerSeries.subst ((k : S) • compL φ (C.B.hL S C.h H.w0)) (PowerSeries.exp S)`. Unfold `Germ.FB.expS`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp (famL φ) (fun p => hφ.const p.2) (by rw [smul_eq_C_mul, map_mul, hhL, mul_zero]), subst_smul hs0]`. Both sides reduce to the same expression.
+
+Establish `hprod : psJet m (subst (famL φ) (Germ.FB.expS S ((k : S) • C.B.hL S C.h H.w0))) * ↑(u ^ k) = 1`. Rewrite using `[Units.val_pow_eq_pow_val, hu, ← psJet_pow, ← FBIdJet.psJet_mul, hsub]`. Unfold `Germ.FB.expS`. Rewrite using `[exp_pow_inv _ hb k]`. Conclude with `FBIdJet.psJet_one m`.
+
+Establish `hinv : psJet m (subst (famL φ) (Germ.FB.expS S ((k : S) • C.B.hL S C.h H.w0))) = ↑((u ^ k)⁻¹)` using `by set X := psJet m (subst (famL φ) (Germ.FB.expS S ((k : S) • C.B.hL S C.h H.w0))) with hX`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, _root_.mul_one]`. Use `_ = (X * ↑(u ^ k)) * ↑((u ^ k)⁻¹) := (_root_.mul_assoc _ _ _).symm`. Use `_ = ↑((u ^ k)⁻¹) := by rw [hprod, _root_.one_mul]`.
+
+Establish `hu' : ((unitΓ u ^ k)⁻¹ : Γ(Sp (Jet S (Fin 1 × Fin (dL Dw)) m), ⊤)ˣ) = unitΓ ((u ^ k)⁻¹)`. Simplify using `[unitΓ, map_pow, map_inv]`. Use `isValueAt_of_eq _ _ _ hval ?_` and prove the remaining obligations. Rewrite using `[appTop_toΓ, hu']`. Use `show toΓ (Jet S (Fin 1 × Fin (dL Dw)) m) _ * toΓ (Jet S (Fin 1 × Fin (dL Dw)) m) _ = toΓ (Jet S (Fin 1 × Fin (dL Dw)) m) _`.
+
+Rewrite using `[← map_mul]`. Use `congr 1`. Use `symm`. Unfold `compL jφ`. Rewrite using `[jetSubstPS_psJet φ hφ.const m f, subst_mul hs0, FBIdJet.psJet_mul]`.
+
+Use `congr 1`. Rewrite using `[nabVal_eq_const, tie_alg C.B.G.F C.uvec φ hφ α]`.
+-/
 theorem tie_holds : TieSt := by
   intro E _ _ _ H Dw l Xo c _ _ S _ _ _ y C φ hφ e he k F f hf
   have hL := Xo.univ.t.PP.isLB

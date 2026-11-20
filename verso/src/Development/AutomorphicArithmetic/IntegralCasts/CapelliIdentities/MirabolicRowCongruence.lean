@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R _ I J g hIJ h`. Establish `key : ∀ (K : Ideal R) (j : Fin 2), Matrix.vecMul ![0, 1] ((Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk K) g : GL (Fin 2) (R ⧸ K)) : Matrix (Fin 2) (Fin 2) (R ⧸ K)) j = Ideal.Quotient.mk K ((g : Matrix (Fin 2) (Fin 2) R) 1 j)`. Introduce `K j`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two, Matrix.GeneralLinearGroup.map]`. Use function extensionality and compare the values at `j`.
+
+Establish `hj` using `congrArg (Ideal.Quotient.factor hIJ) ((key I j).symm.trans (congrFun h j))`. Rewrite `hj` using `[Ideal.Quotient.factor_mk]`. Rewrite using `[key J j, hj]`. Apply the tactic sequence `fin_cases j <;> simp`.
+-/
 theorem UpperTheory.mirabolic_row_congruence :
     ∀ {R : Type} [CommRing R] (I J : Ideal R) (g : GL (Fin 2) R), I ≤ J →
         Matrix.vecMul ![0, 1] ((Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk I) g : GL (Fin 2) (R ⧸ I)) : Matrix (Fin 2) (Fin 2) (R ⧸ I)) = ![0, 1] →

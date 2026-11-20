@@ -29,6 +29,29 @@ variable {D : D7}
 end Heq
 end GlobalTheory.Fam.PkOf
 namespace GlobalTheory.Fam
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hJ hLM hDc hFr hPins hSee hRec hEx hPrim hTS hOk3 hIdE hGap hFinX hNG hTW hTQ`. Establish `hC3` using `Formalism.IndefR.Links.RealDat3.characterisation_of_weak W.Q.charW hEx`. Establish `hU : ∀ t : W.P.T, Formalism.IndefR.RecTie.Used0 _ (W.P.I.tup t)`. Apply `Formalism.L2.DIV.tupAllUsed_of_cover` to reduce the goal to its premises. Introduce `t`.
+
+Establish `hmu : W.Q.Rl.mu = W.P.S0.μ` using `GlobalTheory.Fam.PkOf.mu_of_heq (congrArg (fun Z => W.P.A3.side3 W.P.P0 W.P.ψ0 Z) W.Q.zs) W.Q.s0`. Break down `W.Q.charW.tup.mu_used t with h | ⟨w, h⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨(I.rec7 l Z).plEq.symm w, ?_⟩ show t = W.P.S0.μ ((I.rec7 l Z).plEq ((I.rec7 l Z).plEq.symm w))` and prove the remaining obligations. Rewrite using `[← hmu, Equiv.apply_symm_apply]`.
+
+Conclude with `h.symm`. Use `⟨⟨⟨hJ, hLM, hDc, hC3, W.Q.frames hFr⟩, hPins, hSee, hU, hIdE, hGap, hFinX⟩, ?lev, hEx, hRec.hTop, hNG, ?fin, ?sel, ?aa⟩` and prove the remaining obligations. Use `case lev =>`. Take `⟨s, hs⟩` from `hOk3`. Establish `hR` using `Formalism.IndefR.Links.complex_data_conditions_base_level_of_primitive_links hs hTS W.Q.charW hPrim`.
+
+Conclude with `⟨⟨s, hs⟩, hR.ratZ, _, hR.gUnit, hR.gEquiv, hR.h2P, hR.lev0, hR.lev1⟩`. Use `case fin => classical`. Establish `h1` using `W.Q.charW.tup.mu_off`. Establish `h2` using `W.Q.charW.tup.mu_used`. Establish `: (Set.univ : Set W.P.T) ⊆ insert W.P.A3.A.μ0 (W.Q.Rl.mu '' (W.Q.Rl.twPl : Set _))` using `fun t _ => by`.
+
+Break down `h2 t with h | ⟨w, rfl⟩` into its components or cases. Conclude with `Or.inl h`. Distinguish the cases in `hw : w ∈ W.Q.Rl.twPl`. Conclude with `Or.inr ⟨w, hw, rfl⟩`. Conclude with `Or.inl (h1 w hw)`.
+
+Conclude with `Set.finite_univ_iff.1 ((((W.Q.Rl.twPl).finite_toSet.image _).insert _).subset this)`. Use `case sel =>`. Introduce and unpack `PP PP' ⟨t, ht⟩ ⟨t', ht'⟩ hu`. Establish `hs` using `hTW.ok.sel_ok`. Take `⟨v, rfl⟩` from `GlobalTheory.Fam.PkOf.exists_of_mem_QE ((hTQ.Q t PP).1 ht)`.
+
+Take `⟨v', rfl⟩` from `GlobalTheory.Fam.PkOf.exists_of_mem_QE ((hTQ.Q t' PP').1 ht')`. Establish `e1` using `congrArg HeightOneSpectrum.asIdeal hu`. Establish `hv : v = v'`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[← hs v, ← hs v']`.
+
+Conclude with `e1`. Rewrite using `[hv]`. Use `case aa =>`. Introduce `PP h hmem`. Establish `hcop` using `(I.rec7 l Z).host.ccK_coprime`.
+
+Break down `h with ⟨t, ht⟩ | hg | ⟨u, hu⟩` into its components or cases. Apply `hPins.qGuard.2 t PP ht` to reduce the goal to its premises. Use `push_cast`. Conclude with `Ideal.mul_mem_left _ _ hmem`. Take `⟨plg, iso, -, -, -, -⟩` from `hPins.grpRecPin set kv := plg.symm ⟨PP, hg⟩ with hkv`.
+
+Establish `hPP : ((plg kv : W.Q.Rl.toRealDat.Pg) : Pl (I.rec7 l Z).host.E) = PP`. Rewrite using `[hkv, Equiv.apply_symm_apply]`. Establish `h0 : (((I.rec7 l Z).host.g kv.1 : ℕ) : kP (plg kv).1) = 0`. Rewrite using `[← map_natCast (iso kv), ZMod.natCast_self, map_zero]`. Establish `hg' : (((I.rec7 l Z).host.g kv.1 : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal`.
+
+Rewrite using `[← hPP]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (by simpa using h0)`. Conclude with `GlobalTheory.Fam.PkOf.natCast_not_mem_of_coprime PP (hcop _ (by simp [(I.rec7 l Z).host.g_level kv.1])) hg' hmem`. Conclude with `GlobalTheory.Fam.PkOf.natCast_not_mem_of_coprime PP (hcop _ (by simp [(I.rec7 l Z).T_level u])) hu hmem`.
+-/
 theorem pkHyp_of_real_alt : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), Nonempty (_root_.Formalism.L2.SG.JoinSI.IndefiniteRealisationJoin W.R W.S W.Q) → (∀ u, Formalism.L2.SG.ColDict.LevelMatch W.S.X (W.S.tr u) W.S.Y.hK) → GlobalTheory.MiS.DcPtG W.P → _root_.Formalism.IndefR.IndefiniteRealisation.FramesEx W.Q → _root_.Formalism.IndefR.IndefiniteRealisationNormalisation W.Q → _root_.Formalism.IndefR.IndefiniteRealisationExtends W.Q → _root_.Formalism.IndefR.IndefiniteRealisationRecursion W.Q → W.Q.Rl.toRealDat.ExAt → Formalism.IndefR.Links.PrimRows3 W.Q.Rl W.Q.F → W.P.A3.fam3.TypesSep3 → (∃ s, W.P.A3.fam3.Ok3 s) → GlobalTheory.Core.Mi.IdE W.S.X → GlobalTheory.Count.GapGe W.S.X.B (100 * (B.R.r : ℝ) ^ 4) → Formalism.L2.SG.PackageTie2.FinX W.S.Y → GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap (I.rec7 l Z) → _root_.GlobalTheory.Fam.ValidRealPackage W → _root_.GlobalTheory.Fam.GeometricFamilyConditions W → _root_.GlobalTheory.Fam.PackageHypotheses W := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hJ hLM hDc hFr hPins hSee hRec hEx hPrim hTS hOk3 hIdE hGap hFinX hNG hTW hTQ
   have hC3 := Formalism.IndefR.Links.RealDat3.characterisation_of_weak W.Q.charW hEx

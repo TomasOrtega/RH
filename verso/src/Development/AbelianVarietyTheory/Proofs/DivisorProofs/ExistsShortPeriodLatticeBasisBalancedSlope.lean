@@ -15,6 +15,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ShortPhi
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io y φ hφ C P ϖ hϖ Q hQ`. Set `` to `H.starRing`. Set `` to `io.toAlgebra`. Take `⟨Q', β, hQ', h0, hβ, hβ2, -⟩` from `GlobalTheory.ValForm.main E H T.V C.I.G P ϖ hϖ (IsCMField.complexConj E : E → E) fun _ => rfl`. Take `rfl : Q = Q'` from `funext fun χ => QForm.QVal_unique hϖ P.D (hQ χ) (hQ' χ)`.
+
+Establish `hφ' : HasPhi y (Formalism.MainNotions.ModuliIntegralCharts.phiC _ β)` using `⟨C.I.G, C.I.t', C.I.m1, C.I.m2, P, ϖ, Q, β, hϖ, hQ, h0, hβ2, rfl⟩`. Establish `hnn` using `hφ.nonneg`. Take `rfl : φ = Formalism.MainNotions.ModuliIntegralCharts.phiC _ β` from `(hasPhi_exists_ext_and_unique E H Dw l Xo c).2 T io y _ _ hφ hφ'`. Take `⟨ρ, hρ, -, hq⟩` from `GlobalTheory.ToricRank.rank_le_signature E H Dw l Xo T.V C.I.G P C.I.t' C.I.m2 y.1.x C.I.m1 inferInstance`. Establish `hrt : IsCMField.complexConj E (H.rt : E) = -(H.rt : E)`.
+
+Rewrite using `[← H.bar_eq, HostModel.bar_rt]`. Simplify using the standard rewrite rules. Establish `hw : (H.w0 : E) + IsCMField.complexConj E (H.w0 : E) = 1`. Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`. Simplify `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` using `only [map_mul, map_add, map_one, map_ofNat]`.
+
+Establish `h3` using `congrArg (IsCMField.complexConj E) h2`. Rewrite `h3` using `[map_mul, map_add, map_one, map_ofNat, hrt]`. Take the linear combination `(h2 + h3) / 2`. Establish `hne : ∃ z : E, IsCMField.complexConj E z ≠ z` using `by by_contra! h`. Conclude with `IsCMField.complexConj_ne_one E (AlgEquiv.ext h)`.
+
+Establish `hpos` using `QForm.gram_posDef hϖ P.D hQ (Module.finBasis ℤ P.D.toPre.X)`. Take `⟨b, h1, h2⟩` from `gram_form_phi_holds E (IsCMField.complexConj E : E → E) (fun ψ z => IsCMField.complexEmbedding_complexConj E ψ z) hne H.w0 hw P.D.toPre.X β ⟨_, inferInstance, Module.finBasis ℤ P.D.toPre.X, by simpa only [hβ] using hpos⟩`. Use `⟨Module.finrank ℤ P.D.toPre.X, ?_, by positivity, b, fun j => ?_, fun j z => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ]`. Conclude with `Nat.mul_le_mul (Nat.mul_div_le _ _) hq`.
+
+Use `h1 j` as an intermediate fact. Rewrite `this` using `[hβ2, mul_div_cancel_left₀ _ two_ne_zero]`. Then use the resulting hypothesis. Use `h2 j z` as an intermediate fact. Rewrite `this` using `[hβ2, mul_div_cancel_left₀ _ two_ne_zero, hβ]`. Then use the resulting hypothesis.
+-/
 theorem exists_shortBasis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (φ : ℝ), HasPhi y φ → ∀ (C : IntegralChartA3 Xo c T io y) (P : PELUnif (maximalIdeal T.V) C.I.G) (ϖ : T.V), Irreducible ϖ → ∀ Q : P.D.toPre.X → ℤ, IsQ P.D.toPre ϖ Q → ∃ r : ℕ, r ≤ Module.finrank ℚ E * Dw.q ∧ ShortBasis Q r ((|(discr E : ℝ)| ^ ((2 : ℝ) / Module.finrank ℚ E)) / (2 * Module.finrank ℚ E) * (r : ℝ) ^ 3 * φ) (2 * Real.sqrt r) := by
   intro E _ _ _ H Dw l Xo c T io y φ hφ C P ϖ hϖ Q hQ
   let := H.starRing

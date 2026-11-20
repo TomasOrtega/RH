@@ -20,12 +20,21 @@ variable {A : Type u} [CommRing A] {N : ℕ} (X : ProjScheme A N) {ρ : A →+* 
 
 def point (x : X.complexPoints ρ) : X.X := Classical.choose x.2
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec x.2`.
+-/
 lemma ι_point (x : X.complexPoints ρ) : X.ι.base (X.point x) = projPoint ρ x.1 :=
   Classical.choose_spec x.2
 
+/- English proof (translation)
+The claim follows from `(X.ι_point x) ▸ isOver_projPoint ρ x.1`.
+-/
 lemma isOver_point (x : X.complexPoints ρ) : IsOver ρ x.1.rep (X.ι.base (X.point x)) :=
   (X.ι_point x) ▸ isOver_projPoint ρ x.1
 
+/- English proof (translation)
+The claim follows from `X.ι.isClosedEmbedding.injective`.
+-/
 lemma ι_injective : Function.Injective X.ι.base := X.ι.isClosedEmbedding.injective
 
 def evalAtPoint (x : X.complexPoints ρ) : locRing X.X (X.point x) →+* ℂ :=
@@ -38,11 +47,17 @@ def sectionValue {L : X.X.Modules} (x : X.complexPoints ρ) {U : X.X.Opens} (hx 
     (s : ((preMod X.X).obj L).obj (op U)) : X.Fibre L x :=
   value _ hx s
 
+/- English proof (translation)
+Apply `X.ι_injective` to reduce the goal to its premises. Rewrite using `[ι_point, ι_point]`. Conclude with `projPoint_conj ρ x.1`.
+-/
 lemma point_conjPoint (x : X.complexPoints ρ) : X.point (X.conjPoint ρ x) = X.point x := by
   apply X.ι_injective
   rw [ι_point, ι_point]
   exact projPoint_conj ρ x.1
 
+/- English proof (translation)
+Establish `h : Projectivization.mk ℂ (CP.conj v).rep (CP.conj v).rep_nonzero = Projectivization.mk ℂ (CP.conjVec v.rep) (CP.conjVec_ne_zero v.rep_nonzero)`. Rewrite using `[Projectivization.mk_rep, ← CP.conj_mk v.rep v.rep_nonzero, Projectivization.mk_rep]`. Take `⟨c, hc⟩` from `(Projectivization.mk_eq_mk_iff ℂ _ _ (CP.conj v).rep_nonzero (CP.conjVec_ne_zero v.rep_nonzero)).1 h`. Conclude with `⟨c, hc.symm⟩`.
+-/
 lemma exists_rep_conj (v : CP N) : ∃ c : ℂˣ, (CP.conj v).rep = (c : ℂ) • CP.conjVec v.rep := by
   have h : Projectivization.mk ℂ (CP.conj v).rep (CP.conj v).rep_nonzero =
       Projectivization.mk ℂ (CP.conjVec v.rep) (CP.conjVec_ne_zero v.rep_nonzero) := by
@@ -51,6 +66,9 @@ lemma exists_rep_conj (v : CP N) : ∃ c : ℂˣ, (CP.conj v).rep = (c : ℂ) �
     (CP.conjVec_ne_zero v.rep_nonzero)).1 h
   exact ⟨c, hc.symm⟩
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Establish `: X.evalStalk h' = X.evalStalk (h.conj.smul c.ne_zero)` using `rfl`. Rewrite using `[this, X.evalStalk_smul h.conj c.ne_zero, X.evalStalk_conj h]`.
+-/
 lemma evalStalk_eq_conj {p : X.X} {w w' : Fin (N + 1) → ℂ} (c : ℂˣ)
     (hw : w' = (c : ℂ) • CP.conjVec w) (h : IsOver ρ w (X.ι.base p))
     (h' : IsOver ((starRingEnd ℂ).comp ρ) w' (X.ι.base p)) :
@@ -59,6 +77,11 @@ lemma evalStalk_eq_conj {p : X.X} {w w' : Fin (N + 1) → ℂ} (c : ℂˣ)
   have : X.evalStalk h' = X.evalStalk (h.conj.smul c.ne_zero) := rfl
   rw [this, X.evalStalk_smul h.conj c.ne_zero, X.evalStalk_conj h]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_rep_conj x.1`. Establish `key : ∀ (q : X.X) (e : q = X.point x) (h' : IsOver ((starRingEnd ℂ).comp ρ) (CP.conj x.1).rep (X.ι.base q)) (hq : q ∈ U), X.evalStalk h' (germR hq f) = starRingEnd ℂ (X.evalAtPoint x (germR hx f))`. Introduce `q e h' hq`. Substitute `e` using the available equality. Rewrite using `[X.evalStalk_eq_conj c hc (X.isOver_point x) h']`.
+
+Both sides reduce to the same expression. Conclude with `key _ (X.point_conjPoint x) (X.isOver_point _) hx'`.
+-/
 lemma evalAtPoint_conjPoint_germ (x : X.complexPoints ρ) {U : X.X.Opens} (hx : X.point x ∈ U)
     (hx' : X.point (X.conjPoint ρ x) ∈ U) (f : ringOn X.X U) :
     X.evalAtPoint (X.conjPoint ρ x) (germR hx' f) = starRingEnd ℂ (X.evalAtPoint x (germR hx f)) := by

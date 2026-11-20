@@ -15,40 +15,67 @@ section Theta
 
 variable {K : Type*} [CommRing K] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `Matrix.diagonal_transpose _`.
+-/
 theorem signMatrix_transpose : (Sg K r).transpose = Sg K r := Matrix.diagonal_transpose _
 
+/- English proof (translation)
+Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Sg K r) (Sg K r), sg_sq, Matrix.one_mul]`.
+-/
 theorem theta_mul (M N : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Sg K r * (M * N).transpose * Sg K r = (Sg K r * N.transpose * Sg K r) * (Sg K r * M.transpose * Sg K r) := by
   rw [Matrix.transpose_mul]
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (Sg K r) (Sg K r), sg_sq, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, signMatrix_transpose, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[sg_sq, Matrix.mul_one, ← Matrix.mul_assoc, sg_sq, Matrix.one_mul]`.
+-/
 theorem theta_theta (M : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Sg K r * (Sg K r * M.transpose * Sg K r).transpose * Sg K r = M := by
   rw [Matrix.transpose_mul, Matrix.transpose_mul, signMatrix_transpose, Matrix.transpose_transpose]
   simp only [Matrix.mul_assoc]
   rw [sg_sq, Matrix.mul_one, ← Matrix.mul_assoc, sg_sq, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[← theta_mul, ← theta_mul, ← Matrix.mul_assoc, h]`.
+-/
 theorem theta_stab {a Y b : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : a * Y * b = Y) :
     (Sg K r * b.transpose * Sg K r) * (Sg K r * Y.transpose * Sg K r) * (Sg K r * a.transpose * Sg K r) =
       Sg K r * Y.transpose * Sg K r := by
   rw [← theta_mul, ← theta_mul, ← Matrix.mul_assoc, h]
 
+/- English proof (translation)
+Rewrite using `[Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, sg_sq]`.
+-/
 theorem theta_sub_one (M : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Sg K r * (M - 1).transpose * Sg K r = Sg K r * M.transpose * Sg K r - 1 := by
   rw [Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, sg_sq]
 
+/- English proof (translation)
+The claim follows from `isLo_conj (isLo_transpose h) _ _ (fun a => sgn_sq' r a)`.
+-/
 theorem theta_lo {U : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsUp U) : IsLo (Sg K r * U.transpose * Sg K r) :=
   isLo_conj (isLo_transpose h) _ _ (fun a => sgn_sq' r a)
 
+/- English proof (translation)
+The claim follows from `isUp_conj (isUp_transpose h) _ _ (fun a => sgn_sq' r a)`.
+-/
 theorem theta_up {L : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : IsLo L) : IsUp (Sg K r * L.transpose * Sg K r) :=
   isUp_conj (isUp_transpose h) _ _ (fun a => sgn_sq' r a)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases neg_one_pow_eq_or K k with h | h <;> rw [h]`. Rewrite using `[one_mul]` and apply the resulting hypothesis. Rewrite using `[neg_one_mul]`. Conclude with `J.neg_mem hx`.
+-/
 theorem neg_one_pow_mem (J : AddSubgroup K) (k : ℕ) {x : K} (hx : x ∈ J) : (-1 : K) ^ k * x ∈ J := by
   rcases neg_one_pow_eq_or K k with h | h <;> rw [h]
   · rwa [one_mul]
   · rw [neg_one_mul]; exact J.neg_mem hx
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply]`. Rewrite using `[mul_comm]`. Conclude with `neg_one_pow_mem J _ (neg_one_pow_mem J _ (h j i))`.
+-/
 theorem ent_theta {J : AddSubgroup K} {M : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (h : EntIn J M) :
     EntIn J (Sg K r * M.transpose * Sg K r) := by
   intro i j
@@ -56,6 +83,13 @@ theorem ent_theta {J : AddSubgroup K} {M : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
   rw [mul_comm]
   exact neg_one_pow_mem J _ (neg_one_pow_mem J _ (h j i))
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Ecorner, Matrix.of_apply]`. Establish `hs` using `sgn_sq' (R := K) r`. Distinguish the cases in `hij : i = Fin.last r ∧ j = Fin.last r`. Take `⟨rfl, rfl⟩` from `hij`.
+
+Rewrite using `[if_pos ⟨rfl, rfl⟩]`. Simplify using `only [Fin.val_last, Nat.sub_self, pow_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hji : ¬ (j = Fin.last r ∧ i = Fin.last r)` using `fun h => hij ⟨h.2, h.1⟩`. Rewrite using `[if_neg hij, if_neg hji]`.
+
+Take the linear combination `(s * cf i * cf j * Z i j * (-1 : K) ^ (r - j.val)) * hs i`.
+-/
 theorem sign_transpose_twisted (s e : K) (cf : Fin (r + 1) → K) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Sg K r * (s • (Matrix.diagonal cf * (Z.transpose * Sg K r) * Matrix.diagonal cf) - e • Ecorner r).transpose *
       Sg K r = s • (Matrix.diagonal cf * (Z * Sg K r) * Matrix.diagonal cf) - e • Ecorner r := by
@@ -72,6 +106,9 @@ theorem sign_transpose_twisted (s e : K) (cf : Fin (r + 1) → K) (Z : Matrix (F
     rw [if_neg hij, if_neg hji]
     linear_combination (s * cf i * cf j * Z i j * (-1 : K) ^ (r - j.val)) * hs i
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply]`. Establish `hs` using `sgn_sq' (R := K) r`. Take the linear combination `(cf i * A i j * cfi j * (-1 : K) ^ (r - j.val) * (-1 : K) ^ (r - j.val)) * hs i + (cf i * A i j * cfi j) * hs j`.
+-/
 theorem theta_move (cf cfi : Fin (r + 1) → K) (A : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     Sg K r * (Matrix.diagonal cfi * (Sg K r * A.transpose * Sg K r) * Matrix.diagonal cf).transpose * Sg K r =
       Matrix.diagonal cf * A * Matrix.diagonal cfi := by
@@ -88,6 +125,9 @@ section ModelR
 variable {Fp Ep : Type} [Field Fp] [ValuativeRel Fp] [TopologicalSpace Fp] [CommRing Ep] [Algebra Fp Ep]
   [TopologicalSpace Ep] [MeasurableSpace Ep]
 
+/- English proof (translation)
+Take `⟨L, sp, mu⟩` from `M`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.S.Loc.SplitG L at g`. Take `rfl : sp = some g` from `hM`. Conclude with `(Formalism.MainNotions.LocalModelPeriodLattices.mem_R_split L g mu x).2 ⟨h1, h2, h3⟩`.
+-/
 theorem mem_R_of (M : Formalism.MainNotions.S.Loc.Model Fp Ep) (g : Formalism.MainNotions.S.Loc.SplitG M.L) (hM : M.split = some g) (x : Ep)
     (h1 : (g.e x).1 ∈ 𝒪[Fp]) (h2 : (g.e x).2 ∈ 𝒪[Fp])
     (h3 : ∃ t ∈ 𝒪[Fp], (g.e x).1 - (g.e x).2 = (g.q : Fp) * t) : x ∈ M.R := by
@@ -108,6 +148,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D)
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[ptMat_fσ]`. Both sides reduce to the same expression.
+-/
 theorem ptMat_mono' (w : Point D.host.E (D.R.rS + 1)) : ptMat w = mono (fσ w) (fun a => pv w.1 a) := by
   ext a b
   rw [ptMat_fσ]
@@ -118,6 +161,13 @@ def gX (L₁ X' : PairVal.MatR D) : PairVal.MatR D := L₁ * X' * L₁⁻¹
 def gY (w : Point D.host.E (D.R.rS + 1)) (U₁ X' : PairVal.MatR D) : PairVal.MatR D :=
   U₁⁻¹ * (cOf (fσ w) (fun a => pv w.1 a) X')⁻¹ * U₁
 
+/- English proof (translation)
+Establish `hν : ∀ a : Fin (D.R.rS + 1), IsUnit (pv w.1 a)` using `fun a => IsUnit.mk0 _ (pv_ne' w a)`. Establish `hup` using `cOf_up (fσ_fσ w) (fun a => pv w.1 a) X' hX'.1 hpat hν`. Establish `hc : IsUp (cOf (fσ w) (fun a => pv w.1 a) X')` using `⟨hup.1, fun a b hab => hup.2 b a hab⟩`. Establish `hdc : IsUnit (cOf (fσ w) (fun a => pv w.1 a) X').det` using `by rw [det_up' hc]; exact isUnit_one`. Establish `hdL : IsUnit L₁.det` using `by rw [det_lo' hL₁]; exact isUnit_one`.
+
+Establish `hdU : IsUnit U₁.det` using `by rw [det_up' hU₁]; exact isUnit_one`. Use `⟨isLo_mul (isLo_mul hL₁ hX') (isLo_inv hL₁), isUp_mul (isUp_mul (isUp_inv hU₁) (isUp_inv hc)) hU₁, ?_⟩` and prove the remaining obligations. Establish `hfix` using `fix_cOf (fσ_fσ w) (fun a => pv w.1 a) hν X'`. Rewrite using `[hZ, ptMat_mono']`. Simplify using `only [gX, gY, Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc L₁⁻¹ L₁, Matrix.nonsing_inv_mul _ hdL, Matrix.one_mul, ← Matrix.mul_assoc U₁ U₁⁻¹, Matrix.mul_nonsing_inv _ hdU, Matrix.one_mul, ← Matrix.mul_assoc X' (mono (fσ w) (fun a => pv w.1 a)), hfix, Matrix.mul_assoc (mono (fσ w) (fun a => pv w.1 a)), ← Matrix.mul_ass …`.
+-/
 theorem glob_stab (w : Point D.host.E (D.R.rS + 1)) {Z₁ L₁ U₁ X' : PairVal.MatR D} (hL₁ : IsLo L₁) (hU₁ : IsUp U₁)
     (hZ : Z₁ * Sg D.host.E D.R.rS = L₁ * ptMat w * U₁) (hX' : IsLo X')
     (hpat : ∀ i j, fσ w j < fσ w i → X' i j = 0) :
@@ -139,18 +189,29 @@ theorem glob_stab (w : Point D.host.E (D.R.rS + 1)) {Z₁ L₁ U₁ X' : PairVal
     ← Matrix.mul_assoc (cOf (fσ w) (fun a => pv w.1 a) X') (cOf (fσ w) (fun a => pv w.1 a) X')⁻¹,
     Matrix.mul_nonsing_inv _ hdc, Matrix.one_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hM : (Zd.M p).split with _ | g <;> simp only [locL, hM]`. Conclude with `isLo_conj (isLo_map _ hA) _ _ (fun a => by simp only [← map_mul, cf_cfi, map_one])`. Conclude with `isLo_glue _ (isLo_conj (isLo_map _ hA) _ _ (cf_cfi Zd p)) (isLo_conj (theta_lo (isUp_map _ hB)) _ _ (cf_cfi Zd p))`.
+-/
 theorem locL_lo (p : PlF D) {A B : PairVal.MatR D} (hA : IsLo A) (hB : IsUp B) : IsLo (locL Zd p A B) := by
   rcases hM : (Zd.M p).split with _ | g <;> simp only [locL, hM]
   · exact isLo_conj (isLo_map _ hA) _ _ (fun a => by simp only [← map_mul, cf_cfi, map_one])
   · exact isLo_glue _ (isLo_conj (isLo_map _ hA) _ _ (cf_cfi Zd p))
       (isLo_conj (theta_lo (isUp_map _ hB)) _ _ (cf_cfi Zd p))
 
+/- English proof (translation)
+Apply the tactic sequence `rcases hM : (Zd.M p).split with _ | g <;> simp only [locR, hM]`. Conclude with `isUp_conj (isUp_map _ hB) _ _ (fun a => by simp only [← map_mul, cfi_cf, map_one])`. Conclude with `isUp_glue _ (isUp_conj (isUp_map _ hB) _ _ (cfi_cf Zd p)) (isUp_conj (theta_up (isLo_map _ hA)) _ _ (cfi_cf Zd p))`.
+-/
 theorem locR_up (p : PlF D) {A B : PairVal.MatR D} (hA : IsLo A) (hB : IsUp B) : IsUp (locR Zd p A B) := by
   rcases hM : (Zd.M p).split with _ | g <;> simp only [locR, hM]
   · exact isUp_conj (isUp_map _ hB) _ _ (fun a => by simp only [← map_mul, cfi_cf, map_one])
   · exact isUp_glue _ (isUp_conj (isUp_map _ hB) _ _ (cfi_cf Zd p))
       (isUp_conj (theta_up (isLo_map _ hA)) _ _ (cfi_cf Zd p))
 
+/- English proof (translation)
+Take `⟨-, hll, -⟩` from `ZsVolGrp.intLow_inv (Zd.M p) hl`. Take `⟨-, -, hρρ⟩` from `ZsVolGrp.intUp_inv (Zd.M p) hρ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[hρρ, Matrix.mul_one, ← Matrix.mul_assoc, hll, Matrix.one_mul]`.
+-/
 theorem key_stab (p : PlF D) {l ρ L R Yp : MatP D p} (hl : TieN.IntLow (Zd.M p) l) (hρ : TieN.IntUp (Zd.M p) ρ)
     (h : L * Yp * R = l * Yp * ρ) : (l⁻¹ * L) * Yp * (R * ρ⁻¹) = Yp := by
   obtain ⟨-, hll, -⟩ := ZsVolGrp.intLow_inv (Zd.M p) hl
@@ -161,6 +222,11 @@ theorem key_stab (p : PlF D) {l ρ L R Yp : MatP D p} (hl : TieN.IntLow (Zd.M p)
       simp only [Matrix.mul_assoc]
       rw [hρρ, Matrix.mul_one, ← Matrix.mul_assoc, hll, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h2 : A₀ * (Z₁ * Sg D.host.E D.R.rS) * B₀ * Sg D.host.E D.R.rS * Sg D.host.E D.R.rS = A₀ * (Z₁ * Sg D.host.E D.R.rS) * B₀`. Rewrite using `[Matrix.mul_assoc (A₀ * (Z₁ * Sg D.host.E D.R.rS) * B₀), sg_sq, Matrix.mul_one]`. Establish `h3 : A₀ * (Z₁ * Sg D.host.E D.R.rS) * B₀ * Sg D.host.E D.R.rS * Sg D.host.E D.R.rS = (A₀ * X) * (Z₁ * Sg D.host.E D.R.rS) * (Y * B₀)`. Rewrite using `[h2]`. Use `conv_lhs => rw [← hst]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Conclude with `(locMove Zd u u' p (isLo_mul hA₀ hX) (isUp_mul hY hB₀) h3).symm.trans (locMove Zd u u' p hA₀ hB₀ h2)`.
+-/
 theorem corr_move (u u' : D.what₂.Word) (p : PlF D) {Z₁ A₀ B₀ X Y : PairVal.MatR D} (hA₀ : IsLo A₀) (hB₀ : IsUp B₀)
     (hX : IsLo X) (hY : IsUp Y) (hst : X * (Z₁ * Sg D.host.E D.R.rS) * Y = Z₁ * Sg D.host.E D.R.rS) :
     locL Zd p (A₀ * X) (Y * B₀) * (CntLocal.ZZP (M := Zd.M) Zd.δ u u' p Z₁ * LsDatumB.sgnP p) *
@@ -176,11 +242,17 @@ theorem corr_move (u u' : D.what₂.Word) (p : PlF D) {Z₁ A₀ B₀ X Y : Pair
     simp only [Matrix.mul_assoc]
   exact (locMove Zd u u' p (isLo_mul hA₀ hX) (isUp_mul hY hB₀) h3).symm.trans (locMove Zd u u' p hA₀ hB₀ h2)
 
+/- English proof (translation)
+Simplify using `only [locL, hM]`.
+-/
 theorem locL_L (p : PlF D) (hM : (Zd.M p).split = none) (A B : PairVal.MatR D) :
     locL Zd p A B = Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) *
       A.map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)) := by
   simp only [locL, hM]
 
+/- English proof (translation)
+Simplify using `only [locR, hM]`.
+-/
 theorem locR_L (p : PlF D) (hM : (Zd.M p).split = none) (A B : PairVal.MatR D) :
     locR Zd p A B = Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)) *
       B.map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a)) := by
@@ -192,19 +264,31 @@ variable (p : PlF D) {g : Loc.SplitG (Zd.M p).L} (hM : (Zd.M p).split = some g)
   {e : (D.s.atP p).Ep ≃ₐ[(D.s.atP p).Fp] (D.s.atP p).Fp × (D.s.atP p).Fp} (hge : g.e = e)
 include hM hge
 
+/- English proof (translation)
+Simplify using `only [locL, hM, hge, glue_map_fst]`.
+-/
 theorem leftLocal_firstProj (A B : PairVal.MatR D) : (locL Zd p A B).map (p1 e) =
     Matrix.diagonal (cf Zd p) * A.map ((p1 e).comp (D.s.atP p).ιE) * Matrix.diagonal (cfi Zd p) := by
   simp only [locL, hM, hge, glue_map_fst]
 
+/- English proof (translation)
+Simplify using `only [locL, hM, hge, glue_map_snd]`.
+-/
 theorem leftLocal_secondProj (A B : PairVal.MatR D) : (locL Zd p A B).map (p2 e) =
     Matrix.diagonal (cf Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (B.map ((p2 e).comp (D.s.atP p).ιE)).transpose *
       Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cfi Zd p) := by
   simp only [locL, hM, hge, glue_map_snd]
 
+/- English proof (translation)
+Simplify using `only [locR, hM, hge, glue_map_fst]`.
+-/
 theorem rightLocal_firstProj (A B : PairVal.MatR D) : (locR Zd p A B).map (p1 e) =
     Matrix.diagonal (cfi Zd p) * B.map ((p1 e).comp (D.s.atP p).ιE) * Matrix.diagonal (cf Zd p) := by
   simp only [locR, hM, hge, glue_map_fst]
 
+/- English proof (translation)
+Simplify using `only [locR, hM, hge, glue_map_snd]`.
+-/
 theorem rightLocal_secondProj (A B : PairVal.MatR D) : (locR Zd p A B).map (p2 e) =
     Matrix.diagonal (cfi Zd p) * (Sg (D.s.atP p).Fp D.R.rS * (A.map ((p2 e).comp (D.s.atP p).ιE)).transpose *
       Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p) := by

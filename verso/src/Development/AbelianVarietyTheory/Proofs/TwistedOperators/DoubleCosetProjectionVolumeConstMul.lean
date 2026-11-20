@@ -25,6 +25,11 @@ namespace GlobalTheory.CellLevel
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `le_antisymm (fun y ⟨g, hg⟩ => ⟨g.1, hg⟩) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V g)`. Use `⟨⟨k, MonoidHom.mem_ker.2 k1⟩, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.bc (Lev.swapAE D) (finHom V k) = Formalism.UG.bc (Lev.swapAE D) (finHom V g)`.
+
+Rewrite using `[k2]`.
+-/
 theorem finE_range_eq (V : HSp D) : ((Lev.finE V).comp (GfC V).subtype).range = (Lev.finE V).range := by
   refine le_antisymm (fun y ⟨g, hg⟩ => ⟨g.1, hg⟩) ?_
   rintro _ ⟨g, rfl⟩
@@ -33,12 +38,20 @@ theorem finE_range_eq (V : HSp D) : ((Lev.finE V).comp (GfC V).subtype).range = 
   show Formalism.UG.bc (Lev.swapAE D) (finHom V k) = Formalism.UG.bc (Lev.swapAE D) (finHom V g)
   rw [k2]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex_comap, Subgroup.relIndex_comap, Subgroup.map_comap_eq, Subgroup.map_comap_eq, finE_range_eq]`.
+-/
 theorem relIndex_comap_fin (V : HSp D) (K K' : Subgroup (GL (Fin V.rank) (Lev.EAf D))) :
     (K.comap ((Lev.finE V).comp (GfC V).subtype)).relIndex (K'.comap ((Lev.finE V).comp (GfC V).subtype)) =
       (K.comap (Lev.finE V)).relIndex (K'.comap (Lev.finE V)) := by
   rw [Subgroup.relIndex_comap, Subgroup.relIndex_comap, Subgroup.map_comap_eq, Subgroup.map_comap_eq,
     finE_range_eq]
 
+/- English proof (translation)
+Rewrite using `[Topology.IsEmbedding.subtypeVal.isCompact_iff]`. Use `h.2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`.
+
+Conclude with `Lev.mem_levA.2 ⟨g.2, hg⟩`. Introduce `hy`. Take `⟨h1, h2⟩` from `Lev.mem_levA.1 hy`. Conclude with `⟨⟨y, h1⟩, h2, rfl⟩`.
+-/
 theorem isCompact_comap_fin (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (h : IsCO V K) :
     IsCompact ((K.comap ((Lev.finE V).comp (GfC V).subtype) : Subgroup (GfC V)) : Set (GfC V)) := by
   rw [Topology.IsEmbedding.subtypeVal.isCompact_iff]
@@ -51,11 +64,17 @@ theorem isCompact_comap_fin (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf 
     obtain ⟨h1, h2⟩ := Lev.mem_levA.1 hy
     exact ⟨⟨y, h1⟩, h2, rfl⟩
 
+/- English proof (translation)
+The claim follows from `h.preimage continuous_subtype_val`.
+-/
 theorem isOpen_comap_fin (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
     (h : IsOpen ((K.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))) :
     IsOpen ((K.comap ((Lev.finE V).comp (GfC V).subtype) : Subgroup (GfC V)) : Set (GfC V)) :=
   h.preimage continuous_subtype_val
 
+/- English proof (translation)
+Use `GlobalTheory.LocVec.finiteIndex_of_isOpen (K.comap ((Lev.finE V).comp (GfC V).subtype)) (isCompact_comap_fin V h) subset_rfl ((K₃.comap ((Lev.finE V).comp (GfC V).subtype)).subgroupOf (K.comap ((Lev.finE V).comp (GfC V).subtype))) ((isOpen_comap_fin V h₃).preimage continuous_subt …` as an intermediate fact. Conclude with `this.index_ne_zero`.
+-/
 theorem relIndex_ne_zero (V : HSp D) {K K₃ : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (h : IsCO V K)
     (h₃ : IsOpen ((K₃.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))) :
     (K₃.comap ((Lev.finE V).comp (GfC V).subtype)).relIndex (K.comap ((Lev.finE V).comp (GfC V).subtype)) ≠ 0 := by
@@ -64,6 +83,21 @@ theorem relIndex_ne_zero (V : HSp D) {K K₃ : Subgroup (GL (Fin V.rank) (Lev.EA
     ((isOpen_comap_fin V h₃).preimage continuous_subtype_val)
   exact this.index_ne_zero
 
+/- English proof (translation)
+Take `⟨hLC, hSC, hT2, hB, hTG, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI := hB`.
+
+Use `haveI := hTG`. Use `haveI : μ.IsHaarMeasure := hμ.1`. Establish `h₃ : IsOpen (((K₁ ⊓ K₂).comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))` using `h₁.1.inter h₂.1`. Establish `hA₁ : μ (K₁.comap (Lev.finE V)) = 1` using `GlobalTheory.Mass.Levels.measure_comap_finE hμ`. Establish `hA₂ : μ (K₂.comap (Lev.finE V)) = x`.
+
+Rewrite using `[hx, Measure.smul_apply, GlobalTheory.Mass.Levels.measure_comap_finE hμ', ENNReal.smul_def, smul_eq_mul, mul_one]`. Establish `n₁` using `relIndex_ne_zero V h₁ h₃`. Establish `n₂` using `relIndex_ne_zero V h₂ h₃`. Rewrite `n₁`, `n₂` using `[relIndex_comap_fin]`. Use `haveI : (((K₁ ⊓ K₂).comap (Lev.finE V)).subgroupOf (K₁.comap (Lev.finE V))).FiniteIndex := ⟨n₁⟩`.
+
+Use `haveI : (((K₁ ⊓ K₂).comap (Lev.finE V)).subgroupOf (K₂.comap (Lev.finE V))).FiniteIndex := ⟨n₂⟩`. Establish `e₁` using `Formalism.DoubleCosetMeasures.P.GLRed.relIndex_mul_measure _ _ (Subgroup.comap_mono inf_le_left) h₃.measurableSet μ`. Establish `e₂` using `Formalism.DoubleCosetMeasures.P.GLRed.relIndex_mul_measure _ _ (Subgroup.comap_mono inf_le_right) h₃.measurableSet μ`. Rewrite `e₁` using `[hA₁]`. Rewrite `e₂` using `[hA₂]`.
+
+Establish `m₁` using `relIndex_ne_zero V h₁ h₃`. Establish `m₂` using `relIndex_ne_zero V h₂ h₃`. Use `haveI : ((((K₁ ⊓ K₂).comap ((Lev.finE V).comp (GfC V).subtype))).subgroupOf (K₁.comap ((Lev.finE V).comp (GfC V).subtype))).FiniteIndex := ⟨m₁⟩`. Use `haveI : ((((K₁ ⊓ K₂).comap ((Lev.finE V).comp (GfC V).subtype))).subgroupOf (K₂.comap ((Lev.finE V).comp (GfC V).subtype))).FiniteIndex := ⟨m₂⟩`. Establish `f₁` using `Formalism.DoubleCosetMeasures.P.GLRed.relIndex_mul_measure _ _ (Subgroup.comap_mono inf_le_left) (isOpen_comap_fin V h₃).measurableSet ν`.
+
+Establish `f₂` using `Formalism.DoubleCosetMeasures.P.GLRed.relIndex_mul_measure _ _ (Subgroup.comap_mono inf_le_right) (isOpen_comap_fin V h₃).measurableSet ν`. Rewrite `f₁`, `f₂` using `[relIndex_comap_fin]`. Express the relevant statement in the definitionally equal form `ν (K₂.comap ((Lev.finE V).comp (GfC V).subtype)) = ν (K₁.comap ((Lev.finE V).comp (GfC V).subtype)) * x`. Rewrite using `[← f₁, ← f₂]`. Establish `key : ∀ (p q a m X : ENNReal), p * m = 1 → q * m = X → q * a = p * a * X`.
+
+Introduce `p q a m X h1 h2`. Rewrite using `[← h2, ← mul_one (q * a), ← h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `key _ _ _ _ _ e₁ e₂`.
+-/
 theorem vol_ratio (V : HSp D) {K₁ K₂ : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (h₁ : IsCO V K₁) (h₂ : IsCO V K₂)
     (ν : Measure (GfC V)) [ν.IsHaarMeasure] {μ μ' : Measure (GA D V)} (hμ : Lev.IsMeasLevDef V K₁ μ)
     (hμ' : Lev.IsMeasLevDef V K₂ μ') (x : ℝ≥0) (hx : μ = x • μ') :
@@ -103,6 +137,11 @@ theorem vol_ratio (V : HSp D) {K₁ K₂ : Subgroup (GL (Fin V.rank) (Lev.EAf D)
     ring
   exact key _ _ _ _ _ e₁ e₂
 
+/- English proof (translation)
+Take `⟨hLC, hSC, hT2, hB, hTG, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI := hB`.
+
+Use `haveI := hTG`. Use `ENNReal.toReal_pos ?_ ?_` and prove the remaining obligations. Conclude with `((isOpen_comap_fin V h.1).measure_pos ν ⟨1, one_mem _⟩).ne'`. Conclude with `((isCompact_comap_fin V h).measure_lt_top).ne`.
+-/
 theorem vol_pos (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} (h : IsCO V K)
     (ν : Measure (GfC V)) [ν.IsHaarMeasure] : 0 < ν.real {g | Lev.finE V g.1 ∈ K} := by
   obtain ⟨hLC, hSC, hT2, hB, hTG, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
@@ -115,6 +154,19 @@ end GlobalTheory.CellLevel
 
 namespace GlobalTheory.CellLevel
 
+/- English proof (translation)
+Use `big_mono ?_ hpr` and prove the remaining obligations. Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch h s j hj ν hν`. Establish `hjm : j < D.R.m`. Simplify using `only [idx, List.mem_range'_1] at hj`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hj1 : 1 ≤ j`. Simplify using `only [idx, List.mem_range'_1] at hj`. Use linear arithmetic over natural numbers and integers. Take `⟨c, hc, hcb⟩` from `h s j hj hjm ν hν`. Establish `hMax : IsCO (ch.G.V (.top j)) (ch.G.levMax (.top j))` using `congLev_open_compact _ (ch.G.isV (X := .top j) (show j ≤ D.R.m by omega) (fun _ h => Node.noConfusion h)).sd.1 (by simp)`.
+
+Use `⟨c * ν.real {g | Lev.finE (ch.G.V (.top j)) g.1 ∈ ch.G.levMax (.top j)}, mul_pos hc (vol_pos _ hMax ν), ?_⟩` and prove the remaining obligations. Introduce `t Φ β b hb M M' hM hM' x hx hbj`. Rewrite using `[hcb t Φ β b hb hbj]`. Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `h1 : Lev.IsMeasLevDef _ (ch.G.levMax (.top (j' + 1))) (M.ν (.top (j' + 1)))`.
+
+Use `hM.vtx (.top (j' + 1)) (show j' + 1 ≤ D.R.m by omega)` as an intermediate fact. Unfold `Vol.IsAt at this`. Rewrite `this` using `[if_pos (show Node.neg D.R.m (.top (j' + 1)) = 0 from rfl)]`. Conclude with `this.1`. Establish `h2 : Lev.IsMeasLevDef _ (ch.S.toGridChoice.levTop t Φ β (j' + 1) hjm) (M'.ν (.top (j' + 1)))`.
+
+Use `hM'.1 (j' + 1) hjm` as an intermediate fact. Unfold `Vol.IsAt at this`. Rewrite `this` using `[if_pos (show Node.neg D.R.m (.top (j' + 1)) = 0 from rfl)]`. Conclude with `this.1`. Establish `e` using `vol_ratio _ hMax (GridChoice.isCO_levTop _ _ t Φ β hjm) ν h1 h2 x hx`.
+
+Simplify using `only [Measure.real, e, ENNReal.toReal_mul, ENNReal.coe_toReal, mul_assoc]`.
+-/
 theorem pr_vol_of (hpr : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D, ∀ (hj : j < D.R.m) (ν : Measure (GfC (ch.G.V (.top j)))),
     ν.IsHaarMeasure → ∃ c : ℝ, 0 < c ∧ ∀ t Φ β b, IsRep t ch.S.B s β b → ∀ hb : b j ∈ GfC _,
       ν.real (prSet ch.G j ⟨b j, hb⟩) = c * ν.real {g | Lev.finE (ch.G.V (.top j)) g.1 ∈ ch.S.toGridChoice.levTop t Φ β j hj}) : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D, ∀ ν : Measure (GfC (ch.G.V (.top j))), ν.IsHaarMeasure →
@@ -153,6 +205,9 @@ end GlobalTheory.CellLevel
 
 namespace GlobalTheory.CellLevel
 
+/- English proof (translation)
+The claim follows from `pr_vol_of GlobalTheory.T.volume_periodProjectionSet_eq_familyLevel`.
+-/
 theorem pr_vol : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D, ∀ ν : Measure (GfC (ch.G.V (.top j))), ν.IsHaarMeasure →
     ∃ κ' : ℝ, 0 < κ' ∧ ∀ t Φ β b, IsRep t ch.S.B s β b → ∀ M M' : Vol ch.G, M.Is t → IsTermVol t ch.S.toGridChoice Φ β M' →
       ∀ x : ℝ≥0, M.ν (.top j) = x • M'.ν (.top j) → ∀ hb : b j ∈ GfC _, ν.real (prSet ch.G j ⟨b j, hb⟩) = κ' * x := pr_vol_of GlobalTheory.T.volume_periodProjectionSet_eq_familyLevel

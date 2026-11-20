@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitary
 
 namespace CompanionTheory.Prw
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.SiegelRed.siegelCore`.
+-/
 theorem siegelCore_holds : CompanionTheory.ThKR.SiegelCore :=
   GlobalTheory.CompanionTheory.SiegelRed.siegelCore
 

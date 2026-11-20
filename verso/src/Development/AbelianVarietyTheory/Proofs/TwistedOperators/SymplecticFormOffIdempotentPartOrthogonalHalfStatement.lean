@@ -10,5 +10,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdemOffOrth.symplO_compl_half | exact GlobalTheory.IdemOffOrth.symplO_compl_half | (intros; apply GlobalTheory.IdemOffOrth.symplO_compl_half <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.symplecticForm_offIdempotentPart_orthogonal_half : ∀ (D : D7) (S T : HSp D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P → ∀ w x : WO S T, (IsHalf e x ∨ IsHalf (cA D e) x) → symplO S T ((1 - e - cA D e) • w) x = 0 := by
   first | exact @GlobalTheory.IdemOffOrth.symplO_compl_half | exact GlobalTheory.IdemOffOrth.symplO_compl_half | (intros; apply GlobalTheory.IdemOffOrth.symplO_compl_half <;> assumption)

@@ -20,6 +20,11 @@ open MvPowerSeries
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `h` using `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add (k := ℂ_[p]) (a := (0 : MvPowerSeries κ ℂ_[p])) (b := 0) (by simp) (by simp)`. Rewrite `h` using `[add_zero]`. Establish `hu : IsUnit (PowerSeries.subst (0 : MvPowerSeries κ ℂ_[p]) (PowerSeries.exp ℂ_[p]))`. Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.constantCoeff_exp (by simp)]`. Conclude with `isUnit_one`.
+
+Unfold `product_zeroth_first_parts.expS`. Conclude with `hu.mul_left_cancel (h.symm.trans (mul_one _).symm)`.
+-/
 theorem expS_zero {κ : Type} : product_zeroth_first_parts.expS ℂ_[p] (0 : MvPowerSeries κ ℂ_[p]) = 1 := by
   have h := ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add (k := ℂ_[p]) (a := (0 : MvPowerSeries κ ℂ_[p])) (b := 0)
     (by simp) (by simp)
@@ -30,10 +35,16 @@ theorem expS_zero {κ : Type} : product_zeroth_first_parts.expS ℂ_[p] (0 : MvP
   unfold product_zeroth_first_parts.expS
   exact hu.mul_left_cancel (h.symm.trans (mul_one _).symm)
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add hf hg`.
+-/
 theorem expS_add {κ : Type} {f g : MvPowerSeries κ ℂ_[p]} (hf : constantCoeff f = 0) (hg : constantCoeff g = 0) :
     product_zeroth_first_parts.expS ℂ_[p] (f + g) = product_zeroth_first_parts.expS ℂ_[p] f * product_zeroth_first_parts.expS ℂ_[p] g :=
   ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_add hf hg
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [expS_zero]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, expS_add (hf i) (by rw [map_sum]; exact Finset.sum_eq_zero fun j _ => hf j), ih]`.
+-/
 theorem expS_sum {κ ι : Type} (s : Finset ι) (f : ι → MvPowerSeries κ ℂ_[p]) (hf : ∀ i, constantCoeff (f i) = 0) :
     product_zeroth_first_parts.expS ℂ_[p] (∑ i ∈ s, f i) = ∏ i ∈ s, product_zeroth_first_parts.expS ℂ_[p] (f i) := by
   induction s using Finset.induction_on with
@@ -41,26 +52,43 @@ theorem expS_sum {κ ι : Type} (s : Finset ι) (f : ι → MvPowerSeries κ ℂ
   | insert i s hi ih =>
     rw [Finset.sum_insert hi, Finset.prod_insert hi, expS_add (hf i) (by rw [map_sum]; exact Finset.sum_eq_zero fun j _ => hf j), ih]
 
+/- English proof (translation)
+Rewrite using `[expS_sum _ _ (fun a => by rw [map_sum]; exact Finset.sum_eq_zero fun b _ => hf a b)]`. Conclude with `Finset.prod_congr rfl fun a _ => expS_sum _ _ (hf a)`.
+-/
 theorem padicExpSeries_doubleSum {κ α β : Type} [Fintype α] [Fintype β] (f : α → β → MvPowerSeries κ ℂ_[p])
     (hf : ∀ a b, constantCoeff (f a b) = 0) :
     product_zeroth_first_parts.expS ℂ_[p] (∑ a, ∑ b, f a b) = ∏ a, ∏ b, product_zeroth_first_parts.expS ℂ_[p] (f a b) := by
   rw [expS_sum _ _ (fun a => by rw [map_sum]; exact Finset.sum_eq_zero fun b _ => hf a b)]
   exact Finset.prod_congr rfl fun a _ => expS_sum _ _ (hf a)
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.MainNotions.GL3Theta.logF, PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_logF : PowerSeries.constantCoeff (Formalism.MainNotions.GL3Theta.logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.MainNotions.GL3Theta.logF, PowerSeries.coeff_mk]
   simp
 
+/- English proof (translation)
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.constantCoeff_psubst hu, cc_logF]`.
+-/
 theorem cc_plog {κ : Type} {u : MvPowerSeries κ ℂ_[p]} (hu : constantCoeff u = 0) :
     constantCoeff (PowerSeries.subst u (Formalism.MainNotions.GL3Theta.logF p)) = 0 := by
   rw [ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.constantCoeff_psubst hu, cc_logF]
 
+/- English proof (translation)
+Apply the tactic sequence `have h : ∀ i : Fin 2, constantCoeff (if i = 0 then u else v) = 0 := fun i => by split_ifs <;> assumption`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h hb0`.
+-/
 theorem constantCoeff_bivariateSeriesSubstPair {κ : Type} {b0 : MvPowerSeries (Fin 2) ℂ_[p]} (hb0 : constantCoeff b0 = 0)
     {u v : MvPowerSeries κ ℂ_[p]} (hu : constantCoeff u = 0) (hv : constantCoeff v = 0) :
     constantCoeff (GlobalTheory.ThBe0.at2 b0 u v) = 0 := by
   have h : ∀ i : Fin 2, constantCoeff (if i = 0 then u else v) = 0 := fun i => by split_ifs <;> assumption
   exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h) h hb0
 
+/- English proof (translation)
+Apply the tactic sequence `have h : ∀ i : Fin 2, constantCoeff (if i = 0 then u else v) = 0 := fun i => by split_ifs <;> assumption`. Unfold `GlobalTheory.ThBe0.at2`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero h) hφ]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem subst_powerSeriesEvalTwoGroups {κ κ' : Type} {φ : κ → MvPowerSeries κ' ℂ_[p]} (hφ : HasSubst φ) (b0 : MvPowerSeries (Fin 2) ℂ_[p])
     {u v : MvPowerSeries κ ℂ_[p]} (hu : constantCoeff u = 0) (hv : constantCoeff v = 0) :
     subst φ (GlobalTheory.ThBe0.at2 b0 u v) = GlobalTheory.ThBe0.at2 b0 (subst φ u) (subst φ v) := by
@@ -73,17 +101,37 @@ theorem subst_powerSeriesEvalTwoGroups {κ κ' : Type} {φ : κ → MvPowerSerie
 
 variable {n' : ℕ} [NeZero n']
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+-/
 theorem hasSubst_pair {r0 r1 : ℕ} (a : Fin r0) (b : Fin r1) :
     HasSubst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.BiextInhab.bridge p n' v.2 v.1]`. Conclude with `GlobalTheory.BeProps.constantCoeff_laAt _ _`.
+-/
 theorem cc_jet {r0 r1 : ℕ} (v : ZMod n' × Fin r0 × Fin r1) : constantCoeff (jetLogG p n' v) = 0 := by
   rw [← GlobalTheory.BiextInhab.bridge p n' v.2 v.1]
   exact GlobalTheory.BeProps.constantCoeff_laAt _ _
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero cc_jet`.
+-/
 theorem hasSubst_jet' {r0 r1 : ℕ} : HasSubst (jetLogG p n' (β := Fin r0 × Fin r1)) :=
   hasSubst_of_constantCoeff_zero cc_jet
 
+/- English proof (translation)
+Establish `hψ` using `hasSubst_pair (p := p) (n' := n') a b`. Establish `hcL : constantCoeff (-(∑ r : Fin (n' / 2), GlobalTheory.ThBe0.at2 b0 (PowerSeries.subst (x (Sum.inl r)) (Formalism.MainNotions.GL3Theta.logF p)) (PowerSeries.subst (x (Sum.inr r)) (Formalism.MainNotions.GL3Theta.logF p)))) = 0`. Rewrite using `[map_neg, map_sum, Finset.sum_eq_zero fun r _ => constantCoeff_bivariateSeriesSubstPair hb0 (cc_plog (hx _)) (cc_plog (hx _)), neg_zero]`. Establish `hLa : HasSubst (GlobalTheory.ThStr.laS p n')` using `hasSubst_of_constantCoeff_zero GlobalTheory.BeProps.constantCoeff_laS`. Establish `hcR : constantCoeff (-(subst (GlobalTheory.ThStr.laS p n') bv)) = 0`.
+
+Rewrite using `[map_neg, constantCoeff_subst_eq_zero hLa GlobalTheory.BeProps.constantCoeff_laS hbv, neg_zero]`. Establish `e1 : subst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) (product_zeroth_first_parts.expS ℂ_[p] (-(∑ r : Fin (n' / 2), GlobalTheory.ThBe0.at2 b0 (PowerSeries.subst (x (Sum.inl r)) (Formalism.MainNotions.GL3Theta.logF p)) (PowerSeries.subst ( …`. Rewrite using `[product_zeroth_first_parts.expS, product_zeroth_first_parts.expS, GlobalTheory.BeProps.subst_psubst hψ hcL, ← substAlgHom_apply hψ, map_neg, map_sum]`. Use `congr 2`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[substAlgHom_apply, subst_powerSeriesEvalTwoGroups hψ b0 (cc_plog (hx _)) (cc_plog (hx _)), GlobalTheory.BeProps.subst_psubst hψ (hx _), GlobalTheory.BeProps.subst_psubst hψ (hx _)]`. Both sides reduce to the same expression. Establish `e2 : subst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) (V * product_zeroth_first_parts.expS ℂ_[p] (-(subst (GlobalTheory.ThStr.laS p n') bv))) =`. Substitute `(fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) V * product_zeroth_first_parts.expS ℂ_[p] (-(subst (fun s : ZMod n' => jetLogG p n' (s, a, b)) bv)) := by` using the available equality. Establish `hn : subst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) (-(subst (GlobalTheory.ThStr.laS p n') bv)) = -(subst (fun s : ZMod n' => jetLogG p n' (s, a, b)) bv)`.
+
+Rewrite using `[← substAlgHom_apply hψ, map_neg, substAlgHom_apply, subst_comp_subst_apply hLa hψ]`. Use `congr 2`. Use function extensionality and compare the values at `s`. Conclude with `GlobalTheory.BiextInhab.bridge p n' (a, b) s`. Rewrite using `[product_zeroth_first_parts.expS, product_zeroth_first_parts.expS, ← substAlgHom_apply hψ, map_mul]`.
+
+Simplify using `only [substAlgHom_apply]`. Rewrite using `[GlobalTheory.BeProps.subst_psubst hψ hcR, hn]`. Rewrite using `[← e1, ← e2, H]`.
+-/
 theorem pair_eq {r0 r1 : ℕ} (b0 : MvPowerSeries (Fin 2) ℂ_[p]) (bv : MvPowerSeries (ZMod n') ℂ_[p])
     (x : Fin (n' / 2) ⊕ Fin (n' / 2) → MvPowerSeries (ZMod n') ℂ_[p]) (V : MvPowerSeries (ZMod n') ℂ_[p])
     (hb0 : constantCoeff b0 = 0) (hbv : constantCoeff bv = 0) (hx : ∀ r, constantCoeff (x r) = 0)
@@ -129,6 +177,13 @@ theorem pair_eq {r0 r1 : ℕ} (b0 : MvPowerSeries (Fin 2) ℂ_[p]) (bv : MvPower
     rw [GlobalTheory.BeProps.subst_psubst hψ hcR, hn]
   rw [← e1, ← e2, H]
 
+/- English proof (translation)
+Set `e : ZMod n' ↪ ZMod n' × Fin r0 × Fin r1` to `⟨fun s => (s, a, b), fun x y h => (Prod.mk.inj h).1⟩`. Establish `he : subst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) V = rename e V`. Rewrite using `[rename_eq_subst]`. Both sides reduce to the same expression. Rewrite using `[he]`.
+
+Introduce `m`. Distinguish the cases in `hm : m ∈ Set.range (Finsupp.mapDomain (e : ZMod n' → ZMod n' × Fin r0 × Fin r1))`. Take `⟨n, rfl⟩` from `hm`. Rewrite using `[← Finsupp.embDomain_eq_mapDomain, coeff_embDomain_rename]`. Conclude with `hV n`.
+
+Rewrite using `[coeff_rename_eq_zero _ _ hm]`. Conclude with `zero_mem _`.
+-/
 theorem integralW_pair {r0 r1 : ℕ} (a : Fin r0) (b : Fin r1) {V : MvPowerSeries (ZMod n') ℂ_[p]}
     (hV : Formalism.MainNotions.GL3Theta.IntegralW V) :
     Formalism.MainNotions.GL3Theta.IntegralW (subst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) V) := by
@@ -145,20 +200,38 @@ theorem integralW_pair {r0 r1 : ℕ} (a : Fin r0) (b : Fin r1) {V : MvPowerSerie
   · rw [coeff_rename_eq_zero _ _ hm]
     exact zero_mem _
 
+/- English proof (translation)
+Break down `e with ⟨r, a, b⟩ | ⟨r, a, b⟩` into its components or cases. Conclude with `constantCoeff_subst_eq_zero (hasSubst_pair a b) (fun _ => constantCoeff_X _) (hx _)`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_pair a b) (fun _ => constantCoeff_X _) (hx _)`.
+-/
 theorem cc_xiE {r0 r1 : ℕ} {x : Fin (n' / 2) ⊕ Fin (n' / 2) → MvPowerSeries (ZMod n') ℂ_[p]}
     (hx : ∀ r, constantCoeff (x r) = 0) (e : Eidx n' r0 r1 ⊕ Eidx n' r0 r1) : constantCoeff (xiE x e) = 0 := by
   rcases e with ⟨r, a, b⟩ | ⟨r, a, b⟩
   · exact constantCoeff_subst_eq_zero (hasSubst_pair a b) (fun _ => constantCoeff_X _) (hx _)
   · exact constantCoeff_subst_eq_zero (hasSubst_pair a b) (fun _ => constantCoeff_X _) (hx _)
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm, Fintype.sum_prod_type]`.
+-/
 theorem sum_reorder {r0 r1 : ℕ} {M : Type*} [AddCommMonoid M] (f : Eidx n' r0 r1 → M) :
     ∑ e, f e = ∑ a : Fin r0, ∑ b : Fin r1, ∑ r : Fin (n' / 2), f (r, a, b) := by
   rw [Fintype.sum_prod_type, Finset.sum_comm, Fintype.sum_prod_type]
 
+/- English proof (translation)
+Simplify using `[Finset.sum_neg_distrib]`.
+-/
 theorem neg_doubleSum_eq_doubleSum_neg {α β M : Type*} [Fintype α] [Fintype β] [AddCommGroup M] (g : α → β → M) :
     -(∑ a, ∑ b, g a b) = ∑ a, ∑ b, -g a b := by
   simp [Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `hJ` using `hasSubst_jet' (p := p) (n' := n') (r0 := r0) (r1 := r1)`. Establish `hc : constantCoeff (-(∑ a : Fin r0, ∑ b : Fin r1,`. Substitute `(fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) bv)) = 0 := by` using the available equality. Rewrite using `[map_neg, map_sum, Finset.sum_eq_zero fun a _ => ?_, neg_zero]`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun b _ => constantCoeff_subst_eq_zero (hasSubst_pair a b) (fun _ => constantCoeff_X _) hbv`. Establish `e : subst (jetLogG p n' (β` using `Fin r0 × Fin r1)) (-(∑ a : Fin r0, ∑ b : Fin r1,`. Substitute `(fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) bv)) =` using the available equality. Use the proof step `∑ a : Fin r0, ∑ b : Fin r1, -(subst (fun s : ZMod n' => jetLogG p n' (s, a, b)) bv) := by`. Rewrite using `[← substAlgHom_apply hJ, map_neg, map_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[substAlgHom_apply, subst_comp_subst_apply (hasSubst_pair a b) hJ]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[subst_X hJ]`. Rewrite using `[neg_one_smul, product_zeroth_first_parts.expS, GlobalTheory.BeProps.subst_psubst hJ hc, e]`. Conclude with `padicExpSeries_doubleSum _ fun a b => by`. Rewrite using `[map_neg, constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero fun s => cc_jet _) (fun s => cc_jet _) hbv, neg_zero]`.
+-/
 theorem rhs_eq {r0 r1 : ℕ} (bv : MvPowerSeries (ZMod n') ℂ_[p]) (hbv : constantCoeff bv = 0) :
     subst (jetLogG p n' (β := Fin r0 × Fin r1)) (product_zeroth_first_parts.expS ℂ_[p] ((-1 : ℂ_[p]) • ∑ a : Fin r0, ∑ b : Fin r1,
       subst (fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) bv)) =
@@ -191,6 +264,13 @@ namespace GlobalTheory.OnePlacePairs
 
 open MvPowerSeries
 
+/- English proof (translation)
+Introduce `p _ n' _ b0 bv x V hb0 hbv hx hV H r0 r1`. Use `⟨∏ a : Fin r0, ∏ b : Fin r1,` and prove the remaining obligations. Substitute `(fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) V, fun m => ?_, ?_⟩` using the available equality. Establish `hmem : (∏ a : Fin r0, ∏ b : Fin r1,`. Substitute `(fun s : ZMod n' => (X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) V) ∈` using the available equality.
+
+Use the proof step `GlobalTheory.BiextInhab.serW p (ZMod n' × Fin r0 × Fin r1) :=`. Use the proof step `Subring.prod_mem _ fun a _ => Subring.prod_mem _ fun b _ => GlobalTheory.BiextInhab.mem_serW.2 (integralW_pair a b hV)`. Conclude with `GlobalTheory.BeProps.norm_le_one_of_mem_Wp (GlobalTheory.BiextInhab.mem_serW.1 hmem m)`. Rewrite using `[rhs_eq bv hbv, ← Finset.prod_mul_distrib]`. Simplify using `only [← Finset.prod_mul_distrib]`.
+
+Rewrite using `[sum_reorder, neg_doubleSum_eq_doubleSum_neg, padicExpSeries_doubleSum _ fun a b => by`. Rewrite using `[map_neg, map_sum, Finset.sum_eq_zero fun r _ => constantCoeff_bivariateSeriesSubstPair hb0 (cc_plog (cc_xiE hx _)) (cc_plog (cc_xiE hx _)), neg_zero]]`. Conclude with `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun b _ => pair_eq b0 bv x V hb0 hbv hx H a b`.
+-/
 theorem pairs_all : ∀ {p : ℕ} [Fact p.Prime] {n' : ℕ} [NeZero n'] (b0 : MvPowerSeries (Fin 2) ℂ_[p]) (bv : MvPowerSeries (ZMod n') ℂ_[p]) (x : Fin (n' / 2) ⊕ Fin (n' / 2) → MvPowerSeries (ZMod n') ℂ_[p]) (V : MvPowerSeries (ZMod n') ℂ_[p]), MvPowerSeries.constantCoeff b0 = 0 → MvPowerSeries.constantCoeff bv = 0 → (∀ r, MvPowerSeries.constantCoeff (x r) = 0) → Formalism.MainNotions.GL3Theta.IntegralW V → product_zeroth_first_parts.expS ℂ_[p] (-(∑ r : Fin (n' / 2), GlobalTheory.ThBe0.at2 b0 (PowerSeries.subst (x (Sum.inl r)) (Formalism.MainNotions.GL3Theta.logF p)) (PowerSeries.subst (x (Sum.inr r)) (Formalism.MainNotions.GL3Theta.logF p)))) = V * product_zeroth_first_parts.expS ℂ_[p] (-(MvPowerSeries.subst (GlobalTheory.ThStr.laS p n') bv)) → ∀ (r0 r1 : ℕ), ∃ U2 : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p], (∀ m, ‖MvPowerSeries.coeff m U2‖ ≤ 1) ∧ product_zeroth_first_parts.expS ℂ_[p] (-(∑ e : Eidx n' r0 r1, GlobalTheory.ThBe0.at2 b0 (PowerSeries.subst (xiE x (Sum.inl e)) (Formalism.MainNotions.GL3Theta.logF p)) (PowerSeries.subst (xiE x (Sum.inr e)) (Formalism.MainNotions.GL3Theta.logF p)))) = U2 * MvPowerSeries.subst (jetLogG p n' (β := Fin r0 × Fin r1)) (product_zeroth_first_parts.expS ℂ_[p] ((-1 : ℂ_[p]) • ∑ a : Fin r0, ∑ b : Fin r1, MvPowerSeries.subst (fun s : ZMod n' => (MvPowerSeries.X (s, a, b) : MvPowerSeries (ZMod n' × Fin r0 × Fin r1) ℂ_[p])) bv)) := by
   intro p _ n' _ b0 bv x V hb0 hbv hx hV H r0 r1
   refine ⟨∏ a : Fin r0, ∏ b : Fin r1,

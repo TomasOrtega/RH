@@ -12,6 +12,9 @@ open scoped Matrix
 
 namespace GlobalTheory.FockVacStab
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `show (k * k⁻¹).1.1 = 1`. Simplify using the standard rewrite rules. Use `show (k⁻¹ * k).1.1 = 1`. Simplify using the standard rewrite rules.
+-/
 theorem mat_mul_mat_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} (k : UA σ X.J) : mat k * mat k⁻¹ = 1 ∧ mat k⁻¹ * mat k = 1 := by
   constructor
@@ -20,6 +23,27 @@ theorem mat_mul_mat_inv {F E : Type} [Field F] [NumberField F] [Field E] [Number
   · show (k⁻¹ * k).1.1 = 1
     simp
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP k hk f₀ hG f₁ hact`. Establish `hPA` using `GlobalTheory.T.polynomial_datum_action_of_pair hPr F E σ B n d X W M χX χW om r s r' s' hP`. Take `⟨m, L, hD⟩` from `GlobalTheory.T.heisenbergLine_derivative_finite_span F E σ n d X W M B.ψ hP.base.std`. Use `choose! Dfun hDiff _ using hD`. Take `⟨Dk, _, hDk⟩` from `hPA.2.1 k hk`.
+
+Establish `hGP : ∀ g, M.IsGauss B.ψ B.emb g → g ∈ M.Pol B.ψ B.emb` using `fun g h => Submodule.mem_sInf.2 fun N hN => hN.1 g h`. Establish `hclos : ∀ u, At (evI F) u → ∀ g ∈ M.Pol B.ψ B.emb, Dfun u g ∈ M.Pol B.ψ B.emb` using `fun u hu g hg => Submodule.mem_sInf.2 fun N hN => hN.2 u hu g (Submodule.mem_sInf.1 hg N hN) _ ((hDiff u hu g _).2 rfl)`. Establish `hAt : ∀ (a : Matrix (Fin n) (Fin n) (AE F E)) (u : Matrix (Fin n) (Fin d) (AE F E)), At (evI F) u → At (evI F) (a * u)` using `fun a u hu c hc => by rw [← Matrix.mul_smul, hu c hc, Matrix.mul_zero]`. Take `⟨hkk, hkk'⟩` from `mat_mul_mat_inv k`. Establish `hcomm : ∀ w, (mat k⁻¹).map (piInf (B.emb w)) * X.θ w = X.θ w * (mat k⁻¹).map (piInf (B.emb w))`.
+
+Introduce `w`. Use `set A := (mat k).map (piInf (B.emb w))`. Use `set A' := (mat k⁻¹).map (piInf (B.emb w))`. Establish `h1 : A * A' = 1`. Rewrite using `[← Matrix.map_mul, hkk]`.
+
+Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h2 : A' * A = 1`. Rewrite using `[← Matrix.map_mul, hkk']`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hc : A * X.θ w = X.θ w * A` using `hk.2 w`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨ε, hε⟩` from `hG`. Use `⟨ε, fun u u' hu hu' huu' f f' hf hf' => ?_⟩` and prove the remaining obligations. Use `set v := mat k⁻¹ * u`. Use `set v' := mat k⁻¹ * u'`.
+
+Establish `hv : At (evI F) v` using `hAt _ u hu`. Establish `hv' : At (evI F) v'` using `hAt _ u' hu'`. Establish `hvv' : ∀ w, v'.map (piInf (B.emb w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (X.θ w * v.map (piInf (B.emb w)) * (W.θ w)ᵀ)`. Introduce `w`. Simplify using `only [v, v', Matrix.map_mul, huu' w, Matrix.mul_smul, ← Matrix.mul_assoc, hcomm w]`.
+
+Establish `hkv : mat k * v = u` using `by simp only [v, ← Matrix.mul_assoc, hkk, Matrix.one_mul]`. Establish `hkv' : mat k * v' = u'` using `by simp only [v', ← Matrix.mul_assoc, hkk, Matrix.one_mul]`. Establish `hgg : Dfun v' f₀ = Complex.I • Dfun v f₀` using `hε v v' hv hv' hvv' _ _ ((hDiff v hv f₀ _).2 rfl) ((hDiff v' hv' f₀ _).2 rfl)`. Establish `hf0 : f₀ ∈ M.Pol B.ψ B.emb` using `hGP f₀ ⟨ε, hε⟩`. Establish `hmove : ∀ x, At (evI F) x → ActsD (evI F) (M.heisLine B.ψ (mat k * x)) f₁ (Dk (Dfun x f₀))`.
+
+Introduce `x hx`. Conclude with `GlobalTheory.T.compactUnitary_moves_heisenbergDerivative F E σ B n d X W M χX χW om r s r' s' hP k hk x hx f₀ (Dfun x f₀) f₁ (Dk (Dfun x f₀)) ((hDiff x hx f₀ _).2 rfl) hact ((hDk _ (hclos x hx f₀ hf0) _).2 rfl)`. Establish `e1 : f = Dk (Dfun v f₀)`. Establish `a` using `(hDiff u hu f₁ f).1 hf`. Establish `b` using `(hDiff u hu f₁ _).1 (hkv ▸ hmove v hv)`.
+
+Rewrite using `[a, b]`. Establish `e2 : f' = Dk (Dfun v' f₀)`. Establish `a` using `(hDiff u' hu' f₁ f').1 hf'`. Establish `b` using `(hDiff u' hu' f₁ _).1 (hkv' ▸ hmove v' hv')`. Rewrite using `[a, b]`.
+
+Rewrite using `[e2, e1, hgg, map_smul]`.
+-/
 theorem isGauss_of_acts : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), GlobalTheory.ThK.IsPair B M χX χW om r s r' s' → ∀ k ∈ KInf σ X B.emb, ∀ f₀ : SInf F (Fin n × Fin d),

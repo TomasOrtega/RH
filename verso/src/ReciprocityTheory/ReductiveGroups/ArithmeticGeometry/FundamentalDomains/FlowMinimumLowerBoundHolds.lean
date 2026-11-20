@@ -9,6 +9,13 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Establish `hcol : ∀ c, Matrix.mulVec (X.flowMat ξ τ (t τ : ℂ)) (X.colP x τ c) = X.colP (X.flow ξ (fun τ => (t τ : ℂ)) x) τ c`. Introduce `c`. Unfold `Data.colP`. Rewrite using `[Data.col_flow]`. Use `maj_transfer (hx := hx) (hy := hz) (τ := τ) (g := X.flowMat ξ τ (t τ : ℂ)) (g' := X.flowMat ξ τ (-(t τ : ℂ))) (hgg' := fun w => flowMat_inv (hiso := hiso) (a := _) (w := w)) (hiso := fun u v => flowMat_isom_real (hiso := hiso) (t := t τ) (u := u) (v := v)) (H1 := ?_) (H2 := ?_) ( …` and prove the remaining obligations.
+
+Introduce `c`. Use `⟨fun a => if a = c then 1 else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hcol c]`. Simplify using `[ite_smul]`. Introduce `a`.
+
+Use `⟨fun c => if c = a then 1 else 0, ?_⟩` and prove the remaining obligations. Simplify using `[ite_smul, hcol]`.
+-/
 theorem majorant_realFlow_transfer {r : ℕ} (X : Data E r) (ξ : Fin r → E) (t : X.Ψ → ℝ) {x : Frame X.Ψ r}
     (hx : x ∈ X.dom) (hz : X.flow ξ (fun τ => (t τ : ℂ)) x ∈ X.dom) (τ : X.Ψ)
     (hiso : hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0) (w : Fin r → ℂ) :
@@ -32,6 +39,37 @@ theorem majorant_realFlow_transfer {r : ℕ} (X : Data E r) (ξ : Fin r → E) (
     refine ⟨fun c => if c = a then 1 else 0, ?_⟩
     simp [ite_smul, hcol]
 
+/- English proof (translation)
+Unfold `FlowMinimumLowerBound`. Introduce `r X B hB`. Use `⟨1 + B, by linarith, ?_⟩` and prove the remaining obligations. Introduce `ξ hξ x hx hcm s hs hdom μ hμ0 hμ`. Take `⟨hξΛ, hξ0, hξne⟩` from `hξ`.
+
+Establish `hc : ∀ τ : X.Ψ, 0 ≤ X.c τ` using `fun τ => by show 0 ≤ 2 * ‖τ.1 X.ξ0‖`. Check the signs of the components of the expression. Establish `hiso : ∀ τ : X.Ψ, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (Data.emb τ.1 ξ) = 0` using `fun τ => by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, hξ0, map_zero]`. Establish `hne : ∀ τ : X.Ψ, Data.emb τ.1 ξ ≠ 0` using `fun τ => ReciprocityTheory.ChartRestriction.G.FD.emb_ne_zero τ.1 hξne`.
+
+Establish `hy : X.flow ξ (fun τ => ((s τ).re : ℂ)) x ∈ X.dom`. Establish `hm3a` using `flowDomainCriterion_holds (E := E)`. Unfold `FlowDomainCriterion at hm3a`. Establish `key` using `(hm3a r X (fun τ => Data.emb τ.1 ξ) (by intro τ; exact ⟨hiso τ, hne τ⟩) x hx (fun τ => ((s τ).re : ℂ))).1`. Conclude with `key.2 (fun τ => by simp)`.
+
+Establish `hsplit` using `flow_split (hiso := hiso) (s := s) (x := x)`. Establish `hzdom : X.flow ξ (fun τ => I * ((s τ).im : ℂ)) (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) ∈ X.dom`. Rewrite using `[← hsplit]`. Conclude with `hdom`. Establish `hreal : ∀ (τ : X.Ψ) (u : Fin r → ℂ), X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ u = X.maj x τ (Matrix.mulVec (X.flowMat ξ τ (-((s τ).re : ℂ))) u)` using `fun τ u => majorant_realFlow_transfer X ξ (fun τ => (s τ).re) hx hy τ (hiso τ) u`.
+
+Establish `hmy : ∀ τ : X.Ψ, X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ) = X.maj x τ (Data.emb τ.1 ξ)` using `fun τ => by`. Rewrite using `[hreal τ, Data.flow_fix (s := -((s τ).re : ℂ)) (hv := hiso τ)]`. Break down `eq_or_lt_of_le hμ0 with hμz | hμpos` into its components or cases. Rewrite using `[← hμz, Real.sqrt_zero, mul_zero]`. Conclude with `Real.sqrt_nonneg _`.
+
+Establish `hmain : ∀ (τ : X.Ψ) (w : Fin r → ℂ), μ * X.maj x τ w ≤ (1 + B) ^ 2 * X.maj (X.flow ξ s x) τ w`. Introduce `τ w`. Establish `hinv : Matrix.mulVec (X.flowMat ξ τ (-((s τ).re : ℂ))) (Matrix.mulVec (X.flowMat ξ τ ((s τ).re : ℂ)) w) = w`. Establish `h` using `flowMat_inv (hiso := hiso τ) (a := -((s τ).re : ℂ)) (w := w)`. Rewrite `h` using `[neg_neg]`. Then use the resulting hypothesis.
+
+Establish `e1 : X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Matrix.mulVec (X.flowMat ξ τ ((s τ).re : ℂ)) w) = X.maj x τ w`. Rewrite using `[hreal τ, hinv]`. Establish `hfl : X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Matrix.mulVec (X.flowMat ξ τ ((s τ).re : ℂ)) w) ≤ (1 + X.c τ * |(s τ).re| * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)) ^ 2 * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w` using `maj_flow_le X ξ τ hy (s τ).re w`. Rewrite `hfl` using `[e1, hmy τ]`. Establish `hnn : 0 ≤ X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)` using `mul_nonneg (mul_nonneg (hc τ) (abs_nonneg _)) (MajorantConjugateTransfer.maj_nonneg (hx := hx) (τ := τ) (v := _))`.
+
+Establish `hle : X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ) ≤ B`. Establish `h3 : X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ) = |(s τ).re| * (X.c τ * X.maj x τ (Data.emb τ.1 ξ))` using `by ring`. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsqle : (1 + X.c τ * |(s τ).re| * X.maj x τ (Data.emb τ.1 ξ)) ^ 2 ≤ (1 + B) ^ 2`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hRnn : 0 ≤ X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w` using `MajorantConjugateTransfer.maj_nonneg (hx := hy) (τ := τ) (v := w)`. Establish `hxR : X.maj x τ w ≤ (1 + B) ^ 2 * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w` using `hfl.trans (mul_le_mul_of_nonneg_right hsqle hRnn)`. Establish `hq_eq : 1 + (s τ).im / X.tt ξ x τ = 1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)`. Rewrite using `[hmy τ, show X.tt ξ x τ = 1 / (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) from rfl, div_div_eq_mul_div, div_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hμq` using `hμ τ`. Rewrite `hμq` using `[hq_eq]`. Establish `hq : 0 < 1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)` using `lt_of_lt_of_le hμpos (hμq.trans (min_le_left _ _))`. Establish `himag : min (1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ)) (1 + X.c τ * (s τ).im * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ (Data.emb τ.1 ξ))⁻¹ * X.maj (X.flow ξ (fun τ => ((s τ).re : ℂ)) x) τ w ≤ X.maj (X.flow ξ (fun τ => I * ((s τ …` using `maj_imag_flow (hz := hy) (ξ := ξ) (b := fun τ => (s τ).im) (hy := hzdom) (τ := τ) (hee := hiso τ) (he0 := hne τ) (hq := hq) (w := w)`.
+
+Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB1 : (0 : ℝ) < (1 + B) ^ 2` using `by positivity`. Establish `hK : 0 ≤ μ * ((1 + B) ^ 2)⁻¹` using `mul_nonneg hμ0 (by positivity)`. Establish `hpt : ∀ (τ : X.Ψ) (w : Fin r → ℂ), μ * ((1 + B) ^ 2)⁻¹ * X.maj x τ w ≤ X.maj (X.flow ξ s x) τ w`.
+
+Introduce `τ w`. Combine the equalities or inequalities in the displayed calculation. Establish `hsumnn : ∀ t ∈ {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)}, 0 ≤ t`. Introduce and unpack `t ⟨u, -, -, rfl⟩`. Conclude with `Finset.sum_nonneg (fun τ _ => mul_nonneg (hc τ) (MajorantConjugateTransfer.maj_nonneg (hx := hx) (τ := τ) (v := _)))`.
+
+Establish `hL : 0 ≤ X.firstMinimumSq x` using `Real.sInf_nonneg hsumnn`. Establish `hKL : μ * ((1 + B) ^ 2)⁻¹ * X.firstMinimumSq x ≤ X.firstMinimumSq (X.flow ξ s x)`. Apply `le_csInf` to reduce the goal to its premises. Conclude with `⟨_, ξ, hξΛ, hξne, rfl⟩`. Introduce and unpack `b ⟨v, hv, hv0, rfl⟩`.
+
+Establish `h1 : X.firstMinimumSq x ≤ ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)` using `csInf_le ⟨0, hsumnn⟩ ⟨v, hv, hv0, rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun τ _ => by ring)`. Use `_ ≤ ∑ τ, X.c τ * X.maj (X.flow ξ s x) τ (Data.emb τ.1 v) := Finset.sum_le_sum (fun τ _ => mul_le_mul_of_nonneg_left (hpt τ _) (hc τ))`.
+
+Establish `hlhs : 0 ≤ (1 + B)⁻¹ * X.la1 x * Real.sqrt μ` using `mul_nonneg (mul_nonneg (inv_nonneg.2 (by linarith)) (Real.sqrt_nonneg _)) (Real.sqrt_nonneg _)`. Establish `hsq : ((1 + B)⁻¹ * X.la1 x * Real.sqrt μ) ^ 2 = μ * ((1 + B) ^ 2)⁻¹ * X.firstMinimumSq x`. Rewrite using `[mul_pow, mul_pow, Real.sq_sqrt hμ0, show X.la1 x = Real.sqrt (X.firstMinimumSq x) from rfl, Real.sq_sqrt hL, inv_pow]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem flowMinimumLowerBound_holds : FlowMinimumLowerBound (E := E) := by
   unfold FlowMinimumLowerBound
   intro r X B hB

@@ -7,6 +7,9 @@ section
 variable {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) {E' : Type} [Ring E'] [Algebra A E']
   (f : E →ₐ[A] E')
 
+/- English proof (translation)
+Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul s x => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 private theorem map_eq_lTensor (S : Type) [CommRing S] [Algebra A S] (z : S ⊗[A] E) :
     Algebra.TensorProduct.map (AlgHom.id S S) f z = f.toLinearMap.lTensor S z := by
   induction z with
@@ -14,12 +17,22 @@ private theorem map_eq_lTensor (S : Type) [CommRing S] [Algebra A S] (z : S ⊗[
   | tmul s x => simp
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `LinearMap.lTensor_surjective S (g := f.toLinearMap) hf y`. Conclude with `⟨x, (map_eq_lTensor f S x).trans hx⟩`.
+-/
 private theorem map_surj (hf : Function.Surjective f) (S : Type) [CommRing S] [Algebra A S] :
     Function.Surjective (Algebra.TensorProduct.map (AlgHom.id S S) f) := by
   intro y
   obtain ⟨x, hx⟩ := LinearMap.lTensor_surjective S (g := f.toLinearMap) hf y
   exact ⟨x, (map_eq_lTensor f S x).trans hx⟩
 
+/- English proof (translation)
+Establish `hex` using `lTensor_exact S (LinearMap.exact_subtype_ker_map f.toLinearMap) hf`. Establish `h0 : f.toLinearMap.lTensor S (x - y) = 0`. Rewrite using `[← map_eq_lTensor, map_sub, h, sub_self]`. Take `⟨w, hw⟩` from `(hex _).1 h0`. Establish `key : ∀ (w : S ⊗[A] (LinearMap.ker f.toLinearMap)) (y : S ⊗[A] E), D.D S (y + (LinearMap.ker f.toLinearMap).subtype.lTensor S w) = D.D S y`.
+
+Introduce `w`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `tmul s k`. Introduce `y`.
+
+Use `(D.mem_ker.1 (hk k.1 k.2)) S y (s ⊗ₜ 1) 1` as an intermediate fact. Simplify using `using this`. Consider the case `add a b ha hb => intro y`. Rewrite using `[LinearMap.map_add, ← add_assoc, hb, ha]`. Rewrite using `[← key w y, hw, add_sub_cancel]`.
+-/
 private theorem eq_of_map_eq (hf : Function.Surjective f) (hk : ∀ x, f x = 0 → x ∈ D.ker)
     (S : Type) [CommRing S] [Algebra A S] (x y : S ⊗[A] E)
     (h : Algebra.TensorProduct.map (AlgHom.id S S) f x = Algebra.TensorProduct.map (AlgHom.id S S) f y) :
@@ -40,6 +53,9 @@ private theorem eq_of_map_eq (hf : Function.Surjective f) (hk : ∀ x, f x = 0 �
     | add a b ha hb => intro y; rw [LinearMap.map_add, ← add_assoc, hb, ha]
   rw [← key w y, hw, add_sub_cancel]
 
+/- English proof (translation)
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul s x => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 private theorem map_map_swap (B B' : Type) [CommRing B] [Algebra A B] [CommRing B'] [Algebra A B'] (g : B →ₐ[A] B')
     (x : B ⊗[A] E) :
     Algebra.TensorProduct.map (AlgHom.id B' B') f (Algebra.TensorProduct.map g (AlgHom.id A E) x) =
@@ -51,6 +67,17 @@ private theorem map_map_swap (B B' : Type) [CommRing B] [Algebra A B] [CommRing 
 
 end
 
+/- English proof (translation)
+Introduce `n A E _ _ _ D E' _ _ f hf hk`. Establish `hs` using `map_surj f hf`. Establish `he` using `eq_of_map_eq D f hf hk`. Establish `hσ : ∀ (S : Type) [CommRing S] [Algebra A S] (x : S ⊗[A] E), D.D S (Function.surjInv (hs S) (Algebra.TensorProduct.map (AlgHom.id S S) f x)) = D.D S x` using `fun S _ _ x => he S _ _ (Function.surjInv_eq _ _)`. Set `D' : Det n A E'` to `{ D := fun S _ _ => { toFun := fun y => D.D S (Function.surjInv (hs S) y) map_one' := by`.
+
+Rewrite using `[← map_one (Algebra.TensorProduct.map (AlgHom.id S S) f), hσ, map_one]`. Use the proof step `map_mul' := fun x y => by`. Take `⟨x, rfl⟩` from `hs S x`. Take `⟨y, rfl⟩` from `hs S y`. Rewrite using `[← map_mul (Algebra.TensorProduct.map (AlgHom.id S S) f), hσ, hσ, hσ, map_mul] }`.
+
+Use `nat := fun B B' _ _ _ _ g x => by`. Take `⟨x, rfl⟩` from `hs B x`. Express the relevant statement in the definitionally equal form `D.D B' (Function.surjInv (hs B') _) = g (D.D B (Function.surjInv (hs B) _))`. Rewrite using `[← map_map_swap, hσ, hσ, D.nat]`. Use `homog := fun B _ _ b x => by`.
+
+Take `⟨x, rfl⟩` from `hs B x`. Express the relevant statement in the definitionally equal form `D.D B (Function.surjInv (hs B) _) = b ^ n * D.D B (Function.surjInv (hs B) _)`. Rewrite using `[← map_smul, hσ, hσ, D.homog] }`. Use `⟨D', Det.ext' fun S _ _ x => hσ S x, fun D'' h => Det.ext' fun S _ _ y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hs S y`.
+
+Use `Eq.trans ?_ (hσ S x).symm` and prove the remaining obligations. Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.CA.d_factor :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) {E' : Type} [Ring E'] [Algebra A E'] (f : E →ₐ[A] E'), Function.Surjective f → (∀ x, f x = 0 → x ∈ D.ker) → ∃! D' : Det n A E', D'.pull f = D := by
   intro n A E _ _ _ D E' _ _ f hf hk

@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Establish `: RingHomSurjective (e : R →+* S)` using `⟨e.surjective⟩`. Set `f : R →ₛₗ[(e : R →+* S)] S` to `{ toFun := e, map_add' := e.map_add, map_smul' := fun a b => by simp [smul_eq_mul] }`. Rewrite using `[Module.length, Module.length, WithBot.unbot_inj, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f e.bijective)]`.
+-/
 private theorem length_self_eq_of_ringEquiv {R S : Type*} [CommRing R] [CommRing S] (e : R ≃+* S) :
     Module.length R R = Module.length S S := by
   have : RingHomSurjective (e : R →+* S) := ⟨e.surjective⟩
@@ -11,12 +14,18 @@ private theorem length_self_eq_of_ringEquiv {R S : Type*} [CommRing R] [CommRing
   rw [Module.length, Module.length, WithBot.unbot_inj,
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f e.bijective)]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: IsIso (f.stalkMap x)` using `inferInstance`. Conclude with `(length_self_eq_of_ringEquiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv).symm`.
+-/
 private theorem length_stalk_eq_of_isIso {X Y : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (x : X) (y : Y) (h : f x = y) :
     Module.length (X.presheaf.stalk x) (X.presheaf.stalk x) = Module.length (Y.presheaf.stalk y) (Y.presheaf.stalk y) := by
   subst h
   have : IsIso (f.stalkMap x) := inferInstance
   exact (length_self_eq_of_ringEquiv (asIso (f.stalkMap x)).commRingCatIsoToRingEquiv).symm
 
+/- English proof (translation)
+Introduce `V Ω _ _ r z hz`. Use `haveI : IsIso (z ≫ r) := by rw [hz]; infer_instance`. Use `haveI : IsIso (pullback.fst r (z ≫ r)) := inferInstance`. Unfold `mult`. Rewrite using `[length_stalk_eq_of_isIso (pullback.fst r (z ≫ r)) _ (pt z) (by rw [← pt_comp, pullback.lift_fst])]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.multSec_of :
     MultSec := by
   intro V Ω _ _ r z hz

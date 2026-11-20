@@ -14,9 +14,17 @@ variable {σ K : Type*} [CommSemiring K]
 def SerIn (S : Set σ) (T : MvPowerSeries σ K) : Prop :=
   ∀ ν, MvPowerSeries.coeff ν T ≠ 0 → ∀ v, ν v ≠ 0 → v ∈ S
 
+/- English proof (translation)
+Introduce `ν hν v hv` and use `h (hT ν hν v hv)`.
+-/
 theorem SerIn.mono {S S' : Set σ} (h : S ⊆ S') {T : MvPowerSeries σ K} (hT : SerIn S T) :
     SerIn S' T := fun ν hν v hv => h (hT ν hν v hv)
 
+/- English proof (translation)
+Introduce `ν hν v hv`. Rewrite `hν` using `[MvPowerSeries.coeff_one]`. Use `split_ifs at hν with h`. Substitute `h` using the available equality. Simplify using `at hv`.
+
+Conclude with `absurd rfl hν`.
+-/
 theorem SerIn.one (S : Set σ) : SerIn S (1 : MvPowerSeries σ K) := by
   intro ν hν v hv
   rw [MvPowerSeries.coeff_one] at hν
@@ -24,6 +32,13 @@ theorem SerIn.one (S : Set σ) : SerIn S (1 : MvPowerSeries σ K) := by
   · subst h; simp at hv
   · exact absurd rfl hν
 
+/- English proof (translation)
+Introduce `ν hν v hv`. Rewrite `hν` using `[MvPowerSeries.coeff_mul]`. Take `⟨⟨x, y⟩, hxy, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hν`. Rewrite `hxy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `hx : MvPowerSeries.coeff x T1 ≠ 0` using `left_ne_zero_of_mul hne`.
+
+Establish `hy : MvPowerSeries.coeff y T2 ≠ 0` using `right_ne_zero_of_mul hne`. Establish `e` using `congrArg (fun f => f v) hxy`. Simplify using `only [Finsupp.add_apply] at e`. Distinguish the cases in `h : x v = 0`. Conclude with `h2 y hy v (by omega)`.
+
+Conclude with `h1 x hx v h`.
+-/
 theorem SerIn.mul {S : Set σ} {T1 T2 : MvPowerSeries σ K} (h1 : SerIn S T1) (h2 : SerIn S T2) :
     SerIn S (T1 * T2) := by
   intro ν hν v hv
@@ -38,6 +53,9 @@ theorem SerIn.mul {S : Set σ} {T1 T2 : MvPowerSeries σ K} (h1 : SerIn S T1) (h
   · exact h2 y hy v (by omega)
   · exact h1 x hx v h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using SerIn.one S`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem SerIn.prod {ι : Type*} (s : Finset ι) {S : Set σ} {T : ι → MvPowerSeries σ K}
     (h : ∀ i ∈ s, SerIn S (T i)) : SerIn S (∏ i ∈ s, T i) := by
   induction s using Finset.induction_on with
@@ -46,6 +64,17 @@ theorem SerIn.prod {ι : Type*} (s : Finset ι) {S : Set σ} {T : ι → MvPower
     rw [Finset.prod_insert ha]
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_mul, Finset.sum_eq_single (a, b)]`. Introduce and unpack `⟨x, y⟩ hxy hne`. Assume the negation of the conclusion as `hnz`. Establish `hx : MvPowerSeries.coeff x T1 ≠ 0` using `left_ne_zero_of_mul hnz`. Establish `hy : MvPowerSeries.coeff y T2 ≠ 0` using `right_ne_zero_of_mul hnz`.
+
+Rewrite `hxy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Apply `hne` to reduce the goal to its premises. Establish `key : ∀ v, x v = a v ∧ y v = b v`. Introduce `v`. Establish `e` using `congrArg (fun f => f v) hxy`.
+
+Simplify using `only [Finsupp.add_apply] at e`. Distinguish the cases in `hv : v ∈ S1`. Establish `hv2 : v ∉ S2` using `fun h => Set.disjoint_left.1 hS hv h`. Establish `: y v = 0` using `by by_contra h; exact hv2 (h2 y hy v h)`. Establish `: b v = 0` using `by by_contra h; exact hv2 (hb v h)`.
+
+Use linear arithmetic over natural numbers and integers. Establish `: x v = 0` using `by by_contra h; exact hv (h1 x hx v h)`. Establish `: a v = 0` using `by by_contra h; exact hv (ha v h)`. Use linear arithmetic over natural numbers and integers. Conclude with `Prod.ext (Finsupp.ext fun v => (key v).1) (Finsupp.ext fun v => (key v).2)`.
+
+Introduce `h; exact absurd (by simp) h`.
+-/
 theorem coeff_mul_of_disjoint {S1 S2 : Set σ} (hS : Disjoint S1 S2) {T1 T2 : MvPowerSeries σ K}
     (h1 : SerIn S1 T1) (h2 : SerIn S2 T2) {a b : σ →₀ ℕ} (ha : ∀ v, a v ≠ 0 → v ∈ S1)
     (hb : ∀ v, b v ≠ 0 → v ∈ S2) :
@@ -78,6 +107,9 @@ section Ultra
 
 variable {σ K : Type*} [NormedCommRing K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha0 hb0) fun x _ => ?_` and prove the remaining obligations. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (hA _) (hB _) (norm_nonneg _) ha0)`.
+-/
 theorem norm_coeff_mul_le {A B : MvPolynomial σ K} {a b : ℝ} (ha0 : 0 ≤ a) (hb0 : 0 ≤ b)
     (hA : ∀ m, ‖MvPolynomial.coeff m A‖ ≤ a) (hB : ∀ m, ‖MvPolynomial.coeff m B‖ ≤ b) (m : σ →₀ ℕ) :
     ‖MvPolynomial.coeff m (A * B)‖ ≤ a * b := by
@@ -85,6 +117,11 @@ theorem norm_coeff_mul_le {A B : MvPolynomial σ K} {a b : ℝ} (ha0 : 0 ≤ a) 
   refine IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha0 hb0) fun x _ => ?_
   exact (norm_mul_le _ _).trans (mul_le_mul (hA _) (hB _) (norm_nonneg _) ha0)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing m with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, MvPolynomial.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `insert j s hj ih`.
+
+Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj]`. Conclude with `norm_coeff_mul_le (ha0 j (Finset.mem_insert_self j s)) (Finset.prod_nonneg fun i hi => ha0 i (Finset.mem_insert_of_mem hi)) (hA j (Finset.mem_insert_self j s)) (ih (fun i hi => ha0 i (Finset.mem_insert_of_mem hi)) (fun i hi => hA i (Finset.mem_insert_of_mem hi))) m`.
+-/
 theorem norm_coeff_prod_le [NormOneClass K] {ι : Type*} (s : Finset ι) {A : ι → MvPolynomial σ K}
     {a : ι → ℝ} (ha0 : ∀ i ∈ s, 0 ≤ a i) (hA : ∀ i ∈ s, ∀ m, ‖MvPolynomial.coeff m (A i)‖ ≤ a i)
     (m : σ →₀ ℕ) : ‖MvPolynomial.coeff m (∏ i ∈ s, A i)‖ ≤ ∏ i ∈ s, a i := by
@@ -116,13 +153,24 @@ def applyTerm (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (μ : XZ Lt 
     (((c : ℤ) : ℂ_[l]) * ((Finsupp.sumFinsuppEquivProdFinsupp μ).2.prod fun _ n => (n.factorial : ℂ_[l])) *
       MvPowerSeries.coeff (Finsupp.sumFinsuppEquivProdFinsupp μ).2 Th)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem applyAt0_eq_sum (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l Th P = ∑ μ ∈ P.support, applyTerm l Th μ (MvPolynomial.coeff μ P) := rfl
 
+/- English proof (translation)
+Simplify using `[applyTerm]`.
+-/
 theorem applyTerm_zero (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (μ : XZ Lt N0 N1 →₀ ℕ) :
     applyTerm l Th μ 0 = 0 := by simp [applyTerm]
 
+/- English proof (translation)
+Rewrite using `[applyAt0_eq_sum]`. Use `Finset.sum_subset hS fun μ _ hμ => ?_` and prove the remaining obligations. Establish `: MvPolynomial.coeff μ P = 0`. Assume the negation of the conclusion as `h`. Conclude with `hμ (MvPolynomial.mem_support_iff.2 h)`.
+
+Rewrite using `[this, applyTerm_zero]`.
+-/
 theorem applyAt0_eq_sum_of_subset (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l])
     (P : MvPolynomial (XZ Lt N0 N1) ℤ) (S : Finset (XZ Lt N0 N1 →₀ ℕ)) (hS : P.support ⊆ S) :
     applyAt0 N0 N1 l Th P = ∑ μ ∈ S, applyTerm l Th μ (MvPolynomial.coeff μ P) := by
@@ -132,6 +180,9 @@ theorem applyAt0_eq_sum_of_subset (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) �
     by_contra h; exact hμ (MvPolynomial.mem_support_iff.2 h)
   rw [this, applyTerm_zero]
 
+/- English proof (translation)
+Establish `h1 : P.support ⊆ P.support ∪ Q.support` using `Finset.subset_union_left`. Establish `h2 : Q.support ⊆ P.support ∪ Q.support` using `Finset.subset_union_right`. Rewrite using `[applyAt0_eq_sum_of_subset l Th _ _ MvPolynomial.support_add, applyAt0_eq_sum_of_subset l Th _ _ h1, applyAt0_eq_sum_of_subset l Th _ _ h2, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Simplify using `only [applyTerm, MvPolynomial.coeff_add, Int.cast_add, add_mul, map_add]`.
+-/
 theorem applyAt0_add (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P Q : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyAt0 N0 N1 l Th (P + Q) = applyAt0 N0 N1 l Th P + applyAt0 N0 N1 l Th Q := by
   have h1 : P.support ⊆ P.support ∪ Q.support := Finset.subset_union_left
@@ -147,25 +198,44 @@ def applyHom (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) :
   map_zero' := by simp [applyAt0]
   map_add' := applyAt0_add l Th
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem applyHom_apply (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : MvPolynomial (XZ Lt N0 N1) ℤ) :
     applyHom l Th P = applyAt0 N0 N1 l Th P := rfl
 
+/- English proof (translation)
+Rewrite using `[applyAt0_eq_sum_of_subset l Th _ _ MvPolynomial.support_monomial_subset]`. Simplify using the standard rewrite rules.
+-/
 theorem applyAt0_monomial (Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (μ : XZ Lt N0 N1 →₀ ℕ) (c : ℤ) :
     applyAt0 N0 N1 l Th (MvPolynomial.monomial μ c) = applyTerm l Th μ c := by
   rw [applyAt0_eq_sum_of_subset l Th _ _ MvPolynomial.support_monomial_subset]
   simp
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.C_1, ← MvPolynomial.monomial_zero', applyAt0_monomial]`. Simplify using `[applyTerm]`.
+-/
 theorem applyAt0_one_one :
     applyAt0 N0 N1 l (1 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) 1 = 1 := by
   rw [← MvPolynomial.C_1, ← MvPolynomial.monomial_zero', applyAt0_monomial]
   simp [applyTerm]
 
+/- English proof (translation)
+Apply the tactic sequence `ext v <;> simp`.
+-/
 theorem sumFinsupp_add (μ μ' : XZ Lt N0 N1 →₀ ℕ) :
     Finsupp.sumFinsuppEquivProdFinsupp (μ + μ') =
       ((Finsupp.sumFinsuppEquivProdFinsupp μ).1 + (Finsupp.sumFinsuppEquivProdFinsupp μ').1,
         (Finsupp.sumFinsuppEquivProdFinsupp μ).2 + (Finsupp.sumFinsuppEquivProdFinsupp μ').2) := by
   ext v <;> simp
 
+/- English proof (translation)
+Establish `hS : Disjoint {v : Lt × Fin N0 × Fin N1 | v.1 ∈ A1} {v | v.1 ∈ A2}` using `Set.disjoint_left.2 fun v h h' => Set.disjoint_left.1 hA h h'`. Establish `ha : ∀ v, (Finsupp.sumFinsuppEquivProdFinsupp μ).2 v ≠ 0 → v ∈ {v : Lt × Fin N0 × Fin N1 | v.1 ∈ A1}` using `fun v hv => hμ (Sum.inr v) (by simpa [Finsupp.snd_sumFinsuppEquivProdFinsupp] using hv)`. Establish `hb : ∀ v, (Finsupp.sumFinsuppEquivProdFinsupp μ').2 v ≠ 0 → v ∈ {v : Lt × Fin N0 × Fin N1 | v.1 ∈ A2}` using `fun v hv => hμ' (Sum.inr v) (by simpa [Finsupp.snd_sumFinsuppEquivProdFinsupp] using hv)`. Establish `hdis : Disjoint (Finsupp.sumFinsuppEquivProdFinsupp μ).2.support (Finsupp.sumFinsuppEquivProdFinsupp μ').2.support`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `v hv hv'`. Conclude with `Set.disjoint_left.1 hS (ha v (Finsupp.mem_support_iff.1 hv)) (hb v (Finsupp.mem_support_iff.1 hv'))`. Simplify using `only [applyTerm, MvPolynomial.monomial_mul, sumFinsupp_add]`. Rewrite using `[Finsupp.prod_add_index_of_disjoint hdis, coeff_mul_of_disjoint hS h1 h2 ha hb]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem applyTerm_mul {A1 A2 : Set Lt} (hA : Disjoint A1 A2) {T1 T2 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]}
     (h1 : SerIn {v | v.1 ∈ A1} T1) (h2 : SerIn {v | v.1 ∈ A2} T2) {μ μ' : XZ Lt N0 N1 →₀ ℕ}
     (hμ : ∀ v, μ v ≠ 0 → xzLetter v ∈ A1) (hμ' : ∀ v, μ' v ≠ 0 → xzLetter v ∈ A2) (c c' : ℤ) :
@@ -187,6 +257,15 @@ theorem applyTerm_mul {A1 A2 : Set Lt} (hA : Disjoint A1 A2) {T1 T2 : MvPowerSer
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hv1 : ∀ μ ∈ P1.support, ∀ v, μ v ≠ 0 → xzLetter v ∈ A1`. Introduce `μ hμ v hv`. Establish `: v ∈ P1.vars` using `(MvPolynomial.mem_vars_iff_mem_support v).2 ⟨μ, hμ, Finsupp.mem_support_iff.2 hv⟩`. Conclude with `MvPolynomial.mem_supported.1 hP1 (Finset.mem_coe.2 this)`. Establish `hv2 : ∀ μ ∈ P2.support, ∀ v, μ v ≠ 0 → xzLetter v ∈ A2`.
+
+Introduce `μ hμ v hv`. Establish `: v ∈ P2.vars` using `(MvPolynomial.mem_vars_iff_mem_support v).2 ⟨μ, hμ, Finsupp.mem_support_iff.2 hv⟩`. Conclude with `MvPolynomial.mem_supported.1 hP2 (Finset.mem_coe.2 this)`. Establish `e1` using `P1.as_sum`. Establish `e2` using `P2.as_sum`.
+
+Establish `hprod : P1 * P2 = ∑ μ ∈ P1.support, ∑ μ' ∈ P2.support, MvPolynomial.monomial (μ + μ') (MvPolynomial.coeff μ P1 * MvPolynomial.coeff μ' P2)` using `by conv_lhs => rw [e1, e2]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [MvPolynomial.monomial_mul]`. Rewrite using `[hprod]`. Use `conv_rhs => rw [e1, e2]`.
+
+Simplify using `only [← applyHom_apply, map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun μ hμ => Finset.sum_congr rfl fun μ' hμ' => ?_` and prove the remaining obligations. Simplify using `only [applyHom_apply, applyAt0_monomial]`. Conclude with `applyTerm_mul l hA h1 h2 (hv1 μ hμ) (hv2 μ' hμ') _ _`.
+-/
 theorem applyAt0_mul {A1 A2 : Set Lt} (hA : Disjoint A1 A2) {T1 T2 : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]}
     (h1 : SerIn {v | v.1 ∈ A1} T1) (h2 : SerIn {v | v.1 ∈ A2} T2) {P1 P2 : MvPolynomial (XZ Lt N0 N1) ℤ}
     (hP1 : P1 ∈ MvPolynomial.supported ℤ (xzLetter ⁻¹' A1)) (hP2 : P2 ∈ MvPolynomial.supported ℤ (xzLetter ⁻¹' A2)) :
@@ -213,6 +292,13 @@ theorem applyAt0_mul {A1 A2 : Set Lt} (hA : Disjoint A1 A2) {T1 T2 : MvPowerSeri
   simp only [applyHom_apply, applyAt0_monomial]
   exact applyTerm_mul l hA h1 h2 (hv1 μ hμ) (hv2 μ' hμ') _ _
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using applyAt0_one_one (Lt := Lt) (N0 := N0) (N1 := N1) l`. Consider the case `insert a s ha ih`. Establish `hA' : (s : Set Ω).PairwiseDisjoint A` using `hA.subset (by simp)`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Finset.prod_insert ha]`.
+
+Establish `hdis : Disjoint (A a) (⋃ ω ∈ s, A ω)`. Rewrite using `[Set.disjoint_iUnion₂_right]`. Introduce `ω hω`. Conclude with `hA (by simp) (by simp [hω]) (fun h => ha (h ▸ hω))`. Establish `hTs : SerIn {v : Lt × Fin N0 × Fin N1 | v.1 ∈ ⋃ ω ∈ s, A ω} (∏ ω ∈ s, T ω)` using `SerIn.prod s fun ω hω => SerIn.mono (S := {v : Lt × Fin N0 × Fin N1 | v.1 ∈ A ω}) (fun v hv => (Set.mem_iUnion₂.2 ⟨ω, hω, hv⟩ : v.1 ∈ ⋃ ω ∈ s, A ω)) (hT ω (by simp [hω]))`.
+
+Rewrite using `[applyAt0_mul l hdis (hT a (by simp)) hTs (hP a (by simp)) (Subalgebra.prod_mem _ fun ω hω => MvPolynomial.supported_mono (fun v (hv : xzLetter v ∈ A ω) => show xzLetter v ∈ ⋃ ω ∈ s, A ω from Set.mem_iUnion₂.2 ⟨ω, hω, hv⟩) (hP ω (by simp [hω])))]`. Rewrite using `[ih hA' (fun ω hω => hT ω (by simp [hω])) (fun ω hω => hP ω (by simp [hω]))]`.
+-/
 theorem applyAt0_prod {Ω : Type*} (s : Finset Ω) (A : Ω → Set Lt) (hA : (s : Set Ω).PairwiseDisjoint A)
     (T : Ω → MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]) (P : Ω → MvPolynomial (XZ Lt N0 N1) ℤ)
     (hT : ∀ ω ∈ s, SerIn {v | v.1 ∈ A ω} (T ω))

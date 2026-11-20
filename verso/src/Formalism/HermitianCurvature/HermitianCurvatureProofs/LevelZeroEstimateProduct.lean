@@ -13,17 +13,36 @@ open Classical
 
 namespace Cx1
 
+/- English proof (translation)
+Simplify using `only [TB.PSDOn] at h ⊢`. Conclude with `h.submatrix (fun x : Y => (⟨φ x, hZ x x.2⟩ : Z))`.
+-/
 theorem psd_pullback {α β : Type} (Y : Finset α) (φ : α → β) (k : β → β → ℂ) (Z : Finset β)
     (hZ : ∀ x ∈ Y, φ x ∈ Z) (h : TB.PSDOn Z k) : TB.PSDOn Y (fun x y => k (φ x) (φ y)) := by
   simp only [TB.PSDOn] at h ⊢
   exact h.submatrix (fun x : Y => (⟨φ x, hZ x x.2⟩ : Z))
 
+/- English proof (translation)
+Simplify using `only [TB.PSDOn]`. Conclude with `Matrix.PosSemidef.zero`.
+-/
 theorem psd_zero {α : Type} (Y : Finset α) : TB.PSDOn Y (fun _ _ => (0 : ℂ)) := by
   simp only [TB.PSDOn]
   exact Matrix.PosSemidef.zero
 
 end Cx1
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S hP _ Kr hK0 Th e ε hε i w Y`. Use `show TB.PSDOn Y (S.gram ε i w.1)`. Establish `prodPSD : ∀ (s : Finset (Fin S.f)) (k : Fin S.f → TB.Pt E → TB.Pt E → ℂ), (∀ v, TB.PSDOn Y (k v)) → TB.PSDOn Y (fun p q => ∏ v ∈ s, k v p q)`. Introduce `s k hk`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty`. Simplify using `only [Finset.prod_empty, TB.PSDOn]`. Set `A : Matrix Unit Y ℂ` to `Matrix.of fun _ _ => 1`. Establish `h2` using `Matrix.posSemidef_conjTranspose_mul_self A`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x y`. Simplify using `[A, Matrix.mul_apply]`. Consider the case `@insert a s ha ih`. Simplify using `only [TB.PSDOn] at ih ⊢`. Establish `h1 : (Matrix.of fun x y : Y => ∏ v ∈ insert a s, k v x y) = (Matrix.of fun x y : Y => k a x y).hadamard (Matrix.of fun x y : Y => ∏ v ∈ s, k v x y)`.
+
+Use extensionality with `x y`. Simplify using `[Finset.prod_insert ha, Matrix.hadamard]`. Rewrite using `[h1]`. Conclude with `(hk a).hadamard ih`. Distinguish the cases in `hi : i ≤ S.G.r + 1`.
+
+Establish `hg : S.gram ε i w.1 = fun p q => ∏ v, S.gramLoc v ε i (w.1 v) (loc (S.σ v) p) (loc (S.σ v) q)`. Use function extensionality and compare the values at `p q`. Simplify using `[Formalism.FourierDecayAlt.C.HidaSetting.gram, hi]`. Rewrite using `[hg]`. Conclude with `prodPSD Finset.univ _ fun v => Cx1.psd_pullback Y (loc (S.σ v)) _ _ (fun x hx => Finset.mem_image_of_mem _ hx) (hP v ε hε i hi w _)`.
+
+Establish `hg : S.gram ε i w.1 = fun _ _ => 0`. Use function extensionality and compare the values at `p q`. Simplify using `[Formalism.FourierDecayAlt.C.HidaSetting.gram, hi]`. Rewrite using `[hg]`. Conclude with `Cx1.psd_zero Y`.
+-/
 theorem gram_positive_semidefinite : C.GramPSDOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S hP _ Kr hK0 Th e ε hε i w Y
   show TB.PSDOn Y (S.gram ε i w.1)
@@ -61,6 +80,19 @@ theorem gram_positive_semidefinite : C.GramPSDOfParts := by
     rw [hg]
     exact Cx1.psd_zero Y
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S hG Kr hK0 Th e w`. Use `show 0 < Word.size S.P w.1`. Unfold `Word.size`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `v _`.
+
+Apply `List.prod_pos` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[List.mem_map]`. Take `⟨a, ha, rfl⟩` from `hx`. Apply `abs_pos.mpr` to reduce the goal to its premises.
+
+Take `⟨j, hj, rfl⟩` from `List.mem_iff_getElem.mp ha`. Establish `hadm` using `w.2.1.1 v j hj`. Distinguish the cases in `hb : ((w.1 v)[j]'hj).1 = true`. Rewrite `hadm` using `[if_pos hb]`. Establish `hy : (∃ a, ((w.1 v)[j]'hj).2 ∈ S.grid v a) ∨ ((w.1 v)[j]'hj).2 ∈ S.grid1 v`.
+
+Break down `Finset.mem_union.mp hadm with h | h` into its components or cases. Conclude with `Or.inl ⟨_, h⟩`. Conclude with `Or.inr h`. Conclude with `((hG v).2.2.2.2.2 _ hy).2.2.1`. Rewrite `hadm` using `[if_neg hb]`.
+
+Establish `hy : (∃ a, ((w.1 v)[j]'hj).2 - 1 ∈ S.grid v a) ∨ ((w.1 v)[j]'hj).2 - 1 ∈ S.grid1 v`. Break down `Finset.mem_union.mp hadm with h | h` into its components or cases. Conclude with `Or.inl ⟨_, h⟩`. Conclude with `Or.inr h`. Use `((hG v).2.2.2.2.2 _ hy).2.2.2` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem words_pos_of_parts : C.WordsPosOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S hG Kr hK0 Th e w
   show 0 < Word.size S.P w.1
@@ -89,20 +121,38 @@ theorem words_pos_of_parts : C.WordsPosOfParts := by
     have := ((hG v).2.2.2.2.2 _ hy).2.2.2
     rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S hG hI hP Kr hK0 Th e ε hε i hi1 hi2 w hw hcnt`. Take `⟨θ, hθ, hb⟩` from `hP ε hε i hi1 hi2 w hw hcnt`. Conclude with `⟨θ, hθ, fun Y hY κ hκ => ⟨(hI ε hε i hi1 hi2 w Y hY κ hκ).2, fun l hl hl0 => ⟨S.bigPlaces i l, hb Y hY κ hκ l hl hl0⟩⟩⟩`.
+-/
 theorem wave_estimate_of_integral : C.EstWaveOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S hG hI hP Kr hK0 Th e ε hε i hi1 hi2 w hw hcnt
   obtain ⟨θ, hθ, hb⟩ := hP ε hε i hi1 hi2 w hw hcnt
   exact ⟨θ, hθ, fun Y hY κ hκ => ⟨(hI ε hε i hi1 hi2 w Y hY κ hκ).2,
     fun l hl hl0 => ⟨S.bigPlaces i l, hb Y hY κ hκ l hl hl0⟩⟩⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S h Kr hK0 Th e`. Conclude with `h`.
+-/
 theorem lift_estimate_of_base : C.EstLiftOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S h Kr hK0 Th e
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S C₄ h Kr hK0 Th e`. Conclude with `h`.
+-/
 theorem block_estimate_of_base : C.EstBlockOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S C₄ h Kr hK0 Th e
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S jv hG hE Kr hK0 Th e w _`. Establish `hgram : ∀ ε, (S.mkData Kr hK0 Th e).gram ε 0 w [] [] = ∏ v, (S.pd v).RR ε 0 (w.1 v) [] []`. Introduce `ε`. Use `show S.gram ε 0 w.1 [] [] = _`. Simplify using `[HidaSetting.gram, HidaSetting.gramLoc, loc, nLoc, nAux]`.
+
+Establish `hsize : (S.mkData Kr hK0 Th e).wt w = ∏ v, S.sizeAt v (w.1 v)` using `rfl`. Establish `hpos : 0 < ∏ v, S.sizeAt v (w.1 v)`. Rewrite using `[← hsize]`. Conclude with `words_pos_of_parts E Wp Wq S hG Kr hK0 Th e w`. Establish `hlim : Tendsto (fun ε => ∏ v, (S.pd v).RR ε 0 (w.1 v) [] []) (𝓝[>] 0) (𝓝 (∏ v, ((S.sizeAt v (w.1 v) * jv v : ℝ) : ℂ)))` using `tendsto_finsetProd _ (fun v _ => hE w v)`.
+
+Establish `hre` using `((Complex.continuous_re.tendsto _).comp hlim).div_const (∏ v, S.sizeAt v (w.1 v))`. Establish `key : (∏ v, ((S.sizeAt v (w.1 v) * jv v : ℝ) : ℂ)).re / (∏ v, S.sizeAt v (w.1 v)) = ∏ v, jv v`. Rewrite using `[← Complex.ofReal_prod, Complex.ofReal_re, Finset.prod_mul_distrib, mul_div_cancel_left₀ _ hpos.ne']`. Rewrite `hre` using `[key]`. Repeatedly rewrite using `[hgram, hsize]`.
+
+Conclude with `hre`.
+-/
 theorem level_zero_estimate_product : C.EstEOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S jv hG hE Kr hK0 Th e w _
   have hgram : ∀ ε, (S.mkData Kr hK0 Th e).gram ε 0 w [] [] = ∏ v, (S.pd v).RR ε 0 (w.1 v) [] [] := by
@@ -125,6 +175,9 @@ theorem level_zero_estimate_product : C.EstEOfParts := by
   simp_rw [hgram, hsize]
   exact hre
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S H _ _ Vt hPG Kr hK0 Th e Y hY`. Use `filter_upwards [hPG Y hY] with ε hε p hp q hq _`. Conclude with `hε p hp q hq`.
+-/
 theorem cutoff_of_parts : C.CutoffOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S H _ _ Vt hPG Kr hK0 Th e Y hY
   filter_upwards [hPG Y hY] with ε hε p hp q hq _

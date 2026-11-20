@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.FrameEtale
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `haveI : Algebra.Smooth k A := hα`. Use `letI := (MvPolynomial.eval₂Hom α z).toAlgebra`. Use `haveI : IsScalarTower k (MvPolynomial (Fin n) k) A := IsScalarTower.of_algebraMap_eq fun r => (MvPolynomial.eval₂Hom_C α z r).symm`. Establish `hX (i) : algebraMap (MvPolynomial (Fin n) k) A (MvPolynomial.X i) = z i` using `MvPolynomial.eval₂Hom_X' α z i`.
+
+Conclude with `EtaleCoordJacobian.etale_of_basis k A (Fin n) b fun i => by rw [hX]; exact hb i`.
+-/
 theorem etale_eval₂Hom_of_basis {k A : Type} [CommRing k] [CommRing A] (α : k →+* A) (hα : α.Smooth)
     {n : ℕ} (z : Fin n → A) (b : Module.Basis (Fin n) A (Omega α)) (hb : ∀ i, b i = dFun α (z i)) :
     (MvPolynomial.eval₂Hom α z).Etale := by
@@ -28,6 +33,11 @@ theorem etale_eval₂Hom_of_basis {k A : Type} [CommRing k] [CommRing A] (α : k
     MvPolynomial.eval₂Hom_X' α z i
   exact EtaleCoordJacobian.etale_of_basis k A (Fin n) b fun i => by rw [hX]; exact hb i
 
+/- English proof (translation)
+Introduce `k _ Y q n hq V z hz`. Use `⟨hz.affine, ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `FrameBasis.exists_basis_of_isFrame k Y q n hq V z hz`. Use `haveI : Smooth q := SmoothOfRelativeDimension.smooth n q`. Establish `h` using `HasRingHomProperty.appLE (@Smooth) q inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V, hz.affine⟩ le_top`.
+
+Establish `h₁ : (DVR.FlatBC.algX q V).Smooth` using `RingHom.Smooth.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv h`. Conclude with `etale_eval₂Hom_of_basis (DVR.FlatBC.algX q V) h₁ z b hb`.
+-/
 theorem isEtCoord_of_isFrame : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (V : Y.Opens) (z : Fin n → Γ(Y, V)), IsFrame (dOn q z) → IsAffineOpen V ∧ IsEtCoord q V z := by
   intro k _ Y q n hq V z hz
   refine ⟨hz.affine, ?_⟩

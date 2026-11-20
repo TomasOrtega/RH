@@ -16,12 +16,18 @@ noncomputable section
 
 namespace GlobalTheory.MBLow.TanLift
 
+/- English proof (translation)
+The claim follows from `have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by rw [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst] simpa using IsLocalRing.isUnit_or_isUnit_one_sub_s …`.
+-/
 theorem isLocalRing_dualNumber (R : Type) [CommRing R] [IsLocalRing R] : IsLocalRing (DualNumber R) :=
   have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by
     rw [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst]
     simpa using IsLocalRing.isUnit_or_isUnit_one_sub_self x.fst
 
+/- English proof (translation)
+Use `show spMap _ ≫ spMap _ = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_over {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
     spMap (dualMap f) ≫ (epsR R).hom = spMap (algebraMap R' (DualNumber R')) ≫ spMap f := by
   show spMap _ ≫ spMap _ = _
@@ -29,6 +35,9 @@ theorem dualMap_over {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
   congr 2
   ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `show spMap _ ≫ spMap _ = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]`. Use `congr 2`.
+-/
 theorem redE_over (R : Type) [CommRing R] : redE R ≫ (epsR R).hom = 𝟙 _ := by
   show spMap _ ≫ spMap _ = _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Spec.map_id]
@@ -37,6 +46,19 @@ theorem redE_over (R : Type) [CommRing R] : redE R ≫ (epsR R).hom = 𝟙 _ := 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] {I : Ideal R} [IsAdicComplete I R]
   {D : DegData R I} {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Use `isLocalRing_dualNumber R` as an intermediate fact. Establish `: Module.Finite R (DualNumber R)` using `inferInstanceAs (Module.Finite R (R × R))`. Use `isAdicComplete_map_of_finite I (DualNumber R)` as an intermediate fact. Take `⟨g, hg⟩` from `IntegralGt.exists_gtPt U (φ := algebraMap R (DualNumber R)) y`.
+
+Establish `hz` using `fun e => hg e _ (thick R I e ≫ redE R) (eSec (thickObj R I e G)) ((UnitValue.eSec_fGl (G := G) e).trans ((congrArg (thick R I e ≫ ·) hy.symm).trans (Category.assoc _ _ _).symm))`. Establish `hb : redE R ≫ g.b.left = η[D.toPre.P.A].left` using `hom_ext_of_isHausdorff I fun e => (Category.assoc _ _ _).symm.trans ((hz e).1.symm.trans (UnitValue.eSec_pGl U e))`. Use `⟨g, fun e => ?_, ?_, hb⟩` and prove the remaining obligations. Establish `w : (spMap (dualMap (Ideal.Quotient.mk (I ^ (e + 1)))) ≫ y.left) ≫ G.hom = spMap (algebraMap _ (DualNumber (R ⧸ I ^ (e + 1)))) ≫ thick R I e`. Rewrite using `[Category.assoc, Over.w y]`.
+
+Conclude with `dualMap_over _`. Establish `h₁ : pullback.lift _ _ w ≫ (fstG I e G).left = _` using `pullback.lift_fst _ _ _`. Take `⟨h₂, h₃⟩` from `hg e _ _ _ h₁`. Use `⟨_, h₁, h₂, fun χ => corr_of_val hL fun z J hJ => ?_⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, Category.id_comp]`. Conclude with `h₃ χ z J hJ`. Take `⟨o, ho⟩` from `FormalValue.exists_isZero D.toPre (baseOver (Sp R))`. Establish `hob : o.b.left = redE R ≫ g.b.left`. Rewrite using `[hb, ho.1]`.
+
+Conclude with `(congrArg (· ≫ η[D.toPre.P.A].left) ((Category.comp_id _).symm.trans (Over.w (toUnit (baseOver (Sp R)))))).trans (Category.id_comp _)`. Establish `e₁` using `TorusCoord.comp_eq_of_left g.b o.b (redE R) (𝟙 _) (hob.symm.trans (Category.id_comp _).symm)`. Use `⟨o, ho, hob, fun χ => RedTotal.corr_of_levels I hL (fun W _ f => ?_) (o.isGen χ) (DVR.pullGen_isGen _ _ _ _ (g.isGen χ) _) fun e z J hJ => ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun k _ => congrArg (fun q => f q ^ DegPre.gtε k) ((e₁.1 χ k).trans ((Category.id_comp _).trans (congrFun (TorusCoord.gtφT_eq o.b χ) k).symm)).symm`. Use `((val_corr hJ (ho.2 χ) _).trans (val_one _)).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations.
+
+Use `Eq.trans ?_ ((hz e).2 χ z J hJ)` and prove the remaining obligations. Use `(val_corr hJ ((U.gt e).t_unit χ) (𝟙 _)).trans (val_one _)` as an intermediate fact. Rewrite `this` using `[val_pull hJ, Category.id_comp]`. Conclude with `this.symm`.
+-/
 theorem exists_tan (U : UnifPre I D A G) (y : epsR R ⟶ G) (hy : IsTangent y) :
     ∃ gm : GtPt D.toPre (epsR R), TanRel U y gm ∧ GtTan gm ∧ IsTangent gm.b := by
   have hL := D.toPre.P.isLB
@@ -74,6 +96,9 @@ theorem exists_tan (U : UnifPre I D A G) (y : epsR R ⟶ G) (hy : IsTangent y) :
       rw [val_pull hJ, Category.id_comp] at this
       exact this.symm
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ U y hy` and use `exists_tan U.toUnifPre y hy`.
+-/
 theorem main : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ y : epsR V ⟶ G, IsTangent y →
     ∃ gm : GtPt D.toPre (epsR V), TanRel U.toUnifPre y gm ∧ GtTan gm ∧ IsTangent gm.b :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ U y hy => exists_tan U.toUnifPre y hy

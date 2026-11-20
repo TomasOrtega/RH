@@ -23,6 +23,25 @@ namespace GlobalTheory.BCT.TraceBlocks
 section Assembly
 variable {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Establish `hR : ∀ k ∈ K', ∀ x, F (x * k) = F x` using `fun k hk x => (hF k hk x).2`. Establish `hmaps` using `GlobalTheory.T.heckeOperator_preserves_equivariantRightInvariant G H V ι ρ K K' F hF`. Unfold `trOn`. Rewrite using `[dif_pos hmaps]`. Use `haveI : Fintype (DoubleCoset.Quotient (ι.range : Set G) (K' : Set G)) := Fintype.ofFinite _`.
+
+Use `set T := levOp (rightReg ℂ G V) K K' F LinearMap.id with hT`. Use `set M := eqvM ι ρ K' with hM`. Set `x : DoubleCoset.Quotient (ι.range : Set G) (K' : Set G) → G` to `fun q => Quotient.out q`. Set `e : DoubleCoset.Quotient (ι.range : Set G) (K' : Set G) → (M →ₗ[ℂ] V)` to `fun q => (LinearMap.proj (R := ℂ) (φ := fun _ : G => V) (x q)).comp M.subtype`. Set `s : DoubleCoset.Quotient (ι.range : Set G) (K' : Set G) → (V →ₗ[ℂ] M)` to `fun q => (secM ι ρ K' (x q)).codRestrict M (fun v => GlobalTheory.T.equivariantDoubleCosetSection_mem_equivariant G H V ι ρ K' (x q) v)`.
+
+Establish `hid : ∑ q, s q ∘ₗ e q = LinearMap.id`. Use extensionality with `φ : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `GlobalTheory.T.equivariantFunction_eq_finsum_doubleCosetSections G H V ι hι ρ K' hdc hst φ.1 φ.2` as an intermediate fact. Rewrite `this` using `[finsum_eq_sum_of_fintype]`.
+
+Simplify `this` using `[s, e, x]`. Establish `h1 : ∀ φ : M, φ = ∑ q, s q (e q φ)` using `fun φ => by conv_lhs => rw [← LinearMap.id_apply (R := ℂ) φ, ← hid]`. Simplify using the standard rewrite rules. Use `haveI : Module.Finite ℂ M := by`. Use `Module.Finite.of_injective (LinearMap.pi e) fun a b hab => ?_` and prove the remaining obligations.
+
+Rewrite using `[h1 a, h1 b]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[show e q a = e q b from congrFun hab q]`. Establish `htr : LinearMap.trace ℂ M (T.restrict hmaps) = ∑ q, LinearMap.trace ℂ V (e q ∘ₗ T.restrict hmaps ∘ₗ s q)`. Establish `hsum : T.restrict hmaps ∘ₗ (∑ q, s q ∘ₗ e q) = ∑ q, (T.restrict hmaps ∘ₗ s q) ∘ₗ e q`.
+
+Use extensionality with `φ : 1`. Simplify using `[LinearMap.sum_apply, map_sum]`. Use `conv_lhs => rw [← LinearMap.comp_id (T.restrict hmaps), ← hid, hsum, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.trace_comp_comm']`.
+
+Rewrite using `[htr, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hfin` using `GlobalTheory.T.finite_rationalPoints_conj_in_support G H ι hι K' F hR hsupp (x q) (hst _)`. Establish `hsub : ∀ {β : Type} [AddCommMonoid β] (g : H → β), (∀ h, F ((x q)⁻¹ * ι h * x q) = 0 → g h = 0) → Function.support g ⊆ hfin.toFinset` using `fun g hg h hh => by`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`.
+
+Conclude with `fun h0 => hh (hg h h0)`. Establish `hA : e q ∘ₗ T.restrict hmaps ∘ₗ s q = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • ((stabCard ι K' (x q) : ℂ))⁻¹ • ∑ h ∈ hfin.toFinset, F ((x q)⁻¹ * ι h * x q) • ρ h`. Use extensionality with `v`. Use `GlobalTheory.T.heckeOperator_equivariantDoubleCosetSection_basePoint G H V ι hι ρ K K' F hR hsupp (x q) (hst _) hfin v` as an intermediate fact. Rewrite `this` using `[finsum_eq_sum_of_support_subset _ (hsub _ fun h h0 => by simp [h0])]`.
+
+Simplify `this` using `[e, s, LinearMap.restrict_apply, LinearMap.sum_apply]`. Rewrite using `[hA, LinearMap.map_smul, LinearMap.map_smul, map_sum, smul_eq_mul, smul_eq_mul, finsum_eq_sum_of_support_subset _ (hsub (fun h => F ((x q)⁻¹ * ι h * x q) * LinearMap.trace ℂ V (ρ h)) fun h h0 => by simp [h0])]`. Simplify using `only [map_smul, smul_eq_mul, x]`.
+-/
 theorem trOn_eqvM (ι : H →* G) (hι : Function.Injective ι) (ρ : Representation ℂ H V) (K K' : Subgroup G) (F : G → ℂ)
     (hF : ∀ k ∈ K', ∀ x, F (k * x) = F x ∧ F (x * k) = F x) (hsupp : {q : G ⧸ K' | F q.out ≠ 0}.Finite)
     (hdc : Finite (DoubleCoset.Quotient (ι.range : Set G) (K' : Set G)))
@@ -92,6 +111,13 @@ namespace GlobalTheory.BCT.TraceBlocks
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h1 : finGL E n (ratF E n a.1) = finGL E n (ratF E n b.1)`. Use `congrArg (fun k : finU E n => (k : UA E n).1) h` as an intermediate fact. Simplify `this` using `only [finPtHom_apply, FinPtLoc.finPt_eq]`. Establish `h2 : ratF E n a.1 = ratF E n b.1`.
+
+Use `congrArg (GeneralLinearGroup.map (pFin E)) h1` as an intermediate fact. Simplify using `using this`. Choose the witnesses or unpack the hypotheses as in `⟨w⟩ : Nonempty (HeightOneSpectrum (𝓞 E)) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField E)⟩⟩`.
+
+Use `haveI : Nontrivial (Af E) := (pLoc E w).domain_nontrivial`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `(algebraMap E (Af E)).injective (congrArg (fun g : GL (Fin n) (Af E) => g.val i j) h2)`.
+-/
 theorem finPtHom_injective : Function.Injective (finPtHom (E := E) (n := n)) := by
   intro a b h
   have h1 : finGL E n (ratF E n a.1) = finGL E n (ratF E n b.1) := by
@@ -109,6 +135,11 @@ theorem finPtHom_injective : Function.Injective (finPtHom (E := E) (n := n)) := 
   ext i j
   exact (algebraMap E (Af E)).injective (congrArg (fun g : GL (Fin n) (Af E) => g.val i j) h2)
 
+/- English proof (translation)
+Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Use `⟨γ.1, γ.2, ?_⟩` and prove the remaining obligations. Use `FinPtLoc.finPt_eq γ` as an intermediate fact.
+
+Conclude with `(congrArg Subtype.val this).symm`. Introduce and unpack `⟨g, hg, he⟩`. Use `⟨⟨g, hg⟩, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[finPtHom_apply, FinPtLoc.finPt_eq]`. Conclude with `he`.
+-/
 theorem finPtHom_range : (finPtHom (E := E) (n := n)).range = ratFinU E n := by
   ext k
   constructor
@@ -125,6 +156,13 @@ end GlobalTheory.BCT.TraceBlocks
 
 open GlobalTheory.BCT.TraceBlocks in
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n _ S hS lam K' hK f hf`. Establish `hV : GlobalTheory.BCT.TrKer.vecM S lam K' = eqvM finPtHom (wDual lam) (globLev S K')` using `rfl`. Establish `hT : GlobalTheory.BCT.TrKer.hopM S lam K' f = levOp (rightReg ℂ (finU E n) (Module.Dual ℂ (GlobalTheory.BCT.TrKer.Wsp lam))) (globLev S (KL n)) (globLev S K') (globFn S f) LinearMap.id` using `rfl`. Establish `hF` using `globFn_inv S K' f fun w => (hf.1 w).2`. Establish `hdc : Finite (DoubleCoset.Quotient ((finPtHom (E` using `E) (n := n)).range : Set (finU E n)) (globLev S K' : Set (finU E n))) := by`.
+
+Rewrite using `[finPtHom_range]`. Conclude with `GlobalTheory.T.finite_doubleCoset_definiteUnitaryRational_of_isOpen E n _ (GlobalTheory.T.isOpen_productOfLocalLevelsUnitary E hU n S K' hK)`. Establish `hst : ∀ x : finU E n, Finite ((finPtHom (E` using `E) (n := n)).range ⊓ (globLev S K').map (MulAut.conj x).toMonoidHom : Subgroup (finU E n)) := fun x => by`. Rewrite using `[finPtHom_range]`. Conclude with `GlobalTheory.T.finite_definiteUnitary_rational_inf_conj_level E hU n S hS K' hK x`.
+
+Rewrite using `[hV, hT, trOn_eqvM finPtHom finPtHom_injective (wDual lam) _ _ _ hF (GlobalTheory.T.finite_productOfLocalFunctionsUnitary_ne_zero E hU n S K' hK f hf) hdc hst]`. Establish `htr : ∀ γ : UE E n, LinearMap.trace ℂ _ (wDual lam γ) = LinearMap.trace ℂ _ (GlobalTheory.BCT.TrKer.wAt lam γ⁻¹)` using `fun γ => LinearMap.trace_transpose' _`. Simplify using `only [htr, finPtHom_apply, stabCard]`. Rewrite using `[finPtHom_range]`.
+-/
 theorem GlobalTheory.BCT.TrKer.trOn_vecM_hopM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → ∀ f : ∀ w : Pl E, UL n w → ℂ, IsTest (KL n) K' f → trOn (GlobalTheory.BCT.TrKer.vecM S lam K') (GlobalTheory.BCT.TrKer.hopM S lam K' f) = (((globLev S K').relIndex (globLev S (KL n)) : ℕ) : ℂ)⁻¹ * ∑ᶠ q : DoubleCoset.Quotient (ratFinU E n : Set (finU E n)) (globLev S K' : Set (finU E n)), ((Nat.card (ratFinU E n ⊓ (globLev S K').map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup (finU E n)) : ℂ))⁻¹ * ∑ᶠ γ : UE E n, globFn S f ((Quotient.out q)⁻¹ * finPt γ * Quotient.out q) * LinearMap.trace ℂ _ (GlobalTheory.BCT.TrKer.wAt lam γ⁻¹) := by
   intro E _ _ _ hU n _ S hS lam K' hK f hf
   have hV : GlobalTheory.BCT.TrKer.vecM S lam K' = eqvM finPtHom (wDual lam) (globLev S K') := rfl

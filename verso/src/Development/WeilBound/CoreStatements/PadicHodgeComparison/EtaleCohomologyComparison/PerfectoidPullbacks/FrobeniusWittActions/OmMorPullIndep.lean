@@ -9,6 +9,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers
 
 namespace CrystallineSemistableComparison.IterG
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem omMor_pull_indep {b b' : Base} {L : b.Fun} {L' : b'.Fun} {σ : b.R →+* b'.R} (mm : GlobalTheory.LogCris.Mor L L' σ)
     {Λ : Type} [CommRing Λ] {c : Λ →+* b.R} {c' : Λ →+* b'.R} (σ₀ σ₁ : Λ →+* Λ) (h₀ : ∀ a, σ (c a) = c' (σ₀ a))
     (h₁ : ∀ a, σ (c a) = c' (σ₁ a)) (j : ℕ) (x : CH.H (B.OM L c) j) :
@@ -16,6 +19,9 @@ theorem omMor_pull_indep {b b' : Base} {L : b.Fun} {L' : b'.Fun} {σ : b.R →+*
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem pull_id {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) (n : ℕ) (x : CH.H F n) :
     (CH.Mor.id F).pull n x = x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -27,6 +33,9 @@ def PtN (P : F.ptK κ ⟶ F.ptK κ) : ℕ → (F.ptK κ ⟶ F.ptK κ)
   | 0 => 𝟙 _
   | N + 1 => PtN P N ≫ P
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => exact (DPMorphism.id _).isDPMorphism`. Consider the case `succ N ih`. Rewrite using `[pow_succ]`. Conclude with `IsDPMorphism.comp _ ih dφ`.
+-/
 theorem dpPow {φb : b.R →+* b.R} (dφ : IsDPMorphism b.γ b.γ φb) (N : ℕ) : IsDPMorphism b.γ b.γ (φb ^ N) := by
   induction N with
   | zero => exact (DPMorphism.id _).isDPMorphism
@@ -34,6 +43,9 @@ theorem dpPow {φb : b.R →+* b.R} (dφ : IsDPMorphism b.γ b.γ φb) (N : ℕ)
     rw [pow_succ]
     exact IsDPMorphism.comp _ ih dφ
 
+/- English proof (translation)
+Proceed by induction on `N generalizing r with`. Consider the case `zero => rfl`. Consider the case `succ N ih`. Express the relevant statement in the definitionally equal form `(P.app B₀ ((PtN P N).app B₀ y)).1.1 (Ideal.Quotient.mk _ r) = _`. Rewrite using `[str, ih, pow_succ, RingHom.mul_def, RingHom.comp_apply]`.
+-/
 theorem strN {φb : b.R →+* b.R} (P : F.ptK κ ⟶ F.ptK κ)
     (str : ∀ (B₀ : CommRingCat.{0}) (y : (F.ptK κ).obj B₀) (r : b.R),
       (P.app B₀ y).1.1 (Ideal.Quotient.mk _ r) = y.1.1 (Ideal.Quotient.mk _ (φb r))) (N : ℕ)
@@ -45,6 +57,9 @@ theorem strN {φb : b.R →+* b.R} (P : F.ptK κ ⟶ F.ptK κ)
     change (P.app B₀ ((PtN P N).app B₀ y)).1.1 (Ideal.Quotient.mk _ r) = _
     rw [str, ih, pow_succ, RingHom.mul_def, RingHom.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `N generalizing a with`. Consider the case `zero => rfl`. Consider the case `succ N ih`. Rewrite using `[pow_succ, pow_succ, RingHom.mul_def, RingHom.mul_def, RingHom.comp_apply, RingHom.comp_apply, hc, ih]`.
+-/
 theorem hcN {Λ : Type} [CommRing Λ] {c : Λ →+* b.R} {φb : b.R →+* b.R} {σ₀ : Λ →+* Λ} (hc : ∀ a, φb (c a) = c (σ₀ a))
     (N : ℕ) (a : Λ) : (φb ^ N) (c a) = c ((σ₀ ^ N) a) := by
   induction N generalizing a with
@@ -70,6 +85,13 @@ def mor1 {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) {φb : b.R →+* b.R} (dφ
     {σ₀ : Λ →+* Λ} (hc : ∀ a, φb (c a) = c (σ₀ a)) : CH.Mor (B.OM (F.cr b ht κ) c) (B.OM (F.cr b ht κ) c) σ₀ :=
   B.omMor (B.crMor (F := F) (F' := F) (ht := ht) (ht' := ht) φb rfl dφ P str) σ₀ hc
 
+/- English proof (translation)
+Proceed by induction on `N generalizing x with`. Consider the case `zero`. Establish `h0 : ∀ a, (φb ^ 0) (c a) = c (RingHom.id Λ a)` using `fun _ => rfl`. Use `Eq.symm ((omMor_pull_indep _ _ (RingHom.id _) _ h0 j x).trans ?_)` and prove the remaining obligations. Use `(cr_pull_eq (B.omMor (B.crMor (F := F) (F' := F) (ht := ht) (ht' := ht) (φb ^ 0) rfl (dpPow dφ 0) (PtN P 0) (strN P str 0)) (RingHom.id _) h0) (CH.Mor.id _) (fun T => crHom (RingHom.id _) (fun _ => rfl) (DPMorphism.id _).isDPMorphism fun h => pt_id _ h _) (fun _ _ => rfl) (fun _ …` and prove the remaining obligations.
+
+Conclude with `pull_id _ j x`. Consider the case `succ N ih`. Rewrite using `[Function.iterate_succ_apply, ih]`. Establish `: RingHomCompTriple σ₀ (σ₀ ^ N) (σ₀ ^ (N + 1))` using `⟨by rw [pow_succ, RingHom.mul_def]⟩`. Use `(pull_pull (σ₀ ^ (N + 1)) (mor1 ht c dφ P str hc) (morN ht c dφ P str hc N) j x).trans ?_` and prove the remaining obligations.
+
+Conclude with `cr_pull_eq ((mor1 ht c dφ P str hc).comp (σ'' := σ₀ ^ (N + 1)) (morN ht c dφ P str hc N)) (morN ht c dφ P str hc (N + 1)) (fun T => crHom (RingHom.id _) (fun r => congrArg T.i (by rw [pow_succ, RingHom.mul_def, RingHom.comp_apply])) (DPMorphism.id _).isDPMorphism fun h => pt_id _ …`.
+-/
 theorem iter_pull {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) {φb : b.R →+* b.R} (dφ : IsDPMorphism b.γ b.γ φb)
     (P : F.ptK κ ⟶ F.ptK κ) (str : ∀ (B₀ : CommRingCat.{0}) (y : (F.ptK κ).obj B₀) (r : b.R),
       (P.app B₀ y).1.1 (Ideal.Quotient.mk _ r) = y.1.1 (Ideal.Quotient.mk _ (φb r)))
@@ -95,6 +117,9 @@ theorem iter_pull {Λ : Type} [CommRing Λ] (c : Λ →+* b.R) {φb : b.R →+* 
         (DPMorphism.id _).isDPMorphism fun h => pt_id _ h _)
       (fun _ _ => rfl) (fun _ _ => rfl) j x
 
+/- English proof (translation)
+Use `(pull_pull σ₀ (B.omMor (B.crMor (F := F) (F' := F) (ht := ht) (ht' := ht) (κ := κ₂) (κ' := κ₁) σb rfl dσ ptB strB) σ₀ hc) (B.omMor (B.crMor (F := F) (F' := F) (ht := ht) (ht' := ht) (κ := κ₁) (κ' := κ₂) (RingHom.id b.R) rfl dA ptA strA) (RingHom.id Λ) hA) j x).trans ?_` and prove the remaining obligations. Conclude with `cr_pull_eq ((B.omMor (B.crMor (F := F) (F' := F) (ht := ht) (ht' := ht) (κ := κ₂) (κ' := κ₁) σb rfl dσ ptB strB) σ₀ hc).comp (σ'' := σ₀) (B.omMor (B.crMor (F := F) (F' := F) (ht := ht) (ht' := ht) (κ := κ₁) (κ' := κ₂) (RingHom.id b.R) rfl dA ptA strA) (RingHom.id Λ) hA)) (B.omMor …`.
+-/
 theorem comp_eq {κ₁ κ₂ : O →+* b.R ⧸ b.I} {Λ : Type} [CommRing Λ] (c : Λ →+* b.R)
     (ptA : F.ptK κ₂ ⟶ F.ptK κ₁) (dA : IsDPMorphism b.γ b.γ (RingHom.id b.R))
     (strA : ∀ (B₀ : CommRingCat.{0}) (y : (F.ptK κ₂).obj B₀) (r : b.R),

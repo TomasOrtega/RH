@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SqTop.SqField
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h`. Take `⟨a', ha'⟩` from `h'`. Use `⟨max a a', fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h1⟩` from `ha ε CF (le_of_max_le_left hCF)`. Take `⟨C1, x1, h2⟩` from `ha' ε CF (le_of_max_le_right hCF)`.
+
+Use `⟨max C0 C1, max x0 x1, fun C hC D large₂ he hx hR T Lc μ hμ G => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `h1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ hμ G`. Conclude with `h2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ hμ G`.
+-/
 theorem gBig_and {Q Q' : GP} (h : GBig @Q) (h' : GBig @Q') :
     GBig fun {_ _ _ _} G μ C x b => Q G μ C x b ∧ Q' G μ C x b := by
   obtain ⟨a, ha⟩ := h
@@ -29,6 +34,17 @@ theorem gBig_and {Q Q' : GP} (h : GBig @Q) (h' : GBig @Q') :
   · exact h1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ hμ G
   · exact h2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ hμ G
 
+/- English proof (translation)
+Establish `hco : ∀ h T, P.coord h T ∈ Formalism.MainNotions.TaylorLogMetric.Qbar` using `fun h T => by`. Take `⟨p, hp, hi⟩` from `GlobalTheory.T.exists_prime_isIntegralOverStandardLatticeStabiliser D P.d h`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Conclude with `((hC δ t0 p Q le_rfl P hP).2.2 h hi T).1`. Establish `hsq : ∀ g, ((P.sq g : ℝ) : ℂ) ∈ Formalism.MainNotions.TaylorLogMetric.Qbar` using `fun g => by`.
+
+Unfold `GlobalTheory.NormSum.Pair.sq`. Rewrite using `[Complex.ofReal_sum]`. Use `sum_mem fun T _ => ?_` and prove the remaining obligations. Establish `e : ((‖P.coord g T‖ ^ 2 : ℝ) : ℂ) = P.coord g T * (starRingEnd ℂ) (P.coord g T)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (hco g T) (mem_algebraicClosure_iff.2 ((mem_algebraicClosure_iff.1 (hco g T)).algHom (starRingEnd ℂ).toRatAlgHom))`. Establish `hterm : ∀ h : GlobalTheory.NormSum.Cls D P.d P.J, (((((GlobalTheory.NormSum.gam D P.J h.out : ℝ))⁻¹ * P.sq h.out : ℝ)) : ℂ) ∈ Formalism.MainNotions.TaylorLogMetric.Qbar` using `fun h => by`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_inv, Complex.ofReal_natCast]`. Conclude with `mul_mem (inv_mem (natCast_mem _ _)) (hsq _)`.
+
+Use `mem_algebraicClosure_iff.1 ?_` and prove the remaining obligations. Unfold `GlobalTheory.NormSum.Pair.norm`. Distinguish the cases in `hs : (Function.support fun h : GlobalTheory.NormSum.Cls D P.d P.J => ((GlobalTheory.NormSum.gam D P.J h.out : ℝ))⁻¹ * P.sq h.out).Finite`. Rewrite using `[finsum_eq_sum _ hs, Complex.ofReal_sum]`. Conclude with `sum_mem fun h _ => hterm h`.
+
+Rewrite using `[finsum_of_infinite_support hs, Complex.ofReal_zero]`. Conclude with `zero_mem _`.
+-/
 theorem isAlgebraic_norm {D : D7} {δ t0 : ℂ} {Q N : ℕ} {B : ℝ} {del : ℕ → ℝ} (hC : GlobalTheory.NormSum.CoordInt D N B Q del)
     (P : GlobalTheory.NormSum.Pair D ⊤ δ t0 Q) (hP : P.Small N B) : IsAlgebraic ℚ ((P.norm : ℝ) : ℂ) := by
   have hco : ∀ h T, P.coord h T ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := fun h T => by
@@ -57,6 +73,11 @@ theorem isAlgebraic_norm {D : D7} {δ t0 : ℂ} {Q N : ℕ} {B : ℝ} {del : ℕ
   · rw [finsum_of_infinite_support hs, Complex.ofReal_zero]
     exact zero_mem _
 
+/- English proof (translation)
+Establish `hC : (GlobalTheory.CMVal.C0 E d (2 * s) κ : ℂ) ≠ 0` using `by exact_mod_cast (GlobalTheory.CMVal.cmValueConst_pos E hd (by omega) κ).ne'`. Establish `hΔ : GlobalTheory.CMVal.latDisc Λ ^ Formalism.PairingDivisionLocalBalance.wtM (2 * s) κ ≠ 0` using `pow_ne_zero _ (GlobalTheory.CMVal.latDisc_ne_zero Λ)`. Establish `e : (y / x) ^ 12 = GlobalTheory.CMVal.beta E d s κ Λ y / GlobalTheory.CMVal.beta E d s κ Λ x`. Unfold `GlobalTheory.CMVal.beta`. Clear the denominators using the available nonvanishing facts.
+
+Use `IsAlgebraic.of_pow (n := 12) (by norm_num) ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `mem_algebraicClosure_iff.1 (div_mem (mem_algebraicClosure_iff.2 hb) (mem_algebraicClosure_iff.2 ha))`.
+-/
 theorem isAlgebraic_div_of_beta {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {d s : ℕ} (hd : 0 < d)
     (hs : 1 ≤ s) (κ : I → ℕ) (Λ : PeriodPair) {x y : ℂ} (hx : x ≠ 0)
     (ha : IsAlgebraic ℚ (GlobalTheory.CMVal.beta E d s κ Λ x)) (hb : IsAlgebraic ℚ (GlobalTheory.CMVal.beta E d s κ Λ y)) :
@@ -70,6 +91,21 @@ theorem isAlgebraic_div_of_beta {E : Type} [Field E] [NumberField E] {I : Type} 
   rw [e]
   exact mem_algebraicClosure_iff.1 (div_mem (mem_algebraicClosure_iff.2 hb) (mem_algebraicClosure_iff.2 ha))
 
+/- English proof (translation)
+Take `⟨C, -, hI⟩` from `hI`. Establish `hN : 1 ≤ bigN D` using `by have := D.R.m_add_three_le_k; unfold bigN; omega`. Take `⟨-, del, -, hco, -⟩` from `hI D (levQ G.pl) (bigN D) (maxWt D sc.cGap) (max 1 (Real.log D.host.rdE)) hQ hN (by exact_mod_cast le_max_left _ _) (le_max_left _ _) (le_max_right _ _)`. Choose the witnesses or unpack the hypotheses as in `⟨Sn, hSn, hSa, hSb⟩ : ∃ Sn : Set ℂ, Sn.Finite ∧ (∀ z ∈ Sn, IsAlgebraic ℚ z) ∧ (GlobalTheory.BigTop.Fun.BottomsWith G μ₀ (fun _ => True) → GlobalTheory.BigTop.Fun.BottomsWith G μ₀ (· ∈ Sn)) := by`. Distinguish the cases in `hb : GlobalTheory.BigTop.Fun.BottomsWith G μ₀ (fun _ => True)`.
+
+Take `⟨δ, t0, hb⟩` from `hb choose P P' hP using hb`. Use `⟨Set.range (fun ij => ((P ij).norm : ℂ)) ∪ Set.range (fun ij => ((P' ij).norm : ℂ)), (Set.finite_range _).union (Set.finite_range _), ?_, fun _ => ⟨δ, t0, fun ij => ⟨P ij, P' ij, (hP ij).1, Or.inl ⟨ij, rfl⟩, Or.inr ⟨ij, rfl⟩⟩⟩⟩` and prove the remaining obligations. Introduce and unpack `z (⟨ij, rfl⟩ | ⟨ij, rfl⟩)`. Conclude with `isAlgebraic_norm hco _ (hS δ t0 _ _ _ _ _ _ _ (hP ij).1).1`. Conclude with `isAlgebraic_norm hco _ (hS δ t0 _ _ _ _ _ _ _ (hP ij).1).2`.
+
+Conclude with `⟨∅, Set.finite_empty, fun z hz => absurd hz (Set.notMem_empty z), fun h => absurd h hb⟩`. Set `St : Set ℂ` to `⋃ (i : Fin D.R.m) (j : Fin D.R.m) (s ∈ Set.Icc 1 (halfRank D i j)) (c : Bool), {z | ∃ x y, IsTor G i j s (nuH G μ₀ i j) x ∧ IsTor G i j s (nuH G μ₀ i j * delOf Lc c) y ∧ z = y / x}`. Establish `hSt : St.Finite`. Use `Set.finite_iUnion fun i => Set.finite_iUnion fun j => (Set.finite_Icc _ _).biUnion fun s _ => Set.finite_iUnion fun c => Set.Subsingleton.finite ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, y, hx, hy, rfl⟩ _ ⟨x', y', hx', hy', rfl⟩`.
+
+Rewrite using `[hx.2.unique hx'.2, hy.2.unique hy'.2]`. Establish `hd : 0 < D.host.d` using `D.host.hypOdd.2.1.pos`. Take `⟨Λ, hΛ⟩` from `hΛ`. Establish `hSta : ∀ z ∈ St, IsAlgebraic ℚ z`. Introduce `z hz`.
+
+Simplify using `only [St, Set.mem_iUnion, Set.mem_setOf_eq] at hz`. Take `⟨i, j, s, ⟨h1, h2⟩, c, x, y, hx, hy, rfl⟩` from `hz`. Take `⟨x0, hx0, hx00, ha⟩` from `hT i j s h1 h2 none`. Take `⟨x1, hx1, -, hb⟩` from `hT i j s h1 h2 (some c)`. Rewrite using `[hx.2.unique hx0.2, hy.2.unique hx1.2]`.
+
+Conclude with `isAlgebraic_div_of_beta hd h1 _ Λ hx00 (ha Λ hΛ) (hb Λ hΛ)`. Set `S : Set ℂ` to `Sn ∪ St`. Use `haveI : Finite S := (hSn.union hSt).to_subtype`. Establish `hmem : ∀ z ∈ S, z ∈ Set.range (algebraMap (IntermediateField.adjoin ℚ S) ℂ)` using `fun z hz => ⟨⟨z, IntermediateField.subset_adjoin ℚ S hz⟩, rfl⟩`. Use `⟨IntermediateField.adjoin ℚ S, IntermediateField.finiteDimensional_adjoin fun z hz => (Or.elim hz (hSa z) (hSta z)).isIntegral, ⟨fun h => ?_, fun i j s c x y h1 h2 hx hy => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨δ, t0, b⟩` from `hSb h`. Conclude with `⟨δ, t0, fun ij => let ⟨P, P', a, b1, b2⟩ := b ij; ⟨P, P', a, hmem _ (Or.inl b1), hmem _ (Or.inl b2)⟩⟩`. Use `hmem _ (Or.inr ?_)` and prove the remaining obligations. Simplify using `only [St, Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨i, j, s, ⟨h1, h2⟩, c, x, y, hx, hy, rfl⟩`.
+-/
 theorem sqIn_of {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) (μ₀ : T)
     (hI : GlobalTheory.NormSum.IntSt) (hΛ : ∃ Λ, GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice D.host.d Λ)
     (hT : ∀ (i j : Fin D.R.m) (s : ℕ), 1 ≤ s → s ≤ halfRank D i j → ∀ c, ∃ x, IsTor G i j s (fam G μ₀ i j c) x ∧ x ≠ 0 ∧

@@ -89,12 +89,24 @@ def LeafStep : Prop := Base → ∀ (a b : ℕ) [NeZero a] [NeZero b] (k : Type)
   ∀ {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Spec (CommRingCat.of k)) [IsProper p] (d : ℕ) [SmoothOfRelativeDimension d p],
   PD a X d → PD b X d → PD (a * b) X d
 
+/- English proof (translation)
+Establish `hs : ∀ n i : ℤ, Subsingleton (Ht 1 (sch.obj X) n i)` using `fun n i => Module.subsingleton (ZMod 1) _`. Use `hs (2 * d) d` as an intermediate fact. Set `_ : Unique (Ht 1 (sch.obj X) (2 * d) d)` to `uniqueOfSubsingleton 0`. Use `⟨AddEquiv.ofUnique, fun n i φ => ⟨0, fun b => Subsingleton.elim _ _, fun y _ => (hs n i).elim _ _⟩⟩` and prove the remaining obligations.
+-/
 theorem pd_one (X : Scheme.{0}) (d : ℕ) : PD 1 X d := by
   have hs : ∀ n i : ℤ, Subsingleton (Ht 1 (sch.obj X) n i) := fun n i => Module.subsingleton (ZMod 1) _
   have := hs (2 * d) d
   let _ : Unique (Ht 1 (sch.obj X) (2 * d) d) := uniqueOfSubsingleton 0
   refine ⟨AddEquiv.ofUnique, fun n i φ => ⟨0, fun b => Subsingleton.elim _ _, fun y _ => (hs n i).elim _ _⟩⟩
 
+/- English proof (translation)
+Introduce `a1 a2 a3 a4 a5 a7 a8 a9 a10 a11 b1 b2 b3 b4 b5 b7 c1 c2 c3 c4 c5 d1 d2 d3 e1 e2 e3 e4 e6`. Establish `B : Base` using `⟨a1, a2, a3, a4, a5, hA.1, hA.2.1, hA.2.2.1, hA.2.2.2, a7, a8, a9, a10, a11, b1, b2, b3, b4, b5, b7, c1, c2, c3, c4, c5, d1, d2, d3, e1, e2, e3, e4, e6⟩`. Introduce `q hq k _ _ hu X _ p _ d _`. Express the relevant statement in the definitionally equal form `PD q X d`. Establish `hq0` using `hq.out`.
+
+Use `clear hq`. Proceed by induction on `q using Nat.recOnMul with`. Consider the case `zero => exact absurd rfl hq0`. Consider the case `one => exact pd_one X d`. Consider the case `prime l hl => exact hP B l hl k hu p d`.
+
+Consider the case `mul a b ha hb`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul hq0`. Establish `hb0 : b ≠ 0` using `right_ne_zero_of_mul hq0`. Establish `: NeZero a` using `⟨ha0⟩`. Establish `: NeZero b` using `⟨hb0⟩`.
+
+Establish `hu' : IsUnit ((a : k) * (b : k))` using `by simpa using hu`. Conclude with `hS B a b k hu p d (ha (isUnit_of_mul_isUnit_left hu') ha0) (hb (isUnit_of_mul_isUnit_right hu') hb0)`.
+-/
 theorem goal_of (hA : CupUnitChernKummerLaws) (hP : EtalePrime) (hS : LeafStep) : LateralTheory.E.EtaleChapterEEight := by
   intro a1 a2 a3 a4 a5 a7 a8 a9 a10 a11 b1 b2 b3 b4 b5 b7 c1 c2 c3 c4 c5 d1 d2 d3 e1 e2 e3 e4 e6
   have B : Base := ⟨a1, a2, a3, a4, a5, hA.1, hA.2.1, hA.2.2.1, hA.2.2.2, a7, a8, a9, a10, a11, b1, b2, b3, b4, b5, b7,

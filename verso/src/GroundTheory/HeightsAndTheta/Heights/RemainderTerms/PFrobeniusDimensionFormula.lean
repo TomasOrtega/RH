@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open Comb
 
+/- English proof (translation)
+Introduce `m lam hlam`. Establish `hsum : ∑ i, (lam i + stair m i) = ∑ i, stair m i + ∑ i, lam i`. Rewrite using `[Finset.sum_add_distrib, add_comm]`. Establish `e` using `h3 m (∑ i, lam i) (fun i => lam i + stair m i) hsum`. Rewrite `e` using `[h2 m (∑ i, lam i) lam hlam]`.
+
+Rewrite using `[h1 m lam hlam, e]`. Simplify using `only [stair]`.
+-/
 theorem FrobeniusDimensionFormula.proof (h1 : CombTableEqWords.Statement)
     (h2 : CombCfAtStair.Statement) (h3 : CombCfVandermondePsumOne.Statement) :
     FrobeniusDimensionFormula.Statement := by

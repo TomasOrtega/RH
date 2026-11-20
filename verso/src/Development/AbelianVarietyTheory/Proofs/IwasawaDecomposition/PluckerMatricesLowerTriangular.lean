@@ -17,6 +17,11 @@ namespace GlobalTheory.FlagAmple.PlkLoc.LowerTri
 
 open GlobalTheory.FlagEmb
 
+/- English proof (translation)
+Use `⟨A * B⁻¹, by rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.mul_one], ?_⟩` and prove the remaining obligations. Introduce `i l hil`. Take `⟨c, hc, hA⟩` from `h i`. Establish `hrow : (A * B⁻¹) i = c`. Establish `h1 : (A * B⁻¹) i = Matrix.vecMul (A i) B⁻¹`.
+
+Use extensionality with `k`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Rewrite using `[h1, hA, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hB, Matrix.vecMul_one]`. Rewrite using `[hrow]`. Conclude with `hc l hil`.
+-/
 theorem exists_lower_of_rows {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) (hB : IsUnit B.det)
     (h : ∀ i : Fin n, ∃ c : Fin n → K, (∀ l, i < l → c l = 0) ∧ A i = Matrix.vecMul c B) :
     ∃ L : Matrix (Fin n) (Fin n) K, A = L * B ∧ ∀ i l, i < l → L i l = 0 := by
@@ -31,6 +36,21 @@ theorem exists_lower_of_rows {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n
   rw [hrow]
   exact hc l hil
 
+/- English proof (translation)
+Establish `hn : n - 1 + 1 = n` using `Nat.sub_add_cancel (by omega)`. Establish `hind : LinearIndependent K (what₂ B ⟨(i : ℕ) + 1, h⟩)`. Establish `h0` using `Matrix.linearIndependent_rows_of_isUnit ((Matrix.isUnit_iff_isUnit_det B).2 hB)`. Establish `h1 : LinearIndependent K (fun l : Fin ((i : ℕ) + 1) => B (Fin.castLE h.le l))` using `h0.comp _ (Fin.castLE_injective _)`. Establish `h2` using `h1.map' (LinearEquiv.funCongrLeft K K (finCongr hn)).toLinearMap (LinearEquiv.ker _)`.
+
+Establish `he : what₂ B ⟨(i : ℕ) + 1, h⟩ = (LinearEquiv.funCongrLeft K K (finCongr hn)).toLinearMap ∘ fun l => B (Fin.castLE h.le l)`. Use function extensionality and compare the values at `l c`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `h2`.
+
+Take `⟨_, hs⟩` from `((GlobalTheory.FlagEmb.PlkSpan.main K (n - 1) ((i : ℕ) + 1) (what₂ B ⟨(i : ℕ) + 1, h⟩) (what₂ A ⟨(i : ℕ) + 1, h⟩)).2 hind).2 hp`. Establish `hmem : what₂ A ⟨(i : ℕ) + 1, h⟩ (Fin.last i) ∈ Submodule.span K (Set.range (what₂ B ⟨(i : ℕ) + 1, h⟩))` using `hs ▸ Submodule.subset_span ⟨_, rfl⟩`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hmem`. Use `⟨fun l => if hl : (l : ℕ) < (i : ℕ) + 1 then d ⟨l, hl⟩ else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `l hl`.
+
+Establish `: ¬ ((l : ℕ) < (i : ℕ) + 1)`. Use `Fin.lt_def.1 hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Use function extensionality and compare the values at `k`.
+
+Establish `hk` using `congrFun hd (Fin.cast hn.symm k)`. Simplify using `only [what₂, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Fin.cast_cast, Fin.cast_eq_self] at hk`. Establish `hl : Fin.castLE h.le (Fin.last (i : ℕ)) = i` using `by ext; simp`. Rewrite `hk` using `[hl]`. Rewrite using `[← hk, Matrix.vecMul, dotProduct]`.
+
+Use `Fintype.sum_of_injective (Fin.castLE h.le) (Fin.castLE_injective _) _ _ ?_ ?_` and prove the remaining obligations. Introduce `l hl'`. Establish `: ¬ ((l : ℕ) < (i : ℕ) + 1)` using `fun hlt => hl' ⟨⟨l, hlt⟩, by ext; simp⟩`. Simplify using `[this]`. Introduce `c`.
+
+Establish `hc : ((Fin.castLE h.le c : Fin n) : ℕ) < (i : ℕ) + 1` using `by simpa using c.2`. Simplify using `only [dif_pos hc]`. Both sides reduce to the same expression.
+-/
 theorem row_mem_span {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) (hB : IsUnit B.det) (i : Fin n)
     (h : (i : ℕ) + 1 < n)
     (hp : ∃ r : Kˣ, plk (what₂ A ⟨(i : ℕ) + 1, h⟩) id = (r : K) • plk (what₂ B ⟨(i : ℕ) + 1, h⟩) id) :
@@ -73,6 +93,13 @@ theorem row_mem_span {K : Type} [Field K] {n : ℕ} (A B : Matrix (Fin n) (Fin n
       simp only [dif_pos hc]
       rfl
 
+/- English proof (translation)
+Introduce `D A N j S K _ M M' _ hM' hp τ`. Use `exists_lower_of_rows (M τ) (M' τ) (hM' τ) fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) + 1 < S.Dw.mult τ`. Take `⟨u, hu⟩` from `hp ⟨τ, ⟨⟨(i : ℕ) + 1, h⟩, Nat.succ_pos _⟩⟩`. Conclude with `row_mem_span (M τ) (M' τ) (hM' τ) i h ⟨u, hu⟩`.
+
+Use `⟨Matrix.vecMul (M τ i) (M' τ)⁻¹, fun l hl => ?_, ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Establish `h1` using `Fin.lt_def.1 hl`. Establish `h2` using `l.2`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (hM' τ), Matrix.vecMul_one]`.
+-/
 theorem eq_lower_mul_of_plk_prop : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (K : Type) [Field K] (M M' : GlobalTheory.FlagBundle.Mat S.Dw.mult K), (∀ τ, IsUnit (M τ).det) → (∀ τ, IsUnit (M' τ).det) → (∀ x : GlobalTheory.FlagAmple.Step S.Dw, ∃ u : Kˣ, GlobalTheory.FlagAmple.PlkLoc.plkFn M x = (u : K) • GlobalTheory.FlagAmple.PlkLoc.plkFn M' x) → ∀ τ, ∃ L : Matrix (Fin (S.Dw.mult τ)) (Fin (S.Dw.mult τ)) K, M τ = L * M' τ ∧ ∀ i l, i < l → L i l = 0 := by
   intro D A N j S K _ M M' _ hM' hp τ
   refine exists_lower_of_rows (M τ) (M' τ) (hM' τ) fun i => ?_

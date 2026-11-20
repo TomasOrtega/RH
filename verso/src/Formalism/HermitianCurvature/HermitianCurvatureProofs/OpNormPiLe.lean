@@ -14,20 +14,37 @@ section norms
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Unfold `G.psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_gpsi (β w : ℂ) : ‖G.psi β w‖ = 1 := by
   unfold G.psi; rw [mul_comm]; exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Unfold `U.psiStar U.psiH`. Rewrite using `[norm_mul, norm_mul, norm_star, norm_psi, norm_psi, norm_gpsi, one_mul, one_mul]`.
+-/
 theorem norm_psiStar (σ : Equiv.Perm (Fin p)) (z z' : Fin (2 * (p + 0 + ρ) + k + 1) → ℂ) (ξ : U.Xi k p 0 ρ σ) :
     ‖U.psiStar k ρ σ z z' ξ‖ = 1 := by
   unfold U.psiStar U.psiH
   rw [norm_mul, norm_mul, norm_star, norm_psi, norm_psi, norm_gpsi, one_mul, one_mul]
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [Bs.π_unitary h hh v, one_mul])`.
+-/
 theorem opNorm_pi_le (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h ∈ UWset k ρ Bs.z) : ‖Bs.π h‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [Bs.π_unitary h hh v, one_mul])
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [Bs.π'_unitary h hh v, one_mul])`.
+-/
 theorem opNorm_pi'_le (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h ∈ UWset k ρ Bs.z') : ‖Bs.π' h‖ ≤ 1 :=
   ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun v => by rw [Bs.π'_unitary h hh v, one_mul])
 
+/- English proof (translation)
+Use `le_antisymm ((ContinuousLinearMap.opNorm_comp_le _ _).trans (by simpa using mul_le_mul_of_nonneg_right (opNorm_pi_le Bs hh) (norm_nonneg A))) ?_` and prove the remaining obligations. Establish `hi : h⁻¹ ∈ UWset k ρ Bs.z` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z).inv_mem h hh`. Establish `hu : IsUnit h.det` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bs.z).unit h hh`. Establish `e : A = (Bs.π h⁻¹).comp ((Bs.π h).comp A)`. Rewrite using `[← ContinuousLinearMap.comp_assoc, ← Bs.π_rep.2 _ hi _ hh, Matrix.nonsing_inv_mul _ hu, Bs.π_rep.1]`.
+
+Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_pi_comp (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h ∈ UWset k ρ Bs.z) (A : Wq →L[ℂ] Wp) :
     ‖(Bs.π h).comp A‖ = ‖A‖ := by
   refine le_antisymm ((ContinuousLinearMap.opNorm_comp_le _ _).trans
@@ -42,6 +59,11 @@ theorem norm_pi_comp (Bs : B.RealPlaceData k ρ Wp Wq) {h : B.Mat k ρ} (hh : h 
     _ ≤ 1 * ‖(Bs.π h).comp A‖ := mul_le_mul_of_nonneg_right (opNorm_pi_le Bs hi) (norm_nonneg _)
     _ = ‖(Bs.π h).comp A‖ := one_mul _
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `hP`. Establish `cG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k ρ`. Unfold `B.sgs`. Establish `g1 : (Matrix.of P.1.1 : B.Mat k ρ) ∈ B.GV k ρ` using `h1.1`. Establish `g2 : (Matrix.of P.1.2 : B.Mat k ρ) ∈ B.GV k ρ` using `h2.1`.
+
+Establish `g3 : (Matrix.of P.2.1 : B.Mat k ρ) ∈ B.GV k ρ` using `h3.1`. Establish `g4 : (Matrix.of P.2.2 : B.Mat k ρ) ∈ B.GV k ρ` using `h4.1`. Conclude with `cG.mul_mem _ (cG.mul_mem _ (cG.mul_mem _ (cG.mul_mem _ (cG.inv_mem _ g1) _ (cG.inv_mem _ g2)) _ hg) _ g4) _ g3`.
+-/
 theorem sgs_mem {P : B.SS k ρ} (Bs : B.RealPlaceData k ρ Wp Wq) (hP : Bs.inSS P) {g : B.Mat k ρ} (hg : g ∈ B.GV k ρ) :
     B.sgs P g ∈ B.GV k ρ := by
   obtain ⟨h1, h2, h3, h4⟩ := hP
@@ -53,6 +75,11 @@ theorem sgs_mem {P : B.SS k ρ} (Bs : B.RealPlaceData k ρ Wp Wq) (hP : Bs.inSS 
   have g4 : (Matrix.of P.2.2 : B.Mat k ρ) ∈ B.GV k ρ := h4.1
   exact cG.mul_mem _ (cG.mul_mem _ (cG.mul_mem _ (cG.mul_mem _ (cG.inv_mem _ g1) _ (cG.inv_mem _ g2)) _ hg) _ g4) _ g3
 
+/- English proof (translation)
+Unfold `FL`. Rewrite using `[norm_smul, norm_xiP, one_mul, norm_pi_comp Bj hq.1]`. Establish `hi : (Matrix.of q.1.2.1 : B.Mat k ρ)⁻¹ ∈ UWset k ρ Bj.z'` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k ρ Bj.z').inv_mem _ hq.2.2.1`. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_smul, norm_psiStar, one_mul]`.
+
+Simplify using `using mul_le_mul_of_nonneg_left (opNorm_pi'_le Bj hi) (norm_nonneg (H _))`.
+-/
 theorem norm_fl_le (Bj : B.RealPlaceData k ρ Wp Wq) (z0 z0' : Fin (2 * (p + ρ) + k + 1) → ℂ) (σ : Equiv.Perm (Fin p))
     (d : Fin p → ℂ) (H : B.Mat k (p + ρ) → (Wq →L[ℂ] Wp)) (g : B.Mat k ρ) (q : B.SS k ρ × U.Xi k p 0 ρ σ)
     (hq : Bj.inSS q.1) :
@@ -72,6 +99,11 @@ section main
 variable {k p ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW'` as an intermediate fact. Establish `w1` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarW`. Establish `w2` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarN`.
+
+Establish `w3` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarW'`. Unfold `B.RealPlaceData.μSS`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae w1), Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2), Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_fst.ae w3), Measure.quasiMeasu …`. Conclude with `⟨a, b, c, e⟩`.
+-/
 theorem ae_inSS (Bs : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ P ∂Bs.μSS, Bs.inSS P := by
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarW
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bs.haarN
@@ -86,6 +118,11 @@ theorem ae_inSS (Bs : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ P ∂Bs.μSS, Bs.inSS
     Measure.quasiMeasurePreserving_snd.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with P a b c e
   exact ⟨a, b, c, e⟩
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `w1` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarW`. Establish `w2` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarN`.
+
+Unfold `muL`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae w1), Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with x a b`. Conclude with `⟨a, b⟩`.
+-/
 theorem ae_goodL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) : ∀ᵐ x ∂(muL Bj σ), GoodL Bj σ x := by
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN
@@ -97,6 +134,11 @@ theorem ae_goodL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) : �
     Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with x a b
   exact ⟨a, b⟩
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW'` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `w1` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarW'`. Establish `w2` using `Formalism.FourierDecayAlt.P.B5.haar_ae Bj.haarN`.
+
+Unfold `muR`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_fst.ae w1), Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with x a b`. Conclude with `⟨a, b⟩`.
+-/
 theorem ae_goodR (Bj : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ y ∂(muR (p := p) Bj), GoodR Bj y := by
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW'
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN
@@ -108,10 +150,16 @@ theorem ae_goodR (Bj : B.RealPlaceData k ρ Wp Wq) : ∀ᵐ y ∂(muR (p := p) B
     Measure.quasiMeasurePreserving_fst.ae (Measure.quasiMeasurePreserving_snd.ae w2)] with x a b
   exact ⟨a, b⟩
 
+/- English proof (translation)
+Unfold `cL`. Rewrite using `[norm_mul, norm_mul, norm_psi, norm_psi, norm_gpsi, one_mul, one_mul]`.
+-/
 theorem norm_cL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x : XL k p ρ σ) : ‖cL Bj σ x‖ = 1 := by
   unfold cL
   rw [norm_mul, norm_mul, norm_psi, norm_psi, norm_gpsi, one_mul, one_mul]
 
+/- English proof (translation)
+Unfold `ellL`. Rewrite using `[ContinuousLinearMap.smul_apply, norm_smul, norm_cL, one_mul, ContinuousLinearMap.compL_apply, norm_pi_comp Bj hx.1]`.
+-/
 theorem norm_ellL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x : XL k p ρ σ) (hx : GoodL Bj σ x)
     (A : Wq →L[ℂ] Wp) : ‖ellL Bj σ x A‖ = ‖A‖ := by
   unfold ellL
@@ -120,6 +168,39 @@ theorem norm_ellL (Bj : B.RealPlaceData k ρ Wp Wq) (σ : Equiv.Perm (Fin p)) (x
 
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW'` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Establish `: SigmaFinite Bj.μSS` using `by unfold B.RealPlaceData.μSS; infer_instance`.
+
+Establish `: SigmaFinite (U.muXi k p 0 ρ σ)` using `by unfold U.muXi U.muXiH; infer_instance`. Establish `: SigmaFinite (muL Bj σ)` using `by unfold muL; infer_instance`. Establish `: SigmaFinite (muR (p` using `p) Bj) := by unfold muR; infer_instance`. Establish `: BorelSpace ((Fin 0 → Fin p → ℂ) × (Fin p → Fin 0 → ℂ))` using `Prod.borelSpace`. Establish `: BorelSpace ((U.LW σ → ℂ) × (G.UT p → ℂ))` using `Prod.borelSpace`.
+
+Establish `: BorelSpace (U.XiH p 0 σ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.RC k p ρ × U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (U.Xi k p 0 ρ σ)` using `Prod.borelSpace`. Use `set x1 := U.mMap k p ρ (U.hMat σ d) g with hx1`. Use `set F := FL Bj (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') σ d H g with hF`.
+
+Take `⟨M, C, R', hM0, hball, hb⟩` from `slice_bound hp σ d hd H hHc R hR`. Establish `hgG : g ∈ B.GV k ρ` using `hg.1`. Establish `hSS` using `ae_inSS Bj`. Establish `hS1 : ∀ γ ∈ B.GV k ρ, Integrable (fun ξ : U.Xi k p 0 ρ σ => U.psiStar k ρ σ (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') ξ • H (U.gaXi k ρ σ d ξ (fun a => a.elim0) γ)) (U.muXi k p 0 ρ σ)`. Introduce `γ hγ`.
+
+Use `hball.mono' (hM4 γ hγ).aestronglyMeasurable (ae_of_all _ fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_psiStar, one_mul]`. Use `(hb ξ _ γ hγ).trans ?_` and prove the remaining obligations. Establish `h1` using `bumpG_le_one R' γ`. Establish `h2 : 0 ≤ M * (Metric.closedBall (0 : U.Xi k p 0 ρ σ) C).indicator (fun _ => (1 : ℝ)) ξ` using `mul_nonneg hM0 (Set.indicator_nonneg (fun _ _ => zero_le_one) _)`.
+
+Use polynomial arithmetic with `[bumpG_nonneg R' γ]`. Establish `hbi : Integrable (fun q : B.SS k ρ × U.Xi k p 0 ρ σ => bumpG R' (B.sgs q.1 g) * (M * (Metric.closedBall (0 : U.Xi k p 0 ρ σ) C).indicator (fun _ => (1 : ℝ)) q.2)) (Bj.μSS.prod (U.muXi k p 0 ρ σ))` using `(bump_int Bj hg R').mul_prod hball`. Establish `hFi : Integrable F (Bj.μSS.prod (U.muXi k p 0 ρ σ))`. Use `hbi.mono' hM1 ?_` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae hSS] with q hq`.
+
+Use `(norm_fl_le Bj _ _ σ d H g q hq).trans ((hb q.2 _ _ (sgs_mem Bj hq hgG)).trans (le_of_eq ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hL : B.JF Bj (U.PhiFun (s` using `0) k ρ σ d (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') H (fun a => a.elim0)) g = ∫ q, F q ∂(Bj.μSS.prod (U.muXi k p 0 ρ σ)) := by`. Rewrite using `[integral_prod F hFi]`. Use `show ∫ P, JF.integrand Bj _ g P ∂Bj.μSS = _`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hSS] with P hP`. Establish `hI` using `hS1 _ (sgs_mem Bj hP hgG)`. Use `set L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq →L[ℂ] Wp) := JF.xiP Bj P • ((ContinuousLinearMap.compL ℂ Wq Wp Wp (Bj.π (Matrix.of P.1.1))).comp ((ContinuousLinearMap.compL ℂ Wq Wq Wp).flip (Bj.π' (Matrix.of P.2.1)⁻¹))) with hLdef`. Establish `e1 : ∀ ξ, F (P, ξ) = L (U.psiStar k ρ σ (liftVec k p ρ Bj.z) (liftVec k p ρ Bj.z') ξ • H (U.gaXi k ρ σ d ξ (fun a => a.elim0) (B.sgs P g)))` using `fun ξ => rfl`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[L.integral_comp_comm hI]`. Both sides reduce to the same expression. Establish `hmp` using `splitE_mp Bj σ`. Establish `hS4 : ∫ q, F q ∂(Bj.μSS.prod (U.muXi k p 0 ρ σ)) = ∫ z, F ((splitE σ).symm z) ∂((muL Bj σ).prod (muR Bj))` using `((hmp.symm (splitE σ)).integral_comp' F).symm`.
+
+Establish `hgood : ∀ᵐ z ∂((muL Bj σ).prod (muR (p` using `p) Bj)), GoodL Bj σ z.1 ∧ GoodR Bj z.2 := by filter_upwards [Measure.quasiMeasurePreserving_fst.ae (ae_goodL Bj σ), Measure.quasiMeasurePreserving_snd.ae (ae_goodR (p := p) Bj)] with z a b`. Conclude with `⟨a, b⟩`. Use `set GRl : XL k p ρ σ × XR k p ρ → (Wq →L[ℂ] Wp) := fun z => ellL Bj σ z.1 (KrI B0 H (sxL Bj σ z.1 * x1) (PsiR z.2)) with hGRl`. Use `set GR0 : XL k p ρ σ × XR k p ρ → (Wq →L[ℂ] Wp) := fun z => KrI B0 H (sxL Bj σ z.1 * x1) (PsiR z.2) with hGR0`. Establish `hS5 : (fun z => F ((splitE σ).symm z)) =ᵐ[(muL Bj σ).prod (muR Bj)] GRl` using `by filter_upwards [hgood] with z hz`.
+
+Take `⟨x, y⟩` from `z`. Conclude with `fl_split hGS hPR hPA hPM Bj B0 hz' hπ' σ d H g x y hz.1 hz.2`. Establish `hFi' : Integrable (fun z => F ((splitE σ).symm z)) ((muL Bj σ).prod (muR Bj))` using `((hmp.symm (splitE σ)).integrable_comp_emb (splitE σ).symm.measurableEmbedding).2 hFi`. Establish `hGRli : Integrable GRl ((muL Bj σ).prod (muR Bj))` using `hFi'.congr hS5`. Establish `hGR0i : Integrable GR0 ((muL Bj σ).prod (muR Bj))`.
+
+Use `hGRli.norm.mono' hM2 ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with z hz`. Rewrite using `[hGRl, hGR0]`. Simplify using `only`. Rewrite using `[norm_ellL Bj σ z.1 hz.1]`.
+
+Establish `hRM` using `hRMP k p ρ Bj.z' Bj.μW' B0.μW' Bj.haarW' hW' hW0'`. Establish `hmap : (muR (p` using `p) Bj).map PsiR = B0.μW'.prod B0.μN := by`. Rewrite using `[hN0]`. Unfold `muR`. Rewrite using `[hNj]`.
+
+Conclude with `hRM.map_eq`. Establish `hPm : Measurable (PsiR (k` using `k) (p := p) (ρ := ρ)) := hRM.measurable`. Establish `hS7 : ∀ x, GoodL Bj σ x → PBG.Kr B0 H (sxL Bj σ x * x1) = ∫ y, GR0 (x, y) ∂(muR Bj)`. Introduce `x hx`. Establish `hA : AEStronglyMeasurable (KrI B0 H (sxL Bj σ x * x1)) ((muR (p` using `p) Bj).map PsiR) := by`.
+
+Rewrite using `[hmap]`. Conclude with `hM3 x hx`. Rewrite using `[kr_eq_int, ← hmap, integral_map hPm.aemeasurable hA]`. Establish `hS8 : ∀ᵐ x ∂(muL Bj σ), ellL Bj σ x (PBG.Kr B0 H (sxL Bj σ x * x1)) = ∫ y, GRl (x, y) ∂(muR Bj)` using `by filter_upwards [ae_goodL Bj σ, hGR0i.prod_right_ae] with x hx hxi`. Rewrite using `[hS7 x hx, ← (ellL Bj σ x).integral_comp_comm hxi]`.
+
+Use `⟨hGRli.integral_prod_left.congr (hS8.mono fun x hx => hx.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae hS8, ← integral_prod GRl hGRli, ← integral_congr_ae hS5, ← hS4, ← hL]`.
+-/
 theorem core_main (hGS : GaXiSplit) (hPR : PsiRight) (hPA : PsiRnAct) (hPM : PsiMuP) (hRMP : RightMP)
     (hp : 1 ≤ p) (σ : Equiv.Perm (Fin p)) (d : Fin p → ℂ) (hd : ∀ i, d i ≠ 0)
     (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k (p + ρ) Wp Wq) (hz' : B0.z' = liftVec k p ρ Bj.z')

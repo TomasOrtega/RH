@@ -6,6 +6,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTheory.ConvolutionTheory.R2.I
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ D`. Use `⟨D.mkE_mul, fun u t u' t' => (D.mkE_add u t u' t').symm, D.mkE_one, D.co_mkE, D.mkE_co, D.bar_mkE, ?_⟩` and prove the remaining obligations. Introduce `z u t h`. Establish `hc` using `D.co_mkE u t`. Rewrite using `[D.coe_ideleNorm, h, hc]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.mkLaws :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E), (∀ u t u' t', D.mkE u t * D.mkE u' t' = D.mkE (u * u' + rt D.δ * (t * t')) (u * t' + t * u')) ∧
       (∀ u t u' t', D.mkE u t + D.mkE u' t' = D.mkE (u + u') (t + t')) ∧ D.mkE 1 0 = 1 ∧ (∀ u t, D.co (D.mkE u t) = ![u, t]) ∧

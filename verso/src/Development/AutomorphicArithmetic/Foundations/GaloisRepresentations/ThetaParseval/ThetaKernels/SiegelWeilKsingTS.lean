@@ -15,6 +15,27 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 section GRpt
 variable {n : ℕ}
 end GRpt
+/- English proof (translation)
+Introduce `z a b`. Set `Fz : d.G → M2 d.n → ℂ` to `fun h M => f (R.ι w (toGR' M) * h)`. Set `Γ : Set (M2 d.n)` to `{M | ∃ y' : GR d.n, M = mR y' ∧ ∃ γ ∈ rat2 σ d.Y, ∃ x : d.G, γ = x * R.ι w y' ∧ ∀ y'' : GR d.n, x * R.ι w y'' = R.ι w y'' * x}`. Establish `hcont : ∀ h, ContinuousOn (Fz h) {g | InG g}`. Introduce `h`.
+
+Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Establish `e : Set.domRestrict {g | InG g} (Fz h) = fun p : {M : M2 d.n | InG M} => f (R.ι w (mkG p.1 p.2) * h)`. Use function extensionality and compare the values at `p`. Use `show f (R.ι w (toGR' p.1) * h) = _`. Rewrite using `[toGR'_of p.2]`.
+
+Rewrite using `[e]`. Conclude with `hf.comp (((R.cont w).comp continuous_mkG).mul continuous_const)`. Establish `hΓG : ∀ γ ∈ Γ, InG γ`. Introduce and unpack `_ ⟨y', rfl, -⟩`. Conclude with `y'.2`.
+
+Establish `hdense : {g | InG g} ⊆ closure Γ`. Introduce `M hM`. Rewrite using `[mem_closure_iff]`. Introduce `U hU hMU`. Take `⟨γ, hγ, y', hy'O, x, hγx, hx⟩` from `hDW F E σ d R w (mkG M hM) (mR ⁻¹' U) (hU.preimage continuous_mR) hMU`.
+
+Conclude with `⟨mR y', hy'O, y', rfl, γ, hγ, x, hγx, hx⟩`. Establish `hperm : ∀ γ ∈ Γ, ∀ h, ∃ h', ∀ g, InG g → Fz h (γ * g) = Fz h' g`. Introduce and unpack `_ ⟨y', rfl, γ, hγ, x, hγx, hx⟩ h`. Use `⟨x⁻¹ * h, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1 : mR y' * g = mR (y' * mkG g hg)` using `rfl`.
+
+Establish `hy : R.ι w y' = γ * x⁻¹` using `by rw [hγx, hx y', mul_inv_cancel_right]`. Establish `hc : x⁻¹ * R.ι w (mkG g hg) = R.ι w (mkG g hg) * x⁻¹`. Establish `hc' : Commute x (R.ι w (mkG g hg))` using `hx _`. Conclude with `hc'.inv_left.eq`. Simplify using `only [Fz]`.
+
+Rewrite using `[e1, toGR'_mR, toGR'_of hg, map_mul, hy, mul_assoc, mul_assoc, hinv γ hγ, ← mul_assoc, hc, mul_assoc]`. Establish `hvan : ∀ h g, InG g → ∫ x, Fz h (nU (herm x) * g) * ψ₀ x = 0`. Introduce `h g hg`. Establish `e : ∀ x, Fz h (nU (herm x) * g) = f (R.ι w (nr x) * (R.ι w (mkG g hg) * h))` using `fun x => by`. Establish `e1 : nU (herm x) * g = mR (nr x * mkG g hg)` using `by rw [mR_mul', hnr, mR_mkG]`.
+
+Simplify using `only [Fz]`. Rewrite using `[e1, toGR'_mR, map_mul, mul_assoc]`. Repeatedly rewrite using `[e]`. Conclude with `h0 _`. Establish `key` using `LVs.twoSided d.n d.G Fz Γ hcont hΓG hdense hperm ψ₀ hψc hψs hvan z (mR a) (mR b) a.2 b.2`.
+
+Establish `e : ∀ x, Fz z (mR a * nU (herm x) * mR b) = f (R.ι w (a * nr x * b) * z)` using `fun x => by`. Establish `e1 : mR a * nU (herm x) * mR b = mR (a * nr x * b)` using `by rw [mR_mul', mR_mul', hnr]`. Simplify using `only [Fz]`. Rewrite using `[e1, toGR'_mR]`. Rewrite `key` using `[e]`.
+
+Conclude with `key`.
+-/
 theorem twoSidedW_k (hDW : _root_.PositivityTheory.SiegelWeilFormula.DenseW_k) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (hG : IsTopologicalGroup d.G)
     (f : d.G → ℂ) (hf : Continuous f) (hinv : ∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g)
     (ψ₀ : (Fin d.n → Fin d.n → ℝ) → ℂ) (hψc : Continuous ψ₀) (hψs : HasCompactSupport ψ₀)

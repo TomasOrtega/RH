@@ -11,9 +11,19 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, Set.mem_univ _, rfl⟩`.
+-/
 theorem gen_mem (a : 𝓞 E) : inclR (F := F) (Fv F v) (a : E) ∈ OEv (E := E) v :=
   Submodule.subset_span ⟨a, Set.mem_univ _, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, -, rfl⟩` from `hx`. Rewrite using `[← map_mul]`. Conclude with `gen_mem v (a * b)` after adjusting the coercions.
+
+Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx => rw [mul_smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem gen_mul_mem (a : 𝓞 E) (y : Fv F v ⊗[F] E) (hy : y ∈ OEv (E := E) v) :
     inclR (F := F) (Fv F v) (a : E) * y ∈ OEv (E := E) v := by
   induction hy using Submodule.span_induction with
@@ -25,6 +35,13 @@ theorem gen_mul_mem (a : 𝓞 E) (y : Fv F v ⊗[F] E) (hy : y ∈ OEv (E := E) 
   | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `gen_mem (E := E) v 1` as an intermediate fact. Simplify using `using this`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨b, -, rfl⟩` from `hz`. Conclude with `gen_mul_mem v b y hy`. Consider the case `zero => rw [zero_mul]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x x' _ _ hx hx' => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hx'`. Consider the case `smul r x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem oSub : OSub (E := E) v := by
   refine ⟨?_, ?_⟩
   · have := gen_mem (E := E) v 1
@@ -38,6 +55,15 @@ theorem oSub : OSub (E := E) v := by
     | add x x' _ _ hx hx' => rw [add_mul]; exact Submodule.add_mem _ hx hx'
     | smul r x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Take `⟨L, -, rfl⟩` from `hL`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Establish `hal : a • l ∈ L` using `L.smul_mem a hl`.
+
+Establish `: inclR (F` using `F) (Fv F v) (a : E) • ratV (F := F) (Fv F v) l = ratV (F := F) (Fv F v) (a • l) := by`. Use function extensionality and compare the values at `i`. Simplify using `only [ratV, Pi.smul_apply, smul_eq_mul, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `Submodule.subset_span ⟨_, hal, rfl⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem gen_smul_mem (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ)
     (a : 𝓞 E) (x : Fin n → Fv F v ⊗[F] E) (hx : x ∈ latLoc (E := E) v Λ) :
     inclR (F := F) (Fv F v) (a : E) • x ∈ latLoc (E := E) v Λ := by
@@ -56,6 +82,13 @@ theorem gen_smul_mem (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.I
   | add x y _ _ hx hy => rw [smul_add]; exact Submodule.add_mem _ hx hy
   | smul r x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Introduce `hL c hc x hx`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨b, -, rfl⟩` from `hz`. Conclude with `gen_smul_mem v Λ hL b x hx`.
+
+Consider the case `zero => rw [zero_smul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add c c' _ _ hc hc' => rw [add_smul]`. Conclude with `Submodule.add_mem _ hc hc'`. Consider the case `smul r c _ hc => rw [smul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ r hc`.
+-/
 theorem oSmul : OSmul v Λ := by
   intro hL c hc x hx
   induction hc using Submodule.span_induction with

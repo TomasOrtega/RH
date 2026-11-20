@@ -15,18 +15,31 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.ChartCone
 
+/- English proof (translation)
+Establish `: IsRegularLocalRing (ChartRing k m e)` using `GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin m ⊕ Fin e)`. Use `⟨inferInstance, (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing _).2, ?_, inferInstance⟩` and prove the remaining obligations. Establish `: IsAdicComplete (maximalIdeal k) k` using `by rw [maximalIdeal_eq_bot]; infer_instance`. Conclude with `GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _`.
+-/
 theorem isCN_chartRing (k : Type) [Field k] (m e : ℕ) [CharZero (ChartRing k m e)] : IsCN (ChartRing k m e) := by
   have : IsRegularLocalRing (ChartRing k m e) := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin m ⊕ Fin e)
   refine ⟨inferInstance, (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing _).2, ?_, inferInstance⟩
   have : IsAdicComplete (maximalIdeal k) k := by rw [maximalIdeal_eq_bot]; infer_instance
   exact GlobalTheory.PlaceInt.isAdicComplete_mvPowerSeries_finite (V := k) _
 
+/- English proof (translation)
+Use `⟨fun i => (h.mem i).1, fun i hi => h.basis.linearIndependent.ne_zero i ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext hi`.
+-/
 theorem symm_of_isCone {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)) {X : Type}
     [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] {m : ℕ} {δ : Fin m → LinearMap.BilinForm ℤ X}
     (h : IsCone H.bar φ δ) : (∀ i y z, δ i y z = δ i z y) ∧ ∀ i, δ i ≠ 0 := by
   refine ⟨fun i => (h.mem i).1, fun i hi => h.basis.linearIndependent.ne_zero i ?_⟩
   exact Subtype.ext hi
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c φ Y BD d x h`. Take `⟨k, _, m, e, ξ, t, P, γ, δ, a, hx, h₁, -, -, ⟨μ⟩, h₅, -, h₆, h₇, -, -⟩` from `h`. Establish `: CharZero (ChartRing k m e)` using `(Spec.preimage (ξ ≫ genStr Y)).hom.charZero_iff (RingHom.injective _) |>.1 inferInstance`. Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (CommRingCat.ofHom (RingHom.id c.F)))`. Rewrite using `[show CommRingCat.ofHom (RingHom.id c.F) = 𝟙 (CommRingCat.of c.F) from rfl, Spec.map_id]`.
+
+Use `infer_instance`. Establish `: IsIso (genι Y)` using `inferInstance`. Establish `hE` using `GlobalTheory.T.etaleCompletion_comp_iso ξ (genι Y) h₁`. Take `⟨hs, hne⟩` from `symm_of_isCone H φ h₆`. Use `⟨ChartRing k m e, inferInstance, inferInstance, inferInstance, ξ ≫ genι Y, t, μ, P, m, δ, isCN_chartRing k m e, ?_, hE, GlobalTheory.T.chart_ring_formally_unramified k m e _ hE, GlobalTheory.FlatTors.torsionIso_holds E H _ _ (GlobalTheory.MumfordChart.admissibleBase_chartRing k m …` and prove the remaining obligations.
+
+Rewrite using `[← hx]`. Both sides reduce to the same expression.
+-/
 theorem coneAt_of_hasChartOf : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} (φ : InvFun (𝓞 E)) (Y : Model Xo c (RingHom.id c.F)) (BD : GlobalTheory.EffCartierData Y.X) (d : ℕ) (x : gen Y), GlobalTheory.MumfordChart.HasChartOf φ Y BD d x → GlobalTheory.GenFan.ConeAt (ConeO H φ) Y (genι Y x) := by
   intro E _ _ _ H D l Xo c φ Y BD d x h
   obtain ⟨k, _, m, e, ξ, t, P, γ, δ, a, hx, h₁, -, -, ⟨μ⟩, h₅, -, h₆, h₇, -, -⟩ := h

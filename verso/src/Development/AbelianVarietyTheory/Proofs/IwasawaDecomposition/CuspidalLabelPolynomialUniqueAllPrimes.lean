@@ -14,6 +14,11 @@ namespace GlobalTheory.GLq.LabelUniqueAll
 
 open Finset
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq`. Consider the case `exact _root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq`. Consider the case `(apply _root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq ..)`.
+-/
 theorem esymm_eq_of_psum_eq {d : ℕ} (a b : Fin d → ℂ)
     (h : ∀ k, 1 ≤ k → k ≤ d → ∑ i, a i ^ k = ∑ i, b i ^ k) :
     ∀ k, k ≤ d → MvPolynomial.aeval a (MvPolynomial.esymm (Fin d) ℂ k) =
@@ -26,6 +31,11 @@ theorem esymm_eq_of_psum_eq {d : ℕ} (a b : Fin d → ℂ)
   | (intros; apply @_root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.EsymmOfPowerSums.esymm_eq_of_psum_eq ..)
 
+/- English proof (translation)
+Establish `he` using `esymm_eq_of_psum_eq a b h`. Establish `hp : ((Finset.univ.val.map a).map fun t => X - C t).prod = ((Finset.univ.val.map b).map fun t => X - C t).prod`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm]`. Simplify using `only [Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite using `[← MvPolynomial.aeval_esymm_eq_multiset_esymm (σ := Fin d) (R := ℂ), ← MvPolynomial.aeval_esymm_eq_multiset_esymm (σ := Fin d) (R := ℂ), he j (by simpa [Nat.lt_succ_iff] using hj)]`. Use `congrArg Polynomial.roots hp` as an intermediate fact. Rewrite `this` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Conclude with `this`.
+-/
 theorem map_eq_of_psum_eq {d : ℕ} (a b : Fin d → ℂ)
     (h : ∀ k, 1 ≤ k → k ≤ d → ∑ i, a i ^ k = ∑ i, b i ^ k) :
     Finset.univ.val.map a = Finset.univ.val.map b := by
@@ -41,6 +51,11 @@ theorem map_eq_of_psum_eq {d : ℕ} (a b : Fin d → ℂ)
   rw [Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h1 : 1 ≤ 2 ^ n` using `Nat.one_le_two_pow`. Rewrite using `[pow_succ]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_le_two_pow (n : ℕ) : 2 * n ≤ 2 ^ n := by
   induction n with
   | zero => simp
@@ -50,6 +65,25 @@ theorem two_mul_le_two_pow (n : ℕ) : 2 * n ≤ 2 ^ n := by
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Use `set γ := L.gen d`. Use `set m := g ^ d - 1 with hmdef`. Establish `hg2 : 2 ≤ g` using `(Fact.out : g.Prime).two_le`. Establish `hgd : 2 ≤ g ^ d` using `le_trans hg2 (Nat.le_self_pow hd.ne' g)`. Establish `hord : orderOf γ = m` using `L.gen_order d hd`.
+
+Establish `hγm : γ ^ m = 1` using `by rw [← hord]; exact pow_orderOf_eq_one _`. Establish `hγ0 : γ ≠ 0`. Introduce `h0; rw [h0, zero_pow (by omega)] at hγm; exact zero_ne_one hγm`. Establish `hfix : (γ ^ k) ^ (g ^ d) = γ ^ k`. Rewrite using `[← pow_mul, mul_comm, pow_mul, show g ^ d = m + 1 by omega, pow_succ, hγm, one_mul]`.
+
+Establish `hdvd : (minpoly (ZMod g) (γ ^ k)).natDegree ∣ d` using `(GlobalTheory.GLm.SubfieldCount.natDegree_dvd_iff _ d).2 hfix`. Establish `hfe : (γ ^ k) ^ (g ^ (minpoly (ZMod g) (γ ^ k)).natDegree) = γ ^ k` using `(GlobalTheory.GLm.SubfieldCount.natDegree_dvd_iff _ _).1 dvd_rfl`. Establish `he0 : 0 < (minpoly (ZMod g) (γ ^ k)).natDegree` using `minpoly.natDegree_pos (Algebra.IsIntegral.isIntegral _)`. Generalize the expression as in `(minpoly (ZMod g) (γ ^ k)).natDegree = e at hdvd hfe he0 ⊢`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨c, hc⟩` from `hdvd`. Establish `hc2 : 2 ≤ c`. Break down `c with _ | _ | c` into its components or cases. Simplify using `at hc`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `at hc`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hge : 2 ≤ g ^ e` using `le_trans hg2 (Nat.le_self_pow he0.ne' g)`. Establish `hone : γ ^ (k * (g ^ e - 1)) = 1`.
+
+Establish `: γ ^ k * γ ^ (k * (g ^ e - 1)) = γ ^ k * 1`. Rewrite using `[mul_one, ← pow_add]`. Use `conv_rhs => rw [← hfe, ← pow_mul]`. Use `congr 1`. Establish `: g ^ e = (g ^ e - 1) + 1` using `by omega`.
+
+Use `conv_rhs => rw [this]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ (pow_ne_zero _ hγ0) this`. Establish `hmd : m ∣ k * (g ^ e - 1)` using `hord ▸ orderOf_dvd_of_pow_eq_one hone`. Establish `hpos : 0 < k * (g ^ e - 1)` using `Nat.mul_pos (by omega) (by omega)`.
+
+Establish `hle` using `Nat.le_of_dvd hpos hmd`. Establish `hec : e * 2 ≤ e * c` using `Nat.mul_le_mul_left e hc2`. Establish `h2 : d ≤ 2 * (d - e)` using `by omega`. Establish `h3 : 2 * (d - e) ≤ 2 ^ (d - e)` using `two_mul_le_two_pow _`. Establish `h4 : 2 ^ (d - e) ≤ g ^ (d - e)` using `Nat.pow_le_pow_left hg2 _`.
+
+Establish `h5 : d * g ^ e ≤ g ^ d`. Combine the equalities or inequalities in the displayed calculation. Establish `h6 : k * (g ^ e - 1) ≤ d * (g ^ e - 1)` using `Nat.mul_le_mul_right _ hkd`. Establish `h7 : d * (g ^ e - 1) = d * g ^ e - d` using `Nat.mul_sub_one _ _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natDegree_minpoly_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {k : ℕ} (hk1 : 1 ≤ k)
     (hkd : k ≤ d) : (minpoly (ZMod g) (L.gen d ^ k)).natDegree = d := by
   set γ := L.gen d
@@ -100,6 +134,23 @@ theorem natDegree_minpoly_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {k :
   have h7 : d * (g ^ e - 1) = d * g ^ e - d := Nat.mul_sub_one _ _
   omega
 
+/- English proof (translation)
+Take `⟨hPl, hc, hval⟩` from `h`. Take `⟨hPl', -, hval'⟩` from `h'`. Establish `hd : 0 < d` using `hc.1`. Take `⟨x, hx⟩` from `LabelUnique.exists_mem hd hPl`. Take `⟨x', hx'⟩` from `LabelUnique.exists_mem hd hPl'`.
+
+Establish `hx1` using `LabelUnique.pow_sub_one_eq_one hPl hx`. Establish `hx1'` using `LabelUnique.pow_sub_one_eq_one hPl' hx'`. Establish `hteich : ∀ w : Formalism.CyclotomicNorms.Fbar g, w ^ (g ^ d - 1) = 1 → L.teich w ^ (g ^ d - 1) = 1` using `fun w hw => by`. Rewrite using `[← map_pow, hw, map_one]`. Establish `hg2 : 2 ≤ g` using `(Fact.out : g.Prime).two_le`.
+
+Establish `hgd : 2 ≤ g ^ d` using `le_trans hg2 (Nat.le_self_pow hd.ne' g)`. Establish `hγ0 : L.gen d ≠ 0`. Establish `hγm : L.gen d ^ (g ^ d - 1) = 1` using `by rw [← L.gen_order d hd]; exact pow_orderOf_eq_one _`. Introduce `h0; rw [h0, zero_pow (by omega)] at hγm; exact zero_ne_one hγm`. Establish `hsums : ∀ k, 1 ≤ k → k ≤ d → ∑ i : Fin d, L.teich (x ^ (g ^ (i : ℕ))) ^ k = ∑ i : Fin d, L.teich (x' ^ (g ^ (i : ℕ))) ^ k`.
+
+Introduce `k hk1 hkd`. Establish `hdeg` using `natDegree_minpoly_gen_pow L hd hk1 hkd`. Take `⟨y, hy, hz⟩` from `GlobalTheory.GLm.exists_irreducible_charpoly_mem_rootsBar g d (L.gen d ^ k) (pow_ne_zero _ hγ0) hdeg`. Establish `e1` using `hval x hx y hy _ hz`. Establish `e2` using `hval' x' hx' y hy _ hz`.
+
+Rewrite `e2` using `[e1]`. Establish `e3` using `mul_left_cancel₀ (pow_ne_zero (d - 1) (by norm_num : (-1 : ℂ) ≠ 0)) e2`. Establish `conv : ∀ w : Formalism.CyclotomicNorms.Fbar g, w ^ (g ^ d - 1) = 1 → ∀ i : ℕ, thetaOf L d w ((L.gen d ^ k) ^ (g ^ i)) = L.teich (w ^ (g ^ i)) ^ k`. Introduce `w hw i`. Rewrite using `[← pow_mul, LabelUnique.thetaOf_gen_pow L d hd w (hteich w hw), map_pow, ← pow_mul, Nat.mul_comm]`.
+
+Simplify using `only [conv x hx1, conv x' hx1'] at e3`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => L.teich (x ^ g ^ i) ^ k), Fin.sum_univ_eq_sum_range (fun i => L.teich (x' ^ g ^ i) ^ k)]`. Conclude with `e3`. Establish `hm` using `map_eq_of_psum_eq _ _ hsums`. Establish `hmem : L.teich x ∈ Finset.univ.val.map (fun i : Fin d => L.teich (x ^ (g ^ (i : ℕ))))` using `Multiset.mem_map.2 ⟨⟨0, hd⟩, Finset.mem_univ_val _, by simp⟩`.
+
+Rewrite `hmem` using `[hm]`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 hmem`. Establish `hxe : x = x' ^ (g ^ (i : ℕ))` using `L.teich_inj _ _ (LabelUnique.ne_zero_of_mem hPl hx) (pow_ne_zero _ (LabelUnique.ne_zero_of_mem hPl' hx')) hi.symm`. Establish `h1 : aeval x P' = 0`. Rewrite using `[hxe]`.
+
+Conclude with `LabelUnique.aeval_pow_eq_zero (LabelUnique.aeval_eq_zero_of_mem hPl'.1.ne_zero hx') i`. Establish `h2` using `minpoly.eq_of_irreducible_of_monic hPl'.2.1 h1 hPl'.1`. Rewrite using `[h2, LabelUnique.minpoly_eq_of_mem hPl hx]`.
+-/
 theorem label_eq (L : LabelDatum g) (d : ℕ) (P P' : (ZMod g)[X]) (χ : Gn g d → ℂ)
     (h : IsCuspOf L P χ) (h' : IsCuspOf L P' χ) : P = P' := by
   obtain ⟨hPl, hc, hval⟩ := h
@@ -152,6 +203,9 @@ end GlobalTheory.GLq.LabelUniqueAll
 
 namespace GlobalTheory.GLq
 
+/- English proof (translation)
+Introduce `_ _ _ L d P P' χ h h'` and use `LabelUniqueAll.label_eq L d P P' χ h h'`.
+-/
 theorem isCuspOf_label_unique_allPrimes : GlobalTheory.Published.GreenCuspidal → ∀ (g : ℕ) [Fact g.Prime]
     (L : GlobalTheory.GLq.LabelDatum g) (d : ℕ) (P P' : (ZMod g)[X]) (χ : GlobalTheory.GLq.Gn g d → ℂ),
     GlobalTheory.GLq.IsCuspOf L P χ → GlobalTheory.GLq.IsCuspOf L P' χ → P = P' :=

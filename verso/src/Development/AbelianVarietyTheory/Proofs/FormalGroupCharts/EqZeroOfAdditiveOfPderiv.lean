@@ -15,21 +15,36 @@ namespace GlobalTheory.AdditiveSeries
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `Fin.cases (by simpa using hx) (by simpa using hy)`.
+-/
 theorem gp_cons {m n : ℕ} {x : Pt k n d} {y : Fin m → Pt k n d} (hx : GP x) (hy : ∀ j, GP (y j)) :
     ∀ j, GP ((Fin.cons x y : Fin (m + 1) → Pt k n d) j) :=
   Fin.cases (by simpa using hx) (by simpa using hy)
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Use `exacts [hx, hy]`.
+-/
 theorem gp_pair {n : ℕ} {x y : Pt k n d} (hx : GP x) (hy : GP y) :
     ∀ j, GP ((![x, y] : Fin 2 → Pt k n d) j) := by
   intro j; fin_cases j; exacts [hx, hy]
 
+/- English proof (translation)
+Introduce `j`. Use `fin_cases j`. Conclude with `hx`.
+-/
 theorem gp_single {n : ℕ} {x : Pt k n d} (hx : GP x) :
     ∀ j, GP ((![x] : Fin 1 → Pt k n d) j) := by
   intro j; fin_cases j; exact hx
 
+/- English proof (translation)
+The claim follows from `congrFun subst_self f`.
+-/
 theorem ev_pt {n : ℕ} (f : PS k n d) : ev (fun j => pt k d j) f = f :=
   congrFun subst_self f
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[FormalCalc.pderiv_subst' (fun p : Fin (m + 1) × Fin d => gp_cons hx hy p.1 p.2), Fintype.sum_prod_type, Fin.sum_univ_succ]`. Simplify using `[hv]`.
+-/
 theorem pderiv_ev_cons {m n : ℕ} {x : Pt k n d} {y : Fin m → Pt k n d} (hx : GP x)
     (hy : ∀ j, GP (y j)) (v : Fin n × Fin d) (hv : ∀ j i, pderiv k v (y j i) = 0)
     (g : PS k (m + 1) d) :
@@ -41,6 +56,9 @@ theorem pderiv_ev_cons {m n : ℕ} {x : Pt k n d} {y : Fin m → Pt k n d} (hx :
     Fin.sum_univ_succ]
   simp [hv]
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev V _ hV (gp_cons hx hy)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp`.
+-/
 theorem ev_ev_cons {l m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, GP (V j)) {x : Pt k m d}
     {y : Fin l → Pt k m d} (hx : GP x) (hy : ∀ j, GP (y j)) (g : PS k (l + 1) d) :
     ev V (ev (Fin.cons x y) g) =
@@ -50,9 +68,15 @@ theorem ev_ev_cons {l m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, GP (V j))
   funext j
   refine Fin.cases ?_ (fun j => ?_) j <;> simp
 
+/- English proof (translation)
+The claim follows from `gt_ev_X V hV j i`.
+-/
 theorem ev_pt_apply {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, GP (V j)) (j : Fin m)
     (i : Fin d) : ev V (pt k d j i) = V j i := gt_ev_X V hV j i
 
+/- English proof (translation)
+Unfold `addOf`. Rewrite using `[gt_ev_ev V _ hV (gp_pair (gp_pt a) (gp_pt b))]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Apply the tactic sequence `fin_cases j <;> simp [ev_pt_apply hV]`.
+-/
 theorem ev_addOf {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, GP (V j)) (F : Fin d → PS k 2 d)
     (a b : Fin m) (i : Fin d) :
     ev V (addOf F (pt k d a) (pt k d b) i) = addOf F (V a) (V b) i := by
@@ -62,6 +86,11 @@ theorem ev_addOf {m n : ℕ} {V : Fin m → Pt k n d} (hV : ∀ j, GP (V j)) (F 
   funext j i
   fin_cases j <;> simp [ev_pt_apply hV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (ev ![x]) (G.unit i)`. Rewrite `h` using `[gt_ev_ev _ _ (gp_single hx) (gp_pair gp_zero₂ (gp_pt 0)), gt_ev_X _ (gp_single hx)]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Unfold `addOf`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j i`. Apply the tactic sequence `fin_cases j <;> simp [ev_pt_apply (gp_single hx), gt_ev_zero _ (gp_single hx)]`.
+-/
 theorem zero_addOf {n : ℕ} (G : FGLaw k d) {x : Pt k n d} (hx : GP x) : addOf G.F 0 x = x := by
   funext i
   have h := congrArg (ev ![x]) (G.unit i)
@@ -73,6 +102,11 @@ theorem zero_addOf {n : ℕ} (G : FGLaw k d) {x : Pt k n d} (hx : GP x) : addOf 
   funext j i
   fin_cases j <;> simp [ev_pt_apply (gp_single hx), gt_ev_zero _ (gp_single hx)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hz : GP (0 : Pt k n d)` using `gp_zero₂`. Establish `h` using `congrArg (ev ![x, 0]) (G.comm i)`. Rewrite `h` using `[gt_ev_ev _ _ (gp_pair hx hz) (gp_pair (gp_pt 1) (gp_pt 0))]`. Use `Eq.trans h.symm (Eq.trans ?_ (congrFun (zero_addOf G hx) i))` and prove the remaining obligations.
+
+Unfold `addOf`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Apply the tactic sequence `fin_cases j <;> simp [ev_pt_apply (gp_pair hx hz)]`.
+-/
 theorem addOf_zero {n : ℕ} (G : FGLaw k d) {x : Pt k n d} (hx : GP x) : addOf G.F x 0 = x := by
   funext i
   have hz : GP (0 : Pt k n d) := gp_zero₂
@@ -84,10 +118,18 @@ theorem addOf_zero {n : ℕ} (G : FGLaw k d) {x : Pt k n d} (hx : GP x) : addOf 
   funext j i
   fin_cases j <;> simp [ev_pt_apply (gp_pair hx hz)]
 
+/- English proof (translation)
+Simplify using `[pt, FormalCalc.pderiv_X_ite]`.
+-/
 theorem pderiv_pt {n : ℕ} (a b : Fin n) (i l : Fin d) :
     pderiv k (a, i) (pt k d b l) = if b = a ∧ l = i then 1 else 0 := by
   simp [pt, FormalCalc.pderiv_X_ite]
 
+/- English proof (translation)
+Establish `hx : GP (pt k d (0 : Fin 1))` using `gp_pt 0`. Establish `hy : ∀ j, GP ((fun _ => 0 : Fin (q + 1) → Pt k 1 d) j)` using `fun _ => gp_zero₂`. Establish `h` using `pderiv_ev_cons hx hy ((0 : Fin 1), i) (by simp) (addOf G.F (pt k d (0 : Fin (q + 2))) (pt k d 1) l)`. Rewrite `h` using `[ev_addOf (gp_cons hx hy)]`. Establish `e1 : (Fin.cons (pt k d (0 : Fin 1)) (fun _ => 0) : Fin (q + 2) → Pt k 1 d) 1 = 0` using `rfl`.
+
+Rewrite `h` using `[e1, Fin.cons_zero, addOf_zero G hx]`. Simplify using `only [pderiv_pt, true_and, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite using `[← gt_const_ev_eq _ (gp_cons hx hy), ← h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem constantCoeff_pderiv_addOf {q : ℕ} (G : FGLaw k d) (i l : Fin d) :
     constantCoeff (pderiv k ((0 : Fin (q + 2)), i)
       (addOf G.F (pt k d (0 : Fin (q + 2))) (pt k d 1) l)) = if l = i then 1 else 0 := by
@@ -103,6 +145,33 @@ theorem constantCoeff_pderiv_addOf {q : ℕ} (G : FGLaw k d) (i l : Fin d) :
   rw [← gt_const_ev_eq _ (gp_cons hx hy), ← h]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `: IsAddTorsionFree k` using `.of_module_rat k`. Establish `hS : GP (addOf G.F (pt k d (0 : Fin (q + 2))) (pt k d 1))` using `gp_addOf _ G.const _ _ (gp_pt _) (gp_pt _)`. Establish `hw : ∀ j : Fin q, GP (pt k d j.succ.succ)` using `fun _ => gp_pt _`. Use `set V : Fin (q + 2) → Pt k (q + 1) d := Fin.cons 0 fun j => pt k d j with hVdef`. Establish `hV : ∀ j, GP (V j)` using `gp_cons gp_zero₂ fun _ => gp_pt _`.
+
+Establish `hV0 : V 0 = 0` using `rfl`. Establish `hV1 : V 1 = pt k d 0` using `rfl`. Establish `hVs : ∀ j : Fin q, V j.succ.succ = pt k d j.succ` using `fun _ => rfl`. Establish `hid : (Fin.cons (pt k d 0) fun j : Fin q => pt k d j.succ : Fin (q + 1) → Pt k (q + 1) d) = fun j => pt k d j`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> simp`. Establish `eS (f : PS k (q + 1) d) : ev V (ev (n` using `q + 2) (Fin.cons (addOf G.F (pt k d 0) (pt k d 1)) (fun j : Fin q => pt k d j.succ.succ)) f) = f := by`. Rewrite using `[ev_ev_cons hV hS hw]`. Simplify using `only [ev_addOf hV, ev_pt_apply hV, hV0, hV1, hVs, zero_addOf G (gp_pt _)]`. Conclude with `(congrArg (ev · f) hid).trans (ev_pt f)`.
+
+Establish `e0 (f : PS k (q + 1) d) : ev V (ev (n` using `q + 2) (Fin.cons (pt k d 0) (fun j : Fin q => pt k d j.succ.succ)) f) = ev (Fin.cons 0 fun j : Fin q => pt k d j.succ) f := by`. Rewrite using `[ev_ev_cons hV (gp_pt _) hw]`. Simplify using `only [ev_pt_apply hV, hV0, hVs]`. Establish `e1 (f : PS k (q + 1) d) : ev V (ev (n` using `q + 2) (Fin.cons (pt k d 1) (fun j : Fin q => pt k d j.succ.succ)) f) = f := by`. Rewrite using `[ev_ev_cons hV (gp_pt _) hw]`.
+
+Simplify using `only [ev_pt_apply hV, hV1, hVs]`. Conclude with `(congrArg (ev · f) hid).trans (ev_pt f)`. Establish `hlin' (i : Fin d) : ev (Fin.cons 0 fun j : Fin q => pt k d j.succ) (pderiv k ((0 : Fin (q + 1)), i) g) = 0`. Establish `hU : ∀ j : Fin q, GP (pt k d j.succ)` using `fun _ => gp_pt _`. Establish `h` using `congrArg (ev fun j : Fin q => pt k d j.succ) (hlin i)`.
+
+Rewrite `h` using `[ev_ev_cons hU gp_zero₂ (fun _ => gp_pt _), gt_ev_zero _ hU]`. Simplify using `only [ev_pt_apply hU, Pi.zero_apply, gt_ev_zero _ hU] at h`. Conclude with `h`. Establish `hax : ev (Fin.cons 0 fun j : Fin q => pt k d j.succ) g = 0`. Establish `h` using `congrArg (ev V) hadd`.
+
+Rewrite `h` using `[gt_ev_add V hV, eS, e0, e1]`. Simplify using `using h`. Set `J : Matrix (Fin d) (Fin d) (PS k (q + 1) d)` to `Matrix.of fun l i => ev V (pderiv k ((0 : Fin (q + 2)), i) (addOf G.F (pt k d (0 : Fin (q + 2))) (pt k d 1) l))`. Establish `hJ : IsUnit J`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_constantCoeff, RingHom.map_det]`.
+
+Establish `: (constantCoeff : PS k (q + 1) d →+* k).mapMatrix J = 1`. Use extensionality with `l i`. Simplify using `[J, gt_const_ev_eq V hV, constantCoeff_pderiv_addOf, Matrix.one_apply]`. Rewrite using `[this, Matrix.det_one]`. Conclude with `isUnit_one`.
+
+Establish `hD : Matrix.vecMul (fun l => pderiv k ((0 : Fin (q + 1)), l) g) J = 0`. Use function extensionality and compare the values at `i`. Establish `hv : ∀ (j : Fin q) (l : Fin d), pderiv k ((0 : Fin (q + 2)), i) (pt k d j.succ.succ l) = 0`. Introduce `j l`. Rewrite using `[pderiv_pt, if_neg fun h => Fin.succ_ne_zero _ h.1]`.
+
+Establish `h` using `congrArg (pderiv k ((0 : Fin (q + 2)), i)) hadd`. Rewrite `h` using `[map_add, pderiv_ev_cons hS hw _ hv, pderiv_ev_cons (gp_pt _) hw _ hv, pderiv_ev_cons (gp_pt _) hw _ hv]`. Simplify using `only [pderiv_pt, true_and, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, one_ne_zero, false_and, if_false, Finset.sum_const_zero, add_zero] at h`. Establish `h2` using `congrArg (ev V) h`. Rewrite `h2` using `[e0, hlin']`.
+
+Establish `hs : ∀ f : Fin d → PS k (q + 2) d, ev V (∑ l, f l) = ∑ l, ev V (f l)` using `fun f => by`. Unfold `ev`. Rewrite using `[← coe_substAlgHom (gt_hasSubst V hV), map_sum]`. Simplify using `only [hs, gt_ev_mul V hV, eS] at h2`. Conclude with `h2`.
+
+Establish `hD0 : (fun l => pderiv k ((0 : Fin (q + 1)), l) g) = 0`. Take `⟨u, hu⟩` from `hJ.exists_right_inv`. Establish `h` using `congrArg (fun v => Matrix.vecMul v u) hD`. Simplify `h` using `[Matrix.vecMul_vecMul, hu]`. Use `FormalCalc.ext_of_pderiv_of_subst (fun i : Fin d => ((0 : Fin (q + 1)), i)) (b := fun p : Fin (q + 1) × Fin d => (Fin.cons 0 fun j : Fin q => pt k d j.succ : Fin (q + 1) → Pt k (q + 1) d) p.1 p.2) (fun _ => rfl) ?_ (fun i => ?_) ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨j, i⟩ hj revert hj`. Use `Fin.cases (fun hj => ?_) (fun j _ => rfl) j` and prove the remaining obligations. Conclude with `absurd ⟨i, rfl⟩ hj`. Simplify using `using congrFun hD0 i`. Conclude with `hax.trans (gt_ev_zero _ (gp_cons gp_zero₂ fun _ => gp_pt _)).symm`.
+-/
 theorem eq_zero_of_additive_of_pderiv (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ)
     (G : FGLaw k d) (q : ℕ) (g : PS k (q + 1) d)
     (hadd : ev (n := q + 2) (Fin.cons (addOf G.F (pt k d 0) (pt k d 1))

@@ -14,6 +14,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Set `σ` to `AlgHom.id F E`. Set `J : Matrix (Fin n) (Fin n) E` to `0`. Establish `hJ : ∀ (R : Type) [CommRing R] [Algebra F R] (g : GL (Fin n) (R ⊗[F] E)), g ∈ HR R σ J` using `fun R _ _ g => by`. Express the relevant statement in the definitionally equal form `cT _ g.1 * JR R J * g.1 = JR R J`. Simplify using `[J, JR]`.
+
+Set `b' : ∀ v : S, GLoc σ J v` to `fun v => ⟨b v, hJ _ _⟩`. Set `c' : ∀ w, GArch σ J w` to `fun w => ⟨c w, hJ _ _⟩`. Establish `hm` using `mem_atPts.1 (embAt_mem σ J S b')`. Use `⟨matHom _ σ J (ofInf σ J (embArchPi σ J c') * embAt σ J S b'), fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[← matHom_proj, map_mul, proj_ofInf, one_mul]`.
+
+Distinguish the cases in `hv : v ∈ S`. Rewrite using `[proj_embAt σ J S b' ⟨v, hv⟩]`. Both sides reduce to the same expression. Rewrite using `[hm.2 v hv, map_one, hb v hv]`. Rewrite using `[← matHom_projArch, map_mul, projArch_ofInf, projInfArch_embArchPi, mem_finPts_iff_forall.1 hm.1 w, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_GL_of_components (S : Finset (HeightOneSpectrum (𝓞 F)))
     (b : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (Fv F v ⊗[F] E)) (hb : ∀ v ∉ S, b v = 1)
     (c : ∀ w : InfinitePlace F, GL (Fin n) (w.Completion ⊗[F] E)) :
@@ -36,6 +45,11 @@ theorem exists_GL_of_components (S : Finset (HeightOneSpectrum (𝓞 F)))
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `hs0 : (s : F) ≠ 0` using `fun h => hs (by`. Rewrite using `[show s = 0 from RingOfIntegers.coe_injective (by simpa using h)]; exact zero_mem _)`. Establish `ha : algebraMap F (Fv F v) (s : F)⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : v.valuation F (s : F) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := F) v).2 hs`.
+
+Establish `h2` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (s : F)⁻¹`. Conclude with `(h2.trans ((map_inv₀ _ _).trans ((congrArg _ h1).trans inv_one))).le`. Use `tmul_mem_latLoc ha hx using 2 with i` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `(1 : Fv F v) ⊗ₜ[F] x i = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, Pi.smul_apply, algebraMap_smul, inv_smul_smul₀ hs0]`.
+-/
 theorem incl_mem_latLoc {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectrum (𝓞 F)} {s : 𝓞 F}
     (hs : s ∉ v.asIdeal) {x : Fin n → E} (hx : algebraMap F E s • x ∈ L) :
     (fun i => inclR (Fv F v) (x i)) ∈ latLoc F L v := by
@@ -52,6 +66,17 @@ theorem incl_mem_latLoc {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpe
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `e : (bc (inclR (Fv F v)) P).1 *ᵥ y = ∑ j, (⟨y j, hy j⟩ : intLoc F E v) • fun i => inclR (Fv F v) (P.1 i j)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`.
+
+Express the relevant statement in the definitionally equal form `∑ j, inclR (Fv F v) (P.1 i j) * y j = ∑ j, y j * inclR (Fv F v) (P.1 i j)`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[e]`. Use `sum_mem fun j _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `h1 j`.
+
+Conclude with `incl_mem_latLoc hs h`. Introduce `hy`. Establish `key : ∀ z ∈ latLoc F L v, (bc (inclR (Fv F v)) P⁻¹).1 *ᵥ z ∈ latLoc F (stdLattice E n) v` using `fun z hz => by`. Use `latLoc_induction (p := fun z => (bc (inclR (Fv F v)) P⁻¹).1 *ᵥ z ∈ latLoc F (stdLattice E n) v) (fun a ha x hx => ?_) (by simp) (fun _ _ h h' => by rw [Matrix.mulVec_add]; exact add_mem h h') (fun _ h => by rw [Matrix.mulVec_neg]; exact neg_mem h) hz` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `h2 x hx`.
+
+Use `Submodule.smul_mem _ (⟨_, tmul_mem_intLoc ha 1⟩ : intLoc F E v) (incl_mem_latLoc hs h) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `∑ j, ((1 : Fv F v) ⊗ₜ[F] (P⁻¹).1 i j) * (a ⊗ₜ[F] x j) = (a ⊗ₜ[F] ((1 : 𝓞 E) : E)) * ((1 : Fv F v) ⊗ₜ[F] ∑ j, (P⁻¹).1 i j * x j)`. Simplify using `[TensorProduct.tmul_sum, Finset.mul_sum]`. Use `key _ hy` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec, mem_latLoc_stdLattice]`. Then use the resulting hypothesis.
+-/
 theorem frame_of_rational {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectrum (𝓞 F)} (P : GL (Fin n) E)
     (h1 : ∀ j, ∃ s : 𝓞 F, s ∉ v.asIdeal ∧ algebraMap F E s • (fun i => P.1 i j) ∈ L)
     (h2 : ∀ x ∈ L, ∃ s : 𝓞 F, s ∉ v.asIdeal ∧ algebraMap F E s • ((P⁻¹).1 *ᵥ x) ∈ stdLattice E n)
@@ -86,6 +111,15 @@ theorem frame_of_rational {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneS
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `hL : ∀ (s : 𝓞 F), ∀ y ∈ L, algebraMap F E s • y ∈ L` using `fun s y hy => L.smul_mem (algebraMap (𝓞 F) (𝓞 E) s) hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_mem _, hL _ _ hy⟩`. Consider the case `zero => exact ⟨1, one_mem _, hL _ _ (zero_mem _)⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨s, hs, hy⟩` from `hy`. Take `⟨t, ht, hz⟩` from `hz`. Use `⟨s * t, mul_mem hs ht, ?_⟩` and prove the remaining obligations. Use `add_mem (hL t _ hy) (hL s _ hz)` as an intermediate fact. Rewrite `this` using `[smul_smul, smul_smul, mul_comm, ← smul_add, ← map_mul, ← map_mul]`. Then use the resulting hypothesis.
+
+Consider the case `smul a y _ hy`. Take `⟨s, hs, hy⟩` from `hy`. Take `⟨t, ht, r, hr⟩` from `hA a`. Use `⟨s * t, mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `: (r : E) • algebraMap F E s • y ∈ L` using `L.smul_mem r hy`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hr, ← algebraMap_smul E a y, smul_smul, smul_smul, RingOfIntegers.coe_eq_algebraMap (s * t), map_mul, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smul_mem_of_mem_span (M : Submonoid (𝓞 F)) {A : Type} [CommRing A] [Algebra A E]
     (hA : ∀ a : A, ∃ s ∈ M, ∃ r : 𝓞 E, algebraMap F E s * algebraMap A E a = r)
     {L : Submodule (𝓞 E) (Fin n → E)} {x : Fin n → E} (hx : x ∈ Submodule.span A (L : Set (Fin n → E))) :
@@ -113,12 +147,36 @@ theorem exists_smul_mem_of_mem_span (M : Submonoid (𝓞 F)) {A : Type} [CommRin
     ring
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Introduce `j _` and use `⟨Pi.single (M := fun _ => 𝓞 E) i 1 j, by by_cases e : j = i · subst e; simp · simp [e]⟩`.
+-/
 theorem single_mem_stdLattice (i : Fin n) : (Pi.single i 1 : Fin n → E) ∈ stdLattice E n :=
   fun j _ => ⟨Pi.single (M := fun _ => 𝓞 E) i 1 j, by
     by_cases e : j = i
     · subst e; simp
     · simp [e]⟩
 
+/- English proof (translation)
+Establish `hM : Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl ≤ nonZeroDivisors (𝓞 E)` using `algebraMapSubmonoid_le_nonZeroDivisors_of_faithfulSMul _ v.asIdeal.primeCompl_le_nonZeroDivisors`. Set `A : Subalgebra (𝓞 E) E` to `Localization.subalgebra.ofField E _ hM`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid (𝓞 E) v.asIdeal.primeCompl) A` using `Localization.subalgebra.isLocalization_ofField E _ _`. Establish `: IsFractionRing A E` using `Localization.subalgebra.isFractionRing_ofField E _ _`. Establish `: IsDedekindDomain A` using `IsLocalization.isDedekindDomain (𝓞 E) hM _`.
+
+Establish `: IsPrincipalIdealRing A` using `IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 E) v.asIdeal v.ne_bot`. Establish `hA : ∀ a : A, ∃ s ∈ v.asIdeal.primeCompl, ∃ r : 𝓞 E, algebraMap F E s * algebraMap A E a = r`. Introduce and unpack `⟨a, r, _, ⟨s, hs, rfl⟩, rfl⟩`. Use `⟨s, hs, r, ?_⟩` and prove the remaining obligations. Establish `h0 : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) s) ≠ 0` using `(map_ne_zero_iff _ RingOfIntegers.coe_injective).2 (nonZeroDivisors.ne_zero (hM ⟨s, hs, rfl⟩))`.
+
+Conclude with `(mul_comm _ _).trans (inv_mul_cancel_right₀ h0 _)`. Use `set N : Submodule A (Fin n → E) := Submodule.span A (L : Set (Fin n → E)) with hN`. Establish `: Module.Finite A N`. Take `⟨s, hs⟩` from `hL.fg`. Rewrite using `[Module.Finite.iff_fg]`.
+
+Conclude with `⟨s, by rw [hN, ← hs, Submodule.span_span_of_tower]⟩`. Set `b` to `Module.Free.chooseBasis A N`. Set `u : Module.Free.ChooseBasisIndex A N → Fin n → E` to `fun i => (b i : Fin n → E)`. Establish `hli : LinearIndependent E u` using `(LinearIndependent.iff_fractionRing A E).mp (b.linearIndependent.map' N.subtype N.ker_subtype)`. Establish `hspanA : Submodule.span A (Set.range u) = N`.
+
+Establish `: Set.range u = N.subtype '' Set.range b` using `by rw [← Set.range_comp]; rfl`. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hspan : ⊤ ≤ Submodule.span E (Set.range u)`. Rewrite using `[← hL.span_eq_top, Submodule.span_le]`. Introduce `x hx`.
+
+Establish `hxN : x ∈ Submodule.span A (Set.range u)` using `by rw [hspanA]; exact Submodule.subset_span hx`. Conclude with `Submodule.span_le_restrictScalars A E _ hxN`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex A N) = n`. Rewrite using `[← Module.finrank_eq_card_basis (Module.Basis.mk hli hspan), Module.finrank_fin_fun]`. Set `e` to `Fintype.equivFinOfCardEq hcard`.
+
+Set `P : Matrix (Fin n) (Fin n) E` to `Matrix.of fun a j => (u ∘ e.symm) j a`. Establish `hP : IsUnit P` using `Matrix.linearIndependent_cols_iff_isUnit.mp (hli.comp _ e.symm.injective)`. Use `⟨hP.unit, fun j => exists_smul_mem_of_mem_span v.asIdeal.primeCompl hA (b (e.symm j)).2, fun x hx => exists_smul_mem_of_mem_span v.asIdeal.primeCompl hA ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ Submodule.span A (Set.range (u ∘ e.symm))`. Rewrite using `[EquivLike.range_comp, hspanA]`.
+
+Conclude with `Submodule.subset_span hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun A).1 hx'`. Establish `h1 : x = hP.unit.1 *ᵥ fun j => (c j : E)`. Rewrite using `[← hc]`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm (c j : E) (P i j)`. Rewrite using `[h1, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, ← Finset.univ_sum_single fun j => (c j : E)]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem _ (c j) (Submodule.subset_span (R := A) (single_mem_stdLattice (E := E) j)) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← Pi.single_smul]`. Conclude with `congrArg _ (mul_one _).symm`.
+-/
 theorem exists_rational_frame (L : Submodule (𝓞 E) (Fin n → E)) [hL : Submodule.IsLattice E L]
     (v : HeightOneSpectrum (𝓞 F)) : ∃ P : GL (Fin n) E,
       (∀ j, ∃ s : 𝓞 F, s ∉ v.asIdeal ∧ algebraMap F E s • (fun i => P.1 i j) ∈ L) ∧
@@ -176,6 +234,15 @@ theorem exists_rational_frame (L : Submodule (𝓞 E) (Fin n → E)) [hL : Submo
   rw [← Pi.single_smul]
   exact congrArg _ (mul_one _).symm
 
+/- English proof (translation)
+Establish `hA : ∀ a : E, ∃ s ∈ nonZeroDivisors (𝓞 F), ∃ r : 𝓞 E, algebraMap F E s * algebraMap E E a = r` using `fun a => by`. Take `⟨m, hm, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic a)).exists_integral_multiple`. Conclude with `⟨m, mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hm), ⟨_, hi⟩, by simp⟩`. Take `⟨t, rfl⟩` from `hL`. Use `choose s hs hsx using fun x : Fin n → E => exists_smul_mem_of_mem_span (A := E) (L := L') (x := x) _ hA (hL' ▸ Submodule.mem_top)`.
+
+Use `⟨∏ x ∈ t, s x, Finset.prod_ne_zero_iff.2 fun x _ => nonZeroDivisors.ne_zero (hs x), fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => classical`. Rewrite using `[← Finset.prod_erase_mul t s hy, RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, mul_smul]`. Conclude with `L'.smul_mem (algebraMap (𝓞 F) (𝓞 E) _) (hsx y)`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [smul_comm]`.
+
+Conclude with `L'.smul_mem a hy`.
+-/
 theorem exists_smul_le {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
     (hL' : Submodule.span E (L' : Set (Fin n → E)) = ⊤) :
     ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ x ∈ L, algebraMap F E d • x ∈ L' := by
@@ -196,6 +263,13 @@ theorem exists_smul_le {L L' : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
   | add y z _ _ hy hz => rw [smul_add]; exact add_mem hy hz
   | smul a y _ hy => rw [smul_comm]; exact L'.smul_mem a hy
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `exists_smul_le (F := F) (L' := L) (Submodule.fg_span (Set.finite_range fun j : Fin n => (Pi.single j 1 : Fin n → E))) hL.span_eq_top`. Take `⟨d', hd', h'⟩` from `exists_smul_le (F := F) (L' := stdLattice E n) hL.fg (by`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Simplify using `using single_mem_stdLattice j)`. Establish `hf` using `Ideal.finite_factors (I := Ideal.span {d * d'}) (by simp [hd, hd'])`. Use `⟨hf.toFinset, fun v hv y => ?_⟩` and prove the remaining obligations. Establish `hv' : d * d' ∉ v.asIdeal` using `fun hc => hv (hf.mem_toFinset.2 (Ideal.dvd_span_singleton.2 hc))`. Use `frame_of_rational (L := L) (v := v) 1 (fun j => ⟨d, fun hc => hv' (Ideal.mul_mem_right _ _ hc), h _ (Submodule.subset_span ⟨j, by` as an intermediate fact.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply, Pi.single_apply]⟩)⟩)`. Use the proof step `(fun x hx => ⟨d', fun hc => hv' (Ideal.mul_mem_left _ _ hc), by simpa using h' x hx⟩) y`. Rewrite `this` using `[map_one, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem exists_finset_latLoc_eq (L : Submodule (𝓞 E) (Fin n → E)) [hL : Submodule.IsLattice E L] :
     ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ∀ v ∉ S, ∀ y, (∀ i, y i ∈ intLoc F E v) ↔ y ∈ latLoc F L v := by
   obtain ⟨d, hd, h⟩ := exists_smul_le (F := F) (L' := L)
@@ -214,6 +288,11 @@ theorem exists_finset_latLoc_eq (L : Submodule (𝓞 E) (Fin n → E)) [hL : Sub
     (fun x hx => ⟨d', fun hc => hv' (Ideal.mul_mem_left _ _ hc), by simpa using h' x hx⟩) y
   rwa [map_one, Units.val_one, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_finset_latLoc_eq (F := F) L`. Use `choose P h1 h2 using exists_rational_frame (F := F) L`. Take `⟨a, ha, hc⟩` from `exists_GL_of_components S (fun v => if v ∈ S then bc (inclR (Fv F v)) (P v) else 1) (fun v hv => if_neg hv) c`. Use `⟨a, fun v y => ?_, hc⟩` and prove the remaining obligations. Rewrite using `[ha v]`.
+
+Distinguish the cases in `hv : v ∈ S`. Rewrite using `[if_pos hv]`. Conclude with `frame_of_rational _ (h1 v) (h2 v) y`. Rewrite using `[if_neg hv, Units.val_one, Matrix.one_mulVec]`. Conclude with `hS v hv y`.
+-/
 theorem exists_isLatticeFrame_of_arch (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]
     (c : ∀ w : InfinitePlace F, GL (Fin n) (w.Completion ⊗[F] E)) :
     ∃ a : GL (Fin n) (AF F ⊗[F] E), IsLatticeFrame L a ∧ ∀ w, bc (compInf F E w) a = c w := by
@@ -228,10 +307,22 @@ theorem exists_isLatticeFrame_of_arch (L : Submodule (𝓞 E) (Fin n → E)) [Su
   · rw [if_pos hv]; exact frame_of_rational _ (h1 v) (h2 v) y
   · rw [if_neg hv, Units.val_one, Matrix.one_mulVec]; exact hS v hv y
 
+/- English proof (translation)
+The claim follows from `(exists_isLatticeFrame_of_arch L fun _ => 1).imp fun _ h => h.1`.
+-/
 theorem exists_isLatticeFrame (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] :
     ∃ a : GL (Fin n) (AF F ⊗[F] E), IsLatticeFrame L a :=
   (exists_isLatticeFrame_of_arch L fun _ => 1).imp fun _ h => h.1
 
+/- English proof (translation)
+Establish `h0` using `Formalism.UG.P.eig_ne_zero hG hd.isUnit`. Establish `h1 : (fun i => ((hG.eigenvalues i / |hG.eigenvalues i| : ℝ) : ℂ)) = fun i => if decide (0 < hG.eigenvalues i) then 1 else -1` using `funext fun i => by`. Distinguish the cases in `h : 0 < hG.eigenvalues i`. Rewrite using `[Formalism.UG.P.sign_pos h]`. Simplify using `[h]`.
+
+Rewrite using `[Formalism.UG.P.sign_neg (lt_of_le_of_ne (not_lt.1 h) (h0 i))]`. Simplify using `[h]`. Establish `h2` using `Formalism.UG.P.herm_diag hG`. Rewrite `h2` using `[h1]`. Use `set Q := (hG.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * Matrix.diagonal (Formalism.UG.P.scal hG.eigenvalues)`.
+
+Establish `h3 : Q.det ≠ 0` using `fun h => by`. Use `congrArg Matrix.det h2` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun i _ => ?_) this.symm` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Conclude with `⟨_, Matrix.GeneralLinearGroup.mkOfDetNeZero Q h3, h2⟩`.
+-/
 theorem exists_congr_diagonal_sign {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.IsHermitian) (hd : G.det ≠ 0) :
     ∃ (ε : Fin n → Bool) (Q : GL (Fin n) ℂ), Q.1ᴴ * G * Q.1 = Matrix.diagonal fun i => if ε i then 1 else -1 := by
   have h0 := Formalism.UG.P.eig_ne_zero hG hd.isUnit
@@ -252,12 +343,24 @@ theorem exists_congr_diagonal_sign {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.IsHe
 
 variable {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(infEmb_sigR h τ _).symm`.
+-/
 theorem map_cT_sigR (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w)
     (y : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)) :
     (cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) y).map (infEmb τ) = (y.map (infEmb τ))ᴴ := by
   ext i j
   exact (infEmb_sigR h τ _).symm
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Set `e` to `RingEquiv.ofBijective _ (infEmb_bijective h τ)`. Establish `hG : (J.map τ.1).IsHermitian`. Use extensionality with `i j`. Conclude with `(h.2.2.2 τ.1 _).symm.trans (congrArg _ (hJ.1 i j))`.
+
+Take `⟨ε, Q, hQ⟩` from `exists_congr_diagonal_sign hG (by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hJ.2)`. Use `⟨bc e.symm.toRingHom Q, ε, Matrix.map_injective e.injective ?_⟩` and prove the remaining obligations. Establish `h1 : (bc e.symm.toRingHom Q).1.map (infEmb τ) = Q.1` using `Matrix.ext fun i j => e.apply_symm_apply _`.
+
+Establish `h2 : (JR w.Completion J).map (infEmb τ) = J.map τ.1` using `by ext r s; simp [JR, inclR]`. Express the relevant statement in the definitionally equal form `Matrix.map _ (infEmb τ) = Matrix.map _ (infEmb τ)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_cT_sigR h, h1, h2, hQ, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_arch_frame (h : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     (w : InfinitePlace F) : ∃ (c : GL (Fin n) (w.Completion ⊗[F] E)) (ε : Fin n → Bool),
       cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) c.1 * JR w.Completion J * c.1 =
@@ -278,6 +381,15 @@ theorem exists_arch_frame (h : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (h
   funext i
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `h.1` as an intermediate fact. Establish `: IsModuleTopology w.Completion (w.Completion ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (w.Completion ⊗[F] E)` using `IsModuleTopology.isTopologicalRing w.Completion _`. Establish `hr : w.IsReal` using `IsTotallyReal.isReal w`. Set `r` to `InfinitePlace.Completion.isometryEquivRealOfIsReal hr`.
+
+Establish `he : ∀ t : ℝ, InfinitePlace.Completion.extensionEmbedding w (r.symm t) = t` using `fun t => (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hr _).symm.trans (congrArg _ (r.apply_symm_apply t))`. Use `set e := RingEquiv.ofBijective _ (infEmb_bijective h τ)`. Establish `hs : ∀ (t : ℝ) (y : w.Completion ⊗[F] E), e (r.symm t • y) = t * e y` using `fun t y => by`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `congr 1`.
+
+Conclude with `(infEmb_tmul τ _ 1).trans (by rw [map_one, mul_one]; exact he t)`. Establish `: (e.symm : ℂ → _) = fun z => r.symm z.re • (1 : w.Completion ⊗[F] E) + r.symm z.im • e.symm Complex.I`. Use function extensionality and compare the values at `z`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_add, hs, hs, map_one, mul_one, e.apply_symm_apply, e.apply_symm_apply, Complex.re_add_im]`.
+
+Rewrite using `[this]`. Establish `h1 : Continuous fun z : ℂ => r.symm z.re` using `r.symm.continuous.comp Complex.continuous_re`. Establish `h2 : Continuous fun z : ℂ => r.symm z.im` using `r.symm.continuous.comp Complex.continuous_im`. Conclude with `Continuous.fun_add (Continuous.fun_smul h1 continuous_const) (Continuous.fun_smul h2 continuous_const)`.
+-/
 theorem continuous_infEmb_symm (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) :
     Continuous (RingEquiv.ofBijective _ (infEmb_bijective h τ)).symm := by
   have := h.1
@@ -301,6 +413,15 @@ theorem continuous_infEmb_symm (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : 
   have h2 : Continuous fun z : ℂ => r.symm z.im := r.symm.continuous.comp Complex.continuous_im
   exact Continuous.fun_add (Continuous.fun_smul h1 continuous_const) (Continuous.fun_smul h2 continuous_const)
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Set `e` to `RingEquiv.ofBijective _ (infEmb_bijective h τ)`. Establish `hc : Continuous fun u : Matrix.unitaryGroup (Fin n) ℂ => bc e.symm.toRingHom (Unitary.toUnits u)` using `Units.continuous_iff.2 ⟨continuous_subtype_val.matrix_map (continuous_infEmb_symm h τ), continuous_subtype_val.star.matrix_map (continuous_infEmb_symm h τ)⟩`. Use `isCompact_range hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `h1 : cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ) g.1 * 1 * g.1 = 1` using `hg`. Establish `h2` using `congrArg (fun y => y.map (infEmb τ)) h1`. Simplify using `only [mul_one, Matrix.map_mul, map_cT_sigR h, Matrix.map_one _ (map_zero _) (map_one _)] at h2`.
+
+Conclude with `⟨⟨_, Matrix.mem_unitaryGroup_iff'.2 h2⟩, Units.ext (Matrix.ext fun i j => e.symm_apply_apply _)⟩`. Introduce and unpack `⟨u, rfl⟩`. Use `Matrix.map_injective e.injective ?_` and prove the remaining obligations. Establish `h1 : (bc e.symm.toRingHom (Unitary.toUnits u)).1.map (infEmb τ) = u.1` using `Matrix.ext fun i j => e.apply_symm_apply _`. Express the relevant statement in the definitionally equal form `Matrix.map _ (infEmb τ) = Matrix.map _ (infEmb τ)`.
+
+Rewrite using `[mul_one, Matrix.map_mul, map_cT_sigR h, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 u.2`.
+-/
 theorem isCompact_UJ_one (h : IsCMExt F E σ) (w : InfinitePlace F) :
     IsCompact (UJ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) (1 : Matrix (Fin n) (Fin n) _) :
       Set (GL (Fin n) (w.Completion ⊗[F] E))) := by
@@ -325,6 +446,11 @@ theorem isCompact_UJ_one (h : IsCMExt F E σ) (w : InfinitePlace F) :
     rw [mul_one, Matrix.map_mul, map_cT_sigR h, h1, Matrix.map_one _ (map_zero _) (map_one _)]
     exact Matrix.mem_unitaryGroup_iff'.1 u.2
 
+/- English proof (translation)
+Establish `: IsModuleTopology w.Completion (w.Completion ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (w.Completion ⊗[F] E)` using `IsModuleTopology.isTopologicalRing w.Completion _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) w.Completion`. Establish `: T2Space (w.Completion ⊗[F] E)` using `e.isEmbedding.t2Space`. Establish `hcl : IsClosed (HR w.Completion σ J : Set (GL (Fin n) (w.Completion ⊗[F] E)))` using `isClosed_eq (((Units.continuous_val.matrix_map (GlobalTheory.AdelicUnitaryTop.continuous_sigR w.Completion σ)).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`.
+
+Establish `h1 : Topology.IsClosedEmbedding (matHom w.Completion σ J)` using `hcl.isClosedEmbedding_subtypeVal`. Establish `h2` using `h1.isCompact_preimage (((Homeomorph.mulLeft b⁻¹).trans (Homeomorph.mulRight b)).isCompact_preimage.2 (isCompact_UJ_one (n := n) h w))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `mem_stabArch`.
+-/
 theorem isCompact_stabArch (h : IsCMExt F E σ) (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F)
     (b : GL (Fin n) (w.Completion ⊗[F] E)) : IsCompact (stabArch σ J w b : Set (GArch σ J w)) := by
   have : IsModuleTopology w.Completion (w.Completion ⊗[F] E) := ⟨rfl⟩
@@ -342,6 +468,9 @@ theorem isCompact_stabArch (h : IsCMExt F E σ) (J : Matrix (Fin n) (Fin n) E) (
   ext g
   exact mem_stabArch
 
+/- English proof (translation)
+Use `choose c ε hc using exists_arch_frame h hJ`. Take `⟨a, ha, hw⟩` from `exists_isLatticeFrame_of_arch L c`. Conclude with `⟨a, ha, fun w => ⟨ε w, by rw [hw w]; exact hc w⟩⟩`.
+-/
 theorem exists_isLatticeFrame_isMajorantFrame (h : IsCMExt F E σ) {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L] :
     ∃ a : GL (Fin n) (AF F ⊗[F] E), IsLatticeFrame L a ∧ IsMajorantFrame σ J a := by

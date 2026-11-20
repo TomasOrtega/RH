@@ -12,5 +12,8 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.QCoh.ClosedCounit.isIso_counit_subschemeι | exact GlobalTheory.QCoh.ClosedCounit.isIso_counit_subschemeι | (intros; apply GlobalTheory.QCoh.ClosedCounit.isIso_counit_subschemeι <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ideal_subscheme_counit_iso : ∀ {X : Scheme.{0}} (I : X.IdealSheafData) (G : I.subscheme.Modules) [G.IsQuasicoherent], IsIso ((Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι).counit.app G) := by
   first | exact @GlobalTheory.QCoh.ClosedCounit.isIso_counit_subschemeι | exact GlobalTheory.QCoh.ClosedCounit.isIso_counit_subschemeι | (intros; apply GlobalTheory.QCoh.ClosedCounit.isIso_counit_subschemeι <;> assumption)

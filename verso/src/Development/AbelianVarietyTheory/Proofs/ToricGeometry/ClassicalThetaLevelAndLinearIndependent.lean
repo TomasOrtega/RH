@@ -9,6 +9,11 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `e (c : Fin g → Fin N) : levelTheta 0 0 N τ (fun i => ((c i : ℕ) : ℤ)) = fun z => theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)`. Use function extensionality and compare the values at `z`. Rewrite using `[levelTheta_zero_zero]`. Simplify using `only [Int.cast_natCast]`. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `levelTheta_zero_zero_mem hτ hN (fun i => ((c i : ℕ) : ℤ))`. Rewrite `h` using `[e]`. Conclude with `mem_thetaLevel.1 h`. Establish `h` using `linearIndependent_levelTheta (a := 0) (b := 0) hτ hN (r := fun (c : Fin g → Fin N) i => ((c i : ℕ) : ℤ)) (bijective_fin_zmod hN).1`. Simplify `h` using `only [e]`.
+-/
 theorem classicalTheta_level_and_linearIndependent' (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ)
     (hτ : τ ∈ SiegelH (Fin g)) (N : ℕ) (hN : 1 ≤ N) :
     (∀ c : Fin g → Fin N,
@@ -36,6 +41,13 @@ theorem classicalTheta_level_and_linearIndependent' (g : ℕ) (τ : Matrix (Fin 
 open Complex Matrix Filter Topology in
 open scoped BigOperators Real in
 
+/- English proof (translation)
+Introduce `_ _ _ g τ hτ N hN`. Establish `hN0 : 0 < N` using `hN`. Establish `heq : ∀ c : Fin g → Fin N, (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) = _root_.GlobalTheory.levelTheta 0 0 N τ (fun i => ((c i : ℕ) : ℤ))`. Introduce `c`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[_root_.GlobalTheory.levelTheta_zero_zero]`. Simplify using the standard rewrite rules. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[heq c]`. Conclude with `_root_.GlobalTheory.mem_thetaLevel.1 (_root_.GlobalTheory.levelTheta_zero_zero_mem hτ hN0 _)`.
+
+Use `_root_.GlobalTheory.linearIndependent_levelTheta (a := 0) (b := 0) hτ hN0 (r := fun (c : Fin g → Fin N) i => ((c i : ℕ) : ℤ)) (_root_.GlobalTheory.bijective_fin_zmod (ι := Fin g) hN0).injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`. Conclude with `heq c`.
+-/
 theorem _root_.GlobalTheory.classicalTheta_level_and_linearIndependent :
     _root_.ReciprocityTheory.PTheta.SiegelSubDomainStatement → _root_.ReciprocityTheory.PTheta.ThetaHoloStatement → _root_.ReciprocityTheory.PTheta.ThetaMTestStatement → (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ _root_.ReciprocityTheory.PTheta.SiegelH (Fin g) → ∀ N : ℕ, 1 ≤ N → (∀ c : Fin g → Fin N, (Differentiable ℂ (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) (z + τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n + _root_.ReciprocityTheory.PTheta.ofIntVec n') = _root_.ReciprocityTheory.PTheta.eC (-(N : ℂ) * (_root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ (τ *ᵥ _root_.ReciprocityTheory.PTheta.ofIntVec n) / 2 + _root_.ReciprocityTheory.PTheta.ofIntVec n ⬝ᵥ z)) * (fun z => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ)) z)) ∧ LinearIndependent ℂ (fun (c : Fin g → Fin N) (z : Fin g → ℂ) => _root_.ReciprocityTheory.PTheta.theta (fun i => ((c i : ℕ) : ℝ) / N) 0 ((N : ℂ) • z) ((N : ℂ) • τ))) := by
   intro _ _ _ g τ hτ N hN

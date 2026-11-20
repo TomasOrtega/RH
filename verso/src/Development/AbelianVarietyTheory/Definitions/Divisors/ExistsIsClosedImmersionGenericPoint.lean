@@ -32,14 +32,25 @@ def CInfAt (f : CxPts p σ → ℝ) (y : CxPts p σ) : Prop :=
     y ∈ ptsIn p σ W ∧ IsOpen O ∧ (fun a => ev p σ W (g a) y) ∈ O ∧ ContDiffOn ℝ ∞ F O ∧
       f =ᶠ[𝓝 y] fun z => F fun a => ev p σ W (g a) z
 
+/- English proof (translation)
+The claim follows from `have ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, e.trans h₅⟩`.
+-/
 theorem CInfAt.congr (h : CInfAt f y) (e : f' =ᶠ[𝓝 y] f) : CInfAt f' y :=
   have ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
   ⟨W, ι, i, g, F, O, h₁, h₂, h₃, h₄, e.trans h₅⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, Empty, inferInstance, Empty.elim, fun _ => c, univ, mem_ptsIn_top, isOpen_univ, trivial, contDiffOn_const, EventuallyEq.rfl⟩`.
+-/
 theorem cInfAt_const (c : ℝ) (y : CxPts p σ) : CInfAt (fun _ => c) y :=
   ⟨⊤, Empty, inferInstance, Empty.elim, fun _ => c, univ, mem_ptsIn_top, isOpen_univ, trivial,
     contDiffOn_const, EventuallyEq.rfl⟩
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Take `⟨W', ι', _, g', F', O', h₁', h₂', h₃', h₄', h₅'⟩` from `h'`. Establish `hW` using `mem_ptsIn_inf.2 ⟨h₁, h₁'⟩`. Establish `cl : ContDiff ℝ ∞ fun (v : ι ⊕ ι' → ℂ) a => v (.inl a)` using `contDiff_pi.2 fun a => contDiff_apply _ _ _`. Establish `cr : ContDiff ℝ ∞ fun (v : ι ⊕ ι' → ℂ) a => v (.inr a)` using `contDiff_pi.2 fun a => contDiff_apply _ _ _`.
+
+Use `⟨W ⊓ W', ι ⊕ ι', inferInstance, Sum.elim (fun a => resG X inf_le_left (g a)) fun a => resG X inf_le_right (g' a), fun v => G (F fun a => v (.inl a), F' fun a => v (.inr a)), (fun v a => v (.inl a)) ⁻¹' O ∩ (fun v a => v (.inr a)) ⁻¹' O', hW, (h₂.preimage cl.continuous).inter (h₂' …` and prove the remaining obligations. Simplify `h₃` using `only [mem_preimage, Sum.elim_inl, ev_res _ hW]`. Simplify `h₃'` using `only [mem_preimage, Sum.elim_inr, ev_res _ hW]`. Use `filter_upwards [h₅, h₅', (isOpen_ptsIn _).mem_nhds hW] with z e e' hz`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, ev_res _ hz, e, e']`.
+-/
 theorem CInfAt.comp₂ (h : CInfAt f y) (h' : CInfAt f' y) {G : ℝ × ℝ → ℝ} (hG : ContDiff ℝ ∞ G) :
     CInfAt (fun z => G (f z, f' z)) y := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -61,15 +72,27 @@ theorem CInfAt.comp₂ (h : CInfAt f y) (h' : CInfAt f' y) {G : ℝ × ℝ → �
   · filter_upwards [h₅, h₅', (isOpen_ptsIn _).mem_nhds hW] with z e e' hz
     simp only [Sum.elim_inl, Sum.elim_inr, ev_res _ hz, e, e']
 
+/- English proof (translation)
+The claim follows from `h.comp₂ h' (G := fun x => x.1 + x.2) (contDiff_fst.add contDiff_snd)`.
+-/
 theorem CInfAt.add (h : CInfAt f y) (h' : CInfAt f' y) : CInfAt (fun z => f z + f' z) y :=
   h.comp₂ h' (G := fun x => x.1 + x.2) (contDiff_fst.add contDiff_snd)
 
+/- English proof (translation)
+The claim follows from `h.comp₂ h (G := fun x => c * x.1) (contDiff_const.mul contDiff_fst)`.
+-/
 theorem CInfAt.const_mul (h : CInfAt f y) (c : ℝ) : CInfAt (fun z => c * f z) y :=
   h.comp₂ h (G := fun x => c * x.1) (contDiff_const.mul contDiff_fst)
 
+/- English proof (translation)
+The claim follows from `h.comp₂ h (G := fun x => -x.1) contDiff_fst.neg`.
+-/
 theorem CInfAt.neg (h : CInfAt f y) : CInfAt (fun z => -f z) y :=
   h.comp₂ h (G := fun x => -x.1) contDiff_fst.neg
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `ContinuousAt.congr ?_ h₅.symm` and prove the remaining obligations. Conclude with `ContinuousAt.comp (f := fun z a => ev p σ W (g a) z) (h₄.continuousOn.continuousAt (h₂.mem_nhds h₃)) (continuousAt_pi.2 fun a => (continuousOn_ev (g a)).continuousAt ((isOpen_ptsIn W).mem_nhds h₁))`.
+-/
 theorem CInfAt.continuousAt (h : CInfAt f y) : ContinuousAt f y := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
   refine ContinuousAt.congr ?_ h₅.symm
@@ -77,10 +100,16 @@ theorem CInfAt.continuousAt (h : CInfAt f y) : ContinuousAt f y := by
     (h₄.continuousOn.continuousAt (h₂.mem_nhds h₃)) (continuousAt_pi.2 fun a =>
       (continuousOn_ev (g a)).continuousAt ((isOpen_ptsIn W).mem_nhds h₁))
 
+/- English proof (translation)
+The claim follows from `(valR_comp z.1 π W g).symm`.
+-/
 theorem ev_app {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) (W : X.Opens) (g : Γ(X, W))
     (z : CxPts q σ) : ev q σ (π ⁻¹ᵁ W) (π.app W g) z = ev p σ W g (PtsOver.map π hπ _ z) :=
   (valR_comp z.1 π W g).symm
 
+/- English proof (translation)
+Take `⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨π ⁻¹ᵁ W, ι, inferInstance, fun a => π.app W (g a), F, O, h₁, h₂, ?_, h₄, ?_⟩` and prove the remaining obligations. Simplify `h₃` using `only [ev_app π hπ]`. Simplify using `only [ev_app π hπ]`. Conclude with `(PtsOver.continuous_map π hπ _).continuousAt.eventually h₅`.
+-/
 theorem CInfAt.pull {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) {z : CxPts q σ}
     (h : CInfAt f (PtsOver.map π hπ _ z)) : CInfAt (fun w => f (PtsOver.map π hπ _ w)) z := by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h
@@ -91,6 +120,9 @@ theorem CInfAt.pull {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) {z : Cx
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Introduce `v hv` and use `by obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h _ hv.2 have ho := isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) W) have hg : ContDiffAt ℝ ∞ (fun w a => ev p σ W (g a) (c.e.symm w)) v := contDiffAt_pi.2 fun a => (contDiffOn_real ho (c.holo W (g a))).contDiffAt (ho.mem_nhds …`.
+-/
 theorem contDiffOn_chart {S : Set (CxPts p σ)} (h : ∀ y ∈ S, CInfAt f y) (c : AlgChart p σ D) :
     ContDiffOn ℝ ∞ (f ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S) := fun v hv => by
   obtain ⟨W, ι, _, g, F, O, h₁, h₂, h₃, h₄, h₅⟩ := h _ hv.2
@@ -100,6 +132,11 @@ theorem contDiffOn_chart {S : Set (CxPts p σ)} (h : ∀ y ∈ S, CInfAt f y) (c
   exact (((h₄.contDiffAt (h₂.mem_nhds h₃)).comp v hg).congr_of_eventuallyEq
     ((c.e.continuousAt_symm hv.1).eventually h₅)).contDiffWithinAt
 
+/- English proof (translation)
+Establish `hc (z) (hz : z ∈ c.e.source) : WithLp.toLp 2 (fun a => ev p σ c.U (c.x a) z) = c.e z`. Use extensionality with `a`. Conclude with `(c.apply_eq z hz a).symm`. Establish `ht : ContDiff ℝ ∞ (WithLp.toLp 2 : (Fin D → ℂ) → V D)` using `PiLp.contDiff_toLp`. Use `⟨c.U, Fin D, inferInstance, c.x, (f ∘ c.e.symm) ∘ WithLp.toLp 2, WithLp.toLp 2 ⁻¹' (c.e.target ∩ c.e.symm ⁻¹' S), c.source_subset hy, (isOpen_over c.e hS).preimage ht.continuous, ?_, h.comp ht.contDiffOn fun _ hv => hv, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_preimage, hc y hy]`. Conclude with `mem_over c.e hy hyS`. Use `filter_upwards [c.e.open_source.mem_nhds hy] with z hz`. Simplify using `only [Function.comp_apply, hc z hz, c.e.left_inv hz]`.
+-/
 theorem cInfAt_of_chart {S : Set (CxPts p σ)} (hS : IsOpen S) (c : AlgChart p σ D)
     (h : ContDiffOn ℝ ∞ (f ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' S)) (hy : y ∈ c.e.source)
     (hyS : y ∈ S) : CInfAt f y := by
@@ -114,6 +151,9 @@ theorem cInfAt_of_chart {S : Set (CxPts p σ)} (hS : IsOpen S) (c : AlgChart p �
   · filter_upwards [c.e.open_source.mem_nhds hy] with z hz
     simp only [Function.comp_apply, hc z hz, c.e.left_inv hz]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ => contDiffOn_chart h _, fun h y hy => have ⟨i, hi⟩ := R.cover y cInfAt_of_chart hS _ (h i) hi hy⟩`.
+-/
 theorem cInfAt_iff_smoothOn (R : AnRead p σ D) {S : Set (CxPts p σ)} (hS : IsOpen S) :
     (∀ y ∈ S, CInfAt f y) ↔ R.SmoothOn S f :=
   ⟨fun h _ => contDiffOn_chart h _, fun h y hy =>
@@ -128,28 +168,52 @@ variable {A B : LB X} {φ : Weight p σ B} {D : ℕ}
 
 def IsCInf (φ : Weight p σ B) : Prop := ∀ i, ∀ y ∈ ptsIn p σ (B.U i), CInfAt (φ.φ i) y
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => cInfAt_iff_smoothOn R (isOpen_ptsIn _)`.
+-/
 theorem isCInf_iff_isSmooth (R : AnRead p σ D) : φ.IsCInf ↔ φ.IsSmooth R :=
   forall_congr' fun _ => cInfAt_iff_smoothOn R (isOpen_ptsIn _)
 
+/- English proof (translation)
+Introduce `i y hy` and use `(h i y hy).add (hu y)`.
+-/
 theorem IsCInf.addFn (h : φ.IsCInf) {u : CxPts p σ → ℝ} (hu : ∀ y, CInfAt u y) :
     (φ.addFn u).IsCInf := fun i y hy => (h i y hy).add (hu y)
 
+/- English proof (translation)
+Introduce `i y hy` and use `(h' i.1 y (mem_ptsIn_inf.1 hy).1).add (h i.2 y (mem_ptsIn_inf.1 hy).2)`.
+-/
 theorem IsCInf.tens {ψ : Weight p σ A} (h' : ψ.IsCInf) (h : φ.IsCInf) : (ψ.tens φ).IsCInf :=
   fun i y hy => (h' i.1 y (mem_ptsIn_inf.1 hy).1).add (h i.2 y (mem_ptsIn_inf.1 hy).2)
 
+/- English proof (translation)
+Introduce `i y hy` and use `(h i y hy).neg`.
+-/
 theorem IsCInf.dual (h : φ.IsCInf) : φ.dual.IsCInf := fun i y hy => (h i y hy).neg
 
+/- English proof (translation)
+Introduce `j y hy` and use `((h _ y (mem_pow_iff.1 hy)).const_mul n).congr (.of_forall fun z => φ.zpow_φ n j z)`.
+-/
 theorem IsCInf.zpow (h : φ.IsCInf) (n : ℤ) : (φ.zpow n).IsCInf := fun j y hy =>
   ((h _ y (mem_pow_iff.1 hy)).const_mul n).congr (.of_forall fun z => φ.zpow_φ n j z)
 
+/- English proof (translation)
+Introduce `j z hz` and use `(CInfAt.pull π hπ (h _ _ (mem_of_mem_linComb (m := fun _ => PtsOver.map π hπ _ z) (fun _ => rfl) hz PUnit.unit))).congr (.of_forall fun w => φ.pull_φ π hπ j w)`.
+-/
 theorem IsCInf.pull (h : φ.IsCInf) {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) :
     (φ.pull π hπ).IsCInf := fun j z hz =>
   (CInfAt.pull π hπ (h _ _ (mem_of_mem_linComb (m := fun _ => PtsOver.map π hπ _ z)
     (fun _ => rfl) hz PUnit.unit))).congr (.of_forall fun w => φ.pull_φ π hπ j w)
 
+/- English proof (translation)
+Introduce `_ y _` and use `hu y`.
+-/
 theorem isCInf_ofFun {u : CxPts p σ → ℝ} (hu : ∀ y, CInfAt u y) : (ofFun u).IsCInf :=
   fun _ y _ => hu y
 
+/- English proof (translation)
+Introduce `i y hy` and use `by have hs : ContDiff ℝ ∞ fun v : α → ℂ => ∑ a, ‖∑ j, M j a * v j‖ ^ 2 := ContDiff.sum fun a _ => (ContDiff.sum fun j _ => contDiff_const.mul (contDiff_apply ℝ ℂ j)).norm_sq ℂ refine ⟨B.U i, α, inferInstance, fun j => (b j).f i, fun v => Real.log (∑ a, ‖∑ j, M j a * v j‖ ^ 2), {v …`.
+-/
 theorem isCInf_fsBasis {α : Type} [Fintype α] [DecidableEq α] (hB : B.IsLB) (b : α → B.Sec)
     (hb : ⨆ j, nonzeroLocus (b j) = ⊤) (M : Matrix α α ℂ) (hM : M.det ≠ 0) :
     (fsBasis p σ hB b hb M hM).IsCInf := fun i y hy => by
@@ -164,6 +228,9 @@ theorem isCInf_fsBasis {α : Type} [Fintype α] [DecidableEq α] (hB : B.IsLB) (
   simp only [combVal, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `continuous_iff_continuousAt.2 fun y => by have hi := mem_pick φ.isLB y have ho := (isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds hi refine ((((continuousOn_ev (s.f _)).continuousAt ho).norm.pow 2).mul (h _ y hi).continuousAt.neg.rexp).congr ?_ exact eventually_of_mem ho fun z hz => …`.
+-/
 theorem IsCInf.continuous_nsq (h : φ.IsCInf) (s : B.Sec) : Continuous (φ.nsq (secVal p σ s)) :=
   continuous_iff_continuousAt.2 fun y => by
   have hi := mem_pick φ.isLB y
@@ -176,12 +243,22 @@ def SemiPosReg (φ : Weight p σ B) (D : ℕ) : Prop :=
   ∀ (i : B.ι) (c : AlgChart p σ D), ∀ y ∈ c.e.source ∩ ptsIn p σ (B.U i), ∀ ξ : Fin D → ℂ,
     0 ≤ (leviV D (fun v => (φ.φ i (c.e.symm v) : ℂ)) (c.e y) ξ).re
 
+/- English proof (translation)
+The claim follows from `((contDiffOn_chart (h i) c).contDiffAt ((isOpen_over c.e (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi))).of_le (by norm_cast)`.
+-/
 theorem IsCInf.contDiffAt (h : φ.IsCInf) (c : AlgChart p σ D) {y : CxPts p σ}
     (hy : y ∈ c.e.source) {i : B.ι} (hi : y ∈ ptsIn p σ (B.U i)) :
     ContDiffAt ℝ 2 (fun v => φ.φ i (c.e.symm v)) (c.e y) :=
   ((contDiffOn_chart (h i) c).contDiffAt
     ((isOpen_over c.e (isOpen_ptsIn _)).mem_nhds (mem_over c.e hy hi))).of_le (by norm_cast)
 
+/- English proof (translation)
+Use `⟨fun H i c => H i _, fun H i c y hy ξ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `R.cover y`. Use `set c' := R.chart a`. Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hm` using `mem_over c.e hy.1 ha`.
+
+Establish `e : (fun v => (φ.φ i (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] (fun v => (φ.φ i (c'.e.symm v) : ℂ)) ∘ c'.e ∘ c.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy.1)`. Establish `hd : ContDiffAt ℂ 2 (c'.e ∘ c.e.symm) (c.e y)` using `contDiffAt_euclidean.2 fun b => ((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn D _ _ ho (differentiableOn_euclidean.1 (c.holo_trans c') b)).contDiffAt (ho.mem_nhds hm)).of_le (by norm_cast)`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.leviV_congr e, ReciprocityTheory.L2DbarEstimates.Y.leviV_comp (e₂ ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ (h.contDiffAt c' ha hy.2)) hd, e₂]`.
+
+Conclude with `H i a y ⟨ha, hy.2⟩ _`.
+-/
 theorem semiPosReg_iff (h : φ.IsCInf) (R : AnRead p σ D) : φ.SemiPosReg D ↔ φ.SemiPos R := by
   refine ⟨fun H i c => H i _, fun H i c y hy ξ => ?_⟩
   obtain ⟨a, ha⟩ := R.cover y
@@ -215,6 +292,13 @@ def chernDens (y : CxPts p σ) : ℝ :=
 
 variable {φ}
 
+/- English proof (translation)
+Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i ⊓ B.U j))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨hi, hj⟩)`. Establish `hg` using `c.holo _ (B.g i j).val`. Establish `h0 : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U i ⊓ B.U j), (ev p σ _ (B.g i j).val ∘ c.e.symm) v ≠ 0` using `fun v hv => ev_ne_zero hv.2 (B.g i j).isUnit`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (h i) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).1⟩) (contDiffOn_log_normSq ho hg h0) (-1) hm`.
+
+Establish `e₀ : cHess D (fun w => ((Real.log (‖(ev p σ _ (B.g i j).val ∘ c.e.symm) w‖ ^ 2) : ℝ) : ℂ)) (c.e y) = 0`. Use extensionality with `a b`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hg h0 a b`. Rewrite `e` using `[e₀, smul_zero, add_zero]`. Use `Eq.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_) e` and prove the remaining obligations.
+
+Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[φ.trans i j _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, neg_one_mul, sub_eq_add_neg]`. Both sides reduce to the same expression.
+-/
 theorem hess_eq (h : φ.IsCInf) (hy : y ∈ c.e.source) {i j : B.ι} (hi : y ∈ ptsIn p σ (B.U i))
     (hj : y ∈ ptsIn p σ (B.U j)) : c.hess φ j y = c.hess φ i y := by
   have ho := isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i ⊓ B.U j))
@@ -235,11 +319,19 @@ theorem hess_eq (h : φ.IsCInf) (hy : y ∈ c.e.source) {i j : B.ι} (hi : y ∈
   rw [φ.trans i j _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, neg_one_mul, sub_eq_add_neg]
   rfl
 
+/- English proof (translation)
+Rewrite using `[chernDens, c.hess_eq h hy hi (mem_pick _ y)]`.
+-/
 theorem chernDens_eq (h : φ.IsCInf) (hy : y ∈ c.e.source) {i : B.ι}
     (hi : y ∈ ptsIn p σ (B.U i)) :
     c.chernDens φ y = D.factorial / Real.pi ^ D * (c.hess φ i y).det.re := by
   rw [chernDens, c.hess_eq h hy hi (mem_pick _ y)]
 
+/- English proof (translation)
+Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `hm` using `mem_over c.e hy hy'`. Establish `e : (fun v => (φ.φ (pick φ.isLB y) (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] (fun v => (φ.φ (pick φ.isLB y) (c'.e.symm v) : ℂ)) ∘ c'.e ∘ c.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`.
+
+Rewrite using `[chernDens, chernDens, hess, hess, ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, ReciprocityTheory.L2DbarEstimates.Y.cmpa_det_comp ho hm (c.holo_trans c') (e₂ ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ (h.contDiffAt c' hy' (mem_pick _ y))), e₂, Complex.re_ofReal_mul …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chernDens_trans (h : φ.IsCInf) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
     c.chernDens φ y = ‖transDet c.e c'.e y‖ ^ 2 * c'.chernDens φ y := by
   have ho := isOpen_over c.e c'.e.open_source
@@ -255,14 +347,23 @@ theorem chernDens_trans (h : φ.IsCInf) (hy : y ∈ c.e.source) (hy' : y ∈ c'.
     Complex.re_ofReal_mul, transDet]
   ring
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (by positivity) (ReciprocityTheory.L2DbarEstimates.Y.cmpb_det_nonneg (h.contDiffAt c hy (mem_pick _ y)) (h' _ c y ⟨hy, mem_pick _ y⟩))`.
+-/
 theorem chernDens_nonneg (h : φ.IsCInf) (h' : φ.SemiPosReg D) (hy : y ∈ c.e.source) :
     0 ≤ c.chernDens φ y :=
   mul_nonneg (by positivity) (ReciprocityTheory.L2DbarEstimates.Y.cmpb_det_nonneg
     (h.contDiffAt c hy (mem_pick _ y)) (h' _ c y ⟨hy, mem_pick _ y⟩))
 
+/- English proof (translation)
+Simplify using `[chernDens]`.
+-/
 theorem chernDens_zero (c : AlgChart p σ 0) (y : CxPts p σ) : c.chernDens φ y = 1 := by
   simp [chernDens]
 
+/- English proof (translation)
+Use `ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_add_const (fun v => (φ.φ (pick φ.isLB y) (c.e.symm v) : ℂ)) t (c.e y)` as an intermediate fact. Simplify using `only [chernDens, hess, Weight.addFn, Complex.ofReal_add, this]`.
+-/
 theorem chernDens_addFn_const (t : ℝ) (y : CxPts p σ) :
     c.chernDens (φ.addFn fun _ => t) y = c.chernDens φ y := by
   have := ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_add_const
@@ -286,25 +387,45 @@ def chernInt (S : Set (CxPts p σ)) (f : CxPts p σ → ℝ) : ℝ :=
 
 variable {φ D} {S : Set (CxPts p σ)} {f g : CxPts p σ → ℝ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.congr_fun e hS, h.2.congr_fun e hS⟩`.
+-/
 theorem ChernIntegrableOn.congr (h : φ.ChernIntegrableOn D S f) (hS : MeasurableSet S)
     (e : EqOn f g S) : φ.ChernIntegrableOn D S g := ⟨h.1.congr_fun e hS, h.2.congr_fun e hS⟩
 
+/- English proof (translation)
+Rewrite using `[chernInt, chernInt, setIntegral_congr_fun hS e, setIntegral_congr_fun hS e]`.
+-/
 theorem chernInt_congr (hS : MeasurableSet S) (e : EqOn f g S) :
     φ.chernInt D S f = φ.chernInt D S g := by
   rw [chernInt, chernInt, setIntegral_congr_fun hS e, setIntegral_congr_fun hS e]
 
+/- English proof (translation)
+Rewrite using `[chernInt, chernInt, chernInt, integral_add hf.1 hg.1, integral_add hf.2 hg.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chernInt_add (hf : φ.ChernIntegrableOn D S f) (hg : φ.ChernIntegrableOn D S g) :
     φ.chernInt D S (fun y => f y + g y) = φ.chernInt D S f + φ.chernInt D S g := by
   rw [chernInt, chernInt, chernInt, integral_add hf.1 hg.1, integral_add hf.2 hg.2]
   ring
 
+/- English proof (translation)
+Rewrite using `[chernInt, chernInt, integral_const_mul, integral_const_mul, mul_sub]`.
+-/
 theorem chernInt_const_mul (a : ℝ) : φ.chernInt D S (fun y => a * f y) = a * φ.chernInt D S f := by
   rw [chernInt, chernInt, integral_const_mul, integral_const_mul, mul_sub]
 
+/- English proof (translation)
+Simplify using `only [chernPart, AlgChart.chernDens_addFn_const]`.
+-/
 theorem chernPart_addFn_const (t : ℝ) (ε : ℤˣ) :
     (φ.addFn fun _ => t).chernPart D ε = φ.chernPart D ε := by
   simp only [chernPart, AlgChart.chernDens_addFn_const]
 
+/- English proof (translation)
+Establish `key : φ.chernPart D ε ≤ (φ.chernPart D ε).restrict Sᶜ` using `iSup_le fun c => by`. Establish `e : chartMeas c.e (fun y => ENNReal.ofReal ((ε : ℤ) * c.chernDens φ y)) S = 0`. Rewrite using `[chartMeas_apply _ _ hS, (h c).inter_eq, image_empty, Measure.restrict_empty, lintegral_zero_measure]`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (s := Sᶜ) (compl_mem_ae_iff.2 e)]`. Conclude with `Measure.restrict_mono le_rfl (le_iSup (fun c : AlgChart p σ D => chartMeas c.e fun y => ENNReal.ofReal ((ε : ℤ) * c.chernDens φ y)) c)`.
+
+Use `le_antisymm ((key S).trans_eq ?_) zero_le` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hS, inter_compl_self, measure_empty]`.
+-/
 theorem chernPart_eq_zero (ε : ℤˣ) (hS : MeasurableSet S)
     (h : ∀ c : AlgChart p σ D, Disjoint c.e.source S) : φ.chernPart D ε S = 0 := by
   have key : φ.chernPart D ε ≤ (φ.chernPart D ε).restrict Sᶜ := iSup_le fun c => by
@@ -319,6 +440,9 @@ theorem chernPart_eq_zero (ε : ℤˣ) (hS : MeasurableSet S)
 
 variable [SecondCountableTopology (CxPts p σ)]
 
+/- English proof (translation)
+Rewrite using `[chernPart, glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by`. Rewrite using `[c.chernDens_trans c' h hy hy', mul_left_comm, ENNReal.ofReal_mul (sq_nonneg _)]) c hS hc,`. Use `chartMeas_apply_of_subset _ _ hS hc]`.
+-/
 theorem chernPart_apply (h : φ.IsCInf) (ε : ℤˣ) (c : AlgChart p σ D) (hS : MeasurableSet S)
     (hc : S ⊆ c.e.source) : φ.chernPart D ε S =
       ∫⁻ v in c.e '' S, ENNReal.ofReal ((ε : ℤ) * c.chernDens φ (c.e.symm v)) := by
@@ -328,6 +452,9 @@ theorem chernPart_apply (h : φ.IsCInf) (ε : ℤˣ) (c : AlgChart p σ D) (hS :
 
 omit [SecondCountableTopology (CxPts p σ)] in
 
+/- English proof (translation)
+Use `le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le` and prove the remaining obligations. Rewrite using `[chartMeas_apply _ _ MeasurableSet.univ, inter_univ, c.e.image_source_eq_target]`. Use `setLIntegral_eq_zero c.e.open_target.measurableSet fun v hv => ?_` and prove the remaining obligations. Use `c.chernDens_nonneg h h' (c.e.map_target hv)` as an intermediate fact. Conclude with `ENNReal.ofReal_eq_zero.2 (by simpa using this)`.
+-/
 theorem chernPart_neg_eq_zero (h : φ.IsCInf) (h' : φ.SemiPosReg D) : φ.chernPart D (-1) = 0 := by
   refine le_antisymm (iSup_le fun c => le_of_eq (Measure.measure_univ_eq_zero.1 ?_)) bot_le
   rw [chartMeas_apply _ _ MeasurableSet.univ, inter_univ, c.e.image_source_eq_target]
@@ -346,6 +473,9 @@ section Ord
 variable [IsLocallyNoetherian Z] {D E : CartierDiv Z} {z : Z} {f : Z.functionField}
   {g : Z.functionFieldˣ}
 
+/- English proof (translation)
+Distinguish the cases in `hz : Order.coheight z = 1`. Take `⟨a, ha, rfl⟩` from `h`. Establish `: Ring.KrullDimLE 1 (Z.presheaf.stalk z)` using `krullDimLE_of_coheight_le hz.le`. Conclude with `(Scheme.ord_eq_iff hz (ha.map _).ne_zero).2 (Ring.ordFrac_of_isUnit ha)`. Conclude with `Scheme.ord_eq_zero_of_coheight_neq_one hz f`.
+-/
 theorem UnitAt.ord_eq_zero (h : UnitAt z f) : Scheme.ord f z = 0 := by
   by_cases hz : Order.coheight z = 1
   · obtain ⟨a, ha, rfl⟩ := h
@@ -353,6 +483,9 @@ theorem UnitAt.ord_eq_zero (h : UnitAt z f) : Scheme.ord f z = 0 := by
     exact (Scheme.ord_eq_iff hz (ha.map _).ne_zero).2 (Ring.ordFrac_of_isUnit ha)
   · exact Scheme.ord_eq_zero_of_coheight_neq_one hz f
 
+/- English proof (translation)
+Establish `: Ring.KrullDimLE 1 (Z.presheaf.stalk z)` using `krullDimLE_of_coheight_le hz.le`. Establish `h0` using `mem_nonZeroDivisors_of_ne_zero ha`. Use `(Scheme.ord_eq_iff hz ((map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 ha)).2 ?_` and prove the remaining obligations. Conclude with `(Ring.ordFrac_eq_ord _ ha).trans (Ring.ordMonoidWithZeroHom_eq_coe _ h0 (ENat.coe_toNat (Ring.ord_ne_top h0)).symm)`.
+-/
 theorem ord_algebraMap (hz : Order.coheight z = 1) {a : Z.presheaf.stalk z} (ha : a ≠ 0) :
     Scheme.ord (algebraMap _ Z.functionField a) z =
       (Module.length (Z.presheaf.stalk z) (Z.presheaf.stalk z ⧸ Ideal.span {a})).toNat := by
@@ -367,23 +500,44 @@ namespace CartierDiv
 def mult (D : CartierDiv Z) (z : Z) : ℤ :=
   Scheme.ord ((D.exists_isEqn z).choose : Z.functionField) z
 
+/- English proof (translation)
+Establish `e` using `((h.iff_unitAt).1 (D.exists_isEqn z).choose_spec).ord_eq_zero`. Rewrite using `[mult, ← div_mul_cancel₀ ((D.exists_isEqn z).choose : Z.functionField) g.ne_zero, Scheme.ord_mul (div_ne_zero (Units.ne_zero _) g.ne_zero) g.ne_zero, e, zero_add]`.
+-/
 theorem IsEqn.mult_eq (h : D.IsEqn z g) : D.mult z = Scheme.ord (g : Z.functionField) z := by
   have e := ((h.iff_unitAt).1 (D.exists_isEqn z).choose_spec).ord_eq_zero
   rw [mult, ← div_mul_cancel₀ ((D.exists_isEqn z).choose : Z.functionField) g.ne_zero,
     Scheme.ord_mul (div_ne_zero (Units.ne_zero _) g.ne_zero) g.ne_zero, e, zero_add]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `D.exists_isEqn z`. Take `⟨g', hg'⟩` from `E.exists_isEqn z`. Rewrite using `[(hg.add hg').mult_eq, hg.mult_eq, hg'.mult_eq, Units.val_mul, Scheme.ord_mul g.ne_zero g'.ne_zero]`.
+-/
 theorem mult_add (D E : CartierDiv Z) (z : Z) : (D + E).mult z = D.mult z + E.mult z := by
   obtain ⟨g, hg⟩ := D.exists_isEqn z
   obtain ⟨g', hg'⟩ := E.exists_isEqn z
   rw [(hg.add hg').mult_eq, hg.mult_eq, hg'.mult_eq, Units.val_mul,
     Scheme.ord_mul g.ne_zero g'.ne_zero]
 
+/- English proof (translation)
+The claim follows from `by_contra fun hz => h (Scheme.ord_eq_zero_of_coheight_neq_one hz _)`.
+-/
 theorem coheight_eq_one_of_mult_ne_zero (h : D.mult z ≠ 0) : Order.coheight z = 1 :=
   by_contra fun hz => h (Scheme.ord_eq_zero_of_coheight_neq_one hz _)
 
+/- English proof (translation)
+Introduce `e` and use `h (e.mult_eq.trans (unitAt_one z).ord_eq_zero)`.
+-/
 theorem mem_supp_of_mult_ne_zero (h : D.mult z ≠ 0) : z ∈ D.supp := fun e =>
   h (e.mult_eq.trans (unitAt_one z).ord_eq_zero)
 
+/- English proof (translation)
+Establish `: IsNoetherian Z` using `{}`. Take `⟨S, hS, hc, hi, hU⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible D.supp.isClosed`. Use `(hS.image fun T => if h : IsIrreducible T then h.genericPoint else genericPoint Z).subset fun z hz => ?_` and prove the remaining obligations. Take `⟨T, hT, hzT⟩` from `mem_sUnion.1 (hU.le (mem_supp_of_mult_ne_zero hz))`. Use `⟨T, hT, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos (hi T hT)]`. Establish `hg` using `(hi T hT).isGenericPoint_genericPoint (hc T hT)`. Establish `h₁ : z ≤ (hi T hT).genericPoint` using `hg.specializes hzT`. Establish `h₂ : (hi T hT).genericPoint < genericPoint Z`. Use `lt_of_le_not_ge (genericPoint_specializes _) fun e => ?_` and prove the remaining obligations.
+
+Establish `e' : _ = genericPoint Z` using `(Specializes.antisymm e (genericPoint_specializes _)).eq`. Conclude with `D.genericPoint_notMem_supp (e' ▸ hU.ge (mem_sUnion.2 ⟨T, hT, hg.mem⟩))`. Assume the negation of the conclusion as `hne`. Establish `h₃` using `Order.coheight_add_one_le (lt_of_le_not_ge h₁ fun e => hne (Specializes.antisymm h₁ e).eq)`. Establish `h₄` using `Order.coheight_add_one_le h₂`.
+
+Rewrite `h₃` using `[coheight_eq_one_of_mult_ne_zero hz]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`.
+-/
 theorem finite_support_mult [CompactSpace Z] (D : CartierDiv Z) :
     (Function.support D.mult).Finite := by
   classical
@@ -422,6 +576,11 @@ def ratVal (f : Z.functionField) (y : CxPts q σ) : ℂ :=
   if h : RegAt (under y) f then
     ev q σ h.exists_fnOf.choose h.exists_fnOf.choose_spec.choose_spec.choose y else 0
 
+/- English proof (translation)
+Establish `hr` using `regAt_fnOf (mem_ptsIn.1 hy) h a`. Establish `e` using `hr.exists_fnOf.choose_spec.choose_spec.choose_spec`. Establish `hV` using `mem_ptsIn_inf.2 ⟨mem_ptsIn.2 hr.exists_fnOf.choose_spec.choose, hy⟩`. Rewrite using `[ratVal, dif_pos hr, ← ev_res inf_le_left hV, ← ev_res inf_le_right hV]`. Use `congr 1`.
+
+Conclude with `fn_ext fun _ => by rw [fnOf_resG, fnOf_resG, e]`.
+-/
 theorem ratVal_fnOf {U : Z.Opens} (hy : y ∈ ptsIn q σ U) (h : genericPoint Z ∈ U) (a : Γ(Z, U)) :
     ratVal (fnOf U h a) y = ev q σ U a y := by
   have hr := regAt_fnOf (mem_ptsIn.1 hy) h a
@@ -431,6 +590,9 @@ theorem ratVal_fnOf {U : Z.Opens} (hy : y ∈ ptsIn q σ U) (h : genericPoint Z 
   congr 1
   exact fn_ext fun _ => by rw [fnOf_resG, fnOf_resG, e]
 
+/- English proof (translation)
+Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`. Take `⟨W, hW, b, rfl⟩` from `hg.exists_fnOf`. Establish `hy : y ∈ ptsIn q σ (U ⊓ W)` using `mem_ptsIn.2 ⟨hU, hW⟩`. Rewrite using `[← fnOf_resG (inf_le_left : U ⊓ W ≤ U) (gen_mem (memInf hU hW)), ← fnOf_resG (inf_le_right : U ⊓ W ≤ W) (gen_mem (memInf hU hW)), ← map_mul, ratVal_fnOf hy, ratVal_fnOf hy, ratVal_fnOf hy, ev_mul]`.
+-/
 theorem ratVal_mul (hf : RegAt (under y) f) (hg : RegAt (under y) g) :
     ratVal (f * g) y = ratVal f y * ratVal g y := by
   obtain ⟨U, hU, a, rfl⟩ := hf.exists_fnOf
@@ -440,6 +602,9 @@ theorem ratVal_mul (hf : RegAt (under y) f) (hg : RegAt (under y) g) :
     ← fnOf_resG (inf_le_right : U ⊓ W ≤ W) (gen_mem (memInf hU hW)), ← map_mul,
     ratVal_fnOf hy, ratVal_fnOf hy, ratVal_fnOf hy, ev_mul]
 
+/- English proof (translation)
+Take `⟨U, hU, a, rfl⟩` from `hf.regAt.exists_fnOf`. Rewrite using `[ratVal_fnOf (mem_ptsIn.2 hU)]`. Conclude with `(mem_ptsIn_basicOpen (mem_ptsIn.2 hU) a).1 (mem_ptsIn.2 ((unitAt_fnOf_iff hU _ a).1 hf))`.
+-/
 theorem ratVal_ne_zero (hf : UnitAt (under y) f) : ratVal f y ≠ 0 := by
   obtain ⟨U, hU, a, rfl⟩ := hf.regAt.exists_fnOf
   rw [ratVal_fnOf (mem_ptsIn.2 hU)]
@@ -449,10 +614,19 @@ variable {L : LB Z} {r : L.ι → Z.functionFieldˣ}
 
 def offSupp (q : Z ⟶ Sp k) (σ : k →+* ℂ) (D : CartierDiv Z) : Set (CxPts q σ) := ptsIn q σ D.supp.compl
 
+/- English proof (translation)
+The claim follows from `isOpen_ptsIn _`.
+-/
 theorem isOpen_offSupp (D : CartierDiv Z) : IsOpen (offSupp q σ D) := isOpen_ptsIn _
 
+/- English proof (translation)
+The claim follows from `mem_ptsIn`.
+-/
 theorem mem_offSupp {D : CartierDiv Z} : y ∈ offSupp q σ D ↔ under y ∉ D.supp := mem_ptsIn
 
+/- English proof (translation)
+The claim follows from `not_not.1 (mt ((presents_divOfRatSec hL hr).isEqn i _ (mem_ptsIn.1 hi)).mem_supp_iff.2 (mem_offSupp.1 hy))`.
+-/
 theorem IsRatSec.unitAt (hL : L.IsLB) (hr : IsRatSec L r)
     (hy : y ∈ offSupp q σ (divOfRatSec hL hr)) {i : L.ι} (hi : y ∈ ptsIn q σ (L.U i)) :
     UnitAt (under y) (r i) :=
@@ -462,6 +636,11 @@ theorem IsRatSec.unitAt (hL : L.IsLB) (hr : IsRatSec L r)
 def logNorm (φ : Weight q σ L) (r : L.ι → Z.functionFieldˣ) (y : CxPts q σ) : ℝ :=
   Real.log ‖ratVal (r (pick φ.isLB y) : Z.functionField) y‖ - φ.φ (pick φ.isLB y) y / 2
 
+/- English proof (translation)
+Establish `hj` using `mem_pick φ.isLB y`. Establish `hij` using `mem_ptsIn_inf.2 ⟨hi, hj⟩`. Establish `hu` using `hr.unitAt φ.isLB hy hj`. Rewrite using `[logNorm, hr i _ (gen_mem (mem_ptsIn.1 hij)), ratVal_mul (regAt_fnOf (mem_ptsIn.1 hij) _ _) hu.regAt, ratVal_fnOf hij, φ.trans i _ y hi hj, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (ev_ne_zero hij (Units.isUnit _))) (norm_ne_zero_iff.2 (ratVal_ne_zero hu)), Real.log_pow, CxPts. …`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logNorm_eq (φ : Weight q σ L) (hr : IsRatSec L r)
     (hy : y ∈ offSupp q σ (divOfRatSec φ.isLB hr)) {i : L.ι} (hi : y ∈ ptsIn q σ (L.U i)) :
     logNorm φ r y = Real.log ‖ratVal (r i : Z.functionField) y‖ - φ.φ i y / 2 := by
@@ -475,15 +654,24 @@ theorem logNorm_eq (φ : Weight q σ L) (hr : IsRatSec L r)
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [logNorm, Weight.addFn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logNorm_addFn (φ : Weight q σ L) (u : CxPts q σ → ℝ) (r : L.ι → Z.functionFieldˣ)
     (y : CxPts q σ) : logNorm (φ.addFn u) r y = logNorm φ r y - u y / 2 := by
   simp only [logNorm, Weight.addFn]
   ring
 
+/- English proof (translation)
+The claim follows from `have ⟨i, hi⟩ := exists_chart hL (genericPoint Z) ⟨_, isRatSec_frameRat hL i hi⟩`.
+-/
 theorem exists_isRatSec (hL : L.IsLB) : ∃ r, IsRatSec L r :=
   have ⟨i, hi⟩ := exists_chart hL (genericPoint Z)
   ⟨_, isRatSec_frameRat hL i hi⟩
 
+/- English proof (translation)
+The claim follows from `((unitAt_fnOf_iff h h _).2 ((mem_nonzeroLocus_iff s i h).1 hs)).ne_zero`.
+-/
 theorem fnOf_sec_ne_zero {s : L.Sec} (hs : genericPoint Z ∈ nonzeroLocus s) {i : L.ι}
     (h : genericPoint Z ∈ L.U i) : fnOf _ h (s.f i) ≠ 0 :=
   ((unitAt_fnOf_iff h h _).2 ((mem_nonzeroLocus_iff s i h).1 hs)).ne_zero
@@ -496,12 +684,18 @@ def ratOfSec (s : L.Sec) (hs : genericPoint Z ∈ nonzeroLocus s) (i : L.ι) :
 
 variable {hL : L.IsLB} {s : L.Sec} {hs : genericPoint Z ∈ nonzeroLocus s}
 
+/- English proof (translation)
+Rewrite using `[ratOfSec, dif_pos h, Units.val_mk0]`.
+-/
 theorem val_ratOfSec {i : L.ι} (h : genericPoint Z ∈ L.U i) :
     (ratOfSec s hs i : Z.functionField) = fnOf _ h (s.f i) := by
   rw [ratOfSec, dif_pos h, Units.val_mk0]
 
 variable (s hs) in
 
+/- English proof (translation)
+Introduce `i j h` and use `by rw [val_ratOfSec h.1, val_ratOfSec h.2, ← fnOf_resG inf_le_left h, ← fnOf_resG inf_le_right h, ← map_mul] exact congrArg _ (s.compat i j)`.
+-/
 theorem isRatSec_ratOfSec : IsRatSec L (ratOfSec s hs) := fun i j h => by
   rw [val_ratOfSec h.1, val_ratOfSec h.2, ← fnOf_resG inf_le_left h, ← fnOf_resG inf_le_right h,
     ← map_mul]
@@ -511,14 +705,23 @@ variable (hL s hs) in
 
 abbrev divOfSec : CartierDiv Z := divOfRatSec hL (isRatSec_ratOfSec s hs)
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_chart hL z`. Rewrite using `[((presents_divOfRatSec hL _).isEqn i z hi).mem_supp_iff, not_not, val_ratOfSec (gen_mem hi), unitAt_fnOf_iff hi, mem_nonzeroLocus_iff s i hi]`.
+-/
 theorem notMem_supp_divOfSec {z : Z} : z ∉ (divOfSec hL s hs).supp ↔ z ∈ nonzeroLocus s := by
   obtain ⟨i, hi⟩ := exists_chart hL z
   rw [((presents_divOfRatSec hL _).isEqn i z hi).mem_supp_iff, not_not, val_ratOfSec (gen_mem hi),
     unitAt_fnOf_iff hi, mem_nonzeroLocus_iff s i hi]
 
+/- English proof (translation)
+The claim follows from `Set.ext fun _ => mem_offSupp.trans (notMem_supp_divOfSec.trans mem_ptsIn.symm)`.
+-/
 theorem offSupp_divOfSec : offSupp q σ (divOfSec hL s hs) = ptsIn q σ (nonzeroLocus s) :=
   Set.ext fun _ => mem_offSupp.trans (notMem_supp_divOfSec.trans mem_ptsIn.symm)
 
+/- English proof (translation)
+Establish `e` using `algebraMap_germ hi (s.f i)`. Rewrite using `[((presents_divOfRatSec hL _).isEqn i z hi).mult_eq, val_ratOfSec (gen_mem hi), ← e]`. Conclude with `ord_algebraMap hz fun h0 => fnOf_sec_ne_zero hs (gen_mem hi) (e.symm.trans ((congrArg _ h0).trans (map_zero _)))`.
+-/
 theorem mult_divOfSec [IsLocallyNoetherian Z] {z : Z} (hz : Order.coheight z = 1) {i : L.ι}
     (hi : z ∈ L.U i) : (divOfSec hL s hs).mult z = (Module.length (Z.presheaf.stalk z)
       (Z.presheaf.stalk z ⧸ Ideal.span {Z.presheaf.germ _ z hi (s.f i)})).toNat := by
@@ -527,6 +730,9 @@ theorem mult_divOfSec [IsLocallyNoetherian Z] {z : Z} (hz : Order.coheight z = 1
   exact ord_algebraMap hz fun h0 => fnOf_sec_ne_zero hs (gen_mem hi)
     (e.symm.trans ((congrArg _ h0).trans (map_zero _)))
 
+/- English proof (translation)
+Distinguish the cases in `h : (divOfSec hL s hs).mult z = 0`. Conclude with `h.ge`. Take `⟨i, hi⟩` from `exists_chart hL z`. Rewrite using `[mult_divOfSec (CartierDiv.coheight_eq_one_of_mult_ne_zero h) hi]`. Conclude with `Nat.cast_nonneg _`.
+-/
 theorem mult_divOfSec_nonneg [IsLocallyNoetherian Z] (z : Z) : 0 ≤ (divOfSec hL s hs).mult z := by
   by_cases h : (divOfSec hL s hs).mult z = 0
   · exact h.ge
@@ -534,6 +740,9 @@ theorem mult_divOfSec_nonneg [IsLocallyNoetherian Z] (z : Z) : 0 ≤ (divOfSec h
     rw [mult_divOfSec (CartierDiv.coheight_eq_one_of_mult_ne_zero h) hi]
     exact Nat.cast_nonneg _
 
+/- English proof (translation)
+Establish `hi` using `mem_pick φ.isLB y`. Establish `h0` using `(secVal_ne_zero_iff s hi).2 hy`. Rewrite using `[logNorm, val_ratOfSec (gen_mem (mem_ptsIn.1 hi)), ratVal_fnOf hi, Weight.nsq, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 h0)) (Real.exp_ne_zero _), Real.log_exp, Real.log_pow, secVal_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logNorm_ratOfSec (φ : Weight q σ L) (hy : y ∈ ptsIn q σ (nonzeroLocus s)) :
     logNorm φ (ratOfSec s hs) y = Real.log (φ.nsq (secVal q σ s) y) / 2 := by
   have hi := mem_pick φ.isLB y
@@ -544,6 +753,9 @@ theorem logNorm_ratOfSec (φ : Weight q σ L) (hy : y ∈ ptsIn q σ (nonzeroLoc
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `j j' h` and use `by have h' : genericPoint Z ∈ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit) := ⟨mem_iInter.1 h.1 PUnit.unit, mem_iInter.1 h.2 PUnit.unit⟩ rw [hr _ _ h'] congr 1 have e : (lbPow L 1).g j j' = res (X := Z) (U := L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) (V := (lbPow L 1).U j ⊓ (lbPow L …`.
+-/
 theorem IsRatSec.pow_one (hr : IsRatSec L r) : IsRatSec (lbPow L 1) fun j => r (j PUnit.unit) :=
   fun j j' h => by
   have h' : genericPoint Z ∈ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit) :=
@@ -561,12 +773,18 @@ theorem IsRatSec.pow_one (hr : IsRatSec L r) : IsRatSec (lbPow L 1) fun j => r (
   exact (fnOf_resG (fun _ hx => ⟨mem_iInter.1 hx.1 PUnit.unit, mem_iInter.1 hx.2 PUnit.unit⟩ :
     (lbPow L 1).U j ⊓ (lbPow L 1).U j' ≤ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit)) h _).symm
 
+/- English proof (translation)
+The claim follows from `CartierDiv.ext_of_isEqn fun z => have ⟨i, hi⟩ := exists_chart hL z ⟨r i, (presents_divOfRatSec h hr.pow_one).isEqn (fun _ => i) z (mem_iInter.2 fun _ => hi), (presents_divOfRatSec hL hr).isEqn i z hi⟩`.
+-/
 theorem divOfRatSec_pow_one (hL : L.IsLB) (hr : IsRatSec L r) (h : (lbPow L 1).IsLB) :
     divOfRatSec h hr.pow_one = divOfRatSec hL hr := CartierDiv.ext_of_isEqn fun z =>
   have ⟨i, hi⟩ := exists_chart hL z
   ⟨r i, (presents_divOfRatSec h hr.pow_one).isEqn (fun _ => i) z (mem_iInter.2 fun _ => hi),
     (presents_divOfRatSec hL hr).isEqn i z hi⟩
 
+/- English proof (translation)
+Rewrite using `[logNorm_eq φ hr hy (mem_pow_iff.1 (mem_pick (φ.pow 1).isLB y)), logNorm]`. Conclude with `congrArg (_ - · / 2) ((φ.zpow_φ _ _ y).trans (by simp))`.
+-/
 theorem logNorm_pow_one (φ : Weight q σ L) (hr : IsRatSec L r)
     (hy : y ∈ offSupp q σ (divOfRatSec φ.isLB hr)) :
     logNorm (φ.pow 1) (fun j => r (j PUnit.unit)) y = logNorm φ r y := by
@@ -591,9 +809,19 @@ structure IsArithVar (p : X ⟶ Sp k) (D : ℕ) : Prop where
 
 def GenSmooth (p : X ⟶ Sp k) (D : ℕ) : Prop := ∀ σ : k →+* ℂ, Nonempty (AnRead p σ D)
 
+/- English proof (translation)
+Introduce `_` and use `inferInstance`.
+-/
 theorem genSmooth_of_smooth (p : X ⟶ Sp k) (D : ℕ) [SmoothOfRelativeDimension D p] :
     GenSmooth p D := fun _ => inferInstance
 
+/- English proof (translation)
+Establish `key (U : X.Opens) [Nonempty U] : (t.appLE ⊤ U le_top).hom.Flat ↔ CharZero Γ(X, U)`. Establish `e : (t.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (.of ℤ)).inv.hom = algebraMap ℤ Γ(X, U)` using `RingHom.ext_int _ _`. Rewrite using `[← RingHom.Flat.respectsIso.cancel_left_isIso (Scheme.ΓSpecIso (.of ℤ)).inv, e, RingHom.flat_algebraMap_iff, Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, ← Submodule.isTorsionFree_iff_torsion_eq_bot, Module.isTorsionFree_int_iff_isAddTorsionFree]`. Conclude with `⟨fun _ => .of_isAddTorsionFree _ Γ(X, U), fun _ => inferInstance⟩`. Establish `res (U : X.Opens) [Nonempty U] : CharZero Γ(X, U) ↔ CharZero Γ(X, ⊤)` using `((resG X (le_top : U ≤ ⊤)).charZero_iff (map_injective_of_isIntegral X _)).symm`.
+
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top (genericPoint X))`. Establish `: Nonempty U` using `⟨⟨_, hx⟩⟩`. Conclude with `(res U).1 ((key U).1 (HasRingHomProperty.appLE @Flat t h ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _))`. Use `HasRingHomProperty.of_iSup_eq_top (P := @Flat) (fun U : {U : X.affineOpens // Nonempty U.1} => U.1) (top_le_iff.1 fun x _ => ?_) fun U => ?_` and prove the remaining obligations.
+
+Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top x)`. Conclude with `Opens.mem_iSup.2 ⟨⟨⟨U, hU⟩, ⟨⟨x, hx⟩⟩⟩, hx⟩`. Use `U.2` as an intermediate fact. Conclude with `(key _).2 ((res _).2 h)`.
+-/
 theorem flat_int_iff_charZero [IsIntegral X] (t : X ⟶ Sp ℤ) : Flat t ↔ CharZero Γ(X, ⊤) := by
   have key (U : X.Opens) [Nonempty U] : (t.appLE ⊤ U le_top).hom.Flat ↔ CharZero Γ(X, U) := by
     have e : (t.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (.of ℤ)).inv.hom =
@@ -621,32 +849,56 @@ namespace IsArithVar
 variable {D : ℕ} (h : IsArithVar p D)
 include h
 
+/- English proof (translation)
+The claim follows from `have := h.finite IsNoetherianRing.of_finite ℤ k`.
+-/
 theorem isNoetherianRing : IsNoetherianRing k :=
   have := h.finite
   IsNoetherianRing.of_finite ℤ k
 
+/- English proof (translation)
+The claim follows from `have := h.isNoetherianRing isNoetherian_of_isProjOver h.isProjOver`.
+-/
 theorem isNoetherian : IsNoetherian X :=
   have := h.isNoetherianRing
   isNoetherian_of_isProjOver h.isProjOver
 
+/- English proof (translation)
+The claim follows from `h.isNoetherian.toIsLocallyNoetherian`.
+-/
 theorem isLocallyNoetherian : IsLocallyNoetherian X := h.isNoetherian.toIsLocallyNoetherian
 
+/- English proof (translation)
+The claim follows from `have := h.isIntegral (flat_int_iff_charZero _).1 h.flat`.
+-/
 theorem charZero : CharZero Γ(X, ⊤) :=
   have := h.isIntegral
   (flat_int_iff_charZero _).1 h.flat
 
+/- English proof (translation)
+The claim follows from `have := h.charZero (DVR.FlatBC.algX p ⊤).charZero`.
+-/
 theorem charZero_base : CharZero k :=
   have := h.charZero
   (DVR.FlatBC.algX p ⊤).charZero
 
+/- English proof (translation)
+The claim follows from `have := h.finite have := h.isDomain have := h.charZero_base .of_equiv _ (RingHom.equivIntAlgHom k ℂ).symm`.
+-/
 theorem finite_emb : Finite (k →+* ℂ) :=
   have := h.finite
   have := h.isDomain
   have := h.charZero_base
   .of_equiv _ (RingHom.equivIntAlgHom k ℂ).symm
 
+/- English proof (translation)
+The claim follows from `CxPts.compactSpace σ h.isProjOver`.
+-/
 theorem compactSpace (σ : k →+* ℂ) : CompactSpace (CxPts p σ) := CxPts.compactSpace σ h.isProjOver
 
+/- English proof (translation)
+The claim follows from `have ⟨N, j, _, hj⟩ := h.isProjOver ⟨h.1, h.2, ‹_›, ⟨N, i ≫ j, inferInstance, by rw [Category.assoc, hj]⟩, (flat_int_iff_charZero _).2 hc, he⟩`.
+-/
 theorem of_isClosedImmersion (i : Y ⟶ X) [IsClosedImmersion i] [IsIntegral Y]
     (hc : CharZero Γ(Y, ⊤)) {e : ℕ} (he : topologicalKrullDim Y = (e + 1 : ℕ)) :
     IsArithVar (i ≫ p) e :=
@@ -672,6 +924,9 @@ namespace CxPts
 
 variable {σ' : k →+* ℂ} {y : CxPts p σ} {y' : CxPts p σ'}
 
+/- English proof (translation)
+Establish `e : spMap σ' = spMap ((starRingEnd ℂ).comp σ)`. Rewrite using `[← y'.2, h, Category.assoc, y.2, ← Spec.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+-/
 theorem eq_conj_of_conj (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
     σ' = (starRingEnd ℂ).comp σ := by
   have e : spMap σ' = spMap ((starRingEnd ℂ).comp σ) := by
@@ -685,6 +940,9 @@ namespace HermLB
 
 variable (L M : HermLB p)
 
+/- English proof (translation)
+The claim follows from `(Weight.isCInf_iff_isSmooth R).1 (L.cInf σ)`.
+-/
 theorem isSmooth {D : ℕ} (R : AnRead p σ D) : (L.φ σ).IsSmooth R :=
   (Weight.isCInf_iff_isSmooth R).1 (L.cInf σ)
 
@@ -731,6 +989,9 @@ def shift (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ
   conj σ σ' c y y' h hy := congrArg₂ (· + ·) (L.conj σ σ' _ y y' h hy)
     (congrArg (2 * ·) ((congrArg t (eq_conj_of_conj h)).trans (ht σ)))
 
+/- English proof (translation)
+The claim follows from `(L.φ σ).nsq_addFn _ s y`.
+-/
 theorem nsq_shift (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ)
     (s : L.B.ι → CxPts p σ → ℂ) (y : CxPts p σ) :
     ((L.shift t ht).φ σ).nsq s y = (L.φ σ).nsq s y * Real.exp (-(2 * t σ)) :=
@@ -762,6 +1023,9 @@ def fs {B : LB X} (hB : B.IsLB) {α : Type} [Fintype α] [DecidableEq α] (b : �
 
 def smallSec : Set L.B.Sec := {s | ∀ σ (y : CxPts p σ), (L.φ σ).nsq (secVal p σ s) y ≤ 1}
 
+/- English proof (translation)
+Introduce `σ y` and use `by rw [map_zero] simp [Weight.nsq]`.
+-/
 theorem zero_mem_smallSec : 0 ∈ L.smallSec := fun σ y => by
   rw [map_zero]
   simp [Weight.nsq]
@@ -770,6 +1034,9 @@ def SemiPos (D : ℕ) : Prop := ∀ σ, (L.φ σ).SemiPosReg D
 
 variable {L} in
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun σ => Weight.semiPosReg_iff (L.cInf σ) (R σ)`.
+-/
 theorem semiPos_iff {D : ℕ} (R : ∀ σ, AnRead p σ D) : L.SemiPos D ↔ ∀ σ, (L.φ σ).SemiPos (R σ) :=
   forall_congr' fun σ => Weight.semiPosReg_iff (L.cInf σ) (R σ)
 
@@ -835,6 +1102,11 @@ structure IsNef (D : ℕ) : Prop where
 
 variable {L} {h h' : X → ℝ}
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `H.recursion Z i hc e he hd 1 _ hr.pow_one`. Establish `e₁ : ((L.restr i).pow 1).div hr.pow_one = (L.restr i).div hr` using `divOfRatSec_pow_one _ hr _`. Establish `e₂ (σ) : EqOn (logNorm (((L.restr i).pow 1).φ σ) fun j => r (j PUnit.unit)) (logNorm ((L.restr i).φ σ) r) (offSupp _ σ ((L.restr i).div hr))` using `fun y hy => logNorm_pow_one _ hr hy`. Unfold `ArchIntegrable at h₁`. Rewrite `h₁` using `[e₁]`.
+
+Unfold `archInt at h₂`. Rewrite `h₂` using `[e₁, Nat.cast_one, one_mul]`. Conclude with `⟨fun σ => (h₁ σ).congr (isOpen_offSupp _).measurableSet (e₂ σ), h₂.trans (congrArg _ (finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (e₂ σ)))⟩`.
+-/
 theorem IsArithHeight.recursion_one (H : L.IsArithHeight h) {Z : Scheme.{0}} (i : Z ⟶ X)
     [IsClosedImmersion i] [IsIntegral Z] [IsLocallyNoetherian Z] (hc : CharZero Γ(Z, ⊤)) {e : ℕ}
     (he : 1 ≤ e) (hd : topologicalKrullDim Z = (e + 1 : ℕ))
@@ -854,6 +1126,11 @@ theorem IsArithHeight.recursion_one (H : L.IsArithHeight h) {Z : Scheme.{0}} (i 
   exact ⟨fun σ => (h₁ σ).congr (isOpen_offSupp _).measurableSet (e₂ σ), h₂.trans (congrArg _
     (finsum_congr fun σ => Weight.chernInt_congr (isOpen_offSupp _).measurableSet (e₂ σ)))⟩
 
+/- English proof (translation)
+Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Set `` to `(Scheme.ΓSpecIso (X.residueField x)).inv.hom.toAlgebra`. Establish `hd : topologicalKrullDim (Spec (X.residueField x)) = (0 : ℕ)` using `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _).trans (ringKrullDim_eq_zero_of_field _)`. Establish `e` using `H.vertical _ (X.fromSpecResidueField x) (X.residueField x) 0 hd`. Establish `e₁ : Module.finrank (X.residueField x) Γ(Spec (X.residueField x), ⊤) = 1` using `((AlgEquiv.ofBijective (Algebra.ofId _ _) (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (X.residueField x)).inv)).toLinearEquiv.finrank_eq).symm.trans (Module.finrank_self _)`.
+
+Rewrite `e` using `[Scheme.fromSpecResidueField_apply, topSelfIntersection, interNum_of_isEmpty, chi_structureModule_of_isAffine, e₁]`. Simplify using `using e`.
+-/
 theorem IsArithHeight.closedPoint (H : L.IsArithHeight h) {x : X} (hx : IsClosed {x})
     [Finite (X.residueField x)] : h x = Real.log (Nat.card (X.residueField x)) := by
   have := isClosed_singleton_iff_isClosedImmersion.1 hx
@@ -871,6 +1148,11 @@ theorem IsArithHeight.closedPoint (H : L.IsArithHeight h) {x : X} (hx : IsClosed
 
 end HermLB
 
+/- English proof (translation)
+Set `C : Closeds X` to `⟨closure {x}, isClosed_closure⟩`. Use `isIntegral_red (Z := C) isIrreducible_singleton.closure` as an intermediate fact. Use `⟨_, redι C, inferInstance, this, ?_⟩` and prove the remaining obligations. Establish `h₁` using `(genericPoint_spec _).image (redι C).continuous`. Rewrite `h₁` using `[image_univ, range_redι, C.isClosed.closure_eq]`.
+
+Conclude with `h₁.eq isGenericPoint_closure`.
+-/
 theorem exists_isClosedImmersion_genericPoint (x : X) : ∃ (Z : Scheme.{0}) (i : Z ⟶ X)
     (_ : IsClosedImmersion i) (_ : IsIntegral Z), i (genericPoint Z) = x := by
   let C : Closeds X := ⟨closure {x}, isClosed_closure⟩
@@ -885,6 +1167,9 @@ namespace IsArithVar
 variable {D : ℕ} (hX : IsArithVar p D) {Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i]
 include hX i
 
+/- English proof (translation)
+The claim follows from `have := hX.isNoetherianRing have ⟨N, j, _, hj⟩ := hX.isProjOver isNoetherian_of_isProjOver (f := i ≫ p) ⟨N, i ≫ j, inferInstance, by rw [Category.assoc, hj]⟩`.
+-/
 theorem isNoetherian_sub : IsNoetherian Z :=
   have := hX.isNoetherianRing
   have ⟨N, j, _, hj⟩ := hX.isProjOver
@@ -892,6 +1177,11 @@ theorem isNoetherian_sub : IsNoetherian Z :=
 
 variable [IsIntegral Z]
 
+/- English proof (translation)
+Establish `h₁ : topologicalKrullDim Z ≤ (D + 1 : ℕ)` using `i.isClosedEmbedding.isInducing.topologicalKrullDim_le.trans hX.dim_eq.le`. Establish `: Nonempty (IrreducibleCloseds Z)` using `⟨⟨univ, IrreducibleSpace.isIrreducible_univ Z, isClosed_univ⟩⟩`. Establish `h₂ : (0 : WithBot ℕ∞) ≤ topologicalKrullDim Z` using `Order.krullDim_nonneg`. Generalize the expression as in `topologicalKrullDim Z = a at *`. Proceed by induction on `a with`.
+
+Consider the case `bot => exact absurd h₂ (by simp)`. Consider the case `coe a`. Proceed by induction on `a with`. Consider the case `top => exact absurd h₁ (by rw [not_le]; exact WithBot.coe_lt_coe.2 (ENat.coe_lt_top _))`. Consider the case `coe a => exact ⟨a, rfl⟩`.
+-/
 theorem exists_dim_eq : ∃ d : ℕ, topologicalKrullDim Z = d := by
   have h₁ : topologicalKrullDim Z ≤ (D + 1 : ℕ) :=
     i.isClosedEmbedding.isInducing.topologicalKrullDim_le.trans hX.dim_eq.le
@@ -905,6 +1195,9 @@ theorem exists_dim_eq : ∃ d : ℕ, topologicalKrullDim Z = d := by
     | top => exact absurd h₁ (by rw [not_le]; exact WithBot.coe_lt_coe.2 (ENat.coe_lt_top _))
     | coe a => exact ⟨a, rfl⟩
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨N, j, _, hj⟩ := hX.isProjOver have := isProper_str k N have : IsProper p := hj ▸ inferInstance have : IsFinite (spMap (Int.castRingHom k)) := (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite) let t := i ≫ p ≫ spMap (Int.castRingHom k) have : Flat t := …`.
+-/
 theorem dim_ne_zero (hc : CharZero Γ(Z, ⊤)) : topologicalKrullDim Z ≠ 0 := fun h0 => by
   obtain ⟨N, j, _, hj⟩ := hX.isProjOver
   have := isProper_str k N
@@ -930,6 +1223,11 @@ theorem dim_ne_zero (hc : CharZero Γ(Z, ⊤)) : topologicalKrullDim Z ≠ 0 := 
   have e := congrArg PrimeSpectrum.asIdeal (hb.symm.trans (((hu b).trans (hu a).symm) ▸ ha))
   exact two_ne_zero (Ideal.span_singleton_eq_bot.1 e)
 
+/- English proof (translation)
+Take `⟨ℓ, _⟩` from `CharP.exists Γ(Z, ⊤)`. Break down `CharP.char_is_prime_or_zero Γ(Z, ⊤) ℓ with hℓ | rfl` into its components or cases. Conclude with `.inl ⟨ℓ, ⟨hℓ⟩, ⟨ZMod.algebra _ ℓ⟩⟩`. Establish `hc` using `CharP.charP_to_charZero Γ(Z, ⊤)`. Take `⟨_ | e, hd⟩` from `hX.exists_dim_eq i`.
+
+Conclude with `absurd hd (hX.dim_ne_zero i hc)`. Conclude with `.inr ⟨hc, e, hd⟩`.
+-/
 theorem vertical_or_horizontal :
     (∃ (ℓ : ℕ) (_ : Fact ℓ.Prime), Nonempty (Algebra (ZMod ℓ) Γ(Z, ⊤))) ∨
       (CharZero Γ(Z, ⊤) ∧ ∃ e : ℕ, topologicalKrullDim Z = (e + 1 : ℕ)) := by
@@ -947,6 +1245,15 @@ namespace HermLB
 
 variable {L : HermLB p} {h h' : X → ℝ} {D : ℕ}
 
+/- English proof (translation)
+Use `hX.isNoetherian` as an intermediate fact. Use function extensionality and compare the values at `x`. Proceed by induction on `x using (InvImage.wf (fun x : X => (⟨closure {x}, isClosed_closure⟩ : Closeds X)) (wellFounded_lt (α := Closeds X))).induction with`. Consider the case `_ x ih`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`.
+
+Use `hX.isNoetherian_sub i` as an intermediate fact. Take `⟨r, hr⟩` from `exists_isRatSec (L.restr i).isLB`. Break down `hX.vertical_or_horizontal i with ⟨ℓ, _, ⟨_⟩⟩ | ⟨hc, _ | e, he⟩` into its components or cases. Take `⟨d, hd⟩` from `hX.exists_dim_eq i`. Conclude with `(H.vertical Z i (ZMod ℓ) d hd).trans (H'.vertical Z i (ZMod ℓ) d hd).symm`.
+
+Conclude with `(H.point Z i hc he r hr).trans (H'.point Z i hc he r hr).symm`. Rewrite using `[(H.recursion_one i hc e.succ_pos he hr).2, (H'.recursion_one i hc e.succ_pos he hr).2]`. Use `congrArg (· - _) (finsum_congr fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : ((L.restr i).div hr).mult z = 0`. Simplify using `[hz]`.
+
+Establish `hs` using `(genericPoint_specializes z).map i.continuous`. Use `congrArg _ (ih _ (lt_of_le_not_ge (closure_minimal (singleton_subset_iff.2 hs.mem_closure) isClosed_closure) fun hle => ?_))` and prove the remaining obligations. Establish `e` using `i.isClosedEmbedding.injective (hs.antisymm (specializes_iff_mem_closure.2 (hle (subset_closure rfl)))).eq`. Conclude with `CartierDiv.genericPoint_notMem_supp _ (e ▸ CartierDiv.mem_supp_of_mult_ne_zero hz)`.
+-/
 theorem IsArithHeight.unique (hX : IsArithVar p D) (H : L.IsArithHeight h)
     (H' : L.IsArithHeight h') : h = h' := by
   have := hX.isNoetherian
@@ -972,12 +1279,22 @@ theorem IsArithHeight.unique (hX : IsArithVar p D) (H : L.IsArithHeight h)
       (hs.antisymm (specializes_iff_mem_closure.2 (hle (subset_closure rfl)))).eq
     exact CartierDiv.genericPoint_notMem_supp _ (e ▸ CartierDiv.mem_supp_of_mult_ne_zero hz)
 
+/- English proof (translation)
+Take `⟨h, H, rfl⟩` from `ha`. Take `⟨h', H', rfl⟩` from `hb`. Rewrite using `[H.unique hX H']`.
+-/
 theorem IsSelfInter.unique (hX : IsArithVar p D) [IsIntegral X] {a b : ℝ} (ha : L.IsSelfInter a)
     (hb : L.IsSelfInter b) : a = b := by
   obtain ⟨h, H, rfl⟩ := ha
   obtain ⟨h', H', rfl⟩ := hb
   rw [H.unique hX H']
 
+/- English proof (translation)
+Use `⟨fun N => ⟨N.1, fun Z i _ _ hd => ?_⟩, fun N => ⟨N.1, fun Z i _ _ κ _ _ _ hd => ?_, fun Z i _ _ _ hc hd => ?_⟩⟩` and prove the remaining obligations. Use `hX.isNoetherian_sub i` as an intermediate fact. Break down `hX.vertical_or_horizontal i with ⟨ℓ, _, ⟨_⟩⟩ | ⟨hc, -⟩` into its components or cases. Rewrite using `[H.vertical Z i (ZMod ℓ) 1 hd]`. Conclude with `mul_nonneg (Int.cast_nonneg (N.vertical Z i _ hd)) (Real.log_natCast_nonneg _)`.
+
+Take `⟨r, hr, h0⟩` from `N.horizontal Z i hc hd`. Conclude with `h0.trans_eq (H.point Z i hc hd r hr).symm`. Establish `h0` using `(N.2 Z i hd).trans_eq (H.vertical Z i κ 1 hd)`. Establish `h1 : 0 < Real.log (Nat.card κ)` using `Real.log_pos (by exact_mod_cast Finite.one_lt_card)`. Conclude with `nonneg_of_mul_nonneg_left h0 h1` after adjusting the coercions.
+
+Take `⟨r, hr⟩` from `exists_isRatSec (L.restr i).isLB`. Conclude with `⟨r, hr, (N.2 Z i hd).trans_eq (H.point Z i hc hd r hr)⟩`.
+-/
 theorem IsArithHeight.isNef_iff (hX : IsArithVar p D) (H : L.IsArithHeight h) :
     L.IsNef D ↔ L.SemiPos D ∧ ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z],
       topologicalKrullDim Z = 1 → 0 ≤ h (i (genericPoint Z)) := by
@@ -998,6 +1315,9 @@ theorem IsArithHeight.isNef_iff (hX : IsArithVar p D) (H : L.IsArithHeight h) :
 
 end HermLB
 
+/- English proof (translation)
+Establish `hj` using `mem_pick (φ.pull π hπ).isLB z`. Rewrite using `[φ.nsq_eq (secVal_mem s) (mem_of_mem_linComb (m := fun _ => PtsOver.map π hπ _ z) (fun _ => rfl) hj PUnit.unit)]`. Conclude with `congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp (-b)) (valR_appLE z.1 π _ hj _) (φ.pull_φ π hπ _ z)`.
+-/
 theorem Weight.nsq_pull_secPull {B : LB X} (φ : Weight p σ B) {q : Y ⟶ Sp k} (π : Y ⟶ X)
     (hπ : π ≫ p = q) (s : B.Sec) (z : CxPts q σ) :
     (φ.pull π hπ).nsq (secVal q σ (secPull s π)) z =
@@ -1008,6 +1328,13 @@ theorem Weight.nsq_pull_secPull {B : LB X} (φ : Weight p σ B) {q : Y ⟶ Sp k}
   exact congrArg₂ (fun a b => ‖a‖ ^ 2 * Real.exp (-b)) (valR_appLE z.1 π _ hj _)
     (φ.pull_φ π hπ _ z)
 
+/- English proof (translation)
+Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Take `⟨N, j, _, hj⟩` from `hX.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hj ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite)`.
+
+Establish `hf : IsFinite (X.fromSpecResidueField x ≫ p ≫ spMap (Int.castRingHom k))` using `IsFinite.iff_isProper_and_isAffineHom.2 ⟨inferInstance, inferInstance⟩`. Rewrite `hf` using `[← Spec.map_preimage (X.fromSpecResidueField x ≫ _), IsFinite.SpecMap_iff, RingHom.ext_int (Spec.preimage (X.fromSpecResidueField x ≫ p ≫ spMap (Int.castRingHom k))).hom (algebraMap ℤ (X.residueField x)), RingHom.finite_algebraMap]`. Establish `hd : topologicalKrullDim (Spec (X.residueField x)) = 0` using `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _).trans (ringKrullDim_eq_zero_of_field _)`. Take `⟨ℓ, _⟩` from `CharP.exists (X.residueField x)`. Break down `CharP.char_is_prime_or_zero (X.residueField x) ℓ with hℓ | rfl` into its components or cases.
+
+Use `Fact.mk hℓ` as an intermediate fact. Set `` to `ZMod.algebra (X.residueField x) ℓ`. Use `Module.Finite.of_restrictScalars_finite ℤ (ZMod ℓ) (X.residueField x)` as an intermediate fact. Conclude with `Module.finite_of_finite (ZMod ℓ)`. Conclude with `absurd hd (hX.dim_ne_zero (X.fromSpecResidueField x) (((Scheme.ΓSpecIso (X.residueField x)).inv.hom.charZero_iff (ConcreteCategory.bijective_of_isIso _).1).1 (CharP.charP_to_charZero _)))`.
+-/
 theorem IsArithVar.finite_residueField {D : ℕ} (hX : IsArithVar p D) {x : X} (hx : IsClosed {x}) :
     Finite (X.residueField x) := by
   have := isClosed_singleton_iff_isClosedImmersion.1 hx
@@ -1038,6 +1365,11 @@ namespace HermLB
 variable {L : HermLB p} {h : X → ℝ} {Z : Scheme.{0}} (i : Z ⟶ X) [IsIntegral Z]
   [IsLocallyNoetherian Z] (u : L.B.Sec) (hu : genericPoint Z ∈ nonzeroLocus (secPull u i))
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `H.recursion_one i hc he hd (isRatSec_ratOfSec _ hu)`. Establish `e₁ (σ) : offSupp (i ≫ p) σ ((L.restr i).div (isRatSec_ratOfSec _ hu)) = _` using `offSupp_divOfSec`. Establish `e₂ (σ) : EqOn (logNorm ((L.restr i).φ σ) (ratOfSec _ hu)) (fun y => Real.log ((L.φ σ).nsq (secVal p σ u) (PtsOver.map i rfl _ y)) / 2) (ptsIn _ σ (nonzeroLocus (secPull u i)))` using `fun y hy => (logNorm_ratOfSec _ hy).trans (congrArg (Real.log · / 2) ((L.φ σ).nsq_pull_secPull i rfl u y))`. Use `⟨fun σ => (e₁ σ ▸ h₁ σ).congr (isOpen_ptsIn _).measurableSet (e₂ σ), h₂.trans (congrArg _ (finsum_congr fun σ => ?_))⟩` and prove the remaining obligations. Rewrite using `[e₁]`.
+
+Conclude with `Weight.chernInt_congr (isOpen_ptsIn _).measurableSet (e₂ σ)`.
+-/
 theorem IsArithHeight.recursion_sec (H : L.IsArithHeight h) [IsClosedImmersion i]
     (hc : CharZero Γ(Z, ⊤)) {e : ℕ} (he : 1 ≤ e) (hd : topologicalKrullDim Z = (e + 1 : ℕ)) :
     (∀ σ, ((L.restr i).φ σ).ChernIntegrableOn e (ptsIn _ σ (nonzeroLocus (secPull u i))) fun y =>
@@ -1056,6 +1388,9 @@ theorem IsArithHeight.recursion_sec (H : L.IsArithHeight h) [IsClosedImmersion i
   rw [e₁]
   exact Weight.chernInt_congr (isOpen_ptsIn _).measurableSet (e₂ σ)
 
+/- English proof (translation)
+The claim follows from `congrArg _ (finsum_congr fun σ => finsum_congr fun y => (logNorm_ratOfSec _ (h0 σ y)).trans (congrArg (Real.log · / 2) ((L.φ σ).nsq_pull_secPull i rfl u y)))`.
+-/
 theorem curveDeg_sec
     (h0 : ∀ σ (y : CxPts (i ≫ p) σ), y ∈ ptsIn _ σ (nonzeroLocus (secPull u i))) :
     (L.restr i).curveDeg (isRatSec_ratOfSec _ hu) =
@@ -1067,6 +1402,11 @@ theorem curveDeg_sec
 
 end HermLB
 
+/- English proof (translation)
+Establish `e : (fun v => ((Complex.normSq (c.e (c.e.symm v) 0) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v : V 1 => ((Complex.normSq (v 0) : ℝ) : ℂ)` using `eventually_of_mem (c.e.open_target.mem_nhds (c.e.map_source hy)) fun v hv => by`. Simplify using `only [c.e.right_inv hv]`. Establish `hg` using `(EuclideanSpace.proj (𝕜 := ℂ) (0 : Fin 1) : V 1 →L[ℂ] ℂ).contDiff.contDiffAt (n := 2) (x := c.e y)`. Establish `h` using `ReciprocityTheory.L2DbarEstimates.leviV_normSq_comp hg fun _ => 1`. Rewrite using `[AlgChart.chernDens, AlgChart.hess]`.
+
+Use `erw [ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e]`. Simplify using `only [leviV, Finset.univ_unique, Finset.sum_singleton, map_one, mul_one, ReciprocityTheory.L2DbarEstimates.wd_of_differentiableAt (hg.differentiableAt two_ne_zero), ContinuousLinearMap.fderiv] at h`. Rewrite using `[Matrix.det_unique]`. Use `erw [show cHess 1 (fun v : V 1 => ((Complex.normSq (v 0) : ℝ) : ℂ)) (c.e y) default default = _ from h]`. Simplify using `[ReciprocityTheory.L2DbarEstimates.bas]`.
+-/
 example (c : AlgChart p σ 1) {y : CxPts p σ} (hy : y ∈ c.e.source) :
     c.chernDens (Weight.ofFun fun z => Complex.normSq (c.e z 0)) y = 1 / Real.pi := by
   have e : (fun v => ((Complex.normSq (c.e (c.e.symm v) 0) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)]
@@ -1090,6 +1430,9 @@ namespace Weight
 
 variable {B : LB X} {D : ℕ}
 
+/- English proof (translation)
+Introduce `i c y hy ξ` and use `by let G (a : α) (v : V D) : ℂ := ∑ j, M j a * ev p σ _ ((b j).f i) (c.e.symm v) have ho := isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U i)) have hG (a) : ContDiffAt ℂ 2 (G a) (c.e y) := ContDiffAt.sum fun j _ => contDiffAt_const.mul (((ReciprocityTheory.L2DbarEstimates.c …`.
+-/
 theorem semiPosReg_fsBasis {α : Type} [Fintype α] [DecidableEq α] (hB : B.IsLB) (b : α → B.Sec)
     (hb : ⨆ j, nonzeroLocus (b j) = ⊤) (M : Matrix α α ℂ) (hM : M.det ≠ 0) :
     (fsBasis p σ hB b hb M hM).SemiPosReg D := fun i c y hy ξ => by
@@ -1112,6 +1455,9 @@ theorem semiPosReg_fsBasis {α : Type} [Fintype α] [DecidableEq α] (hB : B.IsL
   simp only [fsBasis_φ]
   exact this
 
+/- English proof (translation)
+Introduce `i c y hy ξ` and use `by have e := ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_add_const (fun v => (φ.φ i (c.e.symm v) : ℂ)) t (c.e y) have e' := fun a b => congrFun₂ e a b simp only [cHess, Matrix.of_apply] at e' have := h i c y hy ξ simp only [addFn, Complex.ofReal_add, leviV, e'] at this ⊢ exact …`.
+-/
 theorem SemiPosReg.addFn_const {φ : Weight p σ B} (h : φ.SemiPosReg D) (t : ℝ) :
     (φ.addFn fun _ => t).SemiPosReg D := fun i c y hy ξ => by
   have e := ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_add_const (fun v => (φ.φ i (c.e.symm v) : ℂ)) t (c.e y)
@@ -1127,18 +1473,27 @@ namespace HermLB
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Introduce `σ` and use `Weight.semiPosReg_fsBasis hB b hb _ (hA σ)`.
+-/
 theorem semiPos_fs {B : LB X} (hB : B.IsLB) {α : Type} [Fintype α] [DecidableEq α] (b : α → B.Sec)
     (hb : ⨆ j, nonzeroLocus (b j) = ⊤) (A : (k →+* ℂ) → Matrix α α ℂ) (hA : ∀ σ, (A σ).det ≠ 0)
     (hc : ∀ σ, ∃ U ∈ Matrix.unitaryGroup α ℂ,
       A ((starRingEnd ℂ).comp σ) = (A σ).map (starRingEnd ℂ) * U) :
     (fs p hB b hb A hA hc).SemiPos D := fun σ => Weight.semiPosReg_fsBasis hB b hb _ (hA σ)
 
+/- English proof (translation)
+Introduce `σ` and use `(h σ).addFn_const _`.
+-/
 theorem SemiPos.shift {L : HermLB p} (h : L.SemiPos D) (t : (k →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) : (L.shift t ht).SemiPos D :=
   fun σ => (h σ).addFn_const _
 
 variable (p D) in
 
+/- English proof (translation)
+The claim follows from `(congrArg Complex.re (ReciprocityTheory.L2DbarEstimates.Y.cmpb_leviV_const 0 _ ξ)).ge vertical Z i _ _ κ _ _ _ _ := (interNum_eq_zero_of_cls_eq_zero κ _ (fun _ => LB.isLB_pull (LB.isLB_triv X) i) 0 (by rw [cls_pull (LB.isLB_triv X), cls_triv, map_zero])).ge horizontal Z i _ _ _ _ …`.
+-/
 theorem isNef_triv : (triv p).IsNef D where
   semiPos σ i c y _ ξ := (congrArg Complex.re (ReciprocityTheory.L2DbarEstimates.Y.cmpb_leviV_const 0 _ ξ)).ge
   vertical Z i _ _ κ _ _ _ _ := (interNum_eq_zero_of_cls_eq_zero κ _
@@ -1170,6 +1525,11 @@ variable (k) (N : ℕ)
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Set `η : ProjectiveSpectrum (grading k N)` to `⟨⊥, Ideal.isPrime_bot, fun h => MvPolynomial.X_ne_zero _ (h (HomogeneousIdeal.mem_irrelevant_of_mem _ one_pos (X_mem k N 0)))⟩`. Establish `h : closure {η} = univ` using `eq_univ_of_forall fun x => (ProjectiveSpectrum.le_iff_mem_closure _ _ x).1 (show ⊥ ≤ x.asHomogeneousIdeal from bot_le)`. Establish `: IrreducibleSpace (PSpace k N)` using `(irreducibleSpace_def _).2 (show IsIrreducible (univ : Set (ProjectiveSpectrum (grading k N))) from h ▸ isIrreducible_singleton.closure)`. Establish `: ∀ i, IsReduced ((chartCover k N).X i)` using `fun i => inferInstanceAs (IsReduced (Sp (MvPolynomial {j // j ≠ i} k)))`. Establish `: IsReduced (PSpace k N)` using `IsReduced.of_openCover _ (chartCover k N)`.
+
+Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem isIntegral_of_isDomain [IsDomain k] : IsIntegral (PSpace k N) := by
   let η : ProjectiveSpectrum (grading k N) := ⟨⊥, Ideal.isPrime_bot, fun h =>
     MvPolynomial.X_ne_zero _ (h (HomogeneousIdeal.mem_irrelevant_of_mem _ one_pos (X_mem k N 0)))⟩
@@ -1183,6 +1543,13 @@ theorem isIntegral_of_isDomain [IsDomain k] : IsIntegral (PSpace k N) := by
   have : IsReduced (PSpace k N) := IsReduced.of_openCover _ (chartCover k N)
   exact isIntegral_of_irreducibleSpace_of_isReduced _
 
+/- English proof (translation)
+Use `isIntegral_of_isDomain ℤ N` as an intermediate fact. Establish `: Smooth (PSpace.str ℤ N)` using `SmoothOfRelativeDimension.smooth N _`. Establish `hc : ∀ i, topologicalKrullDim (chart ℤ N i : Set (PSpace ℤ N)) = (N + 1 : ℕ)` using `fun i => by`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding (chartι ℤ N i).isOpenEmbedding.isEmbedding (congrArg SetLike.coe (opensRange_chartι ℤ N i))]`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := MvPolynomial {j // j ≠ i} ℤ)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Simplify using `[add_comm]`. Use `⟨inferInstance, inferInstance, ‹_›, ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩, ?_, le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ((hc 0).ge.trans (topologicalKrullDim_subspace_le _ _))⟩` and prove the remaining obligations. Rewrite using `[RingHom.ext_int (Int.castRingHom ℤ) (RingHom.id ℤ), spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id] infer_instance`. Take `⟨i, hi⟩` from `exists_mem_chart ℤ N x`.
+
+Conclude with `⟨_, (chart ℤ N i).isOpen, hi, (hc i).le⟩`.
+-/
 theorem isArithVar_int : IsArithVar (PSpace.str ℤ N) N := by
   have := isIntegral_of_isDomain ℤ N
   have : Smooth (PSpace.str ℤ N) := SmoothOfRelativeDimension.smooth N _
@@ -1207,8 +1574,14 @@ def hermitianTwistingSheaf : HermLB (PSpace.str k N) :=
   .fs _ (O1_isLB k N) (coord k N) (iSup_nonzeroLocus_coord k N) (fun _ => 1) (fun _ => by simp)
     fun _ => ⟨1, one_mem _, by rw [mul_one, Matrix.map_one _ (map_zero _) (map_one _)]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermitianTwistingSheaf_weight (σ : k →+* ℂ) : (hermitianTwistingSheaf k N).φ σ = ProjAn.fsO1 k σ N := rfl
 
+/- English proof (translation)
+Use `⟨genSmooth_of_smooth _ _, HermLB.semiPos_fs _ _ _ _ _ _, fun a σ y => ?_⟩` and prove the remaining obligations. Establish `e (a) : Weight.combVal (PSpace.str k N) σ (coord k N) 1 a = secVal _ σ (coord k N a)`. Simplify using `[Weight.combVal, Matrix.one_apply]`. Use `le_of_le_of_eq ?_ (Weight.sum_nsq_fs (hB := O1_isLB k N) (he := fun a => e a ▸ secVal_mem _) (h := Weight.noCommonZero_combVal (iSup_nonzeroLocus_coord k N) (M := 1) (by simp)) y)` and prove the remaining obligations. Conclude with `le_of_eq_of_le (congrArg (Weight.nsq _ · y) (e a).symm) (Finset.single_le_sum (fun b _ => Weight.nsq_nonneg _ _ y) (Finset.mem_univ a))`.
+-/
 example : GenSmooth (PSpace.str k N) N ∧ (hermitianTwistingSheaf k N).SemiPos N ∧
     ∀ a, coord k N a ∈ (hermitianTwistingSheaf k N).smallSec := by
   refine ⟨genSmooth_of_smooth _ _, HermLB.semiPos_fs _ _ _ _ _ _, fun a σ y => ?_⟩
@@ -1223,6 +1596,9 @@ end ProjSpace
 
 namespace ArithBase
 
+/- English proof (translation)
+Establish `hA : IsAmpleLB (LB.triv (Sp k))` using `⟨LB.isLB_triv _, inferInstance, fun x => by`. Take `⟨s, hs⟩` from `((isGenerated_triv (Sp k)).pow 1).exists_mem x`. Conclude with `⟨1, le_rfl, s, hs, inf_top_eq (nonzeroLocus s) ▸ isAffineOpen_nonzeroLocus_inf (isLB_lbPow (LB.isLB_triv _) 1) s (isAffineOpen_top _)⟩⟩`. Conclude with `⟨‹_›, ‹_›, inferInstance, hA.isProjOver _, (flat_int_iff_charZero _).2 (((Scheme.ΓSpecIso (.of k)).inv.hom.charZero_iff (ConcreteCategory.bijective_of_isIso _).1).1 ‹_›), (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim k).trans hd⟩`.
+-/
 theorem isArithVar_id [IsDomain k] [CharZero k] [Module.Finite ℤ k] (hd : ringKrullDim k = 1) :
     IsArithVar (𝟙 (Sp k)) 0 := by
   have hA : IsAmpleLB (LB.triv (Sp k)) := ⟨LB.isLB_triv _, inferInstance, fun x => by
@@ -1234,6 +1610,9 @@ theorem isArithVar_id [IsDomain k] [CharZero k] [Module.Finite ℤ k] (hd : ring
       (ConcreteCategory.bijective_of_isIso _).1).1 ‹_›),
     (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim k).trans hd⟩
 
+/- English proof (translation)
+The claim follows from `isArithVar_id (IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField)`.
+-/
 theorem isArithVar_int : IsArithVar (𝟙 (Sp ℤ)) 0 :=
   isArithVar_id (IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField)
 
@@ -1244,6 +1623,21 @@ section Product
 variable [IsLocallyNoetherian Z] [IsAffine Z] (e : ℤ ≃+* Γ(Z, ⊤))
 include e
 
+/- English proof (translation)
+Establish `hU` using `isAffineOpen_top Z`. Establish `: IsPrincipalIdealRing Γ(Z, ⊤)` using `.of_surjective e e.surjective`. Establish `hπ : Prime (e ℓ)` using `(MulEquiv.prime_iff e).2 (Nat.prime_iff_prime_int.1 hℓ)`. Set `P : PrimeSpectrum Γ(Z, ⊤)` to `⟨Ideal.span {e ℓ}, (Ideal.span_singleton_prime hπ.ne_zero).2 hπ⟩`. Establish `hP0 : P.asIdeal ≠ ⊥` using `mt Ideal.span_singleton_eq_bot.1 hπ.ne_zero`.
+
+Establish `hPm : P.asIdeal.IsMaximal` using `P.isPrime.isMaximal hP0`. Set `z₀ : Z` to `hU.fromSpec P`. Establish `hz₀ : hU.primeIdealOf ⟨z₀, trivial⟩ = P` using `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf _)`. Rewrite using `[finsum_eq_single _ z₀ fun z hz => ?_]`. Set `` to `TopCat.Presheaf.algebra_section_stalk Z.presheaf (⟨z₀, trivial⟩ : (⊤ : Z.Opens))`.
+
+Establish `hl : IsLocalization.AtPrime (Z.presheaf.stalk z₀) P.asIdeal`. Use `hU.isLocalization_stalk ⟨z₀, trivial⟩` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Conclude with `hz₀.symm`. Use `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain _ hP0 (Z.presheaf.stalk z₀)` as an intermediate fact.
+
+Establish `hm : IsLocalRing.maximalIdeal (Z.presheaf.stalk z₀) = Ideal.span {algebraMap Γ(Z, ⊤) _ (e ℓ)}`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal P.asIdeal, Ideal.map_span, image_singleton]`. Establish `hc : Order.coheight z₀ = 1`. Use `(ringKrullDim_stalk_eq_coheight z₀).symm.trans (IsDiscreteValuationRing.ringKrullDim_eq_one _)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `hi` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hm`. Establish `h₁ : Scheme.ord (fnOf ⊤ (Opens.mem_top _) (e ℓ)) z₀ = 1`. Rewrite using `[← algebraMap_germ (Opens.mem_top z₀)]`. Conclude with `(ord_algebraMap hc hi.ne_zero).trans (congrArg (fun n : ℕ∞ => (n.toNat : ℤ)) (Ring.ord_of_irreducible hi))`. Establish `h₂ : Nat.card (Z.residueField z₀) = ℓ` using `(Nat.card_congr (((IsLocalization.AtPrime.equivQuotMaximalIdeal P.asIdeal (Z.presheaf.stalk z₀)).symm.trans (Ideal.quotientEquiv (Ideal.span {(ℓ : ℤ)}) P.asIdeal e (by rw [Ideal.map_span, image_singleton]; rfl)).symm).trans (Int.quotientSpanNatEquivZMod ℓ)).toEquiv).trans (Nat.ca …`.
+
+Rewrite using `[h₁, h₂, Int.cast_one, one_mul]`. Set `` to `TopCat.Presheaf.algebra_section_stalk Z.presheaf (⟨z, trivial⟩ : (⊤ : Z.Opens))`. Use `hU.isLocalization_stalk ⟨z, trivial⟩` as an intermediate fact. Establish `hn : e ℓ ∉ (hU.primeIdealOf ⟨z, trivial⟩).asIdeal` using `fun h => hz <| (hU.fromSpec_primeIdealOf ⟨z, trivial⟩).symm.trans (congrArg hU.fromSpec (PrimeSpectrum.ext (hPm.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ((Ideal.span_singleton_le_iff_mem _).2 h)).symm))`. Establish `hu : UnitAt z (fnOf ⊤ (Opens.mem_top _) (e ℓ))` using `⟨_, IsLocalization.map_units (Z.presheaf.stalk z) (⟨_, hn⟩ : (hU.primeIdealOf ⟨z, trivial⟩).asIdeal.primeCompl), algebraMap_germ (Opens.mem_top z) _⟩`.
+
+Rewrite using `[hu.ord_eq_zero, Int.cast_zero, zero_mul]`.
+-/
 theorem finsum_ord_prime {ℓ : ℕ} (hℓ : ℓ.Prime) :
     ∑ᶠ z, (Scheme.ord (fnOf ⊤ (Opens.mem_top _) (e ℓ)) z : ℝ) * Real.log (Nat.card (Z.residueField z)) =
       Real.log ℓ := by
@@ -1294,6 +1688,27 @@ theorem finsum_ord_prime {ℓ : ℕ} (hℓ : ℓ.Prime) :
         (⟨_, hn⟩ : (hU.primeIdealOf ⟨z, trivial⟩).asIdeal.primeCompl), algebraMap_germ (Opens.mem_top z) _⟩
     rw [hu.ord_eq_zero, Int.cast_zero, zero_mul]
 
+/- English proof (translation)
+Set `G (f : Z.functionField) : ℝ` to `∑ᶠ z, (Scheme.ord f z : ℝ) * Real.log (Nat.card (Z.residueField z))`. Establish `hfin {f : Z.functionField} (hf : f ≠ 0) : (Function.support fun z => (Scheme.ord f z : ℝ) * Real.log (Nat.card (Z.residueField z))).Finite` using `(CartierDiv.principal (Units.mk0 f hf)).finite_support_mult.subset fun z hz h0 => hz (by`. Rewrite `h0` using `[(CartierDiv.isEqn_principal _ z).mult_eq, Units.val_mk0]`. Simplify using `[h0])`. Establish `hG {f g : Z.functionField} (hf : f ≠ 0) (hg : g ≠ 0) : G (f * g) = G f + G g`.
+
+Simplify using `only [G, Scheme.ord_mul hf hg, Int.cast_add, add_mul]`. Conclude with `finsum_add_distrib (hfin hf) (hfin hg)`. Establish `hlog {f g : Z.functionField} (hf : UnitAt (under y) f) (hg : UnitAt (under y) g) : Real.log ‖ratVal (f * g) y‖ = Real.log ‖ratVal f y‖ + Real.log ‖ratVal g y‖`. Rewrite using `[ratVal_mul hf.regAt hg.regAt, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (ratVal_ne_zero hf)) (norm_ne_zero_iff.2 (ratVal_ne_zero hg))]`. Establish `hev (n : ℤ) : ev q σ ⊤ (e n) y = n`.
+
+Rewrite using `[ev_eq mem_ptsIn_top, eq_intCast e, map_intCast]`. Establish `hu {n : ℤ} (hn : n ≠ 0) : UnitAt (under y) (fnOf ⊤ (Opens.mem_top _) (e n))` using `(unitAt_fnOf_iff (Opens.mem_top _) _ _).2 (mem_ptsIn.1 ((mem_ptsIn_basicOpen mem_ptsIn_top _).2 (hev n ▸ Int.cast_ne_zero.2 hn)))`. Establish `hint (n : ℤ) (hn : n ≠ 0) : G (fnOf ⊤ (Opens.mem_top _) (e n)) = Real.log ‖ratVal (fnOf ⊤ (Opens.mem_top _) (e n)) y‖`. Proceed by induction on `n using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact absurd rfl hn`.
+
+Consider the case `h₂ n h`. Establish `(z : Z) : Scheme.ord (fnOf ⊤ (Opens.mem_top _) (e n)) z = 0` using `(unitAt_fnOf (U := ⊤) trivial trivial (h.map e).unit).ord_eq_zero`. Simplify using `only [G, this]`. Rewrite using `[ratVal_fnOf mem_ptsIn_top, hev]`. Apply the tactic sequence `rcases Int.isUnit_iff.1 h with rfl | rfl <;> simp`.
+
+Consider the case `h₃ a π ha hπ ih`. Establish `hp : G (fnOf ⊤ (Opens.mem_top _) (e π)) = Real.log ‖ratVal (fnOf ⊤ (Opens.mem_top _) (e π)) y‖`. Establish `h₁` using `finsum_ord_prime e (Int.prime_iff_natAbs_prime.1 hπ)`. Establish `h₂ (z : Z) : Scheme.ord (fnOf ⊤ (Opens.mem_top _) (e π)) z = Scheme.ord (fnOf ⊤ (Opens.mem_top _) (e π.natAbs)) z`. Break down `Int.natAbs_eq π with h | h` into its components or cases.
+
+Rewrite using `[← h]`. Establish `h₃` using `(unitAt_fnOf (U := ⊤) (x := z) trivial trivial (-1)).ord_eq_zero`. Establish `h₄` using `hu (Int.natCast_ne_zero.2 (Int.natAbs_ne_zero.2 hπ.ne_zero))`. Use `conv_lhs => rw [h, map_neg, ← neg_one_mul, map_mul]`. Use `(Scheme.ord_mul (by simp) h₄.ne_zero).trans ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg (· + _) h₃).trans (zero_add _)`. Simplify using `only [G, h₂]`. Rewrite using `[h₁, ratVal_fnOf mem_ptsIn_top, hev, Complex.norm_intCast, Nat.cast_natAbs, Int.cast_abs]`. Rewrite using `[map_mul, map_mul, hG (hu hπ.ne_zero).ne_zero (hu ha).ne_zero, hlog (hu hπ.ne_zero) (hu ha), hp, ih ha]`. Use `functionField_isFractionRing_of_isAffineOpen Z ⊤ (isAffineOpen_top Z)` as an intermediate fact.
+
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(Z, ⊤)) f`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hf`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hb`.
+
+Rewrite `hf`, the goal using `[CartierDiv.algebraMap_top]`. Establish `hq` using `(hu ha0).mul (hu hb0).inv`. Rewrite `hq` using `[← div_eq_mul_inv]`. Establish `h₁` using `hG hf (hu hb0).ne_zero`. Establish `h₂` using `hlog hq (hu hb0)`.
+
+Rewrite `h₁`, `h₂` using `[div_mul_cancel₀ _ (hu hb0).ne_zero]`. Conclude with `⟨hq, by linarith [hint a ha0, hint b hb0]⟩`.
+-/
 theorem product_formula {q : Z ⟶ Sp ℤ} {σ : ℤ →+* ℂ} (y : CxPts q σ) {f : Z.functionField}
     (hf : f ≠ 0) : UnitAt (under y) f ∧
       ∑ᶠ z, (Scheme.ord f z : ℝ) * Real.log (Nat.card (Z.residueField z)) =
@@ -1361,6 +1776,9 @@ end Product
 
 variable (i : Z ⟶ Sp ℤ)
 
+/- English proof (translation)
+Establish `e : i ⁻¹ᵁ PrimeSpectrum.basicOpen n = Z.basicOpen (n : Γ(Z, ⊤))`. Rewrite using `[← basicOpen_eq_of_affine (R := .of ℤ) n, Scheme.preimage_basicOpen_top, eq_intCast (Scheme.ΓSpecIso (.of ℤ)).inv.hom, map_intCast]`. Use `not_iff_not.1 (Iff.trans (b := genericPoint Z ∈ Z.basicOpen (n : Γ(Z, ⊤))) (e ▸ Iff.rfl) ?_)` and prove the remaining obligations. Rewrite using `[← unitAt_fnOf_iff (Opens.mem_top _) (Opens.mem_top _), ← ne_eq, ← map_ne_zero_iff _ (fnOf_injective ⊤ (Opens.mem_top _))]`. Conclude with `⟨UnitAt.ne_zero, unitAt_genericPoint⟩`.
+-/
 theorem mem_asIdeal_iff (n : ℤ) : n ∈ (i (genericPoint Z)).asIdeal ↔ (n : Γ(Z, ⊤)) = 0 := by
   have e : i ⁻¹ᵁ PrimeSpectrum.basicOpen n = Z.basicOpen (n : Γ(Z, ⊤)) := by
     rw [← basicOpen_eq_of_affine (R := .of ℤ) n, Scheme.preimage_basicOpen_top,
@@ -1372,6 +1790,9 @@ theorem mem_asIdeal_iff (n : ℤ) : n ∈ (i (genericPoint Z)).asIdeal ↔ (n : 
 
 omit [IsIntegral Z] in
 
+/- English proof (translation)
+Rewrite using `[← RingHom.ext_int (i.appTop.hom.comp (Scheme.ΓSpecIso (.of ℤ)).inv.hom) (Int.castRingHom _)]`. Conclude with `(IsClosedImmersion.isAffine_surjective_of_isAffine i).2.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of ℤ)).inv).2`.
+-/
 theorem surjective_intCast [IsClosedImmersion i] :
     Function.Surjective (Int.castRingHom Γ(Z, ⊤)) := by
   rw [← RingHom.ext_int (i.appTop.hom.comp (Scheme.ΓSpecIso (.of ℤ)).inv.hom) (Int.castRingHom _)]
@@ -1382,6 +1803,23 @@ def trivShift (t : ℝ) : HermLB (𝟙 (Sp ℤ)) := (HermLB.triv _).shift (fun _
 
 open Classical in
 
+/- English proof (translation)
+Use `(IsClosedImmersion.isAffine_surjective_of_isAffine i).1` as an intermediate fact. Establish `hinj` using `(algebraMap κ Γ(Z, ⊤)).injective`. Establish `hs : Function.Surjective (Int.castRingHom κ)` using `fun a =>`. Establish `⟨n, hn⟩` using `surjective_intCast i (algebraMap κ _ a)`. Use the proof step `⟨n, hinj ((map_intCast _ n).trans hn)⟩`.
+
+Establish `hb : Function.Bijective (algebraMap κ Γ(Z, ⊤))` using `⟨hinj, fun a =>`. Establish `⟨n, hn⟩` using `surjective_intCast i a`. Use the proof step `⟨n, (map_intCast _ n).trans hn⟩⟩`. Establish `hk : (i (genericPoint Z)).asIdeal = RingHom.ker (Int.castRingHom κ)` using `Ideal.ext fun n => by`. Rewrite using `[mem_asIdeal_iff, ← map_intCast (algebraMap κ Γ(Z, ⊤)), map_eq_zero_iff _ hinj]`.
+
+Both sides reduce to the same expression. Establish `h0 : RingHom.ker (Int.castRingHom κ) ≠ ⊥` using `fun h =>`. Use `Finite.of_injective _ ((RingHom.injective_iff_ker_eq_bot _).2 h)` as an intermediate fact. Use `not_finite ℤ`. Choose the witnesses or unpack the hypotheses as in `rfl : d = 0 := by`.
+
+Rewrite `hd` using `[IsHomeomorph.topologicalKrullDim_eq _ Z.isoSpec.hom.homeomorph.isHomeomorph]`. Use `hd.symm.trans ((PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim _).trans ((ringKrullDim_eq_of_ringEquiv (RingEquiv.ofBijective _ hb)).symm.trans (ringKrullDim_eq_zero_of_field κ)))` as an intermediate fact. Conclude with `this` after adjusting the coercions. Rewrite using `[hk, if_neg h0, Nat.card_congr (RingHom.quotientKerEquivOfSurjective hs).toEquiv, topSelfIntersection, interNum_of_isEmpty, chi_structureModule_of_isAffine, ← (AlgEquiv.ofBijective (Algebra.ofId _ _) hb).toLinearEquiv.finrank_eq, Module.finrank_self]`. Simplify using the standard rewrite rules.
+
+Use `point Z i _ _ _ hc _ r hr := by`. Use `(IsClosedImmersion.isAffine_surjective_of_isAffine i).1` as an intermediate fact. Set `e` to `RingEquiv.ofBijective (Int.castRingHom Γ(Z, ⊤)) ⟨Int.cast_injective, surjective_intCast i⟩`. Establish `h0 : (i (genericPoint Z)).asIdeal = ⊥` using `eq_bot_iff.2 fun n hn => Int.cast_eq_zero.1 ((mem_asIdeal_iff i n).1 hn)`. Set `σ` to `Int.castRingHom ℂ`.
+
+Set `y : CxPts (i ≫ 𝟙 _) σ` to `ofHom (isAffineOpen_top Z) (σ.comp e.symm) fun a => RingHom.congr_fun (RingHom.ext_int ((σ.comp e.symm.toRingHom).comp (DVR.FlatBC.algX (i ≫ 𝟙 _) ⊤)) σ) a`. Establish `hy (y' : CxPts (i ≫ 𝟙 _) σ) : y' = y` using `Subtype.ext ((cancel_mono (i ≫ 𝟙 _)).1 (y'.2.trans y.2.symm))`. Set `j` to `pick (((trivShift t).restr i).φ σ).isLB y`. Establish `hj (z : Z) : (((trivShift t).restr i).div hr).mult z = Scheme.ord (r j : Z.functionField) z` using `((presents_divOfRatSec _ hr).isEqn j z (mem_iInter.2 fun _ => trivial)).mult_eq`. Establish `e' : (((trivShift t).restr i).φ σ).φ j y = 0 + 2 * t` using `((trivShift t).φ σ).pull_φ i rfl j y`.
+
+Rewrite using `[if_pos h0, HermLB.curveDeg, finsum_eq_single _ σ fun σ' h => absurd (RingHom.ext_int _ _) h, finsum_eq_single _ y fun y' h => absurd (hy y') h, logNorm]`. Simplify using `only [hj]`. Rewrite using `[(product_formula e y (r j).ne_zero).2]`. Rewrite using `[e']`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `recursion Z i _ _ _ _ e he hd := by`. Use `hd.ge.trans (i.isClosedEmbedding.isInducing.topologicalKrullDim_le.trans isArithVar_int.dim_eq.le)` as an intermediate fact. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isArithHeight_trivShift (t : ℝ) : (trivShift t).IsArithHeight fun x =>
     if x.asIdeal = ⊥ then t else Real.log (Nat.card (ℤ ⧸ x.asIdeal)) where
   vertical Z i _ _ κ _ _ _ d hd := by
@@ -1436,10 +1874,16 @@ theorem isArithHeight_trivShift (t : ℝ) : (trivShift t).IsArithHeight fun x =>
     norm_cast at this
     omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, isArithHeight_trivShift t, if_pos (Ideal.ext fun n => (mem_asIdeal_iff (𝟙 (Sp ℤ)) n).trans (have := isArithVar_int.charZero; Int.cast_eq_zero))⟩`.
+-/
 theorem isSelfInter_trivShift (t : ℝ) : (trivShift t).IsSelfInter t :=
   ⟨_, isArithHeight_trivShift t, if_pos (Ideal.ext fun n =>
     (mem_asIdeal_iff (𝟙 (Sp ℤ)) n).trans (have := isArithVar_int.charZero; Int.cast_eq_zero))⟩
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨f, hf, e⟩ := isSelfInter_trivShift t exact (((hf.isNef_iff isArithVar_int).1 h).2 _ (𝟙 _) isArithVar_int.dim_eq).not_gt (e.symm ▸ ht)`.
+-/
 example {t : ℝ} (ht : t < 0) : ¬ (trivShift t).IsNef 0 := fun h => by
   obtain ⟨f, hf, e⟩ := isSelfInter_trivShift t
   exact (((hf.isNef_iff isArithVar_int).1 h).2 _ (𝟙 _) isArithVar_int.dim_eq).not_gt

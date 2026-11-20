@@ -13,6 +13,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AnPer
 
+/- English proof (translation)
+Introduce `E _ _ W X hX x x' h`. Establish `: IsSeparated (terminal.from X)` using `hX.isSeparated_terminal_from`. Conclude with `point_hol_ext E W X (⊤_ Scheme) (terminal.from X) x x' (terminal.hom_ext _ _) h`.
+-/
 theorem point_hol_ext_of_isSeparated : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Opens E) {X : Scheme.{0}}, X.IsSeparated → ∀ x x' : Sp (Hol W) ⟶ X, (∀ (p : E) (hp : p ∈ W), spMap (Hol.ev p hp).toRingHom ≫ x = spMap (Hol.ev p hp).toRingHom ≫ x') → x = x' := by
   intro E _ _ W X hX x x' h
   have : IsSeparated (terminal.from X) := hX.isSeparated_terminal_from

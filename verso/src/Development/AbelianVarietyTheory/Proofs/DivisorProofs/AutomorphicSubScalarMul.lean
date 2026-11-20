@@ -17,9 +17,37 @@ namespace GlobalTheory.StdPar.AutLin
 
 open GlobalTheory.WeakHolFamily
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem comb_eq {G : Type} (φ₁ φ₂ : G → ℂ) (z : ℂ) : (fun g => φ₁ g - z * φ₂ g) = φ₁ + (-z) • φ₂ := by
   funext g; simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y S K φ₁ φ₂ z h₁ h₂`. Establish `s₁ : SmoothLines σ J φ₁` using `h₁.smooth`. Establish `s₂ : SmoothLines σ J ((-z) • φ₂)` using `smoothLines_smul (-z) h₂.smooth`. Establish `hfold : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → l.foldr lineDer (fun g => φ₁ g - z * φ₂ g) = fun g => l.foldr lineDer φ₁ g - z * l.foldr lineDer φ₂ g`. Introduce `l hl`.
+
+Rewrite using `[comb_eq, foldr_add s₁ s₂ l hl, foldr_smul, comb_eq]`. Use `⟨fun u hu g => by simp only [h₁.leftN u hu g, h₂.leftN u hu g], fun γ hγ hγ' g => by simp only [h₁.leftM γ hγ hγ' g, h₂.leftM γ hγ hγ' g], ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨U₁, o₁, e₁⟩` from `h₁.level`. Take `⟨U₂, o₂, e₂⟩` from `h₂.level`. Conclude with `⟨U₁ ⊓ U₂, o₁.inter o₂, fun k hk hf g => by`.
+
+Simplify using `only [e₁ k hk.1 hf g, e₂ k hk.2 hf g]⟩`. Conclude with `h₁.cont.sub (continuous_const.mul h₂.cont)`. Establish `: SmoothLines σ J (φ₁ + (-z) • φ₂)` using `smoothLines_add s₁ s₂`. Rewrite using `[comb_eq]`. Conclude with `this`.
+
+Take `⟨N₁, g₁⟩` from `h₁.growth`. Take `⟨N₂, g₂⟩` from `h₂.growth`. Use `⟨max N₁ N₂, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C₁, c₁⟩` from `g₁ l hl`. Take `⟨C₂, c₂⟩` from `g₂ l hl`.
+
+Use `⟨max C₁ 0 + ‖z‖ * max C₂ 0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hfold l hl]`. Establish `hh : (1 : ℝ) ≤ (height σ J g : ℝ)` using `by exact_mod_cast one_le_height σ J g`. Establish `p₁ : (height σ J g : ℝ) ^ N₁ ≤ (height σ J g : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ hh (le_max_left _ _)`. Establish `p₂ : (height σ J g : ℝ) ^ N₂ ≤ (height σ J g : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ hh (le_max_right _ _)`.
+
+Establish `q₁ : (0 : ℝ) ≤ (height σ J g : ℝ) ^ N₁` using `by positivity`. Establish `q₂ : (0 : ℝ) ≤ (height σ J g : ℝ) ^ N₂` using `by positivity`. Establish `a₁ : ‖l.foldr lineDer φ₁ g‖ ≤ max C₁ 0 * (height σ J g : ℝ) ^ max N₁ N₂` using `(c₁ g).trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) q₁).trans (mul_le_mul_of_nonneg_left p₁ (le_max_right _ _)))`. Establish `a₂ : ‖l.foldr lineDer φ₂ g‖ ≤ max C₂ 0 * (height σ J g : ℝ) ^ max N₁ N₂` using `(c₂ g).trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) q₂).trans (mul_le_mul_of_nonneg_left p₂ (le_max_right _ _)))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← norm_mul]`. Conclude with `norm_sub_le _ _`. Use `_ ≤ max C₁ 0 * (height σ J g : ℝ) ^ max N₁ N₂ + ‖z‖ * (max C₂ 0 * (height σ J g : ℝ) ^ max N₁ N₂) := add_le_add a₁ (mul_le_mul_of_nonneg_left a₂ (norm_nonneg _))`. Use `_ = (max C₁ 0 + ‖z‖ * max C₂ 0) * (height σ J g : ℝ) ^ max N₁ N₂ := by ring`. Use `h₁.kfin` as an intermediate fact.
+
+Use `h₂.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k : K => fun g => φ₁ (g * k)) ⊔ Submodule.span ℂ (Set.range fun k : K => fun g => φ₂ (g * k))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e : (fun g => φ₁ (g * k) - z * φ₂ (g * k)) = (fun g => φ₁ (g * k)) - z • fun g => φ₂ (g * k)`. Use function extensionality and compare the values at `g`.
+
+Simplify using the standard rewrite rules. Use `show (fun g => φ₁ (g * k) - z * φ₂ (g * k)) ∈ _`. Rewrite using `[e]`. Conclude with `sub_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨k, rfl⟩)) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)))`. Use `h₁.zfin` as an intermediate fact.
+
+Use `h₂.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {f | ∃ z', IsCentral σ J z' ∧ f = dop z' φ₁} ⊔ Submodule.span ℂ {f | ∃ z', IsCentral σ J z' ∧ f = dop z' φ₂}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z', hz', rfl⟩`. Establish `e : dop z' (fun g => φ₁ g - z * φ₂ g) = dop z' φ₁ - z • dop z' φ₂`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [dop, Finsupp.sum, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[hfold l (hz'.1 l hl)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `sub_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨z', hz', rfl⟩)) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.subset_span ⟨z', hz', rfl⟩)))`.
+-/
 theorem isAutOn_sub_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E) (S : Finset (Fin r)) (K : Subgroup (GAd σ J))
     (φ₁ φ₂ : GAd σ J → ℂ) (z : ℂ), GlobalTheory.StdPar.IsAutOn σ J X Y S K φ₁ → GlobalTheory.StdPar.IsAutOn σ J X Y S K φ₂ →

@@ -9,6 +9,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Establish `key : (l : Polynomial ℤ) ∣ (Polynomial.X ^ l - 1) ^ (l - 1) - (∑ i ∈ Finset.range l, (Polynomial.X : Polynomial ℤ) ^ i) ^ l` using `by set y : Polynomial ℤ := Polynomial.X - 1 with hy`. Establish `hy0 : y ≠ 0` using `Polynomial.X_sub_C_ne_zero (1 : ℤ)`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl y 1`. Establish `hX : y + 1 = Polynomial.X` using `by rw [hy]; ring`. Rewrite `hr` using `[hX, one_pow]`.
+
+Take `⟨k, rfl⟩ : ∃ k, l = k + 1` from `⟨l - 1, (Nat.sub_add_cancel hl.one_le).symm⟩`. Use `set s : Polynomial ℤ := ∑ i ∈ Finset.range (k + 1), (Polynomial.X : Polynomial ℤ) ^ i with hs`. Establish `h1 : s * y = Polynomial.X ^ (k + 1) - 1` using `geom_sum_mul _ _`. Establish `h2 : s = y ^ k + ((k + 1 : ℕ) : Polynomial ℤ) * r`. Use `mul_right_cancel₀ hy0 ?_` and prove the remaining obligations.
+
+Rewrite using `[h1, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ((k + 1 : ℕ) : Polynomial ℤ) ∣ s - y ^ k` using `⟨r, by rw [h2]; ring⟩`. Establish `h4 : ((k + 1 : ℕ) : Polynomial ℤ) ∣ (Polynomial.X ^ (k + 1) - 1) - y ^ (k + 1)` using `⟨y * r, by rw [hr]; ring⟩`. Establish `h5` using `h3.trans (sub_dvd_pow_sub_pow s (y ^ k) (k + 1))`.
+
+Establish `h6` using `h4.trans (sub_dvd_pow_sub_pow _ (y ^ (k + 1)) k)`. Establish `h7` using `dvd_sub h6 h5`. Rewrite `h7` using `[← pow_mul, ← pow_mul, mul_comm k (k + 1), sub_sub_sub_cancel_right]`. Simplify using `using h7`. Simplify `map_dvd (Polynomial.aeval (R := ℤ) x) key` using `[map_sum]`.
+-/
 theorem pow_sub_one_pow_congr_geom_sum_pow {R : Type} [CommRing R] {l : ℕ} (hl : l.Prime) (x : R) :
     (l : R) ∣ (x ^ l - 1) ^ (l - 1) - (∑ i ∈ Finset.range l, x ^ i) ^ l := by
   have key : (l : Polynomial ℤ) ∣ (Polynomial.X ^ l - 1) ^ (l - 1) -
@@ -34,6 +43,23 @@ theorem pow_sub_one_pow_congr_geom_sum_pow {R : Type} [CommRing R] {l : ℕ} (hl
     simpa using h7
   simpa [map_sum] using map_dvd (Polynomial.aeval (R := ℤ) x) key
 
+/- English proof (translation)
+Take `⟨g₁, m₁, h₁⟩` from `hη l`. Take `⟨g₂, m₂, h₂⟩` from `hη (l * l)`. Take `⟨g₃, m₃, h₃⟩` from `hz l`. Establish `hf : ((l.factorial : ℕ) : A) = (l : A) * ((l - 1).factorial : ℕ)`. Rewrite using `[← Nat.mul_factorial_pred hl.ne_zero]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hb : (((l * l).factorial : ℕ) : A) = (Nat.uniformBell l l : A) * ((l.factorial : ℕ) : A) ^ l * ((l.factorial : ℕ) : A)`. Rewrite using `[← Nat.uniformBell_mul_eq l hl.ne_zero]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hg : g₁ ^ l = (Nat.uniformBell l l : A) * ((l.factorial : ℕ) : A) * g₂`. Use `((hu l).pow l).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, h₁, ← pow_mul, ← h₂, hb]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `a : S` to `(((l - 1).factorial : ℕ) : S) * ⟨g₁, m₁⟩`. Set `b : S` to `algebraMap R S z`. Use `⟨a + b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, map_natCast, ← h₁, hf]`. Simplify using `only [a, b]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hl a b`. Establish `ha : (l : S) ∣ a ^ l`. Use `⟨(((l - 1).factorial : ℕ) : S) ^ l * (Nat.uniformBell l l : S) * (((l - 1).factorial : ℕ) : S) * ⟨g₂, m₂⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [a]`. Use `push_cast`. Rewrite using `[mul_pow, hg, hf]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : (l : S) ∣ b ^ l`.
+
+Use `⟨(((l - 1).factorial : ℕ) : S) * ⟨g₃, m₃⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [b]`. Use `push_cast`. Rewrite using `[← h₃, hf]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hr]`. Conclude with `dvd_add (dvd_add ha hb) ⟨a * b * r, by ring⟩`.
+-/
 theorem exists_div_prime_pow_dvd {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {l : ℕ} (hl : l.Prime)
     (hu : ∀ n : ℕ, IsUnit ((n.factorial : ℕ) : A)) (S : Subalgebra R A) (η z : R)
     (hη : ∀ n : ℕ, ∃ g ∈ S, ((n.factorial : ℕ) : A) * g = algebraMap R A η ^ n)
@@ -72,6 +98,9 @@ theorem exists_div_prime_pow_dvd {R A : Type} [CommRing R] [CommRing A] [Algebra
     rw [hr]
     exact dvd_add (dvd_add ha hb) ⟨a * b * r, by ring⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `(GlobalTheory.RingBasics.isUnit_nat l _ n.factorial_ne_zero).exists_right_inv`. Establish `h : ((n.factorial : ℕ) : Per.AinfP l) * (u * algebraMap (Per.Ainf l) (Per.AinfP l) x ^ n) = algebraMap (Per.Ainf l) (Per.AinfP l) x ^ n` using `by rw [← mul_assoc, hu, one_mul]`. Use `⟨_, ?_, h⟩` and prove the remaining obligations. Apply the tactic sequence `apply GlobalTheory.RingIface.dividedPower_mem_Acris0 <;> assumption`.
+-/
 theorem exists_dividedPower_mem_Acris0 (l : ℕ) [Fact l.Prime] (x : Per.Ainf l) (hx : Per.θ l x = 0) (n : ℕ) :
     ∃ g ∈ Per.Acris0 l, ((n.factorial : ℕ) : Per.AinfP l) * g = algebraMap (Per.Ainf l) (Per.AinfP l) x ^ n := by
   obtain ⟨u, hu⟩ := (GlobalTheory.RingBasics.isUnit_nat l _ n.factorial_ne_zero).exists_right_inv
@@ -80,12 +109,26 @@ theorem exists_dividedPower_mem_Acris0 (l : ℕ) [Fact l.Prime] (x : Per.Ainf l)
   refine ⟨_, ?_, h⟩
   apply GlobalTheory.RingIface.dividedPower_mem_Acris0 <;> assumption
 
+/- English proof (translation)
+Rewrite using `[← map_pow]`. Use `congr 1`. Conclude with `frobeniusEquiv_symm_pow_p (Per.Fl l) l e`.
+-/
 theorem tm_root_pow (l : ℕ) [Fact l.Prime] (e : Per.Fl l) :
     Per.tm ((frobeniusEquiv (Per.Fl l) l).symm e) ^ l = Per.tm e := by
   rw [← map_pow]
   congr 1
   exact frobeniusEquiv_symm_pow_p (Per.Fl l) l e
 
+/- English proof (translation)
+Use `set x := Per.tm ((frobeniusEquiv (Per.Fl l) l).symm e) with hx`. Establish `hxl : x ^ l = Per.tm e` using `tm_root_pow l e`. Establish `hmu : mu e = x ^ l - 1` using `by rw [hxl]; rfl`. Establish `hθmu : Per.θ l (x ^ l - 1) = 0`. Rewrite using `[hxl, map_sub, map_one, WittVector.fontaineTheta_teichmuller, he.1, sub_self]`.
+
+Establish `hθx : Per.θ l (x - 1) ≠ 0`. Rewrite using `[hx, map_sub, map_one, WittVector.fontaineTheta_teichmuller, sub_ne_zero]`. Conclude with `he.2`. Establish `hη : Per.θ l (∑ i ∈ Finset.range l, x ^ i) = 0`. Rewrite `hθmu` using `[← geom_sum_mul, map_mul]`.
+
+Conclude with `(mul_eq_zero.1 hθmu).resolve_right hθx`. Take `⟨z, hz⟩` from `pow_sub_one_pow_congr_geom_sum_pow hl.out x`. Establish `hθz : Per.θ l z = 0`. Establish `h` using `congrArg (Per.θ l) hz`. Establish `h1 : l - 1 ≠ 0` using `by have := hl.out.two_le; omega`.
+
+Rewrite `h` using `[map_sub, map_pow, map_pow, hθmu, hη, zero_pow h1, zero_pow hl.out.ne_zero, sub_self, map_mul, map_natCast]`. Use `(mul_eq_zero.1 h.symm).resolve_left ?_` and prove the remaining obligations. Conclude with `hl.out.ne_zero` after adjusting the coercions. Take `⟨w, hw, hd⟩` from `exists_div_prime_pow_dvd hl.out (fun n => GlobalTheory.RingBasics.isUnit_nat l _ n.factorial_ne_zero) (Per.Acris0 l) _ z (exists_dividedPower_mem_Acris0 l _ hη) (exists_dividedPower_mem_Acris0 l _ hθz)`. Use `⟨w, ?_, hd⟩` and prove the remaining obligations.
+
+Rewrite using `[hw, ← hz, add_sub_cancel, map_pow, hmu]`.
+-/
 theorem exists_mu_pow_div_of_isEps (l : ℕ) [hl : Fact l.Prime] (e : Per.Fl l) (he : IsEps e) :
     ∃ w : Per.Acris0 l, (l : Per.AinfP l) * (w : Per.AinfP l) =
       algebraMap (Per.Ainf l) (Per.AinfP l) (mu e) ^ (l - 1) ∧ (l : Per.Acris0 l) ∣ w ^ l := by
@@ -114,6 +157,21 @@ theorem exists_mu_pow_div_of_isEps (l : ℕ) [hl : Fact l.Prime] (e : Per.Fl l) 
   refine ⟨w, ?_, hd⟩
   rw [hw, ← hz, add_sub_cancel, map_pow, hmu]
 
+/- English proof (translation)
+Introduce `l hl e he`. Establish `step : ∀ m : ℕ, ∀ e : Per.Fl l, e.untilt = 1 → (((frobeniusEquiv (Per.Fl l) l).symm)^[m] e).untilt ≠ 1 → ∃ w : Per.Acris0 l, (l : Per.AinfP l) * (w : Per.AinfP l) = algebraMap (Per.Ainf l) (Per.AinfP l) (mu e) ^ (l - 1) ∧ (l : Per.Acris0 l) ∣ w ^ l`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact fun e h1 h2 => absurd h1 h2`.
+
+Consider the case `succ m ih`. Introduce `e h1 h2`. Distinguish the cases in `h : ((frobeniusEquiv (Per.Fl l) l).symm e).untilt = 1`. Take `⟨w, hw, hd⟩` from `ih _ h h2`. Establish `hmu : mu e = xi e * mu ((frobeniusEquiv (Per.Fl l) l).symm e)`.
+
+Rewrite using `[xi, mu, mu, geom_sum_mul, tm_root_pow]`. Use `⟨algebraMap _ _ (xi e ^ (l - 1)) * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmu, map_mul, mul_pow, ← hw, ← map_pow, Subalgebra.coe_mul, Subalgebra.coe_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_pow]`.
+
+Conclude with `hd.mul_left _`. Conclude with `exists_mu_pow_div_of_isEps l e ⟨h1, h⟩`. Distinguish the cases in `h : ∃ m : ℕ, (((frobeniusEquiv (Per.Fl l) l).symm)^[m] e).untilt ≠ 1`. Take `⟨m, hm⟩` from `h`. Conclude with `step m e he hm`.
+
+Use `push Not at h`. Establish `h1 : e = 1`. Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Establish `h2` using `PreTilt.mk_untilt_eq_coeff_zero (((frobeniusEquiv (Per.Fl l) l).symm)^[n] e)`. Rewrite `h2` using `[h n, map_one, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add]`.
+
+Conclude with `h2.symm.trans (map_one (PreTilt.coeff (O := Per.OC l) (p := l) n)).symm`. Establish `h0 : l - 1 ≠ 0` using `by have := hl.out.two_le; omega`. Use `⟨0, ?_, by rw [zero_pow hl.out.ne_zero]; exact dvd_zero _⟩` and prove the remaining obligations. Establish `hm : mu e = 0`. Rewrite using `[h1]`.
+
+Conclude with `sub_eq_zero.2 (map_one (WittVector.teichmuller l))`. Rewrite using `[hm, map_zero, zero_pow h0]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_mu_pow_div : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, e.untilt = 1 →
     ∃ w : Per.Acris0 l, (l : Per.AinfP l) * (w : Per.AinfP l) =
       algebraMap (Per.Ainf l) (Per.AinfP l) (mu e) ^ (l - 1) ∧ (l : Per.Acris0 l) ∣ w ^ l := by

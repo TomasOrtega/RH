@@ -9,6 +9,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.TrueGeo.InducedGen
 
+/- English proof (translation)
+Introduce `F _ _ C Y A M L q cf hI hA`. Take `⟨_, r, hr, _, _⟩` from `hI`. Establish `hq : Y.ample ((q : ℕ) • A.D)` using `Var.ample_nsmul F Y A.D q q.pos hA`. Establish `hiso : LBIso (L.B.pull M.j) (toLB ((q : ℕ) • A.D))` using `hr.lbIso (presents_toLB _)`. Establish `hamp : IsAmpleLB (L.B.pull M.j)` using `IsAmpleLB.of_lbIso hq hr.isLB hiso`.
+
+Take `⟨n, hn, hg⟩` from `hamp.exists_isGenerated_pow`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Conclude with `hg.of_lbIso (LB.isLB_pull (isLB_lbPow L.isLB n) M.j) (LBIso.symm (lbIso_lbPow_pull L.isLB M.j n))`.
+-/
 theorem exists_isGenerated_pow : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y)
     (M : TrueGeo.Model Y) (L : HermLB M.p) (q : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ),
     A.Induced M L q cf → Y.ample A.D → ∃ m : ℕ, 1 ≤ m ∧ GlobalTheory.IsGenerated ((L.pow m).B.pull M.j) := by

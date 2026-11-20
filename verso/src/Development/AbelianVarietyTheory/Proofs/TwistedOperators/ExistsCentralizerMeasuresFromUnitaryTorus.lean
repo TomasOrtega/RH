@@ -17,6 +17,13 @@ namespace GlobalTheory.TrEllMeas
 
 open GlobalTheory.RestrMeas
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `ma : ∀ w s, (μa w).map (ea w) s = μa w (ea w ⁻¹' s)` using `fun w s => (ea w).toHomeomorph.toMeasurableEquiv.map_apply s`. Establish `mf : ∀ v s, (μf v).map (ef v) s = μf v (ef v ⁻¹' s)` using `fun v s => (ef v).toHomeomorph.toMeasurableEquiv.map_apply s`. Establish `m : ∀ s, ν.map e s = ν (e ⁻¹' s)` using `fun s => e.toHomeomorph.toMeasurableEquiv.map_apply s`. Take `⟨S₀, hS⟩` from `exists_finset_of_eventually (h4.1.and hKK)`.
+
+Use `⟨fun w => (ea w).isHaarMeasure_map _, fun v => (ef v).isHaarMeasure_map _, e.isHaarMeasure_map _, isCylProd_of_large (K := fun v => (K v : Set (Yf v))) (fun v => (hK v).measurableSet) S₀ (fun v hv => ?_) (fun _ _ => rfl) fun S hs A B hA hB => ?_⟩` and prove the remaining obligations. Rewrite using `[mf, ← (hS v hv).1]`. Conclude with `congrArg _ (Set.ext (hS v hv).2)`. Simplify using `only [ma, mf, m]`. Rewrite using `[← h4.2 S (fun v hv => (hS v fun h' => hv (hs h')).1) _ _ (fun w => (map_continuous (ea w)).measurable (hA w)) fun v hv => (map_continuous (ef v)).measurable (hB v hv)]`.
+
+Use `congrArg ν (Set.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [mem_preimage, mem_cyl, ha, hf]`. Conclude with `and_congr_right fun _ => and_congr_right fun _ => forall₂_congr fun v hv => (hS v fun h' => hv (hs h')).2 _`.
+-/
 theorem isHaarProd_map_all {X X' W V : Type} {Ya Ya' : W → Type} {Yf Yf' : V → Type} [Fintype W]
     [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [MeasurableSpace X] [BorelSpace X]
     [Group X'] [TopologicalSpace X'] [IsTopologicalGroup X'] [MeasurableSpace X'] [BorelSpace X']
@@ -55,6 +62,9 @@ theorem isHaarProd_map_all {X X' W V : Type} {Ya Ya' : W → Type} {Yf Yf' : V �
     exact and_congr_right fun _ => and_congr_right fun _ => forall₂_congr fun v hv =>
       (hS v fun h' => hv (hs h')).2 _
 
+/- English proof (translation)
+Use `⟨hD.image_of_equiv e.toEquiv ?_ (subEquiv e h).symm.toEquiv fun g x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(MeasurePreserving.symm e.toHomeomorph.toMeasurableEquiv ⟨(map_continuous e).measurable, rfl⟩).quasiMeasurePreserving`. Express the relevant statement in the definitionally equal form `e (e.symm g * x) = g * e x`. Rewrite using `[map_mul, e.apply_symm_apply]`. Rewrite using `[show μ.map e (e '' D) = μ (e ⁻¹' (e '' D)) from e.toHomeomorph.toMeasurableEquiv.map_apply _, e.injective.preimage_image]`.
+-/
 theorem isFundamentalDomain_map {T C : Type} [Group T] [TopologicalSpace T] [MeasurableSpace T] [BorelSpace T]
     [Group C] [TopologicalSpace C] [MeasurableSpace C] [BorelSpace C] (e : T ≃ₜ* C) {Γ : Subgroup T}
     {Γ' : Subgroup C} (h : ∀ t, e t ∈ Γ' ↔ t ∈ Γ) {μ : Measure T} {D : Set T} (hD : IsFundamentalDomain Γ D μ) :
@@ -67,6 +77,9 @@ theorem isFundamentalDomain_map {T C : Type} [Group T] [TopologicalSpace T] [Mea
   · rw [show μ.map e (e '' D) = μ (e ⁻¹' (e '' D)) from e.toHomeomorph.toMeasurableEquiv.map_apply _,
       e.injective.preimage_image]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hasOrbInt_comap_congr {H : Type} [Group H] [MeasurableSpace H] {γ γ' : H} (h : γ = γ') (m μ : Measure H)
     (f : H → ℂ) (c : ℂ) : HasOrbInt μ γ (m.comap Subtype.val) f c ↔ HasOrbInt μ γ' (m.comap Subtype.val) f c := by
   subst h
@@ -74,12 +87,20 @@ theorem hasOrbInt_comap_congr {H : Type} [Group H] [MeasurableSpace H] {γ γ' :
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map ψ (AlgHom.id F E) ((1 : k) ⊗ₜ[F] g.1.1 i j) = (1 : k') ⊗ₜ[F] g.1.1 i j`. Simplify using the standard rewrite rules.
+-/
 theorem mapH_diagH {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {k k' : Type} [CommRing k] [Algebra F k] [CommRing k']
     [Algebra F k'] (ψ : k →ₐ[F] k') (g : GRat σ J) : mapH σ J ψ (diagH σ J k g) = diagH σ J k' g := by
   refine Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))
   change Algebra.TensorProduct.map ψ (AlgHom.id F E) ((1 : k) ⊗ₜ[F] g.1.1 i j) = (1 : k') ⊗ₜ[F] g.1.1 i j
   simp
 
+/- English proof (translation)
+Introduce `g`. Set `l : F ⊗[F] E →+* E` to `(Algebra.TensorProduct.lid F E).toRingEquiv.toRingHom`. Establish `hl : ∀ y, (1 : F) ⊗ₜ[F] l y = y` using `fun y => (Algebra.TensorProduct.lid F E).symm_apply_apply y`. Establish `hl' : ∀ y, l ((1 : F) ⊗ₜ[F] y) = y` using `fun y => (Algebra.TensorProduct.lid F E).apply_symm_apply y`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapU (sigR F σ) (σ : E →+* E) l (fun y => ?_) (JR F J) J (Matrix.ext fun i j => hl' _) g, Subtype.ext (Units.ext (Matrix.ext fun i j => hl _))⟩` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← hl y]`. Conclude with `(hl' (σ (l y))).symm`.
+-/
 theorem diagH_surjective {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Function.Surjective (diagH σ J F) := by
   intro g
   let l : F ⊗[F] E →+* E := (Algebra.TensorProduct.lid F E).toRingEquiv.toRingHom
@@ -92,6 +113,11 @@ theorem diagH_surjective {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Function.Sur
 
 variable [NumberField F] [NumberField E] {σ}
 
+/- English proof (translation)
+Substitute `hγ` using the available equality. Take `⟨e, he, hm⟩` from `GlobalTheory.T.unitaryTorus_equiv_centralizer_with_measure F E σ hσ r r P J hJ k x φ h`. Use `⟨e, he, fun dt x' φ' h' hγ μ f c => ?_⟩` and prove the remaining obligations. Establish `h1 : torEmb h' = torEmb h` using `MonoidHom.ext fun t => by`. Simplify `hγ) t` using `using (GlobalTheory.TrEll.cls_conj_torus F E σ hσ r r P J hJ k x φ h x' φ' h').2.2.1 1 (by simpa`.
+
+Rewrite using `[← hm, centMeas, centMeas, h1]`. Conclude with `hasOrbInt_comap_congr hγ _ _ _ _`.
+-/
 theorem exists_equiv (hσ : IsCMExt F E σ) {r : ℕ} {P : PPol σ r} {J : Matrix (Fin r) (Fin r) E} (hJ : IsHermND σ J)
     {k : Type} [CommRing k] [Algebra F k] [TopologicalSpace k] [IsTopologicalRing k] [T2Space k]
     {x : plusUnits P k} {φ : (k ⊗[F] Fld P) ≃ₗ[k ⊗[F] E] (Fin r → k ⊗[F] E)} (h : IsIsom P k J x.1.1 φ)
@@ -107,6 +133,29 @@ theorem exists_equiv (hσ : IsCMExt F E σ) {r : ℕ} {P : PPol σ r} {J : Matri
   rw [← hm, centMeas, centMeas, h1]
   exact hasOrbInt_comap_congr hγ _ _ _ _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ r P J hJ L _ γ hP dta dtf dt hdt`. Take `⟨P', hP', _, x₀, φ₀, h₀, -, hγ₀⟩` from `(GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hσ r J hJ).2 γ (hP ▸ P.2.2.1)`. Take `rfl : P = P'` from `Subtype.ext (hP.symm.trans hP')`. Take `⟨xA, φA, hA, -, hγA, htA⟩` from `GlobalTheory.TrEll.BaseChg.exists_isom_baseChange F E σ hσ r r P J hJ F (AF F) (Algebra.ofId F (AF F)) x₀ φ₀ h₀`. Rewrite `hγA` using `[hγ₀, mapH_diagH]`.
+
+Use `replace hγA : gam hA = ratEmb σ J γ := hγA`. Use `choose xf φf hf _ hγf htf using fun v : HeightOneSpectrum (𝓞 F) => GlobalTheory.TrEll.BaseChg.exists_isom_baseChange F E σ hσ r r P J hJ (AF F) (Fv F v) (evFin F v) xA φA hA`. Use `choose xa φa ha _ hγa hta using fun w : InfinitePlace F => GlobalTheory.TrEll.BaseChg.exists_isom_baseChange F E σ hσ r r P J hJ (AF F) w.Completion (evInf F w) xA φA hA`. Rewrite `hγf`, `hγa` using `[hγA]`. Use `replace hγf : ∀ v, gam (hf v) = proj σ J v (ratEmb σ J γ) := hγf`.
+
+Use `replace hγa : ∀ w, gam (ha w) = projArch σ J w (ratEmb σ J γ) := hγa`. Use `haveI : T2Space (AF F) := by haveI : T2Space (InfiniteAdeleRing F) := inferInstanceAs (T2Space (∀ w : InfinitePlace F, w.Completion)) haveI : T2Space (FiniteAdeleRing (𝓞 F) F) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) ( …`. Conclude with `inferInstanceAs (T2Space (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))`. Take `⟨e, he, -⟩` from `exists_equiv hσ hJ hA hγA`. Use `choose ef hef hof using fun v => exists_equiv hσ hJ (hf v) (hγf v)`.
+
+Use `choose ea hea hoa using fun w => exists_equiv hσ hJ (ha w) (hγa w)`. Use `⟨fun w => (dta w).map (ea w), fun v => (dtf v).map (ef v), dt.map e, ?_, ?_, fun v x φ h hγ => hof v _ x φ h hγ, fun w x φ h hγ => hoa w _ x φ h hγ⟩` and prove the remaining obligations. Use `isHaarProd_map_all hdt e ea ef (fun w t => Subtype.ext ?_) (fun v t => Subtype.ext ?_) (restrGroup_cent L _).isOpen_K ?_` and prove the remaining obligations. Rewrite using `[hea]`. Conclude with `(congrArg (projArch σ J w) (he t)).trans (hta w t).symm`.
+
+Rewrite using `[hef]`. Conclude with `(congrArg (proj σ J v) (he t)).trans (htf v t).symm`. Use `filter_upwards [GlobalTheory.T.eventually_unitaryTorus_orbitalClass_trivial_local F E σ hσ r P J hJ L, eventually_proj_mem_stabLoc σ J L (ratEmb σ J γ)] with v h1 h2 t`. Rewrite using `[Subgroup.mem_subgroupOf, hef]`. Conclude with `h1.2.2.1 _ _ (hf v) (hγf v ▸ h2) t`.
+
+Use `hdt.2.2.1` as an intermediate fact. Establish `hΓ : ∀ t, e t ∈ (ratPts σ J).subgroupOf (cent (ratEmb σ J γ)) ↔ t ∈ ratPts (star' P) (one₁ P)`. Introduce `t`. Rewrite using `[Subgroup.mem_subgroupOf, ← range_ratEmb, ← range_ratEmb]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨δ, hδ⟩`. Establish `h1 : δ * γ = γ * δ` using `ratEmb_injective σ J (by`. Rewrite using `[map_mul, map_mul, hδ]`. Conclude with `mem_cent.1 (e t).2)`. Use `letI : TopologicalSpace F := ⊥`.
+
+Use `haveI : DiscreteTopology F := ⟨rfl⟩`. Take `⟨e₀, he₀, -⟩` from `exists_equiv hσ hJ h₀ hγ₀`. Take `⟨s, hs⟩` from `e₀.surjective ⟨diagH σ J F δ, mem_cent.2 (by rw [← map_mul, ← map_mul, h1])⟩`. Take `⟨s, rfl⟩` from `diagH_surjective (star' P) (one₁ P) s`. Use `⟨s, e.injective (Subtype.ext ?_)⟩` and prove the remaining obligations.
+
+Establish `h2` using `htA (diagH _ _ F s)`. Rewrite `h2` using `[← he₀, hs, mapH_diagH, mapH_diagH]`. Rewrite using `[he, ← hδ]`. Conclude with `h2`. Introduce and unpack `⟨s, rfl⟩`.
+
+Take `⟨δ, hδ⟩` from `diagH_surjective σ J (torEmb h₀ (diagH _ _ F s))`. Establish `h2` using `htA (diagH _ _ F s)`. Rewrite `h2` using `[← hδ, mapH_diagH, mapH_diagH]`. Conclude with `⟨δ, ((he _).trans h2).symm⟩`. Establish `hD` using `isFundamentalDomain_stdDom (ratPts (star' P) (one₁ P)) dt`.
+
+Take `⟨h1, h2⟩` from `isFundamentalDomain_map e hΓ hD`. Conclude with `⟨_, h1, h2.trans (quotMeasure_univ hD).symm⟩`.
+-/
 theorem exists_isCentProd_torus : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r : ℕ) (P : PPol σ r) (J : Matrix (Fin r) (Fin r) E), IsHermND σ J → ∀ (L : Submodule (𝓞 E) (Fin r → E)) [Submodule.IsLattice E L], ∀ γ : GRat σ J, γ.1.1.charpoly = P.1 → ∀ dta dtf dt, IsTorusMeas P dta dtf dt → ∃ ea ef e, IsCentProd L (ratEmb σ J γ) ea ef e ∧ (∃ 𝓣, IsFundamentalDomain ((ratPts σ J).subgroupOf (cent (ratEmb σ J γ))) 𝓣 e ∧ e 𝓣 = torVol P dt) ∧ (∀ (v : HeightOneSpectrum (𝓞 F)) (x : plusUnits P (Fv F v)) (φ : ((Fv F v) ⊗[F] Fld P) ≃ₗ[(Fv F v) ⊗[F] E] (Fin r → (Fv F v) ⊗[F] E)) (h : IsIsom P (Fv F v) J x.1.1 φ), gam h = proj σ J v (ratEmb σ J γ) → ∀ μ f c, HasOrbInt μ (gam h) (centMeas h (dtf v)) f c ↔ HasOrbInt μ (proj σ J v (ratEmb σ J γ)) (ef v) f c) ∧ ∀ (w : InfinitePlace F) (x : plusUnits P w.Completion) (φ : (w.Completion ⊗[F] Fld P) ≃ₗ[w.Completion ⊗[F] E] (Fin r → w.Completion ⊗[F] E)) (h : IsIsom P w.Completion J x.1.1 φ), gam h = projArch σ J w (ratEmb σ J γ) → ∀ μ f c, HasOrbInt μ (gam h) (centMeas h (dta w)) f c ↔ HasOrbInt μ (projArch σ J w (ratEmb σ J γ)) (ea w) f c := by
   intro F E _ _ _ _ _ σ hσ r P J hJ L _ γ hP dta dtf dt hdt
   obtain ⟨P', hP', _, x₀, φ₀, h₀, -, hγ₀⟩ := (GlobalTheory.T.exists_torusClass_of_irreducible_charpoly_unitary F E σ hσ r J hJ).2 γ (hP ▸ P.2.2.1)

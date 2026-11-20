@@ -5,6 +5,11 @@ open GlobalTheory.AlmostEt
 
 namespace GlobalTheory.AlmostEt
 
+/- English proof (translation)
+Introduce `A S M _ _ _ _ _ s D hD x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `algebraMap r => rw [hD.alg]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y hx hy ihx ihy => rw [hD.add x hx y hy]`. Conclude with `add_mem ihx ihy`. Consider the case `mul x y hx hy ihx ihy`. Rewrite using `[hD.mul x hx y hy]`. Conclude with `add_mem (Submodule.smul_mem _ _ ihy) (Submodule.smul_mem _ _ ihx)`.
+-/
 theorem derOn_adjoin_mem_span : ∀ (A S M : Type) [CommRing A] [CommRing S] [Algebra A S]
     [AddCommGroup M] [Module S M] (s : Set S) (D : S → M), IsDerOn (Algebra.adjoin A s) D →
     ∀ x ∈ Algebra.adjoin A s, D x ∈ Submodule.span S (D '' s) := by

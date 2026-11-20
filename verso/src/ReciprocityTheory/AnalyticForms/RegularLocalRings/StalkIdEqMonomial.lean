@@ -18,6 +18,59 @@ def ordAlong (G : W.IdealSheafData) (C : Set W) : ℕ :=
       (W.presheaf.stalk h.genericPoint ⧸ FinalTheorems.stalkId G h.genericPoint)).toNat
   else 0
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen U.1` using `U.2`. Set `yU : U.1` to `⟨y, hy⟩`. Set `algY : Algebra Γ(W, U.1) (W.presheaf.stalk y)` to `TopCat.Presheaf.algebra_section_stalk W.presheaf yU`. Establish `hlocY : IsLocalization.AtPrime (W.presheaf.stalk y) (hU.primeIdealOf yU).asIdeal` using `hU.isLocalization_stalk yU`. Use `set Py := hU.primeIdealOf yU with hPy`.
+
+Use `set f' : Fin n → W.presheaf.stalk y := fun i => W.presheaf.germ U.1 y hy (f i) with hf'`. Take `⟨U', g, hyU', hg, hGU'⟩` from `hG y`. Use `set γ : W.presheaf.stalk y := W.presheaf.germ U'.1 y hyU' g with hγ`. Establish `hGy : FinalTheorems.stalkId G y = Ideal.span {γ}`. Rewrite using `[WMult.stalkId_eq_map_germ G y U' hyU', hGU', Ideal.map_span, Set.image_singleton]`.
+
+Establish `hγ0 : γ ≠ 0`. Introduce `h0`. Establish `hU' : IsAffineOpen U'.1` using `U'.2`. Set `: Algebra Γ(W, U'.1) (W.presheaf.stalk y)` to `TopCat.Presheaf.algebra_section_stalk W.presheaf (⟨y, hyU'⟩ : U'.1)`. Use `hU'.isLocalization_stalk ⟨y, hyU'⟩` as an intermediate fact.
+
+Take `⟨⟨c, hc⟩, hcg⟩` from `(IsLocalization.map_eq_zero_iff (M := (hU'.primeIdealOf ⟨y, hyU'⟩).asIdeal.primeCompl) (S := W.presheaf.stalk y) g).mp h0`. Establish `hc0 : c = 0` using `(mul_right_mem_nonZeroDivisors_eq_zero_iff hg).mp hcg`. Conclude with `hc (by rw [hc0]; exact Ideal.zero_mem _)`. Establish `hrad : (∏ i ∈ J, f' i) ∈ (Ideal.span {γ}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`.
+
+Introduce and unpack `Q ⟨hQγ, hQ⟩`. Use `hQ` as an intermediate fact. Set `P : PrimeSpectrum Γ(W, U.1)` to `⟨Q.comap (W.presheaf.germ U.1 y hy).hom, inferInstance⟩`. Establish `h1 : hU.fromSpec P ∈ (G.support : Set W)`. Rewrite using `[WMult.mem_support_fromSpec_iff G U hU]`.
+
+Use `show G.ideal U ≤ Q.comap (W.presheaf.germ U.1 y hy).hom`. Rewrite using `[← Ideal.map_le_iff_le_comap, ← WMult.stalkId_eq_map_germ G y U hy, hGy]`. Conclude with `hQγ`. Establish `h2` using `hGZ h1`. Rewrite `h2` using `[WMult.mem_support_fromSpec_iff Z U hU]`.
+
+Establish `h3 : FinalTheorems.stalkId Z y ≤ Q`. Rewrite using `[WMult.stalkId_eq_map_germ Z y U hy]`. Conclude with `Ideal.map_le_iff_le_comap.mpr h2`. Rewrite `h3` using `[hZy]`. Conclude with `h3 (Ideal.mem_span_singleton_self _)`.
+
+Take `⟨u, m, hmJ, hγu⟩` from `eq_unit_mul_monomial f' hrsp.1 hrsp.2 J hγ0 hrad`. Establish `hord : ∀ i ∈ J, ordAlong G (σ i) = m i`. Introduce `i hi`. Take `⟨hCc, hyC, hirr, hηU, hηf⟩` from `hσ i hi`. Establish `hCm : Maximal (fun C => IsIrreducible C ∧ C ⊆ (Z.support : Set W)) (σ i)` using `hCc`.
+
+Establish `hCcl : IsClosed (σ i)`. Establish `h` using `hCm.eq_of_subset ⟨hirr.closure, closure_minimal hCm.1.2 Z.support.isClosed⟩ subset_closure`. Rewrite using `[h]`. Conclude with `isClosed_closure`. Establish `hgen : IsGenericPoint hirr.genericPoint (σ i)`.
+
+Use `hirr.isGenericPoint_genericPoint_closure` as an intermediate fact. Rewrite `this` using `[hCcl.closure_eq]`. Then use the resulting hypothesis. Use `set η := hirr.genericPoint with hη`. Establish `hηy : η ⤳ y` using `hgen.specializes hyC`. Set `Pη` to `hU.primeIdealOf ⟨η, hηU⟩`.
+
+Establish `hfromη : hU.fromSpec Pη = η` using `hU.fromSpec_primeIdealOf ⟨η, hηU⟩`. Establish `hfromy : hU.fromSpec Py = y` using `hU.fromSpec_primeIdealOf yU`. Establish `emb` using `hU.fromSpec.isOpenEmbedding`. Establish `hspec : ∀ P Q : PrimeSpectrum Γ(W, U.1), hU.fromSpec P ⤳ hU.fromSpec Q ↔ P ≤ Q`. Introduce `P Q`.
+
+Rewrite using `[PrimeSpectrum.le_iff_specializes]`. Conclude with `emb.isInducing.specializes_iff`. Establish `hle : Pη ≤ Py` using `(hspec _ _).mp (by rw [hfromη, hfromy]; exact hηy)`. Establish `hfη : f i ∈ Pη.asIdeal`. Establish `h' : η ∈ W.zeroLocus {f i} ∩ U.1` using `⟨hηf, hηU⟩`.
+
+Rewrite `h'` using `[← hU.fromSpec_image_zeroLocus]`. Take `⟨Q, hQ, hQη⟩` from `h'`. Rewrite `hQη` using `[← hfromη]`. Use `emb.injective hQη` as an intermediate fact. Substitute `this` using the available equality.
+
+Conclude with `(PrimeSpectrum.mem_zeroLocus _ _).mp hQ (Set.mem_singleton _)`. Establish `hpi : Prime (f' i)` using `prime_of_regular_params f' hrsp.1 hrsp.2 i`. Establish `hQi : (Ideal.span {f' i}).IsPrime` using `(Ideal.span_singleton_prime hpi.ne_zero).mpr hpi`. Set `Pi : PrimeSpectrum Γ(W, U.1)` to `⟨(Ideal.span {f' i}).comap (algebraMap Γ(W, U.1) (W.presheaf.stalk y)), inferInstance⟩`. Establish `hdisj : Disjoint (Py.asIdeal.primeCompl : Set Γ(W, U.1)) Pη.asIdeal` using `Set.disjoint_left.mpr fun x hx hx' => hx ((show Pη.asIdeal ≤ Py.asIdeal from hle) hx')`.
+
+Establish `hPiη : Pi ≤ Pη` using `by show (Ideal.span {f' i}).comap (algebraMap Γ(W, U.1) (W.presheaf.stalk y)) ≤ Pη.asIdeal`. Combine the equalities or inequalities in the displayed calculation. Apply `Ideal.comap_mono` to reduce the goal to its premises. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ hfη`.
+
+Use `_ = Pη.asIdeal := IsLocalization.under_map_of_isPrime_disjoint Py.asIdeal.primeCompl (W.presheaf.stalk y) Pη.isPrime hdisj`. Establish `hζZ : hU.fromSpec Pi ∈ (Z.support : Set W)`. Rewrite using `[WMult.mem_support_fromSpec_iff Z U hU]`. Use `show Z.ideal U ≤ (Ideal.span {f' i}).comap (W.presheaf.germ U.1 y hy).hom`. Rewrite using `[← Ideal.map_le_iff_le_comap, ← WMult.stalkId_eq_map_germ Z y U hy, hZy, Ideal.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `Ideal.mem_span_singleton.mpr (Finset.dvd_prod_of_mem _ hi)`. Establish `hζη : hU.fromSpec Pi ⤳ η` using `by rw [← hfromη]; exact (hspec _ _).mpr hPiη`. Establish `hcl : closure {η} = σ i` using `hgen`. Establish `hsub : σ i ⊆ closure {hU.fromSpec Pi}`. Introduce `z hz`.
+
+Rewrite `hz` using `[← hcl]`. Conclude with `specializes_iff_closure_subset.mp hζη hz`. Establish `hirrζ : IsIrreducible (closure {hU.fromSpec Pi})` using `isIrreducible_singleton.closure`. Establish `hsubZ : closure {hU.fromSpec Pi} ⊆ (Z.support : Set W)` using `closure_minimal (Set.singleton_subset_iff.mpr hζZ) Z.support.isClosed`. Establish `hCeq : σ i = closure {hU.fromSpec Pi}` using `hCm.eq_of_subset ⟨hirrζ, hsubZ⟩ hsub`.
+
+Establish `hηζ : η ⤳ hU.fromSpec Pi`. Rewrite using `[specializes_iff_mem_closure, hcl, hCeq]`. Conclude with `subset_closure (Set.mem_singleton _)`. Establish `hηPi : Pη ≤ Pi` using `(hspec _ _).mp (by rw [hfromη]; exact hηζ)`. Establish `hPeq : Pη.asIdeal = (Ideal.span {f' i}).comap (algebraMap Γ(W, U.1) (W.presheaf.stalk y))` using `congrArg PrimeSpectrum.asIdeal (le_antisymm hηPi hPiη)`.
+
+Set `T` to `Localization.AtPrime (Ideal.span {f' i})`. Establish `hT : IsLocalization.AtPrime T ((Ideal.span {f' i}).comap (algebraMap Γ(W, U.1) (W.presheaf.stalk y)))` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (M := Py.asIdeal.primeCompl) (S := W.presheaf.stalk y) (T := T) (Ideal.span {f' i})`. Establish `hT' : IsLocalization Pη.asIdeal.primeCompl T`. Establish `hsm : Pη.asIdeal.primeCompl = (Ideal.comap (algebraMap Γ(W, U.1) (W.presheaf.stalk y)) (Ideal.span {f' i})).primeCompl`. Use extensionality with `x`.
+
+Rewrite using `[Ideal.mem_primeCompl_iff, Ideal.mem_primeCompl_iff, hPeq]`. Rewrite using `[hsm]`. Conclude with `hT`. Set `ηU : U.1` to `⟨η, hηU⟩`. Set `algη : Algebra Γ(W, U.1) (W.presheaf.stalk η)` to `TopCat.Presheaf.algebra_section_stalk W.presheaf ηU`.
+
+Establish `hlocη : IsLocalization.AtPrime (W.presheaf.stalk η) Pη.asIdeal` using `hU.isLocalization_stalk ηU`. Set `φ : W.presheaf.stalk η ≃ₐ[Γ(W, U.1)] T` to `IsLocalization.algEquiv Pη.asIdeal.primeCompl _ _`. Set `algYη : Algebra (W.presheaf.stalk y) (W.presheaf.stalk η)` to `(φ.symm.toRingEquiv.toRingHom.comp (algebraMap (W.presheaf.stalk y) T)).toAlgebra`. Establish `hlocYη : IsLocalization.AtPrime (W.presheaf.stalk η) (Ideal.span {f' i})` using `(IsLocalization.isLocalization_iff_of_ringEquiv (M := (Ideal.span {f' i}).primeCompl) (S := T) φ.symm.toRingEquiv).mp inferInstance`. Establish `hgerm : ∀ a : Γ(W, U.1), W.presheaf.germ U.1 η hηU a = algebraMap (W.presheaf.stalk y) (W.presheaf.stalk η) (W.presheaf.germ U.1 y hy a)`.
+
+Use `by`. Introduce `a`. Establish `h1` using `(φ.symm.commutes a).symm`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply Γ(W, U.1) (W.presheaf.stalk y) T]`. Conclude with `h1`.
+
+Establish `hGη : FinalTheorems.stalkId G η = Ideal.span {algebraMap (W.presheaf.stalk y) (W.presheaf.stalk η) γ}`. Rewrite using `[WMult.stalkId_eq_map_germ G η U hηU]`. Establish `hcomp : (W.presheaf.germ U.1 η hηU).hom = (algebraMap (W.presheaf.stalk y) (W.presheaf.stalk η)).comp (W.presheaf.germ U.1 y hy).hom` using `RingHom.ext fun a => hgerm a`. Rewrite using `[hcomp, ← Ideal.map_map, ← WMult.stalkId_eq_map_germ G y U hy, hGy, Ideal.map_span, Set.image_singleton]`. Establish `hordS` using `WMult.ord_isLocalization_eq_exponent f' hrsp.1 hrsp.2 J u m i hi (W.presheaf.stalk η)`.
+
+Establish `hlen : Module.length (W.presheaf.stalk η) (W.presheaf.stalk η ⧸ FinalTheorems.stalkId G η) = (m i : ℕ∞)`. Rewrite using `[hGη, hγu]`. Conclude with `hordS`. Unfold `ordAlong`. Rewrite using `[dif_pos hirr, ← hη, hlen]`.
+
+Conclude with `ENat.toNat_natCast (m i)`. Rewrite using `[hGy, hγu]`. Establish `hprod : ∏ i ∈ J, f' i ^ m i = ∏ i ∈ J, f' i ^ ordAlong G (σ i)` using `Finset.prod_congr rfl fun i hi => by rw [hord i hi]`. Rewrite using `[hprod]`. Conclude with `Ideal.span_singleton_mul_left_unit u.isUnit _`.
+-/
 theorem stalkId_eq_monomial [IsNoetherian W] {Z G : W.IdealSheafData} (hG : FinalTheorems.EffCartier G)
     (hGZ : (G.support : Set W) ⊆ Z.support) (y : W) (U : W.affineOpens) (hy : y ∈ U.1) {n : ℕ}
     (f : Fin n → Γ(W, U.1)) (J : Finset (Fin n)) [IsRegularLocalRing (W.presheaf.stalk y)]
@@ -193,6 +246,19 @@ section Chart
 
 variable {s : W ⟶ Spec (.of ℂ)}
 
+/- English proof (translation)
+Substitute `hpt` using the available equality. Establish `hψ : ∀ g, P.stalkEquiv x hx hcl (W.presheaf.germ P.V x hx (P.secHom g)) = algebraMap _ (locRing P.K (P.coord x hx)) g` using `P.stalkEquiv_germ x hx hcl`. Establish `: IsDomain (W.presheaf.stalk x)` using `isDomain_of_isRegularLocalRing`. Set `σ' : Fin e → Set W` to `fun l => (S.σ l).elim ∅ fun k => (c k : Set W)`. Establish `hσ' : ∀ l ∈ S.J, IsBranch (Z.support : Set W) (P.secHom (S.r l)) x (σ' l)`.
+
+Introduce `l hl`. Take `⟨k, hk, hb⟩` from `hσ l hl`. Use `show IsBranch _ _ x ((S.σ l).elim ∅ fun k => (c k : Set W))`. Rewrite using `[hk]`. Conclude with `hb`.
+
+Establish `hmain : FinalTheorems.stalkId G x = Ideal.span {∏ l ∈ S.J, W.presheaf.germ P.V x hx (P.secHom (S.r l)) ^ ordAlong G (σ' l)}` using `stalkId_eq_monomial (U := P.affOpen) hG hGZ x hx (fun l => P.secHom (S.r l)) S.J (WMult.rsp_of_sncData P Z x hx hcl hdim S) (WMult.stalkId_eq_span_of_sncData P Z x hx hcl S) σ' hσ'`. Rewrite `hmain` using `[ha]`. Take `⟨v, hv⟩` from `Ideal.span_singleton_eq_span_singleton.mp hmain`. Use `⟨P.stalkEquiv x hx hcl ↑v⁻¹, (Units.isUnit v⁻¹).map _, ?_⟩` and prove the remaining obligations. Establish `hv' : W.presheaf.germ P.V x hx (P.secHom a) = (∏ l ∈ S.J, W.presheaf.germ P.V x hx (P.secHom (S.r l)) ^ ordAlong G (σ' l)) * ↑v⁻¹`.
+
+Rewrite using `[← hv, mul_assoc, Units.mul_inv, mul_one]`. Establish `hprod : P.stalkEquiv x hx hcl (∏ l ∈ S.J, W.presheaf.germ P.V x hx (P.secHom (S.r l)) ^ ordAlong G (σ' l)) = ∏ l ∈ S.J, algebraMap _ (locRing P.K (P.coord x hx)) (S.r l) ^ (S.σ l).elim 0 fun k => ordAlong G (c k)`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations. Take `⟨k, hk, -⟩` from `hσ l hl`.
+
+Rewrite using `[map_pow]`. Use `show P.stalkEquiv x hx hcl (W.presheaf.germ P.V x hx (P.secHom (S.r l))) ^ ordAlong G ((S.σ l).elim ∅ fun k => (c k : Set W)) = _`. Rewrite using `[hψ, hk]`. Both sides reduce to the same expression. Rewrite using `[← hψ a, hv', map_mul, hprod]`.
+
+Conclude with `mul_comm _ _`.
+-/
 theorem monomial_chart [IsNoetherian W] [LocallyOfFiniteType s] {Z G : W.IdealSheafData}
     (hG : FinalTheorems.EffCartier G) (hGZ : (G.support : Set W) ⊆ Z.support) (P : AffPres s) {rc : ℕ}
     (c : Fin rc ≃ comps (Z.support : Set W)) (e : ℕ) (x : W) (hx : x ∈ P.V)

@@ -25,10 +25,18 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.NormLeOneOfIsInt
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.KA UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Kato.Nb
 open scoped Matrix MatrixGroups Classical
 
+/- English proof (translation)
+The claim follows from `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC h`.
+-/
 private theorem nsum {l : ℕ} [Fact l.Prime] {ι : Type} (S : Finset ι) (f : ι → Qbar l) (C : ℝ) (hC : 0 ≤ C)
     (h : ∀ i ∈ S, ‖f i‖ ≤ C) : ‖∑ i ∈ S, f i‖ ≤ C :=
   IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC h
 
+/- English proof (translation)
+Introduce `i`. Unfold `Cg`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, ← Finset.sum_sub_distrib]`. Use `nsum _ _ _ (norm_nonneg _) fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_sub, norm_mul]`.
+
+Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hc x)).trans (h x i)`.
+-/
 private theorem cv_wsum {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] (n : ℕ) (cw : ι → Qbar l) (hc : ∀ x, ‖cw x‖ ≤ 1)
     (a b : ι → Fin 2 → Qbar l) (h : ∀ x, Cv n (a x) (b x)) : Cv n (∑ x, cw x • a x) (∑ x, cw x • b x) := by
   intro i
@@ -38,6 +46,9 @@ private theorem cv_wsum {l : ℕ} [Fact l.Prime] {ι : Type} [Fintype ι] (n : �
   rw [Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_sub, norm_mul]
   exact (mul_le_of_le_one_left (norm_nonneg _) (hc x)).trans (h x i)
 
+/- English proof (translation)
+Take `⟨h1, -, h3, -⟩` from `sCohApi Ω ε X l N w n hN A κ`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using h1.refl _`. Consider the case `insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h3 _ _ _ _ (h i) ih).1`.
+-/
 private theorem coh_sum {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ) [Fact l.Prime]
     (N w n : ℕ) (hN : 0 < N) (A : Type) [CommGroup A] (κ : (Ω ≃ₐ[ℚ] Ω) → A) {ι : Type} (S : Finset ι)
     (z z' : ι → (Ω ≃ₐ[ℚ] Ω) → A → X.Fn l) (h : ∀ i, CohB X l N w n κ (z i) (z' i)) :
@@ -47,6 +58,55 @@ private theorem coh_sum {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
   | empty => simpa using h1.refl _
   | insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]; exact (h3 _ _ _ _ (h i) ih).1
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e gN A W ε X pr N _ cw c d gm ψ cf S hNf hmat hgm hlN hl2 he hcw hj hadm c₀ Y hY`. Take `⟨hadm3, hcwO⟩` from `hadm`. Take `⟨x₀, hx₀⟩` from `hcw`. Establish `hA0` using `hadm3 x₀ hx₀`. Establish `hlp : l.Prime` using `Fact.out`.
+
+Take `⟨c₁, hc₁⟩` from `mlTOf symEx sApi sInvApi sBStab sSlD sCohApi sCycZ sTopT kato_normRelation_twistTower kato_normRelation_levelTower l Ω ε X N e hlN hl2 he`. Establish `hm` using `fun x : {x // cw x ≠ 0} => sN2rho l Ω ι e gN A W ε X pr N x.1 c d gm ψ cf (hadm3 x.1 x.2) he hmat`. Use `choose m hm using hm`. Establish `hInt` using `sInteg l Ω ι e gN A W ε X pr N x₀ c d gm ψ cf hA0 he hmat`. Take `⟨Yx, hYx, hYsum⟩` from `hY`.
+
+Take `⟨S', hSS', hS'⟩` from `sEuler l Ω ι e gN A W ε X pr N x₀ c d gm ψ cf hA0 he hlN S hNf hmat`. Use `⟨Finset.univ.sup m + c₁, S', fun w hw => hNf.unr w (fun h => hw (hSS' h)), ?_⟩` and prove the remaining obligations. Introduce `n hn w hw hdiv ψw hK hsurj`. Take `⟨hpP, hpcop, a, δ, ha, hδ, hhec, hfrob⟩` from `hS' w hw`. Use `haveI : NeZero (normV w) := ⟨hpP.ne_zero⟩`.
+
+Establish `hpl : (normV w).Coprime l` using `Nat.Coprime.coprime_dvd_right ⟨N * c * d, by ring⟩ hpcop`. Establish `hplN : (normV w).Coprime (l * N)` using `Nat.Coprime.coprime_dvd_right ⟨c * d, by ring⟩ hpcop`. Establish `hY'` using `fun x : {x // cw x ≠ 0} => hc₁ (c₀ + c₁) (by omega) ι gN A W pr x.1 c d gm ψ cf (hadm3 x.1 x.2) (normV w) hpP hpcop`. Use `choose Y' hY'Z hY'coc hY'push hY'cont hY'O using hY'`. Establish `hEC` using `sEulCg l Ω ι e gN A W ε X pr N x₀ c d gm ψ cf hA0 he (normV w) n hpP hn hdiv a δ ha hδ`.
+
+Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Take `⟨hc1, hd1, hcc, hdc, -, -, -, -, -, -, hgN, -⟩` from `hA0`. Establish `hLaws : ∃ ws, Laws X l c d ws` using `symEx Ω ε X l c d hlp hc1 hd1 (Nat.Coprime.coprime_dvd_right ⟨l * N, by ring⟩ hcc) (Nat.Coprime.coprime_dvd_right ⟨l * N, by ring⟩ hdc)`. Establish `hodd : Odd (2 * e - 1)` using `⟨e - 1, by omega⟩`. Establish `hLW` using `sLiftOk Ω ε X l N (2 * e - 1) hl2 hlN hodd`.
+
+Establish `hHyp : ∀ r₀, Hyp l N c d (gm r₀)` using `fun r₀ => ⟨hl2, hlN, hc1, hd1, hcc, hdc, hgN r₀⟩`. Establish `hkey` using `fun (x : {x // cw x ≠ 0}) (r : ℕ) => hm x (normV w) hpP hplN a δ ha hδ hhec c₀ c₁ r r (Yx x.1 r) (Y' x r) _ _ (sRel0 l Ω ι e gN A W ε X pr N x.1 c d gm ψ cf (hadm3 x.1 x.2) he c₀ (Yx x.1) (hYx x.1) r r) (sRelT l Ω ι e gN A W ε X pr N x.1 c d gm ψ cf (hadm3 x.1 x.2) he (normV w) h …`. Establish `h` using `coh_sum X l N (2 * e - 1) r hN0 _ (fun s => ((cycMod ℚ Ω l r) s)⁻¹) Finset.univ _ _ (fun r₀ => kato_norm_relation_tame_prime Ω ε X l N (normV w) x.1 c d (2 * e - 1) (gm r₀) (hHyp r₀) hpP hpcop hLaws hLW r r)`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals try rfl`.
+
+Apply the tactic sequence `all_goals funext s y`. Apply the tactic sequence `all_goals simp [Finset.sum_apply, Finset.smul_sum, map_sum, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Apply the tactic sequence `all_goals exact Finset.sum_comm)`. Use `choose bN hbN hCvN using hkey`. Establish `hO1 : ∀ z ∈ cf.O, ‖z‖ ≤ 1` using `fun z hz => GlobalTheory.CoefCoord.norm_le_one cf ⟨z, hz⟩`.
+
+Establish `hlO : ((l : ℕ) : Qbar l) ∈ cf.O` using `natCast_mem cf.O l`. Establish `hldvd : l ∣ normV w - 1` using `dvd_trans (dvd_pow_self l (by omega : n ≠ 0)) hdiv`. Establish `hsp` using `fun (x : {x // cw x ≠ 0}) (r : ℕ) => sSpec l Ω ι e gN A W ε X pr N x.1 c d gm ψ cf (hadm3 x.1 x.2) he hmat (normV w) r hpP hldvd a δ (((l : ℕ) : Qbar l) ^ (m x + c₁)) (hO1 a ha) (hO1 δ hδ) (hO1 _ (pow_mem hlO _)) (Yx x.1 r) (fun s y => ((l : ℕ) : Qbar l) ^ (m x) • ∑ t, Y' x r s ( …`. Establish `h` using `hCvN x r s y`. Rewrite `h` using `[mul_comm, ← smul_smul]`.
+
+Conclude with `h)`. Use `choose b' hb'O hb'Cv using hsp`. Use `set M := Finset.univ.sup m with hM`. Establish `hmM : ∀ x, m x ≤ M` using `fun x => Finset.le_sup (Finset.mem_univ x)`. Take `⟨Yt, hYt⟩ : ∃ Yt : (r : ℕ) → (Ω ≃ₐ[ℚ] Ω) → (ZMod (normV w))ˣ × (ZMod (l ^ r))ˣ → Fin 2 → Qbar l, ∀ r s y, Yt r s y = ∑ x, (cw x.1 * ((l : ℕ) : Qbar l) ^ M) • Y' x r s y` from `⟨fun r s y => _, fun r s y => rfl⟩`.
+
+Establish `hcoc : ∀ r s s' y, Yt r (s * s') y = Yt r s y + rhoK W e ψ s *ᵥ Yt r s' (y * cycT l r (normV w) s)`. Introduce `r s s' y`. Simplify using `only [hYt, hY'coc, smul_add, Finset.sum_add_distrib, Matrix.mulVec_sum, Matrix.mulVec_smul]`. Establish `hpush : ∀ r, Yt r = push (Prod.map id (redL l r)) (Yt (r + 1))`. Introduce `r`.
+
+Use function extensionality and compare the values at `s y`. Simplify using `only [push, hYt]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hY'push x r]`.
+
+Simplify using `only [push, Finset.smul_sum]`. Establish `hcont : ∀ r y i, Continuous fun s => Yt r s y i`. Introduce `r y i`. Simplify using `only [hYt, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `continuous_finset_sum _ fun x _ => continuous_const.mul (hY'cont x r y i)`.
+
+Establish `hmem : ∀ r s u i, Yt r s u i ∈ cf.O`. Introduce `r s u i`. Rewrite using `[hYt, Finset.sum_apply]`. Use `Subalgebra.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (hcwO x.1) (pow_mem hlO _)) (hY'O x r s u i)`. Take `⟨Yw, hYw1, hYw2, hYw3, hYw4, hYw5⟩` from `sPushPsi l Ω cf (rhoK W e ψ) (normV w) n ψw hK Yt hcoc hpush hcont hmem`. Establish `hsub : ∀ f : ZMod N → (Fin 2 → Qbar l), ∑ x, cw x • f x = ∑ x : {x // cw x ≠ 0}, cw x.1 • f x.1`. Introduce `f`. Rewrite using `[← Finset.sum_filter_of_ne (p := fun x => cw x ≠ 0) (fun x _ h hc => h (by simp [hc]))]`.
+
+Conclude with `Finset.sum_subtype _ (fun x => by simp) _`. Use `⟨Yw, eul l e (normV w) a δ, 1, fun r => ∑ x, (cw x.1 * ((l : ℕ) : Qbar l) ^ (M - m x)) • b' x r, hYw1, hYw2, hYw3, hYw4, hEC.1, by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r i beta_reduce`. Rewrite using `[Finset.sum_apply]`. Use `Subalgebra.sum_mem _ fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (hcwO x.1) (pow_mem hlO _)) (hb'O x r i)`. Introduce `r s i`. Establish `hcv` using `cv_wsum r (fun x => cw x.1 * ((l : ℕ) : Qbar l) ^ (M - m x)) (fun x => by`. Rewrite using `[norm_mul, norm_pow]`.
+
+Conclude with `mul_le_one₀ (hO1 _ (hcwO x.1)) (by positivity) (pow_le_one₀ (norm_nonneg _) (hO1 _ hlO)))`. Use `_ _ (fun x => hb'Cv x r s)`. Establish `hL : ∀ η : (ZMod (l ^ r))ˣ → Qbar l, (∑ a, spec η (fun s x => Yw r s (a, x)) s) = ∑ x, (cw x.1 * ((l : ℕ) : Qbar l) ^ (M - m x)) • spec η (fun s y => ((l : ℕ) : Qbar l) ^ (m x) • ∑ t, Y' x r s (t, y)) s`. Introduce `η`. Simplify using `only [spec]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.smul_sum]`. Use `_ = ∑ y, η y • ∑ t, Yt r s (t, y) := by simp only [hYw5]`. Use `_ = _ := by`.
+
+Simplify using `only [hYt, Finset.smul_sum, smul_smul]`. Use `(Finset.sum_congr rfl fun y _ => Finset.sum_comm).trans (Finset.sum_comm.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `hp : ((l : ℕ) : Qbar l) ^ M = ((l : ℕ) : Qbar l) ^ (M - m x) * ((l : ℕ) : Qbar l) ^ (m x)`. Rewrite using `[← pow_add, Nat.sub_add_cancel (hmM x)]`.
+
+Rewrite using `[hp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ η : (ZMod (l ^ r))ˣ → Qbar l, eul l e (normV w) a δ • ((l : ℕ) : Qbar l) ^ (M + c₁) • spec η (Y r) s + (mat W s *ᵥ (∑ x, (cw x.1 * ((l : ℕ) : Qbar l) ^ (M - m x)) • b' x r) - ∑ x, (cw x.1 * ((l : ℕ) : Qbar l) ^ (M - m x)) • b' x r) = ∑ x, (cw x.1 * ((l : ℕ) : Qbar l) ^ (M …`. Introduce `η`.
+
+Simplify using `only [smul_add, Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `only [spec, hYsum, hsub, Finset.smul_sum, smul_smul]`. Use `Finset.sum_comm.trans (Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_)` and prove the remaining obligations. Establish `hp : ((l : ℕ) : Qbar l) ^ (M + c₁) = ((l : ℕ) : Qbar l) ^ (M - m x) * ((l : ℕ) : Qbar l) ^ (m x + c₁)`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use `hmM x` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hp]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, smul_sub, Finset.sum_sub_distrib]`. Use `beta_reduce`. Rewrite using `[hL, hR]`.
+
+Conclude with `hcv i`. Introduce `B σ hB hF`. Take `⟨he1, htr, hdet⟩` from `hfrob B σ hB hF`. Conclude with `hEC.2 σ hInt.2.1 he1 htr hdet`.
+-/
 theorem UpperTheory.V.Z.Kato.Nb.kato_tame_relation_projected :
     UpperTheory.V.Z.Kato.Nb.KatoTameRelationProjected := by
   intro l _ Ω _ _ _ ι e gN A W ε X pr N _ cw c d gm ψ cf S hNf hmat hgm hlN hl2 he hcw hj hadm c₀ Y hY

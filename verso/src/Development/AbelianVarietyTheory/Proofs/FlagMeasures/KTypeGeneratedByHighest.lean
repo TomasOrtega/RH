@@ -16,6 +16,11 @@ section OneParam
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun s => U s (U t v)) w (t - t)` using `by rw [sub_self]; exact hd`. Establish `h2` using `HasDerivAt.comp_sub_const t t h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Use `show U s v = U (s - t) (U t v)`.
+
+Rewrite using `[← hadd, sub_add_cancel]`.
+-/
 private theorem hasDerivAt_of_hasDerivAt_shift (U : ℝ → H →L[ℂ] H) (hadd : ∀ s t v, U (s + t) v = U s (U t v))
     (v w : H) (t : ℝ) (hd : HasDerivAt (fun s => U s (U t v)) w 0) :
     HasDerivAt (fun s => U s v) w t := by
@@ -26,6 +31,19 @@ private theorem hasDerivAt_of_hasDerivAt_shift (U : ℝ → H →L[ℂ] H) (hadd
   show U s v = U (s - t) (U t v)
   rw [← hadd, sub_add_cancel]
 
+/- English proof (translation)
+Establish `hder : ∀ t, HasDerivAt (fun s => U s v) (c • U t v) t`. Introduce `t`. Apply `hasDerivAt_of_hasDerivAt_shift U hadd v _ t` to reduce the goal to its premises. Establish `h1 : (fun s => U s (U t v)) = fun s => U t (U s v)`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[← hadd, ← hadd, add_comm]`. Rewrite using `[h1]`. Establish `h2` using `((U t).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars'] at h2`. Rewrite `h2` using `[map_smul]`.
+
+Conclude with `h2`. Set `L : H →L[ℂ] H` to `c • ContinuousLinearMap.id ℂ H`. Establish `hL : ∀ x, L x = c • x` using `fun x => rfl`. Set `g : ℝ → H` to `fun t => Complex.exp (c * t) • v`. Establish `hg : ∀ t, HasDerivAt g (c • g t) t`.
+
+Introduce `t`. Establish `h1 : HasDerivAt (fun t : ℝ => c * (t : ℂ)) c t`. Simplify using `using ((hasDerivAt_id t).ofReal_comp).const_mul c`. Establish `h2` using `h1.cexp.smul_const v`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [g, smul_smul, mul_comm]`. Establish `heq : (fun s => U s v) = g`. Apply `ODE_solution_unique_univ (v := fun _ x => L x) (s := fun _ => Set.univ) (K := ‖L‖₊) (t₀ := 0)` to reduce the goal to its premises. Introduce `_`. Conclude with `L.lipschitz.lipschitzOnWith`.
+
+Introduce `t; exact ⟨by simpa [hL] using hder t, trivial⟩`. Introduce `t; exact ⟨by simpa [hL] using hg t, trivial⟩`. Simplify using `[g, h0]`. Use `congrFun heq 1` as an intermediate fact. Simplify `this` using `[g]`.
+-/
 theorem eigen (U : ℝ → H →L[ℂ] H) (h0 : ∀ v, U 0 v = v)
     (hadd : ∀ s t v, U (s + t) v = U s (U t v)) (v : H) (c : ℂ)
     (hd : HasDerivAt (fun t => U t v) (c • v) 0) : U 1 v = Complex.exp c • v := by
@@ -59,6 +77,9 @@ theorem eigen (U : ℝ → H →L[ℂ] H) (h0 : ∀ v, U 0 v = v)
   have := congrFun heq 1
   simpa [g] using this
 
+/- English proof (translation)
+Establish `hc : IsClosed (S : Set H)` using `S.closed_of_finiteDimensional`. Rewrite `hd` using `[hasDerivAt_iff_tendsto_slope]`. Use `hc.mem_of_tendsto hd (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Rewrite using `[slope_def_module]`. Conclude with `S.smul_mem _ (S.sub_mem (hf t) (hf 0))`.
+-/
 theorem deriv_mem (S : Submodule ℂ H) [FiniteDimensional ℂ S] (f : ℝ → H) (hf : ∀ t, f t ∈ S) (w : H)
     (hd : HasDerivAt f w 0) : w ∈ S := by
   have hc : IsClosed (S : Set H) := S.closed_of_finiteDimensional
@@ -67,6 +88,19 @@ theorem deriv_mem (S : Submodule ℂ H) [FiniteDimensional ℂ S] (f : ℝ → H
   rw [slope_def_module]
   exact S.smul_mem _ (S.sub_mem (hf t) (hf 0))
 
+/- English proof (translation)
+Use `haveI : CompleteSpace T := FiniteDimensional.complete ℂ T`. Set `B : T →L[ℂ] T` to `LinearMap.toContinuousLinearMap (L.restrict hLT)`. Establish `hB : ∀ y : T, ((B y : T) : E) = L y` using `fun y => rfl`. Set `x0 : T` to `⟨f 0, h0⟩`. Set `g : ℝ → E` to `fun t => ((NormedSpace.exp ((t : ℂ) • B) x0 : T) : E)`.
+
+Establish `hg : ∀ t, HasDerivAt g (L (g t)) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun u : ℂ => ((NormedSpace.exp (u • B) x0 : T) : E)) (((B * NormedSpace.exp ((t : ℂ) • B)) x0 : T) : E) (t : ℂ)`. Establish `h0` using `T.subtypeL.hasFDerivAt.comp_hasDerivAt (t : ℂ) ((hasDerivAt_exp_smul_const' B (t : ℂ)).clm_apply (hasDerivAt_const (t : ℂ) x0))`. Apply the tactic sequence `convert h0 using 1 <;> first | rfl | simp`.
+
+Establish `h2` using `(h1.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt t ((hasDerivAt_id t).ofReal_comp)`. Establish `h3 : HasDerivAt (fun u : ℝ => ((NormedSpace.exp ((u : ℂ) • B) x0 : T) : E)) (((B * NormedSpace.exp ((t : ℂ) • B)) x0 : T) : E) t`. Apply the tactic sequence `convert h2 using 1 <;> first | rfl | simp`. Establish `h4 : L (g t) = (((B * NormedSpace.exp ((t : ℂ) • B)) x0 : T) : E)`. Rewrite using `[ContinuousLinearMap.mul_apply, hB]`.
+
+Rewrite using `[h4]`. Conclude with `h3`. Establish `heq : f = g`. Apply `ODE_solution_unique_univ (v := fun _ x => L x) (s := fun _ => s) (K := K) (t₀ := 0)` to reduce the goal to its premises. Introduce `_`.
+
+Conclude with `hK`. Introduce `t`. Conclude with `⟨hf t, hfs t⟩`. Introduce `t`. Conclude with `⟨hg t, hTs _ (NormedSpace.exp ((t : ℂ) • B) x0).2⟩`.
+
+Simplify using `[g, x0]`. Rewrite using `[heq]`. Conclude with `(NormedSpace.exp ((t : ℂ) • B) x0).2`.
+-/
 private theorem mem_of_hasDerivAt_linear_of_invariant {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (T : Submodule ℂ E) [FiniteDimensional ℂ T] (L : E →ₗ[ℂ] E) (hLT : ∀ x ∈ T, L x ∈ T)
     (s : Set E) (hTs : ∀ x ∈ T, x ∈ s) (K : NNReal) (hK : LipschitzOnWith K L s)
@@ -101,14 +135,23 @@ private theorem mem_of_hasDerivAt_linear_of_invariant {E : Type*} [NormedAddComm
   rw [heq]
   exact (NormedSpace.exp ((t : ℂ) • B) x0).2
 
+/- English proof (translation)
+Apply the tactic sequence `split <;> norm_num`.
+-/
 private theorem sign_mul_self' {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     (if ε a then (1 : ℂ) else -1) * (if ε a then 1 else -1) = 1 := by
   split <;> norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp_all`.
+-/
 private theorem sign_eq_neg_of_ne {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) (h : ε a ≠ ε b) :
     (if ε a then (1 : ℂ) else -1) = -(if ε b then 1 else -1) := by
   cases ha : ε a <;> cases hb : ε b <;> simp_all
 
+/- English proof (translation)
+Rewrite using `[h]`.
+-/
 private theorem sign_eq_of_eq {n : ℕ} (ε : Fin n → Bool) (a b : Fin n) (h : ε a = ε b) :
     (if ε a then (1 : ℂ) else -1) = (if ε b then 1 else -1) := by
   rw [h]
@@ -119,6 +162,23 @@ section Alg
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hc : ∀ a b, X a b * (if ε b then (1 : ℂ) else -1) = (if ε a then (1 : ℂ) else -1) * X a b`. Introduce `a b`. Use `congrFun (congrFun h2 a) b` as an intermediate fact.
+
+Simplify `this` using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hg : ∀ a b, star (X b a) * (if ε b then (1 : ℂ) else -1) + (if ε a then (1 : ℂ) else -1) * X a b = 0`. Introduce `a b`. Use `congrFun (congrFun h1 a) b` as an intermediate fact. Simplify `this` using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Establish `hz : ∀ a b, ε a ≠ ε b → X a b = 0`. Introduce `a b hab`. Establish `e1` using `hc a b`. Establish `e2` using `sign_eq_neg_of_ne ε a b hab`. Establish `e3` using `sign_mul_self' ε b`.
+
+Take the linear combination `((if ε b then (1 : ℂ) else -1) / 2) * e1 + ((if ε b then (1 : ℂ) else -1) * X a b / 2) * e2 - X a b * e3`. Use `⟨?_, hz⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.neg_apply]`. Distinguish the cases in `hab : ε a = ε b`.
+
+Establish `e1` using `hg a b`. Establish `e2` using `sign_eq_of_eq ε a b hab`. Establish `e3` using `sign_mul_self' ε b`. Take the linear combination `(if ε b then (1 : ℂ) else -1) * e1 - ((if ε b then (1 : ℂ) else -1) * X a b) * e2 - (star (X b a) + X a b) * e3`. Rewrite using `[hz a b hab, hz b a (Ne.symm hab)]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `⟨hX, hz⟩`. Establish `hcomm : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X`. Use extensionality with `a b`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[sign_eq_of_eq ε a b hab]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz a b hab]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨?_, hcomm⟩` and prove the remaining obligations. Use `show Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0`. Rewrite using `[hX, neg_mul, hcomm, neg_add_cancel]`.
+-/
 theorem inK_iff (X : Matrix (Fin n) (Fin n) ℂ) :
     inK ε X ↔ Xᴴ = -X ∧ ∀ a b, ε a ≠ ε b → X a b = 0 := by
   constructor
@@ -161,6 +221,11 @@ theorem inK_iff (X : Matrix (Fin n) (Fin n) ℂ) :
     show Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0
     rw [hX, neg_mul, hcomm, neg_add_cancel]
 
+/- English proof (translation)
+Rewrite using `[inK_iff]`. Use `⟨?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_neg]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using the standard rewrite rules. Establish `hne : a ≠ b` using `fun h => hab (h ▸ rfl)`. Conclude with `Matrix.diagonal_apply_ne _ hne`.
+-/
 theorem inK_diag (θ : Fin n → ℝ) : inK ε (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) := by
   rw [inK_iff]
   refine ⟨?_, fun a b hab => ?_⟩
@@ -171,6 +236,13 @@ theorem inK_diag (θ : Fin n → ℝ) : inK ε (Matrix.diagonal fun a => (θ a :
   · have hne : a ≠ b := fun h => hab (h ▸ rfl)
     exact Matrix.diagonal_apply_ne _ hne
 
+/- English proof (translation)
+Rewrite using `[inK_iff]`. Use `⟨?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.sub_apply, Matrix.neg_apply, Matrix.single_apply]`. Establish `e1 : (a = j ∧ b = i) ↔ (b = i ∧ a = j)` using `and_comm`.
+
+Establish `e2 : (b = j ∧ a = i) ↔ (a = i ∧ b = j)` using `and_comm`. Simplify using `only [e1, e2]`. Apply the tactic sequence `split_ifs <;> simp [star_sub]`. Simplify using `only [Matrix.sub_apply, Matrix.single_apply]`. Rewrite using `[if_neg, if_neg, sub_zero]`.
+
+Introduce and unpack `⟨rfl, rfl⟩`. Simplify the hypotheses and the goal together. Introduce and unpack `⟨rfl, rfl⟩`. Simplify the hypotheses and the goal together.
+-/
 theorem inK_single {a b : Fin n} (hab : ε a = ε b) (c : ℂ) :
     inK ε (Matrix.single a b c - Matrix.single b a (star c)) := by
   rw [inK_iff]
@@ -186,6 +258,11 @@ theorem inK_single {a b : Fin n} (hab : ε a = ε b) (c : ℂ) :
     · rintro ⟨rfl, rfl⟩; simp_all
     · rintro ⟨rfl, rfl⟩; simp_all
 
+/- English proof (translation)
+Rewrite using `[← Matrix.diagonal_smul, Matrix.exp_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.coe_exp, Pi.smul_apply, smul_eq_mul, ← Complex.exp_eq_exp_ℂ]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exp_diag (θ : Fin n → ℝ) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) =
       Matrix.diagonal fun a => Complex.exp (((t * θ a : ℝ) : ℂ) * Complex.I) := by
@@ -197,6 +274,11 @@ theorem exp_diag (θ : Fin n → ℝ) (t : ℝ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hXs` using `((inK_iff X).1 hX).1`. Establish `hcomm : X * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * X` using `hX.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Establish `hs : star (NormedSpace.exp ((t : ℂ) • X)) = NormedSpace.exp (-((t : ℂ) • X))`.
+
+Rewrite using `[Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hXs, smul_neg]`. Simplify using the standard rewrite rules. Rewrite using `[hs, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • X)).neg_right), add_neg_cancel, NormedSpace.exp_zero]`. Establish `hc : Commute (Formalism.REAL.Jm ε) ((t : ℂ) • X)` using `(Commute.smul_right hcomm.symm _)`. Conclude with `hc.exp_right.eq.symm`.
+-/
 theorem exp_mem_K {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Kset ε := by
   have hXs := ((inK_iff X).1 hX).1
@@ -214,14 +296,25 @@ theorem exp_mem_K {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
 
 variable {W : Type} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Simplify using `[Matrix.diagonal_apply, ite_smul, Finset.sum_ite_eq]`.
+-/
 theorem sum_diag (E : Fin n → Fin n → Module.End ℂ W) (d : Fin n → ℂ) (v : W) :
     ∑ a, ∑ b, Matrix.diagonal d a b • E a b v = ∑ a, d a • E a a v := by
   simp [Matrix.diagonal_apply, ite_smul, Finset.sum_ite_eq]
 
+/- English proof (translation)
+Simplify using `[Matrix.single_apply, ite_and, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem sum_single (E : Fin n → Fin n → Module.End ℂ W) (a b : Fin n) (c : ℂ) (v : W) :
     ∑ i, ∑ j, Matrix.single a b c i j • E i j v = c • E a b v := by
   simp [Matrix.single_apply, ite_and, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Introduce `c`. Establish `h : E c c (E a b u) - E a b (E c c u) = (if c = a then E c b else 0) u - (if b = c then E a c else 0) u` using `LinearMap.congr_fun (hE c c a b) u`. Establish `hu' : ∀ d, E d d u = (μ d : ℂ) • u` using `hu`. Rewrite `h` using `[hu' c, map_smul]`. Apply the tactic sequence `have key : (if c = a then E c b else 0) u - (if b = c then E a c else 0) u = ((((if c = a then 1 else 0) - (if c = b then 1 else 0) : ℝ)) : ℂ) • E a b u := by split_ifs <;> subst_vars <;> simp_all`.
+
+Establish `hr : (((μ + Formalism.REAL.root a b) c : ℝ) : ℂ) = (μ c : ℂ) + ((((if c = a then 1 else 0) - (if c = b then 1 else 0) : ℝ)) : ℂ)`. Simplify using `[Formalism.REAL.root, Pi.single_apply]`. Rewrite `h` using `[sub_eq_iff_eq_add']`. Rewrite using `[h, key, hr, add_smul]`.
+-/
 theorem isWeight_root {E : Fin n → Fin n → Module.End ℂ W} (hE : GlRel E) {μ : Fin n → ℝ} {u : W}
     (hu : IsWeight E μ u) (a b : Fin n) : IsWeight E (μ + root a b) (E a b u) := by
   intro c
@@ -239,10 +332,26 @@ theorem isWeight_root {E : Fin n → Fin n → Module.End ℂ W} (hE : GlRel E) 
   rw [sub_eq_iff_eq_add'] at h
   rw [h, key, hr, add_smul]
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 private theorem sum_mul_root_eq_sub' {n : ℕ} (i j : Fin n) :
     ∑ k : Fin n, ((k : ℕ) : ℝ) * Formalism.REAL.root i j k = ((i : ℕ) : ℝ) - ((j : ℕ) : ℝ) := by
   simp [Formalism.REAL.root, Pi.single_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Introduce and unpack `⟨c, hc, heq⟩`. Set `φ : (Fin n → ℝ) →ₗ[ℝ] ℝ` to `∑ k : Fin n, ((k : ℕ) : ℝ) • LinearMap.proj k`. Establish `hφx : ∀ x, φ x = ∑ k : Fin n, ((k : ℕ) : ℝ) * x k`. Introduce `x`. Simplify using `[φ]`.
+
+Establish `hφr : ∀ i j, φ (Formalism.REAL.root i j) = ((i : ℕ) : ℝ) - ((j : ℕ) : ℝ)`. Introduce `i j`. Rewrite using `[hφx]`. Conclude with `sum_mul_root_eq_sub' i j`. Establish `hneg : Λ - (Λ + Formalism.REAL.root a b) = -Formalism.REAL.root a b` using `by abel`.
+
+Establish `key : -(((a : ℕ) : ℝ) - ((b : ℕ) : ℝ)) = ∑ i, ∑ j, ((c i j : ℕ) : ℝ) * (((i : ℕ) : ℝ) - ((j : ℕ) : ℝ))`. Establish `h1` using `congrArg φ heq`. Rewrite `h1` using `[hneg, map_neg, hφr]`. Rewrite using `[h1, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hφr, smul_eq_mul]`. Establish `hle : ∑ i, ∑ j, ((c i j : ℕ) : ℝ) * (((i : ℕ) : ℝ) - ((j : ℕ) : ℝ)) ≤ 0`. Apply `Finset.sum_nonpos` to reduce the goal to its premises.
+
+Introduce `i _`. Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `h : c i j = 0`. Simplify using `[h]`.
+
+Establish `hij` using `(hc i j h).1`. Establish `: ((i : ℕ) : ℝ) < ((j : ℕ) : ℝ)` using `by exact_mod_cast hij`. Conclude with `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)`. Establish `hab' : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_cdom (Λ : Fin n → ℝ) {a b : Fin n} (hab : a < b) : ¬ CDom ε (Λ + root a b) Λ := by
   rintro ⟨c, hc, heq⟩
   let φ : (Fin n → ℝ) →ₗ[ℝ] ℝ := ∑ k : Fin n, ((k : ℕ) : ℝ) • LinearMap.proj k
@@ -280,11 +389,17 @@ section Rep
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Vs : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ Vs}
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1]`. Both sides reduce to the same expression.
+-/
 theorem group_zero (hσ : IsURepOn (UJset ε) σ) (Z : Matrix (Fin n) (Fin n) ℂ) (v : H) :
     σ (NormedSpace.exp (((0 : ℝ) : ℂ) • Z)) v = v := by
   rw [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split <;> norm_num`.
+-/
 private theorem Jm_mul_JmFlagMeasures (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   simp only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]
   rw [← Matrix.diagonal_one]
@@ -292,6 +407,13 @@ private theorem Jm_mul_JmFlagMeasures (ε : Fin n → Bool) : Formalism.REAL.Jm 
   funext a
   split <;> norm_num
 
+/- English proof (translation)
+Establish `hJJ` using `Jm_mul_JmFlagMeasures ε`. Establish `hst : star (t : ℂ) = t` using `by simp`. Establish `hAg : ((t : ℂ) • Z)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * ((t : ℂ) • Z) = 0`. Establish `hZ' : Zᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Z = 0` using `hZ`. Rewrite using `[Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hZ', smul_zero]`.
+
+Establish `hA : ((t : ℂ) • Z)ᴴ = Formalism.REAL.Jm ε * (-((t : ℂ) • Z)) * Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eq_neg_of_add_eq_zero_left hAg]`. Use `_ = Formalism.REAL.Jm ε * (-((t : ℂ) • Z)) * Formalism.REAL.Jm ε := by rw [mul_neg, neg_mul]`. Establish `hconj : NormedSpace.exp (Formalism.REAL.Jm ε * (-((t : ℂ) • Z)) * Formalism.REAL.Jm ε) = Formalism.REAL.Jm ε * NormedSpace.exp (-((t : ℂ) • Z)) * Formalism.REAL.Jm ε` using `Matrix.exp_units_conj ⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, hJJ, hJJ⟩ (-((t : ℂ) • Z))`.
+
+Use `show (NormedSpace.exp ((t : ℂ) • Z))ᴴ * Formalism.REAL.Jm ε * NormedSpace.exp ((t : ℂ) • Z) = Formalism.REAL.Jm ε`. Rewrite using `[← Matrix.exp_conjTranspose, hA, hconj]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJJ, mul_one, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • Z)).neg_left), neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+-/
 private theorem inUJ_exp_smul_of_inG {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z) (t : ℝ) :
     Formalism.REAL.inUJ ε (NormedSpace.exp ((t : ℂ) • Z)) := by
   have hJJ := Jm_mul_JmFlagMeasures ε
@@ -318,6 +440,9 @@ private theorem inUJ_exp_smul_of_inG {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG 
       rw [hJJ, mul_one, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • Z)).neg_left), neg_add_cancel,
         NormedSpace.exp_zero, mul_one]
 
+/- English proof (translation)
+Establish `hs` using `inUJ_exp_smul_of_inG hZ s`. Establish `ht` using `inUJ_exp_smul_of_inG hZ t`. Rewrite using `[Complex.ofReal_add, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Z).smul_left (s : ℂ)).smul_right (t : ℂ)), hσ.1.2 _ hs _ ht]`. Both sides reduce to the same expression.
+-/
 theorem group_add (hσ : IsURepOn (UJset ε) σ) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inG ε Z)
     (s t : ℝ) (v : H) :
     σ (NormedSpace.exp (((s + t : ℝ) : ℂ) • Z)) v =
@@ -329,6 +454,15 @@ theorem group_add (hσ : IsURepOn (UJset ε) σ) {Z : Matrix (Fin n) (Fin n) ℂ
     hσ.1.2 _ hs _ ht]
   rfl
 
+/- English proof (translation)
+Introduce `θ _`. Establish `hK` using `inK_diag (ε := ε) θ`. Establish `hv' : ∀ a, E a a v = (μ a : ℂ) • v` using `hv`. Establish `hsum : ((∑ a, ∑ b, (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) a b • E a b v : Vs) : H) = (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • (v : H)`. Rewrite using `[sum_diag]`.
+
+Simplify using `only [hv', smul_smul, ← Finset.sum_smul, Submodule.coe_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun a _ => by ring)`.
+
+Establish `hder : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I)) (v : H)) ((((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • (v : H)) 0`. Rewrite using `[← hsum]`. Conclude with `hE _ hK.1 v`. Establish `h1` using `eigen (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I))) (fun w => group_zero hσ _ w) (group_add hσ hK.1) (v : H) _ hder`. Establish `hx : NormedSpace.exp (((1 : ℝ) : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) = Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))`.
+
+Rewrite using `[exp_diag]`. Simplify using `only [one_mul]`. Rewrite using `[← hx]`. Conclude with `h1`.
+-/
 theorem isWtOn_of_isWeight (hσ : IsURepOn (UJset ε) σ)
     (hE : ∀ X, inG ε X → ∀ u : Vs,
       HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) ((∑ a, ∑ b, X a b • E a b u : Vs) : H) 0)
@@ -357,6 +491,23 @@ theorem isWtOn_of_isWeight (hσ : IsURepOn (UJset ε) σ)
   rw [← hx]
   exact h1
 
+/- English proof (translation)
+Introduce `a`. Establish `hK` using `inK_diag (ε := ε) (Pi.single a (1 : ℝ) : Fin n → ℝ)`. Establish `hder` using `hE _ hK.1 v`. Establish `hs0 : ∀ t : ℝ, ∑ b, μ b * (t * (Pi.single a (1 : ℝ) : Fin n → ℝ) b) = t * μ a`. Introduce `t`.
+
+Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+
+Simplify using the standard rewrite rules. Establish `hf : GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ (Matrix.diagonal fun b => (((Pi.single a (1 : ℝ) : Fin n → ℝ) b : ℝ) : ℂ) * Complex.I) (v : H) = fun t : ℝ => Complex.exp ((t : ℂ) * ((μ a : ℂ) * Complex.I)) • (v : H)`. Use function extensionality and compare the values at `t`. Establish `hm` using `exp_mem_K hK t`. Rewrite `hm` using `[exp_diag]`.
+
+Use `show σ (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun b => (((Pi.single a (1 : ℝ) : Fin n → ℝ) b : ℝ) : ℂ) * Complex.I)) (v : H) = _`. Rewrite using `[exp_diag, hv _ hm, hs0]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * ((μ a : ℂ) * Complex.I)) • (v : H)) (((μ a : ℂ) * Complex.I) • (v : H)) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => (t : ℂ) * ((μ a : ℂ) * Complex.I)) ((μ a : ℂ) * Complex.I) 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).ofReal_comp).mul_const ((μ a : ℂ) * Complex.I)`. Simplify using `using h1.cexp.smul_const (v : H)`. Rewrite `hder` using `[hf]`.
+
+Establish `h3` using `hder.unique h2`. Rewrite `h3` using `[sum_diag]`. Establish `hs : ∑ b, ((((Pi.single a (1 : ℝ) : Fin n → ℝ) b : ℝ) : ℂ) * Complex.I) • E b b v = Complex.I • E a a v`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[hs]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.coe_smul]`. Establish `h4 : Complex.I • ((E a a v : Vs) : H) = Complex.I • ((μ a : ℂ) • (v : H))`. Rewrite using `[← Submodule.coe_smul, h3, smul_smul, mul_comm]`. Conclude with `smul_right_injective H Complex.I_ne_zero h4`.
+-/
 theorem isWeight_of_isWtOn
     (hE : ∀ X, inG ε X → ∀ u : Vs,
       HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) ((∑ a, ∑ b, X a b • E a b u : Vs) : H) 0)
@@ -401,6 +552,9 @@ theorem isWeight_of_isWtOn
     rw [← Submodule.coe_smul, h3, smul_smul, mul_comm]
   exact smul_right_injective H Complex.I_ne_zero h4
 
+/- English proof (translation)
+The claim follows from `deriv_mem S (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) (fun t => hS _ (exp_mem_K hX t) _ hu) _ (hE X hX.1 u)`.
+-/
 private theorem sum_smul_E_mem_of_isKStableOn {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Vs : Submodule ℂ H}
     {E : Fin n → Fin n → Module.End ℂ Vs}
@@ -411,12 +565,22 @@ private theorem sum_smul_E_mem_of_isKStableOn {n : ℕ} {ε : Fin n → Bool} {H
     ((∑ a, ∑ b, X a b • E a b u : Vs) : H) ∈ S :=
   deriv_mem S (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) (fun t => hS _ (exp_mem_K hX t) _ hu) _ (hE X hX.1 u)
 
+/- English proof (translation)
+Simplify using `only [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, sum_single]`.
+-/
 private theorem sum_single_sub_single_star_smul_E {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (E : Fin n → Fin n → Module.End ℂ W) (a b : Fin n) (c : ℂ) (v : W) :
     ∑ i, ∑ j, (Matrix.single a b c - Matrix.single b a (star c)) i j • E i j v =
       c • E a b v - star c • E b a v := by
   simp only [Matrix.sub_apply, sub_smul, Finset.sum_sub_distrib, sum_single]
 
+/- English proof (translation)
+Introduce `a b hab x hx`. Establish `hx' : (x : H) ∈ S` using `hx`. Establish `h1` using `sum_smul_E_mem_of_isKStableOn hE S hS _ (inK_single hab (1 : ℂ)) x hx'`. Establish `h2` using `sum_smul_E_mem_of_isKStableOn hE S hS _ (inK_single hab Complex.I) x hx'`. Rewrite `h1`, `h2` using `[sum_single_sub_single_star_smul_E]`.
+
+Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Establish `key : ((E a b x : Vs) : H) = (1 / 2 : ℂ) • (((1 : ℂ) • E a b x - star (1 : ℂ) • E b a x : Vs) : H) + (-(Complex.I / 2)) • ((Complex.I • E a b x - star Complex.I • E b a x : Vs) : H)`. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul, star_one, Complex.star_def, Complex.conj_I]`. Apply the tactic sequence `match_scalars <;> first`. Consider the case `linear_combination (1 / 2 : ℂ) * hI`.
+
+Consider the case `linear_combination (-1 / 2 : ℂ) * hI`. Use `show ((E a b x : Vs) : H) ∈ S`. Rewrite using `[key]`. Conclude with `S.add_mem (S.smul_mem _ h1) (S.smul_mem _ h2)`.
+-/
 theorem kStable_comap
     (hE : ∀ X, inG ε X → ∀ u : Vs,
       HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) ((∑ a, ∑ b, X a b • E a b u : Vs) : H) 0)
@@ -439,6 +603,9 @@ theorem kStable_comap
   rw [key]
   exact S.add_mem (S.smul_mem _ h1) (S.smul_mem _ h2)
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[hasDerivAt_iff_tendsto_slope]`. Rewrite using `[Topology.IsInducing.subtypeVal.tendsto_nhds_iff]`. Use `h.congr (fun s => ?_)` and prove the remaining obligations. Simplify using `[slope_def_module]`.
+-/
 private theorem hasDerivAt_of_hasDerivAt_coe {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (Vs : Submodule ℂ H) (g : ℝ → Vs) (w : Vs) (t : ℝ)
     (h : HasDerivAt (fun s => (g s : H)) (w : H) t) : HasDerivAt g w t := by
@@ -447,6 +614,25 @@ private theorem hasDerivAt_of_hasDerivAt_coe {H : Type} [NormedAddCommGroup H] [
   refine h.congr (fun s => ?_)
   simp [slope_def_module]
 
+/- English proof (translation)
+Introduce `g hg w hw`. Take `⟨Y, hY, hexp, -⟩` from `Formalism.REAL.compact_exists_log_bounded ε g hg`. Take `⟨u, hu, rfl⟩` from `hw`. Use `haveI hS' : FiniteDimensional ℂ (S.comap Vs.subtype) := (Submodule.comapSubtypeEquivOfLe hle).symm.finiteDimensional`. Establish `hTle : T ≤ S.comap Vs.subtype` using `fun x hx => hTS ⟨x, hx, rfl⟩`.
+
+Use `haveI : FiniteDimensional ℂ T := Submodule.finiteDimensional_of_le hTle`. Set `L : Module.End ℂ Vs` to `∑ i, ∑ j, Y i j • E i j`. Establish `hL : ∀ x, L x = ∑ i, ∑ j, Y i j • E i j x`. Introduce `x`. Simplify using `[L]`.
+
+Establish `hLT : ∀ x ∈ T, L x ∈ T`. Introduce `x hx`. Rewrite using `[hL]`. Use `T.sum_mem (fun i _ => T.sum_mem (fun j _ => ?_))` and prove the remaining obligations. Distinguish the cases in `hij : ε i = ε j`.
+
+Conclude with `T.smul_mem _ (hT i j hij x hx)`. Rewrite using `[((inK_iff Y).1 hY).2 i j hij, zero_smul]`. Conclude with `T.zero_mem`. Set `C : (S.comap Vs.subtype) →L[ℂ] Vs` to `LinearMap.toContinuousLinearMap (L ∘ₗ (S.comap Vs.subtype).subtype)`. Establish `hK : LipschitzOnWith ‖C‖₊ L (S.comap Vs.subtype)`.
+
+Apply `LipschitzOnWith.of_dist_le_mul` to reduce the goal to its premises. Introduce `x hx y hy`. Establish `hC : L x - L y = C (⟨x, hx⟩ - ⟨y, hy⟩)`. Rewrite using `[map_sub]`. Both sides reduce to the same expression.
+
+Rewrite using `[dist_eq_norm, dist_eq_norm, hC, coe_nnnorm]`. Use `(C.le_opNorm _).trans (le_of_eq ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hmemS : ∀ t : ℝ, σ (NormedSpace.exp ((t : ℂ) • Y)) (u : H) ∈ S` using `fun t => hS _ (exp_mem_K hY t) _ (hTS ⟨u, hu, rfl⟩)`. Set `f : ℝ → Vs` to `fun t => ⟨σ (NormedSpace.exp ((t : ℂ) • Y)) (u : H), hle (hmemS t)⟩`.
+
+Establish `hf : ∀ t, HasDerivAt f (L (f t)) t`. Introduce `t`. Apply `hasDerivAt_of_hasDerivAt_coe Vs f (L (f t)) t` to reduce the goal to its premises. Rewrite using `[hL]`. Conclude with `hasDerivAt_of_hasDerivAt_shift (fun s : ℝ => σ (NormedSpace.exp ((s : ℂ) • Y))) (group_add hσ hY.1) (u : H) _ t (hE Y hY.1 (f t))`.
+
+Establish `h0 : f 0 ∈ T`. Establish `: f 0 = u` using `Subtype.ext (group_zero hσ Y u)`. Rewrite using `[this]`. Conclude with `hu`. Establish `key` using `mem_of_hasDerivAt_linear_of_invariant T L hLT (S.comap Vs.subtype) (fun x hx => hTle hx) ‖C‖₊ hK f (fun t => hmemS t) hf h0 1`.
+
+Use `⟨f 1, key, ?_⟩` and prove the remaining obligations. Use `show σ (NormedSpace.exp (((1 : ℝ) : ℂ) • Y)) (u : H) = σ g (u : H)`. Rewrite using `[Complex.ofReal_one, one_smul, hexp]`.
+-/
 theorem kStableOn_map (hσ : IsURepOn (UJset ε) σ)
     (hE : ∀ X, inG ε X → ∀ u : Vs,
       HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) ((∑ a, ∑ b, X a b • E a b u : Vs) : H) 0)
@@ -501,6 +687,25 @@ theorem kStableOn_map (hσ : IsURepOn (UJset ε) σ)
 
 end Rep
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ Vs E hσ hc Λ S hS hle`. Take `⟨_, hgl, _, hE, _⟩` from `hc`. Take `⟨hfin, hKS, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `haveI := hfin`. Set `u : Vs` to `⟨v, hle hvS⟩`.
+
+Establish `hwt : IsWeight E Λ u` using `isWeight_of_isWtOn hE Λ u hvw`. Establish `hS' : KStable ε E (S.comap Vs.subtype)` using `kStable_comap hE S hKS`. Establish `hhigh : KHighest ε E Λ u`. Use `⟨hwt, fun a b hab hε => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Establish `hmem : ((E a b u : Vs) : H) ∈ S` using `hS' a b hε u hvS`. Establish `hw2 : IsWeight E (Λ + root a b) (E a b u)` using `isWeight_root hgl hwt a b`. Establish `hw3` using `isWtOn_of_isWeight hσ hE (Λ + root a b) (E a b u) hw2`. Establish `hne' : ((E a b u : Vs) : H) ≠ 0`. Rewrite using `[ne_eq, Submodule.coe_eq_zero]` and apply the resulting hypothesis.
+
+Conclude with `not_cdom (ε := ε) Λ hab (hdom _ _ hmem hne' hw3)`. Establish `hKle : kSpan ε E u ≤ S.comap Vs.subtype` using `sInf_le ⟨hvS, hS'⟩`. Establish `hKst : KStable ε E (kSpan ε E u)`. Introduce `a b hab x hx`. Simplify using `only [Formalism.REAL.kSpan, Submodule.mem_sInf] at hx ⊢`.
+
+Introduce `T hT`. Conclude with `hT.2 a b hab x (hx T hT)`. Establish `hum : u ∈ kSpan ε E u`. Simplify using `only [Formalism.REAL.kSpan, Submodule.mem_sInf]`. Introduce `T hT`.
+
+Conclude with `hT.1`. Use `haveI : FiniteDimensional ℂ (S.comap Vs.subtype) := (Submodule.comapSubtypeEquivOfLe hle).symm.finiteDimensional`. Establish `hfinK : FiniteDimensional ℂ (kSpan ε E u)` using `Submodule.finiteDimensional_of_le hKle`. Establish `hmapS : (kSpan ε E u).map Vs.subtype ≤ S` using `Submodule.map_le_iff_le_comap.2 hKle`. Establish `hKS2` using `kStableOn_map hσ hE S hKS hle (kSpan ε E u) hKst hmapS`.
+
+Use `⟨u, ?_, hhigh, ?_, hfinK⟩` and prove the remaining obligations. Introduce `h`. Apply `hv0` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Simplify `this` using `[u]`.
+
+Break down `hirr _ hmapS hKS2 with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hvm : v ∈ (kSpan ε E u).map Vs.subtype` using `⟨u, hum, rfl⟩`. Rewrite `hvm` using `[h, Submodule.mem_bot]`. Conclude with `hv0 hvm`.
+
+Conclude with `h`.
+-/
 theorem kType_generated_by_highest : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (Vs : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ Vs), IsURepOn (UJset ε) σ → ((∀ u, u ∈ Vs ↔ SmoothOnGV ε (fun g => σ g u)) ∧ GlRel E ∧ IsUnitary ε E ∧ (∀ X, inG ε X → ∀ u : Vs, HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X u) ((∑ a, ∑ b, X a b • E a b u : Vs) : H) 0) ∧ ∀ a b (u : Vs), ∀ g ∈ UJset ε, σ g (E a b u) = EabV ε a b (fun g => σ g u) g) → ∀ (Λ : Fin n → ℝ) (S : Submodule ℂ H), IsKTypeOf ε σ Λ S → S ≤ Vs → ∃ u : Vs, u ≠ 0 ∧ KHighest ε E Λ u ∧ (kSpan ε E u).map Vs.subtype = S ∧ FiniteDimensional ℂ (kSpan ε E u) := by
   intro n ε H _ _ _ σ Vs E hσ hc Λ S hS hle
   obtain ⟨_, hgl, _, hE, _⟩ := hc

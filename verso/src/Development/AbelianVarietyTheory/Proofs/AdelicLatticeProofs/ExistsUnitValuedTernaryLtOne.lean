@@ -11,6 +11,11 @@ namespace TernaryResidue
 
 open MvPolynomial in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NonzeroIsotropic.exists_nonzero_isotropic`. Consider the case `exact _root_.GlobalTheory.NonzeroIsotropic.exists_nonzero_isotropic`. Consider the case `(apply _root_.GlobalTheory.NonzeroIsotropic.exists_nonzero_isotropic <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NonzeroIsotropic.exists_nonzero_isotropic <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroIsotropic.exists_nonzero_isotropic <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroIsotropic.exists_nonzero_isotropic ..)`.
+-/
 theorem exists_ne_zero_sum_eq_zero {k : Type*} [Field k] [Finite k] (a : Fin 3 → Fin 3 → k) :
     ∃ x : Fin 3 → k, x ≠ 0 ∧ ∑ i, ∑ j, a i j * x i * x j = 0 := by
   first
@@ -23,6 +28,21 @@ theorem exists_ne_zero_sum_eq_zero {k : Type*} [Field k] [Finite k] (a : Fin 3 �
 
 end TernaryResidue
 
+/- English proof (translation)
+Use `choose r hr using fun i j => GlobalTheory.Idele.exists_valued_sub_le v (hc i j) 1`. Set `ι : 𝓞 F →+* v.adicCompletion F` to `(algebraMap F (v.adicCompletion F)).comp (algebraMap (𝓞 F) F)`. Establish `hι : ∀ y : 𝓞 F, Valued.v (ι y) = v.valuation F (algebraMap (𝓞 F) F y)` using `fun y => GlobalTheory.Idele.valued_algebraMap v _`. Establish `hle : ∀ y : 𝓞 F, Valued.v (ι y) ≤ 1` using `fun y => by`. Rewrite using `[hι]`.
+
+Conclude with `v.valuation_le_one y`. Establish `hlt : ∀ y : 𝓞 F, Valued.v (ι y) < 1 ↔ y ∈ v.asIdeal` using `fun y => by`. Rewrite using `[hι]`. Conclude with `v.valuation_lt_one_iff_mem y`. Establish `hr' : ∀ i j, Valued.v (c i j - ι (r i j)) < 1` using `fun i j => by`.
+
+Use `(hr i j).trans_lt ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field _`.
+
+Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Take `⟨x, hx0, hx⟩` from `TernaryResidue.exists_ne_zero_sum_eq_zero (k := 𝓞 F ⧸ v.asIdeal) fun i j => Ideal.Quotient.mk v.asIdeal (r i j)`. Use `choose y hy using fun i => Ideal.Quotient.mk_surjective (x i)`. Use `⟨fun i => ι (y i), fun i => hle _, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx0`.
+
+Use `⟨i, le_antisymm (hle _) (not_lt.1 fun h => hi ?_)⟩` and prove the remaining obligations. Rewrite using `[← hy i]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((hlt _).1 h)`. Establish `hmem : (∑ i, ∑ j, r i j * y i * y j) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← hx]`.
+
+Simplify using `only [map_sum, map_mul, hy]`. Establish `hsplit : ∑ i, ∑ j, c i j * ι (y i) * ι (y j) = ι (∑ i, ∑ j, r i j * y i * y j) + ∑ i, ∑ j, (c i j - ι (r i j)) * ι (y i) * ι (y j)`. Simplify using `only [map_sum, map_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsplit]`. Use `Valuation.map_add_lt _ ((hlt _).2 hmem) ?_` and prove the remaining obligations. Use `Valuation.map_sum_lt _ one_ne_zero fun i _ => Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `(mul_le_of_le_one_right' (hle _)).trans_lt ((mul_le_of_le_one_right' (hle _)).trans_lt (hr' i j))`.
+-/
 theorem exists_unit_valued_ternary_lt_one (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (c : Fin 3 → Fin 3 → v.adicCompletion F)
     (hc : ∀ i j, Valued.v (c i j) ≤ 1) :

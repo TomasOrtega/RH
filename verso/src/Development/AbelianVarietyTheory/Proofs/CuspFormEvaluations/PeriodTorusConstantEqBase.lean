@@ -25,10 +25,21 @@ open Classical in
 
 def dimPer (σ : E →+* ℂ) : ℕ := if σ ∈ X.Ψ then r - X.p0 else X.p0
 
+/- English proof (translation)
+Simplify using `[dimPer, h]`.
+-/
 theorem dimPer_mem {σ : E →+* ℂ} (h : σ ∈ X.Ψ) : dimPer X σ = r - X.p0 := by simp [dimPer, h]
 
+/- English proof (translation)
+Simplify using `[dimPer, h]`.
+-/
 theorem dimPer_not_mem {σ : E →+* ℂ} (h : σ ∉ X.Ψ) : dimPer X σ = X.p0 := by simp [dimPer, h]
 
+/- English proof (translation)
+Use `X.p0_le` as an intermediate fact. Distinguish the cases in `h : σ ∈ X.Ψ`. Rewrite using `[dimPer_mem X h, dimPer_not_mem X ((X.cmType σ).mp h)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dimPer_not_mem X h, dimPer_mem X (conj_mem X h)]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem dimPer_add (σ : E →+* ℂ) :
     dimPer X σ + dimPer X (ComplexEmbedding.conjugate σ) = r := by
   have := X.p0_le
@@ -36,6 +47,9 @@ theorem dimPer_add (σ : E →+* ℂ) :
   · rw [dimPer_mem X h, dimPer_not_mem X ((X.cmType σ).mp h)]; omega
   · rw [dimPer_not_mem X h, dimPer_mem X (conj_mem X h)]; omega
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_sigma, sum_emb_split X]`. Simplify using `[dimPer_add]`.
+-/
 theorem card_idx_dimPer : Fintype.card (Idx (dimPer X)) = X.Ψ.card * r := by
   rw [Fintype.card_sigma, sum_emb_split X]
   simp [dimPer_add]
@@ -48,18 +62,29 @@ def rowFn (i : Idx (dimPer X)) : X.Ψ × Fin r :=
   else (⟨ComplexEmbedding.conjugate i.1, conj_mem X h⟩, ⟨X.p0 - 1 - i.2.1, by
       have := lt_of_lt_of_eq i.2.2 (dimPer_not_mem X h); have := X.p0_le; omega⟩)
 
+/- English proof (translation)
+Unfold `rowFn`. Rewrite using `[dif_pos τ.2]`. Conclude with `Prod.ext rfl (Fin.ext ha.symm)`.
+-/
 theorem rowFn_mem (τ : X.Ψ) (i : Fin (dimPer X τ.1)) (a : Fin r) (ha : (a : ℕ) = X.p0 + i) :
     rowFn X ⟨τ.1, i⟩ = (τ, a) := by
   unfold rowFn
   rw [dif_pos τ.2]
   exact Prod.ext rfl (Fin.ext ha.symm)
 
+/- English proof (translation)
+Unfold `rowFn`. Rewrite using `[dif_neg ((X.cmType _).mp τ.2)]`. Conclude with `Prod.ext (Subtype.ext (conj_conj_X _)) (Fin.ext ha.symm)`.
+-/
 theorem rowFn_conj (τ : X.Ψ) (i : Fin (dimPer X (ComplexEmbedding.conjugate τ.1))) (a : Fin r)
     (ha : (a : ℕ) = X.p0 - 1 - i) : rowFn X ⟨ComplexEmbedding.conjugate τ.1, i⟩ = (τ, a) := by
   unfold rowFn
   rw [dif_neg ((X.cmType _).mp τ.2)]
   exact Prod.ext (Subtype.ext (conj_conj_X _)) (Fin.ext ha.symm)
 
+/- English proof (translation)
+Use `(Fintype.bijective_iff_surjective_and_card _).2 ⟨?_, by rw [card_idx_dimPer]; simp⟩` and prove the remaining obligations. Introduce and unpack `⟨τ, a⟩`. Use `a.2` as an intermediate fact. Distinguish the cases in `h : (a : ℕ) < X.p0`. Conclude with `⟨_, rowFn_conj X τ ⟨X.p0 - 1 - a, by`.
+
+Rewrite using `[dimPer_not_mem X ((X.cmType _).mp τ.2)]; omega⟩ a (by simp only; omega)⟩`. Conclude with `⟨_, rowFn_mem X τ ⟨a - X.p0, by rw [dimPer_mem X τ.2]; omega⟩ a (by simp only; omega)⟩`.
+-/
 theorem rowFn_bijective : Function.Bijective (rowFn X) := by
   refine (Fintype.bijective_iff_surjective_and_card _).2 ⟨?_, by rw [card_idx_dimPer]; simp⟩
   rintro ⟨τ, a⟩
@@ -71,8 +96,14 @@ theorem rowFn_bijective : Function.Bijective (rowFn X) := by
 
 def rowEquiv : Idx (dimPer X) ≃ X.Ψ × Fin r := Equiv.ofBijective _ (rowFn_bijective X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowEquiv_apply (i : Idx (dimPer X)) : rowEquiv X i = rowFn X i := rfl
 
+/- English proof (translation)
+Rewrite using `[rowEquiv_apply, rowFn]`. Use `split_ifs with h`. Conclude with `rowType_of_le X _ (Nat.le_add_right _ _)`. Use `lt_of_lt_of_eq i.2.2 (dimPer_not_mem X h)` as an intermediate fact. Rewrite using `[rowType_of_lt X _ (by simp only; omega), conj_conj_X]`.
+-/
 theorem rowType_rowEquiv (i : Idx (dimPer X)) : rowType X (rowEquiv X i) = i.1 := by
   rw [rowEquiv_apply, rowFn]
   split_ifs with h
@@ -102,6 +133,9 @@ def scaledR (x : Frame X.Ψ r) : (X.Ψ → Fin r → ℂ) →ₗ[ℝ] Vsp (dimPe
       exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
     · rw [mulVec_smul, Pi.smul_apply, Complex.real_smul]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scaledR_apply (x : Frame X.Ψ r) (y : X.Ψ → Fin r → ℂ) (i : Idx (dimPer X)) :
     scaledR X x y i = (Real.sqrt (X.c (rowEquiv X i).1) : ℂ) * perR X x y (rowEquiv X i) := rfl
 
@@ -110,9 +144,15 @@ def scaled (x : Frame X.Ψ r) : (Fin r → E) →+ Vsp (dimPer X) where
   map_zero' := by rw [← map_zero (scaledR X x)]; congr 1; ext τ a; simp [Data.emb]
   map_add' u v := by rw [← map_add (scaledR X x)]; congr 1; ext τ a; simp [Data.emb]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scaled_apply (x : Frame X.Ψ r) (v : Fin r → E) (i : Idx (dimPer X)) :
     scaled X x v i = (Real.sqrt (X.c (rowEquiv X i).1) : ℂ) * per X x v (rowEquiv X i) := rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Express the relevant statement in the definitionally equal form `_ = i.1 (α : E) * scaled X x v i`. Rewrite using `[scaled_apply, scaled_apply, per_smul, rowType_rowEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scaled_smul (x : Frame X.Ψ r) (α : 𝓞 E) (v : Fin r → E) :
     scaled X x ((α : E) • v) = act α (scaled X x v) := by
   ext i
@@ -120,6 +160,11 @@ theorem scaled_smul (x : Frame X.Ψ r) (α : 𝓞 E) (v : Fin r → E) :
   rw [scaled_apply, scaled_apply, per_smul, rowType_rowEquiv]
   ring
 
+/- English proof (translation)
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Hf, ← Fintype.sum_prod_type' fun τ a => (X.c τ : ℂ) * (perR X x y (τ, a) * conj (perR X x y' (τ, a)))]`. Use `Fintype.sum_equiv (rowEquiv X) _ _ fun i => ?_` and prove the remaining obligations. Establish `h : (Real.sqrt (X.c (rowEquiv X i).1) : ℂ) * Real.sqrt (X.c (rowEquiv X i).1) = X.c (rowEquiv X i).1`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (c_pos X _).le]`.
+
+Rewrite using `[scaledR_apply, scaledR_apply, map_mul, Complex.conj_ofReal, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_scaledR (x : Frame X.Ψ r) (y y' : X.Ψ → Fin r → ℂ) :
     Hf (scaledR X x y) (scaledR X x y') =
       ∑ τ : X.Ψ, (X.c τ : ℂ) * ∑ a, perR X x y (τ, a) * conj (perR X x y' (τ, a)) := by
@@ -140,12 +185,18 @@ variable {X} {x : Frame X.Ψ r}
     Matrix.diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))
 include hx
 
+/- English proof (translation)
+Use `congrFun (congrFun (hx τ) a) b` as an intermediate fact. Rewrite `this` using `[diagonal_apply]`. Then use the resulting hypothesis.
+-/
 theorem col_orth (τ : X.Ψ) (a b : Fin r) :
     hermC τ.1 X.Gm (FD.col (mat x τ) a) (FD.col (mat x τ) b) =
       if a = b then ((sgn X.p0 a : ℝ) : ℂ) else 0 := by
   have := congrFun (congrFun (hx τ) a) b
   rwa [diagonal_apply] at this
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Matrix.det (hx τ)`. Rewrite `h1` using `[UnitFrame.gram_eq, det_mul, det_transpose, h, zero_mul, det_diagonal]`. Use `Finset.prod_ne_zero_iff.mpr (fun a _ => ?_) h1.symm` and prove the remaining obligations. Apply the tactic sequence `unfold FD.sgn; split_ifs <;> simp`.
+-/
 theorem det_ne_zero (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   intro h
   have h1 := congrArg Matrix.det (hx τ)
@@ -153,6 +204,9 @@ theorem det_ne_zero (τ : X.Ψ) : (mat x τ).det ≠ 0 := by
   refine Finset.prod_ne_zero_iff.mpr (fun a _ => ?_) h1.symm
   unfold FD.sgn; split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `τ` and use `by refine ⟨det_ne_zero hx τ, fun i => ?_⟩ rw [dmin, lminor, hx, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal] have h : ∏ a : Fin i, ((fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) ∘ Fin.castLE (Nat.le_of_lt_succ i.isLt)) a = ((psgn X.p0 i : ℝ) : ℂ) := by rw [psg …`.
+-/
 theorem mem_dom : x ∈ X.dom := fun τ => by
   refine ⟨det_ne_zero hx τ, fun i => ?_⟩
   rw [dmin, lminor, hx, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal]
@@ -164,6 +218,13 @@ theorem mem_dom : x ∈ X.dom := fun τ => by
   refine mul_self_pos.2 (Finset.prod_ne_zero_iff.mpr fun a _ => ?_)
   unfold FD.sgn; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `perR`. Use `split_ifs with h`. Rewrite using `[← hermC_conj τ.1 X.Gm_herm, Complex.norm_conj]`. Establish `hu : mat x τ *ᵥ ((mat x τ)⁻¹ *ᵥ y τ) = y τ`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ (det_ne_zero hx τ).isUnit, one_mulVec]`.
+
+Establish `hcol : FD.col (mat x τ) a = mat x τ *ᵥ Pi.single a 1`. Use extensionality with `k`. Simplify using `[FD.col]`. Use `conv_rhs => rw [hcol, ← hu]`. Rewrite using `[UnitFrame.hermC_mulVec, hx]`.
+
+Simplify using `only at h`. Simplify using `[dotProduct, mulVec_diagonal, FD.sgn, h, Pi.single_apply, apply_ite]`.
+-/
 theorem norm_perR (y : X.Ψ → Fin r → ℂ) (τ : X.Ψ) (a : Fin r) :
     ‖perR X x y (τ, a)‖ = ‖hermC τ.1 X.Gm (y τ) (FD.col (mat x τ) a)‖ := by
   unfold perR
@@ -178,6 +239,9 @@ theorem norm_perR (y : X.Ψ → Fin r → ℂ) (τ : X.Ψ) (a : Fin r) :
     simp only at h
     simp [dotProduct, mulVec_diagonal, FD.sgn, h, Pi.single_apply, apply_ite]
 
+/- English proof (translation)
+Establish `hmaj (τ : X.Ψ)` using `TorusAtDataPf.maj_eq_sum X τ _ (col_orth hx τ) x rfl ((TorusAtDataPf.e_linInd X τ _ (col_orth hx τ)).comp _ (Fin.castLE_injective X.p0_le)) (y τ)`. Simplify using `only [hmaj, Finset.mul_sum, ← norm_perR hx]`. Rewrite using `[EuclideanSpace.norm_sq_eq, ← Fintype.sum_prod_type' fun τ a => X.c τ * ‖perR X x y (τ, a)‖ ^ 2]`. Use `Fintype.sum_equiv (rowEquiv X) _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[scaledR_apply, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (c_pos X _).le]`.
+-/
 theorem norm_sq_scaledR (y : X.Ψ → Fin r → ℂ) :
     ‖scaledR X x y‖ ^ 2 = ∑ τ : X.Ψ, X.c τ * X.maj x τ (y τ) := by
   have hmaj (τ : X.Ψ) := TorusAtDataPf.maj_eq_sum X τ _ (col_orth hx τ) x rfl
@@ -189,6 +253,13 @@ theorem norm_sq_scaledR (y : X.Ψ → Fin r → ℂ) :
   rw [scaledR_apply, norm_mul, mul_pow, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _),
     Real.sq_sqrt (c_pos X _).le]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Use function extensionality and compare the values at `τ`. Assume the negation of the conclusion as `h`. Establish `h1` using `norm_sq_scaledR hx y`.
+
+Rewrite `h1` using `[hy, norm_zero]`. Establish `h2 : 0 < ∑ τ : X.Ψ, X.c τ * X.maj x τ (y τ)`. Use `Finset.sum_pos' (fun σ _ => mul_nonneg (c_pos X σ).le ?_) ⟨τ, Finset.mem_univ _, mul_pos (c_pos X τ) (X.maj_pos (mem_dom hx) τ h)⟩` and prove the remaining obligations. Break down `eq_or_ne (y σ) 0 with h0 | h0` into its components or cases. Simplify using `[h0, Data.maj, Data.posPart, hermC]`.
+
+Conclude with `(X.maj_pos (mem_dom hx) σ h0).le`. Rewrite `h2` using `[← h1]`. Simplify using `at h2`.
+-/
 theorem scaledR_injective : Function.Injective (scaledR X x) := by
   rw [injective_iff_map_eq_zero]
   intro y hy
@@ -212,6 +283,13 @@ def scaledEquiv : (X.Ψ → Fin r → ℂ) ≃ₗ[ℝ] Vsp (dimPer X) :=
       Finset.card_univ, card_idx_dimPer, smul_eq_mul, Fintype.card_coe, Fintype.card_fin]
     ring)
 
+/- English proof (translation)
+Take `⟨b₀, hb₀⟩` from `CMLattice.exists_basis_lattice E r X`. Use `⟨(b₀.map (scaledEquiv hx)).reindex (finCongr (by rw [card_idx_dimPer])), fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.span ℤ (Set.range (b₀.map (scaledEquiv hx))) = (Submodule.span ℤ (Set.range b₀)).map ((scaledR X x).restrictScalars ℤ)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[lat, Module.Basis.range_reindex, h1, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨v, hv, rfl⟩` from `(hb₀ z).1 hz`. Conclude with `⟨v, hv, rfl⟩`.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨_, (hb₀ _).2 ⟨v, hv, rfl⟩, rfl⟩`.
+-/
 theorem exists_basis : ∃ b : Module.Basis (Fin (2 * Fintype.card (Idx (dimPer X)))) ℝ
     (Vsp (dimPer X)), ∀ y, y ∈ lat b ↔ ∃ v ∈ X.Λ, scaled X x v = y := by
   obtain ⟨b₀, hb₀⟩ := CMLattice.exists_basis_lattice E r X
@@ -228,6 +306,15 @@ theorem exists_basis : ∃ b : Module.Basis (Fin (2 * Fintype.card (Idx (dimPer 
   · rintro ⟨v, hv, rfl⟩
     exact ⟨_, (hb₀ _).2 ⟨v, hv, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Hf (scaledR X x _) (scaledR X x _)).im = _`. Rewrite using `[Hf_scaledR, EF_def, UnitFrame.trace_eq_sum_re X.Ψ X.cmType, Complex.im_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h` using `UnitFrame.im_sum_periods X.p0 τ.1 X.Gm (mat x τ) (hx τ) (Data.emb τ.1 u) (Data.emb τ.1 v)`. Rewrite using `[Complex.im_ofReal_mul]`.
+
+Use `(congrArg _ h).trans ?_` and prove the remaining obligations. Establish `h0` using `re_map_xi_eq_zero X τ.1`. Establish `hs` using `X.κ0_sign τ`. Rewrite using `[hermC_emb_eq_map_herm, c_eq_two_mul_abs_im, map_mul, Complex.mul_re]`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] at hs ⊢ <;>`.
+
+Simplify using `only [map_neg, map_mul, map_div₀, map_ofNat] at hs ⊢`. Establish `: (τ.1 X.ξ0).im < 0` using `by simp at hs; linarith`. Rewrite using `[abs_of_neg this]`. Simplify using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: 0 < (τ.1 X.ξ0).im` using `by simp at hs; linarith`. Rewrite using `[abs_of_pos this]`. Simplify using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_Hf_scaled (u v : Fin r → E) :
     (Hf (scaled X x u) (scaled X x v)).im = EF X u v := by
   change (Hf (scaledR X x _) (scaledR X x _)).im = _
@@ -258,14 +345,25 @@ variable {Y : DataX E r} {x : Frame Y.Ψ r}
 def basis : Module.Basis (Fin (2 * Fintype.card (Idx (dimPer Y.toData)))) ℝ
     (Vsp (dimPer Y.toData)) := (exists_basis hx).choose
 
+/- English proof (translation)
+The claim follows from `(exists_basis hx).choose_spec y`.
+-/
 theorem mem_lat_basis (y : Vsp (dimPer Y.toData)) :
     y ∈ lat (basis hx) ↔ ∃ v ∈ Y.Λ, scaled Y.toData x v = y := (exists_basis hx).choose_spec y
 
+/- English proof (translation)
+Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx y).1 hy`. Conclude with `(mem_lat_basis hx _).2 ⟨(α : E) • v, Y.Λ.smul_mem α hv, scaled_smul _ x α v⟩`.
+-/
 theorem stable (α : 𝓞 E) (y : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis hx)) :
     act α y ∈ lat (basis hx) := by
   obtain ⟨v, hv, rfl⟩ := (mem_lat_basis hx y).1 hy
   exact (mem_lat_basis hx _).2 ⟨(α : E) • v, Y.Λ.smul_mem α hv, scaled_smul _ x α v⟩
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `(mem_lat_basis hx y).1 hy`. Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx z).1 hz`. Take `⟨k, hk⟩` from `Y.EF_int u hu v hv`. Rewrite using `[im_Hf_scaled hx]`. Break down `EF_eq_or Y.toData with h | h` into its components or cases.
+
+Conclude with `⟨k, by rw [h, hk, Rat.cast_intCast]⟩`. Conclude with `⟨-k, by rw [h, hk]; simp⟩`.
+-/
 theorem integral (y z : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis hx))
     (hz : z ∈ lat (basis hx)) : ∃ k : ℤ, (Hf y z).im = k := by
   obtain ⟨u, hu, rfl⟩ := (mem_lat_basis hx y).1 hy
@@ -276,6 +374,13 @@ theorem integral (y z : Vsp (dimPer Y.toData)) (hy : y ∈ lat (basis hx))
   · exact ⟨k, by rw [h, hk, Rat.cast_intCast]⟩
   · exact ⟨-k, by rw [h, hk]; simp⟩
 
+/- English proof (translation)
+Set `j : Y.Λ →+ lat (basis hx)` to `{ toFun := fun v => ⟨scaled Y.toData x v, (mem_lat_basis hx _).2 ⟨v, v.2, rfl⟩⟩ map_zero' := by ext1; simp map_add' := fun u v => by ext1; simp }`. Take `⟨u, hu, hψ⟩` from `Y.EF_perf (ψ.comp j)`. Establish `hu' : scaled Y.toData x u ∈ lat (basis hx)` using `(mem_lat_basis hx _).2 ⟨u, hu, rfl⟩`. Break down `EF_eq_or Y.toData with h | h` into its components or cases. Use `⟨_, hu', ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨z, hz⟩`. Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx z).1 hz`. Rewrite using `[im_Hf_scaled hx, h, ← hψ ⟨v, hv⟩, Rat.cast_intCast]`. Both sides reduce to the same expression. Use `⟨_, neg_mem hu', ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨z, hz⟩`. Take `⟨v, hv, rfl⟩` from `(mem_lat_basis hx z).1 hz`. Rewrite using `[im_Hf_neg_left, im_Hf_scaled hx, h, ← hψ ⟨v, hv⟩, Rat.cast_neg, neg_neg, Rat.cast_intCast]`. Both sides reduce to the same expression.
+-/
 theorem perfect (ψ : lat (basis hx) →+ ℤ) : ∃ y ∈ lat (basis hx), ∀ z : lat (basis hx),
     (ψ z : ℝ) = (Hf y (z : Vsp (dimPer Y.toData))).im := by
   let j : Y.Λ →+ lat (basis hx) :=
@@ -299,10 +404,20 @@ theorem perfect (ψ : lat (basis hx) →+ ℤ) : ∃ y ∈ lat (basis hx), ∀ z
 variable {w₀ : 𝓞 E} (hw : (w₀ : E) + cc (w₀ : E) = 1)
 
 include hw in
+/- English proof (translation)
+Rewrite using `[← sub_eq_iff_eq_add'.2 hw.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem coe_one_sub : ((1 - w₀ : 𝓞 E) : E) = cc (w₀ : E) := by
   rw [← sub_eq_iff_eq_add'.2 hw.symm]
   simp
 
+/- English proof (translation)
+Introduce `y hy z hz`. Take `⟨k, hk⟩` from `integral hx y _ hy (stable hx (1 - w₀) z hz)`. Establish `h : z = act w₀ z + act (1 - w₀) z`. Use extensionality with `i`. Simplify using `[act]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨-k, ?_⟩` and prove the remaining obligations. Establish `h2` using `im_Hf_add_right y (act w₀ z) (act (1 - w₀) z)`. Rewrite `h2` using `[← h]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem even_im_hermitian_sub : ∀ y ∈ lat (basis hx), ∀ z ∈ lat (basis hx), ∃ k : ℤ,
     (Hf y (act w₀ z)).im - (Hf y (act (1 - w₀) z)).im - (Hf y z).im = 2 * k := by
   intro y hy z hz

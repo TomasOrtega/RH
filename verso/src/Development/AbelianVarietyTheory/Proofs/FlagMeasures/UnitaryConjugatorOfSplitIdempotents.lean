@@ -6,6 +6,37 @@ namespace GlobalTheory
 
 open ReciprocityTheory.Aut
 
+/- English proof (translation)
+Introduce `R _ σ hσ m n ι _ ε hidem hself hcross Z P Z' P' hZZ' hZ'Z hPP' hP'P`. Take `⟨e, he⟩ : ∃ e : R, e = ∑ j, ε j` from `⟨_, rfl⟩`. Establish `hje : ∀ j, ε j * e = ε j`. Introduce `j`. Rewrite using `[he, Finset.mul_sum, Finset.sum_eq_single j (fun k _ hk => (hcross j k (Ne.symm hk)).1) (fun h => absurd (Finset.mem_univ j) h), hidem]`.
+
+Establish `hjse : ∀ j, ε j * σ e = 0`. Introduce `j`. Rewrite using `[he, map_sum, Finset.mul_sum]`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hk : j = k`.
+
+Substitute `hk` using the available equality. Conclude with `hself j`. Conclude with `(hcross j k hk).2`. Establish `hee : e * e = e` using `by nth_rewrite 1 [he]`. Rewrite using `[Finset.sum_mul]`.
+
+Simplify using `only [hje]`. Conclude with `he.symm`. Establish `hese : e * σ e = 0` using `by nth_rewrite 1 [he]`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero (fun j _ => hjse j)`.
+
+Take `⟨e', he'⟩ : ∃ e' : R, e' = σ e` from `⟨_, rfl⟩`. Rewrite `hese`, `hjse` using `[← he']`. Establish `he'e' : e' * e' = e'` using `by rw [he', ← map_mul, hee]`. Establish `he'e : e' * e = 0` using `by rw [mul_comm, hese]`. Establish `hσe' : σ e' = e` using `by rw [he', hσ]`.
+
+Take `⟨f, hf⟩ : ∃ f : R, f = 1 - e - e'` from `⟨_, rfl⟩`. Establish `hσf : σ f = f` using `by rw [hf, map_sub, map_sub, map_one, hσe', ← he']; ring`. Establish `hfe : f * e = 0` using `by rw [hf]; linear_combination -hee - he'e`. Establish `hfe' : f * e' = 0` using `by rw [hf]; linear_combination -hese - he'e'`. Establish `hff : f * f = f` using `by rw [hf]; linear_combination hee + he'e' + 2 * hese`.
+
+Establish `hef : e * f = 0` using `by rw [mul_comm, hfe]`. Establish `he'f : e' * f = 0` using `by rw [mul_comm, hfe']`. Establish `hee'' : e * e' = 0` using `hese`. Establish `hsum : f + e + e' = 1` using `by rw [hf]; ring`. Establish `cadd : ∀ A B : Matrix (Fin n) (Fin n) R, conjT σ (A + B) = conjT σ A + conjT σ B`.
+
+Introduce `A B`. Use extensionality with `i j`. Simplify using `[conjT]`. Establish `csmul : ∀ (a : R) (A : Matrix (Fin n) (Fin n) R), conjT σ (a • A) = σ a • conjT σ A`. Introduce `a A`.
+
+Use extensionality with `i j`. Simplify using `[conjT]`. Use `set X : Matrix (Fin n) (Fin n) R := Z' * P with hX`. Use `set Y : Matrix (Fin n) (Fin n) R := conjT σ (P' * Z) with hY`. Use `set c : Matrix (Fin n) (Fin n) R := f • (1 : Matrix (Fin n) (Fin n) R) + e • X + e' • Y with hc`.
+
+Establish `hcT : conjT σ c = f • (1 : Matrix (Fin n) (Fin n) R) + e' • conjT σ X + e • (P' * Z)`. Rewrite using `[hc, cadd, cadd, csmul, csmul, csmul, conjT_one, hσf, hY, conjT_conjT σ hσ, hσe', ← he']`. Establish `hXY : X * conjT σ Y = 1`. Rewrite using `[hY, conjT_conjT σ hσ, hX, Matrix.mul_assoc, ← Matrix.mul_assoc P, hPP', Matrix.one_mul, hZ'Z]`. Establish `hYX : Y * conjT σ X = 1`.
+
+Rewrite using `[hY, ← conjT_mul, ← hXY, hY, conjT_conjT σ hσ]`. Rewrite using `[hX, Matrix.mul_assoc, ← Matrix.mul_assoc P, hPP', Matrix.one_mul, hZ'Z, conjT_one]`. Establish `hcc : c * conjT σ c = 1`. Rewrite using `[hcT, hc]`. Establish `hYeq : P' * Z = conjT σ Y` using `by rw [hY, conjT_conjT σ hσ]`.
+
+Rewrite using `[hYeq]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hff, hfe, hfe', hef, he'f, hee, hee'', he'e, he'e', zero_smul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hXY, hYX, smul_add]`. Use `conv_rhs => rw [← one_smul R (1 : Matrix (Fin n) (Fin n) R), ← hsum]`. Simplify using `only [add_smul]`. Normalize the expressions using the abelian group laws.
+
+Establish `hcc' : conjT σ c * c = 1` using `mul_eq_one_comm.mp hcc`. Use `⟨⟨c, conjT σ c, hcc, hcc'⟩, hcc, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show ε j • (Z * c) = ε j • P`. Establish `hjf : ε j * f = 0`. Rewrite using `[hf]`.
+
+Take the linear combination `-hje j - hjse j`. Rewrite using `[hc, Matrix.mul_add, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, smul_add, smul_add, smul_smul, smul_smul, smul_smul, hjf, hje, hjse, zero_smul, zero_smul, zero_add, add_zero, hX, ← Matrix.mul_assoc, hZZ', Matrix.one_mul]`. Use `show ε j • (conjT σ c * Z') = ε j • P'`. Establish `hjf : ε j * f = 0`. Rewrite using `[hf]`.
+
+Take the linear combination `-hje j - hjse j`. Rewrite using `[hcT, Matrix.add_mul, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.smul_mul, smul_add, smul_add, smul_smul, smul_smul, smul_smul, hjf, hje, hjse, zero_smul, zero_smul, zero_add, zero_add, Matrix.mul_assoc, hZZ', Matrix.mul_one]`.
+-/
 theorem unitary_conjugator_of_split_idempotents :
   ∀ (R : Type) [CommRing R] (σ : R →+* R), (∀ a, σ (σ a) = a) → ∀ (m n : ℕ) (ι : Type) [Fintype ι] (ε : ι → R), (∀ j, ε j * ε j = ε j) → (∀ j, ε j * σ (ε j) = 0) → (∀ j k, j ≠ k → ε j * ε k = 0 ∧ ε j * σ (ε k) = 0) → ∀ (Z P : Matrix (Fin m) (Fin n) R) (Z' P' : Matrix (Fin n) (Fin m) R), Z * Z' = 1 → Z' * Z = 1 → P * P' = 1 → P' * P = 1 → ∃ c : GL (Fin n) R, (c : Matrix (Fin n) (Fin n) R) * ReciprocityTheory.Aut.conjT σ (c : Matrix (Fin n) (Fin n) R) = 1 ∧ ∀ j, ε j • (Z * (c : Matrix (Fin n) (Fin n) R)) = ε j • P ∧ ε j • (((c⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * Z') = ε j • P' := by
   intro R _ σ hσ m n ι _ ε hidem hself hcross Z P Z' P' hZZ' hZ'Z hPP' hP'P

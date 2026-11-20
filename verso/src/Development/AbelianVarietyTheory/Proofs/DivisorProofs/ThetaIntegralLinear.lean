@@ -20,6 +20,17 @@ noncomputable section
 
 namespace GlobalTheory.ThKLinSo
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT Φ hΦ Ψ hΨ c`. Establish `hdec` using `(GlobalTheory.T.theta_kernel_decay hKP F E σ B a a' G X om om' hT).2`. Establish `pres : ∀ x, ∀ Φ ∈ schA F (Fin a' × Fin (a + a')), om' x Φ ∈ schA F (Fin a' × Fin (a + a'))` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hT.weil').pres x Φ hΦ`. Establish `hSo : G.M'.So B.ψ B.τ₁ ≤ schA F (Fin a' × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, φ, hSB, hev, -, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hΦS` using `hSo hΦ`. Establish `hΨS` using `hSo hΨ`. Establish `hcΦS : c • Φ ∈ schA F (Fin a' × Fin (a + a'))` using `Submodule.smul_mem _ c hΦS`.
+
+Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om' (c • Φ + Ψ) g h = c * theta om' Φ g h + theta om' Ψ g h` using `fun g => by`. Establish `e1 : theta om' (c • Φ + Ψ) g h = theta om' (c • Φ) g h + theta om' Ψ g h`. Simplify using `only [theta, map_add]`. Conclude with `GlobalTheory.WeilM.thetaSum_add F (pres _ (c • Φ) hcΦS) (pres _ Ψ hΨS)`.
+
+Establish `e2 : theta om' (c • Φ) g h = c * theta om' Φ g h`. Simplify using `only [theta, map_smul]`. Conclude with `GlobalTheory.WeilM.thetaSum_smul F c _`. Rewrite using `[e1, e2]`. Establish `iΦ` using `(hdec Φ hΦ).2.1 h`.
+
+Establish `iΨ` using `(hdec Ψ hΨ).2.1 h`. Simplify using `only [Model.I, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (fun g => theta om' (c • Φ + Ψ) g h) = fun g => c * theta om' Φ g h + theta om' Ψ g h from funext e, integral_add (iΦ.const_mul c) iΨ, integral_const_mul]`.
+-/
 theorem thetaIntegral_linear_So : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ Φ₁ ∈ G.M'.So B.ψ B.τ₁, ∀ Φ₂ ∈ G.M'.So B.ψ B.τ₁, ∀ c : ℂ, G.M'.I om' (c • Φ₁ + Φ₂) = c • G.M'.I om' Φ₁ + G.M'.I om' Φ₂ := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT Φ hΦ Ψ hΨ c
   have hdec := (GlobalTheory.T.theta_kernel_decay hKP F E σ B a a' G X om om' hT).2

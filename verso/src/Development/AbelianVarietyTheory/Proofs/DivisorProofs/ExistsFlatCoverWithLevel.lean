@@ -6,6 +6,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RealMult.exists_faithfullyFlat_level_of GlobalTheory.RealMult.torsion_free_rank_two`.
+-/
 theorem GlobalTheory.RealMult.exists_faithfullyFlat_level :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (N : ℕ), 1 ≤ N →
       ∀ (R : Type) [CommRing R], IsUnit (N : R) → ∀ X : Obj F 𝔠 (Sp R),

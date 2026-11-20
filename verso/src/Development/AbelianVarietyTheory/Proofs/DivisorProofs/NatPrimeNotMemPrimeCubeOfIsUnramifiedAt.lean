@@ -9,6 +9,13 @@ open scoped IntermediateField BigOperators Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hY : Y ∈ P` using `hP.mem_of_pow_mem 2 (Ideal.pow_le_self (by norm_num) h)`. Establish `hprime : Prime P` using `Ideal.prime_of_isPrime hP0 hP`. Establish `hdvd : P ∣ Ideal.span {Y}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hY)`. Take `⟨J, hJ⟩` from `hdvd`. Establish `h2 : P ^ 3 ∣ Ideal.span {Y} ^ 2`.
+
+Rewrite using `[Ideal.span_singleton_pow]`. Conclude with `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr h)`. Rewrite `h2` using `[hJ, mul_pow, show P ^ 3 = P ^ 2 * P by ring]`. Establish `hP2 : P ^ 2 ≠ 0` using `pow_ne_zero _ hP0`. Establish `h3 : P ∣ J ^ 2` using `(mul_dvd_mul_iff_left hP2).mp h2`.
+
+Establish `h4 : P ∣ J` using `hprime.dvd_of_dvd_pow h3`. Establish `h5 : P ^ 2 ∣ Ideal.span {Y}`. Rewrite using `[hJ, sq]`. Conclude with `mul_dvd_mul_left P h4`. Conclude with `(Ideal.span_singleton_le_iff_mem _).mp (Ideal.le_of_dvd h5)`.
+-/
 theorem mem_prime_sq_of_sq_mem_prime_cube {A : Type} [CommRing A] [IsDedekindDomain A]
     (P : Ideal A) [hP : P.IsPrime] (hP0 : P ≠ ⊥) (Y : A) (h : Y ^ 2 ∈ P ^ 3) : Y ∈ P ^ 2 := by
   have hY : Y ∈ P := hP.mem_of_pow_mem 2 (Ideal.pow_le_self (by norm_num) h)
@@ -26,6 +33,25 @@ theorem mem_prime_sq_of_sq_mem_prime_cube {A : Type} [CommRing A] [IsDedekindDom
     rw [hJ, sq]; exact mul_dvd_mul_left P h4
   exact (Ideal.span_singleton_le_iff_mem _).mp (Ideal.le_of_dvd h5)
 
+/- English proof (translation)
+Introduce `p K H _ _ _ _ _ x P _ hp hK hx hP hunr hpP`. Establish `hint : IsIntegral ℤ x`. Use `⟨Polynomial.X ^ 2 + Polynomial.C (p : ℤ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_add_C _ (by norm_num)`. Simplify using `[hx]`.
+
+Use `set y : 𝓞 K := ⟨x, hint⟩ with hydef`. Establish `hy : y ^ 2 = -(p : 𝓞 K)`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_neg, map_natCast]`. Conclude with `hx`.
+
+Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `hy` using `[h0]`. Establish `: ((p : 𝓞 K)) = 0` using `by simpa using hy.symm`. Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+
+Establish `hprime : (Ideal.span {y}).IsPrime` using `GlobalTheory.T.isPrime_span_of_sq_eq_neg_prime_quadratic p K y hp hK hy`. Use `set Y : 𝓞 H := algebraMap (𝓞 K) (𝓞 H) y with hYdef`. Establish `hpY : (p : 𝓞 H) = -(Y ^ 2)`. Rewrite using `[hYdef, ← map_pow, hy, map_neg, map_natCast, neg_neg]`. Establish `hY2 : Y ^ 2 ∈ P ^ 3`.
+
+Use `(P ^ 3).neg_mem_iff.mpr hpP` as an intermediate fact. Rewrite `this` using `[hpY, neg_neg]`. Then use the resulting hypothesis. Establish `hYP2 : Y ∈ P ^ 2` using `mem_prime_sq_of_sq_mem_prime_cube P hP Y hY2`. Establish `hYP : Y ∈ P` using `Ideal.pow_le_self (by norm_num) hYP2`. Establish `hyU : y ∈ P.under (𝓞 K)`.
+
+Rewrite using `[Ideal.under_def, Ideal.mem_comap]`. Conclude with `hYP`. Establish `hU0 : P.under (𝓞 K) ≠ ⊥`. Introduce `h`. Rewrite `hyU` using `[h, Ideal.mem_bot]`.
+
+Conclude with `hy0 hyU`. Establish `hspan : Ideal.span {y} = P.under (𝓞 K)`. Establish `hmax : (Ideal.span {y}).IsMaximal` using `hprime.isMaximal (by simpa [Ideal.span_singleton_eq_bot] using hy0)`. Conclude with `hmax.eq_of_le (Ideal.IsPrime.ne_top inferInstance) ((Ideal.span_singleton_le_iff_mem _).mpr hyU)`. Establish `he : P.ramificationIdx (𝓞 K) = 1` using `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`.
+
+Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (P.under (𝓞 K)) P hU0]`. Establish `hle : Ideal.map (algebraMap (𝓞 K) (𝓞 H)) (P.under (𝓞 K)) ≤ P` using `Ideal.map_comap_le`. Establish `hne` using `(Ideal.ramificationIdx'_ne_one_iff hle).not`. Apply `hne.mp (not_not.mpr he)` to reduce the goal to its premises. Rewrite using `[← hspan, Ideal.map_span, Set.image_singleton]`.
+
+Conclude with `(Ideal.span_singleton_le_iff_mem _).mpr hYP2`.
+-/
 theorem natPrime_not_mem_cube_of_isUnramifiedAt :
     ∀ (p : ℕ) (K H : Type) [Field K] [NumberField K] [Field H] [NumberField H] [Algebra K H] (x : K) (P : Ideal (𝓞 H)) [P.IsPrime], p.Prime → Module.finrank ℚ K = 2 → x ^ 2 = -(p : K) → P ≠ ⊥ → Algebra.IsUnramifiedAt (𝓞 K) P → (p : 𝓞 H) ∉ P ^ 3 := by
   intro p K H _ _ _ _ _ x P _ hp hK hx hP hunr hpP

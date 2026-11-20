@@ -16,6 +16,15 @@ namespace GlobalTheory.ConstFam
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR
 open GlobalTheory.FieldBaseChange
 
+/- English proof (translation)
+Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+
+Take `⟨a, ha⟩` from `hp (res le (t.s PEmpty.elim)).val`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J → (val u r z J).val = gs (r ≫ p) z ⊤ a * (val u' r z J).val`. Introduce `Z r z J hJ`. Rewrite using `[← Units.mul_inv_eq_iff_eq_mul, ← Units.val_mul, ← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a)))`.
+
+Establish `a1 : a = c` using `fn_ext fun y _ => by`. Take `⟨I, hI⟩` from `exists_good' hM y`. Use `key _ e y I hI` as an intermediate fact. Rewrite `this` using `[h y I hI, he]`. Conclude with `((Units.mul_left_inj _).1 this).symm`.
+
+Rewrite using `[← a1]`. Conclude with `key Z r z J hJ`.
+-/
 theorem gen_unique_scal {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _) (hp : Function.Surjective p.appTop.hom)
     {u u' : LB.Gen (LB.LinComb M φ ε)} (hu : u.IsGen) (hu' : u'.IsGen) (c : Γ(S₀, ⊤))
@@ -42,15 +51,24 @@ theorem gen_unique_scal {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K : Ty
     exact ((Units.mul_left_inj _).1 this).symm
   rw [← a1]; exact key Z r z J hJ
 
+/- English proof (translation)
+Rewrite using `[← gs_pull σ r z U h, gs_stalkMap σ z _ h, gs_pull (𝟙 _) r (σ z) U h, Category.id_comp]`.
+-/
 theorem gs_comp_stalkMap {X Y Z : Scheme.{0}} (σ : Z ⟶ Y) (r : Y ⟶ X) (z : Z) (U : X.Opens) (h : r (σ z) ∈ U)
     (a : Γ(X, U)) : gs (σ ≫ r) z U a = (σ.stalkMap z).hom (gs r (σ z) U a) := by
   rw [← gs_pull σ r z U h, gs_stalkMap σ z _ h, gs_pull (𝟙 _) r (σ z) U h, Category.id_comp]
 
+/- English proof (translation)
+The claim follows from `Units.ext ((gs_unit (σ ≫ r) z U h a).symm.trans ((gs_comp_stalkMap σ r z U h _).trans (congrArg _ (gs_unit r (σ z) U h a))))`.
+-/
 theorem gm_comp_stalkMap {X Y Z : Scheme.{0}} (σ : Z ⟶ Y) (r : Y ⟶ X) (z : Z) (U : X.Opens) (h : r (σ z) ∈ U)
     (a : Γ(X, U)ˣ) : gm (σ ≫ r) z U a = Units.map (σ.stalkMap z).hom.toMonoidHom (gm r (σ z) U a) :=
   Units.ext ((gs_unit (σ ≫ r) z U h a).symm.trans ((gs_comp_stalkMap σ r z U h _).trans
     (congrArg _ (gs_unit r (σ z) U h a))))
 
+/- English proof (translation)
+Set `_` to `(r.stalkMap z).hom.toAlgebra`. Establish `: Module.Flat (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z)` using `Flat.stalkMap r z`. Establish `: IsLocalHom (algebraMap (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z))` using `inferInstanceAs (IsLocalHom (r.stalkMap z).hom)`. Establish `: Module.FaithfullyFlat (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z)` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z)`.
+-/
 theorem stalkMap_injective_of_flat {Y Z : Scheme.{0}} (r : Z ⟶ Y) [Flat r] (z : Z) :
     Function.Injective (r.stalkMap z).hom := by
   let _ := (r.stalkMap z).hom.toAlgebra
@@ -61,6 +79,9 @@ theorem stalkMap_injective_of_flat {Y Z : Scheme.{0}} (r : Z ⟶ Y) [Flat r] (z 
     Module.FaithfullyFlat.of_flat_of_isLocalHom
   exact FaithfulSMul.algebraMap_injective (Y.presheaf.stalk (r z)) (Z.presheaf.stalk z)
 
+/- English proof (translation)
+The claim follows from `(gs_eq (𝟙 _) z ⊤ trivial _).symm`.
+-/
 theorem toStk_eq {F : Type} [Field F] (z : Sp F) (a : F) : toStk z a = constVal (𝟙 _) z a :=
   (gs_eq (𝟙 _) z ⊤ trivial _).symm
 
@@ -72,6 +93,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {w : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ)} {e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X} (hW : WitData a P oP φ he w e)
   (F : Type) [Field F] [Algebra (FractionRing (PowerSeries k)) F] (hG : GlobalFnsSt) {j : ℕ} (hj : 1 ≤ j)
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero (algebraMap (FractionRing (PowerSeries k)) F)).2 ((map_ne_zero_iff _ (IsFractionRing.injective (PowerSeries k) _)).2 PowerSeries.X_ne_zero)`.
+-/
 theorem toF_X_ne_zero : toF (R := PowerSeries k) F PowerSeries.X ≠ 0 :=
   (map_ne_zero (algebraMap (FractionRing (PowerSeries k)) F)).2
     ((map_ne_zero_iff _ (IsFractionRing.injective (PowerSeries k) _)).2 PowerSeries.X_ne_zero)
@@ -79,6 +103,9 @@ theorem toF_X_ne_zero : toF (R := PowerSeries k) F PowerSeries.X ≠ 0 :=
 def xUnit (k : Type) [Field k] (F : Type) [Field F] [Algebra (FractionRing (PowerSeries k)) F] (y : Sp F) :
     ((Sp F).presheaf.stalk y)ˣ := Units.map (toStk y).toMonoidHom (Units.mk0 _ (toF_X_ne_zero (k := k) F))
 
+/- English proof (translation)
+Rewrite using `[xUnit, ← map_zpow]`. Use `show toStk y _ = _`. Rewrite using `[Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+-/
 theorem xUnit_zpow (y : Sp F) (n : ℤ) :
     (xUnit k F y ^ n).val = toStk y (toF (R := PowerSeries k) F PowerSeries.X ^ n) := by
   rw [xUnit, ← map_zpow]
@@ -94,6 +121,27 @@ variable [Algebra (FractionRing k) F]
 
 include hW hF hJ₀ hJ
 
+/- English proof (translation)
+Set `F'` to `AlgebraicClosure F`. Set `σ : Sp F' ⟶ Sp F` to `spMap (algebraMap F F')`. Establish `: Flat σ`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.Flat.of_isField (Field.toIsField F) _`.
+
+Establish `z : Sp F'` using `(default : PrimeSpectrum F')`. Establish `: Subsingleton (Sp F)` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Take `rfl : y = σ z` from `Subsingleton.elim _ _`. Establish `s₁ : jFK (R` using `PowerSeries k) F' = σ ≫ jFK (R := PowerSeries k) F := by show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+
+Establish `s₂ : jFK (R` using `k) F' = σ ≫ jFK (R := k) F := by show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`. Take `⟨hp, hv⟩` from `(genRel_iff w _ _ _ z).1 (hW.2.2.2.2.2 F' _ (fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (FractionRing k) F F', hF, IsScalarTower.algebraMap_apply (FractionRing (PowerSeries k)) F F']`. Use the proof step `rfl) rfl χ)`.
+
+Set `m : Sp F ⟶ P.toPre.P.A.left` to `(cP P.toPre (TF (R := PowerSeries k) F) (e χ)).left`. Establish `a₁ : jFK (R` using `PowerSeries k) F ≫ P.toPre.xK (e χ) = m := (Category.assoc _ _ _).symm`. Establish `a₁' : jFK (R` using `PowerSeries k) F' ≫ ptK (P.toPre.c (e χ)) = σ ≫ m := by rw [s₁, Category.assoc, a₁]`. Establish `a₂ : jFK (R` using `k) F ≫ a.D₀.xK χ = m ≫ φ := by`. Use `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ (a.D₀.c χ).left) ?_)).trans (congrArg (fun q => q.left) (push_cP hW (TF (R := PowerSeries k) F) χ)).symm` and prove the remaining obligations.
+
+Use `show (TF (R := k) F).hom = (TF (R := PowerSeries k) F).hom ≫ _`. Rewrite using `[TF_hom, TF_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext hF)`. Establish `m₁ : jFK (R` using `PowerSeries k) F (σ z) ∈ LB.wchart P.toPre.P.L (K := PUnit) (fun _ => ptK (P.toPre.c (e χ))) (fun _ => J m) := Set.mem_iInter.2 fun _ => by have := hJ m; rw [← a₁] at this ⊢; exact this`. Establish `m₂ : jFK (R` using `k) F (σ z) ∈ LB.wchart a.D₀.P.L (K := PUnit) (fun _ => ptK (a.D₀.c χ)) (fun _ => J₀ (m ≫ φ)) := Set.mem_iInter.2 fun _ => by have := hJ₀ (m ≫ φ); rw [← a₂] at this ⊢; exact this`.
+
+Establish `H` using `hv (fun _ => J m) (fun _ => J₀ (m ≫ φ)) (fun _ => by rw [a₁']; exact hJ₀ (m ≫ φ)) (fun _ => by rw [a₁']; exact hJ m)`. Rewrite using `[gm_pullGen _ _ _ _ _ _ _ _ (Set.mem_iInter.2 fun _ => by show (jFK (R := PowerSeries k) F' ≫ ptK (P.toPre.c (e χ))) z ∈ P.toPre.P.L.U (J m)`. Rewrite using `[a₁']`. Conclude with `hJ m),`. Use `gm_pullGen _ _ _ _ _ _ _ _ (Set.mem_iInter.2 fun _ => by show (jFK (R := k) F' ≫ ptK (a.D₀.c χ)) z ∈ a.D₀.P.L.U (J₀ (m ≫ φ))`.
+
+Rewrite using `[s₂, Category.assoc, a₂]`. Conclude with `hJ₀ (m ≫ φ)),`. Use the proof step `Fintype.prod_unique, zpow_neg_one, Category.id_comp, Category.id_comp, a₁', s₁, s₂] at H`. Establish `g₁` using `gm_comp_stalkMap σ _ z _ m₁ ((P.toPre.psi (e χ)).s fun _ => J m)`. Establish `g₂` using `gm_comp_stalkMap σ _ z _ m₂ ((a.D₀.psi χ).s fun _ => J₀ (m ≫ φ))`.
+
+Establish `g₃` using `gm_comp_stalkMap σ m z ((a.D₀.P.L.pull φ).U (fun _ => J₀ (m ≫ φ)) ⊓ P.toPre.P.L.U (J m)) ⟨mem_pull.2 (hJ₀ (m ≫ φ)), hJ m⟩ (w.s (fun _ => J₀ (m ≫ φ), J m))`. Use `replace H := (congrArg Units.val (congrArg₂ (· * ·) (congrArg (·⁻¹) g₃) g₁)).symm.trans (H.trans (congrArg₂ (· * ·) rfl (congrArg Units.val g₂)))`. Establish `hx : toStk z (algebraMap (FractionRing (PowerSeries k)) F' (algebraMap (PowerSeries k) _ PowerSeries.X) ^ (a.be χ χ / 2)) = (σ.stalkMap z).hom (xUnit k F (σ z) ^ (a.be χ χ / 2)).val`. Rewrite using `[xUnit_zpow, toStk_eq, toStk_eq, IsScalarTower.algebraMap_apply (FractionRing (PowerSeries k)) F F', ← map_zpow₀, ← constVal_specMap, Category.id_comp]`. Conclude with `(congrArg (fun q => gs q z ⊤ _) (Category.comp_id σ).symm).trans (gs_comp_stalkMap σ (𝟙 _) z ⊤ trivial _)`.
+
+Rewrite `H` using `[hx]`. Rewrite using `[val_of _ _ _ J (fun _ => J m) (fun _ => congrArg J a₁), val_of _ _ _ J₀ (fun _ => J₀ (m ≫ φ)) (fun _ => congrArg J₀ a₂), ← inv_mul_eq_iff_eq_mul]`. Use `Units.ext (stalkMap_injective_of_flat σ z ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul]`. Rewrite `H` using `[← map_inv, Units.val_mul]`.
+
+Conclude with `H`.
+-/
 theorem val_psi (χ : a.D₀.X) : val (L := P.toPre.P.L) (P.toPre.psi (e χ)) (jFK (R := PowerSeries k) F) y J =
     wVal w y J₀ J (cP P.toPre (TF (R := PowerSeries k) F) (e χ)).left *
       (xUnit k F y ^ (a.be χ χ / 2) * val (L := a.D₀.P.L) (a.D₀.psi χ) (jFK (R := k) F) y J₀) := by
@@ -155,6 +203,11 @@ theorem val_psi (χ : a.D₀.X) : val (L := P.toPre.P.L) (P.toPre.psi (e χ)) (j
   rw [← map_inv, Units.val_mul] at H
   exact H
 
+/- English proof (translation)
+Establish `pm` using `(maps_iff w _ (fun _ => eSec a.D₀.P.A) _ P.toPre.rig a.D₀.rig (spMap (PowerSeries.C (R := k))) _ (rigPull_le φ (spMap (PowerSeries.C (R := k))) he a.D₀.P.L) (fun _ => rfl)).1 hW.2.2.1`. Establish `e₁` using `pmaps_val (fun _ => he) pm (TF (R := PowerSeries k) F).hom hJ₀ hJ`. Establish `hT : (TF (R` using `PowerSeries k) F).hom ≫ spMap (PowerSeries.C (R := k)) = (TF (R := k) F).hom := by`. Rewrite using `[TF_hom, TF_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext hF).symm`.
+
+Rewrite `e₁` using `[Fintype.prod_unique, zpow_one]`. Use `(val_pull hJ₀ _ _ _).trans (Eq.trans ?_ (e₁.trans (congrArg₂ (· * ·) rfl (val_pull hJ _ _ _).symm)))` and prove the remaining obligations. Conclude with `congrArg (fun q => val (L := a.D₀.P.L) a.D₀.rig q y J₀) hT.symm`.
+-/
 theorem val_rig : val (L := a.D₀.P.L) a.D₀.rigK (jFK (R := k) F) y J₀ =
     wVal w y J₀ J (1 : TF (R := PowerSeries k) F ⟶ P.toPre.P.A).left *
       val (L := P.toPre.P.L) P.toPre.rigK (jFK (R := PowerSeries k) F) y J := by
@@ -170,12 +223,20 @@ theorem val_rig : val (L := a.D₀.P.L) a.D₀.rigK (jFK (R := k) F) y J₀ =
 
 end Values
 
+/- English proof (translation)
+The claim follows from `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`.
+-/
 theorem val_tau {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {Z : Scheme.{0}} (r : Z ⟶ (TK R).left) {z : Z}
     {J} (hJ : Good D.P.L z J) (x x' : D.X) : val (D.tau x x') r z J =
       val (D.psi (x + x')) r z J * (val (D.psi x) r z J)⁻¹ * (val (D.psi x') r z J)⁻¹ * (val D.rigK r z J)⁻¹ :=
   (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans
     (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `b₁` using `congrArg Additive.ofMul v₁`. Establish `b₂` using `congrArg Additive.ofMul v₂`. Establish `c₁` using `congrArg Additive.ofMul q₁`. Establish `c₂` using `congrArg Additive.ofMul q₂`.
+
+Establish `c₃` using `congrArg Additive.ofMul q₃`. Establish `c₄` using `congrArg Additive.ofMul q₄`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow] at b₁ b₂ c₁ c₂ c₃ c₄ ⊢`. Take the linear combination `(norm := module) b₂ + b₁ + c₁ + ((j : ℤ) - 1) • c₂ - c₃ - ((j : ℤ) - 1) • c₄`.
+-/
 theorem fe_alg {U : Type} [CommGroup U] (j : ℕ) (n₁ n₂ n₃ : ℤ) {u u' x ψ₁ ψ₂ ψ₃ ρ χ₁ χ₂ χ₃ ρ₀ o m a s t : U}
     (v₁ : χ₁ * χ₂⁻¹ * χ₃⁻¹ * ρ₀⁻¹ * (χ₂ ^ j * ρ₀ ^ j) =
       o ^ ((j : ℤ) - 1) * t * t⁻¹ * o * (m ^ ((j : ℤ) - 1) * s * a⁻¹ * o)⁻¹ * u')
@@ -192,6 +253,9 @@ theorem fe_alg {U : Type} [CommGroup U] (j : ℕ) (n₁ n₂ n₃ : ℤ) {u u' x
   simp only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow] at b₁ b₂ c₁ c₂ c₃ c₄ ⊢
   linear_combination (norm := module) b₂ + b₁ + c₁ + ((j : ℤ) - 1) • c₂ - c₃ - ((j : ℤ) - 1) • c₄
 
+/- English proof (translation)
+Establish `d₁ : (2 : ℤ) ∣ a.be x x` using `(Dvd.intro _ rfl).trans (a.be_dvd x x)`. Establish `d₂ : (2 : ℤ) ∣ a.be x' x'` using `(Dvd.intro _ rfl).trans (a.be_dvd x' x')`. Establish `s` using `a.be_symm x' x`. Simplify using `only [map_add, LinearMap.add_apply]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem be_add_div_two (a : ArcIn D l β k b) (x x' : a.D₀.X) :
     a.be (x + x') (x + x') / 2 = a.be x x / 2 + a.be x' x' / 2 + a.be x x' := by
   have d₁ : (2 : ℤ) ∣ a.be x x := (Dvd.intro _ rfl).trans (a.be_dvd x x)
@@ -201,12 +265,20 @@ theorem be_add_div_two (a : ArcIn D l β k b) (x x' : a.D₀.X) :
   omega
 
 include hW in
+/- English proof (translation)
+Rewrite using `[← Category.assoc, ← Over.comp_left, trF_prB, Over.comp_left, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (famφB_comp hW mu 1)`.
+-/
 theorem trF_comp_φ (mu : a.D₀.X) : (DegPre.trF P.toPre F (e mu)).left ≫ (DegPre.prB P.toPre F).left ≫ φ =
     ((DegPre.prB P.toPre F).left ≫ φ) ≫ (trB a.D₀ mu).left := by
   rw [← Category.assoc, ← Over.comp_left, trF_prB, Over.comp_left, Category.assoc, Category.assoc]
   exact congrArg _ (famφB_comp hW mu 1)
 
 include hW in
+/- English proof (translation)
+Break down `i with i | i` into its components or cases. Use `show DegPre.famφ P.toPre F (e α + j • e mu) i ≫ φ = _`. Rewrite using `[← map_nsmul, ← map_add]`. Conclude with `famφ_comp hW F _ i`. Use `show ((DegPre.trF P.toPre F (e mu)).left ≫ DegPre.famφ P.toPre F (e α) i) ≫ φ = _ ≫ _ ≫ _`.
+
+Rewrite using `[Category.assoc, famφ_comp hW, ← Category.assoc, trF_comp_φ hW, Category.assoc]`.
+-/
 theorem deltaφ_comp (α mu : a.D₀.X) (i : Fin 4 ⊕ Fin 4) : DegPre.deltaφ P.toPre F j (e α) (e mu) i ≫ φ =
     ((DegPre.prB P.toPre F).left ≫ φ) ≫
       Sum.elim (a.D₀.famφB (α + j • mu)) (fun i => (trB a.D₀ mu).left ≫ a.D₀.famφB α i) i := by
@@ -219,6 +291,23 @@ theorem deltaφ_comp (α mu : a.D₀.X) (i : Fin 4 ⊕ Fin 4) : DegPre.deltaφ P
 
 include hW hG in
 
+/- English proof (translation)
+Set `_ : Algebra (FractionRing k) F` to `(IsFractionRing.lift (K := FractionRing k) (constF k F).injective).toAlgebra`. Establish `hF : ∀ x, algebraMap (FractionRing k) F (algebraMap k _ x) = constF k F x` using `fun x => IsFractionRing.lift_algebraMap (constF k F).injective x`. Establish `z₁ : DegPre.zF P.toPre F ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Establish `z₂ : DegPre.zF P.toPre F ≫ DegPre.prB P.toPre F = 1` using `lift_snd _ _`. Use `gen_unique_scal P.toPre.P.isLB (strF P.toPre F) (DegPre.zF P.toPre F).left (congrArg (fun q => q.left) z₁) (surj_appTop P.toPre F hG) hu hu' _ (fun y J hJ => ?_) Z r z J hJ` and prove the remaining obligations.
+
+Take `⟨J₀, hJ₀⟩` from `exists_good' a.D₀.P.isLB y`. Set `κ : Over.mk ((TF (R` to `PowerSeries k) F).hom ≫ spMap (PowerSeries.C (R := k))) ⟶ TK k := Over.homMk (jFK (R := k) F) (by show (TF (R := k) F).hom = (TF (R := PowerSeries k) F).hom ≫ _`. Rewrite using `[TF_hom, TF_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun q => Spec.map (CommRingCat.ofHom q)) (RingHom.ext hF))`. Establish `C : IsCub (th a.D₀ (T` using `Over.mk ((TF (R := PowerSeries k) F).hom ≫ spMap (PowerSeries.C (R := k)))) y J₀) := isCub_cubV a.D₀.cub hJ₀`.
+
+Establish `v₀` using `val_feGen a.D₀ j mu α (pushHom hW.1 (TF (R := PowerSeries k) F) 1) κ hJ₀`. Establish `p₀ : (DegPre.zF P.toPre F).left ≫ (DegPre.prB P.toPre F).left ≫ φ = (pushHom hW.1 (TF (R` using `PowerSeries k) F) 1).left := by`. Rewrite using `[← Category.assoc, ← Over.comp_left, z₂]`. Both sides reduce to the same expression. Establish `v₁` using `hv _ (DegPre.zF P.toPre F).left y J₀ J hJ₀ hJ`.
+
+Rewrite `v₁` using `[p₀]`. Use `replace v₁ := v₀.symm.trans v₁`. Rewrite `v₁` using `[map_one, C.N_one, C.face₂, inv_one, _root_.one_mul, _root_.one_mul, val_tau _ _ hJ₀]`. Establish `p₁` using `prod_fam P.toPre F (DegPre.zF P.toPre F) (e α + j • e mu) j (wVal w y J₀ J)`. Establish `p₂` using `prod_fam P.toPre F (DegPre.zF P.toPre F ≫ DegPre.trF P.toPre F (e mu)) (e α) j (wVal w y J₀ J)`.
+
+Establish `p₃ : (DegPre.zF P.toPre F ≫ DegPre.trF P.toPre F (e mu)) ≫ DegPre.prB P.toPre F = cP P.toPre _ (e mu)`. Rewrite using `[Category.assoc, trF_prB, ← Category.assoc, z₂, MonObj.comp_mul, comp_cP, Category.comp_id, _root_.one_mul]`. Rewrite `p₁` using `[z₂, _root_.mul_one]`. Rewrite `p₂` using `[p₃]`. Simplify using `only [Over.comp_left, Category.assoc] at p₂`.
+
+Establish `p₄` using `prod_sum₂ (K := Fin 4) (K' := Fin 4) (fun i => wVal w y J₀ J ((DegPre.zF P.toPre F).left ≫ DegPre.deltaφ P.toPre F j (e α) (e mu) i) ^ DegPre.deltaε j i) p₁ (prod_neg _ _ p₂)`. Use `replace v₁ := v₁.trans (congrArg (· * _) p₄)`. Establish `v₂` using `val_corr hJ hc (𝟙 _)`. Rewrite `v₂` using `[val_pull hJ, Category.id_comp]`. Use `replace v₂ := v₂.trans (val_famMult (𝟙 (TF (R := PowerSeries k) F)) hJ j (e mu) (e α))`.
+
+Rewrite `v₂` using `[UUA.val_powGen', UUA.val_powGen', val_tau _ _ hJ, Over.id_left, Category.id_comp, ← map_add]`. Establish `q₁` using `val_psi hW F hF hJ₀ hJ (mu + α)`. Establish `q₂` using `val_psi hW F hF hJ₀ hJ mu`. Establish `q₃` using `val_psi hW F hF hJ₀ hJ α`. Establish `q₄` using `val_rig hW F hF hJ₀ hJ`.
+
+Rewrite `q₁` using `[be_add_div_two, map_add, cPoint_add, mul_comm (cP P.toPre _ (e mu)), ← map_add]`. Use `Eq.trans ?_ (congrArg (· * _) ((xUnit_zpow F y _).trans (toStk_eq y _)))` and prove the remaining obligations. Rewrite using `[← Units.val_mul]`. Conclude with `congrArg Units.val (fe_alg j _ _ _ v₁ v₂ q₁ q₂ q₃ q₄)`.
+-/
 theorem val_fe (α mu : a.D₀.X)
     (u u' : LB.Gen (LB.LinComb P.toPre.P.L (DegPre.deltaφ P.toPre F j (e α) (e mu)) (DegPre.deltaε j)))
     (hu : u.IsGen) (hc : LB.Gen.Corr P.toPre.P.L _ _ _ _ (LB.pullGen P.toPre.P.L _ _ u (DegPre.zF P.toPre F).left)
@@ -275,6 +364,17 @@ theorem val_fe (α mu : a.D₀.X)
   rw [← Units.val_mul]
   exact congrArg Units.val (fe_alg j _ _ _ v₁ v₂ q₁ q₂ q₃ q₄)
 
+/- English proof (translation)
+Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := P.toPre) (F := F) hG j (e mu) (e α)`. Take `⟨u', hu', hv⟩` from `exists_gen_through hW.2.1 a.D₀.P.isLB P.toPre.P.isLB (deltaφ_comp hW F α mu) (feGen a.D₀ j mu α) (feGen_isGen a.D₀ j mu α)`. Use `sec_ext' P.toPre.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₀, hJ₀⟩` from `exists_good' a.D₀.P.isLB y`. Establish `key : ∀ χ, e α + j • e mu = χ → sval ((constFam hW F hG hj α s₀).s χ) (𝟙 _) y J = sval ((constFam hW F hG hj α s₀).s (e α)) (𝟙 _ ≫ (DegPre.trF P.toPre F (e mu)).left) y J * (val u (𝟙 _) y J).val`.
+
+Introduce and unpack `_ rfl`. Conclude with `(secRel_iff P.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 ((constFam hW F hG hj α s₀).fe _ _ u hu hc) _ _ y J hJ`. Establish `hi : e α + j • e mu = e (α + j • mu)` using `by rw [map_add, map_nsmul]`. Use `(key _ hi).trans (Eq.trans ?_ (sval_smul' hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[show (constFam hW F hG hj α s₀).s (e α) = pullF hW F j α s₀ from constFam_self hW F hG hj α s₀, val_fe hW F hG α mu u u' hu hc hu' hv _ hJ, mul_left_comm]`.
+
+Use `congrArg _ ?_` and prove the remaining obligations. Establish `a₁` using `(secThrough_pullF hW F j (α + j • mu) (feTranslate a.D₀ j mu α s₀)).sval (famφ_comp hW F _) (𝟙 _) hJ₀ hJ`. Establish `a₂` using `(secThrough_pullF hW F j α s₀).sval (famφ_comp hW F _) (𝟙 _ ≫ (DegPre.trF P.toPre F (e mu)).left) hJ₀ hJ`. Establish `a₃` using `hv _ (𝟙 _) y J₀ J hJ₀ hJ`. Establish `a₄` using `sval_feTranslate a.D₀ j mu α s₀ (𝟙 _ ≫ (DegPre.prB P.toPre F).left ≫ φ) hJ₀`.
+
+Rewrite `a₂` using `[Category.assoc, trF_comp_φ hW, ← Category.assoc]`. Establish `a₅` using `prod_sum₂ (K := Fin 4) (K' := Fin 4) (fun i => wVal w y J₀ J (𝟙 _ ≫ DegPre.deltaφ P.toPre F j (e α) (e mu) i) ^ DegPre.deltaε j i) (c := ∏ i, wVal w y J₀ J (𝟙 _ ≫ DegPre.famφ P.toPre F (e (α + j • mu)) i) ^ DegPre.famε j i) (by rw [← hi]; rfl) (prod_neg _ _ (c := ∏ i, wVal w y J₀ …`. Rewrite `a₄` using `[a₁, a₂, a₃, a₅]`. Use `(Units.mul_right_inj (∏ i, wVal w y J₀ J (𝟙 _ ≫ DegPre.famφ P.toPre F (e (α + j • mu)) i) ^ DegPre.famε j i)).1 (Eq.trans ?_ a₄.symm)` and prove the remaining obligations. Generalize the expression as in `(∏ i, wVal w y J₀ J ((𝟙 _ ≫ (DegPre.trF P.toPre F (e mu)).left) ≫ DegPre.famφ P.toPre F (e α) i) ^ DegPre.famε j i) = W`.
+
+Simplify using `only [Units.val_mul]`. Take the linear combination `(-(sval (pullF hW F j α s₀) (𝟙 _ ≫ (DegPre.trF P.toPre F (e mu)).left) y J * (val u' (𝟙 _) y J).val * (∏ i, wVal w y J₀ J (𝟙 _ ≫ DegPre.famφ P.toPre F (e (α + j • mu)) i) ^ DegPre.famε j i).val)) * W.mul_inv`.
+-/
 theorem constFam_add_nsmul (α mu : a.D₀.X) (s₀ : SecBMod a.D₀ j α) :
     famComp P.toPre F j (e (α + j • mu)) (constFam hW F hG hj α s₀) =
       toF (R := PowerSeries k) F PowerSeries.X ^ expo a j α mu •

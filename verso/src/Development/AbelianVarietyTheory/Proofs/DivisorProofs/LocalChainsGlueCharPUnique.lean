@@ -24,10 +24,20 @@ namespace GlobalTheory.ChainDesc.Kap
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : GlobalTheory.Vert.Model O} {Λ : Type} [CommRing Λ]
 
+/- English proof (translation)
+The claim follows from `isQuasicoherent_of_iso (Examples₂.cokV (smulA Lie (p : Γ(B.X, ⊤)))).symm`.
+-/
 theorem qcoh_cok (p : ℕ) (Lie : AM B Λ) [Lie.V.IsQuasicoherent] :
     (cokernel (smulA Lie (p : Γ(B.X, ⊤)))).V.IsQuasicoherent :=
   isQuasicoherent_of_iso (Examples₂.cokV (smulA Lie (p : Γ(B.X, ⊤)))).symm
 
+/- English proof (translation)
+Set `f` to `smulA Lie (p : Γ(B.X, ⊤))`. Use `haveI : Epi (cokernel.π f).hom := inferInstanceAs (Epi ((Action.forget B.X.Modules Λ).map (cokernel.π f)))`. Establish `hS : (ShortComplex.mk f.hom (cokernel.π f).hom (congrArg Action.Hom.hom (cokernel.condition f))).Exact` using `(ShortComplex.exact_cokernel f).map (Action.forget B.X.Modules Λ)`. Take `⟨h1, h2⟩` from `exact_and_surjective_app_of_exact_of_epi hS hW`. Establish `hf : ∀ y : Γ(Lie.V, W), f.hom.app W y = (p : Γ(B.X, W)) • y` using `fun y => by`.
+
+Express the relevant statement in the definitionally equal form `(B.X.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op).hom (p : Γ(B.X, ⊤)) • y = _`. Rewrite using `[map_natCast]`. Establish `hk : (p : Γ(B.X, W)) • (⊤ : Submodule Γ(B.X, W) Γ(Lie.V, W)) = LinearMap.ker (appLinear (cokernel.π f).hom W)`. Use extensionality with `y`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, LinearMap.mem_ker]`.
+
+Use `Iff.trans ?_ (h1 y).symm` and prove the remaining obligations. Conclude with `⟨fun ⟨z, _, e⟩ => ⟨z, (hf z).trans e⟩, fun ⟨z, e⟩ => ⟨z, trivial, (hf z).symm.trans e⟩⟩`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hk).trans (LinearMap.quotKerEquivOfSurjective _ h2), fun _ => rfl⟩`.
+-/
 theorem exists_cok (p : ℕ) (Lie : AM B Λ) [Lie.V.IsQuasicoherent] {W : B.X.Opens} (hW : IsAffineOpen W) :
     ∃ c : (Γ(Lie.V, W) ⧸ (p : Γ(B.X, W)) • (⊤ : Submodule Γ(B.X, W) Γ(Lie.V, W))) ≃ₗ[Γ(B.X, W)]
       Γ((cokernel (smulA Lie (p : Γ(B.X, ⊤)))).V, W),
@@ -51,6 +61,11 @@ theorem exists_cok (p : ℕ) (Lie : AM B Λ) [Lie.V.IsQuasicoherent] {W : B.X.Op
 variable {p h o : ℕ} [Fact p.Prime] {Lie Om : AM B Λ} {π : Γ(B.X, ⊤)} {γ : ℕ → Γ(B.X, ⊤)}
   {M : Λ →+* Matrix (Fin h) (Fin h) ℤ} {E : ℕ → B.X.Modules} {ι : ∀ n, E n ⟶ freeModule B.X (Fin h)}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_cok p Lie hW`. Take `⟨e, he⟩` from `k.exists_equiv hW (hD n hn.le) (hD (n + 1) hn)`. Use `⟨c.toLinearMap.toAddMonoidHom.comp ((D.κ n).comp e.symm.toLinearMap.toAddMonoidHom), ?_, fun s x y hx hy => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.RingChain.FrobLin.main _ p _ _ _).2.2.2.2 _ _ c ((GlobalTheory.RingChain.FrobLin.main _ p _ _ _).2.2.2.1 _ e.symm _ (D.κ_lin n hn))`. Express the relevant statement in the definitionally equal form `c (D.κ n (e.symm (t.app W s))) = _`.
+
+Rewrite using `[← he s x hx, e.symm_apply_apply, hy, hc]`.
+-/
 theorem exists_map [Lie.V.IsQuasicoherent] {n : ℕ} (hn : n < o) [Mono (ι n)] {Q : AM B Λ} {t : E n ⟶ Q.V}
     (k : IsQuot M (ι n) (latOf (ι (n + 1))) Q t) {W : B.X.Opens} (hW : IsAffineOpen W)
     (D : ChainOn p h o Lie Om π γ W) (hD : Fits ι D) :
@@ -66,6 +81,9 @@ theorem exists_map [Lie.V.IsQuasicoherent] {n : ℕ} (hn : n < o) [Mono (ι n)] 
   · change c (D.κ n (e.symm (t.app W s))) = _
     rw [← he s x hx, e.symm_apply_apply, hy, hc]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `(k.2 W hW).1 z`. Establish `hx : crd (ι n) W s ∈ D.L n` using `by rw [hD n hn.le]; exact ⟨s, rfl⟩`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (D.κ n (Submodule.Quotient.mk ⟨_, hx⟩))`. Conclude with `⟨s, ⟨_, hx⟩, y, rfl, rfl, hy.symm⟩`.
+-/
 theorem exists_rep {n : ℕ} (hn : n < o) {Q : AM B Λ} {t : E n ⟶ Q.V}
     (k : IsQuot M (ι n) (latOf (ι (n + 1))) Q t) {W : B.X.Opens} (hW : IsAffineOpen W)
     (D : ChainOn p h o Lie Om π γ W) (hD : Fits ι D) (z : Γ(Q.V, W)) :
@@ -76,6 +94,11 @@ theorem exists_rep {n : ℕ} (hn : n < o) {Q : AM B Λ} {t : E n ⟶ Q.V}
   obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _ (D.κ n (Submodule.Quotient.mk ⟨_, hx⟩))
   exact ⟨s, ⟨_, hx⟩, y, rfl, rfl, hy.symm⟩
 
+/- English proof (translation)
+Take `⟨s, x, y, rfl, hx, hy⟩` from `exists_rep hn k hW D hD z`. Establish `e : mv (resG B.X hle) 1 x.1 = crd (ι n) W' (resM (E n) hle s)`. Rewrite using `[crd_resM, mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec, hx]`. Both sides reduce to the same expression. Rewrite using `[hψ s x y hx hy, ← GlobalTheory.Twist.app_resM, ← GlobalTheory.Twist.app_resM]`.
+
+Conclude with `hχ _ ⟨_, r.mem n x.1 x.2⟩ _ e (r.κ n hn x _ y rfl hy)`.
+-/
 theorem map_res {n : ℕ} (hn : n < o) {Q : AM B Λ} {t : E n ⟶ Q.V}
     (k : IsQuot M (ι n) (latOf (ι (n + 1))) Q t) {W W' : B.X.Opens} (hW : IsAffineOpen W) (hle : W' ≤ W)
     {D : ChainOn p h o Lie Om π γ W} (hD : Fits ι D) {D' : ChainOn p h o Lie Om π γ W'} (r : ResMap hle D D')
@@ -95,6 +118,13 @@ end GlobalTheory.ChainDesc.Kap
 
 open GlobalTheory.ChainDesc.Kap in
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D hp hq hL n hn Q t k`. Take `⟨ha, hc, ha2, hv, hF, ho, hact⟩` from `hL`. Use `haveI := (hv n).2`. Use `haveI := k.1`. Use `haveI := qcoh_cok p Lie`.
+
+Use `choose ψ hψ hψ' using fun i => exists_map hn k (ha i) (D i) (hF i)`. Use `GlobalTheory.T.additive_maps_glue_affine_cover O p B Λ hp Q _ I V n ψ ha hc ha2 hψ (fun i i' => ?_) fun i a z => ?_` and prove the remaining obligations. Take `⟨D', hD', r, r'⟩` from `ho i i'`. Take `⟨χ, hχ, hχ'⟩` from `exists_map hn k (ha2 i i') D' hD'`. Conclude with `⟨χ, hχ, map_res hn k (ha i) _ (hF i) r (hψ' i) hχ', map_res hn k (ha i') _ (hF i') r' (hψ' i') hχ'⟩`.
+
+Take `⟨s, x, y, rfl, hx, hy⟩` from `exists_rep hn k (ha i) (D i) (hF i) z`. Establish `hm` using `(hact i a).mem n x.1 x.2`. Take `⟨s', hs'⟩ : mv (RingHom.id _) (M a) x.1 ∈ latOf (ι n) (V i)` from `hF i n hn.le ▸ hm`. Rewrite using `[(k.2 _ (ha i)).2.2 a s s' (by rw [hs', hx]), hψ' i s x y hx hy, hψ' i s' ⟨_, hm⟩ _ hs'.symm ((hact i a).κ n hn x _ y rfl hy), app_app, app_app]`. Conclude with `congrArg (fun u => Scheme.Modules.Hom.app u (V i) y) ((cokernel.π (smulA Lie (p : Γ(B.X, ⊤)))).comm a)`.
+-/
 theorem GlobalTheory.ChainDesc.Kap.main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] (B : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (E : ℕ → B.X.Modules) (ι : ∀ n, E n ⟶ freeModule B.X (Fin h)) (I : Type) (V : I → B.X.Opens) (D : ∀ i, ChainOn p h o Lie Om π γ (V i)) (hp : (p : Γ((fibI p B).subscheme, ⊤)) = 0), Lie.V.IsQuasicoherent → IsLoc M ι V D → ∀ n < o, ∀ (Q : AM B Λ) (t : E n ⟶ Q.V), IsQuot M (ι n) (latOf (ι (n + 1))) Q t → Nonempty ((frobA p hp)^[n + 1] Q ≅ cokernel (smulA Lie (p : Γ(B.X, ⊤)))) := by
   intro O _ _ _ p _ B Λ _ h o Lie Om π γ M E ι I V D hp hq hL n hn Q t k
   obtain ⟨ha, hc, ha2, hv, hF, ho, hact⟩ := hL

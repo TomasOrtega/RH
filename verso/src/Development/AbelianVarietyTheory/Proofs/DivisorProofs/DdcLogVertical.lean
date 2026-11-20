@@ -5,6 +5,17 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.DdcVert
 
+/- English proof (translation)
+Use `set u : Pt E g → ℝ := fun Q => Real.log (h Q) with hu`. Establish `hU : IsOpen (cov B g)` using `hB.prod isOpen_univ`. Establish `hmem : ∀ z' : Fin g → ℂ, ((b, z') : Pt E g) ∈ cov B g` using `fun z' => ⟨hb, Set.mem_univ _⟩`. Establish `hu_cd : ContDiffOn ℝ ∞ u (cov B g)` using `hh.log (fun P hP => (hpos P hP).ne')`. Establish `hu_at : ∀ z' : Fin g → ℂ, ContDiffAt ℝ ∞ u (b, z')` using `fun z' => hu_cd.contDiffAt (hU.mem_nhds (hmem z'))`.
+
+Establish `hinr : ∀ z' : Fin g → ℂ, HasFDerivAt (fun z'' : Fin g → ℂ => ((b, z'') : Pt E g)) (ContinuousLinearMap.inr ℝ E (Fin g → ℂ)) z'` using `fun z' => hasFDerivAt_prodMk_right b z'`. Establish `key1 : ∀ z' y : Fin g → ℂ, fderiv ℝ u (b, z') (0, y) = fderiv ℝ (fun z'' => u (b, z'')) z' y`. Introduce `z' y`. Establish `hd : DifferentiableAt ℝ u (b, z')` using `(hu_at z').differentiableAt (by simp)`. Conclude with `(DFunLike.congr_fun (hd.hasFDerivAt.comp z' (hinr z')).fderiv y).symm`.
+
+Establish `key2 : ∀ y w' : Fin g → ℂ, fderiv ℝ (fun Q => fderiv ℝ u Q (0, y)) (b, z) (0, w') = fderiv ℝ (fun z' => fderiv ℝ (fun z'' => u (b, z'')) z' y) z w'`. Introduce `y w'`. Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ u) (b, z)` using `(hu_at z).fderiv_right (by exact WithTop.coe_le_coe.2 le_top)`. Establish `hφ : DifferentiableAt ℝ (fun Q => fderiv ℝ u Q (0, y)) (b, z)` using `(h1.differentiableAt one_ne_zero).clm_apply (differentiableAt_const _)`. Establish `he : (fun z' => fderiv ℝ (fun z'' => u (b, z'')) z' y) = (fun Q => fderiv ℝ u Q (0, y)) ∘ (fun z'' : Fin g → ℂ => ((b, z'') : Pt E g))`.
+
+Use function extensionality and compare the values at `z'`. Simplify using `only [Function.comp_apply, key1]`. Rewrite using `[he]`. Conclude with `(DFunLike.congr_fun (hφ.hasFDerivAt.comp z (hinr z)).fderiv w').symm`. Establish `hs : ∀ y : Fin g → ℂ, Complex.I • ((0 : E), y) = ((0 : E), Complex.I • y)`.
+
+Introduce `y`. Simplify using `[Prod.smul_mk]`. Unfold `ddc`. Rewrite using `[hs v, hs w, key2, key2]`.
+-/
 theorem ddc_log_vert {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {h : Pt E g → ℝ} (hB : IsOpen B) (hh : ContDiffOn ℝ ∞ h (cov B g))
     (hpos : ∀ P ∈ cov B g, 0 < h P) {b : E} (hb : b ∈ B) (z v w : Fin g → ℂ) :

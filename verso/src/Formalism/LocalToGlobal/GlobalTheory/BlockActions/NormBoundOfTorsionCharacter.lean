@@ -9,6 +9,25 @@ open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D u Ch chOf Tf hL hBe h s x Pc hPc Qc hQc o ho o' ho' c`. Establish `hbase` using `base_eq Tf hL h x Pc hPc Qc hQc c`. Take `⟨k, hk, hχ⟩` from `hT D u Ch chOf Tf c`. Take `⟨a, ha, has⟩` from `desc_scalar D.what₂.embLL (Qc c) (brTenL D u (PL Tf c (Pc ((D.fm u).til c)))) _ k hk hχ hbase`. Establish `hAsu : ∀ τ, IsUnit ((AL Tf c τ).map s).det` using `fun τ => isUnit_AL_map Tf c s τ`.
+
+Establish `hR : MvPolynomial.map s (Pc ((D.fm u).til c)) ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam D.R.m)` using `map_mem_CSpan_of_rat _ _ (pc_rat Tf x Pc hPc _) s`. Establish `hY` using `blkRow_mem_CSpan _ (fun τ => (AL Tf c τ).map s) hAsu _ hR`. Establish `hQs : MvPolynomial.map s (Qc c) = (s a * ∏ τ, ((AL Tf c τ).map s).det ^ shiftOf (lamT u D.R.m) τ) • Formalism.L2.Ker.brTen D u (blkRow (fun τ => (AL Tf c τ).map s) (MvPolynomial.map s (Pc ((D.fm u).til c))))`. Rewrite using `[ha, MvPolynomial.smul_eq_C_mul, map_mul, map_C, map_brTenL, map_PL, map_smul, ← MvPolynomial.smul_eq_C_mul, smul_smul]`. Establish `hoN : ∀ τ, (o.1 τ)ᴴ * gramC (gramN D D.R.m le_rfl) (embS D s) τ * o.1 τ = 1` using `fun τ => Formalism.L2.Col.frame_pos o ho τ (gramN_posDef_at Tf (embS D s τ)).posSemidef`.
+
+Establish `hoP : ∀ τ, (o'.1 τ)ᴴ * gramC (gramP D) (embS D s) τ * o'.1 τ = 1` using `fun τ => Formalism.L2.Col.frame_pos o' ho' τ (gramP_posDef_at Tf (embS D s τ)).posSemidef`. Establish `hon : ∀ τ, ((AL Tf c τ).map s * dOT u (o'.1 τ))ᴴ * gramC (gramN D D.R.m le_rfl) (embS D s) τ * ((AL Tf c τ).map s * dOT u (o'.1 τ)) = 1`. Introduce `τ`. Rewrite using `[AL_map, Matrix.map_mul]`. Conclude with `frame_on_at Tf c (embS D s τ) (o'.1 τ) (hoP τ)`.
+
+Establish `hind` using `term_frame_indep ((D.fm u).lam D.R.m) (gramC (gramN D D.R.m le_rfl) (embS D s)) (shiftOf (lamT u D.R.m)) o.1 (fun τ => (AL Tf c τ).map s * dOT u (o'.1 τ)) hoN hon (MvPolynomial.map s (Pc ((D.fm u).til c)))`. Establish `hchain` using `chain_at Tf hBe o'.1 o'.2 _ hY`. Establish `hcomp : blkRow (fun τ => dOT u (o'.1 τ)) (blkRow (fun τ => (AL Tf c τ).map s) (MvPolynomial.map s (Pc ((D.fm u).til c)))) = subP (fun τ => (AL Tf c τ).map s * dOT u (o'.1 τ)) (MvPolynomial.map s (Pc ((D.fm u).til c)))` using `blkRow_comp _ _ _`. Rewrite `hchain` using `[hcomp]`. Rewrite using `[hQs, map_smul, nfAll_smul_reB, normal_form_agree, hind]`.
+
+Establish `hdet : ∏ τ, ‖((AL Tf c τ).map s * dOT u (o'.1 τ)).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ) = (∏ τ, ‖((AL Tf c τ).map s).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ)) * ∏ τ, ‖(dOT u (o'.1 τ)).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ)`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, norm_mul, mul_zpow]`. Establish `hκ : ‖s a * ∏ τ, ((AL Tf c τ).map s).det ^ shiftOf (lamT u D.R.m) τ‖ ^ 2 = ‖s a‖ ^ 2 * ∏ τ, ‖((AL Tf c τ).map s).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ)`.
+
+Rewrite using `[norm_mul, mul_pow, norm_prod, ← Finset.prod_pow]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, ← zpow_natCast, ← _root_.zpow_mul, mul_comm (shiftOf (lamT u D.R.m) τ)]`. Evaluate the numerical expressions.
+
+Rewrite using `[hdet, hκ]`. Establish `hsa : ‖s a‖ ^ 2 ≤ 1`. Establish `h1` using `has s`. Establish `h0` using `norm_nonneg (s a)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `set nW := (Formalism.L2.Forms.nfAll (D.fm u).sg (subP o'.1 (Formalism.L2.Ker.brTen D u (blkRow (fun τ => (AL Tf c τ).map s) (MvPolynomial.map s (Pc ((D.fm u).til c)))))) (subP o'.1 (Formalism.L2.Ker.brTen D u (blkRow (fun τ => (AL Tf c τ).map s) (MvPolynomial.map s (Pc ((D.fm u). …`. Use `set K2 := ∏ τ, ‖(o'.1 τ).det‖ ^ (2 * shiftOf (sgT u) τ)`. Use `set KA := ∏ τ, ‖((AL Tf c τ).map s).det‖ ^ (2 * shiftOf (lamT u D.R.m) τ)`. Establish `hKA : 0 ≤ KA` using `Finset.prod_nonneg fun τ _ => zpow_nonneg (norm_nonneg _) _`. Establish `hK2 : 0 ≤ K2` using `Finset.prod_nonneg fun τ _ => zpow_nonneg (norm_nonneg _) _`.
+
+Establish `hnW : 0 ≤ nW` using `Formalism.L2.Ker.ta_nfAll_nonneg _ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normClsAt_of_tors (hT : ChiTors) : NormClsAt := by
   intro D u Ch chOf Tf hL hBe h s x Pc hPc Qc hQc o ho o' ho' c
   classical
@@ -72,6 +91,9 @@ theorem normClsAt_of_tors (hT : ChiTors) : NormClsAt := by
         mul_le_mul hsa (mul_le_mul_of_nonneg_left hchain hKA) (mul_nonneg hKA (mul_nonneg hK2 hnW)) zero_le_one
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `norm_bound_of_classes h1 h2 (normClsAt_of_tors hT)`.
+-/
 theorem norm_bound_of_torsion_character (h1 : ClassMapInjective) (h2 : StabiliserMapBijective) (hT : ChiTors) : NormBoundAtInfinity :=
   norm_bound_of_classes h1 h2 (normClsAt_of_tors hT)
 

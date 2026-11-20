@@ -10,11 +10,21 @@ noncomputable section
 
 variable {N : ℕ} (p i : ℕ) (hi : i ≤ N)
 
+/- English proof (translation)
+Introduce `a b h`. Simplify using `[lowerMatrix, h]`.
+-/
 theorem lowerMatrix_strict (u : LowerPair N → ℂ) :
     ∀ a b : Fin N, ¬ b < a → lowerMatrix u a b = 0 := by
   intro a b h
   simp [lowerMatrix, h]
 
+/- English proof (translation)
+Establish `hV : (topPoly i hi L).map (evalRingHom 0) = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [topPoly, colPoly, Matrix.one_apply, Fin.castLE_inj] <;> split_ifs <;> simp`. Establish `hV' : (topPoly' i hi L).map (evalRingHom 0) = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `simp [topPoly', rowPoly, Matrix.one_apply, Fin.castLE_inj, eq_comm] <;> split_ifs <;> simp`. Establish `hadj : ∀ M : Matrix (Fin i) (Fin i) ℂ[X], M.adjugate.map (evalRingHom 0) = (M.map (evalRingHom 0)).adjugate` using `fun M => (evalRingHom (0 : ℂ)).map_adjugate M`. Establish `hC : ∀ M : Matrix (Fin i) (Fin i) ℂ, (M.map C).map (evalRingHom 0) = M` using `fun M => by`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hmap : (kerPoly p i hi L).map (evalRingHom 0) = sigTop p i hi * tailForm p i hi L`. Simplify using `only [kerPoly, Matrix.map_mul, hadj, hV, hV', adjugate_one, Matrix.mul_one, hC]`. Rewrite using `[coeff_zero_eq_eval_zero, ← hmap]`. Simplify using `[Matrix.trace, eval_finsetSum]`.
+-/
 theorem coeff_trace_kerPoly (L : Matrix (Fin N) (Fin N) ℂ) :
     (kerPoly p i hi L).trace.coeff 0 = (sigTop p i hi * tailForm p i hi L).trace := by
   have hV : (topPoly i hi L).map (evalRingHom 0) = 1 := by
@@ -34,6 +44,17 @@ theorem coeff_trace_kerPoly (L : Matrix (Fin N) (Fin N) ℂ) :
   rw [coeff_zero_eq_eval_zero, ← hmap]
   simp [Matrix.trace, eval_finsetSum]
 
+/- English proof (translation)
+Rewrite using `[tailSum, sum_fin_split_castLE hi (fun b => ∑ c : Fin N, if b.val < i ∧ i ≤ c.val then sigSign p b * sigSign p c * ‖L c b‖ ^ 2 else 0)]`. Establish `h2 : (∑ b : Fin N, if i ≤ b.val then (∑ c : Fin N, if b.val < i ∧ i ≤ c.val then sigSign p b * sigSign p c * ‖L c b‖ ^ 2 else 0) else 0) = 0`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hb`. Conclude with `Finset.sum_eq_zero fun c _ => if_neg (by omega)`.
+
+Both sides reduce to the same expression. Rewrite using `[h2, add_zero, Matrix.trace, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag_apply, sigTop, tailForm, Matrix.diagonal_mul, Matrix.of_apply, Finset.mul_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `ha : (Fin.castLE hi a).val < i` using `by simp`. Distinguish the cases in `hc : i ≤ c.val`. Rewrite using `[if_pos hc, if_pos ⟨ha, hc⟩]`. Establish `: star (L c (Fin.castLE hi a)) * ((sigSign p c : ℝ) : ℂ) * L c (Fin.castLE hi a) = ((sigSign p c * ‖L c (Fin.castLE hi a)‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[mul_comm (star _), mul_assoc, Complex.star_def, Complex.conj_mul']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← Complex.ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hc, if_neg (fun h => hc h.2)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem re_trace_sigTop_tail (L : Matrix (Fin N) (Fin N) ℂ) :
     (sigTop p i hi * tailForm p i hi L).trace.re = tailSum p i L := by
   rw [tailSum, sum_fin_split_castLE hi (fun b => ∑ c : Fin N,
@@ -63,6 +84,9 @@ theorem re_trace_sigTop_tail (L : Matrix (Fin N) (Fin N) ℂ) :
   · rw [if_neg hc, if_neg (fun h => hc h.2)]
     simp
 
+/- English proof (translation)
+Use `Matrix.ext fun c b => ?_` and prove the remaining obligations. Distinguish the cases in `h : Fin.castLE hi b < c`. Apply the tactic sequence `simp [colPoly, lowerMatrix, Matrix.one_apply, h, Complex.real_smul] <;> split_ifs <;>`. Simplify using `[mul_comm]`. Apply the tactic sequence `simp [colPoly, lowerMatrix, Matrix.one_apply, h] <;> split_ifs <;> simp`.
+-/
 theorem colPoly_eval (u : LowerPair N → ℂ) (t : ℝ) :
     (colPoly i hi (lowerMatrix u)).map (evalRingHom (t : ℂ)) =
       ((1 : Matrix (Fin N) (Fin N) ℂ) + lowerMatrix (t • u)).submatrix id (Fin.castLE hi) := by
@@ -72,6 +96,11 @@ theorem colPoly_eval (u : LowerPair N → ℂ) (t : ℝ) :
       simp [mul_comm]
   · simp [colPoly, lowerMatrix, Matrix.one_apply, h] <;> split_ifs <;> simp
 
+/- English proof (translation)
+Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Distinguish the cases in `h : Fin.castLE hi a < c`. Establish `h2 : c ≠ Fin.castLE hi a` using `fun h' => by rw [h'] at h; exact lt_irrefl _ h`. Simplify using `only [Matrix.map_apply, rowPoly, Matrix.of_apply, coe_evalRingHom, eval_add, eval_mul, eval_X, eval_C, Matrix.conjTranspose_apply, Matrix.submatrix_apply, id_eq, Matrix.add_apply, Matrix.one_apply, lowerMatrix, dif_pos h, if_neg h2, eval_zero, zero_add]`. Simplify using `[Complex.real_smul, mul_comm]`.
+
+Distinguish the cases in `h2 : c = Fin.castLE hi a`. Substitute `h2` using the available equality. Simplify using `[rowPoly, lowerMatrix]`. Simplify using `[rowPoly, lowerMatrix, h, h2]`.
+-/
 theorem rowPoly_eval (u : LowerPair N → ℂ) (t : ℝ) :
     (rowPoly i hi (lowerMatrix u)).map (evalRingHom (t : ℂ)) =
       (((1 : Matrix (Fin N) (Fin N) ℂ) + lowerMatrix (t • u)).submatrix id
@@ -87,6 +116,11 @@ theorem rowPoly_eval (u : LowerPair N → ℂ) (t : ℝ) :
     · subst h2; simp [rowPoly, lowerMatrix]
     · simp [rowPoly, lowerMatrix, h, h2]
 
+/- English proof (translation)
+Establish `hS : signatureForm N p = ((signatureForm N p).map C).map (evalRingHom (t : ℂ))`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[← rowPoly_eval, ← colPoly_eval, hS, ← Matrix.map_mul, ← Matrix.map_mul]`. Rewrite using `[show ∀ M : Matrix (Fin i) (Fin i) ℂ[X], (M.map (evalRingHom (t : ℂ))).det = evalRingHom (t : ℂ) M.det from fun M => ((evalRingHom (t : ℂ)).map_det M).symm]`.
+
+Rewrite using `[det_gram p i hi (lowerMatrix_strict u)]`. Simplify using the standard rewrite rules.
+-/
 theorem det_flag_eval (u : LowerPair N → ℂ) (t : ℝ) :
     ((((1 : Matrix (Fin N) (Fin N) ℂ) + lowerMatrix (t • u)).submatrix id
         (Fin.castLE hi)).conjTranspose * signatureForm N p *
@@ -102,23 +136,43 @@ theorem det_flag_eval (u : LowerPair N → ℂ) (t : ℝ) :
   rw [det_gram p i hi (lowerMatrix_strict u)]
   simp
 
+/- English proof (translation)
+Rewrite using `[sigTop, det_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Unfold `sigSign`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_det_sigTop : ‖(sigTop p i hi).det‖ = 1 := by
   rw [sigTop, det_diagonal, norm_prod]
   refine Finset.prod_eq_one fun a _ => ?_
   unfold sigSign
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[flagPs, det_flag_eval, norm_mul, norm_det_sigTop, one_mul]`.
+-/
 theorem flagPs_smul (u : LowerPair N → ℂ) (t : ℝ) :
     flagPs N p i hi (t • u) =
       Real.log ‖((1 + (X ^ 2 : ℂ[X]) • kerPoly p i hi (lowerMatrix u)).det).eval (t : ℂ)‖ := by
   rw [flagPs, det_flag_eval, norm_mul, norm_det_sigTop, one_mul]
 
+/- English proof (translation)
+Simplify using `only [flagPs_smul]`. Take `⟨h0, h1, h2⟩` from `coeff_det_one_add_X_sq_smul (kerPoly p i hi (lowerMatrix u))`. Rewrite using `[deriv_deriv_log_norm_eval _ h0 h1, h2, coeff_trace_kerPoly, re_trace_sigTop_tail]`.
+-/
 theorem deriv_deriv_flagPs (u : LowerPair N → ℂ) :
     deriv (deriv fun t : ℝ => flagPs N p i hi (t • u)) 0 = 2 * tailSum p i (lowerMatrix u) := by
   simp only [flagPs_smul]
   obtain ⟨h0, h1, h2⟩ := coeff_det_one_add_X_sq_smul (kerPoly p i hi (lowerMatrix u))
   rw [deriv_deriv_log_norm_eval _ h0 h1, h2, coeff_trace_kerPoly, re_trace_sigTop_tail]
 
+/- English proof (translation)
+Establish `hent : ∀ a b, ContDiff ℝ 2 fun z => ((1 : Matrix (Fin N) (Fin N) ℂ) + lowerMatrix (g z)) a b`. Introduce `a b`. Distinguish the cases in `h : b < a`. Simplify using `only [Matrix.add_apply, lowerMatrix, Matrix.of_apply, h, dif_pos]`. Conclude with `contDiff_const.add ((by fun_prop : ContDiff ℝ 2 fun f : LowerPair N → ℂ => f ⟨(a, b), h⟩).comp hg)`.
+
+Simplify using `only [Matrix.add_apply, lowerMatrix, Matrix.of_apply, h, dif_neg, not_false_eq_true, add_zero]`. Conclude with `contDiff_const`. Establish `hdet : ContDiff ℝ 2 fun z => ((((1 : Matrix (Fin N) (Fin N) ℂ) + lowerMatrix (g z)).submatrix id (Fin.castLE hi)).conjTranspose * signatureForm N p * ((1 + lowerMatrix (g z)).submatrix id (Fin.castLE hi))).det`. Use `contDiff_det_of_entries fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.submatrix_apply, id]`.
+
+Use `ContDiff.sum fun c _ => ContDiff.mul (ContDiff.sum fun d _ => ContDiff.mul ?_ contDiff_const) (hent _ _)` and prove the remaining obligations. Simplify `Complex.conjCLE.contDiff.comp (hent d (Fin.castLE hi a))` using `[Function.comp_def]`. Establish `h0 : ((((1 : Matrix (Fin N) (Fin N) ℂ) + lowerMatrix (g 0)).submatrix id (Fin.castLE hi)).conjTranspose * signatureForm N p * ((1 + lowerMatrix (g 0)).submatrix id (Fin.castLE hi))).det ≠ 0`. Establish `h` using `det_flag_eval p i hi (0 : LowerPair N → ℂ) 0`. Rewrite `h` using `[zero_smul]`.
+
+Rewrite using `[hg0, h, Complex.ofReal_zero, ← coeff_zero_eq_eval_zero, (coeff_det_one_add_X_sq_smul _).1, mul_one]`. Introduce `h'`. Use `norm_det_sigTop p i hi` as an intermediate fact. Rewrite `this` using `[h', norm_zero]`. Conclude with `zero_ne_one this`.
+
+Unfold `flagPs`. Conclude with `(ContDiffAt.norm ℝ hdet.contDiffAt h0).log (norm_ne_zero_iff.mpr h0)`.
+-/
 theorem contDiffAt_flagPs {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {g : E → (LowerPair N → ℂ)} (hg : ContDiff ℝ 2 g) (hg0 : g 0 = 0) :
     ContDiffAt ℝ 2 (fun z => flagPs N p i hi (g z)) 0 := by

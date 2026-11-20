@@ -3,6 +3,11 @@ open MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨k, U, Hol, hU, hEq, hD⟩` from `h`. Establish `hA : AnalyticAt ℂ Hol s₀` using `hD.analyticAt hU`. Establish `hM : MeromorphicAt (fun s => (s - s₀) ^ (-(k : ℤ)) • Hol s) s₀` using `((analyticAt_id.sub analyticAt_const).meromorphicAt.zpow (-(k : ℤ))).smul hA.meromorphicAt`. Use `hM.congr ?_` and prove the remaining obligations. Establish `hU' : U ∈ 𝓝[≠] s₀` using `nhdsWithin_le_nhds hU`.
+
+Establish `: ∀ᶠ s in 𝓝[≠] s₀, s ∈ U ∧ s ≠ s₀` using `Filter.Eventually.and hU' self_mem_nhdsWithin`. Use `filter_upwards [this] with s ⟨hsU, hne⟩`. Establish `hne' : (s - s₀) ≠ 0` using `sub_ne_zero.mpr hne`. Simplify using `only [smul_eq_mul, hEq s hsU hne, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem meromorphicAt_of_localForm {f : ℂ → ℂ} {s₀ : ℂ}
     (h : ∃ (k : ℕ) (U : Set ℂ) (Hol : ℂ → ℂ), U ∈ 𝓝 s₀ ∧ (∀ s ∈ U, s ≠ s₀ → Hol s = (s - s₀) ^ k * f s) ∧
       DifferentiableOn ℂ Hol U) : MeromorphicAt f s₀ := by
@@ -19,6 +24,15 @@ theorem meromorphicAt_of_localForm {f : ℂ → ℂ} {s₀ : ℂ}
   simp only [smul_eq_mul, hEq s hsU hne, zpow_neg, zpow_natCast]
   field_simp
 
+/- English proof (translation)
+Introduce `f₁ f₂ c h₁ h₂ hc s₀`. Establish `hM : MeromorphicOn (f₁ - f₂) Set.univ` using `fun z _ => (meromorphicAt_of_localForm (h₁ z)).sub (meromorphicAt_of_localForm (h₂ z))`. Use `set y : ℂ := ((c + 1 : ℝ) : ℂ)`. Establish `hy : meromorphicOrderAt (f₁ - f₂) y = ⊤`. Rewrite using `[meromorphicOrderAt_eq_top_iff]`.
+
+Establish `hopen : IsOpen {s : ℂ | c < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hmem : y ∈ {s : ℂ | c < s.re}` using `by simp [y]`. Establish `hN : {s : ℂ | c < s.re} ∈ 𝓝[≠] y` using `nhdsWithin_le_nhds (hopen.mem_nhds hmem)`. Use `filter_upwards [hN] with s hs`. Simplify using `[hc s hs]`.
+
+Establish `hs₀ : meromorphicOrderAt (f₁ - f₂) s₀ = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `hM.meromorphicOrderAt_ne_top_of_isPreconnected isPreconnected_univ (Set.mem_univ s₀) (Set.mem_univ y) hne hy`. Rewrite `hs₀` using `[meromorphicOrderAt_eq_top_iff]`. Use `filter_upwards [hs₀] with s hs`.
+
+Simplify `hs` using `[sub_eq_zero]`.
+-/
 theorem identity_of_localForm_halfPlane : ∀ (f₁ f₂ : ℂ → ℂ) (c : ℝ),
     (∀ s₀ : ℂ, ∃ (k : ℕ) (U : Set ℂ) (Hol : ℂ → ℂ), U ∈ 𝓝 s₀ ∧ (∀ s ∈ U, s ≠ s₀ → Hol s = (s - s₀) ^ k * f₁ s) ∧
       DifferentiableOn ℂ Hol U) →

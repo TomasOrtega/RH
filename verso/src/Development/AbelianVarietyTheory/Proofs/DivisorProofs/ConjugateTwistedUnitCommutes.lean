@@ -5,6 +5,25 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `shm : ∀ x z : G.C, sh G (x * z) = sh G z * sh G x` using `fun x z => by simp [sh]`. Establish `shs : ∀ x : G.C, sh G (sh G x) = x` using `G.star_star`. Establish `sh1 : sh G 1 = 1` using `sh_one_eq G`. Use `set u : G.C := ((c⁻¹ : G.Cˣ) : G.C) with hu`. Use `set bi : G.C := ((β⁻¹ : G.Cˣ) : G.C) with hbi_def`.
+
+Use `set S : G.C := algebraMap ℚ G.C s with hS`. Establish `hA : ∀ r : G.C, u * ((c : G.C) * r) = r` using `fun r => by rw [← mul_assoc, hu, Units.inv_mul, one_mul]`. Establish `hB : sh G (c : G.C) * sh G u = 1` using `by rw [← shm, hu, Units.inv_mul, sh1]`. Establish `hB' : ∀ r : G.C, sh G (c : G.C) * (sh G u * r) = r` using `fun r => by rw [← mul_assoc, hB, one_mul]`. Establish `hC : ∀ r : G.C, (β : G.C) * (bi * r) = r` using `fun r => by rw [← mul_assoc, hbi_def, Units.mul_inv, one_mul]`.
+
+Establish `hC' : ∀ r : G.C, bi * ((β : G.C) * r) = r` using `fun r => by rw [← mul_assoc, hbi_def, Units.inv_mul, one_mul]`. Establish `hD : (β : G.C) * bi = 1` using `by rw [hbi_def, Units.mul_inv]`. Use `set shYi : G.C := sh G ((Y⁻¹ : G.Cˣ) : G.C) with hshYi`. Establish `hE : ∀ r : G.C, sh G (Y : G.C) * (shYi * r) = r` using `fun r => by`. Rewrite using `[← mul_assoc, hshYi, ← shm, Units.inv_mul, sh1, one_mul]`.
+
+Establish `hE1 : sh G (Y : G.C) * shYi = 1` using `by rw [hshYi, ← shm, Units.inv_mul, sh1]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hshu : IsUnit (sh G u)` using `⟨⟨sh G u, sh G (c : G.C), by rw [← shm, hu, Units.mul_inv, sh1], hB⟩, rfl⟩`. Conclude with `(((Units.isUnit _).mul (Units.isUnit β)).mul hshu).mul (Units.isUnit _)`. Establish `h2 : (Y : G.C) * (u * β * sh G u) * sh G Y = S * (u * β * sh G u)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [shm, mul_assoc, hA, hB, hB', mul_one]`. Use `_ = S * (u * β * sh G u) := by`. Rewrite using `[h1, hS, ← mul_assoc, ← Algebra.commutes s u]`. Simplify using `only [mul_assoc]`.
+
+Establish `e1 : (Y : G.C) * (u * β * sh G u * bi) = S * ((u * β * sh G u) * (shYi * bi))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, hE]`. Use `_ = _ := by rw [h2, mul_assoc]`. Establish `eY : (Y : G.C) = S * ((β : G.C) * (shYi * bi))`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc, hE, hD, mul_one]`. Use `_ = _ := by rw [h0, mul_assoc]`. Establish `e2 : (u * β * sh G u * bi) * (Y : G.C) = S * ((u * β * sh G u) * (shYi * bi))`. Rewrite using `[eY]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hS, ← Algebra.commutes s bi]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [hC', ← mul_assoc, ← mul_assoc, ← Algebra.commutes s, hS]; simp only [mul_assoc]`. Conclude with `e2.trans e1.symm`.
+
+Establish `hbi : sh G bi = bi`. Establish `h3 : sh G (β : G.C) * sh G bi = 1` using `by rw [← shm, hbi_def, Units.inv_mul, sh1]`. Rewrite `h3` using `[hβ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [shm, shs, hβ, hbi, mul_assoc, hC]`.
+-/
 theorem unit_conj_form_props {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β Y c : G.Cˣ) (s : ℚ) (hβ : sh G β = β)
     (h0 : (Y : G.C) * β * sh G Y = algebraMap ℚ G.C s * β)
     (h1 : ((c : G.C) * Y * ((c⁻¹ : G.Cˣ) : G.C)) * β * sh G ((c : G.C) * Y * ((c⁻¹ : G.Cˣ) : G.C)) =
@@ -61,6 +80,9 @@ theorem unit_conj_form_props {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β Y c : 
         _ = bi := by rw [mul_assoc, h3, mul_one]
     simp only [shm, shs, hβ, hbi, mul_assoc, hC]
 
+/- English proof (translation)
+Introduce `p _ G β hβ y y₀ c hy hs`. Establish `h0 : (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * β * sh G ((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) = algebraMap ℚ G.C ((y₀ : G.Cˣ × ℚˣ).2 : ℚ) * β` using `y₀.2.1`. Establish `h1 : (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * β * sh G ((y : G.Cˣ × ℚˣ).1 : G.Cˣ) = algebraMap ℚ G.C ((y : G.Cˣ × ℚˣ).2 : ℚ) * β` using `y.2.1`. Rewrite `h1` using `[hy, hs]`. Conclude with `unit_conj_form_props G β _ c _ hβ h0 h1`.
+-/
 theorem grp_conj_unit_props : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ), sh G β = β → ∀ (y y₀ : grp G β) (c : G.Cˣ),
     (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = c * (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * ((c⁻¹ : G.Cˣ) : G.C) →
     (y : G.Cˣ × ℚˣ).2 = (y₀ : G.Cˣ × ℚˣ).2 →

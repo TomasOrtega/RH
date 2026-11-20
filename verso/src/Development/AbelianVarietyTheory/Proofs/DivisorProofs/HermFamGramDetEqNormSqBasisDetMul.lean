@@ -8,6 +8,11 @@ namespace GlobalTheory.GramChange
 
 variable {F V : Type} [Field F] [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Establish `h` using `nm.add_right σ x 0 0`. Simplify using `only [add_zero] at h`.
+
+Take the linear combination `-h`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, nm.add_right, ih]`.
+-/
 theorem form_sum_right (nm : HermFam F V) (σ : F →+* ℂ) {ι : Type} (s : Finset ι) (f : ι → V) (x : V) :
     nm.form σ x (∑ i ∈ s, f i) = ∑ i ∈ s, nm.form σ x (f i) := by
   classical
@@ -20,15 +25,26 @@ theorem form_sum_right (nm : HermFam F V) (σ : F →+* ℂ) {ι : Type} (s : Fi
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, nm.add_right, ih]
 
+/- English proof (translation)
+Rewrite using `[← nm.conj_symm σ y, form_sum_right, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => nm.conj_symm σ y (f i)`.
+-/
 theorem form_sum_left (nm : HermFam F V) (σ : F →+* ℂ) {ι : Type} (s : Finset ι) (f : ι → V) (y : V) :
     nm.form σ (∑ i ∈ s, f i) y = ∑ i ∈ s, nm.form σ (f i) y := by
   rw [← nm.conj_symm σ y, form_sum_right, map_sum]
   exact Finset.sum_congr rfl fun i _ => nm.conj_symm σ y (f i)
 
+/- English proof (translation)
+Rewrite using `[← nm.conj_symm σ y, nm.smul_right, map_mul, nm.conj_symm]`.
+-/
 theorem form_smul_left (nm : HermFam F V) (σ : F →+* ℂ) (a : F) (x y : V) :
     nm.form σ (a • x) y = starRingEnd ℂ (σ a) * nm.form σ x y := by
   rw [← nm.conj_symm σ y, nm.smul_right, map_mul, nm.conj_symm]
 
+/- English proof (translation)
+Establish `hv : ∀ j, v j = ∑ i, b.toMatrix v i j • b i` using `fun j => by`. Simplify using `[Module.Basis.toMatrix_apply, b.sum_repr]`. Use extensionality with `a c`. Simplify using `only [HermFam.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[hv a, hv c, form_sum_left]`.
+
+Repeatedly rewrite using `[form_smul_left, form_sum_right, nm.smul_right, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_eq {d : ℕ} (nm : HermFam F V) (σ : F →+* ℂ) (b : Module.Basis (Fin d) F V) (v : Fin d → V) :
     nm.gram σ v = Matrix.conjTranspose ((b.toMatrix v).map σ) * nm.gram σ ⇑b * (b.toMatrix v).map σ := by
   have hv : ∀ j, v j = ∑ i, b.toMatrix v i j • b i := fun j => by
@@ -43,6 +59,9 @@ theorem gram_eq {d : ℕ} (nm : HermFam F V) (σ : F →+* ℂ) (b : Module.Basi
   simp [Complex.star_def]
   ring
 
+/- English proof (translation)
+Establish `hd : ((b.toMatrix v).map σ).det = σ (b.det v)`. Rewrite using `[Module.Basis.det_apply, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[gram_eq nm σ b v, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hd, Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_det (F V : Type) [Field F] [AddCommGroup V] [Module F V] (nm : HermFam F V)
     (σ : F →+* ℂ) (d : ℕ) (b : Module.Basis (Fin d) F V) (v : Fin d → V) :
     (nm.gram σ v).det = ((Complex.normSq (σ (b.det v)) : ℝ) : ℂ) * (nm.gram σ ⇑b).det := by

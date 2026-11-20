@@ -38,6 +38,13 @@ section Inhabitants
 
 open ProjLine
 
+/- English proof (translation)
+Introduce `e`. Use `⟨(-e ()).toNat, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨q, w, hw, hg, -⟩` from `SmallGenTwist.smallGen_zcomb (ι := GlobalTheory (Fin 2)) y (fsH (GlobalTheory (Fin 2))) (SmallGenTwist.smallGen_fsH _) 0 (e () + n).toNat`. Establish `ha : (HermLine.zcomb (fsH (GlobalTheory (Fin 2))) (fsH (GlobalTheory (Fin 2))) ((0 : ℕ) : ℤ) (((e () + n).toNat : ℕ) : ℤ)).a = e + (n : ℤ) • fsLine1.a`. Use function extensionality and compare the values at `k`.
+
+Take `rfl : k = ()` from `rfl`. Establish `h1 : fsLine1.a () = 1` using `rfl`. Establish `h2 : (fsH (GlobalTheory (Fin 2))).a () = 1` using `by rw [SmallGenTwist.fsH_a]`. Simplify using `only [HermLine.zcomb, Pi.add_apply, Pi.smul_apply, smul_eq_mul, h1, h2]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨q, w, fun j => ha ▸ hw j, ha ▸ hg⟩`.
+-/
 theorem isAmpleOnModel_projLine : IsAmpleOnModel (ι := GlobalTheory (Fin 2)) y fsLine1.a := by
   intro e
   refine ⟨(-e ()).toNat, fun n hn => ?_⟩
@@ -53,6 +60,9 @@ theorem isAmpleOnModel_projLine : IsAmpleOnModel (ι := GlobalTheory (Fin 2)) y 
     omega
   exact ⟨q, w, fun j => ha ▸ hw j, ha ▸ hg⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨G1.hyps_inhabited.1, bot_le, G1.hyps_inhabited.2.2.2.1, G1.hyps_inhabited.2.2.2.2.2, isAmpleOnModel_projLine⟩`.
+-/
 theorem ArithNakaiMoishezon.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) (1 + 1) ∧ (⊥ : Ideal (MRing (GlobalTheory (Fin 2)))) ≤ mCoordIdeal y ∧
       IsSemipositiveRel ⊥ (mCoordIdeal (ι := GlobalTheory (Fin 2)) y) fsLine1 ∧ IsConjInvariantH fsLine1 ∧

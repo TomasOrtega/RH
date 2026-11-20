@@ -46,6 +46,11 @@ def VolumeRatio (D : D7) : Prop :=
   ∀ (W : HSpace D.host.E) (M P Q : ℕ), IsKind W M P Q → 3 ≤ M →
     (1 ≤ P → Concl D W M P Q 1 (P - 1) Q) ∧ (1 ≤ Q → Concl D W M P Q (-1) P (Q - 1))
 
+/- English proof (translation)
+Introduce `W P Q V V' h h'`. Take `⟨hV, ⟨μ, hμ⟩, hall⟩` from `h`. Take `⟨hV', -, hall'⟩` from `h'`. Take `⟨⟨𝓕, h𝓕⟩, h1⟩` from `hall μ hμ`. Establish `h2` using `(hall' μ hμ).2 𝓕 h𝓕`.
+
+Conclude with `(ENNReal.ofReal_eq_ofReal_iff hV.le hV'.le).1 ((h1 𝓕 h𝓕).symm.trans h2)`.
+-/
 theorem IsVol.unique (D : D7) : letI := D.host.cmStar;
     ∀ (W : HSpace D.host.E) (P Q : ℕ) (V V' : ℝ), IsVol D W P Q V → IsVol D W P Q V' → V = V' := by
   intro W P Q V V' h h'
@@ -55,6 +60,15 @@ theorem IsVol.unique (D : D7) : letI := D.host.cmStar;
   have h2 := (hall' μ hμ).2 𝓕 h𝓕
   exact (ENNReal.ofReal_eq_ofReal_iff hV.le hV'.le).1 ((h1 𝓕 h𝓕).symm.trans h2)
 
+/- English proof (translation)
+Set `_` to `D.host.cmStar`. Establish `key : ∀ (W : HSpace D.host.E) (P Q : ℕ) (β : D.host.E) (P' Q' : ℕ), W.SigOK → (∀ τ, W.sig τ = (P, Q)) → Concl D W W.rank P Q β P' Q' → ∃ x : W.V, W.hT x x = β ∧ ∃ (W' : HSpace D.host.E) (ι : W'.V →ₗ[D.host.E] W.V), HSpace.IsIsomEmb W' W ι ∧ LinearMap.range ι = LinearMap.ker (W.hT …`. Introduce `W P Q β P' Q' hs hsig hc`. Take `⟨⟨x, hx⟩, hall⟩` from `hc`. Take `⟨⟨W', ι, hp, hk⟩, hall'⟩` from `hall x hx`.
+
+Take `⟨-, V, V', hV, hV', hr⟩` from `hall' W' ι hp hk.2.1`. Establish `e1 : V = D.vol W` using `IsVol.unique D W P Q _ _ hV ⟨D.vol_pos W, ht W P Q hs hsig⟩`. Establish `e2 : V' = D.vol W'` using `IsVol.unique D W' P' Q' _ _ hV' ⟨D.vol_pos W', ht W' P' Q' hk.2.1 hk.2.2⟩`. Use `⟨x, hx, W', ι, fun a b => hp.2.1 b a, ?_, hk.2.1, hk.2.2, by rw [← e1, ← e2, hr]⟩` and prove the remaining obligations. Use extensionality with `y`.
+
+Conclude with `hp.2.2 y`. Introduce `W P Q hs hsig h3 s hPQ`. Establish `hW` using `h W W.rank P Q ⟨rfl, hs, hsig⟩ h3`. Consider the cases of `s with`. Consider the case `true => simpa using key W P Q 1 (P - 1) Q hs hsig (hW.1 (by simpa using hPQ))`.
+
+Consider the case `false => simpa using key W P Q (-1) P (Q - 1) hs hsig (hW.2 (by simpa using hPQ))`.
+-/
 theorem volumeComparison_of_ratio (D : D7) (h : VolumeRatio D) (ht : VolTie D) : Conclusion2 D := by
   let _ := D.host.cmStar
   have key : ∀ (W : HSpace D.host.E) (P Q : ℕ) (β : D.host.E) (P' Q' : ℕ), W.SigOK →

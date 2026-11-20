@@ -4,6 +4,15 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 
 namespace GlobalTheory.RankFibreKer
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a d Y ⟨J0, hJ0⟩`. Take `⟨M, -, hM⟩` from `Finset.exists_max_image Finset.univ (fun J => valuation k (minor Y J)) ⟨J0, Finset.mem_univ _⟩`. Use `set S := Finset.univ.filter (fun J => valuation k (minor Y J) = valuation k (minor Y M)) with hS`. Take `⟨J, hJS, hJmin⟩` from `S.exists_min_image (fun J => idx J) ⟨M, by simp [S]⟩`. Establish `hJ : valuation k (minor Y J) = valuation k (minor Y M)` using `(Finset.mem_filter.1 hJS).2`.
+
+Use `⟨J, ?_, fun J' => ⟨?_, fun hlt => ?_⟩⟩` and prove the remaining obligations. Introduce `h0`. Apply `hJ0` to reduce the goal to its premises. Establish `hM0 : valuation k (minor Y M) = 0` using `by rw [← hJ, h0, map_zero]`. Establish `h1` using `hM J0 (Finset.mem_univ _)`.
+
+Rewrite `h1` using `[hM0]`. Conclude with `(Valuation.zero_iff _).1 (le_antisymm h1 zero_le')`. Rewrite using `[hJ]`. Conclude with `hM J' (Finset.mem_univ _)`. Rewrite using `[hJ]`.
+
+Use `lt_of_le_of_ne (hM J' (Finset.mem_univ _)) fun heq => ?_` and prove the remaining obligations. Use `hJmin J' (by simp [S, heq])` as an intermediate fact. Conclude with `absurd hlt (not_lt.2 this)`.
+-/
 theorem exists_isFirstMax : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a d : ℕ) (Y : Matrix (Fin a) (Fin d) k),
     (∃ J, minor Y J ≠ 0) → ∃ J, IsFirstMax Y J := by

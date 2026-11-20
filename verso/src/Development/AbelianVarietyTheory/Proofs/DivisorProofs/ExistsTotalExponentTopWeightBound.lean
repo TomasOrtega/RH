@@ -23,10 +23,18 @@ open Finset
 
 private def extN {n : ℕ} (ν : Fin n → ℕ) : ℕ → ℕ := fun i => if h : i < n then ν ⟨i, h⟩ else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.CohomologicalDescent.LD.res, extN, i.2]`.
+-/
 private theorem res_extN {n : ℕ} (ν : Fin n → ℕ) : Formalism.CohomologicalDescent.LD.res n (extN ν) = ν := by
   funext i
   simp [Formalism.CohomologicalDescent.LD.res, extN, i.2]
 
+/- English proof (translation)
+Establish `hanti : Antitone (Formalism.CohomologicalDescent.LD.res n (extN ν))` using `by rw [res_extN]; exact hν`. Establish `hI : ∀ a < n, (0 : ℤ) ≤ Formalism.CohomologicalDescent.UnitNormBounds.UN n (extN ν) a ∧ Formalism.CohomologicalDescent.UnitNormBounds.UN n (extN ν) a ≤ 0 + (w : ℤ)`. Introduce `a ha`. Establish `h` using `hw ⟨a, ha⟩`. Simplify using `only [Formalism.CohomologicalDescent.UnitNormBounds.UN, extN, ha, dif_pos]`.
+
+Simplify using `only at h`. Apply the tactic sequence `constructor <;> omega`. Establish `h` using `Formalism.CohomologicalDescent.E.exIntervalLt_of_exCut GlobalTheory.LeviCut.exCut n (extN ν) hanti l hl 0 w hI`. Rewrite `h` using `[res_extN]`. Then use the resulting hypothesis.
+-/
 private theorem exZ_le_of_width {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (w : ℕ)
     (hw : ∀ a : Fin n, ν a + (n - 1 - a) ≤ w) (l : ℕ) (hl : l.Prime) :
     Formalism.CohomologicalDescent.LA.exZ n n le_rfl ν l ≤ n.choose 2 * Nat.log l w ∧
@@ -42,6 +50,21 @@ private theorem exZ_le_of_width {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone �
   have h := Formalism.CohomologicalDescent.E.exIntervalLt_of_exCut GlobalTheory.LeviCut.exCut n (extN ν) hanti l hl 0 w hI
   rwa [res_extN] at h
 
+/- English proof (translation)
+Establish `hpos : 0 < n` using `lt_of_le_of_lt (Nat.zero_le _) a.2`. Establish `ha` using `a.2`. Unfold `GlobalTheory.FunObj.wtOf`. Use `split_ifs with h`. Take `⟨z, hz⟩` from `GlobalTheory.SignedHC.highestWeight_int h.1 h.2 a`.
+
+Take `⟨z', hz'⟩` from `GlobalTheory.SignedHC.highestWeight_int h.1 h.2 ⟨n - 1, by omega⟩`. Simplify using `only [Formalism.BasicNotions.DomWeight.natW, Formalism.BasicNotions.DomWeight.detShift, dif_pos hpos, hz, hz', Int.floor_intCast]`. Establish `e1 : (z : ℚ) = GlobalTheory.SignedHC.descEnum E h.1 a - (((n : ℚ) - 1) / 2 - ((a : ℕ) : ℚ))` using `hz.symm`. Establish `e2 : (z' : ℚ) = GlobalTheory.SignedHC.descEnum E h.1 ⟨n - 1, by omega⟩ - (((n : ℚ) - 1) / 2 - ((n - 1 : ℕ) : ℚ))` using `hz'.symm`. Establish `e1R : (z : ℝ) = (GlobalTheory.SignedHC.descEnum E h.1 a : ℝ) - (((n : ℝ) - 1) / 2 - ((a : ℕ) : ℝ))`.
+
+Use `congrArg (fun q : ℚ => (q : ℝ)) e1` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `e2R : (z' : ℝ) = (GlobalTheory.SignedHC.descEnum E h.1 ⟨n - 1, by omega⟩ : ℝ) - (((n : ℝ) - 1) / 2 - ((n - 1 : ℕ) : ℝ))`. Use `congrArg (fun q : ℚ => (q : ℝ)) e2` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Establish `m1` using `hE _ (GlobalTheory.SignedHC.descEnum_mem E h.1 a)`. Establish `m2` using `hE _ (GlobalTheory.SignedHC.descEnum_mem E h.1 ⟨n - 1, by omega⟩)`. Establish `c1 : ((n - 1 - (a : ℕ) : ℕ) : ℝ) + 1 + ((a : ℕ) : ℝ) = n`.
+
+Establish `: n - 1 - (a : ℕ) + 1 + (a : ℕ) = n` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `c2 : ((n - 1 : ℕ) : ℝ) + 1 = n`. Establish `: n - 1 + 1 = n` using `by omega`. Conclude with `this` after adjusting the coercions.
+
+Establish `key : (((z - z' : ℤ) : ℝ)) + ((n - 1 - (a : ℕ) : ℕ) : ℝ) ≤ w`. Use `push_cast`. Combine the linear relations using `[m1.1, m1.2, m2.1, m2.2]`. Establish `key' : (z - z') + ((n - 1 - (a : ℕ) : ℕ) : ℤ) ≤ w` using `by exact_mod_cast key`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [Formalism.BasicNotions.DomWeight.natW, Formalism.BasicNotions.DomWeight.detShift, Pi.zero_apply, dite_eq_ite, ite_self, sub_zero, Int.toNat_zero, zero_add]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem natW_wtOf_add_le (n : ℕ) (E : Finset ℚ) (lo hi : ℝ) (hE : ∀ x ∈ E, lo ≤ (x : ℝ) ∧ (x : ℝ) ≤ hi) (w : ℕ)
     (hw : hi - lo ≤ w) (hn : n - 1 ≤ w) (a : Fin n) :
     (GlobalTheory.FunObj.wtOf n E).natW a + (n - 1 - a) ≤ w := by
@@ -81,6 +104,23 @@ private theorem natW_wtOf_add_le (n : ℕ) (E : Finset ℚ) (lo hi : ℝ) (hE : 
       sub_zero, Int.toNat_zero, zero_add]
     omega
 
+/- English proof (translation)
+Use `set S := (Finset.range (w + 1)).filter Nat.Prime with hS`. Use `⟨∏ p ∈ S, p ^ e p, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_pos fun p hp => pow_pos (Finset.mem_filter.1 hp).2.pos _`. Introduce `p hp`. Distinguish the cases in `hpw : p ≤ w`.
+
+Conclude with `Finset.dvd_prod_of_mem _ (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), hp⟩)`. Rewrite using `[(he p hp).2 (by omega), pow_zero]`. Conclude with `one_dvd _`. Rewrite using `[Nat.cast_prod, Real.log_prod (fun p hp => by`. Use `(Finset.mem_filter.1 hp).2.pos` as an intermediate fact.
+
+Conclude with `(pow_pos this (e p)).ne')]` after adjusting the coercions. Establish `hterm : ∀ p ∈ S, Real.log ((p ^ e p : ℕ) : ℝ) ≤ A * Real.log w`. Introduce `p hp`. Establish `hp'` using `(Finset.mem_filter.1 hp).2`. Establish `hpw : p ≤ w` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 (Finset.mem_filter.1 hp).1)`.
+
+Establish `hw0 : w ≠ 0` using `by have := hp'.two_le; omega`. Rewrite using `[Nat.cast_pow, Real.log_pow]`. Establish `h1 : (e p : ℝ) ≤ A * Nat.log p w` using `by exact_mod_cast (he p hp').1`. Establish `h2 : (Nat.log p w : ℝ) * Real.log p ≤ Real.log w`. Establish `h3` using `Nat.pow_log_le_self p hw0`.
+
+Rewrite using `[← Real.log_pow]`. Establish `hp0 : (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast hp'.pos`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Conclude with `h3` after adjusting the coercions. Establish `hlogp : 0 ≤ Real.log p` using `Real.log_nonneg (by exact_mod_cast hp'.one_lt.le)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcard : S.card ≤ w`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `Finset.mem_filter.1 hp`. Establish `h2` using `h1.2.one_lt`.
+
+Establish `h3` using `Finset.mem_range.1 h1.1`. Rewrite using `[Finset.mem_Icc]`. Use the proof step `omega)`. Use `_ = w := by simp`. Establish `hlw : 0 ≤ Real.log w` using `Real.log_natCast_nonneg w`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (mul_nonneg (by positivity) hlw)` to reduce the goal to its premises. Conclude with `hcard` after adjusting the coercions. Use `_ = A * w * Real.log w := by ring`.
+-/
 private theorem exists_prod_bound (w A : ℕ) (e : ℕ → ℕ)
     (he : ∀ p : ℕ, p.Prime → e p ≤ A * Nat.log p w ∧ (w < p → e p = 0)) :
     ∃ Dn : ℕ, 0 < Dn ∧ (∀ p : ℕ, p.Prime → p ^ e p ∣ Dn) ∧
@@ -136,6 +176,51 @@ namespace GlobalTheory.FinSize
 
 open Finset GlobalTheory.SignedHC
 
+/- English proof (translation)
+Substitute `hC` using the available equality. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hSc, hbe, -⟩` from `hS`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`. Establish `hga : 2 * bigN D ^ 3 + 2 * sLen D + 3 ≤ gap D 1` using `le_trans (le_max_right _ _) (le_max_left _ _)`.
+
+Establish `hN3 : bigN D ≤ bigN D ^ 3` using `Nat.le_self_pow (by norm_num) _`. Establish `htN : D.R.t ≤ bigN D`. Unfold `bigN`. Establish `h1 : D.R.t ≤ D.R.m * (D.R.t + sLen D + 1)` using `le_trans (le_trans (Nat.le_add_right _ _) (Nat.le_add_right _ _)) (Nat.le_mul_of_pos_left _ (by omega))`. Conclude with `le_trans h1 (Nat.le_add_left _ _)`.
+
+Establish `hScpos` using `large₂.Sc_pos`. Establish `htga : (D.R.t : ℝ) + 3 ≤ (gap D 1 : ℝ)` using `by exact_mod_cast (by omega : D.R.t + 3 ≤ gap D 1)`. Establish `hm1 : (3 : ℝ) ≤ (D.R.m : ℝ) + 1`. Establish `: (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hga0 : (0 : ℝ) ≤ (gap D 1 : ℝ)` using `Nat.cast_nonneg _`. Establish `hmγ : (gap D 1 : ℝ) ≤ ((D.R.m : ℝ) + 1) * (gap D 1 : ℝ)` using `by nlinarith`. Establish `htb : (D.R.t : ℝ) ≤ large₂.sc.b` using `by linarith`. Establish `hb1 : 3 ≤ large₂.sc.b` using `by linarith`. Use `set G := num D 1 τ with hG`.
+
+Establish `hGm : G.m = D.R.m` using `rfl`. Establish `hGga : G.ga = gap D 1` using `rfl`. Establish `hGt : G.t = D.R.t` using `rfl`. Establish `hSc' : large₂.Sc + ((G.m : ℝ) + 1) * (G.ga : ℝ) + 1 / 2 ≤ large₂.sc.b` using `hSc`. Establish `hmγ' : (0 : ℝ) ≤ ((G.m : ℝ) + 1) * (G.ga : ℝ)` using `by positivity`.
+
+Establish `hv : ∀ i, 2 ≤ i → i ≤ D.R.k → (-1 : ℝ) ≤ ((G.v i : ℤ) : ℝ) ∧ ((G.v i : ℤ) : ℝ) ≤ large₂.Sc`. Introduce `i h1 h2`. Establish `hi : i - 2 < D.R.k - 1` using `by omega`. Establish `hc` using `large₂.cloud_v τ ⟨i - 2, hi⟩`. Establish `e : G.v i = ⌊(D.hc τ).v ⟨i - 2, hi⟩⌋` using `by show GlobalTheory.SignedHC.GridData.extend 2 (D.hc τ).v i = _`.
+
+Unfold `GlobalTheory.SignedHC.GridData.extend`. Rewrite using `[dif_pos hi]`. Rewrite using `[e]`. Establish `f1 : ((⌊(D.hc τ).v ⟨i - 2, hi⟩⌋ : ℤ) : ℚ) ≤ (D.hc τ).v ⟨i - 2, hi⟩` using `Int.floor_le _`. Establish `f2 : (D.hc τ).v ⟨i - 2, hi⟩ < ((⌊(D.hc τ).v ⟨i - 2, hi⟩⌋ : ℤ) : ℚ) + 1` using `Int.lt_floor_add_one _`.
+
+Establish `g1 : ((⌊(D.hc τ).v ⟨i - 2, hi⟩⌋ : ℤ) : ℝ) ≤ (((D.hc τ).v ⟨i - 2, hi⟩ : ℚ) : ℝ)` using `by exact_mod_cast f1`. Establish `g2 : (((D.hc τ).v ⟨i - 2, hi⟩ : ℚ) : ℝ) < ((⌊(D.hc τ).v ⟨i - 2, hi⟩⌋ : ℤ) : ℝ) + 1` using `by exact_mod_cast f2`. Apply the tactic sequence `constructor <;> linarith [hc.1, hc.2]`. Establish `he : ∀ l, 1 ≤ l → l ≤ D.R.m → (-1 : ℝ) ≤ ((G.e l : ℤ) : ℝ) ∧ ((G.e l : ℤ) : ℝ) ≤ 4 * large₂.sc.b`. Introduce `l h1 h2`.
+
+Establish `hl : l - 1 < D.R.m` using `by omega`. Establish `hc` using `hbe τ ⟨l - 1, hl⟩`. Establish `hgap` using `(D.hc τ).gap_be ⟨l - 1, hl⟩`. Establish `e : G.e l = ⌊(D.hc τ).e ⟨l - 1, hl⟩⌋` using `by show GlobalTheory.SignedHC.GridData.extend 1 (D.hc τ).e l = _`. Unfold `GlobalTheory.SignedHC.GridData.extend`.
+
+Rewrite using `[dif_pos hl]`. Rewrite using `[e]`. Establish `hpos : (0 : ℚ) < (D.hc τ).e ⟨l - 1, hl⟩`. Establish `h0 : (0 : ℚ) < (D.hc τ).b ⟨l - 1, hl⟩` using `by exact_mod_cast hc.1`. Establish `h3 : (0 : ℚ) ≤ (D.R.t : ℚ)` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `f1 : ((⌊(D.hc τ).e ⟨l - 1, hl⟩⌋ : ℤ) : ℚ) ≤ (D.hc τ).e ⟨l - 1, hl⟩` using `Int.floor_le _`. Establish `f2 : (D.hc τ).e ⟨l - 1, hl⟩ < ((⌊(D.hc τ).e ⟨l - 1, hl⟩⌋ : ℤ) : ℚ) + 1` using `Int.lt_floor_add_one _`. Establish `g1 : ((⌊(D.hc τ).e ⟨l - 1, hl⟩⌋ : ℤ) : ℝ) ≤ (((D.hc τ).e ⟨l - 1, hl⟩ : ℚ) : ℝ)` using `by exact_mod_cast f1`. Establish `g2 : (((D.hc τ).e ⟨l - 1, hl⟩ : ℚ) : ℝ) < ((⌊(D.hc τ).e ⟨l - 1, hl⟩⌋ : ℤ) : ℝ) + 1` using `by exact_mod_cast f2`.
+
+Establish `g3 : (0 : ℝ) < (((D.hc τ).e ⟨l - 1, hl⟩ : ℚ) : ℝ)` using `by exact_mod_cast hpos`. Establish `g4 : (((D.hc τ).e ⟨l - 1, hl⟩ : ℚ) : ℝ) ≤ 4 * large₂.sc.b` using `hc.2`. Apply the tactic sequence `constructor <;> linarith`. Establish `hv2` using `hv 2 le_rfl (by omega)`. Introduce `x hx`.
+
+Establish `hx' : x ∈ G.weightX D.R.m`. Rewrite `hx` using `[show Node.par D 1 (.top D.R.m) τ = GlobalTheory.SignedHC.plus (G.weightX D.R.m) from rfl, GlobalTheory.SignedHC.entries_plus]`. Conclude with `hx`. Break down `GlobalTheory.SignedHC.GridData.mem_weightX.1 hx' with h | h | ⟨i, h1, h2, h⟩ | ⟨l, h1, h2, h⟩` into its components or cases. Take `⟨i, hi, rfl⟩` from `GlobalTheory.SignedHC.GridData.mem_tops.1 h`.
+
+Establish `hiR : (i : ℝ) ≤ (G.m : ℝ)` using `by exact_mod_cast hi`. Establish `hi0 : (0 : ℝ) ≤ (i : ℝ)` using `Nat.cast_nonneg _`. Establish `p1 : 0 ≤ ((G.m : ℝ) + 1 - i) * (G.ga : ℝ)` using `mul_nonneg (by linarith) (Nat.cast_nonneg _)`. Establish `p2 : ((G.m : ℝ) + 1 - i) * (G.ga : ℝ) ≤ ((G.m : ℝ) + 1) * (G.ga : ℝ)` using `mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)`. Simplify using `only [GlobalTheory.SignedHC.GridData.a]`.
+
+Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨i, h1, h2, rfl⟩` from `GlobalTheory.SignedHC.GridData.mem_cloudHalf.1 h`. Establish `hvi` using `hv i h1 h2`. Simplify using `only [GlobalTheory.SignedHC.GridData.vHalf]`.
+
+Use `push_cast`. Apply the tactic sequence `constructor <;> linarith`. Establish `hb` using `GlobalTheory.ChiGrid.blockC'_between (num_nearMid D 1 τ) (odd_sLen D).pos (sLen_lt_gap D 1) h1 h2 h`. Establish `c1 : ((G.a i : ℚ) : ℝ) < (x : ℝ)` using `by exact_mod_cast hb.1`. Establish `c2 : (x : ℝ) < ((G.a i + G.ga : ℚ) : ℝ)` using `by exact_mod_cast hb.2`.
+
+Simplify using `only [GlobalTheory.SignedHC.GridData.a] at c1 c2`. Move the coercions through the operations in `at c1 c2`. Establish `hiR : (i : ℝ) ≤ (G.m : ℝ)` using `by exact_mod_cast h2`. Establish `hi1 : (1 : ℝ) ≤ (i : ℝ)` using `by exact_mod_cast h1`. Establish `p1 : 0 ≤ ((G.m : ℝ) + 1 - i) * (G.ga : ℝ)` using `mul_nonneg (by linarith) (Nat.cast_nonneg _)`.
+
+Establish `p2 : ((G.m : ℝ) + 1 - i) * (G.ga : ℝ) + (G.ga : ℝ) ≤ ((G.m : ℝ) + 1) * (G.ga : ℝ)`. Establish `: ((G.m : ℝ) + 1 - i) * (G.ga : ℝ) + (G.ga : ℝ) = ((G.m : ℝ) + 1) * (G.ga : ℝ) - (i - 1) * (G.ga : ℝ)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Establish `: 0 ≤ ((i : ℝ) - 1) * (G.ga : ℝ)` using `mul_nonneg (by linarith) (Nat.cast_nonneg _)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `constructor <;> linarith`. Establish `hab` using `abs_le.1 (GlobalTheory.SignedHC.abs_sub_le_of_mem_block h)`. Establish `hel` using `he l h1 h2`. Establish `c1 : (x : ℝ) ≤ -((G.e l : ℤ) : ℝ) + (G.t : ℝ) / 2`.
+
+Establish `h' : x ≤ -((G.e l : ℤ) : ℚ) + (G.t : ℚ) / 2` using `by push_cast at hab; linarith [hab.2]`. Establish `h'' : (x : ℝ) ≤ ((-((G.e l : ℤ) : ℚ) + (G.t : ℚ) / 2 : ℚ) : ℝ)` using `Rat.cast_le.2 h'`. Move the coercions through the operations in `at h''`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c2 : -((G.e l : ℤ) : ℝ) - (G.t : ℝ) / 2 ≤ (x : ℝ)`.
+
+Establish `h' : -((G.e l : ℤ) : ℚ) - (G.t : ℚ) / 2 ≤ x` using `by push_cast at hab; linarith [hab.1]`. Establish `h'' : ((-((G.e l : ℤ) : ℚ) - (G.t : ℚ) / 2 : ℚ) : ℝ) ≤ (x : ℝ)` using `Rat.cast_le.2 h'`. Move the coercions through the operations in `at h''`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htb' : (G.t : ℝ) ≤ large₂.sc.b` using `htb`.
+
+Establish `ht0 : (0 : ℝ) ≤ (G.t : ℝ)` using `Nat.cast_nonneg _`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 private theorem entries_top_bound (D : D7) (large₂ : SizeData₂ D) (hS : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂) (τ : D.what₂.Tau)
     (C : ℝ) (hC : C = 1) :
     ∀ x ∈ GlobalTheory.SignedHC.entries (Node.par D C (.top D.R.m) τ),
@@ -253,6 +338,13 @@ private theorem entries_top_bound (D : D7) (large₂ : SizeData₂ D) (hS : Glob
     have ht0 : (0 : ℝ) ≤ (G.t : ℝ) := Nat.cast_nonneg _
     constructor <;> linarith
 
+/- English proof (translation)
+Establish `hm` using `D.R.two_le_m`. Establish `key : ∀ j, 1 ≤ j → j ≤ D.R.m → (G.V (.top j)).rank = rankX D j`. Introduce `j h1 h2`. Consider the cases of `j with`. Consider the case `zero => omega`.
+
+Consider the case `succ j => exact (G.sp.X_is (j + 1) h1 h2).rank`. Rewrite using `[key D.R.m (by omega) le_rfl]`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r + 1 = D.R.k + D.R.m` using `by unfold Ranks.r; omega`. Simplify using `only [rankX, rankP, nRk, bigN, sLen]`.
+
+Rewrite using `[show D.R.r + 6 - 1 = D.R.r + 5 by omega, hr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem rank_top {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) :
     (G.V (.top D.R.m)).rank = bigN D := by
   have hm := D.R.two_le_m
@@ -272,10 +364,40 @@ end GlobalTheory.FinSize
 
 namespace GlobalTheory.FinSize
 
+/- English proof (translation)
+Introduce `i j hij` and use `by unfold Formalism.BasicNotions.DomWeight.natW exact Int.toNat_le_toNat (by have := l.anti hij; omega)`.
+-/
 private theorem natW_anti' {n : ℕ} (l : Formalism.BasicNotions.DomWeight n) : Antitone l.natW := fun i j hij => by
   unfold Formalism.BasicNotions.DomWeight.natW
   exact Int.toNat_le_toNat (by have := l.anti hij; omega)
 
+/- English proof (translation)
+Use `⟨0, fun CF _ => ⟨100, fun ε => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ hch`. Establish `hch' : ch.sc = ⟨1, CF, large₂.sc.b⟩` using `hch`. Establish `hsc : ch.sc.cGap = 1` using `by rw [hch']`. Establish `hsize` using `hS.size`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, hSc, -, -⟩` from `hS.size`. Establish `hm2` using `D.R.two_le_m`. Establish `hga : 2 * bigN D ^ 3 + 2 * sLen D + 3 ≤ gap D 1` using `le_trans (le_max_right _ _) (le_max_left _ _)`. Establish `hN3 : bigN D ≤ bigN D ^ 3` using `Nat.le_self_pow (by norm_num) _`. Establish `hNga : (bigN D : ℝ) + 3 ≤ (gap D 1 : ℝ)` using `by exact_mod_cast (by omega : bigN D + 3 ≤ gap D 1)`.
+
+Establish `hm1 : (3 : ℝ) ≤ (D.R.m : ℝ) + 1`. Establish `: (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0 : (0 : ℝ) ≤ (bigN D : ℝ)` using `Nat.cast_nonneg _`. Establish `hγ3 : (3 : ℝ) ≤ (gap D 1 : ℝ)` using `by linarith`.
+
+Establish `hmγ : (gap D 1 : ℝ) ≤ ((D.R.m : ℝ) + 1) * (gap D 1 : ℝ)` using `le_mul_of_one_le_left (by linarith) (by linarith)`. Establish `h9 : (3 : ℝ) * 3 ≤ ((D.R.m : ℝ) + 1) * (gap D 1 : ℝ)` using `mul_le_mul hm1 hγ3 (by norm_num) (by linarith)`. Establish `hScpos` using `large₂.Sc_pos`. Establish `hb9 : 9 ≤ large₂.sc.b` using `by linarith`. Establish `hbN : (bigN D : ℝ) ≤ large₂.sc.b` using `by linarith`.
+
+Use `set b := large₂.sc.b with hb`. Establish `hn : (ch.G.V (.top D.R.m)).rank = bigN D` using `rank_top ch.G`. Use `set W : ℕ := ⌈8 * b⌉₊ with hW`. Establish `hW1 : 8 * b ≤ (W : ℝ)` using `Nat.le_ceil _`. Establish `hW2 : (W : ℝ) < 8 * b + 1` using `Nat.ceil_lt_add_one (by linarith)`.
+
+Establish `hnW : (ch.G.V (.top D.R.m)).rank - 1 ≤ W`. Establish `h1 : ((ch.G.V (.top D.R.m)).rank : ℝ) ≤ W` using `by rw [hn]; linarith`. Establish `h2 : (ch.G.V (.top D.R.m)).rank ≤ W` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Establish `hwidth : ∀ (τ : D.what₂.Tau) (a : Fin (ch.G.V (.top D.R.m)).rank), (wt ch.G (.top D.R.m) τ).natW a + ((ch.G.V (.top D.R.m)).rank - 1 - a) ≤ W`.
+
+Introduce `τ a`. Conclude with `natW_wtOf_add_le (ch.G.V (.top D.R.m)).rank (GlobalTheory.SignedHC.entries (Node.par D ch.sc.cGap (.top D.R.m) τ)) (-(6 * b)) (2 * b) (entries_top_bound D large₂ hsize τ _ hsc) W (by linarith) hnW a`. Establish `hex : ∀ p : ℕ, p.Prime → (∑ τ, Formalism.CohomologicalDescent.LA.exZ _ _ le_rfl (wt ch.G (.top D.R.m) τ).natW p) ≤ (Fintype.card D.what₂.Tau * ((ch.G.V (.top D.R.m)).rank).choose 2) * Nat.log p W ∧ (W < p → (∑ τ, Formalism.CohomologicalDescent.LA.exZ _ _ le_rfl (wt ch.G (.top D.R …`. Introduce `p hp`. Establish `hτ` using `fun τ => exZ_le_of_width _ (natW_anti' (wt ch.G (.top D.R.m) τ)) W (hwidth τ) p hp`.
+
+Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Introduce `hWp`. Conclude with `Finset.sum_eq_zero fun τ _ => (hτ τ).2 hWp`. Take `⟨Dn, h0, hdvd, hlog⟩` from `exists_prod_bound W _ (fun p => ∑ τ, Formalism.CohomologicalDescent.LA.exZ _ _ le_rfl (wt ch.G (.top D.R.m) τ).natW p) hex`.
+
+Use `⟨by linarith, Dn, h0, hdvd, ?_⟩` and prove the remaining obligations. Establish `hA : ((Fintype.card D.what₂.Tau * ((ch.G.V (.top D.R.m)).rank).choose 2 : ℕ) : ℝ) ≤ (D.R.f : ℝ) * (bigN D : ℝ) ^ 2`. Establish `h1 : ((ch.G.V (.top D.R.m)).rank).choose 2 ≤ (ch.G.V (.top D.R.m)).rank ^ 2`. Rewrite using `[Nat.choose_two_right, sq]`. Conclude with `le_trans (Nat.div_le_self _ _) (Nat.mul_le_mul_left _ (Nat.sub_le _ _))`.
+
+Establish `h2 : Fintype.card D.what₂.Tau * ((ch.G.V (.top D.R.m)).rank).choose 2 ≤ D.R.f * bigN D ^ 2`. Rewrite using `[D.what₂.card_Tau, ← hn]`. Conclude with `Nat.mul_le_mul_left _ h1`. Conclude with `h2` after adjusting the coercions. Establish `hWb : (W : ℝ) ≤ 9 * b` using `by linarith`.
+
+Establish `hW0 : (0 : ℝ) < W` using `by linarith`. Establish `hlogW : Real.log W ≤ 2 * Real.log b`. Establish `h1 : Real.log W ≤ Real.log (9 * b)` using `Real.log_le_log hW0 hWb`. Establish `h2 : Real.log (9 * b) = Real.log 9 + Real.log b` using `Real.log_mul (by norm_num) (by linarith)`. Establish `h3 : Real.log 9 ≤ Real.log b` using `Real.log_le_log (by norm_num) hb9`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogW0 : 0 ≤ Real.log W` using `Real.log_natCast_nonneg W`. Establish `hlogb : 0 ≤ Real.log b` using `Real.log_nonneg (by linarith)`. Establish `hP : 0 ≤ (D.R.f : ℝ) * (bigN D : ℝ) ^ 2` using `by positivity`. Establish `s1 : ((Fintype.card D.what₂.Tau * ((ch.G.V (.top D.R.m)).rank).choose 2 : ℕ) : ℝ) * W ≤ ((D.R.f : ℝ) * (bigN D : ℝ) ^ 2) * (9 * b)` using `mul_le_mul hA hWb (Nat.cast_nonneg _) hP`.
+
+Establish `s2` using `mul_le_mul s1 hlogW hlogW0 (mul_nonneg hP (by linarith))`. Establish `hQ : 0 ≤ (D.R.f : ℝ) * (bigN D : ℝ) ^ 2 * b * Real.log b` using `mul_nonneg (mul_nonneg hP (by linarith)) hlogb`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exponent_bound : ∃ CF0 : ℝ, ∀ CF : ℝ, CF0 ≤ CF → ∃ K0 : ℝ, ∀ ε : ℝ, ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε → x₀ ≤ large₂.sc.x →
     ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)
       (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), HidaSetting large₂ R F →
@@ -368,6 +490,9 @@ end GlobalTheory.FinSize
 
 end
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FinSize.exponent_bound`.
+-/
 theorem _root_.GlobalTheory.T.exists_totalExponent_topWeight_bound : ∃ CF0 : ℝ, ∀ CF : ℝ, CF0 ≤ CF → ∃ K0 : ℝ, ∀ ε : ℝ, ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε → x₀ ≤ large₂.sc.x →
     ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)
       (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), HidaSetting large₂ R F →

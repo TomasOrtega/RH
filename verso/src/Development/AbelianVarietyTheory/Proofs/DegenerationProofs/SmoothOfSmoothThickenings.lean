@@ -13,6 +13,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SmoothThickenings
 
+/- English proof (translation)
+Take `⟨_, ⟨W, hW, rfl⟩, hxW, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `hW' : IsAffineOpen W` using `hW`. Establish `hWle : W ≤ f ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `set ψ := f.appLE ⊤ W hWle with hψ`. Use `set φ : CommRingCat.of V ⟶ Γ(X, W) := (Scheme.ΓSpecIso (CommRingCat.of V)).inv ≫ ψ with hφ`.
+
+Set `: Algebra V Γ(X, W)` to `φ.hom.toAlgebra`. Establish `hjf : hW'.fromSpec ≫ f = Spec.map φ`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) hW' hWle, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, hφ, Spec.map_comp]`. Establish `: Algebra.FiniteType V Γ(X, W)`. Establish `h1 : ψ.hom.FiniteType` using `f.finiteType_appLE (isAffineOpen_top _) hW' hWle`.
+
+Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of V)).inv).2`. Conclude with `h1.comp h2`. Use `set p := hW'.primeIdealOf ⟨x, hxW⟩`. Establish `hpx : hW'.fromSpec p = x` using `hW'.fromSpec_primeIdealOf ⟨x, hxW⟩`. Establish `hcomap : p.asIdeal.comap (algebraMap V Γ(X, W)) = IsLocalRing.maximalIdeal V`.
+
+Establish `h3 : (Spec.map φ) p = IsLocalRing.closedPoint V`. Rewrite using `[← hjf]`. Conclude with `(congrArg f hpx).trans hx`. Conclude with `congrArg PrimeSpectrum.asIdeal h3`. Establish `hsm : ∀ e : ℕ, Algebra.Smooth (V ⧸ I ^ (e + 1)) (TensorProduct V (V ⧸ I ^ (e + 1)) Γ(X, W))`.
+
+Introduce `e`. Establish `hg : thick V I e = Spec.map (CommRingCat.ofHom (algebraMap V (V ⧸ I ^ (e + 1))))`. Unfold `thick`. Rewrite using `[Ideal.Quotient.algebraMap_eq]`. Use `h e` as an intermediate fact.
+
+Establish `h3 : Smooth (pullback.snd (Spec.map φ) (thick V I e))`. Rewrite using `[← hjf, ← pullbackRightPullbackFstIso_inv_snd_snd f (thick V I e) hW'.fromSpec]`. Establish `hA : IsOpenImmersion (pullback.snd hW'.fromSpec (pullback.fst f (thick V I e)))` using `inferInstance`. Conclude with `MorphismProperty.comp_mem @Smooth _ _ inferInstance (MorphismProperty.comp_mem @Smooth _ _ inferInstance this)`. Establish `h4 : Smooth ((pullbackSpecIso V Γ(X, W) (V ⧸ I ^ (e + 1))).inv ≫ pullback.snd _ _)`.
+
+Establish `: Smooth (pullback.snd (Spec.map (CommRingCat.ofHom (algebraMap V Γ(X, W)))) (Spec.map (CommRingCat.ofHom (algebraMap V (V ⧸ I ^ (e + 1))))))`. Rewrite using `[← hg]`. Conclude with `h3`. Use `infer_instance`. Rewrite `h4` using `[pullbackSpecIso_inv_snd]`.
+
+Establish `h5` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).mp h4`. Establish `h6` using `RingHom.Smooth.propertyIsLocal.respectsIso.1 _ (Algebra.TensorProduct.comm V Γ(X, W) (V ⧸ I ^ (e + 1))).toRingEquiv h5`. Establish `heq : algebraMap (V ⧸ I ^ (e + 1)) (TensorProduct V (V ⧸ I ^ (e + 1)) Γ(X, W)) = (Algebra.TensorProduct.comm V Γ(X, W) (V ⧸ I ^ (e + 1))).toRingEquiv.toRingHom.comp (Algebra.TensorProduct.includeRight : (V ⧸ I ^ (e + 1)) →ₐ[V] _).toRingHom`. Use extensionality with `t`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← RingHom.smooth_algebraMap, heq]`. Conclude with `h6`. Establish `hq : Algebra.IsSmoothAt V p.asIdeal` using `GlobalTheory.T.isSmoothAt_of_smooth_mod_ideal_powers V I hI Γ(X, W) hsm p.asIdeal hcomap`. Rewrite using `[Scheme.Hom.mem_smoothLocus, formallySmooth_stalkMap_iff ⊤ (isAffineOpen_top _) W hW' hWle hxW]`. Set `: Algebra Γ(Spec (CommRingCat.of V), ⊤) Γ(X, W)` to `ψ.hom.toAlgebra`.
+
+Use `show Algebra.FormallySmooth Γ(Spec (CommRingCat.of V), ⊤) (Localization.AtPrime p.asIdeal)`. Rewrite using `[← RingHom.formallySmooth_algebraMap]`. Rewrite `hq` using `[Algebra.IsSmoothAt, ← RingHom.formallySmooth_algebraMap]`. Establish `e2` using `RingHom.FormallySmooth.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of V)).commRingCatIsoToRingEquiv hq`. Use `e2 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply Γ(Spec (CommRingCat.of V), ⊤) Γ(X, W) (Localization.AtPrime p.asIdeal), IsScalarTower.algebraMap_apply V Γ(X, W) (Localization.AtPrime p.asIdeal)]`. Use `congr 1`. Use `show ψ a = φ ((Scheme.ΓSpecIso (CommRingCat.of V)).hom a)`. Rewrite using `[hφ, CommRingCat.comp_apply, Iso.hom_inv_id_apply]`.
+-/
 theorem mem_smoothLocus {V : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V]
     (I : Ideal V) (hI : I ≠ ⊤)
     {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of V)) [LocallyOfFinitePresentation f]
@@ -88,6 +111,13 @@ theorem mem_smoothLocus {V : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRin
   show ψ a = φ ((Scheme.ΓSpecIso (CommRingCat.of V)).hom a)
   rw [hφ, CommRingCat.comp_apply, Iso.hom_inv_id_apply]
 
+/- English proof (translation)
+Introduce `R _ _ _ I hI B _ Y b hpb hY`. Establish `: LocallyOfFinitePresentation B.hom` using `inferInstance`. Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff]`. Assume the negation of the conclusion as `hne`. Take `⟨z, hz⟩ : ∃ z, z ∉ B.hom.smoothLocus` from `by by_contra! H`.
+
+Conclude with `hne (eq_top_iff.mpr fun z _ => H z)`. Establish `hcl : IsClosed (B.hom '' (B.hom.smoothLocus : Set B.left)ᶜ)` using `B.hom.isClosedMap _ B.hom.smoothLocus.2.isClosed_compl`. Take `⟨z', hz', hz'c⟩` from `(IsLocalRing.specializes_closedPoint (B.hom z)).mem_closed hcl ⟨z, hz, rfl⟩`. Apply `hz'` to reduce the goal to its premises. Use `mem_smoothLocus I hI B.hom (fun e => ?_) z' hz'c` and prove the remaining obligations.
+
+Rewrite using `[← (hpb e).isoPullback_inv_snd]`. Use `hY e` as an intermediate fact. Use `infer_instance`.
+-/
 theorem smooth_of_smooth_thickenings : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → ∀ (B : Over (Spec (CommRingCat.of R))), IsProper B.hom → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (b : ∀ e, (Y e).left ⟶ B.left), (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) → (∀ e, Smooth (Y e).hom) → Smooth B.hom := by
   intro R _ _ _ I hI B _ Y b hpb hY
   have : LocallyOfFinitePresentation B.hom := inferInstance

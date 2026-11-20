@@ -13,12 +13,28 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.IsoDescent
 
+/- English proof (translation)
+Rewrite using `[← CechPic.cls_eq_zero_iff (pull_isLB (LB.isLB_div hN hN') f), CechPic.cls_pull (LB.isLB_div hN hN'), CechPic.cls_div hN hN', map_sub, sub_eq_zero, ← CechPic.cls_eq_iff (pull_isLB hN f) (pull_isLB hN' f), CechPic.cls_pull hN, CechPic.cls_pull hN']`.
+-/
 theorem exists_gen_pull_div_iff {X Y : Scheme.{0}} (f : Y ⟶ X) {N N' : LB X} (hN : N.IsLB) (hN' : N'.IsLB) :
     (∃ t : LB.Gen ((LB.div N N').pull f), t.IsGen) ↔ LBIso (N.pull f) (N'.pull f) := by
   rw [← CechPic.cls_eq_zero_iff (pull_isLB (LB.isLB_div hN hN') f), CechPic.cls_pull (LB.isLB_div hN hN'),
     CechPic.cls_div hN hN', map_sub, sub_eq_zero, ← CechPic.cls_eq_iff (pull_isLB hN f) (pull_isLB hN' f),
     CechPic.cls_pull hN, CechPic.cls_pull hN']
 
+/- English proof (translation)
+Introduce `R k _ _ _ β hβ A _ hA X' π p H N N' hN hN' he hπ`. Use `hA.proper` as an intermediate fact. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Set `K` to `FractionRing R`. Set `δ : K →+* k` to `IsFractionRing.lift hβ`.
+
+Establish `hδ : spMap δ ≫ spMap (algebraMap R K) = spMap β`. Establish `e : δ.comp (algebraMap R K) = β` using `RingHom.ext fun x => IsFractionRing.lift_algebraMap hβ x`. Rewrite using `[← e]`. Conclude with `(Spec.map_comp _ _).symm`. Establish `H₀` using `IsPullback.of_hasPullback A.hom (spMap (algebraMap R K))`.
+
+Use `set π₀ := pullback.fst A.hom (spMap (algebraMap R K))`. Use `set p₀ := pullback.snd A.hom (spMap (algebraMap R K))`. Set `q` to `H₀.lift π (p ≫ spMap δ) (by rw [Category.assoc, hδ, H.w])`. Establish `hq : q ≫ π₀ = π` using `H₀.lift_fst _ _ _`. Establish `H₁ : IsPullback q p p₀ (spMap δ)`.
+
+Use `IsPullback.of_right ?_ (H₀.lift_snd _ _ _) H₀` and prove the remaining obligations. Rewrite using `[hq, hδ]`. Conclude with `H`. Establish `hD` using `LB.isLB_div hN hN'`. Establish `hD₀` using `pull_isLB hD π₀`.
+
+Establish `h₁ : ∃ t : LB.Gen (((LB.div N N').pull π₀).pull q), t.IsGen`. Rewrite using `[← CechPic.cls_eq_zero_iff (pull_isLB hD₀ q), CechPic.cls_pull hD₀, CechPic.cls_pull hD, ← CechPic.pull_comp, hq, ← CechPic.cls_pull hD π (pull_isLB hD π), CechPic.cls_eq_zero_iff]`. Conclude with `(exists_gen_pull_div_iff π hN hN').2 hπ`. Take `⟨t, ht⟩` from `h₁`. Establish `h₂` using `FieldTriv.exists_gen_of_isPullback δ p₀ q p H₁ hD₀ t ht`.
+
+Establish `h₃` using `TrivDedekind.exists_gen_of_generic R K A hA _ π₀ p₀ H₀ _ hD ((exists_gen_pull_div_iff _ hN hN').2 he) h₂`. Rewrite `h₃` using `[← CechPic.cls_eq_zero_iff hD, CechPic.cls_div hN hN', sub_eq_zero, CechPic.cls_eq_iff]`. Then use the resulting hypothesis.
+-/
 theorem lbIso_of_field : ∀ (R k : Type) [CommRing R] [IsDedekindDomain R] [Field k] (β : R →+* k), Function.Injective β → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (X' : Scheme.{0}) (π : X' ⟶ A.left) (p : X' ⟶ Sp k), IsPullback π p A.hom (spMap β) → ∀ N N' : LB A.left, N.IsLB → N'.IsLB → LBIso (N.pull (eSec A)) (N'.pull (eSec A)) → LBIso (N.pull π) (N'.pull π) → LBIso N N' := by
   intro R k _ _ _ β hβ A _ hA X' π p H N N' hN hN' he hπ
   have := hA.proper

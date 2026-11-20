@@ -13,6 +13,33 @@ section Main
 variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
   {v₀ : T.V}
 
+/- English proof (translation)
+Establish `hσ` using `rreg_isURepOn ε`. Take `⟨q, hq⟩` from `LinearMap.mem_range.1 (Submodule.starProjection_apply_mem (LinearMap.range (ffaJ hP v₀)) (rreg ε g (uniformisationL2 ε Ψ v₀ v)))`. Establish `hxo : rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q ∈ (LinearMap.range (ffaJ hP v₀))ᗮ`. Rewrite using `[← ffaJ_apply hP v₀ q, hq]`. Conclude with `Submodule.sub_starProjection_mem_orthogonal (K := LinearMap.range (ffaJ hP v₀)) _`.
+
+Establish `hxj : ∀ w, inner ℂ (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) (uniformisationL2 ε Ψ v₀ w) = 0` using `fun w => Submodule.inner_left_of_mem_orthogonal (LinearMap.mem_range_self (ffaJ hP v₀) w) hxo`. Establish `hfH : rreg ε g (uniformisationL2 ε Ψ v₀ v) ∈ Hlam ε Ψ v₀` using `closGen_stable hgap hσ (isDerivedOn_smE hσ) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) g hg _ (datumEmbedding_mem_Hlam hP v)`. Establish `hxH : rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q ∈ Hlam ε Ψ v₀` using `Submodule.sub_mem _ hfH (datumEmbedding_mem_Hlam hP q)`. Establish `hRH : ∀ k : S7.KG ε, rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) ∈ Hlam ε Ψ v₀` using `fun k => closGen_stable hgap hσ (isDerivedOn_smE hσ) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) _ (ffa_toMK_mem k) _ hxH`. Establish `horth : ∀ u v'' : T.V, inner ℂ (ffaB T (Ψ g v - q) (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) v'') (uniformisationL2 ε Ψ v₀ u) = 0`.
+
+Introduce `u v''`. Establish `h0 : ∀ k : S7.KG ε, inner ℂ (uniformisationL2 ε Ψ v₀ u) (rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q)) = 0`. Introduce `k`. Rewrite using `[← inv_inv k, ← ffa_rreg_adj, rightRegular_datumEmbedding hP]`. Conclude with `inner_eq_zero_symm.1 (hxj _)`.
+
+Rewrite using `[← inner_conj_symm, ffaB_inner]`. Simplify using `only [h0, mul_zero, integral_zero, map_zero]`. Establish `hB0` using `ffa_kmap_zero hgap hP hv₀ (ffaB T (Ψ g v - q) (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q)) (ffaB_equiv T _ _) (ffaB_mem T _ _ (Hlam ε Ψ v₀) hRH) horth`. Establish `hBv : ∫ k, inner ℂ (T.op k (Ψ g v - q)) v₀ • rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) ∂(dk ε) = 0`. Use `LinearMap.congr_fun hB0 v₀` as an intermediate fact.
+
+Rewrite `this` using `[ffaB_apply, LinearMap.zero_apply]`. Then use the resulting hypothesis. Take `⟨yg, hyg⟩` from `ffa_UJ_lift hg`. Establish `hxae : ((rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q : L2 ε) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun y => jfun Ψ v₀ v (Formalism.MainNotions.S.umat y * g) - jfun Ψ v₀ q (Formalism.MainNotions.S.umat y)`. Establish `e1` using `rreg_umat_ae ε yg (uniformisationL2 ε Ψ v₀ v)`. Establish `e2` using `(measurePreserving_mul_right ε yg).quasiMeasurePreserving.ae_eq_comp (uniformisationL2_ae_eq_jfun hP v₀ v)`.
+
+Use `filter_upwards [Lp.coeFn_sub (rreg ε g (uniformisationL2 ε Ψ v₀ v)) (uniformisationL2 ε Ψ v₀ q), e1, e2, uniformisationL2_ae_eq_jfun hP v₀ q] with y h0 h1 h2 h3`. Rewrite using `[h0, Pi.sub_apply, h3, ← hyg, h1]`. Use `congr 1`. Establish `hFc : ContinuousOn (fun y => jfun Ψ v₀ v (y * g) - jfun Ψ v₀ q y) (UJset ε)` using `((ffa_jfun_cont hP v₀ v).comp (continuousOn_id.mul continuousOn_const) (fun y hy => rq_UJ_mul hy hg)).sub (ffa_jfun_cont hP v₀ q)`. Establish `hev` using `ffa_eval hFc hxae _ (ffa_cont_coef T (Ψ g v - q) v₀) hBv`.
+
+Establish `hΨk : ∀ (k : S7.KG ε) (h : Matrix (Fin n) (Fin n) ℂ), h ∈ UJset ε → Ψ (S7.toMK k * h) = T.op k * Ψ h`. Introduce `k h hh`. Establish `e` using `hP.1 k 1 h hh`. Rewrite `e` using `[show S7.toMK (1 : S7.KG ε) = 1 from rfl, mul_one, ffa_op_one, mul_one]`. Then use the resulting hypothesis. Establish `hΨk1 : ∀ k : S7.KG ε, Ψ (S7.toMK k) = T.op k`.
+
+Introduce `k`. Establish `e` using `hΨk k 1 (ffa_toMK_mem (1 : S7.KG ε))`. Rewrite `e` using `[mul_one, hP.2.1, mul_one]`. Then use the resulting hypothesis. Establish `hint : ∀ k : S7.KG ε, inner ℂ (T.op k (Ψ g v - q)) v₀ * (jfun Ψ v₀ v (S7.toMK k * g) - jfun Ψ v₀ q (S7.toMK k)) = ((‖inner ℂ v₀ (T.op k (Ψ g v - q))‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`.
+
+Use `show inner ℂ (T.op k (Ψ g v - q)) v₀ * (inner ℂ v₀ (Ψ (S7.toMK k * g) v) - inner ℂ v₀ (Ψ (S7.toMK k) q)) = _`. Rewrite using `[hΨk k g hg, hΨk1 k, ContinuousLinearMap.mul_apply, ← inner_sub_right, ← map_sub, ← inner_conj_symm, Complex.conj_mul', Complex.ofReal_pow]`. Establish `hI : ∫ k, ‖inner ℂ v₀ (T.op k (Ψ g v - q))‖ ^ 2 ∂(dk ε) = 0`. Establish `e2 : ((∫ k, ‖inner ℂ v₀ (T.op k (Ψ g v - q))‖ ^ 2 ∂(dk ε) : ℝ) : ℂ) = 0`. Rewrite using `[← integral_complex_ofReal]`.
+
+Use `Eq.trans ?_ hev` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `(hint k).symm`. Conclude with `e2` after adjusting the coercions.
+
+Establish `hD : Ψ g v - q = 0`. Establish `hk` using `kschur_coef T v₀ (Ψ g v - q)`. Rewrite `hk` using `[hI, mul_zero]`. Establish `hv0 : ‖v₀‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.2 hv₀)`. Establish `h2 : ‖Ψ g v - q‖ ^ 2 = 0`.
+
+Break down `mul_eq_zero.1 hk.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hv0`. Conclude with `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 h2)`. Establish `hqv : q = Ψ g v` using `(sub_eq_zero.1 hD).symm`.
+
+Establish `hdec : rreg ε g (uniformisationL2 ε Ψ v₀ v) = (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) + uniformisationL2 ε Ψ v₀ q` using `(sub_add_cancel _ _).symm`. Rewrite using `[hdec, inner_add_right, inner_eq_zero_symm.1 (hxj v'), zero_add, hqv, ffa_form hP]`.
+-/
 theorem formulaF (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (v v' : T.V) :
     inner ℂ (uniformisationL2 ε Ψ v₀ v') (rreg ε g (uniformisationL2 ε Ψ v₀ v)) =
       ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) * inner ℂ v' (Ψ g v) := by
@@ -100,6 +127,11 @@ theorem formulaF (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v�
       (rreg ε g (uniformisationL2 ε Ψ v₀ v) - uniformisationL2 ε Ψ v₀ q) + uniformisationL2 ε Ψ v₀ q := (sub_add_cancel _ _).symm
   rw [hdec, inner_add_right, inner_eq_zero_symm.1 (hxj v'), zero_add, hqv, ffa_form hP]
 
+/- English proof (translation)
+Introduce `h`. Establish `hz : uniformisationL2 ε Ψ v₀ (0 : T.V) = 0`. Use `datumEmbedding_smul hP v₀ (0 : ℂ) (0 : T.V)` as an intermediate fact. Simplify using `using this`. Establish `hw : T.w = 0` using `uniformisationL2_injective hP hv₀ (h.trans hz.symm)`.
+
+Establish `hn` using `T.w_norm`. Rewrite `hn` using `[hw, norm_zero]`. Conclude with `zero_ne_one hn`.
+-/
 theorem datumEmbedding_highest_ne_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) : uniformisationL2 ε Ψ v₀ T.w ≠ 0 := by
   intro h
   have hz : uniformisationL2 ε Ψ v₀ (0 : T.V) = 0 := by
@@ -110,6 +142,15 @@ theorem datumEmbedding_highest_ne_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε 
   rw [hw, norm_zero] at hn
   exact zero_ne_one hn
 
+/- English proof (translation)
+Rewrite using `[← formulaF hgap hP hv₀ hg v v']`. Use `set K := Hlam ε Ψ v₀`. Use `set a := uniformisationL2 ε Ψ v₀ v'`. Use `set y := rreg ε g (uniformisationL2 ε Ψ v₀ v)`. Establish `ha : a ∈ K` using `datumEmbedding_mem_Hlam hP v'`.
+
+Establish `hs : sigLam ε Ψ v₀ g ⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩ = K.orthogonalProjectionOnto y` using `rfl`. Rewrite using `[hs, Submodule.coe_inner]`. Establish `horth : y - (K.orthogonalProjectionOnto y : L2 ε) ∈ Kᗮ` using `by first`. Consider the case `exact Submodule.sub_orthogonalProjectionOnto_mem_orthogonal y`. Consider the case `exact K.sub_orthogonalProjectionOnto_mem_orthogonal y`.
+
+Consider the case `exact sub_orthogonalProjection_mem_orthogonal y`. Consider the case `exact Submodule.sub_starProjection_mem_orthogonal y`. Consider the case `exact K.sub_starProjection_mem_orthogonal y`. Consider the case `(rw [Submodule.mem_orthogonal']; intro u hu; exact K.orthogonalProjectionOnto_inner_eq_zero y u hu)`. Establish `h0 : inner ℂ a (y - (K.orthogonalProjectionOnto y : L2 ε)) = 0` using `Submodule.inner_right_of_mem_orthogonal ha horth`.
+
+Rewrite `h0` using `[inner_sub_right, sub_eq_zero]`. Conclude with `h0.symm`.
+-/
 theorem formulaF_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (v v' : T.V) :
     inner ℂ (⟨uniformisationL2 ε Ψ v₀ v', datumEmbedding_mem_Hlam hP v'⟩ : Hlam ε Ψ v₀)
         (sigLam ε Ψ v₀ g ⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_Hlam hP v⟩) =
@@ -134,6 +175,19 @@ theorem formulaF_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv�
   rw [inner_sub_right, sub_eq_zero] at h0
   exact h0.symm
 
+/- English proof (translation)
+Establish `hg : S7.toMK k * NormedSpace.exp X ∈ UJset ε` using `by show inUJ ε _`. Unfold `inUJ`. Rewrite using `[Matrix.conjTranspose_mul]`. Establish `hJJ : Jm ε * Jm ε = 1`. Use extensionality with `i j`.
+
+Simplify using `only [Jm, Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hinv : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_left_inv hJJ`. Establish `hU : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hXJ : Xᴴ = Jm ε * (-X) * (Jm ε)⁻¹`.
+
+Establish `h0 : Xᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX.1`. Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : (NormedSpace.exp X)ᴴ * Jm ε * NormedSpace.exp X = Jm ε`. Rewrite using `[← Matrix.exp_conjTranspose, hXJ, Matrix.exp_conj _ _ hU, hinv, Matrix.mul_assoc (Jm ε * NormedSpace.exp (-X)) (Jm ε) (Jm ε), hJJ, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_left, neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`.
+
+Establish `hk : (S7.toMK k)ᴴ * Jm ε * S7.toMK k = Jm ε` using `by first`. Consider the case `exact (k : S7.UJ ε).2`. Consider the case `exact (k : S7.UJ ε).prop`. Consider the case `(simp only [S7.toMK]; exact (k : S7.UJ ε).2)`. Consider the case `(unfold S7.toMK; clear * - k; done)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [hk, hE]`. Rewrite using `[formulaF hgap hP hv₀ hg v v', norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Establish `h1 : ‖inner ℂ v' (Ψ (S7.toMK k * NormedSpace.exp X) v)‖ ≤ ‖v'‖ * (Real.exp (-(h / 8) * min (S7.hs X) (Real.sqrt (S7.hs X) / Real.sqrt (2 * S7.q0 ε))) * ‖v‖)`.
+
+Use `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `((Ψ _).le_opNorm v).trans (mul_le_mul_of_nonneg_right (hdec k X hX) (norm_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dec_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {h : ℝ}
     (hdec : ∀ (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ), inP ε X →
       ‖Ψ (S7.toMK k * NormedSpace.exp X)‖ ≤

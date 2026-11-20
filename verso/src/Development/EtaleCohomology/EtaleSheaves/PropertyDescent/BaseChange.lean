@@ -8,20 +8,42 @@ namespace LateralTheory.E.LeafPropsDescendPf.BaseChange
 
 variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem toR_incl {R R' : Subalgebra k Ω} (hR : R ≤ R') : toR R' ≫ incl hR = toR R := by
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, toR_incl]`. Conclude with `h.w`.
+-/
 theorem cond {R R' : Subalgebra k Ω} (hR : R ≤ R') {C D : Scheme.{0}} {g : D ⟶ Sp R} {v : C ⟶ D}
     {c : C ⟶ Sp Ω} (h : IsPullback v c g (toR R)) : v ≫ g = (c ≫ toR R') ≫ incl hR := by
   rw [Category.assoc, toR_incl]; exact h.w
 
+/- English proof (translation)
+Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback g (incl hR))` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, toR_incl]`. Conclude with `h`.
+-/
 theorem sq {R R' : Subalgebra k Ω} (hR : R ≤ R') {C D : Scheme.{0}} {g : D ⟶ Sp R} {v : C ⟶ D}
     {c : C ⟶ Sp Ω} (h : IsPullback v c g (toR R)) :
     IsPullback (pullback.lift v (c ≫ toR R') (cond hR h)) c (pullback.snd g (incl hR)) (toR R') := by
   refine IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback g (incl hR))
   rw [pullback.lift_fst, toR_incl]; exact h
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ R R' hR C0 C1 C2 c0 γ1 γ2 D0 D1 D2 q d1 d2 v0 v1 v2 hpre`. Take `⟨-, -, -, p0, p1, p2, h1, h2⟩` from `hpre`. Set `e1 : pullback (d1 ≫ q) (incl hR) ⟶ pullback q (incl hR)` to `pullback.map _ _ _ _ d1 (𝟙 _) (𝟙 _) (by simp) (by simp)`. Set `e2 : pullback (d2 ≫ d1 ≫ q) (incl hR) ⟶ pullback (d1 ≫ q) (incl hR)` to `pullback.map _ _ _ _ d2 (𝟙 _) (𝟙 _) (by simp) (by simp)`. Establish `E1 : e1 ≫ pullback.snd q (incl hR) = pullback.snd (d1 ≫ q) (incl hR)`.
+
+Simplify using `only [e1, pullback.map, pullback.lift_snd, Category.comp_id]`. Establish `E2 : e2 ≫ e1 ≫ pullback.snd q (incl hR) = pullback.snd (d2 ≫ d1 ≫ q) (incl hR)`. Rewrite using `[E1]`. Simplify using `only [e2, pullback.map, pullback.lift_snd, Category.comp_id]`. Use `⟨_, _, _, pullback.snd q (incl hR), e1, e2, pullback.lift v0 (c0 ≫ toR R') (cond hR p0), pullback.lift v1 ((γ1 ≫ c0) ≫ toR R') (cond hR p1), pullback.lift v2 ((γ2 ≫ γ1 ≫ c0) ≫ toR R') (cond hR p2), pullback.fst _ _, pullback.fst _ _, pullback.fst _ _, ⟨sq hR p0, ?_, ?_, ?_, ?_⟩, …` and prove the remaining obligations.
+
+Rewrite using `[E1]`. Conclude with `sq hR p1`. Rewrite using `[E2]`. Conclude with `sq hR p2`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [e1, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`. Conclude with `h1`. Simplify using `only [e1, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [e2, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc]`.
+
+Conclude with `h2`. Simplify using `only [e2, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, Category.comp_id]`. Rewrite using `[E1]`. Conclude with `IsPullback.of_hasPullback _ _`. Rewrite using `[E2]`.
+
+Conclude with `IsPullback.of_hasPullback _ _`.
+-/
 theorem leafBaseChangePre : LeafBaseChangePre := by
   intro k _ Ω _ _ R R' hR C0 C1 C2 c0 γ1 γ2 D0 D1 D2 q d1 d2 v0 v1 v2 hpre
   obtain ⟨-, -, -, p0, p1, p2, h1, h2⟩ := hpre
@@ -50,6 +72,9 @@ theorem leafBaseChangePre : LeafBaseChangePre := by
   · rw [E1]; exact IsPullback.of_hasPullback _ _
   · rw [E2]; exact IsPullback.of_hasPullback _ _
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.LeafPropsDescendPf.LeafPropsDescend_of hS leafBaseChangePre`.
+-/
 theorem LeafPropsDescend_of (hS : LeafSpreadOne) : LeafPropsDescend :=
   LateralTheory.E.LeafPropsDescendPf.LeafPropsDescend_of hS leafBaseChangePre
 

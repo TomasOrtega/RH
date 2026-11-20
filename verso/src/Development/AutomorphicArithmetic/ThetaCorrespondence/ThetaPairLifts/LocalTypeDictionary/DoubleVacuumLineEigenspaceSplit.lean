@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.DblVacLineSplit
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT v _ _ hunr _ _ dd omd hdd hS R _ hR g hg`. Conclude with `GlobalTheory.DblVacLine.dbl_line hT.base.std v hunr hT.geo.hV'.lat hT.geo.hW.lat (GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B _ _ G.V' G.W _ _ _ _ hT.base hT.geo.hV' hT.geo.hW v) G.M' _ (hT.geo.hM'.vac v) dd omd hdd hS.2.1 R hR g hg`.
+-/
 theorem doubleLine_eigenfunction_split : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →
@@ -31,6 +34,9 @@ section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.DblVacLineSplit.doubleLine_eigenfunction_split | exact _root_.GlobalTheory.DblVacLineSplit.doubleLine_eigenfunction_split | (intros; apply _root_.GlobalTheory.DblVacLineSplit.doubleLine_eigenfunction_split <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubleVacuum_line_eigenspace_split : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

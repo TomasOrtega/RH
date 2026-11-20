@@ -10,6 +10,43 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.FirstRowDatum
+/- English proof (translation)
+Introduce `hP hS`. Take `⟨a₁, h₁⟩` from `_root_.GlobalTheory.T.leading_coefficient_term_law_theta hP hS`. Take `⟨a₂, h₂⟩` from `hS`. Use `⟨max a₁ a₂, fun ε CF hC => ?_⟩` and prove the remaining obligations. Establish `hb₁` using `h₁ ε CF (le_of_max_le_left hC)`.
+
+Establish `hb₂` using `h₂ ε CF (le_of_max_le_right hC)`. Take `⟨x₁, hc₁⟩` from `hb₁`. Take `⟨x₂, hc₂⟩` from `hb₂`. Use `⟨max x₁ x₂, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc => ?_⟩` and prove the remaining obligations. Introduce `t a β hβ τ hτ k hkl hk xs ys`.
+
+Establish `key` using `hc₁ D large₂ e (le_of_max_le_left hx) Γ Pl0 T A Ks R F s ch hi hsc t a β hβ τ hτ k hkl hk`. Establish `hOK` using `hc₂ D large₂ e (le_of_max_le_right hx) Γ Pl0 T A Ks R F s ch hi hsc t a`. Establish `hv` using `hOK.vec β τ hτ`. Take `⟨e, he, hsupp, -⟩` from `hτ`. Establish `hsv` using `GlobalTheory.FirstRowShift.rowShift0_model (G := ch.G) (W := ch.W) (U := Set.univ) ch.S.toGridChoice s.core.lev (t := t) (e := e) (Set.mem_univ t) he k hkl`.
+
+Take `⟨c, hc, hshift⟩` from `hsv`. Establish `hkey` using `key c hc`. Generalize the expression as in `hχk : (((levEnv D.sp.X' R.βX (R.datXt t)).χ ⟨toXf k, hk⟩ : ℂˣ) : ℂ) = χk at hkey ⊢`. Simplify using `only [Finsupp.sum] at hkey ⊢`. Break down `Finset.eq_empty_or_nonempty τ.support with h0 | ⟨d₀, hd₀⟩` into its components or cases.
+
+Simplify using `[h0]`. Establish `hTC : ∀ j : Fin D.R.m, ∃ Tm, IsPlaceModel ch.W.ψ (symplO _ _) (heisO ch.W.ψ _ _) e (latO (ch.G.pS (.top t j)) (ch.G.pT (.top t j)) (ch.S.N.latS (.top t j) : Set _) (ch.S.N.latT (.top t j) : Set _) fun _ => True) 1 (ch.S.Z.vac (.top t j)) Tm`. Introduce `j`. Take `⟨f, hf⟩` from `(hv d₀ hd₀).1 j`. Establish `hE` using `((hsupp d₀ hd₀).1 j).2.1`.
+
+Unfold `FinDatum.IsTheta at hf`. Rewrite `hf` using `[hE]`. Conclude with `hf.1`. Establish `hTR : ∀ i : Fin D.R.m, ∃ Tm, IsPlaceModel ch.W.ψ (symplO _ _) (heisO ch.W.ψ _ _) e (latO (ch.G.pS (.chi i D.R.m : Pair T)) (ch.G.pT (.chi i D.R.m : Pair T)) (ch.S.N.latS (.chi i D.R.m : Pair T) : Set _) (ch.S.N.latT (.chi i D.R.m : Pair T) : Set _) fun _ => True) 1 (ch.S.Z.vac (. …`. Introduce `i`.
+
+Take `⟨f, hf⟩` from `(hv d₀ hd₀).2 i`. Establish `hE` using `((hsupp d₀ hd₀).2 i).2.1`. Unfold `FinDatum.IsTheta at hf`. Rewrite `hf` using `[hE]`. Conclude with `hf.1`.
+
+Use `choose TmC hTmC using hTC`. Use `choose TmR hTmR using hTR`. Establish `hvecC : ∀ d ∈ τ.support, ∀ j, ch.S.Z.vec (d.1 j) = TmC j (d.1 j).fn`. Introduce `d hd j`. Take `⟨f, hf⟩` from `(hv d hd).1 j`.
+
+Establish `hE` using `((hsupp d hd).1 j).2.1`. Establish `hz` using `((hsupp d hd).1 j).2.2`. Establish `hf'` using `hf`. Unfold `FinDatum.IsTheta at hf'`. Rewrite `hf'` using `[hE]`.
+
+Rewrite using `[Normal.vec, FinDatum.vec_eq ch.W hf, hz, hf'.2 _ (hTmC j)]`. Use `show ch.W.om _ 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Establish `hvecR : ∀ d ∈ τ.support, ∀ i, ch.S.Z.vec (d.2 i) = TmR i (d.2 i).fn`.
+
+Introduce `d hd i`. Take `⟨f, hf⟩` from `(hv d hd).2 i`. Establish `hE` using `((hsupp d hd).2 i).2.1`. Establish `hz` using `((hsupp d hd).2 i).2.2`. Establish `hf'` using `hf`.
+
+Unfold `FinDatum.IsTheta at hf'`. Rewrite `hf'` using `[hE]`. Rewrite using `[Normal.vec, FinDatum.vec_eq ch.W hf, hz, hf'.2 _ (hTmR i)]`. Use `show ch.W.om _ 1 _ = _`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression. Establish `hext` using `sum_prod_map_eq_zero₂ TmC TmR (τ.support.disjSum τ.support) (Sum.elim (fun d => χk * c * τ d) (fun d => -τ d)) (Sum.elim (fun d : PureDat ch.G t => fun j => (d.1 j).fn) (fun d : PureDat ch.G t => fun j => (d.1 j).fn)) (Sum.elim (fun d : PureDat ch.G t => Function.update (fun i => …`. Establish `h1` using `hkey x y`. Rewrite `h1` using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_disjSum]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[← h1, add_neg_eq_zero]`. Conclude with `Finset.sum_congr rfl fun d _ => by ring) xs ys`. Rewrite `hext` using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, add_neg_eq_zero] at hext`.
+
+Use `Eq.trans ?_ (hext.trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hsb` using `(d.2 (GlobalTheory.FirstRowVertex.firstIx D)).sb`. Rewrite `hsb` using `[((hsupp d hd).2 (GlobalTheory.FirstRowVertex.firstIx D)).2.1]`.
+
+Simplify using `only [hvecC d hd, hvecR d hd]`. Rewrite using `[hshift (TmR (GlobalTheory.FirstRowVertex.firstIx D)) (hTmR _) _ hsb, GlobalTheory.FirstRowVertex.prod_update_smul]`. Establish `hu : ∀ i, Function.update (fun i => TmR i (d.2 i).fn) (GlobalTheory.FirstRowVertex.firstIx D) (TmR (GlobalTheory.FirstRowVertex.firstIx D) (fun y => (d.2 (GlobalTheory.FirstRowVertex.firstIx D)).fn (actO (ch.G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch. …`. Introduce `i`. Distinguish the cases in `hi : i = GlobalTheory.FirstRowVertex.firstIx D`.
+
+Substitute `hi` using the available equality. Simplify using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne hi]`. Simplify using `only [hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Simplify using `only [hvecC d hd, hvecR d hd]`.
+-/
 theorem first_coefficient_datum_law : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →
     ∀ (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →
@@ -130,6 +167,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.RowTest GlobalTheory.StdFrames GlobalTheory.RowClaim
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.FirstRowDatum.first_coefficient_datum_law | exact _root_.GlobalTheory.FirstRowDatum.first_coefficient_datum_law | (intros; apply _root_.GlobalTheory.FirstRowDatum.first_coefficient_datum_law <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_first_coefficient_law : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →
     ∀ (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →

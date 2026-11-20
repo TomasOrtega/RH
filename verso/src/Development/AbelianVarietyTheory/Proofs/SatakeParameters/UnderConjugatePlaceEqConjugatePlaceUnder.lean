@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.ConjUnder
 
+/- English proof (translation)
+Take `⟨j⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj M j]`. Conclude with `(IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K M)) x).symm`.
+-/
 theorem complexConj_algebraMap {K M : Type} [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M]
     [Algebra K M] (x : K) :
     IsCMField.complexConj M (algebraMap K M x) = algebraMap K M (IsCMField.complexConj K x) := by
@@ -20,11 +23,19 @@ theorem complexConj_algebraMap {K M : Type} [Field K] [NumberField K] [IsCMField
   rw [IsCMField.complexEmbedding_complexConj M j]
   exact (IsCMField.complexEmbedding_complexConj K (j.comp (algebraMap K M)) x).symm
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)`.
+-/
 theorem cPl_asIdeal {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     (UpperTheory.V.Af.Bc.cPl w).asIdeal =
       w.asIdeal.comap (RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv : 𝓞 E →+* 𝓞 E) :=
   (GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc _ w)
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ _ w`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[cPl_asIdeal]`. Express the relevant statement in the definitionally equal form `(UpperTheory.V.Af.Bc.cPl w).asIdeal.comap (algebraMap (𝓞 K) (𝓞 M)) = (w.asIdeal.comap (algebraMap (𝓞 K) (𝓞 M))).comap _`. Rewrite using `[cPl_asIdeal, Ideal.comap_comap, Ideal.comap_comap]`.
+
+Use `congr 1`. Use extensionality with `x`. Conclude with `complexConj_algebraMap (x : K)`.
+-/
 theorem cPl_under : ∀ (K M : Type) [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M]
     [Algebra K M] (w : HeightOneSpectrum (𝓞 M)),
     (UpperTheory.V.Af.Bc.cPl w).under (𝓞 K) = UpperTheory.V.Af.Bc.cPl (w.under (𝓞 K)) := by

@@ -13,6 +13,19 @@ variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 def cr_C (E : GLOps n K V) : Module.End K V := ∑ a : Fin n, ∑ b : Fin n, E a b * E b a
 
+/- English proof (translation)
+Establish `key : ∀ a b, E a b * E b a * E c d - E c d * (E a b * E b a) = E a b * ((if a = c then E b d else 0) - (if d = b then E c a else 0)) + ((if b = c then E a d else 0) - (if d = a then E c b else 0)) * E b a`. Introduce `a b`. Rewrite using `[← hR b a c d, ← hR a b c d]`. Use `noncomm_ring`. Establish `S1 : ∑ a : Fin n, ∑ b : Fin n, E a b * (if a = c then E b d else 0) = ∑ b, E c b * E b d`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[mul_ite]`. Establish `S2 : ∑ a : Fin n, ∑ b : Fin n, E a b * (if d = b then E c a else 0) = ∑ a, E a d * E c a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `[mul_ite]`. Establish `S3 : ∑ a : Fin n, ∑ b : Fin n, (if b = c then E a d else 0) * E b a = ∑ a, E a d * E c a`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[ite_mul]`. Establish `S4 : ∑ a : Fin n, ∑ b : Fin n, (if d = a then E c b else 0) * E b a = ∑ b, E c b * E b d`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[ite_mul]`. Rewrite using `[← sub_eq_zero, cr_C, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Establish `: ∀ a : Fin n, (∑ b : Fin n, E a b * E b a) * E c d - E c d * ∑ b : Fin n, E a b * E b a = ∑ b : Fin n, (E a b * ((if a = c then E b d else 0) - (if d = b then E c a else 0)) + ((if b = c then E a d else 0) - (if d = a then E c b else 0)) * E b a)`.
+
+Introduce `a`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun b _ => key a b`. Rewrite using `[Finset.sum_congr rfl fun a _ => this a]`. Simplify using `only [mul_sub, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+
+Rewrite using `[S1, S2, S3, S4]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cr_C_comm (E : GLOps n K V) (hR : SatisfiesGLRelations E) (c d : Fin n) : cr_C E * E c d = E c d * cr_C E := by
   classical
   have key : ∀ a b, E a b * E b a * E c d - E c d * (E a b * E b a) =
@@ -46,15 +59,32 @@ theorem cr_C_comm (E : GLOps n K V) (hR : SatisfiesGLRelations E) (c d : Fin n) 
   rw [S1, S2, S3, S4]
   abel
 
+/- English proof (translation)
+Use `congrArg (fun f : Module.End K V => f x) (cr_C_comm E hR c d)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem cr_C_comm_apply (E : GLOps n K V) (hR : SatisfiesGLRelations E) (c d : Fin n) (x : V) :
     cr_C E (E c d x) = E c d (cr_C E x) := by
   have := congrArg (fun f : Module.End K V => f x) (cr_C_comm E hR c d)
   simpa using this
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DoubleSumDiagonalOffDiagonal.main F`.
+-/
 theorem cr_sym {M : Type*} [AddCommMonoid M] (F : Fin n → Fin n → M) :
     ∑ a, ∑ b, F a b = ∑ a, F a a + ∑ a, ∑ b, if a < b then F a b + F b a else 0 :=
   _root_.UpperTheory.Reformulated.B.DoubleSumDiagonalOffDiagonal.main F
 
+/- English proof (translation)
+Establish `hx'` using `(v2rep_mem_weightSp E mu x).1 hx`. Establish `e0 : cr_C E x = ∑ a : Fin n, ∑ b : Fin n, E a b (E b a x)`. Simplify using `[cr_C, LinearMap.sum_apply]`. Establish `e1 : ∀ a, E a a (E a a x) = ((mu a : K) ^ 2) • x`. Introduce `a`.
+
+Rewrite using `[hx' a, map_smul, hx' a, smul_smul, sq]`. Establish `e2 : ∀ a b : Fin n, E a b (E b a x) + E b a (E a b x) = (2 : K) • E b a (E a b x) + ((mu a : K) - (mu b : K)) • x`. Introduce `a b`. Rewrite using `[v2rep_comm E hR a b b a x]`. Simplify using `only [if_true, hx' a, hx' b, sub_smul, two_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e0, cr_sym, Finset.sum_congr rfl fun a _ => e1 a]`. Establish `e3 : ∀ a b : Fin n, (if a < b then E a b (E b a x) + E b a (E a b x) else 0) = (2 : K) • (if a < b then E b a (E a b x) else 0) + (if a < b then ((mu a : K) - (mu b : K)) else 0) • x`. Introduce `a b`. Use `split_ifs`.
+
+Conclude with `e2 a b`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => e3 a b]`. Simplify using `only [Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.sum_smul]`. Establish `e4 : ((cr_c mu : ℤ) : K) = ∑ a, (mu a : K) ^ 2 + ∑ a : Fin n, ∑ b : Fin n, (if a < b then ((mu a : K) - (mu b : K)) else 0)`.
+
+Simplify using `only [cr_c, cr_h]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e4, add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cr_C_wt (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E mu) :
     cr_C E x = ((cr_c mu : ℤ) : K) • x + (2 : K) • ∑ a : Fin n, ∑ b : Fin n, if a < b then E b a (E a b x) else 0 := by
   classical
@@ -87,6 +117,11 @@ theorem cr_C_wt (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → 
   rw [e4, add_smul]
   abel
 
+/- English proof (translation)
+Rewrite using `[cr_C_wt E hR mu v hv.2.1]`. Establish `: ∑ a : Fin n, ∑ b : Fin n, (if a < b then E b a (E a b v) else 0) = 0`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hv.2.2 a b h, map_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, smul_zero, add_zero]`.
+-/
 theorem cr_C_hwv (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (v : V) (hv : IsHWV E mu v) :
     cr_C E v = ((cr_c mu : ℤ) : K) • v := by
   rw [cr_C_wt E hR mu v hv.2.1]
@@ -97,11 +132,17 @@ theorem cr_C_hwv (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n →
     · rfl
   rw [this, smul_zero, add_zero]
 
+/- English proof (translation)
+Simplify using `only [cr_C, LinearMap.sum_apply, Module.End.mul_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => hW a b _ (hW b a _ hx)`.
+-/
 theorem cr_C_stable (E : GLOps n K V) (W : Submodule K V) (hW : IsStableUnderOperators E W) (x : V) (hx : x ∈ W) :
     cr_C E x ∈ W := by
   simp only [cr_C, LinearMap.sum_apply, Module.End.mul_apply]
   exact Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => hW a b _ (hW b a _ hx)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[v2rep_mem_weightSp]`. Introduce `a`. Rewrite using `[← cr_C_comm_apply E hR, hx a, map_smul]`.
+-/
 theorem cr_C_weightSp (E : GLOps n K V) (hR : SatisfiesGLRelations E) (mu : Fin n → ℤ) (x : V) (hx : x ∈ weightSp E mu) :
     cr_C E x ∈ weightSp E mu := by
   rw [v2rep_mem_weightSp] at hx ⊢

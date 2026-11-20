@@ -26,6 +26,9 @@ instance instCharZeroWW : CharZero (WW p) := by
 instance charZero_witt_fraction : CharZero (K0 p) :=
   charZero_of_injective_algebraMap (IsFractionRing.injective (WW p) (K0 p))
 
+/- English proof (translation)
+Rewrite using `[(WittVector.irreducible p (k := kb p)).maximalIdeal_eq]`. Use `infer_instance`.
+-/
 theorem completeWW : IsAdicComplete (maximalIdeal (WW p)) (WW p) := by
   rw [(WittVector.irreducible p (k := kb p)).maximalIdeal_eq]
   infer_instance
@@ -34,12 +37,25 @@ abbrev Kc : Type := AlgebraicClosure (K0 p)
 
 def Oc : Subring (Kc p) := (integralClosure (WW p) (Kc p)).toSubring
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Oc (x : Kc p) : x ∈ Oc p ↔ IsIntegral (WW p) x := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_Oc, ← IsScalarTower.algebraMap_apply]`. Conclude with `isIntegral_algebraMap`.
+-/
 theorem witt_mem_integers_Cp (x : WW p) : algebraMap (K0 p) (Kc p) (algebraMap (WW p) (K0 p) x) ∈ Oc p := by
   rw [mem_Oc, ← IsScalarTower.algebraMap_apply]
   exact isIntegral_algebraMap
 
+/- English proof (translation)
+Establish `hx : IsIntegral (K0 p) x` using `Algebra.IsIntegral.isIntegral x`. Establish `: FiniteDimensional (K0 p) (K0 p)⟮x⟯` using `adjoin.finiteDimensional hx`. Establish `hD : IsDiscreteValuationRing (integralClosure (WW p) (K0 p)⟮x⟯)` using `IntCl.isDVR (WW p) (K0 p) (K0 p)⟮x⟯ (completeWW p)`. Establish `hF : IsFractionRing (integralClosure (WW p) (K0 p)⟮x⟯) (K0 p)⟮x⟯` using `IntCl.frac (WW p) (K0 p) (K0 p)⟮x⟯`. Establish `: IsScalarTower (WW p) (K0 p)⟮x⟯ (Kc p)` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Set `x' : (K0 p)⟮x⟯` to `⟨x, mem_adjoin_simple_self _ _⟩`. Establish `key : ∀ y : (K0 p)⟮x⟯, IsLocalization.IsInteger (integralClosure (WW p) (K0 p)⟮x⟯) y → IsIntegral (WW p) (y : Kc p)`. Introduce and unpack `y ⟨b, rfl⟩`. Conclude with `(b.2 : IsIntegral (WW p) (b : (K0 p)⟮x⟯)).map (IsScalarTower.toAlgHom (WW p) (K0 p)⟮x⟯ (Kc p))`. Break down `ValuationRing.isInteger_or_isInteger (integralClosure (WW p) (K0 p)⟮x⟯) x' with h | h` into its components or cases.
+
+Conclude with `Or.inl (key _ h)`. Conclude with `Or.inr (key _ h)`.
+-/
 theorem Oc_val (x : Kc p) : x ∈ Oc p ∨ x⁻¹ ∈ Oc p := by
   have hx : IsIntegral (K0 p) x := Algebra.IsIntegral.isIntegral x
   have : FiniteDimensional (K0 p) (K0 p)⟮x⟯ := adjoin.finiteDimensional hx
@@ -56,6 +72,11 @@ theorem Oc_val (x : Kc p) : x ∈ Oc p ∨ x⁻¹ ∈ Oc p := by
   · exact Or.inl (key _ h)
   · exact Or.inr (key _ h)
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic (WW p) x⁻¹` using `(IsFractionRing.isAlgebraic_iff (WW p) (K0 p) (Kc p)).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨a, ha, hint⟩` from `halg.exists_integral_multiple`. Take `⟨m, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' a ha`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Oc]`.
+
+Establish `h1 : (p : Kc p) ^ m / x = ((u⁻¹ : (WW p)ˣ) : WW p) • (a • x⁻¹)`. Rewrite using `[smul_smul, hu, mul_comm ((p : WW p) ^ m), ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast, div_eq_mul_inv]`. Rewrite using `[h1]`. Conclude with `hint.smul _`.
+-/
 theorem Oc_rank1 (x : Kc p) (_hx : x ≠ 0) : ∃ m : ℕ, (p : Kc p) ^ m / x ∈ Oc p := by
   have halg : IsAlgebraic (WW p) x⁻¹ :=
     (IsFractionRing.isAlgebraic_iff (WW p) (K0 p) (Kc p)).2 (Algebra.IsAlgebraic.isAlgebraic _)
@@ -69,6 +90,11 @@ theorem Oc_rank1 (x : Kc p) (_hx : x ≠ 0) : ∃ m : ℕ, (p : Kc p) ^ m / x �
   rw [h1]
   exact hint.smul _
 
+/- English proof (translation)
+Rewrite using `[mem_Oc]`. Introduce `h`. Establish `hK : (p : Kc p)⁻¹ = algebraMap (K0 p) (Kc p) (p : K0 p)⁻¹` using `by simp`. Rewrite `h` using `[hK, isIntegral_algebraMap_iff (algebraMap (K0 p) (Kc p)).injective]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`.
+
+Establish `h1 : algebraMap (WW p) (K0 p) (y * p) = 1`. Rewrite using `[map_mul, hy, map_natCast, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hp.out.ne_zero)]`. Establish `h2 : y * (p : WW p) = 1` using `IsFractionRing.injective (WW p) (K0 p) (by rw [h1, map_one])`. Conclude with `(WittVector.irreducible p).not_isUnit ⟨⟨(p : WW p), y, by rw [mul_comm]; exact h2, h2⟩, rfl⟩`.
+-/
 theorem p_inv_notMem_Oc : (p : Kc p)⁻¹ ∉ Oc p := by
   rw [mem_Oc]
   intro h
@@ -86,22 +112,34 @@ def gF : F2 p n →+* kb p := (IsAlgClosed.lift : F2 p n →ₐ[ZMod p] kb p).to
 
 def gW : W2 p n →+* Kc p := (algebraMap (WW p) (Kc p)).comp (WittVector.map (gF p n))
 
+/- English proof (translation)
+Establish `h1 : Function.Injective (algebraMap (WW p) (Kc p))`. Rewrite using `[IsScalarTower.algebraMap_eq (WW p) (K0 p) (Kc p)]`. Conclude with `(algebraMap (K0 p) (Kc p)).injective.comp (IsFractionRing.injective (WW p) (K0 p))`. Conclude with `h1.comp (WittVector.map_injective _ (gF p n).injective)`.
+-/
 theorem gW_injective : Function.Injective (gW p n) := by
   have h1 : Function.Injective (algebraMap (WW p) (Kc p)) := by
     rw [IsScalarTower.algebraMap_eq (WW p) (K0 p) (Kc p)]
     exact (algebraMap (K0 p) (Kc p)).injective.comp (IsFractionRing.injective (WW p) (K0 p))
   exact h1.comp (WittVector.map_injective _ (gF p n).injective)
 
+/- English proof (translation)
+Rewrite using `[gW, RingHom.comp_apply, IsScalarTower.algebraMap_apply (WW p) (K0 p) (Kc p)]`. Conclude with `witt_mem_integers_Cp p _`.
+-/
 theorem gW_mem (a : W2 p n) : gW p n a ∈ Oc p := by
   rw [gW, RingHom.comp_apply, IsScalarTower.algebraMap_apply (WW p) (K0 p) (Kc p)]
   exact witt_mem_integers_Cp p _
 
 def rtP : Kc p := (IsAlgClosed.exists_pow_nat_eq (p : Kc p) (n := 2) (by norm_num)).choose
 
+/- English proof (translation)
+Unfold `rtP`. Conclude with `(IsAlgClosed.exists_pow_nat_eq (p : Kc p) (n := 2) (by norm_num)).choose_spec`.
+-/
 theorem sqrtPrime_sq : rtP p ^ 2 = (p : Kc p) := by
   unfold rtP
   exact (IsAlgClosed.exists_pow_nat_eq (p : Kc p) (n := 2) (by norm_num)).choose_spec
 
+/- English proof (translation)
+Rewrite using `[mem_Oc]`. Use `⟨Polynomial.X ^ 2 - Polynomial.C (p : WW p), Polynomial.monic_X_pow_sub_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[sqrtPrime_sq]`.
+-/
 theorem sqrtPrime_mem : rtP p ∈ Oc p := by
   rw [mem_Oc]
   refine ⟨Polynomial.X ^ 2 - Polynomial.C (p : WW p), Polynomial.monic_X_pow_sub_C _ two_ne_zero, ?_⟩
@@ -122,12 +160,31 @@ def gO : OO p n →+* Kc p where
       add_zero]
     linear_combination (gW p n x.im * gW p n y.im) * (-h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gO_apply (z : OO p n) : gO p n z = gW p n z.re + gW p n z.im * rtP p := rfl
 
+/- English proof (translation)
+Rewrite using `[gO_apply]`. Conclude with `(Oc p).add_mem (gW_mem p n _) ((Oc p).mul_mem (gW_mem p n _) (sqrtPrime_mem p))`.
+-/
 theorem gO_mem (z : OO p n) : gO p n z ∈ Oc p := by
   rw [gO_apply]
   exact (Oc p).add_mem (gW_mem p n _) ((Oc p).mul_mem (gW_mem p n _) (sqrtPrime_mem p))
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Rewrite `hz` using `[gO_apply]`. Distinguish the cases in `hb : z.im = 0`. Establish `ha : gW p n z.re = 0` using `by rw [hb, map_zero, zero_mul, add_zero] at hz; exact hz`.
+
+Establish `ha' : z.re = 0` using `gW_injective p n (by rw [ha, map_zero])`. Apply the tactic sequence `ext <;> simp [ha', hb]`. It suffices to derive a contradiction. Establish `hbK : gW p n z.im ≠ 0` using `fun h => hb (gW_injective p n (by rw [h, map_zero]))`. Establish `hr : rtP p = -gW p n z.re / gW p n z.im`.
+
+Rewrite using `[eq_div_iff hbK]`. Take the linear combination `hz`. Establish `hcr : algebraMap (K0 p) (Kc p) (-(algebraMap (WW p) (K0 p) (WittVector.map (gF p n) z.re)) / algebraMap (WW p) (K0 p) (WittVector.map (gF p n) z.im)) = rtP p`. Rewrite using `[hr]`. Simplify using `[gW, IsScalarTower.algebraMap_apply (WW p) (K0 p) (Kc p)]`.
+
+Use `set c : K0 p := -(algebraMap (WW p) (K0 p) (WittVector.map (gF p n) z.re)) / algebraMap (WW p) (K0 p) (WittVector.map (gF p n) z.im) with hc`. Establish `hc2 : c ^ 2 = (p : K0 p)`. Apply `(algebraMap (K0 p) (Kc p)).injective` to reduce the goal to its premises. Rewrite using `[map_pow, hcr, sqrtPrime_sq, map_natCast]`. Establish `hci : IsIntegral (WW p) c` using `⟨Polynomial.X ^ 2 - Polynomial.C (p : WW p), Polynomial.monic_X_pow_sub_C _ two_ne_zero, by simp [hc2]⟩`.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hci`. Establish `hy2 : y * y = (p : WW p)` using `IsFractionRing.injective (WW p) (K0 p) (by rw [map_mul, hy, ← sq, hc2, map_natCast])`. Break down `(WittVector.irreducible p).isUnit_or_isUnit hy2.symm with h | h` into its components or cases. Establish `hpu : IsUnit (p : WW p)` using `by rw [← hy2]; exact h.mul h`. Conclude with `(WittVector.irreducible p).not_isUnit hpu`.
+
+Establish `hpu : IsUnit (p : WW p)` using `by rw [← hy2]; exact h.mul h`. Conclude with `(WittVector.irreducible p).not_isUnit hpu`.
+-/
 theorem gO_injective : Function.Injective (gO p n) := by
   rw [injective_iff_map_eq_zero]
   intro z hz
@@ -163,6 +220,9 @@ theorem gO_injective : Function.Injective (gO p n) := by
 
 def gK : KO p n →+* Kc p := IsFractionRing.lift (gO_injective p n)
 
+/- English proof (translation)
+Unfold `gK`. Conclude with `IsFractionRing.lift_algebraMap _ _`.
+-/
 theorem gK_alg (z : OO p n) : gK p n (algebraMap (OO p n) (KO p n) z) = gO p n z := by
   unfold gK
   exact IsFractionRing.lift_algebraMap _ _
@@ -173,16 +233,29 @@ def gL (L : IntermediateField (KO p n) (Om p n)) : L →+* Kc p :=
   letI : Algebra (KO p n) (Kc p) := (gK p n).toAlgebra
   (IsAlgClosed.lift : L →ₐ[KO p n] Kc p).toRingHom
 
+/- English proof (translation)
+Unfold `gL`. Use `letI : Algebra (KO p n) (Kc p) := (gK p n).toAlgebra`. Conclude with `(IsAlgClosed.lift : L →ₐ[KO p n] Kc p).commutes y`.
+-/
 theorem gL_alg (L : IntermediateField (KO p n) (Om p n)) (y : KO p n) :
     gL L (algebraMap (KO p n) L y) = gK p n y := by
   unfold gL
   letI : Algebra (KO p n) (Kc p) := (gK p n).toAlgebra
   exact (IsAlgClosed.lift : L →ₐ[KO p n] Kc p).commutes y
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (OO p n) (KO p n) L, gL_alg, gK_alg]`.
+-/
 theorem gL_algO (L : IntermediateField (KO p n) (Om p n)) (z : OO p n) :
     gL L (algebraMap (OO p n) L z) = gO p n z := by
   rw [IsScalarTower.algebraMap_apply (OO p n) (KO p n) L, gL_alg, gK_alg]
 
+/- English proof (translation)
+Take `⟨f, hfm, hf⟩` from `hx`. Rewrite using `[mem_Oc]`. Establish `hcomp : (gL L).comp (algebraMap (OO p n) L) = gO p n` using `RingHom.ext fun z => gL_algO L z`. Establish `hroot : Polynomial.eval₂ (gO p n) (gL L x) f = 0`. Rewrite using `[← hcomp, ← Polynomial.hom_eval₂, hf, map_zero]`.
+
+Set `g : OO p n →+* integralClosure (WW p) (Kc p)` to `(gO p n).codRestrict (integralClosure (WW p) (Kc p)) fun z => (mem_integralClosure_iff _ _).2 ((mem_Oc p _).1 (gO_mem p n z))`. Establish `hA : IsIntegral (integralClosure (WW p) (Kc p)) (gL L x)`. Use `⟨f.map g, hfm.map g, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hg : (algebraMap (integralClosure (WW p) (Kc p)) (Kc p)).comp g = gO p n` using `RingHom.ext fun z => rfl`.
+
+Rewrite using `[hg, hroot]`. Conclude with `isIntegral_trans _ hA`.
+-/
 theorem gL_mem (L : IntermediateField (KO p n) (Om p n)) {x : L} (hx : IsIntegral (OO p n) x) : gL L x ∈ Oc p := by
   obtain ⟨f, hfm, hf⟩ := hx
   rw [mem_Oc]
@@ -198,6 +271,25 @@ theorem gL_mem (L : IntermediateField (KO p n) (Om p n)) {x : L} (hx : IsIntegra
     rw [hg, hroot]
   exact isIntegral_trans _ hA
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `hnot`. Establish `hF : IsFractionRing (OL p n L) L` using `IntCl.frac (OO p n) (KO p n) L`. Break down `ValuationRing.isInteger_or_isInteger (OL p n L) x with h | ⟨b, hb⟩` into its components or cases.
+
+Conclude with `hnot h`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hnot ⟨0, map_zero _⟩`. Establish `hbm : b ∈ maximalIdeal (OL p n L)`.
+
+Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, rfl⟩`. Use `hnot ⟨((u⁻¹ : (OL p n L)ˣ) : OL p n L), ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (OL p n L) L (u : OL p n L) * algebraMap (OL p n L) L ((u⁻¹ : (OL p n L)ˣ) : OL p n L) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+
+Rewrite `h1` using `[hb]`. Conclude with `(eq_inv_of_mul_eq_one_right h1).trans (inv_inv x)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (OL p n L)`. Establish `hp0 : (p : OL p n L) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hp0 hϖ`.
+
+Rewrite `hbm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hbm`. Establish `h2 : (ϖ * c) ^ e = (p : OL p n L) * ((u : OL p n L) * c ^ e)`. Rewrite using `[mul_pow, ← hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : (x⁻¹) ^ e = (p : L) * algebraMap (OL p n L) L ((u : OL p n L) * c ^ e)`. Rewrite using `[← hb, ← map_pow, h2, map_mul, map_natCast]`. Establish `h4 : gL L (algebraMap (OL p n L) L ((u : OL p n L) * c ^ e)) ∈ Oc p` using `gL_mem L ((u : OL p n L) * c ^ e).2`. Establish `h5 : (p : Kc p)⁻¹ = (gL L x) ^ e * gL L (algebraMap (OL p n L) L ((u : OL p n L) * c ^ e))`. Establish `h6` using `congrArg (gL L) h3`.
+
+Rewrite `h6` using `[map_pow, map_inv₀, map_mul, map_natCast]`. Establish `hg : gL L x ≠ 0` using `(_root_.map_ne_zero _).2 hx0`. Establish `h7 : (gL L x) ^ e * ((gL L x)⁻¹) ^ e = 1` using `by rw [← mul_pow, mul_inv_cancel₀ hg, one_pow]`. Rewrite `h7` using `[h6]`. Establish `h8 : (p : Kc p) * ((gL L x) ^ e * gL L (algebraMap (OL p n L) L ((u : OL p n L) * c ^ e))) = 1`.
+
+Rewrite using `[← h7]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(eq_inv_of_mul_eq_one_right h8).symm`. Conclude with `p_inv_notMem_Oc p (h5 ▸ (Oc p).mul_mem ((Oc p).pow_mem hx e) h4)`. Introduce and unpack `⟨b, rfl⟩`.
+
+Conclude with `gL_mem L b.2`.
+-/
 theorem Oc_K (L : IntermediateField (KO p n) (Om p n)) [FiniteDimensional (KO p n) L] (x : L) :
     gL L x ∈ Oc p ↔ x ∈ Set.range (algebraMap (OL p n L) L) := by
   constructor
@@ -245,18 +337,39 @@ theorem Oc_K (L : IntermediateField (KO p n) (Om p n)) [FiniteDimensional (KO p 
 
 def gWW (p : ℕ) [Fact p.Prime] (n : ℕ) : W2 p n →+* WW p := WittVector.map (gF p n)
 
+/- English proof (translation)
+Rewrite using `[gL_algO, gO_apply]`. Simplify using `[gW, gWW, IsScalarTower.algebraMap_apply (WW p) (K0 p) (Kc p)]`.
+-/
 theorem intermediate_map_witt_quadratic (L : IntermediateField (KO p n) (Om p n)) (a : W2 p n) :
     gL L (algebraMap (OO p n) L (algebraMap (W2 p n) (OO p n) a)) =
       algebraMap (K0 p) (Kc p) (algebraMap (WW p) (K0 p) (gWW p n a)) := by
   rw [gL_algO, gO_apply]
   simp [gW, gWW, IsScalarTower.algebraMap_apply (WW p) (K0 p) (Kc p)]
 
+/- English proof (translation)
+Rewrite using `[jO, RingHom.comp_apply]`. Conclude with `intermediate_map_witt_quadratic L (jW p n a)`.
+-/
 theorem gL_jO (L : IntermediateField (KO p n) (Om p n)) (a : WQ p n) :
     gL L (algebraMap (OO p n) L (jO p n a)) =
       algebraMap (K0 p) (Kc p) (algebraMap (WW p) (K0 p) (gWW p n (jW p n a))) := by
   rw [jO, RingHom.comp_apply]
   exact intermediate_map_witt_quadratic L (jW p n a)
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `fun h => hx ⟨0, by rw [h, map_zero]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : B, algebraMap B L y = x⁻¹ := by`. Break down `ValuationRing.isInteger_or_isInteger B x with h | h` into its components or cases. Take `⟨z, hz⟩` from `RingHom.mem_rangeS.1 h`. Conclude with `absurd ⟨z, hz⟩ hx`.
+
+Conclude with `RingHom.mem_rangeS.1 h`. Establish `hyu : ¬ IsUnit y`. Introduce and unpack `⟨u, rfl⟩`. Apply `hx` to reduce the goal to its premises. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← inv_inv x, ← hy]`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← map_mul, Units.inv_mul, map_one])`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`.
+
+Conclude with `inv_ne_zero hx0 hy.symm`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible B`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy0 hϖ`. Take `⟨m, u', hu'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hπ hϖ`. Establish `hk : k ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hyu` to reduce the goal to its premises. Rewrite using `[hu, pow_zero, mul_one]`. Conclude with `u.isUnit`. Establish `hdvd : π ∣ y ^ m`.
+
+Rewrite using `[hu', hu, mul_pow]`. Use `(Units.mul_left_dvd).2 (Dvd.dvd.mul_left ?_ _)` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Conclude with `pow_dvd_pow ϖ (by nlinarith [Nat.pos_of_ne_zero hk])`. Take `⟨d, hd⟩` from `hdvd`.
+
+Conclude with `⟨m, d, by rw [← hd, map_pow, hy]⟩`.
+-/
 theorem exists_inv_pow {B L : Type*} [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Field L] [Algebra B L]
     [IsFractionRing B L] {π : B} (hπ : π ≠ 0) {x : L} (hx : x ∉ Set.range (algebraMap B L)) :
     ∃ (e : ℕ) (d : B), x⁻¹ ^ e = algebraMap B L (π * d) := by
@@ -292,6 +405,13 @@ theorem exists_inv_pow {B L : Type*} [CommRing B] [IsDomain B] [IsDiscreteValuat
   obtain ⟨d, hd⟩ := hdvd
   exact ⟨m, d, by rw [← hd, map_pow, hy]⟩
 
+/- English proof (translation)
+Establish `hxi : IsIntegral (K0 p) x` using `Algebra.IsIntegral.isIntegral x`. Establish `: FiniteDimensional (K0 p) (K0 p)⟮x⟯` using `adjoin.finiteDimensional hxi`. Establish `hD : IsDiscreteValuationRing (integralClosure (WW p) (K0 p)⟮x⟯)` using `IntCl.isDVR (WW p) (K0 p) (K0 p)⟮x⟯ (completeWW p)`. Establish `hF : IsFractionRing (integralClosure (WW p) (K0 p)⟮x⟯) (K0 p)⟮x⟯` using `IntCl.frac (WW p) (K0 p) (K0 p)⟮x⟯`. Establish `: IsScalarTower (WW p) (K0 p)⟮x⟯ (Kc p)` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Set `x' : (K0 p)⟮x⟯` to `⟨x, mem_adjoin_simple_self _ _⟩`. Establish `key : ∀ b : integralClosure (WW p) (K0 p)⟮x⟯, ((b : (K0 p)⟮x⟯) : Kc p) ∈ Oc p` using `fun b => (b.2 : IsIntegral (WW p) (b : (K0 p)⟮x⟯)).map (IsScalarTower.toAlgHom (WW p) (K0 p)⟮x⟯ (Kc p))`. Establish `hx' : x' ∉ Set.range (algebraMap (integralClosure (WW p) (K0 p)⟮x⟯) (K0 p)⟮x⟯)`. Introduce and unpack `⟨b, hb⟩`. Conclude with `hx (by have := key b; rwa [show ((b : (K0 p)⟮x⟯) : Kc p) = x from congrArg Subtype.val hb] at this)`.
+
+Establish `hp0 : (p : integralClosure (WW p) (K0 p)⟮x⟯) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Take `⟨e, d, hd⟩` from `exists_inv_pow hp0 hx'`. Use `⟨e, ((d : (K0 p)⟮x⟯) : Kc p), key d, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : (K0 p)⟮x⟯ => (z : Kc p)) hd` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_pow_of_notMem_Oc {x : Kc p} (hx : x ∉ Oc p) :
     ∃ (e : ℕ) (d : Kc p), d ∈ Oc p ∧ x⁻¹ ^ e = (p : Kc p) * d := by
   have hxi : IsIntegral (K0 p) x := Algebra.IsIntegral.isIntegral x

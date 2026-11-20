@@ -9,6 +9,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 
 namespace GlobalTheory.NuGood
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' h v hv t k hk hpow`. Establish `hW : splitPrime t ∉ above E (X.T : Set (Pl F))`. Introduce `hmem`. Conclude with `hv.1 (by simpa [above, splitPrime_under] using hmem)`. Establish `hunr : UnrAt X.ν (splitPrime t)`.
+
+Rewrite using `[Chars.ν, div_eq_mul_inv]`. Conclude with `(h.chars.unrα _ hW).mul (h.chars.unrβ _ hW).inv`. Rewrite `hpow` using `[GlobalTheory.T.unramified_character_at_uniformizer F E X.ν v t hunr]`. Establish `hHecke : IsHecke F E X.ν`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(h.chars.heckeα.1.div' h.chars.heckeβ.1 :)`. Rewrite using `[Chars.ν, MonoidHom.div_apply, h.chars.heckeα.2 x, h.chars.heckeβ.2 x, div_one]`. Take `⟨H, hloc, hinf⟩` from `GlobalTheory.T.hecke_character_of_idele_class F E σ h.base.cm X.ν hHecke`. Establish `hexp : HasExp B.emb X.ν (fun w => B.mα w - B.mβ w)`. Introduce `z hz`.
+
+Establish `h1` using `h.chars.expα z hz`. Establish `h2` using `h.chars.expβ z hz`. Use `show (((X.α z / X.β z : Circle)) : ℂ) = _`. Rewrite using `[Circle.coe_div, h1, h2, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Establish `hne : piInf (B.emb w) z ≠ 0` using `(z.isUnit.map (piInf (B.emb w))).ne_zero`. Establish `hne' : piInf (B.emb w) z / (‖piInf (B.emb w) z‖ : ℂ) ≠ 0` using `div_ne_zero hne (by exact_mod_cast (norm_ne_zero_iff.2 hne))`. Rewrite using `[zpow_sub₀ hne']`. Establish `hval : val X.ν (splitPrime t) = H.val (splitPrime t)` using `(hloc _ _).symm`. Take `⟨p, hp, hN, hsq⟩` from `GlobalTheory.T.split_prime_degree_one F E (splitPrime t) (by rw [splitPrime_under]; exact hv.2)`.
+
+Use `GlobalTheory.T.hecke_value_not_finite_order F E σ h.base.cm h.base.galois B.emb H _ (hinf _ _ hexp) (fun w => ?_) p hp _ hN hsq ?_` and prove the remaining obligations. Use `h.geo.kappa w` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hval]`. Conclude with `isOfFinOrder_iff_zpow_eq_one.2 ⟨k, hk, hpow⟩`.
+-/
 theorem not_root_of_unity : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ v, X.Good v → (∀ (t : E →ₐ[F] Fv F v) (k : ℤ), k ≠ 0 → chrW X.ν t (unifAt v) ^ k ≠ 1) := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h v hv t k hk hpow

@@ -14,6 +14,13 @@ open Formalism.FourierDecayAlt.ThreeDimData
 
 namespace G
 
+/- English proof (translation)
+Establish `hS'` using `hS`. Take `⟨hlam, hσ, -, -, hw0, -, -, -, -, hW, hN, hG, hq⟩` from `hS'`. Take `⟨-, hBC2, hBC3, -⟩` from `hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`. Use extensionality with `ξ`. Establish `hc : ContinuousOn (fun g => be z c π σ μW μN (σ g x) v ξ) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))` using `(hBC3 x hx v hv).clm_apply continuousOn_const`.
+
+Establish `heq : ∀ hh ∈ Formalism.QuantumDeterminants.UWset k r z, ∀ n ∈ Formalism.QuantumDeterminants.Nset k r, ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), be z c π σ μW μN (σ (hh * n * g) x) v ξ = Formalism.QuantumDeterminants.psi k r z c n • π hh (be z …`. Introduce `hh hhW n hn g hg`. Establish `hhn : hh * n ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hhW.1 hn.1`. Establish `hm : σ (hh * n * g) = (σ (hh * n)).comp (σ g)` using `TranslationBesselVanishing.sigma_mul hσ hhn hg`. Rewrite using `[hm, ContinuousLinearMap.comp_apply, hBC2 v hv hh hhW n hn (σ g x) (TranslationBesselVanishing.smooth_translate hσ hx hg)]`.
+
+Both sides reduce to the same expression. Establish `h0` using `aez hW hN hG hq (fun g => be z c π σ μW μN (σ g x) v ξ) hc heq (hl ξ) 1 Formalism.QuantumDeterminants.WeylGroupFacts.uh_one`. Simplify `h0` using `[sigma_one hσ]`.
+-/
 theorem vanishing_of_L2_equivariant {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx k r → (H →L[ℂ] H)}
     {w0 : H} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
@@ -40,12 +47,40 @@ theorem vanishing_of_L2_equivariant {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bo
   have h0 := aez hW hN hG hq (fun g => be z c π σ μW μN (σ g x) v ξ) hc heq (hl ξ) 1 Formalism.QuantumDeterminants.WeylGroupFacts.uh_one
   simpa [sigma_one hσ] using h0
 
+/- English proof (translation)
+Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS hDD v hv x hx`. Use `vanishing_of_L2_equivariant hBC hIn hS hx (Or.inl hv) (fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x hx v (Or.inl hv) ξ).1, hDD v hv v hv]`. Simplify using the standard rewrite rules.
+-/
 theorem zeroCaseDD_of (hBC : CompanionTheory.D.Upq.BesselFunctionalConstruction.BeConv) (hNI : CompanionTheory.D.Upq.BesselFunctionalConstruction.NormIdSm) (hSch : SchurH) : CompanionTheory.D.Upq.BesselFunctionalConstruction.ZeroCaseDD := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS hDD v hv x hx
   refine vanishing_of_L2_equivariant hBC hIn hS hx (Or.inl hv) (fun ξ => ?_)
   rw [(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x hx v (Or.inl hv) ξ).1, hDD v hv v hv]
   simp
 
+/- English proof (translation)
+Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS hDD v hv x hx`. Establish `hS'` using `hS`. Take `⟨hlam, hσ, -, -, hw0, -, -, -, -, hW, hN, hG, hq⟩` from `hS'`. Take `⟨-, -, -, hBC4⟩` from `hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`. Establish `hA` using `zeroCaseDD_of hBC hNI hSch hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS hDD`.
+
+Establish `hvs : v ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := hIn.2.2.1 k r ε lam H σ hlam hσ v hv`. Establish `hB : ∀ u ∈ DDsp σ w0, be z c π σ μW μN u v = 0`. Introduce `u hu`. Establish `h1 : be z c π σ μW μN v u = 0` using `hA u hu v hvs`. Establish `h2` using `(hBC4 u hu v (Or.inr hv)).2`.
+
+Rewrite `h2` using `[h1]`. Establish `h3` using `congrArg ContinuousLinearMap.adjoint h2`. Rewrite `h3` using `[ContinuousLinearMap.adjoint_adjoint, map_zero]`. Then use the resulting hypothesis. Establish `hw0n : ‖w0‖ = 1`. Take `⟨P, -, hn1, -⟩` from `hw0`.
+
+Conclude with `hn1`. Establish `hw0ne : w0 ≠ 0`. Introduce `h0`. Rewrite `hw0n` using `[h0, norm_zero]`. Conclude with `zero_ne_one hw0n`.
+
+Take `⟨d, hd, hSd⟩` from `hSch k r ε lam H σ μG hlam hσ hG`. Establish `hdeg : PI.BesselPeriodGGP.fdegH μG σ w0 = d` using `DDSmoothness.fdeg_eq hd hSd hw0ne`. Establish `hw0DD : w0 ∈ DDsp σ w0`. Use `Submodule.subset_span ⟨1, Formalism.QuantumDeterminants.WeylGroupFacts.uh_one, ?_⟩` and prove the remaining obligations. Simplify using `[sigma_one hσ]`.
+
+Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := DDSmoothness.DD_smooth hIn.2.2.1 hlam hσ hw0 w0 hw0DD`. Establish `hmu` using `DDSmoothness.muSof_facts hW hN`. Establish `hae` using `DDSmoothness.ae_UH_of_quot hG.2.2.1 hmu.1 hmu.2 hq`. Establish `hC : ∀ ξ : Wp, ⟪ξ, be z c π σ μW μN v v ξ⟫_ℂ = 0`. Introduce `ξ`.
+
+Take `⟨hNv, him, hre⟩` from `hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS w0 hw0s v (Or.inr hv) ξ`. Establish `hL : PI.BesselPeriodGGP.l2SG νq (fun g => be z c π σ μW μN (σ g w0) v ξ) = 0`. Unfold `PI.BesselPeriodGGP.l2SG`. Use `(lintegral_congr_ae (hae.mono fun g hg => ?_)).trans lintegral_zero` and prove the remaining obligations. Establish `hgD : σ (Matrix.of g) w0 ∈ DDsp σ w0` using `Submodule.subset_span ⟨Matrix.of g, hg, rfl⟩`.
+
+Simplify using `[hB _ hgD]`. Rewrite `hNv` using `[hL, hdeg, hw0n]`. Establish `h0 : 1 ^ 2 * (⟪ξ, be z c π σ μW μN v v ξ⟫_ℂ).re / d ≤ 0` using `ENNReal.ofReal_eq_zero.mp hNv.symm`. Establish `hre0 : (⟪ξ, be z c π σ μW μN v v ξ⟫_ℂ).re = 0`. Establish `: (⟪ξ, be z c π σ μW μN v v ξ⟫_ℂ).re ≤ 0`.
+
+Rewrite `h0` using `[one_pow, one_mul]`. Conclude with `(div_nonpos_iff.mp h0).elim (fun h => absurd h.2 (not_le.mpr hd)) (fun h => h.1)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.ext hre0 him`. Establish `hvv : be z c π σ μW μN v v = 0`.
+
+Establish `hlin : (be z c π σ μW μN v v : Wp →ₗ[ℂ] Wp) = 0`. Rewrite using `[← inner_map_self_eq_zero]`. Introduce `ξ`. Rewrite using `[← inner_conj_symm]`. Simplify using `[hC ξ]`.
+
+Use extensionality with `ξ`. Use `LinearMap.congr_fun hlin ξ` as an intermediate fact. Simplify using `using this`. Use `vanishing_of_L2_equivariant hBC hIn hS hx (Or.inr hv) (fun ξ => ?_)` and prove the remaining obligations. Rewrite using `[(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x hx v (Or.inr hv) ξ).1, hvv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem zeroCase_of (hBC : CompanionTheory.D.Upq.BesselFunctionalConstruction.BeConv) (hNI : CompanionTheory.D.Upq.BesselFunctionalConstruction.NormIdSm) (hSch : SchurH) : CompanionTheory.D.Upq.BesselFunctionalConstruction.ZeroCase := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS hDD v hv x hx
   have hS' := hS

@@ -5,6 +5,9 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.Colim
 
+/- English proof (translation)
+The claim follows from `| 0, _ => rfl | k + 1, x => by show ι (n + k + 1) (f (n + k) (tr f n k x)) = ι n x rw [hc.comm, iota_tr hc n k x]`.
+-/
 theorem iota_tr {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)]
     {f : ∀ n, G n →ₐ[A] G (n + 1)} {L : Type} [CommRing L] [Algebra A L] {ι : ∀ n, G n →ₐ[A] L}
     (hc : IsColim f ι) (n : ℕ) : ∀ (k : ℕ) (x : G n), ι (n + k) (tr f n k x) = ι n x
@@ -13,6 +16,17 @@ theorem iota_tr {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n
     show ι (n + k + 1) (f (n + k) (tr f n k x)) = ι n x
     rw [hc.comm, iota_tr hc n k x]
 
+/- English proof (translation)
+Introduce `P hP hd`. Take `⟨n, y, hy⟩` from `hc.surj P.natDegree (fun i => P.coeff i)`. Use `set Q : Polynomial (G n) := Polynomial.X ^ P.natDegree + ∑ i : Fin P.natDegree, Polynomial.C (y i) * Polynomial.X ^ (i : ℕ) with hQ`. Establish `hQm : Q.Monic` using `Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt y)`. Establish `hmap : Q.map (ι n : G n →+* L) = P`.
+
+Rewrite using `[hQ, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum]`. Simplify using `only [Polynomial.map_mul, Polynomial.map_C, Polynomial.map_pow, Polynomial.map_X, RingHom.coe_coe, hy]`. Use `conv_rhs => rw [hP.as_sum]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => Polynomial.C (P.coeff i) * Polynomial.X ^ i) P.natDegree]`. Establish `hQd : 0 < Q.natDegree`.
+
+Use `Polynomial.natDegree_map_le (f := (ι n : G n →+* L)) (p := Q)` as an intermediate fact. Rewrite `this` using `[hmap]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx⟩` from `hA n Q hQm hQd`. Use `⟨ι (n + 1) x, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : (Q.map (f n : G n →+* G (n + 1))).map (ι (n + 1) : G (n + 1) →+* L) = P`. Rewrite using `[Polynomial.map_map, ← hmap]`. Use `congr 1`. Use extensionality with `z`. Simplify using `[hc.comm]`.
+
+Rewrite using `[← h2]`. Conclude with `Polynomial.IsRoot.map hx`.
+-/
 theorem aic_of_isColim {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)]
     {f : ∀ n, G n →ₐ[A] G (n + 1)} {L : Type} [CommRing L] [Algebra A L] {ι : ∀ n, G n →ₐ[A] L}
     (hc : IsColim f ι) (hA : ∀ n, AICm (f n : G n →+* G (n + 1))) : AIC L := by
@@ -35,6 +49,19 @@ theorem aic_of_isColim {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRi
   rw [← h2]
   exact Polynomial.IsRoot.map hx
 
+/- English proof (translation)
+Introduce `u v ⟨N, hN⟩`. Take `⟨a, b, hab⟩` from `Ideal.mem_span_pair.mp hN`. Take `⟨n, y, hy⟩` from `hc.surj 4 ![a, b, u, v]`. Establish `h0` using `hy 0`. Establish `h1` using `hy 1`.
+
+Establish `h2` using `hy 2`. Establish `h3` using `hy 3`. Simplify using `only [Matrix.cons_val] at h0 h1 h2 h3`. Take `⟨k, hk⟩` from `hc.ker n 1 (fun _ => y 0 * y 2 + y 1 * y 3 - algebraMap A (G n) π ^ N) (fun _ => by simp [h0, h1, h2, h3, hab])`. Establish `hk0` using `hk 0`.
+
+Use `set m := n + k`. Use `set t := tr f n k`. Establish `hspan : algebraMap A (G m) π ^ N ∈ Ideal.span {t (y 2), t (y 3)}`. Use `Ideal.mem_span_pair.mpr ⟨t (y 0), t (y 1), ?_⟩` and prove the remaining obligations. Use `hk0` as an intermediate fact.
+
+Simplify using `only [map_sub, map_add, map_mul, map_pow, AlgHom.commutes] at this`. Conclude with `(sub_eq_zero.mp this)`. Take `⟨e, he, he1, he2⟩` from `hV m (t (y 2)) (t (y 3)) ⟨N, hspan⟩`. Establish `hu : ι (m + 1) (f m (t (y 2))) = u` using `by rw [hc.comm, iota_tr hc n k, h2]`. Establish `hv : ι (m + 1) (f m (t (y 3))) = v` using `by rw [hc.comm, iota_tr hc n k, h3]`.
+
+Use `⟨ι (m + 1) e, he.map (ι (m + 1)), ?_, ?_⟩` and prove the remaining obligations. Rewrite `he1`, the goal using `[Ideal.mem_span_singleton]`. Use `map_dvd (ι (m + 1)) he1` as an intermediate fact. Simplify `this` using `[map_mul, hu, hv]`. Rewrite `he2`, the goal using `[Ideal.mem_span_singleton]`.
+
+Use `map_dvd (ι (m + 1)) he2` as an intermediate fact. Simplify `this` using `[map_mul, map_sub, hu, hv]`.
+-/
 theorem val_of_isColim {A : Type} [CommRing A] (π : A) {G : ℕ → Type} [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)]
     {f : ∀ n, G n →ₐ[A] G (n + 1)} {L : Type} [CommRing L] [Algebra A L] {ι : ∀ n, G n →ₐ[A] L}
     (hc : IsColim f ι) (hV : ∀ n, VALm (algebraMap A (G n) π) (f n : G n →+* G (n + 1))) :
@@ -65,6 +92,9 @@ theorem val_of_isColim {A : Type} [CommRing A] (π : A) {G : ℕ → Type} [∀ 
     have := map_dvd (ι (m + 1)) he2
     simpa [map_mul, map_sub, hu, hv] using this
 
+/- English proof (translation)
+Introduce `_ _ π _ _ _ _ _ _ _ _ hc hA hV` and use `⟨aic_of_isColim hc hA, val_of_isColim π hc hV⟩`.
+-/
 theorem aic_val_of_isColim : ∀ (A : Type) [CommRing A] (π : A) (G : ℕ → Type) [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)] (f : ∀ n, G n →ₐ[A] G (n + 1))(L : Type) [CommRing L] [Algebra A L] (ι : ∀ n, G n →ₐ[A] L), IsColim f ι → (∀ n, AICm (f n : G n →+* G (n + 1))) → (∀ n, VALm (algebraMap A (G n) π) (f n : G n →+* G (n + 1))) → AIC L ∧ VAL (algebraMap A L π) :=
   fun _ _ π _ _ _ _ _ _ _ _ hc hA hV => ⟨aic_of_isColim hc hA, val_of_isColim π hc hV⟩
 end GlobalTheory.CompanionTheory.Colim

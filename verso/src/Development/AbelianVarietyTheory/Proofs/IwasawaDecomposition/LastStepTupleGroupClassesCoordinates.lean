@@ -7,6 +7,25 @@ namespace GlobalTheory
 
 open GlobalTheory.Mem.Col2
 
+/- English proof (translation)
+Introduce `B X I u a`. Establish `hne : B.R.m + 1 ≠ B.R.m` using `by omega`. Establish `hY : ∀ p : PtAt (Pr` using `B.primes X) B.R I.sel (I.tup a) (I.cst a) u B.R.m, p.1.2 = ∅ := by`. Introduce `p`. Establish `h` using `p.2`.
+
+Rewrite `h` using `[ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) hne]`. Conclude with `h`. Establish `hpt : ∀ p q : PtAt (Pr` using `B.primes X) B.R I.sel (I.tup a) (I.cst a) u B.R.m, p.1.1 = q.1.1 → p = q := by`. Introduce `p q h`. Conclude with `Subtype.ext (Prod.ext h ((hY p).trans (hY q).symm))`.
+
+Establish `hcos : ∀ p q : PtAt (Pr` using `B.primes X) B.R I.sel (I.tup a) (I.cst a) u B.R.m, cosetIn p = cosetIn q := by`. Introduce `p q`. Use function extensionality and compare the values at `P`. Use extensionality with `z`. Simplify using `[cosetIn, hY p, hY q]`.
+
+Use `set S := I.stp u a B.R.m with hS`. Establish `key : ∀ (T : GStep B.fields.E B.fields.K (B.R.N B.R.m)) (b : T.β) (x y : T.D b) (g : T.G b), g • x = y → (Quotient.mk (MulAction.orbitRel (T.G b) (T.D b)) x) = Quotient.mk (MulAction.orbitRel (T.G b) (T.D b)) y` using `fun T b x y g h => Quotient.sound ⟨g⁻¹, by rw [← h]; exact inv_smul_smul g x⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨_ | al, hb⟩, q⟩`. Use `⟨Equiv.refl _, fun κ => ⟨rfl, rfl, rfl, rfl, hcos _ _, fun h => hpt _ _ h⟩⟩` and prove the remaining obligations.
+
+Conclude with `absurd (hb.1 rfl) (lt_irrefl _)`. Introduce and unpack `⟨⟨_ | al, hb⟩, q⟩ ⟨⟨_ | al', hb'⟩, q'⟩ γ h θ hγ`. Establish `e1 : S.act ⟨none, hb⟩ (γ, h, θ) (S.rep ⟨⟨none, hb⟩, q⟩) = S.rep ⟨⟨none, hb'⟩, q'⟩` using `hpt _ _ hγ`. Establish `hq : q = q'`. Establish `h1` using `S.rp_spec ⟨none, hb⟩ q`.
+
+Establish `h2` using `S.rp_spec ⟨none, hb'⟩ q'`. Rewrite using `[← h1, ← h2]`. Conclude with `key S _ _ _ _ e1`. Substitute `hq` using the available equality. Both sides reduce to the same expression.
+
+Conclude with `absurd (hb'.1 rfl) (lt_irrefl _)`. Conclude with `absurd (hb.1 rfl) (lt_irrefl _)`. Conclude with `absurd (hb.1 rfl) (lt_irrefl _)`. Introduce `p`. Take `⟨pt, hpt'⟩` from `exists_ptAt I.sel (I.tup a) (I.cst a) (R := B.R) (u := u) (j := B.R.m) p`.
+
+Set `b : S.β` to `Idx.top I.sel (I.tup a) (I.idx a) le_rfl`. Take `⟨g, hg⟩` from `S.exists_mv b pt`. Use `⟨S.cl b pt, g.1, g.2.1, g.2.2, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun x : PtAt (Pr := B.primes X) B.R I.sel (I.tup a) (I.cst a) u B.R.m => x.1.1) hg).trans hpt'`. Use `haveI : NeZero (B.R.N B.R.m) := ⟨by have := N_m_succ B.R; omega⟩`.
+
+Take `⟨pt, -⟩` from `exists_ptAt I.sel (I.tup a) (I.cst a) (R := B.R) (u := u) (j := B.R.m) (DecoF.base _ _ _ _ _)`. Conclude with `⟨S.cl (Idx.top I.sel (I.tup a) (I.idx a) le_rfl) pt⟩`.
+-/
 theorem stpTop_groupClasses : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.ι), (∀ c : (I.stp u a B.R.m).Cl, ∃ e : (I.stp u a B.R.m).G c.1 ≃ (UF B.host.E (B.R.N B.R.m) × ((I.Tp a).levG B.R.m).grp × ((I.Tp a).levQ B.R.m).grp), ∀ κ : (I.stp u a B.R.m).G c.1, (e κ).1 = κ.1 ∧ (I.stp u a B.R.m).gam c.1 κ = ufGL B.host.E (B.R.N B.R.m) (e κ).1 ∧ (I.stp u a B.R.m).chr c.1 κ = ((I.Tp a).levG B.R.m).chr (e κ).2.1 * ((I.Tp a).levQ B.R.m).chr (e κ).2.2 ∧ ((I.stp u a B.R.m).act c.1 κ ((I.stp u a B.R.m).rep c)).1.1 = (((e κ).1, (e κ).2.1.1, (e κ).2.2.1) : UF B.host.E (B.R.N B.R.m) × GLG B.host.E (B.R.N B.R.m) (B.primes X).vGs × GLQ B.host.E (B.R.N B.R.m) (I.Q a)) • ((I.stp u a B.R.m).rep c).1.1 ∧ cosetIn ((I.stp u a B.R.m).act c.1 κ ((I.stp u a B.R.m).rep c)) = cosetIn ((I.stp u a B.R.m).rep c) ∧ (((I.stp u a B.R.m).act c.1 κ ((I.stp u a B.R.m).rep c)).1.1 = ((I.stp u a B.R.m).rep c).1.1 → (I.stp u a B.R.m).act c.1 κ ((I.stp u a B.R.m).rep c) = (I.stp u a B.R.m).rep c)) ∧ (∀ (c c' : (I.stp u a B.R.m).Cl) (γ : UF B.host.E (B.R.N B.R.m)) (h : ((I.Tp a).levG B.R.m).grp) (θ : ((I.Tp a).levQ B.R.m).grp), ((γ, h.1, θ.1) : UF B.host.E (B.R.N B.R.m) × GLG B.host.E (B.R.N B.R.m) (B.primes X).vGs × GLQ B.host.E (B.R.N B.R.m) (I.Q a)) • ((I.stp u a B.R.m).rep c).1.1 = ((I.stp u a B.R.m).rep c').1.1 → c = c') ∧ (∀ p : DecoF B.host.E (B.R.N B.R.m) ((B.primes X).vT u) (B.primes X).vGs (I.Q a), ∃ (c : (I.stp u a B.R.m).Cl) (γ : UF B.host.E (B.R.N B.R.m)) (h : ((I.Tp a).levG B.R.m).grp) (θ : ((I.Tp a).levQ B.R.m).grp), ((γ, h.1, θ.1) : UF B.host.E (B.R.N B.R.m) × GLG B.host.E (B.R.N B.R.m) (B.primes X).vGs × GLQ B.host.E (B.R.N B.R.m) (I.Q a)) • ((I.stp u a B.R.m).rep c).1.1 = p) ∧ Nonempty (I.stp u a B.R.m).Cl := by
   intro B X I u a
   have hne : B.R.m + 1 ≠ B.R.m := by omega

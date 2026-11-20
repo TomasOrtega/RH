@@ -8,6 +8,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.PlaceBelow
 
+/- English proof (translation)
+Introduce `K K' _ _ _ _ i q la' hq hmem T io' e' h`. Use `letI : Algebra K K' := i.toAlgebra`. Use `set la : HeightOneSpectrum (𝓞 K) := la'.under (𝓞 K) with hla`. Use `set r : ℕ := la.asIdeal.ramificationIdx' la'.asIdeal with hr`. Establish `hr0 : r ≠ 0` using `Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver la'.asIdeal la.ne_bot`.
+
+Use `⟨la, e' * r, ?_, ?_⟩` and prove the remaining obligations. Use `show ((q : ℕ) : 𝓞 K) ∈ la'.asIdeal.under (𝓞 K)`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hmem`. Unfold `OverLa vLa at h ⊢`.
+
+Take `⟨he', hv⟩` from `h`. Use `⟨Nat.mul_pos he' (Nat.pos_of_ne_zero hr0), fun a => ?_⟩` and prove the remaining obligations. Establish `key : la.valuation K a ^ r = la'.valuation K' (algebraMap K K' a)` using `HeightOneSpectrum.valuation_liesOver K' la la' a`. Rewrite using `[RingHom.comp_apply, hv, show i a = algebraMap K K' a from rfl, ← key, WithZero.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_overLa_under : ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (i : K →+* K') (q : ℕ) (la' : HeightOneSpectrum (𝓞 K')), q.Prime → ((q : ℕ) : 𝓞 K') ∈ la'.asIdeal → ∀ (T : CDVR) (io' : K' →+* T.Fr) (e' : ℕ), OverLa la' T.V io' e' → ∃ (la : HeightOneSpectrum (𝓞 K)) (e : ℕ), ((q : ℕ) : 𝓞 K) ∈ la.asIdeal ∧ OverLa la T.V (io'.comp i) e := by
   intro K K' _ _ _ _ i q la' hq hmem T io' e' h
   letI : Algebra K K' := i.toAlgebra

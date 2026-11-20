@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ ω C D h T t R' _ ω' C' f φ T' m hC`. Take `⟨-, ⟨-, hφ, iC⟩, -, hact⟩` from `hC`. Establish `hφ' : Serre.IsLinearPullback C'.act C.act (spMap f) φ` using `⟨hφ, hact⟩`. Establish `hψ : Serre.IsLinearPullback (Serre.comapAct T'.t.act (algebraMap (OK H) (𝓞 E))) (Serre.comapAct T.t.act (algebraMap (OK H) (𝓞 E))) (spMap f) m.φ` using `⟨m.cart, fun c => m.act _⟩`. Establish `iT : LBIso (T.t.PP.L.pull m.φ) T'.t.PP.L` using `LBIso.symm (show LBIso T'.t.PP.L (T.t.PP.L.pull m.φ) from m.lin.imp fun _ h => h.1)`.
+
+Establish `e` using `fun a => t.ten.baseChange_tmul hφ' hψ a`. Use `⟨⟨t.ten.baseChange hφ' hψ, fun s a => ?_, fun a b => ?_⟩, e⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (m.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Use `(e (s • a)).trans ?_` and prove the remaining obligations. Rewrite using `[t.lin, Over.comp_left, Over.comp_left, Category.assoc, m.act s, ← Category.assoc, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ (T.t.act.act s).left) (e a).symm`. Conclude with `lamEq_baseChange _ _ (spMap f) C.P.A C.P.A T.t.G C.P.A C'.P.A C'.P.A T'.t.G C'.P.A φ φ m.φ φ hφ.1.w hφ.1.w m.cart hφ T.t.PP.L C.P.L T'.t.PP.L C'.P.L T.t.PP.isLB C.P.isLB T'.t.PP.isLB C'.P.isLB iT iC _ _ _ _ _ _ _ _ (e a) (e b) (hact _) ((Category.id_comp _).trans (Category.comp_i …`.
+-/
 theorem isTen_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (ω : R) (C : Ell H R ω) (D : Datum H) (h : D.La → D.La → OK H) (T : PAT H (Sp R)) (t : IsTen C D h T) (R' : Type) [CommRing R'] (ω' : R') (C' : Ell H R' ω') (f : R →+* R') (φ : C'.P.A.left ⟶ C.P.A.left) (T' : PAT H (Sp R')) (m : SABMap T'.t T.t (spMap f)), EllMap C' C f φ → ∃ t' : IsTen C' D h T', ∀ a, (t'.ten.tmul a).left ≫ m.φ = φ ≫ (t.ten.tmul a).left := by
   intro E _ _ _ H R _ ω C D h T t R' _ ω' C' f φ T' m hC
   obtain ⟨-, ⟨-, hφ, iC⟩, -, hact⟩ := hC

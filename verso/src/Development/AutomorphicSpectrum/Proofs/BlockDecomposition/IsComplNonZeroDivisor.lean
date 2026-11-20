@@ -5,6 +5,9 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.ComplReg
 
+/- English proof (translation)
+Introduce `B _ T _ π g hC hπ`. Conclude with `nonZeroDivisor_of_dense_of_strict π g hC.compl.toIsHausdorff hC.surj hC.inj hπ`.
+-/
 theorem isCompl_nonZeroDivisor : ∀ (B : Type) [CommRing B] (T : Type) [CommRing T] (π : B) (g : B →+* T),
     IsCompl π g → π ∈ nonZeroDivisors B → g π ∈ nonZeroDivisors T := by
   intro B _ T _ π g hC hπ

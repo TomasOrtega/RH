@@ -10,6 +10,9 @@ namespace GroundTheory.Heights₂.Heights
 
 open NumberField
 
+/- English proof (translation)
+Introduce `L _ _ O hft hfr m _ f hf`. Establish `hfS : (f : L) ∈ placesRing {w : FinitePlace L | AbsCentredAt O m fun t ↦ w t}` using `fun w hw ↦ hw.1 f`. Establish `hg : (⟨f, hfS⟩ : placesRing {w : FinitePlace L | AbsCentredAt O m fun t ↦ w t}) ≠ 0` using `fun h ↦ hf (Subtype.ext (by simpa using congrArg Subtype.val h))`. Rewrite using `[← Real.log_pow, ← Nat.cast_pow, ← hC L O hft hfr m f hf, hE L O hft hfr m f hf ⟨f, hfS⟩ rfl]`. Conclude with `hP L _ (hF L O hft hfr m) ⟨f, hfS⟩ hg`.
+-/
 theorem LocalLengthPlaces.proof (hC : LocalQuotCard.Statement) (hF : CentredPlacesFinite.Statement)
     (hE : LocalQuotCentred.Statement) (hP : PlacesRingQuot.Statement) :
     LocalLengthPlaces.Statement := by

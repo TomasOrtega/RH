@@ -6,10 +6,20 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch GlobalTheory.CompanionTheo
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.HuaInt
 
+/- English proof (translation)
+Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]`.
+-/
 theorem det_restrictScalars_toLin' {n : ℕ} (D : Matrix (Fin n) (Fin n) ℂ) :
     LinearMap.det ((Matrix.toLin' D).restrictScalars ℝ) = Complex.normSq (Matrix.det D) := by
   rw [LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]
 
+/- English proof (translation)
+Use `set f : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ) := (Matrix.toLin' D).restrictScalars ℝ with hf`. Establish `hdet : LinearMap.det f = Complex.normSq (Matrix.det D)` using `det_restrictScalars_toLin' D`. Establish `hpos : 0 < Complex.normSq (Matrix.det D)` using `Complex.normSq_pos.mpr hD`. Establish `hne : LinearMap.det f ≠ 0`. Rewrite using `[hdet]`.
+
+Conclude with `hpos.ne'`. Establish `hmap` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Fin n → ℂ)) hne`. Establish `hfm : Measurable f` using `f.continuous_of_finiteDimensional.measurable`. Establish `key : ∫⁻ v, g (D *ᵥ v) = ENNReal.ofReal (Complex.normSq (Matrix.det D))⁻¹ * ∫⁻ u, g u`. Establish `e : ∀ v, D *ᵥ v = f v` using `fun v => by simp [hf, Matrix.toLin'_apply]`.
+
+Repeatedly rewrite using `[e]`. Rewrite using `[← lintegral_map hg hfm, hmap, lintegral_smul_measure, hdet, abs_of_pos (inv_pos.mpr hpos), smul_eq_mul]`. Rewrite using `[key, ← mul_assoc, ← ENNReal.ofReal_mul hpos.le, mul_inv_cancel₀ hpos.ne', ENNReal.ofReal_one, one_mul]`.
+-/
 theorem lintegral_eq_normSq_det_mul_lintegral_mulVec (n : ℕ) (D : Matrix (Fin n) (Fin n) ℂ)
     (hD : Matrix.det D ≠ 0) (g : (Fin n → ℂ) → ENNReal) (hg : Measurable g) :
     ∫⁻ u, g u = ENNReal.ofReal (Complex.normSq (Matrix.det D)) * ∫⁻ v, g (D *ᵥ v) := by

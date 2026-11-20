@@ -8,6 +8,9 @@ namespace GlobalTheory.LKResNrmConj
 
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', pow_succ', AlgEquiv.mul_apply, ← ih]`. Both sides reduce to the same expression.
+-/
 theorem coe_frobQ_iterate (r k : ℕ) (b : Qr p r) :
     (((⇑(frobQ p r))^[k] b : Qr p r) : PadicAlgCl p) = (frobK p (Q0 p) ^ k) (b : PadicAlgCl p) := by
   induction k with
@@ -16,12 +19,24 @@ theorem coe_frobQ_iterate (r k : ℕ) (b : Qr p r) :
     rw [Function.iterate_succ_apply', pow_succ', AlgEquiv.mul_apply, ← ih]
     rfl
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Establish `hK : FiniteDimensional ℚ_[p] (Q0 p)` using `inferInstance`. Rewrite using `[coe_frobQ_iterate]`. Conclude with `(IsFrobOn.pow_fixes_iff p (Q0 p) hK hr ((isFrob_frobK hK).isFrobOn r) r).2 dvd_rfl _ b.2`.
+-/
 theorem frobQ_iterate_self (r : ℕ) (hr : 0 < r) (b : Qr p r) : (⇑(frobQ p r))^[r] b = b := by
   refine Subtype.ext ?_
   have hK : FiniteDimensional ℚ_[p] (Q0 p) := inferInstance
   rw [coe_frobQ_iterate]
   exact (IsFrobOn.pow_fixes_iff p (Q0 p) hK hr ((isFrob_frobK hK).isFrobOn r) r).2 dvd_rfl _ b.2
 
+/- English proof (translation)
+Establish `ht : ∀ (k : ℕ) (a : K) (b : Qr p r), (⇑(sigKQ p K r))^[k] (inclK p K r a * inclQ p K r b) = inclK p K r a * inclQ p K r ((⇑(frobQ p r))^[k] b)`. Introduce `k a b`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`.
+
+Rewrite using `[Function.iterate_succ_apply', ih, map_mul, sigKQ_apply_inclK, sigKQ_apply_inclQ, Function.iterate_succ_apply']`. Establish `key : ∀ z : K ⊗[ℚ_[p]] Qr p r, (⇑(sigKQ p K r))^[r] (z : KQ p K r) = (z : KQ p K r)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact iterate_map_zero (sigKQ p K r) r`.
+
+Consider the case `tmul a b`. Establish `e : inclK p K r a * inclQ p K r b = (a ⊗ₜ[ℚ_[p]] b : K ⊗[ℚ_[p]] Qr p r)`. Express the relevant statement in the definitionally equal form `(a ⊗ₜ[ℚ_[p]] (1 : Qr p r)) * ((1 : K) ⊗ₜ[ℚ_[p]] b) = a ⊗ₜ[ℚ_[p]] b`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `h` using `ht r a b`.
+
+Rewrite `h` using `[frobQ_iterate_self p r hr, e]`. Conclude with `h`. Consider the case `add z w hz hw`. Conclude with `(iterate_map_add (sigKQ p K r) r (z : KQ p K r) (w : KQ p K r)).trans (congrArg₂ (· + ·) hz hw)`. Conclude with `key y`.
+-/
 theorem sigKQ_iterate_self (r : ℕ) (hr : 0 < r) (y : KQ p K r) : (⇑(sigKQ p K r))^[r] y = y := by
   have ht : ∀ (k : ℕ) (a : K) (b : Qr p r), (⇑(sigKQ p K r))^[k] (inclK p K r a * inclQ p K r b) =
       inclK p K r a * inclQ p K r ((⇑(frobQ p r))^[k] b) := by
@@ -46,6 +61,11 @@ theorem sigKQ_iterate_self (r : ℕ) (hr : 0 < r) (y : KQ p K r) : (⇑(sigKQ p 
       exact (iterate_map_add (sigKQ p K r) r (z : KQ p K r) (w : KQ p K r)).trans (congrArg₂ (· + ·) hz hw)
   exact key y
 
+/- English proof (translation)
+Establish `h : ∀ (k : ℕ) (i j : Fin n), ((⇑(sigRes p K n r))^[k] g).val i j = (⇑(sigKQ p K r))^[k] (g.val i j)`. Introduce `k i j`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`.
+
+Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[h, sigKQ_iterate_self p K r hr]`.
+-/
 theorem sigRes_iterate_self (n r : ℕ) (hr : 0 < r) (g : GL (Fin n) (KQ p K r)) :
     (⇑(sigRes p K n r))^[r] g = g := by
   have h : ∀ (k : ℕ) (i j : Fin n), ((⇑(sigRes p K n r))^[k] g).val i j = (⇑(sigKQ p K r))^[k] (g.val i j) := by

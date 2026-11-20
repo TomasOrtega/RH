@@ -25,6 +25,31 @@ section Cube
 
 variable {C : Core} {T : C.Theta} {y : Sp (OO p) ⟶ C.Z} {τ : C.Test y} (E : T.Ext τ)
 
+/- English proof (translation)
+Establish `hG` using `τ.isSemiAbelian`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Use `smooth_cube_hom τ.H` as an intermediate fact. Use `geometricallyIntegral_cube_hom τ.H` as an intermediate fact.
+
+Establish `: IsCommMonObj ((Over.pullback (Out.jK τ.V)).obj τ.H)` using `Functor.isCommMonObj_obj`. Establish `: Mono (jg τ)`. Use `DvrModel.isOpenImmersion_generic (IsPullback.of_hasPullback τ.H.hom (Out.jK τ.V))` as an intermediate fact. Use `inferInstance`. Set `HK` to `(Over.pullback (Out.jK τ.V)).obj τ.H`.
+
+Establish `gp` using `isGrpPullback_pullback τ.H (Out.jK τ.V)`. Establish `hK` using `isPullback_cube gp`. Establish `h₁ : ∀ I : thK.{0}, thφ HK (x3 HK) I ≫ jg τ = (cubeMapOf gp).F3 ≫ thφ τ.H (x3 τ.H) I` using `fun I => (cubeMapOf gp).psum_comm I.down`. Establish `h₂ : ∀ I : thK.{0}, thφ HK (x3 HK) I ≫ τ.φ = (cubeMapOf τ.φ_cart).F3 ≫ thφ C.A (x3 C.A) I` using `fun I => (cubeMapOf τ.φ_cart).psum_comm I.down`. Take `⟨r, hr⟩` from `exists_frac τ`.
+
+Establish `lifts : ∀ (x : Sp (PadicAlgCl p) ⟶ (G3 C.A).left) (s : Fin 3 → (Sp (OO p) ⟶ C.G.toScheme)), (∀ k, s k ≫ C.GG.hom = y) → (∀ k, gPt p ≫ s k = (x ≫ (x3 C.A k).left) ≫ C.a) → ∃ (c : Sp (OO p) ⟶ (G3 τ.H).left) (q : Sp (PadicAlgCl p) ⟶ (G3 HK).left), c ≫ (G3 τ.H).hom = spMap τ.j ∧ q ≫ …`. Introduce `x s hs hx`. Use `choose c q k₁ k₂ k₃ using fun k => exists_lift τ (hs k) (hx k)`. Set `d : Fin 3 → (Over.mk (spMap τ.j) ⟶ τ.H)` to `fun k => Over.homMk (c k) (k₁ k).1`. Set `l : Over.mk (spMap τ.j) ⟶ G3 τ.H` to `lift (d 0) (lift (d 1) (d 2))`.
+
+Apply the tactic sequence `have lx : ∀ k, l ≫ x3 τ.H k = d k := fun k => by fin_cases k <;> simp [l, x3]`. Establish `lx' : ∀ k, l.left ≫ (x3 τ.H k).left = c k` using `fun k => congrArg (fun z => z.left) (lx k)`. Establish `w : l.left ≫ (G3 τ.H).hom = spMap τ.j` using `Over.w l`. Set `Q : Sp (PadicAlgCl p) ⟶ (G3 HK).left` to `hK.lift (gPt p ≫ l.left) r ((Category.assoc _ _ _).trans ((congrArg (gPt p ≫ ·) w).trans hr))`. Establish `hQ : Q ≫ (cubeMapOf gp).F3 = gPt p ≫ l.left` using `hK.lift_fst _ _ _`.
+
+Establish `hQ' : ∀ k, Q ≫ (x3 HK k).left = q k` using `fun k => (cancel_mono (jg τ)).1 ((Category.assoc _ _ _).trans ((congrArg (Q ≫ ·) (cubeMap_comp_proj_three (cubeMapOf gp) k).symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hQ).trans ((Category.assoc _ _ _).trans ((congrArg (gPt p ≫ ·) (lx' k)).trans (k₁ k).2.sym …`. Establish `hx' : Q ≫ (cubeMapOf τ.φ_cart).F3 = x` using `hom_ext_triple _ fun k => (Category.assoc _ _ _).trans ((congrArg (Q ≫ ·) (cubeMap_comp_proj_three (cubeMapOf τ.φ_cart) k)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.φ) (hQ' k)).trans (k₃ k))))`. Use `⟨l.left, Q, w, hQ, hx', fun I => ⟨⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (l.left ≫ ·) (Over.w (psum τ.H (x3 τ.H) I.down))).trans w)`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (Q ≫ ·) (h₁ I)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hQ).trans (Category.assoc _ _ _))))`.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (Q ≫ ·) (h₂ I)).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) hx')))`. Take `⟨c, q, k₁, k₂, rfl, k₄⟩` from `lifts x s hs hx`. Use `⟨_, _, k₄, fun a b ha hb => ?_⟩` and prove the remaining obligations. Set `u : Sp (PadicAlgCl p) ⟶ C.U.toScheme` to `r ≫ τ.yK`. Establish `hu : u ≫ C.U.ι = gPt p ≫ y`.
+
+Rewrite using `[Category.assoc, τ.yK_fac, ← Category.assoc, ← hr, Category.assoc, τ.fac]`. Set `o : Over.mk u ⟶ C.A` to `1`. Establish `ho : o.left = u ≫ eSec C.A` using `by show (toUnit _ ≫ η[C.A]).left = _`. Simplify using `[eSec]`. Apply the tactic sequence `have ox : ∀ k, lift o (lift o o) ≫ x3 C.A k = o := fun k => by fin_cases k <;> simp [x3]`.
+
+Establish `oI : ∀ I : thK.{0}, (lift o (lift o o)).left ≫ thφ C.A (x3 C.A) I = o.left` using `fun I => by`. Establish `e : lift o (lift o o) ≫ psum C.A (x3 C.A) I.down = psum C.A (fun _ => o) I.down` using `(psum_hom (preHom (lift o (lift o o))) (x3 C.A) I.down).trans (congrArg (psum C.A · I.down) (funext ox))`. Establish `e' : psum C.A (fun _ : Fin 3 => o) I.down = o` using `(psum_hom (1 : (Over.mk u ⟶ C.A) →* (Over.mk u ⟶ C.A)) (fun _ => o) I.down).symm`. Conclude with `congrArg (fun z => z.left) (e.trans e')`. Take `⟨c₀, q₀, m₁, m₂, m₃, m₄⟩` from `lifts (lift o (lift o o)).left (fun _ => y ≫ C.e) (fun _ => (Category.assoc _ _ _).trans ((congrArg (y ≫ ·) C.e_sec).trans (Category.comp_id _))) (fun k => by`.
+
+Use `Eq.trans ?_ (congrArg (fun z => z.left ≫ C.a) (ox k)).symm` and prove the remaining obligations. Rewrite using `[ho, ← Category.assoc, ← hu, Category.assoc, C.e_zero]`. Conclude with `(Category.assoc _ _ _).symm)`. Establish `same` using `fun I => (m₄ I).1.unique hp (m₄ ⟨∅⟩).1 ((m₄ I).2.trans ((oI I).trans ((m₄ _).2.trans (oI _)).symm))`. Take `⟨a₀, ha₀⟩` from `exists_chart E.L.isLB ((c₀ ≫ thφ τ.H (x3 τ.H) (⟨∅⟩ : thK.{0})) (cPt p))`.
+
+Use `choose J hJ using fun χ : Sp (PadicAlgCl p) ⟶ C.A.left => exists_chart T.L.isLB (χ (z₀ p))`. Establish `key` using `gen_wv_eq E.L.isLB T.L.isLB E.w_gen hK (lift η[τ.H] (lift η[τ.H] η[τ.H])).left (Over.w _) (thφ τ.H (x3 τ.H)) (thφ HK (x3 HK)) (thφ C.A (x3 C.A)) (cubeMapOf τ.φ_cart).F3 h₁ h₂ (ε := thε) (t := T.cub.t) T.cub.isGen k₂ m₂ (k₁.trans m₁.symm) (a := a) (a' := fun _ => a₀) (b := b) (b' …`. Use `key.trans ?_` and prove the remaining obligations. Establish `e₁ : gm (lift o (lift o o)).left (z₀ p) (LB.wchart T.L.L (thφ C.A (x3 C.A)) fun _ => J o.left) (T.cub.t.s fun _ => J o.left) = 1` using `(val_of (φ := thφ C.A (x3 C.A)) (ε := thε) T.cub.t _ _ J _ fun I => congrArg J (oI I)).symm.trans ((isCub_cubV T.cub (T := Over.mk u) hJ).face 1 1)`. Rewrite using `[m₃]`.
+
+Use `erw [e₁]`. Rewrite using `[map_one, _root_.one_mul, Finset.prod_congr rfl fun I _ => by rw [(same I).2]]`. Conclude with `prod_thε (wv_pos _ _ _ _)`.
+-/
 theorem cube_eq_one (hp : IsPullback τ.f τ.H.hom C.GG.hom τ.y₀) (x : Sp (PadicAlgCl p) ⟶ (G3 C.A).left)
     (s : Fin 3 → (Sp (OO p) ⟶ C.G.toScheme)) (hs : ∀ k, s k ≫ C.GG.hom = y)
     (hx : ∀ k, gPt p ≫ s k = (x ≫ (x3 C.A k).left) ≫ C.a) :
@@ -126,6 +151,39 @@ namespace GlobalTheory.ZJ
 
 open TestNorm CubeGen
 
+/- English proof (translation)
+Introduce `hE C L T hT hB`. Establish `hC : C.TestCart` using `fun p _ y τ => (L.test p y τ).1`. Establish `sepG : IsSeparated C.GG.hom` using `(core_basic C).1`. Establish `ex : ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ C.Z), C.Cl y → ∃ (τ : C.Test y) (E : T.Ext τ) (ρ : ℝ), 0 < ρ ∧ IsRigNorm E ρ` using `fun p _ y hy => by`. Take `⟨τ⟩` from `hT p y hy`.
+
+Take `⟨E⟩` from `Core.Theta.nonempty_ext hE C T p y τ hC`. Conclude with `⟨τ, E, exists_isRigNorm E (hC p y τ)⟩`. Use `choose τ E ρ hρ hR using ex`. Establish `ex₂ : ∀ (p : ℕ) [Fact p.Prime] (x : Sp (PadicAlgCl p) ⟶ C.A.left), ∃ n : T.L.L.ι → ℝ, (∀ j, 0 < n j) ∧ (∀ j j', x (z₀ p) ∈ T.L.L.U j → x (z₀ p) ∈ T.L.L.U j' → un p (gm x (z₀ p) _ (T.L.L.g j j')) * n j = n j') ∧ ∀ j t, (∃ (y : Sp (OO p) ⟶ C.Z) (hy : C.Cl y), ∃ c q a, IsLift (τ p y …`. Introduce `p _ x`.
+
+Use `exists_norm_ext T.L.isLB x _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `j t ⟨y, hy, c, q, a, -, -, -, h, rfl⟩`. Conclude with `⟨div_pos (wv_pos _ _ _ _) (hρ p y hy), h⟩`. Introduce and unpack `j t j' t' ⟨y, hy, c, q, a, h₁, rfl, h₃, h₄, rfl⟩ ⟨y', hy', c', q', a', k₁, k₂, k₃, k₄, rfl⟩`. Take `rfl : y = y'` from `base_ext (by rw [← h₁.base, ← k₁.base, k₂])`.
+
+Take `⟨rfl, rfl⟩` from `h₁.unique (hC _ _ _) k₁ k₂.symm`. Rewrite using `[← wv_trans (E p y hy).w_gen h₁.2 h₃ k₃ h₄ k₄, mul_div_assoc]`. Use `choose ν h₁ h₂ h₃ using ex₂`. Establish `hν : ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ C.Z) (hy : C.Cl y) c q a j, IsLift (τ p y hy) c q → c (cPt p) ∈ (E p y hy).L.L.U a → (q ≫ (τ p y hy).φ) (z₀ p) ∈ T.L.L.U j → ν p (q ≫ (τ p y hy).φ) j = wv (E p y hy).w q a j / ρ p y hy` using `fun p _ y hy c q a j k₁ k₂ k₃ => h₃ p _ j _ ⟨y, hy, c, q, a, k₁, rfl, k₂, k₃, rfl⟩`. Establish `cl : ∀ {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C.Z} {u : Sp (PadicAlgCl p) ⟶ C.U.toScheme}, gPt p ≫ y = u ≫ C.U.ι → C.Cl y` using `fun {p} _ {y u} h => by`.
+
+Rewrite using `[Core.Cl, h]`. Conclude with `range_comp_ι_subset _ _`. Establish `bas : ∀ {p : ℕ} [Fact p.Prime] {b : Sp (OO p) ⟶ C.G.toScheme} {x : Sp (PadicAlgCl p) ⟶ C.A.left}, gPt p ≫ b = x ≫ C.a → gPt p ≫ b ≫ C.GG.hom = (x ≫ C.A.hom) ≫ C.U.ι` using `fun {p} _ {b x} h => by`. Rewrite using `[← Category.assoc, h, Category.assoc, C.isPullback_a.w, Category.assoc]`. Use `⟨ν, ⟨h₁, fun p _ x i j hi hj => ?_, fun p _ s j hj => ?_⟩, fun p _ u ⟨y, hu, _⟩ J hJ => ?_, fun p _ x hx J hJ => ?_, fun p _ u => ?_⟩` and prove the remaining obligations.
+
+Establish `hi'` using `(range_subset_iff x (z₀ p) _).1 hi`. Establish `hj'` using `(range_subset_iff x (z₀ p) _).1 hj`. Rewrite using `[← un_gm x (U := T.L.L.U i ⊓ T.L.L.U j) ⟨hi', hj'⟩]`. Conclude with `h₂ p x i j hi' hj'`. Establish `e : gPt p ≫ s ≫ C.a = (gPt p ≫ s) ≫ C.a` using `(Category.assoc _ _ _).symm`.
+
+Establish `hy` using `cl (bas e)`. Take `⟨c, q, k₁, k₂, k₃⟩` from `exists_lift (τ p _ hy) rfl e`. Take `⟨a, ha⟩` from `exists_chart (E p _ hy).L.isLB (c (cPt p))`. Rewrite using `[← k₃, hν p _ hy c q a j k₁ ha (by rw [k₃]; exact gen_mem s hj), (hR p _ hy).integral k₁ k₂ ha hj, div_self (hρ p _ hy).ne']`. Establish `hy` using `cl hu`.
+
+Take `⟨c, q, k₁, k₂, k₃⟩` from `exists_lift (τ p y hy) (b := y ≫ C.e) (x := u ≫ eSec C.A) ((Category.assoc _ _ _).trans ((congrArg (y ≫ ·) C.e_sec).trans (Category.comp_id _))) (by`. Rewrite using `[← Category.assoc, hu, Category.assoc, C.e_zero]`. Conclude with `(Category.assoc _ _ _).symm)`. Take `⟨a, ha⟩` from `exists_chart (E p _ hy).L.isLB (c (cPt p))`. Establish `hJ'` using `(range_subset_iff u (z₀ p) _).1 hJ`.
+
+Establish `hb : (q ≫ (τ p y hy).φ) (z₀ p) ∈ T.L.L.U (J ⟨⟩)`. Rewrite using `[k₃]`. Conclude with `Set.mem_iInter.1 hJ' ⟨⟩`. Establish `e₁` using `hν p y hy c q a _ k₁ ha hb`. Establish `e₂` using `hR p y hy c q u a _ k₁ k₃ ha hb`.
+
+Rewrite `e₁` using `[k₃]`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Use `(congrArg₂ (· * ·) (un_gm u hJ' _).symm e₁).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_div_assoc]`. Conclude with `(div_eq_one_iff_eq (hρ p y hy).ne').2 e₂`.
+
+Use `choose s hs _ using hx`. Establish `e : ∀ k, gPt p ≫ s k ≫ C.GG.hom = (x ≫ (G3 C.A).hom) ≫ C.U.ι` using `fun k => by`. Rewrite using `[bas (hs k), Category.assoc x, Over.w]`. Establish `hy` using `cl (e 0)`. Take `⟨c, q, k₁, k₂⟩` from `cube_eq_one (E p _ hy) (hC _ _ _) x s (fun k => base_ext ((e k).trans (e 0).symm)) hs`.
+
+Use `choose a ha using fun I => exists_chart (E p _ hy).L.isLB (c I (cPt p))`. Establish `hJ'` using `(range_subset_iff x (z₀ p) _).1 hJ`. Establish `hb : ∀ I, (x ≫ thφ C.A (x3 C.A) I) (z₀ p) ∈ T.L.L.U (J I)` using `Set.mem_iInter.1 hJ'`. Use `(congrArg₂ (· * ·) (un_gm x hJ' _).symm (Finset.prod_congr rfl fun I _ => congrArg (· ^ thε I) ((congrArg (ν p · (J I)) (k₁ I).2.symm).trans (hν p _ hy _ _ (a I) (J I) (k₁ I).1 (ha I) (by rw [(k₁ I).2]; exact hb I))))).trans ?_` and prove the remaining obligations. Simplify using `only [div_zpow, Finset.prod_div_distrib]`.
+
+Conclude with `(congrArg (_ * ·) ((congrArg (_ / ·) (prod_thε (hρ p _ hy))).trans (div_one _))).trans (k₂ a J ha hb)`. Distinguish the cases in `h : ∃ y : Sp (OO p) ⟶ C.Z, gPt p ≫ y = u ≫ C.U.ι swap`. Conclude with `⟨1, one_pos, fun x j hx _ ⟨b, hb, _⟩ => absurd ⟨_, hx ▸ bas hb⟩ h⟩`. Take `⟨y, hu⟩` from `h`. Establish `hy` using `cl hu`.
+
+Use `⟨1 / ρ p y hy, one_div_pos.2 (hρ p y hy), fun x j hx hj ⟨b, hb, _⟩ => ?_⟩` and prove the remaining obligations. Take `⟨c, q, k₁, k₂, rfl⟩` from `exists_lift (τ p y hy) (base_ext ((bas hb).trans (by rw [hx, hu]))) hb`. Take `⟨a, ha⟩` from `exists_chart (E p _ hy).L.isLB (c (cPt p))`. Establish `hj'` using `(range_subset_iff _ (z₀ p) _).1 hj`. Take `⟨t₁, t₂⟩` from `k₁.theta (E p y hy) ha hj'`.
+
+Rewrite using `[hν p y hy c q a j k₁ ha hj', ← mul_div_assoc]`. Use `⟨div_le_div_of_nonneg_right t₁ (hρ p y hy).le, (div_left_inj' (hρ p y hy).ne').trans (t₂.trans ((hB p y _ (E p y hy) _ k₁.centre).symm.trans ?_))⟩` and prove the remaining obligations. Establish `e : (τ p y hy).f (c (cPt p)) = b (cPt p)` using `congrArg (fun g => g (cPt p)) k₂`. Rewrite using `[e]`. Use `⟨fun h => ⟨b, hb, h⟩, fun ⟨b', hb', h⟩ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ext_gPt C.GG.hom (base_ext ((bas hb).trans (bas hb').symm)) (hb.trans hb'.symm)]` and apply the resulting hypothesis.
+-/
 theorem Core.Theta.exists_norms : Semi.extend_existsSt.{0} → ∀ (C : Core) (L : C.Law) (T : C.Theta), C.HasTests → T.BTest L → ∃ ν, T.Norms (T.Om L) ν := by
   intro hE C L T hT hB
   have hC : C.TestCart := fun p _ y τ => (L.test p y τ).1

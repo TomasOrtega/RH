@@ -61,6 +61,15 @@ def SetupEx : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Un
       (W : ∀ N : ℕ, Submodule ℂ (Kinf E N → ℂ)), IsLevel K ∧ (∀ N, FiniteDimensional ℂ (W N)) ∧
       ∀ T : Finset (HeightOneSpectrum (𝓞 E)), Nonempty (Setup π S T K W)
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨K, W, hK, hW, hX⟩` from `h2 E hE n hn π hπ S hS`. Use `⟨K, W, hK, hW, fun T => ?_⟩` and prove the remaining obligations. Take `⟨X⟩` from `hX T`. Use `letI := X.cr`.
+
+Use `letI := X.sr`. Use `letI := X.al`. Use `letI := X.sm`. Use `letI := X.ft`. Use `letI := X.ne`.
+
+Use `letI := X.ng`. Use `letI := X.ip`. Use `letI := X.cs`. Use `letI := X.ag`. Use `letI := X.md`.
+
+Use `letI := X.fd`. Take `⟨s, χ, h1', h2', h3'⟩` from `h1 X.A X.ι X.H X.R X.β X.m X.V X.ρ X.u X.p X.a₀ X.comm X.commU X.pa₀ X.bound X.eig`. Conclude with `X.read s χ h1' h2' h3'`.
+-/
 theorem runT_of (h1 : PeakTraceBound) (h2 : SetupEx) : RunT := by
   intro E _ _ _ hE n hn π hπ S hS
   obtain ⟨K, W, hK, hW, hX⟩ := h2 E hE n hn π hπ S hS

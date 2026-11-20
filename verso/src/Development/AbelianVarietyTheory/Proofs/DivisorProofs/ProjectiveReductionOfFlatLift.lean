@@ -13,6 +13,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FlatLift
 
+/- English proof (translation)
+Establish `hflat : Module.Flat D N`. Apply `Module.flat_of_localized_maximal` to reduce the goal to its premises. Introduce `P _`. Establish `hloc` using `GlobalTheory.T.localization_maximalIdeal_eq_span_nilpotent_artinian D x hx hr P`. Establish `hann` using `GlobalTheory.T.localizedModule_mem_annSpan_smul_of_mem D P.primeCompl x N h`.
+
+Use `haveI := GlobalTheory.T.free_of_principal_maximalIdeal_of_ker_smul_le' (Localization.AtPrime P) (algebraMap D _ x) hloc (LocalizedModule P.primeCompl N) inferInstance hann`. Conclude with `Module.Flat.trans D (Localization.AtPrime P) _`. Use `haveI : Module.FinitePresentation D N := Module.finitePresentation_of_finite D N`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem projective_of_nilpotent_of_reduced_quotient (D : Type) [CommRing D] [IsArtinianRing D] (x : D) (hx : IsNilpotent x)
     (hr : IsReduced (D ⧸ Ideal.span {x})) (N : Type 1) [AddCommGroup N] [Module D N]
     [Module.Finite D N]
@@ -29,6 +34,17 @@ theorem projective_of_nilpotent_of_reduced_quotient (D : Type) [CommRing D] [IsA
   haveI : Module.FinitePresentation D N := Module.finitePresentation_of_finite D N
   exact Module.Flat.projective_of_finitePresentation
 
+/- English proof (translation)
+Introduce `p _ F _ _ Λ _ k _ π hπ hker hp2 hann M _ _ _ _ hfin hfree N _ _ f hf hkerf`. Establish `hpk : (p : k) = 0`. Establish `: (p : Λ) ∈ RingHom.ker π` using `by rw [hker]; exact Ideal.subset_span rfl`. Simplify using `using this`. Establish `hkerp` using `GlobalTheory.T.mem_span_smul_of_smul_eq_zero_of_free Λ (p : Λ) hann M hfree`.
+
+Establish `hkerf' : ∀ m, f m = 0 → m ∈ Ideal.span {(p : Λ)} • (⊤ : Submodule Λ M)`. Introduce `m hm`. Rewrite using `[← hker]`. Conclude with `hkerf m hm`. Take `⟨ϖ, z, hϖz, ⟨n0, hn0⟩, hred⟩` from `GlobalTheory.T.exists_global_uniformizer_above_prime p F`.
+
+Use `haveI : IsArtinianRing (k ⊗[ℤ] 𝓞 F) := IsArtinianRing.of_finite k (k ⊗[ℤ] 𝓞 F)`. Use `haveI : Module.Finite (k ⊗[ℤ] 𝓞 F) N := GlobalTheory.T.finite_of_surjective_semilinear_tensor Λ k π (𝓞 F) M hfin N f hf`. Establish `hnil : IsNilpotent ((1 : k) ⊗ₜ[ℤ] ϖ)`. Use `⟨n0, ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp hn0`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow, ← hy, mul_comm, ← nsmul_eq_mul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', nsmul_eq_mul, mul_one, hpk, TensorProduct.zero_tmul]`. Establish `hfinQ : Finite (𝓞 F ⧸ Ideal.span {(p : 𝓞 F), ϖ})`. Establish `hne : Ideal.span {(p : 𝓞 F)} ≠ ⊥`. Simplify using `[Ideal.span_singleton_eq_bot, (Fact.out : p.Prime).ne_zero]`. Use `haveI : Finite (𝓞 F ⧸ Ideal.span {(p : 𝓞 F)}) := Ideal.finiteQuotientOfFreeOfNeBot _ hne`.
+
+Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective (Ideal.span_mono (by simp : ({(p : 𝓞 F)} : Set (𝓞 F)) ⊆ {(p : 𝓞 F), ϖ})))`. Establish `hredD` using `GlobalTheory.T.isReduced_quot_tensor_of_reduced_mod_p (𝓞 F) k p ϖ hpk (GlobalTheory.T.isReduced_field_tensor_int_finite_reduced _ k)`. Establish `hannN` using `GlobalTheory.T.annihilator_lift_of_mul_eq_p_alt p (𝓞 F) Λ k π hpk hp2 M hkerp N f hf hkerf' ϖ z hϖz`. Conclude with `projective_of_nilpotent_of_reduced_quotient _ _ hnil hredD N hannN`.
+-/
 theorem projective_reduction_of_flat_lift : ∀ (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (Λ : Type) [CommRing Λ] (k : Type) [Field k] (π : Λ →+* k), Function.Surjective π → RingHom.ker π = Ideal.span {(p : Λ)} → (p : Λ) ^ 2 = 0 → (∀ x : Λ, (p : Λ) * x = 0 → x ∈ Ideal.span {(p : Λ)}) → ∀ (M : Type 1) [AddCommGroup M] [Module Λ M] [Module (Λ ⊗[ℤ] 𝓞 F) M] [IsScalarTower Λ (Λ ⊗[ℤ] 𝓞 F) M], Module.Finite Λ M → Module.Free Λ M → ∀ (N : Type 1) [AddCommGroup N] [Module (k ⊗[ℤ] 𝓞 F) N] (f : M →ₛₗ[(Algebra.TensorProduct.map π.toIntAlgHom (AlgHom.id ℤ (𝓞 F))).toRingHom] N), Function.Surjective f → (∀ m, f m = 0 → m ∈ (RingHom.ker π) • (⊤ : Submodule Λ M)) → Module.Projective (k ⊗[ℤ] 𝓞 F) N := by
   intro p _ F _ _ Λ _ k _ π hπ hker hp2 hann M _ _ _ _ hfin hfree N _ _ f hf hkerf
   have hpk : (p : k) = 0 := by

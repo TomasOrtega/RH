@@ -15,6 +15,9 @@ section Alg
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero`.
+-/
 private theorem hasSubst_finite_of_constantCoeff_eq_zero {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ K}
     (ha : ∀ s, constantCoeff (a s) = 0) : HasSubst a := by
   first
@@ -22,10 +25,16 @@ private theorem hasSubst_finite_of_constantCoeff_eq_zero {σ τ : Type} [Finite 
   | exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha
   | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero
 
+/- English proof (translation)
+The claim follows from `hasSubst_finite_of_constantCoeff_eq_zero fun i => by fin_cases i <;> first | exact ha | exact hb | simp [ha, hb]`.
+-/
 private theorem hasSubst_vec_pair_of_constantCoeff_eq_zero {τ : Type} {a b : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (hb : constantCoeff b = 0) : HasSubst ![a, b] :=
   hasSubst_finite_of_constantCoeff_eq_zero fun i => by fin_cases i <;> first | exact ha | exact hb | simp [ha, hb]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_add hφ f g`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_add _ f g)`. Consider the case `exact map_add (substAlgHom hφ) f g`.
+-/
 private theorem mvSubst_add_of_hasSubst {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     (f g : MvPowerSeries ι K) : subst φ (f + g) = subst φ f + subst φ g := by
   first
@@ -33,6 +42,9 @@ private theorem mvSubst_add_of_hasSubst {ι κ : Type} {φ : ι → MvPowerSerie
   | (rw [← coe_substAlgHom hφ]; exact map_add _ f g)
   | exact map_add (substAlgHom hφ) f g
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_sub hφ f g`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_sub _ f g)`. Consider the case `exact map_sub (substAlgHom hφ) f g`.
+-/
 private theorem mvSubst_sub_of_hasSubst {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     (f g : MvPowerSeries ι K) : subst φ (f - g) = subst φ f - subst φ g := by
   first
@@ -40,6 +52,9 @@ private theorem mvSubst_sub_of_hasSubst {ι κ : Type} {φ : ι → MvPowerSerie
   | (rw [← coe_substAlgHom hφ]; exact map_sub _ f g)
   | exact map_sub (substAlgHom hφ) f g
 
+/- English proof (translation)
+Use `first`. Consider the case `exact MvPowerSeries.subst_zero hφ`. Consider the case `(rw [← coe_substAlgHom hφ]; exact map_zero _)`. Consider the case `simp`.
+-/
 private theorem mvSubst_zero_of_hasSubst {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ) :
     subst φ (0 : MvPowerSeries ι K) = 0 := by
   first
@@ -47,12 +62,18 @@ private theorem mvSubst_zero_of_hasSubst {ι κ : Type} {φ : ι → MvPowerSeri
   | (rw [← coe_substAlgHom hφ]; exact map_zero _)
   | simp
 
+/- English proof (translation)
+Use `show subst (fun _ : Unit => a) (f + g) = subst (fun _ : Unit => a) f + subst (fun _ : Unit => a) g`. Conclude with `mvSubst_add_of_hasSubst (hasSubst_finite_of_constantCoeff_eq_zero fun _ => ha) f g`.
+-/
 private theorem powerSeries_subst_add_of_constantCoeff_eq_zero {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (f g : PowerSeries K) :
     PowerSeries.subst a (f + g) = PowerSeries.subst a f + PowerSeries.subst a g := by
   show subst (fun _ : Unit => a) (f + g) = subst (fun _ : Unit => a) f + subst (fun _ : Unit => a) g
   exact mvSubst_add_of_hasSubst (hasSubst_finite_of_constantCoeff_eq_zero fun _ => ha) f g
 
+/- English proof (translation)
+Unfold `at1`. Establish `hx : HasSubst (fun _ : Unit => (X x : MvPowerSeries ι K))` using `hasSubst_finite_of_constantCoeff_eq_zero fun _ => by simp`. Use `show subst b (subst (fun _ : Unit => (X x : MvPowerSeries ι K)) f) = subst (fun _ : Unit => b x) f`. Rewrite using `[subst_comp_subst_apply hx hb]`. Simplify using `only [subst_X hb]`.
+-/
 private theorem mvSubst_at1_eq_powerSeries_subst {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : HasSubst b) (x : ι)
     (f : PowerSeries K) : subst b (at1 x f) = PowerSeries.subst (b x) f := by
   unfold at1
@@ -61,6 +82,9 @@ private theorem mvSubst_at1_eq_powerSeries_subst {ι κ : Type} {b : ι → MvPo
   rw [subst_comp_subst_apply hx hb]
   simp only [subst_X hb]
 
+/- English proof (translation)
+Establish `h1 : HasSubst (fun _ : Unit => a)` using `hasSubst_finite_of_constantCoeff_eq_zero fun _ => ha`. Establish `h2 : HasSubst (fun _ : Unit => e)` using `hasSubst_finite_of_constantCoeff_eq_zero fun _ => he`. Use `show subst (fun _ : Unit => subst (fun _ : Unit => a) e) f =`. Substitute `(fun _ : Unit => a) (subst (fun _ : Unit => e) f)` using the available equality. Rewrite using `[subst_comp_subst_apply h2 h1]`.
+-/
 private theorem powerSeries_subst_subst_eq_subst_comp {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     {e : PowerSeries K} (he : PowerSeries.constantCoeff e = 0) (f : PowerSeries K) :
     PowerSeries.subst (PowerSeries.subst a e) f = PowerSeries.subst a (PowerSeries.subst e f) := by
@@ -70,6 +94,9 @@ private theorem powerSeries_subst_subst_eq_subst_comp {τ : Type} {a : MvPowerSe
     subst (fun _ : Unit => a) (subst (fun _ : Unit => e) f)
   rw [subst_comp_subst_apply h2 h1]
 
+/- English proof (translation)
+Establish `h1 : HasSubst (fun _ : Unit => a)` using `hasSubst_finite_of_constantCoeff_eq_zero fun _ => ha`. Use `show subst b (subst (fun _ : Unit => a) f) = subst (fun _ : Unit => subst b a) f`. Rewrite using `[subst_comp_subst_apply h1 hb]`.
+-/
 private theorem mvSubst_powerSeries_subst_of_constantCoeff_eq_zero {ι κ : Type} {b : ι → MvPowerSeries κ K} (hb : HasSubst b)
     {a : MvPowerSeries ι K} (ha : constantCoeff a = 0) (f : PowerSeries K) :
     subst b (PowerSeries.subst a f) = PowerSeries.subst (subst b a) f := by
@@ -77,6 +104,9 @@ private theorem mvSubst_powerSeries_subst_of_constantCoeff_eq_zero {ι κ : Type
   show subst b (subst (fun _ : Unit => a) f) = subst (fun _ : Unit => subst b a) f
   rw [subst_comp_subst_apply h1 hb]
 
+/- English proof (translation)
+Rewrite using `[subst_comp_subst_apply (hasSubst_vec_pair_of_constantCoeff_eq_zero ha hb) hφ]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private theorem mvSubst_subst_vec_pair_eq_subst_vec_pair {ι κ : Type} {φ : ι → MvPowerSeries κ K} (hφ : HasSubst φ)
     {a b : MvPowerSeries ι K} (ha : constantCoeff a = 0) (hb : constantCoeff b = 0)
     (f : MvPowerSeries (Fin 2) K) :
@@ -86,6 +116,13 @@ private theorem mvSubst_subst_vec_pair_eq_subst_vec_pair {ι κ : Type} {φ : ι
   funext i
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Unfold `in3`. Establish `hx : ∀ i : Fin 2, constantCoeff (![(X 0 : MvPowerSeries (Fin 3) K), X 1] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Use `first`. Consider the case `exact constantCoeff_subst_eq_zero hx F hF0`.
+
+Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hx F hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hx hF0`. Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) hF0 hx`.
+
+Consider the case `exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hF0 hx`. Consider the case `(apply constantCoeff_subst_eq_zero <;> first | assumption | exact hasSubst_finite_of_constantCoeff_eq_zero hx)`.
+-/
 theorem constantCoeff_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) :
     constantCoeff (in3 F) = 0 := by
   unfold in3
@@ -101,6 +138,9 @@ theorem constantCoeff_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF0 : co
   | exact constantCoeff_subst_eq_zero (hasSubst_finite_of_constantCoeff_eq_zero hx) F hF0 hx
   | (apply constantCoeff_subst_eq_zero <;> first | assumption | exact hasSubst_finite_of_constantCoeff_eq_zero hx)
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Unfold `cob at1`. Rewrite using `[powerSeries_subst_add_of_constantCoeff_eq_zero hF0, powerSeries_subst_add_of_constantCoeff_eq_zero (hX 0), powerSeries_subst_add_of_constantCoeff_eq_zero (hX 1)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cob_add {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) (f g : PowerSeries K) :
     cob F (f + g) = cob F f + cob F g := by
   have hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0 := fun i => by simp
@@ -108,6 +148,9 @@ theorem cob_add {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) (f g :
   rw [powerSeries_subst_add_of_constantCoeff_eq_zero hF0, powerSeries_subst_add_of_constantCoeff_eq_zero (hX 0), powerSeries_subst_add_of_constantCoeff_eq_zero (hX 1)]
   ring
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Unfold `d1`. Rewrite using `[mvSubst_add_of_hasSubst (hasSubst_vec_pair_of_constantCoeff_eq_zero (constantCoeff_first_two_of_three hF0) (hX 2)), mvSubst_add_of_hasSubst (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX 0) (hX 2)), mvSubst_add_of_hasSubst (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX 1) (hX …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diffOne_add {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0)
     (H H' : MvPowerSeries (Fin 2) K) : d1 F (H + H') = d1 F H + d1 F H' := by
   have hX : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0 := fun i => by simp
@@ -116,11 +159,17 @@ theorem diffOne_add {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0)
     mvSubst_add_of_hasSubst (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX 1) (hX 2))]
   ring
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Unfold `swap2`. Conclude with `mvSubst_add_of_hasSubst (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX 1) (hX 0)) H H'`.
+-/
 theorem swap_variables_add (H H' : MvPowerSeries (Fin 2) K) : swap2 (H + H') = swap2 H + swap2 H' := by
   have hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0 := fun i => by simp
   unfold swap2
   exact mvSubst_add_of_hasSubst (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX 1) (hX 0)) H H'
 
+/- English proof (translation)
+Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Establish `e : f = PowerSeries.C (PowerSeries.constantCoeff f) + (f - PowerSeries.C (PowerSeries.constantCoeff f))` using `by ring`. Use `conv_lhs => rw [e]`. Rewrite using `[PowerSeries.subst_add hs, PowerSeries.subst_C, map_add, Pair.cc_ps ha (by simp), add_zero, constantCoeff_C]`.
+-/
 theorem cc_ps_gen {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0)
     (f : PowerSeries K) : constantCoeff (PowerSeries.subst a f) = PowerSeries.constantCoeff f := by
   have hs := PowerSeries.HasSubst.of_constantCoeff_zero ha
@@ -130,6 +179,11 @@ theorem cc_ps_gen {τ : Type} {a : MvPowerSeries τ K} (ha : constantCoeff a = 0
   rw [PowerSeries.subst_add hs, PowerSeries.subst_C, map_add, Pair.cc_ps ha (by simp), add_zero,
     constantCoeff_C]
 
+/- English proof (translation)
+Establish `hθ` using `h.1`. Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Establish `hat : ∀ i : Fin 2, constantCoeff (at1 i θ) = 0` using `fun i => by`. Unfold `at1`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX i) θ hθ`.
+
+Establish `hφ : HasSubst ![at1 (0 : Fin 2) θ, at1 (1 : Fin 2) θ]` using `hasSubst_vec_pair_of_constantCoeff_eq_zero (hat 0) (hat 1)`. Establish `e0 : ∀ i : Fin 2, PowerSeries.subst (![at1 (0 : Fin 2) θ, at1 (1 : Fin 2) θ] i) phE = at1 i (PowerSeries.subst θ phE)`. Apply the tactic sequence `intro i; fin_cases i <;> (unfold at1; exact powerSeries_subst_subst_eq_subst_comp (hX _) hθ phE)`. Unfold `cob`. Rewrite using `[mvSubst_sub_of_hasSubst hφ, mvSubst_sub_of_hasSubst hφ, mvSubst_powerSeries_subst_of_constantCoeff_eq_zero hφ hFE0, ← h.2, mvSubst_at1_eq_powerSeries_subst hφ, mvSubst_at1_eq_powerSeries_subst hφ, powerSeries_subst_subst_eq_subst_comp hF0 hθ, e0 0, e0 1]`.
+-/
 theorem cob_hom {F FE : MvPowerSeries (Fin 2) K} {θ : PowerSeries K}
     (hF0 : constantCoeff F = 0) (hFE0 : constantCoeff FE = 0) (h : IsHom F FE θ)
     (phE : PowerSeries K) :
@@ -147,6 +201,21 @@ theorem cob_hom {F FE : MvPowerSeries (Fin 2) K} {θ : PowerSeries K}
   rw [mvSubst_sub_of_hasSubst hφ, mvSubst_sub_of_hasSubst hφ, mvSubst_powerSeries_subst_of_constantCoeff_eq_zero hφ hFE0, ← h.2, mvSubst_at1_eq_powerSeries_subst hφ, mvSubst_at1_eq_powerSeries_subst hφ,
     powerSeries_subst_subst_eq_subst_comp hF0 hθ, e0 0, e0 1]
 
+/- English proof (translation)
+Establish `hθ` using `h.1`. Establish `hX3 : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Establish `hX2 : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Establish `hat2 : ∀ i : Fin 2, constantCoeff (at1 i θ) = 0` using `fun i => by`. Unfold `at1`.
+
+Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX2 i) θ hθ`. Establish `hat3 : ∀ i : Fin 3, constantCoeff (at1 i θ) = 0` using `fun i => by`. Unfold `at1`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX3 i) θ hθ`. Establish `hφ3 : HasSubst ![at1 (0 : Fin 3) θ, at1 (1 : Fin 3) θ, at1 (2 : Fin 3) θ]`.
+
+Apply `hasSubst_finite_of_constantCoeff_eq_zero` to reduce the goal to its premises. Introduce `i`. Use `fin_cases i`. Conclude with `hat3 0`. Conclude with `hat3 1`.
+
+Conclude with `hat3 2`. Establish `h01 : HasSubst ![(X 0 : MvPowerSeries (Fin 3) K), X 1]` using `hasSubst_vec_pair_of_constantCoeff_eq_zero (hX3 0) (hX3 1)`. Establish `key : PowerSeries.subst (in3 F) θ =`. Substitute `![at1 (0 : Fin 3) θ, at1 (1 : Fin 3) θ, at1 (2 : Fin 3) θ] (in3 FE) := by` using the available equality. Unfold `in3`.
+
+Rewrite using `[← mvSubst_powerSeries_subst_of_constantCoeff_eq_zero h01 hF0, h.2, mvSubst_subst_vec_pair_eq_subst_vec_pair h01 (hat2 0) (hat2 1), mvSubst_at1_eq_powerSeries_subst h01, mvSubst_at1_eq_powerSeries_subst h01, mvSubst_subst_vec_pair_eq_subst_vec_pair hφ3 (hX3 0) (hX3 1), subst_X hφ …`. Both sides reduce to the same expression. Establish `key' : PowerSeries.subst ((![in3 F, X 2] : Fin 2 → MvPowerSeries (Fin 3) K) 0) θ =`. Substitute `![at1 (0 : Fin 3) θ, at1 (1 : Fin 3) θ, at1 (2 : Fin 3) θ] (in3 FE) := key` using the available equality. Unfold `d1`.
+
+Rewrite using `[mvSubst_sub_of_hasSubst hφ3, mvSubst_sub_of_hasSubst hφ3, mvSubst_subst_vec_pair_eq_subst_vec_pair (hasSubst_vec_pair_of_constantCoeff_eq_zero (constantCoeff_first_two_of_three hF0) (hX3 2)) (hat2 0) (hat2 1), mvSubst_subst_vec_pair_eq_subst_vec_pair (hasSubst_vec_pair_of_consta …`. Simplify using `only [mvSubst_at1_eq_powerSeries_subst (hasSubst_vec_pair_of_constantCoeff_eq_zero (constantCoeff_first_two_of_three hF0) (hX3 2)), mvSubst_at1_eq_powerSeries_subst (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX3 0) (hX3 2)), mvSubst_at1_eq_powerSeries_subst (hasSubst_vec_pair_o …`. Use `first`. Consider the case `(rw [key']; rfl)`. Consider the case `(rw [key]; rfl)`.
+
+Consider the case `(rw [key']; simp)`. Consider the case `(rw [key]; simp)`.
+-/
 theorem coboundary_commutes_homomorphism {F FE : MvPowerSeries (Fin 2) K} {θ : PowerSeries K}
     (hF0 : constantCoeff F = 0) (hFE0 : constantCoeff FE = 0) (h : IsHom F FE θ)
     (H : MvPowerSeries (Fin 2) K) :
@@ -189,6 +258,11 @@ theorem coboundary_commutes_homomorphism {F FE : MvPowerSeries (Fin 2) K} {θ : 
   | (rw [key']; simp)
   | (rw [key]; simp)
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Establish `hat : ∀ i : Fin 2, constantCoeff (at1 i θ) = 0` using `fun i => by`. Unfold `at1`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX i) θ hθ`. Unfold `swap2`.
+
+Rewrite using `[mvSubst_subst_vec_pair_eq_subst_vec_pair (hasSubst_vec_pair_of_constantCoeff_eq_zero (hX 1) (hX 0)) (hat 0) (hat 1), mvSubst_subst_vec_pair_eq_subst_vec_pair (hasSubst_vec_pair_of_constantCoeff_eq_zero (hat 0) (hat 1)) (hX 1) (hX 0), mvSubst_at1_eq_powerSeries_subst (hasSubst_ve …`. Simplify using `only [subst_X (hasSubst_vec_pair_of_constantCoeff_eq_zero (hat 0) (hat 1))]`. Both sides reduce to the same expression.
+-/
 theorem swap_commutes_subst_log {θ : PowerSeries K} (hθ : PowerSeries.constantCoeff θ = 0)
     (H : MvPowerSeries (Fin 2) K) :
     swap2 (subst ![at1 (0 : Fin 2) θ, at1 (1 : Fin 2) θ] H) =
@@ -202,6 +276,11 @@ theorem swap_commutes_subst_log {θ : PowerSeries K} (hθ : PowerSeries.constant
   simp only [subst_X (hasSubst_vec_pair_of_constantCoeff_eq_zero (hat 0) (hat 1))]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Pair.log_law hF0 hF ha (map_zero (constantCoeff (σ := τ) (R := K)))`. Rewrite `h` using `[TorusDerivation.subst_zero_of_constantCoeff _ (Pair.cc_lgF hl), add_zero]`. Apply the tactic sequence `have hc : constantCoeff (subst ![a, 0] F) = 0 := constantCoeff_subst_eq_zero (Pair.hs2 ha (map_zero _)) (by intro i; fin_cases i <;> simp [ha]) hF0`. Establish `h2` using `Pair.exp_log expSpec hl hc`. Rewrite `h2` using `[h, Pair.exp_log expSpec hl ha]`.
+
+Conclude with `h2.symm`.
+-/
 theorem law_right_zero {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K}
     (hF0 : constantCoeff F = 0) (hF : cob F (lgF K l) = 0) {τ : Type} {a : MvPowerSeries τ K}
     (ha : constantCoeff a = 0) : subst ![a, 0] F = a := by
@@ -214,6 +293,11 @@ theorem law_right_zero {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K}
   rw [h, Pair.exp_log expSpec hl ha] at h2
   exact h2.symm
 
+/- English proof (translation)
+Establish `h` using `Pair.log_law hF0 hF (map_zero (constantCoeff (σ := τ) (R := K))) ha`. Rewrite `h` using `[TorusDerivation.subst_zero_of_constantCoeff _ (Pair.cc_lgF hl), zero_add]`. Apply the tactic sequence `have hc : constantCoeff (subst ![0, a] F) = 0 := constantCoeff_subst_eq_zero (Pair.hs2 (map_zero _) ha) (by intro i; fin_cases i <;> simp [ha]) hF0`. Establish `h2` using `Pair.exp_log expSpec hl hc`. Rewrite `h2` using `[h, Pair.exp_log expSpec hl ha]`.
+
+Conclude with `h2.symm`.
+-/
 theorem law_left_zero {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K}
     (hF0 : constantCoeff F = 0) (hF : cob F (lgF K l) = 0) {τ : Type} {a : MvPowerSeries τ K}
     (ha : constantCoeff a = 0) : subst ![0, a] F = a := by
@@ -226,6 +310,13 @@ theorem law_left_zero {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K}
   rw [h, Pair.exp_log expSpec hl ha] at h2
   exact h2.symm
 
+/- English proof (translation)
+Establish `hX0 : constantCoeff (X 0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `hX1 : constantCoeff (X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `hz` using `map_zero (constantCoeff (σ := Fin 2) (R := K))`. Use `TorusDerivation.divAB_of_axes ?_ ?_` and prove the remaining obligations. Establish `hs` using `Pair.hs2 hX0 hz`.
+
+Unfold `cob`. Rewrite using `[subst_sub hs, subst_sub hs, Pair.subst_subst1 hs (PowerSeries.HasSubst.of_constantCoeff_zero hF0), Pair.subst_single_var hs, Pair.subst_single_var hs, law_right_zero hl hF0 hF hX0]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[TorusDerivation.subst_zero_of_constantCoeff _ hph, sub_self, sub_zero]`. Establish `hs` using `Pair.hs2 hz hX1`.
+
+Unfold `cob`. Rewrite using `[subst_sub hs, subst_sub hs, Pair.subst_subst1 hs (PowerSeries.HasSubst.of_constantCoeff_zero hF0), Pair.subst_single_var hs, Pair.subst_single_var hs, law_left_zero hl hF0 hF hX1]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[TorusDerivation.subst_zero_of_constantCoeff _ hph, sub_zero, sub_self]`.
+-/
 theorem divAB_cob {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K}
     (hF0 : constantCoeff F = 0) (hF : cob F (lgF K l) = 0) {ph : PowerSeries K}
     (hph : PowerSeries.constantCoeff ph = 0) : DivAB (cob F ph) := by
@@ -248,6 +339,11 @@ theorem divAB_cob {l : ℕ} (hl : 2 ≤ l) {F : MvPowerSeries (Fin 2) K}
     simp only [Matrix.cons_val_zero, Matrix.cons_val_one]
     rw [TorusDerivation.subst_zero_of_constantCoeff _ hph, sub_zero, sub_self]
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Unfold `cob at h`. Rewrite `h` using `[map_sub, map_sub]`. Unfold `at1 at h`. Rewrite `h` using `[cc_ps_gen hFE0, cc_ps_gen (hX 0), cc_ps_gen (hX 1)]`.
+
+Take the linear combination `-h`.
+-/
 theorem cc_of_cob {FE : MvPowerSeries (Fin 2) K} (hFE0 : constantCoeff FE = 0)
     {phE : PowerSeries K} (h : constantCoeff (cob FE phE) = 0) :
     PowerSeries.constantCoeff phE = 0 := by
@@ -264,6 +360,9 @@ section Normed
 
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
+/- English proof (translation)
+Unfold `Integral`. Introduce `n`. Rewrite using `[Finsupp.unique_single n]`. Conclude with `h (n default)`.
+-/
 theorem integral_of_ps {θ : PowerSeries K} (h : ∀ n, ‖PowerSeries.coeff n θ‖ ≤ 1) :
     Integral (θ : MvPowerSeries Unit K) := by
   unfold Integral
@@ -271,12 +370,18 @@ theorem integral_of_ps {θ : PowerSeries K} (h : ∀ n, ‖PowerSeries.coeff n �
   rw [Finsupp.unique_single n]
   exact h (n default)
 
+/- English proof (translation)
+The claim follows from `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (φ := fun _ : Unit => g) (fun _ => hg0) (fun _ => hg) (integral_of_ps h)`.
+-/
 theorem integral_ps {τ : Type} {g : MvPowerSeries τ K} (hg0 : constantCoeff g = 0)
     (hg : Integral g) {θ : PowerSeries K} (h : ∀ n, ‖PowerSeries.coeff n θ‖ ≤ 1) :
     Integral (PowerSeries.subst g θ) :=
   Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (φ := fun _ : Unit => g) (fun _ => hg0) (fun _ => hg)
     (integral_of_ps h)
 
+/- English proof (translation)
+Unfold `Integral`. Introduce `n`. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem integral_X_kummer_theta_logarithms {τ : Type} (x : τ) : Integral (X x : MvPowerSeries τ K) := by
   classical
   unfold Integral
@@ -284,11 +389,17 @@ private theorem integral_X_kummer_theta_logarithms {τ : Type} (x : τ) : Integr
   rw [coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `at1`. Conclude with `integral_ps (by simp) (integral_X_kummer_theta_logarithms x) h`.
+-/
 theorem integral_subst_single_variable {τ : Type} (x : τ) {θ : PowerSeries K}
     (h : ∀ n, ‖PowerSeries.coeff n θ‖ ≤ 1) : Integral (at1 x θ) := by
   unfold at1
   exact integral_ps (by simp) (integral_X_kummer_theta_logarithms x) h
 
+/- English proof (translation)
+Establish `hS : Formalism.InvariantFactorPaths.G7.SimeqRules` using `Formalism.InvariantFactorPaths.G7.equivalence_rules`. Establish `h1` using `(hS K ι).2.2.2.2 τ f 0 φ h0 hi h`. Rewrite `h1` using `[mvSubst_zero_of_hasSubst (hasSubst_finite_of_constantCoeff_eq_zero h0)]`. Then use the resulting hypothesis.
+-/
 theorem sim_subst0 {ι τ : Type} [Finite ι] {f : MvPowerSeries ι K} {φ : ι → MvPowerSeries τ K}
     (h0 : ∀ i, constantCoeff (φ i) = 0) (hi : ∀ i, Integral (φ i)) (h : Simeq f 0) :
     Simeq (subst φ f) 0 := by
@@ -296,10 +407,16 @@ theorem sim_subst0 {ι τ : Type} [Finite ι] {f : MvPowerSeries ι K} {φ : ι 
   have h1 := (hS K ι).2.2.2.2 τ f 0 φ h0 hi h
   rwa [mvSubst_zero_of_hasSubst (hasSubst_finite_of_constantCoeff_eq_zero h0)] at h1
 
+/- English proof (translation)
+The claim follows from `sim_subst0 (φ := fun _ : Unit => g) (fun _ => hg0) (fun _ => hg) h`.
+-/
 theorem sim_ps {τ : Type} {g : MvPowerSeries τ K} (hg0 : constantCoeff g = 0) (hg : Integral g)
     {lam : PowerSeries K} (h : Simeq (lam : MvPowerSeries Unit K) 0) :
     Simeq (PowerSeries.subst g lam) 0 := sim_subst0 (φ := fun _ : Unit => g) (fun _ => hg0) (fun _ => hg) h
 
+/- English proof (translation)
+Establish `hS : Formalism.InvariantFactorPaths.G7.SimeqRules` using `Formalism.InvariantFactorPaths.G7.equivalence_rules`. Establish `h1` using `(hS K τ).2.2.1 f 0 g hf ((hS K τ).2.1 g 0 hg)`. Unfold `Simeq at h1 ⊢`. Rewrite using `[sub_zero]`. Conclude with `h1`.
+-/
 theorem simeq_sub_zero_of_simeq_zero {τ : Type} {f g : MvPowerSeries τ K} (hf : Simeq f 0) (hg : Simeq g 0) :
     Simeq (f - g) 0 := by
   have hS : Formalism.InvariantFactorPaths.G7.SimeqRules := Formalism.InvariantFactorPaths.G7.equivalence_rules
@@ -308,17 +425,26 @@ theorem simeq_sub_zero_of_simeq_zero {τ : Type} {f g : MvPowerSeries τ K} (hf 
   rw [sub_zero]
   exact h1
 
+/- English proof (translation)
+Establish `hS : Formalism.InvariantFactorPaths.G7.SimeqRules` using `Formalism.InvariantFactorPaths.G7.equivalence_rules`. Establish `h1` using `(hS K τ).2.2.2.1 f 0 g 0 hf hg`. Rewrite `h1` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem simeq_add_zero {τ : Type} {f g : MvPowerSeries τ K} (hf : Simeq f 0) (hg : Simeq g 0) :
     Simeq (f + g) 0 := by
   have hS : Formalism.InvariantFactorPaths.G7.SimeqRules := Formalism.InvariantFactorPaths.G7.equivalence_rules
   have h1 := (hS K τ).2.2.2.1 f 0 g 0 hf hg
   rwa [add_zero] at h1
 
+/- English proof (translation)
+Unfold `in3`. Apply the tactic sequence `exact Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (by intro i; fin_cases i <;> simp) (by intro i; fin_cases i <;> exact Formalism.InvariantFactorPaths.G7.TwoS.integral_X _) hF`.
+-/
 theorem integral_law_first_two_of_three {F : MvPowerSeries (Fin 2) K} (hF : Integral F) : Integral (in3 F) := by
   unfold in3
   exact Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (by intro i; fin_cases i <;> simp)
     (by intro i; fin_cases i <;> exact Formalism.InvariantFactorPaths.G7.TwoS.integral_X _) hF
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Unfold `cob at1`. Conclude with `simeq_sub_zero_of_simeq_zero (simeq_sub_zero_of_simeq_zero (sim_ps hF0 hF h) (sim_ps (hX 0) (integral_X_kummer_theta_logarithms _) h)) (sim_ps (hX 1) (integral_X_kummer_theta_logarithms _) h)`.
+-/
 theorem sim_cob {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) (hF : Integral F)
     {lam : PowerSeries K} (h : Simeq (lam : MvPowerSeries Unit K) 0) : Simeq (cob F lam) 0 := by
   have hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0 := fun i => by simp
@@ -326,11 +452,17 @@ theorem sim_cob {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) (hF : 
   exact simeq_sub_zero_of_simeq_zero (simeq_sub_zero_of_simeq_zero (sim_ps hF0 hF h) (sim_ps (hX 0) (integral_X_kummer_theta_logarithms _) h))
     (sim_ps (hX 1) (integral_X_kummer_theta_logarithms _) h)
 
+/- English proof (translation)
+The claim follows from `sim_subst0 (fun i => by fin_cases i <;> first | exact hA0 | exact hB0) (fun i => by fin_cases i <;> first | exact hA | exact hB) h`.
+-/
 theorem sim_pair {τ : Type} {A B : MvPowerSeries τ K} (hA0 : constantCoeff A = 0)
     (hB0 : constantCoeff B = 0) (hA : Integral A) (hB : Integral B)
     {μ : MvPowerSeries (Fin 2) K} (h : Simeq μ 0) : Simeq (subst ![A, B] μ) 0 := sim_subst0 (fun i => by fin_cases i <;> first | exact hA0 | exact hB0)
     (fun i => by fin_cases i <;> first | exact hA | exact hB) h
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Unfold `d1`. Conclude with `simeq_sub_zero_of_simeq_zero (simeq_sub_zero_of_simeq_zero (sim_pair (constantCoeff_first_two_of_three hF0) (hX 2) (integral_law_first_two_of_three hF) (integral_X_kummer_theta_logarithms _) h) (sim_pair (hX 0) (hX 2) (integral_X_kummer_theta_logarithms _) (integral_X_kummer_thet …`.
+-/
 theorem simeq_coboundary_of_simeq_zero {F : MvPowerSeries (Fin 2) K} (hF0 : constantCoeff F = 0) (hF : Integral F)
     {μ : MvPowerSeries (Fin 2) K} (h : Simeq μ 0) : Simeq (d1 F μ) 0 := by
   have hX : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0 := fun i => by simp
@@ -339,6 +471,9 @@ theorem simeq_coboundary_of_simeq_zero {F : MvPowerSeries (Fin 2) K} (hF0 : cons
     (sim_pair (hX 0) (hX 2) (integral_X_kummer_theta_logarithms _) (integral_X_kummer_theta_logarithms _) h))
     (sim_pair (hX 1) (hX 2) (integral_X_kummer_theta_logarithms _) (integral_X_kummer_theta_logarithms _) h)
 
+/- English proof (translation)
+Establish `hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0` using `fun i => by simp`. Unfold `swap2`. Conclude with `sim_pair (hX 1) (hX 0) (integral_X_kummer_theta_logarithms _) (integral_X_kummer_theta_logarithms _) h`.
+-/
 theorem sim_swap2 {μ : MvPowerSeries (Fin 2) K} (h : Simeq μ 0) : Simeq (swap2 μ) 0 := by
   have hX : ∀ i : Fin 2, constantCoeff (X i : MvPowerSeries (Fin 2) K) = 0 := fun i => by simp
   unfold swap2
@@ -350,6 +485,29 @@ end TraceNormBounds
 
 open TraceNormBounds
 
+/- English proof (translation)
+Unfold `CoboundaryCocycleTransportAlongHom`. Introduce `K _ _ _ l hl hnl F hF FE θ phE ph hFE0 hθI hH hF1E hsim`. Take `⟨hF0, hFI, hFc⟩` from `hF`. Take `⟨hdivE, hdE, hdsE⟩` from `hF1E`. Establish `hθ : PowerSeries.constantCoeff θ = 0` using `hH.1`.
+
+Establish `hccE : constantCoeff (cob FE phE) = 0`. Establish `h0` using `hdivE 0 (Or.inl (by simp))`. Use `first`. Consider the case `exact h0`. Consider the case `rwa [coeff_zero_eq_constantCoeff_apply] at h0`.
+
+Consider the case `simpa using h0`. Establish `hphE : PowerSeries.constantCoeff phE = 0` using `cc_of_cob hFE0 hccE`. Establish `hph : PowerSeries.constantCoeff ph = 0`. Establish `h1` using `hsim.1`. Rewrite `h1` using `[map_sub, cc_ps_gen (τ := Unit) hθ phE, hphE, sub_zero]`.
+
+Conclude with `h1`. Establish `hlam0 : Simeq ((ph - PowerSeries.subst θ phE : PowerSeries K) : MvPowerSeries Unit K) 0`. Unfold `Simeq at hsim ⊢`. Rewrite using `[sub_zero]`. Conclude with `hsim`.
+
+Establish `hX3 : ∀ i : Fin 3, constantCoeff (X i : MvPowerSeries (Fin 3) K) = 0` using `fun i => by simp`. Establish `hat3 : ∀ i : Fin 3, constantCoeff (at1 i θ) = 0` using `fun i => by`. Unfold `at1`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (hX3 i) θ hθ`. Establish `h03 : ∀ i, constantCoeff (![at1 (0 : Fin 3) θ, at1 (1 : Fin 3) θ, at1 (2 : Fin 3) θ] i) = 0`.
+
+Introduce `i`. Use `fin_cases i`. Conclude with `hat3 0`. Conclude with `hat3 1`. Conclude with `hat3 2`.
+
+Establish `hI3 : ∀ i, Integral (![at1 (0 : Fin 3) θ, at1 (1 : Fin 3) θ, at1 (2 : Fin 3) θ] i)`. Introduce `i`. Use `fin_cases i`. Conclude with `integral_subst_single_variable (0 : Fin 3) hθI`. Conclude with `integral_subst_single_variable (1 : Fin 3) hθI`.
+
+Conclude with `integral_subst_single_variable (2 : Fin 3) hθI`. Establish `split : cob F ph = cob F (PowerSeries.subst θ phE) + cob F (ph - PowerSeries.subst θ phE)`. Rewrite using `[← cob_add hF0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hA : Simeq (d1 F (cob F (PowerSeries.subst θ phE))) 0`. Rewrite using `[cob_hom hF0 hFE0 hH phE, coboundary_commutes_homomorphism hF0 hFE0 hH]`. Conclude with `sim_subst0 h03 hI3 hdE`. Establish `hB : Simeq (d1 F (cob F (ph - PowerSeries.subst θ phE))) 0` using `simeq_coboundary_of_simeq_zero hF0 hFI (sim_cob hF0 hFI hlam0)`. Establish `hA' : Simeq (d1 F (swap2 (cob F (PowerSeries.subst θ phE)))) 0`.
+
+Rewrite using `[cob_hom hF0 hFE0 hH phE, swap_commutes_subst_log hθ, coboundary_commutes_homomorphism hF0 hFE0 hH]`. Conclude with `sim_subst0 h03 hI3 hdsE`. Establish `hB' : Simeq (d1 F (swap2 (cob F (ph - PowerSeries.subst θ phE)))) 0` using `simeq_coboundary_of_simeq_zero hF0 hFI (sim_swap2 (sim_cob hF0 hFI hlam0))`. Use `⟨divAB_cob hl.two_le hF0 hFc hph, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[split, diffOne_add hF0]`.
+
+Conclude with `simeq_add_zero hA hB`. Rewrite using `[split, swap_variables_add, diffOne_add hF0]`. Conclude with `simeq_add_zero hA' hB'`.
+-/
 theorem transport_first_level_holds : CoboundaryCocycleTransportAlongHom := by
   unfold CoboundaryCocycleTransportAlongHom
   intro K _ _ _ l hl hnl F hF FE θ phE ph hFE0 hθI hH hF1E hsim
@@ -407,6 +565,17 @@ theorem transport_first_level_holds : CoboundaryCocycleTransportAlongHom := by
   · rw [split, swap_variables_add, diffOne_add hF0]
     exact simeq_add_zero hA' hB'
 
+/- English proof (translation)
+Introduce `K _ _ _ l σ hU θ phE ph eE α hθ hθi heE hα hσα hcomm hE hsim`. Establish `hl : 2 ≤ l` using `hU.1.two_le`. Establish `hmul : IsMul l α (mulS K l α)` using `Pair.isMul_mulF expSpec hl α`. Establish `he0 : PowerSeries.constantCoeff (mulS K l α) = 0` using `hmul.1`. Establish `hei : ∀ n, ‖PowerSeries.coeff n (mulS K l α)‖ ≤ 1` using `(mulSpec K l σ hU α).2.2 hα hσα _ hmul`.
+
+Establish `hN1 : ‖α * σ α‖ ≤ 1`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hα (norm_nonneg _) ((frobSq K l σ hU).2 α hα)`. Establish `hNf : σ (α * σ α) = α * σ α` using `by rw [map_mul, hσα, mul_comm]`. Establish `hlam : Simeq ((ph - PowerSeries.subst θ phE : PowerSeries K) : MvPowerSeries Unit K) 0` using `B4.simeq_sub_zero hsim`.
+
+Establish `hs_e : PowerSeries.HasSubst (mulS K l α)` using `PowerSeries.HasSubst.of_constantCoeff_zero' he0`. Establish `h1 : Simeq (PowerSeries.subst (mulS K l α) (ph - PowerSeries.subst θ phE : PowerSeries K) : MvPowerSeries Unit K) (MvPowerSeries.C (α * σ α) * (ph - PowerSeries.subst θ phE))` using `InverseCommuting.sim_trans (sim_ps he0 (integral_of_ps hei) hlam) (InverseCommuting.sim_symm (simeq_fixed K l σ hU Unit _ _ hN1 hNf hlam))`. Establish `h2 : Simeq (PowerSeries.subst (mulS K l α) (PowerSeries.subst θ phE : PowerSeries K) : MvPowerSeries Unit K) (MvPowerSeries.C (α * σ α) * PowerSeries.subst θ phE)`. Establish `h` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules K Unit).2.2.2.2 Unit _ _ (fun _ : Unit => θ) (fun _ => hθ) (fun _ => integral_of_ps hθi) hE`. Rewrite `h` using `[TorusDerivation.subst_C_mul (hasSubst_of_constantCoeff_zero fun _ => hθ)]`.
+
+Establish `e1 : (PowerSeries.subst (mulS K l α) (PowerSeries.subst θ phE : PowerSeries K) : MvPowerSeries Unit K) = MvPowerSeries.subst (fun _ : Unit => θ) (PowerSeries.subst eE phE : MvPowerSeries Unit K)`. Rewrite using `[← Pair.ps_comp he0 hθ, hcomm, Pair.ps_comp hθ heE]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `h`.
+
+Establish `h` using `InverseCommuting.sim_add h1 h2`. Unfold `NormRel`. Establish `e : ph = (ph - PowerSeries.subst θ phE) + PowerSeries.subst θ phE` using `by ring`. Rewrite `h` using `[← PowerSeries.subst_add hs_e, ← mul_add, ← e]`. Conclude with `h`.
+-/
 theorem transport_norm_relation : TransportNorm := by
   intro K _ _ _ l σ hU θ phE ph eE α hθ hθi heE hα hσα hcomm hE hsim
   have hl : 2 ≤ l := hU.1.two_le

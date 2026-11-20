@@ -21,6 +21,15 @@ end Sat
 section Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.SmGL GlobalTheory.LocLanglands
+/- English proof (translation)
+Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h); obtain ⟨_, _, _, H⟩ := hOpn) | obtain ⟨_, _, _, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h`. Establish `hx : GlobalTheory.PRep.fixed (cls τ).rep (GlobalTheory.SplitWeil.KOne (w.adicCompletion E) (Fin (cls τ).1)) ≠ ⊥` using `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (IrrRep.nonempty_equiv_rep τ).some.symm hf`. Take `⟨m, b, hb, hw⟩` from `haveI := UpperTheory.One.M.charZero_compl w`. Use the proof step `_root_.UpperTheory.One.M.LawsM.depth H _ (UpperTheory.One.M.good_of_fixed hq _ hx) hx`. Rewrite using `[← hb, GlobalTheory.WeilDeligne.WD.tame_mk]`.
+
+Introduce `g hg`. Use `hw g ⟨GlobalTheory.WeilDeligne.Wild_le_Ine hg, fun x hx0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `hg x hx0`. Establish `e : ((g : G E Ω) x - x) = ((g : G E Ω) x / x - 1) * x` using `by field_simp`. Rewrite using `[e, map_mul]`.
+
+Establish `h2 : (0 : _) < A.valuation x`. Rewrite using `[pos_iff_ne_zero]`. Conclude with `(Valuation.ne_zero_iff _).2 hx0`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_lt_mul_of_pos_right h1 h2`.
+
+Use `_ = A.valuation x := one_mul _`.
+-/
 theorem tame_reciprocity_of_fixed_ne_bot {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w) {n : ℕ}
     (τ : IrrRep (GL (Fin n) (w.adicCompletion E)))
@@ -58,6 +67,9 @@ section Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.SmGL GlobalTheory.LocLanglands
 variable (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r)
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.RowPar.parameter_at_place_eq_reciprocity_of_local_component hL D rep σ s τ hτ]`. Conclude with `_root_.GlobalTheory.RowPar.tame_reciprocity_of_fixed_ne_bot hL _ τ hf hq`.
+-/
 theorem tame_parameter_at_place_of_fixed_ne_bot (σ : D.what₂.FT) (s : SplitPlace D.host.E) (τ : IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E)))
     (hτ : IsLocS (rep σ).S s τ)
     (hf : GlobalTheory.PRep.fixed τ.ρ (GlobalTheory.SplitWeil.KOne (s.w.adicCompletion D.host.E) (Fin D.R.r)) ≠ ⊥)
@@ -83,6 +95,13 @@ open GlobalTheory.SmGL GlobalTheory.LocLanglands
 variable (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r)
 end Loc
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
+/- English proof (translation)
+Introduce `hL D rep hD`. Use `⟨⟨_root_.GlobalTheory.RowPar.weilDeligneParameterAtPlace hL D rep, fun σ => satOf (rep σ).S, _root_.GlobalTheory.RowPar.dim_parameter_at_place_eq_rank hL D rep, fun σ k v => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, τ, hs, hl, hf⟩` from `hD σ k v`. Take `⟨I⟩` from `GlobalTheory.TypeRec.Model.nonempty_ident D`. Establish `hq : UpperTheory.One.M.IsQg ((D.naut.plGw k v).adicCompletion D.host.E)` using `⟨_, ⟨D.host.g_prime k⟩, I.i k v, I.cont k v⟩`.
+
+Rewrite `hq`, the goal using `[← hs]`. Conclude with `_root_.GlobalTheory.RowPar.tame_parameter_at_place_of_fixed_ne_bot hL D rep σ s τ hl hf hq`. Introduce `σ s τ hτ`. Conclude with `_root_.GlobalTheory.RowPar.parameter_at_place_eq_reciprocity_of_local_component hL D rep σ s τ hτ`. Introduce `σ v w hO Dv hα`.
+
+Conclude with `satOf_spec (rep σ).S v w hO Dv hα`.
+-/
 theorem exists_rowWD_rowTrue_m_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r), RowDepth D rep →
     ∃ Rw : RowWD D, _root_.GlobalTheory.HeightCounting.RepresentationParametersHold hL D rep Rw.par Rw.sat := by
   intro hL D rep hD

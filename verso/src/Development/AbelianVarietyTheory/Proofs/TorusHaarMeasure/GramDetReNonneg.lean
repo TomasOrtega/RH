@@ -12,11 +12,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 namespace GlobalTheory.HeightSubmodular
 
+/- English proof (translation)
+Establish `h : (0 : ℂ) ≤ (Nᴴ * N).det` using `(Matrix.posSemidef_conjTranspose_mul_self N).det_nonneg`. Conclude with `(Complex.nonneg_iff.mp h).1`.
+-/
 theorem gram_det_re_nonneg {m ι : Type} [Fintype m] [Fintype ι] [DecidableEq ι]
     (N : Matrix m ι ℂ) : 0 ≤ (Nᴴ * N).det.re := by
   have h : (0 : ℂ) ≤ (Nᴴ * N).det := (Matrix.posSemidef_conjTranspose_mul_self N).det_nonneg
   exact (Complex.nonneg_iff.mp h).1
 
+/- English proof (translation)
+Establish `hnum : 0 ≤ p' * q'` using `(mul_nonneg hp hq).trans h`. Establish `hden : (0 : ℝ) < (i' : ℝ) * j'` using `mul_pos (by exact_mod_cast Nat.pos_of_ne_zero hi) (by exact_mod_cast Nat.pos_of_ne_zero hj)`. Rewrite using `[div_mul_div_comm, div_mul_div_comm]`. Break down `Nat.eq_zero_or_pos (i * j) with h0 | h0` into its components or cases. Establish `hz : (i : ℝ) * j = 0` using `by exact_mod_cast h0`.
+
+Rewrite using `[hz, div_zero]`. Conclude with `div_nonneg hnum hden.le`. Conclude with `div_le_div₀ hnum h hden (by exact_mod_cast hij)`.
+-/
 theorem div_mul_div_le {p q p' q' : ℝ} {i j i' j' : ℕ} (hp : 0 ≤ p) (hq : 0 ≤ q)
     (h : p * q ≤ p' * q') (hi : i' ≠ 0) (hj : j' ≠ 0) (hij : i' * j' ≤ i * j) :
     p / i * (q / j) ≤ p' / i' * (q' / j') := by
@@ -30,6 +38,17 @@ theorem div_mul_div_le {p q p' q' : ℝ} {i j i' j' : ℕ} (hp : 0 ≤ p) (hq : 
     exact div_nonneg hnum hden.le
   · exact div_le_div₀ hnum h hden (by exact_mod_cast hij)
 
+/- English proof (translation)
+Introduce `r X d hd x hx W₁ W₂`. Take `⟨a, b, c, w, hli, hmem, h0, h1, h2, h3⟩` from `GlobalTheory.LatBasisAdapted.exists_basis_adapted_mem r X W₁ W₂`. Establish `hsub : ∀ {κ : Type} (f : κ → Fin a ⊕ Fin b ⊕ Fin c) (τ : X.Ψ), (mat x τ)⁻¹ * (Matrix.of fun k l => τ.1 ((w ∘ f) l k)) = ((mat x τ)⁻¹ * Matrix.of fun k l => τ.1 (w l k)).submatrix id f`. Introduce `κ f τ`. Use extensionality with `k l`.
+
+Simplify using `[Matrix.mul_apply]`. Establish `key` using `fun {κ : Type} [Fintype κ] [DecidableEq κ] (f : κ → Fin a ⊕ Fin b ⊕ Fin c) (hf : Function.Injective f) => hd x hx κ (w ∘ f) (hli.comp f hf) (fun l => hmem (f l))`. Establish `hI` using `fun {κ : Type} [Fintype κ] [DecidableEq κ] (f : κ → Fin a ⊕ Fin b ⊕ Fin c) (hf : Function.Injective f) => GlobalTheory.SpanIndex.relIndex_span_ne_zero r X κ (w ∘ f) (hli.comp f hf) (fun l => hmem (f l))`. Establish `i1 : Function.Injective (Sum.map id Sum.inl : Fin a ⊕ Fin b → Fin a ⊕ Fin b ⊕ Fin c)` using `Sum.map_injective.mpr ⟨Function.injective_id, Sum.inl_injective⟩`. Establish `i2 : Function.Injective (Sum.map id Sum.inr : Fin a ⊕ Fin c → Fin a ⊕ Fin b ⊕ Fin c)` using `Sum.map_injective.mpr ⟨Function.injective_id, Sum.inr_injective⟩`.
+
+Rewrite using `[← h0, ← h3, ← h1, ← h2, key _ Sum.inl_injective, key _ i1, key _ i2, hd x hx _ w hli hmem]`. Apply `div_mul_div_le` to reduce the goal to its premises. Conclude with `Finset.prod_nonneg fun τ _ => gram_det_re_nonneg _`. Conclude with `Finset.prod_nonneg fun τ _ => gram_det_re_nonneg _`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+
+Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `τ _`. Conclude with `mul_nonneg (gram_det_re_nonneg _) (gram_det_re_nonneg _)`. Introduce `τ _`. Simplify using `only [hsub]`.
+
+Conclude with `(GlobalTheory.T.gramDet_inequalities_closed_forms).1 (Fin r) (Fin a) (Fin b) (Fin c) _`. Conclude with `hI _ i1`. Conclude with `hI _ i2`. Conclude with `(GlobalTheory.T.relIndex_integralSpan_supermultiplicative) r X (Fin a) (Fin b) (Fin c) w hli hmem`.
+-/
 theorem height_submodular : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ W₁ W₂, d x (W₁ ⊓ W₂) * d x (W₁ ⊔ W₂) ≤ d x W₁ * d x W₂) := by
   intro r X d hd x hx W₁ W₂
   obtain ⟨a, b, c, w, hli, hmem, h0, h1, h2, h3⟩ :=

@@ -14,6 +14,9 @@ abbrev Vars (L : Type) [Field L] (n : ℕ) := (L →+* ℂ) × Fin n × Fin n
 
 def vmul (y z : Vars L n → ℂ) : Vars L n → ℂ := fun p => ∑ k, y (p.1, p.2.1, k) * z (p.1, k, p.2.2)
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, MvPolynomial.eval_C, MvPolynomial.eval_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, hp, MvPolynomial.aeval_X, map_mul, MvPolynomial.eval_X]`.
+-/
 theorem eval_aeval_eq {σ' : Type} (y : σ' → ℂ) (f : Vars L n → MvPolynomial σ' ℂ) (Q : MvPolynomial (Vars L n) ℂ) :
     MvPolynomial.eval y (MvPolynomial.aeval f Q) = MvPolynomial.eval (fun p => MvPolynomial.eval y (f p)) Q := by
   induction Q using MvPolynomial.induction_on with
@@ -26,6 +29,15 @@ def tInv (g : GL (Fin n) ℂ) : GL (Fin n) ℂ :=
     by rw [← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one],
     by rw [← Matrix.transpose_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.transpose_one]⟩
 
+/- English proof (translation)
+Introduce `σ`. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Use `⟨g, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[evPt]`.
+
+Simplify using `[evPt, conj_ne σ]`. Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`. Substitute `h2` using the available equality. Use `⟨tInv g, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[evPt, conj_ne τ, tInv]`.
+
+Simplify using `[evPt, conj_conj, tInv]`. Establish `h3 : ComplexEmbedding.conjugate σ ≠ τ` using `fun h => h2 (by rw [← h, conj_conj])`. Establish `h4 : ComplexEmbedding.conjugate σ ≠ ComplexEmbedding.conjugate τ` using `fun h => h1 (by`. Rewrite using `[← conj_conj σ, h, conj_conj])`. Use `⟨1, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `[evPt, h1, h2, Matrix.one_apply]`. Simplify using `[evPt, h3, h4, Matrix.one_apply, eq_comm]`.
+-/
 theorem inV_evPt (τ : L →+* ℂ) (g : GL (Fin n) ℂ) : InV (evPt τ g) := by
   intro σ
   by_cases h1 : σ = τ
@@ -45,17 +57,26 @@ theorem inV_evPt (τ : L →+* ℂ) (g : GL (Fin n) ℂ) : InV (evPt τ g) := by
       · simp [evPt, h1, h2, Matrix.one_apply]
       · simp [evPt, h3, h4, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Establish `hg' : γ₀.val * conjT (IsCMField.complexConj L : L →+* L) γ₀.val = 1` using `hg`. Rewrite using `[Units.inv_eq_of_mul_eq_one_right hg']`. Both sides reduce to the same expression.
+-/
 theorem unit_conj (γ₀ : GL (Fin n) L) (hg : γ₀ ∈ GQ0 L n) (i j : Fin n) :
     (IsCMField.complexConj L : L →+* L) (γ₀.val i j) = (γ₀⁻¹).val j i := by
   have hg' : γ₀.val * conjT (IsCMField.complexConj L : L →+* L) γ₀.val = 1 := hg
   rw [Units.inv_eq_of_mul_eq_one_right hg']
   rfl
 
+/- English proof (translation)
+Rewrite using `[← unit_conj γ₀ hg]`. Conclude with `(IsCMField.complexEmbedding_complexConj (K := L) σ _).symm`.
+-/
 theorem conj_ratPt (γ₀ : GL (Fin n) L) (hg : γ₀ ∈ GQ0 L n) (σ : L →+* ℂ) (i j : Fin n) :
     (ComplexEmbedding.conjugate σ) (γ₀.val i j) = σ ((γ₀⁻¹).val j i) := by
   rw [← unit_conj γ₀ hg]
   exact (IsCMField.complexEmbedding_complexConj (K := L) σ _).symm
 
+/- English proof (translation)
+Introduce `σ`. Use `⟨Matrix.GeneralLinearGroup.map σ γ₀, fun i j => ⟨rfl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `conj_ratPt γ₀ hg σ i j`.
+-/
 theorem inV_ratPt (γ₀ : GL (Fin n) L) (hg : γ₀ ∈ GQ0 L n) : InV (ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) := by
   intro σ
   refine ⟨Matrix.GeneralLinearGroup.map σ γ₀, fun i j => ⟨rfl, ?_⟩⟩
@@ -67,6 +88,13 @@ open Classical in
 def trivAt (τ : L →+* ℂ) (y : Vars L n → ℂ) : Vars L n → ℂ := fun p =>
   if p.1 = τ ∨ p.1 = ComplexEmbedding.conjugate τ then (if p.2.1 = p.2.2 then 1 else 0) else y p
 
+/- English proof (translation)
+Introduce `σ`. Distinguish the cases in `h : σ = τ ∨ σ = ComplexEmbedding.conjugate τ`. Establish `h' : ComplexEmbedding.conjugate σ = τ ∨ ComplexEmbedding.conjugate σ = ComplexEmbedding.conjugate τ`. Apply the tactic sequence `rcases h with h | h <;> subst h <;> simp [conj_conj]`. Use `⟨1, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [trivAt, if_pos h]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [trivAt, if_pos h']`. Simplify using `[Matrix.one_apply, eq_comm]`. Establish `h' : ¬ (ComplexEmbedding.conjugate σ = τ ∨ ComplexEmbedding.conjugate σ = ComplexEmbedding.conjugate τ)`.
+
+Introduce and unpack `(h1 | h1)`. Conclude with `h (Or.inr (by rw [← h1, conj_conj]))`. Conclude with `h (Or.inl (by rw [← conj_conj σ, h1, conj_conj]))`. Take `⟨B, hB⟩` from `hy σ`. Conclude with `⟨B, fun i j => by simp only [trivAt, h, h', if_false]; exact hB i j⟩`.
+-/
 theorem inV_trivAt (τ : L →+* ℂ) (y : Vars L n → ℂ) (hy : InV y) : InV (trivAt τ y) := by
   intro σ
   by_cases h : σ = τ ∨ σ = ComplexEmbedding.conjugate τ
@@ -82,12 +110,25 @@ theorem inV_trivAt (τ : L →+* ℂ) (y : Vars L n → ℂ) (hy : InV y) : InV 
     obtain ⟨B, hB⟩ := hy σ
     exact ⟨B, fun i j => by simp only [trivAt, h, h', if_false]; exact hB i j⟩
 
+/- English proof (translation)
+Simplify using `[trivAt]`.
+-/
 theorem trivAt_tau (τ : L →+* ℂ) (y : Vars L n → ℂ) (i j : Fin n) :
     trivAt τ y (τ, i, j) = if i = j then 1 else 0 := by simp [trivAt]
 
+/- English proof (translation)
+Simplify using `[trivAt]`.
+-/
 theorem trivAt_conj (τ : L →+* ℂ) (y : Vars L n → ℂ) (i j : Fin n) :
     trivAt τ y (ComplexEmbedding.conjugate τ, i, j) = if i = j then 1 else 0 := by simp [trivAt]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨σ, i, j⟩` from `p`. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Simplify using `[vmul, trivAt, evPt, ratPt]`.
+
+Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`. Substitute `h2` using the available equality. Establish `e1 : ∀ k, trivAt τ (ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) (ComplexEmbedding.conjugate τ, i, k) = if i = k then 1 else 0` using `fun k => trivAt_conj τ _ i k`. Establish `e2 : ∀ k, evPt τ (Matrix.GeneralLinearGroup.map τ γ₀) (ComplexEmbedding.conjugate τ, k, j) = ((Matrix.GeneralLinearGroup.map τ γ₀)⁻¹).val j k` using `fun k => by`. Simplify using `only [evPt, conj_ne τ, if_false, if_true]`.
+
+Simplify using `only [vmul, e1, e2, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `show (ComplexEmbedding.conjugate τ) (γ₀.val i j) = _`. Rewrite using `[conj_ratPt γ₀ hg, ← map_inv]`. Both sides reduce to the same expression. Simplify using `[vmul, trivAt, evPt, ratPt, h1, h2]`.
+-/
 theorem ratPt_split (τ : L →+* ℂ) (γ₀ : GL (Fin n) L) (hg : γ₀ ∈ GQ0 L n) :
     ratPt (γ₀ : Matrix (Fin n) (Fin n) L) =
       vmul (trivAt τ (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))) (evPt τ (Matrix.GeneralLinearGroup.map τ γ₀)) := by
@@ -109,6 +150,11 @@ theorem ratPt_split (τ : L →+* ℂ) (γ₀ : GL (Fin n) L) (hg : γ₀ ∈ GQ
       rfl
     · simp [vmul, trivAt, evPt, ratPt, h1, h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨σ, i, j⟩` from `p`. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Simplify using `[vmul, evPt, (hy _ _).1]`.
+
+Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`. Substitute `h2` using the available equality. Simplify using `[vmul, evPt, (hy _ _).2, conj_ne τ]`. Simplify using `[vmul, evPt, h1, h2]`.
+-/
 theorem vmul_comm_evPt (τ : L →+* ℂ) (y : Vars L n → ℂ)
     (hy : ∀ i j, y (τ, i, j) = (if i = j then 1 else 0) ∧ y (ComplexEmbedding.conjugate τ, i, j) = (if i = j then 1 else 0))
     (g : GL (Fin n) ℂ) : vmul y (evPt τ g) = vmul (evPt τ g) y := by
@@ -122,6 +168,11 @@ theorem vmul_comm_evPt (τ : L →+* ℂ) (y : Vars L n → ℂ)
       simp [vmul, evPt, (hy _ _).2, conj_ne τ]
     · simp [vmul, evPt, h1, h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Take `⟨σ, i, j⟩` from `p`. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Simplify using `[vmul, evPt, Matrix.mul_apply]`.
+
+Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`. Substitute `h2` using the available equality. Simplify using `[vmul, evPt, conj_ne τ, Matrix.mul_apply, mul_comm]`. Simplify using `[vmul, evPt, h1, h2]`.
+-/
 theorem evPt_mul (τ : L →+* ℂ) (g h : GL (Fin n) ℂ) : evPt τ (g * h) = vmul (evPt τ g) (evPt τ h) := by
   funext p
   obtain ⟨σ, i, j⟩ := p
@@ -133,6 +184,9 @@ theorem evPt_mul (τ : L →+* ℂ) (g h : GL (Fin n) ℂ) : evPt τ (g * h) = v
       simp [vmul, evPt, conj_ne τ, Matrix.mul_apply, mul_comm]
     · simp [vmul, evPt, h1, h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[vmul, ratPt, Matrix.mul_apply]`.
+-/
 theorem vmul_ratPt (γ₀ δ₀ : Matrix (Fin n) (Fin n) L) : vmul (ratPt γ₀) (ratPt δ₀) = ratPt (γ₀ * δ₀) := by
   funext p
   simp [vmul, ratPt, Matrix.mul_apply]

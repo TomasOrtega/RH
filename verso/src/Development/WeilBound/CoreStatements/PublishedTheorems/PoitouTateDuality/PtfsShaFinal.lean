@@ -19,11 +19,29 @@ abbrev toFS (K : IntermediateField ℚ (AlgebraicClosure ℚ)) [FiniteDimensiona
 
 section
 attribute [local instance 2000] Rep.hV2
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem finite_dualRep' {G : Type} [Group G] (D A : Rep.{0} (ULift.{0} ℤ) G) [Finite D] [Finite A] :
     Finite (dualRep D A) := inferInstance
 end
 
 set_option maxHeartbeats 0 in
+/- English proof (translation)
+Introduce `K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Take `⟨e, he⟩` from `gsEquiv_toGS' K (S : Set (HeightOneSpectrum (𝓞 K)))`. Take `⟨ιs, ev, hevc, hev⟩` from `localCmp' K S Av hAv e he`. Take `⟨A, hAd, eM, hM⟩` from `repCmp e ρ hρ`.
+
+Establish `hc' : ContAction (twDual μ ρ)` using `GlobalTheory.CompanionTheory.GalDual.contAction_twDual K (AlgebraicClosure ℚ) l r M S Av μ ρ hρ hμ`. Take `⟨eD, hD, -⟩` from `dualCmp' (toFS K) S hr ζ hζ hS e he μ hμ ρ A eM hM`. Establish `hSN : ∀ v : HeightOneSpectrum (𝓞 K), ((l ^ r : ℕ) : 𝓞 K) ∈ v.asIdeal → v ∈ (S : Set (HeightOneSpectrum (𝓞 K)))`. Introduce `v hv`. Rewrite `hv` using `[Nat.cast_pow]`.
+
+Conclude with `Finset.mem_coe.2 (hS v (v.isPrime.mem_of_pow_mem r hv))`. Establish `hK : Odd (l ^ r) ∨ IsTotallyComplex K` using `hl.imp (fun h => ((Fact.out : l.Prime).odd_of_ne_two h).pow) id`. Establish `hDZ : Nonempty (gsRoots (K` using `(toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r) ≃+ ZMod (l ^ r)) := nonempty_addEquiv_gsRoots_of_mem (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) hSN`. Use `haveI : Finite (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) := Finite.of_equiv _ hDZ.some.symm.toEquiv`. Use `haveI hFA : Finite A := Finite.of_equiv M eM.toEquiv`.
+
+Establish `htor : ∀ m : A, (l ^ r) • m = 0` using `fun m => by`. Take `⟨x, rfl⟩` from `eM.surjective m`. Rewrite using `[← map_nsmul, ← Nat.cast_smul_eq_nsmul (ZMod (l ^ r)), ZMod.natCast_self, zero_smul, map_zero]`. Establish `htor1 : ∀ f : dualRep (gsRoots (K` using `(toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A, (l ^ r) • f = 0 := nsmul_dualRep_eq_zero (fun d => nsmul_gsRoots (K := (toFS K)) _ _ d)`. Use `haveI hDd : IsDiscreteRep (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A) := isDiscreteRep_dualRep _ _`.
+
+Use `haveI hF1 : Finite (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A) := finite_dualRep' _ _`. Use `haveI hDDd : IsDiscreteRep (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A)) := isDiscreteRep_dualRep _ _`. Take `⟨eB, hB⟩` from `bidualCmp (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A (l ^ r) hDZ htor`. Establish `hM'' : ∀ g m, (eM.trans eB) (ρ g m) = (dualRep (gsRoots (K` using `(toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A)).ρ (e g) ((eM.trans eB) m) := by`. Introduce `g m`.
+
+Simplify using `only [AddEquiv.trans_apply, hM, hB]`. Establish `X1 : Nonempty (Sha1 (twDual μ ρ) (locFam S Av) (continuous_locFam S Av) ≃+ ptSha (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs) (dualRep (gsRoots (K` using `(toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A) 1) := (shaIso_of_rep K S Av e ιs ev hevc hev (twDual μ ρ) hc' (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A) eD hD).1`. Establish `X2 : Nonempty (Sha2 ρ (locFam S Av) (continuous_locFam S Av) ≃+ ptSha (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs) (dualRep (gsRoots (K` using `(toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A)) 2) := (shaIso_of_rep K S Av e ιs ev hevc hev ρ hρ (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) (dualRep (gsR …`. Establish `X3 : Nonempty (Sha1 ρ (locFam S Av) (continuous_locFam S Av) ≃+ ptSha (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs) A 1)` using `(shaIso_of_rep K S Av e ιs ev hevc hev ρ hρ A eM hM).1`. Establish `X4 : Nonempty (Sha2 (twDual μ ρ) (locFam S Av) (continuous_locFam S Av) ≃+ ptSha (gsFinFamily (S : Set (HeightOneSpectrum (𝓞 K))) ιs) (dualRep (gsRoots (K` using `(toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A) 2) := (shaIso_of_rep K S Av e ιs ev hevc hev (twDual μ ρ) hc' (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A) eD hD).2`.
+
+Use `⟨⟨(toFS K), (S : Set (HeightOneSpectrum (𝓞 K))), inferInstance, ιs, l ^ r, inferInstance, hSN, hK, (dualRep (gsRoots (K := (toFS K)) (S : Set (HeightOneSpectrum (𝓞 K))) (l ^ r)) A), hDd, hF1, htor1, ?_, ?_⟩, ⟨(toFS K), (S : Set (HeightOneSpectrum (𝓞 K))), inferInstance, ιs, l ^ r …` and prove the remaining obligations. Conclude with `X1`. Conclude with `X2`. Conclude with `X3`. Conclude with `X4`.
+-/
 theorem shaDictFS : ShaDictFS := by
   intro K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ
   haveI : NeZero (l ^ r) := ⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩
@@ -74,6 +92,9 @@ theorem shaDictFS : ShaDictFS := by
   · exact X3
   · exact X4
 
+/- English proof (translation)
+The claim follows from `shaCmpFS_of_dict shaDictFS`.
+-/
 theorem shaCmpFS' : ShaCmpFS := shaCmpFS_of_dict shaDictFS
 
 end PositivityTheory.Lit1.PTN

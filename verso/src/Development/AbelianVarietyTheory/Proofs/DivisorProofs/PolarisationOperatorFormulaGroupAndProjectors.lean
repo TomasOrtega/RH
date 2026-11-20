@@ -12,6 +12,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 
 namespace GlobalTheory.PolarFormula
 
+/- English proof (translation)
+Establish `h2 : ∑ c', Finsupp.weight (rowW N N) d c' = ∑ s, Finsupp.weight (colW N N) d s`. Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, Pi.add_apply, Finset.sum_add_distrib, hf, hg]`. Consider the case `single v k => simp [Finsupp.weight_apply, rowW, colW, Finsupp.sum_single_index, Pi.single_apply]`.
+
+Conclude with `(Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)).trans h2.le`.
+-/
 theorem weight_rowW_le_colSum {N : ℕ} (d : Fin N × Fin N →₀ ℕ) (c : Fin N) :
     Finsupp.weight (rowW N N) d c ≤ ∑ s, Finsupp.weight (colW N N) d s := by
   classical
@@ -22,6 +27,13 @@ theorem weight_rowW_le_colSum {N : ℕ} (d : Fin N × Fin N →₀ ℕ) (c : Fin
     | single v k => simp [Finsupp.weight_apply, rowW, colW, Finsupp.sum_single_index, Pi.single_apply]
   exact (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ c)).trans h2.le
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_sum]`. Repeatedly rewrite using `[coeff_weightedHomogeneousComponent]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Rewrite using `[Fintype.mem_piFinset]`. Introduce `c`.
+
+Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`. Establish `e` using `hf (Ne.symm hne)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_rowComp {O : Type} [CommRing O] {N : ℕ} (ν : Fin N → ℕ) (M : ℕ) (hM : ∑ s, ν s ≤ M)
     (f : MvPolynomial (Fin N × Fin N) O) (hf : IsWeightedHomogeneous (colW N N) f ν) :
     ∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)),
@@ -43,6 +55,15 @@ theorem sum_rowComp {O : Type} [CommRing O] {N : ℕ} (ν : Fin N → ℕ) (M : 
       _ = ∑ s, ν s := by rw [e]
       _ ≤ M := hM
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Distinguish the cases in `hd : coeff d h = 0`. Apply the tactic sequence `split_ifs <;> simp [hd]`. Establish `e` using `hh hd`.
+
+Establish `key : Finsupp.weight (rowW N N) d = w ↔ (fun c => (w c : ℤ)) = H`. Rewrite using `[← e]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Use function extensionality and compare the values at `c`.
+
+Rewrite using `[GlobalTheory.LvT.KerLat.weight_rowZ, hw]`. Introduce `hw`. Use function extensionality and compare the values at `c`. Use `congrFun hw c` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LvT.KerLat.weight_rowZ]`.
+
+Conclude with `this.symm` after adjusting the coercions. Distinguish the cases in `hw : (fun c => (w c : ℤ)) = H`. Rewrite using `[if_pos (key.mpr hw), if_pos hw]`. Rewrite using `[if_neg (mt key.mp hw), if_neg hw, coeff_zero]`.
+-/
 theorem comp_of_rowZ {O : Type} [CommRing O] {N : ℕ} (H : Fin N → ℤ) (h : MvPolynomial (Fin N × Fin N) O)
     (hh : IsWeightedHomogeneous (GlobalTheory.LvT.KerLat.rowZ N N) h H) (w : Fin N → ℕ) :
     weightedHomogeneousComponent (rowW N N) w h = if (fun c => (w c : ℤ)) = H then h else 0 := by
@@ -64,6 +85,11 @@ theorem comp_of_rowZ {O : Type} [CommRing O] {N : ℕ} (H : Fin N → ℤ) (h : 
     · rw [if_pos (key.mpr hw), if_pos hw]
     · rw [if_neg (mt key.mp hw), if_neg hw, coeff_zero]
 
+/- English proof (translation)
+Use extensionality with `d`. Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hd`. Establish `e` using `congrFun (hh hd) c`. Rewrite `e` using `[GlobalTheory.LvT.KerLat.weight_rowZ]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_rowZ_neg {O : Type} [CommRing O] {N : ℕ} (H : Fin N → ℤ) (h : MvPolynomial (Fin N × Fin N) O)
     (hh : IsWeightedHomogeneous (GlobalTheory.LvT.KerLat.rowZ N N) h H) (c : Fin N) (hc : H c < 0) : h = 0 := by
   ext d
@@ -73,6 +99,9 @@ theorem eq_zero_of_rowZ_neg {O : Type} [CommRing O] {N : ℕ} (H : Fin N → ℤ
   rw [GlobalTheory.LvT.KerLat.weight_rowZ] at e
   omega
 
+/- English proof (translation)
+Introduce `d hd`. Use function extensionality and compare the values at `c`. Rewrite using `[GlobalTheory.LvT.KerLat.weight_rowZ, hh hd]`.
+-/
 theorem rowZ_of_rowW {O : Type} [CommRing O] {N : ℕ} (w : Fin N → ℕ) (h : MvPolynomial (Fin N × Fin N) O)
     (hh : IsWeightedHomogeneous (rowW N N) h w) :
     IsWeightedHomogeneous (GlobalTheory.LvT.KerLat.rowZ N N) h (fun c => (w c : ℤ)) := by
@@ -80,6 +109,11 @@ theorem rowZ_of_rowW {O : Type} [CommRing O] {N : ℕ} (w : Fin N → ℕ) (h : 
   funext c
   rw [GlobalTheory.LvT.KerLat.weight_rowZ, hh hd]
 
+/- English proof (translation)
+Establish `e : (rowAct O (n` using `N) (Matrix.transvection b a (1 : O))).toRingHom = (Polynomial.evalRingHom (1 : MvPolynomial (Fin N × Fin N) O)).comp (rowGen O a b).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowAct, rowGen]`. Introduce `v`.
+
+Simplify using `[rowAct, rowGen, Matrix.transvection, Matrix.one_apply, Matrix.single_apply, Finset.sum_add_distrib, add_mul, ite_and]`. Distinguish the cases in `hv : v.1 = b`. Simplify using `[hv]`. Simplify using `[hv, Ne.symm hv]`. Conclude with `congrArg (fun φ : MvPolynomial (Fin N × Fin N) O →+* MvPolynomial (Fin N × Fin N) O => φ f) e`.
+-/
 theorem rowAct_transvection {O : Type} [CommRing O] {N : ℕ} (a b : Fin N) (f : MvPolynomial (Fin N × Fin N) O) :
     rowAct O (n := N) (Matrix.transvection b a (1 : O)) f = (rowGen O a b f).eval 1 := by
   have e : (rowAct O (n := N) (Matrix.transvection b a (1 : O))).toRingHom =
@@ -98,6 +132,19 @@ end GlobalTheory.PolarFormula
 
 namespace GlobalTheory.PolarFormula
 
+/- English proof (translation)
+Establish `hZ` using `rowZ_of_rowW w h hh`. Rewrite using `[rowAct_transvection, Polynomial.eval_eq_sum_range' (n := (rowGen O a b h).natDegree + 2) (by omega)]`. Simplify using `only [one_pow, mul_one, map_sum]`. Establish `hk : ∀ k ∈ Finset.range ((rowGen O a b h).natDegree + 2), weightedHomogeneousComponent (rowW N N) (w + Pi.single a 1 - Pi.single b 1) ((rowGen O a b h).coeff k) = if k = 1 then rowDiv O a b 1 h else 0`. Introduce `k _`.
+
+Establish `hs` using `GlobalTheory.LvT.KerLat.rowDiv_shift O _ a b k h hZ`. Express the relevant statement in the definitionally equal form `weightedHomogeneousComponent _ _ (rowDiv O a b k h) = _`. Rewrite using `[comp_of_rowZ _ _ hs]`. Distinguish the cases in `hk1 : k = 1`. Substitute `hk1` using the available equality.
+
+Distinguish the cases in `hb : 1 ≤ w b`. Rewrite using `[if_pos, if_pos rfl]`. Use function extensionality and compare the values at `c`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.single_apply]`. Distinguish the cases in `hca : c = a`.
+
+Substitute `hca` using the available equality. Simplify using `[hab]`. Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality. Simplify using `[hca]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[hca, hcb]`. Establish `h0 : rowDiv O a b 1 h = 0` using `eq_zero_of_rowZ_neg _ _ hs b (by simp [Pi.single_apply, Ne.symm hab]; omega)`. Simplify using `[h0]`. Rewrite using `[if_neg hk1, if_neg]`.
+
+Introduce `he`. Use `congrFun he a` as an intermediate fact. Simplify using `[Pi.single_apply, hab] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl hk, Finset.sum_ite_eq', if_pos (by simp)]`.
+-/
 theorem comp_rowAct_transvection {O : Type} [CommRing O] {N : ℕ} (a b : Fin N) (hab : a ≠ b) (w : Fin N → ℕ)
     (h : MvPolynomial (Fin N × Fin N) O) (hh : IsWeightedHomogeneous (rowW N N) h w) :
     weightedHomogeneousComponent (rowW N N) (w + Pi.single a 1 - Pi.single b 1)
@@ -140,6 +187,27 @@ namespace GlobalTheory.PolarFormula
 
 open Formalism.CohomologicalDescent.DepthNonnegative GlobalTheory.ExpFrame Formalism.CohomologicalDescent.LD GlobalTheory.CapelliLink
 
+/- English proof (translation)
+Introduce `O _ N ι _ _ τ M a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Use `⟨∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)), (w a : O) • FreeAlgebra.ι O (Sum.inr (τ, w)), ?_⟩` and prove the remaining obligations. Introduce `lam P _ hP hM x`.
+
+Use `⟨⟨rowDiv O a a 1 (x τ), Formalism.GradedWeylDivisibility.rowDivStable O N N _ a a 1 _ (x τ).2⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hcol` using `((rowdiv_mem_dualWeyl_iff O N N _ _).mp (x τ).2).1`. Set `cmp : (Fin N → ℕ) → dualWeyl O N N (res N (lam τ))` to `fun w => ⟨weightedHomogeneousComponent (rowW N N) w (x τ : MvPolynomial (Fin N × Fin N) O), Formalism.GradedWeylDivisibility.dualWeylRowGraded O N N _ w _ (x τ).2⟩`. Establish `hPx : ∀ w, P τ w (PiTensorProduct.tprod O x) = PiTensorProduct.tprod O (Function.update x τ (cmp w))` using `fun w => hP τ w x (cmp w) rfl`. Simplify using `only [evalE, map_sum, map_smul, FreeAlgebra.lift_ι_apply, Sum.elim_inr, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, hPx]`.
+
+Repeatedly rewrite using `[← MultilinearMap.map_update_smul]`. Rewrite using `[← MultilinearMap.map_update_sum]`. Use `congr 2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`.
+
+Use `conv_rhs => rw [← sum_rowComp _ M hM _ hcol]`. Rewrite using `[show rowDiv O a a 1 (∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)), weightedHomogeneousComponent (rowW N N) w (x τ : MvPolynomial (Fin N × Fin N) O)) = rowDivL O a a 1 (∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)), weightedHomogeneousComponent …`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[rowDivL_apply, (GlobalTheory.ValCmp.rowDiv_rowWeight O N N w _ (weightedHomogeneousComponent_isWeightedHomogeneous _ _)).2 a 1, Nat.choose_one_right, Nat.cast_smul_eq_nsmul]`. Set `gt : GL (Fin N) O` to `⟨Matrix.transvection b a (-1), Matrix.transvection b a 1, by rw [Matrix.transvection_mul_transvection_same b a (Ne.symm hab)]; simp, by rw [Matrix.transvection_mul_transvection_same b a (Ne.symm hab)]; simp⟩`.
+
+Set `g : ι → GL (Fin N) O` to `Pi.mulSingle τ gt`. Use `⟨∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)), FreeAlgebra.ι O (Sum.inr (τ, w + Pi.single a 1 - Pi.single b 1)) * FreeAlgebra.ι O (Sum.inl g) * FreeAlgebra.ι O (Sum.inr (τ, w)), ?_⟩` and prove the remaining obligations. Introduce `lam P _ hP hM x`. Use `⟨⟨rowDiv O a b 1 (x τ), Formalism.GradedWeylDivisibility.rowDivStable O N N _ a b 1 _ (x τ).2⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hcol` using `((rowdiv_mem_dualWeyl_iff O N N _ _).mp (x τ).2).1`.
+
+Set `cmp : (Fin N → ℕ) → dualWeyl O N N (res N (lam τ)) → dualWeyl O N N (res N (lam τ))` to `fun w v => ⟨weightedHomogeneousComponent (rowW N N) w (v : MvPolynomial (Fin N × Fin N) O), Formalism.GradedWeylDivisibility.dualWeylRowGraded O N N _ w _ v.2⟩`. Establish `hPz : ∀ w (z : ∀ σ, dualWeyl O N N (res N (lam σ))), P τ w (PiTensorProduct.tprod O z) = PiTensorProduct.tprod O (Function.update z τ (cmp w (z τ)))` using `fun w z => hP τ w z (cmp w (z τ)) rfl`. Establish `hg : ∀ z : ∀ σ, dualWeyl O N N (res N (lam σ)), grp O N lam g (PiTensorProduct.tprod O z) = PiTensorProduct.tprod O (Function.update z τ (Formalism.UG.dualWeylRep O N N _ gt (z τ)))`. Introduce `z`. Unfold `grp`.
+
+Rewrite using `[(Formalism.CohomologicalDescent.RealLocalDeltaNabla.nabla_rep_tensor_product O ι (fun _ => N) (fun _ => N) (fun σ => res N (lam σ)) g z).1]`. Use `congr 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+
+Simplify using `[g]`. Simplify using `[g, hσ, Pi.mulSingle_eq_of_ne hσ]`. Simplify using `only [evalE, map_sum, map_mul, FreeAlgebra.lift_ι_apply, Sum.elim_inr, Sum.elim_inl, LinearMap.sum_apply, Finset.sum_apply, Module.End.mul_apply, hPz, hg, Function.update_self, Function.update_idem]`. Rewrite using `[← MultilinearMap.map_update_sum]`. Use `congr 2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum]`. Use `conv_rhs => rw [← sum_rowComp _ M hM _ hcol]`. Rewrite using `[show rowDiv O a b 1 (∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)), weightedHomogeneousComponent (rowW N N) w (x τ : MvPolynomial (Fin N × Fin N) O)) = rowDivL O a b 1 (∑ w ∈ Fintype.piFinset (fun _ : Fin N => Finset.range (M + 1)), weightedHomogeneousComponent …`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[rowDivL_apply]`. Conclude with `comp_rowAct_transvection a b hab w _ (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`.
+-/
 theorem polar_formula : ∀ (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (τ : ι) (M : ℕ) (a b : Fin N), ∃ F : FreeAlgebra O (Letter O N ι), ∀ (lam : ι → ℕ → ℕ) (P : ι → (Fin N → ℕ) → Module.End O (NablaT O N lam)), (∀ σ, Antitone (res N (lam σ))) → (∀ σ w, IsProj O N lam σ w (P σ w)) → ∑ c : Fin N, lam τ c ≤ M → ∀ x : ∀ σ, Formalism.GradedWeylDivisibility.dualWeyl O N N (res N (lam σ)), ∃ y : Formalism.GradedWeylDivisibility.dualWeyl O N N (res N (lam τ)), (y : MvPolynomial (Fin N × Fin N) O) = Formalism.GradedWeylDivisibility.rowDiv O a b 1 (x τ : MvPolynomial (Fin N × Fin N) O) ∧ evalE O N lam P F (PiTensorProduct.tprod O x) = PiTensorProduct.tprod O (Function.update x τ y) := by
   intro O _ N ι _ _ τ M a b
   by_cases hab : a = b

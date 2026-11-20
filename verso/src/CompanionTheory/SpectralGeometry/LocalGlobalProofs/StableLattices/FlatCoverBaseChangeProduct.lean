@@ -8,6 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.RigDesc
 
+/- English proof (translation)
+Establish `hX : IsPullback (fst A X).left (snd A X).left A.hom X.hom`. Simplify `IsPullback.of_hasPullback A.hom X.hom` using `only [Over.fst_left, Over.snd_left]`. Establish `hY : IsPullback (fst A Y).left (snd A Y).left A.hom Y.hom`. Simplify `IsPullback.of_hasPullback A.hom Y.hom` using `only [Over.fst_left, Over.snd_left]`. Establish `e₁ : (lift (fst A X) (snd A X ≫ q)).left ≫ (fst A Y).left = (fst A X).left`.
+
+Rewrite using `[← Over.comp_left, lift_fst]`. Establish `e₂ : (lift (fst A X) (snd A X ≫ q)).left ≫ (snd A Y).left = (snd A X).left ≫ q.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `hout : IsPullback ((lift (fst A X) (snd A X ≫ q)).left ≫ (fst A Y).left) (snd A X).left A.hom (q.left ≫ Y.hom)`. Rewrite using `[e₁, Over.w q]`.
+
+Conclude with `hX`. Conclude with `(IsPullback.of_right hout e₂ hY).flip`.
+-/
 theorem isPullback_snd_lift_fst_snd_comp {S : Scheme.{0}} (A X Y : Over S) (q : X ⟶ Y) :
     IsPullback (snd A X).left (lift (fst A X) (snd A X ≫ q)).left q.left (snd A Y).left := by
   have hX : IsPullback (fst A X).left (snd A X).left A.hom X.hom := by
@@ -24,6 +31,9 @@ theorem isPullback_snd_lift_fst_snd_comp {S : Scheme.{0}} (A X Y : Over S) (q : 
     exact hX
   exact (IsPullback.of_right hout e₂ hY).flip
 
+/- English proof (translation)
+Introduce `S A X Y _ _ q hf hl hs`. Establish `h` using `isPullback_snd_lift_fst_snd_comp A X Y q`. Conclude with `⟨MorphismProperty.of_isPullback (P := @Flat) h hf, MorphismProperty.of_isPullback (P := @LocallyOfFinitePresentation) h hl, MorphismProperty.of_isPullback (P := @Surjective) h hs⟩`.
+-/
 theorem lift_fst_snd_comp_flat_lfp_surjective :
     ∀ (S : Scheme.{0}) (A X Y : Over S) [GrpObj A], IsAbelianScheme A → ∀ q : X ⟶ Y, Flat q.left →
     LocallyOfFinitePresentation q.left → Surjective q.left →

@@ -9,6 +9,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm n J hJ hdet v sp hsig hdiag`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `L y`. Use `⟨fun hy => ⟨⟨y, hy, fun _ => rfl⟩, y, hy, fun _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨y₁, h₁, e₁⟩, y₂, h₂, e₂⟩`.
+
+Establish `hint : ∀ x, x ∈ intV E v ↔ (sp x).1 ∈ v.adicCompletionIntegers F ∧ (sp x).2 ∈ v.adicCompletionIntegers F` using `split_integral_local F E v sp hdiag`. Establish `ha : sp.symm (1, 0) ∈ intV E v`. Rewrite using `[hint, sp.apply_symm_apply]`. Conclude with `⟨one_mem _, zero_mem _⟩`. Establish `hb : sp.symm (0, 1) ∈ intV E v`.
+
+Rewrite using `[hint, sp.apply_symm_apply]`. Conclude with `⟨zero_mem _, one_mem _⟩`. Establish `hm` using `(loc v L).add_mem ((loc v L).smul_mem ⟨_, ha⟩ h₁) ((loc v L).smul_mem ⟨_, hb⟩ h₂)`. Establish `hy : y = (⟨_, ha⟩ : intV E v) • y₁ + (⟨_, hb⟩ : intV E v) • y₂`. Use function extensionality and compare the values at `b`.
+
+Apply `sp.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sp (y b) = sp (sp.symm (1, 0) * y₁ b + sp.symm (0, 1) * y₂ b)`. Rewrite using `[map_add, map_mul, map_mul, sp.apply_symm_apply, sp.apply_symm_apply]`. Use `ext`. Simplify using `[e₁ b]`.
+
+Simplify using `[e₂ b]`. Rewrite using `[hy]`. Conclude with `hm`. Introduce `g`. Take `⟨e, he⟩` from `Formalism.L2.G.exists_locGL cm.sig J hJ (isUnit_iff_ne_zero.2 hdet) _ sp hsig`.
+
+Use `⟨e.symm g, ?_, fun h hh => ?_⟩` and prove the remaining obligations. Conclude with `(he _).symm.trans (e.apply_symm_apply g)`. Rewrite using `[MulEquiv.eq_symm_apply]`. Conclude with `(he _).trans hh`. Introduce `x y`.
+
+Unfold `hR hform`. Rewrite using `[map_sum, Prod.fst_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Prod.fst_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hsig]`. Both sides reduce to the same expression.
+-/
 theorem split_components :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (v : HeightOneSpectrum (𝓞 F)) (sp : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ x, sp (sigR cm.sig (v.adicCompletion F) x) = swapR _ (sp x)) → (∀ a : v.adicCompletion F, sp ((1 : E) ⊗ₜ[F] a) = (a, a)) → (∀ (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E ⊗[F] v.adicCompletion F), y ∈ loc v L ↔ (∃ y₁ ∈ loc v L, ∀ b, (sp (y₁ b)).1 = (sp (y b)).1) ∧ ∃ y₂ ∈ loc v L, ∀ b, (sp (y₂ b)).2 = (sp (y b)).2) ∧ (∀ g : GL (Fin n) (v.adicCompletion F), ∃! h : UPts cm.sig J (v.adicCompletion F), bc ((RingHom.fst _ _).comp sp.toRingHom) h.1 = g) ∧ ∀ x y : Fin n → E ⊗[F] v.adicCompletion F, (sp (hR cm.sig J (v.adicCompletion F) x y)).1 = ∑ i, ∑ j, (sp (x i)).2 * (sp (inclE (F := F) (v.adicCompletion F) (J i j))).1 * (sp (y j)).1 := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet v sp hsig hdiag

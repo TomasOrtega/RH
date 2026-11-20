@@ -8,6 +8,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_away_factor_coefSpecMap | exact GlobalTheory.exists_away_factor_coefSpecMap | (intros; apply GlobalTheory.exists_away_factor_coefSpecMap <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_section_of_coefficient_spec : ∀ (M : Scheme.{0}) (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] (b : Sp R ⟶ M)
     (W : M.Opens) (hW : IsAffineOpen W) (x : Sp R), b x ∈ W →
     ∃ (f : R) (_ : f ∉ x.asIdeal) (g : R₀ ⊗[ℤ] Γ(M, W) →ₐ[R₀] Localization.Away f),

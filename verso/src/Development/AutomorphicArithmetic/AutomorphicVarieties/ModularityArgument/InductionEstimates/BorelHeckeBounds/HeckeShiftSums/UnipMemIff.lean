@@ -16,6 +16,11 @@ section
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => unipOne_mem_rationalGLOne r ⟨Y, h⟩⟩` and prove the remaining obligations. Take `⟨g, hg⟩ : (unipGL Y : AdelicGLn.AdelicGL K n) ∈ AdelicGLn.rationalGL K n` from `h`. Use `⟨fun p => (g : Matrix (Fin n) (Fin n) K) p.1.1 p.1.2, funext fun p => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun x : AdelicGLn.AdelicGL K n => (x : Matrix (Fin n) (Fin n) 𝔸[K]) p.1.1 p.1.2) hg`. Establish `hne : p.1.1 ≠ p.1.2` using `fun e => by`.
+
+Use `p.2` as an intermediate fact. Rewrite `this` using `[e]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [AdelicGLn.diagonal_apply, coe_unipGL, unipMatrix, Matrix.add_apply, blockEntry_apply, dif_pos p.2, Matrix.one_apply_ne hne, zero_add] at h1`. Conclude with `h1`.
+-/
 private theorem unip_mem_iff {n r : ℕ} (Y : UPos n r → 𝔸[K]) :
     unipOne K n r Y ∈ Gam K n ↔ Y ∈ unipLattice K n r := by
   refine ⟨fun h => ?_, fun h => unipOne_mem_rationalGLOne r ⟨Y, h⟩⟩
@@ -30,6 +35,11 @@ private theorem unip_mem_iff {n r : ℕ} (Y : UPos n r → 𝔸[K]) :
     Matrix.one_apply_ne hne, zero_add] at h1
   exact h1
 
+/- English proof (translation)
+Unfold `ct`. Establish `h : ∀ X, unipOne K n r X * (unipOne K n r Y * z) = unipOne K n r (X + Y) * z`. Introduce `X`. Rewrite using `[unipOne_add, mul_assoc]`. Repeatedly rewrite using `[h]`.
+
+Use `setIntegral_add_right_of_periodic isAddFundamentalDomain_unipFundamentalDomain (h := fun X => ψ (unipOne K n r X * z)) (fun ξ hξ s => ?_) Y` and prove the remaining obligations. Use `show ψ (unipOne K n r (ξ + s) * z) = ψ (unipOne K n r s * z)`. Rewrite using `[unipOne_add, mul_assoc, hψ _ (unipOne_mem_rationalGLOne r ⟨ξ, hξ⟩)]`.
+-/
 private theorem ct_unip {n r : ℕ} {ψ : G1 K n → ℂ} (hψ : ∀ γ ∈ Gam K n, ∀ x, ψ (γ * x) = ψ x)
     (Y : UPos n r → 𝔸[K]) (z : G1 K n) : ct r ψ (unipOne K n r Y * z) = ct r ψ z := by
   unfold ct
@@ -42,6 +52,15 @@ private theorem ct_unip {n r : ℕ} {ψ : G1 K n → ℂ} (hψ : ∀ γ ∈ Gam 
   show ψ (unipOne K n r (ξ + s) * z) = ψ (unipOne K n r s * z)
   rw [unipOne_add, mul_assoc, hψ _ (unipOne_mem_rationalGLOne r ⟨ξ, hξ⟩)]
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `adMeas γ₁ γ₂ 0`. Establish `hlat : ∀ X, e X ∈ unipLattice K (2 + 2) 2 ↔ X ∈ unipLattice K (2 + 2) 2`. Introduce `X`. Rewrite using `[← unip_mem_iff, ← unip_mem_iff]`. Establish `h : unipOne K (2 + 2) 2 (e X) = (lv γ₁ γ₂ 0)⁻¹ * unipOne K (2 + 2) 2 X * lv γ₁ γ₂ 0`.
+
+Rewrite using `[mul_assoc, he X, inv_mul_cancel_left]`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `h'`. Establish `h2` using `mul_mem (mul_mem hl h') (inv_mem hl)`.
+
+Simplify `h2` using `[mul_assoc]`. Conclude with `fun h' => mul_mem (mul_mem (inv_mem hl) h') hl`. Establish `key` using `UpperTheory.integral_unipFundamentalDomain_comp_lattice_preserving K (2 + 2) 2 e hlat (fun X => ψ (unipOne K (2 + 2) 2 X * z)) (fun ξ hξ X => by show ψ (unipOne K (2 + 2) 2 (ξ + X) * z) = ψ (unipOne K (2 + 2) 2 X * z)`. Rewrite using `[unipOne_add, mul_assoc, hψ _ (unipOne_mem_rationalGLOne 2 ⟨ξ, hξ⟩)])`. Unfold `ct`.
+
+Rewrite using `[← key]`. Use `integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `show ψ (unipOne K (2 + 2) 2 X * (lv γ₁ γ₂ 0 * z)) = ψ (unipOne K (2 + 2) 2 (e X) * z)`. Rewrite using `[← mul_assoc, he X, mul_assoc, hψ _ hl]`.
+-/
 private theorem ct_levi {ψ : G1 K (2 + 2) → ℂ} (hψ : ∀ γ ∈ Gam K (2 + 2), ∀ x, ψ (γ * x) = ψ x)
     (γ₁ γ₂ : G1 K 2) (hl : lv γ₁ γ₂ 0 ∈ Gam K (2 + 2)) (z : G1 K (2 + 2)) :
     ct 2 ψ (lv γ₁ γ₂ 0 * z) = ct 2 ψ z := by
@@ -66,6 +85,15 @@ private theorem ct_levi {ψ : G1 K (2 + 2) → ℂ} (hψ : ∀ γ ∈ Gam K (2 +
   show ψ (unipOne K (2 + 2) 2 X * (lv γ₁ γ₂ 0 * z)) = ψ (unipOne K (2 + 2) 2 (e X) * z)
   rw [← mul_assoc, he X, mul_assoc, hψ _ hl]
 
+/- English proof (translation)
+Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Establish `hk` using `kvCont K n μ a`. Establish `hj : Continuous fun p : (UPos n r → 𝔸[K]) × G1 K n => kv μ a (unipOne K n r p.1 * p.2)` using `hk.comp (continuous_unipOne_mul r)`. Establish `hint : ∀ z, IntegrableOn (fun X => kv μ a (unipOne K n r X * z)) (unipFundamentalDomain K n r) (unipMeasure K n r)` using `fun z => ((hj.comp (continuous_id.prodMk continuous_const)).continuousOn.integrableOn_compact hC).mono_set hDC`. Use `haveI : IsFiniteMeasure ((unipMeasure K n r).restrict (unipFundamentalDomain K n r)) := ⟨by rw [Measure.restrict_apply_univ]; exact (measure_mono hDC).trans_lt hC.measure_lt_top⟩`.
+
+Use `⟨fun z => ∫ X in unipFundamentalDomain K n r, kv μ a (unipOne K n r X * z) ∂unipMeasure K n r, ?_, fun φ z => ?_⟩` and prove the remaining obligations. Use `haveI : SecondCountableTopology (G1 K n) := inferInstance haveI : FirstCountableTopology (G1 K n) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Use `continuous_iff_continuousAt.2 fun z₀ => ?_` and prove the remaining obligations. Take `⟨V, hVc, hV⟩` from `exists_compact_mem_nhds z₀`. Take `⟨M, hM⟩` from `(hC.prod hVc).exists_bound_of_continuousOn hj.continuousOn`.
+
+Use `continuousAt_of_dominated (bound := fun _ => M) (Eventually.of_forall fun z => (hint z).aestronglyMeasurable) ?_ (integrable_const M) ?_` and prove the remaining obligations. Use `filter_upwards [hV] with z hz`. Conclude with `(ae_restrict_iff' measurableSet_unipFundamentalDomain).2 (Eventually.of_forall fun X hX => hM (X, z) ⟨hDC hX, hz⟩)`. Conclude with `Eventually.of_forall fun X => (hk.comp (continuous_const_mul _)).continuousAt`. Use `show ⟪∫ X in unipFundamentalDomain K n r, kv μ a (unipOne K n r X * z) ∂unipMeasure K n r, φ⟫_ℂ = ∫ X in unipFundamentalDomain K n r, rc μ a φ (unipOne K n r X * z) ∂unipMeasure K n r`.
+
+Rewrite using `[← inner_conj_symm, ← integral_inner (hint z) φ, ← integral_conj]`. Use `integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `show conj ⟪φ, kv μ a (unipOne K n r X * z)⟫_ℂ = _`. Rewrite using `[inner_conj_symm, inner_kv]`.
+-/
 private theorem kc_ex {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (a : CC K n) (r : ℕ) :
     ∃ kc : G1 K n → L2 μ, Continuous kc ∧ ∀ φ z, ⟪kc z, φ⟫_ℂ = ct r (rc μ a φ) z := by
   obtain ⟨C, hC, hDC⟩ := exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)
@@ -99,6 +127,13 @@ private theorem kc_ex {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (a : 
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ μ _ a`. Use `⟨fun r => kc_ex μ a r, fun φ => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ γ ∈ Gam K (2 + 2), ∀ x, rc μ a φ (γ * x) = rc μ a φ x` using `fun γ hγ x => rconv_mul_left (Gam K (2 + 2)) μ a φ hγ x`. Use `⟨continuous_rconv (Gam K (2 + 2)) μ a φ, ?_, hinv, fun γ hγ z => ?_, fun X z => ct_unip hinv X z⟩` and prove the remaining obligations. Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := 2 + 2) μ filter_upwards [(quasiMeasurePreserving_mk (Gam K (2 + 2)) μ).ae (integrated_ae_eq_rconvQ (Gam K (2 + 2)) μ a φ)] with y hy` as an intermediate fact.
+
+Conclude with `hy`. Take `⟨ξ, γ₁, γ₂, rfl⟩` from `(pkLaws (K := K)).2.1 γ |>.1 hγ`. Establish `hγG : nn ξ.1 * lv (γ₁ : G1 K 2) (γ₂ : G1 K 2) 0 ∈ Gam K (2 + 2)`. Take `⟨g, -, hg⟩` from `hγ`. Rewrite using `[← hg]`.
+
+Conclude with `g.2`. Establish `hl : lv (γ₁ : G1 K 2) (γ₂ : G1 K 2) 0 ∈ Gam K (2 + 2)`. Establish `h2` using `mul_mem (inv_mem (unipOne_mem_rationalGLOne 2 ξ)) hγG`. Simplify using `using h2`. Rewrite using `[mul_assoc, ct_unip hinv, ct_levi hinv _ _ hl]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ctKv :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (a : CC K (2 + 2)), (∀ r, ∃ kc : G1 K (2 + 2) → L2 μ, Continuous kc ∧ ∀ φ z, ⟪kc z, φ⟫_ℂ = ct r (rc μ a φ) z) ∧
       ∀ φ : L2 μ, Continuous (rc μ a φ) ∧ Reps μ (Rop μ a φ) (rc μ a φ) ∧ (∀ γ ∈ Gam K (2 + 2), ∀ x, rc μ a φ (γ * x) = rc μ a φ x) ∧

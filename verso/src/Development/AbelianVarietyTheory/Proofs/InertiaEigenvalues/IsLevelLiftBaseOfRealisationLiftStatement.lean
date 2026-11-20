@@ -10,6 +10,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwistLiftW.isLevelLift_base_of_realisation_lift | exact GlobalTheory.TwistLiftW.isLevelLift_base_of_realisation_lift | (intros; apply GlobalTheory.TwistLiftW.isLevelLift_base_of_realisation_lift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isLevelLift_of_isLevelLift_realisation : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
     (g : X.Γ) (κ : GA D (Wc D j)),
     Lev.IsLevelLift (Wc D j) (X.R.βW j) (X.R.datWp j X.R.triv) (X.R.eG g) κ →

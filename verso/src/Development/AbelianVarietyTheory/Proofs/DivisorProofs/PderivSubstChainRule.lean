@@ -11,6 +11,11 @@ namespace GlobalTheory.PSChain
 
 open scoped MvPowerSeries.WithPiTopology in
 
+/- English proof (translation)
+Apply `continuous_pi` to reduce the goal to its premises. Introduce `n`. Establish `e : (fun f : MvPowerSeries σ R => (pderiv R i f) n) = (fun r : R => r * (n i + 1)) ∘ (fun f : MvPowerSeries σ R => coeff (n + Finsupp.single i 1) f)`. Use function extensionality and compare the values at `f`. Conclude with `coeff_pderiv f n`.
+
+Rewrite using `[e]`. Conclude with `continuous_of_discreteTopology.comp (MvPowerSeries.WithPiTopology.continuous_coeff R _)`.
+-/
 theorem continuous_pderiv_discrete {σ R : Type} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
     (i : σ) : Continuous (fun f : MvPowerSeries σ R => pderiv R i f) := by
   classical
@@ -25,6 +30,23 @@ theorem continuous_pderiv_discrete {σ R : Type} [CommRing R] [TopologicalSpace 
 
 open scoped MvPowerSeries.WithPiTopology in
 
+/- English proof (translation)
+Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero ha0`. Set `_ : UniformSpace R` to `⊥`. Establish `_ : DiscreteUniformity R` using `⟨rfl⟩`. Establish `hcs : Continuous (subst a : MvPowerSeries σ R → MvPowerSeries τ R)` using `continuous_subst ha`. Establish `hs0 : subst a (0 : MvPowerSeries σ R) = 0` using `by rw [← coe_substAlgHom ha, map_zero]`.
+
+Establish `hs1 : subst a (1 : MvPowerSeries σ R) = 1` using `by rw [← coe_substAlgHom ha, map_one]`. Set `D1 : MvPowerSeries σ R → MvPowerSeries τ R` to `fun g => pderiv R k (subst a g)`. Set `D2 : MvPowerSeries σ R → MvPowerSeries τ R` to `fun g => ∑ s, subst a (pderiv R s g) * pderiv R k (a s)`. Establish `c1 : Continuous D1` using `(continuous_pderiv_discrete _).comp hcs`. Establish `c2 : Continuous D2` using `continuous_finsetSum _ fun i _ => (hcs.comp (continuous_pderiv_discrete _)).mul continuous_const`.
+
+Establish `hpoly : ∀ p : MvPolynomial σ R, D1 (p : MvPowerSeries σ R) = D2 (p : MvPowerSeries σ R)`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => simp [D1, D2, subst_C, hs0]`. Consider the case `add p q hp hq`.
+
+Simplify using `only [D1, D2, MvPolynomial.coe_add, subst_add ha, map_add] at hp hq ⊢`. Rewrite using `[hp, hq, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Consider the case `mul_X p s2 hp`. Simplify using `only [D1, D2, MvPolynomial.coe_mul, MvPolynomial.coe_X] at hp ⊢`.
+
+Rewrite using `[subst_mul ha, subst_X ha, Derivation.leibniz, smul_eq_mul, smul_eq_mul, hp]`. Establish `hX : ∀ i : σ, pderiv R i (X s2 : MvPowerSeries σ R) = if i = s2 then 1 else 0`. Introduce `i`. Distinguish the cases in `h : i = s2`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg h, pderiv_X_of_ne (Ne.symm h)]`. Establish `hterm : ∀ i : σ, subst a (pderiv R i ((p : MvPowerSeries σ R) * X s2)) * pderiv R k (a i) = (if i = s2 then subst a (p : MvPowerSeries σ R) * pderiv R k (a i) else 0) + a s2 * (subst a (pderiv R i (p : MvPowerSeries σ R)) * pderiv R k (a i))`. Introduce `i`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, hX i, subst_add ha, subst_mul ha, subst_mul ha, subst_X ha]`.
+
+Use `split_ifs with h`. Rewrite using `[hs1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl (fun i _ => hterm i), Finset.sum_add_distrib, Finset.sum_ite_eq', if_pos (Finset.mem_univ _), ← Finset.mul_sum]`. Use `(MvPowerSeries.WithPiTopology.denseRange_toMvPowerSeries).equalizer c1 c2 (funext hpoly)` as an intermediate fact. Conclude with `congrFun this f`.
+-/
 theorem pderiv_subst_chain {R σ τ : Type} [CommRing R] [Fintype σ] [Fintype τ]
     (a : σ → MvPowerSeries τ R) (ha0 : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ R) (k : τ) :
     pderiv R k (subst a f) = ∑ j, subst a (pderiv R j f) * pderiv R k (a j) := by

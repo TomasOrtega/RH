@@ -21,6 +21,9 @@ namespace GlobalTheory.LevelSeries
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `flipElt`. Rewrite using `[map_add]`. Take the linear combination `(-((m : AE D) - 1) ^ 2) * h1 - ((m : AE D) - 1) * (incA D ((m : D.host.E)⁻¹) - 1) * h2 - ((m : AE D) - 1) * (incA D ((m : D.host.E)⁻¹) - 1) * h3 - (incA D ((m : D.host.E)⁻¹) - 1) ^ 2 * h4`.
+-/
 theorem cflip_flipElt_add {a b : AE D} (m : ℕ) (h1 : a * b = 0) (h2 : a * cA D b = 0) (h3 : cA D a * b = 0)
     (h4 : cA D a * cA D b = 0) : flipElt (a + b) m = flipElt a m * flipElt b m := by
   unfold flipElt
@@ -28,6 +31,11 @@ theorem cflip_flipElt_add {a b : AE D} (m : ℕ) (h1 : a * b = 0) (h2 : a * cA D
   linear_combination (-((m : AE D) - 1) ^ 2) * h1 - ((m : AE D) - 1) * (incA D ((m : D.host.E)⁻¹) - 1) * h2
     - ((m : AE D) - 1) * (incA D ((m : D.host.E)⁻¹) - 1) * h3 - (incA D ((m : D.host.E)⁻¹) - 1) ^ 2 * h4
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun PP hPP => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_eq_single_of_mem PP hPP]`. Conclude with `(hes PP hPP).1.1`. Introduce `Q hQ hne`.
+
+Conclude with `GlobalTheory.Tow.idemAt_orth (hes PP hPP) (hes Q hQ) (Ne.symm hne)`.
+-/
 theorem cflip_sum_idem {S : Finset (Formalism.L2.DIV.Pl D.host.E)} {es : Formalism.L2.DIV.Pl D.host.E → AE D}
     (hes : ∀ PP ∈ S, Formalism.L2.NTheta.IsIdemAt (es PP) PP) : (∑ PP ∈ S, es PP) * (∑ PP ∈ S, es PP) = ∑ PP ∈ S, es PP := by
   rw [Finset.sum_mul]
@@ -37,27 +45,73 @@ theorem cflip_sum_idem {S : Finset (Formalism.L2.DIV.Pl D.host.E)} {es : Formali
   · intro Q hQ hne
     exact GlobalTheory.Tow.idemAt_orth (hes PP hPP) (hes Q hQ) (Ne.symm hne)
 
+/- English proof (translation)
+Rewrite using `[← hu, ← hv, map_mul]`. Take the linear combination `(u * cA D v) * he`.
+-/
 theorem cflip_mul_cA_eq_zero {e u v : AE D} (he : e * cA D e = 0) (hu : e * u = u) (hv : e * v = v) : u * cA D v = 0 := by
   rw [← hu, ← hv, map_mul]
   linear_combination (u * cA D v) * he
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[← hy i j, ← mul_assoc, ← map_mul, hu]`.
+-/
 theorem cflip_isHalf_mono {m n : ℕ} {e u : AE D} (hu : e * u = u) {y : Mx D m n} (hy : Formalism.IndefR.Datum.IsHalf (cA D u) y) :
     Formalism.IndefR.Datum.IsHalf (cA D e) y := by
   intro i j
   rw [← hy i j, ← mul_assoc, ← map_mul, hu]
 
+/- English proof (translation)
+Take the linear combination `hx + (x * (t - 1) ^ 2) * hab`.
+-/
 theorem cflip_det_split {R : Type*} [CommRing R] {a b t x : R} (hab : a * b = 0)
     (hx : x * ((a + b) * t + (1 - (a + b))) = 1) : x * ((a * t + (1 - a)) * (b * t + (1 - b))) = 1 := by
   linear_combination hx + (x * (t - 1) ^ 2) * hab
 
+/- English proof (translation)
+Rewrite using `[mul_smul, Matrix.smul_mul]`.
+-/
 theorem cflip_smul_one_mul {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (c d : R)
     (X : Matrix n n R) : ((c * d) • (1 : Matrix n n R)) * X = c • ((d • (1 : Matrix n n R)) * X) := by
   rw [mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Take the linear combination `(-x) * h`.
+-/
 theorem cflip_unit_split {R : Type*} [CommRing R] {x u v : R} (h : x * (u * v) = 1) : x = x * v * (x * u) := by
   linear_combination (-x) * h
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D ψ V W χV χW om hW T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `eT m z x ℓ hS hm hz hx hℓ`. Take `⟨⟨es, -, he⟩, -⟩` from `hS`.
+
+Rewrite `he` using `[Finset.sum_empty]`. Substitute `he` using the available equality. Establish `h1 : flipElt (0 : AE D) m = 1` using `by unfold flipElt; simp`. Establish `hz1 : z = 1` using `GlobalTheory.IdemSupport.mt_inj V (by rw [hz, h1, one_smul, GlobalTheory.IdemSupport.mt_one])`. Establish `hx1 : x = 1` using `by simpa [IsFlipDet] using hx`.
+
+Substitute `hz1 hx1` using the available equality. Use `⟨1, one_pos, fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `only [inv_one, Circle.coe_one, map_one, inv_one, Complex.ofReal_one, one_mul]`. Use `show ℓ ((om 1) f) = ℓ f`. Rewrite using `[map_one]`.
+
+Both sides reduce to the same expression. Consider the case `@insert P T' hP ih`. Introduce `eT m z x ℓ hS hm hz hx hℓ`. Take `⟨⟨es, hes, heT⟩, hT⟩` from `hS`. Establish `hesP` using `hes P (Finset.mem_insert_self P T')`.
+
+Establish `hes' : ∀ Q ∈ T', Formalism.L2.NTheta.IsIdemAt (es Q) Q` using `fun Q hQ => hes Q (Finset.mem_insert_of_mem hQ)`. Establish `heT' : eT = es P + ∑ Q ∈ T', es Q` using `by rw [heT, Finset.sum_insert hP]`. Establish `hab : es P * ∑ Q ∈ T', es Q = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun Q hQ => GlobalTheory.Tow.idemAt_orth hesP (hes' Q hQ) (fun h => hP (h ▸ hQ))`.
+
+Establish `hbb` using `cflip_sum_idem hes'`. Establish `heA : eT * es P = es P`. Rewrite using `[heT', add_mul, hesP.1.1, mul_comm, hab, add_zero]`. Establish `heB : eT * ∑ Q ∈ T', es Q = ∑ Q ∈ T', es Q`. Rewrite using `[heT', add_mul, hab, hbb, zero_add]`.
+
+Establish `hSa : IsIdemSum (es P) {P}` using `⟨⟨es, by simpa using hesP, by simp⟩, cflip_mul_cA_eq_zero hT heA heA⟩`. Establish `hSb : IsIdemSum (∑ Q ∈ T', es Q) T'` using `⟨⟨es, hes', rfl⟩, cflip_mul_cA_eq_zero hT heB heB⟩`. Establish `hflip : flipElt eT m = flipElt (es P) m * flipElt (∑ Q ∈ T', es Q) m`. Rewrite using `[heT']`. Use `cflip_flipElt_add m hab (cflip_mul_cA_eq_zero hT heA heB) ?_ (by rw [← map_mul, hab, map_zero])` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `cflip_mul_cA_eq_zero hT heB heA`. Take `⟨zP, -, -, hzP⟩` from `GlobalTheory.T.exists_central_conjugateFlipScalar_finiteAdelic D V {P} m (es P) hSa hm`. Establish `h1 : Formalism.L2.Theta.mt V zP * Formalism.L2.Theta.mt V zP⁻¹ = 1`. Rewrite using `[← GlobalTheory.IdemSupport.mt_mul, mul_inv_cancel, GlobalTheory.IdemSupport.mt_one]`.
+
+Establish `hz' : Formalism.L2.Theta.mt V (z * zP⁻¹) = flipElt (∑ Q ∈ T', es Q) m • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))`. Rewrite `h1` using `[hzP]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.IdemSupport.mt_mul, hz, hflip, mul_comm (flipElt (es P) m)]`. Use `_ = flipElt (∑ Q ∈ T', es Q) m • (flipElt (es P) m • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) * Formalism.L2.Theta.mt V zP⁻¹) := cflip_smul_one_mul _ _ _`.
+
+Use `_ = _ := by rw [h1]`. Establish `hx0 : (x : AE D) * ((es P * (m : AE D) ^ V.rank + (1 - es P)) * ((∑ Q ∈ T', es Q) * (m : AE D) ^ V.rank + (1 - ∑ Q ∈ T', es Q))) = 1`. Rewrite `hx` using `[heT']`. Conclude with `cflip_det_split hab hx`. Establish `hxa : (x : AE D) * ((∑ Q ∈ T', es Q) * (m : AE D) ^ V.rank + (1 - ∑ Q ∈ T', es Q)) * (es P * (m : AE D) ^ V.rank + (1 - es P)) = 1`.
+
+Rewrite using `[mul_assoc, mul_comm ((∑ Q ∈ T', es Q) * (m : AE D) ^ V.rank + _)]`. Conclude with `hx0`. Establish `hxb : (x : AE D) * (es P * (m : AE D) ^ V.rank + (1 - es P)) * ((∑ Q ∈ T', es Q) * (m : AE D) ^ V.rank + (1 - ∑ Q ∈ T', es Q)) = 1`. Rewrite using `[mul_assoc]`. Conclude with `hx0`.
+
+Set `xa : (AE D)ˣ` to `⟨_, _, hxa, by rw [mul_comm]; exact hxa⟩`. Set `xb : (AE D)ˣ` to `⟨_, _, hxb, by rw [mul_comm]; exact hxb⟩`. Establish `hxx : x = xa * xb`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [xa, xb, Units.val_mul]`.
+
+Conclude with `cflip_unit_split hx0`. Establish `hxaD : IsFlipDet V (es P) m xa` using `hxa`. Establish `hxbD : IsFlipDet V (∑ Q ∈ T', es Q) m xb` using `hxb`. Take `⟨rP, hrP, hPstep⟩` from `GlobalTheory.T.weilOperator_inv_centralFlip_invariantForm_eq D ψ V W χV χW om hW P (es P) m zP xa ℓ hesP hm hzP hxaD (fun y hy φ hφ => hℓ y (cflip_isHalf_mono heA hy) φ hφ)`. Take `⟨r', hr', hrest⟩` from `ih (∑ Q ∈ T', es Q) m (z * zP⁻¹) xb ℓ hSb hm hz' hxbD (fun y hy φ hφ => hℓ y (cflip_isHalf_mono heB hy) φ hφ)`.
+
+Use `⟨rP * r', mul_pos hrP hr', fun f hf => ?_⟩` and prove the remaining obligations. Establish `hsplit : ((z⁻¹ : GA D V), (1 : GA D W)) = (zP⁻¹, 1) * ((z * zP⁻¹)⁻¹, 1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[hsplit, map_mul, Module.End.mul_apply, hPstep _ (hW.om_pres _ _ hf), hrest f hf, hxx, map_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem centralFlip_phase : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χV χW om → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (eT : AE D) (m : ℕ) (z : GA D V) (x : (AE D)ˣ) (ℓ : (WO V W → ℂ) →ₗ[ℂ] ℂ), IsIdemSum eT T → m ≠ 0 → Formalism.L2.Theta.mt V z = flipElt eT m • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) → IsFlipDet V eT m x → (∀ y : WO V W, IsHalf (cA D eT) y → ∀ φ : WO V W → ℂ, IsThetaFunO ψ V W φ → ℓ (heisO ψ V W y φ) = ℓ φ) → ∃ r : ℝ, 0 < r ∧ ∀ f : WO V W → ℂ, IsThetaFunO ψ V W f → ℓ (om (z⁻¹, 1) f) = (r : ℂ) * ((χW x : Circle) : ℂ)⁻¹ * ℓ f := by
   intro D ψ V W χV χW om hW T
   induction T using Finset.induction_on with

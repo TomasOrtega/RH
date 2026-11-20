@@ -69,6 +69,11 @@ end WordData
 
 def plc {fr : Formalism.HC.Frame} (g : fr.GG) : fr.GG := if g.1.2 = 1 then g else fr.cc * g
 
+/- English proof (translation)
+Rewrite using `[Formalism.HC.Frame.mem_Psi_iff]`. Unfold `plc`. Use `split_ifs with h`. Conclude with `h`. Establish `h' : g.1.2 = -1` using `(Int.units_eq_one_or g.1.2).resolve_left h`.
+
+Simplify using `[Formalism.HC.Frame.cc, c0, h']`.
+-/
 theorem plc_mem {fr : Formalism.HC.Frame} (g : fr.GG) : plc g ∈ fr.Psi := by
   rw [Formalism.HC.Frame.mem_Psi_iff]
   unfold plc

@@ -10,6 +10,15 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.RealWeil GlobalTheory.RealWeilF
 open Classical
 open PositivityTheory.ThKW.RealC
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσ`. Establish `hτ` using `hB.cm.2.2.2`. Prove the components needed by the constructor for the conclusion. Unfold `HMF`. Rewrite using `[blk_conjTranspose]`.
+
+Apply the tactic sequence `congr 1 <;> funext w`. Rewrite using `[conjTranspose_smul, herm_map (hτ _) hT]`. Simplify using the standard rewrite rules. Rewrite using `[conjTranspose_nonsing_inv, herm_map (hτ _) hS]`. Establish `h0 : ∀ w : InfinitePlace F, ((2 * ((B.emb w).1 ξ₀).im : ℝ) : ℂ) ≠ 0` using `fun w => Complex.ofReal_ne_zero.2 (mul_ne_zero two_ne_zero (im_xi (hτ _) hξ hσ))`.
+
+Establish `: HMF JS JT ξ₀ (fun w : InfinitePlace F => (B.emb w).1) * blk (fun w => ((2 * ((B.emb w).1 ξ₀).im : ℝ) : ℂ)⁻¹ • (JT.map (B.emb w).1)⁻¹) (fun w => JS.map (B.emb w).1) = 1`. Unfold `HMF`. Rewrite using `[blk_mul, ← blk_one]`. Apply the tactic sequence `congr 1 <;> funext w`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ (h0 w), one_smul, mul_nonsing_inv _ (unit_map _ hT)]`.
+
+Rewrite using `[mul_nonsing_inv _ (unit_map _ hS)]`. Conclude with `(isUnit_det_of_right_inverse this).ne_zero`.
+-/
 theorem PositivityTheory.ThKW.hermitian_form_selfadjoint_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

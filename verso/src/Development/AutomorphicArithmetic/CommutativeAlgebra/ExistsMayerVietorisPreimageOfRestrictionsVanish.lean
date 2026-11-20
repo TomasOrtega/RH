@@ -7,15 +7,26 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC LateralTh
 
 namespace UpperTheory.SchemePresentationCover
 
+/- English proof (translation)
+Unfold `sch`. Use `infer_instance`.
+-/
 private theorem sch_pres : PreservesLimitsOfShape WalkingCospan sch := by
   unfold sch; infer_instance
 
+/- English proof (translation)
+Substitute `hC` using the available equality. Conclude with `isPullback_opens_inf_le hA hB`.
+-/
 private theorem pb {Y : Scheme.{0}} {A B C D : Y.Opens} (hC : C = A ⊓ B) (hCA : C ≤ A) (hCB : C ≤ B)
     (hA : A ≤ D) (hB : B ≤ D) :
     IsPullback (Y.homOfLE hCA) (Y.homOfLE hCB) (Y.homOfLE hA) (Y.homOfLE hB) := by
   subst hC
   exact isPullback_opens_inf_le hA hB
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Apply `UpperTheory.isCovering_pair_of_isOpenImmersion_of_jointly_surjective` to reduce the goal to its premises. Use `infer_instance`. Use `infer_instance`. Introduce `y`.
+
+Establish `hy : (y.1 : Y) ∈ A ⊔ B` using `y.2`. Break down `(by simpa using hy : (y.1 : Y) ∈ A ∨ (y.1 : Y) ∈ B) with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨y.1, h⟩, by rw [Scheme.homOfLE_apply']; rfl⟩`. Conclude with `Or.inr ⟨⟨y.1, h⟩, by rw [Scheme.homOfLE_apply']; rfl⟩`.
+-/
 private theorem cov (R : Type) [CommRing R] {Y : Scheme.{0}} {A B D : Y.Opens} (hD : D = A ⊔ B)
     (hA : A ≤ D) (hB : B ≤ D) :
     Cover2 R (sch.map (Y.homOfLE hA)) (sch.map (Y.homOfLE hB)) := by
@@ -31,12 +42,28 @@ private theorem cov (R : Type) [CommRing R] {Y : Scheme.{0}} {A B D : Y.Opens} (
 
 end UpperTheory.SchemePresentationCover
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono Q.ι]`. Simplify using `[morphismRestrict_ι]`.
+-/
 private theorem sq_lemma' {T S : Scheme.{0}} (f : T ⟶ S) {P Q : S.Opens} (h : P ≤ Q) (h' : f ⁻¹ᵁ P ≤ f ⁻¹ᵁ Q) :
     T.homOfLE h' ≫ f ∣_ Q = f ∣_ P ≫ S.homOfLE h := by
   rw [← cancel_mono Q.ι]
   simp [morphismRestrict_ι]
 
 open UpperTheory.SchemePresentationCover in
+/- English proof (translation)
+Introduce `R _ F S U V n x hx1 hx2`. Take `⟨d, hd, hnat⟩` from `mayerVietoris R F`. Use `haveI := sch_pres`. Establish `hc` using `cov R (rfl : U ⊔ V = U ⊔ V) le_sup_left le_sup_right`. Take `⟨c, hc'⟩` from `((hd _ _ hc n).2.2 x).1 ⟨hx1, hx2⟩`.
+
+Establish `P` using `(pb (rfl : U ⊓ V = U ⊓ V) inf_le_left inf_le_right (le_sup_left : U ≤ U ⊔ V) (le_sup_right : V ≤ U ⊔ V)).map sch`. Use `⟨pull R P.isoPullback.hom F n c, ?_⟩` and prove the remaining obligations. Introduce `T f a b hab`. Establish `hD : f ⁻¹ᵁ (U ⊔ V) = f ⁻¹ᵁ U ⊔ f ⁻¹ᵁ V` using `by ext; simp`. Establish `hC : f ⁻¹ᵁ (U ⊓ V) = f ⁻¹ᵁ U ⊓ f ⁻¹ᵁ V` using `by ext; simp`.
+
+Establish `hcT` using `cov R hD (f.preimage_mono le_sup_left) (f.preimage_mono le_sup_right)`. Establish `PT` using `(pb hC (f.preimage_mono inf_le_left) (f.preimage_mono inf_le_right) (f.preimage_mono le_sup_left) (f.preimage_mono le_sup_right)).map sch`. Establish `hu : sch.map (T.homOfLE (f.preimage_mono (le_sup_left : U ≤ U ⊔ V))) ≫ sch.map (f ∣_ (U ⊔ V)) = sch.map (f ∣_ U) ≫ sch.map (S.homOfLE (le_sup_left : U ≤ U ⊔ V))`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, sq_lemma']`. Establish `hv : sch.map (T.homOfLE (f.preimage_mono (le_sup_right : V ≤ U ⊔ V))) ≫ sch.map (f ∣_ (U ⊔ V)) = sch.map (f ∣_ V) ≫ sch.map (S.homOfLE (le_sup_right : V ≤ U ⊔ V))`.
+
+Rewrite using `[← Functor.map_comp, ← Functor.map_comp, sq_lemma']`. Establish `key` using `hnat (sch.map (T.homOfLE (f.preimage_mono (le_sup_left : U ≤ U ⊔ V)))) (sch.map (T.homOfLE (f.preimage_mono (le_sup_right : V ≤ U ⊔ V)))) (sch.map (S.homOfLE (le_sup_left : U ≤ U ⊔ V))) (sch.map (S.homOfLE (le_sup_right : V ≤ U ⊔ V))) (sch.map (f ∣_ (U ⊔ V))) (sch.map (f ∣_ U)) ( …`. Rewrite using `[← hc', key, ((hd (sch.map (T.homOfLE (f.preimage_mono (le_sup_left : U ≤ U ⊔ V)))) (sch.map (T.homOfLE (f.preimage_mono (le_sup_right : V ≤ U ⊔ V)))) hcT n).2.1)]`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Establish `inj : Function.Injective (pull R PT.isoPullback.hom F n)`.
+
+Introduce `z w h`. Establish `h2` using `congrArg (pull R PT.isoPullback.inv F n) h`. Rewrite `h2` using `[← pull_comp, ← pull_comp, Iso.inv_hom_id, pull_id, pull_id]`. Then use the resulting hypothesis. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_sub, ← pull_comp, ← pull_comp, ← pull_comp, IsPullback.isoPullback_hom_fst, IsPullback.isoPullback_hom_snd, ← hab, ← pull_comp]`.
+
+Use `congrArg (fun φ => pull R φ F n c) ?_` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.map, pullback.lift_fst, IsPullback.isoPullback_hom_fst_assoc, IsPullback.isoPullback_hom_fst, ← Functor.map_comp, ← Functor.map_comp, sq_lemma']`. Rewrite using `[Category.assoc, Category.assoc, pullback.map, pullback.lift_snd, IsPullback.isoPullback_hom_snd_assoc, IsPullback.isoPullback_hom_snd, ← Functor.map_comp, ← Functor.map_comp, sq_lemma']`.
+-/
 theorem UpperTheory.exists_mayerVietoris_preimage_of_restrictions_vanish :
     ∀ (R : Type) [CommRing R] (F : Shv R) {S : Scheme.{0}} (U V : S.Opens) (n : ℤ)
         (x : H R (sch.obj (U ⊔ V).toScheme) F (n + 1)),

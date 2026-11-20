@@ -21,6 +21,9 @@ abbrev FamSec (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (
 
 abbrev multiples (D : DegPre R) (k : ℕ) : AddSubgroup D.X := (nsmulAddMonoidHom k : D.X →+ D.X).range
 
+/- English proof (translation)
+Introduce `j`. Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := D) (F := F) hG k mu α`. Use `sec_ext_val (s' := SecOps.secZero) D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (s.fe mu α u hu hc) _ (𝟙 _) y J hJ, UUA.sval_zero_of h _ y J (hJ.mem _ _), UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _), MulZeroClass.zero_mul]`.
+-/
 theorem zero_add_nsmul (hG : GlobalFnsSt) {k : ℕ} (s : Fam D F k) (α mu : D.X)
     (h : ∀ j, (s.s α).f j = 0) : ∀ j, (s.s (α + k • mu)).f j = 0 := by
   intro j
@@ -30,15 +33,24 @@ theorem zero_add_nsmul (hG : GlobalFnsSt) {k : ℕ} (s : Fam D F k) (α mu : D.X
     UUA.sval_zero_of h _ y J (hJ.mem _ _), UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _),
     MulZeroClass.zero_mul]
 
+/- English proof (translation)
+Take `⟨mu, rfl⟩` from `hβ`. Conclude with `zero_add_nsmul hG s α mu h`.
+-/
 theorem zero_of_eq_add_nsmul (hG : GlobalFnsSt) {k : ℕ} (s : Fam D F k) {α β : D.X} (hβ : ∃ mu, α + k • mu = β)
     (h : ∀ j, (s.s α).f j = 0) : ∀ j, (s.s β).f j = 0 := by
   obtain ⟨mu, rfl⟩ := hβ
   exact zero_add_nsmul hG s α mu h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨zero_of_eq_add_nsmul hG s ⟨-mu, by rw [smul_neg, add_neg_cancel_right]⟩, zero_add_nsmul hG s α mu⟩`.
+-/
 theorem zero_add_nsmul_iff (hG : GlobalFnsSt) {k : ℕ} (s : Fam D F k) (α mu : D.X) :
     (∀ j, (s.s (α + k • mu)).f j = 0) ↔ ∀ j, (s.s α).f j = 0 :=
   ⟨zero_of_eq_add_nsmul hG s ⟨-mu, by rw [smul_neg, add_neg_cancel_right]⟩, zero_add_nsmul hG s α mu⟩
 
+/- English proof (translation)
+Establish `h0` using `zero_of_eq_add_nsmul hG (s + -t) hβ (fun j => by rw [add_f, neg_f, h, add_neg_cancel])`. Use `SecOps.sec_ext fun j => ?_` and prove the remaining obligations. Use `h0 j` as an intermediate fact. Rewrite `this` using `[add_f, neg_f, add_neg_eq_zero]`. Conclude with `this`.
+-/
 theorem eq_of_eq_add_nsmul (hG : GlobalFnsSt) {k : ℕ} (s t : Fam D F k) {α β : D.X} (hβ : ∃ mu, α + k • mu = β)
     (h : s.s α = t.s α) : s.s β = t.s β := by
   have h0 := zero_of_eq_add_nsmul hG (s + -t) hβ (fun j => by rw [add_f, neg_f, h, add_neg_cancel])
@@ -47,16 +59,31 @@ theorem eq_of_eq_add_nsmul (hG : GlobalFnsSt) {k : ℕ} (s t : Fam D F k) {α β
   rw [add_f, neg_f, add_neg_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Establish `h' : (k : ℤ) • a = (k : ℤ) • b`. Rewrite using `[natCast_zsmul, natCast_zsmul]`. Conclude with `add_left_cancel h`. Conclude with `smul_right_injective D.X (by omega : (k : ℤ) ≠ 0) h'`.
+-/
 theorem add_nsmul_inj {k : ℕ} (hk : 1 ≤ k) (ρ a b : D.X) (h : ρ + k • a = ρ + k • b) : a = b := by
   have h' : (k : ℤ) • a = (k : ℤ) • b := by
     rw [natCast_zsmul, natCast_zsmul]; exact add_left_cancel h
   exact smul_right_injective D.X (by omega : (k : ℤ) ≠ 0) h'
 
+/- English proof (translation)
+The claim follows from `UUA.exists_fam_rep hG hB k ρ (add_nsmul_inj hk ρ) σ`.
+-/
 theorem exists_fam_single (hG : GlobalFnsSt) (hB : D.TauBimult) {k : ℕ} (hk : 1 ≤ k) (ρ : D.X)
     (σ : FamSec D F k ρ) :
     ∃ s : Fam D F k, s.s ρ = σ ∧ ∀ β : D.X, (∀ mu, ρ + k • mu ≠ β) → ∀ j, (s.s β).f j = 0 :=
   UUA.exists_fam_rep hG hB k ρ (add_nsmul_inj hk ρ) σ
 
+/- English proof (translation)
+Use `choose cl hcl hcl' using hrep`. Use `choose f hf _ using fun c => exists_fam_single hG hB hk (rep c) (σ c)`. Establish `key : ∀ (α β : D.X) (c : C), cl β = c → (f (cl β)).s β = (f c).s β`. Introduce and unpack `α β c rfl`. Both sides reduce to the same expression.
+
+Use `⟨⟨fun β => (f (cl β)).s β, fun mu α u hu hc => ?_⟩, fun c => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `e : cl (α + k • mu) = cl α`. Take `⟨nu, hnu⟩` from `hcl α`. Conclude with `(hcl' (α + k • mu) (cl α) ⟨nu + mu, by rw [smul_add, ← add_assoc, hnu]⟩).symm`. Use `(f (cl α)).fe mu α u hu hc` as an intermediate fact.
+
+Rewrite `this` using `[← key α _ _ e]`. Conclude with `this`. Establish `e : cl (rep c) = c` using `(hcl' (rep c) c ⟨0, by rw [smul_zero, add_zero]⟩).symm`. Conclude with `(key (rep c) _ _ e).trans (hf c)`. Use `fam_ext fun α j => ?_` and prove the remaining obligations.
+
+Use `eq_of_eq_add_nsmul hG s (f (cl α)) (hcl α) ((hs (cl α)).trans (hf (cl α)).symm)` as an intermediate fact. Rewrite using `[this]`.
+-/
 theorem existsUnique_fam_of_reps (hG : GlobalFnsSt) (hB : D.TauBimult) {k : ℕ} (hk : 1 ≤ k) {C : Type*}
     (rep : C → D.X) (hrep : ∀ α : D.X, ∃! c, ∃ mu, rep c + k • mu = α) (σ : ∀ c, FamSec D F k (rep c)) :
     ∃! s : Fam D F k, ∀ c, s.s (rep c) = σ c := by
@@ -77,6 +104,11 @@ theorem existsUnique_fam_of_reps (hG : GlobalFnsSt) (hB : D.TauBimult) {k : ℕ}
     have := eq_of_eq_add_nsmul hG s (f (cl α)) (hcl α) ((hs (cl α)).trans (hf (cl α)).symm)
     rw [this]
 
+/- English proof (translation)
+Rewrite using `[QuotientAddGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨mu, h⟩`. Conclude with `⟨mu, by rw [show k • mu = -α + β from h, add_neg_cancel_left]⟩`. Introduce and unpack `⟨mu, rfl⟩`.
+
+Conclude with `⟨mu, by rw [neg_add_cancel_left]; rfl⟩`.
+-/
 theorem mk_eq_mk_iff {k : ℕ} (α β : D.X) :
     (QuotientAddGroup.mk α : D.X ⧸ multiples D k) = QuotientAddGroup.mk β ↔ ∃ mu, α + k • mu = β := by
   rw [QuotientAddGroup.eq]
@@ -86,12 +118,22 @@ theorem mk_eq_mk_iff {k : ℕ} (α β : D.X) :
   · rintro ⟨mu, rfl⟩
     exact ⟨mu, by rw [neg_add_cancel_left]; rfl⟩
 
+/- English proof (translation)
+The claim follows from `existsUnique_fam_of_reps hG hB hk rep (fun α => ⟨QuotientAddGroup.mk α, (mk_eq_mk_iff _ _).1 (hrep _), fun c hc => (hrep c).symm.trans ((mk_eq_mk_iff _ _).2 hc)⟩) σ`.
+-/
 theorem existsUnique_fam (hG : GlobalFnsSt) (hB : D.TauBimult) {k : ℕ} (hk : 1 ≤ k)
     (rep : D.X ⧸ multiples D k → D.X) (hrep : ∀ c, QuotientAddGroup.mk (rep c) = c)
     (σ : ∀ c, FamSec D F k (rep c)) : ∃! s : Fam D F k, ∀ c, s.s (rep c) = σ c :=
   existsUnique_fam_of_reps hG hB hk rep (fun α => ⟨QuotientAddGroup.mk α, (mk_eq_mk_iff _ _).1 (hrep _),
     fun c hc => (hrep c).symm.trans ((mk_eq_mk_iff _ _).2 hc)⟩) σ
 
+/- English proof (translation)
+Introduce `h`. Take `⟨r, -, hr⟩` from `hb SecOps.secZero`. Establish `h0` using `hr 0 (fun j => by show (0 : Γ((T ⊗ A).left, N.U j)) = _`. Simplify using `only [Pi.zero_apply, map_zero, MulZeroClass.zero_mul, Finset.sum_const_zero])`. Establish `h1` using `hr (Pi.single i 1) (fun j => by show (0 : Γ((T ⊗ A).left, N.U j)) = _`.
+
+Use `(Finset.sum_eq_zero fun i' _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `e : i' = i`. Rewrite using `[e, h j, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne e, map_zero, map_zero, MulZeroClass.zero_mul])`. Use `congrFun (h1.trans h0.symm) i` as an intermediate fact.
+
+Rewrite `this` using `[Pi.single_eq_same]`. Conclude with `one_ne_zero this`.
+-/
 theorem IsSecBasis.ne_zero {S : Scheme.{0}} {A T : Over S} [Nontrivial Γ(T.left, ⊤)] {N : LB (T ⊗ A).left} {m : ℕ}
     {b : Fin m → LB.Sec N} (hb : IsSecBasis N b) (i : Fin m) : ¬ ∀ j, (b i).f j = 0 := by
   classical
@@ -110,6 +152,17 @@ theorem IsSecBasis.ne_zero {S : Scheme.{0}} {A T : Over S} [Nontrivial Γ(T.left
   rw [Pi.single_eq_same] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Take `⟨⟨b, hb⟩, -⟩` from `hT _ D.P k hk F (jFK (R := R) F ≫ jK R) (cP D (TF (R := R) F) α)`. Establish `: Nontrivial Γ((TF (R` using `R) F).left, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Establish `hne` using `IsSecBasis.ne_zero hb ⟨0, pow_pos (by omega) _⟩`. Set `q : (DegPre.BF D F).left ⟶ (TK R).left` to `(fst (TF (R := R) F) D.P.A).left ≫ jFK (R := R) F`. Set `u` to `LB.pullGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ (D.psi α) D.rigK) q`.
+
+Establish `hu : u.IsGen` using `pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (D.psi_gen α) (pullGen_isGen _ _ _ _ D.rig_gen _)) _`. Take `⟨σ, hσ⟩` from `exists_sec D.P.isLB (φ' := DegPre.famφ D F α) (ε' := DegPre.famε k) (fun U _ h => by`. Establish `p` using `prod_fam D F (𝟙 _) α k h`. Simplify using `only [Over.id_left, Category.id_comp] at p`. Rewrite using `[p]`.
+
+Establish `a₁ : q ≫ D.xK α = (cP D (DegPre.BF D F) α).left` using `congrArg (fun x => x.left) (comp_cP D (fst (TF (R := R) F) D.P.A) α)`. Establish `a₂ : q ≫ (toUnit (TK R)).left ≫ eSec D.P.A = (1 : DegPre.BF D F ⟶ D.P.A).left` using `congrArg (fun x : DegPre.BF D F ⟶ D.P.A => x.left) (MonObj.comp_one (M := D.P.A) (fst (TF (R := R) F) D.P.A))`. Establish `a₃ : translPt D.P.A (cP D (TF (R` using `R) F) α) = cP D (DegPre.BF D F) α * DegPre.prB D F := by`. Rewrite using `[translPt, comp_cP]`. Both sides reduce to the same expression.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, Fin.prod_univ_two, Category.id_comp, a₁, a₂, a₃, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg_one]`. Rewrite using `[← _root_.mul_assoc])`. Use the proof step `(pullMulSec (b ⟨0, pow_pos (by omega) _⟩) (𝟙 _) u hu)`. Use `⟨σ, fun h => hne fun j => ?_⟩` and prove the remaining obligations. Use `sec_ext_val (s' := SecOps.secZero) D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations.
+
+Establish `e` using `(hσ _ (𝟙 _) y J hJ).trans (sval_pullMulSec _ _ _ hu _ y hJ)`. Rewrite `e` using `[UUA.sval_zero_of h _ y J (hJ.mem _ _), Category.id_comp]`. Rewrite using `[UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]`. Conclude with `(Units.mul_left_eq_zero _).1 e.symm`.
+-/
 theorem exists_sec_ne_zero (hT : SecTwistSt) {k : ℕ} (hk : 1 ≤ k) (α : D.X) :
     ∃ σ : FamSec D F k α, ¬ ∀ j, σ.f j = 0 := by
   obtain ⟨⟨b, hb⟩, -⟩ := hT _ D.P k hk F (jFK (R := R) F ≫ jK R) (cP D (TF (R := R) F) α)
@@ -142,6 +195,9 @@ theorem exists_sec_ne_zero (hT : SecTwistSt) {k : ℕ} (hk : 1 ≤ k) (α : D.X)
   rw [UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]
   exact (Units.mul_left_eq_zero _).1 e.symm
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `exists_sec_ne_zero (D := D) (F := F) hT hk α`. Take `⟨s, rfl, hs⟩` from `exists_fam_single hG hB hk α σ`. Use `⟨s, fun β => ⟨fun h => by_contra fun hn => h (hs β fun mu e => hn ⟨mu, e⟩), ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨mu, rfl⟩ h`. Conclude with `hσ ((zero_add_nsmul_iff hG s α mu).1 h)`.
+-/
 theorem exists_fam_support (hG : GlobalFnsSt) (hT : SecTwistSt) (hB : D.TauBimult) {k : ℕ} (hk : 1 ≤ k) (α : D.X) :
     ∃ s : Fam D F k, ∀ β : D.X, (¬ ∀ j, (s.s β).f j = 0) ↔ ∃ mu, α + k • mu = β := by
   obtain ⟨σ, hσ⟩ := exists_sec_ne_zero (D := D) (F := F) hT hk α

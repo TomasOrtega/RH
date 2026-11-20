@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwMon
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwDomMul
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty (Fin n) with h | h` into its components or cases. Conclude with `⟨1, fun _ _ i => h.elim i⟩`. Take `⟨p, hp⟩` from `Finite.exists_min (fun p : Fin n × Fin n => valuation k ((t p.2 * (t p.1)⁻¹ : kˣ) : k))`. Use `set c : kˣ := t p.2 * (t p.1)⁻¹ with hc`. Establish `h1 : valuation k (c : k) ≤ 1` using `by simpa using hp (p.1, p.1)`.
+
+Use `⟨c, fun s hs i j hij => ?_⟩` and prove the remaining obligations. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `h2 : valuation k (s i : k) * valuation k (c : k) ≤ valuation k (s j : k)`. Break down `hs with rfl | rfl` into its components or cases.
+
+Simplify using `using h1`. Use `mul_le_mul_right (hp (i, j)) (valuation k (s i : k))` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul]`. Use `congr 2`.
+
+Simplify using the standard rewrite rules. Establish `hj` using `j.2`. Establish `hlt' : (i : ℕ) < j` using `hlt`. Establish `e : n - (i : ℕ) = 1 + ((n - j) + (j - i - 1))` using `by omega`. Rewrite using `[e]`.
+
+Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, pow_add, pow_one]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))`.
+-/
 private theorem thetaEx_split {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (t : Fin n → kˣ) :
     ∃ c : kˣ, ∀ s : Fin n → kˣ, (s = 1 ∨ s = t) → ∀ i j : Fin n, i ≤ j →
       valuation k ((s i * c ^ (n - i) : kˣ) : k) ≤ valuation k ((s j * c ^ (n - j) : kˣ) : k) := by
@@ -30,6 +41,13 @@ private theorem thetaEx_split {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (t
   rw [← mul_assoc]
   exact mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n C A M _ _ _ ρ hq`. Take `⟨hmul, hunit, -⟩` from `domMul k n C A M ρ`. Set `P : Submonoid (Fin n → kˣ)` to `{ carrier := {t | Dom t} one_mem' := dom_one mul_mem' := fun {a b} ha hb i j hij => by`. Simplify using `only [Pi.mul_apply, Units.val_mul, map_mul]`. Conclude with `mul_le_mul' (ha i j hij) (hb i j hij) }`.
+
+Use `monoidExt (Fin n → kˣ) _ P (fun t => hk ρ (iwC k n C) (diagT k (Fin n) t)) (fun t => ?_) ?_ (fun a ha b hb => (hmul a b ha hb).symm) (fun a ha => hunit hq a ha)` and prove the remaining obligations. Take `⟨c, hc⟩` from `thetaEx_split t`. Use `⟨t * (fun i : Fin n => c ^ (n - (i : ℕ))), hc t (Or.inr rfl), (1 : Fin n → kˣ) * (fun i : Fin n => c ^ (n - (i : ℕ))), hc 1 (Or.inl rfl), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h` using `hmul 1 1 dom_one dom_one`.
+
+Rewrite `h` using `[mul_one]`. Conclude with `(hunit hq 1 dom_one).mul_left_cancel (h.trans (mul_one _).symm)`.
+-/
 theorem UpperTheory.V.AlgebraTools.thetaEx :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (C : Subgroup 𝓀[k]ˣ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M), IsUnit (resCard k : A) → ∃! θ : (Fin n → kˣ) →* (Module.End A (fixd ρ (iwC k n C)))ˣ, ∀ t, Dom t → (θ t : Module.End A (fixd ρ (iwC k n C))) = hk ρ (iwC k n C) (diagT k (Fin n) t) := by
   intro k _ _ _ _ n C A M _ _ _ ρ hq

@@ -12,39 +12,66 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
 
 def SmoothOn (f : ℂ → ℂ) : Prop := ∀ n : ℕ, ContDiffOn ℝ n f {t | t ≠ 0}
 
+/- English proof (translation)
+The claim follows from `isOpen_ne`.
+-/
 theorem isOpen_ne_zero_complex : IsOpen {t : ℂ | t ≠ 0} := isOpen_ne
 
+/- English proof (translation)
+The claim follows from `((hf 1).contDiffAt (isOpen_ne.mem_nhds ht)).differentiableAt (by norm_num)`.
+-/
 theorem SmoothOn.diffAt {f : ℂ → ℂ} (hf : SmoothOn f) {t : ℂ} (ht : t ≠ 0) : DifferentiableAt ℝ f t := ((hf 1).contDiffAt (isOpen_ne.mem_nhds ht)).differentiableAt (by norm_num)
 
+/- English proof (translation)
+Introduce `n`. Establish `h1 : ContDiffOn ℝ n (fun y => fderiv ℝ f y) {t | t ≠ 0}` using `(hf (n + 1)).fderiv_of_isOpen isOpen_ne (by push_cast; exact le_rfl)`. Conclude with `h1.clm_apply contDiffOn_const`.
+-/
 theorem SmoothOn.fderiv_apply {f : ℂ → ℂ} (hf : SmoothOn f) (v : ℂ) : SmoothOn (fun t => fderiv ℝ f t v) := by
   intro n
   have h1 : ContDiffOn ℝ n (fun y => fderiv ℝ f y) {t | t ≠ 0} :=
     (hf (n + 1)).fderiv_of_isOpen isOpen_ne (by push_cast; exact le_rfl)
   exact h1.clm_apply contDiffOn_const
 
+/- English proof (translation)
+Introduce `n`. Unfold `CutSE.wirt`. Conclude with `contDiffOn_const.mul ((hf.fderiv_apply 1 n).add (contDiffOn_const.mul (hf.fderiv_apply Complex.I n)))`.
+-/
 theorem SmoothOn.wirt' {f : ℂ → ℂ} (hf : SmoothOn f) (b : Bool) : SmoothOn (CutSE.wirt b f) := by
   intro n
   unfold CutSE.wirt
   exact contDiffOn_const.mul ((hf.fderiv_apply 1 n).add (contDiffOn_const.mul (hf.fderiv_apply Complex.I n)))
 
+/- English proof (translation)
+The claim follows from `| [] => hf | b :: bs => (SmoothOn.wd hf bs).wirt' b`.
+-/
 theorem SmoothOn.wd {f : ℂ → ℂ} (hf : SmoothOn f) : ∀ bs : List Bool, SmoothOn (WD bs f)
   | [] => hf
   | b :: bs => (SmoothOn.wd hf bs).wirt' b
 
+/- English proof (translation)
+Simplify using `only [CutSE.wirt, h.fderiv_eq]`.
+-/
 theorem wirt_congr {f g : ℂ → ℂ} {t : ℂ} (b : Bool) (h : f =ᶠ[𝓝 t] g) : CutSE.wirt b f t = CutSE.wirt b g t := by
   simp only [CutSE.wirt, h.fderiv_eq]
 
+/- English proof (translation)
+Establish `h : fderiv ℝ (fun s => f s + g s) t = fderiv ℝ f t + fderiv ℝ g t` using `fderiv_add hf hg`. Simplify using `only [CutSE.wirt, h, ContinuousLinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wirt_add {f g : ℂ → ℂ} {t : ℂ} (b : Bool) (hf : DifferentiableAt ℝ f t) (hg : DifferentiableAt ℝ g t) :
     CutSE.wirt b (fun s => f s + g s) t = CutSE.wirt b f t + CutSE.wirt b g t := by
   have h : fderiv ℝ (fun s => f s + g s) t = fderiv ℝ f t + fderiv ℝ g t := fderiv_add hf hg
   simp only [CutSE.wirt, h, ContinuousLinearMap.add_apply]
   ring
 
+/- English proof (translation)
+Simplify using `only [CutSE.wirt, fderiv_const_mul hf e, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wirt_const_mul {f : ℂ → ℂ} {t : ℂ} (b : Bool) (e : ℂ) (hf : DifferentiableAt ℝ f t) :
     CutSE.wirt b (fun s => e * f s) t = e * CutSE.wirt b f t := by
   simp only [CutSE.wirt, fderiv_const_mul hf e, ContinuousLinearMap.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons i L ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(hF i List.mem_cons_self).add (ih fun j hj => hF j (List.mem_cons_of_mem _ hj))`.
+-/
 theorem diff_listSum {ι : Type*} (L : List ι) (F : ι → ℂ → ℂ) {t : ℂ} (hF : ∀ i ∈ L, DifferentiableAt ℝ (F i) t) :
     DifferentiableAt ℝ (fun s => (L.map fun i => F i s).sum) t := by
   induction L with
@@ -53,6 +80,11 @@ theorem diff_listSum {ι : Type*} (L : List ι) (F : ι → ℂ → ℂ) {t : �
     simp only [List.map_cons, List.sum_cons]
     exact (hF i List.mem_cons_self).add (ih fun j hj => hF j (List.mem_cons_of_mem _ hj))
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [CutSE.wirt]`. Consider the case `cons i L ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Establish `hL : ∀ j ∈ L, DifferentiableAt ℝ (F j) t` using `fun j hj => hF j (List.mem_cons_of_mem _ hj)`.
+
+Rewrite using `[wirt_add b (hF i List.mem_cons_self) (diff_listSum L F hL), ih hL]`.
+-/
 theorem wirt_listSum {ι : Type*} (b : Bool) (L : List ι) (F : ι → ℂ → ℂ) {t : ℂ}
     (hF : ∀ i ∈ L, DifferentiableAt ℝ (F i) t) :
     CutSE.wirt b (fun s => (L.map fun i => F i s).sum) t = (L.map fun i => CutSE.wirt b (F i) t).sum := by
@@ -72,6 +104,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
 def IsNum (N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) : Prop :=
   ∀ a b, ∃ q : ℂ, N a b = algebraMap ℂ (Pr (RadSp k r z z' π π')) q
 
+/- English proof (translation)
+Introduce `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Conclude with `⟨1, by rw [Matrix.one_apply_eq, map_one]⟩`. Conclude with `⟨0, by rw [Matrix.one_apply_ne h, map_zero]⟩`.
+-/
 theorem isNum_one : IsNum (1 : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) := by
   intro a b
   by_cases h : a = b
@@ -79,18 +114,29 @@ theorem isNum_one : IsNum (1 : SlopeTestRemainingChoices S (Pr (RadSp k r z z' �
     exact ⟨1, by rw [Matrix.one_apply_eq, map_one]⟩
   · exact ⟨0, by rw [Matrix.one_apply_ne h, map_zero]⟩
 
+/- English proof (translation)
+Introduce `a b`. Distinguish the cases in `h : a s = i ∧ b s = j ∧ ∀ c, c ≠ s → a c = b c`. Conclude with `⟨1, by simp only [eU, Matrix.of_apply, if_pos h, map_one]⟩`. Conclude with `⟨0, by simp only [eU, Matrix.of_apply, if_neg h, map_zero]⟩`.
+-/
 theorem isNum_eU (s : S) (i j : Fin 2) : IsNum (eU s i j : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) := by
   intro a b
   by_cases h : a s = i ∧ b s = j ∧ ∀ c, c ≠ s → a c = b c
   · exact ⟨1, by simp only [eU, Matrix.of_apply, if_pos h, map_one]⟩
   · exact ⟨0, by simp only [eU, Matrix.of_apply, if_neg h, map_zero]⟩
 
+/- English proof (translation)
+Use `choose qM hqM using hM`. Use `choose qN hqN using hN`. Introduce `a b`. Conclude with `⟨∑ c, qM a c * qN c b, by simp [Matrix.mul_apply, hqM, hqN, map_sum, map_mul]⟩`.
+-/
 theorem isNum_mul {M N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))} (hM : IsNum M) (hN : IsNum N) : IsNum (M * N) := by
   choose qM hqM using hM
   choose qN hqN using hN
   intro a b
   exact ⟨∑ c, qM a c * qN c b, by simp [Matrix.mul_apply, hqM, hqN, map_sum, map_mul]⟩
 
+/- English proof (translation)
+Introduce `b`. Unfold `act`. Use `K.sum_mem fun c _ => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `hN b c`. Rewrite using `[hq]`.
+
+Use `show (algebraMap ℂ (Module.End ℂ (RadSp k r z z' π π')) q) (v c) ∈ K`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `K.smul_mem q (hv c)`.
+-/
 theorem act_num_mem (K : Submodule ℂ (RadSp k r z z' π π')) {N : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))} (hN : IsNum N)
     {v : Ix S → RadSp k r z z' π π'} (hv : ∀ b, v b ∈ K) : ∀ b, act N v b ∈ K := by
   intro b
@@ -102,6 +148,11 @@ theorem act_num_mem (K : Submodule ℂ (RadSp k r z z' π π')) {N : SlopeTestRe
   rw [Module.algebraMap_end_apply]
   exact K.smul_mem q (hv c)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Unfold `act`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `only [Matrix.one_apply_eq]`. Both sides reduce to the same expression.
+
+Introduce `c _ hc`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hc)]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+-/
 theorem act_one' (v : Ix S → RadSp k r z z' π π') : act (1 : SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) v = v := by
   funext b
   unfold act
@@ -116,6 +167,9 @@ theorem act_one' (v : Ix S → RadSp k r z z' π π') : act (1 : SlopeTestRemain
 
 end Num
 
+/- English proof (translation)
+Rewrite using `[← List.sum_ofFn]`. Use `congr 1`. Establish `h : (fun i : Fin L.length => g (L.get i)) = g ∘ L.get` using `rfl`. Rewrite using `[h, ← List.map_ofFn, List.ofFn_get]`.
+-/
 theorem sum_fin_list {α : Type*} (L : List α) (g : α → ℂ) : ∑ i : Fin L.length, g (L.get i) = (L.map g).sum := by
   rw [← List.sum_ofFn]
   congr 1
@@ -126,11 +180,37 @@ section Slots
 
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Use extensionality with `x w`. Simplify using `only [io, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, eU, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem comm_eU_io (a : S) (p q : Fin 2) (y : A) : Commute (eU a p q : SlopeTestRemainingChoices S A) (io y) := by
   ext x w
   simp only [io, Matrix.scalar_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, eU, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `L : ∀ (a s : S), s ≠ a → ∀ (i j p q : Fin 2) (x y : Ix S), (((eU a i j : SlopeTestRemainingChoices S A) * (eU s p q : SlopeTestRemainingChoices S A)) : SlopeTestRemainingChoices S A) x y = if x a = i ∧ y a = j ∧ x s = p ∧ y s = q ∧ ∀ b, b ≠ a → b ≠ s → x b = y b then 1 else 0`. Introduce `a s hs i j p q x y`. Establish `hsa : a ≠ s` using `Ne.symm hs`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Function.update x a j)]`. Simplify using `only [eU, Matrix.of_apply, Function.update_self, Function.update_of_ne hs]`.
+
+Distinguish the cases in `h1 : x a = i`. Establish `e1 : (∀ b, b ≠ a → x b = Function.update x a j b)` using `fun b hb => by`. Rewrite using `[Function.update_of_ne hb]`. Rewrite using `[if_pos ⟨h1, trivial, e1⟩, one_mul]`. Distinguish the cases in `h2 : y a = j ∧ x s = p ∧ y s = q ∧ ∀ b, b ≠ a → b ≠ s → x b = y b`.
+
+Take `⟨h2a, h2b, h2c, h2d⟩` from `h2`. Establish `e2 : ∀ b, b ≠ s → Function.update x a j b = y b`. Introduce `b hb`. Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality.
+
+Rewrite using `[Function.update_self, h2a]`. Rewrite using `[Function.update_of_ne hba]`. Conclude with `h2d b hba hb`. Rewrite using `[if_pos ⟨h2b, h2c, e2⟩, if_pos ⟨h1, h2a, h2b, h2c, h2d⟩]`. Rewrite using `[if_neg (fun h => h2 ⟨?_, h.1, h.2.1, fun b hba hbs => ?_⟩), if_neg (fun h => h2 h.2)]`.
+
+Use `h.2.2 a hsa` as an intermediate fact. Rewrite `this` using `[Function.update_self]`. Conclude with `this.symm`. Use `h.2.2 b hbs` as an intermediate fact. Rewrite `this` using `[Function.update_of_ne hba]`.
+
+Conclude with `this`. Rewrite using `[if_neg (fun h => h1 h.1), zero_mul, if_neg (fun h => h1 h.1)]`. Introduce `w _ hw`. Simplify using `only [eU, Matrix.of_apply]`. Rewrite using `[if_neg, zero_mul]`.
+
+Introduce and unpack `⟨_, hwa, hwb⟩`. Apply `hw` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Distinguish the cases in `hba : b = a`. Substitute `hba` using the available equality.
+
+Rewrite using `[Function.update_self, hwa]`. Rewrite using `[Function.update_of_ne hba]`. Conclude with `(hwb b hba).symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `hee : ∀ s : S, s ≠ a → ∀ p q : Fin 2, Commute (eU a i j : SlopeTestRemainingChoices S A) (eU s p q)`. Introduce `s hs p q`. Use extensionality with `x y`. Rewrite using `[L a s hs i j p q x y, L s a (Ne.symm hs) p q i j x y]`. Use `congr 1`.
+
+Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`. Conclude with `⟨h3, h4, h1, h2, fun b hb1 hb2 => h5 b hb2 hb1⟩`. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`.
+
+Conclude with `⟨h3, h4, h1, h2, fun b hb1 hb2 => h5 b hb2 hb1⟩`. Unfold `vlet ins lift0`. Use `Commute.sum_right _ _ _ fun p _ => Commute.sum_right _ _ _ fun q _ => ?_` and prove the remaining obligations. Conclude with `(hee le.intersection_update_fsHerm_neg_one ha p q).mul_right (comm_eU_io a i j _)`.
+-/
 theorem comm_eU_vlet (σ : Site A) (le : Letter ℂ S) {a : S} (ha : le.intersection_update_fsHerm_neg_one ≠ a) (i j : Fin 2) :
     Commute (eU a i j : SlopeTestRemainingChoices S A) (vlet σ le) := by
   have L : ∀ (a s : S), s ≠ a → ∀ (i j p q : Fin 2) (x y : Ix S),
@@ -186,6 +266,9 @@ theorem comm_eU_vlet (σ : Site A) (le : Letter ℂ S) {a : S} (ha : le.intersec
   refine Commute.sum_right _ _ _ fun p _ => Commute.sum_right _ _ _ fun q _ => ?_
   exact (hee le.intersection_update_fsHerm_neg_one ha p q).mul_right (comm_eU_io a i j _)
 
+/- English proof (translation)
+The claim follows from `| [], _ => Commute.one_right _ | le :: w, h => by simp only [List.map_cons, List.mem_cons, not_or] at h show Commute (eU a i j : SlopeTestRemainingChoices S A) (vlet σ le * bT σ w) exact (comm_eU_vlet σ le (Ne.symm h.1) i j).mul_right (comm_eU_bT σ i j w h.2)`.
+-/
 theorem comm_eU_bT (σ : Site A) {a : S} (i j : Fin 2) : ∀ w : List (Letter ℂ S), a ∉ w.map Letter.intersection_update_fsHerm_neg_one →
     Commute (eU a i j : SlopeTestRemainingChoices S A) (bT σ w)
   | [], _ => Commute.one_right _
@@ -196,6 +279,55 @@ theorem comm_eU_bT (σ : Site A) {a : S} (i j : Fin 2) : ∀ w : List (Letter �
 
 end Slots
 
+/- English proof (translation)
+Introduce `hS hO hB`. Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc`. Use `set Cl := ClsE S P z z' π π' X L st l0 D l with hCl`. Use `set σ := site L l with hσ`. Establish `hsm : ∀ u v : Ix S → RadSp P.k P.r z z' π π', (∀ b, u b ∈ Cl) → (∀ b, v b ∈ Cl) → SmoothOn (Dens μ l u v c)` using `fun u v hu hv => (hS Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl u v hu hv c hc).1`.
+
+Establish `hBl` using `hB Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl`. Establish `hbT : ∀ (w' : List (Letter ℂ S)) (u : Ix S → RadSp P.k P.r z z' π π'), (∀ b, u b ∈ Cl) → ∀ b, act (bT σ w') u b ∈ Cl`. Introduce `w'`. Proceed by induction on `w' with`. Consider the case `nil => intro u hu b`.
+
+Rewrite using `[show bT σ ([] : List (Letter ℂ S)) = 1 from rfl, act_one']`. Conclude with `hu b`. Consider the case `cons le w' ih`. Introduce `u hu b`. Rewrite using `[show bT σ (le :: w') = vlet σ le * bT σ w' from rfl, act_mul]`.
+
+Conclude with `(hBl _ (ih u hu)).1 le b`. Establish `hibT : ∀ (w' : List (Letter ℂ S)) (u : Ix S → RadSp P.k P.r z z' π π'), (∀ b, u b ∈ Cl) → ∀ b, act (ibT σ w') u b ∈ Cl`. Introduce `w'`. Proceed by induction on `w' with`. Consider the case `nil => intro u hu b`.
+
+Rewrite using `[show ibT σ ([] : List (Letter ℂ S)) = 1 from rfl, act_one']`. Conclude with `hu b`. Consider the case `cons le w' ih`. Introduce `u hu b`. Rewrite using `[show ibT σ (le :: w') = ivlet σ le * ibT σ w' from rfl, act_mul]`.
+
+Conclude with `(hBl _ (ih u hu)).2.1 le b`. Establish `gen : ∀ w' : List (Letter ℂ S), (w'.map Letter.intersection_update_fsHerm_neg_one).Nodup → (∀ le ∈ w', le.pt.im = 0) → ∀ u v : Ix S → RadSp P.k P.r z z' π π', (∀ b, u b ∈ Cl) → (∀ b, v b ∈ Cl) → ∃ rest : List (ℂ × List Bool × SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π …`. Introduce `w'`. Proceed by induction on `w' with`. Consider the case `nil`.
+
+Introduce `_ _ u v _ _`. Use `⟨[], by simp, fun t _ => ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_nil, List.sum_nil, add_zero]`. Rewrite using `[show ibT σ ([] : List (Letter ℂ S)) = 1 from rfl, show bT σ ([] : List (Letter ℂ S)) = 1 from rfl, act_one', act_one']`. Consider the case `cons le w' ih`.
+
+Introduce `hnd hre u v hu hv`. Establish `hnd' : le.intersection_update_fsHerm_neg_one ∉ w'.map Letter.intersection_update_fsHerm_neg_one ∧ (w'.map Letter.intersection_update_fsHerm_neg_one).Nodup`. Simplify using `using hnd`. Take `⟨e, bb, i, j, hOL⟩` from `hO Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl le (hre le List.mem_cons_self)`. Establish `hre' : ∀ le' ∈ w', le'.pt.im = 0` using `fun le' h => hre le' (List.mem_cons_of_mem _ h)`.
+
+Establish `hev : ∀ b, act (eU le.intersection_update_fsHerm_neg_one i j) v b ∈ Cl` using `(hBl v hv).2.2 le.intersection_update_fsHerm_neg_one i j`. Take `⟨rest1, hr1, h1⟩` from `ih hnd'.2 hre' u v hu hv`. Take `⟨rest2, hr2, h2⟩` from `ih hnd'.2 hre' u (act (eU le.intersection_update_fsHerm_neg_one i j) v) hu hev`. Use `⟨rest1 ++ (e, [bb], eU le.intersection_update_fsHerm_neg_one i j) :: rest2.map (fun τ => (e * τ.1, bb :: τ.2.1, τ.2.2 * eU le.intersection_update_fsHerm_neg_one i j)), ?_, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`.
+
+Simplify using `only [List.mem_append, List.mem_cons, List.mem_map] at hτ`. Break down `hτ with hτ | hτ | ⟨τ', hτ', rfl⟩` into its components or cases. Take `⟨a1, a2, a3⟩` from `hr1 τ hτ`. Conclude with `⟨a1, by simp only [List.length_cons]; omega, a3⟩`. Substitute `hτ` using the available equality.
+
+Conclude with `⟨by simp, by simp, isNum_eU _ _ _⟩`. Take `⟨a1, a2, a3⟩` from `hr2 τ' hτ'`. Conclude with `⟨by simp, by simp only [List.length_cons]; omega, isNum_mul a3 (isNum_eU _ _ _)⟩`. Introduce `t ht`. Establish `hU' : ∀ b, act (ibT σ w') u b ∈ Cl` using `hibT w' u hu`.
+
+Establish `hV' : ∀ b, act (bT σ w') v b ∈ Cl` using `hbT w' v hv`. Establish `step1 : Dens μ l (act (ibT σ (le :: w')) u) (act (bT σ (le :: w')) v) c t = Dens μ l (act (ivlet σ le) (act (ibT σ w') u)) (act (vlet σ le) (act (bT σ w') v)) c t`. Rewrite using `[show ibT σ (le :: w') = ivlet σ le * ibT σ w' from rfl, show bT σ (le :: w') = vlet σ le * bT σ w' from rfl, act_mul, act_mul]`. Establish `hcomm : act (eU le.intersection_update_fsHerm_neg_one i j) (act (bT σ w') v) = act (bT σ w') (act (eU le.intersection_update_fsHerm_neg_one i j) v)`. Rewrite using `[← act_mul, ← act_mul, (comm_eU_bT σ i j w' hnd'.1).eq]`.
+
+Establish `hevt : Dens μ l (act (ibT σ w') u) (act (eU le.intersection_update_fsHerm_neg_one i j) (act (bT σ w') v)) c =ᶠ[𝓝 t] (fun s => Dens μ l u (act (eU le.intersection_update_fsHerm_neg_one i j) v) c s + (rest2.map fun τ => τ.1 * WD τ.2.1 (Dens μ l u (act τ.2.2 (act (eU le.intersection …` using `by filter_upwards [isOpen_ne_zero_complex.mem_nhds ht] with s hs`. Rewrite using `[hcomm]`. Conclude with `h2 s hs`. Establish `hd0 : DifferentiableAt ℝ (Dens μ l u (act (eU le.intersection_update_fsHerm_neg_one i j) v) c) t` using `(hsm u _ hu hev).diffAt ht`. Establish `hdτ : ∀ τ ∈ rest2, DifferentiableAt ℝ (fun s => τ.1 * WD τ.2.1 (Dens μ l u (act τ.2.2 (act (eU le.intersection_update_fsHerm_neg_one i j) v)) c) s) t`.
+
+Introduce `τ hτ`. Conclude with `(((hsm u _ hu (act_num_mem Cl (hr2 τ hτ).2.2 hev)).wd τ.2.1).diffAt ht).const_mul τ.1`. Establish `hterm : ∀ τ ∈ rest2, CutSE.wirt bb (fun s => τ.1 * WD τ.2.1 (Dens μ l u (act τ.2.2 (act (eU le.intersection_update_fsHerm_neg_one i j) v)) c) s) t = τ.1 * WD (bb :: τ.2.1) (Dens μ l u (act (τ.2.2 * eU le.intersection_update_fsHerm_neg_one i j) v) c) t`. Introduce `τ hτ`. Rewrite using `[wirt_const_mul bb τ.1 (((hsm u _ hu (act_num_mem Cl (hr2 τ hτ).2.2 hev)).wd τ.2.1).diffAt ht), act_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[step1, hOL _ _ hU' hV' c hc t ht, h1 t ht, wirt_congr bb hevt, wirt_add bb hd0 (diff_listSum rest2 _ hdτ), wirt_listSum bb rest2 _ hdτ, List.map_congr_left hterm]`. Simplify using `only [List.map_append, List.sum_append, List.map_cons, List.sum_cons, List.map_map, Function.comp_def]`. Rewrite using `[mul_add, ← List.sum_map_mul_left]`. Establish `hW1 : WD [bb] (Dens μ l u (act (eU le.intersection_update_fsHerm_neg_one i j) v) c) t = CutSE.wirt bb (Dens μ l u (act (eU le.intersection_update_fsHerm_neg_one i j) v) c) t` using `rfl`.
+
+Rewrite using `[hW1]`. Simplify using `only [mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnd : (w.map Letter.intersection_update_fsHerm_neg_one).Nodup` using `(good_of_adm st w hw.1).1`. Establish `hre : ∀ le ∈ w, le.pt.im = 0` using `fun le h => (hw.2.1 le h).1`.
+
+Establish `hl0 : l.castSucc = (0 : Fin (P.r + 1))` using `Fin.ext (by simp [hl])`. Establish `hbase : ∀ Φ ∈ base0 S P z z' π π' L st l0 D, Φ ∈ Cl` using `fun Φ h => Submodule.subset_span ⟨[], Φ, h, by simp⟩`. Establish `hX : ∀ b, act (RRi L st l.castSucc w) x b ∈ Cl`. Introduce `b`. Apply `hbase` to reduce the goal to its premises.
+
+Simplify using `only [act]`. Use `Submodule.sum_mem _ fun b' _ => ?_` and prove the remaining obligations. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Use `Submodule.subset_span ⟨w, hw, b, b', x b', ?_, ?_⟩` and prove the remaining obligations. Use `hx b'` as an intermediate fact.
+
+Rewrite `this` using `[hl0]`. Conclude with `this`. Rewrite using `[hl0]`. Establish `hy' : ∀ b, y b ∈ Cl` using `fun b => hbase _ (Submodule.mem_sup_left (by have := hy b; rw [hl0] at this; exact this))`. Take `⟨rest, hr, hE⟩` from `gen w hnd hre _ y hX hy'`.
+
+Generalize the expression as in `hterms : (((1 : ℂ), ([] : List Bool), (1 : SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π')))) :: rest : List (ℂ × List Bool × SlopeTestRemainingChoices S (Pr (RadSp P.k P.r z z' π π')))) = terms`. Establish `key : ∀ τ ∈ terms, τ.2.1.length ≤ w.length ∧ IsNum τ.2.2`. Rewrite using `[← hterms]`. Introduce `τ hτ`. Break down `List.mem_cons.mp hτ with h | h` into its components or cases.
+
+Rewrite using `[h]; exact ⟨by simp, isNum_one⟩`. Conclude with `⟨(hr _ h).2.1, (hr _ h).2.2⟩`. Establish `hmem : ∀ i : Fin terms.length, (terms.get i).2.1.length ≤ w.length ∧ IsNum (terms.get i).2.2` using `fun i => key _ (List.get_mem terms i)`. Use `⟨terms.length, fun i => (terms.get i).1, fun i => (terms.get i).2.1, fun i => act (terms.get i).2.2 y, fun i => (hmem i).1, fun i b => act_num_mem _ (hmem i).2 hy b, fun t ht => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_fin_list terms (fun τ => τ.1 * WD τ.2.1 (Dens μ l (act (RRi L st l.castSucc w) x) (act τ.2.2 y) c) t)] show Dens μ l (act (ibT σ w) (act (RRi L st l.castSucc w) x)) (act (bT σ w) y) c t = _`.
+
+Rewrite using `[hE t ht, ← hterms, List.map_cons, List.sum_cons, act_one']`. Simplify using `only [one_mul]`. Both sides reduce to the same expression. Rewrite using `[sum_fin_list terms (fun τ => τ.1 * (if τ.2.1 = [] then form μ l.castSucc (act (RRi L st l.castSucc w) x) (act τ.2.2 y) c else 0))]`. Rewrite using `[← hterms, List.map_cons, List.sum_cons, act_one']`.
+
+Establish `h0 : (rest.map fun τ => τ.1 * (if τ.2.1 = [] then form μ l.castSucc (act (RRi L st l.castSucc w) x) (act τ.2.2 y) c else 0)).sum = 0`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `q hq`. Take `⟨τ, hτ, rfl⟩` from `List.mem_map.mp hq`. Rewrite using `[if_neg (hr τ hτ).1, mul_zero]`.
+
+Rewrite using `[h0, add_zero, if_pos rfl, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem expansion_site_zero_induction : ExpansionByLetterInduction := by
   intro hS hO hB
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' w hw l hl x y hx hy c hc

@@ -7,6 +7,13 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 
 namespace GlobalTheory.CompanionTheory.Untilt
 
+/- English proof (translation)
+Establish `chain : ∀ m k, p ^ m ∣ g (m + k) - g m`. Introduce `m k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Establish `h1 : p ^ m ∣ g (m + k + 1) - g (m + k)` using `(pow_dvd_pow p (Nat.le_add_right m k)).trans (hg (m + k))`. Use `dvd_add h1 ih` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {p}) g (fun {m n} hmn => by`. Rewrite using `[smodEq_span_singleton_pow_iff]`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Conclude with `(dvd_sub_comm).1 (chain m k))`. Conclude with `⟨L, fun n => (smodEq_span_singleton_pow_iff _ _ _ _).1 (hL n)⟩`.
+-/
 theorem exists_lim_of_dvd {R : Type*} [CommRing R] (p : R) [IsAdicComplete (Ideal.span {p}) R]
     (g : ℕ → R) (hg : ∀ n, p ^ n ∣ g (n + 1) - g n) : ∃ y, ∀ n, p ^ n ∣ g n - y := by
   have chain : ∀ m k, p ^ m ∣ g (m + k) - g m := by
@@ -24,6 +31,23 @@ theorem exists_lim_of_dvd {R : Type*} [CommRing R] (p : R) [IsAdicComplete (Idea
     exact (dvd_sub_comm).1 (chain m k))
   exact ⟨L, fun n => (smodEq_span_singleton_pow_iff _ _ _ _).1 (hL n)⟩
 
+/- English proof (translation)
+Establish `hH : IsHausdorff (Ideal.span {Ideal.Quotient.mk (Ideal.span {ξ}) p}) (R ⧸ Ideal.span {ξ})`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h1 : ∀ n : ℕ, ∃ y z, a = ξ * y + p ^ n * z`. Introduce `n`.
+
+Establish `hd` using `(smodEq_span_singleton_pow_iff _ _ _ _).1 (hx n)`. Rewrite `hd` using `[sub_zero]`. Take `⟨c, hc⟩` from `hd`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {ξ}) (a - p ^ n * c') = 0`.
+
+Rewrite using `[map_sub, map_mul, map_pow, hc, sub_self]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Conclude with `⟨y, c', by linear_combination hy⟩`. Use `choose y z hyz using h1`. Establish `hy : ∀ n, p ^ n ∣ y (n + 1) - y n` using `fun n => h n _ ⟨z n - p * z (n + 1), by linear_combination hyz n - hyz (n + 1)⟩`.
+
+Take `⟨Y, hY⟩` from `exists_lim_of_dvd p y hy`. Establish `hz : a - ξ * Y = 0`. Use `IsHausdorff.haus' (I := Ideal.span {p}) _ fun n => ?_` and prove the remaining obligations. Rewrite using `[smodEq_span_singleton_pow_iff, sub_zero]`. Take `⟨c, hc⟩` from `hY n`.
+
+Conclude with `⟨ξ * c + z n, by linear_combination hyz n + ξ * hc⟩`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 ⟨Y, sub_eq_zero.1 hz⟩)`. Establish `hP : IsPrecomplete (Ideal.span {Ideal.Quotient.mk (Ideal.span {ξ}) p}) (R ⧸ Ideal.span {ξ})`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `step : ∀ (n : ℕ) (x : R), Ideal.Quotient.mk (Ideal.span {ξ}) x = f n → ∃ y, Ideal.Quotient.mk (Ideal.span {ξ}) y = f (n + 1) ∧ p ^ n ∣ y - x`.
+
+Introduce `n x hx`. Take `⟨c, hc⟩` from `(smodEq_span_singleton_pow_iff _ _ _ _).1 (hf (Nat.le_succ n))`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨x - p ^ n * c', ?_, ⟨-c', by ring⟩⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_pow, hx, ← hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨x0, hx0⟩` from `Ideal.Quotient.mk_surjective (f 0)`. Set `G : ∀ n, {x : R // Ideal.Quotient.mk (Ideal.span {ξ}) x = f n}` to `fun n => Nat.rec ⟨x0, hx0⟩ (fun n x => ⟨(step n x.1 x.2).choose, (step n x.1 x.2).choose_spec.1⟩) n`. Establish `hG : ∀ n, p ^ n ∣ (G (n + 1)).1 - (G n).1` using `fun n => (step n _ (G n).2).choose_spec.2`. Take `⟨y, hy⟩` from `exists_lim_of_dvd p (fun n => (G n).1) hG`.
+
+Use `⟨Ideal.Quotient.mk _ y, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[smodEq_span_singleton_pow_iff]`. Use `map_dvd (Ideal.Quotient.mk (Ideal.span {ξ})) (hy n)` as an intermediate fact. Rewrite `this` using `[map_pow, map_sub, (G n).2]`. Then use the resulting hypothesis. Conclude with `{ hH, hP with }`.
+-/
 theorem isAdicComplete_quotient {R : Type*} [CommRing R] (p ξ : R)
     [IsAdicComplete (Ideal.span {p}) R] (h : ∀ (n : ℕ) (x : R), p ^ n ∣ ξ * x → p ^ n ∣ x) :
     IsAdicComplete (Ideal.span {Ideal.Quotient.mk (Ideal.span {ξ}) p}) (R ⧸ Ideal.span {ξ}) := by
@@ -71,6 +95,9 @@ theorem isAdicComplete_quotient {R : Type*} [CommRing R] (p ξ : R)
     rwa [map_pow, map_sub, (G n).2] at this
   exact { hH, hP with }
 
+/- English proof (translation)
+Introduce `l _ A`. Establish `hc` using `isAdicComplete_quotient (l : A.W) A.xi (fun n x hx => Ideal.mem_span_singleton.1 ((GlobalTheory.CompanionTheory.UntiltRegular.untilt_regular A).2.2 n x (Ideal.mem_span_singleton.2 hx)))`. Establish `e : (l : A.U) = Ideal.Quotient.mk (Ideal.span {A.xi}) (l : A.W)` using `(map_natCast A.th l).symm`. Rewrite using `[e]`. Conclude with `hc`.
+-/
 theorem isAdicComplete_U : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l),
     IsAdicComplete (Ideal.span {(l : A.U)}) A.U := by
   intro l _ A

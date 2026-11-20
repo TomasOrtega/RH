@@ -65,6 +65,11 @@ def IsShapeD {σ : E →ₐ[F] E} {n d : ℕ} {W : Spc F E d} (omd : DblRep σ (
     ∀ φ₁ ∈ SB (Fin n × Fin d ⊕ Fin n × Fin d → Fv F v), Acts (evFin F v) (omd p) φ φ₁ →
       ιd φ₁ = cd p • fun Y => ιd φ (Y * (GlobalTheory.SplitFlip.invT (locMatD t c p)).val)
 
+/- English proof (translation)
+Set `A : Matrix (Fin d) (Fin d) (AE F E)` to `mat h`. Set `Ai : Matrix (Fin d) (Fin d) (AE F E)` to `(((h : GL (Fin d) (AE F E))⁻¹ : GL (Fin d) (AE F E)) : Matrix _ _ _)`. Establish `h1 : A * Ai = 1` using `(h : GL (Fin d) (AE F E)).mul_inv`. Establish `h2 : Ai * A = 1` using `(h : GL (Fin d) (AE F E)).inv_mul`. Set `G : GL (Fin d ⊕ Fin d) (AE F E)` to `⟨Matrix.fromBlocks A 0 0 1, Matrix.fromBlocks Ai 0 0 1, by simp [fromBlocks_multiply, h1], by simp [fromBlocks_multiply, h2]⟩`.
+
+Establish `hu : Aᵀ * incM F J * A.map (cA σ) = incM F J` using `h.2`. Use `⟨⟨G, ?_⟩, rfl⟩` and prove the remaining obligations. Use `show (Matrix.fromBlocks A 0 0 1)ᵀ * dbl (incM F J) * (Matrix.fromBlocks A 0 0 1).map (cA σ) = dbl (incM F J)`. Rewrite using `[fromBlocks_transpose, fromBlocks_map, dbl, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [transpose_zero, transpose_one, Matrix.map_zero _ (map_zero (cA σ)), Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ)), Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hu]`.
+-/
 theorem exists_diag_one {σ : E →ₐ[F] E} {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (h : UA σ J) :
     ∃ gd : UD σ J, ((gd : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) =
       Matrix.fromBlocks (mat h) 0 0 1 := by
@@ -82,6 +87,11 @@ theorem exists_diag_one {σ : E →ₐ[F] E} {d : ℕ} {J : Matrix (Fin d) (Fin 
   simp only [transpose_zero, transpose_one, Matrix.map_zero _ (map_zero (cA σ)), Matrix.map_one _ (map_zero (cA σ)) (map_one (cA σ)),
     Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, hu]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `e : (locMatD t c gd).val = Matrix.fromBlocks (locMat t c h).val 0 0 1` using `by show ((dsum c)⁻¹).val * (((gd : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix _ _ _).map (piW t)) * (dsum c).val = _`. Rewrite using `[hgd, locMat_val, fromBlocks_map]`. Simplify using `only [dsum, Units.inv_mk, fromBlocks_multiply, Matrix.map_zero _ (map_zero (piW t)), Matrix.map_one _ (map_zero (piW t)) (map_one (piW t)), Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul]`. Use `congr 1`.
+
+Simplify using `[Units.mul_inv]`. Simplify using `only [GlobalTheory.SplitFlip.gdet, Matrix.GeneralLinearGroup.val_det_apply, e, det_fromBlocks_zero₂₁, det_one, mul_one]`.
+-/
 theorem gdet_locMatD_diag {σ : E →ₐ[F] E} {v : Pl F} (t : E →ₐ[F] Fv F v) {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
     (c : GL (Fin d) (Fv F v)) (h : UA σ J) (gd : UD σ J)
     (hgd : ((gd : GL (Fin d ⊕ Fin d) (AE F E)) : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) =
@@ -105,6 +115,9 @@ def fixDiag {k : Type} [CommRing k] {d : ℕ} (A : GL (Fin d) k) : GL (Fin d ⊕
   val_inv := by simp [fromBlocks_multiply, Matrix.mul_sub]
   inv_val := by simp [fromBlocks_multiply, Matrix.mul_sub]
 
+/- English proof (translation)
+Simplify using `only [fixDiag, diagCols, Matrix.mul_one]`. Rewrite using `[← fromCols_fromRows_eq_fromBlocks, fromCols_mul_fromRows, fromRows_mul, fromRows_mul]`. Apply the tactic sequence `ext (i | i) j <;> simp`.
+-/
 theorem fixDiag_diag {k : Type} [CommRing k] {d : ℕ} (A : GL (Fin d) k) :
     ((fixDiag A).val : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) k) * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) k) =
       (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) k) * (1 : Matrix (Fin d) (Fin d) k) := by
@@ -112,11 +125,17 @@ theorem fixDiag_diag {k : Type} [CommRing k] {d : ℕ} (A : GL (Fin d) k) :
   rw [← fromCols_fromRows_eq_fromBlocks, fromCols_mul_fromRows, fromRows_mul, fromRows_mul]
   ext (i | i) j <;> simp
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.SplitFlip.gdet, Matrix.GeneralLinearGroup.val_det_apply, fixDiag, det_fromBlocks_zero₂₁]`.
+-/
 theorem gdet_fixDiag {k : Type} [Field k] {d : ℕ} (A : GL (Fin d) k) :
     GlobalTheory.SplitFlip.gdet (fixDiag A) = GlobalTheory.SplitFlip.gdet A := by
   apply Units.ext
   simp [GlobalTheory.SplitFlip.gdet, Matrix.GeneralLinearGroup.val_det_apply, fixDiag, det_fromBlocks_zero₂₁]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply]`.
+-/
 theorem fromBlocks_sub_one {R : Type} [CommRing R] {d : ℕ} (A : Matrix (Fin d) (Fin d) R) :
     Matrix.fromBlocks A (0 : Matrix (Fin d) (Fin d) R) 0 (1 : Matrix (Fin d) (Fin d) R) - 1 =
       Matrix.fromBlocks (A - 1) (0 : Matrix (Fin d) (Fin d) R) 0 0 := by

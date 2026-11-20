@@ -12,6 +12,11 @@ namespace StackedExceptionalBaseBound
 
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i} {T : Type} [Fintype T]
 
+/- English proof (translation)
+Take `⟨ρ, ρ', σ, -, -, -, hker, -, -, hα, -⟩` from `hres`. Establish `hmem : ((a t • b' t : dualLattice F') : Fin i → K) ∈ dualLattice F`. Rewrite using `[Submodule.coe_smul_of_tower, ← hab t]`. Conclude with `(b t).2`. Establish `h0 : ((a t : ℤ) : k) * α t = 0`.
+
+Rewrite using `[hα t, ← zsmul_eq_mul, ← map_zsmul]`. Conclude with `(hker _).mpr hmem`. Establish `h1 : linPointMap α M (C (a t)) = C ((a t : k))` using `by simp [linPointMap]`. Rewrite using `[linPrime, RingHom.mem_ker, map_mul, h1, LinPrimeExample.linPointMap_first, ← mul_assoc, ← C_mul, h0, C_0, zero_mul]`.
+-/
 theorem centre_mem {b : Module.Basis T ℤ (dualLattice F)} {b' : Module.Basis T ℤ (dualLattice F')} {a : T → ℤ}
     (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) {k : Type} [Field k] {α : T → k}
     {M : T → Fin i → k} (hres : IsExcResidueData b b' α M) (t : T) :
@@ -31,6 +36,11 @@ end StackedExceptionalBaseBound
 
 open StackedExceptionalBaseBound in
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ α M hres`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨s, g, rfl, hg⟩` from `hBihom K i F F' T b b' a hab f hf`. Rewrite using `[linPrime, RingHom.mem_ker, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun p hp => hLead K i F F' T b b' a hi hlt hcov hab k α M hres p.1 p.2 (g p) (hg p hp).1 (hg p hp).2`. Rewrite using `[Ideal.span_le, Set.range_subset_iff]`. Conclude with `centre_mem hab hres`.
+-/
 theorem DualStackedExcBaseLe.proof (hBihom : DualStackedGraphBihomog.Statement)
     (hLead : DualStackedExcLeadForm.Statement) : DualStackedExcBaseLe.Statement := by
   intro K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ α M hres

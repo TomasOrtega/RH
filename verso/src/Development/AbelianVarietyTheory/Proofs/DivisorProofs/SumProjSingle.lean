@@ -11,6 +11,11 @@ namespace GlobalTheory.FODef
 
 variable (k : Type) [Field k] (V : Type) [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V] [IsCentralScalar k V]
 
+/- English proof (translation)
+Rewrite using `[pow_two, Submodule.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `r hr s hs`. Rewrite `hr`, `hs` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.fst r = 0 at hr`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.fst s = 0 at hs`.
+
+Rewrite using `[Submodule.mem_bot]`. Use `ext`. Simplify using `[hr, hs]`. Simplify using `[hr, hs]`.
+-/
 theorem sqZero : RingHom.ker (TrivSqZeroExt.fstHom k k V).toRingHom ^ 2 = 0 := by
   rw [pow_two, Submodule.zero_eq_bot, eq_bot_iff, Ideal.mul_le]
   intro r hr s hs
@@ -22,6 +27,9 @@ theorem sqZero : RingHom.ker (TrivSqZeroExt.fstHom k k V).toRingHom ^ 2 = 0 := b
   · simp [hr, hs]
   · simp [hr, hs]
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_hom (isDPMorphism_of_eq_bot _ rfl _ _) (by rw [← GlobalTheory.Cris.spMap_comp, ← GlobalTheory.Cris.spMap_id] congr 1) (𝟙 A₀)`.
+-/
 theorem constMorV (A₀ : Over (Sp k)) [GrpObj A₀] :
     GrpMor (dp0 k) (𝟙 _) A₀ (divided₂ (sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀
       (algebraMap k (TrivSqZeroExt k V)) (𝟙 _) (Over.Hom.left (𝟙 A₀)) :=
@@ -42,6 +50,11 @@ end GlobalTheory.FODef
 
 namespace GlobalTheory.HTUniv
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : Pi.single j (v j) = v j • (Pi.single j (1 : k) : Fin d → k)`. Use extensionality with `i`.
+
+Simplify using `[Pi.single_apply]`. Rewrite using `[e, map_smul, smul_eq_mul]`.
+-/
 theorem coord {k : Type} [Field k] {d : ℕ} (c : (Fin d → k) →ₗ[k] k) (v : Fin d → k) :
     c v = ∑ j, v j * c (Pi.single j 1) := by
   conv_lhs => rw [← Finset.univ_sum_single v]
@@ -51,6 +64,9 @@ theorem coord {k : Type} [Field k] {d : ℕ} (c : (Fin d → k) →ₗ[k] k) (v 
     ext i; simp [Pi.single_apply]
   rw [e, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, coord c, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.pi_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem comp_pi {k : Type} [Field k] {d : ℕ} {P : Type*} [AddCommGroup P] [Module k P]
     (c : (Fin d → k) →ₗ[k] k) (y : Fin d → (P →ₗ[k] k)) :
     c ∘ₗ LinearMap.pi y = ∑ j, c (Pi.single j 1) • y j := by
@@ -59,6 +75,9 @@ theorem comp_pi {k : Type} [Field k] {d : ℕ} {P : Type*} [AddCommGroup P] [Mod
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [LinearMap.smul_apply, LinearMap.pi_apply, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, LinearMap.proj_apply, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Apply the tactic sequence `try exact mul_one _`.
+-/
 theorem sum_proj_single {k : Type} [Field k] {d : ℕ} (c₀ : Fin d → k) (j : Fin d) :
     (∑ i, c₀ i • LinearMap.proj (R := k) (φ := fun _ : Fin d => k) i) (Pi.single j 1) = c₀ j := by
   rw [LinearMap.sum_apply]

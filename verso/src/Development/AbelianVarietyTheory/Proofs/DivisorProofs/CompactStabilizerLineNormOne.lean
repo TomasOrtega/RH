@@ -13,6 +13,25 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ConeNZ
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n X x₀ K hK hx v k hk l hkl`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Use `set x := incV F x₀ with hxdef`. Set `cu : (AE F E)ˣ` to `Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 (x₀ i) hi)`. Establish `hcu : (cu : AE F E) = x i` using `rfl`. Set `f : UA σ X.J → AE F E` to `fun g => (mat g *ᵥ x) i * ((cu⁻¹ : (AE F E)ˣ) : AE F E)`.
+
+Establish `hm : Continuous fun g : UA σ X.J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hf : Continuous f` using `((continuous_apply i).comp (hm.matrix_mulVec continuous_const)).mul continuous_const`. Establish `hval : ∀ g (t : AE F E), mat g *ᵥ x = t • x → f g = t` using `fun g t h => by`. Simplify using `only [f, h, Pi.smul_apply, smul_eq_mul, ← hcu, Units.mul_inv_cancel_right]`. Establish `hinv : ∀ (g : UA σ X.J) (t : (AE F E)ˣ), mat g *ᵥ x = (t : AE F E) • x → mat g⁻¹ *ᵥ x = ((t⁻¹ : (AE F E)ˣ) : AE F E) • x` using `fun g t h => by`.
+
+Establish `e1 : mat g⁻¹ * mat g = 1` using `by simpa using GlobalTheory.StabHaar.mat_mul_inv g⁻¹`. Establish `e2 : (t : AE F E) • (mat g⁻¹ *ᵥ x) = x`. Rewrite using `[← Matrix.mulVec_smul, ← h, Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`.
+
+Use `_ = _ := by rw [e2]`. Establish `hpow : ∀ (g : UA σ X.J) (t : AE F E), mat g *ᵥ x = t • x → ∀ m : ℕ, mat (g ^ m) *ᵥ x = (t ^ m) • x`. Introduce `g t h m`. Proceed by induction on `m with`. Consider the case `zero => simp [GlobalTheory.StabHaar.mat_one]`.
+
+Consider the case `succ m ih`. Rewrite using `[pow_succ, GlobalTheory.StabHaar.mat_mul, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ, mul_comm]`. Set `φ : UA σ X.J → AE F E × (AE F E)ᵐᵒᵖ` to `fun g => (f g, MulOpposite.op (f g⁻¹))`. Establish `hφ : Continuous φ` using `hf.prodMk (MulOpposite.continuous_op.comp (hf.comp continuous_inv))`. Establish `hC : IsCompact (Units.embedProduct (AE F E) ⁻¹' (φ '' (K : Set (UA σ X.J))))` using `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hK.image hφ)`.
+
+Take `⟨Cb, hCb⟩` from `(hC.image GlobalTheory.Doubling.continuous_absE).bddAbove`. Establish `key : ∀ g ∈ K, ∀ t : (AE F E)ˣ, mat g *ᵥ x = (t : AE F E) • x → absE F E t ≤ 1`. Introduce `g hg t h`. Assume the negation of the conclusion as `hlt`. Take `⟨m, hmC⟩` from `pow_unbounded_of_one_lt Cb (not_le.1 hlt)`.
+
+Establish `h1 : mat (g ^ m) *ᵥ x = ((t ^ m : (AE F E)ˣ) : AE F E) • x` using `by rw [Units.val_pow_eq_pow_val]; exact hpow g _ h m`. Establish `h2` using `hinv _ _ h1`. Establish `hmem : t ^ m ∈ Units.embedProduct (AE F E) ⁻¹' (φ '' (K : Set (UA σ X.J)))` using `⟨g ^ m, pow_mem hg m, Prod.ext (hval _ _ h1) (congrArg MulOpposite.op (hval _ _ h2))⟩`. Conclude with `not_le.2 hmC (by rw [← map_pow]; exact hCb ⟨_, hmem, rfl⟩)`. Establish `hk' : k ∈ K` using `hk.1`.
+
+Use `le_antisymm (key k hk' l hkl) ?_` and prove the remaining obligations. Establish `h1` using `key _ (inv_mem hk') _ (hinv k l hkl)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem absE_eq_one_of_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (X : Spc F E n) (x₀ : Fin n → E) (K : Subgroup (UA σ X.J)), IsCompact (K : Set (UA σ X.J)) → x₀ ≠ 0 →
     ∀ (v : Pl F) (k : UA σ X.J), k ∈ KAt K (evFin F v) → ∀ l : (AE F E)ˣ,

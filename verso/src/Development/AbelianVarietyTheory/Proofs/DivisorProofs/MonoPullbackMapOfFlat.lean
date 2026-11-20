@@ -46,6 +46,9 @@ def skyPresheafOfModules : PresheafOfModules.{u} X.ringCatSheaf.val :=
     have e := X.presheaf.germ_res_apply f.unop x h.down (r : Γ(X, U.unop))
     exact congrArg (· • m ⟨leOfHom f.unop h.down⟩) e.symm
 
+/- English proof (translation)
+Use `(TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing _).2 fun ι U sf hsf ↦ ?_` and prove the remaining obligations. Establish `key : ∀ i j (hi : x ∈ U i) (hj : x ∈ U j), sf i ⟨hi⟩ = sf j ⟨hj⟩` using `fun i j hi hj ↦ congrFun (hsf i j) ⟨⟨hi, hj⟩⟩`. Use `⟨fun h ↦ sf (Opens.mem_iSup.mp h.down).choose ⟨(Opens.mem_iSup.mp h.down).choose_spec⟩, fun i ↦ funext fun h ↦ key _ _ _ _, fun t ht ↦ funext fun h ↦ ?_⟩` and prove the remaining obligations. Use `congrFun (ht (Opens.mem_iSup.mp h.down).choose) ⟨(Opens.mem_iSup.mp h.down).choose_spec⟩` as an intermediate fact. Conclude with `this`.
+-/
 theorem skyPresheaf_isSheaf : TopCat.Presheaf.IsSheaf (X := X.toTopCat) (skyPresheaf x M) := by
   refine (TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing _).2 fun ι U sf hsf ↦ ?_
   have key : ∀ i j (hi : x ∈ U i) (hj : x ∈ U j), sf i ⟨hi⟩ = sf j ⟨hj⟩ := fun i j hi hj ↦
@@ -74,11 +77,17 @@ def skyFunctor : ModuleCat.{u} (X.presheaf.stalk x) ⥤ X.Modules where
     fun U r m ↦ funext fun h ↦ g.hom.map_smul _ (m h)⟩
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem skyFunctor_map_app {M N : ModuleCat.{u} (X.presheaf.stalk x)} (g : M ⟶ N) (U : X.Opens)
     (m : Γ(sky x M, U)) (h : PLift (x ∈ U)) :
     ((skyFunctor x).map g).app U m h = g (m h) := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sky_map_apply {U V : X.Opens} (i : V ⟶ U) (m : Γ(sky x M, U)) (h : PLift (x ∈ V)) :
     (sky x M).presheaf.map i.op m h = m ⟨leOfHom i h.down⟩ := rfl
 
@@ -89,6 +98,9 @@ def stalkFunctor : X.Modules ⥤ ModuleCat.{u} (X.presheaf.stalk x) where
   map_comp φ ψ := by ext1; exact GlobalTheory.QCoh.stalkLinear_comp φ ψ x
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stalkFunctor_map {F G : X.Modules} (φ : F ⟶ G) :
     (stalkFunctor x).map φ = ModuleCat.ofHom (GlobalTheory.QCoh.stalkLinear φ x) := rfl
 
@@ -112,6 +124,9 @@ def unitApp (F : X.Modules) : F ⟶ sky x (ModuleCat.of _ (F.presheaf.stalk x)) 
     (fun U r s ↦ funext fun h ↦ GlobalTheory.QCoh.germ_smul F x h.down r s)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitApp_app (F : X.Modules) (U : X.Opens) (s : Γ(F, U)) (h : PLift (x ∈ U)) :
     (unitApp x F).app U s h = F.presheaf.germ U x h.down s := rfl
 
@@ -122,6 +137,9 @@ def counitAb (M : ModuleCat.{u} (X.presheaf.stalk x)) :
         (fun m ↦ m ⟨U.unop.2⟩) fun _ _ ↦ rfl)
       naturality := fun U V i ↦ rfl })
 
+/- English proof (translation)
+Rewrite using `[TopCat.Presheaf.germ, counitAb]`. Use `erw [colimit.ι_desc_apply]`. Both sides reduce to the same expression.
+-/
 theorem counitAb_germ (M : ModuleCat.{u} (X.presheaf.stalk x)) (U : X.Opens) (hx : x ∈ U)
     (m : Γ(sky x M, U)) : counitAb x M ((sky x M).presheaf.germ U x hx m) = m ⟨hx⟩ := by
   rw [TopCat.Presheaf.germ, counitAb]
@@ -149,6 +167,9 @@ def counitApp (M : ModuleCat.{u} (X.presheaf.stalk x)) :
         rfl }
 
 @[simp]
+/- English proof (translation)
+The claim follows from `counitAb_germ x M U hx m`.
+-/
 theorem counitApp_germ (M : ModuleCat.{u} (X.presheaf.stalk x)) (U : X.Opens) (hx : x ∈ U)
     (m : Γ(sky x M, U)) : counitApp x M ((sky x M).presheaf.germ U x hx m) = m ⟨hx⟩ :=
   counitAb_germ x M U hx m
@@ -185,10 +206,16 @@ def adjunction : stalkFunctor x ⊣ skyFunctor x :=
 
 end GlobalTheory.SkyMod
 
+/- English proof (translation)
+The claim follows from `fun _ x ↦ ⟨GlobalTheory.SkyMod.adjunction x⟩`.
+-/
 theorem GlobalTheory.SkyMod.nonempty_adjunction : ∀ (X : Scheme.{0}) (x : X), Nonempty (GlobalTheory.SkyMod.stalkFunctor x ⊣ GlobalTheory.SkyMod.skyFunctor x) := fun _ x ↦ ⟨GlobalTheory.SkyMod.adjunction x⟩
 
 open GlobalTheory.SkyMod in
 
+/- English proof (translation)
+Introduce `X Y f x`. Establish `key : ∀ (M : ModuleCat.{0} (X.presheaf.stalk x)) (U : Y.Opens) (r : Γ(Y, U)) (m : Obj x (f ⁻¹ᵁ U) M) (h : PLift (f x ∈ U)), X.presheaf.germ (f ⁻¹ᵁ U) x h.down (f.app U r) • m h = f.stalkMap x (Y.presheaf.germ U (f x) h.down r) • m h` using `fun M U r m h ↦ by`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Use `⟨NatIso.ofComponents (fun M ↦ ⟨⟨PresheafOfModules.homMk (𝟙 _) (fun U r m ↦ funext fun h ↦ key M U.unop r m h)⟩, ⟨PresheafOfModules.homMk (𝟙 _) (fun U r m ↦ funext fun h ↦ (key M U.unop r m h).symm)⟩, rfl, rfl⟩) (fun g ↦ rfl)⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.SkyMod.nonempty_sky_pushforward_iso : ∀ (X Y : Scheme.{0}) (f : X ⟶ Y) (x : X), Nonempty (GlobalTheory.SkyMod.skyFunctor x ⋙ Scheme.Modules.pushforward f ≅ ModuleCat.restrictScalars (f.stalkMap x).hom ⋙ GlobalTheory.SkyMod.skyFunctor (f x)) := by
   intro X Y f x
   have key : ∀ (M : ModuleCat.{0} (X.presheaf.stalk x)) (U : Y.Opens) (r : Γ(Y, U))
@@ -203,6 +230,17 @@ theorem GlobalTheory.SkyMod.nonempty_sky_pushforward_iso : ∀ (X Y : Scheme.{0}
 
 open GlobalTheory.SkyMod in
 
+/- English proof (translation)
+Introduce `X Y f _ G G' φ _`. Rewrite using `[GlobalTheory.QCoh.mono_iff_stalkLinear_injective]`. Introduce `x`. Take `⟨a₁⟩` from `GlobalTheory.SkyMod.nonempty_adjunction X x`. Take `⟨a₂⟩` from `GlobalTheory.SkyMod.nonempty_adjunction Y (f x)`.
+
+Take `⟨e⟩` from `GlobalTheory.SkyMod.nonempty_sky_pushforward_iso X Y f x`. Set `adjA` to `((Scheme.Modules.pullbackPushforwardAdjunction f).comp a₁).ofNatIsoRight e`. Set `adjB` to `a₂.comp (ModuleCat.extendRestrictScalarsAdj (f.stalkMap x).hom)`. Set `iso` to `adjA.leftAdjointUniq adjB`. Establish `hn` using `iso.hom.naturality φ`.
+
+Establish `hφ : Function.Injective (GlobalTheory.QCoh.stalkLinear φ (f x))` using `GlobalTheory.QCoh.stalkLinear_injective φ (f x)`. Use `letI := (f.stalkMap x).hom.toAlgebra`. Use `haveI : Module.Flat (Y.presheaf.stalk (f x)) (X.presheaf.stalk x) := Flat.stalkMap f x`. Establish `hext : Function.Injective ((ModuleCat.extendScalars (f.stalkMap x).hom).map ((stalkFunctor (f x)).map φ))`. Express the relevant statement in the definitionally equal form `Function.Injective (LinearMap.baseChange _ (GlobalTheory.QCoh.stalkLinear φ (f x)))`.
+
+Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hφ`. Establish `h2 : Function.Injective (((Functor.comp (Scheme.Modules.pullback f) (stalkFunctor x)).map φ ≫ iso.hom.app G').hom)`. Rewrite using `[hn, ModuleCat.hom_comp, LinearMap.coe_comp]`. Conclude with `hext.comp (iso.app G).toLinearEquiv.injective`.
+
+Rewrite `h2` using `[ModuleCat.hom_comp, LinearMap.coe_comp]`. Conclude with `Function.Injective.of_comp h2`.
+-/
 theorem GlobalTheory.mono_pullback_map_of_flat : ∀ (X Y : Scheme.{0}) (f : X ⟶ Y) [Flat f] (G G' : Y.Modules)
     (φ : G ⟶ G') [Mono φ], Mono ((Scheme.Modules.pullback f).map φ) := by
   intro X Y f _ G G' φ _

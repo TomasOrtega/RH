@@ -19,6 +19,15 @@ section gen
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `g₀ hG`. Use `⟨P5.Rad.retDom g₀, fun Y => f (P5.Rad.ret g₀ Y), P5.Rad.isOpen_retDom g₀, P5.Rad.self_mem_retDom hG, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y hY`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Rewrite using `[show (((⊤ : ℕ∞) : WithTop ℕ∞)) = ∞ from rfl, contDiffAt_infty]`.
+
+Introduce `n`. Take `⟨U, F, hU, hYU, hF, hfF⟩` from `hf n (P5.Rad.ret g₀ Y) (P5.Rad.ret_mem hG hY)`. Establish `hr : ContDiffAt ℝ ∞ (P5.Rad.ret g₀) Y` using `(P5.Rad.cd_ret g₀).contDiffAt ((P5.Rad.isOpen_retDom g₀).mem_nhds hY)`. Establish `hFa : ContDiffAt ℝ n F (P5.Rad.ret g₀ Y)`. Use `hF.contDiffAt (hU.mem_nhds hYU)` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Establish `hcomp : ContDiffAt ℝ n (fun Y' => F (P5.Rad.ret g₀ Y')) Y` using `hFa.comp Y (hr.of_le (mod_cast le_top))`. Use `hcomp.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(P5.Rad.isOpen_retDom g₀).mem_nhds hY, hr.continuousAt.preimage_mem_nhds (hU.mem_nhds hYU)] with Y' h1 h2`. Conclude with `hfF _ h2 (P5.Rad.ret_mem hG h1)`.
+
+Introduce `Y hY hYG show f Y = f (P5.Rad.ret g₀ Y)`. Rewrite using `[P5.Rad.ret_self hG hYG hY.1]`.
+-/
 theorem ckOn_top_of_nat {f : B.Mat k r → E} (hf : ∀ m : ℕ, B.CkOn (m : ℕ∞) (B.GV k r) f) :
     B.CkOn ⊤ (B.GV k r) f := by
   intro g₀ hG
@@ -43,6 +52,9 @@ theorem ckOn_top_of_nat {f : B.Mat k r → E} (hf : ∀ m : ℕ, B.CkOn (m : ℕ
     show f Y = f (P5.Rad.ret g₀ Y)
     rw [P5.Rad.ret_self hG hYG hY.1]
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hh _ (B5.curve_mem hg hX t)`.
+-/
 theorem rdV_congrGV {X : B.Mat k r} (hX : B.inLie k r X) {h₁ h₂ : B.Mat k r → E}
     (hh : ∀ g ∈ B.GV k r, h₁ g = h₂ g) : ∀ g ∈ B.GV k r, RdV X h₁ g = RdV X h₂ g := by
   intro g hg
@@ -51,6 +63,9 @@ theorem rdV_congrGV {X : B.Mat k r} (hX : B.inLie k r X) {h₁ h₂ : B.Mat k r 
   funext t
   exact hh _ (B5.curve_mem hg hX t)
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, hh => hh | X :: v, hv, _, _, hh => by show ∀ g ∈ B.GV k r, RdV X (B.Rw v _) g = RdV X (B.Rw v _) g exact rdV_congrGV (hv X (by simp)) (rw_congrGV v (fun Y hY => hv Y (by simp [hY])) hh)`.
+-/
 theorem rw_congrGV : ∀ (v : List (B.Mat k r)), (∀ X ∈ v, B.inLie k r X) → ∀ {h₁ h₂ : B.Mat k r → E},
     (∀ g ∈ B.GV k r, h₁ g = h₂ g) → ∀ g ∈ B.GV k r, B.Rw v h₁ g = B.Rw v h₂ g
   | [], _, _, _, hh => hh
@@ -58,6 +73,11 @@ theorem rw_congrGV : ∀ (v : List (B.Mat k r)), (∀ X ∈ v, B.inLie k r X) �
     show ∀ g ∈ B.GV k r, RdV X (B.Rw v _) g = RdV X (B.Rw v _) g
     exact rdV_congrGV (hv X (by simp)) (rw_congrGV v (fun Y hY => hv Y (by simp [hY])) hh)
 
+/- English proof (translation)
+Introduce `g hg hgU`. Unfold `RdV`. Establish `hc : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))` using `(B5.curve_contDiff g X).continuous`. Establish `hU0 : U ∈ 𝓝 (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[B5.curve_zero]`.
+
+Conclude with `hU.mem_nhds hgU`. Establish `hev : (fun t : ℝ => h (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] fun _ => 0` using `by filter_upwards [hc.continuousAt.preimage_mem_nhds hU0] with t ht`. Conclude with `hh _ (B5.curve_mem hg hX t) ht`. Rewrite using `[hev.deriv_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem rdV_zero_near {X : B.Mat k r} (hX : B.inLie k r X) {h : B.Mat k r → E} {U : Set (B.Mat k r)}
     (hU : IsOpen U) (hh : ∀ g ∈ B.GV k r, g ∈ U → h g = 0) : ∀ g ∈ B.GV k r, g ∈ U → RdV X h g = 0 := by
   intro g hg hgU
@@ -71,6 +91,9 @@ theorem rdV_zero_near {X : B.Mat k r} (hX : B.inLie k r X) {h : B.Mat k r → E}
   rw [hev.deriv_eq]
   simp
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _, hh => hh | X :: v, hv, _, _, hU, hh => by show ∀ g ∈ B.GV k r, g ∈ _ → RdV X (B.Rw v _) g = 0 exact rdV_zero_near (hv X (by simp)) hU (rw_zero_near v (fun Y hY => hv Y (by simp [hY])) hU hh)`.
+-/
 theorem rw_zero_near : ∀ (v : List (B.Mat k r)), (∀ X ∈ v, B.inLie k r X) → ∀ {h : B.Mat k r → E}
     {U : Set (B.Mat k r)}, IsOpen U → (∀ g ∈ B.GV k r, g ∈ U → h g = 0) →
     ∀ g ∈ B.GV k r, g ∈ U → B.Rw v h g = 0
@@ -86,6 +109,11 @@ section ops
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `B.opApply`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `T _`.
+
+Rewrite using `[rw_congrGV T.word T.word_lie hh g hg]`.
+-/
 theorem opApply_congrGV (Θ : B.DiffOp k r Wp Wq) {F₁ F₂ : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hh : ∀ g ∈ B.GV k r, F₁ g = F₂ g) : ∀ g ∈ B.GV k r, B.opApply Θ F₁ g = B.opApply Θ F₂ g := by
   intro g hg
@@ -95,6 +123,11 @@ theorem opApply_congrGV (Θ : B.DiffOp k r Wp Wq) {F₁ F₂ : B.Mat k r → (Wq
   intro T _
   rw [rw_congrGV T.word T.word_lie hh g hg]
 
+/- English proof (translation)
+Introduce `g hg hgU`. Unfold `B.opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `x hx`. Take `⟨T, _, rfl⟩` from `List.mem_map.1 hx`.
+
+Rewrite using `[rw_zero_near T.word T.word_lie hU hh g hg hgU, map_zero]`.
+-/
 theorem opApply_zero_near (Θ : B.DiffOp k r Wp Wq) {F : B.Mat k r → (Wq →L[ℂ] Wp)} {U : Set (B.Mat k r)}
     (hU : IsOpen U) (hh : ∀ g ∈ B.GV k r, g ∈ U → F g = 0) : ∀ g ∈ B.GV k r, g ∈ U → B.opApply Θ F g = 0 := by
   intro g hg hgU
@@ -110,12 +143,21 @@ section casts
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]` and apply the resulting hypothesis.
+-/
 theorem castM_GV {a b : ℕ} (e : a = b) {x : B.Mat k a} (hx : x ∈ B.GV k a) : D.castM e x ∈ B.GV k b := by
   subst e; rwa [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+-/
 theorem gN_castM {a b : ℕ} (e : a = b) (x : B.Mat k a) : B.gN (D.castM e x) = B.gN x := by
   subst e; rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.JCTx6.Link2.castV_self, Formalism.FourierDecayAlt.P.JCTx6.Link2.castV_self]`.
+-/
 theorem Gf_castM {a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) (x : B.Mat k a) :
     Gf k a (D.castV e.symm z) (D.castV e.symm z') x = Gf k b z z' (D.castM e x) := by
   subst e; rw [Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, Formalism.FourierDecayAlt.P.JCTx6.Link2.castV_self,
@@ -123,6 +165,11 @@ theorem Gf_castM {a b : ℕ} (e : a = b) (z z' : Fin (2 * b + k + 1) → ℂ) (x
 
 end casts
 
+/- English proof (translation)
+Establish `hcl : IsClosed {g : B.Mat k r | B.gN g ≤ R}` using `isClosed_le Formalism.FourierDecayAlt.P.B6.gN_continuous continuous_const`. Use `(isCompact_closedBall (0 : B.Mat k r) R).of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(Matrix.norm_le_iff ((norm_nonneg _).trans ((Formalism.FourierDecayAlt.P.Dx3.entry_le_gN g 0 0).trans hg))).2 ?_` and prove the remaining obligations.
+
+Introduce `i j`. Conclude with `(Formalism.FourierDecayAlt.P.Dx3.entry_le_gN g i j).trans hg`.
+-/
 theorem isCompact_gN_le (k r : ℕ) (R : ℝ) : IsCompact {g : B.Mat k r | B.gN g ≤ R} := by
   have hcl : IsClosed {g : B.Mat k r | B.gN g ≤ R} := isClosed_le Formalism.FourierDecayAlt.P.B6.gN_continuous continuous_const
   refine (isCompact_closedBall (0 : B.Mat k r) R).of_isClosed_subset hcl ?_

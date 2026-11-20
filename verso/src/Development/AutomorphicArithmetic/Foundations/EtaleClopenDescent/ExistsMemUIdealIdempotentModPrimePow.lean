@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsTjCorrDiagMod
 
 open NumberField GlobalTheory.UPel.HT GlobalTheory.UPel.HT.ES
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h1`. Take `⟨d, hd⟩` from `h2`. Use `⟨3 * a ^ 2 - 2 * a ^ 3, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : a ^ 2 * (3 - 2 * a) ∈ I` using `I.mul_mem_right _ (by`. Rewrite using `[pow_two]`.
+
+Conclude with `I.mul_mem_left _ ha)`. Establish `e : 3 * a ^ 2 - 2 * a ^ 3 = a ^ 2 * (3 - 2 * a)` using `by ring`. Rewrite using `[e]`. Conclude with `h3`. Establish `e1 : 3 * a ^ 2 - 2 * a ^ 3 + σ (3 * a ^ 2 - 2 * a ^ 3) - 1 = -3 * (a + σ a - 1) ^ 2 - 2 * (a + σ a - 1) ^ 3 + 6 * (a * σ a) * (a + σ a - 1)`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hc, hd]`. Conclude with `⟨P ^ k * (-3 * c ^ 2 - 2 * P ^ (k + 1) * c ^ 3 + 6 * d * c), by ring⟩`. Establish `e2 : (3 * a ^ 2 - 2 * a ^ 3) * σ (3 * a ^ 2 - 2 * a ^ 3) = (a * σ a) ^ 2 * ((3 - 2 * a) * (3 - 2 * σ a))`.
+
+Simplify using `only [map_sub, map_mul, map_pow, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, hd]`. Conclude with `⟨P ^ k * d ^ 2 * ((3 - 2 * a) * (3 - 2 * σ a)), by ring⟩`.
+-/
 private theorem UpperTheory.Cb.idempotent_lift_succ_pow {R : Type*} [CommRing R] (σ : R →+* R) (P : R) (I : Ideal R) (k : ℕ)
     (a : R) (ha : a ∈ I) (h1 : P ^ (k + 1) ∣ a + σ a - 1) (h2 : P ^ (k + 1) ∣ a * σ a) :
     ∃ a' ∈ I, P ^ (k + 2) ∣ a' + σ a' - 1 ∧ P ^ (k + 2) ∣ a' * σ a' := by
@@ -28,6 +37,9 @@ private theorem UpperTheory.Cb.idempotent_lift_succ_pow {R : Type*} [CommRing R]
     rw [e2, hd]
     exact ⟨P ^ k * d ^ 2 * ((3 - 2 * a) * (3 - 2 * σ a)), by ring⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨a, ha, by simpa using h1, by simpa using h2⟩`. Consider the case `succ k ih`. Take `⟨b, hb, hb1, hb2⟩` from `ih`. Conclude with `UpperTheory.Cb.idempotent_lift_succ_pow σ P I k b hb hb1 hb2`.
+-/
 private theorem UpperTheory.Cb.exists_idempotent_lift_pow {R : Type*} [CommRing R] (σ : R →+* R) (P : R) (I : Ideal R)
     (a : R) (ha : a ∈ I) (h1 : P ∣ a + σ a - 1) (h2 : P ∣ a * σ a) (k : ℕ) :
     ∃ a' ∈ I, P ^ (k + 1) ∣ a' + σ a' - 1 ∧ P ^ (k + 1) ∣ a' * σ a' := by
@@ -37,6 +49,33 @@ private theorem UpperTheory.Cb.exists_idempotent_lift_pow {R : Type*} [CommRing 
     obtain ⟨b, hb, hb1, hb2⟩ := ih
     exact UpperTheory.Cb.idempotent_lift_succ_pow σ P I k b hb hb1 hb2
 
+/- English proof (translation)
+Introduce `p _ D r w e hw hle`. Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out : p.Prime)`. Use `set x : 𝓞 D.F := D.ω - (r : 𝓞 D.F) with hx`. Use `set N : ℤ := r ^ 2 - D.tr * r + D.nm with hN`. Use `set s : ℤ := D.tr - 2 * r with hs`.
+
+Establish `hbx : D.bar x = D.bar D.ω - (r : 𝓞 D.F)`. Simplify using `[x, map_sub, map_intCast]`. Establish `hxN : x * D.bar x = (N : 𝓞 D.F)`. Rewrite using `[hbx]`. Move the coercions through the operations in `[N]`.
+
+Take the linear combination `D.nm_eq - (r : 𝓞 D.F) * D.tr_eq`. Establish `hxs : x + D.bar x = (s : 𝓞 D.F)`. Rewrite using `[hbx]`. Move the coercions through the operations in `[s]`. Take the linear combination `D.tr_eq`.
+
+Establish `hpN : (p : ℤ) ∣ N`. Assume the negation of the conclusion as `hnd`. Take `⟨u, v, huv⟩` from `(Irreducible.coprime_iff_not_dvd hp.irreducible).mpr hnd`. Apply `hw` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `hpw : ((p : ℤ) : 𝓞 D.F) ∈ w`. Use `hle (p_mem_uIdeal D r)` as an intermediate fact. Simplify using `using this`. Establish `hNw : ((N : ℤ) : 𝓞 D.F) ∈ w`. Rewrite using `[← hxN]`.
+
+Conclude with `w.mul_mem_right _ (hle (sub_mem_uIdeal D r))`. Establish `h1 : ((u * p + v * N : ℤ) : 𝓞 D.F) ∈ w`. Use `push_cast`. Conclude with `w.add_mem (w.mul_mem_left _ (by simpa using hpw)) (w.mul_mem_left _ hNw)`. Rewrite `h1` using `[huv]`.
+
+Simplify using `using h1`. Establish `hps : ¬ (p : ℤ) ∣ s`. Introduce `hd`. Apply `D.disc_p` to reduce the goal to its premises. Establish `e : D.tr ^ 2 - 4 * D.nm = s ^ 2 - 4 * N`.
+
+Simplify using `only [s, N]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_pow hd two_ne_zero) (dvd_mul_of_dvd_right hpN 4)`. Take `⟨u, v, huv⟩` from `(Irreducible.coprime_iff_not_dvd hp.irreducible).mpr hps`.
+
+Take `⟨N', hN'⟩` from `hpN`. Establish `ha : (v : 𝓞 D.F) * x ∈ uIdeal D r` using `(uIdeal D r).mul_mem_left _ (sub_mem_uIdeal D r)`. Establish `h1 : (p : 𝓞 D.F) ∣ (v : 𝓞 D.F) * x + D.bar ((v : 𝓞 D.F) * x) - 1`. Use `⟨-(u : 𝓞 D.F), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast]`.
+
+Establish `e : (v : 𝓞 D.F) * x + (v : 𝓞 D.F) * D.bar x - 1 = (v : 𝓞 D.F) * (x + D.bar x) - 1` using `by ring`. Rewrite using `[e, hxs]`. Establish `huv' : ((u * p + v * s : ℤ) : 𝓞 D.F) = 1` using `by rw [huv]; simp`. Move the coercions through the operations in `at huv'`. Take the linear combination `huv'`.
+
+Establish `h2 : (p : 𝓞 D.F) ∣ (v : 𝓞 D.F) * x * D.bar ((v : 𝓞 D.F) * x)`. Use `⟨(v : 𝓞 D.F) ^ 2 * (N' : 𝓞 D.F), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast]`. Establish `e : (v : 𝓞 D.F) * x * ((v : 𝓞 D.F) * D.bar x) = (v : 𝓞 D.F) ^ 2 * (x * D.bar x)` using `by ring`. Rewrite using `[e, hxN, hN']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a', ha', h1', h2'⟩` from `UpperTheory.Cb.exists_idempotent_lift_pow (D.bar : 𝓞 D.F →+* 𝓞 D.F) (p : 𝓞 D.F) (uIdeal D r) _ ha (by simpa using h1) (by simpa using h2) e`. Use `⟨a', ha', ?_, ?_⟩` and prove the remaining obligations. Conclude with `(pow_dvd_pow _ (Nat.le_succ e)).trans (by simpa using h1')`.
+
+Conclude with `(pow_dvd_pow _ (Nat.le_succ e)).trans (by simpa using h2')`.
+-/
 theorem UpperTheory.Cb.exists_mem_uIdeal_idempotent_mod_prime_pow :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (r : ℤ) (w : Ideal (𝓞 D.F)) (e : ℕ), w ≠ ⊤ → uIdeal D r ≤ w → ∃ a ∈ uIdeal D r, (p : 𝓞 D.F) ^ e ∣ a + D.bar a - 1 ∧ (p : 𝓞 D.F) ^ e ∣ a * D.bar a := by
   intro p _ D r w e hw hle

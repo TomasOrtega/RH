@@ -23,15 +23,24 @@ noncomputable def galPointsHom : Gal(L/K) →* AddMonoid.End (W.baseChange L).to
     cases P <;> rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galPointsHom_zero (σ : Gal(L/K)) : galPointsHom K L W σ 0 = 0 :=
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl⟩`.
+-/
 theorem galPointsHom_some (σ : Gal(L/K)) {x y : L}
     (h : (W.baseChange L).toAffine.Nonsingular x y) :
     ∃ h' : (W.baseChange L).toAffine.Nonsingular (σ x) (σ y),
       galPointsHom K L W σ (.some x y h) = .some (σ x) (σ y) h' :=
   ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨h', e⟩` from `galPointsHom_some K L W σ h`. Rewrite using `[e]`. Simplify using `only [Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+-/
 theorem galPointsHom_some_eq_self {σ : Gal(L/K)} {x y : L}
     (h : (W.baseChange L).toAffine.Nonsingular x y) (hx : σ x = x) (hy : σ y = y) :
     galPointsHom K L W σ (.some x y h) = .some x y h := by
@@ -59,6 +68,9 @@ noncomputable def galTorsionHom (n : ℕ) :
     rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_galTorsionHom_apply (n : ℕ) (σ : Gal(L/K))
     (P : torsionBy (W.baseChange L).toAffine.Point n) :
     ((galTorsionHom K L W n σ P : torsionBy (W.baseChange L).toAffine.Point n) :
@@ -80,18 +92,30 @@ noncomputable abbrev galTorsionZ (n : ℕ) : Rep.{u} ℤ Gal(L/K) :=
     (torsionBy (W.baseChange L).toAffine.Point n)).toRingHom.toMonoidHom.comp
     (galTorsionHom K L W n))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galPoints_ρ_apply (σ : Gal(L/K)) (P : (W.baseChange L).toAffine.Point) :
     (galPoints.{w} K L W).ρ σ P = galPointsHom K L W σ P :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galPointsZ_ρ_apply (σ : Gal(L/K)) (P : (W.baseChange L).toAffine.Point) :
     (galPointsZ K L W).ρ σ P = galPointsHom K L W σ P :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galTorsion_ρ_apply (n : ℕ) (σ : Gal(L/K)) (P : torsionBy (W.baseChange L).toAffine.Point n) :
     (galTorsion.{w} K L W n).ρ σ P = galTorsionHom K L W n σ P :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galTorsionZ_ρ_apply (n : ℕ) (σ : Gal(L/K))
     (P : torsionBy (W.baseChange L).toAffine.Point n) :
     (galTorsionZ K L W n).ρ σ P = galTorsionHom K L W n σ P :=
@@ -103,6 +127,9 @@ section Discrete
 
 variable {K L : Type u} [Field K] [Field L] [Algebra K L] [DecidableEq L] (W : WeierstrassCurve K)
 
+/- English proof (translation)
+Establish `: FiniteDimensional K K⟮x⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Establish `: FiniteDimensional K K⟮y⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)`. Use `Subgroup.isOpen_mono (H₁ := (K⟮x⟯).fixingSubgroup ⊓ (K⟮y⟯).fixingSubgroup) (fun σ hσ => h σ (apply_eq_of_mem_fixingSubgroup_adjoin hσ.1) (apply_eq_of_mem_fixingSubgroup_adjoin hσ.2)) ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `(fixingSubgroup_isOpen _).inter (fixingSubgroup_isOpen _)`.
+-/
 theorem isOpen_of_forall_apply_eq_apply_eq_mem [Algebra.IsIntegral K L] (H : Subgroup Gal(L/K))
     (x y : L) (h : ∀ σ : Gal(L/K), σ x = x → σ y = y → σ ∈ H) : IsOpen (H : Set Gal(L/K)) := by
   have : FiniteDimensional K K⟮x⟯ := adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)
@@ -113,6 +140,9 @@ theorem isOpen_of_forall_apply_eq_apply_eq_mem [Algebra.IsIntegral K L] (H : Sub
   rw [Subgroup.coe_inf]
   exact (fixingSubgroup_isOpen _).inter (fixingSubgroup_isOpen _)
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Establish `: H = ⊤` using `eq_top_iff.mpr fun σ _ => h σ rfl`. Rewrite using `[this]`. Conclude with `isOpen_univ`. Conclude with `isOpen_of_forall_apply_eq_apply_eq_mem H x y fun σ hx hy => h σ (galPointsHom_some_eq_self K L W hP hx hy)`.
+-/
 theorem isOpen_stabilizer_point [Algebra.IsIntegral K L] (H : Subgroup Gal(L/K))
     (P : (W.baseChange L).toAffine.Point) (h : ∀ σ, galPointsHom K L W σ P = P → σ ∈ H) :
     IsOpen (H : Set Gal(L/K)) := by

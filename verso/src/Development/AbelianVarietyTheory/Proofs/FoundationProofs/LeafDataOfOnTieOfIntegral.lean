@@ -27,15 +27,26 @@ variable {K Z P : Type} [Field K] [NumberField K] [AddCommGroup Z] [Module K Z] 
 
 def trace : Z →ₗ[K] Z := ∑ u : U, ((ψ (u : P) : 𝓞 K) : K) • ρ (u : P)⁻¹
 
+/- English proof (translation)
+Simplify using `only [trace, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Finset.sum_congr rfl fun u _ => algebraMap_smul K _ _`.
+-/
 theorem trace_apply (y : Z) : trace ρ U ψ y = ∑ u : U, ψ (u : P) • ρ (u : P)⁻¹ y := by
   simp only [trace, LinearMap.sum_apply, LinearMap.smul_apply]
   exact Finset.sum_congr rfl fun u _ => algebraMap_smul K _ _
 
 variable {ρ U ψ}
 
+/- English proof (translation)
+Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eig_iff {y : Z} : y ∈ eig ρ U ψ ↔ ∀ u : U, ρ (u : P) y = ((ψ (u : P) : 𝓞 K) : K) • y := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Use `mem_eig_iff.2 fun a => ?_` and prove the remaining obligations. Simplify using `only [trace, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum]`. Use `(Fintype.sum_equiv (Equiv.mulRight a) _ _ fun u => ?_).symm` and prove the remaining obligations. Establish `e : ρ (a : P) (ρ ((u : P) * a)⁻¹ y) = ρ (u : P)⁻¹ y`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_rev, mul_inv_cancel_left]`.
+
+Rewrite using `[Equiv.coe_mulRight, Subgroup.coe_mul, e, hψ _ u.2 _ a.2, smul_smul, mul_comm (ψ u)]`. Conclude with `congrArg (· • _) (map_mul (algebraMap (𝓞 K) K) _ _).symm`.
+-/
 theorem trace_mem_eig (hψ : ∀ a ∈ U, ∀ b ∈ U, ψ (a * b) = ψ a * ψ b) (y : Z) : trace ρ U ψ y ∈ eig ρ U ψ := by
   refine mem_eig_iff.2 fun a => ?_
   simp only [trace, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum]
@@ -45,6 +56,11 @@ theorem trace_mem_eig (hψ : ∀ a ∈ U, ∀ b ∈ U, ψ (a * b) = ψ a * ψ b)
   rw [Equiv.coe_mulRight, Subgroup.coe_mul, e, hψ _ u.2 _ a.2, smul_smul, mul_comm (ψ u)]
   exact congrArg (· • _) (map_mul (algebraMap (𝓞 K) K) _ _).symm
 
+/- English proof (translation)
+Simplify using `only [trace, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => y) fun u _ => ?_, Finset.sum_const, Nat.card_eq_fintype_card, Nat.cast_smul_eq_nsmul, Finset.card_univ]`. Establish `e : ((ψ (u : P) : 𝓞 K) : K) * ((ψ (u : P)⁻¹ : 𝓞 K) : K) = 1`. Use `hψ _ u.2 _ (U.inv_mem u.2)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`.
+
+Conclude with `congrArg (fun a : 𝓞 K => (a : K)) this.symm` after adjusting the coercions. Use `mem_eig_iff.1 hy u⁻¹` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_inv]`. Rewrite using `[this, smul_smul, e, one_smul]`.
+-/
 theorem trace_of_mem_eig (h1 : ψ 1 = 1) (hψ : ∀ a ∈ U, ∀ b ∈ U, ψ (a * b) = ψ a * ψ b) {y : Z} (hy : y ∈ eig ρ U ψ) :
     trace ρ U ψ y = ((Nat.card U : ℕ) : K) • y := by
   simp only [trace, LinearMap.sum_apply, LinearMap.smul_apply]
@@ -69,6 +85,9 @@ section Coord
 
 variable {F K : Type} [Field F] [Field K] [NumberField K] [Algebra F K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[finsum_eq_sum_of_fintype, trace_apply]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[← hf u, ← hρ, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem sum_eq_trace {C : Type} [AddCommGroup C] [Module F C] {z : (Fin n → K) ≃ₗ[K] K ⊗[F] C} {P : Type} [Group P]
     {ρ : Representation K P (Fin n → K)} {U : Subgroup P} [Fintype U] (ψ : P → 𝓞 K) {act : P → C → C}
     (hρ : ∀ g y, ρ g (z.symm (1 ⊗ₜ y)) = z.symm (1 ⊗ₜ act g y)) {f : U → C} {y : C} (hf : ∀ u : U, act u (f u) = y) :
@@ -77,6 +96,17 @@ theorem sum_eq_trace {C : Type} [AddCommGroup C] [Module F C] {z : (Fin n → K)
   refine Finset.sum_congr rfl fun u _ => ?_
   rw [← hf u, ← hρ, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨f, hf⟩, hF, rfl⟩`. Express the relevant statement in the definitionally equal form `f ∈ Submodule.span (𝓞 F) s at hF`. It suffices to establish `key : ∃ hf : f ∈ C, z.symm (1 ⊗ₜ (⟨f, hf⟩ : C)) ∈ M from key.2`. Use `clear hf`.
+
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨hs x hx, hM ⟨x, hs x hx⟩ hx⟩`. Consider the case `zero`. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.symm (1 ⊗ₜ (0 : C)) ∈ _`.
+
+Rewrite using `[TensorProduct.tmul_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Take `⟨a, hx⟩` from `hx`. Take `⟨b, hy⟩` from `hy`.
+
+Use `⟨add_mem a b, ?_⟩` and prove the remaining obligations. Use `add_mem hx hy` as an intermediate fact. Rewrite `this` using `[← map_add, ← TensorProduct.tmul_add]`. Then use the resulting hypothesis. Consider the case `smul r x _ hx`. Take `⟨a, hx⟩` from `hx`.
+
+Establish `e : r • x = (r : F) • x` using `(algebraMap_smul F r x).symm`. Use `⟨e ▸ C.smul_mem _ a, ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨r • x, e ▸ C.smul_mem _ a⟩ : C) = (r : F) • (⟨x, a⟩ : C)` using `Subtype.ext e`. Rewrite using `[e1, TensorProduct.tmul_smul, ← algebraMap_smul K (r : F), map_smul]`. Conclude with `M.smul_mem (algebraMap (𝓞 F) (𝓞 K) r) hx`.
+-/
 theorem spanK_comap_span_le {R : Type} [AddCommGroup R] [Module F R] [Module (𝓞 F) R] [IsScalarTower (𝓞 F) F R]
     (C : Submodule F R) (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) {s : Set R} (hs : ∀ f ∈ s, f ∈ C)
     {M : Submodule (𝓞 K) (Fin n → K)} (hM : ∀ y : C, y.1 ∈ s → z.symm (1 ⊗ₜ y) ∈ M) :
@@ -107,6 +137,9 @@ theorem spanK_comap_span_le {R : Type} [AddCommGroup R] [Module F R] [Module (�
     rw [e1, TensorProduct.tmul_smul, ← algebraMap_smul K (r : F), map_smul]
     exact M.smul_mem (algebraMap (𝓞 F) (𝓞 K) r) hx
 
+/- English proof (translation)
+The claim follows from `sum_eq_trace ψ hρ hf`.
+-/
 theorem sum_eq_trace_cusp {B : WeightFamilies.Prov D} {j : ℕ} {w : WeightFamilies.Wt D j} [Algebra B.KO K]
     {z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w} {P : Type} [Group P]
     {ρ : Representation K P (Fin n → K)} {U : Subgroup P} [Fintype U] (ψ : P → 𝓞 K) {act : P → B.Cusp j w → B.Cusp j w}
@@ -114,12 +147,18 @@ theorem sum_eq_trace_cusp {B : WeightFamilies.Prov D} {j : ℕ} {w : WeightFamil
     (hf : ∀ u : U, act u (f u) = y) :
     ∑ᶠ u : U, ψ (u : P) • z.symm (1 ⊗ₜ[B.KO] f u) = trace ρ U ψ (z.symm (1 ⊗ₜ y)) := sum_eq_trace ψ hρ hf
 
+/- English proof (translation)
+The claim follows from `spanK_comap_span_le _ z hs hM`.
+-/
 theorem spanK_spanIn_le [NumberField F] {R : ℕ → Type} [∀ j, CommRing (R j)] [∀ j, Algebra F (R j)] [∀ j, Algebra (𝓞 F) (R j)]
     [∀ j, IsScalarTower (𝓞 F) F (R j)] (C : ∀ j, WeightFamilies.Wt D j → Submodule F (R j)) (j : ℕ) (w : WeightFamilies.Wt D j)
     (z : (Fin n → K) ≃ₗ[K] K ⊗[F] cutR C j w) {s : Set (R j)} (hs : ∀ f ∈ s, f ∈ cutR C j w)
     {M : Submodule (𝓞 K) (Fin n → K)} (hM : ∀ y : cutR C j w, y.1 ∈ s → z.symm (1 ⊗ₜ y) ∈ M) :
     spanK z (spanIn C j w s : Set (cutR C j w)) ≤ M := spanK_comap_span_le _ z hs hM
 
+/- English proof (translation)
+The claim follows from `spanK_fg_of_fg z h`.
+-/
 theorem spanK_fg_cusp {B : WeightFamilies.Prov D} {P6 : ModuliIntegralCharts.Prov D} {j : ℕ} {X : WeightAlgebra.PJ D B P6 j} {w : WeightFamilies.Wt D j} [Algebra B.KO K]
     (z : (Fin n → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j w) (h : ShortSpanFG X w) : (spanK z (X.shortTh w : Set _)).FG :=
   spanK_fg_of_fg z h
@@ -135,6 +174,11 @@ variable {T : Full D} {h : LawsP T.toTop} {j : ℕ} {w : WeightFamilies.Wt D j} 
   {ℓ : P → (LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l)}
   {act : P → (recB h.toLawsCore).Cusp j w → (recB h.toLawsCore).Cusp j w}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨Λ, N, x₀, Q, x, h1, h2, h3, h4, h5, h6, h7⟩, rfl⟩`. Establish `hG : GoodDatum T.toTop j w Λ N Q` using `⟨h1, h2, h3, h4, h6⟩`. Take `⟨f₀, s₀⟩` from `exists_isSeries hT.sh hj hG (x := x₀) (by simpa [hn] using h5)`. Establish `key : ∀ u : U, ((act u (f u)).1 : T.R j) = f₀` using `fun u => (hact _ _).trans (mv_series T hT hj hxi (hn ▸ Nat.le_add_right _ _) (hdet _ u.2) hG (h7 u).1 ⟨by simpa [hn] using (h7 u).2.1, (cutR_le T.C _ _ (f u).2).1, (h7 u).2.2⟩ s₀)`.
+
+Establish `e` using `sum_eq_trace_cusp ψ hρ (f := f) (y := act (1 : U) (f 1)) fun u => Subtype.ext ((key u).trans (key 1).symm)`. Conclude with `(congrArg (· ∈ eig ρ U ψ) e).mpr (trace_mem_eig hψ _)`.
+-/
 theorem thetaEig_le_eig (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRational T j) (hn : w.n = D.R.nV)
     (hρ : ∀ g F, ρ g (z.symm (1 ⊗ₜ F)) = z.symm (1 ⊗ₜ act g F)) (hact : IsLevAct T.toTop h j w ℓ act)
     (hdet : ∀ u ∈ U, DetOne (ℓ u)) (hψ : ∀ a ∈ U, ∀ b ∈ U, ψ (a * b) = ψ a * ψ b) :
@@ -149,6 +193,11 @@ theorem thetaEig_le_eig (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRa
   have e := sum_eq_trace_cusp ψ hρ (f := f) (y := act (1 : U) (f 1)) fun u => Subtype.ext ((key u).trans (key 1).symm)
   exact (congrArg (· ∈ eig ρ U ψ) e).mpr (trace_mem_eig hψ _)
 
+/- English proof (translation)
+Take `⟨hs, Λ, N, x₀, Q, h1, h2, h3, h4, h5, h6, h7⟩` from `hF`. Establish `hG : GoodDatum T.toTop j w Λ N Q` using `⟨h1, h2, h3, h4, h6⟩`. Use `choose x hx ax using fun u : U => exists_rightMul (ℓ u) h5`. Use `choose f hf using fun u : U => exists_isSeries hT.sh hj hG (ax u)`. Set `f' : U → (recB h.toLawsCore).Cusp j w` to `fun u => ⟨f u, hc _ ((hf u).mem_sh hG)⟩`.
+
+Rewrite using `[← sum_eq_trace_cusp ψ hρ (f := f') fun u => Subtype.ext ((hact _ _).trans (mv_series T hT hj hxi (hn ▸ Nat.le_add_right _ _) (hdet _ u.2) hG (hx u) (hf u) ⟨h5, hs, h7⟩))]`. Conclude with `Submodule.subset_span ⟨f', ⟨Λ, N, x₀, Q, x, h1, h2, h3, h4, by simpa [hn] using h5, h6, fun u => ⟨hx u, by simpa [hn] using ax u, (hf u).2.2⟩⟩, rfl⟩`.
+-/
 theorem trace_gen_mem (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRational T j) (hn : w.n = D.R.nV)
     (hρ : ∀ g F, ρ g (z.symm (1 ⊗ₜ F)) = z.symm (1 ⊗ₜ act g F)) (hact : IsLevAct T.toTop h j w ℓ act)
     (hdet : ∀ u ∈ U, DetOne (ℓ u)) (hc : ∀ f ∈ T.toTop.sh j w, f ∈ cutR T.C j w)
@@ -167,6 +216,11 @@ theorem trace_gen_mem (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRati
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hl'` using `((GlobalTheory.WeightOnDatum.weight_on_datum D T.toCore h.pins j hj w).2.2.1 hl).1`. Establish `hc : ∀ f ∈ T.toTop.sh j w, f ∈ cutR T.C j w` using `fun f hf => by`. Rewrite using `[cutR_eq T.C hj]`. Conclude with `hT.sh.shCusp j hj _ _ (dom_wtA w) hl' (dom_wtA w) hl' hf`. Use `letI : Algebra T.Q.c.F K := ‹Algebra (recB h.toLawsCore).KO K›`.
+
+Conclude with `spanK_spanIn_le T.C j w z hc (M := (thetaEig h j w z U ψ ℓ).comap ((trace ρ U ψ).restrictScalars (𝓞 K))) (fun F hF => trace_gen_mem hT hj hxi hn hρ hact hdet hc F hF) hy`.
+-/
 theorem trace_mem_thetaEig (hT : LawsFull T) (hj : InR D j) (hxi : TwistTrivialOnRational T j) (hn : w.n = D.R.nV)
     (hl : w.LastPos) (hρ : ∀ g F, ρ g (z.symm (1 ⊗ₜ F)) = z.symm (1 ⊗ₜ act g F)) (hact : IsLevAct T.toTop h j w ℓ act)
     (hdet : ∀ u ∈ U, DetOne (ℓ u)) {y : Fin n → K} (hy : y ∈ spanK z ((recPJ h j hj).shortTh w : Set _)) :
@@ -192,6 +246,15 @@ def DetOneOn {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciprocity
     (ℓ : G → (LaMod Dw l ≃ₗ[𝓞 E] LaMod Dw l)) : Prop :=
   ∀ u ∈ U, DetOne (ℓ u)
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite O.U`. Establish `hU : ∀ u ∈ O.U, inc u ∈ U` using `fun u hu => by rwa [t.U_eq] at hu`. Establish `h1 : O.ψ 1 = 1` using `RingOfIntegers.ext ((t.ψ_eq 1 (hU 1 (one_mem _))).trans (by`. Rewrite using `[show (⟨inc 1, hU 1 (one_mem _)⟩ : U) = 1 from Subtype.ext (map_one inc), map_one]`. Use the proof step `rfl))`.
+
+Establish `hψ : ∀ a ∈ O.U, ∀ b ∈ O.U, O.ψ (a * b) = O.ψ a * O.ψ b` using `fun a ha b hb => RingOfIntegers.ext ((t.ψ_eq _ (hU _ (mul_mem ha hb))).trans (by`. Rewrite using `[show (⟨inc (a * b), hU _ (mul_mem ha hb)⟩ : U) = ⟨inc a, hU a ha⟩ * ⟨inc b, hU b hb⟩ from Subtype.ext (map_mul inc a b), map_mul, Units.val_mul, ← t.ψ_eq a, ← t.ψ_eq b]`. Conclude with `(map_mul (algebraMap (𝓞 D.what₂.LL) D.what₂.LL) _ _).symm))`. Establish `hd : ∀ u ∈ O.U, DetOne (ℓ (inc u))` using `fun u hu => hdet _ (hU u hu)`. Use `⟨hfg.of_le (t.Th0_le_ThK hn), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[t.Th0_eq]`. Conclude with `thetaEig_le_eig hT (inR_succ ι) hxi hn t.rho_eq t.act_eq hd hψ`. Introduce and unpack `_ ⟨x, ⟨hx, he⟩, rfl⟩`. Rewrite `hx` using `[t.ThK_eq]`. Rewrite using `[t.Th0_eq]`.
+
+Use `trace_mem_thetaEig (ψ := O.ψ) hT (inR_succ ι) hxi hn hl t.rho_eq t.act_eq hd hx` as an intermediate fact. Rewrite `this` using `[trace_of_mem_eig h1 hψ he]`. Then use the resulting hypothesis.
+-/
 theorem clauses_of_onTie {T : Full D} [Algebra T.J.Q.c.F D.what₂.LL] {R : RealDat D A T.J.Q.c.F}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
     {h : LawsP T.toTop} {fw : FWTie T.J R κ v₀} {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {p : ℕ}
@@ -244,6 +307,9 @@ def TiedAt (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (O : OnObj 
 variable {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {O : OnObj S P oc} {inc : P →* G} {U : Subgroup G}
   {ψ : U →* D.what₂.LLˣ}
 
+/- English proof (translation)
+Establish `key : ∀ v i, TiedAt A hinj EX O inc U ψ (fun _ _ _ X _ ka _ _ _ => ShortSpanFG X ka) v i → (O.Th0 v i).FG ∧ O.Th0 v i ≤ (eig (O.ρ i) O.U O.ψ).restrictScalars (𝓞 D.what₂.LL) ∧ sc ((Nat.card O.U : ℕ) : D.what₂.LL) (cut (eig (O.ρ i) O.U O.ψ) (O.ThK v i)) ≤ O.Th0 v i`. Introduce and unpack `v i ⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, hxi, hn, hl, hdet, hfg⟩`. Conclude with `clauses_of_onTie t hT hxi hn hl hdet (t.ThK_eq ▸ spanK_fg_cusp z hfg)`. Conclude with `fun w hw => ⟨fun i => key w i ((H w hw).1 i), fun i => key _ i ((H w hw).2 i)⟩`.
+-/
 theorem leafData_of_onTie
     (H : AtPair S fun v => ∀ i, TiedAt A hinj EX O inc U ψ (fun _ _ _ X _ ka _ _ _ => ShortSpanFG X ka) v i) :
     LeafData O := by
@@ -254,6 +320,9 @@ theorem leafData_of_onTie
     exact clauses_of_onTie t hT hxi hn hl hdet (t.ThK_eq ▸ spanK_fg_cusp z hfg)
   exact fun w hw => ⟨fun i => key w i ((H w hw).1 i), fun i => key _ i ((H w hw).2 i)⟩
 
+/- English proof (translation)
+Establish `key : ∀ v i, TiedAt A hinj EX O inc U ψ (fun _ _ _ _ _ _ _ _ _ => True) v i → (O.ThK v i).FG → (O.Th0 v i).FG ∧ O.Th0 v i ≤ (eig (O.ρ i) O.U O.ψ).restrictScalars (𝓞 D.what₂.LL) ∧ sc ((Nat.card O.U : ℕ) : D.what₂.LL) (cut (eig (O.ρ i) O.U O.ψ) (O.ThK v i)) ≤ O.Th0 v i`. Introduce and unpack `v i ⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, hxi, hn, hl, hdet, -⟩ hfg`. Conclude with `clauses_of_onTie t hT hxi hn hl hdet hfg`. Conclude with `fun w hw => ⟨fun i => key w i ((H w hw).1 i) ((hS w hw).1 i).2.1, fun i => key _ i ((H w hw).2 i) ((hS w hw).2 i).2.1⟩`.
+-/
 theorem leafData_of_onTie_of_leafSpan (hS : LeafSpan O)
     (H : AtPair S fun v => ∀ i, TiedAt A hinj EX O inc U ψ (fun _ _ _ _ _ _ _ _ _ => True) v i) : LeafData O := by
   have key : ∀ v i, TiedAt A hinj EX O inc U ψ (fun _ _ _ _ _ _ _ _ _ => True) v i → (O.ThK v i).FG →
@@ -264,6 +333,9 @@ theorem leafData_of_onTie_of_leafSpan (hS : LeafSpan O)
   exact fun w hw => ⟨fun i => key w i ((H w hw).1 i) ((hS w hw).1 i).2.1,
     fun i => key _ i ((H w hw).2 i) ((hS w hw).2 i).2.1⟩
 
+/- English proof (translation)
+Establish `key : ∀ v i, TiedAt A hinj EX O inc U ψ (fun B _ j X p ka wL wF nT => 0 < p ∧ Formalism.MainNotions.Gaps.EtaleWeightGaps.LatAt B j ka ∧ WeightAlgebra.H2 X (scalOfP B hinj EX p ka wL wF nT) ka wL wF) v i → TiedAt A hinj EX O inc U ψ (fun _ _ _ X _ ka _ _ _ => ShortSpanFG X ka) v i`. Introduce and unpack `v i ⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, hxi, hn, hl, hdet, hp, hL, hH⟩`. Conclude with `⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, hxi, hn, hl, hdet, shortTh_fg _ hinj EX hp _ _ _ _ hL hH⟩`. Conclude with `leafData_of_onTie fun w hw => ⟨fun i => key w i ((H w hw).1 i), fun i => key _ i ((H w hw).2 i)⟩`.
+-/
 theorem leafData_of_onTie_of_integral
     (H : AtPair S fun v => ∀ i, TiedAt A hinj EX O inc U ψ (fun B _ j X p ka wL wF nT => 0 < p ∧
       Formalism.MainNotions.Gaps.EtaleWeightGaps.LatAt B j ka ∧ WeightAlgebra.H2 X (scalOfP B hinj EX p ka wL wF nT) ka wL wF) v i) : LeafData O := by
@@ -292,6 +364,9 @@ def UnipPin (R : RealDat D A T.J.Q.c.F) (U : Subgroup G) : Prop :=
 
 variable {R : RealDat D A T.J.Q.c.F} {ι : Fin D.R.m}
 
+/- English proof (translation)
+Introduce `u hu` and use `detOne_of_levelPin hT hℓ hH fun PP => by rw [Matrix.det_of_upperTriangular fun _ _ h => ((hU u).1 hu PP).1 h] exact Finset.prod_eq_one fun a _ => ((hU u).1 hu PP).2 a`.
+-/
 theorem detOneOn_of_pins (hT : LawsFull T)
     {ℓ : G → (LaMod (T.Q.Dw ((ι : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((ι : ℕ) + 1)) T.Q.l)}
     (hℓ : LevelPin R ι ℓ) (hH : HalfPin R) {U : Subgroup G} (hU : UnipPin R U) : DetOneOn U ℓ := fun u hu =>
@@ -299,6 +374,11 @@ theorem detOneOn_of_pins (hT : LawsFull T)
     rw [Matrix.det_of_upperTriangular fun _ _ h => ((hU u).1 hu PP).1 h]
     exact Finset.prod_eq_one fun a _ => ((hU u).1 hu PP).2 a
 
+/- English proof (translation)
+Take `⟨-, -, -, χ, hχ, hx⟩` from `hR`. Unfold `TwistTrivialOnRational`. Rewrite using `[hT.p.spaceW _ (inR_succ ι) _ T.toCore.good_σ₀]`. Introduce `γ hγ`. Take `⟨a, ha⟩` from `(GlobalTheory.Member.isDetRoot_laws D (Wc D ι)).2.2.1 γ hγ`.
+
+Conclude with `Units.ext ((hx γ _ ha).trans (by rw [hχ.1.2]; rfl))`.
+-/
 theorem twistTrivial_of_runPin (hT : LawsFull T) {n : ℕ} {v : HeightOneSpectrum (𝓞 D.what₂.LL)} {p : ℕ}
     (hR : RunPin R ι n v p) : TwistTrivialOnRational T ((ι : ℕ) + 1) := by
   obtain ⟨-, -, -, χ, hχ, hx⟩ := hR
@@ -312,6 +392,9 @@ end One
 
 variable {L : SizeData₂ D} {Pm : ParameterChoice' D L}
 
+/- English proof (translation)
+Introduce `τ i hi`. Establish `h1` using `GlobalTheory.DepthBoundProbe.kappa_last Tp hK hj τ i hi`. Establish `h2 : (1 : ℤ) ≤ Tp.TO` using `by have := Tp.TO_40; omega`. Establish `: (1 : ℤ) ≤ ((kaR Tp hK j).aP τ i : ℤ)` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem kaR_lastPos (Tp : ParamsT D L Pm) (hK : DV.KapDef D) {j : ℕ} (hj : InR D j) : (kaR Tp hK j).LastPos := by
   intro τ i hi
   have h1 := GlobalTheory.DepthBoundProbe.kappa_last Tp hK hj τ i hi
@@ -337,20 +420,32 @@ def PinnedAt (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (hinj : Function.Injective
 variable {Tp : ParamsT D L Pm} {hK : DV.KapDef D} {hinj : Function.Injective D.what₂.OtoLL} {EX : ErrX D} {O : OnObj S P oc}
   {inc : P →* G} {U : Subgroup G} {ψ : U →* D.what₂.LLˣ}
 
+/- English proof (translation)
+Take `⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, hκ, hR, hℓ, hH, hU, hQ⟩` from `H`. Conclude with `⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, twistTrivial_of_runPin hT hR, hκ ▸ kaWt_n _ _ _ _, hκ ▸ kaR_lastPos Tp hK (inR_succ ι), detOneOn_of_pins hT hℓ hH hU, hQ⟩`.
+-/
 theorem PinnedAt.tiedAt {Q v i} (H : PinnedAt A Tp hK hinj EX O inc U ψ Q v i) : TiedAt A hinj EX O inc U ψ Q v i := by
   obtain ⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, hκ, hR, hℓ, hH, hU, hQ⟩ := H
   exact ⟨T, _, R, κ, v₀, h, fw, p, ι, wL, wF, nT, z, act, ℓ, ph, y, t, hT, twistTrivial_of_runPin hT hR,
     hκ ▸ kaWt_n _ _ _ _, hκ ▸ kaR_lastPos Tp hK (inR_succ ι), detOneOn_of_pins hT hℓ hH hU, hQ⟩
 
+/- English proof (translation)
+The claim follows from `leafData_of_onTie fun w hw => ⟨fun i => ((H w hw).1 i).tiedAt, fun i => ((H w hw).2 i).tiedAt⟩`.
+-/
 theorem leafData_of_pins
     (H : AtPair S fun v => ∀ i, PinnedAt A Tp hK hinj EX O inc U ψ (fun _ _ _ X _ ka _ _ _ => ShortSpanFG X ka) v i) :
     LeafData O :=
   leafData_of_onTie fun w hw => ⟨fun i => ((H w hw).1 i).tiedAt, fun i => ((H w hw).2 i).tiedAt⟩
 
+/- English proof (translation)
+The claim follows from `leafData_of_onTie_of_leafSpan hS fun w hw => ⟨fun i => ((H w hw).1 i).tiedAt, fun i => ((H w hw).2 i).tiedAt⟩`.
+-/
 theorem leafData_of_pins_of_leafSpan (hS : LeafSpan O)
     (H : AtPair S fun v => ∀ i, PinnedAt A Tp hK hinj EX O inc U ψ (fun _ _ _ _ _ _ _ _ _ => True) v i) : LeafData O :=
   leafData_of_onTie_of_leafSpan hS fun w hw => ⟨fun i => ((H w hw).1 i).tiedAt, fun i => ((H w hw).2 i).tiedAt⟩
 
+/- English proof (translation)
+The claim follows from `leafData_of_onTie_of_integral fun w hw => ⟨fun i => ((H w hw).1 i).tiedAt, fun i => ((H w hw).2 i).tiedAt⟩`.
+-/
 theorem leafData_of_pins_of_integral
     (H : AtPair S fun v => ∀ i, PinnedAt A Tp hK hinj EX O inc U ψ (fun B _ j X p ka wL wF nT => 0 < p ∧
       Formalism.MainNotions.Gaps.EtaleWeightGaps.LatAt B j ka ∧ WeightAlgebra.H2 X (scalOfP B hinj EX p ka wL wF nT) ka wL wF) v i) : LeafData O :=

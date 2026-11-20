@@ -20,6 +20,11 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.MixValues
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos ρ with rfl | hρ` into its components or cases. Rewrite using `[(GlobalTheory.T.wittDecomposition_mixedCoords_rank_zero D ψ).1 S S₀ T d μ 𝓕 hμ f x]`. Apply the tactic sequence `exact ((GlobalTheory.T.weil_datum_transport_source_rational_isometry D ψ S S₀ T d hψ).2.2.1 f).2 hf`. Take `⟨hiso, hrat, -, -, -, hres, -⟩` from `GlobalTheory.T.wittSourceMixedCoord_heisenbergRestriction D ψ S S₀ T ρ d`. Rewrite using `[hres]`.
+
+Establish `hμ' : IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D T.rank ρ) μ 𝓕` using `by rw [hrat]; exact hμ`. Establish `hg` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 (d.extX T x) f hf`. Conclude with `((GlobalTheory.TowerRestrict.res_theta D S S₀ T ρ d.e d.i₀ (hiso hρ) ψ hψ μ 𝓕 hμ').1 _ hg).2.1`.
+-/
 theorem mixS_theta (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S S₀ T : HSp D) (ρ : ℕ)
     (d : HypDec S S₀ ρ) (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ))
     (hμ : IsCovolOne (ratMx D T.rank ρ) μ 𝓕) (f : WO S T → ℂ) (hf : IsThetaFunO ψ S T f) (x : Mx D T.rank ρ) :
@@ -35,6 +40,11 @@ theorem mixS_theta (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D 
 
 end GlobalTheory.MixValues
 
+/- English proof (translation)
+Introduce `D ψ hψ`. Use `⟨fun S S₀ T ρ d μ 𝓕 hμ f hf x => GlobalTheory.MixValues.mixS_theta D ψ hψ S S₀ T ρ d μ 𝓕 hμ f hf x, ?_⟩` and prove the remaining obligations. Introduce `S T T₀ ρ d μ 𝓕 hμ f hf y`. Take `⟨μ', 𝓕', hμ', -, -, -, hsw⟩` from `GlobalTheory.T.wittMixedCoords_conj_hermitianAdjoint D ψ hψ S T T₀ ρ d μ 𝓕 hμ`. Establish `hcd` using `GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ`.
+
+Establish `h1 : IsThetaFunO ψ T S (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f)` using `((hcd S T).2.2.1 f).2 hf`. Establish `h2` using `GlobalTheory.MixValues.mixS_theta D ψ hψ T T₀ S ρ d μ' 𝓕' hμ' _ h1 (incA D D.host.xi0⁻¹ • y)`. Rewrite `h2` using `[hsw]`. Conclude with `((hcd S T₀).2.2.1 _).1 h2`.
+-/
 theorem GlobalTheory.MixValues.mixed_values : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedValues D := by
   intro D ψ hψ
   refine ⟨fun S S₀ T ρ d μ 𝓕 hμ f hf x => GlobalTheory.MixValues.mixS_theta D ψ hψ S S₀ T ρ d μ 𝓕 hμ f hf x, ?_⟩

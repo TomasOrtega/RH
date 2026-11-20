@@ -12,38 +12,61 @@ open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 namespace GlobalTheory.CompanionTheory.UnfoldingAlt.TrGauge
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ti, dg]`.
+-/
 theorem ti_dg {R : Type*} [CommRing R] (x y z : Rˣ) :
     ti (dg x y z) = dg x⁻¹ y⁻¹ z⁻¹ := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [ti, dg]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 theorem dg_mul {R : Type*} [CommRing R] (x y z x' y' z' : Rˣ) :
     dg x y z * dg x' y' z' = dg (x * x') (y * y') (z * z') := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg, Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg, w3, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 theorem longWeyl_mul_diag_GL3 {R : Type*} [CommRing R] (x y z : Rˣ) :
     (w3 : GL (Fin 3) R) * dg x y z = dg z y x * w3 := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg, w3, Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dl3, dg]`.
+-/
 theorem rational_sign_diag_adelic : dia dl3 = dg 1 (-1) 1 := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dl3, dg]
 
+/- English proof (translation)
+Rewrite using `[rational_sign_diag_adelic, ti_dg]`. Simplify using the standard rewrite rules.
+-/
 theorem transposeInv_rational_sign : ti (dia dl3) = dg 1 (-1) 1 := by
   rw [rational_sign_diag_adelic, ti_dg]
   simp
 
+/- English proof (translation)
+Rewrite using `[transposeInv_rational_sign, mul_assoc, dg_mul, longWeyl_mul_diag_GL3, longWeyl_mul_diag_GL3, ← mul_assoc, dg_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem c_mul_dg (x y z : (𝔸[ℚ])ˣ) :
     (w3 : G3) * ti (dia dl3) * dg x y z = dg z y x * ((w3 : G3) * ti (dia dl3)) := by
   rw [transposeInv_rational_sign, mul_assoc, dg_mul, longWeyl_mul_diag_GL3, longWeyl_mul_diag_GL3, ← mul_assoc, dg_mul]
   simp
 
+/- English proof (translation)
+Establish `hd : dg (a * b)⁻¹ (a * b)⁻¹ (a * b)⁻¹ * dg (b * a) a 1 = dg 1⁻¹ b⁻¹ (a * b)⁻¹`. Establish `e1 : (a * b)⁻¹ * (b * a) = 1⁻¹` using `by rw [mul_comm b a, inv_mul_cancel, inv_one]`. Establish `e2 : (a * b)⁻¹ * a = b⁻¹`. Rewrite using `[mul_inv, mul_comm a⁻¹, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[dg_mul, e1, e2, mul_one]`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.UnfoldingAlt.TrBasic.main.1 W, ← hW (a * b)⁻¹ (dg (b * a) a 1 * _), (GlobalTheory.CompanionTheory.UnfoldingAlt.Ti.ti_alg.1 _ _ _ _).1, ti_dg, ← mul_assoc (dg (a * b)⁻¹ (a * b)⁻¹ (a * b)⁻¹), hd, ← mul_assoc ((w3 : G3) * ti (dia dl3)), c_mul_dg, inv_on …`.
+-/
 theorem tr_dg_mul (W : G3 → ℂ) (hW : ∀ (a : (𝔸[ℚ])ˣ) g, W (dg a a a * g) = W g) (a b : (𝔸[ℚ])ˣ) (k : G3) :
     tr W (dg (a * b) b 1 * k) = W (dg (b * a) a 1 * ((w3 : G3) * ti (dia dl3) * ti k)) := by
   have hd : dg (a * b)⁻¹ (a * b)⁻¹ (a * b)⁻¹ * dg (b * a) a 1 = dg 1⁻¹ b⁻¹ (a * b)⁻¹ := by
@@ -55,11 +78,19 @@ theorem tr_dg_mul (W : G3 → ℂ) (hW : ∀ (a : (𝔸[ℚ])ˣ) g, W (dg a a a 
     ← mul_assoc (dg (a * b)⁻¹ (a * b)⁻¹ (a * b)⁻¹), hd, ← mul_assoc ((w3 : G3) * ti (dia dl3)), c_mul_dg,
     inv_one, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `mul_mem (mul_mem GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.1 (GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.2.2.2.2.1 _ GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.2.1)) (GlobalTheory.CompanionTheory …`.
+-/
 theorem c_ti_mem {k : G3} (hk : k ∈ (maxCompact : Subgroup G3)) :
     (w3 : G3) * ti (dia dl3) * ti k ∈ (maxCompact : Subgroup G3) :=
   mul_mem (mul_mem GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.1 (GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.2.2.2.2.1 _ GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.2.1))
     (GlobalTheory.CompanionTheory.UnfoldingAlt.TiK.weyl_delta_ti_maxCompact.2.2.2.2.1 _ hk)
 
+/- English proof (translation)
+Introduce and unpack `W hW ⟨Ω, hΩ, T, h⟩`. Use `⟨Ω, hΩ, T, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h N`. Use `⟨C, fun a b k hk w => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hC b a _ (c_ti_mem hk) w`.
+
+Rewrite using `[tr_dg_mul W hW a b k]`. Use `⟨?_, fun hne => (h2 hne).symm⟩` and prove the remaining obligations. Rewrite using `[mul_comm (IdeleGroup.ideleModule ℚ a : ℝ), mul_comm (1 + ‖(a : 𝔸[ℚ]).1 w‖)]`. Conclude with `h1`.
+-/
 theorem tr_gauge : ∀ W : G3 → ℂ, (∀ (a : (𝔸[ℚ])ˣ) g, W (dg a a a * g) = W g) → (∃ Ω : Set (FiniteAdeleRing (𝓞 ℚ) ℚ), IsCompact Ω ∧ ∃ T : ℕ, ∀ N : ℕ, ∃ C : ℝ, ∀ a b : (𝔸[ℚ])ˣ,
     ∀ k ∈ (maxCompact : Subgroup G3), ∀ w : InfinitePlace ℚ,
       ‖W (dg (a * b) b 1 * k)‖ ≤ C / ((IdeleGroup.ideleModule ℚ a : ℝ) * IdeleGroup.ideleModule ℚ b) ^ T /

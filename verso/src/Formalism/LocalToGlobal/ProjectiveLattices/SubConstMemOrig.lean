@@ -16,6 +16,9 @@ abbrev Jet : Type := MvPolynomial ι R ⧸ orig R ι ^ (m + 1)
 
 variable {R ι m}
 
+/- English proof (translation)
+Rewrite using `[orig, Ideal.map_pow, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_orig_pow {B : Type} [CommRing B] (f : MvPolynomial ι R →+* B) (k : ℕ) :
     Ideal.map f (orig R ι ^ k) = Ideal.span (Set.range fun i => f (X i)) ^ k := by
   rw [orig, Ideal.map_pow, Ideal.map_span, ← Set.range_comp]
@@ -47,6 +50,9 @@ def jetMap {ι' : Type} (φ : ι → MvPolynomial ι' R) (hφ : ∀ i, φ i ∈ 
     refine (Ideal.map_mono h2).trans ?_
     rw [Ideal.map_quotient_self])
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨i, rfl⟩`.
+-/
 theorem X_mem_orig {ι' : Type} (i : ι') : (X i : MvPolynomial ι' R) ∈ orig R ι' :=
   Ideal.subset_span ⟨i, rfl⟩
 
@@ -83,6 +89,13 @@ def jetTan [DecidableEq ι] (ℓ : ι) : Jet R ι (m + 1) →ₐ[R] DualNumber R
     rw [Ideal.span_singleton_pow]
     simp)
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Simplify using the standard rewrite rules. Use `next p q hp hq =>`. Establish `h : p + q - C (MvPolynomial.constantCoeff (p + q)) = (p - C (MvPolynomial.constantCoeff p)) + (q - C (MvPolynomial.constantCoeff q))`.
+
+Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `Ideal.add_mem _ hp hq`. Use `next p n _ =>`.
+
+Simplify using `only [map_mul, constantCoeff_X, mul_zero, map_zero, sub_zero]`. Conclude with `Ideal.mul_mem_left _ _ (X_mem_orig n)`.
+-/
 theorem sub_const_mem_orig (P : MvPolynomial ι R) :
     P - C (MvPolynomial.constantCoeff P) ∈ orig R ι := by
   induction P using MvPolynomial.induction_on

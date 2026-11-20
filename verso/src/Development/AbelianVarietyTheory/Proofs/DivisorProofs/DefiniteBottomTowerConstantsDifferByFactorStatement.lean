@@ -19,6 +19,9 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SqTower.bottom_const_normal | exact GlobalTheory.SqTower.bottom_const_normal | (intros; apply GlobalTheory.SqTower.bottom_const_normal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.definiteBottom_tower_constants_differ_by_factor : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} (W : G.Weil) (i j : Fin D.R.m) {A A' WW : HSp D} (X Y : Tri T A A' WW),
   IsBottomTri W i j X → GlobalTheory.SqTower.IsStageC W i j 0 0 Y →
   Y.rA.Λ = X.rA.Λ → Y.rA'.Λ = X.rA'.Λ → Y.rW.Λ = X.rW.Λ → Y.rA.β = X.rA.β → Y.rA'.β = X.rA'.β → Y.rW.β = X.rW.β →

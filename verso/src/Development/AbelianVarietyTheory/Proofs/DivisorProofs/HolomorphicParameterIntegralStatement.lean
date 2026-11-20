@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HolomorphicParamete
 import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.differentiableOn_integral_integral_mul_cpow | exact GlobalTheory.differentiableOn_integral_integral_mul_cpow | (intros; apply GlobalTheory.differentiableOn_integral_integral_mul_cpow <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.holomorphic_parameter_integral : ∀ {α β : Type} [MeasurableSpace α] [MeasurableSpace β] (μK : Measure α) [IsFiniteMeasure μK] (μ : Measure β) [SFinite μ]
     (A : α → β → ℂ) (a : β → ℝ), Measurable a → (∀ l, 0 < a l) → AEStronglyMeasurable (Function.uncurry A) (μK.prod μ) →
     ∀ g : β → ℝ, (∀ s : ℝ, 1 < s → Integrable (fun l => g l * a l ^ s) μ) → (∀ k l, ‖A k l‖ ≤ g l) →

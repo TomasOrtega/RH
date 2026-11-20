@@ -16,10 +16,18 @@ section Cosets
 
 variable (μ : Measure G) [μ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+The claim follows from `(hA.image QuotientGroup.continuous_mk).finite_of_discrete`.
+-/
 theorem finite_image_mk_of_isCompact (K : OpenSubgroup G) {A : Set G} (hA : IsCompact A) :
     (QuotientGroup.mk '' A : Set (G ⧸ (K : Subgroup G))).Finite :=
   (hA.image QuotientGroup.continuous_mk).finite_of_discrete
 
+/- English proof (translation)
+Establish `hf : HasCompactSupport f` using `HasCompactSupport.intro hA fun y hy => by`. Assume the negation of the conclusion as `h`. Conclude with `hy (hfA y h)`. Rewrite using `[integral_eq_smul_finsum_coset μ K hKc hf hK, finsum_eq_sum_of_support_subset _ (s := (finite_image_mk_of_isCompact K hA).toFinset)]`. Introduce `p hp`.
+
+Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `⟨p.out, hfA _ hp, QuotientGroup.out_eq' p⟩`.
+-/
 theorem integral_eq_smul_sum_coset (K : OpenSubgroup G) (hKc : IsCompact (K : Set G))
     {A : Set G} (hA : IsCompact A) {f : G → ℂ} (hfA : ∀ y, f y ≠ 0 → y ∈ A)
     (hK : ∀ g, ∀ k ∈ K, f (g * k) = f g) :
@@ -35,6 +43,19 @@ theorem integral_eq_smul_sum_coset (K : OpenSubgroup G) (hKc : IsCompact (K : Se
   rw [Set.Finite.coe_toFinset]
   exact ⟨p.out, hfA _ hp, QuotientGroup.out_eq' p⟩
 
+/- English proof (translation)
+Use `set SA := (finite_image_mk_of_isCompact K hA).toFinset`. Use `set SB := (finite_image_mk_of_isCompact K hB).toFinset`. Use `set c := μ.real (K : Set G)`. Establish `e₁ : ∀ y, ∫ z, F y z ∂μ = c • ∑ q ∈ SB, F y q.out` using `fun y => integral_eq_smul_sum_coset μ K hKc hB (fun z hz => (hF y z hz).2) (fun z k hk => h₂ y z k hk)`. Establish `e₂ : ∀ z, ∫ y, F y z ∂μ = c • ∑ p ∈ SA, F p.out z` using `fun z => integral_eq_smul_sum_coset μ K hKc hA (fun y hy => (hF y z hy).1) (fun y k hk => h₁ y z k hk)`.
+
+Establish `sA : ∀ y, c • ∑ q ∈ SB, F y q.out ≠ 0 → y ∈ A`. Introduce `y hy`. Assume the negation of the conclusion as `hyA`. Apply `hy` to reduce the goal to its premises. Rewrite using `[Finset.sum_eq_zero, smul_zero]`.
+
+Introduce `q _`. Assume the negation of the conclusion as `h`. Conclude with `hyA (hF _ _ h).1`. Establish `sB : ∀ z, c • ∑ p ∈ SA, F p.out z ≠ 0 → z ∈ B`. Introduce `z hz`.
+
+Assume the negation of the conclusion as `hzB`. Apply `hz` to reduce the goal to its premises. Rewrite using `[Finset.sum_eq_zero, smul_zero]`. Introduce `p _`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hzB (hF _ _ h).2`. Establish `iA : ∀ y, ∀ k ∈ K, c • ∑ q ∈ SB, F (y * k) q.out = c • ∑ q ∈ SB, F y q.out` using `fun y k hk => by simp only [h₁ y _ k hk]`. Establish `iB : ∀ z, ∀ k ∈ K, c • ∑ p ∈ SA, F p.out (z * k) = c • ∑ p ∈ SA, F p.out z` using `fun z k hk => by simp only [h₂ _ z k hk]`. Repeatedly rewrite using `[e₁, e₂]`. Rewrite using `[integral_eq_smul_sum_coset μ K hKc hA sA iA, integral_eq_smul_sum_coset μ K hKc hB sB iB]`.
+
+Simplify using `only [Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem integral_integral_swap_of_coset (K : OpenSubgroup G) (hKc : IsCompact (K : Set G))
     {A B : Set G} (hA : IsCompact A) (hB : IsCompact B) {F : G → G → ℂ}
     (hF : ∀ y z, F y z ≠ 0 → y ∈ A ∧ z ∈ B)
@@ -83,10 +104,16 @@ def groupConv (f₁ f₂ : G → ℂ) (x : G) : ℂ := ∫ y, f₁ y * f₂ (y�
 def ltrans (g : G) (f : G → ℂ) : G → ℂ := fun x => f (g⁻¹ * x)
 
 omit [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ltrans_apply (g : G) (f : G → ℂ) (x : G) : ltrans g f x = f (g⁻¹ * x) := rfl
 
 omit [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous (continuous_const.mul continuous_id), hf.2.comp_homeomorph (Homeomorph.mulLeft g⁻¹)⟩`.
+-/
 theorem ltrans_mem (g : G) {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) :
     ltrans g f ∈ locallyConstantCompactSupport G ℂ ℂ :=
   ⟨hf.1.comp_continuous (continuous_const.mul continuous_id),
@@ -94,12 +121,20 @@ theorem ltrans_mem (g : G) {f : G → ℂ} (hf : f ∈ locallyConstantCompactSup
 
 variable {μ}
 
+/- English proof (translation)
+Simplify using `only [groupConv, ← mul_assoc, hk]`.
+-/
 theorem groupConv_mul_right {f₁ f₂ : G → ℂ} {k : G} (hk : ∀ g, f₂ (g * k) = f₂ g) (x : G) :
     groupConv μ f₁ f₂ (x * k) = groupConv μ f₁ f₂ x := by
   simp only [groupConv, ← mul_assoc, hk]
 
 variable (μ) in
 
+/- English proof (translation)
+Take `⟨K, -, hK⟩` from `exists_forall_mul_right hf₂`. Use `mem_locallyConstantCompactSupport_of_forall_mul_right K ?_ fun x k hk => groupConv_mul_right (fun g => hK g k hk) x` and prove the remaining obligations. Use `HasCompactSupport.intro (hf₁.2.mul hf₂.2) fun x hx => ?_` and prove the remaining obligations. Establish `: ∀ y, f₁ y * f₂ (y⁻¹ * x) = 0`. Introduce `y`.
+
+Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises. Establish `h'` using `mul_ne_zero_iff.1 h`. Conclude with `⟨y, subset_tsupport _ h'.1, y⁻¹ * x, subset_tsupport _ h'.2, mul_inv_cancel_left y x⟩`. Simplify using `only [groupConv, this, integral_zero]`.
+-/
 theorem groupConv_mem [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     {f₁ f₂ : G → ℂ} (hf₁ : f₁ ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hf₂ : f₂ ∈ locallyConstantCompactSupport G ℂ ℂ) :
@@ -118,6 +153,9 @@ theorem groupConv_mem [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSp
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+The claim follows from `(hf.1.continuous.mul hh).integrable_of_hasCompactSupport (hf.2.mul_right (f' := h))`.
+-/
 theorem integrable_mul_of_mem [IsFiniteMeasureOnCompacts μ] {f : G → ℂ}
     (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) {h : G → ℂ} (hh : Continuous h) :
     Integrable (fun g => f g * h g) μ :=
@@ -136,6 +174,9 @@ variable {μ} {ρ : Representation ℂ G V}
 
 omit [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_exists_open (fun g => ρ g v)).2 fun g => ⟨g • (stabilizerOf ρ v : Set G), hv.smul g, Set.mem_smul_set.2 ⟨1, one_mem (stabilizerOf ρ v), by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Simplify using `only [smul_eq_mul, map_mul, Module.End.mul_apply, mem_stabilizerOf.1 hs]`.
+-/
 theorem isLocallyConstant_orbit {v : V} (hv : v ∈ smoothVectors ρ) :
     IsLocallyConstant fun g => ρ g v := by
   refine (IsLocallyConstant.iff_exists_open (fun g => ρ g v)).2 fun g =>
@@ -145,12 +186,18 @@ theorem isLocallyConstant_orbit {v : V} (hv : v ∈ smoothVectors ρ) :
 
 omit [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+The claim follows from `((isLocallyConstant_orbit hv).comp φ).continuous`.
+-/
 theorem continuous_dual_orbit {v : V} (hv : v ∈ smoothVectors ρ) (φ : Module.Dual ℂ V) :
     Continuous fun g => φ (ρ g v) :=
   ((isLocallyConstant_orbit hv).comp φ).continuous
 
 omit [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp₂ (isLocallyConstant_orbit hv) (fun a b => a • b), hf.2.smul_right⟩`.
+-/
 theorem smul_orbit_mem {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) {v : V}
     (hv : v ∈ smoothVectors ρ) :
     (fun g => f g • ρ g v) ∈ locallyConstantCompactSupport G ℂ V :=
@@ -158,6 +205,11 @@ theorem smul_orbit_mem {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport
 
 omit [IsTopologicalGroup G] [BorelSpace G] in
 
+/- English proof (translation)
+Use `finsum_eq_sum_of_support_subset _ fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `h`. Apply `hw` to reduce the goal to its premises. Establish `: {g | f g • ρ g v = w} = ∅`.
+
+Use extensionality with `g`. Simplify using `only [mem_setOf_eq, mem_empty_iff_false, iff_false]`. Conclude with `fun hg => h ⟨g, hg⟩`. Simplify using `[this]`.
+-/
 theorem heckeAct_eq_sum {f : G → ℂ} {v : V} (hfin : (range fun g => f g • ρ g v).Finite) :
     heckeAct μ ρ f v = ∑ w ∈ hfin.toFinset, ((μ.real {g | f g • ρ g v = w} : ℝ) : ℂ) • w := by
   refine finsum_eq_sum_of_support_subset _ fun w hw => ?_
@@ -172,6 +224,9 @@ theorem heckeAct_eq_sum {f : G → ℂ} {v : V} (hfin : (range fun g => f g • 
 
 omit [IsTopologicalGroup G] [BorelSpace G] in
 
+/- English proof (translation)
+Rewrite using `[heckeAct_eq_sum hfin]`. Use `Submodule.sum_mem _ fun w hw => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hw`. Conclude with `hX g`.
+-/
 theorem heckeAct_mem_of_forall {f : G → ℂ} {v : V} (hfin : (range fun g => f g • ρ g v).Finite)
     {X : Submodule ℂ V} (hX : ∀ g, f g • ρ g v ∈ X) : heckeAct μ ρ f v ∈ X := by
   rw [heckeAct_eq_sum hfin]
@@ -181,6 +236,15 @@ theorem heckeAct_mem_of_forall {f : G → ℂ} {v : V} (hfin : (range fun g => f
 
 variable (μ) in
 
+/- English proof (translation)
+Establish `hF` using `smul_orbit_mem hf hv`. Establish `hfin` using `range_finite_of_mem_locallyConstantCompactSupport hF`. Establish `hpt : ∀ g, f g * φ (ρ g v) = ∑ w ∈ hfin.toFinset, {x | f x • ρ x v = w}.indicator (fun _ => φ w) g`. Introduce `g`. Rewrite using `[Finset.sum_eq_single (f g • ρ g v)]`.
+
+Rewrite using `[Set.indicator_of_mem (show g ∈ {x | f x • ρ x v = f g • ρ g v} from rfl), map_smul, smul_eq_mul]`. Introduce `b _ hb`. Conclude with `Set.indicator_of_notMem (fun h => hb h.symm) _`. Introduce `h`. Conclude with `absurd ((Set.Finite.mem_toFinset hfin).2 (Set.mem_range_self g)) h`.
+
+Establish `hmeas : ∀ w, MeasurableSet {x | f x • ρ x v = w}` using `fun w => (hF.1.isOpen_fiber w).measurableSet`. Rewrite using `[heckeAct_eq_sum hfin, map_sum, integral_congr_ae (Eventually.of_forall hpt), integral_finsetSum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hmeas w), map_smul, smul_eq_mul, Complex.real_smul]`. Introduce `w _`.
+
+Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Simplify using `only [map_zero]`. Conclude with `(integrable_zero G ℂ μ).indicator (hmeas 0)`. Conclude with `(integrable_indicator_iff (hmeas w)).2 (integrableOn_const (isCompact_isOpen_fiber hF hw).1.measure_lt_top.ne)`.
+-/
 theorem dual_heckeAct [IsFiniteMeasureOnCompacts μ] {f : G → ℂ}
     (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) {v : V} (hv : v ∈ smoothVectors ρ)
     (φ : Module.Dual ℂ V) :
@@ -211,6 +275,9 @@ theorem dual_heckeAct [IsFiniteMeasureOnCompacts μ] {f : G → ℂ}
     · exact (integrable_indicator_iff (hmeas w)).2
         (integrableOn_const (isCompact_isOpen_fiber hF hw).1.measure_lt_top.ne)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Rewrite using `[map_sub, h φ, sub_self]`.
+-/
 theorem eq_of_forall_dual {x y : V} (h : ∀ φ : Module.Dual ℂ V, φ x = φ y) : x = y := by
   rw [← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]
   intro φ
@@ -218,6 +285,9 @@ theorem eq_of_forall_dual {x y : V} (h : ∀ φ : Module.Dual ℂ V, φ x = φ y
 
 variable [IsFiniteMeasureOnCompacts μ]
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[map_add, dual_heckeAct μ (add_mem hf₁ hf₂) hv, dual_heckeAct μ hf₁ hv, dual_heckeAct μ hf₂ hv, ← integral_add (integrable_mul_of_mem hf₁ (continuous_dual_orbit hv φ)) (integrable_mul_of_mem hf₂ (continuous_dual_orbit hv φ))]`. Simplify using `only [Pi.add_apply, add_mul]`.
+-/
 theorem heckeAct_add_left {f₁ f₂ : G → ℂ} (hf₁ : f₁ ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hf₂ : f₂ ∈ locallyConstantCompactSupport G ℂ ℂ) {v : V} (hv : v ∈ smoothVectors ρ) :
     heckeAct μ ρ (f₁ + f₂) v = heckeAct μ ρ f₁ v + heckeAct μ ρ f₂ v := by
@@ -227,6 +297,9 @@ theorem heckeAct_add_left {f₁ f₂ : G → ℂ} (hf₁ : f₁ ∈ locallyConst
       (integrable_mul_of_mem hf₂ (continuous_dual_orbit hv φ))]
   simp only [Pi.add_apply, add_mul]
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, dual_heckeAct μ (Submodule.smul_mem _ c hf) hv, dual_heckeAct μ hf hv, smul_eq_mul, ← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem heckeAct_smul_left (c : ℂ) {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ)
     {v : V} (hv : v ∈ smoothVectors ρ) : heckeAct μ ρ (c • f) v = c • heckeAct μ ρ f v := by
   refine eq_of_forall_dual fun φ => ?_
@@ -234,10 +307,16 @@ theorem heckeAct_smul_left (c : ℂ) {f : G → ℂ} (hf : f ∈ locallyConstant
     ← integral_const_mul]
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Use `heckeAct_smul_left (μ := μ) 0 (zero_mem _) hv` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+-/
 theorem heckeAct_zero_left {v : V} (hv : v ∈ smoothVectors ρ) : heckeAct μ ρ 0 v = 0 := by
   have := heckeAct_smul_left (μ := μ) 0 (zero_mem _) hv
   rwa [zero_smul, zero_smul] at this
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[map_add, dual_heckeAct μ hf (add_mem hv hw), dual_heckeAct μ hf hv, dual_heckeAct μ hf hw, ← integral_add (integrable_mul_of_mem hf (continuous_dual_orbit hv φ)) (integrable_mul_of_mem hf (continuous_dual_orbit hw φ))]`. Simplify using `only [map_add, mul_add]`.
+-/
 theorem heckeAct_add_right {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ)
     {v w : V} (hv : v ∈ smoothVectors ρ) (hw : w ∈ smoothVectors ρ) :
     heckeAct μ ρ f (v + w) = heckeAct μ ρ f v + heckeAct μ ρ f w := by
@@ -247,6 +326,11 @@ theorem heckeAct_add_right {f : G → ℂ} (hf : f ∈ locallyConstantCompactSup
       (integrable_mul_of_mem hf (continuous_dual_orbit hw φ))]
   simp only [map_add, mul_add]
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, dual_heckeAct μ hf (Submodule.smul_mem _ c hv), dual_heckeAct μ hf hv, smul_eq_mul, ← integral_const_mul]`. Simplify using `only [map_smul, smul_eq_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heckeAct_smul_right {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) (c : ℂ)
     {v : V} (hv : v ∈ smoothVectors ρ) : heckeAct μ ρ f (c • v) = c • heckeAct μ ρ f v := by
   refine eq_of_forall_dual fun φ => ?_
@@ -257,11 +341,19 @@ theorem heckeAct_smul_right {f : G → ℂ} (hf : f ∈ locallyConstantCompactSu
   funext g
   ring
 
+/- English proof (translation)
+Use `heckeAct_smul_right (μ := μ) (ρ := ρ) hf 0 (zero_mem _)` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+-/
 theorem heckeAct_zero_right {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) :
     heckeAct μ ρ f 0 = 0 := by
   have := heckeAct_smul_right (μ := μ) (ρ := ρ) hf 0 (zero_mem _)
   rwa [zero_smul, zero_smul] at this
 
+/- English proof (translation)
+Establish `hTv : T v ∈ smoothVectors σ` using `Subgroup.isOpen_mono (H₁ := stabilizerOf ρ v) (fun g hg => by rw [mem_stabilizerOf, ← T.isIntertwining, mem_stabilizerOf.1 hg]) hv`. Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Use `dual_heckeAct μ hf hv (φ ∘ₗ T.toLinearMap)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Representation.IntertwiningMap.toLinearMap_apply] at this`. Rewrite using `[this, dual_heckeAct μ hf hTv]`.
+
+Simplify using `only [T.isIntertwining]`.
+-/
 theorem map_heckeAct {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W}
     (T : Representation.IntertwiningMap ρ σ) {f : G → ℂ}
     (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) {v : V} (hv : v ∈ smoothVectors ρ) :
@@ -276,6 +368,9 @@ theorem map_heckeAct {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Represent
 
 variable [μ.IsMulLeftInvariant]
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Use `dual_heckeAct μ hf hv (φ ∘ₗ ρ g)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, dual_heckeAct μ (ltrans_mem g hf) hv, ← integral_mul_left_eq_self (fun y => ltrans g f y * φ (ρ y v)) g]`. Simplify using `only [ltrans_apply, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`.
+-/
 theorem heckeAct_ltrans (g : G) {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ)
     {v : V} (hv : v ∈ smoothVectors ρ) : ρ g (heckeAct μ ρ f v) = heckeAct μ ρ (ltrans g f) v := by
   refine eq_of_forall_dual fun φ => ?_
@@ -285,6 +380,9 @@ theorem heckeAct_ltrans (g : G) {f : G → ℂ} (hf : f ∈ locallyConstantCompa
     ← integral_mul_left_eq_self (fun y => ltrans g f y * φ (ρ y v)) g]
   simp only [ltrans_apply, inv_mul_cancel_left, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `k hk`. Rewrite using `[heckeAct_ltrans k hf hv]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hK k⁻¹ (inv_mem hk) x`.
+-/
 theorem heckeAct_mem_fixedVectors {K : Subgroup G} {f : G → ℂ}
     (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) (hK : ∀ k ∈ K, ∀ x, f (k * x) = f x) {v : V}
     (hv : v ∈ smoothVectors ρ) : heckeAct μ ρ f v ∈ fixedVectors ρ K := by
@@ -296,11 +394,27 @@ theorem heckeAct_mem_fixedVectors {K : Subgroup G} {f : G → ℂ}
 
 variable [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Take `⟨K, hKc, hK⟩` from `exists_forall_mul_left hf`. Conclude with `(mem_smoothVectors_iff ρ).2 ⟨K, hKc, K.isOpen, heckeAct_mem_fixedVectors hf hK hv⟩`.
+-/
 theorem heckeAct_mem_smoothVectors {f : G → ℂ} (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ)
     {v : V} (hv : v ∈ smoothVectors ρ) : heckeAct μ ρ f v ∈ smoothVectors ρ := by
   obtain ⟨K, hKc, hK⟩ := exists_forall_mul_left hf
   exact (mem_smoothVectors_iff ρ).2 ⟨K, hKc, K.isOpen, heckeAct_mem_fixedVectors hf hK hv⟩
 
+/- English proof (translation)
+Take `⟨K₁, hK₁c, hK₁⟩` from `exists_forall_mul_right hf₁`. Take `⟨K₂, -, hK₂⟩` from `exists_forall_mul_left_mul_right hf₂`. Take `⟨K₃, -, hK₃o, hK₃⟩` from `(mem_smoothVectors_iff ρ).1 hv`. Set `K : OpenSubgroup G` to `K₁ ⊓ K₂ ⊓ ⟨K₃, hK₃o⟩`. Establish `hKc : IsCompact (K : Set G)` using `isCompact_inf_left (isCompact_inf_left hK₁c)`.
+
+Establish `m₁ : ∀ k ∈ K, k ∈ K₁` using `fun k hk => (OpenSubgroup.mem_inf.1 (OpenSubgroup.mem_inf.1 hk).1).1`. Establish `m₂ : ∀ k ∈ K, k ∈ K₂` using `fun k hk => (OpenSubgroup.mem_inf.1 (OpenSubgroup.mem_inf.1 hk).1).2`. Establish `m₃ : ∀ k ∈ K, k ∈ K₃` using `fun k hk => (OpenSubgroup.mem_inf.1 hk).2`. Use `eq_of_forall_dual fun φ => ?_` and prove the remaining obligations. Rewrite using `[dual_heckeAct μ (groupConv_mem μ hf₁ hf₂) hv, dual_heckeAct μ hf₁ (heckeAct_mem_smoothVectors hf₂ hv)]`.
+
+Establish `inner : ∀ y, φ (ρ y (heckeAct μ ρ f₂ v)) = ∫ z, f₂ (y⁻¹ * z) * φ (ρ z v) ∂μ` using `fun y => by`. Rewrite using `[heckeAct_ltrans y hf₂ hv, dual_heckeAct μ (ltrans_mem y hf₂) hv]`. Both sides reduce to the same expression. Repeatedly rewrite using `[inner, groupConv, ← integral_mul_const, ← integral_const_mul, ← mul_assoc]`. Use `(integral_integral_swap_of_coset μ K hKc hf₁.2 (hf₁.2.mul hf₂.2) ?_ ?_ ?_).symm` and prove the remaining obligations.
+
+Introduce `y z h`. Establish `h'` using `mul_ne_zero_iff.1 (mul_ne_zero_iff.1 h).1`. Conclude with `⟨subset_tsupport _ h'.1, y, subset_tsupport _ h'.1, y⁻¹ * z, subset_tsupport _ h'.2, mul_inv_cancel_left y z⟩`. Introduce `y z k hk`. Establish `e₂ : f₂ ((y * k)⁻¹ * z) = f₂ (y⁻¹ * z)`.
+
+Use `hK₂ k⁻¹ (inv_mem (m₂ k hk)) (y⁻¹ * z) 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one, ← mul_assoc, ← mul_inv_rev]`. Then use the resulting hypothesis. Rewrite using `[hK₁ y k (m₁ k hk), e₂]`. Introduce `y z k hk`. Establish `e₂ : f₂ (y⁻¹ * (z * k)) = f₂ (y⁻¹ * z)`.
+
+Use `hK₂ 1 (one_mem _) (y⁻¹ * z) k (m₂ k hk)` as an intermediate fact. Rewrite `this` using `[one_mul, mul_assoc]`. Then use the resulting hypothesis. Rewrite using `[e₂, map_mul, Module.End.mul_apply, hK₃ k (m₃ k hk)]`.
+-/
 theorem heckeAct_groupConv {f₁ f₂ : G → ℂ} (hf₁ : f₁ ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hf₂ : f₂ ∈ locallyConstantCompactSupport G ℂ ℂ) {v : V} (hv : v ∈ smoothVectors ρ) :
     heckeAct μ ρ (groupConv μ f₁ f₂) v = heckeAct μ ρ f₁ (heckeAct μ ρ f₂ v) := by
@@ -355,6 +469,9 @@ instance : FunLike (HeckeAlgebra μ) G ℂ where
   coe f := (show locallyConstantCompactSupport G ℂ ℂ from f).1
   coe_injective _ _ h := Subtype.ext h
 
+/- English proof (translation)
+The claim follows from `(show locallyConstantCompactSupport G ℂ ℂ from f).2`.
+-/
 theorem mem (f : HeckeAlgebra μ) : (f : G → ℂ) ∈ locallyConstantCompactSupport G ℂ ℂ :=
   (show locallyConstantCompactSupport G ℂ ℂ from f).2
 
@@ -364,24 +481,51 @@ def mk (f : G → ℂ) (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) : He
   (⟨f, hf⟩ : locallyConstantCompactSupport G ℂ ℂ)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[ext]`.
+-/
 theorem coe_mk (f : G → ℂ) (hf : f ∈ locallyConstantCompactSupport G ℂ ℂ) :
     (mk μ f hf : G → ℂ) = f := rfl
 
 @[ext]
+/- English proof (translation)
+The claim follows from `DFunLike.ext _ _ h`.
+-/
 theorem ext {f g : HeckeAlgebra μ} (h : ∀ x, f x = g x) : f = g := DFunLike.ext _ _ h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_add (f g : HeckeAlgebra μ) : ((f + g : HeckeAlgebra μ) : G → ℂ) = f + g := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_zero : ((0 : HeckeAlgebra μ) : G → ℂ) = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_smul (c : ℂ) (f : HeckeAlgebra μ) :
     ((c • f : HeckeAlgebra μ) : G → ℂ) = c • (f : G → ℂ) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_neg (f : HeckeAlgebra μ) : ((-f : HeckeAlgebra μ) : G → ℂ) = -f := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_sub (f g : HeckeAlgebra μ) : ((f - g : HeckeAlgebra μ) : G → ℂ) = f - g := rfl
 
 instance : Mul (HeckeAlgebra μ) := ⟨fun f g => mk μ (groupConv μ f g) (groupConv_mem μ f.mem g.mem)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_mul (f g : HeckeAlgebra μ) : ((f * g : HeckeAlgebra μ) : G → ℂ) = groupConv μ f g :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mul_apply (f g : HeckeAlgebra μ) (x : G) : (f * g) x = ∫ y, f y * g (y⁻¹ * x) ∂μ := rfl
 
 variable (μ) in
@@ -407,8 +551,16 @@ def leftReg : Representation ℂ G (HeckeAlgebra μ) where
     change f ((g * h)⁻¹ * x) = f (h⁻¹ * (g⁻¹ * x))
     simp [mul_inv_rev, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leftReg_apply (g : G) (f : HeckeAlgebra μ) (x : G) : leftReg μ g f x = f (g⁻¹ * x) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h k hk x`. Use `congrArg (fun φ : HeckeAlgebra μ => φ x) (h k⁻¹ (inv_mem hk))` as an intermediate fact. Simplify `this` using `[leftReg_apply]`. Introduce `h k hk`.
+
+Use extensionality with `x`. Rewrite using `[leftReg_apply]`. Conclude with `h k⁻¹ (inv_mem hk) x`.
+-/
 theorem mem_fixedVectors_leftReg {K : Subgroup G} {f : HeckeAlgebra μ} :
     f ∈ fixedVectors (leftReg μ) K ↔ ∀ k ∈ K, ∀ x, f (k * x) = f x := by
   constructor
@@ -420,12 +572,18 @@ theorem mem_fixedVectors_leftReg {K : Subgroup G} {f : HeckeAlgebra μ} :
     rw [leftReg_apply]
     exact h k⁻¹ (inv_mem hk) x
 
+/- English proof (translation)
+Introduce `f`. Take `⟨K, -, hK⟩` from `exists_forall_mul_left f.mem`. Conclude with `Subgroup.isOpen_mono (H₁ := (K : Subgroup G)) (fun k hk => mem_fixedVectors_leftReg.2 hK k hk) K.isOpen`.
+-/
 theorem isSmooth_leftReg : IsSmooth (leftReg μ) := by
   intro f
   obtain ⟨K, -, hK⟩ := exists_forall_mul_left f.mem
   exact Subgroup.isOpen_mono (H₁ := (K : Subgroup G))
     (fun k hk => mem_fixedVectors_leftReg.2 hK k hk) K.isOpen
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `dual_heckeAct μ f.mem (isSmooth_leftReg φ) (evalₗ μ x)`.
+-/
 theorem heckeAct_leftReg [IsFiniteMeasureOnCompacts μ] (f φ : HeckeAlgebra μ) :
     heckeAct μ (leftReg μ) f φ = f * φ := by
   ext x

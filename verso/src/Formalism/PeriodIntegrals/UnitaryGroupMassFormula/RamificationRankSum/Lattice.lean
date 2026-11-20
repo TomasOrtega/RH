@@ -4,6 +4,11 @@ namespace PI.UnitaryGroupMassFormula.EfRankSum
 
 open Formalism.MainNotions.Gaps.EtaleWeightGaps
 
+/- English proof (translation)
+Use `⟨fun r hr a b hab => ?_⟩` and prove the remaining obligations. Establish `hab' : r • a = r • b` using `hab`. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `hK : algebraMap O K r ≠ 0`. Simplify using `using (IsFractionRing.injective O K).ne hr0`.
+
+Establish `h1 : (algebraMap O K r) • a = (algebraMap O K r) • b`. Rewrite using `[algebraMap_smul, algebraMap_smul]`. Conclude with `hab'`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isTorsionFree_alg (O : Type) [CommRing O] [IsDomain O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
     (A : Type) [CommRing A] [Algebra O A] [Algebra K A] [IsScalarTower O K A] :
@@ -20,6 +25,11 @@ theorem isTorsionFree_alg (O : Type) [CommRing O] [IsDomain O]
     _ = ((algebraMap O K r)⁻¹ * algebraMap O K r) • b := by rw [mul_smul, h1, ← mul_smul]
     _ = b := by rw [inv_mul_cancel₀ hK, one_smul]
 
+/- English proof (translation)
+Take `⟨h⟩` from `isTorsionFree_alg O K A`. Use `⟨fun r hr a b hab => ?_⟩` and prove the remaining obligations. Establish `hab' : r • (a : A) = r • (b : A)`. Establish `h2` using `congrArg (fun x : ↥(As O A) => (x : A)) hab`. Simplify using `using h2`.
+
+Conclude with `Subtype.ext (h hr hab')`.
+-/
 theorem isTorsionFree_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
     (A : Type) [CommRing A] [Algebra O A] [Algebra K A] [IsScalarTower O K A] :
@@ -31,6 +41,9 @@ theorem isTorsionFree_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuati
     simpa using h2
   exact Subtype.ext (h hr hab')
 
+/- English proof (translation)
+Use `haveI := isTorsionFree_as O K A`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem free_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
     (A : Type) [CommRing A] [Algebra O A] [Algebra K A] [IsScalarTower O K A]
@@ -38,6 +51,17 @@ theorem free_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   haveI := isTorsionFree_as O K A
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Take `⟨htf⟩` from `isTorsionFree_alg O K A`. Use `IsLocalizedModule.mk ?_ ?_ ?_` and prove the remaining obligations. Introduce `s`. Establish `hs : algebraMap O K s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite using `[Module.End.isUnit_iff]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Simplify using `only [Module.algebraMap_end_apply] at hxy`. Conclude with `htf (isRegular_of_ne_zero (nonZeroDivisors.ne_zero s.2)) hxy`. Introduce `y`.
+
+Use `⟨(algebraMap O K s)⁻¹ • y, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.algebraMap_end_apply]`. Rewrite using `[← algebraMap_smul K (s : O), smul_smul, mul_inv_cancel₀ hs, one_smul]`. Introduce `y`. Establish `hy : IsAlgebraic K y` using `Algebra.IsAlgebraic.isAlgebraic y`.
+
+Establish `hyO : IsAlgebraic O y` using `(IsFractionRing.isAlgebraic_iff O K A).mpr hy`. Take `⟨c, hc0, hc⟩` from `hyO.exists_integral_multiple`. Use `⟨(⟨c • y, hc⟩, ⟨c, mem_nonZeroDivisors_of_ne_zero hc0⟩), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Introduce `x₁ x₂ h`.
+
+Conclude with `⟨1, by rw [Subtype.ext h]⟩`.
+-/
 theorem isLocalizedModule_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
     (A : Type) [CommRing A] [Algebra O A] [Algebra K A] [IsScalarTower O K A] [FiniteDimensional K A] :
@@ -64,6 +88,9 @@ theorem isLocalizedModule_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteVal
   · intro x₁ x₂ h
     exact ⟨1, by rw [Subtype.ext h]⟩
 
+/- English proof (translation)
+Use `haveI : Module.Free O ↥(As O A) := free_as O K A`. Use `haveI := isLocalizedModule_as O K A`. Set `b` to `Module.Free.chooseBasis O ↥(As O A)`. Set `b'` to `b.ofIsLocalizedModule K (nonZeroDivisors O) ((As O A).val.toLinearMap)`. Rewrite using `[Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis b']`.
+-/
 theorem finrank_as (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsFractionRing O K]
     (A : Type) [CommRing A] [Algebra O A] [Algebra K A] [IsScalarTower O K A] [FiniteDimensional K A]

@@ -17,6 +17,15 @@ namespace GlobalTheory.ExpUniq
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Introduce `hB V _ _ _ D A G _ _ U k σ f g hf hg`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Use `D.toPre.P.isAb.proper` as an intermediate fact. Use `D.toPre.P.isAb.geomConnected` as an intermediate fact.
+
+Set `d : ∀ α : D.toPre.X, D.toPre.SecB k α` to `fun α => SecOps.secAdd (f α) (SecOps.secNeg (g α))`. Establish `hd : ∀ α j, (d α).f j = (f α).f j - (g α).f j` using `fun α j => (sub_eq_add_neg _ _).symm`. Establish `h0 : ∀ e, U.ExpandsAt e k SecOps.secZero d` using `fun e => GlobalTheory.expandsAt_sub V _ D A G U e k σ σ SecOps.secZero f g d (fun j => (sub_self _).symm) hd (hf e) (hg e)`. Use function extensionality and compare the values at `α`. Use `SecOps.sec_ext fun j => sub_eq_zero.1 ((hd α j).symm.trans ?_)` and prove the remaining obligations.
+
+Use `hB V D.toPre.P.A _ (linComb_isLB _ D.toPre.P.isLB _ _) (d α) ϖ hϖ (fun i e => ?_) j` and prove the remaining obligations. Take `⟨τ, hτ⟩` from `(GlobalTheory.ExtDiv.main V ϖ hϖ D A G U e k α (d α)).1 (WeightPf.weightIndep V _ D A G U e k SecOps.secZero d (fun _ => map_zero _) (h0 e) α)`. Rewrite using `[hτ i, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Use `Dvd.dvd.mul_right ?_ _` and prove the remaining obligations. Simplify using `only [scal, pow_succ, map_mul, map_pow]`.
+
+Conclude with `Dvd.dvd.mul_right (dvd_refl _) _`.
+-/
 theorem main : lemmaBSt.{0} → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (maximalIdeal V) D A G) (k : ℕ) (σ : H0 U.LG.L k) (f g : ∀ α : D.toPre.X, D.toPre.SecB k α), (∀ e, U.ExpandsAt e k σ f) → (∀ e, U.ExpandsAt e k σ g) → f = g := by
   intro hB V _ _ _ D A G _ _ U k σ f g hf hg
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible V

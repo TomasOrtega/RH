@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `BS l _ a e _ _ ϖ LL _ P AI h`. Use `⟨BKFunctor.ofExists (fun T hT => GlobalTheory.T.exists_breuilKisin_module_basis_of_fCrystal BS l a e _ _ _ ϖ T ?_) fun M M' f => GlobalTheory.T.breuilKisin_full_faithfulness_lattice_morphism BS l a e _ _ _ ϖ _ _ _ _ _ _ M.I M'.I M.isBK M'.isBK f⟩` and prove the remaining obligations. Take `⟨E, j, H⟩` from `(BS l _ _ _ (isAinf_ainfObj (ϖ.field a))).1 P AI h LL T hT`. Conclude with `⟨E, j, H⟩`.
+-/
 theorem nonempty_crysBKFunctorOL_of_bhattScholze :
     GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] (P : LocPrime l) (AI : LocAinf l P), IsStd P AI → Nonempty (CrysBKFunctorOL a ϖ LL P) := by
   intro BS l _ a e _ _ ϖ LL _ P AI h

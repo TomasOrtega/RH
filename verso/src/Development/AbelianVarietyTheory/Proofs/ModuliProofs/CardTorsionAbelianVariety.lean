@@ -13,6 +13,9 @@ open GlobalTheory.Models
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ B _ g N hB hg hN` and use `GlobalTheory.abMulN_holds k B g N hB hg hN`.
+-/
 theorem card_torsion_abelianVariety : ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g N : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (N : k) ≠ 0 → Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ B // x ^ N = 1} = N ^ (2 * g) :=
   fun k _ _ B _ g N hB hg hN => GlobalTheory.abMulN_holds k B g N hB hg hN
 

@@ -10,6 +10,9 @@ namespace Formalism.IndefR.LowestKTypeSmoothness
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 lemma smoothOnH_of_isSmoothVecU {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (w : H)
     (h : ReciprocityTheory.ChartRestriction.DS.IsSmoothVecU ε σ w) :

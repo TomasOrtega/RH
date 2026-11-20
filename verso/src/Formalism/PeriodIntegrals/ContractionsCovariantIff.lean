@@ -27,6 +27,13 @@ def QnCovHat2 : Prop :=
     GlRel E → Q * P = 1 → P * Q = 1 → ∀ (u : ℂ) (a a' β β' : Fin n → ℂ),
       chat2A (Econj E P Q) u (Q *ᵥ a) (Q *ᵥ a') (β ᵥ* P) (β' ᵥ* P) = chat2A E u a a' β β'
 
+/- English proof (translation)
+Unfold `ContractionsCovariant QnCovDet QnCovHat QnCovHat2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `A _ _ n E P Q hE hQP hPQ u`.
+
+Conclude with `(h A n E P Q hE hQP hPQ u 0 0 0 0).1`. Introduce `A _ _ n E P Q hE hQP hPQ u a β`. Conclude with `(h A n E P Q hE hQP hPQ u a 0 β 0).2.1`. Introduce `A _ _ n E P Q hE hQP hPQ u a a' β β'`. Conclude with `(h A n E P Q hE hQP hPQ u a a' β β').2.2`.
+
+Introduce and unpack `⟨h1, h2, h3⟩ A _ _ n E P Q hE hQP hPQ u a a' β β'`. Conclude with `⟨h1 A n E P Q hE hQP hPQ u, h2 A n E P Q hE hQP hPQ u a β, h3 A n E P Q hE hQP hPQ u a a' β β'⟩`.
+-/
 theorem contractionsCovariant_iff : ContractionsCovariant ↔ QnCovDet ∧ QnCovHat ∧ QnCovHat2 := by
   unfold ContractionsCovariant QnCovDet QnCovHat QnCovHat2
   constructor

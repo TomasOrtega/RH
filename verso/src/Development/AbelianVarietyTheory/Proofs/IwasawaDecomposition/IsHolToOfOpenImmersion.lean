@@ -23,6 +23,11 @@ section Hol
 
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] {X Z : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `U f`. Establish `hU : i ⁻¹ᵁ (i ''ᵁ U) = U` using `i.preimage_image_eq U`. Establish `key : ∀ (U' : X.Opens) (_ : i ⁻¹ᵁ (i ''ᵁ U) = U') (f : Γ(X, U')), IsOpen {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U'} ∧ DifferentiableOn ℂ (fun b => valAt' (y b) U' f) {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U'}`. Introduce and unpack `_ rfl f`. Establish `: IsIso (i.app (i ''ᵁ U))` using `i.isIso_app _ (i.image_le_opensRange U)`.
+
+Take `⟨g, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (i.app (i ''ᵁ U))).2 f`. Use `h (i ''ᵁ U) g` as an intermediate fact. Simplify using `only [← ReciprocityTheory.ChartRestriction.G.PullbackSections.valAt'_comp] at this`. Conclude with `this`. Conclude with `key U hU f`.
+-/
 theorem isHolTo_of_openImmersion (i : X ⟶ Z) [IsOpenImmersion i] {B : Set W} {y : W → (Sp ℂ ⟶ X)}
     (h : IsHolTo B fun b => y b ≫ i) : IsHolTo B y := by
   intro U f
@@ -37,6 +42,9 @@ theorem isHolTo_of_openImmersion (i : X ⟶ Z) [IsOpenImmersion i] {B : Set W} {
     exact this
   exact key U hU f
 
+/- English proof (translation)
+Introduce `U f`. Use `⟨?_, differentiableOn_const _⟩` and prove the remaining obligations. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ U`. Simplify `hB` using `only [h, and_true, Set.ofPred_mem_eq]`. Simplify `isOpen_empty` using `only [h, and_false, Set.ofPred_false]`.
+-/
 theorem isHolTo_const {B : Set W} (hB : IsOpen B) (x : Sp ℂ ⟶ X) : IsHolTo B fun _ => x := by
   intro U f
   refine ⟨?_, differentiableOn_const _⟩
@@ -44,6 +52,9 @@ theorem isHolTo_const {B : Set W} (hB : IsOpen B) (x : Sp ℂ ⟶ X) : IsHolTo B
   · simpa only [h, and_true, Set.ofPred_mem_eq] using hB
   · simpa only [h, and_false, Set.ofPred_false] using isOpen_empty
 
+/- English proof (translation)
+Establish `he : ∀ b, (y b ≫ pullback.fst p q) ≫ p = s ≫ q` using `fun b => by`. Rewrite using `[← hs b, Category.assoc, Category.assoc, pullback.condition]`. Use `LocLift.isHolTo_congr (holPair _ _ _ p q n B _ (fun _ => s) he hB h (isHolTo_const hB s)) fun b _ => ?_` and prove the remaining obligations. Conclude with `pullback.hom_ext (pullback.lift_fst _ _ _).symm ((hs b).trans (pullback.lift_snd _ _ _).symm)`.
+-/
 theorem isHolTo_of_fst {S : Scheme.{0}} (p : X ⟶ Z) (q : S ⟶ Z) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B)
     {y : (Fin n → ℂ) → (Sp ℂ ⟶ pullback p q)} (s : Sp ℂ ⟶ S) (hs : ∀ b, y b ≫ pullback.snd _ _ = s)
     (h : IsHolTo B fun b => y b ≫ pullback.fst _ _) : IsHolTo B y := by
@@ -54,6 +65,11 @@ theorem isHolTo_of_fst {S : Scheme.{0}} (p : X ⟶ Z) (q : S ⟶ Z) {n : ℕ} {B
 
 variable {k : Type} [CommRing k] {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Rewrite using `[continuousOn_iff_continuous_domRestrict, CxPts.continuous_iff]`. Introduce `U`. Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Use `(h U 0).1.preimage (continuous_subtype_val (p := (· ∈ B))) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `b`.
+
+Conclude with `⟨fun hb => ⟨b.2, hb⟩, fun hb => hb.2⟩`. Conclude with `(h U f).2.continuousOn.comp continuous_subtype_val.continuousOn fun b hb => ⟨b.2, hb⟩`.
+-/
 theorem continuousOn_of_isHolTo {B : Set W} {y : W → CxPts p σ} (h : IsHolTo B fun b => (y b).1) :
     ContinuousOn y B := by
   rw [continuousOn_iff_continuous_domRestrict, CxPts.continuous_iff]
@@ -64,6 +80,9 @@ theorem continuousOn_of_isHolTo {B : Set W} {y : W → CxPts p σ} (h : IsHolTo 
     exact ⟨fun hb => ⟨b.2, hb⟩, fun hb => hb.2⟩
   · exact (h U f).2.continuousOn.comp continuous_subtype_val.continuousOn fun b hb => ⟨b.2, hb⟩
 
+/- English proof (translation)
+Use `(differentiableAt_piLp 2).2 fun a => ?_` and prove the remaining obligations. Establish `h1` using `((h ch.U (ch.x a)).2).differentiableAt ((h ch.U (ch.x a)).1.mem_nhds ⟨hb, ch.source_subset hy⟩)`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [((continuousOn_of_isHolTo h).continuousAt (hB.mem_nhds hb)).preimage_mem_nhds (ch.e.open_source.mem_nhds hy)] with v hv`. Conclude with `ch.apply_eq _ hv a`.
+-/
 theorem differentiableAt_chart {B : Set W} (hB : IsOpen B) {y : W → CxPts p σ} (h : IsHolTo B fun b => (y b).1)
     (ch : AlgChart p σ D) {b : W} (hb : b ∈ B) (hy : y b ∈ ch.e.source) :
     DifferentiableAt ℂ (fun v => ch.e (y v)) b := by
@@ -74,6 +93,9 @@ theorem differentiableAt_chart {B : Set W} (hB : IsOpen B) {y : W → CxPts p σ
     (ch.e.open_source.mem_nhds hy)] with v hv
   exact ch.apply_eq _ hv a
 
+/- English proof (translation)
+Introduce `U f` and use `⟨ChartGlue.isOpen_over ch.e (isOpen_ptsIn U), ch.holo U f⟩`.
+-/
 theorem isHolTo_symm (ch : AlgChart p σ D) : IsHolTo ch.e.target fun v => (ch.e.symm v).1 := fun U f =>
   ⟨ChartGlue.isOpen_over ch.e (isOpen_ptsIn U), ch.holo U f⟩
 
@@ -86,6 +108,11 @@ open GlobalTheory.TorsionHolomorphic ReciprocityTheory.ChartRestriction.G.AR.Up
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r j : ℕ} {Tau : Type}
   {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] (X : Data E r) {B : Set W}
 
+/- English proof (translation)
+Unfold `perFr`. Use `split_ifs with h1 h2 h3 h4`. Simplify using `only [mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun a _ => (differentiableOn_matrix_inv _ B (hd _) (fun b hb => (hx b hb _).1) _ _).mul_const _`. Conclude with `differentiableOn_const _`.
+
+Simplify using `only [hermC]`. Conclude with `DifferentiableOn.fun_sum fun a _ => DifferentiableOn.fun_sum fun c _ => ((hd _ _ _).mul_const _).mul_const _`. Conclude with `differentiableOn_const _`. Conclude with `differentiableOn_const _`.
+-/
 theorem differentiableOn_perFr {x : W → Frame X.Ψ r} (hx : ∀ b ∈ B, x b ∈ X.dom)
     (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b) τ a c) B) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     DifferentiableOn ℂ (fun b => perFr X (x b) v τ i) B := by
@@ -101,6 +128,9 @@ theorem differentiableOn_perFr {x : W → Frame X.Ψ r} (hx : ∀ b ∈ B, x b �
   · exact differentiableOn_const _
   · exact differentiableOn_const _
 
+/- English proof (translation)
+Establish `h1 : ∀ a c, DifferentiableOn ℂ (fun b => frameCo X hj (x b) (κ t) a c) B` using `fun a c => differentiableOn_matrix_mul (fun _ => (mat (x0F X) (κ t))⁻¹) (fun b => mat (x b) (κ t)) B (fun _ _ => differentiableOn_const _) (hd _) _ _`. Simplify using `only [domPt, moeb_zero, mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun d _ => (h1 _ _).mul (differentiableOn_matrix_inv (fun b => (frameCo X hj (x b) (κ t)).toBlocks₂₂) B (fun _ _ => h1 _ _) (fun b hb => (frameCo_isUnit₂₂ X hj hp (hx b hb) _).ne_zero) _ _)`.
+-/
 theorem differentiableOn_domPt (hj : j ≤ r) (κ : Tau → X.Ψ) (hp : X.p0 = r - j) {x : W → Frame X.Ψ r}
     (hx : ∀ b ∈ B, x b ∈ X.dom) (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b) τ a c) B) (t : Tau)
     (a : Fin j) (c : Fin (r - j)) : DifferentiableOn ℂ (fun b => domPt X hj κ (x b) t a c) B := by
@@ -112,6 +142,11 @@ theorem differentiableOn_domPt (hj : j ≤ r) (κ : Tau → X.Ψ) (hp : X.p0 = r
     (differentiableOn_matrix_inv (fun b => (frameCo X hj (x b) (κ t)).toBlocks₂₂) B (fun _ _ => h1 _ _)
       (fun b hb => (frameCo_isUnit₂₂ X hj hp (hx b hb) _).ne_zero) _ _)
 
+/- English proof (translation)
+Use `differentiableOn_univ.1 (differentiableOn_matrix_mul (fun _ => mat (x0F X) τ) (fun v => reindex (idx hj).symm (idx hj).symm (fromBlocks 1 (unflat v (κ.symm τ)) 0 1)) _ (fun _ _ => differentiableOn_const _) (fun a c => ?_) a c)` and prove the remaining obligations. Simplify using `only [reindex_apply, submatrix_apply, Equiv.symm_symm]`. Apply the tactic sequence `rcases idx hj a with a | a <;> rcases idx hj c with c | c`. Conclude with `differentiableOn_const _`. Conclude with `differentiableOn_apply (κ.symm τ, a, c) _`.
+
+Conclude with `differentiableOn_const _`. Conclude with `differentiableOn_const _`.
+-/
 theorem differentiable_stdMat [Fintype Tau] (hj : j ≤ r) (κ : Tau ≃ X.Ψ) (τ : X.Ψ) (a c : Fin r) :
     Differentiable ℂ fun v => mat (stdMat X hj κ (unflat v)) τ a c := by
   refine differentiableOn_univ.1 (differentiableOn_matrix_mul (fun _ => mat (x0F X) τ)
@@ -127,6 +162,11 @@ theorem differentiable_stdMat [Fintype Tau] (hj : j ≤ r) (κ : Tau ≃ X.Ψ) (
 variable {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   (Y : Model Xo c (RingHom.id c.F)) {σ : c.F →+* ℂ} {U : Unf Xo c σ r}
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, g, e, F, ik, φ, -, hun⟩` from `hU`. Use `choose P hP hP' hx _ using hun k`. Establish `h1` using `(F.hol (ik k) n B (fun b => P (x b)) hB ⟨fun b _ => hP' _, fun a => differentiableOn_pi.2 fun i => by`. Simplify using `only [hP]`. Conclude with `differentiableOn_perFr _ (fun b _ => (x b).2) hd _ _ _⟩).1`.
+
+Use `isHolTo_of_fst _ _ hB _ (fun b => (torPt Y (U.un k (x b))).2) ?_` and prove the remaining obligations. Simplify using `only [torPt_pr]`. Use `isHolTo_comp (isHolTo_of_fst _ _ hB _ (fun b => ptC_snd _) ?_) _` and prove the remaining obligations. Simplify using `only [ptC_fst]`. Conclude with `LocLift.isHolTo_congr h1 fun b _ => hx _`.
+-/
 theorem isHolTo_torPt (hU : IsUnf U) (k : U.Comp) {n : ℕ} {B : Set (Fin n → ℂ)} (hB : IsOpen B)
     (x : (Fin n → ℂ) → (U.X k).dom) (hd : ∀ τ a c, DifferentiableOn ℂ (fun b => mat (x b).1 τ a c) B) :
     IsHolTo B fun b => (torPt Y (U.un k (x b))).1 := by
@@ -141,6 +181,11 @@ theorem isHolTo_torPt (hU : IsUnf U) (k : U.Comp) {n : ℕ} {B : Set (Fin n → 
   simp only [ptC_fst]
   exact LocLift.isHolTo_congr h1 fun b _ => hx _
 
+/- English proof (translation)
+Set `L : (Tau × Fin j × Fin (r - j) → ℂ) ≃L[ℂ] (Fin (Fintype.card (Tau × Fin j × Fin (r - j))) → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin _).symm).toContinuousLinearEquiv`. Establish `ho : IsOpen (DomFlat Tau j (r - j))` using `ActionDeriv.isOpen_domFlat`. Establish `h` using `isHolTo_torPt Y hU k (ho.preimage L.symm.continuous) (fun b => stdFrame (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) (first_index_eq_of_unfolded U hU e k) (unflat (L.symm b))) fun τ a c => ((differentiable_stdMat (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) τ a c).comp L.sy …`. Use `LocLift.isHolTo_congr (LocLift.isHolTo_comp h ho L.differentiableOn fun v hv => ?_) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, L.symm_apply_apply]` and apply the resulting hypothesis.
+
+Rewrite using `[L.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem isHolTo_domTor [Fintype Tau] (hU : IsUnf U) (e : Dw.p = j) (T : Tau ≃ Psi H) (k : U.Comp) :
     IsHolTo (DomFlat Tau j (r - j)) fun v => (domTor Y U hU e T k (unflat v)).1 := by
   classical
@@ -156,6 +201,9 @@ theorem isHolTo_domTor [Fintype Tau] (hU : IsUnf U) (e : Dw.p = j) (T : Tau ≃ 
   · rw [L.symm_apply_apply]
     rfl
 
+/- English proof (translation)
+Establish `e1 : spMap (RingHom.id c.F) = 𝟙 _` using `Spec.map_id _`. Establish `e2 : spMap (RingHom.id ℂ) = 𝟙 _` using `Spec.map_id _`. Establish `h1 : Y.j ≫ Y.s = pullback.snd _ _`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over, e1, Category.comp_id]`. Rewrite using `[← h1, ← Category.assoc, h, Category.assoc, pullback.condition, ← Category.assoc, w.2, e2, Category.id_comp]`.
+-/
 theorem snd_eq_of_comp_j {w : TorPts Y σ} {y : Sp ℂ ⟶ Xo.XF c} (h : y ≫ Y.j = w.1 ≫ torPr Y σ) :
     y ≫ pullback.snd _ _ = spMap σ := by
   have e1 : spMap (RingHom.id c.F) = 𝟙 _ := Spec.map_id _
@@ -164,6 +212,19 @@ theorem snd_eq_of_comp_j {w : TorPts Y σ} {y : Sp ℂ ⟶ Xo.XF c} (h : y ≫ Y
     rw [Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over, e1, Category.comp_id]
   rw [← h1, ← Category.assoc, h, Category.assoc, pullback.condition, ← Category.assoc, w.2, e2, Category.id_comp]
 
+/- English proof (translation)
+Take `⟨hr, hty, -, hfib, -, g, e, F, ik, ψ, hef, hun⟩` from `hU`. Establish `hw'` using `isHolTo_comp hw (torPr Y σ)`. Establish `hB'` using `(hw' Y.j.opensRange 0).1`. Establish `hb' : b₀ ∈ {b ∈ B | ⊤ ≤ ((w b).1 ≫ torPr Y σ) ⁻¹ᵁ Y.j.opensRange}`. Use `⟨hb₀, fun s _ => ⟨ptC (U.un k x₀) s, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h0, torPt_pr, Scheme.Hom.comp_apply]`. Establish `: Nonempty (Sp ℂ ⟶ Xo.XF c)` using `⟨ptC (U.un k x₀)⟩`. Establish `hy : ∀ b ∈ {b ∈ B | ⊤ ≤ ((w b).1 ≫ torPr Y σ) ⁻¹ᵁ Y.j.opensRange}, ∃ y : Sp ℂ ⟶ Xo.XF c, y ≫ Y.j = (w b).1 ≫ torPr Y σ` using `fun b hb => ⟨IsOpenImmersion.lift Y.j _ (by rintro _ ⟨s, rfl⟩; exact hb.2 (Set.mem_univ s)), IsOpenImmersion.lift_fac _ _ _⟩`. Use `replace hw' := LocLift.isHolTo_mono hw' hB' fun b hb => hb.1`. Generalize the expression as in `{b ∈ B | ⊤ ≤ ((w b).1 ≫ torPr Y σ) ⁻¹ᵁ Y.j.opensRange} = B' at hB' hb' hy hw'`.
+
+Use `choose! y hy using hy`. Establish `hyh : IsHolTo B' y` using `isHolTo_of_openImmersion Y.j (LocLift.isHolTo_congr hw' hy)`. Establish `hpt : ∀ b ∈ B', ∀ z : Formalism.L2.Pj.FrPt Xo c (Formalism.L2.Pj.CAt σ), xC z = y b ≫ pullback.fst _ _ → torPt Y z = w b` using `fun b hb z hz => by`. Establish `h1 : ptC z = y b` using `pullback.hom_ext ((ptC_fst z).trans hz) ((ptC_snd z).trans (snd_eq_of_comp_j Y (hy b hb)).symm)`. Conclude with `Subtype.ext (pullback.hom_ext ((torPt_pr Y z).trans (h1 ▸ hy b hb)) ((torPt Y z).2.trans (w b).2.symm))`.
+
+Take `⟨B₁, i, P, hB₁, hb₁, hs₁, hP, hyP⟩` from `F.lift n B' (fun b => y b ≫ pullback.fst _ _) hB' (fun b hb => by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, snd_eq_of_comp_j Y (hy b hb), ← Spec.map_comp]`. Use the proof step `rfl) (isHolTo_comp hyh _) b₀ hb'`. Take `⟨P₁, hP₁, hP₁', hx₁, -⟩` from `hun k x₀`. Establish `h1 : y b₀ = ptC (U.un k x₀)` using `(cancel_mono Y.j).1 (by rw [hy b₀ hb', h0, torPt_pr])`.
+
+Take `rfl : ik k = i` from `F.disj _ _ _ _ hP₁' (hP.1 b₀ hb₁) (hx₁.symm.trans ((ptC_fst _).symm.trans (h1 ▸ (hyP b₀ hb₁).symm)))`. Take `⟨B₂, x', hB₂, hb₂, hs₂, hx'd, hx'⟩` from `HolChartLift.exists_frames_of_holPeriods c σ e _ (U.X k) (ψ k) hσ (F.sig _).1 (F.sig _).2 hr (hty k).1 (hty k).2 (hef k) (FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k) (ψ k) hσ hr (hty k).1 (hty k).2 (hef k) x₀.1 x₀.2 P₁ hP₁ hP₁') hB₁ P hP hb₁`. Use `⟨B₂, x', hB₂, hb₂, hx'd, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hper, β, hβ, hxβ⟩` from `hx' b hb`. Establish `hd : x' b ∈ (U.X k).dom` using `hxβ ▸ OrthogonalFrameDomain.rmul_mem_dom _ hx hβ`.
+
+Take `⟨t, ht⟩` from `(hfib k k ⟨x, hx⟩ ⟨_, hd⟩).2 ⟨1, one_mem _, β, hβ, by rw [KU.lact_one]; exact congrArg _ hxβ⟩`. Take `⟨P₀, hP₀, -, hux, -⟩` from `hun k ⟨x, hx⟩`. Take `rfl : P₀ = P b` from `AddMonoidHom.ext fun a => funext fun i => (hP₀ a i).trans (hper a i).symm`. Conclude with `⟨hd, hpt b (hs₁ (hs₂ hb)) _ (ht.1.trans (hux.trans (hyP b (hs₂ hb))))⟩`.
+-/
 theorem exists_frames (hU : IsUnf U) (hσ : GoodEmb c σ) (k : U.Comp) {n : ℕ} {B : Set (Fin n → ℂ)}
     {w : (Fin n → ℂ) → TorPts Y σ} (hw : IsHolTo B fun b => (w b).1) {b₀ : Fin n → ℂ} (hb₀ : b₀ ∈ B)
     (x₀ : (U.X k).dom) (h0 : w b₀ = torPt Y (U.un k x₀)) :
@@ -207,6 +268,13 @@ theorem exists_frames (hU : IsUnf U) (hσ : GoodEmb c σ) (k : U.Comp) {n : ℕ}
   obtain rfl : P₀ = P b := AddMonoidHom.ext fun a => funext fun i => (hP₀ a i).trans (hper a i).symm
   exact ⟨hd, hpt b (hs₁ (hs₂ hb)) _ (ht.1.trans (hux.trans (hyP b (hs₂ hb))))⟩
 
+/- English proof (translation)
+Establish `hp` using `first_index_eq_of_unfolded U hU e k`. Take `⟨B₁, x, hB₁, hb₁, hxd, hx⟩` from `exists_frames Y hU hσ k hw hb₀ _ h0`. Use `choose hx hxw using hx`. Take `⟨m, hm, hm0, hmd, ht⟩` from `PointOfFrames.exists_frBor U hU hσ k ⟨_, hx b₀ hb₁⟩ (domFr U hU e T k z) ((torPt_eq_iff Y).1 ((hxw b₀ hb₁).trans h0))`. Take `⟨g, hg, β, hβ, h1⟩` from `(hU.2.2.2.1 k k _ _).1 ht`.
+
+Establish `h2` using `eq_of_heq (Sigma.mk.inj h1).2`. Establish `hl : ∀ b ∈ B₁, lact g (x b) ∈ (U.X k).dom` using `fun b hb => KU.lact_dom _ hg (hx b hb)`. Use `⟨fun b => flat (domPt (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) (lact g (x b))), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `differentiableAt_pi.2 fun i => (differentiableOn_domPt _ _ _ hp hl (fun τ a c => ?_) _ _ _).differentiableAt (hB₁.mem_nhds hb₁)` and prove the remaining obligations. Conclude with `differentiableOn_matrix_mul (fun _ => (g : Matrix (Fin r) (Fin r) E).map τ.1) (fun b => mat (x b) τ) B₁ (fun _ _ => differentiableOn_const _) (fun p q => differentiableOn_pi.1 (differentiableOn_pi.1 (differentiableOn_pi.1 hxd τ) p) q) a c`.
+
+Use `congrArg flat ?_` and prove the remaining obligations. Rewrite using `[← domPt_stdFrame (U.X k) (le_of_isUnf U hU e) (cmEquiv U hU T k) hp hz, h2, domPt_rmul _ _ _ hβ, KU.lact_rmul', PointOfFrames.domPt_rmul_block _ _ _ _ m hm (hp ▸ hm0)]`. Use `filter_upwards [hB₁.mem_nhds hb₁] with b hb`. Conclude with `(domTor_domPt Y U hU e hσ T k ⟨_, hl b hb⟩).trans (((torPt_eq_iff Y).2 (PointWell.pt_lact hU k ⟨_, hx b hb⟩ hg)).trans (hxw b hb))`.
+-/
 theorem exists_lift [Fintype Tau] (hU : IsUnf U) (e : Dw.p = j) (hσ : GoodEmb c σ) (T : Tau ≃ Psi H) (k : U.Comp)
     {n : ℕ} {B : Set (Fin n → ℂ)} {w : (Fin n → ℂ) → TorPts Y σ} (hw : IsHolTo B fun b => (w b).1) {b₀ : Fin n → ℂ}
     (hb₀ : b₀ ∈ B) {z : Pt Tau j (r - j)} (hz : z ∈ DomI Tau j (r - j)) (h0 : w b₀ = domTor Y U hU e T k z) :
@@ -235,6 +303,15 @@ theorem exists_lift [Fintype Tau] (hU : IsUnf U) (e : Dw.p = j) (hσ : GoodEmb c
 
 end Frames
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y σ r j U hU e hσ Tau _ T k`. Establish `hh` using `isHolTo_domTor Y hU e T k`. Use `⟨(continuousOn_of_isHolTo (y := fun v => domTor Y U hU e T k (unflat v)) hh).comp (f := flat) (continuous_pi fun i => by unfold flat; fun_prop).continuousOn fun z hz => hz, fun ch z hz hs => ?_⟩` and prove the remaining obligations. Establish `hd` using `differentiableAt_chart (y := fun v => domTor Y U hU e T k (unflat v)) ActionDeriv.isOpen_domFlat hh ch (b := flat z) hz hs`. Use `⟨hd, ?_⟩` and prove the remaining obligations.
+
+Set `L` to `(EuclideanSpace.equiv (Fin Dw.dim) ℂ).symm`. Establish `ht` using `ch.e.map_source hs`. Take `⟨s, hsd, hs0, hsw⟩` from `exists_lift Y hU e hσ T k (w := fun b => ch.e.symm (L b)) (LocLift.isHolTo_comp (isHolTo_symm ch) (ch.e.open_target.preimage L.continuous) L.differentiableOn fun _ h => h) (b₀ := L.symm (ch.e (domTor Y U hU e T k z))) ht hz (ch.e.left_inv hs)`. Establish `h1 : (fun v => ch.e (domTor Y U hU e T k (unflat v))) ∘ s =ᶠ[nhds (L.symm (ch.e (domTor Y U hU e T k z)))] L` using `by filter_upwards [hsw, (ch.e.open_target.preimage L.continuous).mem_nhds (show L.symm (ch.e (domTor Y U hU e T k z)) ∈ _ from ht)] with b hb hb'`. Conclude with `(congrArg ch.e hb).trans (ch.e.right_inv hb')`.
+
+Establish `h2` using `h1.fderiv_eq (𝕜 := ℂ)`. Rewrite `h2` using `[fderiv_comp _ (hs0 ▸ hd) hsd, hs0, L.fderiv]`. Establish `h3 : Function.Surjective (fderiv ℂ (fun v => ch.e (domTor Y U hU e T k (unflat v))) (flat z))` using `fun v => ⟨_, (DFunLike.congr_fun h2 (L.symm v)).trans (L.apply_symm_apply v)⟩`. Use `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := (fderiv ℂ (fun v => ch.e (domTor Y U hU e T k (unflat v))) (flat z)).toLinearMap) ?_).2 h3` and prove the remaining obligations. Establish `h4` using `(U.X k).card_Psi`.
+
+Rewrite `h4` using `[← Fintype.card_congr (cmEquiv U hU T k)]`. Rewrite using `[finrank_euclideanSpace_fin, Module.finrank_fintype_fun_eq_card, Datum.dim, e, q_of_isUnf U hU e, ← h4]`. Simplify using `[_root_.mul_assoc]`.
+-/
 theorem domTor_holo_immersion : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (σ : c.F →+* ℂ) (r j : ℕ) (U : Unf Xo c σ r) (hU : IsUnf U) (e : Dw.p = j) (hσ : GoodEmb c σ) (Tau : Type) [Fintype Tau] (T : Tau ≃ Psi H) (k : U.Comp), ContinuousOn (domTor Y U hU e T k) (DomI Tau j (r - j)) ∧ ∀ (ch : AlgChart (torStr Y σ) (RingHom.id ℂ) Dw.dim) (z : Pt Tau j (r - j)), z ∈ DomI Tau j (r - j) → domTor Y U hU e T k z ∈ ch.e.source → DifferentiableAt ℂ (fun v => ch.e (domTor Y U hU e T k (unflat v))) (flat z) ∧ Function.Injective (fderiv ℂ (fun v => ch.e (domTor Y U hU e T k (unflat v))) (flat z)) := by
   intro E _ _ _ H Dw l Xo c Y σ r j U hU e hσ Tau _ T k
   have hh := isHolTo_domTor Y hU e T k

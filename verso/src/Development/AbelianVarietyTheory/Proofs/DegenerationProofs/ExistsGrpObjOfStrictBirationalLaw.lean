@@ -25,12 +25,20 @@ namespace GlobalTheory.SS.StrictGrp
 section Basic
 variable {R : Type} [CommRing R] {K : Type} [Field K] [Algebra R K] {A A' A'' : Over (Sp K)}
 
+/- English proof (translation)
+Establish `: IsIso M.e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map M.e.inv))`. Establish `h : IsPullback M.e.inv.left A.hom (pullback.snd M.Y.hom (spMap (algebraMap R K))) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w M.e.inv).trans (Category.comp_id _).symm⟩`. Simplify `h.paste_horiz (IsPullback.of_hasPullback M.Y.hom (spMap (algebraMap R K)))` using `[Model.j]`.
+-/
 theorem isPullback_j (M : Model R A) : IsPullback M.j A.hom M.Y.hom (spMap (algebraMap R K)) := by
   have : IsIso M.e.inv.left := inferInstanceAs (IsIso ((Over.forget _).map M.e.inv))
   have h : IsPullback M.e.inv.left A.hom (pullback.snd M.Y.hom (spMap (algebraMap R K))) (𝟙 _) :=
     IsPullback.of_horiz_isIso ⟨(Over.w M.e.inv).trans (Category.comp_id _).symm⟩
   simpa [Model.j] using h.paste_horiz (IsPullback.of_hasPullback M.Y.hom (spMap (algebraMap R K)))
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun q => q.left ≫ pullback.fst N.Y.hom (spMap (algebraMap R K))) h`. Establish `h4 : ((Over.pullback (spMap (algebraMap R K))).map g).left ≫ pullback.fst N.Y.hom (spMap (algebraMap R K)) = pullback.fst M.Y.hom (spMap (algebraMap R K)) ≫ g.left` using `pullback.lift_fst _ _ _`. Simplify using `only [Over.comp_left, Category.assoc] at h2`. Unfold `Model.j`. Rewrite using `[Category.assoc]`.
+
+Conclude with `(congrArg (fun q => M.e.inv.left ≫ q) h4).symm.trans h2`.
+-/
 theorem j_comm (M : Model R A) (N : Model R A') (f : A ⟶ A') (g : M.Y ⟶ N.Y)
     (h : M.e.inv ≫ (Over.pullback (spMap (algebraMap R K))).map g = f ≫ N.e.inv) : M.j ≫ g.left = f.left ≫ N.j := by
   have h2 := congrArg (fun q => q.left ≫ pullback.fst N.Y.hom (spMap (algebraMap R K))) h
@@ -41,22 +49,37 @@ theorem j_comm (M : Model R A) (N : Model R A') (f : A ⟶ A') (g : M.Y ⟶ N.Y)
   rw [Category.assoc]
   exact (congrArg (fun q => M.e.inv.left ≫ q) h4).symm.trans h2
 
+/- English proof (translation)
+The claim follows from `j_comm (M.prod N) M (fst A A') (fst M.Y N.Y) (by simp [Model.prod])`.
+-/
 theorem prod_j_fst (M : Model R A) (N : Model R A') :
     (M.prod N).j ≫ (fst M.Y N.Y).left = (fst A A').left ≫ M.j :=
   j_comm (M.prod N) M (fst A A') (fst M.Y N.Y) (by simp [Model.prod])
 
+/- English proof (translation)
+The claim follows from `j_comm (M.prod N) N (snd A A') (snd M.Y N.Y) (by simp [Model.prod])`.
+-/
 theorem prod_j_snd (M : Model R A) (N : Model R A') :
     (M.prod N).j ≫ (snd M.Y N.Y).left = (snd A A').left ≫ N.j :=
   j_comm (M.prod N) N (snd A A') (snd M.Y N.Y) (by simp [Model.prod])
 
+/- English proof (translation)
+Simplify using `[Model.twist, Model.j]`.
+-/
 theorem twist_j (M : Model R A) (f : A ≅ A') : (M.twist f).j = f.inv.left ≫ M.j := by
   simp [Model.twist, Model.j]
 
+/- English proof (translation)
+Rewrite using `[← h, twist_j, Category.assoc, ← Category.assoc f.hom.left, ← Over.comp_left, f.hom_inv_id, Over.id_left, Category.id_comp]`.
+-/
 theorem twist_comm {M : Model R A} {N : Model R A'} {f : A ≅ A'} {g : M.Y.left ⟶ N.Y.left}
     (h : (M.twist f).j ≫ g = N.j) : M.j ≫ g = f.hom.left ≫ N.j := by
   rw [← h, twist_j, Category.assoc, ← Category.assoc f.hom.left, ← Over.comp_left, f.hom_inv_id, Over.id_left,
     Category.id_comp]
 
+/- English proof (translation)
+Apply `Over.tensorObj_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(_ ≫ _) ≫ (fst P.Y Q.Y).left = (_ ≫ _) ≫ (fst P.Y Q.Y).left`. Rewrite using `[Category.assoc, Category.assoc, prod_j_fst, ← Over.comp_left, tensorHom_fst, Over.comp_left, ← Category.assoc, prod_j_fst, Category.assoc, h, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, tensorHom_fst]`. Express the relevant statement in the definitionally equal form `(_ ≫ _) ≫ (snd P.Y Q.Y).left = (_ ≫ _) ≫ (snd P.Y Q.Y).left`. Rewrite using `[Category.assoc, Category.assoc, prod_j_snd, ← Over.comp_left, tensorHom_snd, Over.comp_left, ← Category.assoc, prod_j_snd, Category.assoc, h', ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, tensorHom_snd]`.
+-/
 theorem prod_comm {B B' : Over (Sp K)} {M : Model R A} {N : Model R A'} {P : Model R B} {Q : Model R B'}
     {f : A ⟶ B} {f' : A' ⟶ B'} {g : M.Y ⟶ P.Y} {g' : N.Y ⟶ Q.Y} (h : M.j ≫ g.left = f.left ≫ P.j)
     (h' : N.j ≫ g'.left = f'.left ≫ Q.j) :
@@ -71,6 +94,9 @@ theorem prod_comm {B B' : Over (Sp K)} {M : Model R A} {N : Model R A'} {P : Mod
       ← Category.assoc, prod_j_snd, Category.assoc, h', ← Category.assoc, ← Category.assoc, ← Over.comp_left,
       ← Over.comp_left, tensorHom_snd]
 
+/- English proof (translation)
+Use `⟨w.opensRange, w.isoOpensRange.inv ≫ h, hy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h₁, ← Category.assoc, Scheme.Hom.isoOpensRange_inv_comp]`. Establish `e : (G.j ∣_ w.opensRange ≫ w.isoOpensRange.inv) ≫ w = (G.j ⁻¹ᵁ w.opensRange).ι ≫ G.j`. Rewrite using `[Category.assoc, Scheme.Hom.isoOpensRange_inv_comp, morphismRestrict_ι]`. Rewrite using `[← Category.assoc, ← hp.lift_fst _ _ e, Category.assoc, h₂, ← Category.assoc, hp.lift_snd]`.
+-/
 theorem defAt_of_chart {G : Model R A} {N : Model R A'} {φ : A ⟶ A'} {W V : Scheme.{0}} (w : W ⟶ G.Y.left)
     [IsOpenImmersion w] {v : V ⟶ W} {u : V ⟶ A.left} (hp : IsPullback v u w G.j) (h : W ⟶ N.Y.left)
     (h₁ : h ≫ N.Y.hom = w ≫ G.Y.hom) (h₂ : v ≫ h = u ≫ φ.left ≫ N.j) {y : G.Y.left} (hy : y ∈ Set.range w) :
@@ -81,12 +107,18 @@ theorem defAt_of_chart {G : Model R A} {N : Model R A'} {φ : A ⟶ A'} {W V : S
       rw [Category.assoc, Scheme.Hom.isoOpensRange_inv_comp, morphismRestrict_ι]
     rw [← Category.assoc, ← hp.lift_fst _ _ e, Category.assoc, h₂, ← Category.assoc, hp.lift_snd]
 
+/- English proof (translation)
+Establish `h₁` using `isPullback_j M`. Rewrite `h₁` using `[← Over.w f.hom, ← Over.w g]`. Conclude with `IsPullback.of_bot h₁ h (isPullback_j G)`.
+-/
 theorem isPullback_of_comm {M : Model R A} {G : Model R A'} {f : A ≅ A'} {g : M.Y ⟶ G.Y}
     (h : M.j ≫ g.left = f.hom.left ≫ G.j) : IsPullback M.j f.hom.left g.left G.j := by
   have h₁ := isPullback_j M
   rw [← Over.w f.hom, ← Over.w g] at h₁
   exact IsPullback.of_bot h₁ h (isPullback_j G)
 
+/- English proof (translation)
+Take `⟨U, k, hU, h₁, h₂⟩` from `hx`. Use `defAt_of_chart (U.ι ≫ g.left) (v := M.j ∣_ U) (u := (M.j ⁻¹ᵁ U).ι ≫ f.hom.left) ((isPullback_morphismRestrict M.j U).paste_vert (isPullback_of_comm h)) (k ≫ T.left) ?_ ?_ ⟨⟨x, hU⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w T, h₁, Category.assoc, Over.w g]`. Rewrite using `[← Category.assoc, h₂, Category.assoc, Category.assoc, hT, ← Category.assoc ψ.left, ← Over.comp_left, e]`. Simplify using the standard rewrite rules.
+-/
 theorem defAt_transport {M : Model R A} {G : Model R A'} {N N' : Model R A''} {f : A ≅ A'} {g : M.Y ⟶ G.Y}
     [IsOpenImmersion g.left] (h : M.j ≫ g.left = f.hom.left ≫ G.j) {ψ : A ⟶ A''} {φ : A' ⟶ A''} {t : A'' ⟶ A''}
     {T : N.Y ⟶ N'.Y} (hT : N.j ≫ T.left = t.left ≫ N'.j) (e : ψ ≫ t = f.hom ≫ φ) {x : M.Y.left}
@@ -98,6 +130,9 @@ theorem defAt_transport {M : Model R A} {G : Model R A'} {N N' : Model R A''} {f
   · rw [← Category.assoc, h₂, Category.assoc, Category.assoc, hT, ← Category.assoc ψ.left, ← Over.comp_left, e]
     simp
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `x ⟨U, g, hx, h⟩`. Conclude with `⟨U, fun y hy => ⟨U, g, hy, h⟩, U.isOpen, hx⟩`.
+-/
 theorem isOpen_defAt (M : Model R A) (N : Model R A') (f : A ⟶ A') : IsOpen {x | DefAt M N f x} := by
   rw [isOpen_iff_forall_mem_open]
   rintro x ⟨U, g, hx, h⟩
@@ -105,6 +140,11 @@ theorem isOpen_defAt (M : Model R A) (N : Model R A') (f : A ⟶ A') : IsOpen {x
 
 variable [IsDomain R]
 
+/- English proof (translation)
+Use `⟨(⊥ : PrimeSpectrum K), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Establish `h : p.asIdeal = ⊥`. Assume the negation of the conclusion as `h`. Conclude with `hp (PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal (p.isPrime.isMaximal h)))`. Rewrite using `[h]`.
+
+Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective R K)`.
+-/
 theorem mem_range_generic [IsDiscreteValuationRing R] [IsFractionRing R K] (p : Sp R)
     (hp : p ≠ IsLocalRing.closedPoint R) : p ∈ Set.range (spMap (algebraMap R K)) := by
   refine ⟨(⊥ : PrimeSpectrum K), PrimeSpectrum.ext ?_⟩
@@ -114,6 +154,11 @@ theorem mem_range_generic [IsDiscreteValuationRing R] [IsFractionRing R K] (p : 
   rw [h]
   exact Ideal.comap_bot_of_injective _ (IsFractionRing.injective R K)
 
+/- English proof (translation)
+Use `isOpenImmersion_spMap_of_isDiscreteValuationRing R K` as an intermediate fact. Establish `: IsOpenImmersion M.j` using `MorphismProperty.of_isPullback (isPullback_j M).flip this`. Use `defAt_of_chart M.j (v := 𝟙 _) (u := 𝟙 _) (IsKernelPair.id_of_mono _) (f.left ≫ N.j) ?_ (by simp) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, N.j_hom, M.j_hom, ← Category.assoc, Over.w f]`. Take `⟨q, hq⟩` from `mem_range_generic (K := K) (M.Y.hom x) hx`.
+
+Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback (isPullback_j M) x q hq.symm`. Conclude with `⟨z, hz⟩`.
+-/
 theorem defAt_generic [IsDiscreteValuationRing R] [IsFractionRing R K] (M : Model R A) (N : Model R A') (f : A ⟶ A')
     {x : M.Y.left} (hx : x ∉ M.sp) : DefAt M N f x := by
   have := isOpenImmersion_spMap_of_isDiscreteValuationRing R K
@@ -124,6 +169,9 @@ theorem defAt_generic [IsDiscreteValuationRing R] [IsFractionRing R K] (M : Mode
     obtain ⟨z, hz, -⟩ := Scheme.exists_preimage_of_isPullback (isPullback_j M) x q hq.symm
     exact ⟨z, hz⟩
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing R K`. Conclude with `Over.OverMorphism.ext (ExtUnique.hom_ext_of_dominant Y.hom (by rw [Over.w, Over.w]) _ h)`.
+-/
 theorem ext_section [IsFractionRing R K] {Y : Over (Sp R)} [IsSeparated Y.hom] {f g : 𝟙_ (Over (Sp R)) ⟶ Y}
     (h : spMap (algebraMap R K) ≫ f.left = spMap (algebraMap R K) ≫ g.left) : f = g := by
   obtain ⟨_, _⟩ := ExtUnique.spec_fractionRing R K
@@ -134,24 +182,45 @@ end Basic
 section Transl
 variable {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Simplify using `[transl, MonObj.comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit A) (toUnit T)]`.
+-/
 theorem comp_transl {T : Over (Sp K)} (x : T ⟶ A) (a : 𝟙_ (Over (Sp K)) ⟶ A) :
     x ≫ (transl a).hom = (toUnit T ≫ a) * x := by
   simp [transl, MonObj.comp_mul, ← Category.assoc, toUnit_unique (x ≫ toUnit A) (toUnit T)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transl_hom (a : 𝟙_ (Over (Sp K)) ⟶ A) : (transl a).hom = (toUnit A ≫ a) * 𝟙 A := rfl
 
+/- English proof (translation)
+Rewrite using `[comp_transl, transl_hom, transl_hom, MonObj.comp_mul, ← _root_.mul_assoc, _root_.mul_comm (toUnit A ≫ b)]`.
+-/
 theorem transl_mul (a b : 𝟙_ (Over (Sp K)) ⟶ A) : (transl a).hom ≫ (transl b).hom = (transl (a * b)).hom := by
   rw [comp_transl, transl_hom, transl_hom, MonObj.comp_mul, ← _root_.mul_assoc, _root_.mul_comm (toUnit A ≫ b)]
 
+/- English proof (translation)
+Rewrite using `[transl_hom, MonObj.comp_one, _root_.one_mul]`.
+-/
 theorem transl_one : (transl (1 : 𝟙_ (Over (Sp K)) ⟶ A)).hom = 𝟙 A := by
   rw [transl_hom, MonObj.comp_one, _root_.one_mul]
 
+/- English proof (translation)
+Rewrite using `[transl_hom, GrpObj.comp_inv]`. Both sides reduce to the same expression.
+-/
 theorem transl_inv (a : 𝟙_ (Over (Sp K)) ⟶ A) : (transl a).inv = (transl a⁻¹).hom := by
   rw [transl_hom, GrpObj.comp_inv]; rfl
 
+/- English proof (translation)
+Rewrite using `[comp_transl, toUnit_unit, Category.id_comp]`.
+-/
 theorem pt_transl (a b : 𝟙_ (Over (Sp K)) ⟶ A) : a ≫ (transl b).hom = b * a := by
   rw [comp_transl, toUnit_unit, Category.id_comp]
 
+/- English proof (translation)
+Establish `h : (tensorIso (transl a) (transl b)).hom = lift (fst A A ≫ (transl a).hom) (snd A A ≫ (transl b).hom)`. Apply the tactic sequence `ext <;> simp`. Establish `h' : μ[A] = fst A A * snd A A` using `by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h, ← Hom.mul_def, comp_transl, comp_transl, comp_transl, h', MonObj.comp_mul, _root_.mul_mul_mul_comm]`.
+-/
 theorem mul_transl (a b : 𝟙_ (Over (Sp K)) ⟶ A) :
     μ[A] ≫ (transl (a * b)).hom = (tensorIso (transl a) (transl b)).hom ≫ μ[A] := by
   have h : (tensorIso (transl a) (transl b)).hom = lift (fst A A ≫ (transl a).hom) (snd A A ≫ (transl b).hom) := by
@@ -159,6 +228,9 @@ theorem mul_transl (a b : 𝟙_ (Over (Sp K)) ⟶ A) :
   have h' : μ[A] = fst A A * snd A A := by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]
   rw [h, ← Hom.mul_def, comp_transl, comp_transl, comp_transl, h', MonObj.comp_mul, _root_.mul_mul_mul_comm]
 
+/- English proof (translation)
+Establish `h' : ι[A] = (𝟙 A)⁻¹` using `by rw [Hom.inv_def, Category.id_comp]`. Rewrite using `[← Hom.inv_def, comp_transl, transl_hom, h', GrpObj.comp_inv, mul_inv]`.
+-/
 theorem inv_transl (a : 𝟙_ (Over (Sp K)) ⟶ A) : ι[A] ≫ (transl a⁻¹).hom = (transl a).hom ≫ ι[A] := by
   have h' : ι[A] = (𝟙 A)⁻¹ := by rw [Hom.inv_def, Category.id_comp]
   rw [← Hom.inv_def, comp_transl, transl_hom, h', GrpObj.comp_inv, mul_inv]
@@ -168,6 +240,15 @@ end Transl
 section Special
 variable {R K : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K] {A : Over (Sp K)}
 
+/- English proof (translation)
+Take `⟨-, hH, hk, -⟩` from `h`. Use `M.smooth` as an intermediate fact. Set `r` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))`. Take `⟨x, hxS, hx⟩` from `hne`. Take `⟨z, rfl⟩` from `(range_fst_residue M.Y.hom).ge hx`.
+
+Use `LocallyOfFiniteType.jacobsonSpace (pullback.snd M.Y.hom r)` as an intermediate fact. Take `⟨c, hcS, hc⟩` from `nonempty_inter_closedPoints (Z := pullback.fst M.Y.hom r ⁻¹' S) ⟨z, hxS⟩ (hS.preimage (pullback.fst M.Y.hom r).continuous)`. Take `⟨⟨s, hs⟩, e⟩` from `reducePoint_residue_surjective M.Y.hom R (𝟙 _) ⟨pointOfClosedPoint (pullback.snd M.Y.hom r) c hc ≫ pullback.fst M.Y.hom r, by`. Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc, Category.comp_id]⟩`. Use `⟨Over.homMk s hs, ?_⟩` and prove the remaining obligations.
+
+Establish `e₁ : r ≫ s = pointOfClosedPoint (pullback.snd M.Y.hom r) c hc ≫ pullback.fst M.Y.hom r` using `congrArg Subtype.val e`. Establish `e₂ : s (r (IsLocalRing.closedPoint _)) = pullback.fst M.Y.hom r c`. Rewrite using `[← Scheme.Hom.comp_apply, e₁, Scheme.Hom.comp_apply, pointOfClosedPoint_apply]`. Establish `e₃ : r (IsLocalRing.closedPoint _) = IsLocalRing.closedPoint R` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue R)`. Rewrite `e₂` using `[e₃]`.
+
+Express the relevant statement in the definitionally equal form `s _ ∈ S`. Rewrite using `[e₂]`. Conclude with `hcS`.
+-/
 theorem exists_section (h : SH R K) (M : Model R A) {S : Set M.Y.left} (hS : IsLocallyClosed S)
     (hne : (S ∩ M.sp).Nonempty) : ∃ s : 𝟙_ (Over (Sp R)) ⟶ M.Y, s.left (IsLocalRing.closedPoint R) ∈ S := by
   obtain ⟨-, hH, hk, -⟩ := h
@@ -190,12 +271,30 @@ theorem exists_section (h : SH R K) (M : Model R A) {S : Set M.Y.left} (hS : IsL
   change s _ ∈ S
   rw [e₂]; exact hcS
 
+/- English proof (translation)
+The claim follows from `hq.geometrically_connectedSpace y _ _ (IsPullback.of_right (by rw [hP.lift_fst]; exact hZ) (hP.lift_snd _ _ (by simpa using hZ.w)) hP)`.
+-/
 theorem connectedSpace_of_factor {X S S' P Z : Scheme.{0}} {f : X ⟶ S} {i : S' ⟶ S} {p : P ⟶ X} {q : P ⟶ S'}
     (hP : IsPullback p q f i) [hq : GeometricallyConnected q] {L : Type} [Field L] (y : Sp L ⟶ S') {a : Z ⟶ X}
     {b : Z ⟶ Sp L} (hZ : IsPullback a b f (y ≫ i)) : ConnectedSpace Z :=
   hq.geometrically_connectedSpace y _ _
     (IsPullback.of_right (by rw [hP.lift_fst]; exact hZ) (hP.lift_snd _ _ (by simpa using hZ.w)) hP)
 
+/- English proof (translation)
+Take `⟨hD, -, hk, hF⟩` from `h`. Use `M.smooth` as an intermediate fact. Use `⟨fun L _ y Z a b hZ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y (IsLocalRing.closedPoint L) = IsLocalRing.closedPoint R`. Set `r` to `Spec.map (CommRingCat.ofHom (IsLocalRing.residue R))`.
+
+Establish `hr : IsClosedImmersion r` using `.spec_of_surjective _ IsLocalRing.residue_surjective`. Establish `: IrreducibleSpace ↥(pullback M.Y.hom r)`. Establish `he` using `(pullback.fst M.Y.hom r).isClosedEmbedding.isEmbedding`. Establish `h₁ : IsIrreducible (Set.range (pullback.fst M.Y.hom r))`. Rewrite using `[range_fst_residue]`.
+
+Conclude with `hM`. Use `Subtype.irreducibleSpace h₁` as an intermediate fact. Conclude with `he.toHomeomorph.irreducibleSpace_iff.2 this`. Establish `h₂` using `geometricallyIrreducible_of_isAlgClosed (pullback.snd M.Y.hom r)`. Establish `: GeometricallyConnected (pullback.snd M.Y.hom r)` using `⟨fun L _ y Z a b hZ => by`.
+
+Establish `: IrreducibleSpace Z` using `h₂.geometrically_irreducibleSpace y a b hZ`. Use the proof step `infer_instance⟩`. Take `⟨φ, rfl⟩` from `Spec.map_surjective y`. Establish `hl : IsLocalHom φ.hom` using `(IsLocalRing.isLocalHom_iff_comap_closedPoint _).2 hy`. Establish `e : Spec.map φ = spMap (IsLocalRing.ResidueField.lift φ.hom) ≫ r`.
+
+Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Rewrite `hZ` using `[e]`. Conclude with `connectedSpace_of_factor (IsPullback.of_hasPullback _ _) _ hZ`. Use `isOpenImmersion_spMap_of_isDiscreteValuationRing R K` as an intermediate fact.
+
+Establish `hr : Set.range y ⊆ Set.range (spMap (algebraMap R K))`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q (IsLocalRing.closedPoint L)]`. Conclude with `mem_range_generic _ hy`. Rewrite `hZ` using `[← IsOpenImmersion.lift_fac _ _ hr]`.
+
+Conclude with `connectedSpace_of_factor (isPullback_j M) _ hZ`.
+-/
 theorem geometricallyConnected (h : SH R K) (M : Model R A) (hM : M.Irr) [GeometricallyConnected A.hom] :
     GeometricallyConnected M.Y.hom := by
   obtain ⟨hD, -, hk, hF⟩ := h
@@ -230,10 +329,16 @@ theorem geometricallyConnected (h : SH R K) (M : Model R A) (hM : M.Irr) [Geomet
 
 end Special
 
+/- English proof (translation)
+Rewrite using `[Over.tensorHom_left]`. Use `infer_instance`.
+-/
 theorem isOpenImmersion_tensor {S : Scheme.{0}} {X Y X' Y' : Over S} (f : X ⟶ X') (g : Y ⟶ Y')
     [IsOpenImmersion f.left] [IsOpenImmersion g.left] : IsOpenImmersion (f ⊗ₘ g).left := by
   rw [Over.tensorHom_left]; infer_instance
 
+/- English proof (translation)
+Rewrite using `[Over.tensorHom_left]`. Conclude with `(Scheme.Pullback.range_map _ _ _ _ _ _ _ _ _).ge ⟨h₁, h₂⟩`.
+-/
 theorem mem_range_tensor {S : Scheme.{0}} {X Y X' Y' : Over S} (f : X ⟶ X') (g : Y ⟶ Y') (z : (X' ⊗ Y').left)
     (h₁ : (fst X' Y').left z ∈ Set.range f.left) (h₂ : (snd X' Y').left z ∈ Set.range g.left) :
     z ∈ Set.range (f ⊗ₘ g).left := by
@@ -244,6 +349,41 @@ end GlobalTheory.SS.StrictGrp
 
 open GlobalTheory.SS.StrictGrp in
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ hSH A _ _ hA M hM`. Take `⟨G, hGI, hLe, hcov, hmu⟩` from `GlobalTheory.T.exists_union_translates' R K hSH A hA M hM`. Establish `hD` using `hSH.1`. Establish `hF` using `hSH.2.2.2`. Establish `hMI : M.Irr` using `hM.1.1`.
+
+Establish `hGs` using `G.smooth`. Establish `hGp` using `G.sep`. Establish `hext` using `GlobalTheory.SS.existsUnique_extension_of_forall_defAt R K`. Establish `hsec` using `GlobalTheory.SS.SectionTranslation.translation_by_section R K hSH A hA M hM`. Take `⟨-, hcomp, hinv, -⟩` from `GlobalTheory.SS.GI.genIso_calculus R K hSH`.
+
+Set `H : (𝟙_ (Over (Sp K)) ⟶ A) → Prop` to `fun a => GenIso M M (transl a).hom`. Establish `H1 : H 1`. Take `⟨y, hy⟩` from `hMI.nonempty`. Conclude with `⟨y, hy, transl_one (A := A) ▸ isoAt_id M y⟩`. Establish `Hmul : ∀ a b, H a → H b → H (a * b)` using `fun a b ha hb => by`.
+
+Use `hcomp _ _ _ M M M _ _ hMI ha hb` as an intermediate fact. Rewrite `this` using `[transl_mul]`. Then use the resulting hypothesis. Establish `Hinv : ∀ a, H a → H a⁻¹` using `fun a ha => by`. Use `(hinv _ _ M M (transl a)).1 ha` as an intermediate fact. Rewrite `this` using `[transl_inv]`. Then use the resulting hypothesis.
+
+Establish `hg : ∀ a, H a → ∃ g : M.Y ⟶ G.Y, IsOpenImmersion g.left ∧ M.j ≫ g.left = (transl a).hom.left ≫ G.j` using `fun a ha => by`. Take `⟨g, h₁, h₂⟩` from `hLe a ha`. Conclude with `⟨g, h₁, twist_comm h₂⟩`. Establish `hc : ∀ y : G.Y.left, ∃ (a : 𝟙_ (Over (Sp K)) ⟶ A) (g : M.Y ⟶ G.Y) (x : M.Y.left), H a ∧ IsOpenImmersion g.left ∧ M.j ≫ g.left = (transl a).hom.left ≫ G.j ∧ g.left x = y` using `fun y => by`. Take `⟨a, g, ha, h₁, h₂, x, hx⟩` from `hcov y`.
+
+Conclude with `⟨a, g, x, ha, h₁, twist_comm h₂, hx⟩`. Establish `hT : ∀ c, H c → ∃ T : G.Y ⟶ G.Y, G.j ≫ T.left = (transl c).hom.left ≫ G.j` using `fun c hc' => by`. Use `(hext _ _ G G _ fun y => ?_).exists` and prove the remaining obligations. Take `⟨a, g, x, ha, _, h, rfl⟩` from `hc y`. Take `⟨g', -, h'⟩` from `hg _ (Hmul a c ha hc')`.
+
+Conclude with `defAt_transport h h' (by rw [Category.id_comp, transl_mul]) (isoAt_id M x).defAt`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : (G.prod G).Y ⟶ G.Y, (G.prod G).j ≫ m.left = (μ[A]).left ≫ G.j := by`. Use `(hext _ _ (G.prod G) G _ fun z => ?_).exists` and prove the remaining obligations. Take `⟨a, g, x, ha, _, h, hx⟩` from `hc ((fst G.Y G.Y).left z)`. Take `⟨b, g', x', hb, _, h', hx'⟩` from `hc ((snd G.Y G.Y).left z)`.
+
+Take `⟨w, rfl⟩` from `mem_range_tensor g g' z ⟨x, hx⟩ ⟨x', hx'⟩`. Take `⟨T, hT⟩` from `hT _ (Hmul a b ha hb)`. Use `isOpenImmersion_tensor g g'` as an intermediate fact. Conclude with `defAt_transport (M := M.prod M) (G := G.prod G) (f := tensorIso (transl a) (transl b)) (g := g ⊗ₘ g') (prod_comm h h') hT (mul_transl a b) (hmu w)`. Establish `hmove : ∀ (s : 𝟙_ (Over (Sp R)) ⟶ M.Y) (c a : 𝟙_ (Over (Sp K)) ⟶ A) (g : M.Y ⟶ G.Y), c.left ≫ M.j = spMap (algebraMap R K) ≫ s.left → M.j ≫ g.left = (transl a).hom.left ≫ G.j → spMap (algebraMap R K) ≫ (s ≫ g).left = (a * c).left ≫ G.j` using `fun s c a g h₁ h₂ => by`.
+
+Rewrite using `[Over.comp_left, ← Category.assoc, ← h₁, Category.assoc, h₂, ← Category.assoc, ← Over.comp_left, pt_transl]`. Establish `hsecG : ∀ a, H a → ∃ s : 𝟙_ (Over (Sp R)) ⟶ G.Y, spMap (algebraMap R K) ≫ s.left = a.left ≫ G.j` using `fun a ha => by`. Take `⟨s, -⟩` from `exists_section hSH M isOpen_univ.isLocallyClosed (by simpa using hMI.nonempty)`. Take `⟨c, h₁, h₂, -⟩` from `hsec s`. Take `⟨g, -, h₃⟩` from `hg _ (Hmul _ _ ha (Hinv _ h₂))`.
+
+Conclude with `⟨s ≫ g, by rw [hmove s c _ g h₁ h₃, inv_mul_cancel_right]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : G.Y ⟶ G.Y, G.j ≫ i.left = (ι[A]).left ≫ G.j := by`. Use `(hext _ _ G G _ fun y => ?_).exists` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Establish `hys : y ∈ G.sp` using `by_contra fun h => hy (defAt_generic G G _ h)`.
+
+Take `⟨a, g, x, ha, _, h, rfl⟩` from `hc y`. Establish `hxs : x ∈ M.sp`. Establish `e : G.Y.hom (g.left x) = M.Y.hom x` using `by rw [← Scheme.Hom.comp_apply, Over.w g]`. Conclude with `e.symm.trans hys`. Take `⟨s, hs⟩` from `exists_section hSH M (S := g.left ⁻¹' {y | DefAt G G (ι[A]) y}ᶜ) ((isOpen_defAt G G _).isClosed_compl.preimage g.left.continuous).isLocallyClosed ⟨x, hy, hxs⟩`.
+
+Take `⟨x', hx', hx''⟩` from `hM.1.2.2`. Take `⟨u, hu⟩` from `exists_section hSH M (isOpen_defAt M M (ι[A])).isLocallyClosed ⟨x', hx''.defAt, hx'⟩`. Take `⟨c, hc₁, hc₂, -⟩` from `hsec s`. Take `⟨d, hd₁, hd₂, -⟩` from `hsec u`. Establish `He` using `Hmul _ _ (Hmul _ _ ha hc₂) (Hinv _ hd₂)`.
+
+Take `⟨g₁, _, h₁⟩` from `hg _ He`. Take `⟨g₂, -, h₂⟩` from `hg _ (Hinv _ He)`. Establish `e : u ≫ g₁ = s ≫ g` using `ext_section (K := K) (by`. Rewrite using `[hmove u d _ g₁ hd₁ h₁, hmove s c _ g hc₁ h, inv_mul_cancel_right])`. Establish `e' : g₁.left (u.left (IsLocalRing.closedPoint R)) = g.left (s.left (IsLocalRing.closedPoint R))`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ← Over.comp_left, ← Over.comp_left, e]`. Conclude with `hs (e' ▸ defAt_transport h₁ h₂ (inv_transl _) hu)`. Take `⟨e, he⟩` from `hsecG 1 H1`. Use `GlobalTheory.isOpenImmersion_spMap_of_isDiscreteValuationRing R K` as an intermediate fact. Take `⟨inst, -, -, -, hcomm, hpb⟩` from `GlobalTheory.grpObj_of_dense_open (Sp R) (Sp K) (spMap (algebraMap R K)) G.Y A G.j (isPullback_j G) m i e (fun φ₂ h => by`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : φ₂ = (G.prod G).j := by`. Apply `Over.tensorObj_ext` to reduce the goal to its premises. Conclude with `h.1.trans (prod_j_fst G G).symm`. Conclude with `h.2.trans (prod_j_snd G G).symm`. Conclude with `hm) hi (by simpa [Hom.one_def] using he)`.
+
+Use `hA.geomConnected` as an intermediate fact. Use `⟨G, inst, ⟨hcomm, hGs, hGp, G.qc, geometricallyConnected hSH G hGI⟩, ?_, hsecG⟩` and prove the remaining obligations. Take `⟨e', h₁, h₂⟩` from `grpPullback_iso (isGrpPullback_pullback G.Y (spMap (algebraMap R K))) hpb`. Establish `e₀ : G.e.hom = e'.hom`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Apply `(isPullback_j G).hom_ext` to reduce the goal to its premises. Rewrite using `[h₂, Model.j, ← Category.assoc, ← Over.comp_left, G.e.hom_inv_id, Over.id_left, Category.id_comp]`. Rewrite using `[Over.w, Over.w]`. Rewrite using `[e₀]`. Conclude with `h₁`.
+-/
 theorem GlobalTheory.SS.exists_grpObj_of_strict : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [Algebra R K], SH R K → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ M : Model R A, Strict M → ∃ (G : Model R A) (_ : GrpObj G.Y), SmConn G.Y ∧ IsMonHom G.e.hom ∧ ∀ a : (𝟙_ (Over (Sp K)) ⟶ A), GenIso M M (transl a).hom → ∃ s : 𝟙_ (Over (Sp R)) ⟶ G.Y, spMap (algebraMap R K) ≫ s.left = a.left ≫ G.j := by
   intro R K _ _ _ _ _ hSH A _ _ hA M hM
   obtain ⟨G, hGI, hLe, hcov, hmu⟩ := GlobalTheory.T.exists_union_translates' R K hSH A hA M hM

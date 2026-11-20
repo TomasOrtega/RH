@@ -13,11 +13,21 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 
 namespace GlobalTheory.MiTop
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq h1, eq_of_heq h2]`.
+-/
 theorem besLev_per_congr {D : D7} {ρ : ℕ} {B B' : BesLev D ρ} (h : B = B') (ψ) {φ : GA D B.A → ℂ} {φ' : GA D B'.A → ℂ}
     {g : GA D B.V → ℂ} {g' : GA D B'.V → ℂ} (h1 : HEq φ φ') (h2 : HEq g g') : B.per ψ φ g = B'.per ψ φ' g' := by
   subst h
   rw [eq_of_heq h1, eq_of_heq h2]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f d hc hl hb n h₀ t φ`. Take `⟨α₀, h1, h2, h3, -⟩` from `hc t`. Use `⟨(h3 φ).1, fun G y v => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : n = D.R.rS := by`. Establish `: D.R.rS = D.R.m / 2 - 1` using `rfl`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : ∀ g : GA D (Yc D 0) → ℂ, trc (Finsupp.single (f.g.b 0) 1) g = rTrans (f.g.b 0) g` using `fun g => by`. Unfold `trc`. Rewrite using `[Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`. Unfold `BotDat.per Tup.per Tup.perF`.
+
+Rewrite using `[Finset.sum_eq_single α₀ (fun b _ hb => absurd (h1 b) hb) (by simp)]`. Use `beta_reduce`. Rewrite using `[h2, (h3 φ).2 y, hb]`. Conclude with `besLev_per_congr (hl h₀).symm _ HEq.rfl (heq_of_eq (e _))`.
+-/
 theorem linkZero_of_chartZero : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), ∀ u (f : FamCh W u) (d : BotDat W u), ChartZero f → (∀ h₀ : 0 + 2 * D.R.rS + 2 = D.R.m, d.B.lev = f.c.B 0 D.R.rS h₀) → d.b = (show GA D (D.sp.Y 0) from f.g.b 0) → LinkZero f d := by
   intro D L hT Gi Gl Kc Yd cX ex W u f d hc hl hb n h₀ t φ
   obtain ⟨α₀, h1, h2, h3, -⟩ := hc t

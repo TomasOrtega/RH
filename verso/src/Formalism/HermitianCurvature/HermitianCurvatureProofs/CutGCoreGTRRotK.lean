@@ -7,6 +7,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGCoreGTRRFinFrom
 
 namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 
+/- English proof (translation)
+The claim follows from `gTRRotK_of_mat_fin_centre_sec_ode_wirt rotation_matrix_form_holds rotation_finite_from_matrix rotation_centre_condition rotation_section_holds rotation_ode_holds rotation_wirtinger_holds`.
+-/
 theorem rotation_K_invariance_holds : GTRRotK :=
   gTRRotK_of_mat_fin_centre_sec_ode_wirt rotation_matrix_form_holds rotation_finite_from_matrix rotation_centre_condition rotation_section_holds rotation_ode_holds rotation_wirtinger_holds
 

@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CechCmp
 
+/- English proof (translation)
+Establish `e` using `congrArg (resG Z (le_inf (le_inf hi hj) hk)) (hc i j k)`. Simplify using `only [map_add, resG_resG'] at e`. Conclude with `e`.
+-/
 theorem IsCocycle.res_on {Z : Scheme.{0}} {J : Type} {W : J → Z.Opens}
     {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')} (hc : IsCocycle W c) {U : Z.Opens} {i j k : J}
     (hi : U ≤ W i) (hj : U ≤ W j) (hk : U ≤ W k) :
@@ -19,6 +22,19 @@ theorem IsCocycle.res_on {Z : Scheme.{0}} {J : Type} {W : J → Z.Opens}
   simp only [map_add, resG_resG'] at e
   exact e
 
+/- English proof (translation)
+Establish `h1` using `restrict_cmp s W hW hc`. Rewrite `h1` using `[h0, map_zero]`. Take `⟨g, hg⟩` from `CatCoh.H1.mk_eq_zero.1 h1.symm`. Set `g' : ∀ V : Bas W, Γ(Z, V.1.1)` to `fun V ↦ g (Opposite.op V)`. Establish `key : ∀ (V V' : Bas W) (h : V'.1.1 ≤ V.1.1), g' V' - resG Z h (g' V) = resG Z (le_inf (h.trans (le_idx V)) (le_idx V')) (c (idx V) (idx V'))`.
+
+Introduce `V V' h`. Conclude with `congrFun (congrFun (congrFun hg (Opposite.op V)) (Opposite.op V')) (homOfLE (show V' ≤ V from h)).op`. Set `Ω : J → Bas W` to `fun i ↦ ⟨⟨W i, hWa i⟩, i, le_rfl⟩`. Establish `hΩ : ∀ i, W i ≤ W (idx (Ω i))` using `fun i ↦ le_idx (Ω i)`. Set `g₁ : ∀ i, Γ(Z, W i)` to `fun i ↦ g' (Ω i)`.
+
+Use `⟨fun i ↦ resG Z (le_inf le_rfl (hΩ i)) (c i (idx (Ω i))) - g₁ i, fun i i' ↦ ?_⟩` and prove the remaining obligations. Set `Ω₂ : Bas W` to `⟨⟨W i ⊓ W i', hWb i i'⟩, i, inf_le_left⟩`. Establish `hd : W i ⊓ W i' ≤ W (idx Ω₂)` using `le_idx Ω₂`. Set `g₂ : Γ(Z, W i ⊓ W i')` to `g' Ω₂`. Establish `k1 : g₂ - resG Z inf_le_left (g₁ i) = resG Z (le_inf (inf_le_left.trans (hΩ i)) hd) (c (idx (Ω i)) (idx Ω₂))` using `key (Ω i) Ω₂ inf_le_left`.
+
+Establish `k2 : g₂ - resG Z inf_le_right (g₁ i') = resG Z (le_inf (inf_le_right.trans (hΩ i')) hd) (c (idx (Ω i')) (idx Ω₂))` using `key (Ω i') Ω₂ inf_le_right`. Establish `e1` using `hc.res_on (inf_le_left : W i ⊓ W i' ≤ _) (inf_le_left.trans (hΩ i)) hd`. Establish `e2` using `hc.res_on (inf_le_right : W i ⊓ W i' ≤ _) (inf_le_right.trans (hΩ i')) hd`. Establish `e3` using `hc.res_on (inf_le_left : W i ⊓ W i' ≤ _) inf_le_right hd`. Establish `e4 : resG Z (le_inf (inf_le_left : W i ⊓ W i' ≤ _) inf_le_right) (c i i') = c i i'`.
+
+Establish `: (homOfLE (le_inf (inf_le_left : W i ⊓ W i' ≤ _) inf_le_right)).op = 𝟙 _` using `rfl`. Simplify using `only [resG, this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite `e3` using `[e4]`. Simplify using `only [map_sub, resG_resG']`.
+
+Take the linear combination `e3 - e1 + e2 - k1 + k2`.
+-/
 theorem exists_coboundary_of_cmp_eq_zero (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R)
     (J : Type) (W : J → Z.Opens) (hW : ⨆ i, W i = ⊤) (hWa : ∀ i, IsAffineOpen (W i))
     (hWb : ∀ i i', IsAffineOpen (W i ⊓ W i')) (c : ∀ i i' : J, Γ(Z, W i ⊓ W i'))

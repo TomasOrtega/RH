@@ -33,6 +33,9 @@ variable {n j : ℕ}
 
 end Rank
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hg`. Establish `: ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) : kˣ) : k) = algebraMap 𝒪[k] k ((Matrix.GeneralLinearGroup.det u : 𝒪[k]ˣ) : 𝒪[k])`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Rewrite using `[this]`. Conclude with `(Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one.1 (Units.isUnit _)`.
+-/
 theorem valuation_det_of_mem_KO {m : Type} [Fintype m] [DecidableEq m] {g : GL m k} (hg : g ∈ KO k m) :
     valuation k ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = 1 := by
   obtain ⟨u, rfl⟩ := hg

@@ -18,6 +18,9 @@ def Sep (L : Submodule ℤ W) (lam : ℝ) : Prop := ∀ x ∈ L, x ≠ 0 → lam
 
 omit [InnerProductSpace ℝ W] [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Use `DiscreteTopology.of_forall_le_dist hlam fun x y hxy => ?_` and prove the remaining obligations. Use `show lam ≤ dist x y`. Rewrite using `[Subtype.dist_eq, dist_eq_norm]`. Establish `hne : (x : W) - y ≠ 0` using `sub_ne_zero.2 fun h' => hxy (Subtype.ext h')`. Conclude with `h _ (L.sub_mem x.2 y.2) hne`.
+-/
 theorem discreteTopology_of_sep {L : Submodule ℤ W} {lam : ℝ} (hlam : 0 < lam) (h : Sep L lam) :
     DiscreteTopology L := by
   refine DiscreteTopology.of_forall_le_dist hlam fun x y hxy => ?_
@@ -26,17 +29,28 @@ theorem discreteTopology_of_sep {L : Submodule ℤ W} {lam : ℝ} (hlam : 0 < la
   have hne : (x : W) - y ≠ 0 := sub_ne_zero.2 fun h' => hxy (Subtype.ext h')
   exact h _ (L.sub_mem x.2 y.2) hne
 
+/- English proof (translation)
+Use `discreteTopology_of_sep hlam h` as an intermediate fact. Conclude with `GroundTheory.Heights₂.Heights.finite_lattice_closedBall L r`.
+-/
 theorem finite_of_sep {L : Submodule ℤ W} {lam : ℝ} (hlam : 0 < lam) (h : Sep L lam) (r : ℝ) :
     {x : W | x ∈ L ∧ ‖x‖ ≤ r}.Finite := by
   have := discreteTopology_of_sep hlam h
   exact GroundTheory.Heights₂.Heights.finite_lattice_closedBall L r
 
+/- English proof (translation)
+Establish `h1` using `Real.finrank_eq_int_finrank_of_discrete hd`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span]`. Rewrite using `[h1, Set.finrank, finrank_span_eq_card hb]`.
+-/
 theorem linearIndependent_real_of_int {n : ℕ} {b : Fin n → W} (hb : LinearIndependent ℤ b)
     (hd : DiscreteTopology (span ℤ (Set.range b))) : LinearIndependent ℝ b := by
   have h1 := Real.finrank_eq_int_finrank_of_discrete hd
   rw [linearIndependent_iff_card_eq_finrank_span]
   rw [h1, Set.finrank, finrank_span_eq_card hb]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℤ L`. Establish `hspan : span ℤ (Set.range fun i => (b i : W)) = L`. Rewrite using `[show (Set.range fun i => (b i : W)) = L.subtype '' Set.range b by`. Rewrite using `[← Set.range_comp]`. Use the proof step `rfl]`.
+
+Rewrite using `[← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hZ : LinearIndependent ℤ fun i => (b i : W)` using `b.linearIndependent.map' L.subtype (Submodule.ker_subtype L)`. Use `⟨_, fun i => (b i : W), linearIndependent_real_of_int hZ ?_, hspan⟩` and prove the remaining obligations. Rewrite using `[hspan]`. Use `infer_instance`.
+-/
 theorem exists_basis_of_discrete (L : Submodule ℤ W) [DiscreteTopology L] :
     ∃ (n : ℕ) (c : Fin n → W), LinearIndependent ℝ c ∧ span ℤ (Set.range c) = L := by
   let b := Module.finBasis ℤ L
@@ -52,6 +66,9 @@ theorem exists_basis_of_discrete (L : Submodule ℤ W) [DiscreteTopology L] :
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Use extensionality with `i i'`. Simplify using `only [gram, of_apply, mul_apply, transpose_apply, sum_inner, inner_sum, real_inner_smul_left, real_inner_smul_right, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => by ring` and prove the remaining obligations.
+-/
 theorem gram_comb {k l : Type*} [Fintype k] [Fintype l] (A : Matrix k l ℝ) (b : l → W) :
     gram ℝ (fun i => ∑ j, A i j • b j) = A * gram ℝ b * Aᵀ := by
   ext i i'
@@ -61,6 +78,17 @@ theorem gram_comb {k l : Type*} [Fintype k] [Fintype l] (A : Matrix k l ℝ) (b 
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Establish `hP : ∀ i, ∃ c : Fin n → ℤ, ∑ j, c j • b' j = b i` using `fun i => (mem_span_range_iff_exists_fun ℤ).1 (h ▸ subset_span ⟨i, rfl⟩)`. Establish `hQ : ∀ i, ∃ c : Fin n → ℤ, ∑ j, c j • b j = b' i` using `fun i => (mem_span_range_iff_exists_fun ℤ).1 (h.symm ▸ subset_span ⟨i, rfl⟩)`. Use `choose P hP using hP`. Use `choose Q hQ using hQ`. Establish `hPQ : (Matrix.of P) * (Matrix.of Q) = 1`.
+
+Use extensionality with `i l`. Establish `key : ∑ l, ((Matrix.of P * Matrix.of Q) i l - (1 : Matrix (Fin n) (Fin n) ℤ) i l) • b l = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_apply, of_apply, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hQ, hP]`.
+
+Simplify using `[one_apply]`. Use `Fintype.linearIndependent_iff.1 hb _ key l` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Establish `hdet : (Matrix.of P).det = 1 ∨ (Matrix.of P).det = -1`. Use `congrArg Matrix.det hPQ` as an intermediate fact.
+
+Rewrite `this` using `[det_mul, det_one]`. Conclude with `Int.eq_one_or_neg_one_of_mul_eq_one this`. Establish `hb_eq : b = fun i => ∑ j, ((Matrix.of P).map (Int.cast : ℤ → ℝ)) i j • b' j`. Use function extensionality and compare the values at `i`. Rewrite using `[← hP i]`.
+
+Simplify using `[Int.cast_smul_eq_zsmul]`. Rewrite using `[hb_eq, gram_comb, det_mul, det_mul, det_transpose]`. Establish `: ((Matrix.of P).map (Int.cast : ℤ → ℝ)).det = ((Matrix.of P).det : ℝ)` using `(RingHom.map_det (Int.castRingHom ℝ) _).symm`. Rewrite using `[this]`. Apply the tactic sequence `rcases hdet with h1 | h1 <;> rw [h1] <;> push_cast <;> ring`.
+-/
 theorem det_gram_eq_of_span_eq {n : ℕ} {b b' : Fin n → W} (hb : LinearIndependent ℤ b)
     (h : span ℤ (Set.range b) = span ℤ (Set.range b')) : (gram ℝ b).det = (gram ℝ b').det := by
   have hP : ∀ i, ∃ c : Fin n → ℤ, ∑ j, c j • b' j = b i := fun i =>
@@ -101,27 +129,42 @@ def proj (v : W) : W →ₗ[ℝ] W where
     rw [real_inner_smul_right, RingHom.id_apply, smul_sub, smul_smul, mul_div_assoc]
 
 omit [FiniteDimensional ℝ W] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_apply (v x : W) : proj v x = x - (inner ℝ v x / ‖v‖ ^ 2) • v := rfl
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Establish `hn : ‖v‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hv)`. Rewrite using `[proj_apply, inner_sub_right, real_inner_smul_right, real_inner_self_eq_norm_sq, div_mul_cancel₀ _ hn, sub_self]`.
+-/
 theorem inner_proj (v x : W) (hv : v ≠ 0) : inner ℝ v (proj v x) = 0 := by
   have hn : ‖v‖ ^ 2 ≠ 0 := pow_ne_zero _ (norm_ne_zero_iff.2 hv)
   rw [proj_apply, inner_sub_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
     div_mul_cancel₀ _ hn, sub_self]
 
 omit [FiniteDimensional ℝ W] in
+/- English proof (translation)
+Establish `hn : ‖v‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hv)`. Rewrite using `[proj_apply, real_inner_smul_right, real_inner_self_eq_norm_sq, mul_div_assoc, div_self hn, mul_one, sub_self]`.
+-/
 theorem proj_smul_self (v : W) (t : ℝ) (hv : v ≠ 0) : proj v (t • v) = 0 := by
   have hn : ‖v‖ ^ 2 ≠ 0 := pow_ne_zero _ (norm_ne_zero_iff.2 hv)
   rw [proj_apply, real_inner_smul_right, real_inner_self_eq_norm_sq, mul_div_assoc, div_self hn,
     mul_one, sub_self]
 
 omit [FiniteDimensional ℝ W] in
+/- English proof (translation)
+Simplify using `using proj_smul_self v 1 hv`.
+-/
 theorem proj_self (v : W) (hv : v ≠ 0) : proj v v = 0 := by
   simpa using proj_smul_self v 1 hv
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Rewrite using `[norm_add_sq_real, real_inner_smul_right, real_inner_comm, inner_proj v x hv, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_sq_proj_add (v x : W) (hv : v ≠ 0) (s : ℝ) :
     ‖proj v x + s • v‖ ^ 2 = ‖proj v x‖ ^ 2 + s ^ 2 * ‖v‖ ^ 2 := by
   rw [norm_add_sq_real, real_inner_smul_right, real_inner_comm, inner_proj v x hv, norm_smul,
@@ -130,6 +173,9 @@ theorem norm_sq_proj_add (v x : W) (hv : v ≠ 0) (s : ℝ) :
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Rewrite using `[proj_apply, sub_smul, ← Int.cast_smul_eq_zsmul ℝ]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sub_round_smul (v x : W) :
     x - (round (inner ℝ v x / ‖v‖ ^ 2)) • v =
       proj v x + (inner ℝ v x / ‖v‖ ^ 2 - round (inner ℝ v x / ‖v‖ ^ 2)) • v := by
@@ -138,6 +184,11 @@ theorem sub_round_smul (v x : W) :
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Use `⟨round (inner ℝ v y / ‖v‖ ^ 2), ?_⟩` and prove the remaining obligations. Establish `hd` using `sub_round_smul v y`. Rewrite `hd` using `[h0, zero_add]`. Assume the negation of the conclusion as `hne`. Establish `hmem : y - round (inner ℝ v y / ‖v‖ ^ 2) • v ∈ L` using `L.sub_mem hy (L.smul_mem _ hvL)`.
+
+Establish `h1` using `hmin _ hmem (sub_ne_zero.2 hne)`. Rewrite `h1` using `[hd, norm_smul, Real.norm_eq_abs]`. Establish `hs` using `abs_sub_round (inner ℝ v y / ‖v‖ ^ 2)`. Establish `hvpos : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem mem_zsmul_of_proj_eq_zero {L : Submodule ℤ W} {v : W} (hvL : v ∈ L) (hv : v ≠ 0)
     (hmin : ∀ x ∈ L, x ≠ 0 → ‖v‖ ≤ ‖x‖) {y : W} (hy : y ∈ L) (h0 : proj v y = 0) :
     ∃ k : ℤ, y = k • v := by
@@ -154,6 +205,15 @@ theorem mem_zsmul_of_proj_eq_zero {L : Submodule ℤ W} {v : W} (hvL : v ∈ L) 
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Establish `hd` using `sub_round_smul v x`. Establish `hmem : x - round (inner ℝ v x / ‖v‖ ^ 2) • v ∈ L` using `L.sub_mem hx (L.smul_mem _ hvL)`. Establish `hne : x - round (inner ℝ v x / ‖v‖ ^ 2) • v ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[sub_eq_zero.1 h, map_zsmul, proj_self v hv, smul_zero]`. Establish `h1` using `hmin _ hmem hne`. Rewrite `h1` using `[hd]`. Establish `h2` using `norm_sq_proj_add v x hv (inner ℝ v x / ‖v‖ ^ 2 - round (inner ℝ v x / ‖v‖ ^ 2))`. Establish `hs` using `abs_sub_round (inner ℝ v x / ‖v‖ ^ 2)`.
+
+Establish `hs2 : (inner ℝ v x / ‖v‖ ^ 2 - round (inner ℝ v x / ‖v‖ ^ 2)) ^ 2 ≤ 1 / 4`. Use `abs_nonneg (inner ℝ v x / ‖v‖ ^ 2 - round (inner ℝ v x / ‖v‖ ^ 2))` as an intermediate fact. Rewrite using `[← sq_abs]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : ‖v‖ ^ 2 ≤ ‖proj v x‖ ^ 2 + ‖v‖ ^ 2 / 4`.
+
+Use `pow_le_pow_left₀ (norm_nonneg v) h1 2` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg ‖v‖]`. Assume the negation of the conclusion as `hlt`. Establish `hlt'` using `lt_of_not_ge hlt`. Use polynomial arithmetic with `[norm_nonneg (proj v x), sq_nonneg ‖v‖]`.
+-/
 theorem half_le_norm_proj {L : Submodule ℤ W} {v : W} (hvL : v ∈ L) (hv : v ≠ 0)
     (hmin : ∀ x ∈ L, x ≠ 0 → ‖v‖ ≤ ‖x‖) {x : W} (hx : x ∈ L) (h0 : proj v x ≠ 0) :
     ‖v‖ / 2 ≤ ‖proj v x‖ := by
@@ -180,6 +240,11 @@ theorem half_le_norm_proj {L : Submodule ℤ W} {v : W} (hvL : v ∈ L) (hv : v 
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Use `⟨x - round (inner ℝ v x / ‖v‖ ^ 2) • v, L.sub_mem hx (L.smul_mem _ hvL), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_zsmul, proj_self v hv, smul_zero, sub_zero]`. Rewrite using `[sub_round_smul]`. Establish `h1` using `norm_add_le (proj v x) ((inner ℝ v x / ‖v‖ ^ 2 - round (inner ℝ v x / ‖v‖ ^ 2)) • v)`. Establish `h2 : ‖(inner ℝ v x / ‖v‖ ^ 2 - round (inner ℝ v x / ‖v‖ ^ 2)) • v‖ ≤ ‖v‖ / 2`.
+
+Rewrite using `[norm_smul, Real.norm_eq_abs]`. Use `abs_sub_round (inner ℝ v x / ‖v‖ ^ 2)` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg v]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_lift {L : Submodule ℤ W} {v : W} (hvL : v ∈ L) (hv : v ≠ 0) {x : W} (hx : x ∈ L) :
     ∃ y ∈ L, proj v y = proj v x ∧ ‖y‖ ≤ ‖proj v x‖ + ‖v‖ / 2 := by
   refine ⟨x - round (inner ℝ v x / ‖v‖ ^ 2) • v, L.sub_mem hx (L.smul_mem _ hvL), ?_, ?_⟩
@@ -195,6 +260,11 @@ theorem exists_lift {L : Submodule ℤ W} {v : W} (hvL : v ∈ L) (hv : v ≠ 0)
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Rewrite using `[det_succ_row_zero, Fin.sum_univ_succ]`. Establish `h0 : ∀ j : Fin m, gram ℝ (Fin.cons v c : Fin (m + 1) → W) 0 j.succ = 0` using `fun j => by`. Simplify using `[gram, hc]`. Simplify using `only [h0, mul_zero, zero_mul, Finset.sum_const_zero, add_zero]`. Establish `hsub : (gram ℝ (Fin.cons v c : Fin (m + 1) → W)).submatrix Fin.succ (Fin.succAbove 0) = gram ℝ c`.
+
+Use extensionality with `i j`. Simplify using `[gram]`. Rewrite using `[hsub]`. Simplify using `[gram]`.
+-/
 theorem det_gram_cons_orth {m : ℕ} (v : W) (c : Fin m → W) (hc : ∀ i, inner ℝ v (c i) = 0) :
     (gram ℝ (Fin.cons v c : Fin (m + 1) → W)).det = ‖v‖ ^ 2 * (gram ℝ c).det := by
   rw [det_succ_row_zero, Fin.sum_univ_succ]
@@ -210,6 +280,15 @@ theorem det_gram_cons_orth {m : ℕ} (v : W) (c : Fin m → W) (hc : ∀ i, inne
 
 omit [FiniteDimensional ℝ W] in
 
+/- English proof (translation)
+Set `T : Matrix (Fin (m + 1)) (Fin (m + 1)) ℝ` to `Matrix.of fun i j => if i = j then 1 else if j = 0 then (Fin.cons 0 t : Fin (m + 1) → ℝ) i else 0`. Establish `hT : (Fin.cons v (fun i => c i + t i • v) : Fin (m + 1) → W) = fun i => ∑ j, T i j • (Fin.cons v c : Fin (m + 1) → W) j`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Establish `h0 : ∀ x : Fin m, (0 : Fin (m + 1)) ≠ x.succ` using `fun x => (Fin.succ_ne_zero x).symm`.
+
+Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[T, Fin.succ_ne_zero, h0]`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[T, Fin.succ_ne_zero, add_comm]`. Establish `hdet : T.det = 1`.
+
+Rewrite using `[det_of_isLowerTriangular T ?_]`. Simplify using `[T]`. Introduce `i j hij`. Establish `hij' : i < j` using `OrderDual.toDual_lt_toDual.1 hij`. Establish `hj : j ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `absurd hij' (Fin.not_lt_zero i)`. Simplify using `[T, hij'.ne, hj]`. Rewrite using `[hT, gram_comb, det_mul, det_mul, det_transpose, hdet]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_cons_add {m : ℕ} (v : W) (c : Fin m → W) (t : Fin m → ℝ) :
     (gram ℝ (Fin.cons v (fun i => c i + t i • v) : Fin (m + 1) → W)).det =
       (gram ℝ (Fin.cons v c : Fin (m + 1) → W)).det := by
@@ -236,6 +315,39 @@ theorem det_gram_cons_add {m : ℕ} (v : W) (c : Fin m → W) (t : Fin m → ℝ
   rw [hT, gram_comb, det_mul, det_mul, det_transpose, hdet]
   ring
 
+/- English proof (translation)
+Use `set L := span ℤ (Set.range b) with hL`. Establish `hb0 : b 0 ≠ 0` using `hb.ne_zero 0`. Establish `hb0L : b 0 ∈ L` using `subset_span ⟨0, rfl⟩`. Use `set T := {x : W | x ∈ L ∧ ‖x‖ ≤ ‖b 0‖} ∩ {x | x ≠ 0} with hT`. Establish `hTfin : T.Finite` using `(finite_of_sep hlam hsep _).subset Set.inter_subset_left`.
+
+Establish `hTne : T.Nonempty` using `⟨b 0, ⟨hb0L, le_rfl⟩, hb0⟩`. Take `⟨v, ⟨⟨hvL, -⟩, hv⟩, hvmin⟩` from `Set.exists_min_image T (fun x => ‖x‖) hTfin hTne`. Establish `hmin : ∀ x ∈ L, x ≠ 0 → ‖v‖ ≤ ‖x‖`. Introduce `x hx hx0`. Distinguish the cases in `h : ‖x‖ ≤ ‖b 0‖`.
+
+Conclude with `hvmin x ⟨⟨hx, h⟩, hx0⟩`. Conclude with `(hvmin (b 0) ⟨⟨hb0L, le_rfl⟩, hb0⟩).trans (le_of_not_ge h)`. Set `L' : Submodule ℤ W` to `L.map ((proj v).restrictScalars ℤ)`. Establish `hmemL' : ∀ u, u ∈ L' ↔ ∃ x ∈ L, proj v x = u` using `fun u => by`. Simplify using `only [L', Submodule.mem_map, LinearMap.restrictScalars_apply]`.
+
+Establish `hsepL' : Sep L' (lam / 2)`. Introduce `u hu hu0`. Take `⟨x, hx, rfl⟩` from `(hmemL' u).1 hu`. Use `half_le_norm_proj hvL hv hmin hx hu0` as an intermediate fact. Combine the linear relations using `[hsep v hvL hv]`.
+
+Establish `hdL'` using `discreteTopology_of_sep (half_pos hlam) hsepL'`. Take `⟨n, c, hc, hcspan⟩` from `exists_basis_of_discrete L'`. Establish `hlift : ∀ i, ∃ w ∈ L, proj v w = c i` using `fun i => (hmemL' (c i)).1 (hcspan ▸ subset_span ⟨i, rfl⟩)`. Use `choose w hwL hw using hlift`. Establish `hpv` using `proj_self v hv`.
+
+Establish `hwind : LinearIndependent ℝ w`. Apply `LinearIndependent.of_comp (proj v)` to reduce the goal to its premises. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Conclude with `hw i`.
+
+Establish `hvw : v ∉ span ℝ (Set.range w)`. Introduce `h`. Take `⟨a, ha⟩` from `(mem_span_range_iff_exists_fun ℝ).1 h`. Establish `h2 : ∑ i, a i • c i = 0`. Use `congrArg (proj v) ha` as an intermediate fact.
+
+Rewrite `this` using `[map_sum, hpv]`. Simplify `this` using `[map_smul, hw]`. Establish `ha0` using `Fintype.linearIndependent_iff.1 hc a h2`. Apply `hv` to reduce the goal to its premises. Rewrite using `[← ha]`.
+
+Simplify using `[ha0]`. Establish `hb'ind : LinearIndependent ℝ (Fin.cons v w : Fin (n + 1) → W)` using `linearIndependent_finCons.2 ⟨hwind, hvw⟩`. Establish `hspan' : span ℤ (Set.range (Fin.cons v w : Fin (n + 1) → W)) = L`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hvL`. Simplify using `using hwL i`. Introduce `x hx`.
+
+Establish `hpx : proj v x ∈ span ℤ (Set.range c)`. Rewrite using `[hcspan]`. Conclude with `(hmemL' _).2 ⟨x, hx, rfl⟩`. Take `⟨k, hk⟩` from `(mem_span_range_iff_exists_fun ℤ).1 hpx`. Establish `hyL : x - ∑ i, k i • w i ∈ L` using `L.sub_mem hx (L.sum_mem fun i _ => L.smul_mem _ (hwL i))`.
+
+Establish `hy0 : proj v (x - ∑ i, k i • w i) = 0`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_zsmul, hw, hk, sub_self]`. Take `⟨k0, hk0⟩` from `mem_zsmul_of_proj_eq_zero hvL hv hmin hyL hy0`. Establish `hx' : x = k0 • v + ∑ i, k i • w i`.
+
+Rewrite using `[← hk0]`. Normalize the expressions using the abelian group laws. Rewrite using `[hx']`. Use `add_mem (Submodule.smul_mem _ _ (subset_span ⟨0, by simp⟩)) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (subset_span ⟨i.succ, by simp⟩))` and prove the remaining obligations. Establish `hnm : n = m`.
+
+Establish `h1` using `finrank_span_eq_card hb`. Establish `h2` using `finrank_span_eq_card hb'ind`. Establish `hsp : span ℝ (Set.range b) = span ℝ (Set.range (Fin.cons v w : Fin (n + 1) → W))`. Rewrite using `[← span_span_of_tower ℤ ℝ (Set.range b), ← span_span_of_tower ℤ ℝ (Set.range (Fin.cons v w : Fin (n + 1) → W)), hspan']`. Rewrite `h1` using `[hsp, h2]`.
+
+Simplify using `using h1`. Substitute `hnm` using the available equality. Use `⟨v, c, hvL, hv, hsep v hvL hv, hmin, hc, fun u => by rw [hcspan]; exact hmemL' u, hcspan ▸ hsepL', ?_⟩` and prove the remaining obligations. Establish `hZ : LinearIndependent ℤ b` using `hb.restrict_scalars' (R := ℤ)`. Rewrite using `[det_gram_eq_of_span_eq hZ hspan'.symm]`.
+
+Establish `hwc : w = fun i => c i + (inner ℝ v (w i) / ‖v‖ ^ 2) • v`. Use function extensionality and compare the values at `i`. Rewrite using `[← hw i, proj_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[hwc, det_gram_cons_add, det_gram_cons_orth v c (fun i => by rw [← hw i]; exact inner_proj v _ hv)]`.
+-/
 theorem decompose {m : ℕ} (b : Fin (m + 1) → W) (hb : LinearIndependent ℝ b) {lam : ℝ}
     (hlam : 0 < lam) (hsep : Sep (span ℤ (Set.range b)) lam) :
     ∃ (v : W) (c : Fin m → W), v ∈ span ℤ (Set.range b) ∧ v ≠ 0 ∧ lam ≤ ‖v‖ ∧
@@ -330,6 +442,31 @@ theorem decompose {m : ℕ} (b : Fin (m + 1) → W) (hb : LinearIndependent ℝ 
     abel
   rw [hwc, det_gram_cons_add, det_gram_cons_orth v c (fun i => by rw [← hw i]; exact inner_proj v _ hv)]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Use `⟨fun lam _ => ⟨1, one_pos, fun b _ _ => by simp⟩, fun lam _ C => ⟨0, fun b _ _ _ => ?_⟩⟩` and prove the remaining obligations. Establish `: Set.range b = ∅` using `Set.range_eq_empty b`. Simplify using `[this]`.
+
+Consider the case `succ m ih`. Use `⟨fun lam hlam => ?_, fun lam hlam C => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgb⟩` from `ih.1 (lam / 2) (half_pos hlam)`. Use `⟨lam ^ 2 * g, by positivity, fun b hb hsep => ?_⟩` and prove the remaining obligations. Take `⟨v, c, -, -, hlv, -, hc, -, hsepc, hdet⟩` from `decompose b hb hlam hsep`.
+
+Rewrite using `[hdet]`. Establish `h1` using `hgb c hc hsepc`. Establish `h2 : lam ^ 2 ≤ ‖v‖ ^ 2` using `pow_le_pow_left₀ hlam.le hlv 2`. Conclude with `mul_le_mul h2 h1 hg.le (sq_nonneg _)`. Take `⟨g, hg, hgb⟩` from `ih.1 (lam / 2) (half_pos hlam)`.
+
+Take `⟨R', hR'⟩` from `ih.2 (lam / 2) (half_pos hlam) (C / lam ^ 2)`. Use `⟨|R'| + Real.sqrt (C / g), fun b hb hsep hC => ?_⟩` and prove the remaining obligations. Take `⟨v, c, hvL, hv, hlv, hmin, hc, hmemc, hsepc, hdet⟩` from `decompose b hb hlam hsep`. Establish `hgc` using `hgb c hc hsepc`. Establish `hv2 : ‖v‖ ^ 2 ≤ C / g`.
+
+Rewrite using `[le_div_iff₀ hg]`. Combine the equalities or inequalities in the displayed calculation. Establish `hvR : ‖v‖ ≤ Real.sqrt (C / g)` using `(le_abs_self _).trans (Real.abs_le_sqrt hv2)`. Establish `hcC : (gram ℝ c).det ≤ C / lam ^ 2`. Rewrite using `[le_div_iff₀ (by positivity)]`.
+
+Establish `h2 : lam ^ 2 ≤ ‖v‖ ^ 2` using `pow_le_pow_left₀ hlam.le hlv 2`. Establish `hc0 : 0 ≤ (gram ℝ c).det` using `hg.le.trans hgc`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgen` using `hR' c hc hsepc hcC`. Use `set L := span ℤ (Set.range b) with hL`.
+
+Use `set N := span ℤ {x | x ∈ L ∧ ‖x‖ ≤ |R'| + Real.sqrt (C / g)} with hN`. Establish `hNL : N ≤ L` using `span_le.2 fun x hx => hx.1`. Establish `hvN : v ∈ N` using `subset_span ⟨hvL, by linarith [abs_nonneg R']⟩`. Establish `hlift : ∀ u ∈ span ℤ {x | x ∈ span ℤ (Set.range c) ∧ ‖x‖ ≤ R'}, ∃ y ∈ N, proj v y = u`. Introduce `u hu`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨hu1, hu2⟩` from `hu`. Take `⟨x, hx, rfl⟩` from `(hmemc u).1 hu1`. Take `⟨y, hyL, hy, hyn⟩` from `exists_lift hvL hv hx`.
+
+Use `⟨y, subset_span ⟨hyL, ?_⟩, hy⟩` and prove the remaining obligations. Combine the linear relations using `[le_abs_self R', norm_nonneg v]`. Consider the case `zero => exact ⟨0, N.zero_mem, map_zero _⟩`. Consider the case `add u u' _ _ hu hu'`. Take `⟨y, hy, rfl⟩` from `hu`.
+
+Take `⟨y', hy', rfl⟩` from `hu'`. Conclude with `⟨y + y', N.add_mem hy hy', map_add _ _ _⟩`. Consider the case `smul k u _ hu`. Take `⟨y, hy, rfl⟩` from `hu`. Conclude with `⟨k • y, N.smul_mem k hy, map_zsmul _ _ _⟩`.
+
+Introduce `x hx`. Take `⟨y, hyN, hy⟩` from `hlift (proj v x) (hgen ((hmemc _).2 ⟨x, hx, rfl⟩))`. Establish `hxy : x - y ∈ L` using `L.sub_mem hx (hNL hyN)`. Establish `h0 : proj v (x - y) = 0` using `by rw [map_sub, hy, sub_self]`. Take `⟨k, hk⟩` from `mem_zsmul_of_proj_eq_zero hvL hv hmin hxy h0`.
+
+Establish `hxe : x = k • v + y`. Rewrite using `[← hk]`. Normalize the expressions using the abelian group laws. Rewrite using `[hxe]`. Conclude with `N.add_mem (N.smul_mem k hvN) hyN`.
+-/
 theorem bounds (m : ℕ) :
     (∀ lam : ℝ, 0 < lam → ∃ g : ℝ, 0 < g ∧ ∀ b : Fin m → W, LinearIndependent ℝ b →
         Sep (span ℤ (Set.range b)) lam → g ≤ (gram ℝ b).det) ∧
@@ -401,6 +538,11 @@ theorem bounds (m : ℕ) :
       rw [hxe]
       exact N.add_mem (N.smul_mem k hvN) hyN
 
+/- English proof (translation)
+Use `choose Rf hRf using fun n => (bounds (W := W) n).2 lam hlam C`. Use `⟨∑ n ∈ Finset.range (finrank ℝ W + 1), |Rf n|, fun n b hb hsep hC => ?_⟩` and prove the remaining obligations. Establish `hn : n ≤ finrank ℝ W` using `by simpa using hb.fintype_card_le_finrank`. Use `(hRf n b hb hsep hC).trans (span_mono fun x hx => ⟨hx.1, hx.2.trans ?_⟩)` and prove the remaining obligations. Use `(le_abs_self _).trans ?_` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun n => |Rf n|) (fun i _ => abs_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hn))`.
+-/
 theorem exists_short_generators {lam : ℝ} (hlam : 0 < lam) (C : ℝ) :
     ∃ R : ℝ, ∀ (n : ℕ) (b : Fin n → W), LinearIndependent ℝ b →
       Sep (span ℤ (Set.range b)) lam → (gram ℝ b).det ≤ C →
@@ -413,6 +555,9 @@ theorem exists_short_generators {lam : ℝ} (hlam : 0 < lam) (C : ℝ) :
   exact Finset.single_le_sum (f := fun n => |Rf n|) (fun i _ => abs_nonneg _)
     (Finset.mem_range.2 (Nat.lt_succ_of_le hn))
 
+/- English proof (translation)
+The claim follows from `(bounds n).1 lam hlam`.
+-/
 theorem exists_det_gram_lower {lam : ℝ} (hlam : 0 < lam) (n : ℕ) :
     ∃ g : ℝ, 0 < g ∧ ∀ b : Fin n → W, LinearIndependent ℝ b →
       Sep (span ℤ (Set.range b)) lam → g ≤ (gram ℝ b).det :=

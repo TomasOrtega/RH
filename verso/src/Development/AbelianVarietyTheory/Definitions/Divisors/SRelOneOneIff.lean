@@ -19,6 +19,11 @@ def SRel {h n' n : ℕ} {B' B : Type} [CommRing B'] [CommRing B] {ζ' : B'} {ζ 
     {s : S ⟶ Sp B} (c' : SiegPre h n' ζ' s') (c : SiegPre h n ζ s) (d' d : ℕ) (f : S' ⟶ S) : Prop :=
   ∃ φ, SRelBy c' c d' d f φ
 
+/- English proof (translation)
+Unfold `SRel SRelBy SiegPB`. Simplify using `only [pow_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hpb, ⟨φ₂, hsq, hiso⟩, hlev⟩`. Conclude with `⟨φ, φ₂, hpb, hsq, hiso, hlev⟩`.
+
+Introduce and unpack `⟨φ, φ₂, hpb, hsq, hiso, hlev⟩`. Conclude with `⟨φ, hpb, ⟨φ₂, hsq, hiso⟩, hlev⟩`.
+-/
 theorem sRel_one_one_iff {h n : ℕ} {B' B : Type} [CommRing B'] [CommRing B] {ζ' : B'} {ζ : B} {S' S : Scheme.{0}}
     {s' : S' ⟶ Sp B'} {s : S ⟶ Sp B} (c' : SiegPre h n ζ' s') (c : SiegPre h n ζ s) (f : S' ⟶ S) :
     SRel c' c 1 1 f ↔ SiegPB c' c f := by

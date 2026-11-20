@@ -5,6 +5,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.ValuationCompositionDivisor
 
+/- English proof (translation)
+Unfold `valR`. Both sides reduce to the same expression.
+-/
 theorem valR_comp {A : Type} [CommRing A] {X Y : Scheme.{0}} (p : Sp A ⟶ X) (ψ : X ⟶ Y)
     (U : Y.Opens) (f : Γ(Y, U)) :
     valR (p ≫ ψ) U f = valR p (ψ ⁻¹ᵁ U) ((ψ.app U).hom f) := by

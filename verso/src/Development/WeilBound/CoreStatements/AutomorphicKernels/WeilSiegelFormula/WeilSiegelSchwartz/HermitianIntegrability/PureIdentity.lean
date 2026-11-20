@@ -36,6 +36,59 @@ section Pure
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨hEu, hlat⟩` from `GlobalTheory.T.adelic_measure_euler_product_decomposition F E σ hCM M J hJ n h2n ψ hψ dx hdx d b laminf lam hinf hlam`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.euler_product_measure_eventually_standard F E M n d b dx 1 _ _ hEu`. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.hermitian_measure_euler_product F E σ hCM M J hJ n h2n ψ hψ db hdb d b laminf lam hinf hlam`. Establish `hq` using `GlobalTheory.T.gram_matrix_integral_almost_all_places F E σ hCM M J hJ n h2n d b T hT`. Establish `hqf` using `Filter.eventually_cofinite.1 hq`.
+
+Use `⟨S₀ ∪ S₁ ∪ hqf.toFinset, fun S hS φ hφ A hA hAl => ?_⟩` and prove the remaining obligations. Establish `hS0 : S₀ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS1 : S₁ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS2 : ∀ v, v ∉ S → ∀ X ∈ (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)), hermOf (Fv F v) σ T hT - gramH hCM hJ (Fv F v) X ∈ latH σ b v n`. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hv (hS (by simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq]; exact Or.inr hc))`. Take `⟨ρ, U, hρ, hρs, hU, hUs, hI, hc, hbd, hlim⟩` from `hS₁ S hS1`. Establish `hΦSB : IsSchwartzBruhat (pureN φ A)` using `GlobalTheory.T.factorizable_schwartz_orbital_integral F E σ hCM M J hJ n h2n d b S φ A hφ hA hAl`. Establish `hΦdx : Integrable (pureN φ A) dx` using `GlobalTheory.T.schwartz_bruhat_integrable_adelic F E σ hCM M J hJ n h2n ψ hψ dx hdx _ hΦSB`.
+
+Establish `hstar : Integrable (starN σ J ψ dx (pureN φ A)) db` using `hInt _ hΦSB`. Establish `hu : ∀ (R : Type) [CommRing R] [Algebra F R], IsUnit (hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det`. Introduce `R _ _`. Establish `h : (hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det = inclR R T.det` using `((inclR R).map_det T).symm`. Rewrite using `[h]`.
+
+Conclude with `(IsUnit.mk0 _ hdet).map (inclR R)`. Use `set cI : HermR (Ainf F) σ n := hermOf (Ainf F) σ T hT with hcI`. Establish `hInf` using `GlobalTheory.T.archimedean_gram_fibre_measure_exists F E σ hCM M J hJ n h2n d b laminf hinf minf hminf cI (hu _) φ hφ ρ hρ hρs`. Establish `hV` using `fun v => GlobalTheory.T.local_gram_fibre_measure_unramified F E σ hCM M J hJ n h2n d b v (lam v) (hlam v) (m v) (hm v) (hermOf (Fv F v) σ T hT) (hu _) (A v) (hA v).1 (hA v).2 (fun k => U k v) (fun k => ⟨(hU k v).1, (hU k v).2.1, (hU k v).2.2.1⟩) (hUs v)`. Establish `hUpos : ∀ k v, 0 < (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b (lam v) n (U k v)).toReal` using `fun k v => (hU k v).2.2.2`.
+
+Establish `hρpos : ∀ k, 0 < ∫ y, ρ k y ∂(GlobalTheory.CompanionTheory.SW.coordHerm (Ainf F) σ b laminf n)` using `fun k => (hρ k).2.2.2`. Establish `hck : ∀ k, (∫ y, testH σ b (ρ k) S (U k) y ∂db) ≠ 0`. Introduce `k`. Rewrite using `[hc k]`. Use `mul_ne_zero (by exact_mod_cast (hρpos k).ne') (Finset.prod_ne_zero_iff.2 fun v _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(hUpos k v).ne'` after adjusting the coercions. Establish `a1 : ∀ {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R'), hermMap f σ (hermOf R σ T hT) = hermOf R' σ T hT` using `fun f => hermMap_hermOf f σ T hT`. Establish `h3 : ∀ (x : Fin n → Fin M → AF F ⊗[F] E) (v : HeightOneSpectrum (𝓞 F)), hermV σ v (hermFin σ (hermOf (AF F) σ T hT - gramH hCM hJ (AF F) x)) = hermOf (Fv F v) σ T hT - gramH hCM hJ (Fv F v) (projV v (projFin x))`. Introduce `x v`. Simplify using `only [hermV, hermFin, hermMap_sub, a1, hermMap_gramH]`.
+
+Both sides reduce to the same expression. Establish `h0 : ∀ x : Fin n → Fin M → AF F ⊗[F] E, hermInf σ (hermOf (AF F) σ T hT - gramH hCM hJ (AF F) x) = cI - gramH hCM hJ (Ainf F) (projInf x)`. Introduce `x`. Simplify using `only [hermInf, hermMap_sub, a1, hermMap_gramH]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ k, ∫ bb, (fouH σ ψ db (testH σ b (ρ k) S (U k)) bb / ∫ y, testH σ b (ρ k) S (U k) y ∂db) * (starN σ J ψ dx (pureN φ A) bb * chiT σ ψ T bb) ∂db = ((∫ X, φ X * (ρ k (cI - gramH hCM hJ (Ainf F) X) : ℂ) ∂(GlobalTheory.CompanionTheory.SW.coordW (Ainf F) b laminf n M)) / ((∫ y, …`. Introduce `k`. Establish `hf` using `GlobalTheory.T.siegel_weil_integral_normalised F E σ hCM M J hJ n h2n ψ hψ dx hdx db hdb _ hΦdx (testH σ b (ρ k) S (U k)) (hI k).1 (hI k).2 T hT`. Set `A' : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin n → Fin M → Fv F v ⊗[F] E)` to `fun v => if v ∈ S then A v ∩ {X | hermOf (Fv F v) σ T hT - gramH hCM hJ (Fv F v) X ∈ U k v} else A v`. Establish `hA'S : ∀ v ∈ S, A' v = A v ∩ {X | hermOf (Fv F v) σ T hT - gramH hCM hJ (Fv F v) X ∈ U k v}` using `fun v hv => if_pos hv`.
+
+Establish `hA'n : ∀ v, v ∉ S → A' v = latV b v` using `fun v hv => (if_neg hv).trans (hAl v hv)`. Establish `hmem : ∀ x : Fin n → Fin M → AF F ⊗[F] E, (projFin x ∈ boxFN A ∧ hermFin σ (hermOf (AF F) σ T hT - gramH hCM hJ (AF F) x) ∈ boxH σ b n S (U k)) ↔ projFin x ∈ boxFN A'`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h'⟩ v`.
+
+Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hA'S v hv]`. Use `⟨h v, ?_⟩` and prove the remaining obligations. Use `show _ ∈ U k v`. Rewrite using `[← h3 x v]`.
+
+Conclude with `h'.1 v hv`. Rewrite using `[show A' v = A v from if_neg hv]`. Conclude with `h v`. Introduce `h`. Use `⟨fun v => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ S`. Use `h v` as an intermediate fact. Rewrite `this` using `[hA'S v hv]`. Conclude with `this.1`. Use `h v` as an intermediate fact.
+
+Rewrite `this` using `[show A' v = A v from if_neg hv]`. Then use the resulting hypothesis. Use `h v` as an intermediate fact. Rewrite `this` using `[hA'S v hv]`. Rewrite using `[h3 x v]`. Conclude with `this.2`.
+
+Use `h v` as an intermediate fact. Rewrite `this` using `[hA'n v hv]`. Rewrite using `[h3 x v]`. Conclude with `hS2 v hv _ this`. Establish `hpt : ∀ x, pureN φ A x * testH σ b (ρ k) S (U k) (hermOf (AF F) σ T hT - gramH hCM hJ (AF F) x) = pureN (fun X => φ X * (ρ k (cI - gramH hCM hJ (Ainf F) X) : ℂ)) A' x`.
+
+Introduce `x`. Unfold `pureN testH`. Rewrite using `[h0 x]`. Distinguish the cases in `h : projFin x ∈ boxFN A'`. Take `⟨ha, hb⟩` from `(hmem x).2 h`.
+
+Rewrite using `[Set.indicator_of_mem ha, Set.indicator_of_mem hb, Set.indicator_of_mem h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem h, mul_zero]`. Distinguish the cases in `ha : projFin x ∈ boxFN A`. Establish `hb : hermFin σ (hermOf (AF F) σ T hT - gramH hCM hJ (AF F) x) ∉ boxH σ b n S (U k)` using `fun hb => h ((hmem x).1 ⟨ha, hb⟩)`.
+
+Rewrite using `[Set.indicator_of_notMem hb]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem ha]`. Simplify using the standard rewrite rules. Establish `hmeasA' : ∀ v, MeasurableSet (A' v)`.
+
+Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hA'S v hv]`. Conclude with `((hV v).1 k).1`. Rewrite using `[show A' v = A v from if_neg hv]`.
+
+Conclude with `(GlobalTheory.T.local_gram_fibre_measure_standard_volume F E σ hCM M J hJ n h2n d b v (lam v) (hlam v) (m v) (hm v) _ (hu _) (A v) (hA v).1 (hA v).2).1`. Establish `hfinA' : ∀ v, GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M (A' v) ≠ ⊤`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hA'S v hv]`.
+
+Conclude with `((hV v).1 k).2`. Rewrite using `[hA'n v hv, hlat v]`. Conclude with `ENNReal.one_ne_top`. Establish `he` using `(hS₀ S hS0 _ (hInf.1 k).1 (hInf.1 k).2 A' hmeasA' hfinA' hA'n).2`. Establish `htail : (∏' v : {v // v ∉ S}, (GlobalTheory.CompanionTheory.SW.coordW (Fv F v.1) b (lam v.1) n M (latV b v.1)).toReal) = 1`.
+
+Simplify using `[hlat]`. Rewrite `he` using `[htail]`. Establish `hprod : (∏ v ∈ S, ((GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M (A' v)).toReal : ℂ)) = ∏ v ∈ S, ((GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b (lam v) n M (A v ∩ {X | hermOf (Fv F v) σ T hT - gramH hCM hJ (Fv F v) X ∈ U k v})).toReal : ℂ)` using `Finset.prod_congr rfl fun v hv => by rw [hA'S v hv]`. Establish `e1 : ∫ bb, (fouH σ ψ db (testH σ b (ρ k) S (U k)) bb / ∫ y, testH σ b (ρ k) S (U k) y ∂db) * (starN σ J ψ dx (pureN φ A) bb * chiT σ ψ T bb) ∂db = (∫ bb, fouH σ ψ db (testH σ b (ρ k) S (U k)) bb * (starN σ J ψ dx (pureN φ A) bb * chiT σ ψ T bb) ∂db) / ∫ y, testH σ b (ρ k) S (U k) …`. Rewrite using `[← integral_div]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun bb => by simp only []; ring)`. Rewrite using `[e1, hf, integral_congr_ae (Filter.Eventually.of_forall hpt), he, hprod, hc k]`. Use `push_cast`. Rewrite using `[Finset.prod_div_distrib]`. Simplify using `only [NNReal.coe_one, Complex.ofReal_one, one_mul, mul_one]`.
+
+Rewrite using `[div_mul_div_comm]`. Establish `lim1 : Filter.Tendsto (fun k => ∫ bb, (fouH σ ψ db (testH σ b (ρ k) S (U k)) bb / ∫ y, testH σ b (ρ k) S (U k) y ∂db) * (starN σ J ψ dx (pureN φ A) bb * chiT σ ψ T bb) ∂db) Filter.atTop (nhds (coefSN σ b J ψ dx db (pureN φ A) T S))`. Establish `hχ : Continuous (chiT σ ψ T)` using `GlobalTheory.T.continuous_fourier_character_of_matrix F E σ hCM M J hJ n h2n ψ hψ T`. Use `tendsto_integral_of_dominated_convergence (fun bb => ‖starN σ J ψ dx (pureN φ A) bb‖) ?_ hstar.norm ?_ ?_` and prove the remaining obligations. Introduce `k`.
+
+Conclude with `((hI k).1.div_const _).aestronglyMeasurable.mul (hstar.aestronglyMeasurable.mul hχ.aestronglyMeasurable)`. Introduce `k`. Use `Filter.Eventually.of_forall fun bb => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, show ‖chiT σ ψ T bb‖ = 1 from hψ.2.1 _, mul_one, norm_div]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) ((div_le_one (norm_pos_iff.2 (hck k))).2 (hbd k bb))`.
+
+Use `Filter.Eventually.of_forall fun bb => ?_` and prove the remaining obligations. Conclude with `(hlim bb).mul_const _`. Establish `lim2` using `hInf.2.mul (tendsto_finset_prod S fun v _ => (Complex.continuous_ofReal.tendsto _).comp (hV v).2)`. Conclude with `tendsto_nhds_unique lim1 (lim2.congr fun k => by simpa using (key k).symm)`.
+-/
 theorem coefS_pure (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {n : ℕ} (h2n : 2 * n < M) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
     (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (hdx : SdW F E σ M J (AF F) ψ n dx)
@@ -222,6 +275,19 @@ theorem coefS_pure (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Ma
     (Complex.continuous_ofReal.tendsto _).comp (hV v).2)
   exact tendsto_nhds_unique lim1 (lim2.congr fun k => by simpa using (key k).symm)
 
+/- English proof (translation)
+Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.euler_product_measure_eventually_standard F E M n d b _ 1 _ _ hEu`. Take `⟨S₂, hS₂⟩` from `coefS_pure σ hCM J hJ h2n ψ hψ dx hdx db hdb hInt d b laminf lam hinf hlam minf hminf m hm T hT hdet`. Establish `hu : ∀ (R : Type) [CommRing R] [Algebra F R], IsUnit (hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det`. Introduce `R _ _`. Establish `h : (hermOf R σ T hT : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det = inclR R T.det` using `((inclR R).map_det T).symm`.
+
+Rewrite using `[h]`. Conclude with `(IsUnit.mk0 _ hdet).map (inclR R)`. Take `⟨hφm, hφi, -⟩` from `GlobalTheory.T.archimedean_gram_fibre_measure_formula F E σ hCM M J hJ n h2n d b laminf hinf minf hminf _ (hu _) φ hφ`. Establish `hφi'` using `hφi.self_of_nhds`. Establish `hΦSB : IsSchwartzBruhat (pureN φ A)` using `GlobalTheory.T.factorizable_schwartz_orbital_integral F E σ hCM M J hJ n h2n d b S₀ φ A hφ hA hAl`.
+
+Establish `hstar : Integrable (starN σ J ψ dx (pureN φ A)) db` using `hInt _ hΦSB`. Establish `hlimC` using `GlobalTheory.T.siegel_eisenstein_unfolding_identity F E σ hCM M J hJ n h2n ψ hψ dx db _ hstar d b T`. Establish `hsum` using `hEu.2.1`. Establish `htail` using `GlobalTheory.T.tendsto_tail_infinite_product_one _ hsum`. Establish `hfin` using `fun v => GlobalTheory.T.local_gram_fibre_measure_standard_volume F E σ hCM M J hJ n h2n d b v (lam v) (hlam v) (m v) (hm v) (hermOf (Fv F v) σ T hT) (hu _) (A v) (hA v).1 (hA v).2`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hs : S₁ ⊆ S₀ ∪ S₁` using `Finset.subset_union_right`. Conclude with `(hS₁ (S₀ ∪ S₁) hs φ hφm hφi' A (fun v => (hfin v).1) (fun v => (hfin v).2) (fun v hv => hAl v fun h => hv (Finset.mem_union_left _ h))).1`. Establish `hev : ∀ᶠ S in Filter.atTop, S₀ ∪ S₁ ∪ S₂ ⊆ S` using `Filter.eventually_ge_atTop _`. Establish `hlim2 : Filter.Tendsto (fun S => coefSN σ b J ψ dx db (pureN φ A) T S * ((∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal : ℝ) : ℂ)) Filter.atTop (nhds (coefN σ J ψ dx db (pureN φ A) T * ((1 : ℝ) : ℂ)))` using `hlimC.mul ((Complex.continuous_ofReal.tendsto _).comp htail)`.
+
+Establish `hconst : ∀ᶠ S in Filter.atTop, coefSN σ b J ψ dx db (pureN φ A) T S * ((∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal : ℝ) : ℂ) = ∫ X, pureN φ A X ∂I` using `by filter_upwards [hev] with S hS`. Establish `hs0 : S₀ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hs1 : S₁ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hs2 : S₂ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hAS : ∀ v, v ∉ S → A v = latV b v` using `fun v hv => hAl v fun h => hv (hs0 h)`.
+
+Rewrite using `[hS₂ S hs2 φ hφ A hA hAS, (hS₁ S hs1 φ hφm hφi' A (fun v => (hfin v).1) (fun v => (hfin v).2) hAS).2]`. Simplify using the standard rewrite rules. Use `tendsto_nhds_unique (hlim2.congr' hconst) tendsto_const_nhds` as an intermediate fact. Simplify using `using this`.
+-/
 theorem pure_identity (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {n : ℕ} (h2n : 2 * n < M) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
     (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (hdx : SdW F E σ M J (AF F) ψ n dx)
@@ -285,6 +351,11 @@ theorem pure_identity (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J :
   have := tendsto_nhds_unique (hlim2.congr' hconst) tendsto_const_nhds
   simpa using this
 
+/- English proof (translation)
+Establish `hstar : ∀ y, GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx (fun X => ∑ i, Φ i X) y = ∑ i, GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx (Φ i) y`. Introduce `y`. Unfold `GlobalTheory.CompanionTheory.SiegelND.starN`. Simplify using `only [Finset.sum_mul]`. Conclude with `integral_finset_sum _ fun i _ => GlobalTheory.T.twisted_schwartz_function_integrable F E σ hCM M J n ψ hψ dx hdx.1 (Φ i) (hΦ i) y`.
+
+Establish `hχ : Continuous (chiT σ ψ T)` using `GlobalTheory.T.continuous_fourier_character_of_matrix F E σ hCM M J hJ n h2n ψ hψ T`. Establish `hi : ∀ i, Integrable (fun y => GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx (Φ i) y * chiT σ ψ T y) db` using `fun i => (hInt _ (hΦ i)).mul_bdd (c := 1) hχ.aestronglyMeasurable (Filter.Eventually.of_forall fun y => le_of_eq (hψ.2.1 _))`. Use `show ∫ y, GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx (fun X => ∑ i, Φ i X) y * chiT σ ψ T y ∂db = ∑ i, ∫ y, GlobalTheory.CompanionTheory.SiegelND.starN σ J ψ dx (Φ i) y * chiT σ ψ T y ∂db`. Simplify using `only [hstar, Finset.sum_mul]`. Conclude with `integral_finset_sum _ fun i _ => hi i`.
+-/
 theorem coefN_sum (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     {n : ℕ} (h2n : 2 * n < M) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
     (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (hdx : SdW F E σ M J (AF F) ψ n dx)
@@ -324,6 +395,15 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz (schwartzA)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n h2n ψ hψ dx hdx db hdb hInt μ 𝓕 hμ h𝓕 Φ hΦ T hT hdet`. Set `b` to `Module.finBasis F E`. Take `⟨laminf, hinf⟩` from `GlobalTheory.CompanionTheory.SW.StdEx.exists_isStdInf F`. Use `choose lam hlam using GlobalTheory.CompanionTheory.SW.StdEx.exists_isStdV F`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`.
+
+Use `haveI : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`. Take `⟨minf, hminf⟩` from `GlobalTheory.CompanionTheory.SW.Step.loc_families σ hCM J hJ (Ainf F) (GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1) b laminf hinf.1 n`. Use `choose m hm using fun v => GlobalTheory.CompanionTheory.SW.Step.loc_families σ hCM J hJ (Fv F v) (GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v) b (lam v) (hlam v).1 n`. Establish `hEu : GlobalTheory.CompanionTheory.SW.IsEulerProd b (GlobalTheory.CompanionTheory.SW.thetaMeas σ J μ 𝓕 {X | HeckeCharacterZeroLocus.SiegelWeilU.gramE σ J X = T}) 1 (minf (hermOf (Ainf F) σ T hT)) (fun v => m v (hermOf (Fv F v) σ T hT))` using `GlobalTheory.T.siegel_weil_measure_of_rank_small_or_zero F E σ hCM n M J hJ (by omega) T hT hdet _ b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm`. Take `⟨N, φ, A, S, hφ, hA, hAl, hsum⟩` from `GlobalTheory.T.schwartz_bruhat_finite_sum_of_products F E σ hCM M J hJ n h2n _ b Φ hΦ`.
+
+Establish `hSB : ∀ i, GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (Coef.pureN (φ i) (A i))` using `fun i => GlobalTheory.T.factorizable_schwartz_orbital_integral F E σ hCM M J hJ n h2n _ b S (φ i) (A i) (hφ i) (hA i) (hAl i)`. Establish `hΦe : Φ = fun X => ∑ i, Coef.pureN (φ i) (A i) X` using `funext hsum`. Establish `hP` using `fun i => PositivityTheory.PfWsf.Hand.CoreH.pure_identity σ hCM J hJ h2n ψ hψ dx hdx db hdb hInt _ _ b laminf lam hinf hlam minf hminf m hm T hT hdet hEu S (φ i) (hφ i) (A i) (hA i) (hAl i)`. Establish `e1 : ∫ X, Φ X ∂(GlobalTheory.CompanionTheory.SW.thetaMeas σ J μ 𝓕 {X | HeckeCharacterZeroLocus.SiegelWeilU.gramE σ J X = T}) = ∑ i, ∫ X, Coef.pureN (φ i) (A i) X ∂(GlobalTheory.CompanionTheory.SW.thetaMeas σ J μ 𝓕 {X | HeckeCharacterZeroLocus.SiegelWeilU.gramE σ J X = T})`. Simplify using `only [hsum]`.
+
+Conclude with `integral_finset_sum _ fun i _ => (hP i).1`. Rewrite using `[e1, hΦe, PositivityTheory.PfWsf.Hand.CoreH.coefN_sum σ hCM J hJ h2n ψ hψ dx hdx db hdb hInt T N _ hSB]`. Conclude with `Finset.sum_congr rfl fun i _ => (hP i).2`.
+-/
 theorem PositivityTheory.PfWsf.Hand.CoreH.coreH : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
   IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
   ∀ n : ℕ, 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ →

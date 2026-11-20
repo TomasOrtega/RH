@@ -20,6 +20,17 @@ section Abstract
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨δ, -, h0, hfg', hgδ, hδf⟩` from `CrystallineSemistableComparison.P.les f g hf hfg hg`. Use `⟨fun j hj => ?_, ?_, fun x => (hfg' a x).symm⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : K.H j, x = 0 from ⟨fun x y => by rw [h x, h y]⟩`. Introduce `x`. Establish `hx : f.mapH j x = 0`.
+
+Use `hL j hj` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Consider the cases of `j with`. Consider the case `zero => exact h0 (by rw [hx, map_zero])`. Consider the case `succ k`.
+
+Take `⟨y, rfl⟩` from `(hδf k x).1 hx`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Take `⟨z, rfl⟩` from `hga y`. Conclude with `(hgδ k _).2 ⟨z, rfl⟩`.
+
+Use `hM k hk` as an intermediate fact. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Consider the cases of `a with`. Consider the case `zero => exact h0`. Consider the case `succ k`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(hδf k x).1 hx`. Use `hM k (by omega)` as an intermediate fact. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+-/
 theorem les_one {K : Cx.{w} R} {L : Cx.{w'} R} {M : Cx.{w''} R} (f : Cx.Hom K L (RingHom.id R))
     (g : Cx.Hom L M (RingHom.id R)) (hf : ∀ n, Function.Injective (f.f n)) (hfg : ∀ n, Function.Exact (f.f n) (g.f n))
     (hg : ∀ n, Function.Surjective (g.f n)) (a : ℕ) (hL : ∀ j, j ≠ a → Subsingleton (L.H j))
@@ -64,6 +75,11 @@ def liftQ (hQ : Cosieve Q) {n : ℕ} (s : ComposableArrows U.FullSubcategory n) 
   ObjectProperty.lift (U ⊓ Q) (s ⋙ U.ι) fun j =>
     show U (s.obj j).obj ∧ Q (s.obj j).obj from ⟨(s.obj j).property, hQ (s.map (homOfLE (Fin.zero_le j))).hom hs⟩
 
+/- English proof (translation)
+Introduce `z`. Use `⟨fun s => if hs : Q (s.obj 0).obj then z (liftQ U Q hQ s hs) else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `hs : Q ((s ⋙ ObjectProperty.ιOfLE hle).obj 0).obj` using `(s.obj 0).property.2`. Express the relevant statement in the definitionally equal form `(if hs : Q ((s ⋙ ObjectProperty.ιOfLE hle).obj 0).obj then z (liftQ U Q hQ _ hs) else 0) = z s`.
+
+Rewrite using `[dif_pos hs]`. Both sides reduce to the same expression.
+-/
 theorem res_surj (hQ : Cosieve Q) (hle : U ⊓ Q ≤ U) (n : ℕ) : Function.Surjective ((resU F hle).pullC n) := by
   classical
   intro z
@@ -74,6 +90,11 @@ theorem res_surj (hQ : Cosieve Q) (hle : U ⊓ Q ≤ U) (n : ℕ) : Function.Sur
   rw [dif_pos hs]
   rfl
 
+/- English proof (translation)
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨⟨y, fun s hs => ?_⟩, hι n _⟩` and prove the remaining obligations. Conclude with `congrFun hy (liftQ U Q hQ s hs)`.
+
+Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[hι]`. Use function extensionality and compare the values at `s`. Conclude with `x.2 (s ⋙ ObjectProperty.ιOfLE hle) (s.obj 0).property.2`.
+-/
 theorem res_exact (hQ : Cosieve Q) (hle : U ⊓ Q ≤ U) (ι : Cx.Hom (RC F U hQ) (CH.cx (U.ι ⋙ F)) (RingHom.id R))
     (hι : ∀ n x, ι.f n x = x.1) (n : ℕ) : Function.Exact (ι.f n) ((resU F hle).pullC n) := by
   intro y
@@ -91,6 +112,29 @@ end Ses
 end AffineRelativeForms
 
 open AffineRelativeForms in
+/- English proof (translation)
+Introduce `hSite hOn hAff hNat hForm K _ _ W Z q i _ hQ V d d' hc hc' a`. Establish `: Mono i` using `inferInstance`. Establish `hS` using `hSite K W Z W q i i`. Establish `h0 : ∀ T, inU (i ≫ q) (i ⁻¹ᵁ V) T → inU q V ((smS i rfl).G.obj T)` using `fun T h => (hS.2.2.2.2.1 V T).1 h`. Establish `h2 : ∀ T, inU q V ((smS i rfl).G.obj T) → inU (i ≫ q) (i ⁻¹ᵁ V) T` using `fun T h => (hS.2.2.2.2.1 V T).2 h`.
+
+Establish `hOnW : ∀ T, On q i ((smS i rfl).G.obj T)`. Introduce `T`. Use `(hS.2.2.2.2.2 T).1 ?_` and prove the remaining obligations. Take `⟨w, hw⟩ : ∃ w, w = pt (γ` from `dividedPowersBot K) (p := 0) (q := i ≫ q) (κ := Ideal.Quotient.mk ⊥) T := ⟨_, rfl⟩`. Conclude with `⟨pullback.lift w w rfl, by rw [pullback.lift_snd, hw]⟩`.
+
+Establish `h1 : ∀ T, inU (i ≫ q) (i ⁻¹ᵁ V) T → (inU q V ⊓ On q i) ((smS i rfl).G.obj T)` using `fun T h => show inU q V _ ∧ On q i _ from ⟨h0 T h, hOnW T⟩`. Establish `hBij` using `hOn K W Z q i (inU q V) (inU (i ≫ q) (i ⁻¹ᵁ V)) h1 h2 a`. Take `⟨hVsub, e0, he0, he0b⟩` from `hAff K Z q V d hc a`. Take `⟨hWsub, e', he', he'b⟩` from `hAff K W (i ≫ q) (i ⁻¹ᵁ V) d' hc' a`. Take `⟨φ, hφ, hnat⟩` from `hNat K Z W q (i ≫ q) i rfl V (i ⁻¹ᵁ V) le_rfl h0`.
+
+Establish `hφs : Function.Surjective φ`. Introduce `y`. Take `⟨x, hx⟩` from `i.app_surjective V hc.some.affine y`. Conclude with `⟨x, by rw [hφ, Scheme.Hom.appLE_eq_app]; exact hx⟩`. Establish `hFL` using `((hForm K (Sec q V) (Sec (i ≫ q) (i ⁻¹ᵁ V)) a).2 φ).2.2 hφs`.
+
+Establish `hker : RingHom.ker φ = (show Ideal (Sec q V) from RingHom.ker (i.app V).hom)`. Use extensionality with `g`. Use `show g ∈ RingHom.ker φ ↔ g ∈ RingHom.ker (i.app V).hom`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker, hφ, Scheme.Hom.appLE_eq_app]`. Conclude with `Iff.rfl`.
+
+Establish `hle : inU q V ⊓ On q i ≤ inU q V` using `fun T h => h.1`. Establish `hcomp : ∀ n x, (morV i rfl a h1).pull n ((resU (G q a) hle).hom.mapH n x) = (morV i rfl a h0).pull n x`. Introduce `n x`. Take `⟨z, hz, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ n).1 x`. Both sides reduce to the same expression.
+
+Establish `hM : ∀ j, j ≠ a → Subsingleton ((CH.cx ((inU q V ⊓ On q i).ι ⋙ G q a)).H j)`. Introduce `j hj`. Use `hWsub j hj` as an intermediate fact. Conclude with `(hBij j).1.subsingleton`. Establish `hga : Function.Surjective ((resU (G q a) hle).hom.mapH a)`.
+
+Introduce `y`. Take `⟨ω', hω'⟩` from `he'b.2 ((morV i rfl a h1).pull a y)`. Take `⟨ω, rfl⟩` from `hFL.1 ω'`. Use `⟨e0 ω, (hBij a).1 ?_⟩` and prove the remaining obligations. Rewrite using `[hcomp, hnat a e0 e' he0 he' ω]`.
+
+Conclude with `hω'`. Establish `key : ∀ ι : Cx.Hom (RC (G q a) (inU q V) hQ) (CH.cx ((inU q V).ι ⋙ G q a)) (RingHom.id K), (∀ n x, ι.f n x = x.1) → (∀ j, j ≠ a → Subsingleton ((RC (G q a) (inU q V) hQ).H j)) ∧ Function.Injective (ι.mapH a) ∧ ∀ x, x ∈ Set.range (ι.mapH a) ↔ (resU (G q a) hle).hom.mapH a x = 0`. Introduce `ι hι`. Conclude with `les_one ι (resU (G q a) hle).hom (fun n x y h => Subtype.ext (by rw [← hι, ← hι]; exact h)) (fun n => res_exact (G q a) (inU q V) (On q i) hQ hle ι hι n) (fun n => res_surj (G q a) (inU q V) (On q i) hQ hle n) a hVsub hM hga`. Set `ι0 : Cx.Hom (RC (G q a) (inU q V) hQ) (CH.cx ((inU q V).ι ⋙ G q a)) (RingHom.id K)` to `⟨fun n => (relS ((inU q V).ι ⋙ G q a) (fun T => On q i T.obj) n).subtype, fun n x => rfl⟩`.
+
+Use `⟨(key ι0 fun _ _ => rfl).1, fun e he ι hι => ⟨(key ι hι).2.1, fun ω => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(key ι hι).2.2, ← hker, ← hFL.2 ω]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `he'b.1` to reduce the goal to its premises.
+
+Rewrite using `[← hnat a e e' he he' ω, ← hcomp, h, map_zero, map_zero]`. Introduce `h`. Apply `(hBij a).1` to reduce the goal to its premises. Rewrite using `[hcomp, hnat a e e' he he' ω, h, map_zero, map_zero]`.
+-/
 theorem affRelOf_pf : AffRelOf := by
   intro hSite hOn hAff hNat hForm K _ _ W Z q i _ hQ V d d' hc hc' a
   have : Mono i := inferInstance

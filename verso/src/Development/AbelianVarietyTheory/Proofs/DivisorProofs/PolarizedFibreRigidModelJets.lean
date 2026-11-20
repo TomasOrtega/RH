@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.SecJet.ModelLat
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `h`. Unfold `tanComb`. Use `congr 2`. Conclude with `funext fun i => Over.OverMorphism.ext (hu i)`.
+-/
 theorem eq_tanComb {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m : ℕ} {c : Fin m → R}
     {v : Fin m → (epsR R ⟶ G)} {w : epsR R ⟶ G} (h : IsLieComb c v w) : w = tanComb c v := by
   obtain ⟨u, hu, rfl⟩ := h
@@ -23,6 +26,9 @@ theorem eq_tanComb {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m : ℕ
   congr 2
   exact funext fun i => Over.OverMorphism.ext (hu i)
 
+/- English proof (translation)
+Use `(spMap_comp_spMap _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem dualMapR_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap (Chart.dualMapR g) ≫ spMap (Chart.dualMapR f) = spMap (Chart.dualMapR (g.comp f)) := by
   refine (spMap_comp_spMap _ _).trans ?_
@@ -30,6 +36,11 @@ theorem dualMapR_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''
   refine RingHom.ext fun x => ?_
   ext <;> simp [Chart.dualMapR]
 
+/- English proof (translation)
+Use `choose Y hY hY' using hx`. Use `⟨tanComb a Y, isTangent_tanComb R G m Y a hY, ?_⟩` and prove the remaining obligations. Take `⟨-, -, hcomp, -⟩` from `LieComb.lieComb_algebra K A n v hv`. Establish `h` using `hcomp m x (fun i => tanComb (x i) v) (fun i => g (a i)) _ (fun i => isLieComb_tanComb _ _) (isLieComb_tanComb _ _)`. Rewrite using `[← eq_tanComb h]`.
+
+Conclude with `(lieComb_baseChange R K g G A φ hφ m Y _ a _ _ hY' (isLieComb_tanComb a Y)).2 (isLieComb_tanComb _ _)`.
+-/
 theorem lift_sum {R K : Type} [CommRing R] [CommRing K] {g : R →+* K} {G : Over (Sp R)} {A : Over (Sp K)} [GrpObj G]
     [GrpObj A] [IsCommMonObj A] {φ : A.left ⟶ G.left} (hφ : IsGrpPullback A G (spMap g) φ) {n m : ℕ}
     {v : Fin n → (epsR K ⟶ A)} (hv : ∀ i, IsTangent (v i)) (a : Fin m → R) (x : Fin m → Fin n → K)
@@ -59,6 +70,27 @@ namespace GlobalTheory.SecJet
 
 open ModelLat
 
+/- English proof (translation)
+Introduce `K _ _ F K'' _ _ _ P ψ AA _ _ φ MM N w v' hP hψ hM hv`. Take `⟨-, -, -, hφ, ⟨G, _, j, φ₀, hG, hj, -, rfl, hφ₀⟩, -⟩` from `hM`. Establish `: IsCommMonObj P.A` using `P.isAb.comm`. Establish `hvt : ∀ i, IsTangent (v' i)` using `fun i => (hv i).isTangent hψ.2.1 (F.basis.1 i)`. Set `b` to `algebraMap (𝓞 K) (𝓞 K'')`.
+
+Establish `hb : (algebraMap (𝓞 K'') K'').comp b = (algebraMap K K'').comp (algebraMap (𝓞 K) K)` using `by ext; rfl`. Establish `h'` using `isGrpPullback_pullback F.G (spMap b)`. Establish `n' : IsGrpPullback P.A F.G (spMap (algebraMap (𝓞 K'') K'') ≫ spMap b) (ψ ≫ F.φ)` using `(hψ.2.1.comp F.fib).congr (by rw [spMap_comp_spMap, spMap_comp_spMap, hb]) rfl`. Establish `hw : (ψ ≫ F.φ) ≫ F.G.hom = (P.A.hom ≫ spMap (algebraMap (𝓞 K'') K'')) ≫ spMap b` using `n'.1.w.trans (Category.assoc _ _ _).symm`. Establish `e₁` using `h'.1.lift_fst _ _ hw`.
+
+Establish `hφ'` using `h'.cancel (n'.congr rfl e₁.symm) (h'.1.lift_snd _ _ hw)`. Establish `: IsMonHom (𝟙 P.A)` using `inferInstance`. Take `⟨E, ⟨hE, hE'⟩, -⟩` from `hP.p22.fractionField_of_isGrpPullback (IsSemiAbelian.pullback _ F.G F.semi) hG hφ' hφ₀ (𝟙 P.A)`. Rewrite `hE'` using `[Over.id_left, Category.id_comp]`. It suffices to establish `h : latBC K'' F.lieLat ≤ liftable hφ hvt from h`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Express the relevant statement in the definitionally equal form `(fun i => algebraMap K K'' (c i)) ∈ liftable hφ hvt`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`.
+
+Take `⟨u, hu, x, hx, hc⟩` from `hc`. Take `⟨u', hu', -⟩` from `existsUnique_isVecOver (A' := (Over.pullback (spMap b)).obj F.G) (f := b) h'.1 u`. Use `⟨(u' ≫ E) ≫ j, GrpTangent.isTangent_comp (GrpTangent.isTangent_comp (hu'.isTangent h' hu) E) j, ?_⟩` and prove the remaining obligations. Establish `h₁` using `(lieComb_baseChange K K'' _ _ _ ψ hψ.2.1 _ F.v x c v' _ hv hc).2 (isLieComb_tanComb _ _)`. Take `⟨y, hy, -⟩` from `existsUnique_isVecOver hφ'.1 u'`.
+
+Establish `h₂ : y = tanComb (fun i => algebraMap K K'' (c i)) v'`. Use `Over.OverMorphism.ext (n'.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Unfold `IsVecOver at hx hu' hy`. Establish `a₁ : y.left ≫ ψ ≫ F.φ = spMap (Chart.dualMapR ((algebraMap (𝓞 K'') K'').comp b)) ≫ u.left`. Rewrite using `[← e₁, ← Category.assoc, hy, Category.assoc, hu', ← dualMapR_comp, Category.assoc]`.
+
+Rewrite using `[a₁, hb, ← dualMapR_comp, Category.assoc, ← hx, ← Category.assoc, ← h₁, Category.assoc]`. Rewrite using `[← h₂]`. Unfold `IsVecOver at hy ⊢`. Rewrite using `[hE', ← Category.assoc, ← Category.assoc, hy]`. Simplify using `only [Over.comp_left, Category.assoc]`.
+
+Consider the case `zero`. Use `(liftable hφ hvt).zero_mem using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+
+Use `(liftable hφ hvt).add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using the standard rewrite rules. Consider the case `smul t x _ hx`. Use `(liftable hφ hvt).smul_mem (b t) hx` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_tangent_of_mem_latBC : ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K) (K'' : Type) [Field K''] [NumberField K''] [Algebra K K''] (P : Out.PolAV (Sp K'')) (ψ : P.A.left ⟶ F.P₀.A.left) (AA : Over (Sp (𝓞 K''))) [GrpObj AA] [IsCommMonObj AA] (φ : P.A.left ⟶ AA.left) (MM : RigLB AA) (N : ℕ) (w : LB.Iso (MM.L.pull φ) (lbPow P.L N)) (v' : Fin F.P₀.g → (epsR K'' ⟶ P.A)), Hypotheses2 → GlobalTheory.IsPolFibre (algebraMap K K'') F.P₀ P ψ → IsModel w → (∀ k, GlobalTheory.IsVecOver (algebraMap K K'') ψ (F.v k) (v' k)) → ∀ z ∈ latBC K'' F.lieLat, ∃ Y : epsR (𝓞 K'') ⟶ AA, IsTangent Y ∧ GlobalTheory.IsVecOver (algebraMap (𝓞 K'') K'') φ Y (tanComb z v') := by
   intro K _ _ F K'' _ _ _ P ψ AA _ _ φ MM N w v' hP hψ hM hv
   obtain ⟨-, -, -, hφ, ⟨G, _, j, φ₀, hG, hj, -, rfl, hφ₀⟩, -⟩ := hM

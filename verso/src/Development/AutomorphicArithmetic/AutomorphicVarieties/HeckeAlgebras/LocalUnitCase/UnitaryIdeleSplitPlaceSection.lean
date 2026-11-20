@@ -17,12 +17,18 @@ section Fr
 
 variable {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {d m : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem raF_eq (τ : X.Ub →* GL (Fin m) ℂ) (u : X.Ub) (F : Fin m → X.Fn ℂ d) (i : Fin m) :
     X.raF d τ u F i = ∑ j, τ u i j • fun g => F j (g * ((u : Ga), 1)) := by
   funext g k
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Introduce `γ g` and use `by simp only [mul_assoc] exact hF γ _`.
+-/
 theorem AF_tr {ξ : Gp →* GL (Fin d) ℂ} {F : X.Fn ℂ d} (hF : F ∈ X.AF ξ) (y : Ga × Gp) :
     (fun g => F (g * y)) ∈ X.AF ξ := fun γ g => by
   simp only [mul_assoc]
@@ -35,15 +41,24 @@ section U
 variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
   {s : HidaSetting l L Ω} {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+-/
 theorem w_under (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ w.asIdeal ↔ _`. Rewrite using `[map_natCast]`.
+-/
 theorem l_iff (w : Plc L) : ((l : ℕ) : 𝓞 (Lp L)) ∈ (w.under (𝓞 (Lp L))).asIdeal ↔ ((l : ℕ) : 𝓞 L) ∈ w.asIdeal := by
   change algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ w.asIdeal ↔ _
   rw [map_natCast]
 
+/- English proof (translation)
+Unfold `CaseU.cmp`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem cmp_of {w : Plc L} (h : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal) (x : UA L n) :
     cmp n w ((away l L n).rangeRestrict x) = cLoc w x := by
   unfold CaseU.cmp
@@ -70,12 +85,18 @@ noncomputable def tf (i : Fin m) (ℓ : Module.Dual ℂ (⨂[ℂ] e : Emb l (fun
     rw [map_smul, map_smul, map_smul]
     rfl
 
+/- English proof (translation)
+Use `and_congr Iff.rfl ⟨fun h i ℓ => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le (p := σ.comap (tf Q τ₀ ι e i ℓ))).2 (fun F hF => by exact hF i ℓ) h`.
+-/
 theorem mem_Y {ξ : GV n (fun v : V.frame.Vl => s.w v.1) →* GL (Fin d) ℂ} {σ : Submodule ℂ (UA L n → ℂ)}
     {F : Fin m → (hset Q τ₀).X.Fn ℂ d} :
     F ∈ YOf Q ι τ₀ e ξ σ ↔ F ∈ (hset Q τ₀).Big ι ξ ∧ ∀ i ℓ, tf Q τ₀ ι e i ℓ F ∈ σ := by
   refine and_congr Iff.rfl ⟨fun h i ℓ => ?_, fun h => Submodule.subset_span h⟩
   exact (Submodule.span_le (p := σ.comap (tf Q τ₀ ι e i ℓ))).2 (fun F hF => by exact hF i ℓ) h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `ℓ (infRep ι lam (g * x)⁻¹ (e (F (JU V (g * x))))) = ℓ (infRep ι lam x⁻¹ (infRep ι lam g⁻¹ (e (F (JU V g * JU V x)))))`. Establish `: JU V (g * x) = JU V g * JU V x` using `Prod.ext (map_mul _ _ _) (funext fun v => map_mul _ _ _)`. Rewrite using `[this, mul_inv_rev, map_mul, Module.End.mul_apply]`.
+-/
 theorem RU_form (F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) (ℓ) (x : UA L n) :
     RU L n x (toForm ι e F ℓ) = toForm ι e (fun g => F (g * JU V x)) (ℓ ∘ₗ infRep ι lam x⁻¹) := by
   funext g
@@ -83,6 +104,11 @@ theorem RU_form (F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d 
   have : JU V (g * x) = JU V g * JU V x := Prod.ext (map_mul _ _ _) (funext fun v => map_mul _ _ _)
   rw [this, mul_inv_rev, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `h : infRep (V` using `V) ι lam x⁻¹ = 1 := by`. Establish `h1 : cInf x⁻¹ = 1` using `inv_mem hx`. Use `(congrArg PiTensorProduct.mapMonoidHom (funext fun y => ?_)).trans (map_one _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n _ (Matrix.GeneralLinearGroup.map _ (cInf x⁻¹)) = 1`. Rewrite using `[h1, map_one, map_one]`.
+
+Rewrite using `[RU_form, h]`. Both sides reduce to the same expression.
+-/
 theorem RU_fin (F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ) (ℓ) {x : UA L n} (hx : x ∈ finU L n) :
     RU L n x (toForm ι e F ℓ) = toForm ι e (fun g => F (g * JU V x)) ℓ := by
   have h : infRep (V := V) ι lam x⁻¹ = 1 := by

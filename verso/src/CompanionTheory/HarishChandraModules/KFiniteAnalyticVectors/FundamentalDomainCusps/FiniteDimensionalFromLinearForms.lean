@@ -8,6 +8,11 @@ noncomputable section
 
 namespace CompanionTheory.D.gk.RF
 
+/- English proof (translation)
+Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq μ Real.HolderConjugate.two_two (f := fun y => θ y ^ (1 / 2 : ℝ)) (g := fun y => θ y ^ (1 / 2 : ℝ) * f y) (hθ.pow_const _) ((hθ.pow_const _).mul hf)`. Establish `e0 : ∀ a : ℝ≥0∞, (a ^ (1 / 2 : ℝ)) ^ (2 : ℝ) = a` using `fun a => by rw [← ENNReal.rpow_mul]; norm_num`. Establish `e1 : ∀ a : ℝ≥0∞, a ^ (1 / 2 : ℝ) * a ^ (1 / 2 : ℝ) = a` using `fun a => by`. Rewrite using `[← _root_.sq, ← ENNReal.rpow_two, e0]`. Simplify using `only [Pi.mul_apply, ← mul_assoc, e1, e0, ENNReal.mul_rpow_of_nonneg _ _ (zero_le_two : (0 : ℝ) ≤ 2), ENNReal.rpow_two] at h`.
+
+Establish `e2 : ∀ a : ℝ≥0∞, (a ^ (1 / 2 : ℝ)) ^ 2 = a` using `fun a => by rw [← ENNReal.rpow_two, e0]`. Use `(pow_le_pow_left' h 2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, e2, e2]`.
+-/
 theorem sq_lintegral_le {X : Type} [MeasurableSpace X] (μ : Measure X) {θ f : X → ℝ≥0∞} (hθ : AEMeasurable θ μ)
     (hf : AEMeasurable f μ) : (∫⁻ y, θ y * f y ∂μ) ^ 2 ≤ (∫⁻ y, θ y ∂μ) * ∫⁻ y, θ y * f y ^ 2 ∂μ := by
   have h := ENNReal.lintegral_mul_le_Lp_mul_Lq μ Real.HolderConjugate.two_two
@@ -27,6 +32,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] {μ : Measure G} [μ.IsHaarMeasure]
   {Γ : Subgroup G} [Countable Γ] {D : Set G}
 
+/- English proof (translation)
+Establish `hmp` using `measurePreserving_mul_right μ y⁻¹`. Establish `hD' : IsFundamentalDomain Γ ((fun x => x * y⁻¹) ⁻¹' D) μ` using `hD.preimage_of_equiv (e := id) hmp.quasiMeasurePreserving Function.bijective_id fun g x => by show ((g : G) * x) * y⁻¹ = (g : G) * (x * y⁻¹)`. Rewrite using `[mul_assoc]`. Rewrite using `[← hD'.setLIntegral_eq hD f fun g x => hΓ g g.2 x, ← hmp.setLIntegral_comp_preimage_emb (measurableEmbedding_mulRight y⁻¹) (fun x => f (x * y)) D]`. Simplify using the standard rewrite rules.
+-/
 theorem setLIntegral_right [μ.IsMulRightInvariant] (hD : IsFundamentalDomain Γ D μ) {f : G → ℝ≥0∞}
     (hΓ : LInv Γ f) (y : G) : ∫⁻ x in D, f (x * y) ∂μ = ∫⁻ x in D, f x ∂μ := by
   have hmp := measurePreserving_mul_right μ y⁻¹
@@ -40,6 +48,11 @@ theorem setLIntegral_right [μ.IsMulRightInvariant] (hD : IsFundamentalDomain Γ
 
 end
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ _ Γ _ D hD f θ hf hθ hΓ`. Establish `hm : Measurable fun p : G × G => f (p.1 * p.2)` using `hf.comp measurable_mul`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_lintegral_swap (hθ.comp_snd.mul (hm.pow_const 2).aemeasurable)]`. Use `_ = (∫⁻ y, θ y ∂μ) * ∫⁻ y, θ y * ∫⁻ x in D, f x ^ 2 ∂μ ∂μ := by`.
+
+Use `congr 2`. Use function extensionality and compare the values at `y`. Rewrite using `[lintegral_const_mul (f := fun x => f (x * y) ^ 2) _ ((hf.comp (measurable_mul_const y)).pow_const 2), setLIntegral_right hD (f := fun x => f x ^ 2) (fun g hg x => by simp only [hΓ g hg]) y]`. Use `_ = _ := by rw [lintegral_mul_const'' _ hθ, _root_.sq, mul_assoc]`.
+-/
 theorem young_convolution_inequality : Young := by
   intro G _ _ _ _ _ _ _ _ μ _ _ Γ _ D hD f θ hf hθ hΓ
   have hm : Measurable fun p : G × G => f (p.1 * p.2) := hf.comp measurable_mul
@@ -58,6 +71,19 @@ theorem young_convolution_inequality : Young := by
           setLIntegral_right hD (f := fun x => f x ^ 2) (fun g hg x => by simp only [hΓ g hg]) y]
     _ = _ := by rw [lintegral_mul_const'' _ hθ, _root_.sq, mul_assoc]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ Γ _ D hD hd B hB`. Establish `hfin` using `hd _ (hB.mul hB.inv)`. Use `⟨μ B * hfin.toFinset.card, ENNReal.mul_ne_top hB.measure_lt_top.ne (by simp), fun f hf hΓ => ?_⟩` and prove the remaining obligations. Establish `h1` using `sq_lintegral_le (μ.restrict B) (θ := fun _ => 1) aemeasurable_const hf.aemeasurable`. Simplify using `only [one_mul, lintegral_const, Measure.restrict_apply_univ] at h1`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`. Establish `hm : Measurable (B.indicator fun x => f x ^ 2)` using `(hf.pow_const 2).indicator hB.measurableSet`. Rewrite using `[← lintegral_indicator hB.measurableSet, hD.lintegral_eq_tsum'', ← lintegral_tsum (f := fun (g : Γ) x => B.indicator (fun y => f y ^ 2) (g • x)) fun g => (hm.comp (measurable_const_smul g)).aemeasurable, ← lintegral_const_mul _ (hf.pow_const 2)]`.
+
+Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∃ g₀ : Γ, g₀ • x ∈ B`. Take `⟨g₀, h₀⟩` from `h`. Set `s : Finset Γ` to `hfin.toFinset.preimage (fun g : Γ => (g : G) * (g₀ : G)⁻¹) ((mul_left_injective _).comp Subtype.val_injective).injOn`. Rewrite using `[tsum_eq_sum (s := s) fun g hg => indicator_of_notMem (fun hgB => hg ?_) _]`.
+
+Use `(Finset.sum_le_card_nsmul _ _ (f x ^ 2) fun g _ => (indicator_le_self _ _ _).trans (le_of_eq (by rw [show g • x = (g : G) * x from rfl, hΓ g g.2]))).trans ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Use `gcongr`. Conclude with `Finset.card_le_card_of_injOn (fun g : Γ => (g : G) * (g₀ : G)⁻¹) (fun g hg => by`. Simplify `hg)` using `only [s, Finset.mem_coe, Finset.mem_preimage]`.
+
+Use the proof step `((mul_left_injective _).comp Subtype.val_injective).injOn`. Rewrite using `[Finset.mem_preimage, Set.Finite.mem_toFinset]`. Use `⟨⟨_, hgB, _, Set.inv_mem_inv.2 h₀, ?_⟩, Γ.mul_mem g.2 (Γ.inv_mem g₀.2)⟩` and prove the remaining obligations. Use `show (g : G) * x * ((g₀ : G) * x)⁻¹ = _`. Use `group`.
+
+Use `push Not at h`. Simplify using `[indicator_of_notMem (h _)]`.
+-/
 theorem compact_integral_quotient_bound : CompactIntegralBoundedByQuotientNorm := by
   classical
   intro G _ _ _ _ _ _ _ _ μ _ Γ _ D hD hd B hB
@@ -91,6 +117,13 @@ theorem compact_integral_quotient_bound : CompactIntegralBoundedByQuotientNorm :
   · push Not at h
     simp [indicator_of_notMem (h _)]
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ Γ _ D hD C hC`. Establish `e : {x | ∃ γ ∈ Γ, γ * x ∈ C} = ⋃ g : Γ, (fun x => (g : G) * x) ⁻¹' C`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Use `⟨MeasurableSet.iUnion fun g => measurable_const_mul _ hC.measurableSet, ?_⟩` and prove the remaining obligations. Rewrite using `[inter_iUnion, hD.measure_eq_tsum C, ← (Equiv.inv Γ).tsum_eq]`. Use `(measure_iUnion_le _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[inter_comm]`.
+
+Use `congr 2`. Use extensionality with `x`. Simplify using `only [Equiv.inv_apply, inv_inv, mem_preimage, Set.mem_smul_set_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+-/
 theorem near_cusp_measure_estimate : NearMeas := by
   intro G _ _ _ _ _ _ _ _ μ _ Γ _ D hD C hC
   have e : {x | ∃ γ ∈ Γ, γ * x ∈ C} = ⋃ g : Γ, (fun x => (g : G) * x) ⁻¹' C := by
@@ -106,6 +139,13 @@ theorem near_cusp_measure_estimate : NearMeas := by
   simp only [Equiv.inv_apply, inv_inv, mem_preimage, Set.mem_smul_set_iff_inv_smul_mem]
   rfl
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ α hc hs`. Take `⟨U₀, hU₀, hU₀c⟩` from `exists_compact_mem_nhds (1 : G)`. Use `⟨U₀ * tsupport α, hU₀.mul hs, fun e he => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ᶠ u in 𝓝 (1 : G), ∀ y ∈ U₀ * tsupport α, ‖α (u⁻¹ * y) - α y‖ ≤ e`. Use `(hU₀.mul hs).eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations.
+
+Establish `: Continuous fun p : G × G => ‖α (p.1⁻¹ * p.2) - α p.2‖` using `by fun_prop`. Conclude with `(this.tendsto (1, y)).eventually (ge_mem_nhds (by simpa using he))`. Use `⟨_, inter_mem h1 hU₀c, fun u hu y => ?_⟩` and prove the remaining obligations. Establish `h2 : y ∉ U₀ * tsupport α → α (u⁻¹ * y) = 0 ∧ α y = 0` using `fun hy => ⟨image_eq_zero_of_notMem_tsupport fun h => hy ⟨u, hu.2, _, h, by simp⟩, image_eq_zero_of_notMem_tsupport fun h => hy ⟨1, mem_of_mem_nhds hU₀c, _, h, by simp⟩⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ U₀ * tsupport α`. Conclude with `hu.1 y hy`. Rewrite using `[(h2 hy).1, (h2 hy).2]`. Simplify using `using he.le`.
+-/
 theorem uniform_continuity_estimate : UnifC := by
   intro G _ _ _ _ _ α hc hs
   obtain ⟨U₀, hU₀, hU₀c⟩ := exists_compact_mem_nhds (1 : G)
@@ -123,6 +163,11 @@ theorem uniform_continuity_estimate : UnifC := by
   · exact hu.1 y hy
   · rw [(h2 hy).1, (h2 hy).2]; simpa using he.le
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ φ O hφ hO h0 e he`. Take `⟨g, hgs, hge, hgc, hgi⟩` from `hφ.exists_hasCompactSupport_integral_sub_le he`. Use `⟨O.indicator g, hO.continuous_indicator hgc, hgs.mono (fun y hy h => hy (by simp [indicator, h])), fun y hy => indicator_of_notMem hy _, le_trans (integral_mono_of_nonneg (Eventually.of_forall fun _ => norm_nonneg _) (hφ.sub hgi).norm (Eventually.of_forall fun y => ?_)) hge⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ O`. Simplify using `[indicator_of_mem hy]`.
+
+Simplify using `[indicator_of_notMem hy, h0 y hy]`.
+-/
 theorem approximation_of_square_identity : Approx := by
   intro G _ _ _ _ _ _ _ _ μ _ φ O hφ hO h0 e he
   obtain ⟨g, hgs, hge, hgc, hgi⟩ := hφ.exists_hasCompactSupport_integral_sub_le he
@@ -138,6 +183,13 @@ section
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] {μ : Measure G} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Take `⟨hc, M, hM⟩` from `hh`. Establish `hc' : Continuous fun y => h (x * y)` using `hc.comp (continuous_const.mul continuous_id)`. Establish `e1 : ∫ y, α y * h (x * u * y) ∂μ = ∫ y, α (u⁻¹ * y) * h (x * y) ∂μ`. Rewrite using `[← integral_mul_left_eq_self (fun y => α (u⁻¹ * y) * h (x * y)) u]`. Simplify using `only [inv_mul_cancel_left, mul_assoc]`.
+
+Rewrite using `[e1, ← integral_sub (integrable_mul_bc (hα.comp_mul_left _) hc' fun _ => hM _) (integrable_mul_bc hα hc' fun _ => hM _), ← lintegral_indicator hB.measurableSet, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ B`. Rewrite using `[indicator_of_mem hy, ← sub_mul, enorm_mul] gcongr`. Rewrite using `[← ofReal_norm]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hu y).1`. Simplify using `[((hu y).2 hy).1, ((hu y).2 hy).2]`.
+-/
 theorem diff_est {α h : G → ℂ} (hα : Integrable α μ) (hh : BC h) {B : Set G} (hB : IsCompact B) {e : ℝ} {u : G}
     (hu : ∀ y, ‖α (u⁻¹ * y) - α y‖ ≤ e ∧ (y ∉ B → α (u⁻¹ * y) = 0 ∧ α y = 0)) (x : G) :
     ‖∫ y, α y * h (x * u * y) ∂μ - ∫ y, α y * h (x * y) ∂μ‖ₑ ≤ ENNReal.ofReal e * ∫⁻ y in B, ‖h (x * y)‖ₑ ∂μ := by
@@ -159,6 +211,15 @@ theorem diff_est {α h : G → ℂ} (hα : Integrable α μ) (hh : BC h) {B : Se
 
 end
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ φ α Γ O U B e hc hs h0 hB hU x ⟨ν, hν, hνU, hv⟩ h hh`. Establish `hα : Integrable α μ` using `hc.integrable_of_hasCompactSupport hs`. Take `⟨hhc, M, hM⟩` from `hh.1`. Establish `hI : Integrable (fun p : G × G => α p.2 * h (p.1 * x * p.2)) (ν.prod μ)` using `(hα.comp_snd ν).mul_bdd (by fun_prop : Continuous fun p : G × G => h (p.1 * x * p.2)).aestronglyMeasurable (Eventually.of_forall fun _ => hM _)`. Establish `h1 : ∫ m, ∫ y, α y * h (m * x * y) ∂μ ∂ν = 0`.
+
+Rewrite using `[integral_integral_swap hI]`. Use `integral_eq_zero_of_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[integral_const_mul]`. Distinguish the cases in `hy : y ∈ O`.
+
+Simplify using `[hv h hh y hy]`. Simplify using `[h0 y hy]`. Establish `h2 : ∫ y, α y * h (x * y) ∂μ = -∫ m, (∫ y, α y * h (m * x * y) ∂μ - ∫ y, α y * h (x * y) ∂μ) ∂ν`. Rewrite using `[integral_sub hI.integral_prod_left (integrable_const _), h1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h2, enorm_neg]`. Use `(enorm_integral_le_lintegral_enorm _).trans ((lintegral_mono_ae ?_).trans (le_of_eq (by rw [lintegral_const, measure_univ, mul_one])))` and prove the remaining obligations. Use `filter_upwards [hνU] with m hm`. Use `diff_est hα hh.1 hB (hU _ hm) x` as an intermediate fact. Rewrite `this` using `[show x * (x⁻¹ * m * x) = m * x by group]`. Then use the resulting hypothesis.
+-/
 theorem far_from_cusp_estimate : FarEst := by
   intro G _ _ _ _ _ _ _ _ μ _ φ α Γ O U B e hc hs h0 hB hU x ⟨ν, hν, hνU, hv⟩ h hh
   have hα : Integrable α μ := hc.integrable_of_hasCompactSupport hs
@@ -184,6 +245,17 @@ theorem far_from_cusp_estimate : FarEst := by
   have := diff_est hα hh.1 hB (hU _ hm) x
   rwa [show x * (x⁻¹ * m * x) = m * x by group] at this
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ Γ _ D hD hd α hc hs C hC e he`. Establish `hα : Integrable α μ` using `hc.integrable_of_hasCompactSupport hs`. Take `⟨B, hB, hU⟩` from `uniform_continuity_estimate G α hc hs`. Take `⟨M, hM, hL⟩` from `compact_integral_quotient_bound G μ Γ D hD hd _ (hC.mul hB)`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd0, hde⟩ : ∃ d : ℝ, 0 < d ∧ ENNReal.ofReal d ^ 2 * M ≤ e := by`.
+
+Establish `ht : Tendsto (fun d : ℝ => ENNReal.ofReal d ^ 2 * M) (𝓝[>] 0) (𝓝 (ENNReal.ofReal 0 ^ 2 * M))` using `ENNReal.Tendsto.mul_const (((ENNReal.continuous_pow 2).comp ENNReal.continuous_ofReal).continuousWithinAt) (Or.inr hM)`. Rewrite `ht` using `[ENNReal.ofReal_zero, zero_pow two_ne_zero, zero_mul]`. Conclude with `((eventually_mem_nhdsWithin (s := Ioi (0 : ℝ))).and (ht.eventually (ge_mem_nhds he))).exists`. Take `⟨U, hU1, hUe⟩` from `hU d hd0`. Take `⟨t, htC, ht⟩` from `hC.elim_nhds_subcover (fun p => (fun x => p⁻¹ * x) ⁻¹' U) fun p _ => (continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using hU1)`.
+
+Use `⟨t.card, fun i => t.equivFin.symm i, fun h hh hΓ h0 x hx => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hxp⟩` from `mem_iUnion₂.1 (ht hx)`. Establish `h1` using `diff_est hα hh hB (hUe _ hxp) p`. Establish `h2` using `h0 (t.equivFin ⟨p, hp⟩)`. Simplify using `only [Equiv.symm_apply_apply] at h2`.
+
+Rewrite `h1` using `[mul_inv_cancel_left, h2, sub_zero]`. Establish `h3 : ∫⁻ y in B, ‖h (p * y)‖ₑ ∂μ ≤ ∫⁻ y in C * B, ‖h y‖ₑ ∂μ`. Rewrite using `[← (measurePreserving_mul_left μ p).setLIntegral_comp_preimage_emb (measurableEmbedding_mulLeft p) (fun y => ‖h y‖ₑ) (C * B)]`. Conclude with `lintegral_mono_set fun y hy => ⟨p, htC p hp, y, hy, rfl⟩`. Establish `h4` using `hL (fun y => ‖h y‖ₑ) hh.1.measurable.enorm fun g hg y => by simp only [hΓ g hg]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem near_cusp_estimate : NearEst := by
   intro G _ _ _ _ _ _ _ _ μ _ Γ _ D hD hd α hc hs C hC e he
   have hα : Integrable α μ := hc.integrable_of_hasCompactSupport hs
@@ -213,17 +285,54 @@ theorem near_cusp_estimate : NearEst := by
     _ ≤ ENNReal.ofReal d ^ 2 * (M * sq μ D h) := by rw [mul_pow]; gcongr; exact h4
     _ ≤ _ := by rw [← mul_assoc]; gcongr
 
+/- English proof (translation)
+Establish `ht : Tendsto (fun d : ℝ => ENNReal.ofReal d * M) (𝓝[>] 0) (𝓝 (ENNReal.ofReal 0 * M))` using `ENNReal.Tendsto.mul_const ENNReal.continuous_ofReal.continuousWithinAt (Or.inr hM)`. Rewrite `ht` using `[ENNReal.ofReal_zero, zero_mul]`. Conclude with `((eventually_mem_nhdsWithin (s := Ioi (0 : ℝ))).and (ht.eventually (ge_mem_nhds (by simp)))).exists`.
+-/
 theorem exists_small {M : ℝ≥0∞} (hM : M ≠ ∞) : ∃ d : ℝ, 0 < d ∧ ENNReal.ofReal d * M ≤ 8⁻¹ := by
   have ht : Tendsto (fun d : ℝ => ENNReal.ofReal d * M) (𝓝[>] 0) (𝓝 (ENNReal.ofReal 0 * M)) :=
     ENNReal.Tendsto.mul_const ENNReal.continuous_ofReal.continuousWithinAt (Or.inr hM)
   rw [ENNReal.ofReal_zero, zero_mul] at ht
   exact ((eventually_mem_nhdsWithin (s := Ioi (0 : ℝ))).and (ht.eventually (ge_mem_nhds (by simp)))).exists
 
+/- English proof (translation)
+Use `ENNReal.rpow_add_le_mul_rpow_add_rpow a b (p := 2) one_le_two` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `this`.
+-/
 theorem add_sq_le (a b : ℝ≥0∞) : (a + b) ^ 2 ≤ 2 * (a ^ 2 + b ^ 2) := by
   have := ENNReal.rpow_add_le_mul_rpow_add_rpow a b (p := 2) one_le_two
   norm_num at this
   exact this
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ _ Γ _ D hD hd φ O hφ hO h0 hcusp`. Take `⟨α, hc, hs, hα0, hap⟩` from `approximation_of_square_identity G μ φ O hφ hO h0 8⁻¹ (by norm_num)`. Establish `hα : Integrable α μ` using `hc.integrable_of_hasCompactSupport hs`. Take `⟨B, hB, hU⟩` from `uniform_continuity_estimate G α hc hs`. Take `⟨e, he, heB⟩` from `exists_small (hB.measure_lt_top (μ := μ)).ne`.
+
+Take `⟨U, hU1, hUe⟩` from `hU e he`. Take `⟨C, hC, hCx⟩` from `hcusp U hU1`. Take `⟨e₂, he₂, he₂C⟩` from `exists_small (hC.measure_lt_top (μ := μ)).ne`. Take `⟨m, p, hp⟩` from `near_cusp_estimate G μ Γ D hD hd α hc hs C hC (ENNReal.ofReal e₂) (by simpa using he₂)`. Use `⟨m, α, p, hc, hs, fun h hh hfin hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hhc, M, hM⟩` from `hh.1`. Take `⟨hZm, hZ⟩` from `near_cusp_measure_estimate G μ Γ D hD C hC`. Use `set Z := {x | ∃ γ ∈ Γ, γ * x ∈ C}`. Use `set S := sq μ D h with hS`. Establish `hf : Measurable fun y => ‖h y‖ₑ` using `hhc.measurable.enorm`.
+
+Establish `hfΓ : LInv Γ fun y => ‖h y‖ₑ` using `fun g hg y => by simp only [hh.2.1 g hg]`. Establish `hm2 : Measurable fun p : G × G => ‖h (p.1 * p.2)‖ₑ` using `hf.comp measurable_mul`. Set `θ₁ : G → ℝ≥0∞` to `fun y => ‖φ y - α y‖ₑ`. Set `θ₂ : G → ℝ≥0∞` to `B.indicator fun _ => ENNReal.ofReal e`. Establish `hθ₁ : AEMeasurable θ₁ μ` using `(hφ.sub hα).aestronglyMeasurable.enorm`.
+
+Establish `hθ₂ : Measurable θ₂` using `measurable_const.indicator hB.measurableSet`. Establish `i₁ : ∫⁻ y, θ₁ y ∂μ ≤ 8⁻¹`. Use `(ofReal_integral_norm_eq_lintegral_enorm (hφ.sub hα)).symm.trans_le ?_` and prove the remaining obligations. Use `(ENNReal.ofReal_le_ofReal hap).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_inv_of_pos (by norm_num)]; simp`.
+
+Establish `i₂ : ∫⁻ y, θ₂ y ∂μ ≤ 8⁻¹`. Rewrite using `[lintegral_indicator_const hB.measurableSet]`. Conclude with `heB`. Set `r₁ : G → ℝ≥0∞` to `fun x => (∫⁻ y, θ₁ y * ‖h (x * y)‖ₑ ∂μ) ^ 2`. Set `r₂ : G → ℝ≥0∞` to `fun x => (∫⁻ y, θ₂ y * ‖h (x * y)‖ₑ ∂μ) ^ 2`.
+
+Establish `y₁ : ∫⁻ x in D, r₁ x ∂μ ≤ 8⁻¹ ^ 2 * S` using `(young_convolution_inequality G μ Γ D hD _ θ₁ hf hθ₁ hfΓ).trans (by gcongr; rfl)`. Establish `y₂ : ∫⁻ x in D, r₂ x ∂μ ≤ 8⁻¹ ^ 2 * S` using `(young_convolution_inequality G μ Γ D hD _ θ₂ hf hθ₂.aemeasurable hfΓ).trans (by gcongr; rfl)`. Establish `hr₂ : Measurable r₂` using `(((hθ₂.comp measurable_snd).mul hm2).lintegral_prod_right').pow_const 2`. Establish `pt : ∀ x, ‖h x‖ₑ ^ 2 ≤ 2 * (Z.indicator (fun _ => ENNReal.ofReal e₂ * S) x + r₂ x + r₁ x)`. Introduce `x`.
+
+Establish `hc' : Continuous fun y => h (x * y)` using `hhc.comp (continuous_const.mul continuous_id)`. Establish `e1 : h x = ∫ y, α y * h (x * y) ∂μ + ∫ y, (φ y - α y) * h (x * y) ∂μ`. Rewrite using `[← integral_add (integrable_mul_bc hα hc' fun _ => hM _) (integrable_mul_bc (φ := fun y => φ y - α y) (hφ.sub hα) hc' fun _ => hM _), hh.2.2 x]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `b1 : ‖∫ y, (φ y - α y) * h (x * y) ∂μ‖ₑ ^ 2 ≤ r₁ x`. Use `pow_le_pow_left' ?_ 2` and prove the remaining obligations. Conclude with `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq (by simp only [enorm_mul, θ₁]))`. Establish `b2 : ‖∫ y, α y * h (x * y) ∂μ‖ₑ ^ 2 ≤ Z.indicator (fun _ => ENNReal.ofReal e₂ * S) x + r₂ x`.
+
+Break down `hCx x with hx | hx` into its components or cases. Rewrite using `[indicator_of_mem (show x ∈ Z from hx)]`. Take `⟨γ, hγ, hγx⟩` from `hx`. Use `hp h hh.1 hh.2.1 hz _ hγx` as an intermediate fact. Simplify using `only [mul_assoc, hh.2.1 γ hγ] at this`.
+
+Conclude with `this.trans le_self_add`. Use `le_trans ?_ le_add_self` and prove the remaining obligations. Use `pow_le_pow_left' ?_ 2` and prove the remaining obligations. Use `(far_from_cusp_estimate G μ φ α Γ O U B e hc hs hα0 hB hUe x hx h hh).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← lintegral_indicator hB.measurableSet]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Apply the tactic sequence `by_cases hy : y ∈ B <;> simp [θ₂, hy]`. Rewrite using `[e1]`. Use `(pow_le_pow_left' (enorm_add_le _ _) 2).trans ((add_sq_le _ _).trans ?_)` and prove the remaining obligations.
+
+Use `gcongr`. Establish `tot : S ≤ 2 * (8⁻¹ * S + 8⁻¹ ^ 2 * S + 8⁻¹ ^ 2 * S)`. Use `(lintegral_mono pt).trans ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ (by simp), lintegral_add_left (f := fun a => Z.indicator (fun _ => ENNReal.ofReal e₂ * S) a + r₂ a) ((measurable_const.indicator hZm).add hr₂), lintegral_add_left (measurable_const.indicator hZm), lintegral_indicator_const hZm, Measure.restrict_apply hZm …`. Use `mul_le_mul_right (add_le_add (add_le_add ?_ y₂) y₁) 2` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lift S to NNReal using hfin with S' hS'`. Establish `tot' : (S' : ℝ) ≤ 2 * (8⁻¹ * S' + 8⁻¹ ^ 2 * S' + 8⁻¹ ^ 2 * S')`. Use `ENNReal.toReal_mono (by finiteness) tot` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_add (by finiteness) (by finiteness), ENNReal.toReal_add (by finiteness) (by finiteness)]`.
+
+Simplify using `using this`. Establish `: (S' : ℝ) = 0` using `le_antisymm (by nlinarith [S'.2]) S'.2`. Conclude with `this` after adjusting the coercions.
+-/
 theorem discrete_series_bound_of_inputs : Core := by
   intro G _ _ _ _ _ _ _ _ μ _ _ Γ _ D hD hd φ O hφ hO h0 hcusp
   obtain ⟨α, hc, hs, hα0, hap⟩ := approximation_of_square_identity G μ φ O hφ hO h0 8⁻¹ (by norm_num)
@@ -303,6 +412,25 @@ theorem discrete_series_bound_of_inputs : Core := by
   have : (S' : ℝ) = 0 := le_antisymm (by nlinarith [S'.2]) S'.2
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ Γ D φ hφ ⟨m, α, p, hc, hs, hdet⟩ S hS`. Establish `hα : Integrable α μ` using `hc.integrable_of_hasCompactSupport hs`. Establish `hi : ∀ {θ h : G → ℂ}, Integrable θ μ → BC h → ∀ x, Integrable (fun y => θ y * h (x * y)) μ` using `fun hθ ⟨h1, _, hM⟩ x => integrable_mul_bc hθ (h1.comp (continuous_const.mul continuous_id)) fun _ => hM _`. Set `H₂ : Submodule ℂ (G → ℂ)` to `{ carrier := {h | IsRep μ φ Γ h ∧ MemLp h 2 (μ.restrict D)} add_mem' := fun {a b} ha hb => by`. Take `⟨M, hM⟩` from `ha.1.1.2`.
+
+Take `⟨M', hM'⟩` from `hb.1.1.2`. Use `⟨⟨⟨ha.1.1.1.add hb.1.1.1, M + M', fun x => norm_add_le_of_le (hM x) (hM' x)⟩, fun g hg x => by simp only [Pi.add_apply, ha.1.2.1 g hg, hb.1.2.1 g hg], fun x => ?_⟩, ha.2.add hb.2⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, mul_add]`. Rewrite using `[integral_add (hi hφ ha.1.1 x) (hi hφ hb.1.1 x), ← ha.1.2.2, ← hb.1.2.2]`. Use the proof step `zero_mem' := ⟨⟨⟨continuous_const, 0, by simp⟩, fun _ _ _ => rfl, by simp⟩, MemLp.zero⟩`.
+
+Use the proof step `smul_mem' := fun c a ha => by`. Take `⟨M, hM⟩` from `ha.1.1.2`. Use `⟨⟨⟨ha.1.1.1.const_smul c, ‖c‖ * M, fun x => by` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hM x) (norm_nonneg _)⟩,`.
+
+Use `fun g hg x => by simp only [Pi.smul_apply, ha.1.2.1 g hg], fun x => ?_⟩, ha.2.const_smul c⟩`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm _ c]`. Rewrite using `[integral_const_mul, ← ha.1.2.2] }`. Set `r : H₂ →ₗ[ℂ] Lp ℂ 2 (μ.restrict D)` to `{ toFun := fun h => h.2.2.toLp _ map_add' := fun a b => MemLp.toLp_add _ _ map_smul' := fun c a => MemLp.toLp_const_smul c _ }`. Set `l : H₂ →ₗ[ℂ] (Fin m → ℂ)` to `{ toFun := fun h i => ∫ y, α y * h.1 (p i * y) ∂μ map_add' := fun a b => funext fun i => by`.
+
+Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (hi hα a.2.1.1 _) (hi hα b.2.1.1 _)`. Use the proof step `map_smul' := fun c a => funext fun i => by`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, RingHom.id_apply]`. Conclude with `integral_const_mul _ _ }`.
+
+Establish `hker : LinearMap.ker l ≤ LinearMap.ker r` using `fun h hh => by`. Establish `hfin : sq μ D h.1 ≠ ∞`. Use `(lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top two_ne_zero (by simp) h.2.2.2).ne` as an intermediate fact. Simplify `this` using `[sq]`. Establish `h0` using `hdet h.1 h.2.1 hfin fun i => congrFun hh i`.
+
+Rewrite `h0` using `[sq, lintegral_eq_zero_iff (h.2.1.1.1.measurable.enorm.pow_const 2)]`. Use `(Lp.eq_zero_iff_ae_eq_zero).2 (h.2.2.coeFn_toLp.trans ?_)` and prove the remaining obligations. Use `filter_upwards [h0] with x hx`. Simplify using `using hx`. Establish `hfd : FiniteDimensional ℂ (LinearMap.range r)`.
+
+Establish `: FiniteDimensional ℂ (H₂ ⧸ LinearMap.ker l)` using `l.quotKerEquivRange.symm.finiteDimensional`. Rewrite using `[← Submodule.range_liftQ _ r hker]`. Use `infer_instance`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range r) fun F hF => ?_` and prove the remaining obligations. Use `(LinearMap.range r).closed_of_finiteDimensional.closure_subset_iff.2 ?_ (hS F hF)` and prove the remaining obligations.
+
+Introduce and unpack `F' ⟨h, hh, hae⟩`. Conclude with `⟨⟨h, hh, (memLp_congr_ae hae).1 (Lp.memLp F')⟩, Lp.ext ((MemLp.coeFn_toLp ((memLp_congr_ae hae).1 (Lp.memLp F'))).trans hae.symm)⟩`.
+-/
 theorem finite_dimensional_from_linear_forms : FiniteDimensionalFromLinearForms := by
   intro G _ _ _ _ _ _ _ _ μ _ Γ D φ hφ ⟨m, α, p, hc, hs, hdet⟩ S hS
   have hα : Integrable α μ := hc.integrable_of_hasCompactSupport hs
@@ -356,6 +484,21 @@ theorem finite_dimensional_from_linear_forms : FiniteDimensionalFromLinearForms 
   exact ⟨⟨h, hh, (memLp_congr_ae hae).1 (Lp.memLp F')⟩, Lp.ext ((MemLp.coeFn_toLp
     ((memLp_congr_ae hae).1 (Lp.memLp F'))).trans hae.symm)⟩
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ Γ φ φ₀ s hφ hφ₀ hconv hs ⟨M, hM⟩ hΓ`. Establish `e : ∀ x, ∫ y, φ₀ y * s (x * y) ∂μ = ∫ y, φ₀ (x⁻¹ * y) * s y ∂μ` using `fun x => by`. Rewrite using `[← integral_mul_left_eq_self (fun y => φ₀ (x⁻¹ * y) * s y) x]`. Simplify using `only [inv_mul_cancel_left]`. Establish `hi : ∀ {θ : G → ℂ}, Integrable θ μ → ∀ x, Integrable (fun y => θ y * s (x * y)) μ` using `fun hθ x => hθ.mul_bdd (hs.comp (measurable_const_mul x)).aestronglyMeasurable (Eventually.of_forall fun _ => hM _)`.
+
+Establish `hb : ∀ {θ : G → ℂ}, Integrable θ μ → ∀ x, ‖∫ y, θ y * s (x * y) ∂μ‖ ≤ (∫ y, ‖θ y‖ ∂μ) * M` using `fun hθ x => by`. Rewrite using `[← integral_mul_const]`. Conclude with `norm_integral_le_of_norm_le (hθ.norm.mul_const _) (Eventually.of_forall fun y => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hM _) (norm_nonneg _))`.
+
+Use `⟨⟨continuous_iff_continuousAt.2 fun x₀ => tendsto_iff_norm_sub_tendsto_zero.2 ?_, _, hb hφ₀⟩, fun g hg x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun x : G => x⁻¹ * x₀) (𝓝 x₀) (𝓝 1)`. Establish `h : Continuous fun x : G => x⁻¹ * x₀` using `by fun_prop`. Simplify using `using h.tendsto x₀`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun x => ?_) (by simpa using ((tendsto_transl hφ₀).comp ht).mul_const M)` and prove the remaining obligations.
+
+Establish `e2 : ∫ y, φ₀ y * s (x * y) ∂μ = ∫ y, φ₀ (x⁻¹ * x₀ * y) * s (x₀ * y) ∂μ`. Rewrite using `[← integral_mul_left_eq_self (fun y => φ₀ y * s (x * y)) (x⁻¹ * x₀)]`. Simplify using `only [← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite using `[norm_sub_rev, e2, ← integral_sub (hi hφ₀ x₀) (hi (hφ₀.comp_mul_left _) x₀)]`. Simplify using `only [← sub_mul]`.
+
+Conclude with `hb (hφ₀.sub (hφ₀.comp_mul_left _)) x₀`. Use `beta_reduce`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [(measurePreserving_mul_left μ x).quasiMeasurePreserving.ae (hΓ g hg)] with y hy`. Rewrite using `[mul_assoc, hy]`.
+
+Establish `h1 : Integrable (fun p : G × G => φ p.1 * φ₀ (p.1⁻¹ * p.2)) (μ.prod μ)` using `(measurePreserving_prod_inv_mul μ μ).integrable_comp_of_integrable (hφ.mul_prod hφ₀)`. Establish `h2 : Integrable (fun p : G × G => φ p.1 * φ₀ (p.1⁻¹ * p.2) * s (x * p.2)) (μ.prod μ)` using `h1.mul_bdd (hs.comp (measurable_snd.const_mul x)).aestronglyMeasurable (Eventually.of_forall fun p => hM _)`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[← integral_mul_left_eq_self (fun w => φ y * φ₀ (y⁻¹ * w) * s (x * w)) y, ← integral_const_mul]`. Simplify using `only [inv_mul_cancel_left, mul_assoc]`. Use `_ = ∫ w, ∫ y, φ y * φ₀ (y⁻¹ * w) * s (x * w) ∂μ ∂μ := integral_integral_swap h2`. Use `_ = _ := by simp only [integral_mul_const, hconv]`.
+-/
 theorem representation_of_convolution : RepOfConv := by
   intro G _ _ _ _ _ _ _ _ μ _ Γ φ φ₀ s hφ hφ₀ hconv hs ⟨M, hM⟩ hΓ
   have e : ∀ x, ∫ y, φ₀ y * s (x * y) ∂μ = ∫ y, φ₀ (x⁻¹ * y) * s y ∂μ := fun x => by

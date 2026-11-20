@@ -12,6 +12,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ D F _ _`. Establish `h₁` using `D.P.isAb.smooth`. Establish `h₂` using `D.P.isAb.geomConnected`. Set `j : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R)` to `DegPre.jFR (R := R) F`. Set `g : (DegPre.BF D F).left ⟶ Spec (CommRingCat.of F)` to `pullback.fst j D.P.A.hom`.
+
+Establish `hs : Smooth g` using `inferInstanceAs (Smooth (pullback.fst j D.P.A.hom))`. Establish `hc : ConnectedSpace (DegPre.BF D F).left` using `GeometricallyConnected.geometrically_connectedSpace (f := D.P.A.hom) j (pullback.snd j D.P.A.hom) (pullback.fst j D.P.A.hom) (IsPullback.of_hasPullback j D.P.A.hom).flip`. Conclude with `⟨isIntegral_of_smooth_field_of_connectedSpace g, fun y ↦ ((isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field F _ g hs).2.1 y).2⟩`.
+-/
 theorem degPre_abelianPart_isIntegral_and_isIntegrallyClosed_stalk :
     ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
       [Algebra (FractionRing R) F], IsIntegral (DegPre.BF D F).left ∧

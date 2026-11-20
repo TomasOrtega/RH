@@ -6,10 +6,16 @@ open NumberField IsDedekindDomain CategoryTheory GroundTheory.ProfCoh GroundTheo
 
 namespace PositivityTheory.Lit1.GEN
 
+/- English proof (translation)
+The claim follows from `W_devis.ratioOne_of_killed_l ℓ P h`.
+-/
 theorem ratioOne_of_killed_l (ℓ : ℕ) [Fact ℓ.Prime] (P : FiniteSubfield → Prop) (h : RatioOneKilled ℓ P) :
     RatioOne ℓ P :=
   W_devis.ratioOne_of_killed_l ℓ P h
 
+/- English proof (translation)
+The claim follows from `ratioOne_of_killed_l ℓ _ (W_assemble.ratioOneKilled_of_lemmaX ℓ hX)`.
+-/
 theorem ratioOne_of_lemmaX (ℓ : ℕ) [Fact ℓ.Prime] (hX : GlobalEulerCharCoprime) : RatioOne ℓ (fun _ => True) :=
   ratioOne_of_killed_l ℓ _ (W_assemble.ratioOneKilled_of_lemmaX ℓ hX)
 

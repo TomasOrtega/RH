@@ -11,6 +11,9 @@ variable (R B : Type) [CommRing R] [CommRing B] (I : Type) [Algebra R B]
 open KaehlerDifferential TensorProduct in
 variable (R B : Type) [CommRing R] [CommRing B] (I : Type) [Algebra R B]
   [Algebra (MvPolynomial I R) B] [IsScalarTower R (MvPolynomial I R) B] in
+/- English proof (translation)
+Rewrite using `[Module.Basis.baseChange_apply, mvPolynomialBasis_apply, mapBaseChange_tmul, one_smul, map_D]`.
+-/
 theorem _root_.GlobalTheory.EtaleCoordJacobian.mapBaseChange_basis (i : I) :
     mapBaseChange R (MvPolynomial I R) B (((mvPolynomialBasis R I).baseChange B) i) =
       D R B (algebraMap (MvPolynomial I R) B (MvPolynomial.X i)) := by
@@ -20,6 +23,9 @@ theorem _root_.GlobalTheory.EtaleCoordJacobian.mapBaseChange_basis (i : I) :
 open KaehlerDifferential TensorProduct in
 variable (R B : Type) [CommRing R] [CommRing B] (I : Type) [Algebra R B]
   [Algebra (MvPolynomial I R) B] [IsScalarTower R (MvPolynomial I R) B] in
+/- English proof (translation)
+Use `haveI : Algebra.Smooth R (MvPolynomial I R) := Algebra.Smooth.mk`. Use `⟨⟨((mvPolynomialBasis R I).baseChange B).map (tensorKaehlerEquivOfFormallyEtale R (MvPolynomial I R) B), fun i => ?_⟩, Algebra.Smooth.comp R (MvPolynomial I R) B⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, ← _root_.GlobalTheory.EtaleCoordJacobian.mapBaseChange_basis]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.EtaleCoordJacobian.exists_basis_of_etale [Finite I] [Algebra.Etale (MvPolynomial I R) B] :
     (∃ b : Module.Basis I B Ω[B⁄R],
       ∀ i, b i = D R B (algebraMap (MvPolynomial I R) B (MvPolynomial.X i))) ∧
@@ -34,6 +40,19 @@ theorem _root_.GlobalTheory.EtaleCoordJacobian.exists_basis_of_etale [Finite I] 
 open KaehlerDifferential TensorProduct in
 variable (R B : Type) [CommRing R] [CommRing B] (I : Type) [Algebra R B]
   [Algebra (MvPolynomial I R) B] [IsScalarTower R (MvPolynomial I R) B] in
+/- English proof (translation)
+Use `set bc := (mvPolynomialBasis R I).baseChange B`. Establish `hmap : mapBaseChange R (MvPolynomial I R) B = (bc.equiv b (Equiv.refl I)).toLinearMap` using `bc.ext fun i => by`. Rewrite using `[_root_.GlobalTheory.EtaleCoordJacobian.mapBaseChange_basis, LinearEquiv.coe_coe, Module.Basis.equiv_apply, Equiv.refl_apply, hb]`. Establish `hinj : Function.Injective (mapBaseChange R (MvPolynomial I R) B)`. Rewrite using `[hmap]`.
+
+Conclude with `(bc.equiv b (Equiv.refl I)).injective`. Establish `hsurj : Function.Surjective (mapBaseChange R (MvPolynomial I R) B)`. Rewrite using `[hmap]`. Conclude with `(bc.equiv b (Equiv.refl I)).surjective`. Establish `hΩ : Subsingleton Ω[B⁄MvPolynomial I R]`.
+
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ z : Ω[B⁄MvPolynomial I R], z = 0` using `fun z => by`. Take `⟨w, rfl⟩` from `map_surjective R (MvPolynomial I R) B z`. Take `⟨v, rfl⟩` from `hsurj w`. Conclude with `(exact_mapBaseChange_map R (MvPolynomial I R) B).apply_apply_eq_zero v`.
+
+Rewrite using `[hx x, hx y]`. Establish `hH : Subsingleton (Algebra.H1Cotangent (MvPolynomial I R) B)` using `by haveI : Subsingleton (Algebra.H1Cotangent R B) := Algebra.FormallySmooth.subsingleton_h1Cotangent`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ z : Algebra.H1Cotangent (MvPolynomial I R) B, z = 0` using `fun z => by`. Establish `h1 : Algebra.H1Cotangent.δ R (MvPolynomial I R) B z = 0` using `hinj (((Algebra.H1Cotangent.exact_δ_mapBaseChange R _ B).apply_apply_eq_zero z).trans (map_zero _).symm)`.
+
+Take `⟨w, rfl⟩` from `(Algebra.H1Cotangent.exact_map_δ R (MvPolynomial I R) B z).mp h1`. Rewrite using `[Subsingleton.elim w 0, map_zero]`. Rewrite using `[hx x, hx y]`. Use `haveI : Algebra.FormallyEtale (MvPolynomial I R) B := Algebra.FormallyEtale.mk hΩ hH`. Use `haveI : Algebra.FinitePresentation (MvPolynomial I R) B := Algebra.FinitePresentation.of_restrict_scalars_finitePresentation R _ B`.
+
+Conclude with `Algebra.Etale.mk`.
+-/
 theorem _root_.GlobalTheory.EtaleCoordJacobian.etale_of_basis [Finite I] [Algebra.Smooth R B]
     (b : Module.Basis I B Ω[B⁄R])
     (hb : ∀ i, b i = D R B (algebraMap (MvPolynomial I R) B (MvPolynomial.X i))) :
@@ -73,6 +92,11 @@ theorem _root_.GlobalTheory.EtaleCoordJacobian.etale_of_basis [Finite I] [Algebr
 end tower
 
 open KaehlerDifferential TensorProduct in
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial I R) B := (MvPolynomial.eval₂Hom (algebraMap R B) t).toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial I R) B := IsScalarTower.of_algebraMap_eq fun r => by`. Simplify using `[RingHom.algebraMap_toAlgebra, MvPolynomial.algebraMap_eq]`. Use `haveI : Algebra.Etale (MvPolynomial I R) B := h`. Take `⟨⟨b, hb⟩, hs⟩` from `_root_.GlobalTheory.EtaleCoordJacobian.exists_basis_of_etale R B I`.
+
+Conclude with `⟨⟨b, fun i => by rw [hb]; simp [RingHom.algebraMap_toAlgebra]⟩, hs⟩`.
+-/
 private theorem exists_basis_D_and_smooth_of_etale_eval2Hom (R B I : Type) [CommRing R] [CommRing B]
     [Finite I] [Algebra R B] (t : I → B)
     (h : (MvPolynomial.eval₂Hom (algebraMap R B) t).Etale) :
@@ -85,6 +109,19 @@ private theorem exists_basis_D_and_smooth_of_etale_eval2Hom (R B I : Type) [Comm
   exact ⟨⟨b, fun i => by rw [hb]; simp [RingHom.algebraMap_toAlgebra]⟩, hs⟩
 
 open KaehlerDifferential TensorProduct in
+/- English proof (translation)
+Use `letI : Algebra B C := φ.toAlgebra`. Use `letI : Algebra R C := (φ.comp (algebraMap R B)).toAlgebra`. Use `haveI : IsScalarTower R B C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `key : ∀ i j, d i (t' j) = ∑ k, d i (t k) * φ (b.repr (D R B (t' j)) k)`. Introduce `i j`.
+
+Set `δ : Derivation R B C` to `Derivation.mk' { toFun := d i map_add' := map_add (d i) map_smul' := fun r x => by`. Rewrite using `[RingHom.id_apply, Algebra.smul_def r (d i x), Algebra.smul_def, hd, hc, mul_zero, add_zero]`. Use `rfl }`. Use the proof step `(fun x y => by`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, Algebra.smul_def]`.
+
+Conclude with `hd i x y)`. Establish `h1 : ∀ x, d i x = δ.liftKaehlerDifferential (D R B x)` using `fun x => by`. Rewrite using `[Derivation.liftKaehlerDifferential_comp_D]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+
+Use `conv_lhs => rw [← b.sum_repr (D R B (t' j))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hb, ← h1, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression.
+
+Establish `hmat : (Matrix.of fun i j => d i (t' j)) = (Matrix.of fun i j => d i (t j)) * (Matrix.of fun k j => b.repr (D R B (t' j)) k).map φ`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply, key]`. Rewrite using `[hmat, Matrix.det_mul, mul_comm]`. Use `congr 1`.
+
+Conclude with `(RingHom.map_det φ _).symm`.
+-/
 private theorem det_derivation_eq_mul_det_repr {R B I : Type} [CommRing R] [CommRing B] [Fintype I]
     [DecidableEq I] [Algebra R B] (t t' : I → B) (b : Module.Basis I B Ω[B⁄R])
     (hb : ∀ i, b i = D R B (t i)) (C : Type) [CommRing C] (φ : B →+* C) (d : I → B →+ C)
@@ -125,6 +162,9 @@ private theorem det_derivation_eq_mul_det_repr {R B I : Type} [CommRing R] [Comm
   exact (RingHom.map_det φ _).symm
 
 open KaehlerDifferential TensorProduct in
+/- English proof (translation)
+Use `⟨b.map (Matrix.toLinearEquiv b _ ha), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.map_apply, Matrix.toLinearEquiv_apply, Matrix.toLin_self]`. Use `conv_rhs => rw [← b.sum_repr (D R B (t' j))]`. Simplify using `only [Matrix.of_apply]`.
+-/
 private theorem exists_basis_D_of_isUnit_det_repr {R B I : Type} [CommRing R] [CommRing B]
     [Fintype I] [DecidableEq I] [Algebra R B] (t' : I → B) (b : Module.Basis I B Ω[B⁄R])
     (ha : IsUnit (Matrix.of fun k j => b.repr (D R B (t' j)) k).det) :
@@ -135,6 +175,11 @@ private theorem exists_basis_D_of_isUnit_det_repr {R B I : Type} [CommRing R] [C
   simp only [Matrix.of_apply]
 
 open KaehlerDifferential TensorProduct in
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial I R) B := (MvPolynomial.eval₂Hom (algebraMap R B) t).toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial I R) B := IsScalarTower.of_algebraMap_eq fun r => by`. Simplify using `[RingHom.algebraMap_toAlgebra, MvPolynomial.algebraMap_eq]`. Conclude with `_root_.GlobalTheory.EtaleCoordJacobian.etale_of_basis R B I b fun i => by`. Rewrite using `[hb]`.
+
+Simplify using `[RingHom.algebraMap_toAlgebra]`.
+-/
 private theorem etale_eval2Hom_of_basis_D (R B I : Type) [CommRing R] [CommRing B]
     [Finite I] [Algebra R B] [Algebra.Smooth R B] (t : I → B) (b : Module.Basis I B Ω[B⁄R])
     (hb : ∀ i, b i = D R B (t i)) : (MvPolynomial.eval₂Hom (algebraMap R B) t).Etale := by
@@ -146,6 +191,11 @@ private theorem etale_eval2Hom_of_basis_D (R B I : Type) [CommRing R] [CommRing 
 
 open KaehlerDifferential TensorProduct in
 
+/- English proof (translation)
+Introduce `R B _ _ c I _ _ t t' het`. Use `letI : Algebra R B := c.toAlgebra`. Take `⟨⟨b, hb⟩, hs⟩` from `exists_basis_D_and_smooth_of_etale_eval2Hom R B I t het`. Use `⟨(Matrix.of fun k j => b.repr (D R B (t' j)) k).det, fun C _ φ d hd hc => det_derivation_eq_mul_det_repr t t' b hb C φ d hd hc, fun ha => ?_⟩` and prove the remaining obligations. Take `⟨b', hb'⟩` from `exists_basis_D_of_isUnit_det_repr t' b ha`.
+
+Conclude with `etale_eval2Hom_of_basis_D R B I t' b' hb'`.
+-/
 theorem _root_.GlobalTheory.EtaleCoordJacobian.chain_rule_and_jacobian_criterion : ∀ (R B : Type) [CommRing R] [CommRing B] (c : R →+* B) (I : Type) [Fintype I] [DecidableEq I] (t t' : I → B), (MvPolynomial.eval₂Hom c t).Etale → ∃ a : B, (∀ (C : Type) [CommRing C] (φ : B →+* C) (d : I → B →+ C), (∀ i x y, d i (x * y) = φ x * d i y + φ y * d i x) → (∀ i r, d i (c r) = 0) → (Matrix.of fun i j => d i (t' j)).det = φ a * (Matrix.of fun i j => d i (t j)).det) ∧ (IsUnit a → (MvPolynomial.eval₂Hom c t').Etale) := by
   intro R B _ _ c I _ _ t t' het
   letI : Algebra R B := c.toAlgebra

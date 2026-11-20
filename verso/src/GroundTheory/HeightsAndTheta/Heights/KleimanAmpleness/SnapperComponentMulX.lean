@@ -23,6 +23,9 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 omit [LinearOrder K] [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+Establish `h` using `DirectSum.coe_decompose_mul_add_of_right_mem (weightedHomogeneousSubmodule F (NumbersDVR.blockWeight ι)) (a := f) (i := b) (isWeightedHomogeneous_X F (NumbersDVR.blockWeight ι) v)`. Establish `key : ∀ (φ : MvPolynomial (Σ k, ι k) F) (c : K → ℕ), (DirectSum.decompose (weightedHomogeneousSubmodule F (NumbersDVR.blockWeight ι)) φ c : MvPolynomial (Σ k, ι k) F) = weightedHomogeneousComponent (NumbersDVR.blockWeight ι) c φ` using `fun φ c => weightedDecomposition.decompose'_apply F (NumbersDVR.blockWeight ι) φ c`. Rewrite `h` using `[key, key]`. Conclude with `h`.
+-/
 theorem snapper_component_mul_X [DecidableEq K] (f : MvPolynomial (Σ k, ι k) F) (b : K → ℕ) (v : Σ k, ι k) :
     weightedHomogeneousComponent (NumbersDVR.blockWeight ι) (b + NumbersDVR.blockWeight ι v) (f * X v) =
       weightedHomogeneousComponent (NumbersDVR.blockWeight ι) b f * X v := by
@@ -38,6 +41,9 @@ theorem snapper_component_mul_X [DecidableEq K] (f : MvPolynomial (Σ k, ι k) F
 
 omit [LinearOrder K] [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+Introduce `f hf b`. Rewrite `hf`, the goal using `[Submodule.mem_colon_span_singleton, smul_eq_mul]`. Rewrite using `[← snapper_component_mul_X]`. Conclude with `hJ _ hf _`.
+-/
 theorem snapper_colon_X [DecidableEq K] {J : Ideal (MvPolynomial (Σ k, ι k) F)} (hJ : NumbersDVR.IsMultiHomogIdeal J)
     (v : Σ k, ι k) : NumbersDVR.IsMultiHomogIdeal (J.colon (Ideal.span {(X v : MvPolynomial (Σ k, ι k) F)})) := by
   intro f hf b
@@ -47,6 +53,9 @@ theorem snapper_colon_X [DecidableEq K] {J : Ideal (MvPolynomial (Σ k, ι k) F)
 
 omit [Fintype K] [LinearOrder K] in
 
+/- English proof (translation)
+Establish `hb : ∀ (x : K → ℚ) (g : K → MvPolynomial K ℚ), eval x (bind₁ g p) = eval (fun j => eval x (g j)) p` using `fun x g => eval₂Hom_bind₁ _ _ _ _`. Rewrite using `[hb]`. Use `congrArg (fun x => eval x p) (funext fun j => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem snapper_eval_shift (p : MvPolynomial K ℚ) (e m : K → ℤ) :
     eval (fun k => ((m - e) k : ℚ)) p =
       eval (fun k => (m k : ℚ)) (bind₁ (fun j => X j - C ((e j : ℤ) : ℚ)) p) := by
@@ -56,6 +65,11 @@ theorem snapper_eval_shift (p : MvPolynomial K ℚ) (e m : K → ℤ) :
   refine congrArg (fun x => eval x p) (funext fun j => ?_)
   simp
 
+/- English proof (translation)
+Establish `hI : ∀ I : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι n, False` using `fun I => by`. Establish `h1 : ∑ k, ((I.1 k).card - 1) ≤ ∑ k, (Fintype.card (ι k) - 1)` using `Finset.sum_le_sum fun k _ => Nat.sub_le_sub_right (Finset.card_le_univ _) 1`. Use `I.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: Subsingleton (CechC F ι (MvPolynomial (Σ k, ι k) F ⧸ V) n)` using `⟨fun f g => funext fun I => (hI I).elim⟩`.
+
+Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[Subsingleton.elim x y]`.
+-/
 theorem snapper_top (V : Ideal (MvPolynomial (Σ k, ι k) F)) (m : K → ℤ) (n : ℕ)
     (hn : ∑ k, (Fintype.card (ι k) - 1) < n) : Subsingleton (cechHc ι (quotPart F V) m n) := by
   have hI : ∀ I : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι n, False := fun I => by
@@ -70,6 +84,9 @@ theorem snapper_top (V : Ideal (MvPolynomial (Σ k, ι k) F)) (m : K → ℤ) (n
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ y
   rw [Subsingleton.elim x y]
 
+/- English proof (translation)
+The claim follows from `(hS F K ι (MvPolynomial (Σ k, ι k) F ⧸ V) (quotPart F V) inferInstance inferInstance (HilbertSamuel.QuotPartGraded.proof F K ι V ((NumbersDVR.Objects.isMultiHomogIdeal_iff V).1 hV))).1 m i`.
+-/
 theorem snapper_finite (hS : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.TheoremSStatement) (V : Ideal (MvPolynomial (Σ k, ι k) F))
     (hV : NumbersDVR.IsMultiHomogIdeal V) (m : K → ℤ) (i : ℕ) :
     FiniteDimensional F (cechHc ι (quotPart F V) m i) :=
@@ -78,6 +95,23 @@ theorem snapper_finite (hS : ReciprocityTheory.ChartRestriction.G.ArakelovGeomet
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ _ V hV`. Establish `hfin : ∀ J : Ideal (MvPolynomial (Σ k, ι k) F), NumbersDVR.IsMultiHomogIdeal J → ∀ (m : K → ℤ) (i : ℕ), FiniteDimensional F (cechHc ι (quotPart F J) m i)` using `fun J hJ => snapper_finite hS J hJ`. Establish `key : ∀ J : Ideal (MvPolynomial (Σ k, ι k) F), NumbersDVR.IsMultiHomogIdeal J → ∃ p : MvPolynomial K ℚ, ∀ m, eulerChar F ι J m = eval (fun k => (m k : ℚ)) p`. Introduce `J hJ`. Use `IsNoetherian.induction (P := fun J : Ideal (MvPolynomial (Σ k, ι k) F) => NumbersDVR.IsMultiHomogIdeal J → ∃ p : MvPolynomial K ℚ, ∀ m, eulerChar F ι J m = eval (fun k => (m k : ℚ)) p) (fun J ih hJ => ?_) J hJ` and prove the remaining obligations.
+
+Establish `hlt2 : ∀ v : Σ k, ι k, (X v : MvPolynomial (Σ k, ι k) F) ∉ J → J < J ⊔ Ideal.span {(X v : MvPolynomial (Σ k, ι k) F)}` using `fun v hvJ => lt_of_le_of_ne le_sup_left fun h => hvJ (h ▸ Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hSup : ∀ v : Σ k, ι k, NumbersDVR.IsMultiHomogIdeal (J ⊔ Ideal.span {(X v : MvPolynomial (Σ k, ι k) F)})` using `fun v => FieldNumbers.isMultiHomogIdeal_sup_span hJ (isWeightedHomogeneous_X F (NumbersDVR.blockWeight ι) v)`. Distinguish the cases in `hA : ∃ v : Σ k, ι k, (X v : MvPolynomial (Σ k, ι k) F) ∉ J ∧ J.colon (Ideal.span {(X v : MvPolynomial (Σ k, ι k) F)}) ≠ J`. Take `⟨v, hvJ, hne⟩` from `hA`. Establish `hle : J ≤ J.colon (Ideal.span {(X v : MvPolynomial (Σ k, ι k) F)})` using `fun f hf => by`.
+
+Rewrite using `[Submodule.mem_colon_span_singleton, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ J hf`. Take `⟨p1, hp1⟩` from `ih _ (lt_of_le_of_ne hle (Ne.symm hne)) (snapper_colon_X hJ v)`. Take `⟨p2, hp2⟩` from `ih _ (hlt2 v hvJ) (hSup v)`. Use `⟨bind₁ (fun j => X j - C (((Pi.single v.1 1 : K → ℤ) j : ℤ) : ℚ)) p1 + p2, fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hE F K ι J v hJ (hfin J hJ) (hfin _ (snapper_colon_X hJ v)) (hfin _ (hSup v)) m, hp1, hp2, map_add, ← snapper_eval_shift]`. Use `push Not at hA`. Distinguish the cases in `hB : ∃ k, ∀ i, (X ⟨k, i⟩ : MvPolynomial (Σ k, ι k) F) ∈ J`. Take `⟨k, hk⟩` from `hB`. Use `⟨0, fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zero, eulerChar]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `cechHc_subsingleton_of_block hk m i` as an intermediate fact. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Simplify using the standard rewrite rules.
+
+Use `push Not at hB`. Use `hD K (eulerChar F ι J) fun k => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hB k`. Take `⟨q, hq⟩` from `ih _ (hlt2 ⟨k, i⟩ hi) (hSup ⟨k, i⟩)`. Use `⟨q, fun m => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hE F K ι J ⟨k, i⟩ hJ (hfin J hJ) (hfin _ (snapper_colon_X hJ _)) (hfin _ (hSup _)) m`. Rewrite `h` using `[hA _ hi]`. Rewrite using `[← hq m]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨p, hp⟩` from `key V hV`.
+
+Conclude with `⟨∑ k, (Fintype.card (ι k) - 1), p, hfin V hV, fun m i hi => snapper_top V m i hi, hp⟩`.
+-/
 theorem EulerPoly.proof (hS : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.TheoremSStatement) (hE : EulerVar.Statement)
     (hD : PolyOfDiffsExact.Statement) : EulerPoly.Statement := by
   intro F _ K _ _ ι _ _ V hV

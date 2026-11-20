@@ -16,6 +16,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.CompProport
+/- English proof (translation)
+Introduce `hP hS hT hL D T _ j hp _ hf _ Y e o hY`. Establish `hr : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`. Take `⟨X, h1, h2, h3, h4⟩` from `hT.exists_model_charts hS hr Y.d.Xo₂ Y.d.c₂`. Take `⟨TF, hc⟩` from `exists_torFlag_charts hr X h1 h2 h3 h4`. Conclude with `_root_.GlobalTheory.CompProport.proportionality_of_local_charts (_root_.GlobalTheory.T.covering_topology_refinement hP) hP.q7 hL hY hf TF hc`.
+-/
 theorem hirzebruch_proportionality_toroidal :
     _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Proport Y.U ∧ ∀ Z, 0 < CompHt.vZero Y.U Z := by
   intro hP hS hT hL D T _ j hp _ hf _ Y e o hY
@@ -37,6 +40,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CompProport.hirzebruch_proportionality_toroidal | exact _root_.GlobalTheory.CompProport.hirzebruch_proportionality_toroidal | (intros; apply _root_.GlobalTheory.CompProport.hirzebruch_proportionality_toroidal <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.proportionality_principle_compactification : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Proport Y.U ∧ ∀ Z, 0 < CompHt.vZero Y.U Z := by
   first | exact @_root_.GlobalTheory.CompProport.hirzebruch_proportionality_toroidal | exact _root_.GlobalTheory.CompProport.hirzebruch_proportionality_toroidal | (intros; apply _root_.GlobalTheory.CompProport.hirzebruch_proportionality_toroidal <;> assumption)
 end

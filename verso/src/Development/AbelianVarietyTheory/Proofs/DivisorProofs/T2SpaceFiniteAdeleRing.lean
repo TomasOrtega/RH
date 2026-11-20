@@ -21,6 +21,9 @@ def idem (T : Finset (Pl E)) : FiniteAdeleRing (𝓞 E) E :=
     rw [if_neg (by simpa using hw)]
     exact zero_mem _⟩
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Use `show (if w ∈ T then (1 : w.adicCompletion E) else 0) * (if w ∈ T then 1 else 0) = if w ∈ T then 1 else 0`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem idem_mul_self (T : Finset (Pl E)) : idem E T * idem E T = idem E T := by
   refine Subtype.ext (funext fun w => ?_)
   show (if w ∈ T then (1 : w.adicCompletion E) else 0) * (if w ∈ T then 1 else 0) = if w ∈ T then 1 else 0

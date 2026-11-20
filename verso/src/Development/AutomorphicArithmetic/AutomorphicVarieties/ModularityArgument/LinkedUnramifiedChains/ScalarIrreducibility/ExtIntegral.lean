@@ -8,6 +8,17 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 
 namespace UpperTheory.V.J.ChevalleyRestriction
 
+/- English proof (translation)
+Use `haveI hP : (RingHom.ker y).IsPrime := RingHom.ker_isPrime y`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker y) (⊥ : Ideal S) (by rw [Ideal.comap_bot_of_injective _ hinj]; exact bot_le)`. Set `y' : (R ⧸ Ideal.comap (algebraMap R S) Q) →+* K` to `Ideal.Quotient.lift _ y (fun a ha => by rw [hQc] at ha; exact ha)`. Establish `hy' : Function.Injective y'`. Use `(injective_iff_map_eq_zero y').2 fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Use `Ideal.Quotient.eq_zero_iff_mem.2 ?_` and prove the remaining obligations. Rewrite using `[hQc]`. Conclude with `hz`. Use `letI : Algebra (R ⧸ Ideal.comap (algebraMap R S) Q) K := y'.toAlgebra`.
+
+Use `haveI : IsDomain (R ⧸ Ideal.comap (algebraMap R S) Q) := by`. Rewrite using `[hQc]`. Use `infer_instance`. Use `haveI : Module.IsTorsionFree (R ⧸ Ideal.comap (algebraMap R S) Q) K := Module.isTorsionFree_iff_algebraMap_injective.2 hy'`. Use `haveI : Module.IsTorsionFree (R ⧸ Ideal.comap (algebraMap R S) Q) (S ⧸ Q) := Module.isTorsionFree_iff_algebraMap_injective.2 Ideal.algebraMap_quotient_injective`.
+
+Use `haveI : Nontrivial (R ⧸ Ideal.comap (algebraMap R S) Q) := IsDomain.toNontrivial`. Use `haveI hI : Algebra.IsIntegral (R ⧸ Ideal.comap (algebraMap R S) Q) (S ⧸ Q) := Algebra.IsIntegral.quotient`. Use `haveI : Algebra.IsAlgebraic (R ⧸ Ideal.comap (algebraMap R S) Q) (S ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Set `φ : (S ⧸ Q) →ₐ[R ⧸ Ideal.comap (algebraMap R S) Q] K` to `IsAlgClosed.lift`. Use `⟨(φ : (S ⧸ Q) →+* K).comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `r`. Establish `h` using `φ.commutes (Ideal.Quotient.mk _ r)`. Conclude with `h`.
+-/
 private theorem ext_integral (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [Algebra R S]
     [Algebra.IsIntegral R S] (hinj : Function.Injective (algebraMap R S))
     (K : Type) [Field K] [IsAlgClosed K] (y : R →+* K) :
@@ -42,6 +53,17 @@ private theorem ext_integral (R S : Type) [CommRing R] [IsDomain R] [CommRing S]
   have h := φ.commutes (Ideal.Quotient.mk _ r)
   exact h
 
+/- English proof (translation)
+Establish `hinjx` using `transcendental_iff_injective.1 ht`. Set `e : Polynomial R ≃ₐ[R] S` to `AlgEquiv.ofBijective (Polynomial.aeval x) ⟨hinjx, hx⟩`. Take `⟨p, rfl⟩` from `hx c`. Establish `hp : p ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hc`. Use `⟨p.leadingCoeff, Polynomial.leadingCoeff_ne_zero.2 hp, ?_⟩` and prove the remaining obligations. Introduce `K _ _ y hy`. Establish `hmap : p.map y ≠ 0` using `fun h => hy (by`. Use `congrArg (fun q => Polynomial.coeff q p.natDegree) h` as an intermediate fact.
+
+Simplify using `using this)`. Establish `hcard : ((p.map y).natDegree : Cardinal) < Cardinal.mk K` using `(Cardinal.natCast_lt_aleph0).trans_le (Cardinal.aleph0_le_mk K)`. Take `⟨t, htt⟩` from `Polynomial.exists_eval_ne_zero_of_natDegree_lt_card _ hmap hcard`. Use `⟨(Polynomial.eval₂RingHom y t).comp (e.symm : S →+* Polynomial R), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`.
+
+Establish `h1 : e.symm (algebraMap R S r) = Polynomial.C r`. Use `e.symm.commutes r` as an intermediate fact. Simplify `this` using `[Polynomial.algebraMap_eq]`. Simplify using `[h1]`. Establish `h2 : e.symm (Polynomial.aeval x p) = p` using `e.symm_apply_apply p`.
+
+Simplify `htt` using `[h2, Polynomial.eval_map]`.
+-/
 private theorem one_tr (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Algebra R S]
     (x : S) (hx : Function.Surjective (Polynomial.aeval x : Polynomial R →ₐ[R] S))
     (ht : Transcendental R x) (c : S) (hc : c ≠ 0) :
@@ -71,6 +93,11 @@ private theorem one_tr (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDo
   · have h2 : e.symm (Polynomial.aeval x p) = p := e.symm_apply_apply p
     simpa [h2, Polynomial.eval_map] using htt
 
+/- English proof (translation)
+Use `haveI : Nontrivial R := IsDomain.toNontrivial`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `monomial n r`. Rewrite using `[Polynomial.aeval_monomial]`.
+
+Conclude with `(isAlgebraic_algebraMap r).mul (hxa.pow n)`.
+-/
 private theorem isAlg_aeval (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S]
     [Algebra R S] (x : S) (hxa : IsAlgebraic R x) (p : Polynomial R) :
     IsAlgebraic R (Polynomial.aeval x p) := by
@@ -81,6 +108,9 @@ private theorem isAlg_aeval (R S : Type) [CommRing R] [IsDomain R] [CommRing S] 
     rw [Polynomial.aeval_monomial]
     exact (isAlgebraic_algebraMap r).mul (hxa.pow n)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ra3.one_alg R S hinj x hx hxa c hc`.
+-/
 private theorem one_alg (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Algebra R S]
     (hinj : Function.Injective (algebraMap R S))
     (x : S) (hx : Function.Surjective (Polynomial.aeval x : Polynomial R →ₐ[R] S))
@@ -89,6 +119,9 @@ private theorem one_alg (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsD
       ∃ ξ : S →+* K, ξ.comp (algebraMap R S) = y ∧ ξ c ≠ 0 :=
   _root_.UpperTheory.Reformulated.B.Ra3.one_alg R S hinj x hx hxa c hc
 
+/- English proof (translation)
+Distinguish the cases in `h : IsAlgebraic R x`. Conclude with `one_alg R S hinj x hx h c hc`. Conclude with `one_tr R S x hx h c hc`.
+-/
 private theorem one (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Algebra R S]
     (hinj : Function.Injective (algebraMap R S))
     (x : S) (hx : Function.Surjective (Polynomial.aeval x : Polynomial R →ₐ[R] S))
@@ -99,6 +132,9 @@ private theorem one (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomai
   · exact one_alg R S hinj x hx h c hc
   · exact one_tr R S x hx h c hc
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Ra5.main_fin A s`.
+-/
 private theorem main_fin (A : Type) [CommRing A] [IsDomain A] (s : Finset A) :
     ∀ (B : Type) [CommRing B] [IsDomain B] [Algebra B A],
       Algebra.adjoin B (s : Set A) = ⊤ → Function.Injective (algebraMap B A) →
@@ -108,6 +144,9 @@ private theorem main_fin (A : Type) [CommRing A] [IsDomain A] (s : Finset A) :
 
 end UpperTheory.V.J.ChevalleyRestriction
 
+/- English proof (translation)
+Introduce `B A _ _ _ _ _ hft hinj a ha`. Take `⟨s, hs⟩` from `hft.out`. Conclude with `UpperTheory.V.J.ChevalleyRestriction.main_fin A s B hs hinj a ha`.
+-/
 theorem UpperTheory.V.J.chev :
     ∀ (B A : Type) [CommRing B] [IsDomain B] [CommRing A] [IsDomain A] [Algebra B A] [Algebra.FiniteType B A], Function.Injective (algebraMap B A) →
         ∀ a : A, a ≠ 0 → ∃ b : B, b ≠ 0 ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (y : B →+* K), y b ≠ 0 →

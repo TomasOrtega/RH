@@ -11,6 +11,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GlueProj.isProjOver_of_glue | exact GlobalTheory.GlueProj.isProjOver_of_glue | (intros; apply GlobalTheory.GlueProj.isProjOver_of_glue <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.polarization_glues_over_cover : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l}
     {c : Coeff l} {I : Type} [Finite I] {R : I → Type} [∀ i, CommRing (R i)] {a : I → 𝓞 c.F} {b : ∀ i, 𝓞 c.F →+* R i}
     {ω : ∀ i, R i →+* c.F} (C : ∀ i, Model Xo c (ω i)) (BD : ∀ i, EffCartierData (C i).X) (φ : InvFun (𝓞 E)) (m : ℕ)

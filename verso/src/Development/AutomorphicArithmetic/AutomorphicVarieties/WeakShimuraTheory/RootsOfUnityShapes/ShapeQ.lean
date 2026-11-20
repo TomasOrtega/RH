@@ -3,6 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Sgn
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `R _ X n₀ hX hu h0 hq`. Take `⟨-, hd, hl⟩` from `h0`. Establish `x01 : X 0 1 = 0` using `hX 0 1 (by decide) (by decide)`. Establish `x02 : X 0 2 = 0` using `hX 0 2 (by decide) (by decide)`. Establish `x03 : X 0 3 = 0` using `hX 0 3 (by decide) (by decide)`.
+
+Establish `x13 : X 1 3 = 0` using `hX 1 3 (by decide) (by decide)`. Establish `x23 : X 2 3 = 0` using `hX 2 3 (by decide) (by decide)`. Establish `x21 : X 2 1 = 0` using `hX 2 1 (by decide) (by decide)`. Establish `n21 : n₀ 2 1 = 0` using `hq 2 1 (by decide) (by decide)`. Establish `n01 : n₀ 0 1 = 0` using `hl 0 1 (by decide)`.
+
+Establish `y00 : (X * n₀) 0 0 = X 0 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, x01, x02, x03, hd]`. Establish `y01 : (X * n₀) 0 1 = 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, x01, x02, x03, n01]`. Establish `y11 : (X * n₀) 1 1 = X 1 1`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, x13, n21, n01, hd]`. Establish `y21 : (X * n₀) 2 1 = 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, x21, x23, n21, n01]`. Use `⟨⟨y00 ▸ hu 0, ?_⟩, fun n hn hU => ?_⟩` and prove the remaining obligations. Rewrite using `[y00, y11, y01, zero_mul, sub_zero]`.
+
+Conclude with `(hu 0).mul (hu 1)`. Take `⟨hg, nd, nl⟩` from `hn`. Establish `h1 : adj n * n = 1`. Use `hg` as an intermediate fact. Unfold `IsGSp at this`.
+
+Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `h2 : n * adj n = 1` using `mul_eq_one_comm.mp h1`. Use `set U := adj n * X * n₀ with hUdef`. Establish `hY : X * n₀ = n * U`. Rewrite using `[hUdef, mul_assoc (adj n), ← mul_assoc n, h2, one_mul]`.
+
+Establish `u21 : U 2 1 = 0` using `hU 2 1 (by decide)`. Establish `u31 : U 3 1 = 0` using `hU 3 1 (by decide)`. Establish `m01 : n 0 1 = 0` using `nl 0 1 (by decide)`. Establish `u01 : U 0 1 = 0`. Rewrite `y01` using `[hY]`.
+
+Simplify `y01` using `[Matrix.mul_apply (M := n), Fin.sum_univ_four, u21, u31, m01, nd]`. Establish `u11 : U 1 1 = X 1 1`. Rewrite `y11` using `[hY]`. Simplify `y11` using `[Matrix.mul_apply (M := n), Fin.sum_univ_four, u21, u31, u01, nd]`. Establish `m21 : n 2 1 = 0`.
+
+Rewrite `y21` using `[hY, Matrix.mul_apply, Fin.sum_univ_four, u01, u21, u31, u11, mul_zero, mul_zero, mul_zero, zero_add, add_zero, add_zero]`. Conclude with `(hu 1).mul_left_eq_zero.mp y21`. Introduce `i j hij hw`. Establish `key : i < j ∨ (i = 2 ∧ j = 1)` using `by revert i j`. Evaluate the decidable proposition.
+
+Break down `key with h | ⟨rfl, rfl⟩` into its components or cases. Conclude with `nl i j h`. Conclude with `m21`.
+-/
 theorem UpperTheory.V.Ws.Rq.shapeQ :
     ∀ (R : Type) [CommRing R] (X n₀ : M4 R), SuppM nP X → (∀ i, IsUnit (X i i)) → IsLow n₀ → SuppM qQ n₀ →
       (IsUnit ((X * n₀) 0 0) ∧ IsUnit ((X * n₀) 0 0 * (X * n₀) 1 1 - (X * n₀) 0 1 * (X * n₀) 1 0)) ∧

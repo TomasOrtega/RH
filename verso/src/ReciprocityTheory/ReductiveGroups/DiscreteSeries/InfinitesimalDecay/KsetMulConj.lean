@@ -13,19 +13,31 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+The claim follows from `IsSmoothVecU.dS hσ hX hv`.
+-/
 theorem dS_smooth (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {v : H}
     (hv : IsSmoothVecU ε σ v) : IsSmoothVecU ε σ (dS σ X v) :=
   IsSmoothVecU.dS hσ hX hv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dSW_cons (X : Matrix (Fin n) (Fin n) ℂ) (w : List (Matrix (Fin n) (Fin n) ℂ)) (v : H) :
     dSW σ (X :: w) v = dS σ X (dSW σ w v) := rfl
 
+/- English proof (translation)
+Proceed by induction on `a with`. Consider the case `nil => rfl`. Consider the case `cons X a ih => rw [List.cons_append, dSW_cons, dSW_cons, ih]`.
+-/
 theorem dSW_append (a b : List (Matrix (Fin n) (Fin n) ℂ)) (v : H) :
     dSW σ (a ++ b) v = dSW σ a (dSW σ b v) := by
   induction a with
   | nil => rfl
   | cons X a ih => rw [List.cons_append, dSW_cons, dSW_cons, ih]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hv`. Consider the case `cons X w ih`. Rewrite using `[dSW_cons]`. Conclude with `IsSmoothVecU.dS hσ (hw X (by simp)) (ih (fun Y hY => hw Y (by simp [hY])))`.
+-/
 theorem dSW_smooth (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n) ℂ)} (hw : ∀ X ∈ w, inG ε X)
     {v : H} (hv : IsSmoothVecU ε σ v) : IsSmoothVecU ε σ (dSW σ w v) := by
   induction w with
@@ -34,6 +46,9 @@ theorem dSW_smooth (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin
     rw [dSW_cons]
     exact IsSmoothVecU.dS hσ (hw X (by simp)) (ih (fun Y hY => hw Y (by simp [hY])))
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih`. Establish `hw' : ∀ Y ∈ w, inG ε Y` using `fun Y hY => hw Y (by simp [hY])`. Rewrite using `[dSW_cons, dSW_cons, dSW_cons, ih hw', dS_add_vec hσ (hw X (by simp)) (dSW_smooth hσ hw' hv) (dSW_smooth hσ hw' hv')]`.
+-/
 theorem dSW_add (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n) ℂ)} (hw : ∀ X ∈ w, inG ε X)
     {v v' : H} (hv : IsSmoothVecU ε σ v) (hv' : IsSmoothVecU ε σ v') :
     dSW σ w (v + v') = dSW σ w v + dSW σ w v' := by
@@ -44,18 +59,29 @@ theorem dSW_add (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n)
     rw [dSW_cons, dSW_cons, dSW_cons, ih hw',
       dS_add_vec hσ (hw X (by simp)) (dSW_smooth hσ hw' hv) (dSW_smooth hσ hw' hv')]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => rw [dSW_cons, dSW_cons, ih, dS_smul_vec]`.
+-/
 theorem dSW_smul (c : ℂ) (w : List (Matrix (Fin n) (Fin n) ℂ)) (v : H) :
     dSW σ w (c • v) = c • dSW σ w v := by
   induction w with
   | nil => rfl
   | cons X w ih => rw [dSW_cons, dSW_cons, ih, dS_smul_vec]
 
+/- English proof (translation)
+Establish `e : v - v' = v + (-1 : ℂ) • v'` using `by rw [neg_one_smul, sub_eq_add_neg]`. Rewrite using `[e, dSW_add hσ hw hv (IsSmoothVecU.smul (-1) hv'), dSW_smul, neg_one_smul, sub_eq_add_neg]`.
+-/
 theorem dSW_sub (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n) ℂ)} (hw : ∀ X ∈ w, inG ε X)
     {v v' : H} (hv : IsSmoothVecU ε σ v) (hv' : IsSmoothVecU ε σ v') :
     dSW σ w (v - v') = dSW σ w v - dSW σ w v' := by
   have e : v - v' = v + (-1 : ℂ) • v' := by rw [neg_one_smul, sub_eq_add_neg]
   rw [e, dSW_add hσ hw hv (IsSmoothVecU.smul (-1) hv'), dSW_smul, neg_one_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+Establish `h : inG ε ((t : ℂ) • X)`. Unfold `inG at hX ⊢`. Establish `e : ((t : ℂ) • X)ᴴ = (t : ℂ) • Xᴴ`. Rewrite using `[Matrix.conjTranspose_smul]`. Use `congr 1`.
+
+Conclude with `Complex.conj_ofReal t`. Rewrite using `[e, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`. Conclude with `Formalism.REAL.f1alg_exp_inUJ ε _ h`.
+-/
 private lemma exp_real_smul_mem_UJset_of_inG {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ UJset ε := by
   have h : inG ε ((t : ℂ) • X) := by
@@ -67,11 +93,21 @@ private lemma exp_real_smul_mem_UJset_of_inG {X : Matrix (Fin n) (Fin n) ℂ} (h
     rw [e, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
   exact Formalism.REAL.f1alg_exp_inUJ ε _ h
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g).toLinearMap, norm_map' := hσ.2.1 g hg }`. Conclude with `L.inner_map_map y v`.
+-/
 private lemma inner_map_map_of_isURepOn (hσ : IsURepOn (UJset ε) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε)
     (y v : H) : inner ℂ (σ g y) (σ g v) = inner ℂ y v := by
   let L : H →ₗᵢ[ℂ] H := { toLinearMap := (σ g).toLinearMap, norm_map' := hσ.2.1 g hg }
   exact L.inner_map_map y v
 
+/- English proof (translation)
+Establish `hf : HasDerivAt (fun t : ℝ => inner ℂ (σ (NormedSpace.exp ((t : ℂ) • X)) y) (σ (NormedSpace.exp ((t : ℂ) • X)) v)) (inner ℂ (σ (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) y) (dS σ X v) + inner ℂ (dS σ X y) (σ (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) v)) 0` using `(hasDerivAt_dS hσ hX hy).inner ℂ (hasDerivAt_dS hσ hX hv)`. Establish `hc : (fun t : ℝ => inner ℂ (σ (NormedSpace.exp ((t : ℂ) • X)) y) (σ (NormedSpace.exp ((t : ℂ) • X)) v)) = fun _ => inner ℂ y v`. Use function extensionality and compare the values at `t`. Conclude with `inner_map_map_of_isURepOn hσ (exp_real_smul_mem_UJset_of_inG hX t) y v`. Rewrite `hf` using `[hc]`.
+
+Establish `h0 : σ (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) = 1`. Rewrite using `[Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero]`. Conclude with `hσ.1.1`. Rewrite `hf` using `[h0]`. Establish `h2` using `hf.unique (hasDerivAt_const (0 : ℝ) (inner ℂ y v))`.
+
+Simplify `h2` using `[add_comm]`.
+-/
 theorem inner_dS_add (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {y v : H}
     (hy : IsSmoothVecU ε σ y) (hv : IsSmoothVecU ε σ v) :
     inner ℂ (dS σ X y) v + inner ℂ y (dS σ X v) = 0 := by
@@ -92,6 +128,13 @@ theorem inner_dS_add (hσ : IsURepOn (UJset ε) σ) {X : Matrix (Fin n) (Fin n) 
   have h2 := hf.unique (hasDerivAt_const (0 : ℝ) (inner ℂ y v))
   simpa [add_comm] using h2
 
+/- English proof (translation)
+Proceed by induction on `w generalizing y with`. Consider the case `nil`. Simplify using `only [List.reverse_nil, List.length_nil, pow_zero, one_mul]`. Both sides reduce to the same expression. Consider the case `cons X w ih`.
+
+Establish `hX : inG ε X` using `hw X (by simp)`. Establish `hw' : ∀ Y ∈ w, inG ε Y` using `fun Y hY => hw Y (by simp [hY])`. Establish `hXy : IsSmoothVecU ε σ (dS σ X y)` using `IsSmoothVecU.dS hσ hX hy`. Establish `h1` using `inner_dS_add hσ hX hy (dSW_smooth hσ hw' hv)`. Establish `h2 : inner ℂ (dS σ X y) (dSW σ w v) = (-1 : ℂ) ^ w.length * inner ℂ (dSW σ w.reverse (dS σ X y)) v` using `ih (y := dS σ X y) hw' hXy`.
+
+Establish `e : dSW σ [X] y = dS σ X y` using `rfl`. Rewrite using `[dSW_cons, eq_neg_of_add_eq_zero_right h1, h2, List.reverse_cons, dSW_append, e, List.length_cons, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_dSW (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin n) ℂ)} (hw : ∀ X ∈ w, inG ε X)
     {y v : H} (hy : IsSmoothVecU ε σ y) (hv : IsSmoothVecU ε σ v) :
     inner ℂ y (dSW σ w v) = (-1 : ℂ) ^ w.length * inner ℂ (dSW σ w.reverse y) v := by
@@ -111,6 +154,13 @@ theorem inner_dSW (hσ : IsURepOn (UJset ε) σ) {w : List (Matrix (Fin n) (Fin 
       List.length_cons, pow_succ]
     ring
 
+/- English proof (translation)
+Establish `hu : k * kᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hk.1`. Establish `hu' : kᴴ * k = 1` using `Matrix.mem_unitaryGroup_iff'.mp hk.1`. Establish `hc : k * Jm ε = Jm ε * k` using `hk.2`. Establish `hc' : kᴴ * Jm ε = Jm ε * kᴴ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hu, Matrix.mul_one]`. Use `_ = kᴴ * (k * Jm ε) * kᴴ := by rw [hc]`. Use `_ = Jm ε * kᴴ := by rw [← Matrix.mul_assoc, hu', Matrix.one_mul]`. Unfold `inG at hX ⊢`. Establish `e : (kᴴ * X * k)ᴴ * Jm ε + Jm ε * (kᴴ * X * k) = kᴴ * (Xᴴ * Jm ε + Jm ε * X) * k`.
+
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_add, Matrix.add_mul]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc, hc]`. Simplify using `only [← Matrix.mul_assoc, hc']`. Rewrite using `[e, hX, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem inG_conj_K {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hX : inG ε X) : inG ε (kᴴ * X * k) := by
   have hu : k * kᴴ = 1 := Matrix.mem_unitaryGroup_iff.mp hk.1
   have hu' : kᴴ * k = 1 := Matrix.mem_unitaryGroup_iff'.mp hk.1
@@ -129,9 +179,21 @@ theorem inG_conj_K {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hX :
     · simp only [← Matrix.mul_assoc, hc']
   rw [e, hX, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Conclude with `⟨Matrix.mem_unitaryGroup_iff.mp hk.1, Matrix.mem_unitaryGroup_iff'.mp hk.1⟩`.
+-/
 theorem Kset_mul_conj {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) : k * kᴴ = 1 ∧ kᴴ * k = 1 := by
   exact ⟨Matrix.mem_unitaryGroup_iff.mp hk.1, Matrix.mem_unitaryGroup_iff'.mp hk.1⟩
 
+/- English proof (translation)
+Take `⟨hu, hu'⟩` from `Kset_mul_conj hk`. Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hu'`. Establish `hunit : IsUnit k` using `(Matrix.isUnit_iff_isUnit_det k).mpr (Matrix.isUnit_det_of_left_inverse hu')`. Establish `hkU : k ∈ UJset ε` using `by show kᴴ * Jm ε * k = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, hu', Matrix.one_mul]`.
+
+Establish `hY : inG ε (kᴴ * X * k)` using `inG_conj_K hk hX`. Establish `hfun : (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ k v)) = fun t : ℝ => σ k (σ (NormedSpace.exp ((t : ℂ) • (kᴴ * X * k))) v)`. Use function extensionality and compare the values at `t`. Establish `he : NormedSpace.exp ((t : ℂ) • X) * k = k * NormedSpace.exp ((t : ℂ) • (kᴴ * X * k))`. Establish `h1 : (t : ℂ) • (kᴴ * X * k) = k⁻¹ * ((t : ℂ) • X) * k`.
+
+Rewrite using `[hinv, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[h1, Matrix.exp_conj' k _ hunit, hinv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hu, Matrix.one_mul]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 _ (exp_real_smul_mem_UJset_of_inG hX t) _ hkU, he, hσ.1.2 _ hkU _ (exp_real_smul_mem_UJset_of_inG hY t), ContinuousLinearMap.comp_apply]`. Establish `hd` using `hasDerivAt_dS hσ hY hv`. Establish `hd2 : HasDerivAt (fun t : ℝ => σ k (σ (NormedSpace.exp ((t : ℂ) • (kᴴ * X * k))) v)) (σ k (dS σ (kᴴ * X * k) v)) 0` using `((σ k).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`.
+
+Rewrite using `[show dS σ X (σ k v) = deriv (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) (σ k v)) 0 from rfl, hfun]`. Conclude with `hd2.deriv`.
+-/
 theorem dS_conj (hσ : IsURepOn (UJset ε) σ) {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hX : inG ε X)
     {v : H} (hv : IsSmoothVecU ε σ v) : dS σ X (σ k v) = σ k (dS σ (kᴴ * X * k) v) := by
   obtain ⟨hu, hu'⟩ := Kset_mul_conj hk
@@ -159,6 +221,11 @@ theorem dS_conj (hσ : IsURepOn (UJset ε) σ) {k X : Matrix (Fin n) (Fin n) ℂ
     hfun]
   exact hd2.deriv
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih`. Establish `hX : inG ε X` using `hw X (by simp)`. Establish `hw' : ∀ Y ∈ w, inG ε Y` using `fun Y hY => hw Y (by simp [hY])`.
+
+Establish `hm : ∀ Y ∈ w.map (fun X => kᴴ * X * k), inG ε Y`. Introduce `Y hY`. Take `⟨Z, hZ, rfl⟩` from `List.mem_map.mp hY`. Conclude with `inG_conj_K hk (hw' Z hZ)`. Rewrite using `[List.map_cons, dSW_cons, dSW_cons, ih hw', dS_conj hσ hk hX (dSW_smooth hσ hm hv)]`.
+-/
 theorem dSW_conj (hσ : IsURepOn (UJset ε) σ) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε)
     {w : List (Matrix (Fin n) (Fin n) ℂ)} (hw : ∀ X ∈ w, inG ε X) {v : H} (hv : IsSmoothVecU ε σ v) :
     dSW σ w (σ k v) = σ k (dSW σ (w.map fun X => kᴴ * X * k) v) := by

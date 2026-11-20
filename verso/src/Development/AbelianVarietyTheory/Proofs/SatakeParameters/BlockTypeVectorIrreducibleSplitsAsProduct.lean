@@ -15,6 +15,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 namespace GlobalTheory.BlockSplitProof
 
+/- English proof (translation)
+Establish `hk : (χ⁻¹).ker = χ.ker`. Use extensionality with `x`. Simplify using `[MonoidHom.mem_ker]`. Unfold `IsSmoothChar`. Rewrite using `[hk]`.
+
+Conclude with `h`.
+-/
 private theorem is_smooth_char_inv {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {χ : kˣ →* ℂˣ} (h : IsSmoothChar χ) : IsSmoothChar χ⁻¹ := by
   have hk : (χ⁻¹).ker = χ.ker := by
@@ -24,6 +29,13 @@ private theorem is_smooth_char_inv {k : Type} [Field k] [ValuativeRel k] [Topolo
   rw [hk]
   exact h
 
+/- English proof (translation)
+Introduce `hBZ hGL hUP hDZ k _ _ _ _ r t χ π v hχ hT hv hvec`. Take `⟨s, d, σ, hsupp, hle⟩` from `GlobalTheory.T.parahoricBlockTypeVector_cuspidalSupport_tame_characters hBZ hGL hUP hDZ k r t χ π v hχ hT hv hvec`. Break down `hle.lt_or_eq with hlt | heq` into its components or cases. Conclude with `Or.inr ⟨s, d, σ, hsupp, hlt⟩`. Take `⟨π₁, π₂, hE, hns⟩` from `GlobalTheory.T.irreducible_split_exact_twistCount_product hBZ hGL hUP k r t χ π s d σ hχ hsupp heq.symm`.
+
+Establish `hsph` using `GlobalTheory.T.spherical_twist_of_blockTypeVector hBZ hGL hDZ k r t χ π π₁ π₂ v hχ hT hns hE hv hvec`. Establish `hχi : IsSmoothChar χ⁻¹` using `is_smooth_char_inv hχ`. Use `Or.inl ⟨π₁, GlobalTheory.SplitPairLift.twistIrr π₂ hχi, hsph, ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.SplitPairLift.twist_twist_inv π₂ χ⁻¹`. Rewrite `h2` using `[inv_inv]`.
+
+Use `show Nonempty (π.π.Equiv (prod₂ π₁.π (twist (twist π₂.π (detChar (Fin t) χ⁻¹)) (detChar (Fin t) χ))))`. Rewrite using `[h2]`. Conclude with `hE`.
+-/
 theorem main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.UnlinkedProductIrreducible → GlobalTheory.Published.DepthZeroJacquetInjective → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], BlockSplit k := by
   intro hBZ hGL hUP hDZ k _ _ _ _ r t χ π v hχ hT hv hvec
 

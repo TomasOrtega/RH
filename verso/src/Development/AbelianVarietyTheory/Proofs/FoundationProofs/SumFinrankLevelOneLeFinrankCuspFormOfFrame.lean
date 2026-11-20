@@ -7,12 +7,32 @@ open scoped MatrixGroups ModularForm Manifold Topology
 noncomputable section
 namespace GlobalTheory.OddFrame
 
+/- English proof (translation)
+Establish `h` using `ModularForm.mul_slash_SL2 (k - w) w x (⇑g) F`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, (isMF_coe_top g).slash_top x]`.
+-/
 theorem levelOne_mul_slash {k w : ℤ} (g : ModularForm 𝒮ℒ (k - w)) (F : ℍ → ℂ) (x : SL(2, ℤ)) :
     ((⇑g) * F) ∣[k] x = (⇑g) * (F ∣[w] x) := by
   have h := ModularForm.mul_slash_SL2 (k - w) w x (⇑g) F
   rw [sub_add_cancel] at h
   rw [h, (isMF_coe_top g).slash_top x]
 
+/- English proof (translation)
+Establish `hcf : ∀ (j : Fin r) (g : ModularForm 𝒮ℒ (k - w j)), IsCF Γ k ((⇑g) * F j)` using `fun j g => ((isMF_coe_top g).mono le_top).mul_isCF (hF j) (by ring)`. Establish `happ : ∀ (c : Fin r → CuspForm Γ k) (τ : ℍ), (∑ j, c j) τ = ∑ j, c j τ`. Introduce `c τ`. Proceed by induction on `(Finset.univ : Finset (Fin r)) using Finset.induction_on with`. Consider the case `empty => simp`.
+
+Consider the case `insert a t ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, CuspForm.add_apply, ih]`. Set `L : (Π j, ModularForm 𝒮ℒ (k - w j)) →ₗ[ℂ] CuspForm Γ k` to `{ toFun := fun g => ∑ j, (hcf j (g j)).toCF map_add' := by`. Introduce `a b`. Use extensionality with `τ`. Simplify using `only [CuspForm.add_apply, happ, IsCF.coe_toCF, Pi.mul_apply, Pi.add_apply, ModularForm.add_apply, add_mul, Finset.sum_add_distrib]`.
+
+Use the proof step `map_smul' := by`. Introduce `c a`. Use extensionality with `τ`. Simplify using `only [CuspForm.smul_apply, happ, IsCF.coe_toCF, Pi.mul_apply, Pi.smul_apply, ModularForm.smul_apply, RingHom.id_apply, smul_eq_mul, Finset.mul_sum, mul_assoc] }`. Establish `hinj : Function.Injective L`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Establish `h0 : ∀ τ, ∑ j, g j τ * F j τ = 0`. Introduce `τ`. Use `congrArg (fun f : CuspForm Γ k => f τ) hg` as an intermediate fact.
+
+Simplify `this` using `[L, happ]`. Establish `hfun : (∑ j, (⇑(g j)) * F j) = 0`. Use extensionality with `τ`. Simplify `h0 τ` using `[Finset.sum_apply]`. Establish `hvec : ∀ τ, Matrix.mulVec (evM s w F τ) (fun j => g j τ) = 0`.
+
+Introduce `τ`. Use extensionality with `i`. Establish `h1` using `congrArg (fun f => (f ∣[k] s i) τ) hfun`. Simplify using `only [SlashAction.zero_slash, Pi.zero_apply] at h1`. Rewrite `h1` using `[SlashAction.sum_slash]`.
+
+Simplify using `only [levelOne_mul_slash, Finset.sum_apply, Pi.mul_apply] at h1`. Simplify using `only [Matrix.mulVec, dotProduct, evM, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use function extensionality and compare the values at `j`.
+
+Use extensionality with `τ`. Use `Matrix.eq_zero_of_mulVec_eq_zero (hdet τ) (hvec τ)` as an intermediate fact. Conclude with `congrFun this j`. Use `haveI : FiniteDimensional ℂ (Π j, ModularForm 𝒮ℒ (k - w j)) := inferInstance`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_finrank_le_finrank_cuspForm (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ)
     (F : Fin r → ℍ → ℂ) (k : ℤ) (hΓ : Γ.FiniteIndex) (hfin : FiniteDimensional ℂ (CuspForm Γ k))
     (hF : ∀ j, IsCF Γ (w j) (F j)) (hdet : ∀ τ, (evM s w F τ).det ≠ 0) :

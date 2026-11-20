@@ -24,6 +24,11 @@ open GlobalTheory.CxForm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hφ1 : DifferentiableAt ℂ φ v` using `hφ.differentiableAt two_ne_zero`. Establish `e : (fun w => pull (fderiv ℂ φ w) (β (φ w))) = fun w => ∑ T, (bas n).repr (β (φ w)) T • pull (fderiv ℂ φ w) (bas n T)` using `funext fun w => by conv_lhs => rw [← (bas n).sum_repr (β (φ w))]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[e, GlobalTheory.T.holomorphicDelOperatorAt_sum_smul_leibniz (fun T w => (bas n).repr (β (φ w)) T) (fun T w => pull (fderiv ℂ φ w) (bas n T)) (fun T => (hβ T).comp v (hφ1.restrictScalars ℝ)) (fun T S => GlobalTheory.T.differentiableAt_repr_pullback_holomorphic_fderiv hφ (bas n T) …`. Simplify using `only [GlobalTheory.T.holomorphicDel_pullback_fderiv_form_eq_zero hφ, smul_zero, add_zero]`.
+
+Rewrite using `[delAt_eq_sum_dOne β (φ v), map_sum]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, GlobalTheory.T.holomorphicDifferentialOneForm_comp_holomorphic (c := fun u => (bas n).repr (β u) T) (hβ T) hφ1]`.
+-/
 theorem delAt_pull_comp {φ : V n → V n} {v : V n} (hφ : ContDiffAt ℂ 2 φ v) {β : V n → Alt n}
     (hβ : ∀ S, DifferentiableAt ℝ (fun u => (bas n).repr (β u) S) (φ v)) :
     delAt (fun w => pull (fderiv ℂ φ w) (β (φ w))) v = pull (fderiv ℂ φ v) (delAt β (φ v)) := by
@@ -41,6 +46,15 @@ theorem delAt_pull_comp {φ : V n → V n} {v : V n} (hφ : ContDiffAt ℂ 2 φ 
 
 variable {M : Type} [TopologicalSpace M] {A : HolAtlas M n}
 
+/- English proof (translation)
+Use `set φ : V n → V n := x'.ch ∘ x.ch.symm with hφdef`. Establish `hW : IsOpen (x.ch.target ∩ x.ch.symm ⁻¹' x'.ch.source)` using `x.ch.isOpen_inter_preimage_symm x'.ch.open_source`. Establish `hv : x.crd ∈ x.ch.target ∩ x.ch.symm ⁻¹' x'.ch.source` using `⟨x.ch.map_source x.2, by simp only [mem_preimage, x.ch.left_inv x.2, h]; exact x'.2⟩`. Establish `hφ : ContDiffAt ℂ 2 φ x.crd`. Establish `hd : DifferentiableOn ℂ φ (x.ch.target ∩ x.ch.symm ⁻¹' x'.ch.source)` using `A.holo x.1.1 x'.1.1`.
+
+Establish `hs : ContDiffOn ℂ ∞ φ (x.ch.target ∩ x.ch.symm ⁻¹' x'.ch.source)` using `(contDiffOn_piLp 2).2 fun c => ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ hW ((EuclideanSpace.proj c : V n →L[ℂ] ℂ).differentiable.comp_differentiableOn hd)`. Conclude with `(hs.contDiffAt (hW.mem_nhds hv)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hφv : φ x.crd = x'.crd` using `by simp only [hφdef, Function.comp_apply, x.ch.left_inv x.2, h]`. Establish `hloc : A.loc α x.1.1 =ᶠ[𝓝 x.crd] fun w => pull (fderiv ℂ φ w) (A.loc α x'.1.1 (φ w))` using `by filter_upwards [hW.mem_nhds hv] with w hw`. Set `p : A.Pt` to `⟨(x.1.1, x.ch.symm w), x.ch.map_target hw.1⟩`.
+
+Set `p' : A.Pt` to `⟨(x'.1.1, x.ch.symm w), hw.2⟩`. Establish `hc` using `hα.compat p p' rfl`. Establish `hp : p.crd = w` using `x.ch.right_inv hw.1`. Rewrite using `[HolAtlas.loc, dif_pos hw.1]`. Use `hc.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hp, ← A.loc_crd α p']`. Both sides reduce to the same expression. Use `show delAt (A.loc α x.1.1) x.crd = pull (fderiv ℂ φ x.crd) (delAt (A.loc α x'.1.1) x'.crd)`. Rewrite using `[delAt_congr hloc, delAt_pull_comp hφ (fun S => hφv ▸ FormMul.differentiableAt_coef hα x' S), hφv]`.
+-/
 theorem del_compat {α : A.Fld} (hα : A.IsForm α) (x x' : A.Pt) (h : x.pt = x'.pt) :
     A.del α x = pull (fderiv ℂ (x'.ch ∘ x.ch.symm) x.crd) (A.del α x') := by
   set φ : V n → V n := x'.ch ∘ x.ch.symm with hφdef
@@ -68,6 +82,9 @@ theorem del_compat {α : A.Fld} (hα : A.IsForm α) (x x' : A.Pt) (h : x.pt = x'
   show delAt (A.loc α x.1.1) x.crd = pull (fderiv ℂ φ x.crd) (delAt (A.loc α x'.1.1) x'.crd)
   rw [delAt_congr hloc, delAt_pull_comp hφ (fun S => hφv ▸ FormMul.differentiableAt_coef hα x' S), hφv]
 
+/- English proof (translation)
+Introduce `A α hα` and use `⟨GlobalTheory.T.del_loc_repr_contDiffOn_target A α hα, fun x x' h => del_compat hα x x' h⟩`.
+-/
 theorem isForm_del : ∀ {M : Type} [TopologicalSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (α : A.Fld),
     A.IsForm α → A.IsForm (A.del α) :=
   fun A α hα => ⟨GlobalTheory.T.del_loc_repr_contDiffOn_target A α hα, fun x x' h => del_compat hα x x' h⟩

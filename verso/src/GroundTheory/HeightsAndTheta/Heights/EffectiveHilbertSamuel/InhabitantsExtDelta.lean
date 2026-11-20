@@ -15,11 +15,19 @@ noncomputable section
 
 open ExtInhabitants
 
+/- English proof (translation)
+The claim follows from `let ⟨X, Z, h1, h2, h3⟩ := extDelta_hyp ⟨X, Z, h1, h2, h3, one_pos, one_pos⟩`.
+-/
 theorem extTwist_hyp : ∃ (X : EmbDatum 1) (Z : ZeroDatum X), 1 ≤ 1 ∧ 2 ≤ 2 ∧ Z.S.Nonempty ∧
     (0 : ℝ) < 1 ∧ (0 : ℝ) < 1 :=
   let ⟨X, Z, h1, h2, h3⟩ := extDelta_hyp
   ⟨X, Z, h1, h2, h3, one_pos, one_pos⟩
 
+/- English proof (translation)
+Use `⟨isOpen_univ, subset_univ _, fun k => continuousOn_const, fun k l x _ => ?_, fun x _ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[exOne, jac_flat, trivLB]`. Express the relevant statement in the definitionally equal form `(1 : ℂ) = 1 * sJac (flatAtlas 1) (fun i => lin exE (exC i)) _ x`. Rewrite using `[exSJac, one_mul]`. Take `⟨X, Z, -, -, h⟩` from `extDelta_hyp`.
+
+Conclude with `⟨0, by`. Express the relevant statement in the definitionally equal form `(0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))`. Rewrite using `[exZero]`. Use the proof step `rfl⟩`.
+-/
 theorem extShell_hyp : IsOpen (univ : Set exEmb.U) ∧ exZ.S ⊆ univ ∧
     (∀ k, ContinuousOn (exOne k ∘ (exEmb.A.chart k).symm)
       ((exEmb.A.chart k).target ∩ (exEmb.A.chart k).symm ⁻¹' univ)) ∧
@@ -37,6 +45,17 @@ theorem extShell_hyp : IsOpen (univ : Set exEmb.U) ∧ exZ.S ⊆ univ ∧
       change (0 : Fin 1 → ℂ) ∈ zeroSet (flatAtlas 1) (fun i => lin exE (exC i))
       rw [exZero]; rfl⟩
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun k l x _ => ?_, fun k => continuousOn_const, fun k l x _ => by simp [exOne, jac_flat, trivLB], ?_, fun h => ?_⟩` and prove the remaining obligations. Apply `Continuous.continuousOn` to reduce the goal to its premises. Establish `h1 : ∀ y, (∑ i : Fin 1, ‖exE₂ i k y‖ ^ 2) = 1` using `fun y => by simp [exE₂]`. Establish `h2 : ∀ y, (∑ i : Fin 2, ‖exE i k y‖ ^ 2) = 1 + ‖y 0‖ ^ 2` using `fun y => by`. Simplify using `[exE, Fin.sum_univ_two]`.
+
+Establish `e : exEmb.wt 2 k ∘ (exEmb.A.chart k).symm = fun y => Real.log 1 + ((2 : ℕ) : ℝ) * Real.log (1 + ‖y 0‖ ^ 2)`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `Real.log (∑ i : Fin 1, ‖exE₂ i k y‖ ^ 2) + ((2 : ℕ) : ℝ) * Real.log (∑ i : Fin 2, ‖exE i k y‖ ^ 2) = _`. Rewrite using `[h1, h2]`. Rewrite using `[e]`.
+
+Conclude with `continuous_const.add (continuous_const.mul ((continuous_const.add ((continuous_apply 0).norm.pow 2)).log fun y => (by positivity : (0 : ℝ) < 1 + ‖y 0‖ ^ 2).ne'))`. Establish `hkl : k = l` using `Subsingleton.elim k l`. Substitute `hkl` using the available equality. Simplify using `[trivLB]`. Express the relevant statement in the definitionally equal form `chartIntegral (flatAtlas 1) _ < ⊤`.
+
+Rewrite using `[chartIntegral_flat]`. Simplify using `only [exOne, norm_one, one_pow, mul_one]`. Simplify using `only [exp_neg_wt]`. Simplify using `using lintegral_inv_one_add_sq_sq_lt_top 2`. Use `congr_fun (congr_fun h c0) 0` as an intermediate fact.
+
+Simplify using `[exOne] at this`.
+-/
 theorem bergmanProj_hyp :
     (∀ k, ContinuousOn (exEmb.wt 2 k ∘ (exEmb.A.chart k).symm) (exEmb.A.chart k).target) ∧
     (∀ k l, ∀ x ∈ (exEmb.A.chart k).source ∩ (exEmb.A.chart l).source,

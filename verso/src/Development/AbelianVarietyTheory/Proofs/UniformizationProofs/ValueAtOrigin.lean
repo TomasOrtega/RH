@@ -21,11 +21,17 @@ noncomputable section
 namespace GlobalTheory.UT.EvalZero
 open GlobalTheory.UT.CoefBasic GlobalTheory.ExpansionValueZero GlobalTheory.BoxExpansion
 
+/- English proof (translation)
+Rewrite using `[← gs_unit (r ≫ g) z U h, ← gs_unit g (r z) U h, ← gs_pull r g z U h, gs_stalkMap r z _ h]`. Conclude with `congrArg _ ((gs_pull (𝟙 _) g (r z) U h _).trans (by rw [Category.id_comp]))`.
+-/
 theorem gm_comp_map {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (r z) ∈ U)
     (a : Γ(X, U)ˣ) : (gm (r ≫ g) z U a).val = (r.stalkMap z).hom (gm g (r z) U a).val := by
   rw [← gs_unit (r ≫ g) z U h, ← gs_unit g (r z) U h, ← gs_pull r g z U h, gs_stalkMap r z _ h]
   exact congrArg _ ((gs_pull (𝟙 _) g (r z) U h _).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Establish `hJ' : Good L (r z) (fun ψ => J (r ≫ ψ))` using `fun ψ => hJ (r ≫ ψ)`. Rewrite using `[val_of t (r ≫ g) z J (fun k => J (r ≫ g ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gm_comp_map r g z _ (hJ'.mem φ g) _`.
+-/
 theorem val_comp_map {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y') (g : Y' ⟶ Y) (q : Z ⟶ Y) (hq : r ≫ g = q) (z : Z) {J}
     (hJ : Good L z J) : (val t q z J).val = (r.stalkMap z).hom (val t g (r z) (fun ψ => J (r ≫ ψ))).val := by
@@ -34,6 +40,9 @@ theorem val_comp_map {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {
   rw [val_of t (r ≫ g) z J (fun k => J (r ≫ g ≫ φ k)) (fun k => by rw [Category.assoc])]
   exact gm_comp_map r g z _ (hJ'.mem φ g) _
 
+/- English proof (translation)
+Rewrite using `[h₀, h₁, h₂, h₃, h₄]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem alg_norm {M : Type} [CommGroup M] {a g₀ p₀ r₀ p r g x y q : M} (h₀ : q = a * p) (h₁ : a = g₀ * (p₀ * r₀)⁻¹)
     (h₂ : p = y * x⁻¹ * p₀) (h₃ : r = x * r₀) (h₄ : g = y * g₀) : q * r = g := by
   rw [h₀, h₁, h₂, h₃, h₄]
@@ -41,6 +50,9 @@ theorem alg_norm {M : Type} [CommGroup M] {a g₀ p₀ r₀ p r g x y q : M} (h�
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Use `(g ^ k).mul_left_inj.1 ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, ← Finset.sum_congr rfl fun i _ => h₅ i, ← h₂, h₁, h₃]`. Simplify using `only [Units.val_pow_eq_pow_val, ← h₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg_value {M K : Type} [CommRing M] [Fintype K] {k : ℕ} {p r g : Mˣ} {s s' b : M} {u v : K → M}
     (h₁ : s' = (p ^ k).val * s) (h₂ : s' = ∑ i, u i) (h₃ : s = b * (r ^ k).val) (h₄ : p.val * r.val = g.val)
     (h₅ : ∀ i, u i = v i * (g ^ k).val) : b = ∑ i, v i := by
@@ -49,6 +61,11 @@ theorem alg_value {M K : Type} [CommRing M] [Fintype K] {k : ℕ} {p r g : Mˣ} 
   simp only [Units.val_pow_eq_pow_val, ← h₄]
   ring
 
+/- English proof (translation)
+Use `⟨Submodule.map φ ⊤, (Module.Finite.fg_top).map φ, ⟨x, trivial, rfl⟩, fun i => ⟨a i, trivial, rfl⟩, fun n => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `h n`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sum, ← map_sub, ← Submodule.map_smul'']`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations.
+
+Simplify using `using Submodule.smul_mem_smul (Ideal.pow_le_pow_right (Nat.le_succ n) (hS T hT)) (Submodule.mem_top (x := (1 : R)))`.
+-/
 theorem sumI_map {R : Type} [CommRing R] (I : Ideal R) {E Ix : Type} [AddCommGroup E] [Module R E] (φ : R →ₗ[R] E)
     (a : Ix → R) (x : R) (h : ∀ n : ℕ, ∃ S : Finset Ix, ∀ T : Finset Ix, S ⊆ T → x - ∑ i ∈ T, a i ∈ I ^ (n + 1)) :
     SumI I (fun i => φ (a i)) (φ x) := by
@@ -59,6 +76,9 @@ theorem sumI_map {R : Type} [CommRing R] (I : Ideal R) {E Ix : Type} [AddCommGro
   refine Submodule.mem_map_of_mem ?_
   simpa using Submodule.smul_mem_smul (Ideal.pow_le_pow_right (Nat.le_succ n) (hS T hT)) (Submodule.mem_top (x := (1 : R)))
 
+/- English proof (translation)
+Set `_ : Module R F` to `Module.compHom F (algebraMap R (FractionRing R))`. Establish `e : ∀ r : R, LinearMap.toSpanSingleton R F 1 r = algebraMap (FractionRing R) F (algebraMap R _ r)` using `fun r => (Algebra.algebraMap_eq_smul_one (algebraMap R (FractionRing R) r)).symm`. Use `sumI_map I (LinearMap.toSpanSingleton R F 1) a x h` as an intermediate fact. Simplify using `only [e] at this`. Conclude with `this`.
+-/
 theorem sumF_map {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (F : Type) [Field F] [Algebra (FractionRing R) F]
     {Ix : Type} (a : Ix → R) (x : R)
     (h : ∀ n : ℕ, ∃ S : Finset Ix, ∀ T : Finset Ix, S ⊆ T → x - ∑ i ∈ T, a i ∈ I ^ (n + 1)) :
@@ -71,6 +91,9 @@ theorem sumF_map {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (F : Type) [
   simp only [e] at this
   exact this
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using sumF_map I F (fun _ : Ix => 0) 0 (fun n => ⟨∅, fun T _ => by simp⟩)`. Consider the case `insert a S ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(GlobalTheory.AdicSum.sumF_calculus R I hI F Ix _ _ _ _).2.1 (h a) ih _`.
+-/
 theorem sumF_comb {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hI : AdmBase R I) (F : Type) [Field F]
     [Algebra (FractionRing R) F] {Ix K : Type} (S : Finset K) (c : K → F) (x : K → Ix → F) (s : K → F)
     (h : ∀ i, SumF I F (x i) (s i)) : SumF I F (fun α => ∑ i ∈ S, c i * x i α) (∑ i ∈ S, c i * s i) := by
@@ -85,15 +108,36 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
 
+/- English proof (translation)
+Use `U.gen_hom` as an intermediate fact. Conclude with `congrArg (·.left) (IsMonHom.one_hom U.gen.hom)`.
+-/
 theorem eK_gen : eSec ((Over.pullback (jK R)).obj G) ≫ U.gen.hom.left = eSec A.A := by
   have := U.gen_hom
   exact congrArg (·.left) (IsMonHom.one_hom U.gen.hom)
 
 omit [IsDomain R] [IsCommMonObj G] in
+/- English proof (translation)
+Simplify using `[eSec]`. Rewrite using `[pullback.lift_fst, ← Category.assoc, ← pullback.condition, Category.comp_id]`.
+-/
 theorem eK_fst : eSec ((Over.pullback (jK R)).obj G) ≫ pullback.fst G.hom (jK R) = jK R ≫ eSec G := by
   simp [eSec]
   rw [pullback.lift_fst, ← Category.assoc, ← pullback.condition, Category.comp_id]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `U.ext`. Set `z₀ : Spec (CommRingCat.of (FractionRing R))` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))`. Take `⟨JA₀, hA₀⟩` from `exists_good' A.isLB z₀`. Take `⟨JG₀, hG₀⟩` from `exists_good' U.LG.isLB z₀`. Set `eK : Spec (CommRingCat.of (FractionRing R)) ⟶ ((Over.pullback (jK R)).obj G).left` to `eSec ((Over.pullback (jK R)).obj G)`.
+
+Establish `h₁ : eK ≫ U.gen.hom.left = eSec A.A` using `eK_gen U`. Establish `h₂ : eK ≫ pullback.fst G.hom (jK R) = jK R ≫ eSec G` using `eK_fst`. Establish `h₃ : eK ≫ ((Over.pullback (jK R)).obj G).hom = 𝟙 _` using `Over.w η[(Over.pullback (jK R)).obj G]`. Establish `hsurj : ∀ u : ((Spec (CommRingCat.of (FractionRing R))).presheaf.stalk z₀)ˣ, ∃ a : Γ(Spec (CommRingCat.of (FractionRing R)), ⊤)ˣ, gm (𝟙 _) z₀ ⊤ a = u`. Introduce `u`.
+
+Take `⟨V, hV, s, hs⟩` from `(Spec (CommRingCat.of (FractionRing R))).presheaf.exists_germ_eq u.val`. Take `rfl : V = ⊤` from `eq_top_iff.2 fun y _ => (Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z₀ y) ▸ hV`. Establish `hu : IsUnit s` using `(Spec (CommRingCat.of (FractionRing R))).toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `rfl : z₀ = y` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z₀ y`. Conclude with `(congrArg IsUnit hs).mpr u.isUnit`.
+
+Conclude with `⟨hu.unit, Units.ext ((gm_val _ z₀ ⊤ trivial _).trans hs)⟩`. Take `⟨a, ha⟩` from `hsurj (val (L := U.LG.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.LG.rig (jK R) z₀ JG₀ * (pw w eK z₀ (JA₀ (eSec A.A)) (JG₀ (jK R ≫ eSec G)) * val (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) (Z := Spec (CommRingCat.of (FractionRing R))) ρ (𝟙 _) z₀ JA₀)⁻ …`. Use `⟨scaleGen (pullU ((Over.pullback (jK R)).obj G).hom ⊤ a) w, scaleGen_isGen _ _ hw, hρ, fun z JA JG hA hG => ?_⟩` and prove the remaining obligations. Take `rfl : z₀ = z` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z₀ z`. Establish `mA : ∀ J, Good A.L z₀ J → U.gen.hom.left (eK z₀) ∈ A.L.U (J (eSec A.A))` using `fun J hJ => (congrArg (fun q => q z₀ ∈ A.L.U (J (eSec A.A))) h₁).mpr (hJ _)`.
+
+Establish `mG : ∀ J, Good U.LG.L z₀ J → pullback.fst G.hom (jK R) (eK z₀) ∈ U.LG.L.U (J (jK R ≫ eSec G))` using `fun J hJ => (congrArg (fun q => q z₀ ∈ U.LG.L.U (J (jK R ≫ eSec G))) h₂).mpr (hJ _)`. Establish `b₀ : gw (scaleGen (pullU ((Over.pullback (jK R)).obj G).hom ⊤ a) w) eK z₀ (JG (jK R ≫ eSec G)) (fun _ => JA (eSec A.A)) = gm (𝟙 _) z₀ ⊤ a * pw w eK z₀ (JA (eSec A.A)) (JG (jK R ≫ eSec G))`. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Use `(gm_res eK z₀ _ (by exact ⟨mem_pull.2 (mG _ hG), mem_pull.2 (mA _ hA)⟩) _).trans ?_` and prove the remaining obligations. Conclude with `(gm_pull eK _ z₀ ⊤ trivial a).trans (by rw [h₃])`.
+
+Establish `b₁` using `pw_trans hw eK z₀ (mA _ hA) (mA _ hA₀) (mG _ hG) (mG _ hG₀)`. Establish `b₂` using `val_tr (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) (Z := Spec (CommRingCat.of (FractionRing R))) hρ (𝟙 _) hA hA₀`. Establish `b₃` using `val_tr (L := U.LG.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.LG.rigGen (jK R) hG hG₀`. Rewrite `b₁` using `[h₁, h₂]`. Rewrite `b₂`, `b₃` using `[Fintype.prod_unique, zpow_one]`.
+
+Rewrite `b₂` using `[Category.id_comp]`. Conclude with `alg_norm b₀ ha b₁ b₂ b₃`.
+-/
 theorem exists_normW (ρ : LB.Gen (A.L.pull (eSec A.A))) (hρ : ρ.IsGen) : ∃ w₀, NormW U w₀ ρ := by
   obtain ⟨w, hw⟩ := U.ext
   let z₀ : Spec (CommRingCat.of (FractionRing R)) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))
@@ -140,6 +184,11 @@ theorem exists_normW (ρ : LB.Gen (A.L.pull (eSec A.A))) (hρ : ρ.IsGen) : ∃ 
 
 variable (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Establish `hA' : Good A.L (jFK (R` using `R) F z) (fun ψ => JA (jFK (R := R) F ≫ ψ)) := fun ψ => hA (jFK (R := R) F ≫ ψ)`. Establish `hG' : Good U.LG.L (jFK (R` using `R) F z) (fun ψ => JG (jFK (R := R) F ≫ ψ)) := fun ψ => hG (jFK (R := R) F ≫ ψ)`. Establish `e` using `congrArg (fun u => ((jFK (R := R) F).stalkMap z).hom u.val) (h.2.2 _ _ _ hA' hG')`. Establish `mA` using `(congrArg (fun q => q (jFK (R := R) F z) ∈ A.L.U (JA (jFK (R := R) F ≫ eSec A.A))) (eK_gen U)).mpr (hA' _)`. Establish `mG` using `(congrArg (fun q => q (jFK (R := R) F z) ∈ U.LG.L.U (JG (jFK (R := R) F ≫ jK R ≫ eSec G))) (eK_fst (G := G))).mpr (hG' _)`.
+
+Rewrite using `[Category.assoc]`. Use `Eq.trans ?_ (e.trans (val_comp_map _ _ _ _ rfl z hG).symm)` and prove the remaining obligations. Use `Eq.trans (congrArg₂ (· * ·) ?_ ?_) (map_mul _ _ _).symm` and prove the remaining obligations. Conclude with `gm_comp_map _ _ z _ (by exact ⟨mem_pull.2 mG, mem_pull.2 mA⟩) _`. Conclude with `val_comp_map _ _ _ _ (Category.comp_id _) z hA`.
+-/
 theorem normW_ext {w₀ : W0 U} {ρ : LB.Gen (A.L.pull (eSec A.A))} (h : NormW U w₀ ρ) (z : Sp F) {JA JG}
     (hA : Good A.L z JA) (hG : Good U.LG.L z JG) :
     (pw w₀ (jFK (R := R) F ≫ eSec ((Over.pullback (jK R)).obj G)) z (JA (jFK (R := R) F ≫ eSec A.A))
@@ -158,6 +207,9 @@ theorem normW_ext {w₀ : W0 U} {ρ : LB.Gen (A.L.pull (eSec A.A))} (h : NormW U
   · exact gm_comp_map _ _ z _ (by exact ⟨mem_pull.2 mG, mem_pull.2 mA⟩) _
   · exact val_comp_map _ _ _ _ (Category.comp_id _) z hA
 
+/- English proof (translation)
+Rewrite using `[val_of (rigT B L ρ T (k : ℤ)) (𝟙 _) z J (fun _ => J (T.hom ≫ eSec B)) (fun _ => congrArg J (Category.id_comp _))]`. Establish `hm : (𝟙 T.left : T.left ⟶ T.left) z ∈ LB.wchart L (fun _ : Fin 1 => T.hom ≫ eSec B) (fun _ => J (T.hom ≫ eSec B))` using `Set.mem_iInter.2 fun _ => hJ (T.hom ≫ eSec B)`. Establish `e` using `(gm_res (𝟙 T.left) z (rigT_le B L (fun _ => J (T.hom ≫ eSec B))) hm _).trans (gm_pull (𝟙 T.left) T.hom z _ (rigT_le B L _ hm) (ρ.s (fun _ => J (T.hom ≫ eSec B))))`. Rewrite `e` using `[Category.id_comp]`. Conclude with `(map_zpow _ _ _).trans ((zpow_natCast _ _).trans (congrArg (· ^ k) e))`.
+-/
 theorem val_rigT {S : Scheme.{0}} (B : Over S) [GrpObj B] (L : LB B.left) (ρ : LB.Gen (L.pull (eSec B)))
     (T : Over S) (k : ℕ) (z : T.left) {J} (hJ : Good L z J) :
     val (rigT B L ρ T (k : ℤ)) (𝟙 _) z J =
@@ -173,10 +225,20 @@ theorem val_rigT {S : Scheme.{0}} (B : Over S) [GrpObj B] (L : LB B.left) (ρ : 
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.ExpansionValueZero.cst_comp _ _ z a).trans (H1.gs_spec _ z _)).trans (cst_eq z _)`.
+-/
 theorem cst_base (z : (TF (R := R) F).left) (a : R) :
     Geo.Tor.cst (jFK (R := R) F ≫ jK R) z a = cstH z (algebraMap (FractionRing R) F (algebraMap R _ a)) :=
   ((GlobalTheory.ExpansionValueZero.cst_comp _ _ z a).trans (H1.gs_spec _ z _)).trans (cst_eq z _)
 
+/- English proof (translation)
+Take `⟨hb, hv⟩` from `(isZero_iff g).1 hg`. Use `coef_eq fun z J hJ => ?_` and prove the remaining obligations. Establish `e₁ : lift (𝟙 (TF (R` using `R) F)) g.b = lift (𝟙 (TF (R := R) F)) 1 := by rw [hb]`. Establish `e₂ : (lift (𝟙 (TF (R` using `R) F)) (1 : _ ⟶ D.P.A)).left ≫ (DegPre.prB D F).left = (jFK (R := R) F ≫ jK R) ≫ eSec D.P.A := GC.zF_prB D F`. Establish `e₃ : (lift (𝟙 (TF (R` using `R) F)) (1 : _ ⟶ D.P.A)).left ≫ (fst (TF (R := R) F) D.P.A).left = 𝟙 _ := by`.
+
+Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Rewrite using `[hw.2 z J hJ, hv α z J hJ, e₁, secLin_val hs _ z hJ, e₂, Units.val_one, _root_.mul_one, _root_.mul_one, cst_eq, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `b : gs (lift (𝟙 (TF (R` using `R) F)) (1 : _ ⟶ D.P.A)).left z ⊤ (scal (fst (TF (R := R) F) D.P.A).left (c i)) = cstH z (c i) := ((gs_pull _ _ z ⊤ trivial _).trans (by rw [e₃]; rfl)).trans (cst_eq z _)`.
+
+Rewrite using `[b, map_mul, _root_.mul_assoc, ← cst_base]`. Conclude with `congrArg _ (ha i _ _ z J hJ).symm`.
+-/
 theorem coef_comb {D : DegPre R} {k n : ℕ} (s : Fam D F k) (c : Fin n → F) (f : Fin n → ∀ α : D.X, D.SecB k α) (α : D.X)
     (hs : GeneratorPullback.SecLin D.P.L (DegPre.famφ D F α) (DegPre.famε k) (s.s α)
         (D.famφB α) (DegPre.famε k) (fun i => f i α) (DegPre.prB D F).left
@@ -200,6 +262,23 @@ theorem coef_comb {D : DegPre R} {k n : ℕ} (s : Fam D F k) (c : Fin n → F) (
   rw [b, map_mul, _root_.mul_assoc, ← cst_base]
   exact congrArg _ (ha i _ _ z J hJ).symm
 
+/- English proof (translation)
+Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Take `⟨JA, hA⟩` from `exists_good' (Z := (TFK (R := R) F).left) A.isLB z`. Take `⟨JG, hG⟩` from `exists_good' (Z := (TFK (R := R) F).left) U.LG.isLB z`. Use `U.gen_hom` as an intermediate fact. Set `r : TFK (R` to `R) F ⟶ UnifPre.GF (G := G) F := lift (𝟙 _) 1`.
+
+Establish `e₁ : r.left ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = jFK (R := R) F ≫ eSec ((Over.pullback (jK R)).obj G) := by`. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression. Establish `e₂ : r.left ≫ (U.genF F).left = (ptSecT A.A 1).left`. Rewrite using `[← Over.comp_left]`.
+
+Use `congr 1`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[r, ptSecT]`. Simplify using `[r, ptSecT, MonObj.one_comp]`. Establish `e₃ : r.left ≫ UnifPre.gFK (G` using `G) F = (jFK (R := R) F ≫ jK R) ≫ eSec G := by`.
+
+Rewrite using `[← Category.assoc, e₁, Category.assoc, Category.assoc]`. Conclude with `congrArg _ eK_fst`. Establish `e₄ : r.left ≫ (fst (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+
+Establish `e₅ : (jFK (R` using `R) F ≫ eSec ((Over.pullback (jK R)).obj G)) ≫ U.gen.hom.left = jFK (R := R) F ≫ eSec A.A := (Category.assoc _ _ _).trans (congrArg _ (eK_gen U))`. Establish `e₆ : (jFK (R` using `R) F ≫ eSec ((Over.pullback (jK R)).obj G)) ≫ pullback.fst G.hom (jK R) = (jFK (R := R) F ≫ jK R) ≫ eSec G := (Category.assoc _ _ _).trans ((congrArg _ eK_fst).trans (Category.assoc _ _ _).symm)`. Establish `a₁` using `isoRel_val hR r.left z hA hG`. Establish `a₂` using `secLin_val hσ r.left z hG`. Establish `a₃` using `hb z JA hA`.
+
+Establish `a₄` using `normW_ext U F h z hA hG`. Rewrite `a₁` using `[Category.comp_id, e₁, e₂]`. Rewrite `a₂` using `[e₃]`. Rewrite `a₃` using `[val_rigT _ _ _ _ _ _ hA]`. Establish `a₅ : ∀ i, gs r.left z ⊤ (scal (fst (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left (c i)) * sval (Z := (TFK (R := R) F).left) (σ i) ((jFK (R := R) F ≫ jK R) ≫ eSec G) z JG = @id ((TFK (R := R) F).left.presheaf.stalk z) (cstH (R := R) z (c i * algebraMap (FractionRing R) F (algebraMap R _ (x i)))) * (val (L := U.LG.L) ( …`.
+
+Rewrite using `[map_mul, ← cst_base]`. Conclude with `(congrArg₂ (· * ·) (((gs_pull _ _ z ⊤ trivial _).trans (by rw [e₄]; rfl)).trans (cst_eq (R := R) z _)) (hx i _ _ z JG hG)).trans (_root_.mul_assoc _ _ _).symm`. Apply `cstH_inj (R := R) z` to reduce the goal to its premises. Rewrite using `[map_sum, ← cst_eq]`. Use `erw [e₅, e₆] at a₁`.
+
+Conclude with `alg_value a₁ a₂ a₃ a₄ a₅`.
+-/
 theorem value_comb {w₀ : W0 U} {ρ : LB.Gen (A.L.pull (eSec A.A))} (h : NormW U w₀ ρ) {k n : ℕ} (t : SecA A F k)
     (σ' : U.SecGF F k)
     (hR : GeneratorPullback.IsoRelM A.L U.LG.L U.gen.hom.left (pullback.fst G.hom (jK R)) w₀
@@ -259,6 +338,11 @@ theorem value_comb {w₀ : W0 U} {ρ : LB.Gen (A.L.pull (eSec A.A))} (h : NormW 
   erw [e₅, e₆] at a₁
   exact alg_value a₁ a₂ a₃ a₄ a₅
 
+/- English proof (translation)
+Introduce `_ R _ _ _ I hI D A G _ _ _ U F _ _ _`. Use `⟨exists_gen_pt (Y := Spec (CommRingCat.of (FractionRing R))) A.isLB (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R)) (fun y => Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) _ _) _ _, exists_normW U.toUnifPre, ?_⟩` and prove the remaining obligations. Introduce and unpack `w₀ ρ h k t s ⟨σ', hR, n, c, σ, f, hE, hσ, hs⟩ g w hg hw b hb`. Use `choose a ha using fun i α => exists_value D.toPre k α (f i α)`. Use `choose x hx using fun i => exists_coeff (A := R) U.LG.isLB (σ i) (eSec G) (GeneratorPullback.powGen U.LG.L _ _ U.LG.rig k) (powGen_isGen _ _ _ _ U.LG.rigGen k) (fun W _ f => by simp)`.
+
+Establish `hx' : ∀ i (Z : Scheme.{0}) (r : Z ⟶ Sp R) (z : Z) (J), Good U.LG.L z J → sval (σ i) (r ≫ eSec G) z J = Geo.Tor.cst r z (x i) * (val (L` using `U.LG.L) U.LG.rig r z J ^ k).val := fun i Z r z J hJ => (hx i Z r z J hJ).trans (by rw [val_pow])`. Rewrite using `[value_comb U.toUnifPre F h t σ' hR c σ hσ x hx' b hb,`. Use function extensionality and compare the values at `fun α => coef_comb F s c f α (hs α) (fun i => a i α) (fun i => ha i α) g w hg hw]`. Conclude with `sumF_comb hI F _ c _ _ fun i => sumF_map I F (a i) (x i) fun e => value_sub_sum_mem U.toUnifPre e k (σ i) (f i) (hE i e) (x i) (hx' i) (a i) (ha i)`.
+-/
 theorem value_at_origin : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => (∃ ρ : LB.Gen (A.L.pull (eSec A.A)), ρ.IsGen) ∧ (∀ ρ : LB.Gen (A.L.pull (eSec A.A)), ρ.IsGen → ∃ w₀, NormW U.toUnifPre w₀ ρ) ∧ ∀ w₀ ρ, NormW U.toUnifPre w₀ ρ → ∀ (k : ℕ) (t : SecA A F k) s, U.ExpandsF F k w₀ t s → ∀ (g : GtPtF D.toPre F) (w : Frm D.toPre F k g.b), g.IsZero → FrmOne w → ∀ c : F, (∀ z J, Good A.L z J → sA t (ptSecT A.A 1).left z J = @id ((TFK (R := R) F).left.presheaf.stalk z) (cst (R := R) F z c) * (val (rigT A.A A.L ρ (TFK (R := R) F) (k : ℤ)) (𝟙 _) z J).val) → SumF I F (coef s g w) c := by
   intro _ R _ _ _ I hI D A G _ _ _ U F _ _ _
   refine ⟨exists_gen_pt (Y := Spec (CommRingCat.of (FractionRing R))) A.isLB

@@ -50,6 +50,9 @@ section SA
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use `split_ifs with h`. Conclude with `zero_mem _`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀]`. Establish `h1 : Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) c) = 1` using `le_antisymm ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (levelaf_int_mem_v w c)) (not_lt.1 h)`. Rewrite using `[h1, inv_one]`.
+-/
 theorem inverse_in_adic_integers (c : 𝓞 F) (w : HeightOneSpectrum (𝓞 F)) [Decidable (Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) c) < 1)] :
     (if Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) c) < 1 then (0 : w.adicCompletion F)
       else (algebraMap (𝓞 F) (w.adicCompletion F) c)⁻¹) ∈ w.adicCompletionIntegers F := by
@@ -66,8 +69,20 @@ def a_u (c : 𝓞 F) : FiniteAdeleRing (𝓞 F) F :=
   ⟨fun w => if Valued.v (algebraMap (𝓞 F) (w.adicCompletion F) c) < 1 then (0 : w.adicCompletion F)
       else (algebraMap (𝓞 F) (w.adicCompletion F) c)⁻¹, Filter.Eventually.of_forall fun w => inverse_in_adic_integers c w⟩
 
+/- English proof (translation)
+Introduce `w` and use `inverse_in_adic_integers c w`.
+-/
 theorem a_u_mem (c : 𝓞 F) : a_u c ∈ intAd F := fun w => inverse_in_adic_integers c w
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `loc_int_bound F E`. Establish `hfin` using `levelaf_finite_places c hc0`. Establish `key : x = ∑ v ∈ hfin.toFinset, afsplitIE v (prV (E` using `E) v x) + ((1 : E) ⊗ₜ[F] a_u c) * (levelafC E c * x) := by`. Rewrite using `[← sub_eq_zero]`. Apply `afsplit_inj` to reduce the goal to its premises.
+
+Introduce `w`. Rewrite using `[map_sub, map_add, map_sum, map_mul, map_mul, sub_eq_zero, afsplit_prV_tmul]`. Unfold `levelafC`. Rewrite using `[afsplit_prV_tmul]`. Distinguish the cases in `hw : w ∈ hfin.toFinset`.
+
+Rewrite using `[Finset.sum_eq_single w (fun v _ hv => afsplit_prV_IE_ne v w (Ne.symm hv) _) (fun h => absurd hw h), afsplit_prV_IE]`. Establish `h0 : (a_u c) w = 0` using `if_pos (by simpa using hw)`. Rewrite using `[h0, TensorProduct.tmul_zero, zero_mul, add_zero]`. Rewrite using `[Finset.sum_eq_zero (fun v hv => afsplit_prV_IE_ne v w (by rintro rfl; exact hw hv) _), zero_add]`. Establish `h0 : (a_u c) w = (algebraMap (𝓞 F) (w.adicCompletion F) c)⁻¹` using `if_neg (by simpa using hw)`.
+
+Rewrite using `[h0, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, show (algebraMap (𝓞 F) (FiniteAdeleRing (𝓞 F) F) c) w = algebraMap (𝓞 F) (w.adicCompletion F) c from rfl, inv_mul_cancel₀ (levelaf_algebraMap_ne_zero w c hc0), ← Algebra.TensorProduct.one_def, one_mul]`. Rewrite using `[key]`. Use `add_mem (Subring.sum_mem _ fun v _ => afsplit_IE_int v _ (h v)) (mul_mem ?_ (hc x h))` and prove the remaining obligations. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a_u c, a_u_mem c⟩, rfl⟩)`.
+-/
 theorem mem_S_of_loc (x : E ⊗[F] FiniteAdeleRing (𝓞 F) F) (h : ∀ w, prV (E := E) w x ∈ intV E w) :
     x ∈ tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F) := by
   classical
@@ -95,6 +110,15 @@ theorem mem_S_of_loc (x : E ⊗[F] FiniteAdeleRing (𝓞 F) F) (h : ∀ w, prV (
   refine add_mem (Subring.sum_mem _ fun v _ => afsplit_IE_int v _ (h v)) (mul_mem ?_ (hc x h))
   exact Subring.subset_closure (Or.inr ⟨⟨a_u c, a_u_mem c⟩, rfl⟩)
 
+/- English proof (translation)
+Use extensionality with `g`. Unfold `adG`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+
+Establish `hU : g ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F)` using `(Subgroup.mem_inf.mp hg).1`. Take `⟨h1, h2⟩` from `(afsplit_stab_iff _ _).mp (Subgroup.mem_inf.mp hg).2`. Use `⟨hU, fun v => Subgroup.mem_comap.2 ⟨afsplit_bc_mem σ J v g hU, (afsplit_stab_iff _ _).mpr ⟨fun i j => afsplit_prV_int v _ (h1 i j), fun i j => ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `afsplit_prV_int v _ (h2 i j)`.
+
+Introduce and unpack `⟨hU, hv⟩`. Use `⟨hU, (afsplit_stab_iff _ _).mpr ⟨fun i j => mem_S_of_loc _ fun w => ?_, fun i j => mem_S_of_loc _ fun w => ?_⟩⟩` and prove the remaining obligations. Conclude with `((afsplit_stab_iff _ _).mp (Subgroup.mem_inf.mp (Subgroup.mem_comap.1 (hv w))).2).1 i j`. Establish `h3` using `((afsplit_stab_iff _ _).mp (Subgroup.mem_inf.mp (Subgroup.mem_comap.1 (hv w))).2).2 i j`. Rewrite `h3` using `[← map_inv]`.
+
+Conclude with `h3`.
+-/
 theorem levelAf_eq_adG (σ : E →ₐ[F] E) (J : Matrix n n E) :
     levelAf σ J = adG σ J (fun v => levelV σ J v) := by
   ext g
@@ -123,12 +147,18 @@ section SP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_inf.trans (and_congr Iff.rfl (Subgroup.mem_iInf.trans (forall_congr' fun _ => Subgroup.mem_comap)))`.
+-/
 theorem p_mem_adG (σ : E →ₐ[F] E) (J : Matrix n n E)
     (W : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL n (E ⊗[F] v.adicCompletion F)))
     (x : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     x ∈ adG σ J W ↔ x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) ∧ ∀ v, bc (prV (E := E) v) x ∈ W v :=
   Subgroup.mem_inf.trans (and_congr Iff.rfl (Subgroup.mem_iInf.trans (forall_congr' fun _ => Subgroup.mem_comap)))
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[p_mem_adG]`. Conclude with `⟨hx.1, fun v => hle v (hx.2 v)⟩`.
+-/
 theorem p_mono (σ : E →ₐ[F] E) (J : Matrix n n E)
     (W W' : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL n (E ⊗[F] v.adicCompletion F)))
     (hle : ∀ v, W v ≤ W' v) : adG σ J W ≤ adG σ J W' := by
@@ -136,6 +166,9 @@ theorem p_mono (σ : E →ₐ[F] E) (J : Matrix n n E)
   rw [p_mem_adG] at hx ⊢
   exact ⟨hx.1, fun v => hle v (hx.2 v)⟩
 
+/- English proof (translation)
+Use `⟨afsplitU v h 1, afsplitU_mem v σ J h 1 hh (one_mem _), afsplit_right1 v h 1, fun w hw => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV, afsplitU_coe, afsplitC_prV_ne v w hw, Units.val_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem p_lift (σ : E →ₐ[F] E) (J : Matrix n n E) (v : HeightOneSpectrum (𝓞 F))
     (h : GL n (E ⊗[F] v.adicCompletion F)) (hh : h ∈ UPts σ J (v.adicCompletion F)) :
     ∃ x ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F), bc (prV (E := E) v) x = h ∧
@@ -145,6 +178,21 @@ theorem p_lift (σ : E →ₐ[F] E) (J : Matrix n n E) (v : HeightOneSpectrum (�
   rw [afsplit_coe_bc_prV, afsplitU_coe, afsplitC_prV_ne v w hw, Units.val_one, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `h1 : adG σ J W = adG σ J W' ⊓ (W a).comap (bc (prV (E` using `E) a)) := by`. Use extensionality with `x`. Rewrite using `[Subgroup.mem_inf, p_mem_adG, p_mem_adG, Subgroup.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h⟩`.
+
+Use `⟨⟨hx, fun v => ?_⟩, h a⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = a`. Substitute `hv` using the available equality. Conclude with `hle (h v)`. Rewrite using `[← hW v hv]`.
+
+Conclude with `h v`. Introduce and unpack `⟨⟨hx, h⟩, ha⟩`. Use `⟨hx, fun v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = a`. Substitute `hv` using the available equality.
+
+Conclude with `ha`. Rewrite using `[hW v hv]`. Conclude with `h v`. Establish `h2 : (adG σ J W').map (bc (prV (E` using `E) a)) = W' a := by`. Use extensionality with `y`.
+
+Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `((p_mem_adG σ J W' x).1 hx).2 a`. Introduce `hy`.
+
+Take `⟨x, hx, hxa, hxw⟩` from `p_lift σ J a y (hU hy)`. Use `⟨x, (p_mem_adG σ J W' x).2 ⟨hx, fun v => ?_⟩, hxa⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = a`. Substitute `hv` using the available equality. Rewrite using `[hxa]`.
+
+Conclude with `hy`. Rewrite using `[hxw v hv]`. Conclude with `one_mem _`. Rewrite using `[h1, Subgroup.inf_relIndex_left, Subgroup.relIndex_comap, h2]`.
+-/
 theorem p_step (σ : E →ₐ[F] E) (J : Matrix n n E)
     (W W' : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL n (E ⊗[F] v.adicCompletion F)))
     (a : HeightOneSpectrum (𝓞 F)) (hU : W' a ≤ UPts σ J (a.adicCompletion F))
@@ -179,6 +227,23 @@ theorem p_step (σ : E →ₐ[F] E) (J : Matrix n n E)
   rw [h1, Subgroup.inf_relIndex_left, Subgroup.relIndex_comap, h2]
 
 open Classical in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `: (fun v : HeightOneSpectrum (𝓞 F) => if v ∈ (∅ : Finset (HeightOneSpectrum (𝓞 F))) then W' v else W v) = W`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Subgroup.relIndex_self, Finset.prod_empty]`. Consider the case `insert a s ha ih`. Establish `hm1 : adG σ J W ≤ adG σ J (fun v => if v ∈ s then W' v else W v)`. Use `p_mono σ J _ _ fun v => ?_` and prove the remaining obligations. Use `show W v ≤ if v ∈ s then W' v else W v`.
+
+Use `split_ifs`. Conclude with `hle v`. Conclude with `le_rfl`. Establish `hm2 : adG σ J (fun v => if v ∈ s then W' v else W v) ≤ adG σ J (fun v => if v ∈ insert a s then W' v else W v)`. Use `p_mono σ J _ _ fun v => ?_` and prove the remaining obligations.
+
+Use `show (if v ∈ s then W' v else W v) ≤ if v ∈ insert a s then W' v else W v`. Distinguish the cases in `hv : v ∈ s`. Rewrite using `[if_pos hv, if_pos (Finset.mem_insert_of_mem hv)]`. Rewrite using `[if_neg hv] split_ifs`. Conclude with `hle v`.
+
+Conclude with `le_rfl`. Establish `hs` using `p_step σ J (fun v => if v ∈ s then W' v else W v) (fun v => if v ∈ insert a s then W' v else W v) a (by show (if a ∈ insert a s then W' a else W a) ≤ _`. Rewrite using `[if_pos (Finset.mem_insert_self a s)]`. Conclude with `hU a)`. Use the proof step `(fun v hv => by show (if v ∈ s then W' v else W v) = if v ∈ insert a s then W' v else W v`.
+
+Distinguish the cases in `hvs : v ∈ s`. Rewrite using `[if_pos hvs, if_pos (Finset.mem_insert_of_mem hvs)]`. Rewrite using `[if_neg hvs, if_neg (fun h => (Finset.mem_insert.1 h).elim hv hvs)])`. Use the proof step `(by show (if a ∈ s then W' a else W a) ≤ if a ∈ insert a s then W' a else W a`. Rewrite using `[if_neg ha, if_pos (Finset.mem_insert_self a s)]`.
+
+Conclude with `hle a)`. Establish `hs' : (adG σ J (fun v => if v ∈ s then W' v else W v)).relIndex (adG σ J (fun v => if v ∈ insert a s then W' v else W v)) = (W a).relIndex (W' a)`. Rewrite using `[hs]`. Use `show (if a ∈ s then W' a else W a).relIndex (if a ∈ insert a s then W' a else W a) = _`. Rewrite using `[if_neg ha, if_pos (Finset.mem_insert_self a s)]`.
+
+Rewrite using `[← Subgroup.relIndex_mul_relIndex _ _ _ hm1 hm2, ih, hs', Finset.prod_insert ha, mul_comm]`.
+-/
 theorem p_ind (σ : E →ₐ[F] E) (J : Matrix n n E)
     (W W' : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL n (E ⊗[F] v.adicCompletion F)))
     (hle : ∀ v, W v ≤ W' v) (hU : ∀ v, W' v ≤ UPts σ J (v.adicCompletion F))
@@ -225,6 +290,11 @@ theorem p_ind (σ : E →ₐ[F] E) (J : Matrix n n E)
       rw [if_neg ha, if_pos (Finset.mem_insert_self a s)]
     rw [← Subgroup.relIndex_mul_relIndex _ _ _ hm1 hm2, ih, hs', Finset.prod_insert ha, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `p_ind σ J W W' hle hU B`. Establish `h' : (fun v : HeightOneSpectrum (𝓞 F) => if v ∈ B then W' v else W v) = W'`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ B`. Rewrite using `[if_pos hv]`.
+
+Rewrite using `[if_neg hv, hB v hv]`. Rewrite `h` using `[h']`. Then use the resulting hypothesis.
+-/
 theorem adG_relIndex (σ : E →ₐ[F] E) (J : Matrix n n E)
     (W W' : ∀ v : HeightOneSpectrum (𝓞 F), Subgroup (GL n (E ⊗[F] v.adicCompletion F)))
     (hle : ∀ v, W v ≤ W' v) (hU : ∀ v, W' v ≤ UPts σ J (v.adicCompletion F))
@@ -243,6 +313,15 @@ end SP
 
 section SL
 
+/- English proof (translation)
+Introduce `y`. Use `choose M hM using fun i j => Ideal.Quotient.mk_surjective (I := IsLocalRing.maximalIdeal O) ((y : Matrix n n (O ⧸ IsLocalRing.maximalIdeal O)) i j)`. Establish `hmap : (Matrix.of M).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)) = (y : Matrix n n (O ⧸ IsLocalRing.maximalIdeal O))`. Use extensionality with `i j`. Conclude with `hM i j`.
+
+Establish `hdet : IsUnit (Matrix.of M).det`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal]`. Introduce `hmem`. Establish `h0 : Ideal.Quotient.mk (IsLocalRing.maximalIdeal O) (Matrix.of M).det = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hmem`. Rewrite `h0` using `[RingHom.map_det, RingHom.mapMatrix_apply, hmap]`.
+
+Establish `hu : IsUnit (y : Matrix n n (O ⧸ IsLocalRing.maximalIdeal O)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Rewrite `hu` using `[h0]`. Conclude with `not_isUnit_zero hu`. Use `⟨Matrix.nonsingInvUnit (Matrix.of M) hdet, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+
+Conclude with `hmap`.
+-/
 theorem l_red_surj {O : Type} [CommRing O] [IsLocalRing O] {n : Type} [Fintype n] [DecidableEq n] :
     Function.Surjective (redGL (n := n) (IsLocalRing.maximalIdeal O)) := by
   intro y
@@ -269,6 +348,15 @@ theorem l_red_surj {O : Type} [CommRing O] [IsLocalRing O] {n : Type} [Fintype n
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `split_group_points F E n σ (1 : Matrix n n E) (v.adicCompletion F) s.φ s.sig`. Take `⟨g', hg', hg'h⟩` from `split_surjective (1 : Matrix n n (v.adicCompletion F)) (by simp) h`. Establish `hJ : (1 : Matrix n n E).map ((s.φ : E ⊗[F] v.adicCompletion F →+* _).comp (inclE (F` using `F) (v.adicCompletion F))) = splitJ (1 : Matrix n n (v.adicCompletion F)) := by`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[splitJ]`. Simplify using `[splitJ, hij]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `[splitJ]`. Simplify using `[splitJ, hij, Ne.symm hij]`. Rewrite `hg'` using `[← hJ]`. Use `⟨(e.symm ⟨g', hg'⟩ : GL n _), (e.symm ⟨g', hg'⟩).2, ?_⟩` and prove the remaining obligations. Establish `h1 : bc (s.φ : E ⊗[F] v.adicCompletion F →+* _) (e.symm ⟨g', hg'⟩ : GL n _) = g'`.
+
+Rewrite using `[← he, e.apply_symm_apply]`. Rewrite using `[← hg'h]`. Conclude with `congrArg (bc (RingHom.fst _ _)) h1`.
+-/
 theorem l_surj (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore σ v)
     (h : GL n (v.adicCompletion F)) :
     ∃ g ∈ UPts σ (1 : Matrix n n E) (v.adicCompletion F), bc ((RingHom.fst _ _).comp s.φ.toRingHom) g = h := by
@@ -290,6 +378,11 @@ theorem l_surj (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitC
   rw [← hg'h]
   exact congrArg (bc (RingHom.fst _ _)) h1
 
+/- English proof (translation)
+Establish `hu : ∃ u ∈ GLint n (v.adicCompletionIntegers F).toSubring, (u : Matrix n n (v.adicCompletion F)) = fun i j => (s.φ (inclE (F` using `F) (v.adicCompletion F) ((1 : Matrix n n E) i j))).1 := by`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hij]`. Conclude with `level_subgroup_split F E n σ 1 v s.φ s.sig s.int hu g hg`.
+-/
 theorem l_levelV_iff (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore σ v)
     (g : GL n (E ⊗[F] v.adicCompletion F)) (hg : g ∈ UPts σ (1 : Matrix n n E) (v.adicCompletion F)) :
     g ∈ levelV σ (1 : Matrix n n E) v ↔
@@ -304,6 +397,9 @@ theorem l_levelV_iff (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : 
     · simp [hij]
   exact level_subgroup_split F E n σ 1 v s.φ s.sig s.int hu g hg
 
+/- English proof (translation)
+Introduce and unpack `x ⟨g, -, rfl⟩`. Conclude with `⟨g, rfl⟩`.
+-/
 theorem l_congPre_le (v : HeightOneSpectrum (𝓞 F))
     (Hk : Subgroup (GL n (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)))) :
     congPre (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))
@@ -312,6 +408,11 @@ theorem l_congPre_le (v : HeightOneSpectrum (𝓞 F))
   rintro x ⟨g, -, rfl⟩
   exact ⟨g, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `(l_levelV_iff σ v s g (Subgroup.mem_inf.1 hg).1).1 hg`. Introduce `hh`.
+
+Take `⟨g, hg, rfl⟩` from `l_surj σ v s h`. Conclude with `⟨g, (l_levelV_iff σ v s g hg).2 hh, rfl⟩`.
+-/
 theorem l_map_levelV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore σ v) :
     (levelV σ (1 : Matrix n n E) v).map (bc ((RingHom.fst _ _).comp s.φ.toRingHom)) =
       GLint n (v.adicCompletionIntegers F).toSubring := by
@@ -323,6 +424,9 @@ theorem l_map_levelV (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : 
     obtain ⟨g, hg, rfl⟩ := l_surj σ v s h
     exact ⟨g, (l_levelV_iff σ v s g hg).2 hh, rfl⟩
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨hU, hC⟩` from `Subgroup.mem_inf.1 hg`. Conclude with `(l_levelV_iff σ v s g hU).2 (l_congPre_le v Hk hC)`.
+-/
 theorem congU_le (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore σ v)
     (Hk : Subgroup (GL n (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)))) :
     congU σ (1 : Matrix n n E) v s Hk ≤ levelV σ 1 v := by
@@ -330,6 +434,11 @@ theorem congU_le (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : Spli
   obtain ⟨hU, hC⟩ := Subgroup.mem_inf.1 hg
   exact (l_levelV_iff σ v s g hU).2 (l_congPre_le v Hk hC)
 
+/- English proof (translation)
+Establish `hG : GLint n (v.adicCompletionIntegers F).toSubring = (⊤ : Subgroup (GL n (v.adicCompletionIntegers F))).map (bc (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)))`. Rewrite using `[← MonoidHom.range_eq_map]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (bc (n` using `n) (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))) := bc_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Rewrite using `[hG]`.
+
+Unfold `congPre`. Rewrite using `[Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_top_right, Subgroup.index_comap_of_surjective _ l_red_surj]`.
+-/
 theorem l_congPre_relIndex (v : HeightOneSpectrum (𝓞 F))
     (Hk : Subgroup (GL n (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)))) :
     (congPre (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F))
@@ -347,6 +456,11 @@ theorem l_congPre_relIndex (v : HeightOneSpectrum (𝓞 F))
   rw [Subgroup.relIndex_map_map_of_injective _ _ hinj, Subgroup.relIndex_top_right,
     Subgroup.index_comap_of_surjective _ l_red_surj]
 
+/- English proof (translation)
+Establish `h1 : congU σ (1 : Matrix n n E) v s Hk ⊓ levelV σ 1 v = (congPre (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) Hk).comap (bc ((RingHom.fst _ _).comp s.φ.toRingHom)) ⊓ levelV σ 1 v`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf, congU]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h⟩, hK⟩`.
+
+Conclude with `⟨h, hK⟩`. Introduce and unpack `⟨h, hK⟩`. Conclude with `⟨⟨(Subgroup.mem_inf.1 hK).1, h⟩, hK⟩`. Rewrite using `[← Subgroup.inf_relIndex_right, h1, Subgroup.inf_relIndex_right, Subgroup.relIndex_comap, l_map_levelV, l_congPre_relIndex]`.
+-/
 theorem congU_relIndex (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore σ v)
     (Hk : Subgroup (GL n (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)))) :
     (congU σ (1 : Matrix n n E) v s Hk).relIndex (levelV σ 1 v) = Hk.index := by
@@ -368,6 +482,11 @@ end SL
 
 section K
 
+/- English proof (translation)
+Introduce `y`. Use `⟨bc (e.symm : B →+* A) y, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show e (e.symm ((y : Matrix n n B) i j)) = _`.
+
+Conclude with `e.apply_symm_apply _`.
+-/
 theorem k_bc_surj {A B : Type} [CommRing A] [CommRing B] {n : Type} [Fintype n] [DecidableEq n] (e : A ≃+* B) :
     Function.Surjective (bc (n := n) (e : A →+* B)) := by
   intro y
@@ -402,6 +521,11 @@ def k_uni (A : Type) [CommRing A] [Nontrivial A] (k g : ℕ) [Fact g.Prime] [Cha
     rw [h2, Units.val_pow_eq_pow_val]
     exact Formalism.MainNotions.Gaps.MI.isUnitri_pow ha _
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Subgroup.closure_le]`. Introduce `y hy`. Conclude with `⟨fun i j hij => (hy i j).1 hij, fun i => (hy i i).2⟩`. Introduce `y hy`.
+
+Conclude with `Subgroup.subset_closure fun i j => ⟨fun hij => hy.1 i j hij, hy.2 i⟩`.
+-/
 theorem k_closure_eq (A : Type) [CommRing A] [Nontrivial A] (k g : ℕ) [Fact g.Prime] [CharP A g] :
     Subgroup.closure (upperUni k A) = k_uni A k g := by
   apply le_antisymm
@@ -411,6 +535,17 @@ theorem k_closure_eq (A : Type) [CommRing A] [Nontrivial A] (k g : ℕ) [Fact g.
   · intro y hy
     exact Subgroup.subset_closure fun i j => ⟨fun hij => hy.1 i j hij, hy.2 i⟩
 
+/- English proof (translation)
+Establish `: Fact g.Prime` using `⟨hg⟩`. Establish `: Finite κ` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact hg.ne_zero)`. Set `_ : Fintype κ` to `Fintype.ofFinite κ`. Set `e : ZMod g ≃+* κ` to `ZMod.ringEquivOfPrime κ hg (by rw [← Nat.card_eq_fintype_card, hc])`. Establish `: Nontrivial κ` using `e.symm.toEquiv.nontrivial`.
+
+Establish `: CharP κ g` using `charP_of_injective_ringHom (f := (e : ZMod g →+* κ)) e.injective g`. Rewrite using `[k_closure_eq κ k g]`. Set `E : GL (Fin k) κ ≃ GL (Fin k) (ZMod g)` to `(Units.mapEquiv (RingEquiv.mapMatrix (m := Fin k) e.symm).toMulEquiv).toEquiv`. Establish `hE : ∀ (a : GL (Fin k) κ) (i j : Fin k), ((E a : GL (Fin k) (ZMod g)) : Matrix (Fin k) (Fin k) (ZMod g)) i j = e.symm ((a : Matrix (Fin k) (Fin k) κ) i j)` using `fun _ _ _ => rfl`. Establish `h1 : Nat.card (GL (Fin k) κ) = Nat.card (GL (Fin k) (ZMod g))` using `Nat.card_congr E`.
+
+Establish `h2 : Nat.card (k_uni κ k g) = Nat.card {A : GL (Fin k) (ZMod g) // Formalism.MainNotions.StandardLattice.IsUnitri (A : Matrix (Fin k) (Fin k) (ZMod g))}`. Use `Nat.card_congr (Equiv.subtypeEquiv E fun a => ?_)` and prove the remaining obligations. Use `show Formalism.MainNotions.StandardLattice.IsUnitri (a : Matrix (Fin k) (Fin k) κ) ↔ _`. Unfold `Formalism.MainNotions.StandardLattice.IsUnitri`. Simplify using `only [hE, EmbeddingLike.map_eq_zero_iff, EmbeddingLike.map_eq_one_iff]`.
+
+Establish `h3` using `Subgroup.card_mul_index (k_uni κ k g)`. Establish `h4 : (Nat.card (k_uni κ k g) : ℝ) ≠ 0`. Establish `: 0 < Nat.card (k_uni κ k g)` using `Nat.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Unfold `Formalism.MainNotions.StandardLattice.idxColLoc Formalism.MainNotions.StandardLattice.idxLoc`.
+
+Rewrite using `[← h1, ← h2, eq_div_iff h4, ← h3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idx_upperUni (κ : Type) [CommRing κ] (g k : ℕ) (hg : g.Prime) (hc : Nat.card κ = g) :
     ((Subgroup.closure (upperUni k κ)).index : ℝ) = Formalism.MainNotions.StandardLattice.idxColLoc g k := by
   have : Fact g.Prime := ⟨hg⟩
@@ -441,6 +576,11 @@ theorem idx_upperUni (κ : Type) [CommRing κ] (g k : ℕ) (hg : g.Prime) (hc : 
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨j0, hj0⟩` from `Function.ne_iff.1 hw`. Set `M : Matrix (Fin k) (Fin k) K` to `((1 : Matrix (Fin k) (Fin k) K).updateRow j0 w).submatrix (Equiv.swap i0 j0) id`. Establish `hdet : M.det ≠ 0` using `by show (((1 : Matrix (Fin k) (Fin k) K).updateRow j0 w).submatrix (Equiv.swap i0 j0) id).det ≠ 0`. Rewrite using `[Matrix.det_permute, ← Matrix.cramer_transpose_apply, Matrix.transpose_one, Matrix.cramer_one]`. Use `mul_ne_zero ?_ hj0` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap i0 j0)) with h | h <;> rw [h] <;> simp`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet, fun j => ?_⟩` and prove the remaining obligations. Use `show M i0 j = w j`. Simplify using `[M]`.
+-/
 theorem k_exists_row {K : Type} [Field K] {k : ℕ} (i0 : Fin k) (w : Fin k → K) (hw : w ≠ 0) :
     ∃ g : GL (Fin k) K, ∀ j, (g : Matrix (Fin k) (Fin k) K) i0 j = w j := by
   obtain ⟨j0, hj0⟩ := Function.ne_iff.1 hw
@@ -468,6 +608,23 @@ def k_V (K : Type) (k : ℕ) : Type := Fin k → K
         ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K)
     rw [Matrix.vecMul_vecMul, _root_.mul_inv_rev, Units.val_mul]
 
+/- English proof (translation)
+Set `act : MulAction (GL (Fin k) K) (k_V K k)` to `k_act K k`. Set `e0 : k_V K k` to `(Pi.single i0 1 : Fin k → K)`. Establish `hsm : ∀ (g : GL (Fin k) K) (w : k_V K k), g • w = (show Fin k → K from w) ᵥ* ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K)` using `fun _ _ => rfl`. Establish `hrow : ∀ (g : GL (Fin k) K), (Pi.single i0 1 : Fin k → K) ᵥ* (g : Matrix (Fin k) (Fin k) K) = fun j => (g : Matrix (Fin k) (Fin k) K) i0 j`. Introduce `g`.
+
+Use extensionality with `j`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`. Establish `hone : (fun j => (1 : Matrix (Fin k) (Fin k) K) i0 j) = (Pi.single i0 1 : Fin k → K)`. Use extensionality with `j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+
+Establish `hs : rowStab K i0 = MulAction.stabilizer (GL (Fin k) K) e0`. Use extensionality with `g`. Rewrite using `[MulAction.mem_stabilizer_iff, ← inv_mem_iff, hsm]`. Use `show _ ↔ (Pi.single i0 1 : Fin k → K) ᵥ* ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) = (Pi.single i0 1 : Fin k → K)`. Rewrite using `[hrow, ← hone]`.
+
+Conclude with `⟨fun h => funext h, fun h j => congrFun h j⟩`. Establish `ho : MulAction.orbit (GL (Fin k) K) e0 = (({0} : Set (Fin k → K))ᶜ : Set (Fin k → K))`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ h0`.
+
+Establish `h0' : (Pi.single i0 1 : Fin k → K) ᵥ* ((g⁻¹ : GL (Fin k) K) : Matrix (Fin k) (Fin k) K) = 0` using `h0`. Establish `h1` using `congrArg (fun u => u ᵥ* (g : Matrix (Fin k) (Fin k) K)) h0'`. Simplify using `only [Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one, Matrix.zero_vecMul] at h1`. Establish `h2` using `congrFun h1 i0`. Simplify using `at h2`.
+
+Introduce `hw`. Take `⟨g, hg⟩` from `k_exists_row i0 (show Fin k → K from w) hw`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Use `show g⁻¹ • e0 = w`. Rewrite using `[hsm, inv_inv]`.
+
+Use `show (Pi.single i0 1 : Fin k → K) ᵥ* (g : Matrix (Fin k) (Fin k) K) = w`. Rewrite using `[hrow]`. Conclude with `funext hg`. Rewrite using `[hs, MulAction.index_stabilizer, ho]`. Use `show (({0} : Set (Fin k → K))ᶜ : Set (Fin k → K)).ncard = _`.
+
+Rewrite using `[Set.ncard_compl, Set.ncard_singleton, Nat.card_fun]`. Simplify using the standard rewrite rules.
+-/
 theorem k_idx_field (K : Type) [Field K] [Finite K] {k : ℕ} (i0 : Fin k) :
     (rowStab K i0).index = Nat.card K ^ k - 1 := by
   let act : MulAction (GL (Fin k) K) (k_V K k) := k_act K k
@@ -512,6 +669,13 @@ theorem k_idx_field (K : Type) [Field K] [Finite K] {k : ℕ} (i0 : Fin k) :
   rw [Set.ncard_compl, Set.ncard_singleton, Nat.card_fun]
   simp
 
+/- English proof (translation)
+Establish `: Fact T.Prime` using `⟨hT⟩`. Establish `: Finite κ` using `Nat.finite_of_card_ne_zero (by rw [hc]; exact hT.ne_zero)`. Set `_ : Fintype κ` to `Fintype.ofFinite κ`. Set `e : ZMod T ≃+* κ` to `ZMod.ringEquivOfPrime κ hT (by rw [← Nat.card_eq_fintype_card, hc])`. Establish `h : rowStab κ i0 = (rowStab (ZMod T) i0).comap (bc (n` using `Fin k) (e.symm : κ →+* ZMod T)) := by`.
+
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_comap]`. Use `show (∀ j, (x : Matrix (Fin k) (Fin k) κ) i0 j = (1 : Matrix (Fin k) (Fin k) κ) i0 j) ↔ ∀ j, e.symm ((x : Matrix (Fin k) (Fin k) κ) i0 j) = (1 : Matrix (Fin k) (Fin k) (ZMod T)) i0 j`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i0 = j`.
+
+Simplify using `[Matrix.one_apply, hij]`. Simplify using `[hij]`. Rewrite using `[h, Subgroup.index_comap_of_surjective _ (k_bc_surj e.symm), k_idx_field, Nat.card_zmod]`.
+-/
 theorem idx_rowStab (κ : Type) [CommRing κ] (T k : ℕ) (hT : T.Prime) (hc : Nat.card κ = T) (i0 : Fin k) :
     (rowStab κ i0).index = T ^ k - 1 := by
   have : Fact T.Prime := ⟨hT⟩
@@ -536,10 +700,18 @@ section TAbs
 variable {A : Type} [CommRing A] (O : Subring A) {n : Type} [Fintype n] [DecidableEq n] (i0 : n) (p q qi : A)
   (Lb Ld : Submodule O (n → A))
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem t_mulVec_single (M : Matrix n n A) (j : n) (x : A) (i : n) :
     (M *ᵥ (Pi.single j x : n → A)) i = M i j * x := by
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Establish `h1 : ∀ j, g i0 j = (1 : Matrix n n A) i0 j + p * z j` using `fun j => by rw [← hz j]; ring`. Establish `h2 : ∑ j, (1 : Matrix n n A) i0 j * y j = y i0` using `by simp [Matrix.one_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_congr rfl (fun j _ => by rw [h1 j, add_mul]), Finset.sum_add_distrib, h2, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl (fun j _ => by ring)`.
+-/
 theorem t_row_id (g : Matrix n n A) (z : n → A) (hz : ∀ j, g i0 j - (1 : Matrix n n A) i0 j = p * z j) (y : n → A) :
     (g *ᵥ y) i0 = y i0 + p * ∑ j, z j * y j := by
   have h1 : ∀ j, g i0 j = (1 : Matrix n n A) i0 j + p * z j := fun j => by rw [← hz j]; ring
@@ -554,6 +726,23 @@ variable (hp : p ∈ O) (hq : q ∈ O) (hqi : q * qi = 1)
   (mLd : ∀ y, y ∈ Ld ↔ q * y i0 ∈ O ∧ ∀ i, i ≠ i0 → y i ∈ O)
 
 include hp hq hqi mLb mLd in
+/- English proof (translation)
+Distinguish the cases in `hj : j = i0`. Substitute `hj` using the available equality. Establish `h1 : (Pi.single j qi : n → A) ∈ Ld`. Rewrite using `[mLd]`. Conclude with `⟨by rw [Pi.single_eq_same, hqi]; exact one_mem _, fun i hi => by rw [Pi.single_eq_of_ne hi]; exact zero_mem _⟩`.
+
+Establish `h2` using `(mLd _).1 ((hD _).1 h1)`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Establish `h3` using `h2.1`. Rewrite `h3` using `[t_mulVec_single]`.
+
+Establish `: q * ((g : Matrix n n A) i i * qi) = (g : Matrix n n A) i i`. Rewrite using `[mul_left_comm, hqi, mul_one]`. Rewrite `h3` using `[this]`. Then use the resulting hypothesis. Establish `h3` using `h2.2 i hi`. Rewrite `h3` using `[t_mulVec_single]`.
+
+Establish `: (g : Matrix n n A) i j = q * ((g : Matrix n n A) i j * qi)`. Rewrite using `[mul_left_comm, hqi, mul_one]`. Rewrite using `[this]`. Conclude with `mul_mem hq h3`. Establish `h1 : (Pi.single j 1 : n → A) ∈ Lb`.
+
+Rewrite using `[mLb]`. Use `⟨⟨0, zero_mem _, by rw [Pi.single_eq_of_ne (Ne.symm hj), mul_zero]⟩, fun i _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hij]`. Conclude with `zero_mem _`. Establish `h2` using `(mLb _).1 ((hL _).1 h1)`. Distinguish the cases in `hi : i = i0`.
+
+Substitute `hi` using the available equality. Take `⟨c, hc, h3⟩` from `h2.1`. Rewrite `h3` using `[t_mulVec_single, mul_one]`. Rewrite using `[h3]`. Conclude with `mul_mem hp hc`.
+
+Establish `h3` using `h2.2 i hi`. Rewrite `h3` using `[t_mulVec_single, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem t_abs_entries (g : GL n A) (hL : g ∈ stabGL Lb) (hD : g ∈ stabGL Ld) (i j : n) :
     (g : Matrix n n A) i j ∈ O := by
   by_cases hj : j = i0
@@ -593,6 +782,13 @@ theorem t_abs_entries (g : GL n A) (hL : g ∈ stabGL Lb) (hD : g ∈ stabGL Ld)
       rwa [t_mulVec_single, mul_one] at h3
 
 include hp mLb in
+/- English proof (translation)
+Take `⟨⟨c, hc, hc'⟩, hy'⟩` from `(mLb y).1 hy`. Establish `hyO : ∀ i, y i ∈ O` using `fun i => by`. Distinguish the cases in `h : i = i0`. Substitute `h` using the available equality. Rewrite using `[hc']`.
+
+Conclude with `mul_mem hp hc`. Conclude with `hy' i h`. Use `choose z hz hz' using hrow`. Rewrite using `[mLb]`. Use `⟨⟨c + ∑ j, z j * y j, add_mem hc (sum_mem fun j _ => mul_mem (hz j) (hyO j)), ?_⟩, fun i _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[t_row_id i0 p g z hz' y, hc', mul_add]`. Conclude with `sum_mem fun j _ => mul_mem (hO i j) (hyO j)`.
+-/
 theorem t_abs_Lb (g : Matrix n n A) (hO : ∀ i j, g i j ∈ O)
     (hrow : ∀ j, ∃ z ∈ O, g i0 j - (1 : Matrix n n A) i0 j = p * z) (y : n → A) (hy : y ∈ Lb) :
     g *ᵥ y ∈ Lb := by
@@ -608,6 +804,17 @@ theorem t_abs_Lb (g : Matrix n n A) (hO : ∀ i j, g i j ∈ O)
   · exact sum_mem fun j _ => mul_mem (hO i j) (hyO j)
 
 include hq mLd in
+/- English proof (translation)
+Take `⟨h0, hy'⟩` from `(mLd y).1 hy`. Establish `hqy : ∀ j, q * y j ∈ O` using `fun j => by`. Distinguish the cases in `h : j = i0`. Substitute `h` using the available equality. Conclude with `h0`.
+
+Conclude with `mul_mem hq (hy' j h)`. Rewrite using `[mLd]`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (hO i0 j) (hqy j)`. Take `⟨z, hz, hz'⟩` from `hcol i hi`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : j = i0`. Substitute `h` using the available equality. Establish `h3 : g i j * y j = z * (q * y j)` using `by rw [hz']; ring`. Use `show g i j * y j ∈ O`. Rewrite using `[h3]`.
+
+Conclude with `mul_mem hz h0`. Conclude with `mul_mem (hO i j) (hy' j h)`.
+-/
 theorem t_abs_Ld (g : Matrix n n A) (hO : ∀ i j, g i j ∈ O)
     (hcol : ∀ i, i ≠ i0 → ∃ z ∈ O, g i i0 = q * z) (y : n → A) (hy : y ∈ Ld) : g *ᵥ y ∈ Ld := by
   obtain ⟨h0, hy'⟩ := (mLd y).1 hy
@@ -633,6 +840,17 @@ theorem t_abs_Ld (g : Matrix n n A) (hO : ∀ i j, g i j ∈ O)
     · exact mul_mem (hO i j) (hy' j h)
 
 include hq mLb mLd in
+/- English proof (translation)
+Establish `hgy` using `(mLd _).1 (t_abs_Ld O i0 q Ld hq mLd g hO hcol y hy)`. Take `⟨h0, hy'⟩` from `(mLd y).1 hy`. Establish `hqy : ∀ j, q * y j ∈ O` using `fun j => by`. Distinguish the cases in `h : j = i0`. Substitute `h` using the available equality.
+
+Conclude with `h0`. Conclude with `mul_mem hq (hy' j h)`. Use `choose z hz hz' using hrow`. Use `⟨Pi.single i0 (∑ j, z j * y j), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mLd]`.
+
+Use `⟨?_, fun i hi => by rw [Pi.single_eq_of_ne hi]; exact zero_mem _⟩` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same, Finset.mul_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (hz j) (hqy j)`.
+
+Rewrite using `[mLb]`. Use `⟨⟨0, zero_mem _, ?_⟩, fun i hi => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.single_eq_same, smul_eq_mul]`. Rewrite using `[t_row_id i0 p g z hz' y]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Pi.single_eq_of_ne hi, mul_zero, sub_zero]`. Conclude with `sub_mem (hgy.2 i hi) (hy' i hi)`.
+-/
 theorem t_abs_diff (g : Matrix n n A) (hO : ∀ i j, g i j ∈ O)
     (hrow : ∀ j, ∃ z ∈ O, g i0 j - (1 : Matrix n n A) i0 j = p * z)
     (hcol : ∀ i, i ≠ i0 → ∃ z ∈ O, g i i0 = q * z) (y : n → A) (hy : y ∈ Ld) :
@@ -661,6 +879,11 @@ theorem t_abs_diff (g : Matrix n n A) (hO : ∀ i j, g i j ∈ O)
       exact sub_mem (hgy.2 i hi) (hy' i hi)
 
 include hq mLb mLd in
+/- English proof (translation)
+Take `⟨c, hc, hc'⟩` from `((mLb a).1 ha).1`. Establish `hb'` using `((mLd b).1 hb).1`. Use `⟨c + b i0, by rw [mul_add]; exact add_mem (mul_mem hq hc) hb', ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun h i0`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at h1`.
+
+Rewrite `h1` using `[t_mulVec_single, mul_one, hc']`. Rewrite using `[mul_add, ← h1, Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem t_abs_row (g : Matrix n n A) (j : n) (a b : n → A) (ha : a ∈ Lb) (hb : b ∈ Ld)
     (h : g *ᵥ (Pi.single j 1 : n → A) - Pi.single j 1 = a + p • b) :
     ∃ w, q * w ∈ O ∧ g i0 j - (1 : Matrix n n A) i0 j = p * w := by
@@ -678,11 +901,19 @@ section TConc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `show IsLocalRing.residue _ (fm_pr s x) = 0 ↔ _`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, Examples₂.adicInt_mem_max_iff, fm_pr_coe]`.
+-/
 theorem t_rho_iff {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v) (x : intV E v) :
     fm_rho s x = 0 ↔ Valued.v (s.φ x).1 < 1 := by
   show IsLocalRing.residue _ (fm_pr s x) = 0 ↔ _
   rw [IsLocalRing.residue_eq_zero_iff, Examples₂.adicInt_mem_max_iff, fm_pr_coe]
 
+/- English proof (translation)
+Rewrite using `[← t_rho_iff s ⟨x, hx⟩, fm_rho_eq_zero s p h1 h2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z, z.2, congrArg Subtype.val hz⟩`. Introduce and unpack `⟨z, hz, h⟩`.
+
+Conclude with `⟨⟨z, hz⟩, Subtype.ext h⟩`.
+-/
 theorem t_dvd_iff {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v) (p : intV E v)
     (h1 : Valued.v (s.φ p).1 = WithZero.exp (-1 : ℤ)) (h2 : Valued.v (s.φ p).2 = 1)
     (x : E ⊗[F] v.adicCompletion F) (hx : x ∈ intV E v) :
@@ -694,17 +925,28 @@ theorem t_dvd_iff {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : Spl
   · rintro ⟨z, hz, h⟩
     exact ⟨⟨z, hz⟩, Subtype.ext h⟩
 
+/- English proof (translation)
+Apply `s.φ.injective` to reduce the goal to its premises. Rewrite using `[s.sig, s.sig]`. Both sides reduce to the same expression.
+-/
 theorem t_tau_tau {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v)
     (x : E ⊗[F] v.adicCompletion F) : sigR σ (v.adicCompletion F) (sigR σ (v.adicCompletion F) x) = x := by
   apply s.φ.injective
   rw [s.sig, s.sig]
   rfl
 
+/- English proof (translation)
+Rewrite using `[s.int, s.sig]`. Conclude with `⟨((s.int x).1 hx).2, ((s.int x).1 hx).1⟩`.
+-/
 theorem t_tau_mem {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (s : SplitCore σ v)
     (x : E ⊗[F] v.adicCompletion F) (hx : x ∈ intV E v) : sigR σ (v.adicCompletion F) x ∈ intV E v := by
   rw [s.int, s.sig]
   exact ⟨((s.int x).1 hx).2, ((s.int x).1 hx).1⟩
 
+/- English proof (translation)
+Establish `h : cT τ (g : Matrix n n A) * 1 * (g : Matrix n n A) = 1` using `hg`. Rewrite `h` using `[Matrix.mul_one]`. Establish `h2 : ((g⁻¹ : GL n A) : Matrix n n A) = cT τ (g : Matrix n n A)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Matrix.one_mul]`.
+
+Use `_ = cT τ (g : Matrix n n A) := by rw [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+-/
 theorem t_unit_inv {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (τ : A →+* A) (g : GL n A)
     (hg : g ∈ UJ τ (1 : Matrix n n A)) (i j : n) : ((g⁻¹ : GL n A) : Matrix n n A) i j = τ ((g : Matrix n n A) j i) := by
   have h : cT τ (g : Matrix n n A) * 1 * (g : Matrix n n A) = 1 := hg
@@ -718,6 +960,15 @@ theorem t_unit_inv {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n
 
 variable {k : ℕ} (P : Par F E k)
 
+/- English proof (translation)
+Establish `hLb : P.LbV v = latS (F` using `F) (v.adicCompletion F) (intV E v) (LevGap.diagLat (LevGap.vecAt (⟨0, hk⟩ : Fin k) (P.pz : E))) := by`. Unfold `Par.LbV Par.Lb`. Rewrite using `[LevGap.LbOf_eq_latT hk]`. Both sides reduce to the same expression. Rewrite using `[hLb, fm_mem_latS]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h ⟨0, hk⟩`. Conclude with `⟨c, c.2, by rw [hc, LevGap.vecAt_same]⟩`.
+
+Take `⟨c, hc⟩` from `h i`. Rewrite using `[hc, LevGap.vecAt_ne hi, map_one, one_mul]`. Conclude with `c.2`. Introduce and unpack `⟨⟨c, hc, hc'⟩, h⟩ i`. Distinguish the cases in `hi : i = ⟨0, hk⟩`.
+
+Substitute `hi` using the available equality. Conclude with `⟨⟨c, hc⟩, by rw [hc', LevGap.vecAt_same]⟩`. Conclude with `⟨⟨y i, h i hi⟩, by rw [LevGap.vecAt_ne hi, map_one, one_mul]⟩`.
+-/
 theorem t_memLb (hk : 0 < k) (v : HeightOneSpectrum (𝓞 F)) (y : Fin k → E ⊗[F] v.adicCompletion F) :
     y ∈ P.LbV v ↔ (∃ c ∈ intV E v, y ⟨0, hk⟩ = inclE (F := F) (v.adicCompletion F) (P.pz : E) * c) ∧
       ∀ i, i ≠ (⟨0, hk⟩ : Fin k) → y i ∈ intV E v := by
@@ -739,6 +990,17 @@ theorem t_memLb (hk : 0 < k) (v : HeightOneSpectrum (𝓞 F)) (y : Fin k → E �
       exact ⟨⟨c, hc⟩, by rw [hc', LevGap.vecAt_same]⟩
     · exact ⟨⟨y i, h i hi⟩, by rw [LevGap.vecAt_ne hi, map_one, one_mul]⟩
 
+/- English proof (translation)
+Establish `hzc : P.σ (P.pz : E) ≠ 0` using `(map_ne_zero _).2 hz`. Establish `hinv : inclE (F` using `F) (v.adicCompletion F) (P.σ (P.pz : E)) * inclE (F := F) (v.adicCompletion F) (P.σ (P.pz : E))⁻¹ = 1 := by`. Rewrite using `[← map_mul, mul_inv_cancel₀ hzc, map_one]`. Establish `hLd : P.LdV v = latS (F` using `F) (v.adicCompletion F) (intV E v) (LevGap.diagLat (LevGap.vecAt (⟨0, hk⟩ : Fin k) (P.σ (P.pz : E))⁻¹)) := by`. Unfold `Par.LdV`.
+
+Rewrite using `[LevGap.Ld_eq hk P hJ hz]`. Rewrite using `[hLd, fm_mem_latS]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `h ⟨0, hk⟩`. Rewrite using `[hc, LevGap.vecAt_same, ← mul_assoc, hinv, one_mul]`. Conclude with `c.2`. Take `⟨c, hc⟩` from `h i`. Rewrite using `[hc, LevGap.vecAt_ne hi, map_one, one_mul]`.
+
+Conclude with `c.2`. Introduce and unpack `⟨h0, h⟩ i`. Distinguish the cases in `hi : i = ⟨0, hk⟩`. Substitute `hi` using the available equality. Use `⟨⟨_, h0⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LevGap.vecAt_same, ← mul_assoc, mul_comm (inclE (F := F) (v.adicCompletion F) (P.σ (P.pz : E))⁻¹), hinv, one_mul]`. Conclude with `⟨⟨y i, h i hi⟩, by rw [LevGap.vecAt_ne hi, map_one, one_mul]⟩`.
+-/
 theorem t_memLd (hk : 0 < k) (hJ : P.J = 1) (hz : (P.pz : E) ≠ 0) (v : HeightOneSpectrum (𝓞 F))
     (y : Fin k → E ⊗[F] v.adicCompletion F) :
     y ∈ P.LdV v ↔ inclE (F := F) (v.adicCompletion F) (P.σ (P.pz : E)) * y ⟨0, hk⟩ ∈ intV E v ∧
@@ -767,6 +1029,21 @@ theorem t_memLd (hk : 0 < k) (hJ : P.J = 1) (hz : (P.pz : E) ≠ 0) (v : HeightO
       rw [LevGap.vecAt_same, ← mul_assoc, mul_comm (inclE (F := F) (v.adicCompletion F) (P.σ (P.pz : E))⁻¹), hinv, one_mul]
     · exact ⟨⟨y i, h i hi⟩, by rw [LevGap.vecAt_ne hi, map_one, one_mul]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, g0, hg0, hg0'⟩`. Establish `hG : bc ((RingHom.fst _ _).comp s.φ.toRingHom) g ∈ GLint (Fin k) (v.adicCompletionIntegers F).toSubring` using `⟨g0, hg0'⟩`. Establish `hu : ∃ u ∈ GLint (Fin k) (v.adicCompletionIntegers F).toSubring, (u : Matrix (Fin k) (Fin k) (v.adicCompletion F)) = fun i j => (s.φ (inclE (F` using `F) (v.adicCompletion F) (P.J i j))).1 := by`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Rewrite using `[hJ]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hij]`. Establish `h1 : g ∈ levelV P.σ P.J v` using `(Formalism.UG.P.level_subgroup_split F E (Fin k) P.σ P.J v s.φ s.sig s.int hu g hU).2 hG`. Take `⟨e1, e2⟩` from `(afsplit_stab_iff _ _).mp (Subgroup.mem_inf.mp h1).2`. Use `⟨hU, e1, e2, fun j => ?_⟩` and prove the remaining obligations. Establish `h3 : (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))) ((g0 : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) i0 j) = (1 : Matrix (Fin k) (Fin k) _) i0 j` using `hg0 j`.
+
+Rewrite `h3` using `[← LevGap.map_one_apply (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))) i0 j, Ideal.Quotient.eq, Examples₂.adicInt_mem_max_iff]`. Establish `h4 : (s.φ ((g : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j)).1 = (((g0 : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) i0 j : v.adicCompletionIntegers F) : v.adicCompletion F)` using `(congrArg (fun u : GL (Fin k) (v.adicCompletion F) => (u : Matrix (Fin k) (Fin k) (v.adicCompletion F)) i0 j) hg0').symm`. Establish `h5 : (s.φ ((1 : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j)).1 = (((1 : Matrix (Fin k) (Fin k) (v.adicCompletionIntegers F)) i0 j : v.adicCompletionIntegers F) : v.adicCompletion F)` using `(LevGap.map_one_apply ((RingHom.fst _ _).comp s.φ.toRingHom) i0 j).trans (LevGap.map_one_apply (algebraMap (v.adicCompletionIntegers F) (v.adicCompletion F)) i0 j).symm`. Rewrite using `[map_sub, Prod.fst_sub, h4, h5]`. Conclude with `h3`.
+
+Introduce and unpack `⟨hU, e1, e2, hrow⟩`. Establish `r1 : (g : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) ∈ (RingHom.mapMatrix (m` using `Fin k) (intV E v).subtype).range := ⟨Matrix.of fun i j => ⟨_, e1 i j⟩, by ext i j; rfl⟩`. Establish `r2 : ((g⁻¹ : GL (Fin k) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) ∈ (RingHom.mapMatrix (m` using `Fin k) (intV E v).subtype).range := ⟨Matrix.of fun i j => ⟨_, e2 i j⟩, by ext i j; rfl⟩`. Take `⟨G, hG⟩` from `levelaf_mem_range_of_integral (intV E v) g r1 r2`. Use `⟨hU, bc (fm_pr s) G, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `j show (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))) (fm_pr s ((G : Matrix (Fin k) (Fin k) (intV E v)) i0 j)) = (1 : Matrix (Fin k) (Fin k) _) i0 j`. Rewrite using `[← LevGap.map_one_apply (Ideal.Quotient.mk (IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))) i0 j, ← LevGap.map_one_apply (fm_pr s) i0 j, Ideal.Quotient.eq, ← map_sub, Examples₂.adicInt_mem_max_iff, fm_pr_coe]`. Establish `h` using `hrow j`. Rewrite `h` using `[← hG, ← LevGap.map_one_apply (intV E v).subtype i0 j]`. Conclude with `h`.
+
+Rewrite using `[← hG]`. Both sides reduce to the same expression.
+-/
 theorem t_cong_iff (hJ : P.J = 1) (i0 : Fin k) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore P.σ v)
     (g : GL (Fin k) (E ⊗[F] v.adicCompletion F)) :
     g ∈ congU P.σ P.J v s (rowStab _ i0) ↔ g ∈ UPts P.σ P.J (v.adicCompletion F) ∧
@@ -833,6 +1110,9 @@ section TMain
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `i hi`. Take `⟨z, hz, h⟩` from `hrow i`. Rewrite `h` using `[Matrix.one_apply_ne (Ne.symm hi), sub_zero, t_unit_inv _ g hU]`. Use `⟨sigR σ (v.adicCompletion F) z, t_tau_mem s z hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← h, t_tau_tau s]`.
+-/
 theorem t_col {k : ℕ} (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore σ v) (i0 : Fin k)
     (p : E ⊗[F] v.adicCompletion F)
     (g : GL (Fin k) (E ⊗[F] v.adicCompletion F))
@@ -848,6 +1128,35 @@ theorem t_col {k : ℕ} (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (s
   refine ⟨sigR σ (v.adicCompletion F) z, t_tau_mem s z hz, ?_⟩
   rw [← map_mul, ← h, t_tau_tau s]
 
+/- English proof (translation)
+Set `i0 : Fin k` to `⟨0, hk⟩`. Set `ι : E →+* E ⊗[F] v.adicCompletion F` to `inclE (F := F) (E := E) (v.adicCompletion F)`. Establish `hzc : P.σ (P.pz : E) ≠ 0` using `(map_ne_zero _).2 hz`. Establish `hqi : ι (P.σ (P.pz : E)) * ι (P.σ (P.pz : E))⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hzc, map_one]`.
+
+Establish `hp : ι (P.pz : E) ∈ intV E v` using `fm_incl_mem v P.pz`. Establish `hq : ι (P.σ (P.pz : E)) ∈ intV E v` using `by rw [← hc]; exact fm_incl_mem v pzc`. Establish `mLb` using `t_memLb P hk v`. Establish `mLd` using `t_memLd P hk hJ hz v`. Establish `hJ' : P.J.map (inclE (F` using `F) (v.adicCompletion F)) = 1 := by`.
+
+Rewrite using `[hJ]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hUJ : ∀ g, g ∈ UPts P.σ P.J (v.adicCompletion F) → g ∈ UJ (sigR P.σ (v.adicCompletion F)) (1 : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F))`. Introduce `g hg`. Unfold `UPts at hg`.
+
+Rewrite `hg` using `[hJ']`. Then use the resulting hypothesis. Establish `hsw : s.φ (ι (P.σ (P.pz : E))) = ((s.φ (ι (P.pz : E))).2, (s.φ (ι (P.pz : E))).1)` using `s.sig ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))`. Establish `htp : sigR P.σ (v.adicCompletion F) (ι (P.pz : E)) = ι (P.σ (P.pz : E))` using `rfl`. Establish `hdvd` using `t_dvd_iff s (P.pzV v) h1 h2`. Use extensionality with `g`.
+
+Rewrite using `[t_cong_iff P hJ i0 v s g]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hU, hL⟩, hD, hf⟩`. Establish `e1` using `t_abs_entries (intV E v) i0 _ _ _ (P.LbV v) (P.LdV v) hp hq hqi mLb mLd g hL hD`. Establish `e2` using `t_abs_entries (intV E v) i0 _ _ _ (P.LbV v) (P.LdV v) hp hq hqi mLb mLd g⁻¹ (inv_mem hL) (inv_mem hD)`.
+
+Use `⟨hU, e1, e2, fun j => ?_⟩` and prove the remaining obligations. Establish `hej : (Pi.single j 1 : Fin k → E ⊗[F] v.adicCompletion F) ∈ P.LdV v`. Rewrite using `[mLd]`. Use `⟨?_, fun i _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : i0 = j`.
+
+Rewrite using `[← hj, Pi.single_eq_same, mul_one]`. Conclude with `hq`. Rewrite using `[Pi.single_eq_of_ne hj, mul_zero]`. Conclude with `zero_mem _`. Distinguish the cases in `hj : i = j`.
+
+Rewrite using `[← hj, Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne hj]`. Conclude with `zero_mem _`. Establish `h3` using `hf ⟨_, hej⟩`.
+
+Establish `h4` using `(Submodule.Quotient.eq (P.fKer v)).1 h3`. Take `⟨a, ha, _, ⟨b, rfl⟩, hab⟩` from `Submodule.mem_sup.1 h4`. Take `⟨w, hw, hw'⟩` from `t_abs_row (intV E v) i0 (ι (P.pz : E)) _ (P.LbV v) (P.LdV v) hq mLb mLd (g : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) j a.1 b.1 ha b.2 (congrArg Subtype.val hab).symm`. Rewrite using `[hw', map_mul, Prod.fst_mul, map_mul]`. Establish `h5 : Valued.v (s.φ w).1 ≤ 1`.
+
+Establish `h6` using `((s.int _).1 hw).1`. Rewrite `h6` using `[map_mul, Prod.fst_mul, hsw, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul]`. Express the relevant statement in the definitionally equal form `Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).2 * _ ≤ 1 at h6`. Rewrite `h6` using `[h2, one_mul]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).1 * _ < 1`.
+
+Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Introduce `hg`. Establish `hgc : g ∈ congU P.σ P.J v s (rowStab _ i0)` using `(t_cong_iff P hJ i0 v s g).2 hg`. Take `⟨hU, e1, e2, hr⟩` from `hg`.
+
+Take `⟨hU', -, -, hr'⟩` from `(t_cong_iff P hJ i0 v s g⁻¹).1 (inv_mem hgc)`. Establish `one_mem' : ∀ j, (1 : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j ∈ intV E v` using `fun j => afsplit_one_mem _ i0 j`. Establish `hrow : ∀ j, ∃ z ∈ intV E v, (g : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j - (1 : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j = ι (P.pz : E) * z` using `fun j => (hdvd _ (sub_mem (e1 i0 j) (one_mem' j))).1 (hr j)`. Establish `hrow' : ∀ j, ∃ z ∈ intV E v, ((g⁻¹ : GL (Fin k) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j - (1 : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) i0 j = ι (P.pz : E) * z` using `fun j => (hdvd _ (sub_mem (e2 i0 j) (one_mem' j))).1 (hr' j)`. Establish `hcol` using `t_col P.σ v s i0 (ι (P.pz : E)) g (hUJ g hU) hrow'`.
+
+Establish `hcol'` using `t_col P.σ v s i0 (ι (P.pz : E)) g⁻¹ (hUJ _ hU') (by rw [inv_inv]; exact hrow)`. Rewrite `hcol`, `hcol'` using `[htp]`. Establish `hL : g ∈ stabGL (P.LbV v)` using `LevGap.mem_stabGL_of _ g (t_abs_Lb (intV E v) i0 _ (P.LbV v) hp mLb _ e1 hrow) (t_abs_Lb (intV E v) i0 _ (P.LbV v) hp mLb _ e2 hrow')`. Establish `hD : g ∈ stabGL (P.LdV v)` using `LevGap.mem_stabGL_of _ g (t_abs_Ld (intV E v) i0 _ (P.LdV v) hq mLd _ e1 hcol) (t_abs_Ld (intV E v) i0 _ (P.LdV v) hq mLd _ e2 hcol')`. Use `⟨⟨hU, hL⟩, hD, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, hb, hab⟩` from `t_abs_diff (intV E v) i0 (ι (P.pz : E)) _ (P.LbV v) (P.LdV v) hq mLb mLd (g : Matrix (Fin k) (Fin k) (E ⊗[F] v.adicCompletion F)) e1 hrow hcol x.1 x.2`. Use `(Submodule.Quotient.eq (P.fKer v)).2 ?_` and prove the remaining obligations. Use `Submodule.mem_sup.2 ⟨_ - P.pzV v • (⟨b, hb⟩ : P.LdV v), ?_, P.pzV v • (⟨b, hb⟩ : P.LdV v), ⟨⟨b, hb⟩, rfl⟩, sub_add_cancel _ _⟩` and prove the remaining obligations. Conclude with `hab`.
+-/
 theorem Uloc_T_eq {k : ℕ} (P : Par F E k) (hk : 0 < k) (hJ : P.J = 1) (pzc : 𝓞 E) (hc : (pzc : E) = P.σ (P.pz : E))
     (hz : (P.pz : E) ≠ 0) (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore P.σ v)
     (h1 : Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).1 = WithZero.exp (-1 : ℤ))
@@ -942,6 +1251,11 @@ section Asm
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.Gaps.LevGap.diagLat_eq_span (E := E) (n := Fin k) (fun _ => (1 : E))`. Unfold `Formalism.MainNotions.StandardLattice.stdLat`. Rewrite using `[← h]`. Use extensionality with `x`. Rewrite using `[Formalism.MainNotions.Gaps.LevGap.mem_diagLat, mem_stdLat_iff']`.
+
+Use `forall_congr' fun i => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc, one_mul]⟩`. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [one_mul]; exact hc.symm⟩`.
+-/
 theorem m_stdLat_eq (k : ℕ) :
     Formalism.MainNotions.StandardLattice.stdLat E k = Formalism.UG.stdLat (n := Fin k) (A := E) (𝓞 E) := by
   have h := Formalism.MainNotions.Gaps.LevGap.diagLat_eq_span (E := E) (n := Fin k) (fun _ => (1 : E))
@@ -955,6 +1269,11 @@ theorem m_stdLat_eq (k : ℕ) :
   · rintro ⟨c, hc⟩
     exact ⟨c, by rw [one_mul]; exact hc.symm⟩
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {(p : 𝓞 F)} ≠ 0`. Introduce `h`. Rewrite `h` using `[Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp (by exact_mod_cast h)`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations.
+
+Conclude with `(Ideal.dvd_span_singleton).2 hv`.
+-/
 theorem m_finite_places (p : ℕ) (hp : p ≠ 0) : {v : HeightOneSpectrum (𝓞 F) | (p : 𝓞 F) ∈ v.asIdeal}.Finite := by
   have h0 : Ideal.span {(p : 𝓞 F)} ≠ 0 := by
     intro h
@@ -963,14 +1282,23 @@ theorem m_finite_places (p : ℕ) (hp : p ≠ 0) : {v : HeightOneSpectrum (𝓞 
   refine (Ideal.finite_factors h0).subset fun v hv => ?_
   exact (Ideal.dvd_span_singleton).2 hv
 
+/- English proof (translation)
+Rewrite using `[m_stdLat_eq, level_subgroup_finite_adelic_standard, levelAf_eq_adG]`.
+-/
 theorem Kstd_eq {k : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E) :
     levelAfL σ J (Formalism.MainNotions.StandardLattice.stdLat E k) = adG σ J (fun v => levelV σ J v) := by
   rw [m_stdLat_eq, level_subgroup_finite_adelic_standard, levelAf_eq_adG]
 
 variable {k : ℕ} (P : Par F E k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem m_U_eq (S : P.Splits) : P.U S = adG P.σ P.J (P.Uloc S) := rfl
 
+/- English proof (translation)
+Rewrite using `[← level_subgroup_local_standard F E (Fin k) P.σ P.J v]`. Unfold `levelVL Par.Lb`. Rewrite using `[iw_latS_eq (F := F) k P.pz pzc P.T hpz v hTv]`.
+-/
 theorem m_levelVL_Lb (pzc : 𝓞 E) (hpz : (P.pz : E) * (pzc : E) = (P.T : E))
     (v : HeightOneSpectrum (𝓞 F)) (hTv : (P.T : 𝓞 F) ∉ v.asIdeal) :
     levelVL P.σ P.J v P.Lb = levelV P.σ P.J v := by
@@ -978,9 +1306,25 @@ theorem m_levelVL_Lb (pzc : 𝓞 E) (hpz : (P.pz : E) * (pzc : E) = (P.T : E))
   unfold levelVL Par.Lb
   rw [iw_latS_eq (F := F) k P.pz pzc P.T hpz v hTv]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem m_iwPre_eq (v : HeightOneSpectrum (𝓞 F)) (s : SplitCore P.σ v) :
     P.iwPre v s.φ = congU P.σ P.J v s (Subgroup.closure (upperUni k _)) := rfl
 
+/- English proof (translation)
+Establish `hsw : s.φ ((P.σ (P.pz : E)) ⊗ₜ[F] (1 : v.adicCompletion F)) = ((s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).2, (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).1)` using `s.sig ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))`. Establish `e1 : ((P.T : ℕ) : E) ⊗ₜ[F] (1 : v.adicCompletion F) = ((P.T : ℕ) : E ⊗[F] v.adicCompletion F)` using `map_natCast (inclE (F := F) (E := E) (v.adicCompletion F)) P.T`. Establish `e2 : (1 : E) ⊗ₜ[F] ((P.T : ℕ) : v.adicCompletion F) = ((P.T : ℕ) : E ⊗[F] v.adicCompletion F)` using `map_natCast (Algebra.TensorProduct.includeRight : v.adicCompletion F →ₐ[F] E ⊗[F] v.adicCompletion F) P.T`. Establish `hprod : (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).1 * (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).2 = ((P.T : ℕ) : v.adicCompletion F)`. Establish `h0 : ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F)) * ((P.σ (P.pz : E)) ⊗ₜ[F] (1 : v.adicCompletion F)) = (1 : E) ⊗ₜ[F] ((P.T : ℕ) : v.adicCompletion F)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hpz, mul_one, e1, e2]`. Establish `h` using `congrArg s.φ h0`. Rewrite `h` using `[map_mul, hsw, s.alg]`. Conclude with `congrArg Prod.fst h`. Establish `hint` using `(s.int _).1 (P.pzV v).2`.
+
+Establish `hv1 : Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).1 ≤ 1` using `hint.1`. Establish `hv2 : Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).2 ≤ 1` using `hint.2`. Establish `hvp` using `congrArg Valued.v hprod`. Rewrite `hvp` using `[map_mul, hval]`. Distinguish the cases in `h : Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).1 = 1`.
+
+Rewrite `hvp` using `[h, one_mul]`. Conclude with `⟨fm_swap s, hvp, h⟩`. Establish `h1` using `(Examples₂.wz_lt_one_iff _).1 (lt_of_le_of_ne hv1 h)`. Establish `h2 : Valued.v (s.φ ((P.pz : E) ⊗ₜ[F] (1 : v.adicCompletion F))).2 = 1`. Assume the negation of the conclusion as `h2`.
+
+Establish `h2'` using `(Examples₂.wz_lt_one_iff _).1 (lt_of_le_of_ne hv2 h2)`. Establish `: WithZero.exp (-1 : ℤ) ≤ WithZero.exp (-1 : ℤ) * WithZero.exp (-1 : ℤ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[← WithZero.exp_add, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hvp` using `[h2, mul_one]`. Conclude with `⟨s, hvp, h2⟩`.
+-/
 theorem m_orient (hpz : (P.pz : E) * P.σ (P.pz : E) = (P.T : E)) (v : HeightOneSpectrum (𝓞 F))
     (s : SplitCore P.σ v) (hval : Valued.v ((P.T : ℕ) : v.adicCompletion F) = WithZero.exp (-1 : ℤ)) :
     ∃ s' : SplitCore P.σ v,
@@ -1039,19 +1383,36 @@ structure IdxHyp (f : ℕ) : Prop where
 
 variable {P} {f : ℕ}
 
+/- English proof (translation)
+The claim follows from `fm_card_residue v`.
+-/
 theorem m_card_res (v : HeightOneSpectrum (𝓞 F)) :
     Nat.card (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) =
       Nat.card (𝓞 F ⧸ v.asIdeal) := fm_card_residue v
 
+/- English proof (translation)
+The claim follows from `(Nat.coprime_primes h.T_prime (h.g_prime i)).2 (h.T_g i)`.
+-/
 theorem IdxHyp.coprime_level_prime (h : IdxHyp P f) (i : Fin 2) : Nat.Coprime P.T (P.gp i) :=
   (Nat.coprime_primes h.T_prime (h.g_prime i)).2 (h.T_g i)
 
+/- English proof (translation)
+The claim follows from `(Nat.coprime_primes (h.g_prime 0) (h.g_prime 1)).2 h.g_ne`.
+-/
 theorem IdxHyp.cop_g (h : IdxHyp P f) : Nat.Coprime (P.gp 0) (P.gp 1) :=
   (Nat.coprime_primes (h.g_prime 0) (h.g_prime 1)).2 h.g_ne
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.Gaps.LevGap.map_int_mem (P.σ : E →+* E) P.pz`.
+-/
 theorem IdxHyp.exists_pzc (_h : IdxHyp P f) : ∃ pzc : 𝓞 E, (pzc : E) = P.σ (P.pz : E) :=
   Formalism.MainNotions.Gaps.LevGap.map_int_mem (P.σ : E →+* E) P.pz
 
+/- English proof (translation)
+Take `⟨s0⟩` from `h.core_alt v hv`. Take `⟨s, h1, h2⟩` from `m_orient P h.norm v s0 (h.valuation_at_places_over_T v hv)`. Take `⟨pzc, hc⟩` from `h.exists_pzc`. Establish `hz : (P.pz : E) ≠ 0`. Introduce `h0`.
+
+Use `h.norm` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `h.T_prime.ne_zero (by exact_mod_cast this.symm)`. Conclude with `⟨s, by rw [Par.UlocAlt P S v hv]; exact Uloc_T_eq P h.k_pos h.J_one pzc hc hz v s h1 h2⟩`.
+-/
 theorem IdxHyp.UlocAlt (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (𝓞 F)) (hv : (P.T : 𝓞 F) ∈ v.asIdeal) :
     ∃ s : SplitCore P.σ v, P.Uloc S v = congU P.σ P.J v s (rowStab _ (⟨0, h.k_pos⟩ : Fin k)) := by
   obtain ⟨s0⟩ := h.core_alt v hv
@@ -1064,11 +1425,17 @@ theorem IdxHyp.UlocAlt (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (�
     exact h.T_prime.ne_zero (by exact_mod_cast this.symm)
   exact ⟨s, by rw [Par.UlocAlt P S v hv]; exact Uloc_T_eq P h.k_pos h.J_one pzc hc hz v s h1 h2⟩
 
+/- English proof (translation)
+Rewrite using `[Par.Uloc_g P S h.coprime_level_prime h.cop_g i v hv]`. Both sides reduce to the same expression.
+-/
 theorem IdxHyp.Uloc_g (h : IdxHyp P f) (S : P.Splits) (i : Fin 2) (v : HeightOneSpectrum (𝓞 F))
     (hv : (P.gp i : 𝓞 F) ∈ v.asIdeal) :
     P.Uloc S v = congU P.σ P.J v (S i v hv).core (Subgroup.closure (upperUni k _)) := by
   rw [Par.Uloc_g P S h.coprime_level_prime h.cop_g i v hv]; rfl
 
+/- English proof (translation)
+Take `⟨pzc, hc⟩` from `h.exists_pzc`. Rewrite using `[Par.Uloc_hyp P S v h0 h1 hT]`. Conclude with `m_levelVL_Lb P pzc (by rw [hc]; exact h.norm) v hT`.
+-/
 theorem IdxHyp.Uloc_hyp (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (𝓞 F))
     (hT : (P.T : 𝓞 F) ∉ v.asIdeal) (h0 : (P.gp 0 : 𝓞 F) ∉ v.asIdeal) (h1 : (P.gp 1 : 𝓞 F) ∉ v.asIdeal) :
     P.Uloc S v = levelV P.σ P.J v := by
@@ -1076,6 +1443,13 @@ theorem IdxHyp.Uloc_hyp (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (
   rw [Par.Uloc_hyp P S v h0 h1 hT]
   exact m_levelVL_Lb P pzc (by rw [hc]; exact h.norm) v hT
 
+/- English proof (translation)
+Distinguish the cases in `hT : (P.T : 𝓞 F) ∈ v.asIdeal`. Take `⟨s, hs⟩` from `h.UlocAlt S v hT`. Rewrite using `[hs, h.J_one]`. Conclude with `congU_le _ _ _ _`. Distinguish the cases in `h0 : (P.gp 0 : 𝓞 F) ∈ v.asIdeal`.
+
+Rewrite using `[h.Uloc_g S 0 v h0, h.J_one]`. Conclude with `congU_le _ _ _ _`. Distinguish the cases in `h1 : (P.gp 1 : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[h.Uloc_g S 1 v h1, h.J_one]`. Conclude with `congU_le _ _ _ _`.
+
+Conclude with `(h.Uloc_hyp S v hT h0 h1).le`.
+-/
 theorem IdxHyp.Uloc_le (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (𝓞 F)) :
     P.Uloc S v ≤ levelV P.σ P.J v := by
   by_cases hT : (P.T : 𝓞 F) ∈ v.asIdeal
@@ -1087,23 +1461,35 @@ theorem IdxHyp.Uloc_le (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (�
   · rw [h.Uloc_g S 1 v h1, h.J_one]; exact congU_le _ _ _ _
   exact (h.Uloc_hyp S v hT h0 h1).le
 
+/- English proof (translation)
+Rewrite using `[Kstd_eq, m_U_eq]`. Conclude with `inf_le_inf_left _ (iInf_mono fun v => Subgroup.comap_mono (h.Uloc_le S v))`.
+-/
 theorem IdxHyp.U_le (h : IdxHyp P f) (S : P.Splits) :
     P.U S ≤ levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k) := by
   rw [Kstd_eq, m_U_eq]
   exact inf_le_inf_left _ (iInf_mono fun v => Subgroup.comap_mono (h.Uloc_le S v))
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h.UlocAlt S v hv`. Rewrite using `[hs, h.J_one, congU_relIndex]`. Conclude with `idx_rowStab _ P.T k h.T_prime ((m_card_res v).trans (h.card_alt v hv)) _`.
+-/
 theorem IdxHyp.relIndex_alt (h : IdxHyp P f) (S : P.Splits) (v : HeightOneSpectrum (𝓞 F))
     (hv : (P.T : 𝓞 F) ∈ v.asIdeal) : (P.Uloc S v).relIndex (levelV P.σ P.J v) = P.T ^ k - 1 := by
   obtain ⟨s, hs⟩ := h.UlocAlt S v hv
   rw [hs, h.J_one, congU_relIndex]
   exact idx_rowStab _ P.T k h.T_prime ((m_card_res v).trans (h.card_alt v hv)) _
 
+/- English proof (translation)
+Rewrite using `[h.Uloc_g S i v hv, h.J_one, congU_relIndex]`. Conclude with `idx_upperUni _ (P.gp i) k (h.g_prime i) ((m_card_res v).trans (h.card_g i v hv))`.
+-/
 theorem IdxHyp.relIndex_g (h : IdxHyp P f) (S : P.Splits) (i : Fin 2) (v : HeightOneSpectrum (𝓞 F))
     (hv : (P.gp i : 𝓞 F) ∈ v.asIdeal) :
     ((P.Uloc S v).relIndex (levelV P.σ P.J v) : ℝ) = Formalism.MainNotions.StandardLattice.idxColLoc (P.gp i) k := by
   rw [h.Uloc_g S i v hv, h.J_one, congU_relIndex]
   exact idx_upperUni _ (P.gp i) k (h.g_prime i) ((m_card_res v).trans (h.card_g i v hv))
 
+/- English proof (translation)
+Rewrite using `[h.Uloc_g S i v hv, h.J_one, congU_relIndex]`. Establish `: Finite (v.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F))` using `Nat.finite_of_card_ne_zero (by rw [m_card_res v, h.card_g i v hv]; exact (h.g_prime i).ne_zero)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem IdxHyp.relIndex_g_ne (h : IdxHyp P f) (S : P.Splits) (i : Fin 2) (v : HeightOneSpectrum (𝓞 F))
     (hv : (P.gp i : 𝓞 F) ∈ v.asIdeal) : (P.Uloc S v).relIndex (levelV P.σ P.J v) ≠ 0 := by
   rw [h.Uloc_g S i v hv, h.J_one, congU_relIndex]
@@ -1111,6 +1497,17 @@ theorem IdxHyp.relIndex_g_ne (h : IdxHyp P f) (S : P.Splits) (i : Fin 2) (v : He
     Nat.finite_of_card_ne_zero (by rw [m_card_res v, h.card_g i v hv]; exact (h.g_prime i).ne_zero)
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Establish `fT` using `m_finite_places (F := F) P.T h.T_prime.ne_zero`. Establish `f0` using `m_finite_places (F := F) (P.gp 0) (h.g_prime 0).ne_zero`. Establish `f1` using `m_finite_places (F := F) (P.gp 1) (h.g_prime 1).ne_zero`. Establish `d01 : Disjoint f0.toFinset f1.toFinset`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `v h0 h1`. Conclude with `asm_not_both h.cop_g v (f0.mem_toFinset.1 h0) (f1.mem_toFinset.1 h1)`. Establish `dT : Disjoint (f0.toFinset ∪ f1.toFinset) fT.toFinset`. Rewrite using `[Finset.disjoint_left]`. Introduce `v h0 hT`.
+
+Break down `Finset.mem_union.1 h0 with h0 | h0` into its components or cases. Conclude with `asm_not_both (h.coprime_level_prime 0) v (fT.mem_toFinset.1 hT) (f0.mem_toFinset.1 h0)`. Conclude with `asm_not_both (h.coprime_level_prime 1) v (fT.mem_toFinset.1 hT) (f1.mem_toFinset.1 h0)`. Rewrite using `[Kstd_eq, m_U_eq, adG_relIndex P.σ P.J (P.Uloc S) (fun v => levelV P.σ P.J v) (h.Uloc_le S) (fun v => inf_le_left) ((f0.toFinset ∪ f1.toFinset) ∪ fT.toFinset) ?_]`. Rewrite using `[Finset.prod_union dT, Finset.prod_union d01]`.
+
+Use `push_cast`. Rewrite using `[Finset.prod_congr rfl (fun v hv => h.relIndex_g S 0 v (f0.mem_toFinset.1 hv)), Finset.prod_congr rfl (fun v hv => h.relIndex_g S 1 v (f1.mem_toFinset.1 hv)), Finset.prod_congr rfl (fun v hv => congrArg (Nat.cast : ℕ → ℝ) (h.relIndex_alt S v (fT.mem_toFinset.1 hv))), Finset.prod_ …`. Use `push_cast`. Both sides reduce to the same expression. Introduce `v hv`.
+
+Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or] at hv`. Conclude with `h.Uloc_hyp S v hv.2 hv.1.1 hv.1.2`.
+-/
 theorem IdxHyp.relIndex (h : IdxHyp P f) (S : P.Splits) :
     ((P.U S).relIndex (levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k)) : ℝ) =
       Formalism.MainNotions.StandardLattice.idxColLoc (P.gp 0) k ^ f * Formalism.MainNotions.StandardLattice.idxColLoc (P.gp 1) k ^ f * ((P.T : ℝ) ^ k - 1) ^ f := by
@@ -1144,6 +1541,13 @@ theorem IdxHyp.relIndex (h : IdxHyp P f) (S : P.Splits) :
     simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or] at hv
     exact h.Uloc_hyp S v hv.2 hv.1.1 hv.1.2
 
+/- English proof (translation)
+Establish `fT` using `m_finite_places (F := F) P.T h.T_prime.ne_zero`. Establish `f0` using `m_finite_places (F := F) (P.gp 0) (h.g_prime 0).ne_zero`. Establish `f1` using `m_finite_places (F := F) (P.gp 1) (h.g_prime 1).ne_zero`. Rewrite using `[Kstd_eq, m_U_eq, adG_relIndex P.σ P.J (P.Uloc S) (fun v => levelV P.σ P.J v) (h.Uloc_le S) (fun v => inf_le_left) ((f0.toFinset ∪ f1.toFinset) ∪ fT.toFinset) ?_]`. Use `Finset.prod_ne_zero_iff.2 fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq] at hv`. Break down `hv with (hv | hv) | hv` into its components or cases. Conclude with `h.relIndex_g_ne S 0 v hv`. Conclude with `h.relIndex_g_ne S 1 v hv`. Rewrite using `[h.relIndex_alt S v hv]`.
+
+Use `Nat.one_lt_pow h.k_pos.ne' h.T_prime.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `v hv`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or] at hv`. Conclude with `h.Uloc_hyp S v hv.2 hv.1.1 hv.1.2`.
+-/
 theorem IdxHyp.relIndex_ne_zero (h : IdxHyp P f) (S : P.Splits) :
     (P.U S).relIndex (levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k)) ≠ 0 := by
   classical
@@ -1164,17 +1568,26 @@ theorem IdxHyp.relIndex_ne_zero (h : IdxHyp P f) (S : P.Splits) :
     simp only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_or] at hv
     exact h.Uloc_hyp S v hv.2 hv.1.1 hv.1.2
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex_subgroupOf (show levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k) ≤ P.GA from inf_le_left)]`. Conclude with `h.relIndex S`.
+-/
 theorem IdxHyp.relIndex_GA (h : IdxHyp P f) (S : P.Splits) :
     (((P.U S).subgroupOf P.GA).relIndex ((levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k)).subgroupOf P.GA) : ℝ) =
       Formalism.MainNotions.StandardLattice.idxColLoc (P.gp 0) k ^ f * Formalism.MainNotions.StandardLattice.idxColLoc (P.gp 1) k ^ f * ((P.T : ℝ) ^ k - 1) ^ f := by
   rw [Subgroup.relIndex_subgroupOf (show levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k) ≤ P.GA from inf_le_left)]
   exact h.relIndex S
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex_subgroupOf (show levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k) ≤ P.GA from inf_le_left)]`. Conclude with `h.relIndex_ne_zero S`.
+-/
 theorem IdxHyp.relIndex_GA_ne_zero (h : IdxHyp P f) (S : P.Splits) :
     ((P.U S).subgroupOf P.GA).relIndex ((levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k)).subgroupOf P.GA) ≠ 0 := by
   rw [Subgroup.relIndex_subgroupOf (show levelAfL P.σ P.J (Formalism.MainNotions.StandardLattice.stdLat E k) ≤ P.GA from inf_le_left)]
   exact h.relIndex_ne_zero S
 
+/- English proof (translation)
+Introduce `S` and use `⟨h.U_le S, h.relIndex S⟩`.
+-/
 theorem IdxHyp.idxOK (h : IdxHyp P f) : IdxOK P f := fun S => ⟨h.U_le S, h.relIndex S⟩
 
 end Asm
@@ -1183,6 +1596,9 @@ section Host
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `hs` using `Formalism.MainNotions.Gaps.LevGap.T_split_of_levHyp H T pz piG h`. Use `exact`. Use the proof step `{ k_pos := Formalism.MainNotions.Gaps.LevGap.k_pos R J_one := rfl norm := h.pz_norm T_prime := h.T_prime g_prime := H.g_prime T_g := Formalism.MainNotions.Gaps.LevGap.factTNeG H T pz piG h g_ne := H.g_ne core_alt := fun v hv => host_core H T h.T_prime hs v hv valuation_at_places_ …`.
+-/
 theorem idxHyp_host (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : LevHyp H T pz piG) :
     IdxHyp (hostPar H T pz piG) R.f := by
   have hs := Formalism.MainNotions.Gaps.LevGap.T_split_of_levHyp H T pz piG h
@@ -1202,26 +1618,41 @@ theorem idxHyp_host (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : Le
     num_g := fun i => (Formalism.MainNotions.Gaps.LevGap.split_F H (H.g i) (H.g_prime i) (h.g_split i)).trans
       (Formalism.MainNotions.Gaps.LevGap.finrank_F H) }
 
+/- English proof (translation)
+The claim follows from `(idxHyp_host H T pz piG h).U_le S`.
+-/
 theorem host_U_le (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : LevHyp H T pz piG)
     (S : (hostPar H T pz piG).Splits) :
     (hostPar H T pz piG).U S ≤ levelAfL (Examples₂.conjF H) 1 (Formalism.MainNotions.StandardLattice.stdLat H.E R.k) :=
   (idxHyp_host H T pz piG h).U_le S
 
+/- English proof (translation)
+The claim follows from `(idxHyp_host H T pz piG h).relIndex S`.
+-/
 theorem host_relIndex (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : LevHyp H T pz piG)
     (S : (hostPar H T pz piG).Splits) :
     (((hostPar H T pz piG).U S).relIndex (levelAfL (Examples₂.conjF H) 1 (Formalism.MainNotions.StandardLattice.stdLat H.E R.k)) : ℝ) =
       Formalism.MainNotions.StandardLattice.idxColLoc (H.g 0) R.k ^ R.f * Formalism.MainNotions.StandardLattice.idxColLoc (H.g 1) R.k ^ R.f * ((T : ℝ) ^ R.k - 1) ^ R.f :=
   (idxHyp_host H T pz piG h).relIndex S
 
+/- English proof (translation)
+The claim follows from `(idxHyp_host H T pz piG h).relIndex_ne_zero S`.
+-/
 theorem host_relIndex_ne_zero (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : LevHyp H T pz piG)
     (S : (hostPar H T pz piG).Splits) :
     ((hostPar H T pz piG).U S).relIndex (levelAfL (Examples₂.conjF H) 1 (Formalism.MainNotions.StandardLattice.stdLat H.E R.k)) ≠ 0 :=
   (idxHyp_host H T pz piG h).relIndex_ne_zero S
 
+/- English proof (translation)
+Introduce `S` and use `⟨host_U_le H T pz piG h S, host_relIndex H T pz piG h S⟩`.
+-/
 theorem idxOK_host (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : LevHyp H T pz piG) :
     IdxOK (hostPar H T pz piG) R.f :=
   fun S => ⟨host_U_le H T pz piG h S, host_relIndex H T pz piG h S⟩
 
+/- English proof (translation)
+The claim follows from `host_relIndex_ne_zero H T pz piG h S`.
+-/
 theorem host_relIndex_Kstd_ne_zero (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (h : LevHyp H T pz piG)
     (S : (hostPar H T pz piG).Splits) :
     ((hostPar H T pz piG).U S).relIndex (Kstd (hostPar H T pz piG).σ (hostPar H T pz piG).J) ≠ 0 :=

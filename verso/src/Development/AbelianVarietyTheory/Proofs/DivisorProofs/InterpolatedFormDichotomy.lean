@@ -10,24 +10,39 @@ open ComplexConjugate
 
 variable {n : Type} [Fintype n]
 
+/- English proof (translation)
+Rewrite using `[form_add, form_smul, form_smul]`.
+-/
 theorem form_comb (P₀ P : Matrix n n ℂ) (σ : ℝ) (x y : n → ℂ) :
     form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) x y
       = ((1 - σ : ℝ) : ℂ) * form P₀ x y + (σ : ℂ) * form P x y := by
   rw [form_add, form_smul, form_smul]
 
+/- English proof (translation)
+Rewrite using `[form_comb, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
+-/
 theorem re_form_comb (P₀ P : Matrix n n ℂ) (σ : ℝ) (x y : n → ℂ) :
     (form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) x y).re
       = (1 - σ) * (form P₀ x y).re + σ * (form P x y).re := by
   rw [form_comb, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Rewrite using `[← conj_form hH x y, Complex.conj_re]`.
+-/
 theorem re_form_swap {H : Matrix n n ℂ} (hH : H.IsHermitian) (x y : n → ℂ) :
     (form H y x).re = (form H x y).re := by
   rw [← conj_form hH x y, Complex.conj_re]
 
+/- English proof (translation)
+Rewrite using `[← gnorm_sq hH]`. Check the signs of the components of the expression.
+-/
 theorem re_form_nonneg {H : Matrix n n ℂ} (hH : H.PosSemidef) (x : n → ℂ) :
     0 ≤ (form H x x).re := by
   rw [← gnorm_sq hH]; positivity
 
+/- English proof (translation)
+Rewrite using `[re_form_comb]`. Conclude with `add_nonneg (mul_nonneg (by linarith) (re_form_nonneg h₀ x)) (mul_nonneg hσ0 (re_form_nonneg h₁ x))`.
+-/
 theorem re_form_comb_nonneg {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P.PosSemidef)
     {σ : ℝ} (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) (x : n → ℂ) :
     0 ≤ (form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) x x).re := by
@@ -35,6 +50,11 @@ theorem re_form_comb_nonneg {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (
   exact add_nonneg (mul_nonneg (by linarith) (re_form_nonneg h₀ x))
     (mul_nonneg hσ0 (re_form_nonneg h₁ x))
 
+/- English proof (translation)
+Establish `hh` using `congrArg Complex.re (h u)`. Rewrite `hh` using `[re_form_comb, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Establish `s1` using `re_form_swap h₀ p u`. Establish `s2` using `re_form_swap h₀ X u`. Establish `s3` using `re_form_swap h₁ q u`.
+
+Establish `s4` using `re_form_swap h₁ X u`. Rewrite using `[re_form_comb, re_form_comb]`. Simplify using `only [form_sub_left, form_sub_right, Complex.sub_re]`. Take the linear combination `(1 - σ) * s1 + σ * s3 - (1 - σ) * s2 - σ * s4 - 2 * hh`.
+-/
 theorem proj_eq {P₀ P : Matrix n n ℂ} (h₀ : P₀.IsHermitian) (h₁ : P.IsHermitian) {σ : ℝ}
     {X p q : n → ℂ}
     (h : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w
@@ -53,6 +73,9 @@ theorem proj_eq {P₀ P : Matrix n n ℂ} (h₀ : P₀.IsHermitian) (h₁ : P.Is
   simp only [form_sub_left, form_sub_right, Complex.sub_re]
   linear_combination (1 - σ) * s1 + σ * s3 - (1 - σ) * s2 - σ * s4 - 2 * hh
 
+/- English proof (translation)
+Rewrite using `[proj_eq h₀.isHermitian h₁.isHermitian h X, sub_self]`. Establish `e : (form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) 0 0).re = 0` using `by simp [form]`. Rewrite using `[e, sub_zero]`. Conclude with `add_nonneg (mul_nonneg (by linarith) (re_form_nonneg h₀ _)) (mul_nonneg hσ0 (re_form_nonneg h₁ _))`.
+-/
 theorem proj_nonneg {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P.PosSemidef) {σ : ℝ}
     (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) {X p q : n → ℂ}
     (h : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w
@@ -65,6 +88,9 @@ theorem proj_nonneg {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P
   exact add_nonneg (mul_nonneg (by linarith) (re_form_nonneg h₀ _))
     (mul_nonneg hσ0 (re_form_nonneg h₁ _))
 
+/- English proof (translation)
+Rewrite using `[proj_eq h₀.isHermitian h₁.isHermitian h u]`. Combine the linear relations using `[re_form_comb_nonneg h₀ h₁ hσ0 hσ1 (X - u)]`.
+-/
 theorem proj_le {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P.PosSemidef) {σ : ℝ}
     (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) {X p q : n → ℂ}
     (h : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w
@@ -75,10 +101,16 @@ theorem proj_le {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P.Pos
   rw [proj_eq h₀.isHermitian h₁.isHermitian h u]
   linarith [re_form_comb_nonneg h₀ h₁ hσ0 hσ1 (X - u)]
 
+/- English proof (translation)
+Rewrite using `[← gnorm_sq hH, ← gnorm_sq hH, gnorm_smul hH, mul_pow]`.
+-/
 theorem re_form_smul {H : Matrix n n ℂ} (hH : H.PosSemidef) (c : ℂ) (v : n → ℂ) :
     (form H (c • v) (c • v)).re = ‖c‖ ^ 2 * (form H v v).re := by
   rw [← gnorm_sq hH, ← gnorm_sq hH, gnorm_smul hH, mul_pow]
 
+/- English proof (translation)
+Establish `e1 : (form H (c • v) Y).re = (conj c * form H Y v).re`. Rewrite using `[re_form_swap hH.isHermitian, form_smul_right]`. Simplify using `only [form_add_left, form_add_right, Complex.add_re]`. Rewrite using `[e1, form_smul_right H c Y v]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem re_form_add_smul {H : Matrix n n ℂ} (hH : H.PosSemidef) (Y v : n → ℂ) (c : ℂ) :
     (form H (Y + c • v) (Y + c • v)).re
       = (form H Y Y).re + 2 * (conj c * form H Y v).re + (form H (c • v) (c • v)).re := by
@@ -88,12 +120,18 @@ theorem re_form_add_smul {H : Matrix n n ℂ} (hH : H.PosSemidef) (Y v : n → �
   rw [e1, form_smul_right H c Y v]
   ring
 
+/- English proof (translation)
+Establish `h` using `gnorm_parallelogram hH x y`. Rewrite `h` using `[gnorm_sq hH, gnorm_sq hH, gnorm_sq hH, gnorm_sq hH]`. Combine the linear relations using `[re_form_nonneg hH (x + y)]`.
+-/
 theorem re_form_sub_le {H : Matrix n n ℂ} (hH : H.PosSemidef) (x y : n → ℂ) :
     (form H (x - y) (x - y)).re ≤ 2 * ((form H x x).re + (form H y y).re) := by
   have h := gnorm_parallelogram hH x y
   rw [gnorm_sq hH, gnorm_sq hH, gnorm_sq hH, gnorm_sq hH] at h
   linarith [re_form_nonneg hH (x + y)]
 
+/- English proof (translation)
+The claim follows from `|(a - b) * l| ≤ 2 * |K| * N ^ 2 * ((1 - σ) * a + σ * b) := by have h1σ : 0 ≤ 1 - σ := by linarith have hs : 0 ≤ σ + ρ * (1 - σ) := by positivity have hK1 : K * N ^ 2 * (1 - σ) ≤ |K| * N ^ 2 * (1 - σ) := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self K) (sq_no …`.
+-/
 theorem ell_bound {a b σ ρ N K l : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1)
     (hρ : 0 ≤ ρ) (hba : ρ * b ≤ a) (h1 : |l| ≤ K * N ^ 2 * (σ + ρ * (1 - σ)))
     (h2 : |l| ≤ K * N ^ 2 * (1 - σ)) :
@@ -118,6 +156,9 @@ theorem ell_bound {a b σ ρ N K l : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hσ0 : 
     _ = a * |l| + b * |l| := by ring
     _ ≤ 2 * |K| * N ^ 2 * ((1 - σ) * a + σ * b) := by linarith
 
+/- English proof (translation)
+The claim follows from `|(form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X X).re - σ * (form P Y Y).re| ≤ (1 - σ) * (form P₀ Y Y).re := by have h' : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w = ((1 - σ : ℝ) : ℂ) * form P₀ 0 w + (σ : ℂ) * form P Y w := by intro w; rw [h w]; simp [form] have e1 := …`.
+-/
 theorem rem_zero {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P.PosSemidef) {σ : ℝ}
     (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) {X Y : n → ℂ}
     (h : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w = (σ : ℂ) * form P Y w) :
@@ -136,6 +177,49 @@ theorem rem_zero {P₀ P : Matrix n n ℂ} (h₀ : P₀.PosSemidef) (h₁ : P.Po
   rw [z1, z2] at e2
   rw [abs_le]; constructor <;> nlinarith
 
+/- English proof (translation)
+Introduce `n _ P₀ P σ ρ N C₂ K d ℓ v X Y h₀ h₁ hσ0 hσ1 hρ hN hℓ hab hba hY hX hcase`. Establish `p₀` using `h₀.posSemidef`. Establish `p₁` using `h₁.posSemidef`. Establish `h1σ : 0 ≤ 1 - σ` using `by linarith`. Establish `hR : ((form P₀ v v - form P v v) * ℓ - 2 * ((d * starRingEnd ℂ (form P Y v)).re : ℂ) + form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X X - (σ : ℂ) * form P Y Y).re = ((form P₀ v v).re - (form P v v).re) * ℓ.re - 2 * (d * starRingEnd ℂ (form P Y v)).re + (form (((1 - σ : ℝ) : ℂ) • P …`.
+
+Simplify using `only [Complex.sub_re, Complex.add_re, Complex.mul_re, hℓ, mul_zero, sub_zero, Complex.ofReal_re, Complex.ofReal_im, Complex.sub_im]`. Evaluate the numerical expressions. Rewrite using `[hR]`. Establish `ha` using `re_form_nonneg p₀ v`. Establish `hb` using `re_form_nonneg p₁ v`.
+
+Establish `hy0` using `re_form_nonneg p₀ Y`. Establish `hyC : (form P₀ Y Y).re ≤ C₂ ^ 2 * N ^ 2 * (form P₀ v v).re`. Establish `h2 : gnorm P₀ Y ^ 2 ≤ (C₂ * N * gnorm P₀ v) ^ 2` using `pow_le_pow_left₀ (gnorm_nonneg _ _) hY 2`. Rewrite `h2` using `[mul_pow, mul_pow, gnorm_sq p₀, gnorm_sq p₀]`. Conclude with `h2`.
+
+Establish `hW : 0 ≤ N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re)` using `mul_nonneg (sq_nonneg N) (add_nonneg (mul_nonneg h1σ ha) (mul_nonneg hσ0 hb))`. Establish `hyV : (1 - σ) * (form P₀ Y Y).re ≤ C₂ ^ 2 * (N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re))`. Use `mul_le_mul_of_nonneg_left hyC h1σ` as an intermediate fact. Establish `: 0 ≤ C₂ ^ 2 * N ^ 2 * (σ * (form P v v).re)` using `mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) (mul_nonneg hσ0 hb)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hK0 : 0 ≤ |K| * (N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re))` using `mul_nonneg (abs_nonneg K) hW`. Establish `hK2 : 0 ≤ K ^ 2 * (N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re))` using `mul_nonneg (sq_nonneg K) hW`. Establish `hC0 : 0 ≤ C₂ ^ 2 * (N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re))` using `mul_nonneg (sq_nonneg _) hW`. Distinguish the cases in `hd : d = 0`. Establish `h' : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w = (σ : ℂ) * form P Y w`.
+
+Introduce `w`. Rewrite using `[hX w, hd, zero_mul, add_zero]`. Establish `hz` using `abs_le.1 (rem_zero p₀ p₁ hσ0 hσ1 h')`. Establish `hc : (d * starRingEnd ℂ (form P Y v)).re = 0` using `by simp [hd]`. Establish `hE : |((form P₀ v v).re - (form P v v).re) * ℓ.re| ≤ 2 * |K| * N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re)`.
+
+Break down `hcase with ⟨-, hl⟩ | ⟨-, -, -, hl1, hl2⟩` into its components or cases. Rewrite using `[hl, mul_zero, abs_zero]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `ell_bound ha hb hσ0 hσ1 hρ.le hba hl1 hl2`. Establish `hE'` using `abs_le.1 hE`.
+
+Rewrite using `[hc, abs_le]`. Apply the tactic sequence `constructor <;> nlinarith`. Break down `hcase with ⟨hd0, -⟩ | ⟨hs1, hd1, hd2, hl1, hl2⟩` into its components or cases. Conclude with `absurd hd0 hd`. Establish `hσpos : 0 < σ`.
+
+Break down `hσ0.lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `hd2` using `[← h]`. Establish `: ‖d‖ ^ 2 ≤ 0` using `by simpa using hd2`.
+
+Conclude with `hd (norm_eq_zero.1 (by nlinarith [norm_nonneg d]))`. Establish `h1σp : 0 < 1 - σ` using `by linarith`. Establish `h1σc : ((1 - σ : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 h1σp.ne'`. Establish `hσc : (σ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hσpos.ne'`. Establish `hproj : ∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w = ((1 - σ : ℝ) : ℂ) * form P₀ ((-(d / ((1 - σ : ℝ) : ℂ))) • v) w + (σ : ℂ) * form P (Y + (d / (σ : ℂ)) • v) w`.
+
+Introduce `w`. Establish `e1 : ((1 - σ : ℝ) : ℂ) * (d / ((1 - σ : ℝ) : ℂ)) = d` using `mul_div_cancel₀ d h1σc`. Establish `e2 : (σ : ℂ) * (d / (σ : ℂ)) = d` using `mul_div_cancel₀ d hσc`. Rewrite using `[hX w, form_smul_left, form_add_left, form_smul_left]`. Take the linear combination `(form P₀ v w) * e1 - (form P v w) * e2`.
+
+Establish `pos` using `proj_nonneg p₀ p₁ hσ0 hσ1 hproj`. Establish `le` using `proj_le p₀ p₁ hσ0 hσ1 hproj Y`. Establish `n1 : ‖-(d / ((1 - σ : ℝ) : ℂ))‖ = ‖d‖ / (1 - σ)`. Rewrite using `[norm_neg, norm_div, Complex.norm_real, Real.norm_of_nonneg h1σ]`. Establish `n2 : ‖d / (σ : ℂ)‖ = ‖d‖ / σ`.
+
+Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg hσ0]`. Establish `hp : (form P₀ ((-(d / ((1 - σ : ℝ) : ℂ))) • v) ((-(d / ((1 - σ : ℝ) : ℂ))) • v)).re = (‖d‖ / (1 - σ)) ^ 2 * (form P₀ v v).re` using `by rw [re_form_smul p₀, n1]`. Establish `hq` using `re_form_add_smul p₁ Y v (d / (σ : ℂ))`. Rewrite `hq` using `[re_form_smul p₁, n2]`. Establish `hγ : σ * (starRingEnd ℂ (d / (σ : ℂ)) * form P Y v).re = (d * starRingEnd ℂ (form P Y v)).re`.
+
+Rewrite using `[← Complex.re_ofReal_mul, map_div₀, Complex.conj_ofReal, ← mul_assoc, mul_div_cancel₀ _ hσc, ← Complex.conj_re, map_mul, Complex.conj_conj]`. Establish `hqY : (form P (Y + (d / (σ : ℂ)) • v - Y) (Y + (d / (σ : ℂ)) • v - Y)).re = (‖d‖ / σ) ^ 2 * (form P v v).re`. Rewrite using `[add_sub_cancel_left, re_form_smul p₁, n2]`. Establish `hpY` using `re_form_sub_le p₀ ((-(d / ((1 - σ : ℝ) : ℂ))) • v) Y`. Rewrite `hpY`, `pos`, `le` using `[hp]`.
+
+Rewrite `pos`, `le` using `[hq]`. Rewrite `le` using `[hqY]`. Establish `le'` using `mul_le_mul_of_nonneg_left hpY h1σ`. Establish `hD1 : ‖d‖ / (1 - σ) ≤ K * N` using `by rw [div_le_iff₀ h1σp]; linarith`. Establish `hD1' : (‖d‖ / (1 - σ)) ^ 2 ≤ K ^ 2 * N ^ 2`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (div_nonneg (norm_nonneg _) h1σ) hD1 2`. Establish `he1 : (1 - σ) * ((‖d‖ / (1 - σ)) ^ 2 * (form P₀ v v).re) ≤ K ^ 2 * N ^ 2 * ((1 - σ) * (form P₀ v v).re)`. Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hD1' ha) h1σ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hKσ : 0 ≤ K ^ 2 * N ^ 2 * (σ * (form P v v).re)` using `mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) (mul_nonneg hσ0 hb)`. Establish `he1' : 0 ≤ (1 - σ) * ((‖d‖ / (1 - σ)) ^ 2 * (form P₀ v v).re)` using `mul_nonneg h1σ (mul_nonneg (sq_nonneg _) ha)`. Establish `hs2 : σ * (‖d‖ / σ) ^ 2 = ‖d‖ ^ 2 / σ` using `by field_simp`. Establish `hD2 : ‖d‖ ^ 2 / σ ≤ K * N ^ 2 * (σ + ρ * (1 - σ))`. Rewrite using `[div_le_iff₀ hσpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsρ : 0 ≤ σ + ρ * (1 - σ)` using `by positivity`. Establish `hD2' : ‖d‖ ^ 2 / σ ≤ |K| * N ^ 2 * (σ + ρ * (1 - σ))` using `hD2.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self K) (sq_nonneg N)) hsρ)`. Establish `he2 : σ * ((‖d‖ / σ) ^ 2 * (form P v v).re) ≤ |K| * N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re)`. Establish `e : σ * ((‖d‖ / σ) ^ 2 * (form P v v).re) = ‖d‖ ^ 2 / σ * (form P v v).re`.
+
+Rewrite using `[← hs2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h3` using `mul_le_mul_of_nonneg_right hD2' hb`. Establish `hKN : 0 ≤ |K| * N ^ 2` using `by positivity`.
+
+Establish `h4` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hba h1σ) hKN`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he2' : 0 ≤ σ * ((‖d‖ / σ) ^ 2 * (form P v v).re)` using `mul_nonneg hσ0 (mul_nonneg (sq_nonneg _) hb)`. Establish `hE` using `abs_le.1 (ell_bound ha hb hσ0 hσ1 hρ.le hba hl1 hl2)`. Rewrite using `[abs_le]`.
+
+Apply the tactic sequence `constructor <;> linarith [hE.1, hE.2]`.
+-/
 theorem remainder_bound : ∀ {n : Type} [Fintype n] {P₀ P : Matrix n n ℂ} {σ ρ N C₂ K : ℝ} {d ℓ : ℂ} {v X Y : n → ℂ}, P₀.PosDef → P.PosDef → 0 ≤ σ → σ ≤ 1 → 0 < ρ → 0 ≤ N → ℓ.im = 0 → ρ * (form P₀ v v).re ≤ (form P v v).re → ρ * (form P v v).re ≤ (form P₀ v v).re → gnorm P₀ Y ≤ C₂ * N * gnorm P₀ v → (∀ w, form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X w = (σ : ℂ) * form P Y w + d * (form P v w - form P₀ v w)) → ((d = 0 ∧ ℓ.re = 0) ∨ (σ < 1 ∧ ‖d‖ ≤ K * (1 - σ) * N ∧ ‖d‖ ^ 2 ≤ K * N ^ 2 * σ * (σ + ρ * (1 - σ)) ∧ |ℓ.re| ≤ K * N ^ 2 * (σ + ρ * (1 - σ)) ∧ |ℓ.re| ≤ K * N ^ 2 * (1 - σ))) → |((form P₀ v v - form P v v) * ℓ - 2 * ((d * starRingEnd ℂ (form P Y v)).re : ℂ) + form (((1 - σ : ℝ) : ℂ) • P₀ + (σ : ℂ) • P) X X - (σ : ℂ) * form P Y Y).re| ≤ (2 * C₂ ^ 2 + 4 * |K| + 3 * K ^ 2) * N ^ 2 * ((1 - σ) * (form P₀ v v).re + σ * (form P v v).re) := by
   intro n _ P₀ P σ ρ N C₂ K d ℓ v X Y h₀ h₁ hσ0 hσ1 hρ hN hℓ hab hba hY hX hcase
   have p₀ := h₀.posSemidef

@@ -13,14 +13,25 @@ open GlobalTheory.Amp.Swap GlobalTheory.DegVol.Swap
 
 variable {k r j : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Distinguish the cases in `h : a < b`. Simplify using `[upperIn, upper, h, h.ne]`. Simplify using `[upperIn, upper, h, Matrix.one_apply]`.
+-/
 theorem upperIn_0 (β : Fin r → ℕ) : upperIn β 0 = 1 := by
   ext a b
   by_cases h : a < b
   · simp [upperIn, upper, h, h.ne]
   · simp [upperIn, upper, h, Matrix.one_apply]
 
+/- English proof (translation)
+The claim follows from `Fin.ext (by simp [wI, UEmb.mI])`.
+-/
 private lemma wI_eq_mI (m : Fin (k + 1)) : wI k r m = UEmb.mI k r m := Fin.ext (by simp [wI, UEmb.mI])
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `Rad.cases3 (P := fun l => pOf k r q (wI k r a) l * uEmb k r u l (eI k r b) = 0) ?_ ?_ ?_ l` and prove the remaining obligations. Introduce `c`. Simplify using `only [pOf, Rad.pEl_we, zero_mul]`.
+
+Introduce `c`. Rewrite using `[wI_eq_mI c, UEmb.u_me, mul_zero]`. Introduce `c`. Rewrite using `[UEmb.u_se, mul_zero]`.
+-/
 theorem pOf_mul_we (q : PPar k r) (u : Matrix (Fin r) (Fin r) ℂ) (a : Fin (k + 1)) (b : Fin r) :
     (pOf k r q * uEmb k r u) (wI k r a) (eI k r b) = 0 := by
   rw [Matrix.mul_apply]
@@ -33,6 +44,11 @@ theorem pOf_mul_we (q : PPar k r) (u : Matrix (Fin r) (Fin r) ℂ) (a : Fin (k +
   · intro c
     rw [UEmb.u_se, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `Rad.cases3 (P := fun l => pOf k r q (esI k r a) l * uEmb k r u l (eI k r b) = 0) ?_ ?_ ?_ l` and prove the remaining obligations. Introduce `c`. Simplify using `only [pOf, Rad.pEl_se, zero_mul]`.
+
+Introduce `c`. Rewrite using `[wI_eq_mI c, UEmb.u_me, mul_zero]`. Introduce `c`. Rewrite using `[UEmb.u_se, mul_zero]`.
+-/
 theorem pOf_mul_se (q : PPar k r) (u : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r) :
     (pOf k r q * uEmb k r u) (esI k r a) (eI k r b) = 0 := by
   rw [Matrix.mul_apply]
@@ -45,22 +61,36 @@ theorem pOf_mul_se (q : PPar k r) (u : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r)
   · intro c
     rw [UEmb.u_se, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [crd, pTop]`. Conclude with `pOf_mul_ee _ _ a b`.
+-/
 private lemma crd_eI_eI (β : Fin r → ℕ) (x : (UTin β → ℂ) × PTop k r j) (a b : Fin r) :
     crd k r j β x (eI k r a) (eI k r b) = upperIn β x.1 a b := by
   simp only [crd, pTop]
   exact pOf_mul_ee _ _ a b
 
+/- English proof (translation)
+Rewrite using `[← wI_eq_mI]`. Simplify using `only [crd, pTop]`. Conclude with `pOf_mul_we _ _ m b`.
+-/
 private lemma crd_mI_eI_eq_zero (β : Fin r → ℕ) (x : (UTin β → ℂ) × PTop k r j) (m : Fin (k + 1)) (b : Fin r) :
     crd k r j β x (UEmb.mI k r m) (eI k r b) = 0 := by
   rw [← wI_eq_mI]
   simp only [crd, pTop]
   exact pOf_mul_we _ _ m b
 
+/- English proof (translation)
+Simplify using `only [crd, pTop]`. Conclude with `pOf_mul_se _ _ a b`.
+-/
 private lemma crd_esI_eI_eq_zero (β : Fin r → ℕ) (x : (UTin β → ℂ) × PTop k r j) (a b : Fin r) :
     crd k r j β x (esI k r a) (eI k r b) = 0 := by
   simp only [crd, pTop]
   exact pOf_mul_se _ _ a b
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `e : (crd k r j β p * crd k r j β q) (eI k r a) (eI k r b) = crd k r j β w (eI k r a) (eI k r b)`. Rewrite using `[h]`. Rewrite `e` using `[crd_eI_eI, Matrix.mul_apply, UEmb.sum_idx]`. Simplify using `only [crd_mI_eI_eq_zero, crd_esI_eI_eq_zero, crd_eI_eI, mul_zero, Finset.sum_const_zero, add_zero] at e`.
+
+Rewrite using `[← e, Matrix.mul_apply]`.
+-/
 theorem upperIn_mul (β : Fin r → ℕ) (p q w : (UTin β → ℂ) × PTop k r j)
     (h : crd k r j β p * crd k r j β q = crd k r j β w) :
     upperIn β w.1 = upperIn β p.1 * upperIn β q.1 := by
@@ -71,6 +101,13 @@ theorem upperIn_mul (β : Fin r → ℕ) (p q w : (UTin β → ℂ) × PTop k r 
   simp only [crd_mI_eI_eq_zero, crd_esI_eI_eq_zero, crd_eI_eI, mul_zero, Finset.sum_const_zero, add_zero] at e
   rw [← e, Matrix.mul_apply]
 
+/- English proof (translation)
+Take `⟨⟨a, b⟩, hab⟩` from `i`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add a b hab.ne]`. Simplify using `only [upper, lt_irrefl, dif_neg, not_false_eq_true, if_true, dif_pos hab, one_mul, mul_one]`. Conclude with `add_comm _ _`. Introduce and unpack `c ⟨hca, hcb⟩`.
+
+Simplify using `only [upper]`. Distinguish the cases in `h1 : a < c`. Distinguish the cases in `h2 : c < b`. Establish `hl : c.val - a.val < b.val - a.val`. Use `Fin.lt_def.mp h1` as an intermediate fact.
+
+Use `Fin.lt_def.mp h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos h1, hx ⟨(a, c), h1⟩ hl, zero_mul]`. Rewrite using `[dif_neg h2, if_neg hcb, mul_zero]`. Rewrite using `[dif_neg h1, if_neg (Ne.symm hca), zero_mul]`.
+-/
 theorem upper_mul_entry (x y : UT r → ℂ) (i : UT r)
     (hx : ∀ l : UT r, l.1.2.val - l.1.1.val < i.1.2.val - i.1.1.val → x l = 0) :
     (upper x * upper y) i.1.1 i.1.2 = x i + y i := by
@@ -88,6 +125,11 @@ theorem upper_mul_entry (x y : UT r → ℂ) (i : UT r)
       · rw [dif_neg h2, if_neg hcb, mul_zero]
     · rw [dif_neg h1, if_neg (Ne.symm hca), zero_mul]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun M : Matrix (Fin r) (Fin r) ℂ => M i.1.1.1 i.1.1.2) (upperIn_mul β p q w h)`. Simplify using `only [upperIn] at e`. Apply the tactic sequence `rw [upper_mul_entry _ _ i.1] at e`. Simplify `e` using `[upper, i.1.2, i.2]`. Introduce `l hl split_ifs with hβ`.
+
+Conclude with `hi ⟨l, hβ⟩ hl`. Both sides reduce to the same expression.
+-/
 theorem first (β : Fin r → ℕ) (p q w : (UTin β → ℂ) × PTop k r j)
     (h : crd k r j β p * crd k r j β q = crd k r j β w) (i : UTin β)
     (hi : ∀ l : UTin β, l.1.1.2.val - l.1.1.1.val < i.1.1.2.val - i.1.1.1.val → p.1 l = 0) :
@@ -101,6 +143,15 @@ theorem first (β : Fin r → ℕ) (p q w : (UTin β → ℂ) × PTop k r j)
     · exact hi ⟨l, hβ⟩ hl
     · rfl
 
+/- English proof (translation)
+Establish `hm` using `upperIn_mul β p q w h`. Rewrite `hm` using `[hp, upperIn_0, one_mul]`. Use `set U := upperIn β q.1 with hUdef`. Establish `hT : U.IsUpperTriangular`. Introduce `a b hba`.
+
+Establish `h1 : ¬ a < b` using `not_lt.mpr hba.le`. Establish `h2 : a ≠ b` using `ne_of_gt hba`. Simplify using `[hUdef, upperIn, upper, h1, h2]`. Establish `hU : IsUnit U.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hT]`.
+
+Simplify using `[hUdef, upperIn, upper]`. Establish `hV : uEmb k r U * uEmb k r U⁻¹ = 1`. Rewrite using `[← UEmb.uEmb_mul, Matrix.mul_nonsing_inv _ hU, UEmb.uEmb_one]`. Establish `h' : pTop k r j p.2 * pTop k r j q.2 * uEmb k r U = pTop k r j w.2 * uEmb k r U`. Establish `h2` using `h`.
+
+Simplify using `only [crd, hp, upperIn_0, UEmb.uEmb_one, mul_one, hm] at h2`. Rewrite using `[mul_assoc]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cancel (β : Fin r → ℕ) (p q w : (UTin β → ℂ) × PTop k r j)
     (h : crd k r j β p * crd k r j β q = crd k r j β w) (hp : p.1 = 0) :
     pTop k r j p.2 * pTop k r j q.2 = pTop k r j w.2 := by
@@ -127,6 +178,11 @@ theorem cancel (β : Fin r → ℕ) (p q w : (UTin β → ℂ) × PTop k r j)
     _ = pTop k r j w.2 * uEmb k r U * uEmb k r U⁻¹ := by rw [h']
     _ = pTop k r j w.2 := by rw [mul_assoc, hV, mul_one]
 
+/- English proof (translation)
+Establish `hB : B = B'`. Use function extensionality and compare the values at `b c`. Simplify `congrArg (fun M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => M (wI k r c) (esI k r b)) h` using `[Rad.pEl_ws]`. Substitute `hB` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Simplify `congrArg (fun M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => M (eI k r a) (esI k r b)) h` using `[Rad.pEl_es]`.
+-/
 private lemma eq_and_eq_of_pEl_eq (B B' : Fin r → Fin (k + 1) → ℂ) (S S' : Matrix (Fin r) (Fin r) ℂ)
     (h : pEl k r B S = pEl k r B' S') : B = B' ∧ S = S' := by
   have hB : B = B' := by
@@ -139,6 +195,19 @@ private lemma eq_and_eq_of_pEl_eq (B B' : Fin r → Fin (k + 1) → ℂ) (S S' :
   simpa [Rad.pEl_es] using
     congrArg (fun M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => M (eI k r a) (esI k r b)) h
 
+/- English proof (translation)
+Introduce `k r j β`. Use `⟨?_, fun p q w h => ⟨fun i hi => first β p q w h i hi, fun hp => ?_, fun hp hB => ?_⟩⟩` and prove the remaining obligations. Establish `hS : skewM (r` using `r) (fun _ => 0) (fun _ => 0) = 0 := by`. Use extensionality with `a b`. Simplify using `only [skewM, Matrix.zero_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [crd, Prod.fst_zero, Prod.snd_zero, upperIn_0, UEmb.uEmb_one, mul_one, pTop, pOf, Pi.zero_apply, dite_eq_ite, ite_self, hS]`. Conclude with `Rad.pEl_zero`. Establish `hc` using `cancel β p q w h hp`. Simplify using `only [pTop, pOf] at hc`.
+
+Rewrite `hc` using `[Rad.pEl_mul]`. Establish `hB'` using `(eq_and_eq_of_pEl_eq _ _ _ _ hc).1`. Use function extensionality and compare the values at `a c`. Establish `e` using `congrFun (congrFun hB' a.1) c`. Simplify `e.symm` using `[a.2]`.
+
+Establish `hc` using `cancel β p q w h hp`. Simplify using `only [pTop, pOf, hB, Pi.zero_apply, dite_eq_ite, ite_self] at hc`. Rewrite `hc` using `[Rad.pEl_mul]`. Establish `hS'` using `(eq_and_eq_of_pEl_eq _ _ _ _ hc).2`. Simplify using `only [Rad.herm_Hb] at hS'`.
+
+Use extensionality with `x`. Take `⟨⟨⟨a, b⟩, hab⟩, hj⟩` from `x`. Establish `e` using `congrFun (congrFun hS' a) b`. Simplify using `[skewM, hab, hj] at e`. Simplify using `using e.symm`.
+
+Take `⟨a, ha⟩` from `x`. Establish `e` using `congrArg Complex.im (congrFun (congrFun hS' a) a)`. Simplify using `[skewM, ha] at e`. Simplify using `using e.symm`.
+-/
 theorem crd_mul : ∀ (k r j : ℕ) (β : Fin r → ℕ), crd k r j β 0 = 1 ∧ ∀ p q w : (UTin β → ℂ) × PTop k r j, crd k r j β p * crd k r j β q = crd k r j β w → (∀ i : UTin β, (∀ l : UTin β, l.1.1.2.val - l.1.1.1.val < i.1.1.2.val - i.1.1.1.val → p.1 l = 0) → w.1 i = p.1 i + q.1 i) ∧ (p.1 = 0 → w.2.1 = p.2.1 + q.2.1) ∧ (p.1 = 0 → p.2.1 = 0 → w.2.2 = p.2.2 + q.2.2) := by
   intro k r j β
   refine ⟨?_, fun p q w h => ⟨fun i hi => first β p q w h i hi, fun hp => ?_, fun hp hB => ?_⟩⟩

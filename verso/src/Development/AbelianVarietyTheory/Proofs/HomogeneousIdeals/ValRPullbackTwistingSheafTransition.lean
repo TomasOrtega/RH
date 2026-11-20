@@ -16,6 +16,9 @@ namespace GlobalTheory.TuplePoint
 
 variable {L : Type} [Field L] {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `η.denseRange.exists_mem_open W.isOpen ⟨x, hx⟩`. Introduce `p _`. Take `rfl : p = q` from `Subsingleton.elim (α := PrimeSpectrum L) p q`. Conclude with `hq`.
+-/
 theorem le_preimage_of_mem (η : Sp L ⟶ X) [IsDominant η] {W : X.Opens} {x : X} (hx : x ∈ W) :
     ⊤ ≤ η ⁻¹ᵁ W := by
   obtain ⟨q, hq⟩ := η.denseRange.exists_mem_open W.isOpen ⟨x, hx⟩
@@ -23,6 +26,11 @@ theorem le_preimage_of_mem (η : Sp L ⟶ X) [IsDominant η] {W : X.Opens} {x : 
   obtain rfl : p = q := Subsingleton.elim (α := PrimeSpectrum L) p q
   exact hq
 
+/- English proof (translation)
+Establish `key : X.basicOpen (s - s') = ⊥`. Assume the negation of the conclusion as `hne`. Take `⟨y, hy⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).mp hne`. Establish `hW : ⊤ ≤ η ⁻¹ᵁ W` using `le_preimage_of_mem η (X.basicOpen_le _ hy)`. Establish `hB` using `le_preimage_of_mem η hy`.
+
+Rewrite `hB` using `[le_preimage_basicOpen_iff η hW, sub_eq_add_neg, valR_add η W hW, valR_neg η W hW, h hW, add_neg_cancel]`. Conclude with `not_isUnit_zero hB`. Conclude with `sub_eq_zero.mp ((basicOpen_eq_bot_iff _).mp key)`.
+-/
 theorem ext_of_dense (η : Sp L ⟶ X) [IsDominant η] [IsReduced X] {W : X.Opens} {s s' : Γ(X, W)}
     (h : ⊤ ≤ η ⁻¹ᵁ W → valR η W s = valR η W s') : s = s' := by
   have key : X.basicOpen (s - s') = ⊥ := by
@@ -35,6 +43,9 @@ theorem ext_of_dense (η : Sp L ⟶ X) [IsDominant η] [IsReduced X] {W : X.Open
     exact not_isUnit_zero hB
   exact sub_eq_zero.mp ((basicOpen_eq_bot_iff _).mp key)
 
+/- English proof (translation)
+Introduce `s s' hss`. Conclude with `ext_of_dense η fun _ => by rw [valR_eq η W h, valR_eq η W h]; exact hss`.
+-/
 theorem valMap_injective (η : Sp L ⟶ X) [IsDominant η] [IsReduced X] {W : X.Opens}
     (h : ⊤ ≤ η ⁻¹ᵁ W) : Function.Injective (valMap η W h).hom := by
   intro s s' hss
@@ -42,12 +53,18 @@ theorem valMap_injective (η : Sp L ⟶ X) [IsDominant η] [IsReduced X] {W : X.
 
 variable {o : Type} [CommRing o] [Algebra o L]
 
+/- English proof (translation)
+Rewrite using `[← valR_eq η W h]`. Conclude with `valR_constFn_of_over f (algebraMap o L) η hf W h a`.
+-/
 theorem valMap_baseRingHom {η : Sp L ⟶ X} {f : X ⟶ Sp o} (hf : η ≫ f = spMap (algebraMap o L))
     {W : X.Opens} (h : ⊤ ≤ η ⁻¹ᵁ W) (a : o) :
     (valMap η W h).hom ((baseRingHom f W).hom a) = algebraMap o L a := by
   rw [← valR_eq η W h]
   exact valR_constFn_of_over f (algebraMap o L) η hf W h a
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.map_eval₂Hom, MvPolynomial.aeval_def]`. Establish `hc : (valMap η W h).hom.comp (baseRingHom f W).hom = algebraMap o L` using `RingHom.ext (valMap_baseRingHom hf h)`. Establish `hv : (fun k => (valMap η W h).hom (u k)) = fun k => valR η W (u k)`. Use function extensionality and compare the values at `fun k => (valR_eq η W h (u k)).symm`. Rewrite using `[hc, hv, MvPolynomial.coe_eval₂Hom]`.
+-/
 theorem valMap_eval₂Hom {σ : Type*} {η : Sp L ⟶ X} {f : X ⟶ Sp o}
     (hf : η ≫ f = spMap (algebraMap o L)) {W : X.Opens} (h : ⊤ ≤ η ⁻¹ᵁ W) (u : σ → Γ(X, W))
     (p : MvPolynomial σ o) :
@@ -62,6 +79,9 @@ theorem valMap_eval₂Hom {σ : Type*} {η : Sp L ⟶ X} {f : X ⟶ Sp o}
 
 variable {r M : ℕ}
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.mp ht`. Use `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ (HomogeneousIdeal.mem_irrelevant_of_mem _ Nat.one_pos (X_mem o r i))) ?_` and prove the remaining obligations. Simplify using `using hi`.
+-/
 theorem map_irrelevant_eq_top (o : Type) [CommRing o] [Algebra o L] {t : Fin (r + 1) → L}
     (ht : t ≠ 0) : (HomogeneousIdeal.irrelevant (grading o r)).toIdeal.map
       (aeval (R := o) t).toRingHom = ⊤ := by
@@ -77,12 +97,22 @@ def point (o : Type) [CommRing o] [Algebra o L] (t : Fin (r + 1) → L) (ht : t 
 variable {t : Fin (r + 1) → L} {ht : t ≠ 0}
 
 @[reassoc]
+/- English proof (translation)
+Simplify using `only [point, PSpace.str, spMap, ProjPoint.ofHom_toSpecZero_assoc, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+-/
 theorem point_str : point o t ht ≫ PSpace.str o r = spMap (algebraMap o L) := by
   simp only [point, PSpace.str, spMap, ProjPoint.ofHom_toSpecZero_assoc, ← Spec.map_comp]
   congr 1
   ext a
   simp
 
+/- English proof (translation)
+Rewrite using `[point, ProjPoint.ofHom_preimage_basicOpen _ _ _ Nat.one_pos (X_mem o r i)]`. Use `show (⊤ : Opens (PrimeSpectrum L)) ≤ PrimeSpectrum.basicOpen ((aeval t).toRingHom (X i)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hle h0`. Establish `hm` using `hle (show (default : PrimeSpectrum L) ∈ (⊤ : Opens (PrimeSpectrum L)) from trivial)`.
+
+Rewrite `hm` using `[PrimeSpectrum.mem_basicOpen]`. Apply `hm` to reduce the goal to its premises. Simplify using `[h0]`. Introduce `h1 p _`. Rewrite using `[PrimeSpectrum.mem_basicOpen, Ideal.eq_bot_of_prime p.asIdeal]`.
+
+Simplify using `using h1`.
+-/
 theorem le_point_preimage_iff (i : Fin (r + 1)) :
     ⊤ ≤ point o t ht ⁻¹ᵁ chart o r i ↔ t i ≠ 0 := by
   rw [point, ProjPoint.ofHom_preimage_basicOpen _ _ _ Nat.one_pos (X_mem o r i)]
@@ -97,6 +127,21 @@ theorem le_point_preimage_iff (i : Fin (r + 1)) :
     rw [PrimeSpectrum.mem_basicOpen, Ideal.eq_bot_of_prime p.asIdeal]
     simpa using h1
 
+/- English proof (translation)
+Establish `hu : IsUnit ((aeval t).toRingHom (X i : MvPolynomial (Fin (r + 1)) o))` using `by simpa using hi`. Establish `hpre : ⊤ ≤ Proj.awayι (grading o r) (X i) (X_mem o r i) Nat.one_pos ⁻¹ᵁ chart o r i`. Establish `e1` using `Scheme.Hom.preimage_opensRange (Proj.awayι (grading o r) (X i) (X_mem o r i) Nat.one_pos)`. Rewrite `e1` using `[Proj.opensRange_awayι]`. Conclude with `e1.ge`.
+
+Establish `hmem : (X j : MvPolynomial (Fin (r + 1)) o) ∈ grading o r (1 • 1)`. Simplify using `using X_mem o r j`. Establish `hA : ratio o r i j = (Proj.awayToSection (grading o r) (X i)).hom (HomogeneousLocalization.Away.mk (grading o r) (X_mem o r i) 1 (X j) hmem)`. Rewrite using `[ProjFrac.awayToSection_mk]`. Conclude with `ProjFrac.frac_eq (by ring)`.
+
+Establish `key : Proj.awayToSection (grading o r) (X i) ≫ (Proj.awayι (grading o r) (X i) (X_mem o r i) Nat.one_pos).appLE (chart o r i) ⊤ hpre = (Scheme.ΓSpecIso _).inv` using `by set A := Proj.awayι (grading o r) (X i) (X_mem o r i) Nat.one_pos set e := Proj.basicOpenIsoSpec (grading o r) (X i) (X_mem o r i) Nat.one_pos`. Establish `: IsIso (Proj.awayToSection (grading o r) (X i))` using `(Proj.basicOpenIsoAway (grading o r) (X i) (X_mem o r i) Nat.one_pos).isIso_hom`. Establish `hι : e.hom ≫ A = (chart o r i).ι`. Conclude with `Iso.hom_inv_id_assoc e _`. Establish `gen : ∀ (g : (chart o r i).toScheme ⟶ Proj (grading o r)) (_ : e.hom ≫ A = g) (hle : ⊤ ≤ g ⁻¹ᵁ chart o r i), g.appLE (chart o r i) ⊤ hle = A.appLE (chart o r i) ⊤ hpre ≫ e.hom.appLE ⊤ ⊤ le_rfl`.
+
+Introduce and unpack `g rfl hle`. Conclude with `(Scheme.Hom.appLE_comp_appLE e.hom A (chart o r i) ⊤ ⊤ hpre _).symm`. Establish `h1` using `gen _ hι (chart o r i).ι_preimage_self.ge`. Establish `F1 : e.hom.appLE ⊤ ⊤ le_rfl = (Scheme.ΓSpecIso _).hom ≫ Proj.awayToSection (grading o r) (X i) ≫ (chart o r i).topIso.inv`. Rewrite using `[← Proj.basicOpenToSpec_app_top]`.
+
+Both sides reduce to the same expression. Establish `F2 : (chart o r i).ι.appLE (chart o r i) ⊤ (chart o r i).ι_preimage_self.ge = (chart o r i).topIso.inv`. Rewrite using `[Scheme.Opens.ι_appLE]`. Both sides reduce to the same expression. Rewrite `h1` using `[F2, F1]`.
+
+Establish `h3 : A.appLE (chart o r i) ⊤ hpre ≫ (Scheme.ΓSpecIso _).hom ≫ Proj.awayToSection (grading o r) (X i) = 𝟙 _`. Rewrite using `[← cancel_mono (chart o r i).topIso.inv, Category.id_comp, Category.assoc, Category.assoc]`. Conclude with `h1.symm`. Rewrite using `[← cancel_mono ((Scheme.ΓSpecIso _).hom ≫ Proj.awayToSection (grading o r) (X i)), Category.assoc, h3, Category.comp_id, Iso.inv_hom_id_assoc]`. Rewrite using `[point, ProjPoint.ofHom_eq_awayι _ _ _ Nat.one_pos (X_mem o r i) hu, ← valR_appLE _ _ hpre (le_preimage_top _), hA, ← CommRingCat.comp_apply, key, valR_specMap]`.
+
+Apply `eq_div_of_mul_eq hi` to reduce the goal to its premises. Simplify using `using ProjPoint.awayLift_mk_mul (grading o r) ((aeval t).toRingHom) hu (X_mem o r i) 1 (X j) hmem`.
+-/
 theorem valR_point_ratio {i : Fin (r + 1)} (hi : t i ≠ 0) (j : Fin (r + 1)) :
     valR (point o t ht) (chart o r i) (ratio o r i j) = t j / t i := by
   have hu : IsUnit ((aeval t).toRingHom (X i : MvPolynomial (Fin (r + 1)) o)) := by simpa using hi
@@ -146,6 +191,9 @@ theorem valR_point_ratio {i : Fin (r + 1)} (hi : t i ≠ 0) (j : Fin (r + 1)) :
   apply eq_div_of_mul_eq hi
   simpa using ProjPoint.awayLift_mk_mul (grading o r) ((aeval t).toRingHom) hu (X_mem o r i) 1 (X j) hmem
 
+/- English proof (translation)
+Use `ProjSpace.hom_ext (hx.trans point_str.symm) fun _ => ⟨⊤, by simp, i, h, (le_point_preimage_iff i).mpr hi, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : ⊤ ≤ (𝟙 (Sp L)) ⁻¹ᵁ (⊤ : (Sp L).Opens)` using `le_preimage_top _`. Apply `valMap_injective (𝟙 (Sp L)) h1` to reduce the goal to its premises. Rewrite using `[← valR_eq, ← valR_eq, pullRatio, pullRatio, valR_appLE (𝟙 _) x h h1, valR_appLE (𝟙 _) (point o t ht) _ h1, Category.id_comp, Category.id_comp, hv j, valR_point_ratio hi]`.
+-/
 theorem eq_point {x : Sp L ⟶ PSpace o r} (hx : x ≫ PSpace.str o r = spMap (algebraMap o L))
     {i : Fin (r + 1)} (hi : t i ≠ 0) (h : ⊤ ≤ x ⁻¹ᵁ chart o r i)
     (hv : ∀ j, valR x (chart o r i) (ratio o r i j) = t j / t i) : x = point o t ht := by
@@ -157,6 +205,21 @@ theorem eq_point {x : Sp L ⟶ PSpace o r} (hx : x ≫ PSpace.str o r = spMap (a
     valR_appLE (𝟙 _) (point o t ht) _ h1, Category.id_comp, Category.id_comp, hv j,
     valR_point_ratio hi]
 
+/- English proof (translation)
+Establish `hi : t i ≠ 0` using `(le_point_preimage_iff i).mp h`. Establish `hc : ∀ a : o, (valMap (point o t ht) _ h).hom (algebraMap o Γ(PSpace o r, chart o r i) a) = algebraMap o L a` using `valMap_baseRingHom point_str h`. Establish `hr : ∀ k, (valMap (point o t ht) _ h).hom (ratio o r i k) = t k / t i` using `fun k => by`. Rewrite using `[← valR_eq, valR_point_ratio hi]`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl⟩`. Take `⟨p, rfl⟩` from `(chartAlgEquiv o r i).surjective f`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[← MvPolynomial.algebraMap_eq, AlgEquiv.commutes, hc]`. Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem hp hq`.
+
+Consider the case `mul_X p j hp`. Rewrite using `[map_mul, map_mul, chartAlgEquiv_X, hr]`. Conclude with `mul_mem hp (Algebra.subset_adjoin ⟨j.1, rfl⟩)`. Introduce `hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `⟨ratio o r i k, hr k⟩`. Consider the case `algebraMap a => exact ⟨_, hc a⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨f, rfl⟩` from `hx`. Take `⟨g, rfl⟩` from `hy`. Conclude with `⟨f + g, map_add _ f g⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨f, rfl⟩` from `hx`.
+
+Take `⟨g, rfl⟩` from `hy`. Conclude with `⟨f * g, map_mul _ f g⟩`.
+-/
 theorem range_valMap_point {i : Fin (r + 1)} (h : ⊤ ≤ point o t ht ⁻¹ᵁ chart o r i) :
     Set.range (valMap (point o t ht) _ h).hom =
       Algebra.adjoin o (Set.range fun k => t k / t i) := by
@@ -201,17 +264,26 @@ variable {η : Sp L ⟶ X} {π : X ⟶ PSpace o r} (hπ : η ≫ π = point o t 
 
 include hπ
 
+/- English proof (translation)
+Establish `key` using `le_preimage_comp η π hi hW`. Rewrite `key` using `[hπ, le_point_preimage_iff]`. Conclude with `key`.
+-/
 theorem ne_zero_of_le {W : X.Opens} (hW : ⊤ ≤ η ⁻¹ᵁ W) {i : Fin (r + 1)}
     (hi : W ≤ π ⁻¹ᵁ chart o r i) : t i ≠ 0 := by
   have key := le_preimage_comp η π hi hW
   rw [hπ, le_point_preimage_iff] at key
   exact key
 
+/- English proof (translation)
+Establish `key` using `(le_point_preimage_iff (o := o) (ht := ht) i).mpr hi`. Rewrite `key` using `[← hπ]`. Conclude with `key`.
+-/
 theorem le_preimage_chart {i : Fin (r + 1)} (hi : t i ≠ 0) : ⊤ ≤ η ⁻¹ᵁ (π ⁻¹ᵁ chart o r i) := by
   have key := (le_point_preimage_iff (o := o) (ht := ht) i).mpr hi
   rw [← hπ] at key
   exact key
 
+/- English proof (translation)
+Rewrite using `[pullRatio, valR_appLE η π hi hW, hπ, valR_point_ratio (ne_zero_of_le hπ hW hi)]`.
+-/
 theorem valR_pullRatio {W : X.Opens} (hW : ⊤ ≤ η ⁻¹ᵁ W) {i : Fin (r + 1)}
     (hi : W ≤ π ⁻¹ᵁ chart o r i) (j : Fin (r + 1)) :
     valR η W (pullRatio π W i hi j) = t j / t i := by
@@ -219,6 +291,31 @@ theorem valR_pullRatio {W : X.Opens} (hW : ⊤ ≤ η ⁻¹ᵁ W) {i : Fin (r + 
 
 end
 
+/- English proof (translation)
+Establish `hone : ∀ a, u a (c a) = 1` using `fun a => ext_of_dense η fun h => by rw [hu a, div_self (hc a), valR_one η _ h]`. Establish `hrel : ∀ a b k, resG X (inf_le_left : U a ⊓ U b ≤ U a) (u a k) = resG X (inf_le_left : U a ⊓ U b ≤ U a) (u a (c b)) * resG X (inf_le_right : U a ⊓ U b ≤ U b) (u b k)`. Introduce `a b k`. Apply `ext_of_dense η` to reduce the goal to its premises. Introduce `h`.
+
+Rewrite using `[valR_mul η _ h, valR_res η inf_le_left h, valR_res η inf_le_left h, valR_res η inf_le_right h, hu, hu, hu]`. Clear denominators, using `[hc a, hc b]` for the nonvanishing conditions. Establish `compat : ∀ (a b : ι) {Z : Scheme.{0}} (p : Z ⟶ (U a).toScheme) (q : Z ⟶ (U b).toScheme), p ≫ (U a).ι = q ≫ (U b).ι → p ≫ ofCoords f (U a) (c a) (u a) = q ≫ ofCoords f (U b) (c b) (u b)`. Introduce `a b Z p q hpq`. Establish `hA : ⊤ ≤ (p ≫ (U a).ι) ⁻¹ᵁ U a` using `fun x _ => (p.base x).2`.
+
+Establish `hB : ⊤ ≤ (q ≫ (U b).ι) ⁻¹ᵁ U b` using `fun x _ => (q.base x).2`. Establish `hB' : ⊤ ≤ (p ≫ (U a).ι) ⁻¹ᵁ U b` using `by rw [hpq]; exact hB`. Establish `hAB : ⊤ ≤ (p ≫ (U a).ι) ⁻¹ᵁ (U a ⊓ U b)` using `le_inf hA hB'`. Establish `pb : ∀ k, ((p ≫ (U a).ι).appLE (U a ⊓ U b) ⊤ hAB).hom (resG X inf_le_right (u b k)) = ((q ≫ (U b).ι).appLE (U b) ⊤ hB).hom (u b k)` using `fun k => by`. Rewrite using `[appLE_resG, appLE_of_eq hpq (U b) ⊤ _ hB]`.
+
+Establish `rel : ∀ k, ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a k) = ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a (c b)) * ((q ≫ (U b).ι).appLE (U b) ⊤ hB).hom (u b k)` using `fun k => by`. Establish `e` using `congrArg ((p ≫ (U a).ι).appLE (U a ⊓ U b) ⊤ hAB).hom (hrel a b k)`. Rewrite `e` using `[map_mul, pb, appLE_resG, appLE_resG]`. Conclude with `e`. Establish `inv1 : ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a (c b)) * ((q ≫ (U b).ι).appLE (U b) ⊤ hB).hom (u b (c a)) = 1`.
+
+Rewrite using `[← rel, hone a, map_one]`. Establish `hpa` using `ofCoords_preimage f (U a) (c a) (u a) p`. Establish `hqb` using `ofCoords_preimage f (U b) (c b) (u b) q`. Establish `ra : ∀ k, pullRatio (p ≫ ofCoords f (U a) (c a) (u a)) ⊤ (c a) hpa k = ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a k)` using `fun k => pullRatio_comp_ofCoords f (U a) (c a) (hone a) p ⊤ hpa hA k`. Establish `rb : ∀ k, pullRatio (q ≫ ofCoords f (U b) (c b) (u b)) ⊤ (c b) hqb k = ((q ≫ (U b).ι).appLE (U b) ⊤ hB).hom (u b k)` using `fun k => pullRatio_comp_ofCoords f (U b) (c b) (hone b) q ⊤ hqb hB k`.
+
+Establish `h2 : ⊤ ≤ (q ≫ ofCoords f (U b) (c b) (u b)) ⁻¹ᵁ chart o M (c a)`. Establish `hu' : IsUnit (pullRatio (q ≫ ofCoords f (U b) (c b) (u b)) ⊤ (c b) hqb (c a))`. Rewrite using `[rb]`. Conclude with `⟨⟨_, _, (mul_comm _ _).trans inv1, inv1⟩, rfl⟩`. Establish `e` using `basicOpen_pullRatio (φ := q ≫ ofCoords f (U b) (c b) (u b)) (W := ⊤) (i := c b) (hi := hqb) (j := c a)`.
+
+Rewrite `e` using `[Scheme.basicOpen_of_isUnit _ hu', top_inf_eq]`. Conclude with `e.le`. Use `ProjSpace.hom_ext ?_ fun _ => ⟨⊤, by simp, c a, hpa, h2, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ofCoords_str, ofCoords_str, ← Category.assoc, hpq, Category.assoc]`. Establish `m1` using `pullRatio_mul_pullRatio (φ := q ≫ ofCoords f (U b) (c b) (u b)) (W := ⊤) (i := c a) (j := c b) (k := j) (hi := h2) (hj := hqb)`.
+
+Establish `m2` using `pullRatio_mul_pullRatio (φ := q ≫ ofCoords f (U b) (c b) (u b)) (W := ⊤) (i := c b) (j := c a) (k := c b) (hi := hqb) (hj := h2)`. Rewrite `m2` using `[pullRatio_self, rb]`. Rewrite `m1` using `[rb]`. Establish `hx : pullRatio (q ≫ ofCoords f (U b) (c b) (u b)) ⊤ (c a) h2 (c b) = ((p ≫ (U a).ι).appLE (U a) ⊤ hA).hom (u a (c b))`. Rewrite using `[← mul_one (pullRatio _ _ _ h2 (c b)), ← inv1, mul_comm, mul_assoc, m2, mul_one]`.
+
+Rewrite using `[ra, rel j, ← m1, hx]`. Set `g : X ⟶ PSpace o M` to `(X.openCoverOfIsOpenCover U hU).glueMorphisms (fun a => ofCoords f (U a) (c a) (u a)) fun a b => compat a b _ _ pullback.condition`. Establish `hg : ∀ a, (U a).ι ≫ g = ofCoords f (U a) (c a) (u a)` using `fun a => (X.openCoverOfIsOpenCover U hU).ι_glueMorphisms _ _ a`. Establish `hpre : ∀ a, U a ≤ g ⁻¹ᵁ chart o M (c a)` using `fun a x hx => by`. Establish `h` using `ofCoords_preimage_top f (U a) (c a) (u a) (show (⟨x, hx⟩ : (U a).toScheme) ∈ (⊤ : (U a).toScheme.Opens) from trivial)`.
+
+Rewrite `h` using `[← hg a]`. Conclude with `h`. Establish `hratio : ∀ a j, pullRatio g (U a) (c a) (hpre a) j = u a j`. Introduce `a j`. Apply `(ConcreteCategory.bijective_of_isIso ((U a).ι.appLE (U a) ⊤ (U a).ι_preimage_self.ge)).1` to reduce the goal to its premises.
+
+Rewrite using `[appLE_pullRatio, pullRatio_of_eq ((hg a).trans (Category.id_comp _).symm) _ (ofCoords_preimage f (U a) (c a) (u a) (𝟙 _)), pullRatio_comp_ofCoords f (U a) (c a) (hone a) (𝟙 _) ⊤ _ (by simp), appLE_of_eq (Category.id_comp _)]`. Establish `hstr : g ≫ PSpace.str o M = f` using `(X.openCoverOfIsOpenCover U hU).hom_ext _ _ fun a => by`. Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ PSpace.str o M) (hg a)).trans (ofCoords_str f (U a) (c a) (u a))`. Take `⟨a0, ha0⟩` from `exists_le_preimage_of_iSup_eq_top η hU`.
+
+Use `⟨g, ?_, hstr, hpre⟩` and prove the remaining obligations. Use `eq_point (by rw [Category.assoc, hstr, hf]) (hc a0) (le_preimage_comp η g (hpre a0) ha0) fun j => ?_` and prove the remaining obligations. Rewrite using `[← valR_appLE η g (hpre a0) ha0]`. Conclude with `(congrArg (valR η (U a0)) (hratio a0 j)).trans (hu a0 j)`.
+-/
 theorem exists_hom_of_coords [IsReduced X] (η : Sp L ⟶ X) [IsDominant η] (f : X ⟶ Sp o)
     (hf : η ≫ f = spMap (algebraMap o L)) {ι : Type} (U : ι → X.Opens) (hU : ⨆ a, U a = ⊤)
     (hη : ∀ a, ⊤ ≤ η ⁻¹ᵁ U a) {z : Fin (M + 1) → L} (hz : z ≠ 0) (c : ι → Fin (M + 1))
@@ -312,6 +409,19 @@ theorem exists_hom_of_coords [IsReduced X] (η : Sp L ⟶ X) [IsDominant η] (f 
   rw [← valR_appLE η g (hpre a0) ha0]
   exact (congrArg (valR η (U a0)) (hratio a0 j)).trans (hu a0 j)
 
+/- English proof (translation)
+Set `W : Option ι → Y.Opens` to `fun a => a.elim ⟨(Set.range φ)ᶜ, hcl.isOpen_compl⟩ V`. Establish `hW : iSup W = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+
+Distinguish the cases in `hy : y ∈ Set.range φ`. Take `⟨x, rfl⟩` from `hy`. Establish `hx : x ∈ ⨆ a, φ ⁻¹ᵁ V a` using `by rw [hc]; trivial`. Rewrite `hx` using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨a, ha⟩` from `hx`.
+
+Conclude with `⟨some a, ha⟩`. Conclude with `⟨none, hy⟩`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top W hW fun a => ?_` and prove the remaining obligations. Consider the cases of `a with`. Consider the case `none`.
+
+Establish `: IsEmpty (φ ⁻¹ᵁ W none).toScheme` using `⟨fun x => x.2 ⟨x.1, rfl⟩⟩`. Use `infer_instance`. Consider the case `some a`. Establish `: IsAffine (V a).toScheme` using `hV a`. Establish `: IsAffine (φ ⁻¹ᵁ V a).toScheme` using `hU a`.
+
+Use `show IsClosedImmersion (φ ∣_ V a)`. Apply `IsClosedImmersion.of_surjective_of_isAffine` to reduce the goal to its premises. Rewrite using `[morphismRestrict_appTop]`. Establish `key : ∀ Z (_ : Z = V a), Function.Surjective (φ.app Z).hom`. Introduce and unpack `_ rfl`.
+
+Conclude with `hs a`. Conclude with `(ConcreteCategory.bijective_of_isIso (X.presheaf.map (eqToHom (image_morphismRestrict_preimage φ (V a) ⊤)).op)).2.comp (key _ (V a).ι_image_top)`.
+-/
 theorem isClosedImmersion_of_cover (φ : X ⟶ Y) (hcl : IsClosed (Set.range φ)) {ι : Type}
     (V : ι → Y.Opens) (hV : ∀ a, IsAffineOpen (V a)) (hU : ∀ a, IsAffineOpen (φ ⁻¹ᵁ V a))
     (hs : ∀ a, Function.Surjective (φ.app (V a)).hom) (hc : ⨆ a, φ ⁻¹ᵁ V a = ⊤) :
@@ -350,17 +460,29 @@ section Units
 
 variable (η : Sp L ⟶ X) {U V : X.Opens}
 
+/- English proof (translation)
+The claim follows from `valR_res η e h u.val`.
+-/
 theorem valR_res_unit (e : V ≤ U) (h : ⊤ ≤ η ⁻¹ᵁ V) (u : Γ(X, U)ˣ) :
     valR η V (res e u).val = valR η U u.val := valR_res η e h u.val
 
+/- English proof (translation)
+The claim follows from `(valR_comp η g W u.val).symm`.
+-/
 theorem valR_pullU (g : X ⟶ Y) (W : Y.Opens) (u : Γ(Y, W)ˣ) :
     valR η (g ⁻¹ᵁ W) (pullU g W u).val = valR (η ≫ g) W u.val := (valR_comp η g W u.val).symm
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul]`. Conclude with `valR_mul η U h _ _`.
+-/
 theorem valR_mul_unit (h : ⊤ ≤ η ⁻¹ᵁ U) (u v : Γ(X, U)ˣ) :
     valR η U (u * v).val = valR η U u.val * valR η U v.val := by
   rw [Units.val_mul]
   exact valR_mul η U h _ _
 
+/- English proof (translation)
+Break down `n with k | k` into its components or cases. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, valR_pow η U h]`. Establish `key` using `valR_mul η U h (u ^ (k + 1)).val ((u ^ (k + 1))⁻¹).val`. Rewrite `key` using `[Units.mul_inv, valR_one η U h]`. Rewrite using `[zpow_negSucc, eq_inv_of_mul_eq_one_right key.symm, Units.val_pow_eq_pow_val, valR_pow η U h, zpow_negSucc]`.
+-/
 theorem valR_zpow_unit (h : ⊤ ≤ η ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
     valR η U (u ^ n).val = valR η U u.val ^ n := by
   rcases n with k | k
@@ -370,12 +492,18 @@ theorem valR_zpow_unit (h : ⊤ ≤ η ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
     rw [zpow_negSucc, eq_inv_of_mul_eq_one_right key.symm, Units.val_pow_eq_pow_val,
       valR_pow η U h, zpow_negSucc]
 
+/- English proof (translation)
+Establish `key` using `valR_mul η U h u.val (u⁻¹).val`. Rewrite `key` using `[Units.mul_inv, valR_one η U h]`. Conclude with `eq_inv_of_mul_eq_one_right key.symm`.
+-/
 theorem valR_inv_unit (h : ⊤ ≤ η ⁻¹ᵁ U) (u : Γ(X, U)ˣ) :
     valR η U (u⁻¹).val = (valR η U u.val)⁻¹ := by
   have key := valR_mul η U h u.val (u⁻¹).val
   rw [Units.mul_inv, valR_one η U h] at key
   exact eq_inv_of_mul_eq_one_right key.symm
 
+/- English proof (translation)
+Rewrite using `[linComb_punit_g, valR_zpow_unit η h]`. Use `congr 1`. Conclude with `(valR_res_unit η _ h _).trans (valR_pullU η g (B.U (i PUnit.unit) ⊓ B.U (j PUnit.unit)) (B.g (i PUnit.unit) (j PUnit.unit)))`.
+-/
 theorem valR_linComb_g (B : LB Y) (g : X ⟶ Y) (n : ℤ) (i j : PUnit → B.ι)
     (h : ⊤ ≤ η ⁻¹ᵁ (LB.wchart B (fun _ => g) i ⊓ LB.wchart B (fun _ => g) j)) :
     valR η (LB.wchart B (fun _ => g) i ⊓ LB.wchart B (fun _ => g) j)
@@ -388,6 +516,11 @@ theorem valR_linComb_g (B : LB Y) (g : X ⟶ Y) (n : ℤ) (i j : PUnit → B.ι)
 
 end Units
 
+/- English proof (translation)
+Establish `hU : ⊤ ≤ (η ≫ π) ⁻¹ᵁ (chart o r (i PUnit.unit) ⊓ chart o r (j PUnit.unit))` using `le_preimage_comp η π (le_inf (inf_le_left.trans (LB.wchart_le (O1 o r) (fun _ => π) i PUnit.unit)) (inf_le_right.trans (LB.wchart_le (O1 o r) (fun _ => π) j PUnit.unit))) h`. Establish `hi : t (i PUnit.unit) ≠ 0`. Establish `key` using `le_preimage_mono (η ≫ π) inf_le_left hU`. Rewrite `key` using `[hπ, le_point_preimage_iff]`. Conclude with `key`.
+
+Use `(valR_linComb_g η (O1 o r) π 1 i j h).trans ?_` and prove the remaining obligations. Use `show valR (η ≫ π) (chart o r (i PUnit.unit) ⊓ chart o r (j PUnit.unit)) _ ^ _ = _`. Simplify using `only [zpow_one]`. Rewrite using `[O1_g_eq_ratioUnit_chart_inf, val_ratioUnit, ← resG_ratioOn (hi := le_rfl) inf_le_left, valR_res (η ≫ π) inf_le_left hU, hπ, valR_point_ratio hi]`.
+-/
 theorem valR_pullback_twistingSheaf_transition {η : Sp L ⟶ X} {π : X ⟶ PSpace o r} (hπ : η ≫ π = point o t ht)
     (i j : PUnit → Fin (r + 1))
     (h : ⊤ ≤ η ⁻¹ᵁ (((O1 o r).pull π).U i ⊓ ((O1 o r).pull π).U j)) :
@@ -406,6 +539,25 @@ theorem valR_pullback_twistingSheaf_transition {η : Sp L ⟶ X} {π : X ⟶ PSp
   rw [O1_g_eq_ratioUnit_chart_inf, val_ratioUnit, ← resG_ratioOn (hi := le_rfl) inf_le_left,
     valR_res (η ≫ π) inf_le_left hU, hπ, valR_point_ratio hi]
 
+/- English proof (translation)
+Establish `hsub : ∀ (k : PUnit → Fin (M + 1)) (j : PUnit → PUnit → Fin (r + 1)), ((O1 o M).pull φ).U k ⊓ (lbPow ((O1 o r).pull π) e).U j ≤ φ ⁻¹ᵁ (chart o M (k PUnit.unit) ⊓ chart o M (c (j PUnit.unit PUnit.unit)))`. Introduce `k j`. Use `show _ ≤ φ ⁻¹ᵁ chart o M (k PUnit.unit) ⊓ φ ⁻¹ᵁ chart o M (c (j PUnit.unit PUnit.unit))`. Apply `le_inf` to reduce the goal to its premises. Conclude with `inf_le_left.trans (LB.wchart_le (O1 o M) (fun _ => φ) k PUnit.unit)`.
+
+Conclude with `inf_le_right.trans ((LB.wchart_le ((O1 o r).pull π) (fun _ => 𝟙 X) j PUnit.unit).trans ((LB.wchart_le (O1 o r) (fun _ => π) (j PUnit.unit) PUnit.unit).trans (hle _)))`. Establish `key : ∀ (k : PUnit → Fin (M + 1)) (jj : PUnit → PUnit → Fin (r + 1)) (V : X.Opens) (hV : ⊤ ≤ η ⁻¹ᵁ V) (e1 : V ≤ φ ⁻¹ᵁ (chart o M (k PUnit.unit) ⊓ chart o M (c (jj PUnit.unit PUnit.unit)))), valR η V (res e1 (pullU φ _ (ratioUnit _ (k PUnit.unit) (c (jj PUnit.unit PUnit.unit)) inf …`. Introduce `k jj V hV e1`. Establish `hU' : ⊤ ≤ (η ≫ φ) ⁻¹ᵁ (chart o M (k PUnit.unit) ⊓ chart o M (c (jj PUnit.unit PUnit.unit)))` using `le_preimage_comp η φ e1 hV`. Establish `hk : z (k PUnit.unit) ≠ 0`.
+
+Establish `hh` using `le_preimage_mono (η ≫ φ) inf_le_left hU'`. Rewrite `hh` using `[hφ, le_point_preimage_iff]`. Conclude with `hh`. Rewrite using `[valR_res_unit η e1 hV, valR_pullU, val_ratioUnit, ← resG_ratioOn (hi := le_rfl) inf_le_left, valR_res (η ≫ φ) inf_le_left hU', hφ, valR_point_ratio hk, hc]`. Use `⟨{ s := fun i => res (hsub i.1 i.2) (pullU φ _ (ratioUnit _ (i.1 PUnit.unit) (c (i.2 PUnit.unit PUnit.unit)) inf_le_left inf_le_right)) }, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [LB.div]`. Apply `ext_of_dense η` to reduce the goal to its premises. Introduce `h`.
+
+Establish `hM : ⊤ ≤ η ⁻¹ᵁ (((O1 o M).pull φ).U i.1 ⊓ ((O1 o M).pull φ).U j.1)` using `le_preimage_mono η (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) h`. Establish `hL : ⊤ ≤ η ⁻¹ᵁ ((lbPow ((O1 o r).pull π) e).U i.2 ⊓ (lbPow ((O1 o r).pull π) e).U j.2)` using `le_preimage_mono η (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) h`. Establish `hL' : ⊤ ≤ η ⁻¹ᵁ (((O1 o r).pull π).U (i.2 PUnit.unit) ⊓ ((O1 o r).pull π).U (j.2 PUnit.unit))` using `le_preimage_mono η (inf_le_inf (LB.wchart_le ((O1 o r).pull π) (fun _ => 𝟙 X) i.2 PUnit.unit) (LB.wchart_le ((O1 o r).pull π) (fun _ => 𝟙 X) j.2 PUnit.unit)) hL`. Establish `hg` using `valR_linComb_g η ((O1 o r).pull π) (𝟙 X) (e : ℤ) i.2 j.2 hL`. Rewrite `hg` using `[Category.comp_id, valR_pullback_twistingSheaf_transition hπ _ _ hL', zpow_natCast]`.
+
+Establish `hgM` using `valR_pullback_twistingSheaf_transition hφ i.1 j.1 hM`. Establish `hzj : z (j.1 PUnit.unit) ≠ 0`. Establish `hh` using `le_preimage_comp η φ (LB.wchart_le (O1 o M) (fun _ => φ) j.1 PUnit.unit) (le_preimage_mono η inf_le_right hM)`. Rewrite `hh` using `[hφ]`. Conclude with `(le_point_preimage_iff _).mp hh`.
+
+Establish `htj : ∀ q : PUnit → PUnit → Fin (r + 1), ⊤ ≤ η ⁻¹ᵁ ((O1 o r).pull π).U (q PUnit.unit) → t (q PUnit.unit PUnit.unit) ≠ 0` using `fun q hq => by`. Establish `hh` using `le_preimage_comp η π (LB.wchart_le (O1 o r) (fun _ => π) (q PUnit.unit) PUnit.unit) hq`. Rewrite `hh` using `[hπ]`. Conclude with `(le_point_preimage_iff _).mp hh`. Establish `ht1` using `htj i.2 (le_preimage_mono η inf_le_left hL')`.
+
+Establish `ht2` using `htj j.2 (le_preimage_mono η inf_le_right hL')`. Use `erw [valR_mul_unit η h, valR_mul_unit η h, valR_inv_unit η h, valR_res_unit η _ h, valR_res_unit η _ h, valR_res_unit η _ h, valR_res_unit η _ h, key _ _ _ (le_preimage_mono η inf_le_left h), key _ _ _ (le_preimage_mono η inf_le_right h)]`. Use `erw [hg, hgM]`. Establish `hzi : z (i.1 PUnit.unit) ≠ 0`. Establish `hh` using `le_preimage_comp η φ (LB.wchart_le (O1 o M) (fun _ => φ) i.1 PUnit.unit) (le_preimage_mono η inf_le_left hM)`.
+
+Rewrite `hh` using `[hφ]`. Conclude with `(le_point_preimage_iff _).mp hh`. Rewrite using `[div_pow, inv_div]`. Clear the denominators using the available nonvanishing facts. Conclude with `fun k j h => key k j _ h (hsub k j)`.
+-/
 theorem exists_iso_lbPow [IsReduced X] {η : Sp L ⟶ X} [IsDominant η] {π : X ⟶ PSpace o r}
     (hπ : η ≫ π = point o t ht) {z : Fin (M + 1) → L} {hz : z ≠ 0} {φ : X ⟶ PSpace o M}
     (hφ : η ≫ φ = point o z hz) {e : ℕ} (c : Fin (r + 1) → Fin (M + 1))

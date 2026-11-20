@@ -22,6 +22,23 @@ noncomputable section
 
 namespace GlobalTheory.NLinkTyp
 
+/- English proof (translation)
+Establish `hη1 : 1 ≤ η` using `ht1.trans hte`. Establish `ht0 : 0 ≤ t` using `by linarith`. Establish `hn0 : 0 ≤ n` using `by linarith`. Establish `hη0 : 0 ≤ η` using `by linarith`. Establish `e1 : nV ^ 2 ≤ 4 * t ^ 2` using `by nlinarith`.
+
+Establish `e2 : nV + eta + t ≤ 4 * η` using `by linarith`. Establish `eT : constantSecondHub * nV ^ 2 * (nV + eta + t) ≤ constantSecondHub * (4 * t ^ 2) * (4 * η)`. Establish `h0 : 0 ≤ nV + eta + t` using `by linarith`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left e1 hC68) e2 h0 (by positivity)`. Establish `A : 4 * f * nV * (constantSecondHub * nV ^ 2 * (nV + eta + t)) ≤ 256 * constantSecondHub * (n * t ^ 3) * η`.
+
+Rewrite using `[hf]`. Establish `h1 : 4 * (2 * n) * nV ≤ 4 * (2 * n) * (2 * t)` using `mul_le_mul_of_nonneg_left hnV (by positivity)`. Establish `h2 : 0 ≤ constantSecondHub * nV ^ 2 * (nV + eta + t)`. Establish `: 0 ≤ nV + eta + t` using `by linarith`. Check the signs of the components of the expression.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `ht3 : t ^ 2 ≤ t ^ 3` using `by nlinarith`. Establish `B : 2 * f * r ^ 2 ≤ 4 * (n * t ^ 3) * η`. Rewrite using `[hf]`. Establish `h1 : r ^ 2 ≤ t ^ 2` using `by nlinarith`.
+
+Establish `h2 : n * t ^ 3 ≤ n * t ^ 3 * η` using `le_mul_of_one_le_right (by positivity) hη1`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hn0, mul_le_mul_of_nonneg_left ht3 hn0]`. Establish `Cc : 4 * nV * vdel ≤ 16 * (n * t ^ 3) * η`. Establish `h1 : 4 * nV * vdel ≤ 4 * (2 * t) * (2 * t)` using `mul_le_mul (mul_le_mul_of_nonneg_left hnV (by norm_num)) hv hv0 (by positivity)`. Establish `h2 : t ^ 2 ≤ n * t ^ 3` using `by nlinarith`.
+
+Establish `h3 : n * t ^ 3 ≤ n * t ^ 3 * η` using `le_mul_of_one_le_right (by positivity) hη1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX0 : 0 ≤ x ^ C1` using `Real.rpow_nonneg (by linarith) _`. Establish `hnt : n * t ^ 3 ≤ x ^ (4 * C1)`. Establish `: x ^ (4 * C1) = x ^ C1 * (x ^ C1) ^ 3`.
+
+Rewrite using `[show (4 : ℝ) * C1 = C1 + C1 * (3 : ℕ) by push_cast; ring, Real.rpow_add (by linarith), Real.rpow_mul_natCast (by linarith : (0 : ℝ) ≤ x)]`. Rewrite using `[this]`. Conclude with `mul_le_mul hnx (pow_le_pow_left₀ ht0 htx 3) (by positivity) hX0`. Establish `hexp : x ^ (4 * C1) ≤ x ^ (2000 * (constantSecondHub + 1) + 5 * C1)` using `Real.rpow_le_rpow_of_exponent_le hx (by linarith)`. Establish `hK : 256 * constantSecondHub + 20 ≤ 2000 * (constantSecondHub + 1) + 5 * C1` using `by linarith`.
+
+Establish `hxC0 : 0 ≤ x ^ (2000 * (constantSecondHub + 1) + 5 * C1)` using `Real.rpow_nonneg (by linarith) _`. Establish `hsum : 4 * f * nV * (constantSecondHub * nV ^ 2 * (nV + eta + t)) + 2 * f * r ^ 2 + 4 * nV * vdel ≤ (256 * constantSecondHub + 20) * (n * t ^ 3) * η` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hη0` to reduce the goal to its premises. Conclude with `mul_le_mul hK (hnt.trans hexp) (by positivity) (by linarith)`.
+-/
 theorem typePrime_size_terms_le_elementary (n t r nV f η eta vdel constantSecondHub C1 x : ℝ) (hf : f = 2 * n) (hnV0 : 0 ≤ nV) (hnV : nV ≤ 2 * t)
     (hr0 : 0 ≤ r) (hr : r ≤ t) (he0 : 0 ≤ eta) (he : eta ≤ η) (ht1 : 1 ≤ t) (hte : t ≤ η) (hn1 : 1 ≤ n)
     (hnx : n ≤ x ^ C1) (htx : t ≤ x ^ C1) (hv0 : 0 ≤ vdel) (hv : vdel ≤ 2 * t) (hC68 : 0 ≤ constantSecondHub) (hC1 : 1 ≤ C1)
@@ -83,6 +100,21 @@ namespace GlobalTheory.NLinkTyp
 
 open Classical in
 
+/- English proof (translation)
+Introduce `j hj l hl`. Use `set M := C * L.sc.x ^ C * L.etaSz + TwistedPlaces.epsL l + TwistedPlaces.VVr D l + TwistedPlaces.vhE D l + TwistedPlaces.epsL l with hMdef`. Establish `hM0 : 0 ≤ M` using `hM l hl`. Establish `hlp : l.Prime`. Unfold `TwistedPlaces.gset at hl`.
+
+Break down `Finset.mem_insert.1 hl with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `D.host.g_prime 0`. Rewrite using `[Finset.mem_singleton.1 h]`. Conclude with `D.host.g_prime 1`.
+
+Establish `hj' : 1 ≤ j ∧ j ≤ D.R.m` using `Finset.mem_Icc.1 hj`. Establish `hw : ∀ w ∈ TwistedPlaces.twAt L l, (D.what₂.etaJ j w : ℝ) ≤ (L.dZ0 j : ℝ) * M`. Introduce `w hw`. Take `⟨_, htw, hres⟩` from `TwistedPlaces.mem_twAt.1 hw`. Rewrite using `[D.etaJ_tie j w hj'.1 hj'.2]`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hli : D.nd.l i = l`. Rewrite using `[← D.nd.w_l i, ((D.nd.locs_mem j w i).1 hi).2, hres]`.
+
+Use `hloc i (htw.twLoc hi) (hli ▸ hl)` as an intermediate fact. Rewrite `this` using `[hli]`. Conclude with `this`. Use `_ = (∑ i ∈ D.nd.locs j w, ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℝ)) * M := by`. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `_ ≤ (L.zeroSpaceRankAtPlace j w : ℝ) * M := mul_le_mul_of_nonneg_right (hmult j hj w htw) hM0`. Use `_ = (L.dZ0 j : ℝ) * M := by rw [h3 j hj w htw]`. Unfold `TwistedPlaces.etaAt`.
+
+Establish `hnn : ∀ w, 0 ≤ SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ)` using `fun w => mul_nonneg (div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Use `_ ≤ Real.log l * ((L.dZ0 j : ℝ) * M) := mul_le_mul_of_nonneg_right (TwistedPlaces.admissibleMeanCondition_holds L l hlp) (mul_nonneg (Nat.cast_nonneg _) hM0)`. Use `_ = Real.log l * (L.dZ0 j : ℝ) * M := by ring`.
+-/
 theorem starH_of_local {D : D7} (L : SizeData₂ D) (C : ℝ)
     (hloc : ∀ i : D.nd.Loc, TwistedPlaces.TwLoc D i → D.nd.l i ∈ TwistedPlaces.gset D →
       (D.nd.etaLoc i : ℝ) ≤ ∑ π ∈ D.nd.Zgood i, (D.nd.mult i π : ℝ) *
@@ -135,6 +167,19 @@ end GlobalTheory.NLinkTyp
 
 namespace GlobalTheory.NLinkTyp
 
+/- English proof (translation)
+Establish `hK1` using `((hK i hi).1 π hπ).2`. Rewrite `hK1` using `[hν, zero_add]`. Establish `hK2` using `(hK i hi).2`. Establish `hVV : TwistedPlaces.VVr D (D.nd.l i) = ∑ e ∈ Finset.Ioo 0 D.R.t, (D.what₂.shaLen (D.nd.l i) e : ℝ)`. Establish `: TwistedPlaces.VVr D (D.nd.l i) = ((∑ e ∈ Finset.Ioo 0 D.R.t, D.what₂.shaLen (D.nd.l i) e : ℚ) : ℝ)` using `by show ((∑ e ∈ Finset.Ico 1 D.R.t, D.what₂.shaLen (D.nd.l i) e : ℚ) : ℝ) = _`.
+
+Use `congr 2`. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hvh : TwistedPlaces.vhE D (D.nd.l i) = (padicValNat (D.nd.l i) (hE D.host) : ℝ)` using `rfl`.
+
+Establish `hZ : (∑ q ∈ D.nd.Q i, (PairedCharacterCondition.vZeta i q : ℝ)) = ((∑ v ∈ D.nd.Q i, lenUnit (O` using `D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i v - 1}) : ℚ) : ℝ) := by`. Use `push_cast`. Both sides reduce to the same expression. Establish `htr` using `TwistedPlaces.t_ge D`. Establish `hnV : (D.R.nV : ℝ) = D.R.r + D.R.t` using `by unfold Ranks.nV; push_cast; ring`.
+
+Establish `hv0 : (0 : ℝ) ≤ (D.nd.vdel i : ℝ)`. Establish `: (0 : ℚ) ≤ D.nd.vdel i` using `by unfold NData.vdel; positivity`. Conclude with `this` after adjusting the coercions. Establish `hv : (D.nd.vdel i : ℝ) ≤ 2 * D.R.t`. Establish `h1` using `LargeLevelLemmas.vdel_le (D := D) i`.
+
+Rewrite `h1` using `[UpperTheory.Small.localLevel_eq_one_of_not_mem_smallPrimes D.nd i hl2]`. Establish `h2 : (padicValNat (D.nd.l i) D.R.t.factorial : ℚ) ≤ D.R.t`. Conclude with `padicValNat_factorial_le (D.nd.l i) D.R.t` after adjusting the coercions. Establish `h3 : D.nd.vdel i ≤ 2 * (D.R.t : ℚ)` using `by push_cast at h1; linarith`. Conclude with `h3` after adjusting the coercions.
+
+Establish `hS` using `typePrime_size_terms_le_elementary (D.R.n : ℝ) D.R.t D.R.r D.R.nV D.R.f L.etaSz (X.eta : ℝ) (D.nd.vdel i : ℝ) constantSecondHub C1 L.sc.x (TwistedPlaces.f_eq D) (Nat.cast_nonneg _) (by linarith) (Nat.cast_nonneg _) (by linarith) (Nat.cast_nonneg _) heta (TwistedPlaces.t_ge_one D) …`. Unfold `PairedCharacterCondition.rhs PairedCharacterCondition.eT`. Rewrite using `[hVV, hvh, hZ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rhs_le {D : D7} (L : SizeData₂ D) (P : ParameterChoice' D L) (X : KillingConditions.HubData D) (constantSecondHub C1 : ℝ) (hC68 : 0 ≤ constantSecondHub)
     (hC1 : 1 ≤ C1) (hpar : TwistedPlaces.ParametersPolynomiallyBounded L C1 P) (heta : (X.eta : ℝ) ≤ L.etaSz) (hK : KillingConditions.KillAt X.ρ)
     (i : D.nd.Loc) (hi : TwistedPlaces.TwLoc D i) (hl2 : D.nd.l i ∉ D.host.small) (hν : TwistedPlaces.nuL D (D.nd.l i) = 0) (π : D.nd.X i) (hπ : π ∈ D.nd.Zgood i) :
@@ -181,6 +226,11 @@ end GlobalTheory.NLinkTyp
 
 namespace GlobalTheory.NLinkTyp
 
+/- English proof (translation)
+Establish `h` using `(hG k k).1`. Establish `hk : (5 : ℝ) ≤ D.R.k` using `TwistedPlaces.k_ge_five D`. Establish `hb : 1 ≤ L.sc.b`. Rewrite using `[TwistedPlaces.b_eq]`. Conclude with `Real.one_le_exp (by linarith [TwistedPlaces.L_ge_one L])`.
+
+Establish `h5 : (5 : ℝ) ≤ D.R.k * L.sc.b` using `by nlinarith`. Establish `h8 : (5 : ℝ) ^ 8 ≤ (D.R.k * L.sc.b) ^ 8` using `pow_le_pow_left₀ (by norm_num) h5 8`. Establish `: (2 : ℝ) < D.host.g k` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem g_two_lt {D : D7} (L : SizeData₂ D) (hG : SizeG L) (k : Fin 2) : 2 < D.host.g k := by
   have h := (hG k k).1
   have hk : (5 : ℝ) ≤ D.R.k := TwistedPlaces.k_ge_five D
@@ -192,6 +242,17 @@ theorem g_two_lt {D : D7} (L : SizeData₂ D) (hG : SizeG L) (k : Fin 2) : 2 < D
   have : (2 : ℝ) < D.host.g k := by nlinarith
   exact_mod_cast this
 
+/- English proof (translation)
+Distinguish the cases in `hHG : HG D.nd D.naut i`. Establish `hX` using `GlobalTheory.T.split_bound_of_params hPr.font hPr.fin GlobalTheory.Published.cheb_holds D L HW F (rowC C₂) nch X 120 CT hS.canon P (by linarith [hS.big]) (by norm_num) hCT (hS.facts.admJ L hS.par) hS.par67 hS.facts.toCore.admA hS.facts.Conclusion1.1 hS.facts.Conclusion1.2.2 hS.fa …`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, hT, -⟩` from `hX`. Take `⟨hgood, hZρ, s, S, sg, U, hs, hCTg, hsg, hHJ, hSQ⟩` from `hT i k hi hlk hHG`. Establish `hAN : SumRepresentations.adm5 D` using `hS.facts.toCore.admA.2.2.2.2.2.2`.
+
+Establish `hl2 : 2 < D.nd.l i` using `hlk ▸ g_two_lt L hG k`. Establish `hodd : Odd (D.nd.l i)` using `(D.nd.lPrime i).out.odd_of_ne_two (by omega)`. Establish `hlog : Real.log (D.host.g k' : ℝ) ≤ 2 * Real.log (D.host.g k : ℝ)`. Establish `h1` using `(hG k' k).2.1`. Establish `hg0 : (0 : ℝ) < D.host.g k'` using `by exact_mod_cast (D.host.g_prime k').pos`.
+
+Establish `hg2 : (2 : ℝ) ≤ D.host.g k` using `by exact_mod_cast (D.host.g_prime k).two_le`. Establish `h2` using `Real.log_le_log hg0 h1`. Rewrite `h2` using `[Real.log_mul (by norm_num) (by linarith)]`. Establish `h3 : Real.log 2 ≤ Real.log (D.host.g k : ℝ)` using `Real.log_le_log (by norm_num) hg2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsha : ∀ e ∈ Finset.Ioo 0 D.R.t, Formalism.GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤`. Introduce `e he`. Rewrite `he` using `[Finset.mem_Ioo]`. Conclude with `lt_top_iff_ne_top.2 (hS.sha (D.nd.l i) e he.1 he.2)`. Conclude with `h68 i k k' hkk hlk (X.r i) (X.ρ i) hgood (fun π hπ => semisimple_decomposition_of D i (X.r i) (X.ρ i) π hAN hgood (hZρ π hπ).1 (hZρ π hπ).2) X.eta s S sg U hs hlog hCTg hsg hHJ hSQ (fun π hπ => ((hS.kill i hi).1 π hπ).1) hsha`.
+
+Establish `hZ : D.nd.Zgood i = ∅` using `Finset.eq_empty_of_forall_notMem fun x hx => hHG ⟨x, (D.Zgood_tie i x).1 hx⟩`. Establish `hP` using `TruncatedSeriesCountingIdentities.endomorphism_index_bound i (D.nd.Zgood i) (Formalism.L2.zgoodSub D i) 0 1 one_ne_zero (fun f => by simp) (fun x hx => by rw [hZ] at hx; simp at hx) (fun x _ _ u _ => by simp)`. Rewrite `hP` using `[← TruncatedSeriesCountingIdentities.Br.etaLoc_eq, hZ, Finset.sum_empty]`. Rewrite using `[hZ, Finset.sum_empty]`. Conclude with `hP` after adjusting the coercions.
+-/
 theorem etaLoc_le_rhs (hPr : Hypotheses₂) (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc)
     (F : FonOf D.loc D.locA HW) (X : KillingConditions.HubData D) (C₂ : ℝ) (hS : Setup L nch HW X C₂) (constantSecondHub : ℝ) (CT : ℕ)
     (hCT : (CT : ℝ) ≤ L.sc.b) (h68 : PairedCharacterCondition.aux₃ (D := D) constantSecondHub CT) (hG : SizeG L)
@@ -234,6 +295,19 @@ end GlobalTheory.NLinkTyp
 
 namespace GlobalTheory.NLinkTyp
 
+/- English proof (translation)
+Introduce `hPr D L P nch HW F _ X C₂ hS constantSecondHub C1 CT hC68 hC1 hCT h68 hmult hpar hG`. Establish `heta : (X.eta : ℝ) ≤ L.etaSz`. Rewrite using `[hS.canon.eta]`. Conclude with `Nat.floor_le (by linarith [TwistedPlaces.one_le_eta L P])`. Establish `hM : ∀ l ∈ TwistedPlaces.gset D, 0 ≤ (2000 * (constantSecondHub + 1) + 5 * C1) * L.sc.x ^ (2000 * (constantSecondHub + 1) + 5 * C1) * L.etaSz + TwistedPlaces.epsL l + TwistedPlaces.VVr D l + TwistedPlaces.vhE D l + TwistedPlaces.epsL l`.
+
+Introduce `l _`. Establish `h1 : 0 ≤ L.sc.x ^ (2000 * (constantSecondHub + 1) + 5 * C1)` using `Real.rpow_nonneg (by linarith [L.sc.one_lt_alt]) _`. Establish `h2 : 0 ≤ L.etaSz` using `by linarith [TwistedPlaces.one_le_eta L P]`. Establish `h3 : 0 ≤ TwistedPlaces.epsL l` using `by unfold TwistedPlaces.epsL; positivity`. Establish `h4 : 0 ≤ TwistedPlaces.VVr D l` using `by show (0 : ℝ) ≤ ((∑ e ∈ Finset.Ico 1 D.R.t, D.what₂.shaLen l e : ℚ) : ℝ)`.
+
+Conclude with `Finset.sum_nonneg fun e _ => D.what₂.shaLen_nonneg l e` after adjusting the coercions. Establish `h5 : 0 ≤ TwistedPlaces.vhE D l` using `by unfold TwistedPlaces.vhE; positivity`. Establish `h6 : 0 ≤ 2000 * (constantSecondHub + 1) + 5 * C1` using `by linarith`. Use `mul_nonneg (mul_nonneg h6 h1) h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `starH_of_local L _ (fun i hi hl => ?_) hM hmult (hS.facts.toCore.a3 L)` and prove the remaining obligations. Establish `hk : ∃ k k' : Fin 2, k ≠ k' ∧ D.nd.l i = D.host.g k`. Unfold `TwistedPlaces.gset at hl`. Break down `Finset.mem_insert.1 hl with h | h` into its components or cases. Conclude with `⟨0, 1, by decide, h⟩`.
+
+Conclude with `⟨1, 0, by decide, Finset.mem_singleton.1 h⟩`. Take `⟨k, k', hkk, hlk⟩` from `hk`. Establish `hl2 : D.nd.l i ≠ 2` using `by have := g_two_lt L hG k; omega`. Use `(etaLoc_le_rhs hPr D L P nch HW F X C₂ hS constantSecondHub CT hCT h68 hG i hi k k' hkk hlk).trans ?_` and prove the remaining obligations. Use `Finset.sum_le_sum fun π hπ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `exact mul_le_mul_of_nonneg_left (rhs_le L P X constantSecondHub C1 hC68 hC1 hpar heta hS.kill i hi (by rw [hlk]; exact UpperTheory.Small.not_mem_of_mod D.host (D.ntypes.g_cond k)) (UpperTheory.KStar.nuL_eq_zero_of_g D _ (by rw [hlk]; fin_cases k <;> simp [TwistedPlaces.gset]) hl2 …`.
+-/
 theorem main : Hypotheses₂ → ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (nch : NChoice D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (X : KillingConditions.HubData D) (C₂ : ℝ), Setup L nch HW X C₂ → ∀ (constantSecondHub C1 : ℝ) (CT : ℕ), 0 ≤ constantSecondHub → 1 ≤ C1 → (CT : ℝ) ≤ L.sc.b → PairedCharacterCondition.aux₃ (D := D) constantSecondHub CT → MultLe L → TwistedPlaces.ParametersPolynomiallyBounded L C1 P → SizeG L → StarH L (2000 * (constantSecondHub + 1) + 5 * C1) := by
   intro hPr D L P nch HW F _ X C₂ hS constantSecondHub C1 CT hC68 hC1 hCT h68 hmult hpar hG
   have heta : (X.eta : ℝ) ≤ L.etaSz := by

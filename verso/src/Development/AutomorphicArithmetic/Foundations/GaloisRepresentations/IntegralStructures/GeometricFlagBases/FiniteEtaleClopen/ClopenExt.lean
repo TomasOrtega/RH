@@ -8,6 +8,25 @@ open CategoryTheory Limits AlgebraicGeometry NumberField IsDedekindDomain
 open GlobalTheory.GalV (HTower)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Cut
 
+/- English proof (translation)
+Establish `key : ∀ W : Set X, IsOpen W → IsPreirreducible W → (f ⁻¹' W ⊆ U ∨ f ⁻¹' W ⊆ Uᶜ)`. Introduce `W hW hWi`. Take `⟨A, hA, hAU⟩` from `hf.isInducing.isOpen_iff.mp hU.isOpen`. Take `⟨B, hB, hBU⟩` from `hf.isInducing.isOpen_iff.mp hU.compl.isOpen`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_or, Set.not_subset, Set.not_subset]`. Take `⟨⟨a, ha, haU⟩, ⟨b, hb, hbU⟩⟩` from `hc`. Establish `h1 : (W ∩ A).Nonempty`. Use `⟨f b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.mem_preimage, hAU]`.
+
+Simplify using `using hbU`. Establish `h2 : (W ∩ B).Nonempty`. Use `⟨f a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.mem_preimage, hBU]`. Conclude with `haU`.
+
+Take `⟨x, hxW, hxA, hxB⟩` from `hWi A B hA hB h1 h2`. Take `⟨_, ⟨q, rfl⟩, -, hqA, hqB⟩` from `hd.exists_mem_open (hW.inter (hA.inter hB)) ⟨x, hxW, hxA, hxB⟩`. Establish `hq1 : q ∈ U` using `by rw [← hAU]; exact hqA`. Establish `hq2 : q ∈ Uᶜ` using `by rw [← hBU]; exact hqB`. Conclude with `hq2 hq1`.
+
+Use `⟨{x | ∃ W : Set X, IsOpen W ∧ x ∈ W ∧ IsPreirreducible W ∧ f ⁻¹' W ⊆ U}, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `x hx`. Take `⟨W, hW, hxW, hWi⟩` from `hl x`. Establish `hWc : f ⁻¹' W ⊆ Uᶜ`.
+
+Break down `key W hW hWi with h | h` into its components or cases. Conclude with `absurd ⟨W, hW, hxW, hWi, h⟩ hx`. Conclude with `h`. Use `⟨W, ?_, hW, hxW⟩` and prove the remaining obligations. Introduce and unpack `z hz ⟨W', hW', hzW', hW'i, hW'U⟩`.
+
+Take `⟨_, ⟨q, rfl⟩, hqW, hqW'⟩` from `hd.exists_mem_open (hW.inter hW') ⟨z, hz, hzW'⟩`. Conclude with `hWc hqW (hW'U hqW')`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `x ⟨W, hW, hxW, hWi, hWU⟩`. Conclude with `⟨W, fun z hz => ⟨W, hW, hz, hWi, hWU⟩, hW, hxW⟩`.
+
+Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, -, hqW, -, hWU⟩`. Conclude with `hWU hqW`. Introduce `hq`.
+
+Take `⟨W, hW, hxW, hWi⟩` from `hl (f q)`. Break down `key W hW hWi with h | h` into its components or cases. Conclude with `⟨W, hW, hxW, hWi, h⟩`. Conclude with `absurd hq (h hxW)`.
+-/
 private theorem exists_isClopen_preimage {X P : Type*} [TopologicalSpace X] [TopologicalSpace P]
     (f : P → X) (hf : Topology.IsEmbedding f) (hd : Dense (Set.range f))
     (hl : ∀ x : X, ∃ W : Set X, IsOpen W ∧ x ∈ W ∧ IsPreirreducible W)
@@ -57,6 +76,15 @@ private theorem exists_isClopen_preimage {X P : Type*} [TopologicalSpace X] [Top
       · exact ⟨W, hW, hxW, hWi, h⟩
       · exact absurd hq (h hxW)
 
+/- English proof (translation)
+Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := ⊤) trivial`. Use `haveI : IsNoetherianRing Γ(Y, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Use `haveI hN : TopologicalSpace.NoetherianSpace (U : Scheme) := noetherianSpace_of_isAffineOpen U hU`. Establish `hdom : ∀ z : (U : Scheme), IsDomain ((U : Scheme).presheaf.stalk z)`. Introduce `z`.
+
+Establish `e` using `(Scheme.Opens.stalkIso U z).commRingCatIsoToRingEquiv`. Use `haveI := hY z.1`. Conclude with `Function.Injective.isDomain e.toRingHom e.injective`. Set `z : (U : Scheme)` to `⟨y, hyU⟩`. Establish `hC : IsOpen (irreducibleComponent z)`.
+
+Establish `h` using `FunctorialResolution.EmbeddedResolution.isOpen_sUnion_of_subset_irreducibleComponents (X := (U : Scheme)) (𝒜 := {irreducibleComponent z}) ?_ ?_`. Rewrite `h` using `[Set.sUnion_singleton]`. Then use the resulting hypothesis. Introduce and unpack `C₁ h1 C₂ h2 ⟨x, hx1, hx2⟩`. Conclude with `FunctorialResolution.EmbeddedResolution.irreducibleComponents_eq_of_stalk_isDomain (U : Scheme) hdom h1 h2 hx1 hx2`. Introduce `D hD`.
+
+Rewrite using `[Set.mem_singleton_iff.mp hD]`. Conclude with `irreducibleComponent_mem_irreducibleComponents _`. Use `⟨U.ι '' irreducibleComponent z, U.ι.isOpenEmbedding.isOpenMap _ hC, ⟨z, mem_irreducibleComponent, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `isIrreducible_irreducibleComponent.isPreirreducible.image _ U.ι.continuous.continuousOn`.
+-/
 private theorem exists_isPreirreducible_nhd (Y : Scheme.{0}) [IsLocallyNoetherian Y]
     (hY : ∀ y : Y, IsDomain (Y.presheaf.stalk y)) (y : Y) :
     ∃ W : Set Y, IsOpen W ∧ y ∈ W ∧ IsPreirreducible W := by
@@ -83,6 +111,11 @@ private theorem exists_isPreirreducible_nhd (Y : Scheme.{0}) [IsLocallyNoetheria
     ⟨z, mem_irreducibleComponent, rfl⟩, ?_⟩
   exact isIrreducible_irreducibleComponent.isPreirreducible.image _ U.ι.continuous.continuousOn
 
+/- English proof (translation)
+Introduce `O k _ _ _ _ _ _ Y p hp U hU`. Establish `hf : Flat p` using `inferInstance`. Establish `: IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian p`. Take `⟨hr, he⟩` from `genRange O k Y p`. Take `⟨V, hV, hVU⟩` from `exists_isClopen_preimage (pullback.fst p (gen O k)) he (by rw [hr]; exact genDense O Y p hf) (exists_isPreirreducible_nhd Y (stalkDom O Y p hp)) U hU`.
+
+Conclude with `⟨⟨V, hV.isOpen⟩, hV.isClosed, hVU⟩`.
+-/
 theorem UpperTheory.Gal.Int.Geo.Cut.clopenExt :
     UpperTheory.Gal.Int.Geo.Cut.ClopenExt := by
   intro O k _ _ _ _ _ _ Y p hp U hU

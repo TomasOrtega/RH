@@ -19,6 +19,9 @@ section Gen
 
 variable {E F F' : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
 
+/- English proof (translation)
+Use `(hd.hasFDerivAt.comp g A.hasFDerivAt).fderiv` as an intermediate fact. Establish `e : (fun y => h (A y)) = h ∘ A` using `rfl`. Rewrite using `[e, this]`. Both sides reduce to the same expression.
+-/
 theorem fderiv_comp_clm {h : E → F} (A : E →L[ℝ] E) {g : E} (hd : DifferentiableAt ℝ h (A g)) (v : E) :
     fderiv ℝ (fun y => h (A y)) g v = fderiv ℝ h (A g) (A v) := by
   have := (hd.hasFDerivAt.comp g A.hasFDerivAt).fderiv
@@ -27,6 +30,9 @@ theorem fderiv_comp_clm {h : E → F} (A : E →L[ℝ] E) {g : E} (hd : Differen
 
 end Gen
 
+/- English proof (translation)
+Use `((L.restrictScalars ℝ).hasFDerivAt.comp g hd.hasFDerivAt).fderiv` as an intermediate fact. Establish `e : (fun y => L (h y)) = (L.restrictScalars ℝ) ∘ h` using `rfl`. Rewrite using `[e, this]`. Both sides reduce to the same expression.
+-/
 theorem fderiv_post {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℂ F]
     {h : E → F} (L : F →L[ℂ] F) {g : E} (hd : DifferentiableAt ℝ h g) (v : E) :
     fderiv ℝ (fun y => L (h y)) g v = L (fderiv ℝ h g v) := by
@@ -45,9 +51,15 @@ def Sm : Submodule ℂ (Mat n → V) where
 def res {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) : Sm n V :=
   ⟨(GLs n).indicator f, hf.congr fun _ hg => Set.indicator_of_mem hg f, fun _ hg => Set.indicator_of_notMem hg f⟩
 
+/- English proof (translation)
+The claim follows from `Set.indicator_of_mem hg f`.
+-/
 theorem res_apply {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     (res hf).1 g = f g := Set.indicator_of_mem hg f
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ GLs n`. Conclude with `e hg`. Rewrite using `[h.2.2 g hg, h'.2.2 g hg]`.
+-/
 theorem Sm_ext {h h' : Sm n V} (e : Set.EqOn h.1 h'.1 (GLs n)) : h = h' := by
   apply Subtype.ext
   funext g
@@ -57,6 +69,9 @@ theorem Sm_ext {h h' : Sm n V} (e : Set.EqOn h.1 h'.1 (GLs n)) : h = h' := by
 
 def Dmf (X : Mat n) (h : Sm n V) : Sm n V := res (Rd_contDiffOn X h.2.1)
 
+/- English proof (translation)
+The claim follows from `res_apply (Rd_contDiffOn X h.2.1) hg`.
+-/
 theorem Dmf_apply (X : Mat n) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (Dmf X h).1 g = Rd X h.1 g :=
   res_apply (Rd_contDiffOn X h.2.1) hg
 
@@ -71,6 +86,9 @@ def Dm (X : Mat n) : Module.End ℂ (Sm n V) where
     rw [Dmf_apply _ _ hg, Dmf_apply _ _ hg]
     exact Rd_smul c X a.2.1 hg
 
+/- English proof (translation)
+The claim follows from `Dmf_apply X h hg`.
+-/
 theorem Dm_apply (X : Mat n) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (Dm X h).1 g = Rd X h.1 g :=
   Dmf_apply X h hg
 
@@ -90,9 +108,15 @@ def DA : Mat n →+ Module.End ℂ (Sm n V) where
     rw [Dm_apply _ _ hg, Dm_apply _ _ hg, Dm_apply _ _ hg, Rd_add_left]
     rfl
 
+/- English proof (translation)
+The claim follows from `Dmf_apply X h hg`.
+-/
 theorem DA_apply (X : Mat n) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (DA n V X h).1 g = Rd X h.1 g :=
   Dmf_apply X h hg
 
+/- English proof (translation)
+Use extensionality with `h : 1`. Use `Sm_ext fun g hg => ?_` and prove the remaining obligations. Use `show (DA n V X (DA n V Y h)).1 g - (DA n V Y (DA n V X h)).1 g = (DA n V (X * Y - Y * X) h).1 g`. Rewrite using `[DA_apply _ _ hg, DA_apply _ _ hg, DA_apply _ _ hg, Rd_congr X (fun _ hy => DA_apply Y h hy) hg, Rd_congr Y (fun _ hy => DA_apply X h hy) hg]`. Conclude with `Rd_bracket X Y h.2.1 hg`.
+-/
 theorem DA_bracket (X Y : Mat n) : DA n V X * DA n V Y - DA n V Y * DA n V X = DA n V (X * Y - Y * X) := by
   ext h : 1
   refine Sm_ext fun g hg => ?_
@@ -101,6 +125,11 @@ theorem DA_bracket (X Y : Mat n) : DA n V X * DA n V Y - DA n V Y * DA n V X = D
     Rd_congr Y (fun _ hy => DA_apply X h hy) hg]
   exact Rd_bracket X Y h.2.1 hg
 
+/- English proof (translation)
+Use extensionality with `h : 1`. Use `Sm_ext fun g hg => ?_` and prove the remaining obligations. Use `show (DA n V ((r : ℂ) • X) h).1 g = (r : ℂ) • (DA n V X h).1 g`. Rewrite using `[DA_apply _ _ hg, DA_apply _ _ hg]`. Establish `e : (r : ℂ) • X = r • X` using `by ext; simp`.
+
+Rewrite using `[e, Rd_smul_left]`. Simplify using the standard rewrite rules.
+-/
 theorem DA_smul (r : ℝ) (X : Mat n) : DA n V ((r : ℂ) • X) = (r : ℂ) • DA n V X := by
   ext h : 1
   refine Sm_ext fun g hg => ?_
@@ -110,12 +139,20 @@ theorem DA_smul (r : ℝ) (X : Mat n) : DA n V ((r : ℂ) • X) = (r : ℂ) •
   rw [e, Rd_smul_left]
   simp
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply]`. Rewrite using `[Rd_congr _ e hg, Rd_congr _ e hg]`.
+-/
 theorem Eu_congr (s : Bool) (a b : Fin n) {f h : Mat n → V} (e : Set.EqOn f h (GLs n)) :
     Set.EqOn (Eu s a b f) (Eu s a b h) (GLs n) := by
   intro g hg
   simp only [Eu, Pi.smul_apply, Pi.add_apply]
   rw [Rd_congr _ e hg, Rd_congr _ e hg]
 
+/- English proof (translation)
+Establish `e : (Complex.I • Matrix.single a b (1 : ℂ) : Mat n) = Matrix.single a b Complex.I`. Simplify using `[Matrix.smul_single]`. Use `show ((1 / 2 : ℂ) • (DA n V (Matrix.single a b 1) h + eps s • DA n V (Complex.I • Matrix.single a b 1) h)).1 g = _`. Rewrite using `[e]`. Use `show (1 / 2 : ℂ) • ((DA n V (Matrix.single a b 1) h).1 g + eps s • (DA n V (Matrix.single a b Complex.I) h).1 g) = _`.
+
+Rewrite using `[DA_apply _ _ hg, DA_apply _ _ hg]`. Both sides reduce to the same expression.
+-/
 theorem Tc_apply (s : Bool) (a b : Fin n) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (Tc (DA n V) s a b h).1 g = Eu s a b h.1 g := by
   have e : (Complex.I • Matrix.single a b (1 : ℂ) : Mat n) = Matrix.single a b Complex.I := by
@@ -129,6 +166,13 @@ theorem Tc_apply (s : Bool) (a b : Fin n) (h : Sm n V) {g : Mat n} (hg : g ∈ G
 def Gl (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (s : Bool) (m : ℕ) : Module.End ℂ (Sm n V) :=
   ∑ c, Pw (Tc (DA n V) s) m c c
 
+/- English proof (translation)
+Proceed by induction on `m generalizing a b with`. Consider the case `zero`. Introduce `g hg`. Distinguish the cases in `h : a = b`. Simplify using `[Epow, Pw, h, res_apply hf hg]`.
+
+Simplify using `[Epow, Pw, h]`. Consider the case `succ m ih`. Introduce `g hg`. Establish `e : (Pw (Tc (DA n V) s) (m + 1) a b (res hf)).1 g = ∑ c, (Tc (DA n V) s a c (Pw (Tc (DA n V) s) m c b (res hf))).1 g`. Simplify using `[Pw, LinearMap.sum_apply, Finset.sum_apply]`.
+
+Rewrite using `[e]`. Simplify using `only [Epow, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Tc_apply _ _ _ _ hg]`. Conclude with `Eu_congr s a c (ih c b) hg`.
+-/
 theorem Epow_eq (s : Bool) (m : ℕ) (a b : Fin n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (Epow s m a b f) (Pw (Tc (DA n V) s) m a b (res hf)).1 (GLs n) := by
   induction m generalizing a b with
@@ -148,6 +192,11 @@ theorem Epow_eq (s : Bool) (m : ℕ) (a b : Fin n) {f : Mat n → V} (hf : ContD
     rw [Tc_apply _ _ _ _ hg]
     exact Eu_congr s a c (ih c b) hg
 
+/- English proof (translation)
+Introduce `g hg`. Establish `e : (Gl n V s m (res hf)).1 g = ∑ c, (Pw (Tc (DA n V) s) m c c (res hf)).1 g`. Simplify using `[Gl, LinearMap.sum_apply, Finset.sum_apply]`. Rewrite using `[e]`. Simplify using `only [gel, Finset.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => Epow_eq s m c c hf hg`.
+-/
 theorem gel_eq (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (gel s m f) (Gl n V s m (res hf)).1 (GLs n) := by
   intro g hg
@@ -157,6 +206,9 @@ theorem gel_eq (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f
   simp only [gel, Finset.sum_apply]
   exact Finset.sum_congr rfl fun c _ => Epow_eq s m c c hf hg
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hg`.
+-/
 theorem mul_mem_GLs {x g : Mat n} (hx : x ∈ GLs n) (hg : g ∈ GLs n) : x * g ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hg
@@ -164,6 +216,9 @@ theorem mul_mem_GLs {x g : Mat n} (hx : x ∈ GLs n) (hg : g ∈ GLs n) : x * g 
 def preF (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GLs n)) (h : Sm n V) : Sm n V :=
   res (h.2.1.comp φ.contDiff.contDiffOn hφ)
 
+/- English proof (translation)
+The claim follows from `res_apply (h.2.1.comp φ.contDiff.contDiffOn hφ) hg`.
+-/
 theorem preF_apply (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GLs n)) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (preF φ hφ h).1 g = h.1 (φ g) :=
   res_apply (h.2.1.comp φ.contDiff.contDiffOn hφ) hg
@@ -179,6 +234,9 @@ def preE (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GLs n)) : Mo
     rw [preF_apply _ _ _ hg, preF_apply _ _ _ hg]
     rfl
 
+/- English proof (translation)
+The claim follows from `preF_apply φ hφ h hg`.
+-/
 theorem preE_apply (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GLs n)) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) :
     (preE φ hφ h).1 g = h.1 (φ g) :=
   preF_apply φ hφ h hg
@@ -186,6 +244,9 @@ theorem preE_apply (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GL
 def postF (L : V →L[ℂ] V) (h : Sm n V) : Sm n V :=
   res ((L.restrictScalars ℝ).contDiff.comp_contDiffOn h.2.1)
 
+/- English proof (translation)
+The claim follows from `res_apply ((L.restrictScalars ℝ).contDiff.comp_contDiffOn h.2.1) hg`.
+-/
 theorem postF_apply (L : V →L[ℂ] V) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (postF L h).1 g = L (h.1 g) :=
   res_apply ((L.restrictScalars ℝ).contDiff.comp_contDiffOn h.2.1) hg
 
@@ -200,22 +261,39 @@ def postE (L : V →L[ℂ] V) : Module.End ℂ (Sm n V) where
     rw [postF_apply _ _ hg, postF_apply _ _ hg]
     exact map_smul L c _
 
+/- English proof (translation)
+The claim follows from `postF_apply L h hg`.
+-/
 theorem postE_apply (L : V →L[ℂ] V) (h : Sm n V) {g : Mat n} (hg : g ∈ GLs n) : (postE L h).1 g = L (h.1 g) :=
   postF_apply L h hg
 
+/- English proof (translation)
+Use `Commute.sum_right _ _ _ fun c _ => Pw_commute (fun a b => ?_) m c c` and prove the remaining obligations. Simplify using `only [Tc, TX]`. Conclude with `((h _).add_right ((h _).smul_right _)).smul_right _`.
+-/
 theorem Gl_commute {u : Module.End ℂ (Sm n V)} (h : ∀ X, Commute u (DA n V X)) (s : Bool) (m : ℕ) :
     Commute u (Gl n V s m) := by
   refine Commute.sum_right _ _ _ fun c _ => Pw_commute (fun a b => ?_) m c c
   simp only [Tc, TX]
   exact ((h _).add_right ((h _).smul_right _)).smul_right _
 
+/- English proof (translation)
+The claim follows from `D_commute_trPw DA_bracket (fun r X => DA_smul r X) s m X`.
+-/
 theorem DA_Gl_commute (X : Mat n) (s : Bool) (m : ℕ) : Commute (DA n V X) (Gl n V s m) :=
   D_commute_trPw DA_bracket (fun r X => DA_smul r X) s m X
 
+/- English proof (translation)
+The claim follows from `(Gl n V s m (res hf)).2.1.congr (gel_eq s m hf)`.
+-/
 theorem gel_contDiffOn (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (gel s m f) (GLs n) :=
   (Gl n V s m (res hf)).2.1.congr (gel_eq s m hf)
 
+/- English proof (translation)
+Establish `e : res (Rd_contDiffOn X hf) = DA n V X (res hf)` using `Sm_ext fun y hy => by`. Rewrite using `[res_apply _ hy, DA_apply _ _ hy]`. Conclude with `(Rd_congr X (fun _ h => res_apply hf h) hy).symm`. Rewrite using `[Rd_congr X (gel_eq s m hf) hg, gel_eq s m (Rd_contDiffOn X hf) hg, e, ← DA_apply _ _ hg]`. Use `LinearMap.congr_fun (DA_Gl_commute (V := V) X s m).eq (res hf)` as an intermediate fact.
+
+Conclude with `congrArg (fun h : Sm n V => h.1 g) this`.
+-/
 theorem Rd_gel (X : Mat n) (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     Rd X (gel s m f) g = gel s m (Rd X f) g := by
   have e : res (Rd_contDiffOn X hf) = DA n V X (res hf) := Sm_ext fun y hy => by
@@ -225,6 +303,11 @@ theorem Rd_gel (X : Mat n) (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiff
   have := LinearMap.congr_fun (DA_Gl_commute (V := V) X s m).eq (res hf)
   exact congrArg (fun h : Sm n V => h.1 g) this
 
+/- English proof (translation)
+Establish `hf' : ContDiffOn ℝ ∞ (fun y => f (φ y)) (GLs n)` using `hf.comp φ.contDiff.contDiffOn hφ`. Establish `e : res hf' = preE φ hφ (res hf)` using `Sm_ext fun y hy => by`. Rewrite using `[res_apply _ hy, preE_apply _ _ _ hy, res_apply hf (hφ hy)]`. Rewrite using `[gel_eq s m hf' hg, gel_eq s m hf (hφ hg), e, ← preE_apply φ hφ _ hg]`. Use `LinearMap.congr_fun hc.eq (res hf)` as an intermediate fact.
+
+Conclude with `(congrArg (fun h : Sm n V => h.1 g) this).symm`.
+-/
 theorem gel_pre (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GLs n)) (s : Bool) (m : ℕ)
     (hc : Commute (preE (V := V) φ hφ) (Gl n V s m)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n}
     (hg : g ∈ GLs n) : gel s m (fun y => f (φ y)) g = gel s m f (φ g) := by
@@ -235,6 +318,13 @@ theorem gel_pre (φ : Mat n →L[ℝ] Mat n) (hφ : Set.MapsTo φ (GLs n) (GLs n
   have := LinearMap.congr_fun hc.eq (res hf)
   exact (congrArg (fun h : Sm n V => h.1 g) this).symm
 
+/- English proof (translation)
+Establish `hf' : ContDiffOn ℝ ∞ (fun y => L (f y)) (GLs n)` using `(L.restrictScalars ℝ).contDiff.comp_contDiffOn hf`. Establish `e : res hf' = postE L (res hf)` using `Sm_ext fun y hy => by`. Rewrite using `[res_apply _ hy, postE_apply _ _ hy, res_apply hf hy]`. Establish `hc : Commute (postE (n` using `n) L) (Gl n V s m) := Gl_commute (fun X => by`. Use extensionality with `h : 1`.
+
+Use `Sm_ext fun y hy => ?_` and prove the remaining obligations. Use `show (postE L (DA n V X h)).1 y = (DA n V X (postE L h)).1 y`. Rewrite using `[postE_apply _ _ hy, DA_apply _ _ hy, DA_apply _ _ hy, Rd_congr X (fun _ h' => postE_apply L h h') hy]`. Conclude with `(fderiv_post L (differentiableAt_of_smooth h.2.1 hy) _).symm) s m`. Rewrite using `[gel_eq s m hf' hg, gel_eq s m hf hg, e, ← postE_apply L _ hg]`.
+
+Use `LinearMap.congr_fun hc.eq (res hf)` as an intermediate fact. Conclude with `(congrArg (fun h : Sm n V => h.1 g) this).symm`.
+-/
 theorem gel_post (L : V →L[ℂ] V) (s : Bool) (m : ℕ) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) {g : Mat n}
     (hg : g ∈ GLs n) : gel s m (fun y => L (f y)) g = L (gel s m f g) := by
   have hf' : ContDiffOn ℝ ∞ (fun y => L (f y)) (GLs n) := (L.restrictScalars ℝ).contDiff.comp_contDiffOn hf
@@ -250,10 +340,21 @@ theorem gel_post (L : V →L[ℂ] V) (s : Bool) (m : ℕ) {f : Mat n → V} (hf 
   have := LinearMap.congr_fun hc.eq (res hf)
   exact (congrArg (fun h : Sm n V => h.1 g) this).symm
 
+/- English proof (translation)
+Introduce `_ hg` and use `mul_mem_GLs hx hg`.
+-/
 theorem mapsTo_mulL {x : Mat n} (hx : x ∈ GLs n) : Set.MapsTo (mulL x) (GLs n) (GLs n) := fun _ hg => mul_mem_GLs hx hg
 
+/- English proof (translation)
+Introduce `_ hg` and use `mul_mem_GLs hg hx`.
+-/
 theorem mapsTo_mulR {x : Mat n} (hx : x ∈ GLs n) : Set.MapsTo (mulR x) (GLs n) (GLs n) := fun _ hg => mul_mem_GLs hg hx
 
+/- English proof (translation)
+Use `gel_pre (mulL x) (mapsTo_mulL hx) s m (Gl_commute (fun X => ?_) s m) hf hg` and prove the remaining obligations. Use extensionality with `h : 1`. Use `Sm_ext fun y hy => ?_` and prove the remaining obligations. Use `show (preE (mulL x) (mapsTo_mulL hx) (DA n V X h)).1 y = (DA n V X (preE (mulL x) (mapsTo_mulL hx) h)).1 y`. Rewrite using `[preE_apply _ _ _ hy, DA_apply _ _ (mapsTo_mulL hx hy), DA_apply _ _ hy, Rd_congr X (fun _ h' => preE_apply (mulL x) (mapsTo_mulL hx) h h') hy]`.
+
+Use `fderiv_comp_clm (mulL x) (differentiableAt_of_smooth h.2.1 (mapsTo_mulL hx hy)) (y * X)` as an intermediate fact. Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Simplify using `only [Rd, mulL_apply, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem gel_left (s : Bool) (m : ℕ) {x : Mat n} (hx : x ∈ GLs n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) : gel s m (fun y => f (x * y)) g = gel s m f (x * g) := by
   refine gel_pre (mulL x) (mapsTo_mulL hx) s m (Gl_commute (fun X => ?_) s m) hf hg
@@ -267,6 +368,13 @@ theorem gel_left (s : Bool) (m : ℕ) {x : Mat n} (hx : x ∈ GLs n) {f : Mat n 
   simp only [Rd, mulL_apply, mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit x.det` using `isUnit_iff_ne_zero.mpr hx`. Establish `hyx : x⁻¹ * x = 1` using `Matrix.nonsing_inv_mul x hu`. Establish `hxy : x * x⁻¹ = 1` using `Matrix.mul_nonsing_inv x hu`. Use `gel_pre (mulR x) (mapsTo_mulR hx) s m ?_ hf hg` and prove the remaining obligations. Use `Commute.symm (trPw_conj (fun r X => DA_smul r X) s m hyx fun X => ?_)` and prove the remaining obligations.
+
+Use extensionality with `h : 1`. Use `Sm_ext fun y hy => ?_` and prove the remaining obligations. Use `show (DA n V X (preE (mulR x) (mapsTo_mulR hx) h)).1 y = (preE (mulR x) (mapsTo_mulR hx) (DA n V (x⁻¹ * X * x) h)).1 y`. Rewrite using `[preE_apply _ _ _ hy, DA_apply _ _ (mapsTo_mulR hx hy), DA_apply _ _ hy, Rd_congr X (fun _ h' => preE_apply (mulR x) (mapsTo_mulR hx) h h') hy]`. Use `fderiv_comp_clm (mulR x) (differentiableAt_of_smooth h.2.1 (mapsTo_mulR hx hy)) (y * X)` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Establish `e : y * x * (x⁻¹ * X * x) = y * X * x`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Rd, mulR_apply, e]`. Both sides reduce to the same expression.
+-/
 theorem gel_right (s : Bool) (m : ℕ) {x : Mat n} (hx : x ∈ GLs n) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) : gel s m (fun y => f (y * x)) g = gel s m f (g * x) := by
   have hu : IsUnit x.det := isUnit_iff_ne_zero.mpr hx
@@ -287,12 +395,20 @@ theorem gel_right (s : Bool) (m : ℕ) {x : Mat n} (hx : x ∈ GLs n) {f : Mat n
   simp only [Rd, mulR_apply, e]
   rfl
 
+/- English proof (translation)
+Establish `h : k.1 * star k.1 = 1` using `(Matrix.mem_unitaryGroup_iff).mp k.2`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one this`.
+-/
 theorem unitary_mem_GLs (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n := by
   have h : k.1 * star k.1 = 1 := (Matrix.mem_unitaryGroup_iff).mp k.2
   have := congrArg Matrix.det h
   rw [Matrix.det_mul, Matrix.det_one] at this
   exact left_ne_zero_of_mul_eq_one this
 
+/- English proof (translation)
+Use `⟨gel_contDiffOn s m hf.1, fun g hg k => ?_⟩` and prove the remaining obligations. Establish `hk` using `unitary_mem_GLs k`. Rewrite using `[← gel_right s m hk hf.1 hg, ← gel_post (E.ρ k⁻¹) s m hf.1 hg]`. Establish `h1 : ContDiffOn ℝ ∞ (fun y => f (y * k.1)) (GLs n)` using `hf.1.comp (mulR k.1).contDiff.contDiffOn (mapsTo_mulR hk)`. Establish `h2 : ContDiffOn ℝ ∞ (fun y => E.ρ k⁻¹ (f y)) (GLs n)` using `((E.ρ k⁻¹).restrictScalars ℝ).contDiff.comp_contDiffOn hf.1`.
+
+Establish `e : res h1 = res h2` using `Sm_ext fun y hy => by`. Rewrite using `[res_apply _ hy, res_apply _ hy]`. Conclude with `hf.2 y hy k`. Rewrite using `[gel_eq s m h1 hg, gel_eq s m h2 hg, e]`.
+-/
 theorem gel_mem_CE (E : KMod n) {f : Mat n → E.V} (hf : f ∈ CE E) (s : Bool) (m : ℕ) : gel s m f ∈ CE E := by
   refine ⟨gel_contDiffOn s m hf.1, fun g hg k => ?_⟩
   have hk := unitary_mem_GLs k

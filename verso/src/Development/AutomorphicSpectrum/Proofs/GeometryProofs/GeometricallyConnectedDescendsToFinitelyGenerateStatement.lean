@@ -8,5 +8,8 @@ open CategoryTheory AlgebraicGeometry Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj CategoryTheory.MonObj
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg | exact GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg | (intros; apply GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg <;> assum …`.
+-/
 theorem _root_.GlobalTheory.T.geometricallyConnected_descends_to_finitelyGenerated : ∀ (k V : Type) [CommRing k] [IsNoetherianRing k] [CommRing V] [Algebra k V] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → IsProper G.hom → GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap k V))) → ∃ R : Subalgebra k V, R.FG ∧ GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap k R))) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg | exact GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg | (intros; apply GlobalTheory.CompanionTheory.Ar.Approx.geometricallyConnected_descends_to_fg <;> assumption)

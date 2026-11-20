@@ -11,6 +11,11 @@ section General
 variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {n : ℕ}
   (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `h : S.rho emb lam b g v = ((S.chr b g : Kˣ) : K) • rhoVr emb lam (S.gam b g) v` using `rfl`. Rewrite using `[h, LinearMap.map_smulₛₗ, GStep.tr, trFr_apply, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Use `evV_rhoVr_tr emb 1 lam σ _ v y _ ?_` and prove the remaining obligations.
+
+Use `congrArg Subtype.val ((frEquiv emb σ (S.gam b g)).apply_symm_apply y)` as an intermediate fact. Introduce `τ`. Conclude with `(congrFun this τ).symm`.
+-/
 theorem evV_rho_tr (b : S.β) (g : S.G b) (v : VV K lam) :
     evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ (S.rho emb lam b g v) =
       S.tr emb σ b g (evV emb (1 : Matrix (Fin n) (Fin n) E) lam σ v) := by
@@ -23,6 +28,11 @@ theorem evV_rho_tr (b : S.β) (g : S.G b) (v : VV K lam) :
   intro τ
   exact (congrFun this τ).symm
 
+/- English proof (translation)
+Use `⟨⟨fun c => S.rho emb lam c.1 (S.mv c.1 (p c)) (x.1 (S.cl c.1 (p c))), fun c g => ?_⟩, fun c => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `hg : (g.1 : S.G c.1) = 1` using `hf c.1 g.1 (S.rep c) g.2 show S.rho emb lam c.1 g.1 _ = _`. Rewrite using `[hg, map_one]`. Both sides reduce to the same expression. Establish `h1 : delAtr emb lam (S.Lsh c.1 (S.mv c.1 (p c) • S.rep (S.cl c.1 (p c)))) = (delAtr emb lam (S.Lsh c.1 (S.rep (S.cl c.1 (p c))))).map ((S.rho emb lam c.1 (S.mv c.1 (p c))).restrictScalars (𝓞 K))` using `(h c.1).del_smul (S.mv c.1 (p c)) (S.rep (S.cl c.1 (p c)))`.
+
+Rewrite `h1` using `[S.mv_smul, hp]`. Use `show S.rho emb lam c.1 (S.mv c.1 (p c)) (x.1 (S.cl c.1 (p c))) ∈ delAtr emb lam (S.Lsh c.1 (S.rep c))`. Rewrite using `[h1]`. Conclude with `Submodule.mem_map_of_mem (hx (S.cl c.1 (p c)))`. Conclude with `evV_rho_tr S emb σ lam c.1 _ _`.
+-/
 theorem exists_pull (hf : S.Free) (h : (S.fam emb lam).Ok) (p : ∀ c : S.Cl, S.D c.1)
     (hp : ∀ c, S.Lsh c.1 (p c) = S.Lsh c.1 (S.rep c)) (x : S.FormsK emb lam h) (hx : x ∈ (S.hlat emb lam h).L) :
     ∃ y ∈ (S.hlat emb lam h).L, ∀ c, S.embF emb σ lam h y c =
@@ -44,6 +54,9 @@ theorem exists_pull (hf : S.Free) (h : (S.fam emb lam).Ok) (p : ∀ c : S.Cl, S.
 
 end General
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ _ _ R I J emb σ hc _ _ hJ hF P a x hx`. Take `⟨y, hy, e⟩` from `exists_pull (I.S 0) emb σ (lamT hc 0) hJ.free0 hF (fun c => (J.A 0).diaPt P a c) (fun c => (hJ.lev 0).dia_Lsh c.1 P a _) x hx`. Conclude with `⟨y, hy, funext e⟩`.
+-/
 theorem dia_lat : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {R : Ranks} (I : ChainIn E K ι R) (J : AtIn I) (emb : ι → E →+* K) (σ : K →+* ℂ) (hc : ι → HCParam R), FOk emb σ → ∀ (hI : I.Ok), J.Ok → ∀ (hF : ((I.S 0).fam emb (lamT hc 0)).Ok) P a x, x ∈ ((I.S 0).hlat emb (lamT hc 0) hF).L → ∃ y ∈ ((I.S 0).hlat emb (lamT hc 0) hF).L, (I.S 0).embF emb σ (lamT hc 0) hF y = J.diaLin emb σ P a ((I.S 0).embF emb σ (lamT hc 0) hF x) := by
   intro E K ι _ _ _ _ _ _ _ R I J emb σ hc _ _ hJ hF P a x hx
   obtain ⟨y, hy, e⟩ := exists_pull (I.S 0) emb σ (lamT hc 0) hJ.free0 hF (fun c => (J.A 0).diaPt P a c)

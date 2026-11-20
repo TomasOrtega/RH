@@ -9,6 +9,9 @@ open scoped nonZeroDivisors
 
 namespace KLinesIdealStdIndex
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[idealLattice, Submodule.mem_pi, AddSubgroup.mem_pi]`.
+-/
 theorem idealLattice_toAddSubgroup {K : Type} [Field K] {k : ℕ}
     (a : Fin k → FractionalIdeal (𝓞 K)⁰ K) :
     (idealLattice a).toAddSubgroup =
@@ -20,6 +23,9 @@ end KLinesIdealStdIndex
 
 open KLinesIdealStdIndex in
 
+/- English proof (translation)
+Introduce `K _ _ k a`. Rewrite using `[idealLattice_toAddSubgroup, h2 K k, h1 (Fin k) K]`. Both sides reduce to the same expression.
+-/
 theorem LinesIdealStdIndex.proof (h1 : LinesGenIndexPi.Statement) (h2 : LinesStdPi.Statement) :
     LinesIdealStdIndex.Statement := by
   intro K _ _ k a

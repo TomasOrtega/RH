@@ -15,6 +15,9 @@ namespace VeryAmpleZFinite
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[ampleBase, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨MvPolynomial.X l, MvPolynomial.X j, 1, X_mem_monos hj, MvPolynomial.isHomogeneous_X S l, MvPolynomial.isHomogeneous_X S j, by simp⟩`.
+-/
 theorem ampleBase_le_chartRing {h : Fin (r + 1) → Ω} (J : Chart h) {j : Fin (r + 1)} (hj : j ∈ J.1) :
     ampleBase (S := S) h j ≤ chartRing S h J := by
   rw [ampleBase, Algebra.adjoin_le_iff]
@@ -26,6 +29,29 @@ end VeryAmpleZFinite
 
 open VeryAmpleZFinite in
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x E _ _ _ _ F hF H r h hH J`. Take `⟨j, hj⟩` from `J.2.1`. Establish `hj0 : h j ≠ 0` using `(mem_support h).mp (J.2.2 hj)`. Establish `hsec : ∀ l, h l ∈ H.toSubSystem.secs` using `hH.mem_secs`. Take `⟨n, a, b, Jk, ha, hb, hab, hrat⟩` from `hH.affine j hj0`.
+
+Establish `hA : ∀ z ∈ ampleRing H.toSubSystem 1 (h j), z ∈ chartRing S h J` using `fun z hz => ampleBase_le_chartRing J hj (hH.closed j hj0 hz)`. Use `choose g hg using fun k => hF (Jk k)`. Establish `hext : ∀ k, ∀ᶠ M in atTop, ∀ y ∈ g k, b k ^ M • y ∈ secsOnZ F.toSubSystem H.toSubSystem h J` using `fun k => (eventually_all_finset _).mpr fun y hy => hExt S Ω N x E F H.toSubSystem r h hsec J j hj (b k) (hb k) (Jk k) (hrat k) y (by rw [← hg k]; exact Submodule.subset_span hy)`. Use `choose M0 hM0 using fun k => eventually_atTop.mp (hext k)`. Use `set T : Finset E := Finset.univ.biUnion fun k => (g k).image fun y => b k ^ M0 k • y with hT`.
+
+Establish `hTmem : ∀ k, ∀ y ∈ g k, b k ^ M0 k • y ∈ T` using `fun k y hy => Finset.mem_biUnion.mpr ⟨k, Finset.mem_univ _, Finset.mem_image.mpr ⟨y, hy, rfl⟩⟩`. Use `⟨T, fun z hz => ?_, fun e he => ?_⟩` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `Finset.mem_biUnion.mp hz`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.mp hk`. Conclude with `hM0 k (M0 k) le_rfl y hy`.
+
+Rewrite using `[Submodule.restrictScalars_mem]`. Establish `hloc : ∀ k, ∀ᶠ L in atTop, b k ^ L • e ∈ Submodule.span (chartRing S h J) (T : Set E)`. Introduce `k`. Establish `heK : e ∈ secsOnZChart F.toSubSystem H.toSubSystem h (Jk k) J` using `(Submodule.mem_iInf _).mp he (Jk k)`. Take `⟨β, hβ, rfl⟩` from `hSpan S Ω N x E F.toSubSystem H.toSubSystem r h hsec (Jk k) J (g k) (hg k).ge _ heK`.
+
+Take `⟨L0, hL0⟩` from `eventually_atTop.mp ((eventually_all_finset (g k)).mpr fun y hy => hRing S Ω N x H r h hH J j hj (b k) (hb k) (Jk k) (hrat k) (β y) (hβ y hy))`. Use `eventually_atTop.mpr ⟨L0 + M0 k, fun L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun y hy => ?_` and prove the remaining obligations. Establish `hmem : b k ^ (L - M0 k) * β y ∈ chartRing S h J` using `hL0 _ (by omega) y hy`.
+
+Establish `e1 : b k ^ L • (β y • y) = (⟨_, hmem⟩ : chartRing S h J) • (b k ^ M0 k • y)`. Rewrite using `[Subalgebra.smul_def, smul_smul, smul_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `b k ^ L * β y = b k ^ (L - M0 k) * β y * b k ^ M0 k`. Rewrite using `[mul_comm _ (b k ^ M0 k), ← mul_assoc, ← pow_add, Nat.add_sub_cancel' (by omega)]`.
+
+Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hTmem k y hy))`. Use `choose L hL using fun k => eventually_atTop.mp (hloc k)`. Use `set L' := Finset.univ.sup L`. Set `bA : Fin n → chartRing S h J` to `fun k => ⟨b k, hA _ (hb k)⟩`.
+
+Establish `htop : Ideal.span (Set.range bA) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun k => ⟨a k, hA _ (ha k)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finsetSum, OneMemClass.coe_one]`. Conclude with `hab`.
+
+Establish `h1 : (1 : chartRing S h J) ∈ Ideal.span (Set.range fun k => bA k ^ L')`. Use `Ideal.span_pow_eq_top _ htop L'` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Rewrite using `[← Ideal.eq_top_iff_one]`. Conclude with `this`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.mp h1`. Establish `he' : e = ∑ k, c k • (b k ^ L' • e)`. Establish `: ∑ k, c k • (b k ^ L' • e) = (∑ k, c k * bA k ^ L') • e`. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Subalgebra.smul_def, Subalgebra.smul_def, smul_smul]`. Simplify using `[bA]`. Rewrite using `[this, hc, one_smul]`. Rewrite using `[he']`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hL k L' (Finset.le_sup (Finset.mem_univ k)))`.
+-/
 theorem VeryAmpleZFinite.proof (hExt : VeryAmpleZExtend.Statement.{u, v, w})
     (hSpan : VeryAmpleZChartSpan.Statement.{u, v, w}) (hRing : VeryAmpleZChartRing.Statement.{u, w}) :
     VeryAmpleZFinite.Statement.{u, v, w} := by

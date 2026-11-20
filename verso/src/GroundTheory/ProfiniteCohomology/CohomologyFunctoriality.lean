@@ -13,6 +13,9 @@ variable {k G H K : Type u} [CommRing k] [Group G] [Group H] [Group K]
 
 section Discrete
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a => by have h : (stabilizer (Rep.res φ A).ρ a : Set H) = φ ⁻¹' (stabilizer A.ρ a : Set G) := rfl rw [h] exact (GroundTheory.ProfCoh.isOpen_stabilizer A a).preimage hφ⟩`.
+-/
 theorem IsDiscreteRep.res {φ : H →* G} (hφ : Continuous φ) (A : Rep.{u} k G) [IsDiscreteRep A] :
     IsDiscreteRep (Rep.res φ A) :=
   ⟨fun a => by
@@ -20,9 +23,15 @@ theorem IsDiscreteRep.res {φ : H →* G} (hφ : Continuous φ) (A : Rep.{u} k G
     rw [h]
     exact (GroundTheory.ProfCoh.isOpen_stabilizer A a).preimage hφ⟩
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val`.
+-/
 theorem continuous_subgroup_subtype (S : Subgroup G) : Continuous S.subtype :=
   continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `QuotientGroup.continuous_mk`.
+-/
 theorem continuous_quotientGroup_mk' (N : Subgroup G) [N.Normal] :
     Continuous (QuotientGroup.mk' N) :=
   QuotientGroup.continuous_mk
@@ -52,6 +61,9 @@ section Cochains
 
 omit [IsTopologicalGroup G] [IsTopologicalGroup H] in
 
+/- English proof (translation)
+Establish `hc : Continuous fun h : Fin n → H => (⇑φ ∘ h)` using `continuous_pi fun i => hφ.comp (continuous_apply i)`. Conclude with `(hx.comp_continuous hc).comp _`.
+-/
 theorem isLocallyConstant_cochainsMapAlong {A : Rep.{u} k G} {B : Rep.{u} k H} {φ : H →* G}
     (hφ : Continuous φ) (f : Rep.res φ A ⟶ B) {n : ℕ} {x : (Fin n → G) → A}
     (hx : IsLocallyConstant x) :
@@ -78,12 +90,18 @@ noncomputable def cochainsMapAlong {A : Rep.{u} k G} {B : Rep.{u} k H} [IsDiscre
 variable {A : Rep.{u} k G} {B : Rep.{u} k H} [IsDiscreteRep A] [IsDiscreteRep B]
   (φ : H →* G) (hφ : Continuous φ) (f : Rep.res φ A ⟶ B)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem cochainsComplexι_cochainsMapAlong_apply (n : ℕ) (x : (cochainsComplex A).X n) :
     ((cochainsComplexι B).f n).hom (((cochainsMapAlong φ hφ f).f n).hom x) =
       fun h => f.hom (((cochainsComplexι A).f n).hom x (⇑φ ∘ h)) :=
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 theorem cochainsMapAlong_comp_cochainsComplexι :
     cochainsMapAlong φ hφ f ≫ cochainsComplexι B =
       cochainsComplexι A ≫ groupCohomology.cochainsMap φ f := by
@@ -91,11 +109,17 @@ theorem cochainsMapAlong_comp_cochainsComplexι :
   rfl
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem cochainsMapAlong_id : cochainsMapAlong (MonoidHom.id G) continuous_id (𝟙 A) = 𝟙 _ := by
   ext n x : 3
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem cochainsMapAlong_comp {C : Rep.{u} k K} [IsDiscreteRep C] (ψ : K →* H) (hψ : Continuous ψ)
     (g : Rep.res ψ B ⟶ C) :
     cochainsMapAlong (φ.comp ψ) (hφ.comp hψ) ((Rep.resFunctor ψ).map f ≫ g) =
@@ -104,6 +128,9 @@ theorem cochainsMapAlong_comp {C : Rep.{u} k K} [IsDiscreteRep C] (ψ : K →* H
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+-/
 theorem cochainsMapAlong_id_comp {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     [IsDiscreteRep C] (f : A ⟶ B) (g : B ⟶ C) :
     cochainsMapAlong (MonoidHom.id G) continuous_id (f ≫ g) =
@@ -113,6 +140,9 @@ theorem cochainsMapAlong_id_comp {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDisc
   rfl
 
 @[simp]
+/- English proof (translation)
+Use extensionality with `n x : 3`. Both sides reduce to the same expression.
+-/
 theorem cochainsMapAlong_zero : cochainsMapAlong φ hφ (0 : Rep.res φ A ⟶ B) = 0 := by
   ext n x : 3
   rfl
@@ -131,17 +161,26 @@ noncomputable def cohomologyMapAlong (n : ℕ) : cohomology A n ⟶ cohomology B
   HomologicalComplex.homologyMap (cochainsMapAlong φ hφ f) n
 
 @[reassoc, elementwise]
+/- English proof (translation)
+Simplify using `[cohomologyMapAlong, cocyclesMapAlong, cohomologyπ, cohomology]`. Use the proof step `@[simp]`.
+-/
 theorem cohomologyπ_cohomologyMapAlong (n : ℕ) :
     cohomologyπ A n ≫ cohomologyMapAlong φ hφ f n = cocyclesMapAlong φ hφ f n ≫ cohomologyπ B n := by
   simp [cohomologyMapAlong, cocyclesMapAlong, cohomologyπ, cohomology]
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[cohomologyMapAlong, cochainsMapAlong_id]`. Conclude with `HomologicalComplex.homologyMap_id _ _`. Use the proof step `@[reassoc]`.
+-/
 theorem cohomologyMapAlong_id (n : ℕ) :
     cohomologyMapAlong (MonoidHom.id G) continuous_id (𝟙 A) n = 𝟙 _ := by
   rw [cohomologyMapAlong, cochainsMapAlong_id]
   exact HomologicalComplex.homologyMap_id _ _
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[cohomologyMapAlong, cochainsMapAlong_comp, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem cohomologyMapAlong_comp {C : Rep.{u} k K} [IsDiscreteRep C] (ψ : K →* H) (hψ : Continuous ψ)
     (g : Rep.res ψ B ⟶ C) (n : ℕ) :
     cohomologyMapAlong (φ.comp ψ) (hφ.comp hψ) ((Rep.resFunctor ψ).map f ≫ g) n =
@@ -150,6 +189,9 @@ theorem cohomologyMapAlong_comp {C : Rep.{u} k K} [IsDiscreteRep C] (ψ : K →*
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[cohomologyMapAlong, cochainsMapAlong_id_comp, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem cohomologyMapAlong_id_comp {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     [IsDiscreteRep C] (f : A ⟶ B) (g : B ⟶ C) (n : ℕ) :
     cohomologyMapAlong (MonoidHom.id G) continuous_id (f ≫ g) n =
@@ -159,6 +201,9 @@ theorem cohomologyMapAlong_id_comp {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDi
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Establish `h` using `congrArg (fun ψ => HomologicalComplex.homologyMap ψ n) (cochainsMapAlong_comp_cochainsComplexι φ hφ f)`. Simplify using `only [HomologicalComplex.homologyMap_comp] at h`. Conclude with `h`.
+-/
 theorem cohomologyMapAlong_comp_homologyMap_cochainsComplexι (n : ℕ) :
     cohomologyMapAlong φ hφ f n ≫ (HomologicalComplex.homologyMap (cochainsComplexι B) n :
         cohomology B n ⟶ groupCohomology B n) =
@@ -179,11 +224,17 @@ noncomputable def cohomologyRes (S : Subgroup G) (n : ℕ) :
     cohomology A n ⟶ cohomology (Rep.res S.subtype A) n :=
   cohomologyMapAlong S.subtype (continuous_subgroup_subtype S) (𝟙 _) n
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem cohomologyRes_eq (S : Subgroup G) (n : ℕ) :
     cohomologyRes A S n = cohomologyMapAlong S.subtype (continuous_subgroup_subtype S) (𝟙 _) n :=
   rfl
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[cohomologyRes, cohomologyRes, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression. Use the proof step `@[reassoc]`.
+-/
 theorem cohomologyRes_naturality {A' : Rep.{u} k G} [IsDiscreteRep A'] (g : A ⟶ A')
     (S : Subgroup G) (n : ℕ) :
     cohomologyMapAlong (MonoidHom.id G) continuous_id g n ≫ cohomologyRes A' S n =
@@ -193,6 +244,9 @@ theorem cohomologyRes_naturality {A' : Rep.{u} k G} [IsDiscreteRep A'] (g : A �
   rfl
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `cohomologyMapAlong_comp_homologyMap_cochainsComplexι _ _ _ n`.
+-/
 theorem cohomologyRes_comp_homologyMap_cochainsComplexι (S : Subgroup G) (n : ℕ) :
     cohomologyRes A S n ≫
       (HomologicalComplex.homologyMap (cochainsComplexι (Rep.res S.subtype A)) n :
@@ -212,12 +266,18 @@ noncomputable def cohomologyInfl (N : Subgroup G) [N.Normal] (n : ℕ) :
   cohomologyMapAlong (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N)
     (Rep.ofHom (A.ρ.quotientToInvariants_lift N)) n
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem cohomologyInfl_eq (N : Subgroup G) [N.Normal] (n : ℕ) :
     cohomologyInfl A N n = cohomologyMapAlong (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N)
       (Rep.ofHom (A.ρ.quotientToInvariants_lift N)) n :=
   rfl
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `cohomologyMapAlong_comp_homologyMap_cochainsComplexι _ _ _ n`.
+-/
 theorem cohomologyInfl_comp_homologyMap_cochainsComplexι (N : Subgroup G) [N.Normal] (n : ℕ) :
     cohomologyInfl A N n ≫ (HomologicalComplex.homologyMap (cochainsComplexι A) n :
         cohomology A n ⟶ groupCohomology A n) =

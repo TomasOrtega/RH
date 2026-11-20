@@ -15,6 +15,9 @@ attribute [local instance] FiniteSubfield.isGalois_of_normal galCommGroup
 variable {K : FiniteSubfield} (ι : LocalEmbeddings K) (E : FiniteSubfield) [Fact (K ≤ E)]
   [(E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal] [IsMulCommutative (E.1 ≃ₐ[K.1] E.1)]
 
+/- English proof (translation)
+The claim follows from `restrictHom_globalDecomp_of_finite E (ι.fin v) fun y hy ↦ AlgEquiv.liftNormal_commutes _ _ (⟨y, hy⟩ : GroundTheory.LocalField.maximalAbelianExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)))`.
+-/
 theorem restrictHom_localSymbolAt_inr (v : HeightOneSpectrum (𝓞 K.1)) (a : K.1ˣ) :
     restrictHom (E := E) (localSymbolAt ι (.inr v) a) =
       localSymbol E.1 v (Units.map (algebraMap K.1 (v.adicCompletion K.1) : K.1 →* v.adicCompletion K.1) a) :=
@@ -22,12 +25,30 @@ theorem restrictHom_localSymbolAt_inr (v : HeightOneSpectrum (𝓞 K.1)) (a : K.
     AlgEquiv.liftNormal_commutes _ _ (⟨y, hy⟩ : GroundTheory.LocalField.maximalAbelianExtension
       (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)))
 
+/- English proof (translation)
+The claim follows from `restrictHom_globalDecomp_of_infinite E (ι.inf v) (exists_eq_one_iff_mem_range_norm v (algebraMap K.1 v.Completion (a : K.1))).choose_spec`.
+-/
 theorem restrictHom_localSymbolAt_inl (v : InfinitePlace K.1) (a : K.1ˣ) :
     restrictHom (E := E) (localSymbolAt ι (.inl v) a) =
       infiniteLocalSymbol E.1 v (Units.map (algebraMap K.1 v.Completion : K.1 →* v.Completion) a) :=
   restrictHom_globalDecomp_of_infinite E (ι.inf v)
     (exists_eq_one_iff_mem_range_norm v (algebraMap K.1 v.Completion (a : K.1))).choose_spec
 
+/- English proof (translation)
+Use `set R := (restrictHom : K.1.fixingSubgroup →* (E.1 ≃ₐ[K.1] E.1)) with hR`. Use `set χm : K.1.fixingSubgroup →* Multiplicative QZ := AddMonoidHom.toMultiplicativeRight χ.toAddMonoidHom with hχm`. Establish `hχm_apply : ∀ h, χ (Additive.ofMul h) = Multiplicative.toAdd (χm h)` using `fun _ ↦ rfl`. Establish `hker : R.ker ≤ χm.ker`. Introduce `h hh`.
+
+Rewrite `hh` using `[hR, ker_restrictHom, Subgroup.mem_subgroupOf]`. Rewrite using `[MonoidHom.mem_ker, ← ofAdd_toAdd (χm h), ← hχm_apply, hχ h hh, ofAdd_zero]`. Use `set χ' := R.liftOfSurjective restrictHom_surjective ⟨χm, hker⟩ with hχ'`. Establish `hχ'R : ∀ h, χ' (R h) = χm h` using `fun h ↦ R.liftOfRightInverse_comp_apply _ (Function.rightInverse_surjInv restrictHom_surjective) ⟨χm, hker⟩ h`. Establish `hfin : ∀ v, finiteProj v (diagonal K.1 a) = Units.map (algebraMap K.1 (v.adicCompletion K.1) : K.1 →* v.adicCompletion K.1) a` using `fun v ↦ Units.ext (coe_finiteProj_diagonal v a)`.
+
+Establish `hinf : ∀ w, infiniteProj w (diagonal K.1 a) = Units.map (algebraMap K.1 w.Completion : K.1 →* w.Completion) a` using `fun w ↦ Units.ext (coe_infiniteProj_diagonal w a)`. Establish `hF_inr : ∀ v, χ (Additive.ofMul (localSymbolAt ι (.inr v) a)) = Multiplicative.toAdd (χ' (localSymbol E.1 v (finiteProj v (diagonal K.1 a))))`. Introduce `v`. Rewrite using `[hχm_apply, ← hχ'R, hR, restrictHom_localSymbolAt_inr, ← hfin]`. Establish `hF_inl : ∀ w, χ (Additive.ofMul (localSymbolAt ι (.inl w) a)) = Multiplicative.toAdd (χ' (infiniteLocalSymbol E.1 w (infiniteProj w (diagonal K.1 a))))`.
+
+Introduce `w`. Rewrite using `[hχm_apply, ← hχ'R, hR, restrictHom_localSymbolAt_inl, ← hinf]`. Take `⟨S, hS⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 K.1)), Function.mulSupport (fun v ↦ localSymbol E.1 v (finiteProj v (diagonal K.1 a))) ⊆ S` from `⟨(hasFiniteMulSupport_localSymbol E.1 (diagonal K.1 a)).toFinset, fun v hv ↦ (Set.Finite.mem_toFinset _).2 hv⟩`. Establish `hψ : ideleSymbol K.1 E.1 (diagonal K.1 a) = (∏ v ∈ S, localSymbol E.1 v (finiteProj v (diagonal K.1 a))) * ∏ w, infiniteLocalSymbol E.1 w (infiniteProj w (diagonal K.1 a))`. Rewrite using `[ideleSymbol_apply, finprod_eq_prod_of_mulSupport_subset _ hS]`.
+
+Establish `hsupp : Function.support (fun v : Place K.1 ↦ χ (Additive.ofMul (localSymbolAt ι v a))) ⊆ (Finset.univ.disjSum S : Finset (Place K.1))`. Introduce and unpack `(w | v) hv`. Conclude with `Finset.inl_mem_disjSum.2 (Finset.mem_univ w)`. Use `Finset.inr_mem_disjSum.2 (hS ?_)` and prove the remaining obligations. Introduce `h1`.
+
+Apply `hv` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `χ (Additive.ofMul (localSymbolAt ι (.inr v) a)) = 0`. Rewrite using `[hF_inr]`. Rewrite using `[show localSymbol E.1 v (finiteProj v (diagonal K.1 a)) = 1 from h1, map_one, toAdd_one]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_disjSum, hχm_apply, ← hχ'R, hg, hψ, map_mul, toAdd_mul, map_prod χ', map_prod χ', toAdd_prod, toAdd_prod, add_comm]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun v _ ↦ hF_inr v`. Conclude with `Finset.sum_congr rfl fun w _ ↦ hF_inl w`.
+-/
 theorem finsum_char_localSymbolAt_eq (χ : Additive K.1.fixingSubgroup →ₜ+ QZ)
     (hχ : ∀ h : K.1.fixingSubgroup, (h : ℚ̄ ≃ₐ[ℚ] ℚ̄) ∈ E.1.fixingSubgroup → χ (Additive.ofMul h) = 0)
     (a : K.1ˣ) (g : K.1.fixingSubgroup)

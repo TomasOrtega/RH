@@ -8,12 +8,18 @@ set_option backward.isDefEq.respectTransparency false
 
 namespace GlobalTheory.CompanionTheory.Ar.LieBc
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `⟨M₁, fun _ => rfl⟩`.
+-/
 theorem exists_model_of_eq {S : Scheme.{0}} {R : Type} [CommRing R] (G : Over S) [GrpObj G] {x₁ x₂ : Sp R ⟶ S}
     (hx : x₁ = x₂) {T : Type} [AddCommGroup T] [Module R T] (M₁ : LieModel G x₁ T) :
     ∃ M₂ : LieModel G x₂ T, ∀ t, (M₂.pt t).left = (M₁.pt t).left := by
   subst hx
   exact ⟨M₁, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `e : ⇑j = hj.equiv ∘ TensorProduct.mk K K' V 1`. Use function extensionality and compare the values at `x`. Simplify using `[IsBaseChange.equiv_tmul]`. Rewrite using `[e]`. Conclude with `hj.equiv.injective.comp (Module.FaithfullyFlat.tensorProduct_mk_injective V)`.
+-/
 theorem injective_of_isBaseChange {K K' : Type} [Field K] [Field K'] [Algebra K K'] {V T : Type} [AddCommGroup V]
     [Module K V] [AddCommGroup T] [Module K T] [Module K' T] [IsScalarTower K K' T] {j : V →ₗ[K] T}
     (hj : IsBaseChange K' j) : Function.Injective j := by
@@ -23,6 +29,9 @@ theorem injective_of_isBaseChange {K K' : Type} [Field K] [Field K'] [Algebra K 
   rw [e]
   exact hj.equiv.injective.comp (Module.FaithfullyFlat.tensorProduct_mk_injective V)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `t _`. Use `hj.inductionOn t (fun t => t ∈ Submodule.span K' (Set.range j)) (Submodule.zero_mem _) (fun m => Submodule.subset_span ⟨m, rfl⟩) (fun s n h => Submodule.smul_mem _ s h) (fun a b ha hb => Submodule.add_mem _ ha hb)` and prove the remaining obligations.
+-/
 theorem span_range_of_isBaseChange {K K' : Type} [CommRing K] [CommRing K'] [Algebra K K'] {V T : Type}
     [AddCommGroup V] [Module K V] [AddCommGroup T] [Module K T] [Module K' T] [IsScalarTower K K' T]
     {j : V →ₗ[K] T} (hj : IsBaseChange K' j) : Submodule.span K' (Set.range j) = ⊤ := by
@@ -34,6 +43,15 @@ theorem span_range_of_isBaseChange {K K' : Type} [CommRing K] [CommRing K'] [Alg
 
 end GlobalTheory.CompanionTheory.Ar.LieBc
 
+/- English proof (translation)
+Introduce `L L' _ _ e G G' _ _ _ _ φ h V _ _ MV`. Use `letI : Algebra L L' := e.toAlgebra`. Take `⟨T, iT, mT, mR, tower, M', j, hl, hbc⟩` from `GlobalTheory.CompanionTheory.Ar.FlagFib.lieModel_liftBaseChange (Sp L) G L L' (𝟙 _) V MV`. Establish `hx : spMap (algebraMap L L') ≫ 𝟙 (Sp L) = 𝟙 (Sp L') ≫ spMap e`. Rewrite using `[Category.comp_id, Category.id_comp]`.
+
+Both sides reduce to the same expression. Take `⟨M₂, hM₂⟩` from `GlobalTheory.CompanionTheory.Ar.LieBc.exists_model_of_eq G hx M'`. Use `⟨T, iT, mT, GlobalTheory.CompanionTheory.Ar.LieMove.pullModel h M₂, j.toAddMonoidHom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c x`. Express the relevant statement in the definitionally equal form `j (c • x) = e c • j x`.
+
+Rewrite using `[map_smul]`. Conclude with `(algebraMap_smul L' c (j x)).symm`. Conclude with `GlobalTheory.CompanionTheory.Ar.LieBc.injective_of_isBaseChange hbc`. Introduce `x`. Establish `e₁` using `hl x`.
+
+Establish `e₂ : (M'.pt (j x)).left ≫ 𝟙 G.left = spMap (dualMap (algebraMap L L')) ≫ (MV.pt x).left` using `e₁`. Express the relevant statement in the definitionally equal form `(GlobalTheory.CompanionTheory.Ar.LieMove.liftEps h (M₂.pt (j x))).left ≫ φ = _`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.LieMove.liftEps_left, hM₂]`. Conclude with `(Category.comp_id _).symm.trans e₂`. Conclude with `GlobalTheory.CompanionTheory.Ar.LieBc.span_range_of_isBaseChange hbc`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.LieBc.main : ∀ (L L' : Type) [Field L] [Field L'] (e : L →+* L') (G : Over (Sp L)) (G' : Over (Sp L')) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [GrpObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G (spMap e) φ → ∀ (V : Type) [AddCommGroup V] [Module L V] (MV : LieModel G (𝟙 (Sp L)) V), ∃ (V' : Type) (_ : AddCommGroup V') (_ : Module L' V') (MV' : LieModel G' (𝟙 (Sp L')) V') (j : V →+ V'), (∀ (c : L) x, j (c • x) = e c • j x) ∧ Function.Injective j ∧ (∀ x, (MV'.pt (j x)).left ≫ φ = spMap (dualMap e) ≫ (MV.pt x).left) ∧ Submodule.span L' (Set.range j) = ⊤ := by
   intro L L' _ _ e G G' _ _ _ _ φ h V _ _ MV
   letI : Algebra L L' := e.toAlgebra

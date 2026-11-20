@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.LocalEmbedding
 
+/- English proof (translation)
+Establish `h1 : minpoly ℚ_[l] ((φ y : ↥L) : PadicAlgCl l) = minpoly ℚ_[l] y` using `minpoly.algHom_eq (L.val.comp φ) (L.val.comp φ).toRingHom.injective y`. Establish `h2 : minpoly ℚ_[l] (y : PadicAlgCl l) = minpoly ℚ_[l] y` using `minpoly.algHom_eq K.val K.val.toRingHom.injective y`. Express the relevant statement in the definitionally equal form `spectralNorm ℚ_[l] (PadicAlgCl l) _ = spectralNorm ℚ_[l] (PadicAlgCl l) _`. Unfold `spectralNorm`. Rewrite using `[h1, h2]`.
+-/
 theorem norm_algHom {l : ℕ} [Fact l.Prime] {K L : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (φ : ↥K →ₐ[ℚ_[l]] ↥L) (y : ↥K) : ‖((φ y : ↥L) : PadicAlgCl l)‖ = ‖(y : PadicAlgCl l)‖ := by
   have h1 : minpoly ℚ_[l] ((φ y : ↥L) : PadicAlgCl l) = minpoly ℚ_[l] y :=
@@ -21,6 +24,11 @@ theorem norm_algHom {l : ℕ} [Fact l.Prime] {K L : IntermediateField ℚ_[l] (P
   unfold spectralNorm
   rw [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[← D.nd.plOm.2 w x]`. Use `set y := algebraMap D.host.E D.nd.Om (x : D.host.E)`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hj : 0 < ‖(D.nbr i w hw).j y‖` using `norm_pos_iff.2 ((_root_.map_ne_zero _).2 hy)`.
+
+Establish `h` using `D.nbr_ind i w hw y⁻¹`. Rewrite `h` using `[← ValuationSubring.valuation_le_one_iff, map_inv₀, map_inv₀, norm_inv, inv_le_one₀ hj, inv_le_one₀ (zero_lt_iff.2 ((_root_.map_ne_zero _).2 hy))]`. Rewrite using `[← not_le, ← not_le, h]`.
+-/
 theorem mem_place_iff (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (x : 𝓞 D.host.E) :
     x ∈ w.asIdeal ↔ ‖(D.nbr i w hw).j (algebraMap D.host.E D.nd.Om (x : D.host.E))‖ < 1 := by
@@ -34,6 +42,11 @@ theorem mem_place_iff (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.hos
     inv_le_one₀ (zero_lt_iff.2 ((_root_.map_ne_zero _).2 hy))] at h
   rw [← not_le, ← not_le, h]
 
+/- English proof (translation)
+Introduce `D i w hw LL' τ' τ h`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_place_iff D i w hw x, h, norm_algHom τ']`. Conclude with `Iff.rfl`. Take `⟨g, hg⟩` from `(factEmb D.R D.host).1.2 ((D.naut.iotaQC i).toRingHom.comp τ)`.
+
+Conclude with `⟨g, hg.symm⟩`.
+-/
 theorem inducesW_and_exists_emb : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (LL' : FinExt (D.nd.l i)) (τ' : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥LL'.1) (τ : D.host.E →+* Qbar (D.nd.l i)), (∀ x : D.host.E, τ x = ((τ' (Br.cEw D.nbr i w hw x) : ↥LL'.1) : Om (D.nd.l i))) → InducesW D.nd i τ w ∧ ∃ g : D.R.GG, (D.naut.iotaQC i).toRingHom.comp τ = D.host.emb g := by
   intro D i w hw LL' τ' τ h
   refine ⟨fun x => ?_, ?_⟩

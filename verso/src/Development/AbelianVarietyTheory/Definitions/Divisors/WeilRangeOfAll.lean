@@ -77,17 +77,32 @@ def LowRange : Prop :=
         (((m : ℂ) - (n : ℂ)) / 2) s) g)
     (((m : ℂ) - (n : ℂ)) / 2) ((if n < m then 1 else 2 : ℂ) * ⨍ h in 𝓕, thetaSum F (om (h, g) Φ) ∂ν)
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem range_cases (n m : ℕ) : 2 * n < m ∨ (n < m ∧ m ≤ 2 * n) ∨ m ≤ n := by omega
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm _` and use `h F E σ hCM hU ψ hψ n m hn hm`.
+-/
 theorem weilRange_of_all (h : GlobalTheory.Published.SiegelWeilAnisotropicWitt) : WeilRange :=
   fun F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm _ => h F E σ hCM hU ψ hψ n m hn hm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm _` and use `h F E σ hCM hU ψ hψ n m hn hm`.
+-/
 theorem midRange_of_all (h : GlobalTheory.Published.SiegelWeilAnisotropicWitt) : MidRange :=
   fun F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm _ => h F E σ hCM hU ψ hψ n m hn hm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm _` and use `h F E σ hCM hU ψ hψ n m hn hm`.
+-/
 theorem lowRange_of_all (h : GlobalTheory.Published.SiegelWeilAnisotropicWitt) : LowRange :=
   fun F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm _ => h F E σ hCM hU ψ hψ n m hn hm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm`. Break down `range_cases n m with h | h | h` into its components or cases. Conclude with `h₁ F E σ hCM hU ψ hψ n m hn hm h`. Conclude with `h₂ F E σ hCM hU ψ hψ n m hn hm h`. Conclude with `h₃ F E σ hCM hU ψ hψ n m hn hm h`.
+-/
 theorem all_of_ranges (h₁ : WeilRange) (h₂ : MidRange) (h₃ : LowRange) : GlobalTheory.Published.SiegelWeilAnisotropicWitt := by
   intro F E _ _ _ _ _ σ hCM hU ψ hψ n m hn hm
   rcases range_cases n m with h | h | h
@@ -95,21 +110,38 @@ theorem all_of_ranges (h₁ : WeilRange) (h₂ : MidRange) (h₃ : LowRange) : G
   · exact h₂ F E σ hCM hU ψ hψ n m hn hm h
   · exact h₃ F E σ hCM hU ψ hψ n m hn hm h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨weilRange_of_all h, midRange_of_all h, lowRange_of_all h⟩, fun h => all_of_ranges h.1 h.2.1 h.2.2⟩`.
+-/
 theorem all_iff_ranges : GlobalTheory.Published.SiegelWeilAnisotropicWitt ↔ WeilRange ∧ MidRange ∧ LowRange :=
   ⟨fun h => ⟨weilRange_of_all h, midRange_of_all h, lowRange_of_all h⟩, fun h => all_of_ranges h.1 h.2.1 h.2.2⟩
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 example (n m : ℕ) :
     ¬ (2 * n < m ∧ n < m ∧ m ≤ 2 * n) ∧ ¬ (2 * n < m ∧ m ≤ n) ∧ ¬ ((n < m ∧ m ≤ 2 * n) ∧ m ≤ n) := by omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨2 * n + 1, by omega⟩, ⟨2 * n, by omega⟩, ⟨n, by omega⟩⟩`.
+-/
 example (n : ℕ) (hn : 1 ≤ n) :
     (∃ m, 1 ≤ m ∧ 2 * n < m) ∧ (∃ m, 1 ≤ m ∧ n < m ∧ m ≤ 2 * n) ∧ ∃ m, 1 ≤ m ∧ m ≤ n :=
   ⟨⟨2 * n + 1, by omega⟩, ⟨2 * n, by omega⟩, ⟨n, by omega⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => if_pos (by omega), fun h => if_pos h.1, fun h => if_neg (by omega)⟩`.
+-/
 example (n m : ℕ) :
     (2 * n < m → (if n < m then 1 else 2 : ℂ) = 1) ∧ (n < m ∧ m ≤ 2 * n → (if n < m then 1 else 2 : ℂ) = 1) ∧
     (m ≤ n → (if n < m then 1 else 2 : ℂ) = 2) :=
   ⟨fun h => if_pos (by omega), fun h => if_pos h.1, fun h => if_neg (by omega)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: (2 * n : ℝ) < m` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`.
+
+Establish `: (2 * n : ℝ) < m` using `by linarith`. Conclude with `this` after adjusting the coercions.
+-/
 example (n m : ℕ) : 2 * n < m ↔ (n : ℝ) / 2 < ((m : ℝ) - (n : ℝ)) / 2 := by
   constructor
   · intro h

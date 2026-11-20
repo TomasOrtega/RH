@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LocalFreeLagrangianComplement
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdaptedBasis.exists_adapted_basis_away | exact GlobalTheory.AdaptedBasis.exists_adapted_basis_away | (intros; apply GlobalTheory.AdaptedBasis.exists_adapted_basis_away <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_free_lagrangian_complement : ∀ (R : Type) [CommRing R] (M : Type*) [AddCommGroup M] [Module R M] (g : ℕ) (P : Submodule R M),
     (∃ N : Submodule R M, IsCompl P N) → Module.Finite R M → Module.Projective R M →
     (∀ q : PrimeSpectrum R, Module.rankAtStalk M q = 2 * g) →

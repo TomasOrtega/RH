@@ -7,6 +7,15 @@ open scoped Matrix
 
 namespace GlobalTheory.Ord2.GwIneq
 
+/- English proof (translation)
+Establish `heq : twDual (μ.comp φ) (rho.comp φ) = (twDual μ rho).comp φ`. Use `MonoidHom.ext fun s => LinearMap.ext fun ψ => TDual.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, twDual_apply, map_inv φ]`. Establish `hf' : f.1 ∈ Z1 (twDual (μ.comp φ) (rho.comp φ))` using `by rw [heq]; exact f.2`. Establish `hy` using `key (Submodule.Quotient.mk ⟨f.1, hf'⟩) (by`.
+
+Introduce `x hx`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H a =>`. Establish `e` using `hf _ hx`. Establish `e'` using `(Submodule.Quotient.mk_eq_zero _).1 e`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 e')`.
+
+Rewrite `hy` using `[H1ur, LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 _ J.subtype continuous_subtype_val ⟨f.1, hf'⟩) = 0 at hy`. Rewrite `hy` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hy`. Use `⟨m, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hm ⟨s, hs⟩`. Express the relevant statement in the definitionally equal form `f.1 s = twDual (μ.comp φ) (rho.comp φ) s m - m at e`. Rewrite using `[e, heq]`. Both sides reduce to the same expression.
+-/
 theorem cob_of_perp_transport {R : Type} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
     {Γ D : Type} [Group Γ] [Group D] [TopologicalSpace D]
     {M : Type} [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M]
@@ -38,6 +47,11 @@ theorem cob_of_perp_transport {R : Type} [CommRing R] [TopologicalSpace R] [Disc
   rw [e, heq]
   rfl
 
+/- English proof (translation)
+Introduce `hL l _ Ω _ _ _ n hn S M _ _ _ _ _ rho hrho μ hμ B q hq hl f hf`. Establish `hχ : (cycMod ℚ Ω l n).comp (Dec (F` using `ℚ) B).subtype = μ.comp (locHom (S : Set Pl) B) := by`. Rewrite using `[← hμ]`. Both sides reduce to the same expression. Establish `hc` using `hrho.comp' (continuous_locHom (S : Set Pl) B)`.
+
+Establish `key` using `GlobalTheory.Ord2.unramified_h1_dual_iff_perp hL ℚ Ω l n M B q (rho.comp (locHom (S : Set Pl) B)) hc hq hn hl`. Rewrite `key` using `[hχ]`. Take `⟨m, hm⟩` from `cob_of_perp_transport μ rho (locHom (S : Set Pl) B) _ hc _ (fun y hy => (key y).2 hy) f hf`. Conclude with `⟨m, fun s hs => hm s (Subgroup.mem_subgroupOf.2 hs)⟩`.
+-/
 theorem dual_cocycle_cob_on_inertia : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (n : ℕ), 1 ≤ n → ∀ (S : Finset Pl) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ n)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (rho : Representation (ZMod (l ^ n)) (GS Ω (S : Set Pl)) M) (hrho : ContAction rho) (μ : GS Ω (S : Set Pl) →* (ZMod (l ^ n))ˣ), μ.comp (toGS Ω (S : Set Pl)) = cycMod ℚ Ω l n → ∀ (B : ValuationSubring Ω) (q : Pl), IsPlaceOver B q → ((l : ℕ) : 𝓞 ℚ) ∉ q.asIdeal → ∀ f : Z1 ((twDual μ rho).comp (locHom (S : Set Pl) B)), (∀ a ∈ H1ur (rho.comp (locHom (S : Set Pl) B)) ((Ine (F := ℚ) B).subgroupOf (Dec (F := ℚ) B)), cupH1H1TwistedDual μ rho (locHom (S : Set Pl) B) (hrho.comp' (continuous_locHom _ B)) (Submodule.mkQ _ f) a = 0) → ∃ m : TDual (ZMod (l ^ n)) M, ∀ s : Dec (F := ℚ) B, (s : G ℚ Ω) ∈ Ine (F := ℚ) B → f.1 s = twDual μ rho (locHom (S : Set Pl) B s) m - m := by
   intro hL l _ Ω _ _ _ n hn S M _ _ _ _ _ rho hrho μ hμ B q hq hl f hf
   have hχ : (cycMod ℚ Ω l n).comp (Dec (F := ℚ) B).subtype = μ.comp (locHom (S : Set Pl) B) := by

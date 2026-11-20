@@ -14,6 +14,13 @@ namespace GlobalTheory.SeeSaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hu` using `hρ.uni j hj`. Take `⟨ζ, hζ⟩` from `GlobalTheory.CenterScalar.scalar_of_comm_unitary (ρ.r j hj z τ) fun U hU => by`. Take `⟨k, hk⟩` from `hu.onto (fun _ => U) fun _ => (Matrix.mem_unitaryGroup_iff').2 hU`. Establish `e1` using `hu.mul k ⟨z, hz⟩ τ`. Establish `e2` using `hu.mul ⟨z, hz⟩ k τ`.
+
+Establish `hkz : (k * ⟨z, hz⟩ : GinfC (c.X j)) = ⟨z, hz⟩ * k` using `Subtype.ext ((Subgroup.mem_center_iff.1 hzc) k.1)`. Rewrite `e1` using `[hkz, e2]`. Establish `hk' : ρ.r j hj k.1 τ = U` using `congrFun hk τ`. Rewrite `e1` using `[hk']`. Conclude with `e1.symm`.
+
+Break down `Nat.eq_zero_or_pos (ρ.N j) with h0 | hpos` into its components or cases. Use extensionality with `a`. Conclude with `absurd a.2 (by omega)`. Rewrite using `[hζ, Matrix.trace_smul, Matrix.trace_one, Fintype.card_fin, smul_eq_mul, mul_div_assoc, div_self (by exact_mod_cast hpos.ne'), mul_one]`.
+-/
 theorem RealD.r_center_scalar {c : Comm D} (ρ : RealD c) (hρ : ρ.Is) (j : ℕ) (hj : j ≤ D.R.m) {z : GA D (c.X j)}
     (hz : z ∈ GinfC (c.X j)) (hzc : z ∈ Subgroup.center (GA D (c.X j))) (τ : D.what₂.Tau) :
     ρ.r j hj z τ = (Matrix.trace (ρ.r j hj z τ) / (ρ.N j : ℂ)) • (1 : Matrix (Fin (ρ.N j)) (Fin (ρ.N j)) ℂ) := by
@@ -34,6 +41,13 @@ theorem RealD.r_center_scalar {c : Comm D} (ρ : RealD c) (hρ : ρ.Is) (j : ℕ
   · rw [hζ, Matrix.trace_smul, Matrix.trace_one, Fintype.card_fin, smul_eq_mul,
       mul_div_assoc, div_self (by exact_mod_cast hpos.ne'), mul_one]
 
+/- English proof (translation)
+Introduce `D c 𝒯 t hc _ hP j hj`. Take `⟨ρ, hρ, H⟩` from `hP`. Use `⟨fun z => ∏ τ, (Matrix.trace (ρ.r j hj z τ) / (ρ.N j : ℂ)) ^ (∑ i, (ρ.lam j τ).w i), fun s ψ hψ α y => ?_⟩` and prove the remaining obligations. Take `⟨⟨A, hA⟩, -⟩` from `H s`. Take `⟨h1, -, h3, h4⟩` from `GlobalTheory.T.seesaw_scalar_forms_laws_on_class_data D c (t s) ρ A hc hρ hA.1 j hj ψ hψ α`.
+
+Use `⟨h1 y, fun z hz hzc g => ?_⟩` and prove the remaining obligations. Establish `hdet : ∀ τ, IsUnit (ρ.r j hj z τ).det` using `fun τ => Matrix.isUnit_det_of_left_inverse ((Matrix.mem_unitaryGroup_iff').1 ((hρ.uni j hj).uni ⟨z, hz⟩ τ))`. Use `set w := (ρ.fr j y).tr (ρ.r j hj z) hdet with hw`. Establish `e1 : (t s).rd j α ψ y (g * z) = (t s).rd j α ψ ((ρ.fr j).symm w) g` using `h3 y _ g z hz (by rw [Equiv.apply_symm_apply]; exact Frames.isTr_tr _ hdet _)`. Establish `e2` using `(GlobalTheory.KJInf.valC_poly _ _ _ _ |>.2.2.2) _ (h4 g) (fun τ => Matrix.trace (ρ.r j hj z τ) / (ρ.N j : ℂ)) (ρ.fr j y) w (fun τ => by show ρ.r j hj z τ * (ρ.fr j y).1 τ = _ conv_lhs => rw [ρ.r_center_scalar hρ j hj hz hzc τ]`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.one_mul])`. Simplify using `only [Equiv.symm_apply_apply] at e2`. Rewrite using `[e1, e2]`.
+-/
 theorem rdX_of_clsPinD : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), c.Is → (∀ s, (t s).Is) → ClsPinD t → RdX t := by
   intro D c 𝒯 t hc _ hP j hj
   obtain ⟨ρ, hρ, H⟩ := hP

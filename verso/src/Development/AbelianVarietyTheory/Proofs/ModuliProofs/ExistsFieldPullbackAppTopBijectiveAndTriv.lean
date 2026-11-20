@@ -13,6 +13,11 @@ open GlobalTheory.AbLaw
 noncomputable section
 namespace GlobalTheory.GeomFibre
 
+/- English proof (translation)
+Establish `hfin : f.appTop.hom.Finite` using `finite_appTop_of_universallyClosed K f`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of K)).inv`. Establish `he : Function.Bijective e.hom` using `ConcreteCategory.bijective_of_isIso e`. Establish `hfin' : (f.appTop.hom.comp e.hom).Finite` using `hfin.comp (RingHom.Finite.of_surjective _ he.2)`. Establish `hb : Function.Bijective (f.appTop.hom.comp e.hom)` using `IsAlgClosed.ringHom_bijective_of_isIntegral (k := K) _ hfin'.to_isIntegral`.
+
+Conclude with `(Function.Bijective.of_comp_iff _ he).1 hb`.
+-/
 theorem bijective_appTop (K : Type) [Field K] [IsAlgClosed K] {X : Scheme.{0}}
     (f : X ⟶ Spec (CommRingCat.of K)) [IsIntegral X] [IsProper f] : Function.Bijective f.appTop.hom := by
   have hfin : f.appTop.hom.Finite := finite_appTop_of_universallyClosed K f
@@ -23,6 +28,11 @@ theorem bijective_appTop (K : Type) [Field K] [IsAlgClosed K] {X : Scheme.{0}}
     IsAlgClosed.ringHom_bijective_of_isIntegral (k := K) _ hfin'.to_isIntegral
   exact (Function.Bijective.of_comp_iff _ he).1 hb
 
+/- English proof (translation)
+Introduce `R _ X f M _ _ _ K _ g X' π f' h ⟨t, ht⟩`. Set `a : K →+* AlgebraicClosure K` to `algebraMap K (AlgebraicClosure K)`. Establish `h₁` using `IsPullback.of_hasPullback f' (Spec.map (CommRingCat.ofHom a))`. Establish `h₂ : IsPullback (pullback.fst f' (Spec.map (CommRingCat.ofHom a)) ≫ π) (pullback.snd f' (Spec.map (CommRingCat.ofHom a))) f (Spec.map (CommRingCat.ofHom (a.comp g)))`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Conclude with `h₁.paste_horiz h`. Establish `: IsIntegral (pullback f' (Spec.map (CommRingCat.ofHom a)))` using `GeometricallyIntegral.geometrically_isIntegral _ _ _ h₂`. Establish `: IsProper (pullback.snd f' (Spec.map (CommRingCat.ofHom a)))` using `MorphismProperty.of_isPullback (P := @IsProper) h₂ inferInstance`. Use `⟨AlgebraicClosure K, inferInstance, a.comp g, _, _, _, RingHom.ker_comp_of_injective g a.injective, h₂, bijective_appTop _ _, ?_⟩` and prove the remaining obligations. Conclude with `⟨_, LB.isGen_pullGen M _ _ t ht _⟩`.
+-/
 theorem exists_field_pullback_appTop_bijective_and_triv : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X), M.IsLB → IsProper f → GeometricallyIntegral f → ∀ (K : Type) [Field K] (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of K)), IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) → Triv (M.pull π) → ∃ (K₀ : Type) (_ : Field K₀) (g₀ : R →+* K₀) (X₀ : Scheme.{0}) (π₀ : X₀ ⟶ X) (f₀ : X₀ ⟶ Spec (CommRingCat.of K₀)), RingHom.ker g₀ = RingHom.ker g ∧ IsPullback π₀ f₀ f (Spec.map (CommRingCat.ofHom g₀)) ∧ Function.Bijective f₀.appTop.hom ∧ Triv (M.pull π₀) := by
   intro R _ X f M _ _ _ K _ g X' π f' h ⟨t, ht⟩
   let a : K →+* AlgebraicClosure K := algebraMap K (AlgebraicClosure K)

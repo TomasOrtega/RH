@@ -8,6 +8,9 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 
 namespace PositivityTheory.Rg.Sw.WR
 
+/- English proof (translation)
+The claim follows from `T.wr_of G.gauss B.clsBound K.GB.clsGainB ibp I.integr (D.densOf3 G.gauss K.GB.clsGainB I.integr)`.
+-/
 theorem wr : WRSt :=
   T.wr_of G.gauss B.clsBound K.GB.clsGainB ibp I.integr (D.densOf3 G.gauss K.GB.clsGainB I.integr)
 

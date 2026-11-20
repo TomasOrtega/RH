@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VacLoc.exists_schr_eigen | exact GlobalTheory.VacLoc.exists_schr_eigen | (intros; apply GlobalTheory.VacLoc.exists_schr_eigen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_schroedinger_eigenvector_compact_cocycle : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (ψ : AddChar (Fv F v) ℂ), Continuous ψ → ψ ≠ 1 →
     ∀ {κ M : Type} [Fintype κ] [Fintype M] (u : M → (κ → Fv F v) × (κ → Fv F v))
       (χ : (M → v.adicCompletionIntegers F) → ℂ), Continuous χ →

@@ -31,8 +31,17 @@ instance (A : Shv R) : ((tF R).obj A).PreservesZeroMorphisms where
     change A.obj ◁ (sheafToPresheaf _ _).map (0 : B ⟶ C) = 0
     rw [Functor.map_zero]; exact MonoidalPreadditive.whiskerLeft_zero
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (I J : Cx R) : HomologicalComplex.HasMapBifunctor I J (tF R) (ComplexShape.up ℤ) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (P : PSh1 R) : Presheaf.IsLocallySurjective Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (P : PSh1 R) : Presheaf.IsLocallyInjective Scheme.etaleTopology (toSheafify Scheme.etaleTopology P) := inferInstance
 
 abbrev P (I J : Cx R) : CochainComplex (PSh1 R) ℤ := HomologicalComplex.mapBifunctor I J (tF R) (ComplexShape.up ℤ)
@@ -42,6 +51,9 @@ abbrev T (I J : Cx R) : Cx R := ((presheafToSheaf Scheme.etaleTopology _).mapHom
 abbrev jm (I J : Cx R) (s t w : ℤ) (h : s + t = w) : ((tF R).obj (I.X s)).obj (J.X t) ⟶ sheafify Scheme.etaleTopology ((P I J).X w) :=
   HomologicalComplex.ιMapBifunctor I J (tF R) (ComplexShape.up ℤ) s t w h ≫ toSheafify Scheme.etaleTopology _
 
+/- English proof (translation)
+Rewrite using `[jm, Category.assoc, ← toSheafify_naturality, ← Category.assoc, HomologicalComplex.mapBifunctor.d_eq, Preadditive.comp_add, HomologicalComplex.mapBifunctor.ι_D₁, HomologicalComplex.mapBifunctor.ι_D₂, HomologicalComplex.mapBifunctor.d₁_eq _ _ _ _ (show (ComplexShape.up ℤ).Rel s (s …`. Simplify using `[Preadditive.add_comp, Category.assoc]`.
+-/
 theorem jm_d (I J : Cx R) (s t w : ℤ) (h : s + t = w) :
     jm I J s t w h ≫ sheafifyMap Scheme.etaleTopology ((P I J).d w (w + 1)) =
       ((tF R).map (I.d s (s + 1))).app (J.X t) ≫ jm I J (s + 1) t (w + 1) (by omega) +
@@ -72,6 +84,9 @@ def Phi (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} 
   exact DirectSum.toModule _ _ _ fun p =>
     ((HomologicalComplex.ιMapBifunctor I J (tF R) (ComplexShape.up ℤ) p.1.1 p.1.2 w p.2).app (op U)).hom
 
+/- English proof (translation)
+Unfold `Phi`. Conclude with `DirectSum.toModule_lof (ULift.{1} R) (M := fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) p t`.
+-/
 theorem Phi_lof (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (t : Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) :
     Phi I J U w (DirectSum.of (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) p t) =
@@ -80,6 +95,13 @@ theorem Phi_lof (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // 
   unfold Phi
   exact DirectSum.toModule_lof (ULift.{1} R) (M := fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) p t
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => first | (erw [map_zero, map_zero] <;> rfl) | (erw [map_zero, map_zero, map_zero] <;> rfl) | (erw [map_zero, map_zero, map_zero, map_zero] <;> rfl) | (simp only [map_zero]) | rfl`. Consider the case `add x y hx hy => erw [map_add, map_add, map_add, hx, hy] <;> rfl`. Consider the case `of p t`. Rewrite using `[Phi_lof]`.
+
+Unfold `Pair.lift`. Use `erw [DirectSum.toModule_lof]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => erw [map_zero, map_zero, map_zero]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => erw [map_add, map_add, map_add, hx, hy]`. Both sides reduce to the same expression. Consider the case `tmul a b => rw [TensorProduct.lift.tmul]`. Both sides reduce to the same expression.
+-/
 theorem lift_eq (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     (tau I J).lift U w x = ((toSheafify Scheme.etaleTopology ((P I J).X w)).app (op U)).hom (Phi I J U w x) := by
   classical
@@ -95,6 +117,11 @@ theorem lift_eq (I J : Cx R) (U : Scheme.{0}) (w : ℤ) (x : Tens I J U w) :
     | add x y hx hy => erw [map_add, map_add, map_add, hx, hy]; rfl
     | tmul a b => rw [TensorProduct.lift.tmul]; rfl
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => first | (erw [map_zero, map_zero] <;> rfl) | (erw [map_zero, map_zero, map_zero] <;> rfl) | (erw [map_zero, map_zero, map_zero, map_zero] <;> rfl) | (simp only [map_zero]) | rfl`. Consider the case `add x y hx hy => erw [map_add, map_add, map_add, map_add, hx, hy] <;> rfl`. Consider the case `of p t`. Rewrite using `[Phi_lof]`.
+
+Unfold `Tens.res`. Use `erw [DirectSum.lmap_lof]`. Use `erw [Phi_lof]`. Use `congrArg (fun f => f.hom t) ((HomologicalComplex.ιMapBifunctor I J (tF R) (ComplexShape.up ℤ) p.1.1 p.1.2 w p.2).naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem Phi_nat (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     ((P I J).X w |>.map g.op).hom (Phi I J U w x) = Phi I J V w (Tens.res g w x) := by
   classical
@@ -125,6 +152,17 @@ def dsCocone (I J : Cx R) (U : Scheme.{0}) (w : ℤ) :
   ι := Discrete.natTrans fun k => ModuleCat.ofHom (DirectSum.lof (ULift.{1} R) _
     (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) ⟨k.as.1, k.as.2⟩)
 
+/- English proof (translation)
+Set `hc` to `hcol I J U w`. Set `Ψ` to `hc.desc (dsCocone I J U w)`. Establish `h1 : ∀ x, Ψ.hom (Phi I J U w x) = x`. Introduce `x`. Proceed by induction on `x using DirectSum.induction_on with`.
+
+Consider the case `zero => erw [map_zero]`. Apply the tactic sequence `first | rfl | exact map_zero Ψ.hom`. Consider the case `add x y hx hy => erw [map_add, map_add, hx, hy]`. Both sides reduce to the same expression. Consider the case `of p t`.
+
+Rewrite using `[Phi_lof]`. Use `congrArg (fun f => f.hom t) (hc.fac (dsCocone I J U w) ⟨⟨p.1, p.2⟩⟩)` as an intermediate fact. Conclude with `this`. Establish `h2 : ∀ y, Phi I J U w (Ψ.hom y) = y`. Set `PhiH : (dsCocone I J U w).pt ⟶ (((evaluation Scheme.{0}ᵒᵖ (ModuleCat.{1} (ULift.{1} R))).obj (op U)).mapCocone ((GX I J).cofanMapObj (ComplexShape.π (ComplexShape.up ℤ) (ComplexShape.up ℤ) (ComplexShape.up ℤ)) w)).pt` to `ModuleCat.ofHom (Phi I J U w)`.
+
+Establish `: Ψ ≫ PhiH = 𝟙 _`. Apply `hc.hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨k⟩`. Rewrite using `[← Category.assoc, hc.fac, Category.comp_id]`. Use extensionality with `t`.
+
+Conclude with `Phi_lof I J U w ⟨k.1, k.2⟩ t`. Introduce `y`. Conclude with `congrArg (fun f => f.hom y) this`. Conclude with `⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩`.
+-/
 theorem Phi_bij (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Function.Bijective (Phi I J U w) := by
   classical
   let hc := hcol I J U w
@@ -152,6 +190,13 @@ theorem Phi_bij (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Function.Bijective (Ph
     exact congrArg (fun f => f.hom y) this
   exact ⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `U w y`. Use `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology ((P I J).X w)) y, ?_⟩` and prove the remaining obligations. Introduce and unpack `V g ⟨t, ht⟩`. Take `⟨x, rfl⟩` from `(Phi_bij I J V w).2 t`.
+
+Conclude with `⟨x, by rw [lift_eq]; exact ht⟩`. Introduce `U w x hx`. Rewrite `hx` using `[lift_eq]`. Establish `hm` using `Presheaf.equalizerSieve_mem Scheme.etaleTopology (toSheafify Scheme.etaleTopology ((P I J).X w)) (X := op U) (Phi I J U w x) 0 (by rw [map_zero]; exact hx)`. Use `⟨_, hm, ?_⟩` and prove the remaining obligations.
+
+Introduce `V g hg`. Apply `(Phi_bij I J V w).1` to reduce the goal to its premises. Rewrite using `[map_zero, ← Phi_nat]`. Establish `hg' : ((P I J).X w |>.map g.op).hom (Phi I J U w x) = ((P I J).X w |>.map g.op).hom 0` using `hg`. Rewrite using `[hg', map_zero]`.
+-/
 theorem tau_isTensor (I J : Cx R) : (tau I J).IsTensor := by
   constructor
   · intro U w y
@@ -170,10 +215,16 @@ theorem tau_isTensor (I J : Cx R) : (tau I J).IsTensor := by
     have hg' : ((P I J).X w |>.map g.op).hom (Phi I J U w x) = ((P I J).X w |>.map g.op).hom 0 := hg
     rw [hg', map_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, tau I J, tau_isTensor I J⟩`.
+-/
 theorem tens_exists (I J : Cx R) : ∃ (K : Cx R) (τ : Pair I J K), τ.IsTensor := ⟨_, tau I J, tau_isTensor I J⟩
 
 end LateralTheory.E.LeafTwTensExistsPf
 
+/- English proof (translation)
+Introduce `q _ i j`. Conclude with `LateralTheory.E.LeafTwTensExistsPf.tens_exists _ _`.
+-/
 theorem LateralTheory.E.LeafTwPairHtpyPf.LeafTwTensExists_of : LateralTheory.E.LeafTwPairHtpyPf.LeafTwTensExists := by
   intro q _ i j
   exact LateralTheory.E.LeafTwTensExistsPf.tens_exists _ _

@@ -88,6 +88,15 @@ def spaceThree (D : D7) : HSp D := Examples₂.stdSpace Examples₂.star_isInteg
 
 def spaceOne (D : D7) : HSp D := Examples₂.stdSpace Examples₂.star_isIntegral 1 ![false] 1 0
 
+/- English proof (translation)
+Establish `hg : ∀ i j : Fin 3, (spaceThree D).gram i j = if i = j then (Examples₂.sgn (![false, true, false] i) : D.host.E) else 0` using `Examples₂.stdSpace_gram_apply Examples₂.star_isIntegral 3 ![false, true, false] 2 1`. Establish `hg' : ∀ i j : Fin 1, (spaceOne D).gram i j = if i = j then (Examples₂.sgn (![false] i) : D.host.E) else 0` using `Examples₂.stdSpace_gram_apply Examples₂.star_isIntegral 1 ![false] 1 0`. Use `⟨⟨one_pos, ?_, ?_⟩, ?_, ?_, rfl⟩` and prove the remaining obligations. Use `linearIndependent_unique_iff.2 fun h => ?_` and prove the remaining obligations. Use `congrFun h (0 : Fin 3)` as an intermediate fact.
+
+Conclude with `one_ne_zero this`. Use function extensionality and compare the values at `a b`. Express the relevant statement in the definitionally equal form `∑ j : Fin 3, (∑ i : Fin 3, D.sp.cm.sig ((![1, 1, 0] : Fin 3 → D.host.E) i) * (spaceThree D).gram i j) * (![1, 1, 0] : Fin 3 → D.host.E) j = 0`. Simplify using `[Fin.sum_univ_three, hg, Examples₂.sgn]`. Use function extensionality and compare the values at `(a : Fin 1) (b : Fin 1)`.
+
+Express the relevant statement in the definitionally equal form `∑ j : Fin 3, (∑ i : Fin 3, D.sp.cm.sig ((![0, 0, 1] : Fin 3 → D.host.E) i) * (spaceThree D).gram i j) * (![0, 0, 1] : Fin 3 → D.host.E) j = _`. Rewrite using `[hg', Subsingleton.elim a 0, Subsingleton.elim b 0]`. Simplify using `[Fin.sum_univ_three, hg, Examples₂.sgn]`. Use function extensionality and compare the values at `a b`. Express the relevant statement in the definitionally equal form `∑ j : Fin 3, (∑ i : Fin 3, D.sp.cm.sig ((![1, 1, 0] : Fin 3 → D.host.E) i) * (spaceThree D).gram i j) * (![0, 0, 1] : Fin 3 → D.host.E) j = 0`.
+
+Simplify using `[Fin.sum_univ_three, hg, Examples₂.sgn]`.
+-/
 theorem isIsoSplit_three (D : D7) :
     IsIsoSplit (spaceThree D) (spaceOne D) (r := 1)
       (Matrix.of fun (i : Fin 3) _ => (![1, 1, 0] : Fin 3 → D.host.E) i)

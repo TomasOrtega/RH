@@ -14,6 +14,19 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `(hA.1 k X p D hX).1 P.A`. Establish `hα : P.A.IsSelfInter (h (genericPoint X))` using `⟨h, hh, rfl⟩`. Establish `hnef` using `GlobalTheory.T.hermitianLineBundle_isNef_shift_of_nonneg k X p D hX P.A 0 le_rfl hG.nef`. Establish `hrep : P.Rep 0 1 P.A` using `(GlobalTheory.T.represents_base_bundles_and_trivial k X p P).2.1`. Establish `key` using `GlobalTheory.eventually_le_of_poly_asymptotics (D + 1) b (fun η j => P.lc 0 (j : ℤ) (Real.exp (η * j))) (fun j => P.lc 0 (j : ℤ) 2) (h (genericPoint X) / (D + 1).factorial) ((D + 1) * gdeg P.A D / (D + 1).factorial) (Nat.succ_pos D) hG.pos (fun η hη => by`.
+
+Use `GlobalTheory.T.arith_hilbertSamuel_log_ball_count_tendsto hHS hA k X p D hX P 0 1 P.A (h (genericPoint X)) 0 hrep hα hnef η hη` as an intermediate fact. Simplify `this)` using `only [mul_zero, mul_one]`. Use the proof step `(fun η hη => by`. Establish `h1 : ∀ᶠ j : ℕ in atTop, Real.log 2 ≤ η * j` using `(tendsto_natCast_atTop_atTop.const_mul_atTop hη).eventually_ge_atTop _`. Use `filter_upwards [h1] with j hj`.
+
+Establish `h2 : (2 : ℝ) ≤ Real.exp (η * j)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : P.Bl 0 (j : ℤ) 2 ⊆ P.Bl 0 (j : ℤ) (Real.exp (η * j))` using `fun f hf => ⟨hf.1, fun σ y => (hf.2 σ y).trans h2⟩`. Establish `hfin` using `GlobalTheory.T.hermLineBundlePair_balls_finite hHS k X p D hX P b s t hG 0 (j : ℤ) (Real.exp (η * j)) hA`. Establish `hle` using `Set.ncard_le_ncard hsub hfin`.
+
+Simplify using `only [Pair.lc]`. Break down `Nat.eq_zero_or_pos (P.Bl 0 (j : ℤ) 2).ncard with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast h0) (by exact_mod_cast hle))`.
+
+Use `ε hε`. Use `filter_upwards [key] with n hn`. Use `filter_upwards [hn] with m hm`. Establish `e1 : (((b * n + 1) * m : ℕ) : ℤ) = (b : ℤ) * ((n * m : ℕ) : ℤ) + (m : ℤ)` using `by push_cast; ring`. Establish `e2 : (((b * n * m : ℕ)) : ℤ) = (b : ℤ) * ((n * m : ℕ) : ℤ)` using `by push_cast; ring`.
+
+Simplify using `only [e1, e2, zero_mul, Real.exp_zero] at hm`. Conclude with `hm`.
+-/
 theorem lc_two_le_lc_one_add (hHS : GlobalTheory.Published.ArithHilbertSamuel) (hA : GlobalTheory.Published.ArCalc) (k : Type) [CommRing k]
     (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsArithVar p D) (P : Pair p) (b : ℕ)
     (s t : X.functionField) (hG : P.Good D b s t) (ε : ℝ) (hε : 0 < ε) :

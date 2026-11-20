@@ -14,16 +14,46 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.MatchLeviWordsO
 
 namespace PositivityTheory.Rg.BcB.F.MLM
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matching_identity_of`.
+-/
 theorem matchLMIdOf : MatchLMIdOf := GlobalTheory.T.matching_identity_of
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matching_unit_of`.
+-/
 theorem matchLMUnitOf : MatchLMUnitOf := GlobalTheory.T.matching_unit_of
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matching_word_of`.
+-/
 theorem matchLMWordOf : MatchLMWordOf := GlobalTheory.T.matching_word_of
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.multiplicity_inert`.
+-/
 theorem muInert : MuInert := GlobalTheory.T.multiplicity_inert
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.regular_power_torus`.
+-/
 theorem regPowT : RegPowT := GlobalTheory.T.regular_power_torus
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.separable_power_torus`.
+-/
 theorem sepPowT : SepPowT := GlobalTheory.T.separable_power_torus
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.macdonald_inverse_of`.
+-/
 theorem macInvOf : MacInvOf := GlobalTheory.T.macdonald_inverse_of
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.generator_pow_split_places_idempotent`.
+-/
 theorem generator_pow_split_places_of_idempotent : SplitPowersOfIdempotents := GlobalTheory.T.generator_pow_split_places_idempotent
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.constant_term_star`.
+-/
 theorem ctStar : CtStar := GlobalTheory.T.constant_term_star
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.match_levi_words_of`.
+-/
 theorem matchLMWordSOf : MatchLMWordSOf := GlobalTheory.T.match_levi_words_of
 
 end PositivityTheory.Rg.BcB.F.MLM

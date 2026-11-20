@@ -18,6 +18,15 @@ def coneQ (y : (Σ k, ι k) → Ω) : MvPolynomial (Σ k, ι k) ℚ →ₐ[ℚ] 
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `hring : ((coneQ y : MvPolynomial (Σ k, ι k) ℚ →+* MvPolynomial K Ω).comp (MvPolynomial.map (Int.castRingHom ℚ))) = (mConeMap y : MRing ι →+* MvPolynomial K Ω)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[coneQ, mConeMap]`. Introduce `i`.
+
+Simplify using `[coneQ, mConeMap]`. Establish `hker : mCoordIdeal y = (RingHom.ker (coneQ y)).comap (MvPolynomial.map (Int.castRingHom ℚ))`. Use extensionality with `f`. Rewrite using `[Ideal.mem_comap]`. Simplify using `only [mCoordIdeal, RingHom.mem_ker]`.
+
+Establish `h` using `RingHom.congr_fun hring f`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe] at h`. Rewrite using `[h]`. Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Σ k, ι k) (R := ℤ) (S := ℚ)`. Establish `e : algebraMap (MvPolynomial (Σ k, ι k) ℤ) (MvPolynomial (Σ k, ι k) ℚ) = MvPolynomial.map (Int.castRingHom ℚ)`.
+
+Rewrite using `[MvPolynomial.algebraMap_def, algebraMap_int_eq]`. Establish `h` using `IsLocalization.map_under ((nonZeroDivisors ℤ).map (C (σ := Σ k, ι k))) (MvPolynomial (Σ k, ι k) ℚ) (RingHom.ker (coneQ y))`. Rewrite `h` using `[e]`. Rewrite using `[hker]`. Conclude with `h`.
+-/
 theorem map_mCoordIdeal (y : (Σ k, ι k) → Ω) :
     (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ)) = RingHom.ker (coneQ y) := by
   have hring : ((coneQ y : MvPolynomial (Σ k, ι k) ℚ →+* MvPolynomial K Ω).comp
@@ -45,11 +54,19 @@ theorem map_mCoordIdeal (y : (Σ k, ι k) → Ω) :
   rw [hker]
   exact h
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma]`. Simplify using `[NumbersDVR.blockWeight, Pi.single_apply]`.
+-/
 theorem weight_blockWeight (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (NumbersDVR.blockWeight ι) m k = ∑ i, m ⟨k, i⟩ := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma]
   simp [NumbersDVR.blockWeight, Pi.single_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h m hm k`. Rewrite using `[← weight_blockWeight, h (mem_support_iff.mp hm)]`. Introduce `h m hm`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[weight_blockWeight, h m (mem_support_iff.mpr hm) k]`.
+-/
 theorem isWeightedHomogeneous_iff {R : Type} [CommRing R] (f : MvPolynomial (Σ k, ι k) R) (a : K → ℕ) :
     IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f a ↔ ∀ m ∈ f.support, ∀ k, ∑ i, m ⟨k, i⟩ = a k := by
   constructor
@@ -59,6 +76,13 @@ theorem isWeightedHomogeneous_iff {R : Type} [CommRing R] (f : MvPolynomial (Σ 
     funext k
     rw [weight_blockWeight, h m (mem_support_iff.mpr hm) k]
 
+/- English proof (translation)
+Establish `hf'` using `(isWeightedHomogeneous_iff f a).mp hf`. Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hX : ∏ p : (Σ k, ι k), (MvPolynomial.X p.1 : MvPolynomial K Ω) ^ m p = ∏ k, MvPolynomial.X k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (MvPolynomial.X k : MvPolynomial K Ω) ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf' m hm k]`.
+
+Simplify using `only [coneQ, aeval_monomial]`. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => by simp), Finsupp.prod_fintype _ _ (fun i => by simp)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hX, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneQ_eq (y : (Σ k, ι k) → Ω) {f : MvPolynomial (Σ k, ι k) ℚ} {a : K → ℕ}
     (hf : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f a) :
     coneQ y f = MvPolynomial.C (aeval y f) * ∏ k, MvPolynomial.X k ^ a k := by
@@ -79,6 +103,11 @@ theorem coneQ_eq (y : (Σ k, ι k) → Ω) {f : MvPolynomial (Σ k, ι k) ℚ} {
     MvPolynomial.algebraMap_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[RingHom.mem_ker, coneQ_eq y hf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hne : (∏ k, MvPolynomial.X k ^ a k : MvPolynomial K Ω) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k)`. Break down `mul_eq_zero.mp h with h | h` into its components or cases.
+
+Conclude with `MvPolynomial.C_eq_zero.mp h`. Conclude with `absurd h hne`. Introduce `h`. Rewrite using `[h, map_zero, zero_mul]`.
+-/
 theorem mem_ker_iff (y : (Σ k, ι k) → Ω) {f : MvPolynomial (Σ k, ι k) ℚ} {a : K → ℕ}
     (hf : IsWeightedHomogeneous (NumbersDVR.blockWeight ι) f a) :
     f ∈ RingHom.ker (coneQ y) ↔ aeval y f = 0 := by
@@ -101,6 +130,17 @@ def quotForms (P : Ideal (MvPolynomial (Σ k, ι k) ℚ)) (a : K → ℕ) :
     weightedHomogeneousSubmodule ℚ (NumbersDVR.blockWeight ι) a →ₗ[ℚ] MvPolynomial (Σ k, ι k) ℚ ⧸ P :=
   (Ideal.Quotient.mkₐ ℚ P).toLinearMap.comp (Submodule.subtype _)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨f, hf⟩, rfl⟩`. Establish `hf'` using `(isWeightedHomogeneous_iff f a).mp ((mem_weightedHomogeneousSubmodule _ _ _ _).mp hf)`. Use `show aeval y f ∈ valueSpan y a`. Use `conv => arg 2`.
+
+Rewrite using `[f.as_sum]`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun v hv => ?_` and prove the remaining obligations. Establish `hmon : aeval y (monomial v (coeff v f)) = coeff v f • aeval y (monomial v (1 : ℤ) : MRing ι)`. Simplify using `only [aeval_monomial, Algebra.smul_def, map_one, one_mul]`.
+
+Rewrite using `[hmon]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨monomial v 1, ?_, rfl⟩)` and prove the remaining obligations. Introduce `m hm k`. Rewrite `hm` using `[support_monomial, if_neg one_ne_zero, Finset.mem_singleton]`. Rewrite using `[hm]`.
+
+Conclude with `hf' v hv k`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `hmem : MvPolynomial.map (Int.castRingHom ℚ) g ∈ weightedHomogeneousSubmodule ℚ (NumbersDVR.blockWeight ι) a`. Rewrite using `[mem_weightedHomogeneousSubmodule, isWeightedHomogeneous_iff]`.
+
+Conclude with `fun m hm k => hg m (support_map_subset _ _ hm) k`. Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Use `show aeval y (MvPolynomial.map (Int.castRingHom ℚ) g) = aeval y g`. Rewrite using `[← algebraMap_int_eq, aeval_map_algebraMap]`.
+-/
 theorem range_evalForms (y : (Σ k, ι k) → Ω) (a : K → ℕ) :
     LinearMap.range (evalForms y a) = valueSpan y a := by
   apply le_antisymm
@@ -129,6 +169,13 @@ theorem range_evalForms (y : (Σ k, ι k) → Ω) (a : K → ℕ) :
     show aeval y (MvPolynomial.map (Int.castRingHom ℚ) g) = aeval y g
     rw [← algebraMap_int_eq, aeval_map_algebraMap]
 
+/- English proof (translation)
+Use `set P := (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ))`. Establish `hrange : LinearMap.range (quotForms P a) = NumbersDVR.gradedPiece P a`. Rewrite using `[quotForms, LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression. Establish `hker : LinearMap.ker (quotForms P a) = LinearMap.ker (evalForms y a)`.
+
+Use extensionality with `⟨f, hf⟩`. Rewrite `hf` using `[mem_weightedHomogeneousSubmodule]`. Simplify using `only [LinearMap.mem_ker, quotForms, evalForms, LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[show P = RingHom.ker (coneQ y) from map_mCoordIdeal y, mem_ker_iff y hf]`. Rewrite using `[← hrange, ← range_evalForms y a, ← (quotForms P a).quotKerEquivRange.finrank_eq, ← (evalForms y a).quotKerEquivRange.finrank_eq]`.
+
+Conclude with `(Submodule.quotEquivOfEq _ _ hker).finrank_eq`.
+-/
 theorem finrank_gradedPiece (y : (Σ k, ι k) → Ω) (a : K → ℕ) :
     Module.finrank ℚ (NumbersDVR.gradedPiece
         ((mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ))) a) =
@@ -150,6 +197,9 @@ theorem finrank_gradedPiece (y : (Σ k, ι k) → Ω) (a : K → ℕ) :
 
 end HilbFnValueSpan
 
+/- English proof (translation)
+Introduce `K _ _ ι _ Ω _ _ y a`. Unfold `NumbersDVR.hilbFn`. Rewrite using `[if_pos (fun k => Int.natCast_nonneg _)]`. Establish `ha : (fun k => ((a k : ℤ)).toNat) = a` using `funext fun k => Int.toNat_natCast _`. Rewrite using `[ha, HilbFnValueSpan.finrank_gradedPiece]`.
+-/
 theorem HilbFnValueSpan.proof : HilbFnValueSpan.Statement := by
   intro K _ _ ι _ Ω _ _ y a
   unfold NumbersDVR.hilbFn

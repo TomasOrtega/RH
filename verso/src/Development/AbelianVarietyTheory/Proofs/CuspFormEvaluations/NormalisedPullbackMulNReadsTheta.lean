@@ -22,17 +22,26 @@ section MulN
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ}
   (Φ : AnFr A L x0 g)
 
+/- English proof (translation)
+Establish `h` using `Φ.e_add 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+-/
 theorem mulN_e_zero : Φ.e 0 = 1 := by
   have h := Φ.e_add 0 0
   rw [add_zero] at h
   simpa using h
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp [mulN_e_zero Φ]`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, Φ.e_add, ih, pow_succ]`.
+-/
 theorem mulN_e_nsmul (N : ℕ) (z : Fin g → ℂ) : Φ.e ((N : ℂ) • z) = Φ.e z ^ N := by
   induction N with
   | zero => simp [mulN_e_zero Φ]
   | succ n ih => rw [Nat.cast_succ, add_smul, one_smul, Φ.e_add, ih, pow_succ]
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Unfold `mulA`. Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih, Category.comp_id]`.
+-/
 theorem mulN_comp {Z : Over S} (y : Z ⟶ A) (N : ℕ) : y ≫ mulA A N = y ^ N := by
   unfold mulA
   induction N with
@@ -40,6 +49,11 @@ theorem mulN_comp {Z : Over S} (y : Z ⟶ A) (N : ℕ) : y ≫ mulA A N = y ^ N 
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih, Category.comp_id]
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Establish `h1 : (η : 𝟙_ (Over S) ⟶ A) = 1`. Establish `h0 : (1 : 𝟙_ (Over S) ⟶ A) = toUnit _ ≫ η` using `rfl`. Simplify using `using h0.symm`. Establish `h` using `mulN_comp (η : 𝟙_ (Over S) ⟶ A) N`. Rewrite `h` using `[h1, one_pow]`.
+
+Unfold `eSec`. Rewrite using `[← Over.comp_left, h1, h]`.
+-/
 theorem mulN_eSec (N : ℕ) : eSec A ≫ (mulA A N).left = eSec A := by
   have h1 : (η : 𝟙_ (Over S) ⟶ A) = 1 := by
     have h0 : (1 : 𝟙_ (Over S) ⟶ A) = toUnit _ ≫ η := rfl
@@ -49,6 +63,27 @@ theorem mulN_eSec (N : ℕ) : eSec A ≫ (mulA A N).left = eSec A := by
   unfold eSec
   rw [← Over.comp_left, h1, h]
 
+/- English proof (translation)
+Establish `hφ : ∀ (z : Fin g → ℂ) (k : Fin 2), (Φ.e z).left ≫ (![𝟙 A.left, (mulA A N).left] : Fin 2 → (A.left ⟶ A.left)) k = (Φ.e ((![LinearMap.id, (N : ℂ) • LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) k z)).left`. Introduce `z k`. Use `fin_cases k`. Simplify using the standard rewrite rules. Simplify using `[← Over.comp_left, mulN_comp, mulN_e_nsmul]`.
+
+Establish `hper : ∀ gm ∈ Φ.lat, (∀ z, (Φ.e (z + gm)).left = (Φ.e z).left) ∧ ∀ k, (![LinearMap.id, (N : ℂ) • LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) k gm ∈ Φ.lat`. Introduce `gm hgm`. Use `⟨fun z => by rw [Φ.genMove_e_per z gm hgm], fun k => ?_⟩` and prove the remaining obligations. Use `fin_cases k`. Simplify using `using hgm`.
+
+Simplify `Φ.lat.nsmul_mem hgm N` using `[Nat.cast_smul_eq_nsmul]`. Establish `hherm : ∀ z w, ∑ k, (((![(N : ℤ) ^ 2, -1] : Fin 2 → ℤ) k : ℤ) : ℂ) * hermForm Φ.Hm ((![LinearMap.id, (N : ℂ) • LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) k z) ((![LinearMap.id, (N : ℂ) • LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) k w) = 0`. Introduce `z w`. Simplify using `[Fin.sum_univ_two, hermForm]`. Simplify using `only [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨⟨v, -, hv⟩, -⟩` from `GlobalTheory.T.abelianHolomorphicFrame_reading_const_of_forms_cancel S A L x0 g Φ A.left (Fin 2) ![𝟙 A.left, (mulA A N).left] ![(N : ℤ) ^ 2, -1] α₀ hg g (fun z => (Φ.e z).left) ![LinearMap.id, (N : ℂ) • LinearMap.id] Φ.lat Φ.hol hφ Φ.span hper hherm`. Establish `hrig : Φ.GenRd (K` using `PUnit) (fun _ => eSec A) (fun _ => 1) L.rig x0 (fun _ => 0) 1 := by`. Use `⟨fun _ => (Φ.genMove_e_zero_left).symm, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hj'` using `(GlobalTheory.AnValGenCorr.chart_iff _ _ _ _).mp hj PUnit.unit`.
+
+Rewrite `hj'` using `[← Φ.genMove_e_zero_left]`. Simplify using the standard rewrite rules. Conclude with `(Φ.fr_0 (j PUnit.unit) hj').symm`. Establish `h0` using `hv 0`. Rewrite `h0` using `[Φ.genMove_e_zero_left]`.
+
+Establish `h0'` using `(Φ.genRd_pullGen_iff _ _ α₀ (eSec A) x0 _ v).mpr h0`. Establish `hinv` using `(GlobalTheory.AnValGenCorr.genRd_corr_mul_inv S A L x0 g Φ S PUnit PUnit _ _ _ _ L.rig L.rig x0 _ _ 1 1 hrig hrig).2.2.2`. Establish `hpow` using `Φ.genRd_rigPow ((N : ℤ) ^ 2)`. Establish `hmul` using `(GlobalTheory.AnValGenCorr.genRd_corr_mul_inv S A L x0 g Φ _ PUnit PUnit _ _ _ _ _ _ x0 _ _ 1 _ hpow hinv).2.2.1`. Establish `hv1` using `(GlobalTheory.AnValGenCorr.genRd_corr_mul_inv S A L x0 g Φ _ (Fin 2) (PUnit ⊕ PUnit) _ _ _ _ _ _ x0 _ _ v _ h0' hmul).2.1 hn ?ss ⟨fun _ => 0, ?pa, ?pb⟩`.
+
+Simplify using `at hv1`. Substitute `hv1` using the available equality. Establish `hz` using `hv z`. Establish `hp : (fun k => (![LinearMap.id, (N : ℂ) • LinearMap.id] : Fin 2 → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) k z) = ![z, (N : ℂ) • z]`. Use function extensionality and compare the values at `k`.
+
+Apply the tactic sequence `fin_cases k <;> simp`. Rewrite `hz` using `[hp]`. Conclude with `hz`. Unfold `LB.SameSum`. Introduce `ψ`.
+
+Establish `e0 : eSec A ≫ 𝟙 A.left = eSec A` using `Category.comp_id _`. Establish `e1 : eSec A ≫ (mulA A N).left = eSec A` using `mulN_eSec N`. Simplify using `[Fin.sum_univ_two, Fintype.sum_sum_type]`. Apply the tactic sequence `split_ifs <;> simp_all`. Apply the tactic sequence `intro k fin_cases k <;> simp`.
+
+Apply the tactic sequence `rintro (_ | _) <;> rfl`.
+-/
 theorem mulN_genRd (N : ℕ)
     (α₀ : LB.Gen (LB.LinComb L.L (K := Fin 2) ![𝟙 A.left, (mulA A N).left] ![(N : ℤ) ^ 2, -1]))
     (hg : α₀.IsGen) (hn : IsNormMul A L.L L.rig N α₀) (z : Fin g → ℂ) :
@@ -113,6 +148,19 @@ theorem mulN_genRd (N : ℕ)
 
 end MulN
 
+/- English proof (translation)
+Introduce `S A _ _ L x0 g Φ N α₀ α s s₁ θ h1 h2 h3 h4 h5`. Establish `hψ : mulT A (Over.mk x0) N ≫ fst (Over.mk x0) A = fst (Over.mk x0) A`. Unfold `mulT`. Simplify using the standard rewrite rules. Establish `hsnd : ∀ z, (ptSecT A (Φ.e z)).left ≫ (snd (Over.mk x0) A).left = (Φ.e z).left`.
+
+Introduce `z`. Unfold `ptSecT`. Rewrite using `[← Over.comp_left]`. Simplify using the standard rewrite rules. Establish `hsN : (snd (Over.mk x0) A).left ≫ (mulA A N).left = (snd (Over.mk x0) A ^ N).left`.
+
+Rewrite using `[← Over.comp_left, mulN_comp]`. Establish `hpt : ∀ z, (ptSecT A (Φ.e z)).left ≫ (snd (Over.mk x0) A ^ N).left = (Φ.e ((N : ℂ) • z)).left ∧ ∃ j : Fin 2 → L.L.ι, ⊤ ≤ (ptSecT A (Φ.e z)).left ⁻¹ᵁ LB.wchart L.L ![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ^ N).left] j ∧ valAt' (ptSecT A (Φ.e z)).left (LB.wchart L.L ![(snd …`. Introduce `z`. Establish `hqm : (ptSecT A (Φ.e z)).left ≫ (snd (Over.mk x0) A ^ N).left = (Φ.e ((N : ℂ) • z)).left`. Rewrite using `[← hsN, ← Category.assoc, hsnd, ← Over.comp_left, mulN_comp, mulN_e_nsmul]`.
+
+Use `⟨hqm, ?_⟩` and prove the remaining obligations. Establish `hg` using `mulN_genRd Φ N α₀ h1 h2 z`. Rewrite `hg` using `[← hsnd z]`. Establish `hpull` using `(Φ.genRd_pullGen_iff _ _ α₀ (snd (Over.mk x0) A).left (ptSecT A (Φ.e z)).left _ 1).mpr hg`. Take `⟨J, hJ⟩ : ∃ J : ((Over.mk x0 ⊗ A).left ⟶ A.left) → L.L.ι, ∀ ψ, ⊤ ≤ ((ptSecT A (Φ.e z)).left ≫ ψ) ⁻¹ᵁ L.L.U (J ψ)` from `⟨fun ψ => (GlobalTheory.AnValGenCorr.exists_chart L.L L.3 ((ptSecT A (Φ.e z)).left ≫ ψ)).choose, fun ψ => (GlobalTheory.AnValGenCorr.exists_chart L.L L.3 ((ptSecT A (Φ.e z)).left ≫ ψ)).choose_spec⟩`.
+
+Establish `hcv` using `GlobalTheory.AnValGenCorr.corr_val L.L _ _ _ _ α _ h3 J (ptSecT A (Φ.e z)).left hJ`. Use `⟨fun k => J (![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ^ N).left] k), (GlobalTheory.AnValGenCorr.chart_iff _ _ _ _).mpr (fun k => hJ _), ?_⟩` and prove the remaining obligations. Rewrite using `[hcv, hpull.2 _ ((GlobalTheory.AnValGenCorr.chart_iff _ _ _ _).mpr (fun k => hJ _))]`. Establish `hs0 : (snd (Over.mk x0) A).left ≫ (![𝟙 A.left, (mulA A N).left] : Fin 2 → (A.left ⟶ A.left)) 0 = (snd (Over.mk x0) A).left` using `Category.comp_id _`. Establish `hs1 : (snd (Over.mk x0) A).left ≫ (![𝟙 A.left, (mulA A N).left] : Fin 2 → (A.left ⟶ A.left)) 1 = (snd (Over.mk x0) A ^ N).left` using `hsN`.
+
+Simplify using `only [Fin.prod_univ_two, hs0, hs1]`. Simplify using the standard rewrite rules. Establish `res` using `AnFr.rd_twistPull S A L x0 g Φ (mulT A (Over.mk x0) N) (snd (Over.mk x0) A ^ N) (lift_snd _ _) ((N : ℤ) ^ 2) 1 α s s₁ θ (fun z => (N : ℂ) • z) (fun _ => 1) hψ h4 h5 hpt`. Simplify using `using res`.
+-/
 theorem rd_mulN : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (N : ℕ) (α₀ : LB.Gen (LB.LinComb L.L (K := Fin 2) ![𝟙 A.left, (mulA A N).left] ![(N : ℤ) ^ 2, -1])) (α : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(snd (Over.mk x0) A).left, (snd (Over.mk x0) A ^ N).left] ![(N : ℤ) ^ 2, -1])) (s : LB.Sec (LPow A L.L 1 (Over.mk x0))) (s₁ : LB.Sec (LPow A L.L ((N : ℤ) ^ 2) (Over.mk x0))) (θ : (Fin g → ℂ) → ℂ), α₀.IsGen → IsNormMul A L.L L.rig N α₀ → LB.Gen.Corr L.L _ _ _ _ α (LB.pullGen L.L _ _ α₀ (snd (Over.mk x0) A).left) → IsTwistPull A L.L (mulT A (Over.mk x0) N) (snd (Over.mk x0) A ^ N) (lift_snd _ _) ((N : ℤ) ^ 2) 1 α s s₁ → Φ.Rd 1 s θ → Φ.Rd ((N : ℤ) ^ 2) s₁ (fun z => θ ((N : ℂ) • z)) := by
   intro S A _ _ L x0 g Φ N α₀ α s s₁ θ h1 h2 h3 h4 h5
   have hψ : mulT A (Over.mk x0) N ≫ fst (Over.mk x0) A = fst (Over.mk x0) A := by

@@ -5,6 +5,15 @@ open GlobalTheory.PsCo.PcEG
 
 namespace GlobalTheory.PsCo.PcEG
 
+/- English proof (translation)
+Introduce `n ε m c t ht`. Unfold `ReciprocityTheory.ChartRestriction.TR.Weyl.numK`. Establish `hfilt : (Finset.univ.filter (fun σ : Equiv.Perm (Fin n) => ∀ i, ε (σ i) = ε i)) = Finset.univ.filter (fun w : Equiv.Perm (Fin n) => ε ∘ w = ε)`. Use extensionality with `w`. Simplify using `[funext_iff]`.
+
+Rewrite using `[hfilt, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hw' : ∀ i, ε (w i) = ε i` using `fun i => congrFun (Finset.mem_filter.1 hw).2 i`. Rewrite using `[mul_assoc]`. Use `congr 1`.
+
+Establish `h1 : ∏ i, t (w i) ^ (m i - c (ε i)) = (∏ i, t (w i) ^ m i) * ∏ i, t (w i) ^ (-c (ε (w i)))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hw', sub_eq_add_neg, zpow_add₀ (ht _)]`. Rewrite using `[h1]`.
+
+Use `congr 1`. Use `Equiv.prod_comp w (fun a => t a ^ m (w.symm a))` as an intermediate fact. Simplify using `using this`. Conclude with `Equiv.prod_comp w (fun a => t a ^ (-c (ε a)))`.
+-/
 theorem numShift_holds : NumShift := by
   intro n ε m c t ht
   unfold ReciprocityTheory.ChartRestriction.TR.Weyl.numK

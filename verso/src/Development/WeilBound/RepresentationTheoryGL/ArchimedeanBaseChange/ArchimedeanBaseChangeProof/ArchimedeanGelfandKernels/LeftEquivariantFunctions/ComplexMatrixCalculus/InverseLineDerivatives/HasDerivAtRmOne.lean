@@ -13,13 +13,24 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `show IsOpen {g : Mat n | g.det ≠ 0}`. Conclude with `isOpen_ne_fun continuous_id.matrix_det continuous_const`.
+-/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   show IsOpen {g : Mat n | g.det ≠ 0}
   exact isOpen_ne_fun continuous_id.matrix_det continuous_const
 
+/- English proof (translation)
+The claim follows from `((Cxc.rm_smooth lam).contDiffAt (isOpen_GLs.mem_nhds hx)).differentiableAt (by simp)`.
+-/
 theorem rm_diff (lam : Fin n → ℤ) {x : Mat n} (hx : x ∈ GLs n) : DifferentiableAt ℝ (Rm lam) x :=
   ((Cxc.rm_smooth lam).contDiffAt (isOpen_GLs.mem_nhds hx)).differentiableAt (by simp)
 
+/- English proof (translation)
+Establish `hg : HasDerivAt (fun t : ℝ => x * (1 + t • X)) (x * X) 0`. Establish `e : (fun t : ℝ => x * (1 + t • X)) = fun t => x + t • (x * X)`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_add, mul_one, Matrix.mul_smul]`. Rewrite using `[e]`.
+
+Use `((hasDerivAt_id (0 : ℝ)).smul_const (x * X)).const_add x` as an intermediate fact. Rewrite `this` using `[one_smul]`. Conclude with `this`. Conclude with `hf.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hg (by simp)`.
+-/
 theorem hasDerivAt_line {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {f : Mat n → W} {x : Mat n}
     (hf : DifferentiableAt ℝ f x) (X : Mat n) :
     HasDerivAt (fun t : ℝ => f (x * (1 + t • X))) (fderiv ℝ f x (x * X)) 0 := by
@@ -39,15 +50,26 @@ def entL {J : Type} [Fintype J] [DecidableEq J] (P N : Matrix J J ℂ) (i j : J)
       map_add' := fun M M' => by simp [Matrix.mul_add, Matrix.add_mul]
       map_smul' := fun r M => by simp [Matrix.mul_smul, Matrix.smul_mul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem entL_apply {J : Type} [Fintype J] [DecidableEq J] (P N M : Matrix J J ℂ) (i j : J) :
     entL P N i j M = (P * M * N) i j := rfl
 
+/- English proof (translation)
+Establish `hc : Continuous (fun t : ℝ => (1 + t • X).det)` using `(continuous_const.add (continuous_id.smul continuous_const)).matrix_det`. Establish `h0 : (1 + (0 : ℝ) • X).det ≠ 0` using `by simp`. Conclude with `(hc.continuousAt.eventually_ne h0).mono fun t ht => isUnit_iff_ne_zero.mpr ht`.
+-/
 theorem eventually_det (X : Mat n) : ∀ᶠ t : ℝ in nhds 0, IsUnit (1 + t • X).det := by
   have hc : Continuous (fun t : ℝ => (1 + t • X).det) :=
     (continuous_const.add (continuous_id.smul continuous_const)).matrix_det
   have h0 : (1 + (0 : ℝ) • X).det ≠ 0 := by simp
   exact (hc.continuousAt.eventually_ne h0).mono fun t ht => isUnit_iff_ne_zero.mpr ht
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_line (rm_diff lam (x := 1) (by show (1 : Mat n).det ≠ 0; simp)) X`. Simplify using `only [one_mul] at h`. Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
+
+Consider the case `exact (hD n lam hlam X).symm`. Consider the case `(congr 1; exact (hD n lam hlam X).symm)`.
+-/
 theorem hasDerivAt_rm_one (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (X : Mat n) :
     HasDerivAt (fun t : ℝ => Rm lam (1 + t • X)) (∑ a, ∑ b, X a b • At lam a b) 0 := by
   have h := hasDerivAt_line (rm_diff lam (x := 1) (by show (1 : Mat n).det ≠ 0; simp)) X
@@ -58,6 +80,13 @@ theorem hasDerivAt_rm_one (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone la
     | exact (hD n lam hlam X).symm
     | (congr 1; exact (hD n lam hlam X).symm)
 
+/- English proof (translation)
+Establish `hxu : IsUnit x.det` using `isUnit_iff_ne_zero.mpr hx`. Establish `hf : DifferentiableAt ℝ (fun y => (Rm lam y * N) i j) x`. Use `((entL 1 N i j).differentiableAt).comp x (rm_diff lam hx)` as an intermediate fact. Simplify using `only [Function.comp_def, entL_apply, one_mul] at this`. Conclude with `this`.
+
+Establish `h1` using `hasDerivAt_line hf X`. Establish `h2 : HasDerivAt (fun t : ℝ => (Rm lam x * Rm lam (1 + t • X) * N) i j) ((Rm lam x * (∑ a, ∑ b, X a b • At lam a b) * N) i j) 0`. Use `(entL (Rm lam x) N i j).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_rm_one lam hD hlam X)` as an intermediate fact. Simplify using `only [Function.comp_def, entL_apply] at this`. Conclude with `this`.
+
+Establish `h3 : (fun t : ℝ => (Rm lam (x * (1 + t • X)) * N) i j) =ᶠ[nhds 0] fun t => (Rm lam x * Rm lam (1 + t • X) * N) i j` using `by filter_upwards [eventually_det X] with t ht`. Rewrite using `[Cxc.rm_mul lam x _ hxu ht]`. Use `show fderiv ℝ (fun y => (Rm lam y * N) i j) x (x * X) = _`. Conclude with `h1.unique (h3.hasDerivAt_iff.mpr h2)`.
+-/
 theorem rd_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (N : Matrix (Jd n lam) (Jd n lam) ℂ)
     (i j : Jd n lam) {x : Mat n} (hx : x ∈ GLs n) (X : Mat n) :
     Rd X (fun y => (Rm lam y * N) i j) x = (Rm lam x * (∑ a, ∑ b, X a b • At lam a b) * N) i j := by
@@ -79,10 +108,18 @@ theorem rd_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (N : Mat
   show fderiv ℝ (fun y => (Rm lam y * N) i j) x (x * X) = _
   exact h1.unique (h3.hasDerivAt_iff.mpr h2)
 
+/- English proof (translation)
+Simplify using `[Matrix.single_apply, ite_and, ite_smul]`.
+-/
 theorem sum_single {lam : Fin n → ℤ} (X : Mat n) (a b : Fin n) (z : ℂ) (A : Fin n → Fin n → Matrix (Jd n lam) (Jd n lam) ℂ) :
     ∑ c, ∑ d, (Matrix.single a b z : Mat n) c d • A c d = z • A a b := by
   simp [Matrix.single_apply, ite_and, ite_smul]
 
+/- English proof (translation)
+Establish `e1` using `rd_hol lam hD hlam N i j hx (Matrix.single a b 1)`. Establish `e2` using `rd_hol lam hD hlam N i j hx (Matrix.single a b Complex.I)`. Rewrite `e1` using `[sum_single (0 : Mat n) a b (1 : ℂ) (At lam)]`. Rewrite `e2` using `[sum_single (0 : Mat n) a b Complex.I (At lam)]`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, e1, e2]`.
+
+Apply the tactic sequence `cases s <;> simp [Matrix.mul_smul, Matrix.smul_mul] <;> ring_nf <;> simp [Complex.I_sq] <;> ring`.
+-/
 theorem eu_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (N : Matrix (Jd n lam) (Jd n lam) ℂ)
     (i j : Jd n lam) {x : Mat n} (hx : x ∈ GLs n) (s : Bool) (a b : Fin n) :
     Eu s a b (fun y => (Rm lam y * N) i j) x = if s then (Rm lam x * At lam a b * N) i j else 0 := by
@@ -93,12 +130,24 @@ theorem eu_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (N : Mat
   simp only [Eu, Pi.smul_apply, Pi.add_apply, e1, e2]
   cases s <;> simp [Matrix.mul_smul, Matrix.smul_mul] <;> ring_nf <;> simp [Complex.I_sq] <;> ring
 
+/- English proof (translation)
+Establish `e : ∀ Y : Mat n, Rd Y f x = Rd Y g x` using `fun Y => by`. Simplify using `only [Rd, h.fderiv_eq]`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, e]`.
+-/
 theorem eu_congr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f g : Mat n → V} {x : Mat n}
     (h : f =ᶠ[nhds x] g) (s : Bool) (a b : Fin n) : Eu s a b f x = Eu s a b g x := by
   have e : ∀ Y : Mat n, Rd Y f x = Rd Y g x := fun Y => by
     simp only [Rd, h.fderiv_eq]
   simp only [Eu, Pi.smul_apply, Pi.add_apply, e]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b y hy`. Rewrite using `[Epow.eq_1]`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Matrix.one_apply]`.
+
+Consider the case `succ m ih`. Introduce `a b y hy`. Rewrite using `[show m + 1 = m.succ from rfl, Epow.eq_2]`. Simplify using `only [Finset.sum_apply]`. Establish `key : ∀ c, Eu true a c (Epow true m c b (fun y => (Rm lam y * M) i j)) y = (Rm lam y * At lam a c * ((At lam ^ m) c b * M)) i j` using `fun c => by`.
+
+Rewrite using `[eu_congr (g := fun z => (Rm lam z * ((At lam ^ m) c b * M)) i j) ?_ true a c]`. Rewrite using `[eu_hol lam hD hlam ((At lam ^ m) c b * M) i j hy true a c]`. Conclude with `if_pos rfl`. Use `filter_upwards [isOpen_GLs.mem_nhds hy] with z hz`. Conclude with `(ih c b hz).trans (congrFun (congrFun (Matrix.mul_assoc _ _ _) i) j)`.
+
+Simplify using `only [key]`. Rewrite using `[pow_succ', Matrix.mul_apply (M := At lam) (N := At lam ^ m), Finset.mul_sum, Finset.sum_mul, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc]`.
+-/
 theorem epow_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (M : Matrix (Jd n lam) (Jd n lam) ℂ)
     (i j : Jd n lam) (m : ℕ) : ∀ a b : Fin n, Set.EqOn (Epow true m a b (fun y => (Rm lam y * M) i j))
       (fun y => (Rm lam y * (At lam ^ m) a b * M) i j) (GLs n) := by
@@ -124,6 +173,11 @@ theorem epow_hol (lam : Fin n → ℤ) (hD : AtDer) (hlam : Antitone lam) (M : M
     refine Finset.sum_congr rfl fun c _ => ?_
     simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `n lam hlam M i j g hg`. Use `⟨fun m => ?_, fun a b => by rw [eu_hol lam hD hlam M i j hg false a b]; rfl⟩` and prove the remaining obligations. Simplify using `only [gel, Finset.sum_apply]`. Rewrite using `[Finset.sum_congr rfl fun a _ => epow_hol lam hD hlam M i j m a a hg]`. Establish `e : ∑ a, (Rm lam g * (At lam ^ m) a a * M) i j = (Rm lam g * (At lam ^ m).trace * M) i j`.
+
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_sum, Matrix.sum_mul, Matrix.sum_apply]`. Rewrite using `[e, hT n lam hlam m]`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem rmHol_of (hT : AtTrace) (hD : AtDer) : RmHol := by
   intro n lam hlam M i j g hg
   refine ⟨fun m => ?_, fun a b => by rw [eu_hol lam hD hlam M i j hg false a b]; rfl⟩

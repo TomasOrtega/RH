@@ -8,6 +8,9 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce | exact PositivityTheory.Xgn.t_xgz_chow_mahler_e0reduce`.
+-/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.ball_average_fibre_count : ∀ (n e : ℕ) (S : Set (EuclideanSpace ℂ (Fin n))), IsScaleStable S → IsSigmaCompact S →
   ∀ T : ℝ≥0∞ → ℝ≥0∞, Measurable T →
     ∫⁻ π : Fin (e + 1) → Fin n → ℂ, matGauss π *

@@ -22,8 +22,14 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace CrystallinePoints.Pd
 
+/- English proof (translation)
+The claim follows from `resSurj_coreD.{u}`.
+-/
 theorem resSurj.{u} : ResSurj.{u} := resSurj_coreD.{u}
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg L hL ψ hψ`. Use `haveI := hA.comm`. Establish `iso : ∀ x ∈ Fil A, ∀ y ∈ Fil A, ψ x y = 0` using `orth_of_surj hF hB hA hg (fun C _ _ A' _ φ h ↦ hS C A' g (GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h) ((smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback h.1 hg)) (LB.isLB_linComb hL _ _) (isCorrForm_lam hψ)`. Conclude with `⟨iso, perfect_ring hF hH hB hA hg hL hψ iso⟩`.
+-/
 theorem duality_of_surjAll (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge) (hB : AbelianDeRham.BaseChange)
     (hS : SurjAll) : AbelianDeRham.Duality := by
   intro R _ A _ g hA hg L hL ψ hψ
@@ -34,6 +40,9 @@ theorem duality_of_surjAll (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge) 
       (LB.isLB_linComb hL _ _) (isCorrForm_lam hψ)
   exact ⟨iso, perfect_ring hF hH hB hA hg hL hψ iso⟩
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg`. Take `⟨E, hE⟩` from `exists_isE`. Take `⟨B, _, P, hA', hd, h₁, h₂⟩` from `hD (Sp R) A hA`. Conclude with `surj_of_isDual' hE h₁ (fun hM a b ↦ additive_eps hC hA hA' h₁ hM a b) resSurj hF hH hB hA hg hA' (hd g hg) h₂.additive`.
+-/
 theorem surjAll_of_dual (hC : CubeTheorem) (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge)
     (hB : AbelianDeRham.BaseChange) (hD : DualAbelianScheme) : SurjAll := by
   intro R _ A _ g hA hg
@@ -42,6 +51,9 @@ theorem surjAll_of_dual (hC : CubeTheorem) (hF : AbelianDeRham.Free) (hH : Abeli
   exact surj_of_isDual' hE h₁ (fun hM a b ↦ additive_eps hC hA hA' h₁ hM a b) resSurj hF hH hB hA hg hA' (hd g hg)
     h₂.additive
 
+/- English proof (translation)
+The claim follows from `have hF := GlobalTheory.abelianDeRhamStructure_toFree hS ⟨hF, hS.2.1, hS.2.2, AbelianDeRham.rigid_of_free_of_crystallineDeRham hF FubiniStudyChowHeightFormula₂.Adr.crystallineDeRham, duality_of_surjAll hF hS.2.1 hS.2.2 (surjAll_of_dual hC hF hS.2.1 hS.2.2 hD)⟩`.
+-/
 theorem abelianDeRham (hC : CubeTheorem) (hS : AbelianDeRhamStructure) (hD : DualAbelianScheme) : AbelianDeRham :=
   have hF := GlobalTheory.abelianDeRhamStructure_toFree hS
   ⟨hF, hS.2.1, hS.2.2, AbelianDeRham.rigid_of_free_of_crystallineDeRham hF FubiniStudyChowHeightFormula₂.Adr.crystallineDeRham,

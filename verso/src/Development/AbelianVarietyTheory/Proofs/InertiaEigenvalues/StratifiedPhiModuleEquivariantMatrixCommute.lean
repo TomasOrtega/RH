@@ -6,6 +6,21 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ K bk d d' S S' ρ ρ' T T' hT hT' f hf Y hY g`. Set `G : WCb l →+* WCb l` to `(galW l (g : GQ l)).toRingEquiv.toRingHom`. Establish `hG : ∀ z : ℤ_[l], G (algebraMap ℤ_[l] (WCb l) z) = algebraMap ℤ_[l] (WCb l) z` using `fun z => (galW l (g : GQ l)).commutes z`. Establish `hzG : ∀ {m n : Type} (M : Matrix m n ℤ_[l]), (zW M).map G = zW M`. Introduce `m n M`.
+
+Conclude with `Matrix.ext fun i j => hG _`. Establish `hYG : (Y.map bk.evW).map G = (Y.map (BK.hf ((ainfHom K g).comp bk.ι))).map (inclW l)`. Conclude with `Matrix.ext fun i j => galW_inclW (g : GQ l) (bk.ev (Y i j))`. Establish `hzmul : ∀ {m n o : Type} [Fintype n] (A : Matrix m n ℤ_[l]) (B : Matrix n o ℤ_[l]), zW (A * B) = zW A * zW B` using `fun A B => Matrix.map_mul`. Establish `h1` using `congrArg (fun M => M.map G) hY`.
+
+Simplify using `only [Matrix.map_mul, hzG, hYG] at h1`. Establish `e1 : T' * ((S'.ε bk.ι ((ainfHom K g).comp bk.ι)).map (inclW l) * (Y.map (BK.hf ((ainfHom K g).comp bk.ι))).map (inclW l)) = T' * ((Y.map (BK.hf bk.ι)).map (inclW l) * (S.ε bk.ι ((ainfHom K g).comp bk.ι)).map (inclW l))`. Establish `a1` using `hT'.gal g`. Establish `a2` using `hT.gal g`. Establish `a3 : T'.map (galW l (g : GQ l)) = T'.map G` using `rfl`.
+
+Establish `a4 : T.map (galW l (g : GQ l)) = T.map G` using `rfl`. Establish `a5 : (Y.map (BK.hf bk.ι)).map (inclW l) = Y.map bk.evW` using `Matrix.map_map`. Rewrite `a1` using `[a3]`. Rewrite `a2` using `[a4]`. Rewrite using `[a5]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← a1, Matrix.mul_assoc]`. Use `_ = zW (ρ' g * f) * T.map G := by rw [h1, hzmul, Matrix.mul_assoc]`. Use `_ = zW f * (zW (ρ g) * T.map G) := by rw [← hf g, hzmul, Matrix.mul_assoc]`. Use `_ = (T' * Y.map bk.evW) * (S.ε bk.ι ((ainfHom K g).comp bk.ι)).map (inclW l) := by`.
+
+Rewrite using `[a2, hY, Matrix.mul_assoc]`. Use `_ = _ := Matrix.mul_assoc _ _ _`. Take `⟨u, hu⟩` from `hT'.unit`. Rewrite `e1` using `[← hu]`. Establish `e2` using `congrArg (fun M => (↑u⁻¹ : Matrix (Fin d') (Fin d') (WCb l)) * M) e1`.
+
+Simplify using `only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at e2`. Apply `Matrix.map_injective (f := inclW l) inclW_injective` to reduce the goal to its premises. Conclude with `(Matrix.map_mul (f := inclW l)).trans (e2.trans (Matrix.map_mul (f := inclW l)).symm)`.
+-/
 theorem strat_homGal : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d') (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (ρ' : ↥(GK K) → Matrix (Fin d') (Fin d') ℤ_[l]) (T : Matrix (Fin d) (Fin d) (WCb l)) (T' : Matrix (Fin d') (Fin d') (WCb l)), MReal S ρ T → MReal S' ρ' T' → ∀ f : Matrix (Fin d') (Fin d) ℤ_[l], (∀ g, f * ρ g = ρ' g * f) → ∀ Y : Matrix (Fin d') (Fin d) bk.S, T' * Y.map bk.evW = zW f * T → ∀ g : ↥(GK K), S'.ε bk.ι ((ainfHom K g).comp bk.ι) * Y.map (BK.hf ((ainfHom K g).comp bk.ι)) = Y.map (BK.hf bk.ι) * S.ε bk.ι ((ainfHom K g).comp bk.ι) := by
   intro l _ K bk d d' S S' ρ ρ' T T' hT hT' f hf Y hY g
   let G : WCb l →+* WCb l := (galW l (g : GQ l)).toRingEquiv.toRingHom

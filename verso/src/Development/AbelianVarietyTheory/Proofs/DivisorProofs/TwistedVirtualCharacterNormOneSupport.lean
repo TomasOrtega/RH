@@ -10,6 +10,11 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Introduce `V _ _ _ ρ hY`. Establish `hk` using `h V ρ hY`. Establish `: Fintype G` using `Fintype.ofFinite G`. Rewrite `hk`, the goal using `[finsum_eq_sum_of_fintype]`. Establish `e : (fun g => star (c * f g) • ρ g) = fun g => star c • (star (f g) • ρ g)`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[star_mul', mul_smul]`. Simplify using `only []`. Rewrite using `[e, ← Finset.smul_sum, hk, smul_zero]`.
+-/
 theorem kills_const_mul {G : Type} [Group G] [Finite G] (c : ℂ) (f Y : G → ℂ) (h : Kills f Y) :
     Kills (fun g => c * f g) Y := by
   intro V _ _ _ ρ hY
@@ -21,6 +26,21 @@ theorem kills_const_mul {G : Type} [Group G] [Finite G] (c : ℂ) (f Y : G → �
   simp only []
   rw [e, ← Finset.smul_sum, hk, smul_zero]
 
+/- English proof (translation)
+Introduce `G Γ _ _ _ _ φ s hp hs X hX hn Y hY hYs z hz hl`. Take `⟨χ, e, hχ, hχG, hXe⟩` from `GlobalTheory.T.virtualCharacter_coset_normOne_single G Γ φ s hp hs X hX hn`. Establish `hgen : ∀ t : Γ, t ∈ Subgroup.zpowers s` using `by haveI : Fact (Nat.card Γ).Prime := ⟨hp⟩`. Introduce `t`. Rewrite using `[zpowers_eq_top_of_prime_card rfl hs]`.
+
+Conclude with `Subgroup.mem_top t`. Take `⟨Z, hZ, hZY⟩` from `GlobalTheory.T.exists_semidirect_character_ext_of_stable G Γ φ s hgen Y hY hYs`. Establish `hZv : Z ∈ Virt ℂ ℂ (G ⋊[φ] Γ)` using `AddSubgroup.subset_closure hZ`. Establish `hXZ : ∑ᶠ g, X (inl g) * star (Z (inl g)) = z * (Nat.card G : ℂ)`. Simplify using `only [hZY]`.
+
+Conclude with `hz`. Establish `hc` using `GlobalTheory.T.finsum_semidirect_coset_pairing_ne_zero G Γ φ s hp hs X hX Z hZv z hXZ hl`. Establish `hχc : ∑ᶠ g, χ (inl g * inr s) * star (Z (inl g * inr s)) ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises.
+
+Establish `: (fun g => X (inl g * inr s) * star (Z (inl g * inr s))) = fun g => e * (χ (inl g * inr s) * star (Z (inl g * inr s)))`. Use function extensionality and compare the values at `g`. Rewrite using `[hXe, mul_assoc]`. Rewrite using `[this, ← mul_finsum, h0, mul_zero]`. Establish `hχchar : IsChar ℂ ℂ χ`.
+
+Take `⟨n, ρ, -, h⟩` from `hχ`. Conclude with `⟨n, ρ, h⟩`. Establish `hχY : ∑ᶠ g, χ (inl g) * star (Y g) ≠ 0`. Introduce `h0`. Apply `hχc` to reduce the goal to its premises.
+
+Apply `GlobalTheory.T.finsum_semidirect_coset_character_orth_zero G Γ φ s hp hs χ Z hχchar hZ` to reduce the goal to its premises. Simplify using `only [hZY]`. Conclude with `h0`. Establish `hK` using `GlobalTheory.T.twisted_restricted_character_in_isotypic_part G Γ φ s χ Y hχchar hχG hY hχY`. Use `kills_const_mul e _ Y hK` as an intermediate fact.
+
+Simplify `this` using `only [hXe]`.
+-/
 theorem kills_of_norm_one_of_pairing_prime :
     ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ] (φ : Γ →* MulAut G) (s : Γ), (Nat.card Γ).Prime →
       s ≠ 1 → ∀ X ∈ Virt ℂ ℂ (G ⋊[φ] Γ), ∑ᶠ g, X (inl g * inr s) * star (X (inl g * inr s)) = (Nat.card G : ℂ) →

@@ -27,6 +27,9 @@ open GlobalTheory.RowClaim GlobalTheory.RowVal GlobalTheory.RowReal
 
 namespace GlobalTheory.RowUnfLast
 
+/- English proof (translation)
+Introduce `p c s` and use `have rel := GlobalTheory.T.lastRow_real_iterated_integral_eq_const_mul_finite have hcv := GlobalTheory.T.cellSumRelationsPassToIntegrals_proof have grp := GlobalTheory.T.rowPeriodGroups_split_real_finite_large_depth have it := GlobalTheory.T.iteration_and_linearity_cuspidal have …`.
+-/
 theorem stepUnfold : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → SumOKK → StepUnfold := fun p c s =>
   have rel := GlobalTheory.T.lastRow_real_iterated_integral_eq_const_mul_finite
   have hcv := GlobalTheory.T.cellSumRelationsPassToIntegrals_proof

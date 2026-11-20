@@ -5,6 +5,35 @@ open scoped ComplexOrder ENNReal Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K V Y σ _ _ _ _ _ r t D α c Ω hr hΩ hpos hlub hsub hmove hcon`. Establish `hΩ0 : 0 < Ω` using `by linarith`. Use `⟨2 * Ω ^ 3, by positivity, fun y i hi0 hir => ?_⟩` and prove the remaining obligations. Establish `hle : ∀ k ≤ r, ∀ z (W : Submodule K V), Module.finrank K W = k → D z W ≤ α k z` using `fun k hk z W hW => (hlub k hk z).1 ⟨W, hW, rfl⟩`. Establish `hub : ∀ k ≤ r, ∀ z (b : ℝ), (∀ W : Submodule K V, Module.finrank K W = k → D z W ≤ b) → α k z ≤ b` using `fun k hk z b hb => (hlub k hk z).2 (by`.
+
+Introduce and unpack `_ ⟨W, hW, rfl⟩`. Conclude with `hb W hW)`. Establish `hex : ∀ b < α i y, ∃ W : Submodule K V, Module.finrank K W = i ∧ b < D y W`. Introduce `b hb`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `absurd (hub i hir.le y b h) (not_le.2 hb)`. Establish `hA : 0 < α i y`. Take `⟨W, hW, -⟩` from `hex (α i y - 1) (by linarith)`. Conclude with `(hpos y W).trans_le (hle i hir.le y W hW)`.
+
+Use `set A := α i y with hAdef`. Use `set B := A / (2 * Ω ^ 2) with hBdef`. Establish `hB0 : 0 < B` using `by positivity`. Establish `hAB : A = 2 * Ω ^ 2 * B` using `by rw [hBdef]; field_simp`. Establish `hBA : B < A`.
+
+Establish `: 1 ≤ Ω ^ 2` using `one_le_pow₀ hΩ`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨W₀, hW₀, hBW₀⟩` from `hex B hBA`. Distinguish the cases in `hcase : ∀ W : Submodule K V, Module.finrank K W = i → B < D y W → W = W₀`. Use `left`.
+
+Establish `h0 : A = D y W₀`. Use `le_antisymm (hub i hir.le y _ fun W hW => ?_) (hle i hir.le y W₀ hW₀)` and prove the remaining obligations. Distinguish the cases in `h : B < D y W`. Rewrite using `[hcase W hW h]`. Conclude with `(not_lt.1 h).trans hBW₀.le`.
+
+Establish `h1 : ∀ s, α i (t s y) ≤ D (t s y) W₀`. Introduce `s`. Use `hub i hir.le _ _ fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `h : B < D y W`. Rewrite using `[hcase W hW h]`.
+
+Establish `a1` using `(hmove s y W).1`. Establish `a2` using `(hmove s y W₀).2`. Establish `a3 : Ω * D y W ≤ Ω * B` using `mul_le_mul_of_nonneg_left (not_lt.1 h) hΩ0.le`. Establish `a4 : Ω * (Ω * B) ≤ Ω * D (t s y) W₀`. Establish `: 0 < Ω ^ 2 * B` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `a5` using `le_of_mul_le_mul_left a4 hΩ0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : W₀ ≠ ⊥`. Introduce and unpack `rfl`.
+
+Rewrite `hW₀` using `[finrank_bot]`. Use linear arithmetic over natural numbers and integers. Establish `ht : W₀ ≠ ⊤`. Introduce and unpack `rfl`. Rewrite `hW₀` using `[finrank_top]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[h0]`. Conclude with `(Finset.sum_le_sum fun s _ => h1 s).trans (hcon y W₀ hb ht)`. Use `right push Not at hcase`. Take `⟨W₁, hW₁, hBW₁, hne⟩` from `hcase`.
+
+Establish `hdim` using `Submodule.finrank_sup_add_finrank_inf_eq W₁ W₀`. Establish `hlt : Module.finrank K ↥(W₁ ⊓ W₀) < i`. Rewrite using `[← hW₁]`. Use `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne inf_le_left fun h => hne ?_)` and prove the remaining obligations. Conclude with `Submodule.eq_of_le_of_finrank_eq (inf_eq_left.1 h) (hW₁.trans hW₀.symm)`.
+
+Establish `hsr : Module.finrank K ↥(W₁ ⊔ W₀) ≤ r` using `hr ▸ Submodule.finrank_le _`. Use `⟨i - Module.finrank K ↥(W₁ ⊓ W₀), by omega, by omega, by omega, fun s => ?_⟩` and prove the remaining obligations. Use `set j := i - Module.finrank K ↥(W₁ ⊓ W₀) with hj`. Establish `e1 : D y (W₁ ⊓ W₀) ≤ α (i - j) y` using `hle _ (by omega) y _ (by omega)`. Establish `e2 : D y (W₁ ⊔ W₀) ≤ α (i + j) y` using `hle _ (by omega) y _ (by omega)`.
+
+Establish `e3 : B ^ 2 ≤ α (i - j) y * α (i + j) y`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : B ≤ Real.sqrt (α (i - j) y * α (i + j) y)` using `Real.le_sqrt_of_sq_le e3`. Establish `e5 : α i (t s y) ≤ Ω * A` using `hub i hir.le _ _ fun W hW => (hmove s y W).1.trans (mul_le_mul_of_nonneg_left (hle i hir.le y W hW) hΩ0.le)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem subspace_sup_alternative :
     (∀ (K V Y σ : Type) [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Fintype σ] (r : ℕ) (t : σ → Y → Y) (D : Y → Submodule K V → ℝ) (α : ℕ → Y → ℝ) (c Ω : ℝ), Module.finrank K V = r → 1 ≤ Ω → (∀ y W, 0 < D y W) → (∀ i ≤ r, ∀ y, IsLUB (D y '' {W | Module.finrank K W = i}) (α i y)) → (∀ y W₁ W₂, D y W₁ * D y W₂ ≤ D y (W₁ ⊓ W₂) * D y (W₁ ⊔ W₂)) → (∀ s y W, D (t s y) W ≤ Ω * D y W ∧ D y W ≤ Ω * D (t s y) W) → (∀ y W, W ≠ ⊥ → W ≠ ⊤ → ∑ s, D (t s y) W ≤ Fintype.card σ * (c * D y W)) → ∃ C : ℝ, 0 ≤ C ∧ (∀ (y : Y) (i : ℕ), 0 < i → i < r → (∑ s, α i (t s y) ≤ Fintype.card σ * (c * α i y)) ∨ ∃ j : ℕ, 0 < j ∧ j ≤ i ∧ i + j ≤ r ∧ ∀ s, α i (t s y) ≤ C * Real.sqrt (α (i - j) y * α (i + j) y))) := by
   intro K V Y σ _ _ _ _ _ r t D α c Ω hr hΩ hpos hlub hsub hmove hcon

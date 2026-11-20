@@ -22,9 +22,17 @@ noncomputable section
 
 attribute [local instance] algebraOfOver
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 lemma isClosedImmersion_of_isIso' {X Y : Scheme.{u}} (f : X ⟶ Y) [IsIso f] : IsClosedImmersion f :=
   inferInstance
 
+/- English proof (translation)
+Use `⟨isQuasicoherent_unit X, fun U _ => ?_⟩` and prove the remaining obligations. Set `one : Γ(𝟙_ X.Modules, U)` to `(1 : Γ(X, U))`. Use `⟨⟨{one}, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `m _`.
+
+Establish `hm : m = (show Γ(X, U) from m) • one` using `(mul_one (show Γ(X, U) from m)).symm`. Rewrite using `[hm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_singleton_self _)))`.
+-/
 theorem isCoherent_unit (X : Scheme.{u}) : IsCoherent (𝟙_ X.Modules) := by
   refine ⟨isQuasicoherent_unit X, fun U _ => ?_⟩
   let one : Γ(𝟙_ X.Modules, U) := (1 : Γ(X, U))
@@ -37,6 +45,69 @@ theorem isCoherent_unit (X : Scheme.{u}) : IsCoherent (𝟙_ X.Modules) := by
 
 variable {A : Type u} [CommRing A] [IsNoetherianRing A]
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Use `hF.1` as an intermediate fact. Take `⟨I, hIT, G, hG, ⟨e⟩⟩` from `exists_pushforward_iso_of_supportedIn F hF hT hFT`. Establish `hFI : Scheme.Modules.SupportedIn F (I.support : Set X)`.
+
+Establish `h` using `(Scheme.Modules.SupportedIn.univ G).pushforward I.subschemeι`. Rewrite `h` using `[Set.image_univ, Scheme.IdealSheafData.range_subschemeι]`. Conclude with `h.of_iso e`. Distinguish the cases in `hST : (I.support : Set X) = T`. Use `swap`.
+
+Conclude with `IH _ I.support.isClosed (lt_of_le_of_ne hIT hST) F hF hFI`. Break down `isEmpty_or_nonempty I.subscheme with hZ | hZ` into its components or cases. Establish `h0 : (I.support : Set X) = ∅`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `Set.range_eq_empty _`.
+
+Conclude with `FiniteH.of_isZero A (Scheme.Modules.SupportedIn.isZero_of_empty (h0 ▸ hFI))`. Use `set Z := I.subscheme`. Use `set j : Z ⟶ X := I.subschemeι`. Set `_ : Z.Over (Spec (.of A))` to `⟨j ≫ (X ↘ Spec (.of A))⟩`. Establish `: IsProper (Z ↘ Spec (.of A))` using `(inferInstance : IsProper (j ≫ (X ↘ Spec (.of A))))`.
+
+Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian (Z ↘ Spec (.of A))`. Establish `: CompactSpace Z` using `QuasiCompact.compactSpace_of_compactSpace (Z ↘ Spec (.of A))`. Establish `: IsNoetherian Z` using `⟨⟩`. Take `⟨Z₁, c, O, hc, hirr, hOne, hcO⟩` from `exists_irreducible_isIso_restrict Z`. Set `_ : Z₁.Over (Spec (.of A))` to `⟨c ≫ (Z ↘ Spec (.of A))⟩`.
+
+Establish `: IsProper (Z₁ ↘ Spec (.of A))` using `(inferInstance : IsProper (c ≫ (Z ↘ Spec (.of A))))`. Take `⟨N, Z', i, π, U₁, hi, hiπ, hU₁, hπU⟩` from `exists_chow (A := A) Z₁`. Use `set ψ : Z' ⟶ X := π ≫ c ≫ j with hψ`. Set `_ : Z'.Over (Spec (.of A))` to `⟨ψ ≫ (X ↘ Spec (.of A))⟩`. Establish `: ψ.IsOver (Spec (.of A))` using `⟨rfl⟩`.
+
+Establish `: i.IsOver (Spec (.of A))` using `⟨by`. Express the relevant statement in the definitionally equal form `i ≫ ProjSpace.toSpecBase A N = (π ≫ c ≫ j) ≫ (X ↘ Spec (.of A))`. Rewrite using `[hiπ]`. Simplify using `only [Category.assoc]`. Use the proof step `rfl⟩`.
+
+Establish `hZ'p : IsProper (ψ ≫ (X ↘ Spec (.of A)))`. Establish `h : ψ ≫ (X ↘ Spec (.of A)) = i ≫ ProjSpace.toSpecBase A N` using `(CategoryTheory.comp_over i (Spec (.of A))).symm`. Rewrite using `[h]`. Use `infer_instance`. Establish `: IsProper ψ` using `IsProper.of_comp ψ (X ↘ Spec (.of A))`.
+
+Establish `: IsClosedImmersion (c ≫ j)` using `inferInstance`. Establish `hG' : IsCoherent ((Scheme.Modules.pullback ψ).obj F)` using `isCoherent_pullback ψ hF`. Use `set G' := (Scheme.Modules.pullback ψ).obj F`. Take `⟨n₀, hn₀⟩` from `ProjScheme.exists_relativeSerre i ψ G' hG'`. Take `⟨n₁, hn₁⟩` from `ProjScheme.exists_generatingSections_twist i (𝟙_ Z'.Modules) (isCoherent_unit Z')`.
+
+Use `set n := max n₀ n₁`. Take `⟨σ, hσ⟩` from `hn₁ n (le_max_right _ _)`. Use `set L := ProjScheme.twistingSheaf i (n : ℤ)`. Establish `eL : ProjScheme.twist i (𝟙_ Z'.Modules) (n : ℤ) ≅ L` using `λ_ L`. Take `⟨σL, hσL⟩` from `exists_generatingSections_of_iso eL ⟨σ, hσ⟩`.
+
+Use `isQuasicoherent_unit Z'` as an intermediate fact. Establish `: L.IsQuasicoherent` using `(SheafOfModules.isQuasicoherent Z'.ringCatSheaf).prop_of_iso eL (ProjScheme.isQuasicoherent_twist i (𝟙_ Z'.Modules) (n : ℤ))`. Establish `hL : IsInvertibleSheaf L` using `ProjScheme.isInvertibleSheaf_twistingSheaf i (n : ℤ)`. Establish `hcO' : ((c ⁻¹ᵁ O : Z₁.Opens) : Set Z₁).Nonempty`. Take `⟨o, ho⟩` from `hOne`.
+
+Take `⟨z, hz, -⟩` from `exists_preimage_of_isIso_morphismRestrict c ho`. Conclude with `⟨z, hz⟩`. Take `⟨z, hzU, hzO⟩` from `nonempty_preirreducible_inter U₁.isOpen (c ⁻¹ᵁ O).isOpen hU₁ hcO'`. Take `⟨y, hyU, hyz⟩` from `exists_preimage_of_isIso_morphismRestrict π hzU`. Take `⟨k, W', hyW', hbasis⟩` from `exists_isBasisOn_generatingSection L hL σL y`.
+
+Use `set s : Γ(L, ⊤) := (σL.s k).val (op ⊤)`. Use `set Φ := (Scheme.Modules.pushforward ψ).obj (ProjScheme.twist i G' n)`. Set `α : F ⟶ Φ` to `(Scheme.Modules.pullbackPushforwardAdjunction ψ).unit.app F ≫ (Scheme.Modules.pushforward ψ).map (mulSection G' L s)`. Use `set Wg : Z'.Opens := W' ⊓ π ⁻¹ᵁ (U₁ ⊓ c ⁻¹ᵁ O)`. Use `set Bad : Set X := ψ.base '' (Wg : Set Z')ᶜ ∪ j.base '' (O : Set Z)ᶜ ∪ (c ≫ j).base '' (U₁ : Set Z₁)ᶜ`.
+
+Establish `hBad : IsClosed Bad` using `((ψ.isClosedMap _ Wg.isOpen.isClosed_compl).union (j.isClosedMap _ O.isOpen.isClosed_compl)).union ((c ≫ j).isClosedMap _ U₁.isOpen.isClosed_compl)`. Take `⟨W, hWdef⟩ : ∃ W : X.Opens, (W : Set X) = Badᶜ` from `⟨⟨Badᶜ, hBad.isOpen_compl⟩, rfl⟩`. Establish `hcjinj : Function.Injective (c ≫ j).base` using `(c ≫ j).isClosedEmbedding.injective`. Establish `hjinj : Function.Injective j.base` using `j.isClosedEmbedding.injective`. Establish `hψy : ψ.base y = (c ≫ j).base (π.base y)` using `rfl`.
+
+Establish `hyWg : y ∈ Wg` using `⟨hyW', by`. Express the relevant statement in the definitionally equal form `π.base y ∈ U₁ ⊓ c ⁻¹ᵁ O`. Rewrite using `[hyz]`. Conclude with `⟨hzU, hzO⟩⟩`. Establish `hxW : ψ.base y ∈ W`.
+
+Express the relevant statement in the definitionally equal form `ψ.base y ∈ (W : Set X)`. Rewrite using `[hWdef]`. Introduce and unpack `((⟨y', hy', hyy'⟩ | ⟨o, ho, hoy⟩) | ⟨z', hz', hzy⟩)`. Establish `h1 : π.base y' = π.base y` using `hcjinj hyy'`. Establish `hy'U : y' ∈ π ⁻¹ᵁ U₁`.
+
+Express the relevant statement in the definitionally equal form `π.base y' ∈ U₁`. Rewrite using `[h1, hyz]`. Conclude with `hzU`. Conclude with `hy' (injOn_of_isIso_morphismRestrict π hy'U hyU h1 ▸ hyWg)`. Establish `h1 : o = c.base (π.base y)` using `hjinj hoy`.
+
+Apply `ho` to reduce the goal to its premises. Rewrite using `[h1, hyz]`. Conclude with `hzO`. Establish `h1 : z' = π.base y` using `hcjinj hzy`. Apply `hz'` to reduce the goal to its premises.
+
+Rewrite using `[h1, hyz]`. Conclude with `hzU`. Establish `hψW : ψ ⁻¹ᵁ W ≤ Wg` using `fun y' hy' => by`. Establish `hy' : ψ.base y' ∈ (W : Set X)` using `hy'`. Rewrite `hy'` using `[hWdef]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hy' (Or.inl (Or.inl ⟨y', h, rfl⟩))`. Establish `hjW : j ⁻¹ᵁ W ≤ O` using `fun z' hz' => by`. Establish `hz' : j.base z' ∈ (W : Set X)` using `hz'`. Rewrite `hz'` using `[hWdef]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hz' (Or.inl (Or.inr ⟨z', h, rfl⟩))`. Establish `hcjW : (c ≫ j) ⁻¹ᵁ W ≤ U₁` using `fun z' hz' => by`. Establish `hz' : (c ≫ j).base z' ∈ (W : Set X)` using `hz'`. Rewrite `hz'` using `[hWdef]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hz' (Or.inr ⟨z', h, rfl⟩)`. Establish `hπW : IsIso (π ∣_ ((c ≫ j) ⁻¹ᵁ W))` using `isIso_morphismRestrict_of_le π hcjW`. Establish `: IsClosedImmersion (ψ ∣_ W)`. Establish `h1 : IsClosedImmersion (π ∣_ ((c ≫ j) ⁻¹ᵁ W))` using `@isClosedImmersion_of_isIso' _ _ _ hπW`.
+
+Establish `h2 : IsClosedImmersion ((c ≫ j) ∣_ W)` using `inferInstance`. Rewrite using `[show ψ = π ≫ (c ≫ j) from rfl, morphismRestrict_comp]`. Conclude with `@IsClosedImmersion.comp _ _ _ _ _ h1 h2`. Establish `hkill : ∀ V : X.Opens, IsAffineOpen V → V ≤ W → ∀ a : Γ(X, V), ψ.app V a = 0 → ∀ m : Γ(F, V), a • m = 0`. Introduce `V _ hVW a ha m`.
+
+Establish `hVc : (c ≫ j) ⁻¹ᵁ V ≤ U₁` using `(Scheme.Hom.preimage_mono _ hVW).trans hcjW`. Establish `hVj : j ⁻¹ᵁ V ≤ O` using `(Scheme.Hom.preimage_mono _ hVW).trans hjW`. Establish `hπinj` using `(bijective_app_of_isIso_morphismRestrict π hVc).1`. Establish `hcinj` using `(bijective_app_of_isIso_morphismRestrict c hVj).1`. Establish `hja : j.app V a = 0`.
+
+Apply `hcinj` to reduce the goal to its premises. Apply `hπinj` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Take `⟨m', rfl⟩ : ∃ m', e.hom.app V m' = m` from `⟨e.inv.app V m, by rw [← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, e.inv_hom_id, Scheme.Modules.Hom.id_app, ConcreteCategory.id_apply]⟩`. Establish `h0 : a • m' = 0`.
+
+Rewrite using `[smul_pushforward, hja, zero_smul]`. Both sides reduce to the same expression. Rewrite using `[← Scheme.Modules.Hom.app_smul, h0, map_zero]`. Establish `hunit` using `bijective_unit_app_of_le ψ F W hkill`. Establish `hmul` using `bijective_mulSection_app G' L s hbasis`.
+
+Establish `hα : ∀ V : X.Opens, V ≤ W → Function.Bijective (α.app V)` using `fun V hV => (hmul (ψ ⁻¹ᵁ V) ((Scheme.Hom.preimage_mono _ hV).trans (hψW.trans inf_le_left))).comp (hunit V hV)`. Take `⟨hΦcoh, hΦiso⟩` from `hn₀ n (le_max_left _ _)`. Establish `hΦ : FiniteH.{u} A Φ` using `fun p => by`. Take `⟨e'⟩` from `hΦiso p`. Use `ProjScheme.finite_H.{u} i (ProjScheme.twist i G' n) (isCoherent_tensor_of_invertible hG' hL) p` as an intermediate fact.
+
+Conclude with `Module.Finite.equiv e'`. Establish `hxT : ψ.base y ∈ T`. Rewrite using `[← hST, ← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `⟨c.base (π.base y), rfl⟩`. Establish `hT' : IsClosed (T ∩ (W : Set X)ᶜ)` using `hT.inter W.isOpen.isClosed_compl`.
+
+Establish `hT'T : T ∩ (W : Set X)ᶜ ⊂ T` using `⟨Set.inter_subset_left, fun h => (h hxT).2 hxW⟩`. Establish `hK : FiniteH.{u} A (kernel α)`. Use `hΦcoh.1` as an intermediate fact. Use `IH _ hT' hT'T (kernel α) (isCoherent_kernel α hF) ((hFT.of_mono (kernel.ι α)).inter (kernel_supportedIn α W hα) hT W.isOpen.isClosed_compl)`. Establish `hΦT : Scheme.Modules.SupportedIn Φ T`.
+
+Use `((Scheme.Modules.SupportedIn.univ _).pushforward ψ).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y', -, rfl⟩`. Rewrite using `[← hST, ← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `⟨c.base (π.base y'), rfl⟩`. Establish `hC : FiniteH.{u} A (cokernel α)` using `IH _ hT' hT'T (cokernel α) (isCoherent_cokernel α hΦcoh) ((hΦT.of_epi (cokernel.π α)).inter (cokernel_supportedIn α W hα) hT W.isOpen.isClosed_compl)`.
+
+Conclude with `FiniteH.of_shortExact₂ (kerCoimSC_shortExact α) hK (FiniteH.of_shortExact₁ (coimCokSC_shortExact α) hΦ hC)`.
+-/
 theorem finiteH_step
     (X : Scheme.{u}) [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))]
     (T : Set X) (hT : IsClosed T)
@@ -227,6 +298,11 @@ theorem finiteH_step
   exact FiniteH.of_shortExact₂ (kerCoimSC_shortExact α) hK
     (FiniteH.of_shortExact₁ (coimCokSC_shortExact α) hΦ hC)
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (X ↘ Spec (.of A))`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace (X ↘ Spec (.of A))`. Establish `: IsNoetherian X` using `⟨⟩`. Proceed by induction on `T using WellFoundedLT.induction with`. Consider the case `_ T IH`.
+
+Introduce `F hF hFT`. Use `finiteH_step X T T.isClosed (fun T' hT' hlt F' hF' hF'T' => ?_) F hF hFT` and prove the remaining obligations. Conclude with `IH ⟨T', hT'⟩ hlt F' hF' hF'T'`.
+-/
 theorem finiteH_of_supportedIn
     (X : Scheme.{u}) [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (T : Closeds X) :
     ∀ F : X.Modules, IsCoherent F → Scheme.Modules.SupportedIn F T → FiniteH.{u} A F := by

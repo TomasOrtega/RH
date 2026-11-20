@@ -8,6 +8,9 @@ namespace GlobalTheory.Lin
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology in
 open scoped Classical in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨χ.conductor_ne_zero⟩; (LFunction χ s = 0 ↔ LFunction χ.primitiveCharacter s = 0) ∧ _root_.GlobalTheory.Lin.ord χ s = _root_.GlobalTheory.Lin.ord χ.primitiveCharacter s := by intro q _ χ s hs hχs haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩ set E : ℂ → ℂ := fun z => ∏ p ∈ …`.
+-/
 theorem _root_.GlobalTheory.Lin.zeros_eq_zeros_primitiveCharacter :
     ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ), 0 < s.re → (χ ≠ 1 ∨ s ≠ 1) →
       haveI : NeZero χ.conductor := ⟨χ.conductor_ne_zero⟩;

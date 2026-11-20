@@ -19,6 +19,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Poinc.FibLat GlobalTheory.Poinc.Eq8
 namespace GlobalTheory.LabelTransfer
 
+/- English proof (translation)
+Use `⟨fun z => ?_⟩` and prove the remaining obligations. Take `⟨P, hP0, hPz⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := ℚ_[p]) z`. Use `set κ := algebraMap (FractionRing V) (PadicAlgCl p)`. Establish `hl : P.map (algebraMap ℚ_[p] (PadicAlgCl p)) ∈ Polynomial.lifts κ`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+
+Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `GlobalTheory.PadicUnitBall.padic_mem_range p V hc κ hV _`. Take `⟨P', hP'⟩` from `hl`. Rewrite `hP'` using `[Polynomial.coe_mapRingHom]`.
+
+Use `⟨P', fun h => hP0 ?_, ?_⟩` and prove the remaining obligations. Establish `: P.map (algebraMap ℚ_[p] (PadicAlgCl p)) = 0` using `by rw [← hP', h, Polynomial.map_zero]`. Conclude with `(Polynomial.map_eq_zero_iff (algebraMap ℚ_[p] (PadicAlgCl p)).injective).1 this`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval z (P'.map κ) = 0`.
+
+Rewrite using `[hP', ← Polynomial.eval₂_eq_eval_map, ← Polynomial.aeval_def, hPz]`.
+-/
 theorem isAlgebraic_padicAlgCl (p : ℕ) [Fact p.Prime] (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CharZero V] (hc : IsAdicComplete (IsLocalRing.maximalIdeal V) V)
     [Algebra (FractionRing V) (PadicAlgCl p)]
@@ -46,6 +55,19 @@ end GlobalTheory.LabelTransfer
 
 namespace GlobalTheory.LabelTransfer
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ p _ y₀ u eA s H F _ _ _ k hk _ q q' a a' hq hq' haa`. Use `haveI : CharZero (FractionRing u.V) := (algebraMap (FractionRing u.V) (PadicAlgCl p)).charZero`. Use `haveI : CharZero u.V := (algebraMap u.V (FractionRing u.V)).charZero`. Use `haveI : Algebra.IsAlgebraic (FractionRing u.V) (PadicAlgCl p) := isAlgebraic_padicAlgCl p u.V u.complete u.norm_le`. Set `emb : PadicAlgCl p →ₐ[FractionRing u.V] F` to `IsAlgClosed.lift`.
+
+Use `letI : Algebra (PadicAlgCl p) F := emb.toRingHom.toAlgebra`. Use `haveI : IsScalarTower (FractionRing u.V) (PadicAlgCl p) F := IsScalarTower.of_algebraMap_eq fun c => (emb.commutes c).symm`. Establish `hf : (algebraMap (PadicAlgCl p) F).comp (algebraMap (FractionRing u.V) (PadicAlgCl p)) = algebraMap (FractionRing u.V) F` using `(IsScalarTower.algebraMap_eq _ _ _).symm`. Establish `hk0 : ((k : ℕ) : PadicAlgCl p) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨q₀, hq₀⟩` from `GlobalTheory.QkClosure.exists_qkExt_descent (algebraMap (PadicAlgCl p) F) hf hk0 q`.
+
+Take `⟨q₀', hq₀'⟩` from `GlobalTheory.QkClosure.exists_qkExt_descent (algebraMap (PadicAlgCl p) F) hf hk0 q'`. Take `⟨f₀, hf₀, -⟩` from `GlobalTheory.ZH.uTors_closed u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) k hk`. Take `⟨f₁, hf₁, -⟩` from `GlobalTheory.ZH.uTors_closed u.V u.complete u.A u.G u.D u.U F k hk`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Establish `e₁ : QkToAkU u.U.toUnifPre F k q (GlobalTheory.TorsionExt.fieldMap (PadicAlgCl p) F ≫ f₀ q₀)` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow u.U hk hq₀ _).1 ((hf₀ _ _).2 rfl)`.
+
+Establish `e₂ : QkToAkU u.U.toUnifPre F k q' (GlobalTheory.TorsionExt.fieldMap (PadicAlgCl p) F ≫ f₀ q₀')` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow u.U hk hq₀' _).1 ((hf₀ _ _).2 rfl)`. Establish `ha : a = GlobalTheory.TorsionExt.fieldMap (PadicAlgCl p) F ≫ f₀ q₀` using `((hf₁ _ _).1 hq).trans ((hf₁ _ _).1 e₁).symm`. Establish `ha' : a' = GlobalTheory.TorsionExt.fieldMap (PadicAlgCl p) F ≫ f₀ q₀'` using `((hf₁ _ _).1 hq').trans ((hf₁ _ _).1 e₂).symm`. Establish `hepi : Epi (GlobalTheory.TorsionExt.fieldMap (R` using `u.V) (PadicAlgCl p) F).left := by`. Establish `: Flat (GlobalTheory.TorsionExt.fieldMap (R` using `u.V) (PadicAlgCl p) F).left := inferInstanceAs (Flat (Spec.map (CommRingCat.ofHom (algebraMap (PadicAlgCl p) F))))`.
+
+Establish `: Surjective (GlobalTheory.TorsionExt.fieldMap (R` using `u.V) (PadicAlgCl p) F).left := ⟨fun z => ⟨(default : PrimeSpectrum F), Subsingleton.elim (α := PrimeSpectrum (PadicAlgCl p)) _ _⟩⟩`. Establish `: QuasiCompact (GlobalTheory.TorsionExt.fieldMap (R` using `u.V) (PadicAlgCl p) F).left := inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom (algebraMap (PadicAlgCl p) F))))`. Conclude with `Flat.epi_of_flat_of_surjective _`. Establish `hx : (f₀ q₀).left = (f₀ q₀').left ≫ eA.left`. Rewrite `haa` using `[ha, ha', Over.comp_left, Over.comp_left, Category.assoc]`.
+
+Conclude with `(cancel_epi _).1 haa`. Use `H k q₀' q₀ (f₀ q₀') (f₀ q₀) hk ((hf₀ _ _).2 rfl) ((hf₀ _ _).2 rfl) hx` as an intermediate fact. Rewrite using `[hq₀.1, hq₀'.1]`. Conclude with `this`.
+-/
 theorem main : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (eA : u.A.A ⟶ u.A.A) (s : u.D.toPre.X →+ u.D.toPre.X), (∀ (m : ℕ) (pk pk' : QkPt u.D.toPre (PadicAlgCl p) m) (x x' : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), 1 ≤ m → QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk x → QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk' x' → x'.left = x.left ≫ eA.left → CongMod m pk'.y (s pk.y)) → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing u.V) F] (k : ℕ), 1 ≤ k → IsUnit (k : u.V) → ∀ (q q' : QkPt u.D.toPre F k) (a a' : TFK (R := u.V) F ⟶ u.A.A), QkToAkU u.U.toUnifPre F k q a → QkToAkU u.U.toUnifPre F k q' a' → a.left = a'.left ≫ eA.left → CongMod k q.y (s q'.y) := by
   intro o Ω _ _ _ S ρ p _ y₀ u eA s H F _ _ _ k hk _ q q' a a' hq hq' haa
   haveI : CharZero (FractionRing u.V) := (algebraMap (FractionRing u.V) (PadicAlgCl p)).charZero

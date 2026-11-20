@@ -12,11 +12,21 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 section Ring
 variable {ι : Type}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(unfold IntegralMv DivByMv; simp)`. Consider the case `simp [IntegralMv, DivByMv]`.
+-/
 theorem integralMv_iff_divBy_one (F : MvPowerSeries ι K) : IntegralMv F ↔ DivByMv (1 : K) F := by
   first
   | exact Iff.rfl
   | (unfold IntegralMv DivByMv; simp)
   | simp [IntegralMv, DivByMv]
+/- English proof (translation)
+Rewrite using `[integralMv_iff_divBy_one]`. Unfold `IntegralPS DivByMv`. Prove the components needed by the constructor for the conclusion. Introduce `h d`. Establish `hd : d = Finsupp.single () (d ())`.
+
+Use `Finsupp.ext fun u => ?_` and prove the remaining obligations. Consider the cases of `u`. Simplify using the standard rewrite rules. Rewrite using `[hd, norm_one]`. Conclude with `h (d ())`.
+
+Introduce `h n`. Use `h (Finsupp.single () n)` as an intermediate fact. Rewrite `this` using `[norm_one]`. Conclude with `this`.
+-/
 theorem integralPS_iff_mv (f : PowerSeries K) : IntegralPS f ↔ IntegralMv (ι := Unit) f := by
   rw [integralMv_iff_divBy_one]
   unfold IntegralPS DivByMv
@@ -32,6 +42,13 @@ theorem integralPS_iff_mv (f : PowerSeries K) : IntegralPS f ↔ IntegralMv (ι 
     have := h (Finsupp.single () n)
     rw [norm_one] at this
     exact this
+/- English proof (translation)
+Unfold `DivBy DivByMv`. Prove the components needed by the constructor for the conclusion. Introduce `h d`. Establish `hd : d = Finsupp.single () (d ())`. Use `Finsupp.ext fun u => ?_` and prove the remaining obligations.
+
+Consider the cases of `u`. Simplify using the standard rewrite rules. Rewrite using `[hd]`. Conclude with `h (d ())`. Introduce `h n`.
+
+Conclude with `h (Finsupp.single () n)`.
+-/
 theorem divBy_iff_mv (x : K) (f : PowerSeries K) : DivBy x f ↔ DivByMv (ι := Unit) x f := by
   unfold DivBy DivByMv
   constructor
@@ -44,25 +61,42 @@ theorem divBy_iff_mv (x : K) (f : PowerSeries K) : DivBy x f ↔ DivByMv (ι := 
     exact h (d ())
   · intro h n
     exact h (Finsupp.single () n)
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_zero, norm_zero]`. Conclude with `norm_nonneg _`.
+-/
 theorem divByMv_zero (x : K) : DivByMv x (0 : MvPowerSeries ι K) := by
   intro d
   rw [map_zero, norm_zero]
   exact norm_nonneg _
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hF d) (hG d))`.
+-/
 theorem divByMv_add {x : K} {F G : MvPowerSeries ι K} (hF : DivByMv x F) (hG : DivByMv x G) :
     DivByMv x (F + G) := by
   intro d
   rw [map_add]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hF d) (hG d))
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_sub, sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hF d) (by rw [norm_neg]; exact hG d))`.
+-/
 theorem divByMv_sub {x : K} {F G : MvPowerSeries ι K} (hF : DivByMv x F) (hG : DivByMv x G) :
     DivByMv x (F - G) := by
   intro d
   rw [map_sub, sub_eq_add_neg]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans
     (max_le (hF d) (by rw [norm_neg]; exact hG d))
+/- English proof (translation)
+Introduce `d`. Rewrite using `[map_neg, norm_neg]`. Conclude with `hF d`.
+-/
 theorem divByMv_neg {x : K} {F : MvPowerSeries ι K} (hF : DivByMv x F) : DivByMv x (-F) := by
   intro d
   rw [map_neg, norm_neg]
   exact hF d
+/- English proof (translation)
+Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul, norm_mul]`. Use `Finset.sum_induction _ (fun z : K => ‖z‖ ≤ ‖x‖ * ‖y‖) (fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)) (by rw [norm_zero]; positivity) ?_` and prove the remaining obligations. Introduce `p _`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hF _) (hG _) (norm_nonneg _) (norm_nonneg _)`.
+-/
 theorem divByMv_mul {x y : K} {F G : MvPowerSeries ι K} (hF : DivByMv x F) (hG : DivByMv y G) :
     DivByMv (x * y) (F * G) := by
   classical
@@ -74,38 +108,66 @@ theorem divByMv_mul {x y : K} {F G : MvPowerSeries ι K} (hF : DivByMv x F) (hG 
   intro p _
   rw [norm_mul]
   exact mul_le_mul (hF _) (hG _) (norm_nonneg _) (norm_nonneg _)
+/- English proof (translation)
+Establish `h` using `divByMv_mul ((integralMv_iff_divBy_one F).mp hF) hG`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem divByMv_mul_left {x : K} {F G : MvPowerSeries ι K} (hF : IntegralMv F) (hG : DivByMv x G) :
     DivByMv x (F * G) := by
   have h := divByMv_mul ((integralMv_iff_divBy_one F).mp hF) hG
   rwa [one_mul] at h
+/- English proof (translation)
+Conclude with `Finset.sum_induction _ (DivByMv x) (fun _ _ => divByMv_add) (divByMv_zero x) hF`.
+-/
 theorem divByMv_sum {x : K} {α : Type} (s : Finset α) (F : α → MvPowerSeries ι K)
     (hF : ∀ i ∈ s, DivByMv x (F i)) : DivByMv x (∑ i ∈ s, F i) := by
   exact Finset.sum_induction _ (DivByMv x) (fun _ _ => divByMv_add) (divByMv_zero x) hF
+/- English proof (translation)
+Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integralMv_one : IntegralMv (1 : MvPowerSeries ι K) := by
   classical
   refine (integralMv_iff_divBy_one _).mpr fun d => ?_
   rw [MvPowerSeries.coeff_one]
   split_ifs <;> simp
+/- English proof (translation)
+Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem integralMv_X (i : ι) : IntegralMv (MvPowerSeries.X i : MvPowerSeries ι K) := by
   classical
   refine (integralMv_iff_divBy_one _).mpr fun d => ?_
   rw [MvPowerSeries.coeff_X]
   split_ifs <;> simp
+/- English proof (translation)
+Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C]`. Apply the tactic sequence `split_ifs <;> simp [hc]`.
+-/
 theorem integralMv_C {c : K} (hc : ‖c‖ ≤ 1) : IntegralMv (MvPowerSeries.C c : MvPowerSeries ι K) := by
   classical
   refine (integralMv_iff_divBy_one _).mpr fun d => ?_
   rw [MvPowerSeries.coeff_C]
   split_ifs <;> simp [hc]
+/- English proof (translation)
+Rewrite `*` using `[integralMv_iff_divBy_one]`. Establish `h` using `divByMv_mul hF hG`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem integralMv_mul {F G : MvPowerSeries ι K} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) := by
   rw [integralMv_iff_divBy_one] at *
   have h := divByMv_mul hF hG
   rwa [one_mul] at h
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `integralMv_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `integralMv_mul ih hF`.
+-/
 theorem integralMv_pow {F : MvPowerSeries ι K} (hF : IntegralMv F) (n : ℕ) : IntegralMv (F ^ n) := by
   induction n with
   | zero => rw [pow_zero]; exact integralMv_one
   | succ n ih => rw [pow_succ]; exact integralMv_mul ih hF
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨x⁻¹ • F, ?_, by rw [smul_smul, mul_inv_cancel₀ hx, one_smul]⟩` and prove the remaining obligations. Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_smul, norm_mul, norm_inv, norm_one, inv_mul_le_iff₀ (norm_pos_iff.mpr hx), mul_one]`.
+
+Conclude with `h d`. Introduce and unpack `⟨G, hG, rfl⟩ d`. Establish `h1` using `(integralMv_iff_divBy_one G).mp hG d`. Rewrite `h1` using `[norm_one]`. Rewrite using `[MvPowerSeries.coeff_smul, norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divByMv_iff_smul {x : K} (hx : x ≠ 0) (F : MvPowerSeries ι K) :
     DivByMv x F ↔ ∃ G : MvPowerSeries ι K, IntegralMv G ∧ F = x • G := by
   constructor
@@ -126,27 +188,54 @@ end Ring
 
 section OneVar
 
+/- English proof (translation)
+The claim follows from `(divBy_iff_mv _ _).mpr (divByMv_add ((divBy_iff_mv _ _).mp hf) ((divBy_iff_mv _ _).mp hg))`.
+-/
 theorem divBy_add {x : K} {f g : PowerSeries K} (hf : DivBy x f) (hg : DivBy x g) :
     DivBy x (f + g) :=
   (divBy_iff_mv _ _).mpr (divByMv_add ((divBy_iff_mv _ _).mp hf) ((divBy_iff_mv _ _).mp hg))
+/- English proof (translation)
+The claim follows from `(divBy_iff_mv _ _).mpr (divByMv_neg ((divBy_iff_mv _ _).mp hf))`.
+-/
 theorem divBy_neg {x : K} {f : PowerSeries K} (hf : DivBy x f) : DivBy x (-f) :=
   (divBy_iff_mv _ _).mpr (divByMv_neg ((divBy_iff_mv _ _).mp hf))
+/- English proof (translation)
+The claim follows from `(divBy_iff_mv _ _).mpr (divByMv_mul_left ((integralPS_iff_mv _).mp hf) ((divBy_iff_mv _ _).mp hg))`.
+-/
 theorem divBy_mul_left {x : K} {f g : PowerSeries K} (hf : IntegralPS f) (hg : DivBy x g) :
     DivBy x (f * g) :=
   (divBy_iff_mv _ _).mpr (divByMv_mul_left ((integralPS_iff_mv _).mp hf) ((divBy_iff_mv _ _).mp hg))
+/- English proof (translation)
+Rewrite using `[integralPS_iff_mv, integralMv_iff_divBy_one, divBy_iff_mv]`.
+-/
 theorem integralPS_iff_divBy_one (f : PowerSeries K) : IntegralPS f ↔ DivBy (1 : K) f := by
   rw [integralPS_iff_mv, integralMv_iff_divBy_one, divBy_iff_mv]
+/- English proof (translation)
+Conclude with `(integralPS_iff_mv _).mpr (integralMv_X ())`.
+-/
 theorem integralPS_X : IntegralPS (X : PowerSeries K) := by
   exact (integralPS_iff_mv _).mpr (integralMv_X ())
+/- English proof (translation)
+Conclude with `(integralPS_iff_mv _).mpr (integralMv_C hc)`.
+-/
 theorem integralPS_C {c : K} (hc : ‖c‖ ≤ 1) : IntegralPS (C c : PowerSeries K) := by
   exact (integralPS_iff_mv _).mpr (integralMv_C hc)
+/- English proof (translation)
+Rewrite `*` using `[integralPS_iff_mv]`. Conclude with `integralMv_mul hf hg`.
+-/
 theorem integralPS_mul {f g : PowerSeries K} (hf : IntegralPS f) (hg : IntegralPS g) :
     IntegralPS (f * g) := by
   rw [integralPS_iff_mv] at *
   exact integralMv_mul hf hg
+/- English proof (translation)
+Rewrite `*` using `[integralPS_iff_mv]`. Conclude with `integralMv_pow hf n`.
+-/
 theorem integralPS_pow {f : PowerSeries K} (hf : IntegralPS f) (n : ℕ) : IntegralPS (f ^ n) := by
   rw [integralPS_iff_mv] at *
   exact integralMv_pow hf n
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `push_cast`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))`.
+-/
 private theorem norm_natCast_le_one_unramified_integrals (n : ℕ) : ‖(n : K)‖ ≤ 1 := by
   induction n with
   | zero => simp
@@ -154,6 +243,11 @@ private theorem norm_natCast_le_one_unramified_integrals (n : ℕ) : ‖(n : K)�
     push_cast
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))
 
+/- English proof (translation)
+Unfold `DivBy at hf ⊢`. Introduce `n`. Rewrite using `[PowerSeries.coeff_derivative, norm_mul]`. Establish `h1 : ‖((n : K) + 1)‖ ≤ 1`. Use `norm_natCast_le_one_unramified_integrals (K := K) (n + 1)` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divBy_derivative {x : K} {f : PowerSeries K} (hf : DivBy x f) :
     DivBy x (derivative K f) := by
   unfold DivBy at hf ⊢
@@ -166,11 +260,21 @@ theorem divBy_derivative {x : K} {f : PowerSeries K} (hf : DivBy x f) :
   calc ‖coeff (n + 1) f‖ * ‖((n : K) + 1)‖ ≤ ‖x‖ * 1 :=
         mul_le_mul (hf _) h1 (norm_nonneg _) (norm_nonneg _)
     _ = ‖x‖ := mul_one _
+/- English proof (translation)
+Rewrite `*` using `[integralPS_iff_divBy_one]`. Conclude with `divBy_derivative hf`.
+-/
 theorem integralPS_derivative {f : PowerSeries K} (hf : IntegralPS f) :
     IntegralPS (derivative K f) := by
   rw [integralPS_iff_divBy_one] at *
   exact divBy_derivative hf
 
+/- English proof (translation)
+Unfold `IntegralPS at hf ⊢`. Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih`. Rewrite using `[PowerSeries.coeff_inv]`.
+
+Use `split_ifs with hn`. Rewrite using `[norm_inv, h0, inv_one]`. Rewrite using `[norm_mul, norm_neg, norm_inv, h0, inv_one, one_mul]`. Use `Finset.sum_induction _ (fun z : K => ‖z‖ ≤ 1) (fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)) (by rw [norm_zero]; exact zero_le_one) ?_` and prove the remaining obligations. Introduce `p _`.
+
+Use `split_ifs with hlt`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (ih _ hlt)`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem integralPS_inv {f : PowerSeries K} (hf : IntegralPS f) (h0 : ‖constantCoeff f‖ = 1) :
     IntegralPS f⁻¹ := by
   unfold IntegralPS at hf ⊢
@@ -191,6 +295,11 @@ theorem integralPS_inv {f : PowerSeries K} (hf : IntegralPS f) (h0 : ‖constant
     · rw [norm_zero]
       exact zero_le_one
 
+/- English proof (translation)
+Establish `hf0 : constantCoeff f ≠ 0`. Introduce `hz`. Rewrite `h0` using `[hz, norm_zero]`. Conclude with `zero_ne_one h0`. Establish `e : g = f⁻¹ * (f * g)` using `by rw [← mul_assoc, PowerSeries.inv_mul_cancel _ hf0, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `divBy_mul_left (integralPS_inv hf h0) h`.
+-/
 theorem divBy_of_mul_unit {x : K} {f g : PowerSeries K} (hf : IntegralPS f)
     (h0 : ‖constantCoeff f‖ = 1) (h : DivBy x (f * g)) : DivBy x g := by
   have hf0 : constantCoeff f ≠ 0 := by
@@ -200,6 +309,13 @@ theorem divBy_of_mul_unit {x : K} {f g : PowerSeries K} (hf : IntegralPS f)
   have e : g = f⁻¹ * (f * g) := by rw [← mul_assoc, PowerSeries.inv_mul_cancel _ hf0, one_mul]
   rw [e]
   exact divBy_mul_left (integralPS_inv hf h0) h
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst ((X : PowerSeries K) ^ k)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hk])`. Rewrite using `[PowerSeries.coeff_subst' ha]`. Simplify using `only [← pow_mul, PowerSeries.coeff_X_pow]`. Use `split_ifs with hd`. Take `⟨q, rfl⟩` from `hd`.
+
+Rewrite using `[finsum_eq_single _ q]`. Simplify using `[Nat.mul_div_cancel_left q (Nat.pos_of_ne_zero hk)]`. Introduce `d hd`. Establish `: k * q ≠ k * d` using `fun h => hd (Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hk) h).symm`. Simplify using `[this]`.
+
+Rewrite using `[finsum_eq_zero_of_forall_eq_zero]`. Introduce `d`. Establish `: m ≠ k * d` using `fun h => hd ⟨d, h⟩`. Simplify using `[this]`.
+-/
 private theorem coeff_subst_X_pow_eq_ite_dvd' (f : PowerSeries K) {k : ℕ} (hk : k ≠ 0) (m : ℕ) :
     coeff m (f.subst ((X : PowerSeries K) ^ k)) = if k ∣ m then coeff (m / k) f else 0 := by
   have ha : PowerSeries.HasSubst ((X : PowerSeries K) ^ k) :=
@@ -218,6 +334,13 @@ private theorem coeff_subst_X_pow_eq_ite_dvd' (f : PowerSeries K) {k : ℕ} (hk 
     have : m ≠ k * d := fun h => hd ⟨d, h⟩
     simp [this]
 
+/- English proof (translation)
+Unfold `DivBy`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Use `h (n * m)` as an intermediate fact. Rewrite `this` using `[coeff_subst_X_pow_eq_ite_dvd' f hn, if_pos (dvd_mul_right n m), Nat.mul_div_cancel_left m (Nat.pos_of_ne_zero hn)]`. Then use the resulting hypothesis.
+
+Introduce `h m`. Rewrite using `[coeff_subst_X_pow_eq_ite_dvd' f hn]`. Use `split_ifs`. Conclude with `h _`. Rewrite using `[norm_zero]`.
+
+Conclude with `norm_nonneg _`.
+-/
 theorem divBy_expand_iff (x : K) (n : ℕ) (hn : n ≠ 0) (f : PowerSeries K) :
     DivBy x (f.subst ((X : PowerSeries K) ^ n)) ↔ DivBy x f := by
   unfold DivBy
@@ -232,6 +355,13 @@ theorem divBy_expand_iff (x : K) (n : ℕ) (hn : n ≠ 0) (f : PowerSeries K) :
     · exact h _
     · rw [norm_zero]
       exact norm_nonneg _
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h d`. Use `h (n • d)` as an intermediate fact. Rewrite `this` using `[MvPowerSeries.coeff_expand_smul]`. Then use the resulting hypothesis. Introduce `h d`.
+
+Distinguish the cases in `hd : ∀ i, n ∣ d i`. Establish `e : d = n • Finsupp.mapRange (fun k => k / n) (Nat.zero_div n) d`. Use extensionality with `i`. Simplify using `[Nat.mul_div_cancel' (hd i)]`. Rewrite using `[e, MvPowerSeries.coeff_expand_smul]`.
+
+Conclude with `h _`. Use `push_neg at hd`. Take `⟨i, hi⟩` from `hd`. Rewrite using `[MvPowerSeries.coeff_expand_of_not_dvd n hn F hi, norm_zero]`. Conclude with `norm_nonneg _`.
+-/
 theorem divByMv_expand_iff {ι : Type} (x : K) (n : ℕ) (hn : n ≠ 0) (F : MvPowerSeries ι K) :
     DivByMv x (MvPowerSeries.expand n hn F) ↔ DivByMv x F := by
   classical
@@ -256,6 +386,9 @@ end OneVar
 section Subst
 variable {ι : Type}
 
+/- English proof (translation)
+Distinguish the cases in `hs : (Function.support g).Finite`. Rewrite using `[finsum_eq_sum g hs]`. Conclude with `Finset.sum_induction _ (fun z : K => ‖z‖ ≤ C) (fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)) (by rw [norm_zero]; exact hC) (fun i _ => h i)`. Rewrite using `[finsum_of_infinite_support hs, norm_zero]`. Conclude with `hC`.
+-/
 private theorem norm_finsum_le_of_forall_norm_le {α : Type} (g : α → K) {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ i, ‖g i‖ ≤ C) : ‖∑ᶠ i, g i‖ ≤ C := by
   by_cases hs : (Function.support g).Finite
@@ -266,6 +399,13 @@ private theorem norm_finsum_le_of_forall_norm_le {α : Type} (g : α → K) {C :
   · rw [finsum_of_infinite_support hs, norm_zero]
     exact hC
 
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst P` using `PowerSeries.HasSubst.of_constantCoeff_zero hP0`. Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[norm_one]`. Establish `hf' : ∀ k, ‖coeff k f‖ ≤ 1` using `hf`. Establish `hPk : ∀ k, ‖MvPowerSeries.coeff d (P ^ k)‖ ≤ 1` using `fun k => by`.
+
+Establish `h1` using `(integralMv_iff_divBy_one _).mp (integralMv_pow hP k) d`. Rewrite `h1` using `[norm_one]`. Then use the resulting hypothesis. Use `first`. Consider the case `rw [PowerSeries.coeff_subst ha]`. Consider the case `rw [PowerSeries.coeff_subst' ha]`.
+
+Conclude with `norm_finsum_le_of_forall_norm_le _ zero_le_one fun k => by`. Rewrite using `[smul_eq_mul, norm_mul]`. Conclude with `mul_le_one₀ (hf' k) (norm_nonneg _) (hPk k)`.
+-/
 theorem integralMv_subst {f : PowerSeries K} {P : MvPowerSeries ι K} (hf : IntegralPS f)
     (hP0 : MvPowerSeries.constantCoeff P = 0) (hP : IntegralMv P) : IntegralMv (f.subst P) := by
   have ha : PowerSeries.HasSubst P := PowerSeries.HasSubst.of_constantCoeff_zero hP0
@@ -281,6 +421,13 @@ theorem integralMv_subst {f : PowerSeries K} {P : MvPowerSeries ι K} (hf : Inte
   exact norm_finsum_le_of_forall_norm_le _ zero_le_one fun k => by
     rw [smul_eq_mul, norm_mul]
     exact mul_le_one₀ (hf' k) (norm_nonneg _) (hPk k)
+/- English proof (translation)
+Establish `ha : PowerSeries.HasSubst P` using `PowerSeries.HasSubst.of_constantCoeff_zero hP0`. Introduce `d`. Establish `hf' : ∀ k, ‖coeff k f‖ ≤ ‖x‖` using `hf`. Establish `hPk : ∀ k, ‖MvPowerSeries.coeff d (P ^ k)‖ ≤ 1` using `fun k => by`. Establish `h1` using `(integralMv_iff_divBy_one _).mp (integralMv_pow hP k) d`.
+
+Rewrite `h1` using `[norm_one]`. Then use the resulting hypothesis. Use `first`. Consider the case `rw [PowerSeries.coeff_subst ha]`. Consider the case `rw [PowerSeries.coeff_subst' ha]`. Conclude with `norm_finsum_le_of_forall_norm_le _ (norm_nonneg _) fun k => by`.
+
+Rewrite using `[smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divByMv_subst {x : K} {f : PowerSeries K} {P : MvPowerSeries ι K} (hf : DivBy x f)
     (hP0 : MvPowerSeries.constantCoeff P = 0) (hP : IntegralMv P) : DivByMv x (f.subst P) := by
   have ha : PowerSeries.HasSubst P := PowerSeries.HasSubst.of_constantCoeff_zero hP0
@@ -298,6 +445,17 @@ theorem divByMv_subst {x : K} {f : PowerSeries K} {P : MvPowerSeries ι K} (hf :
           mul_le_mul (hf' k) (hPk k) (norm_nonneg _) (norm_nonneg _)
       _ = ‖x‖ := mul_one _
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `hPQ' : P = Q`. Use extensionality with `d`. Establish `h1` using `hPQ d`.
+
+Rewrite `h1` using `[norm_zero, map_sub]`. Conclude with `sub_eq_zero.mp (norm_le_zero_iff.mp h1)`. Rewrite using `[hPQ', sub_self]`. Conclude with `divByMv_zero _`. Take `⟨R, hR, hPR⟩` from `(divByMv_iff_smul hx _).mp hPQ`.
+
+Establish `haP : PowerSeries.HasSubst P` using `PowerSeries.HasSubst.of_constantCoeff_zero hP0`. Establish `haQ : PowerSeries.HasSubst Q` using `PowerSeries.HasSubst.of_constantCoeff_zero hQ0`. Establish `hf' : ∀ k, ‖coeff k f‖ ≤ 1` using `hf`. Introduce `d`. Establish `hfinP` using `PowerSeries.coeff_subst_finite haP f d`.
+
+Establish `hfinQ` using `PowerSeries.coeff_subst_finite haQ f d`. Rewrite using `[map_sub, PowerSeries.coeff_subst haP, PowerSeries.coeff_subst haQ, ← finsum_sub_distrib hfinP hfinQ]`. Use `norm_finsum_le_of_forall_norm_le _ (norm_nonneg _) fun k => ?_` and prove the remaining obligations. Establish `hG : IntegralMv (∑ i ∈ Finset.range k, P ^ i * Q ^ (k - 1 - i))`. Rewrite using `[integralMv_iff_divBy_one]`.
+
+Conclude with `divByMv_sum _ _ fun i _ => (integralMv_iff_divBy_one _).mp (integralMv_mul (integralMv_pow hP i) (integralMv_pow hQ _))`. Establish `hGR` using `(integralMv_iff_divBy_one _).mp (integralMv_mul hG hR) d`. Rewrite `hGR` using `[norm_one]`. Rewrite using `[smul_eq_mul, smul_eq_mul, ← mul_sub, ← map_sub, ← geom_sum₂_mul, hPR, mul_smul_comm, MvPowerSeries.coeff_smul, norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divByMv_subst_congr {x : K} (hx : ‖x‖ ≤ 1) {f : PowerSeries K} {P Q : MvPowerSeries ι K}
     (hf : IntegralPS f) (hP0 : MvPowerSeries.constantCoeff P = 0)
     (hQ0 : MvPowerSeries.constantCoeff Q = 0) (hP : IntegralMv P) (hQ : IntegralMv Q)
@@ -333,6 +491,13 @@ theorem divByMv_subst_congr {x : K} (hx : ‖x‖ ≤ 1) {f : PowerSeries K} {P 
       ≤ 1 * (‖x‖ * 1) := mul_le_mul (hf' k) (mul_le_mul_of_nonneg_left hGR (norm_nonneg _))
         (by positivity) zero_le_one
     _ = ‖x‖ := by ring
+/- English proof (translation)
+Establish `ha : MvPowerSeries.HasSubst P` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hP0`. Consider the case `exact ⟨fun s => by rw [hP0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `hprod : ∀ e : Fin 2 →₀ ℕ, IntegralMv (e.prod fun s k => P s ^ k)`. Introduce `e`.
+
+Unfold `Finsupp.prod`. Conclude with `Finset.prod_induction _ IntegralMv (fun _ _ => integralMv_mul) integralMv_one (fun s _ => integralMv_pow (hP s) _)`. Introduce `d`. Rewrite using `[MvPowerSeries.coeff_subst ha]`. Conclude with `norm_finsum_le_of_forall_norm_le _ (norm_nonneg _) fun e => by`.
+
+Rewrite using `[smul_eq_mul, norm_mul]`. Establish `h1` using `(integralMv_iff_divBy_one _).mp (hprod e) d`. Rewrite `h1` using `[norm_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divByMv_subst2 {x : K} {F : MvPowerSeries (Fin 2) K} {P : Fin 2 → MvPowerSeries ι K}
     (hF : DivByMv x F) (hP0 : ∀ i, MvPowerSeries.constantCoeff (P i) = 0)
     (hP : ∀ i, IntegralMv (P i)) : DivByMv x (F.subst P) := by
@@ -354,11 +519,25 @@ theorem divByMv_subst2 {x : K} {F : MvPowerSeries (Fin 2) K} {P : Fin 2 → MvPo
     calc ‖MvPowerSeries.coeff e F‖ * ‖MvPowerSeries.coeff d (e.prod fun s k => P s ^ k)‖
         ≤ ‖x‖ * 1 := mul_le_mul (hF e) h1 (norm_nonneg _) (norm_nonneg _)
       _ = ‖x‖ := mul_one _
+/- English proof (translation)
+Rewrite `hF`, the goal using `[integralMv_iff_divBy_one]`. Conclude with `divByMv_subst2 hF hP0 hP`.
+-/
 theorem integralMv_subst2 {F : MvPowerSeries (Fin 2) K} {P : Fin 2 → MvPowerSeries ι K}
     (hF : IntegralMv F) (hP0 : ∀ i, MvPowerSeries.constantCoeff (P i) = 0)
     (hP : ∀ i, IntegralMv (P i)) : IntegralMv (F.subst P) := by
   rw [integralMv_iff_divBy_one] at hF ⊢
   exact divByMv_subst2 hF hP0 hP
+/- English proof (translation)
+Establish `haP : MvPowerSeries.HasSubst P` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hP0`. Consider the case `exact ⟨fun s => by rw [hP0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `haQ : MvPowerSeries.HasSubst Q` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero hQ0`.
+
+Consider the case `exact ⟨fun s => by rw [hQ0 s]; exact IsNilpotent.zero, fun _ => Set.toFinite _⟩`. Establish `hpow : ∀ i k, DivByMv x (P i ^ k - Q i ^ k)`. Introduce `i k`. Rewrite using `[← geom_sum₂_mul]`. Use `divByMv_mul_left ?_ (hPQ i)` and prove the remaining obligations.
+
+Rewrite using `[integralMv_iff_divBy_one]`. Conclude with `divByMv_sum _ _ fun j _ => (integralMv_iff_divBy_one _).mp (integralMv_mul (integralMv_pow (hP i) j) (integralMv_pow (hQ i) _))`. Establish `hprod : ∀ e : Fin 2 →₀ ℕ, DivByMv x ((e.prod fun s k => P s ^ k) - e.prod fun s k => Q s ^ k)`. Introduce `e`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two, Fin.prod_univ_two]`.
+
+Establish `e2 : P 0 ^ e 0 * P 1 ^ e 1 - Q 0 ^ e 0 * Q 1 ^ e 1 = P 0 ^ e 0 * (P 1 ^ e 1 - Q 1 ^ e 1) + Q 1 ^ e 1 * (P 0 ^ e 0 - Q 0 ^ e 0)` using `by ring`. Rewrite using `[e2]`. Conclude with `divByMv_add (divByMv_mul_left (integralMv_pow (hP 0) _) (hpow 1 _)) (divByMv_mul_left (integralMv_pow (hQ 1) _) (hpow 0 _))`. Introduce `d`. Rewrite using `[map_sub, MvPowerSeries.coeff_subst haP, MvPowerSeries.coeff_subst haQ, ← finsum_sub_distrib (MvPowerSeries.coeff_subst_finite haP F d) (MvPowerSeries.coeff_subst_finite haQ F d)]`.
+
+Use `norm_finsum_le_of_forall_norm_le _ (norm_nonneg _) fun e => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, smul_eq_mul, ← mul_sub, ← map_sub, norm_mul]`. Establish `h1` using `(integralMv_iff_divBy_one F).mp hF e`. Rewrite `h1` using `[norm_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divByMv_subst2_congr {x : K} (hx : ‖x‖ ≤ 1) {F : MvPowerSeries (Fin 2) K}
     {P Q : Fin 2 → MvPowerSeries ι K} (hF : IntegralMv F)
     (hP0 : ∀ i, MvPowerSeries.constantCoeff (P i) = 0)
@@ -408,12 +587,28 @@ end Subst
 section Frob
 variable {l : ℕ} {σ : K →+* K} {ι : Type}
 
+/- English proof (translation)
+Use `(integralMv_iff_divBy_one _).mpr fun d => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map, h.isom]`. Conclude with `(integralMv_iff_divBy_one F).mp hF d`.
+-/
 theorem FrobField.integralMv_map (h : FrobField K l σ) {F : MvPowerSeries ι K} (hF : IntegralMv F) :
     IntegralMv (MvPowerSeries.map σ F) := by
   refine (integralMv_iff_divBy_one _).mpr fun d => ?_
   rw [MvPowerSeries.coeff_map, h.isom]
   exact (integralMv_iff_divBy_one F).mp hF d
 
+/- English proof (translation)
+Establish `hint : ∀ a : ℤ, ‖(a : K)‖ ≤ 1`. Introduce `a`. Break down `Int.eq_nat_or_neg a with ⟨n, rfl | rfl⟩` into its components or cases. Use `push_cast`. Conclude with `norm_natCast_le_one_unramified_integrals n`.
+
+Use `push_cast`. Rewrite using `[norm_neg]`. Conclude with `norm_natCast_le_one_unramified_integrals n`. Establish `hcop : Nat.gcd m l = 1` using `((Nat.Prime.coprime_iff_not_dvd hl).mpr hm).symm`. Establish `hb` using `Nat.gcd_eq_gcd_ab m l`.
+
+Rewrite `hb` using `[hcop]`. Establish `hbK : (1 : K) = (m : K) * (Nat.gcdA m l : K) + (l : K) * (Nat.gcdB m l : K)`. Use `congrArg (fun z : ℤ => (z : K)) hb` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+
+Use `le_antisymm (norm_natCast_le_one_unramified_integrals m) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h1` using `IsUltrametricDist.norm_add_le_max ((m : K) * (Nat.gcdA m l : K)) ((l : K) * (Nat.gcdB m l : K))`. Rewrite `h1` using `[← hbK, norm_one]`.
+
+Establish `h2 : ‖(m : K) * (Nat.gcdA m l : K)‖ < 1`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖(l : K) * (Nat.gcdB m l : K)‖ < 1`. Rewrite using `[norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_irrefl _ (lt_of_le_of_lt h1 (max_lt h2 h3))`.
+-/
 theorem norm_natCast_of_coprime (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) (m : ℕ) (hm : ¬ l ∣ m) :
     ‖(m : K)‖ = 1 := by
   have hint : ∀ a : ℤ, ‖(a : K)‖ ≤ 1 := by
@@ -448,6 +643,9 @@ theorem norm_natCast_of_coprime (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) (m : �
           mul_le_mul_of_nonneg_left (hint _) (norm_nonneg _)
       _ < 1 := by rw [mul_one]; exact hl1
   exact lt_irrefl _ (lt_of_le_of_lt h1 (max_lt h2 h3))
+/- English proof (translation)
+Use `⟨h.prime, ⟨1, one_pos, (pow_one l).symm⟩, h.norm_l, ?_⟩` and prove the remaining obligations. Conclude with `h.frob`.
+-/
 theorem FrobField.funEqSetting [CharZero K] (h : FrobField K l σ) : FunctionalEquationSetting K l l σ := by
   refine ⟨h.prime, ⟨1, one_pos, (pow_one l).symm⟩, h.norm_l, ?_⟩
   exact h.frob

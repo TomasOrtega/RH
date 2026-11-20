@@ -12,6 +12,31 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.HtGen
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t S _ ρ p _ n hN hK hζ hsplit`. Use `haveI : CharZero S.functionField := hK`. Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `hgen (s : S) : spMap (algebraMap (S.presheaf.stalk s) S.functionField) ≫ (S.fromSpecStalk s ≫ ρ) = S.fromSpecStalk (genericPoint S) ≫ ρ`.
+
+Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes s)`. Establish `key (s : S)` using `by haveI := (hN s).1 haveI := (hN s).2`. Conclude with `GlobalTheory.T.integral_point_extension_split E H X t S.functionField _ (p ^ n) hq hζ hsplit (S.presheaf.stalk s) _ (hgen s)`.
+
+Use `haveI := (key (genericPoint S)).1`. Take `⟨N, ⟨eqv⟩⟩` from `Finite.exists_equiv_fin (TorsK t (S.fromSpecStalk (genericPoint S) ≫ ρ) (p ^ n) →* S.functionFieldˣ)`. Establish `hz (y : Sp ↥(intO ℂ_[p]) ⟶ S) : spMap (Scheme.stalkClosedPointTo y).hom ≫ (S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ) = y ≫ ρ`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ ρ) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y)`.
+
+Establish `L (y : Sp ↥(intO ℂ_[p]) ⟶ S)` using `(key (y (IsLocalRing.closedPoint _))).2 p (Scheme.stalkClosedPointTo y).hom (y ≫ ρ) inferInstance (hz y)`. Set `c : Fin N → ∀ y : Sp ↥(intO ℂ_[p]) ⟶ S, TorsChar t (y ≫ ρ) (p ^ n)` to `fun j y => Classical.choose ((L y).1 (eqv.symm j))`. Establish `hc (j : Fin N) (y : Sp ↥(intO ℂ_[p]) ⟶ S)` using `Classical.choose_spec ((L y).1 (eqv.symm j))`. Establish `memU (U : S.Opens) (hU : IsAffineOpen U) (x : Γ(S, U) →+* ↥(intO ℂ_[p])) (y : Sp ↥(intO ℂ_[p]) ⟶ S) (hxy : spMap x ≫ hU.fromSpec = y) : y (IsLocalRing.closedPoint _) ∈ U`. Rewrite using `[← SetLike.mem_coe, ← hU.range_fromSpec, ← hxy]`.
+
+Conclude with `⟨_, rfl⟩`. Use `⟨N, c, fun y c' => ?_, fun U hU g e he => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχ⟩` from `(L y).2.1 c'`. Use `⟨eqv χ, (L y).2.2 χ c' (c (eqv χ) y) hχ ?_⟩` and prove the remaining obligations. Establish `gen : ∀ j, eqv.symm j = χ → InducedBy χ (S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ) (algebraMap (S.presheaf.stalk (y (IsLocalRing.closedPoint _))) S.functionField) (Scheme.stalkClosedPointTo y).hom (c j y)`.
+
+Introduce and unpack `j rfl`. Conclude with `hc j y`. Conclude with `gen _ (eqv.symm_apply_apply χ)`. Distinguish the cases in `hne : Nonempty U swap`. Conclude with `⟨fun _ _ => 0, fun x y hxy _ => absurd ⟨⟨_, memU U hU x y hxy⟩⟩ hne⟩`.
+
+Use `haveI : IsIntegrallyClosed Γ(S, U) := GlobalTheory.LineNorm.Chart.isIntegrallyClosed_sections hN hU`. Use `haveI := functionField_isFractionRing_of_isAffineOpen S U hU`. Establish `hgU : genericPoint S ∈ U`. Take `⟨u⟩` from `hne`. Conclude with `(genericPoint_specializes u.1).mem_open U.isOpen u.2`.
+
+Establish `hchart : spMap (algebraMap Γ(S, U) S.functionField) ≫ (hU.fromSpec ≫ ρ) = S.fromSpecStalk (genericPoint S) ≫ ρ`. Rewrite using `[← Category.assoc, ← hU.fromSpecStalk_eq_fromSpecStalk hgU]`. Both sides reduce to the same expression. Use `choose hh hhs using fun j : Fin N => GlobalTheory.T.integral_point_torsion_split E H X t S.functionField _ p n hsplit Γ(S, U) (hU.fromSpec ≫ ρ) hchart g e he.1 (eqv.symm j)`. Use `⟨hh, fun x y hxy j => ?_⟩` and prove the remaining obligations.
+
+Establish `hs` using `memU U hU x y hxy`. Set `φ` to `(S.presheaf.germ U _ hs).hom`. Establish `hu : (algebraMap (S.presheaf.stalk (y (IsLocalRing.closedPoint _))) S.functionField).comp φ = algebraMap Γ(S, U) S.functionField` using `by show (S.presheaf.germ U _ hs ≫ S.presheaf.stalkSpecializes (genericPoint_specializes _)).hom = _`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes]`. Both sides reduce to the same expression.
+
+Establish `hx0 : spMap φ ≫ hU.fromSpec ≫ ρ = S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ`. Rewrite using `[← Category.assoc, ← hU.fromSpecStalk_eq_fromSpecStalk hs]`. Both sides reduce to the same expression. Establish `heq : (Scheme.stalkClosedPointTo y).hom.comp φ = x`. Apply `GlobalTheory.LineNorm.Chart.ringHom_ext hU` to reduce the goal to its premises.
+
+Rewrite using `[hxy]`. Use `show Spec.map (CommRingCat.ofHom ((Scheme.stalkClosedPointTo y).hom.comp φ)) ≫ hU.fromSpec = y`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `show _ ≫ hU.fromSpecStalk hs = y`. Rewrite using `[hU.fromSpecStalk_eq_fromSpecStalk hs]`.
+
+Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk y`. Establish `k : DlogIs t p n (c j y) (fun i => spMap (dualMap ((Scheme.stalkClosedPointTo y).hom.comp φ)) ≫ e i) (fun i => ((Scheme.stalkClosedPointTo y).hom.comp φ) (hh j i))` using `hhs j _ φ _ _ _ _ (c j y) hu hx0 inferInstance (hz y) (hc j y)`. Rewrite `k` using `[heq]`. Conclude with `k`.
+-/
 theorem charFam_of_normal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (S : Scheme.{0}) [IsIntegral S] (ρ : S ⟶ X) (p : ℕ) [Fact p.Prime] (n : ℕ), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → CharZero S.functionField → (∃ ζ : S.functionField, IsPrimitiveRoot ζ (p ^ n)) → SplitK t (K := S.functionField) (S.fromSpecStalk (genericPoint S) ≫ ρ) (p ^ n) → CharFam t ρ p n := by
   intro E _ _ _ H X _ t S _ ρ p _ n hN hK hζ hsplit
   classical

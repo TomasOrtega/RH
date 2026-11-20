@@ -11,6 +11,15 @@ open ReciprocityTheory.AnForm (levi)
 
 namespace LevelTowerAlt
 
+/- English proof (translation)
+Establish `hc` using `ReciprocityTheory.AnForm.continuousOn_levi Metric.isOpen_ball hf`. Use `set S : Set ((Fin n → ℂ) × (Fin n → ℂ)) := Metric.closedBall 0 (1 / 2) ×ˢ Metric.sphere 0 1 with hS`. Establish `hSc : IsCompact S` using `(isCompact_closedBall _ _).prod (isCompact_sphere _ _)`. Establish `hsub : S ⊆ Metric.ball 0 1 ×ˢ Set.univ` using `fun p hp' => ⟨Metric.closedBall_subset_ball (by norm_num) hp'.1, trivial⟩`. Take `⟨δ, hδ, hle⟩` from `hSc.exists_forall_le' (hc.mono hsub) (a := 0) fun p hp' => hp _ (hsub hp').1 _ fun h0 => by`.
+
+Use `hp'.2` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Use `⟨δ, hδ, fun t ht v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`.
+
+Rewrite using `[hv, ReciprocityTheory.AnForm.levi_zero]`. Simplify using the standard rewrite rules. Establish `hn : 0 < ‖v‖` using `norm_pos_iff.2 hv`. Establish `h1` using `hle (t, ‖v‖⁻¹ • v) ⟨by simpa using ht, by`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Real.norm_eq_abs, abs_inv, abs_norm, inv_mul_cancel₀ hn.ne']⟩`.
+
+Simplify using `only [ReciprocityTheory.AnForm.levi_smul_dir] at h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem levi_margin {n : ℕ} {f : (Fin n → ℂ) → ℝ} (hf : ContDiffOn ℝ 2 f (Metric.ball 0 1))
     (hp : ∀ t ∈ Metric.ball (0 : Fin n → ℂ) 1, ∀ v, v ≠ 0 → 0 < levi f t v) :
     ∃ δ > (0 : ℝ), ∀ t : Fin n → ℂ, ‖t‖ ≤ 1 / 2 → ∀ v, δ * ‖v‖ ^ 2 ≤ levi f t v := by
@@ -35,6 +44,11 @@ theorem levi_margin {n : ℕ} {f : (Fin n → ℂ) → ℝ} (hf : ContDiffOn ℝ
     calc δ * ‖v‖ ^ 2 ≤ (‖v‖⁻¹ ^ 2 * levi f t v) * ‖v‖ ^ 2 := mul_le_mul_of_nonneg_right h1 (by positivity)
       _ = levi f t v := by field_simp
 
+/- English proof (translation)
+Introduce `f hf`. Use `set F := MvPolynomial.map (Int.castRingHom ℂ) f`. Establish `h0 : (fun y' => MvPolynomial.eval (τ y') F) =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `by filter_upwards [hm] with y' hy'`. Conclude with `hy'.2 f hf`. Establish `hD` using `(ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.adens_hasFDerivAt_eval F (τ y)).comp y hτ.hasFDerivAt`.
+
+Establish `hD0 : HasFDerivAt (fun y' => MvPolynomial.eval (τ y') F) (0 : (Fin e → ℂ) →L[ℂ] ℂ) y` using `(hasFDerivAt_const (0 : ℂ) y).congr_of_eventuallyEq h0`. Establish `h1` using `congrArg (fun L => L w) (hD.unique hD0)`. Simplify `h1` using `[smul_eq_mul, mul_comm]`.
+-/
 theorem coneTangent_fderiv {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)} {e : ℕ}
     {τ : (Fin e → ℂ) → (Σ k, J k) → ℂ} {y : Fin e → ℂ} (hτ : DifferentiableAt ℂ τ y)
     (hm : ∀ᶠ y' in 𝓝 y, τ y' ∈ mcPts P) (w : Fin e → ℂ) :
@@ -52,6 +66,17 @@ theorem coneTangent_fderiv {K : Type} [Fintype K] {J : K → Type} [∀ k, Finty
 
 end LevelTowerAlt
 
+/- English proof (translation)
+Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D`. Establish `key : ∀ a, ∃ δ > (0 : ℝ), ∀ t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ, ‖t‖ ≤ 1 / 2 → ∀ v, δ * ‖v‖ ^ 2 ≤ levi (fun t' => Real.log (D.A'.h ((D.chart a).γ t'))) t v`. Introduce `a`. Establish `hφ : ∀ t ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1, ContDiffAt ℝ 2 (fun z => Real.log (D.A'.h z)) ((D.chart a).γ t)` using `fun t ht => by`. Establish `hz` using `(D.chart a).mem t ht`.
+
+Conclude with `((D.A'_pos.1.contDiffAt (StokesStep.isOpen_multicone.mem_nhds hz.1)).of_le (WithTop.coe_le_coe.mpr le_top)).log (D.A'.pos _ hz.1).ne'`. Use `LevelTowerAlt.levi_margin (fun t ht => ?_) fun t ht v hv => ?_` and prove the remaining obligations. Conclude with `((hφ t ht).comp t (((D.chart a).analytic t ht).restrictScalars (𝕜 := ℝ)).contDiffAt).contDiffWithinAt`. Establish `hτ` using `(D.chart a).analytic t ht`. Establish `h1` using `ReciprocityTheory.AnForm.levi_comp v hτ (hφ t ht)`.
+
+Express the relevant statement in the definitionally equal form `0 < levi ((fun z => Real.log (D.A'.h z)) ∘ (D.chart a).γ) t v`. Rewrite using `[h1]`. Use `D.A'_pos.2 _ ((D.chart a).mem t ht) _ (LevelTowerAlt.coneTangent_fderiv hτ.differentiableAt ?_ v) fun c hc => hv ((D.chart a).immersion t ht v ⟨c, hc⟩)` and prove the remaining obligations. Use `filter_upwards [Metric.isOpen_ball.mem_nhds ht] with y hy using (D.chart a).mem y hy`. Use `choose δ hδ h using key`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hle⟩ : ∃ m > (0 : ℝ), ∀ a, m ≤ δ a := by`. Break down `isEmpty_or_nonempty (Fin D.nCharts) with h0 | h0` into its components or cases. Conclude with `⟨1, one_pos, fun a => h0.elim a⟩`. Take `⟨a₀, h₀⟩` from `Finite.exists_min δ`. Conclude with `⟨δ a₀, hδ a₀, h₀⟩`.
+
+Conclude with `⟨m, hm, fun a t ht v => (mul_le_mul_of_nonneg_right (hle a) (by positivity)).trans (h a t ht v)⟩`.
+-/
 theorem LevelTowerAlt.levi_positive_reference_line : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W), ∃ δ > (0 : ℝ), ∀ a, ∀ t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ, ‖t‖ ≤ 1 / 2 → ∀ v, δ * ‖v‖ ^ 2 ≤ levi (fun t' => Real.log (D.A'.h ((D.chart a).γ t'))) t v := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D
   have key : ∀ a, ∃ δ > (0 : ℝ), ∀ t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ, ‖t‖ ≤ 1 / 2 → ∀ v,

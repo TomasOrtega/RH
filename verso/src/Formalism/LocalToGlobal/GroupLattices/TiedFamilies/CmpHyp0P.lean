@@ -33,6 +33,9 @@ structure CmpHyp0P (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (I 
   latM : ∀ u w hg, Submodule.span (D.gat u w hg).O
     (cmpRec T Gt I u w hg '' (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)) = (D.gat u w hg).M
 
+/- English proof (translation)
+The claim follows from `H.ex evInj := H.evInj ptEx := H.ptEx ptAll := H.ptAll pos := pos chi := H.chi latM := H.latM`.
+-/
 theorem CmpHyp0P.toHyp0 {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {I : CmpIn D X} (H : CmpHyp0P T Gt I)
     (pos : ∀ u w hg v (s : Fin ((D.gat u w hg).P.n' v)) (x : D.host.E),
       I.embW u w hg (tEL D (Gt.gat_pos u w hg ⟨v, s⟩) (if Even s.val then x else sigD D x)) =

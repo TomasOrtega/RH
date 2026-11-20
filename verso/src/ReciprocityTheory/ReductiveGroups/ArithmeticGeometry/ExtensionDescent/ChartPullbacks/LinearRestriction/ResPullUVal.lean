@@ -49,6 +49,15 @@ section Val
 
 open Geo.Tor
 
+/- English proof (translation)
+Set `p1 : (LB.LinComb (L.pull F) ψ ε).ι` to `fun k _ => J ((r ≫ ψ k) ≫ F)`. Set `p2 : (LB.LinComb L' ψ ε).ι` to `fun k => J' (r ≫ ψ k)`. Establish `m1 : r z ∈ (LB.LinComb (L.pull F) ψ ε).U p1` using `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => hJ ((r ≫ ψ k) ≫ F)`. Establish `m2 : r z ∈ (LB.LinComb L' ψ ε).U p2` using `Set.mem_iInter.2 fun k => hJ' (r ≫ ψ k)`. Establish `m12 : r z ∈ (LB.LinComb (L.pull F) ψ ε).U p1 ⊓ (LB.LinComb L' ψ ε).U p2` using `⟨m1, m2⟩`.
+
+Establish `mt : h.base (r.base z) ∈ LB.wchart L φ (fun k => J ((r ≫ ψ k) ≫ F))` using `Set.mem_iInter.2 fun k => by`. Establish `hx` using `hJ ((r ≫ ψ k) ≫ F)`. Establish `hp : ((r ≫ ψ k) ≫ F).base z = (φ k).base (h.base (r.base z))`. Rewrite using `[Category.assoc, hψ k]`. Both sides reduce to the same expression.
+
+Rewrite `hx` using `[hp]`. Conclude with `hx`. Establish `L1 : gm r z ((LB.LinComb (L.pull F) ψ ε).U p1) ((GeneratorPullback.pullAlong L F h φ ε ψ hψ t).s p1) = val t (r ≫ h) z J` using `(gm_res r z _ m1 _).trans ((gm_pull r h z _ mt _).trans (val_of t (r ≫ h) z J (fun k => J ((r ≫ ψ k) ≫ F)) (fun k => congrArg J (by rw [Category.assoc, Category.assoc, hψ k]))).symm)`. Establish `H` using `congrArg (gm r z ((LB.LinComb (L.pull F) ψ ε).U p1 ⊓ (LB.LinComb L' ψ ε).U p2)) (hm (p1, p2))`. Establish `W1 : gm r z ((LB.LinComb (L.pull F) ψ ε).U p1 ⊓ (LB.LinComb L' ψ ε).U p2) ((LB.linCombIso w ψ ε).s (p1, p2)) = ∏ k, gm (r ≫ ψ k) z _ (w.s (fun _ => J ((r ≫ ψ k) ≫ F), J' (r ≫ ψ k))) ^ ε k` using `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ((gm_res r z _ m12 _).trans (gm_pull r (ψ k) z ((L.pull F).U (p1 k) ⊓ L'.U (p2 k)) ⟨Set.mem_iInter.1 m1 k, Set.mem_iInter.1 m2 k⟩ _))))`.
+
+Conclude with `L1.symm.trans ((gm_res r z _ m12 _).symm.trans (H.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) W1 (gm_res r z _ m12 _)))))`.
+-/
 theorem val_maps {X X' Y Y' Z : Scheme.{0}} {L : LB X} {L' : LB X'} (F : X' ⟶ X)
     (w : LB.Iso L' (L.pull F)) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (ψ : K → (Y' ⟶ X')) (h : Y' ⟶ Y) (hψ : ∀ k, ψ k ≫ F = h ≫ φ k)

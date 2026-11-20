@@ -5,6 +5,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Cyc
 
 namespace GlobalTheory.Cyc
 
+/- English proof (translation)
+Establish `h1` using `PadicComplex.norm_extends l (algebraMap ℚ_[l] (PadicAlgCl l) l)`. Rewrite `h1` using `[PadicAlgCl.norm_extends, Padic.norm_p, map_natCast]`. Rewrite using `[← h1]`. Use `norm_cast`.
+-/
 theorem _root_.GlobalTheory.Cyc.norm_natCast_prime_padicComplex (l : ℕ) [Fact l.Prime] :
     ‖(l : PadicComplex l)‖ = (l : ℝ)⁻¹ := by
   have h1 := PadicComplex.norm_extends l (algebraMap ℚ_[l] (PadicAlgCl l) l)
@@ -12,6 +15,13 @@ theorem _root_.GlobalTheory.Cyc.norm_natCast_prime_padicComplex (l : ℕ) [Fact 
   rw [← h1]
   norm_cast
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn⟩`. Take `⟨k, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hμ`. Establish `hnorm : ‖ζ‖ = 1`. Establish `h` using `congrArg norm hζ.pow_eq_one`. Rewrite `h` using `[norm_pow, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg ζ) hn).mp h`. Use `clear hμ`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Establish `: ζ ^ (k + 1) - 1 = ζ ^ k * (ζ - 1) + (ζ ^ k - 1)` using `by ring`. Rewrite using `[this]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ih)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, hnorm, one_pow, one_mul]`.
+-/
 theorem _root_.GlobalTheory.Cyc.norm_sub_one_le_of_isPrimitiveRoot {K : Type*} [NormedField K]
     [IsUltrametricDist K]
     {n : ℕ} (hn : n ≠ 0) {ζ μ : K} (hζ : IsPrimitiveRoot ζ n) (hμ : μ ^ n = 1) :
@@ -31,6 +41,15 @@ theorem _root_.GlobalTheory.Cyc.norm_sub_one_le_of_isPrimitiveRoot {K : Type*} [
     refine (IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ih)
     rw [norm_mul, norm_pow, hnorm, one_pow, one_mul]
 
+/- English proof (translation)
+Establish `hpos : 0 < l ^ j` using `pow_pos hl.out.pos j`. Establish `hall : ∀ μ ∈ primitiveRoots (l ^ j) (PadicComplex l), ‖1 - μ‖ = ‖ζ - 1‖`. Introduce `μ hμ`. Rewrite `hμ` using `[mem_primitiveRoots hpos]`. Rewrite using `[norm_sub_rev]`.
+
+Conclude with `le_antisymm (_root_.GlobalTheory.Cyc.norm_sub_one_le_of_isPrimitiveRoot hpos.ne' hζ hμ.pow_eq_one) (_root_.GlobalTheory.Cyc.norm_sub_one_le_of_isPrimitiveRoot hpos.ne' hμ hζ.pow_eq_one)`. Establish `heval` using `congrArg (Polynomial.eval 1) (Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ)`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Rewrite `heval` using `[Polynomial.eval_one_cyclotomic_prime_pow, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at heval`.
+
+Establish `hprod` using `congrArg norm heval`. Rewrite `hprod` using `[_root_.GlobalTheory.Cyc.norm_natCast_prime_padicComplex, norm_prod, Finset.prod_congr rfl hall, Finset.prod_const, hζ.card_primitiveRoots, Nat.totient_prime_pow hl.out (Nat.succ_pos k)]`. Simplify using `only [Nat.succ_sub_one, Nat.add_sub_cancel] at hprod ⊢`. Establish `hN : l ^ k * (l - 1) ≠ 0` using `Nat.mul_ne_zero (pow_ne_zero _ hl.out.ne_zero) (Nat.sub_ne_zero_of_lt hl.out.one_lt)`. Establish `hcast : ((l ^ k * (l - 1) : ℕ) : ℝ) = (l : ℝ) ^ k * ((l : ℝ) - 1)`.
+
+Move the coercions through the operations in `[Nat.cast_sub hl.out.one_le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Real.pow_rpow_inv_natCast (norm_nonneg (ζ - 1)) hN, ← hprod, hcast, Real.inv_rpow (Nat.cast_nonneg l), ← Real.rpow_neg (Nat.cast_nonneg l), neg_div, one_div]`.
+-/
 theorem _root_.GlobalTheory.Cyc.norm_primitiveRoot_sub_one (l : ℕ) [hl : Fact l.Prime] (j : ℕ)
     (hj : 1 ≤ j) (ζ : PadicComplex l) (hζ : IsPrimitiveRoot ζ (l ^ j)) :
     ‖ζ - 1‖ = (l : ℝ) ^ (-(1 : ℝ) / ((l : ℝ) ^ (j - 1) * ((l : ℝ) - 1))) := by

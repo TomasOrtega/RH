@@ -16,6 +16,13 @@ section Values
 variable {Ω : Type} [Field Ω]
 
 omit [Fintype K] in
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩` from `hv`. Take `⟨d', g', h', hg', hh', hy', heq', hz0', rfl⟩` from `hw`. Use `⟨d + d', g * h' + g' * h, h * h', isMultiHomog_add (isMultiHomog_mul hg hh') ?_, isMultiHomog_mul hh hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm d d']`. Conclude with `isMultiHomog_mul hg' hh`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hy hy'`. Rewrite using `[map_add, map_mul, map_mul, map_mul, heq, heq']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `mul_ne_zero hz0 hz0'`. Simplify using `only [map_add, map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isValueAt_add {y : (Σ k, ι k) → Ω} {s t : Ω} {z : (Σ k, ι k) → ℂ} {v w : ℂ}
     (hv : IsValueAt y s z v) (hw : IsValueAt y t z w) : IsValueAt y (s + t) z (v + w) := by
   obtain ⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩ := hv
@@ -29,10 +36,18 @@ theorem isValueAt_add {y : (Σ k, ι k) → Ω} {s t : Ω} {z : (Σ k, ι k) →
   · simp only [map_add, map_mul]
     field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, C n, 1, isMultiHomog_C_zero n, isMultiHomog_one, by simp, by simp, by simp, by simp⟩`.
+-/
 theorem isValueAt_intCast (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (n : ℤ) :
     IsValueAt y (n : Ω) z (n : ℂ) :=
   ⟨0, C n, 1, isMultiHomog_C_zero n, isMultiHomog_one, by simp, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩` from `hv`. Establish `hgy : aeval y g ≠ 0` using `by rw [heq]; exact mul_ne_zero hs hy`. Establish `hgz : eval z (map (Int.castRingHom ℂ) g) ≠ 0`. Introduce `h0`. Rewrite `hv0` using `[h0, zero_div]`.
+
+Conclude with `hv0 rfl`. Use `⟨d, h, g, hh, hg, hgy, ?_, hgz, by rw [inv_div]⟩` and prove the remaining obligations. Rewrite using `[heq]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isValueAt_inv {y : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) → ℂ} {v : ℂ}
     (hv : IsValueAt y s z v) (hs : s ≠ 0) (hv0 : v ≠ 0) : IsValueAt y s⁻¹ z v⁻¹ := by
   obtain ⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩ := hv
@@ -43,12 +58,24 @@ theorem isValueAt_inv {y : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) → �
   rw [heq]
   field_simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using isValueAt_one_self y z`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `isValueAt_mul ih hv`.
+-/
 theorem isValueAt_pow {y : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) → ℂ} {v : ℂ}
     (hv : IsValueAt y s z v) (n : ℕ) : IsValueAt y (s ^ n) z (v ^ n) := by
   induction n with
   | zero => simpa using isValueAt_one_self y z
   | succ n ih => rw [pow_succ, pow_succ]; exact isValueAt_mul ih hv
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Take `⟨a, i₀⟩` from `p`. Use `show ∑ i, (Finsupp.single (⟨a, i₀⟩ : Σ k, ι k) 1 : (Σ k, ι k) →₀ ℕ) ⟨k, i⟩ = if k = a then 1 else 0`.
+
+Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `i _ hi classical`.
+
+Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hi (eq_of_heq (Sigma.mk.inj_iff.mp h).2).symm`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hk]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hk (congrArg Sigma.fst h).symm`.
+-/
 theorem isMultiHomog_X_single [DecidableEq K] (p : Σ k, ι k) :
     IsMultiHomog (X p : MRing ι) (fun k => if k = p.1 then 1 else 0) := by
   intro m hm k
@@ -73,6 +100,13 @@ theorem isMultiHomog_X_single [DecidableEq K] (p : Σ k, ι k) :
     intro h
     exact hk (congrArg Sigma.fst h).symm
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : MRing ι)) (fun k => if k ∈ s then 1 else 0)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.notMem_empty, if_false]`.
+
+Conclude with `isMultiHomog_one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Use `isMultiHomog_mul (isMultiHomog_X_single (ι := ι) ⟨a, c a⟩) ih using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `[ha]`. Simplify using `[hk]`. Simplify using `using key Finset.univ`.
+-/
 theorem isMultiHomog_prod_X (c : (k : K) → ι k) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRing ι)) (fun _ => 1) := by
   classical
@@ -92,6 +126,17 @@ theorem isMultiHomog_prod_X (c : (k : K) → ι k) :
       · simp [hk]
   simpa using key Finset.univ
 
+/- English proof (translation)
+Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨c', rfl⟩` from `hx`. Use `⟨(∏ k, z ⟨k, c' k⟩) / ∏ k, z ⟨k, c k⟩, fun _ => 1, ∏ k, X ⟨k, c' k⟩, ∏ k, X ⟨k, c k⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isMultiHomog_prod_X c'`.
+
+Conclude with `isMultiHomog_prod_X c`. Simplify `hyc` using `[segreCoord]`. Simplify using `only [map_prod, aeval_X]`. Conclude with `(div_mul_cancel₀ _ hyc).symm`. Simplify using `only [map_prod, map_X, eval_X]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => hz k`. Simplify using `[map_prod]`. Consider the case `algebraMap n => exact ⟨n, by simpa using isValueAt_intCast y z n⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨v, hv⟩` from `ha`.
+
+Take `⟨w, hw⟩` from `hb`. Conclude with `⟨v + w, isValueAt_add hv hw⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨v, hv⟩` from `ha`. Take `⟨w, hw⟩` from `hb`.
+
+Conclude with `⟨v * w, isValueAt_mul hv hw⟩`.
+-/
 theorem exists_isValueAt_of_mem_chartRing {y : (Σ k, ι k) → Ω} {c : (k : K) → ι k}
     {z : (Σ k, ι k) → ℂ} (hyc : segreCoord y c ≠ 0) (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) {r : Ω}
     (hr : r ∈ chartRing ℤ (segreCoord y) c) : ∃ v, IsValueAt y r z v := by
@@ -119,6 +164,11 @@ theorem exists_isValueAt_of_mem_chartRing {y : (Σ k, ι k) → Ω} {c : (k : K)
     obtain ⟨w, hw⟩ := hb
     exact ⟨v * w, isValueAt_mul hv hw⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_isValueAt_of_mem_chartRing hyc hz hr`. Take `⟨a, ha, ha0⟩` from `hf`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `ha0 (isValueAt_zero hzP ha)`.
+
+Establish `hinv` using `isValueAt_pow (isValueAt_inv ha hf0 ha0) n`. Use `⟨w * a⁻¹ ^ n, ?_⟩` and prove the remaining obligations. Use `isValueAt_mul hw hinv` as an intermediate fact. Rewrite `this` using `[mul_comm (f ^ n) r, mul_assoc, ← mul_pow, mul_inv_cancel₀ hf0, one_pow, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_isValueAt_of_pow_mul_mem {y : (Σ k, ι k) → Ω} {c : (k : K) → ι k}
     {z : (Σ k, ι k) → ℂ} (hzP : z ∈ mcPts (mCoordIdeal y)) (hyc : segreCoord y c ≠ 0)
     (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) {f r : Ω} (hf : IsUnitAt y f z) {n : ℕ}

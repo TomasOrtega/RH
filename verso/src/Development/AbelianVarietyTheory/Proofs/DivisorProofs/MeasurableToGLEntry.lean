@@ -48,20 +48,37 @@ open Classical in
 
 def toGL (x : Matrix (Fin n) (Fin n) ℂ) : GL (Fin n) ℂ := if h : IsUnit x then h.unit else 1
 
+/- English proof (translation)
+Simplify using `[toGL, h]`.
+-/
 theorem val_toGL {x : Matrix (Fin n) (Fin n) ℂ} (h : IsUnit x) : (toGL x : Matrix (Fin n) (Fin n) ℂ) = x := by
   simp [toGL, h]
 
+/- English proof (translation)
+Unfold `htGL`. Establish `h1 : 0 ≤ ∑ i, ∑ j, ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`. Establish `h2 : 0 ≤ ∑ i, ∑ j, ‖((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_le_htGL (g : GL (Fin n) ℂ) : 1 ≤ htGL g := by
   unfold htGL
   have h1 : 0 ≤ ∑ i, ∑ j, ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖ := by positivity
   have h2 : 0 ≤ ∑ i, ∑ j, ‖((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖ := by positivity
   linarith
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le one_pos (one_le_htGL g)`.
+-/
 theorem htGL_pos (g : GL (Fin n) ℂ) : 0 < htGL g := lt_of_lt_of_le one_pos (one_le_htGL g)
 
+/- English proof (translation)
+Unfold `htGL`. Rewrite using `[inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem htGL_inv (g : GL (Fin n) ℂ) : htGL g⁻¹ = htGL g := by
   unfold htGL; rw [inv_inv]; ring
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => norm_mul_le _ _)`.
+
+Use `_ = ∑ l, ‖a i l‖ * ∑ j, ‖b l j‖ := by rw [Finset.sum_comm]; simp [Finset.mul_sum]`. Use `_ ≤ ∑ l, ‖a i l‖ * ∑ l', ∑ j, ‖b l' j‖ := Finset.sum_le_sum fun l _ => mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun l' => ∑ j, ‖b l' j‖) (fun _ _ => by positivity) (Finset.mem_univ l)) (norm_nonneg _)`. Use `_ = _ := by rw [Finset.sum_mul]`.
+-/
 theorem sum_norm_mul_le (a b : Matrix (Fin n) (Fin n) ℂ) :
     ∑ i, ∑ j, ‖(a * b) i j‖ ≤ (∑ i, ∑ j, ‖a i j‖) * ∑ i, ∑ j, ‖b i j‖ := by
   rw [Finset.sum_mul]
@@ -77,6 +94,11 @@ theorem sum_norm_mul_le (a b : Matrix (Fin n) (Fin n) ℂ) :
           (norm_nonneg _)
     _ = _ := by rw [Finset.sum_mul]
 
+/- English proof (translation)
+Unfold `htGL`. Rewrite using `[mul_inv_rev, Units.val_mul, Units.val_mul]`. Establish `h1` using `sum_norm_mul_le (g : Matrix (Fin n) (Fin n) ℂ) h`. Establish `h2` using `sum_norm_mul_le ((h⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) (g⁻¹ : GL (Fin n) ℂ)`. Establish `a1 : 0 ≤ ∑ i, ∑ j, ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`.
+
+Establish `a2 : 0 ≤ ∑ i, ∑ j, ‖((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`. Establish `a3 : 0 ≤ ∑ i, ∑ j, ‖(h : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`. Establish `a4 : 0 ≤ ∑ i, ∑ j, ‖((h⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg a1 a4, mul_nonneg a2 a3]`.
+-/
 theorem htGL_mul_le (g h : GL (Fin n) ℂ) : htGL (g * h) ≤ htGL g * htGL h := by
   unfold htGL
   rw [mul_inv_rev, Units.val_mul, Units.val_mul]
@@ -88,6 +110,9 @@ theorem htGL_mul_le (g h : GL (Fin n) ℂ) : htGL (g * h) ≤ htGL g * htGL h :=
   have a4 : 0 ≤ ∑ i, ∑ j, ‖((h⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖ := by positivity
   nlinarith [mul_nonneg a1 a4, mul_nonneg a2 a3]
 
+/- English proof (translation)
+Unfold `htGL`. Establish `h2 : 0 ≤ ∑ i, ∑ j, ‖((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖` using `by positivity`. Establish `h1 : ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖ ≤ ∑ i, ∑ j, ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖` using `(Finset.single_le_sum (f := fun j => ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖) (fun _ _ => by positivity) (Finset.mem_univ i))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_entry_le_htGL (g : GL (Fin n) ℂ) (i j : Fin n) : ‖(g : Matrix (Fin n) (Fin n) ℂ) i j‖ ≤ htGL g := by
   unfold htGL
   have h2 : 0 ≤ ∑ i, ∑ j, ‖((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j‖ := by positivity
@@ -98,6 +123,9 @@ theorem norm_entry_le_htGL (g : GL (Fin n) ℂ) (i j : Fin n) : ‖(g : Matrix (
       (Finset.mem_univ i))
   linarith
 
+/- English proof (translation)
+Establish `h1 : Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ)` using `Units.continuous_val`. Establish `h2 : Continuous fun g : GL (Fin n) ℂ => ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)` using `Units.continuous_coe_inv`. Unfold `htGL`. Use `fun_prop`.
+-/
 theorem continuous_htGL : Continuous (htGL : GL (Fin n) ℂ → ℝ) := by
   have h1 : Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ) := Units.continuous_val
   have h2 : Continuous fun g : GL (Fin n) ℂ => ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) :=
@@ -105,10 +133,16 @@ theorem continuous_htGL : Continuous (htGL : GL (Fin n) ℂ → ℝ) := by
   unfold htGL
   fun_prop
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in exact Units.isOpenEmbedding_val (R := Matrix (Fin n) (Fin n) ℂ)`.
+-/
 theorem isOpenEmbedding_valGL :
     Topology.IsOpenEmbedding (fun g : GL (Fin n) ℂ => fun i j => (g : Matrix (Fin n) (Fin n) ℂ) i j) := by
   open scoped Matrix.Norms.Operator in exact Units.isOpenEmbedding_val (R := Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (GL (Fin n) ℂ) := borel _`. Use `haveI : BorelSpace (GL (Fin n) ℂ) := ⟨rfl⟩`. Establish `h : Measurable γ` using `(isOpenEmbedding_valGL.measurableEmbedding.measurable_comp_iff).1 (measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => hγ i j)`. Conclude with `hF.measurable.comp h`.
+-/
 theorem measurable_comp_GL {X β : Type} [MeasurableSpace X] [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β]
     {F : GL (Fin n) ℂ → β} (hF : Continuous F) {γ : X → GL (Fin n) ℂ}
     (hγ : ∀ i j, Measurable fun x => (γ x : Matrix (Fin n) (Fin n) ℂ) i j) : Measurable fun x => F (γ x) := by
@@ -118,6 +152,11 @@ theorem measurable_comp_GL {X β : Type} [MeasurableSpace X] [TopologicalSpace �
     (measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => hγ i j)
   exact hF.measurable.comp h
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ Z`. Establish `: η = fun x => ∑ i, η x (b i) • LinearMap.toContinuousLinearMap (b.coord i)`. Use function extensionality and compare the values at `x`. Use extensionality with `z`. Use `conv_lhs => rw [← b.sum_repr z, map_sum]`.
+
+Simplify using `only [map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[this]`. Conclude with `Finset.measurable_sum _ fun i _ => (h _).smul_const _`.
+-/
 theorem measurable_dual {X Z : Type} [MeasurableSpace X] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] {η : X → Z →L[ℝ] ℝ} (h : ∀ z, Measurable fun x => η x z) : Measurable η := by
   let b := Module.finBasis ℝ Z
@@ -130,6 +169,13 @@ theorem measurable_dual {X Z : Type} [MeasurableSpace X] [NormedAddCommGroup Z] 
   rw [this]
   exact Finset.measurable_sum _ fun i _ => (h _).smul_const _
 
+/- English proof (translation)
+Take `⟨hc, C, N, hC⟩` from `hW`. Establish `hC0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact. Conclude with `nonneg_of_mul_nonneg_left this (pow_pos (htGL_pos _) _)`. Use `((h.2.2.2 N).const_mul (C * htGL g ^ N)).mono' ?_ (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Use `Measurable.aestronglyMeasurable ((h.1.mul ?_).mul ?_)` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp Real.continuous_fourierChar).measurable.comp (h.2.2.1 z)`. Conclude with `measurable_comp_GL (F := fun q => W (g * q)) (by fun_prop) h.2.1`. Rewrite using `[norm_mul, norm_mul, Circle.norm_coe, mul_one]`. Establish `h1 : htGL (g * γ x) ≤ htGL g * (htGL (γ x) * (1 + ‖η x‖))` using `(htGL_mul_le _ _).trans (mul_le_mul_of_nonneg_left (le_mul_of_one_le_right (htGL_pos _).le (by linarith [norm_nonneg (η x)])) (htGL_pos _).le)`.
+
+Establish `h2` using `pow_le_pow_left₀ (htGL_pos _).le h1 N`. Rewrite `h2` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsRapidF.integrable {X Z : Type} [MeasurableSpace X] [NormedAddCommGroup Z] [NormedSpace ℝ Z] {ν : Measure X}
     {k : X → ℂ} {γ : X → GL (Fin n) ℂ} {η : X → Z →L[ℝ] ℝ} (h : IsRapidF ν k γ η) {W : GL (Fin n) ℂ → ℂ}
     (hW : IsModGrowth W) (z : Z) (g : GL (Fin n) ℂ) :

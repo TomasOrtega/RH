@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.TopForm
 
+/- English proof (translation)
+Set `e : A ≃+* B` to `RingEquiv.ofBijective ρ hρ`. Set `σ : B →+* A` to `e.symm.toRingHom`. Establish `e1 : σ.comp ρ = RingHom.id A` using `RingHom.ext fun a => e.symm_apply_apply a`. Establish `e2 : ρ.comp σ = RingHom.id B` using `RingHom.ext fun b => e.apply_symm_apply b`. Establish `h' : σ.comp β = α`.
+
+Rewrite using `[← h, ← RingHom.comp_assoc, e1, RingHom.id_comp]`. Use `Function.bijective_iff_has_inverse.mpr ⟨TopForm.formMap D σ h', fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[formMap_formMap ρ σ (RingHom.id A) e1 h h' (RingHom.id_comp α)]`. Conclude with `formMap_of_eq_id _ rfl _ x`. Rewrite using `[formMap_formMap σ ρ (RingHom.id B) e2 h' h (RingHom.id_comp β)]`.
+
+Conclude with `formMap_of_eq_id _ rfl _ y`.
+-/
 theorem bijective_formMap_of_bijective {k A B : Type*} [CommRing k] [CommRing A] [CommRing B]
     {α : k →+* A} {β : k →+* B} (D : ℕ) (ρ : A →+* B) (h : ρ.comp α = β)
     (hρ : Function.Bijective ρ) : Function.Bijective (TopForm.formMap D ρ h) := by
@@ -32,6 +39,9 @@ end GlobalTheory.TopForm
 
 namespace GlobalTheory.EtaleKlt
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p s _ hs n`. Conclude with `TopForm.bijective_formMap_of_bijective n _ (functionFieldMap_comp_constFn p s) hs`.
+-/
 theorem ratPull_bijective_of_birational : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X]
     [IsIntegral Y] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s],
     Function.Bijective (functionFieldMap s) → ∀ n : ℕ,

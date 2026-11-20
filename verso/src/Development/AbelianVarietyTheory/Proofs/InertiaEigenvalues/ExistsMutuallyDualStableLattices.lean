@@ -12,6 +12,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.StableDual
 
+/- English proof (translation)
+Take `⟨_, _, hmod, _, hopen⟩` from `hO`. Establish `hn : ‖(P.χQ (g : GQ l) : ℚ_[l])‖ ≤ 1` using `((GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).1 _).le`. Establish `hmem` using `GlobalTheory.GoodCoeff.padicInt_mem (algebraMap O LL).range (by rw [RingHom.coe_range]; exact hopen) (⟨_, hn⟩ : ℤ_[l])`. Take `⟨a, ha⟩` from `RingHom.mem_range.1 hmem`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ha]`. Simplify using `[cycLL, LocPrime.PD_χ]`.
+-/
 theorem cyc_integral (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL]
     [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL]
     (hO : GoodO (Qp := ℚ_[l]) LL O) (g : ↥(GK K)) :
@@ -25,6 +30,11 @@ theorem cyc_integral (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (L
   rw [ha]
   simp [cycLL, LocPrime.PD_χ]
 
+/- English proof (translation)
+Introduce `l _ P K LL _ _ _ O _ _ hO A A' m hm`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Use `haveI : CompactSpace ↥(GK K) := isCompact_iff_compactSpace.1 (IntermediateField.fixingSubgroup_isClosed K.1).isCompact`. Take `⟨LA⟩` from `GlobalTheory.T.exists_stable_lattice_compact_group hO A`. Take `⟨LA', h⟩` from `GlobalTheory.T.dualLattice_stable_twisted_pairing l P K LL O hO A A' m LA hm (cyc_integral l P K LL O hO)`.
+
+Conclude with `⟨LA, LA', h⟩`.
+-/
 theorem stable_dual_lattices : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDual1 (P.PD K) A.ρ A'.ρ m → ∃ (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ), IsDualLat1 (P.PD K) LA LA' m ∧ IsDualLat1 (P.PD K) LA' LA m.flip := by
   intro l _ P K LL _ _ _ O _ _ hO A A' m hm
   haveI : FiniteDimensional ℚ_[l] K.1 := K.2

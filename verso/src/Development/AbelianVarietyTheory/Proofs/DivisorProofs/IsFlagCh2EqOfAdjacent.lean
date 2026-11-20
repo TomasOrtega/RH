@@ -32,6 +32,11 @@ open GlobalTheory.ArInt
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Break down `hX.vertical_or_horizontal i with ⟨ℓ, _, ⟨_⟩⟩ | ⟨hc, d, hd⟩` into its components or cases. Take `⟨d, hd⟩` from `hX.exists_dim_eq i`. Establish `⟨w, hw, _⟩` using `e`. Establish `e' : topSelfIntersection (ZMod ℓ) (L.B.pull i) d = topSelfIntersection (ZMod ℓ) (M.B.pull i) d` using `interNum_congr_lbIso _ _ (fun _ => (L.restr i).isLB) (fun _ => (M.restr i).isLB) fun _ => ⟨w, hw⟩`. Rewrite using `[H.vertical Z i (ZMod ℓ) d hd, H'.vertical Z i (ZMod ℓ) d hd, e']`.
+
+Establish `hZ` using `hX.of_isClosedImmersion i hc hd`. Conclude with `(e.isSelfInter hZ (H.isSelfInter_restrict hX i rfl)).unique hZ (H'.isSelfInter_restrict hX i rfl)`.
+-/
 theorem height_eq {D : ℕ} (hX : IsArithVar p D) {L M : HermLB p} {h h' : X → ℝ}
     (H : L.IsArithHeight h) (H' : M.IsArithHeight h') {Z : Scheme.{0}} (i : Z ⟶ X)
     [IsClosedImmersion i] [IsIntegral Z] (e : (L.restr i).Isometric (M.restr i)) :
@@ -47,6 +52,15 @@ theorem height_eq {D : ℕ} (hX : IsArithVar p D) {L M : HermLB p} {h h' : X →
     exact (e.isSelfInter hZ (H.isSelfInter_restrict hX i rfl)).unique hZ
       (H'.isSelfInter_restrict hX i rfl)
 
+/- English proof (translation)
+Set `T : Fin 3 → HermLB p` to `![L, Q, L']`. Take `⟨Ψ, hΨ⟩` from `((hC.arExists k X p 1 hX).2 (Fin 3) T).1`. Establish `e' : L.icls + Q.icls = L'.icls + Q'.icls` using `HermLB.icls_eq_iff.2 e`. Establish `c₀ : (comb T ![1, 0, 0]).Isometric L` using `HermLB.icls_eq_iff.1 (by`. Simplify using `[icls_comb, Fin.sum_univ_three, T])`.
+
+Establish `c₁ : (comb T ![0, 1, 0]).Isometric Q` using `HermLB.icls_eq_iff.1 (by`. Simplify using `[icls_comb, Fin.sum_univ_three, T])`. Establish `c₂ : (comb T ![0, 0, 1]).Isometric L'` using `HermLB.icls_eq_iff.1 (by`. Simplify using `[icls_comb, Fin.sum_univ_three, T])`. Establish `c₃ : (comb T ![1, 1, -1]).Isometric Q'` using `HermLB.icls_eq_iff.1 (by`.
+
+Simplify using `[icls_comb, Fin.sum_univ_three, T, e'])`. Establish `c₄ : (comb T ![0, 1, -1]).Isometric (L'.dual.tens Q)` using `HermLB.icls_eq_iff.1 (by`. Simplify using `[icls_comb, Fin.sum_univ_three, T, HermLB.icls_tens, HermLB.icls_dual, add_comm])`. Establish `I₀` using `HermLB.isInter_of_comb hC.arExists hC.arMix hC.arIso hX hΨ c₄ c₀`. Establish `I₂` using `HermLB.isInter_of_comb hC.arExists hC.arMix hC.arIso hX hΨ c₄ c₂`.
+
+Rewrite using `[hx.unique hX (c₀.isSelfInter hX (hΨ.1 _)), hy.unique hX (c₁.isSelfInter hX (hΨ.1 _)), hx'.unique hX (c₂.isSelfInter hX (hΨ.1 _)), hy'.unique hX (c₃.isSelfInter hX (hΨ.1 _)), ha.unique hX I₀, ha'.unique hX I₂, neg_mul, two_mul, ← map_add, ← map_sub, ← map_sub, ← map_sub, ← map_ad …`. Use `congr 1`. Simplify using `[lin, Fin.sum_univ_three]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem selfInter_sub [IsIntegral X] [IsLocallyNoetherian X] (hC : Published.ArCalc)
     (hX : IsArithVar p 1) {L Q L' Q' : HermLB p} (e : (L.tens Q).Isometric (L'.tens Q'))
     {x y x' y' a a' : ℝ} (hx : L.IsSelfInter x) (hy : Q.IsSelfInter y) (hx' : L'.IsSelfInter x')
@@ -80,6 +94,11 @@ section Dens
 variable [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)]
   {ρ ρ' : AlgChart p σ 1 → CxPts p σ → ℝ}
 
+/- English proof (translation)
+Take `⟨ν, w, _, -, h₁, h₂⟩` from `T.finite_measure_density_exists k X p σ hR`. Take `⟨g, hg, e⟩` from `h₁ ρ h`. Take `⟨g', hg', e'⟩` from `h₁ ρ' h'`. Establish `i` using `hg.integrable_of_hasCompactSupport (μ := ν) (HasCompactSupport.of_compactSpace _)`. Establish `i'` using `hg'.integrable_of_hasCompactSupport (μ := ν) (HasCompactSupport.of_compactSpace _)`.
+
+Rewrite using `[(h₂ ρ g hg e).2, (h₂ ρ' g' hg' e').2, ← integral_add i i', ← integral_sub i i']`. Conclude with `⟨(h₂ _ _ (hg.add hg') fun c y hy => by rw [e c y hy, e' c y hy, Pi.add_apply, add_mul]).2, (h₂ _ _ (hg.sub hg') fun c y hy => by rw [e c y hy, e' c y hy, Pi.sub_apply, sub_mul]).2⟩`.
+-/
 theorem total_add_sub (hR : Nonempty (AnRead p σ 1)) (h : IsDens ρ) (h' : IsDens ρ') :
     total (fun c y => ρ c y + ρ' c y) = total ρ + total ρ' ∧
       total (fun c y => ρ c y - ρ' c y) = total ρ - total ρ' := by
@@ -94,6 +113,9 @@ theorem total_add_sub (hR : Nonempty (AnRead p σ 1)) (h : IsDens ρ) (h' : IsDe
 
 end Dens
 
+/- English proof (translation)
+Use `g.form_frame ⟨U, _, ht⟩ hy 0 0` as an intermediate fact. Rewrite using `[show g.form t t y = _ from this]`. Conclude with `(Complex.pos_iff.1 ((g.posDef ⟨U, _, ht⟩ y hy).diag_pos)).1`.
+-/
 theorem form_frame_pos {L : X.Modules} (g : Met p σ L 1) {U : X.Opens} {t : Γ(L, U)}
     (ht : IsFrame fun _ : Fin 1 => t) {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) :
     0 < (g.form t t y).re := by
@@ -101,6 +123,9 @@ theorem form_frame_pos {L : X.Modules} (g : Met p σ L 1) {U : X.Opens} {t : Γ(
   rw [show g.form t t y = _ from this]
   exact (Complex.pos_iff.1 ((g.posDef ⟨U, _, ht⟩ y hy).diag_pos)).1
 
+/- English proof (translation)
+Establish `key {F : X.Modules} (c : Chart F 1) {U : X.Opens} (h : U ≤ c.U) : IsFrame fun _ : Fin 1 => Twist.resM F h (c.e 0)` using `fun V hV => by`. Use `c.isFrame V (hV.trans h) using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Twist.resM_resM, Subsingleton.elim i 0]`. Conclude with `⟨_, _, _, key (hL.pick y) inf_le_left, key (hL'.pick y) inf_le_right, mem_ptsIn_inf.2 ⟨hL.mem_pick y, hL'.mem_pick y⟩⟩`.
+-/
 theorem exists_frames {L L' : X.Modules} (hL : IsVB L 1) (hL' : IsVB L' 1) (y : CxPts p σ) :
     ∃ (U : X.Opens) (t : Γ(L, U)) (t' : Γ(L', U)), (IsFrame fun _ : Fin 1 => t) ∧
       (IsFrame fun _ : Fin 1 => t') ∧ y ∈ ptsIn p σ U := by
@@ -121,6 +146,11 @@ variable {V L Q L' Q' : X.Modules} {l : L ⟶ V} {m : V ⟶ Q} {w : l ≫ m = 0}
 
 include hl hl' hL' in
 
+/- English proof (translation)
+Establish `p₁` using `form_frame_pos (h.restrict hl hL) ht hU`. Establish `p₂` using `form_frame_pos (h.restrict hl' hL') ht' hU`. Establish `p₃ : ((Met.quot (S` using `.mk l m w) h hS hL hQ).form ((l' ≫ m).app U t') ((l' ≫ m).app U t') y).re * (h.form (l.app U t) (l.app U t) y).re = (h.form (l'.app U t') (l'.app U t') y).re * (h.form (l.app U t) (l.app U t) y).re - ‖h.form (l'.app U t') (l.app U t) y‖ ^ 2 := T.quotient_metric_norm_product_formu …`. Rewrite using `[div_eq_iff p₂.ne']`. Rewrite `p₁` using `[h.form_restrict hl hL t t hU]`.
+
+Rewrite using `[h.form_restrict hl' hL' t' t' hU]`. Use `mul_right_cancel₀ p₁.ne' (p₃.trans ?_)` and prove the remaining obligations. Rewrite using `[hv U t t' y hU]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem div_eq_one_sub (h : Met p σ V (1 + 1)) {v : CxPts p σ → ℝ} (hv : IsCosSq h l l' v)
     {U : X.Opens} {t : Γ(L, U)} {t' : Γ(L', U)} (ht : IsFrame fun _ : Fin 1 => t)
     (ht' : IsFrame fun _ : Fin 1 => t') {y : CxPts p σ} (hU : y ∈ ptsIn p σ U) :
@@ -140,6 +170,13 @@ theorem div_eq_one_sub (h : Met p σ V (1 + 1)) {v : CxPts p σ → ℝ} (hv : I
   rw [hv U t t' y hU]
   ring
 
+/- English proof (translation)
+Take `⟨v, hv, hc, hb⟩` from `T.exists_continuous_cosSq_angle_function k X p σ V L L' _ h l l' H hl hl' hL hL'`. Establish `d₁` using `isDens_bcDens (S := .mk l m w) hS hL hQ H`. Establish `d₂` using `isDens_bcDens (S := .mk l' m' w') hS' hL' hQ' H`. Rewrite `j₁`, `j₂` using `[Weight.ChernIntegrableOn, (chernPart_eq _).1, (chernPart_eq _).2]`. Rewrite using `[← total_bcDens (S := .mk l m w) hS hL hQ H, ← total_bcDens (S := .mk l' m' w') hS' hL' hQ' H, ← (total_add_sub hR d₁ d₂).2, Weight.chernInt, Weight.chernInt, (chernPart_eq _).1, (chernPart_eq _).2, (chernPart_eq _).1, (chernPart_eq _).2]`.
+
+Use `T.density_inequality_log_one_sub_cosSq k X p σ hR _ _ _ ((T.chernDens_detWeight_eq_neg_levi_log k X p σ).1 _ _ (H.restrict hl hL).detWeight) ((T.chernDens_detWeight_eq_neg_levi_log k X p σ).1 _ _ (H.restrict hl' hL').detWeight) (d₁.sub d₂) v f S hc hb ho hf (fun y hy => ?_) j₁.1 …` and prove the remaining obligations. Take `⟨U, t, t', ht, ht', hU⟩` from `exists_frames hL hL' y`. Take `⟨n₁, n₂⟩` from `hn y hy U t' ht' hU`. Establish `e` using `div_eq_one_sub hS hL hQ hL' hl hl' h hv ht ht' hU`. Use `div_pos n₁ (form_frame_pos (h.restrict hl' hL') ht' hU)` as an intermediate fact.
+
+Rewrite `this`, `n₂` using `[e]`. Conclude with `⟨by linarith, n₂⟩`.
+-/
 theorem green_log [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
     [SecondCountableTopology (CxPts p σ)] (hR : Nonempty (AnRead p σ 1)) (h : Met p σ V (1 + 1))
     (H : h.IsCInf) {S : Set (CxPts p σ)} (ho : IsOpen S) (hf : Sᶜ.Finite) {f : CxPts p σ → ℝ}
@@ -173,6 +210,23 @@ theorem green_log [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
 
 variable [IsIntegral X] {h : VMetric p V (1 + 1)} (H : h.IsCInf)
 
+/- English proof (translation)
+Establish `hA` using `hX.toIsArithVar`. Distinguish the cases in `hs : l' ≫ m = 0`. Take `⟨e, he⟩` from `T.iso_of_equal_sublines_shortExact X V L Q L' Q' l m w l' m' w' hS hS' hQ hQ' hs`. Take `⟨e₁, e₂⟩` from `T.det_metric_shortExact_iso_isometric k X p (.mk l' m' w') (.mk l m w) 1 1 h h H H hS' hS hL' hQ' hL hQ e (Iso.refl V) (he.trans (Category.comp_id _).symm) fun _ _ _ _ _ _ => rfl`. Apply the tactic sequence `have e₃ := T.det_metric_isometric_of_isometry k X p L' L 1 (h.restrict hl' hL') (h.restrict hl hL) (H.restrict hl' hL') (H.restrict hl hL) e fun σ U s t y hy => by`.
+
+Use `((h.met σ).form_restrict hl hL _ _ hy).trans (Eq.trans ?_ ((h.met σ).form_restrict hl' hL' s t hy).symm)` and prove the remaining obligations. Rewrite using `[← he]`. Both sides reduce to the same expression. Rewrite using `[e₂, hx.unique hA (e₃.isSelfInter hA hx'), hy.unique hA (e₁.isSelfInter hA hy')]`. Use `hA.isLocallyNoetherian` as an intermediate fact.
+
+Establish `HQ` using `VMetric.IsCInf.quot (S := .mk l m w) hS hL hQ H`. Take `⟨r, hr, hv, hn⟩` from `T.exists_ratSec_det_dual_tensor_support k X p L' Q (h.restrict hl' hL') (VMetric.quot (S := .mk l m w) h hS hL hQ) (H.restrict hl' hL') HQ (l' ≫ m) hs`. Establish `e₀` using `fun a a' => selfInter_sub (a := a) (a' := a') hC hA ((T.det_metric_shortExact_isometric k X p (.mk l m w) 1 1 h H hS hL hQ hl).trans (T.det_metric_shortExact_isometric k X p (.mk l' m' w') 1 1 h H hS' hL' hQ' hl').symm) hx hy hx' hy'`. Generalize the expression as in `(VMetric.det (H.restrict hl' hL')).dual.tens (VMetric.det HQ) = P at *`. Take `⟨a, ha⟩` from `(isInter_calculus hC k X p hA P P (VMetric.det (H.restrict hl hL))).1`.
+
+Take `⟨a', ha'⟩` from `(isInter_calculus hC k X p hA P P (VMetric.det (H.restrict hl' hL'))).1`. Use `replace e₀ := e₀ a a' ha ha'`. Take `⟨g, G, ha⟩` from `ha`. Take `⟨g', G', ha'⟩` from `ha'`. Take `⟨i₁, rfl⟩` from `ha r hr`.
+
+Take `⟨i₂, rfl⟩` from `ha' r hr`. Establish `e₁ : ∑ᶠ z, ((P.div hr).mult z : ℝ) * g z = ∑ᶠ z, ((P.div hr).mult z : ℝ) * g' z` using `finsum_congr fun z => by`. Distinguish the cases in `hz : (P.div hr).mult z = 0`. Simplify using `[hz]`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`.
+
+Rewrite using `[height_eq hA G G' i (T.det_metric_restriction_vanishing_locus k X p V L Q L' l m w l' hS hQ hL hL' hl hl' h H Z i (hv _ (CartierDiv.mem_supp_of_mult_ne_zero hz)))]`. Establish `key (σ : k →+* ℂ)`. Use `hA.compactSpace σ` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hA.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hA.isProjOver` as an intermediate fact.
+
+Use `green_log hS hS' hL hQ hL' hQ' hl hl' ((RegGenSmooth.genSmooth_of_isRegSurf k X p hX).1 σ) (h.met σ) (H σ) (isOpen_offSupp (P.div hr)) (SurfacePoints.finite_compl_ptsIn k X p hA _ (P.div hr).genericPoint_notMem_supp σ) (hn σ) (i₁ σ) (i₂ σ)`. Use `hA.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `e₂` using `Finset.sum_congr rfl fun σ (_ : σ ∈ Finset.univ) => key σ`. Rewrite `e₂` using `[← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_sub_distrib]`.
+
+Rewrite `e₀` using `[HermLB.archInt, HermLB.archInt, finsum_eq_sum_of_fintype (α := k →+* ℂ), finsum_eq_sum_of_fintype (α := k →+* ℂ)]`. Rewrite using `[VMetric.bcInt, VMetric.bcInt, finsum_eq_sum_of_fintype (α := k →+* ℂ), finsum_eq_sum_of_fintype (α := k →+* ℂ)]`. Express the relevant statement in the definitionally equal form `2 * (∑ σ, ((VMetric.det (H.restrict hl hL)).φ σ).chernInt 1 _ _ - ∑ σ, ((VMetric.det (H.restrict hl' hL')).φ σ).chernInt 1 _ _) = _ at e₂`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rank_two (hC : Published.ArCalc) (hX : IsRegSurf p) {x y x' y' : ℝ}
     (hx : (VMetric.det (H.restrict hl hL)).IsSelfInter x)
     (hy : (VMetric.det (VMetric.IsCInf.quot (S := .mk l m w) hS hL hQ H)).IsSelfInter y)
@@ -236,6 +290,9 @@ theorem rank_two (hC : Published.ArCalc) (hX : IsRegSurf p) {x y x' y' : ℝ}
 
 end RankTwo
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `hx`.
+-/
 theorem isSelfInter_congr [IsIntegral X] {E : X.Modules} {r : ℕ} {h h' : VMetric p E r} (e : h = h')
     {H : h.IsCInf} {H' : h'.IsCInf} {x : ℝ} (hx : (VMetric.det H').IsSelfInter x) :
     (VMetric.det H).IsSelfInter x := by
@@ -255,6 +312,17 @@ variable [IsIntegral X] {A B V : X.Modules} {u : A ⟶ B} {q₂ : B ⟶ V} {w₂
 omit [IsIntegral X] in
 include H in
 
+/- English proof (translation)
+Take `⟨l, m, w₃, hS₃, e₁, e₂⟩` from `T.exists_shortExact_of_composition X A M B L Q V f g u q₀ q₁ q₂ w₀ w₁ w₂ hS₀ hS₁ hS₂ hu`. Establish `hl : IsSubbundle l` using `isSubbundle_of_shortExact hS₃ hQ`. Establish `key (σ : k →+* ℂ)` using `T.shortExact_composition_compatibility k X p σ A M B L Q V f g u q₀ q₁ q₂ w₀ w₁ w₂ hS₀ hS₁ hS₂ l m w₃ hS₃ n hA hM hL hQ hV hg (h.met σ) hu e₁ e₂ hl`. Use `⟨l, m, w₃, hS₃, hl, VMetric.ext (funext fun σ => (key σ).1), VMetric.ext (funext fun σ => (key σ).2), ?_⟩` and prove the remaining obligations. Establish `hX'` using `hX.toIsArithVar`.
+
+Use `hX'.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Simplify using `only [VMetric.bcInt, finsum_eq_sum_of_fintype, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `hX'.compactSpace σ` as an intermediate fact.
+
+Use `CxPts.secondCountableTopology_of_isProjOver σ hX'.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hX'.isProjOver` as an intermediate fact. Establish `hR` using `(RegGenSmooth.genSmooth_of_isRegSurf k X p hX).1 σ`. Establish `H₀` using `(H σ).restrict hg hM`. Establish `H₃` using `Met.IsCInf.quot (S := .mk u q₂ w₂) (r := n) (s := 1 + 1) hS₂ hA hV (H σ)`.
+
+Establish `t₀` using `total_bcDens (S := .mk f q₀ w₀) hS₀ hA hL H₀`. Establish `t₁` using `total_bcDens (S := .mk g q₁ w₁) hS₁ hM hQ (H σ)`. Establish `t₂` using `total_bcDens (S := .mk u q₂ w₂) (r := n) (s := 1 + 1) hS₂ hA hV (H σ)`. Establish `t₃` using `total_bcDens (S := .mk l m w₃) hS₃ hL hQ H₃`. Establish `s₁` using `(total_add_sub hR (isDens_bcDens (S := .mk f q₀ w₀) hS₀ hA hL H₀) (isDens_bcDens (S := .mk g q₁ w₁) hS₁ hM hQ (H σ))).1`.
+
+Establish `s₂` using `(total_add_sub hR (isDens_bcDens (S := .mk u q₂ w₂) (r := n) (s := 1 + 1) hS₂ hA hV (H σ)) (isDens_bcDens (S := .mk l m w₃) hS₃ hL hQ H₃)).1`. Rewrite `s₁` using `[t₀, t₁]`. Rewrite `s₂` using `[t₂, t₃]`. Conclude with `s₁.symm.trans ((total_congr (T.shortExact_composition_metric_compat k X p σ A M B L Q V f g u q₀ q₁ q₂ w₀ w₁ w₂ hS₀ hS₁ hS₂ l m w₃ hS₃ n hA hM hL hQ hV hg (h.met σ) hu e₁ e₂ (H σ))).trans s₂)`.
+-/
 theorem three_step (hX : IsRegSurf p) (hu : f ≫ g = u) :
     ∃ (l : L ⟶ V) (m : V ⟶ Q) (w₃ : l ≫ m = 0) (hS₃ : (ShortComplex.mk l m w₃).ShortExact)
       (hl : IsSubbundle l),
@@ -304,6 +372,13 @@ variable {M' L' Q' : X.Modules} {f' : A ⟶ M'} {g' : M' ⟶ B} {q₀' : M' ⟶ 
   (hS₁' : (ShortComplex.mk g' q₁' w₁').ShortExact) (hM' : IsVB M' (n + 1)) (hL' : IsVB L' 1)
   (hQ' : IsVB Q' 1) (hg' : IsSubbundle g')
 
+/- English proof (translation)
+Establish `m₀ : Mono f` using `hS₀.mono_f`. Establish `m₁ : Mono g` using `hS₁.mono_f`. Establish `hS₂ : (ShortComplex.mk (f ≫ g) _ (Limits.cokernel.condition _)).ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Establish `hV : IsVB (Limits.cokernel (f ≫ g)) (1 + 1)`. Take `⟨l, m, w₃, hS₃, -⟩` from `T.exists_shortExact_of_composition X A M B L Q _ f g _ q₀ q₁ _ w₀ w₁ _ hS₀ hS₁ hS₂ rfl`.
+
+Conclude with `(VBExt.isVB_and_cls_det_of_shortExact X _ 1 1 hS₃ hL hQ).1`. Take `⟨l, m, w₃, hS₃, hl, e₁, e₂, e₃⟩` from `three_step hS₂ hA hV H hS₀ hS₁ hM hL hQ hg hX rfl`. Take `⟨l', m', w₃', hS₃', hl', e₁', e₂', e₃'⟩` from `three_step hS₂ hA hV H hS₀' hS₁' hM' hL' hQ' hg' hX hu.symm`. Establish `HV` using `VMetric.IsCInf.quot (S := .mk (f ≫ g) _ (Limits.cokernel.condition _)) (r := n) (s := 1 + 1) hS₂ hA hV H`. Establish `aux {a a' b c c' d d' : ℝ} (e : d = b + c) (e' : d' = b + c') (k : a - c = a' - c') : a - d = a' - d'` using `by linarith`.
+
+Conclude with `aux e₃ e₃' (rank_two hS₃ hS₃' hL hQ hL' hQ' hl hl' HV hC hX (isSelfInter_congr e₁ hx) (isSelfInter_congr e₂ hy) (isSelfInter_congr e₁' hx') (isSelfInter_congr e₂' hy'))`.
+-/
 theorem two_steps (hC : Published.ArCalc) (hX : IsRegSurf p) (hu : f ≫ g = f' ≫ g') {x y x' y' : ℝ}
     (hx : (VMetric.det (VMetric.IsCInf.quot (S := .mk f q₀ w₀) hS₀ hA hL
       (H.restrict hg hM))).IsSelfInter x)
@@ -343,6 +418,9 @@ variable {E : X.Modules} {r : ℕ} {h : VMetric p E r} (H : h.IsCInf) {fl fl' : 
 noncomputable abbrev stepBc (h : VMetric p E r) (fl : Vert.Flag E r) (i : Fin r) : ℝ :=
   (h.stepMet fl i).bcInt (stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)
 
+/- English proof (translation)
+Introduce `σ U s t y hy` and use `by refine ((h.met σ).form_restrict hi' hF' _ _ hy).trans (Eq.trans ?_ ((h.met σ).form_restrict hi hF s t hy).symm) rw [← he] rfl`.
+-/
 theorem isIsometry_restrict {F F' : X.Modules} {s : ℕ} {i : F ⟶ E} {i' : F' ⟶ E}
     (hi : IsSubbundle i) (hi' : IsSubbundle i') (hF : IsVB F s) (hF' : IsVB F' s) (e : F ≅ F')
     (he : e.hom ≫ i' = i) : (h.restrict hi hF).IsIsometry (h.restrict hi' hF') e :=
@@ -352,6 +430,9 @@ theorem isIsometry_restrict {F F' : X.Modules} {s : ℕ} {i : F ⟶ E} {i' : F' 
     rw [← he]
     rfl
 
+/- English proof (translation)
+Take `⟨e₀, h₀⟩` from `h₀`. Take `⟨e₁, h₁⟩` from `h₁`. Use `T.det_metric_shortExact_iso_isometric k X p (stepSeq fl i) (stepSeq fl' i) i 1 (h.stepMet fl i) (h.stepMet fl' i) (H.restrict _ _) (H.restrict _ _) _ _ _ _ _ _ e₀ e₁ ?_ (isIsometry_restrict _ _ _ _ e₁ h₁)` and prove the remaining obligations. Rewrite using `[← cancel_mono (fl'.ι i.succ)]`. Simplify using `only [Category.assoc, Vert.Flag.step_ι, h₀, h₁]`.
+-/
 theorem step_eq {i : Fin r} (h₀ : fl.SameStep fl' i.castSucc) (h₁ : fl.SameStep fl' i.succ) :
     (grLB fl i H).Isometric (grLB fl' i H) ∧ stepBc h fl i = stepBc h fl' i := by
   obtain ⟨e₀, h₀⟩ := h₀
@@ -361,6 +442,21 @@ theorem step_eq {i : Fin r} (h₀ : fl.SameStep fl' i.castSucc) (h₁ : fl.SameS
   rw [← cancel_mono (fl'.ι i.succ)]
   simp only [Category.assoc, Vert.Flag.step_ι, h₀, h₁]
 
+/- English proof (translation)
+Establish `hA` using `hX.toIsArithVar`. Use `set i₀ : Fin r := ⟨n, by omega⟩`. Use `set i₁ : Fin r := ⟨n + 1, hn⟩`. Take `⟨e₀, h₀⟩` from `h₀`. Take `⟨e₂, h₂⟩` from `h₂`.
+
+Set `g : fl.F i₀.succ ⟶ fl.F i₁.succ` to `fl.step i₁`. Set `f' : fl.F i₀.castSucc ⟶ fl'.F i₀.succ` to `e₀.hom ≫ fl'.step i₀`. Set `g' : fl'.F i₀.succ ⟶ fl.F i₁.succ` to `fl'.step i₁ ≫ e₂.inv`. Set `q' : fl.F i₁.succ ⟶ fl'.gr i₁` to `e₂.hom ≫ fl'.π i₁`. Establish `w₀' : f' ≫ fl'.π i₀ = 0`.
+
+Simplify using `only [f', Category.assoc]`. Rewrite using `[show fl'.step i₀ ≫ fl'.π i₀ = 0 from Limits.cokernel.condition _, Limits.comp_zero]`. Establish `w₁' : g' ≫ q' = 0`. Simplify using `only [g', q', Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `Limits.cokernel.condition _`.
+
+Establish `hS₀' : (ShortComplex.mk f' _ w₀').ShortExact` using `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := stepSeq fl' i₀) e₀.symm (Iso.refl _) (Iso.refl _) (by simp [f']) (by simp)) (stepSeq_shortExact fl' i₀)`. Establish `hS₁' : (ShortComplex.mk g' q' w₁').ShortExact` using `ShortComplex.shortExact_of_iso (ShortComplex.isoMk (S₁ := stepSeq fl' i₁) (Iso.refl _) e₂.symm (Iso.refl _) (by simp [g']) (by simp [q'])) (stepSeq_shortExact fl' i₁)`. Establish `hg : IsSubbundle g` using `isSubbundle_of_shortExact (stepSeq_shortExact fl i₁) (fl.isVB_gr i₁)`. Establish `hg' : IsSubbundle g'` using `isSubbundle_of_shortExact hS₁' (fl'.isVB_gr i₁)`. Establish `gι : g ≫ fl.ι i₁.succ = fl.ι i₀.succ` using `fl.step_ι i₁`.
+
+Establish `gι' : g' ≫ fl.ι i₁.succ = fl'.ι i₀.succ`. Rewrite using `[← h₂, Category.assoc, Iso.inv_hom_id_assoc]`. Conclude with `fl'.step_ι i₁`. Establish `hu : fl.step i₀ ≫ g = f' ≫ g'`. Rewrite using `[← cancel_mono (fl.ι i₁.succ), Category.assoc, Category.assoc, gι, gι', fl.step_ι, Category.assoc, fl'.step_ι, h₀]`.
+
+Establish `HB : (h.stepMet fl i₁).IsCInf` using `H.restrict _ _`. Apply the tactic sequence `have res {F : X.Modules} {a : F ⟶ fl.F i₁.succ} {b : F ⟶ E} (ha : IsSubbundle a) (hb : IsSubbundle b) (hF : IsVB F (n + 1)) (e : a ≫ fl.ι i₁.succ = b) : ((h.stepMet fl i₁).restrict ha hF).IsIsometry (h.restrict hb hF) (Iso.refl F) := fun σ U s t y hy => by`. Use `((h.met σ).form_restrict hb hF _ _ hy).trans (Eq.trans ?_ ((((h.stepMet fl i₁).met σ).form_restrict ha hF s t hy).trans ((h.met σ).form_restrict (fl.isSubbundle i₁.succ) (fl.isVB i₁.succ) _ _ hy)).symm)` and prove the remaining obligations. Rewrite using `[← e]`. Both sides reduce to the same expression.
+
+Take `⟨a₁, b₁⟩` from `T.det_metric_shortExact_iso_isometric k X p (stepSeq fl i₀) (stepSeq fl i₀) n 1 _ (h.stepMet fl i₀) (HB.restrict hg (fl.isVB i₀.succ)) (H.restrict _ _) (stepSeq_shortExact fl i₀) (stepSeq_shortExact fl i₀) (fl.isVB i₀.castSucc) (fl.isVB_gr i₀) (fl.isVB i₀.castSucc) (fl.isVB_gr i₀ …`. Take `⟨a₂, b₂⟩` from `T.det_metric_shortExact_iso_isometric k X p (.mk f' _ w₀') (stepSeq fl' i₀) n 1 _ (h.stepMet fl' i₀) (HB.restrict hg' (fl'.isVB i₀.succ)) (H.restrict _ _) hS₀' (stepSeq_shortExact fl' i₀) (fl.isVB i₀.castSucc) (fl'.isVB_gr i₀) (fl'.isVB i₀.castSucc) (fl'.isVB_gr i₀) e₀ (Iso.refl …`. Take `⟨a₃, b₃⟩` from `T.det_metric_shortExact_iso_isometric k X p (.mk g' q' w₁') (stepSeq fl' i₁) (n + 1) 1 _ (h.stepMet fl' i₁) HB (H.restrict _ _) hS₁' (stepSeq_shortExact fl' i₁) (fl'.isVB i₀.succ) (fl'.isVB_gr i₁) (fl'.isVB i₁.castSucc) (fl'.isVB_gr i₁) (Iso.refl _) e₂ (by simp [g']) (isIsometry_ …`. Establish `key` using `two_steps (fl.isVB i₀.castSucc) HB (stepSeq_shortExact fl i₀) (stepSeq_shortExact fl i₁) (fl.isVB i₀.succ) (fl.isVB_gr i₀) (fl.isVB_gr i₁) hg hS₀' hS₁' (fl'.isVB i₀.succ) (fl'.isVB_gr i₀) (fl'.isVB_gr i₁) hg' hC hX hu (a₁.symm.isSelfInter hA hx) hy (a₂.symm.isSelfInter hA hx') (a …`. Conclude with `(congrArg (fun t => x + y - (t + stepBc h fl i₁)) b₁).symm.trans (key.trans (congrArg₂ (fun s t => x' + y' - (s + t)) b₂ b₃))`.
+-/
 theorem mid_eq [IsIntegral X] (hC : Published.ArCalc) (hX : IsRegSurf p) {n : ℕ} (hn : n + 1 < r)
     (h₀ : fl.SameStep fl' (Fin.castSucc ⟨n, by omega⟩)) (h₂ : fl.SameStep fl' (Fin.succ ⟨n + 1, hn⟩))
     {x y x' y' : ℝ} (hx : (grLB fl ⟨n, by omega⟩ H).IsSelfInter x)
@@ -428,6 +524,11 @@ theorem mid_eq [IsIntegral X] (hC : Published.ArCalc) (hX : IsRegSurf p) {n : �
   exact (congrArg (fun t => x + y - (t + stepBc h fl i₁)) b₁).symm.trans
     (key.trans (congrArg₂ (fun s t => x' + y' - (s + t)) b₂ b₃))
 
+/- English proof (translation)
+Break down `hj with rfl | rfl` into its components or cases. Establish `z` using `isVB_zero_iff.1 (fl.isVB 0)`. Conclude with `⟨z.iso (isVB_zero_iff.1 (fl'.isVB 0)), z.eq_of_src _ _⟩`. Use `fl.isIso_last` as an intermediate fact. Use `fl'.isIso_last` as an intermediate fact.
+
+Conclude with `⟨asIso (fl.ι _) ≪≫ (asIso (fl'.ι _)).symm, by simp⟩`.
+-/
 theorem sameStep_of_end {j : Fin (r + 1)} (hj : j = 0 ∨ j = Fin.last r) : fl.SameStep fl' j := by
   rcases hj with rfl | rfl
   · have z := isVB_zero_iff.1 (fl.isVB 0)
@@ -438,6 +539,17 @@ theorem sameStep_of_end {j : Fin (r + 1)} (hj : j = 0 ∨ j = Fin.last r) : fl.S
 
 end Flags
 
+/- English proof (translation)
+Introduce and unpack `hC k _ X p _ hX E r h H fl fl' ⟨j, hj⟩ _ _ ⟨-, x, hx, rfl⟩ ⟨-, x', hx', rfl⟩`. Establish `hA` using `hX.toIsArithVar`. Establish `same {i : Fin r} (h₀ : fl.SameStep fl' i.castSucc) (h₁ : fl.SameStep fl' i.succ) : x i - stepBc h fl i - (x' i - stepBc h fl' i) = 0`. Take `⟨e₁, e₂⟩` from `step_eq H h₀ h₁`. Rewrite using `[e₂, (e₁.isSelfInter hA (hx i)).unique hA (hx' i), sub_self]`.
+
+It suffices to establish `e : ∑ i, (x i - stepBc h fl i - (x' i - stepBc h fl' i)) = 0 by`. Simplify using `only [Finset.sum_sub_distrib] at e`. Rewrite using `[← Finset.sum_div, ← Finset.sum_div, VMetric.flagBc, VMetric.flagBc]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `he : j = 0 ∨ j = Fin.last r`.
+
+Establish `all (i) : fl.SameStep fl' i`. Distinguish the cases in `hi : i = j`. Conclude with `hi ▸ sameStep_of_end he`. Conclude with `hj i hi`. Conclude with `Finset.sum_eq_zero fun i _ => same (all _) (all _)`.
+
+Take `⟨_ | n, hn⟩` from `j`. Conclude with `absurd (.inl rfl) he`. Establish `hn' : n + 1 < r`. Establish `: n + 1 ≠ r` using `fun e => he (.inr (Fin.ext e))`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Fintype.sum_eq_add (⟨n, by omega⟩ : Fin r) (⟨n + 1, hn'⟩ : Fin r) (by simp) fun i hi => same (i := i) (hj _ fun e => hi.2 (Fin.ext (congrArg Fin.val e :))) (hj _ fun e => hi.1 (Fin.ext (Nat.succ_injective (congrArg Fin.val e :))))]`. Use `mid_eq H hC hX hn' (hj _ (by simp [Fin.ext_iff])) (hj _ (by simp [Fin.ext_iff])) (hx _) (hx _) (hx' _) (hx' _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isFlagCh2_eq_of_adjacent : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0})
     (p : X ⟶ Sp k) [IsIntegral X], IsRegSurf p → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r)
     (H : h.IsCInf) (fl fl' : Vert.Flag E r), fl.Adjacent fl' → ∀ a b : ℝ,

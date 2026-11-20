@@ -13,6 +13,13 @@ namespace GlobalTheory.HolDict
 
 open GlobalTheory.HolRead in
 
+/- English proof (translation)
+Establish `hn : p + q = V.rank` using `hpq.trans hr.symm`. Establish `hp : p ≤ V.rank` using `by omega`. Establish `he : IsEnum (Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW h p q)) (M.lam ρ) (M.ε ρ)` using `hS ▸ M.enum ρ`. Establish `hε : ∀ a, M.ε ρ a = decide ((a : ℕ) < p)` using `fun a => (isEnum_holPar_kapW h hr hn he a).2`. Take `⟨hn', hx⟩` from `GlobalTheory.HolDS.lowK_holPar (Formalism.L2.NTheta.holOK_kapW h p q hpq) he`.
+
+Establish `hc` using `c.2`. Distinguish the cases in `hcq : (c : ℕ) < q`. Rewrite using `[extWt_arr M ρ hp hε c (Fin.cast hn' (finSumFinEquiv (Sum.inr ⟨c, hcq⟩ : Fin p ⊕ Fin q))) (by rw [if_pos (by omega)]; simp), hx]`. Simplify using `only [wtCol, if_pos hcq, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, Sum.elim_inr]`. Rewrite using `[extWt_arr M ρ hp hε c (Fin.cast hn' (finSumFinEquiv (Sum.inl ⟨c - q, by omega⟩ : Fin p ⊕ Fin q))) (by rw [if_neg (by omega)]; simp; omega), hx]`.
+
+Simplify using `only [wtCol, if_neg hcq, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, Sum.elim_inl]`.
+-/
 theorem extWt_arr_eq_wtCol {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (h : HCParam D.R) (p q : ℕ)
     (hpq : p + q = D.R.r) (hr : V.rank = D.R.r) (ρ : D.what₂.Tau)
     (hS : S ρ = Formalism.L2.NTheta.holPar p q (Formalism.L2.NTheta.kapW h p q)) (c : Fin V.rank) :
@@ -31,11 +38,21 @@ theorem extWt_arr_eq_wtCol {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M 
       (by rw [if_neg (by omega)]; simp; omega), hx]
     simp only [wtCol, if_neg hcq, Formalism.L2.NTheta.kapW, Formalism.L2.NTheta.kapQ, Sum.elim_inl]
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Conclude with `h`.
+-/
 theorem muVal_castDict {D : D7} {V W : HSp D} (hV : V = W) {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : MuVal V χ mu) :
     MuVal W χ (castDict hV mu) := by
   subst hV
   exact h
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R κ v₀ hM ht i σ hσ hV w hw`. Use `choose e he using fun ρ => (D.hc (lab σ ρ)).e_int i`. Use `⟨fun ρ => -e ρ, ?_, fun k ρ τ hτ a => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.HolRead.mu_real_eq_prod_det D R.θ _ _ _ e hM.inf (muVal_castDict hV (ht.laws.muVal _ (inR i) _ hσ)) fun ρ => he ρ ▸ (ht.chiR i σ hσ).2.2.1 ρ`. Establish `hs : (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (inR i).1 (inR i).2 _`.
+
+Establish `hr : (D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `hi` using `i.2`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1` using `extWt_arr_eq_wtCol (R.MW i σ) (D.hc (lab σ ρ)) _ _ (hs ▸ hr : ((Wc D i).sig (tauE D ρ)).1 + ((Wc D i).sig (tauE D ρ)).2 = D.R.r) (rank_Wc i) ρ (if_pos ((GlobalTheory.ConjReading.branch_of_pins T ht.alg ht.laws.pins σ ρ).1 hσ)) a`. Rewrite `h1` using `[← hw ρ a, hs]`. Rewrite using `[GlobalTheory.HolRead.SecWt.laU_eq_wtCol D T κ ht.laws ht.alg ht.kap i σ hσ e (fun ρ => (he ρ).symm) k ρ τ hτ, Int.cast_injective h1]`. Simplify using the standard rewrite rules.
+-/
 theorem extWt_eq_laU_add : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.IsModels → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), GoodEmb T.Q.c (res T σ) → ∀ hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i, ∀ w, WtIs (R.MW i σ) w → ∃ e : D.what₂.Tau → ℤ, (∀ u ∈ GinfC (Wc D i), castDict hV (T.mu ((i : ℕ) + 1) (res T σ)) u = ∏ ρ, (archM (Wc D i) (R.θ ρ) u).det ^ e ρ) ∧ ∀ k ρ (τ : ((T.U ((i : ℕ) + 1) (res T σ)).X k).Ψ), τ.1 = tauE D ρ → ∀ a : Fin (Wc D i).rank, w ρ a = (laU (T.U ((i : ℕ) + 1) (res T σ)) (wtA (κ i)) (κ i).n) k τ (Fin.cast (rank_Wc i) a) + e ρ := by
   intro D G _ _ Pl0 T0 A T _ R κ v₀ hM ht i σ hσ hV w hw
   choose e he using fun ρ => (D.hc (lab σ ρ)).e_int i

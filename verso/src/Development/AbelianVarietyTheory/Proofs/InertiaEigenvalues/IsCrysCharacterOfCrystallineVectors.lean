@@ -12,6 +12,21 @@ open Classical
 
 namespace GlobalTheory.LetterCrys
 
+/- English proof (translation)
+Introduce `l _ P AI hT K LL hA μ hμ d hw`. Use `haveI := LL.2`. Use `haveI := K.2`. Take `⟨hgood, -⟩` from `GlobalTheory.LocalIntegers.good_integers l LL`. Set `A : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)` to `{ V := ↥LL.1 ρ := charRep μ cont := fun x => (hμ.mul continuous_const : Continuous fun g : ↥(GK K) => ((μ g : (↥LL.1)ˣ) : ↥LL.1) * x) }`.
+
+Take `⟨⟨hfin, hle⟩, -, -⟩` from `GlobalTheory.Per.FontaineTied.fontCore_all_of_tied l P AI hT K ↥LL.1 ↥(OL LL) hgood A`. Use `haveI : Module.Finite ↥LL.1 ↥(Dcris (P.PD K) (charRep μ)) := hfin`. Unfold `IsCrys`. Use `le_antisymm hle ?_` and prove the remaining obligations. Establish `hcard : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1` using `Formalism.MainNotions.N.JsetEmb.card_emb_good hA.2.2`.
+
+Establish `e : K0 K = K.1` using `inf_eq_left.2 hA.1`. Establish `hfr : finrank ℚ_[l] ↥(K0 K) = finrank ℚ_[l] ↥K.1` using `(IntermediateField.equivOfEq e).toLinearEquiv.finrank_eq`. Establish `hsurj : Function.Surjective (algebraMap ↥(K0 K) ↥K.1)` using `fun x => ⟨⟨x, x.2, hA.1 x.2⟩, rfl⟩`. Set `f : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)` to `fun τ => τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1)`. Establish `hf : Function.Injective f` using `fun τ τ' h => AlgHom.ext fun x => by`.
+
+Take `⟨y, rfl⟩` from `hsurj x`. Conclude with `AlgHom.congr_fun h y`. Use `choose w hwmem hw1 hw2 using hw`. Establish `hne : ∀ τ, w τ ≠ 0` using `fun τ h0 => hw2 τ (by rw [h0, map_zero]; exact Submodule.zero_mem _)`. Establish `hind : iSupIndep fun τ => DcrisL (P.PD K) (charRep μ) (f τ)` using `(GlobalTheory.NL.PhiD.iSupIndep_letter (P.PD K) (charRep μ)).comp hf`.
+
+Establish `hli : LinearIndependent ↥LL.1 w` using `iSupIndep.linearIndependent _ hind hwmem hne`. Set `w' : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ↥(Dcris (P.PD K) (charRep μ))` to `fun τ => ⟨w τ, (hwmem τ).1⟩`. Establish `hli' : LinearIndependent ↥LL.1 w'` using `LinearIndependent.of_comp (Dcris (P.PD K) (charRep μ)).subtype hli`. Establish `hpos : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) ≠ 0`. Rewrite using `[hcard]`.
+
+Conclude with `Module.finrank_pos.ne'`. Use `haveI : Finite (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := Nat.finite_of_card_ne_zero hpos`. Use `haveI := Fintype.ofFinite (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)`. Establish `h2` using `hli'.fintype_card_le_finrank`. Rewrite `h2` using `[← Nat.card_eq_fintype_card, hcard]`.
+
+Rewrite using `[Module.finrank_self, mul_one, hfr]`. Conclude with `h2`.
+-/
 theorem isCrys_of_letters : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l), CaseA K LL → ∀ μ : ↥(GK K) →* (↥LL.1)ˣ, Continuous (fun g : ↥(GK K) => ((μ g : (↥LL.1)ˣ) : ↥LL.1)) → ∀ d : (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) → ℤ, (∀ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, ∃ w ∈ DcrisL (P.PD K) (charRep μ) (τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1)), ιV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) w ∈ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) (d τ) ∧ ιV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) w ∉ FilV (P.PD K) (LL := ↥LL.1) (V := ↥LL.1) (d τ + 1)) → IsCrys (P.PD K) (charRep μ) := by
   intro l _ P AI hT K LL hA μ hμ d hw
   haveI := LL.2

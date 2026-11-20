@@ -10,6 +10,11 @@ open GlobalTheory.PhiOneVal
 
 namespace GlobalTheory.PhiOneVal
 
+/- English proof (translation)
+Introduce `B X I l Z u a Ch A hA i hi β P x hx r hr c hc`. Use `choose y hy using (Formalism.L2.Col.mem_stdLat x).1 hx`. Establish `hxy : x = fun j => (y j : B.fields.E)` using `funext fun j => (hy j).symm`. Establish `hyc : y r = c` using `NumberField.RingOfIntegers.coe_injective ((hy r).trans hc.symm)`. Rewrite using `[hxy, ← hyc]`.
+
+Conclude with `GlobalTheory.BaseFn.fn_eq (hA.base i hi β).1 (hA.base i hi β).2 P r hr _ (fun j => (hA.reads i hi).k_T β P r j hr) y`.
+-/
 theorem base_deco_fn : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι)
     (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ i, i ≤ B.R.m → ∀ (β : Ch i) (P : (B.primes X).vT u)
     (x : Formalism.L2.Col.Sp B.fields.E (B.R.N i)), x ∈ Formalism.L2.Col.stdLat B.fields.E (B.R.N i) → ∀ r : Fin (B.R.N i), r.1 + 1 = B.R.N i →

@@ -19,6 +19,9 @@ def SecondHalf : Prop := ∀ p q r s : ℕ,
     (∀ Z : Mat p q, IsPC Z → minusPart ((fockAct1 p q r s) Z) P = 0) →
     ∃ d : ℕ, (d : ℚ) = degW (cPair p q) μ ∧ P ∈ homog (Ix p q × Ix r s) d
 
+/- English proof (translation)
+Introduce `p q r s` and use `⟨h1 p q r s, h2 p q r s⟩`.
+-/
 theorem oneDeg_of_halves (h1 : FirstHalf) (h2 : SecondHalf) : PI.FockDegreeTwoParts.OneDeg :=
   fun p q r s => ⟨h1 p q r s, h2 p q r s⟩
 
@@ -64,6 +67,9 @@ def Reduction : Prop := HwHarmDeg → FirstHalf
 
 def Swap : Prop := FirstHalf → SecondHalf
 
+/- English proof (translation)
+The claim follows from `oneDeg_of_halves (hR hT) (hS (hR hT))`.
+-/
 theorem oneDeg_of (hT : HwHarmDeg) (hR : Reduction) (hS : Swap) : PI.FockDegreeTwoParts.OneDeg :=
   oneDeg_of_halves (hR hT) (hS (hR hT))
 

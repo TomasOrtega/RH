@@ -5,6 +5,17 @@ open Formalism.FourierDecayAlt.ThreeDimData
 
 namespace GlobalTheory.GapSizeCheck
 
+/- English proof (translation)
+Use `set B : ℝ := |2 * Mexp r * (AS k r + AG k r) + AG k r + 3| + |9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3| + 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 with hB`. Establish `hs : 1 ≤ 8 * Real.sqrt (2 * ((r : ℝ) + 1))`. Establish `: (1 : ℝ) ≤ Real.sqrt (2 * ((r : ℝ) + 1))`. Rewrite using `[Real.one_le_sqrt]`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `abs_nonneg (2 * Mexp r * (AS k r + AG k r) + AG k r + 3)`. Establish `h2` using `abs_nonneg (9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3)`. Establish `h3 : (0 : ℝ) ≤ 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `by positivity`.
+
+Establish `h1'` using `le_abs_self (2 * Mexp r * (AS k r + AG k r) + AG k r + 3)`. Establish `h2'` using `le_abs_self (9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3)`. Establish `hB0 : 0 ≤ B` using `by rw [hB]; positivity`. Establish `ha : aOf r (B * (8 * Real.sqrt (2 * ((r : ℝ) + 1)))) = B`. Unfold `aOf`.
+
+Clear the denominators using the available nonvanishing facts. Use `⟨B * (8 * Real.sqrt (2 * ((r : ℝ) + 1))), hk, ?_, ?_, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gapOK_inhabited (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, GapOK k r h := by
   set B : ℝ := |2 * Mexp r * (AS k r + AG k r) + AG k r + 3| +
     |9 * ((r : ℝ) + 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 + 3 * AG k r + 3| +
@@ -26,6 +37,11 @@ theorem gapOK_inhabited (k r : ℕ) (hk : 1 ≤ k) : ∃ h : ℝ, GapOK k r h :=
   · rw [ha]; linarith
   · rw [ha]; linarith
 
+/- English proof (translation)
+Take `⟨hk, -, h3, -⟩` from `hg`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hG0 : 0 ≤ AG k r` using `by unfold AG; positivity`. Establish `hd0 : 0 ≤ dN k r` using `by unfold dN; nlinarith [mul_nonneg hr hk0]`.
+
+Establish `hS0 : 0 ≤ AS k r` using `by unfold AS; positivity`. Establish `hM : 2 ≤ Mexp r` using `by unfold Mexp; nlinarith`. Establish `e1 : 2 * AS k r ≤ Mexp r * AS k r` using `mul_le_mul_of_nonneg_right hM hS0`. Establish `e2 : 2 * AG k r ≤ Mexp r * AG k r` using `mul_le_mul_of_nonneg_right hM hG0`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> nlinarith`.
+-/
 theorem thresholds (k r : ℕ) (h : ℝ) (hg : GapOK k r h) :
     AG k r < (aOf r h - 1) / 2 ∧ AS k r < (aOf r h - 1) / 2 ∧
       (2 * Mexp r * AS k r + 1) + AG k r + 1 ≤ aOf r h - 1 := by
@@ -40,6 +56,11 @@ theorem thresholds (k r : ℕ) (h : ℝ) (hg : GapOK k r h) :
   have e2 : 2 * AG k r ≤ Mexp r * AG k r := mul_le_mul_of_nonneg_right hM hG0
   refine ⟨?_, ?_, ?_⟩ <;> nlinarith
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hs : Real.sqrt ((r : ℝ) + 1) ≤ (r : ℝ) + 1`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`. Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn`.
+
+Establish `hn1 : (r : ℝ) + 1 ≤ n` using `by rw [hn]; push_cast; linarith`. Establish `: ((r : ℝ) + 1) * Real.sqrt ((r : ℝ) + 1) ≤ n * n` using `mul_le_mul hn1 (hs.trans hn1) (Real.sqrt_nonneg _) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem decay_range (k r : ℕ) (h : ℝ) (h120 : 120 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ h) :
     120 * ((2 * r + k + 1 : ℕ) : ℝ) * (((r : ℝ) + 1) * Real.sqrt ((r : ℝ) + 1)) ≤ h := by
   have hr : (0 : ℝ) ≤ r := Nat.cast_nonneg r

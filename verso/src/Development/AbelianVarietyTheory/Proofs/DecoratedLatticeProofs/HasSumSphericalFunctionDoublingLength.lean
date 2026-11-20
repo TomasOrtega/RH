@@ -12,12 +12,18 @@ namespace GlobalTheory.DoublingLength
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hg i l) (((SplitFlip.mem_KO_iff x).1 hx).1 l j)`.
+-/
 theorem int_mul_of_mem_KO {g x : GL (Fin n) k} (hg : ∀ i j, g.1 i j ∈ 𝒪[k]) (hx : x ∈ KO k (Fin n)) :
     ∀ i j, (g * x).1 i j ∈ 𝒪[k] := by
   intro i j
   rw [Units.val_mul, Matrix.mul_apply]
   exact sum_mem fun l _ => mul_mem (hg i l) (((SplitFlip.mem_KO_iff x).1 hx).1 l j)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `hx`. Apply `ord_eq_zero` to reduce the goal to its premises. Establish `h1 : ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) g) : kˣ) : k) = algebraMap 𝒪[k] k (Matrix.GeneralLinearGroup.det g : 𝒪[k]ˣ)` using `((algebraMap 𝒪[k] k).map_det _).symm`. Rewrite using `[h1]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`.
+-/
 theorem ord_det_of_mem_KO {x : GL (Fin n) k} (hx : x ∈ KO k (Fin n)) :
     ord k (Matrix.GeneralLinearGroup.det x) = 0 := by
   obtain ⟨g, rfl⟩ := hx
@@ -45,6 +51,9 @@ def pairEquiv : ((GL (Fin n) k ⧸ KO k (Fin n)) × (GL (Fin n) k ⧸ KO k (Fin 
     show (QuotientGroup.mk (p.1.out⁻¹ * (QuotientGroup.mk (p.1.out * p.2.out) : GL (Fin n) k ⧸ KO k (Fin n)).out) : GL (Fin n) k ⧸ KO k (Fin n)) = p.2
     rw [hx, mul_assoc, inv_mul_cancel_left, QuotientGroup.mk_mul_of_mem _ x.2, QuotientGroup.out_eq']
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairEquiv_apply (p : (GL (Fin n) k ⧸ KO k (Fin n)) × (GL (Fin n) k ⧸ KO k (Fin n))) :
     pairEquiv k n p = (p.2, (QuotientGroup.mk (p.2.out⁻¹ * p.1.out) : GL (Fin n) k ⧸ KO k (Fin n))) := rfl
 
@@ -57,6 +66,11 @@ def pairTerm (X : ℂ) (φ : GL (Fin n) k → ℂ)
       (ord k (Matrix.GeneralLinearGroup.det p.2.out)).toNat) * φ (p.1.out * p.2.out)
   else 0
 
+/- English proof (translation)
+Establish `h2 : HasSum (fun x => Set.indicator {x | P x} f x * c) (a * c)` using `((hasSum_subtype_iff_indicator (s := {x | P x}) (f := f)).1 h).mul_right c`. Establish `h3 : g = fun x => Set.indicator {x | P x} f x * c` using `funext fun x => by`. Distinguish the cases in `hx : P x`. Rewrite using `[h1 x hx, Set.indicator_of_mem (by exact hx)]`. Rewrite using `[h0 x hx, Set.indicator_of_notMem (by exact hx), zero_mul]`.
+
+Rewrite using `[h3, hb]`. Conclude with `h2`.
+-/
 theorem hasSum_of_subtype {β : Type} {P : β → Prop} (f : β → ℂ) {g : β → ℂ} {a b : ℂ} (c : ℂ)
     (h : HasSum (fun x : {x // P x} => f x.1) a) (h1 : ∀ x, P x → g x = f x * c) (h0 : ∀ x, ¬ P x → g x = 0)
     (hb : b = a * c) : HasSum g b := by
@@ -71,6 +85,13 @@ theorem hasSum_of_subtype {β : Type} {P : β → Prop} (f : β → ℂ) {g : β
 
 open scoped Classical in
 
+/- English proof (translation)
+Distinguish the cases in `hA : ∀ i j, (h.out⁻¹ : GL (Fin n) k).1 i j ∈ 𝒪[k]`. Rewrite using `[if_pos hA]`. Use `hasSum_of_subtype (P := fun c : GL (Fin n) k ⧸ KO k (Fin n) => ∀ i j, (c.out : GL (Fin n) k).1 i j ∈ 𝒪[k]) (fun c => X ^ (ord k (Matrix.GeneralLinearGroup.det c.out)).toNat * φ (h.out * c.out)) (X ^ (-ord k (Matrix.GeneralLinearGroup.det h.out)).toNat) (GlobalTheory.T.hasSum_heck …` and prove the remaining obligations. Rewrite using `[pairTerm, if_pos ⟨hA, hB⟩]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[pairTerm, if_neg fun H => hB H.2]`. Rewrite using `[if_neg hA]`. Establish `: (fun c => pairTerm X φ (h, c)) = fun _ => 0` using `funext fun c => by`. Rewrite using `[pairTerm, if_neg fun H => hA H.1]`. Rewrite using `[this]`.
+
+Conclude with `hasSum_zero`.
+-/
 theorem hasSum_pairTerm_fiber {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ : IsBorelSph k γ φ) (hγ : ∀ i, γ i ≠ 0)
     {X : ℂ} (hX : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i * X‖ < 1)
     (h : GL (Fin n) k ⧸ KO k (Fin n)) :
@@ -95,6 +116,9 @@ theorem hasSum_pairTerm_fiber {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (
 
 open scoped Classical in
 
+/- English proof (translation)
+Conclude with `hasSum_of_subtype (P := fun c : GL (Fin n) k ⧸ KO k (Fin n) => ∀ i j, (c.out⁻¹ : GL (Fin n) k).1 i j ∈ 𝒪[k]) (fun c => X ^ (-ord k (Matrix.GeneralLinearGroup.det c.out)).toNat * φ c.out) a (GlobalTheory.T.hasSum_hecke_series_spherical_integral_inverse k n γ φ hφ hγ X hX) (fun c h …`.
+-/
 theorem hasSum_pairTerm_total {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ : IsBorelSph k γ φ) (hγ : ∀ i, γ i ≠ 0)
     {X : ℂ} (hX : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (i : ℕ) * (γ i)⁻¹ * X‖ < 1) (a : ℂ) :
     HasSum (fun h : GL (Fin n) k ⧸ KO k (Fin n) =>
@@ -106,6 +130,9 @@ theorem hasSum_pairTerm_total {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (
     (fun c => X ^ (-ord k (Matrix.GeneralLinearGroup.det c.out)).toNat * φ c.out) a
     (GlobalTheory.T.hasSum_hecke_series_spherical_integral_inverse k n γ φ hφ hγ X hX) (fun c hB => if_pos hB) (fun c hB => if_neg hB) (mul_comm _ _)
 
+/- English proof (translation)
+Unfold `pairTerm`. Use `split_ifs`. Rewrite using `[norm_mul, norm_pow, Complex.ofReal_mul, Complex.ofReal_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_pairTerm (X : ℂ) (φ : GL (Fin n) k → ℂ)
     (p : (GL (Fin n) k ⧸ KO k (Fin n)) × (GL (Fin n) k ⧸ KO k (Fin n))) :
     ((‖pairTerm X φ p‖ : ℝ) : ℂ) = pairTerm (‖X‖ : ℂ) (fun g => (‖φ g‖ : ℂ)) p := by
@@ -114,11 +141,21 @@ theorem norm_pairTerm (X : ℂ) (φ : GL (Fin n) k → ℂ)
   · rw [norm_mul, norm_pow, Complex.ofReal_mul, Complex.ofReal_pow]
   · simp
 
+/- English proof (translation)
+Use `⟨fun g x hx => by simp only [h.1 g x hx], fun b hb t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [h.2 b hb t ht, norm_prod, norm_zpow, Complex.ofReal_prod, Complex.ofReal_zpow]`.
+-/
 theorem isBorelSph_norm {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (h : IsBorelSph k γ φ) :
     IsBorelSph k (fun i => (‖γ i‖ : ℂ)) (fun g => (‖φ g‖ : ℂ)) := by
   refine ⟨fun g x hx => by simp only [h.1 g x hx], fun b hb t ht => ?_⟩
   simp only [h.2 b hb t ht, norm_prod, norm_zpow, Complex.ofReal_prod, Complex.ofReal_zpow]
 
+/- English proof (translation)
+Establish `hψ` using `isBorelSph_norm hφ`. Establish `hγ' : ∀ i, (‖γ i‖ : ℂ) ≠ 0` using `fun i => by simpa using hγ i`. Establish `hX1' : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * (‖γ i‖ : ℂ) * (‖X‖ : ℂ)‖ < 1` using `fun i => by`. Simplify using `using hX1 i`. Establish `hX2' : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (i : ℕ) * ((‖γ i‖ : ℂ))⁻¹ * (‖X‖ : ℂ)‖ < 1` using `fun i => by`.
+
+Simplify using `using hX2 i`. Use `Summable.of_norm ((summable_prod_of_nonneg fun _ => norm_nonneg _).2 ⟨fun h => ?_, ?_⟩)` and prove the remaining obligations. Use `(hasSum_pairTerm_fiber hψ hγ' hX1' h).summable` as an intermediate fact. Rewrite `this` using `[← norm_pairTerm]`. Conclude with `Complex.summable_ofReal.1 this`.
+
+Use `Complex.summable_ofReal.1 ((hasSum_pairTerm_total hψ hγ' hX2' (∏ i : Fin n, (1 - (resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * (‖γ i‖ : ℂ) * (‖X‖ : ℂ))⁻¹)).summable.congr fun h => ?_)` and prove the remaining obligations. Rewrite using `[Complex.ofReal_tsum]`. Repeatedly rewrite using `[norm_pairTerm]`. Conclude with `(hasSum_pairTerm_fiber hψ hγ' hX1' h).tsum_eq.symm`.
+-/
 theorem summable_pairTerm {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ : IsBorelSph k γ φ) (hγ : ∀ i, γ i ≠ 0)
     {X : ℂ} (hX1 : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i * X‖ < 1)
     (hX2 : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (i : ℕ) * (γ i)⁻¹ * X‖ < 1) : Summable (pairTerm X φ) := by
@@ -141,6 +178,13 @@ theorem summable_pairTerm {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ 
 
 open scoped Classical in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `QuotientGroup.mk_out_eq_mul (KO k (Fin n)) (h.out⁻¹ * g.out)`. Establish `hiff : (∀ i j, (h.out⁻¹ * g.out * x : GL (Fin n) k).1 i j ∈ 𝒪[k]) ↔ ∀ i j, (h.out⁻¹ * g.out : GL (Fin n) k).1 i j ∈ 𝒪[k]` using `⟨fun H => by`. Use `int_mul_of_mem_KO H (inv_mem x.2)` as an intermediate fact. Rewrite using `[mul_inv_cancel_right] at this, fun H => int_mul_of_mem_KO H x.2⟩` and apply the resulting hypothesis. Establish `hord : ord k (Matrix.GeneralLinearGroup.det (h.out⁻¹ * g.out * x : GL (Fin n) k)) = ord k (Matrix.GeneralLinearGroup.det (h.out⁻¹ * g.out))`.
+
+Rewrite using `[map_mul, ord_mul, ord_det_of_mem_KO x.2, add_zero]`. Establish `hval : φ (h.out * (h.out⁻¹ * g.out * x)) = φ g.out`. Rewrite using `[mul_assoc, mul_inv_cancel_left, hφ.1 _ _ x.2]`. Rewrite using `[pairEquiv_apply, pairTerm]`. Simplify using `only`.
+
+Rewrite using `[hx, hord, hval]`. Conclude with `if_congr (and_congr Iff.rfl hiff) rfl rfl`.
+-/
 theorem pairTerm_pairEquiv {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ : IsBorelSph k γ φ) (X : ℂ)
     (g h : GL (Fin n) k ⧸ KO k (Fin n)) :
     pairTerm X φ (pairEquiv k n (g, h)) =
@@ -165,6 +209,11 @@ theorem pairTerm_pairEquiv {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ
   rw [hx, hord, hval]
   exact if_congr (and_congr Iff.rfl hiff) rfl rfl
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `Set.mem_iUnion.1 (show g.out ∈ ⋃ e : {e : Fin n → ℤ // Antitone e}, cell k (Fin n) ϖ e by`. Rewrite using `[iUnion_cell hϖ]`. Use the proof step `trivial)`. Rewrite using `[hlen e.1 e.2 g.out he]`. Use `hasSum_of_subtype (P := fun h : GL (Fin n) k ⧸ KO k (Fin n) => (∀ i j, (h.out⁻¹ : GL (Fin n) k).1 i j ∈ 𝒪[k]) ∧ (∀ i j, (h.out⁻¹ * g.out : GL (Fin n) k).1 i j ∈ 𝒪[k])) (fun h => X ^ ((-ord k (Matrix.GeneralLinearGroup.det h.out)).toNat + (ord k (Matrix.GeneralLinearGroup.det (h.o …` and prove the remaining obligations.
+
+Rewrite using `[pairTerm_pairEquiv hφ, if_pos hB]`. Rewrite using `[pairTerm_pairEquiv hφ, if_neg hB]`.
+-/
 theorem hasSum_pairTerm_pairEquiv {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (hφ : IsBorelSph k γ φ)
     {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) {len : GL (Fin n) k → ℕ}
     (hlen : ∀ e : Fin n → ℤ, Antitone e → ∀ g ∈ cell k (Fin n) ϖ e, len g = (∑ i, |e i|).toNat)
@@ -183,6 +232,13 @@ theorem hasSum_pairTerm_pairEquiv {γ : Fin n → ℂ} {φ : GL (Fin n) k → �
   · rw [pairTerm_pairEquiv hφ, if_pos hB]
   · rw [pairTerm_pairEquiv hφ, if_neg hB]
 
+/- English proof (translation)
+Take `⟨S, hS, hS0⟩ : ∃ S : ℝ, (∀ i, ‖γ i‖ + ‖γ i‖⁻¹ ≤ S) ∧ 0 ≤ S` from `⟨∑ i, (‖γ i‖ + ‖γ i‖⁻¹), fun i => Finset.single_le_sum (f := fun i => ‖γ i‖ + ‖γ i‖⁻¹) (fun j _ => by positivity) (Finset.mem_univ i), Finset.sum_nonneg fun j _ => by positivity⟩`. Establish `hq1 : 1 ≤ q + 1` using `by linarith`. Establish `hM1 : 1 ≤ (q + 1) ^ n * (1 + S)` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hq1) (by linarith)`. Establish `hM0 : 0 < (q + 1) ^ n * (1 + S)` using `by linarith`. Establish `hpow : ∀ m ≤ n, q ^ m ≤ (q + 1) ^ n` using `fun m hm => (pow_le_pow_left₀ hq0 (by linarith) m).trans (pow_le_pow_right₀ hq1 hm)`.
+
+Establish `key : ∀ m ≤ n, ∀ c : ℝ, 0 ≤ c → c ≤ 1 + S → ∀ x : ℝ, 0 ≤ x → x < ((q + 1) ^ n * (1 + S))⁻¹ → q ^ m * c * x < 1`. Introduce `m hm c hc0 hc x hx0 hx`. Establish `h1 : q ^ m * c ≤ (q + 1) ^ n * (1 + S)` using `mul_le_mul (hpow m hm) hc hc0 (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨_, inv_pos.2 hM0, fun x hx0 hx i => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `key _ (by omega) _ (norm_nonneg _) (by linarith [hS i, inv_nonneg.2 (norm_nonneg (γ i))]) x hx0 hx`. Conclude with `key _ i.2.le _ (by positivity) (by linarith [hS i, norm_nonneg (γ i)]) x hx0 hx`. Establish `hx1 : x ≤ 1` using `hx.le.trans (inv_le_one_of_one_le₀ hM1)`. Rewrite using `[sq, ← mul_assoc]`. Conclude with `key _ i.2.le _ hx0 (by linarith) x hx0 hx`.
+-/
 theorem exists_small (q : ℝ) (hq0 : 0 ≤ q) (γ : Fin n → ℂ) : ∃ δ : ℝ, 0 < δ ∧ ∀ x : ℝ, 0 ≤ x → x < δ → ∀ i : Fin n,
     q ^ (n - 1 - (i : ℕ)) * ‖γ i‖ * x < 1 ∧ q ^ (i : ℕ) * ‖γ i‖⁻¹ * x < 1 ∧ q ^ (i : ℕ) * x ^ 2 < 1 := by
   obtain ⟨S, hS, hS0⟩ : ∃ S : ℝ, (∀ i, ‖γ i‖ + ‖γ i‖⁻¹ ≤ S) ∧ 0 ≤ S :=
@@ -207,6 +263,15 @@ theorem exists_small (q : ℝ) (hq0 : 0 ≤ q) (γ : Fin n → ℂ) : ∃ δ : �
     rw [sq, ← mul_assoc]
     exact key _ i.2.le _ hx0 (by linarith) x hx0 hx
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n γ φ hφ hγ ϖ hϖ len hlen`. Take `⟨δ, hδ, hsm⟩` from `exists_small (resCard k : ℝ) (Nat.cast_nonneg _) γ`. Use `⟨δ, hδ, fun X hX => ?_⟩` and prove the remaining obligations. Establish `hX1 : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i * X‖ < 1` using `fun i => by`. Simplify using `using (hsm _ (norm_nonneg X) hX i).1`.
+
+Establish `hX2 : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (i : ℕ) * (γ i)⁻¹ * X‖ < 1` using `fun i => by`. Simplify using `using (hsm _ (norm_nonneg X) hX i).2.1`. Establish `hX3 : ∀ i : Fin n, ‖(resCard k : ℂ) ^ (i : ℕ) * X ^ 2‖ < 1` using `fun i => by`. Simplify using `using (hsm _ (norm_nonneg X) hX i).2.2`. Establish `hsum` using `(summable_pairTerm hφ hγ hX1 hX2).hasSum`.
+
+Rewrite `hsum` using `[(hsum.prod_fiberwise (hasSum_pairTerm_fiber hφ hγ hX1)).unique (hasSum_pairTerm_total hφ hγ hX2 _)]`. Establish `hmain` using `((pairEquiv k n).hasSum_iff.2 hsum).prod_fiberwise (hasSum_pairTerm_pairEquiv hφ hϖ hlen hX3)`. Establish `hR : ∏ i : Fin n, (1 - (resCard k : ℂ) ^ (i : ℕ) * X ^ 2) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ H => by`. Use `hX3 i` as an intermediate fact. Rewrite `this` using `[← sub_eq_zero.1 H, norm_one]`.
+
+Conclude with `lt_irrefl _ this`. Establish `hfun : (fun c : GL (Fin n) k ⧸ KO k (Fin n) => X ^ len c.out * φ c.out) = fun c => X ^ len c.out * (∏ i : Fin n, (1 - (resCard k : ℂ) ^ (i : ℕ) * X ^ 2)⁻¹) * φ c.out * ∏ i : Fin n, (1 - (resCard k : ℂ) ^ (i : ℕ) * X ^ 2)` using `funext fun c => by`. Rewrite using `[Finset.prod_inv_distrib, mul_right_comm _ _ (φ c.out), inv_mul_cancel_right₀ hR]`. Rewrite using `[hfun]`. Conclude with `hmain.mul_right _`.
+-/
 theorem hasSum_doublingLength : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (γ : Fin n → ℂ) (φ : GL (Fin n) k → ℂ), IsBorelSph k γ φ → (∀ i, γ i ≠ 0) → ∀ ϖ : kˣ, valuation k (ϖ : k) = uniformizer k → ∀ len : GL (Fin n) k → ℕ, (∀ e : Fin n → ℤ, Antitone e → ∀ g ∈ cell k (Fin n) ϖ e, len g = (∑ i, |e i|).toNat) → ∃ δ : ℝ, 0 < δ ∧ ∀ X : ℂ, ‖X‖ < δ → HasSum (fun c : GL (Fin n) k ⧸ KO k (Fin n) => X ^ len c.out * φ c.out) ((∏ i : Fin n, (1 - (resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i * X)⁻¹) * (∏ i : Fin n, (1 - (resCard k : ℂ) ^ (i : ℕ) * (γ i)⁻¹ * X)⁻¹) * ∏ i : Fin n, (1 - (resCard k : ℂ) ^ (i : ℕ) * X ^ 2)) := by
   intro k _ _ _ _ n γ φ hφ hγ ϖ hϖ len hlen
   obtain ⟨δ, hδ, hsm⟩ := exists_small (resCard k : ℝ) (Nat.cast_nonneg _) γ

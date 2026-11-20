@@ -20,10 +20,16 @@ private def sing (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : GLw n w 
   Function.update (fun v _ => (N v : Set (GLw n v)).indicator 1) w
     (fun b => if b = b₀ then f else (N w : Set (GLw n w)).indicator 1)
 
+/- English proof (translation)
+Simplify using `[sing]`.
+-/
 private theorem sing_self (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : GLw n w → ℂ) (b₀ : Bool) :
     sing N w f b₀ w b₀ = f := by
   simp [sing]
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Establish `hb : b ≠ b₀` using `fun e => h (by rw [e])`. Simplify using `[sing, hb]`. Simplify using `[sing, Function.update_of_ne hv]`.
+-/
 private theorem sing_ne (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : GLw n w → ℂ) (b₀ : Bool)
     (v : Pl E) (b : Bool) (h : (v, b) ≠ (w, b₀)) :
     sing N w f b₀ v b = (N v : Set (GLw n v)).indicator 1 := by
@@ -33,6 +39,9 @@ private theorem sing_ne (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : G
     simp [sing, hb]
   · simp [sing, Function.update_of_ne hv]
 
+/- English proof (translation)
+Use `⟨fun i hi => ?_, fun i _ hi => ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality. Conclude with `⟨hs, by rw [sing_self]; exact hf⟩`. Conclude with `sing_ne N w f b₀ i.1 i.2 (by simpa using hi)`.
+-/
 private theorem sing_fam (S : Set (Pl E)) (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : GLw n w → ℂ)
     (b₀ : Bool) (hs : Sl S (w, b₀)) (hf : IsHecke (N w) f) :
     Fam S N {(w, b₀)} (sing N w f b₀) := by
@@ -42,10 +51,16 @@ private theorem sing_fam (S : Set (Pl E)) (N : ∀ w : Pl E, Subgroup (GLw n w))
     exact ⟨hs, by rw [sing_self]; exact hf⟩
   · exact sing_ne N w f b₀ i.1 i.2 (by simpa using hi)
 
+/- English proof (translation)
+Rewrite using `[sing_ne N w f false v true (by simp), sing_ne N w f true v false (by simp)]`.
+-/
 private theorem sing_cross (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : GLw n w → ℂ) (v : Pl E) :
     sing N w f false v true = sing N w f true v false := by
   rw [sing_ne N w f false v true (by simp), sing_ne N w f true v false (by simp)]
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[sing_self, sing_self]`. Rewrite using `[sing_ne N w f false v false (by simp [hv]), sing_ne N w f true v true (by simp [hv])]`.
+-/
 private theorem sing_diag (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f : GLw n w → ℂ) (v : Pl E) :
     sing N w f false v false = sing N w f true v true := by
   by_cases hv : v = w
@@ -53,6 +68,15 @@ private theorem sing_diag (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E) (f :
     rw [sing_self, sing_self]
   · rw [sing_ne N w f false v false (by simp [hv]), sing_ne N w f true v true (by simp [hv])]
 
+/- English proof (translation)
+Unfold `pf`. Use `finprod_congr fun v => finprod_congr fun _ => ?_` and prove the remaining obligations. Establish `q0 : qw n v false (thF E n g) = qw n v true g` using `rfl`. Establish `q1 : qw n v true (thF E n g) = qw n v false g` using `by show GeneralLinearGroup.map (pLoc E v) (thF E n (thF E n g)) = _`. Rewrite using `[hth]`.
+
+Both sides reduce to the same expression. Rewrite using `[q0, q1]`. Distinguish the cases in `hs : IsSplitAt v`. Rewrite using `[if_pos hs, if_pos hs, sing_cross, sing_diag, mul_comm]`. Establish `hv : v ≠ w` using `fun e => hs (e ▸ hw)`.
+
+Rewrite using `[if_neg hs, if_neg hs, mul_one, mul_one, sing_ne N w f false v false (by simp [hv]), sing_ne N w f true v false (by simp [hv]), hN v hs]`. Establish `h` using `hin v hs g`. Distinguish the cases in `hm : qw n v false g ∈ KGL v n`. Rewrite using `[Set.indicator_of_mem (show qw n v true g ∈ (KGL v n : Set (GLw n v)) from h.2 hm), Set.indicator_of_mem (show qw n v false g ∈ (KGL v n : Set (GLw n v)) from hm)]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem (show qw n v true g ∉ (KGL v n : Set (GLw n v)) from fun e => hm (h.1 e)), Set.indicator_of_notMem (show qw n v false g ∉ (KGL v n : Set (GLw n v)) from hm)]`.
+-/
 private theorem pf_sing_twist (S : Set (Pl E)) (N : ∀ w : Pl E, Subgroup (GLw n w)) (w : Pl E)
     (f : GLw n w → ℂ) (hw : IsSplitAt w) (hth : ∀ g, thF E n (thF E n g) = g)
     (hin : ∀ v : Pl E, ¬ IsSplitAt v → ∀ g, qw n v true g ∈ KGL v n ↔ qw n v false g ∈ KGL v n)
@@ -81,6 +105,15 @@ private theorem pf_sing_twist (S : Set (Pl E)) (N : ∀ w : Pl E, Subgroup (GLw 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hSF hPH hPO E _ _ _ n S Z N hS hZ hG π y w hw f hf x x' hx`. Take `⟨hth, -, -, -, -, hin, -⟩` from `hSF E n S hS`. Establish `hwS` using `hZ w hw`. Establish `hN : ∀ v : Pl E, ¬ IsSplitAt v → N v = KGL v n` using `fun v hv => (hG v).2.2.2 fun hvZ => hv (hZ v hvZ).2`. Establish `F0` using `sing_fam S N w f false ⟨hwS.1, by simp⟩ hf`.
+
+Establish `F1` using `sing_fam S N w f true ⟨hwS.1, fun _ => hwS.2⟩ hf`. Establish `h0` using `hPH E n S Z N hS hZ hG _ _ F0`. Establish `h1` using `hPH E n S Z N hS hZ hG _ _ F1`. Establish `e : (fun g => pf S (sing N w f false) (thF E n g)) = pf S (sing N w f true)`. Use function extensionality and compare the values at `(pf_sing_twist S N w f hwS.2 hth hin hN)`.
+
+Establish `t` using `y.tw _ h0`. Rewrite `t` using `[e]`. Establish `a0 : y.r (pf S (sing N w f false)) x = x'`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[y.act _ h0, hPO E n S Z N hS hZ hG _ _ F0 _ (y.fix x.2), hx]`.
+
+Simplify using `[sing_self]`. Establish `t'` using `congrArg (fun T : Module.End ℂ y.Y => T x) t`. Simplify using `only [Module.End.mul_apply, a0] at t'`. Rewrite using `[t', y.act _ h1, hPO E n S Z N hS hZ hG _ _ F1 _ (y.fix (y.A x).2)]`. Simplify using `[sing_self]`.
+-/
 theorem ySwap_pf : SlotBasic → PfHecke → ProdOp → YSwap := by
   intro hSF hPH hPO E _ _ _ n S Z N hS hZ hG π y w hw f hf x x' hx
   obtain ⟨hth, -, -, -, -, hin, -⟩ := hSF E n S hS

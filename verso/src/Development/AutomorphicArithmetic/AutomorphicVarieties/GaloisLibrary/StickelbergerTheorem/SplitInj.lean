@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Stic
 open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `M _ K _ _ _ p _ π hp a b hab`. Use `haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩`. Establish `hz` using `(IsCyclotomicExtension.zeta_spec M ℚ K).toInteger_isPrimitiveRoot`. Take `⟨hπz, -⟩` from `redRoot (𝓞 K) p π M _ hp hz`. Establish `key : ∀ x : 𝓞 K, π (sgO M K a x) = π (sgO M K b x)`.
+
+Introduce `x`. Establish `h1 : x - ((π (sgO M K a x)).val : 𝓞 K) ∈ conjI M K (RingHom.ker π) a`. Simplify using `only [conjI, Ideal.mem_comap, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `h1` using `[hab]`. Simplify using `only [conjI, Ideal.mem_comap, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_eq_zero] at h1`.
+
+Conclude with `h1.symm`. Establish `h2` using `key (IsCyclotomicExtension.zeta_spec M ℚ K).toInteger`. Rewrite `h2` using `[sgO_apply _ _ _ hz.pow_eq_one, sgO_apply _ _ _ hz.pow_eq_one, map_pow, map_pow]`. Conclude with `Units.ext (ZMod.val_injective _ (hπz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2))`.
+-/
 theorem UpperTheory.V.Stick.splitInj :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (p : ℕ) [Fact p.Prime] (π : 𝓞 K →+* ZMod p), p.Coprime M →
     Function.Injective (conjI M K (RingHom.ker π)) := by

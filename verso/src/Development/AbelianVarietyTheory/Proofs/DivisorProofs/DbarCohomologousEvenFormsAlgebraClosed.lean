@@ -12,6 +12,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `M _ n A`. Take `⟨h1, hc, hl, -, -⟩` from `GlobalTheory.formCalculus M n A`. Establish `h0 : A.IsForm 0` using `by simpa using (hc 0 1 1 h1 h1).2.2.1`. Establish `d0 : A.dbar 0 = 0` using `by simpa using (hc 0 1 1 h1 h1).2.2.2.2.2.2.2.2`. Establish `e1 : fld A 1 = 1` using `rfl`.
+
+Establish `d1 : A.dbar 1 = 0`. Establish `h` using `(hl 1 1 h1 h1).2`. Rewrite `h` using `[e1, mul_one, mul_one, one_mul]`. Simplify using `using h`. Establish `diag : ∀ w : A.Pt → Ev n, A.IsForm (fld A w) → A.dbar (fld A w) = 0 → DbarCoh A w w` using `fun w hw dw => ⟨hw, hw, dw, dw, 0, h0, by rw [d0, sub_self]⟩`.
+
+Use `⟨diag 1 h1 d1, diag, ?_⟩` and prove the remaining obligations. Introduce and unpack `c w w' z z' ⟨hw, hw', dw, dw', u, hu, eu⟩ ⟨hz, hz', dz, dz', v, hv, ev⟩`. Establish `es (x : A.Pt → Ev n) : fld A (c • x) = c • fld A x` using `rfl`. Establish `ea (x y : A.Pt → Ev n) : fld A (x + y) = fld A x + fld A y` using `rfl`. Establish `em (x y : A.Pt → Ev n) : fld A (x * y) = fld A x * fld A y` using `rfl`.
+
+Establish `ecomm (x y : A.Pt → Ev n) : fld A x * fld A y = fld A y * fld A x` using `by rw [← em, ← em, mul_comm]`. Establish `hs (α : A.Fld) (h : A.IsForm α)` using `(hc c α α h h).2.2.1`. Establish `ds (α : A.Fld) (h : A.IsForm α)` using `(hc c α α h h).2.2.2.2.2.2.2.2`. Establish `ha (α β : A.Fld) (h : A.IsForm α) (h' : A.IsForm β)` using `(hc c α β h h').1`. Establish `hm (α β : A.Fld) (h : A.IsForm α) (h' : A.IsForm β)` using `(hc c α β h h').2.1`.
+
+Establish `da (α β : A.Fld) (h : A.IsForm α) (h' : A.IsForm β)` using `(hc c α β h h').2.2.2.2.2.2.1`. Use `⟨⟨hs _ hw, hs _ hw', ?_, ?_, c • u, hs _ hu, ?_⟩, ⟨ha _ _ hw hz, ha _ _ hw' hz', ?_, ?_, u + v, ha _ _ hu hv, ?_⟩, ⟨hm _ _ hw hz, hm _ _ hw' hz', ?_, ?_, fld A w * v + fld A z' * u, ha _ _ (hm _ _ hw hv) (hm _ _ hz' hu), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[es, ds _ hw, dw, smul_zero]`. Rewrite using `[es, ds _ hw', dw', smul_zero]`. Rewrite using `[es, es, ds _ hu, ← eu, smul_sub]`.
+
+Rewrite using `[ea, da _ _ hw hz, dw, dz, add_zero]`. Rewrite using `[ea, da _ _ hw' hz', dw', dz', add_zero]`. Rewrite using `[ea, ea, da _ _ hu hv, ← eu, ← ev]`. Normalize the expressions using the abelian group laws. Rewrite using `[em, (hl w _ hw hz).2, dw, dz, zero_mul, mul_zero, add_zero]`.
+
+Rewrite using `[em, (hl w' _ hw' hz').2, dw', dz', zero_mul, mul_zero, add_zero]`. Rewrite using `[em, em, da _ _ (hm _ _ hw hv) (hm _ _ hz' hu), (hl w _ hw hv).2, (hl z' _ hz' hu).2, dw, dz', ← eu, ← ev, zero_mul, zero_mul, zero_add, zero_add, mul_sub, mul_sub, ecomm z' w, ecomm z' w']`. Normalize the expressions using the abelian group laws.
+-/
 theorem dbarCoh_algebra : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) , DbarCoh A 1 1 ∧ (∀ w : A.Pt → Ev n, A.IsForm (fld A w) → A.dbar (fld A w) = 0 → DbarCoh A w w) ∧ ∀ (c : ℂ) (w w' z z' : A.Pt → Ev n), DbarCoh A w w' → DbarCoh A z z' → DbarCoh A (c • w) (c • w') ∧ DbarCoh A (w + z) (w' + z') ∧ DbarCoh A (w * z) (w' * z') := by
   intro M _ n A
   obtain ⟨h1, hc, hl, -, -⟩ := GlobalTheory.formCalculus M n A

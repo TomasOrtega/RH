@@ -14,6 +14,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbLocusAtPrime
 
+/- English proof (translation)
+Introduce `R _ _ _ G₁ _ _ hG p _ hp`. Use `haveI : IsNoetherianRing R := inferInstance`. Use `haveI : IsDomain (Localization.AtPrime p.asIdeal) := IsLocalization.isDomain_localization p.asIdeal.primeCompl_le_nonZeroDivisors`. Use `haveI : IsNoetherianRing (Localization.AtPrime p.asIdeal) := IsLocalization.isNoetherianRing p.asIdeal.primeCompl _ inferInstance`. Use `set f := spMap (algebraMap R (Localization.AtPrime p.asIdeal)) with hf`.
+
+Establish `hG' : IsSemiAbelian ((Over.pullback f).obj G₁)` using `IsSemiAbelian.pullback f G₁ hG`. Establish `hopen : IsOpen (abLocus G₁)` using `GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_of_locallyNoetherian G₁ hG`. Establish `hgen : ∀ z : Sp (Localization.AtPrime p.asIdeal), f z ∈ abLocus G₁`. Introduce `z`. Establish `hle : (f z) ⤳ p`.
+
+Use `(PrimeSpectrum.le_iff_specializes (R := R) (f z) p).1 ?_` and prove the remaining obligations. Establish `hr : (f z : PrimeSpectrum R) ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.AtPrime p.asIdeal)))`. Conclude with `⟨z, rfl⟩`. Rewrite `hr` using `[PrimeSpectrum.localization_comap_range (Localization.AtPrime p.asIdeal) p.asIdeal.primeCompl]`. Use `show (f z : PrimeSpectrum R).asIdeal ≤ (p : PrimeSpectrum R).asIdeal`.
+
+Introduce `x hx`. Assume the negation of the conclusion as `hxp`. Conclude with `Set.disjoint_left.1 hr hxp hx`. Conclude with `hle.mem_open hopen hp`. Establish `hab : abLocus ((Over.pullback f).obj G₁) = Set.univ` using `Set.eq_univ_of_forall fun z => (abLocus_pullback abLocusOne hG (IsPullback.of_hasPullback G₁.hom f) z).1 (hgen z)`.
+
+Conclude with `{ comm := hG'.comm smooth := hG'.smooth proper := GlobalTheory.AbLocusProperNormal.isProper_of_abLocus_eq_univ _ _ hG' hab geomConnected := hG'.geomConnected }`.
+-/
 theorem isAbelianScheme_localization : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R] [IsDomain R] (G₁ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁], IsSemiAbelian G₁ → ∀ (p : Sp R) [p.asIdeal.IsPrime], p ∈ abLocus G₁ → IsAbelianScheme ((Over.pullback (spMap (algebraMap R (Localization.AtPrime p.asIdeal)))).obj G₁) := by
   intro R _ _ _ G₁ _ _ hG p _ hp
   haveI : IsNoetherianRing R := inferInstance

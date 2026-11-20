@@ -30,6 +30,9 @@ noncomputable def prod (μ₁ : LeibnizPairing M₁ N₁ P₁) (μ₂ : LeibnizP
     rw [prodComplex_d_hom_apply, prodComplex_d_hom_apply, prodComplex_d_hom_apply]
     exact Prod.ext (μ₁.leibniz h x.1 y.1) (μ₂.leibniz h x.2 y.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prod_μ_apply (μ₁ : LeibnizPairing M₁ N₁ P₁) (μ₂ : LeibnizPairing M₂ N₂ P₂) {r s n : ℕ}
     (h : r + s = n) (x : (prodComplex M₁ M₂).X r) (y : (prodComplex N₁ N₂).X s) :
     (prod μ₁ μ₂).μ h x y = ((μ₁.μ h x.1 y.1, μ₂.μ h x.2 y.2) : P₁.X n × P₂.X n) :=
@@ -48,6 +51,9 @@ noncomputable def prodLeft (μ₁ : LeibnizPairing M₁ N P₁) (μ₂ : Leibniz
     rw [prodComplex_d_hom_apply, prodComplex_d_hom_apply]
     exact Prod.ext (μ₁.leibniz h x.1 y) (μ₂.leibniz h x.2 y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodLeft_μ_apply (μ₁ : LeibnizPairing M₁ N P₁) (μ₂ : LeibnizPairing M₂ N P₂) {r s n : ℕ}
     (h : r + s = n) (x : (prodComplex M₁ M₂).X r) (y : N.X s) :
     (prodLeft μ₁ μ₂).μ h x y = ((μ₁.μ h x.1 y, μ₂.μ h x.2 y) : P₁.X n × P₂.X n) :=
@@ -65,6 +71,9 @@ noncomputable def degZeroμ (β : E →ₗ[k] N.X 0 →ₗ[k] E') :
   | 0, 0, 0, _ => β
   | _, _, _, _ => 0
 
+/- English proof (translation)
+Apply the tactic sequence `cases r <;> cases n <;> rfl`.
+-/
 theorem degZeroμ_succ (β : E →ₗ[k] N.X 0 →ₗ[k] E') (r s n : ℕ) (h : r + (s + 1) = n) :
     degZeroμ β r (s + 1) n h = 0 := by
   cases r <;> cases n <;> rfl
@@ -113,6 +122,9 @@ noncomputable def coconeLeftHtpyμ {r s n : ℕ} (h : r + s = n) :
       change _ = c • (μL.shiftLeft r s n h p.2 ((ρ.f s).hom z) + η h p.1 z)
       rw [smul_add]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coconeLeftHtpyμ_apply {r s n : ℕ} (h : r + s = n) (x : K.X r) (y : shiftNegOneX L r)
     (z : N.X s) :
     coconeLeftHtpyμ μL ρ μK η (f := f) (f' := f') h ((x, y) : K.X r × shiftNegOneX L r) z =
@@ -152,6 +164,13 @@ variable (hη : ∀ {r s n : ℕ} (h : r + s = n) (x : K.X r) (z : N.X s),
       η (by omega) ((K.d r (r + 1)).hom x) z +
       (-1 : k) ^ r • η (by omega) x ((N.d s (s + 1)).hom z))
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `homologyπ_hom_surjective _ r ξ`. Take `⟨w, rfl⟩` from `homologyπ_hom_surjective _ s z`. Take `⟨c', hc'1, hc'2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f r c`. Rewrite using `[homologyMap_homologyπ_apply, homology_homologyπ]`. Take `⟨c'', hc''1, hc''2⟩` from `mappingCoconeNat.exists_homologyδ_homologyπ f' n (μL.cycles h c ((HomologicalComplex.cyclesMap ρ s).hom w))`.
+
+Rewrite using `[hc'1, hc''1, homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[iCycles_cycles, hc'2, hc''2, iCycles_cycles, iCycles_cyclesMap_apply]`. Use `Prod.ext (LinearMap.map_zero₂ _ _) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `μL.shiftLeft (r + 1) s (n + 1) h' _ _ + η h' 0 _ = _`. Rewrite using `[LinearMap.map_zero₂, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem coconeLeftHtpy_homology_homologyδ {r s n : ℕ} (h : r + s = n) (h' : r + 1 + s = n + 1)
     (ξ : L.homology r) (z : N.homology s) :
     (coconeLeftHtpy μL ρ μK η hη).homology h' ((mappingCoconeNat.homologyδ f r).hom ξ) z =

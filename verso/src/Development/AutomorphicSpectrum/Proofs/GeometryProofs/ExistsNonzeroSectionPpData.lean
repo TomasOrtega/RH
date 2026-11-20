@@ -20,6 +20,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyDeg
 
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.H1 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D`. Establish `hS : SecBaseChangeAnySt` using `GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Use `D.tK.semi.smooth` as an intermediate fact. Use `D.tK.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace D.tK.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := D.tK.G.hom) (𝟙 _) (𝟙 _) D.tK.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`.
+
+Take `⟨d, hd⟩` from `exists_dim_of_preconnected D.tK.G.hom (eSec D.tK.G (default : PrimeSpectrum L))`. Take `⟨-, ws, gs', -⟩` from `D.tK.sym`. Take `⟨hprop, hamp, hkt⟩` from `D.princ`. Establish `eid : spMap (RingHom.id L) = 𝟙 (Sp L)`. Simplify using `[spMap]`.
+
+Establish `hpb : IsPullback (𝟙 D.tK.G.left) D.tK.G.hom D.tK.G.hom (spMap (RingHom.id L))`. Rewrite using `[eid]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Take `⟨β, hβ⟩ : ∃ β : LB.Sec D.tK.PP.L, ¬ ∀ y j, (𝟙 D.tK.G.left : D.tK.G.left ⟶ D.tK.G.left) y ∈ D.tK.PP.L.U j → gs (𝟙 D.tK.G.left) y _ (β.f j) = 0` from `exists_sec_ne hS { A := D.tK.G, g := d, smoothDim := hd, L := D.tK.PP.L, isLB := D.tK.PP.isLB ample := hamp ktriv := hkt isAb := ⟨inferInstance, inferInstance, hprop, ‹_›⟩ rigid := ⟨D.tK.PP.rig, D.tK.PP.rigGen⟩ sym := fun _ => ⟨⊤, trivial, gen_of_iso ((isGen_iff ws).1 gs') _⟩ } ( …`. Take `⟨w, gw', -⟩` from `D.m.lin`.
+
+Use `D.t.semi.separated` as an intermediate fact. Use `D.t.semi.quasiCompact` as an intermediate fact. Establish `: CompactSpace D.t.G.left` using `QuasiCompact.compactSpace_of_compactSpace D.t.G.hom`. Take `⟨a, ha, σ, hσ⟩` from `exists_extend (nonZeroDivisors (𝓞 L)) D.m.cart.1 D.t.PP.isLB D.tK.PP.isLB ((isGen_iff w).1 gw') β`. Take `⟨w₁, hw₁⟩` from `exists_iso_linComb (F := 𝟙 D.t.G.left) D.t.PP.isLB (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ)) (fun U _ k => by simp)`.
+
+Establish `hM` using `linComb_isLB D.t.PP.L D.t.PP.isLB (K := Fin 1) (fun _ => 𝟙 D.t.G.left) (fun _ => ((1 : ℕ) : ℤ))`. Take `⟨τ, hτ⟩` from `sec_pull_down ((isGen_iff w₁).1 hw₁) D.t.PP.isLB hM σ`. Use `⟨τ, fun h0 => hβ fun y k hk => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart D.t.PP.isLB (D.m.φ y)`. Take `⟨k', hk'⟩` from `exists_chart hM (D.m.φ y)`.
+
+Establish `hz : LB.Sec.f τ k' = 0` using `congrArg (fun s : SecMod D.t.G.hom (LB.LinComb D.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))) => LB.Sec.f s k') h0`. Establish `e₁` using `hτ _ D.m.φ y j k' hj hk'`. Rewrite `e₁` using `[hz, gs_zero _ y _ hk', mul_zero, Category.comp_id]`. Establish `e₂` using `hσ y j k hj hk`. Rewrite `e₂` using `[e₁, D.m.cart.1.w, cst_comp]`.
+
+Establish `ha' : algebraMap (𝓞 L) L a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)).2 (nonZeroDivisors.ne_zero ha)`. Establish `u₁ : IsUnit (cst D.tK.G.hom y (algebraMap (𝓞 L) L a))` using `IsUnit.of_mul_eq_one (cst D.tK.G.hom y (algebraMap (𝓞 L) L a)⁻¹) (by`. Rewrite using `[← cst_mul, mul_inv_cancel₀ ha', cst_one])`. Conclude with `(Units.isUnit _).mul_right_eq_zero.1 (u₁.mul_right_eq_zero.1 e₂.symm)`.
+-/
 theorem exists_sec_ne_zero_int : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L), ∃ t : SecMod D.t.G.hom (LB.LinComb D.t.PP.L (K := Fin 1) (fun _ => 𝟙 _) (fun _ => ((1 : ℕ) : ℤ))), t ≠ 0 := by
   intro E _ _ _ H L _ _ D
   have hS : SecBaseChangeAnySt := GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1

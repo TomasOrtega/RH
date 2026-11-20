@@ -59,6 +59,9 @@ structure TwStep (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, For
 
 variable {I l Z}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ Ch := H.Ch u i fin := H.ChFin u i chOf := f gOf := id K := fun h1 hm => absurd ⟨h1, hm⟩ hout reads := fun h1 hm => absurd ⟨h1, hm⟩ hout readsQ := fun h1 hm => absurd ⟨h1, hm⟩ hout fk := fun h1 hm => absurd ⟨h1, hm⟩ hout lev := fun h1 hm => absurd ⟨h1, hm⟩ hout cls := fun h1 hm …`.
+-/
 theorem twStep_out {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)} {F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)}
     {Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))} (u : B.Word) (a : I.ι) (i : ℕ) (hout : ¬ (1 ≤ i ∧ i ≤ B.R.m))
     (f : (I.stp u a i).Cl → H.Ch u i) : Nonempty (TwStep I l Z H F Q u a i) :=
@@ -80,6 +83,13 @@ theorem twStep_out {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)} {F : ∀ u, F
      chiFin := fun _ h1 hm => absurd ⟨h1, hm⟩ hout
      chiC := fun h1 h2 => absurd ⟨h1, le_of_succ_m h2⟩ hout }⟩
 
+/- English proof (translation)
+Establish `hPr` using `l.pr`. Establish `hX` using `GlobalTheory.Mem.FieldsLaws.fields_ok B`. Use `haveI : NeZero (B.R.N i) := ⟨(B.R.N_pos i).ne'⟩`. Take `⟨-, -, -, hc⟩` from `TC.spaces_in_coordinates I hok pins l Z`. Take `⟨hgr, -, -⟩` from `hc i hi`.
+
+Establish `hB` using `basePi_of_ok hX hPr u`. Establish `hLb : (K β).lev.Lb = baseLb B.fields.E (B.R.N i) ((B.primes X).vT u)`. Take `⟨k, hk⟩` from `hK`. Use extensionality with `x`. Conclude with `(hk.lb β x).trans (GlobalTheory.Mem.Col2.Reside.mem_baseLb hPr u _ x).symm`.
+
+Conclude with `⟨_, GlobalTheory.Mem.Col2.Reside.swapLaws B.sp.cm hB (hPr.T_prime u) (hPr.piT_norm u) (rls_vT_iff hX hPr u) (fun P hP => hPr.vT_norm u P hP) hgr (K β).lev hLb⟩`.
+-/
 theorem swap_ex (hok : I.Ok) (pins : TC.Pins B X) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) {bad : Set (HeightOneSpectrum (𝓞 B.host.F))}
     {Ch : Type} {chOf : (I.stp u a i).Cl → Ch}
     (K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1)
@@ -137,6 +147,9 @@ def twStep_mk (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermColsC
     offL := fun _ _ β => (hx β).choose_spec.choose_spec.1, offK := hK, uniq := hu,
     chiFin := fun h _ _ => hF h, chiC := hC }
 
+/- English proof (translation)
+Take `⟨k, R⟩` from `h`. Take `⟨k', R'⟩` from `h'`. Use extensionality with `x`. Conclude with `(R.lb β x).trans (R'.lb β' x).symm`.
+-/
 theorem reads_lb_eq {u : B.Word} {a a' : I.ι} {i : ℕ} {hi : i ≤ B.R.m} {bad bad' : Set (HeightOneSpectrum (𝓞 B.host.F))} {Ch Ch' : Type}
     {chOf : (I.stp u a i).Cl → Ch} {chOf' : (I.stp u a' i).Cl → Ch'}
     {K : ∀ β : Ch, LevelChart (I.rec7 l Z) (B.T u) bad i hi (fun c : {c // chOf c = β} => (I.chain l u a).stab i c.1)
@@ -150,6 +163,15 @@ theorem reads_lb_eq {u : B.Word} {a a' : I.ι} {i : ℕ} {hi : i ≤ B.R.m} {bad
   ext x
   exact (R.lb β x).trans (R'.lb β' x).symm
 
+/- English proof (translation)
+Establish `hoff : ∀ v ∈ Q, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, (((I.rec7 l Z).host.g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal` using `fun v hv => GlobalTheory.T.twistPlaces_prime_to_levelAndTypePrimes I hok l u a v ((hQ v).1 hv)`. Establish `hi : i ≤ B.R.m` using `le_of_succ_m h2`. Distinguish the cases in `ha : a = I.mu0`. Substitute `ha` using the available equality. Establish `hr0` using `(hF u).mid i h1 h2`.
+
+Set `K : ∀ β : H.Ch u i, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) i hi (fun c : {c // H.chOf u i c = β} => (I.chain l u I.mu0).stab i c.1) (fun c => latCrd (I.rec7 l Z) i hi (I.latAt u I.mu0 i c.1))` to `fun β => chartWiden Set.subset_union_left ((F u).ch i h1 h2 β)`. Use `⟨twStep_mk hok pins u I.mu0 i h1 hi hoff (H.Ch u i) (H.ChFin u i) (H.chOf u i) id K hr0 (fun _ => hr0.elim fun k hk => ⟨k, hk, fun _ v hv => absurd hv (GlobalTheory.T.not_twistPlace_referenceTuple I hok v)⟩) (fun β => ?_) (fun β v _ => ?_) (fun _ _ β v _ => rfl) (fun e => by omeg …` and prove the remaining obligations. Conclude with `(hC.carC u i h1 h2 β).Lb_eq`. Conclude with `(hC.carC u i h1 h2 β).Uloc_eq v`. Establish `: κ = κ'` using `Subtype.ext e`.
+
+Substitute `this` using the available equality. Both sides reduce to the same expression. Take `⟨Ch, fin, chOf, K, g, hrQ, hp⟩` from `GlobalTheory.Mem.Col2.TC.ChTw.charts_tuple_trivQ I hok pins l Z u a Q i hi (H.Ch u i) (H.chOf u i) ((F u).ch i h1 h2) h1 (by omega) hQ ((hF u).mid i h1 h2)`. Establish `hr : I.ReadsK l Z u a i hi chOf K` using `hrQ.elim fun k hk => ⟨k, hk.1⟩`. Establish `hoU : ∀ β v, v ∉ Q → (K β).lev.Uloc v = ((F u).ch i h1 h2 (g β)).lev.Uloc v` using `fun β v hv => (hp β).1 v hv`.
+
+Use `⟨twStep_mk hok pins u a i h1 hi hoff Ch fin chOf g K hr (fun _ => hrQ) (fun β => ?_) (fun β v hv => ?_) (fun _ _ β v hv => hoU β v hv) (fun e => by omega) (fun _ β => (hp β).2.1) (fun _ _ β κ κ' e hv => (hp β).2.2 κ κ' e hv)⟩` and prove the remaining obligations. Rewrite using `[reads_lb_eq hr ((hF u).mid i h1 h2) β (g β)]`. Conclude with `(hC.carC u i h1 h2 (g β)).Lb_eq`. Rewrite using `[hoU β v hv]`. Conclude with `(hC.carC u i h1 h2 (g β)).Uloc_eq v`.
+-/
 theorem twStep_mid (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)}
     {F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)}
     {Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))} (u : B.Word) (a : I.ι) (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ B.R.m)
@@ -195,6 +217,23 @@ structure TopP {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)} {F : ∀ u, Forms
         IsExt (I.rec7 l Z) (z0 X u) (inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) g'.1 g.1 →
         PtOf (g * k β) (tilF I.sel (I.tup a) u d)
 
+/- English proof (translation)
+Establish `hoff : ∀ v ∈ Q, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, (((I.rec7 l Z).host.g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal` using `fun v hv => GlobalTheory.T.twistPlaces_prime_to_levelAndTypePrimes I hok l u a v ((hQ v).1 hv)`. Establish `h1m : 1 ≤ B.R.m` using `one_le_m B.R`. Establish `hr0` using `(hF u).ends B.R.m le_rfl (Or.inr rfl)`. Establish `hno : ∀ h2 : B.R.m + 1 ≤ B.R.m, False` using `fun h2 => by omega`. Distinguish the cases in `ha : a = I.mu0`.
+
+Substitute `ha` using the available equality. Set `K : ∀ β : Unit, LevelChart (I.rec7 l Z) (B.T u) (badQ (I.rec7 l Z) Q) B.R.m le_rfl (fun c : {c // (fun _ : (I.stp u I.mu0 B.R.m).Cl => ()) c = β} => (I.chain l u I.mu0).stab B.R.m c.1) (fun c => latCrd (I.rec7 l Z) B.R.m le_rfl (I.latAt u I.mu0 B.R.m c.1))` to `chartAll (chartWiden Set.subset_union_left ((F u).cls B.R.m le_rfl (Or.inr rfl)).toChart)`. Establish `hr : I.ReadsK l Z u I.mu0 B.R.m le_rfl (fun _ => ()) K` using `hr0`. Use `⟨twStep_mk hok pins u I.mu0 B.R.m h1m le_rfl hoff Unit inferInstance (fun _ => ()) (fun _ => chM H u) K hr (fun h2 => (hno h2).elim) (fun β => ?_) (fun β v _ => ?_) (fun _ h2 => (hno h2).elim) (fun _ => ⟨inferInstance⟩) (fun h => absurd rfl h) (fun _ h2 => (hno h2).elim), ?_, ?_, …` and prove the remaining obligations. Conclude with `(hC.carM u).Lb_eq`.
+
+Conclude with `(hC.carM u).Uloc_eq v`. Introduce `_ β κ κ' e _`. Establish `: κ = κ'` using `Subtype.ext e`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+
+Conclude with `fun h => absurd rfl h`. Conclude with `fun h => absurd rfl h`. Take `⟨K1, ⟨k1, hR1, hk1⟩, htop, hoU, hfin, hchi⟩` from `GlobalTheory.T.chart_lastStep_twistBasePoint I hok pins l Z u a Q ((F u).cls B.R.m le_rfl (Or.inr rfl)) hQ hr0`. Establish `hr : I.ReadsK l Z u a B.R.m le_rfl (fun _ => ()) K1` using `⟨k1, hR1⟩`. Use `⟨twStep_mk hok pins u a B.R.m h1m le_rfl hoff Unit inferInstance (fun _ => ()) (fun _ => chM H u) K1 hr (fun h2 => (hno h2).elim) (fun β => ?_) (fun β v hv => ?_) (fun _ h2 => (hno h2).elim) (fun _ => ⟨inferInstance⟩) (fun _ β => hfin) (fun _ h2 => (hno h2).elim), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e0 : (K1 β).lev.Lb = ((F u).cls B.R.m le_rfl (Or.inr rfl)).lev.Lb`. Take `⟨k, R⟩` from `hr`. Take `⟨k', R'⟩` from `hr0`. Use extensionality with `x`. Conclude with `(R.lb β x).trans (R'.lb () x).symm`.
+
+Rewrite using `[e0]`. Conclude with `(hC.carM u).Lb_eq`. Establish `: β = ()` using `rfl`. Substitute `this` using the available equality. Rewrite using `[hoU v hv]`.
+
+Conclude with `(hC.carM u).Uloc_eq v`. Introduce `_ β κ κ' e hv`. Conclude with `hchi κ κ' e hv`. Introduce `_ _ β`. Conclude with `htop`.
+
+Introduce `_ _`. Conclude with `⟨k1, hR1, hk1⟩`.
+-/
 theorem twStep_top (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)}
     {F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)}
     {Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))} (u : B.Word) (a : I.ι)
@@ -254,6 +293,11 @@ structure TwPack (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, For
   off : ∀ (κ : J.levJ.U) (κ' : (F u).levJ.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 →
     (∀ v ∈ Q, bc (prV (E := (I.rec7 l Z).host.E) v) κ.1 = 1) → J.chiJ κ = (F u).levJ.chi κ'
 
+/- English proof (translation)
+Establish `hm2` using `B.R.two_le_m`. Establish `hmj : B.R.m - 1 + 1 = B.R.m` using `by omega`. Establish `hL` using `hOk.idx_ok a`. Take `⟨b0x, -⟩` from `hL.last_uniq`. Set `b0 : Idx I.sel (I.tup a) (I.idx a) (B.R.m - 1)` to `⟨some (cast (by rw [show B.R.m - 1 = B.R.m - 2 + 1 by omega]) b0x), by simp; omega⟩`.
+
+Set `q0 : (I.stp u a (B.R.m - 1)).D b0` to `⟨(DecoF.base _ _ _ _ _, {z | z - 0 ∈ locLat (rowSG (B.primes X) I.sel (I.tup a)) (DecoF.base B.fields.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K))).deco.1.N (fun P => if P.1 ∈ (B.primes X).vGs then 0 else ( …`. Rewrite using `[ysAt_ys_of_eq _ _ _ hmj]`. Conclude with `⟨0, zero_mem _, rfl⟩⟩`. Conclude with `⟨(I.stp u a (B.R.m - 1)).cl b0 q0⟩`.
+-/
 theorem twBefore_cl_nonempty (hOk : I.Ok) (u : B.Word) (a : I.ι) : Nonempty (I.stp u a (B.R.m - 1)).Cl := by
   classical
   have hm2 := B.R.two_le_m
@@ -269,6 +313,21 @@ theorem twBefore_cl_nonempty (hOk : I.Ok) (u : B.Word) (a : I.ι) : Nonempty (I.
   exact ⟨(I.stp u a (B.R.m - 1)).cl b0 q0⟩
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Establish `ex : ∀ i, Nonempty (TwStep I l Z H F Q u a i)` using `fun i => by`. Distinguish the cases in `h0 : i = 0`. Substitute `h0` using the available equality. Conclude with `twStep_out u a 0 (by omega) (fun c => H.chOf u 0 ((I.eCls0 l u a).symm c))`. Distinguish the cases in `h2 : i + 1 ≤ B.R.m`.
+
+Conclude with `twStep_mid hok pins u a i (by omega) h2 hQ hF hC`. Distinguish the cases in `h3 : i = B.R.m`. Substitute `h3` using the available equality. Conclude with `(twStep_top hok pins u a hQ hF hC).elim fun S _ => ⟨S⟩`. Take `⟨f⟩` from `GlobalTheory.T.nonempty_classMap_above_lastStep I hok u a i (by omega)`.
+
+Conclude with `twStep_out u a i (by omega) (fun c => H.chOf u i (f c))`. Take `⟨Sm, hSm⟩` from `twStep_top (F := F) (Q := Q) hok pins u a hQ hF hC`. Set `St : ∀ i, TwStep I l Z H F Q u a i` to `Function.update (fun i => (ex i).some) B.R.m Sm`. Establish `hSt : St B.R.m = Sm` using `Function.update_self _ _ _`. Establish `h1 : 1 ≤ B.R.m - 1` using `by have := B.R.two_le_m; omega`.
+
+Establish `h2` using `succ_pred_m B.R`. Establish `hfin : ∀ β, GlobalTheory.Mem.Col2.AdT.ChiFin I l Z ((St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β).lev` using `fun β => by`. Distinguish the cases in `ha : a = I.mu0`. Use `⟨1, one_pos, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`.
+
+Use `((St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β).lev.chi_triv κ fun v hv => ?_` and prove the remaining obligations. Break down `hv with hv | hv` into its components or cases. Conclude with `hκ v hv`. Conclude with `absurd (ha ▸ (hQ v).1 hv) (GlobalTheory.T.not_twistPlace_referenceTuple I hok v)`. Take `⟨n, hn, h⟩` from `(St (B.R.m - 1)).chiFin ha h1 (Nat.sub_le _ _) β`.
+
+Conclude with `⟨n, hn, fun κ _ => h κ⟩`. Take `⟨J⟩` from `GlobalTheory.T.exists_penultimateLevel_couplingCosets I hok pins l Z H.Ch H.chOf F u a Q h1 (St (B.R.m - 1)).Ch (St (B.R.m - 1)).fin (St (B.R.m - 1)).chOf (fun β => (St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β) (St (B.R.m - 1)).gOf hQ hF hJ ((St (B.R.m - 1)).readsQ h1 (Nat.sub_le _ _ …`. Establish `hLb : (F u).levJ.Lb = reL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) J.levJ.Lb`. Take `⟨c⟩` from `twBefore_cl_nonempty hok u a`. Rewrite using `[← J.lb ((St (B.R.m - 1)).chOf c), ← (F u).levJ_Lb h1 ((St (B.R.m - 1)).gOf ((St (B.R.m - 1)).chOf c))]`.
+
+Conclude with `(reads_lb_eq ((St (B.R.m - 1)).reads h1 (Nat.sub_le _ _)) ((hF u).mid (B.R.m - 1) h1 h2) _ _).symm`. Establish `hoffx` using `GlobalTheory.T.exists_levelJ_character_eq_member_off_places I hok pins l Z H.Ch H.chOf F u a Q h1 (St (B.R.m - 1)).Ch (St (B.R.m - 1)).fin (St (B.R.m - 1)).chOf (fun β => (St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β) (St (B.R.m - 1)).gOf hQ hF hJ ((St (B.R.m - 1)).reads h1 (Nat.sub_l …`. Apply the tactic sequence `have fin : (∃ χ : J.levJ.U →* ℂˣ, (∀ β (κ : J.levJ.U) (κ' : ((St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β).lev.U), κ'.1 = reGL (rankN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _)) _ κ.1 → ((St (B.R.m - 1)).K h1 (Nat.sub_le _ _) β).lev.chi κ' = χ κ) ∧ ∀ (κ : J.levJ.U) (κ' : (F u).levJ.U) …`. Take `⟨χ, hχ, hχ'⟩` from `fin`. Conclude with `⟨⟨St, hSt ▸ hSm, { J with chiJ := χ, chiJ_eq := hχ }, hχ'⟩⟩`.
+-/
 theorem twPack_ex (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)}
     {F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)}
     {Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))} (u : B.Word) (a : I.ι)
@@ -318,6 +377,9 @@ theorem twPack_ex (hok : I.Ok) (pins : TC.Pins B X) {H : Formalism.L2.Herm.HermC
   obtain ⟨χ, hχ, hχ'⟩ := fin
   exact ⟨⟨St, hSt ▸ hSm, { J with chiJ := χ, chiJ_eq := hχ }, hχ'⟩⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.map_injective_of_injective (f := (reV h E : (Fin a → E) →ₗ[E] (Fin b → E)).restrictScalars (𝓞 E)) (reV h E).injective e`.
+-/
 theorem reL_inj {a b : ℕ} (h : a = b) {E : Type} [Field E] [NumberField E] {L L' : Submodule (𝓞 E) (Fin a → E)}
     (e : reL h L = reL h L') : L = L' :=
   Submodule.map_injective_of_injective (f := (reV h E : (Fin a → E) →ₗ[E] (Fin b → E)).restrictScalars (𝓞 E)) (reV h E).injective e
@@ -395,6 +457,11 @@ def twJ {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)} {F : ∀ u, FormsTiedSym
   Lb_off u μ i h1 hm β v hv := congrArg _ (((p u μ).St i).offL h1 hm β)
   Q_off u μ := hoff u μ
 
+/- English proof (translation)
+Introduce `y`. Establish `e : (I.rec7 l Z).R.m = B.R.m` using `rfl`. Use `show (eYS (F u) i hi y).1 = y.1`. Unfold `eYS`. Use `split_ifs with h`.
+
+Conclude with `(hF u).eY i hi h y`. Conclude with `(hF u).eYC i (by omega) (by omega) y`.
+-/
 theorem idY_twYS {inQ : I.ι → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) → Prop} {H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)}
     {F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)} (hF : ∀ u, I.StdF l Z u (F u))
     (Q : I.ι → Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (hQ : ∀ a v, v ∈ Q a ↔ inQ a v)
@@ -461,6 +528,13 @@ end
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `B X I hok pins l Z l0 inQ H F hin hF hC hJ`. Establish `hF' : ∀ u, I.StdF l Z u (F u)` using `fun u => (hF u).1`. Establish `hQex : ∀ a, ∃ Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ∀ v, v ∈ Q ↔ I.UnderQ a v` using `fun a => ⟨(I.Q a).image (fun P => P.under (𝓞 B.host.F)), fun v => Finset.mem_image⟩`. Use `choose Q hQ using hQex`. Establish `hQ' : ∀ a v, v ∈ Q a ↔ inQ a v` using `fun a v => (hQ a v).trans (hin a v).symm`.
+
+Establish `P : ∀ u a, Nonempty (TwPack (I` using `I) (l := l) (Z := Z) H F (Q a) u a) := fun u a => twPack_ex hok pins u a (hQ a) hF' hJ hC`. Set `p` to `fun u a => (P u a).some`. Use `choose A hA hA' using fun u a => GlobalTheory.Mem.Col2.TwAtStd.twAtT_exists I hok pins l Z l0 u a`. Establish `hoff : ∀ (u : B.Word) a, ∀ v ∈ Q a, ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal ∧ ∀ j, (((I.rec7 l Z).host.g j : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∉ v.asIdeal` using `fun u a v hv => GlobalTheory.T.twistPlaces_prime_to_levelAndTypePrimes I hok l u a v ((hQ a v).1 hv)`. Use `⟨twT Q hQ' p, twJ Q hQ' p hoff, twW hok pins l0 hF' Q hQ' p hoff A hA, ⟨fun u i hi => Equiv.ext fun y => rfl, fun u => Equiv.ext fun c => GlobalTheory.T.eCls0_mu0_eq_self I hok l u c⟩, ⟨fun _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ => rfl, hA, ?_, fun u a _ i h1 hm => ((p u a).St …` and prove the remaining obligations.
+
+Introduce `u a v r`. Use `show ((A u a).eFv v).symm ((F u).atT.res ((A u a).eVT v) r) = _`. Rewrite using `[(hF' u).res]`. Conclude with `((A u a).eFv v).symm_apply_eq.2 (hA' u a v r).symm`.
+-/
 theorem tw_chains : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (inQ : I.ι → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) → Prop) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ a v, inQ a v ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → (∀ u j v h, (F u).glevJ.fr j v h = 1) → ∃ (T : Formalism.L2.Herm.TwChTied (I.rec7 l Z) inQ) (J : Formalism.L2.Herm.TwChJointS T H) (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F), Formalism.L2.Herm.TwChMu0 T ∧ I.StdW l Z l0 W ∧ Nonempty (SymmetricTwistedJointForms T F) := by
   intro B X I hok pins l Z l0 inQ H F hin hF hC hJ
   have hF' : ∀ u, I.StdF l Z u (F u) := fun u => (hF u).1
@@ -485,6 +559,9 @@ theorem tw_chains : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `I hok pins l Z l0 inQ H F hin hF hC` and use `tw_chains I hok pins l Z l0 inQ H F hin hF hC fun u => (hF u).2.2`.
+-/
 theorem tw_chains_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (inQ : I.ι → HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F) → Prop) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ a v, inQ a v ↔ I.UnderQ a v) → (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∃ (T : Formalism.L2.Herm.TwChTied (I.rec7 l Z) inQ) (J : Formalism.L2.Herm.TwChJointS T H) (W : TwFormsTiedS (I.rec7 l Z) (I.tw l l0 Z) T J F), Formalism.L2.Herm.TwChMu0 T ∧ I.StdW l Z l0 W ∧ Nonempty (SymmetricTwistedJointForms T F) :=
   fun I hok pins l Z l0 inQ H F hin hF hC => tw_chains I hok pins l Z l0 inQ H F hin hF hC fun u => (hF u).2.2
 

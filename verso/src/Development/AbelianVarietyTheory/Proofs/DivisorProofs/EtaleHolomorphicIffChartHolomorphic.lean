@@ -11,6 +11,27 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.OTY
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A U z hE Ω u hΩ`. Establish `hloc` using `GlobalTheory.T.etale_isLocalHomeomorph' n Y ι La A U z hE`. Prove the components needed by the constructor for the conclusion. Introduce `h i v hv`. Take `⟨hvt, hvU, hvΩ⟩` from `hv`.
+
+Take `⟨e, hes, hez⟩` from `hloc ⟨(A.chart i).symm v, hvU⟩`. Establish `he : IsChart n (fun y : U => z y) e` using `fun w _ => by rw [hez]`. Establish `hev : ∀ w : U, e w = z w` using `fun w => by rw [← hez]`. Take `⟨W, hW, hWe⟩` from `isOpen_induced_iff.1 e.open_source`. Establish `hO : IsOpen (e.target ∩ e.symm ⁻¹' (Subtype.val ⁻¹' Ω))` using `e.isOpen_inter_preimage_symm (hΩ.preimage continuous_subtype_val)`.
+
+Establish `hmem : z ((A.chart i).symm v) ∈ e.target ∩ e.symm ⁻¹' (Subtype.val ⁻¹' Ω)`. Establish `h1` using `hev ⟨(A.chart i).symm v, hvU⟩`. Simplify using `only at h1`. Rewrite using `[← h1]`. Use `⟨e.map_source hes, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage]`. Rewrite using `[e.left_inv hes]`. Conclude with `hvΩ`. Establish `h1 : DifferentiableAt ℂ ((fun y : U => u y) ∘ e.symm) (z ((A.chart i).symm v))` using `(h e he _ hmem).differentiableAt (hO.mem_nhds hmem)`. Establish `h2 : DifferentiableAt ℂ (z ∘ (A.chart i).symm) v` using `(hE.holo i v ⟨hvt, hvU⟩).differentiableAt (((A.chart i).isOpen_inter_preimage_symm hE.isOpen).mem_nhds ⟨hvt, hvU⟩)`.
+
+Establish `h3` using `DifferentiableAt.comp v (g := (fun y : U => u y) ∘ e.symm) (f := z ∘ (A.chart i).symm) h1 h2`. Use `(h3.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Establish `hvW : (A.chart i).symm v ∈ W`. Rewrite `hes` using `[← hWe]`. Conclude with `hes`.
+
+Use `filter_upwards [((A.chart i).isOpen_inter_preimage_symm (hE.isOpen.inter hW)).mem_nhds ⟨hvt, hvU, hvW⟩] with v' hv'`. Establish `hs : (⟨(A.chart i).symm v', hv'.2.1⟩ : U) ∈ e.source`. Rewrite using `[← hWe]`. Conclude with `hv'.2.2`. Establish `h4` using `hev ⟨(A.chart i).symm v', hv'.2.1⟩`.
+
+Simplify using `only at h4`. Simplify using `only [Function.comp]`. Rewrite using `[← h4, e.left_inv hs]`. Introduce `h e he v hv`. Take `⟨hvt, hvΩ⟩` from `hv`.
+
+Establish `hs` using `A.mem_pick (e.symm v : U)`. Use `set i := A.pick (e.symm v : U)`. Take `⟨hc, hev, -⟩` from `GlobalTheory.T.contDiffAt_chart_inverse_of_etale n Y ι La A U z hE e he v hvt i hs`. Establish `hmem : A.chart i (e.symm v : U) ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' (U ∩ Ω)`. Use `⟨(A.chart i).map_source hs, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage]`. Rewrite using `[(A.chart i).left_inv hs]`. Conclude with `⟨(e.symm v).2, hvΩ⟩`. Establish `h1 : DifferentiableAt ℂ (u ∘ (A.chart i).symm) (A.chart i (e.symm v : U))` using `(h i _ hmem).differentiableAt (((A.chart i).isOpen_inter_preimage_symm (hE.isOpen.inter hΩ)).mem_nhds hmem)`. Establish `h3` using `DifferentiableAt.comp v (g := u ∘ (A.chart i).symm) (f := fun v' => A.chart i (e.symm v' : U)) h1 (hc.differentiableAt (by simp))`.
+
+Use `(h3.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hev] with v' hv'`. Simplify using `only [Function.comp]`. Rewrite using `[(A.chart i).left_inv hv']`.
+-/
 theorem holo_etale_iff_holo_chart : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (U : Set Y) (z : Y → V n), Etale A U z → ∀ (Ω : Set Y) (u : Y → ℂ), IsOpen Ω → ((∀ e : OpenPartialHomeomorph U (V n), IsChart n (fun y : U => z y) e → DifferentiableOn ℂ ((fun y : U => u y) ∘ e.symm) (e.target ∩ e.symm ⁻¹' (Subtype.val ⁻¹' Ω))) ↔ ∀ i, DifferentiableOn ℂ (u ∘ (A.chart i).symm) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' (U ∩ Ω))) := by
   intro n Y _ _ _ _ _ ι La _ A U z hE Ω u hΩ
   have hloc := GlobalTheory.T.etale_isLocalHomeomorph' n Y ι La A U z hE

@@ -51,12 +51,26 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Take `⟨m, r, M, hr, hM, hL, -⟩` from `GlobalTheory.T.tangent_basis_integral_change t hx b hb`. Conclude with `GlobalTheory.CM.LieLattice.fg_and_span_eq_top _ r M hr (fun i => (hM i).2) hL`.
+-/
 theorem full_lieCoordLat {X : Scheme.{0}} (t : SAB H X) {K : Type} [Field K] [NumberField K]
     {xO : Sp (𝓞 K) ⟶ X} {xK : Sp K ⟶ X} (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK) {n : ℕ} (b : Fin n → TanM xK t.G)
     (hb : TanBasis t b) : Full (lieCoordLat t hx b) := by
   obtain ⟨m, r, M, hr, hM, hL, -⟩ := GlobalTheory.T.tangent_basis_integral_change t hx b hb
   exact GlobalTheory.CM.LieLattice.fg_and_span_eq_top _ r M hr (fun i => (hM i).2) hL
 
+/- English proof (translation)
+Establish `hv : LinearIndependent K (fun k => (Pi.single (s k) (1 : K) : Fin n → K))`. Simplify `(Pi.basisFun K (Fin n)).linearIndependent.comp s hs` using `[Function.comp_def]`. Take `⟨h0, h1⟩` from `GlobalTheory.T.graded_ideal_norm_successive_minimum j _ _ i (full_lieCoordLat t hx b hb) hv`. Take `⟨hi, hl⟩` from `GlobalTheory.T.tangent_basis_ultrametric_norm t hx b hb j hC`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+
+Establish `hU : u = fun k => (tv (bcTan j hC (b (s k)))).left` using `funext fun k => by rw [hu, left_bcTan]`. Establish `e (d : Fin r → C) : ∑ k, d k • bcTan j hC (b (s k)) = ∑ m, (∑ k, d k • fun m => j ((Pi.single (s k) (1 : K) : Fin n → K) m)) m • bcTan j hC (b m)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Finset.sum_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_eq_single (s k) (fun m _ hm => by simp [hm]) (by simp)]`. Simplify using the standard rewrite rules. Establish `key (d : Fin r → C) : (∃ w ∈ latDR t xC, IsCombAtG t xC u d w) ↔ (∑ k, d k • fun m => j ((Pi.single (s k) (1 : K) : Fin n → K) m)) ∈ latC j (lieCoordLat t hx b)`. Rewrite using `[hU]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, hc⟩`. Take `⟨d', hd', rfl⟩` from `(hl w).1 hw`. Use `(LieMet.isComb_iff _ _ _).1 hc` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[← Fintype.linearIndependent_iffₛ.1 hi _ _ this |> funext]` and apply the resulting hypothesis.
+
+Introduce `hd`. Conclude with `⟨_, (hl _).2 ⟨_, hd, rfl⟩, (LieMet.isComb_iff _ _ _).2 (e d).symm⟩`. Rewrite using `[← h1, grNorm]`. Simplify using `only [key]`.
+-/
 theorem grNorm_eq {X : Scheme.{0}} [X.IsSeparated] (t : SAB H X) {K : Type} [Field K] [NumberField K]
     {xO : Sp (𝓞 K) ⟶ X} {xK : Sp K ⟶ X} (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK) {n : ℕ} (b : Fin n → TanM xK t.G)
     (hb : TanBasis t b) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (j : K →+* C) {xC : Sp C ⟶ X}
@@ -99,6 +113,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
+/- English proof (translation)
+Take `⟨a, ha, hco⟩` from `GlobalTheory.T.flag_compactification_eigenframe_point Y p g (expo Dw w) hc`. Rewrite using `[GlobalTheory.T.height_below_point_decomposition _ φ p hp]`. Establish `hinf (σ : K →+* ℂ) : Real.log ((cxSt F).pn Y.Y (σ.comp φ) (divOf Y (expo Dw w)) (Y.met (G _) (expo Dw w)) ((cxSt F).cx Y.Y _ ((eqn (divOf Y (expo Dw w)) (below p))⁻¹ : Y.Y.Fnˣ)) (cxPtOf p hp σ)) / 2 = Real.log ‖σ a‖ + (1 / 2) * ∑ z : Letter Dw, (expo Dw w z : ℝ) * Real.log (q σ z …`. Establish `h1 : embOf e (σ.comp φ) = σ.comp fK` using `by rw [hφ]; rfl`. Establish `h2 : (Y.down (σ` using `σ.comp φ) (cxPtOf p hp σ)).1 ≫ genι Z = spMap σ ≫ xK := by`.
+
+Rewrite using `[hx]`. Simplify using `[FlagCpt.down, cxPtOf]`. Take `⟨g', hg'⟩` from `g.exists_isMap σ h1 h2`. Establish `h3` using `FlagCpt.pn_met (G (σ.comp φ)) (expo Dw w) (p := cxPtOf p hp σ) (g := g') (GlobalTheory.T.flag_compactification_base_change Y σ p g g' _ _ a h1 h2 hg' hco)`. Use `(congrArg (Real.log · / 2) h3).trans ?_` and prove the remaining obligations.
+
+Establish `h4 : ‖σ a‖ ≠ 0` using `by simpa using ha`. Rewrite using `[Real.log_mul (pow_ne_zero _ h4) (Y.genSq_pos _ _ _).ne', Real.log_pow, FlagCpt.genSq, Real.log_prod (fun w _ => (zpow_pos (grSq_pos ((G _).pos _ _ _) _) _).ne')]`. Simplify using `only [Real.log_zpow, hq σ g' hg']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hloc (v : HeightOneSpectrum (𝓞 F)) (θ : EmbOver φ) : lgOf Y w v (extOf v) (algPtOf p hp θ) = Real.log ((extOf v).w (θ.1 a)) - ∑ s ∈ w.support, (w s : ℝ) * Real.log (⨆ a : 𝔞 s.2.2, (extOf v).w (θ.1 a))` using `by haveI := Fact.mk (residueCharacteristic_prime v)`. Take `⟨g', hg'⟩` from `g.exists_isMap θ.1 (φ' := θ.1.comp fK) (x' := spMap θ.1 ≫ xK) rfl rfl`. Establish `h1` using `fun s hs => hfin s hs (resP v) ((ioOf (resP v) (extOf v)).comp θ.1) (spMap (ioOf (resP v) (extOf v)) ≫ spMap θ.1 ≫ xK) (fun τ i => spMap (dualMap (ioOf (resP v) (extOf v))) ≫ g'.v τ i) (by rw [← Category.assoc, ← Spec.map_comp]; rfl) (fun τ i => by simp only [hg' τ i, GlobalTheor …`. Establish `h2 : below (algPtOf p hp θ).1 = below p`. Express the relevant statement in the definitionally equal form `p (spMap θ.1 _) = p _`.
+
+Use `congr 1`. Conclude with `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[GlobalTheory.T.flag_point_local_height_prime Y w v (extOf v) (algPtOf p hp θ) g' (θ.1 a) (fun s hs => by rw [hw s hs]) (fun s hs => by rw [(h1 s hs).2]; exact (inv_pos.2 (h1 s hs).1).ne') (by rw [h2]; exact GlobalTheory.T.flag_compactification_base_change Y θ.1 p g g' _ _ a rfl …`. Use `congrArg _ (Finset.sum_congr rfl fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[(h1 s hs).2, Real.log_inv, ← GlobalTheory.T.ideal_sup_norm_local_rescale v (extOf v) θ.1 _ (h𝔞 s hs).1 (h𝔞 s hs).2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hfinsum : ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, lgOf Y w v (extOf v) (algPtOf p hp θ) = -(∑ σ : K →+* ℂ, Real.log ‖σ a‖) - w.sum fun s n => (n : ℝ) * idealLog (𝔞 s.2.2)`. Simplify using `only [hloc, Finset.sum_sub_distrib]`. Establish `h1` using `fun s hs => GlobalTheory.T.product_formula_fractional_ideal φ _ (h𝔞 s hs).1 (h𝔞 s hs).2`. Establish `h2 (v : HeightOneSpectrum (𝓞 F)) : ∑ θ : EmbOver φ, ∑ s ∈ w.support, (w s : ℝ) * Real.log (⨆ a : 𝔞 s.2.2, (extOf v).w (θ.1 a)) = ∑ s ∈ w.support, (w s : ℝ) * ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞 s.2.2, (extOf v).w (θ.1 a))`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Establish `h3 : ∀ s ∈ w.support, (Function.support fun v : HeightOneSpectrum (𝓞 F) => (w s : ℝ) * ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞 s.2.2, (extOf v).w (θ.1 a))).Finite` using `fun s hs => (h1 s hs).1.subset (Function.support_mul_subset_right _ _)`. Simplify using `only [h2]`. Rewrite using `[finsum_sub_distrib (GlobalTheory.T.product_formula_extension_embeddings φ a ha).1 ((w.support.finite_toSet.biUnion h3).subset (Finset.support_sum _ _)), (GlobalTheory.T.product_formula_extension_embeddings φ a ha).2, finsum_sum_comm _ _ h3, Finsupp.sum]`.
+
+Use `congrArg _ (Finset.sum_congr rfl fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[← mul_finsum' _ _ (h1 s hs).1, (h1 s hs).2]`. Express the relevant statement in the definitionally equal form `-((∑ σ : K →+* ℂ, (_ - ((1 : ℕ) : ℝ) * 0)) + ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, lgOf Y w v (extOf v) (algPtOf p hp θ)) / (((1 : ℕ) : ℝ) * _) = _`. Rewrite using `[hfinsum]`. Use `erw [Finset.sum_congr rfl fun σ _ => congrArg (· - ((1 : ℕ) : ℝ) * 0) (hinf σ)]`.
+
+Simplify using `only [mul_zero, sub_zero, Finset.sum_add_distrib, ← Finset.mul_sum, Nat.cast_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ht_core (G : ∀ σ : F →+* ℂ, EigMet Z (embOf e σ)) {K : Type} [Field K] [NumberField K] (φ : F →+* K)
     (p : Sp K ⟶ Y.Y.X) (hp : p ≫ Y.Y.str = spMap φ) {fK : c.F →+* K} {xK : Sp K ⟶ Z.X} (g : EigFrame Z fK xK)
     (hc : Y.Carries p g) (hφ : fK = φ.comp e.symm.toRingHom) (hx : xK = p ≫ Y.π ≫ genι Z) (w : Sym E →₀ ℤ)
@@ -188,17 +221,26 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Establish `h : tauFr K e τ = Pi.basisFun K (Fin n) ∘ fun j : Fin (Dw.mult τ) => e.symm ⟨τ, j⟩`. Use function extensionality and compare the values at `j`. Simplify using `[tauFr]`. Rewrite using `[h]`. Conclude with `(Pi.basisFun K (Fin n)).linearIndependent.comp _ (e.symm.injective.comp sigma_mk_injective)`.
+-/
 theorem linearIndependent_tauFr (τ : E →+* ℂ) : LinearIndependent K (tauFr K e τ) := by
   have h : tauFr K e τ = Pi.basisFun K (Fin n) ∘ fun j : Fin (Dw.mult τ) => e.symm ⟨τ, j⟩ := by
     funext j; simp [tauFr]
   rw [h]
   exact (Pi.basisFun K (Fin n)).linearIndependent.comp _ (e.symm.injective.comp sigma_mk_injective)
 
+/- English proof (translation)
+The claim follows from `e.symm.bijective.comp ⟨List.nodup_iff_injective_get.1 (GlobalTheory.Proof.LetterConjugation.nodup_letters Dw), fun x => List.get_of_mem (GlobalTheory.Proof.LetterConjugation.mem_letters Dw x)⟩`.
+-/
 theorem bijective_pos : Function.Bijective fun j => e.symm ((letters Dw).get j) :=
   e.symm.bijective.comp ⟨List.nodup_iff_injective_get.1 (GlobalTheory.Proof.LetterConjugation.nodup_letters Dw), fun x => List.get_of_mem (GlobalTheory.Proof.LetterConjugation.mem_letters Dw x)⟩
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Establish `h : allFr K e = Pi.basisFun K (Fin n) ∘ fun j => e.symm ((letters Dw).get j)`. Use function extensionality and compare the values at `j`. Simplify using `[allFr]`. Rewrite using `[h, (bijective_pos e).2.range_comp]`. Conclude with `⟨(Pi.basisFun K (Fin n)).linearIndependent.comp _ (bijective_pos e).1, Module.Basis.span_eq _⟩`.
+-/
 theorem basis_allFr : LinearIndependent K (allFr K e) ∧ Submodule.span K (Set.range (allFr K e)) = ⊤ := by
   have h : allFr K e = Pi.basisFun K (Fin n) ∘ fun j => e.symm ((letters Dw).get j) := by
     funext j; simp [allFr]
@@ -207,6 +249,9 @@ theorem basis_allFr : LinearIndependent K (allFr K e) ∧ Submodule.span K (Set.
 
 variable {K} in
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single (e.symm a) (fun m _ hm => by simp [tauFr, hm]) (by simp)]`. Use `tan_ext ?_` and prove the remaining obligations. Rewrite using `[tauFr, Pi.single_eq_same, one_smul, left_bcTan, ← hg]`. Conclude with `(hg' a.1 a.2).symm`.
+-/
 theorem bcTan_tauFr {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {fK : c.F →+* K} {xK : Sp K ⟶ Z.X} (g : EigFrame Z fK xK)
     (b : Fin n → TanM xK Z.t.G) (hg : ∀ z : Letter Dw, g.vec z.1 z.2 = b (e.symm z)) {C : Type} [Field C] (σ : K →+* C)
@@ -219,6 +264,11 @@ theorem bcTan_tauFr {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [C
 
 variable {K} in
 
+/- English proof (translation)
+Establish `hform (z : CxPts (genStr Z) (σ.comp fK)) (hz : z.1 = spMap σ ≫ yK) (g' : EigFrame Z (σ.comp fK) (z.1 ≫ genι Z)) (hg' : g.IsMap σ g') (a a' : Letter Dw) : h.form σ (tauFr K e a.1 a.2) (tauFr K e a'.1 a'.2) = x.met _ z (g'.vec a'.1 a'.2) (g'.vec a.1 a.2)`. Rewrite using `[hh σ z hz, bcTan_tauFr e g b hg σ _ g' hg' a', bcTan_tauFr e g b hg σ _ g' hg' a]`. Use `⟨fun z z' hz => ?_, ?_⟩` and prove the remaining obligations. Set `y : CxPts (genStr Z) (σ.comp fK)` to `⟨spMap σ ≫ yK, by rw [Category.assoc, hov, ← Spec.map_comp]; rfl⟩`. Take `⟨g', hg'⟩` from `g.exists_isMap σ (φ' := σ.comp fK) (x' := y.1 ≫ genι Z) rfl (Category.assoc _ _ _)`.
+
+Conclude with `(hform y rfl g' hg' z z').trans (x.met_vec_eq_zero g' g' hz.symm _ _)`. Introduce and unpack `_ z g' rfl hz hg' τ`. Conclude with `Matrix.ext fun a a' => (hform z hz g' hg' ⟨τ, a⟩ ⟨τ, a'⟩).symm`.
+-/
 theorem form_tauFr {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} [SmoothOfRelativeDimension Dw.dim (genStr Z)] (x : OddPrimesWithRootsOfUnity Z)
     {fK : c.F →+* K} {yK : Sp K ⟶ gen Z} (hov : yK ≫ genStr Z = spMap fK) (g : EigFrame Z fK (yK ≫ genι Z))
@@ -242,6 +292,11 @@ theorem form_tauFr {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [Co
 
 variable {K} in
 
+/- English proof (translation)
+Break down `s with ⟨τ, k⟩ | k` into its components or cases. Establish `hk : k < Dw.mult τ` using `by by_contra hk; simp [letterOf, hk] at hs`. Simplify using `only [stepId, dif_pos hk]`. Conclude with `GlobalTheory.T.graded_ideal_fg_ne_bot K _ _ _ _ _ hL.1 (linearIndependent_tauFr K e τ) (by rw [hL.2]; exact le_top)`. Establish `hk : k < (letters Dw).length` using `by simpa [letterOf] using hs`.
+
+Simplify using `only [stepId, dif_pos hk]`. Conclude with `GlobalTheory.T.graded_ideal_fg_ne_bot K _ _ _ _ _ hL.1 (basis_allFr K e).1 (by rw [hL.2]; exact le_top)`.
+-/
 theorem stepId_fg {L : Submodule (𝓞 K) (Fin n → K)} (hL : Full L) {s : ((E →+* ℂ) × ℕ) ⊕ ℕ}
     (hs : (letterOf Dw s).isSome) : (stepId e L s).FG ∧ stepId e L s ≠ ⊥ := by
   rcases s with ⟨τ, k⟩ | k
@@ -254,6 +309,11 @@ theorem stepId_fg {L : Submodule (𝓞 K) (Fin n → K)} (hL : Full L) {s : ((E 
 
 variable {K} in
 
+/- English proof (translation)
+Break down `s with ⟨τ, k⟩ | k` into its components or cases. Establish `hk : k < Dw.mult τ` using `by by_contra hk; simp [letterOf, hk] at hs`. Rewrite using `[stepId, stepNorm, dif_pos hk, dif_pos hk]`. Conclude with `grNorm_eq t hx b hb j hC (fun i => e.symm ⟨τ, i⟩) (e.symm.injective.comp sigma_mk_injective) (u τ) (fun i => hu ⟨τ, i⟩) _`. Establish `hk : k < (letters Dw).length` using `by simpa [letterOf] using hs`.
+
+Rewrite using `[stepId, stepNorm, dif_pos hk, dif_pos hk]`. Conclude with `grNorm_eq t hx b hb j hC (fun i => e.symm ((letters Dw).get i)) (bijective_pos e).1 _ (fun i => hu _) _`.
+-/
 theorem stepNorm_eq {X : Scheme.{0}} [X.IsSeparated] (t : SAB H X)
     {xO : Sp (𝓞 K) ⟶ X} {xK : Sp K ⟶ X} (hx : spMap (algebraMap (𝓞 K) K) ≫ xO = xK) (b : Fin n → TanM xK t.G)
     (hb : TanBasis t b) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] (j : K →+* C) {xC : Sp C ⟶ X}
@@ -272,6 +332,17 @@ theorem stepNorm_eq {X : Scheme.{0}} [X.IsSeparated] (t : SAB H X)
 
 variable {D : D7} (O : Setup D)
 
+/- English proof (translation)
+Take `⟨x, P, io, fK, yK, xO, hx, hio, e, b, hc, hov, hb, rfl, hh⟩` from `hL`. Simplify using `only [left_bcTan] at hb`. Take `⟨hB, g, hg⟩` from `GlobalTheory.T.flag_point_tangent_base_change y io fK yK hio hov e b hb`. Establish `hgv (z : Letter O.S.Dw) : g.v z.1 z.2 = (tv (b (e.symm z))).left` using `by rw [← hg]; rfl`. Take `⟨p, hπ, hcar, hbase⟩` from `GlobalTheory.T.eigenframe_flag_point_lift O.Φ y io fK yK hio hov g fun τ i => by`.
+
+Rewrite using `[hgv ⟨τ, i⟩, hb, e.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hfull` using `full_lieCoordLat O.s.T.Z.t hx b hB`. Establish `hform` using `form_tauFr e x hov g b hg h hh`. Use `⟨hfull, e, fun σ => (hform σ).1, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := isProper_toroidalModel_structureMap O.s.T.Z`. Use `haveI : O.s.T.Z.X.IsSeparated := ⟨by rw [← Limits.terminal.comp_from O.s.T.Z.s]; infer_instance⟩`. Establish `hp : p ≫ (O.Φ.C (compPt O.s y)).Y.str = spMap (fK.comp O.κ.e.toRingHom)`. Rewrite using `[← (O.Φ.C (compPt O.s y)).π_str, ← Category.assoc, hπ, ← Category.assoc, hov, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `hφ : fK = (fK.comp O.κ.e.toRingHom).comp O.κ.e.symm.toRingHom` using `RingHom.ext fun a => by simp`. Establish `h0 : ref0 O (compPt O.s y) = fun _ σ n => (O.Φ.C _).met (x.eigMet (embOf O.κ.e σ)) n`. Use function extensionality and compare the values at `_`. Conclude with `congrFun hc.h0_eq _`. Rewrite using `[h0, ← hbase]`.
+
+Use `ht_core (O.Φ.C _) (fun σ => x.eigMet (embOf O.κ.e σ)) _ p hp g hcar hφ (by rw [← hπ, Category.assoc]) w (fun s hs => (hw s hs).1) (stepId e _) (fun s hs => ?_) (fun s hs q _ j xC u hC hu => ?_) _ fun σ g' hg' z => ?_` and prove the remaining obligations. Conclude with `stepId_fg e hfull (hw s hs).2`. Conclude with `stepNorm_eq e O.s.T.Z.t hx b hB j hC u (fun z => by rw [hu, hgv]) (hw s hs).2`. Conclude with `congrArg (grSq · z.2) ((hform σ).2 _ _ g' (congrArg σ.comp hφ).symm (by rw [← hπ]; exact Category.assoc _ _ _) hg' z.1)`.
+-/
 theorem ht_lie (y : Pt O.s) (K : Type) [Field K] [NumberField K] (L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K))
     (h : HermFam K (Fin (D.R.f * O.N) → K)) (hL : IsLieAt O y K L h) : Full L ∧
     ∃ e : Fin (D.R.f * O.N) ≃ Letter O.S.Dw,
@@ -312,6 +383,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 open Classical in
 
+/- English proof (translation)
+Simplify using `only [expo_single, hz, Option.some.injEq]`. Rewrite using `[Finset.sum_eq_single z (fun x _ hx => by simp [hx.symm]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_expo_single (a : ℕ → Bool) (R : Option ℝ) {s : ((E →+* ℂ) × ℕ) ⊕ ℕ} (m : ℤ) {z : Letter Dw}
     (hz : letterOf Dw s = some z) (f : Letter Dw → ℝ) :
     ∑ x, (expo Dw (Finsupp.single (a, R, s) m) x : ℝ) * f x = m * f z := by
@@ -319,6 +393,23 @@ theorem sum_expo_single (a : ℕ → Bool) (R : Option ℝ) {s : ((E →+* ℂ) 
   rw [Finset.sum_eq_single z (fun x _ hx => by simp [hx.symm]) (by simp)]
   simp
 
+/- English proof (translation)
+Introduce `_ _ D O _ _ _ _ _ _`. Use `⟨0, fun y K _ _ L h hL => ?_⟩` and prove the remaining obligations. Take `⟨hfull, e, horth, hht⟩` from `ht_lie O y K L h hL`. Establish `hlen : (letters O.S.Dw).length = D.R.f * O.N` using `(GlobalTheory.Proof.LetterConjugation.letters_spec D _ _ _ O.S O.κ O.s).1`. Establish `hind : ArIn.ind ∅ = fun _ => false` using `funext fun q => by simp [ArIn.ind]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `hk (k : Fin (D.R.f * O.N)) : (k : ℕ) < (letters O.S.Dw).length` using `k.2.trans_eq hlen.symm`. Establish `hlet (k : Fin (D.R.f * O.N)) : letterOf O.S.Dw (.inr (k : ℕ)) = some ((letters O.S.Dw).get ⟨k, hk k⟩)`. Simplify using `[letterOf, hk k]`. Establish `hd : detOmSym D.host.E (D.R.f * O.N) = ∑ k : Fin (D.R.f * O.N), Finsupp.single ((fun _ => false : ℕ → Bool), (none : Option ℝ), (Sum.inr (k : ℕ) : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ)) (-1)`.
+
+Rewrite using `[GlobalTheory.CovolFin.detOmSym_eq, hind, ← Finset.sum_neg_distrib]`. Simplify using `only [Finsupp.single_neg]`. Rewrite using `[omHt, hht _ fun s hs => ?_, GlobalTheory.T.deg_eq_sum_line_heights K _ h L _ _ hfull.1 (basis_allFr K e).1 (hfull.2.trans (basis_allFr K e).2.symm), hd, GlobalTheory.CovolFin.expo_sum, ← Finsupp.sum_finset_sum_index (by simp) (by simp [add_mul]), ← (finCongr hlen.symm).sum_comp]`. Simplify using `only [Finset.sum_apply, Int.cast_sum, Finset.sum_mul]`. Establish `h1 (σ : K →+* ℂ)` using `Finset.sum_comm (s := (Finset.univ : Finset (Letter O.S.Dw))) (t := (Finset.univ : Finset (Fin (D.R.f * O.N)))) (f := fun z k => (expo O.S.Dw (Finsupp.single ((fun _ => false : ℕ → Bool), (none : Option ℝ), (Sum.inr (k : ℕ) : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ)) (-1)) z : ℝ) * Real.log ( …`.
+
+Simplify using `only [h1, sum_expo_single _ _ _ (hlet _), ← GlobalTheory.T.gram_graded_square_orthogonal e h _ (horth _)]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div, ← Finset.sum_add_distrib, Finset.sum_eq_zero fun k _ => ?_, abs_zero]`. Rewrite using `[Finsupp.sum_single_index (by simp), ← Finset.mul_sum]`. Simplify using `only [lineHt, stepId, dif_pos (hk k)]`. Establish `: finCongr hlen.symm k = ⟨k, hk k⟩` using `rfl`.
+
+Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hs` using `[hd]`. Take `⟨k, -, hk'⟩` from `Finsupp.mem_support_finset_sum _ hs`.
+
+Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hk')]`. Conclude with `⟨rfl, by rw [hlet]; rfl⟩`. Introduce `τ k hk`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.lattice_flag_rank_saturated K _ h L _ (tauFr K e τ) k hk hfull.1 (linearIndependent_tauFr K e τ) (by rw [hfull.2]; exact le_top)`. Use `⟨_, inf_le_left, h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.T.deg_eq_sum_line_heights K _ h _ _ _ h2 ((linearIndependent_tauFr K e τ).comp _ (Fin.castLE_injective hk)) h3, stepHt, Finset.sum_range, ← sub_eq_add_neg, ← Finset.sum_sub_distrib, Finset.sum_eq_zero fun i _ => ?_, abs_zero]`. Establish `hi : (i : ℕ) < O.S.Dw.mult τ` using `i.2.trans_le hk`. Establish `hlet : letterOf O.S.Dw (.inl (τ, (i : ℕ))) = some ⟨τ, ⟨i, hi⟩⟩` using `by simp [letterOf, hi]`. Rewrite using `[h4, hht _ fun s hs => ?_, Finsupp.sum_single_index (by simp)]`. Simplify using `only [sum_expo_single _ _ _ hlet, lineHt, stepId, dif_pos hi, Int.cast_one, one_mul]`.
+
+Conclude with `sub_self _`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hs)]`. Conclude with `⟨hind, by rw [hlet]; rfl⟩`.
+-/
 theorem readsAt_smooth : Hypotheses2 → HypothesesH → OnObj fun D O _ _ _ _ => ∃ C : ℝ, ∀ (y : Pt O.s) (K : Type) [Field K] [NumberField K]
     (L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K)) (h : HermFam K (Fin (D.R.f * O.N) → K)),
     IsLieAt O y K L h → ReadsAt O (ref0 O) y h L C := by

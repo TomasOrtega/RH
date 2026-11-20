@@ -5,6 +5,45 @@ open Filter Topology Metric
 
 namespace GlobalTheory.CompanionTheory.HoloChart
 
+/- English proof (translation)
+Introduce `n I J _ _ Ω Φ b₀ x₀ L hΩ ha hΦ hL`. Establish `cS` using `ReciprocityTheory.ChartRestriction.DS.S7.cca_contDiffOn hΩ hΦ`. Establish `cΦ : ContDiffAt ℂ 1 Φ (b₀, x₀)` using `(cS.contDiffAt (hΩ.mem_nhds ha)).of_le (by exact_mod_cast le_top)`. Establish `hinr : ∀ p : (Fin n → ℂ) × (I → ℂ), DifferentiableAt ℂ Φ p → HasFDerivAt (fun x => Φ (p.1, x)) ((fderiv ℂ Φ p).comp (ContinuousLinearMap.inr ℂ (Fin n → ℂ) (I → ℂ))) p.2` using `fun p hp => HasFDerivAt.comp p.2 (f := fun x => (p.1, x)) hp.hasFDerivAt (hasFDerivAt_prodMk_right p.1 p.2)`. Set `D` to `fderiv ℂ Φ (b₀, x₀)`.
+
+Establish `hD : HasFDerivAt Φ D (b₀, x₀)` using `(cΦ.differentiableAt one_ne_zero).hasFDerivAt`. Establish `hDL : D.comp (ContinuousLinearMap.inr ℂ (Fin n → ℂ) (I → ℂ)) = (L : (I → ℂ) →L[ℂ] (J → ℂ))` using `(hinr (b₀, x₀) hD.differentiableAt).unique hL`. Establish `hDuv : ∀ u v, D (u, v) = D (u, 0) + L v` using `fun u v => by`. Establish `h1 : D (0, v) = L v`. Use `congrArg (fun A : (I → ℂ) →L[ℂ] (J → ℂ) => A v) hDL` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[← h1, ← map_add]`. Simplify using the standard rewrite rules. Set `F₀ : ((Fin n → ℂ) × (I → ℂ)) →L[ℂ] ((Fin n → ℂ) × (J → ℂ))` to `(ContinuousLinearMap.fst ℂ (Fin n → ℂ) (I → ℂ)).prod D`. Set `G₀ : ((Fin n → ℂ) × (J → ℂ)) →L[ℂ] ((Fin n → ℂ) × (I → ℂ))` to `(ContinuousLinearMap.fst ℂ (Fin n → ℂ) (J → ℂ)).prod ((L.symm : (J → ℂ) →L[ℂ] (I → ℂ)).comp (ContinuousLinearMap.snd ℂ (Fin n → ℂ) (J → ℂ) - (D.comp (ContinuousLinearMap.inl ℂ (Fin n → ℂ) (I → ℂ))).comp (ContinuousLinearMap.fst ℂ (Fin n → ℂ) (J → ℂ))))`.
+
+Establish `hGF : Function.LeftInverse G₀ F₀`. Introduce and unpack `⟨u, v⟩`. Simplify using `[F₀, G₀, hDuv u v]`. Establish `hFG : Function.RightInverse G₀ F₀`. Introduce and unpack `⟨u, w⟩`.
+
+Establish `h : G₀ (u, w) = (u, L.symm (w - D (u, 0)))` using `by simp [G₀]`. Rewrite using `[h]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use `show D (u, L.symm (w - D (u, 0))) = w`. Rewrite using `[hDuv]`.
+
+Simplify using the standard rewrite rules. Set `F' : ((Fin n → ℂ) × (I → ℂ)) ≃L[ℂ] ((Fin n → ℂ) × (J → ℂ))` to `ContinuousLinearEquiv.equivOfInverse F₀ G₀ hGF hFG`. Set `F : (Fin n → ℂ) × (I → ℂ) → (Fin n → ℂ) × (J → ℂ)` to `fun p => (p.1, Φ p)`. Establish `hF : HasFDerivAt F (F' : ((Fin n → ℂ) × (I → ℂ)) →L[ℂ] ((Fin n → ℂ) × (J → ℂ))) (b₀, x₀)` using `hasFDerivAt_fst.prodMk hD`. Establish `cF : ContDiffAt ℂ 1 F (b₀, x₀)` using `contDiffAt_fst.prodMk cΦ`.
+
+Set `T` to `cF.toOpenPartialHomeomorph F (f' := F') hF one_ne_zero`. Establish `hTF : ∀ p, T p = F p` using `fun _ => rfl`. Establish `src : (b₀, x₀) ∈ T.source` using `cF.mem_toOpenPartialHomeomorph_source (f' := F') hF one_ne_zero`. Establish `tgt : F (b₀, x₀) ∈ T.target` using `cF.image_mem_toOpenPartialHomeomorph_target (f' := F') hF one_ne_zero`. Establish `hinv : T.symm (F (b₀, x₀)) = (b₀, x₀)` using `T.left_inv src`.
+
+Set `O` to `(T.target ∩ interior {w | ContDiffAt ℂ 1 T.symm w}) ∩ (T.target ∩ T.symm ⁻¹' Ω)`. Establish `oO : IsOpen O` using `(T.open_target.inter isOpen_interior).inter (T.isOpen_inter_preimage_symm hΩ)`. Establish `mO : F (b₀, x₀) ∈ O`. Use `⟨⟨tgt, mem_interior_iff_mem_nhds.2 ?_⟩, tgt, ?_⟩` and prove the remaining obligations. Conclude with `(cF.to_localInverse (f' := F') hF one_ne_zero).eventually (by simp)`.
+
+Simplify `ha` using `[hinv]`. Take `⟨ε, ε0, hε⟩` from `Metric.isOpen_iff.1 oO _ mO`. Establish `hball : ball b₀ ε ×ˢ ball (Φ (b₀, x₀)) ε ⊆ O`. Rewrite using `[ball_prod_same]`. Conclude with `hε`.
+
+Take `⟨δ, δ0, hδ⟩` from `Metric.mem_nhds_iff.1 (Filter.inter_mem (Filter.inter_mem (T.open_source.mem_nhds src) (hΩ.mem_nhds ha)) (hF.continuousAt.preimage_mem_nhds (ball_mem_nhds (F (b₀, x₀)) ε0)))`. Establish `hsec : ∀ p ∈ O, T.symm p = (p.1, (T.symm p).2) ∧ Φ (T.symm p) = p.2` using `fun p hp => by`. Establish `h : F (T.symm p) = p` using `T.right_inv hp.1.1`. Establish `h1 : (T.symm p).1 = p.1` using `congrArg Prod.fst h`. Establish `h2 : Φ (T.symm p) = p.2` using `congrArg Prod.snd h`.
+
+Conclude with `⟨Prod.ext h1 rfl, h2⟩`. Use `⟨ε, min δ δ, fun p => (T.symm p).2, ε0, lt_min δ0 δ0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Prod.snd hinv`. Introduce `p hp`. Establish `c : ContDiffAt ℂ 1 T.symm p` using `interior_subset (hball hp).1.2`.
+
+Conclude with `((differentiableAt_snd).comp p (c.differentiableAt one_ne_zero)).differentiableWithinAt`. Introduce `p hp`. Establish `hpO` using `hball hp`. Take `⟨e1, e2⟩` from `hsec p hpO`. Establish `hq : T.symm p ∈ Ω` using `hpO.2.2`.
+
+Establish `hq' : (p.1, (T.symm p).2) ∈ Ω` using `e1 ▸ hq`. Use `⟨hq', by rw [← e1]; exact e2, fun v hv => ?_⟩` and prove the remaining obligations. Establish `dΦ : DifferentiableAt ℂ Φ (T.symm p)` using `(hΦ _ hq).differentiableAt (hΩ.mem_nhds hq)`. Establish `h1` using `(hinr (T.symm p) dΦ).fderiv`. Establish `h2 : (T.symm p).1 = p.1` using `congrArg Prod.fst e1`.
+
+Rewrite `h1` using `[h2]`. Rewrite `hv` using `[h1]`. Establish `dF : HasFDerivAt F ((ContinuousLinearMap.fst ℂ (Fin n → ℂ) (I → ℂ)).prod (fderiv ℂ Φ (T.symm p))) (T.symm p)` using `hasFDerivAt_fst.prodMk dΦ.hasFDerivAt`. Establish `c : ContDiffAt ℂ 1 T.symm p` using `interior_subset hpO.1.2`. Establish `dS : HasFDerivAt T.symm (fderiv ℂ T.symm p) (F (T.symm p))`.
+
+Rewrite using `[show F (T.symm p) = p from T.right_inv hpO.1.1]`. Conclude with `(c.differentiableAt one_ne_zero).hasFDerivAt`. Establish `hcomp` using `dS.comp (T.symm p) dF`. Establish `hid : HasFDerivAt (T.symm ∘ F) (ContinuousLinearMap.id ℂ _) (T.symm p)`. Use `(hasFDerivAt_id (𝕜 := ℂ) (T.symm p)).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+
+Use `filter_upwards [T.open_source.mem_nhds (T.map_target hpO.1.1)] with q hq`. Conclude with `T.left_inv hq`. Establish `hu` using `hcomp.unique hid`. Establish `hv' : fderiv ℂ Φ (T.symm p) (0, v) = 0` using `by simpa using hv`. Establish `e0 : ((ContinuousLinearMap.fst ℂ (Fin n → ℂ) (I → ℂ)).prod (fderiv ℂ Φ (T.symm p))) (0, v) = 0` using `Prod.ext (by simp) (by simpa using hv')`.
+
+Establish `h3` using `DFunLike.congr_fun hu (0, v)`. Rewrite `h3` using `[ContinuousLinearMap.comp_apply, e0, map_zero]`. Conclude with `(congrArg Prod.snd h3).symm`. Introduce `b hb x hx`. Establish `hbx : (b, x) ∈ ball (b₀, x₀) δ`.
+
+Rewrite using `[← ball_prod_same]; exact ⟨by simpa using hb, by simpa using hx⟩`. Take `⟨⟨h1, h2⟩, h3⟩` from `hδ hbx`. Establish `h3' : F (b, x) ∈ ball b₀ ε ×ˢ ball (Φ (b₀, x₀)) ε`. Rewrite using `[ball_prod_same]`. Conclude with `h3`.
+
+Conclude with `⟨h2, h3'.2, congrArg Prod.snd (T.left_inv h1)⟩`.
+-/
 theorem holomorphic_inverse_with_parameters :
     ∀ (n : ℕ) (I J : Type) [Fintype I] [Fintype J] (Ω : Set ((Fin n → ℂ) × (I → ℂ)))
       (Φ : (Fin n → ℂ) × (I → ℂ) → (J → ℂ)) (b₀ : Fin n → ℂ) (x₀ : I → ℂ)

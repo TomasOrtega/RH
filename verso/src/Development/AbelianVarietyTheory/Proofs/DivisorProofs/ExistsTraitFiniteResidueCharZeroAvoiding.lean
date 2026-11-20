@@ -11,6 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Distinguish the cases in `h : P = ⊥`. Substitute `h` using the available equality. Use `le_antisymm (fun x hx => ?_) Ideal.le_jacobson` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `h0`. Establish `h1` using `Ideal.mem_jacobson_bot.1 hx x`. Establish `h2 : 0 < x * x` using `mul_self_pos.2 h0`. Apply the tactic sequence `rcases Int.isUnit_iff.1 h1 with h3 | h3 <;> omega`.
+
+Use `Ring.DimensionLEOne.maximalOfPrime h hP` as an intermediate fact. Conclude with `Ideal.jacobson_eq_self_of_isMaximal`.
+-/
 theorem isJacobsonRing_int_of_dim_one : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
   intro P hP
@@ -25,6 +32,49 @@ theorem isJacobsonRing_int_of_dim_one : IsJacobsonRing ℤ := by
   · have := Ring.DimensionLEOne.maximalOfPrime h hP
     exact Ideal.jacobson_eq_self_of_isMaximal
 
+/- English proof (translation)
+Introduce `B _ _ _ _ m h hm hh`. Use `letI : Field (B ⧸ m) := Ideal.Quotient.field m`. Use `haveI : IsJacobsonRing ℤ := isJacobsonRing_int_of_dim_one`. Use `haveI : Algebra.FiniteType ℤ (B ⧸ m) := .of_surjective (Ideal.Quotient.mkₐ ℤ _) (Ideal.Quotient.mkₐ_surjective ℤ _)`. Use `haveI : Module.Finite ℤ (B ⧸ m) := finite_of_finite_type_of_isJacobsonRing ℤ (B ⧸ m)`.
+
+Use `set p := ringChar (B ⧸ m) with hpdef`. Establish `hp0 : p ≠ 0`. Introduce `h0`. Use `haveI : CharP (B ⧸ m) 0 := h0 ▸ ringChar.charP (B ⧸ m)`. Use `haveI : CharZero (B ⧸ m) := CharP.charP_to_charZero _`.
+
+Use `haveI : Algebra.IsIntegral ℤ (B ⧸ m) := Algebra.IsIntegral.of_finite ℤ _`. Conclude with `Int.not_isField (isField_of_isIntegral_of_isField (algebraMap ℤ (B ⧸ m)).injective_int (Field.toIsField _))`. Use `haveI : CharP (B ⧸ m) p := ringChar.charP (B ⧸ m)`. Use `haveI : Fact p.Prime := ⟨(CharP.char_is_prime_or_zero (B ⧸ m) p).resolve_right hp0⟩`. Use `letI : Algebra (ZMod p) (B ⧸ m) := ZMod.algebra (B ⧸ m) p`.
+
+Use `haveI : IsScalarTower ℤ (ZMod p) (B ⧸ m) := AddCommGroup.intIsScalarTower`. Use `haveI : Algebra.FiniteType (ZMod p) (B ⧸ m) := Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) (B ⧸ m)`. Use `haveI : Module.Finite (ZMod p) (B ⧸ m) := finite_of_finite_type_of_isJacobsonRing (ZMod p) (B ⧸ m)`. Use `haveI hfin : Finite (B ⧸ m) := Module.finite_of_finite (ZMod p)`. Establish `hpm : (p : B) ∈ m`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`. Establish `hpB : (p : B) ≠ 0` using `Nat.cast_ne_zero.mpr hp0`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing ℤ B`. Set `R` to `Localization.AtPrime m`.
+
+Use `haveI hRn : IsNoetherianRing R := IsLocalization.isNoetherianRing m.primeCompl R inferInstance`. Establish `hinj : Function.Injective (algebraMap B R)` using `IsLocalization.injective R (Ideal.primeCompl_le_nonZeroDivisors m)`. Establish `hx0 : algebraMap B R (h * p) ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap B R)]`. Conclude with `fun e => mul_ne_zero hh hpB (hinj e)`.
+
+Establish `hxm : algebraMap B R (h * p) ∈ IsLocalRing.maximalIdeal R` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff R m _).mpr (m.mul_mem_left h hpm)`. Take `⟨q, hq, hnq, hdim⟩` from `GlobalTheory.T.exists_prime_not_mem_ringKrullDim_quotient_eq_one R (algebraMap B R (h * p)) hx0 hxm`. Set `D` to `R ⧸ q`. Use `haveI : IsDomain D := Ideal.Quotient.isDomain q`. Use `haveI : IsLocalRing D := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective`.
+
+Set `φ : B →+* D` to `(Ideal.Quotient.mk q).comp (algebraMap B R)`. Establish `hcompR : Ideal.comap (Ideal.Quotient.mk q) (IsLocalRing.maximalIdeal D) = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)`. Establish `hcomp : Ideal.comap φ (IsLocalRing.maximalIdeal D) = m`. Rewrite using `[← Ideal.comap_comap, hcompR]`. Conclude with `Localization.AtPrime.comap_maximalIdeal`.
+
+Establish `hφh : φ h ≠ 0`. Introduce `e`. Apply `hnq` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `q.mul_mem_right _ ((Ideal.Quotient.eq_zero_iff_mem).mp e)`.
+
+Establish `hφp : φ (p : B) ≠ 0`. Introduce `e`. Apply `hnq` to reduce the goal to its premises. Rewrite using `[map_mul]`. Conclude with `q.mul_mem_left _ ((Ideal.Quotient.eq_zero_iff_mem).mp e)`.
+
+Use `haveI hD0 : CharZero D := by haveI : CharP D (ringChar D) := ringChar.charP D`. Break down `CharP.char_is_prime_or_zero D (ringChar D) with hl | hl` into its components or cases. It suffices to derive a contradiction. Establish `hlm' : ((ringChar D : ℕ) : B) ∈ Ideal.comap φ (IsLocalRing.maximalIdeal D)`. Rewrite using `[Ideal.mem_comap, map_natCast, CharP.cast_eq_zero]`.
+
+Conclude with `zero_mem _`. Establish `hlm : ((ringChar D : ℕ) : B) ∈ m` using `hcomp.le hlm'`. Rewrite `hlm` using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Establish `hdvd : p ∣ ringChar D` using `(CharP.cast_eq_zero_iff (B ⧸ m) p _).mp hlm`. Establish `hpl : p = ringChar D` using `((Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) hl).mp hdvd)`.
+
+Apply `hφp` to reduce the goal to its premises. Rewrite using `[map_natCast, hpl, CharP.cast_eq_zero]`. Use `haveI : CharP D 0 := hl ▸ ringChar.charP D`. Conclude with `CharP.charP_to_charZero D`. Establish `hsurj : Function.Surjective ((IsLocalRing.residue D).comp φ)`.
+
+Introduce `y`. Take `⟨d, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Establish `hsR` using `IsLocalization.surjective_quotientMap_of_maximal_of_localization m.primeCompl R (I := IsLocalRing.maximalIdeal R) (J := m) (H := le_of_eq Localization.AtPrime.comap_maximalIdeal.symm) (by rw [Localization.AtPrime.comap_maximalIdeal]; exact hm)`. Take `⟨bb, hb⟩` from `hsR (Ideal.Quotient.mk _ r)`.
+
+Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective bb`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`.
+
+Establish `hb' : algebraMap B R b - r ∈ Ideal.comap (Ideal.Quotient.mk q) (IsLocalRing.maximalIdeal D)` using `hcompR ▸ hb`. Simplify `hb'` using `[φ, map_sub]`. Establish `hker : ∀ b ∈ m, ((IsLocalRing.residue D).comp φ) b = 0`. Introduce `b hb`. Rewrite using `[RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, ← Ideal.mem_comap, hcomp]`.
+
+Conclude with `hb`. Use `haveI hresfin : Finite (IsLocalRing.ResidueField D) := Finite.of_surjective (Ideal.Quotient.lift m _ hker) (by`. Introduce `y`. Take `⟨b, rfl⟩` from `hsurj y`. Conclude with `⟨Ideal.Quotient.mk m b, rfl⟩)`.
+
+Take `⟨V, _, _, _, hcV, g, hg, hgl, hVfin⟩` from `GlobalTheory.exists_complete_dvr_finite_residueField D inferInstance hdim hresfin`. Use `haveI : CharZero V := ⟨fun a b e => by`. Apply `Nat.cast_injective (R := D)` to reduce the goal to its premises. Apply `hg` to reduce the goal to its premises. Rewrite using `[map_natCast, map_natCast]`.
+
+Conclude with `e⟩`. Use `⟨V, inferInstance, inferInstance, inferInstance, inferInstance, g.comp φ, hcV, hVfin, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply]`. Introduce `e`. Apply `hφh` to reduce the goal to its premises.
+
+Apply `hg` to reduce the goal to its premises. Rewrite using `[e, map_zero]`. Establish `hgm : Ideal.comap g (IsLocalRing.maximalIdeal V) = IsLocalRing.maximalIdeal D`. Use extensionality with `x`. Simplify using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff]`.
+
+Rewrite using `[← Ideal.comap_comap, hgm, hcomp]`.
+-/
 theorem exists_trait_finite_residueField_charZero_avoiding : ∀ (B : Type) [CommRing B] [IsDomain B] [CharZero B] [Algebra.FiniteType ℤ B] (m : Ideal B) (h : B), m.IsMaximal → h ≠ 0 → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (_ : CharZero V) (t : B →+* V), IsAdicComplete (IsLocalRing.maximalIdeal V) V ∧ Finite (IsLocalRing.ResidueField V) ∧ t h ≠ 0 ∧ (IsLocalRing.maximalIdeal V).comap t = m := by
   intro B _ _ _ _ m h hm hh
   classical

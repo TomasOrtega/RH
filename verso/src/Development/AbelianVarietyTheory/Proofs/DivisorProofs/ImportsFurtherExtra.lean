@@ -4,6 +4,15 @@ namespace GlobalTheory.SpectralLemmaSecond
 
 open Matrix
 
+/- English proof (translation)
+Introduce `d1 m k p _ _ _ M N`. Simplify using `only [d1]`. Establish `hB : ∀ l : k, ∑ j : p, ‖N l j‖ ≤ ∑ l' : k, ∑ j : p, ‖N l' j‖` using `fun l => Finset.single_le_sum (f := fun l' => ∑ j : p, ‖N l' j‖) (fun _ _ => Finset.sum_nonneg (fun _ _ => norm_nonneg _)) (Finset.mem_univ l)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_apply]`.
+
+Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr with l _`. Conclude with `(norm_mul _ _).le`. Use `_ = ∑ i : m, ∑ l : k, ‖M i l‖ * ∑ j : p, ‖N l j‖ := by`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ ∑ i : m, ∑ l : k, ‖M i l‖ * ∑ l' : k, ∑ j : p, ‖N l' j‖ := by gcongr with i _ l _`. Conclude with `hB l`.
+
+Use `_ = (∑ i : m, ∑ l : k, ‖M i l‖) * ∑ l' : k, ∑ j : p, ‖N l' j‖ := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+-/
 theorem main : (let d1 : {m k : Type} → [Fintype m] → [Fintype k] → Matrix m k ℂ → ℝ := @(fun {m k : Type} [Fintype m] [Fintype k] (M : Matrix m k ℂ) ↦ ∑ i : m, ∑ j : k, ‖M i j‖); ∀ {m k p : Type} [inst : Fintype m] [inst_1 : Fintype k] [inst_2 : Fintype p] (M : Matrix m k ℂ) (N : Matrix k p ℂ), d1 (M * N) ≤ d1 M * d1 N) := by
   intro d1 m k p _ _ _ M N
   simp only [d1]

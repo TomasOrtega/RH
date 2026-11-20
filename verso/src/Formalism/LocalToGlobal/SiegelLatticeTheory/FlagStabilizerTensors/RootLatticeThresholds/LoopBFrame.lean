@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF))
 
+/- English proof (translation)
+Establish `hR` using `rowLat_map (Formalism.L2.SG.Pf.WittFlags.LatIso_holds D) (W.δ u) (W.isom u) (X.Fu u) _ (rowLat_tc hI t)`. Establish `hFx` using `fixedC W hI (Formalism.L2.SG.Pf.WittFlags.LatIso_holds D) t`. Take `⟨hLift, -, hOK⟩` from `pdC W hI t`. Conclude with `⟨hR.1, ⟨hFx.1, hFx.2.1, ⟨hLift.1, rfl⟩, hOK.1⟩, hOK.2⟩`.
+-/
 theorem rowLat_fl' {u u' : D.what₂.Word} (t : D.s.Term u u') :
     IsRowLat D (fl'Of W hI t).fl (lamOf W hI t) := by
   have hR := rowLat_map (Formalism.L2.SG.Pf.WittFlags.LatIso_holds D) (W.δ u) (W.isom u) (X.Fu u) _ (rowLat_tc hI t)
@@ -22,11 +25,17 @@ theorem rowLat_fl' {u u' : D.what₂.Word} (t : D.s.Term u u') :
   obtain ⟨hLift, -, hOK⟩ := pdC W hI t
   exact ⟨hR.1, ⟨hFx.1, hFx.2.1, ⟨hLift.1, rfl⟩, hOK.1⟩, hOK.2⟩
 
+/- English proof (translation)
+Introduce `u u' t ξ hl hd`. Take `⟨n, hn, hnf⟩` from `Formalism.L2.S.Pv.ClassCounting.frameOpFull D u' (fl'Of W hI t).fl (lamOf W hI t) (rowLat_fl' W hI t) ξ hl hd`. Conclude with `⟨n, hn, fun b => hnf b⟩`.
+-/
 theorem frameChangeAt_holds : FrameChangeAt W hI := by
   intro u u' t ξ hl hd
   obtain ⟨n, hn, hnf⟩ := Formalism.L2.S.Pv.ClassCounting.frameOpFull D u' (fl'Of W hI t).fl (lamOf W hI t) (rowLat_fl' W hI t) ξ hl hd
   exact ⟨n, hn, fun b => hnf b⟩
 
+/- English proof (translation)
+Introduce `_ _ _ _ hI W` and use `frameChangeAt_holds W hI`.
+-/
 theorem frameChangeC_holds : FrameChangeC := fun _ _ _ _ hI W => frameChangeAt_holds W hI
 
 end Formalism.L2.SG.Pf.LoopBFrame

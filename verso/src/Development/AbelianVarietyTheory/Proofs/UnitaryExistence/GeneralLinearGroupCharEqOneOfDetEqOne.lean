@@ -9,6 +9,11 @@ section DetOneChar
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
   {A : Type} [CommGroup A]
 
+/- English proof (translation)
+Establish `: Finite (MaximalSpectrum R)` using `Finite.of_injective (fun m : MaximalSpectrum R => (m.asIdeal : Set R)) (fun a b hab => MaximalSpectrum.ext (SetLike.coe_injective hab))`. Use `Ideal.exists_forall_sub_mem_ideal (I := fun m : MaximalSpectrum R => m.asIdeal) ?_ f` and prove the remaining obligations. Introduce `a b hab`. Establish `ha` using `a.isMaximal`. Establish `hb` using `b.isMaximal`.
+
+Conclude with `Ideal.isCoprime_of_isMaximal (fun h => hab (MaximalSpectrum.ext h))`.
+-/
 theorem ddChar_crt [Finite R] (f : MaximalSpectrum R → R) :
     ∃ t : R, ∀ m : MaximalSpectrum R, t - f m ∈ m.asIdeal := by
   have : Finite (MaximalSpectrum R) :=
@@ -20,11 +25,27 @@ theorem ddChar_crt [Finite R] (f : MaximalSpectrum R → R) :
   have hb := b.isMaximal
   exact Ideal.isCoprime_of_isMaximal (fun h => hab (MaximalSpectrum.ext h))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨M, hM, hxM⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hx)`. Conclude with `h ⟨M, hM⟩ hxM`.
+-/
 theorem ddChar_isUnit {x : R} (h : ∀ m : MaximalSpectrum R, x ∉ m.asIdeal) : IsUnit x := by
   by_contra hx
   obtain ⟨M, hM, hxM⟩ := exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hx)
   exact h ⟨M, hM⟩ hxM
 
+/- English proof (translation)
+Establish `key : ∀ m : MaximalSpectrum R, ∃ c : R, c ∉ m.asIdeal ∧ c - 1 ∉ m.asIdeal`. Introduce `m`. Establish `h4` using `h m.asIdeal m.isMaximal`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`.
+
+Establish `hsurj : Function.Surjective (fun b : Bool => if b then (1 : R ⧸ m.asIdeal) else 0)`. Introduce `y`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Distinguish the cases in `hc : c ∈ m.asIdeal`. Conclude with `⟨false, by simp [Ideal.Quotient.eq_zero_iff_mem.2 hc]⟩`.
+
+Use `⟨true, ?_⟩` and prove the remaining obligations. Establish `h1` using `hno c hc`. Simplify using `only [if_true]`. Rewrite using `[eq_comm, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk m.asIdeal), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h1`.
+
+Use `Nat.card_le_card_of_surjective _ hsurj` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `choose f hf using key`. Take `⟨t, ht⟩` from `ddChar_crt f`.
+
+Establish `hnot : ∀ (c : R) (m : MaximalSpectrum R), c - f m ∈ m.asIdeal → f m ∉ m.asIdeal → c ∉ m.asIdeal` using `fun c m h1 h2 h3 => h2 (by simpa using m.asIdeal.sub_mem h3 h1)`. Establish `htu : IsUnit t` using `ddChar_isUnit fun m => hnot t m (ht m) (hf m).1`. Use `⟨htu.unit, ddChar_isUnit fun m hm => (hf m).2 ?_⟩` and prove the remaining obligations. Establish `: (t - 1) - (t - f m) = f m - 1` using `by ring`. Rewrite using `[← this]`.
+
+Conclude with `m.asIdeal.sub_mem (by simpa using hm) (ht m)`.
+-/
 theorem ddChar_exists_unit [Finite R]
     (h : ∀ 𝔪 : Ideal R, 𝔪.IsMaximal → 4 ≤ Nat.card (R ⧸ 𝔪)) :
     ∃ u : Rˣ, IsUnit ((u : R) - 1) := by
@@ -58,6 +79,15 @@ theorem ddChar_exists_unit [Finite R]
   rw [← this]
   exact m.asIdeal.sub_mem (by simpa using hm) (ht m)
 
+/- English proof (translation)
+Establish `key : ∀ m : MaximalSpectrum R, ∃ c : R, v + c * b ∉ m.asIdeal`. Introduce `m`. Distinguish the cases in `hb : b ∈ m.asIdeal`. Use `⟨0, fun hv => m.isMaximal.ne_top ((Ideal.eq_top_iff_one _).2 ?_)⟩` and prove the remaining obligations. Establish `: w * v + b ∈ m.asIdeal` using `m.asIdeal.add_mem (m.asIdeal.mul_mem_left _ (by simpa using hv)) hb`.
+
+Rewrite `this` using `[h]`. Then use the resulting hypothesis. Take `⟨y, i, hi, hyi⟩` from `m.isMaximal.exists_inv hb`. Use `⟨(1 - v) * y, fun hmem => m.isMaximal.ne_top ((Ideal.eq_top_iff_one _).2 ?_)⟩` and prove the remaining obligations. Establish `e : (1 : R) = (v + (1 - v) * y * b) + (1 - v) * i` using `by linear_combination (v - 1) * hyi`. Rewrite using `[e]`.
+
+Conclude with `m.asIdeal.add_mem hmem (m.asIdeal.mul_mem_left _ hi)`. Use `choose f hf using key`. Take `⟨t, ht⟩` from `ddChar_crt f`. Use `⟨t, ddChar_isUnit fun m hm => hf m ?_⟩` and prove the remaining obligations. Establish `: v + f m * b = (v + t * b) - (t - f m) * b` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `m.asIdeal.sub_mem hm (m.asIdeal.mul_mem_right _ (ht m))`.
+-/
 theorem ddChar_stable [Finite R] {v w b : R} (h : w * v + b = 1) :
     ∃ t : R, IsUnit (v + t * b) := by
   have key : ∀ m : MaximalSpectrum R, ∃ c : R, v + c * b ∉ m.asIdeal := by
@@ -81,6 +111,23 @@ theorem ddChar_stable [Finite R] {v w b : R} (h : w * v + b = 1) :
 def ddCharUnip (N : Matrix n n R) (hN : N * N = 0) : GL n R :=
   ⟨1 + N, 1 - N, by simp [add_mul, mul_sub, hN], by simp [sub_mul, mul_add, hN]⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hpq`. Use `set M : Matrix n n R := ((c⁻¹ : Rˣ) : R) • N with hM`. Establish `hM2 : M * M = 0`. Rewrite using `[hM, Matrix.smul_mul, Matrix.mul_smul, hN, smul_zero, smul_zero]`. Establish `hMM : ∀ a : R, (a • M) * (a • M) = 0` using `fun a => by`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hM2, smul_zero, smul_zero]`. Establish `hdM : (d : Matrix n n R) * M = p • M` using `by rw [hM, Matrix.mul_smul, hp, smul_comm]`. Establish `hMd : M * (d : Matrix n n R) = q • M` using `by rw [hM, Matrix.smul_mul, hq, smul_comm]`. Use `clear_value M`. Set `U : R → GL n R` to `fun a => ddCharUnip (a • M) (hMM a)`.
+
+Establish `hU_add : ∀ a b : R, U a * U b = U (a + b)`. Introduce `a b`. Apply `Units.ext` to reduce the goal to its premises. Use `show (1 + a • M) * (1 + b • M) = 1 + (a + b) • M`. Establish `h0 : (a • M) * (b • M) = 0`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hM2, smul_zero, smul_zero]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, h0, add_zero, add_smul]`. Normalize the expressions using the abelian group laws. Establish `hconj : d * U q = U p * d`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `show (d : Matrix n n R) * (1 + q • M) = (1 + p • M) * (d : Matrix n n R)`. Rewrite using `[mul_add, mul_one, add_mul, one_mul, Matrix.mul_smul, hdM, Matrix.smul_mul, hMd, smul_smul, smul_smul, mul_comm q p]`. Establish `h1 : ψ (U q) = ψ (U p)`. Use `congrArg ψ hconj` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, mul_comm (ψ (U p))]`.
+
+Conclude with `mul_left_cancel this`. Establish `h2 : U q = U p * U (q - p)` using `by rw [hU_add, add_sub_cancel]`. Establish `h3 : ψ (U (q - p)) = 1`. Use `congrArg ψ h2` as an intermediate fact. Rewrite `this` using `[map_mul, h1]`.
+
+Conclude with `mul_left_cancel (this.symm.trans (mul_one _).symm)`. Establish `h4 : U (q - p) = ddCharUnip N hN`. Apply `Units.ext` to reduce the goal to its premises. Use `show 1 + (q - p) • M = 1 + N`. Rewrite using `[hM, smul_smul, ← hc, Units.mul_inv, one_smul]`.
+
+Rewrite using `[← h4]`. Conclude with `h3`.
+-/
 theorem ddChar_unip_eq_one (ψ : GL n R →* A) (N : Matrix n n R) (hN : N * N = 0) (d : GL n R)
     (p q : R) (hp : (d : Matrix n n R) * N = p • N) (hq : N * (d : Matrix n n R) = q • N)
     (hpq : IsUnit (q - p)) : ψ (ddCharUnip N hN) = 1 := by
@@ -126,9 +173,23 @@ theorem ddChar_unip_eq_one (ψ : GL n R →* A) (N : Matrix n n R) (hN : N * N =
 def ddCharDiag : (n → Rˣ) →* GL n R :=
   (Units.map (diagonalRingHom n R).toMonoidHom).comp MulEquiv.piUnits.symm.toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ddCharDiag_val (d : n → Rˣ) :
     ((ddCharDiag d : GL n R) : Matrix n n R) = diagonal fun i => (d i : R) := rfl
 
+/- English proof (translation)
+Set `σ` to `Equiv.swap i j`. Set `P : Matrix n n R` to `σ.toPEquiv.toMatrix`. Establish `hPP : P * P = 1`. Use extensionality with `a b`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`.
+
+Simplify using `[P, σ, PEquiv.toMatrix_apply, Matrix.one_apply]`. Set `Pg : GL n R` to `⟨P, P, hPP, hPP⟩`. Establish `hconj : Pg * ddCharDiag (Pi.mulSingle i u) * Pg = ddCharDiag (Pi.mulSingle j u)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, ddCharDiag_val, ddCharDiag_val]`.
+
+Use `show P * _ * P = _`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, id, diagonal_apply, σ, Equiv.symm_swap]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using `only [if_true]`. Simplify using `[Pi.mulSingle_apply, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `: Equiv.swap i j a ≠ Equiv.swap i j b` using `fun h => hab ((Equiv.swap i j).injective h)`.
+
+Simplify using `[hab, this]`. Establish `h` using `congrArg ψ hconj`. Rewrite `h` using `[map_mul, map_mul, mul_comm (ψ Pg), mul_assoc, ← map_mul, show Pg * Pg = 1 from Units.ext hPP, map_one, mul_one]`. Conclude with `h`.
+-/
 theorem ddChar_diag_single (ψ : GL n R →* A) (i j : n) (u : Rˣ) :
     ψ (ddCharDiag (Pi.mulSingle i u)) = ψ (ddCharDiag (Pi.mulSingle j u)) := by
   let σ := Equiv.swap i j
@@ -157,6 +218,23 @@ theorem ddChar_diag_single (ψ : GL n R →* A) (i j : n) (u : Rˣ) :
     show Pg * Pg = 1 from Units.ext hPP, map_one, mul_one] at h
   exact h
 
+/- English proof (translation)
+Establish `hdiag : (g : Matrix n n R) = diagonal fun k => (g : Matrix n n R) k k`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hab, hg a b hab]`. Establish `hdet' : ∏ k, (g : Matrix n n R) k k = 1`. Establish `e : (g : Matrix n n R).det = ∏ k, (g : Matrix n n R) k k` using `by conv_lhs => rw [hdiag]`. Rewrite using `[det_diagonal]`. Rewrite using `[← e, hdet]`.
+
+Establish `hunit : ∀ k, IsUnit ((g : Matrix n n R) k k)` using `fun k => isUnit_of_dvd_one (hdet' ▸ Finset.dvd_prod_of_mem _ (Finset.mem_univ k))`. Set `dv : n → Rˣ` to `fun k => (hunit k).unit`. Establish `hgD : g = ddCharDiag dv`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ddCharDiag_val, hdiag]`.
+
+Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[dv]`. Simplify using `[hab]`.
+
+Establish `hprod : ∏ k, dv k = 1` using `Units.ext (by rw [Units.coe_prod]; simpa [dv] using hdet')`. Set `φ : (n → Rˣ) →* A` to `ψ.comp ddCharDiag`. Establish `hφ : ∀ w, φ w = ψ (ddCharDiag w)` using `fun w => rfl`. Rewrite using `[hgD, ← hφ, ← Finset.univ_prod_mulSingle dv, map_prod]`. Break down `isEmpty_or_nonempty n with hn | ⟨⟨j0⟩⟩` into its components or cases.
+
+Simplify using `[Finset.univ_eq_empty]`. Simplify using `only [hφ]`. Rewrite using `[Finset.prod_congr rfl fun k _ => ddChar_diag_single ψ k j0 (dv k)]`. Rewrite using `[show (∏ k, ψ (ddCharDiag (Pi.mulSingle j0 (dv k) : n → Rˣ))) = φ (∏ k, (Pi.mulSingle j0 (dv k) : n → Rˣ)) from (map_prod φ _ _).symm]`. Establish `e2 : ∏ k, (Pi.mulSingle j0 (dv k) : n → Rˣ) = (Pi.mulSingle j0 (∏ k, dv k) : n → Rˣ)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Finset.prod_apply]`. Distinguish the cases in `hi : i = j0`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hi]`. Rewrite using `[e2, hprod, Pi.mulSingle_one, map_one]`.
+-/
 theorem ddChar_diag (ψ : GL n R →* A) (g : GL n R)
     (hg : ∀ i j, i ≠ j → (g : Matrix n n R) i j = 0) (hdet : (g : Matrix n n R).det = 1) :
     ψ g = 1 := by
@@ -201,6 +279,11 @@ theorem ddChar_diag (ψ : GL n R →* A) (g : GL n R)
       · simp [hi]
     rw [e2, hprod, Pi.mulSingle_one, map_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h' : ∑ k, y k * x k = 0` using `h`. Simplify using `only [Matrix.mul_apply, vecMulVec_apply, Matrix.zero_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = 0 := by rw [h', mul_zero]`.
+-/
 theorem ddChar_vecMulVec_sq {x y : n → R} (h : y ⬝ᵥ x = 0) :
     vecMulVec x y * vecMulVec x y = 0 := by
   ext i j
@@ -211,11 +294,21 @@ theorem ddChar_vecMulVec_sq {x y : n → R} (h : y ⬝ᵥ x = 0) :
         exact Finset.sum_congr rfl fun k _ => by ring
     _ = 0 := by rw [h', mul_zero]
 
+/- English proof (translation)
+Use `show (1 + vecMulVec x y).det = 1`. Rewrite using `[vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, h, add_zero]`.
+-/
 theorem ddChar_det_unip {x y : n → R} (h : y ⬝ᵥ x = 0) :
     ((ddCharUnip _ (ddChar_vecMulVec_sq h) : GL n R) : Matrix n n R).det = 1 := by
   show (1 + vecMulVec x y).det = 1
   rw [vecMulVec_eq Unit, det_one_add_replicateCol_mul_replicateRow, h, add_zero]
 
+/- English proof (translation)
+Use `ddChar_unip_eq_one ψ _ _ (ddCharDiag (Pi.mulSingle a u)) (u : R) 1 ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[ddCharDiag_val, Matrix.diagonal_mul, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul]`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hi]`. Use extensionality with `i j`. Rewrite using `[ddCharDiag_val, Matrix.mul_diagonal, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul, one_mul]`. Distinguish the cases in `hj : j = a`.
+
+Substitute `hj` using the available equality. Simplify using `[hy]`. Simplify using `[hj]`. Rewrite using `[← neg_sub]`. Conclude with `hu.neg`.
+-/
 theorem ddChar_row (ψ : GL n R →* A) (u : Rˣ) (hu : IsUnit ((u : R) - 1)) (a : n) (y : n → R)
     (hy : y a = 0) (h : y ⬝ᵥ Pi.single a 1 = 0) :
     ψ (ddCharUnip _ (ddChar_vecMulVec_sq h)) = 1 := by
@@ -235,6 +328,13 @@ theorem ddChar_row (ψ : GL n R →* A) (u : Rˣ) (hu : IsUnit ((u : R) - 1)) (a
   · rw [← neg_sub]
     exact hu.neg
 
+/- English proof (translation)
+Use `ddChar_unip_eq_one ψ _ _ (ddCharDiag (Pi.mulSingle a u)) 1 (u : R) ?_ ?_ hu` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[ddCharDiag_val, Matrix.diagonal_mul, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul, one_mul]`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality.
+
+Simplify using `[hx]`. Simplify using `[hi]`. Use extensionality with `i j`. Rewrite using `[ddCharDiag_val, Matrix.mul_diagonal, Matrix.smul_apply, vecMulVec_apply, smul_eq_mul]`. Distinguish the cases in `hj : j = a`.
+
+Substitute `hj` using the available equality. Simplify using `[mul_comm]`. Simplify using `[hj]`.
+-/
 theorem ddChar_col (ψ : GL n R →* A) (u : Rˣ) (hu : IsUnit ((u : R) - 1)) (a : n) (x : n → R)
     (hx : x a = 0) (h : Pi.single a 1 ⬝ᵥ x = 0) :
     ψ (ddCharUnip _ (ddChar_vecMulVec_sq h)) = 1 := by
@@ -252,6 +352,9 @@ theorem ddChar_col (ψ : GL n R →* A) (u : Rˣ) (hu : IsUnit ((u : R) - 1)) (a
       simp [mul_comm]
     · simp [hj]
 
+/- English proof (translation)
+Use `show ((1 + vecMulVec x y) * (g : Matrix n n R)) i j = _`. Rewrite using `[add_mul, one_mul, Matrix.add_apply, Matrix.mul_apply, Finset.mul_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [vecMulVec_apply]; ring`.
+-/
 theorem ddChar_unip_mul_apply {x y : n → R} (h : y ⬝ᵥ x = 0) (g : GL n R) (i j : n) :
     ((ddCharUnip _ (ddChar_vecMulVec_sq h) * g : GL n R) : Matrix n n R) i j
       = (g : Matrix n n R) i j + x i * ∑ k, y k * (g : Matrix n n R) k j := by
@@ -260,6 +363,9 @@ theorem ddChar_unip_mul_apply {x y : n → R} (h : y ⬝ᵥ x = 0) (g : GL n R) 
   congr 1
   exact Finset.sum_congr rfl fun k _ => by rw [vecMulVec_apply]; ring
 
+/- English proof (translation)
+Use `show ((g : Matrix n n R) * (1 + vecMulVec x y)) i j = _`. Rewrite using `[mul_add, mul_one, Matrix.add_apply, Matrix.mul_apply, Finset.sum_mul]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [vecMulVec_apply]; ring`.
+-/
 theorem ddChar_mul_unip_apply {x y : n → R} (h : y ⬝ᵥ x = 0) (g : GL n R) (i j : n) :
     ((g * ddCharUnip _ (ddChar_vecMulVec_sq h) : GL n R) : Matrix n n R) i j
       = (g : Matrix n n R) i j + (∑ k, (g : Matrix n n R) i k * x k) * y j := by
@@ -268,6 +374,55 @@ theorem ddChar_mul_unip_apply {x y : n → R} (h : y ⬝ᵥ x = 0) (g : GL n R) 
   congr 1
   exact Finset.sum_congr rfl fun k _ => by rw [vecMulVec_apply]; ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg hdet`. Conclude with `ddChar_diag ψ g (fun i j hij => hg i j hij (Or.inl (Finset.notMem_empty i))) hdet`. Consider the case `insert a s ha ih`.
+
+Introduce `g hg hdet`. Establish `hinv : ∑ k, ((g⁻¹ : GL n R) : Matrix n n R) a k * (g : Matrix n n R) k a = 1`. Use `congrArg (fun M : GL n R => (M : Matrix n n R) a a) (inv_mul_cancel g)` as an intermediate fact. Simplify using `only [Units.val_mul, Units.val_one, Matrix.mul_apply, Matrix.one_apply_eq] at this`. Conclude with `this`.
+
+Establish `hz : ∀ k ∈ (Finset.univ : Finset n), k ∉ insert a s → ((g⁻¹ : GL n R) : Matrix n n R) a k * (g : Matrix n n R) k a = 0`. Introduce `k _ hk`. Establish `hka : k ≠ a` using `fun e => hk (e ▸ Finset.mem_insert_self a s)`. Rewrite using `[hg k a hka (Or.inl hk), mul_zero]`. Establish `hwvb : ((g⁻¹ : GL n R) : Matrix n n R) a a * (g : Matrix n n R) a a + ∑ k ∈ s, ((g⁻¹ : GL n R) : Matrix n n R) a k * (g : Matrix n n R) k a = 1`.
+
+Rewrite using `[← Finset.sum_insert ha (f := fun k => ((g⁻¹ : GL n R) : Matrix n n R) a k * (g : Matrix n n R) k a), Finset.sum_subset (Finset.subset_univ _) hz]`. Conclude with `hinv`. Take `⟨t, ht⟩` from `ddChar_stable hwvb`. Set `y1 : n → R` to `fun k => if k ∈ s then t * ((g⁻¹ : GL n R) : Matrix n n R) a k else 0`. Establish `hy1a : y1 a = 0` using `by simp [y1, ha]`.
+
+Establish `h1 : y1 ⬝ᵥ Pi.single a 1 = 0` using `by rw [dotProduct_single, hy1a, zero_mul]`. Set `g1 : GL n R` to `ddCharUnip _ (ddChar_vecMulVec_sq h1) * g`. Establish `e1 : ∀ i j, (g1 : Matrix n n R) i j = (g : Matrix n n R) i j + (Pi.single a (1 : R) : n → R) i * ∑ k, y1 k * (g : Matrix n n R) k j` using `fun i j => ddChar_unip_mul_apply h1 g i j`. Establish `hsum1 : ∀ j, ∑ k, y1 k * (g : Matrix n n R) k j = ∑ k ∈ s, t * ((g⁻¹ : GL n R) : Matrix n n R) a k * (g : Matrix n n R) k j`. Introduce `j`.
+
+Simplify using `only [y1, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`. Establish `hg1aa : IsUnit ((g1 : Matrix n n R) a a)`. Rewrite using `[e1, hsum1, Pi.single_eq_same, one_mul]`. Use `ht using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hs1 : ∀ i j, i ≠ j → (i ∉ insert a s ∨ j ∉ insert a s) → (g1 : Matrix n n R) i j = 0`. Introduce `i j hij hout`. Rewrite using `[e1]`.
+
+Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Establish `hj : j ∉ insert i s`. Break down `hout with h | h` into its components or cases. Conclude with `absurd (Finset.mem_insert_self i s) h`.
+
+Conclude with `h`. Rewrite using `[hg i j hij (Or.inr hj), zero_add, hsum1]`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun k hk => ?_)` and prove the remaining obligations. Establish `hkj : k ≠ j` using `fun e => hj (e ▸ Finset.mem_insert_of_mem hk)`. Rewrite using `[hg k j hkj (Or.inr hj), mul_zero]`.
+
+Rewrite using `[Pi.single_eq_of_ne hia, zero_mul, add_zero]`. Conclude with `hg i j hij hout`. Establish `hdet1 : (g1 : Matrix n n R).det = 1`. Rewrite using `[Units.val_mul, det_mul, ddChar_det_unip h1, hdet, one_mul]`. Establish `hψ1 : ψ g1 = ψ g` using `by rw [map_mul, ddChar_row ψ u hu a y1 hy1a h1, one_mul]`.
+
+Set `C : R` to `(g1 : Matrix n n R) a a`. Set `ci : R` to `((hg1aa.unit⁻¹ : Rˣ) : R)`. Establish `hCci : C * ci = 1` using `hg1aa.mul_val_inv`. Establish `hciC : ci * C = 1` using `by rw [mul_comm]; exact hCci`. Set `x2 : n → R` to `fun i => if i = a then 0 else -((g1 : Matrix n n R) i a * ci)`.
+
+Establish `hx2a : x2 a = 0` using `by simp [x2]`. Establish `h2 : Pi.single a 1 ⬝ᵥ x2 = 0` using `by rw [single_dotProduct, hx2a, mul_zero]`. Set `g2 : GL n R` to `ddCharUnip _ (ddChar_vecMulVec_sq h2) * g1`. Establish `e2 : ∀ i j, (g2 : Matrix n n R) i j = (g1 : Matrix n n R) i j + x2 i * (g1 : Matrix n n R) a j`. Introduce `i j`.
+
+Rewrite using `[ddChar_unip_mul_apply h2 g1 i j]`. Use `congr 2`. Simplify using `[Pi.single_apply, ite_mul]`. Establish `hg2a : ∀ i, i ≠ a → (g2 : Matrix n n R) i a = 0`. Introduce `i hia`.
+
+Rewrite using `[e2]`. Simplify using `only [x2, if_neg hia]`. Express the relevant statement in the definitionally equal form `(g1 : Matrix n n R) i a + -((g1 : Matrix n n R) i a * ci) * C = 0`. Rewrite using `[neg_mul, mul_assoc, hciC, mul_one, add_neg_cancel]`. Establish `hg2aj : ∀ j, (g2 : Matrix n n R) a j = (g1 : Matrix n n R) a j`.
+
+Introduce `j`. Rewrite using `[e2, hx2a, zero_mul, add_zero]`. Establish `hs2 : ∀ i j, i ≠ j → (i ∉ insert a s ∨ j ∉ insert a s) → (g2 : Matrix n n R) i j = 0`. Introduce `i j hij hout`. Distinguish the cases in `hia : i = a`.
+
+Substitute `hia` using the available equality. Rewrite using `[hg2aj]`. Conclude with `hs1 i j hij hout`. Rewrite using `[e2, hs1 i j hij hout, zero_add]`. Simplify using `only [x2, if_neg hia]`.
+
+Break down `hout with h | h` into its components or cases. Rewrite using `[hs1 i a hia (Or.inl h), zero_mul, neg_zero, zero_mul]`. Establish `haj : a ≠ j` using `fun e => h (e ▸ Finset.mem_insert_self a s)`. Rewrite using `[hs1 a j haj (Or.inr h), mul_zero]`. Establish `hdet2 : (g2 : Matrix n n R).det = 1`.
+
+Rewrite using `[Units.val_mul, det_mul, ddChar_det_unip h2, hdet1, one_mul]`. Establish `hψ2 : ψ g2 = ψ g1` using `by rw [map_mul, ddChar_col ψ u hu a x2 hx2a h2, one_mul]`. Set `y3 : n → R` to `fun j => if j = a then 0 else -(ci * (g2 : Matrix n n R) a j)`. Establish `hy3a : y3 a = 0` using `by simp [y3]`. Establish `h3 : y3 ⬝ᵥ Pi.single a 1 = 0` using `by rw [dotProduct_single, hy3a, zero_mul]`.
+
+Set `g3 : GL n R` to `g2 * ddCharUnip _ (ddChar_vecMulVec_sq h3)`. Establish `e3 : ∀ i j, (g3 : Matrix n n R) i j = (g2 : Matrix n n R) i j + (g2 : Matrix n n R) i a * y3 j`. Introduce `i j`. Rewrite using `[ddChar_mul_unip_apply h3 g2 i j]`. Use `congr 2`.
+
+Simplify using `[Pi.single_apply]`. Establish `hg2aa : (g2 : Matrix n n R) a a = C` using `by rw [hg2aj]`. Establish `hs3 : ∀ i j, i ≠ j → (i ∉ s ∨ j ∉ s) → (g3 : Matrix n n R) i j = 0`. Introduce `i j hij hout`. Rewrite using `[e3]`.
+
+Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Establish `hja : j ≠ i` using `fun e => hij e.symm`. Simplify using `only [y3, if_neg hja]`. Rewrite using `[hg2aa, mul_neg, ← mul_assoc, hCci, one_mul, add_neg_cancel]`.
+
+Rewrite using `[hg2a i hia, zero_mul, add_zero]`. Distinguish the cases in `hja : j = a`. Substitute `hja` using the available equality. Conclude with `hg2a i hia`. Establish `hout' : i ∉ insert a s ∨ j ∉ insert a s`.
+
+Break down `hout with h | h` into its components or cases. Conclude with `Or.inl (by simp [hia, h])`. Conclude with `Or.inr (by simp [hja, h])`. Conclude with `hs2 i j hij hout'`. Establish `hdet3 : (g3 : Matrix n n R).det = 1`.
+
+Rewrite using `[Units.val_mul, det_mul, ddChar_det_unip h3, hdet2, mul_one]`. Establish `hψ3 : ψ g3 = ψ g2` using `by rw [map_mul, ddChar_row ψ u hu a y3 hy3a h3, mul_one]`. Rewrite using `[← hψ1, ← hψ2, ← hψ3]`. Conclude with `ih g3 hs3 hdet3`.
+-/
 theorem ddChar_induction [Finite R] (ψ : GL n R →* A) (u : Rˣ) (hu : IsUnit ((u : R) - 1))
     (s : Finset n) : ∀ g : GL n R,
       (∀ i j, i ≠ j → (i ∉ s ∨ j ∉ s) → (g : Matrix n n R) i j = 0) →
@@ -400,6 +555,9 @@ theorem ddChar_induction [Finite R] (ψ : GL n R →* A) (u : Rˣ) (hu : IsUnit 
 
 end DetOneChar
 
+/- English proof (translation)
+Introduce `R _ _ r A _ ψ h4 g hdet`. Take `⟨u, hu⟩` from `ddChar_exists_unit h4`. Conclude with `ddChar_induction ψ u hu Finset.univ g (fun i j _ hout => by simp at hout) hdet`.
+-/
 theorem generalLinearGroup_char_eq_one_of_det_eq_one :
     ∀ (R : Type) [CommRing R] [Finite R] (r : ℕ) (A : Type) [CommGroup A]
       (ψ : GL (Fin r) R →* A), (∀ 𝔪 : Ideal R, 𝔪.IsMaximal → 4 ≤ Nat.card (R ⧸ 𝔪)) →

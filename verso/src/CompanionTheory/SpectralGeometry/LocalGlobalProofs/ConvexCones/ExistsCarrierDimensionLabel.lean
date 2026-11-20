@@ -12,6 +12,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.CarrierDimension
 
+/- English proof (translation)
+Establish `hmem : toReal β ∈ psdCone bar X`. Use `ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![β] ![1] (fun i => by fin_cases i; exact hβ) (fun i y => by fin_cases i; exact hp y) (fun i => by fin_cases i; norm_num)` as an intermediate fact. Simplify using `using this`. Take `⟨S, -, hS⟩` from `hfan.finite`. Take `⟨e, m, γ, c, hγ, -, hc, he⟩` from `hS _ hmem`.
+
+Use `⟨m, fun i => pull e.symm.toLinearMap (γ i), isCell_pull_equiv hγ e.symm, c, hc, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun₂ he (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`.
+-/
 theorem exists_cell {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] {bar : O → O}
     {ψ : InvFun O} {X : Type}
     [AddCommGroup X] [Module O X] [Module.Finite O X] (hfan : IsPolyFanOn bar ψ X)
@@ -27,6 +32,17 @@ theorem exists_cell {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [M
   have := LinearMap.congr_fun₂ he (e.symm a) (e.symm b)
   simpa [LinearMap.sum_apply] using this
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 hb q ψ hD hψ htw`. Use `⟨carFun bar ψ, GlobalTheory.T.carrier_function_twisted_galois O bar w0 hb ψ htw, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX β hβ hp`. Establish `hfan` using `hψ X hX`. Establish `hface` using `GlobalTheory.T.cell_face_of_face_cut O bar hb ψ X hfan (hD X)`.
+
+Rewrite using `[evalZ_carFun hβ hp]`. Use `congr 1`. Take `⟨m₀, γ₀, hγ₀, hin₀⟩` from `exists_cell hfan hβ hp`. Establish `hne : {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ β ∧ genRank γ = k}.Nonempty` using `⟨_, m₀, γ₀, hγ₀, hin₀, rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Take `⟨m, γ, h1, h2, h3⟩` from `Nat.sInf_mem hne`. Take `⟨m', δ, k1, k2, k3⟩` from `GlobalTheory.T.cell_of_quotient_radical_cone O bar hb ψ X hface β hβ hp m γ h1 h2`. Conclude with `(Nat.sInf_le (show genRank δ ∈ cdimSet bar ψ X (orad β) β from ⟨m', δ, k1, k2, rfl⟩)).trans (k3.trans h3.le)`. Establish `hne' : (cdimSet bar ψ X (orad β) β).Nonempty`. Take `⟨m', δ, k1, k2, -⟩` from `GlobalTheory.T.cell_of_quotient_radical_cone O bar hb ψ X hface β hβ hp m₀ γ₀ hγ₀ hin₀`.
+
+Conclude with `⟨_, m', δ, k1, k2, rfl⟩`. Take `⟨m', δ, h1, h2, h3⟩` from `Nat.sInf_mem hne'`. Take `⟨m, γ, k1, k2, k3⟩` from `GlobalTheory.T.cell_of_quotient_cell O bar hb ψ X hfan hface β hβ hp m' δ h1 h2`. Unfold `cdimQ`. Rewrite using `[← h3]`.
+
+Conclude with `(Nat.sInf_le (show genRank γ ∈ {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ β ∧ genRank γ = k} from ⟨m, γ, k1, k2, rfl⟩)).trans k3`.
+-/
 theorem exists_isCarrierDim : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (q : ℕ) (ψ : InvFun O), (∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Dominates bar X) → IsPolyFan bar q ψ → IsTwG w0 ψ → ∃ lab : InvFun O, IsTwG w0 lab ∧ IsCarrierDim bar q ψ lab := by
   intro O _ _ _ _ bar w0 hb q ψ hD hψ htw
   refine ⟨carFun bar ψ, GlobalTheory.T.carrier_function_twisted_galois O bar w0 hb ψ htw, ?_⟩

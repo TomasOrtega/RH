@@ -20,6 +20,9 @@ open Polynomial in
 abbrev CycRing (n : ℕ) : Type := AdjoinRoot (cyclotomic n ℤ)
 
 open Polynomial in
+/- English proof (translation)
+Establish `h` using `(AdjoinRoot.mk_eq_zero (f := cyclotomic n ℤ)).mpr (cyclotomic.dvd_X_pow_sub_one n ℤ)`. Rewrite `h` using `[map_sub, map_pow, AdjoinRoot.mk_X, map_one]`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem root_pow (n : ℕ) : AdjoinRoot.root (cyclotomic n ℤ) ^ n = 1 := by
   have h := (AdjoinRoot.mk_eq_zero (f := cyclotomic n ℤ)).mpr (cyclotomic.dvd_X_pow_sub_one n ℤ)
   rw [map_sub, map_pow, AdjoinRoot.mk_X, map_one] at h
@@ -31,13 +34,24 @@ def cycUnit {n : ℕ} (hn : 0 < n) : (CycRing n)ˣ :=
   Units.ofPowEqOne (AdjoinRoot.root (cyclotomic n ℤ)) n (root_pow n) hn.ne'
 
 open Polynomial in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cycUnit_val {n : ℕ} (hn : 0 < n) : (cycUnit hn : CycRing n) = AdjoinRoot.root (cyclotomic n ℤ) := rfl
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, cycUnit_val, root_pow, Units.val_one]`.
+-/
 theorem cycUnit_pow {n : ℕ} (hn : 0 < n) : cycUnit hn ^ n = 1 := by
   ext
   rw [Units.val_pow_eq_pow_val, cycUnit_val, root_pow, Units.val_one]
 
 open Polynomial in
+/- English proof (translation)
+Establish `: NeZero (n : K)` using `⟨hK⟩`. Establish `hr : (cyclotomic n K).IsRoot (β (AdjoinRoot.root (cyclotomic n ℤ)))`. Establish `h` using `congrArg β (AdjoinRoot.eval₂_root (cyclotomic n ℤ))`. Rewrite `h` using `[Polynomial.hom_eval₂, map_zero, RingHom.ext_int (β.comp (AdjoinRoot.of _)) (Int.castRingHom K), ← Polynomial.eval_map, Polynomial.map_cyclotomic_int]`. Conclude with `h`.
+
+Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Establish `hv : ((Units.map β.toMonoidHom (cycUnit hn) : Kˣ) : K) = β (AdjoinRoot.root (cyclotomic n ℤ))`. Simplify using `[cycUnit_val]`. Rewrite using `[hv]`. Conclude with `(Polynomial.isRoot_cyclotomic_iff).mp hr`.
+-/
 theorem isPrimitiveRoot_map {n : ℕ} (hn : 0 < n) {K : Type} [Field K] (hK : (n : K) ≠ 0) (β : CycRing n →+* K) :
     IsPrimitiveRoot (Units.map β.toMonoidHom (cycUnit hn)) n := by
   have : NeZero (n : K) := ⟨hK⟩
@@ -53,6 +67,9 @@ theorem isPrimitiveRoot_map {n : ℕ} (hn : 0 < n) {K : Type} [Field K] (hK : (n
   exact (Polynomial.isRoot_cyclotomic_iff).mp hr
 
 open Polynomial in
+/- English proof (translation)
+Establish `h : (cyclotomic n ℤ).eval₂ (Int.castRingHom K) (ζ : K) = 0`. Rewrite using `[Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic_int]`. Conclude with `(IsPrimitiveRoot.coe_units_iff.mpr hζ).isRoot_cyclotomic hn`. Use `⟨AdjoinRoot.lift (Int.castRingHom K) (ζ : K) h, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[cycUnit_val]`.
+-/
 theorem exists_map_eq {n : ℕ} (hn : 0 < n) {K : Type} [Field K] {ζ : Kˣ} (hζ : IsPrimitiveRoot ζ n) :
     ∃ β : CycRing n →+* K, Units.map β.toMonoidHom (cycUnit hn) = ζ := by
   have h : (cyclotomic n ℤ).eval₂ (Int.castRingHom K) (ζ : K) = 0 := by
@@ -62,22 +79,36 @@ theorem exists_map_eq {n : ℕ} (hn : 0 < n) {K : Type} [Field K] {ζ : Kˣ} (h�
   simp [cycUnit_val]
 
 open Polynomial in
+/- English proof (translation)
+Establish `hf : Module.Finite ℤ (CycRing n)` using `(AdjoinRoot.powerBasis' (cyclotomic.monic n ℤ)).finite`. Simplify using `only [spMap]`. Rewrite using `[IsFinite.SpecMap_iff, CommRingCat.hom_ofHom]`. Conclude with `RingHom.finite_algebraMap.mpr hf`.
+-/
 theorem isFinite_cyc (n : ℕ) : IsFinite (spMap (algebraMap ℤ (CycRing n))) := by
   have hf : Module.Finite ℤ (CycRing n) := (AdjoinRoot.powerBasis' (cyclotomic.monic n ℤ)).finite
   dsimp only [spMap]
   rw [IsFinite.SpecMap_iff, CommRingCat.hom_ofHom]
   exact RingHom.finite_algebraMap.mpr hf
 
+/- English proof (translation)
+Establish `h'` using `h.map f.appTop.hom`. Rewrite `h'` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_natCast_of_hom {X Y : Scheme.{0}} (f : X ⟶ Y) {n : ℕ} (h : IsUnit (n : Γ(Y, ⊤))) :
     IsUnit (n : Γ(X, ⊤)) := by
   have h' := h.map f.appTop.hom
   rwa [map_natCast] at h'
 
+/- English proof (translation)
+Establish `h'` using `h.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom`. Rewrite `h'` using `[map_natCast]`. Conclude with `h'.ne_zero`.
+-/
 theorem natCast_ne_zero_of_isUnit {K : Type} [Field K] {n : ℕ} (h : IsUnit (n : Γ(Sp K, ⊤))) : (n : K) ≠ 0 := by
   have h' := h.map (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom
   rw [map_natCast] at h'
   exact h'.ne_zero
 
+/- English proof (translation)
+Establish `h : IsUnit (n : Γ(S, S.basicOpen (n : Γ(S, ⊤))))`. Establish `h0` using `S.toRingedSpace.isUnit_res_basicOpen (n : Γ(S, ⊤))`. Rewrite `h0` using `[map_natCast]`. Then use the resulting hypothesis. Establish `e : (n : Γ(S.basicOpen (n : Γ(S, ⊤)), ⊤)) = (S.basicOpen (n : Γ(S, ⊤))).topIso.inv.hom (n : Γ(S, S.basicOpen (n : Γ(S, ⊤))))` using `(map_natCast _ n).symm`. Rewrite using `[e]`.
+
+Conclude with `h.map _`.
+-/
 theorem isUnit_natCast_basicOpen (S : Scheme.{0}) (n : ℕ) :
     IsUnit (n : Γ(S.basicOpen (n : Γ(S, ⊤)), ⊤)) := by
   have h : IsUnit (n : Γ(S, S.basicOpen (n : Γ(S, ⊤)))) := by
@@ -89,6 +120,13 @@ theorem isUnit_natCast_basicOpen (S : Scheme.{0}) (n : ℕ) :
   rw [e]
   exact h.map _
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hK' : IsUnit (n : Γ(Sp K, ⊤))`. Establish `h1` using `(Ne.isUnit hK).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `hu : IsUnit (x.app ⊤ (n : Γ(S, ⊤)))`. Rewrite using `[map_natCast]`. Establish `h1` using `hK'.map ((Sp K).presheaf.map (homOfLE (le_top : x ⁻¹ᵁ ⊤ ≤ ⊤)).op).hom`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h` using `Scheme.preimage_basicOpen x (n : Γ(S, ⊤))`.
+
+Rewrite `h` using `[(Sp K).basicOpen_of_isUnit hu]`. Use `show y ∈ x ⁻¹ᵁ S.basicOpen (n : Γ(S, ⊤))`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem range_subset_basicOpen {S : Scheme.{0}} {K : Type} [Field K] (x : Sp K ⟶ S) {n : ℕ} (hK : (n : K) ≠ 0) :
     Set.range x ⊆ Set.range (S.basicOpen (n : Γ(S, ⊤))).ι := by
   rintro _ ⟨y, rfl⟩
@@ -106,12 +144,24 @@ theorem range_subset_basicOpen {S : Scheme.{0}} {K : Type} [Field K] (x : Sp K �
   rw [h]
   trivial
 
+/- English proof (translation)
+Introduce `a b h`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (fun u : Γ(Sp k, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom (u : Γ(Sp k, ⊤))) h`. Simplify `h1` using `[unitOn]`.
+-/
 theorem unitOn_inj {k : Type} [CommRing k] : Function.Injective (unitOn (R := k)) := by
   intro a b h
   apply Units.ext
   have h1 := congrArg (fun u : Γ(Sp k, ⊤)ˣ => (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom (u : Γ(Sp k, ⊤))) h
   simpa [unitOn] using h1
 
+/- English proof (translation)
+Set `pt : Sp K` to `IsLocalRing.closedPoint K`. Choose the witnesses or unpack the hypotheses as in `⟨c, hcC, hc⟩ : ∃ c ∈ C, q c = x pt := by`. Establish `h1 : (x ≫ f) pt ∈ closure ((q ≫ f) '' C)` using `hx ⟨pt, rfl⟩`. Establish `e : (q ≫ f) '' C = f '' (q '' C)`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules. Rewrite `h1` using `[e]`. Establish `h2 : x pt ∈ closure (q '' C)`. Rewrite using `[f.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image]`. Simplify `h1` using `[Scheme.Hom.comp_apply]`.
+
+Rewrite `h2` using `[(q.isClosedMap C hC).closure_eq]`. Conclude with `h2`. Take `⟨z, hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback c pt hc`. Use `QuasiCompact.compactSpace_of_compactSpace (pullback.snd q x)` as an intermediate fact. Establish `hS : IsClosed ((pullback.fst q x) ⁻¹' C)` using `hC.preimage (pullback.fst q x).continuous`.
+
+Take `⟨z', hz'C, hz'⟩` from `hS.exists_closed_singleton ⟨z, by simpa [Set.mem_preimage, hz1] using hcC⟩`. Use `⟨pointOfClosedPoint (pullback.snd q x) z' hz' ≫ pullback.fst q x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`. Introduce and unpack `_ ⟨a, rfl⟩`. Simplify `hz'C` using `[Scheme.Hom.comp_apply]`.
+-/
 private theorem exists_lift_of_range_subset_closure_image_finite {W U S : Scheme.{0}} (q : W ⟶ U) [IsFinite q] (f : U ⟶ S) [IsOpenImmersion f]
     {C : Set W} (hC : IsClosed C) {K : Type} [Field K] [IsAlgClosed K] (x : Sp K ⟶ U)
     (hx : Set.range (x ≫ f) ⊆ closure ((q ≫ f) '' C)) : ∃ w : Sp K ⟶ W, w ≫ q = x ∧ Set.range w ⊆ C := by
@@ -136,11 +186,37 @@ private theorem exists_lift_of_range_subset_closure_image_finite {W U S : Scheme
   · rintro _ ⟨a, rfl⟩
     simpa [Scheme.Hom.comp_apply] using hz'C
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, IsOpenImmersion.lift_fac _ x (range_subset_basicOpen x hK)⟩`.
+-/
 private theorem lift_lemma' {S : Scheme.{0}} {K : Type} [Field K] (x : Sp K ⟶ S) {n : ℕ} (hK : (n : K) ≠ 0) :
     ∃ xU : Sp K ⟶ (S.basicOpen (n : Γ(S, ⊤)) : Scheme.{0}), xU ≫ (S.basicOpen (n : Γ(S, ⊤))).ι = x :=
   ⟨_, IsOpenImmersion.lift_fac _ x (range_subset_basicOpen x hK)⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `S G _ _ n La _ _ _ hG hn`. Establish `hU : IsUnit (n : Γ(S.basicOpen (n : Γ(S, ⊤)), ⊤))` using `isUnit_natCast_basicOpen S n`. Establish `hGU : IsAbelianScheme ((Over.pullback (S.basicOpen (n : Γ(S, ⊤))).ι).obj G)` using `Out.TLinPf.isAb_pullback _ G hG`. Establish `hP` using `isGrpPullback_pullback G (S.basicOpen (n : Γ(S, ⊤))).ι`. Take `⟨Z₀, et₀, hfin, -, hadd₀, hpow₀, huniv₀⟩` from `GlobalTheory.exists_finiteEtale_latticeTorsionHom _ ((Over.pullback (S.basicOpen (n : Γ(S, ⊤))).ι).obj G) n La hGU hU`.
+
+Establish `hcyc` using `isFinite_cyc n`. Establish `hp1 : IsFinite (pullback.fst (specZIsTerminal.from Z₀.left) (spMap (algebraMap ℤ (CycRing n))))` using `by infer_instance`. Set `ZU : Over (S.basicOpen (n : Γ(S, ⊤)) : Scheme.{0})` to `Over.mk (pullback.fst (specZIsTerminal.from Z₀.left) (spMap (algebraMap ℤ (CycRing n))) ≫ Z₀.hom)`. Set `r : ZU ⟶ Z₀` to `Over.homMk (pullback.fst _ _)`. Establish `hWu : IsUnit (n : Γ(ZU.left, ⊤))` using `isUnit_natCast_of_hom ZU.hom hU`.
+
+Use `⟨Over.mk (ZU.hom ≫ (S.basicOpen (n : Γ(S, ⊤))).ι), fun a => GlobalTheory.ObjPull.pushEquiv hP ZU (r ≫ et₀ a), Units.map (GlobalTheory.LevCover.fnOn (pullback.snd (specZIsTerminal.from Z₀.left) (spMap (algebraMap ℤ (CycRing n))))).toMonoidHom (cycUnit hn), hWu, ?_, ?_, ?_, ?_, ?_, …` and prove the remaining obligations. Introduce `a a' dsimp only`. Rewrite using `[hadd₀, comp_mul, map_mul]`. Introduce `a dsimp only`. Rewrite using `[← map_pow, ← comp_pow, hpow₀]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← map_pow, cycUnit_pow, map_one]`. Introduce `K _ h ζ hζ`. Take `⟨β, hβ⟩` from `GlobalTheory.LevCover.exists_spMap (h ≫ pullback.snd _ _)`. Rewrite `hζ` using `[GlobalTheory.LevCover.map_fnOn _ h β hβ]`.
+
+Rewrite using `[← unitOn_inj hζ]`. Conclude with `isPrimitiveRoot_map hn (natCast_ne_zero_of_isUnit (isUnit_natCast_of_hom h hWu)) β`. Introduce `K _ x et' ζ hK hadd hpow hζ`. Take `⟨xU, hxU⟩` from `lift_lemma' (S := S) (K := K) (n := n) x hK`. Set `e : Over.mk ((Over.mk xU).hom ≫ (S.basicOpen (n : Γ(S, ⊤))).ι) ⟶ Over.mk x` to `Over.homMk (𝟙 _) (by simpa using hxU.symm)`.
+
+Take `⟨h₀, hh₀, -⟩` from `huniv₀ (Over.mk xU) (fun a => (GlobalTheory.ObjPull.pushEquiv hP _).symm (e ≫ et' a)) (fun a a' => by rw [hadd, comp_mul, map_mul]) (fun a => by rw [← map_pow, ← comp_pow, hpow]; simp)`. Take `⟨β, hβ⟩` from `exists_map_eq hn hζ`. Set `hW : Sp K ⟶ ZU.left` to `pullback.lift h₀.left (spMap β) (specZIsTerminal.hom_ext _ _)`. Establish `hW1 : hW ≫ pullback.fst _ _ = h₀.left` using `pullback.lift_fst _ _ _`. Establish `hW2 : hW ≫ pullback.snd _ _ = spMap β` using `pullback.lift_snd _ _ _`.
+
+Use `⟨Over.homMk hW ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show hW ≫ (pullback.fst _ _ ≫ Z₀.hom) ≫ _ = x`. Rewrite using `[← Category.assoc, ← Category.assoc, hW1, Over.w h₀]`. Conclude with `hxU`. Introduce `a`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1` using `GlobalTheory.ObjPull.pushEquiv_symm_left hP _ (e ≫ et' a)`. Rewrite `h1` using `[← hh₀ a]`. Establish `h2 : (e ≫ et' a).left = (et' a).left` using `by simp [e]`. Use `show hW ≫ (GlobalTheory.ObjPull.pushEquiv hP ZU (r ≫ et₀ a)).left = (et' a).left`.
+
+Rewrite using `[GlobalTheory.ObjPull.pushEquiv_left, ← h2, ← h1, Over.comp_left, Over.comp_left, ← hW1]`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression. Use `show Units.map hW.appTop.hom.toMonoidHom _ = _`. Rewrite using `[GlobalTheory.LevCover.map_fnOn _ hW β hW2, hβ]`.
+
+Introduce `C hC K _ _ x hK hcl`. Take `⟨xU, hxU⟩` from `lift_lemma' (S := S) (K := K) (n := n) x hK`. Establish `: IsFinite Z₀.hom` using `hfin`. Establish `: IsFinite ZU.hom` using `by show IsFinite (pullback.fst (specZIsTerminal.from Z₀.left) (spMap (algebraMap ℤ (CycRing n))) ≫ Z₀.hom) infer_instance`. Take `⟨w, hw, hwC⟩` from `exists_lift_of_range_subset_closure_image_finite ZU.hom (S.basicOpen (n : Γ(S, ⊤))).ι hC xU (by rw [hxU]; exact hcl)`.
+
+Use `⟨Over.homMk w ?_, hwC⟩` and prove the remaining obligations. Use `show w ≫ ZU.hom ≫ _ = x`. Rewrite using `[← Category.assoc, hw, hxU]`.
+-/
 private theorem main_lemma_3 : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La], IsAbelianScheme G → 0 < n → ∃ (Z : Over S) (et : La → (Z ⟶ G)) (c : Γ(Z.left, ⊤)ˣ), IsUnit (n : Γ(Z.left, ⊤)) ∧ (∀ a a', et (a + a') = et a * et a') ∧ (∀ a, et a ^ n = 1) ∧ c ^ n = 1 ∧ (∀ (K : Type) [Field K] (h : Sp K ⟶ Z.left) (ζ : Kˣ), Units.map h.appTop.hom.toMonoidHom c = unitOn ζ → IsPrimitiveRoot ζ n) ∧ (∀ (K : Type) [Field K] (x : Sp K ⟶ S) (et' : La → (Over.mk x ⟶ G)) (ζ : Kˣ), (n : K) ≠ 0 → (∀ a a', et' (a + a') = et' a * et' a') → (∀ a, et' a ^ n = 1) → IsPrimitiveRoot ζ n → ∃ h : Over.mk x ⟶ Z, (∀ a, h ≫ et a = et' a) ∧ Units.map h.left.appTop.hom.toMonoidHom c = unitOn ζ) ∧ ∀ (C : Set Z.left), IsClosed C → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S), (n : K) ≠ 0 → Set.range x ⊆ closure (Z.hom '' C) → ∃ h : Over.mk x ⟶ Z, Set.range h.left ⊆ C := by
   intro S G _ _ n La _ _ _ hG hn
   have hU : IsUnit (n : Γ(S.basicOpen (n : Γ(S, ⊤)), ⊤)) := isUnit_natCast_basicOpen S n
@@ -216,6 +292,9 @@ namespace GlobalTheory
 
 open TorsRootParam in
 
+/- English proof (translation)
+Conclude with `main_lemma_3`.
+-/
 theorem exists_latticeTorsionHom_primitiveRoot_param : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (n : ℕ) (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La], IsAbelianScheme G → 0 < n → ∃ (Z : Over S) (et : La → (Z ⟶ G)) (c : Γ(Z.left, ⊤)ˣ), IsUnit (n : Γ(Z.left, ⊤)) ∧ (∀ a a', et (a + a') = et a * et a') ∧ (∀ a, et a ^ n = 1) ∧ c ^ n = 1 ∧ (∀ (K : Type) [Field K] (h : Sp K ⟶ Z.left) (ζ : Kˣ), Units.map h.appTop.hom.toMonoidHom c = unitOn ζ → IsPrimitiveRoot ζ n) ∧ (∀ (K : Type) [Field K] (x : Sp K ⟶ S) (et' : La → (Over.mk x ⟶ G)) (ζ : Kˣ), (n : K) ≠ 0 → (∀ a a', et' (a + a') = et' a * et' a') → (∀ a, et' a ^ n = 1) → IsPrimitiveRoot ζ n → ∃ h : Over.mk x ⟶ Z, (∀ a, h ≫ et a = et' a) ∧ Units.map h.left.appTop.hom.toMonoidHom c = unitOn ζ) ∧ ∀ (C : Set Z.left), IsClosed C → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S), (n : K) ≠ 0 → Set.range x ⊆ closure (Z.hom '' C) → ∃ h : Over.mk x ⟶ Z, Set.range h.left ⊆ C := by
   exact main_lemma_3
 

@@ -20,6 +20,45 @@ open GlobalTheory.FrameAut.VecProj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨B, hh, hp, hd, hi⟩` from `GlobalTheory.DefU.Petersson.exists_invariant_pos_form E n`. Use `set C := forms W.rep with hC`. Set `Bf` to `form B W.rep`. Set `B2 : (W.Sp →ₗ[ℂ] (UA E n → ℂ)) → (W.Sp →ₗ[ℂ] (UA E n → ℂ)) → ℂ` to `fun x y => if h : x ∈ C ∧ y ∈ C then Bf ⟨x, h.1⟩ ⟨y, h.2⟩ else 0`. Establish `hB2 : ∀ x (hx : x ∈ C) y (hy : y ∈ C), B2 x y = Bf ⟨x, hx⟩ ⟨y, hy⟩` using `fun x hx y hy => dif_pos ⟨hx, hy⟩`.
+
+Establish `h1 : ∀ x ∈ C, ∀ y ∈ C, ∀ z ∈ C, ∀ c : ℂ, B2 x (y + c • z) = B2 x y + c * B2 x z`. Introduce `x hx y hy z hz c`. Rewrite using `[hB2 x hx _ (C.add_mem hy (C.smul_mem c hz)), hB2 x hx y hy, hB2 x hx z hz]`. Establish `e : (⟨y + c • z, C.add_mem hy (C.smul_mem c hz)⟩ : C) = ⟨y, hy⟩ + c • ⟨z, hz⟩` using `rfl`. Rewrite using `[e, map_add, map_smul, smul_eq_mul]`.
+
+Establish `h2 : ∀ x ∈ C, ∀ y ∈ C, B2 x y = starRingEnd ℂ (B2 y x)`. Introduce `x hx y hy`. Rewrite using `[hB2 x hx y hy, hB2 y hy x hx, ← form_herm B hh W.rep ⟨y, hy⟩ ⟨x, hx⟩]`. Both sides reduce to the same expression. Establish `h3 : ∀ x ∈ C, x ≠ 0 → 0 < (B2 x x).re`.
+
+Introduce `x hx hx0`. Rewrite using `[hB2 x hx x hx]`. Use `lt_of_le_of_ne (form_nonneg B hp W.rep _) fun h0 => hx0 ?_` and prove the remaining obligations. Establish `him : (Bf ⟨x, hx⟩ ⟨x, hx⟩).im = 0`. Use `congrArg Complex.im (form_herm B hh W.rep ⟨x, hx⟩ ⟨x, hx⟩)` as an intermediate fact.
+
+Rewrite `this` using `[Complex.star_def, Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `form_def B hh hp hd W.rep ⟨x, hx⟩ (Complex.ext h0.symm him)` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Set `core` to `GlobalTheory.IsotOrth.coreOf C B2 h1 h2 h3`.
+
+Use `letI : NormedAddCommGroup C := core.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ C := InnerProductSpace.ofCore core.toCore`. Set `ρC` to `GlobalTheory.IsotOrth.rhoC (post E n W.Sp) C (fun k x hx => post_mem W.rep k x hx)`. Establish `hunit : ∀ g (x y : C), inner ℂ (ρC g x) (ρC g y) = inner ℂ x y`. Introduce `g x y`.
+
+Use `show B2 _ _ = B2 _ _`. Rewrite using `[hB2 _ (ρC g x).2 _ (ρC g y).2, hB2 _ x.2 _ y.2]`. Conclude with `form_inv B hi W.rep g x y`. Take `⟨K0, hK0o, hK0c⟩` from `GlobalTheory.DefU.Petersson.exists_isOpen_isCompact_finU E n`. Establish `hsm : ∀ x : C, IsOpen {k : finU E n | ρC k x = x}` using `fun x => rep_smooth W.rep x`.
+
+Set `K : Subgroup (finU E n)` to `K0 ⊓ GlobalTheory.AdmissibleProjection.stab ρC ⟨f, hf⟩`. Establish `hKo : IsOpen (K : Set (finU E n))`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hK0o.inter (hsm _)`. Set `F : Submodule ℂ C` to `{ carrier := {w | ∀ k ∈ K, ρC k w = w} zero_mem' := fun k _ => map_zero _ add_mem' := fun ha hb k hk => by rw [map_add, ha k hk, hb k hk] smul_mem' := fun c w hw k hk => by rw [map_smul, hw k hk] }`.
+
+Establish `hF : ∀ w, w ∈ F ↔ ∀ k ∈ K, ρC k w = w` using `fun w => Iff.rfl`. Use `haveI := rep_fd W.rep K hKo`. Use `haveI : FiniteDimensional ℂ F := by`. Set `ι : F →ₗ[ℂ] fixed (rep W.rep) K` to `F.subtype.codRestrict _ (fun w k => by show rep W.rep (k : finU E n) w.1 = ((1 : ℂˣ) : ℂ) • w.1`. Rewrite using `[Units.val_one, one_smul]`.
+
+Conclude with `w.2 k k.2)`. Conclude with `FiniteDimensional.of_injective ι (fun a b h => Subtype.ext (congrArg (fun z : fixed (rep W.rep) K => (z : C)) h))`. Establish `horb : ∀ y : C, ((fun k => ρC k y) '' (K : Set (finU E n))).Finite`. Introduce `y`. Use `(GlobalTheory.AdmissibleProjection.orbit_finite ρC hsm K0 hK0c y).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `⟨⟨k, hk.1⟩, rfl⟩`. Establish `hmem` using `GlobalTheory.SpanIsot.mem_sSup_irr ρC hunit K F hF horb ⟨f, hf⟩ (fun k hk => hk.2)`. Use `set S := sSup {U : Submodule ℂ (UA E n → ℂ) | IsAutRepU U} with hS`. Set `T : Submodule ℂ C` to `⨅ v : W.Sp, S.comap ((LinearMap.applyₗ v).comp C.subtype)`.
+
+Establish `hT : ∀ x : C, x ∈ T ↔ ∀ v, (x : W.Sp →ₗ[ℂ] (UA E n → ℂ)) v ∈ S`. Introduce `x`. Simplify using `[T, Submodule.mem_iInf]`. Establish `hle : sSup {M | GlobalTheory.SpanIsot.IrrSub ρC M} ≤ T`. Use `sSup_le fun M hM => ?_` and prove the remaining obligations.
+
+Take `⟨hM0, hMs, hMi⟩` from `hM`. Set `M' : Submodule ℂ (W.Sp →ₗ[ℂ] (UA E n → ℂ))` to `M.map C.subtype`. Establish `hπ` using `GlobalTheory.FrameAut.VecForms.isAutRepU_span_values E n W.Sp W.rep (GlobalTheory.DefU.Pairs.span_rep W) M' ?_ ?_ ?_ ?_`. Introduce `x hx`. Rewrite using `[hT]`.
+
+Introduce `v`. Conclude with `le_sSup (show _ ∈ {U : Submodule ℂ (UA E n → ℂ) | IsAutRepU U} from hπ) (Submodule.subset_span ⟨x.1, ⟨x, hx, rfl⟩, v, rfl⟩)`. Introduce `h`. Apply `hM0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+
+Introduce `x hx`. Establish `: (x : W.Sp →ₗ[ℂ] (UA E n → ℂ)) ∈ M'` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext this)`. Introduce and unpack `_ ⟨x, -, rfl⟩`.
+
+Conclude with `⟨fun v => x.2.1 v, x.2.2⟩`. Introduce and unpack `k hk _ ⟨x, hx, rfl⟩`. Conclude with `⟨ρC ⟨k, hk⟩ x, hMs _ x hx, rfl⟩`. Introduce `N hNM hN`. Set `N' : Submodule ℂ C` to `N.comap C.subtype`.
+
+Establish `hN'M : N' ≤ M`. Introduce `x hx`. Take `⟨y, hy, e⟩` from `hNM hx`. Rewrite using `[← Subtype.ext e]`. Conclude with `hy`.
+
+Establish `hN's : GlobalTheory.SpanIsot.Stab ρC N'` using `fun g x hx => hN g.1 g.2 x.1 hx`. Establish `hNe : N'.map C.subtype = N`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 (hNM.trans (Submodule.map_subtype_le _ _))`. Break down `hMi N' hN'M hN's with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[← hNe, h, Submodule.map_bot]`. Use `right`. Rewrite using `[← hNe, h]`. Conclude with `(hT _).1 (hle hmem) v`.
+-/
 theorem values_mem_sSup (W : Wt E n) [Nontrivial W.Sp] (f : W.Sp →ₗ[ℂ] (UA E n → ℂ))
     (hf : f ∈ forms W.rep) (v : W.Sp) :
     f v ∈ sSup {U : Submodule ℂ (UA E n → ℂ) | IsAutRepU U} := by
@@ -134,12 +173,32 @@ namespace GlobalTheory.EigenDecomp
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h : sSup s ≤ (sSup s).comap (RU E n x)` using `sSup_le fun U hU φ hφ => le_sSup hU ((hs U hU).stable x φ hφ)`. Conclude with `fun φ hφ => h hφ`.
+-/
 theorem sSup_stable {s : Set (Submodule ℂ (UA E n → ℂ))} (hs : ∀ U ∈ s, IsAutRepU U) (x : UA E n) :
     ∀ φ ∈ sSup s, RU E n x φ ∈ sSup s := by
   have h : sSup s ≤ (sSup s).comap (RU E n x) :=
     sSup_le fun U hU φ hφ => le_sSup hU ((hs U hU).stable x φ hφ)
   exact fun φ hφ => h hφ
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨∅, subset_rfl, by simp, rfl⟩`. Consider the case `insert a s ha ih`. Take `⟨t, hts, hti, htS⟩` from `ih (fun U hU => hs U (Finset.mem_insert_of_mem hU))`. Establish `haU` using `hs a (Finset.mem_insert_self a s)`.
+
+Establish `htA : ∀ U ∈ (t : Set (Submodule ℂ (UA E n → ℂ))), IsAutRepU U` using `fun U hU => hs U (Finset.mem_insert_of_mem (hts hU))`. Establish `hst : ∀ x, ∀ φ ∈ a ⊓ sSup (t : Set (Submodule ℂ (UA E n → ℂ))), RU E n x φ ∈ a ⊓ sSup (t : Set (Submodule ℂ (UA E n → ℂ)))` using `fun x φ hφ => ⟨haU.stable x φ hφ.1, sSup_stable htA x φ hφ.2⟩`. Break down `haU.irred _ inf_le_left hst with h | h` into its components or cases. Establish `hat : a ∉ (t : Set (Submodule ℂ (UA E n → ℂ)))` using `fun hat => haU.ne_bot ((inf_eq_left.2 (le_sSup hat)).symm.trans h)`. Use `⟨insert a t, Finset.insert_subset_insert a hts, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.coe_insert]`. Introduce `x hx`. Break down `hx with rfl | hx` into its components or cases. Use `(disjoint_iff.2 h).mono_right (sSup_le_sSup ?_)` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`.
+
+Break down `hy1 with rfl | hy1` into its components or cases. Conclude with `absurd rfl hy2`. Conclude with `hy1`. Establish `hxa : x ≠ a` using `fun e => hat (e ▸ hx)`. Establish `e : insert a (t : Set (Submodule ℂ (UA E n → ℂ))) \ {x} = insert a ((t : Set (Submodule ℂ (UA E n → ℂ))) \ {x})`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_sdiff, Set.mem_insert_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1 | h1, h2⟩`. Conclude with `Or.inl h1`.
+
+Conclude with `Or.inr ⟨h1, h2⟩`. Introduce and unpack `(h1 | ⟨h1, h2⟩)`. Conclude with `⟨Or.inl h1, fun e => hxa (e.symm.trans h1)⟩`. Conclude with `⟨Or.inr h1, h2⟩`. Rewrite using `[e, sSup_insert]`.
+
+Establish `h1 : Disjoint x (sSup ((t : Set (Submodule ℂ (UA E n → ℂ))) \ {x}))` using `hti hx`. Establish `h2 : Disjoint (x ⊔ sSup ((t : Set (Submodule ℂ (UA E n → ℂ))) \ {x})) a` using `(disjoint_iff.2 h).symm.mono_left (sup_le (le_sSup hx) (sSup_le_sSup Set.sdiff_subset))`. Rewrite using `[sup_comm]`. Conclude with `h1.disjoint_sup_right_of_disjoint_sup_left h2`. Rewrite using `[Finset.coe_insert, Finset.coe_insert, sSup_insert, sSup_insert, htS]`.
+
+Use `⟨t, hts.trans (Finset.subset_insert _ _), hti, ?_⟩` and prove the remaining obligations. Establish `hle : a ≤ sSup (t : Set (Submodule ℂ (UA E n → ℂ)))` using `inf_eq_left.1 h`. Rewrite using `[Finset.coe_insert, sSup_insert, ← htS]`. Conclude with `(sup_eq_right.2 hle).symm`.
+-/
 theorem exists_indep (s : Finset (Submodule ℂ (UA E n → ℂ))) (hs : ∀ U ∈ s, IsAutRepU U) :
     ∃ t ⊆ s, sSupIndep (t : Set (Submodule ℂ (UA E n → ℂ))) ∧
       sSup (t : Set (Submodule ℂ (UA E n → ℂ))) = sSup (s : Set (Submodule ℂ (UA E n → ℂ))) := by
@@ -190,6 +249,49 @@ theorem exists_indep (s : Finset (Submodule ℂ (UA E n → ℂ))) (hs : ∀ U �
       rw [Finset.coe_insert, sSup_insert, ← htS]
       exact (sup_eq_right.2 hle).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ n W C χ f hf`. Distinguish the cases in `hW : Nontrivial W.Sp`. Use `swap`. Use `haveI : Subsingleton W.Sp := not_nontrivial_iff_subsingleton.1 hW`. Use `⟨∅, fun _ => 0, by simp, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_empty]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Subsingleton.elim v 0, map_zero]`.
+
+Both sides reduce to the same expression. Set `b` to `Module.finBasis ℂ W.Sp`. Establish `hex : ∀ i, ∃ s : Finset (Submodule ℂ (UA E n → ℂ)), (↑s ⊆ {U : Submodule ℂ (UA E n → ℂ) | IsAutRepU U}) ∧ f.1 (b i) ∈ ⨆ U ∈ s, U` using `fun i => Submodule.mem_sSup_iff_exists_finset.1 (values_mem_sSup W f.1 f.2 (b i))`. Use `choose s hsA hsm using hex`. Set `s0` to `Finset.univ.biUnion s`.
+
+Establish `hs0A : ∀ U ∈ s0, IsAutRepU U`. Introduce `U hU`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.1 hU`. Conclude with `hsA i hi`. Take `⟨t, hts, hti, htS⟩` from `exists_indep s0 hs0A`.
+
+Establish `htA : ∀ U ∈ t, IsAutRepU U` using `fun U hU => hs0A U (hts hU)`. Establish `hsup : sSup (t : Set (Submodule ℂ (UA E n → ℂ))) = ⨆ U ∈ t, U`. Rewrite using `[sSup_eq_iSup]`. Both sides reduce to the same expression. Establish `hval : ∀ v, f.1 v ∈ ⨆ U ∈ t, U`.
+
+Introduce `v`. Rewrite using `[← hsup, htS, ← b.sum_repr v, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Use `(iSup₂_le fun U hU => le_sSup ?_ : (⨆ U ∈ s i, U) ≤ sSup (s0 : Set (Submodule ℂ (UA E n → ℂ)))) (hsm i)` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hU⟩)`. Establish `hdec : ∀ v, ∃ μ : ∀ U : Submodule ℂ (UA E n → ℂ), U, ∑ U ∈ t, (μ U : UA E n → ℂ) = f.1 v` using `fun v => (Submodule.mem_iSup_finset_iff_exists_sum (fun U => U) (f.1 v)).1 (hval v)`. Use `choose μ hμ using hdec`. Set `c : W.Sp → Submodule ℂ (UA E n → ℂ) → (UA E n → ℂ)` to `fun v U => if U ∈ t then (μ v U : UA E n → ℂ) else 0`.
+
+Establish `hcm : ∀ v U, c v U ∈ U` using `fun v U => by`. Distinguish the cases in `hU : U ∈ t`. Simplify using `only [c, if_pos hU]`. Conclude with `(μ v U).2`. Simplify using `only [c, if_neg hU]`.
+
+Conclude with `U.zero_mem`. Establish `hc0 : ∀ v U, U ∉ t → c v U = 0` using `fun v U hU => if_neg hU`. Establish `hcs : ∀ v, ∑ U ∈ t, c v U = f.1 v` using `fun v => by`. Rewrite using `[← hμ v]`. Conclude with `Finset.sum_congr rfl fun U hU => if_pos hU`.
+
+Establish `huniq : ∀ a a' : Submodule ℂ (UA E n → ℂ) → (UA E n → ℂ), (∀ U, a U ∈ U) → (∀ U, a' U ∈ U) → (∀ U, U ∉ t → a U = 0) → (∀ U, U ∉ t → a' U = 0) → ∑ U ∈ t, a U = ∑ U ∈ t, a' U → a = a'`. Introduce `a a' ha ha' h0 h0' he`. Use function extensionality and compare the values at `U`. Distinguish the cases in `hU : U ∈ t`. Establish `hz : ∑ V ∈ t, (a V - a' V) = 0` using `by rw [Finset.sum_sub_distrib, he, sub_self]`.
+
+Establish `hsplit` using `Finset.add_sum_erase t (fun V => a V - a' V) hU`. Rewrite `hsplit` using `[hz]`. Establish `h1 : a U - a' U ∈ U` using `U.sub_mem (ha U) (ha' U)`. Establish `h2 : a U - a' U ∈ sSup ((t : Set (Submodule ℂ (UA E n → ℂ))) \ {U})`. Establish `e : a U - a' U = -∑ V ∈ t.erase U, (a V - a' V)` using `eq_neg_of_add_eq_zero_left hsplit`.
+
+Rewrite using `[e]`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun V hV => ?_)` and prove the remaining obligations. Establish `hVm : V ∈ (t : Set (Submodule ℂ (UA E n → ℂ))) \ {U}` using `⟨Finset.mem_coe.2 (Finset.mem_of_mem_erase hV), Finset.ne_of_mem_erase hV⟩`. Conclude with `le_sSup hVm (V.sub_mem (ha V) (ha' V))`. Conclude with `sub_eq_zero.1 (Submodule.disjoint_def.1 (hti (Finset.mem_coe.2 hU)) _ h1 h2)`.
+
+Rewrite using `[h0 U hU, h0' U hU]`. Establish `hkey : ∀ v (a : Submodule ℂ (UA E n → ℂ) → (UA E n → ℂ)), (∀ U, a U ∈ U) → (∀ U, U ∉ t → a U = 0) → ∑ U ∈ t, a U = f.1 v → a = c v` using `fun v a ha h0 he => huniq a (c v) ha (hcm v) h0 (hc0 v) (he.trans (hcs v).symm)`. Set `Fl : Submodule ℂ (UA E n → ℂ) → W.Sp →ₗ[ℂ] (UA E n → ℂ)` to `fun U => { toFun := fun v => c v U map_add' := fun v w => congrFun (hkey (v + w) (fun U => c v U + c w U) (fun U => U.add_mem (hcm v U) (hcm w U)) (fun U hU => by rw [hc0 v U hU, hc0 w U hU, add_zero]) (by rw [Finset.sum_add_distrib, hcs, hcs, map_add])).symm U map_smul' := fun r …`. Establish `hFl : ∀ U v, Fl U v = c v U` using `fun _ _ => rfl`. Establish `hinf : ∀ (x : infU E n) v, c (W.rep x v) = fun U => RU E n x (c v U)`.
+
+Introduce `x v`. Use `(hkey (W.rep x v) (fun U => RU E n x (c v U)) (fun U => ?_) (fun U hU => by rw [hc0 v U hU, map_zero]) (by rw [← map_sum, hcs]; exact (f.2.2 x v).symm)).symm` and prove the remaining obligations. Distinguish the cases in `hU : U ∈ t`. Conclude with `(htA U hU).stable _ _ (hcm v U)`. Rewrite using `[hc0 v U hU, map_zero]`.
+
+Conclude with `U.zero_mem`. Establish `heig : ∀ (c0 : C) v, (fun U => RU E n c0 (c v U)) = fun U => ((χ c0 : ℂˣ) : ℂ) • c v U`. Introduce `c0 v`. Use `huniq _ _ (fun U => ?_) (fun U => U.smul_mem _ (hcm v U)) (fun U hU => by rw [hc0 v U hU, map_zero]) (fun U hU => by rw [hc0 v U hU, smul_zero]) ?_` and prove the remaining obligations. Distinguish the cases in `hU : U ∈ t`.
+
+Conclude with `(htA U hU).stable _ _ (hcm v U)`. Rewrite using `[hc0 v U hU, map_zero]`. Conclude with `U.zero_mem`. Rewrite using `[← map_sum, ← Finset.smul_sum, hcs]`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[RU_apply, hf c0 v g]`. Both sides reduce to the same expression. Establish `hmemA : ∀ U ∈ t, Fl U ∈ algForms W` using `fun U hU => (⟨fun v => (htA U hU).aut _ (hcm v U), fun x v => by rw [hFl, hFl, hinf x v]⟩ : (∀ v, Fl U v ∈ autU E n) ∧ ∀ (x : infU E n) v, Fl U (W.rep x v) = RU E n x (Fl U v))`. Set `P : t → AutSub E n` to `fun U => ⟨U.1, htA U.1 U.2⟩`. Establish `hPinj : Function.Injective P` using `fun U U' h => Subtype.ext (congrArg AutSub.V h)`.
+
+Set `F : AutSub E n → algForms W` to `fun π => if h : π.V ∈ t then ⟨Fl π.V, hmemA π.V h⟩ else 0`. Establish `hFv : ∀ π v, (F π).1 v = c v π.V`. Introduce `π v`. Distinguish the cases in `h : π.V ∈ t`. Simplify using `only [F, dif_pos h]`.
+
+Both sides reduce to the same expression. Simplify using `only [F, dif_neg h]`. Conclude with `(hc0 v π.V h).symm`. Use `⟨Finset.univ.image P, F, fun π _ => AutSub.mem_finPart.2 fun v => by rw [hFv]; exact hcm v π.V, fun π _ c0 v g => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrFun (hFv π v) _).trans ((congrFun (congrFun (heig c0 v) π.V) g).trans (congrArg (fun z => ((χ c0 : ℂˣ) : ℂ) * z) (congrFun (hFv π v) g).symm))`.
+
+Rewrite using `[Finset.sum_image fun U _ U' _ h => hPinj h]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Submodule.coe_sum, LinearMap.sum_apply]`.
+
+Simplify using `only [hFv]`. Rewrite using `[← hcs v]`. Conclude with `(Finset.sum_coe_sort t (fun U => c v U)).symm`.
+-/
 theorem eigen_decomp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (W : Wt E n) (C : Subgroup (UA E n)) (χ : C →* ℂˣ) (f : algForms W), (∀ (c : C) v g, f.1 v (g * c) = (χ c : ℂ) * f.1 v g) → ∃ (I : Finset (AutSub E n)) (F : AutSub E n → algForms W), (∀ π ∈ I, F π ∈ π.finPart W) ∧ (∀ π ∈ I, ∀ (c : C) v g, (F π).1 v (g * c) = (χ c : ℂ) * (F π).1 v g) ∧ f = ∑ π ∈ I, F π := by
   intro E _ _ _ n W C χ f hf
   classical

@@ -22,6 +22,13 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.LatHtFinPart
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n L hL u hu`. Take `⟨I, hI0, hI⟩` from `GlobalTheory.T.lattice_vector_content_ideal_exists E n L hL u hu`. Use `⟨I, hI0, hI, ?_⟩` and prove the remaining obligations. Establish `h : ∀ v : HeightOneSpectrum (𝓞 F), (GlobalTheory.EisMidHt.normFin F L v (fun i => compFin F E v (GlobalTheory.EisMidHt.adVec F u i)) : ℝ) = ∏ w ∈ Formalism.L2.Host.aboveF (L` using `E) F v, (Ideal.absNorm w.asIdeal : ℝ) ^ FractionalIdeal.count E w I := by`. Introduce `v`.
+
+Establish `e : (fun i => compFin F E v (GlobalTheory.EisMidHt.adVec F u i)) = fun i => (1 : Fv F v) ⊗ₜ[F] u i`. Use function extensionality and compare the values at `fun i => GlobalTheory.EisMidHtScale.compFin_adVec v u i`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.local_norm_of_valuation_profile F E n L v _ _ fun c => ⟨GlobalTheory.T.content_ideal_local_lattice_valuation F E n L hL u hu I hI0 hI v c, GlobalTheory.T.content_ideal_local_valuation_bound F E n L hL u hu I hI0 hI v c⟩`. Rewrite using `[finprod_congr h]`.
+
+Conclude with `GlobalTheory.T.ideal_norm_product_over_places F E I hI0`.
+-/
 theorem finprod_normFin_eq_absNorm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →
       ∃ I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, I ≠ 0 ∧ (∀ c : E, c ∈ I ↔ c • u ∈ L) ∧

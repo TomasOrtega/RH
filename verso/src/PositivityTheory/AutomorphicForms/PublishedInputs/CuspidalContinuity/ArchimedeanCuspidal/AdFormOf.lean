@@ -277,6 +277,11 @@ def AdForm : Prop :=
     (∀ (W : V) h g, (U ⟨fun x => W.1 (x * h), hV.stable _ W.2 h⟩ : G3 → ℂ) g = (U W : G3 → ℂ) (g * h)) ∧
     ∀ (W : V) i j, U ⟨_, hV.lie _ W.2 i j⟩ = EA i j (U W)
 
+/- English proof (translation)
+Introduce `k N _ hk χ hχ f a hf ha hp`. Take `⟨D, rfl, hs, hfe⟩` from `h8 k N hk χ hχ f a hf ha hp`. Break down `h10 a D hfe (h9 h7 N χ D f a hf ha hs) with h | h` into its components or cases. Conclude with `Or.inl h`. Take `⟨V, hV, hg⟩` from `h5 h1 h2 h3 h4 D h`.
+
+Conclude with `Or.inr ⟨D, rfl, hs, V, hV, hg, h6 V hV hg.1⟩`.
+-/
 theorem adForm_of (h1 : LocF) (h2 : LocU) (h3 : LocR) (h4 : Mellin) (h5 : Glob) (h6 : ConvA) (h7 : Shim) (h8 : RS)
     (h9 : EulOf) (h10 : AnOf) : AdForm := by
   intro k N _ hk χ hχ f a hf ha hp

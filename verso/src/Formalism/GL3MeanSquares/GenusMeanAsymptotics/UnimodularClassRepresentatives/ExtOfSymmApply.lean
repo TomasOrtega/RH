@@ -14,19 +14,31 @@ variable {K V V' : Type} [Field K] [NumberField K] [StarRing K]
 
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
+/- English proof (translation)
+Conclude with `S.h_x₀_comb c a`.
+-/
 theorem h_x₀_decomp (S : VecSplit h h') (c : K) (a : V') :
     h S.x₀ (c • S.x₀ + S.ι a) = c * h S.x₀ S.x₀ := by
   exact S.h_x₀_comb c a
 
+/- English proof (translation)
+Take `⟨c, a, rfl⟩` from `S.cover v`. Rewrite `hv` using `[S.h_x₀_comb]`. Establish `hc : c = 0` using `(mul_eq_zero.mp hv).resolve_right S.hx₀`. Conclude with `⟨a, by rw [hc, zero_smul, zero_add]⟩`.
+-/
 theorem exists_of_orth (S : VecSplit h h') {v : V} (hv : h S.x₀ v = 0) : ∃ a, S.ι a = v := by
   obtain ⟨c, a, rfl⟩ := S.cover v
   rw [S.h_x₀_comb] at hv
   have hc : c = 0 := (mul_eq_zero.mp hv).resolve_right S.hx₀
   exact ⟨a, by rw [hc, zero_smul, zero_add]⟩
 
+/- English proof (translation)
+Conclude with `S.orth' hs a`.
+-/
 theorem orth' (hs : h.IsSymm) (S : VecSplit h h') (a : V') : h (S.ι a) S.x₀ = 0 := by
   exact S.orth' hs a
 
+/- English proof (translation)
+Simplify using `[S.orth, S.orth' hs, S.isom, mul_assoc, starRingEnd_apply]`.
+-/
 theorem h_decomp (hs : h.IsSymm) (S : VecSplit h h') (c d : K) (a b : V') :
     h (c • S.x₀ + S.ι a) (d • S.x₀ + S.ι b) = star c * d * h S.x₀ S.x₀ + h' a b := by
   simp [S.orth, S.orth' hs, S.isom, mul_assoc, starRingEnd_apply]
@@ -40,12 +52,18 @@ def liftι {W : Type} [AddCommGroup W] [Module K W] (S : VecSplit h h') (f : W �
     simp only [RingHom.id_apply]
     rw [map_smul S.ι, (hf a).choose_spec, (hf (c • a)).choose_spec, map_smul f])
 
+/- English proof (translation)
+The claim follows from `(hf w).choose_spec`.
+-/
 theorem liftι_spec {W : Type} [AddCommGroup W] [Module K W] (S : VecSplit h h') (f : W →ₗ[K] V)
     (hf : ∀ w, ∃ b, S.ι b = f w) (w : W) : S.ι (liftι S f hf w) = f w := (hf w).choose_spec
 
 def projX (S : VecSplit h h') : V →ₗ[K] V :=
   ((h S.x₀ S.x₀)⁻¹ • h S.x₀).smulRight S.x₀
 
+/- English proof (translation)
+Unfold `projX`. Rewrite using `[LinearMap.smulRight_apply, LinearMap.smul_apply, S.h_x₀_comb, smul_eq_mul]`. Use `congr 1`. Rewrite using `[inv_mul_eq_iff_eq_mul₀ S.hx₀]`. Conclude with `mul_comm _ _`.
+-/
 theorem projX_apply (S : VecSplit h h') (c : K) (a : V') :
     projX S (c • S.x₀ + S.ι a) = c • S.x₀ := by
   unfold projX
@@ -59,26 +77,46 @@ def coordA (S : VecSplit h h') : V →ₗ[K] V' :=
     intro v; obtain ⟨c, b, rfl⟩ := S.cover v
     exact ⟨b, by simp [projX_apply]⟩)
 
+/- English proof (translation)
+Apply `S.inj` to reduce the goal to its premises. Unfold `coordA`. Rewrite using `[liftι_spec, LinearMap.sub_apply, LinearMap.id_apply, projX_apply, add_sub_cancel_left]`.
+-/
 theorem coordA_apply (S : VecSplit h h') (c : K) (a : V') : coordA S (c • S.x₀ + S.ι a) = a := by
   apply S.inj
   unfold coordA
   rw [liftι_spec, LinearMap.sub_apply, LinearMap.id_apply, projX_apply, add_sub_cancel_left]
 
+/- English proof (translation)
+Use extensionality with `v`. Take `⟨c, a, rfl⟩` from `S.cover v`. Rewrite using `[map_add, map_add, map_smul, map_smul, h0, h1]`.
+-/
 theorem linearMap_ext (S : VecSplit h h') {f g : V →ₗ[K] V} (h0 : f S.x₀ = g S.x₀)
     (h1 : ∀ a, f (S.ι a) = g (S.ι a)) : f = g := by
   ext v
   obtain ⟨c, a, rfl⟩ := S.cover v
   rw [map_add, map_add, map_smul, map_smul, h0, h1]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem autL_iff {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] {k : W →ₗ⋆[K] W →ₗ[K] K} {M : Submodule (𝓞 K) W} {g : W ≃ₗ[K] W} :
     g ∈ Formalism.ThetaLiftIndependence.autL k M ↔ g ∈ Formalism.HermitianLatticesTheory.isom k ∧ Formalism.HermitianLatticesTheory.gmap g M = M := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `hg x y`.
+-/
 theorem isom_apply {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (x y : V) : h (g x) (g y) = h x y := hg x y
 
+/- English proof (translation)
+Conclude with `inv_mem hg`.
+-/
 theorem symm_mem_isom {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) : g.symm ∈ Formalism.HermitianLatticesTheory.isom h := by
   exact inv_mem hg
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+
+Introduce `hv`. Conclude with `⟨e.symm v, hv, by simp⟩`.
+-/
 theorem mem_gmap_iff {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W]
     [IsScalarTower (𝓞 K) K W] (e : W ≃ₗ[K] W) (M : Submodule (𝓞 K) W) (v : W) :
     v ∈ Formalism.HermitianLatticesTheory.gmap e M ↔ e.symm v ∈ M := by
@@ -90,16 +128,25 @@ theorem mem_gmap_iff {W : Type} [AddCommGroup W] [Module K W] [Module (𝓞 K) W
   · intro hv
     exact ⟨e.symm v, hv, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[S.comb_mem_adjoin_iff, Submodule.mem_one]`.
+-/
 theorem mem_adjoin_iff (S : VecSplit h h') (L' : Submodule (𝓞 K) V') (c : K) (a : V') :
     c • S.x₀ + S.ι a ∈ S.adjoin L' ↔ (∃ r : 𝓞 K, algebraMap (𝓞 K) K r = c) ∧ a ∈ L' := by
   rw [S.comb_mem_adjoin_iff, Submodule.mem_one]
 
+/- English proof (translation)
+Apply `exists_of_orth S` to reduce the goal to its premises. Use `show h S.x₀ (g (S.ι a)) = 0`. Rewrite using `[← hx, isom_apply hg, S.orth]`.
+-/
 theorem maps_of_fix (S : VecSplit h h') {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (hx : g S.x₀ = S.x₀) (a : V') : ∃ b, S.ι b = (g.toLinearMap ∘ₗ S.ι) a := by
   apply exists_of_orth S
   show h S.x₀ (g (S.ι a)) = 0
   rw [← hx, isom_apply hg, S.orth]
 
+/- English proof (translation)
+Conclude with `g.symm_apply_eq.mpr hx.symm`.
+-/
 theorem symm_fix {g : V ≃ₗ[K] V} {x : V} (hx : g x = x) : g.symm x = x := by
   exact g.symm_apply_eq.mpr hx.symm
 
@@ -110,20 +157,32 @@ def res (S : VecSplit h h') (g : V ≃ₗ[K] V) (hg : g ∈ Formalism.HermitianL
     (by ext a; apply S.inj; simp [liftι_spec])
     (by ext a; apply S.inj; simp [liftι_spec])
 
+/- English proof (translation)
+Conclude with `liftι_spec S _ _ a`.
+-/
 theorem res_spec (S : VecSplit h h') (g : V ≃ₗ[K] V) (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (hx : g S.x₀ = S.x₀) (a : V') : S.ι (res S g hg hx a) = g (S.ι a) := by
   exact liftι_spec S _ _ a
 
+/- English proof (translation)
+Conclude with `liftι_spec S _ _ a`.
+-/
 theorem res_symm_spec (S : VecSplit h h') (g : V ≃ₗ[K] V) (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (hx : g S.x₀ = S.x₀) (a : V') : S.ι ((res S g hg hx).symm a) = g.symm (S.ι a) := by
   exact liftι_spec S _ _ a
 
+/- English proof (translation)
+Use `show ∀ x y, h' (res S g hg hx x) (res S g hg hx y) = h' x y`. Introduce `x y`. Rewrite using `[← S.isom, res_spec, res_spec, isom_apply hg, S.isom]`.
+-/
 theorem res_mem_isom (S : VecSplit h h') (g : V ≃ₗ[K] V) (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (hx : g S.x₀ = S.x₀) : res S g hg hx ∈ Formalism.HermitianLatticesTheory.isom h' := by
   show ∀ x y, h' (res S g hg hx x) (res S g hg hx y) = h' x y
   intro x y
   rw [← S.isom, res_spec, res_spec, isom_apply hg, S.isom]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[mem_gmap_iff, S.mem_cut_iff, S.mem_cut_iff, res_symm_spec, ← hL, mem_gmap_iff]`.
+-/
 theorem gmap_res (S : VecSplit h h') (g : V ≃ₗ[K] V) (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (hx : g S.x₀ = S.x₀) {L₁ L₂ : Submodule (𝓞 K) V} (hL : Formalism.HermitianLatticesTheory.gmap g L₁ = L₂) :
     Formalism.HermitianLatticesTheory.gmap (res S g hg hx) (S.cut L₁) = S.cut L₂ := by
@@ -133,14 +192,23 @@ theorem gmap_res (S : VecSplit h h') (g : V ≃ₗ[K] V) (hg : g ∈ Formalism.H
 def extFun (S : VecSplit h h') (f : V' →ₗ[K] V') : V →ₗ[K] V :=
   projX S + S.ι ∘ₗ f ∘ₗ coordA S
 
+/- English proof (translation)
+Unfold `extFun`. Rewrite using `[LinearMap.add_apply, projX_apply, LinearMap.comp_apply, LinearMap.comp_apply, coordA_apply]`.
+-/
 theorem extFun_apply (S : VecSplit h h') (f : V' →ₗ[K] V') (c : K) (a : V') :
     extFun S f (c • S.x₀ + S.ι a) = c • S.x₀ + S.ι (f a) := by
   unfold extFun
   rw [LinearMap.add_apply, projX_apply, LinearMap.comp_apply, LinearMap.comp_apply, coordA_apply]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem eq_decomp_x₀ (S : VecSplit h h') : S.x₀ = (1 : K) • S.x₀ + S.ι 0 := by
   simp
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem eq_decomp_ι (S : VecSplit h h') (a : V') : S.ι a = (0 : K) • S.x₀ + S.ι a := by
   simp
 
@@ -159,21 +227,38 @@ def extOf (S : VecSplit h h') (g' : V' ≃ₗ[K] V') : V ≃ₗ[K] V :=
         simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.id_coe, id_eq]
         rw [eq_decomp_ι S, extFun_apply, extFun_apply]; simp))
 
+/- English proof (translation)
+The claim follows from `extFun_apply S g'.toLinearMap c a`.
+-/
 theorem extOf_apply (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (c : K) (a : V') :
     extOf S g' (c • S.x₀ + S.ι a) = c • S.x₀ + S.ι (g' a) := extFun_apply S g'.toLinearMap c a
 
+/- English proof (translation)
+The claim follows from `extFun_apply S g'.symm.toLinearMap c a`.
+-/
 theorem extOf_symm_apply (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (c : K) (a : V') :
     (extOf S g').symm (c • S.x₀ + S.ι a) = c • S.x₀ + S.ι (g'.symm a) := extFun_apply S g'.symm.toLinearMap c a
 
+/- English proof (translation)
+Rewrite using `[eq_decomp_x₀ S, extOf_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem extOf_x₀ (S : VecSplit h h') (g' : V' ≃ₗ[K] V') : extOf S g' S.x₀ = S.x₀ := by
   rw [eq_decomp_x₀ S, extOf_apply]
   simp
 
+/- English proof (translation)
+Rewrite using `[eq_decomp_ι S a, extOf_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem extOf_ι (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (a : V') :
     extOf S g' (S.ι a) = S.ι (g' a) := by
   rw [eq_decomp_ι S a, extOf_apply]
   simp
 
+/- English proof (translation)
+Establish `hg' : ∀ x y, h' (g' x) (g' y) = h' x y` using `hg`. Use `show ∀ x y, h (extOf S g' x) (extOf S g' y) = h x y`. Introduce `x y`. Take `⟨c, a, rfl⟩` from `S.cover x`. Take `⟨d, b, rfl⟩` from `S.cover y`.
+
+Rewrite using `[extOf_apply, extOf_apply, h_decomp hs, h_decomp hs, hg']`.
+-/
 theorem extOf_mem_isom (hs : h.IsSymm) (S : VecSplit h h') {g' : V' ≃ₗ[K] V'}
     (hg : g' ∈ Formalism.HermitianLatticesTheory.isom h') : extOf S g' ∈ Formalism.HermitianLatticesTheory.isom h := by
   have hg' : ∀ x y, h' (g' x) (g' y) = h' x y := hg
@@ -183,6 +268,9 @@ theorem extOf_mem_isom (hs : h.IsSymm) (S : VecSplit h h') {g' : V' ≃ₗ[K] V'
   obtain ⟨d, b, rfl⟩ := S.cover y
   rw [extOf_apply, extOf_apply, h_decomp hs, h_decomp hs, hg']
 
+/- English proof (translation)
+Use extensionality with `v`. Take `⟨c, a, rfl⟩` from `S.cover v`. Rewrite using `[mem_gmap_iff, extOf_symm_apply, SplitBAux.mem_adjoin_iff, SplitBAux.mem_adjoin_iff, ← hC, mem_gmap_iff]`.
+-/
 theorem gmap_extOf (S : VecSplit h h') (g' : V' ≃ₗ[K] V') {C₁ C₂ : Submodule (𝓞 K) V'}
     (hC : Formalism.HermitianLatticesTheory.gmap g' C₁ = C₂) :
     Formalism.HermitianLatticesTheory.gmap (extOf S g') (S.adjoin C₁) = S.adjoin C₂ := by

@@ -17,17 +17,26 @@ open Classical in
 def fk (o : Finset (Fin (D.nB j + D.r))) : Fin (D.nB j + D.r) → D.ML :=
   if D.Marked j o then D.e1 j else D.e0 j
 
+/- English proof (translation)
+Unfold `fk`. Use `split_ifs`. Conclude with `D.second_embedding_injective j`. Conclude with `D.index_embedding_injective j`.
+-/
 theorem fk_inj (o : Finset (Fin (D.nB j + D.r))) : Function.Injective (D.fk j o) := by
   unfold fk; split_ifs
   · exact D.second_embedding_injective j
   · exact D.index_embedding_injective j
 
+/- English proof (translation)
+Unfold `fk`. Use `split_ifs`. Conclude with `D.segment_letter_second_embedding j l`. Conclude with `D.segment_letter_first_embedding j l`.
+-/
 theorem segL_fk (o : Finset (Fin (D.nB j + D.r))) (l : Fin (D.nB j + D.r)) :
     D.SegL j (D.fk j o l) := by
   unfold fk; split_ifs
   · exact D.segment_letter_second_embedding j l
   · exact D.segment_letter_first_embedding j l
 
+/- English proof (translation)
+Apply the tactic sequence `unfold fk; split_ifs <;> simp`.
+-/
 theorem fk_castAdd (o : Finset (Fin (D.nB j + D.r))) (a : Fin (D.nB j)) :
     D.fk j o (Fin.castAdd D.r a) = D.mb (D.eB j a) := by
   unfold fk; split_ifs <;> simp
@@ -35,6 +44,11 @@ theorem fk_castAdd (o : Finset (Fin (D.nB j + D.r))) (a : Fin (D.nB j)) :
 def cnt (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) : ℕ :=
   ∑ l, if D.fk j o l = i then (if l ∈ o then 1 else 0) else 0
 
+/- English proof (translation)
+Unfold `cnt`. Rewrite using `[Finset.sum_eq_single l0]`. Rewrite using `[if_pos h]`. Introduce `l _ hl`. Rewrite using `[if_neg]`.
+
+Introduce `h2`. Conclude with `hl (D.fk_inj j o (h2.trans h.symm))`. Introduce `h2`. Conclude with `absurd (Finset.mem_univ _) h2`.
+-/
 theorem cnt_eq (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) (l0 : Fin (D.nB j + D.r))
     (h : D.fk j o l0 = i) : D.cnt j o i = if l0 ∈ o then 1 else 0 := by
   unfold cnt
@@ -46,11 +60,19 @@ theorem cnt_eq (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) (l0 : Fin (D.nB j + 
     exact hl (D.fk_inj j o (h2.trans h.symm))
   · intro h2; exact absurd (Finset.mem_univ _) h2
 
+/- English proof (translation)
+Unfold `cnt`. Conclude with `Finset.sum_eq_zero fun l _ => if_neg (h l)`.
+-/
 theorem cnt_zero (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) (h : ∀ l, D.fk j o l ≠ i) :
     D.cnt j o i = 0 := by
   unfold cnt
   exact Finset.sum_eq_zero fun l _ => if_neg (h l)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ l, D.fk j o l = i`. Take `⟨l0, h0⟩` from `h`. Rewrite using `[D.cnt_eq j o i l0 h0]`. Apply the tactic sequence `split_ifs <;> simp`. Use `push_neg at h`.
+
+Rewrite using `[D.cnt_zero j o i h]`. Conclude with `Nat.zero_le _`.
+-/
 theorem cnt_le_one (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) : D.cnt j o i ≤ 1 := by
   by_cases h : ∃ l, D.fk j o l = i
   · obtain ⟨l0, h0⟩ := h
@@ -59,9 +81,17 @@ theorem cnt_le_one (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) : D.cnt j o i �
   · push_neg at h
     rw [D.cnt_zero j o i h]; exact Nat.zero_le _
 
+/- English proof (translation)
+Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun m => ?_) l <;> simp [mb, mlab, mtp]`.
+-/
 theorem first_embedding_ne_tangent (l : Fin (D.nB j + D.r)) (t : D.Tau) : D.e0 j l ≠ D.mtp t := by
   refine Fin.addCases (fun a => ?_) (fun m => ?_) l <;> simp [mb, mlab, mtp]
 
+/- English proof (translation)
+Use `revert h`. Use `Fin.addCases (fun a => ?_) (fun m0 => ?_) l` and prove the remaining obligations. Simplify using `[mb, mtp]`. Rewrite using `[second_embedding_natAdd] split_ifs with h0`. Simplify using `[mlab, mtp]`.
+
+Introduce `h`. Simplify using `only [mtp, Sum.inr.injEq, Prod.mk.injEq, true_and] at h`. Substitute `h` using the available equality. Conclude with `⟨h0, by rw [Fin.rev_rev]⟩`.
+-/
 theorem second_embedding_tangent_index (l : Fin (D.nB j + D.r)) (m : Fin D.r) (h : D.e1 j l = D.mtp (j, m)) :
     m.val ≠ 0 ∧ l = Fin.natAdd (D.nB j) (Fin.rev m) := by
   revert h
@@ -75,6 +105,11 @@ theorem second_embedding_tangent_index (l : Fin (D.nB j + D.r)) (m : Fin D.r) (h
       subst h
       exact ⟨h0, by rw [Fin.rev_rev]⟩
 
+/- English proof (translation)
+Use `revert h`. Use `Fin.addCases (fun a => ?_) (fun m0 => ?_) l` and prove the remaining obligations. Simplify using `[mb, mlab]`. Rewrite using `[second_embedding_natAdd] split_ifs with h0`. Introduce `h`.
+
+Simplify using `only [mlab, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq, true_and] at h`. Substitute `h` using the available equality. Conclude with `h0`. Simplify using `[mlab, mtp]`.
+-/
 theorem second_embedding_label_index_zero (l : Fin (D.nB j + D.r)) (m : Fin D.r) (h : D.e1 j l = D.mlab (j, m)) :
     m.val = 0 := by
   revert h
@@ -88,10 +123,22 @@ theorem second_embedding_label_index_zero (l : Fin (D.nB j + D.r)) (m : Fin D.r)
       exact h0
     · simp [mlab, mtp]
 
+/- English proof (translation)
+The claim follows from `D.cnt_eq j o _ _ (D.fk_castAdd j o a)`.
+-/
 theorem cnt_mb (o : Finset (Fin (D.nB j + D.r))) (a : Fin (D.nB j)) :
     D.cnt j o (D.mb (D.eB j a)) = if Fin.castAdd D.r a ∈ o then 1 else 0 :=
   D.cnt_eq j o _ _ (D.fk_castAdd j o a)
 
+/- English proof (translation)
+Distinguish the cases in `hM : D.Marked j o`. Establish `hf : D.fk j o = D.e1 j` using `by unfold fk; rw [if_pos hM]`. Distinguish the cases in `h0 : m.val = 0`. Rewrite using `[D.cnt_eq j o (D.mlab (j, m)) (Fin.natAdd (D.nB j) (Fin.rev m)) (by rw [hf, second_embedding_natAdd, Fin.rev_rev, if_pos h0]), D.cnt_zero j o (D.mtp (j, m)) (by`. Introduce `l hl`.
+
+Rewrite `hl` using `[hf]`. Conclude with `(D.second_embedding_tangent_index j l m hl).1 h0), add_zero]`. Rewrite using `[D.cnt_eq j o (D.mtp (j, m)) (Fin.natAdd (D.nB j) (Fin.rev m)) (by rw [hf, second_embedding_natAdd, Fin.rev_rev, if_neg h0]), D.cnt_zero j o (D.mlab (j, m)) (by`. Introduce `l hl`. Rewrite `hl` using `[hf]`.
+
+Conclude with `h0 (D.second_embedding_label_index_zero j l m hl)), zero_add]`. Establish `hf : D.fk j o = D.e0 j` using `by unfold fk; rw [if_neg hM]`. Rewrite using `[D.cnt_eq j o (D.mlab (j, m)) (Fin.natAdd (D.nB j) (Fin.rev m)) (by rw [hf, first_embedding_natAdd, Fin.rev_rev]), D.cnt_zero j o (D.mtp (j, m)) (by`. Introduce `l hl`. Rewrite `hl` using `[hf]`.
+
+Conclude with `D.first_embedding_ne_tangent j l _ hl), add_zero]`.
+-/
 theorem cnt_lab_add_tp (o : Finset (Fin (D.nB j + D.r))) (m : Fin D.r) :
     D.cnt j o (D.mlab (j, m)) + D.cnt j o (D.mtp (j, m)) =
       if Fin.natAdd (D.nB j) (Fin.rev m) ∈ o then 1 else 0 := by
@@ -112,6 +159,11 @@ theorem cnt_lab_add_tp (o : Finset (Fin (D.nB j + D.r))) (m : Fin D.r) :
         D.cnt_zero j o (D.mtp (j, m)) (by
           intro l hl; rw [hf] at hl; exact D.first_embedding_ne_tangent j l _ hl), add_zero]
 
+/- English proof (translation)
+Apply `D.cnt_zero` to reduce the goal to its premises. Introduce `l hl`. Unfold `fk at hl`. Use `split_ifs at hl`. Conclude with `(D.second_embedding_tangent_index j l m hl).1 h0`.
+
+Conclude with `D.first_embedding_ne_tangent j l _ hl`.
+-/
 theorem cnt_tp_zero (o : Finset (Fin (D.nB j + D.r))) (m : Fin D.r) (h0 : m.val = 0) :
     D.cnt j o (D.mtp (j, m)) = 0 := by
   apply D.cnt_zero
@@ -121,6 +173,15 @@ theorem cnt_tp_zero (o : Finset (Fin (D.nB j + D.r))) (m : Fin D.r) (h0 : m.val 
   · exact (D.second_embedding_tangent_index j l m hl).1 h0
   · exact D.first_embedding_ne_tangent j l _ hl
 
+/- English proof (translation)
+Distinguish the cases in `hM : D.Marked j o`. Take `⟨l, hl, hln⟩` from `hM`. Use `le_trans (D.cnt_le_one j o _) ?_` and prove the remaining obligations. Establish `: (if Fin.castAdd D.r (⟨l.val, hln⟩ : Fin (D.nB j)) ∈ o then 1 else 0 : ℕ) = 1`. Rewrite using `[if_pos]`.
+
+Establish `: Fin.castAdd D.r (⟨l.val, hln⟩ : Fin (D.nB j)) = l` using `by ext; simp`. Rewrite using `[this]`. Conclude with `hl`. Establish `h2` using `Finset.single_le_sum (f := fun a : Fin (D.nB j) => if Fin.castAdd D.r a ∈ o then 1 else 0) (fun _ _ => Nat.zero_le _) (Finset.mem_univ (⟨l.val, hln⟩ : Fin (D.nB j)))`. Simplify using `only [this] at h2`.
+
+Conclude with `h2`. Rewrite using `[D.cnt_zero j o]`. Conclude with `Nat.zero_le _`. Introduce `l hl`. Unfold `fk at hl`.
+
+Rewrite `hl` using `[if_neg hM]`. Conclude with `D.first_embedding_ne_tangent j l _ hl`.
+-/
 theorem cnt_tp_le (o : Finset (Fin (D.nB j + D.r))) (m : Fin D.r) :
     D.cnt j o (D.mtp (j, m)) ≤ ∑ a : Fin (D.nB j), if Fin.castAdd D.r a ∈ o then 1 else 0 := by
   by_cases hM : D.Marked j o
@@ -141,6 +202,9 @@ theorem cnt_tp_le (o : Finset (Fin (D.nB j + D.r))) (m : Fin D.r) :
       rw [if_neg hM] at hl
       exact D.first_embedding_ne_tangent j l _ hl
 
+/- English proof (translation)
+Apply `D.cnt_zero` to reduce the goal to its premises. Introduce `l hl`. Conclude with `hi (hl ▸ D.segL_fk j o l)`.
+-/
 theorem cnt_not_segL (o : Finset (Fin (D.nB j + D.r))) (i : D.ML) (hi : ¬ D.SegL j i) :
     D.cnt j o i = 0 := by
   apply D.cnt_zero
@@ -151,6 +215,9 @@ def PsiP {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) × Fin D.
     (occ : Fin nc → Finset (Fin (D.nB j + D.r))) : MvPolynomial (D.ML × Fin D.r) K :=
   ∏ k, rename (Prod.map (D.fk j (occ k)) id) (col k)
 
+/- English proof (translation)
+Unfold `PsiP`. Use `HomD_prod _ _ _ fun k _ => ?_` and prove the remaining obligations. Conclude with `HomD_rename (D.fk j (occ k)) (D.fk_inj j _) _ _ ((mem_PolK_iff _ _).mp (hcol k))`.
+-/
 theorem PsiP_HomD {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K)
     (occ : Fin nc → Finset (Fin (D.nB j + D.r)))
     (hcol : ∀ k, col k ∈ PolK K D.r (fun i => if i ∈ occ k then 1 else 0)) :
@@ -159,6 +226,21 @@ theorem PsiP_HomD {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) 
   refine HomD_prod _ _ _ fun k _ => ?_
   exact HomD_rename (D.fk j (occ k)) (D.fk_inj j _) _ _ ((mem_PolK_iff _ _).mp (hcol k))
 
+/- English proof (translation)
+Establish `hd` using `D.PsiP_HomD j col occ hcol ξ hξ`. Establish `hc : ∀ i, (∑ k, if i ∈ occ k then 1 else 0) = D.dO (D.eA j i)`. Introduce `i`. Rewrite using `[← hcount i, Finset.card_filter]`. Establish `hz : ∀ i, ldeg ξ i = 0 → ∀ a, ξ (i, a) = 0`.
+
+Introduce `i h a`. Unfold `ldeg at h`. Conclude with `(Finset.sum_eq_zero_iff.mp h) a (Finset.mem_univ a)`. Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `b hb`.
+
+Take `⟨a, rfl⟩` from `D.eB_surj j b hb`. Rewrite using `[hd]`. Simplify using `only [cnt_mb]`. Rewrite using `[hc, eA_castAdd]`. Both sides reduce to the same expression.
+
+Introduce `m`. Rewrite using `[hd, hd, ← Finset.sum_add_distrib]`. Simplify using `only [cnt_lab_add_tp]`. Rewrite using `[hc, eA_natAdd, Fin.rev_rev]`. Both sides reduce to the same expression.
+
+Introduce `m`. Rewrite using `[hd]`. Use `le_trans (Finset.sum_le_sum fun k _ => D.cnt_tp_le j (occ k) m) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, dLL_eq_sum]`. Use `le_of_eq (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hc, eA_castAdd]`. Both sides reduce to the same expression. Introduce `m h0`. Apply `hz` to reduce the goal to its premises. Rewrite using `[hd]`.
+
+Conclude with `Finset.sum_eq_zero fun k _ => D.cnt_tp_zero j _ m h0`. Introduce `i hi`. Apply `hz` to reduce the goal to its premises. Rewrite using `[hd]`. Conclude with `Finset.sum_eq_zero fun k _ => D.cnt_not_segL j _ i hi`.
+-/
 theorem PsiP_support {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K)
     (occ : Fin nc → Finset (Fin (D.nB j + D.r)))
     (hcol : ∀ k, col k ∈ PolK K D.r (fun i => if i ∈ occ k then 1 else 0))

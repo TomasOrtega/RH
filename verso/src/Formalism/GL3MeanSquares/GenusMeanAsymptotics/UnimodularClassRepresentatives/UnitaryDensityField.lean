@@ -20,9 +20,15 @@ abbrev AQ (K : Type) {F : Type} [Field K] [Field F] [Algebra F K] (𝔭 : Ideal 
 def sg (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) : AQ K 𝔭 k →+* AQ K 𝔭 k :=
   conjQ (extP K 𝔭 ^ k) (idealPowerSpanBounds.conjO_mem_pow hF 𝔭 k)
 
+/- English proof (translation)
+The claim follows from `conjQ_mk _ _ a`.
+-/
 theorem sg_mk (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : 𝓞 K) :
     sg hF 𝔭 k (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk _ (conjO K a) := conjQ_mk _ _ a
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[sg_mk, sg_mk, conjO_conjO]`.
+-/
 theorem sg_sg (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : AQ K 𝔭 k) :
     sg hF 𝔭 k (sg hF 𝔭 k a) = a := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
@@ -31,6 +37,11 @@ theorem sg_sg (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : AQ K 𝔭
 def InQ (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : AQ K 𝔭 k) : Prop :=
   ∃ z ∈ extP K 𝔭, Ideal.Quotient.mk (extP K 𝔭 ^ k) z = a
 
+/- English proof (translation)
+Unfold `InQ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzy⟩`. Establish `hd : z - y ∈ extP K 𝔭 ^ k` using `Ideal.Quotient.eq.mp hzy`. Establish `hd' : z - y ∈ extP K 𝔭` using `Ideal.pow_le_self (by omega) hd`.
+
+Establish `hy` using `sub_mem hz hd'`. Simplify using `using hy`. Introduce `hy`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem inQ_mk (𝔭 : Ideal (𝓞 F)) {k : ℕ} (hk : 1 ≤ k) (y : 𝓞 K) :
     InQ 𝔭 k (Ideal.Quotient.mk (extP K 𝔭 ^ k) y) ↔ y ∈ extP K 𝔭 := by
   unfold InQ
@@ -54,13 +65,22 @@ def cntI (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k M : ℕ) (n : 𝓞 K) : �
   Nat.card {x : Fin M → AQ K 𝔭 k // (∀ i, InQ 𝔭 k (x i)) ∧
     ∑ i, sg hF 𝔭 k (x i) * x i = Ideal.Quotient.mk _ n}
 
+/- English proof (translation)
+The claim follows from `(normRepCount_eq _ (idealPowerSpanBounds.conjO_mem_pow hF 𝔭 k) M n).symm`.
+-/
 theorem cnt_eq_normRepCount (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k M : ℕ) (n : 𝓞 K) :
     cnt hF 𝔭 k M n = normRepCount K (extP K 𝔭 ^ k) M n :=
   (normRepCount_eq _ (idealPowerSpanBounds.conjO_mem_pow hF 𝔭 k) M n).symm
 
+/- English proof (translation)
+The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ (idealPowerSpanBounds.map_ne_bot_of_isMaximal h𝔭))`.
+-/
 theorem finite_AQ {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) : Finite (AQ K 𝔭 k) :=
   Ideal.finiteQuotientOfFreeOfNeBot _ (pow_ne_zero _ (idealPowerSpanBounds.map_ne_bot_of_isMaximal h𝔭))
 
+/- English proof (translation)
+Unfold `extP`. Rewrite using `[Ideal.absNorm_algebraMap, ← MeanB.finrank_eq_two hK hF]`. Use `congr 1`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 K) K).symm`.
+-/
 theorem absNorm_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) :
     Ideal.absNorm (extP K 𝔭) = Ideal.absNorm 𝔭 ^ 2 := by
   unfold extP
@@ -68,10 +88,18 @@ theorem absNorm_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   congr 1
   exact (IsFractionRing.finrank_eq (𝓞 F) F (𝓞 K) K).symm
 
+/- English proof (translation)
+Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, map_pow, absNorm_extP hK hF, ← pow_mul]`.
+-/
 theorem card_AQ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) (k : ℕ) :
     Nat.card (AQ K 𝔭 k) = Ideal.absNorm 𝔭 ^ (2 * k) := by
   rw [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, map_pow, absNorm_extP hK hF, ← pow_mul]
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite X`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_subtype]`. Rewrite using `[← Finset.card_union_of_disjoint]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`. The claim follows by propositional logic. Rewrite using `[Finset.disjoint_filter]`. Introduce `x _ h1 h2`. Conclude with `h1.1 h2.1`.
+-/
 theorem card_split {X : Type*} [Finite X] (p r : X → Prop) :
     Nat.card {x // r x} = Nat.card {x // ¬ p x ∧ r x} + Nat.card {x // p x ∧ r x} := by
   classical
@@ -86,12 +114,28 @@ theorem card_split {X : Type*} [Finite X] (p r : X → Prop) :
     intro x _ h1 h2
     exact h1.1 h2.1
 
+/- English proof (translation)
+Use `haveI := finite_AQ (K := K) h𝔭 k`. Unfold `cnt cntP cntI`. Conclude with `card_split (fun x : Fin M → AQ K 𝔭 k => ∀ i, InQ 𝔭 k (x i)) _`.
+-/
 theorem cnt_eq_add (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k M : ℕ) (n : 𝓞 K) :
     cnt hF 𝔭 k M n = cntP hF 𝔭 k M n + cntI hF 𝔭 k M n := by
   haveI := finite_AQ (K := K) h𝔭 k
   unfold cnt cntP cntI
   exact card_split (fun x : Fin M → AQ K 𝔭 k => ∀ i, InQ 𝔭 k (x i)) _
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `idealPowerSpanBounds.exists_theta hK hF h𝔭`. Establish `h1 : ∃ b : 𝓞 K, conjO K a * b + conjO K b * a ∉ extP K 𝔭`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `e1` using `hcon 1`.
+
+Establish `e2` using `hcon θ`. Apply `ha` to reduce the goal to its premises. Establish `e3 : (θ - conjO K θ) * a ∈ extP K 𝔭 ^ 1`. Rewrite using `[pow_one]`. Use `(extP K 𝔭).sub_mem ((extP K 𝔭).mul_mem_left θ e1) e2` as an intermediate fact.
+
+Establish `e : θ * (conjO K a * 1 + conjO K 1 * a) - (conjO K a * θ + conjO K θ * a) = (θ - conjO K θ) * a` using `by rw [map_one]; ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `idealPowerSpanBounds.mem_of_unit_mul_mem hθ e3` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `h1`.
+
+Take `⟨c, hc⟩` from `idealPowerSpanBounds.exists_tr hF (conjO K a * b)`. Rewrite `hc` using `[map_mul, conjO_conjO, mul_comm a]`. Establish `hc𝔭 : c ∉ 𝔭`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+
+Rewrite using `[← hc]`. Conclude with `Ideal.mem_map_of_mem _ h`. Take `⟨u, hu⟩` from `MeanA.exists_mul_sub_one_mem_pow h𝔭 hc𝔭 N`. Use `⟨ι u * b, ?_⟩` and prove the remaining obligations. Establish `e : conjO K a * (ι u * b) + conjO K (ι u * b) * a - 1 = ι (u * c - 1)`.
+
+Rewrite using `[map_mul (conjO K), idealPowerSpanBounds.conjO_map hF, map_sub, map_mul, map_one, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, idealPowerSpanBounds.mem_pow_iff]`. Conclude with `hu`.
+-/
 theorem exists_tr_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {a : 𝓞 K} (ha : a ∉ extP K 𝔭) (N : ℕ) :
     ∃ b : 𝓞 K, conjO K a * b + conjO K b * a - 1 ∈ extP K 𝔭 ^ N := by
@@ -126,6 +170,25 @@ theorem exists_tr_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF :
   rw [e, idealPowerSpanBounds.mem_pow_iff]
   exact hu
 
+/- English proof (translation)
+Establish `hle : extP K 𝔭 ^ (k + 1) ≤ extP K 𝔭 ^ k` using `Ideal.pow_le_pow_right (Nat.le_succ k)`. Use `finite_AQ (K := K) h𝔭 (k + 1)` as an intermediate fact. Take `⟨θ, hθ⟩` from `idealPowerSpanBounds.exists_theta hK hF h𝔭`. Take `⟨e, he⟩` from `idealPowerSpanBounds.exists_inv_theta hθ (k + 1)`. Establish `hIn : ∀ a : AQ K 𝔭 (k + 1), InQ 𝔭 k (Ideal.Quotient.factor hle a) ↔ InQ 𝔭 (k + 1) a`.
+
+Introduce `a`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Ideal.Quotient.factor_mk, inQ_mk 𝔭 hk, inQ_mk 𝔭 (by omega)]`. Establish `h` using `SecondPropositionFree.card_lift_pred (σ := sg hF 𝔭 (k + 1)) (τ := sg hF 𝔭 k) (π := Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle) (by`. Introduce `a`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[sg_mk, Ideal.Quotient.factor_mk, Ideal.Quotient.factor_mk, sg_mk])`. Use the proof step `(sg_sg hF 𝔭 (k + 1))`. Use the proof step `(by`. Introduce `a b ha hb`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `ha`, `hb` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : a * b ∈ extP K 𝔭 ^ (k + k)` using `by rw [pow_add]; exact Ideal.mul_mem_mul ha hb`.
+
+Conclude with `Ideal.pow_le_pow_right (by omega) h2)`. Use the proof step `(θ := Ideal.Quotient.mk _ θ) (e := Ideal.Quotient.mk _ e)`. Use the proof step `(by`. Rewrite using `[sg_mk, ← map_sub, ← map_mul, ← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `he)`.
+
+Use the proof step `(n := Ideal.Quotient.mk _ n) (by rw [sg_mk, hn]) (Ideal.absNorm 𝔭)`. Use the proof step `(by rw [card_AQ hK hF, card_AQ hK hF]; ring) M hM`. Use the proof step `(fun x => ¬ ∀ i, InQ 𝔭 k (x i))`. Use the proof step `(by`. Introduce `y hy w hw`.
+
+Use `push Not at hy`. Take `⟨i₀, hi₀⟩` from `hy`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (y i₀)`. Rewrite `hi₀` using `[← ha, Ideal.Quotient.factor_mk, inQ_mk 𝔭 hk]`. Take `⟨b, hb⟩` from `exists_tr_one hK hF h𝔭 hi₀ (k + 1)`.
+
+Use `SecondPropositionFree.mem_range_linPart _ y i₀ (b := Ideal.Quotient.mk _ b) ?_ hw` and prove the remaining obligations. Rewrite using `[← ha, sg_mk, sg_mk, ← map_mul, ← map_mul, ← map_add, ← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `hb)`. Rewrite `h` using `[Ideal.Quotient.factor_mk]`. Unfold `cntP`.
+
+Rewrite using `[← h]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun x => by simp only [hIn])`.
+-/
 theorem cntP_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {k M : ℕ} (hk : 1 ≤ k) (hM : 1 ≤ M) {n : 𝓞 K} (hn : conjO K n = n) :
     cntP hF 𝔭 (k + 1) M n = Ideal.absNorm 𝔭 ^ (2 * M - 1) * cntP hF 𝔭 k M n := by
@@ -175,6 +238,11 @@ theorem cntP_succ (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsF
   rw [← h]
   exact Nat.card_congr (Equiv.subtypeEquivRight fun x => by simp only [hIn])
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[cntP_succ hK hF h𝔭 (by omega) hM hn, ih, ← mul_assoc, ← pow_add]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cntP_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (j : ℕ) {M : ℕ} (hM : 1 ≤ M) {n : 𝓞 K} (hn : conjO K n = n) :
     cntP hF 𝔭 (j + 1) M n = Ideal.absNorm 𝔭 ^ ((2 * M - 1) * j) * cntP hF 𝔭 1 M n := by

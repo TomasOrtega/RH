@@ -10,6 +10,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SmallSub
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hC.isBounded.exists_norm_le`. Establish `ht : Filter.Tendsto (fun n : ℕ => ‖c‖ ^ n * B) Filter.atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg c) hc).mul_const B`. Use `norm_le_zero_iff.1 (ge_of_tendsto' ht fun n => ?_)` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `h n`.
+
+Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_left (hB u hu) (by positivity)`.
+-/
 theorem eq_zero_of_pow_mul {K : Type} [NormedField K] {C : Set K} (hC : IsCompact C) {c x : K} (hc : ‖c‖ < 1)
     (h : ∀ n : ℕ, ∃ u ∈ C, x = c ^ n * u) : x = 0 := by
   obtain ⟨B, hB⟩ := hC.isBounded.exists_norm_le
@@ -20,6 +25,11 @@ theorem eq_zero_of_pow_mul {K : Type} [NormedField K] {C : Set K} (hC : IsCompac
   rw [norm_mul, norm_pow]
   exact mul_le_mul_of_nonneg_left (hB u hu) (by positivity)
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F v x = 0`. Establish `hv : Continuous (evalV F v)` using `RestrictedProduct.continuous_eval v`. Establish `h1` using `(NumberField.FinitePlace.norm_lt_one_iff_mem F v _).2 (Ideal.absNorm_mem v.asIdeal)`. Rewrite `h1` using `[map_natCast, map_natCast]`.
+
+Establish `h0 : 0 < Ideal.absNorm v.asIdeal` using `Nat.pos_of_ne_zero fun e => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 e)`. Use `eq_zero_of_pow_mul (hC.image hv) h1 fun n => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `h _ (pow_pos h0 n)`. Conclude with `⟨_, ⟨u, hu, rfl⟩, by rw [map_nsmul, nsmul_eq_mul, Nat.cast_pow]⟩`.
+-/
 theorem finiteAdele_eq_zero (F : Type) [Field F] [NumberField F] {C : Set (Af F)} (hC : IsCompact C) {x : Af F}
     (h : ∀ M : ℕ, 0 < M → ∃ u ∈ C, x = M • u) : x = 0 := by
   refine Subtype.ext (funext fun v => ?_)
@@ -33,6 +43,11 @@ theorem finiteAdele_eq_zero (F : Type) [Field F] [NumberField F] {C : Set (Af F)
   obtain ⟨u, hu, rfl⟩ := h _ (pow_pos h0 n)
   exact ⟨_, ⟨u, hu, rfl⟩, by rw [map_nsmul, nsmul_eq_mul, Nat.cast_pow]⟩
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Set `b` to `Algebra.TensorProduct.basis (Af F) (Module.finBasis F E)`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Establish `hc : Continuous (b.coord i)` using `IsModuleTopology.continuous_of_linearMap _`.
+
+Rewrite using `[map_zero, Finsupp.zero_apply]`. Express the relevant statement in the definitionally equal form `b.coord i x = 0`. Use `finiteAdele_eq_zero F (hC.image hc) fun M hM => ?_` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `h M hM`. Conclude with `⟨_, ⟨u, hu, rfl⟩, map_nsmul _ _ _⟩`.
+-/
 theorem tensor_eq_zero (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {C : Set (Af F ⊗[F] E)} (hC : IsCompact C) {x : Af F ⊗[F] E}
     (h : ∀ M : ℕ, 0 < M → ∃ u ∈ C, x = M • u) : x = 0 := by
@@ -47,6 +62,17 @@ theorem tensor_eq_zero (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   obtain ⟨u, hu, rfl⟩ := h M hM
   exact ⟨_, ⟨u, hu, rfl⟩, map_nsmul _ _ _⟩
 
+/- English proof (translation)
+Take `⟨C, hC, hLC⟩` from `GlobalTheory.StabCompact.exists_compact_latHat D.host.F D.host.E (GlobalTheory.SW.stdL D.host.E V.rank) (Submodule.fg_span (Set.finite_range _))`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Ker.fmt V k = 1`. Use extensionality with `i j`. Establish `h1 : (1 : Af D.host.F) ∈ intAf D.host.F` using `fun w => by rw [map_one]; exact one_mem _`.
+
+Establish `hy : (Pi.single j 1 : Fin V.rank → GlobalTheory.Ker.AfE D) ∈ GlobalTheory.Ker.hatV (D` using `D) (GlobalTheory.SW.stdL D.host.E V.rank) := by`. Use `AddSubgroup.subset_closure ⟨1, h1, Pi.single j 1, Submodule.subset_span ⟨j, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Distinguish the cases in `e : a = j`. Substitute `e` using the available equality.
+
+Simplify using `only [Pi.single_eq_same]`. Both sides reduce to the same expression. Simplify using `[Pi.single_eq_of_ne e]`. Establish `key : (GlobalTheory.Ker.fmt V k *ᵥ Pi.single j 1 - (Pi.single j 1 : Fin V.rank → GlobalTheory.Ker.AfE D)) i = 0`. Use `tensor_eq_zero D.host.F D.host.E (hC.image (continuous_apply i)) fun M hM => ?_` and prove the remaining obligations.
+
+Take `⟨u, hu, e⟩` from `(h M).2 _ hy`. Take `⟨c, hc⟩` from `Nat.dvd_factorial hM le_rfl`. Use `⟨_, ⟨c • u, hLC _ (nsmul_mem hu c), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, hc, mul_smul]`. Both sides reduce to the same expression.
+
+Rewrite `key` using `[Pi.sub_apply, sub_eq_zero, Matrix.mulVec_single_one]`. Rewrite using `[Matrix.one_apply, ← Pi.single_apply]`. Conclude with `key`.
+-/
 theorem mem_GinfC_of_cong {D : D7} (V : HSp D) (k : GA D V)
     (h : ∀ n : ℕ, GlobalTheory.Ker.CongK V (GlobalTheory.SW.stdL D.host.E V.rank) n.factorial k) : k ∈ GinfC V := by
   obtain ⟨C, hC, hLC⟩ := GlobalTheory.StabCompact.exists_compact_latHat D.host.F D.host.E (GlobalTheory.SW.stdL D.host.E V.rank)
@@ -74,6 +100,15 @@ theorem mem_GinfC_of_cong {D : D7} (V : HSp D) (k : GA D V)
   rw [Matrix.one_apply, ← Pi.single_apply]
   exact key
 
+/- English proof (translation)
+Introduce `D V N hN`. Take `⟨i0, -, -, i3, -, -, hK⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V`. Establish `hL : (GlobalTheory.SW.stdL D.host.E V.rank).FG ∧ Submodule.span D.host.E (GlobalTheory.SW.stdL D.host.E V.rank : Set (Fin V.rank → D.host.E)) = ⊤`. Use `⟨Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← (Pi.basisFun D.host.E (Fin V.rank)).span_eq]`.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨a, by simp⟩`. Use `choose K hK1 hK2 hK3 _ using fun n : ℕ => hK _ n.factorial hL n.factorial_pos`.
+
+Establish `hanti : Antitone fun n => (K n : Set (GA D V)) ∩ GfC V`. Introduce `m n hmn k hk`. Use `⟨(hK1 m k).2 ⟨((hK1 n k).1 hk.1).1, fun u hu => ?_⟩, hk.2⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `((hK1 n k).1 hk.1).2 u hu`. Take `⟨c, hc⟩` from `Nat.factorial_dvd_factorial hmn`.
+
+Conclude with `⟨c • w, nsmul_mem hw c, by rw [e, hc, mul_smul]⟩`. Take `⟨n, hn⟩` from `exists_subset_nhds_of_isCompact' (U := N) hanti.directed_ge hK3 (fun n => (hK3 n).isClosed) (fun x hx => by`. Rewrite `hx` using `[Set.mem_iInter]`. Rewrite using `[GlobalTheory.AutFunCounterexample.GfC_inf_GinfC V (hx 0).2 (mem_GinfC_of_cong V x fun n => (hK1 n x).1 (hx n).1)])` and apply the resulting hypothesis. Conclude with `⟨K n, hK2 n, fun k hk hf => hn ⟨hk, hf⟩⟩`.
+-/
 theorem exists_open_subgroup_finite_subset : ∀ (D : D7) (V : HSp D), ∀ N ∈ 𝓝 (1 : GA D V), ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, k ∈ GfC V → k ∈ N := by
   intro D V N hN
   obtain ⟨i0, -, -, i3, -, -, hK⟩ := GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V

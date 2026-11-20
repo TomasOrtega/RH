@@ -13,6 +13,13 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, hH, hP⟩` from `h`. Use `haveI := hP`. Establish `hc : IsClosed (Set.range πY)` using `πY.isClosedMap.isClosed_range`. Establish `hg : genericPoint X₁.M.Z ∈ Set.range πY`. Use `⟨Y.pt (IsLocalRing.closedPoint X₁.Ω₁), ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun f : Sp X₁.Ω₁ ⟶ X₁.M.Z => f (IsLocalRing.closedPoint X₁.Ω₁)) hH`. Simplify using `only [Scheme.Hom.comp_apply] at e`. Conclude with `e.trans (X₁.M.pt_apply _)`. Introduce `z`. Establish `: z ∈ closure ({genericPoint X₁.M.Z} : Set X₁.M.Z)`.
+
+Rewrite using `[genericPoint_spec X₁.M.Z |>.def]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(closure_minimal (Set.singleton_subset_iff.2 hg) hc) this`.
+-/
 theorem zhAbove_surjective {X₁ : GSet} {Y : RatModel X₁.o₁ X₁.Ω₁} {πY : Y.Z ⟶ X₁.M.Z} (h : ZHAbove X₁ Y πY) :
     Function.Surjective πY := by
   obtain ⟨-, -, -, -, -, hH, hP⟩ := h
@@ -28,6 +35,9 @@ theorem zhAbove_surjective {X₁ : GSet} {Y : RatModel X₁.o₁ X₁.Ω₁} {π
     rw [genericPoint_spec X₁.M.Z |>.def]; trivial
   exact (closure_minimal (Set.singleton_subset_iff.2 hg) hc) this
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act hact`. Take `⟨Y, πY, hY⟩` from `GlobalTheory.T.exists_semiAbelianExtendingModel_above_thetaSystem X₁`. Take `⟨y, hy⟩` from `zhAbove_surjective hY z₁`. Take `⟨V, i1, i2, i3, -, ev, X, i4, t, δ, 𝔫, -, -, -, hinj⟩` from `GlobalTheory.T.exists_thetaMember_through_model_point I X₁ z₁ act hact Y πY hY y hy`. Conclude with `⟨V, i1, i2, i3, ev, X, i4, t, δ, hinj, ⟨𝔫⟩⟩`.
+-/
 theorem exists_gMem_injective : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), GlobalTheory.GSep.IsAct X₁ act → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) (_ : AddCommGroup X) (t : X → V) (δ : I → X → X), Function.Injective ev ∧ Nonempty (GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) := by
   intro I X₁ z₁ act hact
   obtain ⟨Y, πY, hY⟩ := GlobalTheory.T.exists_semiAbelianExtendingModel_above_thetaSystem X₁

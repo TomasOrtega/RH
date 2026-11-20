@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `y`. Use `choose r hr using fun j : ι => AdicCompletion.of_surjective I (N j) (AdicCompletion.pi I N y j)`. Use `⟨r, (AdicCompletion.piEquivOfFintype I N).injective ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.piEquivOfFintype_apply, AdicCompletion.piEquivOfFintype_apply]`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[← hr j]`. Conclude with `AdicCompletion.map_of I (LinearMap.proj (R := R) (φ := N) j) r`.
+-/
 private theorem UpperTheory.Reformulated.B.Qk17.pi_precomplete {R : Type*} [CommRing R] (I : Ideal R)
     {ι : Type*} [Fintype ι] [DecidableEq ι] (N : ι → Type*) [∀ i, AddCommGroup (N i)]
     [∀ i, Module R (N i)] [∀ i, IsPrecomplete I (N i)] : IsPrecomplete I (∀ i, N i) := by
@@ -13,6 +18,11 @@ private theorem UpperTheory.Reformulated.B.Qk17.pi_precomplete {R : Type*} [Comm
   rw [← hr j]
   exact AdicCompletion.map_of I (LinearMap.proj (R := R) (φ := N) j) r
 
+/- English proof (translation)
+Introduce `R _ I _ M _ _ _`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R M`. Use `UpperTheory.Reformulated.B.Qk17.pi_precomplete I (fun _ : Fin n => R)` as an intermediate fact. Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `x`.
+
+Take `⟨y, rfl⟩` from `AdicCompletion.map_surjective I hf x`. Take `⟨r, rfl⟩` from `AdicCompletion.of_surjective I (Fin n → R) y`. Conclude with `⟨f r, (AdicCompletion.map_of I f r).symm⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qk17.isPrecomplete_finite_module.{u_1, u_2} :
     ∀ {R : Type u_1} [inst : CommRing R] (I : Ideal R) [IsAdicComplete I R] (M : Type u_2)
     [inst_2 : AddCommGroup M] [inst_3 : _root_.Module R M] [Module.Finite R M], IsPrecomplete I M := by

@@ -14,6 +14,11 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hBK hTD hEC D HW F Cm`. Establish `hadm` using `GlobalTheory.T.localLifting_theoremC_hypotheses_admitted hBK hTD hEC D HW F Cm`. Establish `h23 : LiftingTheory.adm23 D HW F` using `(GlobalTheory.jumps_exact_adm D HW F).2`. Establish `hC4 : LetterConditionGlobal D HW F` using `GlobalTheory.T.letterConditionGlobal_of_N1used D HW F Cm (GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm)`. Establish `hH : ElementDenominator.HerrClassNaturalExtension D.loc D.locA HW F` using `GlobalTheory.AdmHerrLocal.main D HW F`.
+
+Establish `h22 : CrystallineLiftingBounds.adm22 D HW F` using `GlobalTheory.FontaineIneq.one_place_admissible_of_gap_constant_le D HW F`. Establish `hL : InvariantsGenerators.LitFont D HW F` using `GlobalTheory.T.fontaine_fullFaithful_exact_psi D HW F`. Conclude with `GlobalTheory.T.ramified_coefficient_chains_of_hypotheses D HW F Cm 10 23 32 32 h23 hC4 hH h22 hL hadm`.
+-/
 theorem ramifiedCoefficientChains_prv_twenty_five :
     GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
       ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),

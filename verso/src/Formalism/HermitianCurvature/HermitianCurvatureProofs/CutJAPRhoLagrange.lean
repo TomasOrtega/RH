@@ -10,6 +10,11 @@ open Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.JA
 
 namespace LagrangeInterpolation
 
+/- English proof (translation)
+Establish `hpow : ∀ n : ℕ, (C ^ n) v = d ^ n • v`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[pow_succ', ContinuousLinearMap.mul_apply, ih, map_smul, hv, smul_smul, pow_succ]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, ContinuousLinearMap.add_apply, hp, hq, Polynomial.eval_add, add_smul]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.eval_monomial, ContinuousLinearMap.mul_apply, hpow, Algebra.algebraMap_eq_smul_one, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, smul_smul]`.
+-/
 theorem aeval_eig {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (C : E →L[ℂ] E) (d : ℂ) (v : E)
     (hv : C v = d • v) (p : Polynomial ℂ) : Polynomial.aeval C p v = p.eval d • v := by
   have hpow : ∀ n : ℕ, (C ^ n) v = d ^ n • v := by
@@ -27,11 +32,17 @@ theorem aeval_eig {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (C : E 
 def lagP {ι κ : Type*} (c : ι → ℂ) (d : κ → ℂ) (bad : ι → Finset κ) (ρ : ι) : Polynomial ℂ :=
   ∏ σ ∈ bad ρ, (Polynomial.C (c ρ - d σ)⁻¹ * (Polynomial.X - Polynomial.C (d σ)))
 
+/- English proof (translation)
+Rewrite using `[lagP, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero hb (by simp)`.
+-/
 theorem lagrangePoly_eval_eq_zero_of_mem {ι κ : Type*} (c : ι → ℂ) (d : κ → ℂ) (bad : ι → Finset κ) {ρ : ι} {σ : κ}
     (hb : σ ∈ bad ρ) : (lagP c d bad ρ).eval (d σ) = 0 := by
   rw [lagP, Polynomial.eval_prod]
   exact Finset.prod_eq_zero hb (by simp)
 
+/- English proof (translation)
+Rewrite using `[lagP, Polynomial.eval_prod]`. Use `Finset.prod_eq_one fun τ hτ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]`. Rewrite using `[h]`. Conclude with `inv_mul_cancel₀ (sub_ne_zero.mpr (hne τ hτ).symm)`.
+-/
 theorem lagrangePoly_eval_eq_one {ι κ : Type*} (c : ι → ℂ) (d : κ → ℂ) (bad : ι → Finset κ) {ρ : ι} {σ : κ}
     (h : d σ = c ρ) (hne : ∀ τ ∈ bad ρ, d τ ≠ c ρ) : (lagP c d bad ρ).eval (d σ) = 1 := by
   rw [lagP, Polynomial.eval_prod]
@@ -43,10 +54,22 @@ theorem lagrangePoly_eval_eq_one {ι κ : Type*} (c : ι → ℂ) (d : κ → �
 def qP (P : M.Par) (ρ : M.Ty P) : Polynomial ℂ :=
   ∏ i ∈ Finset.Icc 1 (P.k - 1), (Polynomial.X + Polynomial.C ((M.rho P ρ i : ℝ) : ℂ))
 
+/- English proof (translation)
+Rewrite using `[qP, Polynomial.eval_prod]`. Simplify using `[M.xC]`.
+-/
 theorem eval_qP (P : M.Par) (ρ : M.Ty P) (Y : ℂ) : (qP P ρ).eval Y = M.xC P ρ Y := by
   rw [qP, Polynomial.eval_prod]
   simp [M.xC]
 
+/- English proof (translation)
+Set `D : Polynomial ℂ` to `∏ ρ : M.Ty P, ∏ σ : M.Ty (Qx8.P2 P), (if qP (Qx8.P2 P) σ = qP P ρ then 1 else qP (Qx8.P2 P) σ - qP P ρ)`. Establish `hD : D ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun ρ _ => Finset.prod_ne_zero_iff.mpr fun σ _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `one_ne_zero`.
+
+Conclude with `sub_ne_zero.mpr h`. Choose the witnesses or unpack the hypotheses as in `⟨Y, hY⟩ : ∃ Y, D.eval Y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hD (Polynomial.funext fun y => by rw [hcon y, Polynomial.eval_zero])`.
+
+Use `⟨Y, fun ρ σ hex hEq => ?_⟩` and prove the remaining obligations. Take `⟨Y', hY'⟩` from `hex`. Establish `hne : qP (Qx8.P2 P) σ ≠ qP P ρ` using `fun h => hY' (by rw [← eval_qP, ← eval_qP, h])`. Apply `hY` to reduce the goal to its premises. Rewrite using `[Polynomial.eval_prod]`.
+
+Use `Finset.prod_eq_zero (Finset.mem_univ ρ) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod]`. Use `Finset.prod_eq_zero (Finset.mem_univ σ) ?_` and prove the remaining obligations. Rewrite using `[if_neg hne, Polynomial.eval_sub, eval_qP, eval_qP, hEq, sub_self]`.
+-/
 theorem generic (P : M.Par) : ∃ Y : ℂ, ∀ (ρ : M.Ty P) (σ : M.Ty (Qx8.P2 P)),
     (∃ Y', M.xC (Qx8.P2 P) σ Y' ≠ M.xC P ρ Y') → M.xC (Qx8.P2 P) σ Y ≠ M.xC P ρ Y := by
   classical
@@ -74,6 +97,27 @@ theorem generic (P : M.Par) : ∃ Y : ℂ, ∀ (ρ : M.Ty P) (σ : M.Ty (Qx8.P2 
 end LagrangeInterpolation
 
 open LagrangeInterpolation in
+/- English proof (translation)
+Introduce `hE P hOK hk`. Establish `hOK2 : (Qx8.P2 P).OK`. Unfold `Qx8.P2`. Use `⟨hOK.k_pos, hOK.T_pos, hOK.T'_pos, hOK.int_u, hOK.int_u, fun i hmem => ?_⟩` and prove the remaining obligations. Establish `g` using `hOK.gap i hmem`.
+
+Simplify using `only [M.Par.lo, M.Par.hi, max_self, min_self] at g ⊢`. Combine the linear relations using `[le_max_left (P.u (i + 1)) (P.u' (i + 1)), min_le_left (P.u i) (P.u' i)]`. Take `⟨Y, hY⟩` from `generic P`. Use `⟨Y + ((P.k : ℂ) - 2) / 2, fun ρ => lagP (fun ρ => M.xC P ρ Y) (fun σ => M.xC (Qx8.P2 P) σ Y) (fun ρ => Finset.univ.filter fun σ => M.xC (Qx8.P2 P) σ Y ≠ M.xC P ρ Y) ρ, ?_⟩` and prove the remaining obligations. Introduce `Wp _ _ _ z e π hz hT hπ he hez hee Fr hFr C hC ρ`.
+
+Take `⟨S, hSi, -, hSc⟩` from `branching_proof Wp (Qx8.P2 P) hOK2 rfl z e π hz hT hπ he hez hee`. Establish `hSv : ∀ σ, ∀ v ∈ S σ, ∀ Fr' : Fin (P.k - 1) → Fin (2 * P.r + P.k + 1) → ℂ, IsFrameOf P.k P.r [z, e] Fr' → ∀ w', capRep P.k P.r π Fr' w' v = M.xC (Qx8.P2 P) σ (w' - ((P.k : ℂ) - 2) / 2) • v` using `fun σ v hv Fr' hFr' w' => hSc Fr' hFr' σ w' v hv`. Establish `hCv : ∀ σ, ∀ v ∈ S σ, C v = M.xC (Qx8.P2 P) σ Y • v`. Introduce `σ v hv`. Rewrite using `[hC, hSv σ v hv Fr hFr, add_sub_cancel_right]`.
+
+Establish `hKs : ∀ σ, ∀ v ∈ S σ, v ∈ Kset P.k P.r z e π (fun w' => M.xC (Qx8.P2 P) σ (w' - ((P.k : ℂ) - 2) / 2))` using `fun σ v hv Fr' hFr' w' => hSv σ v hv Fr' hFr' w'`. Establish `hRep : Qr.IsRepW P.k P.r z π` using `⟨hπ.2.1, hπ.2.2.1⟩`. Establish `hOrth : ∀ σ, M.xC (Qx8.P2 P) σ Y ≠ M.xC P ρ Y → ∀ v ∈ S σ, v ∈ (K P.k P.r z e π (fun w' => M.xC P ρ (w' - ((P.k : ℂ) - 2) / 2)))ᗮ`. Introduce `σ hne v hv`. Rewrite using `[Submodule.mem_orthogonal]`.
+
+Introduce `u hu`. Use `Submodule.span_induction (fun x hx => ?_) ?_ (fun x y _ _ hx hy => ?_) (fun a x _ hx => ?_) hu` and prove the remaining obligations. Conclude with `hE Wp P.k P.r z e π hz hT hRep hπ.2.2.2.1 ⟨Fr, hFr⟩ _ _ x v hx (hKs σ v hv) ⟨Y + ((P.k : ℂ) - 2) / 2, by simpa using hne.symm⟩`. Conclude with `inner_zero_left _`. Rewrite using `[inner_add_left, hx, hy, add_zero]`.
+
+Rewrite using `[inner_smul_left, hx, mul_zero]`. Establish `hIn : ∀ σ, M.xC (Qx8.P2 P) σ Y = M.xC P ρ Y → ∀ v ∈ S σ, v ∈ K P.k P.r z e π (fun w' => M.xC P ρ (w' - ((P.k : ℂ) - 2) / 2))`. Introduce `σ heq v hv`. Establish `hfun : ∀ Y', M.xC (Qx8.P2 P) σ Y' = M.xC P ρ Y'`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hY ρ σ hc heq`. Use `Submodule.subset_span (fun Fr' hFr' w' => ?_)` and prove the remaining obligations. Use `show capRep P.k P.r π Fr' w' v = M.xC P ρ (w' - ((P.k : ℂ) - 2) / 2) • v`. Rewrite using `[hSv σ v hv Fr' hFr' w', hfun]`.
+
+Use extensionality with `v`. Establish `hv : v ∈ ⨆ σ, S σ`. Rewrite using `[hSi.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction S (motive := fun x => (Polynomial.aeval C) (lagP (fun ρ => M.xC P ρ Y) (fun σ => M.xC (Qx8.P2 P) σ Y) (fun ρ => Finset.univ.filter fun σ => M.xC (Qx8.P2 P) σ Y ≠ M.xC P ρ Y) ρ) x = (K P.k P.r z e π (fun w' => M.xC P ρ (w' - ((P.k : ℂ) - 2) / 2))).starProj …` and prove the remaining obligations.
+
+Introduce `σ x hx`. Rewrite using `[aeval_eig C _ x (hCv σ x hx)]`. Distinguish the cases in `hb : M.xC (Qx8.P2 P) σ Y = M.xC P ρ Y`. Rewrite using `[lagrangePoly_eval_eq_one (fun ρ => M.xC P ρ Y) (fun σ => M.xC (Qx8.P2 P) σ Y) (fun ρ => Finset.univ.filter fun σ => M.xC (Qx8.P2 P) σ Y ≠ M.xC P ρ Y) hb (fun τ hτ => (Finset.mem_filter.mp hτ).2), one_smul]`. Conclude with `((Submodule.starProjection_eq_self_iff).mpr (hIn σ hb x hx)).symm`.
+
+Rewrite using `[lagrangePoly_eval_eq_zero_of_mem (fun ρ => M.xC P ρ Y) (fun σ => M.xC (Qx8.P2 P) σ Y) (fun ρ => Finset.univ.filter fun σ => M.xC (Qx8.P2 P) σ Y ≠ M.xC P ρ Y) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩), zero_smul]`. Conclude with `((Submodule.starProjection_apply_eq_zero_iff _).mpr (hOrth σ hb x hx)).symm`. Simplify using `only [map_zero]`. Introduce `x y hx hy`. Rewrite using `[map_add, map_add, hx, hy]`.
+-/
 theorem lagrange_annihilation : Lagrange := by
   classical
   intro hE P hOK hk

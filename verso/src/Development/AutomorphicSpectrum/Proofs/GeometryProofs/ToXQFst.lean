@@ -18,6 +18,9 @@ abbrev XQ.snd (X : Scheme.{0}) : XQ X ⟶ Sp ℚ := pullback.snd _ _
 def toXQ {X : Scheme.{0}} {F : Type} [Field F] [CharZero F] (x : Sp F ⟶ X) : Sp F ⟶ XQ X :=
   pullback.lift x (spMap (algebraMap ℚ F)) (specULiftZIsTerminal.hom_ext _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[simp] theorem toXQ_fst {X : Scheme.{0}} {F : Type} [Field F] [CharZero F] (x : Sp F ⟶ X) :
     toXQ x ≫ XQ.fst X = x := pullback.lift_fst _ _ _
 

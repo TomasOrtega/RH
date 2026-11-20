@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Take `⟨Us, hUs, hfin, hU⟩` from `X.isBasis_affineOpens.exists_finite_of_isCompact (U := ⊤) isCompact_univ`. Set `s` to `hfin.toFinset`. Use `⟨s.card, fun i => (s.equivFin.symm i).1, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(s.equivFin.symm i).2`. Conclude with `hUs (hfin.mem_toFinset.mp h)`.
+
+Apply `le_antisymm le_top` to reduce the goal to its premises. Rewrite using `[hU]`. Use `sSup_le fun u hu => ?_` and prove the remaining obligations. Establish `hs : u ∈ s` using `hfin.mem_toFinset.mpr hu`. Use `le_iSup_of_le (s.equivFin ⟨u, hs⟩) ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_fin_affineOpen_cover_of_compactSpace (X : Scheme.{0}) [CompactSpace X] :
     ∃ (n : ℕ) (D : Fin n → X.Opens), (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ := by
   obtain ⟨Us, hUs, hfin, hU⟩ :=
@@ -30,6 +37,11 @@ theorem exists_fin_affineOpen_cover_of_compactSpace (X : Scheme.{0}) [CompactSpa
     refine le_iSup_of_le (s.equivFin ⟨u, hs⟩) ?_
     simp
 
+/- English proof (translation)
+Introduce `K _ _ A _ g hA hg`. Take `⟨hax, -, hrk⟩` from `GlobalTheory.T.abelian_variety_h1_axes_primitive_rank K A g hA hg`. Take `⟨hw, hno⟩` from `GlobalTheory.T.abelian_variety_wedge_no_primitive_h2 K A g hA hg`. Use `⟨?_, hrk, hw, hno, hax⟩` and prove the remaining obligations. Use `haveI : IsProper A.hom := hA.proper`.
+
+Use `haveI : CompactSpace A.left := QuasiCompact.compactSpace_of_compactSpace A.hom`. Take `⟨n, D, hD, hcov⟩` from `exists_fin_affineOpen_cover_of_compactSpace A.left`. Take `⟨⟨e⟩, -⟩` from `GlobalTheory.T.cech_cohomology_structure_sheaf_iso K A.left A.hom (Fin n) D inferInstance hD hcov`. Take `⟨hfin, -, -⟩` from `GlobalTheory.T.cech_cohomology_trivial_bundle_abelian K A g hA hg (Fin n) D hD hcov`. Conclude with `Module.Finite.equiv e.symm`.
+-/
 theorem structureSheafCoh_abelianVariety_algClosed :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A] (g : ℕ),
       IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →

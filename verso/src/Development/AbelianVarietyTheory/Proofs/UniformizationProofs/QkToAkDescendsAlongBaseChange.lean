@@ -29,6 +29,9 @@ section Theta
 
 variable {S S' W : Scheme.{0}} {g : S' ⟶ S} {t : W ⟶ S} {t' : W ⟶ S'}
 
+/- English proof (translation)
+Use `pullback.hom_ext (f := t) (g := A.hom) ?_ ?_` and prove the remaining obligations. Use `show (ω ≫ Ω) ≫ (fst (Over.mk t) A).left = 𝟙 _ ≫ (fst (Over.mk t) A).left`. Rewrite using `[Category.assoc, H₁, h₁, Category.id_comp]`. Use `show (ω ≫ Ω) ≫ (snd (Over.mk t) A).left = 𝟙 _ ≫ (snd (Over.mk t) A).left`. Rewrite using `[Category.assoc, H₂, h₂, Category.id_comp]`.
+-/
 theorem inv_cmp {A : Over S} {A' : Over S'} {Φ : A'.left ⟶ A.left}
     {ω : (Over.mk t ⊗ A).left ⟶ (Over.mk t' ⊗ A').left} {Ω : (Over.mk t' ⊗ A').left ⟶ (Over.mk t ⊗ A).left}
     (h₁ : ω ≫ (fst (Over.mk t') A').left = (fst (Over.mk t) A).left)
@@ -43,6 +46,9 @@ theorem inv_cmp {A : Over S} {A' : Over S'} {Φ : A'.left ⟶ A.left}
 
 variable {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {Φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left}
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Establish `e : pushHom hp (Over.mk t') x' = x` using `Over.OverMorphism.ext hx`. Establish `e₂` using `congrArg (pushHom hp (Over.mk t')) h`. Rewrite `e₂` using `[map_pow, map_one, e]`. Conclude with `e₂`.
+-/
 theorem pow_eq_one_of_pull (ht : t' ≫ g = t) (hp : IsGrpPullback A' A g Φ) {x : Over.mk t ⟶ A}
     {x' : Over.mk t' ⟶ A'} (hx : x'.left ≫ Φ = x.left) {k : ℕ} (h : x' ^ k = 1) : x ^ k = 1 := by
   subst ht
@@ -53,6 +59,11 @@ theorem pow_eq_one_of_pull (ht : t' ≫ g = t) (hp : IsGrpPullback A' A g Φ) {x
 
 omit [GrpObj A] [GrpObj A'] in
 
+/- English proof (translation)
+Establish `e : (r ≫ Ω) ≫ ω = r` using `by rw [Category.assoc, hΩ, Category.comp_id]`. Establish `e₂ : (r ≫ Ω) ≫ (snd (Over.mk t) A).left = (r ≫ (snd (Over.mk t') A').left) ≫ Φ`. Rewrite using `[Category.assoc, H₂, Category.assoc]`. Establish `c` using `m Z (r ≫ Ω) z _ _ (hJ ((r ≫ Ω) ≫ (snd (Over.mk t) A).left)) (hJ' (((r ≫ Ω) ≫ ω) ≫ (snd (Over.mk t') A').left))`. Rewrite `c` using `[e]`.
+
+Use `c.trans ?_` and prove the remaining obligations. Rewrite using `[e₂]`. Both sides reduce to the same expression.
+-/
 theorem moved_val {v : LB.Iso L' (L.pull Φ)} {ω : (Over.mk t ⊗ A).left ⟶ (Over.mk t' ⊗ A').left}
     {Ω : (Over.mk t' ⊗ A').left ⟶ (Over.mk t ⊗ A).left} (hΩ : Ω ≫ ω = 𝟙 _)
     (H₂ : Ω ≫ (snd (Over.mk t) A).left = (snd (Over.mk t') A').left ≫ Φ) {k : ℤ}
@@ -69,6 +80,17 @@ theorem moved_val {v : LB.Iso L' (L.pull Φ)} {ω : (Over.mk t ⊗ A).left ⟶ (
   rw [e₂]
   rfl
 
+/- English proof (translation)
+Establish `c₁` using `translPt_cmp ht hp hx h₁ h₂`. Establish `c₂` using `translT_cmp ht hp hx h₁ h₂`. Establish `hω` using `inv_cmp h₁ h₂ H₁ H₂`. Establish `c₃ : (translPt A' x').left ≫ Φ = Ω ≫ (translPt A θ.pt).left`. Rewrite using `[← c₁, ← Category.assoc Ω, hΩ, Category.id_comp]`.
+
+Establish `c₄ : (translT A' x').left ≫ Ω = Ω ≫ (translT A θ.pt).left`. Establish `e` using `congrArg (fun q => Ω ≫ q ≫ Ω) c₂`. Simplify using `only [Category.assoc, hω, Category.comp_id] at e`. Rewrite using `[e, ← Category.assoc Ω, hΩ, Category.id_comp]`. Take `⟨u, hu, hval⟩` from `exists_genPull v ((isGen_iff v).2 hv) hL hL' (K := Fin 2) ![(snd (Over.mk t') A').left, (translPt A' x').left] ![(snd (Over.mk t) A).left, (translPt A θ.pt).left] ![k, -k] Ω (fun κ => by fin_cases κ; exacts [H₂.symm, c₃]) θ.φ θ.isGen`.
+
+Use `⟨⟨x', u, hu⟩, rfl, fun s' s₂' s s₂ m m₂ H => ActVal.isActOf hL' fun Z r z J' hJ' => ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun ψ : Z ⟶ A.left => exists_chart hL (ψ z)`. Establish `hJ : Good L z J` using `hJ`. Establish `a` using `actVal_of_isActOf H Z (r ≫ Ω) z J hJ`. Establish `b` using `hval Z r z J J' hJ hJ'`.
+
+Establish `c` using `moved_val hΩ H₂ m₂ r z hJ hJ'`. Establish `d` using `moved_val hΩ H₂ m (r ≫ (translT A' x').left) z hJ hJ'`. Rewrite `d` using `[Category.assoc, c₄, ← Category.assoc, Category.assoc r (translT A' x').left, translT_snd_left]`. Rewrite `b` using `[Fin.prod_univ_two]`. Establish `f` using `c.symm.trans (a.trans (congrArg₂ (· * ·) (congrArg Units.val b) d))`.
+
+Use `(Units.mul_right_inj (wGerm v z J J' (r ≫ (snd (Over.mk t') A').left) ^ k)).1 (f.trans ?_)` and prove the remaining obligations. Use `show (wGerm v z J J' (r ≫ (snd (Over.mk t') A').left) ^ k * wGerm v z J J' (r ≫ (translPt A' x').left) ^ (-k) * thetaVal ⟨x', u, hu⟩ r z J').val * _ = _`. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul, zpow_neg, mul_right_comm _ _⁻¹, inv_mul_cancel_right]`.
+-/
 theorem exists_theta_pulled (hL : L.IsLB) (hL' : L'.IsLB) (ht : t' ≫ g = t) (hp : IsGrpPullback A' A g Φ)
     {v : LB.Iso L' (L.pull Φ)} (hv : PGen v) {ω : (Over.mk t ⊗ A).left ⟶ (Over.mk t' ⊗ A').left}
     {Ω : (Over.mk t' ⊗ A').left ⟶ (Over.mk t ⊗ A).left}
@@ -114,6 +136,9 @@ section Gen
 
 variable {X X' Y Y' : Scheme.{0}} {L : LB X} {L' : LB X'} {Φ : X' ⟶ X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `rfl : φ = fun k => φ' k ≫ Φ` from `funext fun k => ((hc k).trans (Category.id_comp _)).symm`. Take `⟨t, ht, h⟩` from `exists_up hw hL hL' a ha`. Use `⟨t, ht, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `h Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`.
+-/
 theorem exists_pmaps_up {w : LB.Iso L' (L.pull Φ)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB)
     {φ' : K → (Y ⟶ X')} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (hc : ∀ κ, φ' κ ≫ Φ = 𝟙 _ ≫ φ κ)
     (a : LB.Gen (LB.LinComb L' φ' ε)) (ha : a.IsGen) :
@@ -124,6 +149,9 @@ theorem exists_pmaps_up {w : LB.Iso L' (L.pull Φ)} (hw : PGen w) (hL : L.IsLB) 
   rw [Category.comp_id]
   exact h Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)
 
+/- English proof (translation)
+Use `sec_ext_val hL (fun y J hJ => ?_) j` and prove the remaining obligations. Use `choose J' hJ' using fun ψ : Y ⟶ X' => exists_chart hL' (ψ y)`. Establish `hJ' : Good L' y J'` using `hJ'`. Establish `e` using `(H.val hc n y hJ hJ').trans (H₂.val hc n y hJ hJ').symm`. Rewrite `e` using `[hn]`. Then use the resulting hypothesis.
+-/
 theorem sec_eq_of_pull (hL : L.IsLB) (hL' : L'.IsLB) {w : LB.Iso L' (L.pull Φ)} {φ' : K → (Y' ⟶ X')}
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {h : Y' ⟶ Y} {n : Y ⟶ Y'} (hn : n ≫ h = 𝟙 _) (hc : ∀ κ, φ' κ ≫ Φ = h ≫ φ κ)
     {a : LB.Sec (LB.LinComb L' φ' ε)} {s s₂ : LB.Sec (LB.LinComb L φ ε)} (H : IsSecPull w φ' φ ε h a s)
@@ -143,6 +171,43 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.FieldBaseChange GlobalTheory.ThetaBaseChange GlobalTheory.ThetaDescent in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hG _ R R' _ _ _ _ I I' _ _ φ D A G _ _ U G' _ _ bc hbc A' D' hD U' hU F _ _ _ hF k hk p x p' x' hy hg hx H w hw`. Take `⟨wL, hwL, -, -, hlev⟩` from `(isPullUnif_iff_stalks R R' I I' φ D D' hD A A' G G' bc U U').1 hU`. Take `⟨w', hw'⟩` from `U'.ext`. Take `⟨hx1, H⟩` from `H w' hw'`. Take `⟨g, hg₁, hg₂⟩` from `exists_fraction_map φ F hF`.
+
+Establish `gA` using `grp_generic U.toUnifPre`. Establish `gΨ : IsGrpPullback G' G (specOf φ) (bc.hom.left ≫ pullback.fst G.hom (specOf φ))` using `((isGrpPullback_of_iso bc).comp (isGrpPullback_pullback G (specOf φ))).congr (Category.id_comp _) rfl`. Establish `hΘF : (jFK (R` using `R') F ≫ jK R') ≫ specOf φ = jFK (R := R) F ≫ jK R := by`. Rewrite using `[Category.assoc, ← hg₁, ← Category.assoc, hg₂]`. Take `⟨Θ, hΘ₁, hΘ₂⟩` from `exists_cmp hΘF (pull_grp hD).1.w`.
+
+Establish `gA'` using `(grp_generic U'.toUnifPre).comp gΨ`. Take `⟨Φ, hΦ₁, hΦ₂⟩ : ∃ Φ : A'.A.left ⟶ A.A.left, Φ ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) = (U'.gen.inv.left ≫ pullback.fst G'.hom (jK R')) ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ) ∧ Φ ≫ A.A.hom = A'.A.hom ≫ g` from `⟨gA.1.lift _ (A'.A.hom ≫ g) (by rw [gA'.1.w, Category.assoc, hg₁]), gA.1.lift_fst _ _ _, gA.1.lift_snd _ _ _⟩`. Establish `gΦ : IsGrpPullback A'.A A.A g Φ` using `gA.cancel (gA'.congr hg₁.symm hΦ₁.symm) hΦ₂`. Establish `hxΦ : x'.left ≫ Φ = x.left` using `gA.1.hom_ext (by`. Rewrite using `[Category.assoc, hΦ₁, ← hx]; simp only [Category.assoc]) (by`.
+
+Rewrite using `[Category.assoc, hΦ₂, ← Category.assoc, Over.w x', Over.w x]`. Conclude with `hg₂)`. Use `⟨pow_eq_one_of_pull hg₂ gΦ hxΦ hx1, fun θ hθ => ?_⟩` and prove the remaining obligations. Establish `n₁ : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, U.gen.inv_hom_id, Over.id_left]`. Establish `n₂ : U'.gen.inv.left ≫ U'.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, U'.gen.inv_hom_id, Over.id_left]`.
+
+Establish `n₃ : U'.gen.hom.left ≫ U'.gen.inv.left = 𝟙 _` using `by rw [← Over.comp_left, U'.gen.hom_inv_id, Over.id_left]`. Establish `hΦ₃ : (U'.gen.hom.left ≫ Φ) ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) = pullback.fst G'.hom (jK R') ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ)`. Rewrite using `[Category.assoc, hΦ₁, ← Category.assoc, ← Category.assoc U'.gen.hom.left, n₃]`. Conclude with `congrArg (· ≫ _) (Category.id_comp _)`. Take `⟨v₂, hv₂, hsq⟩` from `exists_side A.isLB A'.isLB U.LG.isLB U'.LG.isLB hw _ n₁ hw' hwL _ hΦ₃`.
+
+Take `⟨v, hv, hvv⟩` from `exists_unpull hv₂ _ n₂ (P := Φ) (by rw [← Category.assoc, n₂, Category.id_comp])`. Take `⟨Ω, hΩ₁, hΩ₂⟩` from `exists_cmp hg₂ hΦ₂`. Take `⟨ω, hω₁, hω₂⟩` from `exists_cmp_inv hg₂ gΦ.1`. Establish `hΩω : Ω ≫ ω = 𝟙 _` using `cmp_ext gΦ.1 (by rw [Category.assoc, hω₁, hΩ₁, Category.id_comp]) (by rw [Category.assoc, hω₂, hΩ₂, Category.id_comp])`. Set `n : TFK (R` to `R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)`.
+
+Establish `hn : n.left ≫ (U.toUnifPre.genF F).left = 𝟙 _` using `congrArg (fun q => q.left) (show n ≫ U.toUnifPre.genF F = 𝟙 _ by`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [n])`. Establish `hn₁ : n.left ≫ (fst (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = (fst (TFK (R := R) F) A.A).left := congrArg (fun q => q.left) (lift_fst _ _ : n ≫ fst _ _ = _)`. Establish `hn₂ : n.left ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = (snd (TFK (R := R) F) A.A).left ≫ U.gen.inv.left := congrArg (fun q => q.left) (lift_snd _ _ : n ≫ snd _ _ = _)`. Establish `hh₁ : (U'.toUnifPre.genF F).left ≫ (fst (TFK (R` using `R') F) A'.A).left = (fst (TFK (R := R') F) ((Over.pullback (jK R')).obj G')).left := congrArg (fun q => q.left) (lift_fst _ _ : U'.toUnifPre.genF F ≫ fst _ _ = _)`.
+
+Establish `hh₂ : (U'.toUnifPre.genF F).left ≫ (snd (TFK (R` using `R') F) A'.A).left = (snd (TFK (R := R') F) ((Over.pullback (jK R')).obj G')).left ≫ U'.gen.hom.left := congrArg (fun q => q.left) (lift_snd _ _ : U'.toUnifPre.genF F ≫ snd _ _ = _)`. Take `⟨Ξ, hΞ⟩ : ∃ Ξ : (UnifPre.GF (G` from `G') F).left ⟶ (UnifPre.GF (G := G) F).left, Ξ = (U'.toUnifPre.genF F).left ≫ Ω ≫ n.left := ⟨_, rfl⟩`. Establish `x₁ : (Ξ ≫ (U.toUnifPre.genF F).left) ≫ ω = (U'.toUnifPre.genF F).left`. Rewrite using `[hΞ, Category.assoc _ (Ω ≫ n.left), Category.assoc Ω, hn, Category.comp_id, Category.assoc, hΩω, Category.comp_id]`. Establish `x₂ : Ξ ≫ (snd (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = (snd (TFK (R := R') F) ((Over.pullback (jK R')).obj G')).left ≫ (U'.gen.hom.left ≫ Φ) ≫ U.gen.inv.left := by`.
+
+Rewrite using `[hΞ, Category.assoc, Category.assoc, hn₂, ← Category.assoc Ω]`. Use `(congrArg (fun a => _ ≫ a ≫ _) hΩ₂).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc, hh₂]`. Simplify using `only [Category.assoc]`. Establish `hΞ₁ : Ξ ≫ (fst (TFK (R` using `R) F) ((Over.pullback (jK R)).obj G)).left = (fst (TFK (R := R') F) ((Over.pullback (jK R')).obj G')).left := by`.
+
+Rewrite using `[hΞ, Category.assoc, Category.assoc, hn₁]`. Conclude with `(congrArg (_ ≫ ·) hΩ₁).trans hh₁`. Establish `hΞ₂ : Ξ ≫ UnifPre.gFK (G` using `G) F = UnifPre.gFK (G := G') F ≫ (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) := by`. Use `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) x₂).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ ((congrArg (_ ≫ ·) hΦ₃).trans (Category.assoc _ _ _).symm)` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc]`. Take `⟨θ', hθ', hact⟩` from `exists_theta_pulled A.isLB A'.isLB hg₂ gΦ hv hω₁ hω₂ hΩ₁ hΩ₂ hΩω θ (x' := x') (by rw [hθ]; exact hxΦ)`. Take `⟨ν', hν', Hν'⟩` from `H θ' hθ'`. Establish `hl : ∀ i, DegPre.lineφ D'.toPre F p'.g.b i ≫ (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ)) = 𝟙 _ ≫ DegPre.lineφ D.toPre F p.g.b i` using `fun i => by`. Take `⟨hψ, -⟩` from `hg.2 0`.
+
+Use `fin_cases i`. Conclude with `hψ 3`. Conclude with `hψ 2`. Take `⟨ν, hν, pm⟩` from `exists_pmaps_up ((isGen_iff hD.w).1 hD.w_gen) D.toPre.P.isLB D'.toPre.P.isLB hl ν' hν'`. Use `⟨ν, hν, fun t t₂ s s₂ E E₂ hA => ?_⟩` and prove the remaining obligations.
+
+Establish `bij` using `expandsF_bijective U.toUnifPre F hG hk (U.expand k hk) hw`. Establish `bij'` using `expandsF_bijective U'.toUnifPre F hG hk (U'.expand k hk) hw'`. Use `choose pl hpl using exists_fam_field_pull hG R R' φ D.toPre D'.toPre hD F hF Θ hΘ₁ hΘ₂ k`. Establish `hT` using `PhiPull.base_eq hF`. Take `⟨Λ, hΛ₁, hΛ₂⟩` from `exists_cmp_inv hΘF (pull_grp hD).1`.
+
+Establish `hΛ` using `inv_cmp hΛ₁ hΛ₂ hΘ₁ hΘ₂`. Establish `inj : ∀ b b₂, pl b = pl b₂ → b = b₂` using `fun b b₂ e => fam_ext fun α j => by`. Take `⟨α', rfl⟩` from `hD.xe.surjective α`. Establish `h₂` using `hpl b₂ α'`. Rewrite `h₂` using `[← e]`.
+
+Conclude with `sec_eq_of_pull D.toPre.P.isLB D'.toPre.P.isLB hΛ (FamFieldPull.famφ_pr hD F hT hΘ₁ hΘ₂ α') (hpl b α') h₂ j`. Establish `key : ∀ a b, U.toUnifPre.ExpandsF F k w a b → ∃ a', Moved v ω a' a ∧ U'.toUnifPre.ExpandsF F k w' a' (pl b)` using `fun a₀ b₀ E₀ => by`. Take `⟨a', E⟩` from `(bij'.2 (pl b₀)).exists`. Take `⟨a, ha⟩` from `exists_moved A.isLB A'.isLB hω₂ n₂ hv₂ hvv a'`. Take `⟨b, σ, h₁, h₂⟩` from `(bij.1 a).exists`.
+
+Establish `e : pl b = pl b₀`. Use `(bij'.1 a').unique ?_ E` and prove the remaining obligations. Take `⟨σ', h₁', -⟩` from `E`. Conclude with `⟨σ', h₁', expandsG_transport R R' I I' φ D D' hD A A' G G' bc hbc U.toUnifPre U'.toUnifPre wL hwL hlev F hF Θ hΘ₁ hΘ₂ Ξ hΞ₁ hΞ₂ k σ σ' b (pl b) (moved_sec A.isLB A'.isLB n₃ n₁ hΦ₃ hsq hvv x₁ x₂ ha h₁ h₁') (hpl b) h₂⟩`. Take `rfl` from `inj _ _ e`.
+
+Take `rfl : a = a₀` from `(bij.2 b).unique ⟨σ, h₁, h₂⟩ E₀`. Conclude with `⟨a', ha, E⟩`. Take `⟨t', m, e⟩` from `key t s E`. Take `⟨t₂', m₂, e₂⟩` from `key t₂ s₂ E₂`. Establish `P'` using `(phiRel_iff hG p' ν' hν' _ _).1 (Hν' t' t₂' _ _ e e₂ (hact t' t₂' t t₂ m m₂ hA))`.
+
+Take `⟨s₃, P⟩` from `exists_phi hG p ν hν D.tau_bimult s`. Establish `P''` using `PhiPull.phiVal_pull hD hT hΘ₁ hΘ₂ hG p p' hy hg ν ν' hl pm s s₃ _ _ (hpl s) (hpl s₃) P`. Take `rfl` from `inj _ _ (phi_unique p' ν' P'' P')`. Conclude with `(phiRel_iff hG p ν hν _ _).2 P`.
+-/
 theorem qkToAk_of_baseChange : GlobalFnsSt → SecBaseChangeSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R'), AdmBase R I → AdmBase R' I' → ∀ (φ : R →+* R') (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Unif I D A G) (G' : Over (Spec (CommRingCat.of R'))) [GrpObj G'] [IsCommMonObj G'] (bc : G' ≅ (Over.pullback (specOf φ)).obj G), IsMonHom bc.hom → ∀ (A' : PolAV (Spec (CommRingCat.of (FractionRing R')))) (D' : DegData R' I') (hD : IsPullDeg φ D.toPre D'.toPre) (U' : Unif I' D' A' G'), IsPullUnif φ hD bc U U' → ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing R') F], (∀ r : R, algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r) = algebraMap (FractionRing R') F (algebraMap R' (FractionRing R') (φ r))) → ∀ (k : ℕ), 1 ≤ k → ∀ (p : QkPt D.toPre F k) (x : TFK (R := R) F ⟶ A.A) (p' : QkPt D'.toPre F k) (x' : TFK (R := R') F ⟶ A'.A), p'.y = hD.xe.symm p.y → IsPullGtF φ hD F p.g p'.g → x'.left ≫ U'.gen.inv.left ≫ pullback.fst G'.hom (jK R') ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ) = x.left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) → QkToAkU U'.toUnifPre F k p' x' → QkToAkU U.toUnifPre F k p x := by
   intro hG _ R R' _ _ _ _ I I' _ _ φ D A G _ _ U G' _ _ bc hbc A' D' hD U' hU F _ _ _ hF k hk p x p' x' hy hg hx H w hw
   obtain ⟨wL, hwL, -, -, hlev⟩ := (isPullUnif_iff_stalks R R' I I' φ D D' hD A A' G G' bc U U').1 hU

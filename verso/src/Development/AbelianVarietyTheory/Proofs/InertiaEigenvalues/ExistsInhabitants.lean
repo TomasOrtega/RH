@@ -8,23 +8,39 @@ open Polynomial IsLocalRing
 section
 variable (p : ℕ) [hp : Fact p.Prime]
 
+/- English proof (translation)
+Simplify using `[WittVector.FractionRing.frobenius]`.
+-/
 theorem frob_algebraMap (x : WittVector p (GaloisField p 2)) :
     WittVector.FractionRing.frobenius p (GaloisField p 2) (algebraMap _ _ x) =
       algebraMap _ (FractionRing (WittVector p (GaloisField p 2))) (WittVector.frobenius x) := by
   simp [WittVector.FractionRing.frobenius]
 
+/- English proof (translation)
+The claim follows from `(WittVector.irreducible p).maximalIdeal_eq`.
+-/
 theorem witt_max : maximalIdeal (WittVector p (GaloisField p 2)) = Ideal.span {(p : WittVector p (GaloisField p 2))} :=
   (WittVector.irreducible p).maximalIdeal_eq
 
 def wittResEquiv : ResidueField (WittVector p (GaloisField p 2)) ≃+* GaloisField p 2 :=
   (Ideal.quotEquivOfEq (witt_max p)).trans WittVector.quotientPEquiv
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite (GaloisField p 2)`. Establish `hc : Fintype.card (GaloisField p 2) = p ^ 2`. Rewrite using `[← Nat.card_eq_fintype_card, GaloisField.card p _ two_ne_zero]`. Rewrite using `[← pow_mul, ← pow_two, ← hc, FiniteField.pow_card]`.
+-/
 theorem galois_pow (x : GaloisField p 2) : (x ^ p) ^ p = x := by
   letI := Fintype.ofFinite (GaloisField p 2)
   have hc : Fintype.card (GaloisField p 2) = p ^ 2 := by
     rw [← Nat.card_eq_fintype_card, GaloisField.card p _ two_ne_zero]
   rw [← pow_mul, ← pow_two, ← hc, FiniteField.pow_card]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `letI := Fintype.ofFinite (GaloisField p 2)`. Establish `hc : Fintype.card (GaloisField p 2) = p ^ 2`. Rewrite using `[← Nat.card_eq_fintype_card, GaloisField.card p _ two_ne_zero]`.
+
+Establish `h1` using `hp.out.one_lt`. Establish `hz : (X ^ p - X : (GaloisField p 2)[X]) = 0`. Apply `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero (f := id) _ Function.injective_id` to reduce the goal to its premises. Introduce `i`. Simplify using `[h i]`.
+
+Rewrite using `[FiniteField.X_pow_card_sub_X_natDegree_eq _ h1, hc]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `FiniteField.X_pow_card_sub_X_ne_zero _ h1 hz`.
+-/
 theorem galois_exists : ∃ x : GaloisField p 2, x ^ p ≠ x := by
   by_contra h
   push_neg at h

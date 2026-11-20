@@ -15,11 +15,21 @@ namespace Formalism.MainNotions.BridgeLemma
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.MainNotions.S.Bridge
 
+/- English proof (translation)
+The claim follows from `lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg D.R.k D.R.rS z z' hz hz' hT hT' γ h.1) (Ne.symm h.2.2)`.
+-/
 theorem cell_G_pos (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} {γ : MatKR D.R.k D.R.rS}
     {p : Point ℂ (D.R.rS + 1)} (h : RelPt D z z' γ p) (hz : inWb D.R.k D.R.rS z) (hz' : inWb D.R.k D.R.rS z')
     (hT : 0 < Tz D.R.k D.R.rS z) (hT' : 0 < Tz D.R.k D.R.rS z') : 0 < Gf D.R.k D.R.rS z z' γ :=
   lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg D.R.k D.R.rS z z' hz hz' hT hT' γ h.1) (Ne.symm h.2.2)
 
+/- English proof (translation)
+Proceed by induction on `xs with`. Consider the case `nil => intro a q`. Simplify using the standard rewrite rules. Consider the case `cons x xs ih`. Introduce `a q`.
+
+Consider the cases of `q with`. Consider the case `zero => simp [List.scanl_cons]`. Consider the case `succ q`. Use `ih (a + x) q` as an intermediate fact. Rewrite using `[List.scanl_cons, List.take_succ_cons, List.sum_cons, List.mem_cons]`.
+
+Use `right`. Rewrite `this` using `[add_assoc]`. Then use the resulting hypothesis.
+-/
 theorem mem_scanl_take (xs : List ℕ) : ∀ (a q : ℕ), a + (xs.take q).sum ∈ xs.scanl (· + ·) a := by
   induction xs with
   | nil => intro a q; simp
@@ -33,6 +43,13 @@ theorem mem_scanl_take (xs : List ℕ) : ∀ (a q : ℕ), a + (xs.take q).sum �
       right
       rwa [add_assoc] at this
 
+/- English proof (translation)
+Establish `h` using `mem_scanl_take (p.1.map Prod.snd) 0 q`. Rewrite `h` using `[zero_add, ← hl]`. Unfold `ptBlockEnds`. Consider the cases of `hxs : p.1.map Prod.snd with`. Consider the case `nil`.
+
+Rewrite `hl` using `[hxs]`. Simplify using `at hl`. Use linear arithmetic over natural numbers and integers. Consider the case `cons x xs`. Rewrite `h` using `[hxs, List.scanl_cons, List.mem_cons]`.
+
+Rewrite using `[List.scanl_cons, List.tail_cons]`. Break down `h with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h`.
+-/
 theorem mem_blockEnds_of_take {i : ℕ} (p : Point ℂ i) (q l : ℕ) (h1 : 1 ≤ l)
     (hl : l = ((p.1.map Prod.snd).take q).sum) : l ∈ ptBlockEnds p := by
   have h := mem_scanl_take (p.1.map Prod.snd) 0 q
@@ -50,6 +67,11 @@ theorem mem_blockEnds_of_take {i : ℕ} (p : Point ℂ i) (q l : ℕ) (h1 : 1 �
     · omega
     · exact h
 
+/- English proof (translation)
+Take `⟨L, U, hL, hU, hZ⟩` from `h.2.1`. Establish `e : DminN z z' γ l = leadMinor (Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS z z' γ) l hl`. Unfold `DminN`. Rewrite using `[dif_pos (Nat.lt_succ_of_le hl)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ← normSq_leadMinor_ZhatO, hZ, leadMinor_cell L (ptMat p) U hL hU l hl]`.
+-/
 theorem cell_normSq (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} {γ : MatKR D.R.k D.R.rS}
     {p : Point ℂ (D.R.rS + 1)} (h : RelPt D z z' γ p) (l : ℕ) (hl : l ≤ D.R.rS + 1) :
     Complex.normSq (DminN z z' γ l) = Complex.normSq (leadMinor (ptMat p) l hl) := by
@@ -60,6 +82,13 @@ theorem cell_normSq (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} {γ :
     rfl
   rw [e, ← normSq_leadMinor_ZhatO, hZ, leadMinor_cell L (ptMat p) U hL hU l hl]
 
+/- English proof (translation)
+Establish `h2 : leadMinor (ptMat p) l hl ≠ 0`. Introduce `h0`. Use `cell_normSq D h l hl` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `hne (Complex.normSq_eq_zero.1 this)`.
+
+Establish `e : leadMinor (ptMat p) l hl = Formalism.HermitianLatticeCounting.ExpansionTerms.leadingPrincipalMinor (Formalism.HermitianLatticeCounting.ExpansionTerms.blockAntidiagonalMatrix (Formalism.MainNotions.BesselShellMomentBounds.toComp p) (Formalism.MainNotions.BesselShellMomentBound …`. Rewrite using `[← Formalism.MainNotions.BesselShellMomentBounds.ptMat_eq]`. Conclude with `Formalism.MainNotions.BesselShellMomentBounds.leadMinorK_eq _ _ _`. Assume the negation of the conclusion as `hcon`. Apply `h2` to reduce the goal to its premises.
+
+Rewrite using `[e]`. Apply `Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aVanish ℂ _ _ _ l hl` to reduce the goal to its premises. Introduce `q hq`. Conclude with `hcon (mem_blockEnds_of_take p q l h1 hq)`.
+-/
 theorem cell_mem_blockEnds (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} {γ : MatKR D.R.k D.R.rS}
     {p : Point ℂ (D.R.rS + 1)} (h : RelPt D z z' γ p) (l : ℕ) (h1 : 1 ≤ l) (hl : l ≤ D.R.rS + 1)
     (hne : DminN z z' γ l ≠ 0) : l ∈ ptBlockEnds p := by
@@ -79,6 +108,9 @@ theorem cell_mem_blockEnds (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ
   intro q hq
   exact hcon (mem_blockEnds_of_take p q l h1 hq)
 
+/- English proof (translation)
+Apply `mem_blockEnds_of_take p (p.1.map Prod.snd).length (r + 1) (by omega)` to reduce the goal to its premises. Rewrite using `[List.take_length]`. Conclude with `p.2.2.symm`.
+-/
 theorem cell_last_mem {r : ℕ} (p : Point ℂ (r + 1)) : r + 1 ∈ ptBlockEnds p := by
   apply mem_blockEnds_of_take p (p.1.map Prod.snd).length (r + 1) (by omega)
   rw [List.take_length]
@@ -94,6 +126,11 @@ namespace Formalism.MainNotions.BridgeLemma
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.MainNotions.S.Bridge
 
+/- English proof (translation)
+Proceed by induction on `xs with`. Consider the case `nil => intro a y h; simp at h; exact ⟨0, by simp [h]⟩`. Consider the case `cons x xs ih`. Introduce `a y h`. Rewrite `h` using `[List.scanl_cons, List.mem_cons]`.
+
+Break down `h with h | h` into its components or cases. Conclude with `⟨0, by simp [h]⟩`. Take `⟨q, hq⟩` from `ih _ _ h`. Conclude with `⟨q + 1, by rw [hq, List.take_succ_cons, List.sum_cons, add_assoc]⟩`.
+-/
 theorem take_of_mem_scanl (xs : List ℕ) : ∀ (a y : ℕ), y ∈ xs.scanl (· + ·) a → ∃ q, y = a + (xs.take q).sum := by
   induction xs with
   | nil => intro a y h; simp at h; exact ⟨0, by simp [h]⟩
@@ -105,15 +142,26 @@ theorem take_of_mem_scanl (xs : List ℕ) : ∀ (a y : ℕ), y ∈ xs.scanl (· 
     · obtain ⟨q, hq⟩ := ih _ _ h
       exact ⟨q + 1, by rw [hq, List.take_succ_cons, List.sum_cons, add_assoc]⟩
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `take_of_mem_scanl (p.1.map Prod.snd) 0 l (List.mem_of_mem_tail h)`. Conclude with `⟨q, by rw [hq, zero_add]⟩`.
+-/
 theorem take_of_mem_blockEnds {i : ℕ} (p : Point ℂ i) (l : ℕ) (h : l ∈ ptBlockEnds p) :
     ∃ q, l = ((p.1.map Prod.snd).take q).sum := by
   obtain ⟨q, hq⟩ := take_of_mem_scanl (p.1.map Prod.snd) 0 l (List.mem_of_mem_tail h)
   exact ⟨q, by rw [hq, zero_add]⟩
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `take_of_mem_blockEnds p l h`. Conclude with `(Formalism.MainNotions.BesselShellMomentBounds.toComp p).sizeUpTo_le q`.
+-/
 theorem blockEnd_le {i : ℕ} (p : Point ℂ i) (l : ℕ) (h : l ∈ ptBlockEnds p) : l ≤ i := by
   obtain ⟨q, rfl⟩ := take_of_mem_blockEnds p l h
   exact (Formalism.MainNotions.BesselShellMomentBounds.toComp p).sizeUpTo_le q
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `take_of_mem_blockEnds p l h`. Establish `e : leadMinor (ptMat p) ((p.1.map Prod.snd).take q).sum hl = Formalism.HermitianLatticeCounting.ExpansionTerms.leadingPrincipalMinor (Formalism.HermitianLatticeCounting.ExpansionTerms.blockAntidiagonalMatrix (Formalism.MainNotions.BesselShellMomentBounds.toComp p) (Formalism.Main …`. Rewrite using `[← Formalism.MainNotions.BesselShellMomentBounds.ptMat_eq]`. Conclude with `Formalism.MainNotions.BesselShellMomentBounds.leadMinorK_eq _ _ _`. Rewrite using `[e, Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aValue]`.
+
+Use `Finset.prod_ne_zero_iff.2 (fun a _ => mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ ?_))` and prove the remaining obligations. Conclude with `Formalism.MainNotions.BesselShellMomentBounds.toT_ne p a`.
+-/
 theorem leadMinor_blockEnd_ne {i : ℕ} (p : Point ℂ i) (l : ℕ) (h : l ∈ ptBlockEnds p) (hl : l ≤ i) :
     leadMinor (ptMat p) l hl ≠ 0 := by
   obtain ⟨q, rfl⟩ := take_of_mem_blockEnds p l h
@@ -126,6 +174,9 @@ theorem leadMinor_blockEnd_ne {i : ℕ} (p : Point ℂ i) (l : ℕ) (h : l ∈ p
   refine Finset.prod_ne_zero_iff.2 (fun a _ => mul_ne_zero (pow_ne_zero _ (by norm_num)) (pow_ne_zero _ ?_))
   exact Formalism.MainNotions.BesselShellMomentBounds.toT_ne p a
 
+/- English proof (translation)
+Introduce `h0`. Establish `hl` using `blockEnd_le p l hm`. Use `cell_normSq D h l hl` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `leadMinor_blockEnd_ne p l hm hl (Complex.normSq_eq_zero.1 this.symm)`.
+-/
 theorem cell_ne_of_mem (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} {γ : MatKR D.R.k D.R.rS}
     {p : Point ℂ (D.R.rS + 1)} (h : RelPt D z z' γ p) (l : ℕ) (hm : l ∈ ptBlockEnds p) : DminN z z' γ l ≠ 0 := by
   intro h0
@@ -134,11 +185,19 @@ theorem cell_ne_of_mem (D : D7) {z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ} {�
   rw [h0, map_zero] at this
   exact leadMinor_blockEnd_ne p l hm hl (Complex.normSq_eq_zero.1 this.symm)
 
+/- English proof (translation)
+Break down `le_total 1 x with h | h` into its components or cases. Conclude with `le_max_of_le_left h`. Conclude with `le_max_of_le_right ((one_le_inv₀ hx).2 h)`.
+-/
 theorem one_le_max_inv {x : ℝ} (hx : 0 < x) : 1 ≤ max x x⁻¹ := by
   rcases le_total 1 x with h | h
   · exact le_max_of_le_left h
   · exact le_max_of_le_right ((one_le_inv₀ hx).2 h)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Establish `h1` using `h a (by simp)`. Establish `h2` using `ih (fun x hx => h x (by simp [hx]))`.
+
+Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `⟨mul_nonneg h1.1 h2.1, mul_le_mul h1.2 h2.2 h2.1 (le_trans h1.1 h1.2)⟩`.
+-/
 theorem list_prod_map_le (l : List ℕ) (f g : ℕ → ℝ) (h : ∀ x ∈ l, 0 ≤ f x ∧ f x ≤ g x) :
     0 ≤ (l.map f).prod ∧ (l.map f).prod ≤ (l.map g).prod := by
   induction l with
@@ -149,10 +208,16 @@ theorem list_prod_map_le (l : List ℕ) (f g : ℕ → ℝ) (h : ∀ x ∈ l, 0 
     simp only [List.map_cons, List.prod_cons]
     exact ⟨mul_nonneg h1.1 h2.1, mul_le_mul h1.2 h2.2 h2.1 (le_trans h1.1 h1.2)⟩
 
+/- English proof (translation)
+Use `(list_prod_map_le l (fun _ => 1) f (fun x hx => ⟨zero_le_one, h x hx⟩)).2` as an intermediate fact. Simplify using `using this`.
+-/
 theorem one_le_list_prod_map (l : List ℕ) (f : ℕ → ℝ) (h : ∀ x ∈ l, 1 ≤ f x) : 1 ≤ (l.map f).prod := by
   have := (list_prod_map_le l (fun _ => 1) f (fun x hx => ⟨zero_le_one, h x hx⟩)).2
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.foldr_cons]`. Conclude with `le_max_of_le_right ih`.
+-/
 theorem one_le_foldr_max (l : List ℝ) : 1 ≤ l.foldr max 1 := by
   induction l with
   | nil => simp
@@ -162,6 +227,11 @@ section Loss
 
 variable {k r : ℕ} (b : ℝ) (m : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : MatKR k r) (p : Point ℂ (r + 1))
 
+/- English proof (translation)
+Unfold `lossP`. Apply `Real.one_le_rpow` to reduce the goal to its premises. Establish `h1 : 1 ≤ b ^ (C * (m : ℝ))` using `Real.one_le_rpow hb (by positivity)`. Establish `h2` using `one_le_foldr_max ((ptBlockEnds p).map fun l => max 1 ‖DminN z z' γ l‖⁻¹)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Check the signs of the components of the expression.
+-/
 theorem one_le_lossP (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) : 1 ≤ lossP b C m z z' γ p := by
   unfold lossP
   apply Real.one_le_rpow
@@ -170,6 +240,11 @@ theorem one_le_lossP (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) : 1 ≤ lossP b C m
     nlinarith
   · positivity
 
+/- English proof (translation)
+Unfold `lossP`. Establish `h2` using `one_le_foldr_max ((ptBlockEnds p).map fun l => max 1 ‖DminN z z' γ l‖⁻¹)`. Establish `h1 : 1 ≤ b ^ (C * (m : ℝ))` using `Real.one_le_rpow hb (by positivity)`. Establish `h3 : b ^ (C * (m : ℝ)) ≤ b ^ (C₂ * (m : ℝ))` using `Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right h (by positivity))`. Use `set Fm := ((ptBlockEnds p).map fun l => max 1 ‖DminN z z' γ l‖⁻¹).foldr max 1 with hF`.
+
+Establish `h4 : b ^ (C * (m : ℝ)) * Fm ≤ b ^ (C₂ * (m : ℝ)) * Fm` using `mul_le_mul_of_nonneg_right h3 (by linarith)`. Establish `h5 : 1 ≤ b ^ (C₂ * (m : ℝ)) * Fm` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lossP_mono (hb : 1 ≤ b) {C C₂ : ℝ} (hC : 0 ≤ C) (h : C ≤ C₂) :
     lossP b C m z z' γ p ≤ lossP b C₂ m z z' γ p := by
   unfold lossP
@@ -185,6 +260,9 @@ theorem lossP_mono (hb : 1 ≤ b) {C C₂ : ℝ} (hC : 0 ≤ C) (h : C ≤ C₂)
     _ ≤ (b ^ (C₂ * (m : ℝ)) * Fm) ^ (C₂ * (r : ℝ) ^ 3) :=
         Real.rpow_le_rpow_of_exponent_le h5 (mul_le_mul_of_nonneg_right h (by positivity))
 
+/- English proof (translation)
+Unfold `lossV`. Establish `h1 : 1 ≤ b ^ (C * (m : ℝ) ^ 4)` using `Real.one_le_rpow hb (by positivity)`. Establish `h2 : 1 ≤ (max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹) ^ (C * (m : ℝ) ^ 2)` using `Real.one_le_rpow (one_le_max_inv hG) (by positivity)`. Establish `h3 : 1 ≤ ((ptBlockEnds p).map fun l => (max ‖DminN z z' γ l‖ ‖DminN z z' γ l‖⁻¹) ^ (C * (m : ℝ))).prod` using `one_le_list_prod_map _ _ (fun l hl => Real.one_le_rpow (one_le_max_inv (norm_pos_iff.2 (hD l hl))) (by positivity))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_lossV (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) (hG : 0 < Gf k r z z' γ)
     (hD : ∀ l ∈ ptBlockEnds p, DminN z z' γ l ≠ 0) : 1 ≤ lossV b C m z z' γ p := by
   unfold lossV
@@ -197,6 +275,11 @@ theorem one_le_lossV (hb : 1 ≤ b) {C : ℝ} (hC : 0 ≤ C) (hG : 0 < Gf k r z 
   calc (1 : ℝ) = 1 * 1 * 1 := by norm_num
     _ ≤ _ := mul_le_mul (mul_le_mul h1 h2 zero_le_one (by linarith)) h3 zero_le_one (by positivity)
 
+/- English proof (translation)
+Unfold `lossV`. Establish `hb0 : 0 < b` using `by linarith`. Establish `h1 : b ^ (C * (m : ℝ) ^ 4) ≤ b ^ (C₂ * (m : ℝ) ^ 4)` using `Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right h (by positivity))`. Establish `h2 : (max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹) ^ (C * (m : ℝ) ^ 2) ≤ (max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹) ^ (C₂ * (m : ℝ) ^ 2)` using `Real.rpow_le_rpow_of_exponent_le (one_le_max_inv hG) (mul_le_mul_of_nonneg_right h (by positivity))`. Establish `h3` using `list_prod_map_le (ptBlockEnds p) (fun l => (max ‖DminN z z' γ l‖ ‖DminN z z' γ l‖⁻¹) ^ (C * (m : ℝ))) (fun l => (max ‖DminN z z' γ l‖ ‖DminN z z' γ l‖⁻¹) ^ (C₂ * (m : ℝ))) (fun l hl => ⟨Real.rpow_nonneg (le_trans zero_le_one (one_le_max_inv (norm_pos_iff.2 (hD l hl)))) _, Real.rp …`.
+
+Establish `hG1 : 0 ≤ max (Gf k r z z' γ) (Gf k r z z' γ)⁻¹` using `le_trans zero_le_one (one_le_max_inv hG)`. Conclude with `mul_le_mul (mul_le_mul h1 h2 (Real.rpow_nonneg hG1 _) (Real.rpow_nonneg hb0.le _)) h3.2 h3.1 (mul_nonneg (Real.rpow_nonneg hb0.le _) (Real.rpow_nonneg hG1 _))`.
+-/
 theorem lossV_mono (hb : 1 ≤ b) {C C₂ : ℝ} (h : C ≤ C₂) (hG : 0 < Gf k r z z' γ)
     (hD : ∀ l ∈ ptBlockEnds p, DminN z z' γ l ≠ 0) : lossV b C m z z' γ p ≤ lossV b C₂ m z z' γ p := by
   unfold lossV
@@ -228,14 +311,27 @@ namespace Formalism.MainNotions.BridgeLemma
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Cnt
 
+/- English proof (translation)
+The claim follows from `LatticeGluingRadicals.hadamard_section`.
+-/
 theorem hadamard_inequality_packet : VanishingOnXAndXPlusBranching.adm7 := LatticeGluingRadicals.hadamard_section
 
+/- English proof (translation)
+Unfold `Scale.b`. Apply `Real.one_le_exp` to reduce the goal to its premises. Unfold `Scale.L`. Conclude with `Real.rpow_nonneg (le_trans zero_le_one large₂.sc.one_lt_alt.le) _`.
+-/
 theorem one_le_b {D : D7} (large₂ : SizeData₂ D) : 1 ≤ large₂.sc.b := by
   unfold Scale.b
   apply Real.one_le_exp
   unfold Scale.L
   exact Real.rpow_nonneg (le_trans zero_le_one large₂.sc.one_lt_alt.le) _
 
+/- English proof (translation)
+Introduce `τ w w' hTT θ hθ W hW S hS hdeg γ p hp θ' hθ' νR hν hH hD`. Establish `h0` using `H τ w w' hTT θ hθ W hW S hS hdeg γ p hp θ' hθ' νR hν hH hD`. Use `le_trans h0 ?_` and prove the remaining obligations. Establish `hv : 0 < D.host.v` using `lt_of_lt_of_le one_pos hH.1.1.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`.
+
+Establish `hP` using `lossP_mono large₂.sc.b D.R.m W.z W.z' γ p (one_le_b large₂) hC h`. Establish `hP0 : 0 ≤ lossP large₂.sc.b C D.R.m W.z W.z' γ p` using `le_trans zero_le_one (one_le_lossP large₂.sc.b D.R.m W.z W.z' γ p (one_le_b large₂) hC)`. Establish `hq : C / (D.R.k * D.host.v) ≤ C₂ / (D.R.k * D.host.v)` using `div_le_div_of_nonneg_right h (mul_nonneg hk hv.le)`. Establish `hq0 : 0 ≤ C / (D.R.k * D.host.v)` using `div_nonneg hC (mul_nonneg hk hv.le)`. Establish `hpw` using `pow_le_pow_left₀ hq0 hq (D.R.rS * (D.R.k - 2 - D.R.rS))`.
+
+Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hP hpw (pow_nonneg hq0 _) (le_trans hP0 hP)) (inv_nonneg.2 (pow_nonneg (norm_nonneg _) _))`.
+-/
 theorem abs_pointwise_mono_constant (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 A C1 C C₂ : ℝ} (hC : 0 ≤ C) (h : C ≤ C₂)
     (H : VanishingOnXAndXPlusBranching.Conclusion4 D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C) : VanishingOnXAndXPlusBranching.Conclusion4 D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C₂ := by
   intro τ w w' hTT θ hθ W hW S hS hdeg γ p hp θ' hθ' νR hν hH hD

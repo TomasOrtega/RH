@@ -15,38 +15,113 @@ section Int
 
 variable (I : Formalism.MainNotions.S.AutInst)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, rfl⟩`.
+-/
 theorem isInt_coe (a : 𝓞 I.E) : IsInt I (a : I.E) := ⟨a, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, by push_cast; rfl⟩`.
+-/
 theorem isInt_mul {x y : I.E} (hx : IsInt I x) (hy : IsInt I y) : IsInt I (x * y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a * b, by push_cast; rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a - b, by push_cast; rfl⟩`.
+-/
 theorem isInt_sub {x y : I.E} (hx : IsInt I x) (hy : IsInt I y) : IsInt I (x - y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a - b, by push_cast; rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by push_cast; rfl⟩`.
+-/
 theorem isInt_add {x y : I.E} (hx : IsInt I x) (hy : IsInt I y) : IsInt I (x + y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a + b, by push_cast; rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩`.
+-/
 theorem isInt_one : IsInt I (1 : I.E) := ⟨1, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(I.L_dual y).1 hy x hx`. Conclude with `⟨a, ha⟩`.
+-/
 theorem isInt_hG {x y : Fin I.n → I.E} (hx : x ∈ I.L) (hy : y ∈ I.L) : IsInt I (hG I x y) := by
   obtain ⟨a, ha⟩ := (I.L_dual y).1 hy x hx
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨star (θ : I.E), (RingOfIntegers.isIntegral_coe θ).map (starRingEnd I.E).toIntAlgHom⟩, rfl⟩`.
+-/
 theorem isInt_star (θ : 𝓞 I.E) : IsInt I (star (θ : I.E)) :=
   ⟨⟨star (θ : I.E), (RingOfIntegers.isIntegral_coe θ).map (starRingEnd I.E).toIntAlgHom⟩, rfl⟩
 
+/- English proof (translation)
+Use `⟨1, Nat.coprime_one_left p, (s : 𝓞 I.E), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem natCast_mem_Ap (p s : ℕ) : (s : I.E) ∈ Ap I p := by
   refine ⟨1, Nat.coprime_one_left p, (s : 𝓞 I.E), ?_⟩
   simp
 
 end Int
 
+/- English proof (translation)
+Unfold `PPAssemble`. Introduce `I p m r k θ e f M w wd hp hm hH hw hew hwd hspan`. Take `⟨-, -, hθ, -, -, -, -, hMc, -⟩` from `hH`. Take `⟨hθ1, hθ2, hθ3⟩` from `hθ`. Establish `hm0 : m ≠ 0` using `by omega`.
+
+Establish `hp1 : p ≠ 1` using `hp.one_lt.ne'`. Establish `hMp : Nat.Coprime M p` using `Nat.Coprime.coprime_dvd_right (dvd_pow_self p hm0) hMc`. Establish `hM0 : (M : I.E) ≠ 0`. Establish `hM : M ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hp1 ((Nat.coprime_zero_left _).1 hMp)`. Conclude with `hM` after adjusting the coercions. Use `choose sw hsw using fun i => LA_clear (I := I) p (hw i).1`. Use `choose sd hsd using fun i => LA_clear (I := I) p (hw i).2`. Establish `hT0p : Nat.Coprime ((∏ i, sw i) * ∏ i, sd i) p` using `Nat.Coprime.mul (Nat.Coprime.prod_left fun i _ => (hsw i).1) (Nat.Coprime.prod_left fun i _ => (hsd i).1)`.
+
+Take `⟨T, hTdef⟩ : ∃ T : ℕ, T = ((∏ i, sw i) * ∏ i, sd i) ^ Nat.totient (p ^ m)` from `⟨_, rfl⟩`. Establish `hTp : Nat.Coprime T p` using `hTdef ▸ Nat.Coprime.pow_left _ hT0p`. Establish `hT0dvd : ((∏ i, sw i) * ∏ i, sd i) ∣ T` using `hTdef ▸ dvd_pow_self _ (Nat.totient_pos.2 (pow_pos hp.pos m)).ne'`. Establish `hTne : T ≠ 0`. Introduce and unpack `h0`.
+
+Rewrite `hTp` using `[h0]`. Conclude with `hp1 ((Nat.coprime_zero_left _).1 hTp)`. Establish `hTE : (T : I.E) ≠ 0` using `by exact_mod_cast hTne`. Establish `hTmod : T ≡ 1 [MOD p ^ m]` using `hTdef ▸ Nat.ModEq.pow_totient (Nat.Coprime.pow_right m hT0p)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, T = 1 + p ^ m * c := by`.
+
+Establish `h1 : 1 ≤ T` using `Nat.one_le_iff_ne_zero.2 hTne`. Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd' h1).1 hTmod.symm`. Use `⟨c, ?_⟩` and prove the remaining obligations. Generalize the expression as in `p ^ m * c = q at hc ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hT1 : QA I p (p ^ m) (1 - (T : I.E) ^ 2)`. Apply `QA_of_GE (I := I)` to reduce the goal to its premises. Use `⟨-((c : 𝓞 I.E) + c + (p : 𝓞 I.E) ^ m * c * c), ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hTA : (T : I.E) ^ 2 ∈ Ap I p` using `pow_mem (natCast_mem_Ap I p T) 2`. Establish `hTw : ∀ i, (T : I.E) • w i ∈ I.L`. Introduce `i`. Take `⟨d, hd⟩ : sw i ∣ T` from `dvd_trans (dvd_trans (Finset.dvd_prod_of_mem sw (Finset.mem_univ i)) (dvd_mul_right _ _)) hT0dvd`.
+
+Rewrite using `[hd, Nat.cast_mul, mul_comm, mul_smul, natE_smul (I := I)]`. Conclude with `I.L.smul_mem _ (hsw i).2`. Establish `hTwd : ∀ i, (T : I.E) • wd i ∈ I.L`. Introduce `i`. Take `⟨d, hd⟩ : sd i ∣ T` from `dvd_trans (dvd_trans (Finset.dvd_prod_of_mem sd (Finset.mem_univ i)) (dvd_mul_left _ _)) hT0dvd`.
+
+Rewrite using `[hd, Nat.cast_mul, mul_comm, mul_smul, natE_smul (I := I)]`. Conclude with `I.L.smul_mem _ (hsd i).2`. Establish `hθ1s : GE I (p ^ m) (star (θ : I.E) * star (θ : I.E) - star (θ : I.E))`. Take `⟨t, ht⟩` from `hθ1`. Take `⟨ts, hts⟩` from `isInt_star I t`.
+
+Use `⟨ts, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star ht`. Simplify using `only [star_sub, star_mul, star_natCast] at h`. Rewrite using `[h, hts]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨θs, hθs⟩` from `isInt_star I θ`. Take `⟨z, hzdef⟩ : ∃ z : Fin I.n → I.E, z = (T : I.E) • ((θ : I.E) • w (Fin.last k) - star (θ : I.E) • wd (Fin.last k))` from `⟨_, rfl⟩`. Establish `hz : z ∈ I.L`. Rewrite using `[hzdef, smul_sub, smul_comm (T : I.E) (θ : I.E), smul_comm (T : I.E) (star (θ : I.E)), ← hθs]`. Conclude with `I.L.sub_mem (I.L.smul_mem θ (hTw _)) (I.L.smul_mem θs (hTwd _))`.
+
+Establish `hl1 : hG I (wd (Fin.last k)) (w (Fin.last k)) = 1`. Simplify using `using hwd (Fin.last k) (Fin.last k)`. Establish `hl2 : hG I (w (Fin.last k)) (wd (Fin.last k)) = 1`. Rewrite using `[hG_symm (I := I) (wd (Fin.last k)) (w (Fin.last k)), hl1, star_one]`. Establish `hl3 : ∀ i : Fin k, hG I (wd (Fin.last k)) (w i.castSucc) = 0`.
+
+Introduce `i`. Rewrite using `[hwd, if_neg (Fin.castSucc_ne_last i).symm]`. Establish `hl4 : ∀ i : Fin k, hG I (w (Fin.last k)) (wd i.castSucc) = 0`. Introduce `i`. Rewrite using `[hG_symm (I := I) (wd i.castSucc) (w (Fin.last k)), hwd, if_neg (Fin.castSucc_ne_last i), star_zero]`.
+
+Unfold `Concl`. Use `⟨z, fun i => (T : I.E) • w i.castSucc, fun i => (T : I.E) • wd i.castSucc, hz, fun i => ⟨hTw _, hTwd _⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[hzdef]`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [hG_smul_right, hG_sub_right, hG_smul_right, hG_smul_right]`.
+
+Rewrite using `[(hew a _).1, (hew a _).2.2.1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hew a _).2.1, (hew a _).2.2.2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a i`.
+
+Simplify using `[hG_smul_right, hew]`. Apply `GE_of_QA (I := I) p m (isInt_add I (isInt_hG I hz hz) (isInt_one I))` to reduce the goal to its premises. Establish `hzz : hG I z z + 1 = ((T : I.E) ^ 2 * (hG I (w (Fin.last k)) (w (Fin.last k)) + hG I (wd (Fin.last k)) (wd (Fin.last k)))) * ((θ : I.E) * star (θ : I.E)) - (T : I.E) ^ 2 * ((θ : I.E) * θ - θ) - (T : I.E) ^ 2 * (star (θ : I.E) * star (θ : I.E) - star (θ : I.E)) + (T : I.E) ^ 2 * ( …`. Rewrite using `[hzdef]`. Simplify using `only [hG_smul_left, hG_smul_right, hG_sub_left, hG_sub_right, star_natCast, star_star, star_sub, star_smul]`.
+
+Rewrite using `[hl1, hl2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hzz]`. Establish `hAD : (T : I.E) ^ 2 * (hG I (w (Fin.last k)) (w (Fin.last k)) + hG I (wd (Fin.last k)) (wd (Fin.last k))) ∈ Ap I p` using `mul_mem hTA (add_mem (hG_mem_Ap (I := I) p (hw _).1 (hw _).1) (hG_mem_Ap (I := I) p (hw _).2 (hw _).2))`. Use `QA_add (I := I) p _ (QA_add (I := I) p _ (QA_sub (I := I) p _ (QA_sub (I := I) p _ (QA_mul (I := I) p _ hAD (QA_of_GE (I := I) p _ hθ2)) (QA_mul (I := I) p _ hTA (QA_of_GE (I := I) p _ hθ1))) (QA_mul (I := I) p _ hTA (QA_of_GE (I := I) p _ hθ1s))) (QA_mul (I := I) p _ hTA (QA_of_ …` and prove the remaining obligations.
+
+Introduce `i`. Prove the components needed by the constructor for the conclusion. Apply `GE_of_QA (I := I) p m (isInt_mul I (isInt_coe I θ) (isInt_hG I hz (hTw _)))` to reduce the goal to its premises. Establish `h : (θ : I.E) * hG I z ((T : I.E) • w i.castSucc) = ((T : I.E) ^ 2 * hG I (w (Fin.last k)) (w i.castSucc)) * ((θ : I.E) * star (θ : I.E))`. Rewrite using `[hzdef]`.
+
+Simplify using `only [hG_smul_left, hG_smul_right, hG_sub_left, star_natCast, star_star, star_sub]`. Rewrite using `[hl3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `QA_mul (I := I) p _ (mul_mem hTA (hG_mem_Ap (I := I) p (hw _).1 (hw _).1)) (QA_of_GE (I := I) p _ hθ2)`.
+
+Apply `GE_of_QA (I := I) p m (isInt_mul I (by rw [← hθs]; exact isInt_coe I θs) (isInt_hG I hz (hTwd _)))` to reduce the goal to its premises. Establish `h : star (θ : I.E) * hG I z ((T : I.E) • wd i.castSucc) = -((T : I.E) ^ 2 * hG I (wd (Fin.last k)) (wd i.castSucc)) * ((θ : I.E) * star (θ : I.E))`. Rewrite using `[hzdef]`. Simplify using `only [hG_smul_left, hG_smul_right, hG_sub_left, star_natCast, star_star, star_sub]`. Rewrite using `[hl4]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `QA_mul (I := I) p _ (neg_mem (mul_mem hTA (hG_mem_Ap (I := I) p (hw _).2 (hw _).2))) (QA_of_GE (I := I) p _ hθ2)`. Introduce `i j`. Establish `h : hG I ((T : I.E) • wd i.castSucc) ((T : I.E) • w j.castSucc) = (T : I.E) ^ 2 * (if i = j then 1 else 0)`.
+
+Rewrite using `[hG_smul_left, hG_smul_right, hwd, star_natCast]`. Simplify using `only [Fin.castSucc_inj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Distinguish the cases in `hij : i = j`.
+
+Rewrite using `[if_pos hij, mul_one]`. Apply `GE_of_QA (I := I) p m (isInt_mul I (isInt_coe I θ) (isInt_sub I ⟨(T : 𝓞 I.E) ^ 2, by push_cast; rfl⟩ (isInt_one I)))` to reduce the goal to its premises. Establish `h2 : (θ : I.E) * ((T : I.E) ^ 2 - 1) = -(θ : I.E) * (1 - (T : I.E) ^ 2)` using `by ring`. Rewrite using `[h2]`. Conclude with `QA_mul (I := I) p _ (neg_mem (int_mem_Ap (I := I) p θ)) hT1`.
+
+Rewrite using `[if_neg hij]`. Conclude with `⟨0, by simp⟩`. Conclude with `span_part (I := I) p m r k θ e f M T w wd hMp hM0 hTp hTE hθ1 hθ2 hθ3 hw hspan _ (fun a => Or.inl (Or.inl (Or.inl (Or.inl ⟨a, rfl⟩)))) (fun a => Or.inl (Or.inl (Or.inl (Or.inr ⟨a, rfl⟩)))) (Or.inl (Or.inl (Or.inr hzdef.symm))) (fun i => Or.inl (Or.inr ⟨i, rfl⟩)) (fun i => Or.inr …`.
+-/
 theorem local_assembly_principal : PPAssemble := by
   unfold PPAssemble
   intro I p m r k θ e f M w wd hp hm hH hw hew hwd hspan

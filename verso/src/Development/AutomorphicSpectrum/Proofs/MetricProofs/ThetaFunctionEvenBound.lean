@@ -26,10 +26,16 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 namespace GlobalTheory.CompanionTheory.Ar.NForm
 
 open Matrix in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[periodMatrix]`.
+-/
 theorem periodMatrix_im {g : ℕ} (X Y : Matrix (Fin g) (Fin g) ℝ) : (periodMatrix X Y).map Complex.im = Y := by
   ext i j; simp [periodMatrix]
 
 open Matrix in
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hX i) j`. Establish `h2` using `congrFun (congrFun hY i) j`. Simplify using `only [Matrix.transpose_apply] at h1 h2`. Simplify using `[periodMatrix, h1, h2]`.
+-/
 theorem periodMatrix_isSymm {g : ℕ} {X Y : Matrix (Fin g) (Fin g) ℝ} (hX : X.IsSymm) (hY : Y.IsSymm) :
     (periodMatrix X Y).IsSymm := by
   ext i j
@@ -38,19 +44,31 @@ theorem periodMatrix_isSymm {g : ℕ} {X Y : Matrix (Fin g) (Fin g) ℝ} (hX : X
   simp only [Matrix.transpose_apply] at h1 h2
   simp [periodMatrix, h1, h2]
 
+/- English proof (translation)
+Simplify using `[hermForm, add_dotProduct]`.
+-/
 theorem hermForm_add_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (x y w : Fin g → ℂ) :
     hermForm Hm (x + y) w = hermForm Hm x w + hermForm Hm y w := by
   simp [hermForm, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `[hermForm, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hermForm_add_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (w x y : Fin g → ℂ) :
     hermForm Hm w (x + y) = hermForm Hm w x + hermForm Hm w y := by
   simp [hermForm, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_smul_eq_zsmul ℂ k x]`. Simplify using `[hermForm, smul_dotProduct]`.
+-/
 theorem hermForm_zsmul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (k : ℤ) (x w : Fin g → ℂ) :
     hermForm Hm (k • x) w = k * hermForm Hm x w := by
   rw [← Int.cast_smul_eq_zsmul ℂ k x]
   simp [hermForm, smul_dotProduct]
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_smul_eq_zsmul ℂ k x]`. Establish `h : star ((k : ℂ) • x) = (k : ℂ) • star x`. Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `[hermForm, h, Matrix.mulVec_smul, dotProduct_smul]`.
+-/
 theorem hermForm_zsmul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (k : ℤ) (w x : Fin g → ℂ) :
     hermForm Hm w (k • x) = k * hermForm Hm w x := by
   rw [← Int.cast_smul_eq_zsmul ℂ k x]
@@ -58,6 +76,9 @@ theorem hermForm_zsmul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (k : �
     ext i; simp
   simp [hermForm, h, Matrix.mulVec_smul, dotProduct_smul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hermForm]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hermForm_add_left, ih]`.
+-/
 theorem hermForm_sum_left {g : ℕ} {J : Type} (Hm : Matrix (Fin g) (Fin g) ℂ) (s : Finset J)
     (f : J → Fin g → ℂ) (w : Fin g → ℂ) : hermForm Hm (∑ α ∈ s, f α) w = ∑ α ∈ s, hermForm Hm (f α) w := by
   classical
@@ -65,6 +86,9 @@ theorem hermForm_sum_left {g : ℕ} {J : Type} (Hm : Matrix (Fin g) (Fin g) ℂ)
   | empty => simp [hermForm]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hermForm_add_left, ih]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hermForm]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hermForm_add_right, ih]`.
+-/
 theorem hermForm_sum_right {g : ℕ} {J : Type} (Hm : Matrix (Fin g) (Fin g) ℂ) (s : Finset J)
     (f : J → Fin g → ℂ) (w : Fin g → ℂ) : hermForm Hm w (∑ α ∈ s, f α) = ∑ α ∈ s, hermForm Hm w (f α) := by
   classical
@@ -72,6 +96,11 @@ theorem hermForm_sum_right {g : ℕ} {J : Type} (Hm : Matrix (Fin g) (Fin g) ℂ
   | empty => simp [hermForm]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hermForm_add_right, ih]
 
+/- English proof (translation)
+Rewrite using `[hermForm_sum_left]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[hermForm_sum_right]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[hermForm_zsmul_left, hermForm_zsmul_right]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_sum {g : ℕ} {J : Type} [Fintype J] (Hm : Matrix (Fin g) (Fin g) ℂ) (v : J → Fin g → ℂ)
     (m n : J → ℤ) :
     hermForm Hm (∑ α, m α • v α) (∑ β, n β • v β) =
@@ -84,17 +113,48 @@ theorem hermForm_sum {g : ℕ} {J : Type} [Fintype J] (Hm : Matrix (Fin g) (Fin 
   push_cast
   ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mulVec_zsum {g : ℕ} {J : Type} [Fintype J] (h : Matrix (Fin g) (Fin g) ℂ) (v : J → Fin g → ℂ)
     (m : J → ℤ) : h.mulVec (∑ α, m α • v α) = ∑ α, m α • h.mulVec (v α) := by
   calc h.mulVec (∑ α, m α • v α) = Matrix.mulVecLin h (∑ α, m α • v α) := rfl
     _ = ∑ α, Matrix.mulVecLin h (m α • v α) := map_sum _ _ _
     _ = ∑ α, m α • h.mulVec (v α) := Finset.sum_congr rfl fun α _ => by rw [map_zsmul]; rfl
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem zsum_single {g : ℕ} (m : Fin g → ℤ) :
     (∑ i, m i • (Pi.single i 1 : Fin g → ℂ)) = fun i => (m i : ℂ) := by
   ext k
   simp [Finset.sum_apply, Pi.single_apply]
 
+/- English proof (translation)
+Take `⟨bs0, hJ0⟩` from `GlobalTheory.T.exists_symplectic_basis_principal_polarization g Λ Hm hd hs hH hpos hint hdual`. Take `⟨h0, X0, Y0, -, hX0, hY0, -, -, -, hG0⟩` from `GlobalTheory.T.hermitian_form_period_matrix_normal_form g Hm (fun α => (bs0 α : Fin g → ℂ)) hH hpos hJ0`. Establish `hS` using `(SiegelCoordinates.intersectionNumber_baseChange g).1 X0 Y0 hX0 hY0`. Take `⟨bs, ρ, hρ, hρ2, hJ, hfirst, hmin, hdet⟩` from `GlobalTheory.T.real_part_gram_in_symplectic_group g Λ Hm bs0 hH hpos hJ0 (by rw [hG0]; exact hS.1) (by rw [hG0]; exact hS.2)`. Take `⟨h, X, Y, hh, hX, hY, hHh, hin, hinr, -⟩` from `GlobalTheory.T.hermitian_form_period_matrix_normal_form g Hm (fun α => (bs α : Fin g → ℂ)) hH hpos hJ`.
+
+Establish `hτim : (periodMatrix X Y).map Complex.im = Y` using `periodMatrix_im X Y`. Establish `hexp : ∀ x : Λ, (x : Fin g → ℂ) = ∑ α, (bs.repr x α) • (bs α : Fin g → ℂ)` using `fun x => by`. Use `congrArg Subtype.val (bs.sum_repr x)` as an intermediate fact. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at this`. Conclude with `this.symm`.
+
+Establish `hYe : ∀ i j, Y⁻¹ i j = (hermForm Hm (bs (Sum.inl i) : Fin g → ℂ) (bs (Sum.inl j) : Fin g → ℂ)).re`. Introduce `i j`. Rewrite using `[hHh, hin, hin, hermForm, GlobalTheory.SiegelNormalForm.form_single, GlobalTheory.CanTh.imInv, hτim]`. Simplify using the standard rewrite rules. Establish `hred : IsReducedImaginaryPart Y ρ`.
+
+Use `⟨hρ, hρ2, by rw [hYe]; exact hfirst, fun l hl => ?_, ?_⟩` and prove the remaining obligations. Set `x : Λ` to `∑ i, l i • bs (Sum.inl i)`. Establish `hxc : (x : Fin g → ℂ) = ∑ i, l i • (bs (Sum.inl i) : Fin g → ℂ)` using `by simp [x]`. Establish `hhx : h.mulVec (x : Fin g → ℂ) = fun i => (l i : ℂ)`. Rewrite using `[hxc, mulVec_zsum]`.
+
+Simplify using `only [hin]`. Conclude with `zsum_single l`. Establish `hx0 : x ≠ 0`. Introduce `e`. Rewrite `hhx` using `[e]`.
+
+Apply `hl` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun hhx i` as an intermediate fact. Simplify using `using this.symm`. Use `hmin x hx0` as an intermediate fact.
+
+Rewrite `this` using `[hHh, hhx, hermForm, GlobalTheory.CanTh.imInv, hτim]`. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `hst : star (fun i => (l i : ℂ)) = fun i : Fin g => (l i : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hst]`. Simplify using `only [qf, intVec, dotProduct, Matrix.mulVec, Matrix.map_apply, Finset.mul_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `: Y⁻¹ = Matrix.of fun i j : Fin g => (hermForm Hm (bs (Sum.inl i) : Fin g → ℂ) (bs (Sum.inl j) : Fin g → ℂ)).re`.
+
+Use extensionality with `i j`. Simplify using `[hYe]`. Rewrite using `[this]`. Simplify using `using hdet`. Use `⟨bs, h, X, Y, ρ, hh, hX, hY, hred, hHh, fun x => ?_, fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hexp x, mulVec_zsum, Fintype.sum_sum_type]`. Simplify using `only [hin, hinr]`. Rewrite using `[zsum_single (fun i => bs.repr x (Sum.inl i))]`. Use `congr 1`. Establish `e : (fun i => ((bs.repr x (Sum.inr i) : ℤ) : ℂ)) = ∑ i, bs.repr x (Sum.inr i) • (Pi.single i 1 : Fin g → ℂ)` using `(zsum_single (fun i => bs.repr x (Sum.inr i))).symm`.
+
+Rewrite using `[e, mulVec_zsum]`. Rewrite using `[hexp x, hexp y, hermForm_sum, Complex.im_sum]`. Simplify using `only [Complex.im_sum]`. Establish `hc : ∀ (k : ℤ) (c : ℂ), ((k : ℂ) * c).im = (k : ℝ) * c.im` using `fun k c => by simp`. Simplify using `only [hc, hJ, Fintype.sum_sum_type, Matrix.J, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, Matrix.one_apply]`.
+
+Simplify using `only [mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_neg, mul_ite, _root_.mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_neg_distrib]`. Use `push_cast`. Rewrite using `[Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_reduced (g : ℕ) [NeZero g] (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hd : DiscreteTopology Λ) (hs : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (hH : Hm.IsHermitian)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re)
@@ -171,6 +231,73 @@ theorem exists_reduced (g : ℕ) [NeZero g] (Λ : Submodule ℤ (Fin g → ℂ))
     rw [Finset.sum_sub_distrib]
     ring
 
+/- English proof (translation)
+Take `⟨C, hC, hB⟩` from `ThetaBound.full`. Use `⟨C, hC.le, ?_⟩` and prove the remaining obligations. Introduce `S G _ _ P z g a hg hint hdual hsc hsq θ b hθ hL2`. Use `haveI : NeZero g := ⟨by omega⟩`. Take `⟨hH, hpos, hχn, -⟩` from `a.ah`.
+
+Take `⟨bs, h, X, Y, ρ, hh, hX, hY, hR, hHh, hcoord, him⟩` from `exists_reduced g a.u.Λ a.Hm a.u.discrete a.u.full hH hpos hint hdual`. Establish `hτim : (periodMatrix X Y).map Complex.im = Y` using `periodMatrix_im X Y`. Establish `hYs : Y.IsSymm`. Use `hY.isHermitian` as an intermediate fact. Rewrite `this` using `[Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis.
+
+Establish `hτs : (periodMatrix X Y).IsSymm` using `periodMatrix_isSymm hX hYs`. Establish `hτp : ((periodMatrix X Y).map Complex.im).PosDef` using `by rw [hτim]; exact hY`. Establish `hhu : IsUnit h` using `(Matrix.isUnit_iff_isUnit_det h).2 hh`. Establish `hhi : Function.Injective h.mulVec` using `Matrix.mulVec_injective_iff_isUnit.2 hhu`. Establish `hxy : ∀ m n : Fin g → ℤ, ∃ x : a.u.Λ, h.mulVec (x : Fin g → ℂ) = (fun i => (m i : ℂ)) + (periodMatrix X Y).mulVec (fun i => (n i : ℂ)) ∧ (∀ i, bs.repr x (Sum.inl i) = m i) ∧ (∀ i, bs.repr x (Sum.inr i) = n i)`.
+
+Introduce `m n`. Establish `hr : ∀ α, bs.repr (bs.equivFun.symm (Sum.elim m n)) α = Sum.elim m n α` using `fun α => by`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Use `⟨bs.equivFun.symm (Sum.elim m n), ?_, fun i => hr _, fun i => hr _⟩` and prove the remaining obligations. Rewrite using `[hcoord]`.
+
+Simplify using `only [hr, Sum.elim_inl, Sum.elim_inr]`. Establish `hmem : ∀ lam, lam ∈ a.u.Λ ↔ ∃ m n : Fin g → ℤ, h.mulVec lam = (fun i => (m i : ℂ)) + (periodMatrix X Y).mulVec (fun i => (n i : ℂ))`. Introduce `lam`. Prove the components needed by the constructor for the conclusion. Introduce `hl`.
+
+Conclude with `⟨_, _, hcoord ⟨lam, hl⟩⟩`. Introduce and unpack `⟨m, n, e⟩`. Take `⟨x, hx, -, -⟩` from `hxy m n`. Establish `: lam = x` using `hhi (e.trans hx.symm)`. Rewrite using `[this]`.
+
+Conclude with `x.2`. Take `⟨a₀, c₀, ha₀, hc₀, hχ⟩` from `GlobalTheory.T.semicharacter_theta_characteristic g a.u.Λ bs a.χ (fun l l' => by`. Use `hsc l l'` as an intermediate fact. Rewrite `this` using `[show (a.herm l l').im = _ from him l l']`. Conclude with `this) hsq`.
+
+Take `⟨κ, hκ⟩` from `GlobalTheory.T.theta_function_canonical_multiplier g (periodMatrix X Y) h a.Hm a₀ c₀ θ hτs hτp hh hHh hθ.1 (fun m n lam hlam w => by`. Take `⟨x, hx, hxm, hxn⟩` from `hxy m n`. Take `rfl : lam = x` from `hhi (hlam.trans hx.symm)`. Use `hθ.2 x w` as an intermediate fact. Rewrite `this` using `[pow_one, hχ x]`.
+
+Establish `e1 : (fun i => bs.repr x (Sum.inl i)) = m` using `funext hxm`. Establish `e2 : (fun i => bs.repr x (Sum.inr i)) = n` using `funext hxn`. Rewrite `this` using `[e1, e2]`. Conclude with `this)`. Establish `hb2` using `GlobalTheory.T.theta_function_canonical_form g (periodMatrix X Y) h a.Hm a₀ c₀ a.u.Λ θ κ b hτs hτp hh ha₀ hc₀ hmem hHh hκ (fun l hl => ⟨a.χ ⟨l, hl⟩, hχn _, fun w => by`.
+
+Use `hθ.2 ⟨l, hl⟩ w` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `this⟩) hL2.1 hL2.2`. Rewrite `hb2` using `[hτim]`. Establish `hbpos` using `hL2.1`.
+
+Establish `hDpos : (0 : ℝ) < 2 ^ g * Y.det` using `mul_pos (by positivity) hY.det_pos`. Use `set β : ℝ := ((2 : ℝ) ^ g * Y.det) ^ (-(1 / 4 : ℝ)) with hβ`. Establish `hβpos : 0 < β` using `Real.rpow_pos_of_pos hDpos _`. Establish `hβ2 : β ^ 2 = (Real.sqrt (2 ^ g * Y.det))⁻¹`. Rewrite using `[hβ, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hDpos.le, ← Real.rpow_neg hDpos.le]`.
+
+Evaluate the numerical expressions. Establish `hbκ : b = ‖κ‖ * β`. Establish `: b ^ 2 = (‖κ‖ * β) ^ 2` using `by rw [mul_pow, hβ2]; exact hb2`. Conclude with `(sq_eq_sq₀ hbpos.le (by positivity)).1 this`. Establish `hκpos : 0 < ‖κ‖`.
+
+Break down `(norm_nonneg κ).eq_or_lt with h0 | h0` into its components or cases. Rewrite `hbκ` using `[← h0, zero_mul]`. Conclude with `absurd hbκ hbpos.ne'`. Conclude with `h0`. Establish `hκ0 : κ ≠ 0` using `norm_pos_iff.1 hκpos`.
+
+Set `Hq : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `(Matrix.toLinearEquiv' h (Matrix.invertibleOfIsUnitDet h hh)).restrictScalars ℝ`. Establish `hHq (w : Fin g → ℂ) : Hq w = h.mulVec w` using `rfl`. Set `L : (Fin g ⊕ Fin g → ℝ) ≃ₗ[ℝ] (Fin g → ℂ)` to `(LinearEquiv.ofBijective (GlobalTheory.ThetaMean.periodMap (periodMatrix X Y)) (GlobalTheory.ThetaMean.periodMap_bijective hτp)).trans Hq.symm`. Establish `hLap (p) : h.mulVec (L p) = GlobalTheory.ThetaMean.periodMap (periodMatrix X Y) p`. Rewrite using `[← hHq]`.
+
+Conclude with `Hq.apply_symm_apply _`. Establish `hcoordL : ∀ w, h.mulVec w = (periodMatrix X Y).mulVec (fun i => (L.symm w (Sum.inr i) : ℂ)) + (fun i => (L.symm w (Sum.inl i) : ℂ))`. Introduce `w`. Use `hLap (L.symm w)` as an intermediate fact. Rewrite `this` using `[L.apply_symm_apply, GlobalTheory.ThetaMean.periodMap_apply, add_comm]`.
+
+Conclude with `this`. Establish `hE` using `GlobalTheory.T.theta_norm_in_period_coordinates g X Y a₀ c₀ h a.Hm θ κ hX hY hHh hκ`. Use `set E : ℝ := g * Real.log (1 + 1 / ρ) + C * g * Real.log (2 * g) with hEdef`. Establish `hhalf : ∀ (t : Fin g → ℝ), (∀ i, t i = 0 ∨ t i = 1 / 2) → ∀ i, ∃ m : ℤ, t i = m / 2`. Introduce `t ht i`.
+
+Break down `ht i with e | e` into its components or cases. Conclude with `⟨0, by simp [e]⟩`. Conclude with `⟨1, by simp [e]⟩`. Establish `hbd` using `(hB g X Y ρ a₀ c₀ hX hY hR (hhalf a₀ ha₀) (hhalf c₀ hc₀)).2`. Set `d : (Fin g → ℂ) → ℝ` to `fun w => Metric.infDist (L.symm w (Sum.inr 0) + a₀ 0) (Set.range ((↑) : ℤ → ℝ))`.
+
+Establish `hρ : 0 < ρ` using `hR.pos`. Establish `hnb : ∀ w, a.nrm 1 θ w ≤ b * Real.exp (-(Real.pi / (2 * ρ ^ 2)) * d w ^ 2 + E)`. Introduce `w`. Establish `h1` using `hE (fun i => L.symm w (Sum.inr i)) (fun i => L.symm w (Sum.inl i)) w (hcoordL w)`. Establish `h2` using `hbd (fun i => L.symm w (Sum.inr i)) (fun i => L.symm w (Sum.inl i))`.
+
+Establish `h3 : a.nrm 1 θ w = ‖κ‖ * thetaNorm X Y a₀ c₀ (fun i => L.symm w (Sum.inr i)) (fun i => L.symm w (Sum.inl i))` using `h1`. Rewrite using `[h3, hbκ, _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h2 hκpos.le`. Use `⟨ρ, hρ, Real.le_sqrt_of_sq_le hR.sq_le, fun w => ?_, ?_⟩` and prove the remaining obligations. Use `(hnb w).trans (mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hbpos.le)` and prove the remaining obligations.
+
+Establish `: 0 ≤ Real.pi / (2 * ρ ^ 2) * d w ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnz : ∃ w, θ w ≠ 0`. Take `⟨ζ, hζ⟩` from `Function.ne_iff.1 (GlobalTheory.CanTh.canTh_ne_zero (a := a₀) (b := c₀) hτs hτp)`. Take `⟨w, rfl⟩` from `(Matrix.mulVec_surjective_iff_isUnit.2 hhu) ζ`.
+
+Conclude with `⟨w, by rw [hκ]; exact mul_ne_zero hκ0 hζ⟩`. Establish `hLint : ∀ p, L p ∈ a.u.Λ ↔ ∃ k : Fin g ⊕ Fin g → ℤ, p = fun α => (k α : ℝ)`. Introduce `p`. Rewrite using `[hmem, hLap]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, n, e⟩`. Use `⟨Sum.elim m n, (GlobalTheory.ThetaMean.periodMap_bijective hτp).1 ?_⟩` and prove the remaining obligations. Rewrite using `[e, GlobalTheory.ThetaMean.periodMap_apply]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨k, rfl⟩`.
+
+Use `⟨fun i => k (Sum.inl i), fun i => k (Sum.inr i), ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThetaMean.periodMap_apply]`. Simplify using the standard rewrite rules. Establish `hinv : ∀ l ∈ a.u.Λ, ∀ w, θ (w + l) = 0 ↔ θ w = 0`. Introduce `l hl w`.
+
+Use `hθ.2 ⟨l, hl⟩ w` as an intermediate fact. Rewrite `this` using `[pow_one]`. Establish `hne : a.χ ⟨l, hl⟩ ≠ 0` using `fun e => by`. Use `hχn ⟨l, hl⟩` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Simplify using `at this`. Express the relevant statement in the definitionally equal form `θ (w + l) = _ at this`. Rewrite using `[this]`. Simplify using `[hne, Complex.exp_ne_zero]`. Use `filter_upwards [GlobalTheory.T.theta_zero_divisor_jet_bound g a.u.Λ θ L (Sum.inr 0) (a₀ 0) hθ.1 hnz hLint hinv (hhalf a₀ ha₀ 0)] with m hm`.
+
+Introduce `Ix _ r hr hu`. Take `⟨hne, hcard⟩` from `hm Ix r hr hu`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hper : ∀ i, Real.pi / (2 * ρ ^ 2) * d (r i) ^ 2 - E ≤ -Real.log (a.nrm 1 θ (r i) / b)`. Introduce `i`.
+
+Establish `hn0 : 0 < a.nrm 1 θ (r i)`. Unfold `ArchFrame.nrm`. Conclude with `mul_pos (norm_pos_iff.2 (hr i).2) (Real.exp_pos _)`. Establish `h1 : a.nrm 1 θ (r i) / b ≤ Real.exp (-(Real.pi / (2 * ρ ^ 2)) * d (r i) ^ 2 + E)`. Rewrite using `[div_le_iff₀ hbpos, mul_comm]`.
+
+Conclude with `hnb _`. Establish `h2` using `(Real.log_le_iff_le_exp (div_pos hn0 hbpos)).2 h1`. Combine the linear equalities and inequalities to obtain the conclusion. Set `A : Finset Ix` to `Finset.univ.filter fun i => (1 / 4 : ℝ) ≤ d (r i)`. Establish `hA : {i | (1 / 4 : ℝ) ≤ Metric.infDist (L.symm (r i) (Sum.inr 0) + a₀ 0) (Set.range ((↑) : ℤ → ℝ))}.ncard = A.card`.
+
+Rewrite using `[← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[A, d]`. Rewrite `hcard` using `[hA]`.
+
+Establish `hsum : (A.card : ℝ) / 16 ≤ ∑ i, d (r i) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `: (1 / 4 : ℝ) ≤ d (r i)` using `(Finset.mem_filter.1 hi).2`. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ ∑ i, d (r i) ^ 2 := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun i _ _ => sq_nonneg _`.
+
+Establish `hcard' : (Fintype.card Ix : ℝ) ≤ 3 * A.card` using `by exact_mod_cast hcard`. Establish `hq : 0 < Real.pi / (2 * ρ ^ 2)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ Real.pi / (2 * ρ ^ 2) * (∑ i, d (r i) ^ 2) - Fintype.card Ix * E := by`. Establish `: (Fintype.card Ix : ℝ) / 48 ≤ ∑ i, d (r i) ^ 2` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = ∑ i, (Real.pi / (2 * ρ ^ 2) * d (r i) ^ 2 - E) := by`. Rewrite using `[Finset.sum_sub_distrib, Finset.mul_sum]`.
+
+Simplify using the standard rewrite rules. Use `_ ≤ ∑ i, -Real.log (a.nrm 1 θ (r i) / b) := Finset.sum_le_sum fun i _ => hper i`.
+-/
 theorem nform : ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P : RigLB G} {z : Sp ℂ ⟶ S} {g : ℕ} (a : ArchFrame P z g), 1 ≤ g → (∀ l l' : a.u.Λ, ∃ k : ℤ, (a.herm l l').im = k) → (∀ w : Fin g → ℂ, (∀ l : a.u.Λ, ∃ k : ℤ, (a.herm w l).im = k) → w ∈ a.u.Λ) → (∀ l l' : a.u.Λ, a.χ (l + l') = a.χ l * a.χ l' * Complex.exp (Real.pi * Complex.I * (a.herm l l').im)) → (∀ l : a.u.Λ, a.χ l ^ 2 = 1) → ∀ (θ : (Fin g → ℂ) → ℂ) (b : ℝ), a.IsTheta 1 θ → a.IsThetaMeanSquareNorm θ b → ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ √(2 * g) ∧ (∀ w, a.nrm 1 θ w ≤ b * Real.exp (g * Real.log (1 + 1 / ρ) + C₀ * g * Real.log (2 * g))) ∧ ∀ᶠ m : ℕ in Filter.atTop, ∀ (Ix : Type) [Fintype Ix] (r : Ix → Fin g → ℂ), (∀ i, (m : ℂ) • r i ∈ a.u.Λ ∧ θ (r i) ≠ 0) → (∀ w : Fin g → ℂ, (m : ℂ) • w ∈ a.u.Λ → θ w ≠ 0 → ∃! i, w - r i ∈ a.u.Λ) → Nonempty Ix ∧ (Fintype.card Ix : ℝ) * (Real.pi / 96 * (ρ ^ 2)⁻¹ - (g * Real.log (1 + 1 / ρ) + C₀ * g * Real.log (2 * g))) ≤ ∑ i, -Real.log (a.nrm 1 θ (r i) / b) := by
   obtain ⟨C, hC, hB⟩ := ThetaBound.full
   refine ⟨C, hC.le, ?_⟩

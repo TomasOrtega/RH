@@ -17,6 +17,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 def HermLine.ConjInvariant (A : HermLine n) : Prop :=
   ∀ z : Cone n ℂ, BlockNonzero z → A.metric (fun k i ↦ starRingEnd ℂ (z k i)) = A.metric z
 
+/- English proof (translation)
+Establish `hb : ∀ w : Coord n → ℂ, BlockNonzero (unflatCone fun p ↦ starRingEnd ℂ (w p)) ↔ BlockNonzero (unflatCone w)`. Introduce `w`. Simplify using `only [blockNonzero_unflatCone_iff, ne_eq, map_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`.
+
+Distinguish the cases in `hw : BlockNonzero (unflatCone w)`. Rewrite using `[A.toGeo_h_of_blockNonzero hw, A.toGeo_h_of_blockNonzero ((hb w).mpr hw)]`. Conclude with `h _ hw`. Simplify using `only [toGeo, if_neg hw, if_neg (fun h' ↦ hw ((hb w).mp h'))]`. Introduce `h z hz`.
+
+Establish `hz' : BlockNonzero (unflatCone (flatCone z))` using `hz`. Use `h (flatCone z)` as an intermediate fact. Rewrite `this` using `[A.toGeo_h_of_blockNonzero hz', A.toGeo_h_of_blockNonzero ((hb _).mpr hz')]`. Conclude with `this`.
+-/
 theorem HermLine.conjInvariant_iff (A : HermLine n) :
     A.ConjInvariant ↔ Geo.IsConjInvariantH A.toGeo := by
   have hb : ∀ w : Coord n → ℂ, BlockNonzero (unflatCone fun p ↦ starRingEnd ℂ (w p)) ↔
@@ -46,6 +53,9 @@ def HermLine.ofGeo (N : Geo.HermLine (blockIdx n)) (hN : Geo.IsSmoothHerm N) : H
         (ContinuousLinearMap.proj (R := ℝ) (φ := fun k ↦ Fin (n k + 1) → ℂ) p.1)).contDiff
     exact hN.comp hu.contDiffOn fun z hz ↦ (blockNonzero_unflatCone_iff _).mp hz
 
+/- English proof (translation)
+The claim follows from `HermLine.toGeo_h_of_blockNonzero _ hw`.
+-/
 theorem HermLine.toGeo_ofGeo_h (N : Geo.HermLine (blockIdx n)) (hN : Geo.IsSmoothHerm N)
     {w : Coord n → ℂ} (hw : BlockNonzero (unflatCone w)) : (HermLine.ofGeo N hN).toGeo.h w = N.h w :=
   HermLine.toGeo_h_of_blockNonzero _ hw
@@ -106,6 +116,17 @@ def IsSupSmallBlock {κ : Type} [Fintype κ] [DecidableEq κ] {n' : κ → ℕ} 
 def monomialValues {Ω : Type} [Field Ω] (y : Coord n → Ω) (d : ι → ℕ) : Set Ω :=
   {s | ∃ μ : Coord n →₀ ℕ, (∀ k, ∑ i, μ ⟨k, i⟩ = d k) ∧ s = ∏ p, y p ^ μ p}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hs p q δp δq hp hq hd hpq z hz`. Establish `hgp` using `(geoMultiHomog_iff p δp).mpr hp`. Establish `hgq` using `(geoMultiHomog_iff q δq).mpr hq`. Establish `hd' : ∀ k, (δp k : ℤ) = δq k + (τ • A.deg) k` using `hd`.
+
+Establish `hy` using `(hR p q δp δq hp hq hd').mpr hpq`. Establish `hzm : flatCone z ∈ Geo.mcPts (ι` using `blockIdx n) P.ideal := (P.mem_mcPts_iff _).mpr hz`. Use `hs δp δq p q (flatCone z) hgp hgq (fun k ↦ by have := hd' k; simpa [HermLine.toGeo] using this) hy hzm` as an intermediate fact. Rewrite `this` using `[eval_map_flatCone, eval_map_flatCone, HermLine.toGeo_h_of_blockNonzero A (show BlockNonzero (unflatCone (flatCone z)) from hz.1)]`. Simplify `this` using `[HermLine.pow]`.
+
+Introduce `hs δp δq p q z hp hq hd hy hz`. Establish `hp'` using `(geoMultiHomog_iff p δp).mp hp`. Establish `hq'` using `(geoMultiHomog_iff q δq).mp hq`. Establish `hd' : ∀ k, (δp k : ℤ) = δq k + (τ • A.deg) k` using `fun k ↦ by`. Use `hd k` as an intermediate fact.
+
+Simplify `this` using `[HermLine.toGeo]`. Establish `hF` using `(hR p q δp δq hp' hq' hd').mp hy`. Establish `hz'` using `(P.mem_mcPts_iff z).mp hz`. Use `hs p q δp δq hp' hq' hd' hF (unflatCone z) hz'` as an intermediate fact. Rewrite `this` using `[← eval_map_flatCone, ← eval_map_flatCone]`.
+
+Rewrite using `[HermLine.toGeo_h_of_blockNonzero A hz'.1]`. Simplify `this` using `[HermLine.pow]`.
+-/
 theorem ArithVariety.isSmallH_iff {Ω : Type} [Field Ω] {y : Coord n → Ω} (P : ArithVariety n)
     (A : HermLine n) (τ : ℕ) {s : Ω} {t : P.FunField} (hR : P.Reads y (τ • A.deg) s t) :
     Geo.IsSmallH (ι := blockIdx n) P.ideal y A.toGeo τ s ↔ P.IsSmallFor (A.pow τ) t := by
@@ -134,6 +155,13 @@ theorem ArithVariety.isSmallH_iff {Ω : Type} [Field Ω] {y : Coord n → Ω} (P
     rw [HermLine.toGeo_h_of_blockNonzero A hz'.1]
     simpa [HermLine.pow] using this
 
+/- English proof (translation)
+Use `⟨fun k ↦ hz.1 (some k), fun f hf ↦ ?_⟩` and prove the remaining obligations. Establish `hmem : D.liftOld f ∈ Geo.mCoordIdeal (ι` using `blockIdx D.extSizes) (D.plusCoord y x') := by`. Establish `hf0 : Geo.mConeMap (ι` using `blockIdx n) y f = 0 := RingHom.mem_ker.mp hf`. Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker]`. Establish `key : Geo.mConeMap (ι` using `blockIdx D.extSizes) (D.plusCoord y x') (D.liftOld f) = rename some (Geo.mConeMap (ι := blockIdx n) y f) := by`.
+
+Establish `h : ((Geo.mConeMap (ι` using `blockIdx D.extSizes) (D.plusCoord y x')).toRingHom.comp (D.liftOld).toRingHom) = (rename (R := Ω) (some : ι → Option ι)).toRingHom.comp (Geo.mConeMap (ι := blockIdx n) y).toRingHom := by`. Use `MvPolynomial.ringHom_ext (fun r ↦ by simp) (fun v ↦ ?_)` and prove the remaining obligations. Simplify using `[Geo.mConeMap, AddBlockData.liftOld, AddBlockData.oldCoord, AddBlockData.plusCoord]`. Conclude with `congrArg (fun φ : _ →+* _ ↦ φ f) h`. Rewrite using `[key, hf0, map_zero]`.
+
+Establish `h3` using `hz.2 _ hmem`. Rewrite `h3`, the goal using `[eval_map]`. Rewrite `h3` using `[AddBlockData.liftOld, eval₂_rename]`. Conclude with `h3`.
+-/
 theorem AddBlockData.oldFlat_mem_mcPts {P : ArithVariety n} (D : AddBlockData P) {Ω : Type} [Field Ω]
     (y : Coord n → Ω) (x' : Fin (D.size + 1) → Ω) (z : Coord D.extSizes → ℂ)
     (hz : z ∈ Geo.mcPts (ι := blockIdx D.extSizes)
@@ -164,6 +192,9 @@ variable (n)
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[Geo.mCoordIdeal, RingHom.mem_ker, RingHom.mem_ker, Geo.mConeMap, aeval_def]`. Both sides reduce to the same expression.
+-/
 theorem mCoordIdeal_eq_ker {Ω : Type} [Field Ω] (y : Coord n → Ω) :
     Geo.mCoordIdeal (ι := blockIdx n) y =
       RingHom.ker (eval₂Hom (Int.castRingHom (MvPolynomial ι Ω)) fun v : Coord n ↦ C (y v) * X v.1) := by
@@ -173,6 +204,9 @@ theorem mCoordIdeal_eq_ker {Ω : Type} [Field Ω] (y : Coord n → Ω) :
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Establish `h : (aeval (fun v ↦ φ (X v)) : _ →ₐ[ℤ] Ω).toRingHom = φ` using `MvPolynomial.ringHom_ext (fun r ↦ by simp) (fun v ↦ by simp)`. Conclude with `congrArg (fun ψ : _ →+* _ ↦ ψ f) h`.
+-/
 theorem aeval_of_hom {Ω : Type} [Field Ω] (φ : MvPolynomial (Coord n) ℤ →+* Ω)
     (f : MvPolynomial (Coord n) ℤ) : aeval (fun v ↦ φ (X v)) f = φ f := by
   have h : (aeval (fun v ↦ φ (X v)) : _ →ₐ[ℤ] Ω).toRingHom = φ :=
@@ -181,6 +215,11 @@ theorem aeval_of_hom {Ω : Type} [Field Ω] (φ : MvPolynomial (Coord n) ℤ →
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use `(Submodule.eq_bot_iff _).mpr fun f hf ↦ hy ?_` and prove the remaining obligations. Establish `h1 : (aeval (fun _ : ι ↦ (1 : Ω))).toRingHom.comp (Geo.mConeMap (ι` using `blockIdx n) y).toRingHom = (aeval y : _ →ₐ[ℤ] Ω).toRingHom := by`. Use `MvPolynomial.ringHom_ext (fun r ↦ by simp) (fun v ↦ by simp [Geo.mConeMap])` and prove the remaining obligations. Establish `h2` using `congrArg (fun φ : _ →+* _ ↦ φ f) h1`. Establish `h3 : Geo.mConeMap (ι` using `blockIdx n) y f = 0 := RingHom.mem_ker.mp hf`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h3, map_zero] at h2`. Rewrite using `[← h2, map_zero]`.
+-/
 theorem mCoordIdeal_of_aeval_injective {Ω : Type} [Field Ω] (y : Coord n → Ω)
     (hy : Function.Injective (aeval y : MvPolynomial (Coord n) ℤ →ₐ[ℤ] Ω)) :
     Geo.mCoordIdeal (ι := blockIdx n) y = ⊥ := by
@@ -196,6 +235,9 @@ theorem mCoordIdeal_of_aeval_injective {Ω : Type} [Field Ω] (y : Coord n → �
 def wholePoint : Coord n → (ArithVariety.whole n).FunField := fun v ↦ (ArithVariety.whole n).mkF (X v)
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `mCoordIdeal_of_aeval_injective n _ fun f g h ↦ by have hf := aeval_of_hom n (ArithVariety.whole n).mkF f have hg := aeval_of_hom n (ArithVariety.whole n).mkF g exact ArithVariety.whole_mkF_injective n (hf.symm.trans (h.trans hg))`.
+-/
 theorem mCoordIdeal_wholePoint :
     Geo.mCoordIdeal (ι := blockIdx n) (wholePoint n) = ⊥ :=
   mCoordIdeal_of_aeval_injective n _ fun f g h ↦ by
@@ -203,6 +245,9 @@ theorem mCoordIdeal_wholePoint :
     have hg := aeval_of_hom n (ArithVariety.whole n).mkF g
     exact ArithVariety.whole_mkF_injective n (hf.symm.trans (h.trans hg))
 
+/- English proof (translation)
+The claim follows from `(mCoordIdeal_wholePoint n).symm ext_eq := by have h : D.plusCoord (wholePoint n) D.elt = D.extVal := by funext v rcases v with ⟨_ | k, i⟩ <;> rfl rw [h, mCoordIdeal_eq_ker] rfl reads j g h _ _ _ _ _ := by have hg := aeval_of_hom n (ArithVariety.whole n).mkF g have hh := aeval_of_ …`.
+-/
 theorem blockReading_whole (D : AddBlockData (ArithVariety.whole n)) :
     D.BlockReading (wholePoint n) D.elt where
   ideal_eq := (mCoordIdeal_wholePoint n).symm
@@ -220,6 +265,9 @@ theorem blockReading_whole (D : AddBlockData (ArithVariety.whole n)) :
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Introduce `g h _ _ _ _ _`. Establish `hg` using `aeval_of_hom n (ArithVariety.whole n).mkF g`. Establish `hh` using `aeval_of_hom n (ArithVariety.whole n).mkF h`. Conclude with `⟨fun e ↦ hg.symm.trans (e.trans (congrArg _ hh)), fun e ↦ hg.trans (e.trans (congrArg _ hh.symm))⟩`.
+-/
 theorem reads_wholePoint (a : ι → ℤ) (t : (ArithVariety.whole n).FunField) :
     (ArithVariety.whole n).Reads (wholePoint n) a t t := by
   intro g h _ _ _ _ _
@@ -228,10 +276,16 @@ theorem reads_wholePoint (a : ι → ℤ) (t : (ArithVariety.whole n).FunField) 
   exact ⟨fun e ↦ hg.symm.trans (e.trans (congrArg _ hh)),
     fun e ↦ hg.trans (e.trans (congrArg _ hh.symm))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, ArithVariety.isMultiProjPrime _, ArithVariety.isHorizontal _, whole_ringKrullDim N⟩`.
+-/
 theorem whole_isArithVar (N : ℕ) :
     Geo.IsArithVar (ι := blockIdx fun _ : Unit ↦ N) (ArithVariety.whole fun _ : Unit ↦ N).ideal (N + 1) :=
   ⟨inferInstance, ArithVariety.isMultiProjPrime _, ArithVariety.isHorizontal _, whole_ringKrullDim N⟩
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal_wholePoint]`. Conclude with `whole_isArithVar N`.
+-/
 theorem wholePoint_isArithVar (N : ℕ) :
     Geo.IsArithVar (ι := blockIdx fun _ : Unit ↦ N)
       (Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ N) (wholePoint fun _ : Unit ↦ N)) (N + 1) := by
@@ -240,6 +294,13 @@ theorem wholePoint_isArithVar (N : ℕ) :
 
 def unitPoint : Coord (fun _ : Unit ↦ 0) → ℚ := fun _ ↦ 1
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal_eq_ker]`. Establish `h : (eval₂Hom (Int.castRingHom (MvPolynomial Unit ℚ)) fun v : Coord (fun _ : Unit ↦ 0) ↦ C (unitPoint v) * X v.1) = (map (Int.castRingHom ℚ)).comp (rename (Sigma.fst : Coord (fun _ : Unit ↦ 0) → Unit)).toRingHom`. Use `MvPolynomial.ringHom_ext (fun r ↦ by simp) (fun v ↦ by simp [unitPoint])` and prove the remaining obligations. Rewrite using `[h]`. Use `(RingHom.injective_iff_ker_eq_bot _).mp ?_` and prove the remaining obligations.
+
+Use `(map_injective _ Int.cast_injective).comp (rename_injective _ ?_)` and prove the remaining obligations. Introduce and unpack `⟨a, i⟩ ⟨b, j⟩ _`. Consider the cases of `a`. Consider the cases of `b`. Establish `hij : i = j` using `Subsingleton.elim (α := Fin 1) i j`.
+
+Rewrite using `[hij]`.
+-/
 theorem mCoordIdeal_unitPoint :
     Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ 0) unitPoint = ⊥ := by
   rw [mCoordIdeal_eq_ker]
@@ -256,12 +317,22 @@ theorem mCoordIdeal_unitPoint :
   have hij : i = j := Subsingleton.elim (α := Fin 1) i j
   rw [hij]
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal_unitPoint]`. Conclude with `whole_isArithVar 0`.
+-/
 theorem unitPoint_isArithVar :
     Geo.IsArithVar (ι := blockIdx fun _ : Unit ↦ 0)
       (Geo.mCoordIdeal (ι := blockIdx fun _ : Unit ↦ 0) unitPoint) (0 + 1) := by
   rw [mCoordIdeal_unitPoint]
   exact whole_isArithVar 0
 
+/- English proof (translation)
+Establish `hC : ∀ a : ℤ, Geo.IsMultiHomog (ι` using `blockIdx fun _ : Unit ↦ 0) (C a : MvPolynomial (Coord fun _ : Unit ↦ 0) ℤ) 0 := by`. Introduce `a m hm k`. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `h0`. Conclude with `(mem_support_iff.mp hm) (by rw [coeff_C, if_neg (Ne.symm h0)])`.
+
+Simplify using `[hm0]`. Introduce `s`. Use `⟨0, C s.num, C (s.den : ℤ), hC _, hC _, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hv : ∀ a : ℤ, aeval unitPoint (C a : MvPolynomial (Coord fun _ : Unit ↦ 0) ℤ) = (a : ℚ)` using `fun a ↦ by rw [aeval_C]; simp`.
+
+Rewrite using `[hv, hv]`. Use `push_cast`. Conclude with `(Rat.mul_den_eq_num s).symm`.
+-/
 theorem unitPoint_birational : Geo.Birational (ι := blockIdx fun _ : Unit ↦ 0) unitPoint := by
   have hC : ∀ a : ℤ, Geo.IsMultiHomog (ι := blockIdx fun _ : Unit ↦ 0)
       (C a : MvPolynomial (Coord fun _ : Unit ↦ 0) ℤ) 0 := by
@@ -279,6 +350,17 @@ theorem unitPoint_birational : Geo.Birational (ι := blockIdx fun _ : Unit ↦ 0
     push_cast
     exact (Rat.mul_den_eq_num s).symm
 
+/- English proof (translation)
+Establish `hm : ∀ m ∈ f.support, m = Finsupp.single ⟨(), 0⟩ (δ ())`. Introduce `m hm`. Establish `h1` using `(geoMultiHomog_iff f δ).mpr hf m hm ()`. Use extensionality with `⟨u, i⟩`. Consider the cases of `u`.
+
+Establish `hi : i = 0` using `Subsingleton.elim (α := Fin 1) i 0`. Substitute `hi` using the available equality. Establish `h2 : ∑ i : Fin 1, m ⟨(), i⟩ = m ⟨(), 0⟩` using `Fin.sum_univ_one _`. Rewrite using `[Finsupp.single_eq_same, ← h2]`. Conclude with `h1`.
+
+Assume the negation of the conclusion as `h0`. Establish `hs : f.support = {Finsupp.single ⟨(), 0⟩ (δ ())}`. Take `⟨m, hmem⟩` from `Finset.nonempty_of_ne_empty (mt support_eq_empty.mp h0)`. Use `Finset.eq_singleton_iff_unique_mem.mpr ⟨?_, hm⟩` and prove the remaining obligations. Rewrite using `[← hm m hmem]`.
+
+Conclude with `hmem`. Establish `hc : coeff (Finsupp.single ⟨(), 0⟩ (δ ())) f ≠ 0` using `mem_support_iff.mp (by rw [hs]; exact Finset.mem_singleton_self _)`. Rewrite `h` using `[aeval_def, eval₂_eq, hs, Finset.sum_singleton]`. Simplify using `only [unitPoint, one_pow, Finset.prod_const_one, mul_one] at h`. Establish `h3 : ((coeff (Finsupp.single ⟨(), 0⟩ (δ ())) f : ℤ) : ℚ) = 0` using `by simpa using h`.
+
+Conclude with `hc (by exact_mod_cast h3)`.
+-/
 theorem form_eq_zero_of_unitPoint {f : MvPolynomial (Coord fun _ : Unit ↦ 0) ℤ} {δ : Unit → ℕ}
     (hf : IsWeightedHomogeneous (coordDeg fun _ : Unit ↦ 0) f δ) (h : aeval unitPoint f = 0) : f = 0 := by
   have hm : ∀ m ∈ f.support, m = Finsupp.single ⟨(), 0⟩ (δ ()) := by
@@ -304,6 +386,17 @@ theorem form_eq_zero_of_unitPoint {f : MvPolynomial (Coord fun _ : Unit ↦ 0) �
   have h3 : ((coeff (Finsupp.single ⟨(), 0⟩ (δ ())) f : ℤ) : ℚ) = 0 := by simpa using h
   exact hc (by exact_mod_cast h3)
 
+/- English proof (translation)
+Introduce `g h δg δh hg hh hd`. Establish `hXh : IsWeightedHomogeneous (coordDeg fun _ : Unit ↦ 0) ((X ⟨(), 0⟩ : MvPolynomial (Coord fun _ : Unit ↦ 0) ℤ) * h) δg`. Establish `h1` using `(isWeightedHomogeneous_X ℤ (coordDeg fun _ : Unit ↦ 0) ⟨(), 0⟩).mul hh`. Establish `hδ : coordDeg (fun _ : Unit ↦ 0) ⟨(), 0⟩ + δh = δg`. Use function extensionality and compare the values at `u`.
+
+Consider the cases of `u`. Establish `h2 : (δg () : ℤ) = δh () + 1` using `hd ()`. Simplify using `only [coordDeg, Pi.add_apply, Pi.single_eq_same]`. Express the relevant statement in the definitionally equal form `1 + δh () = δg ()`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h1` using `[hδ]`. Then use the resulting hypothesis. Establish `hsub` using `hg.sub hXh`. Establish `hval : aeval unitPoint (X ⟨(), 0⟩ : MvPolynomial (Coord fun _ : Unit ↦ 0) ℤ) = 1`. Simplify using `[unitPoint]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `e`. Establish `h0 : g - X ⟨(), 0⟩ * h = 0` using `form_eq_zero_of_unitPoint hsub (by`. Rewrite using `[map_sub, map_mul, hval, e, one_mul, sub_self])`. Rewrite using `[sub_eq_zero.mp h0, map_mul]`. Introduce `e`.
+
+Establish `h0 : g = X ⟨(), 0⟩ * h` using `ArithVariety.whole_mkF_injective _ (by rw [e, map_mul])`. Rewrite using `[h0, map_mul, hval, one_mul]`.
+-/
 theorem reads_unitPoint :
     (ArithVariety.whole fun _ : Unit ↦ 0).Reads unitPoint (fun _ ↦ 1) 1
       ((ArithVariety.whole fun _ : Unit ↦ 0).mkF (X ⟨(), 0⟩)) := by
@@ -331,12 +424,20 @@ theorem reads_unitPoint :
     have h0 : g = X ⟨(), 0⟩ * h := ArithVariety.whole_mkF_injective _ (by rw [e, map_mul])
     rw [h0, map_mul, hval, one_mul]
 
+/- English proof (translation)
+Use `⟨fun j c _ ↦ by simp [one_mem], fun c _ ↦ ⟨fun _ ↦ 1, fun _ ↦ one_mem _, by simp⟩⟩` and prove the remaining obligations.
+-/
 theorem unitPoint_generates :
     (∀ j : Fin (0 + 1), (fun _ ↦ (1 : ℚ)) j ∈ Geo.chartLat (ι := blockIdx fun _ : Unit ↦ 0) unitPoint 0 1) ∧
       ArakelovGeometry.KH.GeneratesOn (ι := blockIdx fun _ : Unit ↦ 0) unitPoint 0 (fun _ : Fin (0 + 1) ↦ (1 : ℚ)) := by
   refine ⟨fun j c _ ↦ by simp [one_mem], fun c _ ↦ ⟨fun _ ↦ 1, fun _ ↦ one_mem _, by simp⟩⟩
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨μ, hμ, rfl⟩`. Establish `h0 : ∀ p, μ p = 0` using `fun p ↦ by`. Use `hμ p.1` as an intermediate fact.
+
+Rewrite `this` using `[Pi.zero_apply, Finset.sum_eq_zero_iff]`. Conclude with `this p.2 (Finset.mem_univ _)`. Simplify using `[h0]`. Introduce and unpack `rfl`. Conclude with `⟨0, fun k ↦ by simp, by simp⟩`.
+-/
 theorem monomialValues_zero [Fintype ι] {Ω : Type} [Field Ω] (y : Coord n → Ω) :
     monomialValues y 0 = {1} := by
   ext s
@@ -352,11 +453,21 @@ theorem monomialValues_zero [Fintype ι] {Ω : Type} [Field Ω] (y : Coord n →
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Rewrite using `[monomialValues_zero, Set.range_const]`.
+-/
 theorem span_monomialValues_zero [Fintype ι] {Ω : Type} [Field Ω] (y : Coord n → Ω) :
     Submodule.span ℤ (Set.range fun _ : Fin (0 + 1) ↦ (1 : Ω)) =
       Submodule.span ℤ (monomialValues y 0) := by
   rw [monomialValues_zero, Set.range_const]
 
+/- English proof (translation)
+Establish `hd : (L.pow 0).deg = 0`. Use function extensionality and compare the values at `k`. Simplify using `[HermLine.pow]`. Use `⟨⟨⟨1, 1, 0, 0, isWeightedHomogeneous_one ℤ (coordDeg n), isWeightedHomogeneous_one ℤ (coordDeg n), fun k ↦ by simp [hd], (Ideal.ne_top_iff_one _).mp (ArithVariety.whole n).isPrime.ne_top, by simp⟩, fun c _ ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hd]`.
+
+Simplify using `only [ArithVariety.chartPow, Pi.zero_apply, zpow_zero, Finset.prod_const_one, div_one]`. Conclude with `one_mem _`. Introduce `p q _ _ _ _ _ h z _`. Establish `hpq : p = q` using `ArithVariety.whole_mkF_injective n (by rw [h, one_mul])`. Rewrite using `[hpq]`.
+
+Express the relevant statement in the definitionally equal form `_ ≤ _ * L.metric z ^ 0`. Simplify using the standard rewrite rules.
+-/
 theorem whole_one_normal (L : HermLine n) :
     (ArithVariety.whole n).IsNormalSection (L.pow 0).deg 1 ∧
       (ArithVariety.whole n).IsSmallFor (L.pow 0) 1 := by
@@ -377,9 +488,29 @@ theorem whole_one_normal (L : HermLine n) :
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `fun z _ ↦ vectorL2Norm_conj (z k₀)`.
+-/
 theorem blockLine_conjInvariant [Fintype ι] (k₀ : ι) : (blockLine n k₀).ConjInvariant :=
   fun z _ ↦ vectorL2Norm_conj (z k₀)
 
+/- English proof (translation)
+Use `set D := blockAddData n k₀ with hD`. Introduce `j g m dg dm _ _ _ hgm z hz`. Establish `hz'` using `hz`. Establish `hg : g = m * X ⟨k₀, j⟩`. Establish `h1` using `aeval_of_hom n (ArithVariety.whole n).mkF g`.
+
+Establish `h2` using `aeval_of_hom n (ArithVariety.whole n).mkF m`. Use `ArithVariety.whole_mkF_injective n ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← h1, ← h2]`. Conclude with `hgm`. Establish `hcross : ∀ i, z ⟨none, j⟩ * z ⟨some k₀, i⟩ = z ⟨none, i⟩ * z ⟨some k₀, j⟩`.
+
+Introduce `i`. Establish `hmem : (X (D.newCoord j) * X (D.oldCoord ⟨k₀, i⟩) - X (D.newCoord i) * X (D.oldCoord ⟨k₀, j⟩) : MvPolynomial (Coord D.extSizes) ℤ) ∈ Geo.mCoordIdeal (ι` using `blockIdx D.extSizes) (D.plusCoord (wholePoint n) D.elt) := by`. Rewrite using `[mCoordIdeal_eq_ker, RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, eval₂Hom_X']`. Establish `hi : D.plusCoord (wholePoint n) D.elt (D.newCoord i) = D.plusCoord (wholePoint n) D.elt (D.oldCoord ⟨k₀, i⟩)` using `rfl`.
+
+Establish `hj : D.plusCoord (wholePoint n) D.elt (D.newCoord j) = D.plusCoord (wholePoint n) D.elt (D.oldCoord ⟨k₀, j⟩)` using `rfl`. Rewrite using `[hi, hj]`. Simplify using `only [AddBlockData.newCoord, AddBlockData.oldCoord]`. Expand and normalize the polynomial expressions, which then agree. Use `hz.2 _ hmem` as an intermediate fact.
+
+Simplify `this` using `[AddBlockData.newCoord, AddBlockData.oldCoord, sub_eq_zero]`. Establish `hold : BlockNonzero (unflatCone (D.oldFlat z))`. Use `(blockNonzero_unflatCone_iff _).mpr fun k ↦ ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 (some k)`. Conclude with `⟨i, hi⟩`.
+
+Establish `hnew : BlockNonzero (unflatCone z)` using `(blockNonzero_unflatCone_iff _).mpr hz.1`. Rewrite using `[HermLine.toGeo_h_of_blockNonzero _ hold, HermLine.toGeo_h_of_blockNonzero _ hnew, hg]`. Express the relevant statement in the definitionally equal form `_ * _ * l2Norm (fun i ↦ z ⟨some k₀, i⟩) = _ * l2Norm (fun i ↦ z ⟨none, i⟩)`. Establish `hev : eval (D.oldFlat z) (map (Int.castRingHom ℂ) (m * X ⟨k₀, j⟩)) = eval (D.oldFlat z) (map (Int.castRingHom ℂ) m) * z ⟨some k₀, j⟩`. Simplify using `[AddBlockData.oldFlat]`.
+
+Rewrite using `[hev, norm_mul]`. Establish `key : ‖z ⟨none, j⟩‖ * l2Norm (fun i ↦ z ⟨some k₀, i⟩) = ‖z ⟨some k₀, j⟩‖ * l2Norm (fun i ↦ z ⟨none, i⟩)`. Establish `hs : (‖z ⟨none, j⟩‖ * l2Norm (fun i ↦ z ⟨some k₀, i⟩)) ^ 2 = (‖z ⟨some k₀, j⟩‖ * l2Norm (fun i ↦ z ⟨none, i⟩)) ^ 2`. Simplify using `only [mul_pow, l2Norm]`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _), Real.sq_sqrt (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _), Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, ← mul_pow, ← norm_mul, ← norm_mul, hcross i, mul_comm]`. Conclude with `(pow_left_inj₀ (mul_nonneg (norm_nonneg _) (Real.sqrt_nonneg _)) (mul_nonneg (norm_nonneg _) (Real.sqrt_nonneg _)) two_ne_zero).mp hs`. Take the linear combination `‖eval (D.oldFlat z) (map (Int.castRingHom ℂ) m)‖ * key`.
+-/
 theorem blockLine_inducesMetric (k₀ : ι) :
     (blockAddData n k₀).InducesMetric (wholePoint n) (blockAddData n k₀).elt (blockLine n k₀).toGeo
       (blockLine (blockAddData n k₀).extSizes none).toGeo := by
@@ -433,6 +564,17 @@ theorem blockLine_inducesMetric (k₀ : ι) :
       (mul_nonneg (norm_nonneg _) (Real.sqrt_nonneg _)) two_ne_zero).mp hs
   linear_combination ‖eval (D.oldFlat z) (map (Int.castRingHom ℂ) m)‖ * key
 
+/- English proof (translation)
+Establish `hz : ∀ f : MvPolynomial (Coord n') ℤ, Geo.IsMultiHomog (ι` using `blockIdx n') f (Pi.single k₀ 0) → f = C (coeff 0 f) := by`. Introduce `f hf`. Use extensionality with `m`. Rewrite using `[coeff_C]`. Use `split_ifs with h0`.
+
+Rewrite using `[h0]`. Assume the negation of the conclusion as `hc`. Use `h0 (Finsupp.ext fun p ↦ ?_).symm` and prove the remaining obligations. Establish `h` using `hf m (mem_support_iff.mpr hc) p.1`. Rewrite `h` using `[Pi.single_zero, Pi.zero_apply, Finset.sum_eq_zero_iff]`.
+
+Conclude with `h p.2 (Finset.mem_univ _)`. Prove the components needed by the constructor for the conclusion. Use `Submodule.subset_span ⟨1, fun m hm k ↦ ?_, map_one _⟩` and prove the remaining obligations. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `(mem_support_iff.mp hm) (by rw [← C_1, coeff_C, if_neg (Ne.symm h0)])`. Simplify using `[hm0]`. Introduce `f hf hs z _`. Rewrite `hs`, the goal using `[hz f hf]`. Establish `h1 : coeff 0 f = 1`.
+
+Rewrite `hs` using `[aeval_C]`. Conclude with `(by simpa using hs : ((coeff 0 f : ℤ) : Ω) = 1)` after adjusting the coercions. Simplify using `[h1]`.
+-/
 theorem isSupSmallBlock_one {κ : Type} [Fintype κ] [DecidableEq κ] {n' : κ → ℕ} {Ω : Type} [Field Ω]
     [CharZero Ω] (y : Coord n' → Ω) (k₀ : κ) (A : Geo.HermLine (blockIdx n')) :
     (1 : Ω) ∈ Geo.secM (ι := blockIdx n') y (Pi.single k₀ 0) ∧ IsSupSmallBlock y k₀ A 0 1 := by
@@ -463,6 +605,11 @@ theorem isSupSmallBlock_one {κ : Type} [Fintype κ] [DecidableEq κ] {n' : κ �
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Introduce `dg dh g h z _ _ _ hy _`. Establish `hg` using `aeval_of_hom n (ArithVariety.whole n).mkF g`. Establish `hh` using `aeval_of_hom n (ArithVariety.whole n).mkF h`. Establish `hgh : g = h` using `ArithVariety.whole_mkF_injective n (by`. Rewrite `hy` using `[one_mul]`.
+
+Conclude with `hg.symm.trans (hy.trans hh))`. Substitute `hgh` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isSmallH_one_wholePoint [Fintype ι] (N : Geo.HermLine (blockIdx n)) :
     Geo.IsSmallH (ι := blockIdx n) (Geo.mCoordIdeal (ι := blockIdx n) (wholePoint n)) (wholePoint n) N 0 1 := by
   intro dg dh g h z _ _ _ hy _
@@ -473,9 +620,17 @@ theorem isSmallH_one_wholePoint [Fintype ι] (N : Geo.HermLine (blockIdx n)) :
   subst hgh
   simp
 
+/- English proof (translation)
+Simplify `(whole_one_normal n (HermLine.standard n)).1.degree` using `[HermLine.pow]`.
+-/
 theorem whole_isOfDegree_one : (ArithVariety.whole n).IsOfDegree 0 1 := by
   simpa [HermLine.pow] using (whole_one_normal n (HermLine.standard n)).1.degree
 
+/- English proof (translation)
+Use `⟨X ⟨(), 0⟩, 1, fun _ ↦ 1, 0, ?_, isWeightedHomogeneous_one ℤ _, fun k ↦ by simp, ?_, by simp⟩` and prove the remaining obligations. Use `isWeightedHomogeneous_X ℤ (coordDeg fun _ : Unit ↦ 0) ⟨(), 0⟩` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Consider the cases of `u`.
+
+Simplify using `[coordDeg]`. Conclude with `(Ideal.ne_top_iff_one _).mp (ArithVariety.whole _).isPrime.ne_top`.
+-/
 theorem whole_isOfDegree_X : (ArithVariety.whole fun _ : Unit ↦ 0).IsOfDegree (fun _ ↦ 1)
     ((ArithVariety.whole fun _ : Unit ↦ 0).mkF (X ⟨(), 0⟩)) := by
   refine ⟨X ⟨(), 0⟩, 1, fun _ ↦ 1, 0, ?_, isWeightedHomogeneous_one ℤ _, fun k ↦ by simp, ?_, by simp⟩
@@ -486,6 +641,11 @@ theorem whole_isOfDegree_X : (ArithVariety.whole fun _ : Unit ↦ 0).IsOfDegree 
     simp [coordDeg]
   · exact (Ideal.ne_top_iff_one _).mp (ArithVariety.whole _).isPrime.ne_top
 
+/- English proof (translation)
+Introduce `z hz μ hμ`. Establish `h0 : ∀ p, μ p = 0` using `fun p ↦ by`. Use `hμ p.1` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, Finset.sum_eq_zero_iff]`. Conclude with `this p.2 (Finset.mem_univ _)`.
+
+Establish `hz' : BlockNonzero (unflatCone z)` using `(blockNonzero_unflatCone_iff z).mpr hz.1`. Rewrite using `[HermLine.toGeo_h_of_blockNonzero _ hz']`. Simplify using `[h0, HermLine.pow]`.
+-/
 theorem monomialsBounded_zero (Q : Ideal (MvPolynomial (Coord n) ℤ)) :
     Geo.MonomialsBounded (ι := blockIdx n) Q ((HermLine.standard n).pow 0).toGeo 0 := by
   intro z hz μ hμ

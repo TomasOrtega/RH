@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SphTheta.InertAsm
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 _ _ χ η σ c hχ hc hη hform g k hk`. Take `⟨hη1, hηu, -, -⟩` from `hη`. Use `haveI : Fact (Module.finrank F E = 2) := ⟨h2⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Algebra.IsSeparable F E := inferInstance`.
+
+Establish `hrow` using `GlobalTheory.CompanionTheory.SphTheta.RowIwasawa.iwasawa_lower_row F`. Establish `hdk : modulus (k.val).det = 1`. Establish `h1` using `(hrow 1 k hk).2.1`. Simplify using `using h1`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : Eˣ, Algebra.norm F (s : E) = (k.val).det := by`.
+
+Establish `hk0 : (k.val).det ≠ 0` using `(Matrix.GeneralLinearGroup.det k).ne_zero`. Establish `h1` using `hη1 (Units.mk0 _ hk0)`. Rewrite `h1` using `[char_congr η hηu (u := Units.mk0 _ hk0) (v := 1) (by simpa using hdk), map_one, Units.val_one, Units.val_mk0, GL2LocalData.nsg]`. Assume the negation of the conclusion as `hn`. Rewrite `h1` using `[if_neg hn]`.
+
+Evaluate the numerical expressions using `at h1`. Distinguish the cases in `hg : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`. Take `⟨t, ht⟩` from `hg`. Establish `ht' : Algebra.norm F ((t * s : Eˣ) : E) = ((g * k).val).det`. Rewrite using `[Units.val_mul, map_mul, ht, hs, Units.val_mul, Matrix.det_mul]`.
+
+Rewrite using `[Wc_eq hc hform _ _ ht', Wc_eq hc hform _ _ ht]`. Take `⟨hm0, hdet, hmm, hx⟩` from `hrow g k hk`. Conclude with `val_eq hχ hη1 hηu hc ht ht' hm0 (hrow (g * k) 1 (one_mem _)).1 hdet hmm hx`. Establish `hg' : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = ((g * k).val).det`. Introduce and unpack `⟨t', ht'⟩`.
+
+Use `hg ⟨t' * s⁻¹, ?_⟩` and prove the remaining obligations. Establish `hs0 : Algebra.norm F (s : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 s.ne_zero`. Establish `hmul : Algebra.norm F ((t' * s⁻¹ : Eˣ) : E) * Algebra.norm F (s : E) = Algebra.norm F (t' : E)`. Rewrite using `[← map_mul, ← Units.val_mul, inv_mul_cancel_right]`. Establish `hd : ((g * k).val).det = (g.val).det * (k.val).det`.
+
+Rewrite using `[Units.val_mul, Matrix.det_mul]`. Rewrite `hmul` using `[ht', hs, hd]`. Conclude with `mul_right_cancel₀ (hs ▸ hs0) hmul`. Rewrite using `[GL2LocalData.Wc, GL2LocalData.Wc, dif_neg hg, dif_neg hg']`.
+-/
 theorem Wc_intInd_right_invariant : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] [CharZero F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → Continuous (algebraMap F E) → GroundTheory.LocalField.ord (algebraMap F E (unifUnit F : F)) = 1 → ∀ (χ : AddChar F Circle) (η : Fˣ →* ℂˣ) (σ : E ≃ₐ[F] E) (c : Eˣ →* ℂˣ), Ad3.IsStd χ → IsUnramifiedChar c → ((∀ a, ((η a : ℂˣ) : ℂ) = GL2LocalData.nsg E (a : F)) ∧ IsUnramifiedChar η ∧ η * η = 1 ∧ GL2LocalData.nsg E (-1 : F) = 1) → (∀ (g : GL (Fin 2) F) (t : Eˣ), Algebra.norm F (t : E) = (g.val).det → GL2LocalData.rW χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => intInd (x * (t : E))) 1 = (((modulus (mRow g) : ℝ)⁻¹ : ℝ) : ℂ) * GL2LocalData.nsg E (mRow g) * (χ (xRow g) : ℂ) * intInd ((t : E) * algebraMap F E (mRow g)⁻¹)) → ∀ (g k : GL (Fin 2) F), k ∈ GLnLocal.integralGL F 2 → GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd (g * k) = GL2LocalData.Wc χ σ (selfDualMeasure (GL2LocalData.chE E χ)) 1 c intInd g := by
   intro F _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ h2 _ _ χ η σ c hχ hc hη hform g k hk
   obtain ⟨hη1, hηu, -, -⟩ := hη

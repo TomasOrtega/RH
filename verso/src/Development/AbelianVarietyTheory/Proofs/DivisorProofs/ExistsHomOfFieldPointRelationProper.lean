@@ -6,6 +6,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits ReciprocityTheory.
 
 namespace GlobalTheory.FieldPointGraph
 
+/- English proof (translation)
+Establish `: Flat (spMap ι)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Use `letI := ι.toAlgebra`. Conclude with `(inferInstance : Module.Flat K K')`. Establish `: Surjective (spMap ι)` using `⟨fun y => ⟨IsLocalRing.closedPoint K', Subsingleton.elim _ _⟩⟩`.
+
+Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_spMap {K K' : Type} [Field K] [Field K'] (ι : K →+* K') : Epi (spMap ι) := by
   have : Flat (spMap ι) := by
     rw [HasRingHomProperty.Spec_iff (P := @Flat)]
@@ -16,14 +21,23 @@ theorem epi_spMap {K K' : Type} [Field K] [Field K'] (ι : K →+* K') : Epi (sp
 
 noncomputable def pt (K : Type) [Field K] : Sp K := IsLocalRing.closedPoint K
 
+/- English proof (translation)
+The claim follows from `Subsingleton.elim _ _`.
+-/
 theorem eq_pt {K : Type} [Field K] (t : Sp K) : t = pt K := Subsingleton.elim _ _
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `⟨_, (Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K X c).symm⟩`.
+-/
 theorem exists_eq_spMap_comp {X : Scheme.{0}} {K : Type} [Field K] (c : Sp K ⟶ X) {x : X}
     (hx : c (pt K) = x) :
     ∃ ι : X.residueField x →+* K, c = spMap ι ≫ X.fromSpecResidueField x := by
   subst hx
   exact ⟨_, (Scheme.descResidueField_stalkClosedPointTo_fromSpecResidueField K X c).symm⟩
 
+/- English proof (translation)
+Take `⟨A, hA, hl⟩` from `IsLocalRing.exists_factor_valuationRing f`. Use `⟨A, inferInstance, inferInstance, inferInstance, f.codRestrict A.toSubring hA, IsFractionRing.lift (A := A) (g := A.subtype) Subtype.val_injective, hl, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `IsFractionRing.lift_algebraMap (A := A) (g := A.subtype) Subtype.val_injective _`.
+-/
 theorem exists_valuationRing_factor {R K : Type} [CommRing R] [IsLocalRing R] [Field K]
     (f : R →+* K) :
     ∃ (A : Type) (_ : CommRing A) (_ : IsDomain A) (_ : ValuationRing A) (φ : R →+* A)
@@ -35,6 +49,13 @@ theorem exists_valuationRing_factor {R K : Type} [CommRing R] [IsLocalRing R] [F
   ext a
   exact IsFractionRing.lift_algebraMap (A := A) (g := A.subtype) Subtype.val_injective _
 
+/- English proof (translation)
+Take `⟨A, _, _, _, φ, ι, hl, hf⟩` from `exists_valuationRing_factor (X.presheaf.stalkSpecializes h ≫ X.residue x).hom`. Use `⟨A, inferInstance, inferInstance, inferInstance, spMap φ ≫ X.fromSpecStalk y, ι, ?_, ?_⟩` and prove the remaining obligations. Establish `e : spMap ι ≫ spMap (algebraMap A (FractionRing A)) ≫ spMap φ = Spec.map (X.presheaf.stalkSpecializes h ≫ X.residue x)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hf]`. Both sides reduce to the same expression.
+
+Use `Eq.trans ?_ ((congrArg (· ≫ X.fromSpecStalk y) e).trans ?_)` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Both sides reduce to the same expression. Establish `e1 : (spMap (IsLocalRing.residue A)) (pt _) = IsLocalRing.closedPoint A` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue A)`.
+
+Establish `e2 : (spMap φ) (IsLocalRing.closedPoint A) = IsLocalRing.closedPoint _` using `IsLocalRing.comap_closedPoint φ`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, e1]`. Conclude with `(congrArg (X.fromSpecStalk y) e2).trans Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem exists_valuationRing_of_specializes {X : Scheme.{0}} {x y : X} (h : x ⤳ y) :
     ∃ (A : Type) (_ : CommRing A) (_ : IsDomain A) (_ : ValuationRing A) (u : Sp A ⟶ X)
       (ι : FractionRing A →+* X.residueField x),
@@ -58,6 +79,39 @@ theorem exists_valuationRing_of_specializes {X : Scheme.{0}} {x y : X} (h : x �
     rw [Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, e1]
     exact (congrArg (X.fromSpecStalk y) e2).trans Scheme.fromSpecStalk_closedPoint
 
+/- English proof (translation)
+Establish `hD : ∀ (K K' : Type) [Field K] [Field K'] (ι : K →+* K') (c : Sp K ⟶ W), G K' (spMap ι ≫ c) → G K c`. Introduce `K K' _ _ ι c hc`. Take `⟨d, ⟨hd, hdr⟩, -⟩` from `hU K (c ≫ r)`. Establish `e : spMap ι ≫ c = spMap ι ≫ d` using `(hU K' (spMap ι ≫ c ≫ r)).unique ⟨hc, Category.assoc _ _ _⟩ ⟨hB _ _ ι d hd, by rw [Category.assoc, hdr]⟩`. Use `epi_spMap ι` as an intermediate fact.
+
+Rewrite using `[(cancel_epi _).mp e]` and apply the resulting hypothesis. Set `T : Set W` to `{x | G (W.residueField x) (W.fromSpecResidueField x)}`. Establish `hT : ∀ (K : Type) [Field K] (c : Sp K ⟶ W), G K c ↔ c (pt K) ∈ T`. Introduce `K _ c`. Take `⟨ι, hι⟩` from `exists_eq_spMap_comp c rfl`.
+
+Conclude with `⟨fun h => hD _ _ ι _ (hι ▸ h), fun h => by rw [hι]; exact hB _ _ ι _ h⟩`. Establish `hspec : ∀ x y : W, x ⤳ y → x ∈ T → y ∈ T`. Introduce `x y h hx`. Take `⟨A, _, _, _, u, ι, hu, hy⟩` from `exists_valuationRing_of_specializes h`. Establish `h1` using `hV A u (hD _ _ ι _ (hu ▸ hx))`.
+
+Rewrite `h1` using `[hT, hy]`. Then use the resulting hypothesis. Use `choose g hg hg' using fun y : Q => hU (Q.residueField y) (Q.fromSpecResidueField y)`. Set `γ : Q → W` to `fun y => g y (pt _)`. Establish `hγT : ∀ y, γ y ∈ T` using `fun y => (hT _ _).mp (hg y).1`. Establish `hγr : ∀ y, r (γ y) = y` using `fun y => by`.
+
+Use `(Scheme.Hom.comp_apply (g y) r _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[(hg y).2]`. Conclude with `Scheme.fromSpecResidueField_apply _ _`. Establish `hTγ : ∀ x ∈ T, x = γ (r x)`. Introduce `x hx`.
+
+Establish `hpt : (W.fromSpecResidueField x ≫ r) (pt (W.residueField x)) = r x`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Take `⟨ι, hι⟩` from `exists_eq_spMap_comp (K := W.residueField x) _ hpt`. Establish `e : W.fromSpecResidueField x = spMap ι ≫ g (r x)` using `(hU (W.residueField x) (W.fromSpecResidueField x ≫ r)).unique ⟨hx, rfl⟩ ⟨hB _ _ ι _ (hg _).1, by rw [Category.assoc, (hg _).2, hι]⟩`. Establish `e1` using `Scheme.fromSpecResidueField_apply x (pt (W.residueField x))`.
+
+Use `e1.symm.trans ?_` and prove the remaining obligations. Rewrite using `[e, Scheme.Hom.comp_apply]`. Conclude with `congrArg (g (r x)) (eq_pt _)`. Establish `hfin : (γ '' genericPoints Q).Finite` using `(genericPoints.finite NoetherianSpace.finite_irreducibleComponents).image γ`. Establish `hsub : closure (γ '' genericPoints Q) ⊆ T`.
+
+Introduce `x hx`. Rewrite `hx` using `[← Set.biUnion_of_singleton (γ '' genericPoints Q), hfin.closure_biUnion]`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨_, ⟨y, -, rfl⟩, hx⟩` from `hx`. Conclude with `hspec _ _ (specializes_iff_mem_closure.mpr hx) (hγT y)`.
+
+Establish `hcl : IsClosed T`. Establish `hsurj : r '' closure (γ '' genericPoints Q) = Set.univ`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← genericPoints.closure (α := Q)]`. Use `closure_minimal (fun y hy => ⟨γ y, subset_closure ⟨y, hy, rfl⟩, hγr y⟩) (r.isClosedMap _ isClosed_closure)` and prove the remaining obligations.
+
+Establish `: T = closure (γ '' genericPoints Q)`. Use `Set.Subset.antisymm (fun x hx => ?_) hsub` and prove the remaining obligations. Take `⟨x', hx', e⟩ : r x ∈ r '' closure (γ '' genericPoints Q)` from `hsurj ▸ Set.mem_univ _`. Rewrite using `[hTγ x hx, ← e, ← hTγ x' (hsub hx')]` and apply the resulting hypothesis. Rewrite using `[this]`.
+
+Conclude with `isClosed_closure`. Set `I` to `Scheme.IdealSheafData.vanishingIdeal (⟨T, hcl⟩ : Closeds W)`. Establish `hI : Set.range I.subschemeι = T`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι]`. Both sides reduce to the same expression.
+
+Establish `hGI : ∀ (K : Type) [Field K] (c : Sp K ⟶ I.subscheme), G K (c ≫ I.subschemeι)`. Introduce `K _ c`. Rewrite using `[hT, ← hI, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Establish `: IsIso (I.subschemeι ≫ r)`.
+
+Use `GlobalTheory.isIso_of_isProper_of_existsUnique_field_point _ _ _ inferInstance (ReducedSubgroup.isReduced_subscheme_vanishingIdeal _) (GlobalTheory.IsNormalScheme.pred _) inferInstance fun K _ z => ?_` and prove the remaining obligations. Take `⟨c, ⟨hc, hcr⟩, hu⟩` from `hU K z`. Establish `hker : I.subschemeι.ker ≤ c.ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Use `ReducedSubgroup.vanishingIdeal_le_ker c _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[eq_pt t]`. Conclude with `(hT K c).mp hc`. Establish `hl` using `IsClosedImmersion.lift_fac I.subschemeι c hker`. Use `⟨IsClosedImmersion.lift I.subschemeι c hker, ?_, fun d hd => ?_⟩` and prove the remaining obligations.
+
+Use `show _ ≫ _ ≫ _ = _`. Rewrite using `[← Category.assoc, hl, hcr]`. Rewrite using `[← cancel_mono I.subschemeι, hl]`. Conclude with `hu _ ⟨hGI K d, (Category.assoc _ _ _).trans hd⟩`. Use `⟨inv (I.subschemeι ≫ r) ≫ I.subschemeι, ?_, fun K _ z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, IsIso.inv_hom_id]`. Rewrite using `[← Category.assoc]`. Conclude with `hGI K _`.
+-/
 theorem exists_section {W Q : Scheme.{0}} (r : W ⟶ Q) [IsProper r] [IsNoetherian Q]
     [GlobalTheory.IsNormalScheme Q] (G : ∀ (K : Type) [Field K], (Sp K ⟶ W) → Prop)
     (hU : ∀ (K : Type) [Field K] (z : Sp K ⟶ Q), ∃! c, G K c ∧ c ≫ r = z)
@@ -158,6 +212,15 @@ theorem exists_section {W Q : Scheme.{0}} (r : W ⟶ Q) [IsProper r] [IsNoetheri
   · rw [← Category.assoc]
     exact hGI K _
 
+/- English proof (translation)
+Introduce `Q P S q p _ _ _ R hC hU hB hV`. Take `⟨s, hs, hG⟩` from `exists_section (pullback.fst q p) (fun K _ c => R K (c ≫ pullback.fst q p) (c ≫ pullback.snd q p)) (fun K _ z => by`. Take `⟨w, hw, hu⟩` from `hU K z`. Use `⟨pullback.lift z w (hC K z w hw), ⟨?_, pullback.lift_fst _ _ _⟩, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, pullback.lift_snd]` and apply the resulting hypothesis.
+
+Use `pullback.hom_ext (by rw [pullback.lift_fst, hc.2]) ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_snd]`. Conclude with `hu _ (hc.2 ▸ hc.1))`. Use the proof step `(fun K K' _ _ ι c hc => by`. Rewrite using `[Category.assoc, Category.assoc]`.
+
+Conclude with `hB K K' ι _ _ hc)`. Use the proof step `(fun A _ _ _ u hu => by`. Rewrite `hu`, the goal using `[Category.assoc, Category.assoc]`. Conclude with `hV A _ _ (by simp [pullback.condition]) hu)`. Use `⟨s ≫ pullback.snd q p, ?_, fun K _ z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← pullback.condition, ← Category.assoc, hs, Category.id_comp]`. Use `hG K z` as an intermediate fact. Rewrite `this` using `[Category.assoc, Category.assoc, hs, Category.comp_id]`. Then use the resulting hypothesis.
+-/
 theorem exists_hom_of_rel : ∀ (Q P S : Scheme.{0}) (q : Q ⟶ S) (p : P ⟶ S) [IsProper p] [IsNoetherian Q] [GlobalTheory.IsNormalScheme Q] (R : ∀ (K : Type) [Field K], (Sp K ⟶ Q) → (Sp K ⟶ P) → Prop), (∀ (K : Type) [Field K] (z : Sp K ⟶ Q) (w : Sp K ⟶ P), R K z w → z ≫ q = w ≫ p) → (∀ (K : Type) [Field K] (z : Sp K ⟶ Q), ∃! w, R K z w) → (∀ (K K' : Type) [Field K] [Field K'] (ι : K →+* K') (z : Sp K ⟶ Q) (w : Sp K ⟶ P), R K z w → R K' (spMap ι ≫ z) (spMap ι ≫ w)) → (∀ (A : Type) [CommRing A] [IsDomain A] [ValuationRing A] (u : Sp A ⟶ Q) (v : Sp A ⟶ P), u ≫ q = v ≫ p → R (FractionRing A) (spMap (algebraMap A (FractionRing A)) ≫ u) (spMap (algebraMap A (FractionRing A)) ≫ v) → R (IsLocalRing.ResidueField A) (spMap (IsLocalRing.residue A) ≫ u) (spMap (IsLocalRing.residue A) ≫ v)) → ∃ h : Q ⟶ P, h ≫ p = q ∧ ∀ (K : Type) [Field K] (z : Sp K ⟶ Q), R K z (z ≫ h) := by
   intro Q P S q p _ _ _ R hC hU hB hV
   obtain ⟨s, hs, hG⟩ := exists_section (pullback.fst q p)

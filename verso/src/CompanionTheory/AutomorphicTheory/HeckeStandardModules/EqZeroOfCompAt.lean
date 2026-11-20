@@ -22,21 +22,41 @@ def sgl (v : HeightOneSpectrum (𝓞 L⁺)) (r : v.adicCompletion L⁺) : AFplus
     simp only [Set.mem_setOf_eq, Pi.single_eq_of_ne hw']
     exact zero_mem _⟩
 
+/- English proof (translation)
+Conclude with `Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 L⁺) => w.adicCompletion L⁺) v r`.
+-/
 theorem sgl_same (v : HeightOneSpectrum (𝓞 L⁺)) (r : v.adicCompletion L⁺) : sgl v r v = r := by
   classical
   exact Pi.single_eq_same (M := fun w : HeightOneSpectrum (𝓞 L⁺) => w.adicCompletion L⁺) v r
 
+/- English proof (translation)
+Conclude with `Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 L⁺) => w.adicCompletion L⁺) hw r`.
+-/
 theorem sgl_ne (v : HeightOneSpectrum (𝓞 L⁺)) (r : v.adicCompletion L⁺) {w} (hw : w ≠ v) : sgl v r w = 0 := by
   classical
   exact Pi.single_eq_of_ne (M := fun w : HeightOneSpectrum (𝓞 L⁺) => w.adicCompletion L⁺) hw r
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compAt_tmul (v : HeightOneSpectrum (𝓞 L⁺)) (x : L) (a : AFplus L) :
     compAt L v (x ⊗ₜ[L⁺] a) = x ⊗ₜ[L⁺] (a v) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem proj_tmul (s : SplitPlace L) (x : L) (a : AFplus L) : s.proj (x ⊗ₜ[L⁺] a) = s.i x * a s.v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conj_tmul (x : L) (a : AFplus L) : conjAL L (x ⊗ₜ[L⁺] a) = IsCMField.complexConj L x ⊗ₜ[L⁺] a := rfl
 
+/- English proof (translation)
+Establish `hli : LinearIndependent L⁺ ![(1 : L), e]`. Rewrite using `[LinearIndependent.pair_iff' one_ne_zero]`. Introduce and unpack `a rfl`. Conclude with `he (by rw [← Algebra.algebraMap_eq_smul_one, AlgEquiv.commutes])`. Use `⟨basisOfLinearIndependentOfCardEqFinrank hli (by` and prove the remaining obligations.
+
+Apply the tactic sequence `rw [Fintype.card_fin, Algebra.IsQuadraticExtension.finrank_eq_two]), ?_, ?_⟩ <;> simp`.
+-/
 theorem exists_basis (e : L) (he : IsCMField.complexConj L e ≠ e) :
     ∃ b : Module.Basis (Fin 2) L⁺ L, b 0 = 1 ∧ b 1 = e := by
   have hli : LinearIndependent L⁺ ![(1 : L), e] := by
@@ -46,6 +66,11 @@ theorem exists_basis (e : L) (he : IsCMField.complexConj L e ≠ e) :
   refine ⟨basisOfLinearIndependentOfCardEqFinrank hli (by
     rw [Fintype.card_fin, Algebra.IsQuadraticExtension.finrank_eq_two]), ?_, ?_⟩ <;> simp
 
+/- English proof (translation)
+Set `b : Module.Basis (Fin 2) L⁺ L` to `Module.finBasisOfFinrankEq _ _ (Algebra.IsQuadraticExtension.finrank_eq_two L⁺ L)`. Take `⟨A, B, rfl⟩` from `GlobalTheory.tensor_exists_decomp b z`. Establish `h : ∀ w, A w = 0 ∧ B w = 0` using `fun w => GlobalTheory.tensor_decomp_eq_zero b _ _ (by`. Use `hz w` as an intermediate fact. Rewrite using `[map_add, compAt_tmul, compAt_tmul] at this)` and apply the resulting hypothesis.
+
+Rewrite using `[show A = 0 from DFunLike.ext _ _ fun w => (h w).1, show B = 0 from DFunLike.ext _ _ fun w => (h w).2]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_zero_of_compAt (z : AL L) (hz : ∀ v, compAt L v z = 0) : z = 0 := by
   let b : Module.Basis (Fin 2) L⁺ L := Module.finBasisOfFinrankEq _ _ (Algebra.IsQuadraticExtension.finrank_eq_two L⁺ L)
   obtain ⟨A, B, rfl⟩ := GlobalTheory.tensor_exists_decomp b z
@@ -57,10 +82,20 @@ theorem eq_zero_of_compAt (z : AL L) (hz : ∀ v, compAt L v z = 0) : z = 0 := b
 
 variable (s : SplitPlace L)
 
+/- English proof (translation)
+Take `⟨e, h1, h2⟩` from `GlobalTheory.SplitSep.exists_sep L s`. Conclude with `⟨e, fun h => by rw [h, h1] at h2; exact lt_irrefl _ h2⟩`.
+-/
 theorem exists_ne : ∃ e : L, s.i (IsCMField.complexConj L e) ≠ s.i e := by
   obtain ⟨e, h1, h2⟩ := GlobalTheory.SplitSep.exists_sep L s
   exact ⟨e, fun h => by rw [h, h1] at h2; exact lt_irrefl _ h2⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_ne s`. Take `⟨b, hb0, hb1⟩` from `exists_basis e fun h => he (by rw [h])`. Use `eq_zero_of_compAt z fun w => ?_` and prove the remaining obligations. Break down `eq_or_ne w s.v with rfl | hw` into its components or cases. Take `⟨A, B, rfl⟩` from `GlobalTheory.tensor_exists_decomp b z`.
+
+Rewrite `*` using `[hb0, hb1]`. Rewrite `h1` using `[map_add, proj_tmul, proj_tmul, map_one]`. Rewrite `h2` using `[map_add, conj_tmul, conj_tmul, map_add, proj_tmul, proj_tmul, map_one, map_one]`. Establish `hB : B s.v = 0` using `(mul_eq_zero.1 (show (s.i (IsCMField.complexConj L e) - s.i e) * B s.v = 0 by`. Take the linear combination `h2 - h1)).resolve_left (sub_ne_zero.2 he)`.
+
+Establish `hA : A s.v = 0` using `by simpa [hB] using h1`. Rewrite using `[map_add, compAt_tmul, compAt_tmul, hA, hB, tmul_zero, tmul_zero, add_zero]`. Conclude with `hz w hw`.
+-/
 theorem eq_zero_of_proj {z : AL L} (hz : ∀ w, w ≠ s.v → compAt L w z = 0) (h1 : s.proj z = 0)
     (h2 : s.proj (conjAL L z) = 0) : z = 0 := by
   obtain ⟨e, he⟩ := exists_ne s
@@ -77,6 +112,11 @@ theorem eq_zero_of_proj {z : AL L} (hz : ∀ w, w ≠ s.v → compAt L w z = 0) 
     rw [map_add, compAt_tmul, compAt_tmul, hA, hB, tmul_zero, tmul_zero, add_zero]
   · exact hz w hw
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_ne s`. Establish `hd` using `sub_ne_zero.2 he`. Use `set β := (b - a) / (s.i (IsCMField.complexConj L e) - s.i e) with hβ`. Use `⟨(1 : L) ⊗ₜ[L⁺] sgl s.v (a - s.i e * β) + e ⊗ₜ[L⁺] sgl s.v β, fun w hw => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, compAt_tmul, compAt_tmul, sgl_ne _ _ hw, sgl_ne _ _ hw, tmul_zero, tmul_zero, add_zero]`.
+
+Rewrite using `[map_add, proj_tmul, proj_tmul, sgl_same, sgl_same, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, conj_tmul, conj_tmul, map_add, proj_tmul, proj_tmul, sgl_same, sgl_same, map_one, map_one]`. Use `div_mul_cancel₀ (b - a) hd` as an intermediate fact. Take the linear combination `this`.
+-/
 theorem exists_pair (a b : s.v.adicCompletion L⁺) :
     ∃ z : AL L, (∀ w, w ≠ s.v → compAt L w z = 0) ∧ s.proj z = a ∧ s.proj (conjAL L z) = b := by
   obtain ⟨e, he⟩ := exists_ne s
@@ -90,6 +130,11 @@ theorem exists_pair (a b : s.v.adicCompletion L⁺) :
     have := div_mul_cancel₀ (b - a) hd
     linear_combination this
 
+/- English proof (translation)
+Establish `: ∀ z : AL L, compAt L w (conjAL L z) = Algebra.TensorProduct.map (IsCMField.complexConj L).toAlgHom (AlgHom.id L⁺ _) (compAt L w z)` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Rewrite using `[this, h, map_zero]`.
+-/
 theorem compAt_conj {w : HeightOneSpectrum (𝓞 L⁺)} {z : AL L} (h : compAt L w z = 0) : compAt L w (conjAL L z) = 0 := by
   have : ∀ z : AL L, compAt L w (conjAL L z) =
       Algebra.TensorProduct.map (IsCMField.complexConj L).toAlgHom (AlgHom.id L⁺ _) (compAt L w z) := fun z => by
@@ -101,17 +146,26 @@ theorem compAt_conj {w : HeightOneSpectrum (𝓞 L⁺)} {z : AL L} (h : compAt L
 
 abbrev ent (x : GA L n) : Matrix (Fin n) (Fin n) (AL L) := x.1
 
+/- English proof (translation)
+Establish `h1 : ((x.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) x.1` using `Units.inv_eq_of_mul_eq_one_right x.2`. Conclude with `congrFun (congrFun h1 i) j`.
+-/
 theorem ent_inv (x : GA L n) (i j : Fin n) : ent x⁻¹ i j = conjAL L (ent x j i) := by
   have h1 : ((x.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) x.1 :=
     Units.inv_eq_of_mul_eq_one_right x.2
   exact congrFun (congrFun h1 i) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_apply (x : GA L n) (i j : Fin n) :
     (s.loc n x : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j = s.proj (ent x i j) := rfl
 
 def Gv (n : ℕ) (T : Set (HeightOneSpectrum (𝓞 L⁺))) : Subgroup (GA L n) :=
   ⨅ w, ⨅ _ : w ∉ T, ((Matrix.GeneralLinearGroup.map (compAt L w)).comp (GA L n).subtype).ker
 
+/- English proof (translation)
+Simplify using `only [Gv, Subgroup.mem_iInf, MonoidHom.mem_ker, TrivOutside, Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_Gv {T : Set (HeightOneSpectrum (𝓞 L⁺))} {x : GA L n} : x ∈ Gv n T ↔ TrivOutside T x := by
   simp only [Gv, Subgroup.mem_iInf, MonoidHom.mem_ker, TrivOutside, Units.ext_iff]
   rfl
@@ -119,19 +173,33 @@ theorem mem_Gv {T : Set (HeightOneSpectrum (𝓞 L⁺))} {x : GA L n} : x ∈ Gv
 instance Gv_normal (T : Set (HeightOneSpectrum (𝓞 L⁺))) : (Gv (L := L) n T).Normal :=
   Subgroup.normal_iInf_normal fun _ => Subgroup.normal_iInf_normal fun _ => inferInstance
 
+/- English proof (translation)
+Rewrite using `[map_sub, show compAt L w (ent x i j) = _ from congrFun (congrFun (hx w hw) i) j]`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem sub_one_supp {v : HeightOneSpectrum (𝓞 L⁺)} {x : GA L n} (hx : TrivOutside {v} x) (i j : Fin n) {w}
     (hw : w ≠ v) : compAt L w (ent x i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j) = 0 := by
   rw [map_sub, show compAt L w (ent x i j) = _ from congrFun (congrFun (hx w hw) i) j]
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem map_one_apply {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (i j : Fin n) :
     φ ((1 : Matrix (Fin n) (Fin n) R) i j) = (1 : Matrix (Fin n) (Fin n) S) i j := by
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Simplify using `[Matrix.one_apply, eq_comm]`.
+-/
 theorem one_apply_symm {R : Type*} [CommRing R] (i j : Fin n) :
     (1 : Matrix (Fin n) (Fin n) R) i j = (1 : Matrix (Fin n) (Fin n) R) j i := by
   simp [Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Establish `h' : s.loc n x⁻¹ = 1` using `by rw [map_inv, h, inv_one]`. Use `Subtype.ext (Units.ext (Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_proj s (fun w => sub_one_supp hx i j) ?_ ?_)))` and prove the remaining obligations. Use `show s.proj (ent x i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j) = 0`. Rewrite using `[map_sub, ← loc_apply, h, map_one_apply]`. Conclude with `sub_self _`.
+
+Use `show s.proj (conjAL L (ent x i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j)) = 0`. Rewrite using `[map_sub, map_sub, ← ent_inv, ← loc_apply, h', map_one_apply, map_one_apply, one_apply_symm]`. Conclude with `sub_self _`.
+-/
 theorem eq_one_of_loc {x : GA L n} (hx : TrivOutside {s.v} x) (h : s.loc n x = 1) : x = 1 := by
   have h' : s.loc n x⁻¹ = 1 := by rw [map_inv, h, inv_one]
   refine Subtype.ext (Units.ext (Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_proj s (fun w => sub_one_supp hx i j) ?_ ?_)))
@@ -142,6 +210,15 @@ theorem eq_one_of_loc {x : GA L n} (hx : TrivOutside {s.v} x) (h : s.loc n x = 1
     rw [map_sub, map_sub, ← ent_inv, ← loc_apply, h', map_one_apply, map_one_apply, one_apply_symm]
     exact sub_self _
 
+/- English proof (translation)
+Use `choose Z h0 h1 h2 using fun i j : Fin n => exists_pair s ((g : Matrix (Fin n) (Fin n) _) i j - (1 : Matrix (Fin n) (Fin n) _) i j) (((g⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) j i - (1 : Matrix (Fin n) (Fin n) _) i j)`. Use `set X : Matrix (Fin n) (Fin n) (AL L) := 1 + Matrix.of Z with hX`. Establish `e0 : ∀ w, w ≠ s.v → X.map (compAt L w) = 1` using `fun w hw => Matrix.ext fun i j => by`. Rewrite using `[Matrix.map_apply, hX, Matrix.add_apply, map_add, Matrix.of_apply, h0 i j w hw, add_zero, map_one_apply]`. Establish `e0' : ∀ w, w ≠ s.v → (conjT (conjAL L) X).map (compAt L w) = 1` using `fun w hw => Matrix.ext fun i j => by show compAt L w (conjAL L (X j i)) = _`.
+
+Rewrite using `[hX, Matrix.add_apply, map_add, map_add, Matrix.of_apply, compAt_conj (h0 j i w hw), add_zero, map_one_apply, map_one_apply, one_apply_symm]`. Establish `e1 : X.map s.proj = g` using `Matrix.ext fun i j => by`. Rewrite using `[Matrix.map_apply, hX, Matrix.add_apply, map_add, Matrix.of_apply, h1, map_one_apply, add_sub_cancel]`. Establish `e2 : (conjT (conjAL L) X).map s.proj = (g⁻¹ : GL (Fin n) _)` using `Matrix.ext fun i j => by show s.proj (conjAL L (X j i)) = _`. Rewrite using `[hX, Matrix.add_apply, map_add, map_add, Matrix.of_apply, h2, map_one_apply, map_one_apply, add_sub_cancel]`.
+
+Establish `e3 : (X * conjT (conjAL L) X).map s.proj = 1` using `by rw [Matrix.map_mul, e1, e2, Units.mul_inv]`. Establish `hU : X * conjT (conjAL L) X = 1` using `Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_proj s (fun w hw => by`. Rewrite using `[map_sub, ← Matrix.map_apply (f := compAt L w), Matrix.map_mul, e0 w hw, e0' w hw, one_mul, map_one_apply, sub_self])`. Use the proof step `(by rw [map_sub, ← Matrix.map_apply (f := s.proj), e3, map_one_apply, sub_self]) (by`. Establish `: conjAL L ((X * conjT (conjAL L) X) i j) = (X * conjT (conjAL L) X) j i` using `by show conjT (conjAL L) (X * conjT (conjAL L) X) j i = _`.
+
+Rewrite using `[conjT_mul, conjT_conjT _ (conjAL_conjAL L)]`. Rewrite using `[map_sub, map_sub, this, ← Matrix.map_apply (f := s.proj), e3, map_one_apply, map_one_apply, one_apply_symm, sub_self]))`. Conclude with `⟨⟨⟨X, _, hU, mul_eq_one_comm.1 hU⟩, hU⟩, e0, Units.ext e1⟩`.
+-/
 theorem exists_loc (g : GL (Fin n) (s.v.adicCompletion L⁺)) : ∃ x : GA L n, TrivOutside {s.v} x ∧ s.loc n x = g := by
   choose Z h0 h1 h2 using fun i j : Fin n => exists_pair s
     ((g : Matrix (Fin n) (Fin n) _) i j - (1 : Matrix (Fin n) (Fin n) _) i j)
@@ -169,6 +246,11 @@ theorem exists_loc (g : GL (Fin n) (s.v.adicCompletion L⁺)) : ∃ x : GA L n, 
         sub_self]))
   exact ⟨⟨⟨X, _, hU, mul_eq_one_comm.1 hU⟩, hU⟩, e0, Units.ext e1⟩
 
+/- English proof (translation)
+Establish `: ALint L ≤ (s.v.adicCompletionIntegers L⁺).toSubring.comap s.proj`. Rewrite using `[ALint, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Use `show Valued.v (s.i y * 1) ≤ 1`. Rewrite using `[mul_one]`.
+
+Conclude with `s.split_le_one y`. Use `show s.i 1 * a s.v ∈ s.v.adicCompletionIntegers L⁺`. Rewrite using `[map_one, one_mul]`. Conclude with `ha _`. Conclude with `this hz`.
+-/
 theorem proj_le {z : AL L} (hz : z ∈ ALint L) : Valued.v (s.proj z) ≤ 1 := by
   have : ALint L ≤ (s.v.adicCompletionIntegers L⁺).toSubring.comap s.proj := by
     rw [ALint, Subring.closure_le]
@@ -184,6 +266,11 @@ theorem proj_le {z : AL L} (hz : z ∈ ALint L) : Valued.v (s.proj z) ≤ 1 := b
 abbrev KL (n : ℕ) : Subgroup (GL (Fin n) (s.v.adicCompletion L⁺)) :=
   Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers L⁺).toSubring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_inv]`. Conclude with `⟨fun i j => ((a : Matrix (Fin n) (Fin n) (s.v.adicCompletionIntegers L⁺).toSubring) i j).2, fun i j => (((a⁻¹ : GL (Fin n) (s.v.adicCompletionIntegers L⁺).toSubring) : Matrix (Fin n) (Fin n) (s.v.adicCompletionIntegers L⁺).toSubring) i j).2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `Formalism.UG.P.levelaf_mem_range_of_integral _ g ⟨Matrix.of fun i j => ⟨_, h1 i j⟩, rfl⟩ ⟨Matrix.of fun i j => ⟨_, h2 i j⟩, rfl⟩`.
+-/
 theorem mem_KL {g : GL (Fin n) (s.v.adicCompletion L⁺)} : g ∈ KL s n ↔
     (∀ i j, Valued.v ((g : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1) ∧
       ∀ i j, Valued.v (((g⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1 := by
@@ -197,11 +284,19 @@ theorem mem_KL {g : GL (Fin n) (s.v.adicCompletion L⁺)} : g ∈ KL s n ↔
     exact Formalism.UG.P.levelaf_mem_range_of_integral _ g ⟨Matrix.of fun i j => ⟨_, h1 i j⟩, rfl⟩
       ⟨Matrix.of fun i j => ⟨_, h2 i j⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(mem_KL s).2 ⟨fun i j => proj_le s (hx i j), fun i j => by rw [← map_inv] exact proj_le s ((Umax L n).inv_mem hx i j)⟩`.
+-/
 theorem loc_mem_KL {x : GA L n} (hx : x ∈ Umax L n) : s.loc n x ∈ KL s n :=
   (mem_KL s).2 ⟨fun i j => proj_le s (hx i j), fun i j => by
     rw [← map_inv]
     exact proj_le s ((Umax L n).inv_mem hx i j)⟩
 
+/- English proof (translation)
+Use `⟨loc_mem_KL s, fun h i j => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(mem_KL s).1 h`. Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep L s`. Establish `hone : ∀ i j, Valued.v ((1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1` using `fun i j => by`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+
+Establish `hz` using `GlobalTheory.mem_ALint_of_supported_at_split L s e he he' _ (fun w => sub_one_supp hx i j) (by rw [map_sub, map_one_apply]; exact (Valuation.map_sub _ _ _).trans (max_le (h1 i j) (hone i j))) (by`. Rewrite using `[map_sub, map_sub, ← ent_inv, map_one_apply, map_one_apply, ← loc_apply, map_inv]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (h2 j i) (hone i j)))`. Use `add_mem hz ((Umax L n).one_mem i j)` as an intermediate fact. Rewrite `this` using `[show ((1 : GA L n).1 : Matrix (Fin n) (Fin n) (AL L)) = 1 from rfl, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_Umax_iff {x : GA L n} (hx : TrivOutside {s.v} x) : x ∈ Umax L n ↔ s.loc n x ∈ KL s n := by
   refine ⟨loc_mem_KL s, fun h i j => ?_⟩
   obtain ⟨h1, h2⟩ := (mem_KL s).1 h
@@ -225,18 +320,35 @@ def locEquiv (n : ℕ) : Gv (L := L) n {s.v} ≃* GL (Fin n) (s.v.adicCompletion
 def emb (n : ℕ) : GL (Fin n) (s.v.adicCompletion L⁺) →* GA L n :=
   (Gv n {s.v}).subtype.comp (locEquiv s n).symm.toMonoidHom
 
+/- English proof (translation)
+The claim follows from `mem_Gv.1 ((locEquiv s n).symm g).2`.
+-/
 theorem emb_triv (g : GL (Fin n) (s.v.adicCompletion L⁺)) : TrivOutside {s.v} (emb s n g) :=
   mem_Gv.1 ((locEquiv s n).symm g).2
 
+/- English proof (translation)
+The claim follows from `(locEquiv s n).apply_symm_apply g`.
+-/
 theorem loc_emb (g : GL (Fin n) (s.v.adicCompletion L⁺)) : s.loc n (emb s n g) = g := (locEquiv s n).apply_symm_apply g
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((locEquiv s n).symm_apply_apply ⟨x, mem_Gv.2 hx⟩)`.
+-/
 theorem emb_loc {x : GA L n} (hx : TrivOutside {s.v} x) : emb s n (s.loc n x) = x :=
   congrArg Subtype.val ((locEquiv s n).symm_apply_apply ⟨x, mem_Gv.2 hx⟩)
 
+/- English proof (translation)
+Rewrite using `[← emb_loc s (mem_Gv.1 ((Gv_normal _).conj_mem _ (mem_Gv.2 (emb_triv s g)) x)), map_mul (s.loc n), map_mul (s.loc n), map_inv (s.loc n), loc_emb]`.
+-/
 theorem conj_emb (x : GA L n) (g : GL (Fin n) (s.v.adicCompletion L⁺)) :
     x * emb s n g * x⁻¹ = emb s n (s.loc n x * g * (s.loc n x)⁻¹) := by
   rw [← emb_loc s (mem_Gv.1 ((Gv_normal _).conj_mem _ (mem_Gv.2 (emb_triv s g)) x)), map_mul (s.loc n), map_mul (s.loc n), map_inv (s.loc n), loc_emb]
 
+/- English proof (translation)
+Use `Subtype.ext (Units.ext (Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_compAt _ fun w => ?_)))` and prove the remaining obligations. Establish `: (ent x * ent y).map (compAt L w) = (ent y * ent x).map (compAt L w)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Break down `eq_or_ne w v with rfl | hw` into its components or cases. Rewrite using `[hy w h, mul_one, one_mul]`.
+
+Rewrite using `[hx w hw, mul_one, one_mul]`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun (congrFun this i) j`.
+-/
 theorem commute_of_ne {v v' : HeightOneSpectrum (𝓞 L⁺)} (h : v ≠ v') {x y : GA L n} (hx : TrivOutside {v} x)
     (hy : TrivOutside {v'} y) : x * y = y * x := by
   refine Subtype.ext (Units.ext (Matrix.ext fun i j => sub_eq_zero.1 (eq_zero_of_compAt _ fun w => ?_)))

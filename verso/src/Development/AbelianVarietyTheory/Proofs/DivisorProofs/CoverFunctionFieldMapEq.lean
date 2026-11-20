@@ -9,6 +9,13 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjV
 
 namespace GlobalTheory.Mean4O.Cover
 
+/- English proof (translation)
+Establish `e : V.π (genericPoint V.G) = genericPoint Y.X`. Establish `hc : (spMap V.φ) (IsLocalRing.closedPoint (V.G.presheaf.stalk (genericPoint V.G))) = IsLocalRing.closedPoint (Y.X.presheaf.stalk (genericPoint Y.X))` using `Subsingleton.elim (α := PrimeSpectrum (Y.X.presheaf.stalk (genericPoint Y.X))) _ _`. Use `(congrArg V.π Scheme.fromSpecStalk_closedPoint.symm).trans ?_` and prove the remaining obligations. Use `(Scheme.Hom.comp_apply _ _ _).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (fun f => f (IsLocalRing.closedPoint (V.G.presheaf.stalk (genericPoint V.G)))) V.φ_spec).trans ?_` and prove the remaining obligations.
+
+Use `(Scheme.Hom.comp_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Use `⟨specializes_of_eq e, ?_⟩` and prove the remaining obligations. Establish `key : Spec.map (CommRingCat.ofHom V.φ) = Spec.map (Y.X.presheaf.stalkSpecializes (specializes_of_eq e) ≫ V.π.stalkMap (genericPoint V.G))`.
+
+Rewrite using `[← cancel_mono (Y.X.fromSpecStalk (genericPoint Y.X)), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Conclude with `V.φ_spec.symm`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective key)`.
+-/
 theorem φ_eq_fnMap {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) :
     ∃ hη : V.π (genericPoint V.G) ⤳ genericPoint Y.X, V.φ = GlobalTheory.TrueGeo.SmallSec.fnMap V.π hη := by
   have e : V.π (genericPoint V.G) = genericPoint Y.X := by

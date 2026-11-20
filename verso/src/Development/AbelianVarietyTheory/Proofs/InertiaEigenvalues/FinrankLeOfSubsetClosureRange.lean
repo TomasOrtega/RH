@@ -4,6 +4,15 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Mai
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℚ E`. Set `S : Submodule ℚ_[l] (PadicAlgCl l)` to `Submodule.span ℚ_[l] (Set.range fun k => J (b k))`. Establish `hfd : FiniteDimensional ℚ_[l] S` using `FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Establish `hcl : IsClosed (S : Set (PadicAlgCl l))` using `Submodule.closed_of_finiteDimensional S`. Establish `hsub : Set.range J ⊆ S`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `S.sum_mem fun k _ => ?_` and prove the remaining obligations. Establish `e : J (b.repr x k • b k) = ((b.repr x k : ℚ) : ℚ_[l]) • J (b k)`. Rewrite using `[Rat.smul_def, map_mul, map_ratCast, Algebra.smul_def, map_ratCast]`.
+
+Rewrite using `[e]`. Conclude with `S.smul_mem _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hle : K.toSubalgebra.toSubmodule ≤ S` using `fun x hx => closure_minimal hsub hcl (hdense hx)`. Establish `h1 : finrank ℚ_[l] ↥K.toSubalgebra.toSubmodule ≤ finrank ℚ_[l] S` using `Submodule.finrank_mono hle`. Establish `h2 : finrank ℚ_[l] S ≤ finrank ℚ E`.
+
+Use `finrank_range_le_card (R := ℚ_[l]) (fun k => J (b k))` as an intermediate fact. Simplify `this` using `[Set.finrank]`. Conclude with `le_trans h1 h2`.
+-/
 theorem finrank_le_of_subset_closure_range {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [NumberField E]
     (J : E →+* PadicAlgCl l) (K : IntermediateField ℚ_[l] (PadicAlgCl l))
     (hdense : (K : Set (PadicAlgCl l)) ⊆ closure (Set.range J)) :
@@ -28,6 +37,9 @@ theorem finrank_le_of_subset_closure_range {l : ℕ} [Fact l.Prime] {E : Type} [
     simpa [Set.finrank] using this
   exact le_trans h1 h2
 
+/- English proof (translation)
+Establish `h1 : finrank ℚ D.host.E = 4 * D.R.ord` using `D.host.finrank_cmField`. Establish `h2` using `finrank_le_of_subset_closure_range ((D.nbr i w hw).j.comp (algebraMap D.host.E D.nd.Om)) (D.nbr i w hw).Kw.1 (D.nbr i w hw).j_dense`. Establish `h3 : D.R.n = D.R.ord` using `rfl`. Establish `h4 : finrank ℚ D.host.E = 4 * D.R.n` using `by rw [h1, h3]`. Conclude with `le_trans h2 h4.le`.
+-/
 theorem bridge_finrank_le (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) :
     finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1 ≤ 4 * D.R.n := by

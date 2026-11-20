@@ -14,20 +14,34 @@ noncomputable section
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {V : Type} [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+Simplify using `only [flagStep, Submodule.map_span, Set.image_comp]`.
+-/
 theorem map_flagStep {E E' : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω E'] {r : ℕ}
     (f : E →ₗ[Ω] E') (v : Fin r → E) (i : ℕ) : (flagStep Ω v i).map f = flagStep Ω (f ∘ v) i := by
   simp only [flagStep, Submodule.map_span, Set.image_comp]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Pi.basisFun_apply, Fintype.linearCombination_apply_single]`.
+-/
 theorem lc_comp_basisFun {r : ℕ} (b : Fin r → V) :
     Fintype.linearCombination Ω b ∘ ⇑(Pi.basisFun Ω (Fin r)) = b := by
   classical
   funext i
   simp [Pi.basisFun_apply, Fintype.linearCombination_apply_single]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_subset_range _ _)`.
+-/
 theorem flagStep_le_span {E : Type} [AddCommGroup E] [Module Ω E] {r : ℕ} (b : Fin r → E) (i : ℕ) :
     flagStep Ω b i ≤ Submodule.span Ω (Set.range b) :=
   Submodule.span_mono (Set.image_subset_range _ _)
 
+/- English proof (translation)
+Establish `hmem : ∀ k, b' k ∈ LinearMap.range (Fintype.linearCombination Ω b)`. Introduce `k`. Rewrite using `[Fintype.range_linearCombination]`. Apply `flagStep_le_span b r` to reduce the goal to its premises. Rewrite using `[← h r]`.
+
+Conclude with `Submodule.subset_span ⟨k, k.2, rfl⟩`. Use `choose b'c hb'c using hmem`. Conclude with `⟨b'c, funext hb'c⟩`.
+-/
 theorem exists_coords {r : ℕ} (b b' : Fin r → V) (h : ∀ i, flagStep Ω b' i = flagStep Ω b i) :
     ∃ b'c : Fin r → (Fin r → Ω), Fintype.linearCombination Ω b ∘ b'c = b' := by
   have hmem : ∀ k, b' k ∈ LinearMap.range (Fintype.linearCombination Ω b) := by
@@ -39,6 +53,19 @@ theorem exists_coords {r : ℕ} (b b' : Fin r → V) (h : ∀ i, flagStep Ω b' 
   choose b'c hb'c using hmem
   exact ⟨b'c, funext hb'c⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Fintype.linearCombination Ω b)` using `hb.fintypeLinearCombination_injective`. Establish `hlc` using `lc_comp_basisFun (Ω := Ω) b`. Establish `hfl : ∀ j, (flagStep Ω (⇑(Pi.basisFun Ω (Fin r))) j).map (Fintype.linearCombination Ω b) = flagStep Ω b j`. Introduce `j`. Rewrite using `[map_flagStep, hlc]`.
+
+Establish `he : ∀ j, Fintype.linearCombination Ω b (Pi.basisFun Ω (Fin r) j) = b j` using `fun j => congrFun hlc j`. Use function extensionality and compare the values at `q`. Unfold `Lat.gr`. Use `congr 1`. Use extensionality with `t`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzt⟩`. Use `⟨Fintype.linearCombination Ω b z, hz, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (f := Fintype.linearCombination Ω b) hzt` as an intermediate fact. Rewrite `this` using `[map_sub, map_smul, he, hfl]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨v, hv, hvt⟩`. Establish `hvs : v ∈ LinearMap.range (Fintype.linearCombination Ω b)`. Rewrite using `[Fintype.range_linearCombination]`. Establish `h1` using `flagStep_le_span b i hvt`. Establish `h2 : t • b i ∈ Submodule.span Ω (Set.range b)` using `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Simplify using `using add_mem h1 h2`. Take `⟨z, rfl⟩` from `hvs`. Use `⟨z, hv, ?_⟩` and prove the remaining obligations. Establish `: Fintype.linearCombination Ω b (z - t • Pi.basisFun Ω (Fin r) i) ∈ (flagStep Ω (⇑(Pi.basisFun Ω (Fin r))) i).map (Fintype.linearCombination Ω b)`. Rewrite using `[map_sub, map_smul, he, hfl]`.
+
+Conclude with `hvt`. Take `⟨w, hw, hwz⟩` from `this`. Rewrite using `[← hinj hwz]` and apply the resulting hypothesis.
+-/
 theorem gr_comap {r : ℕ} (b : Fin r → V) (hb : LinearIndependent Ω b) (L : Lat ξ V) (i : Fin r) :
     (L.comap (Fintype.linearCombination Ω b)).gr (⇑(Pi.basisFun Ω (Fin r))) i = L.gr b i := by
   have hinj : Function.Injective (Fintype.linearCombination Ω b) := hb.fintypeLinearCombination_injective
@@ -70,6 +97,15 @@ theorem gr_comap {r : ℕ} (b : Fin r → V) (hb : LinearIndependent Ω b) (L : 
     obtain ⟨w, hw, hwz⟩ := this
     rwa [← hinj hwz]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Fintype.linearCombination Ω b)` using `hb.fintypeLinearCombination_injective`. Establish `hlc` using `lc_comp_basisFun (Ω := Ω) b`. Introduce `p hp`. Take `⟨U, hU, b', hfl, hfr⟩` from `h p hp`. Take `⟨b'c, hb'c⟩` from `exists_coords b b' hfl`.
+
+Use `⟨U, hU, b'c, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[map_flagStep, map_flagStep, hb'c, hlc, hfl]`. Introduce `q hq hqU`.
+
+Take `⟨hli, hsp⟩` from `hfr q hq hqU`. Use `⟨LinearIndependent.of_comp (Fintype.linearCombination Ω b) (by rw [hb'c]; exact hli), ?_⟩` and prove the remaining obligations. Use `show (L q).comap ((Fintype.linearCombination Ω b).restrictScalars (regAt ξ q)) = _`. Establish `hinj' : Function.Injective ((Fintype.linearCombination Ω b).restrictScalars (regAt ξ q))` using `hinj`. Rewrite using `[hsp, ← hb'c, Set.range_comp]`.
+
+Establish `: Submodule.span (regAt ξ q) (⇑(Fintype.linearCombination Ω b) '' Set.range b'c) = (Submodule.span (regAt ξ q) (Set.range b'c)).map ((Fintype.linearCombination Ω b).restrictScalars (regAt ξ q))`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.comap_map_eq_of_injective hinj']`.
+-/
 theorem isFlagVBOn_comap {r : ℕ} (b : Fin r → V) (hb : LinearIndependent Ω b) (L : Lat ξ V) (T : Set (Cpt ξ))
     (h : L.IsFlagVBOn T b) :
     (L.comap (Fintype.linearCombination Ω b)).IsFlagVBOn T (⇑(Pi.basisFun Ω (Fin r))) := by
@@ -99,6 +135,15 @@ end GlobalTheory.CompanionTheory.Ar.CoordRead
 
 namespace GlobalTheory.CompanionTheory.Ar.CoordRead
 
+/- English proof (translation)
+Introduce `X Ω _ ξ K _ _ J _ y hT d hd A _ _ _ _ hA hC p hp m _ hm O _ _ _ _ _ _ _ ϖ hϖ V _ _ r b hb L L' Q hP hoff`. Establish `hpair : IsLatFlagPair y (overPrime ξ p) (L.comap (Fintype.linearCombination Ω b)) (L'.comap (Fintype.linearCombination Ω b)) (⇑(Pi.basisFun Ω (Fin r))) Q`. Take `⟨h1, h2, h3⟩` from `hP`. Use `⟨isFlagVBOn_comap b hb L _ h1, isFlagVBOn_comap b hb L' _ h2, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[gr_comap b hb L i, gr_comap b hb L' i]`.
+
+Conclude with `h3 i`. Establish `hoff' : ∀ q : Cpt ξ, q ∈ overPrime ξ p → ¬ InFibre ξ p q → (L.comap (Fintype.linearCombination Ω b)) q = (L'.comap (Fintype.linearCombination Ω b)) q`. Introduce `q h1 h2`. Use `show (L q).comap _ = (L' q).comap _`. Rewrite using `[hoff q h1 h2]`.
+
+Take `⟨B, B', v, v', hlat, -, -, hfp⟩` from `GlobalTheory.T.dedekind_constants_degree_two X Ω ξ K J y hT d hd A hA hC p hp m hm O ϖ hϖ (Fin r → Ω) r (Pi.basisFun Ω (Fin r)) (L.comap (Fintype.linearCombination Ω b)) (L'.comap (Fintype.linearCombination Ω b)) Q hpair hoff'`. Use `⟨B, B', v, v', fun c hc => ⟨AddSubgroup.ext fun z => ?_, AddSubgroup.ext fun z => ?_⟩, hfp⟩` and prove the remaining obligations. Rewrite using `[(hlat c hc z).1]`. Simplify using `only [coordLat, AddSubgroup.mem_iInf]`. Both sides reduce to the same expression.
+
+Rewrite using `[(hlat c hc z).2]`. Simplify using `only [coordLat, AddSubgroup.mem_iInf]`. Both sides reduce to the same expression.
+-/
 theorem flagPair_coord : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type)
     [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω),
     CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ d : ℕ, IsArithVar (mCoordIdeal y) (d + 1) →

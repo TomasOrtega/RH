@@ -7,6 +7,15 @@ namespace Formalism.RepresentationBoundsCohomology.CyclotomicTwistCohomology
 
 open Matrix Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Polynomial
 
+/- English proof (translation)
+Introduce `ℓ _ R r r₀ M0 h0 S Um Vm U Y Y' F hX hI hY1 hY2 hVm hHT i infm infX hInf hT4`. Take `⟨hv, hm1, hm2, hw2⟩` from `w_facts R F`. Establish `hcoc` using `slOfInter ℓ R.Gg R.OC R.actO r S Um Y Y' F.lnzd hI hY1`. Establish `hMx` using `ofFun_Mx R.actO Um hcoc`. Establish `hDT : Inter (SL.ofFun R.actO Um) S Y`.
+
+Introduce `g`. Rewrite using `[hMx]`. Conclude with `hI g`. Establish `hTD` using `interInv ℓ R.Gg R.OC R.actO r _ _ _ Y' F.lnzd hDT hY1 hY2`. Establish `hDTi` using `interTwist ℓ R.Gg R.OC R.actO r _ _ _ R.χ i hDT`.
+
+Establish `hTDi` using `interTwist ℓ R.Gg R.OC R.actO r _ _ _ R.χ i hTD`. Establish `hT3 : ∀ j : ℤ, _` using `fun j => t3W ℓ R.Tt r Vm R.z R.z' R.ϖ R.ϖ₁ R.w j F.zz F.ϖϖ hX.1 hX.2 hVm hw2`. Use `⟨?_, hInf, hT4, hT3 i, ?_, ?_⟩` and prove the remaining obligations. Introduce `x show matrixMapOnH1 _ _ Y R.p (matrixMapOnH1 _ _ Y' R.p x) = _`. Rewrite using `[matrix_map_H1_eq_onH1 _ _ _ _ hDTi, matrix_map_H1_eq_onH1 _ _ _ _ hTDi]`.
+
+Conclude with `sandwich_composite_on_H1 ℓ R.Gg R.G R.OC R.actO r _ _ _ _ hDTi hTDi R.p hY2 x`. Introduce `x hx`. Use function extensionality and compare the values at `k`. Conclude with `F.omtf _ (congrFun hx k)`. Conclude with `htW ℓ R.Tt r Vm R.w U F.omtf hHT (fun u _ => (hT3 u).1) i`.
+-/
 theorem pieceBThm : StatPieceB := by
   intro ℓ _ R r r₀ M0 h0 S Um Vm U Y Y' F hX hI hY1 hY2 hVm hHT i infm infX hInf hT4
   obtain ⟨hv, hm1, hm2, hw2⟩ := w_facts R F
@@ -31,6 +40,19 @@ theorem pieceBThm : StatPieceB := by
     exact F.omtf _ (congrFun hx k)
   · exact htW ℓ R.Tt r Vm R.w U F.omtf hHT (fun u _ => (hT3 u).1) i
 
+/- English proof (translation)
+Introduce `OC _ r c A B hc h`. Establish `hpow : ∀ (n : ℕ) (a : OC), c ^ n * a = 0 → a = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a ha`.
+
+Simplify using `using ha`. Consider the case `succ n ih`. Introduce `a ha`. Apply `ih` to reduce the goal to its premises. Apply `hc` to reduce the goal to its premises.
+
+Rewrite using `[← mul_assoc, ← pow_succ']`. Conclude with `ha`. Establish `h0 : A * (B * A - c • 1) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, h, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one, sub_self]`. Establish `h1 : A.det • (B * A - c • 1) = 0`.
+
+Use `congrArg (fun M => A.adjugate * M) h0` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_zero] at this`. Conclude with `this`. Establish `hdet : A.det * B.det = c ^ r`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`.
+
+Establish `hz : B * A - c • 1 = 0`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun h1 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at e`. Apply `hpow r` to reduce the goal to its premises.
+
+Rewrite using `[← hdet, mul_comm A.det, mul_assoc, e, mul_zero]`. Conclude with `sub_eq_zero.mp hz`.
+-/
 theorem square : StatSquare := by
   intro OC _ r c A B hc h
   have hpow : ∀ (n : ℕ) (a : OC), c ^ n * a = 0 → a = 0 := by
@@ -61,6 +83,21 @@ theorem square : StatSquare := by
     rw [← hdet, mul_comm A.det, mul_assoc, e, mul_zero]
   exact sub_eq_zero.mp hz
 
+/- English proof (translation)
+Introduce `ℓ _ G _ OC Om _ _ _ eO actO r ρ S Sτ Um Vm Y Y' Pp Sp Cm Bm t hℓ hinj hI hY2 hP hS hB hV`. Use `set Cq := Cm.map eO with hCq`. Use `set Bq := Bm.map eO with hBq`. Use `set Z := Y * Pp with hZ`. Establish `h1 : (Sp * Y' * Bq) * (Cq * Z) = (ℓ : OC) • (1 : Matrix (Fin ρ) (Fin ρ) OC)`.
+
+Rewrite using `[Matrix.mul_assoc, ← hB, hZ, Matrix.mul_assoc, ← Matrix.mul_assoc Y', hY2, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, hS]`. Establish `h2` using `square OC ρ (ℓ : OC) _ _ hℓ h1`. Establish `hCB : Cm * Bm = 1`. Establish `e1 : (Cq * Bq) * (Cq * Z) = Cq * Z` using `by rw [Matrix.mul_assoc, ← hB]`. Establish `e2 : (ℓ : OC) • (Cq * Bq) = (ℓ : OC) • (1 : Matrix (Fin ρ) (Fin ρ) OC)`.
+
+Use `congrArg (fun M => M * (Sp * Y' * Bq)) e1` as an intermediate fact. Simplify using `only [Matrix.mul_assoc (Cq * Bq), h2, Matrix.mul_smul, Matrix.mul_one] at this`. Conclude with `this`. Establish `e3` using `mat_cancel (ℓ : OC) hℓ e2`. Use extensionality with `a b`.
+
+Apply `hinj` to reduce the goal to its premises. Use `congrFun (congrFun e3 a) b` as an intermediate fact. Rewrite `this` using `[hCq, hBq, ← Matrix.map_mul]`. Rewrite using `[show eO ((Cm * Bm) a b) = ((Cm * Bm).map eO) a b from rfl, this]`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`.
+
+Use `⟨h1, h2, ?_, hCB, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[Matrix.map_mul, hZ, Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_assoc, hP g, ← Matrix.mul_assoc (Y.map _), hI g, Matrix.mul_assoc (Um g), ← hZ]`. Use `conv_lhs => rw [hB]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Introduce `a b`. Establish `: Cm * Vm * Bm - (1 : Matrix (Fin ρ) (Fin ρ) Om) = Cm * (Vm - 1) * Bm`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hCB]`. Rewrite using `[this, Matrix.mul_apply]`. Use `Finset.dvd_sum fun q _ => ?_` and prove the remaining obligations.
+
+Apply `Dvd.dvd.mul_right` to reduce the goal to its premises. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun q' _ => Dvd.dvd.mul_left (hV q' q) _`.
+-/
 theorem sec3 : StatSec3 := by
   intro ℓ _ G _ OC Om _ _ _ eO actO r ρ S Sτ Um Vm Y Y' Pp Sp Cm Bm t hℓ hinj hI hY2 hP hS hB hV
   set Cq := Cm.map eO with hCq
@@ -98,6 +135,39 @@ theorem sec3 : StatSec3 := by
     rw [Matrix.mul_apply]
     exact Finset.dvd_sum fun q' _ => Dvd.dvd.mul_left (hV q' q) _
 
+/- English proof (translation)
+Introduce `ℓ _ R r r₀ M0 h0 S Um Vm U Y Y' F hX hI hY1 hY2 hVm hHT h0U hfix hemb hg0 hUH hUg v hv`. Take `⟨hval, hm1, hm2, hw2⟩` from `w_facts R F`. Establish `hcoc` using `slOfInter ℓ R.Gg R.OC R.actO r S Um Y Y' F.lnzd hI hY1`. Establish `hMx` using `ofFun_Mx R.actO Um hcoc`. Establish `hDT : Inter (SL.ofFun R.actO Um) S Y`.
+
+Introduce `g`. Rewrite using `[hMx]`. Conclude with `hI g`. Establish `hTD` using `interInv ℓ R.Gg R.OC R.actO r _ _ _ Y' F.lnzd hDT hY1 hY2`. Establish `hT3` using `t3W ℓ R.Tt r Vm R.z R.z' R.ϖ R.ϖ₁ R.w 0 F.zz F.ϖϖ hX.1 hX.2 hVm hw2`.
+
+Establish `hT3all : ∀ j : ℤ, _` using `fun j => t3W ℓ R.Tt r Vm R.z R.z' R.ϖ R.ϖ₁ R.w j F.zz F.ϖϖ hX.1 hX.2 hVm hw2`. Establish `hHTp` using `htW ℓ R.Tt r Vm R.w U F.omtf hHT (fun u _ => (hT3all u).1) 0`. Use `set y := v ᵥ* Y' with hy`. Establish `hinv : ∀ g : R.G, (fun k => R.actO (R.p g) (y k)) ᵥ* Um (R.p g) = y`. Introduce `g`.
+
+Establish `h1 : (fun k => R.actO (R.p g) (v k)) ᵥ* S.Mx (R.p g) = v`. Use `hv g` as an intermediate fact. Establish `e : repS R S 0 g v = (fun k => R.actO (R.p g) (v k)) ᵥ* ((((R.χ (R.p g)) ^ (0 : ℤ) : ℤ_[ℓ]ˣ) : ℤ_[ℓ]) • S.Mx (R.p g))` using `rfl`. Rewrite `this` using `[e]`. Simplify using `using this`.
+
+Establish `h2` using `hTD (R.p g)`. Rewrite `h2` using `[hMx]`. Rewrite using `[hy, map_vecMul', Matrix.vecMul_vecMul, h2, ← Matrix.vecMul_vecMul, h1]`. Establish `hcoord : ∀ k, ∃ a : R.Tt.Oi, R.emb a = y k`. Introduce `k`.
+
+Apply `hfix` to reduce the goal to its premises. Introduce `h hh`. Use `congrFun (hinv h) k` as an intermediate fact. Rewrite `this` using `[hUH h hh, Matrix.vecMul_one]`. Conclude with `this`.
+
+Use `choose a ha using hcoord`. Establish `hrel : ∀ t, ∑ q, R.Tt.g0 (a q) * algebraMap R.Tt.Om R.Tt.Oi (Vm q t) = a t`. Introduce `t`. Apply `hemb` to reduce the goal to its premises. Use `congrFun (hinv R.gg) t` as an intermediate fact.
+
+Rewrite `this` using `[hUg]`. Rewrite using `[ha t, ← this, map_sum]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply, map_mul, ← hg0, ha]`. Both sides reduce to the same expression. Set `am : Fin r → R.Tt.Om` to `fun t => R.Tt.pr (a t)`.
+
+Establish `ham : R.Tt.gmI Vm R.w 0 am = am`. Rewrite using `[gmI_apply]`. Use function extensionality and compare the values at `t`. Use `congrArg R.Tt.pr (hrel t)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+
+Use `show ∑ q, R.Tt.Vi Vm R.w 0 t q * R.Tt.pr (a q) = R.Tt.pr (a t)`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `e : R.Tt.pr (R.Tt.g0 (a q) * algebraMap R.Tt.Om R.Tt.Oi (Vm q t)) = Vm q t * R.Tt.pr (a q)`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, R.Tt.pr_comp_g_zero, smul_eq_mul]`.
+
+Rewrite using `[e, Vi_apply]`. Simplify using the standard rewrite rules. Establish `htf : ∀ x : Fin r → R.Tt.Om, (ℓ : ℤ_[ℓ]) • x = 0 → x = 0`. Introduce `x hx`. Use function extensionality and compare the values at `k`.
+
+Conclude with `F.omtf _ (congrFun hx k)`. Establish `ham0 : am = 0` using `eigenInj ℓ R.w _ hm1 (fun _ => hm2) hval U 0 h0U (Fin r → R.Tt.Om) (R.Tt.gmI Vm R.w 0) htf hHTp am ham`. Set `aX : Fin r → R.Tt.Xm` to `fun t => ⟨a t, congrFun ham0 t⟩`. Establish `haX : R.Tt.gXI Vm R.w 0 aX = aX`. Use function extensionality and compare the values at `t`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[gXI_coe]`. Use `show ∑ q, R.Tt.Vi Vm R.w 0 t q • R.Tt.g0 (a q) = a t`. Rewrite using `[← hrel t]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Vi_apply, Algebra.smul_def, mul_comm]`. Simplify using the standard rewrite rules. Establish `haX0` using `hT3.1 aX haX`. Establish `ha0 : ∀ t, a t = 0` using `fun t => congrArg (fun z : R.Tt.Xm => (z : R.Tt.Oi)) (congrFun haX0 t)`. Establish `hy0 : y = 0`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[← ha k, ha0 k, map_zero]`. Both sides reduce to the same expression. Establish `: (ℓ : R.OC) • v = 0`. Establish `e : (v ᵥ* Y') ᵥ* Y = (ℓ : R.OC) • v`.
+
+Rewrite using `[Matrix.vecMul_vecMul, hY2, Matrix.vecMul_smul, Matrix.vecMul_one]`. Rewrite using `[← e, ← hy, hy0, Matrix.zero_vecMul]`. Use function extensionality and compare the values at `k`. Conclude with `F.lnzd _ (congrFun this k)`.
+-/
 theorem cyclotomicInvariantsZero_statement : CyclotomicInvariantsZero := by
   intro ℓ _ R r r₀ M0 h0 S Um Vm U Y Y' F hX hI hY1 hY2 hVm hHT h0U hfix hemb hg0 hUH hUg v hv
   obtain ⟨hval, hm1, hm2, hw2⟩ := w_facts R F

@@ -9,6 +9,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegSS.CptQuot
 
+/- English proof (translation)
+Unfold `adj`. Establish `hc : Continuous (fun l : Matrix n n A => cT σ l)`. Unfold `Formalism.UG.cT`. Conclude with `(continuous_id.matrix_map hσ).matrix_transpose`. Conclude with `(continuous_const.matrix_mul hc).matrix_mul continuous_const`.
+-/
 theorem continuous_adj {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A) (hσ : Continuous σ) (J : Matrix n n A) :
     Continuous (adj σ J) := by
@@ -18,6 +21,21 @@ theorem continuous_adj {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologic
     exact (continuous_id.matrix_map hσ).matrix_transpose
   exact (continuous_const.matrix_mul hc).matrix_mul continuous_const
 
+/- English proof (translation)
+Establish `hca` using `continuous_adj σ hσ J`. Set `C : Set (Matrix n n A)` to `D ∩ {M | M * adj σ J M = 1 ∧ adj σ J M * M = 1 ∧ M * (γ : Matrix n n A) = (γ : Matrix n n A) * M}`. Establish `hCc : IsCompact C`. Use `hD.inter_right ?_` and prove the remaining obligations. Conclude with `(isClosed_eq (continuous_id.matrix_mul hca) continuous_const).inter ((isClosed_eq (hca.matrix_mul continuous_id) continuous_const).inter (isClosed_eq (continuous_id.matrix_mul continuous_const) (continuous_const.matrix_mul continuous_id)))`.
+
+Set `u : C → GL n A` to `fun M => ⟨M.1, adj σ J M.1, M.2.2.1, M.2.2.2.1⟩`. Establish `hu : ∀ M : C, u M ∈ (UJ σ J ⊓ Subgroup.centralizer {γ} : Subgroup (GL n A))`. Introduce `M`. Use `Subgroup.mem_inf.2 ⟨(mem_UJ_iff_adj_mul σ hJ (u M)).2 M.2.2.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_centralizer_iff]`.
+
+Introduce `h hh`. Rewrite using `[Set.mem_singleton_iff.1 hh]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `M.2.2.2.2.symm`.
+
+Set `f : C → (UJ σ J ⊓ Subgroup.centralizer {γ} : Subgroup (GL n A))` to `fun M => ⟨u M, hu M⟩`. Establish `hf : Continuous f`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨continuous_subtype_val, hca.comp continuous_subtype_val⟩`.
+
+Establish `: CompactSpace C` using `isCompact_iff_compactSpace.mp hCc`. Use `⟨Set.range f, isCompact_range hf, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hg'` using `Subgroup.mem_inf.1 g.2`. Establish `h1` using `(mem_UJ_iff_mul_adj σ hJ (g : GL n A)).1 hg'.1`.
+
+Establish `h2` using `(mem_UJ_iff_adj_mul σ hJ (g : GL n A)).1 hg'.1`. Establish `h3 : ((g : GL n A) : Matrix n n A) * γ = γ * (g : GL n A)`. Establish `hc` using `congrArg Units.val (Subgroup.mem_centralizer_iff.1 hg'.2 γ (Set.mem_singleton γ))`. Rewrite `hc` using `[Units.val_mul, Units.val_mul]`. Conclude with `hc.symm`.
+
+Use `⟨⟨_, hg, h1, h2, h3⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem exists_isCompact {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [T2Space A] {n : Type} [Fintype n] [DecidableEq n] (σ : A →+* A) (hσ : Continuous σ)
     {J : Matrix n n A} (hJ : IsUnit J.det) (γ : GL n A) {D : Set (Matrix n n A)}
@@ -64,6 +82,21 @@ theorem exists_isCompact {A : Type} [CommRing A] [TopologicalSpace A] [IsTopolog
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ n _ _ σ J γ hreg hM`. Use `quad_finite hreg.quad` as an intermediate fact. Take `⟨hTR, -, hT2, -⟩` from `hL F E`. Take `⟨D, hD, hDg⟩` from `hM`. Set `: TopologicalSpace (E ⊗[F] AdeleRing (𝓞 F) F)` to `Formalism.BasicNotions.tensTopL (F := F) (E := E) (AdeleRing (𝓞 F) F)`.
+
+Establish `: IsTopologicalRing (E ⊗[F] AdeleRing (𝓞 F) F)` using `hTR`. Establish `: T2Space (E ⊗[F] AdeleRing (𝓞 F) F)` using `hT2`. Establish `hD' : IsCompact D` using `hD`. Establish `hσ' : Continuous (sigR σ (AdeleRing (𝓞 F) F))` using `continuous_sigR σ (AdeleRing (𝓞 F) F)`. Establish `hJ' : IsUnit (J.map (inclE (F` using `F) (AdeleRing (𝓞 F) F))).det := isUnit_det_map (inclE (F := F) (AdeleRing (𝓞 F) F)) hreg.nondeg`.
+
+Establish `key : ∃ K : Set (centPts σ J γ (AdeleRing (𝓞 F) F)), IsCompact K ∧ ∀ g : centPts σ J γ (AdeleRing (𝓞 F) F), ((g : GL n (E ⊗[F] AdeleRing (𝓞 F) F)) : Matrix n n (E ⊗[F] AdeleRing (𝓞 F) F)) ∈ D → g ∈ K` using `exists_isCompact (sigR σ (AdeleRing (𝓞 F) F)) hσ' hJ' (bc (inclE (F := F) (AdeleRing (𝓞 F) F)) γ) hD'`. Take `⟨K, hK, hKD⟩` from `key`. Establish `hδc : ∀ δ ∈ centRat σ J γ, bc (inclE (F` using `F) (AdeleRing (𝓞 F) F)) δ ∈ centPts σ J γ (AdeleRing (𝓞 F) F) := by`. Introduce `δ hδ`. Establish `hδ'` using `Subgroup.mem_inf.1 (show δ ∈ UJ (σ : E →+* E) J ⊓ Subgroup.centralizer {γ} from hδ)`.
+
+Establish `hadj` using `(mem_UJ_iff_adj_mul (σ : E →+* E) hreg.nondeg δ).1 hδ'.1`. Establish `hcomm` using `Subgroup.mem_centralizer_iff.1 hδ'.2 γ (Set.mem_singleton γ)`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ UJ (sigR σ (AdeleRing (𝓞 F) F)) (J.map (inclE (F := F) (AdeleRing (𝓞 F) F)))`. Rewrite using `[mem_UJ_iff_adj_mul _ hJ']`.
+
+Use `show adj (sigR σ (AdeleRing (𝓞 F) F)) (J.map (inclE (F := F) (AdeleRing (𝓞 F) F))) ((δ : Matrix n n E).map (inclE (F := F) (AdeleRing (𝓞 F) F))) * (δ : Matrix n n E).map (inclE (F := F) (AdeleRing (𝓞 F) F)) = 1`. Rewrite using `[adj_map (σ : E →+* E) (sigR σ (AdeleRing (𝓞 F) F)) (inclE (F := F) (AdeleRing (𝓞 F) F)) (fun x => inclE_conj σ (AdeleRing (𝓞 F) F) x) hreg.nondeg, ← Matrix.map_mul, hadj, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Subgroup.mem_centralizer_iff]`. Introduce `h hh`. Rewrite using `[Set.mem_singleton_iff.1 hh, ← map_mul, ← map_mul, hcomm]`.
+
+Use `⟨?_⟩` and prove the remaining obligations. Establish `himg : (QuotientGroup.mk '' K : Set (centPts σ J γ (AdeleRing (𝓞 F) F) ⧸ ((centRat σ J γ).map (bc (inclE (F` using `F) (AdeleRing (𝓞 F) F)))).subgroupOf (centPts σ J γ (AdeleRing (𝓞 F) F)))) = Set.univ := by`. Apply `Set.eq_univ_of_forall` to reduce the goal to its premises. Introduce `q`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`.
+
+Take `⟨δ, hδ, hgδ⟩` from `hDg g g.2`. Use `⟨g * ⟨_, hδc δ hδ⟩, hKD _ hgδ, ?_⟩` and prove the remaining obligations. Conclude with `QuotientGroup.mk_mul_of_mem _ (Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨δ, hδ, rfl⟩))`. Rewrite using `[← himg]`. Conclude with `hK.image QuotientGroup.continuous_mk`.
+-/
 theorem compactOfMatBounded (hL : TensorLattice) : CompactOfMatBounded := by
   intro F E _ _ _ _ n _ _ σ J γ hreg hM
   have := quad_finite hreg.quad

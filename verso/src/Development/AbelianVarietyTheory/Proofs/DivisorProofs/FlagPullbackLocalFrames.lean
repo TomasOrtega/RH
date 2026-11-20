@@ -12,12 +12,30 @@ namespace GlobalTheory.FlagQ
 
 open GlobalTheory.FlagBundle GlobalTheory.ProjVar GlobalTheory.FlagZ GlobalTheory.Cartier
 
+/- English proof (translation)
+Take `⟨U, hy, a, rfl⟩` from `h.exists_fnOf`. Use `filter_upwards [U.isOpen.mem_nhds hy] with z hz`. Conclude with `regAt_fnOf hz _ a`.
+-/
 theorem regAt_eventually {X : Scheme.{0}} [IsIntegral X] {y : X} {f : X.functionField} (h : RegAt y f) :
     ∀ᶠ z in 𝓝 y, RegAt z f := by
   obtain ⟨U, hy, a, rfl⟩ := h.exists_fnOf
   filter_upwards [U.isOpen.mem_nhds hy] with z hz
   exact regAt_fnOf hz _ a
 
+/- English proof (translation)
+Introduce `ι _ N Y j _ y`. Establish `hloc : IsLocalRing (Y.X.presheaf.stalk y)` using `Y.X.toLocallyRingedSpace.isLocalRing y`. Take `⟨g, hg⟩` from `@exists_eq_flagPt_of_isLocalRing ι (ι × Fin (N + 1)) _ _ N Prod.fst Prod.snd (Y.X.presheaf.stalk y) _ hloc (Y.X.fromSpecStalk y ≫ j)`. Use `set φ : Y.X.presheaf.stalk y →+* Y.Fn := algebraMap _ _ with hφ`. Use `set g' : ι → GL (Fin N) Y.Fn := fun τ => Matrix.GeneralLinearGroup.map φ (g τ) with hg'`.
+
+Use `set A : Mat (fun _ : ι => N) Y.Fn := fun τ => (g' τ).1.transpose with hA`. Establish `hgen : flagPt Prod.fst Prod.snd (genMat j) = flagPt Prod.fst Prod.snd g'`. Rewrite using `[← flagPt_genMat, ← spMap_flagPt, ← hg, ← Category.assoc]`. Conclude with `congrArg (· ≫ j) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes y)).symm`. Establish `hb` using `(flagPt_eq_iff_below ι _ N Prod.fst Prod.snd Y.Fn (genMat j) g').1 hgen`.
+
+Establish `hdet (τ : ι) : (A τ).det = φ (g τ).1.det`. Rewrite using `[hA, Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hent (τ : ι) (i k : Fin N) : A τ i k = φ ((g τ).1 k i)` using `rfl`. Establish `hunit (τ : ι) : UnitAt y (A τ).det` using `⟨_, (Matrix.isUnit_iff_isUnit_det _).1 (g τ).isUnit, (hdet τ).symm⟩`.
+
+Establish `hev : ∀ᶠ z in 𝓝 y, (∀ τ i k, RegAt z (A τ i k)) ∧ ∀ τ, RegAt z (A τ).det⁻¹`. Use `(eventually_all.2 fun τ => eventually_all.2 fun i => eventually_all.2 fun k => ?_).and (eventually_all.2 fun τ => ?_)` and prove the remaining obligations. Conclude with `regAt_eventually ⟨_, (hent τ i k).symm⟩`. Conclude with `regAt_eventually (hunit τ).inv.regAt`. Establish `hkey (τ : ι) : (A * (genFrame j)⁻¹) τ = (((genMat j τ)⁻¹ * g' τ).1).transpose`.
+
+Rewrite using `[Pi.mul_apply, Pi.inv_apply, Units.val_mul, Matrix.coe_units_inv, Matrix.transpose_mul]`. Use `show (g' τ).1.transpose * ((genMat j τ).1.transpose)⁻¹ = _`. Rewrite using `[Matrix.transpose_nonsing_inv]`. Take `⟨t, ht, hto, hyt⟩` from `mem_nhds_iff.1 hev`. Use `⟨⟨t, hto⟩, A, hyt, fun z hz => ⟨fun τ => ⟨fun i k => ?_, ?_, ?_, fun i k hi _ => absurd hi (Nat.not_lt_zero _)⟩, fun τ => ⟨fun _ _ => trivial, ?_, trivial, fun i k _ hik => ?_⟩⟩⟩` and prove the remaining obligations.
+
+Conclude with `mem_O_ratOf.2 ((ht hz).1 τ i k)`. Conclude with `(hunit τ).ne_zero`. Conclude with `mem_O_ratOf.2 ((ht hz).2 τ)`. Rewrite using `[hkey, Matrix.det_transpose]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 ((genMat j τ)⁻¹ * g' τ).isUnit).ne_zero`.
+
+Rewrite using `[hkey, Matrix.transpose_apply]`. Conclude with `hb τ k i ⟨(τ, ⟨k, Nat.lt_succ_of_lt k.isLt⟩), rfl, hik, le_refl _⟩`.
+-/
 theorem exists_isFrame : ∀ (ι : Type) [Fintype ι] (N : ℕ) (Y : GlobalTheory.ProjVar.Var ℚ) (j : Y.X ⟶ GlobalTheory.FlagZ.Fl ι N),
     IsPullback j Y.str (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ)) → ∀ y : Y.X,
     ∃ (U : Y.X.Opens) (A : GlobalTheory.FlagBundle.Mat (fun _ : ι => N) Y.Fn), y ∈ U ∧ ∀ z ∈ U, GlobalTheory.FlagQ.IsFrame j z A := by

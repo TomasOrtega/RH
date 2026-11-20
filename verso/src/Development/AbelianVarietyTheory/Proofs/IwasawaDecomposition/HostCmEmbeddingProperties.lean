@@ -9,6 +9,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 
 namespace GlobalTheory.Mem.HostCM
 
+/- English proof (translation)
+Establish `hp` using `P.isPrime`. Establish `hp'` using `(P.under (𝓞 (maximalRealSubfield K))).isPrime`. Establish `: P.asIdeal.LiesOver (P.under (𝓞 (maximalRealSubfield K))).asIdeal` using `⟨rfl⟩`. Establish `hcard` using `Ideal.card_inertia_eq_ramificationIdxIn (G := K ≃ₐ[maximalRealSubfield K] K) (P.under (𝓞 (maximalRealSubfield K))).asIdeal P.asIdeal`. Establish `h1 : Nat.card (P.asIdeal.inertia (K ≃ₐ[maximalRealSubfield K] K)) = 1`.
+
+Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun x y => Subtype.ext ?_⟩, ⟨⟨1, one_mem _⟩⟩⟩` and prove the remaining obligations. Establish `key : ∀ z : P.asIdeal.inertia (K ≃ₐ[maximalRealSubfield K] K), (z : K ≃ₐ[maximalRealSubfield K] K) = 1`. Introduce `z`. Break down `Eta.cases K z.1 with hz | hz` into its components or cases.
+
+Conclude with `hz`. It suffices to derive a contradiction. Establish `hm` using `AddSubgroup.mem_inertia.mp z.2`. Rewrite `hm` using `[hz]`. Conclude with `hunr P.asIdeal hp P.ne_bot hm`.
+
+Rewrite using `[key x, key y]`. Rewrite `hcard` using `[h1, Ideal.ramificationIdxIn_eq_ramificationIdx _ P.asIdeal (K ≃ₐ[maximalRealSubfield K] K)]`. Rewrite using `[← HeightOneSpectrum.valuation_liesOver K (P.under (𝓞 (maximalRealSubfield K))) P x, Ideal.ramificationIdx'_eq_ramificationIdx _ _ (P.under (𝓞 (maximalRealSubfield K))).ne_bot, ← hcard, pow_one]`.
+-/
 theorem valuation_eq_of_unram (K : Type) [Field K] [NumberField K] [IsCMField K]
     (hunr : ∀ P : Ideal (𝓞 K), P.IsPrime → P ≠ ⊥ →
       ¬ ∀ x : 𝓞 K, IsCMField.complexConj K • x - x ∈ P)
@@ -39,6 +48,21 @@ theorem valuation_eq_of_unram (K : Type) [Field K] [NumberField K] [IsCMField K]
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H`. Establish `hcm : IsCMField H.E` using `H.isCMField_hostE`. Establish `hc : ∀ x, IsCMField.complexConj H.E x = H.conj x` using `fun x => bridge_star_holds R H x`. Establish `hmem : ∀ g : R.Psi, embPsi H g ∈ H.cmType` using `fun g => ((factEmb R H).2 g).2 g.2`. Establish `hT` using `H.der.cmType.1`.
+
+Use `⟨IsCMField.complexConj H.E, hc, ⟨inferInstance, inferInstance, Algebra.IsQuadraticExtension.finrank_eq_two _ _, IsCMField.complexConj_ne_one _, ?_, ?_⟩, ?_, hmem, ?_⟩` and prove the remaining obligations. Introduce `g g' h`. Break down `InfinitePlace.mk_eq_iff.1 h with h | h` into its components or cases. Conclude with `Subtype.ext ((factEmb R H).1.1 h)`. Establish `h'` using `hmem g'`.
+
+Rewrite `h'` using `[← h]`. Conclude with `absurd h' ((hT _).1 (hmem g))`. Introduce `w`. Distinguish the cases in `hw : w.embedding ∈ H.cmType`. Take `⟨g, hg⟩` from `(factEmb R H).1.2 w.embedding`.
+
+Use `⟨⟨g, ((factEmb R H).2 g).1 (hg ▸ hw)⟩, ?_⟩` and prove the remaining obligations. Use `show InfinitePlace.mk (H.emb g) = w`. Rewrite using `[hg, InfinitePlace.mk_embedding]`. Take `⟨g, hg⟩` from `(factEmb R H).1.2 (ComplexEmbedding.conjugate w.embedding)`. Establish `hw' : ComplexEmbedding.conjugate w.embedding ∈ H.cmType`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `hw ((hT _).2 h')`. Use `⟨⟨g, ((factEmb R H).2 g).1 (hg ▸ hw')⟩, ?_⟩` and prove the remaining obligations. Use `show InfinitePlace.mk (H.emb g) = w`. Rewrite using `[hg, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+
+Introduce `P k`. Use `valuation_eq_of_unram H.E (fun P hP h0 hx => H.der.unramEF P hP h0 fun x => by` as an intermediate fact. Establish `e : H.conj • x = IsCMField.complexConj H.E • x` using `Subtype.ext (hc x).symm`. Rewrite using `[e]`. Conclude with `hx x) P k`.
+
+Unfold `ordF`. Rewrite using `[← this]`. Both sides reduce to the same expression. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `(factCardPsi R H).1`.
+-/
 theorem host_cm_embedding_properties : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), ∃ c : H.E ≃ₐ[H.F] H.E, (∀ x, c x = H.conj x) ∧ (IsTotallyReal H.F ∧ IsTotallyComplex H.E ∧ Module.finrank H.F H.E = 2 ∧ c ≠ 1 ∧ Function.Bijective fun g => InfinitePlace.mk (embPsi H g)) ∧ (∀ (P : HeightOneSpectrum (𝓞 H.E)) (k : (H.F)ˣ), ordF P (upF H.F k) = ordF (P.under (𝓞 H.F)) k) ∧ (∀ g : R.Psi, embPsi H g H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ)) ∧ Fintype.card (R.Psi) = R.f := by
   intro R H
   have hcm : IsCMField H.E := H.isCMField_hostE
@@ -80,6 +104,9 @@ theorem host_cm_embedding_properties : ∀ (R : Ranks) (H : Formalism.BasicNotio
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H`. Take `⟨c, hc, ⟨h1, h2, h3, h4, h5⟩, h⟩` from `host_cm_embedding_properties R H`. Conclude with `⟨c, hc, ⟨h1, h2, h3, h4, h5⟩, h⟩`.
+-/
 theorem host_cm : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R), ∃ c : H.E ≃ₐ[H.F] H.E, (∀ x, c x = H.conj x) ∧ CMData H.F c (embPsi H) ∧ (∀ (P : HeightOneSpectrum (𝓞 H.E)) (k : (H.F)ˣ), ordF P (upF H.F k) = ordF (P.under (𝓞 H.F)) k) ∧ (∀ g : R.Psi, embPsi H g H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ)) ∧ Fintype.card (R.Psi) = R.f := by
   intro R H
   obtain ⟨c, hc, ⟨h1, h2, h3, h4, h5⟩, h⟩ := host_cm_embedding_properties R H

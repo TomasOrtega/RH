@@ -43,6 +43,9 @@ def lbOf (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) : Submodule (𝓞 D.host.E) (F
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `v` and use `(Subgroup.map_comap_eq_self_of_surjective (f := (reGL (rankN D (i + 1) hi) _).toMonoidHom) (reGL (rankN D (i + 1) hi) _).surjective ((Fo.K β).lev.Uloc v)).symm`.
+-/
 theorem sameU_of (Fo : FormsIn M (i + 1) hi) (β : Fo.Ch) : SameUlocJ hi (Fo.K β).lev (ulocOf Fo β) := fun v =>
   (Subgroup.map_comap_eq_self_of_surjective (f := (reGL (rankN D (i + 1) hi) _).toMonoidHom)
     (reGL (rankN D (i + 1) hi) _).surjective ((Fo.K β).lev.Uloc v)).symm
@@ -82,6 +85,9 @@ structure SiteD where
 
 variable {X0 u w hg M}
 
+/- English proof (translation)
+Rewrite using `[← rank_step D i hi, ht]`. Establish `h1` using `(X0.g u w hg).rk`. Generalize the expression as in `(i + 1) * (D.R.t + 1) = q`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_of (X0 : Formalism.L2.Herm.Herm0 D) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (i : ℕ) (hi : i < D.R.m) :
     (D.gat u w hg).P.m + (i + 1) * (Fl.t + 1) + 1 = (D.sp.X (i + 1)).rank := by
   rw [← rank_step D i hi, ht]
@@ -98,6 +104,9 @@ def lv : Levels Fl :=
   levelsG (X0.g u w hg) Fl D.R.m (fun i => (D.sp.X (i + 1)).rank) (fun i hi => rank_of X0 Fl ht i hi)
     (fun i hi => (Z.Fo i hi).Ch) (fun i hi β => (Z.S i hi).chart β)
 
+/- English proof (translation)
+The claim follows from `haveI := Z.chFin levelsG_empty _ _ _ _ _ _ _ j hj`.
+-/
 theorem lv_empty (j : ℕ) (hj : D.R.m < j) : IsEmpty ((Z.lv Fl ht).comp j) :=
   haveI := Z.chFin
   levelsG_empty _ _ _ _ _ _ _ j hj
@@ -115,17 +124,35 @@ def loc (i : ℕ) (hi : i + 1 ≤ D.R.m) : LocIn X0 u w hg (Z.lv Fl ht) i (Z.Fo 
       (fun i hi => (Z.Fo i hi).Ch) (fun i hi β => (Z.S i hi).chart β) i hi β)
     (Z.S i hi).B
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_B (i : ℕ) (hi : i + 1 ≤ D.R.m) : (Z.loc Fl ht i hi).B = (Z.S i hi).B := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_psi (i : ℕ) (hi : i + 1 ≤ D.R.m) : (Z.loc Fl ht i hi).ψ = (Z.S i hi).ψ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_Uloc (i : ℕ) (hi : i + 1 ≤ D.R.m) : (Z.loc Fl ht i hi).Uloc = fun β => ulocOf (Z.Fo i hi) β := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem loc_Lb (i : ℕ) (hi : i + 1 ≤ D.R.m) : (Z.loc Fl ht i hi).Lb = fun β => lbOf (Z.Fo i hi) β := rfl
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem frRat (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) : FrRatJ ((Z.loc Fl ht i hi).t β) (Z.loc Fl ht i hi).B :=
   fun _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `sameU_of (Z.Fo i hi) β`.
+-/
 theorem sameU (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (Z.Fo i hi).Ch) :
     SameUlocJ hi ((Z.Fo i hi).K β).lev ((Z.loc Fl ht i hi).Uloc β) := sameU_of (Z.Fo i hi) β
 
@@ -148,9 +175,15 @@ def SiteD.inMem (Z : SiteD X0 u w hg (D.fm u)) (Tw : TwForms D) (Fl : Fills (D.g
     CmpJIn Tw u D.what₂.mu0 w hg (Z.lv Fl ht) :=
   ⟨fun j hj => StepAt.ofMem (Z.st Fl ht Gt j hj)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SiteD.inTw_st (Z : SiteD X0 u w hg (Tw.fm u μ)) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (Gt : GatTies D) (j : ℕ)
     (hj : j + 1 ≤ D.R.m) : ((Z.inTw Fl ht Gt).at' j hj).st = Z.st Fl ht Gt j hj := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SiteD.inMem_st (Z : SiteD X0 u w hg (D.fm u)) (Tw : TwForms D) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (Gt : GatTies D)
     (j : ℕ) (hj : j + 1 ≤ D.R.m) : ((Z.inMem Tw Fl ht Gt).at' j hj).st = Z.st Fl ht Gt j hj := rfl
 

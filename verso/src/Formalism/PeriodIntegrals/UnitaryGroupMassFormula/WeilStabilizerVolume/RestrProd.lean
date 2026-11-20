@@ -101,6 +101,17 @@ def RestrProd : Prop := InCtx fun F E _ _ _ _ _ σ M J a X0 hT =>
         ∫ X, Φ X ∂νX = (∫ X, Φinf X ∂(fibInf (hermOf (Ainf F) σ (gramE σ J X0) hT))) *
           ∏' v, ∫ X, Φv v X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`. Establish `c1` using `h1 F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`. Establish `c2` using `h2 F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`. Establish `c3` using `h3 F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`. Establish `c4` using `h4 F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`.
+
+Establish `c5` using `h5 F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ`. Take `⟨μinf, νinf, μv, νv, fibInf, fibV, hμi, hνi, hμv, hνv, hfi, hfv⟩` from `c1`. Take `⟨νX, hsupp, hform⟩` from `c5 μinf hμi νinf hνi μv hμv νv hνv fibInf hfi fibV hfv (c4 μv hμv νv hνv fibV hfv)`. Use `⟨νX, hsupp, ⟨μinf, hμi⟩, fun μinf' hμi' => ?_⟩` and prove the remaining obligations. Take `rfl` from `c2.1 _ _ hμi hμi'`.
+
+Use `⟨⟨νinf, hνi⟩, fun νinf' hνi' => ?_⟩` and prove the remaining obligations. Take `rfl` from `c2.2.1 _ _ hνi hνi'`. Use `⟨⟨μv, hμv⟩, fun μv' hμv' => ?_⟩` and prove the remaining obligations. Take `rfl : μv = μv'` from `funext fun v => (c2.2.2 v).1 _ _ (hμv v) (hμv' v)`. Use `⟨⟨νv, hνv⟩, fun νv' hνv' => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : νv = νv'` from `funext fun v => (c2.2.2 v).2 _ _ (hνv v) (hνv' v)`. Use `⟨⟨fibInf, hfi⟩, fun fibInf' hfi' => ⟨⟨fibV, hfv⟩, fun fibV' hfv' => ?_⟩⟩` and prove the remaining obligations. Introduce `d b Φ Φinf Φf Φv hc1 hc2 hp hpr`. Take `⟨hI, hF⟩` from `hform d b Φ Φinf Φf Φv hc1 hc2 hp hpr`. Use `⟨hI, c4 μv hμv νv hνv fibV' hfv' d b Φf Φv hp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hF, c3.1 μinf hμi νinf hνi fibInf fibInf' hfi hfi' Φinf hc1 hc2]`. Use `congr 1`. Conclude with `tprod_congr fun v => c3.2 v (μv v) (hμv v) (νv v) (hνv v) (fibV v) (fibV' v) (hfv v) (hfv' v) (Φv v) (hp.1 v)`.
+-/
 theorem exOmT_of (h1 : LocEx) (h2 : SdUniq) (h3 : FibPin) (h4 : MultFib) (h5 : RestrProd) :
     ExOmT := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ

@@ -9,6 +9,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.CompanionTheory.Ar.Fan.MultipleCells
 
+/- English proof (translation)
+Take `⟨S, hS, hcov⟩` from `hX.finite`. Set `U : LinearMap.BilinForm ℤ X → Set (LinearMap.BilinForm ℤ X)` to `fun s => {t | ∃ ht : t ∈ balForms bar X, IsPrim bar (⟨t, ht⟩ : balForms bar X) ∧ ∃ p r : ℕ, 0 < p ∧ 0 < r ∧ p • t = r • s}`. Establish `hU : ∀ s, (U s).Subsingleton`. Introduce and unpack `s t ⟨ht, hpt, p, r, hp, hr, he⟩ t' ⟨ht', hpt', p', r', hp', hr', he'⟩`. Establish `key : (r' * p) • t = (r * p') • t'`.
+
+Rewrite using `[mul_smul, he, mul_smul, he', smul_comm]`. Use `GlobalTheory.T.primitiveBalancedForm_eq_of_same_ray bar ⟨t, ht⟩ ⟨t', ht'⟩ (r' * p) (r * p') hpt hpt' (by positivity) (by positivity) (Subtype.ext (by simpa using key))` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Use `⟨⋃ s ∈ S, U s, hS.biUnion fun s _ => (hU s).finite, fun m δ h hli hprim => ?_⟩` and prove the remaining obligations. Establish `hB : ∑ i, (1 : ℝ) • toReal (δ i) ∈ psdCone bar X` using `ConeSub.sum_smul_toReal_mem_psdCone O bar X m δ (fun _ => 1) h.mem h.nonneg (fun _ => zero_le_one)`.
+
+Take `⟨e, m', γ, c, hγ, hγS, hc, hsum⟩` from `hcov _ hB`. Use `set γ' : Fin m' → LinearMap.BilinForm ℤ X := fun j => pull e.symm.toLinearMap (γ j) with hγ'def`. Establish `hγ' : IsCell bar φ γ'` using `isCell_pull_equiv hγ e.symm`. Establish `hsum' : ∑ i, toReal (δ i) = ∑ j, c j • toReal (γ' j)`. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun₂ hsum (e.symm y) (e.symm z)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, γ']`. Use `⟨e, fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, a, hk, hka⟩` from `GlobalTheory.T.cell_generators_smul_mem_other_cellCone bar φ δ γ' c h hγ' hc hsum' i`. Take `⟨j, p, r, hp, hr, hpr⟩` from `GlobalTheory.T.exists_pos_smul_eq_of_linearIndependent_cone' δ γ' i k a hli hk hka (GlobalTheory.T.cell_generator_mem_cone_of_smul_combination bar φ δ γ' i k a h hγ' hk hka)`.
+
+Use `Set.mem_biUnion (hγS j) ⟨pull_mem _ (h.mem i), isPrim_pull_equiv e (h.mem i) (hprim i), p, r, hp, hr, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ hpr (e y) (e z)` as an intermediate fact. Simplify `this` using `[γ']`.
+-/
 theorem perModule {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (φ : InvFun O)
     (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] (hX : IsPolyFanOn bar φ X) :
     ∃ T : Set (LinearMap.BilinForm ℤ X), T.Finite ∧ ∀ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X)
@@ -45,6 +56,19 @@ theorem perModule {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Mod
   have := LinearMap.congr_fun₂ hpr (e y) (e z)
   simpa [γ'] using this
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar hb q φ hφ M`. Take `⟨n, R, hR, hcls⟩` from `hb.classes q`. Use `haveI hfin : ∀ k, Module.Finite O (R k) := fun k => (hR k).1`. Establish `key : ∀ k, ∃ T : Set (LinearMap.BilinForm ℤ (R k)), T.Finite ∧ ∀ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ (R k)) (h : IsCell bar φ δ), LinearIndependent ℤ δ → (∀ i, IsPrim bar (⟨δ i, h.mem i⟩ : balForms bar (R k))) → ∃ e : (R k) ≃ₗ[O] (R k), ∀ i, pull e.toLinearMap (δ i) ∈ T` using `fun k => by haveI := (hR k).2.1`. Conclude with `perModule bar φ (R k) (hφ (R k) (hR k).2.2)`.
+
+Use `choose T hTfin hT using key`. Use `haveI : ∀ k, Finite (T k) := fun k => (hTfin k).to_subtype`. Set `D` to `Σ k : Fin n, Σ m : Fin (Nat.card (T k) + 1), (Fin m → T k)`. Set `g : D → FormFamily O` to `fun d => ⟨R d.1, d.2.1, fun i => (d.2.2 i : LinearMap.BilinForm ℤ (R d.1))⟩`. Take `⟨N, ⟨eq⟩⟩` from `Finite.exists_equiv_fin D`.
+
+Use `⟨N, fun k' => g (eq.symm k'), fun X _ _ _ _ hX m δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨hcell, hli, hprim, -⟩` from `hδ`. Take `⟨k, ⟨f⟩⟩` from `hcls X hX`. Set `δ' : Fin m → LinearMap.BilinForm ℤ (R k)` to `fun i => pull f.symm.toLinearMap (δ i)`. Establish `hcell' : IsCell bar φ δ'` using `isCell_pull_equiv hcell f.symm`.
+
+Establish `hli' : LinearIndependent ℤ δ'` using `linearIndependent_pull_equiv hli f.symm`. Establish `hprim' : ∀ i, IsPrim bar (⟨δ' i, hcell'.mem i⟩ : balForms bar (R k))` using `fun i => isPrim_pull_equiv f.symm (hcell.mem i) (hprim i)`. Take `⟨e, he⟩` from `hT k m δ' hcell' hli' hprim'`. Set `t : Fin m → T k` to `fun i => ⟨_, he i⟩`. Establish `ht : Function.Injective t` using `fun i j hij => hli'.injective (pull_injective e.surjective (congrArg Subtype.val hij))`.
+
+Establish `hm : m < Nat.card (T k) + 1`. Use `Nat.card_le_card_of_injective t ht` as an intermediate fact. Rewrite `this` using `[Nat.card_eq_fintype_card, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Use `⟨eq ⟨k, ⟨m, hm⟩, t⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Equiv.symm_apply_apply]`. Use `⟨f.trans e.symm, Equiv.refl (Fin m), fun i => LinearMap.ext₂ fun y z => ?_⟩` and prove the remaining obligations. Simplify using `[g, t, δ']`.
+-/
 theorem multCellsAmong_of_isPolyFan : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
     (bar : O → O), CMOrd O bar → ∀ (q : ℕ) (φ : InvFun O),
     IsPolyFan bar q φ → ∀ M : ℕ, ∃ n : ℕ, MultCellsAmong bar q φ M n := by

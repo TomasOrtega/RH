@@ -10,9 +10,15 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+The claim follows from `RelSectionsLarge.proof RelChartPoly.proof (RelOneStep.proof RelChartPoly.proof RelTorsionBound.proof)`.
+-/
 theorem RelSectionsLarge.full : RelSectionsLarge.Statement :=
   RelSectionsLarge.proof RelChartPoly.proof (RelOneStep.proof RelChartPoly.proof RelTorsionBound.proof)
 
+/- English proof (translation)
+The claim follows from `MoriwakiHS.of_leaves hC hG RelSectionsLarge.full hL2 hP hM hS hApx hCurve`.
+-/
 theorem MoriwakiHS.of_open (hC : KH.CondStatement) (hG : GridSeparation.Statement)
     (hL2 : SectionL2Lattice.Statement) (hP : TensorPowerL2Degree.Statement)
     (hM : NefCountAlongMultiples.Statement) (hS : NefSmallSectionEventually.Statement)

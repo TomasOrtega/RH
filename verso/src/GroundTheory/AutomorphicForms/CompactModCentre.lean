@@ -15,6 +15,13 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
   {π : Representation ℂ G V} {σ : Representation ℂ G W}
 
+/- English proof (translation)
+Use `set S := Submodule.span ℂ (range fun g => π g v)`. Establish `hS : ∀ g, ∀ ⦃x⦄, x ∈ S → π g x ∈ S`. Introduce `g x hx`. Establish `: S ≤ S.comap (π g)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨h, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨g * h, by simp [Module.End.mul_apply]⟩)`. Conclude with `this hx`. Break down `IsSimpleOrder.eq_bot_or_eq_top (⟨S, hS⟩ : Subrepresentation π) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises.
+
+Establish `: v ∈ (⟨S, hS⟩ : Subrepresentation π).toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Conclude with `congrArg Subrepresentation.toSubmodule h`.
+-/
 theorem span_orbit_eq_top [π.IsIrreducible] {v : V} (hv : v ≠ 0) :
     Submodule.span ℂ (range fun g => π g v) = ⊤ := by
   set S := Submodule.span ℂ (range fun g => π g v)
@@ -32,6 +39,13 @@ theorem span_orbit_eq_top [π.IsIrreducible] {v : V} (hv : v ≠ 0) :
     exact (Submodule.mem_bot ℂ).1 this
   · exact congrArg Subrepresentation.toSubmodule h
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ V`. Establish `hopen : IsOpen ((⨅ i, stabilizerOf π (b i) : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun i => hπs (b i)`. Use `Subgroup.isOpen_mono (fun h hh => ?_) hopen` and prove the remaining obligations.
+
+Rewrite using `[mem_stabilizerOf]`. Establish `hh' : ∀ i, π h⁻¹ (b i) = b i`. Introduce `i`. Establish `: π h (b i) = b i` using `mem_stabilizerOf.1 (Subgroup.mem_iInf.1 hh i)`. Use `conv_lhs => rw [← this]`.
+
+Conclude with `rep_inv_apply_apply π h (b i)`. Establish `hid : π h⁻¹ = LinearMap.id` using `b.ext fun i => by rw [hh', LinearMap.id_apply]`. Use extensionality with `x`. Rewrite using `[dual_apply_apply, hid, LinearMap.id_apply]`.
+-/
 theorem mem_smoothVectors_dual_of_finiteDimensional [FiniteDimensional ℂ V] (hπs : IsSmooth π)
     (φ : Module.Dual ℂ V) : φ ∈ smoothVectors (Representation.dual π) := by
   let b := Module.finBasis ℂ V
@@ -52,6 +66,19 @@ theorem mem_smoothVectors_dual_of_finiteDimensional [FiniteDimensional ℂ V] (h
 variable [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
   {Z : Subgroup G} [Z.Normal]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Take `⟨K, -, hKo, hvK⟩` from `(isSmooth_iff_forall_exists π).1 hπs v`. Set `U : G → Set (G ⧸ Z)` to `fun g => QuotientGroup.mk '' ((fun k => g * k) '' (K : Set G))`. Establish `hUo : ∀ g, IsOpen (U g)` using `fun g => QuotientGroup.isOpenMap_coe _ (isOpenMap_mul_left g _ hKo)`. Establish `hcover : (univ : Set (G ⧸ Z)) ⊆ ⋃ g, U g`.
+
+Introduce `q _`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `mem_iUnion.2 ⟨g, g, ⟨1, K.one_mem, mul_one g⟩, rfl⟩`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover U hUo hcover`. Use `set S := Submodule.span ℂ (range fun g : t => π (g : G) v)`.
+
+Establish `hmem : ∀ g, π g v ∈ S`. Introduce `g`. Take `⟨i, hi, hgi⟩` from `mem_iUnion₂.1 (ht (mem_univ (g : G ⧸ Z)))`. Take `⟨_, ⟨k, hk, rfl⟩, hkg⟩` from `hgi`. Establish `hz : (i * k)⁻¹ * g ∈ Z` using `QuotientGroup.eq.1 hkg`.
+
+Take `⟨c, hc⟩` from `hZ _ hz`. Establish `hg : g = i * k * ((i * k)⁻¹ * g)` using `by group`. Establish `hkv : π k v = v` using `mem_fixedVectors.1 hvK k hk`. Rewrite using `[hg, map_mul, Module.End.mul_apply, hc, map_smul, map_mul, Module.End.mul_apply, hkv]`. Conclude with `S.smul_mem c (Submodule.subset_span ⟨⟨i, hi⟩, rfl⟩)`.
+
+Establish `htop : (⊤ : Submodule ℂ V) ≤ S`. Rewrite using `[← span_orbit_eq_top (π := π) hv, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hmem g`. Establish `hfg : S.FG` using `Submodule.fg_span (finite_range _)`.
+
+Conclude with `Module.finite_def.2 (top_le_iff.1 htop ▸ hfg)`.
+-/
 theorem finiteDimensional_of_compactSpace [CompactSpace (G ⧸ Z)] (hπs : IsSmooth π)
     [π.IsIrreducible] (hZ : ∀ z ∈ Z, ∃ c : ℂ, ∀ v, π z v = c • v) : FiniteDimensional ℂ V := by
   obtain ⟨v, hv⟩ := exists_ne_zero_of_isIrreducible (ρ := π)
@@ -82,12 +109,18 @@ theorem finiteDimensional_of_compactSpace [CompactSpace (G ⧸ Z)] (hπs : IsSmo
   have hfg : S.FG := Submodule.fg_span (finite_range _)
   exact Module.finite_def.2 (top_le_iff.1 htop ▸ hfg)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hπs, fun _ _ _ => inferInstance⟩`.
+-/
 theorem isAdmissible_of_finiteDimensional [FiniteDimensional ℂ V] (hπs : IsSmooth π) :
     IsAdmissible π :=
   ⟨hπs, fun _ _ _ => inferInstance⟩
 
 variable [MeasurableSpace (G ⧸ Z)] [BorelSpace (G ⧸ Z)] {ν : Measure (G ⧸ Z)}
 
+/- English proof (translation)
+Use `⟨h1, fun v φ => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun q : G ⧸ Z => ‖(φ : Module.Dual ℂ V) (π q.out v)‖` using `continuous_apply_out (F := fun g => ‖(φ : Module.Dual ℂ V) (π g v)‖) (norm_coeff_mul_mem h1 v _) (continuous_dual_orbit (hπs v) _).norm`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hc.continuousOn`. Conclude with `MemLp.of_bound hc.aestronglyMeasurable C (ae_of_all _ fun q => hC q (mem_univ q))`.
+-/
 theorem isSquareIntegrable_of_compactSpace [CompactSpace (G ⧸ Z)] [IsFiniteMeasure ν]
     (hπs : IsSmooth π) (h1 : ∀ z ∈ Z, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, π z v = c • v) :
     IsSquareIntegrable Z ν π := by
@@ -106,12 +139,18 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 def character (π : Representation ℂ G V) (g : G) : ℂ :=
   LinearMap.trace ℂ V (π g)
 
+/- English proof (translation)
+Rewrite using `[character, LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace]`. Simplify using `[LinearMap.toMatrix_apply, Basis.coord_apply]`.
+-/
 theorem character_eq_sum {ι : Type*} [Fintype ι] (π : Representation ℂ G V) (b : Module.Basis ι ℂ V)
     (g : G) : character π g = ∑ i, b.coord i (π g (b i)) := by
   classical
   rw [character, LinearMap.trace_eq_matrix_trace ℂ b, Matrix.trace]
   simp [LinearMap.toMatrix_apply, Basis.coord_apply]
 
+/- English proof (translation)
+Rewrite using `[character, character, ← Representation.Equiv.conj_apply_self g E]`. Conclude with `LinearMap.trace_conj' _ _`.
+-/
 theorem character_eq_of_equiv {π : Representation ℂ G V} {σ : Representation ℂ G W}
     (E : π.Equiv σ) (g : G) : character σ g = character π g := by
   rw [character, character, ← Representation.Equiv.conj_apply_self g E]
@@ -128,6 +167,13 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
   {π : Representation ℂ G V} {σ : Representation ℂ G W}
 
+/- English proof (translation)
+Use `isInvInvariant_of_isMulRightInvariant Z ν` as an intermediate fact. Use `set b := Module.finBasis ℂ V`. Set `c : Fin (Module.finrank ℂ V) → smoothVectors (Representation.dual π)` to `fun j => ⟨b.coord j, mem_smoothVectors_dual_of_finiteDimensional hπs _⟩`. Unfold `pairing`. Establish `hI : ∀ j ∈ Finset.univ, Integrable (fun q : G ⧸ Z => coeffProd π π v (b.coord j) (b j) ψ q.out) ν` using `fun j _ => integrable_coeffProd hπ2 hπ2 (sameCentralCharacter_self hπ2) hπs hπs v (c j) (b j) ψ`.
+
+Rewrite using `[← integral_finsetSum _ hI]`. Establish `hpt : ∀ q : G ⧸ Z, ∑ j, coeffProd π π v (b.coord j) (b j) ψ q.out = (ψ : Module.Dual ℂ V) v`. Introduce `q`. Simplify using `only [coeffProd]`. Establish `: ∑ j, b.coord j (π q.out v) * (ψ : Module.Dual ℂ V) (π q.out⁻¹ (b j)) = (ψ : Module.Dual ℂ V) (π q.out⁻¹ (∑ j, b.coord j (π q.out v) • b j))`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[this]`. Simplify using `only [Basis.coord_apply, Basis.sum_repr, rep_inv_apply_apply]`. Simplify using `only [hpt, integral_const, Complex.real_smul]`.
+-/
 theorem sum_pairing_basis [FiniteDimensional ℂ V] (hπ2 : IsSquareIntegrable Z ν π)
     (hπs : IsSmooth π) (v : V) (ψ : smoothVectors (Representation.dual π)) :
     ∑ j, pairing Z ν π π v ((Module.finBasis ℂ V).coord j) ((Module.finBasis ℂ V) j) ψ =
@@ -152,6 +198,17 @@ theorem sum_pairing_basis [FiniteDimensional ℂ V] (hπ2 : IsSquareIntegrable Z
     simp only [Basis.coord_apply, Basis.sum_repr, rep_inv_apply_apply]
   simp only [hpt, integral_const, Complex.real_smul]
 
+/- English proof (translation)
+Establish `hfd : FiniteDimensional ℂ V` using `finiteDimensional_of_compactSpace hπs fun z hz => by`. Take `⟨c, -, hc⟩` from `h1 z hz`. Conclude with `⟨c, hc⟩`. Establish `hπ : IsAdmissible π` using `isAdmissible_of_finiteDimensional hπs`. Establish `hπ2 : IsSquareIntegrable Z ν π` using `isSquareIntegrable_of_compactSpace hπs h1`.
+
+Take `⟨v₀, ψ₀, h₀⟩` from `exists_dual_apply_eq_one hπs`. Establish `hsum` using `sum_pairing_basis hπ2 hπs v₀ ψ₀`. Use `set b := Module.finBasis ℂ V`. Set `c : Fin (Module.finrank ℂ V) → smoothVectors (Representation.dual π)` to `fun j => ⟨b.coord j, mem_smoothVectors_dual_of_finiteDimensional hπs _⟩`. Establish `hterm : ∀ j, pairing Z ν π π v₀ (b.coord j) (b j) ψ₀ = (formalDegree ν π : ℂ)⁻¹`.
+
+Introduce `j`. Establish `: pairing Z ν π π v₀ (b.coord j) (b j) ψ₀ = _` using `integral_eq_formalDegree hπ hπ2 v₀ (c j) (b j) ψ₀`. Rewrite using `[this, h₀]`. Simplify using `[c, Basis.coord_apply, Basis.repr_self]`. Simplify using `only [hterm, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, h₀, mul_one] at hsum`.
+
+Establish `hd` using `formalDegree_pos (ν := ν) hπ hπ2`. Establish `hvol : 0 < ν.real univ`. Conclude with `ENNReal.toReal_pos (isOpen_univ.measure_pos ν univ_nonempty).ne' (measure_ne_top ν univ)`. Establish `hd' : (formalDegree ν π : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `key : (Module.finrank ℂ V : ℂ) = ν.real univ * formalDegree ν π`.
+
+Rewrite using `[← hsum, mul_assoc, inv_mul_cancel₀ hd', mul_one]`. Establish `key' : (Module.finrank ℂ V : ℝ) = ν.real univ * formalDegree ν π` using `by exact_mod_cast key`. Rewrite using `[key', mul_div_cancel_left₀ _ hvol.ne']`.
+-/
 theorem formalDegree_eq (hπs : IsSmooth π) [π.IsIrreducible]
     (h1 : ∀ z ∈ Z, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, π z v = c • v) :
     formalDegree ν π = Module.finrank ℂ V / ν.real univ := by
@@ -184,6 +241,35 @@ theorem formalDegree_eq (hπs : IsSmooth π) [π.IsIrreducible]
 
 open Classical in
 
+/- English proof (translation)
+Use `isInvInvariant_of_isMulRightInvariant Z ν` as an intermediate fact. Take `⟨v₀, hv₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `h1σ : ∀ z ∈ Z, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ w, σ z w = c • w`. Introduce `z hz`. Take `⟨c, hcπ, hcσ⟩` from `hc z hz`.
+
+Take `⟨c', hc'1, hc'⟩` from `h1 z hz`. Establish `: c = c'`. Establish `h` using `(hcπ v₀).symm.trans (hc' v₀)`. Establish `h2 : (c - c') • v₀ = 0` using `by rw [sub_smul, h, sub_self]`. Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+
+Conclude with `sub_eq_zero.1 h3`. Conclude with `absurd h3 hv₀`. Conclude with `⟨c, this ▸ hc'1, hcσ⟩`. Establish `: FiniteDimensional ℂ V` using `finiteDimensional_of_compactSpace hπs fun z hz => by`. Take `⟨c, -, hc⟩` from `h1 z hz`.
+
+Conclude with `⟨c, hc⟩`. Establish `: FiniteDimensional ℂ W` using `finiteDimensional_of_compactSpace hσs fun z hz => by`. Take `⟨c, -, hc⟩` from `h1σ z hz`. Conclude with `⟨c, hc⟩`. Establish `hπ : IsAdmissible π` using `isAdmissible_of_finiteDimensional hπs`.
+
+Establish `hσ : IsAdmissible σ` using `isAdmissible_of_finiteDimensional hσs`. Establish `hπ2 : IsSquareIntegrable Z ν π` using `isSquareIntegrable_of_compactSpace hπs h1`. Establish `hσ2 : IsSquareIntegrable Z ν σ` using `isSquareIntegrable_of_compactSpace hσs h1σ`. Use `set b := Module.finBasis ℂ V`. Use `set b' := Module.finBasis ℂ W`.
+
+Set `c : Fin (Module.finrank ℂ V) → smoothVectors (Representation.dual π)` to `fun j => ⟨b.coord j, mem_smoothVectors_dual_of_finiteDimensional hπs _⟩`. Set `c' : Fin (Module.finrank ℂ W) → smoothVectors (Representation.dual σ)` to `fun j => ⟨b'.coord j, mem_smoothVectors_dual_of_finiteDimensional hσs _⟩`. Use `split_ifs with hiso`. Take `⟨E⟩` from `hiso`. Establish `hself : ∫ q : G ⧸ Z, character π q.out * character π q.out⁻¹ ∂ν = ν.real univ`.
+
+Establish `hexp : ∀ q : G ⧸ Z, character π q.out * character π q.out⁻¹ = ∑ i, ∑ j, coeffProd π π (b i) (b.coord i) (b j) (b.coord j) q.out`. Introduce `q`. Rewrite using `[character_eq_sum π b, character_eq_sum π b, Finset.sum_mul_sum]`. Both sides reduce to the same expression. Establish `hI : ∀ i j, Integrable (fun q : G ⧸ Z => coeffProd π π (b i) (b.coord i) (b j) (b.coord j) q.out) ν` using `fun i j => integrable_coeffProd hπ2 hπ2 (sameCentralCharacter_self hπ2) hπs hπs (b i) (c i) (b j) (c j)`.
+
+Establish `hsplit : ∀ i, ∫ q : G ⧸ Z, ∑ j, coeffProd π π (b i) (b.coord i) (b j) (b.coord j) q.out ∂ν = ∑ j, ∫ q : G ⧸ Z, coeffProd π π (b i) (b.coord i) (b j) (b.coord j) q.out ∂ν` using `fun i => integral_finsetSum _ fun j _ => hI i j`. Simplify using `only [hexp]`. Rewrite using `[integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hI i j]`. Establish `hij : ∀ i j, ∫ q : G ⧸ Z, coeffProd π π (b i) (b.coord i) (b j) (b.coord j) q.out ∂ν = (formalDegree ν π : ℂ)⁻¹ * (if i = j then 1 else 0)`. Introduce `i j`.
+
+Use `integral_eq_formalDegree hπ hπ2 (b i) (c i) (b j) (c j)` as an intermediate fact. Simplify using `only [c, Basis.coord_apply, Basis.repr_self] at this`. Rewrite using `[show (∫ q : G ⧸ Z, coeffProd π π (b i) (b.coord i) (b j) (b.coord j) q.out ∂ν) = ∫ q : G ⧸ Z, (b.coord i) (π q.out (b i)) * (b.coord j) (π q.out⁻¹ (b j)) ∂ν from rfl]`. Simplify using `only [Basis.coord_apply]`. Rewrite using `[this]`.
+
+Use `congr 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+
+Simplify using `only [hsplit, hij, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[formalDegree_eq (ν := ν) hπs h1]`. Establish `hvol : 0 < ν.real univ`. Conclude with `ENNReal.toReal_pos (isOpen_univ.measure_pos ν univ_nonempty).ne' (measure_ne_top ν univ)`. Establish `hn : (Module.finrank ℂ V : ℂ) ≠ 0`.
+
+Conclude with `(Module.finrank_pos_iff_exists_ne_zero.2 ⟨v₀, hv₀⟩).ne'` after adjusting the coercions. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify `hself` using `only [character_eq_of_equiv E]`. Establish `hne : IsEmpty (π.Equiv σ)` using `not_nonempty_iff.1 hiso`.
+
+Establish `hexp : ∀ q : G ⧸ Z, character π q.out * character σ q.out⁻¹ = ∑ i, ∑ j, coeffProd π σ (b i) (b.coord i) (b' j) (b'.coord j) q.out`. Introduce `q`. Rewrite using `[character_eq_sum π b, character_eq_sum σ b', Finset.sum_mul_sum]`. Both sides reduce to the same expression. Establish `hI : ∀ i j, Integrable (fun q : G ⧸ Z => coeffProd π σ (b i) (b.coord i) (b' j) (b'.coord j) q.out) ν` using `fun i j => integrable_coeffProd hπ2 hσ2 hc hπs hσs (b i) (c i) (b' j) (c' j)`.
+
+Simplify using `only [hexp]`. Rewrite using `[integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => hI i j]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun j _ => hI i j]`. Conclude with `Finset.sum_eq_zero fun j _ => integral_eq_zero_of_isEmpty_equiv hπ hσ hπ2 hσ2 hc hne (b i) (c i) (b' j) (c' j)`.
+-/
 theorem integral_character_mul_inv (hπs : IsSmooth π) (hσs : IsSmooth σ) [π.IsIrreducible]
     [σ.IsIrreducible] (h1 : ∀ z ∈ Z, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, π z v = c • v)
     (hc : SameCentralCharacter Z π σ) :

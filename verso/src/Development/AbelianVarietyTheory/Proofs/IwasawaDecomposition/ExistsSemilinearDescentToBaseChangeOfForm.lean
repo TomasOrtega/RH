@@ -3,6 +3,25 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `LL _ _ L0 Ks _ _ kKs hk WL _ _ _ _ WK n bs hb hKs hLi hLs KT _ _ rd hrd`. Take `⟨π, hπ⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap L0 LL) (LinearMap.ker_eq_bot.mpr (algebraMap L0 LL).injective)`. Establish `hπ1 : π 1 = 1`. Use `LinearMap.congr_fun hπ 1` as an intermediate fact. Simplify using `using this`.
+
+Establish `hπx : ∀ (c : L0) (y : LL), π ((c : LL) * y) = c * π y`. Introduce `c y`. Establish `: ((c : LL) * y) = c • y` using `(Algebra.smul_def c y).symm`. Rewrite using `[this, map_smul, smul_eq_mul]`. Take `⟨B, hB⟩ : ∃ B : Module.Basis (Fin n) LL WL, ∀ k, B k = bs k` from `⟨Module.Basis.mk hLi (by rw [hLs]), fun k => Module.Basis.mk_apply _ _ k⟩`.
+
+Take `⟨Φ, hΦ⟩ : ∃ Φ : WL →+ KT ⊗[Ks] WK, ∀ x, Φ x = ∑ k, rd (π (B.repr x k)) • ((1 : KT) ⊗ₜ[Ks] (⟨bs k, hb k⟩ : WK))` from `⟨{ toFun := fun x => ∑ k, rd (π (B.repr x k)) • ((1 : KT) ⊗ₜ[Ks] (⟨bs k, hb k⟩ : WK)) map_zero' := by simp map_add' := by intro x y; simp [map_add, add_smul, Finset.sum_add_distrib] }, fun _ => rfl⟩`. Establish `key : ∀ (l : LL) (w : WK), Φ (l • (w : WL)) = rd (π l) • ((1 : KT) ⊗ₜ[Ks] w)`. Introduce `l w`. Take `⟨s, hs⟩` from `(Submodule.mem_span_range_iff_exists_fun Ks).mp (show (w : WL) ∈ Submodule.span Ks (Set.range bs) by rw [hKs]; exact w.2)`. Establish `hw : w = ∑ k, s k • (⟨bs k, hb k⟩ : WK)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hs]`. Establish `hrep : ∀ k, B.repr (l • (w : WL)) k = l * algebraMap Ks LL (s k)`. Establish `: l • (w : WL) = ∑ k, (l * algebraMap Ks LL (s k)) • B k`. Rewrite using `[← hs, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hB, mul_smul, algebraMap_smul]`. Introduce `k`. Rewrite using `[this, B.repr_sum_self]`. Rewrite using `[hΦ]`.
+
+Use `conv_rhs => rw [hw, TensorProduct.tmul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hrep, ← hk, mul_comm, hπx, map_mul, ← hrd, TensorProduct.tmul_smul, ← algebraMap_smul KT (s k), smul_smul, mul_comm]`. Use `⟨Φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c x`.
+
+Rewrite using `[hΦ, hΦ x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, hπx, map_mul, mul_smul]`. Introduce `f fr hf x conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[map_sum, map_sum, hΦ x, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hB, ← hf ⟨bs k, hb k⟩, key, map_smul, LinearMap.baseChange_tmul]`. Introduce `w`. Use `key 1 w` as an intermediate fact. Rewrite `this` using `[one_smul, hπ1, map_one, one_smul]`.
+
+Conclude with `this`.
+-/
 theorem exists_semilinear_descent_to_baseChange :
   ∀ {LL : Type} [Field LL] [Algebra ℚ LL] (L0 : IntermediateField ℚ LL) {Ks : Type} [Field Ks] [Algebra Ks LL]
     (kKs : Ks →+* L0), (∀ x, ((kKs x : L0) : LL) = algebraMap Ks LL x) →

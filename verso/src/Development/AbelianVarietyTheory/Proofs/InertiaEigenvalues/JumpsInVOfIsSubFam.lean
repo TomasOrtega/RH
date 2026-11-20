@@ -6,6 +6,11 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory.Pass
 
+/- English proof (translation)
+Introduce `l _ P K LL ι k Ms W hW τ U hU`. Take `⟨a, x, p, hp, hinj⟩` from `hW`. Use `GlobalTheory.SubSumJumps.jumpsInV_of_isSubOfSums (P.PD K) W.ρ Ms τ U ⟨a, x, LinearMap.pi p, ?_, ?_⟩ hU` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+
+Conclude with `hinj v fun j => congrFun hv j`. Introduce `g v`. Use function extensionality and compare the values at `j`. Conclude with `hp j g v`.
+-/
 theorem jumpsInV_of_isSubFam : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (ι : Type) (k : ℕ) (Ms : ι → (↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1)) (W : GRep ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), IsSubFam Ms W → ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (U : Set ℤ), (∀ x, JumpsInV (P.PD K) (matRep (Ms x)) τ U) → JumpsInV (P.PD K) W.ρ τ U := by
   intro l _ P K LL ι k Ms W hW τ U hU
   obtain ⟨a, x, p, hp, hinj⟩ := hW

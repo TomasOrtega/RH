@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CovHt.Link.IntPt
 
+/- English proof (translation)
+Establish `e : ((p : 𝓞 K) : K) = (p : K)` using `by simp`. Establish `h1 : pl.valuation K (p : K) < 1`. Rewrite using `[← e, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem pl _).2 hp`. Establish `h0 : pl.valuation K (p : K) ≠ 0` using `(Valuation.ne_zero_iff _).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+
+Unfold `vLa`. Use `(WithZero.log_lt_log h0 one_ne_zero).2 h1` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vLa_pos {K : Type} [Field K] [NumberField K] (pl : HeightOneSpectrum (𝓞 K)) (p : ℕ) [Fact p.Prime]
     (hp : (p : 𝓞 K) ∈ pl.asIdeal) : 0 < vLa pl (p : K) := by
   have e : ((p : 𝓞 K) : K) = (p : K) := by simp
@@ -30,6 +35,17 @@ end GlobalTheory.CovHt.Link.IntPt
 
 open GlobalTheory.CovHt.Link.IntPt in
 
+/- English proof (translation)
+Introduce `h2 hH D A N j S κ s Φ k Z hZ la g hg hv pl p _ hp T io e ho y hf hy`. Take `⟨jm, hj⟩` from `GlobalTheory.T.padic_embedding_of_dvr pl p hp T io e ho hf`. Take `⟨x, hx⟩` from `GlobalTheory.T.arithmetic_section_padic_bound h2 hH D A N j S κ s Φ k Z hZ la g hg hv pl p hp T io e ho y hf hy jm hj`. Use `⟨x, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[hx]`.
+
+Distinguish the cases in `hz : evI y g = 0`. Rewrite using `[hz, nval_zero]`. Conclude with `le_top`. Rewrite `*` using `[nval_of_ne hz, hj _ hz]`. Establish `hvp` using `vLa_pos pl p hp`.
+
+Establish `hpo : vV T.V (io (p : κ.c.F)) = (e : ℤ) * vLa pl (p : κ.c.F)` using `ho.2 _`. Establish `he : (0 : ℝ) < e` using `by exact_mod_cast ho.1`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hle : -((vV T.V (evI y g) : ℝ) / (vV T.V (io (p : κ.c.F)) : ℝ)) ≤ -r` using `(Real.rpow_le_rpow_left_iff hp1).1 hr`. Rewrite `hle` using `[hpo]`.
+
+Move the coercions through the operations in `at hle`. Establish `hv0 : (0 : ℝ) < (vLa pl (p : κ.c.F) : ℝ)` using `by exact_mod_cast hvp`. Establish `: r ≤ (vV T.V (evI y g) : ℝ) / ((e : ℝ) * (vLa pl (p : κ.c.F) : ℝ))` using `by linarith`. Rewrite `this` using `[le_div_iff₀ (by positivity)]`. Apply `EReal.coe_le_coe_iff.2` to reduce the goal to its premises.
+
+Rewrite using `[le_div_iff₀ he]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem GlobalTheory.CovHt.Link.exists_pt_drAt_le : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (Z : Comp s.Xo κ.c), Over Φ k Z → ∀ (la : AllWt.Weight S.Dw) (g : Rul s.Xo κ.c), g ∈ secZ s.Xo κ.c (exOf S.Dw la 0) → (Φ.C k).val g ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) → ∀ (pl : HeightOneSpectrum (𝓞 κ.c.F)) (p : ℕ) [Fact p.Prime], (p : 𝓞 κ.c.F) ∈ pl.asIdeal → ∀ (T : CDVR) (io : κ.c.F →+* T.Fr) (e : ℕ), OverLa pl T.V io e → ∀ y : IntFr s.Xo κ.c T io, T.FinRes → (letI := io.toAlgebra; AllWt.LiesOn Z y.1) → ∃ x : Sp ℂ_[p] ⟶ (Φ.C k).Y.X, ∀ r : ℝ, drAt Φ k la p x ((Φ.C k).val g) ≤ (p : ℝ) ^ (-r) → (((vLa pl (p : κ.c.F) : ℝ) * r : ℝ) : EReal) ≤ nval T.V e (evI y g) := by
   intro h2 hH D A N j S κ s Φ k Z hZ la g hg hv pl p _ hp T io e ho y hf hy
   obtain ⟨jm, hj⟩ := GlobalTheory.T.padic_embedding_of_dvr pl p hp T io e ho hf

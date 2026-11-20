@@ -17,6 +17,15 @@ namespace GlobalTheory.Twist.exists_addEquiv_symplecticCoords_orientedModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv0` to reduce the goal to its premises. Use `set x : S.V := ∑ j, v j • S.frame j with hxdef`. Establish `hfr : ∀ i, S.hT (S.frame i) x = 0`.
+
+Introduce `i`. Use `congrFun hv i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at this`. Rewrite using `[hxdef, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.BasicNotions.HSpace.gram, mul_comm]`. Establish `hx : S.hT.flip x = 0` using `S.frame.ext fun i => by simpa using hfr i`. Establish `hx0 : x = 0` using `S.nondeg.2 x fun y => by`.
+
+Use `LinearMap.congr_fun hx y` as an intermediate fact. Simplify using `using this`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 S.frame.linearIndependent v hx0 j`.
+-/
 theorem gram_det_ne_zero (S : HSp D) : S.gram.det ≠ 0 := by
   intro h
   obtain ⟨v, hv0, hv⟩ := Matrix.exists_mulVec_eq_zero_iff.2 h
@@ -38,6 +47,11 @@ theorem gram_det_ne_zero (S : HSp D) : S.gram.det ≠ 0 := by
   funext j
   exact Fintype.linearIndependent_iff.1 S.frame.linearIndependent v hx0 j
 
+/- English proof (translation)
+Establish `h1 : (c • S.gram).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) (gram_det_ne_zero S)`. Establish `h2 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)).det = (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `D.host.F) (AF D.host.F)) (c • S.gram).det := by`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(isUnit_iff_ne_zero.2 h1).map _`.
+-/
 theorem isUnit_det_incM (S : HSp D) (c : D.host.E) (hc : c ≠ 0) :
     IsUnit (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)).det := by
   have h1 : (c • S.gram).det ≠ 0 := by
@@ -68,6 +82,9 @@ def coordsEquiv {n m d : ℕ} (e : Fin m ≃ Fin d) (G : Matrix (Fin n) (Fin n) 
     rw [Matrix.transpose_add, ← Matrix.add_mul]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨coordsEquiv e _ (isUnit_det_incM S c hc), fun _ => rfl⟩`.
+-/
 theorem coords (D : D7) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (c : D.host.E) (hc : c ≠ 0) :
     ∃ f : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X,
       ∀ u, f u = (HMul.hMul (uᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (c • S.gram)) :

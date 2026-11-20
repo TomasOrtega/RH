@@ -49,6 +49,9 @@ def mkI (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     topf_open := (Formalism.MainNotions.S.Inh.aut_HTop_holds cm J L hfg hspan).choose_spec.2.1
     topf_basis := (Formalism.MainNotions.S.Inh.aut_HTop_holds cm J L hfg hspan).choose_spec.2.2 }
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun _ => rfl`.
+-/
 theorem mkI_sig (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     (cm : @Formalism.BasicNotions.CMData F E _ _ _ _ (starOf σ hσ) _) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (hdet : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
@@ -66,10 +69,16 @@ def bridgeS (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs 
   subst hs
   exact Formalism.L2.SG.AdBridge.toHA I (Formalism.L2.SG.Closed.AdBridgeIso_holds I)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.AdBridge.toHA_isBridge I _`.
+-/
 theorem bridgeS_isBridge (I : Formalism.MainNotions.S.AutInst) :
     Formalism.L2.SG.AdBridge.IsBridge I (bridgeS I I.cm.sig rfl) :=
   Formalism.L2.SG.AdBridge.toHA_isBridge I _
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Introduce `γ hγ`. Establish `h` using `Formalism.L2.SG.Closed.AdBridgeGF_holds I (bridgeS I _ rfl) (bridgeS_isBridge I)`. Establish `h2 : bridgeS I _ rfl γ ∈ Formalism.L2.SG.AdBridge.ratHA I` using `h ▸ Set.mem_image_of_mem _ hγ`. Conclude with `Subgroup.mem_subgroupOf.2 h2`.
+-/
 theorem bridgeS_rat (I : Formalism.MainNotions.S.AutInst) (s : I.E →ₐ[I.F] I.E) (hs : s = I.cm.sig) :
     ∀ γ ∈ I.GFset, bridgeS I s hs γ ∈ GlobalTheory.AdelicU.ratPts s I.J := by
   subst hs

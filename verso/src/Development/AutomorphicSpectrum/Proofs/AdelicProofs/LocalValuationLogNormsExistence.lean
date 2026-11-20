@@ -11,9 +11,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Br.Dd
 
 variable {K : Type} [Field K] [NumberField K] {p : Nat.Primes}
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.Xgf.NI.norm_int_le (κ.comp (algebraMap (𝓞 K) K)) x`.
+-/
 theorem norm_int_le (κ : K →+* ℂ_[p]) (x : 𝓞 K) : ‖κ (algebraMap (𝓞 K) K x)‖ ≤ 1 :=
   PositivityTheory.Xgf.NI.norm_int_le (κ.comp (algebraMap (𝓞 K) K)) x
 
+/- English proof (translation)
+Establish `h : (n : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((n : ℚ) : ℚ_[p])` using `by simp`. Rewrite using `[h, norm_algebraMap', Padic.eq_padicNorm]`. Conclude with `padicNorm.nat_lt_one_iff n` after adjusting the coercions.
+-/
 theorem norm_natCast_lt_one_iff (n : ℕ) : ‖(n : ℂ_[p])‖ < 1 ↔ (p : ℕ) ∣ n := by
   have h : (n : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((n : ℚ) : ℚ_[p]) := by simp
   rw [h, norm_algebraMap', Padic.eq_padicNorm]
@@ -29,9 +35,15 @@ def ballIdeal (κ : K →+* ℂ_[p]) : Ideal (𝓞 K) where
     simp only [Set.mem_setOf_eq, smul_eq_mul, map_mul, norm_mul] at *
     exact (mul_le_of_le_one_left (norm_nonneg _) (norm_int_le κ c)).trans_lt hx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ballIdeal (κ : K →+* ℂ_[p]) (x : 𝓞 K) :
     x ∈ ballIdeal κ ↔ ‖κ (algebraMap (𝓞 K) K x)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_ballIdeal, map_natCast, map_natCast]`. Conclude with `(norm_natCast_lt_one_iff _).2 dvd_rfl`.
+-/
 theorem natCast_mem_ballIdeal (κ : K →+* ℂ_[p]) : ((p : ℕ) : 𝓞 K) ∈ ballIdeal κ := by
   rw [mem_ballIdeal, map_natCast, map_natCast]
   exact (norm_natCast_lt_one_iff _).2 dvd_rfl
@@ -55,17 +67,37 @@ def placeOf (κ : K →+* ℂ_[p]) : HeightOneSpectrum (𝓞 K) where
     rw [show ballIdeal κ = ⊥ from h, Ideal.mem_bot] at h1
     exact p.2.ne_zero (by exact_mod_cast h1)
 
+/- English proof (translation)
+The claim follows from `natCast_mem_ballIdeal κ`.
+-/
 theorem natCast_mem_placeOf (κ : K →+* ℂ_[p]) : ((p : ℕ) : 𝓞 K) ∈ (placeOf κ).asIdeal :=
   natCast_mem_ballIdeal κ
 
+/- English proof (translation)
+The claim follows from `la.valuation_lt_one_iff_mem r`.
+-/
 theorem val_lt_one_iff (la : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) :
     la.valuation K (algebraMap (𝓞 K) K r) < 1 ↔ r ∈ la.asIdeal :=
   la.valuation_lt_one_iff_mem r
 
+/- English proof (translation)
+The claim follows from `la.valuation_of_algebraMap r`.
+-/
 theorem val_algebraMap (la : HeightOneSpectrum (𝓞 K)) (r : 𝓞 K) :
     la.valuation K (algebraMap (𝓞 K) K r) = la.intValuation r :=
   la.valuation_of_algebraMap r
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hd1 : algebraMap (𝓞 K) K d ≠ 0` using `by simpa using hd0`. Establish `hsp : Ideal.span {d} ≠ 0` using `by simpa [Ideal.zero_eq_bot] using hd0`. Take `⟨m, B, hB, hs⟩` from `WfDvdMonoid.max_power_factor hsp la.irreducible`.
+
+Take `⟨z, hzB, hzl⟩` from `SetLike.not_le_iff_exists.1 (fun h' => hB (Ideal.dvd_iff_le.2 h'))`. Establish `hdm : d ∈ la.asIdeal ^ m`. Establish `h1 : d ∈ Ideal.span {d}` using `Ideal.mem_span_singleton_self d`. Rewrite `h1` using `[hs]`. Conclude with `(Ideal.mul_le_inf.trans inf_le_left) h1`.
+
+Establish `hv : la.intValuation n ≤ la.intValuation d`. Establish `hv0 : 0 < la.valuation K (algebraMap (𝓞 K) K d)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hd1)`. Rewrite `h` using `[map_div₀, div_le_one₀ hv0, val_algebraMap, val_algebraMap]`. Then use the resulting hypothesis. Establish `hnm : n ∈ la.asIdeal ^ m`. Rewrite using `[← la.intValuation_le_pow_iff_mem]`.
+
+Conclude with `hv.trans ((la.intValuation_le_pow_iff_mem d m).2 hdm)`. Establish `h2 : n * z ∈ Ideal.span {d}`. Rewrite using `[hs]`. Conclude with `Ideal.mul_mem_mul hnm hzB`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h2`.
+
+Use `⟨c, z, hzl, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (algebraMap (𝓞 K) K) hc`. Rewrite `h3` using `[map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← h3, mul_comm]`.
+-/
 theorem exists_frac (la : HeightOneSpectrum (𝓞 K)) (a : K) (h : la.valuation K a ≤ 1) :
     ∃ c z : 𝓞 K, z ∉ la.asIdeal ∧ a * algebraMap (𝓞 K) K z = algebraMap (𝓞 K) K c := by
   obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 K) a
@@ -97,6 +129,19 @@ theorem exists_frac (la : HeightOneSpectrum (𝓞 K)) (a : K) (h : la.valuation 
 def Lies (κ : K →+* ℂ_[p]) (la : HeightOneSpectrum (𝓞 K)) : Prop :=
   ∀ a : K, la.valuation K a ≤ 1 ↔ ‖κ a‖ ≤ 1
 
+/- English proof (translation)
+Establish `hunit : ∀ z : 𝓞 K, z ∉ (placeOf κ).asIdeal → ‖κ (algebraMap (𝓞 K) K z)‖ = 1` using `fun z hz => le_antisymm (norm_int_le κ z) (not_lt.1 hz)`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨c, z, hz, e⟩` from `exists_frac _ a h`.
+
+Establish `h1` using `congrArg (fun t => ‖κ t‖) e`. Simplify using `only [map_mul, norm_mul, hunit z hz, mul_one] at h1`. Rewrite using `[h1]`. Conclude with `norm_int_le κ c`. Introduce `h`.
+
+Assume the negation of the conclusion as `hv`. Rewrite `hv` using `[not_le]`. Establish `ha : a ≠ 0` using `by rintro rfl; simp at hv`. Establish `hinv : (placeOf κ).valuation K a⁻¹ < 1`. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ hv`. Take `⟨c, z, hz, e⟩` from `exists_frac _ a⁻¹ hinv.le`. Establish `hzv : (placeOf κ).valuation K (algebraMap (𝓞 K) K z) = 1` using `le_antisymm ((placeOf κ).valuation_le_one z) (not_lt.1 fun h' => hz ((val_lt_one_iff _ z).1 h'))`. Establish `hc : c ∈ (placeOf κ).asIdeal` using `(val_lt_one_iff _ c).1 (by`. Rewrite using `[← e, map_mul, hzv, mul_one]`.
+
+Conclude with `hinv)`. Establish `hcn : ‖κ (algebraMap (𝓞 K) K c)‖ < 1` using `hc`. Establish `h1` using `congrArg (fun t => ‖κ t‖) e`. Simplify using `only [map_mul, norm_mul, hunit z hz, mul_one, map_inv₀, norm_inv] at h1`. Establish `hpos : 0 < ‖κ a‖` using `norm_pos_iff.2 ((map_ne_zero κ).2 ha)`.
+
+Establish `h2 : 1 < ‖κ a‖` using `(inv_lt_one₀ hpos).1 (h1 ▸ hcn)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lies_placeOf (κ : K →+* ℂ_[p]) : Lies κ (placeOf κ) := by
   have hunit : ∀ z : 𝓞 K, z ∉ (placeOf κ).asIdeal → ‖κ (algebraMap (𝓞 K) K z)‖ = 1 := fun z hz =>
     le_antisymm (norm_int_le κ z) (not_lt.1 hz)
@@ -126,6 +171,11 @@ theorem lies_placeOf (κ : K →+* ℂ_[p]) : Lies κ (placeOf κ) := by
     have h2 : 1 < ‖κ a‖ := (inv_lt_one₀ hpos).1 (h1 ▸ hcn)
     linarith
 
+/- English proof (translation)
+Rewrite using `[← val_lt_one_iff la a]`. Distinguish the cases in `ha : algebraMap (𝓞 K) K a = 0`. Rewrite using `[ha]`. Simplify using the standard rewrite rules. Establish `h1` using `h (algebraMap (𝓞 K) K a)⁻¹`.
+
+Establish `hv0 : 0 < la.valuation K (algebraMap (𝓞 K) K a)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ha)`. Establish `hn0 : 0 < ‖κ (algebraMap (𝓞 K) K a)‖` using `norm_pos_iff.2 ((map_ne_zero κ).2 ha)`. Rewrite `h1` using `[map_inv₀, map_inv₀, norm_inv, inv_le_one₀ hv0, inv_le_one₀ hn0]`. Rewrite using `[← not_le, ← not_le, h1]`.
+-/
 theorem Lies.norm_lt_one_iff {κ : K →+* ℂ_[p]} {la : HeightOneSpectrum (𝓞 K)} (h : Lies κ la) (a : 𝓞 K) :
     ‖κ (algebraMap (𝓞 K) K a)‖ < 1 ↔ a ∈ la.asIdeal := by
   rw [← val_lt_one_iff la a]
@@ -138,9 +188,15 @@ theorem Lies.norm_lt_one_iff {κ : K →+* ℂ_[p]} {la : HeightOneSpectrum (�
     rw [map_inv₀, map_inv₀, norm_inv, inv_le_one₀ hv0, inv_le_one₀ hn0] at h1
     rw [← not_le, ← not_le, h1]
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun x => (h.norm_lt_one_iff x).symm)`.
+-/
 theorem Lies.eq_placeOf {κ : K →+* ℂ_[p]} {la : HeightOneSpectrum (𝓞 K)} (h : Lies κ la) : la = placeOf κ :=
   HeightOneSpectrum.ext (Ideal.ext fun x => (h.norm_lt_one_iff x).symm)
 
+/- English proof (translation)
+Establish `h0 : 0 < la.valuation K b` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb)`. Establish `h1 : la.valuation K (a / b) ≤ 1` using `by rwa [map_div₀, div_le_one₀ h0]`. Establish `h2` using `(h _).1 h1`. Rewrite `h2` using `[map_div₀, norm_div, div_le_one₀ (norm_pos_iff.2 ((map_ne_zero κ).2 hb))]`. Then use the resulting hypothesis.
+-/
 theorem Lies.norm_le_of_val_le {κ : K →+* ℂ_[p]} {la : HeightOneSpectrum (𝓞 K)} (h : Lies κ la) {a b : K}
     (hb : b ≠ 0) (hv : la.valuation K a ≤ la.valuation K b) : ‖κ a‖ ≤ ‖κ b‖ := by
   have h0 : 0 < la.valuation K b := zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb)
@@ -148,23 +204,41 @@ theorem Lies.norm_le_of_val_le {κ : K →+* ℂ_[p]} {la : HeightOneSpectrum (�
   have h2 := (h _).1 h1
   rwa [map_div₀, norm_div, div_le_one₀ (norm_pos_iff.2 ((map_ne_zero κ).2 hb))] at h2
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+-/
 theorem ne_zero_of_unif {la : HeightOneSpectrum (𝓞 K)} {π : K}
     (hπ : la.valuation K π = WithZero.exp (-1 : ℤ)) : π ≠ 0 := by
   rintro rfl
   rw [map_zero] at hπ
   exact WithZero.exp_ne_zero hπ.symm
 
+/- English proof (translation)
+The claim follows from `le_antisymm (h.norm_le_of_val_le (ne_zero_of_unif hπ') (hπ.trans hπ'.symm).le) (h.norm_le_of_val_le (ne_zero_of_unif hπ) (hπ'.trans hπ.symm).le)`.
+-/
 theorem Lies.norm_unif_eq {κ : K →+* ℂ_[p]} {la : HeightOneSpectrum (𝓞 K)} (h : Lies κ la) {π π' : K}
     (hπ : la.valuation K π = WithZero.exp (-1 : ℤ)) (hπ' : la.valuation K π' = WithZero.exp (-1 : ℤ)) :
     ‖κ π‖ = ‖κ π'‖ :=
   le_antisymm (h.norm_le_of_val_le (ne_zero_of_unif hπ') (hπ.trans hπ'.symm).le)
     (h.norm_le_of_val_le (ne_zero_of_unif hπ) (hπ'.trans hπ.symm).le)
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {(l : 𝓞 K)} ≠ 0`. Simplify `hl` using `[Ideal.zero_eq_bot]`. Conclude with `(Ideal.finite_factors h0).subset fun w hw => Ideal.dvd_span_singleton.2 hw`.
+-/
 theorem finite_over {l : ℕ} (hl : l ≠ 0) : {w : HeightOneSpectrum (𝓞 K) | (l : 𝓞 K) ∈ w.asIdeal}.Finite := by
   have h0 : Ideal.span {(l : 𝓞 K)} ≠ 0 := by
     simpa [Ideal.zero_eq_bot] using hl
   exact (Ideal.finite_factors h0).subset fun w hw => Ideal.dvd_span_singleton.2 hw
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `la.intValuation_exists_uniformizer`. Establish `hf` using `finite_over (K := K) (l := (p : ℕ)) p.2.ne_zero`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hf.toFinset) (fun q : HeightOneSpectrum (𝓞 K) => q.asIdeal) (fun q => if q = la then 2 else 1) (fun q _ => q.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun q => if q.1 = la then u else 1)`. Use `⟨y, ?_, fun q hq hne hmem => ?_⟩` and prove the remaining obligations. Establish `h1` using `hy la (by simpa using hp)`.
+
+Simplify using `only [if_true] at h1`. Establish `h2 : la.intValuation (y - u) < la.intValuation u`. Rewrite using `[hu]`. Use `((la.intValuation_le_pow_iff_mem _ 2).2 h1).trans_lt ?_` and prove the remaining obligations. Rewrite using `[WithZero.exp_lt_exp]`.
+
+Evaluate the numerical expressions. Establish `h3` using `la.intValuation.map_add_eq_of_lt_right (x := y - u) (y := u) h2`. Rewrite `h3` using `[sub_add_cancel]`. Rewrite using `[h3, hu]`. Establish `h1` using `hy q (by simpa using hq)`.
+
+Simplify using `only [if_neg hne, pow_one] at h1`. Establish `h2 : (1 : 𝓞 K) ∈ q.asIdeal`. Use `q.asIdeal.sub_mem hmem h1` as an intermediate fact. Simplify using `using this`. Conclude with `q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)`.
+-/
 theorem exists_sep (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal) :
     ∃ y : 𝓞 K, la.intValuation y = WithZero.exp (-1 : ℤ) ∧
       ∀ q : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ q.asIdeal → q ≠ la → y ∉ q.asIdeal := by
@@ -192,6 +266,11 @@ theorem exists_sep (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) 
       simpa using this
     exact q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)
 
+/- English proof (translation)
+Rewrite `hI`, `hd` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI := Nat.finite_of_card_ne_zero hI`. Use `haveI := Fact.mk hl`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' l hd`. Use `⟨x, fun h => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[h, addOrderOf_zero]`. Conclude with `hl.one_lt.ne hx`. Rewrite using `[← nsmul_eq_mul, ← hx]`. Conclude with `addOrderOf_nsmul_eq_zero x`.
+-/
 theorem exists_quot (I : Ideal (𝓞 K)) (hI : Ideal.absNorm I ≠ 0) {l : ℕ} (hl : l.Prime)
     (hd : l ∣ Ideal.absNorm I) : ∃ x : 𝓞 K ⧸ I, x ≠ 0 ∧ (l : 𝓞 K ⧸ I) * x = 0 := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply] at hI hd
@@ -202,6 +281,11 @@ theorem exists_quot (I : Ideal (𝓞 K)) (hI : Ideal.absNorm I ≠ 0) {l : ℕ} 
   · rw [h, addOrderOf_zero] at hx; exact hl.one_lt.ne hx
   · rw [← nsmul_eq_mul, ← hx]; exact addOrderOf_nsmul_eq_zero x
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm la.asIdeal ≠ 0` using `fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Use `Nat.eq_prime_pow_of_unique_prime_dvd h0 fun {l} hl hd => ?_` and prove the remaining obligations. Take `⟨x, hx0, hx⟩` from `exists_quot la.asIdeal h0 hl hd`. Use `haveI := la.isPrime`. Establish `hl0 : ((l : 𝓞 K) : 𝓞 K ⧸ la.asIdeal) = 0` using `(mul_eq_zero.1 hx).resolve_right hx0`.
+
+Establish `hlm : (l : 𝓞 K) ∈ la.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using hl0`. Conclude with `congrArg Subtype.val (PositivityTheory.Xgf.NP.prime_unique la (p := ⟨l, hl⟩) hlm hp)`.
+-/
 theorem absNorm_eq_pow (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal) :
     Ideal.absNorm la.asIdeal = (p : ℕ) ^ (Ideal.absNorm la.asIdeal).primeFactorsList.length := by
   have h0 : Ideal.absNorm la.asIdeal ≠ 0 := fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
@@ -213,14 +297,25 @@ theorem absNorm_eq_pow (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞
     rw [← Ideal.Quotient.eq_zero_iff_mem]; simpa using hl0
   exact congrArg Subtype.val (PositivityTheory.Xgf.NP.prime_unique la (p := ⟨l, hl⟩) hlm hp)
 
+/- English proof (translation)
+Establish `h : ((p : ℕ) : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((p : ℕ) : ℚ_[p])` using `by simp`. Rewrite using `[h, norm_algebraMap', Padic.norm_p]`.
+-/
 theorem norm_natCast_p : ‖((p : ℕ) : ℂ_[p])‖ = ((p : ℕ) : ℝ)⁻¹ := by
   have h : ((p : ℕ) : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] ((p : ℕ) : ℚ_[p]) := by simp
   rw [h, norm_algebraMap', Padic.norm_p]
 
+/- English proof (translation)
+Rewrite using `[absNorm_eq_pow la hp, Nat.cast_pow, Nat.cast_pow, norm_pow, norm_natCast_p, inv_pow]`.
+-/
 theorem norm_absNorm_place (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal) :
     ‖((Ideal.absNorm la.asIdeal : ℕ) : ℂ_[p])‖ = ((Ideal.absNorm la.asIdeal : ℕ) : ℝ)⁻¹ := by
   rw [absNorm_eq_pow la hp, Nat.cast_pow, Nat.cast_pow, norm_pow, norm_natCast_p, inv_pow]
 
+/- English proof (translation)
+Use `le_antisymm (IsUltrametricDist.norm_natCast_le_one _ _) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Take `⟨x, hx0, hx⟩` from `exists_quot J hJ p.2 ((norm_natCast_lt_one_iff _).1 h)`. Apply `hx0` to reduce the goal to its premises. Establish `hj0 : (j : 𝓞 K ⧸ J) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hj`. Establish `e'` using `congrArg (Ideal.Quotient.mk J) e`.
+
+Rewrite `e'` using `[map_add, map_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e', one_mul]`. Use `_ = 0 := by`. Rewrite using `[show Ideal.Quotient.mk J j = (j : 𝓞 K ⧸ J) from rfl, hj0, zero_add, mul_assoc, map_natCast, hx, mul_zero]`.
+-/
 theorem norm_absNorm_coprime (J : Ideal (𝓞 K)) (hJ : Ideal.absNorm J ≠ 0) {j s : 𝓞 K} (hj : j ∈ J)
     (e : j + s * ((p : ℕ) : 𝓞 K) = 1) : ‖((Ideal.absNorm J : ℕ) : ℂ_[p])‖ = 1 := by
   refine le_antisymm (IsUltrametricDist.norm_natCast_le_one _ _) (not_lt.1 fun h => ?_)
@@ -235,6 +330,9 @@ theorem norm_absNorm_coprime (J : Ideal (𝓞 K)) (hJ : Ideal.absNorm J ≠ 0) {
           rw [show Ideal.Quotient.mk J j = (j : 𝓞 K ⧸ J) from rfl, hj0, zero_add, mul_assoc, map_natCast, hx,
             mul_zero]
 
+/- English proof (translation)
+Break down `Int.natAbs_eq n with h | h` into its components or cases. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [h]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_intCast_eq (n : ℤ) : ‖(n : ℂ_[p])‖ = ‖((n.natAbs : ℕ) : ℂ_[p])‖ := by
   rcases Int.natAbs_eq n with h | h
   · conv_lhs => rw [h]
@@ -242,6 +340,21 @@ theorem norm_intCast_eq (n : ℤ) : ‖(n : ℂ_[p])‖ = ‖((n.natAbs : ℕ) :
   · conv_lhs => rw [h]
     simp
 
+/- English proof (translation)
+Establish `hyl : y ∈ la.asIdeal`. Rewrite using `[← la.intValuation_lt_one_iff_mem, hy1, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hyl2 : y ∉ la.asIdeal ^ 2`. Rewrite using `[← la.intValuation_le_pow_iff_mem, hy1, WithZero.exp_le_exp]`.
+
+Evaluate the numerical expressions. Take `⟨J, hJ⟩` from `Ideal.dvd_span_singleton.2 hyl`. Establish `hy0 : y ≠ 0` using `by rintro rfl; exact hyl2 (Ideal.zero_mem _)`. Establish `hsp : Ideal.absNorm (Ideal.span {y}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hy0`. Establish `hJ0 : Ideal.absNorm J ≠ 0`. Rewrite `hsp` using `[hJ, map_mul]`. Conclude with `right_ne_zero_of_mul hsp`. Establish `hcop : (1 : 𝓞 K) ∈ J ⊔ Ideal.span {((p : ℕ) : 𝓞 K)}`.
+
+Assume the negation of the conclusion as `hn`. Establish `hne : J ⊔ Ideal.span {((p : ℕ) : 𝓞 K)} ≠ ⊤` using `fun h => hn (h ▸ Submodule.mem_top)`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hpM : ((p : ℕ) : 𝓞 K) ∈ M` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hJM : J ≤ M` using `le_sup_left.trans hle`.
+
+Set `q : HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, fun h => by`. Rewrite using `[h, Ideal.mem_bot] at hpM; exact p.2.ne_zero (by exact_mod_cast hpM)⟩`. Establish `hyM : y ∈ la.asIdeal * J` using `by rw [← hJ]; exact Ideal.mem_span_singleton_self y`. Distinguish the cases in `hq : q = la`. Apply `hyl2` to reduce the goal to its premises.
+
+Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mono_right (show J ≤ la.asIdeal from hq ▸ hJM) hyM`. Conclude with `hy2 q hpM hq (hJM ((Ideal.mul_le_inf.trans inf_le_right) hyM))`. Take `⟨j, hj, t, ht, e⟩` from `Submodule.mem_sup.1 hcop`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`.
+
+Establish `hN : (Algebra.norm ℚ (algebraMap (𝓞 K) K y) : ℚ) = ((Algebra.norm ℤ y : ℤ) : ℚ)` using `(Algebra.coe_norm_int y).symm`. Rewrite using `[hN, Rat.cast_intCast, norm_intCast_eq, ← Ideal.absNorm_span_singleton, hJ, map_mul, Nat.cast_mul, norm_mul, norm_absNorm_place la hp, norm_absNorm_coprime J hJ0 hj e, mul_one]`.
+-/
 theorem norm_sep (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal) (y : 𝓞 K)
     (hy1 : la.intValuation y = WithZero.exp (-1 : ℤ))
     (hy2 : ∀ q : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ q.asIdeal → q ≠ la → y ∉ q.asIdeal) :
@@ -279,6 +392,13 @@ theorem norm_sep (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) �
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨y, hy1, hy2⟩` from `exists_sep la hp`. Establish `hyv : la.valuation K (algebraMap (𝓞 K) K y) = WithZero.exp (-1 : ℤ)` using `(val_algebraMap _ _).trans hy1`. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.Fl.sum_log_norm_embeddings_eq_log_norm K ℂ_[p] _ (ne_zero_of_unif hyv)`. Rewrite `h1` using `[norm_sep la hp y hy1 hy2, Real.log_inv]`. Rewrite using `[← h1]`.
+
+Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `congrArg Real.log ((lies_placeOf κ).norm_unif_eq hπ hyv)`. Establish `: y ∉ (placeOf κ).asIdeal` using `hy2 _ (natCast_mem_placeOf κ) h`.
+
+Rewrite using `[le_antisymm (norm_int_le κ y) (not_lt.1 this), Real.log_one]`.
+-/
 theorem sum_lies (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal) {π : K}
     (hπ : la.valuation K π = WithZero.exp (-1 : ℤ)) :
     ∑ κ : K →+* ℂ_[p], (if placeOf κ = la then Real.log ‖κ π‖ else 0) =
@@ -294,6 +414,41 @@ theorem sum_lies (la : HeightOneSpectrum (𝓞 K)) (hp : ((p : ℕ) : 𝓞 K) �
   · have : y ∉ (placeOf κ).asIdeal := hy2 _ (natCast_mem_placeOf κ) h
     rw [le_antisymm (norm_int_le κ y) (not_lt.1 this), Real.log_one]
 
+/- English proof (translation)
+Introduce `K _ _ r ρ`. Use `choose u hu using fun la : HeightOneSpectrum (𝓞 K) => la.valuation_exists_uniformizer K`. Use `⟨fun p κ => ⟨placeOf κ, u _, lies_placeOf κ, hu _⟩, ⟨⟨fun σ => Real.log (r σ), fun p κ => ρ (placeOf κ) * Real.log ‖κ (u (placeOf κ))‖⟩, fun σ => rfl, fun p κ la π hl hπ => ?_⟩, fun N hinf hfin => ?_⟩` and prove the remaining obligations. Take `rfl` from `Lies.eq_placeOf (la := la) hl show ρ (placeOf κ) * Real.log ‖κ (u (placeOf κ))‖ = _`. Rewrite using `[Lies.norm_unif_eq hl (hu _) hπ]`.
+
+Establish `hf : ∀ (p : Nat.Primes) (κ : K →+* ℂ_[p]), N.fin p κ = ρ (placeOf κ) * Real.log ‖κ (u (placeOf κ))‖` using `fun p κ => hfin p κ _ _ (lies_placeOf κ) (hu _)`. Use `choose P hP using PositivityTheory.Xgf.NP.exists_prime_mem (k := K)`. Establish `key : ∀ S : Finset (HeightOneSpectrum (𝓞 K)), (∀ la, ρ la ≠ 0 → la ∈ S) → ∀ p : Nat.Primes, N.finSum p = -∑ la ∈ S.filter (fun la => ((p : ℕ) : 𝓞 K) ∈ la.asIdeal), ρ la * Real.log (Ideal.absNorm la.asIdeal : ℝ)`. Introduce `S hS p`. Establish `e1 : ∀ κ : K →+* ℂ_[p], N.fin p κ = ∑ la ∈ S.filter (fun la => ((p : ℕ) : 𝓞 K) ∈ la.asIdeal), ρ la * (if placeOf κ = la then Real.log ‖κ (u la)‖ else 0)`.
+
+Introduce `κ`. Rewrite using `[hf]`. Distinguish the cases in `hm : placeOf κ ∈ S`. Rewrite using `[Finset.sum_eq_single (placeOf κ)]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb), mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_filter.2 ⟨hm, natCast_mem_placeOf κ⟩) hn`. Establish `h0 : ρ (placeOf κ) = 0` using `by by_contra h0; exact hm (hS _ h0)`.
+
+Rewrite using `[h0, zero_mul]`. Use `(Finset.sum_eq_zero fun la hla => ?_).symm` and prove the remaining obligations. Establish `: placeOf κ ≠ la` using `fun h => hm (h ▸ (Finset.mem_filter.1 hla).1)`. Rewrite using `[if_neg this, mul_zero]`. Unfold `LogNorms.finSum`.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun la hla => ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, sum_lies la (Finset.mem_filter.1 hla).2 (hu la)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsupp : N.IsAdelic ↔ (Function.support ρ).Finite`. Prove the components needed by the constructor for the conclusion. Introduce `hA`. Use `(Set.Finite.biUnion hA fun p _ => PositivityTheory.Xgf.NP.finite_over (k := K) p).subset ?_` and prove the remaining obligations. Introduce `la hla`.
+
+Simplify using `only [Set.mem_iUnion]`. Use `⟨P la, ?_, hP la⟩` and prove the remaining obligations. Establish `hs` using `sum_lies la (hP la) (hu la)`. Establish `h1 : 1 < Ideal.absNorm la.asIdeal`. Establish `h0 : Ideal.absNorm la.asIdeal ≠ 0` using `fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Establish `h1 : Ideal.absNorm la.asIdeal ≠ 1` using `fun h => la.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h)`. Use linear arithmetic over natural numbers and integers. Establish `hne : ∑ κ : K →+* ℂ_[P la], (if placeOf κ = la then Real.log ‖κ (u la)‖ else 0) ≠ 0`. Rewrite using `[hs, neg_ne_zero]; exact (Real.log_pos (by exact_mod_cast h1)).ne'`. Take `⟨κ, _, hκ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+
+Establish `hpl : placeOf κ = la` using `by by_contra h; rw [if_neg h] at hκ; exact hκ rfl`. Use `⟨κ, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hpl]`. Conclude with `mul_ne_zero hla (by rwa [if_pos hpl] at hκ)`. Introduce `hS`.
+
+Use `(hS.image P).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨κ, hκ⟩`. Use `⟨placeOf κ, fun h0 => hκ (by rw [hf, h0, zero_mul]), ?_⟩` and prove the remaining obligations. Conclude with `PositivityTheory.Xgf.NP.prime_unique _ (hP _) (natCast_mem_placeOf κ)`. Use `⟨hsupp, fun hA => ?_⟩` and prove the remaining obligations.
+
+Establish `hS` using `hsupp.1 hA`. Establish `hSm : ∀ la, ρ la ≠ 0 → la ∈ hS.toFinset` using `fun la h => hS.mem_toFinset.2 h`. Establish `hsum : ∑ᶠ p, N.finSum p = -∑ la ∈ hS.toFinset, ρ la * Real.log (Ideal.absNorm la.asIdeal : ℝ)`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hS.toFinset.image P)]`. Repeatedly rewrite using `[key _ hSm]`.
+
+Rewrite using `[Finset.sum_neg_distrib]`. Use `congr 1`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := P) (t := hS.toFinset.image P) (fun la h => Finset.mem_image_of_mem P h)]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `la`.
+
+Simplify using `only [Finset.mem_filter]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨h1, PositivityTheory.Xgf.NP.prime_unique la (hP la) h2⟩, fun ⟨h1, h2⟩ => ⟨h1, h2 ▸ hP la⟩⟩`. Introduce `p hp`. Rewrite `hp` using `[Function.mem_support, key _ hSm]`. Take `⟨la, hla, _⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (neg_ne_zero.1 hp)`.
+
+Take `⟨hlaS, hpla⟩` from `Finset.mem_filter.1 hla`. Rewrite using `[Finset.coe_image]`. Conclude with `⟨la, hlaS, PositivityTheory.Xgf.NP.prime_unique _ (hP la) hpla⟩`. Establish `hl : ∑ᶠ la, ρ la * Formalism.BasicNotions.lw K la = (∑ la ∈ hS.toFinset, ρ la * Real.log (Ideal.absNorm la.asIdeal : ℝ)) / Module.finrank ℚ K`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hS.toFinset)]`.
+
+Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun la _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.BasicNotions.lw]`. Expand and normalize the polynomial expressions, which then agree. Introduce `la hla`.
+
+Rewrite `hla` using `[Function.mem_support]`. Conclude with `hSm la (left_ne_zero_of_mul hla)`. Rewrite using `[LogNorms.deg, GlobalTheory.FlatLine.lineDeg, hl, hsum]`. Simplify using `only [hinf]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_dict : ∀ (K : Type) [Field K] [NumberField K] (r : (K →+* ℂ) → ℝ) (ρ : HeightOneSpectrum (𝓞 K) → ℝ), (∀ (p : Nat.Primes) (κ : K →+* ℂ_[p]), ∃ (la : HeightOneSpectrum (𝓞 K)) (π : K), (∀ a : K, la.valuation K a ≤ 1 ↔ ‖κ a‖ ≤ 1) ∧ la.valuation K π = WithZero.exp (-1 : ℤ)) ∧ (∃ N : LogNorms K, (∀ σ, N.inf σ = Real.log (r σ)) ∧ ∀ (p : Nat.Primes) (κ : K →+* ℂ_[p]) (la : HeightOneSpectrum (𝓞 K)) (π : K), (∀ a : K, la.valuation K a ≤ 1 ↔ ‖κ a‖ ≤ 1) → la.valuation K π = WithZero.exp (-1 : ℤ) → N.fin p κ = ρ la * Real.log ‖κ π‖) ∧ ∀ N : LogNorms K, (∀ σ, N.inf σ = Real.log (r σ)) → (∀ (p : Nat.Primes) (κ : K →+* ℂ_[p]) (la : HeightOneSpectrum (𝓞 K)) (π : K), (∀ a : K, la.valuation K a ≤ 1 ↔ ‖κ a‖ ≤ 1) → la.valuation K π = WithZero.exp (-1 : ℤ) → N.fin p κ = ρ la * Real.log ‖κ π‖) → (N.IsAdelic ↔ (Function.support ρ).Finite) ∧ (N.IsAdelic → N.deg = GlobalTheory.FlatLine.lineDeg r ρ) := by
   intro K _ _ r ρ
   classical

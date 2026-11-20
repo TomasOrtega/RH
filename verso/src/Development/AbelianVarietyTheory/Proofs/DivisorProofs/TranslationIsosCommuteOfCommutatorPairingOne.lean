@@ -17,6 +17,9 @@ namespace GlobalTheory.UPel.HT.Hecke
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
 
+/- English proof (translation)
+Use `congr 1`. Rewrite using `[transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (snd (𝟙_ (Over S)) G ≫ toUnit G) (fst (𝟙_ (Over S)) G), mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem snd_transl (x : 𝟙_ (Over S) ⟶ G) :
     (snd (𝟙_ (Over S)) G ≫ transl x).left = (Out.translPt G x).left := by
   congr 1
@@ -24,6 +27,11 @@ theorem snd_transl (x : 𝟙_ (Over S) ⟶ G) :
     (fst (𝟙_ (Over S)) G), mul_comm]
   rfl
 
+/- English proof (translation)
+Take `⟨u, hu, hv⟩` from `exists_gen hL (K' := Fin 2) (φ' := ![(snd (𝟙_ (Over S)) G).left, (Out.translPt G x).left]) (ε' := ![1, -1]) (fun U _ h => by`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id]`. Rewrite using `[← Over.comp_left, snd_transl])`. Use the proof step `(LB.pullGen L _ _ φ (snd (𝟙_ (Over S)) G).left) (DVR.pullGen_isGen _ _ _ _ hφ _)`. Use `⟨⟨x, u, hu⟩, rfl, fun Z t a z J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `(hv _ _ z J hJ).trans ((val_pull hJ _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd]`.
+-/
 theorem exists_theta (hL : L.IsLB) (x : 𝟙_ (Over S) ⟶ G)
     (φ : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 G.left, (transl x).left] ![1, -1])) (hφ : φ.IsGen) :
     ∃ θ : Out.ThetaGrp G L 1 (𝟙_ (Over S)), θ.pt = x ∧ ∀ (Z : Over S) (t : Z ⟶ 𝟙_ (Over S)) (a : Z ⟶ G)
@@ -37,6 +45,13 @@ theorem exists_theta (hL : L.IsLB) (x : 𝟙_ (Over S) ⟶ G)
   refine (hv _ _ z J hJ).trans ((val_pull hJ _ _ _).trans ?_)
   rw [← Over.comp_left, lift_snd]
 
+/- English proof (translation)
+Introduce `S G _ _ hA L hL x y φx φy hx hy hW`. Take `⟨θx, hθx, ex⟩` from `exists_theta hL x φx hx`. Take `⟨θy, hθy, ey⟩` from `exists_theta hL y φy hy`. Rewrite `hW` using `[← hθx, ← hθy]`. Establish `hC` using `(GlobalTheory.CommutatorPairing.commIsOf_iff hL θx θy 1).1 ((GlobalTheory.GlobalLift.weilIs_iff_commIsOf GlobalTheory.globalFns_holds hA hL θx θy 1).1 hW)`.
+
+Use `corr_of_val hL fun g J hJ => ?_` and prove the remaining obligations. Establish `h` using `hC G (toUnit G) (𝟙 G) g J hJ`. Rewrite `h` using `[map_one, CommutatorPairing.commVal, mul_inv_eq_one, ex _ _ _ _ _ hJ, ex _ _ _ _ _ hJ, ey _ _ _ _ _ hJ, ey _ _ _ _ _ hJ]`. Rewrite using `[val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Rewrite `h` using `[hθx, hθy, show toUnit G ≫ x * 𝟙 G = transl x from mul_comm _ _, show toUnit G ≫ y * 𝟙 G = transl y from mul_comm _ _]`.
+
+Conclude with `h`.
+-/
 theorem gen_commute_of_weilIs : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsAbelianScheme G →
     ∀ (L : LB G.left), L.IsLB → ∀ (x y : 𝟙_ (Over S) ⟶ G)
     (φx : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 G.left, (GlobalTheory.UPel.HT.Hecke.transl x).left] ![1, -1]))

@@ -8,6 +8,9 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Dict
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z.Sym.Al
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `hg`. Use `show valuation k ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) h) : kˣ) : k) = 1`. Rewrite using `[Matrix.GeneralLinearGroup.map_det]`. Conclude with `(Valuation.integer.integers (valuation k)).valuation_unit _`.
+-/
 private theorem det_mem_Uo (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {g : Matrix.GeneralLinearGroup Unit k} (hg : g ∈ KO k Unit) :
     Matrix.GeneralLinearGroup.det g ∈ UpperTheory.V.Hi.Uo k := by
@@ -16,6 +19,13 @@ private theorem det_mem_Uo (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   rw [Matrix.GeneralLinearGroup.map_det]
   exact (Valuation.integer.integers (valuation k)).valuation_unit _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ψ hψ`. Establish `key : ∀ g : Levi k (fun _ : Fin n => Unit), (∀ a, g a ∈ KO k Unit) → (MonoidHom.comp (ofChar (torusChar ψ)) (leviTorus k (Fin n)).symm.toMonoidHom) g (1 : ℂ) = 1`. Introduce `g hg`. Establish `hs : (leviTorus k (Fin n)).symm g = fun i => Matrix.GeneralLinearGroup.det (g i)` using `rfl`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, ofChar_apply, hs, torusChar_apply]`.
+
+Rewrite using `[Finset.prod_eq_one fun i _ => hψ i _ (det_mem_Uo k (hg i))]`. Simplify using the standard rewrite rules. Take `⟨f, hf, h1⟩` from `GlobalTheory.SatInd.exists_fixed_apply_one (points (Fin n)) key`. Use `⟨f, ?_, fun u hu => GlobalTheory.LGrp.mem_fixed.mp hf u hu⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Simplify using `at h1`.
+-/
 theorem UpperTheory.V.Z.Sym.Al.locSph :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ), (∀ i, ∀ u ∈ Hi.Uo k, ψ i u = 1) → ∃ v, v ≠ 0 ∧ ∀ u ∈ KO k (Fin n), prinSeries ψ u v = v := by
   intro k _ _ _ _ n ψ hψ

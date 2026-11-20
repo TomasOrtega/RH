@@ -13,29 +13,50 @@ namespace GlobalTheory.ArchSchB
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 + b.1) = _`. Conclude with `map_add _ _ _`.
+-/
 theorem sub_evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 + b.1) = _
   exact map_add _ _ _
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * a.1) = _`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem sub_evI_realAd_mul (t : ℝ) (a : AF F) : evI F (realAd F t * a) = t • evI F a := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F
     ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * a.1) = _
   rw [map_mul, RingEquiv.apply_symm_apply, Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[arch, sub_evI_add]`.
+-/
 theorem sub_arch_add {κ : Type} (p q : κ → AF F) : arch F (p + q) = arch F p + arch F q := by
   funext i; simp [arch, sub_evI_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[arch, sub_evI_realAd_mul]`.
+-/
 theorem sub_arch_smul {κ : Type} (t : ℝ) (p : κ → AF F) : arch F (realAd F t • p) = t • arch F p := by
   funext i; simp [arch, sub_evI_realAd_mul]
 
+/- English proof (translation)
+Introduce `u _` and use `smul_zero u`.
+-/
 theorem sub_at_zero {M : Type} [AddCommGroup M] [Module (AF F) M] : At (evI F) (0 : M) :=
   fun u _ => smul_zero u
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_add, hx u hu, hy u hu, add_zero]`.
+-/
 theorem sub_at_add {M : Type} [AddCommGroup M] [Module (AF F) M] {x y : M} (hx : At (evI F) x)
     (hy : At (evI F) y) : At (evI F) (x + y) :=
   fun u hu => by rw [smul_add, hx u hu, hy u hu, add_zero]
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_comm, hx u hu, smul_zero]`.
+-/
 theorem sub_at_smul {M : Type} [AddCommGroup M] [Module (AF F) M] {x : M} (c : AF F) (hx : At (evI F) x) :
     At (evI F) (c • x) :=
   fun u hu => by rw [smul_comm, hx u hu, smul_zero]
@@ -44,6 +65,17 @@ end GlobalTheory.ArchSchB
 
 namespace GlobalTheory.ArchSchB
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d n₁ d₁ X W X₁ W₁ M M₁ H H'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨0, 0, 0, sub_at_zero, sub_at_zero, sub_at_zero, by simp [arch_zero'], ?_⟩` and prove the remaining obligations. Simplify using `only [vecMulVec_zero', Matrix.mulVec_zero, Matrix.zero_vecMulVec, Matrix.mul_zero, Matrix.zero_mul, add_zero, map_zero, Prod.fst_zero, Prod.snd_zero, arch_zero']`. Both sides reduce to the same expression.
+
+Introduce and unpack `l ⟨a, c, z, ha, hc, hz, hz1, rfl⟩ l' ⟨a', c', z', ha', hc', hz', hz1', rfl⟩`. Use `⟨a + a', c + c', z + z', sub_at_add ha ha', sub_at_add hc hc', sub_at_add hz hz', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Prod.fst_add, sub_arch_add, hz1, hz1', add_zero]`. Establish `: Matrix.vecMulVec (incV F H.x) (a + a') + Matrix.vecMulVec (incM F H.ι *ᵥ (c + c')) (incV F H'.x) + incM F H.ι * (z + z') * (incM F H'.ι)ᵀ = (Matrix.vecMulVec (incV F H.x) a + Matrix.vecMulVec (incM F H.ι *ᵥ c) (incV F H'.x) + incM F H.ι * z * (incM F H'.ι)ᵀ) + (Matrix.vecMulVec …`. Rewrite using `[Matrix.vecMulVec_add, Matrix.mulVec_add, Matrix.add_vecMulVec, Matrix.mul_add, Matrix.add_mul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Apply the tactic sequence `ext : 1 <;> simp only [Prod.fst_add, Prod.snd_add, LinearEquiv.map_add, sub_arch_add] <;> abel`. Introduce and unpack `t l ⟨a, c, z, ha, hc, hz, hz1, rfl⟩`. Use `⟨realAd F t • a, realAd F t • c, realAd F t • z, sub_at_smul _ ha, sub_at_smul _ hc, sub_at_smul _ hz, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, Prod.smul_fst, sub_arch_smul, hz1, smul_zero]`. Establish `: Matrix.vecMulVec (incV F H.x) (realAd F t • a) + Matrix.vecMulVec (incM F H.ι *ᵥ (realAd F t • c)) (incV F H'.x) + incM F H.ι * (realAd F t • z) * (incM F H'.ι)ᵀ = realAd F t • (Matrix.vecMulVec (incV F H.x) a + Matrix.vecMulVec (incM F H.ι *ᵥ c) (incV F H'.x) + incM F H.ι * z …`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.smul_sum, Finset.sum_mul, smul_add, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[this, map_smul, Prod.smul_fst, Prod.smul_snd, sub_arch_smul, sub_arch_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lagSetB_isSubspace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W) (M₁ : Model σ X₁ W₁) (H : Plane E n n₁) (H' : Plane E d d₁),
     (0 ∈ lagSetB M M₁ H H') ∧ (∀ l ∈ lagSetB M M₁ H H', ∀ l' ∈ lagSetB M M₁ H H', l + l' ∈ lagSetB M M₁ H H') ∧
     ∀ t : ℝ, ∀ l ∈ lagSetB M M₁ H H', t • l ∈ lagSetB M M₁ H H' := by

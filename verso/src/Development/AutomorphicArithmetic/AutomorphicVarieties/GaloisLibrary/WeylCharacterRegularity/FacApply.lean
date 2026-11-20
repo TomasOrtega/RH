@@ -18,10 +18,16 @@ def fac (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) : GL (Fin a) (Cinf E) →*
       Matrix.mul_smul, smul_smul, mul_comm]
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fac_apply (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) (y : GL (Fin a) (Cinf E)) (i j : Fin P.d) :
     fac P N τ y i j = (coord τ y.val.det)⁻¹ ^ N * P.mat (y.val.map (coord τ)) i j := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨p, hp⟩ := P.poly i j have h1 : ∀ q : MvPolynomial (Fin a × Fin a) ℂ, (fun y : GL (Fin a) (Cinf E) => MvPolynomial.eval (fun ab => coord τ (y.val ab.1 ab.2)) q) ∈ regFun E a := fun q => by induction q using MvPolynomial.induction_on with | C c => simp only [MvPolynomial …`.
+-/
 theorem isReg_fac (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) : IsReg (fac P N τ) := fun i j => by
   obtain ⟨p, hp⟩ := P.poly i j
   have h1 : ∀ q : MvPolynomial (Fin a × Fin a) ℂ, (fun y : GL (Fin a) (Cinf E) =>
@@ -39,6 +45,13 @@ theorem isReg_fac (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) : IsReg (fac P N
   funext y
   simp [fac_apply, hp]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `P.poly i j`. Establish `e : P.coef i j = fun x => MvPolynomial.eval (fun ab : Fin a × Fin a => x ab.1 ab.2) p` using `funext fun x => hp _`. Rewrite using `[e]`. Use `clear e hp`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+
+Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p n hp`. Simplify using `only [map_mul, MvPolynomial.eval_X]`.
+
+Conclude with `hp.mul (by fun_prop : Differentiable ℂ fun x : Fin a → Fin a → ℂ => x n.1 n.2)`.
+-/
 theorem diff_coef (P : Weyl.Pre a) (i j : Fin P.d) : Differentiable ℂ (P.coef i j) := by
   obtain ⟨p, hp⟩ := P.poly i j
   have e : P.coef i j = fun x => MvPolynomial.eval (fun ab : Fin a × Fin a => x ab.1 ab.2) p := funext fun x => hp _
@@ -51,6 +64,15 @@ theorem diff_coef (P : Weyl.Pre a) (i j : Fin P.d) : Differentiable ℂ (P.coef 
     simp only [map_mul, MvPolynomial.eval_X]
     exact hp.mul (by fun_prop : Differentiable ℂ fun x : Fin a → Fin a → ℂ => x n.1 n.2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Set `L : Lie E a →L[ℝ] (Fin a → Fin a → ℂ)` to `ContinuousLinearMap.pi fun k => ContinuousLinearMap.pi fun l => (coordL τ).comp ((ContinuousLinearMap.proj l).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin a => Fin a → Cinf E) k))`. Establish `hL : L (oneL E a) = Weyl.oneM a`. Use function extensionality and compare the values at `k l`. Conclude with `congrFun (congrFun (Matrix.map_one (coord τ) (map_zero _) (map_one _)) k) l`.
+
+Establish `h1 : HasFDerivAt (fun x => P.coef i j (L x)) (((fderiv ℂ (P.coef i j) (Weyl.oneM a)).restrictScalars ℝ).comp L) (oneL E a)` using `HasFDerivAt.comp (g := P.coef i j) (oneL E a) (by rw [hL]; exact (diff_coef P i j _).hasFDerivAt.restrictScalars ℝ) L.hasFDerivAt`. Establish `h2` using `(coordL τ).hasFDerivAt.comp (oneL E a) (contDiff_det.differentiable (by simp) (oneL E a)).hasFDerivAt`. Establish `hd : (Matrix.of (oneL E a)).det = 1` using `Matrix.det_one`. Establish `h3` using `((hasDerivAt_inv (x := coordL τ (Matrix.of (oneL E a)).det) (by simp [hd])).pow N).hasFDerivAt.restrictScalars ℝ`. Establish `h4` using `(h3.comp (oneL E a) h2).mul h1`.
+
+Establish `h5` using `h4.congr_of_eventuallyEq (extGL_eventuallyEq (f := fun y => fac P N τ y i j) (fun y => rfl) (x := oneL E a) isUnit_one)`. Rewrite using `[dOf, Matrix.of_apply, h5.fderiv]`. Establish `h6 : P.coef i j (Weyl.oneM a) = (1 : Matrix _ _ ℂ) i j` using `congrFun (congrFun (map_one P.mat) i) j`. Establish `h7 : P.D ((Matrix.of X).map (coord τ)) i j = fderiv ℂ (P.coef i j) (Weyl.oneM a) (L X)` using `rfl`. Simplify using `[hd, hL, h6, h7, fderiv_det_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dOf_fac (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) (X : Lie E a) :
     dOf (fac P N τ) X = P.D ((Matrix.of X).map (coord τ)) - ((N : ℂ) * coord τ (Matrix.of X).trace) • 1 := by
   ext i j
@@ -77,6 +99,13 @@ theorem dOf_fac (P : Weyl.Pre a) (N : ℕ) (τ : E →+* ℂ) (X : Lie E a) :
   ring
 
 open Classical in
+/- English proof (translation)
+Establish `h1 : ∀ x : Cinf E, dOf (fac P N τ') (toL (Matrix.single i j x)) = coord τ' x • (P.E i j + (if i = j then algebraMap ℂ _ (-(N : ℂ)) else 0))` using `fun x => by`. Establish `e0 : Matrix.of (toL (Matrix.single i j x)) = Matrix.single i j x` using `rfl`. Establish `e : (Matrix.single i j x).map (coord τ') = coord τ' x • Matrix.single i j 1`. Use extensionality with `k l`. Simplify using `[Matrix.single_apply, apply_ite (coord τ')]`.
+
+Rewrite using `[dOf_fac, e0, e, map_smul, Weyl.Pre.E, smul_add, sub_eq_add_neg]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Algebra.algebraMap_eq_smul_one, smul_smul, mul_comm]`.
+
+Simplify using `[h]`. Rewrite using `[eOf, h1, h1, smul_smul, ← sub_smul, smul_smul, coord_hol]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem eOf_fac [IsTotallyComplex E] (P : Weyl.Pre a) (N : ℕ) (τ' τ : E →+* ℂ) (i j : Fin a) :
     eOf (fac P N τ') τ i j =
       if τ' = τ then P.E i j + (if i = j then algebraMap ℂ _ (-(N : ℂ)) else 0) else 0 := by

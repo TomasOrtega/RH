@@ -8,6 +8,9 @@ namespace Formalism.CohomologicalDescent.LR
 
 open Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ω, rfl⟩`. Use `⟨applyWord ℤ (liftWord p ω) (hw ℤ le_rfl (LD.blockWt p q w lam2)), Submodule.subset_span ⟨liftWord p ω, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[lrc_intQ_apply, ← lclosedeq_applyWord_map, lclosedeq_hw_map]`.
+-/
 theorem lri_LevZ_le (p q w : ℕ) (lam2 : Fin q → ℕ) :
     LevZ p q w lam2 ≤ (weyl ℤ (p + q) (p + q) le_rfl (LD.blockWt p q w lam2)).map (intQ (p + q) (p + q)) := by
   refine Submodule.span_le.mpr ?_
@@ -15,10 +18,16 @@ theorem lri_LevZ_le (p q w : ℕ) (lam2 : Fin q → ℕ) :
   refine ⟨applyWord ℤ (liftWord p ω) (hw ℤ le_rfl (LD.blockWt p q w lam2)), Submodule.subset_span ⟨liftWord p ω, rfl⟩, ?_⟩
   rw [lrc_intQ_apply, ← lclosedeq_applyWord_map, lclosedeq_hw_map]
 
+/- English proof (translation)
+The claim follows from `lri_LevZ_le p q w lam2 hu`.
+-/
 theorem MW_le_MV (p q w : ℕ) (lam2 : Fin q → ℕ) (u : (rationalBlockModuleSetting p q w lam2).W) (hu : u ∈ MW p q w lam2) :
     (u : VQ p q w lam2) ∈ MV p q w lam2 :=
   lri_LevZ_le p q w lam2 hu
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply, EV_coe, ih, pow_succ', Module.End.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem lri_EV_pow_coe (p q w : ℕ) (lam2 : Fin q → ℕ) (a b : Fin p ⊕ Fin q) (k : ℕ) (x : VQ p q w lam2) :
     ((((EV p q w lam2 a b) ^ k) x : VQ p q w lam2) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) =
       ((der (p + q) (p + q) (idx p q a) (idx p q b) : Module.End ℚ _) ^ k) (x : MvPolynomial _ ℚ) := by
@@ -28,6 +37,13 @@ theorem lri_EV_pow_coe (p q w : ℕ) (lam2 : Fin q → ℕ) (a b : Fin p ⊕ Fin
     rw [pow_succ', Module.End.mul_apply, EV_coe, ih, pow_succ', Module.End.mul_apply]
     rfl
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_MV]`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `hne : Fin.natAdd p v.1 ≠ Fin.castAdd q v.2`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`.
+
+Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at h'`. Use `v.2.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e : (((((k.factorial : ℚ)⁻¹) • (((rationalBlockModuleSetting p q w lam2).f v) ^ k) x : VQ p q w lam2)) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = rowDiv ℚ (Fin.natAdd p v.1) (Fin.castAdd q v.2) k (x : MvPolynomial _ ℚ)`. Rewrite using `[der_pow _ _ hne, Submodule.coe_smul]`.
+
+Use `congr 1`. Conclude with `lri_EV_pow_coe p q w lam2 (Sum.inr v.1) (Sum.inl v.2) k x`. Rewrite using `[e, ← hyx, lrc_intQ_apply, lclosedeq_rowDiv_map]`. Conclude with `⟨_, weylRowDivStable ℤ _ _ le_rfl _ _ _ k y hy, rfl⟩`.
+-/
 theorem lri_hL (p q w : ℕ) (lam2 : Fin q → ℕ) (v : Fin q × Fin p) (k : ℕ) (x : VQ p q w lam2)
     (hx : x ∈ MV p q w lam2) :
     ((k.factorial : ℚ)⁻¹) • (((rationalBlockModuleSetting p q w lam2).f v) ^ k) x ∈ MV p q w lam2 := by
@@ -48,10 +64,20 @@ theorem lri_hL (p q w : ℕ) (lam2 : Fin q → ℕ) (v : Fin q × Fin p) (k : �
   rw [e, ← hyx, lrc_intQ_apply, lclosedeq_rowDiv_map]
   exact ⟨_, weylRowDivStable ℤ _ _ le_rfl _ _ _ k y hy, rfl⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem lri_coe_zsmul (p q w : ℕ) (lam2 : Fin q → ℕ) (m : ℤ) (u : (rationalBlockModuleSetting p q w lam2).W) :
     ((m • u : (rationalBlockModuleSetting p q w lam2).W) : VQ p q w lam2) = m • (u : VQ p q w lam2) := by
   simp
 
+/- English proof (translation)
+Use `iSup_le fun n => Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨m, u, hu, rfl⟩`. Take `⟨m₀, hm₀, hmu⟩` from `(mem_locSpan l hl _ u).1 hu`. Establish `h1` using `MW_le_MV p q w lam2 _ hmu`. Rewrite `h1` using `[lri_coe_zsmul]`.
+
+Establish `h2` using `Fs_div_mem (rationalBlockModuleSetting p q w lam2) (MV p q w lam2) (lri_hL p q w lam2) m _ h1`. Use `⟨m₀, hm₀, ?_⟩` and prove the remaining obligations. Establish `e : ((Symmetrization.mfact m : ℚ)⁻¹) • (rationalBlockModuleSetting p q w lam2).Fs m (m₀ • (u : VQ p q w lam2)) = m₀ • (((Symmetrization.mfact m : ℚ)⁻¹) • (rationalBlockModuleSetting p q w lam2).Fs m (u : VQ p q w lam2))`. Rewrite using `[map_zsmul, smul_comm]`. Rewrite using `[← e]`.
+
+Conclude with `h2`.
+-/
 theorem deltaAll_le (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ) :
     DeltaAll (rationalBlockModuleSetting p q w lam2) (DelLR l hl p q w lam2) ≤ locSpan l hl (MV p q w lam2) := by
   refine iSup_le fun n => Submodule.span_le.mpr ?_
@@ -67,15 +93,30 @@ theorem deltaAll_le (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ
   rw [← e]
   exact h2
 
+/- English proof (translation)
+Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`.
+-/
 theorem lri_intQ_zsmul (r : ℕ) (z : ℤ) (x : MvPolynomial (Fin r × Fin r) ℤ) :
     intQ r r (z • x) = (z : ℚ) • intQ r r x := by
   rw [map_zsmul, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Introduce `x y h`. Rewrite `h` using `[lrc_intQ_apply, lrc_intQ_apply]`. Conclude with `MvPolynomial.map_injective _ (RingHom.injective_int (Int.castRingHom ℚ)) h`.
+-/
 theorem lri_intQ_inj (r : ℕ) : Function.Injective (intQ r r) := by
   intro x y h
   rw [lrc_intQ_apply, lrc_intQ_apply] at h
   exact MvPolynomial.map_injective _ (RingHom.injective_int (Int.castRingHom ℚ)) h
 
+/- English proof (translation)
+Establish `hanti` using `LD.ld_blockWt_anti p q w lam2 ha hb`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Introduce `y hy`. Take `⟨m, hm, hmy⟩` from `(mem_locSpan l hl _ y).1 (deltaAll_le l hl p q w lam2 hy)`. Rewrite `hmy` using `[mem_MV]`.
+
+Take `⟨y', hy', hy'e⟩` from `hmy`. Take `⟨z, hz⟩` from `fock_int (p + q) _ hanti x hx y' hy'`. Rewrite using `[mem_one_iff, zl_mem_iff hl]`. Use `⟨m, hm, z, ?_⟩` and prove the remaining obligations. Establish `hc` using `(hw_norm_pos (LD.blockWt p q w lam2)).ne'`.
+
+Establish `e1 : (m : ℚ) * formB p q w lam2 ⟨intQ _ _ x, hx'⟩ y = formB p q w lam2 ⟨intQ _ _ x, hx'⟩ (m • y)`. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Rewrite using `[e1, formB_apply]`. Establish `e2 : (((m • y : VQ p q w lam2)) : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) = intQ _ _ y'`. Rewrite using `[hy'e]`.
+
+Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `fockQ (intQ (p + q) (p + q) x) (intQ (p + q) (p + q) y') / _ = _`. Rewrite using `[hz, mul_div_assoc, div_self hc, mul_one]`.
+-/
 theorem mem_dual (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w)
     (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ) (hx : x ∈ dualWeyl ℤ (p + q) (p + q) (LD.blockWt p q w lam2))
     (hx' : intQ _ _ x ∈ dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)) :
@@ -100,6 +141,13 @@ theorem mem_dual (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ) (
   change fockQ (intQ (p + q) (p + q) x) (intQ (p + q) (p + q) y') / _ = _
   rw [hz, mul_div_assoc, div_self hc, mul_one]
 
+/- English proof (translation)
+Take `⟨m, hm, hmv⟩` from `(mem_locSpan l hl _ _).1 (deltaAll_le l hl p q w lam2 h)`. Rewrite `hmv` using `[mem_MV]`. Take `⟨y, hy, hye⟩` from `hmv`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e : intQ _ _ ((m * (l : ℤ) ^ E) • x) = intQ _ _ y`.
+
+Rewrite using `[hye, lri_intQ_zsmul]`. Simplify using `only [Submodule.coe_smul_of_tower, lrc_smul_def]`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ m, smul_smul]`. Use `congr 1`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[lri_intQ_inj _ e]`. Conclude with `hy`.
+-/
 theorem concl (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ)
     (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ)
     (hx' : intQ _ _ x ∈ dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)) (E : ℕ)
@@ -120,6 +168,11 @@ theorem concl (l : ℕ) (hl : l.Prime) (p q w : ℕ) (lam2 : Fin q → ℕ)
   rw [lri_intQ_inj _ e]
   exact hy
 
+/- English proof (translation)
+Use `(real_weight p q w lam2 _ μ).1 ?_` and prove the remaining obligations. Introduce `d hd`. Apply `hμ` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `coeff d (intQ _ _ x) = 0`. Rewrite using `[lrc_intQ_apply, coeff_map, h0, map_zero]`.
+-/
 theorem wt_of_hom (p q w : ℕ) (lam2 : Fin q → ℕ) (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℤ)
     (hx' : intQ _ _ x ∈ dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)) (μ : Fin (p + q) → ℕ)
     (hμ : IsWeightedHomogeneous (rowW (p + q) (p + q)) x μ) :
@@ -132,6 +185,11 @@ theorem wt_of_hom (p q w : ℕ) (lam2 : Fin q → ℕ) (x : MvPolynomial (Fin (p
   change coeff d (intQ _ _ x) = 0
   rw [lrc_intQ_apply, coeff_map, h0, map_zero]
 
+/- English proof (translation)
+Use `show 0 ≤ ∑ a, ξ (idx p q a) * ((Pi.single (Sum.inl α) 1 - Pi.single (Sum.inr b) 1 : Fin p ⊕ Fin q → ℤ) a)`. Simplify using `only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `sub_nonneg.mpr (hξ ?_)` and prove the remaining obligations. Use `show Fin.castAdd q α ≤ Fin.natAdd p b`. Rewrite using `[Fin.le_def]`.
+
+Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dominant_xi {p q : ℕ} (ξ : Fin (p + q) → ℤ) (hξ : Antitone ξ) (α : Fin p) (b : Fin q) :
     0 ≤ xiOf ξ (Pi.single (Sum.inl α) 1 - Pi.single (Sum.inr b) 1) := by
   show 0 ≤ ∑ a, ξ (idx p q a) * ((Pi.single (Sum.inl α) 1 - Pi.single (Sum.inr b) 1 : Fin p ⊕ Fin q → ℤ) a)

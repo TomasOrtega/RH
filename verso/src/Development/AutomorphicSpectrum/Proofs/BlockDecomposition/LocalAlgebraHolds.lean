@@ -17,6 +17,11 @@ section Generic
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `key : ∀ q : G ⧸ K', F (g * q.out) = F ((g • q : G ⧸ K').out)`. Introduce `q`. Establish `hq : (g • q : G ⧸ K') = ((g * q.out : G) : G ⧸ K')` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K' (g * q.out)`.
+
+Rewrite using `[hq, hh, hr _ h.2]`. Establish `e : ∑ᶠ q : G ⧸ K', F ((g • q : G ⧸ K').out) = ∑ᶠ q : G ⧸ K', F q.out` using `finsum_comp_equiv (MulAction.toPerm g : Equiv.Perm (G ⧸ K')) (f := fun q => F q.out)`. Rewrite using `[finsum_congr key, e]`.
+-/
 theorem finsum_left {M : Type} [AddCommMonoid M] (K' : Subgroup G) (F : G → M)
     (hr : ∀ k ∈ K', ∀ x, F (x * k) = F x) (g : G) :
     ∑ᶠ q : G ⧸ K', F (g * q.out) = ∑ᶠ q : G ⧸ K', F q.out := by
@@ -31,6 +36,27 @@ theorem finsum_left {M : Type} [AddCommMonoid M] (K' : Subgroup G) (F : G → M)
     finsum_comp_equiv (MulAction.toPerm g : Equiv.Perm (G ⧸ K')) (f := fun q => F q.out)
   rw [finsum_congr key, e]
 
+/- English proof (translation)
+Use `set S : Subgroup G := rStab u ⊓ K with hS`. Establish `hKS : K' ≤ S` using `fun k hk => Subgroup.mem_inf.mpr ⟨fun x => hr k hk x, hle hk⟩`. Establish `hSK : S ≤ K` using `inf_le_right`. Establish `hmul : K'.relIndex S * S.relIndex K = K'.relIndex K` using `Subgroup.relIndex_mul_relIndex K' S K hKS hSK`. Establish `h1 : K'.relIndex S ≠ 0` using `fun h => hidx (by rw [← hmul, h, zero_mul])`.
+
+Establish `h2 : S.relIndex K ≠ 0` using `fun h => hidx (by rw [← hmul, h, mul_zero])`. Establish `hrS : ∀ s ∈ S, ∀ x, u (x * s) = u x` using `fun s hs x => (Subgroup.mem_inf.mp hs).1 x`. Set `e` to `Subgroup.quotientEquivProdOfLE (α := G) hKS`. Establish `he : ∀ q : G ⧸ K', u q.out = u ((e q).1).out`. Introduce `q`.
+
+Establish `hq : (e q).1 = ((q.out : G) : G ⧸ S)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[hq]`. Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul S q.out`. Rewrite using `[hs, hrS _ s.2]`.
+
+Use `haveI : Finite (S ⧸ K'.subgroupOf S) := Nat.finite_of_card_ne_zero h1`. Use `letI : Fintype (S ⧸ K'.subgroupOf S) := Fintype.ofFinite _`. Establish `h3 : ∑ᶠ q : G ⧸ K', u ((e q).1).out = ∑ᶠ x : (G ⧸ S) × (S ⧸ K'.subgroupOf S), u x.1.out` using `finsum_comp_equiv e (f := fun x => u x.1.out)`. Establish `hfinP : (Function.support fun x : (G ⧸ S) × (S ⧸ K'.subgroupOf S) => u x.1.out).Finite`. Use `(hfin.image e).subset ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Use `⟨e.symm x, ?_, by simp⟩` and prove the remaining obligations. Use `show u (e.symm x).out ≠ 0`. Rewrite using `[he, Equiv.apply_symm_apply]`. Conclude with `hx`.
+
+Establish `hfinA : {p : G ⧸ S | u p.out ≠ 0}.Finite`. Use `(hfinP.image Prod.fst).subset ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `⟨(p, ((1 : S) : S ⧸ K'.subgroupOf S)), hp, rfl⟩`. Establish `hsub1 : (Function.support fun x : (G ⧸ S) × (S ⧸ K'.subgroupOf S) => u x.1.out) ⊆ ↑(hfinA.toFinset ×ˢ (Finset.univ : Finset (S ⧸ K'.subgroupOf S)))`.
+
+Introduce `x hx`. Simplify using `only [Finset.coe_product, Set.Finite.coe_toFinset, Finset.coe_univ, Set.mem_prod, Set.mem_univ, and_true, Set.mem_ofPred_eq]`. Conclude with `hx`. Establish `hsub2 : (Function.support fun p : G ⧸ S => u p.out) ⊆ ↑hfinA.toFinset`. Introduce `p hp`.
+
+Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `hp`. Establish `hsum : ∑ᶠ q : G ⧸ K', u q.out = ((K'.relIndex S : ℕ) : ℂ) * ∑ᶠ p : G ⧸ S, u p.out`. Rewrite using `[finsum_congr he, h3, finsum_eq_sum_of_support_subset _ hsub1, finsum_eq_sum_of_support_subset _ hsub2, Finset.sum_product]`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Rewrite using `[← Finset.mul_sum]`. Use `congr 2`. Rewrite using `[Fintype.card_eq_nat_card]`. Both sides reduce to the same expression. Establish `hdef : hint K u = ((S.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ p : G ⧸ S, u p.out` using `rfl`.
+
+Establish `ha : ((K'.relIndex S : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr h1`. Rewrite using `[hdef, hsum, ← hmul, Nat.cast_mul, mul_inv, mul_comm ((K'.relIndex S : ℂ))⁻¹ _, mul_assoc, ← mul_assoc ((K'.relIndex S : ℂ))⁻¹, inv_mul_cancel₀ ha, one_mul]`.
+-/
 theorem hint_eq (K K' : Subgroup G) (hle : K' ≤ K) (hidx : K'.relIndex K ≠ 0) (u : G → ℂ)
     (hr : ∀ k ∈ K', ∀ x, u (x * k) = u x) (hfin : {q : G ⧸ K' | u q.out ≠ 0}.Finite) :
     hint K u = ((K'.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : G ⧸ K', u q.out := by
@@ -92,6 +118,9 @@ theorem hint_eq (K K' : Subgroup G) (hle : K' ≤ K) (hidx : K'.relIndex K ≠ 0
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `hs` using `GlobalTheory.TwTrLin.term_fin ρ K' f LinearMap.id hfin`. Establish `key : (∑ᶠ q : G ⧸ K', f q.out • ρ q.out ∘ₗ (LinearMap.id : V →ₗ[ℂ] V)) v = ∑ᶠ q : G ⧸ K', f q.out • ρ q.out v`. Use `map_finsum (LinearMap.applyₗ (R := ℂ) (M := V) (M₂ := V) v) hs` as an intermediate fact. Simplify using `using this`. Simplify using `only [levOp, LinearMap.smul_apply, key]`.
+-/
 theorem levOp_apply (ρ : Representation ℂ G V) (K K' : Subgroup G) (f : G → ℂ)
     (hfin : {q : G ⧸ K' | f q.out ≠ 0}.Finite) (v : V) :
     levOp ρ K K' f LinearMap.id v = ((K'.relIndex K : ℕ) : ℂ)⁻¹ • ∑ᶠ q : G ⧸ K', f q.out • ρ q.out v := by
@@ -104,11 +133,17 @@ theorem levOp_apply (ρ : Representation ℂ G V) (K K' : Subgroup G) (f : G →
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Establish `h' : HasCompactSupport (fun x => f (g * x))` using `hf.comp_homeomorph (Homeomorph.mulLeft g)`. Conclude with `GlobalTheory.TwTrLin.finite_out_support ho h'`.
+-/
 theorem fin_translate {K' : Subgroup G} (ho : IsOpen (K' : Set G)) {f : G → ℂ} (hf : HasCompactSupport f) (g : G) :
     {q : G ⧸ K' | f (g * q.out) ≠ 0}.Finite := by
   have h' : HasCompactSupport (fun x => f (g * x)) := hf.comp_homeomorph (Homeomorph.mulLeft g)
   exact GlobalTheory.TwTrLin.finite_out_support ho h'
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.IsHecke at *`. Use `⟨h₁.1.add h₂.1, fun k hk x => ?_⟩` and prove the remaining obligations. Take `⟨a1, b1⟩` from `h₁.2 k hk x`. Take `⟨a2, b2⟩` from `h₂.2 k hk x`. Simplify using `only [Pi.add_apply, a1, b1, a2, b2, and_self]`.
+-/
 theorem isHecke_add {K' : Subgroup G} {f₁ f₂ : G → ℂ} (h₁ : IsHecke K' f₁) (h₂ : IsHecke K' f₂) :
     IsHecke K' (f₁ + f₂) := by
   unfold GlobalTheory.BCT.IsHecke at *
@@ -117,6 +152,9 @@ theorem isHecke_add {K' : Subgroup G} {f₁ f₂ : G → ℂ} (h₁ : IsHecke K'
   obtain ⟨a2, b2⟩ := h₂.2 k hk x
   simp only [Pi.add_apply, a1, b1, a2, b2, and_self]
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.IsHecke at *`. Use `⟨h.1.mono (Function.support_const_smul_subset z f), fun k hk x => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `h.2 k hk x`. Simplify using `only [Pi.smul_apply, a, b, and_self]`.
+-/
 theorem isHecke_smul {K' : Subgroup G} {f : G → ℂ} (z : ℂ) (h : IsHecke K' f) : IsHecke K' (z • f) := by
   unfold GlobalTheory.BCT.IsHecke at *
   refine ⟨h.1.mono (Function.support_const_smul_subset z f), fun k hk x => ?_⟩
@@ -130,6 +168,11 @@ section Conv
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `fin1` using `GlobalTheory.TwTrLin.finite_out_support ho h₁.1`. Use `GlobalTheory.CompanionTheory.LocHecke.hint_eq K K' hle hidx _ ?_ (fin1.subset ?_)` and prove the remaining obligations. Apply the tactic sequence `intro k hk z try dsimp only`. Rewrite using `[(h₁.2 k hk z).2, _root_.mul_inv_rev, mul_assoc, (h₂.2 k⁻¹ (K'.inv_mem hk) _).1]`. Introduce `q hq h0`.
+
+Apply `hq` to reduce the goal to its premises. Simplify using `[h0]`.
+-/
 theorem conv_formula {K K' : Subgroup G} (ho : IsOpen (K' : Set G)) (hle : K' ≤ K) (hidx : K'.relIndex K ≠ 0)
     {f₁ f₂ : G → ℂ} (h₁ : IsHecke K' f₁) (h₂ : IsHecke K' f₂) (y : G) :
     hint K (fun z => f₁ z * f₂ (z⁻¹ * y)) =
@@ -143,6 +186,21 @@ theorem conv_formula {K K' : Subgroup G} (ho : IsOpen (K' : Set G)) (hle : K' �
     apply hq
     simp [h0]
 
+/- English proof (translation)
+Establish `hconv : ∀ y, hint K (fun z => f₁ z * f₂ (z⁻¹ * y)) = ((K'.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : G ⧸ K', f₁ q.out * f₂ (q.out⁻¹ * y)` using `fun y => GlobalTheory.CompanionTheory.LocHecke.conv_formula ho hle hidx h₁ h₂ y`. Establish `fin1` using `GlobalTheory.TwTrLin.finite_out_support ho h₁.1`. Unfold `GlobalTheory.BCT.IsHecke at *`. Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (K := ⋃ q ∈ fin1.toFinset, (fun x => q.out * x) '' tsupport f₂) (fin1.toFinset.isCompact_biUnion fun q _ => IsCompact.image h₂.1 (by fun_prop)) ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Apply the tactic sequence `try dsimp only`. Rewrite using `[hconv, finsum_eq_zero_of_forall_eq_zero, mul_zero]`. Introduce `q`. Distinguish the cases in `hq : f₁ q.out = 0`.
+
+Rewrite using `[hq, zero_mul]`. Establish `h0 : f₂ (q.out⁻¹ * y) = 0`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hmem`. Apply `hy` to reduce the goal to its premises.
+
+Conclude with `Set.mem_iUnion₂.mpr ⟨q, (Set.Finite.mem_toFinset fin1).mpr hq, ⟨q.out⁻¹ * y, hmem, by simp⟩⟩`. Rewrite using `[h0, mul_zero]`. Simplify using `only`. Rewrite using `[hconv, hconv]`. Use `congr 1`.
+
+Establish `hΦ : ∀ k' ∈ K', ∀ z, f₁ (z * k') * f₂ ((z * k')⁻¹ * (k * x)) = f₁ z * f₂ (z⁻¹ * (k * x))`. Introduce `k' hk' z`. Rewrite using `[(h₁.2 k' hk' z).2, _root_.mul_inv_rev, mul_assoc, (h₂.2 k'⁻¹ (K'.inv_mem hk') _).1]`. Establish `hl : ∑ᶠ q : G ⧸ K', f₁ (k * q.out) * f₂ ((k * q.out)⁻¹ * (k * x)) = ∑ᶠ q : G ⧸ K', f₁ q.out * f₂ (q.out⁻¹ * (k * x))` using `GlobalTheory.CompanionTheory.LocHecke.finsum_left K' (fun z => f₁ z * f₂ (z⁻¹ * (k * x))) hΦ k`. Rewrite using `[← hl]`.
+
+Apply `finsum_congr` to reduce the goal to its premises. Introduce `q`. Rewrite using `[(h₁.2 k hk q.out).1, _root_.mul_inv_rev, mul_assoc, inv_mul_cancel_left]`. Simplify using `only`. Rewrite using `[hconv, hconv]`.
+
+Use `congr 1`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `q`. Rewrite using `[← mul_assoc, (h₂.2 k hk _).2]`.
+-/
 theorem isHecke_conv {K K' : Subgroup G} (ho : IsOpen (K' : Set G)) (hle : K' ≤ K) (hidx : K'.relIndex K ≠ 0)
     {f₁ f₂ : G → ℂ} (h₁ : IsHecke K' f₁) (h₂ : IsHecke K' f₂) :
     IsHecke K' (fun y => hint K fun z => f₁ z * f₂ (z⁻¹ * y)) := by
@@ -188,6 +246,11 @@ theorem isHecke_conv {K K' : Subgroup G} (ho : IsOpen (K' : Set G)) (hle : K' �
     intro q
     rw [← mul_assoc, (h₂.2 k hk _).2]
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.IsHecke at *`. Take `⟨hc, hinv⟩` from `h`. Use `⟨?_, fun k hk x => ?_⟩` and prove the remaining obligations. Conclude with `(hc.comp_homeomorph (Homeomorph.inv G)).comp_left (g := starRingEnd ℂ) (map_zero _)`. Establish `hk' : k⁻¹ ∈ K'` using `K'.inv_mem hk`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[_root_.mul_inv_rev, (hinv _ hk' _).2]`. Simplify using `only`. Rewrite using `[_root_.mul_inv_rev, (hinv _ hk' _).1]`.
+-/
 theorem isHecke_star {K' : Subgroup G} {f : G → ℂ} (h : IsHecke K' f) :
     IsHecke K' (fun y => starRingEnd ℂ (f y⁻¹)) := by
   unfold GlobalTheory.BCT.IsHecke at *
@@ -201,6 +264,37 @@ theorem isHecke_star {K' : Subgroup G} {f : G → ℂ} (h : IsHecke K' f) :
     · dsimp only
       rw [_root_.mul_inv_rev, (hinv _ hk' _).1]
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.CompanionTheory.LocHecke.isHecke_conv ho hle hidx h₁ h₂`. Establish `fin1` using `GlobalTheory.TwTrLin.finite_out_support ho h₁.1`. Establish `fin2` using `GlobalTheory.TwTrLin.finite_out_support ho h₂.1`. Establish `finF` using `GlobalTheory.TwTrLin.finite_out_support ho hF.1`. Establish `hfix : ∀ k ∈ K', ρ k v = v` using `(GlobalTheory.TwTrLin.mem_fixed_iff ρ K' v).mp hv`.
+
+Establish `stepC : ∀ q : G ⧸ K', ∑ᶠ p : G ⧸ K', f₂ (q.out⁻¹ * p.out) • ρ p.out v = ρ q.out (∑ᶠ r : G ⧸ K', f₂ r.out • ρ r.out v)`. Introduce `q`. Establish `hsupp : (Function.support fun r : G ⧸ K' => f₂ r.out • ρ r.out v).Finite` using `fin2.subset (fun r hr h0 => hr (by simp [h0]))`. Rewrite using `[map_finsum (ρ q.out) hsupp]`. Establish `hrΦ : ∀ k ∈ K', ∀ x : G, f₂ (q.out⁻¹ * (x * k)) • ρ (x * k) v = f₂ (q.out⁻¹ * x) • ρ x v`.
+
+Introduce `k hk x`. Rewrite using `[← mul_assoc, (h₂.2 k hk _).2, map_mul]`. Use `show _ • ρ x (ρ k v) = _`. Rewrite using `[hfix k hk]`. Establish `hl : ∑ᶠ r : G ⧸ K', f₂ (q.out⁻¹ * (q.out * r.out)) • ρ (q.out * r.out) v = ∑ᶠ p : G ⧸ K', f₂ (q.out⁻¹ * p.out) • ρ p.out v` using `GlobalTheory.CompanionTheory.LocHecke.finsum_left K' (fun x => f₂ (q.out⁻¹ * x) • ρ x v) hrΦ q.out`.
+
+Rewrite using `[← hl]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `r`. Rewrite using `[inv_mul_cancel_left, map_mul, map_smul]`. Both sides reduce to the same expression.
+
+Establish `hconv : ∀ y, hint K (fun z => f₁ z * f₂ (z⁻¹ * y)) = ((K'.relIndex K : ℕ) : ℂ)⁻¹ * ∑ᶠ q : G ⧸ K', f₁ q.out * f₂ (q.out⁻¹ * y)` using `fun y => GlobalTheory.CompanionTheory.LocHecke.conv_formula ho hle hidx h₁ h₂ y`. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.levOp_apply ρ K K' _ finF, GlobalTheory.CompanionTheory.LocHecke.levOp_apply ρ K K' _ fin2, GlobalTheory.CompanionTheory.LocHecke.levOp_apply ρ K K' _ fin1]`. Repeatedly rewrite using `[hconv]`. Generalize the expression as in `((K'.relIndex K : ℕ) : ℂ)⁻¹ = c`. Use `congrArg (c • ·) ?_` and prove the remaining obligations.
+
+Use `set S₁ : Finset (G ⧸ K') := fin1.toFinset with hS₁`. Use `set T : Finset (G ⧸ K') := S₁.biUnion (fun q => (GlobalTheory.CompanionTheory.LocHecke.fin_translate ho h₂.1 q.out⁻¹).toFinset) with hT`. Establish `memT : ∀ q ∈ S₁, ∀ p : G ⧸ K', f₂ (q.out⁻¹ * p.out) ≠ 0 → p ∈ T`. Introduce `q hq p hp`. Rewrite using `[hT, Finset.mem_biUnion]`.
+
+Conclude with `⟨q, hq, (Set.Finite.mem_toFinset _).mpr hp⟩`. Establish `hsub : ∀ p : G ⧸ K', (Function.support fun q : G ⧸ K' => f₁ q.out * f₂ (q.out⁻¹ * p.out)) ⊆ ↑S₁`. Introduce `p q hq`. Rewrite using `[hS₁, Set.Finite.coe_toFinset]`. Introduce `h0`.
+
+Conclude with `hq (by simp [h0])`. Establish `hsubT : (Function.support fun p : G ⧸ K' => (c * ∑ q ∈ S₁, f₁ q.out * f₂ (q.out⁻¹ * p.out)) • ρ p.out v) ⊆ ↑T`. Introduce `p hp`. Assume the negation of the conclusion as `hpT`. Apply `hp` to reduce the goal to its premises.
+
+Establish `hz : ∑ q ∈ S₁, f₁ q.out * f₂ (q.out⁻¹ * p.out) = 0`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Establish `hb : f₂ (q.out⁻¹ * p.out) = 0`. Assume the negation of the conclusion as `hb`. Conclude with `hpT (memT q hq p hb)`.
+
+Rewrite using `[hb, mul_zero]`. Simplify using `[hz]`. Establish `hsubT' : ∀ q ∈ S₁, (Function.support fun p : G ⧸ K' => f₂ (q.out⁻¹ * p.out) • ρ p.out v) ⊆ ↑T`. Introduce `q hq p hp`. Assume the negation of the conclusion as `hpT`.
+
+Apply `hp` to reduce the goal to its premises. Establish `hb : f₂ (q.out⁻¹ * p.out) = 0`. Assume the negation of the conclusion as `hb`. Conclude with `hpT (memT q hq p hb)`. Simplify using `[hb]`.
+
+Establish `hsubS : (Function.support fun q : G ⧸ K' => f₁ q.out • ρ q.out (c • ∑ᶠ r : G ⧸ K', f₂ r.out • ρ r.out v)) ⊆ ↑S₁`. Introduce `q hq`. Rewrite using `[hS₁, Set.Finite.coe_toFinset]`. Introduce `h0`. Conclude with `hq (by simp [h0])`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `finsum_congr` to reduce the goal to its premises. Introduce `p`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hsub p)]`. Use `_ = ∑ p ∈ T, (c * ∑ q ∈ S₁, f₁ q.out * f₂ (q.out⁻¹ * p.out)) • ρ p.out v := finsum_eq_sum_of_support_subset _ hsubT`.
+
+Use `_ = ∑ q ∈ S₁, c • f₁ q.out • ∑ p ∈ T, f₂ (q.out⁻¹ * p.out) • ρ p.out v := by`. Simplify using `only [Finset.mul_sum, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`. Use `_ = ∑ q ∈ S₁, c • f₁ q.out • ρ q.out (∑ᶠ r : G ⧸ K', f₂ r.out • ρ r.out v) := by`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Rewrite using `[← finsum_eq_sum_of_support_subset _ (hsubT' q hq), stepC q]`. Use `_ = ∑ q ∈ S₁, f₁ q.out • ρ q.out (c • ∑ᶠ r : G ⧸ K', f₂ r.out • ρ r.out v) := by`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm]`. Use `_ = ∑ᶠ q : G ⧸ K', f₁ q.out • ρ q.out (c • ∑ᶠ r : G ⧸ K', f₂ r.out • ρ r.out v) := (finsum_eq_sum_of_support_subset _ hsubS).symm`.
+-/
 theorem levOp_conv (ρ : Representation ℂ G V) {K K' : Subgroup G} (ho : IsOpen (K' : Set G)) (hle : K' ≤ K)
     (hidx : K'.relIndex K ≠ 0) {f₁ f₂ : G → ℂ} (h₁ : IsHecke K' f₁) (h₂ : IsHecke K' f₂) {v : V}
     (hv : v ∈ fixed ρ K') :
@@ -301,11 +395,17 @@ section Unitary
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwTrLin.levOp_mapsTo σ.ρ (KL n w) K' LinearMap.id f (GlobalTheory.TwTrLin.finite_out_support ho hf.1) (fun k hk x => (hf.2 k hk x).1) (fun k hk x => (hf.2 k hk x).2) (fun _ hv => hv)`.
+-/
 theorem locOp_mapsTo (σ : SmIrr (UL n w)) {K' : Subgroup (UL n w)} (ho : IsOpen (K' : Set (UL n w))) {f : UL n w → ℂ}
     (hf : IsHecke K' f) : ∀ v ∈ fixed σ.ρ K', levOp σ.ρ (KL n w) K' f LinearMap.id v ∈ fixed σ.ρ K' :=
   GlobalTheory.TwTrLin.levOp_mapsTo σ.ρ (KL n w) K' LinearMap.id f (GlobalTheory.TwTrLin.finite_out_support ho hf.1)
     (fun k hk x => (hf.2 k hk x).1) (fun k hk x => (hf.2 k hk x).2) (fun _ hv => hv)
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.BcB.F.Eig.locOp`. Rewrite using `[dif_pos (GlobalTheory.CompanionTheory.LocHecke.locOp_mapsTo σ ho hf)]`. Both sides reduce to the same expression.
+-/
 theorem locOp_val (σ : SmIrr (UL n w)) {K' : Subgroup (UL n w)} (ho : IsOpen (K' : Set (UL n w))) {f : UL n w → ℂ}
     (hf : IsHecke K' f) (v : fixed σ.ρ K') : (locOp σ K' f v).1 = levOp σ.ρ (KL n w) K' f LinearMap.id v.1 := by
   unfold PositivityTheory.Rg.BcB.F.Eig.locOp
@@ -314,6 +414,21 @@ theorem locOp_val (σ : SmIrr (UL n w)) {K' : Subgroup (UL n w)} (ho : IsOpen (K
 
 end Unitary
 
+/- English proof (translation)
+Introduce `E iF iN iC n w σ K' hlev f₁ f₂ h₁ h₂`. Establish `hunit` using `GlobalTheory.TwTrUnit.twTr_unit E n w K' hlev σ`. Take `⟨ho, hle, -⟩` from `hlev`. Establish `hidx : K'.relIndex (KL n w) ≠ 0` using `hunit.2.1`. Establish `hc : IsHecke K' (lconv f₁ f₂)` using `GlobalTheory.CompanionTheory.LocHecke.isHecke_conv ho hle hidx h₁ h₂`.
+
+Establish `hsum : ∀ z : ℂ, IsHecke K' (f₁ + z • f₂)` using `fun z => GlobalTheory.CompanionTheory.LocHecke.isHecke_add h₁ (GlobalTheory.CompanionTheory.LocHecke.isHecke_smul z h₂)`. Establish `hind : ((K' : Set (UL n w)).indicator fun _ => ((K'.relIndex (KL n w) : ℕ) : ℂ)) = ((K'.relIndex (KL n w) : ℕ) : ℂ) • (K' : Set (UL n w)).indicator 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (K' : Set (UL n w))`. Simplify using `[Set.indicator_of_mem hx]`.
+
+Simplify using `[Set.indicator_of_notMem hx]`. Establish `hI : IsHecke K' ((K' : Set (UL n w)).indicator fun _ => ((K'.relIndex (KL n w) : ℕ) : ℂ))`. Rewrite using `[hind]`. Conclude with `GlobalTheory.CompanionTheory.LocHecke.isHecke_smul _ hunit.1`. Use `⟨?_, fun v => GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho h₁ v, hc, GlobalTheory.CompanionTheory.LocHecke.isHecke_star h₁, ?_, ?_, hI, ?_⟩` and prove the remaining obligations.
+
+Unfold `GlobalTheory.BCT.twTr PositivityTheory.Rg.BcB.F.Eig.locOp split_ifs with h`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use `LinearMap.ext fun v => Subtype.ext ?_ show (locOp σ K' (lconv f₁ f₂) v).1 = (locOp σ K' f₁ (locOp σ K' f₂ v)).1` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho hc, GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho h₁, GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho h₂]`.
+
+Conclude with `GlobalTheory.CompanionTheory.LocHecke.levOp_conv σ.ρ ho hle hidx h₁ h₂ v.2`. Introduce `z`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Use `show (locOp σ K' (f₁ + z • f₂) v).1 = (locOp σ K' f₁ v).1 + z • (locOp σ K' f₂ v).1`. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho (hsum z), GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho h₁, GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho h₂, GlobalTheory.TwTrLin.levOp_add σ.ρ (KL n w) K' f₁ (z • f₂) LinearMap.id (GlobalTheory.TwTrLin.finite_o …`.
+
+Both sides reduce to the same expression. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.locOp_val σ ho hI, hind, GlobalTheory.TwTrLin.levOp_smul_fun]`. Take `⟨x₀, hx₀, hx⟩` from `GlobalTheory.TwTrLin.levOp_unit σ.ρ (KL n w) K'`. Rewrite using `[hx]`.
+
+Establish `hv : σ.ρ x₀ v.1 = v.1` using `(GlobalTheory.TwTrLin.mem_fixed_iff σ.ρ K' v.1).mp v.2 x₀ hx₀`. Establish `hne : ((K'.relIndex (KL n w) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hidx`. Simplify using `only [LinearMap.smul_apply, hv, smul_smul, mul_inv_cancel₀ hne, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem locAlg : LocAlg := by
   intro E iF iN iC n w σ K' hlev f₁ f₂ h₁ h₂
   have hunit := GlobalTheory.TwTrUnit.twTr_unit E n w K' hlev σ

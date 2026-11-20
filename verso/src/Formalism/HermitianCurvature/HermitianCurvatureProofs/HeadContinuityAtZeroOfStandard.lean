@@ -16,6 +16,11 @@ noncomputable section
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Introduce `ε hε γ hγ hle`. Establish `hle0 : ε ≤ D.ptG (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') P.r γ` using `hle`. Unfold `KB.Pl.V D.vecV`. Use `split_ifs with h h'`. Rewrite using `[Formalism.FourierDecayAlt.P.JCx1.needs.orbJ_cutF]`.
+
+Establish `hG` using `Formalism.FourierDecayAlt.P.ptG_spec P.k P.r p.T.base.z p.T.base.z' γ h'.choose hγ h'.choose_spec.2.1`. Establish `hle' : ε ≤ Gf P.k P.r p.T.base.z p.T.base.z' h'.choose` using `hG ▸ hle0`. Rewrite using `[hχ _ ((one_le_div hε).mpr hle'), Complex.ofReal_one, one_smul]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem vecCutAt_of_one (p : KB.Pl P Wp Wq) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (hχ : ∀ x, 1 ≤ x → χ x = 1) : TBB.VecCutAt p χ F := by
   intro ε hε γ hγ hle
@@ -29,15 +34,30 @@ theorem vecCutAt_of_one (p : KB.Pl P Wp Wq) (χ : ℝ → ℝ) (F : B.Mat P.k P.
   · rfl
   · rfl
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p χ F hχ`. Conclude with `vecCutAt_of_one p χ F hχ.2.2`.
+-/
 theorem vecCutAll : TBB.VecCutAll := by
   intro Wp Wq _ _ _ _ _ _ P p χ F hχ
   exact vecCutAt_of_one p χ F hχ.2.2
 
+/- English proof (translation)
+Unfold `B.hsInner`. Establish `h` using `inner_self_nonneg (𝕜 := ℂ) (x := B.hsVec A)`. Simplify using `using h`.
+-/
 theorem hsInner_self_re_nonneg (A : Wq →L[ℂ] Wp) : 0 ≤ (B.hsInner A A).re := by
   unfold B.hsInner
   have h := inner_self_nonneg (𝕜 := ℂ) (x := B.hsVec A)
   simpa using h
 
+/- English proof (translation)
+Unfold `KB.Pl.RR D.RRplace`. Distinguish the cases in `h1 : D.IsLocPt h i ∧ D.IsLocPt h i`. Rewrite using `[dif_pos h1, dif_neg (by omega)]`. Distinguish the cases in `h2 : i = P.r + 1`. Rewrite using `[if_pos h2]`.
+
+Distinguish the cases in `h3 : w = []`. Rewrite using `[if_pos h3]`. Conclude with `hsInner_self_re_nonneg _`. Rewrite using `[if_neg h3]`. Unfold `Top.topOf`.
+
+Rewrite using `[Complex.re_sum]`. Use `Finset.sum_nonneg fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_nonneg fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_ofReal_mul]`.
+
+Conclude with `mul_nonneg (mul_self_nonneg _) (hsInner_self_re_nonneg _)`. Rewrite using `[if_neg h2]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg h1]`. Simplify using the standard rewrite rules.
+-/
 theorem rr_top_re_nonneg (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (i : ℕ) (w : List C.Letter)
     (h : C.LPt) (hi : P.r < i) : 0 ≤ (p.RR F i w h h).re := by
   unfold KB.Pl.RR D.RRplace
@@ -61,6 +81,13 @@ theorem rr_top_re_nonneg (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ
   · rw [dif_neg h1]
     simp
 
+/- English proof (translation)
+Introduce `i w h hw hN`. Unfold `TBB.Ew TBB.NP`. Rewrite using `[Complex.re_ofReal_mul]`. Apply `mul_nonneg` to reduce the goal to its premises. Apply `div_nonneg (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))` to reduce the goal to its premises.
+
+Unfold `TBB.normC`. Apply `List.prod_nonneg` to reduce the goal to its premises. Introduce `a ha`. Rewrite `ha` using `[List.mem_map]`. Take `⟨l, _, rfl⟩` from `ha`.
+
+Conclude with `hnn _`. Distinguish the cases in `hi : i ≤ P.r`. Conclude with `hform i w h hi hw hN`. Conclude with `rr_top_re_nonneg p F i w h (by omega)`.
+-/
 theorem posAt_of_forms (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (N : ℕ)
     (hnn : ∀ y, 0 ≤ nn y)
     (hform : ∀ (j : ℕ) (w : List C.Letter) (h : C.LPt), j ≤ P.r → TBB.AdmW P p.l0 Y w → w.length ≤ N →
@@ -80,6 +107,13 @@ theorem posAt_of_forms (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r
     · exact hform i w h hi hw hN
     · exact rr_top_re_nonneg p F i w h (by omega)
 
+/- English proof (translation)
+Use `posAt_of_forms p nn F Y N hnn ?_` and prove the remaining obligations. Introduce `j w h hj hw hN`. Establish `hcut : D.cutF p.T.base (fun _ => (1 : ℝ)) F 1 = F`. Use function extensionality and compare the values at `g`. Simplify using `[D.cutF]`.
+
+Unfold `KB.Pl.RR D.RRplace`. Distinguish the cases in `h1 : D.IsLocPt h j ∧ D.IsLocPt h j`. Rewrite using `[dif_pos h1, dif_pos hj]`. Establish `hS'` using `hS 1 one_pos j hj w ⟨hw, hN⟩ h h1.1`. Rewrite `hS'` using `[hcut]`.
+
+Establish `hx` using `(hM ⟨j, by omega⟩ w ⟨hw, hN⟩).2 _ (Submodule.mem_pi.2 fun a _ => hS' a)`. Conclude with `(Complex.le_def.1 hx).1`. Rewrite using `[dif_neg h1]`. Simplify using the standard rewrite rules.
+-/
 theorem posAt_of_module (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ)
     (N : ℕ) (KK : ∀ j : Fin (P.r + 1), Submodule ℂ (B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)))
     (hnn : ∀ y, 0 ≤ nn y)
@@ -101,6 +135,13 @@ theorem posAt_of_module (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.
   · rw [dif_neg h1]
     simp
 
+/- English proof (translation)
+Take `⟨KK, hM, hK⟩` from `Formalism.FourierDecayAlt.P.theorem_P_module_moderate_growth hTP Formalism.FourierDecayAlt.P.radial_module_form Formalism.FourierDecayAlt.P.positive_density_moderate_growth Formalism.FourierDecayAlt.P.level_form_sesquilinear_moderate Wp Wq P p.T p.l0 N (fun w => TBB.AdmW P p.l0 Y …`. Use `posAt_of_forms p nn F Y N hnn ?_` and prove the remaining obligations. Introduce `j w h hj hw hN`. Unfold `KB.Pl.RR D.RRplace`. Distinguish the cases in `h1 : D.IsLocPt h j ∧ D.IsLocPt h j`.
+
+Rewrite using `[dif_pos h1, dif_pos hj]`. Establish `hmem : ∀ a, KB.slv p.T F j hj w h h1.1.2 a ∈ KK ⟨j, by omega⟩`. Introduce `a`. Take `⟨ε, hε, hCk, hCC, hG⟩` from `hslice j hj w hw hN h h1.1 a`. Conclude with `hK ⟨j, by omega⟩ _ ε hε hCC hCk hG`.
+
+Establish `hx` using `(hM ⟨j, by omega⟩ w ⟨hw, hN⟩).2 _ (Submodule.mem_pi.2 fun a _ => hmem a)`. Conclude with `(Complex.le_def.1 hx).1`. Rewrite using `[dif_neg h1]`. Simplify using the standard rewrite rules.
+-/
 theorem posAt_of_thmP (hTP : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Y : Finset ℝ) (N : ℕ) (A : ℝ) (mm : ℕ) (hnn : ∀ y, 0 ≤ nn y) (hA : P5.Auser P N + 1 ≤ A)
     (hmm : P5.mmUser P N ≤ mm)
@@ -135,6 +176,31 @@ theorem posAt_of_thmP (hTP : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → �
   · rw [dif_neg h1]
     simp
 
+/- English proof (translation)
+Introduce `j hj h hh w hw hN`. Take `⟨φ, hφc, hφi, hφ, -⟩` from `hPS hTP Wp Wq P p F j hj w h h hh hh Cb hCb hF hw.1`. Use `set A := C.nAux P.k P.r 0 (fun _ _ => 1) 1 h with hAdef`. Use `⟨fun c => ((A / TBB.normC nn w : ℝ) : ℂ) * φ c, continuous_const.mul hφc, hφi.const_mul _, ?_⟩` and prove the remaining obligations. Introduce `c hc`.
+
+Simplify using `only`. Rewrite using `[hφ c hc]`. Establish `hA : 0 ≤ A` using `Formalism.FourierDecayAlt.P.PBD.lpt_value_nonneg_of_pos_of_size_le P.k P.r 0 (fun _ _ => 1) (fun _ _ => one_pos) h 1 le_rfl (by rw [hh.2]; omega)`. Establish `hn : TBB.nPt P.k P.r (TBB.TTp p) (h ++ [(1, c)]) = A * C.nAux P.k P.r (D.ptGG (TBB.TTp p) (h ++ [(1, c)])) (fun _ _ => 1) (1 + j) [(1, c)]`. Unfold `TBB.nPt`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.PBD.weight_product_append, hh.2, hAdef, Formalism.FourierDecayAlt.P.PBD.weight_product_indep_of_real_parameter P.k P.r _ 0 (fun _ _ => 1) h 1 le_rfl (by rw [hh.2]; omega)]`. Unfold `TBB.NP`. Rewrite using `[hn]`. Distinguish the cases in `hjr : j = P.r`. Substitute `hjr` using the available equality.
+
+Distinguish the cases in `hc2 : Complex.normSq c ≤ Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z'`. Establish `h0 : p.RR F (P.r + 1) w (h ++ [(1, c)]) (h ++ [(1, c)]) = 0` using `Formalism.FourierDecayAlt.P.PBD.rrTop_zero P p.l0 p.T p.ν' p.m₀ p.Θ p.TP (M.sgn P p.l0) F w h _ c hh.2 hc2`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `push Not at hc2`.
+
+Establish `hT : Tz P.k P.r p.T.base.z = P.T` using `p.hP.2.2.2.1`. Establish `hT' : Tz P.k P.r p.T.base.z' = P.T'` using `p.hP.2.2.2.2.1`. Establish `hlast : D.ptGG (TBB.TTp p) (h ++ [(1, c)]) = Complex.normSq c - TBB.TTp p`. Simplify using `[D.ptGG, D.ptLast]`. Establish `hTT : TBB.TTp p = P.T * P.T'`.
+
+Unfold `TBB.TTp`. Rewrite using `[hT, hT']`. Establish `hfac : C.nAux P.k P.r (D.ptGG (TBB.TTp p) (h ++ [(1, c)])) (fun _ _ => 1) (1 + P.r) [(1, c)] = KB.levW P (P.r + 1) c`. Rewrite using `[hlast, hTT]`. Rewrite `hc2` using `[hT, hT']`.
+
+Simplify using `only [C.nAux, KB.levW, B2.zWeight, if_pos hc2.le]`. Rewrite using `[if_pos ⟨by omega, trivial⟩]`. Simplify using the standard rewrite rules. Establish `hlev : 0 ≤ KB.levW P (P.r + 1) c`. Rewrite using `[← hfac, hlast]`.
+
+Simplify using `only [C.nAux]`. Rewrite using `[if_pos ⟨by omega, trivial⟩]`. Establish `: 0 ≤ Complex.normSq c - TBB.TTp p`. Unfold `TBB.TTp`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Simplify using `using pow_nonneg this _`. Rewrite using `[hfac, Real.mul_self_sqrt (mul_nonneg hA hlev)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfac : C.nAux P.k P.r (D.ptGG (TBB.TTp p) (h ++ [(1, c)])) (fun _ _ => 1) (1 + j) [(1, c)] = KB.levW P (j + 1) c`.
+
+Simplify using `only [C.nAux, KB.levW]`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Establish `e : 1 + j + 1 - 1 = j + 1` using `by omega`. Rewrite using `[e]`. Simplify using `only [one_mul, mul_one, Nat.cast_one]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hlev : 0 ≤ KB.levW P (j + 1) c`. Simplify using `only [KB.levW]`. Rewrite using `[if_neg (by omega)]`.
+
+Conclude with `zpow_nonneg (norm_nonneg _) _`. Rewrite using `[hfac, Real.mul_self_sqrt (mul_nonneg hA hlev)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem head_continuity_at_zero_of_standard (hPS : KB.PStd) (hTP : P5.ThmPActual) (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ)
     (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (N : ℕ) (Cb : ℝ)
     (hCb : KB.InDDplus2 P p.l0 p.T.base Cb p.Θ) (hF : KB.CptCoef p.T.base F) : TBB.HeadContinuityAtZero p nn F Y N := by
@@ -203,6 +269,9 @@ theorem head_continuity_at_zero_of_standard (hPS : KB.PStd) (hTP : P5.ThmPActual
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h1 : ∀ TT : ℝ, TBB.nPt P.k P.r TT [] = 1` using `fun TT => by simp [TBB.nPt, C.nAux]`. Unfold `TBB.Ew TBB.NP`. Simplify using `only [h1, Real.sqrt_one, one_mul]`. Rewrite using `[Complex.re_ofReal_mul, one_div, inv_mul_eq_div]`.
+-/
 theorem ew_zero_nil (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) :
     TBB.Ew p nn G 0 w [] = (p.RR G 0 w [] []).re / TBB.normC nn w := by
   have h1 : ∀ TT : ℝ, TBB.nPt P.k P.r TT [] = 1 := fun TT => by simp [TBB.nPt, C.nAux]
@@ -210,6 +279,15 @@ theorem ew_zero_nil (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (G : B.Mat P.k P.r �
   simp only [h1, Real.sqrt_one, one_mul]
   rw [Complex.re_ofReal_mul, one_div, inv_mul_eq_div]
 
+/- English proof (translation)
+Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨⟨by simp, rfl⟩, ⟨by simp, rfl⟩⟩, dif_pos (Nat.zero_le _)]`. Unfold `D.formLev`. Establish `hx : ∀ a : Wd.Ix (Fin ([] : List C.Letter).length), D.castF (k` using `P.k) (a := P.r - 0) (b := P.r) (by simp) (D.sliceAt P.k P.r p.T.base.z p.T.base.z' (D.uwG P.k P.r p.T.base.z p.T.base.z' G 0 (Nat.zero_le _) [] a) []) = G := by`. Introduce `a`.
+
+Establish `ha : a = Wd.e1` using `funext fun i => i.elim0`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx1.LZ.uwG_zero, if_pos ha]`. Use function extensionality and compare the values at `g`. Unfold `D.castF`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx1.SN.sliceAt_nil P.k P.r _ _ p.T.base.z_mem p.T.base.z'_mem]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_eq_single Wd.e1 (fun b _ hb => absurd (funext fun i => i.elim0) hb) (fun h => absurd (Finset.mem_univ _) h)]`. Use `congr 1`. Apply the tactic sequence `all_goals first | exact hx _ | skip`. Unfold `D.actOp D.RRlev`.
+
+Rewrite using `[Finset.sum_eq_single Wd.e1 (fun b _ hb => absurd (funext fun i => i.elim0) hb) (fun h => absurd (Finset.mem_univ _) h)]`. Establish `hs : D.positionted ([] : List C.Letter) = []` using `by simp [D.positionted]`. Rewrite using `[hs, Formalism.FourierDecayAlt.P.Dx1.LZ.RRop_nil, if_pos rfl]`. Conclude with `hx _`.
+-/
 theorem rr_zero_nil (p : KB.Pl P Wp Wq) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) :
     p.RR G 0 [] [] [] = B.beta p.T.base G G := by
   unfold KB.Pl.RR D.RRplace
@@ -237,6 +315,15 @@ theorem rr_zero_nil (p : KB.Pl P Wp Wq) (G : B.Mat P.k P.r → (Wq →L[ℂ] Wp)
   rw [hs, Formalism.FourierDecayAlt.P.Dx1.LZ.RRop_nil, if_pos rfl]
   exact hx _
 
+/- English proof (translation)
+Introduce `w hw hN`. Take `⟨sz, hsz0, hszn, hlim⟩` from `hE w hw hN`. Establish `hEw : ∀ ε, TBB.Ew p nn (D.cutF p.T.base χ F ε) 0 w [] = (p.RR (D.cutF p.T.base χ F ε) 0 w [] []).re / TBB.normC nn w` using `fun ε => ew_zero_nil p nn _ w`. Establish `hlim2 : Tendsto (fun ε => ENNReal.ofReal (TBB.Ew p nn (D.cutF p.T.base χ F ε) 0 w [])) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (sz * (B.beta p.T.base F F).re / TBB.normC nn w)))`. Simplify using `only [hEw]`.
+
+Conclude with `ENNReal.tendsto_ofReal (hlim.div_const _)`. Rewrite using `[hlim2.limsup_eq]`. Use `le_trans ?_ hB` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_le_ofReal_iff']`. Establish `hn0 : 0 ≤ TBB.normC nn w` using `le_trans hsz0 hszn`.
+
+Distinguish the cases in `hb : 0 ≤ (B.beta p.T.base F F).re`. Use `left`. Break down `hn0.lt_or_eq with hpos | hzero` into its components or cases. Rewrite using `[div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hzero, div_zero]`. Conclude with `hb`. Use `right push_neg at hb`. Conclude with `div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonneg_of_nonpos hsz0 hb.le) hn0`.
+-/
 theorem limZeroAt_of_limits (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Y : Finset ℝ) (N : ℕ) (κ₀ : ℝ)
     (hE : ∀ w, TBB.AdmW P p.l0 Y w → w.length ≤ N → ∃ sz : ℝ, 0 ≤ sz ∧ sz ≤ TBB.normC nn w ∧
@@ -277,11 +364,17 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology MeasureTheory
 
+/- English proof (translation)
+Conclude with `TBBx3.vecCutAt_of_one p χ F hχ`.
+-/
 theorem vector_truncation_at_place {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par} (p : KB.Pl P Wp Wq)
     (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (hχ : ∀ x, 1 ≤ x → χ x = 1) : Formalism.FourierDecayAlt.TBB.VecCutAt p χ F := by
   exact TBBx3.vecCutAt_of_one p χ F hχ
 
+/- English proof (translation)
+Conclude with `TBBx3.posAt_of_thmP hTP p nn F Y N A mm hnn hA hmm hdata hslice`.
+-/
 theorem positivity_at_place (hTP : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
     (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (N : ℕ) (A : ℝ) (mm : ℕ)
@@ -302,6 +395,9 @@ theorem positivity_at_place (hTP : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommG
     Formalism.FourierDecayAlt.TBB.PosAt p nn F Y N := by
   exact TBBx3.posAt_of_thmP hTP p nn F Y N A mm hnn hA hmm hdata hslice
 
+/- English proof (translation)
+Conclude with `TBBx3.head_continuity_at_zero_of_standard hPS hTP p nn F Y N Cb hCb hF`.
+-/
 theorem head_continuity_at_zero_of_compact_coefficients (hPS : KB.PStd) (hTP : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
     [FiniteDimensional ℂ Wq] {P : M.Par} (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
@@ -309,6 +405,9 @@ theorem head_continuity_at_zero_of_compact_coefficients (hPS : KB.PStd) (hTP : P
     Formalism.FourierDecayAlt.TBB.HeadContinuityAtZero p nn F Y N := by
   exact TBBx3.head_continuity_at_zero_of_standard hPS hTP p nn F Y N Cb hCb hF
 
+/- English proof (translation)
+Conclude with `TBBx3.limZeroAt_of_limits p nn χ F Y N κ₀ hE hB`.
+-/
 theorem limit_zero_at_place {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par} (p : KB.Pl P Wp Wq)
     (nn : ℝ → ℝ) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (N : ℕ) (κ₀ : ℝ)

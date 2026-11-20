@@ -13,6 +13,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 namespace GlobalTheory.CompanionTheory.MM
 
+/- English proof (translation)
+Introduce `D ψ θ l hψ hθ hl`. Use `⟨⟨fun τ => GlobalTheory.Mem.VolExists.infEmb_continuous (hθ τ), GlobalTheory.Mem.VolExists.infEmb_bijective (isCMExt_host D) (GlobalTheory.Mem.Vol.isCMFam_host _ D.host _ D.eTau) hθ, fun τ z => GlobalTheory.Mem.VolExists.infEmb_sigR (isCMExt_host D) (hθ τ) z, fun τ => GlobalTheor …` and prove the remaining obligations. Conclude with `D.eTau.nonempty_congr.2 inferInstance`.
+-/
 theorem isPlaces_of_hasRealPar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (l : D.what₂.Tau → ℝ), IsCharAF D.host.F ψ → IsInfFam θ → HasRealPar ψ θ l → PositivityTheory.SiegelWeilFormula.Gen.IsPlaces D.sp.cm.sig ψ θ l ∧ Nonempty D.what₂.Tau := by
   intro D ψ θ l hψ hθ hl
   refine ⟨⟨fun τ => GlobalTheory.Mem.VolExists.infEmb_continuous (hθ τ),

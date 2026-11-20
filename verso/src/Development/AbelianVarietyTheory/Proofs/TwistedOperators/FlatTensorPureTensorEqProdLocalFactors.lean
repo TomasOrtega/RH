@@ -14,24 +14,36 @@ open GlobalTheory.SplitFlip (Grid Edge)
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Substitute `hc hp` using the available equality. Both sides reduce to the same expression.
+-/
 theorem flCol_datC_congr (ψ : AddChar k Circle) (ν : Measure k) {a b N N' : ℕ} (Φ : Matrix (Fin N) (Fin N') k → ℂ)
     {c₁ c₂ p₁ p₂ : ℕ} (hc : c₁ = c₂) (hp : p₁ = p₂) (h₁ : a + c₁ = N') (h₁' : b + (c₁ + 1) = N) (h₂ : a + c₂ = N')
     (h₂' : b + (c₂ + 1) = N) :
     GlobalTheory.LocFlat.flCol ψ ν p₁ (datC h₁ h₁' Φ) = GlobalTheory.LocFlat.flCol ψ ν p₂ (datC h₂ h₂' Φ) := by
   subst hc hp; rfl
 
+/- English proof (translation)
+Substitute `hc hp` using the available equality. Both sides reduce to the same expression.
+-/
 theorem flRow_datC_congr (ψ : AddChar k Circle) (ν : Measure k) {a b N N' : ℕ} (Φ : Matrix (Fin N) (Fin N') k → ℂ)
     {c₁ c₂ p₁ p₂ : ℕ} (hc : c₁ = c₂) (hp : p₁ = p₂) (h₁ : a + c₁ = N') (h₁' : b + (c₁ + 1) = N) (h₂ : a + c₂ = N')
     (h₂' : b + (c₂ + 1) = N) :
     GlobalTheory.LocFlat.flRow ψ ν p₁ (datC h₁ h₁' Φ) = GlobalTheory.LocFlat.flRow ψ ν p₂ (datC h₂ h₂' Φ) := by
   subst hc hp; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stepDatum_eq_datC (G : Grid k) (hs : 1 ≤ G.s) (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ)
     (j : Fin (G.m - 1)) :
     stepDatum hs φ j = datC (c := G.m - 2 - j) (c' := G.m - 2 - j + 1)
       (by have := topRank_add hs (j + 1); have := j.2; show _ = G.rank (G.m, j + 1); omega)
       (by have := topRank_add hs j; have := j.2; show _ = G.rank (G.m, j); omega) (φ (.theta G.m j)) := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem theta_sub_congr (G : Grid k) (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (x : ColArgs G)
     {i i' : ℕ} (h : i = i') (p₁ : G.rank (G.m, i + 1) ≤ topRank G (i + 1)) (p₂ : G.rank (G.m, i) = topRank G i)
     (p₃ : G.rank (G.m, i' + 1) ≤ topRank G (i' + 1)) (p₄ : G.rank (G.m, i') = topRank G i') :
@@ -39,6 +51,9 @@ theorem theta_sub_congr (G : Grid k) (φ : ∀ b : Edge, Matrix (Fin (G.rank b.t
       φ (.theta G.m i') ((x i').submatrix (Fin.castLE p₃) (Fin.cast p₄))ᵀ := by
   subst h; rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[show 2 * (n + 1) = 2 * n + 1 + 1 by ring, Finset.prod_range_succ, Finset.prod_range_succ, ih, Finset.prod_range_succ, if_pos (even_two_mul n), if_neg (by rw [Nat.not_even_iff_odd]; exact odd_two_mul_add_one n), mul_one]`.
+-/
 theorem prod_fin_even (n : ℕ) (g : ℕ → ℂ) :
     (∏ j ∈ Finset.range (2 * n), if Even j then g j else 1) = ∏ i ∈ Finset.range n, g (2 * i) := by
   induction n with
@@ -47,6 +62,11 @@ theorem prod_fin_even (n : ℕ) (g : ℕ → ℂ) :
     rw [show 2 * (n + 1) = 2 * n + 1 + 1 by ring, Finset.prod_range_succ, Finset.prod_range_succ, ih,
       Finset.prod_range_succ, if_pos (even_two_mul n), if_neg (by rw [Nat.not_even_iff_odd]; exact odd_two_mul_add_one n), mul_one]
 
+/- English proof (translation)
+Take `rfl : j = G.m - 2` from `by omega`. Rewrite using `[locA, dif_pos (by omega), stepDatum_eq_datC]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Conclude with `theta_sub_congr G φ x (by omega) _ _ _ _`. Use `congr 1`.
+
+Use function extensionality and compare the values at `u`. Conclude with `congrFun (flCol_datC_congr ψ ν _ (by simp) rfl _ _ _ _) _`.
+-/
 theorem locA_last (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k)
     (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (x : ColArgs G) (j : ℕ) (hj : j + 2 = G.m) :
     locA G hs ψ ν φ j (x j, x (j + 1)) =
@@ -61,6 +81,9 @@ theorem locA_last (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Me
     funext u
     exact congrFun (flCol_datC_congr ψ ν _ (by simp) rfl _ _ _ _) _
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `he`. Take `⟨b, hb⟩` from `hm`. Rewrite using `[locA, dif_neg (by omega), dif_pos (by omega), stepDatum_eq_datC, stepDatum_eq_datC]`. Conclude with `congrArg₂ (fun A B => GlobalTheory.LocFlat.contr ψ ν A B q) (flCol_datC_congr ψ ν _ (by simp only; omega) (by omega) _ _ _ _) (flRow_datC_congr ψ ν _ (by simp only; omega) (by omega) _ _ _ _)`.
+-/
 theorem locA_double (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k)
     (φ : ∀ b : Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ) (hm : Even G.m) (j : ℕ) (he : Even j)
     (hj : j < G.m - 2) (q) :
@@ -76,6 +99,13 @@ theorem locA_double (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : 
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ G hs hm hme ψ ν hψ hψ1 hν φ hφ x y`. Rewrite using `[GlobalTheory.FunObj.flatTensor_pureTensor_eq_prod_contr k G hs hm hme ψ ν hψ hψ1 hν φ hφ x y, mul_assoc]`. Use `congr 1`. Take `⟨n, hn⟩ : ∃ n, G.m = 2 * n + 2` from `by obtain ⟨b, hb⟩ := hme; exact ⟨b - 1, by omega⟩`. Establish `hr : G.m / 2 = n + 1` using `by omega`.
+
+Rewrite using `[hr, Finset.prod_range_succ, mul_comm, locA_last G hs ψ ν φ x (2 * n) (by omega)]`. Use `congr 1`. Establish `h2 : G.m - 2 = 2 * n` using `by omega`. Rewrite using `[← prod_fin_even n (fun j => locA G hs ψ ν φ j (x j, x (j + 1)))]`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j => if Even j then locA G hs ψ ν φ j (x j, x (j + 1)) else 1) (2 * n)]`.
+
+Rewrite using `[← h2]`. Use `Finset.prod_congr rfl fun j _ => if_ctx_congr Iff.rfl (fun hj => ?_) fun _ => rfl` and prove the remaining obligations. Conclude with `(locA_double G hs ψ ν φ ⟨n + 1, by omega⟩ j hj j.2 _).symm`.
+-/
 theorem flatTensor_pureTensor_eq_prod_locA : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (G : GlobalTheory.SplitFlip.Grid k) (hs : 1 ≤ G.s), 2 ≤ G.m → Even G.m → ∀ (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (φ : ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ), (∀ j < G.m - 1, φ (.theta G.m j) ∈ SB _) → ∀ (x : ColArgs G) (y : RowArgs G), flatTensor hs ψ ν (G.lines₂ (GlobalTheory.SplitFlip.oppositePath G.m) φ) x y = (∏ i ∈ Finset.range G.m, φ (.ex i G.m) (y i)ᵀ) * ∏ n ∈ Finset.range (G.m / 2), locA G hs ψ ν φ (2 * n) (x (2 * n), x (2 * n + 1)) := by
   intro k _ _ _ _ _ _ G hs hm hme ψ ν hψ hψ1 hν φ hφ x y
   rw [GlobalTheory.FunObj.flatTensor_pureTensor_eq_prod_contr k G hs hm hme ψ ν hψ hψ1 hν φ hφ x y, mul_assoc]

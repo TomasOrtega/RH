@@ -10,6 +10,13 @@ namespace GlobalTheory.HilbertThetaSeries.AdelicLift
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Establish `hinv : Pos (toInf τ' * h)⁻¹` using `(SlashCocycle.slash_cocycle F k _ _ 0 hτ' hτ').2.1`. Establish `hγ : Pos (toInf (τ * τ'⁻¹))`. Establish `e : toInf (τ * τ'⁻¹) = (toInf τ * h) * (toInf τ' * h)⁻¹`. Rewrite using `[map_mul, map_inv]`. Use `group`.
+
+Rewrite using `[e]`. Conclude with `(SlashCocycle.slash_cocycle F k _ _ 0 hτ hinv).1`. Establish `hTP : TP (τ * τ'⁻¹).val.det` using `((GlobalTheory.T.hilbert_slash_rational_matrix_properties F k 0).2.1 _).1.1 hγ`. Establish `e1 : toInf τ * h = toInf (τ * τ'⁻¹) * (toInf τ' * h)`. Rewrite using `[map_mul, map_inv]`.
+
+Use `group`. Establish `e2 : toFin τ * g = toFin (τ * τ'⁻¹) * (toFin τ' * g)`. Rewrite using `[map_mul, map_inv]`. Use `group`. Rewrite using `[e1, e2, (SlashCocycle.slash_cocycle F k _ _ _ hγ hτ').2.2.2.1, hΨ.left _ hTP]`.
+-/
 theorem sl_indep {k : ℕ} {Ψ : GL (Fin 2) (Af F) → Hn F → ℂ} (hΨ : Sys k Ψ) (h : GL (Fin 2) (InfinitePlace F → ℝ))
     (g : GL (Fin 2) (Af F)) (τ τ' : GL (Fin 2) F) (hτ : Pos (toInf τ * h)) (hτ' : Pos (toInf τ' * h)) :
     sl k (toInf τ * h) (Ψ (toFin τ * g)) = sl k (toInf τ' * h) (Ψ (toFin τ' * g)) := by
@@ -26,6 +33,9 @@ theorem sl_indep {k : ℕ} {Ψ : GL (Fin 2) (Af F) → Hn F → ℂ} (hΨ : Sys 
     rw [map_mul, map_inv]; group
   rw [e1, e2, (SlashCocycle.slash_cocycle F k _ _ _ hγ hτ').2.2.2.1, hΨ.left _ hTP]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, hij]`.
+-/
 theorem map_scalar {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (z : Rˣ) :
     Matrix.GeneralLinearGroup.map f (Matrix.GeneralLinearGroup.scalar (Fin 2) z) =
       Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.map f.toMonoidHom z) := by
@@ -34,11 +44,27 @@ theorem map_scalar {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (z : R
   · subst hij; simp [Matrix.GeneralLinearGroup.scalar]
   · simp [Matrix.GeneralLinearGroup.scalar, hij]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `((Matrix.scalar_commute (z : R) (fun r => Commute.all _ r) g.val).eq).symm`.
+-/
 theorem scalar_comm {R : Type} [CommRing R] (z : Rˣ) (g : GL (Fin 2) R) :
     g * Matrix.GeneralLinearGroup.scalar (Fin 2) z = Matrix.GeneralLinearGroup.scalar (Fin 2) z * g := by
   apply Units.ext
   exact ((Matrix.scalar_commute (z : R) (fun r => Commute.all _ r) g.val).eq).symm
 
+/- English proof (translation)
+Introduce `F _ _ _ k hk Ψ hΨ`. Use `choose τ hτ using (GlobalTheory.T.rational_GL2_infinite_finite_factor F 1).2`. Set `G : GL (Fin 2) (InfinitePlace F → ℝ) → GL (Fin 2) (Af F) → Hn F → ℂ` to `fun h g => sl k (toInf (τ h) * h) (Ψ (toFin (τ h) * g))`. Establish `hG : ∀ h g σ, Pos (toInf σ * h) → G h g = sl k (toInf σ * h) (Ψ (toFin σ * g))` using `fun h g σ hσ => sl_indep hΨ h g _ _ (hτ h) hσ`. Use `⟨fun x => G (Matrix.GeneralLinearGroup.map (TR.pInf F) x) (Matrix.GeneralLinearGroup.map (pFin F) x) fun _ => UpperHalfPlane.I, ⟨fun γ x => ?_, fun h hh g => ?_⟩, fun u hu x => ?_, fun z x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(GlobalTheory.T.rational_GL2_infinite_finite_factor F γ).1]`. Simplify using `only [map_mul, TR.pInf_infGL, TR.pInf_finGL, TR.pFin_infGL, pFin_finGL, mul_one, one_mul]`. Generalize the expression as in `Matrix.GeneralLinearGroup.map (TR.pInf F) x = h`. Generalize the expression as in `Matrix.GeneralLinearGroup.map (pFin F) x = g`. Establish `hp : Pos (toInf (τ (toInf γ * h) * γ) * h)`.
+
+Rewrite using `[map_mul, mul_assoc]`. Conclude with `hτ _`. Rewrite using `[hG h g _ hp]`. Simplify using `only [G, map_mul, mul_assoc]`. Simplify using `only [map_mul, TR.pInf_infGL, TR.pInf_finGL, TR.pFin_infGL, pFin_finGL, mul_one, one_mul]`.
+
+Rewrite using `[hG h g 1 (by simpa using hh)]`. Simplify using `only [map_one, one_mul]`. Simplify using `only [map_mul, TR.pInf_finGL, pFin_finGL, mul_one, G]`. Rewrite using `[← mul_assoc, hΨ.right _ u hu]`. Simplify using `only [map_mul, map_scalar]`.
+
+Generalize the expression as in `Matrix.GeneralLinearGroup.map (TR.pInf F) x = h`. Generalize the expression as in `Matrix.GeneralLinearGroup.map (pFin F) x = g`. Generalize the expression as in `Units.map (TR.pInf F).toMonoidHom z = t`. Generalize the expression as in `Units.map (pFin F).toMonoidHom z = s`. Establish `e : toInf (τ h) * (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) = Matrix.GeneralLinearGroup.scalar (Fin 2) t * (toInf (τ h) * h)`.
+
+Rewrite using `[← mul_assoc, scalar_comm, mul_assoc]`. Establish `e' : toFin (τ h) * (Matrix.GeneralLinearGroup.scalar (Fin 2) s * g) = Matrix.GeneralLinearGroup.scalar (Fin 2) s * (toFin (τ h) * g)`. Rewrite using `[← mul_assoc, scalar_comm, mul_assoc]`. Establish `H` using `(GlobalTheory.T.hilbert_slash_rational_matrix_properties F k (Ψ (toFin (τ h) * g))).2.2.1 hk t _ (hτ h)`. Rewrite using `[hG _ _ (τ h) (by rw [e]; exact H.1), e, e', hΨ.cent, H.2]`.
+-/
 theorem exists_lift : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ), Even k → ∀ (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ), Sys k Ψ → ∃ φ : GA F 2 → ℂ, IsLift k Ψ φ ∧ (∀ u ∈ KLev F 2 1, ∀ g, φ (g * finGL F 2 u) = φ g) ∧ ∀ (z : Ideles F) (g : GA F 2), φ (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = φ g := by
   intro F _ _ _ k hk Ψ hΨ
   choose τ hτ using (GlobalTheory.T.rational_GL2_infinite_finite_factor F 1).2
@@ -80,5 +106,8 @@ end GlobalTheory.HilbertThetaSeries.AdelicLift
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.AdelicLift.exists_lift | exact GlobalTheory.HilbertThetaSeries.AdelicLift.exists_lift | (intros; apply GlobalTheory.HilbertThetaSeries.AdelicLift.exists_lift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_adelic_lift_of_hilbert_system : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ), Even k → ∀ (Ψ : GL (Fin 2) (Af F) → Hn F → ℂ), Sys k Ψ → ∃ φ : GA F 2 → ℂ, IsLift k Ψ φ ∧ (∀ u ∈ KLev F 2 1, ∀ g, φ (g * finGL F 2 u) = φ g) ∧ ∀ (z : Ideles F) (g : GA F 2), φ (Matrix.GeneralLinearGroup.scalar (Fin 2) z * g) = φ g := by
   first | exact @GlobalTheory.HilbertThetaSeries.AdelicLift.exists_lift | exact GlobalTheory.HilbertThetaSeries.AdelicLift.exists_lift | (intros; apply GlobalTheory.HilbertThetaSeries.AdelicLift.exists_lift <;> assumption)

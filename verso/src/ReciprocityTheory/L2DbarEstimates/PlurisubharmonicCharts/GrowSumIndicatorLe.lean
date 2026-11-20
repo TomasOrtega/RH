@@ -9,6 +9,15 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `X _ μ Γ _ _ _ _ _ _ D B F ps x' C Sup m hD hB hF hps hinv hm hmv hSup`. Use `set φ : X → ℝ≥0∞ := fun x => ENNReal.ofReal (‖F x‖ ^ 2 * Real.exp (-ps x)) with hφdef`. Establish `hφ : Measurable φ` using `ENNReal.measurable_ofReal.comp (((hF.norm).pow_const 2).mul (Real.measurable_exp.comp hps.neg))`. Establish `hcount` using `hC X μ Γ D B φ m hD hB hφ (fun γ x => by simp only [hφdef, hinv]) hm`. Establish `hB2 : ∫⁻ x in B, ENNReal.ofReal (‖F x‖ ^ 2) ∂μ ≤ ENNReal.ofReal (Real.exp Sup) * ∫⁻ x in B, φ x ∂μ`.
+
+Rewrite using `[← lintegral_const_mul _ hφ]`. Use `setLIntegral_mono ((hφ.const_mul _)) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hφdef]`. Simplify using `only`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le]`.
+
+Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1 : 1 ≤ Real.exp Sup * Real.exp (-ps x)`. Rewrite using `[← Real.exp_add]`. Conclude with `Real.one_le_exp (by linarith [hSup x hx])`. Establish `h2 : 0 ≤ ‖F x‖ ^ 2` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `hB2.trans (by gcongr)`. Use `_ = C * m * ENNReal.ofReal (Real.exp Sup) * ∫⁻ x in D, φ x ∂μ := by ring`.
+-/
 theorem grow.{u1, u2} (hC : GROWCountStatement.{u1, u2}) : GROWStatement.{u1, u2} := by
   intro X _ μ Γ _ _ _ _ _ _ D B F ps x' C Sup m hD hB hF hps hinv hm hmv hSup
   set φ : X → ℝ≥0∞ := fun x => ENNReal.ofReal (‖F x‖ ^ 2 * Real.exp (-ps x)) with hφdef

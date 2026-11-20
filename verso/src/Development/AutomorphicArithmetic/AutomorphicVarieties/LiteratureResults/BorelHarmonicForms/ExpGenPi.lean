@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Wign
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `hc : Continuous fun M : Matrix (Fin a) (Fin a) (ι → ℂ) => M.map fun x => x w` using `continuous_id.matrix_map (continuous_apply w)`. Establish `key` using `open scoped Norms.Operator in NormedSpace.map_exp ((Pi.evalRingHom (fun _ : ι => ℂ) w).mapMatrix : Matrix (Fin a) (Fin a) (ι → ℂ) →+* Matrix (Fin a) (Fin a) ℂ) hc X`. Conclude with `key`.
+-/
 private theorem exp_map_coord {ι : Type} [Fintype ι] {a : ℕ} (X : Matrix (Fin a) (Fin a) (ι → ℂ)) (w : ι) :
     (NormedSpace.exp X).map (fun x => x w) = NormedSpace.exp (X.map fun x => x w) := by
   classical
@@ -15,6 +18,43 @@ private theorem exp_map_coord {ι : Type} [Fintype ι] {a : ℕ} (X : Matrix (Fi
       Matrix (Fin a) (Fin a) (ι → ℂ) →+* Matrix (Fin a) (Fin a) ℂ) hc X
   exact key
 
+/- English proof (translation)
+Take `⟨J, hJ⟩ : ∃ J : (ι → Matrix (Fin a) (Fin a) ℂ) → Matrix (Fin a) (Fin a) (ι → ℂ), J = fun g => Matrix.of fun i j v => g v i j` from `⟨_, rfl⟩`. Establish `Jmap : ∀ g v, (J g).map (fun x => x v) = g v`. Introduce `g v`. Substitute `hJ` using the available equality. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `Jmul : ∀ g h, J (g * h) = J g * J h`. Introduce `g h`. Substitute `hJ` using the available equality. Use extensionality with `i j v`.
+
+Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Establish `Jone : J 1 = 1`. Substitute `hJ` using the available equality. Use extensionality with `i j v`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, hij]`. Establish `Jext : ∀ M N : Matrix (Fin a) (Fin a) (ι → ℂ), (∀ v, M.map (fun x => x v) = N.map (fun x => x v)) → M = N`. Introduce `M N h`.
+
+Use extensionality with `i j v`. Conclude with `congrFun (congrFun (h v) i) j`. Establish `single : ∀ (w : ι) (m : Matrix (Fin a) (Fin a) ℂ), m.det ≠ 0 → J (Function.update 1 w m) ∈ H`. Introduce `w m hm`. Set `K : Submonoid (Matrix (Fin a) (Fin a) ℂ)` to `{ carrier := {p | J (Function.update 1 w p) ∈ H} one_mem' := by show J (Function.update 1 w 1) ∈ H`.
+
+Establish `: Function.update (1 : ι → Matrix (Fin a) (Fin a) ℂ) w 1 = 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hv]`. Rewrite using `[this, Jone]`. Conclude with `H.one_mem`. Use the proof step `mul_mem' := by`. Introduce `p q hp hq`.
+
+Use `show J (Function.update 1 w (p * q)) ∈ H`. Establish `: Function.update (1 : ι → Matrix (Fin a) (Fin a) ℂ) w (p * q) = Function.update (1 : ι → Matrix (Fin a) (Fin a) ℂ) w p * Function.update (1 : ι → Matrix (Fin a) (Fin a) ℂ) w q`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hv]`. Rewrite using `[this, Jmul]`. Conclude with `H.mul_mem hp hq }`. Establish `hK : ∀ X, NormedSpace.exp X ∈ K`.
+
+Introduce `X`. Use `show J (Function.update 1 w (NormedSpace.exp X)) ∈ H`. Establish `: J (Function.update 1 w (NormedSpace.exp X)) = NormedSpace.exp (J (Function.update 0 w X))`. Apply `Jext` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[Jmap, exp_map_coord, Jmap]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hv, NormedSpace.exp_zero]`.
+
+Rewrite using `[this]`. Conclude with `hH _`. Conclude with `UpperTheory.V.AlgRepEndIrreducible.expGenC a K hK m hm`. Establish `hdet : ∀ v, (y.map fun x => x v).det ≠ 0`. Introduce `v`.
+
+Establish `h1` using `hy.map (Pi.evalRingHom (fun _ : ι => ℂ) v).mapMatrix`. Rewrite `h1` using `[Matrix.isUnit_iff_isUnit_det]`. Conclude with `h1.ne_zero`. Establish `all : ∀ s : Finset ι, J (fun v => if v ∈ s then y.map (fun x => x v) else 1) ∈ H`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `: (fun v => if v ∈ (∅ : Finset ι) then y.map (fun x => x v) else 1) = 1`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Jone]`. Conclude with `H.one_mem`. Consider the case `insert b s hb ih`. Establish `: (fun v => if v ∈ insert b s then y.map (fun x => x v) else 1) = Function.update (1 : ι → Matrix (Fin a) (Fin a) ℂ) b (y.map fun x => x b) * (fun v => if v ∈ s then y.map (fun x => x v) else 1)`. Use function extensionality and compare the values at `v`.
+
+Distinguish the cases in `hv : v = b`. Substitute `hv` using the available equality. Simplify using `[hb]`. Simplify using `[hv]`. Rewrite using `[this, Jmul]`.
+
+Conclude with `H.mul_mem (single b _ (hdet b)) ih`. Establish `hy' : y = J (fun v => if v ∈ (Finset.univ : Finset ι) then y.map (fun x => x v) else 1)`. Apply `Jext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Jmap]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hy']`. Conclude with `all _`.
+-/
 private theorem gen_prod {ι : Type} [Fintype ι] {a : ℕ} (H : Submonoid (Matrix (Fin a) (Fin a) (ι → ℂ)))
     (hH : ∀ X, NormedSpace.exp X ∈ H) (y : Matrix (Fin a) (Fin a) (ι → ℂ)) (hy : IsUnit y) : y ∈ H := by
   classical
@@ -119,6 +159,11 @@ private theorem gen_prod {ι : Type} [Fintype ι] {a : ℕ} (H : Submonoid (Matr
   rw [hy']
   exact all _
 
+/- English proof (translation)
+Introduce `T _ a H hH y`. Establish `h : y.val ∈ H.map (Units.coeHom _)`. Use `gen_prod (ι := T) (H.map (Units.coeHom _)) ?_ y.val y.isUnit` and prove the remaining obligations. Introduce `X`. Take `⟨u, hu⟩` from `Matrix.isUnit_exp X`.
+
+Conclude with `⟨u, hH X u hu, hu⟩`. Take `⟨u, hu, h'⟩` from `h`. Establish `: u = y` using `Units.ext h'`. Conclude with `this ▸ hu`.
+-/
 theorem UpperTheory.V.Lit.Bor.expGenPi :
     UpperTheory.V.Lit.Bor.ExpGenPi := by
   intro T _ a H hH y

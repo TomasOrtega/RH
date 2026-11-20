@@ -4,6 +4,17 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
+/- English proof (translation)
+Introduce `l _ P AI T d s v v₀ t p hv h lam`. Substitute `hv` using the available equality. Set `Λ : OB P →ₗ[↥(MaximalUnramifiedExtension l)] Bst P` to `(TensorProduct.lid (↥(MaximalUnramifiedExtension l)) (Bst P)).toLinearMap ∘ₗ lam.rTensor (Bst P)`. Establish `hΛ : ∀ (x : Om l) (b : Bst P), Λ (x ⊗ₜ b) = lam x • b`. Introduce `x b`.
+
+Express the relevant statement in the definitionally equal form `TensorProduct.lid (↥(MaximalUnramifiedExtension l)) (Bst P) (lam.rTensor (Bst P) (x ⊗ₜ b)) = lam x • b`. Rewrite using `[LinearMap.rTensor_tmul, TensorProduct.lid_tmul]`. Establish `h1` using `congrArg Λ h`. Rewrite `h1` using `[map_sum, hΛ]`. Simplify using `only [hΛ] at h1`.
+
+Establish `hc : lam p • (1 : Bst P) = Polynomial.C (lam p • (1 : P.R.B))`. Rewrite using `[← Polynomial.smul_C, map_one]`. Establish `h2 : (∑ i, lam (t i) • T.eB.symm (v₀ i)) = lam p • (1 : P.R.B)`. Apply `Polynomial.C_injective` to reduce the goal to its premises. Rewrite using `[map_sum, ← hc, ← h1]`.
+
+Simplify using `only [Polynomial.smul_C]`. Simplify using `only [Algebra.smul_def] at h2`. Establish `h3` using `congrArg T.eB h2`. Simplify using `only [map_sum, map_mul, map_one, mul_one, RingEquiv.apply_symm_apply] at h3`. Establish `h4 : ∑ i, uB T (lam (t i)) * v₀ i = uB T (lam p)` using `h3`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← h4, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.testTr_holds :
     TestTr := by
   intro l _ P AI T d s v v₀ t p hv h lam

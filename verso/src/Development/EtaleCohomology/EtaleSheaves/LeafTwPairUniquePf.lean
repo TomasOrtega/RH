@@ -24,6 +24,11 @@ def LeafHtpyAW : Prop := ∀ (R : Type) [CommRing R] {I J K : Cx R} (μ μ' : Pa
     (γ γ' : Cocycle ((chains R).obj E) K k), μ.IsAW hk α.1 β.1 γ.1 → μ'.IsAW hk α.1 β.1 γ'.1 →
     CohomologyClass.mk γ = CohomologyClass.mk γ'
 
+/- English proof (translation)
+Take `⟨ex, sp⟩` from `hc R μ E hk`. Take `⟨ex', sp'⟩` from `hc R μ' E hk`. Use extensionality with `a b`. Take `⟨α, rfl⟩` from `a.mk_surjective`. Take `⟨β, rfl⟩` from `b.mk_surjective`.
+
+Take `⟨γ, hγ⟩` from `ex α β`. Take `⟨γ', hγ'⟩` from `ex' α β`. Rewrite using `[sp α β γ hγ, sp' α β γ' hγ']`. Conclude with `hAW α β γ γ' hγ hγ'`.
+-/
 theorem cup_eq_of_aw {R : Type} [CommRing R] {I J K : Cx R} (hc : LateralTheory.E.CupProductRingLaws.LeafCupSpec) (μ μ' : Pair I J K)
     (E : Spc) {n m k : ℤ} (hk : n + m = k)
     (hAW : ∀ (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m)
@@ -43,6 +48,9 @@ theorem cup_eq_of_aw {R : Type} [CommRing R] {I J K : Cx R} (hc : LateralTheory.
 end LateralTheory.E.LeafTwPairUniquePf
 
 open LateralTheory.E.LeafTwPairUniquePf in
+/- English proof (translation)
+Introduce `q _ i j μ μ' hμ hμ' E n m k hk`. Conclude with `cup_eq_of_aw hc μ μ' E hk (ha (ZMod q) μ μ' (hh q i j μ μ' hμ hμ') E hk)`.
+-/
 theorem LateralTheory.E.CupProductRingLaws.LeafTwPairUnique_of (hc : LateralTheory.E.CupProductRingLaws.LeafCupSpec) (hh : LeafTwPairHtpy)
     (ha : LeafHtpyAW) : LateralTheory.E.CupProductRingLaws.LeafTwPairUnique := by
   intro q _ i j μ μ' hμ hμ' E n m k hk

@@ -29,6 +29,9 @@ open MeasureTheory Formalism.IndefR.Datum GlobalTheory.Doubling GlobalTheory.Mix
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : p.1.1ᵀ * incM D.host.F V.gramᵀ * p.1.1.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = incM D.host.F V.gramᵀ` using `p.2`. Establish `h2` using `congrArg Matrix.transpose h`. Rewrite `h2` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Conclude with `⟨ofMat V p.1.1 h2, rfl⟩`.
+-/
 theorem exists_GA_of_UG (V : HSp D)
     (p : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F V.gramᵀ)) :
     ∃ h : GA D V, mt V h = p.1.1 := by
@@ -37,6 +40,9 @@ theorem exists_GA_of_UG (V : HSp D)
   rw [Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose] at h2
   exact ⟨ofMat V p.1.1 h2, rfl⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.DiagSiegel.thetaDiagInt`. Use `congr 1`.
+-/
 theorem thetaDiag_transD (S T : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AE D) (κ : Type) [Fintype κ]
     (co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) ξ
       (incM D.host.F ((dblSp T).gramᵀ)) (incM D.host.F JB)) κ)
@@ -47,6 +53,15 @@ theorem thetaDiag_transD (S T : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.
   unfold GlobalTheory.DiagSiegel.thetaDiagInt
   congr 1
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `lattice_Mx D m' n'`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D m' n') := ⟨rfl⟩`. Use `haveI := h.1`.
+
+Set `f : Mx D m n ≃ₜ Mx D m' n'` to `{ e.toEquiv with continuous_toFun := he, continuous_invFun := he' }`. Establish `hemb : MeasurableEmbedding e` using `f.measurableEmbedding`. Use `⟨⟨e.isAddHaarMeasure_map μ he he', ?_, ?_⟩, hemb⟩` and prove the remaining obligations. Set `g : ratMx D m' n' ≃ ratMx D m n` to `{ toFun := fun γ => ⟨e.symm γ, hr' _ γ.2⟩ invFun := fun γ => ⟨e γ, hr _ γ.2⟩ left_inv := fun γ => Subtype.ext (e.apply_symm_apply _) right_inv := fun γ => Subtype.ext (e.symm_apply_apply _) }`. Use `h.2.1.image_of_equiv e.toEquiv ?_ g fun γ x => ?_` and prove the remaining obligations.
+
+Use `⟨he'.measurable, ?_⟩` and prove the remaining obligations. Establish `: (μ.map e).map e.symm = μ`. Rewrite using `[Measure.map_map he'.measurable he.measurable]`. Establish `: (e.symm ∘ e : Mx D m n → Mx D m n) = id` using `funext e.symm_apply_apply`. Rewrite using `[this, Measure.map_id]`.
+
+Conclude with `this.absolutelyContinuous`. Express the relevant statement in the definitionally equal form `e (e.symm γ + x) = γ + e x`. Rewrite using `[map_add, e.apply_symm_apply]`. Rewrite using `[hemb.map_apply, Set.preimage_image_eq _ e.injective]`. Conclude with `h.2.2`.
+-/
 theorem isCovolOne_map {m n m' n' : ℕ} {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)} (h : IsCovolOne (ratMx D m n) μ 𝓕)
     (e : Mx D m n ≃+ Mx D m' n') (he : Continuous e) (he' : Continuous e.symm)
     (hr : ∀ x ∈ ratMx D m n, e x ∈ ratMx D m' n') (hr' : ∀ x ∈ ratMx D m' n', e.symm x ∈ ratMx D m n) :
@@ -83,10 +98,18 @@ def gramT (T : HSp D) (n : ℕ) : Mx D n T.rank ≃+ Mx D T.rank n where
   right_inv a := by simp only [Matrix.transpose_transpose, gA_giA_cancel]
   map_add' w w' := by simp only [Matrix.transpose_add, Matrix.mul_add]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `mem_ratMx.1 hx`. Conclude with `⟨aᵀ, rfl⟩`.
+-/
 theorem ratMx_transpose {m n : ℕ} {x : Mx D m n} (hx : x ∈ ratMx D m n) : xᵀ ∈ ratMx D n m := by
   obtain ⟨a, rfl⟩ := mem_ratMx.1 hx
   exact ⟨aᵀ, rfl⟩
 
+/- English proof (translation)
+Establish `hj : (dblDec T).jX = (Matrix.fromRows (giA T) (giA T)).submatrix finSumFinEquiv.symm id`. Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨s | s, rfl⟩ := finSumFinEquiv.surjective i <;>`. Simplify using `only [HypDec.jX, dblDec, stackRows, rat, giA, Matrix.map_apply, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr]`. Rewrite using `[HypDec.incX_apply, hj]`.
+
+Use extensionality with `i j`. Establish `h : giA T ⬝ gramT T S.rank w = wᵀ` using `giA_gA_cancel T wᵀ`. Take `⟨s | s, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify `congrFun (congrFun h s) j` using `only [GlobalTheory.DiagSiegel.diagMat, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromCols_apply_inl]`. Simplify `congrFun (congrFun h s) j` using `only [GlobalTheory.DiagSiegel.diagMat, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inr]`.
+-/
 theorem incX_gramT (S T : HSp D) (w : Mx D S.rank T.rank) :
     (dblDec T).incX S (gramT T S.rank w) = (GlobalTheory.DiagSiegel.diagMat w)ᵀ := by
   have hj : (dblDec T).jX = (Matrix.fromRows (giA T) (giA T)).submatrix finSumFinEquiv.symm id := by
@@ -103,6 +126,11 @@ theorem incX_gramT (S T : HSp D) (w : Mx D S.rank T.rank) :
   · simpa only [GlobalTheory.DiagSiegel.diagMat, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, id,
       Equiv.symm_apply_apply, Matrix.fromRows_apply_inr, Matrix.fromCols_apply_inr] using congrFun (congrFun h s) j
 
+/- English proof (translation)
+Establish `hν' : IsCovolOne (ratMx D S.rank T.rank) ν 𝓕` using `hν`. Take `⟨hc, hemb⟩` from `isCovolOne_map hν' (gramT T S.rank) (continuous_const.matrix_mul continuous_id.matrix_transpose) (continuous_const.matrix_mul continuous_id).matrix_transpose (fun x hx => ratMx_mul (rat_mem _) (ratMx_transpose hx)) (fun x hx => ratMx_transpose (ratMx_mul (rat_mem _) hx))`. Use `⟨_, _, hc, fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [HypDec.mixT, HypDec.integrandT_eq]`. Simplify using `only [map_zero, add_zero, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul]`.
+
+Rewrite using `[hemb.setIntegral_map, Set.preimage_image_eq _ (gramT T S.rank).injective]`. Simplify using `only [incX_gramT]`.
+-/
 theorem diag_eq_mixT (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ν : Measure (WO T S)) (𝓕 : Set (WO T S))
     (hν : IsCovolOne (ratL S T) ν 𝓕) :
     ∃ (μ : Measure (Mx D T.rank S.rank)) (𝓕' : Set (Mx D T.rank S.rank)), IsCovolOne (ratMx D T.rank S.rank) μ 𝓕' ∧
@@ -120,6 +148,11 @@ theorem diag_eq_mixT (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ν : Measur
   rw [hemb.setIntegral_map, Set.preimage_image_eq _ (gramT T S.rank).injective]
   simp only [incX_gramT]
 
+/- English proof (translation)
+Establish `key : ∀ (s : Fin n ⊕ Fin n) (j : Fin n), M (finSumFinEquiv s) (finSumFinEquiv (.inl j)) + M (finSumFinEquiv s) (finSumFinEquiv (.inr j)) = t (s.elim id id) j`. Introduce `s j`. Establish `h1` using `h (finSumFinEquiv s) j`. Rewrite `h1` using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Apply the tactic sequence `rcases s with s | s <;>`.
+
+Simplify `h1` using `only [Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply, mul_ite, ite_mul, mul_one, one_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Sum.elim_inl, Sum.elim_inr]`. Use `⟨(keepsDiag_iff _).2 fun i j => (key (.inr i) j).trans (key (.inl i) j).symm, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `key (.inl i) j`.
+-/
 theorem keepsDiag_of_diagCols {A : Type} [CommRing A] {n : ℕ} {M : Matrix (Fin (n + n)) (Fin (n + n)) A}
     {t : Matrix (Fin n) (Fin n) A}
     (h : ∀ i j, ∑ k, M i k * (Matrix.fromRows (1 : Matrix (Fin n) (Fin n) A) 1).submatrix finSumFinEquiv.symm id k j =
@@ -138,6 +171,9 @@ theorem keepsDiag_of_diagCols {A : Type} [CommRing A] {n : ℕ} {M : Matrix (Fin
   ext i j
   exact key (.inl i) j
 
+/- English proof (translation)
+Establish `hk` using `keepsDiag_of_diagCols (n := T.rank) (M := p.1.1) (t := t.1) fun i j => congrFun (congrFun ht i) j`. Establish `hk1 : KeepsDiag finSumFinEquiv (mt (dblSp T) h)` using `hh ▸ hk.1`. Establish `hk2 : leviMat finSumFinEquiv (mt (dblSp T) h) = t.1` using `hh ▸ hk.2`. Conclude with `⟨mem_siegelOf.2 hk1, fun hs => Units.ext (congrArg Matrix.det hk2)⟩`.
+-/
 theorem siegel_of_diag (T : HSp D) (h : GA D (dblSp T))
     (p : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F ((GlobalTheory.Doubling.dblSp T).gramᵀ)))
     (hh : mt (dblSp T) h = p.1.1) (t : GL (Fin T.rank) (AF D.host.F ⊗[D.host.F] D.host.E))
@@ -151,6 +187,9 @@ theorem siegel_of_diag (T : HSp D) (h : GA D (dblSp T))
   have hk2 : leviMat finSumFinEquiv (mt (dblSp T) h) = t.1 := hh ▸ hk.2
   exact ⟨mem_siegelOf.2 hk1, fun hs => Units.ext (congrArg Matrix.det hk2)⟩
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.ModuAdele.modu_norm_eq_absE]`. Both sides reduce to the same expression.
+-/
 theorem ruleFac_absE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (χ : (AF F ⊗[F] E)ˣ →* Circle) (n : ℕ) {ρ : ℕ} (t : GL (Fin ρ) (AF F ⊗[F] E)) :
     GlobalTheory.DiagSiegel.ruleFac (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.WeilM.adeleClass F) χ n t =
@@ -159,6 +198,9 @@ theorem ruleFac_absE {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [← GlobalTheory.ModuAdele.modu_norm_eq_absE]
   rfl
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, h, Fintype.card_fin]`. Conclude with `(ruleFac_absE D.sp.cm.sig χ n t).symm`.
+-/
 theorem ruleFac_eq (χ : (AE D)ˣ →* Circle) (n : ℕ) {ρ : ℕ} (a : GL (Fin ρ) (AE D)) (t : GL (Fin ρ) (AF D.host.F ⊗[D.host.F] D.host.E))
     (h : Matrix.GeneralLinearGroup.det a = Matrix.GeneralLinearGroup.det t) :
     ((χ (Matrix.GeneralLinearGroup.det a) : Circle) : ℂ) * (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod n a : ℂ) =
@@ -167,6 +209,13 @@ theorem ruleFac_eq (χ : (AE D)ˣ →* Circle) (n : ℕ) {ρ : ℕ} (a : GL (Fin
   rw [GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, h, Fintype.card_fin]
   exact (ruleFac_absE D.sp.cm.sig χ n t).symm
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨om₀, h₀⟩ : ∃ om₀ : GA D S × GA D (zeroSp D) →* Module.End ℂ (WO S (zeroSp D) → ℂ), IsWeilDatumO ψ S (zeroSp D) χS 1 om₀ := by`. Use `hP D ψ S (zeroSp D) χS 1 hW.std hW.hecS hW.hecT hW.resS ?_` and prove the remaining obligations. Conclude with `⟨hW.resS.1, fun η _ a => by rw [show (zeroSp D).rank = 0 from rfl, pow_zero]; rfl⟩`. Take `⟨a, c, hp⟩` from `siegel_decomp T ⟨h, hs⟩`. Establish `haP` using `aP_decomp T ⟨h, hs⟩ a c hp`.
+
+Use `replace hp : h = (dblDec T).levi a * (dblDec T).nC c := hp`. Establish `hF'` using `hW.om_pres (1, (dblDec T).nC c) f hf`. Establish `hM` using `GlobalTheory.MixTargetProof.mixedTarget D ψ S (dblSp T) (zeroSp D) T.rank (dblDec T) χS 1 ωd om₀ hW h₀ μ 𝓕 hμ`. Establish `h1` using `(hM _ hF').levi a 0`. Establish `h2` using `(hM f hf).centre c 0`.
+
+Establish `e1 : ωd (1, h) f = ωd (1, (dblDec T).levi a) (ωd (1, (dblDec T).nC c) f)`. Rewrite using `[hp, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hq : (dblDec T).qT S c 0 = 0` using `by rw [HypDec.qT, map_zero, symplOH_zero_left]`. Rewrite using `[e1, h1, Matrix.zero_mul, h2, hq, AddChar.map_zero_eq_one, one_smul, Pi.smul_apply, smul_eq_mul, ruleFac_eq χS S.rank a t (haP.symm.trans ht)]`.
+-/
 theorem mixT_law (hP : GlobalTheory.Published.WeilRepresentationUnitaryPair) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
     (χS : (AE D)ˣ →* Circle) (ωd : GA D S × GA D (dblSp T) →* Module.End ℂ (WO S (dblSp T) → ℂ))
     (hW : IsWeilDatumO ψ S (dblSp T) χS 1 ωd) (μ : Measure (Mx D T.rank S.rank)) (𝓕 : Set (Mx D T.rank S.rank))
@@ -199,6 +248,13 @@ end
 
 open GlobalTheory.DblTargetTheta in
 
+/- English proof (translation)
+Introduce `D ψ hψ S T JB ξ hξ κ _ co hco ν 𝓕 hν χS hχ hη ωd hW omp homp p t hpt Φ hΦ`. Take `⟨h, hh⟩` from `exists_GA_of_UG (dblSp T) p`. Establish `hT` using `homp p 1 1 h hh (by simp) Φ hΦ`. Use `⟨hT.1, ?_⟩` and prove the remaining obligations. Establish `hf` using `GlobalTheory.ThetaTransformTheta.isThetaFunO_thetaTr D ψ hψ S (dblSp T) _ JB ξ rfl hξ κ co hco Φ hΦ`.
+
+Take `⟨μ, 𝓕', hμ, hI⟩` from `diag_eq_mixT ψ S T ν 𝓕 hν`. Establish `key` using `siegel_of_diag T h p hh t hpt`. Establish `hL` using `mixT_law GlobalTheory.weilRepresentationUnitaryPair ψ S T χS ωd hW μ 𝓕' hμ _ hf h key.1 t (key.2 key.1)`. Establish `e2 : (∫ w in 𝓕, GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ (omp (p, 1) Φ) (GlobalTheory.DiagSiegel.diagMat w)ᵀ ∂ν) = ∫ w in 𝓕, ωd (1, h) (GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ) (GlobalTheory.DiagSiegel.diagMat w)ᵀ ∂ν` using `by rw [hT.2]`. Use `(thetaDiag_transD S T JB ξ κ co ψ ν 𝓕 (omp (p, 1) Φ)).trans ?_` and prove the remaining obligations.
+
+Use `e2.trans ?_` and prove the remaining obligations. Use `(hI _).trans ?_` and prove the remaining obligations. Use `hL.trans ?_` and prove the remaining obligations. Conclude with `congrArg (_ * ·) ((hI _).symm.trans (thetaDiag_transD S T JB ξ κ co ψ ν 𝓕 Φ).symm)`.
+-/
 theorem GlobalTheory.DblTargetTheta.thetaDiag_rule : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (ξ : AF D.host.F ⊗[D.host.F] D.host.E),
         ξ • incM D.host.F JB = incM D.host.F (D.host.xi0 • S.gram⁻¹) →

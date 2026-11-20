@@ -27,6 +27,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 open GlobalTheory.CompanionTheory.LeibOrd.Main in
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `n m ρ τ N hN h hρ hτ`. Substitute `hN` using the available equality.
+
+Conclude with `miso_refl _`. Consider the case `succ j ih`. Introduce `n m ρ τ N hN h hρ hτ`. Substitute `hN` using the available equality. Establish `h2 : m + (n + (j + 1)) = (m + (n + j)) + 1` using `by omega`.
+
+Establish `e : m + (n + j) = (m + n) + j` using `by omega`. Establish `s1` using `GlobalTheory.CompanionTheory.LeibPhi.phiGP k ψ hc h1 m (n + j) ρ τ hρ hτ`. Establish `s2 : MIso (phiN ψ (mcast h (prodGPn ρ τ))) (mcast e (prodGPn ρ (phiN ψ τ)))`. Rewrite using `[phiN_mcast ψ _ h h2 e]`. Conclude with `miso_mcast e s1`.
+
+Conclude with `miso_trans (miso_iterN ψ j s2) (ih n m ρ (phiN ψ τ) _ rfl e hρ (isSmooth_phiN ψ hτ))`.
+-/
 theorem gp_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
     ∀ (j n m : ℕ) (ρ : GRep k m) (τ : MRep k (n + j)) (N : ℕ) (hN : m + n = N) (h : m + (n + j) = N + j),
       IsSmooth ρ.ρ → IsSmooth τ.ρ →
@@ -48,6 +57,11 @@ theorem gp_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
       exact miso_mcast e s1
     exact miso_trans (miso_iterN ψ j s2) (ih n m ρ (phiN ψ τ) _ rfl e hρ (isSmooth_phiN ψ hτ))
 
+/- English proof (translation)
+Use `⟨fun f f' => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Conclude with `Subsingleton.elim _ _`.
+-/
 theorem subsingleton_cInd {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     (H : Subgroup G) (σ : Representation ℂ H W) [Subsingleton W] : Subsingleton (cIndSpace H σ) := by
   refine ⟨fun f f' => ?_⟩
@@ -57,6 +71,11 @@ theorem subsingleton_cInd {G W : Type} [Group G] [TopologicalSpace G] [IsTopolog
   funext g
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Use `haveI : Subsingleton ((ρ.tw (((j + 1 : ℕ) : ℝ) / 2)).V ⊗[ℂ] (mtw τ (-((m : ℕ) : ℝ) / 2)).V) := by haveI : Subsingleton (ρ.tw (((j + 1 : ℕ) : ℝ) / 2)).V := h`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : (ρ.tw (((j + 1 : ℕ) : ℝ) / 2)).V ⊗[ℂ] (mtw τ (-((m : ℕ) : ℝ) / 2)).V, z = 0`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => rfl`. Consider the case `tmul a b => rw [Subsingleton.elim a 0, TensorProduct.zero_tmul]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Rewrite using `[key x, key y]`. Conclude with `subsingleton_cInd _ _`.
+-/
 theorem subsingleton_prodGPn {m j : ℕ} (ρ : GRep k m) (τ : MRep k j) (h : Subsingleton ρ.V) :
     Subsingleton (prodGPn ρ τ).V := by
   haveI : Subsingleton ((ρ.tw (((j + 1 : ℕ) : ℝ) / 2)).V ⊗[ℂ] (mtw τ (-((m : ℕ) : ℝ) / 2)).V) := by
@@ -73,6 +92,17 @@ theorem subsingleton_prodGPn {m j : ℕ} (ρ : GRep k m) (τ : MRep k j) (h : Su
 
 open GlobalTheory.CompanionTheory.LeibOrd.Main in
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `n t τ σ N hN h hτ hσ _`. Substitute `hN` using the available equality.
+
+Conclude with `miso_refl _`. Consider the case `succ j ih`. Introduce `n t τ σ N hN h hτ hσ hv`. Substitute `hN` using the available equality. Establish `e : (n + j) + (t + 1) = (n + (t + 1)) + j` using `by omega`.
+
+Establish `h2 : (n + j + 1) + (t + 1) = ((n + j) + t + 1) + 1` using `by omega`. Establish `e0 : (n + j) + t + 1 = (n + (t + 1)) + j` using `by omega`. Establish `hext` using `GlobalTheory.T.phi_pg_commutation_holds k ψ hc h1 (n + j) t τ σ hτ hσ`. Establish `hz : Subsingleton (psiN τ).V` using `hv 0 (n + (j + 1)) rfl (by omega)`. Use `haveI : Subsingleton (mcast (by omega : (n + j + 1) + t = (n + j) + t + 1) (prodGPn (psiN τ) (gres σ))).V := subsingleton_mcast _ (subsingleton_prodGPn _ _ hz)`.
+
+Take `⟨q⟩` from `equiv_of_ses_zero (ses_of_mext hext)`. Establish `s2 : MIso (phiN ψ (mcast h (prodPGn τ σ))) (mcast e (prodPGn (phiN ψ τ) σ))`. Rewrite using `[phiN_mcast ψ _ h h2 e0]`. Use `miso_mcast e0 (miso_symm (⟨q⟩ : MIso _ _))` as an intermediate fact. Rewrite `this` using `[mcast_mcast]`. Then use the resulting hypothesis.
+
+Use `miso_trans (miso_iterN ψ j s2) (ih n t (phiN ψ τ) σ _ rfl e (isSmooth_phiN ψ hτ) hσ ?_)` and prove the remaining obligations. Introduce `i n' e' hi`. Establish `e'' : n + (j + 1) = n' + (i + 1)` using `by omega`. Establish `h3 : Subsingleton (dN ψ i (phiN ψ (mcast e'' τ))).V` using `hv (i + 1) n' e'' (by omega)`. Rewrite `h3` using `[phiN_mcast ψ τ e'' rfl e']`. Then use the resulting hypothesis.
+-/
 theorem pg_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
     ∀ (j n t : ℕ) (τ : MRep k (n + j)) (σ : GRep k (t + 1)) (N : ℕ) (hN : n + (t + 1) = N)
       (h : (n + j) + (t + 1) = N + j), IsSmooth τ.ρ → IsSmooth σ.ρ →
@@ -107,6 +137,9 @@ theorem pg_iter (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) :
 
 open GlobalTheory.CompanionTheory.LeibOrd.DerivTw in
 
+/- English proof (translation)
+Take `⟨e1⟩` from `giso_psiG (iterN_iso ψ j τ)`. Take `⟨e2⟩` from `psiG_mtw (iterPhi k ψ j τ) (-(j : ℝ) / 2)`. Take `⟨e3⟩` from `GlobalTheory.CompanionTheory.BZMir.iterPhi_twJacquet_equiv k ψ n j τ`. Conclude with `⟨(e1.toLinearEquiv.trans e2.toLinearEquiv).trans e3⟩`.
+-/
 theorem dN_equiv (ψ : AddChar k Circle) {n : ℕ} (j : ℕ) (τ : MRep k (n + j)) :
     Nonempty ((dN ψ j τ).V ≃ₗ[ℂ] TwJacquet τ.ρ (derUnipM k (n + j) n) (derCharM k ψ (n + j) n)) := by
   obtain ⟨e1⟩ := giso_psiG (iterN_iso ψ j τ)
@@ -114,6 +147,9 @@ theorem dN_equiv (ψ : AddChar k Circle) {n : ℕ} (j : ℕ) (τ : MRep k (n + j
   obtain ⟨e3⟩ := GlobalTheory.CompanionTheory.BZMir.iterPhi_twJacquet_equiv k ψ n j τ
   exact ⟨(e1.toLinearEquiv.trans e2.toLinearEquiv).trans e3⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨q⟩` from `dN_equiv ψ i (gres π)`. Establish `h : twKer (gres π).ρ (derUnipM k (n' + i) n') (derCharM k ψ (n' + i) n') = ⊤` using `(GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM k ψ (n' + i) n' π.V π.ρ).trans (GlobalTheory.T.cuspidal_twisted_kernel_top k ψ _ _ _ π.ρ hcu hn (by omega))`. Use `haveI : Subsingleton (TwJacquet (gres π).ρ (derUnipM k (n' + i) n') (derCharM k ψ (n' + i) n')) := Submodule.Quotient.subsingleton_iff.2 h`. Conclude with `q.toEquiv.subsingleton`.
+-/
 theorem dN_gres_vanish (ψ : AddChar k Circle) {p : ℕ} (π : GRep k (p + 1)) (hcu : IsCuspidal π.ρ) (i n' : ℕ)
     (e : p = n' + i) (hn : 0 < n') : Subsingleton (dN ψ i (mcast e (gres π))).V := by
   subst e
@@ -125,6 +161,11 @@ theorem dN_gres_vanish (ψ : AddChar k Circle) {p : ℕ} (π : GRep k (p + 1)) (
     Submodule.Quotient.subsingleton_iff.2 h
   exact q.toEquiv.subsingleton
 
+/- English proof (translation)
+Use `⟨fun a b => Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Establish `ha` using `(mem_Mir_iff k _).1 a.2`. Establish `hb` using `(mem_Mir_iff k _).1 b.2`. Use extensionality with `i j`. Take `rfl : i = Fin.last 0` from `Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)`.
+
+Conclude with `congrFun (ha.trans hb.symm) j`.
+-/
 theorem subsingleton_mir_zero : Subsingleton (Mir k 0) := by
   refine ⟨fun a b => Subtype.ext (Units.ext ?_)⟩
   have ha := (mem_Mir_iff k _).1 a.2
@@ -135,6 +176,9 @@ theorem subsingleton_mir_zero : Subsingleton (Mir k 0) := by
 
 open GlobalTheory.LocGL GlobalTheory.BZSeg
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: χ = χ'` using `funext fun u => hχ u`. Rewrite using `[this]`.
+-/
 theorem rank_functionals_congr {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) {N N' : Subgroup G} (h : N = N') (χ : N → ℂ) (χ' : N' → ℂ)
     (hχ : ∀ u : N, χ u = χ' ⟨u, h ▸ u.2⟩) :
@@ -144,6 +188,13 @@ theorem rank_functionals_congr {G V : Type} [Group G] [AddCommGroup V] [Module �
   have : χ = χ' := funext fun u => hχ u
   rw [this]
 
+/- English proof (translation)
+Establish `hadm : GroundTheory.Automorphic.IsAdmissible π` using `(GlobalTheory.CompanionTheory.AdmDict.isAdmissible_iff π).1 (PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top k N V π hs hi)`. Establish `hc0 : Continuous (Circle.coeHom.compAddChar ψ)` using `continuous_subtype_val.comp hc`. Establish `h10 : Circle.coeHom.compAddChar ψ ≠ 1`. Introduce `h`. Apply `h1` to reduce the goal to its premises.
+
+Use extensionality with `x`. Establish `h2 : Circle.coeHom (ψ x) = 1` using `by simpa using DFunLike.congr_fun h x`. Establish `h3 : ((ψ x : Circle) : ℂ) = 1` using `h2`. Simplify using `using h3`. Use `haveI := hi`.
+
+Establish `hle` using `GroundTheory.Automorphic.ContragredientTranspose.rank_whittaker_le_one (Circle.coeHom.compAddChar ψ) hc0 h10 π hadm`. Rewrite using `[GlobalTheory.CompanionTheory.TwistedDual.rank_twJacquet_le_one_iff]`. Rewrite using `[rank_functionals_congr π (GlobalTheory.CompanionTheory.IwasawaDict.unipB_eq_unipotent k N) _ (fun u => GroundTheory.Automorphic.Whittaker.psiN (Circle.coeHom.compAddChar ψ) (u : GL (Fin N) k)) (fun u => GlobalTheory.CompanionTheory.WhitDict.whitChar_eq_psiN k ψ N u)]`. Conclude with `hle`.
+-/
 theorem whit_rank_le (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (N : ℕ) {V : Type} [AddCommGroup V]
     [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) :
     Module.rank ℂ (TwJacquet π (unipB k (Fin N)) (whitChar ψ N)) ≤ 1 := by
@@ -166,6 +217,13 @@ theorem whit_rank_le (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1
     (fun u => GlobalTheory.CompanionTheory.WhitDict.whitChar_eq_psiN k ψ N u)]
   exact hle
 
+/- English proof (translation)
+Establish `hV : Nontrivial π.V`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Take `⟨a, b, hab⟩` from `hi.toNontrivial.exists_pair_ne`. Apply `hab` to reduce the goal to its premises.
+
+Use extensionality with `x`. Simplify using `[Subsingleton.elim x 0]`. Establish `hg : IsGenericFor ψ π.ρ` using `GlobalTheory.T.cuspidal_is_generic k ψ hc h1 p _ π.ρ hcu hV`. Establish `hle` using `whit_rank_le ψ hc h1 (p + 1) π.ρ hs hi`. Use `haveI : Nontrivial (TwJacquet π.ρ (unipB k (Fin (p + 1))) (whitChar ψ (p + 1))) := hg`.
+
+Conclude with `Module.finrank_eq_of_rank_eq (le_antisymm hle (Cardinal.one_le_iff_pos.2 rank_pos))`.
+-/
 theorem finrank_whit (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {p : ℕ} (π : GRep k (p + 1))
     (hs : IsSmooth π.ρ) (hi : π.ρ.IsIrreducible) (hcu : IsCuspidal π.ρ) :
     Module.finrank ℂ (TwJacquet π.ρ (unipB k (Fin (p + 1))) (whitChar ψ (p + 1))) = 1 := by
@@ -181,6 +239,13 @@ theorem finrank_whit (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1
   haveI : Nontrivial (TwJacquet π.ρ (unipB k (Fin (p + 1))) (whitChar ψ (p + 1))) := hg
   exact Module.finrank_eq_of_rank_eq (le_antisymm hle (Cardinal.one_le_iff_pos.2 rank_pos))
 
+/- English proof (translation)
+Take `⟨q⟩` from `dN_equiv ψ m (gres π)`. Establish `hb : twKer (iterN ψ m (gres π)).ρ (MirUin k 0) 1 = ⊥` using `by haveI := subsingleton_mir_zero (k := k)`. Unfold `twKer`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `w ⟨u, v, rfl⟩`.
+
+Establish `hu : (u : Mir k 0) = 1` using `Subsingleton.elim _ _`. Establish `hu' : u = 1` using `Subtype.ext hu`. Substitute `hu'` using the available equality. Simplify using the standard rewrite rules. Establish `hk : twKer (gres π).ρ (derUnipM k (0 + m) 0) (derCharM k ψ (0 + m) 0) = twKer π.ρ (unipB k (Fin (0 + m + 1))) (whitChar ψ (0 + m + 1))` using `(GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM k ψ (0 + m) 0 π.V π.ρ).trans (GlobalTheory.CompanionTheory.DerWhit.twKer_derUnip_zero (k := k) ψ (0 + m + 1) π.V π.ρ)`.
+
+Establish `e1 : (iterN ψ m (gres π)).V ≃ₗ[ℂ] (dN ψ m (gres π)).V` using `(Submodule.quotEquivOfEqBot _ hb).symm`. Establish `e3 : TwJacquet (gres π).ρ (derUnipM k (0 + m) 0) (derCharM k ψ (0 + m) 0) ≃ₗ[ℂ] TwJacquet π.ρ (unipB k (Fin (0 + m + 1))) (whitChar ψ (0 + m + 1))` using `Submodule.quotEquivOfEq (M := π.V) _ _ hk`. Rewrite using `[e1.finrank_eq, q.finrank_eq, e3.finrank_eq]`. Conclude with `finrank_whit ψ hc h1 π hs hi hcu`.
+-/
 theorem finrank_iterN (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) {m : ℕ} (π : GRep k (0 + m + 1))
     (hs : IsSmooth π.ρ) (hi : π.ρ.IsIrreducible) (hcu : IsCuspidal π.ρ) :
     Module.finrank ℂ (iterN ψ m (gres π)).V = 1 := by
@@ -206,19 +271,49 @@ theorem finrank_iterN (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 
 
 def glCast {a b : ℕ} (c : a = b) (g : GL (Fin a) k) : GL (Fin b) k := c ▸ g
 
+/- English proof (translation)
+Substitute `c` using the available equality. Both sides reduce to the same expression.
+-/
 theorem glCast_apply {a b : ℕ} (c : a = b) (g : GL (Fin a) k) (i j : Fin b) :
     (glCast c g : GL (Fin b) k).val i j = g.val (Fin.cast c.symm i) (Fin.cast c.symm j) := by
   subst c; rfl
 
+/- English proof (translation)
+Substitute `c` using the available equality. Both sides reduce to the same expression.
+-/
 theorem glCast_glCast {a b : ℕ} (c : a = b) (g : GL (Fin b) k) : glCast c (glCast c.symm g) = g := by
   subst c; rfl
 
 open GlobalTheory.CompanionTheory.MirFourier GlobalTheory.CompanionTheory.MirLevi GlobalTheory.CompanionTheory.BZOnto.PerpSmall
 
+/- English proof (translation)
+The claim follows from `(isOpen_polyBall n s).preimage (continuous_ofAdd.comp (continuous_id.sub continuous_const))`.
+-/
 theorem isOpen_shiftBall (n : ℕ) (s : kˣ) (p : Fin n → k) :
     IsOpen {v : Fin n → k | Multiplicative.ofAdd (v - p) ∈ polyBall (k := k) n s} :=
   (isOpen_polyBall n s).preimage (continuous_ofAdd.comp (continuous_id.sub continuous_const))
 
+/- English proof (translation)
+Establish `hloc : ∀ p : Fin n → k, ∃ s : kˣ, ∀ a : Fin n → k, Multiplicative.ofAdd a ∈ polyBall (k` using `k) n s → φ (p + a) = φ p := by`. Introduce `p`. Establish `hU : (fun x : Multiplicative (Fin n → k) => p + Multiplicative.toAdd x) ⁻¹' (φ ⁻¹' {φ p}) ∈ nhds (1 : Multiplicative (Fin n → k))`. Use `((hl.isOpen_fiber (φ p)).preimage (continuous_const.add continuous_toAdd)).mem_nhds ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Take `⟨s, hs⟩` from `exists_polyBall_subset hU`. Conclude with `⟨s, fun a ha => hs ha⟩`. Use `choose sp hsp using hloc`. Take `⟨t, ht⟩` from `hK.isCompact.elim_finite_subcover (fun p : Fin n → k => {v : Fin n → k | Multiplicative.ofAdd (v - p) ∈ polyBall (k := k) n (sp p)}) (fun p => isOpen_shiftBall n (sp p) p) (fun v _ => Set.mem_iUnion.2 ⟨v, by simp [sub_self, one_mem]⟩)`. Establish `hcom : ∀ t : Finset (Fin n → k), ∃ s : kˣ, ∀ p ∈ t, polyBall (k` using `k) n s ≤ polyBall n (sp p) := by`.
+
+Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨1, by simp⟩`. Consider the case `insert a t _ ih`. Take `⟨S, hS⟩` from `ih`.
+
+Take `⟨s, h1, h2⟩` from `exists_common n S (sp a)`. Use `⟨s, fun p hp => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Conclude with `h2`. Conclude with `h1.trans (hS p hp)`.
+
+Take `⟨s, hs⟩` from `hcom t`. Establish `key : ∀ v ∈ tsupport φ, ∀ a : Fin n → k, Multiplicative.ofAdd a ∈ polyBall (k` using `k) n s → φ (v + a) = φ v := by`. Introduce `v hv a ha`. Take `⟨p, hp, hvp⟩ : ∃ p ∈ t, Multiplicative.ofAdd (v - p) ∈ polyBall (k` from `k) n (sp p) := by`. Use `ht hv` as an intermediate fact.
+
+Simplify using `only [Set.mem_iUnion] at this`. Take `⟨p, hp, h⟩` from `this`. Conclude with `⟨p, hp, h⟩`. Establish `h2 : Multiplicative.ofAdd (v + a - p) ∈ polyBall (k` using `k) n (sp p) := by`. Use `mul_mem hvp (hs p hp ha)` as an intermediate fact.
+
+Rewrite `this` using `[← ofAdd_add]`. Rewrite `this` using `[show v - p + a = v + a - p by abel]`. Then use the resulting hypothesis. Establish `e1` using `hsp p _ hvp`. Establish `e2` using `hsp p _ h2`. Rewrite `e1` using `[show p + (v - p) = v by abel]`.
+
+Rewrite `e2` using `[show p + (v + a - p) = v + a by abel]`. Rewrite using `[e1, e2]`. Use `⟨s, fun v a ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ tsupport φ`. Conclude with `key v hv a ha`.
+
+Distinguish the cases in `hv' : v + a ∈ tsupport φ`. Establish `h3 : Multiplicative.ofAdd (-a) ∈ polyBall (k` using `k) n s := by`. Use `inv_mem ha` as an intermediate fact. Rewrite `this` using `[← ofAdd_neg]`. Then use the resulting hypothesis. Use `key _ hv' (-a) h3` as an intermediate fact.
+
+Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hv, image_eq_zero_of_notMem_tsupport hv']`.
+-/
 theorem exists_period {n : ℕ} {E : Type} [AddCommGroup E] (φ : (Fin n → k) → E) (hl : IsLocallyConstant φ)
     (hK : HasCompactSupport φ) :
     ∃ s : kˣ, ∀ v a : Fin n → k, Multiplicative.ofAdd a ∈ polyBall (k := k) n s → φ (v + a) = φ v := by
@@ -278,6 +373,11 @@ theorem exists_period {n : ℕ} {E : Type} [AddCommGroup E] (φ : (Fin n → k) 
       exact this.symm
     · rw [image_eq_zero_of_notMem_tsupport hv, image_eq_zero_of_notMem_tsupport hv']
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `restr_periodic ρ f`. Use `(IsLocallyConstant.iff_exists_open _).2 fun v => ⟨_, isOpen_shiftBall n s v, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `show Multiplicative.ofAdd (v - v) ∈ polyBall (k := k) n s`. Rewrite using `[sub_self, ofAdd_zero]`. Conclude with `one_mem _`.
+
+Establish `hy' : Multiplicative.ofAdd (y - v) ∈ polyBall (k` using `k) n s := hy`. Establish `e : v + (y - v) = y` using `by abel`. Conclude with `(congrArg (restr ρ f) e).symm.trans (hs v (y - v) hy')`.
+-/
 theorem restr_lc {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Representation ℂ (LH k n) E)
     (f : cIndSpace (LH k n) ρ) : IsLocallyConstant (restr ρ f) := by
   obtain ⟨s, hs⟩ := restr_periodic ρ f
@@ -288,6 +388,9 @@ theorem restr_lc {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Repr
   have e : v + (y - v) = y := by abel
   exact (congrArg (restr ρ f) e).symm.trans (hs v (y - v) hy')
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `restr_support ρ f`. Use `HasCompactSupport.intro ((isCompact_polyBall n S).image continuous_toAdd) fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv ⟨Multiplicative.ofAdd v, hS v h, rfl⟩`.
+-/
 theorem restr_cs {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Representation ℂ (LH k n) E)
     (f : cIndSpace (LH k n) ρ) : HasCompactSupport (restr ρ f) := by
   obtain ⟨S, hS⟩ := restr_support ρ f
@@ -303,6 +406,11 @@ def restrS {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Representa
 
 set_option maxHeartbeats 2000000 in
 open Classical in
+/- English proof (translation)
+Introduce `f`. Take `⟨s, hs⟩` from `exists_period f.1 f.2.1 f.2.2`. Take `⟨S, hS⟩` from `exists_compact_polyBall n f.2.2.isCompact`. Take `⟨R, hR⟩` from `exists_reps f.1 s S hs (fun v hv => hS v (subset_tsupport _ hv))`. Use `choose b hb using fun e : E => exists_bump ρ hρ s e`.
+
+Use `⟨∑ x ∈ R, cInd (LH k n) ρ (uv n (-x)) (b (f.1 x)), Subtype.ext (funext fun v => ?_)⟩` and prove the remaining obligations. Establish `hx : ∀ x, restr ρ (cInd (LH k n) ρ (uv n (-x)) (b (f.1 x))) v = if Multiplicative.ofAdd (v - x) ∈ polyBall (k` using `k) n s then f.1 x else 0 := fun x => (restr_uv ρ (-x) _ v).trans ((hb (f.1 x) (v + -x)).trans (by rw [sub_eq_add_neg]))`. Use `(congrFun (map_sum (restr ρ) _ _) v).trans ((Finset.sum_apply _ _ _).trans ?_)` and prove the remaining obligations. Conclude with `(Finset.sum_congr rfl fun x _ => hx x).trans (hR v).symm`.
+-/
 theorem restrS_surjective {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Representation ℂ (LH k n) E)
     (hρ : IsSmooth ρ) : Function.Surjective (restrS ρ) := by
   intro f
@@ -317,6 +425,9 @@ theorem restrS_surjective {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (
   refine (congrFun (map_sum (restr ρ) _ _) v).trans ((Finset.sum_apply _ _ _).trans ?_)
   exact (Finset.sum_congr rfl fun x _ => hx x).trans (hR v).symm
 
+/- English proof (translation)
+Establish `hi : Function.Injective (restrS ρ)` using `fun f f' h => restr_injective ρ (congrArg Subtype.val h)`. Use `⟨(LinearEquiv.ofBijective (restrS ρ) ⟨hi, restrS_surjective ρ hρ⟩).symm, fun f y => ?_⟩` and prove the remaining obligations. Use `(LinearEquiv.ofBijective (restrS ρ) ⟨hi, restrS_surjective ρ hρ⟩).apply_symm_apply f` as an intermediate fact. Conclude with `congrFun (congrArg Subtype.val this) y`.
+-/
 theorem model_LH {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Representation ℂ (LH k n) E) (hρ : IsSmooth ρ) :
     ∃ e : SchF k n E ≃ₗ[ℂ] cIndSpace (LH k n) ρ, ∀ f y, restr ρ (e f) y = f.1 y := by
   have hi : Function.Injective (restrS ρ) := fun f f' h =>
@@ -327,6 +438,9 @@ theorem model_LH {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (ρ : Repr
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Substitute `hH` using the available equality. Take `⟨e, he⟩` from `model_LH ρ hρ`. Use `⟨e, fun x f => restr_injective ρ (funext fun y => ?_), fun g f => restr_injective ρ (funext fun y => ?_)⟩` and prove the remaining obligations. Conclude with `(he _ y).trans ((he f (y + x)).symm.trans (restr_uv ρ x (e f) y).symm)`. Conclude with `(he _ y).trans ((congrArg (ρ (lv k n g)) (he f _)).symm.trans (restr_levi ρ g (e f) y).symm)`.
+-/
 theorem model_H {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (H : Subgroup (Mir k n)) (hH : H = LH k n)
     (ρ : Representation ℂ H E) (hρ : IsSmooth ρ) (hm : ∀ g, levi k n g ∈ H) :
     ∃ e : SchF k n E ≃ₗ[ℂ] cIndSpace H ρ, (∀ x f, e (shiftF x f) = cInd H ρ (uM n x) (e f)) ∧
@@ -337,9 +451,17 @@ theorem model_H {n : ℕ} {E : Type} [AddCommGroup E] [Module ℂ E] (H : Subgro
   · exact (he _ y).trans ((he f (y + x)).symm.trans (restr_uv ρ x (e f) y).symm)
   · exact (he _ y).trans ((congrArg (ρ (lv k n g)) (he f _)).symm.trans (restr_levi ρ g (e f) y).symm)
 
+/- English proof (translation)
+Simplify using `[ePG, two]`.
+-/
 theorem ePG_zero_true' (t : ℕ) (b : Fin t) : (ePG 0 t ⟨true, b⟩ : Fin (0 + t + 1)).val = b.val := by
   simp [ePG, two]
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `haveI := subsingleton_mir_zero (k := k)`. Conclude with `Subsingleton.elim _ _`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Use `show ((levi k (0 + t) g : Mir k (0 + t)) : GL (Fin (0 + t + 1)) k).val (ePG 0 t ⟨true, i⟩) (ePG 0 t ⟨true, j⟩) = (glCast c g).val i j`. Establish `e : ∀ b : Fin t, (ePG 0 t ⟨true, b⟩ : Fin (0 + t + 1)) = Fin.castSucc (Fin.cast c.symm b)` using `fun b => Fin.ext ((ePG_zero_true' t b).trans rfl)`. Rewrite using `[e, e, glCast_apply]`. Use `show glEmbMat k _ g.val _ _ = _`. Simplify using `[glEmbMat]`.
+-/
 theorem pg_levi (t : ℕ) (c : 0 + t = t) (g : GL (Fin (0 + t)) k) (h : levi k (0 + t) g ∈ HPG k 0 t) :
     pgProj k 0 t ⟨_, h⟩ = (1, glCast c g) := by
   refine Prod.ext ?_ ?_
@@ -361,6 +483,11 @@ def schMap {d : ℕ} {E E' : Type} [AddCommGroup E] [Module ℂ E] [AddCommGroup
   map_add' f f' := Subtype.ext (funext fun y => map_add ι _ _)
   map_smul' c f := Subtype.ext (funext fun y => map_smul ι c _)
 
+/- English proof (translation)
+Substitute `c` using the available equality. Use `⟨LinearEquiv.ofLinear (schMap ι.toLinearMap) (schMap ι.symm.toLinearMap) ?_ ?_, fun x f => rfl, fun g f => ?_⟩` and prove the remaining obligations. Use extensionality with `f y`. Conclude with `congrFun (congrArg Subtype.val (rfl : _ = _)) y |>.trans (ι.apply_symm_apply _)`. Use extensionality with `f y`.
+
+Conclude with `ι.symm_apply_apply _`. Conclude with `Subtype.ext (funext fun y => hX g _)`.
+-/
 theorem model_cast {N t : ℕ} (c : N = t) {E E' : Type} [AddCommGroup E] [Module ℂ E] [AddCommGroup E'] [Module ℂ E']
     (ι : E ≃ₗ[ℂ] E') (X : Representation ℂ (GL (Fin t) k) E) (X' : Representation ℂ (GL (Fin N) k) E')
     (hX : ∀ g v, ι (X g v) = X' (glCast c.symm g) (ι v)) :
@@ -374,12 +501,18 @@ theorem model_cast {N t : ℕ} (c : N = t) {E E' : Type} [AddCommGroup E] [Modul
     exact ι.symm_apply_apply _
   · exact Subtype.ext (funext fun y => hX g _)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨LinearEquiv.refl _ _, fun _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem mcast_act {a b : ℕ} (h : a = b) (R : MRep k a) :
     ∃ E : R.V ≃ₗ[ℂ] (mcast h R).V, (∀ x v, E (R.ρ (uM a (x ∘ Fin.cast h)) v) = (mcast h R).ρ (uM b x) (E v)) ∧
       ∀ g v, E (R.ρ (levi k a (glCast h.symm g)) v) = (mcast h R).ρ (levi k b g) (E v) := by
   subst h
   exact ⟨LinearEquiv.refl _ _, fun _ _ => rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℂ W := Module.finite_of_finrank_pos (by omega)`. Set `e : ℂ ≃ₗ[ℂ] W` to `LinearEquiv.ofFinrankEq _ _ (by simp [h])`. Use `⟨e 1, (TensorProduct.lid ℂ V).symm.trans (TensorProduct.congr e (LinearEquiv.refl ℂ V)), fun v => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem exists_line_tensor {W V : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V]
     (h : Module.finrank ℂ W = 1) : ∃ (w : W) (ι : V ≃ₗ[ℂ] W ⊗[ℂ] V), ∀ v, ι v = w ⊗ₜ[ℂ] v := by
   haveI : Module.Finite ℂ W := Module.finite_of_finrank_pos (by omega)
@@ -389,6 +522,15 @@ theorem exists_line_tensor {W V : Type} [AddCommGroup W] [Module ℂ W] [AddComm
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hm : ∀ g, levi k (0 + t) g ∈ HPG k 0 t` using `fun g => by`. Rewrite using `[HPG_zero t]`. Conclude with `⟨g, rfl⟩`. Establish `hsm` using `smooth_pg 0 t (mtw τ (((t : ℕ) : ℝ) / 2)).ρ (σ.tw (-((0 + 1 : ℕ) : ℝ) / 2)).ρ (sm_mtw hτ _) (sm_tw hσ _)`. Take `⟨e, e1, e2⟩` from `model_H (HPG k 0 t) (HPG_zero t) _ hsm hm`.
+
+Take `⟨w, ι, hι⟩` from `exists_line_tensor (W := (mtw τ (((t : ℕ) : ℝ) / 2)).V) (V := (σ.tw (-((0 + 1 : ℕ) : ℝ) / 2)).V) h1`. Take `⟨T, T1, T2⟩` from `model_cast c ι (σ.tw (-((0 + 1 : ℕ) : ℝ) / 2)).ρ (((extTensor (mtw τ (((t : ℕ) : ℝ) / 2)).ρ (σ.tw (-((0 + 1 : ℕ) : ℝ) / 2)).ρ).comp (pgProj k 0 t)).comp ((levi k (0 + t)).codRestrict (HPG k 0 t) hm)) (fun g v => by show _ = extTensor _ _ (pgProj k 0 t ⟨levi k (0 + t) (glCast c.sy …`. Rewrite using `[pg_levi t c, glCast_glCast]`. Use `(hι _).trans (Eq.trans ?_ (congrArg _ (hι v)).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (extTensor_tmul _ _ _ _ _).symm` and prove the remaining obligations.
+
+Establish `h2 : (mtw τ (((t : ℕ) : ℝ) / 2)).ρ (1 : Mir k 0) w = w`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Conclude with `(congrArg (fun z => z ⊗ₜ[ℂ] ((σ.tw (-((0 + 1 : ℕ) : ℝ) / 2)).ρ g v)) h2).symm)`. Take `⟨E, E1, E2⟩` from `mcast_act c (prodPGn τ σ)`.
+
+Use `⟨(T.trans e).trans E, fun x f => ?_, fun g f => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun z => E (e z)) (T1 x f)).trans ((congrArg E (e1 _ (T f))).trans (E1 x _))`. Conclude with `(congrArg (fun z => E (e z)) (T2 g f)).trans ((congrArg E (e2 _ (T f))).trans (E2 g _))`.
+-/
 theorem model' (t : ℕ) (c : 0 + t = t) (τ : MRep k 0) (σ : GRep k t) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ)
     (h1 : Module.finrank ℂ τ.V = 1) :
     ∃ e : SchF k t σ.V ≃ₗ[ℂ] (mcast c (prodPGn τ σ)).V,
@@ -416,6 +558,13 @@ theorem model' (t : ℕ) (c : 0 + t = t) (τ : MRep k 0) (σ : GRep k t) (hτ : 
   · exact (congrArg (fun z => E (e z)) (T1 x f)).trans ((congrArg E (e1 _ (T f))).trans (E1 x _))
   · exact (congrArg (fun z => E (e z)) (T2 g f)).trans ((congrArg E (e2 _ (T f))).trans (E2 g _))
 
+/- English proof (translation)
+Use `show (g : GL (Fin (d + 0 + 1)) k) ∈ parab k (eGP d 0)`. Rewrite using `[mem_parab_iff]`. Introduce `a c i j hac`. Apply the tactic sequence `obtain ⟨rfl, rfl⟩ : a = true ∧ c = false := by revert hac; cases a <;> cases c <;> decide`. Establish `hi : i = Fin.last 0` using `Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)`.
+
+Substitute `hi` using the available equality. Rewrite using `[blockIndex_true_last]`. Establish `hh` using `congrFun ((mem_Mir_iff k _).1 g.2) (eGP d 0 ⟨false, j⟩)`. Rewrite using `[hh]`. Simplify using `only [eLast, Pi.single_apply]`.
+
+Conclude with `if_neg (blockIndex_false_ne_last d 0 j)`.
+-/
 theorem mem_mirabolicParabolic_zero_right (d : ℕ) (g : Mir k (d + 0)) : g ∈ MirabolicParabolic k d 0 := by
   show (g : GL (Fin (d + 0 + 1)) k) ∈ parab k (eGP d 0)
   rw [mem_parab_iff]
@@ -430,6 +579,13 @@ theorem mem_mirabolicParabolic_zero_right (d : ℕ) (g : Mir k (d + 0)) : g ∈ 
   simp only [eLast, Pi.single_apply]
   exact if_neg (blockIndex_false_ne_last d 0 j)
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show (1 + colMat k (d + 0) x) (eGP d 0 ⟨false, i⟩) (eGP d 0 ⟨false, j⟩) = (1 : Matrix (Fin d) (Fin d) k) i j`. Establish `hinj : eGP d 0 ⟨false, i⟩ = eGP d 0 ⟨false, j⟩ ↔ i = j`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Simplify using `using (eGP d 0).injective e`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+
+Establish `hl : eGP d 0 ⟨false, j⟩ ≠ Fin.last (d + 0)` using `blockIndex_false_ne_last d 0 j`. Simplify using `[colMat, hl, one_apply, hinj]`. Conclude with `fun h => absurd h hl`. Use `haveI := subsingleton_mir_zero (k := k)`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem gp_uM (d : ℕ) (x : Fin (d + 0) → k) (h : uM (d + 0) x ∈ MirabolicParabolic k d 0) : gpProj k d 0 ⟨_, h⟩ = 1 := by
   refine Prod.ext ?_ ?_
   · apply Units.ext
@@ -446,6 +602,13 @@ theorem gp_uM (d : ℕ) (x : Fin (d + 0) → k) (h : uM (d + 0) x ∈ MirabolicP
   · haveI := subsingleton_mir_zero (k := k)
     exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `hf : ∀ (h : H) (x : G), f.1.1.1 ((h : G) * x) = σ h (f.1.1.1 x)` using `f.1.1.2`.
+
+Use `show f.1.1.1 (g * u) = f.1.1.1 g`. Establish `a1` using `hf ⟨g, htop g⟩ u`. Establish `a2` using `hf ⟨u, htop u⟩ 1`. Establish `a3` using `hf ⟨g, htop g⟩ 1`. Rewrite `a2`, `a3` using `[mul_one]`.
+
+Simplify using `only at a1 a2 a3`. Rewrite using `[a1, a3, a2, h1]`.
+-/
 theorem cInd_top {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup W] [Module ℂ W]
     (H : Subgroup G) (σ : Representation ℂ H W) (htop : ∀ g, g ∈ H) (u : G) (h1 : ∀ w, σ ⟨u, htop u⟩ w = w)
     (f : cIndSpace H σ) : cInd H σ u f = f := by
@@ -462,6 +625,9 @@ theorem cInd_top {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup
   simp only at a1 a2 a3
   rw [a1, a3, a2, h1]
 
+/- English proof (translation)
+Use `cInd_top _ _ (mem_mirabolicParabolic_zero_right d) _ (fun w => ?_) v` and prove the remaining obligations. Use `show extTensor _ _ (gpProj k d 0 ⟨uM (d + 0) x, _⟩) w = w`. Rewrite using `[gp_uM, map_one]`. Both sides reduce to the same expression.
+-/
 theorem gp_triv {d : ℕ} (ρ : GRep k d) (Z : MRep k 0) (x : Fin (d + 0) → k) (v : (prodGPn ρ Z).V) :
     (prodGPn ρ Z).ρ (uM (d + 0) x) v = v := by
   refine cInd_top _ _ (mem_mirabolicParabolic_zero_right d) _ (fun w => ?_) v
@@ -469,24 +635,42 @@ theorem gp_triv {d : ℕ} (ρ : GRep k d) (Z : MRep k 0) (x : Fin (d + 0) → k)
   rw [gp_uM, map_one]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gres_cast {p q : ℕ} (h : p = q) (h' : p + 1 = q + 1) (π : GRep k (p + 1)) :
     gres (π.cast h') = mcast h (gres π) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hi`.
+-/
 theorem irr_cast {p q : ℕ} (h : p = q) (π : GRep k p) (hi : π.ρ.IsIrreducible) : (π.cast h).ρ.IsIrreducible := by
   subst h; exact hi
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hi`.
+-/
 theorem cusp_cast {p q : ℕ} (h : p = q) (π : GRep k p) (hi : IsCuspidal π.ρ) : IsCuspidal (π.cast h).ρ := by
   subst h; exact hi
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mcast_pg {p q t N : ℕ} (e : p = q) (τ : MRep k p) (σ : GRep k t) (h : p + t = N) (h' : q + t = N) :
     mcast h (prodPGn τ σ) = mcast h' (prodPGn (mcast e τ) σ) := by
   subst e; rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mcast_gp {p q r N : ℕ} (e : p = q) (ρ : GRep k r) (τ : MRep k p) (h : r + p = N) (h' : r + q = N) :
     mcast h (prodGPn ρ τ) = mcast h' (prodGPn ρ (mcast e τ)) := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `h` using `model' t c τ σ hτ hσ h1`. Rewrite `h` using `[show -((0 + 1 : ℕ) : ℝ) / 2 = -1 / 2 by norm_num]`. Then use the resulting hypothesis.
+-/
 theorem model (t : ℕ) (c : 0 + t = t) (τ : MRep k 0) (σ : GRep k t) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ)
     (h1 : Module.finrank ℂ τ.V = 1) :
     ∃ e : SchF k t σ.V ≃ₗ[ℂ] (mcast c (prodPGn τ σ)).V,
@@ -497,6 +681,23 @@ theorem model (t : ℕ) (c : 0 + t = t) (τ : MRep k 0) (σ : GRep k t) (hτ : I
 
 open GlobalTheory.CompanionTheory.LeibOrd.Main in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hc h1 m a b hs hb hi hcu`. Establish `e0 : m = 0 + m` using `by omega`. Establish `e1 : m + 1 = 0 + m + 1` using `by omega`. Establish `sa' : IsSmooth (a.cast e1).ρ` using `isSmooth_gcast e1 hs`. Establish `sb' : IsSmooth (b.cast e1).ρ` using `isSmooth_gcast e1 hb`.
+
+Establish `sga : IsSmooth (gres (a.cast e1)).ρ` using `isSmooth_gres sa'`. Establish `sgb : IsSmooth (gres (b.cast e1)).ρ` using `isSmooth_gres sb'`. Establish `hx` using `GlobalTheory.CompanionTheory.BZRes.resSeq k m m ((m + 1) + m) (by omega) a b hs hb`. Establish `ses` using `ses_iterN ψ hc m (n := m + 1) (isSmooth_mcast _ (isSmooth_prodPGn _ _)) (isSmooth_gres (isSmooth_gcast _ (isSmooth_prod _ _))) (isSmooth_mcast _ (isSmooth_prodGPn _ _)) (ses_of_mext hx)`. Establish `hτ₀ : IsSmooth (iterN ψ m (gres (a.cast e1))).ρ` using `isSmooth_iterN ψ m sga`.
+
+Establish `hfin` using `finrank_iterN ψ hc h1 (a.cast e1) sa' (irr_cast e1 a hi) (cusp_cast e1 a hcu)`. Establish `isoA : MIso (iterN ψ m (mcast (by omega : m + (m + 1) = (m + 1) + m) (prodPGn (gres a) b))) (mcast (by omega : 0 + (m + 1) = m + 1) (prodPGn (iterN ψ m (gres (a.cast e1))) b))`. Rewrite using `[mcast_pg e0 (gres a) b (by omega) (by omega : (0 + m) + (m + 1) = (m + 1) + m), ← gres_cast e0 e1 a]`. Conclude with `pg_iter ψ hc h1 m 0 m (gres (a.cast e1)) b (m + 1) (by omega) (by omega) sga hb (fun i n' e hi' => dN_gres_vanish ψ (a.cast e1) (cusp_cast e1 a hcu) i n' e (by omega))`. Establish `isoC : MIso (iterN ψ m (mcast (by omega : (m + 1) + m = (m + 1) + m) (prodGPn a (gres b)))) (prodGPn (m` using `m + 1) (j := 0) a (iterN ψ m (gres (b.cast e1)))) := by`.
+
+Rewrite using `[mcast_gp e0 a (gres b) (by omega) (by omega : (m + 1) + (0 + m) = (m + 1) + m), ← gres_cast e0 e1 b]`. Conclude with `gp_iter ψ hc h1 m 0 (m + 1) a (gres (b.cast e1)) (m + 1) rfl (by omega) hs sgb`. Take `⟨f, g, hf, hg, hinj, hsurj, hex⟩` from `ses`. Take `⟨eA⟩` from `isoA`. Take `⟨eC⟩` from `isoC`.
+
+Take `⟨e, he1, he2⟩` from `model (m + 1) (by omega) (iterN ψ m (gres (a.cast e1))) b hτ₀ hb hfin`. Use `⟨f ∘ₗ eA.symm.toLinearEquiv.toLinearMap ∘ₗ e.toLinearMap, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hinj.comp (eA.symm.toLinearEquiv.injective.comp e.injective)`. Introduce `x φ show f (eA.symm (e (shiftF x φ))) = _`. Rewrite using `[he1, eint eA.symm, hf]`.
+
+Both sides reduce to the same expression. Introduce `x φ`. Conclude with `(congrArg (fun z => f (eA.symm z)) (he2 x φ)).trans ((congrArg f (eint eA.symm _ _)).trans (hf _ _))`. Introduce `x v`. Establish `h0 : (Rm ψ a b).ρ (uM (m + 1) x) v - v ∈ LinearMap.ker g`.
+
+Establish `h4 : g ((Rm ψ a b).ρ (uM (m + 1) x) v) = g v`. Use `(hg _ _).trans ?_` and prove the remaining obligations. Apply `eC.toLinearEquiv.injective` to reduce the goal to its premises. Conclude with `(eint eC _ _).trans (gp_triv a _ x _)`. Conclude with `(map_sub g _ _).trans (sub_eq_zero.2 h4)`.
+
+Take `⟨w, hw⟩` from `hex.ge h0`. Take `⟨φ, hφ⟩` from `e.surjective (eA w)`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun z => f (eA.symm z)) hφ).trans ((congrArg f (Representation.Equiv.symm_apply_apply eA w)).trans hw)`.
+-/
 theorem open_part : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (hc : Continuous ψ) (h1 : ψ ≠ 1) (m : ℕ) (a b : GRep k (m + 1))
     (hs : IsSmooth a.ρ) (hb : IsSmooth b.ρ) (hi : a.ρ.IsIrreducible) (hcu : IsCuspidal a.ρ),

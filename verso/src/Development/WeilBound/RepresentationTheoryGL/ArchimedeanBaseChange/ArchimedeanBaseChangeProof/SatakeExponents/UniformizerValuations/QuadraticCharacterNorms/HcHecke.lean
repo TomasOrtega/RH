@@ -17,6 +17,11 @@ set_option linter.unusedSimpArgs false
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Unfold `ordL at hx`. Distinguish the cases in `h1 : Valued.v x = 0`. Rewrite `hx` using `[dif_pos h1]`. Conclude with `absurd hx (by norm_num)`. Rewrite `hx` using `[dif_neg h1]`.
+
+Unfold `IsUnifV`. Rewrite using `[← WithZero.coe_unzero h1]`. Use `congr 1`. Establish `e : Multiplicative.toAdd (WithZero.unzero h1) = -1` using `by omega`. Rewrite using `[← e, ofAdd_toAdd]`.
+-/
 theorem fok_unif {w : Pl E} {x : w.adicCompletion E} (hx : ordL x = 1) : IsUnifV E w x := by
   unfold ordL at hx
   by_cases h1 : Valued.v x = 0
@@ -29,6 +34,13 @@ theorem fok_unif {w : Pl E} {x : w.adicCompletion E} (hx : ordL x = 1) : IsUnifV
     have e : Multiplicative.toAdd (WithZero.unzero h1) = -1 := by omega
     rw [← e, ofAdd_toAdd]
 
+/- English proof (translation)
+Establish `hv : Valued.v ((GeneralLinearGroup.det κ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, GlobalTheory.GLintCover.det_v hκ]`. Establish `h1 : Valued.v ((GeneralLinearGroup.det κ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≠ 0`. Rewrite using `[hv]`. Conclude with `one_ne_zero`.
+
+Unfold `ordL`. Rewrite using `[dif_neg h1]`. Establish `e : WithZero.unzero h1 = 1`. Rewrite using `[← WithZero.coe_inj, WithZero.coe_unzero, hv]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, toAdd_one, neg_zero]`.
+-/
 theorem fok_ordL_det {w : Pl E} {p : ℕ} {κ : GLw p w} (hκ : κ ∈ KGL w p) :
     ordL ((GeneralLinearGroup.det κ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 0 := by
   have hv : Valued.v ((GeneralLinearGroup.det κ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1 := by
@@ -41,6 +53,13 @@ theorem fok_ordL_det {w : Pl E} {p : ℕ} {κ : GLw p w} (hκ : κ ∈ KGL w p) 
     rw [← WithZero.coe_inj, WithZero.coe_unzero, hv]; rfl
   rw [e, toAdd_one, neg_zero]
 
+/- English proof (translation)
+Use `set F : GLw n w → ℂ := fun y => (fun u : UL n w => Tj ℂ n (Ov E w) ϖ k u.1) (toSub (UL n w) y) with hFdef`. Establish `hF' : ∀ y, F y = Tj ℂ n (Ov E w) ϖ k y` using `fun y => by`. Simplify using `only [hFdef]`. Rewrite using `[SplitLevels.toSub_of_mem _ _ (SplitLevels.mem_UL_split hw _)]`. Establish `hF : ∀ y ∈ KGL w n, ∀ x, F (y * x) = F x ∧ F (x * y) = F x` using `fun y hy x => by`.
+
+Rewrite using `[hF', hF', hF']`. Conclude with `⟨by simpa using (Tj_mem_hecke hϖ k).1 ⟨y, hy⟩ 1 x, by simpa using (Tj_mem_hecke hϖ k).1 1 ⟨y, hy⟩ x⟩`. Establish `hct` using `SplitLevels.ct_inv_blocks h w (KGL w n) F (fun k' hk' x hx => mul_mem (mul_mem (inv_mem hk') hx) hk') hF κ h1 h2 (b_dgM_mem h w κ h1 h2) m`. Establish `d1 : ν (GeneralLinearGroup.det κ.1) = 1` using `hν _ h1`. Establish `d2 : ν (GeneralLinearGroup.det κ.2) = 1` using `hν _ h2`.
+
+Establish `hnu : ∀ y : GLw a w × GLw b w, ν ((-1) ^ (a * b) * GeneralLinearGroup.det (κ * y).1 ^ b * GeneralLinearGroup.det (κ * y).2 ^ a) = ν ((-1) ^ (a * b) * GeneralLinearGroup.det y.1 ^ b * GeneralLinearGroup.det y.2 ^ a) ∧ ν ((-1) ^ (a * b) * GeneralLinearGroup.det (y * κ).1 ^ b * Gene …` using `fun y => by`. Simplify using `only [Prod.fst_mul, Prod.snd_mul, map_mul, mul_pow, map_pow, d1, d2, one_pow, mul_one, one_mul]`. Apply the tactic sequence `constructor <;> simp only [one_pow, one_mul, mul_one]`. Unfold `ctT ctMu`. Conclude with `⟨by rw [(hnu m).1, hct.1], by rw [(hnu m).2, hct.2]⟩`.
+-/
 theorem fok_inv {n a b : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) (ν : (w.adicCompletion E)ˣ →* ℂˣ)
     (hν : ∀ {p : ℕ} (κ : GLw p w), κ ∈ KGL w p → ν (GeneralLinearGroup.det κ) = 1)
     {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (k : ℕ) (κ : GLw a w × GLw b w) (h1 : κ.1 ∈ KGL w a)
@@ -66,6 +85,11 @@ theorem fok_inv {n a b : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) (ν 
   unfold ctT ctMu
   exact ⟨by rw [(hnu m).1, hct.1], by rw [(hnu m).2, hct.2]⟩
 
+/- English proof (translation)
+Establish `hd : diagJ n ϖ k = diagJ n ϖ n`. Unfold `diagJ`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[if_pos (lt_of_lt_of_le i.isLt hk), if_pos i.isLt]`.
+
+Unfold `Tj`. Rewrite using `[hd]`.
+-/
 theorem fok_Tj_top {n k : ℕ} {w : Pl E} {ϖ : w.adicCompletion E} (hk : n ≤ k) :
     Tj ℂ n (Ov E w) ϖ k = Tj ℂ n (Ov E w) ϖ n := by
   have hd : diagJ n ϖ k = diagJ n ϖ n := by
@@ -76,6 +100,13 @@ theorem fok_Tj_top {n k : ℕ} {w : Pl E} {ϖ : w.adicCompletion E} (hk : n ≤ 
   unfold Tj
   rw [hd]
 
+/- English proof (translation)
+Establish `h0` using `b_unif_ne_zero hϖ`. Set `S : ∀ m : ℕ, ℕ → Set (GLw m w)` to `fun m i => (fun q : GLw m w × GLw m w => q.1 * tJ h0 m i * q.2) '' ((KGL w m : Set (GLw m w)) ×ˢ (KGL w m : Set (GLw m w)))`. Establish `hS : ∀ m i, IsCompact (S m i)` using `fun m i => ((GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w m).prod (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w m)).image ((continuous_fst.mul continuous_const).mul continuous_snd)`. Establish `hmem : ∀ {m i : ℕ} {g : GLw m w}, Tj ℂ m (Ov E w) ϖ i g ≠ 0 → g ∈ S m i`. Introduce `m i g hg`.
+
+Rewrite `hg` using `[GlobalTheory.WeylGL.Tj_eq h0]`. Unfold `dosetInd at hg`. Take `⟨x, hx, y, hy, e⟩` from `GlobalTheory.WeylGL.mem_doset.1 (Set.mem_of_indicator_ne_zero hg)`. Conclude with `⟨(x, y), ⟨hx, hy⟩, e.symm⟩`. Use `HasCompactSupport.intro ((pairsK a b k).isCompact_biUnion fun p _ => (hS a p.1).prod (hS b p.2)) fun m hm => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Take `⟨p, hp, h1, h2⟩` from `ctT_supp h w hw ν hϖ k hk m hne`. Conclude with `hm (Set.mem_biUnion hp ⟨hmem h1, hmem h2⟩)`.
+-/
 theorem fok_supp_le {n a b : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) (ν : (w.adicCompletion E)ˣ →* ℂˣ)
     {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (k : ℕ) (hk : k ≤ n) : HasCompactSupport (ctT h w ν ϖ k) := by
   have h0 := b_unif_ne_zero hϖ
@@ -95,6 +126,11 @@ theorem fok_supp_le {n a b : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) 
   obtain ⟨p, hp, h1, h2⟩ := ctT_supp h w hw ν hϖ k hk m hne
   exact hm (Set.mem_biUnion hp ⟨hmem h1, hmem h2⟩)
 
+/- English proof (translation)
+Distinguish the cases in `hk : k ≤ n`. Conclude with `fok_supp_le h w hw ν hϖ k hk`. Establish `e : ctT h w ν ϖ k = ctT h w ν ϖ n`. Unfold `ctT`. Rewrite using `[fok_Tj_top (by omega)]`.
+
+Rewrite using `[e]`. Conclude with `fok_supp_le h w hw ν hϖ n le_rfl`.
+-/
 theorem fok_supp {n a b : ℕ} (h : a + b = n) (w : Pl E) (hw : IsSplitAt w) (ν : (w.adicCompletion E)ˣ →* ℂˣ)
     {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (k : ℕ) : HasCompactSupport (ctT h w ν ϖ k) := by
   by_cases hk : k ≤ n
@@ -113,6 +149,11 @@ open scoped Classical
 
 namespace PositivityTheory.Rg.BcB.F.Fok
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h w μ ϖ hw hord hμ k`. Establish `hϖ` using `RS.FockSupport.fok_unif hord`. Establish `hν : ∀ {p : ℕ} (κ : GLw p w), κ ∈ GlobalTheory.LFun.KGL w p → μ (GeneralLinearGroup.det κ) = 1` using `fun κ hκ => hμ _ (RS.FockSupport.fok_ordL_det hκ)`. Use `⟨RS.FockSupport.fok_supp h w hw μ hϖ k, fun κ hκ x => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `Subgroup.mem_prod.1 hκ`.
+
+Conclude with `RS.FockSupport.fok_inv h w hw μ hν hϖ k κ h1 h2 x`.
+-/
 theorem ctT_hecke : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ) (ϖ : (w.adicCompletion E)ˣ), IsSplitAt w → ordL (ϖ : w.adicCompletion E) = 1 → (∀ u : (w.adicCompletion E)ˣ, ordL (u : w.adicCompletion E) = 0 → μ u = 1) → ∀ k : ℕ, IsHecke (K2 a b w) (RS.ctT h w μ (ϖ : w.adicCompletion E) k) := by
   intro E _ _ _ n a b h w μ ϖ hw hord hμ k
   have hϖ := RS.FockSupport.fok_unif hord

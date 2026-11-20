@@ -15,6 +15,9 @@ def funField {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] 
     IsMultiHomog u a ∧ IsMultiHomog v a ∧
       x = IsLocalization.mk' (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P u) ⟨_, hv⟩}
 
+/- English proof (translation)
+Establish `hv : Ideal.Quotient.mk P g ∈ nonZeroDivisors (MRing ι ⧸ P)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Conclude with `⟨⟨IsLocalization.mk' _ (Ideal.Quotient.mk P f) ⟨_, hv⟩, Subring.subset_closure ⟨f, g, a, hv, hf, hg, rfl⟩⟩, IsLocalization.mk'_spec _ _ _⟩`.
+-/
 theorem exists_funField_mul_eq {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι)} [P.IsPrime] {f g : MRing ι} {a : K → ℕ}
     (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) (hgP : g ∉ P) :

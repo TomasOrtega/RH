@@ -10,6 +10,25 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ D C C' hC hC' hC'O`. Establish `hW : IsCompact (UWset k r D.z)` using `Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r D.z D.z_mem D.T_pos`. Establish `hW' : IsCompact (UWset k r D.z')` using `Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r D.z' D.z'_mem D.T'_pos`. Establish `hgc : Continuous (B.gN : B.Mat k r → ℝ)` using `Formalism.FourierDecayAlt.P.B6.gN_continuous`. Take `⟨MW, hMW⟩` from `hW.exists_bound_of_continuousOn hgc.continuousOn`.
+
+Take `⟨MW', hMW'⟩` from `hW'.exists_bound_of_continuousOn hgc.continuousOn`. Take `⟨MC, hMC⟩` from `hC.exists_bound_of_continuousOn hgc.continuousOn`. Take `⟨Co, hCo0, hCo⟩` from `Formalism.FourierDecayAlt.P.WeakDominationMajorants.Orb.orbit D.z D.z' C' hC' hC'O`. Establish `gN_nn : ∀ M : B.Mat k r, 0 ≤ B.gN M` using `fun M => Real.sqrt_nonneg _`. Establish `bnd : ∀ {s : Set (B.Mat k r)} {M : ℝ}, (∀ x ∈ s, ‖B.gN x‖ ≤ M) → ∀ x ∈ s, B.gN x ≤ M` using `fun h x hx => (le_abs_self _).trans (h x hx)`.
+
+Use `set Bd : ℝ := max MW 0 * max MC 0 * max MW' 0 with hBd`. Use `set R : ℝ := max (max MW MW') (Co * Bd ^ (2 * r + 1)) with hR`. Use `⟨Metric.closedBall 0 (max R 0), isCompact_closedBall _ _, ?_⟩` and prove the remaining obligations. Introduce `p hp g hg hsg`. Take `⟨hh, hn, hh', hn'⟩` from `hp`.
+
+Use `set h : B.Mat k r := Matrix.of p.1.1`. Use `set n : B.Mat k r := Matrix.of p.1.2`. Use `set h' : B.Mat k r := Matrix.of p.2.1`. Use `set n' : B.Mat k r := Matrix.of p.2.2`. Establish `hdet : IsUnit h.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh.1`.
+
+Establish `hdet' : IsUnit h'.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh'.1`. Establish `hx : n⁻¹ * g * n' = h * B.sgs p g * h'⁻¹`. Establish `e1 : h * h⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet`. Establish `e2 : h' * h'⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdet'`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hb : B.gN (n⁻¹ * g * n') ≤ Bd`. Rewrite using `[hx]`. Establish `h1` using `bnd hMW h hh`. Establish `h2` using `bnd hMC _ hsg`. Establish `h3` using `bnd hMW' _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh')`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hBd0 : 0 ≤ Bd` using `by positivity`. Establish `hpow : B.gN (n⁻¹ * g * n') ^ (2 * r + 1) ≤ Bd ^ (2 * r + 1)` using `pow_le_pow_left₀ (gN_nn _) hb _`. Take `⟨hon, hon'⟩` from `hCo g hg n hn n' hn'`. Establish `hnR : B.gN n ≤ max R 0` using `(hon.trans (mul_le_mul_of_nonneg_left hpow hCo0)).trans ((le_max_right _ _).trans (le_max_left _ _))`.
+
+Establish `hn'R : B.gN n' ≤ max R 0` using `(hon'.trans (mul_le_mul_of_nonneg_left hpow hCo0)).trans ((le_max_right _ _).trans (le_max_left _ _))`. Establish `hhR : B.gN h ≤ max R 0` using `(bnd hMW h hh).trans ((le_max_left _ _).trans ((le_max_left _ _).trans (le_max_left _ _)))`. Establish `hh'R : B.gN h' ≤ max R 0` using `(bnd hMW' h' hh').trans ((le_max_right _ _).trans ((le_max_left _ _).trans (le_max_left _ _)))`. Establish `sup : ∀ x : Mt k r, ‖x‖ ≤ B.gN (Matrix.of x)` using `fun x => Formalism.FourierDecayAlt.P.WeakDominationMajorants.Asm.sup_le_gN (Matrix.of x)`. Rewrite using `[mem_closedBall_zero_iff]`.
+
+Use `norm_prod_le_iff.2 ⟨norm_prod_le_iff.2 ⟨?_, ?_⟩, norm_prod_le_iff.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(sup _).trans hhR`. Conclude with `(sup _).trans hnR`. Conclude with `(sup _).trans hh'R`. Conclude with `(sup _).trans hn'R`.
+-/
 theorem averaging_properness_holds : ACProper := by
   intro k r Wp Wq _ _ _ _ D C C' hC hC' hC'O
   have hW : IsCompact (UWset k r D.z) := Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r D.z D.z_mem D.T_pos

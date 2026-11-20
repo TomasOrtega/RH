@@ -14,6 +14,11 @@ def torsRLe {R : Type} [CommRing R] {M : Type w'} [AddCommGroup M] [Module R M] 
     (ε : M →ₗ[R] K.X 0) : Prop :=
   (∀ x, K.d 0 (ε x) = 0) ∧ InjUpTo s ε ∧ ExactUpTo s ε (K.d 0) ∧ ∀ i ≤ n, ExactUpTo s (K.d i) (K.d (i + 1))
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3⟩` from `h`. Use `⟨h0, fun x hx => ?_, fun y hy => ?_, fun i hi y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, h1 x hx, smul_zero]`. Take `⟨x, hx⟩` from `h2 y hy`. Conclude with `⟨t • x, by rw [map_smul, hx, smul_smul, mul_comm]⟩`.
+
+Take `⟨x, hx⟩` from `h3 i hi y hy`. Conclude with `⟨t • x, by rw [map_smul, hx, smul_smul, mul_comm]⟩`.
+-/
 theorem torsRLe.mul {R : Type} [CommRing R] {M : Type w'} [AddCommGroup M] [Module R M] {K : Cx.{w} R} {s : R} {n : ℕ}
     {ε : M →ₗ[R] K.X 0} (h : torsRLe K s n ε) (t : R) : torsRLe K (s * t) n ε := by
   obtain ⟨h0, h1, h2, h3⟩ := h
@@ -24,6 +29,11 @@ theorem torsRLe.mul {R : Type} [CommRing R] {M : Type w'} [AddCommGroup M] [Modu
   · obtain ⟨x, hx⟩ := h3 i hi y hy
     exact ⟨t • x, by rw [map_smul, hx, smul_smul, mul_comm]⟩
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3⟩` from `h`. Use `⟨h0, fun x hx => ?_, fun y hy => ?_, fun i y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, h1 x hx, smul_zero]`. Take `⟨x, hx⟩` from `h2 y hy`. Conclude with `⟨t • x, by rw [map_smul, hx, smul_smul, mul_comm]⟩`.
+
+Take `⟨x, hx⟩` from `h3 i y hy`. Conclude with `⟨t • x, by rw [map_smul, hx, smul_smul, mul_comm]⟩`.
+-/
 theorem tors_resUpTo_mul {R : Type} [CommRing R] {M : Type w'} [AddCommGroup M] [Module R M] {K : Cx.{w} R} {s : R}
     {ε : M →ₗ[R] K.X 0} (h : K.ResUpTo s ε) (t : R) : K.ResUpTo (s * t) ε := by
   obtain ⟨h0, h1, h2, h3⟩ := h
@@ -34,6 +44,21 @@ theorem tors_resUpTo_mul {R : Type} [CommRing R] {M : Type w'} [AddCommGroup M] 
   · obtain ⟨x, hx⟩ := h3 i y hy
     exact ⟨t • x, by rw [map_smul, hx, smul_smul, mul_comm]⟩
 
+/- English proof (translation)
+Take `⟨c0, c1, c2, c3⟩` from `h`. Establish `cz : ∀ x, L.d 0 (φ.f 0 (ε x)) = 0` using `fun x => by rw [φ.comm, c0, map_zero]`. Use `⟨cz, fun x hx => ?_, fun y hy => ?_, fun i hi y hy => ?_⟩` and prove the remaining obligations. Establish `hx' : φ.f 0 (ε x) = 0` using `hx`. Establish `e1 : φ.mapH 0 (K.cls (ε x) (c0 x)) = 0`.
+
+Rewrite using `[CrystallineSemistableComparison.P.mapH_cls φ 0 (ε x) (c0 x) (cz x), (CrystallineSemistableComparison.P.cls_surj L 0).2.1, hx']`. Conclude with `Submodule.zero_mem _`. Establish `e2` using `h0 _ e1`. Establish `hs : K.d 0 (s' • ε x) = 0` using `by rw [map_smul, c0, smul_zero]`. Rewrite `e2` using `[← (CrystallineSemistableComparison.P.cls_surj K 0).2.2.2.2 s' (ε x) (c0 x) hs, (CrystallineSemistableComparison.P.cls_surj K 0).2.1]`.
+
+Establish `e3 : s' • ε x = 0` using `(Submodule.mem_bot R).1 e2`. Rewrite `e3` using `[← map_smul]`. Rewrite using `[mul_smul, c1 _ e3]`. Take `⟨z, hz⟩` from `hS 0 (Nat.zero_le _) (L.cls y hy)`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K 0).1 z`.
+
+Establish `hb : L.d 0 (φ.f 0 a) = 0` using `by rw [φ.comm, ha, map_zero]`. Establish `hsy : L.d 0 (s' • y) = 0` using `by rw [map_smul, hy, smul_zero]`. Rewrite `hz` using `[CrystallineSemistableComparison.P.mapH_cls φ 0 a ha hb, ← (CrystallineSemistableComparison.P.cls_surj L 0).2.2.2.2 s' y hy hsy, (CrystallineSemistableComparison.P.cls_surj L 0).2.2.1]`. Establish `e3 : φ.f 0 a = s' • y` using `sub_eq_zero.1 ((Submodule.mem_bot R).1 hz)`. Take `⟨x, hx⟩` from `c2 a ha`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.f 0 (ε x) = _`. Rewrite using `[hx, map_smul, e3, smul_smul]`. Take `⟨z, hz⟩` from `hS (i + 1) (by omega) (L.cls y hy)`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K (i + 1)).1 z`.
+
+Establish `hb : L.d (i + 1) (φ.f (i + 1) a) = 0` using `by rw [φ.comm, ha, map_zero]`. Establish `hsy : L.d (i + 1) (s' • y) = 0` using `by rw [map_smul, hy, smul_zero]`. Rewrite `hz` using `[CrystallineSemistableComparison.P.mapH_cls φ (i + 1) a ha hb, ← (CrystallineSemistableComparison.P.cls_surj L (i + 1)).2.2.2.2 s' y hy hsy, (CrystallineSemistableComparison.P.cls_surj L (i + 1)).2.2.1]`. Take `⟨b, hb'⟩` from `hz`. Take `⟨c, hc⟩` from `c3 i hi a ha`.
+
+Use `⟨φ.f i c - s • b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, φ.comm, hc, map_smul, hb', smul_sub, sub_sub_cancel, smul_smul]`.
+-/
 theorem torsRLe.transfer {R : Type} [CommRing R] {K : Cx.{w} R} {L : Cx.{w'} R} (φ : Cx.Hom K L (RingHom.id R))
     {M : Type v''} [AddCommGroup M] [Module R M] {ε : M →ₗ[R] K.X 0} {s s' : R} {n : ℕ}
     (h0 : InjUpTo s' (φ.mapH 0)) (hS : ∀ k ≤ n + 1, SurjUpTo s' (φ.mapH k)) (h : torsRLe K s n ε) :
@@ -100,11 +125,19 @@ def torsStep (L : Line j U) {e : ℕ} {S : C} (g : Gam e →* End S) : Gam (e + 
       show L.γ.app S ≫ L.Ξ.map (g (torsPi e a)) = L.Ξ.map (g (torsPi e a)) ≫ L.γ.app S
       exact (L.γ.naturality _).symm)).comp ((MonoidHom.id _).prod (MonoidHom.id _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem torsStep_apply (L : Line j U) {e : ℕ} {S : C} (g : Gam e →* End S) (a : Gam (e + 1)) :
     (torsStep L g a : L.Ξ.obj S ⟶ L.Ξ.obj S) =
       (torsGp L S (Multiplicative.toAdd a (Fin.last e)) : L.Ξ.obj S ⟶ L.Ξ.obj S) ≫ L.Ξ.map (g (torsPi e a)) :=
   rfl
 
+/- English proof (translation)
+Establish `h1 : L.i.app S ≫ L.γ.app S = L.i.app S`. Use `congrArg (fun t => NatTrans.app t S) L.iγ` as an intermediate fact. Simplify using `using this`. Proceed by induction on `m with`. Consider the case `zero => exact Category.comp_id _`.
+
+Consider the case `succ m ih`. Rewrite using `[torsGp, pow_succ, End.mul_def, ← Category.assoc, h1, ← torsGp, ih]`.
+-/
 theorem tors_i_pow (L : Line j U) (S : C) (m : ℕ) :
     L.i.app S ≫ (torsGp L S m : L.Ξ.obj S ⟶ L.Ξ.obj S) = L.i.app S := by
   have h1 : L.i.app S ≫ L.γ.app S = L.i.app S := by
@@ -115,6 +148,9 @@ theorem tors_i_pow (L : Line j U) (S : C) (m : ℕ) :
   | succ m ih =>
     rw [torsGp, pow_succ, End.mul_def, ← Category.assoc, h1, ← torsGp, ih]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, one_mul]`. Conclude with `U.map_id _ _`. Consider the case `succ m ih`. Rewrite using `[torsGp, pow_succ, End.mul_def, U.map_comp, L.γη, map_mul, ← torsGp, ih, U.map_q, pow_succ', mul_assoc]`.
+-/
 theorem tors_pow_η (L : Line j U) (S : C) (m : ℕ) :
     U.map (torsGp L S m : L.Ξ.obj S ⟶ L.Ξ.obj S) (L.η S) = U.q _ ^ m * L.η S := by
   induction m with
@@ -122,11 +158,19 @@ theorem tors_pow_η (L : Line j U) (S : C) (m : ℕ) :
   | succ m ih =>
     rw [torsGp, pow_succ, End.mul_def, U.map_comp, L.γη, map_mul, ← torsGp, ih, U.map_q, pow_succ', mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[torsStep_apply, ← Category.assoc, tors_i_pow]`. Conclude with `(L.i.naturality _).symm`.
+-/
 theorem tors_istep (L : Line j U) {e : ℕ} {S : C} (g : Gam e →* End S) (a : Gam (e + 1)) :
     L.i.app S ≫ (torsStep L g a : L.Ξ.obj S ⟶ L.Ξ.obj S) = (g (torsPi e a) : S ⟶ S) ≫ L.i.app S := by
   rw [torsStep_apply, ← Category.assoc, tors_i_pow]
   exact (L.i.naturality _).symm
 
+/- English proof (translation)
+Establish `hp : torsPi e (gen (Fin.last e)) = 1`. Use function extensionality and compare the values at `k`. Conclude with `Pi.single_eq_of_ne (Fin.castSucc_ne_last k) _`. Rewrite using `[torsStep_apply, hp, map_one]`. Use `show _ ≫ L.Ξ.map (𝟙 S) = _`.
+
+Rewrite using `[L.Ξ.map_id, Category.comp_id]`. Rewrite using `[show Multiplicative.toAdd (gen (Fin.last e)) (Fin.last e) = 1 from Pi.single_eq_same _ _, torsGp, pow_one]`.
+-/
 theorem torsStep_gen (L : Line j U) {e : ℕ} {S : C} (g : Gam e →* End S) :
     (torsStep L g (gen (Fin.last e)) : L.Ξ.obj S ⟶ L.Ξ.obj S) = L.γ.app S := by
   have hp : torsPi e (gen (Fin.last e)) = 1 := by
@@ -143,6 +187,29 @@ end CrystallineSemistableComparison.B
 
 namespace CrystallineSemistableComparison.B
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`. Establish `: ∀ Y : SingleObj (Gam 0), Unique (SingleObj.star (Gam 0) ⟶ Y)` using `fun Y => ⟨⟨(1 : Gam 0)⟩, fun a => show (a : Fin 0 → ℕ) = (1 : Gam 0) from funext fun k => k.elim0⟩`. Establish `hI : Limits.IsInitial (SingleObj.star (Gam 0))` using `Limits.IsInitial.ofUnique _`.
+
+Use `⟨T, 𝟙 T, fun k => k.elim0, 1, fun a => Category.comp_id _, fun a k => k.elim0, fun t' φ b => ⟨φ, ⟨Category.id_comp _, fun k => k.elim0⟩, fun ψ h => by rw [← h.1, Category.id_comp]⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `CrystallineSemistableComparison.P.initial (SingleObj.functor (1 : Gam 0 →* End T) ⋙ F) _ hI`. Rewrite using `[zero_mul, pow_zero]`. Conclude with `⟨h.1, h.2.1, h.2.2.1, fun i _ => h.2.2.2 i⟩`. Consider the case `succ e ih`.
+
+Take `⟨S, ir, η, g, h1, h2, h3, h4⟩` from `ih`. Use `⟨L.Ξ.obj S, ir ≫ L.i.app S, Fin.lastCases (L.η S) (fun k => U.map (L.i.app S) (η k)), torsStep L g, fun a => ?_, fun a k => ?_, fun t' φ b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, tors_istep, ← Category.assoc, h1]`. Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.lastCases_last]`.
+
+Rewrite using `[torsStep_apply, U.map_comp, tors_pow_η, map_mul, map_pow, U.map_q, L.map_η]`. Simplify using `only [Fin.lastCases_castSucc]`. Rewrite using `[← U.map_comp, tors_istep, U.map_comp]`. Use `erw [h2 (torsPi e a) k]`. Rewrite using `[map_mul, map_pow, U.map_q]`.
+
+Both sides reduce to the same expression. Take `⟨χ, ⟨hχ1, hχ2⟩, hχu⟩` from `h3 t' φ (fun k => b k.castSucc)`. Take `⟨ψ, ⟨hψ1, hψ2⟩, hψu⟩` from `L.univ S t' χ (b (Fin.last e))`. Use `⟨ψ, ⟨by rw [Category.assoc, hψ1, hχ1], fun k => ?_⟩, fun ψ' h' => ?_⟩` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun k => ?_) k` and prove the remaining obligations.
+
+Simplify using `only [Fin.lastCases_last]`. Conclude with `hψ2`. Simplify using `only [Fin.lastCases_castSucc]`. Rewrite using `[← U.map_comp, hψ1]`. Conclude with `hχ2 k`.
+
+Use `hψu ψ' ⟨hχu _ ⟨by rw [← Category.assoc]; exact h'.1, fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Use `h'.2 k.castSucc` as an intermediate fact. Simplify using `only [Fin.lastCases_castSucc] at this`. Rewrite `this` using `[← U.map_comp]`. Conclude with `this`.
+
+Use `h'.2 (Fin.last e)` as an intermediate fact. Simplify using `only [Fin.lastCases_last] at this`. Conclude with `this`. Establish `hk` using `CrystallineSemistableComparison.B.P.kstep (SingleObj.functor g ⋙ F) (SingleObj.functor (torsStep L g) ⋙ F) (torsPi e) (fun a k => rfl) (F.map (L.i.app S)).hom (fun a x => by`. Establish `h` using `congrArg (fun f => (F.map f).hom x) (tors_istep L g a)`.
+
+Simplify using `only [Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply] at h`. Conclude with `h.symm) s`. Use the proof step `(by`. Express the relevant statement in the definitionally equal form `Acyc1 s (F.map (L.i.app S)).hom (F.map (torsStep L g (gen (Fin.last e)))).hom`. Rewrite using `[torsStep_gen]`.
+
+Conclude with `hA S) (n + 1)`. Establish `ht` using `torsRLe.transfer _ (hk 0 (Nat.zero_le _)).1 (fun k hk' => (hk k hk').2) h4`. Rewrite `ht` using `[← pow_add]`. Rewrite using `[show (e + 1) * (2 * n + 5) = e * (2 * n + 5) + (2 * (n + 1) + 3) by ring]`. Use `ht using 1` and compare the differences between its conclusion and the goal.
+
+Use `LinearMap.ext fun x => funext fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(F.map (ir ≫ L.i.app S)).hom x = (F.map (L.i.app S)).hom ((F.map ir).hom x)`. Rewrite using `[F.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem tors_tower {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     (F : C ⥤ ModuleCat.{w} R) (j : C' ⥤ C) (U : UF C) (L : Line j U) (s : R) (n : ℕ)
     (hA : ∀ T, Acyc1 s (F.map (L.i.app T)).hom (F.map (L.γ.app T)).hom) (T : C) :
@@ -211,6 +278,21 @@ theorem tors_tower {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : T
 
 end CrystallineSemistableComparison.B
 
+/- English proof (translation)
+Introduce `d n`. Take `⟨N₀, hN₀⟩` from `CrystallineSemistableComparison.B.P.gam.{w, v, u, v', u'} n`. Use `⟨(d * (2 * n + 5) + 1) * N₀, ?_⟩` and prove the remaining obligations. Introduce `R _ C _ C' _ F j _ _ U D A L s hD hA`. Rewrite using `[pow_mul]`.
+
+Unfold `Act.ι`. Use `hN₀ F j (Gam d) D A.γ (s ^ (d * (2 * n + 5) + 1)) (fun T => ?_) (fun t => ?_)` and prove the remaining obligations. Rewrite using `[pow_succ']`. Conclude with `tors_resUpTo_mul (hD T) _`. Take `⟨S, ir, η, g, h1, h2, h3, h4⟩` from `tors_tower F j U L s n hA (j.obj t) d`.
+
+Take `⟨c₀⟩` from `A.ne t`. Establish `h4'` using `h4.mul s`. Rewrite `h4'` using `[← pow_succ]`. Use `⟨S, A.act η (c₀ ≫ ir), ir, g, fun a => ?_, h1, fun t' c φ => ?_, h4'.2.1, h4'.2.2.1, h4'.2.2.2⟩` and prove the remaining obligations. Establish `e1 : A.act η (c₀ ≫ ir) ≫ (g a : S ⟶ S) = A.act (fun k => U.q S ^ (Multiplicative.toAdd a k)) (A.act η (c₀ ≫ ir))`.
+
+Rewrite using `[A.act_comp, Category.assoc, h1, ← A.act_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `h2 a k`. Establish `e2 : (A.γ a : D ⟶ D) ≫ A.act η (c₀ ≫ ir) = A.act (fun k => U.q S ^ (Multiplicative.toAdd a k)) (A.act η (c₀ ≫ ir))` using `by show A.act (fun k => U.q D ^ (Multiplicative.toAdd a k)) (𝟙 D) ≫ _ = _`.
+
+Rewrite using `[A.act_comp, Category.id_comp]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_pow, U.map_q]`. Rewrite using `[e1, e2]`.
+
+Take `⟨a, ha, hau⟩` from `A.trans t' (c₀ ≫ φ) c`. Take `⟨ψ, ⟨hψ1, hψ2⟩, hψu⟩` from `h3 t' φ a`. Use `⟨ψ, ⟨?_, hψ1⟩, fun ψ' h' => ?_⟩` and prove the remaining obligations. Rewrite using `[A.act_comp, Category.assoc, hψ1, show (fun k => U.map ψ (η k)) = a from funext hψ2]`. Conclude with `ha`.
+
+Use `hψu ψ' ⟨h'.2, fun k => ?_⟩` and prove the remaining obligations. Establish `hh` using `h'.1`. Rewrite `hh` using `[A.act_comp, Category.assoc, h'.2]`. Conclude with `congrFun (hau _ hh) k`.
+-/
 theorem CrystallineSemistableComparison.B.P.tors : ∀ d n : ℕ, ∃ N : ℕ, ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] (F : C ⥤ ModuleCat.{w} R) (j : C' ⥤ C) [j.Full] [j.Faithful] (U : UF C) (D : C) (A : Act j U d D) (L : Line j U) (s : R), Desc s F j → (∀ T, Acyc1 s (F.map (L.i.app T)).hom (F.map (L.γ.app T)).hom) → RI (s ^ N) n F A.ι := by
   intro d n
   obtain ⟨N₀, hN₀⟩ := CrystallineSemistableComparison.B.P.gam.{w, v, u, v', u'} n

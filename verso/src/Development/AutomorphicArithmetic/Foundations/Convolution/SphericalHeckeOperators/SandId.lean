@@ -13,26 +13,41 @@ section SlopeTestRemainingChoices
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun x : HeckeAlgebra μ => (x : G → ℂ)) (mul_assoc (HeckeAlgebra.mk μ a ha) (HeckeAlgebra.mk μ b hb) (HeckeAlgebra.mk μ c hc))`.
+-/
 private theorem cv_assoc {a b c : G → ℂ} (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hb : b ∈ locallyConstantCompactSupport G ℂ ℂ) (hc : c ∈ locallyConstantCompactSupport G ℂ ℂ) :
     groupConv μ (groupConv μ a b) c = groupConv μ a (groupConv μ b c) :=
   congrArg (fun x : HeckeAlgebra μ => (x : G → ℂ))
     (mul_assoc (HeckeAlgebra.mk μ a ha) (HeckeAlgebra.mk μ b hb) (HeckeAlgebra.mk μ c hc))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+-/
 private theorem cv_smul_left (c : ℂ) (a b : G → ℂ) : groupConv μ (c • a) b = c • groupConv μ a b := by
   funext x
   simp only [groupConv, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+-/
 private theorem cv_smul_right (c : ℂ) (a b : G → ℂ) : groupConv μ a (c • b) = c • groupConv μ a b := by
   funext x
   simp only [groupConv, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun x : HeckeAlgebra μ => (x : G → ℂ)) (mul_sub (HeckeAlgebra.mk μ a ha) (HeckeAlgebra.mk μ b hb) (HeckeAlgebra.mk μ c hc))`.
+-/
 private theorem cv_sub_right {a b c : G → ℂ} (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hb : b ∈ locallyConstantCompactSupport G ℂ ℂ) (hc : c ∈ locallyConstantCompactSupport G ℂ ℂ) :
     groupConv μ a (b - c) = groupConv μ a b - groupConv μ a c :=
   congrArg (fun x : HeckeAlgebra μ => (x : G → ℂ))
     (mul_sub (HeckeAlgebra.mk μ a ha) (HeckeAlgebra.mk μ b hb) (HeckeAlgebra.mk μ c hc))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Finset.sum_apply, Finset.mul_sum]`. Conclude with `integral_finsetSum _ fun i hi => integrable_mul_of_mem ha ((hb i hi).1.continuous.comp (continuous_inv.mul continuous_const))`.
+-/
 private theorem cv_sum_right {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : ι → G → ℂ}
     (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hb : ∀ i ∈ S, b i ∈ locallyConstantCompactSupport G ℂ ℂ) :
@@ -42,6 +57,9 @@ private theorem cv_sum_right {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : �
   exact integral_finsetSum _ fun i hi => integrable_mul_of_mem ha
     ((hb i hi).1.continuous.comp (continuous_inv.mul continuous_const))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [groupConv, Finset.sum_apply, Finset.sum_mul]`. Conclude with `integral_finsetSum _ fun i hi => integrable_mul_of_mem (hb i hi) (ha.1.continuous.comp (continuous_inv.mul continuous_const))`.
+-/
 private theorem cv_sum_left {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : ι → G → ℂ}
     (ha : a ∈ locallyConstantCompactSupport G ℂ ℂ)
     (hb : ∀ i ∈ S, b i ∈ locallyConstantCompactSupport G ℂ ℂ) :
@@ -51,6 +69,9 @@ private theorem cv_sum_left {ι : Type*} (S : Finset ι) {a : G → ℂ} {b : ι
   exact integral_finsetSum _ fun i hi => integrable_mul_of_mem (hb i hi)
     (ha.1.continuous.comp (continuous_inv.mul continuous_const))
 
+/- English proof (translation)
+Unfold `groupConv`. Rewrite using `[← integral_mul_left_eq_self (fun y => a y * b (y⁻¹ * (k * x))) k]`. Simplify using `[hk, mul_assoc]`.
+-/
 private theorem cv_mul_left {a b : G → ℂ} {k : G} (hk : ∀ g, a (k * g) = a g) (x : G) :
     groupConv μ a b (k * x) = groupConv μ a b x := by
   unfold groupConv
@@ -63,15 +84,24 @@ section Aux2
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `indicator_mem_locallyConstantCompactSupport (isCompact_integralGL F n) (isOpen_integralGL F n) 1`.
+-/
 private theorem oneK_mem : oneK F n ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ :=
   indicator_mem_locallyConstantCompactSupport (isCompact_integralGL F n) (isOpen_integralGL F n) 1
 
 variable [MeasurableSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F))
 
+/- English proof (translation)
+Unfold `thP`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.sum_single_index (by exact zero_smul _ _), one_smul]`.
+-/
 private theorem thP_monomial (a : Fin n → ℤ) : thP μ (monomial a) = th μ a := by
   unfold thP
   rw [AddMonoidAlgebra.coeff_single, Finsupp.sum_single_index (by exact zero_smul _ _), one_smul]
 
+/- English proof (translation)
+Introduce `b hb`. Rewrite `hb` using `[AddMonoidAlgebra.coeff_single]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hb)]`. Conclude with `ha`.
+-/
 private theorem dom_monomial {a : Fin n → ℤ} (ha : Antitone a) : Dom (monomial a) := by
   intro b hb
   rw [AddMonoidAlgebra.coeff_single] at hb
@@ -80,6 +110,11 @@ private theorem dom_monomial {a : Fin n → ℤ} (ha : Antitone a) : Dom (monomi
 
 end Aux2
 
+/- English proof (translation)
+Use `Finset.prod_ne_zero_iff.2 fun p hp h => ?_` and prove the remaining obligations. Establish `hp' : p.1 < p.2` using `(Finset.mem_filter.1 hp).2`. Establish `hne : (Pi.single p.2 1 : Fin n → ℤ) ≠ Pi.single p.1 1` using `fun e => by`. Use `congrFun e p.1` as an intermediate fact. Simplify using `[hp'.ne] at this`.
+
+Use `congrArg (fun y : LaurentRing n => y.coeff (Pi.single p.1 1)) h` as an intermediate fact. Simplify using `[Finsupp.single_apply, hne] at this`.
+-/
 private theorem dPol_ne_zero (n : ℕ) (t : ℂ) : dPol n t ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun p hp h => ?_
   have hp' : p.1 < p.2 := (Finset.mem_filter.1 hp).2
@@ -89,6 +124,13 @@ private theorem dPol_ne_zero (n : ℕ) (t : ℂ) : dPol n t ≠ 0 := by
   have := congrArg (fun y : LaurentRing n => y.coeff (Pi.single p.1 1)) h
   simp [Finsupp.single_apply, hne] at this
 
+/- English proof (translation)
+Establish `key : ∀ i j, i < j → z i ≠ z j` using `fun i j hij e => by`. Use `h ?_` and prove the remaining obligations. Unfold `dPol`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_zero (i := (i, j)) (Finset.mem_filter.2 ⟨Finset.mem_univ _, hij⟩) ?_` and prove the remaining obligations.
+
+Establish `hv : ∀ a, evalAt z (varL a) = z a` using `fun a => by`. Apply the tactic sequence `rw [evalAt_single, one_mul, monomialChar_apply, Finset.prod_eq_single a] <;> simp +contextual [Pi.single_apply]`. Simplify using `[hv, e]`. Introduce `i j e`. Break down `lt_trichotomy i j with h | h | h` into its components or cases.
+
+Conclude with `absurd e (key _ _ h)`. Conclude with `h`. Conclude with `absurd e.symm (key _ _ h)`.
+-/
 private theorem inj_of_dPol {n : ℕ} {z : Fin n → ℂˣ} (h : evalAt z (dPol n 1) ≠ 0) : Function.Injective z := by
   have key : ∀ i j, i < j → z i ≠ z j := fun i j hij e => by
     refine h ?_
@@ -104,6 +146,33 @@ private theorem inj_of_dPol {n : ℕ} {z : Fin n → ℂˣ} (h : evalAt z (dPol 
   · exact h
   · exact absurd e.symm (key _ _ h)
 
+/- English proof (translation)
+Introduce `F _ _ _ _ n _ _ μ _ hK`. Use `set t : ℂ := ((qF F : ℂ))⁻¹`. Set `ν : Fin n → ℤ` to `fun i => -((n : ℤ) * (i : ℕ))`. Establish `hν : Gap n ν` using `fun i j hij => by`. Establish `h1 : ((i : ℕ) : ℤ) + 1 ≤ (j : ℕ)` using `by exact_mod_cast hij`.
+
+Establish `h2 : (0 : ℤ) ≤ n` using `by positivity`. Simplify using `only [ν]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hνa : Antitone ν` using `fun i j hij => by`. Break down `hij.eq_or_lt with rfl | hij` into its components or cases.
+
+Conclude with `le_rfl`. Use `hν i j hij` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hg` using `gapDom n ν hν`. Establish `hνν` using `hg.2.2 ν hνa`.
+
+Establish `hth : ∀ a : Fin n → ℤ, Antitone a → th μ a ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ ∧ BiI F (th μ a)` using `fun a ha => by`. Use `thPMul F n μ _ _ (dom_monomial ha) (dom_monomial ha)` as an intermediate fact. Rewrite `this` using `[thP_monomial]`. Conclude with `⟨this.2.1, this.2.2.1⟩`. Establish `hD` using `(gapDom n _ hνν).2.1 t`.
+
+Establish `hP` using `thPMul F n μ _ _ hD hD`. Establish `hterm : ∀ S ∈ (pairs n).powerset, groupConv μ (oneK F n) (th μ (ν + eR S)) ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `fun S hS => groupConv_mem μ oneK_mem (hth _ (hg.1 S hS).2).1`. Establish `hterm' : ∀ S ∈ (pairs n).powerset, sgS S • groupConv μ (th μ (ν + eL S)) (groupConv μ (oneK F n) (th μ (ν + eR S))) ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `fun S hS => Submodule.smul_mem _ _ (groupConv_mem μ (hth _ (hg.1 S hS).1).1 (hterm S hS))`. Establish `hs : sand μ ν ν ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `Submodule.sum_mem _ hterm'`. Establish `hsI : BiI F (sand μ ν ν)` using `fun g y hy => by`.
+
+Simplify using `only [sand, Finset.sum_apply, Pi.smul_apply]`. Prove the components needed by the constructor for the conclusion. Conclude with `Finset.sum_congr rfl fun S hS => by`. Rewrite using `[cv_mul_left μ fun g => ((hth _ (hg.1 S hS).1).2 g y hy).1]`. Conclude with `Finset.sum_congr rfl fun S hS => by`.
+
+Rewrite using `[groupConv_mul_right fun g => groupConv_mul_right (fun g => ((hth _ (hg.1 S hS).2).2 g y hy).2) g]`. Use `set T := vPoly n t • sand μ ν ν - thP μ (monomial (ν + ν) * dPol n t) with hT`. Establish `hTm : T ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `Submodule.sub_mem _ (Submodule.smul_mem _ _ hs) hP.2.1`. Establish `hTI : BiI F T` using `fun g y hy => by`. Simplify using `only [hT, Pi.sub_apply, Pi.smul_apply, (hsI g y hy).1, (hsI g y hy).2, (hP.2.2.1 g y hy).1, (hP.2.2.1 g y hy).2, and_self]`.
+
+Establish `hD0 : (∏ σ : Equiv.Perm (Fin n), permAct σ (dPol n t)) * dPol n 1 ≠ 0`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun σ _ h => dPol_ne_zero n t ?_) (dPol_ne_zero n 1)` and prove the remaining obligations. Use `congrArg (permAct σ⁻¹) h` as an intermediate fact. Rewrite `this` using `[permAct_permAct, inv_mul_cancel, permAct_one, map_zero]`. Then use the resulting hypothesis. Establish `hct` using `constTerm F n μ T hTm hTI _ hD0 fun z hz f hf => by`.
+
+Rewrite `hz` using `[map_mul, map_prod]`. Establish `h1` using `sandPS F n μ hK ν ν hν hν z (inj_of_dPol (right_ne_zero_of_mul hz)) (fun σ => by`. Rewrite using `[← evalAt_permAct]`. Conclude with `Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hz) σ (Finset.mem_univ _)) f hf`. Establish `hfc : Continuous f`.
+
+Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open f).2 fun g => ?_)` and prove the remaining obligations. Use `⟨(fun x => g⁻¹ * x) ⁻¹' (iwahori F n : Set (GL (Fin n) F)), (isOpen_iwahori F n).preimage (by fun_prop), by simp [one_mem], fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf.2 g _ hy, mul_inv_cancel_left]`. Simplify using `only [hT, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_mul, mul_assoc]`. Rewrite using `[integral_sub ((integrable_mul_of_mem hs hfc).const_mul _) (integrable_mul_of_mem hP.2.1 hfc), integral_const_mul, h1, sub_self]`.
+
+Take `⟨a, ha, ha0⟩` from `jacq F n μ T hTm hTI hct`. Use `⟨a + ν, ν, hg.2.2 a ha, hν, ?_⟩` and prove the remaining obligations. Establish `h0 : groupConv μ (th μ a) T = 0`. Rewrite using `[th, cv_smul_left, ha0, smul_zero]`. Rewrite `h0` using `[hT, cv_sub_right μ (hth a ha).1 (Submodule.smul_mem _ _ hs) hP.2.1, sub_eq_zero, cv_smul_right]`.
+
+Establish `h1` using `(thPMul F n μ _ _ (dom_monomial ha) hD).2.2.2`. Rewrite `h1` using `[thP_monomial, ← mul_assoc, ← monomial_add, ← add_assoc]`. Rewrite using `[← h1, ← h0]`. Use `congr 1`. Unfold `sand`.
+
+Rewrite using `[cv_sum_right μ _ (hth a ha).1 hterm']`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite using `[cv_smul_right, ← cv_assoc μ (hth a ha).1 (hth _ (hg.1 S hS).1).1 (hterm S hS), thMul F n μ _ _ ha (hg.1 S hS).1, add_assoc]`.
+-/
 theorem UpperTheory.ConvolutionTheory.H.sandId :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)
       [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure], μ (integralGL F n : Set (GL (Fin n) F)) = 1 →

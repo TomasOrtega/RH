@@ -30,11 +30,22 @@ def algAtlas : FinHolAtlas e (CxPts p σ) where
     simpa using hj
   holo _ _ := AlgChart.analyticOnNhd_trans _ _
 
+/- English proof (translation)
+Introduce `_` and use `⟨_, rfl⟩`.
+-/
 theorem isAlgAtlas_algAtlas : IsAlgAtlas (algAtlas hA) := fun _ => ⟨_, rfl⟩
 
+/- English proof (translation)
+The claim follows from `(hA j).choose_spec`.
+-/
 theorem chart_eq (j : Fin A.n) :
     A.chart j = h.transOpenPartialHomeomorph ((algAtlas hA).chart j) := (hA j).choose_spec
 
+/- English proof (translation)
+Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[chart_eq hA j, Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_target]`. Establish `e1 : (g ∘ h) ∘ (h.symm ∘ ((algAtlas hA).chart j).symm) = g ∘ ((algAtlas hA).chart j).symm`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+
+Establish `e2 : (h.symm ∘ ((algAtlas hA).chart j).symm) ⁻¹' (h ⁻¹' S) = ((algAtlas hA).chart j).symm ⁻¹' S`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+-/
 theorem holoOn_comp_iff {S : Set (CxPts p σ)} {g : CxPts p σ → ℂ} :
     A.HoloOn (h ⁻¹' S) (g ∘ h) ↔ (algAtlas hA).HoloOn S g := by
   refine forall_congr' fun j => ?_
@@ -46,6 +57,11 @@ theorem holoOn_comp_iff {S : Set (CxPts p σ)} {g : CxPts p σ → ℂ} :
     ext v; simp
   rw [e1, e2]
 
+/- English proof (translation)
+Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[chart_eq hA j, Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_target]`. Establish `e1 : (g ∘ h) ∘ (h.symm ∘ ((algAtlas hA).chart j).symm) = g ∘ ((algAtlas hA).chart j).symm`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+
+Establish `e2 : (h.symm ∘ ((algAtlas hA).chart j).symm) ⁻¹' (h ⁻¹' S) = ((algAtlas hA).chart j).symm ⁻¹' S`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+-/
 theorem smoothOn_comp_iff {S : Set (CxPts p σ)} {g : CxPts p σ → ℝ} :
     A.SmoothOn (h ⁻¹' S) (g ∘ h) ↔ (algAtlas hA).SmoothOn S g := by
   refine forall_congr' fun j => ?_
@@ -57,6 +73,9 @@ theorem smoothOn_comp_iff {S : Set (CxPts p σ)} {g : CxPts p σ → ℝ} :
     ext v; simp
   rw [e1, e2]
 
+/- English proof (translation)
+Introduce `j` and use `by obtain ⟨h1, h2⟩ := hψ j rw [chart_eq hA j] simp only [Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_apply, Homeomorph.transOpenPartialHomeomorph_target, Homeomorph.transOpenPartialHomeomorph_source] constructor · have e1 : (ψ ∘ h) ∘ (h …`.
+-/
 theorem isCompatChart_trans {ψ : OpenPartialHomeomorph (CxPts p σ) (Fin e → ℂ)}
     (hψ : IsCompatChart (algAtlas hA) ψ) : IsCompatChart A (h.transOpenPartialHomeomorph ψ) := fun j => by
   obtain ⟨h1, h2⟩ := hψ j
@@ -77,6 +96,9 @@ theorem isCompatChart_trans {ψ : OpenPartialHomeomorph (CxPts p σ) (Fin e → 
       ext v; simp
     rw [e1, e2]; exact h2
 
+/- English proof (translation)
+Use `⟨fun x => (smoothOn_comp_iff hA).2 (hL.1 (h x)), fun x x' y hy => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hyW, G, hG, e⟩` from `hL.2 (h x) (h x') (h y) hy`. Use `⟨h ⁻¹' W, hW.preimage h.continuous, hyW, G ∘ h, (holoOn_comp_iff hA).2 hG, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `e (h z) ⟨⟨hz.1.1, hz.1.2⟩, hz.2⟩`.
+-/
 theorem isPotential_pullback {L : LocPot (CxPts p σ)} (hL : IsPotential (algAtlas hA) L) :
     IsPotential A (L.pullback h h.continuous) := by
   refine ⟨fun x => (smoothOn_comp_iff hA).2 (hL.1 (h x)), fun x x' y hy => ?_⟩
@@ -84,12 +106,18 @@ theorem isPotential_pullback {L : LocPot (CxPts p σ)} (hL : IsPotential (algAtl
   refine ⟨h ⁻¹' W, hW.preimage h.continuous, hyW, G ∘ h, (holoOn_comp_iff hA).2 hG, fun z hz => ?_⟩
   exact e (h z) ⟨⟨hz.1.1, hz.1.2⟩, hz.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => (holoOn_comp_iff hA (g := s (h x))).2 (hs.1 (h x)), fun x x' y hy => hs.2 (h x) (h x') (h y) hy⟩`.
+-/
 theorem isSection_pullback {L : LocPot (CxPts p σ)} {s : CxPts p σ → CxPts p σ → ℂ}
     (hs : IsSection (algAtlas hA) L s) :
     IsSection A (L.pullback h h.continuous) (fun x z => s (h x) (h z)) :=
   ⟨fun x => (holoOn_comp_iff hA (g := s (h x))).2 (hs.1 (h x)),
     fun x x' y hy => hs.2 (h x) (h x') (h y) hy⟩
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨ψ, hc, hx, hsub, τ, hinj, hW, u, hu, hu0, he⟩ := hs (h x) refine ⟨h.transOpenPartialHomeomorph ψ, isCompatChart_trans hA hc, hx, fun z hz => hsub hz, τ, hinj, fun k => ?_, u ∘ h, ?_, fun z hz => hu0 (h z) hz, fun z hz => he (h z) hz⟩ · ext z have := Set.ext_iff.1 (hW k …`.
+-/
 theorem isSNC_pullback {L : LocPot (CxPts p σ)} {s : CxPts p σ → CxPts p σ → ℂ} {r : ℕ} {m : Fin r → ℕ}
     {W : Fin r → Set (CxPts p σ)} (hs : IsSNC (algAtlas hA) L s m W) :
     IsSNC A (L.pullback h h.continuous) (fun x z => s (h x) (h z)) m (fun k => h ⁻¹' W k) := fun x => by
@@ -115,6 +143,9 @@ def eqT (i : Fin m) (y : CxPts p σ) : Γ(Y, (eqV hn i y).1) := ((hn i).2 y).cho
 
 def eqF (i : Fin m) (y : CxPts p σ) : CxPts p σ → ℝ := ((hn i).2 y).choose_spec.choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `((hn i).2 y).choose_spec.choose_spec.choose_spec`.
+-/
 theorem eq_spec (i : Fin m) (y : CxPts p σ) :
     y ∈ ptsIn p σ (eqV hn i y).1 ∧
       (Scheme.IdealSheafData.vanishingIdeal (C i)).ideal (eqV hn i y) = Ideal.span {eqT hn i y} ∧
@@ -130,9 +161,19 @@ def divPot : LocPot (CxPts p σ) where
 
 def divSec (y z : CxPts p σ) : ℂ := ∏ i, ev p σ (eqV hn i y).1 (eqT hn i y) z
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.1 hz i`.
+-/
 theorem mem_eqV {y z : CxPts p σ} (hz : z ∈ (divPot hn).U y) (i : Fin m) : z ∈ ptsIn p σ (eqV hn i y).1 :=
   Set.mem_iInter.1 hz i
 
+/- English proof (translation)
+Establish `h1 : ∀ i, n i z = ‖ev p σ (eqV hn i y).1 (eqT hn i y) z‖ * Real.exp (-eqF hn i y z / 2)` using `fun i => by`. Establish `e` using `(eq_spec hn i y).2.2.2 z (mem_eqV hn hz i)`. Establish `h0` using `((hn i).1 z).1`. Establish `hx : Real.exp (-eqF hn i y z) = Real.exp (-eqF hn i y z / 2) ^ 2`. Rewrite using `[← Real.exp_nat_mul]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[hx, ← mul_pow]`. Conclude with `(pow_left_inj₀ h0 (by positivity) two_ne_zero).1 e`.
+
+Simplify using `only [divSec, divPot, norm_prod, h1]`. Rewrite using `[Finset.prod_mul_distrib, ← Real.exp_sum]`. Use `congr 2`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem norm_divSec_mul {y z : CxPts p σ} (hz : z ∈ (divPot hn).U y) :
     ‖divSec hn y z‖ * Real.exp (-(divPot hn).φ y z) = ∏ i, n i z := by
   have h1 : ∀ i, n i z = ‖ev p σ (eqV hn i y).1 (eqT hn i y) z‖ * Real.exp (-eqF hn i y z / 2) := fun i => by
@@ -148,6 +189,9 @@ theorem norm_divSec_mul {y z : CxPts p σ} (hz : z ∈ (divPot hn).U y) :
   rw [← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [divSec, Finset.prod_eq_zero_iff, Finset.mem_univ, true_and]`. Conclude with `exists_congr fun i => ev_eq_zero_iff (eq_spec hn i y).2.1 (eq_spec hn i y).1`.
+-/
 theorem divSec_eq_zero_iff (y : CxPts p σ) : divSec hn y y = 0 ↔ ∃ i, LiesIn y (C i) := by
   simp only [divSec, Finset.prod_eq_zero_iff, Finset.mem_univ, true_and]
   exact exists_congr fun i => ev_eq_zero_iff (eq_spec hn i y).2.1 (eq_spec hn i y).1
@@ -159,6 +203,9 @@ section Sec
 variable {d m : ℕ} {R : AnRead p σ d} {C : Fin m → Closeds Y} {n : Fin m → CxPts p σ → ℝ}
   (hn : ∀ i, IsDivNorm R (C i) (n i))
 
+/- English proof (translation)
+Introduce `j` and use `by have h : ∀ i, DifferentiableOn ℂ (fun v => ev p σ (eqV hn i y).1 (eqT hn i y) ((R.chart j).e.symm v)) ((R.chart j).e.target ∩ (R.chart j).e.symm ⁻¹' (divPot hn).U y) := fun i => (R.holoOn_ev _ (eqT hn i y) j).mono fun v hv => ⟨hv.1, mem_eqV hn hv.2 i⟩ have key : ∀ s : Finset ( …`.
+-/
 theorem holoOn_divSec (y : CxPts p σ) : R.HoloOn ((divPot hn).U y) (divSec hn y) := fun j => by
   have h : ∀ i, DifferentiableOn ℂ
       (fun v => ev p σ (eqV hn i y).1 (eqT hn i y) ((R.chart j).e.symm v))
@@ -176,6 +223,9 @@ theorem holoOn_divSec (y : CxPts p σ) : R.HoloOn ((divPot hn).U y) (divSec hn y
   refine (key Finset.univ).congr fun v _ => ?_
   simp [divSec]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => (hB.holoOn_iff R ((divPot hn).isOpen_U y)).2 (holoOn_divSec hn y), fun _ _ _ hz => by rw [norm_divSec_mul hn hz.1, norm_divSec_mul hn hz.2]⟩`.
+-/
 theorem isSection_divSec {B : FinHolAtlas d (CxPts p σ)} (hB : IsAlgAtlas B) :
     IsSection B (divPot hn) (divSec hn) :=
   ⟨fun y => (hB.holoOn_iff R ((divPot hn).isOpen_U y)).2 (holoOn_divSec hn y),

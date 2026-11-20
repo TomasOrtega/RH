@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
+/- English proof (translation)
+Rewrite using `[theta_val]`. Simplify using `[Matrix.mul_apply, Jmat]`. Rewrite using `[Finset.sum_eq_single j.rev]`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Apply `hk` to reduce the goal to its premises. Rewrite using `[h, Fin.rev_rev]`. Simplify using the standard rewrite rules.
+-/
 private theorem theta_entry {R : Type} [CommRing R] (g : GL (Fin 3) R) (i j : Fin 3) :
     (theta g : Matrix (Fin 3) (Fin 3) R) i j = ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) j.rev i.rev := by
   rw [theta_val]
@@ -15,6 +20,19 @@ private theorem theta_entry {R : Type} [CommRing R] (g : GL (Fin 3) R) (i j : Fi
     rw [h, Fin.rev_rev]
   · simp
 
+/- English proof (translation)
+Establish `hDm : ∀ f h : R, D (f * h) = x f • D h + x h • D f` using `hD`. Establish `hD1 : D 1 = 0`. Establish `h` using `hDm 1 1`. Simplify using `only [mul_one, map_one, one_smul] at h`. Establish `h' : D 1 + D 1 = D 1 + 0` using `by rw [add_zero]; exact h.symm`.
+
+Conclude with `add_left_cancel h'`. Establish `hx : ∀ i j, x ((g : Matrix (Fin 3) (Fin 3) R) i j) = ((tor O t : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) i j`. Introduce `i j`. Rewrite using `[← hg]`. Both sides reduce to the same expression.
+
+Establish `hxi : ∀ i j, x (((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) i j) = (((tor O t)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) i j`. Introduce `i j`. Rewrite using `[← hg, ← map_inv]`. Both sides reduce to the same expression. Establish `htor : ((tor O t : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) = diagonal fun i => ((t ^ wt1 i : Oˣ) : O)` using `rfl`.
+
+Establish `htori : (((tor O t)⁻¹ : GL (Fin 3) O) : Matrix (Fin 3) (Fin 3) O) = diagonal fun i => (((t ^ wt1 i)⁻¹ : Oˣ) : O)` using `rfl`. Establish `h1 : D ((1 : Matrix (Fin 3) (Fin 3) R) p q) = 0`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `hD1`.
+
+Conclude with `map_zero D`. Establish `key` using `congrArg (fun M : Matrix (Fin 3) (Fin 3) R => D (M p q)) (congrArg (fun h : GL (Fin 3) R => (h : Matrix (Fin 3) (Fin 3) R)) (mul_inv_cancel g))`. Simplify using `only [Units.val_mul, Units.val_one, h1, Matrix.mul_apply, map_sum, hDm, hx, hxi, htor, htori, Finset.sum_add_distrib, diagonal_apply, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true] at key`. Establish `e : ((t ^ wt1 p : Oˣ) : O) • D (((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) p q) = -((((t ^ wt1 q)⁻¹ : Oˣ) : O) • D ((g : Matrix (Fin 3) (Fin 3) R) p q))` using `eq_neg_of_add_eq_zero_left key`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = _ := by`. Rewrite using `[e, smul_neg, smul_smul, neg_smul, mul_comm (((t ^ wt1 q)⁻¹ : Oˣ) : O)]`.
+-/
 private theorem der_inv {O R Q : Type} [CommRing O] [CommRing R] [Algebra O R] [AddCommGroup Q] [Module O Q]
     (x : R →ₐ[O] O) (D : R →ₗ[O] Q) (hD : D ∈ PtDer x Q) (t : Oˣ) (g : GL (Fin 3) R)
     (hg : GeneralLinearGroup.map (x : R →+* O) g = tor O t) (p q : Fin 3) :
@@ -60,6 +78,9 @@ private theorem der_inv {O R Q : Type} [CommRing O] [CommRing R] [Algebra O R] [
     _ = _ := by
         rw [e, smul_neg, smul_smul, neg_smul, mul_comm (((t ^ wt1 q)⁻¹ : Oˣ) : O)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `h` using `congrArg SemidirectProduct.left hy`. Simplify `h` using `[GG.map]`. Establish `h` using `congrArg SemidirectProduct.right hy`. Simplify `h` using `[GG.map]`.
+-/
 private theorem map_left_eq_tor_and_right_eq_of_map_eq {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
     (s : ℤˣ) (t : Oˣ) (x : R →ₐ[O] O) (y : GG 3 R) (hy : GG.map (x : R →+* O) y = ⟨tor O t, s⟩) :
     GeneralLinearGroup.map (x : R →+* O) y.left = tor O t ∧ y.right = s := by
@@ -69,9 +90,33 @@ private theorem map_left_eq_tor_and_right_eq_of_map_eq {O R : Type} [CommRing O]
   · have h := congrArg SemidirectProduct.right hy
     simpa [GG.map] using h
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> decide`.
+-/
 private theorem wt_rev_rev_eq_wt1_sub_wt1 (i j : Fin 3) : wt j.rev i.rev = wt1 i - wt1 j := by
   fin_cases i <;> fin_cases j <;> decide
 
+/- English proof (translation)
+Introduce `O _ s t a b`. Distinguish the cases in `hs : s = 1`. Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Use `⟨1, i, j, by simp [wt6, wt], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`.
+
+Take `⟨_, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_pos (hr.trans hs)]`. Simplify using `[GG.mat]`. Use `⟨0, i, j, by simp [wt6, wt], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`.
+
+Take `⟨_, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_pos (hr.trans hs)]`. Simplify using the standard rewrite rules. Use `⟨0, i, j, by simp [wt6, wt], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`.
+
+Take `⟨_, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_pos (hr.trans hs)]`. Simplify using the standard rewrite rules. Use `⟨-((((t ^ wt1 i.rev)⁻¹ : Oˣ) : O) * (((t ^ wt1 j.rev)⁻¹ : Oˣ) : O)), j.rev, i.rev, by simp [wt6, wt_rev_rev_eq_wt1_sub_wt1], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`.
+
+Take `⟨hl, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_pos (hr.trans hs)]`. Simplify using `only [fromBlocks_apply₂₂]`. Rewrite using `[theta_entry]`. Conclude with `der_inv x D hD t y.left hl j.rev i.rev`.
+
+Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Use `⟨0, i, j, by simp [wt6, wt], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`. Take `⟨_, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_neg (by rw [hr]; exact hs)]`.
+
+Simplify using the standard rewrite rules. Use `⟨1, i, j, by simp [wt6, wt], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`. Take `⟨_, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_neg (by rw [hr]; exact hs)]`.
+
+Simplify using `[GG.mat]`. Use `⟨-((((t ^ wt1 i.rev)⁻¹ : Oˣ) : O) * (((t ^ wt1 j.rev)⁻¹ : Oˣ) : O)), j.rev, i.rev, by simp [wt6, wt_rev_rev_eq_wt1_sub_wt1], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`. Take `⟨hl, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_neg (by rw [hr]; exact hs)]`.
+
+Simplify using `only [fromBlocks_apply₂₁]`. Rewrite using `[theta_entry]`. Conclude with `der_inv x D hD t y.left hl j.rev i.rev`. Use `⟨0, i, j, by simp [wt6, wt], ?_⟩` and prove the remaining obligations. Introduce `R Q _ _ _ _ x D hD y hy`.
+
+Take `⟨_, hr⟩` from `map_left_eq_tor_and_right_eq_of_map_eq s t x y hy`. Rewrite using `[emb_apply, if_neg (by rw [hr]; exact hs)]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.exists_pointDerivation_emb_entry_eq_smul_mat_entry :
     ∀ {O : Type} [CommRing O] (s : ℤˣ) (t : Oˣ) (a b : Fin 3 ⊕ Fin 3), ∃ (u : O) (a' b' : Fin 3), wt a' b' = wt6 a - wt6 b ∧
           ∀ {R Q : Type} [CommRing R] [Algebra O R] [AddCommGroup Q] [Module O Q] (x : R →ₐ[O] O), ∀ D ∈ PtDer x Q, ∀ y : GG 3 R,

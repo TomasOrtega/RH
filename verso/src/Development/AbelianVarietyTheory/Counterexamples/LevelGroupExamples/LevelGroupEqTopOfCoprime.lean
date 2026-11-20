@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Establish `h : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb`. Rewrite using `[← l.prod]`. Conclude with `Ideal.mul_le_left`. Conclude with `h (Ideal.subset_span rfl)`.
+-/
 theorem natCast_mem_half (l : Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   have h : Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb := by
     rw [← l.prod]; exact Ideal.mul_le_left

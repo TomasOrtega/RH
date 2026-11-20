@@ -11,6 +11,11 @@ open MvPolynomial MeasureTheory NumberField
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `specFirst`. Rewrite using `[map_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `ij`. Take `⟨i, j⟩` from `ij`.
+
+Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [specFirstVar]`. Consider the case `succ i => simp [specFirstVar]`.
+-/
 theorem map_specFirst {R S : Type*} [CommSemiring R] [CommSemiring S] (φ : R →+* S) {k n : ℕ}
     (f : MvPolynomial (Fin (k + 1) × Fin n) R) (u : Fin n → R) :
     MvPolynomial.map φ (specFirst f u) = specFirst (MvPolynomial.map φ f) (fun j => φ (u j)) := by
@@ -23,6 +28,25 @@ theorem map_specFirst {R S : Type*} [CommSemiring R] [CommSemiring S] (φ : R �
   | zero => simp [specFirstVar]
   | succ i => simp [specFirstVar]
 
+/- English proof (translation)
+Introduce `K _ _ n e δ H I f u hI hf hδ hu`. Use `set u' : Fin n → K := fun j => (u j : K) with hu'`. Use `set g := specFirst f u' with hg`. Establish `hfin_f` using `log_gaussNorm_support_finite (K := K) hf.1`. Establish `hfin_g : (Function.support fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) => Real.log (gaussNorm v g)).Finite`.
+
+Distinguish the cases in `hg0 : g = 0`. Establish `: (fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 K) => Real.log (gaussNorm v g)) = 0`. Use function extensionality and compare the values at `v`. Rewrite using `[hg0]`. Simplify using `[gaussNorm]`.
+
+Conclude with `Or.inl rfl`. Rewrite using `[this, Function.support_zero]`. Conclude with `Set.finite_empty`. Conclude with `log_gaussNorm_support_finite hg0`. Establish `hfinsum : ∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), Real.log (gaussNorm v f) = (∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), Real.log (gaussNorm v g)) + vertTerm I (e + 1) u`.
+
+Unfold `vertTerm`. Rewrite using `[← finsum_add_distrib hfin_g]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← hV K n e I f u hI hf hu v]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `Set.Finite.subset (hfin_f.union hfin_g) fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Function.mem_support, ← hV K n e I f u hI hf hu v]`. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hcon`. Conclude with `hv (by rw [hcon.1, hcon.2, sub_zero])`.
+
+Establish `harch : ∀ σ : K →+* ℂ, mahler (H.normAt σ) (e + 1) (f.map σ) = mahler (H.normAt σ) e (g.map σ) - δ * (harmonic (n - 1) : ℝ) / 2 - cycleIntegral (H.normAt σ) (fundCycle (I.map (MvPolynomial.map σ))) e (fsLog (H.normAt σ) fun j => σ (u j))`. Introduce `σ`. Take `⟨hprime, hcyc⟩` from `hB K n (e + 1) I f σ hI hf`. Establish `hδσ : IsMultiHomog δ (MvPolynomial.map σ f)` using `(isMultiHomog_iff _ _).mpr fun i => IsWeightedHomogeneous.map' ((isMultiHomog_iff _ _).mp hδ i) σ`. Establish `h` using `hA n e δ (H.normAt σ) _ _ (fun j => σ (u j)) hprime hcyc hδσ (fun W hW => hAv K n I u' σ hI hu W hW)`.
+
+Rewrite using `[hg, map_specFirst, h]`. Expand and normalize the polynomial expressions, which then agree. Unfold `chowHt`. Establish `hs : ∑ σ : K →+* ℂ, (mahler (H.normAt σ) (e + 1) (f.map σ) + ((e + 1 : ℕ) : ℝ) * δ * (harmonic (n - 1) : ℝ) / 2) = ∑ σ : K →+* ℂ, (mahler (H.normAt σ) e (g.map σ) + (e : ℝ) * δ * (harmonic (n - 1) : ℝ) / 2) - ∑ σ : K →+* ℂ, cycleIntegral (H.normAt σ) (fundCycle (I.map (MvPolynomi …`. Rewrite using `[← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[harch σ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfinsum, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ChowHeightRecursion.proof (hV : ChowFormSectionVertical.Statement) (hA : MahlerSection.Statement)
     (hB : ChowFormBaseChange.Statement) (hAv : BaseChangeAvoid.Statement) :
     ChowHeightRecursion.Statement := by

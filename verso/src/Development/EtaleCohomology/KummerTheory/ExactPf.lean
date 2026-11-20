@@ -9,46 +9,82 @@ open LateralTheory.KummerTheory LateralTheory.KummerTheory.ContCut
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(F.obj.map g.op ≫ φ.hom.app (op V)).hom x = (φ.hom.app (op U) ≫ G.obj.map g.op).hom x`. Rewrite using `[φ.hom.naturality]`.
+-/
 theorem map_res {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map φ (Sec.res g x) = Sec.res g (Sec.map φ x) := by
   change (F.obj.map g.op ≫ φ.hom.app (op V)).hom x = (φ.hom.app (op U) ≫ G.obj.map g.op).hom x
   rw [φ.hom.naturality]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ = (F.obj.map (a ≫ g).op).hom x`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {F : Shv R} {W V U : Scheme.{0}} (a : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res a (Sec.res g x) = Sec.res (a ≫ g) x := by
   change _ = (F.obj.map (a ≫ g).op).hom x
   rw [op_comp, Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Sec.map (I.d i j ≫ I.d j k) s) = 0`. Rewrite using `[I.d_comp_d]`. Both sides reduce to the same expression.
+-/
 theorem dd (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (s : Sec (I.X i) U) :
     Sec.map (I.d j k) (Sec.map (I.d i j) s) = 0 := by
   change (Sec.map (I.d i j ≫ I.d j k) s) = 0
   rw [I.d_comp_d]
   rfl
 
+/- English proof (translation)
+The claim follows from `map_neg _ _`.
+-/
 theorem mneg {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x : Sec F U) : Sec.map φ (-x) = -Sec.map φ x :=
   map_neg _ _
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem mzero {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 := map_zero _
 
+/- English proof (translation)
+The claim follows from `map_neg _ _`.
+-/
 theorem rneg {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) : Sec.res g (-x) = -Sec.res g x :=
   map_neg _ _
 
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 theorem msub {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) :
     Sec.map φ (x - y) = Sec.map φ x - Sec.map φ y := map_sub _ _ _
 
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 theorem rsub {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) : Sec.res g (x - y) = Sec.res g x - Sec.res g y :=
   map_sub _ _ _
 
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem rzero {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 := map_zero _
 
+/- English proof (translation)
+Unfold `res`. Use `infer_instance`.
+-/
 theorem inj (F : Shv R) (m : ℤ) : Injective ((res R F).X m) := by
   unfold res; infer_instance
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `id`.
+-/
 theorem tr (I : Cx R) {X : Scheme.{0}} (m k j : ℤ) (h : m = k) (a : Sec (I.X j) X) :
     (∃ b : Sec (I.X m) X, Sec.map (I.d m j) b = a) → ∃ b : Sec (I.X k) X, Sec.map (I.d k j) b = a := by
   subst h; exact id
 
+/- English proof (translation)
+Take `⟨-, -, D3, D4, -⟩` from `hD R (res R F) Y m`. Establish `h3` using `(D4 x (-y) s (-t) hx (D4 y y t t hy hy).2).1`. Rewrite `h3` using `[← sub_eq_add_neg, ← sub_eq_add_neg]`. Conclude with `sub_eq_zero.mp ((D3 _ _ h3).2.mpr h)`.
+-/
 theorem cls_eq (hD : Dict) (F : Shv R) {Y : Scheme.{0}} (m : ℤ) {x y : H R (sch.obj Y) F m}
     {s t : Sec ((res R F).X m) Y} (hx : IsCls x s) (hy : IsCls y t)
     (h : ∃ b : Sec ((res R F).X (m - 1)) Y, Sec.map ((res R F).d (m - 1) m) b = s - t) : x = y := by
@@ -57,6 +93,49 @@ theorem cls_eq (hD : Dict) (F : Shv R) {Y : Scheme.{0}} (m : ℤ) {x y : H R (sc
   rw [← sub_eq_add_neg, ← sub_eq_add_neg] at h3
   exact sub_eq_zero.mp ((D3 _ _ h3).2.mpr h)
 
+/- English proof (translation)
+Introduce `R _ F W U V X a b f g hmv n`. Establish `hpb` using `hmv.2.2.1`. Use `haveI : IsOpenImmersion g := hmv.2.1`. Use `haveI : Mono a := hpb.mono_fst_of_mono`. Establish `hw : a ≫ f = b ≫ g` using `hpb.w`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u v huv`. Take `⟨u0, hu0⟩` from `(hD R (res R F) U n).2.1 u`. Take `⟨v0, hv0⟩` from `(hD R (res R F) V n).2.1 v`. Establish `hau : IsCls (pull R (sch.map a) F n u) (Sec.res a u0)` using `(hD R (res R F) U n).2.2.2.2 a u u0 hu0`.
+
+Establish `hbv : IsCls (pull R (sch.map b) F n v) (Sec.res b v0)` using `(hD R (res R F) V n).2.2.2.2 b v v0 hv0`. Rewrite `hau` using `[huv]`. Establish `hu0c` using `((hD R (res R F) U n).2.2.1 u u0 hu0).1`. Establish `hv0c` using `((hD R (res R F) V n).2.2.1 v v0 hv0).1`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : ∃ r : Sec ((res R F).X (n - 1)) W, Sec.map ((res R F).d (n - 1) n) r = Sec.res a u0 - Sec.res b v0 := by`.
+
+Establish `h3` using `((hD R (res R F) W n).2.2.2.1 _ _ _ _ hau ((hD R (res R F) W n).2.2.2.1 _ _ _ _ hbv hbv).2).1`. Rewrite `h3` using `[add_neg_cancel, ← sub_eq_add_neg]`. Conclude with `((hD R (res R F) W n).2.2.1 _ _ h3).2.mp rfl`. Use `haveI := inj F (n - 1)`. Take `⟨r', hr'⟩` from `hF R ((res R F).X (n - 1)) a r`.
+
+Express the relevant statement in the definitionally equal form `Sec.res a r' = r at hr'`. Establish `hu1 : Sec.res a (u0 - Sec.map ((res R F).d (n - 1) n) r') = Sec.res b v0`. Rewrite using `[rsub]`. Rewrite using `[← map_res, hr', hr]`. Normalize the expressions using the abelian group laws.
+
+Take `⟨z, hzf, hzg⟩` from `(hG R ((res R F).X n) a b f g hmv).2 _ v0 hu1`. Establish `hdz : Sec.map ((res R F).d n (n + 1)) z = 0`. Apply `(hG R ((res R F).X (n + 1)) a b f g hmv).1` to reduce the goal to its premises. Rewrite using `[← map_res, hzf, msub, hu0c, dd, sub_zero]`. Rewrite using `[← map_res, hzg, hv0c]`.
+
+Take `⟨x, hx⟩` from `(hD R (res R F) X n).1 z hdz`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Establish `hfx : IsCls (pull R (sch.map f) F n x) (Sec.res f z)` using `(hD R (res R F) X n).2.2.2.2 f x z hx`. Rewrite `hfx` using `[hzf]`. Use `cls_eq hD F n hfx hu0 ⟨-r', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mneg]`. Normalize the expressions using the abelian group laws. Establish `hgx : IsCls (pull R (sch.map g) F n x) (Sec.res g z)` using `(hD R (res R F) X n).2.2.2.2 g x z hx`. Rewrite `hgx` using `[hzg]`. Conclude with `cls_eq hD F n hgx hv0 ⟨0, by rw [mzero, sub_self]⟩`.
+
+Introduce `x hfx hgx`. Take `⟨z0, hz0⟩` from `(hD R (res R F) X (n + 1)).2.1 x`. Establish `hz0c` using `((hD R (res R F) X (n + 1)).2.2.1 x z0 hz0).1`. Establish `hgz : IsCls (pull R (sch.map g) F (n + 1) x) (Sec.res g z0)` using `(hD R (res R F) X (n + 1)).2.2.2.2 g x z0 hz0`. Rewrite `hgz` using `[hgx]`.
+
+Take `⟨t, ht⟩` from `tr (res R F) (n + 1 - 1) n (n + 1) (by ring) _ (((hD R (res R F) V (n + 1)).2.2.1 _ _ hgz).2.mp rfl)`. Use `haveI := inj F n`. Take `⟨t', ht'⟩` from `hF R ((res R F).X n) g t`. Express the relevant statement in the definitionally equal form `Sec.res g t' = t at ht'`. Establish `hzg : Sec.res g (z0 - Sec.map ((res R F).d n (n + 1)) t') = 0`.
+
+Rewrite using `[rsub, ← map_res, ht', ht, sub_self]`. Take `⟨x', hx'⟩` from `(hD R (res R F) X (n + 1)).1 (z0 - Sec.map ((res R F).d n (n + 1)) t') (by rw [msub, hz0c, dd, sub_zero])`. Establish `hxx : x' = x` using `cls_eq hD F (n + 1) hx' hz0 (tr (res R F) n (n + 1 - 1) (n + 1) (by ring) _ ⟨-t', by rw [mneg]; abel⟩)`. Rewrite `hx'` using `[hxx]`. Establish `hfz : IsCls (pull R (sch.map f) F (n + 1) x) (Sec.res f (z0 - Sec.map ((res R F).d n (n + 1)) t'))` using `(hD R (res R F) X (n + 1)).2.2.2.2 f x _ hx'`.
+
+Rewrite `hfz` using `[hfx]`. Take `⟨s, hs⟩` from `tr (res R F) (n + 1 - 1) n (n + 1) (by ring) _ (((hD R (res R F) U (n + 1)).2.2.1 _ _ hfz).2.mp rfl)`. Establish `hsc : Sec.map ((res R F).d n (n + 1)) (Sec.res a s) = 0`. Rewrite using `[map_res, hs, res_res, hw, ← res_res, hzg, rzero]`. Take `⟨w, hw'⟩` from `(hD R (res R F) W n).1 _ hsc`.
+
+Conclude with `⟨w, s, _, hw', hx', hs.symm, hzg⟩`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, z, hws, hz0, hfz, hgz⟩`. Take `⟨t, ht⟩` from `tr (res R F) (n + 1 - 1) n (n + 1) (by ring) _ (((hD R (res R F) X (n + 1)).2.2.1 _ _ hz0).2.mp rfl)`.
+
+Establish `hu : Sec.map ((res R F).d n (n + 1)) (s - Sec.res f t) = 0`. Rewrite using `[msub, map_res, ht, hfz, sub_self]`. Establish `hv : Sec.map ((res R F).d n (n + 1)) (-Sec.res g t) = 0`. Rewrite using `[mneg, map_res, ht, hgz, neg_zero]`. Take `⟨u, hu'⟩` from `(hD R (res R F) U n).1 _ hu`.
+
+Take `⟨v, hv'⟩` from `(hD R (res R F) V n).1 _ hv`. Use `⟨u, v, ?_⟩` and prove the remaining obligations. Establish `h1 : IsCls (pull R (sch.map a) F n u) (Sec.res a (s - Sec.res f t))` using `(hD R (res R F) U n).2.2.2.2 a u _ hu'`. Establish `h2 : IsCls (pull R (sch.map b) F n v) (Sec.res b (-Sec.res g t))` using `(hD R (res R F) V n).2.2.2.2 b v _ hv'`. Establish `h3` using `((hD R (res R F) W n).2.2.2.1 _ _ _ _ h1 ((hD R (res R F) W n).2.2.2.1 _ _ _ _ h2 h2).2).1`.
+
+Establish `hA : Sec.res a (s - Sec.res f t) + -Sec.res b (-Sec.res g t) = Sec.res a s`. Rewrite using `[rsub, rneg, res_res, res_res, hw]`. Normalize the expressions using the abelian group laws. Rewrite `h3` using `[hA, ← sub_eq_add_neg]`. Conclude with `cls_eq hD F n hws h3 ⟨0, by rw [mzero, sub_self]⟩`.
+
+Introduce and unpack `⟨u, v, rfl⟩`. Take `⟨u0, hu0⟩` from `(hD R (res R F) U n).2.1 u`. Take `⟨v0, hv0⟩` from `(hD R (res R F) V n).2.1 v`. Establish `hu0c` using `((hD R (res R F) U n).2.2.1 u u0 hu0).1`. Establish `hv0c` using `((hD R (res R F) V n).2.2.1 v v0 hv0).1`.
+
+Use `haveI := inj F n`. Take `⟨s', hs'⟩` from `hF R ((res R F).X n) a (Sec.res b v0)`. Express the relevant statement in the definitionally equal form `Sec.res a s' = Sec.res b v0 at hs'`. Take `⟨t, htf, htg⟩` from `(hG R ((res R F).X n) a b f g hmv).2 s' v0 hs'`. Use `⟨u0 - s', -Sec.map ((res R F).d n (n + 1)) t, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : IsCls (pull R (sch.map a) F n u) (Sec.res a u0)` using `(hD R (res R F) U n).2.2.2.2 a u u0 hu0`. Establish `h2 : IsCls (pull R (sch.map b) F n v) (Sec.res b v0)` using `(hD R (res R F) V n).2.2.2.2 b v v0 hv0`. Establish `h3` using `((hD R (res R F) W n).2.2.2.1 _ _ _ _ h1 ((hD R (res R F) W n).2.2.2.1 _ _ _ _ h2 h2).2).1`. Rewrite `h3` using `[← sub_eq_add_neg, ← sub_eq_add_neg, ← hs', ← rsub]`. Conclude with `h3`.
+
+Take `⟨y, hy⟩` from `(hD R (res R F) X (n + 1)).1 (-Sec.map ((res R F).d n (n + 1)) t) (by rw [mneg, dd, neg_zero])`. Establish `hy0 : y = 0` using `((hD R (res R F) X (n + 1)).2.2.1 _ _ hy).2.mpr (tr (res R F) n (n + 1 - 1) (n + 1) (by ring) _ ⟨-t, mneg _ _⟩)`. Rewrite `hy` using `[hy0]`. Conclude with `hy`. Rewrite using `[rneg, ← map_res, htf, msub, hu0c, zero_sub]`.
+
+Rewrite using `[rneg, ← map_res, htg, hv0c, neg_zero]`.
+-/
 theorem Exact_of (hD : Dict) (hG : Glue) (hF : Flasque) : Exact := by
   intro R _ F W U V X a b f g hmv n
   have hpb := hmv.2.2.1

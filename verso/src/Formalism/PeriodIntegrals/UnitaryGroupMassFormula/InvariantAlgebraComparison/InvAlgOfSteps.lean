@@ -14,6 +14,9 @@ def Theta (I : AutInst) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolu
     (InfinitePlace I.F → ℂ) × (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) :=
   RingHom.prod (Pi.ringHom fun v => thetaV I v) (tauF I)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_apply (I : AutInst) (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     Theta I x = (fun v => thetaV I v x, tauF I x) := rfl
 

@@ -20,6 +20,9 @@ variable {n : ℕ}
 
 def sumNum (e : Option (Fin n) ≃ Fin (n + 1)) : Fin n ⊕ Unit ≃ Fin (n + 1) := (Equiv.optionEquivSumPUnit (Fin n)).symm.trans e
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [GlobalTheory.CompanionTheory.PairingAnalysis.emb, embH, sumNum, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_trans_apply, Equiv.symm_symm]`. Apply the tactic sequence `rcases e.symm a with _ | i <;> rcases e.symm b with _ | j <;> simp [Equiv.optionEquivSumPUnit]`.
+-/
 theorem emb_sumNum (e : Option (Fin n) ≃ Fin (n + 1)) (h : Mat n) : GlobalTheory.CompanionTheory.PairingAnalysis.emb (sumNum e) h = embH e h := by
   ext a b
   simp only [GlobalTheory.CompanionTheory.PairingAnalysis.emb, embH, sumNum, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_trans_apply, Equiv.symm_symm]
@@ -28,11 +31,29 @@ theorem emb_sumNum (e : Option (Fin n) ≃ Fin (n + 1)) (h : Mat n) : GlobalTheo
 variable {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool} {lam : Fin (n + 1) → ℝ} {ε' : Fin n → Bool}
   {mu : Fin n → ℝ} {B : ℝ}
 
+/- English proof (translation)
+Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Simplify `hP.signs.1` using `[GlobalTheory.CompanionTheory.PairingAnalysis.zi, sumNum, Equiv.optionEquivSumPUnit]`. Simplify `hP.signs.2 a` using `[sumNum, Equiv.optionEquivSumPUnit]`.
+-/
 theorem fits_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.PairingAnalysis.Fits ε ε' (sumNum e) := by
   refine ⟨?_, fun a => ?_⟩
   · simpa [GlobalTheory.CompanionTheory.PairingAnalysis.zi, sumNum, Equiv.optionEquivSumPUnit] using hP.signs.1
   · simpa [sumNum, Equiv.optionEquivSumPUnit] using hP.signs.2 a
 
+/- English proof (translation)
+Establish `hs` using `hP.signs`. Use `⟨by linarith [hP.three_le], ?_, ?_, hP.hlam, hP.hmu, hP.bound.1, hP.bound.2, ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hP.neg`. Conclude with `⟨e (some i), by rw [hs.2 i, hi]⟩`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.card_le_card_of_surjOn (fun i => e (some i)) ?_` and prove the remaining obligations. Introduce `a ha`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at ha`. Consider the cases of `hsa : e.symm a with`. Consider the case `none`.
+
+Establish `: a = e none` using `by rw [← hsa, Equiv.apply_symm_apply]`. Rewrite `ha` using `[this, hs.1]`. Conclude with `absurd ha (by decide)`. Consider the case `some i`. Establish `: a = e (some i)` using `by rw [← hsa, Equiv.apply_symm_apply]`.
+
+Use `⟨i, ?_, this.symm⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Rewrite using `[← hs.2 i, ← this, ha]`. Use `_ ≤ #{i | ε' i = true} := hP.pos`. Use `_ ≤ #{a | ε a = true} := by`.
+
+Use `Finset.card_le_card_of_injOn (fun i => e (some i)) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hi ⊢`. Rewrite using `[hs.2 i, hi]`. Introduce `i _ j _ hij`.
+
+Simplify using `using hij`. Introduce `a b hab`. Establish `h1` using `hP.gap a b hab`. Establish `h2 : (0 : ℝ) ≤ (↑n + 1) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `a b hab`. Establish `h1` using `hP.gap' a b hab`. Establish `h2 : (0 : ℝ) ≤ (↑n + 1) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem par_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.PairingAnalysis.Par ε lam ε' mu B := by
   have hs := hP.signs
   refine ⟨by linarith [hP.three_le], ?_, ?_, hP.hlam, hP.hmu, hP.bound.1, hP.bound.2, ?_, ?_⟩
@@ -69,6 +90,9 @@ theorem par_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.Pairi
     have h2 : (0 : ℝ) ≤ (↑n + 1) ^ 3 := by positivity
     linarith
 
+/- English proof (translation)
+Introduce `x y hxy hz`. Establish `h` using `hP.word x y hxy hz`. Simplify using `only [ne_eq] at h`. Unfold `Xor'`. The claim follows by propositional logic.
+-/
 theorem heWord_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.PairingAnalysis.HeWord ε lam ε' mu := by
   intro x y hxy hz
   have h := hP.word x y hxy hz
@@ -76,6 +100,11 @@ theorem heWord_of (hP : Par e ε lam ε' mu B) : GlobalTheory.CompanionTheory.Pa
   unfold Xor'
   tauto
 
+/- English proof (translation)
+Establish `hJ : Jm ε * Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Establish `hh' : hᴴ * Jm ε * h = Jm ε` using `hh`. Establish `h1 : (Jm ε * hᴴ * Jm ε) * h = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨⟨h, Jm ε * hᴴ * Jm ε, mul_eq_one_comm.mp h1, h1⟩, hh⟩, rfl⟩`.
+-/
 private theorem exists_uj_umat_eq_of_mem_UJset {m : ℕ} {ε : Fin m → Bool} {h : Mat m} (hh : h ∈ UJset ε) :
     ∃ g : UJ ε, umat g = h := by
   have hJ : Jm ε * Jm ε = 1 := by
@@ -89,6 +118,13 @@ private theorem exists_uj_umat_eq_of_mem_UJset {m : ℕ} {ε : Fin m → Bool} {
       _ = 1 := by rw [hh', hJ]
   exact ⟨⟨⟨h, Jm ε * hᴴ * Jm ε, mul_eq_one_comm.mp h1, h1⟩, hh⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hJ : Jm ε = embH e (Jm ε')`. Use extensionality with `a b`. Establish `ha` using `e.apply_symm_apply a`. Establish `hb` using `e.apply_symm_apply b`. Simplify using `only [embH, Formalism.REAL.Jm, Matrix.diagonal_apply]`.
+
+Apply the tactic sequence `rcases hA : e.symm a with _ | i <;> rcases hB : e.symm b with _ | j <;> rw [hA] at ha <;>`. Apply the tactic sequence `rw [hB] at hb <;> subst ha <;> subst hb <;> simp [hs.1, hs.2]`. Establish `hC : (embH e h)ᴴ = embH e hᴴ`. Use extensionality with `a b`. Simplify using `only [embH, Matrix.conjTranspose_apply]`.
+
+Apply the tactic sequence `rcases e.symm a with _ | i <;> rcases e.symm b with _ | j <;> simp`. Rewrite `hh`, the goal using `[GlobalTheory.SepReal.ProjSm.mem_iff]`. Rewrite using `[hC, hJ, ← embH_mul, ← embH_mul, hh]`.
+-/
 private theorem embH_mem_UJset_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool}
     {ε' : Fin n → Bool} (hs : Signs e ε ε') {h : Mat n} (hh : h ∈ UJset ε') : embH e h ∈ UJset ε := by
   have hJ : Jm ε = embH e (Jm ε') := by
@@ -105,6 +141,13 @@ private theorem embH_mem_UJset_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε
   rw [GlobalTheory.SepReal.ProjSm.mem_iff] at hh ⊢
   rw [hC, hJ, ← embH_mul, ← embH_mul, hh]
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ρ 1 = 1`. Conclude with `hρ.1.1`. Introduce `a b`. Establish `h` using `hρ.1.2 _ (GlobalTheory.SepReal.RealAsm.umat_mem ε a) _ (GlobalTheory.SepReal.RealAsm.umat_mem ε b)`.
+
+Use `show ρ (umat a * umat b) = _`. Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `g x`. Conclude with `hρ.2.1 _ (GlobalTheory.SepReal.RealAsm.umat_mem ε g) x`.
+
+Introduce `x`. Conclude with `(hρ.2.2 x).comp_continuous (GlobalTheory.SepReal.RealAsm.continuous_umat ε) (GlobalTheory.SepReal.RealAsm.umat_mem ε)`.
+-/
 private theorem isU_comp_umat_of_isURepOn {m : ℕ} {ε : Fin m → Bool} {K : Type} [NormedAddCommGroup K]
     [InnerProductSpace ℂ K] {ρ : Mat m → K →L[ℂ] K} (hρ : IsURepOn (UJset ε) ρ) :
     GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsU (fun g : UJ ε => ρ (umat g)) := by
@@ -122,6 +165,11 @@ private theorem isU_comp_umat_of_isURepOn {m : ℕ} {ε : Fin m → Bool} {K : T
     exact (hρ.2.2 x).comp_continuous (GlobalTheory.SepReal.RealAsm.continuous_umat ε)
       (GlobalTheory.SepReal.RealAsm.umat_mem ε)
 
+/- English proof (translation)
+Establish `hc : Continuous (embH e)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [embH]`. Apply the tactic sequence `rcases e.symm a with _ | i <;> rcases e.symm b with _ | j <;> first | fun_prop | exact continuous_const`. Use `⟨⟨?_, fun a ha b hb => ?_⟩, fun g hg v => hπ.2.1 _ (embH_mem_UJset_of_signs hs hg) v, fun v => (hπ.2.2 v).comp hc.continuousOn (fun h hh => embH_mem_UJset_of_signs hs hh)⟩` and prove the remaining obligations.
+
+Simplify using `only [embH_one]`. Conclude with `hπ.1.1`. Simplify using `only [embH_mul]`. Conclude with `hπ.1.2 _ (embH_mem_UJset_of_signs hs ha) _ (embH_mem_UJset_of_signs hs hb)`.
+-/
 private theorem isURepOn_embH_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε : Fin (n + 1) → Bool}
     {ε' : Fin n → Bool} {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     (hs : Signs e ε ε') {π : Mat (n + 1) → K →L[ℂ] K} (hπ : IsURepOn (UJset ε) π) :
@@ -137,6 +185,25 @@ private theorem isURepOn_embH_of_signs {e : Option (Fin n) ≃ Fin (n + 1)} {ε 
   · simp only [embH_mul]
     exact hπ.1.2 _ (embH_mem_UJset_of_signs hs ha) _ (embH_mem_UJset_of_signs hs hb)
 
+/- English proof (translation)
+Unfold `ProjLarge ForPair`. Introduce `n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ v₀ hv₀`. Use `haveI : CompleteSpace H := hπ.1`. Use `haveI : CompleteSpace H' := hσ.1`. Take `⟨d, hd⟩` from `Formalism.MainNotions.BridgeCSchur.fdeg_of_DS mu σ hσ`.
+
+Establish `hK : PositivityTheory.RgHe.SchurK ε' σ (muG ε') d⁻¹`. Use `⟨inv_pos.2 hd.1, fun v w v' w' => ⟨(hd.2 v w v' w').1, ?_⟩⟩` and prove the remaining obligations. Use `(hd.2 v w v' w').2.trans ?_` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul, Complex.ofReal_inv]`. Take `⟨S, hKS⟩` from `hσ.2.2.2.2.2.1`.
+
+Take `⟨x, hxS, hx0, -⟩` from `hKS.2.2.2.1`. Establish `hxL : x ∈ lowKSub ε' mu σ`. Unfold `Formalism.MainNotions.S.lowKSub`. Conclude with `Submodule.mem_sSup_of_mem hKS hxS`. Use `set w : H' := ((‖x‖ : ℂ)⁻¹) • x with hwdef`.
+
+Establish `hwL : w ∈ lowKSub ε' mu σ` using `Submodule.smul_mem _ _ hxL`. Establish `hw1 : ‖w‖ = 1`. Rewrite using `[hwdef, norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 hx0)]`. Establish `hfit` using `fits_of hP`. Establish `hpar` using `par_of hP`.
+
+Take `⟨hint, i, η, hiso, hieq, hη, hηi, hηa⟩` from `hS n ε lam ε' mu B (sumNum e) H H' π σ (muG ε') inferInstance hfit hpar hπ hσ (heWord_of hP) d⁻¹ hK w hwL hw1`. Take `⟨g₀, hg₀s, hg₀⟩` from `hB n ε lam ε' mu B (sumNum e) H H' π σ (muG ε') inferInstance hfit hpar hπ hσ d⁻¹ hK w hwL hw1 hint i η hiso hieq hη hηi hηa v₀ hv₀.2 hv₀.1`. Establish `hB1` using `GlobalTheory.SepReal.RealAsm.one_le_B hP`. Establish `hn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `hX : 0 ≤ 8 * ((n : ℝ) + 1) * B` using `by nlinarith`.
+
+Use `⟨i, ContinuousLinearMap.adjoint i, ⟨?_, hiso, fun v y => (ContinuousLinearMap.adjoint_inner_right i y v).symm⟩, umat g₀, GlobalTheory.SepReal.RealAsm.umat_mem ε g₀, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh y`. Take `⟨g, rfl⟩` from `exists_uj_umat_eq_of_mem_UJset hh`. Establish `h2` using `hieq g y`. Rewrite `h2` using `[emb_sumNum]`. Then use the resulting hypothesis.
+
+Rewrite using `[show (10 : ℝ) * ((n : ℝ) + 1) = ((10 * (n + 1) : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast] show Real.sqrt (Formalism.REAL.hs (umat g₀)) ≤ _`. Rewrite using `[← Real.sqrt_sq (pow_nonneg hX (10 * (n + 1)))]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[← pow_mul]`. Apply the tactic sequence `convert hg₀s using 2 <;> ring`.
+
+Establish `hL : 0 ≤ Real.log (8 * ((n : ℝ) + 1) * B)` using `Real.log_nonneg (by nlinarith)`. Establish `h1 : 1 ≤ big 100 n B * Real.exp (-(100 * ((n : ℝ) + 1) ^ 3 * Real.log (8 * ((n : ℝ) + 1) * B)))`. Unfold `big`. Rewrite using `[← Real.exp_add]`. Apply `Real.one_le_exp` to reduce the goal to its premises.
+
+Establish `h3 : 100 * ((n : ℝ) + 1) ^ 4 * Real.log (8 * ((n : ℝ) + 1) * B) + -(100 * ((n : ℝ) + 1) ^ 3 * Real.log (8 * ((n : ℝ) + 1) * B)) = 100 * (((n : ℝ) + 1) ^ 3 * (n : ℝ) * Real.log (8 * ((n : ℝ) + 1) * B))` using `by ring`. Rewrite using `[h3]`. Conclude with `mul_nonneg (by norm_num) (mul_nonneg (mul_nonneg (by positivity) hn) hL)`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left hg₀ (GlobalTheory.SepReal.RealAsm.big_pos _ _ _).le)`.
+-/
 theorem projLarge_of (hS : PositivityTheory.RgHe.A.SchurEigenProjectionExists) (hB : PositivityTheory.RgHe.A.BigProjP) : ProjLarge := by
   unfold ProjLarge ForPair
   intro n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ v₀ hv₀
@@ -193,6 +260,17 @@ theorem projLarge_of (hS : PositivityTheory.RgHe.A.SchurEigenProjectionExists) (
       exact mul_nonneg (by norm_num) (mul_nonneg (mul_nonneg (by positivity) hn) hL)
     exact h1.trans (mul_le_mul_of_nonneg_left hg₀ (GlobalTheory.SepReal.RealAsm.big_pos _ _ _).le)
 
+/- English proof (translation)
+Unfold `EigMap ForPair`. Introduce `n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ d hd w₀ hw₀ hint j P hjP v hv hPv`. Use `haveI : CompleteSpace H := hπ.1`. Use `haveI : CompleteSpace H' := hσ.1`. Establish `hU' : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsU (fun g : UJ ε' => σ (umat g))` using `isU_comp_umat_of_isURepOn hσ.2.2.1`.
+
+Establish `hU : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsU (fun g : UJ ε' => π (embH e (umat g)))` using `isU_comp_umat_of_isURepOn (ρ := fun h => π (embH e h)) (isURepOn_embH_of_signs hP.signs hπ.2.2.1)`. Establish `hFd : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsFd (muG ε') (fun g : UJ ε' => σ (umat g)) d` using `hd`. Establish `hiso : GlobalTheory.CompanionTheory.UnitaryFramesMetricPeriods.IsIsoMap (fun g : UJ ε' => σ (umat g)) (fun g => π (embH e (umat g))) j` using `⟨fun g x => hjP.1 _ (GlobalTheory.SepReal.RealAsm.umat_mem ε' g) x, hjP.2.1⟩`. Establish `hadj : ContinuousLinearMap.adjoint j = P`. Use `symm`.
+
+Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[← inner_conj_symm, ← hjP.2.2 x y]`. Conclude with `inner_conj_symm _ _`. Take `⟨w, c, hw0, hc, hb⟩` from `hE (muG ε') (fun g : UJ ε' => σ (umat g)) (fun g => π (embH e (umat g))) d hU' hU hFd w₀ hw₀ hint j hiso v hv`.
+
+Rewrite `hc` using `[hadj]`. Establish `hcpos : 0 < c` using `lt_of_lt_of_le (div_pos (pow_pos (norm_pos_iff.2 hPv) 2) (by linarith [hd.1])) hc`. Take `⟨T, hT, hTv⟩` from `hT (muG ε') (fun g : UJ ε' => σ (umat g)) (fun g => π (embH e (umat g))) d hU' hU hFd v hv w c hcpos.ne' (fun b => (hb b).2)`. Use `⟨w, c, T, hw0, hc, fun b => (hb b).2, ?_, hTv⟩` and prove the remaining obligations. Introduce `h hh x`.
+
+Take `⟨g, rfl⟩` from `exists_uj_umat_eq_of_mem_UJset hh`. Conclude with `hT g x`.
+-/
 theorem eigMap_of (hE : PositivityTheory.RgHe.A.EigA) (hT : PositivityTheory.RgHe.A.TMap) : EigMap := by
   unfold EigMap ForPair
   intro n e ε lam ε' mu B hP H H' _ _ _ _ π σ hπ hσ d hd w₀ hw₀ hint j P hjP v hv hPv
@@ -228,12 +306,18 @@ end
 
 namespace UpperTheory.Lit
 
+/- English proof (translation)
+The claim follows from `Branch.realInputE (Branch.projLarge_of (PositivityTheory.RgHe.A.Pf.seedB_of PositivityTheory.RgHe.LowestKTypeModel.seed PositivityTheory.RgHe.occ) (PositivityTheory.RgHe.A.Pf.bigProjP PositivityTheory.RgHe.A.Pf.momentP CompanionTheory.Lime.T3.analytic_estimates)) (Branch.eigMap_o …`.
+-/
 theorem realInputE_holds : Branch.RealInputE :=
   Branch.realInputE
     (Branch.projLarge_of (PositivityTheory.RgHe.A.Pf.seedB_of PositivityTheory.RgHe.LowestKTypeModel.seed PositivityTheory.RgHe.occ)
       (PositivityTheory.RgHe.A.Pf.bigProjP PositivityTheory.RgHe.A.Pf.momentP CompanionTheory.Lime.T3.analytic_estimates))
     (Branch.eigMap_of GlobalTheory.CompanionTheory.RgHeA.eigA GlobalTheory.CompanionTheory.RgHeA.TMapPf.tMap)
 
+/- English proof (translation)
+The claim follows from `functionalsSeparate_of_input P hH hSW realInputE_holds`.
+-/
 theorem functionalsSeparate_free (P : GlobalTheory.FunPr.Hypotheses₂) (hH : GlobalTheory.Hk3.HoweUnram)
     (hSW : GlobalTheory.Published.SiegelWeilUnitaryConvergent) : GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate :=
   functionalsSeparate_of_input P hH hSW realInputE_holds

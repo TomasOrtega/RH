@@ -11,6 +11,19 @@ namespace Formalism.RepresentationBoundsCohomology.SF
 
 open Formalism.NG Formalism.RepresentationBoundsCohomology.FIN Formalism.RepresentationBoundsCohomology.BR Formalism.RepresentationBoundsCohomology.ringDataObjects
 
+/- English proof (translation)
+Introduce `ℓ hℓ O _ _ _ G _ ε g₀ s₀ y ⟨hu, h0, hs1, hs2, hx⟩`. Establish `key : ∀ n : ℕ, n ≠ 0 → (ε g₀) ^ n ≠ 1`. Introduce `n hn h1`. Establish `h` using `powSubOneO O ℓ hℓ hu s₀ hs1 hs2 ((ε g₀ : Oˣ) : O) y hx n hn`. Establish `h2 : ((ε g₀ : Oˣ) : O) ^ n - 1 = 0`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, h1, Units.val_one, sub_self]`. Rewrite `h` using `[h2, IsDiscreteValuationRing.addVal_zero]`. Establish `h3 : IsDiscreteValuationRing.addVal O (ℓ : O) ≠ ⊤`. Introduce `h4`. Conclude with `h0 (IsDiscreteValuationRing.addVal_eq_top_iff.1 h4)`.
+
+Conclude with `(WithTop.mul_ne_top h3 (ENat.natCast_ne_top _)) h.symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `aux : ∀ i j : ℕ, i ≤ j → (ε g₀) ^ i = (ε g₀) ^ j → i = j`. Introduce `i j hij h`. Assume the negation of the conclusion as `hne`.
+
+Use `key (j - i) (by omega) ?_` and prove the remaining obligations. Establish `: (ε g₀) ^ j = (ε g₀) ^ i * (ε g₀) ^ (j - i)` using `by rw [← pow_add]; congr 1; omega`. Rewrite `h` using `[this]`. Conclude with `(mul_eq_left.1 h.symm)`. Introduce `i j h`.
+
+Break down `le_total i j with hij | hij` into its components or cases. Conclude with `aux i j hij h`. Conclude with `(aux j i hij h.symm).symm`. Introduce `O' _ _`. Establish `h` using `congrArg (algebraMap O O') hx`.
+
+Simplify `h` using `[bcChar]`.
+-/
 theorem gen : StatGen := by
   intro ℓ hℓ O _ _ _ G _ ε g₀ s₀ y ⟨hu, h0, hs1, hs2, hx⟩
   have key : ∀ n : ℕ, n ≠ 0 → (ε g₀) ^ n ≠ 1 := by
@@ -39,6 +52,11 @@ theorem gen : StatGen := by
     have h := congrArg (algebraMap O O') hx
     simpa [bcChar] using h
 
+/- English proof (translation)
+Introduce `ℓ Ek Ω O O' _ _ _ _ _ _ ε h g n ζ hζ`. Take `⟨a, h1, h2⟩` from `h g n ζ hζ`. Use `⟨a, h1, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h2`. Use `Ideal.mem_span_singleton'.2 ⟨algebraMap O O' c, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrArg (algebraMap O O') hc`. Simplify `h3` using `[bcChar]`.
+-/
 theorem cycBc : StatCycBc := by
   intro ℓ Ek Ω O O' _ _ _ _ _ _ ε h g n ζ hζ
   obtain ⟨a, h1, h2⟩ := h g n ζ hζ
@@ -48,6 +66,9 @@ theorem cycBc : StatCycBc := by
   have h3 := congrArg (algebraMap O O') hc
   simpa [bcChar] using h3
 
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ s₀ y hP hA h2 hG3 hg hcyc L ϖ hϖ`. Take `⟨g1, g2⟩` from `gen ℓ Fact.out O _ ε g₀ s₀ y hg`. Take `⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, hO⟩` from `galois_theorem_with_extension ℓ O X T d Ek Ω r π t ht bl χ₁ ε g₀ ⟨hP, hA, h2, hG3, fun i j _ _ h => g1 i j h⟩ L ϖ hϖ`. Conclude with `⟨eB, e₁, s, hAB, O', i1, i2, i3, i4, i5, i6, e, he, hO, cycBc ℓ Ek Ω O O' ε hcyc, g2 O'⟩`.
+-/
 theorem galois_theorem_with_generator : GaloisTheoremWithGenerator := by
   intro ℓ _ O _ _ _ _ X _ T d _ _ Ek Ω _ _ _ _ _ r π t ht bl χ₁ ε g₀ s₀ y hP hA h2 hG3 hg hcyc L ϖ hϖ
   obtain ⟨g1, g2⟩ := gen ℓ Fact.out O _ ε g₀ s₀ y hg

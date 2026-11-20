@@ -28,6 +28,11 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l}
   (hE : ∀ g x i, E (ρ' g x) i = ρ i g (E x i))
 include hE
 
+/- English proof (translation)
+Simplify using `only [mem_Dst]`. Rewrite using `[forall_comm]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← (GlobalTheory.BlockSum.tensComp E (Bst P)).injective.eq_iff, funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Establish `key : GlobalTheory.BlockSum.tensComp E (Bst P) (stRep P ρ' g x) i = stRep P (ρ i) g (GlobalTheory.BlockSum.tensComp E (Bst P) x i)` using `GlobalTheory.BlockSum.tensComp_map E (ρ' g) (fun i => ρ i g) (hE g) (actSt P (g : GQ l)).toLinearMap x i`. Rewrite using `[key]`.
+-/
 theorem mem_Dst_iff (x : V' ⊗[ℚ_[l]] Bst P) :
     x ∈ Dst P ρ' ↔ ∀ i, GlobalTheory.BlockSum.tensComp E (Bst P) x i ∈ Dst P (ρ i) := by
   simp only [mem_Dst]
@@ -40,6 +45,9 @@ theorem mem_Dst_iff (x : V' ⊗[ℚ_[l]] Bst P) :
     GlobalTheory.BlockSum.tensComp_map E (ρ' g) (fun i => ρ i g) (hE g) (actSt P (g : GQ l)).toLinearMap x i
   rw [key]
 
+/- English proof (translation)
+Use `fun i => finiteDimensional_Dst_of_isSst l P K (V i) (ρ i) (h i)` as an intermediate fact. Unfold `IsSst at h ⊢`. Rewrite using `[GlobalTheory.BlockSum.finrank_eq_sum (GlobalTheory.BlockSum.tensComp E (Bst P)) _ _ (mem_Dst_iff P hE), E.finrank_eq, Module.finrank_pi_fintype, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => h i`.
+-/
 theorem isSst_sum [∀ i, FiniteDimensional ℚ_[l] (V i)] (h : ∀ i, IsSst P (ρ i)) : IsSst P ρ' := by
   have := fun i => finiteDimensional_Dst_of_isSst l P K (V i) (ρ i) (h i)
   unfold IsSst at h ⊢
@@ -49,6 +57,11 @@ theorem isSst_sum [∀ i, FiniteDimensional ℚ_[l] (V i)] (h : ∀ i, IsSst P (
 
 end Sum
 
+/- English proof (translation)
+Establish `hD : Dst P (GlobalTheory.PstCoeff.resQ ρ) = (Dst P ρ).restrictScalars ℚ_[l]`. Use extensionality with `x`. Simplify using `[mem_Dst, GlobalTheory.PstCoeff.stRep_resQ]`. Establish `e : finrank ℚ_[l] ↥(Dst P (GlobalTheory.PstCoeff.resQ ρ)) = finrank ℚ_[l] LL * finrank LL ↥(Dst P ρ)`. Rewrite using `[hD, finrank_mul_finrank]`.
+
+Both sides reduce to the same expression. Rewrite using `[IsSst, e, h, ← finrank_mul_finrank ℚ_[l] LL V]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isSst_resQ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     [FiniteDimensional ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
     (ρ : Representation LL ↥(GK K) V) (h : IsSst P ρ) : IsSst P (GlobalTheory.PstCoeff.resQ ρ) := by
@@ -80,6 +93,9 @@ def repL (k : Fin Ly.m) : ↥(GK K) →* GL (Fin a) ↥(Ly.L k).1 :=
         ext i j
         simp [matL, Matrix.mul_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repL_val (k : Fin Ly.m) (g : ↥(GK K)) (i j : Fin a) :
     (((repL Ly k g).val i j : ↥(Ly.L k).1) : Om l) = (Ly.rep k g).val i j := rfl
 
@@ -87,16 +103,25 @@ def RL (k : Fin Ly.m) : Representation ↥(Ly.L k).1 ↥(GK K) (Fin a → ↥(Ly
   ((Matrix.toLinAlgEquiv' : Matrix (Fin a) (Fin a) ↥(Ly.L k).1 ≃ₐ[↥(Ly.L k).1] _) : _ →* _).comp
     ((Units.coeHom _).comp (repL Ly k))
 
+/- English proof (translation)
+Simplify using `[RL, Matrix.toLinAlgEquiv'_apply]`.
+-/
 theorem RL_apply (k : Fin Ly.m) (g : ↥(GK K)) (v : Fin a → ↥(Ly.L k).1) : RL Ly k g v = (repL Ly k g).val *ᵥ v := by
   simp [RL, Matrix.toLinAlgEquiv'_apply]
 
 def coordM (v : Fin d → ℚ_[l]) (k : Fin Ly.m) : Matrix (Fin a) (Fin a) (Om l) :=
   ∑ s, algebraMap ℚ_[l] (Om l) (v s) • Ly.b s k
 
+/- English proof (translation)
+Simplify using `only [coordM, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `sum_mem fun s _ => mul_mem (IntermediateField.algebraMap_mem _ _) (Ly.b_mem s k i j)`.
+-/
 theorem coordM_mem (v : Fin d → ℚ_[l]) (k : Fin Ly.m) (i j : Fin a) : coordM Ly v k i j ∈ (Ly.L k).1 := by
   simp only [coordM, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
   exact sum_mem fun s _ => mul_mem (IntermediateField.algebraMap_mem _ _) (Ly.b_mem s k i j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[coordM, Finset.sum_apply, algebraMap_smul]`.
+-/
 theorem sum_b (v : Fin d → ℚ_[l]) : ∑ s, v s • Ly.b s = fun k => coordM Ly v k := by
   funext k
   simp [coordM, Finset.sum_apply, algebraMap_smul]
@@ -122,9 +147,21 @@ def coordLin : (Fin d → ℚ_[l]) →ₗ[ℚ_[l]] ((p : Fin Ly.m × Fin a) → 
     refine Finset.sum_congr rfl fun s _ => ?_
     rw [Algebra.smul_def, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordLin_apply (v : Fin d → ℚ_[l]) (p : Fin Ly.m × Fin a) (i : Fin a) :
     ((coordLin Ly v p i : ↥(Ly.L p.1).1) : Om l) = coordM Ly v p.1 i p.2 := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `h0 : ∑ s, v s • Ly.b s = 0`. Rewrite using `[sum_b]`.
+
+Use function extensionality and compare the values at `k i j`. Use `congrArg Subtype.val (congrFun (congrFun hv (k, j)) i)` as an intermediate fact. Conclude with `this`. Conclude with `funext (Fintype.linearIndependent_iff.1 Ly.indep v h0)`. Introduce `y`.
+
+Set `x : Fin Ly.m → Matrix (Fin a) (Fin a) (Om l)` to `fun k i j => ((y (k, j) i : ↥(Ly.L k).1) : Om l)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ_[l]).1 (Ly.span x fun k i j => (y (k, j) i).2)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[coordLin_apply]`. Rewrite `hc` using `[sum_b]`. Conclude with `congrFun (congrFun (congrFun hc p.1) i) p.2`.
+-/
 theorem coordLin_bijective : Function.Bijective (coordLin Ly) := by
   constructor
   · rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -148,6 +185,11 @@ theorem coordLin_bijective : Function.Bijective (coordLin Ly) := by
 def coordEquiv : (Fin d → ℚ_[l]) ≃ₗ[ℚ_[l]] ((p : Fin Ly.m × Fin a) → Fin a → ↥(Ly.L p.1).1) :=
   LinearEquiv.ofBijective (coordLin Ly) (coordLin_bijective Ly)
 
+/- English proof (translation)
+Establish `hr : ∀ t, (Ly.rep k g).val * Ly.b t k = ∑ s, zOm l ((ρ g).val s t) • Ly.b s k` using `fun t => (Ly.reads k).equi g t`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [coordM, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_smul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Both sides reduce to the same expression. Use `_ = ∑ t, ∑ s, (algebraMap ℚ_[l] (Om l) (v t) * zOm l ((ρ g).val s t)) • Ly.b s k := Finset.sum_comm`. Use `_ = (Ly.rep k g).val * coordM Ly v k := by`. Simplify using `only [coordM, Finset.mul_sum, Matrix.mul_smul, hr, Finset.smul_sum, smul_smul]`.
+-/
 theorem coordM_mulVec (g : ↥(GK K)) (v : Fin d → ℚ_[l]) (k : Fin Ly.m) :
     coordM Ly (((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ v) k = (Ly.rep k g).val * coordM Ly v k := by
   have hr : ∀ t, (Ly.rep k g).val * Ly.b t k = ∑ s, zOm l ((ρ g).val s t) • Ly.b s k :=
@@ -162,6 +204,11 @@ theorem coordM_mulVec (g : ↥(GK K)) (v : Fin d → ℚ_[l]) (k : Fin Ly.m) :
     _ = (Ly.rep k g).val * coordM Ly v k := by
         simp only [coordM, Finset.mul_sum, Matrix.mul_smul, hr, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hq : qRep ρ g v = ((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ v`. Simplify using `[qRep, Matrix.toLinAlgEquiv'_apply]`. Rewrite using `[GlobalTheory.PstCoeff.resQ_apply, RL_apply]`.
+
+Express the relevant statement in the definitionally equal form `coordM Ly (qRep ρ g v) p.1 i p.2 = _`. Rewrite using `[hq, coordM_mulVec, Matrix.mul_apply]`. Simplify using `[Matrix.mulVec, dotProduct, repL_val, coordEquiv, coordLin_apply]`.
+-/
 theorem coordEquiv_equi (g : ↥(GK K)) (v : Fin d → ℚ_[l]) (p : Fin Ly.m × Fin a) :
     coordEquiv Ly (qRep ρ g v) p = GlobalTheory.PstCoeff.resQ (RL Ly p.1) g (coordEquiv Ly v p) := by
   funext i
@@ -175,6 +222,13 @@ theorem coordEquiv_equi (g : ↥(GK K)) (v : Fin d → ℚ_[l]) (p : Fin Ly.m ×
 
 end Layer2
 
+/- English proof (translation)
+Introduce `l _ K L₀ P AI T a Cl d ρ Ly`. Establish `hfin : ∀ p : Fin Ly.m × Fin a, FiniteDimensional ℚ_[l] (Fin a → ↥(Ly.L p.1).1)` using `fun p => by`. Use `(Ly.L p.1).2` as an intermediate fact. Use `infer_instance`. Establish `hE` using `coordEquiv_equi Ly`.
+
+Use `⟨fun hS => ?_, fun hC => ?_⟩` and prove the remaining obligations. Use `isSst_sum P (E := coordEquiv Ly) (fun g x p => hE g x p) fun p => ?_` and prove the remaining obligations. Use `(Ly.L p.1).2` as an intermediate fact. Conclude with `isSst_resQ P _ (hS (Ly.rep p.1) (Ly.mem p.1) (Ly.L p.1) (repL Ly p.1) (RL Ly p.1) (Ly.le p.1) (fun g v => RL_apply Ly p.1 g v) (fun g i j => repL_val Ly p.1 g i j))`. Use `GlobalTheory.BlockSum.isCrys_sum (P.PD K) (E := coordEquiv Ly) (fun g x p => hE g x p) fun p => ?_` and prove the remaining obligations.
+
+Use `(Ly.L p.1).2` as an intermediate fact. Conclude with `(GlobalTheory.BSCoeff.isCrys_resQ_iff P (RL Ly p.1)).2 (hC (Ly.rep p.1) (Ly.mem p.1) (Ly.L p.1) (repL Ly p.1) (RL Ly p.1) (Ly.le p.1) (fun g v => RL_apply Ly p.1 g v) (fun g i j => repL_val Ly p.1 g i j))`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (a : ℕ) (Cl : Set (↥(GK K) →* GL (Fin a) (Om l))) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (Ly : Layer L₀ Cl ρ), ((∀ ρ₁ ∈ Cl, ∀ (L : FinExt l) (r' : ↥(GK K) →* GL (Fin a) ↥L.1) (R : Representation ↥L.1 ↥(GK K) (Fin a → ↥L.1)), L₀.1 ≤ L.1 → (∀ g v, R g v = (r' g).val *ᵥ v) → (∀ g i j, (((r' g).val i j : ↥L.1) : Om l) = (ρ₁ g).val i j) → IsSst P R) → IsSst P (qRep ρ)) ∧ ((∀ ρ₁ ∈ Cl, (∀ (L : FinExt l) (r' : ↥(GK K) →* GL (Fin a) ↥L.1) (R : Representation ↥L.1 ↥(GK K) (Fin a → ↥L.1)), L₀.1 ≤ L.1 → (∀ g v, R g v = (r' g).val *ᵥ v) → (∀ g i j, (((r' g).val i j : ↥L.1) : Om l) = (ρ₁ g).val i j) → IsCrys (P.PD K) R)) → IsCrys (P.PD K) (qRep ρ)) := by
   intro l _ K L₀ P AI T a Cl d ρ Ly
   have hfin : ∀ p : Fin Ly.m × Fin a, FiniteDimensional ℚ_[l] (Fin a → ↥(Ly.L p.1).1) := fun p => by

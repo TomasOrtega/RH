@@ -24,10 +24,19 @@ namespace PositivityTheory.Rg.BcB.G8
 
 open GlobalTheory.CompanionTheory
 
+/- English proof (translation)
+The claim follows from `LocalThetaTranslation.translEx`.
+-/
 theorem translation_existence_holds : TranslEx := LocalThetaTranslation.translEx
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.LefPair.lefPairOf EllipticTwist.ellDiag weylAt_holds LocalThetaTopology.topo`.
+-/
 theorem lefschetz_pair_holds : LefPair := GlobalTheory.CompanionTheory.LefPair.lefPairOf EllipticTwist.ellDiag weylAt_holds LocalThetaTopology.topo
 
+/- English proof (translation)
+The claim follows from `have hA : AdelEq := AdelEqProof.adelEqOf TranslAdele.translAd global_character_of_holds (termOf_holds (QSplitPf.qSplitOf QuotNorm.qIndep) HaarProd.haarSplit LocalThetaTopology.topo CompIsoProof.compIso hK hL hF hA TwistCent.centEq NormPoly.polEq (EllProp.ellProperOf EllipticTwist …`.
+-/
 theorem global_character_of_finite_inputs (hK : KfOC) (hL : FinLevel) (hF : FinHalf) : G4 :=
   have hA : AdelEq := AdelEqProof.adelEqOf TranslAdele.translAd
   global_character_of_holds

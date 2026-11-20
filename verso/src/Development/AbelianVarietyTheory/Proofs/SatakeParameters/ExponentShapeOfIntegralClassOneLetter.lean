@@ -18,6 +18,11 @@ namespace GlobalTheory.KerStd.OneLetter
 open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq)
 open Formalism.DworkPowerSeriesWeights (Integral mvExp)
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Th1.D.SingleLetterLog.at_variable_artin_hasse_eq_one_log]`. Use extensionality with `m`. Establish `hb : ∀ e : ℕ, OrbitPlaces.backPl D p v.1 e = v.1` using `fun e => by`. Simplify using `[OrbitPlaces.backPl, h1, posPl_zero]`. Use `show (∑ e ∈ Finset.range (JetTdeg m + 1), _) = ∑ e ∈ Finset.range (m.degree + 1), _`.
+
+Establish `hd : JetTdeg m = m.degree` using `rfl`. Rewrite using `[hd]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hb]`.
+-/
 theorem localLogarithm_eq_single_variable_oneLetter (D : D7) (p : ℕ) [Fact p.Prime] (h1 : nP D p = 1) {β : Type} (v : OrbitPlaces.Pl D × β) :
     OrbitPlaces.logPl D p v = at1 v (lgF ℂ_[p] p) := by
   rw [Formalism.L2.Th1.D.SingleLetterLog.at_variable_artin_hasse_eq_one_log]
@@ -30,10 +35,16 @@ theorem localLogarithm_eq_single_variable_oneLetter (D : D7) (p : ℕ) [Fact p.P
   refine Finset.sum_congr rfl fun e _ => ?_
   rw [hb]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨by simp, by simp⟩, fun _ => ⟨Formalism.L2.Th1.D.SingleLetterLog.iter_one σ 2, Formalism.L2.Th1.D.SingleLetterLog.iter_one σ 2⟩⟩`.
+-/
 theorem owOK_one {K : Type} [NormedField K] (σ : K →+* K) :
     OwOK 2 σ (fun _ : Fin (2 / 2) => (1 : K)) (fun _ => 1) :=
   ⟨fun _ => ⟨by simp, by simp⟩, fun _ => ⟨Formalism.L2.Th1.D.SingleLetterLog.iter_one σ 2, Formalism.L2.Th1.D.SingleLetterLog.iter_one σ 2⟩⟩
 
+/- English proof (translation)
+Use `⟨by simp, fun r r' => ?_⟩` and prove the remaining obligations. Establish `hr : r = r'` using `Fin.ext (by have := r.isLt; have := r'.isLt; omega)`. Rewrite using `[Formalism.L2.Th1.D.SingleLetterLog.univ_two, Finset.sum_pair (by decide)]`. Establish `h1 : (1 : ZMod 2).val = 1` using `rfl`. Simplify using `[h1, hr]`.
+-/
 theorem trDual_one {K : Type} [NormedField K] (σ : K →+* K) :
     TrDual 2 σ (fun _ : Fin (2 / 2) => (1 : K)) (fun _ => 1) := by
   refine ⟨by simp, fun r r' => ?_⟩
@@ -42,6 +53,11 @@ theorem trDual_one {K : Type} [NormedField K] (σ : K →+* K) :
   have h1 : (1 : ZMod 2).val = 1 := rfl
   simp [h1, hr]
 
+/- English proof (translation)
+Establish `h : Formalism.L2.Th1.D.beTil (d` using `2) l σ be0 (fun _ : Fin (2 / 2) => (1 : K)) (fun _ => 1) = Formalism.L2.Th1.D.beTil (d := 2) l σ be0 (fun _ : Unit => (1 : K)) (fun _ => 1) := by`. Unfold `Formalism.L2.Th1.D.beTil`. Rewrite using `[Finset.sum_const, Finset.sum_const]`. Simplify using the standard rewrite rules. Unfold `Formalism.L2.Th1.D.beMean`.
+
+Rewrite using `[h]`.
+-/
 theorem beMean_fin_unit {K : Type} [Field K] (l : ℕ) (σ : K →+* K) (be0 : MvPowerSeries (Fin 2) K) (ζ : K) :
     Formalism.L2.Th1.D.beMean (d := 2) l σ be0 (fun _ : Fin (2 / 2) => (1 : K)) (fun _ => 1) ζ =
       Formalism.L2.Th1.D.beMean (d := 2) l σ be0 (fun _ : Unit => (1 : K)) (fun _ => 1) ζ := by
@@ -61,6 +77,41 @@ open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq)
 open Formalism.DworkPowerSeriesWeights (Integral mvExp)
 open OneLetter
 
+/- English proof (translation)
+Introduce `D p _ g2 g3 s2 ε σ F hC h1 N N' ep Th hep hH`. Take `⟨h5, hg2, hg3, hε, hth, hσ, hF, hN⟩` from `hC`. Establish `hl : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Take `⟨f1, f2, hph⟩` from `Formalism.L2.Th1.D.FAux.ffs p Formalism.L2.Th1.D.first_level_on_curve g2 g3 ε hg2 hg3 hε hth σ hσ F hF s2 hN`. Take `⟨ζ, hζ⟩` from `Formalism.L2.Th1.D.FAux.exists_root2 p`.
+
+Use `set B : MvPowerSeries (ZMod 2) (MaximalUnramifiedExtension p) := Formalism.L2.Th1.D.beMean (d := 2) p σ (cob F (phFF p g2 g3 s2 ε)) (fun _ : Unit => (1 : MaximalUnramifiedExtension p)) (fun _ => 1) ζ with hBdef`. Use `set Bc : MvPowerSeries (ZMod 2) ℂ_[p] := MvPowerSeries.map (MaximalUnramifiedExtension p).subtype B with hBc`. Establish `hstd : BeStd p 2 Bc` using `⟨σ, F, cob F (phFF p g2 g3 s2 ε), fun _ => 1, fun _ => 1, ζ, ⟨hσ, hF, f1, f2, owOK_one σ, trDual_one σ, hζ⟩, by rw [beOf, beMean_fin_unit]⟩`. Establish `hB14` using `GlobalTheory.T.standard_series_b_conditions_large_prime p 2 Bc h5 le_rfl even_two hstd`. Establish `hO` using `Formalism.L2.Th1.D.oneLetterHalf (MaximalUnramifiedExtension p) p σ hσ F hF _ f1 f2 ζ hζ _ hph`.
+
+Establish `h2` using `(Formalism.InvariantFactorPaths.G7.Top.mapSimeq (MaximalUnramifiedExtension p) ℂ_[p] Unit (MaximalUnramifiedExtension p).subtype (Formalism.L2.Th1.D.FAux.norm_coe p)).1 _ _ hO`. Establish `hsL0 : MvPowerSeries.HasSubst (fun _ : ZMod 2 => (lgF (MaximalUnramifiedExtension p) p : MvPowerSeries Unit (MaximalUnramifiedExtension p)))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => Formalism.L2.Th1.D.Pair.cc_lgF hl)`. Establish `hsL : MvPowerSeries.HasSubst (fun _ : ZMod 2 => (lgF ℂ_[p] p : MvPowerSeries Unit ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => Formalism.L2.Th1.D.Pair.cc_lgF hl)`. Establish `e2 : MvPowerSeries.map (MaximalUnramifiedExtension p).subtype (MvPowerSeries.C ((2 : MaximalUnramifiedExtension p)⁻¹) * MvPowerSeries.subst (fun _ : ZMod 2 => (lgF (MaximalUnramifiedExtension p) p : MvPowerSeries Unit (MaximalUnramifiedExtension p))) B) = MvPowerSeries.C ((2 : ℂ_ …`. Rewrite using `[map_mul, MvPowerSeries.map_C, MvPowerSeries.map_subst hsL0, map_inv₀, map_ofNat]`.
+
+Establish `e3 : MvPowerSeries.map (MaximalUnramifiedExtension p).subtype (lgF (MaximalUnramifiedExtension p) p : MvPowerSeries Unit (MaximalUnramifiedExtension p)) = lgF ℂ_[p] p` using `Formalism.InvariantFactorPaths.G7.FormalGroupLaws.map_lgF (MaximalUnramifiedExtension p).subtype p`. Simplify using `only [e3, hBc]`. Rewrite `h2` using `[e2]`. Take `⟨-, hsymm, -, -, -⟩` from `Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] (OrbitPlaces.Pl D × Fin N × Fin N')`. Establish `hsub` using `(Formalism.InvariantFactorPaths.G7.Top.simeqRules ℂ_[p] Unit).2.2.2.2 (OrbitPlaces.Pl D × Fin N × Fin N')`.
+
+Establish `h3 : ∀ x : OrbitPlaces.Pl D × Fin N × Fin N', Simeq (at1 x (PowerSeries.map (MaximalUnramifiedExtension p).subtype (phFF p g2 g3 s2 ε))) (MvPowerSeries.C ((2 : ℂ_[p])⁻¹) * MvPowerSeries.subst (fun _ : ZMod 2 => at1 x (lgF ℂ_[p] p)) Bc)`. Introduce `x`. Establish `hsx : MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X x : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)`. Establish `h4` using `hsub _ _ (fun _ : Unit => (MvPowerSeries.X x : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) (fun _ => by simp) (fun _ => Formalism.InvariantFactorPaths.G7.TwoS.integral_X x) h2`. Rewrite `h4` using `[MvPowerSeries.subst_mul hsx, MvPowerSeries.subst_C, MvPowerSeries.subst_comp_subst_apply hsL hsx]`.
+
+Conclude with `h4`. Establish `h5s` using `Formalism.L2.Th1.D.B4.simeq_sum Finset.univ _ _ fun x _ => h3 x`. Take `⟨h50, h5I⟩` from `hsymm _ _ h5s`. Use `set f : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p] := ∑ x : OrbitPlaces.Pl D × Fin N × Fin N', at1 x (PowerSeries.map (MaximalUnramifiedExtension p).subtype (phFF p g2 g3 s2 ε)) with hf`. Use `set g : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p] := ∑ x : OrbitPlaces.Pl D × Fin N × Fin N', MvPowerSeries.C ((2 : ℂ_[p])⁻¹) * MvPowerSeries.subst (fun _ : ZMod 2 => at1 x (lgF ℂ_[p] p)) Bc with hg`.
+
+Establish `hm0 : PowerSeries.constantCoeff (PowerSeries.map (MaximalUnramifiedExtension p).subtype (phFF p g2 g3 s2 ε)) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.L2.Th1.D.FAux.cc_phFF hl, map_zero]`. Establish `hf0 : MvPowerSeries.constantCoeff f = 0`. Rewrite using `[hf, map_sum]`. Conclude with `Finset.sum_eq_zero fun x _ => Formalism.L2.Th1.D.Pair.constantCoeff_inVar_eq_zero x hm0`.
+
+Establish `hg0 : MvPowerSeries.constantCoeff g = 0`. Establish `h` using `h50`. Rewrite `h` using `[map_sub, hf0, sub_zero]`. Conclude with `h`. Establish `hng0 : MvPowerSeries.constantCoeff (-g) = 0` using `by rw [map_neg, hg0, neg_zero]`.
+
+Establish `hnf0 : MvPowerSeries.constantCoeff (-f) = 0` using `by rw [map_neg, hf0, neg_zero]`. Establish `hsA : MvPowerSeries.HasSubst (fun i : OrbitPlaces.Pl D × Fin N × Fin N' => at1 i (lgF ℂ_[p] p))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => Formalism.L2.Th1.D.Pair.constantCoeff_inVar_eq_zero i (Formalism.L2.Th1.D.Pair.cc_lgF hl)`. Establish `hsE : MvPowerSeries.HasSubst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (MvPowerSeries.C ep * MvPowerSeries.X v : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun v => by simp`. Establish `hlogfun : (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => MvPowerSeries.C ep * OrbitPlaces.logPl D p v) = fun v => MvPowerSeries.C ep * at1 v (lgF ℂ_[p] p)` using `funext fun v => by rw [localLogarithm_eq_single_variable_oneLetter D p h1]`. Establish `hlog2 : (OrbitPlaces.logPl D p (β` using `Fin N × Fin N')) = fun v => at1 v (lgF ℂ_[p] p) :=`.
+
+Use function extensionality and compare the values at `fun v => localLogarithm_eq_single_variable_oneLetter D p h1 v`. Establish `hS : MvPowerSeries.subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => MvPowerSeries.C ep * OrbitPlaces.logPl D p v) Th = MvPowerSeries.subst (fun i : OrbitPlaces.Pl D × Fin N × Fin N' => at1 i (lgF ℂ_[p] p)) (MvPowerSeries.subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (MvP …`. Rewrite using `[hlogfun, MvPowerSeries.subst_comp_subst_apply hsE hsA]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[MvPowerSeries.subst_mul hsA, MvPowerSeries.subst_C, MvPowerSeries.subst_X hsA]`. Establish `hE : ∀ z : OrbitPlaces.Pl D, ∀ a : Fin N, ∀ b : Fin N', MvPowerSeries.subst (fun s : ZMod 2 => if s = 0 then (MvPowerSeries.X (z, a, b) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]) else MvPowerSeries.C (1 : ℂ_[p]) * MvPowerSeries.X (z, a, b)) Bc = MvPowerSeries.subs …`. Introduce `z a b`. Simplify using `only [map_one, one_mul, ite_self]`. Establish `hsX : ∀ x : OrbitPlaces.Pl D × Fin N × Fin N', MvPowerSeries.HasSubst (fun _ : ZMod 2 => (MvPowerSeries.X x : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]))` using `fun x => MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => by simp`.
+
+Use `set E' : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p] := ((-1 : ℂ_[p]) / 2) • ∑ x : OrbitPlaces.Pl D × Fin N × Fin N', MvPowerSeries.subst (fun _ : ZMod 2 => (MvPowerSeries.X x : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) Bc with hE'`. Establish `hsubE : MvPowerSeries.subst (fun i : OrbitPlaces.Pl D × Fin N × Fin N' => at1 i (lgF ℂ_[p] p)) E' = -g`. Rewrite using `[hE', ← MvPowerSeries.coe_substAlgHom hsA, map_smul, MvPowerSeries.coe_substAlgHom hsA, Formalism.L2.Th1.D.Pair.subst_sum hsA, hg, MvPowerSeries.smul_eq_C_mul, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hsX x) hsA]`.
+
+Simplify using `only [MvPowerSeries.subst_X hsA]`. Rewrite using `[← neg_mul, ← map_neg]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hE0 : MvPowerSeries.constantCoeff E' = 0`.
+
+Rewrite using `[← HostLog.constantCoeff_subst (fun i => Formalism.L2.Th1.D.Pair.constantCoeff_inVar_eq_zero i (Formalism.L2.Th1.D.Pair.cc_lgF hl)) E', hsubE, hng0]`. Establish `hsum : (∑ z : OrbitPlaces.Pl D, ((-1 : ℂ_[p]) / 2) • ∑ a : Fin N, ∑ b : Fin N', MvPowerSeries.subst (fun s : ZMod 2 => if s = 0 then (MvPowerSeries.X (z, a, b) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]) else MvPowerSeries.C (1 : ℂ_[p]) * MvPowerSeries.X (z, a, b)) …`. Simplify using `only [hE, hE', Fintype.sum_prod_type, Finset.smul_sum]`. Establish `e5 : mvExp (g - f) * mvExp (-g) = mvExp (-f)`. Rewrite using `[← Formalism.InvariantFactorPaths.G7.mvExp_add h50 hng0]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e6 : mvExp (-f) * mvExp f = 1`. Rewrite using `[← Formalism.InvariantFactorPaths.G7.mvExp_add hnf0 hf0, neg_add_cancel, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.mvExp_zero']`. Use `⟨ep, hep, fun _ => Bc, fun _ => hB14, fun _ => 1, fun _ => norm_one, fun _ => -1, fun _ => Or.inr rfl, mvExp (g - f) * (mvExp f * MvPowerSeries.subst (fun i : OrbitPlaces.Pl D × Fin N × Fin N' => at1 i (lgF ℂ_[p] p)) (MvPowerSeries.subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' …` and prove the remaining obligations.
+
+Use `show _ = _ * MvPowerSeries.subst (OrbitPlaces.logPl D p (β := Fin N × Fin N')) (product_zeroth_first_parts.expS ℂ_[p] (∑ z : OrbitPlaces.Pl D, ((-1 : ℂ_[p]) / 2) • ∑ a : Fin N, ∑ b : Fin N', MvPowerSeries.subst (fun s : ZMod 2 => if s = 0 then (MvPowerSeries.X (z, a, b) : MvPower …`. Rewrite using `[hS, hsum, hlog2]`. Use `show _ = _ * MvPowerSeries.subst _ (mvExp E')`. Rewrite using `[Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hsA hE0, hsubE]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e6, one_mul]`. Use `_ = _ := by rw [← e5]; ring`.
+-/
 theorem expShape_of_integralClass : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension p)), CurveData p g2 g3 s2 ε σ F → nP D p = 1 → ∀ (N N' : ℕ) (ep : ℂ_[p]) (Th : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]), ‖ep‖ = 1 → HostLog p g2 g3 s2 ε (MvPowerSeries.subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (MvPowerSeries.C ep * MvPowerSeries.X v : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) Th : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]) → OrbitPlaces.ThetaExpansionRealPlaces D p Th := by
   intro D p _ g2 g3 s2 ε σ F hC h1 N N' ep Th hep hH
   obtain ⟨h5, hg2, hg3, hε, hth, hσ, hF, hN⟩ := hC

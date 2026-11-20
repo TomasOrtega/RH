@@ -20,6 +20,17 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.LocalHeart
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨a, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `⟨1, fun _ => a, fun _ => 1, by simp⟩`. Conclude with `⟨1, fun _ => 1, fun _ => b, by simp⟩`.
+
+Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `one => exact ⟨1, fun _ => 1, fun _ => 1, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨l, a, b, rfl⟩` from `hx`. Take `⟨l', a', b', rfl⟩` from `hy`.
+
+Conclude with `⟨l + l', Fin.append a a', Fin.append b b', by simp [Fin.sum_univ_add]⟩`. Consider the case `neg x _ hx`. Take `⟨l, a, b, rfl⟩` from `hx`. Conclude with `⟨l, fun q => -a q, b, by simp [Finset.sum_neg_distrib]⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨l, a, b, rfl⟩` from `hx`. Take `⟨l', a', b', rfl⟩` from `hy`. Use `⟨l * l', fun q => a (finProdFinEquiv.symm q).1 * a' (finProdFinEquiv.symm q).2, fun q => b (finProdFinEquiv.symm q).1 * b' (finProdFinEquiv.symm q).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← finProdFinEquiv.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem closure_rep {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (ι : A →+* C)
     (j : B →+* C) {x : C} (hx : x ∈ Subring.closure (Set.range ι ∪ Set.range j)) :
     ∃ (l : ℕ) (a : Fin l → A) (b : Fin l → B), x = ∑ q, ι (a q) * j (b q) := by
@@ -49,17 +60,88 @@ theorem closure_rep {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (ι : 
     simp only [map_mul]
     ring
 
+/- English proof (translation)
+Rewrite using `[Place.ordQ, Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply, Finsupp.sum]`. Simplify using `[smul_eq_mul]`.
+-/
 theorem ordQ_mapDomain {K' K'' : Type} [Field K'] (c : ℂ →+* K') (V : Place c) (f : K'' → K')
     (φ : K'' →₀ ℚ) : V.ordQ (Finsupp.mapDomain f φ) = ∑ g ∈ φ.support, φ g * (V.ord (f g) : ℚ) := by
   rw [Place.ordQ, Finsupp.linearCombination_mapDomain, Finsupp.linearCombination_apply, Finsupp.sum]
   simp [smul_eq_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hf : f = 0`. Rewrite using `[hf]`. Conclude with `V.ring.zero_mem`. Conclude with `(V.ord_nonneg_iff hf).1 (h hf).ge`.
+-/
 theorem mem_ring_of_ord {K' : Type} [Field K'] {c : ℂ →+* K'} (V : Place c) {f : K'}
     (h : f ≠ 0 → V.ord f = 0) : f ∈ V.ring := by
   by_cases hf : f = 0
   · rw [hf]; exact V.ring.zero_mem
   · exact (V.ord_nonneg_iff hf).1 (h hf).ge
 
+/- English proof (translation)
+Introduce `hP K κ _ _ _ _ n k c l M R π w lam wb hxK hzκ hk hR hπc hπf hπO hw hl hM`. Take `⟨z, hz⟩` from `hzκ`. Take `⟨κ', _, _, ρ, O', hO', hO'r, hdom, k', z', hz'⟩` from `GlobalTheory.CommonPoint.exists_common_field c (fun i => (π i).range) (fun i => hπO i) ⟨k, z, hz⟩`. Take `⟨b, hb0, hbM⟩` from `GlobalTheory.count_kernel_nonzero k c M l ρ wb ⟨z, hz⟩ hl`. Take `⟨B, hB, r, τ, hBr, hBO, hmax, het, hτ, j₀, hj₀, hbB⟩` from `GlobalTheory.SmoothNormalise.normalise_at_smooth_point O' l b hO' hO'r hb0`.
+
+Use `choose a ha using fun j => hBr _ (hbB j)`. Establish `ha0 : a ≠ 0`. Introduce `h`. Establish `h1` using `ha j₀`. Rewrite `h1` using `[h, div_self hj₀]`.
+
+Simplify using `only [Pi.zero_apply, map_zero, sub_zero] at h1`. Conclude with `not_nonUnit_one B h1`. Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Introduce `i xi φ u s t hxi hφ hEff hu ht hs hs0 hcase hKlt`. Use `haveI := GlobalTheory.TensorFields.isDomain_tensor_complex K κ'`.
+
+Take `⟨T, ι, ψ, jB, hT, hι, hj, hψj, hTfrac⟩` from `GlobalTheory.FieldPair.TensorTower.exists_isEtTower_tensor (L := FractionRing (K ⊗[ℂ] κ')) (R i) B hB r τ (hR i).1 (hR i).2.1 (hR i).2.2 hBr hmax het`. Set `β : Fin l → B` to `fun j => ⟨b j / b j₀, hbB j⟩`. Establish `hψβ : ∀ j, ((ψ (jB (β j)) : R i) : K) = algebraMap ℂ K (a j)` using `fun j => hψj _ _ (ha j)`. Set `σ : T` to `∑ j, ι (w i j) * jB (β j) + ι u`. Establish `hψσ : ψ σ = s`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using `only [σ, map_add, map_sum, map_mul, hT.retr]`. Use `push_cast`. Repeatedly rewrite using `[hψβ, mul_comm]`.
+
+Establish `hσ0 : ψ σ ≠ 0`. Rewrite using `[hψσ]; intro h; exact hs0 (by simp [h])`. Establish `hKT` using `GlobalTheory.FieldPair.klt_of_isEtTower hP (algebraMap ℂ K) (algebraMap ℂ (FractionRing (K ⊗[ℂ] κ'))) n r (R i) T ι ψ (fun q => jB (τ q)) xi φ (Finsupp.single σ t) hT hxi hφ (fun g hg => by`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hg), Finsupp.single_eq_same]`. Conclude with `⟨hσ0, ht⟩)`.
+
+Use `hEff (by rwa [Finsupp.mapDomain_single, hψσ])`. Establish `hV : ∃ V : Place (algebraMap ℂ (FractionRing (K ⊗[ℂ] κ'))), (∀ r : R i, algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((r : K) ⊗ₜ 1) ∈ V.ring) ∧ (∀ b : κ', b ≠ 0 → V.ord (algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) (1 ⊗ₜ b)) = 0) ∧ (∀ (l : ℕ) (a : Fin l → R i) (b : Fin …`. Establish `hfr : ∀ g : K, ∃ a b : R i, (b : K) ≠ 0 ∧ g * b = a` using `fun g => by`. Take `⟨a', ha', b', hb', hb0', e⟩` from `(hR i).1.frac g`. Conclude with `⟨⟨a', ha'⟩, ⟨b', hb'⟩, hb0', e⟩`.
+
+Break down `hcase with ⟨hinj, htM⟩ | ⟨E, hEc, hEπ, hEd⟩` into its components or cases. Take `⟨V, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.FieldPair.GraphPlace.exists_place (L := FractionRing (K ⊗[ℂ] κ')) n k r (fun q => (xi q : K)) (fun q => (τ q : κ')) (R i) (π i) (ρ i) hxi hτ ⟨O', hO'⟩ ⟨z, hz⟩ (hπc i) (hπf i) (hR i).1 hinj hfr M hk hM`. Use `⟨V, fun r => h1 r, h2, h4, h5, ?_⟩` and prove the remaining obligations. Rewrite using `[ordQ_mapDomain, Finset.sum_eq_zero (fun g hg => by`. Rewrite using `[h3 _ (fun h => hφ g hg (Subtype.ext h))]`.
+
+Use the proof step `simp)]`. Establish `h6'` using `(Int.cast_le (R := ℚ)).2 h6`. Move the coercions through the operations in `at h6'`. Establish `: (k : ℚ) ≤ t * M` using `htM`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨V, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.FieldPair.exists_place_weighted_over_place (L := FractionRing (K ⊗[ℂ] κ')) n k r (fun q => (xi q : K)) (fun q => (τ q : κ')) (R i) (π i) (ρ i) hxi hτ ⟨O', hO'⟩ ⟨z, hz⟩ (hπc i) (hR i).1.const_mem (hπf i) E hEc hEπ M hk hM`. Use `⟨V, h1, h2, h4, h5, ?_⟩` and prove the remaining obligations. Establish `hq : V.ordQ (Finsupp.mapDomain (fun g : R i => algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((g : K) ⊗ₜ 1)) φ) = M * E.ordQ (Finsupp.mapDomain (fun g : R i => (g : K)) φ)`. Rewrite using `[ordQ_mapDomain, ordQ_mapDomain, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations.
+
+Rewrite using `[h3 _ (fun h => hφ g hg (Subtype.ext h))]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq]`. Establish `h6'` using `(Int.cast_le (R := ℚ)).2 h6`.
+
+Move the coercions through the operations in `at h6'`. Rewrite `hEd` using `[Place.disc]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨V, h1, h2, h4, h5, h6⟩` from `hV`. Establish `hjmem : ∀ bb : B, (jB bb : FractionRing (K ⊗[ℂ] κ')) ∈ V.ring` using `fun bb => mem_ring_of_ord V (fun hne => by`.
+
+Rewrite using `[hj]`. Conclude with `h2 _ (fun h0 => hne (by rw [hj, h0, TensorProduct.tmul_zero, map_zero])))`. Establish `hιmem : ∀ a' : R i, (ι a' : FractionRing (K ⊗[ℂ] κ')) ∈ V.ring` using `fun a' => by`. Rewrite using `[hι]`. Conclude with `h1 a'`.
+
+Establish `hsum : ∀ (l' : ℕ) (a' : Fin l' → R i) (b' : Fin l' → B), (((∑ q, ι (a' q) * jB (b' q) : T)) : FractionRing (K ⊗[ℂ] κ')) = ∑ q, algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((a' q : K) ⊗ₜ (b' q : κ'))`. Introduce `l' a' b'`. Use `push_cast`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hι, hj, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Establish `hcl : ∀ x ∈ Subring.closure (Set.range ι ∪ Set.range jB), (x : FractionRing (K ⊗[ℂ] κ')) ∈ V.ring`. Introduce `x hx`. Take `⟨l', a', b', rfl⟩` from `closure_rep ι jB hx`. Use `push_cast`. Conclude with `V.ring.toSubring.sum_mem fun q _ => V.ring.toSubring.mul_mem (hιmem _) (hjmem _)`.
+
+Establish `hunit : ∀ x ∈ Subring.closure (Set.range ι ∪ Set.range jB), IsUnit (ψ x) → (x : FractionRing (K ⊗[ℂ] κ')) ≠ 0 ∧ V.ord (x : FractionRing (K ⊗[ℂ] κ')) = 0`. Introduce `x hx hux`. Take `⟨l', a', b', rfl⟩` from `closure_rep ι jB hx`. Rewrite using `[hsum]`. Apply `h4` to reduce the goal to its premises.
+
+Introduce `hD`. Use `letI := hB.isLocalRing`. Use `choose cc hcc using fun q => hBr _ (b' q).2`. Establish `hψb : ∀ q, ψ (jB (b' q)) = ⟨algebraMap ℂ K (cc q), (hR i).1.const_mem _⟩` using `fun q => Subtype.ext (hψj _ _ (hcc q))`. Take `⟨v, hv⟩` from `hux`.
+
+Establish `hyv : π i (ψ (∑ q, ι (a' q) * jB (b' q))) = ∑ q, π i (a' q) * algebraMap ℂ κ (cc q)`. Simplify using `only [map_sum, map_mul, hT.retr, hψb, hπc]`. Establish `hρB : ∀ f ∈ (π i).range, ρ i f ∈ B` using `fun f hf => (hBO _ ((hdom i) f hf).1).1`. Establish `hu1 : IsUnit (⟨ρ i (π i v), hρB _ ⟨_, rfl⟩⟩ : B)`. Use `IsUnit.of_mul_eq_one (⟨ρ i (π i ↑v⁻¹), hρB _ ⟨_, rfl⟩⟩ : B) (Subtype.ext ?_)` and prove the remaining obligations.
+
+Use `show ρ i (π i v) * ρ i (π i ↑v⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Set `m : B` to `∑ q, ⟨ρ i (π i (a' q)), hρB _ ⟨_, rfl⟩⟩ * (b' q - ⟨algebraMap ℂ κ' (cc q), hB.const_mem _⟩)`. Establish `hm : m ∈ IsLocalRing.maximalIdeal B`. Use `Ideal.sum_mem _ fun q _ => Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).2 ((nonUnit_iff _).1 (hcc q))`. Establish `he : (⟨ρ i (π i v), hρB _ ⟨_, rfl⟩⟩ : B) = -m`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hmc : (m : κ') = ∑ q, ρ i (π i (a' q)) * (b' q : κ') - ∑ q, ρ i (π i (a' q)) * algebraMap ℂ κ' (cc q)`. Simplify using `only [m]`.
+
+Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[mul_sub]`. Rewrite using `[Subring.coe_neg, hmc, hD, zero_sub, neg_neg]`. Use `show ρ i (π i v) = _`.
+
+Rewrite using `[hv, hyv, map_sum]`. Simplify using `only [map_mul, AlgHom.commutes]`. Establish `hm' : -m ∈ IsLocalRing.maximalIdeal B` using `neg_mem hm`. Rewrite `hm'` using `[← he]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm' hu1`.
+
+Establish `hVT : V.Contains T`. Introduce `f hf`. Take `⟨s1, s2, hs1, hs2, hu2, e⟩` from `hTfrac ⟨f, hf⟩`. Take `⟨hs20, hs2o⟩` from `hunit s2 hs2 hu2`. Establish `h1'` using `hcl s1 hs1`.
+
+Distinguish the cases in `hf0 : f = 0`. Rewrite using `[hf0]`. Conclude with `V.ring.zero_mem`. Establish `e' : f * (s2 : FractionRing (K ⊗[ℂ] κ')) = s1` using `e`. Establish `hs10 : (s1 : FractionRing (K ⊗[ℂ] κ')) ≠ 0` using `by rw [← e']; exact mul_ne_zero hf0 hs20`.
+
+Establish `ho` using `V.ord_mul hf0 hs20`. Rewrite `ho` using `[e', hs2o, add_zero]`. Conclude with `(V.ord_nonneg_iff hf0).1 (by rw [← ho]; exact (V.ord_nonneg_iff hs10).2 h1')`. Establish `hKT' : Klt (algebraMap ℂ (FractionRing (K ⊗[ℂ] κ'))) (r + n) T (dForm (algebraMap ℂ (FractionRing (K ⊗[ℂ] κ'))) (Fin.append (fun q => algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) (1 ⊗ₜ (τ q : κ'))) (fun q => algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((xi q : K) ⊗ₜ 1) …`. Establish `e1 : (fun q => algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) (1 ⊗ₜ (τ q : κ'))) = fun q => ((jB (τ q) : T) : FractionRing (K ⊗[ℂ] κ'))` using `funext fun q => (hj _).symm`.
+
+Establish `e2 : (fun q => algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((xi q : K) ⊗ₜ 1)) = fun q => ((ι (xi q) : T) : FractionRing (K ⊗[ℂ] κ'))` using `funext fun q => (hι _).symm`. Establish `e3 : (fun g : R i => algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((g : K) ⊗ₜ 1)) = fun g => ((ι g : T) : FractionRing (K ⊗[ℂ] κ'))` using `funext fun g => (hι _).symm`. Establish `h` using `hKT`. Rewrite `h` using `[Finsupp.mapDomain_single]`. Rewrite using `[e1, e2, e3]`.
+
+Conclude with `h`. Establish `hlt` using `hKT'.lt_disc hVT`. Rewrite `hlt` using `[Place.disc, map_add, Place.ordQ_single]`. Establish `hσL : ((σ : T) : FractionRing (K ⊗[ℂ] κ')) = ∑ q : Fin (l + 1), algebraMap (K ⊗[ℂ] κ') (FractionRing (K ⊗[ℂ] κ')) ((((Fin.cons u (w i) : Fin (l + 1) → R i) q : R i) : K) ⊗ₜ ((Fin.cons 1 (fun j => (β j : κ')) : Fin (l + 1) → κ') q))`. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ, σ]`. Use `push_cast`. Rewrite using `[hι u, add_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hι, hj, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `hσne : ((σ : T) : FractionRing (K ⊗[ℂ] κ')) ≠ 0` using `fun h => hσ0 (by`. Rewrite using `[show σ = 0 from Subtype.ext h, map_zero])`. Establish `hker : ∑ q : Fin (l + 1), π i ((Fin.cons u (w i) : Fin (l + 1) → R i) q) ⊗ₜ[ℂ] ((Fin.cons 1 (fun j => (β j : κ')) : Fin (l + 1) → κ') q) ∈ (RingHom.ker (Algebra.TensorProduct.productMap (ρ i) (AlgHom.id ℂ κ'))) ^ M`. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ, hu, TensorProduct.zero_tmul, zero_add, (hw i).2]`. Establish `hh : ∑ j, (lam i * wb j) ⊗ₜ[ℂ] (β j : κ') = (lam i ⊗ₜ[ℂ] (b j₀)⁻¹) * ∑ j, wb j ⊗ₜ[ℂ] b j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show (lam i * wb j) ⊗ₜ[ℂ] (b j / b j₀) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, div_eq_inv_mul]`. Rewrite using `[hh]`. Conclude with `Ideal.mul_mem_left _ _ (hbM i)`. Establish `hσM` using `h5 (l + 1) (Fin.cons u (w i)) (Fin.cons 1 (fun j => (β j : κ'))) (by rw [← hσL]; exact hσne) hker`. Rewrite `hσM` using `[← hσL]`.
+
+Establish `hσM' : (M : ℚ) ≤ (V.ord (σ : FractionRing (K ⊗[ℂ] κ')) : ℚ)` using `by exact_mod_cast hσM`. Establish `hmul` using `mul_le_mul_of_nonneg_left hσM' ht`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_klt_at_points : GlobalTheory.Published.Principalisation →
   ∀ {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ] (n k c l M : ℕ) (R : Fin c → Subring K)
     (π : ∀ i, R i →+* κ) (w : ∀ i, Fin l → R i) (lam : Fin c → κ) (wb : Fin l → κ),

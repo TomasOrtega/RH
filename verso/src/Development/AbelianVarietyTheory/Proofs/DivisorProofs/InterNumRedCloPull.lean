@@ -23,6 +23,13 @@ namespace GlobalTheory.DegRec
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Establish `e : spMap (algebraMap ℚ ℂ) ≫ spMap (Int.castRingHom ℚ) = spMap (Int.castRingHom ℂ)`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Establish `H₀ : IsPullback (cxFibre.fst p) (cxFibre.snd p) (p ≫ spMap (Int.castRingHom k)) (spMap (algebraMap ℚ ℂ) ≫ spMap (Int.castRingHom ℚ))`. Rewrite using `[e]`.
+
+Conclude with `IsPullback.of_hasPullback _ _`. Set `π` to `(ratFibre.isPullback p).lift (cxFibre.fst p) (cxFibre.snd p ≫ spMap (algebraMap ℚ ℂ)) (by rw [Category.assoc]; exact H₀.w)`. Establish `hπ : π ≫ ratFibre.fst p = cxFibre.fst p` using `IsPullback.lift_fst _ _ _ _`. Establish `H : IsPullback π (cxFibre.snd p) (ratFibre.snd p) (spMap (algebraMap ℚ ℂ))` using `IsPullback.of_right (hπ ▸ H₀) (IsPullback.lift_snd _ _ _ _) (ratFibre.isPullback p)`. Establish `: IsProper (ratFibre.snd p)` using `MorphismProperty.of_isPullback (P := @IsProper) (ratFibre.isPullback p) ‹_›`.
+
+Establish `hR` using `pull_isLB hL (ratFibre.fst p)`. Use `Eq.trans ?_ (FieldChangeInter.interNum_pull H (L := fun _ : Fin n => L.pull (ratFibre.fst p)) fun _ => hR)` and prove the remaining obligations. Use `interNum_congr_cls ℂ _ (fun _ => pull_isLB hL _) (fun _ => pull_isLB hR _) fun _ => ?_` and prove the remaining obligations. Rewrite using `[cls_pull hR, cls_pull hL, cls_pull hL, ← pull_comp, hπ]`.
+-/
 theorem topSelf_cxFibre (p : X ⟶ Sp k) [IsProper (p ≫ spMap (Int.castRingHom k))] {L : LB X} (hL : L.IsLB) (n : ℕ) :
     topSelfIntersection ℂ (L.pull (cxFibre.fst p)) n = topSelfIntersection ℚ (L.pull (ratFibre.fst p)) n := by
   have e : spMap (algebraMap ℚ ℂ) ≫ spMap (Int.castRingHom ℚ) = spMap (Int.castRingHom ℂ) := by
@@ -43,13 +50,22 @@ theorem topSelf_cxFibre (p : X ⟶ Sp k) [IsProper (p ≫ spMap (Int.castRingHom
   refine interNum_congr_cls ℂ _ (fun _ => pull_isLB hL _) (fun _ => pull_isLB hR _) fun _ => ?_
   rw [cls_pull hR, cls_pull hL, cls_pull hL, ← pull_comp, hπ]
 
+/- English proof (translation)
+The claim follows from `(g.residueFieldMap y).hom.charZero_iff (g.residueFieldMap y).hom.injective`.
+-/
 theorem charZero_iff (g : Y ⟶ X) (y : Y) : CharZero (X.residueField (g y)) ↔ CharZero (Y.residueField y) :=
   (g.residueFieldMap y).hom.charZero_iff (g.residueFieldMap y).hom.injective
 
+/- English proof (translation)
+The claim follows from `((((ratFibre p).Γevaluation y).hom.comp (algebraMap ℚ Γ(ratFibre p, ⊤))).charZero_iff (RingHom.injective _)).1 inferInstance`.
+-/
 theorem charZero_ratFibre (p : X ⟶ Sp k) (y : ratFibre p) : CharZero ((ratFibre p).residueField y) :=
   ((((ratFibre p).Γevaluation y).hom.comp (algebraMap ℚ Γ(ratFibre p, ⊤))).charZero_iff (RingHom.injective _)).1
     inferInstance
 
+/- English proof (translation)
+Establish `h₁ : IsPreimmersion (spMap (Int.castRingHom ℚ))` using `IsPreimmersion.of_isLocalization (R := ℤ) (S := ℚ) (nonZeroDivisors ℤ)`. Establish `: IsPreimmersion (ratFibre.fst p)` using `MorphismProperty.of_isPullback (ratFibre.isPullback p).flip h₁`. Use `RatDegZeros.flat_fst p` as an intermediate fact. Conclude with `ratFibre.isIntegral_of_flat_preimmersion (ratFibre.fst p)`.
+-/
 theorem isIntegral_ratFibre (p : X ⟶ Sp k) [IsIntegral X] [Nonempty (ratFibre p)] : IsIntegral (ratFibre p) := by
   have h₁ : IsPreimmersion (spMap (Int.castRingHom ℚ)) :=
     IsPreimmersion.of_isLocalization (R := ℤ) (S := ℚ) (nonZeroDivisors ℤ)
@@ -57,6 +73,9 @@ theorem isIntegral_ratFibre (p : X ⟶ Sp k) [IsIntegral X] [Nonempty (ratFibre 
   have := RatDegZeros.flat_fst p
   exact ratFibre.isIntegral_of_flat_preimmersion (ratFibre.fst p)
 
+/- English proof (translation)
+Establish `hcl : closure ({redι (clo z) (genericPoint _)} : Set X) = closure {z}`. Rewrite using `[← Set.image_singleton, (redι (clo z)).isClosedEmbedding.closure_image_eq, (genericPoint_spec _).def, Set.image_univ, range_redι]`. Both sides reduce to the same expression. Conclude with `(inseparable_iff_closure_eq.2 hcl).eq`.
+-/
 theorem redι_genericPoint (z : X) : redι (clo z) (genericPoint _) = z := by
   have hcl : closure ({redι (clo z) (genericPoint _)} : Set X) = closure {z} := by
     rw [← Set.image_singleton, (redι (clo z)).isClosedEmbedding.closure_image_eq,
@@ -64,6 +83,11 @@ theorem redι_genericPoint (z : X) : redι (clo z) (genericPoint _) = z := by
     rfl
   exact (inseparable_iff_closure_eq.2 hcl).eq
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `: Nonempty (ratFibre (redι (clo z) ≫ p))` using `not_isEmpty_iff.1 hn`. Use `isIntegral_ratFibre (redι (clo z) ≫ p)` as an intermediate fact. Establish `h` using `(charZero_iff (ratFibre.fst (redι (clo z) ≫ p)) _).2 (charZero_ratFibre _ (genericPoint _))`. Rewrite `h` using `[RatDegZeros.fst_genericPoint, ← charZero_iff (redι (clo z)), redι_genericPoint]`.
+
+Conclude with `hz h`.
+-/
 theorem isEmpty_ratFibre (p : X ⟶ Sp k) {z : X} (hz : ¬ CharZero (X.residueField z)) :
     IsEmpty (ratFibre (redι (clo z) ≫ p)) := by
   by_contra hn
@@ -73,22 +97,40 @@ theorem isEmpty_ratFibre (p : X ⟶ Sp k) {z : X} (hz : ¬ CharZero (X.residueFi
   rw [RatDegZeros.fst_genericPoint, ← charZero_iff (redι (clo z)), redι_genericPoint] at h
   exact hz h
 
+/- English proof (translation)
+The claim follows from `haveI : IsProper ((redι (clo z) ≫ p) ≫ spMap (Int.castRingHom k)) := by rw [Category.assoc]; infer_instance topSelf_cxFibre _ (pull_isLB hL _) n`.
+-/
 theorem degAt_eq (p : X ⟶ Sp k) [IsProper (p ≫ spMap (Int.castRingHom k))] {L : LB X} (hL : L.IsLB) (z : X) (n : ℕ) :
     degAt p L z n = topSelfIntersection ℚ ((L.pull (redι (clo z))).pull (ratFibre.fst (redι (clo z) ≫ p))) n :=
   haveI : IsProper ((redι (clo z) ≫ p) ≫ spMap (Int.castRingHom k)) := by
     rw [Category.assoc]; infer_instance
   topSelf_cxFibre _ (pull_isLB hL _) n
 
+/- English proof (translation)
+Use `isEmpty_ratFibre p hz` as an intermediate fact. Rewrite using `[degAt_eq p hL]`. Conclude with `interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _) fun _ => pull_isLB (pull_isLB hL _) _`.
+-/
 theorem degAt_eq_zero (p : X ⟶ Sp k) [IsProper (p ≫ spMap (Int.castRingHom k))] {L : LB X} (hL : L.IsLB) {z : X}
     (hz : ¬ CharZero (X.residueField z)) (n : ℕ) : degAt p L z n = 0 := by
   have := isEmpty_ratFibre p hz
   rw [degAt_eq p hL]
   exact interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _) fun _ => pull_isLB (pull_isLB hL _) _
 
+/- English proof (translation)
+Rewrite using `[← Set.image_singleton, u.isClosedEmbedding.closure_image_eq, (genericPoint_spec _).def, Set.image_univ]`.
+-/
 theorem range_eq_closure (u : Y ⟶ X) [IsClosedImmersion u] [IsIntegral Y] :
     Set.range u = closure {u (genericPoint Y)} := by
   rw [← Set.image_singleton, u.isClosedEmbedding.closure_image_eq, (genericPoint_spec _).def, Set.image_univ]
 
+/- English proof (translation)
+Use `set i := redι (clo (ratFibre.fst p x)) with hi`. Establish `hg : i (genericPoint _) = ratFibre.fst p x` using `redι_genericPoint _`. Establish `hc : CharZero ((Scheme.IdealSheafData.vanishingIdeal (clo (ratFibre.fst p x))).subscheme.residueField (genericPoint _))`. Rewrite using `[← charZero_iff i, hg, charZero_iff]`. Conclude with `charZero_ratFibre p x`.
+
+Take `⟨y, -⟩` from `RatDegZeros.mem_range_fst k _ (i ≫ p) _ hc`. Establish `: Nonempty (ratFibre (i ≫ p))` using `⟨y⟩`. Use `isIntegral_ratFibre (i ≫ p)` as an intermediate fact. Establish `: IsClosedImmersion (ratFibre.map p i)` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (ratFibre.isPullback_map p i) inferInstance`. Establish `hux : ratFibre.map p i (genericPoint _) = x`.
+
+Apply `(RatDegZeros.isIso_stalkMap_and_injective k X p).2` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, ratFibre.map_fst, Scheme.Hom.comp_apply, RatDegZeros.fst_genericPoint, hg]`. Establish `hr : Set.range (ratFibre.map p i) = clo x` using `by rw [range_eq_closure, hux]; rfl`. Rewrite using `[degAt_eq p hL, InterModel.interNumRed_eq_interNumOn _ (ratFibre.map p i) _ hr, interNumOn_eq_interNum_pull (appTop_algebraΓOfHom _ _ (ratFibre.map_snd p i)) (fun _ => pull_isLB hL _)]`. Use `interNum_congr_cls ℚ _ (fun _ => pull_isLB (pull_isLB hL _) _) (fun _ => pull_isLB (pull_isLB hL _) _) fun _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[cls_pull (pull_isLB hL _), cls_pull (pull_isLB hL _), cls_pull hL, cls_pull hL, ← pull_comp, ← pull_comp, ratFibre.map_fst]`.
+-/
 theorem degAt_fst (p : X ⟶ Sp k) [IsProper (p ≫ spMap (Int.castRingHom k))] {L : LB X} (hL : L.IsLB) (x : ratFibre p)
     (n : ℕ) : degAt p L (ratFibre.fst p x) n = interNumRed ℚ (clo x) fun _ : Fin n => L.pull (ratFibre.fst p) := by
   set i := redι (clo (ratFibre.fst p x)) with hi
@@ -113,6 +155,9 @@ theorem degAt_fst (p : X ⟶ Sp k) [IsProper (p ≫ spMap (Int.castRingHom k))] 
   rw [cls_pull (pull_isLB hL _), cls_pull (pull_isLB hL _), cls_pull hL, cls_pull hL, ← pull_comp, ← pull_comp,
     ratFibre.map_fst]
 
+/- English proof (translation)
+Establish `hr : Set.range (redι (clo y) ≫ u) = clo (u y)`. Rewrite using `[range_eq_closure, Scheme.Hom.comp_apply, redι_genericPoint]`. Both sides reduce to the same expression. Rewrite using `[InterModel.interNumRed_eq_interNumOn _ (redι (clo y) ≫ u) _ hr, interNumOn_comp hu _ hL]`. Both sides reduce to the same expression.
+-/
 theorem interNumRed_clo_pull {κ : Type} [Field κ] [Algebra κ Γ(X, ⊤)] [Algebra κ Γ(Y, ⊤)] (u : Y ⟶ X)
     [IsClosedImmersion u] (hu : ∀ r : κ, u.appTop (algebraMap κ Γ(X, ⊤) r) = algebraMap κ Γ(Y, ⊤) r) (y : Y)
     {ι : Type} [Fintype ι] {L : ι → LB X} (hL : ∀ a, (L a).IsLB) :
@@ -122,6 +167,21 @@ theorem interNumRed_clo_pull {κ : Type} [Field κ] [Algebra κ Γ(X, ⊤)] [Alg
   rw [InterModel.interNumRed_eq_interNumOn _ (redι (clo y) ≫ u) _ hr, interNumOn_comp hu _ hL]
   rfl
 
+/- English proof (translation)
+Use `hq.finite` as an intermediate fact. Use `hq.flat` as an intermediate fact. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 hq.finite`.
+
+Take `⟨_, A, hA⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB q).1 hq.isProjOver`. Establish `hP : IsProjOver (q ≫ spMap (Int.castRingHom k))` using `hA.isProjOver _`. Establish `H : IsPullback (ratFibre.fst q) (ratFibre.snd q) (q ≫ spMap (Int.castRingHom k)) (spMap (algebraMap ℤ ℚ))` using `ratFibre.isPullback q`. Establish `hd : topologicalKrullDim (ratFibre q) = (n + 1 : ℕ)` using `ratFibre.dim_eq_of_isPullback _ H hq.dim_eq`. Establish `: Nonempty (ratFibre q)`.
+
+Assume the negation of the conclusion as `hn`. Establish `: IsEmpty (ratFibre q)` using `not_nonempty_iff.1 hn`. Establish `: IsEmpty (IrreducibleCloseds (ratFibre q))` using `⟨fun Z => Z.isIrreducible.nonempty.elim fun x _ => isEmptyElim x⟩`. Rewrite `hd` using `[topologicalKrullDim, Order.krullDim_eq_bot]`. Conclude with `WithBot.bot_ne_coe hd`.
+
+Use `isIntegral_ratFibre q` as an intermediate fact. Establish `hp : IsProjOver (strHom ℚ (ratFibre q))`. Rewrite using `[ratFibre.strHom_eq]`. Conclude with `ProjSpace.isProjOver_of_isPullback_spMap _ H hP`. Establish `: AlgebraicGeometry.IsNoetherian (ratFibre q)` using `isNoetherian_of_isProjOver hp`.
+
+Take `⟨r, hr, hmult⟩` from `MultPull.exists_isRatSec_pull_mult _ _ (ratFibre.fst q) (RatDegZeros.fst_genericPoint k Y q) (RatDegZeros.isIso_stalkMap_and_injective k Y q).1 M hM _ (isRatSec_ratOfSec s hs)`. Establish `hL'` using `pull_isLB hL (ratFibre.fst q)`. Establish `hM'` using `LB.isLB_pull hM (ratFibre.fst q)`. Establish `key` using `GlobalTheory.T.rational_section_cycle_formula_projective ℚ (ratFibre q) hp n hd.le _ hM' (fun _ : Fin n => L.pull (ratFibre.fst q)) (fun _ => hL') r hr`. Simplify using `only [hmult] at key`.
+
+Rewrite using `[← key]`. Establish `hv` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom ℚ (ratFibre q)) (structureModule (ratFibre q)) hp (d := n + 1) (by rw [QCoh.suppDim_structureModule]; exact hd.le)`. Establish `e` using `hv.interNum_update_of_cls_eq_zsmul (L := fun _ : Fin (n + 1) => L.pull (ratFibre.fst q)) (by simp) (fun _ => hL') 0 hM' hL' m (by rw [cls_pull hM, cls_pull hL, hc, map_nsmul, natCast_zsmul])`. Rewrite `e` using `[Function.update_eq_self_iff.2 rfl]`. Use `e.symm.trans (congrArg _ ?_)` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use `Fin.cases ?_ (fun b => ?_) a` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne (Fin.succ_ne_zero b)]`. Both sides reduce to the same expression.
+-/
 theorem mul_topSelf_eq (q : Y ⟶ Sp k) [IsIntegral Y] [IsLocallyNoetherian Y] {n : ℕ} (hq : IsArithVar q (n + 1))
     {L M : LB Y} (hL : L.IsLB) (hM : M.IsLB) {m : ℕ} (hc : cls M hM = m • cls L hL) (s : M.Sec)
     (hs : genericPoint Y ∈ Out.nonzeroLocus s) :
@@ -170,6 +230,29 @@ theorem mul_topSelf_eq (q : Y ⟶ Sp k) [IsIntegral Y] [IsLocallyNoetherian Y] {
 open NumberField MvPolynomial Filter Topology in
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `k _ X _ _ p d hX N`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 hX.finite`. Establish `: IsProper p` using `((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hX.isProjOver).1`.
+
+Use `⟨fun z n hz => degAt_eq_zero p N.isLB hz n, fun m s z n hdim hz => ?_⟩` and prove the remaining obligations. Establish `: IsLocallyNoetherian (Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme` using `LocallyOfFiniteType.isLocallyNoetherian (redι (clo z))`. Establish `hs : genericPoint _ ∈ Out.nonzeroLocus (GlobalTheory.ZM.RepBC.secPull _ (redι (clo z)) s)`. Express the relevant statement in the definitionally equal form `_ ∈ Out.nonzeroLocus (Cartier.secPull s (redι (clo z)))`. Rewrite using `[Cartier.nonzeroLocus_secPull]`.
+
+Express the relevant statement in the definitionally equal form `redι (clo z) (genericPoint _) ∈ Out.nonzeroLocus s`. Rewrite using `[redι_genericPoint]` and apply the resulting hypothesis. Use `set i := redι (clo z) with hi`. Use `set j := ratFibre.fst (i ≫ p) with hj`. Establish `hinj : Function.Injective (j ≫ i)`.
+
+Rewrite using `[Scheme.Hom.comp_base]`. Conclude with `i.isClosedEmbedding.injective.comp (RatDegZeros.isIso_stalkMap_and_injective k _ (i ≫ p)).2`. Use `set F : X → ℤ := fun w => cutMult (N.pow m).isLB s z w * degAt p N.B w n with hF`. Establish `hmul (a) : cutMult (N.pow m).isLB s z (i a) = (divOfSec (LB.isLB_pull (N.pow m).isLB i) _ hs).mult a`. Rewrite using `[cutMult, dif_pos hs]`.
+
+Conclude with `i.isClosedEmbedding.injective.extend_apply _ _ a`. Establish `hsupp : Function.support F ⊆ Set.range (j ≫ i)` using `fun w hw => by`. Establish `hw' : cutMult (N.pow m).isLB s z w * degAt p N.B w n ≠ 0` using `hw`. Choose the witnesses or unpack the hypotheses as in `⟨a, rfl⟩ : ∃ a, i a = w := by`. Assume the negation of the conclusion as `hn`.
+
+Use `left_ne_zero_of_mul hw' ?_` and prove the remaining obligations. Rewrite using `[cutMult, dif_pos hs]`. Conclude with `Function.extend_apply' _ _ _ hn`. Establish `hc : CharZero (X.residueField (i a))`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `right_ne_zero_of_mul hw' (degAt_eq_zero p N.isLB hc n)`. Take `⟨y, rfl⟩` from `RatDegZeros.mem_range_fst k _ (i ≫ p) a ((charZero_iff i a).1 hc)`. Conclude with `⟨y, Scheme.Hom.comp_apply _ _ _⟩`. Establish `hre : ∑ᶠ y, F ((j ≫ i) y) = ∑ᶠ w, F w`. Rewrite using `[← finsum_mem_range hinj, ← finsum_mem_inter_support, Set.inter_eq_right.2 hsupp, finsum_mem_support]`.
+
+Rewrite using `[← hre]`. Distinguish the cases in `hc : CharZero (X.residueField z)`. Use `swap`. Use `isEmpty_ratFibre p hc` as an intermediate fact. Rewrite using `[degAt_eq_zero p N.isLB hc, mul_zero, finsum_of_isEmpty]`.
+
+Establish `hc' : CharZero Γ((Scheme.IdealSheafData.vanishingIdeal (clo z)).subscheme, ⊤)`. Rewrite `hc` using `[← redι_genericPoint z, charZero_iff]`. Conclude with `(Scheme.Γevaluation _ (genericPoint _)).hom.charZero`. Establish `hq : IsArithVar (i ≫ p) (n + 1)` using `hX.of_isClosedImmersion i hc' ((topologicalKrullDim_red (clo z)).trans hdim)`. Establish `: IsClosedImmersion (ratFibre.map p i)` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) (ratFibre.isPullback_map p i) inferInstance`.
+
+Rewrite using `[degAt_eq p N.isLB, mul_topSelf_eq (i ≫ p) hq (pull_isLB N.isLB i) (LB.isLB_pull (N.pow m).isLB i) (m := m) (by rw [cls_pull (N.pow m).isLB, cls_pull N.isLB, ← map_nsmul]; exact congrArg _ (cls_lbPow N.isLB m _)) _ hs]`. Use `finsum_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [hF]`. Rewrite using `[← ratFibre.map_fst, Scheme.Hom.comp_apply, degAt_fst p N.isLB, ← Scheme.Hom.comp_apply, ratFibre.map_fst, Scheme.Hom.comp_apply, hmul, interNumRed_clo_pull _ (appTop_algebraΓOfHom _ _ (ratFibre.map_snd p i)) y (L := fun _ : Fin n => N.B.pull (ratFibre.fst p)) (fun _ => pull_isLB …`. Use `congr 1`.
+
+Use `interNum_congr_cls (ι := Fin n) ℚ _ (fun _ => pull_isLB (pull_isLB N.isLB _) _) (fun _ => pull_isLB (pull_isLB N.isLB _) _) fun _ => ?_` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB N.isLB _), cls_pull (pull_isLB N.isLB _), cls_pull N.isLB, cls_pull N.isLB, ← pull_comp, ← pull_comp, ratFibre.map_fst]`.
+-/
 theorem degAt_recursion : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (d : ℕ), IsArithVar p d → ∀ (N : HermLB p), (∀ (z : X) (n : ℕ), ¬ CharZero (X.residueField z) → degAt p N.B z n = 0) ∧ ∀ (m : ℕ) (s : (N.pow m).B.Sec) (z : X) (n : ℕ), topologicalKrullDim (closure ({z} : Set X)) = (n + 2 : ℕ) → z ∈ Out.nonzeroLocus s → (m : ℤ) * degAt p N.B z (n + 1) = ∑ᶠ w, cutMult (N.pow m).isLB s z w * degAt p N.B w n := by
   intro k _ X _ _ p d hX N
   have : IsFinite (spMap (Int.castRingHom k)) := by

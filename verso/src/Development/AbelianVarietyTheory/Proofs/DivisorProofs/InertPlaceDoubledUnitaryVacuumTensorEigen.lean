@@ -15,6 +15,21 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.InertDblLine
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hw dd omd hdd hsp R hR g hg`. Take `⟨hvSB, hv0, θ, hθ, hvac⟩` from `hTr.geo.hM'.vac v`. Use `set φ₀ := boxFun (G.M'.vac v) (fun x => star (G.M'.vac v x)) with hφ₀`. Use `set r₀ : ((Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a')) → AF F) → ℂ := boxFun R (fun x => star (R x)) with hr₀`. Establish `hΦ : GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) = tens (evFin F v) φ₀ r₀`.
+
+Use function extensionality and compare the values at `x`. Use `show (_ * _) * star (_ * _) = (_ * _) * (_ * _)`. Rewrite using `[star_mul']`. Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `hstar : (fun x => star (G.M'.vac v x)) ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `⟨hvSB.1.comp star, hvSB.2.comp_left (g := star) (star_zero ℂ)⟩`.
+
+Establish `hφ₀SB : φ₀ ∈ SB _` using `GlobalTheory.BoxSpan.boxFun_mem_SB' hvSB hstar`. Establish `hRest : Rest (evFin F v) φ₀ r₀`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hl : At (evFin F v) (z ∘ Sum.inl)` using `fun u hu => by`. Use function extensionality and compare the values at `i`.
+
+Conclude with `congrFun (hz u hu) (Sum.inl i)`. Establish `hr : At (evFin F v) (z ∘ Sum.inr)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inr i)`. Simplify using `only [hr₀, boxFun]`.
+
+Rewrite using `[show (x + z) ∘ Sum.inl = x ∘ Sum.inl + z ∘ Sum.inl from rfl, show (x + z) ∘ Sum.inr = x ∘ Sum.inr + z ∘ Sum.inr from rfl, hR.1 _ _ hl, hR.1 _ _ hr]`. Rewrite using `[← hΦ]`. Conclude with `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ _ hR.2 _ (GlobalTheory.SchAConj.star_mem_schA F _ _ hR.2)`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.doubledWeilRepresentation_locality_finitePlace F E σ B a a' G X om om' hTr v dd omd hsp g hg.1 φ₀ hφ₀SB`. Establish `h₀` using `GlobalTheory.T.doubledVacuum_twistedVacuumCondition_doubledLattice F E σ B a a' G X om om' hTr v dd hdd θ hθ hvac`.
+
+Establish `h₁` using `GlobalTheory.T.doubledVacuumCondition_stable_latticeStabilizer_inert F E σ B a a' G X om om' hTr v dd omd hsp θ hθ g hg φ₀ hφ₀SB φ₁ hφ₁ h₀ hact`. Take `⟨c, hc⟩` from `GlobalTheory.T.inertPlace_doubledVacuumCondition_unique F E σ B a a' G X om om' hTr v w hw dd hdd θ hθ hvac φ₁ hφ₁ h₁`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ, hact r₀ hRest, hc]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w →

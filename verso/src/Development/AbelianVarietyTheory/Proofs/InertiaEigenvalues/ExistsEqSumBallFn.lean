@@ -21,13 +21,24 @@ open Classical in
 def ballFn (a r : k) : OnePoint k → ℂ := fun x =>
   x.elim 0 fun y => if valuation k (y - a) ≤ valuation k r then 1 else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ballFn_infty (a r : k) : ballFn a r ∞ = 0 := rfl
 
 open Classical in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ballFn_coe (a r x : k) :
     ballFn a r x = if valuation k (x - a) ≤ valuation k r then 1 else 0 := rfl
 
+/- English proof (translation)
+Use `hS.1 _ h (r / s) (a - r / s * b) (div_ne_zero hr hs) _ rfl fun x => ?_` and prove the remaining obligations. Establish `h1 : r / s * x + (a - r / s * b) - a = r * ((x - b) / s)` using `by field_simp; ring`. Establish `h2 : valuation k r ≠ 0` using `by simpa using hr`. Establish `h3 : 0 < valuation k s` using `zero_lt_iff.2 (by simpa using hs)`. Rewrite using `[ballFn_coe, ballFn_coe, h1, map_mul, map_div₀]`.
+
+Use `congr 1`. Rewrite using `[mul_le_iff_le_one_right (zero_lt_iff.2 h2), div_le_one₀ h3]`.
+-/
 theorem Stable.ballFn_mem {S : Submodule ℂ (OnePoint k → ℂ)} (hS : Stable S) {a r : k} (hr : r ≠ 0)
     (h : ballFn a r ∈ S) (b : k) {s : k} (hs : s ≠ 0) : ballFn b s ∈ S := by
   refine hS.1 _ h (r / s) (a - r / s * b) (div_ne_zero hr hs) _ rfl fun x => ?_
@@ -46,6 +57,11 @@ def vball (r : k) : AddSubgroup k where
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `ho : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Establish `h3 : 0 < valuation k r` using `zero_lt_iff.2 (by simpa using hr)`. Use `ho.preimage (continuous_id.div_const r) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `show valuation k x ≤ valuation k r ↔ valuation k (x / r) ≤ 1`.
+
+Rewrite using `[map_div₀, div_le_one₀ h3]`.
+-/
 theorem isOpen_vball {r : k} (hr : r ≠ 0) : IsOpen (vball r : Set k) := by
   have ho : IsOpen (𝒪[k] : Set k) := Valuation.isOpen_integer
   have h3 : 0 < valuation k r := zero_lt_iff.2 (by simpa using hr)
@@ -54,6 +70,11 @@ theorem isOpen_vball {r : k} (hr : r ≠ 0) : IsOpen (vball r : Set k) := by
   show valuation k x ≤ valuation k r ↔ valuation k (x / r) ≤ 1
   rw [map_div₀, div_le_one₀ h3]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff U).1 hU`. Take `⟨s, hs⟩` from `valuation_surjective (γ : ValueGroupWithZero k)`. Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Establish `h0 : s ≠ 0` using `by rintro rfl; exact γ.ne_zero (by simpa using hs.symm)`. Use `⟨ϖ * s, mul_ne_zero ϖ.ne_zero h0, fun x hx => hγ (hx.trans_lt ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hs, hϖ]`. Conclude with `mul_lt_of_lt_one_left γ.zero_lt uniformizer_lt_one`.
+-/
 theorem exists_vball_subset {U : Set k} (hU : U ∈ nhds (0 : k)) :
     ∃ r : k, r ≠ 0 ∧ ∀ x, valuation k x ≤ valuation k r → x ∈ U := by
   obtain ⟨γ, hγ⟩ := (IsValuativeTopology.mem_nhds_zero_iff U).1 hU
@@ -64,6 +85,21 @@ theorem exists_vball_subset {U : Set k} (hU : U ∈ nhds (0 : k)) :
   rw [map_mul, hs, hϖ]
   exact mul_lt_of_lt_one_left γ.zero_lt uniformizer_lt_one
 
+/- English proof (translation)
+Set `A : AddSubgroup k` to `vball R`. Set `B : AddSubgroup k` to `vball r`. Establish `hA : IsCompact (A : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k (valuation k R)`. Establish `hB : IsOpen (B : Set k)` using `isOpen_vball hr`. Use `haveI : CompactSpace A := isCompact_iff_compactSpace.1 hA`.
+
+Use `haveI := (B.addSubgroupOf A).quotient_finite_of_isOpen (hB.preimage continuous_subtype_val)`. Use `haveI := Fintype.ofFinite (A ⧸ B.addSubgroupOf A)`. Set `o : A ⧸ B.addSubgroupOf A → k` to `fun q => q.out`. Establish `ho : Function.Injective o` using `fun p q h => Quotient.out_injective (Subtype.ext h)`. Establish `key : ∀ (q : A ⧸ B.addSubgroupOf A) (x : A), valuation k (x - o q) ≤ valuation k r ↔ q = x` using `fun q x => by conv_rhs => rw [← q.out_eq']`.
+
+Rewrite using `[QuotientAddGroup.eq, sub_eq_neg_add]`. Both sides reduce to the same expression. Use `⟨Finset.univ.image o, fun a ha => ?_, fun h => ?_, fun F h0 h1 h2 => funext fun x => ?_⟩` and prove the remaining obligations. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `q.out.2`.
+
+Rewrite using `[Finset.card_image_of_injective _ ho, Finset.card_univ, Fintype.one_lt_card_iff]`. Use `⟨(0 : A), (⟨R, show valuation k R ≤ valuation k R from le_rfl⟩ : A), fun e => h.not_ge ?_⟩` and prove the remaining obligations. Establish `h5` using `QuotientAddGroup.eq.1 e`. Establish `h4 : -(0 : k) + R ∈ B` using `h5`. Rewrite `h4` using `[neg_zero, zero_add]`. Then use the resulting hypothesis.
+
+Rewrite using `[Finset.sum_image ho.injOn, Finset.sum_apply]`. Proceed by induction on `x using OnePoint.rec with`. Consider the case `infty => simp [h0]`. Consider the case `coe x`. Distinguish the cases in `hx : valuation k x ≤ valuation k R`.
+
+Simplify using `only [Pi.smul_apply, ballFn_coe, key _ ⟨x, hx⟩, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `(congrArg F (by simp)).trans (h2 _ _ ((key _ ⟨x, hx⟩).2 rfl))`. Rewrite using `[h1 x (not_le.1 hx), Finset.sum_eq_zero]`. Introduce `q _`. Rewrite using `[Pi.smul_apply, ballFn_coe, if_neg, smul_zero]`.
+
+Introduce `h`. Establish `h3 : x - o q + o q ∈ A` using `A.add_mem (h.trans hle) q.out.2`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `hx h3`.
+-/
 theorem exists_eq_sum_ballFn {r R : k} (hr : r ≠ 0) (hle : valuation k r ≤ valuation k R) :
     ∃ T : Finset k, (∀ a ∈ T, valuation k a ≤ valuation k R) ∧
       (valuation k r < valuation k R → 1 < T.card) ∧

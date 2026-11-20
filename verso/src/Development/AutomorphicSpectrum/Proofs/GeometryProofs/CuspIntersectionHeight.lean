@@ -33,10 +33,16 @@ section Field
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {L : Type} [Field L]
 
+/- English proof (translation)
+Use `(Scheme.Hom.comp_apply (spMap e) zL _).trans ?_` and prove the remaining obligations. Conclude with `congrArg zL (Subsingleton.elim _ _)`.
+-/
 theorem centre_field_map (zL : Sp L ⟶ X) (e : L →+* ℂ) : centre (spMap e ≫ zL) = centre zL := by
   refine (Scheme.Hom.comp_apply (spMap e) zL _).trans ?_
   exact congrArg zL (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Establish `hc : centre zL = centre (spMap e ≫ zL)` using `(centre_field_map zL e).symm`. Take `⟨h', s, hs, rfl⟩` from `h`. Establish `h'' : genPt ξ ⤳ centre zL` using `hc ▸ h'`. Establish `hv : ValAt ξ zL a (Scheme.stalkClosedPointTo zL |>.hom (X.presheaf.stalkSpecializes (specializes_of_eq hc) s))` using `⟨h'', _, (genMap_stalkSpecializes ξ hc h' h'' s).trans hs, rfl⟩`. Conclude with `⟨_, hv, CxVal.unique (valAt_of_field_map ξ zL _ e rfl hv) ⟨h', s, hs, rfl⟩⟩`.
+-/
 theorem val_descend (ξ : Sp Ω ⟶ X) (zL : Sp L ⟶ X) (e : L →+* ℂ) {a : Ω} {r : ℂ}
     (h : ValAt ξ (spMap e ≫ zL) a r) : ∃ t : L, ValAt ξ zL a t ∧ e t = r := by
   have hc : centre zL = centre (spMap e ≫ zL) := (centre_field_map zL e).symm
@@ -46,6 +52,11 @@ theorem val_descend (ξ : Sp Ω ⟶ X) (zL : Sp L ⟶ X) (e : L →+* ℂ) {a : 
     ⟨h'', _, (genMap_stalkSpecializes ξ hc h' h'' s).trans hs, rfl⟩
   exact ⟨_, hv, CxVal.unique (valAt_of_field_map ξ zL _ e rfl hv) ⟨h', s, hs, rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨fun k => (hw.1 k).imp fun c hc => hc.map e, fun k c hc => ?_⟩` and prove the remaining obligations. Establish `hne : w ⟨k, c⟩ ≠ 0` using `fun h0 => by simp [h0] at hc`. Take `⟨hy, hi⟩` from `hw.2 k c (isUnit_iff_ne_zero.2 hne)`. Use `⟨hy, fun i => ?_⟩` and prove the remaining obligations. Take `⟨ρ, hρ, hr⟩` from `hi i`.
+
+Conclude with `⟨e ρ, valAt_of_field_map ξ zL _ e rfl hρ, by simp only [hr, map_mul]⟩`.
+-/
 theorem coords_field_map (ξ : Sp Ω ⟶ X) {K : Type} {J : K → Type} {y : (Σ k, J k) → Ω} {zL : Sp L ⟶ X}
     {w : (Σ k, J k) → L} (hw : CoordsAt ξ y zL w) (e : L →+* ℂ) :
     CoordsAt ξ y (spMap e ≫ zL) (fun p => e (w p)) := by
@@ -56,6 +67,9 @@ theorem coords_field_map (ξ : Sp Ω ⟶ X) {K : Type} {J : K → Type} {y : (Σ
   obtain ⟨ρ, hρ, hr⟩ := hi i
   exact ⟨e ρ, valAt_of_field_map ξ zL _ e rfl hρ, by simp only [hr, map_mul]⟩
 
+/- English proof (translation)
+Unfold `InFibre`. Rewrite using `[not_not]`. Establish `hv : ValAt ξ zL (p : Ω) (p : L)` using `⟨h, (p : X.presheaf.stalk (centre zL)), map_natCast _ _, map_natCast _ _⟩`. Conclude with `⟨Nat.cast_ne_zero.2 hp, ⟨(p : X.presheaf.stalk (centre zL)), map_natCast _ _⟩, GlobalTheory.CompanionTheory.Ar.RootHt.inv_mem_regAt_of_isUnit h hv (isUnit_iff_ne_zero.2 (Nat.cast_ne_zero.2 hp))⟩`.
+-/
 theorem not_inFibre [CharZero Ω] [CharZero L] (ξ : Sp Ω ⟶ X) (zL : Sp L ⟶ X) (h : genPt ξ ⤳ centre zL) {p : ℕ}
     (hp : p ≠ 0) : ¬ InFibre ξ p ⟨centre zL, h⟩ := by
   unfold InFibre
@@ -68,6 +82,19 @@ end Field
 
 section Datum
 
+/- English proof (translation)
+Take `⟨e₀⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Establish `hw₀` using `coords_field_map Or.𝔐.ξ hw e₀`. Take `⟨⟨d⟩, hall⟩` from `GlobalTheory.T.intersection_system_weight_right hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or _ _ hw₀`. Take `⟨⟨s, hs⟩, hs2⟩` from `hall d`. Take `⟨hfr, hu0, -⟩` from `hs2 s hs`.
+
+Establish `hT` using `Or.𝔐.tie`. Establish `tv : ∀ (e : L →+* ℂ) (a : Ω) (r : ℂ), ValAt Or.𝔐.ξ (spMap e ≫ zL) a r ↔ IsValueAt Dc.y a (fun p => e (w p)) r` using `fun e a r => GlobalTheory.T.valAt_iff_value_at _ _ _ K J _ hT _ _ (Or.𝔐.all _) (coords_field_map Or.𝔐.ξ hw e) a r`. Take `⟨vf, hvf, hvf0⟩` from `d.inDom.2`. Take `⟨fL, hfL, hfe⟩` from `val_descend _ _ _ ((tv e₀ _ _).2 hvf)`. Establish `hfL0 : fL ≠ 0` using `fun h0 => hvf0 (by rw [← hfe, h0, map_zero])`.
+
+Establish `hex : ∃ v, IsValueAt Dc.y d.u (fun p => e₀ (w p)) v`. Assume the negation of the conclusion as `hn`. Conclude with `hu0 (by rw [GroundTheory.Heights₂.Heights.LowerBoundFree.valAt, dif_neg hn])`. Establish `hu1 : valAt Dc.y d.u (fun p => e₀ (w p)) = hex.choose` using `by rw [GroundTheory.Heights₂.Heights.LowerBoundFree.valAt, dif_pos hex]`. Take `⟨uL, huL, hue⟩` from `val_descend _ _ _ ((tv e₀ _ _).2 hex.choose_spec)`.
+
+Establish `huL0 : uL ≠ 0` using `fun h0 => hu0 (by rw [hu1, ← hue, h0, map_zero])`. Use `⟨d.c, d.f, d.b, d.u, uL, s, fun k h0 => ?_, d.adapted, d.unit, d.eq, huL0, huL, fun e => ⟨fun k h0 => ?_, ?_⟩, fun e => ?_, hs, fun τ => ?_⟩` and prove the remaining obligations. Conclude with `d.inDom.1 k (by simp [h0])`. Establish `hne : w ⟨k, d.c k⟩ ≠ 0` using `fun h1 => d.inDom.1 k (by simp [h1])`. Conclude with `hne (by simpa using h0)`.
+
+Conclude with `⟨e fL, (tv e _ _).1 (valAt_of_field_map _ zL _ e rfl hfL), by simpa using hfL0⟩`. Establish `h1 : ValAt Or.𝔐.ξ (spMap e ≫ zL) d.u (e uL)` using `valAt_of_field_map _ zL _ e rfl huL`. Establish `hex' : ∃ v, IsValueAt Dc.y d.u (fun p => e (w p)) v` using `⟨_, (tv e _ _).1 h1⟩`. Rewrite using `[GroundTheory.Heights₂.Heights.LowerBoundFree.valAt, dif_pos hex']`. Conclude with `CxVal.unique ((tv e _ _).2 hex'.choose_spec) h1`.
+
+Establish `hq : (⟨centre (spMap e₀ ≫ zL), Or.𝔐.all _⟩ : Cpt Or.𝔐.ξ) = ⟨centre zL, Or.𝔐.all _⟩` using `Subtype.ext (centre_field_map zL e₀)`. Conclude with `hq ▸ hfr τ (Or.𝔐.all _)`.
+-/
 theorem datum (hG : Top.Given) (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E)
     (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l)
     (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type)
@@ -124,6 +151,17 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.PtHt
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.PtHt
 
+/- English proof (translation)
+Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hr : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h1 : (τ₀ (H.rt : E)) ^ 2 = H.rt0 ^ 2`.
+
+Rewrite using `[← map_pow, hr, H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules. Establish `hre : H.rt0.re = 0`. Establish `h2` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Establish `h3` using `congrArg Complex.re H.sqrt_neg_disc_sq`.
+
+Simplify using `only [pow_two, Complex.mul_im, Complex.mul_re, Complex.neg_im, Complex.neg_re, Complex.natCast_im, Complex.natCast_re, neg_zero] at h2 h3`. Establish `h4 : H.rt0.re * H.rt0.im = 0` using `by linarith`. Break down `mul_eq_zero.1 h4 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Rewrite `h3` using `[h]`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg H.rt0.re]`. Establish `hconj : starRingEnd ℂ H.rt0 = -H.rt0`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+
+Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Conclude with `⟨⟨τ₀, h⟩⟩`. Use `⟨⟨(starRingEnd ℂ).comp τ₀, ?_⟩⟩` and prove the remaining obligations. Simplify using `[h, hconj]`.
+-/
 theorem cm_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) : Nonempty (CMType H) := by
   obtain ⟨τ₀⟩ : Nonempty (E →+* ℂ) := inferInstance
   have hr : (H.rt : E) ^ 2 = -(H.d : E) := by
@@ -150,6 +188,9 @@ theorem cm_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host
   · refine ⟨⟨(starRingEnd ℂ).comp τ₀, ?_⟩⟩
     simp [h, hconj]
 
+/- English proof (translation)
+Unfold `logIdx`. Rewrite using `[h]`.
+-/
 theorem logIdx_congr {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] (F : Submodule R V) {A₁ A₂ : Type}
     (b : A₁ → V) (b' : A₂ → V) (h : Set.range b = Set.range b') : logIdx F b = logIdx F b' := by
   unfold logIdx
@@ -159,6 +200,85 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.PtHt
 
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.PtHt
 
+/- English proof (translation)
+Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B L _ _ z P V _ _ _ _ MV A w r k v q hGood hw hLP hO hAd`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨cc, f, b, u, uL, s, hc, had, hun, heq, huL, hval, hdom, hvalC, hsm, hfr⟩` from `datum hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or L (spMap (algebraMap (𝓞 L) L) ≫ z) w hw`. Establish `hS₀ : ∀ p ∈ S₀, p ≠ 0` using `fun p hp => (Or.𝔐.S_prime p hp).ne_zero`. Establish `hvs` using `GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B`.
+
+Establish `hS' : ∀ p ∈ S₀ ∪ Dc.SB B, p ≠ 0` using `fun p hp => (hvs.1 p hp).ne_zero`. Establish `hV : ∀ t', Or.𝔐.V t' ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩ = Or.𝔐.dR t' ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩` using `fun t' => Lat.patch_of_not _ _ _ fun p hp => not_inFibre _ _ _ (hS₀ p hp)`. Establish `hVS : ∀ t', Or.𝔐.VS (S₀ ∪ Dc.SB B) t' ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩ = Or.𝔐.dR t' ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩` using `fun t' => Lat.patch_of_not _ _ _ fun p hp => not_inFibre _ _ _ (hS' p hp)`. Establish `hdr : ∀ τ, (Or.𝔐.dR (Or.sm τ)).IsFrameAt (s τ) ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩` using `fun τ => ⟨(hfr τ).1, (hV _).symm.trans (hfr τ).2⟩`. Establish `hfrS : ∀ τ, (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)).IsFrameAt (s τ) ⟨centre (spMap (algebraMap (𝓞 L) L) ≫ z), Or.𝔐.all _⟩` using `fun τ => ⟨(hfr τ).1, (hVS _).trans (hdr τ).2⟩`.
+
+Use `choose sL hsLv hsLi hsLs using fun τ => GlobalTheory.T.abelian_part_integral_point_alt E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A (Or.sm τ) _ (s τ) hLP (hdr τ)`. Take `⟨τ₀⟩` from `cm_nonempty H`. Establish `hrk : r + k = Dc.N - Dc.j`. Establish `h1` using `finrank_span_eq_card (hAd τ₀).1.1`. Establish `h2` using `finrank_span_eq_card (hsLi τ₀)`.
+
+Rewrite `h1` using `[(hAd τ₀).1.2]`. Rewrite `h2` using `[hsLs τ₀, h1]`. Simplify using `using h2`. Establish `hCex : ∀ τ, ∃ C : Matrix (Fin (Dc.N - Dc.j)) (Fin (Dc.N - Dc.j)) L, (∀ i, A.fam (Or.sm τ) v (q τ) i = ∑ j, C j (Fin.cast hrk i) • sL τ j) ∧ C.det ≠ 0`. Introduce `τ`.
+
+Establish `hmem : ∀ i : Fin (Dc.N - Dc.j), ∃ a : Fin (Dc.N - Dc.j) → L, ∑ j, a j • sL τ j = A.fam (Or.sm τ) v (q τ) (Fin.cast hrk.symm i)`. Introduce `i`. Establish `: A.fam (Or.sm τ) v (q τ) (Fin.cast hrk.symm i) ∈ Submodule.span L (Set.range (sL τ))`. Rewrite using `[hsLs τ, ← (hAd τ).1.2]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun L).1 this`. Use `choose a ha using hmem`. Use `⟨Matrix.of fun j i => a i j, fun i => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Use `ha (Fin.cast hrk i)` as an intermediate fact. Simplify using `using this.symm`.
+
+Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `h3 : ∑ i, x i • A.fam (Or.sm τ) v (q τ) (Fin.cast hrk.symm i) = 0`. Establish `: ∀ i, x i • A.fam (Or.sm τ) v (q τ) (Fin.cast hrk.symm i) = ∑ j, (x i * a i j) • sL τ j`. Introduce `i`. Rewrite using `[← ha i, Finset.smul_sum]`.
+
+Simplify using `[smul_smul]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Establish `h4` using `congrFun hx j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at h4`. Rewrite using `[show ∑ i, x i * a i j = ∑ i, a i j * x i from Finset.sum_congr rfl fun _ _ => mul_comm _ _, h4, zero_smul]`. Establish `hli : LinearIndependent L fun i : Fin (Dc.N - Dc.j) => A.fam (Or.sm τ) v (q τ) (Fin.cast hrk.symm i)` using `(hAd τ).1.1.comp _ (Fin.cast_injective _)`. Conclude with `hx0 (funext fun i => (Fintype.linearIndependent_iff.1 hli x h3 i))`.
+
+Use `choose C hC1 hC2 using hCex`. Establish `hvb : ∀ τ, (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)).IsVB (Dc.N - Dc.j) (Or.𝔐.Vgen (Or.sm τ))`. Introduce `τ`. Use `hvs.2.2.2 (Or.sm τ)` as an intermediate fact. Rewrite `this` using `[Or.rk_sm]`. Then use the resulting hypothesis.
+
+Use `choose T T' b' hb1 hb2 hb3 hb4 hb5 hb6 using fun τ => GlobalTheory.T.abelian_part_lattice_eigen_compat E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) _ _ (s τ) (sL τ) (hvb τ) (hfrS τ) (hsLv τ) (hsLi τ)`. Establish `hidx : ∀ τ, logIdx (Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) (A.fam (Or.sm τ) v (q τ)) = (∑ᶠ x : FinitePlace L, Real.log (x (T τ x).det)) + ∑ σ : L →+* ℂ, Real.log ‖σ (C τ).det‖`. Introduce `τ`. Rewrite using `[← GlobalTheory.T.glued_lattice_from_local_matrices L V _ (sL τ) _ (T τ) (C τ) (hsLi τ) (hb4 τ) (hC2 τ) (hb5 τ) (hb6 τ)]`. Use `logIdx_congr _ _ _ ?_` and prove the remaining obligations.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨Fin.cast hrk i, (hC1 τ i).symm⟩`. Introduce and unpack `⟨i, rfl⟩`.
+
+Conclude with `⟨Fin.cast hrk.symm i, by rw [hC1 τ]; simp⟩`. Establish `hvert : ∀ p ∈ Dc.SB B, _` using `fun p hp => GlobalTheory.T.exists_val_at_vert_factor_eq_norm_mul_prod E H D l (Xo l) c Y II K J Ω W Dc Hd S₀ Or L (spMap (algebraMap (𝓞 L) L) ≫ z) w cc p hw hc (Finset.mem_filter.1 hp).1`. Use `choose! t ht0 htv htf using hvert`. Use `set g : L := uL * ∏ p ∈ Dc.SB B, t p with hg`. Establish `hg0 : g ≠ 0` using `mul_ne_zero huL (Finset.prod_ne_zero_iff.2 ht0)`.
+
+Establish `hmd` using `GlobalTheory.T.intersection_datum_degree_sum E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B b s (u * chartMono Dc.y cc Hd.aMu) hsm heq`. Establish `hy : ∀ k, Dc.y ⟨k, cc k⟩ ≠ 0` using `fun k => (hw.2 k (cc k) (isUnit_iff_ne_zero.2 (hc k))).1`. Establish `cm_ne : ∀ x : K → ℤ, chartMono Dc.y cc x ≠ 0` using `fun x => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy k)`. Establish `cm_add : ∀ x x' : K → ℤ, chartMono Dc.y cc (x + x') = chartMono Dc.y cc x * chartMono Dc.y cc x'`. Introduce `x x'`.
+
+Simplify using `only [chartMono, Pi.add_apply, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => zpow_add₀ (hy k) _ _`. Establish `cm_neg : ∀ x : K → ℤ, chartMono Dc.y cc (-x) = (chartMono Dc.y cc x)⁻¹`. Introduce `x`. Simplify using `only [chartMono, Pi.neg_apply, _root_.zpow_neg, Finset.prod_inv_distrib]`.
+
+Establish `cm_sum : ∀ sF : Finset ℕ, chartMono Dc.y cc (∑ p ∈ sF, Dc.vdeg p) = ∏ p ∈ sF, chartMono Dc.y cc (Dc.vdeg p)`. Introduce `sF`. Proceed by induction on `sF using Finset.induction_on with`. Consider the case `empty => simp [chartMono]`. Consider the case `insert p sF hp ih => rw [Finset.sum_insert hp, Finset.prod_insert hp, cm_add, ih]`.
+
+Establish `hid : (((u * chartMono Dc.y cc Hd.aMu)⁻¹ * ∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vden p) / MvPolynomial.aeval Dc.y (Dc.vnum p)) * chartMono Dc.y cc (muTwDeg Hd B))⁻¹ = u * ∏ p ∈ Dc.SB B, (MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) * chartMono D …`. Rewrite using `[show muTwDeg Hd B = Hd.aMu + ∑ p ∈ Dc.SB B, Dc.vdeg p from rfl, cm_add, cm_sum]`. Simplify using `only [cm_neg]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib]`. Establish `e1 : ∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) = (∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vden p) / MvPolynomial.aeval Dc.y (Dc.vnum p))⁻¹`.
+
+Rewrite using `[← Finset.prod_inv_distrib]`. Simplify using `only [inv_div]`. Rewrite using `[e1]`. Establish `hM` using `cm_ne Hd.aMu`. Generalize the expression as in `(∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vden p) / MvPolynomial.aeval Dc.y (Dc.vnum p)) = a₁`.
+
+Generalize the expression as in `(∏ p ∈ Dc.SB B, chartMono Dc.y cc (Dc.vdeg p)) = a₂`. Generalize the expression as in `chartMono Dc.y cc Hd.aMu = a₃ at hM`. Simplify using `only [mul_inv, inv_inv]`. Clear the denominators using the available nonvanishing facts. Establish `hΘ : ValAt Or.𝔐.ξ (spMap (algebraMap (𝓞 L) L) ≫ z) (((u * chartMono Dc.y cc Hd.aMu)⁻¹ * ∏ p ∈ Dc.SB B, MvPolynomial.aeval Dc.y (Dc.vden p) / MvPolynomial.aeval Dc.y (Dc.vnum p)) * chartMono Dc.y cc (muTwDeg Hd B))⁻¹ g`.
+
+Rewrite using `[hid, hg]`. Use `GlobalTheory.CompanionTheory.Ar.RootHt.valAt_mul hval ?_` and prove the remaining obligations. Establish `hsub : ∀ sF : Finset ℕ, sF ⊆ Dc.SB B → ValAt Or.𝔐.ξ (spMap (algebraMap (𝓞 L) L) ≫ z) (∏ p ∈ sF, (MvPolynomial.aeval Dc.y (Dc.vnum p) / MvPolynomial.aeval Dc.y (Dc.vden p) * chartMono Dc.y cc (-Dc.vdeg p))) (∏ p ∈ sF, t p)`. Introduce `sF`. Proceed by induction on `sF using Finset.induction_on with`.
+
+Consider the case `empty => intro _`. Simplify using `using GlobalTheory.CompanionTheory.Ar.RootHt.valAt_one (Or.𝔐.all _)`. Consider the case `insert p sF hp ih`. Introduce `hs`. Rewrite using `[Finset.prod_insert hp, Finset.prod_insert hp]`.
+
+Conclude with `GlobalTheory.CompanionTheory.Ar.RootHt.valAt_mul (htv p (hs (Finset.mem_insert_self _ _))) (ih fun x hx => hs (Finset.mem_insert_of_mem hx))`. Conclude with `hsub _ subset_rfl`. Establish `hunit : ∀ x : FinitePlace L, (∏ τ, x (T τ x).det) * GlobalTheory.CompanionTheory.Ar.RootHt.locRatio (muTwDeg Hd B) w cc x = x g` using `fun x => GlobalTheory.T.tensor_lattice_coord_degree Or.𝔐.X Ω Or.𝔐.ξ K J Dc.y (CMType H) Or.𝔐.Li (fun τ => Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) _ s (muTwDeg Hd B) _ Or.𝔐.all Or.𝔐.tie hmd.1 hmd.2 L w z cc g x (fun τ => b' τ x) (fun τ => T' τ x) (fun τ => T τ x) hw hc hΘ hg0 (fun τ => …`. Take `⟨hρ, hfin, hsum⟩` from `GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum L K J (muTwDeg Hd B) w cc g (fun k => ⟨cc k, hc k⟩) hc hg0`. Establish `hLsum : ∑ τ, ∑ᶠ x : FinitePlace L, Real.log (x (T τ x).det) = -((∑ᶠ x : FinitePlace L, ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log (⨆ i, x (w ⟨k', i⟩))) + ∑ σ : L →+* ℂ, (Real.log ‖σ g‖ + ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log ‖σ (w ⟨k', cc k'⟩)‖))`.
+
+Rewrite using `[← hsum, ← finsum_neg_distrib, ← finsum_sum_comm]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Establish `hp : ∀ τ, 0 < x (T τ x).det` using `fun τ => FinitePlace.pos_iff.2 (hb4 τ x)`. Establish `hx` using `hunit x`. Rewrite using `[← Real.log_prod (fun τ _ => (hp τ).ne'), ← hx, Real.log_mul (Finset.prod_pos fun τ _ => hp τ).ne' (hρ x).ne']`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `τ _`. Use `(hb5 τ).subset fun x hx => ?_` and prove the remaining obligations. Introduce `hbad`. Conclude with `hx (by simp [hbad.2])`.
+
+Establish `harch` using `GlobalTheory.T.abelian_part_integral_lattice E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L z P V MV A Or.sm r k _ hrk v q s sL C hLP hO hAd hsLv hC1 hC2`. Use `choose hgram ν hGeo hν0 hνe using harch`. Use `⟨fun e => Real.log (‖GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y u (fun p => e (w p))‖ * ∏ k', ‖e (w ⟨k', cc k'⟩)‖ ^ Hd.aMu k') + Real.log (ν e) / 2, fun e => ⟨⟨cc, f, hdom e, b, had, u, hun, heq⟩, s, ν e, hsm, hGeo e, hν0 e, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hrI : (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hO.2.2`. Establish `hwe : ∀ (e : L →+* ℂ) k', ‖e (w ⟨k', cc k'⟩)‖ ≠ 0` using `fun e k' => norm_ne_zero_iff.2 (by simpa using hc k')`.
+
+Establish `hdet : ∀ (e : L →+* ℂ) τ, ‖e (C τ).det‖ ≠ 0` using `fun e τ => norm_ne_zero_iff.2 (by simpa using hC2 τ)`. Establish `hpi : (4 * Real.pi)⁻¹ ≠ 0` using `inv_ne_zero (by positivity)`. Establish `hlogν : ∀ e : L →+* ℂ, Real.log (ν e) = Real.log (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) + ∑ τ, ((r : ℝ) * Real.log (4 * Real.pi)⁻¹ + Real.log (A.gramDet e (q τ)) - 2 * Real.log ‖e (C τ).det‖)`. Introduce `e`. Establish `hf : ∀ τ, (4 * Real.pi)⁻¹ ^ r * A.gramDet e (q τ) / ‖e (C τ).det‖ ^ 2 ≠ 0` using `fun τ => div_ne_zero (mul_ne_zero (pow_ne_zero _ hpi) (hgram e τ).ne') (pow_ne_zero _ (hdet e τ))`.
+
+Rewrite using `[hνe e, Real.log_mul hrI (Finset.prod_ne_zero_iff.2 fun τ _ => hf τ), Real.log_prod (fun τ _ => hf τ)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (mul_ne_zero (pow_ne_zero _ hpi) (hgram e τ).ne') (pow_ne_zero _ (hdet e τ)), Real.log_mul (pow_ne_zero _ hpi) (hgram e τ).ne', Real.log_pow, Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hcast : ∀ k', (muTwDeg Hd B k' : ℝ) = (Hd.aMu k' : ℝ) + ∑ p ∈ Dc.SB B, (Dc.vdeg p k' : ℝ)`. Introduce `k'`. Use `show (((Hd.aMu + ∑ p ∈ Dc.SB B, Dc.vdeg p) k' : ℤ) : ℝ) = _`. Rewrite using `[Pi.add_apply, Finset.sum_apply]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hone : ∀ e : L →+* ℂ, twW (D` using `Dc) B (fun _ => 0) (fun p => e (w p)) + (Real.log (‖GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y u (fun p => e (w p))‖ * ∏ k', ‖e (w ⟨k', cc k'⟩)‖ ^ Hd.aMu k') + Real.log (ν e) / 2) = (Real.log ‖e g‖ + ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖) + (Real …`. Introduce `e`. Establish `huE : e uL ≠ 0` using `by simpa using huL`.
+
+Establish `htE : ∀ p ∈ Dc.SB B, ‖e (t p)‖ ≠ 0` using `fun p hp => norm_ne_zero_iff.2 (by simpa using ht0 p hp)`. Establish `hlw : Real.log (∏ k', ‖e (w ⟨k', cc k'⟩)‖ ^ Hd.aMu k') = ∑ k', (Hd.aMu k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖`. Rewrite using `[Real.log_prod (fun k' _ => zpow_ne_zero _ (hwe e k'))]`. Conclude with `Finset.sum_congr rfl fun k' _ => Real.log_zpow _ _`. Establish `hvf : ∀ p ∈ Dc.SB B, Real.log (Dc.vertFactor p (fun i => e (w i))) = Real.log ‖e (t p)‖ + ∑ k', (Dc.vdeg p k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖`.
+
+Introduce `p hp`. Rewrite using `[htf p hp e, Real.log_mul (htE p hp) (Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (hwe e k')), Real.log_prod (fun k' _ => zpow_ne_zero _ (hwe e k'))]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k' _ => Real.log_zpow _ _`. Establish `hge : Real.log ‖e g‖ = Real.log ‖e uL‖ + ∑ p ∈ Dc.SB B, Real.log ‖e (t p)‖`.
+
+Rewrite using `[hg, map_mul, norm_mul, map_prod, norm_prod, Real.log_mul (norm_ne_zero_iff.2 huE) (Finset.prod_ne_zero_iff.2 htE), Real.log_prod htE]`. Establish `hsplit : ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖ = ∑ k', (Hd.aMu k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖ + ∑ p ∈ Dc.SB B, ∑ k', (Dc.vdeg p k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖`. Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[hcast, add_mul, Finset.sum_mul]`.
+
+Establish `htw : twW (D` using `Dc) B (fun _ => 0) (fun p => e (w p)) = ∑ p ∈ Dc.SB B, Real.log ‖e (t p)‖ + ∑ p ∈ Dc.SB B, ∑ k', (Dc.vdeg p k' : ℝ) * Real.log ‖e (w ⟨k', cc k'⟩)‖ := by`. Unfold `twW`. Rewrite using `[zero_add, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl hvf`. Rewrite using `[htw, hvalC e, Real.log_mul (norm_ne_zero_iff.2 huE) (Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (hwe e k')), hlw, hlogν e, hge, hsplit, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_const, ← Finset.mul_sum]`.
+
+Simplify using `only [Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hN : (0 : ℝ) < Module.finrank ℚ L` using `by exact_mod_cast Module.finrank_pos`. Establish `hcard : (Fintype.card (L →+* ℂ) : ℝ) = Module.finrank ℚ L`. Conclude with `NumberField.Embeddings.card L ℂ` after adjusting the coercions.
+
+Establish `hS : (∑ σ : L →+* ℂ, twW (D` using `Dc) B (fun _ => 0) (fun p => σ (w p))) + (∑ e : L →+* ℂ, (Real.log (‖GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y u (fun p => e (w p))‖ * ∏ k', ‖e (w ⟨k', cc k'⟩)‖ ^ Hd.aMu k') + Real.log (ν e) / 2)) = (∑ σ : L →+* ℂ, (Real.log ‖σ g‖ + ∑ k', (muTwDeg Hd B k' : ℝ) * Rea …`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_congr rfl fun e _ => hone e, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard, ← Finset.sum_div, Finset.sum_comm (f := fun (e : L →+* ℂ) τ => Real.log (A.gramDet e …`. Establish `hsum2 : ∑ τ, (logIdx (Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) (A.fam (Or.sm τ) v (q τ)) - (∑ ι' : L →+* ℂ, Real.log (A.gramDet ι' (q τ))) / 2) / Module.finrank ℚ L = ((∑ τ, ∑ᶠ x : FinitePlace L, Real.log (x (T τ x).det)) + (∑ τ, ∑ σ : L →+* ℂ, Real.log ‖σ (C τ).det …`. Simplify using `only [hidx]`. Rewrite using `[← Finset.sum_div, Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.sum_div]`.
+
+Use `show (Module.finrank ℚ L : ℝ)⁻¹ * ((∑ᶠ x : FinitePlace L, ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log (⨆ i, x (w ⟨k', i⟩))) + ∑ σ : L →+* ℂ, twW (D := Dc) B (fun _ => 0) (fun p => σ (w p))) + _ / _ = -(∑ τ, (logIdx (Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) (A.fam (Or.sm …`. Rewrite using `[hsum2, hLsum]`. Rewrite `hS` using `[Real.log_inv]`. Generalize the expression as in `(∑ᶠ x : FinitePlace L, ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log (⨆ i, x (w ⟨k', i⟩))) = Pf at *`. Generalize the expression as in `(∑ σ : L →+* ℂ, twW (D := Dc) B (fun _ => 0) (fun p => σ (w p))) = TW at *`.
+
+Generalize the expression as in `(∑ e : L →+* ℂ, (Real.log (‖GroundTheory.Heights₂.Heights.LowerBoundFree.valAt Dc.y u (fun p => e (w p))‖ * ∏ k', ‖e (w ⟨k', cc k'⟩)‖ ^ Hd.aMu k') + Real.log (ν e) / 2)) = Xs at *`. Generalize the expression as in `(∑ σ : L →+* ℂ, (Real.log ‖σ g‖ + ∑ k', (muTwDeg Hd B k' : ℝ) * Real.log ‖σ (w ⟨k', cc k'⟩)‖)) = As at *`. Generalize the expression as in `(∑ τ, ∑ ι' : L →+* ℂ, Real.log (A.gramDet ι' (q τ))) = Gs at *`. Generalize the expression as in `(∑ τ, ∑ σ : L →+* ℂ, Real.log ‖σ (C τ).det‖) = Cs at *`. Generalize the expression as in `Real.log (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ) = lr at *`.
+
+Generalize the expression as in `Real.log (4 * Real.pi) = l4 at *`. Generalize the expression as in `(Fintype.card (CMType H) : ℝ) = cf at *`. Generalize the expression as in `(Module.finrank ℚ L : ℝ) = N at *`. Establish `hN' : N ≠ 0` using `hN.ne'`. Establish `e2 : Xs = As + N * (lr / 2 + cf * r / 2 * -l4) + Gs / 2 - Cs - TW` using `by linarith`.
+
+Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem g_height : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B : ℕ) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ Or.𝔐.X) (P : AbPart Or.𝔐.t (spMap (algebraMap (𝓞 L) L) ≫ z)) (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (MV : LieModel P.tK.G (𝟙 (Sp L)) V) (A : LinPt E L (CMType H) V) (w : (Σ k, J k) → L) (r k : ℕ) (v : Fin r → V) (q : CMType H → Fin k → A.Λ), Or.Good → CoordsAt Or.𝔐.ξ Dc.y (spMap (algebraMap (𝓞 L) L) ≫ z) w → Or.𝔐.IsLinPtOf z P MV A → IsOFamily A.ρ A.I v → (∀ τ, A.IsAdapted (Or.sm τ) v (q τ) ∧ ∀ i, (q τ i : V) ∈ A.eig (Or.sm τ)) → ∃ x : (L →+* ℂ) → ℝ, (∀ e : L →+* ℂ, Or.PhiWeight (spMap e ≫ spMap (algebraMap (𝓞 L) L) ≫ z) (fun p => e (w p)) (x e)) ∧ Ht.ptHt (fun k => (muTwDeg Hd B k : ℝ)) (twW (D := Dc) B fun _ => 0) L w + (∑ e : L →+* ℂ, x e) / Module.finrank ℚ L = -A.phiDeg Or.sm (fun τ => Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) v q := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B L _ _ z P V _ _ _ _ MV A w r k v q hGood hw hLP hO hAd
   classical

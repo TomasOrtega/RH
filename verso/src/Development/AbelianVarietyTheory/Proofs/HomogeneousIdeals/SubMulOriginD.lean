@@ -23,6 +23,9 @@ def lineQuadCoeff (W : Projective R) (n v d : R) : R :=
 
 variable {W : Projective R}
 
+/- English proof (translation)
+Establish `h` using `(equation_iff _).mp h₁`. Establish `h'` using `(equation_iff _).mp h₂`. Take the linear combination `(norm := (simp only [originN, originD, fin3_def_ext]; ring1)) h' - h`.
+-/
 lemma sub_mul_originD {z₁ w₁ z₂ w₂ : R} (h₁ : W.Equation ![z₁, -1, w₁])
     (h₂ : W.Equation ![z₂, -1, w₂]) :
     (w₂ - w₁) * originD W w₁ z₂ w₂ = (z₂ - z₁) * originN W z₁ w₁ z₂ := by
@@ -30,6 +33,9 @@ lemma sub_mul_originD {z₁ w₁ z₂ w₂ : R} (h₁ : W.Equation ![z₁, -1, w
   have h' := (equation_iff _).mp h₂
   linear_combination (norm := (simp only [originN, originD, fin3_def_ext]; ring1)) h' - h
 
+/- English proof (translation)
+Simplify using `only [addX, addZ, negAddY, fin3_def_ext]`. Use `ring1`.
+-/
 lemma addZ_line (z₁ w₁ z₂ l : R) :
     W.addZ ![z₁, -1, w₁] ![z₂, -1, w₁ + l * (z₂ - z₁)] =
       l * W.addX ![z₁, -1, w₁] ![z₂, -1, w₁ + l * (z₂ - z₁)]
@@ -37,6 +43,9 @@ lemma addZ_line (z₁ w₁ z₂ l : R) :
   simp only [addX, addZ, negAddY, fin3_def_ext]
   ring1
 
+/- English proof (translation)
+Establish `h` using `sub_eq_zero.mpr <| (equation_iff _).mp h₁`. Take the linear combination `(norm := (simp only [originN, originD, lineCubicCoeff, lineQuadCoeff, addX, negAddY, fin3_def_ext]; ring1)) (-3 * z₁ - 3 * W.a₂ * z₁ * l - 3 * W.a₄ * z₁ * l ^ 2 - 3 * W.a₆ * z₁ * l ^ 3 + 3 * z₂ + 3 * W.a₂ * l * z₂ + 3 * W.a₄ * l ^ 2 * z₂ + 3 * W.a₆ * l ^ 3 * z₂) * h + (-3 * z₁ ^ …`.
+-/
 lemma negAddY_line {z₁ w₁ z₂ l : R} (h₁ : W.Equation ![z₁, -1, w₁])
     (hl : originN W z₁ w₁ z₂ = l * originD W w₁ z₂ (w₁ + l * (z₂ - z₁))) :
     (-lineQuadCoeff W l (w₁ - l * z₁) 1 - lineCubicCoeff W l 1 * (z₁ + z₂))
@@ -52,6 +61,9 @@ lemma negAddY_line {z₁ w₁ z₂ l : R} (h₁ : W.Equation ![z₁, -1, w₁])
       + W.a₃ * l ^ 2 * z₂ + W.a₄ * z₁ * l ^ 2 * z₂ + W.a₂ * w₁ * z₂ + 2 * W.a₄ * l * w₁ * z₂
       + 3 * W.a₆ * l ^ 2 * w₁ * z₂) * hl
 
+/- English proof (translation)
+Establish `h` using `sub_eq_zero.mpr <| (equation_iff _).mp h₁`. Take the linear combination `(norm := (simp only [originN, originD, diagX, diagZ, negDiagY, fin3_def_ext]; ring1)) (-3 + 3 * W.a₁ * z₁ + 3 * W.a₂ * z₁ ^ 2 - W.a₁ ^ 2 * l - 4 * W.a₂ * l - W.a₁ ^ 2 * W.a₃ * z₁ * l ^ 2 - 4 * W.a₂ * W.a₃ * z₁ * l ^ 2 - W.a₂ * W.a₃ ^ 2 * z₁ ^ 2 * l ^ 3 + W.a₁ * W.a₃ * W.a₄ * z₁ ^ …`.
+-/
 lemma diagZ_line {z₁ w₁ z₂ l : R} (h₁ : W.Equation ![z₁, -1, w₁])
     (hl : originN W z₁ w₁ z₂ = l * originD W w₁ z₂ (w₁ + l * (z₂ - z₁))) :
     diagZ W ![z₁, -1, w₁] ![z₂, -1, w₁ + l * (z₂ - z₁)] =
@@ -92,6 +104,9 @@ lemma diagZ_line {z₁ w₁ z₂ l : R} (h₁ : W.Equation ![z₁, -1, w₁])
       - 9 * W.a₆ * z₁ * w₁ ^ 2 - W.a₂ * W.a₃ ^ 2 * w₁ ^ 3 + W.a₁ * W.a₃ * W.a₄ * w₁ ^ 3
       + W.a₄ ^ 2 * w₁ ^ 3) * hl
 
+/- English proof (translation)
+Establish `h` using `sub_eq_zero.mpr <| (equation_iff _).mp h₁`. Take the linear combination `(norm := (simp only [originN, originD, lineCubicCoeff, lineQuadCoeff, diagX, negDiagY, fin3_def_ext]; ring1)) (W.a₁ ^ 2 + W.a₂ - 3 * W.a₃ * z₁ - 6 * W.a₂ ^ 2 * z₁ ^ 2 + 6 * W.a₂ ^ 2 * l + 3 * W.a₁ * W.a₃ * l + 3 * W.a₄ * l + W.a₁ ^ 2 * W.a₃ * z₁ * l - 2 * W.a₂ * W.a₃ * z₁ * l - 3 …`.
+-/
 lemma negDiagY_line {z₁ w₁ z₂ l : R} (h₁ : W.Equation ![z₁, -1, w₁])
     (hl : originN W z₁ w₁ z₂ = l * originD W w₁ z₂ (w₁ + l * (z₂ - z₁))) :
     (-lineQuadCoeff W l (w₁ - l * z₁) 1 - lineCubicCoeff W l 1 * (z₁ + z₂))

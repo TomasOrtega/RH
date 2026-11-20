@@ -9,6 +9,21 @@ open GlobalTheory.CuspRep (Cinf Lie chart infGL pInf sInf toL lmul invSet)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
+/- English proof (translation)
+Introduce `hc E _ _ _ n f hf ⟨C, hC⟩ α X _ _ _ _ ν _ u a hu ha ⟨D, hD⟩ g`. Establish `hS : MeasurableSet ((Set.univ : Set X) ×ˢ invSet E n)` using `(isOpen_univ.prod GlobalTheory.CuspRep.isOpen_invSet).measurableSet`. Establish `h1 : ContinuousOn (fun z : X × Lie E n => chart f (u z.1 * g) z.2) (Set.univ ×ˢ invSet E n)` using `(hc E n f hf).1.comp (f := fun z : X × Lie E n => (u z.1 * g, z.2)) (((hu.comp continuous_fst).mul continuous_const).prodMk continuous_snd).continuousOn fun z hz => ⟨trivial, hz.2⟩`. Establish `h2 : Measurable fun z : X × Lie E n => chart f (u z.1 * g) z.2`. Use `h1.measurable_piecewise (g := fun _ => 0) continuousOn_const hS` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ (Set.univ : Set X) ×ˢ invSet E n`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hz]`. Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hz, chart]`.
+
+Conclude with `dif_neg fun h => hz ⟨trivial, h⟩`. Establish `hb : ∀ g y, ‖chart f g y‖ ≤ C` using `fun g y => by`. Unfold `chart`. Use `split_ifs`. Conclude with `hC _`.
+
+Simplify using `using (norm_nonneg _).trans (hC 1)`. Use `haveI : (volume : Measure (Fin n → Cinf E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Lie E n)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hα : Integrable (fun y => α y) (volume : Measure (Lie E n))` using `α.integrable`. Establish `ha' : Integrable a ν` using `Integrable.of_bound ha.measurable.aestronglyMeasurable D (.of_forall hD)`.
+
+Establish `hi : Integrable (fun z : X × Lie E n => chart f (u z.1 * g) z.2 * (a z.1 * α z.2)) (ν.prod volume)` using `(ha'.mul_prod hα).bdd_mul h2.aestronglyMeasurable (.of_forall fun z => hb _ _)`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [conv]`. Rewrite using `[← integral_mul_const]`.
+
+Conclude with `integral_congr_ae (.of_forall fun y => by ring)`. Use `_ = ∫ y, ∫ x, chart f (u x * g) y * (a x * α y) ∂ν := integral_integral_swap hi`. Use `_ = _ := by`. Unfold `conv`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [chart]`. Use `split_ifs with h`. Rewrite using `[← integral_mul_const]`. Conclude with `integral_congr_ae (.of_forall fun x => by simp only [mul_assoc])`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.convFub :
     UpperTheory.V.Af.StrongMultiplicityOne.ChartCont → UpperTheory.V.Af.StrongMultiplicityOne.ConvFub := by
   classical

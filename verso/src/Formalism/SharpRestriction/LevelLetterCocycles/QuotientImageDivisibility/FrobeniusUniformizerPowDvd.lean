@@ -21,6 +21,9 @@ section Ev
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hx, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hy, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T ((W.N T).add_mem hx hy)]`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+-/
 theorem cmpD_add {x y : W.DD T} (hx : x ∈ W.N T) (hy : y ∈ W.N T) :
     Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x + y) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T x + Formalism.MainNotions.ArcLiftingSetup.cmpD W T y := by
   rw [Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hx, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hy,
@@ -28,6 +31,11 @@ theorem cmpD_add {x y : W.DD T} (hx : x ∈ W.N T) (hy : y ∈ W.N T) :
   rw [← map_add]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (W.N T).zero_mem]`. Conclude with `map_zero (W.cmp T)`.
+
+Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, cmpD_add W T (hy a (Finset.mem_insert_self a s)) (Submodule.sum_mem _ fun k hk => hy k (Finset.mem_insert_of_mem hk)), ih fun k hk => hy k (Finset.mem_insert_of_mem hk)]`.
+-/
 theorem cmpD_sum {ι : Type} (s : Finset ι) (y : ι → W.DD T) (hy : ∀ k ∈ s, y k ∈ W.N T) :
     Formalism.MainNotions.ArcLiftingSetup.cmpD W T (∑ k ∈ s, y k) = ∑ k ∈ s, Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y k) := by
   induction s using Finset.induction_on with
@@ -41,6 +49,9 @@ theorem cmpD_sum {ι : Type} (s : Finset ι) (y : ι → W.DD T) (hy : ∀ k ∈
         (Submodule.sum_mem _ fun k hk => hy k (Finset.mem_insert_of_mem hk)),
       ih fun k hk => hy k (Finset.mem_insert_of_mem hk)]
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hw, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T ((W.N T).smul_mem a hw)]`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_smul_letter W T i a w hw hwi`.
+-/
 theorem cmpD_smul_letter (i : ZMod n) (a : LetA O n) {w : W.DD T} (hw : w ∈ W.N T)
     (hwi : (letE i : LetA O n) • w = w) :
     Formalism.MainNotions.ArcLiftingSetup.cmpD W T (a • w) =
@@ -54,6 +65,17 @@ section Div
 
 variable {W : LocWach PD LL O v n}
 
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `hR.2.1 a ha`. Establish `hπc : ∀ i, PowerSeries.constantCoeff (W.π₀ i) = 0` using `fun i => Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR`. Establish `hsub : ∀ i, HasSubst (W.π₀ i)` using `fun i => HasSubst.of_constantCoeff_zero' (hπc i)`. Establish `hfc : PowerSeries.constantCoeff (f c) = 0`. Rewrite using `[← Formalism.MainNotions.UnusedSlot80.ToolsR.cc_subst (hπc c) (f c), ← hf c]`.
+
+Conclude with `h0`. Take `⟨g', hg'⟩` from `PowerSeries.X_dvd_iff.mpr hfc`. Use `set g : LetA O n := fun i => if i = c then subst (W.π₀ i) g' else 0 with hgdef`. Establish `hag : a = W.π₀ * g`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Simplify using `only [Pi.mul_apply, hgdef, if_pos rfl]`. Rewrite using `[hf i, hg', subst_mul (hsub i), subst_X (hsub i)]`. Simplify using the standard rewrite rules.
+
+Establish `: a i = ((letE c : LetA O n) * a) i` using `by rw [hc]`. Rewrite using `[this]`. Simplify using `[letE, Pi.single_eq_of_ne hi, hgdef, hi]`. Use `⟨g, ?_, hag⟩` and prove the remaining obligations. Use `Formalism.MainNotions.UnusedSlot80.ToolsR.cancel_AΔ (W := W) hR.1 (fun i => Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_ne hR) ?_` and prove the remaining obligations.
+
+Rewrite using `[← hag]`. Conclude with `ha`.
+-/
 theorem frobenius_uniformizer_pow_dvd [IsDomain O] (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {c : ZMod n} {a : LetA O n}
     (ha : a ∈ W.AΔ) (hc : (letE c : LetA O n) * a = a) (h0 : PowerSeries.constantCoeff (a c) = 0) :
     ∃ g ∈ W.AΔ, a = W.π₀ * g := by
@@ -83,6 +105,9 @@ end Div
 
 section Ker
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, Pi.single_eq_of_ne h]`.
+-/
 theorem letE_sq (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   funext j
   by_cases h : j = i
@@ -91,6 +116,11 @@ theorem letE_sq (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hw]`. Establish `h2 : o • w ∈ W.N T`. Rewrite using `[← algebraMap_smul (LetA O n) o w]`. Conclude with `(W.N T).smul_mem _ hw`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T h2]`.
+
+Establish `e : (⟨o • w, h2⟩ : ↥(W.N T)) = o • (⟨w, hw⟩ : ↥(W.N T))` using `rfl`. Rewrite using `[e, W.cmp_smul]`.
+-/
 theorem cmpD_osmul (o : O) {w : W.DD T} (hw : w ∈ W.N T) :
     Formalism.MainNotions.ArcLiftingSetup.cmpD W T (o • w) = algebraMap O LL o • Formalism.MainNotions.ArcLiftingSetup.cmpD W T w := by
   rw [Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hw]
@@ -100,6 +130,15 @@ theorem cmpD_osmul (o : O) {w : W.DD T} (hw : w ∈ W.N T) :
   have e : (⟨o • w, h2⟩ : ↥(W.N T)) = o • (⟨w, hw⟩ : ↥(W.N T)) := rfl
   rw [e, W.cmp_smul]
 
+/- English proof (translation)
+Establish `hx' : x ∈ W.N T ∧ Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x` using `hx`. Take `⟨d, b, hb⟩` from `Formalism.MainNotions.UnusedSlot80.Relay2.frame_exists W T c hmod`. Establish `hxi : Formalism.MainNotions.LiftingTheory.InNΔi W T c x` using `Formalism.MainNotions.UnusedSlot80.Relay2.InNΔi_of W T c ⟨hx'.1, hx'.2.2⟩ hx'.2.1`. Take `⟨a, ⟨ha, hxa⟩, -⟩` from `hb.2 x hxi`. Establish `hbN : ∀ k, b k ∈ W.N T` using `fun k => (hb.1 k).1.1`.
+
+Establish `hbl : ∀ k, (letE c : LetA O n) • b k = b k` using `fun k => Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c (hb.1 k).2`. Establish `hsum : ∑ k, algebraMap O LL (PowerSeries.constantCoeff ((a k) c)) • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (b k) = 0`. Rewrite using `[← h0, hxa, cmpD_sum W T _ _ (fun k _ => (W.N T).smul_mem _ (hbN k))]`. Conclude with `Finset.sum_congr rfl fun k _ => (cmpD_smul_letter W T c (a k) (hbN k) (hbl k)).symm`. Establish `hcc` using `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_indepO W T h3 hmod c b hb _ hsum`.
+
+Use `choose g hgΔ hg using fun k => frobenius_uniformizer_pow_dvd hR (ha k).1 (ha k).2 (hcc k)`. Use `⟨∑ k, g k • b k, Submodule.sum_mem _ fun k _ => (W.N T).smul_mem _ (hbN k), fun δ hδ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => (Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T (hgΔ k) (hb.1 k).1).2 δ hδ`. Rewrite using `[pow_one, hxa, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by rw [hg k, mul_smul]`.
+-/
 theorem ker_NDl [IsDomain O] (c : ZMod n) (h3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T)
     (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {x : W.DD T}
     (hx : x ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T c) (h0 : Formalism.MainNotions.ArcLiftingSetup.cmpD W T x = 0) :
@@ -126,6 +165,17 @@ theorem ker_NDl [IsDomain O] (c : ZMod n) (h3 : Formalism.MainNotions.DeltaInvar
   · rw [pow_one, hxa, Finset.smul_sum]
     exact Finset.sum_congr rfl fun k _ => by rw [hg k, mul_smul]
 
+/- English proof (translation)
+Take `⟨⟨r, b, hb, huniq, -⟩, -⟩` from `hmod`. Take `⟨a, ha, -⟩` from `huniq x hx`. Establish `hE` using `Formalism.MainNotions.LiftingTheory.idempotent_mem_invariants W i`. Use `set b' : Fin r → W.DD T := fun j => (letE i : LetA O n) • b j with hb'`. Establish `hb'Δ : ∀ j, b' j ∈ W.NΔ T` using `fun j => Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T hE (hb j)`.
+
+Establish `hb'l : ∀ j, (letE i : LetA O n) • b' j = b' j` using `fun j => by`. Simplify using `only [hb', smul_smul, letE_sq]`. Establish `hxs : x = ∑ j, a j • b' j` using `by conv_lhs => rw [← hxi, ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hb', smul_smul, mul_comm]`.
+
+Use `set y : W.DD T := ∑ j, (PowerSeries.constantCoeff ((a j) i)) • b' j with hy`. Establish `hyN : ∀ j, (PowerSeries.constantCoeff ((a j) i)) • b' j ∈ W.N T` using `fun j => by`. Rewrite using `[← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T).smul_mem _ (hb'Δ j).1`. Use `⟨y, ⟨Submodule.sum_mem _ fun j _ => hyN j, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hy, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_comm, hb'l j]`. Introduce `δ hδ`. Rewrite using `[hy, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, (hb'Δ j).2 δ hδ]`.
+
+Rewrite using `[hxs, cmpD_sum W T _ _ (fun j _ => (W.N T).smul_mem _ (hb'Δ j).1), hy, cmpD_sum W T _ _ (fun j _ => hyN j)]`. Conclude with `Finset.sum_congr rfl fun j _ => by`. Rewrite using `[cmpD_smul_letter W T i (a j) (hb'Δ j).1 (hb'l j), cmpD_osmul W T _ (hb'Δ j).1]`.
+-/
 theorem cmpD_mem_NDl (i : ZMod n) (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) {x : W.DD T}
     (hx : x ∈ W.N T) (hxi : (letE i : LetA O n) • x = x) :
     ∃ y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T i, Formalism.MainNotions.ArcLiftingSetup.cmpD W T x = Formalism.MainNotions.ArcLiftingSetup.cmpD W T y := by

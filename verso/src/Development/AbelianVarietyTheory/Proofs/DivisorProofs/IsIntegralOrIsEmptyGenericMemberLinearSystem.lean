@@ -14,6 +14,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ N X X' _ _ f f' π hP L hL b hb`. Establish `loc : ∀ x : X, ∃ (V : X.Opens) (c : L.ι) (hVc : V ≤ L.U c) (j : Fin N), IsAffineOpen V ∧ x ∈ V ∧ IsUnit (resG X hVc ((b j).f c))`. Introduce `x`. Establish `hx : x ∈ (⨆ i, nonzeroLocus (b i))` using `hb.ge (Set.mem_univ x)`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 hx`.
+
+Take `⟨c, hc⟩` from `Opens.mem_iSup.1 hj`. Take `⟨V, hVa, hxV, hVle⟩` from `Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hc`. Establish `hVc : V ≤ L.U c` using `hVle.trans (X.basicOpen_le _)`. Use `⟨V, c, hVc, j, hVa, hxV, ?_⟩` and prove the remaining obligations. Establish `h1` using `RingedSpace.isUnit_res_basicOpen X.toRingedSpace ((b j).f c)`.
+
+Establish `h2` using `h1.map (X.presheaf.map (homOfLE hVle).op).hom`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [resG]`. Use `erw [← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Use `choose V c hVc j hVa hxV hu using loc`. Establish `hW : ∀ x, IsAffineOpen (π ⁻¹ᵁ V x)` using `fun x => (GlobalTheory.T.affine_base_change_over_field_extension k _ X X' f f' π hP (V x) (hVa x)).1`. Establish `key : ∀ x, (genSec k N f' π L b).f (fun _ => c x) ≠ 0 ∧ ((secIdeal (LB.isLB_pull hL π) (genSec k N f' π L b)).ideal ⟨π ⁻¹ᵁ V x, hW x⟩ = ⊤ ∨ ((secIdeal (LB.isLB_pull hL π) (genSec k N f' π L b)).ideal ⟨π ⁻¹ᵁ V x, hW x⟩).IsPrime ∧ ((secIdeal (LB.isLB_pull hL π) (genSec k N f' π L b …` using `fun x => by`. Take `⟨-, e, he1, he2⟩` from `GlobalTheory.T.affine_base_change_over_field_extension k _ X X' f f' π hP (V x) (hVa x)`. Conclude with `GlobalTheory.T.genericMemberSection_ne_zero_isPrime_affineChart k N X X' f f' π L hL b (V x) ⟨x, hxV x⟩ (hW x) (c x) (hVc x) (j x) (hu x) e he1 he2`.
+
+Use `⟨genSec k N f' π L b, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x⟩` from `(inferInstance : Nonempty X)`. Conclude with `(key x).1 (by rw [h0]; rfl)`. Use `GlobalTheory.T.isIntegral_or_isEmpty_subscheme_of_prime_charts X' _ X (fun x => ⟨π ⁻¹ᵁ V x, hW x⟩) ?_ (fun x => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Use `eq_top_iff.2 fun z _ => Opens.mem_iSup.2 ⟨π z, hxV (π z)⟩` and prove the remaining obligations.
+
+Break down `(key x).2 with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h.1`. Break down `(key x).2 with h | h` into its components or cases. Conclude with `absurd h hx.ne_top`.
+
+Establish `hg` using `GlobalTheory.T.fromSpec_comap_eq_bot_eq_genericPoint X X' π (V x) (hVa x) (hW x) _ hx h.2 show π _ ∈ V y`. Rewrite using `[hg]`. Conclude with `(genericPoint_spec X).mem_open_set_iff (V y).isOpen |>.2 ⟨y, trivial, hxV y⟩`.
+-/
 theorem GenericMember.isIntegral_or_isEmpty_zeroScheme : ∀ (k : Type) [Field k] (N : ℕ) (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (f : X ⟶ Sp k) (f' : X' ⟶ Sp (FractionRing (MvPolynomial (Fin N) k))) (π : X' ⟶ X), IsPullback π f' f (spMap (algebraMap k (FractionRing (MvPolynomial (Fin N) k)))) → ∀ (L : LB X) (hL : L.IsLB) (b : Fin N → L.Sec), ⨆ i, nonzeroLocus (b i) = ⊤ → ∃ t : (L.pull π).Sec, t ≠ 0 ∧ (IsIntegral (secIdeal (LB.isLB_pull hL π) t).subscheme ∨ IsEmpty (secIdeal (LB.isLB_pull hL π) t).subscheme) := by
   intro k _ N X X' _ _ f f' π hP L hL b hb
 

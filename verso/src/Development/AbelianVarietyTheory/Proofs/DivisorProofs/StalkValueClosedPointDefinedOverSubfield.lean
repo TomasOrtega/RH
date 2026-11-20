@@ -9,6 +9,9 @@ open GlobalTheory GlobalTheory.USep
 
 namespace GlobalTheory.USep
 
+/- English proof (translation)
+Establish `key : X.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo (spMap g ≫ ξ) = Scheme.stalkClosedPointTo ξ ≫ CommRingCat.ofHom g`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (ξ (closedPoint R))), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Conclude with `congrArg (fun q => q.hom a) key`.
+-/
 theorem stalkClosedPointTo_comp_stalkMap_spec (X : Scheme.{0}) {R W : Type} [CommRing R] [IsLocalRing R]
     [CommRing W] [IsLocalRing W] (ξ : Sp R ⟶ X) (g : R →+* W)
     (hs : (spMap g ≫ ξ) (closedPoint W) ⤳ ξ (closedPoint R)) (a : X.presheaf.stalk (ξ (closedPoint R))) :
@@ -22,18 +25,29 @@ theorem stalkClosedPointTo_comp_stalkMap_spec (X : Scheme.{0}) {R W : Type} [Com
       Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]
   exact congrArg (fun q => q.hom a) key
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `Function.bijective_id`.
+-/
 theorem bijective_stalkSpecializes_of_eq {X : Scheme.{0}} {x y : X} (h : x ⤳ y) (e : x = y) :
     Function.Bijective (X.presheaf.stalkSpecializes h).hom := by
   subst e
   rw [TopCat.Presheaf.stalkSpecializes_refl]
   exact Function.bijective_id
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `⟨fun a ha => ha⟩`.
+-/
 theorem isLocalHom_stalkSpecializes_of_eq {X : Scheme.{0}} {x y : X} (h : x ⤳ y) (e : x = y) :
     IsLocalHom (X.presheaf.stalkSpecializes h).hom := by
   subst e
   rw [TopCat.Presheaf.stalkSpecializes_refl]
   exact ⟨fun a ha => ha⟩
 
+/- English proof (translation)
+Take `⟨P₀, rfl⟩` from `hQ`. Establish `e : (spMap k₀.subtype ≫ P₀) (closedPoint K) = P₀ (closedPoint k₀)`. Express the relevant statement in the definitionally equal form `P₀ ((spMap k₀.subtype) (closedPoint K)) = _`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Establish `hs : (spMap k₀.subtype ≫ P₀) (closedPoint K) ⤳ P₀ (closedPoint k₀)` using `e ▸ specializes_refl _`. Take `⟨a, rfl⟩` from `(bijective_stalkSpecializes_of_eq hs e).2 b`. Rewrite using `[stalkClosedPointTo_comp_stalkMap_spec X P₀ k₀.subtype hs a]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem stalkClosedPointTo_mem_subfield_of_definedOver {X : Scheme.{0}} {K : Type} [Field K] (k₀ : Subfield K) (Q : Sp K ⟶ X)
     (hQ : GlobalTheory.UChart.DefOver k₀ Q) (b : X.presheaf.stalk (Q (closedPoint K))) :
     (Scheme.stalkClosedPointTo Q).hom b ∈ k₀ := by
@@ -47,6 +61,13 @@ theorem stalkClosedPointTo_mem_subfield_of_definedOver {X : Scheme.{0}} {K : Typ
   rw [stalkClosedPointTo_comp_stalkMap_spec X P₀ k₀.subtype hs a]
   exact SetLike.coe_mem _
 
+/- English proof (translation)
+Introduce `X R _ _ ξ₁ K _ ev₁ k₀ hpt hdef h hh`. Take `⟨a, rfl⟩` from `hh`. Establish `e` using `hpt (closedPoint K)`. Establish `hs : (spMap ev₁ ≫ ξ₁) (closedPoint K) ⤳ ξ₁ (closedPoint R)` using `e ▸ specializes_refl _`. Establish `hv` using `stalkClosedPointTo_comp_stalkMap_spec X ξ₁ ev₁ hs a`.
+
+Use `⟨?_, fun hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← hv]`. Conclude with `stalkClosedPointTo_mem_subfield_of_definedOver k₀ _ hdef _`. Assume the negation of the conclusion as `hne`. Establish `hl` using `isLocalHom_stalkSpecializes_of_eq hs e`.
+
+Establish `hu : IsUnit ((Scheme.stalkClosedPointTo (spMap ev₁ ≫ ξ₁)).hom ((X.presheaf.stalkSpecializes hs).hom a))`. Rewrite using `[hv]`. Conclude with `Ne.isUnit hne`. Establish `ha : IsUnit a` using `isUnit_of_map_unit _ _ (isUnit_of_map_unit _ _ hu)`. Conclude with `(mem_maximalIdeal _).1 hm (ha.map _)`.
+-/
 theorem stalkVal_closedPoint : ∀ (X : Scheme.{0}) (R : Type) [CommRing R] [IsLocalRing R] (ξ₁ : Sp R ⟶ X) (K : Type) [Field K] (ev₁ : R →+* K) (k₀ : Subfield K), (∀ p, (spMap ev₁ ≫ ξ₁) p = ξ₁ (closedPoint R)) → GlobalTheory.UChart.DefOver k₀ (spMap ev₁ ≫ ξ₁) → ∀ h ∈ (Scheme.stalkClosedPointTo ξ₁).hom.range, ev₁ h ∈ k₀ ∧ (h ∈ maximalIdeal R → ev₁ h = 0) := by
   intro X R _ _ ξ₁ K _ ev₁ k₀ hpt hdef h hh
   obtain ⟨a, rfl⟩ := hh

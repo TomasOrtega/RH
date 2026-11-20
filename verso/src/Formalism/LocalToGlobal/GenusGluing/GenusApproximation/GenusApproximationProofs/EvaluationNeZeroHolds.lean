@@ -13,6 +13,9 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h` using `Algebra.TensorProduct.includeRight_injective (R := F) (A := E) (B := Formalism.L2.Herm.Af F) (algebraMap F E).injective`. Introduce `a b hab`. Apply `h` to reduce the goal to its premises. Simplify `hab` using `[Algebra.TensorProduct.includeRight_apply]`.
+-/
 theorem one_tmul_injective : Function.Injective (fun a : Formalism.L2.Herm.Af F => (1 : E) ⊗ₜ[F] a) := by
   have h := Algebra.TensorProduct.includeRight_injective (R := F) (A := E) (B := Formalism.L2.Herm.Af F)
     (algebraMap F E).injective
@@ -20,11 +23,19 @@ theorem one_tmul_injective : Function.Injective (fun a : Formalism.L2.Herm.Af F 
   apply h
   simpa [Algebra.TensorProduct.includeRight_apply] using hab
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eAt_eq (v : HeightOneSpectrum (𝓞 F)) :
     eAt E v = (1 : E) ⊗ₜ[F] ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) := rfl
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v h`. Rewrite `h` using `[eAt_eq, ← TensorProduct.tmul_zero (R := F) (Formalism.L2.Herm.Af F) (1 : E)]`. Establish `h2` using `one_tmul_injective h`. Establish `h3 : ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) v = (0 : Formalism.L2.Herm.Af F) v` using `by rw [h2]`. Rewrite `h3` using `[Formalism.L2.DIV.idemAd_pos (P := fun w => w = v) rfl]`.
+
+Conclude with `one_ne_zero h3`.
+-/
 theorem evaluationNeZero_holds : EAtNeZero := by
   intro F E _ _ _ _ _ v h
   rw [eAt_eq, ← TensorProduct.tmul_zero (R := F) (Formalism.L2.Herm.Af F) (1 : E)] at h
@@ -34,6 +45,23 @@ theorem evaluationNeZero_holds : EAtNeZero := by
   rw [Formalism.L2.DIV.idemAd_pos (P := fun w => w = v) rfl] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc v u`. Use `set σ := Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F) with hσ`. Establish `hfix : σ (u * σ u) = u * σ u`. Rewrite using `[map_mul, hσ, Formalism.L2.DIV.sigR_sigR, mul_comm]`. Take `⟨a, ha⟩` from `Formalism.L2.DIV.exists_adele_of_fixed hc _ hfix`.
+
+Use `set idem : Formalism.L2.Herm.Af F := ((Formalism.L2.DIV.idemAd (fun w => w = v) : Formalism.UG.intAd F) : Formalism.L2.Herm.Af F) with hidem`. Distinguish the cases in `hav : a v = 0`. Use `left`. Rewrite using `[ha, eAt_eq, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.tmul_zero (R := F) (Formalism.L2.Herm.Af F) (1 : E)]`. Use `congr 1`.
+
+Apply `FiniteAdeleRing.ext` to reduce the goal to its premises. Introduce `w`. Use `show idem w * a w = 0`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[hav, mul_zero]`. Rewrite using `[hidem, Formalism.L2.DIV.idemAd_neg (P := fun x => x = v) hw, zero_mul]`. Use `right`. Set `f : ∀ w : HeightOneSpectrum (𝓞 F), w.adicCompletion F` to `fun w => if w = v then (a w)⁻¹ else 0`. Establish `hf : ∀ᶠ w in Filter.cofinite, f w ∈ w.adicCompletionIntegers F` using `by filter_upwards [Filter.eventually_cofinite_ne v] with w hw`.
+
+Simplify using `only [f, if_neg hw]`. Conclude with `zero_mem _`. Set `a' : Formalism.L2.Herm.Af F` to `⟨f, hf⟩`. Establish `hprod : idem * a * a' = idem`. Apply `FiniteAdeleRing.ext` to reduce the goal to its premises.
+
+Introduce `w`. Use `show idem w * a w * f w = idem w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `only [f, if_pos rfl]`.
+
+Rewrite using `[mul_assoc, mul_inv_cancel₀ hav, mul_one]`. Rewrite using `[hidem, Formalism.L2.DIV.idemAd_neg (P := fun x => x = v) hw, zero_mul, zero_mul]`. Use `⟨σ u * ((1 : E) ⊗ₜ[F] a'), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc u (σ u), ha, ← mul_assoc, eAt_eq, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `only [one_mul]`.
+
+Conclude with `congrArg _ hprod`.
+-/
 theorem unitDichotomy_holds : UnitDich := by
   classical
   intro F E _ _ _ _ _ _ hc v u
@@ -80,6 +108,11 @@ section Aux2
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hb : Function.Bijective (algebraMap F E)` using `⟨(algebraMap F E).injective, fun x => by`. Take `⟨y, hy⟩` from `RingHom.mem_range.1 ((hc.fixed x).1 (h x))`. Conclude with `⟨y, hy⟩⟩`.
+
+Establish `h1` using `Module.finrank_of_bijective_algebraMap hb`. Rewrite `h1` using `[hc.deg2]`. Conclude with `absurd h1 (by norm_num)`.
+-/
 theorem exists_star_ne (hc : Formalism.BasicNotions.CMData F E) : ∃ θ : E, star θ ≠ θ := by
   by_contra h
   push Not at h
@@ -91,6 +124,19 @@ theorem exists_star_ne (hc : Formalism.BasicNotions.CMData F E) : ∃ θ : E, st
   rw [hc.deg2] at h1
   exact absurd h1 (by norm_num)
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `exists_star_ne hc`. Use `set d : E := θ - star θ with hd_def`. Establish `hd : star d = -d` using `by rw [hd_def, star_sub, star_star, neg_sub]`. Establish `hd0 : d ≠ 0` using `sub_ne_zero.2 (Ne.symm hθ)`. Establish `h2 : (2 : E) ≠ 0` using `two_ne_zero`.
+
+Establish `hs : (1 + d) ≠ 0`. Introduce `h`. Establish `h' : star (1 + d) = 0` using `by rw [h, star_zero]`. Rewrite `h'` using `[star_add, star_one, hd]`. Conclude with `h2 (by linear_combination h + h')`.
+
+Establish `hsb : (1 - d) ≠ 0`. Introduce `h`. Establish `h' : star (1 - d) = 0` using `by rw [h, star_zero]`. Rewrite `h'` using `[star_sub, star_one, hd]`. Conclude with `h2 (by linear_combination h + h')`.
+
+Establish `e1 : star ((1 + d) * (1 - d)⁻¹) = (1 + d)⁻¹ * (1 - d)`. Rewrite using `[star_mul, star_inv₀, star_sub, star_add, star_one, hd, sub_neg_eq_add, ← sub_eq_add_neg]`. Establish `hsi : (1 + d) * (1 + d)⁻¹ = 1` using `mul_inv_cancel₀ hs`. Establish `hsbi : (1 - d) * (1 - d)⁻¹ = 1` using `mul_inv_cancel₀ hsb`. Use `⟨(1 + d) * (1 - d)⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e1]`. Establish `hinv : (1 + d)⁻¹ * (1 + d) = 1` using `inv_mul_cancel₀ hs`. Take the linear combination `(1 - d) * (1 - d)⁻¹ * hinv + hsbi`. Rewrite using `[e1]`. Introduce `h`.
+
+Establish `h4 : (4 : E) * d = 0`. Take the linear combination `(-((1 + d) * (1 - d))) * h + (1 - d) ^ 2 * hsi - (1 + d) ^ 2 * hsbi`. Break down `mul_eq_zero.1 h4 with h5 | h5` into its components or cases. Conclude with `absurd h5 (by norm_num)`. Conclude with `hd0 h5`.
+-/
 theorem exists_norm_one (hc : Formalism.BasicNotions.CMData F E) : ∃ t : E, star t * t = 1 ∧ star t - t ≠ 0 := by
   obtain ⟨θ, hθ⟩ := exists_star_ne hc
   set d : E := θ - star θ with hd_def
@@ -125,6 +171,23 @@ theorem exists_norm_one (hc : Formalism.BasicNotions.CMData F E) : ∃ t : E, st
 
 end Aux2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc v α β ⟨α', hα⟩`. Use `set e := eAt E v with he_def`. Use `set σ := Formalism.UG.sigR hc.sig (Formalism.L2.Herm.Af F) with hσ`. Establish `hσι : ∀ t : E, σ (iA F E t) = iA F E (star t)` using `fun t => rfl`. Use `set b := β * α' with hb`.
+
+Establish `win : ∀ t : E, star t * t = 1 → (∃ u', e * ((iA F E t + b) * u') = e) → ∃ t : E, star t * t = 1 ∧ ∃ w, e * ((α * iA F E t + β) * w) = e`. Introduce and unpack `t ht ⟨u', hu'⟩`. Use `⟨t, ht, α' * u', ?_⟩` and prove the remaining obligations. Rewrite `hu'` using `[hb]`. Take the linear combination `hu' + (iA F E t * u') * hα`.
+
+Take `⟨t3, ht3, hne⟩` from `exists_norm_one hc`. Break down `unitDichotomy_holds F E hc v (iA F E 1 + b) with h1 | h1` into its components or cases. Use `swap`. Conclude with `win 1 (by rw [star_one, one_mul]) h1`. Break down `unitDichotomy_holds F E hc v (iA F E (-1) + b) with h2 | h2` into its components or cases.
+
+Use `swap`. Conclude with `win (-1) (by rw [star_neg, star_one, neg_mul_neg, one_mul]) h2`. Break down `unitDichotomy_holds F E hc v (iA F E t3 + b) with h3 | h3` into its components or cases. Use `swap`. Conclude with `win t3 ht3 h3`.
+
+It suffices to derive a contradiction. Rewrite `h1` using `[map_add, hσι, star_one, map_one]`. Rewrite `h2` using `[map_add, hσι, star_neg, star_one, map_neg, map_one]`. Rewrite `h3` using `[map_add, hσι]`. Use `set sb := σ b`.
+
+Use `set T := iA F E t3`. Use `set S := iA F E (star t3)`. Establish `hTS : S * T = 1` using `by rw [← map_mul, ht3, map_one]`. Use `set k := iA F E (star t3 - t3)⁻¹`. Establish `hk : (S - T) * k = 1` using `by rw [← map_sub, ← map_mul, mul_inv_cancel₀ hne, map_one]`.
+
+Use `set half := iA F E (2 : E)⁻¹`. Establish `hh : half * 2 = 1`. Rewrite using `[show (2 : E ⊗[F] Formalism.L2.Herm.Af F) = iA F E 2 from (map_ofNat (iA F E) 2).symm, ← map_mul, inv_mul_cancel₀ (two_ne_zero : (2 : E) ≠ 0), map_one]`. Establish `A : e * (b + sb) = 0` using `by linear_combination half * h1 - half * h2 - (e * (b + sb)) * hh`. Establish `B : e * (1 + b * sb) = 0` using `by linear_combination half * h1 + half * h2 - (e * (1 + b * sb)) * hh`.
+
+Establish `C : e * b * (S - T) = 0` using `by linear_combination h3 - B - T * A - e * hTS`. Establish `D : e * b = 0` using `by linear_combination k * C - (e * b) * hk`. Establish `hE : e = 0` using `by linear_combination B - sb * D`. Conclude with `evaluationNeZero_holds F E v hE`.
+-/
 theorem shiftOne_holds : ShiftOne := by
   intro F E _ _ _ _ _ _ hc v α β ⟨α', hα⟩
   set e := eAt E v with he_def

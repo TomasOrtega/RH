@@ -16,6 +16,13 @@ variable {n' r K m : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (hk : m + 1 =
 def BlockDeg (dd : Fin n' → ℕ) (rho : TL J nL r × Fin (r + K) → ℕ) (dPl dNo : TL J nL r → ℕ) : Prop :=
   ∀ x : TL J nL r, ∑ c, rho (x, c) + lowP Fr p x * (dPl x + dNo x) = dd (posOf n' (posTL Fr x))
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← h3, ← h2.1 x, ← h2.2 x]`. Establish `e : ∑ c : Fin (m + 1), mo (posOf n' (posTL Fr x), c) = ∑ c : Fin (r + K), mo (posOf n' (posTL Fr x), Fin.cast hk.symm c)` using `(Fintype.sum_equiv (finCongr hk.symm) _ _ (fun c => rfl)).symm`. Rewrite using `[e, Fin.sum_univ_add, Fin.sum_univ_add]`. Repeatedly rewrite using `[← h1.1 x, ← h1.2 x]`.
+
+Establish `hA : ∑ a, mo (plVar Fr hk nL x a) = ∑ a, mo (plVar Fr hk nL x a) % lowP Fr p x + ∑ a, lowP Fr p x * (mo (plVar Fr hk nL x a) / lowP Fr p x)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun a _ => (Nat.mod_add_div _ _).symm)`. Establish `hB : ∑ b, mo (noVar Fr hk nL x b) = ∑ b, mo (noVar Fr hk nL x b) % lowP Fr p x + ∑ b, lowP Fr p x * (mo (noVar Fr hk nL x b) / lowP Fr p x)`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl (fun a _ => (Nat.mod_add_div _ _).symm)`. Express the relevant statement in the definitionally equal form `_ = ∑ a, mo (plVar Fr hk nL x a) + ∑ b, mo (noVar Fr hk nL x b)`. Rewrite using `[hA, hB, mul_add, Finset.mul_sum, Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blockDeg_of (dd : Fin n' → ℕ) (rho : TL J nL r × Fin (r + K) → ℕ) (dPl dNo : TL J nL r → ℕ)
     (mo : TV n' (m + 1) →₀ ℕ) (h1 : InLow Fr p hk nL rho mo) (h2 : InBlock Fr p hk nL dPl dNo mo)
     (h3 : ∀ t, ∑ c, mo (t, c) = dd t) : BlockDeg Fr p nL dd rho dPl dNo := by
@@ -70,6 +77,13 @@ def memSubB : Submodule (KK O) (MvPolynomial (TV n' (m + 1)) (KK O)) where
     rw [levImg_smul, oneT_smul, planeCoeff_smul]
     exact XX_smul Dt c (hF J Dt dPl dNo ka hT rho hb e he nu)
 
+/- English proof (translation)
+Introduce `J _ Dt dPl dNo ka hT rho e he nu`. Distinguish the cases in `hb : BlockDeg Fr p Dt.nL dd rho dPl dNo`. Conclude with `h J Dt dPl dNo ka hT rho hb e he nu`. Establish `h0 : levImg Fr p hk Dt.nL rho dPl dNo F = 0`. Unfold `levImg`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `mo hmo`. Take `⟨h1, h2, h3⟩` from `Finset.mem_filter.1 hmo`. Conclude with `absurd (blockDeg_of Fr p hk Dt.nL dd rho dPl dNo mo h2 h3 (hdeg mo h1)) hb`. Rewrite using `[h0, oneT_zero, planeCoeff_zero]`.
+
+Conclude with `XX_zero Dt`.
+-/
 theorem memAtG_of_B (F : MvPolynomial (TV n' (m + 1)) (KK O)) (hdeg : ∀ mo ∈ F.support, ∀ t, ∑ c, mo (t, c) = dd t)
     (h : MemAtB sc sL p O hk Fr deg Y N₁ G' cP dd F) : MemAtG sc sL p O hk Fr deg Y N₁ G' cP F := by
   intro J _ Dt dPl dNo ka hT rho e he nu
@@ -88,12 +102,18 @@ end MemLin
 
 def topDeg {n' k : ℕ} (ga : TV n' k →₀ ℕ) (t : Fin n') : ℕ := ∑ c, ga (t, c)
 
+/- English proof (translation)
+Introduce `u v huv`. Establish `h1 : (castV hk u).1 = (castV hk v).1` using `congrArg Prod.fst huv`. Establish `h2 : (castV hk u).2 = (castV hk v).2` using `congrArg Prod.snd huv`. Conclude with `Prod.ext h1 (Fin.cast_injective hk.symm h2)`.
+-/
 theorem castV_inj {n' m r K : ℕ} (hk : m + 1 = r + K) : Function.Injective (castV (n' := n') hk) := by
   intro u v huv
   have h1 : (castV hk u).1 = (castV hk v).1 := congrArg Prod.fst huv
   have h2 : (castV hk u).2 = (castV hk v).2 := congrArg Prod.snd huv
   exact Prod.ext h1 (Fin.cast_injective hk.symm h2)
 
+/- English proof (translation)
+Unfold `topDeg`. Establish `hinj` using `castV_inj (n' := n') hk`. Rewrite using `[← Fintype.sum_equiv (finCongr hk.symm) (fun c => (b.mapDomain (castV hk)) (t, Fin.cast hk.symm c)) _ (fun c => rfl)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.mapDomain_apply hinj b (t, c)`.
+-/
 theorem topDeg_castV {n' m r K : ℕ} (hk : m + 1 = r + K) (b : Fin n' × Fin (r + K) →₀ ℕ) (t : Fin n') :
     topDeg (b.mapDomain (castV hk)) t = ∑ c, b (t, c) := by
   unfold topDeg
@@ -121,6 +141,17 @@ def PlanePairsOnBlocksAt (C CLa : ℝ) : Prop :=
       MemAtB 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h x) (goodG' r de h x) (cPrime n' r TT.card c0 cpp cStar)
         (fun t => G2d F (flatDeg lam0) E' t + topDeg ga t) (symG p O hk F l ga xs)
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD b ga hga`. Establish `hGen` using `hD.2.2.2.1.choose_spec.2 b`. Use `set E' := hD.2.2.2.1.choose with hE'`. Take `⟨xs, hxs, l, hl, hB, hdeg⟩` from `hGen`. Establish `e1 : MvPolynomial.map (algebraMap O (KK O)) (rename (castV hk) (B b) * monomial ga 1) = symG p O hk F l ga xs` using `by rw [hB]; rfl`.
+
+Apply `memAtG_of_B 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar) (fun t => G2d F (flatDeg lam0) E' t + topDeg ga t)` to reduce the goal to its premises. Introduce `mo hmo t`. Establish `h1` using `MvPolynomial.support_map_subset (algebraMap O (KK O)) _ hmo`. Take `⟨d, hd, g, hg, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul _ _ h1)`. Establish `hg'` using `MvPolynomial.support_monomial_subset hg`.
+
+Rewrite `hg'` using `[Finset.mem_singleton]`. Substitute `hg'` using the available equality. Establish `hd'` using `hd`. Rewrite `hd'` using `[MvPolynomial.support_rename_of_injective (castV_inj hk)]`. Take `⟨b', hb', rfl⟩` from `Finset.mem_image.1 hd'`.
+
+Establish `h2 : ∑ c, b' (t, c) = G2d F (flatDeg lam0) E' t` using `((MvPolynomial.mem_restrictSupport_iff O).1 hdeg) hb' t`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`. Rewrite using `[← h2, ← topDeg_castV hk b' t]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+
+Set `mS : ℕ` to `mStar p F (r + K) (orbitWindowCount r de h' x) (p ^ goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar)`. Set `Sj : ℤ → Set (SegRing O r K)` to `fun jj => pairSet O r K F jj (g2mg p n' r K F (flatDeg lam0) mS Y jj) (g2th p n' F (flatDeg lam0) jj)`. Establish `hspan : ∀ i : ℕ, i < F.J → xs i ∈ Submodule.span O (Sj i)` using `fun i _ => symbol_spaces_le_pair_span CLa p n' O r K F (flatDeg lam0) L₁ (min (orbitWindowCount r de h' x) (2 * TT.card)) mS a Y (i : ℤ) (hxs i)`. Conclude with `symG_span p O hk F (memSubB 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar) (fun t => G2d F (flatDeg lam0) E' t + topDeg ga t)) Sj l ga (fun xs' hxs' => h p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT …`.
+-/
 theorem rest5aMonoStep_of_B (C CLa : ℝ) (h : PlanePairsOnBlocksAt C CLa) : Lemma5aMonomialAt C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk
     F nb B hD b ga hga
@@ -160,6 +191,9 @@ theorem rest5aMonoStep_of_B (C CLa : ℝ) (h : PlanePairsOnBlocksAt C CLa) : Lem
 def PlanePairsOnBlocks (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → PlanePairsOnBlocksAt C CLa
 
+/- English proof (translation)
+Introduce `hA`. Take `⟨C₁, h1, h2⟩` from `h hA`. Conclude with `⟨C₁, h1, fun C hC => rest5aMonoStep_of_B C CLa (h2 C hC)⟩`.
+-/
 theorem rest5aMono_of_B (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : PlanePairsOnBlocks D CLa Ck Crk Cdeg) :
     Lemma5aMonomial D CLa Ck Crk Cdeg := by
   intro hA

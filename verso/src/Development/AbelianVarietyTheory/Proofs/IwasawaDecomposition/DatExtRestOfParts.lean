@@ -20,11 +20,27 @@ open scoped TensorProduct InnerProductSpace ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Mem.R3.Rw.frame_pb_heq {P P' : Pre} (e : P' = P) {g' : Fr P'} {g : Fr P} (h : HEq g' g) : HEq g'.P.pb g.P.pb := by
   subst e; cases h; rfl
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `k1 k2 k3 h1 h2 h3 h4 h5 h6 h7`. Use `(((k1 h1 h2 h3 h4 h5 h6 h7).and (k2 h1 h2 h3 h4 h5 h6 h7)).and (k3 h1 h2 h3 h4 h5 h6 h7)).trans (Step.of_all fun K B' f' T' _ _ _ _ w' hw => ?_)` and prove the remaining obligations. Take `⟨⟨ha, hb⟩, hd⟩` from `hw`. Introduce `B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' ha1 ha2 ha3 hc hL hC hD hpb`. Take `⟨Xg, tr₀, R₀, cG, s0⟩` from `ha B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' ha1 ha2 ha3 hc hL hC hD hpb`.
+
+Take `⟨tr, R', cG', s1⟩` from `hb B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' ha1 ha2 ha3 hc hL hC hD hpb Xg tr₀ R₀ cG s0`. Take `⟨geo, hg⟩` from `hd B f T w hE hf hP hpx Z hX Wt z hG hGA hF hH Z' hX' hG' hGA' hV core' alg' ha1 ha2 ha3 hc hL hC hD hpb Xg tr R' cG' s1`. Take `⟨p, l, i, g, m, s, e, ⟨rW, rT⟩⟩` from `s1`. Use `letI := alg'`. Use `⟨⟨Xg, tr, core', ha1, R', cG', geo, p, l, i, g, m, ha2, ha3⟩, rfl, e, hg.1, s, ?_⟩` and prove the remaining obligations.
+
+Take `⟨hH, hl, hcc, hDw, hXo, hU, hV', hdict, hmu, hKf, hcE, hchiW, hx₀, hiota⟩` from `hc`. Take `⟨rψ, rθ, rβW, rβY, rΛY, rnW, rβV, rΛV, rΛW, rPg, reG, rSb, rI, rjL⟩` from `rW`. Conclude with `{ H := hH, l := hl, c := hcc, Dw := hDw, Xo := hXo, U := hU, V := hV', dict := hdict, mu := hmu, Kf := hKf, cE := hcE, chiW := hchiW, x₀ := hx₀, iota := hiota, ψ := rψ, θ := rθ, βW := rβW, βY := rβY, nW := rnW, βV := rβV, ΛV := rΛV, ΛW := rΛW, Pg := rPg, eG := reG, Sb := rSb BV : …`. Take `⟨a1, a2, -, -, a5, a6, a7, -⟩` from `rI i i' hi`. Conclude with `⟨a1, a2, a5, a6, (rT i i' hi).1, a7⟩`.
+
+Use `MW := fun i i' hi => by`. Take `⟨-, -, -, -, -, -, -, b1, b2, b3, b4, b5, b6, b7, b8, b9, -⟩` from `rI i i' hi`. Conclude with `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, (hg.2.1 i i' hi).1, (hg.2.1 i i' hi).2.1⟩`. Use `forms := hg.2.2`. Use `cV := fun i i' hi => by`.
+
+Take `⟨-, -, a3, a4, -⟩` from `rI i i' hi`. Conclude with `⟨a3, a4⟩`. Use `pb := (heq_of_eq hpb).trans ((GlobalTheory.Mem.R3.Rw.frame_pb_heq hE.1 hf).trans (heq_of_eq hF.2.2.1.2.2.2.symm))`. Use `ΛY := rΛY`. Use `κ := fun i i' hi => (hg.2.1 i i' hi).2.2`.
+
+Use `ref := fun i i' hi => by`. Take `⟨-, t2, t3, t4, t5, t6, t7⟩` from `rT i i' hi`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, c1, c2, -⟩` from `rI i i' hi`. Conclude with `⟨t2, t3, t4, t5, t6, t7, c1, c2⟩`. Use `jL := rjL }`.
+-/
 theorem GlobalTheory.Mem.R3.Rw.datExt_rest_of_parts :
     (GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

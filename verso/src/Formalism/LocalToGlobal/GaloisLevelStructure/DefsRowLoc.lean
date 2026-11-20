@@ -22,6 +22,9 @@ def SatAtS (S : Submodule ℂ (GAf L n → W)) {v : HeightOneSpectrum (𝓞 L⁺
     ∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU Dv.σw n),
       heckeFunI L n U Dv h f = Formalism.UG.SatU Dv.ϖ (Formalism.UG.qV L⁺ v) h α • f
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem satAt_iff (π : AutRep L n) {v : HeightOneSpectrum (𝓞 L⁺)} {w : HeightOneSpectrum (𝓞 L)} (Dv : InertDatum L n v w)
     (α : Fin (n / 2) → ℂ) : SatAt π Dv α ↔ SatAtS π.S Dv α := Iff.rfl
 

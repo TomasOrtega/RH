@@ -183,10 +183,18 @@ def lvlSub (P : Subgroup G) (ψ : P →* Kˣ) : Submodule K S.Forms where
   add_mem' := fun {f g} hf hg h => by rw [map_add, hf h, hg h, smul_add]
   smul_mem' := fun a f hf h => by rw [map_smul, hf h, smul_comm]
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun f h => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_bot.1 h.2, map_one]`. Simplify using the standard rewrite rules.
+-/
 example : lvlForms S r ⊥ 1 = Set.univ := by
   refine Set.eq_univ_of_forall fun f h => ?_
   rw [Subgroup.mem_bot.1 h.2, map_one]; simp
 
+/- English proof (translation)
+Establish `h1` using `hf h`. Rewrite `h1` using `[hr]`. Establish `h2 : (2 : K) • f = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 1 [← neg_neg f]`.
+
+Rewrite using `[neg_add_eq_zero]`. Simplify using `using h1`. Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`.
+-/
 example (P : Subgroup G) (h : P) (hr : r (h : G) = -1) (f : S.Forms) (hf : f ∈ lvlForms S r P 1) : f = 0 := by
   have h1 := hf h
   rw [hr] at h1
@@ -195,10 +203,18 @@ example (P : Subgroup G) (h : P) (hr : r (h : G) = -1) (f : S.Forms) (hf : f ∈
     rw [neg_add_eq_zero]; simpa using h1
   exact (smul_eq_zero.1 h2).resolve_left two_ne_zero
 
+/- English proof (translation)
+Simplify using `[intSpan]`.
+-/
 example {V : Type} [AddCommGroup V] [Module ℂ V] : intSpan D (∅ : Set V) = ⊥ := by simp [intSpan]
 
 end Basic
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h1` using `h x`. Rewrite `h1` using `[hx, norm_zero, zero_pow two_ne_zero]`. Establish `h2` using `(mul_eq_zero.1 h1.symm).resolve_left (RealDat.nP_pos (F := F) b).ne'`.
+
+Simplify using `using h2`.
+-/
 theorem injective_of_norm_sq {F : Face D A} {b : Bool} {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] (e : V →ₗ[ℂ] W) (h : ∀ x, ‖e x‖ ^ 2 = RealDat.nP F b * ‖x‖ ^ 2) :
     Function.Injective e := by
@@ -209,6 +225,9 @@ theorem injective_of_norm_sq {F : Face D A} {b : Bool} {V W : Type} [NormedAddCo
   have h2 := (mul_eq_zero.1 h1.symm).resolve_left (RealDat.nP_pos (F := F) b).ne'
   simpa using h2
 
+/- English proof (translation)
+Establish `h' : ∀ x, ((‖e x‖ : ℝ) : ℂ) ^ 2 = ((RealDat.nP F b : ℝ) : ℂ) * ((‖x‖ : ℝ) : ℂ) ^ 2` using `fun x => by exact_mod_cast h x`. Rewrite using `[inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four, ← map_add, ← map_sub, ← map_smul, ← map_sub, ← map_add]`. Simplify using `only [Complex.coe_algebraMap, h']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inner_of_norm_sq {F : Face D A} {b : Bool} {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] (e : V →ₗ[ℂ] W) (h : ∀ x, ‖e x‖ ^ 2 = RealDat.nP F b * ‖x‖ ^ 2) (x y : V) :
     ⟪e x, e y⟫_ℂ = ((RealDat.nP F b : ℝ) : ℂ) * ⟪x, y⟫_ℂ := by
@@ -222,6 +241,9 @@ namespace SideTie
 variable {R : RealDat D A Ks} {F : Face D A} {tup : T → D.what₂.Tup} {b : Bool} {EE : Type} [NormedAddCommGroup EE]
   [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] {S : RowSide D EE} (Y : SideTie R F tup b S)
 
+/- English proof (translation)
+The claim follows from `injective_of_norm_sq _ Y.eE_norm`.
+-/
 theorem eE_injective : Function.Injective Y.eE := injective_of_norm_sq _ Y.eE_norm
 
 end SideTie
@@ -230,6 +252,9 @@ section Fibre
 
 variable {V H I J : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup H] [Module ℂ H]
 
+/- English proof (translation)
+Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [iSup_pos, iSup_bool_eq, if_true, Bool.false_eq_true, if_false]`. Conclude with `LinearMap.sup_range_inl_inr`. Take `⟨x, hx⟩ : ((0, 1) : ℂ × ℂ) ∈ LinearMap.range (LinearMap.inl ℂ ℂ ℂ)` from `h ▸ Submodule.mem_top`. Simplify using `using congrArg Prod.snd hx`.
+-/
 example : (⨆ π : Bool, ⨆ (_ : (fun _ => ()) π = ()),
       (if π then LinearMap.range (LinearMap.inl ℂ ℂ ℂ) else LinearMap.range (LinearMap.inr ℂ ℂ ℂ))) = ⊤ ∧
     LinearMap.range (LinearMap.inl ℂ ℂ ℂ) ≠ ⊤ := by
@@ -245,10 +270,16 @@ namespace RowsTieSum
 
 variable {R : RealDat D A Ks} {F : Face D A} {X0 : BaseLevelRowSide D} (Y : RowsTieSum R F X0)
 
+/- English proof (translation)
+The claim follows from `injective_of_norm_sq _ (Y.eW_norm i)`.
+-/
 theorem eW_injective (i : Fin D.R.m) : Function.Injective (Y.eW i) := injective_of_norm_sq _ (Y.eW_norm i)
 
 def Separated : Prop := Function.Injective Y.ty
 
+/- English proof (translation)
+Rewrite using `[← Y.isot_sum i π]`. Simplify using `only [(show Function.Injective Y.ty from h).eq_iff, iSup_iSup_eq_left]`.
+-/
 theorem isot_eq_of_separated (h : Y.Separated) (i : Fin D.R.m) (π : D.what₂.FT) :
     D.what₂.isot ((i : ℕ) + 1) π = (R.Wp i (Y.ty π)).comap (Y.eW i) := by
   rw [← Y.isot_sum i π]
@@ -286,8 +317,14 @@ namespace RowsTie
 
 variable {R : RealDat D A Ks} {F : Face D A} {X0 : BaseLevelRowSide D} (Y : RowsTie R F X0)
 
+/- English proof (translation)
+The claim follows from `injective_of_norm_sq _ (Y.eW_norm i)`.
+-/
 theorem eW_injective (i : Fin D.R.m) : Function.Injective (Y.eW i) := injective_of_norm_sq _ (Y.eW_norm i)
 
+/- English proof (translation)
+Simplify using `only [Y.ty_inj.eq_iff, iSup_iSup_eq_left, Y.isot_tie]`.
+-/
 theorem iSup_isot (i : Fin D.R.m) (π : D.what₂.FT) :
     (⨆ π', ⨆ (_ : Y.ty π' = Y.ty π), D.what₂.isot ((i : ℕ) + 1) π') = (R.Wp i (Y.ty π)).comap (Y.eW i) := by
   simp only [Y.ty_inj.eq_iff, iSup_iSup_eq_left, Y.isot_tie]

@@ -14,6 +14,17 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.VolBr GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `hAr hHS k _ X _ p D hX P hamp hsp J _ e x he hx hbox`. Establish `hxb` using `(GlobalTheory.T.isTranscendenceBasis_functionField_arithmeticVariety k X p D hX).2 x hx`. Establish `hmono` using `(GlobalTheory.VolBr.isBallFam_mono_neg_add _ _ _ (GlobalTheory.VolBr.Pair.isBallFam k X p P 1 0)).1`. Establish `hb : ∀ c, ∃ u : ℝ, 0 ≤ u ∧ boxFam e x c ∈ P.Bl 1 0 (Real.exp u)` using `fun c => GlobalTheory.T.pairSection_mem_ball_exp_of_projArithVariety k X p D hX P 1 0 _ (hbox c)`. Use `choose u hu0 hu using hb`.
+
+Establish `hall : ∀ c, boxFam e x c ∈ P.Bl 1 0 (Real.exp (∑ c, u c))` using `fun c => hmono _ _ (Real.exp_le_exp.2 (Finset.single_le_sum (fun c _ => hu0 c) (Finset.mem_univ c))) (hu c)`. Apply `GlobalTheory.T.factorial_mul_rank_le_degree_of_indep_small_sections hAr hHS k X p D hX P 1 0 P.L (GlobalTheory.VolBr.Pair.rep_base k X p P).1 hamp hsp (Fintype.card J) (∑ c, u c)` to reduce the goal to its premises. Introduce `m hm`. Break down `isEmpty_or_nonempty J with hJ | ⟨⟨j⟩⟩` into its components or cases. Establish `h0 : Fintype.card J = 0` using `Fintype.card_eq_zero haveI : IsEmpty (Fin (Fintype.card J * m ^ D)) := by rw [h0, zero_mul]; exact Fin.isEmpty'`.
+
+Conclude with `⟨isEmptyElim, linearIndependent_empty_type, isEmptyElim⟩`. Use `haveI : CharZero X.functionField := charZero_of_inj_zero fun n hn => by`. Establish `h` using `he.smul_left_injective j (a₁ := (n : ℤ)) (a₂ := 0) (by simp [hn])`. Conclude with `h` after adjusting the coercions. Take `⟨v, hv, hvs⟩` from `GlobalTheory.T.exists_linearIndependent_products_function_field X.functionField D x hxb J e he m hm`.
+
+Use `⟨v, hv, fun s => ?_⟩` and prove the remaining obligations. Take `⟨w, n, hn, hvs'⟩` from `hvs s`. Rewrite using `[hvs']`. Establish `h` using `GlobalTheory.T.boxMonomialFamily_prod_mem_normBall_of_exponent_lt k X p P D J e x 1 0 (Real.exp (∑ c, u c)) (Real.exp_pos _).le hall m w n hn`. Rewrite `h` using `[← Real.exp_nat_mul, mul_comm (m : ℝ)]`.
+
+Conclude with `h`.
+-/
 theorem GlobalTheory.HSNef.factorial_mul_card_le_gdeg_of_boxFam : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → P.L.SemiPos D → ∀ (J : Type) [Fintype J] (e : J → X.functionField) (x : Fin D → X.functionField), LinearIndependent ℤ e → AlgebraicIndependent ℤ x → (∀ c, boxFam e x c ∈ P.H 1 0) → (D.factorial : ℝ) * Fintype.card J ≤ gdeg P.L D := by
   intro hAr hHS k _ X _ p D hX P hamp hsp J _ e x he hx hbox
   have hxb := (GlobalTheory.T.isTranscendenceBasis_functionField_arithmeticVariety k X p D hX).2 x hx

@@ -21,6 +21,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Unfold `symp hTens`. Use `congr 2`. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_transpose {R : Type} [CommRing R] {K : Type} [CommRing K] [Algebra R K] (c : K →ₐ[R] K)
     {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (ξ : K) (JA : Matrix α α K) (JB : Matrix β β K)
     (x y : Matrix α β K) : symp (R := R) c ξ JB JA xᵀ yᵀ = symp (R := R) c ξ JA JB x y := by
@@ -34,6 +39,11 @@ theorem symp_transpose {R : Type} [CommRing R] {K : Type} [CommRing K] [Algebra 
   ring
 
 omit [NumberField E] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Use `h u hu` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_smul]`. Simplify using `using congrArg Matrix.transpose this`.
+
+Introduce `h u hu`. Rewrite using `[← Matrix.transpose_smul, h u hu, Matrix.transpose_zero]`.
+-/
 theorem at_transpose {m n : Type} (v : Pl F) (z : Matrix m n (AE F E)) :
     At (evFin F v) zᵀ ↔ At (evFin F v) z := by
   constructor
@@ -44,6 +54,11 @@ theorem at_transpose {m n : Type} (v : Pl F) (z : Matrix m n (AE F E)) :
   · intro h u hu
     rw [← Matrix.transpose_smul, h u hu, Matrix.transpose_zero]
 
+/- English proof (translation)
+Establish `hle : latAtV X Y v ≤ (latAtV Y X v).comap (Matrix.transposeAddEquiv (Fin n) (Fin d) (AE F E)).toAddMonoidHom`. Use `(AddSubgroup.closure_le _).mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, hai, x, hx, y, hy, rfl⟩`. Use `AddSubgroup.subset_closure ⟨a, ha, hai, y, hy, x, hx, ?_⟩` and prove the remaining obligations. Use `show (a • incM F (Matrix.vecMulVec x y))ᵀ = _`.
+
+Simplify using `only [incM, Matrix.transpose_smul, ← Matrix.transpose_map, Matrix.transpose_vecMulVec]`. Conclude with `hle hz`.
+-/
 theorem transpose_mem_latAtV {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F) {z : Matrix (Fin n) (Fin d) (AE F E)}
     (hz : z ∈ latAtV X Y v) : zᵀ ∈ latAtV Y X v := by
   have hle : latAtV X Y v ≤ (latAtV Y X v).comap (Matrix.transposeAddEquiv (Fin n) (Fin d) (AE F E)).toAddMonoidHom := by
@@ -54,12 +69,54 @@ theorem transpose_mem_latAtV {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl
     simp only [incM, Matrix.transpose_smul, ← Matrix.transpose_map, Matrix.transpose_vecMulVec]
   exact hle hz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa using transpose_mem_latAtV Y X v h, transpose_mem_latAtV X Y v⟩`.
+-/
 theorem mem_latAtV_transpose {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (v : Pl F) (z : Matrix (Fin n) (Fin d) (AE F E)) :
     zᵀ ∈ latAtV Y X v ↔ z ∈ latAtV X Y v :=
   ⟨fun h => by simpa using transpose_mem_latAtV Y X v h, transpose_mem_latAtV X Y v⟩
 
 open GlobalTheory.DblVacLine in
 
+/- English proof (translation)
+Distinguish the cases in `hR0 : R = 0`. Establish `e : GlobalTheory.InertDbl.dblFun (tens (evFin F v) φ R) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[hR0, GlobalTheory.InertDbl.dblFun, boxFun, tens]`. Conclude with `⟨0, by rw [e, map_zero, smul_zero]⟩`.
+
+Take `⟨x₀, hx₀⟩` from `Function.ne_iff.mp hR0`. Take `⟨hφSB, hφ0, θ, -, hvac⟩` from `hφ`. Establish `hn` using `GlobalTheory.StdCharFromIsStd.norm_psi hψ`. Use `set Λ := latAtV X Y v with hΛ`. Establish `hat : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable X Y v).1`.
+
+Use `set φd := boxFun φ fun x => star (φ x) with hφd`. Use `set Rd := GlobalTheory.InertDbl.dblFun R with hRd`. Use `set Φ := GlobalTheory.InertDbl.dblFun (tens (evFin F v) φ R) with hΦ`. Establish `hΦt : Φ = tens (evFin F v) φd Rd` using `dblFun_tens v φ R`. Establish `hrest : Rest (evFin F v) φd Rd` using `rest_dbl v hR`.
+
+Establish `hΦs : Φ ∈ schA F _` using `hΦt ▸ hrest.2`. Establish `hRd0 : Rd (Sum.elim x₀ x₀) ≠ 0` using `by show R x₀ * star (R x₀) ≠ 0`. Conclude with `mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)`. Establish `hφdSB : φd ∈ SB _` using `box_mem_SB hφSB ⟨hφSB.1.comp star, hφSB.2.comp_left (star_zero ℂ)⟩`. Set `cf : Matrix (Fin n) (Fin d ⊕ Fin d) (AE F E) → ℂ` to `fun w => ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F X.J) (dbl (incM F Y.J)) w w)`.
+
+Establish `h1 : ∀ γ₁ ∈ Λ, ∀ γ₂ ∈ Λ, dd.rho ψ (Matrix.fromCols γ₁ γ₂) Φ = cf (Matrix.fromCols γ₁ γ₂) • Φ`. Introduce `γ₁ h₁ γ₂ h₂`. Establish `e₁` using `hvac γ₁ h₁ R hR`. Establish `e₂` using `hvac γ₂ h₂ R hR`. Rewrite `e₁`, `e₂` using `[GlobalTheory.VacTransport.tens_smul]`.
+
+Simplify using `only [Darboux.rho] at e₁ e₂`. Rewrite using `[Darboux.rho, hdd, hΦ, GlobalTheory.InertDbl.dblFun, schr_box ψ hn, e₁, e₂]`. Use function extensionality and compare the values at `x`. Simplify using `only [cf, symp_dbl, boxFun, Pi.smul_apply, smul_eq_mul, star_mul', star_eq_neg ψ hn, mul_sub]`. Rewrite using `[sub_eq_add_neg, AddChar.map_add_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ γ₁ ∈ Λ, ∀ γ₂ ∈ Λ, dd.rho ψ (Matrix.fromCols γ₁ γ₂) (omd g Φ) = cf (Matrix.fromCols γ₁ γ₂) • omd g Φ`. Introduce `γ₁ h₁ γ₂ h₂`. Take `⟨δ₁, k₁, δ₂, k₂, he⟩` from `fromCols_mul_transpose X Y v (GlobalTheory.InertDbl.matD g⁻¹) (fun z hz => (hg.2 z hz).2) h₁ h₂`. Establish `hback : actB (cA σ) g (Matrix.fromCols δ₁ δ₂) = Matrix.fromCols γ₁ γ₂`.
+
+Express the relevant statement in the definitionally equal form `Matrix.fromCols δ₁ δ₂ * (GlobalTheory.InertDbl.matD g)ᵀ = _`. Establish `e : GlobalTheory.InertDbl.matD g * GlobalTheory.InertDbl.matD g⁻¹ = 1` using `Units.mul_inv g.1`. Rewrite using `[← he, Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`. Establish `hsy : cf (Matrix.fromCols δ₁ δ₂) = cf (Matrix.fromCols γ₁ γ₂)`. Simplify using `only [cf]`.
+
+Rewrite using `[← he, GlobalTheory.VacTransport.symp_mul_transpose (cA σ) _ _ _ (GlobalTheory.InertDbl.matD g⁻¹) (g⁻¹).2]`. Establish `h` using `hS.impl g (Matrix.fromCols δ₁ δ₂) Φ hΦs`. Rewrite `h` using `[hback, h1 δ₁ k₁ δ₂ k₂, map_smul, hsy]`. Conclude with `h.symm`. Take `⟨φ₁, -, hact⟩` from `acts_of_at hψ dd omd hS v g hg.1 φd hφdSB`.
+
+Establish `hT : omd g Φ = tens (evFin F v) φ₁ Rd` using `by rw [hΦt]; exact hact Rd hrest`. Establish `hrest₁ : Rest (evFin F v) φ₁ Rd` using `⟨hrest.1, hT ▸ hS.pres g Φ hΦs⟩`. Establish `hloc : ∀ f, Rest (evFin F v) f Rd → ∀ γ₁ ∈ Λ, ∀ γ₂ ∈ Λ, dd.rho ψ (Matrix.fromCols γ₁ γ₂) (tens (evFin F v) f Rd) = cf (Matrix.fromCols γ₁ γ₂) • tens (evFin F v) f Rd → schr (GlobalTheory.LatVac.psiAt ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols γ₁ γ₂)) f = cf (Matrix.fro …`. Introduce `f hf γ₁ h₁ γ₂ h₂ h`. Use `eq_of_tens v hf.1 hRd0 ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.VacTransport.tens_smul, ← h]`. Conclude with `(GlobalTheory.VacBridge.rho_acts_locCo dd ψ v _ (at_fromCols v (hat _ h₁) (hat _ h₂)) f Rd hf).symm`. Establish `hco : ∀ γ₁ γ₂, GlobalTheory.LatVac.locCo dd v (Matrix.fromCols γ₁ γ₂) = (Sum.elim (GlobalTheory.LatVac.locCo co v γ₁).1 (GlobalTheory.LatVac.locCo co v γ₂).1, Sum.elim (GlobalTheory.LatVac.locCo co v γ₁).2 (-(GlobalTheory.LatVac.locCo co v γ₂).2))`. Introduce `γ₁ γ₂`. Express the relevant statement in the definitionally equal form `((fun k => evFin F v ((dd.e (Matrix.fromCols γ₁ γ₂)).1 k)), fun k => evFin F v ((dd.e (Matrix.fromCols γ₁ γ₂)).2 k)) = _`.
+
+Rewrite using `[hdd]`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases k <;> rfl`. Consider the cases of `k with`. Consider the case `inl k => rfl`.
+
+Consider the case `inr k => exact map_neg (evFin F v) _`. Take `⟨c, hc0, hcb⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded X Y v co hX hY`. Establish `hfill` using `GlobalTheory.SelfDualFirstProj.exists_pair_of_annihilator v (GlobalTheory.LatVac.psiAt ψ v) (Λ.map (GlobalTheory.LatVac.locCo co v)) c hc0 (fun x => hunr x) (GlobalTheory.LatVac.DualLoc.map_selfDual v co ψ Λ hat hsd) (fun l hl i => by`. Take `⟨γ, hγ, rfl⟩` from `AddSubgroup.mem_map.mp hl`. Conclude with `hcb γ hγ i)`.
+
+Establish `hφd0 : φd ≠ 0`. Take `⟨t, ht⟩` from `Function.ne_iff.mp hφ0`. Use `Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩` and prove the remaining obligations. Use `show φ t * star (φ t) ≠ 0`. Conclude with `mul_ne_zero ht (star_ne_zero.mpr ht)`.
+
+Take `⟨c', hc'⟩` from `GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt ψ v) (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1 i.2.1)) (fun i => cf (Matrix.fromCols i.1.1 i.2.1)) (fun u hu => by`. Establish `eu : u = Sum.elim (u ∘ Sum.inl) (u ∘ Sum.inr)` using `(Sum.elim_comp_inl_inr u).symm`. Take `⟨y₁, γ₁, h₁, e₁⟩` from `hfill (u ∘ Sum.inl) (by`. Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (⟨γ, hγ⟩, 0) (by` as an intermediate fact.
+
+Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero]`. Apply the tactic sequence `funext k; cases k <;> rfl)`. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero] at this`. Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`.
+
+Take `⟨y₂, γ₂, h₂, e₂⟩` from `hfill (u ∘ Sum.inr) (by`. Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (0, ⟨-γ, neg_mem hγ⟩) (by` as an intermediate fact. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg]`. Apply the tactic sequence `funext k; cases k <;> simp)`.
+
+Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg] at this`. Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`. Use `⟨(⟨γ₁, h₁⟩, ⟨γ₂, h₂⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [hco, e₁, e₂]`.
+
+Conclude with `eu.symm) φ₁ φd`. Use the proof step `(fun i => hloc φ₁ hrest₁ _ i.1.2 _ i.2.2 (hT ▸ h2 _ i.1.2 _ i.2.2))`. Use the proof step `(fun i => hloc φd hrest _ i.1.2 _ i.2.2 (hΦt ▸ h1 _ i.1.2 _ i.2.2)) hφd0`. Conclude with `⟨c', by rw [hT, hc', GlobalTheory.VacTransport.tens_smul, ← hΦt]⟩`.
+-/
 theorem dbl_line_co {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {Y : Spc F E d} {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ)
     (v : Pl F) (hunr : PsiUnr ψ v) (hX : X.L.IsLattice E) (hY : Y.L.IsLattice E)
     (hsd : ∀ z : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) z → (z ∈ latAtV X Y v ↔ ∀ γ ∈ latAtV X Y v,
@@ -192,6 +249,17 @@ namespace GlobalTheory.DblVacLineSplitTransp
 
 open GlobalTheory.DblVacLineTransp
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT v _ _ hunr _ _ d' hd' dd omd hdd hS R _ hR g hg`. Take `⟨hSB, h0, θ, hθ, hvac⟩` from `hT.geo.hM'.vac v`. Use `dbl_line_co hT.base.std v hunr hT.geo.hW.lat hT.geo.hV'.lat ?_ d' (G.M'.vac v) ⟨hSB, h0, θ, hθ, ?_⟩ dd omd hdd hS.2.1 R hR g hg` and prove the remaining obligations. Introduce `z hz`. Establish `h` using `GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B _ _ G.V' G.W _ _ _ _ hT.base hT.geo.hV' hT.geo.hW v zᵀ ((at_transpose v z).2 hz)`.
+
+Rewrite `h` using `[mem_latAtV_transpose]`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `H γ hγ`. Use `H γᵀ ((mem_latAtV_transpose _ _ v γ).2 hγ)` as an intermediate fact.
+
+Rewrite `this` using `[symp_transpose]`. Then use the resulting hypothesis. Introduce `H γ' hγ'`. Use `H γ'ᵀ ((mem_latAtV_transpose _ _ v γ').2 hγ')` as an intermediate fact. Establish `e` using `symp_transpose (R := AF F) (cA σ) (-1) (incM F G.W.J) (incM F G.V'.J) z γ'ᵀ`. Rewrite `e` using `[Matrix.transpose_transpose]`.
+
+Rewrite using `[e]`. Conclude with `this`. Introduce `γ hγ`. Establish `h` using `hvac γᵀ ((mem_latAtV_transpose _ _ v γ).2 hγ)`. Establish `e1 : d'.rho B.ψ γ = G.M'.co.rho B.ψ γᵀ`.
+
+Simplify using `only [Darboux.rho]`. Rewrite using `[← hd' γᵀ, Matrix.transpose_transpose]`. Rewrite using `[e1, ← symp_transpose (R := AF F) (cA σ) _ (incM F G.W.J) (incM F G.V'.J) γ γ]`. Conclude with `h`.
+-/
 theorem dblFun_eigen_split_transp : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

@@ -51,6 +51,13 @@ def GRegJ : Prop :=
     (∀ Y : ℝ, ∃ c : ℂ, ∀ g ∈ JF.Om k r D.z D.z', Q.CV k r (Y : ℂ) J g = c • J g) →
     Q.SmoothLev k r 0 (Q.OmPlus k r D.z D.z') J
 
+/- English proof (translation)
+Use `⟨100, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v`. Establish `hce` using `JfS.class_eigenvalue_constant 100 E Wp Wq S T f χ ν' m₀ top A₀ le_rfl hB v`. Take `⟨_, _, _, hbuilt, _, _, _, _, _, _, hk2, hA, _⟩` from `hB`. Take `⟨_, hv⟩` from `hbuilt`.
+
+Take `⟨_, _, _, hplace, hCC, _⟩` from `hv v`. Establish `hpos : 0 ≤ ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3)` using `by positivity`. Establish `hA' : 100 * ((S.G.r : ℝ) + 1) ^ 4 * ((S.Ntop : ℝ) * (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 2 + (2 * (S.G.r : ℝ) + S.G.k + 1) ^ 3) ≤ A₀` using `hA`. Establish `hThr : JF.TransportedAlt S.G.k S.G.r A₀ (2 * S.G.r + S.G.k + 1)` using `Formalism.FourierDecayAlt.P.CutMP.thr_of_budget S.G.k S.G.r (S.Ntop : ℝ) A₀ hk2 (Nat.cast_nonneg _) hA'`. Establish `hF` using `Gr.jf_mem_FFlM (T v).base A₀ (2 * S.G.r + S.G.k + 1) (f v) hThr (hCC _)`.
+
+Take `⟨_, _, _, _, _, hTy, hTy'⟩` from `hplace`. Establish `hS` using `hR S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base _ _ (B.JF (T v).base (f v)) hTy hTy' hF (fun Y => ⟨_, hce.2 Y⟩)`. Establish `hsub : ∀ g, g ∈ Q.Glev S.G.k S.G.r 0 ∩ OmP S T v → g ∈ Q.Glev S.G.k S.G.r 0 ∩ Q.OmPlus S.G.k S.G.r (T v).base.z (T v).base.z'` using `fun g hg => ⟨hg.1, (JfS.mem_om_of_mem_omP S T v hg.1.1 hg.2).2⟩`. Take `⟨_, hL, hRt, hU⟩` from `hF`. Use `⟨fun g₀ hg₀ => hS g₀ (hsub g₀ hg₀), fun g hg n hn => hL g (hsub g hg) n hn, fun g hg n hn => hRt g (hsub g hg) n hn, fun g hg h hh h' hh' => hU g (hsub g hg) h hh h' hh'⟩` and prove the remaining obligations.
+-/
 theorem transfer_smooth_of_regularity (hR : GRegJ) : JfSmoothBuilt := by
   refine ⟨100, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v
@@ -75,6 +82,9 @@ theorem transfer_smooth_of_regularity (hR : GRegJ) : JfSmoothBuilt := by
   refine ⟨fun g₀ hg₀ => hS g₀ (hsub g₀ hg₀), fun g hg n hn => hL g (hsub g hg) n hn,
     fun g hg n hn => hRt g (hsub g hg) n hn, fun g hg h hh h' hh' => hU g (hsub g hg) h hh h' hh'⟩
 
+/- English proof (translation)
+The claim follows from `modelPlaceBuilt2_of_3' (transfer_smooth_of_regularity hR) h3`.
+-/
 theorem model_place_of_regularity (hR : GRegJ) (h3 : ModelPlaceBuilt3) : Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=
   modelPlaceBuilt2_of_3' (transfer_smooth_of_regularity hR) h3
 

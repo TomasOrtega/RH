@@ -56,6 +56,9 @@ def Datum.OEp (D : Datum F) (p : ℕ) : Subring ℂ :=
 def ZbarP (p : ℕ) : Subring ℂ :=
   Subring.closure ({x : ℂ | IsIntegral ℤ x} ∪ {x | ∃ m : ℕ, m.Coprime p ∧ x = (m : ℂ)⁻¹})
 
+/- English proof (translation)
+The claim follows from `Subring.closure_mono (Set.union_subset_union (fun _ hx => hx.2) le_rfl)`.
+-/
 theorem OEp_le (D : Datum F) (p : ℕ) : D.OEp p ≤ ZbarP p :=
   Subring.closure_mono (Set.union_subset_union (fun _ hx => hx.2) le_rfl)
 
@@ -150,6 +153,9 @@ def ObjMap.refl {D : Datum F} {p N : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p 
     (Geo.Tor.chartPullPull _ _ _ rfl)
   eta a := by simp
 
+/- English proof (translation)
+Take `⟨p, hp, hpr⟩` from `Nat.exists_infinite_primes ((NumberField.discr F).natAbs + N + 1)`. Use `⟨p, hpr, fun h => ?_, hN, (Nat.coprime_of_lt_prime (by omega) (by omega) hpr).symm⟩` and prove the remaining obligations. Establish `h₁` using `Nat.le_of_dvd (Int.natAbs_pos.2 (NumberField.discr_ne_zero F)) (Int.natCast_dvd.1 h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_good (F : Type) [Field F] [NumberField F] {N : ℕ} (hN : 3 ≤ N) : ∃ p, Good F p N := by
   obtain ⟨p, hp, hpr⟩ := Nat.exists_infinite_primes ((NumberField.discr F).natAbs + N + 1)
   refine ⟨p, hpr, fun h => ?_, hN, (Nat.coprime_of_lt_prime (by omega) (by omega) hpr).symm⟩
@@ -160,6 +166,11 @@ section Host
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hd : (H.d : ℂ) ≠ 0` using `by exact_mod_cast H.d_prime.ne_zero`. Establish `h0 : H.rt0 ≠ 0` using `fun h1 => hd (by have h2 := H.sqrt_neg_disc_sq; rw [h1] at h2; linear_combination h2)`. Establish `hsq : τ (H.rt : E) ^ 2 = H.rt0 ^ 2` using `by rw [← map_pow, HostModel.coe_rt_sq, H.sqrt_neg_disc_sq]; simp`. Rewrite using `[RingHom.comp_apply, HostModel.conj_embedding_rt]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h h'`. Rewrite `h` using `[h']`. Conclude with `h0 (by linear_combination (-1 / 2 : ℂ) * h)`. Introduce `h`. Rewrite using `[(sq_eq_sq_iff_eq_or_eq_neg.mp hsq).resolve_left h, neg_neg]`.
+-/
 theorem conj_mem_type_iff (H : Host E) (τ : E →+* ℂ) :
     ((starRingEnd ℂ).comp τ) (H.rt : E) = H.rt0 ↔ ¬ τ (H.rt : E) = H.rt0 := by
   have hd : (H.d : ℂ) ≠ 0 := by exact_mod_cast H.d_prime.ne_zero
@@ -175,6 +186,15 @@ theorem conj_mem_type_iff (H : Host E) (τ : E →+* ℂ) :
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ hτ => ?_` and prove the remaining obligations. Rewrite using `[Geo.Tor.Datum.mult, if_pos (Finset.mem_filter.1 hτ).2]`. Use `Finset.sum_nbij' (fun τ => (starRingEnd ℂ).comp τ) (fun τ => (starRingEnd ℂ).comp τ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`. Conclude with `(conj_mem_type_iff H τ).2 hτ`. Introduce `τ hτ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`.
+
+Conclude with `fun h => (conj_mem_type_iff H τ).1 h hτ`. Introduce `τ _`. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `τ _`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `τ hτ`. Rewrite using `[Geo.Tor.Datum.mult, if_neg (Finset.mem_filter.1 hτ).2]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_mult_eq (D : Geo.Tor.Datum H) (a : E) :
     ∑ τ : E →+* ℂ, (D.mult τ : ℂ) * τ a =
       ∑ τ ∈ Finset.univ.filter (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0),
@@ -221,6 +241,11 @@ theorem sum_mult_eq (D : Geo.Tor.Datum H) (a : E) :
     obtain ⟨J, h₁, h₂, h₃, h₄⟩ := D.dom
     exact ⟨J, h₁, h₂, h₃, fun a A hA => h₄ a A _ hA (by convert sum_mult_eq D (a : E))⟩
 
+/- English proof (translation)
+Establish `h : ∀ τ : E →+* ℂ, D.mult τ * (D.p + D.q - D.mult τ) = D.p * D.q` using `fun τ => by`. Unfold `Geo.Tor.Datum.mult`. Use `split_ifs`. Rewrite using `[Nat.add_sub_cancel_left]`. Rewrite using `[Nat.add_sub_cancel, mul_comm]`.
+
+Unfold `Datum.dim Geo.Tor.Datum.dim`. Simplify using `only [h, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, smul_eq_mul]`. Rewrite using `[IsTotallyComplex.finrank E, Nat.mul_assoc, Nat.mul_div_cancel_left _ two_pos, Nat.mul_div_cancel_left _ two_pos, Nat.mul_assoc]`.
+-/
 theorem dim_ofHost (D : Geo.Tor.Datum H) : (Datum.ofHost D).dim = D.dim := by
   have h : ∀ τ : E →+* ℂ, D.mult τ * (D.p + D.q - D.mult τ) = D.p * D.q := fun τ => by
     unfold Geo.Tor.Datum.mult
@@ -232,6 +257,11 @@ theorem dim_ofHost (D : Geo.Tor.Datum H) : (Datum.ofHost D).dim = D.dim := by
   rw [IsTotallyComplex.finrank E, Nat.mul_assoc, Nat.mul_div_cancel_left _ two_pos, Nat.mul_div_cancel_left _ two_pos,
     Nat.mul_assoc]
 
+/- English proof (translation)
+Take `⟨τ₀, h₀⟩` from `HostModel.exists_embedding_rt_eq H`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ⟩`. Express the relevant statement in the definitionally equal form `D.mult τ = 0 at hτ`. Unfold `Geo.Tor.Datum.mult at hτ`.
+
+Use `split_ifs at hτ`. Use `exacts [Or.inl hτ, Or.inr hτ]`. Introduce and unpack `(h | h)`. Conclude with `⟨τ₀, (if_pos h₀).trans h⟩`. Conclude with `⟨(starRingEnd ℂ).comp τ₀, (if_neg fun h' => (conj_mem_type_iff H τ₀).1 h' h₀).trans h⟩`.
+-/
 theorem definite_ofHost_iff (D : Geo.Tor.Datum H) : (Datum.ofHost D).Definite ↔ D.p = 0 ∨ D.q = 0 := by
   obtain ⟨τ₀, h₀⟩ := HostModel.exists_embedding_rt_eq H
   constructor
@@ -259,6 +289,11 @@ def TateIsoP.ofHost {D : Geo.Tor.Datum H} (p : ℕ) {k : Type} [Field k] {Q : Ty
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Use `haveI : CharZero k := ξ.charZero_iff ξ.injective |>.1 inferInstance`. Establish `hi : Function.Injective σ` using `(RingHom.injective_iff_ker_eq_bot _).2 (Ideal.eq_bot_of_comap_eq_bot (R := ℤ) (eq_bot_iff.2 fun n hn => by simpa using hn))`. Establish `hinj : Function.Injective fun τ : E →+* ℂ => ξ.comp τ` using `fun τ τ' h => RingHom.ext fun x => ξ.injective (RingHom.congr_fun h x)`. Establish `hbij : Function.Bijective fun τ : E →+* ℂ => ξ.comp τ` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨hinj, by`. Rewrite using `[NumberField.Embeddings.card, NumberField.Embeddings.card]⟩`.
+
+Take `⟨τ, hτ⟩` from `hbij.2 (IsFractionRing.lift (K := E) hi)`. Use `⟨τ, fun a => (RingHom.congr_fun hτ a).trans (IsFractionRing.lift_algebraMap hi a), fun τ' h => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[hτ]`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => (h a).trans (IsFractionRing.lift_algebraMap hi a).symm)`.
+-/
 theorem existsUnique_embedding {k : Type} [Field k] [IsAlgClosed k] (ξ : ℂ →+* k) (σ : 𝓞 E →+* k) :
     ∃! τ : E →+* ℂ, ∀ a : 𝓞 E, ξ (τ (a : E)) = σ a := by
   haveI : CharZero k := ξ.charZero_iff ξ.injective |>.1 inferInstance
@@ -275,6 +310,13 @@ theorem existsUnique_embedding {k : Type} [Field k] [IsAlgClosed k] (ξ : ℂ �
   exact IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))
     (RingHom.ext fun a => (h a).trans (IsFractionRing.lift_algebraMap hi a).symm)
 
+/- English proof (translation)
+Use `⟨ξ.comp (ZbarP p).subtype, fun y => ?_, fun σ => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Subring.coe_subtype, Subring.coe_inclusion]`. Take `⟨τ, hτ, huniq⟩` from `existsUnique_embedding ξ σ`. Establish `key : LieMult act x σ (D.mult τ)`. Unfold `Geo.Tor.Datum.mult`.
+
+Use `split_ifs with hr`. Conclude with `(h σ).1 (by rw [← hτ, hr])`. Conclude with `(h σ).2 (by rw [← hτ]; exact fun h' => hr (ξ.injective h'))`. Establish `he : ∀ τ' : E →+* ℂ, (∀ a, (ξ.comp (ZbarP p).subtype) (embP p τ' a) = σ a) ↔ τ' = τ` using `fun τ' => ⟨fun h' => huniq τ' h', fun h' => h' ▸ hτ⟩`. Rewrite using `[Finset.sum_eq_single_of_mem τ]`.
+
+Conclude with `key`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, he]`. Introduce `τ' h' hne`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, he] at h'`. Conclude with `absurd h' hne`.
+-/
 theorem determinantConditionAt_of_determinantCondition (D : Geo.Tor.Datum H) (p : ℕ) {k : Type} [Field k] [IsAlgClosed k] {G : Over S} [GrpObj G]
     (act : OAct (𝓞 E) G) (x : Sp k ⟶ S) (ξ : ℂ →+* k) (h : DetCond D act x (ξ H.rt0)) :
     DetCondP (Datum.ofHost D) p act x (ξ.comp ((Datum.ofHost D).OEp p).subtype) := by
@@ -321,6 +363,9 @@ def Obj.ofHost {D : Geo.Tor.Datum H} {l : Level H} {b : Base l ℂ} (hb : b.ρ =
     obtain ⟨hdet, I, -, hI, -⟩ := o.geom k x ξ hξ
     exact ⟨determinantConditionAt_of_determinantCondition D p _ x ξ (hb ▸ hdet), TateIsoP.ofHost p I, hI⟩
 
+/- English proof (translation)
+Take `⟨b, o, hb, -, h⟩` from `GlobalTheory.exists_obj_complex E H D hD (HostModel.level H N hN)`. Conclude with `⟨Obj.ofHost hb p o, h⟩`.
+-/
 theorem exists_obj_ofHost (D : Geo.Tor.Datum H) (hD : 1 ≤ D.p + D.q) (p N : ℕ) (hN : 0 < N) :
     ∃ o : Obj (Datum.ofHost D) p N (𝟙 (Sp ℂ) ≫ spMap ((Datum.ofHost D).OEp p).subtype),
       SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (Datum.ofHost D).n) o.A.hom ∧
@@ -330,6 +375,11 @@ theorem exists_obj_ofHost (D : Geo.Tor.Datum H) (hD : 1 ≤ D.p + D.q) (p N : �
 
 end Host
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `exists_good HostModel.E21 (N := 5) (by norm_num)`. Use `⟨Datum.ofHost (HostModel.hypDatum HostModel.host), p, rfl, ?_, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[dim_ofHost, Geo.Tor.Datum.dim, HostModel.finrank_rat_E21_eq_twelve]`. Both sides reduce to the same expression. Establish `h` using `exists_obj_ofHost (HostModel.hypDatum HostModel.host) (by norm_num) p 5 (by norm_num)`.
+
+Rewrite `h` using `[HostModel.finrank_rat_E21_eq_twelve]`. Conclude with `h`.
+-/
 theorem exists_datum_good_obj : ∃ (D : Datum HostModel.E21) (p : ℕ), D.n = 2 ∧ D.dim = 6 ∧ Good HostModel.E21 p 5 ∧
     ∃ o : Obj D p 5 (𝟙 (Sp ℂ) ≫ spMap (D.OEp p).subtype), SmoothOfRelativeDimension 12 o.A.hom ∧
       ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ o.A, x ≠ 1 := by
@@ -340,6 +390,11 @@ theorem exists_datum_good_obj : ∃ (D : Datum HostModel.E21) (p : ℕ), D.n = 2
     rw [HostModel.finrank_rat_E21_eq_twelve] at h
     exact h
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `exists_good CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight (N := 5) (by norm_num)`. Take `⟨D, h₁, h₀⟩` from `CM.CyclotomicTwentyEight.exists_datum`. Take `⟨o, -, ho⟩` from `exists_obj_ofHost D (by omega) p 5 (by norm_num)`. Use `⟨Datum.ofHost D, p, ?_, ?_, (definite_ofHost_iff D).2 (Or.inr h₀), hp, o, ho⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.p + D.q = 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[dim_ofHost, Geo.Tor.Datum.dim, h₀, Nat.mul_zero]`.
+-/
 theorem exists_definite_datum_good_obj : ∃ (D : Datum CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight) (p : ℕ), D.n = 1 ∧ D.dim = 0 ∧ D.Definite ∧
     Good CM.CyclotomicTwentyEight.CyclotomicFieldTwentyEight p 5 ∧ ∃ o : Obj D p 5 (𝟙 (Sp ℂ) ≫ spMap (D.OEp p).subtype),
       ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ o.A, x ≠ 1 := by
@@ -351,8 +406,14 @@ theorem exists_definite_datum_good_obj : ∃ (D : Datum CM.CyclotomicTwentyEight
     omega
   · rw [dim_ofHost, Geo.Tor.Datum.dim, h₀, Nat.mul_zero]
 
+/- English proof (translation)
+Introduce `h` and use `by simpa [h] using D.w_add`.
+-/
 example (D : Datum F) : D.w ≠ 0 := fun h => by simpa [h] using D.w_add
 
+/- English proof (translation)
+Rewrite using `[definite_ofHost_iff]`. Simplify using the standard rewrite rules.
+-/
 example {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     ¬ (Datum.ofHost (HostModel.hypDatum H)).Definite := by
   rw [definite_ofHost_iff]; simp

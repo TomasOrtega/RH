@@ -17,6 +17,29 @@ open GlobalTheory.SymBridge GlobalTheory.FinPl GlobalTheory.Fam.Inhab
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hmem : ∀ x : Fin S.rank → D.host.E, x ∈ L ↔ ∀ i, IsIntegral ℤ (x i)` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, hL]`. Both sides reduce to the same expression. Establish `hsingle : ∀ i : Fin S.rank, (Pi.single i (1 : D.host.E) : Fin S.rank → D.host.E) ∈ L` using `fun i => (hmem _).2 fun j => by`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[Pi.single_apply, h]`. Set `G : Finset (Fin S.rank → D.host.E)` to `Finset.univ.image fun i => Pi.single i 1`. Establish `hGL : ∀ x ∈ (G : Set (Fin S.rank → D.host.E)), x ∈ L`.
+
+Introduce `x hx`. Simplify using `only [G, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `hsingle i`. Establish `hG : Submodule.span (𝓞 D.host.E) (G : Set (Fin S.rank → D.host.E)) = L`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Conclude with `hGL`. Introduce `x hx`. Establish `hi` using `(hmem x).1 hx`.
+
+Establish `e : x = ∑ i, (⟨x i, hi i⟩ : 𝓞 D.host.E) • (Pi.single i 1 : Fin S.rank → D.host.E)`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_apply, Ne.symm hb]) (by simp)]`. Simplify using `[Algebra.smul_def]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (by simp [G]))`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `FullLatFrame.pr_mem_span q G hG h`. Simplify using `only [q.pr_sec] at h1`.
+
+Establish `h2 : ∀ z ∈ Submodule.span 𝒪[k] (FullLatFrame.aux₃ q '' (G : Set (Fin S.rank → D.host.E))), ∀ i, z i ∈ 𝒪[k]`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+
+Introduce `i`. Conclude with `FullLatFrame.pr_int_mem q ⟨x i, (hmem x).1 (hGL x hx) i⟩`. Consider the case `zero => intro i`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => intro i`.
+
+Conclude with `add_mem (hx i) (hy i)`. Consider the case `smul a x _ hx => intro i`. Conclude with `mul_mem a.2 (hx i)`. Conclude with `h2 _ h1`. Introduce `h`.
+
+Establish `e : w = ∑ i, (⟨w i, h i⟩ : 𝒪[k]) • FullLatFrame.aux₃ q (S` using `S) (Pi.single i 1) := by`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j (fun b _ hb => by simp [FullLatFrame.aux₃, Pi.single_apply, Ne.symm hb]) (by simp)]`. Simplify using `[FullLatFrame.aux₃]`. Express the relevant statement in the definitionally equal form `_ = w j * 1`.
+
+Rewrite using `[mul_one]`. Rewrite using `[← FullLatFrame.mem_latW, e]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[FullLatFrame.mem_latW]`. Conclude with `GlobalTheory.FinPl.FrameLat.sec_inc_mem (hsingle i)`.
+-/
 theorem sec_mem_latV_iff (q : SplitPt D k) (S : HSp D) (L : Lat S)
     (hL : (L : Set (Fin S.rank → D.host.E)) = GlobalTheory.AdForm.intVec D S.rank) (w : Fin S.rank → k) :
     (fun i => q.sec (w i)) ∈ latV S L (· = q.v) ↔ ∀ i, w i ∈ 𝒪[k] := by
@@ -72,6 +95,11 @@ theorem sec_mem_latV_iff (q : SplitPt D k) (S : HSp D) (L : Lat S)
     rw [FullLatFrame.mem_latW]
     exact GlobalTheory.FinPl.FrameLat.sec_inc_mem (hsingle i)
 
+/- English proof (translation)
+Introduce `y`. Rewrite using `[sec_mem_latV_iff q S L hL]`. Establish `h : (stdFr k e).β *ᵥ y = y ∘ e.symm`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin S.rank) (Fin S.rank) k).submatrix id e *ᵥ y = _`. Use `Matrix.submatrix_mulVec_equiv (1 : Matrix (Fin S.rank) (Fin S.rank) k) y id e` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def]`. Rewrite using `[h]`. Conclude with `⟨fun h i => h _, fun h a => by simpa using h (e a)⟩`.
+-/
 theorem intIn_stdFr (q : SplitPt D k) (S : HSp D) (L : Lat S)
     (hL : (L : Set (Fin S.rank → D.host.E)) = GlobalTheory.AdForm.intVec D S.rank) {Y : Type} [Fintype Y] [DecidableEq Y]
     (e : Y ≃ Fin S.rank) : IntIn q S (stdFr k e) L := by
@@ -103,6 +131,13 @@ def diagFr {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (e : Y ≃ Fin N) (d
     rw [Matrix.mul_assoc, ← Matrix.mul_assoc (stdFr k e).γ, (stdFr k e).γβ, Matrix.one_mul, Matrix.diagonal_mul_diagonal,
       show (fun y => (d y)⁻¹ * d y) = fun _ => (1 : k) from funext fun y => inv_mul_cancel₀ (hd y), Matrix.diagonal_one]
 
+/- English proof (translation)
+Introduce `y`. Establish `h1` using `intIn_stdFr q S L hL e (fun a => d a * y a)`. Establish `h2 : (diagFr e d hd).β *ᵥ y = (stdFr k e).β *ᵥ fun a => d a * y a`. Express the relevant statement in the definitionally equal form `((stdFr k e).β * Matrix.diagonal d) *ᵥ y = _`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `Matrix.mulVec_diagonal _ _ _`. Rewrite using `[h2, ← h1]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `valuation k (y a) ≤ 1 ↔ valuation k (d a * y a) ≤ 1`. Rewrite using `[map_mul, hv, one_mul]`.
+-/
 theorem intIn_diagFr (q : SplitPt D k) (S : HSp D) (L : Lat S)
     (hL : (L : Set (Fin S.rank → D.host.E)) = GlobalTheory.AdForm.intVec D S.rank) {Y : Type} [Fintype Y] [DecidableEq Y]
     (e : Y ≃ Fin S.rank) (d : Y → k) (hd : ∀ y, d y ≠ 0) (hv : ∀ y, valuation k (d y) = 1) :
@@ -122,10 +157,16 @@ theorem intIn_diagFr (q : SplitPt D k) (S : HSp D) (L : Lat S)
 
 variable {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Introduce `b a`. Both sides reduce to the same expression.
+-/
 theorem oTop_iA {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (hI : I.Ok) (n : ℕ) (h : n = (I.rec7 l Z).R.m) :
     ∀ b a, (oTop l Z hI n h).iA b a = if (a : ℕ) = (b : ℕ) then 1 else 0 := by
   subst h; intro b a; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Introduce `b a`. Both sides reduce to the same expression.
+-/
 theorem oTop_iB {I : TC B X} (l : I.Laws) (Z : TC.Later B (I.cols l)) (hI : I.Ok) (n : ℕ) (h : n = (I.rec7 l Z).R.m) :
     ∀ b a, (oTop l Z hI n h).iB b a = if (I.rec7 l Z).sp.X'.rank = (b : ℕ) then 1 else 0 := by
   subst h; intro b a; rfl
@@ -134,6 +175,9 @@ end GlobalTheory.XGeoStd.Frames
 
 namespace GlobalTheory.XGeoStd.Frames
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (eT c) (fun b _ hb => by rw [Matrix.submatrix_apply, id, Matrix.one_apply_ne hb, mul_zero]) (by simp)]`. Rewrite using `[Matrix.submatrix_apply, id, Matrix.one_apply_eq, mul_one, Matrix.map_apply, hA, Matrix.one_apply]`. Distinguish the cases in `h : (eT c : ℕ) = r`. Rewrite using `[if_pos h, hf1, if_pos (Fin.ext (h.symm.trans hm.symm))]`. Rewrite using `[if_neg h, hf0, if_neg (fun h' => h (hm.symm.trans (congrArg Fin.val h'.symm)))]`.
+-/
 theorem entry_inl {E k : Type} [Field E] [Field k] (f : E → k) (hf0 : f 0 = 0) (hf1 : f 1 = 1) {n N : ℕ} {Y : Type} [Fintype Y]
     [DecidableEq Y] (eT : Y ≃ Fin n) (iA : Matrix (Fin N) (Fin n) E) (hA : ∀ b a, iA b a = if (a : ℕ) = (b : ℕ) then 1 else 0)
     (r : Fin N) (c : Y) (m : Fin N) (hm : (m : ℕ) = eT c) :
@@ -145,6 +189,9 @@ theorem entry_inl {E k : Type} [Field E] [Field k] (f : E → k) (hf0 : f 0 = 0)
   · rw [if_pos h, hf1, if_pos (Fin.ext (h.symm.trans hm.symm))]
   · rw [if_neg h, hf0, if_neg (fun h' => h (hm.symm.trans (congrArg Fin.val h'.symm)))]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct, Fin.sum_univ_one, Matrix.map_apply, hB, hz, Matrix.one_apply]`. Distinguish the cases in `h : n = (r : ℕ)`. Rewrite using `[if_pos h, hf1, if_pos (Fin.ext (h.symm.trans hm.symm))]`. Rewrite using `[if_neg h, hf0, if_neg (fun h' => h (hm.symm.trans (congrArg Fin.val h'.symm)))]`.
+-/
 theorem entry_inr {E k : Type} [Field E] [Field k] (f : E → k) (hf0 : f 0 = 0) (hf1 : f 1 = 1) {n N : ℕ}
     (iB : Matrix (Fin N) (Fin 1) E) (hB : ∀ b a, iB b a = if n = (b : ℕ) then 1 else 0) (z : Fin 1 → E) (x : E)
     (hz : ∀ i, z i = x) (r : Fin N) (m : Fin N) (hm : (m : ℕ) = n) :
@@ -160,6 +207,35 @@ namespace GlobalTheory.XGeoStd.Frames
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u vac PP k _ _ _ _ _ _ q hidem hunder hunit hval`. Establish `hI` using `hW.tr.ok`. Take `⟨hsI, hXsp, hX'sp, -⟩` from `hI.spaces`. Establish `hLX : ∀ j, ((GlobalTheory.PlaceModel.latFrame ((I.rec7 l Z).sp.X j)) : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) = GlobalTheory.AdForm.intVec _ _` using `fun j => GlobalTheory.AdForm.PinInhab.lat_X hI j`. Establish `hLT : (((pk W).ΛX : GlobalTheory.FinPl.Lat (I.rec7 l Z).sp.X') : Set (Fin (I.rec7 l Z).sp.X'.rank → (I.rec7 l Z).host.E)) = GlobalTheory.AdForm.intVec _ _`.
+
+Rewrite using `[GlobalTheory.XGeoStd.eq_latFrame_of_isSDFrame W.Q.charW.base.lev.βX]`. Conclude with `GlobalTheory.AdForm.VacStd.coe_latFrame_of_eq _ hsI _ hX'sp`. Establish `hβ : (pk W).βX = 1` using `hW.pk.bot.pins.betaStd.2`. Establish `hm` using `(I.rec7 l Z).R.two_le_m`. Take `⟨s, hs⟩ : ∃ s, s + 1 + 1 = (I.rec7 l Z).R.m` from `⟨(I.rec7 l Z).R.m - 2, by omega⟩`.
+
+Establish `rX : ∀ j, j ≤ s + 1 → (I.rec7 l Z).R.k + j + j * (I.rec7 l Z).R.t = ((I.rec7 l Z).sp.X j).rank`. Introduce `j hj`. Rewrite using `[Formalism.L2.Forms.rankN _ j (by omega)]`. Use `show _ = (I.rec7 l Z).R.k + j * ((I.rec7 l Z).R.t + 1)`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `rT : (I.rec7 l Z).R.k + (s + 1) + (s + 2) * (I.rec7 l Z).R.t = (I.rec7 l Z).sp.X'.rank`. Rewrite using `[Formalism.L2.Forms.rankP, show (I.rec7 l Z).R.N (I.rec7 l Z).R.m = (I.rec7 l Z).R.k + (I.rec7 l Z).R.m * ((I.rec7 l Z).R.t + 1) from rfl, ← hs]`. Establish `e : (s + 1 + 1) * ((I.rec7 l Z).R.t + 1) = (s + 2) * (I.rec7 l Z).R.t + (s + 1) + 1` using `by ring`. Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `rM : (I.rec7 l Z).sp.X'.rank + 1 = ((I.rec7 l Z).sp.X (s + 1 + 1)).rank`. Rewrite using `[hs]`. Conclude with `GlobalTheory.AdForm.LiveModel.rk_top _`. Use `set κ := (I.rec7 l Z).R.k`. Use `set τ := (I.rec7 l Z).R.t`.
+
+Set `eX : ∀ j (hj : j ≤ s + 1), XIx (Fin κ) (Fin τ) j ≃ Fin ((I.rec7 l Z).sp.X j).rank` to `fun j hj => (GlobalTheory.Fam.Inhab.blockOrd κ τ j j).trans (finCongr (rX j hj))`. Establish `oX : ∀ j hj, GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos (eX j hj)` using `fun j hj a => by`. Simplify `GlobalTheory.Fam.Inhab.isOrd_xPos κ τ j a` using `[eX]`. Set `eT : GlobalTheory.StepData.Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (s + 2) ≃ Fin (I.rec7 l Z).sp.X'.rank` to `(GlobalTheory.Fam.Inhab.blockOrd κ τ (s + 1) (s + 2)).trans (finCongr rT)`. Establish `oT : GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.zPos eT` using `fun a => by`.
+
+Simplify `GlobalTheory.Fam.Inhab.isOrd_zPos κ τ (s + 1) (s + 2) a` using `[eT]`. Set `eM : GlobalTheory.StepData.Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (s + 2) ⊕ Unit ≃ Fin ((I.rec7 l Z).sp.X (s + 1 + 1)).rank` to `((Equiv.sumCongr eT (finOneEquiv.symm)).trans finSumFinEquiv).trans (finCongr rM)`. Establish `eM_l : ∀ a, (eM (Sum.inl a) : ℕ) = eT a` using `fun a => by simp [eM]`. Establish `eM_r : (eM (Sum.inr ()) : ℕ) = (I.rec7 l Z).sp.X'.rank` using `by simp [eM]`. Use `set π := (GlobalTheory.LocMod.ofSplit q).pr (GlobalTheory.XGeoStd.piE I l Z u) with hπ`.
+
+Establish `hπ0 : π ≠ 0` using `fun h0 => by rw [h0, map_zero] at hval; exact zero_ne_one hval`. Set `dM : GlobalTheory.StepData.Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (s + 2) ⊕ Unit → k` to `Sum.elim (fun _ => 1) fun _ => π`. Apply the tactic sequence `have hd0 : ∀ y, dM y ≠ 0 := by rintro (a | a) <;> simp [dM, hπ0]`. Apply the tactic sequence `have hdv : ∀ y, valuation k (dM y) = 1 := by rintro (a | a) <;> simp [dM, hval]`. Use `⟨{ k := k, q := q, idem := hidem, under := hunder, unit := hunit, s := s, hs := hs, FX := fun j hj => GlobalTheory.Fam.Inhab.stdFr k (eX j hj), FT := GlobalTheory.Fam.Inhab.stdFr k eT, FM := diagFr eM dM hd0, last := ?_, latX := ?_, latM := ?_, latT := ?_, frameTop := ?_ }, fun j …` and prove the remaining obligations.
+
+Establish `hpr1 : (GlobalTheory.LocMod.ofSplit q).pr (1 : (I.rec7 l Z).host.E) = 1` using `by simp [GlobalTheory.LocMod.Place.pr]`. Establish `hpr0 : (GlobalTheory.LocMod.ofSplit q).pr (0 : (I.rec7 l Z).host.E) = 0` using `by simp [GlobalTheory.LocMod.Place.pr]`. Use extensionality with `r c`. Break down `c with c | c` into its components or cases. Rewrite using `[Matrix.fromCols_apply_inl]`.
+
+Express the relevant statement in the definitionally equal form `((GlobalTheory.Fam.Inhab.stdFr k eM).β * Matrix.diagonal dM) r (Sum.inl c) = _`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [dM, Sum.elim_inl, mul_one]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ k) r (eM (Sum.inl c)) = (((oTop l Z hI (s + 1 + 1) hs).iA.map (GlobalTheory.LocMod.ofSplit q).pr * (1 : Matrix (Fin (I.rec7 l Z).sp.X'.rank) (Fin (I.rec7 l Z).sp.X'.rank) k).submatrix id eT : Matrix (Fin ((I.rec7 l Z).sp.X (s + 1 + 1)).rank) _ k) r c)`. Conclude with `entry_inl _ hpr0 hpr1 eT _ (oTop_iA l Z hI (s + 1 + 1) hs) r c _ (eM_l c)`.
+
+Rewrite using `[Matrix.fromCols_apply_inr]`. Express the relevant statement in the definitionally equal form `((GlobalTheory.Fam.Inhab.stdFr k eM).β * Matrix.diagonal dM) r (Sum.inr c) = _`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [dM, Sum.elim_inr]`. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ k) r (eM (Sum.inr c)) * π = ((oTop l Z hI (s + 1 + 1) hs).iB.map (GlobalTheory.LocMod.ofSplit q).pr *ᵥ fun i => (GlobalTheory.LocMod.ofSplit q).pr (GlobalTheory.XGeoStd.zeta I l Z u i)) r`.
+
+Conclude with `entry_inr _ hpr0 hpr1 _ (oTop_iB l Z hI (s + 1 + 1) hs) _ (GlobalTheory.XGeoStd.piE I l Z u) (fun _ => rfl) r _ eM_r`. Introduce `j hj`. Conclude with `intIn_stdFr q _ _ (hLX j) (eX j hj)`. Conclude with `intIn_diagFr q _ _ (hLX (s + 1 + 1)) eM dM hd0 hdv`. Conclude with `intIn_stdFr q _ _ hLT eT`.
+
+Use `⟨eT, oT, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h1 : b.map (GlobalTheory.LocMod.ofSplit q).π = 1`. Establish `h2 : b.map (toEAf (I.rec7 l Z)) = (1 : Matrix (Fin (I.rec7 l Z).sp.X'.rank) (Fin (I.rec7 l Z).sp.X'.rank) (AE (I.rec7 l Z))).map (toEAf (I.rec7 l Z))`. Rewrite using `[hb, hβ, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[(GlobalTheory.LocMod.ofSplit q).map_pi_eq_of_toEAf h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `h3 : (GlobalTheory.Fam.Inhab.stdFr k eT).β.submatrix id eT.symm = 1`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin (I.rec7 l Z).sp.X'.rank) (Fin (I.rec7 l Z).sp.X'.rank) k).submatrix id eT).submatrix id eT.symm = 1`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules. Rewrite using `[h3, show (GlobalTheory.XGeoStd.xgeo l Z hI vac u (pk W).ΛX).bT = 1 from rfl, GlobalTheory.LocMod.mt_one_gaMat, Matrix.one_mul, h1]`.
+-/
 theorem exists_locX_std : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex) (hW : AllTrue W) (u : B.Word) (vac : ∀ j, WO ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)) → ℂ) (PP : Pl (I.rec7 l Z).host.E) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (q : GlobalTheory.FinPl.SplitPt (I.rec7 l Z) k), Formalism.L2.NTheta.IsIdemAt q.e PP → q.v = PP.under (𝓞 (I.rec7 l Z).host.F) → q.UnitAA → valuation k ((GlobalTheory.LocMod.ofSplit q).pr (GlobalTheory.XGeoStd.piE I l Z u)) = 1 → ∃ s : LocX (GlobalTheory.XGeoStd.xgeo l Z hW.tr.ok vac u (pk W).ΛX) (pk W).βX PP, (∀ j hj, IsStdFr GlobalTheory.SymBridge.xPos (s.FX j hj)) ∧ IsStdFr GlobalTheory.SymBridge.zPos s.FT := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u vac PP k _ _ _ _ _ _ q hidem hunder hunit hval
   have hI := hW.tr.ok

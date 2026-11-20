@@ -18,6 +18,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.DiagUnifFactor
 
+/- English proof (translation)
+Rewrite using `[List.getD_eq_getElem?_getD, List.getElem?_append]`. Use `split_ifs with h1 h2 h2`. Simplify using `[List.getElem?_replicate, h2]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `at h1`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `simp [List.getElem?_replicate] split_ifs <;> rfl`.
+-/
 theorem getD_pattern (k m i : ℕ) :
     (List.replicate k (1 : ℤ) ++ List.replicate m 0).getD i 0 = if i < k then 1 else 0 := by
   rw [List.getD_eq_getElem?_getD, List.getElem?_append]
@@ -28,6 +33,33 @@ theorem getD_pattern (k m i : ℕ) :
   · simp [List.getElem?_replicate]
     split_ifs <;> rfl
 
+/- English proof (translation)
+Introduce `F _ _ v n k ϖ π hϖ hπ`. Establish `hπ0 : π ≠ 0`. Introduce `h`. Rewrite `hπ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hπ`.
+
+Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`. Establish `hu : Valued.v (ϖ / π) = 1`.
+
+Rewrite using `[map_div₀, hϖ, hπ, div_self (WithZero.coe_ne_zero)]`. Establish `hu' : Valued.v (π / ϖ) = 1`. Rewrite using `[map_div₀, hϖ, hπ, div_self (WithZero.coe_ne_zero)]`. Set `d : Fin n → v.adicCompletion F` to `fun i => if (i : ℕ) < k then ϖ / π else 1`. Set `d' : Fin n → v.adicCompletion F` to `fun i => if (i : ℕ) < k then π / ϖ else 1`.
+
+Establish `hdd' : Matrix.diagonal d * Matrix.diagonal d' = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [d, d']`.
+
+Use `split_ifs`. Rewrite using `[div_mul_div_comm, mul_comm ϖ π, div_self (mul_ne_zero hπ0 hϖ0)]`. Conclude with `one_mul 1`. Establish `hd'd : Matrix.diagonal d' * Matrix.diagonal d = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [d, d']`. Use `split_ifs`. Rewrite using `[div_mul_div_comm, mul_comm π ϖ, div_self (mul_ne_zero hϖ0 hπ0)]`.
+
+Conclude with `one_mul 1`. Set `T : GL (Fin n) (v.adicCompletion F)` to `⟨Matrix.diagonal d, Matrix.diagonal d', hdd', hd'd⟩`. Establish `hmem : ∀ (e : Fin n → v.adicCompletion F), (∀ i, Valued.v (e i) ≤ 1) → ∀ a b, Matrix.diagonal e a b ∈ Formalism.UG.Ov F v`. Introduce `e he a b`. Use `show Matrix.diagonal e a b ∈ v.adicCompletionIntegers F`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Conclude with `he a`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hab, map_zero]`. Conclude with `zero_le'`. Establish `hle : ∀ (x : v.adicCompletion F), Valued.v x = 1 → ∀ i : Fin n, Valued.v (if (i : ℕ) < k then x else 1) ≤ 1`. Introduce `x hx i`. Use `split_ifs`.
+
+Conclude with `hx.le`. Rewrite using `[map_one]`. Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Establish `inj : Function.Injective ((Formalism.UG.Ov F v).subtype.mapMatrix (m` using `Fin n)) := fun A B h => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun h i) j)`. Set `A : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)` to `fun i j => ⟨Matrix.diagonal d i j, hmem d (hle _ hu) i j⟩`.
+
+Set `B : Matrix (Fin n) (Fin n) (Formalism.UG.Ov F v)` to `fun i j => ⟨Matrix.diagonal d' i j, hmem d' (hle _ hu') i j⟩`. Establish `hA : (Formalism.UG.Ov F v).subtype.mapMatrix A = Matrix.diagonal d` using `rfl`. Establish `hB : (Formalism.UG.Ov F v).subtype.mapMatrix B = Matrix.diagonal d'` using `rfl`. Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, hdd']`.
+
+Rewrite using `[map_mul, hA, hB, map_one, hd'd]`. Use `show Matrix.diagonal _ = _ * Matrix.diagonal d`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[getD_pattern]`. Simplify using `only [d]`. Use `split_ifs`. Rewrite using `[zpow_one, mul_div_cancel₀ _ hπ0]`. Rewrite using `[zpow_zero, one_mul]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (n k : ℕ)
     (ϖ π : v.adicCompletion F), Valued.v ϖ = WithZero.exp (-1 : ℤ) → Valued.v π = WithZero.exp (-1 : ℤ) →
     ∃ T ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov F v), Formalism.UG.diagJ n ϖ k =

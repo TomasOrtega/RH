@@ -18,6 +18,13 @@ def partialZetaSum (w : InfinitePlace K) (f : 𝔸[K] → ℂ) (χ : HeckeCharac
   ∑' ξ : Kˣ, f ((diagonal K ξ * moduleSection w t * (u : IdeleGroup K) : IdeleGroup K) : 𝔸[K]) *
     (χ.toIdele (moduleSection w t * (u : IdeleGroup K)) : ℂ)
 
+/- English proof (translation)
+Rewrite `hδ` using `[Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Take `⟨ξ₀, hξ₀⟩` from `hδ`. Unfold `partialZetaSum`. Use `conv_rhs => rw [← (Equiv.mulRight ξ₀).tsum_eq]`. Use `tsum_congr fun ξ ↦ ?_` and prove the remaining obligations.
+
+Establish `hχ : χ.toIdele (moduleSection w t * ((u * δ : normOneSubgroup K) : IdeleGroup K)) = χ.toIdele (moduleSection w t * (u : IdeleGroup K))`. Rewrite using `[Subgroup.coe_mul, ← hξ₀, ← mul_assoc, map_mul, HeckeCharacter.toIdele_diagonal, mul_one]`. Establish `hf : diagonal K ξ * moduleSection w t * ((u * δ : normOneSubgroup K) : IdeleGroup K) = diagonal K ((Equiv.mulRight ξ₀) ξ) * moduleSection w t * (u : IdeleGroup K)`. Rewrite using `[Subgroup.coe_mul, ← hξ₀, Equiv.coe_mulRight, map_mul]`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`.
+
+Rewrite using `[hχ, hf]`.
+-/
 theorem partialZetaSum_mul (w : InfinitePlace K) (f : 𝔸[K] → ℂ) (χ : HeckeCharacter K)
     (t : {r : ℝ // 0 < r}) (u : normOneSubgroup K) {δ : normOneSubgroup K}
     (hδ : δ ∈ diagonalNormOne K) : partialZetaSum w f χ t (u * δ) = partialZetaSum w f χ t u := by
@@ -47,6 +54,9 @@ def partialZeta (w : InfinitePlace K) (f : 𝔸[K] → ℂ) (χ : HeckeCharacter
     (t : {r : ℝ // 0 < r}) : ℂ :=
   ∫ c, partialZetaClass w f χ t c ∂normOneClassMeasure K
 
+/- English proof (translation)
+Use `Measurable.tsum fun ξ ↦ Continuous.measurable ?_` and prove the remaining obligations. Establish `hu : Continuous fun u : normOneSubgroup K ↦ moduleSection w t * (u : IdeleGroup K)` using `continuous_const.mul continuous_subtype_val`. Establish `hu' : Continuous fun u : normOneSubgroup K ↦ diagonal K ξ * moduleSection w t * (u : IdeleGroup K)` using `continuous_const.mul continuous_subtype_val`. Conclude with `(hf.comp (Units.continuous_val.comp hu')).mul (continuous_subtype_val.comp (χ.continuous_toIdele.comp hu))`.
+-/
 theorem measurable_partialZetaSum (w : InfinitePlace K) {f : 𝔸[K] → ℂ} (hf : Continuous f)
     (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) : Measurable (partialZetaSum w f χ t) := by
   refine Measurable.tsum fun ξ ↦ Continuous.measurable ?_
@@ -58,6 +68,9 @@ theorem measurable_partialZetaSum (w : InfinitePlace K) {f : 𝔸[K] → ℂ} (h
   exact (hf.comp (Units.continuous_val.comp hu')).mul
     (continuous_subtype_val.comp (χ.continuous_toIdele.comp hu))
 
+/- English proof (translation)
+Establish `hm : Measurable (partialZetaClass w f χ t)` using `QuotientGroup.measurable_from_quotient.2 (measurable_partialZetaSum w hf χ t)`. Rewrite using `[partialZeta, normOneClassMeasure, integral_map QuotientGroup.measurable_coe.aemeasurable hm.aestronglyMeasurable]`. Both sides reduce to the same expression.
+-/
 theorem partialZeta_eq_setIntegral (w : InfinitePlace K) {f : 𝔸[K] → ℂ} (hf : Continuous f)
     (χ : HeckeCharacter K) (t : {r : ℝ // 0 < r}) :
     partialZeta w f χ t =
@@ -68,6 +81,11 @@ theorem partialZeta_eq_setIntegral (w : InfinitePlace K) {f : 𝔸[K] → ℂ} (
     integral_map QuotientGroup.measurable_coe.aemeasurable hm.aestronglyMeasurable]
   rfl
 
+/- English proof (translation)
+Establish `hu : ideleModule K (u : IdeleGroup K) = 1` using `u.2`. Establish `hmod : ideleModule K (diagonal K ξ * moduleSection w t * (u : IdeleGroup K)) = t`. Rewrite using `[map_mul, map_mul, ideleModule_diagonal, one_mul, ideleModule_moduleSection, hu, mul_one]`. Establish `hχ : χ.toIdele (diagonal K ξ * moduleSection w t * (u : IdeleGroup K)) = χ.toIdele (moduleSection w t * (u : IdeleGroup K))`. Rewrite using `[mul_assoc, map_mul, HeckeCharacter.toIdele_diagonal, one_mul]`.
+
+Simplify using `only [hmod, hχ]`.
+-/
 theorem zetaIntegrand_diagonal_mul (w : InfinitePlace K) (f : 𝔸[K] → ℂ) (χ : HeckeCharacter K)
     (s : ℂ) (ξ : Kˣ) (t : {r : ℝ // 0 < r}) (u : normOneSubgroup K) :
     f ((diagonal K ξ * moduleSection w t * (u : IdeleGroup K) : IdeleGroup K) : 𝔸[K]) *
@@ -83,6 +101,17 @@ theorem zetaIntegrand_diagonal_mul (w : InfinitePlace K) (f : 𝔸[K] → ℂ) (
     rw [mul_assoc, map_mul, HeckeCharacter.toIdele_diagonal, one_mul]
   simp only [hmod, hχ]
 
+/- English proof (translation)
+Establish `hfc` using `continuous_of_mem_schwartzBruhat hf`. Use `set G : IdeleGroup K → ℂ := fun x ↦ f x * (χ.toIdele x : ℂ) * ((ideleModule K x : ℝ) : ℂ) ^ s with hGdef`. Establish `hG : Integrable G (ideleMeasure K)` using `integrable_globalZetaIntegrand hf χ hs`. Establish `hg : Integrable (fun p : normOneSubgroup K × {r : ℝ // 0 < r} ↦ G ((p.1 : IdeleGroup K) * moduleSection w p.2)) ((normOneMeasure K).prod posRealMeasure)`. Rewrite using `[← map_normOneSplitting_eq_prod w]`.
+
+Use `(integrable_map_equiv (normOneSplitting w).toHomeomorph.toMeasurableEquiv _).2 ?_` and prove the remaining obligations. Use `hG using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `congrArg G ((normOneSplitting w).symm_apply_apply x)`. Establish `hae : (fun t ↦ ∫ u, G ((u : IdeleGroup K) * moduleSection w t) ∂normOneMeasure K) =ᵐ[posRealMeasure] fun t ↦ partialZeta w f χ t * ((t : ℝ) : ℂ) ^ s` using `by filter_upwards [hg.prod_left_ae] with t ht`.
+
+Rewrite using `[integral_normOneMeasure_eq_setIntegral_tsum ht, partialZeta_eq_setIntegral w hfc, ← integral_mul_const]`. Use `integral_congr_ae (Eventually.of_forall fun u ↦ ?_)` and prove the remaining obligations. Simplify using `only [partialZetaSum]`. Rewrite using `[← tsum_mul_right]`. Use `tsum_congr fun ξ ↦ ?_` and prove the remaining obligations.
+
+Establish `hx : ((diagonalToNormOne K ξ * u : normOneSubgroup K) : IdeleGroup K) * moduleSection w t = diagonal K ξ * moduleSection w t * (u : IdeleGroup K)`. Rewrite using `[Subgroup.coe_mul, coe_diagonalToNormOne, mul_right_comm]`. Rewrite using `[hx]`. Conclude with `zetaIntegrand_diagonal_mul w f χ s ξ t u`. Use `⟨hg.integral_prod_right.congr hae, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[globalZeta, integral_ideleMeasure_eq_integral_normOne w hG]`. Conclude with `integral_congr_ae hae`.
+-/
 theorem globalZeta_eq_integral_partialZeta (w : InfinitePlace K) {f : 𝔸[K] → ℂ}
     (hf : f ∈ schwartzBruhat K) (χ : HeckeCharacter K) {s : ℂ} (hs : 1 < s.re) :
     Integrable (fun t ↦ partialZeta w f χ t * ((t : ℝ) : ℂ) ^ s) posRealMeasure ∧

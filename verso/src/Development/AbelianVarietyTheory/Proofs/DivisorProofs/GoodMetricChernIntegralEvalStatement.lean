@@ -12,5 +12,8 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GoodMetric.PointChern.chernIntegral_point | exact GlobalTheory.GoodMetric.PointChern.chernIntegral_point | (intros; apply GlobalTheory.GoodMetric.PointChern.chernIntegral_point <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.good_metric_chern_integral_eval : ∀ (ι : Type) [Fintype ι] (m : ι → ℕ) (X : GlobalTheory.ProjVar.Var ℚ) (E : GlobalTheory.FlagBundle.Fr (GlobalTheory.FlagBundle.ratOf X) m 0), X.dim = 0 → ∃ (σ : ℚ →+* ℂ) (H : GlobalTheory.FlagBundle.Mat m X.Fn → CxPts X.str σ → GlobalTheory.FlagBundle.Mat m ℂ), GlobalTheory.GoodMetric.IsMetricOn E ⊤ H ∧ GlobalTheory.GoodMetric.IsGood E ⊤ H ∧ ∀ (R : MvPolynomial (ι × ℕ) ℝ) (t : ℝ), GlobalTheory.GoodMetric.HasChernIntegral E ⊤ H R t → t = MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R := by
   first | exact @GlobalTheory.GoodMetric.PointChern.chernIntegral_point | exact GlobalTheory.GoodMetric.PointChern.chernIntegral_point | (intros; apply GlobalTheory.GoodMetric.PointChern.chernIntegral_point <;> assumption)

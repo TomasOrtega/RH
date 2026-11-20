@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
+/- English proof (translation)
+Introduce `L _ _ l k hl ⟨ζ, hζ⟩`. Establish `hpos : 0 < l ^ k` using `pow_pos hl.pos k`. Establish `ht : (l ^ k).totient ≤ Module.finrank ℚ L`. Establish `h1` using `hζ.lcm_totient_le_finrank (K := ℚ) hζ (by rw [Nat.lcm_self]; exact Polynomial.cyclotomic.irreducible_rat hpos)`. Rewrite `h1` using `[Nat.lcm_self]`. Then use the resulting hypothesis.
+
+Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `only [pow_zero, Nat.totient_one] at ht ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Rewrite `ht` using `[Nat.totient_prime_pow hl hk, Nat.add_sub_cancel]`.
+
+Establish `h2 : l ≤ 2 * (l - 1)`. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Win.rootdeg :
     ∀ (L : Type) [Field L] [NumberField L] (l k : ℕ), l.Prime → (∃ ζ : L, IsPrimitiveRoot ζ (l ^ k)) →
       l ^ k ≤ 2 * Module.finrank ℚ L := by

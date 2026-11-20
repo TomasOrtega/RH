@@ -10,6 +10,9 @@ namespace GlobalTheory.GalStep
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[ED, PiSys.iD, glue_const, Ehat, PiSys.iHat_ofAl]`. Conclude with `(ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E 1 O K))`.
+-/
 theorem ED_eq (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O]
     [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
     [NormedAlgebra ℚ_[l] K] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) :
@@ -17,6 +20,13 @@ theorem ED_eq (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algeb
   rw [ED, PiSys.iD, glue_const, Ehat, PiSys.iHat_ofAl]
   exact (ϖ.iAl_of_mem O K (E_mem l e _) _).trans (congrArg (toOD l O) (ϖ.iA_E 1 O K))
 
+/- English proof (translation)
+Use `set d := ϖ.ev 1 (eis l 1 e) with hd`. Establish `hdvd : ∀ h : GQ l, d ∣ Per.σA h d` using `fun h => by`. Rewrite using `[← Ideal.mem_span_singleton, ϖ.span_ev_eis 1, RingHom.mem_ker, GlobalTheory.RingBasics.θ_σA, ϖ.theta_ev_eis 1, map_zero]`. Take `⟨u, hu⟩` from `hdvd g`. Take `⟨u', hu'⟩` from `hdvd g⁻¹`.
+
+Distinguish the cases in `hd0 : d = 0`. Use `⟨1, isUnit_one, ?_⟩` and prove the remaining obligations. Rewrite using `[hd0, map_zero, zero_mul]`. Use `⟨u, ?_, hu⟩` and prove the remaining obligations. Establish `h1 : d = d * (u * Per.σA g u')`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : u * Per.σA g u' = 1`. Establish `h3 : d * (u * Per.σA g u' - 1) = 0` using `by rw [mul_sub, ← h1, mul_one, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left hd0)`. Conclude with `IsUnit.of_mul_eq_one _ h2`.
+-/
 theorem σA_ev_eis_eq {e : ℕ} [NeZero e] (ϖ : PiSys l e) (g : GQ l) :
     ∃ u : Ainf l, IsUnit u ∧ Per.σA g (ϖ.ev 1 (eis l 1 e)) = ϖ.ev 1 (eis l 1 e) * u := by
   set d := ϖ.ev 1 (eis l 1 e) with hd
@@ -40,6 +50,11 @@ end GlobalTheory.GalStep
 
 open GlobalTheory.GalStep in
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ g _`. Take `⟨u, hu, hσ⟩` from `σA_ev_eis_eq ϖ g`. Use `⟨(1 : O) ⊗ₜ[ℤ_[l]] GlobalTheory.MemLoc.aDp l u, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hu.map ((Algebra.TensorProduct.includeRight : Per.BdRp l →ₐ[ℤ_[l]] OD l O).comp (ainfToBdRp l))`. Rewrite using `[ED_eq a e O K t ϖ]`.
+
+Express the relevant statement in the definitionally equal form `(1 : O) ⊗ₜ[ℤ_[l]] Per.σDp g (GlobalTheory.MemLoc.aDp l (ϖ.ev 1 (eis l 1 e))) = _`. Rewrite using `[GlobalTheory.MemLoc.ActLaws.σDp_aDp, hσ, map_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem GlobalTheory.GalStep.galOD_ED : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (g : GQ l), g ∈ GK (ϖ.field a) → ∃ v : OD l O, IsUnit v ∧ GlobalTheory.GalStep.galOD O g (GlobalTheory.GalStep.ED K t ϖ) = GlobalTheory.GalStep.ED K t ϖ * v := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ g _
   obtain ⟨u, hu, hσ⟩ := σA_ev_eis_eq ϖ g

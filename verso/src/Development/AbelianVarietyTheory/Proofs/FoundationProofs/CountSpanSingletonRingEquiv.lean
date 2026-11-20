@@ -6,6 +6,13 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.OrdTransport
 
+/- English proof (translation)
+Introduce `A F _ _ _ _ _ τ σ hc v w hvw x hx`. Establish `h : v.asIdeal = w.asIdeal.comap τ` using `Ideal.ext fun a => by`. Rewrite using `[Ideal.mem_comap]`. Conclude with `hvw a`. Establish `hv : v.valuation F x = w.valuation F (σ x)`.
+
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) x`. Rewrite using `[map_div₀ σ, hc, hc, map_div₀, map_div₀]`. Simplify using `only [HeightOneSpectrum.valuation_of_algebraMap, GlobalTheory.QNorm.intValuation_of_eq_comap τ w v h]`. Establish `hσx : σ x ≠ 0` using `(map_ne_zero σ).2 hx`. Rewrite `hv` using `[GlobalTheory.Idele.valuation_eq_exp_neg_count v hx, GlobalTheory.Idele.valuation_eq_exp_neg_count w hσx, WithZero.exp_inj, neg_inj]`.
+
+Conclude with `hv.symm`.
+-/
 theorem count_spanSingleton_ringEquiv : ∀ (A F : Type) [CommRing A] [IsDedekindDomain A] [Field F]
     [Algebra A F] [IsFractionRing A F] (τ : A ≃+* A) (σ : F ≃+* F),
     (∀ a : A, σ (algebraMap A F a) = algebraMap A F (τ a)) → ∀ v w : HeightOneSpectrum A,

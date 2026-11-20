@@ -11,19 +11,31 @@ section DualMono
 
 variable {k : Type} [Field k] {F : Type} [Field F] [Algebra k F] {d : ℕ} {x : Fin (d + 1) → F}
 
+/- English proof (translation)
+Use `Algebra.adjoin_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨i, hi, j, rfl⟩`. Conclude with `⟨i, h hi, j, rfl⟩`.
+-/
 theorem rA_le_of_subset {I J : Finset (Fin (d + 1))} (h : I ⊆ J) : rA k x I ≤ rA k x J := by
   refine Algebra.adjoin_mono ?_
   rintro y ⟨i, hi, j, rfl⟩
   exact ⟨i, h hi, j, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨i, hi, j, rfl⟩`.
+-/
 theorem div_mem_rA_of_mem {J : Finset (Fin (d + 1))} {i : Fin (d + 1)} (hi : i ∈ J) (j : Fin (d + 1)) :
     x j / x i ∈ rA k x J :=
   Algebra.subset_adjoin ⟨i, hi, j, rfl⟩
 
+/- English proof (translation)
+Simplify using `[omA, Submodule.mem_iInf]`.
+-/
 theorem mem_omA_iff_mul {I : Finset (Fin (d + 1))} {y : F} :
     y ∈ omA k x I ↔ ∀ i ∈ I, (∏ j, x i / x j) * y ∈ rA k x I := by
   simp [omA, Submodule.mem_iInf]
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[mem_omA_iff_mul]`. Introduce `i hi`. Rewrite using `[mul_left_comm]`. Conclude with `(rA k x J).mul_mem hr (hy i hi)`.
+-/
 theorem mul_mem_omA_of_mem_rA {J : Finset (Fin (d + 1))} {r y : F} (hr : r ∈ rA k x J) (hy : y ∈ omA k x J) :
     r * y ∈ omA k x J := by
   rw [mem_omA_iff_mul] at hy ⊢
@@ -31,6 +43,13 @@ theorem mul_mem_omA_of_mem_rA {J : Finset (Fin (d + 1))} {r y : F} (hr : r ∈ r
   rw [mul_left_comm]
   exact (rA k x J).mul_mem hr (hy i hi)
 
+/- English proof (translation)
+Take `⟨i₀, hi₀⟩` from `hI`. Introduce `y hy`. Rewrite `hy`, the goal using `[mem_omA_iff_mul]`. Introduce `i hi`. Establish `e : (∏ j, x i / x j) = (x i / x i₀) ^ (d + 1) * ∏ j, x i₀ / x j`.
+
+Establish `hc : (x i / x i₀) ^ (d + 1) = ∏ _j : Fin (d + 1), (x i / x i₀)`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[hc, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Clear denominators, using `[hx i₀, hx j]` for the nonvanishing conditions.
+
+Rewrite using `[e, mul_assoc]`. Conclude with `(rA k x J).mul_mem ((rA k x J).pow_mem (div_mem_rA_of_mem (h hi₀) i) _) (rA_le_of_subset h (hy i₀ hi₀))`.
+-/
 theorem omA_le_of_subset (hx : ∀ i, x i ≠ 0) {I J : Finset (Fin (d + 1))} (hI : I.Nonempty) (h : I ⊆ J) :
     omA k x I ≤ omA k x J := by
   obtain ⟨i₀, hi₀⟩ := hI

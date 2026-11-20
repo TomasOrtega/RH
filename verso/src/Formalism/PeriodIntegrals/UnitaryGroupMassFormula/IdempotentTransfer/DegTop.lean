@@ -22,6 +22,15 @@ def PerSBound : Prop :=
       |degL A (cut A ρ (eps P * eS T s) A.L) - (nS T P s : ℝ) * degL A (cut A ρ (eps P0 * eS T s) A.L)| ≤
         5 * laG G * ((nS T P s * rS T P0 A ρ s : ℕ) : ℝ)
 
+/- English proof (translation)
+Introduce `K _ _ _ _ G _ _ T P0 P hM A ρ hA`. Establish `hs` using `h1 K G T P0 P hM A ρ hA`. Establish `hp` using `h2 K G T P0 P hM A ρ hA`. Use `set a := degL A (cut A ρ (eps P * eG T) A.L)`. Use `set c : T.S → ℝ := fun s => degL A (cut A ρ (eps P * eS T s) A.L)`.
+
+Use `set b : T.S → ℝ := fun s => degL A (cut A ρ (eps P0 * eS T s) A.L)`. Establish `hsum : |∑ s, (c s - (nS T P s : ℝ) * b s)| ≤ 5 * laG G * (rkT T P0 P A ρ : ℝ)`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun s _ => hp s).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, rkT]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_sub_distrib]`. Put the polynomial expressions in normal form.
+
+Use `_ ≤ |a - ∑ s, c s| + |∑ s, (c s - (nS T P s : ℝ) * b s)| := abs_add_le _ _`. Use `_ ≤ 5 * laG G * (rkT T P0 P A ρ : ℝ) + 5 * laG G * (rkT T P0 P A ρ : ℝ) := add_le_add hs hsum`. Use `_ = 10 * laG G * (rkT T P0 P A ρ : ℝ) := by ring`.
+-/
 theorem degPart_of (h1 : SplitBound) (h2 : PerSBound) : DegPart := by
   intro K _ _ _ _ G _ _ T P0 P hM A ρ hA
   have hs := h1 K G T P0 P hM A ρ hA

@@ -11,11 +11,19 @@ open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory
 
 namespace GlobalTheory.Proportionality
 
+/- English proof (translation)
+The claim follows from `h.2.symm.trans h'.2`.
+-/
 theorem hasChernIntegral_unique {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} {m : ι → ℕ}
     {E : Fr (ratOf X) m 0} {O : X.X.Opens} {H : Mat m X.Fn → GlobalTheory.CxPts X.str σ → Mat m ℂ} {R : MvPolynomial (ι × ℕ) ℝ}
     {t t' : ℝ} (h : HasChernIntegral E O H R t) (h' : HasChernIntegral E O H R t') : t = t' :=
   h.2.symm.trans h'.2
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k la`. Take `⟨X, Eb, E', φ, f, Ob, Hm, hf, hg, hH, hG, hint⟩` from `GlobalTheory.LieBase.exists_goodBase E H Dw l Xo c O β Y T F e σ U hσ hU Φ k`. Take `⟨R, hR⟩` from `GlobalTheory.AntisymmChern.antisymm_eq_chernRoots_mul_rootDiscr _ Dw.mult ((∑ x : Root Dw.mult, MvPolynomial.C (-(GlobalTheory.AllWt.exOf Dw la 0 (some x) : ℝ)) * MvPolynomial.X x) ^ (Φ.C k).Y.dim)`. Rewrite using `[GlobalTheory.Member.selfInter_Lw_interPoly (Φ.C k) la]`. Establish `key` using `hasChernIntegral_unique (h.flag hf hg hH hG hR) (hint la R hR)`.
+
+Apply the tactic sequence `convert key using 3 <;> exact Subsingleton.elim _ _`.
+-/
 theorem mumfordProportionality_of_goodChernWeil (h : GlobalTheory.Published.GoodChernWeil) : GlobalTheory.Published.MumfordProportionality := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k la
   obtain ⟨X, Eb, E', φ, f, Ob, Hm, hf, hg, hH, hG, hint⟩ := GlobalTheory.LieBase.exists_goodBase E H Dw l Xo c O β Y T F e σ U hσ hU Φ k

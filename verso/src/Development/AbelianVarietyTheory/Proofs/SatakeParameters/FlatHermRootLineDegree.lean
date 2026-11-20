@@ -11,6 +11,9 @@ namespace GlobalTheory.PD.PullMap
 
 variable {ι κ : Type} [LinearOrder ι] [LinearOrder κ]
 
+/- English proof (translation)
+Establish `row : ∀ a, ∏ b ∈ t, g a b = g a i * ∏ b ∈ t.erase i, g a b` using `fun a => (Finset.mul_prod_erase t (g a) hi).symm`. Establish `h1` using `Finset.mul_prod_erase t (fun a => ∏ b ∈ t, g a b) hi`. Rewrite using `[← h1, row i, hg, one_mul, Finset.prod_congr rfl (fun a _ => row a)]`. Simplify using `only [Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_prod_erase (g : κ → κ → ℤ) {t : Finset κ} {i : κ} (hi : i ∈ t) (hg : g i i = 1) :
     ∏ a ∈ t, ∏ b ∈ t, g a b =
       (∏ a ∈ t.erase i, ∏ b ∈ t.erase i, g a b) * ∏ a ∈ t.erase i, (g a i * g i a) := by
@@ -21,20 +24,34 @@ theorem prod_prod_erase (g : κ → κ → ℤ) {t : Finset κ} {i : κ} (hi : i
   simp only [Finset.prod_mul_distrib]
   ring
 
+/- English proof (translation)
+Rewrite using `[cubeSign, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`.
+-/
 theorem cubeSign_eq_prod (t : Finset κ) (i : κ) :
     cubeSign t i = ∏ a ∈ t, (if a < i then (-1 : ℤ) else 1) := by
   rw [cubeSign, Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[cubeSign_eq_prod, Finset.prod_image (by intro x hx y hy hxy; exact h hx hy hxy)]`.
+-/
 theorem cubeSign_image {τ : κ → ι} {t : Finset κ} (h : Set.InjOn τ t) (i : κ) :
     cubeSign (t.image τ) (τ i) = ∏ a ∈ t, (if τ a < τ i then (-1 : ℤ) else 1) := by
   rw [cubeSign_eq_prod, Finset.prod_image (by intro x hx y hy hxy; exact h hx hy hxy)]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases lt_or_gt_of_ne hx with h | h <;> rcases lt_or_gt_of_ne hτ with h' | h' <;>`. Simplify using `[h, h', lt_asymm h, lt_asymm h']`.
+-/
 theorem pair_sign {τ : κ → ι} {x i : κ} (hx : x ≠ i) (hτ : τ x ≠ τ i) :
     (if x < i ∧ τ i < τ x then (-1 : ℤ) else 1) * (if i < x ∧ τ x < τ i then (-1 : ℤ) else 1) =
       (if x < i then (-1 : ℤ) else 1) * (if τ x < τ i then (-1 : ℤ) else 1) := by
   rcases lt_or_gt_of_ne hx with h | h <;> rcases lt_or_gt_of_ne hτ with h' | h' <;>
     simp [h, h', lt_asymm h, lt_asymm h']
 
+/- English proof (translation)
+Use `prod_prod_erase (fun x y => if x < y ∧ τ y < τ x then (-1 : ℤ) else 1) hi (by simp)` as an intermediate fact. Use `beta_reduce at this`. Unfold `sortSign`. Rewrite using `[this]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun x hx => pair_sign (Finset.ne_of_mem_erase hx) (hne x hx)`.
+-/
 theorem sortSign_eq_erase {τ : κ → ι} {s : Finset κ} {i : κ} (hi : i ∈ s)
     (hne : ∀ x ∈ s.erase i, τ x ≠ τ i) :
     sortSign τ s = sortSign τ (s.erase i) *
@@ -46,6 +63,13 @@ theorem sortSign_eq_erase {τ : κ → ι} {s : Finset κ} {i : κ} (hi : i ∈ 
   congr 1
   exact Finset.prod_congr rfl fun x hx => pair_sign (Finset.ne_of_mem_erase hx) (hne x hx)
 
+/- English proof (translation)
+Establish `e1` using `sortSign_eq_erase (τ := τ) hi (fun x hx e => Finset.ne_of_mem_erase hx (h (Finset.mem_of_mem_erase hx) hi e))`. Rewrite `e1` using `[Finset.prod_mul_distrib]`. Establish `e2 : cubeSign t i = ∏ a ∈ t.erase i, (if a < i then (-1 : ℤ) else 1)`. Rewrite using `[cubeSign_eq_prod, ← Finset.mul_prod_erase t _ hi]`. Simplify using the standard rewrite rules.
+
+Establish `e3 : cubeSign (t.image τ) (τ i) = ∏ a ∈ t.erase i, (if τ a < τ i then (-1 : ℤ) else 1)`. Rewrite using `[cubeSign_image h, ← Finset.mul_prod_erase t _ hi]`. Simplify using the standard rewrite rules. Establish `hQ : (∏ a ∈ t.erase i, (if τ a < τ i then (-1 : ℤ) else 1)) * ∏ a ∈ t.erase i, (if τ a < τ i then (-1 : ℤ) else 1) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Apply the tactic sequence `exact Finset.prod_eq_one fun a _ => by split_ifs <;> norm_num`. Rewrite using `[e1, e2, e3]`. Take the linear combination `(sortSign τ (t.erase i) * ∏ a ∈ t.erase i, (if a < i then (-1 : ℤ) else 1)) * hQ`.
+-/
 theorem sign_inj {τ : κ → ι} {t : Finset κ} (h : Set.InjOn τ t) {i : κ} (hi : i ∈ t) :
     sortSign τ t * cubeSign (t.image τ) (τ i) = cubeSign t i * sortSign τ (t.erase i) := by
   have e1 := sortSign_eq_erase (τ := τ) hi (fun x hx e =>
@@ -64,6 +88,15 @@ theorem sign_inj {τ : κ → ι} {t : Finset κ} (h : Set.InjOn τ t) {i : κ} 
   rw [e1, e2, e3]
   linear_combination (sortSign τ (t.erase i) * ∏ a ∈ t.erase i, (if a < i then (-1 : ℤ) else 1)) * hQ
 
+/- English proof (translation)
+Establish `hb' : b ∈ t.erase a` using `Finset.mem_erase.2 ⟨hab.symm, hb⟩`. Establish `ha' : a ∈ t.erase b` using `Finset.mem_erase.2 ⟨hab, ha⟩`. Establish `hu' : (t.erase b).erase a = (t.erase a).erase b` using `Finset.erase_right_comm`. Establish `mem : ∀ x ∈ (t.erase a).erase b, τ x ≠ τ b`. Introduce `x hx e`.
+
+Establish `hx1` using `Finset.mem_erase.1 hx`. Conclude with `hx1.1 (h hx1.2 hb' e)`. Establish `e1` using `sortSign_eq_erase (τ := τ) hb' mem`. Establish `e2` using `sortSign_eq_erase (τ := τ) ha' (by rw [hu', he]; exact mem)`. Rewrite `e2` using `[hu', he]`.
+
+Establish `c1 : cubeSign t a = (if b < a then (-1 : ℤ) else 1) * ∏ x ∈ (t.erase a).erase b, (if x < a then (-1 : ℤ) else 1)`. Rewrite using `[cubeSign_eq_prod, ← Finset.mul_prod_erase t _ hb, ← Finset.mul_prod_erase (t.erase b) _ ha', hu']`. Simplify using `only [lt_self_iff_false, if_false, one_mul]`. Establish `c2 : cubeSign t b = (if a < b then (-1 : ℤ) else 1) * ∏ x ∈ (t.erase a).erase b, (if x < b then (-1 : ℤ) else 1)`. Rewrite using `[cubeSign_eq_prod, ← Finset.mul_prod_erase t _ ha, ← Finset.mul_prod_erase (t.erase a) _ hb']`.
+
+Simplify using `only [lt_self_iff_false, if_false, one_mul]`. Establish `hs : (if b < a then (-1 : ℤ) else 1) = -(if a < b then (-1 : ℤ) else 1)`. Apply the tactic sequence `rcases lt_or_gt_of_ne hab with h' | h' <;> simp [h', lt_asymm h']`. Rewrite using `[e1, e2, c1, c2, Finset.prod_mul_distrib, Finset.prod_mul_distrib, hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sign_pair {τ : κ → ι} {t : Finset κ} {a b : κ} (ha : a ∈ t) (hb : b ∈ t) (hab : a ≠ b)
     (he : τ a = τ b) (h : Set.InjOn τ (t.erase a)) :
     cubeSign t a * sortSign τ (t.erase a) = -(cubeSign t b * sortSign τ (t.erase b)) := by
@@ -90,6 +123,11 @@ theorem sign_pair {τ : κ → ι} {t : Finset κ} {a b : κ} (ha : a ∈ t) (hb
   rw [e1, e2, c1, c2, Finset.prod_mul_distrib, Finset.prod_mul_distrib, hs]
   ring
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Finset.mem_erase, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, x, hx, rfl⟩`. Conclude with `⟨x, ⟨fun e => hy (congrArg τ e), hx⟩, rfl⟩`.
+
+Introduce and unpack `⟨x, ⟨hxi, hx⟩, rfl⟩`. Conclude with `⟨fun e => hxi (h hx hi e), x, hx, rfl⟩`.
+-/
 theorem image_erase_of_injOn {τ : κ → ι} {t : Finset κ} (h : Set.InjOn τ t) {i : κ} (hi : i ∈ t) :
     (t.image τ).erase (τ i) = (t.erase i).image τ := by
   ext y
@@ -100,6 +138,11 @@ theorem image_erase_of_injOn {τ : κ → ι} {t : Finset κ} (h : Set.InjOn τ 
   · rintro ⟨x, ⟨hxi, hx⟩, rfl⟩
     exact ⟨fun e => hxi (h hx hi e), x, hx, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Finset.mem_erase, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨_, hx⟩, rfl⟩`. Conclude with `⟨x, hx, rfl⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Distinguish the cases in `hxa : x = a`. Conclude with `⟨b, ⟨hab.symm, hb⟩, by rw [hxa]; exact he.symm⟩`. Conclude with `⟨x, ⟨hxa, hx⟩, rfl⟩`.
+-/
 theorem image_erase_eq {τ : κ → ι} {t : Finset κ} {a b : κ} (hb : b ∈ t) (hab : a ≠ b) (he : τ a = τ b) :
     (t.erase a).image τ = t.image τ := by
   ext y
@@ -112,6 +155,11 @@ theorem image_erase_eq {τ : κ → ι} {t : Finset κ} {a b : κ} (hb : b ∈ t
     · exact ⟨b, ⟨hab.symm, hb⟩, by rw [hxa]; exact he.symm⟩
     · exact ⟨x, ⟨hxa, hx⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `x hx y hy hxy`. Simplify using `only [Finset.coe_erase, Set.mem_diff, Finset.mem_coe, Set.mem_singleton_iff] at hx hy`. Establish `hb' : b ∈ (↑(t.erase a) : Set κ)` using `by simp [hab.symm, hb]`. Apply the tactic sequence `by_cases hxa : x = a <;> by_cases hya : y = a`. Rewrite using `[hxa, hya]`.
+
+Conclude with `absurd (h (by simp [hya, hy.1]) hb' (by rw [← hxy, hxa, he])) hy.2`. Conclude with `absurd (h (by simp [hxa, hx.1]) hb' (by rw [hxy, hya, he])) hx.2`. Conclude with `h (by simp [hxa, hx.1]) (by simp [hya, hy.1]) hxy`.
+-/
 theorem injOn_erase_swap {τ : κ → ι} {t : Finset κ} {a b : κ} (hb : b ∈ t) (hab : a ≠ b)
     (he : τ a = τ b) (h : Set.InjOn τ (t.erase a)) : Set.InjOn τ (t.erase b) := by
   intro x hx y hy hxy
@@ -127,9 +175,23 @@ variable {k : Type} [Field k] {E E' : Type} [AddCommGroup E] [Module k E] [AddCo
 
 open Classical in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullC_apply (τ : κ → ι) (φ : E →ₗ[k] E') (c : Finset ι → E) (s : Finset κ) :
     pullC τ φ c s = if Set.InjOn τ s then sortSign τ s • φ (c (s.image τ)) else 0 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Rewrite using `[pullC_apply]`. Simplify using `only [GlobalTheory.DI.delta]`. Distinguish the cases in `h : Set.InjOn τ t`. Rewrite using `[if_pos h, Finset.sum_image (by intro x hx y hy hxy; exact h hx hy hxy), map_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[pullC_apply, if_pos (h.mono (Finset.coe_subset.2 (Finset.erase_subset i t))), map_zsmul, ← image_erase_of_injOn h hi, smul_smul, smul_smul, sign_inj h hi]`. Rewrite using `[if_neg h]`. Establish `h' : ∃ a ∈ t, ∃ b ∈ t, τ a = τ b ∧ a ≠ b`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `h (by intro x hx y hy hxy; exact hc x hx y hy hxy)`. Take `⟨a, ha, b, hb, he, hab⟩` from `h'`. Establish `zero_of : ∀ s : Finset κ, a ∈ s → b ∈ s → pullC τ φ c s = 0` using `fun s has hbs => by`. Rewrite using `[pullC_apply, if_neg]`.
+
+Introduce `hs`. Conclude with `hab (hs has hbs he)`. Rewrite using `[Finset.sum_eq_add_of_mem a b ha hb hab (fun x _ hne => by`. Rewrite using `[zero_of _ (Finset.mem_erase.2 ⟨hne.1.symm, ha⟩) (Finset.mem_erase.2 ⟨hne.2.symm, hb⟩), smul_zero])]`. Distinguish the cases in `hia : Set.InjOn τ (t.erase a)`.
+
+Establish `hib` using `injOn_erase_swap hb hab he hia`. Rewrite using `[pullC_apply, pullC_apply, if_pos hia, if_pos hib, image_erase_eq hb hab he, image_erase_eq ha hab.symm he.symm, smul_smul, smul_smul, ← add_smul, sign_pair ha hb hab he hia, neg_add_cancel, zero_smul]`. Establish `hib : ¬ Set.InjOn τ (t.erase b)` using `fun hib => hia (injOn_erase_swap ha hab.symm he.symm hib)`. Rewrite using `[pullC_apply, pullC_apply, if_neg hia, if_neg hib, smul_zero, smul_zero, add_zero]`.
+-/
 theorem pullC_delta (τ : κ → ι) (φ : E →ₗ[k] E') (c : Finset ι → E) :
     pullC τ φ (GlobalTheory.DI.delta c) = GlobalTheory.DI.delta (pullC τ φ c) := by
   funext t
@@ -160,6 +222,15 @@ theorem pullC_delta (τ : κ → ι) (φ : E →ₗ[k] E') (c : Finset ι → E)
     · have hib : ¬ Set.InjOn τ (t.erase b) := fun hib => hia (injOn_erase_swap ha hab.symm he.symm hib)
       rw [pullC_apply, pullC_apply, if_neg hia, if_neg hib, smul_zero, smul_zero, add_zero]
 
+/- English proof (translation)
+Simplify using `only [cechC, Submodule.mem_pi, Set.mem_univ, true_implies, forall_const] at hc ⊢`. Introduce `s`. Rewrite using `[pullC_apply]`. Use `split_ifs with hs hinj`. Establish `hcard` using `Finset.card_image_of_injOn hinj`.
+
+Establish `hc'` using `hc (s.image τ)`. Rewrite `hc'` using `[if_pos ⟨hs.1.image τ, by rw [hcard]; exact hs.2⟩]`. Conclude with `zsmul_mem (hφ s hs.1 _ hc') _`. Conclude with `Submodule.zero_mem _`. Name the introduced variables `hinj`.
+
+Establish `hc'` using `hc (s.image τ)`. Rewrite using `[if_neg (fun h' => hs ⟨Finset.image_nonempty.1 h'.1, by`. Rewrite using `[← Finset.card_image_of_injOn hinj]`. Conclude with `h'.2⟩), Submodule.mem_bot] at hc'`. Rewrite using `[hc', map_zero, smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem pullC_mem (A : Finset ι → Submodule k E) (B : Finset κ → Submodule k E') (τ : κ → ι) (φ : E →ₗ[k] E')
     (hφ : ∀ s : Finset κ, s.Nonempty → ∀ y ∈ A (s.image τ), φ y ∈ B s) (n : ℤ) (c : Finset ι → E)
     (hc : c ∈ cechC A n) : pullC τ φ c ∈ cechC B n := by
@@ -184,6 +255,9 @@ end GlobalTheory.PD.PullMap
 
 namespace GlobalTheory.PD
 
+/- English proof (translation)
+Introduce `k _ ι κ _ _ E E' _ _ _ _ A B τ φ _ _ hφ n c hc`. Conclude with `⟨PullMap.pullC_mem A B τ φ hφ n c hc, PullMap.pullC_delta τ φ c⟩`.
+-/
 theorem pullC_isMap : ∀ (k : Type) [Field k] (ι κ : Type) [LinearOrder ι] [LinearOrder κ] (E E' : Type)
     [AddCommGroup E] [Module k E] [AddCommGroup E'] [Module k E'] (A : Finset ι → Submodule k E)
     (B : Finset κ → Submodule k E') (τ : κ → ι) (φ : E →ₗ[k] E'),

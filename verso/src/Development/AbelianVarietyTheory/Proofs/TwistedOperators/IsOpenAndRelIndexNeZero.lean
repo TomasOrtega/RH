@@ -10,6 +10,15 @@ namespace GlobalTheory.RootEx.LatOpen
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {ι : Type}
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span k (L : Set (ι → k))` using `by rw [hL]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Establish `h : (𝒪[k] : Set k) ∈ nhds (0 : k)` using `(isOpen_int k).mem_nhds (zero_mem 𝒪[k])`. Use `filter_upwards [h] with t ht`.
+
+Conclude with `L.smul_mem (⟨t, ht⟩ : 𝒪[k]) hy`. Consider the case `zero => exact Filter.Eventually.of_forall fun t => by simp`. Consider the case `add y z _ _ hy hz => filter_upwards [hy, hz] with t h1 h2`. Rewrite using `[smul_add]`. Conclude with `L.add_mem h1 h2`.
+
+Consider the case `smul a y _ hy`. Establish `ht : Filter.Tendsto (fun t : k => t * a) (nhds 0) (nhds 0)`. Establish `h : Continuous (fun t : k => t * a)` using `continuous_id.mul continuous_const`. Simplify using `using h.tendsto 0`. Use `filter_upwards [ht.eventually hy] with t h`.
+
+Rewrite using `[smul_smul]` and apply the resulting hypothesis.
+-/
 theorem eventually_smul_mem (L : Submodule 𝒪[k] (ι → k))
     (hL : Submodule.span k (L : Set (ι → k)) = ⊤) (x : ι → k) :
     ∀ᶠ t in nhds (0 : k), t • x ∈ L := by
@@ -31,6 +40,13 @@ theorem eventually_smul_mem (L : Submodule 𝒪[k] (ι → k))
     filter_upwards [ht.eventually hy] with t h
     rwa [smul_smul]
 
+/- English proof (translation)
+Use `AddSubgroup.isOpen_of_mem_nhds L.toAddSubgroup (g := 0) ?_` and prove the remaining obligations. Establish `h : ∀ᶠ x in nhds (0 : ι → k), ∀ i, x i • (Pi.single i (1 : k) : ι → k) ∈ L`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun x : ι → k => x i) (nhds 0) (nhds 0)` using `(continuous_apply i).tendsto (0 : ι → k)`. Conclude with `ht.eventually (eventually_smul_mem L hL _)`.
+
+Use `filter_upwards [h] with x hx`. Establish `e : x = ∑ i, x i • (Pi.single i (1 : k) : ι → k)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Express the relevant statement in the definitionally equal form `x ∈ L`.
+
+Rewrite using `[e]`. Conclude with `L.sum_mem fun i _ => hx i`.
+-/
 theorem isOpen_of_span_eq_top [Fintype ι] [DecidableEq ι] (L : Submodule 𝒪[k] (ι → k))
     (hL : Submodule.span k (L : Set (ι → k)) = ⊤) : IsOpen (L : Set (ι → k)) := by
   refine AddSubgroup.isOpen_of_mem_nhds L.toAddSubgroup (g := 0) ?_
@@ -47,6 +63,9 @@ theorem isOpen_of_span_eq_top [Fintype ι] [DecidableEq ι] (L : Submodule 𝒪[
   rw [e]
   exact L.sum_mem fun i _ => hx i
 
+/- English proof (translation)
+Establish `e : (stdLat k ι : Set (ι → k)) = Set.pi Set.univ fun _ => (𝒪[k] : Set k)`. Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, mem_stdLat, Set.mem_pi, Set.mem_univ, true_imp_iff]`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => isCompact_int k`.
+-/
 theorem isCompact_stdLat : IsCompact (stdLat k ι : Set (ι → k)) := by
   have e : (stdLat k ι : Set (ι → k)) = Set.pi Set.univ fun _ => (𝒪[k] : Set k) := by
     ext v
@@ -54,6 +73,9 @@ theorem isCompact_stdLat : IsCompact (stdLat k ι : Set (ι → k)) := by
   rw [e]
   exact isCompact_univ_pi fun _ => isCompact_int k
 
+/- English proof (translation)
+Establish `ho` using `isOpen_of_span_eq_top L hL.span_eq_top`. Use `⟨ho, ?_⟩` and prove the remaining obligations. Use `haveI : CompactSpace (stdLat k ι).toAddSubgroup := isCompact_iff_compactSpace.1 (isCompact_stdLat (k := k) (ι := ι))`. Use `haveI : Finite ((stdLat k ι).toAddSubgroup ⧸ L.toAddSubgroup.addSubgroupOf (stdLat k ι).toAddSubgroup) := AddSubgroup.quotient_finite_of_isOpen _ (ho.preimage continuous_subtype_val)`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 theorem isOpen_and_relIndex_ne_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) [Fintype ι] [DecidableEq ι]
     (L : Submodule 𝒪[k] (ι → k)) (hL : Submodule.IsLattice k L) :

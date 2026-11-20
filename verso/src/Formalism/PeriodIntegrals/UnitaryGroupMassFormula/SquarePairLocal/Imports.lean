@@ -10,6 +10,13 @@ open PI.SqPair
 
 attribute [local instance] StModel.cr StModel.dom StModel.dvr StModel.hens StModel.fin
 
+/- English proof (translation)
+Use `Finset.induction_on s ⟨1, one_ne_zero, fun x hx => by simp at hx⟩ ?_` and prove the remaining obligations. Introduce `x s _ ih`. Take `⟨b, hb, hw⟩` from `ih`. Take `⟨⟨a, c⟩, hac⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 E)) x`. Simplify using `only at hac`.
+
+Establish `hc : (c : 𝓞 E) ≠ 0` using `nonZeroDivisors.ne_zero c.2`. Use `⟨b * c, mul_ne_zero hb hc, fun y hy => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hy with rfl | hy` into its components or cases. Use `⟨b * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_assoc, mul_comm (algebraMap (𝓞 E) E (c : 𝓞 E)), hac]`.
+
+Take `⟨w, hw'⟩` from `hw y hy`. Use `⟨c * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_comm (algebraMap (𝓞 E) E b), mul_assoc, hw']`.
+-/
 private theorem exists_common_denominator' {E : Type} [Field E] [NumberField E] (s : Finset E) :
     ∃ b : 𝓞 E, b ≠ 0 ∧ ∀ x ∈ s, ∃ w : 𝓞 E,
       algebraMap (𝓞 E) E b * x = algebraMap (𝓞 E) E w := by
@@ -28,6 +35,15 @@ private theorem exists_common_denominator' {E : Type} [Field E] [NumberField E] 
     refine ⟨c * w, ?_⟩
     rw [map_mul, map_mul, mul_comm (algebraMap (𝓞 E) E b), mul_assoc, hw']
 
+/- English proof (translation)
+Establish `hne : Ideal.span {b} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Use `haveI : Finite (𝓞 E ⧸ Ideal.span {b}) := by first`. Consider the case `exact (Ideal.absNorm_ne_zero_iff _).mp (fun h0 => hne (Ideal.absNorm_eq_zero_iff.mp h0))`. Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot _ hne`.
+
+Consider the case `infer_instance`. Take `⟨x, y, hxy, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => Ideal.Quotient.mk (Ideal.span {b}) (ϖ ^ n))`. Establish `key : ∀ x y : ℕ, x < y → Ideal.Quotient.mk (Ideal.span {b}) (ϖ ^ x) = Ideal.Quotient.mk (Ideal.span {b}) (ϖ ^ y) → ∃ m k : ℕ, ∃ v : 𝓞 E, (1 - ϖ ^ (m + 1)) * ϖ ^ k = b * v`. Introduce `x y hlt he`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_lt hlt`.
+
+Rewrite `he` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨v, hv⟩` from `he`. Conclude with `⟨m, x, v, by rw [← hv]; ring⟩`. Break down `Nat.lt_or_gt_of_ne hxy with hlt | hlt` into its components or cases. Conclude with `key x y hlt h`.
+
+Conclude with `key y x hlt h.symm`.
+-/
 private theorem exists_one_sub_pow_mul_pow_eq_mul {E : Type} [Field E] [NumberField E] (ϖ : 𝓞 E) (b : 𝓞 E) (hb : b ≠ 0) :
     ∃ m k : ℕ, ∃ v : 𝓞 E, (1 - ϖ ^ (m + 1)) * ϖ ^ k = b * v := by
   have hne : Ideal.span {b} ≠ ⊥ := by
@@ -51,6 +67,9 @@ private theorem exists_one_sub_pow_mul_pow_eq_mul {E : Type} [Field E] [NumberFi
   · exact key x y hlt h
   · exact key y x hlt h.symm
 
+/- English proof (translation)
+Introduce `h`. Establish `h2 : ϖ ^ (m + 1) ∈ Q` using `Q.pow_mem_of_mem hϖ (m + 1) (Nat.succ_pos m)`. Establish `h3 : (1 : 𝓞 E) ∈ Q` using `by simpa using Q.add_mem h h2`. Conclude with `hQ.ne_top ((Ideal.eq_top_iff_one Q).mpr h3)`.
+-/
 private theorem one_sub_pow_succ_not_mem_of_mem_maximal {E : Type} [Field E] [NumberField E] (Q : Ideal (𝓞 E)) [hQ : Q.IsMaximal]
     (ϖ : 𝓞 E) (hϖ : ϖ ∈ Q) (m : ℕ) : (1 - ϖ ^ (m + 1)) ∉ Q := by
   intro h
@@ -58,6 +77,9 @@ private theorem one_sub_pow_succ_not_mem_of_mem_maximal {E : Type} [Field E] [Nu
   have h3 : (1 : 𝓞 E) ∈ Q := by simpa using Q.add_mem h h2
   exact hQ.ne_top ((Ideal.eq_top_iff_one Q).mpr h3)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(simp [cj]; rfl)`. Consider the case `simp [cj]`.
+-/
 private theorem algebraMap_cj_eq_star {E : Type} [Field E] [NumberField E] [StarRing E] (x : 𝓞 E) :
     algebraMap (𝓞 E) E (cj E x) = star (algebraMap (𝓞 E) E x) := by
   first
@@ -65,6 +87,71 @@ private theorem algebraMap_cj_eq_star {E : Type} [Field E] [NumberField E] [Star
   | (simp [cj]; rfl)
   | simp [cj]
 
+/- English proof (translation)
+Unfold `LocMat`. Introduce `E _ _ _ Q hQ M hC N hN u hu1 hu2 K`. Use `haveI hQp : Q.IsPrime := hQ.isPrime`. Establish `hone : (1 : 𝓞 E) ∉ Q` using `fun h1 => hQ.ne_top ((Ideal.eq_top_iff_one Q).mpr h1)`. Establish `hϖ0 : M.ϖ ≠ 0` using `by first`.
+
+Consider the case `exact M.ϖ_ne`. Consider the case `exact StModel.ϖ_ne (M := M)`. Consider the case `exact StModel.ϖ_ne M`. Take `⟨b, hb0, hb⟩` from `exists_common_denominator' (Finset.univ.image (fun p : Fin N × Fin N => u p.1 p.2))`. Take `⟨m, k, v, hv⟩` from `exists_one_sub_pow_mul_pow_eq_mul M.ϖ b hb0`.
+
+Use `set d : 𝓞 E := 1 - M.ϖ ^ (m + 1) with hd_def`. Establish `hd : d ∉ Q` using `one_sub_pow_succ_not_mem_of_mem_maximal Q M.ϖ M.ϖ_Q m`. Establish `hdd : d * d ∉ Q` using `fun hx => hd ((hQp.mem_or_mem hx).elim id id)`. Establish `hdc : cj E d = d` using `by rw [hd_def, map_sub, map_one, map_pow, M.ϖ_cj]`. Establish `hc0 : cj E (d * M.ϖ ^ k) = d * M.ϖ ^ k` using `by rw [map_mul, map_pow, hdc, M.ϖ_cj]`.
+
+Establish `hU0 : ∀ a c, ∃ w : 𝓞 E, algebraMap (𝓞 E) E w = algebraMap (𝓞 E) E (d * M.ϖ ^ k) * u a c`. Introduce `a c`. Take `⟨w, hw⟩` from `hb (u a c) (Finset.mem_image.mpr ⟨(a, c), Finset.mem_univ _, rfl⟩)`. Use `⟨v * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hv, map_mul, map_mul, ← hw]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose U hU using hU0`. Take `⟨Um, hUm⟩ : ∃ Um : Matrix (Fin N) (Fin N) (𝓞 E), ∀ a c, Um a c = U a c` from `⟨Matrix.of U, fun _ _ => rfl⟩`. Establish `hUι : (algebraMap (𝓞 E) E).mapMatrix Um = algebraMap (𝓞 E) E (d * M.ϖ ^ k) • u`. Use extensionality with `a c`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, hUm]`. Conclude with `hU a c`. Establish `hUc : (algebraMap (𝓞 E) E).mapMatrix ((Um.map (cj E))ᵀ) = algebraMap (𝓞 E) E (d * M.ϖ ^ k) • uᴴ`. Use extensionality with `a c`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul, Matrix.conjTranspose_apply]`.
+
+Rewrite using `[algebraMap_cj_eq_star, hUm, hU, star_mul', ← algebraMap_cj_eq_star (d * M.ϖ ^ k), hc0]`. Establish `hE1 : ∀ W : Matrix (Fin N) (Fin N) (𝓞 E), (algebraMap (𝓞 E) E).mapMatrix ((Um.map (cj E))ᵀ * W * Um) = (algebraMap (𝓞 E) E (d * M.ϖ ^ k) * algebraMap (𝓞 E) E (d * M.ϖ ^ k)) • (uᴴ * (algebraMap (𝓞 E) E).mapMatrix W * u)`. Introduce `W`. Rewrite using `[map_mul, map_mul, hUc, hUι]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+
+Establish `hUU : (Um.map (cj E))ᵀ * Um = (d * M.ϖ ^ k * (d * M.ϖ ^ k)) • (1 : Matrix (Fin N) (Fin N) (𝓞 E))`. Establish `key : (algebraMap (𝓞 E) E).mapMatrix ((Um.map (cj E))ᵀ * Um) = (algebraMap (𝓞 E) E).mapMatrix ((d * M.ϖ ^ k * (d * M.ϖ ^ k)) • (1 : Matrix (Fin N) (Fin N) (𝓞 E)))`. Establish `h1` using `hE1 1`. Rewrite `h1` using `[mul_one, map_one, mul_one, hu1]`. Rewrite using `[h1]`.
+
+Use extensionality with `a c`. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, map_mul]`. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply_ne hac, smul_eq_mul, mul_zero, map_zero]`.
+
+Use extensionality with `a c`. Use `first`. Consider the case `exact congrArg (fun X => X a c) key`. Consider the case `exact IsFractionRing.injective (𝓞 E) E (congrArg (fun X => X a c) key)`. Take `⟨τ, hτ⟩` from `(M.unit_of d hd).exists_left_inv`.
+
+Establish `hσd : M.σ (M.j d) = M.j d` using `by rw [← M.j_cj, hdc]`. Establish `hστ : M.σ τ * M.j d = 1`. Establish `h1` using `congrArg M.σ hτ`. Rewrite `h1` using `[map_mul, map_one, hσd]`. Then use the resulting hypothesis. Establish `hσϖ : M.σ (M.j M.ϖ) = M.j M.ϖ` using `(M.mem₀ _).mp M.ϖ_mem`.
+
+Take `⟨h, hdef⟩ : ∃ h : Matrix (Fin N) (Fin N) M.R, h = τ • M.j.mapMatrix Um` from `⟨_, rfl⟩`. Establish `hUj : M.j.mapMatrix Um = M.j d • h`. Rewrite using `[hdef, smul_smul, show M.j d * τ = 1 by rw [mul_comm]; exact hτ, one_smul]`. Establish `hUc' : M.j.mapMatrix ((Um.map (cj E))ᵀ) = M.j d • (h.map M.σ)ᵀ`. Use extensionality with `a c`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul, hdef, map_mul, M.j_cj]`. Take the linear combination `(-(M.σ (M.j (Um c a)))) * hστ`. Establish `hR1 : ∀ W : Matrix (Fin N) (Fin N) (𝓞 E), M.j.mapMatrix ((Um.map (cj E))ᵀ * W * Um) = (M.j d * M.j d) • ((h.map M.σ)ᵀ * M.j.mapMatrix W * h)`. Introduce `W`. Rewrite using `[map_mul, map_mul, hUc', hUj]`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Establish `h2 : (M.j d * M.j d) • ((h.map M.σ)ᵀ * h) = M.j.mapMatrix ((d * M.ϖ ^ k * (d * M.ϖ ^ k)) • (1 : Matrix (Fin N) (Fin N) (𝓞 E)))`. Establish `h1` using `hR1 1`. Rewrite `h1` using `[map_one, mul_one, mul_one, hUU]`. Conclude with `h1.symm`.
+
+Establish `hh : (h.map M.σ)ᵀ * h = (M.j M.ϖ ^ (2 * k)) • (1 : Matrix (Fin N) (Fin N) M.R)`. Establish `h3 : (h.map M.σ)ᵀ * h = (τ * τ) • M.j.mapMatrix ((d * M.ϖ ^ k * (d * M.ϖ ^ k)) • (1 : Matrix (Fin N) (Fin N) (𝓞 E)))`. Rewrite using `[← h2, smul_smul, show τ * τ * (M.j d * M.j d) = 1 by linear_combination (τ * M.j d + 1) * hτ, one_smul]`. Rewrite using `[h3]`. Use extensionality with `a c`.
+
+Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, map_mul, map_pow]`. Take the linear combination `(τ * M.j d + 1) * M.j M.ϖ ^ (2 * k) * hτ`. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.one_apply_ne hac, smul_eq_mul, mul_zero, map_zero]`.
+
+Take `⟨e, f, he, heS, hef⟩` from `hC M.R M.σ M.σσ M.R₀ M.mem₀ M.unram ⟨M.j M.ϖ, M.ϖ_mem⟩ M.ϖ_irr N hN k h hh`. Use `choose Y Z hYZ using fun a c => M.dense (e a c) (2 * k + K)`. Take `⟨Ym, hYm⟩ : ∃ Ym : Matrix (Fin N) (Fin N) (𝓞 E), ∀ a c, Ym a c = Y a c` from `⟨Matrix.of Y, fun _ _ => rfl⟩`. Take `⟨Zm, hZm⟩ : ∃ Zm : Matrix (Fin N) (Fin N) M.R, ∀ a c, Zm a c = Z a c` from `⟨Matrix.of Z, fun _ _ => rfl⟩`. Establish `hYj : M.j.mapMatrix Ym = e - (M.j M.ϖ ^ (2 * k + K)) • Zm`.
+
+Use extensionality with `a c`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, hYm, hZm]`. Take the linear combination `-(hYZ a c)`. Establish `hYY : M.j.mapMatrix (Ym * Ym - Ym) = (M.j M.ϖ ^ (2 * k + K)) • (Zm - e * Zm - Zm * e + (M.j M.ϖ ^ (2 * k + K)) • (Zm * Zm))`. Rewrite using `[map_sub, map_mul, hYj]`.
+
+Simplify using `only [mul_sub, sub_mul, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_add, smul_smul, he]`. Normalize the expressions using the abelian group laws. Establish `hYcj : M.j.mapMatrix ((Ym.map (cj E))ᵀ) = ((M.j.mapMatrix Ym).map M.σ)ᵀ`. Use extensionality with `a c`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply, M.j_cj]`.
+
+Establish `hs : ((e - (M.j M.ϖ ^ (2 * k + K)) • Zm).map M.σ)ᵀ = (e.map M.σ)ᵀ - (M.j M.ϖ ^ (2 * k + K)) • (Zm.map M.σ)ᵀ`. Use extensionality with `a c`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub, map_mul, map_pow, hσϖ]`. Establish `hA : M.j.mapMatrix (Ym + (Ym.map (cj E))ᵀ - 1) = (M.j M.ϖ ^ (2 * k + K)) • (-(Zm + (Zm.map M.σ)ᵀ))`. Rewrite using `[map_sub, map_add, map_one, hYcj, hYj, hs, heS]`.
+
+Simplify using `only [smul_neg, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hcT : ((algebraMap (𝓞 E) E).mapMatrix Ym)ᴴ = (algebraMap (𝓞 E) E).mapMatrix ((Ym.map (cj E))ᵀ)`. Use extensionality with `a c`. Simplify using `only [Matrix.conjTranspose_apply, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply]`.
+
+Conclude with `(algebraMap_cj_eq_star _).symm`. Establish `hsq : (algebraMap (𝓞 E) E).mapMatrix Ym * (algebraMap (𝓞 E) E).mapMatrix Ym - (algebraMap (𝓞 E) E).mapMatrix Ym = (algebraMap (𝓞 E) E).mapMatrix (Ym * Ym - Ym)`. Rewrite using `[map_sub, map_mul]`. Establish `hpl : (algebraMap (𝓞 E) E).mapMatrix Ym + ((algebraMap (𝓞 E) E).mapMatrix Ym)ᴴ - 1 = (algebraMap (𝓞 E) E).mapMatrix (Ym + (Ym.map (cj E))ᵀ - 1)`. Rewrite using `[hcT, map_sub, map_add, map_one]`.
+
+Establish `hdetA : ∀ (A : Matrix (Fin N) (Fin N) (𝓞 E)) (V : Matrix (Fin N) (Fin N) M.R), M.j.mapMatrix A = (M.j M.ϖ ^ (2 * k + K)) • V → ∀ a c, ∃ s : 𝓞 E, s ∉ Q ∧ ∃ w : 𝓞 E, s * A a c = M.ϖ ^ K * w`. Introduce `A V hAV a c`. Apply `M.detect` to reduce the goal to its premises. Use `⟨M.j M.ϖ ^ (2 * k) * V a c, ?_⟩` and prove the remaining obligations. Establish `h1 : M.j (A a c) = M.j M.ϖ ^ (2 * k + K) * V a c` using `congrArg (fun X => X a c) hAV`.
+
+Rewrite using `[h1, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGen : ∀ (W : Matrix (Fin N) (Fin N) (𝓞 E)) (mm : ℕ) (V : Matrix (Fin N) (Fin N) M.R), (h.map M.σ)ᵀ * M.j.mapMatrix W * h = (M.j M.ϖ ^ (2 * k + mm)) • V → ∀ a c, DivAt Q (M.ϖ ^ mm) ((uᴴ * (algebraMap (𝓞 E) E).mapMatrix W * u) a c)`. Introduce `W mm V hV a c`. Use `divAt_conj M.ϖ (d * d) hϖ0 hdd k mm ((Um.map (cj E))ᵀ * W * Um) _ ?_ ?_ a c` and prove the remaining obligations.
+
+Introduce `a' c'`. Establish `h1 : algebraMap (𝓞 E) E (((Um.map (cj E))ᵀ * W * Um) a' c') = (algebraMap (𝓞 E) E (d * M.ϖ ^ k) * algebraMap (𝓞 E) E (d * M.ϖ ^ k)) * (uᴴ * (algebraMap (𝓞 E) E).mapMatrix W * u) a' c'` using `congrArg (fun X => X a' c') (hE1 W)`. Rewrite using `[h1]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `a' c'`. Apply `M.detect` to reduce the goal to its premises. Use `⟨M.j d * M.j d * V a' c', ?_⟩` and prove the remaining obligations. Establish `h1` using `hR1 W`. Rewrite `h1` using `[hV]`.
+
+Establish `h2 : M.j (((Um.map (cj E))ᵀ * W * Um) a' c') = M.j d * M.j d * (M.j M.ϖ ^ (2 * k + mm) * V a' c')` using `congrArg (fun X => X a' c') h1`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hV2 : (h.map M.σ)ᵀ * M.j.mapMatrix Ym * h = (M.j M.ϖ ^ (2 * k + 0)) • (f - (M.j M.ϖ ^ K) • ((h.map M.σ)ᵀ * Zm * h))`. Rewrite using `[hYj, mul_sub, sub_mul, mul_assoc _ e h, hef, ← mul_assoc, hh, add_zero, pow_add]`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, one_mul, smul_sub, smul_smul]`. Establish `hV4 : (h.map M.σ)ᵀ * M.j.mapMatrix (Ym * Ym - Ym) * h = (M.j M.ϖ ^ (2 * k + K)) • ((h.map M.σ)ᵀ * (Zm - e * Zm - Zm * e + (M.j M.ϖ ^ (2 * k + K)) • (Zm * Zm)) * h)`. Rewrite using `[hYY]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul]`. Establish `hV6 : (h.map M.σ)ᵀ * M.j.mapMatrix (Ym + (Ym.map (cj E))ᵀ - 1) * h = (M.j M.ϖ ^ (2 * k + K)) • ((h.map M.σ)ᵀ * (-(Zm + (Zm.map M.σ)ᵀ)) * h)`.
+
+Rewrite using `[hA]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul]`. Use `⟨(algebraMap (𝓞 E) E).mapMatrix Ym, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a c`. Conclude with `intAt_of_divAt_zero M.ϖ (divAt_of_map Ym (M.ϖ ^ 0) (fun a' c' => ⟨1, hone, Ym a' c', by simp⟩) a c)`.
+
+Introduce `a c`. Conclude with `intAt_of_divAt_zero M.ϖ (hGen Ym 0 _ hV2 a c)`. Introduce `a c`. Rewrite using `[hsq]`. Conclude with `divAt_of_map _ _ (hdetA _ _ hYY) a c`.
+
+Introduce `a c`. Rewrite using `[hsq]`. Conclude with `hGen _ K _ hV4 a c`. Introduce `a c`. Rewrite using `[hpl]`.
+
+Conclude with `divAt_of_map _ _ (hdetA _ _ hA) a c`. Introduce `a c`. Rewrite using `[hpl]`. Conclude with `hGen _ K _ hV6 a c`.
+-/
 theorem locMat : LocMat := by
   classical
   unfold LocMat

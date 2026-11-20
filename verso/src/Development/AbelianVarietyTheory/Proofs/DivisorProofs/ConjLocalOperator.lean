@@ -18,6 +18,9 @@ variable {F : Type} [Field F] [NumberField F]
 def conjSchR (κ : Type) [Fintype κ] : SInf F κ →L[ℝ] SInf F κ :=
   SchwartzMap.postcompCLM (Complex.conjCLE : ℂ →L[ℝ] ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjSchR_apply {κ : Type} [Fintype κ] (f : SInf F κ) (x : κ → mixedEmbedding.mixedSpace F) :
     conjSchR κ f x = starRingEnd ℂ (f x) := rfl
 
@@ -32,10 +35,16 @@ def conjSchCLM {κ κ₁ : Type} [Fintype κ] [Fintype κ₁] (T : SInf F κ →
       smul_eq_mul, map_mul, Complex.conj_conj, conjSchR_apply]
   cont := (conjSchR κ₁).continuous.comp (T.continuous.comp (conjSchR κ).continuous)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.comp (starRingEnd ℂ), h.2.comp_left (g := starRingEnd ℂ) (map_zero _)⟩`.
+-/
 theorem conj_mem_SB {X : Type} [TopologicalSpace X] {φ : X → ℂ} (h : φ ∈ SB X) :
     (fun x => starRingEnd ℂ (φ x)) ∈ SB X :=
   ⟨h.1.comp (starRingEnd ℂ), h.2.comp_left (g := starRingEnd ℂ) (map_zero _)⟩
 
+/- English proof (translation)
+Unfold `stdInd`. Distinguish the cases in `hy : y ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F}`. Rewrite using `[Set.indicator_of_mem hy, Pi.one_apply, map_one]`. Rewrite using `[Set.indicator_of_notMem hy, map_zero]`.
+-/
 theorem conj_stdInd_apply (κ : Type) (v : Pl F) (y : κ → Fv F v) :
     starRingEnd ℂ (stdInd F κ v y) = stdInd F κ v y := by
   unfold stdInd
@@ -43,16 +52,29 @@ theorem conj_stdInd_apply (κ : Type) (v : Pl F) (y : κ → Fv F v) :
   · rw [Set.indicator_of_mem hy, Pi.one_apply, map_one]
   · rw [Set.indicator_of_notMem hy, map_zero]
 
+/- English proof (translation)
+The claim follows from `funext (conj_stdInd_apply κ v)`.
+-/
 theorem conj_stdInd (κ : Type) (v : Pl F) :
     (fun y => starRingEnd ℂ (stdInd F κ v y)) = stdInd F κ v :=
   funext (conj_stdInd_apply κ v)
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, conjSchR_apply, map_mul]`. Use `congr 1`. Conclude with `MulEquiv.map_finprod (starRingAut : ℂ ≃+* ℂ).toMulEquiv _`.
+-/
 theorem conj_pure {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x : κ → AF F) :
     starRingEnd ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ x) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (conjSchR κ f) (fun v y => starRingEnd ℂ (φ v y)) x := by
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, conjSchR_apply, map_mul]
   congr 1
   exact MulEquiv.map_finprod (starRingAut : ℂ ≃+* ℂ).toMulEquiv _
 
+/- English proof (translation)
+Take `⟨ei, ev, hSB, hstd, hloc⟩` from `he`. Use `⟨conjSchCLM ei, fun v => conjLin (ev v), fun v φ hφ => conj_mem_SB (hSB v _ (conj_mem_SB hφ)), ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hstd] with v hv`. Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply, conj_stdInd, hv, conj_stdInd_apply]`.
+
+Introduce `f φ hφ hfin`. Use function extensionality and compare the values at `y`. Rewrite using `[conjLin_apply]`. Establish `h1 : (fun x => starRingEnd ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ x)) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (conjSchR κ f) (fun v y => starRingEnd ℂ (φ v y))`. Use function extensionality and compare the values at `(conj_pure f φ)`.
+
+Establish `hfin' : ∀ᶠ v in cofinite, (fun y => starRingEnd ℂ (φ v y)) = stdInd F κ v` using `by filter_upwards [hfin] with v hv`. Rewrite using `[hv, conj_stdInd]`. Rewrite using `[h1, hloc _ _ (fun v => conj_mem_SB (hφ v)) hfin', conj_pure]`. Both sides reduce to the same expression.
+-/
 theorem isLocOp_conjLin {κ κ₁ : Type} [Fintype κ] [Fintype κ₁] (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ)
     (he : IsLocOp e) : IsLocOp (conjLin e) := by
   obtain ⟨ei, ev, hSB, hstd, hloc⟩ := he

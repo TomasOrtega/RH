@@ -16,15 +16,24 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 
 open Classical
 
+/- English proof (translation)
+Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `h`. Assume the negation of the conclusion as `hn`. Conclude with `hP (Finset.mem_sdiff.2 ⟨h, hn⟩)`.
+-/
 theorem tw_mem_vGs_of_not {P : rowSG Pr sel mu} (hP : P.1 ∉ twQOff (Pr := Pr) sel mu) : P.1 ∈ Pr.vGs := by
   rcases Finset.mem_union.1 P.2 with h | h
   · exact h
   · by_contra hn
     exact hP (Finset.mem_sdiff.2 ⟨h, hn⟩)
 
+/- English proof (translation)
+The claim follows from `Finset.mem_sdiff.2 ⟨(Finset.mem_union.1 P.2).resolve_left hP, hP⟩`.
+-/
 theorem tw_mem_QOff {P : rowSG Pr sel mu} (hP : P.1 ∉ Pr.vGs) : P.1 ∈ twQOff (Pr := Pr) sel mu :=
   Finset.mem_sdiff.2 ⟨(Finset.mem_union.1 P.2).resolve_left hP, hP⟩
 
+/- English proof (translation)
+Unfold `twCFin at hD`. Use `split_ifs at hD with hf`. Conclude with `(Set.Finite.mem_toFinset hf).1 hD`. Conclude with `absurd hD (Finset.notMem_empty _)`.
+-/
 theorem twCFin_sub {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} {P : twQOff (Pr := Pr) sel mu}
     {D : Quotient (twSetoid (Pr := Pr) (R := R) cst.sharp (i + 1) P.1)} (hD : D ∈ twCFin Ch sel mu cst st P) :
     D ∈ twCSet Ch sel mu cst st P := by
@@ -33,6 +42,9 @@ theorem twCFin_sub {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i
   · exact (Set.Finite.mem_toFinset hf).1 hD
   · exact absurd hD (Finset.notMem_empty _)
 
+/- English proof (translation)
+Unfold `twCFin`. Rewrite using `[dif_pos hf]`. Conclude with `(Set.Finite.mem_toFinset hf).2 hD`.
+-/
 theorem twCFin_mem {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} {P : twQOff (Pr := Pr) sel mu}
     (hf : (twCSet Ch sel mu cst st P).Finite) {D : Quotient (twSetoid (Pr := Pr) (R := R) cst.sharp (i + 1) P.1)}
     (hD : D ∈ twCSet Ch sel mu cst st P) : D ∈ twCFin Ch sel mu cst st P := by
@@ -44,6 +56,9 @@ def TwNormAt {i : ℕ} (st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i) : Pr
   ∀ (P : twQOff (Pr := Pr) sel mu) D, D ∈ twCSet Ch sel mu cst st P →
     ∃ h, Quotient.mk _ h = D ∧ TwCand Ch sel mu cst st P h ∧ TwNF (Pr := Pr) (i + 1) P.1 h ∧ prCat (Pr := Pr) cst.sharp (i + 1) P.1 h ≤ GLint X.E (R.N (i + 1)) P.1
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec hD`.
+-/
 theorem twRep_spec {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} {P : twQOff (Pr := Pr) sel mu}
     {D : Quotient (twSetoid (Pr := Pr) (R := R) cst.sharp (i + 1) P.1)}
     (hD : ∃ h, Quotient.mk _ h = D ∧ TwCand Ch sel mu cst st P h ∧ TwNF (Pr := Pr) (i + 1) P.1 h ∧ prCat (Pr := Pr) cst.sharp (i + 1) P.1 h ≤ GLint X.E (R.N (i + 1)) P.1) :
@@ -51,11 +66,17 @@ theorem twRep_spec {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i
       TwNF (Pr := Pr) (i + 1) P.1 (twRep Ch sel mu cst st P D) ∧ prCat (Pr := Pr) cst.sharp (i + 1) P.1 (twRep Ch sel mu cst st P D) ≤ GLint X.E (R.N (i + 1)) P.1 :=
   Classical.epsilon_spec hD
 
+/- English proof (translation)
+Simplify using `only [twNext]`. Rewrite using `[dif_neg (fun h => (Finset.mem_sdiff.1 h).2 hP)]`.
+-/
 theorem twNext_h_g {i : ℕ} (st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i) (b : (twNext Ch sel mu cst st).β)
     (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) : (twNext Ch sel mu cst st).h b P = 1 := by
   dsimp only [twNext]
   rw [dif_neg (fun h => (Finset.mem_sdiff.1 h).2 hP)]
 
+/- English proof (translation)
+Simplify using `only [twNext]`. Rewrite using `[dif_pos (show (twRow P).1 ∈ twQOff (Pr := Pr) sel mu from P.2)]`. Both sides reduce to the same expression.
+-/
 theorem twNext_h_Q {i : ℕ} (st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i) (b : (twNext Ch sel mu cst st).β)
     (P : twQOff (Pr := Pr) sel mu) :
     (twNext Ch sel mu cst st).h b (twRow P) = twRep Ch sel mu cst st P (b.1 P).1 := by
@@ -63,6 +84,9 @@ theorem twNext_h_Q {i : ℕ} (st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i
   rw [dif_pos (show (twRow P).1 ∈ twQOff (Pr := Pr) sel mu from P.2)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[twNext_h_Q]`. Conclude with `twRep_spec (hN P _ (twCFin_sub (b.1 P).2))`.
+-/
 theorem twNext_spec {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} (hN : TwNormAt (Ch := Ch) (cst := cst) st)
     (b : (twNext Ch sel mu cst st).β) (P : twQOff (Pr := Pr) sel mu) :
     Quotient.mk _ ((twNext Ch sel mu cst st).h b (twRow P)) = (b.1 P).1 ∧
@@ -71,6 +95,11 @@ theorem twNext_spec {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) 
   rw [twNext_h_Q]
   exact twRep_spec (hN P _ (twCFin_sub (b.1 P).2))
 
+/- English proof (translation)
+Distinguish the cases in `hP : P.1 ∈ twQOff (Pr := Pr) sel mu`. Take `⟨-, ⟨-, al, hal⟩, -, -⟩` from `twNext_spec hN b ⟨P.1, hP⟩`. Conclude with `⟨al, hal⟩`. Establish `hG` using `tw_mem_vGs_of_not hP`. Take `⟨al, hal⟩` from `b.2 P hG`.
+
+Conclude with `⟨al, by rw [twNext_h_g st b P hG]; exact hal⟩`.
+-/
 theorem twNext_nonvan {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} (hN : TwNormAt (Ch := Ch) (cst := cst) st)
     (b : (twNext Ch sel mu cst st).β) (P : rowSG Pr sel mu) :
     ∃ al : st.β, FiniteSumNonzeroLargeDepth Ch sel mu cst i P (st.h al P) ((twNext Ch sel mu cst st).h b P) := by
@@ -81,6 +110,11 @@ theorem twNext_nonvan {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)
     obtain ⟨al, hal⟩ := b.2 P hG
     exact ⟨al, by rw [twNext_h_g st b P hG]; exact hal⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `P`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `(twNext_spec hN b P).1`. Establish `h2` using `(twNext_spec hN b' P).1`.
+
+Rewrite using `[← h1, ← h2]`. Conclude with `Quotient.sound (H (twRow P))`.
+-/
 theorem twNext_inj {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} (hN : TwNormAt (Ch := Ch) (cst := cst) st)
     (b b' : (twNext Ch sel mu cst st).β)
     (H : ∀ P : rowSG Pr sel mu, SameDC (Pr := Pr) cst.sharp (i + 1) P.1 ((twNext Ch sel mu cst st).h b P) ((twNext Ch sel mu cst st).h b' P)) :
@@ -93,6 +127,15 @@ theorem twNext_inj {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i
   rw [← h1, ← h2]
   exact Quotient.sound (H (twRow P))
 
+/- English proof (translation)
+Establish `hmem : ∀ P : twQOff (Pr` using `Pr) sel mu, Quotient.mk (twSetoid (Pr := Pr) (R := R) cst.sharp (i + 1) P.1) (hh (twRow P)) ∈ twCFin Ch sel mu cst st P := fun P => by`. Apply `twCFin_mem (hfin P)` to reduce the goal to its premises. Establish `hc : TwCand Ch sel mu cst st P (hh (twRow P))` using `⟨hb (twRow P) (Finset.mem_sdiff.1 P.2).2, H (twRow P)⟩`. Conclude with `⟨hh (twRow P), rfl, hc⟩`. Establish `hne : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → ∃ al : st.β, FiniteSumNonzeroLargeDepth Ch sel mu cst i P (st.h al P) 1` using `fun P hP => by`.
+
+Take `⟨al, -⟩` from `H P`. Conclude with `⟨al, by rw [hg1 al P hP]; exact hNV P hP⟩`. Set `b : (twNext Ch sel mu cst st).β` to `⟨fun P => ⟨_, hmem P⟩, hne⟩`. Use `⟨b, fun P => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hP : P.1 ∈ twQOff (Pr := Pr) sel mu`.
+
+Establish `h1` using `(twNext_spec hN b ⟨P.1, hP⟩).1`. Conclude with `Quotient.exact h1`. Establish `hG` using `tw_mem_vGs_of_not hP`. Rewrite using `[twNext_h_g st b P hG]`. Take `⟨al, hal⟩` from `H P`.
+
+Rewrite `hal` using `[hg1 al P hG]`. Conclude with `hSG P hG (hh P) (hs P hG) hal`.
+-/
 theorem twNext_surj {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) i} (hN : TwNormAt (Ch := Ch) (cst := cst) st)
     (hfin : ∀ P, (twCSet Ch sel mu cst st P).Finite) (hg1 : ∀ al (P : rowSG Pr sel mu), P.1 ∈ Pr.vGs → st.h al P = 1)
     (hSG : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → ∀ h ∈ stabL X.E _ (lamYat (Pr := Pr) (i + 1) P.1),
@@ -123,14 +166,26 @@ theorem twNext_surj {i : ℕ} {st : TwSt X Pr R (QE sel (mu : Chr X.F X.E X.K)) 
 
 variable (Ch sel mu cst)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twSt_zero (m2 : ℕ) : twSt Ch sel mu cst m2 0 = twUnitSt _ 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[twSt, if_pos h]`.
+-/
 theorem twSt_succ_le {m2 i : ℕ} (h : i + 1 ≤ m2) : twSt Ch sel mu cst m2 (i + 1) = twNext Ch sel mu cst (twSt Ch sel mu cst m2 i) := by
   rw [twSt, if_pos h]
 
+/- English proof (translation)
+Rewrite using `[twSt, if_neg (by omega), if_pos rfl]`.
+-/
 theorem twSt_last (m2 : ℕ) : twSt Ch sel mu cst m2 (m2 + 1) = twUnitSt _ (m2 + 1) := by
   rw [twSt, if_neg (by omega), if_pos rfl]
 
+/- English proof (translation)
+The claim follows from `| 0, _ => Nat.zero_le _ | i + 1, b => by revert b by_cases h1 : i + 1 ≤ m2 · intro _; omega · by_cases h2 : i + 1 = m2 + 1 · intro _; omega · rw [show twSt Ch sel mu cst m2 (i + 1) = twEmptySt _ (i + 1) by rw [twSt, if_neg h1, if_neg h2]] intro b; exact b.elim`.
+-/
 theorem twSt_le (m2 : ℕ) : ∀ (j : ℕ) (_b : (twSt Ch sel mu cst m2 j).β), j ≤ m2 + 1
   | 0, _ => Nat.zero_le _
   | i + 1, b => by
@@ -142,6 +197,9 @@ theorem twSt_le (m2 : ℕ) : ∀ (j : ℕ) (_b : (twSt Ch sel mu cst m2 j).β), 
         · rw [show twSt Ch sel mu cst m2 (i + 1) = twEmptySt _ (i + 1) by rw [twSt, if_neg h1, if_neg h2]]
           intro b; exact b.elim
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => rfl | i + 1, b, P, hP => by revert b by_cases h1 : i + 1 ≤ m2 · rw [twSt_succ_le Ch sel mu cst h1] intro b; exact twNext_h_g _ b P hP · by_cases h2 : i + 1 = m2 + 1 · rw [show twSt Ch sel mu cst m2 (i + 1) = twUnitSt _ (i + 1) by rw [twSt, if_neg h1, if_pos h2]] i …`.
+-/
 theorem twSt_h_g (m2 : ℕ) : ∀ (j : ℕ) (b : (twSt Ch sel mu cst m2 j).β) (P : rowSG Pr sel mu), P.1 ∈ Pr.vGs →
     (twSt Ch sel mu cst m2 j).h b P = 1
   | 0, _, _, _ => rfl

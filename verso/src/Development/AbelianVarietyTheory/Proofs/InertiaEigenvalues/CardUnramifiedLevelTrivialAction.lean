@@ -19,6 +19,11 @@ section Triv
 
 variable {O : Type} [CommRing O] {G : Type} [Group G] {M : Type} [AddCommGroup M] [Module O M]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Use function extensionality and compare the values at `g`. Use `show ρ g v - v = 0`. Rewrite using `[hρ, sub_self]`.
+
+Introduce and unpack `rfl`. Conclude with `zero_mem _`.
+-/
 theorem mem_coboundaries_of_trivial {ρ : Representation O G M} (hρ : ∀ g m, ρ g m = m) (x : G → M) :
     x ∈ Formalism.NG.coB1 ρ ↔ x = 0 := by
   constructor
@@ -29,6 +34,9 @@ theorem mem_coboundaries_of_trivial {ρ : Representation O G M} (hρ : ∀ g m, 
   · rintro rfl
     exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries_of_trivial hρ]`.
+-/
 theorem mk_eq_zero_of_triv {ρ : Representation O G M} (hρ : ∀ g m, ρ g m = m)
     (z : Formalism.NG.coZ1s ρ) : (Submodule.Quotient.mk z : Formalism.NG.H1z ρ) = 0 ↔ (z : G → M) = 0 := by
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype,
@@ -36,6 +44,27 @@ theorem mk_eq_zero_of_triv {ρ : Representation O G M} (hρ : ∀ g m, ρ g m = 
 
 variable [TopologicalSpace G]
 
+/- English proof (translation)
+Establish `hres : ∀ (g : I) (m : M), Formalism.NG.resRep ρ I g m = m` using `fun g m => hρ g m`. Set `coc : LCHomLev M c I → Formalism.NG.coZ1s ρ` to `fun f => ⟨fun g => (f.1 g).val, fun a b => by show (f.1 (a * b)).val = (f.1 a).val + ρ a (f.1 b).val`. Rewrite using `[hρ, f.2.2.1, Lev.val_add]⟩`. Set `F : LCHomLev M c I → LinearMap.ker (c • LinearMap.id : ↥((Formalism.RepresentationBoundsCohomology.BR.unrH1 ρ I).comap (ReciprocityTheory.ChartRestriction.T2.HcLC ρ).subtype) →ₗ[O] ↥((Formalism.RepresentationBoundsCohomology.BR.unrH1 ρ I).comap (ReciprocityTheory.ChartRestriction …` to `fun f => ⟨⟨⟨Submodule.Quotient.mk (coc f), Submodule.mem_map.2 ⟨coc f, f.2.1.comp Lev.val, rfl⟩⟩, by`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (Formalism.NG.restrictCocycles1 ρ I (coc f)) : Formalism.NG.H1z (Formalism.NG.resRep ρ I)) = 0`.
+
+Rewrite using `[mk_eq_zero_of_triv hres]`. Use function extensionality and compare the values at `g`. Use `show (f.1 g.1).val = 0`. Rewrite using `[f.2.2.2 g.1 g.2]`. Use the proof step `rfl⟩,`.
+
+Use `by`. Rewrite using `[LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show c • (Submodule.Quotient.mk (coc f) : Formalism.NG.H1z ρ) = 0`.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, mk_eq_zero_of_triv hρ]`. Use function extensionality and compare the values at `g`. Conclude with `Lev.smul_val (f.1 g)⟩`. Establish `hinj : ∀ f f' : LCHomLev M c I, (Submodule.Quotient.mk (coc f) : Formalism.NG.H1z ρ) = Submodule.Quotient.mk (coc f') → f = f'`. Introduce `f f' h`.
+
+Rewrite `h` using `[← sub_eq_zero, ← Submodule.Quotient.mk_sub, mk_eq_zero_of_triv hρ]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Apply `Lev.ext` to reduce the goal to its premises. Establish `h1 : (f.1 g).val - (f'.1 g).val = 0` using `congrFun h g`.
+
+Conclude with `sub_eq_zero.1 h1`. Use `(Nat.card_eq_of_bijective F ⟨fun f f' h => hinj f f' ?_, fun y => ?_⟩).symm` and prove the remaining obligations. Conclude with `congrArg (fun y => y.1.1.1) h`. Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.1 y.1.1.2`. Establish `hk : (Submodule.Quotient.mk (c • z) : Formalism.NG.H1z ρ) = 0`.
+
+Rewrite using `[Submodule.Quotient.mk_smul]`. Express the relevant statement in the definitionally equal form `c • Submodule.mkQ _ z = 0`. Rewrite using `[hzy]`. Conclude with `congrArg (fun w => w.1.1) (LinearMap.mem_ker.1 y.2)`. Rewrite `hk` using `[mk_eq_zero_of_triv hρ]`.
+
+Establish `hz0 : ∀ g, c • (z : G → M) g = 0` using `fun g => congrFun hk g`. Establish `hu : Formalism.NG.resH1 ρ I (Submodule.mkQ _ z) = 0`. Rewrite using `[hzy]`. Conclude with `y.1.2`. Establish `hu' : (Submodule.Quotient.mk (Formalism.NG.restrictCocycles1 ρ I z) : Formalism.NG.H1z (Formalism.NG.resRep ρ I)) = 0` using `hu`.
+
+Rewrite `hu'` using `[mk_eq_zero_of_triv hres]`. Establish `hI0 : ∀ g ∈ I, (z : G → M) g = 0` using `fun g hg => congrFun hu' ⟨g, hg⟩`. Set `f : LCHomLev M c I` to `⟨fun g => Lev.mk ((z : G → M) g) (hz0 g), IsLocallyConstant.desc _ Lev.val hz (fun a b h => Lev.ext h), fun a b => Lev.ext (by rw [Lev.val_add, Lev.val_mk, Lev.val_mk, Lev.val_mk, z.2 a b, hρ]), fun g hg => Lev.ext (by rw [Lev.val_mk, hI0 g hg]; rfl)⟩`. Use `⟨f, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (coc f) = y.1.1.1`. Rewrite using `[← hzy]`. Both sides reduce to the same expression.
+-/
 theorem card_torsion_eq_locConstHom_trivial_action (ρ : Representation O G M) (hρ : ∀ g m, ρ g m = m)
     (I : Subgroup G) (c : O) :
     Nat.card (LinearMap.ker (c • LinearMap.id :
@@ -114,6 +143,11 @@ variable {R : Type} [CommRing R] {Γ : Type} [Group Γ] [TopologicalSpace Γ] {N
   [AddCommGroup N] [Module R N] [TopologicalSpace N] [IsTopologicalAddGroup N]
   [ContinuousConstSMul R N]
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hm g, hrho, sub_self]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨0, fun g => by rw [map_zero, sub_zero]; rfl⟩`.
+-/
 theorem H1_mk_eq_zero_iff_of_trivial {rho : Representation R Γ N} (hrho : ∀ g m, rho g m = m)
     (z : Z1 rho) : (Submodule.Quotient.mk z : H1 rho) = 0 ↔ z = 0 := by
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]
@@ -126,6 +160,9 @@ theorem H1_mk_eq_zero_iff_of_trivial {rho : Representation R Γ N} (hrho : ∀ g
   · rintro rfl
     exact ⟨0, fun g => by rw [map_zero, sub_zero]; rfl⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (restrictCocycles1 rho J.subtype continuous_subtype_val z) : H1 (rho.comp J.subtype)) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]`. Conclude with `(mem_coboundaries1 _ _).2 ⟨0, fun g => by rw [map_zero, sub_zero]; exact hz g.1 g.2⟩`.
+-/
 theorem mk_mem_H1ur_of_vanish (rho : Representation R Γ N) (J : Subgroup Γ) (z : Z1 rho)
     (hz : ∀ g ∈ J, z.1 g = 0) : (Submodule.Quotient.mk z : H1 rho) ∈ H1ur rho J := by
   change (Submodule.Quotient.mk (restrictCocycles1 rho J.subtype continuous_subtype_val z) :
@@ -133,6 +170,9 @@ theorem mk_mem_H1ur_of_vanish (rho : Representation R Γ N) (J : Subgroup Γ) (z
   rw [Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]
   exact (mem_coboundaries1 _ _).2 ⟨0, fun g => by rw [map_zero, sub_zero]; exact hz g.1 g.2⟩
 
+/- English proof (translation)
+Establish `h1 : (Submodule.Quotient.mk (restrictCocycles1 rho J.subtype continuous_subtype_val z) : H1 (rho.comp J.subtype)) = 0` using `hz`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 h1`. Establish `h3 : z.1 g = rho g m - m` using `hm ⟨g, hg⟩`. Rewrite using `[h3, hJ g hg, sub_self]`.
+-/
 theorem vanish_of_mk_mem_H1ur (rho : Representation R Γ N) (J : Subgroup Γ)
     (hJ : ∀ g ∈ J, ∀ m, rho g m = m) (z : Z1 rho)
     (hz : (Submodule.Quotient.mk z : H1 rho) ∈ H1ur rho J) (g : Γ) (hg : g ∈ J) : z.1 g = 0 := by
@@ -145,6 +185,21 @@ theorem vanish_of_mk_mem_H1ur (rho : Representation R Γ N) (J : Subgroup Γ)
 
 end H1Triv
 
+/- English proof (translation)
+Use `letI := levZ (M := M) p r h`. Set `ρ'` to `levRepZ p r h (ρ.comp i.symm.toMulEquiv.toMonoidHom)`. Establish `hρ' : ∀ g x, ρ' g x = x` using `fun g x => Lev.ext (hρ _ _)`. Set `F : LCHomLev M c I → Formalism.GaloisCohomology.unrK ρ'` to `fun f => ⟨Submodule.Quotient.mk ⟨f.1 ∘ i.symm, (f.2.1.comp_continuous i.symm.continuous).continuous, fun a b => by show f.1 (i.symm (a * b)) = f.1 (i.symm a) + ρ' a (f.1 (i.symm b))`. Rewrite using `[hρ', map_mul, f.2.2.1]⟩,`.
+
+Use `mk_mem_H1ur_of_vanish ρ' _ _ fun g hg => by show f.1 (i.symm g) = 0`. Conclude with `f.2.2.2 _ ((hI _).2 (by rw [ContinuousMulEquiv.apply_symm_apply]; exact hg))⟩`. Use `Nat.card_eq_of_bijective F ⟨fun f f' hff => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Subtype.val hff`. Rewrite `h1` using `[← sub_eq_zero, ← Submodule.Quotient.mk_sub, H1_mk_eq_zero_iff_of_trivial hρ', sub_eq_zero]`.
+
+Establish `h2` using `congrArg Subtype.val h1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `h3` using `congrFun h2 (i g)`. Simplify `h3` using `only [Function.comp_apply, ContinuousMulEquiv.symm_apply_apply]`.
+
+Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ x.1`. Establish `hx : (Submodule.Quotient.mk z : H1 ρ') ∈ H1ur ρ' (Formalism.GaloisCohomology.inertiaK p K)`. Rewrite using `[hz]`. Conclude with `x.2`. Set `f : LCHomLev M c I` to `⟨fun g => z.1 (i g), ((IsLocallyConstant.iff_continuous _).2 z.2.1).comp_continuous i.continuous, fun a b => by show z.1 (i (a * b)) = z.1 (i a) + z.1 (i b)`.
+
+Rewrite using `[map_mul, z.2.2, hρ'],`. Use `fun g hg => vanish_of_mk_mem_H1ur ρ' _ (fun σ _ m => hρ' σ m) z hx (i g) ((hI g).1 hg)⟩`. Use `⟨f, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = x.1`.
+
+Rewrite using `[← hz]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show z.1 (i (i.symm g)) = z.1 g`.
+
+Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+-/
 theorem card_LCHomLev_eq_unrK {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     {O : Type} [CommRing O] {G : Type} [Group G] [TopologicalSpace G]
     (i : G ≃ₜ* Formalism.GaloisCohomology.GK p K) {M : Type} [AddCommGroup M] [Module O M]
@@ -194,6 +249,9 @@ theorem card_LCHomLev_eq_unrK {p : ℕ} [Fact p.Prime] {K : IntermediateField �
 
 open scoped ReciprocityTheory.DiscreteGroups.LocalClassField in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Nat.card (Neutral.B1.H1ur rho (Neutral.B1.inertiaK p K)) = Nat.card (Neutral.B1.H0 rho)`. Use `replace hI : ∀ σ ∈ Neutral.B1.inertiaK p K, ∀ m, rho σ m = m := hI`. Rewrite `hI`, the goal using `[← ReciprocityTheory.DiscreteGroups.LocalClassField.subG_Kur_eq_inertiaK hK]`. Conclude with `ReciprocityTheory.DiscreteGroups.LocalClassField.InflationOneCocycles.card_H1ur hrho hI (s := ReciprocityTheory.DiscreteGroups.LocalClassField.frobK p K) (ReciprocityTheory.DiscreteGroups.LocalClassField.isZHat_GalKur hK)`.
+-/
 theorem card_unramifiedClasses_eq_card_invariants_localGalois {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
     (hK : FiniteDimensional ℚ_[p] K) {R : Type} [CommRing R] {N : Type} [AddCommGroup N] [Module R N]
     [Finite N] [TopologicalSpace N] [DiscreteTopology N]
@@ -206,6 +264,13 @@ theorem card_unramifiedClasses_eq_card_invariants_localGalois {p : ℕ} [Fact p.
   exact ReciprocityTheory.DiscreteGroups.LocalClassField.InflationOneCocycles.card_H1ur hrho hI (s := ReciprocityTheory.DiscreteGroups.LocalClassField.frobK p K)
     (ReciprocityTheory.DiscreteGroups.LocalClassField.isZHat_GalKur hK)
 
+/- English proof (translation)
+Introduce `p _ K hK O _ _ _ _ ϖ hϖ hp G _ _ i M _ _ e ρ hρ I hI n`. Establish `hpn : ((p : O) ^ n) ∈ Ideal.span {ϖ ^ n}` using `Ideal.mem_span_singleton.2 (pow_dvd_pow_of_dvd (Ideal.mem_span_singleton.1 hp) n)`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩`. Use `letI := levZ (M := M) p n hpn`. Take `⟨hfin, hcard⟩` from `levKO_card hϖ e n`.
+
+Use `haveI := hfin`. Set `ρ'` to `levRepZ p n hpn (ρ.comp i.symm.toMulEquiv.toMonoidHom)`. Establish `hρ' : ∀ g x, ρ' g x = x` using `fun g x => Lev.ext (hρ _ _)`. Establish `hcont : ReciprocityTheory.Gal.ContAction ρ'`. Unfold `ReciprocityTheory.Gal.ContAction`.
+
+Simplify using `only [hρ']`. Conclude with `continuous_snd`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_unr_lev_of_triv : ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}, FiniteDimensional ℚ_[p] K →
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (IsLocalRing.ResidueField O)] {ϖ : O},
     Irreducible ϖ → (p : O) ∈ Ideal.span {ϖ} →

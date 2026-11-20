@@ -12,6 +12,19 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory.LamF
 
+/- English proof (translation)
+Introduce `hT K _ _ A x φ hx p`. Establish `hg : x.P.g = A.g` using `((isFibreOf_iff_isPolFibre _ _ (algebraMap (𝓞 K) K) A x φ).1 hx).1`. Establish `hφ : IsGrpPullback x.P.A A.A (spMap (algebraMap (𝓞 K) K)) φ` using `hx.1`. Set `R` to `(p.valuation K).integer`. Set `f : 𝓞 K →+* R` to `(algebraMap (𝓞 K) K).codRestrict R fun r => p.valuation_le_one r`.
+
+Establish `hf : spMap (algebraMap R K) ≫ spMap f = spMap (algebraMap (𝓞 K) K)` using `(Spec.map_comp _ _).symm`. Take `⟨y, ψ, w₀, hg₀, hψ, hw₀⟩` from `KeyPow.exists_keyIn_pullback hT f A (hg ▸ x.g_pos)`. Establish `sq : φ ≫ A.A.hom = (x.P.A.hom ≫ spMap (algebraMap R K)) ≫ spMap f` using `by rw [Category.assoc, hf, hφ.1.w]`. Take `⟨φ', rfl, h₂⟩ : ∃ φ' : x.P.A.left ⟶ y.P.A.left, φ' ≫ ψ = φ ∧ φ' ≫ y.P.A.hom = x.P.A.hom ≫ spMap (algebraMap R K)` from `⟨hψ.1.lift _ _ sq, hψ.1.lift_fst _ _ _, hψ.1.lift_snd _ _ _⟩`. Establish `h : IsGrpPullback x.P.A y.P.A (spMap (algebraMap R K)) φ'` using `hψ.cancel (hφ.congr hf.symm rfl) h₂`.
+
+Use `x.P.isAb.comm` as an intermediate fact. Use `y.P.isAb.comm` as an intermediate fact. Use `y.P.isAb.smooth` as an intermediate fact. Establish `sq' : ∀ i, (spMap (Chart.dualMapR (algebraMap R K)) ≫ (y.v i).left) ≫ y.P.A.hom = (epsR K).hom ≫ spMap (algebraMap R K)` using `fun i => by`. Rewrite using `[Category.assoc, Over.w]`.
+
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Set `v' : Fin y.P.g → (epsR K ⟶ x.P.A)` to `fun i => Over.homMk (h.1.lift _ _ (sq' i)) (h.1.lift_snd _ _ _)`.
+
+Establish `hv' : ∀ i, (v' i).left ≫ φ' = spMap (Chart.dualMapR (algebraMap R K)) ≫ (y.v i).left` using `fun i => h.1.lift_fst _ _ _`. Establish `hb : ∀ {n : ℕ} (e : n = y.P.g), IsLieBasis fun i : Fin n => v' (i.cast e)` using `fun e => by`. Substitute `e` using the available equality. Conclude with `Chart.isLieBasis_baseChange (algebraMap R K) h y.basis hv'`. Establish `e : y.P.g = x.P.g` using `hg₀.trans hg.symm`.
+
+Take `⟨a, M, -, hM⟩` from `KeyPow.exists_scalar_matrix hT x.P x.th x.th x.th_ne x.basis (hb e.symm)`. Establish `hd : Formalism.L2.Pj.dualMap (algebraMap R K) = Chart.dualMapR (algebraMap R K)`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, Formalism.L2.Pj.dualMap]`. Use `⟨M, R, inferInstance, inferInstance, inferInstance, inferInstance, inferInstanceAs (IsFractionRing (p.valuation K).valuationSubring K), f, y, ψ, e, rfl, fun z => ⟨fun ⟨r, hr⟩ => hr ▸ r.2, fun hz => ⟨⟨z, hz⟩, rfl⟩⟩, ⟨hψ, w₀, (isGen_iff _).2 hw₀⟩, (((LieComb.lieComb_algebra K x.P.A …` and prove the remaining obligations. Rewrite using `[hd, ← Category.assoc, hv', Category.assoc]`.
+-/
 theorem exists_isModelAt : Out.SecTwistSt → ∀ (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left), IsFibreOf A x (gmap K) φ → ∀ p : HeightOneSpectrum (𝓞 K), ∃ M, IsModelAt A x φ p M := by
   intro hT K _ _ A x φ hx p
   have hg : x.P.g = A.g := ((isFibreOf_iff_isPolFibre _ _ (algebraMap (𝓞 K) K) A x φ).1 hx).1

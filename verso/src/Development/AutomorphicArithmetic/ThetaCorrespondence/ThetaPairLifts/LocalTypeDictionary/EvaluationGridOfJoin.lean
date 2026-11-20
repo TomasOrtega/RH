@@ -20,6 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx
 open GlobalTheory.Mem.Top GlobalTheory.Mem.LiteralAutomorphy
 namespace GlobalTheory.Mem.LiteralAutomorphy
+/- English proof (translation)
+Introduce `hw hm P hJ ht K WC LM TA FS` and use `GlobalTheory.Mem.LiteralAutomorphy.evLgG_gridA_of_exGrid (GlobalTheory.Mem.LiteralAutomorphy.exGrid_of (_root_.GlobalTheory.Mem.LiteralAutomorphy.exists_weilDeligne_of_localInputs P) (isEx_of_separates FS (_root_.GlobalTheory.RowEx.twisted_linear_bound P (_root_.GlobalTheory.Pair …`.
+-/
 theorem evaluation_grid_of_join : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → EvLgG (GridA CF) :=
   fun hw hm P hJ ht K WC LM TA FS =>
     GlobalTheory.Mem.LiteralAutomorphy.evLgG_gridA_of_exGrid

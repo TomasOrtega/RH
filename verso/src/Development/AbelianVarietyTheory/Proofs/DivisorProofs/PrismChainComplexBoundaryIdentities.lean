@@ -9,6 +9,9 @@ namespace GlobalTheory.EtC.PrCx
 
 open SimplexCategory
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.AlternatingSumZero.alt_sum_zero G`.
+-/
 theorem alt_sum_zero {A : Type*} [AddCommGroup A] {n : ℕ} (G : (SimplexCategory.mk n ⟶ SimplexCategory.mk (n + 2)) → A) :
     ∑ i : Fin (n + 3), ∑ j : Fin (n + 2), ((-1 : ℤ) ^ (i : ℕ) * (-1) ^ (j : ℕ)) • G (δ j ≫ δ i) = 0 :=
   _root_.UpperTheory.Reformulated.B.AlternatingSumZero.alt_sum_zero G
@@ -21,13 +24,25 @@ open SimplexCategory Finsupp
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d₁_zero {r : ℕ} (a : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) : Pr.d₁ (⟨0, r, a, b⟩ : Pr N) = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d₁_succ {p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨p + 1, r, a, b⟩ : Pr N) = ∑ i : Fin (p + 2), single ⟨p, r, δ i ≫ a, b⟩ ((-1) ^ (i : ℕ)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d₂_zero {p : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk 0 ⟶ SimplexCategory.mk N) : Pr.d₂ (⟨p, 0, a, b⟩ : Pr N) = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d₂_succ {p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk (r + 1) ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, r + 1, a, b⟩ : Pr N) = ∑ j : Fin (r + 2), single ⟨p, r, a, δ j ≫ b⟩ ((-1) ^ (j : ℕ)) := rfl
 
@@ -43,52 +58,91 @@ variable (N) in
 
 def E : (Pr N →₀ ℤ) →ₗ[ℤ] (Pr N →₀ ℤ) := linearCombination ℤ fun z : Pr N => (-1 : ℤ) ^ z.1 • single z (1 : ℤ)
 
+/- English proof (translation)
+Simplify using `[D₁]`.
+-/
 theorem D₁_single (z : Pr N) (c : ℤ) : D₁ N (single z c) = c • z.d₁ := by simp [D₁]
 
+/- English proof (translation)
+Simplify using `[D₂]`.
+-/
 theorem D₂_single (z : Pr N) (c : ℤ) : D₂ N (single z c) = c • z.d₂ := by simp [D₂]
 
+/- English proof (translation)
+Rewrite using `[E, linearCombination_single, smul_comm, smul_single_one]`.
+-/
 theorem E_single (z : Pr N) (c : ℤ) : E N (single z c) = (-1 : ℤ) ^ z.1 • single z c := by
   rw [E, linearCombination_single, smul_comm, smul_single_one]
 
+/- English proof (translation)
+Simplify using `[Pr.d]`.
+-/
 theorem d_single (z : Pr N) (c : ℤ) : Pr.d N (single z c) = c • (z.d₁ + (-1 : ℤ) ^ z.1 • z.d₂) := by
   simp [Pr.d]
 
+/- English proof (translation)
+Take `⟨p, r, a, b⟩` from `z`. Break down `r with _ | r` into its components or cases. Simplify using `[d₂_zero]`. Simplify using `[d₂_succ, map_sum, E_single, Finset.smul_sum]`.
+-/
 theorem E_d₂ (z : Pr N) : E N z.d₂ = (-1 : ℤ) ^ z.1 • z.d₂ := by
   obtain ⟨p, r, a, b⟩ := z
   rcases r with _ | r
   · simp [d₂_zero]
   · simp [d₂_succ, map_sum, E_single, Finset.smul_sum]
 
+/- English proof (translation)
+Take `⟨p, r, a, b⟩` from `z`. Break down `p with _ | p` into its components or cases. Simplify using `[d₁_zero]`. Simplify using `[d₁_succ, map_sum, E_single, Finset.smul_sum, pow_succ]`.
+-/
 theorem E_d₁ (z : Pr N) : E N z.d₁ = -((-1 : ℤ) ^ z.1 • z.d₁) := by
   obtain ⟨p, r, a, b⟩ := z
   rcases p with _ | p
   · simp [d₁_zero]
   · simp [d₁_succ, map_sum, E_single, Finset.smul_sum, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Normalize the expressions using the abelian group laws. Consider the case `single z c => simp [d_single, D₁_single, D₂_single, E_d₂]`.
+-/
 theorem d_eq (c : Pr N →₀ ℤ) : Pr.d N c = D₁ N c + E N (D₂ N c) := by
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => simp only [map_add, hf, hg]; abel
   | single z c => simp [d_single, D₁_single, D₂_single, E_d₂]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single z c => rw [E_single, map_zsmul, E_single, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem E_E (c : Pr N →₀ ℤ) : E N (E N c) = c := by
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => simp only [map_add, hf, hg]
   | single z c => rw [E_single, map_zsmul, E_single, smul_smul, ← mul_pow]; simp
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single z c => rw [E_single, map_zsmul, D₂_single, map_zsmul, E_d₂, smul_comm]`.
+-/
 theorem D₂_E (c : Pr N →₀ ℤ) : D₂ N (E N c) = E N (D₂ N c) := by
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => simp only [map_add, hf, hg]
   | single z c => rw [E_single, map_zsmul, D₂_single, map_zsmul, E_d₂, smul_comm]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Normalize the expressions using the abelian group laws. Consider the case `single z c => rw [E_single, map_zsmul, D₁_single, map_zsmul, E_d₁, smul_neg, smul_comm, neg_neg]`.
+-/
 theorem D₁_E (c : Pr N →₀ ℤ) : D₁ N (E N c) = -E N (D₁ N c) := by
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add f g hf hg => simp only [map_add, hf, hg]; abel
   | single z c => rw [E_single, map_zsmul, D₁_single, map_zsmul, E_d₁, smul_neg, smul_comm, neg_neg]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg, add_zero]`. Consider the case `single z c`. Rewrite using `[D₁_single, map_zsmul]`.
+
+It suffices to establish `D₁ N (Pr.d₁ z) = 0 by rw [this, smul_zero]`. Take `⟨p, r, a, b⟩` from `z`. Break down `p with _ | p` into its components or cases. Simplify using `[d₁_zero]`. Break down `p with _ | p` into its components or cases.
+
+Simplify using `[d₁_succ, map_sum, D₁_single, d₁_zero]`. Establish `h` using `alt_sum_zero (n := p) (fun θ => single (⟨p, r, θ ≫ a, b⟩ : Pr N) (1 : ℤ))`. Rewrite using `[d₁_succ, map_sum]`. Simplify using `only [D₁_single, d₁_succ, Finset.smul_sum]`. Rewrite using `[← h]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[smul_single, Category.assoc]`.
+-/
 theorem D₁_D₁ (c : Pr N →₀ ℤ) : D₁ N (D₁ N c) = 0 := by
   induction c using Finsupp.induction_linear with
   | zero => simp
@@ -108,6 +162,15 @@ theorem D₁_D₁ (c : Pr N →₀ ℤ) : D₁ N (D₁ N c) = 0 := by
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
     simp [smul_single, Category.assoc]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg, add_zero]`. Consider the case `single z c`. Rewrite using `[D₂_single, map_zsmul]`.
+
+It suffices to establish `D₂ N (Pr.d₂ z) = 0 by rw [this, smul_zero]`. Take `⟨p, r, a, b⟩` from `z`. Break down `r with _ | r` into its components or cases. Simplify using `[d₂_zero]`. Break down `r with _ | r` into its components or cases.
+
+Simplify using `[d₂_succ, map_sum, D₂_single, d₂_zero]`. Establish `h` using `alt_sum_zero (n := r) (fun θ => single (⟨p, r, a, θ ≫ b⟩ : Pr N) (1 : ℤ))`. Rewrite using `[d₂_succ, map_sum]`. Simplify using `only [D₂_single, d₂_succ, Finset.smul_sum]`. Rewrite using `[← h]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[smul_single, Category.assoc]`.
+-/
 theorem D₂_D₂ (c : Pr N →₀ ℤ) : D₂ N (D₂ N c) = 0 := by
   induction c using Finsupp.induction_linear with
   | zero => simp
@@ -127,6 +190,13 @@ theorem D₂_D₂ (c : Pr N →₀ ℤ) : D₂ N (D₂ N c) = 0 := by
     refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
     simp [smul_single, Category.assoc]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single z c`. Rewrite using `[D₁_single, D₂_single, map_zsmul, map_zsmul]`.
+
+Use `congr 1`. Take `⟨p, r, a, b⟩` from `z`. Apply the tactic sequence `rcases p with _ | p <;> rcases r with _ | r`. Simplify using `[d₁_zero, d₂_zero]`. Simplify using `[d₁_zero, d₂_succ, map_sum, D₁_single]`.
+
+Simplify using `[d₂_zero, d₁_succ, map_sum, D₂_single]`. Simplify using `only [d₁_succ, d₂_succ, map_sum, D₁_single, D₂_single, Finset.smul_sum, smul_single, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem D₁_D₂ (c : Pr N →₀ ℤ) : D₁ N (D₂ N c) = D₂ N (D₁ N c) := by
   induction c using Finsupp.induction_linear with
   | zero => simp
@@ -144,6 +214,9 @@ theorem D₁_D₂ (c : Pr N →₀ ℤ) : D₁ N (D₂ N c) = D₂ N (D₁ N c) 
       refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
       rw [mul_comm]
 
+/- English proof (translation)
+Rewrite using `[d_eq (Pr.d N c), d_eq c]`. Simplify using `only [map_add, D₁_E, D₂_E, D₁_D₁, D₂_D₂, D₁_D₂, E_E, map_zero, map_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem d_d (c : Pr N →₀ ℤ) : Pr.d N (Pr.d N c) = 0 := by
   rw [d_eq (Pr.d N c), d_eq c]
   simp only [map_add, D₁_E, D₂_E, D₁_D₁, D₂_D₂, D₁_D₂, E_E, map_zero, map_neg]
@@ -155,10 +228,16 @@ namespace GlobalTheory.EtC.PrCx
 
 open SimplexCategory Finsupp
 
+/- English proof (translation)
+Simplify using `[Pr.push]`.
+-/
 theorem push_single {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (z : Pr N) (c : ℤ) :
     Pr.push θ (single z c) = single (⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ : Pr M) c := by
   simp [Pr.push]
 
+/- English proof (translation)
+Take `⟨p, r, a, b⟩` from `z`. Break down `p with _ | p` into its components or cases. Simplify using `[d₁_zero]`. Simplify using `[d₁_succ, map_sum, push_single, Category.assoc]`.
+-/
 theorem push_d₁ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (z : Pr N) :
     Pr.push θ z.d₁ = Pr.d₁ (⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ : Pr M) := by
   obtain ⟨p, r, a, b⟩ := z
@@ -166,6 +245,9 @@ theorem push_d₁ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk 
   · simp [d₁_zero]
   · simp [d₁_succ, map_sum, push_single, Category.assoc]
 
+/- English proof (translation)
+Take `⟨p, r, a, b⟩` from `z`. Break down `r with _ | r` into its components or cases. Simplify using `[d₂_zero]`. Simplify using `[d₂_succ, map_sum, push_single, Category.assoc]`.
+-/
 theorem push_d₂ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (z : Pr N) :
     Pr.push θ z.d₂ = Pr.d₂ (⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ : Pr M) := by
   obtain ⟨p, r, a, b⟩ := z
@@ -173,6 +255,9 @@ theorem push_d₂ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk 
   · simp [d₂_zero]
   · simp [d₂_succ, map_sum, push_single, Category.assoc]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single z c`. Rewrite using `[push_single, d_single, d_single, map_zsmul, map_add, map_zsmul, push_d₁, push_d₂]`.
+-/
 theorem d_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (c : Pr N →₀ ℤ) :
     Pr.d M (Pr.push θ c) = Pr.push θ (Pr.d N c) := by
   induction c using Finsupp.induction_linear with
@@ -181,6 +266,9 @@ theorem d_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) 
   | single z c =>
     rw [push_single, d_single, d_single, map_zsmul, map_add, map_zsmul, push_d₁, push_d₂]
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `single z c => simp [push_single, Category.assoc]`.
+-/
 theorem push_push {N M K : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M)
     (θ' : SimplexCategory.mk M ⟶ SimplexCategory.mk K) (c : Pr N →₀ ℤ) :
     Pr.push θ' (Pr.push θ c) = Pr.push (θ ≫ θ') c := by
@@ -189,18 +277,30 @@ theorem push_push {N M K : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.m
   | add f g hf hg => simp only [map_add, hf, hg]
   | single z c => simp [push_single, Category.assoc]
 
+/- English proof (translation)
+Establish `h` using `alt_sum_zero (n := N) (fun θ => Pr.push θ c)`. Simplify using `only [Pr.bd, map_sum, map_zsmul, push_push, Finset.smul_sum, smul_smul]`. Conclude with `h`.
+-/
 theorem bd_bd {N : ℕ} (c : Pr N →₀ ℤ) : Pr.bd (Pr.bd c) = 0 := by
   have h := alt_sum_zero (n := N) (fun θ => Pr.push θ c)
   simp only [Pr.bd, map_sum, map_zsmul, push_push, Finset.smul_sum, smul_smul]
   exact h
 
+/- English proof (translation)
+Simplify using `only [Pr.bd, map_sum, map_zsmul, d_push]`.
+-/
 theorem d_bd {N : ℕ} (c : Pr N →₀ ℤ) : Pr.d (N + 1) (Pr.bd c) = Pr.bd (Pr.d N c) := by
   simp only [Pr.bd, map_sum, map_zsmul, d_push]
 
+/- English proof (translation)
+Simplify using `[Pr.Deg, mem_supported, Set.subset_def]`.
+-/
 theorem deg_iff {N : ℕ} (k : ℕ) (c : Pr N →₀ ℤ) :
     Pr.Deg k c ↔ c ∈ supported ℤ ℤ {z : Pr N | z.1 + z.2.1 = k} := by
   simp [Pr.Deg, mem_supported, Set.subset_def]
 
+/- English proof (translation)
+Introduce `z hz`. Establish `hz'` using `Finsupp.mapDomain_support (f := fun z : Pr N => (⟨z.1, z.2.1, z.2.2.1 ≫ θ, z.2.2.2 ≫ θ⟩ : Pr M)) (s := c) hz`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hz'`. Conclude with `hc w hw`.
+-/
 theorem deg_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) (k : ℕ) (c : Pr N →₀ ℤ)
     (hc : Pr.Deg k c) : Pr.Deg k (Pr.push θ c) := by
   classical
@@ -210,6 +310,13 @@ theorem deg_push {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M
   obtain ⟨w, hw, rfl⟩ := Finset.mem_image.1 hz'
   exact hc w hw
 
+/- English proof (translation)
+Rewrite `hc`, the goal using `[deg_iff]`. Establish `key : ∀ z : Pr N, z.1 + z.2.1 = k + 1 → z.d₁ + (-1 : ℤ) ^ z.1 • z.d₂ ∈ supported ℤ ℤ {z : Pr N | z.1 + z.2.1 = k}`. Introduce and unpack `⟨p, r, a, b⟩ hz`. Simplify using `only at hz`. Use `add_mem ?_ (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations.
+
+Break down `p with _ | p` into its components or cases. Simplify using `[d₁_zero]`. Rewrite using `[d₁_succ]`. Conclude with `Submodule.sum_mem _ fun i _ => single_mem_supported ℤ _ (by simp; omega)`. Break down `r with _ | r` into its components or cases.
+
+Simplify using `[d₂_zero]`. Rewrite using `[d₂_succ]`. Conclude with `Submodule.sum_mem _ fun j _ => single_mem_supported ℤ _ (by simp; omega)`. Rewrite using `[Pr.d, linearCombination_apply, Finsupp.sum]`. Conclude with `Submodule.sum_mem _ fun z hz => Submodule.smul_mem _ _ (key z ((mem_supported _ _).1 hc hz))`.
+-/
 theorem deg_d {N : ℕ} (k : ℕ) (c : Pr N →₀ ℤ) (hc : Pr.Deg (k + 1) c) : Pr.Deg k (Pr.d N c) := by
   rw [deg_iff] at hc ⊢
   have key : ∀ z : Pr N, z.1 + z.2.1 = k + 1 →
@@ -228,6 +335,9 @@ theorem deg_d {N : ℕ} (k : ℕ) (c : Pr N →₀ ℤ) (hc : Pr.Deg (k + 1) c) 
   rw [Pr.d, linearCombination_apply, Finsupp.sum]
   exact Submodule.sum_mem _ fun z hz => Submodule.smul_mem _ _ (key z ((mem_supported _ _).1 hc hz))
 
+/- English proof (translation)
+Establish `h : ∀ θ : SimplexCategory.mk N ⟶ SimplexCategory.mk (N + 1), Pr.push θ c ∈ supported ℤ ℤ {z : Pr (N + 1) | z.1 + z.2.1 = k}` using `fun θ => (deg_iff k _).1 (deg_push θ k c hc)`. Rewrite using `[deg_iff, Pr.bd]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h _)`.
+-/
 theorem deg_bd {N : ℕ} (k : ℕ) (c : Pr N →₀ ℤ) (hc : Pr.Deg k c) : Pr.Deg k (Pr.bd c) := by
   have h : ∀ θ : SimplexCategory.mk N ⟶ SimplexCategory.mk (N + 1),
       Pr.push θ c ∈ supported ℤ ℤ {z : Pr (N + 1) | z.1 + z.2.1 = k} :=
@@ -235,14 +345,23 @@ theorem deg_bd {N : ℕ} (k : ℕ) (c : Pr N →₀ ℤ) (hc : Pr.Deg k c) : Pr.
   rw [deg_iff, Pr.bd]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h _)
 
+/- English proof (translation)
+Rewrite using `[deg_iff, Pr.aw]`. Conclude with `Submodule.sum_mem _ fun p _ => single_mem_supported ℤ _ (by simp; omega)`.
+-/
 theorem deg_aw (N : ℕ) : Pr.Deg N (Pr.aw N) := by
   rw [deg_iff, Pr.aw]
   exact Submodule.sum_mem _ fun p _ => single_mem_supported ℤ _ (by simp; omega)
 
+/- English proof (translation)
+Rewrite using `[deg_iff, Pr.wa]`. Conclude with `Submodule.sum_mem _ fun p _ => single_mem_supported ℤ _ (by simp; omega)`.
+-/
 theorem deg_wa (N : ℕ) : Pr.Deg N (Pr.wa N) := by
   rw [deg_iff, Pr.wa]
   exact Submodule.sum_mem _ fun p _ => single_mem_supported ℤ _ (by simp; omega)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ c => d_d c, fun θ c => d_push θ c, fun _ k c h => deg_d k c h, fun _ k c h => deg_bd k c h, fun _ c => bd_bd c, fun _ c => d_bd c, fun N => ⟨deg_aw N, deg_wa N⟩⟩`.
+-/
 theorem pr_complex :
     (∀ N (c : Pr N →₀ ℤ), Pr.d N (Pr.d N c) = 0) ∧
     (∀ {N M : ℕ} (θ : SimplexCategory.mk N ⟶ SimplexCategory.mk M) c, Pr.d M (Pr.push θ c) = Pr.push θ (Pr.d N c)) ∧

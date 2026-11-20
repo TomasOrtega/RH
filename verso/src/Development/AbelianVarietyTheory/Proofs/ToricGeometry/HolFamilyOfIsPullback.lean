@@ -8,6 +8,25 @@ open scoped BigOperators Real
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hpt : ∀ (Y : Scheme.{0}) (x : Sp ℂ ⟶ Y) (O : Y.Opens), ⊤ ≤ x ⁻¹ᵁ O ↔ x (default : PrimeSpectrum ℂ) ∈ O` using `fun Y x O => (hv Y x).1 O`. Establish `key : ∀ w₀ ∈ {w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ U}, ∃ N : Set E, IsOpen N ∧ w₀ ∈ N ∧ N ⊆ {w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (c w) U f) N`. Introduce and unpack `w₀ ⟨hw₀, hU₀⟩`. Take `⟨V, hVa, hV₀, hVo, hVd⟩` from `hc w₀ hw₀`. Take `⟨g, hgU, hg₀⟩` from `hVa.exists_basicOpen_le (V := U) ⟨c w₀ (default : PrimeSpectrum ℂ), (hpt _ _ _).1 hU₀⟩ ((hpt _ _ _).1 hV₀)`.
+
+Establish `hDV : Z.basicOpen g ≤ V` using `Z.basicOpen_le g`. Set `` to `hVa.isLocalization_basicOpen g`. Take `⟨⟨h, ⟨_, n, rfl⟩⟩, hh⟩` from `IsLocalization.surj (Submonoid.powers g) (resG Z hgU f)`. Establish `hh' : resG Z hgU f * resG Z hDV g ^ n = resG Z hDV h`. Rewrite using `[← map_pow]`.
+
+Conclude with `hh`. Use `⟨{w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ V} ∩ (fun w => valAt' (c w) V g) ⁻¹' {0}ᶜ, (hVd g).continuousOn.isOpen_inter_preimage hVo isOpen_compl_singleton, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨hw₀, hV₀⟩, ?_⟩` and prove the remaining obligations. Conclude with `((hv Z (c w₀)).2.2.2.2.1 V g).1 ((hpt _ _ _).2 hg₀)`. Introduce and unpack `w ⟨⟨hw, -⟩, hg⟩`.
+
+Establish `hD : ⊤ ≤ c w ⁻¹ᵁ Z.basicOpen g` using `((hv Z (c w)).2.2.2.2.1 V g).2 hg`. Conclude with `⟨hw, (hpt _ _ _).2 (hgU ((hpt _ _ _).1 hD))⟩`. Establish `hq : DifferentiableOn ℂ (fun w => valAt' (c w) V h * (valAt' (c w) V g ^ n)⁻¹) ({w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ V} ∩ (fun w => valAt' (c w) V g) ⁻¹' {0}ᶜ)`. Apply `DifferentiableOn.fun_mul` to reduce the goal to its premises. Conclude with `(hVd h).mono Set.inter_subset_left`.
+
+Apply `DifferentiableOn.fun_inv` to reduce the goal to its premises. Conclude with `((hVd g).mono Set.inter_subset_left).fun_pow n`. Introduce `w hw`. Conclude with `pow_ne_zero _ hw.2`. Use `hq.congr fun w ⟨⟨hw, hwV⟩, hg⟩ => ?_` and prove the remaining obligations.
+
+Establish `hg' : valAt' (c w) V g ≠ 0` using `hg`. Establish `hD : ⊤ ≤ c w ⁻¹ᵁ Z.basicOpen g` using `((hv Z (c w)).2.2.2.2.1 V g).2 hg'`. Take `⟨e, he⟩` from `(hv Z (c w)).2.1 _ hD`. Establish `h1` using `(hv Z (c w)).2.2.1 U _ hgU f hD`. Establish `h2` using `(hv Z (c w)).2.2.1 V _ hDV g hD`.
+
+Establish `h3` using `(hv Z (c w)).2.2.1 V _ hDV h hD`. Rewrite `h1`, `h2`, `h3` using `[he]`. Establish `h4` using `congrArg e hh'`. Rewrite `h4` using `[map_mul, map_pow, h1, h2, h3]`. Rewrite using `[← div_eq_mul_inv]`.
+
+Conclude with `eq_div_of_mul_eq (pow_ne_zero _ hg') h4`. Use `⟨isOpen_iff_forall_mem_open.2 fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨N, hNo, hwN, hNs, -⟩` from `key w hw`. Conclude with `⟨N, hNs, hNo, hwN⟩`. Take `⟨N, hNo, hwN, -, hNd⟩` from `key w hw`.
+
+Conclude with `(hNd.differentiableAt (hNo.mem_nhds hwN)).differentiableWithinAt`.
+-/
 theorem holFamily_of_affine
     (hv : (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)))
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) (Z : Scheme.{0}) (c : E → (Sp ℂ ⟶ Z))
@@ -65,6 +84,33 @@ theorem holFamily_of_affine
   · obtain ⟨N, hNo, hwN, -, hNd⟩ := key w hw
     exact (hNd.differentiableAt (hNo.mem_nhds hwN)).differentiableWithinAt
 
+/- English proof (translation)
+Establish `hpt : ∀ (T : Scheme.{0}) (x : Sp ℂ ⟶ T) (O : T.Opens), ⊤ ≤ x ⁻¹ᵁ O ↔ x (default : PrimeSpectrum ℂ) ∈ O` using `fun T x O => (hv T x).1 O`. Use `holFamily_of_affine hv W Z c (fun w hw => ?_) U f` and prove the remaining obligations. Take `⟨VX, hVXa, hVX₀, -⟩` from `exists_isAffineOpen_mem_and_subset (TopologicalSpace.Opens.mem_top (p (c w (default : PrimeSpectrum ℂ))))`. Take `⟨VY, hVYa, hVY₀, -⟩` from `exists_isAffineOpen_mem_and_subset (TopologicalSpace.Opens.mem_top (q (c w (default : PrimeSpectrum ℂ))))`. Establish `hSX : VX ≤ s ⁻¹ᵁ (⊤ : S.Opens)` using `le_top`.
+
+Establish `hST : VY ≤ t ⁻¹ᵁ (⊤ : S.Opens)` using `le_top`. Establish `hmem : ∀ x : Sp ℂ ⟶ Z, ⊤ ≤ x ⁻¹ᵁ (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) ↔ ⊤ ≤ (x ≫ p) ⁻¹ᵁ VX ∧ ⊤ ≤ (x ≫ q) ⁻¹ᵁ VY`. Introduce `x`. Use `show ⊤ ≤ x ⁻¹ᵁ (p ⁻¹ᵁ VX) ⊓ x ⁻¹ᵁ (q ⁻¹ᵁ VY) ↔ _`. Conclude with `le_inf_iff`.
+
+Establish `hPO` using `(isIso_pushoutSection_iff H hST hSX (UY := p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) rfl).1 (isIso_pushoutSection_of_isAffineOpen H hST hSX rfl (isAffineOpen_top S) hVYa hVXa)`. Establish `hVa : IsAffineOpen (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY)`. Establish `: IsAffine (⊤ : S.Opens)` using `isAffineOpen_top S`. Establish `: IsAffine VY` using `hVYa`. Establish `: IsAffine VX` using `hVXa`.
+
+Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H hST hSX rfl).isoPullback.hom`. Establish `hNo : IsOpen {w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY)}`. Use `(ha VX 0).1.inter (hb VY 0).1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_inter_iff, hmem]`.
+
+The claim follows by propositional logic. Set `T : Subring Γ(Z, p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY)` to `{ carrier := {g | DifferentiableOn ℂ (fun w => valAt' (c w) (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) g) {w | w ∈ W ∧ ⊤ ≤ c w ⁻¹ᵁ (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY)}} mul_mem' := fun {a b} ha' hb' => (ha'.fun_mul hb').congr fun w hw => by`. Take `⟨e, he⟩` from `(hv Z (c w)).2.1 _ hw.2`. Simplify using `only [he, map_mul]`. Use the proof step `one_mem' := (differentiableOn_const (1 : ℂ)).congr fun w hw => by`.
+
+Take `⟨e, he⟩` from `(hv Z (c w)).2.1 _ hw.2`. Simplify using `only [he, map_one]`. Use the proof step `add_mem' := fun {a b} ha' hb' => (ha'.fun_add hb').congr fun w hw => by`. Take `⟨e, he⟩` from `(hv Z (c w)).2.1 _ hw.2`. Simplify using `only [he, map_add]`.
+
+Use the proof step `zero_mem' := (differentiableOn_const (0 : ℂ)).congr fun w hw => by`. Take `⟨e, he⟩` from `(hv Z (c w)).2.1 _ hw.2`. Simplify using `only [he, map_zero]`. Use the proof step `neg_mem' := fun {a} ha' => ha'.fun_neg.congr fun w hw => by`. Take `⟨e, he⟩` from `(hv Z (c w)).2.1 _ hw.2`.
+
+Simplify using `only [he, map_neg] }`. Establish `hXT : ∀ a : Γ(X, VX), (p.appLE VX (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) inf_le_left).hom a ∈ T`. Introduce `a`. Use `((ha VX a).2.mono fun w hw => ⟨hw.1, ((hmem _).1 hw.2).1⟩).congr fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `(hv Z (c w)).2.2.1 (p ⁻¹ᵁ VX) _ inf_le_left ((p.app VX).hom a) hw.2`.
+
+Establish `h2` using `(hv Z (c w)).2.2.2.1 X p VX a`. Conclude with `h1.trans h2`. Establish `hYT : ∀ b : Γ(Y, VY), (q.appLE VY (p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY) inf_le_right).hom b ∈ T`. Introduce `b`. Use `((hb VY b).2.mono fun w hw => ⟨hw.1, ((hmem _).1 hw.2).2⟩).congr fun w hw => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hv Z (c w)).2.2.1 (q ⁻¹ᵁ VY) _ inf_le_right ((q.app VY).hom b) hw.2`. Establish `h2` using `(hv Z (c w)).2.2.2.1 Y q VY b`. Conclude with `h1.trans h2`. Set `φX : Γ(X, VX) ⟶ CommRingCat.of T` to `CommRingCat.ofHom ((p.appLE VX _ inf_le_left).hom.codRestrict T hXT)`. Set `φY : Γ(Y, VY) ⟶ CommRingCat.of T` to `CommRingCat.ofHom ((q.appLE VY _ inf_le_right).hom.codRestrict T hYT)`.
+
+Establish `hw' : s.appLE ⊤ VX hSX ≫ φX = t.appLE ⊤ VY hST ≫ φY`. Use extensionality with `x`. Conclude with `congrArg (fun k => k.hom x) hPO.w`. Establish `hid : hPO.desc φX φY hw' ≫ CommRingCat.ofHom T.subtype = 𝟙 _`. Use `hPO.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hPO.inl_desc, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, hPO.inr_desc, Category.comp_id]`. Both sides reduce to the same expression. Use `⟨_, hVa, (hmem _).2 ⟨(hpt _ _ _).2 hVX₀, (hpt _ _ _).2 hVY₀⟩, hNo, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (fun k => k.hom g) hid`. Establish `h2 : ((hPO.desc φX φY hw').hom g : Γ(Z, p ⁻¹ᵁ VX ⊓ q ⁻¹ᵁ VY)) = g` using `h1`. Rewrite using `[← h2]`. Conclude with `((hPO.desc φX φY hw').hom g).2`.
+-/
 theorem holFamily_of_isPullback
     (hv : (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)))
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) {S X Y Z : Scheme.{0}} [IsAffine S]
@@ -154,6 +200,11 @@ theorem holFamily_of_isPullback
   rw [← h2]
   exact ((hPO.desc φX φY hw').hom g).2
 
+/- English proof (translation)
+Introduce `hv E _ _ W X Y a b ha hb U f`. Establish `H : IsPullback (fst X Y).left (snd X Y).left X.hom Y.hom` using `IsPullback.of_hasPullback X.hom Y.hom`. Establish `hfa : ∀ w, (lift (a w) (b w)).left ≫ (fst X Y).left = (a w).left` using `fun w => by`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `hfb : ∀ w, (lift (a w) (b w)).left ≫ (snd X Y).left = (b w).left` using `fun w => by`.
+
+Rewrite using `[← Over.comp_left, lift_snd]`. Conclude with `holFamily_of_isPullback hv W H (fun w => (lift (a w) (b w)).left) (fun U' f' => by simpa only [hfa] using ha U' f') (fun U' f' => by simpa only [hfb] using hb U' f') U f`.
+-/
 theorem holFamily_lift :
     (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (W : Set E) (X Y : Over (Sp ℂ)) (a : E → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (b : E → (𝟙_ (Over (Sp ℂ)) ⟶ Y)), (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (a w).left U f) {w | w ∈ W ∧ ⊤ ≤ (a w).left ⁻¹ᵁ U}) → (∀ (U : (Y).left.Opens) (f : Γ((Y).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (b w).left U f) {w | w ∈ W ∧ ⊤ ≤ (b w).left ⁻¹ᵁ U}) → (∀ (U : (X ⊗ Y).left.Opens) (f : Γ((X ⊗ Y).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ ((fun w => lift (a w) (b w)) w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' ((fun w => lift (a w) (b w)) w).left U f) {w | w ∈ W ∧ ⊤ ≤ ((fun w => lift (a w) (b w)) w).left ⁻¹ᵁ U})) := by
   intro hv E _ _ W X Y a b ha hb U f

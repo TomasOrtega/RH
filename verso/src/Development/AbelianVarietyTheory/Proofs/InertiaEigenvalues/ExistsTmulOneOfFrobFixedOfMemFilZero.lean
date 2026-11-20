@@ -7,6 +7,9 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v m => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem equivFinsuppOfBasisLeft_lTensor_apply {F : Type} [Field F] {V M N : Type}
     [AddCommGroup V] [Module F V] [AddCommGroup M] [Module F M] [AddCommGroup N] [Module F N]
     {ι : Type} [DecidableEq ι] (b : Module.Basis ι F V) (f : M →ₗ[F] N) (x : V ⊗[F] M) (i : ι) :
@@ -16,6 +19,9 @@ theorem equivFinsuppOfBasisLeft_lTensor_apply {F : Type} [Field F] {V M N : Type
   | tmul v m => simp
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v m => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem algebraTensorModule_map_id_apply {F L : Type} [Field F] [Field L] [Algebra F L]
     {V M N : Type} [AddCommGroup V] [Module L V] [Module F V] [IsScalarTower F L V]
     [AddCommGroup M] [Module F M] [AddCommGroup N] [Module F N]
@@ -26,6 +32,17 @@ theorem algebraTensorModule_map_id_apply {F L : Type} [Field F] [Field L] [Algeb
   | tmul v m => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ x hφ hF`. Set `b` to `Module.Basis.ofVectorSpace Qp V`. Establish `key : ∀ i, ∃ c : Qp, algebraMap Qp B c = equivFinsuppOfBasisLeft b x i`. Introduce `i`. Apply `PD.fund` to reduce the goal to its premises.
+
+Establish `h` using `equivFinsuppOfBasisLeft_lTensor_apply b PD.φ.toLinearMap x i`. Rewrite `h` using `[← algebraTensorModule_map_id_apply (L := LL)]`. Establish `h2 : AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) PD.φ.toLinearMap x = x` using `hφ`. Rewrite `h` using `[h2]`. Conclude with `h.symm`.
+
+Take `⟨y, hy⟩` from `hF`. Establish `h` using `equivFinsuppOfBasisLeft_lTensor_apply b (PD.ι.toLinearMap.restrictScalars Qp) x i`. Rewrite `h` using `[← algebraTensorModule_map_id_apply (L := LL)]`. Establish `h'` using `equivFinsuppOfBasisLeft_lTensor_apply b ((PD.Fil 0).restrictScalars Qp).subtype y i`. Rewrite `h'` using `[← algebraTensorModule_map_id_apply (L := LL), hy]`.
+
+Establish `h3 : PD.ι (equivFinsuppOfBasisLeft b x i) = ((PD.Fil 0).restrictScalars Qp).subtype (equivFinsuppOfBasisLeft b y i)` using `h.symm.trans h'`. Rewrite using `[h3]`. Conclude with `(equivFinsuppOfBasisLeft b y i).2`. Use `choose c hc using key`. Use `⟨∑ i ∈ (equivFinsuppOfBasisLeft b x).support, c i • b i, ?_⟩` and prove the remaining obligations.
+
+Establish `hx : x = (equivFinsuppOfBasisLeft b).symm (equivFinsuppOfBasisLeft b x)` using `by simp`. Rewrite `hx` using `[equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum]`. Rewrite using `[TensorProduct.sum_tmul]`. Use `hx.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← hc i, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 theorem exists_tmul_one_of_frob_fixed_of_mem_fil_zero :
     ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] (x : V ⊗[Qp] B), φVB PD (LL := LL) (V := V) x = x → ιV PD (LL := LL) (V := V) x ∈ FilV PD (LL := LL) (V := V) 0 → ∃ v : V, x = v ⊗ₜ[Qp] (1 : B) := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ x hφ hF

@@ -20,6 +20,9 @@ def pushField : ResidueField (gaussRing (gaussCurve W W)) →+* univField (W.map
     ((ffMap (gaussResidue W) ((gaussCurve W W).map (residue (gaussRing W)))).comp
       (gaussResidue (gaussCurve W W)))
 
+/- English proof (translation)
+Rewrite using `[pushField, RingHom.comp_apply, RingHom.comp_apply, gaussResidue_residue_algebraMap, ffMap_algebraMap]`. Conclude with `ffCongr_algebraMap _ _`.
+-/
 theorem pushField_residue_algebraMap (g : gaussRing W) :
     pushField W (residue _ (algebraMap (gaussRing W) (gaussRing (gaussCurve W W)) g)) =
       algebraMap (W.map (residue 𝒪)).toAffine.FunctionField _ (gaussResidue W (residue _ g)) := by
@@ -27,11 +30,17 @@ theorem pushField_residue_algebraMap (g : gaussRing W) :
     ffMap_algebraMap]
   exact ffCongr_algebraMap _ _
 
+/- English proof (translation)
+Rewrite using `[pushField, RingHom.comp_apply, RingHom.comp_apply, gaussResidue_gaussX, ffMap_genX]`. Conclude with `ffCongr_genX _`.
+-/
 theorem pushField_gaussX :
     pushField W (residue _ (gaussX (gaussCurve W W))) = genX _ := by
   rw [pushField, RingHom.comp_apply, RingHom.comp_apply, gaussResidue_gaussX, ffMap_genX]
   exact ffCongr_genX _
 
+/- English proof (translation)
+Rewrite using `[pushField, RingHom.comp_apply, RingHom.comp_apply, gaussResidue_gaussY, ffMap_genY]`. Conclude with `ffCongr_genY _`.
+-/
 theorem pushField_gaussY :
     pushField W (residue _ (gaussY (gaussCurve W W))) = genY _ := by
   rw [pushField, RingHom.comp_apply, RingHom.comp_apply, gaussResidue_gaussY, ffMap_genY]
@@ -50,6 +59,9 @@ abbrev liftField : Type _ :=
 abbrev liftJ : 𝒪 →+* gaussRing (gaussCurve W W) :=
   (algebraMap (gaussRing W) (gaussRing (gaussCurve W W))).comp (algebraMap 𝒪 (gaussRing W))
 
+/- English proof (translation)
+Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply (gaussRing W) (gaussRing (gaussCurve W W)) (liftField K W), IsScalarTower.algebraMap_apply (gaussRing W) (W.baseChange K).toAffine.FunctionField (liftField K W), ← IsScalarTower.algebraMap_apply 𝒪 (gaussRing W) (W.baseChange K …`.
+-/
 theorem liftJ_algebraMap (c : 𝒪) :
     algebraMap K (liftField K W) (algebraMap 𝒪 K c) =
       algebraMap (gaussRing (gaussCurve W W)) (liftField K W) (liftJ W c) := by
@@ -61,6 +73,9 @@ theorem liftJ_algebraMap (c : 𝒪) :
     IsScalarTower.algebraMap_apply 𝒪 K (W.baseChange K).toAffine.FunctionField,
     ← IsScalarTower.algebraMap_apply K _ (liftField K W)]
 
+/- English proof (translation)
+Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `residue_surjective c`. Rewrite using `[RingHom.comp_apply, ResidueField.map_residue, RingHom.comp_apply, pushField_residue_algebraMap, gaussResidue_residue_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem pushField_comp_residueField_map :
     (pushField W).comp (ResidueField.map (liftJ W)) =
       algebraMap (ResidueField 𝒪) (univField (W.map (residue 𝒪))) := by
@@ -70,6 +85,9 @@ theorem pushField_comp_residueField_map :
     pushField_residue_algebraMap, gaussResidue_residue_algebraMap,
     ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `show V.map (((pushField W).comp (residue _)).comp (liftJ W)) = V.map ((algebraMap (ResidueField 𝒪) _).comp (residue 𝒪))`. Establish `h : ((pushField W).comp (residue _)).comp (liftJ W) = (algebraMap (ResidueField 𝒪) (univField (W.map (residue 𝒪)))).comp (residue 𝒪)`. Rewrite using `[← pushField_comp_residueField_map, RingHom.comp_assoc, RingHom.comp_assoc, ResidueField.map_comp_residue]`. Rewrite using `[h]`.
+-/
 theorem pushCurve_eq (V : WeierstrassCurve 𝒪) :
     ((V.map (liftJ W)).map (residue _)).map (pushField W) =
       (V.map (residue 𝒪)).baseChange (univField (W.map (residue 𝒪))) := by
@@ -95,6 +113,13 @@ def redU (V : WeierstrassCurve 𝒪) [V.IsElliptic] :
     (pointCongr (map_baseChange_eq_map_of K V (liftJ W) (liftField K W)
       (liftJ_algebraMap K W))).toAddMonoidHom
 
+/- English proof (translation)
+Establish `h₁ : (curveK (liftField K W) (V.map (liftJ W))).Nonsingular (algebraMap _ (liftField K W) x) (algebraMap _ (liftField K W) y)` using `by show ((V.map (liftJ W)).map (algebraMap _ (liftField K W))).toAffine.Nonsingular _ _`. Rewrite using `[← map_baseChange_eq_map_of K V (liftJ W) (liftField K W) (liftJ_algebraMap K W)]`. Conclude with `h`. Establish `n` using `nonsingular_residue_of_isElliptic (liftField K W) (V.map (liftJ W)) h₁.1`. Take `⟨h', e⟩` from `pointMapRing_some (pushField W) ((V.map (liftJ W)).map (residue _)) n`.
+
+Use `⟨by rw [← pushCurve_eq W V]; exact h', ?_⟩` and prove the remaining obligations. Establish `e₁ : pointCongr (map_baseChange_eq_map_of K V (liftJ W) (liftField K W) (liftJ_algebraMap K W)) (Point.some _ _ h) = Point.some _ _ h₁` using `pointCongr_some _ h`. Establish `e₂ : redU K W V (.some _ _ h) = .some _ _ n` using `by show reducePoint (liftField K W) (V.map (liftJ W)) (pointCongr _ (.some _ _ h)) = _`. Rewrite using `[e₁, reducePoint_some_integral _ _ h₁ n]`. Rewrite using `[e₂]`.
+
+Conclude with `(congrArg (pointCongr (pushCurve_eq W V)) e).trans (pointCongr_some _ _)`.
+-/
 theorem pushPt_redU_some (V : WeierstrassCurve 𝒪) [V.IsElliptic]
     {x y : gaussRing (gaussCurve W W)}
     (h : ((V.baseChange K).baseChange (liftField K W)).toAffine.Nonsingular
@@ -128,6 +153,9 @@ def liftPt₁ : ((W.baseChange K).baseChange (liftField K W)).toAffine.Point :=
   Point.map (IsScalarTower.toAlgHom K (W.baseChange K).toAffine.FunctionField (liftField K W))
     (GroundTheory.Arith.Abelian.genericPoint (W.baseChange K))
 
+/- English proof (translation)
+Use `show W.map (((algebraMap (W.baseChange K).toAffine.FunctionField (liftField K W)).comp (algebraMap (gaussRing W) _)).comp (algebraMap 𝒪 (gaussRing W))) = W.map ((algebraMap K (liftField K W)).comp (algebraMap 𝒪 K))`. Use `congrArg W.map (RingHom.ext fun c => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply 𝒪 (gaussRing W) (W.baseChange K).toAffine.FunctionField, IsScalarTower.algebraMap_apply 𝒪 K (W.baseChange K).toAffine.FunctionField, ← IsScalarTower.algebraMap_apply K _ (liftField K W)]`.
+-/
 theorem baseChange_liftField_eq :
     ((gaussCurve W W).baseChange (W.baseChange K).toAffine.FunctionField).baseChange
       (liftField K W) = (W.baseChange K).baseChange (liftField K W) := by
@@ -145,11 +173,19 @@ def liftPt₂ : ((W.baseChange K).baseChange (liftField K W)).toAffine.Point :=
     (GroundTheory.Arith.Abelian.genericPoint
       ((gaussCurve W W).baseChange (W.baseChange K).toAffine.FunctionField))
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Substitute `hb` using the available equality. Conclude with `⟨h, rfl⟩`.
+-/
 theorem exists_some_eq {F : Type*} [Field F] [DecidableEq F] {V : WeierstrassCurve F}
     {a b a' b' : F} (h : V.toAffine.Nonsingular a b) (ha : a = a') (hb : b = b') :
     ∃ h', (Point.some a b h : V.toAffine.Point) = Point.some a' b' h' := by
   subst ha; subst hb; exact ⟨h, rfl⟩
 
+/- English proof (translation)
+Establish `hx : algebraMap (gaussRing (gaussCurve W W)) (liftField K W) (algebraMap (gaussRing W) _ (gaussX W)) = algebraMap (W.baseChange K).toAffine.FunctionField _ (genX (W.baseChange K))`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (gaussRing W) (W.baseChange K).toAffine.FunctionField (liftField K W), algebraMap_gaussX]`. Establish `hy : algebraMap (gaussRing (gaussCurve W W)) (liftField K W) (algebraMap (gaussRing W) _ (gaussY W)) = algebraMap (W.baseChange K).toAffine.FunctionField _ (genY (W.baseChange K))`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (gaussRing W) (W.baseChange K).toAffine.FunctionField (liftField K W), algebraMap_gaussY]`. Rewrite using `[liftPt₁, GroundTheory.Arith.Abelian.genericPoint, Point.map_some]`.
+
+Conclude with `exists_some_eq _ hx.symm hy.symm`.
+-/
 theorem liftPt₁_eq : ∃ h, liftPt₁ K W = Point.some
     (algebraMap (gaussRing (gaussCurve W W)) (liftField K W)
       (algebraMap (gaussRing W) _ (gaussX W)))
@@ -168,6 +204,9 @@ theorem liftPt₁_eq : ∃ h, liftPt₁ K W = Point.some
   rw [liftPt₁, GroundTheory.Arith.Abelian.genericPoint, Point.map_some]
   exact exists_some_eq _ hx.symm hy.symm
 
+/- English proof (translation)
+Rewrite using `[liftPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`. Conclude with `exists_some_eq _ (algebraMap_gaussX (gaussCurve W W) (W.baseChange K).toAffine.FunctionField).symm (algebraMap_gaussY (gaussCurve W W) (W.baseChange K).toAffine.FunctionField).symm`.
+-/
 theorem liftPt₂_eq : ∃ h, liftPt₂ K W = Point.some
     (algebraMap (gaussRing (gaussCurve W W)) (liftField K W) (gaussX (gaussCurve W W)))
     (algebraMap (gaussRing (gaussCurve W W)) (liftField K W) (gaussY (gaussCurve W W))) h := by
@@ -176,6 +215,11 @@ theorem liftPt₂_eq : ∃ h, liftPt₂ K W = Point.some
     (algebraMap_gaussX (gaussCurve W W) (W.baseChange K).toAffine.FunctionField).symm
     (algebraMap_gaussY (gaussCurve W W) (W.baseChange K).toAffine.FunctionField).symm
 
+/- English proof (translation)
+Take `⟨h, e⟩` from `liftPt₁_eq K W`. Take `⟨h', e'⟩` from `pushPt_redU_some K W W h`. Rewrite using `[e, e', univPt₁, GroundTheory.Arith.Abelian.genericPoint, Point.map_some, Point.some.injEq]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[pushField_residue_algebraMap, gaussResidue_gaussX]`.
+
+Both sides reduce to the same expression. Rewrite using `[pushField_residue_algebraMap, gaussResidue_gaussY]`. Both sides reduce to the same expression.
+-/
 theorem pushPt_redU_liftPt₁ :
     pushPt W W (redU K W W (liftPt₁ K W)) = univPt₁ (W.map (residue 𝒪)) := by
   obtain ⟨h, e⟩ := liftPt₁_eq K W
@@ -185,6 +229,9 @@ theorem pushPt_redU_liftPt₁ :
   · rw [pushField_residue_algebraMap, gaussResidue_gaussX]; rfl
   · rw [pushField_residue_algebraMap, gaussResidue_gaussY]; rfl
 
+/- English proof (translation)
+Take `⟨h, e⟩` from `liftPt₂_eq K W`. Take `⟨h', e'⟩` from `pushPt_redU_some K W W h`. Rewrite using `[e, e', univPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some, Point.some.injEq]`. Conclude with `⟨pushField_gaussX W, pushField_gaussY W⟩`.
+-/
 theorem pushPt_redU_liftPt₂ :
     pushPt W W (redU K W W (liftPt₂ K W)) = univPt₂ (W.map (residue 𝒪)) := by
   obtain ⟨h, e⟩ := liftPt₂_eq K W
@@ -192,16 +239,28 @@ theorem pushPt_redU_liftPt₂ :
   rw [e, e', univPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some, Point.some.injEq]
   exact ⟨pushField_gaussX W, pushField_gaussY W⟩
 
+/- English proof (translation)
+The claim follows from `isGenPt_map _ _ (transcendental_genX _)`.
+-/
 theorem isGenPt_liftPt₁ : IsGenPt (W.baseChange K) (liftPt₁ K W) :=
   isGenPt_map _ _ (transcendental_genX _)
 
+/- English proof (translation)
+Rewrite using `[liftPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]`. Conclude with `transcendental_genX _`.
+-/
 theorem transOver_liftPt₂ :
     TransOver (W.baseChange K) (W.baseChange K).toAffine.FunctionField (liftPt₂ K W) := by
   rw [liftPt₂, GroundTheory.Arith.Abelian.genericPoint, pointCongr_some]
   exact transcendental_genX _
 
+/- English proof (translation)
+The claim follows from `(transOver_liftPt₂ K W).isGenPt`.
+-/
 theorem isGenPt_liftPt₂ : IsGenPt (W.baseChange K) (liftPt₂ K W) := (transOver_liftPt₂ K W).isGenPt
 
+/- English proof (translation)
+The claim follows from `((transOver_liftPt₂ K W).add_left (GroundTheory.Arith.Abelian.genericPoint (W.baseChange K))).isGenPt`.
+-/
 theorem isGenPt_liftPt₁₂ : IsGenPt (W.baseChange K) (liftPt₁ K W + liftPt₂ K W) :=
   ((transOver_liftPt₂ K W).add_left (GroundTheory.Arith.Abelian.genericPoint (W.baseChange K))).isGenPt
 

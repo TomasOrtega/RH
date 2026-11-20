@@ -5,6 +5,11 @@ namespace Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingBounds
 
 open Finset
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i hi`. Take `⟨k, hk⟩` from `hS i hi`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = ∑ k, ∑ i ∈ S.filter (fun i => i ∈ W k), g i := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`.
+-/
 private lemma sum_le_sum_cover {K : ℕ} (W : Fin K → Finset ℤ) (S : Finset ℤ)
     (hS : ∀ i ∈ S, ∃ k, i ∈ W k) (g : ℤ → ℕ) :
     ∑ i ∈ S, g i ≤ ∑ k, ∑ i ∈ S.filter (fun i => i ∈ W k), g i := by
@@ -21,6 +26,25 @@ private lemma sum_le_sum_cover {K : ℕ} (W : Fin K → Finset ℤ) (S : Finset 
         refine Finset.sum_congr rfl fun k _ => ?_
         rw [Finset.sum_filter]
 
+/- English proof (translation)
+Introduce `ℓ _ hℓ χ hχ ell K D a L JJ hJJ hD`. Take `⟨hne, hv⟩` from `Formalism.WindowSums.arc_KillerVal ℓ hℓ χ hχ ell JJ`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Use `set S := JJ.erase 0 with hSdef`.
+
+Use `set W : Fin K → Finset ℤ := fun k => Finset.Ico (a k) (a k + (L k : ℤ)) with hWdef`. Establish `hcov : ∀ i ∈ S, ∃ k, i ∈ W k`. Introduce `i hi`. Use `hJJ (Finset.mem_of_mem_erase hi)` as an intermediate fact. Simplify `this` using `[Finset.mem_biUnion, hWdef]`.
+
+Establish `hcard : S.card ≤ ∑ k, L k`. Establish `h` using `sum_le_sum_cover W S hcov (fun _ => 1)`. Rewrite using `[Finset.card_eq_sum_ones]`. Use `h.trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.card_eq_sum_ones]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `i hi`. Conclude with `(Finset.mem_filter.mp hi).2`. Use `_ = L k := by simp [hWdef]`.
+
+Establish `hsumv : ((∑ i ∈ S, padicValInt ℓ i : ℕ) : ℝ) ≤ ∑ k, ((L k : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ D)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `sum_le_sum_cover W S hcov (fun i => padicValInt ℓ i)` after adjusting the coercions. Use `_ = ∑ k, ((∑ i ∈ S.filter (fun i => i ∈ W k), padicValInt ℓ i : ℕ) : ℝ) := by push_cast; rfl`. Use `_ ≤ ∑ k, ((L k : ℝ) / ((ℓ : ℝ) - 1) + Real.logb ℓ D) := by`.
+
+Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Use `Formalism.WindowSums.arc_WindowSum ℓ (a k) (L k) D _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Conclude with `(Finset.mem_filter.mp hi).2`. Introduce `h0`.
+
+Use `(Finset.mem_filter.mp h0).1` as an intermediate fact. Simplify using `[hSdef] at this`. Introduce `i hi`. Conclude with `hD i (Finset.mem_of_mem_erase (Finset.mem_filter.mp hi).1)`. Establish `hsplit : ∑ i ∈ S, (1 + ell + padicValInt ℓ i) = S.card * (1 + ell) + ∑ i ∈ S, padicValInt ℓ i`.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul]`. Rewrite using `[hsplit]`. Establish `hcardR : (S.card : ℝ) ≤ ((∑ k, L k : ℕ) : ℝ)` using `by exact_mod_cast hcard`. Establish `hmul : (S.card : ℝ) * (1 + ell) ≤ ((∑ k, L k : ℕ) : ℝ) * (1 + ell)` using `mul_le_mul_of_nonneg_right hcardR (by positivity)`. Establish `hgoal : ((S.card * (1 + ell) + ∑ i ∈ S, padicValInt ℓ i + ell : ℕ) : ℝ) = (S.card : ℝ) * (1 + ell) + ((∑ i ∈ S, padicValInt ℓ i : ℕ) : ℝ) + ell` using `by push_cast; ring`.
+
+Rewrite using `[hgoal]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kappa_window_bound : KapWin := by
   intro ℓ _ hℓ χ hχ ell K D a L JJ hJJ hD
   obtain ⟨hne, hv⟩ := Formalism.WindowSums.arc_KillerVal ℓ hℓ χ hχ ell JJ

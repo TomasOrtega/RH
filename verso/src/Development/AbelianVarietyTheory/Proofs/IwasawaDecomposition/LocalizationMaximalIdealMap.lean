@@ -3,6 +3,27 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hJq : J ≤ q` using `hJ.trans hq`. Establish `hker : RingHom.ker (Ideal.Quotient.mk J) ≤ q` using `by rwa [Ideal.mk_ker]`. Set `qb : Ideal (S ⧸ J)` to `q.map (Ideal.Quotient.mk J)`. Use `haveI hqb : qb.IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective hker`. Establish `hcomap : ∀ s : S, Ideal.Quotient.mk J s ∈ qb → s ∈ q`.
+
+Introduce `s hs`. Establish `: s ∈ qb.comap (Ideal.Quotient.mk J)` using `hs`. Rewrite `this` using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, sup_eq_left.2 hker]`. Then use the resulting hypothesis. Set `D` to `Localization.AtPrime qb`. Use `haveI : Algebra.FormallyUnramified (S ⧸ J) D := .of_isLocalization qb.primeCompl`.
+
+Use `haveI : Algebra.FormallyUnramified B D := .comp B (S ⧸ J) D`. Use `haveI : Algebra.EssFiniteType (S ⧸ J) D := .of_isLocalization D qb.primeCompl`. Use `haveI : Algebra.EssFiniteType B (S ⧸ J) := inferInstance`. Use `haveI : Algebra.EssFiniteType B D := .comp B (S ⧸ J) D`. Establish `hBD : ∀ b : B, algebraMap B D b = algebraMap (S ⧸ J) D (Ideal.Quotient.mk J (algebraMap B S b))` using `fun b => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply B (S ⧸ J) D]`. Both sides reduce to the same expression. Establish `hmem : ∀ b ∈ maximalIdeal B, algebraMap B D b ∈ maximalIdeal D`. Introduce `b hb`. Rewrite using `[hBD, IsLocalization.AtPrime.to_map_mem_maximal_iff D qb]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (hq (Ideal.mem_map_of_mem _ hb))`. Use `haveI : IsLocalHom (algebraMap B D) := ⟨fun b hb => by`. Assume the negation of the conclusion as `hnu`. Conclude with `(mem_maximalIdeal _).1 (hmem b ((mem_maximalIdeal _).2 hnu)) hb⟩`. Establish `hmax : (maximalIdeal B).map (algebraMap B D) = maximalIdeal D` using `Algebra.FormallyUnramified.map_maximalIdeal`.
+
+Set `I` to `(maximalIdeal B).map (algebraMap B S)`. Establish `hmapD : (maximalIdeal B).map (algebraMap B D) = (I.map (Ideal.Quotient.mk J)).map (algebraMap (S ⧸ J) D)`. Simplify using `only [I, Ideal.map_map]`. Use `congr 1`. Establish `hyD : algebraMap (S ⧸ J) D (Ideal.Quotient.mk J y) ∈ (I.map (Ideal.Quotient.mk J)).map (algebraMap (S ⧸ J) D)`.
+
+Rewrite using `[← hmapD, hmax, IsLocalization.AtPrime.to_map_mem_maximal_iff D qb]`. Conclude with `Ideal.mem_map_of_mem _ hy`. Take `⟨⟨a, s⟩, has⟩` from `(IsLocalization.mem_map_algebraMap_iff qb.primeCompl D).1 hyD`. Simplify using `only at has`. Rewrite `has` using `[← map_mul]`.
+
+Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists qb.primeCompl D).1 has`. Take `⟨a', ha', haa⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 a.2`. Take `⟨s', hs'⟩` from `Ideal.Quotient.mk_surjective (s : S ⧸ J)`. Take `⟨c', hc'⟩` from `Ideal.Quotient.mk_surjective (c : S ⧸ J)`. Use `⟨c' * s', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hmul`. Break down `(inferInstance : q.IsPrime).mem_or_mem hmul with h | h` into its components or cases. Conclude with `c.2 (hc' ▸ Ideal.mem_map_of_mem _ h)`. Conclude with `s.2 (hs' ▸ Ideal.mem_map_of_mem _ h)`. Establish `hdiff : c' * (y * s') - c' * a' ∈ J`.
+
+Rewrite using `[← Ideal.Quotient.eq, map_mul, map_mul, map_mul, hc', hs', haa]`. Conclude with `hc`. Establish `h1 : c' * s' * y = (c' * (y * s') - c' * a') + c' * a'` using `by ring`. Rewrite using `[h1]`. Conclude with `I.add_mem (hJ hdiff) (I.mul_mem_left _ ha')`.
+-/
 theorem exists_mul_mem_map_maximalIdeal_of_formallyUnramified_quotient
     (B S : Type) [CommRing B] [IsLocalRing B] [CommRing S] [Algebra B S]
     (J q : Ideal S) [q.IsMaximal]
@@ -65,6 +86,11 @@ theorem exists_mul_mem_map_maximalIdeal_of_formallyUnramified_quotient
     rw [h1]
     exact I.add_mem (hJ hdiff) (I.mul_mem_left _ ha')
 
+/- English proof (translation)
+Set `C` to `Localization.AtPrime q`. Establish `hK : (maximalIdeal B).map ((algebraMap S C).comp (algebraMap B S)) = ((maximalIdeal B).map (algebraMap B S)).map (algebraMap S C)`. Rewrite using `[Ideal.map_map]`. Rewrite using `[hK, ← Localization.AtPrime.map_eq_maximalIdeal]`. Use `le_antisymm (Ideal.map_mono hq) (Ideal.map_le_iff_le_comap.2 fun y hy => ?_)` and prove the remaining obligations.
+
+Take `⟨t, ht, hty⟩` from `exists_mul_mem_map_maximalIdeal_of_formallyUnramified_quotient B S J q hJ hq hU hF y hy`. Establish `htu : IsUnit (algebraMap S C t)` using `IsLocalization.map_units C (⟨t, ht⟩ : q.primeCompl)`. Establish `h2` using `Ideal.mem_map_of_mem (algebraMap S C) hty`. Rewrite `h2` using `[map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ htu).1 h2`.
+-/
 theorem map_maximalIdeal_localization_eq_of_formallyUnramified_quotient
     (B S : Type) [CommRing B] [IsLocalRing B] [CommRing S] [Algebra B S]
     (J q : Ideal S) [q.IsMaximal]
@@ -87,6 +113,9 @@ theorem map_maximalIdeal_localization_eq_of_formallyUnramified_quotient
   rw [map_mul] at h2
   exact (Ideal.unit_mul_mem_iff_mem _ htu).1 h2
 
+/- English proof (translation)
+The claim follows from `@map_maximalIdeal_localization_eq_of_formallyUnramified_quotient`.
+-/
 example : ∀ (B S : Type) [CommRing B] [IsLocalRing B] [CommRing S] [Algebra B S] (J q : Ideal S) [q.IsMaximal], J ≤ (IsLocalRing.maximalIdeal B).map (algebraMap B S) → (IsLocalRing.maximalIdeal B).map (algebraMap B S) ≤ q → Algebra.FormallyUnramified B (S ⧸ J) → Module.Finite B (S ⧸ J) → (IsLocalRing.maximalIdeal B).map ((algebraMap S (Localization.AtPrime q)).comp (algebraMap B S)) = IsLocalRing.maximalIdeal (Localization.AtPrime q) :=
   @map_maximalIdeal_localization_eq_of_formallyUnramified_quotient
 

@@ -20,6 +20,19 @@ open GlobalTheory.PsiEvenPull (proj)
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Establish `hm : (specOf φ ∣_ hD.W) ≫ hD.W.ι = (specOf φ ⁻¹ᵁ hD.W).ι ≫ specOf φ` using `morphismRestrict_ι _ _`. Establish `key : ∀ x : D'.X, ∃ a : LB.Gen (LB.LinComb D'.P.L (K` using `PUnit) (fun _ => (toUnit (TW (specOf φ ⁻¹ᵁ hD.W)) ≫ D'.c x).left) (fun _ => -1)), a.IsGen ∧ LB.Gen.Corr D'.P.L _ _ _ _ (LB.pullGen D'.P.L _ _ a (jK R' ∣_ (specOf φ ⁻¹ᵁ hD.W))) (LB.pullGen D'.P.L _ _ (D'.psi x) (jK R' ⁻¹ᵁ (specOf φ ⁻¹ᵁ hD.W)).ι) ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (spec …`. Introduce `x`. Establish `hψ : (toUnit (TW (specOf φ ⁻¹ᵁ hD.W)) ≫ D'.c x).left ≫ proj hD = (specOf φ ∣_ hD.W) ≫ (toUnit (TW hD.W) ≫ D.c (hD.xe x)).left` using `by show (specOf φ ⁻¹ᵁ hD.W).ι ≫ (D'.c x).left ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ) = (specOf φ ∣_ hD.W) ≫ hD.W.ι ≫ (D.c (hD.xe x)).left`. Rewrite using `[hD.c_pr x, ← Category.assoc, ← Category.assoc, hm]`.
+
+Take `⟨a, ha, H⟩` from `DegPull.exists_pmaps ((isGen_iff _).1 hD.w_gen) D.P.isLB D'.P.isLB (K := PUnit) (ε := fun _ => -1) (specOf φ ∣_ hD.W) (fun _ => hψ) (hD.psiW.psi (hD.xe x)) (hD.psiW.psi_gen _)`. Use `⟨a, ha, corr_of_val D'.P.isLB fun y J' hJ' => ?_, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `swap`. Establish `v` using `DegPull.pmaps_val (fun _ => hψ) H r z hJ hJ'`. Rewrite `v` using `[Fintype.prod_unique, zpow_neg_one]`.
+
+Conclude with `v`. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB y`. Establish `hz : ((jK R' ∣_ (specOf φ ⁻¹ᵁ hD.W)) ≫ (specOf φ ∣_ hD.W)) ≫ hD.W.ι = (jK R' ⁻¹ᵁ (specOf φ ⁻¹ᵁ hD.W)).ι ≫ jK R' ≫ specOf φ`. Rewrite using `[Category.assoc, hm, ← Category.assoc, morphismRestrict_ι, Category.assoc]`. Take `⟨hp, P⟩` from `ArcSpecialise.pmaps_psiOn hD hD.psiW _ _ hz x`.
+
+Establish `v₁` using `DegPull.pmaps_val (fun _ => hψ) H (jK R' ∣_ (specOf φ ⁻¹ᵁ hD.W)) y hJ hJ'`. Establish `v₂` using `DegPull.pmaps_val (fun _ => hp) P (𝟙 _) y hJ hJ'`. Rewrite using `[val_pull hJ', val_pull hJ']`. Rewrite `v₂` using `[val_pull hJ, val_pull hJ']`. Simplify using `only [Category.id_comp] at v₁ v₂ ⊢`.
+
+Establish `hmor : (jK R' ∣_ (specOf φ ⁻¹ᵁ hD.W)) ≫ (toUnit (TW (specOf φ ⁻¹ᵁ hD.W)) ≫ D'.c x).left = (jK R' ⁻¹ᵁ (specOf φ ⁻¹ᵁ hD.W)).ι ≫ D'.xK x` using `by show (jK R' ∣_ (specOf φ ⁻¹ᵁ hD.W)) ≫ (specOf φ ⁻¹ᵁ hD.W).ι ≫ (D'.c x).left = (jK R' ⁻¹ᵁ (specOf φ ⁻¹ᵁ hD.W)).ι ≫ jK R' ≫ (D'.c x).left`. Rewrite using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`. Rewrite `v₁` using `[hmor]`. Conclude with `mul_left_cancel (v₁.symm.trans v₂)`. Use `choose a ha hc hv using key`.
+
+Conclude with `⟨⟨a, ha, hc⟩, hv⟩`.
+-/
 theorem exists_psiOn_pull {φ : R →+* R'} {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D') :
     ∃ ψ : PsiOn D' (specOf φ ⁻¹ᵁ hD.W), ∀ (x : D'.X) (Z : Scheme.{0}) (r : Z ⟶ (specOf φ ⁻¹ᵁ hD.W).toScheme) (z : Z) J J',
       Good D.P.L z J → Good D'.P.L z J' →

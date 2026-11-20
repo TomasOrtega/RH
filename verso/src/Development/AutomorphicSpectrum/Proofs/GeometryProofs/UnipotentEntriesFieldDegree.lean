@@ -10,6 +10,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep.AdjoinLower
 
+/- English proof (translation)
+Introduce `Ω₀ Ω _ _ _ S r u hdiag hup hfin`. Rewrite `hfin` using `[IntermediateField.finrank_eq_one_iff_eq_top]`. Rewrite using `[← hfin]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨⟨σ, ⟨l, k⟩, _⟩, rfl⟩`. Conclude with `⟨⟨σ, l, k⟩, rfl⟩`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨σ, l, k⟩, rfl⟩`. Break down `lt_trichotomy l k with h | h | h` into its components or cases.
+
+Simplify using `only [hup σ l k h]`. Conclude with `zero_mem _`. Substitute `h` using the available equality. Simplify using `only [hdiag σ l]`. Conclude with `one_mem _`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨σ, ⟨l, k⟩, h⟩, rfl⟩`.
+-/
 theorem adjoin_lower_eq_top : ∀ (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [Algebra Ω₀ Ω] (S : Type) (r : S → ℕ)
     (u : ∀ σ, Matrix (Fin (r σ)) (Fin (r σ)) Ω),
     (∀ σ k, u σ k k = 1) → (∀ σ l k, l < k → u σ l k = 0) →

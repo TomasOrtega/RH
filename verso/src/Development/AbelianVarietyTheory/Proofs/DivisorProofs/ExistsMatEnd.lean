@@ -17,6 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Eq8
 
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `hu B (fun w => if w = a then pr b else 1)`. Establish `ext : ∀ {T : Over S} (z z' : T ⟶ B), (∀ w, z ≫ pr w = z' ≫ pr w) → z = z'`. Introduce `T z z' h`. Take `⟨_, -, hz⟩` from `hu T (fun w => z' ≫ pr w)`. Conclude with `(hz z h).trans (hz z' fun _ => rfl).symm`.
+
+Establish `mul : ∀ (T : Over S) (x y : T ⟶ B), (x * y) ≫ f = (x ≫ f) * (y ≫ f)`. Introduce `T x y`. Use `ext _ _ fun w => ?_` and prove the remaining obligations. Establish `hw` using `hpr w`. Establish `e : ((x ≫ f) * (y ≫ f)) ≫ pr w = (x ≫ f ≫ pr w) * (y ≫ f ≫ pr w)`.
+
+Rewrite using `[MonObj.mul_comp, Category.assoc, Category.assoc]`. Rewrite using `[e, Category.assoc, hf]`. Use `split_ifs`. Use `hpr b` as an intermediate fact. Rewrite using `[MonObj.mul_comp]`.
+
+Simplify using the standard rewrite rules. Use `⟨f, ⟨?_, ?_⟩, hf⟩` and prove the remaining obligations. Establish `h` using `mul (𝟙_ _) 1 1`. Rewrite `h` using `[_root_.mul_one]`. Establish `h' : (1 : 𝟙_ (Over S) ⟶ B) ≫ f = 1` using `mul_eq_left.1 h.symm`.
+
+Simplify `h'` using `[Hom.one_def]`. Establish `h` using `mul (B ⊗ B) (fst _ _) (snd _ _)`. Rewrite `h` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h]`. Use `congr 1`.
+-/
 theorem exists_matEnd {S : Scheme.{0}} {B C : Over S} [GrpObj B] [GrpObj C] (pr : Fin 8 → (B ⟶ C))
     (hpr : ∀ a, IsMonHom (pr a))
     (hu : ∀ (T' : Over S) (y : Fin 8 → (T' ⟶ C)), ∃! z : T' ⟶ B, ∀ a, z ≫ pr a = y a) (a b : Fin 8) :
@@ -46,6 +57,35 @@ theorem exists_matEnd {S : Scheme.{0}} {B C : Over S} [GrpObj B] [GrpObj C] (pr 
     rw [Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp] at h
     rw [h]; congr 1
 
+/- English proof (translation)
+Introduce `o' Ω _ _ _ _ S ρ M U₀ EE FinalForm hU C _ _ pr hpr hu a b`. Take `⟨f₁, hf₁⟩` from `exists_matEnd pr hpr hu a b`. Establish `: IsMonHom f₁` using `hf₁.1`. Establish `hr : Set.range M.pt ⊆ Set.range U₀.ι`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `M.top_le_preimage_pt hU (x := w) trivial`. Set `x : Sp Ω ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι M.pt hr`. Establish `hx : x ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Set `Q` to `(Over.pullback FinalForm.u₀).obj ρ.P.A`.
+
+Set `ν : pullback FinalForm.G.hom M.pt ⟶ pullback ρ.P.A.hom FinalForm.u₀` to `FinalForm.cart.1.lift (pullback.fst FinalForm.G.hom M.pt) (pullback.snd FinalForm.G.hom M.pt ≫ x) (by rw [pullback.condition, Category.assoc, hx])`. Establish `hν₁ : ν ≫ FinalForm.φ = pullback.fst FinalForm.G.hom M.pt` using `FinalForm.cart.1.lift_fst _ _ _`. Establish `hν₂ : ν ≫ Q.hom = pullback.snd FinalForm.G.hom M.pt ≫ x` using `FinalForm.cart.1.lift_snd _ _ _`. Establish `gη : IsGrpPullback ((Over.pullback M.pt).obj FinalForm.G) FinalForm.G (x ≫ U₀.ι) (ν ≫ FinalForm.φ)` using `(isGrpPullback_pullback FinalForm.G M.pt).congr hx.symm hν₁.symm`. Establish `gν : IsGrpPullback ((Over.pullback M.pt).obj FinalForm.G) Q x ν` using `FinalForm.cart.cancel gη hν₂`.
+
+Establish `gψ` using `gν.comp (isGrpPullback_pullback ρ.P.A FinalForm.u₀)`. Take `⟨w', hw', pa⟩` from `GlobalTheory.SymBaseChange.exists_endo gψ f₁`. Establish `hw'l : w'.left ≫ ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀ = (ν ≫ pullback.fst ρ.P.A.hom FinalForm.u₀) ≫ f₁.left`. Use `congrArg (fun z => z.left) (pa (𝟙 _))` as an intermediate fact. Simplify `this` using `[pushPt]`.
+
+Take `⟨F, ⟨hF, hFw⟩, -⟩` from `FinalForm.endo w' hw'`. Use `⟨F, hF, f₁, hf₁, ?_⟩` and prove the remaining obligations. Establish `hsep : IsSeparated FinalForm.G.hom` using `FinalForm.semi.separated`. Establish `hsm : Smooth FinalForm.G.hom` using `FinalForm.semi.smooth`. Establish `hQf : Flat Q.hom` using `MorphismProperty.of_isPullback (P := @Flat) FinalForm.cart.1 inferInstance`.
+
+Establish `hqc : QuasiCompact M.pt`. Establish `: IsSeparated M.s` using `M.sep`. Establish `: QuasiCompact (M.pt ≫ M.s)` using `by rw [M.pt_s]; infer_instance`. Conclude with `QuasiCompact.of_comp M.pt M.s`. Establish `hdom : IsSchemeTheoreticallyDominant M.pt` using `.of_isDominant M.pt`.
+
+Set `p : pullback ρ.P.A.hom FinalForm.u₀ ⟶ M.Z` to `Q.hom ≫ U₀.ι`. Set `j` to `pullback.fst p M.pt`. Establish `hj : j ≫ Q.hom = pullback.snd p M.pt ≫ x`. Rewrite using `[← cancel_mono U₀.ι, Category.assoc, Category.assoc, hx]`. Conclude with `pullback.condition`.
+
+Set `k : pullback p M.pt ⟶ pullback FinalForm.G.hom M.pt` to `pullback.lift (j ≫ FinalForm.φ) (pullback.snd p M.pt) (by`. Rewrite using `[Category.assoc, FinalForm.cart.1.w]`. Conclude with `pullback.condition)`. Establish `hk₁ : k ≫ pullback.fst FinalForm.G.hom M.pt = j ≫ FinalForm.φ` using `pullback.lift_fst _ _ _`. Establish `hk₂ : k ≫ pullback.snd FinalForm.G.hom M.pt = pullback.snd p M.pt` using `pullback.lift_snd _ _ _`.
+
+Establish `hkν : k ≫ ν = j`. Apply `FinalForm.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hν₁, hk₁]`. Rewrite using `[Category.assoc, hν₂, ← Category.assoc, hk₂, hj]`. Establish `hF' : ((Over.pullback M.pt).map F).left ≫ pullback.fst FinalForm.G.hom M.pt = pullback.fst FinalForm.G.hom M.pt ≫ F.left`.
+
+Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`. Establish `hw₂ : w'.left ≫ pullback.snd FinalForm.G.hom M.pt = pullback.snd FinalForm.G.hom M.pt` using `Over.w w'`. Establish `key : k ≫ w'.left ≫ ν = j ≫ ((Over.pullback FinalForm.u₀).map f₁).left`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[hw'l]`. Simplify using `only [← Category.assoc]`. Rewrite using `[hkν]`. Simplify using `only [Category.assoc, Over.pullback_map_left]`.
+
+Conclude with `congrArg (j ≫ ·) (pullback.lift_fst _ _ _).symm`. Establish `e : ((Over.pullback FinalForm.u₀).map f₁).left ≫ Q.hom = Q.hom` using `Over.w ((Over.pullback FinalForm.u₀).map f₁) show (k ≫ w'.left ≫ ν) ≫ Q.hom = (j ≫ ((Over.pullback FinalForm.u₀).map f₁).left) ≫ Q.hom`. Simplify using `only [Category.assoc]`. Rewrite using `[hν₂, e, hj, ← Category.assoc w'.left, hw₂, ← Category.assoc, hk₂]`. Use `GlobalTheory.SS.GenProj.ext_of_dense j FinalForm.G.hom ?_ ?_` and prove the remaining obligations.
+
+Establish `e1 : j ≫ FinalForm.φ ≫ F.left = k ≫ w'.left ≫ ν ≫ FinalForm.φ`. Rewrite using `[hν₁, ← hFw, hF', ← Category.assoc k, hk₁, Category.assoc]`. Rewrite using `[e1]`. Simplify using `only [← Category.assoc] at key ⊢`. Rewrite using `[key]`.
+
+Rewrite using `[Category.assoc, Category.assoc, Over.w F, FinalForm.cart.1.w, ← Category.assoc, Over.w]`.
+-/
 theorem matOn_exists : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), (U₀ : Set M.Z).Nonempty → ∀ (C : Over (Sp S.R)) [GrpObj C] [IsCommMonObj C] (pr : Fin 8 → (ρ.P.A ⟶ C)), (∀ a, IsMonHom (pr a)) → (∀ (T' : Over (Sp S.R)) (y : Fin 8 → (T' ⟶ C)), ∃! z : T' ⟶ ρ.P.A, ∀ a, z ≫ pr a = y a) → ∀ a b, ∃ f, MatOn FinalForm pr a b f := by
   intro o' Ω _ _ _ _ S ρ M U₀ EE FinalForm hU C _ _ pr hpr hu a b
   obtain ⟨f₁, hf₁⟩ := exists_matEnd pr hpr hu a b

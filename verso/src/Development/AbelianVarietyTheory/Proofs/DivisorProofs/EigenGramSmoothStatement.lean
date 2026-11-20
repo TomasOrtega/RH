@@ -12,6 +12,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GramSmooth.contDiffAt_eigGram | exact GlobalTheory.GramSmooth.contDiffAt_eigGram | (intros; apply GlobalTheory.GramSmooth.contDiffAt_eigGram <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eigen_gram_smooth : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ)
     (G : EigMet s.T.Z σ) (T : Set (CxPts (genStr s.T.Z) σ)), IsOpen T → G.SmoothOn (manifold s.T.Z σ) T →
     ∀ (n : ℕ) (U : Set (V n)) (a : V n → CxFr s.T.Z σ), IsOpen U → HolFam U a → ContinuousOn (fun u => (a u).1) U →

@@ -17,22 +17,34 @@ section Schur
 
 variable {ε : Fin n → Bool} {Λ : Fin n → ℝ}
 
+/- English proof (translation)
+Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.star_eq_adjoint, Unitary.star_mul_self_of_mem (T.τ k).2, ContinuousLinearMap.one_apply]`.
+-/
 theorem fct_op_inner (T : S7.KType ε Λ) (k : S7.KG ε) (x y : T.V) :
     ⟪T.op k x, T.op k y⟫_ℂ = ⟪x, y⟫_ℂ := by
   rw [← ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.mul_apply,
     ← ContinuousLinearMap.star_eq_adjoint, Unitary.star_mul_self_of_mem (T.τ k).2,
     ContinuousLinearMap.one_apply]
 
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem fct_integrable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : S7.KG ε → E}
     (hf : Continuous f) : Integrable f (S7.muK ε) :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
+/- English proof (translation)
+Set `tr : (T.V →L[ℂ] T.V) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.trace ℂ T.V ∘ₗ ContinuousLinearMap.coeLM ℂ)`. Conclude with `(tr.continuous.comp (cont_op T)).star`.
+-/
 theorem fct_cont_char (T : S7.KType ε Λ) :
     Continuous fun k : S7.KG ε => star (LinearMap.trace ℂ T.V (T.op k).toLinearMap) := by
   let tr : (T.V →L[ℂ] T.V) →L[ℂ] ℂ :=
     LinearMap.toContinuousLinearMap (LinearMap.trace ℂ T.V ∘ₗ ContinuousLinearMap.coeLM ℂ)
   exact (tr.continuous.comp (cont_op T)).star
 
+/- English proof (translation)
+Rewrite using `[LinearMap.trace_eq_sum_inner _ (stdOrthonormalBasis ℂ T.V), star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Conclude with `inner_conj_symm _ _`.
+-/
 theorem fct_trace_star (T : S7.KType ε Λ) (k : S7.KG ε) :
     star (LinearMap.trace ℂ T.V (T.op k).toLinearMap) =
       ∑ a, ⟪T.op k (stdOrthonormalBasis ℂ T.V a), stdOrthonormalBasis ℂ T.V a⟫_ℂ := by
@@ -40,10 +52,28 @@ theorem fct_trace_star (T : S7.KType ε Λ) (k : S7.KG ε) :
   refine Finset.sum_congr rfl fun a _ => ?_
   exact inner_conj_symm _ _
 
+/- English proof (translation)
+Rewrite using `[dk, integral_smul_measure, ENNReal.toReal_inv]`.
+-/
 theorem fct_int_dk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : S7.KG ε → E) :
     ∫ k, f k ∂(dk ε) = ((S7.muK ε Set.univ).toReal)⁻¹ • ∫ k, f k ∂(S7.muK ε) := by
   rw [dk, integral_smul_measure, ENNReal.toReal_inv]
 
+/- English proof (translation)
+Use `set A : T.V →L[ℂ] T.V := ∫ k, T.op k * P * T.op k⁻¹ ∂(dk ε) with hAdef`. Establish `hcomm : ∀ k, T.op k * A = A * T.op k`. Introduce `k`. Establish `h` using `int_conj T P k`. Rewrite `h` using `[← hAdef]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha⟩` from `schur T A hcomm`. Set `tr : (T.V →L[ℂ] T.V) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (LinearMap.trace ℂ T.V ∘ₗ ContinuousLinearMap.coeLM ℂ)`. Establish `htr_apply : ∀ B : T.V →L[ℂ] T.V, tr B = LinearMap.trace ℂ T.V (B : T.V →ₗ[ℂ] T.V)` using `fun B => rfl`. Establish `htrP : ∀ k, tr (T.op k * P * T.op k⁻¹) = LinearMap.trace ℂ T.V (P : T.V →ₗ[ℂ] T.V)`.
+
+Introduce `k`. Rewrite using `[htr_apply, ContinuousLinearMap.toLinearMap_mul, LinearMap.trace_mul_comm, ← ContinuousLinearMap.toLinearMap_mul, ← mul_assoc, op_inv_mul, one_mul]`. Establish `htrA : tr A = LinearMap.trace ℂ T.V (P : T.V →ₗ[ℂ] T.V)`. Rewrite using `[hAdef, ← ContinuousLinearMap.integral_comp_comm _ (integrable_conj T _)]`. Simplify using `only [htrP, integral_const, probReal_univ, one_smul]`.
+
+Establish `hd : (Module.finrank ℂ T.V : ℂ) ≠ 0`. Establish `: Nontrivial T.V` using `⟨⟨T.w, 0, fun h => by`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this⟩⟩`.
+
+Conclude with `(Module.finrank_pos (R := ℂ) (M := T.V)).ne'` after adjusting the coercions. Establish `htra : tr A = a * (Module.finrank ℂ T.V : ℂ)`. Rewrite using `[ha, map_smul, htr_apply, ContinuousLinearMap.toLinearMap_one, LinearMap.trace_one, smul_eq_mul]`. Establish `hvol : ((S7.muK ε Set.univ).toReal : ℂ) ≠ 0`. Conclude with `(S7.muK_univ_pos ε).ne'` after adjusting the coercions.
+
+Establish `hA : ∫ k, T.op k * P * T.op k⁻¹ ∂(S7.muK ε) = ((S7.muK ε Set.univ).toReal : ℂ) • A`. Rewrite using `[hAdef, fct_int_dk, Complex.coe_smul, smul_smul, mul_inv_cancel₀ (S7.muK_univ_pos ε).ne', one_smul]`. Rewrite using `[hA, smul_smul, ha, smul_smul]`. Use `congr 1`. Establish `: a = LinearMap.trace ℂ T.V (P : T.V →ₗ[ℂ] T.V) / (Module.finrank ℂ T.V : ℂ)`.
+
+Rewrite using `[← htrA, htra]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fct_schur_gen (T : S7.KType ε Λ) (P : T.V →L[ℂ] T.V) :
     ((Module.finrank ℂ T.V : ℂ) / ((S7.muK ε Set.univ).toReal : ℂ)) •
         ∫ k, T.op k * P * T.op k⁻¹ ∂(S7.muK ε) =
@@ -86,6 +116,17 @@ theorem fct_schur_gen (T : S7.KType ε Λ) (P : T.V →L[ℂ] T.V) :
   rw [this]
   field_simp
 
+/- English proof (translation)
+Use `set e := stdOrthonormalBasis ℂ T.V`. Set `P : Fin (Module.finrank ℂ T.V) → T.V →L[ℂ] T.V` to `fun a => (innerSL ℂ (e a)).smulRight c`. Set `Lf : Fin (Module.finrank ℂ T.V) → (T.V →L[ℂ] T.V) →L[ℂ] ℂ` to `fun a => (innerSL ℂ b).comp (ContinuousLinearMap.apply ℂ T.V (e a))`. Establish `hLf : ∀ a (B : T.V →L[ℂ] T.V), Lf a B = ⟪b, B (e a)⟫_ℂ` using `fun a B => rfl`. Establish `hpt : ∀ k, star (LinearMap.trace ℂ T.V (T.op k).toLinearMap) * ⟪b, T.op k c⟫_ℂ = ∑ a, Lf a (T.op k * P a * T.op k⁻¹)`.
+
+Introduce `k`. Rewrite using `[fct_trace_star, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hLf]`. Simplify using `only [ContinuousLinearMap.mul_apply, P, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, map_smul, inner_smul_right]`.
+
+Use `congr 1`. Rewrite using `[← fct_op_inner T k (e a) (T.op k⁻¹ (e a)), ← ContinuousLinearMap.mul_apply, op_mul_inv, ContinuousLinearMap.one_apply]`. Establish `hint : ∀ a, Integrable (fun k => T.op k * P a * T.op k⁻¹) (S7.muK ε)` using `fun a => fct_integrable (cont_conj T _)`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_finsetSum _ (fun a _ => (fct_integrable ((Lf a).continuous.comp (cont_conj T (P a))) : Integrable (fun k => Lf a (T.op k * P a * T.op k⁻¹)) (S7.muK ε))), Finset.mul_sum]`.
+
+Establish `h1 : ∀ a, ((Module.finrank ℂ T.V : ℂ) / ((S7.muK ε Set.univ).toReal : ℂ)) * ∫ k, Lf a (T.op k * P a * T.op k⁻¹) ∂(S7.muK ε) = ⟪e a, c⟫_ℂ * ⟪b, e a⟫_ℂ`. Introduce `a`. Rewrite using `[ContinuousLinearMap.integral_comp_comm _ (hint a), ← smul_eq_mul, ← map_smul, fct_schur_gen, map_smul, hLf, ContinuousLinearMap.one_apply, smul_eq_mul]`. Use `congr 1`. Simplify using `[P, LinearMap.trace_smulRight]`.
+
+Repeatedly rewrite using `[h1]`. Rewrite using `[← e.sum_inner_mul_inner b c]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+-/
 theorem fct_char (T : S7.KType ε Λ) (b c : T.V) :
     ((Module.finrank ℂ T.V : ℂ) / ((S7.muK ε Set.univ).toReal : ℂ)) *
         ∫ k, star (LinearMap.trace ℂ T.V (T.op k).toLinearMap) * ⟪b, T.op k c⟫_ℂ ∂(S7.muK ε) =
@@ -129,14 +170,26 @@ section Theta
 variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+The claim follows from `k.1.2`.
+-/
 theorem fct_toMK_mem (k : S7.KG ε) : S7.toMK k ∈ UJset ε := k.1.2
 
+/- English proof (translation)
+The claim follows from `(S7.continuous_toM ε).comp continuous_subtype_val`.
+-/
 theorem fct_cont_toMK : Continuous fun k : S7.KG ε => S7.toMK k :=
   (S7.continuous_toM ε).comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `((rreg_isURepOn ε).2.2 r).comp_continuous fct_cont_toMK fct_toMK_mem`.
+-/
 theorem fct_cont_R (r : L2 ε) : Continuous fun k : S7.KG ε => rreg ε (S7.toMK k) r :=
   ((rreg_isURepOn ε).2.2 r).comp_continuous fct_cont_toMK fct_toMK_mem
 
+/- English proof (translation)
+Set `f : L2 ε →ₗᵢ[ℂ] L2 ε` to `{ toLinearMap := (rreg ε g).toLinearMap, norm_map' := (rreg_isURepOn ε).2.1 g hg }`. Conclude with `f.inner_map_map x y`.
+-/
 theorem fct_rreg_inner {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (x y : L2 ε) :
     ⟪rreg ε g x, rreg ε g y⟫_ℂ = ⟪x, y⟫_ℂ := by
   let f : L2 ε →ₗᵢ[ℂ] L2 ε := { toLinearMap := (rreg ε g).toLinearMap, norm_map' := (rreg_isURepOn ε).2.1 g hg }
@@ -145,6 +198,9 @@ theorem fct_rreg_inner {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) (x
 def fctTheta (T : S7.KType ε (lowK ε lam)) (r : L2 ε) (e p : T.V) : L2 ε :=
   ∫ k, ⟪T.op k e, p⟫_ℂ • rreg ε (S7.toMK k) r ∂(S7.muK ε)
 
+/- English proof (translation)
+Establish `h1 : Continuous fun k : S7.KG ε => ⟪T.op k e, p⟫_ℂ` using `((cont_op T).clm_apply continuous_const).inner continuous_const`. Conclude with `h1.smul (fct_cont_R r)`.
+-/
 theorem fct_cont_integrand (r : L2 ε) (e p : T.V) :
     Continuous fun k : S7.KG ε => ⟪T.op k e, p⟫_ℂ • rreg ε (S7.toMK k) r :=
   by
@@ -152,6 +208,9 @@ theorem fct_cont_integrand (r : L2 ε) (e p : T.V) :
       ((cont_op T).clm_apply continuous_const).inner continuous_const
     exact h1.smul (fct_cont_R r)
 
+/- English proof (translation)
+Unfold `fctTheta`. Rewrite using `[← integral_add (fct_integrable (fct_cont_integrand r e p)) (fct_integrable (fct_cont_integrand r e q))]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[inner_add_right, add_smul]`.
+-/
 theorem fct_theta_add (r : L2 ε) (e p q : T.V) :
     fctTheta T r e (p + q) = fctTheta T r e p + fctTheta T r e q := by
   unfold fctTheta
@@ -160,6 +219,9 @@ theorem fct_theta_add (r : L2 ε) (e p q : T.V) :
   funext k
   rw [inner_add_right, add_smul]
 
+/- English proof (translation)
+Unfold `fctTheta`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[inner_smul_right, mul_smul]`.
+-/
 theorem fct_theta_smul (r : L2 ε) (e : T.V) (c : ℂ) (p : T.V) :
     fctTheta T r e (c • p) = c • fctTheta T r e p := by
   unfold fctTheta
@@ -173,6 +235,11 @@ def fctThetaLin (T : S7.KType ε (lowK ε lam)) (r : L2 ε) (e : T.V) : T.V →�
   map_add' := fct_theta_add r e
   map_smul' := fct_theta_smul r e
 
+/- English proof (translation)
+Unfold `fctTheta`. Use `conv_lhs => rw [← integral_mul_left_eq_self _ k']`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (fct_integrable (fct_cont_integrand r e p))]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[op_mul, ContinuousLinearMap.mul_apply, fct_op_inner, map_smul]`. Use `congr 1`. Use `show rreg ε (S7.toMK k' * S7.toMK k) r = _`. Rewrite using `[(rreg_isURepOn ε).1.2 _ (fct_toMK_mem k') _ (fct_toMK_mem k)]`. Both sides reduce to the same expression.
+-/
 theorem fct_theta_equiv (r : L2 ε) (e p : T.V) (k' : S7.KG ε) :
     fctTheta T r e (T.op k' p) = rreg ε (S7.toMK k') (fctTheta T r e p) := by
   unfold fctTheta
@@ -186,12 +253,20 @@ theorem fct_theta_equiv (r : L2 ε) (e p : T.V) (k' : S7.KG ε) :
   rw [(rreg_isURepOn ε).1.2 _ (fct_toMK_mem k') _ (fct_toMK_mem k)]
   rfl
 
+/- English proof (translation)
+The claim follows from `closGen_stable hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) g hg x hx`.
+-/
 theorem fct_Hlam_stable (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) {x : L2 ε} (hx : x ∈ Hlam ε Ψ v₀) :
     rreg ε g x ∈ Hlam ε Ψ v₀ :=
   closGen_stable hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀)
     (datumV_casimir hP v₀) (datumV_kStable hP v₀) g hg x hx
 
+/- English proof (translation)
+Rewrite using `[← Submodule.orthogonal_orthogonal (Hlam ε Ψ v₀), Submodule.mem_orthogonal]`. Introduce `z hz`. Unfold `fctTheta`. Rewrite using `[← integral_inner (fct_integrable (fct_cont_integrand r e p))]`. Use `(integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)).trans (integral_zero _ _)` and prove the remaining obligations.
+
+Use `show ⟪z, ⟪T.op k e, p⟫_ℂ • rreg ε (S7.toMK k) r⟫_ℂ = 0`. Rewrite using `[inner_smul_right, Submodule.inner_left_of_mem_orthogonal (fct_Hlam_stable hgap hP hv₀ (fct_toMK_mem k) hr) hz, mul_zero]`.
+-/
 theorem fct_theta_mem (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {r : L2 ε}
     (hr : r ∈ Hlam ε Ψ v₀) (e p : T.V) : fctTheta T r e p ∈ Hlam ε Ψ v₀ := by
   rw [← Submodule.orthogonal_orthogonal (Hlam ε Ψ v₀), Submodule.mem_orthogonal]
@@ -203,6 +278,11 @@ theorem fct_theta_mem (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ 
   rw [inner_smul_right, Submodule.inner_left_of_mem_orthogonal
     (fct_Hlam_stable hgap hP hv₀ (fct_toMK_mem k) hr) hz, mul_zero]
 
+/- English proof (translation)
+Unfold `fctTheta`. Rewrite using `[← integral_inner (fct_integrable (fct_cont_integrand r e p))]`. Use `(integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)).trans (integral_zero _ _)` and prove the remaining obligations. Use `show ⟪uniformisationL2 ε Ψ v₀ q, ⟪T.op k e, p⟫_ℂ • rreg ε (S7.toMK k) r⟫_ℂ = 0`. Establish `hq : uniformisationL2 ε Ψ v₀ q = rreg ε (S7.toMK k) (uniformisationL2 ε Ψ v₀ (T.op k⁻¹ q))`.
+
+Rewrite using `[rightRegular_datumEmbedding hP, ← ContinuousLinearMap.mul_apply, op_mul_inv, ContinuousLinearMap.one_apply]`. Rewrite using `[inner_smul_right, hq, fct_rreg_inner (fct_toMK_mem k), horth, mul_zero]`.
+-/
 theorem fct_theta_orth (hP : IsPsiFor ε lam T Ψ) {r : L2 ε}
     (horth : ∀ b, ⟪uniformisationL2 ε Ψ v₀ b, r⟫_ℂ = 0) (e p q : T.V) :
     ⟪uniformisationL2 ε Ψ v₀ q, fctTheta T r e p⟫_ℂ = 0 := by
@@ -214,6 +294,17 @@ theorem fct_theta_orth (hP : IsPsiFor ε lam T Ψ) {r : L2 ε}
     rw [rightRegular_datumEmbedding hP, ← ContinuousLinearMap.mul_apply, op_mul_inv, ContinuousLinearMap.one_apply]
   rw [inner_smul_right, hq, fct_rreg_inner (fct_toMK_mem k), horth, mul_zero]
 
+/- English proof (translation)
+Set `eqv : T.V ≃ₗ[ℂ] datumV ε Ψ v₀` to `(LinearEquiv.ofInjective (jSm hP v₀) (jSm_injective hP hv₀)).trans (LinearEquiv.ofEq _ _ (datumV_eq_range hP v₀).symm)`. Establish `heqv : ∀ p, (((eqv p : datumV ε Ψ v₀) : smD ε (rreg ε)) : L2 ε) = uniformisationL2 ε Ψ v₀ p` using `fun p => rfl`. Establish `hsymm : ∀ w : datumV ε Ψ v₀, (((w : datumV ε Ψ v₀) : smD ε (rreg ε)) : L2 ε) = uniformisationL2 ε Ψ v₀ (eqv.symm w)` using `fun w => by rw [← heqv, LinearEquiv.apply_symm_apply]`. Set `j' : datumV ε Ψ v₀ →ₗ[ℂ] L2 ε` to `(fctThetaLin T r e) ∘ₗ eqv.symm.toLinearMap`. Establish `hj'_apply : ∀ w, j' w = fctTheta T r e (eqv.symm w)` using `fun w => rfl`.
+
+Establish `h0` using `rigid_multOne hgap (rreg_isURepOn ε) (isDerivedOn_smE (rreg_isURepOn ε)) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) j' ?hj ?hrange ?horth`. Use `LinearMap.congr_fun h0 (eqv p)` as an intermediate fact. Rewrite `this` using `[hj'_apply, LinearEquiv.symm_apply_apply, LinearMap.zero_apply]`. Then use the resulting hypothesis. Use `case hj =>`. Introduce `k hk v w hvw`.
+
+Establish `hk' : S7.toMK (pdA_kg k hk) = k` using `pdA_toMK_kg k hk`. Rewrite `hvw` using `[hsymm, hsymm, ← hk', rightRegular_datumEmbedding hP]`. Establish `hq` using `uniformisationL2_injective hP hv₀ hvw`. Rewrite using `[hj'_apply, hj'_apply, hq, fct_theta_equiv, hk']`. Use `case hrange =>`.
+
+Introduce `v`. Conclude with `fct_theta_mem hgap hP hv₀ hr e _`. Use `case horth =>`. Introduce `v v'`. Rewrite using `[hsymm, hj'_apply]`.
+
+Conclude with `inner_eq_zero_symm.mp (fct_theta_orth hP horth e _ _)`.
+-/
 theorem fct_theta_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {r : L2 ε}
     (hr : r ∈ Hlam ε Ψ v₀) (horth : ∀ b, ⟪uniformisationL2 ε Ψ v₀ b, r⟫_ℂ = 0) (e p : T.V) :
     fctTheta T r e p = 0 := by
@@ -243,6 +334,13 @@ theorem fct_theta_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀
     rw [hsymm, hj'_apply]
     exact inner_eq_zero_symm.mp (fct_theta_orth hP horth e _ _)
 
+/- English proof (translation)
+Use `set e := stdOrthonormalBasis ℂ T.V`. Establish `hpt : ∀ k, star (LinearMap.trace ℂ T.V (T.op k).toLinearMap) * ⟪y, rreg ε (S7.toMK k) r⟫_ℂ = ∑ a, ⟪y, ⟪T.op k (e a), e a⟫_ℂ • rreg ε (S7.toMK k) r⟫_ℂ`. Introduce `k`. Rewrite using `[fct_trace_star, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => (inner_smul_right _ _ _).symm`.
+
+Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_finsetSum _ (fun a _ => fct_integrable (continuous_const.inner (fct_cont_integrand r (e a) (e a))))]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_inner (fct_integrable (fct_cont_integrand r (e a) (e a)))]`. Use `show ⟪y, fctTheta T r (e a) (e a)⟫_ℂ = 0`.
+
+Rewrite using `[fct_theta_zero hgap hP hv₀ hr horth, inner_zero_right]`.
+-/
 theorem fct_key (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {r : L2 ε}
     (hr : r ∈ Hlam ε Ψ v₀) (horth : ∀ b, ⟪uniformisationL2 ε Ψ v₀ b, r⟫_ℂ = 0) (y : L2 ε) :
     ∫ k, star (LinearMap.trace ℂ T.V (T.op k).toLinearMap) * ⟪y, rreg ε (S7.toMK k) r⟫_ℂ ∂(S7.muK ε) = 0 := by

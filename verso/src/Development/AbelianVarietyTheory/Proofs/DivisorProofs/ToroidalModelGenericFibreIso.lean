@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.TwoLat.OfCharts
 
+/- English proof (translation)
+Establish `h1 : Twist.resM M (inf_le_left : U ⊓ V ≤ U) (f i) = ∑ a, resG X (le_inf inf_le_right inf_le_left : U ⊓ V ≤ V ⊓ U) (trCo hp f a i) • Twist.resM M (inf_le_right : U ⊓ V ≤ V) (p a)`. Establish `h` using `(hp.basis (inf_le_right : U ⊓ V ≤ V)).sum_repr (Twist.resM M (inf_le_left : U ⊓ V ≤ U) (f i))`. Use `h.symm.trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hp.basis_apply, trCo, ← hp.repr_resM, Twist.resM_resM]`. Establish `h2 : ∀ a, QCoh.appLinear g (U ⊓ V) (Twist.resM M (inf_le_right : U ⊓ V ≤ V) (p a)) = ∑ b, resG X (inf_le_right : U ⊓ V ≤ V) (A b a) • Twist.resM M' (inf_le_right : U ⊓ V ≤ V) (p' b)` using `fun a => by`.
+
+Rewrite using `[QCoh.appLinear_apply, Twist.app_resM, hg, map_sum]`. Simplify using `only [Twist.resM_smul]`. Establish `h3 : Twist.resM M' (inf_le_left : U ⊓ V ≤ U) (g.app U (f i)) = QCoh.appLinear g (U ⊓ V) (Twist.resM M (inf_le_left : U ⊓ V ≤ U) (f i))`. Rewrite using `[QCoh.appLinear_apply, Twist.app_resM]`. Rewrite using `[← hf'.repr_resM, Twist.resM_resM, h3, h1]`.
+
+Simplify using `only [map_sum, map_smul, h2, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, Finset.mul_sum, trCo]`.
+-/
 theorem repr_app {X : Scheme.{0}} {M M' : X.Modules} {r : ℕ} (g : M ⟶ M') {U V : X.Opens}
     (f : Fin r → Γ(M, U)) {f' : Fin r → Γ(M', U)} (hf' : VB.IsFrame f') {p : Fin r → Γ(M, V)} (hp : VB.IsFrame p)
     (p' : Fin r → Γ(M', V)) (A : Matrix (Fin r) (Fin r) Γ(X, V)) (hg : ∀ a, g.app V (p a) = ∑ b, A b a • p' b)
@@ -36,6 +43,9 @@ theorem repr_app {X : Scheme.{0}} {M M' : X.Modules} {r : ℕ} (g : M ⟶ M') {U
   rw [← hf'.repr_resM, Twist.resM_resM, h3, h1]
   simp only [map_sum, map_smul, h2, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul, Finset.mul_sum, trCo]
 
+/- English proof (translation)
+Rewrite using `[e1, funext e2, funext e3]`. Simplify using `only [Finset.smul_sum, Finset.sum_smul, smul_smul]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+-/
 theorem sum_smul_three {K N : Type} [CommRing K] {_ : AddCommMonoid N} {_ : Module K N} {r : ℕ} {P : Fin r → K}
     {A Q : Fin r → Fin r → K} {u u' v : Fin r → N} {w : N} (e1 : w = ∑ a, P a • u a)
     (e2 : ∀ a, u a = ∑ b, A a b • u' b) (e3 : ∀ b, u' b = ∑ k, Q b k • v k) :
@@ -53,6 +63,9 @@ open scoped CategoryTheory.Obj
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `e1` using `(GradedPieces.comb_iff hu _ hw).1 h1`. Establish `e2` using `fun a => (GradedPieces.comb_iff hu' _ (hu a)).1 (h2 a)`. Establish `e3` using `fun b => (GradedPieces.comb_iff hv _ (hu' b)).1 (h3 b)`. Conclude with `(GradedPieces.comb_iff hv _ hw).2 (sum_smul_three e1 e2 e3)`.
+-/
 theorem comb_three {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {T : Scheme.{0}} {t : SAB H T} {K : Type} [CommRing K] {x : Sp K ⟶ T} {r : ℕ}
     {u u' v : Fin r → (Sp (DualNumber K) ⟶ t.G.left)} {w : Sp (DualNumber K) ⟶ t.G.left}
@@ -76,10 +89,22 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 variable (e πB) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage (y ≫ πB ≫ genStr Z ≫ spMap e.toRingHom)).hom, (Spec.map_preimage _).symm⟩`.
+-/
 theorem exists_over {K : Type} [CommRing K] (y : Sp K ⟶ W) :
     ∃ ψ : F →+* K, y ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ψ :=
   ⟨(Spec.preimage (y ≫ πB ≫ genStr Z ≫ spMap e.toRingHom)).hom, (Spec.map_preimage _).symm⟩
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `exists_over e πB x`. Establish `hUV : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ (U ⊓ V)` using `fun z hz => ⟨hx hz, hV hz⟩`. Establish `hVU : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ (V ⊓ U)` using `fun z hz => ⟨hV hz, hx hz⟩`. Establish `tf` using `fun a => ((h.1 U f hf K x hx ψ hψ).1 a).1`. Establish `tp` using `fun a => ((h.1 V p hp K x hV ψ hψ).1 a).1`.
+
+Establish `tf'` using `fun a => ((h'.1 U f' hf' K x hx ψ hψ).1 a).1`. Establish `tp'` using `fun a => ((h'.1 V p' hp' K x hV ψ hψ).1 a).1`. Establish `e1` using `comb_three tp tp' tf' (tf i) (h.2.1 V U p f hp hf K x hV hx hVU i) (hA K x hV) (h'.2.1 U V f' p' hf' hp' K x hx hV hUV)`. Establish `e4 : ∀ k, TangentOrigin.evalPt (x ≫ jB) U hx ((hf'.basis le_rfl).repr (Twist.resM M' le_rfl (g.app U (f i))) k) = ∑ a, ∑ b, TangentOrigin.evalPt (x ≫ jB) (V ⊓ U) hVU (trCo hp f a i) * (TangentOrigin.evalPt (x ≫ jB) V hV (A b a) * TangentOrigin.evalPt (x ≫ jB) (U ⊓ V) hUV (trCo hf …`. Introduce `k`.
+
+Rewrite using `[← TangentOrigin.evalPt_res _ inf_le_left hx hUV, repr_app g f hf' hp p' A hg]`. Simplify using `only [map_sum, map_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[TangentOrigin.evalPt_res _ _ hVU hUV, TangentOrigin.evalPt_res _ _ hV hUV]`. Rewrite using `[funext e4]`.
+
+Conclude with `e1`.
+-/
 theorem comb_of_chart (h : IsLieFrames Z e jB πB M r τ false t) (h' : IsLieFrames Z e jB πB M' r τ false t')
     {V : X.Opens} {p : Fin r → Γ(M, V)} (hp : VB.IsFrame p) {p' : Fin r → Γ(M', V)} (hp' : VB.IsFrame p')
     {A : Matrix (Fin r) (Fin r) Γ(X, V)} (hA : IsCoordMat Z jB πB t t' hp hp' A) {g : M ⟶ M'}
@@ -114,6 +139,15 @@ end GlobalTheory.TwoLat.OfCharts
 
 namespace GlobalTheory.TwoLat
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W jB πB M M' r τ t t' h h' ι V hV p hp p' hp' A hA g hg U f f' hf hf' K _ x hx i`. Take `⟨ψ, hψ⟩` from `OfCharts.exists_over e πB x`. Take `⟨a, ha, -⟩` from `(h'.1 U f' hf' K x hx ψ hψ).2 _ ((h.1 U f hf K x hx ψ hψ).1 i)`. It suffices to establish `hs : (fun b => TangentOrigin.evalPt (x ≫ jB) U hx ((hf'.basis le_rfl).repr (Twist.resM M' le_rfl (g.app U (f i))) b)) = a by`. Rewrite using `[hs]`.
+
+Conclude with `ha`. Use function extensionality and compare the values at `b`. Use `Module.eq_of_localization_maximal (R := K) (fun P _ => Localization P.primeCompl) (fun P _ => Algebra.linearMap K _) _ _ fun P _ => ?_` and prove the remaining obligations. Set `φ` to `algebraMap K (Localization P.primeCompl)`. Set `y` to `spMap φ ≫ x`.
+
+Establish `hy : ⊤ ≤ (y ≫ jB) ⁻¹ᵁ U` using `fun z _ => hx (Set.mem_univ (spMap φ z))`. Take `⟨j, hj⟩` from `hV ((y ≫ jB) (IsLocalRing.closedPoint (Localization P.primeCompl)))`. Establish `hyV : ⊤ ≤ (y ≫ jB) ⁻¹ᵁ V j` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of (Localization P.primeCompl)) (y ≫ jB) hj).ge`. Establish `c1` using `OfCharts.comb_of_chart h h' (hp j) (hp' j) (hA j) (hg j) hf hf' y hy hyV i`. Establish `c2` using `GradedPieces.comb_map φ (x' := y ≫ πB ≫ genι Z) (Category.assoc _ _ _).symm ha`.
+
+Rewrite `c2` using `[← h.2.2 U f hf K _ φ x hx hy i, ← funext (h'.2.2 U f' hf' K _ φ x hx hy)]`. Take `⟨χ, hχ⟩` from `OfCharts.exists_over e πB y`. Establish `c3` using `congrFun (((h'.1 U f' hf' _ y hy χ hχ).2 _ ((h.1 U f hf _ y hy χ hχ).1 i)).unique c1 c2) b`. Conclude with `(TangentOrigin.evalPt_spMap_comp φ (x ≫ jB) U hx hy _).symm.trans c3`.
+-/
 theorem matches_of_charts : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

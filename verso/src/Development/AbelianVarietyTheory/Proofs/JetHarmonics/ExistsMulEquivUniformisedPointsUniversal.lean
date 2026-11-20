@@ -21,6 +21,11 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.PtTie
 
+/- English proof (translation)
+Set `Φ₀ : (Z ⟶ G') → (Over.mk (Z.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by show (x.left ≫ φ) ≫ G.hom = Z.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x])`. Set `Φ : (Z ⟶ G') →ₙ* (Over.mk (Z.hom ≫ f) ⟶ G)` to `⟨Φ₀, fun x y => Over.OverMorphism.ext (h.2 Z x y (Φ₀ x) (Φ₀ y) rfl rfl).symm⟩`. Establish `hinj : Function.Injective Φ` using `fun x y hxy => Over.OverMorphism.ext (h.1.hom_ext (congrArg CommaMorphism.left hxy) (by rw [Over.w x, Over.w y]))`. Establish `hsurj : Function.Surjective Φ` using `fun x₀ => ⟨Over.homMk (h.1.lift x₀.left Z.hom (Over.w x₀)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+
+Conclude with `⟨MulEquiv.ofBijective Φ ⟨hinj, hsurj⟩, fun x => rfl⟩`.
+-/
 theorem exists_mulEquiv_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (Z : Over S') :
     ∃ e : (Z ⟶ G') ≃* (Over.mk (Z.hom ≫ f) ⟶ G), ∀ x, (e x).left = x.left ≫ φ := by
@@ -39,6 +44,23 @@ theorem exists_mulEquiv_of_isGrpPullback {S S' : Scheme.{0}} {G' : Over S'} {G :
 
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io y I P F _ _ xF hxF`. Use `letI := H.starRing`. Substitute `hxF` using the available equality. Use `P.U.gen_hom` as an intermediate fact. Establish `gpG : IsGrpPullback P.A.A I.G.G (jK T.V) (P.U.gen.inv.left ≫ pullback.fst I.G.G.hom (jK T.V))`.
+
+Establish `: IsMonHom P.U.gen.symm.hom` using `by show IsMonHom P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso P.U.gen.symm).comp (isGrpPullback_pullback I.G.G (jK T.V))).congr (Category.id_comp _) rfl`. Establish `actA : ∀ a, (P.oA.act a).left ≫ P.U.gen.inv.left ≫ pullback.fst I.G.G.hom (jK T.V) = P.U.gen.inv.left ≫ pullback.fst I.G.G.hom (jK T.V) ≫ (I.G.act.act a).left`. Introduce `a`. Establish `e : P.oA.act a ≫ P.U.gen.inv = P.U.gen.inv ≫ (Over.pullback (jK T.V)).map (I.G.act.act a)`.
+
+Rewrite using `[Iso.comp_inv_eq, Category.assoc]`. Conclude with `((Iso.inv_comp_eq _).2 (P.lin.ext a)).symm`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`. Take `⟨eA, hA⟩` from `exists_mulEquiv_of_isGrpPullback gpG (TFK (R := T.V) F)`.
+
+Take `⟨e2, h2⟩` from `exists_mulEquiv_of_isGrpPullback I.m2.cart (TFK (R := T.V) F)`. Take `⟨e1, h1⟩` from `exists_mulEquiv_of_isGrpPullback I.m1.cart (TFK (R := T.V) F)`. Use `⟨(eA.trans e2.symm).trans e1, fun x b => ⟨?_, ?_⟩, fun a x => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨r, hr, hr1, hr2⟩`. Set `r' : TFK (R` to `T.V) F ⟶ I.t'.G := Over.homMk r hr`.
+
+Establish `h3 : e2 r' = eA x` using `Over.OverMorphism.ext (by`. Rewrite using `[h2, hA]`. Conclude with `hr2.trans (by rw [Over.comp_left, Category.assoc]))`. Use `show b = e1 (e2.symm (eA x))`. Rewrite using `[← h3, e2.symm_apply_apply]`.
+
+Conclude with `Over.OverMorphism.ext (hr1.symm.trans (h1 r').symm)`. Introduce and unpack `rfl`. Use `⟨(e2.symm (eA x)).left, Over.w _, (h1 _).symm, ?_⟩` and prove the remaining obligations. Use `(h2 _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e2.apply_symm_apply, hA, Over.comp_left, Category.assoc]`.
+
+Establish `h3 : e2.symm (eA (x ≫ P.oA.act a)) = e2.symm (eA x) ≫ I.t'.act.act a`. Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hA, h2, Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, actA, I.m2.act a, ← Category.assoc _ I.m2.cm.F, ← h2, e2.apply_symm_apply, hA, Category.assoc, Category.assoc]`. Use `show e1 (e2.symm (eA (x ≫ P.oA.act a))) = e1 (e2.symm (eA x)) ≫ Xo.univ.t.act.act a`.
+
+Rewrite using `[h3]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h1, Over.comp_left, Over.comp_left, h1, Category.assoc, Category.assoc, I.m1.act a]`.
+-/
 theorem exists_mulEquiv_ptTieF : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (I : IntData Xo c T io y) (P : PELUnif (maximalIdeal T.V) I.G) (F : Type) [Field F] [Algebra T.Fr F] (xF : Sp F ⟶ Xo.X), xF = spMap (algebraMap T.Fr F) ≫ (letI := io.toAlgebra; y.x) → ∃ e : (TFK (R := T.V) F ⟶ P.A.A) ≃* (ptO Xo xF ⟶ Xo.univ.t.G), (∀ x b, PtTieF I P F xF x b ↔ b = e x) ∧ ∀ (a : 𝓞 E) x, e (x ≫ P.oA.act a) = e x ≫ Xo.univ.t.act.act a := by
   intro E _ _ _ H Dw l Xo c T io y I P F _ _ xF hxF
   letI := H.starRing

@@ -34,10 +34,16 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LeviHC.SmG σ J).sum_mem fun i _ => (GlobalTheory.LeviHC.SmG σ J).smul_mem _ (hf i)`.
+-/
 theorem isSm_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) {f : ι → GAd σ J → ℂ} (hf : ∀ i, IsSm σ J (f i)) :
     IsSm σ J (∑ i ∈ s, c i • f i) :=
   (GlobalTheory.LeviHC.SmG σ J).sum_mem fun i _ => (GlobalTheory.LeviHC.SmG σ J).smul_mem _ (hf i)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using foldr_smul l 0 (0 : GAd σ J → ℂ)`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, foldr_add hl (isSm_smul _ (hf i)) (isSm_sum s c hf), ih, foldr_smul]`.
+-/
 theorem foldr_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) {f : ι → GAd σ J → ℂ} (hf : ∀ i, IsSm σ J (f i))
     {l : List (ℝ → GAd σ J)} (hl : ∀ γ ∈ l, IsRealLine σ J γ) :
     l.foldr lineDer (∑ i ∈ s, c i • f i) = ∑ i ∈ s, c i • l.foldr lineDer (f i) := by
@@ -47,6 +53,11 @@ theorem foldr_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) {f : ι → GAd �
   | insert i s hi ih =>
     rw [Finset.sum_insert hi, Finset.sum_insert hi, foldr_add hl (isSm_smul _ (hf i)) (isSm_sum s c hf), ih, foldr_smul]
 
+/- English proof (translation)
+Take `⟨w, τ, Z, -, hy⟩` from `hγ`. Use `choose y e1 e2 using hy`. Establish `inj` using `GlobalTheory.LeviHC.LineLie.archMat_injective (J := J) h τ`. Use `⟨?_, fun s t => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, show y 0 = 1 from inj (by rw [e2, zero_smul, NormedSpace.exp_zero, map_one]), map_one]`.
+
+Rewrite using `[e1, e1, e1, ← map_mul, show y (s + t) = y s * y t from inj (by`. Rewrite using `[map_mul, e2, e2, e2, add_smul, Matrix.exp_add_of_commute]`. Conclude with `((Commute.refl Z).smul_left s).smul_right t)]`. Rewrite using `[e1]`. Conclude with `mem_infPts.2 (projFin_embArch _ _ _ _)`.
+-/
 theorem line_hom (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) :
     γ 0 = 1 ∧ (∀ s t, γ (s + t) = γ s * γ t) ∧ ∀ t, γ t ∈ infPts σ J := by
   obtain ⟨w, τ, Z, -, hy⟩ := hγ
@@ -59,6 +70,11 @@ theorem line_hom (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine 
       exact ((Commute.refl Z).smul_left s).smul_right t)]
   · rw [e1]; exact mem_infPts.2 (projFin_embArch _ _ _ _)
 
+/- English proof (translation)
+Take `⟨Y, hY⟩` from `GlobalTheory.OneParamMatrix.eq_exp_of_continuous_oneParameter (n := Unit) (fun t => Matrix.diagonal fun _ => e t) (Continuous.matrix_diagonal (continuous_pi fun _ => hc)) (by simp [h0]) (fun s t => by simp [hm])`. Establish `e1 : e = fun t : ℝ => Complex.exp (t * Y () ())` using `funext fun t => by`. Establish `h1 : t • Y = Matrix.diagonal fun _ => (t : ℂ) * Y () ()` using `by ext ⟨⟩ ⟨⟩; simp`. Establish `h2` using `congrFun (congrFun (hY t) ()) ()`. Rewrite `h2` using `[h1, Matrix.exp_diagonal]`.
+
+Simplify `h2` using `[Pi.exp_def, Complex.exp_eq_exp_ℂ]`. Rewrite using `[e1]`. Use `fun_prop`.
+-/
 theorem differentiableAt_of_hom {e : ℝ → ℂ} (hc : Continuous e) (h0 : e 0 = 1) (hm : ∀ s t, e (s + t) = e s * e t) :
     DifferentiableAt ℝ e 0 := by
   obtain ⟨Y, hY⟩ := GlobalTheory.OneParamMatrix.eq_exp_of_continuous_oneParameter (n := Unit) (fun t => Matrix.diagonal fun _ => e t)
@@ -71,6 +87,45 @@ theorem differentiableAt_of_hom {e : ℝ → ℂ} (hc : Continuous e) (h0 : e 0 
   rw [e1]
   fun_prop
 
+/- English proof (translation)
+Establish `hconj : ∀ (lP : List (ℝ → GAd σ J)), (∀ β ∈ lP, IsRealLine σ J β ∧ ∀ s, β s ∈ P) → ∀ k, ∀ γ ∈ lP.map fun β s => k⁻¹ * β s * k, IsRealLine σ J γ` using `fun lP hlP k γ hγ => by`. Take `⟨β, hβ, rfl⟩` from `List.mem_map.1 hγ`. Conclude with `GlobalTheory.ThK.DescB.GenGrowth.isRealLine_conj h (hlP β hβ).1 k`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Introduce and unpack `Φ - ⟨φ, a, hφ, ha, e⟩ l - hl lP hlP`. Take `rfl` from `List.length_eq_zero_iff.1 hl`. Establish `key : ∃ φ' : Fin d → P → ℂ, (∀ i, U (φ' i)) ∧ ∀ p : P, ∀ k ∈ S, (lP.map fun β s => k⁻¹ * β s * k).foldr lineDer Φ (p * k) = ∑ i, φ' i p * a i k`. Proceed by induction on `lP with`.
+
+Consider the case `nil => exact ⟨φ, hφ, e⟩`. Consider the case `cons β lP ih`. Take `⟨φ', h1, h2⟩` from `ih fun γ hγ => hlP γ (List.mem_cons_of_mem _ hγ)`. Take `⟨hβ, hβP⟩` from `hlP β List.mem_cons_self`. Use `choose φ'' h3 h4 using fun i => U2 _ (h1 i) β hβ hβP`.
+
+Use `⟨φ'', h3, fun p k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[List.map_cons, List.foldr_cons, lineDer]`. Establish `e2 : (fun s => (lP.map fun β s => k⁻¹ * β s * k).foldr lineDer Φ (p * k * (k⁻¹ * β s * k))) = fun s => ∑ i, φ' i (p * ⟨β s, hβP s⟩) * a i k` using `funext fun s => by`. Rewrite using `[← h2 _ k hk]`. Simplify using `[mul_assoc]`.
+
+Rewrite using `[e2]`. Conclude with `(HasDerivAt.fun_sum fun i _ => (h4 i p).mul_const (a i k)).deriv`. Take `⟨φ', h1, h2⟩` from `key`. Use `choose C hC using fun i => U1 _ (h1 i)`. Use `choose B hB using fun i => A1 _ (ha i)`.
+
+Use `⟨∑ i, C i * B i, fun p k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[List.foldr_nil, h2 p k hk, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_right_comm]`. Conclude with `mul_le_mul (hC i p) (hB i k hk) (norm_nonneg _) ((norm_nonneg _).trans (hC i p))`.
+
+Consider the case `succ m ih`. Introduce and unpack `Φ hΦ hcl l hl hlen lP hlP`. Take `⟨γ, l, rfl⟩` from `List.exists_cons_of_length_eq_add_one hlen`. Establish `hl' : ∀ γ ∈ l, IsRealLine σ J γ` using `fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)`. Establish `hlen' : l.length = m` using `by simpa using hlen`.
+
+Establish `hK : ∀ ζ, IsRealLine σ J ζ → (∀ s, ζ s ∈ K) → ∀ l₂ l₁ : List (ℝ → GAd σ J), (∀ γ ∈ l₁, IsRealLine σ J γ) → (∀ γ ∈ l₂, IsRealLine σ J γ) → l₁.length + l₂.length = m → ∃ C : ℝ, ∀ p : P, ∀ k ∈ S, ‖(lP.map fun β s => k⁻¹ * β s * k).foldr lineDer (l₁.foldr lineDer (lineDer ζ (l₂.foldr …`. Introduce `ζ hζ hζK l₂`. Proceed by induction on `l₂ with`. Consider the case `nil`. Introduce `l₁ h1 _ h3`.
+
+Take `⟨φ, a, hφ, ha, e⟩` from `hcl`. Use `choose a' h4 h5 using fun i => A2 _ (ha i) ζ hζ hζK`. Use `ih _ (isSm_lineDer hΦ hζ) ⟨φ, a', hφ, h4, fun p k hk => ?_⟩ l₁ h1 (by simpa using h3) lP hlP` and prove the remaining obligations. Establish `e2 : (fun s => Φ (p * k * ζ s)) = fun s => ∑ i, φ i p * a i (k * ζ s)` using `funext fun s => by`. Rewrite using `[mul_assoc, e p _ (hS k hk _ (hζK s))]`.
+
+Rewrite using `[lineDer, e2]`. Conclude with `(HasDerivAt.fun_sum fun i _ => (h5 i k hk).const_mul (φ i p)).deriv`. Consider the case `cons δ l₂ ih₂`. Introduce `l₁ h1 h2 h3`. Establish `hδ` using `h2 δ List.mem_cons_self`.
+
+Establish `h2' : ∀ γ ∈ l₂, IsRealLine σ J γ` using `fun γ hγ => h2 γ (List.mem_cons_of_mem _ hγ)`. Take `⟨ε, hε, hbr⟩` from `GlobalTheory.T.siegel_line_derivative_commutator F E σ h n J hJ ζ δ hζ hδ`. Take `⟨C₁, hC₁⟩` from `ih₂ (l₁ ++ [δ]) (by`. Introduce `γ hγ`. Break down `List.mem_append.1 hγ with h | h` into its components or cases.
+
+Conclude with `h1 γ h`. Rewrite using `[List.mem_singleton.1 h]; exact hδ) h2' (by simp at h3 ⊢; omega)`. Take `⟨C₂, hC₂⟩` from `ih Φ hΦ hcl (l₁ ++ ε :: l₂) (by`. Introduce `γ hγ`. Break down `List.mem_append.1 hγ with h | h` into its components or cases.
+
+Conclude with `h1 γ h`. Break down `List.mem_cons.1 h with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hε`. Conclude with `h2' γ h) (by simpa using h3) lP hlP`.
+
+Use `⟨C₁ + C₂, fun p k hk => ?_⟩` and prove the remaining obligations. Establish `hR` using `isSm_foldr h2' hΦ`. Establish `s1` using `isSm_lineDer (isSm_lineDer hR hζ) hδ`. Establish `s2` using `isSm_lineDer hR hε`. Rewrite using `[List.foldr_cons, hbr _ hR, foldr_add h1 s1 s2, foldr_add (hconj lP hlP k) (isSm_foldr h1 s1) (isSm_foldr h1 s2), add_mul]`.
+
+Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Simplify `hC₁ p k hk` using `only [List.foldr_append, List.foldr_cons, List.foldr_nil]`. Simplify `hC₂ p k hk` using `only [List.foldr_append, List.foldr_cons, List.foldr_nil]`. Take `⟨e, e', β, ζ, C, hβ, hζ, hd⟩` from `hdec γ (hl γ List.mem_cons_self)`. Use `choose C₁ hC₁ using fun j => ih Φ hΦ hcl l hl' hlen' (lP ++ [β j]) (by`.
+
+Introduce `γ hγ`. Break down `List.mem_append.1 hγ with h | h` into its components or cases. Conclude with `hlP γ h`. Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hβ j)`.
+
+Use `choose C₂ hC₂ using fun j => hK (ζ j) (hζ j).1 (hζ j).2 l [] (by simp) hl' (by simpa using hlen')`. Use `⟨∑ j, C * C₁ j + ∑ j, C * C₂ j, fun p k hk => ?_⟩` and prove the remaining obligations. Take `⟨c, c', hc, hc', hcc⟩` from `hd k hk`. Establish `hR` using `isSm_foldr hl' hΦ`. Establish `s1 : ∀ j, IsSm σ J (lineDer (fun s => k⁻¹ * β j s * k) (l.foldr lineDer Φ))` using `fun j => isSm_lineDer hR (GlobalTheory.ThK.DescB.GenGrowth.isRealLine_conj h (hβ j).1 k)`.
+
+Establish `s2 : ∀ j, IsSm σ J (lineDer (ζ j) (l.foldr lineDer Φ))` using `fun j => isSm_lineDer hR (hζ j).1`. Rewrite using `[List.foldr_cons, hcc _ hR, foldr_add (hconj lP hlP k) (isSm_sum _ _ s1) (isSm_sum _ _ s2), foldr_sum _ _ s1 (hconj lP hlP k), foldr_sum _ _ s2 (hconj lP hlP k), add_mul, Finset.sum_mul, Finset.sum_mul, Pi.add_apply, Finset.sum_apply, Finset.sum_apply]`. Use `(norm_add_le _ _).trans (add_le_add ((norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)) ((norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)))` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Use `mul_le_mul (hc j) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hc j))` and prove the remaining obligations.
+
+Simplify `hC₁ j p k hk` using `only [List.map_append, List.map_cons, List.map_nil, List.foldr_append, List.foldr_cons, List.foldr_nil]`. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul (hc' j) (hC₂ j p k hk) (norm_nonneg _) ((norm_nonneg _).trans (hc' j))`.
+-/
 theorem abstract_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) (P K : Subgroup (GAd σ J)) (S : Set (GAd σ J))
     (hS : ∀ k ∈ S, ∀ k' ∈ K, k * k' ∈ S) (w : P → ℝ) (U : (P → ℂ) → Prop) (A : (GAd σ J → ℂ) → Prop)
     (U1 : ∀ φ, U φ → ∃ C : ℝ, ∀ p, ‖φ p‖ ≤ C * w p)
@@ -195,6 +250,19 @@ theorem abstract_bound (h : IsCMExt F E σ) (hJ : IsHermND σ J) (P K : Subgroup
     · rw [Pi.smul_apply, norm_smul, mul_assoc]
       exact mul_le_mul (hc' j) (hC₂ j p k hk) (norm_nonneg _) ((norm_nonneg _).trans (hc' j))
 
+/- English proof (translation)
+Take `⟨b0, bm, bi⟩` from `line_hom h hβ`. Set `b : ℝ → P` to `fun s => ⟨β s, hP s⟩`. Establish `hb : Continuous b` using `(GlobalTheory.RealLineCont.continuous_of_isRealLine F E σ h n J β hβ).subtype_mk _`. Establish `c0 : b 0 = 1` using `Subtype.ext b0`. Establish `cm : ∀ s t, b (s + t) = b s * b t` using `fun s t => Subtype.ext (bm s t)`.
+
+Take `⟨r, δ, hδ, hd⟩` from `GlobalTheory.LineDerSum.exists_lines_of_infPts h J₁ (fun s => π (b s)) (hπ.comp hb) (by rw [c0, map_one]) (fun s t => by rw [cm, map_mul]) fun t => hπi _ (bi t)`. Establish `he` using `(differentiableAt_of_hom (e := fun s => η (b s)) (hη.comp hb) (by rw [c0, hη1]) fun s t => by rw [cm, hηm]).hasDerivAt`. Use `set c := deriv (fun s => η (b s)) 0`. Establish `s1 : ∀ i, IsSm σ J₁ (lineDer (δ i) f)` using `fun i => isSm_lineDer hf (hδ i)`. Use `⟨c • f + ∑ i, (1 : ℂ) • lineDer (δ i) f, isSm_add (isSm_smul _ hf) (isSm_sum _ _ s1), fun l hl => ?_, fun p => ?_⟩` and prove the remaining obligations.
+
+Take `⟨C, hC⟩` from `hg l hl choose D hD using fun i => hg (l ++ [δ i]) (by`. Introduce `γ hγ`. Break down `List.mem_append.1 hγ with h | h` into its components or cases. Conclude with `hl γ h`. Rewrite using `[List.mem_singleton.1 h]`.
+
+Conclude with `hδ i)`. Use `⟨‖c‖ * C + ∑ i, D i, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_add hl (isSm_smul _ hf) (isSm_sum _ _ s1), foldr_smul, foldr_sum _ _ s1 hl, add_mul, Finset.sum_mul, Pi.add_apply, Finset.sum_apply]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ((norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)))` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hC y) (norm_nonneg _)`. Simplify `hD i y` using `only [one_smul, List.foldr_append, List.foldr_cons, List.foldr_nil]`. Establish `h1` using `(he.mul (hd f hf (π p))).const_mul (η p)`. Establish `e1 : (fun s => η (p * ⟨β s, hP s⟩) * f (π (p * ⟨β s, hP s⟩))) = fun s => η p * ((fun s => η (b s)) * fun s => f (π p * π (b s))) s` using `funext fun s => by`. Simplify using `only [hηm, map_mul, Pi.mul_apply, mul_assoc, b]`.
+
+Rewrite using `[e1]`. Use `h1.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [c0, hη1, map_one, mul_one, one_mul, one_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]`.
+-/
 theorem datum_deriv (h : IsCMExt F E σ) {n₁ : ℕ} {J₁ : Matrix (Fin n₁) (Fin n₁) E} {P : Subgroup (GAd σ J)}
     (π : P →* GAd σ J₁) (hπ : Continuous π) (hπi : ∀ p : P, p.1 ∈ infPts σ J → π p ∈ infPts σ J₁)
     (η : P → ℂ) (hη : Continuous η) (hη1 : η 1 = 1) (hηm : ∀ p q, η (p * q) = η p * η q) (w : GAd σ J₁ → ℝ)
@@ -237,6 +305,35 @@ theorem datum_deriv (h : IsCMExt F E σ) {n₁ : ℕ} {J₁ : Matrix (Fin n₁) 
     refine h1.congr_deriv ?_
     simp only [c0, hη1, map_one, mul_one, one_mul, one_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ K' hK' Kc d ψs a Ψ hI hψs c1 c3 c4 c5`. Establish `hsm` using `GlobalTheory.T.skew_plane_jacobian_identity F E σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hMc hM hMr r Xf Yf hWf X' Y' hW' hx0 hy0 hsucc S' χ hχ hχc K₁ hK₁ K' hK' Kc d ψs a Ψ hI hψs c1 c3 c4`. Take `⟨P, π, T, hP, hdec, hmem, hπ, hT, A, hA, hmat⟩` from `GlobalTheory.T.skew_plane_stabilizer_action F E σ hCM hσ n n₁ W W₁ H hJ hn hxx hyy hxy hι hJ₁ c₀ hc₀ hN₁ hN M hM r X' Y' hW' hx0`. Take `⟨e, b, hb, hab, hbb⟩` from `c5`. Use `choose N hNg using fun i => (hψs i).1.growth`.
+
+Establish `hx : hE σ (c₀ • W.J.map σ) H.x H.x = 0`. Establish `h1` using `congrFun (congrFun hW'.xx 0) 0`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hx0, Finset.sum_mul] at h1`. Rewrite `h1` using `[Finset.sum_comm]`. Conclude with `h1`.
+
+Establish `hπi : ∀ p : P, p.1 ∈ infPts σ _ → π p ∈ infPts σ _` using `fun p hp => mem_infPts_iff_forall.2 fun v => by`. Establish `h1 : (matHom _ σ _ p.1).1.map (compFin F E v) = 1` using `congrArg (fun z => z.1.1) (mem_infPts_iff_forall.1 hp v)`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show (matHom _ σ _ (π p)).1.map (compFin F E v) = 1`. Rewrite using `[hmat, Matrix.map_mul, Matrix.map_mul, h1, Matrix.mul_one, ← Matrix.map_mul, adMat, adMat, ← Matrix.map_mul, hA, Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Take `⟨K₀, hK₀⟩` from `GlobalTheory.EmbHeight.exists_heightGL_aff_le F 0 (adMat F A) (adMat F H.ι)`. Establish `hht : ∀ p : P, height σ _ (π p) ≤ K₀ * height σ _ p.1` using `fun p => hK₀ _ _ (by rw [zero_add]; exact hmat p) (by rw [zero_add, ← map_inv, ← map_inv, ← map_inv]; exact hmat p⁻¹)`. Take `⟨B, hB⟩` from `height_bddAbove_of_isCompact σ _ c1.1`. Set `N₀` to `Finset.univ.sup N`. Set `w : GAd σ (c₀ • W₁.J.map σ) → ℝ` to `fun y => (height σ _ y : ℝ) ^ N₀`.
+
+Set `η : P → ℂ` to `fun p => (χ (T p) : ℂ)`. Use `⟨N₀, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `abstract_bound hCM hN P K' Kc c1.2.2 (fun p => w (π p)) (fun φ => ∃ f, IsSm σ _ f ∧ (∀ l : List (ℝ → GAd σ (c₀ • W₁.J.map σ)), (∀ γ ∈ l, IsRealLine σ _ γ) → ∃ C : ℝ, ∀ y, ‖l.foldr lineDer f y‖ ≤ C * w y) ∧ φ = fun p => η p * f (π p)) (fun a' => ∃ i, ∃ l : List (ℝ → GAd σ (c₀ • W. …`. Introduce and unpack `_ ⟨f, -, hf, rfl⟩`. Take `⟨C, hC⟩` from `hf [] (by simp)`.
+
+Conclude with `⟨C, fun p => by simpa only [η, norm_mul, Circle.norm_coe, one_mul, List.foldr_nil] using hC (π p)⟩)`. Use the proof step `(by`. Introduce and unpack `_ ⟨f, hf, hg, rfl⟩ β hβ hβP`. Take `⟨f', h1, h2, h3⟩` from `datum_deriv hCM π hπ hπi η (hχc.comp hT) (by simp [η]) (fun p q => by simp [η]) w hf hg hβ hβP`. Conclude with `⟨_, ⟨f', h1, h2, rfl⟩, h3⟩)`.
+
+Use the proof step `(by`. Introduce and unpack `_ ⟨i, l, hl, rfl⟩`. Conclude with `(GlobalTheory.T.k_finite_functions_compact_bound F E σ hCM n _ K' Kc c1.1 c1.2.2 e b hb hbb (a i) (hab i) (c4 i) l hl).1)`. Use the proof step `(by`. Introduce and unpack `_ ⟨i, l, hl, rfl⟩ ζ hζ hζK`.
+
+Use `⟨_, ⟨i, ζ :: l, fun γ hγ => ?_, rfl⟩, fun k hk => ((GlobalTheory.T.k_finite_functions_compact_bound F E σ hCM n _ K' Kc c1.1 c1.2.2 e b hb hbb (a i) (hab i) (c4 i) l hl).2 ζ hζ hζK k hk).hasDerivAt⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hγ with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `⟨hζ, hζK⟩`. Conclude with `hl γ h)`.
+
+Use the proof step `(fun γ hγ => by`. Take `⟨e, e', β, ζ, C, h1, h2, h3⟩` from `GlobalTheory.T.siegel_set_line_decomposition F E σ hCM n _ hN H.x hx K' hK' Kc c1.1 γ hγ`. Conclude with `⟨e, e', β, ζ, C, fun j => ⟨(h1 j).1, fun s => (hP _).2 ((h1 j).2 s)⟩, h2, h3⟩)`. Use `d l.length Ψ hsm`. Use the proof step `⟨fun i p => η p * ψs i (π p), a, fun i => ⟨ψs i, (hψs i).1.smooth, fun l hl => by`.
+
+Take `⟨C, hC⟩` from `hNg i l hl`. Use `⟨max C 0, fun y => (hC y).trans ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ height σ _ y` using `by exact_mod_cast one_le_height σ _ y`. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_right₀ h1 (Finset.le_sup (f := N) (Finset.mem_univ i))) (by positivity) (le_max_right _ _), rfl⟩,`. Use `fun i => ⟨i, [], by simp, rfl⟩, fun p k hk => by`.
+
+Take `⟨u, hu, m, hm, hp⟩` from `hdec p`. Rewrite using `[hp, hI.2 u hu _ m _ k hk hm, Finset.mul_sum]`. Simplify using `only [η, mul_assoc]⟩`. Use `l hl rfl [] (by simp)`. Use `⟨max C 0 * ((K₀ : ℝ) * B) ^ N₀, fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu, t, m, y, k, hk, hm, rfl⟩` from `hI.1 g`. Set `p : P` to `⟨_, hmem u hu t m y hm⟩`. Express the relevant statement in the definitionally equal form `‖l.foldr lineDer Ψ (p.1 * k)‖ ≤ _ * (height σ _ (p.1 * k) : ℝ) ^ N₀`. Establish `h1 : height σ _ (π p) ≤ K₀ * B * height σ _ (p.1 * k)`. Establish `h2` using `height_mul_le σ _ (p.1 * k) k⁻¹`.
+
+Rewrite `h2` using `[mul_inv_cancel_right, height_inv]`. Use `(hht p).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_comm B]`. Conclude with `mul_le_mul' le_rfl (h2.trans (mul_le_mul' le_rfl (hB k hk)))`. Establish `h3 : (height σ _ (π p) : ℝ) ≤ (K₀ : ℝ) * B * height σ _ (p.1 * k)` using `by exact_mod_cast h1`.
+
+Use `(hC p k hk).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ (by positivity) h3 _) (by positivity) (le_max_right _ _)`.
+-/
 theorem growth_of_ind : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

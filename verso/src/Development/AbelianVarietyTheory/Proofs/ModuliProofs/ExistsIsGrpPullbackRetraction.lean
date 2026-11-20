@@ -24,10 +24,20 @@ def translInvIso {S : Scheme.{0}} (B : Over S) [GrpObj B] (c : 𝟙_ (Over S) �
   inv_hom_id := by
     rw [MonObj.comp_mul, Category.comp_id, GrpObj.comp_inv, ← Category.assoc, comp_toUnit, mul_inv_cancel_right]
 
+/- English proof (translation)
+Simplify using `[translInvIso, MonObj.comp_mul, GrpObj.comp_inv]`.
+-/
 theorem comp_translInvIso_hom {S : Scheme.{0}} {B T : Over S} [GrpObj B] (c : 𝟙_ (Over S) ⟶ B) (x : T ⟶ B) :
     x ≫ (translInvIso B c).hom = x * (toUnit T ≫ c)⁻¹ := by
   simp [translInvIso, MonObj.comp_mul, GrpObj.comp_inv]
 
+/- English proof (translation)
+Establish `hw : (η[G'].left ≫ φ) ≫ G.hom = (Over.mk ((𝟙_ (Over S')).hom ≫ f)).hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Both sides reduce to the same expression. Set `u : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G` to `Over.homMk (η[G'].left ≫ φ) hw`. Establish `hη : (η[G'] : 𝟙_ (Over S') ⟶ G') * η[G'] = η[G']`.
+
+Rewrite using `[MonObj.one_eq_one]`. Conclude with `_root_.one_mul _`. Establish `huu : u * u = u` using `by ext1`. Rewrite using `[h.2 _ η[G'] η[G'] u u rfl rfl, hη]`. Both sides reduce to the same expression.
+
+Establish `hu1 : u = 1` using `mul_eq_left.mp huu`. Use `congrArg (fun v => CommaMorphism.left v) hu1` as an intermediate fact. Simplify `this` using `[u, Hom.one_def]`.
+-/
 theorem unit_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) : η[G'].left ≫ φ = f ≫ η[G].left := by
   have hw : (η[G'].left ≫ φ) ≫ G.hom = (Over.mk ((𝟙_ (Over S')).hom ≫ f)).hom := by
@@ -45,6 +55,39 @@ theorem unit_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
   have := congrArg (fun v => CommaMorphism.left v) hu1
   simpa [u, Hom.one_def] using this
 
+/- English proof (translation)
+Set `adj` to `Over.mapPullbackAdj f`. Set `B : Over S'` to `Over.mk (pullback.snd A₀.hom f)`. Set `F : (Over S')ᵒᵖ ⥤ GrpCat` to `(Over.map f).op ⋙ yonedaGrpObj A₀`. Set `α : (F ⋙ forget _).RepresentableBy B` to `{ homEquiv := (adj.homEquiv _ _).symm homEquiv_comp := fun g h => (adj.representableBy A₀).homEquiv_comp g h }`. Set `_ : GrpObj B` to `GrpObj.ofRepresentableBy B F α`.
+
+Set `E : ∀ T : Over S', (T ⟶ B) ≃ ((Over.map f).obj T ⟶ A₀)` to `fun T => (adj.homEquiv T A₀).symm`. Establish `hmul : ∀ {T : Over S'} (x y : T ⟶ B), E T (x * y) = E T x * E T y`. Introduce `T x y`. Conclude with `((yonedaGrpObjIsoOfRepresentableBy B F α).hom.app (Opposite.op T)).hom.map_mul x y`. Establish `hinv : ∀ {T : Over S'} (x : T ⟶ B), E T x⁻¹ = (E T x)⁻¹`.
+
+Introduce `T x`. Conclude with `((yonedaGrpObjIsoOfRepresentableBy B F α).hom.app (Opposite.op T)).hom.map_inv x`. Establish `hleft : ∀ {T : Over S'} (x : T ⟶ B), (E T x).left = x.left ≫ pullback.fst A₀.hom f` using `fun x => rfl`. Establish `hB : IsGrpPullback B A₀ f (pullback.fst A₀.hom f)`. Use `⟨IsPullback.of_hasPullback A₀.hom f, ?_⟩` and prove the remaining obligations.
+
+Introduce `T x y x₁ y₁ hx hy`. Establish `ex : x₁ = E T x` using `by ext1; rw [hx, hleft]`. Establish `ey : y₁ = E T y` using `by ext1; rw [hy, hleft]`. Rewrite using `[ex, ey, ← hmul, hleft]`. Establish `hBab : IsAbelianScheme B` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback h₀ hB`.
+
+Set `x₀ : (Over.map f).obj A' ⟶ A₀` to `Over.homMk ρ₀ (by rw [hρ.w]; rfl)`. Set `m₀ : A' ⟶ B` to `(E A').symm x₀`. Establish `hm₀ : m₀.left ≫ pullback.fst A₀.hom f = ρ₀`. Rewrite using `[← hleft]`. Express the relevant statement in the definitionally equal form `(E A' ((E A').symm x₀)).left = ρ₀`.
+
+Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Set `c : 𝟙_ (Over S') ⟶ B` to `η[A'] ≫ m₀`. Set `m : A' ⟶ B` to `m₀ ≫ (translInvIso B c).hom`. Establish `hm : m = m₀ * (toUnit A' ≫ c)⁻¹` using `comp_translInvIso_hom c m₀`.
+
+Establish `hm1 : η[A'] ≫ m = η[B]`. Rewrite using `[← Category.assoc, comp_translInvIso_hom, MonObj.one_eq_one, toUnit_unit, Category.id_comp]`. Conclude with `_root_.mul_inv_cancel c`. Establish `: IsMonHom m` using `rig S' A' B h' hBab m hm1`. Use `⟨m.left ≫ pullback.fst A₀.hom f, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : IsIso m₀.left`. Establish `e : m₀.left = hρ.isoPullback.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[IsPullback.isoPullback_hom_fst]`. Conclude with `hm₀`.
+
+Rewrite using `[IsPullback.isoPullback_hom_snd]`. Conclude with `Over.w m₀`. Rewrite using `[e]`. Use `infer_instance`. Establish `h2 : IsIso (translInvIso B c).hom.left` using `inferInstanceAs (IsIso ((Over.forget S').map (translInvIso B c).hom))`.
+
+Establish `h3 : IsIso m.left`. Express the relevant statement in the definitionally equal form `IsIso (m₀.left ≫ (translInvIso B c).hom.left)`. Use `infer_instance`. Establish `sq : IsPullback m.left A'.hom B.hom (𝟙 S')` using `IsPullback.of_horiz_isIso ⟨by rw [Over.w m, Category.comp_id]⟩`. Use `sq.paste_horiz (IsPullback.of_hasPullback A₀.hom f)` as an intermediate fact.
+
+Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Introduce `T x y x₁ y₁ hx hy`. Rewrite using `[hB.2 T (x ≫ m) (y ≫ m) x₁ y₁ (by rw [hx, ← Category.assoc]; rfl) (by rw [hy, ← Category.assoc]; rfl), ← MonObj.mul_comp, ← Category.assoc]`. Both sides reduce to the same expression. Establish `hJ : j ≫ ((Over.map f).obj A').hom = A₀.hom`.
+
+Express the relevant statement in the definitionally equal form `j ≫ A'.hom ≫ f = A₀.hom`. Rewrite using `[← hρ.w, ← Category.assoc, hjρ, Category.id_comp]`. Set `J : A₀ ⟶ (Over.map f).obj A'` to `Over.homMk j hJ`. Establish `hρm : m.left ≫ pullback.fst A₀.hom f = (x₀ * (E A' (toUnit A' ≫ c))⁻¹).left`. Rewrite using `[← hleft, hm, hmul, hinv, Equiv.apply_symm_apply]`.
+
+Establish `hc : c.left ≫ pullback.fst A₀.hom f = η[A'].left ≫ ρ₀`. Express the relevant statement in the definitionally equal form `(η[A'].left ≫ m₀.left) ≫ _ = _`. Rewrite using `[Category.assoc, hm₀]`. Establish `hz : J ≫ E A' (toUnit A' ≫ c) = 1` using `by ext1`. Express the relevant statement in the definitionally equal form `j ≫ (A'.hom ≫ c.left) ≫ pullback.fst A₀.hom f = A₀.hom ≫ η[A₀].left`.
+
+Rewrite using `[Category.assoc, hc, ← Category.assoc j, hj.1.w]`. Simplify using `only [Category.assoc]`. Rewrite using `[← Category.assoc i, ← unit_left_comp hj, Category.assoc, hjρ, Category.comp_id]`. Establish `hJx : J ≫ x₀ = 𝟙 A₀` using `by ext1`. Conclude with `hjρ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hρm]`. Both sides reduce to the same expression. Use `_ = 𝟙 A₀.left := by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, hJx, hz, _root_.inv_one, _root_.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_isGrpPullback_retraction (rig : Out.RigiditySt) {S S' : Scheme.{0}} (A₀ : Over S) [GrpObj A₀]
     (A' : Over S') [GrpObj A'] (f : S' ⟶ S) (i : S ⟶ S') (ρ₀ : A'.left ⟶ A₀.left) (j : A₀.left ⟶ A'.left)
     (h₀ : IsAbelianScheme A₀) (h' : IsAbelianScheme A') (hj : IsGrpPullback A₀ A' i j)
@@ -130,6 +173,9 @@ theorem exists_isGrpPullback_retraction (rig : Out.RigiditySt) {S S' : Scheme.{0
       _ = 𝟙 A₀.left := by
           rw [MonObj.comp_mul, GrpObj.comp_inv, hJx, hz, _root_.inv_one, _root_.mul_one]; rfl
 
+/- English proof (translation)
+Introduce `hL A₀ _ A' _ ρ₀ j h₀ h' hj hρ hjρ`. Take `⟨ρ, hρ', hjρ'⟩` from `exists_isGrpPullback_retraction hL.rigidity A₀ A' _ _ ρ₀ j h₀ h' hj hρ hjρ`. Conclude with `⟨ρ, by unfold IsConst; exact ⟨hρ', hj, hjρ'⟩⟩`.
+-/
 theorem exists_isConst_of_isPullback :
     Out.Laws → ∀ (A₀ : Over (Sp ℂ)) [GrpObj A₀] (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (ρ₀ : A'.left ⟶ A₀.left) (j : A₀.left ⟶ A'.left), IsAbelianScheme A₀ → IsAbelianScheme A' → IsGrpPullback A₀ A' (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) j → IsPullback ρ₀ A'.hom A₀.hom (spMap (algebraMap ℂ (DualNumber ℂ))) → j ≫ ρ₀ = 𝟙 _ → ∃ ρ, IsConst A' A₀ ρ j := by
   intro hL A₀ _ A' _ ρ₀ j h₀ h' hj hρ hjρ

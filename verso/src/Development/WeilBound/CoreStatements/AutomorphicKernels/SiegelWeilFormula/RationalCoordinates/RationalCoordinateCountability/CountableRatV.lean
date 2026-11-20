@@ -17,6 +17,9 @@ variable {d : SD σ} {R : RD d} {L : LD d}
 variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' : nA σ L.Y L.b → G2 σ L.Y} {w₁ : d.G}
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply]`. Simplify using `only [hy]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one, hx]`.
+-/
 theorem fix_mul {x y : d.G}
     (hx : ∀ k, inFrame d.b x k (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀))
     (hy : ∀ k, inFrame d.b y k (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀))
@@ -26,6 +29,9 @@ theorem fix_mul {x y : d.G}
   simp only [hy]
   rw [← Matrix.mul_apply, Matrix.mul_one, hx]
 
+/- English proof (translation)
+Establish `e2 : ((γ + β : nA σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) (AE F E)) = γ.1 + β.1` using `rfl`. Rewrite using `[kunf.nb_add h.nb, mul_assoc, hΨ _ (kunf.nb_rat h.nb hγ) (fix_nb h γ)]`. Use `congr 1`. Unfold `th`. Rewrite using `[e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]`.
+-/
 theorem perF (h : Hyp L nb uM nb' w₁ cM δ) (Ψ : d.G → ℂ) (hΨ : ∀ r ∈ rat2 σ d.Y, (∀ k, inFrame d.b r k (Sum.inl L.i₀) =
       (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀)) → ∀ g, Ψ (r * g) = Ψ g)
     (T : nF σ d.Y d.b) (x : d.G) (γ : nA σ d.Y d.b) (hγ : γ ∈ nF σ d.Y d.b) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
@@ -37,6 +43,9 @@ theorem perF (h : Hyp L nb uM nb' w₁ cM δ) (Ψ : d.G → ℂ) (hΨ : ∀ r �
   rw [e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv,
     kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]
 
+/- English proof (translation)
+Establish `e2 : ((γ + β : nA σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) (AE F E)) = γ.1 + β.1` using `rfl`. Rewrite using `[kunf.nb_add h.nb, mul_assoc, hΨ _ (kunf.nb_rat h.nb hγ) (fix_nb h γ)]`. Use `congr 2`. Unfold `th`. Rewrite using `[e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]`.
+-/
 theorem perFE (h : Hyp L nb uM nb' w₁ cM δ) (Ψ : d.G → ℝ≥0∞) (hΨ : ∀ r ∈ rat2 σ d.Y, (∀ k, inFrame d.b r k (Sum.inl L.i₀) =
       (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀)) → ∀ g, Ψ (r * g) = Ψ g)
     (T : nF σ d.Y d.b) (x : d.G) (γ : nA σ d.Y d.b) (hγ : γ ∈ nF σ d.Y d.b) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
@@ -48,6 +57,9 @@ theorem perFE (h : Hyp L nb uM nb' w₁ cM δ) (Ψ : d.G → ℝ≥0∞) (hΨ : 
   rw [e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv,
     kunf.psi_rat d.ok.good.std T ⟨γ, hγ⟩, inv_one, one_mul]
 
+/- English proof (translation)
+Establish `e1 : cM (u, s + a) = cM (0, s) * cM (u, a)`. Rewrite using `[cM_split h, centre_matrix_add h, cM_split h u a, ← mul_assoc, cM_comm h, mul_assoc]`. Rewrite using `[sM_add, e1]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (sM R L b) (cM (0, s)), siegel_centre_commute h, mul_assoc]`.
+-/
 theorem shift_eq (h : Hyp L nb uM nb' w₁ cM δ) (r b u : Fin L.n → AE F E) (s a : AF F) :
     sM R L (r + b) * cM (u, s + a) = (sM R L r * cM (0, s)) * (sM R L b * cM (u, a)) := by
   have e1 : cM (u, s + a) = cM (0, s) * cM (u, a) := by
@@ -56,15 +68,24 @@ theorem shift_eq (h : Hyp L nb uM nb' w₁ cM δ) (r b u : Fin L.n → AE F E) (
   simp only [mul_assoc]
   rw [← mul_assoc (sM R L b) (cM (0, s)), siegel_centre_commute h, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `mul_mem (sM_rat hr) (cM_rat h (c := (0, s)) (zero_mem _) hs)`.
+-/
 theorem rr_rat (h : Hyp L nb uM nb' w₁ cM δ) {r : Fin L.n → AE F E} (hr : r ∈ L.ratV) {s : AF F}
     (hs : s ∈ (algebraMap F (AF F)).range) : sM R L r * cM (0, s) ∈ rat2 σ d.Y :=
   mul_mem (sM_rat hr) (cM_rat h (c := (0, s)) (zero_mem _) hs)
 
+/- English proof (translation)
+The claim follows from `fix_mul (L := L) (fix_sM r) (fix_cM h (0, s)) k`.
+-/
 theorem rr_fix (h : Hyp L nb uM nb' w₁ cM δ) (r : Fin L.n → AE F E) (s : AF F) (k) :
     inFrame d.b (sM R L r * cM (0, s)) k (Sum.inl L.i₀) =
       (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀) :=
   fix_mul (L := L) (fix_sM r) (fix_cM h (0, s)) k
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nb_split (R := R) h β]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (cM (0, pa L δ β)) (uM u), ← cM_comm h, ← cM_split h]`. Use `_ = _ := by rw [move h]; simp only [mul_assoc]`.
+-/
 theorem pt_eq (h : Hyp L nb uM nb' w₁ cM δ) (x : d.G) (u : Fin L.n → AE F E) (β : nA σ d.Y d.b) :
     nb β * (uM u * x) = sM R L (pb L β + (tau L uM nb' δ (u, C4.prj L β)).1) *
       (cM (u, pa L δ β + (tau L uM nb' δ (u, C4.prj L β)).2) * (L.j (nb' (C4.prj L β)) * x)) := by
@@ -82,6 +103,17 @@ instance countable_ratV (L : LD d) : Countable L.ratV := by
     exact ⟨v, rfl⟩
   exact h.to_subtype
 
+/- English proof (translation)
+Use `haveI : Fact (IsFrame2 σ d.Y d.b) := ⟨d.ok.frame⟩`. Use `haveI : Fact (IsFrame2 σ L.Y L.b) := ⟨L.ok.frame⟩`. Use `haveI := hc.2.1`. Use `haveI := hc'.2.1`. Use `haveI := hU.2.1`.
+
+Take `⟨-, -, hiff⟩` from `pEquiv h`. Set `PM : (nA σ d.Y d.b) ≃ᵐ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b)` to `P.toHomeomorph.toMeasurableEquiv`. Establish `hPM : ∀ β, PM β = ((pb L β, pa L δ β), C4.prj L β)` using `hP`. Establish `hPc' : lam.map PM = c • ((ν.prod (lamA F)).prod lam')` using `hPc`. Establish `hZ : IsAddFundamentalDomain (L.ratV.prod (fA F)) (𝓤 ×ˢ 𝓐) (ν.prod (lamA F))` using `fd_prod' hU.2.2.1 h𝓐`.
+
+Establish `key` using `chainC (νu := ν.restrict 𝓤) (ΓN := nF σ d.Y d.b) (ΓZ := L.ratV.prod (fA F)) (ΓN' := nF σ L.Y L.b) hPc' (fun a b => map_add P a b) (fun β => by rw [hPM, hiff, AddSubgroup.mem_prod]) hc.2.2.1 hZ hc'.2.2.1 (continuous_tau h).measurable (fun p => Ψ (nb p.2 * (uM p.1 * x)) * th T p.2) …`. Take `⟨hg1, hg2⟩` from `AddSubgroup.mem_prod.1 hg`. Take `⟨β'', u, b, a⟩` from `w`. Use `show Ψ (sM R L (g.1 + b) * (cM (u, g.2 + a) * _)) * _ = Ψ (sM R L b * (cM (u, a) * _)) * _`. Rewrite using `[← mul_assoc, shift_eq h, mul_assoc (sM R L g.1 * cM (0, g.2)), hΨ _ (rr_rat h hg1 hg2) (rr_fix h g.1 g.2)]`.
+
+Simplify using `only [mul_assoc])`. Use the proof step `(fun u β => by`. Rewrite using `[hPM]`. Use `show Ψ (nb β * (uM u * x)) * th T β = Ψ (sM R L (pb L β + (tau L uM nb' δ (u, C4.prj L β)).1) * (cM (u, pa L δ β + (tau L uM nb' δ (u, C4.prj L β)).2) * (L.j (nb' (C4.prj L β)) * x))) * th' T' (C4.prj L β)`. Rewrite using `[pt_eq (R := R) h x u β]`.
+
+Use `congr 1`. Unfold `th th'`. Rewrite using `[C4.tr_sub L hT β])`. Rewrite using `[key, ← Measure.prod_restrict]`.
+-/
 theorem coordsC_ck (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
     (hU : L.UData uM ν 𝓤) {lam' : Measure (nA σ L.Y L.b)} {𝓖' : Set (nA σ L.Y L.b)}
@@ -126,6 +158,17 @@ theorem coordsC_ck (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.
       rw [C4.tr_sub L hT β])
   rw [key, ← Measure.prod_restrict]
 
+/- English proof (translation)
+Use `haveI : Fact (IsFrame2 σ d.Y d.b) := ⟨d.ok.frame⟩`. Use `haveI : Fact (IsFrame2 σ L.Y L.b) := ⟨L.ok.frame⟩`. Use `haveI := hc.2.1`. Use `haveI := hc'.2.1`. Use `haveI := hU.2.1`.
+
+Take `⟨-, -, hiff⟩` from `pEquiv h`. Set `PM : (nA σ d.Y d.b) ≃ᵐ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b)` to `P.toHomeomorph.toMeasurableEquiv`. Establish `hPM : ∀ β, PM β = ((pb L β, pa L δ β), C4.prj L β)` using `hP`. Establish `hPc' : lam.map PM = c • ((ν.prod (lamA F)).prod lam')` using `hPc`. Establish `hZ : IsAddFundamentalDomain (L.ratV.prod (fA F)) (𝓤 ×ˢ 𝓐) (ν.prod (lamA F))` using `fd_prod' hU.2.2.1 h𝓐`.
+
+Establish `key` using `chainE (νu := ν.restrict 𝓤) (ΓN := nF σ d.Y d.b) (ΓZ := L.ratV.prod (fA F)) (ΓN' := nF σ L.Y L.b) hPc' (fun a b => map_add P a b) (fun β => by rw [hPM, hiff, AddSubgroup.mem_prod]) hc.2.2.1 hZ hc'.2.2.1 (continuous_tau h).measurable (fun p => Ψ (nb p.2 * (uM p.1 * x)) * ‖th T p.2 …`. Take `⟨hg1, hg2⟩` from `AddSubgroup.mem_prod.1 hg`. Take `⟨β'', u, b, a⟩` from `w`. Use `show Ψ (sM R L (g.1 + b) * (cM (u, g.2 + a) * _)) * _ = Ψ (sM R L b * (cM (u, a) * _)) * _`. Rewrite using `[← mul_assoc, shift_eq h, mul_assoc (sM R L g.1 * cM (0, g.2)), hΨ _ (rr_rat h hg1 hg2) (rr_fix h g.1 g.2)]`.
+
+Simplify using `only [mul_assoc])`. Use the proof step `(fun u β => by`. Rewrite using `[hPM]`. Use `show Ψ (nb β * (uM u * x)) * ‖th T β‖ₑ = Ψ (sM R L (pb L β + (tau L uM nb' δ (u, C4.prj L β)).1) * (cM (u, pa L δ β + (tau L uM nb' δ (u, C4.prj L β)).2) * (L.j (nb' (C4.prj L β)) * x))) * ‖th' T' (C4.prj L β)‖ₑ`. Rewrite using `[pt_eq (R := R) h x u β]`.
+
+Use `congr 2`. Unfold `th th'`. Rewrite using `[C4.tr_sub L hT β])`. Rewrite using `[key, ← Measure.prod_restrict]`.
+-/
 theorem coordsE_ck (h : Hyp L nb uM nb' w₁ cM δ) {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hc : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {ν : Measure (Fin L.n → AE F E)} {𝓤 : Set (Fin L.n → AE F E)}
     (hU : L.UData uM ν 𝓤) {lam' : Measure (nA σ L.Y L.b)} {𝓖' : Set (nA σ L.Y L.b)}

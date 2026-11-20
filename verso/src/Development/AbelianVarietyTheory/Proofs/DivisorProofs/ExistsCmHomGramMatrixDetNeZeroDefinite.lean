@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FlatCM.HomLat
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ K _ _ ρ σ₁ p X`. Take `⟨gP, gQ, h⟩` from `GlobalTheory.FlatCM.GramExists.exists_isGram E H K ρ σ₁ p 0 X`. Conclude with `⟨gP, gQ, h, (GlobalTheory.GramAt.gram_det X h).1⟩`.
+-/
 theorem exists_isGram_det_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0),

@@ -64,12 +64,18 @@ def frMul (γ : GL (Fin n) E) (y : Fr emb σ n) : Fr emb σ n :=
     rw [← h]
     exact (Matrix.isUnit_iff_isUnit_det _ |>.1 γ.isUnit).map _⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Simplify using `[frMul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem frMul_mul (γ δ : GL (Fin n) E) (y : Fr emb σ n) :
     frMul emb σ (γ * δ) y = frMul emb σ γ (frMul emb σ δ y) := by
   apply Subtype.ext
   funext τ
   simp [frMul, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Simplify using `[frMul]`.
+-/
 theorem frMul_one (y : Fr emb σ n) : frMul emb σ 1 y = y := by
   apply Subtype.ext
   funext τ
@@ -84,6 +90,9 @@ def frEquiv (γ : GL (Fin n) E) : Fr emb σ n ≃ Fr emb σ n where
 def trFr (γ : GL (Fin n) E) (c : Kˣ) : (Fr emb σ n → ℂ) ≃ₗ[ℂ] (Fr emb σ n → ℂ) :=
   (LinearEquiv.funCongrLeft ℂ ℂ (frEquiv emb σ γ⁻¹)).trans (LinearEquiv.smulOfUnit (Units.map (σ : K →* ℂ) c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trFr_apply (γ : GL (Fin n) E) (c : Kˣ) (F : Fr emb σ n → ℂ) (y : Fr emb σ n) :
     trFr emb σ γ c F y = σ c * F (frMul emb σ γ⁻¹ y) := rfl
 
@@ -112,6 +121,9 @@ def rep (c : S.Cl) : S.D c.1 := S.rp c.1 c.2
 
 @[reducible] def cl (b : S.β) (d : S.D b) : S.Cl := ⟨b, Quotient.mk _ d⟩
 
+/- English proof (translation)
+Establish `h : (MulAction.orbitRel (S.G b) (S.D b)).r d (S.rep (S.cl b d))` using `(MulAction.orbitRel (S.G b) (S.D b)).symm (Quotient.exact (S.rp_spec b (Quotient.mk _ d)))`. Conclude with `h`.
+-/
 theorem exists_mv (b : S.β) (d : S.D b) : ∃ g : S.G b, g • S.rep (S.cl b d) = d := by
   have h : (MulAction.orbitRel (S.G b) (S.D b)).r d (S.rep (S.cl b d)) :=
     (MulAction.orbitRel (S.G b) (S.D b)).symm (Quotient.exact (S.rp_spec b (Quotient.mk _ d)))
@@ -119,6 +131,9 @@ theorem exists_mv (b : S.β) (d : S.D b) : ∃ g : S.G b, g • S.rep (S.cl b d)
 
 def mv (b : S.β) (d : S.D b) : S.G b := (S.exists_mv b d).choose
 
+/- English proof (translation)
+The claim follows from `(S.exists_mv b d).choose_spec`.
+-/
 theorem mv_smul (b : S.β) (d : S.D b) : S.mv b d • S.rep (S.cl b d) = d := (S.exists_mv b d).choose_spec
 
 abbrev Stab (c : S.Cl) : Type := MulAction.stabilizer (S.G c.1) (S.rep c)
@@ -337,9 +352,19 @@ open Classical in
 
 def DGam (R : Ranks) : ℕ := if h : (gamOrd E R).Finite then h.toFinset.lcm id else 0
 
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLatticesTheory.final_autFinite E (Sp E n) (hStd E n) hStd_isSymm (hStd_pos hE) N hN`.
+-/
 theorem autO_finite (hE : PosStar E) {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) : Finite (autO N) :=
   Formalism.HermitianLatticesTheory.final_autFinite E (Sp E n) (hStd E n) hStd_isSymm (hStd_pos hE) N hN
 
+/- English proof (translation)
+Establish `h : autO (Formalism.HermitianLatticesTheory.gmap g N) = (autO N).map (MulAut.conj g).toMonoidHom`. Use extensionality with `γ`. Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`. Simplify using `only [autO, Subgroup.mem_inf, mem_autLat]`. Use `and_congr ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.mul_mem_cancel_right _ hg, Subgroup.mul_mem_cancel_left _ (Subgroup.inv_mem _ hg)]`. Rewrite using `[gmap_mul, gmap_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, ← gmap_mul, inv_mul_cancel, gmap_one]`.
+
+Introduce `h`. Establish `h2` using `congrArg (Formalism.HermitianLatticesTheory.gmap g) h`. Rewrite `h2` using `[← gmap_mul, mul_inv_cancel, gmap_one]`. Then use the resulting hypothesis. Rewrite using `[h]`. Conclude with `(Nat.card_congr ((autO N).equivMapOfInjective _ (MulAut.conj g).injective).toEquiv).symm`.
+-/
 theorem card_autO_gmap {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (N : Submodule (𝓞 E) (Sp E n)) :
     Nat.card (autO (Formalism.HermitianLatticesTheory.gmap g N)) = Nat.card (autO N) := by
   have h : autO (Formalism.HermitianLatticesTheory.gmap g N) = (autO N).map (MulAut.conj g).toMonoidHom := by
@@ -358,6 +383,9 @@ theorem card_autO_gmap {g : Sp E n ≃ₗ[E] Sp E n} (hg : g ∈ UF E n) (N : Su
   rw [h]
   exact (Nat.card_congr ((autO N).equivMapOfInjective _ (MulAut.conj g).injective).toEquiv).symm
 
+/- English proof (translation)
+Take `⟨s, -, hs⟩` from `unimod_finite hE n`. Use `(s.finite_toSet.image fun N => Nat.card (autO N)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨M, h1, h2, rfl⟩`. Take `⟨N, hN, g, hg, rfl⟩` from `hs M h1 h2`. Conclude with `⟨N, hN, (card_autO_gmap hg N).symm⟩`.
+-/
 theorem autOrd_finite (hE : PosStar E) (n : ℕ) : (autOrd E n).Finite := by
   obtain ⟨s, -, hs⟩ := unimod_finite hE n
   refine (s.finite_toSet.image fun N => Nat.card (autO N)).subset ?_
@@ -365,20 +393,34 @@ theorem autOrd_finite (hE : PosStar E) (n : ℕ) : (autOrd E n).Finite := by
   obtain ⟨N, hN, g, hg, rfl⟩ := hs M h1 h2
   exact ⟨N, hN, (card_autO_gmap hg N).symm⟩
 
+/- English proof (translation)
+The claim follows from `(gamRanks R).finite_toSet.biUnion fun n _ => autOrd_finite hE n`.
+-/
 theorem gamOrd_finite (hE : PosStar E) (R : Ranks) : (gamOrd E R).Finite :=
   (gamRanks R).finite_toSet.biUnion fun n _ => autOrd_finite hE n
 
+/- English proof (translation)
+Unfold `DGam`. Rewrite using `[dif_pos (gamOrd_finite hE R)]`. Conclude with `Finset.dvd_lcm (f := id) ((Set.Finite.mem_toFinset _).2 (Set.mem_biUnion hn ⟨N, h1, h2, rfl⟩))`.
+-/
 theorem dvd_DGam (hE : PosStar E) (R : Ranks) (hn : n ∈ gamRanks R) {N : Submodule (𝓞 E) (Sp E n)}
     (h1 : Submodule.IsLattice E N) (h2 : Formalism.HermitianLatticesTheory.IsUnimodular (hStd E n) N) : Nat.card (autO N) ∣ DGam E R := by
   unfold DGam
   rw [dif_pos (gamOrd_finite hE R)]
   exact Finset.dvd_lcm (f := id) ((Set.Finite.mem_toFinset _).2 (Set.mem_biUnion hn ⟨N, h1, h2, rfl⟩))
 
+/- English proof (translation)
+Unfold `DGam`. Rewrite using `[dif_pos (gamOrd_finite hE R)]`. Conclude with `Finset.lcm_dvd fun a ha => h a ((Set.Finite.mem_toFinset _).1 ha)`.
+-/
 theorem DGam_dvd (hE : PosStar E) (R : Ranks) {M : ℕ} (h : ∀ a ∈ gamOrd E R, a ∣ M) : DGam E R ∣ M := by
   unfold DGam
   rw [dif_pos (gamOrd_finite hE R)]
   exact Finset.lcm_dvd fun a ha => h a ((Set.Finite.mem_toFinset _).1 ha)
 
+/- English proof (translation)
+Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Unfold `DGam`. Rewrite using `[dif_pos (gamOrd_finite hE R), Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨a, ha, h0⟩`. Take `⟨n, -, N, h1, -, rfl⟩` from `Set.mem_iUnion₂.1 ((Set.Finite.mem_toFinset _).1 ha)`.
+
+Use `haveI := autO_finite hE h1`. Conclude with `Nat.card_pos.ne' h0`.
+-/
 theorem DGam_pos (hE : PosStar E) (R : Ranks) : 0 < DGam E R := by
   apply Nat.pos_of_ne_zero
   unfold DGam
@@ -388,13 +430,22 @@ theorem DGam_pos (hE : PosStar E) (R : Ranks) : 0 < DGam E R := by
   haveI := autO_finite hE h1
   exact Nat.card_pos.ne' h0
 
+/- English proof (translation)
+The claim follows from `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_Icc.2 ⟨h1, h2⟩))`.
+-/
 theorem N_mem_gamRanks (R : Ranks) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ R.m) : R.N j ∈ gamRanks R :=
   Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_Icc.2 ⟨h1, h2⟩))
 
+/- English proof (translation)
+Rewrite using `[rank_X'_eq]`. Conclude with `Finset.mem_union_right _ (Finset.mem_insert_self _ _)`.
+-/
 theorem pred_mem_gamRanks (R : Ranks) : R.N R.m - 1 ∈ gamRanks R := by
   rw [rank_X'_eq]
   exact Finset.mem_union_right _ (Finset.mem_insert_self _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.mem_union_right _ (by simp)`.
+-/
 theorem nV_mem_gamRanks (R : Ranks) : R.nV ∈ gamRanks R := Finset.mem_union_right _ (by simp)
 
 end DGam
@@ -415,11 +466,17 @@ structure ChainIn.Ok {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Fie
   DG_pos : 0 < I.DG
   dvd_DG : ∀ i, i ≤ R.m → ∀ c, Nat.card ((I.S i).Stab c) ∣ I.DG
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨c, hc⟩` from `R.t_odd`. Conclude with `⟨a + j * (c + 1), by unfold Ranks.N; rw [ha, hc]; ring⟩`.
+-/
 theorem N_even (R : Ranks) (j : ℕ) : ∃ a : ℕ, R.N j = 2 * a := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨c, hc⟩ := R.t_odd
   exact ⟨a + j * (c + 1), by unfold Ranks.N; rw [ha, hc]; ring⟩
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `P.e_int i`. Take `⟨a, ha⟩` from `N_even R j`. Establish `: P.e i - (R.N j : ℚ) / 2 = ((z - a : ℤ) : ℚ)` using `by rw [hz, ha]; push_cast; ring`. Rewrite using `[this, Int.floor_intCast]`.
+-/
 theorem floor_sub_half {R : Ranks} (P : HCParam R) (i : Fin R.m) (j : ℕ) :
     ((⌊P.e i - (R.N j : ℚ) / 2⌋ : ℤ) : ℚ) = P.e i - (R.N j : ℚ) / 2 := by
   obtain ⟨z, hz⟩ := P.e_int i
@@ -573,6 +630,9 @@ def stabMap (h : Q.Ok) (c : Q.S'.Cl) : Q.S'.Stab c →* (I.S R.m).Stab (Q.tilC c
       (((I.S R.m).mv Q.b0 (Q.tilPt c))⁻¹ * Q.ext c.1 b.1 * (I.S R.m).mv Q.b0 (Q.tilPt c)) : (I.S R.m).G Q.b0)
     simp [mul_assoc]
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1 : (((I.S R.m).mv Q.b0 (Q.tilPt c))⁻¹ * Q.ext c.1 a.1 * (I.S R.m).mv Q.b0 (Q.tilPt c) : (I.S R.m).G Q.b0) = ((I.S R.m).mv Q.b0 (Q.tilPt c))⁻¹ * Q.ext c.1 b.1 * (I.S R.m).mv Q.b0 (Q.tilPt c)` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (h.ext_inj _ (mul_left_cancel (mul_right_cancel h1)))`.
+-/
 theorem stabMap_inj (h : Q.Ok) (c : Q.S'.Cl) : Function.Injective (Q.stabMap h c) := by
   intro a b hab
   have h1 : (((I.S R.m).mv Q.b0 (Q.tilPt c))⁻¹ * Q.ext c.1 a.1 * (I.S R.m).mv Q.b0 (Q.tilPt c) : (I.S R.m).G Q.b0) =
@@ -863,6 +923,9 @@ open Classical in
 def prefRep {G D : Type} [Group G] [MulAction G D] (pref : D → Prop) (q : MulAction.orbitRel.Quotient G D) : D :=
   if h : ∃ p, Quotient.mk (MulAction.orbitRel G D) p = q ∧ pref p then h.choose else Quotient.out q
 
+/- English proof (translation)
+Unfold `prefRep`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `Quotient.out_eq q`.
+-/
 theorem prefRep_spec {G D : Type} [Group G] [MulAction G D] (pref : D → Prop) (q : MulAction.orbitRel.Quotient G D) :
     Quotient.mk (MulAction.orbitRel G D) (prefRep pref q) = q := by
   unfold prefRep

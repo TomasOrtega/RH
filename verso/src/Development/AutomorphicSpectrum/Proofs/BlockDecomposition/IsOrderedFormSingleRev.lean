@@ -6,18 +6,31 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 
 namespace GlobalTheory.CompanionTheory.OneTermOrder
 
+/- English proof (translation)
+Rewrite using `[nabs_uniformiser (Zls.irreducible_unif (k := k)) (x := Zls.unifU k) rfl]`. Establish `hq : 1 < resCard k` using `Finite.one_lt_card`. Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hq)`.
+-/
 theorem nabs_unifU_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : nabs k (Zls.unifU k) < 1 := by
   rw [nabs_uniformiser (Zls.irreducible_unif (k := k)) (x := Zls.unifU k) rfl]
   have hq : 1 < resCard k := Finite.one_lt_card
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hq)
 
+/- English proof (translation)
+Rewrite using `[val_absPow, Complex.cpow_natCast, norm_pow, Complex.norm_real, Real.norm_of_nonneg (nabs_pos' k t).le]`.
+-/
 theorem norm_absPow_natCast (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : kˣ) (j : ℕ) :
     ‖((absPow k (j : ℂ) t : ℂˣ) : ℂ)‖ = nabs k t ^ j := by
   rw [val_absPow, Complex.cpow_natCast, norm_pow, Complex.norm_real,
     Real.norm_of_nonneg (nabs_pos' k t).le]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ξ hξ hanti`. Use `⟨?_, fun i j hij hp => ?_⟩` and prove the remaining obligations. Establish `h` using `Multiset.map_univ_val_equiv (Fin.revPerm (n := n))`. Rewrite using `[PositivityTheory.SphericalProduct.msOne]`. Use `conv_rhs => rw [← h, Multiset.map_map]`.
+
+Both sides reduce to the same expression. Take `⟨-, m, hm, he⟩` from `hp`. Establish `he' : IrrGL.ofChar (ξ (Fin.rev j)) (isSmoothChar_of_isUnram (hξ (Fin.rev j))) = (IrrGL.ofChar (ξ (Fin.rev i)) (isSmoothChar_of_isUnram (hξ (Fin.rev i)))).nu (m : ℂ)` using `he`. Rewrite `he'` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Establish `hle : ‖((ξ (Fin.rev i) (Zls.unifU k) : ℂˣ) : ℂ)‖ ≤ ‖((ξ (Fin.rev j) (Zls.unifU k) : ℂˣ) : ℂ)‖` using `hanti (Fin.rev_le_rev.2 hij.le)`.
+
+Rewrite `hle` using `[he', MonoidHom.mul_apply, Units.val_mul, norm_mul, norm_absPow_natCast]`. Establish `hpos : 0 < ‖((ξ (Fin.rev i) (Zls.unifU k) : ℂˣ) : ℂ)‖` using `norm_pos_iff.2 (Units.ne_zero _)`. Establish `hlt : nabs k (Zls.unifU k) ^ m < 1` using `pow_lt_one₀ (nabs_pos' k _).le (nabs_unifU_lt_one k) hm.ne'`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem isOrderedForm_single_rev : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (ξ : Fin n → kˣ →* ℂˣ) (hξ : ∀ i, IsUnram (ξ i)),
     PositivityTheory.SphericalProduct.AbsAnti (PositivityTheory.SphericalProduct.atUnif k ξ) →

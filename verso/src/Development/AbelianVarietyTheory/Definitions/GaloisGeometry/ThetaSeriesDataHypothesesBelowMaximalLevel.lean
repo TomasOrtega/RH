@@ -136,8 +136,16 @@ def CurveEx : Prop :=
 
 def dGT (D : D7) (u : D.what₂.Word) (p : ℕ) : ℕ → ℕ := fun j => if j = 0 then 0 else padicValNat p (D.mem u).C.DGam
 
+/- English proof (translation)
+Simplify using `[dGT]`.
+-/
 theorem dGT_zero (D : D7) (u : D.what₂.Word) (p : ℕ) : dGT D u p 0 = 0 := by simp [dGT]
 
+/- English proof (translation)
+Introduce `j hj a L hL`. Distinguish the cases in `h0 : j = 0`. Substitute `h0` using the available equality. Rewrite using `[KA.stab_zero a L hL]`. Simplify using `[dGT]`.
+
+Establish `hm : j ≤ D.R.m` using `by rw [← KA.fl_m]; exact hj`. Take `⟨_, hdvd⟩` from `KA.stab_dvd j hm a L hL`. Simplify using `only [dGT, if_neg h0]`. Conclude with `(padicValNat_dvd_iff_le (D.mem u).C.DGam_pos.ne').1 (dvd_trans pow_padicValNat_dvd hdvd)`.
+-/
 theorem dGT_spec {D : D7} {c : LatCmp D} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
     {h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} [Fact (D.what₂.places.resChar w).Prime]
     {Fl : Fills (D.gat u w h)} {Lv : Levels Fl} {Ch : Chain Lv} (KA : TwTie.KerAtMu D c Tw u μ w h Ch) :
@@ -163,6 +171,9 @@ def StdAtW (D : D7) (Gl : G.LatInst D) (u : D.what₂.Word) (w : D.what₂.place
 def StdAt (D : D7) (Gl : G.LatInst D) : Prop :=
   ∀ u (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)), StdAtW D Gl u w hg
 
+/- English proof (translation)
+The claim follows from `((D.gat u w hg).P.setting (Gl.vOf u w hg 0)).frac_O`.
+-/
 theorem fracAt {D : D7} (Gl : G.LatInst D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) : IsFractionRing (D.gat u w hg).O (D.gat u w hg).Kf :=
   ((D.gat u w hg).P.setting (Gl.vOf u w hg 0)).frac_O

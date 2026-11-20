@@ -15,6 +15,9 @@ namespace GlobalTheory.CompHt.PointUp
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N : ℕ}
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det]`. Use `congr 1`. Use extensionality with `l k`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_apply]`.
+-/
 private theorem aeval_det_linear_form_eq_det_map {K Ω ι : Type} [Field K] [Field Ω] [Algebra K Ω] {N d : ℕ}
     (e : Fin N → ι) (M : Fin N → Matrix (Fin d) (Fin d) K) (u : ι → Ω) :
     aeval u (Matrix.of fun l k => ∑ i, X (e i) * C (M i l k)).det =
@@ -25,6 +28,11 @@ private theorem aeval_det_linear_form_eq_det_map {K Ω ι : Type} [Field K] [Fie
   simp [RingHom.mapMatrix_apply, Matrix.map_apply]
 
 open MvPolynomial in
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `aeval_det_linear_form_eq_det_map (Ω := K) e M (fun v : ι => if v = e j then (1 : K) else 0)`. Rewrite `h1` using `[h0, map_zero]`. Establish `: (Matrix.of fun l k => ∑ i, (if e i = e j then (1 : K) else 0) * algebraMap K K (M i l k) : Matrix (Fin d) (Fin d) K) = 1`. Use extensionality with `l k`.
+
+Simplify using `[he.eq_iff, hM, Matrix.one_apply]`. Rewrite `h1` using `[this, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+-/
 private theorem det_linear_form_ne_zero_of_eq_one {K ι : Type} [Field K] {N d : ℕ}
     (e : Fin N → ι) (he : Function.Injective e) (M : Fin N → Matrix (Fin d) (Fin d) K) (j : Fin N)
     (hM : M j = 1) :
@@ -41,6 +49,11 @@ private theorem det_linear_form_ne_zero_of_eq_one {K ι : Type} [Field K] {N d :
   exact zero_ne_one h1
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `IsHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have hentry : ∀ l k, (∑ i, (X (e i) * C (M i l k) : MvPolynomial ι K)).IsHomogeneous 1 := fun l k => IsHomogeneous.sum _ _ _ fun i _ => by`. Simplify using `using (isHomogeneous_X K (e i)).mul (isHomogeneous_C _ (M i l k))`. Apply the tactic sequence `have hprod := IsHomogeneous.prod Finset.univ (fun l => (Matrix.of fun l k => ∑ i, (X (e i) * C (M i l k) : MvPolynomial ι K)) (σ l) l) (fun _ => 1) fun l _ => hentry (σ l) l`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at hprod`. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (show _ ∈ homogeneousSubmodule ι K d from hprod) _`.
+-/
 private theorem isHomogeneous_det_linear_form {K ι : Type} [Field K] {N d : ℕ}
     (e : Fin N → ι) (M : Fin N → Matrix (Fin d) (Fin d) K) :
     (Matrix.of fun l k => ∑ i, (X (e i) * C (M i l k) : MvPolynomial ι K)).det.IsHomogeneous d := by
@@ -57,6 +70,19 @@ private theorem isHomogeneous_det_linear_form {K ι : Type} [Field K] {N d : ℕ
   exact zsmul_mem (show _ ∈ homogeneousSubmodule ι K d from hprod) _
 
 open MvPolynomial in
+/- English proof (translation)
+Introduce `hzj`. Apply `hz0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `set m := minpoly K (y i)`. Use `set r := m.natDegree`.
+
+Establish `hmon : m.Monic` using `minpoly.monic (Algebra.IsIntegral.isIntegral (y i))`. Use `set h : MvPolynomial (Fin N) K := ∑ k ∈ Finset.range (r + 1), C (m.coeff k) * X i ^ k * X j ^ (r - k) with hh`. Establish `hhom : h.IsHomogeneous r`. Use `IsHomogeneous.sum _ _ _ fun k hk => ?_` and prove the remaining obligations. Establish `hkr : k + (r - k) = r` using `Nat.add_sub_cancel' (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))`.
+
+Simplify `((isHomogeneous_C _ (m.coeff k)).mul (isHomogeneous_X_pow i k)).mul (isHomogeneous_X_pow j (r - k))` using `[hkr]`. Establish `hyh : aeval y h = 0`. Establish `: aeval y h = Polynomial.aeval (y i) m`. Rewrite using `[Polynomial.aeval_eq_sum_range]`. Simplify using `[hh, map_sum, hy, Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, minpoly.aeval]`. Establish `hzh` using `hzI h ((_root_.GlobalTheory.CompHt.mem_coneIdeal_of_isHomogeneous y hhom).mpr hyh)`. Rewrite `hzh` using `[hh, map_sum, Finset.sum_eq_single r]`. Establish `h2 : z i = 0 ∧ ¬m.natDegree = 0` using `by simpa [hzj, hmon.coeff_natDegree, r] using hzh`.
+
+Conclude with `h2.1`. Introduce `k hk hkr`. Establish `: r - k ≠ 0`. Use `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[hzj, zero_pow this]`. Introduce `hr`. Conclude with `absurd (Finset.self_mem_range_succ r) hr`.
+-/
 private theorem coord_ne_zero_of_vanishes_on_coneIdeal {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] {N : ℕ} (y z : Fin N → Ω) (j : Fin N) (hy : y j = 1) (hz0 : z ≠ 0)
     (hzI : ∀ g ∈ _root_.GlobalTheory.CompHt.coneIdeal K y, aeval z g = 0) : z j ≠ 0 := by
@@ -90,6 +116,15 @@ private theorem coord_ne_zero_of_vanishes_on_coneIdeal {K Ω : Type} [Field K] [
   · intro hr; exact absurd (Finset.self_mem_range_succ r) hr
 
 open MvPolynomial in
+/- English proof (translation)
+Set `φ : MvPolynomial (Fin N) K →ₐ[K] Algebra.adjoin K (Set.range y)` to `(aeval y).codRestrict _ fun g => by`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨g, rfl⟩`. Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨s, hs⟩`.
+
+Rewrite `hs` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨g, rfl⟩` from `hs`. Conclude with `⟨g, rfl⟩`. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hφ`. Set `lift` to `Ideal.Quotient.liftₐ (RingHom.ker φ) (aeval w) fun g hg => by`.
+
+Apply `hker` to reduce the goal to its premises. Use `congrArg Subtype.val (RingHom.mem_ker.mp hg)` as an intermediate fact. Simplify `this` using `[φ]`. Use `⟨lift.comp e.symm.toAlgHom, fun i => ?_⟩` and prove the remaining obligations. Establish `hX : (⟨y i, Algebra.subset_adjoin (Set.mem_range_self i)⟩ : Algebra.adjoin K (Set.range y)) = e (Ideal.Quotient.mk _ (X i))`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[e, φ]`. Rewrite using `[hX]`. Simplify using `only [lift, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom, AlgEquiv.symm_apply_apply, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.lift_mk]`. Conclude with `aeval_X w i`.
+-/
 private theorem exists_algHom_adjoin_of_ker_le {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N : ℕ}
     (y w : Fin N → Ω) (hker : ∀ g : MvPolynomial (Fin N) K, aeval y g = 0 → aeval w g = 0) :
     ∃ ρ : Algebra.adjoin K (Set.range y) →ₐ[K] Ω,
@@ -118,6 +153,11 @@ private theorem exists_algHom_adjoin_of_ker_le {K Ω : Type} [Field K] [Field Ω
   exact aeval_X w i
 
 open MvPolynomial in
+/- English proof (translation)
+Use `conv_lhs => rw [φ.as_sum]`. Use `conv_rhs => rw [φ.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hφ (mem_support_iff.mp hm)`.
+
+Simplify using `only [aeval_monomial, Pi.smul_apply, smul_eq_mul, mul_pow, Finsupp.prod_mul]`. Establish `: ∑ a, m a = n`. Apply the tactic sequence `rw [← hdeg, Finsupp.weight_apply, Finsupp.sum_fintype] <;> simp`. Rewrite using `[Finsupp.prod_pow, Finset.prod_pow_eq_pow_sum, this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem aeval_smul_eq_pow_mul_of_isHomogeneous {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N n : ℕ}
     {φ : MvPolynomial (Fin N) K} (hφ : φ.IsHomogeneous n) (c : Ω) (x : Fin N → Ω) :
     aeval (c • x) φ = c ^ n * aeval x φ := by
@@ -132,6 +172,17 @@ private theorem aeval_smul_eq_pow_mul_of_isHomogeneous {K Ω : Type} [Field K] [
   rw [Finsupp.prod_pow, Finset.prod_pow_eq_pow_sum, this]; ring
 
 open MvPolynomial in
+/- English proof (translation)
+Use `set D := g.totalDegree`. Use `set h : MvPolynomial (Fin N) K := ∑ d ∈ Finset.range (D + 1), X j ^ (D - d) * homogeneousComponent d g with hh`. Establish `hhom : h.IsHomogeneous D`. Use `IsHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Establish `hdD : D - d + d = D` using `Nat.sub_add_cancel (Nat.lt_succ_iff.mp (Finset.mem_range.mp hd))`.
+
+Simplify `(isHomogeneous_X_pow j (D - d)).mul (homogeneousComponent_isHomogeneous d g)` using `[hdD]`. Establish `hyh : aeval y h = 0`. Establish `: aeval y h = aeval y (∑ d ∈ Finset.range (D + 1), homogeneousComponent d g)`. Simplify using `[hh, map_sum, hy]`. Rewrite using `[this, sum_homogeneousComponent, hg]`.
+
+Establish `hzh : aeval z h = 0` using `hzI h ((_root_.GlobalTheory.CompHt.mem_coneIdeal_of_isHomogeneous y hhom).mpr hyh)`. Establish `hc : z j ^ D ≠ 0` using `pow_ne_zero _ hz`. Use `(mul_eq_zero.mp ?_).resolve_left hc` and prove the remaining obligations. Rewrite using `[← sum_homogeneousComponent g, map_sum, Finset.mul_sum]`. Rewrite `hzh` using `[hh, map_sum]`.
+
+Rewrite using `[← hzh]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdD : d ≤ D` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hd)`. Rewrite using `[aeval_smul_eq_pow_mul_of_isHomogeneous (homogeneousComponent_isHomogeneous d g), map_mul, map_pow, aeval_X, inv_pow, ← mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[← Nat.sub_add_cancel hdD, pow_add, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hz), mul_one, Nat.add_sub_cancel]`.
+-/
 private theorem aeval_inv_smul_eq_zero_of_mem_coneIdeal_zero {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N : ℕ}
     (y z : Fin N → Ω) (j : Fin N) (hy : y j = 1) (hz : z j ≠ 0)
     (hzI : ∀ g ∈ _root_.GlobalTheory.CompHt.coneIdeal K y, aeval z g = 0)
@@ -163,6 +214,19 @@ private theorem aeval_inv_smul_eq_zero_of_mem_coneIdeal_zero {K Ω : Type} [Fiel
     Nat.add_sub_cancel]
 
 open MvPolynomial in
+/- English proof (translation)
+Rewrite using `[← Matrix.exists_vecMul_eq_zero_iff]`. Use `⟨fun k => ρ (b k), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : ρ 1 = 0`. Rewrite using `[← b.sum_repr 1, map_sum]`.
+
+Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, show ρ (b l) = 0 from congrFun h0 l, smul_zero]`. Conclude with `one_ne_zero (h1 ▸ (map_one ρ).symm)`. Use function extensionality and compare the values at `k`. Establish `hcol : ∀ i, ∑ l, algebraMap K L (LinearMap.toMatrix b b (Algebra.lmul K A (Y i)) l k) * ρ (b l) = ρ (Y i) * ρ (b k)`.
+
+Introduce `i`. Rewrite using `[← map_mul, ← b.sum_repr (Y i * b k), map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = (∑ i, u i * ρ (Y i)) * ρ (b k) := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hcol]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hu, zero_mul]`.
+-/
 private theorem det_multiplication_form_eq_zero_of_sum_eq_zero {K L A : Type} [Field K] [CommRing A] [Algebra K A]
     [Field L] [Algebra K L] {d N : ℕ} (b : Module.Basis (Fin d) K A) (Y : Fin N → A)
     (ρ : A →ₐ[K] L) (u : Fin N → L) (hu : ∑ i, u i * ρ (Y i) = 0) :
@@ -205,6 +269,27 @@ set_option autoImplicit false in
 open MvPolynomial in
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {N : ℕ} in
 
+/- English proof (translation)
+Introduce `K _ N δ y j f hyj hf`. Take `⟨hhomog, -, hzero⟩` from `id hf`. Establish `hSeq : (IntermediateField.adjoin K (Set.range y)).toSubalgebra = Algebra.adjoin K (Set.range y)` using `IntermediateField.adjoin_toSubalgebra _`. Use `haveI hfinE : FiniteDimensional K (IntermediateField.adjoin K (Set.range y)) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Establish `hfin : Module.finrank K (IntermediateField.adjoin K (Set.range y)) = Module.finrank K (Algebra.adjoin K (Set.range y))`.
+
+Rewrite using `[← hSeq]`. Both sides reduce to the same expression. Use `haveI : FiniteDimensional K (Algebra.adjoin K (Set.range y)) := Module.finite_of_finrank_pos (hfin ▸ Module.finrank_pos)`. Rewrite using `[hfin]`. Use `set d := Module.finrank K (Algebra.adjoin K (Set.range y))`.
+
+Set `b` to `Module.finBasis K (Algebra.adjoin K (Set.range y))`. Set `Y : Fin N → Algebra.adjoin K (Set.range y)` to `fun i => ⟨y i, Algebra.subset_adjoin (Set.mem_range_self i)⟩`. Set `M : Fin N → Matrix (Fin d) (Fin d) K` to `fun i => LinearMap.toMatrix b b (Algebra.lmul K _ (Y i))`. Set `e : Fin N → Fin (0 + 1) × Fin N` to `fun i => (0, i)`. Establish `he : Function.Injective e` using `fun a a' h => (Prod.ext_iff.mp h).2`.
+
+Use `set p := (Matrix.of fun l k => ∑ i, (X (e i) * C (M i l k) : MvPolynomial (Fin (0 + 1) × Fin N) K)).det with hp`. Establish `hMj : M j = 1`. Establish `: Y j = 1` using `Subtype.ext hyj`. Simplify using `only [M, this, map_one]`. Conclude with `LinearMap.toMatrix_one b`.
+
+Establish `hp0 : p ≠ 0` using `det_linear_form_ne_zero_of_eq_one e he M j hMj`. Establish `hphom : p.IsHomogeneous d` using `isHomogeneous_det_linear_form e M`. Establish `key : ∀ u : Fin (0 + 1) × Fin N → AlgebraicClosure K, aeval u f = 0 → aeval u p = 0`. Introduce `u hu`. Take `⟨z, hz0, hzI, hzu⟩` from `(hzero u).mp hu`.
+
+Establish `hzj` using `coord_ne_zero_of_vanishes_on_coneIdeal y z j hyj hz0 hzI`. Take `⟨ρ, hρ⟩` from `exists_algHom_adjoin_of_ker_le (K := K) y ((z j)⁻¹ • z) (aeval_inv_smul_eq_zero_of_mem_coneIdeal_zero y z j hyj hzj hzI)`. Rewrite using `[hp, aeval_det_linear_form_eq_det_map]`. Use `det_multiplication_form_eq_zero_of_sum_eq_zero b Y ρ (fun i => u (e i)) ?_` and prove the remaining obligations. Establish `h0` using `hzu 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hρ i]`. Simplify using `only [e, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [h0, mul_zero]`. Take `⟨q, hq⟩` from `hf.dvd_of_forall_aeval_eq_zero key`. Establish `hf0` using `hf.ne_zero`. Establish `hq0 : q ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hq` using `[mul_zero]`. Conclude with `hp0 hq`. Establish `hfdeg : f.totalDegree = δ`. Use `(_root_.GlobalTheory.ChowHt.isMultiHomogeneous_iff_block.mp hhomog).isHomogeneous` as an intermediate fact.
+
+Simplify using `using this.totalDegree hf0`. Establish `hdeg` using `totalDegree_mul_of_isDomain hf0 hq0`. Rewrite `hdeg` using `[← hq, hphom.totalDegree hp0, hfdeg]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.CompHt.PointUp.le_finrank_of_isChowFormInt : ∀ (K : Type) [Field K] (N δ : ℕ) (y : Fin N → AlgebraicClosure K)
     (j : Fin N) (f : MvPolynomial (Fin (0 + 1) × Fin N) K), y j = 1 → _root_.GlobalTheory.ChowHt.IsChowFormInt (_root_.GlobalTheory.CompHt.coneIdeal K y) 0 δ f →
     δ ≤ Module.finrank K (IntermediateField.adjoin K (Set.range y)) := by

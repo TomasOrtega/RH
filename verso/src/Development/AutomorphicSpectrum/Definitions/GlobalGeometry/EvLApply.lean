@@ -41,6 +41,9 @@ def latIn {K R : Type} [Field K] [NumberField K] [CommRing R] [Algebra K R] [Alg
     Submodule (𝓞 K) R :=
   (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨g, hg, e⟩ => e ▸ ⟨g.2, hg⟩, fun h => ⟨⟨f, h.1⟩, h.2, rfl⟩⟩`.
+-/
 theorem mem_latIn {K R : Type} [Field K] [NumberField K] [CommRing R] [Algebra K R] [Algebra (𝓞 K) R]
     [IsScalarTower (𝓞 K) K R] (C : Submodule K R) (Vs : HeightOneSpectrum (𝓞 K) → Set (R → EReal))
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) (f : R) : f ∈ latIn C Vs hV ↔ f ∈ C ∧ ∀ la, ∀ v ∈ Vs la, 0 ≤ v f :=
@@ -51,6 +54,11 @@ variable (Xo : Moduli Dw l) (c : Coeff l)
 def secZ (a : WZ E) : Submodule c.F (Rul Xo c) :=
   secWZ (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (fun t y y' => FrBor t y y') (exZ Dw a)
 
+/- English proof (translation)
+Establish `h : ∀ (S : Type) [CommRing S] (t : Ix Dw → Sˣ), (∏ i, ((t i ^ exZ Dw (fun x => (a x : ℤ)) i : Sˣ) : S)) = wchar (ex Dw a 0) t`. Introduce `S _ t`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases i <;> simp [exZ, ex]`. Use extensionality with `f`.
+
+Use `and_congr Iff.rfl (forall_congr' fun p => forall_congr' fun t => forall_congr' fun y => forall_congr' fun y' => forall_congr' fun _ => ?_)` and prove the remaining obligations. Rewrite using `[h]`.
+-/
 theorem secZ_nat (a : (E →+* ℂ) × ℕ → ℕ) : secZ Xo c (fun x => (a x : ℤ)) = sec Xo c a 0 := by
   have h : ∀ (S : Type) [CommRing S] (t : Ix Dw → Sˣ),
       (∏ i, ((t i ^ exZ Dw (fun x => (a x : ℤ)) i : Sˣ) : S)) = wchar (ex Dw a 0) t := by
@@ -69,6 +77,9 @@ def laZ {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (a : WZ E) (k : U.Com
   fun τ j => if (U.X k).p0 ≤ (j : ℕ) then a (Function.invFun (relab c σ) τ.1, (j : ℕ) - (U.X k).p0)
     else -a (Function.invFun (relab c σ) (conjEmb τ.1), (U.X k).p0 - 1 - (j : ℕ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k τ j`. Simplify using `[laZ, laU]`.
+-/
 theorem laZ_nat {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) :
     laZ U (fun x => (a x : ℤ)) = laU U a 0 := by
   funext k τ j
@@ -79,6 +90,9 @@ variable {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r)
 def cuspZ (a : WZ E) : Submodule c.F (Rul Xo c) :=
   secZ Xo c a ⊓ ⨅ (σ : c.F →+* ℂ) (_ : GoodEmb c σ), (holSub (U σ).X (laZ (U σ) a)).comap (rdU (U σ))
 
+/- English proof (translation)
+Unfold `cuspZ cusp`. Simplify using `only [secZ_nat, laZ_nat]`.
+-/
 theorem cuspZ_nat (a : (E →+* ℂ) × ℕ → ℕ) : cuspZ Xo c U (fun x => (a x : ℤ)) = cusp Xo c U a 0 := by
   unfold cuspZ cusp
   simp only [secZ_nat, laZ_nat]
@@ -88,6 +102,9 @@ variable {Xo c}
 def evL (h : GenFrEx Xo c) (Z : Comp Xo c) : Rul Xo c →ₗ[c.F] Om Z :=
   evalL (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (genFr h Z)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evL_apply (h : GenFrEx Xo c) (Z : Comp Xo c) (f : Rul Xo c) : evL h Z f = evC h Z f := rfl
 
 def cuspOn (h : GenFrEx Xo c) (a : WZ E) (Z : Comp Xo c) : Submodule c.F (Rul Xo c) :=

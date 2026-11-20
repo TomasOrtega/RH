@@ -4,11 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open IsLocalRing Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype]`. Use `Finset.card_product_filter_lt (s := (Finset.univ : Finset (Fin n)))` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem card_lt' (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 < p.2} = n.choose 2 := by
   rw [Fintype.card_subtype]
   have := Finset.card_product_filter_lt (s := (Finset.univ : Finset (Fin n)))
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[← card_lt' n]`. Establish `e : {p : Fin n × Fin n // p.1 ≤ p.2} ≃ Fin n ⊕ {p : Fin n × Fin n // p.1 < p.2}` using `{ toFun := fun p => if h : p.1.1 < p.1.2 then .inr ⟨p.1, h⟩ else .inl p.1.1 invFun := Sum.elim (fun i => ⟨(i, i), le_rfl⟩) fun p => ⟨p.1, p.2.le⟩ left_inv := fun p => by`. Distinguish the cases in `h : p.1.1 < p.1.2`. Simplify using `[h]`. Simplify using `only [h, dite_false, Sum.elim_inl]`.
+
+Conclude with `Subtype.ext (Prod.ext rfl (le_antisymm p.2 (not_lt.1 h)))`. Use `right_inv := by`. Introduce and unpack `(i | p)`. Simplify using the standard rewrite rules. Simplify using `[p.2] }`.
+
+Rewrite using `[Fintype.card_congr e, Fintype.card_sum, Fintype.card_fin]`.
+-/
 private theorem card_le' (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 ≤ p.2} = n + n.choose 2 := by
   rw [← card_lt' n]
   have e : {p : Fin n × Fin n // p.1 ≤ p.2} ≃ Fin n ⊕ {p : Fin n × Fin n // p.1 < p.2} :=
@@ -25,11 +35,22 @@ private theorem card_le' (n : ℕ) : Fintype.card {p : Fin n × Fin n // p.1 ≤
         · simp [p.2] }
   rw [Fintype.card_congr e, Fintype.card_sum, Fintype.card_fin]
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 private theorem red_mul {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (A B : Matrix (Fin n) (Fin n) O) :
     red m (A * B) = red m A * red m B := Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 private theorem red_one {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) : red m (1 : Matrix (Fin n) (Fin n) O) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
+/- English proof (translation)
+Set `e₀` to `(Fintype.equivFin ι).symm`. Set `e` to `(Tuple.sort (ht ∘ e₀)).trans e₀`. Establish `hm : Monotone (ht ∘ e)` using `Tuple.monotone_sort (ht ∘ e₀)`. Rewrite using `[← e.prod_comp]`. Use `filtCount Z Y _ (fun i => f (e i)) (fun i => P (e i)) (fun z hz => h0 z fun i => ?_) (fun i => hP _) fun i z hz => hf _ z fun j hj => ?_` and prove the remaining obligations.
+
+Take `⟨i, rfl⟩` from `e.surjective i`. Conclude with `hz i`. Take `⟨j, rfl⟩` from `e.surjective j`. Conclude with `hz j (hm.reflect_lt hj)`.
+-/
 private theorem filt_ht {Z Y ι : Type} [AddCommGroup Z] [AddCommGroup Y] [Fintype ι] (ht : ι → ℕ) (f : ι → Z →+ Y)
     (P : ι → Set Y) (h0 : ∀ z, (∀ i, f i z = 0) → z = 0) (hP : ∀ i, (P i).Finite)
     (hf : ∀ i z, (∀ j, ht j < ht i → f j z = 0) → f i z ∈ P i) : Finite Z ∧ Nat.card Z ≤ ∏ i, (P i).ncard := by
@@ -44,6 +65,13 @@ private theorem filt_ht {Z Y ι : Type} [AddCommGroup Z] [AddCommGroup Y] [Finty
   · obtain ⟨j, rfl⟩ := e.surjective j
     exact hz j (hm.reflect_lt hj)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j, Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `p _ hp`. Distinguish the cases in `c : p < i`. Rewrite using `[hT i p c, zero_mul]`. Rewrite using `[hB p j (not_lt.1 c) le_rfl (.inl hp), mul_zero]`.
+
+Simplify using the standard rewrite rules. Introduce `q _ hq`. Distinguish the cases in `c : j < q`. Rewrite using `[hT' q j c, mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_zero, zero_mul]`.
+
+Introduce `p _`. Distinguish the cases in `c' : p < i`. Rewrite using `[hT i p c', zero_mul]`. Rewrite using `[hB p q (not_lt.1 c') (not_lt.1 c) (.inr hq), mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private theorem conj_entry {R : Type} [CommRing R] {n : ℕ} (T B T' : Matrix (Fin n) (Fin n) R)
     (hT : ∀ i j, j < i → T i j = 0) (hT' : ∀ i j, j < i → T' i j = 0) (i j : Fin n)
     (hB : ∀ p q, i ≤ p → q ≤ j → (p ≠ i ∨ q ≠ j) → B p q = 0) : (T * B * T') i j = T i i * B i j * T' j j := by
@@ -63,11 +91,17 @@ private theorem conj_entry {R : Type} [CommRing R] {n : ℕ} (T B T' : Matrix (F
       · rw [hB p q (not_lt.1 c') (not_lt.1 c) (.inr hq), mul_zero]
   · simp
 
+/- English proof (translation)
+Introduce `N` and use `by simp only [map_mul] exact (h N).mul (h' N)`.
+-/
 private theorem adic_mul {D R : Type} [TopologicalSpace D] [CommRing R] {I : Ideal R} {f f' : D → R}
     (h : AdicCont I f) (h' : AdicCont I f') : AdicCont I fun g => f g * f' g := fun N => by
   simp only [map_mul]
   exact (h N).mul (h' N)
 
+/- English proof (translation)
+Introduce `N` and use `by classical induction s using Finset.induction_on with | empty => exact IsLocallyConstant.of_constant _ fun _ _ => rfl | insert i s hi ih => simp only [Finset.sum_insert hi, map_add] exact (h i N).add ih`.
+-/
 private theorem adic_sum {D R ι : Type} [TopologicalSpace D] [CommRing R] {I : Ideal R} (s : Finset ι) {f : ι → D → R}
     (h : ∀ i, AdicCont I (f i)) : AdicCont I fun g => ∑ i ∈ s, f i g := fun N => by
   classical
@@ -82,6 +116,9 @@ section
 variable {l : ℕ} [Fact l.Prime] {L : Loc} {G0 : Glob l L} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
   (y : Pt G0.frame O n) (v : L.Vl)
 
+/- English proof (translation)
+Establish `e : (fun g : L.Gv v => (y.ψ v i g : O)) = fun g => ∑ q, (∑ p, (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) i p * mat y.ρ (G0.φ v g) p q) * (y.w v : Matrix (Fin n) (Fin n) O) q i` using `funext fun g => ((y.tri v g).2 i).symm`. Rewrite using `[e]`. Conclude with `adic_sum _ fun q => adic_mul (adic_sum _ fun p => adic_mul (fun N => IsLocallyConstant.const _) fun N => (y.cont p q N).comp_continuous (G0.φ_cont v)) fun N => IsLocallyConstant.const _`.
+-/
 private theorem psi_cont (i : Fin n) : AdicCont (maximalIdeal O) fun g : L.Gv v => (y.ψ v i g : O) := by
   have e : (fun g : L.Gv v => (y.ψ v i g : O)) = fun g => ∑ q, (∑ p, (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) i p *
       mat y.ρ (G0.φ v g) p q) * (y.w v : Matrix (Fin n) (Fin n) O) q i := funext fun g => ((y.tri v g).2 i).symm
@@ -92,10 +129,18 @@ private theorem psi_cont (i : Fin n) : AdicCont (maximalIdeal O) fun g : L.Gv v 
 private noncomputable def cj (m : ℕ) (Z : Mm O n m) : Mm O n m :=
   red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * Z * red m (y.w v : Matrix (Fin n) (Fin n) O)
 
+/- English proof (translation)
+Rewrite using `[← red_mul, Units.mul_inv, red_one]`.
+-/
 private theorem i2 (m : ℕ) :
     red m (y.w v : Matrix (Fin n) (Fin n) O) * red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1 := by
   rw [← red_mul, Units.mul_inv, red_one]
 
+/- English proof (translation)
+Establish `e : cj y v m (y.ρ0 m (G0.φ v g)) = red m (((y.w v)⁻¹ * y.ρ (G0.φ v g) * y.w v : GL (Fin n) O) : Matrix (Fin n) (Fin n) O)`. Rewrite using `[Units.val_mul, Units.val_mul, red_mul, red_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg (Ideal.Quotient.mk _) ((y.tri v g).1 i j h)).trans (map_zero _)`. Conclude with `congrArg (Ideal.Quotient.mk _) ((y.tri v g).2 i)`.
+-/
 private theorem cj_rho (m : ℕ) (g : L.Gv v) : (∀ i j, j < i → cj y v m (y.ρ0 m (G0.φ v g)) i j = 0) ∧
     ∀ i, cj y v m (y.ρ0 m (G0.φ v g)) i i = algebraMap O (Om O m) (y.ψ v i g : O) := by
   have e : cj y v m (y.ρ0 m (G0.φ v g)) =
@@ -110,6 +155,11 @@ private noncomputable def crd (m : ℕ) (i j : Fin n) : Zbor y m v →+ (L.Gv v 
   AddMonoidHom.mk' (fun β g => cj y v m (β.1 g) i j) fun β β' => funext fun g => by
     simp only [cj, AddSubgroup.coe_add, Pi.add_apply, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply]
 
+/- English proof (translation)
+Use `⟨β.2.1.comp fun Z : Mm O n m => cj y v m Z i j, fun g h => ?_⟩` and prove the remaining obligations. Establish `e : cj y v m (β.1 (g * h)) = cj y v m (β.1 g) + cj y v m (y.ρ0 m (G0.φ v g)) * cj y v m (β.1 h) * cj y v m (y.ρ0 m (G0.φ v g⁻¹))`. Establish `i3 : ∀ M : Mm O n m, red m (y.w v : Matrix (Fin n) (Fin n) O) * (red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * M) = M` using `fun M => by`. Rewrite using `[← mul_assoc, i2, one_mul]`. Rewrite using `[β.2.2.1 g h, map_inv]`.
+
+Simplify using `only [cj, mul_add, add_mul, mul_assoc, i3]`. Express the relevant statement in the definitionally equal form `cj y v m (β.1 (g * h)) i j = cj y v m (β.1 g) i j + _ • cj y v m (β.1 h) i j`. Apply the tactic sequence `rw [e, Matrix.add_apply, conj_entry _ _ _ (cj_rho y v m g).1 (cj_rho y v m g⁻¹).1 i j (hB h), (cj_rho y v m g).2, (cj_rho y v m g⁻¹).2, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem crd_coc (m : ℕ) (i j : Fin n) (β : Zbor y m v)
     (hB : ∀ g p q, i ≤ p → q ≤ j → (p ≠ i ∨ q ≠ j) → cj y v m (β.1 g) p q = 0) :
     IsLocallyConstant (crd y v m i j β) ∧ ∀ g h, crd y v m i j β (g * h) =
@@ -129,6 +179,25 @@ private theorem crd_coc (m : ℕ) (i j : Fin n) (β : Zbor y m v)
 
 end
 
+/- English proof (translation)
+Introduce `l _ L G0 O _ _ _ _ _ n y v d hL hε`. Set `P : ∀ m, {p : Fin n × Fin n // p.1 ≤ p.2} → Set (L.Gv v → Om O m)` to `fun m t => {z | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ((y.ψ v t.1.1 g : O) * (y.ψ v t.1.2 g⁻¹ : O)) • z h}`. Establish `hP : ∀ t, ∃ C : ℕ, ∀ m, (P m t).Finite ∧ (P m t).ncard ≤ Nat.card (ResidueField O) ^ (m * (1 + d) + C)`. Introduce and unpack `⟨⟨i, j⟩, hij⟩`. Set `χ : L.Gv v →* Oˣ` to `y.ψ v i * (y.ψ v j)⁻¹`.
+
+Establish `e : ∀ g, ((χ g : Oˣ) : O) = (y.ψ v i g : O) * (y.ψ v j g⁻¹ : O)` using `fun g => by show ((y.ψ v i g * (y.ψ v j g)⁻¹ : Oˣ) : O) = _`. Rewrite using `[map_inv, Units.val_mul]`. Establish `h` using `oneCntO l O (L.Gv v) _ d χ hL ?_ ?_`. Simplify `h` using `only [e]`. Simplify using `only [e]`.
+
+Conclude with `adic_mul (psi_cont y v i) fun N => (psi_cont y v j N).comp_continuous continuous_inv`. Break down `hij.lt_or_eq with hlt | heq` into its components or cases. Assume the negation of the conclusion as `c push Not at c`. Use `y.N1 v i j hlt (MonoidHom.ext fun g => ?_)` and prove the remaining obligations. Establish `c' : y.ψ v i g * (y.ψ v j g)⁻¹ = G0.frame.eps O O (G0.φ v g)` using `Units.ext (c g)`.
+
+Use `show y.ψ v i g = y.ψ v j g * G0.frame.eps O O (G0.φ v g)`. Rewrite using `[← c', mul_comm, inv_mul_cancel_right]`. Take `⟨g, hg⟩` from `hε`. Use `⟨g, fun c => hg ?_⟩` and prove the remaining obligations. Establish `hij' : i = j` using `heq`.
+
+Substitute `hij'` using the available equality. Establish `c1 : χ g = 1` using `mul_inv_cancel (y.ψ v i g)`. Rewrite `c` using `[c1]`. Conclude with `c.symm`. Use `choose C hC using hP`.
+
+Use `⟨∑ t, C t, fun m => ?_⟩` and prove the remaining obligations. Use `And.imp_right (fun h2 => ?_) <| filt_ht (fun t : {p : Fin n × Fin n // p.1 ≤ p.2} => (t.1.2 : ℕ) - t.1.1) (fun t => crd y v m t.1.1 t.1.2) (P m) (fun β h => ?_) (fun t => (hC t m).1) fun t β h => ?_` and prove the remaining obligations. Use `h2.trans ((Finset.prod_le_prod' fun t _ => (hC t m).2).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[Finset.prod_pow_eq_pow_sum, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, card_le', smul_eq_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `e0 : cj y v m (β.1 g) = 0` using `Matrix.ext fun p q => by`. Distinguish the cases in `c : q < p`. Conclude with `β.2.2.2 g p q c`.
+
+Conclude with `congrFun (h ⟨(p, q), not_lt.1 c⟩) g`. Establish `e1` using `congrArg (fun M => red m (y.w v : Matrix (Fin n) (Fin n) O) * M * red m (((y.w v)⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O)) e0`. Simplify using `only [cj, ← mul_assoc, i2, one_mul, mul_zero, zero_mul] at e1`. Rewrite `e1` using `[mul_assoc, i2, mul_one]`. Then use the resulting hypothesis. Conclude with `crd_coc y v m t.1.1 t.1.2 β fun g p q c1 c2 c3 => by`.
+
+Distinguish the cases in `c : q < p`. Conclude with `β.2.2.2 g p q c`. Use `congrFun (h ⟨(p, q), not_lt.1 c⟩ ?_) g` and prove the remaining obligations. Simplify using `only [Fin.le_def, Fin.lt_def, ne_eq, Fin.ext_iff] at c c1 c2 c3 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Th.locVO :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (v : L.Vl) (d : ℕ), LocCnt (L.Gv v) (G0.ε.comp (G0.η.ker.subtype.comp (G0.φ v))) d → (∃ g, algebraMap ℤ_[l] O (G0.ε (G0.φ v g) : ℤ_[l]) ≠ 1) → ∃ C : ℕ, ∀ m, Finite (Zbor y m v) ∧ Nat.card (Zbor y m v) ≤ Nat.card (ResidueField O) ^ (m * ((n + n.choose 2) * (1 + d)) + C) := by
   intro l _ L G0 O _ _ _ _ _ n y v d hL hε

@@ -23,6 +23,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace MainStatements.Tam.T2
 
+/- English proof (translation)
+Establish `h : ∀ ρ : D.what₂.Tau, ∃ a : Matrix (Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) (Fin V.rank) ℂ, aᴴ * Formalism.UG.Jpq (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 * a = gramAt D V ρ`. Introduce `ρ`. Take `⟨e, Q, hQ⟩` from `hV (tauE D ρ)`. Establish `hQ' : (Q : Matrix _ _ ℂ)ᴴ * ((HSpace.gram V).map (tauE D ρ)).reindex e e * (Q : Matrix _ _ ℂ) = Formalism.UG.Jpq _ _` using `hQ`. Establish `h1 : ((Q⁻¹ : GL _ ℂ) : Matrix _ _ ℂ)ᴴ * Formalism.UG.Jpq _ _ * ((Q⁻¹ : GL _ ℂ) : Matrix _ _ ℂ) = ((HSpace.gram V).map (tauE D ρ)).reindex e e`.
+
+Rewrite using `[← hQ']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Units.mul_inv]; simp`. Set `Pm : Matrix (Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) (Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) ℂ` to `((Q⁻¹ : GL _ ℂ) : Matrix _ _ ℂ)`.
+
+Set `a : Matrix (Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) (Fin V.rank) ℂ` to `Pm.submatrix id e`. Establish `h1' : Pmᴴ * Formalism.UG.Jpq (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 * Pm = ((HSpace.gram V).map (tauE D ρ)).reindex e e` using `h1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h2 : aᴴ * Formalism.UG.Jpq (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 * a = (Pmᴴ * Formalism.UG.Jpq (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 * Pm).submatrix e e`. Use extensionality with `i j`.
+
+Simplify using `[a, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[h2, h1']`. Use extensionality with `a b`. Simplify using `[gramAt]`. Use `choose A hA using h`.
+
+Conclude with `⟨A, hA⟩`.
+-/
 theorem exists_frames (D : D7) (V : HSp D) (hV : V.SigOK) : ∃ A : Frames V, IsFrames V A := by
   classical
   have h : ∀ ρ : D.what₂.Tau, ∃ a : Matrix (Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2) (Fin V.rank) ℂ,
@@ -54,6 +65,9 @@ theorem exists_frames (D : D7) (V : HSp D) (hV : V.SigOK) : ∃ A : Frames V, Is
   choose A hA using h
   exact ⟨A, hA⟩
 
+/- English proof (translation)
+Substitute `hΨ` using the available equality. Substitute `hG` using the available equality. Rewrite using `[GlobalTheory.T.riemannianHaar_independent_of_orthonormal_frame E r p0 p1 Ψ G x x' hh hx hx']`.
+-/
 theorem covol_frame {E : Type} [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ Ψ' : Finset (E →+* ℂ))
     (G G' : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (x' : Frame Ψ' r) (p0 p1 : ℕ) (Γ : Subgroup (GL (Fin r) E))
     (hΨ : Ψ = Ψ') (hG : G = G') (hh : ∀ a b, cc (G a b) = G b a)
@@ -72,6 +86,55 @@ open MainStatements.Tam.T2
 
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hvol hstab hidx D V P Q hV hsig hr M hM ι _ X g x0 hdist hX`. Take `⟨hLC, hSC, hBor, hC⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Set `μ : Measure (GA D V)` to `Measure.haar`. Use `haveI hμH : μ.IsHaarMeasure := by infer_instance`.
+
+Take `⟨𝓕, hFD⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμH`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Take `⟨A, hA⟩` from `exists_frames D V hV`. Use `choose mm hmm using GlobalTheory.MinfMeasure.exists_isMinf`. Set `m : ∀ ρ, Measure (Upq V ρ)` to `fun ρ => mm _ _`.
+
+Establish `hm : ∀ ρ, IsMinf (m ρ)` using `fun ρ => hmm _ _`. Take `⟨X₀, σ, x₀, e, hG, hσ, hx₀, hid⟩` from `GlobalTheory.T.exists_flagDomain_orthonormalFrame_identification D V P Q hV hsig A hA`. Take `⟨rp, hrpc, hrp⟩` from `GlobalTheory.T.exists_continuous_realComponentHom_unitaryAdelic D V θ A hV hθ hA`. Set `a₀ : ∀ ρ : D.what₂.Tau, Fin (V.sig (tauE D ρ)).1 ⊕ Fin (V.sig (tauE D ρ)).2` to `fun ρ => (e ρ).symm ⟨0, by omega⟩`. Take `⟨π, hπc, hπ, hπe⟩` from `GlobalTheory.T.exists_continuous_equivariant_detOneFactorProjection D.host.E V.rank D.what₂.Tau _ _ X₀.Ψ X₀.Gm x₀ σ A e a₀ hid`.
+
+Establish `hcard : X₀.Ψ.card = D.R.f`. Rewrite using `[← Fintype.card_coe, ← Fintype.card_congr σ, D.what₂.card_Tau]`. Establish `hf : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Choose the witnesses or unpack the hypotheses as in `⟨ρ₀⟩ : Nonempty D.what₂.Tau := by`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hΨk : ∀ k, (X k).Ψ = X₀.Ψ`. Introduce `k`. Use extensionality with `τ`. Rewrite using `[(hX k).2.1 τ]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ρ, rfl⟩`. Rewrite using `[← hσ ρ]`. Conclude with `(σ ρ).2`. Introduce `hτ`.
+
+Take `⟨ρ, hρ⟩` from `σ.surjective ⟨τ, hτ⟩`. Conclude with `⟨ρ, by rw [← hσ ρ, hρ]⟩`. Establish `htr : ∀ k, covolume (inReal (X k).Ψ (X k).Gm (X k).Γ) (realSU (X k).Ψ (X k).Gm) (riemHaar (X k).Ψ (X k).Gm (x0 k)) = covolume (inReal X₀.Ψ X₀.Gm (X k).Γ) (realSU X₀.Ψ X₀.Gm) (riemHaar X₀.Ψ X₀.Gm x₀)` using `fun k => covol_frame V.rank _ _ _ _ (x0 k) x₀ (X k).p0 X₀.p0 (X k).Γ (hΨk k) ((hX k).1.trans hG.symm) (X k).Gm_herm (hX k).2.2.2.2 hx₀`. Use `choose F hFm hFcov hFfree using fun k => GlobalTheory.T.exists_packingSet_measure_ge_covolume (realSU X₀.Ψ X₀.Gm) (riemHaar X₀.Ψ X₀.Gm x₀) (inReal X₀.Ψ X₀.Gm (X k).Γ) (GlobalTheory.T.countable_rationalSubgroupInRealSpecialUnitary _ _ _ _ _)`. Use `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1` as an intermediate fact.
+
+Use `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1` as an intermediate fact. Set `B : ι → Set (∀ ρ, Upq V ρ)` to `fun k => π ⁻¹' F k ∩ {b | 0 < (UpqT.mat (b ρ₀)).det.im}`. Establish `hBm : ∀ k, MeasurableSet (B k)` using `fun k => (hπc.measurable (hFm k)).inter (GlobalTheory.T.measurableSet_det_im_pos_at_index D.what₂.Tau _ _ ρ₀)`. Use `choose g' hg'C hg'f using fun k => GlobalTheory.SplitDec.exists_finPart V (g k)`. Set `T : ι → Set (GA D V)` to `fun k => {y | (g' k)⁻¹ * y ∈ KM V M ∧ rp y ∈ B k}`.
+
+Establish `hKMo : IsOpen (KM V M)` using `(hstab.1 D V).2 M (by omega)`. Establish `hTm : ∀ k, MeasurableSet (T k)` using `fun k => ((hKMo.preimage (continuous_const.mul continuous_id)).measurableSet).inter (hrpc.measurable (hBm k))`. Establish `hdisj` using `tube_disj D V θ A rp X₀.Ψ X₀.Gm σ π M ι X g' F hM hG hθ hrp hσ hπe hFfree (fun k k' h => hdist k k' (by rw [hg'f k, hg'f k']; exact h)) (fun k => (hX k).1) (fun k => by rw [← hg'f k]; exact (hX k).2.2.1) (fun k => (hX k).2.2.2.1)`. Establish `hTd : Pairwise (Function.onFun Disjoint T)`. Introduce `k k' hne`.
+
+Use `Set.disjoint_left.2 fun y hy hy' => hne ?_` and prove the remaining obligations. Conclude with `(hdisj 1 (GQ V).one_mem k k' y ⟨hy.1, hy.2.1⟩ (by rw [one_mul]; exact ⟨hy'.1, hy'.2.1⟩)).2`. Set `S` to `⋃ k, T k`. Establish `hSm : MeasurableSet S` using `MeasurableSet.iUnion hTm`. Establish `hμS : μ S = ∑ k, μ (T k)`.
+
+Rewrite using `[measure_iUnion hTd hTm, tsum_fintype]`. Establish `hSF : μ S ≤ μ 𝓕`. Use `hFD.measure_le_of_pairwise_disjoint hSm.nullMeasurableSet ?_` and prove the remaining obligations. Introduce `γ γ' hne`. Use `Disjoint.aedisjoint (Set.disjoint_left.2 fun z hz hz' => hne ?_)` and prove the remaining obligations.
+
+Take `⟨y, hy, hyz⟩` from `Set.mem_smul_set.1 hz.1`. Take `⟨y', hy', hyz'⟩` from `Set.mem_smul_set.1 hz'.1`. Take `⟨j, hyj⟩` from `Set.mem_iUnion.1 hy`. Take `⟨j', hyj'⟩` from `Set.mem_iUnion.1 hy'`. Establish `h1 : (γ : GA D V) * y = z` using `hyz`.
+
+Establish `h2 : (γ' : GA D V) * y' = z` using `hyz'`. Establish `e1 : ((γ'⁻¹ * γ : GQ V) : GA D V) * y = y'`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, mul_assoc, h1, ← h2, ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `e2` using `(hdisj _ (γ'⁻¹ * γ).2 j j' y ⟨hyj.1, hyj.2.1⟩ (by rw [e1]; exact ⟨hyj'.1, hyj'.2.1⟩)).1`. Establish `e3 : γ'⁻¹ * γ = 1` using `Subtype.ext e2`.
+
+Conclude with `(inv_mul_eq_one.1 e3).symm`. Establish `hKM1 : Stab V = KM V 1` using `(hstab.1 D V).1`. Establish `hlowk : ∀ k, μ {h | h ∈ Stab V ∧ rp h ∈ B k} ≤ ((M : ℝ≥0∞) ^ (2 * D.R.f * V.rank ^ 2)) * μ (T k)`. Introduce `k`. Establish `e1 : μ (T k) = μ {z | z ∈ KM V M ∧ rp z ∈ B k}` using `meas_transl D V θ A rp hV hA hrp μ (g' k) (hg'C k) (KM V M) (B k)`.
+
+Rewrite using `[e1, hKM1]`. Conclude with `meas_low D V θ A rp hV hA hrp μ hidx M (by omega) (B k)`. Establish `hvk : ∀ k, μ 𝓕 * Measure.pi m (B k) = μ {h | h ∈ Stab V ∧ rp h ∈ B k} * ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank)` using `fun k => hvol D V P Q hV hsig μ 𝓕 hFD θ A m rp hθ hA hm hrpc hrp (B k) (hBm k)`. Establish `h16 : ∀ k, ENNReal.ofReal ((1 / 16 : ℝ) ^ (D.R.f * V.rank ^ 2)) * riemHaar X₀.Ψ X₀.Gm x₀ (F k) ≤ Measure.pi m (B k)`. Introduce `k`.
+
+Rewrite using `[← hcard]`. Conclude with `GlobalTheory.T.archimedean_mass_product_lower_bound_unitary_pq D.host.E V.rank D.what₂.Tau _ _ X₀.Ψ X₀.Gm x₀ σ A e a₀ π m ρ₀ (by omega) hid hπc hπ hπe hm (F k) (hFm k)`. Establish `hvolU : 0 < ReciprocityTheory.ChartRestriction.DS.volU V.rank`. Unfold `ReciprocityTheory.ChartRestriction.DS.volU`. Conclude with `Finset.prod_pos fun i _ => by positivity`.
+
+Establish `hCpos : 0 < ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank` using `mul_pos (pow_pos hvolU _) (Formalism.MainNotions.StandardLattice.massI_pos D V.rank)`. Establish `hFtop : μ 𝓕 ≠ ⊤` using `(GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol V μ 𝓕 hμH hFD).ne`. Establish `hF0 : μ 𝓕 ≠ 0`. Introduce `h0`. Establish `e0` using `hvol D V P Q hV hsig μ 𝓕 hFD θ A m rp hθ hA hm hrpc hrp Set.univ MeasurableSet.univ`.
+
+Rewrite `e0` using `[h0, zero_mul]`. Establish `hset : {h | h ∈ Stab V ∧ rp h ∈ (Set.univ : Set (∀ ρ, Upq V ρ))} = KM V 1`. Use extensionality with `h`. Simplify using `[hKM1]`. Establish `h1mem : (1 : GA D V) ∈ KM V 1` using `by show IsKM _ _ _ _ _`.
+
+Rewrite using `[map_one, Units.val_one]`. Conclude with `isKM_one _ _ _ _`. Establish `hpos : 0 < μ (KM V 1)` using `((hstab.1 D V).2 1 le_rfl).measure_pos μ ⟨1, h1mem⟩`. Rewrite `e0` using `[hset]`. Conclude with `(mul_ne_zero hpos.ne' (ENNReal.ofReal_pos.2 hCpos).ne') e0.symm`.
+
+Establish `hsum : ∑ k, Measure.pi m (B k) ≤ ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank) * ((M : ℝ≥0∞) ^ (2 * D.R.f * V.rank ^ 2))`. Establish `h1 : μ 𝓕 * ∑ k, Measure.pi m (B k) ≤ μ 𝓕 * (ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank) * ((M : ℝ≥0∞) ^ (2 * D.R.f * V.rank ^ 2)))`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ ≤ ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank) * ((M : ℝ≥0∞) ^ (2 * D.R.f * V.rank ^ 2)) * μ 𝓕 := by gcongr`. Rewrite using `[← hμS]`. Conclude with `hSF`. Use `_ = _ := by ring`.
+
+Conclude with `(ENNReal.mul_le_mul_iff_right hF0 hFtop).1 h1`. Establish `hcov : ∀ k, covolume (inReal (X k).Ψ (X k).Gm (X k).Γ) (realSU (X k).Ψ (X k).Gm) (riemHaar (X k).Ψ (X k).Gm (x0 k)) ≤ ENNReal.ofReal ((16 : ℝ) ^ (D.R.f * V.rank ^ 2)) * Measure.pi m (B k)`. Introduce `k`. Rewrite using `[htr k]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ (16 : ℝ) ^ (D.R.f * V.rank ^ 2)), ← mul_pow]`. Evaluate the numerical expressions. Use `_ ≤ _ := by gcongr; exact h16 k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `_ ≤ ENNReal.ofReal ((16 : ℝ) ^ (D.R.f * V.rank ^ 2)) * (ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank ^ D.R.f * massI D V.rank) * ((M : ℝ≥0∞) ^ (2 * D.R.f * V.rank ^ 2))) := by gcongr`. Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ (16 : ℝ) ^ (D.R.f * V.rank ^ 2) * (M : ℝ) ^ (2 * D.R.f * V.rank ^ 2)), ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ (16 : ℝ) ^ (D.R.f * V.rank ^ 2)), ENNReal.ofReal_pow (Nat.cast_nonneg M), ENNReal.ofReal_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tube : VolSt → StabSt → IdxSt → TubeSt := by
   intro hvol hstab hidx D V P Q hV hsig hr M hM ι _ X g x0 hdist hX
   classical

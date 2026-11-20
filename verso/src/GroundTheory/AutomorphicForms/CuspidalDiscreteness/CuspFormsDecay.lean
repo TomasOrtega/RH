@@ -26,13 +26,22 @@ def cuspQuot {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ) :
     rw [← hγ']
     exact hφ γ' b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem cuspQuot_mk {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (y : Reduction.normOneGL K n) : cuspQuot hφ (mk Γ₁ y) = φ y := rfl
 
+/- English proof (translation)
+The claim follows from `(isOpenQuotientMap_mk Γ₁).isQuotientMap.continuous_iff.2 (hc.comp continuous_subtype_val)`.
+-/
 theorem continuous_cuspQuot {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (hc : Continuous φ) : Continuous (cuspQuot hφ) :=
   (isOpenQuotientMap_mk Γ₁).isQuotientMap.continuous_iff.2 (hc.comp continuous_subtype_val)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Conclude with `h y`.
+-/
 theorem cuspQuot_surj_eq {φ ψ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftInvariant φ)
     (hψ : IsLeftInvariant ψ) (h : ∀ y : Reduction.normOneGL K n, φ y = ψ y) :
     cuspQuot hφ = cuspQuot hψ := by
@@ -42,6 +51,9 @@ theorem cuspQuot_surj_eq {φ ψ : AdelicGLn.AdelicGL K n → ℂ} (hφ : IsLeftI
 
 variable (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ` as an intermediate fact. Take `⟨C, hC⟩` from `exists_norm_le_of_mem_cuspForms hφ`. Use `MemLp.of_bound (continuous_cuspQuot _ hφ.1.continuous).aestronglyMeasurable C (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Conclude with `hC y y.2`.
+-/
 theorem memLp_cuspQuot {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ ∈ cuspForms K n) :
     MemLp (cuspQuot hφ.1.isLeftInvariant) 2 (quotientMeasure Γ₁ μ) := by
   have := Reduction.isFiniteMeasure_quotientMeasure (K := K) (n := n) μ
@@ -51,6 +63,9 @@ theorem memLp_cuspQuot {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ ∈ cuspF
   obtain ⟨y, rfl⟩ := mk_surjective Γ₁ q
   exact hC y y.2
 
+/- English proof (translation)
+Introduce `r hr hrn`. Use `filter_upwards [ae_ctFun_congr μ r (MemLp.coeFn_toLp (memLp_cuspQuot μ hφ))] with y hy`. Rewrite using `[constantTermL2, hy]`. Conclude with `hφ.2 r hr hrn y`.
+-/
 theorem toLp_mem_cuspidalL2 {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : φ ∈ cuspForms K n) :
     (memLp_cuspQuot μ hφ).toLp _ ∈ cuspidalL2 μ := by
   intro r hr hrn
@@ -75,11 +90,23 @@ def cuspToL2 : cuspForms K n →ₗ[ℂ] cuspidalL2 μ where
       obtain ⟨y, rfl⟩ := mk_surjective Γ₁ q
       rfl)
 
+/- English proof (translation)
+The claim follows from `MemLp.coeFn_toLp (memLp_cuspQuot μ φ.2)`.
+-/
 theorem coeFn_cuspToL2 (φ : cuspForms K n) :
     ((cuspToL2 μ φ : cuspidalL2 μ) : Lp ℂ 2 (quotientMeasure Γ₁ μ)) =ᵐ[quotientMeasure Γ₁ μ]
       cuspQuot φ.2.1.isLeftInvariant :=
   MemLp.coeFn_toLp (memLp_cuspQuot μ φ.2)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h1 : cuspQuot φ.2.1.isLeftInvariant =ᵐ[quotientMeasure Γ₁ μ] 0`. Use `(coeFn_cuspToL2 μ φ).symm.trans ?_` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `Lp.coeFn_zero _ _ _`. Establish `h2 : (fun y : Reduction.normOneGL K n => (φ : AdelicGLn.AdelicGL K n → ℂ) y) =ᵐ[μ] 0` using `(quasiMeasurePreserving_mk Γ₁ μ).ae_eq h1`. Establish `h3` using `(Continuous.ae_eq_iff_eq μ (φ.2.1.continuous.comp continuous_subtype_val) continuous_const).1 h2`. Conclude with `congrFun h3 ⟨x, hx⟩`. Introduce `h`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_zero]`. Use `Lp.ext ((coeFn_cuspToL2 μ φ).trans (EventuallyEq.trans ?_ (Lp.coeFn_zero _ _ _).symm))` and prove the remaining obligations. Use `Eventually.of_forall fun q => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`.
+
+Conclude with `h y y.2`.
+-/
 theorem cuspToL2_eq_zero_iff (φ : cuspForms K n) :
     cuspToL2 μ φ = 0 ↔ ∀ x ∈ Reduction.normOneGL K n, (φ : AdelicGLn.AdelicGL K n → ℂ) x = 0 := by
   constructor
@@ -101,6 +128,11 @@ theorem cuspToL2_eq_zero_iff (φ : cuspForms K n) :
     obtain ⟨y, rfl⟩ := mk_surjective Γ₁ q
     exact h y y.2
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨1, x, ?_, by rw [map_one, one_mul]⟩` and prove the remaining obligations. Rewrite using `[Reduction.mem_normOneGL_iff_detModule]`. Establish `: AdelicGLn.det K 0 x = 1` using `Units.ext (by rw [AdelicGLn.coe_det, Matrix.det_isEmpty]; rfl)`. Rewrite using `[Reduction.detModule, MonoidHom.comp_apply, this, map_one]`.
+
+Use `set s := Reduction.detModule K n x`. Use `⟨s, (Reduction.centralSection K n s)⁻¹ * x, ?_, by rw [mul_inv_cancel_left]⟩` and prove the remaining obligations. Rewrite using `[Reduction.mem_normOneGL_iff_detModule, map_mul, map_inv, Reduction.detModule_centralSection hn, inv_mul_cancel]`.
+-/
 theorem exists_centralSection_mul_mem_normOneGL (x : AdelicGLn.AdelicGL K n) :
     ∃ (s : {r : ℝ // 0 < r}) (y : AdelicGLn.AdelicGL K n), y ∈ Reduction.normOneGL K n ∧
       x = Reduction.centralSection K n s * y := by
@@ -114,6 +146,11 @@ theorem exists_centralSection_mul_mem_normOneGL (x : AdelicGLn.AdelicGL K n) :
     rw [Reduction.mem_normOneGL_iff_detModule, map_mul, map_inv,
       Reduction.detModule_centralSection hn, inv_mul_cancel]
 
+/- English proof (translation)
+Introduce `φ hφ ψ hψ h`. Establish `h0 : cuspToL2 μ (φ - ψ) = 0`. Rewrite using `[LinearMap.map_sub]`. Conclude with `sub_eq_zero.2 h`. Rewrite `h0` using `[cuspToL2_eq_zero_iff]`.
+
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨s, y, hy, rfl⟩` from `exists_centralSection_mul_mem_normOneGL x`. Rewrite using `[hφ s y, hψ s y, ← sub_eq_zero]`. Conclude with `h0 y hy`.
+-/
 theorem injOn_cuspToL2 :
     Set.InjOn (cuspToL2 μ) {φ : cuspForms K n | ∀ (s : {r : ℝ // 0 < r}) (x : AdelicGLn.AdelicGL K n),
       (φ : AdelicGLn.AdelicGL K n → ℂ) (Reduction.centralSection K n s * x) =
@@ -128,10 +165,20 @@ theorem injOn_cuspToL2 :
   rw [hφ s y, hψ s y, ← sub_eq_zero]
   exact h0 y hy
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_cuspRep_apply (g : Reduction.normOneGL K n) (v : cuspidalL2 μ) :
     ((cuspRep μ g v : cuspidalL2 μ) : Lp ℂ 2 (quotientMeasure Γ₁ μ)) =
       RightCosetSpace.rightTranslate Γ₁ μ g (v : Lp ℂ 2 (quotientMeasure Γ₁ μ)) := rfl
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_cuspRep_apply]`. Establish `h1` using `(measurePreserving_rightMul μ g).quasiMeasurePreserving.ae_eq (coeFn_cuspToL2 μ φ)`. Establish `h2 : cuspQuot ψ.2.1.isLeftInvariant = fun q => cuspQuot φ.2.1.isLeftInvariant (rightMul Γ₁ g q)`. Use function extensionality and compare the values at `q`.
+
+Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Rewrite using `[rightMul_mk, cuspQuot_mk, cuspQuot_mk, hψ]`. Both sides reduce to the same expression. Use `Lp.ext ((coeFn_cuspToL2 μ ψ).trans ?_)` and prove the remaining obligations. Rewrite using `[h2]`.
+
+Conclude with `h1.symm.trans (coeFn_rightTranslate Γ₁ μ g _).symm`.
+-/
 theorem cuspToL2_rightTranslate (g : Reduction.normOneGL K n) (φ ψ : cuspForms K n)
     (hψ : (ψ : AdelicGLn.AdelicGL K n → ℂ) =
       Automorphic.rightTranslate (g : AdelicGLn.AdelicGL K n) (φ : AdelicGLn.AdelicGL K n → ℂ)) :
@@ -149,6 +196,13 @@ theorem cuspToL2_rightTranslate (g : Reduction.normOneGL K n) (φ ψ : cuspForms
   rw [h2]
   exact h1.symm.trans (coeFn_rightTranslate Γ₁ μ g _).symm
 
+/- English proof (translation)
+Establish `hmem : ∀ k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)), Automorphic.rightTranslate (k : AdelicGLn.AdelicGL K n) (φ : AdelicGLn.AdelicGL K n → ℂ) ∈ cuspForms K n` using `fun k => ⟨φ.2.1.rightTranslate_of_mem_maxCompact k.2, φ.2.2.translate _⟩`. Establish `hmap : (Submodule.span ℂ (Set.range fun k => (⟨_, hmem k⟩ : cuspForms K n))).map (cuspForms K n).subtype = Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => Automorphic.rightTranslate (k : AdelicGLn.AdelicGL K n) (φ : AdelicGLn.Adel …`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Establish `hfd : FiniteDimensional ℂ ((Submodule.span ℂ (Set.range fun k => (⟨_, hmem k⟩ : cuspForms K n))).map (cuspForms K n).subtype)`.
+
+Rewrite using `[hmap]`. Conclude with `φ.2.1.isKFinite`. Establish `hW : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => (⟨_, hmem k⟩ : cuspForms K n)))` using `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ (cuspForms K n).injective_subtype _).symm`. Establish `hle : Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => cuspRep μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ (cuspToL2 μ φ)) ≤ (Submodule.span ℂ (Set.range fun k => (⟨_, hmem k⟩ : cuspForms K n))).map (cuspToL2 μ)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨_, hmem k⟩, Submodule.subset_span ⟨k, rfl⟩, cuspToL2_rightTranslate μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ φ ⟨_, hmem k⟩ rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem finiteDimensional_span_cuspRep_maxCompact (φ : cuspForms K n) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k :
       (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) =>

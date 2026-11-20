@@ -14,6 +14,19 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Take `⟨m', δ, hδ, hδli, -, hδγ⟩` from `hlab.2 X hX m γ hγφ`. Take `⟨δ₁, hδ₁, hδ₁li, hδ₁p, hδδ₁⟩` from `GlobalTheory.T.exists_rescale_primitive_linearIndependent_cell H.bar φ δ hδ hδli`. Establish `hγδ₁ : ∀ k, InRCone δ₁ (γ k)` using `fun k => hδδ₁ _ (hδγ k)`. Take `⟨h₂, h₂n, h₂z, h₂c⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone H.bar φ δ₁ γ hδ₁ hγφ hγδ₁`. Take `⟨h₁, h₁n, h₁z, h₁c⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_cell_in_cone H.bar ψ' γ γ' hγψ hγ' hin`.
+
+Take `⟨h, hn, hz, hc⟩` from `GlobalTheory.T.exists_linForm_cut_face_of_face_of_cone H.bar δ₁ γ γ' h₂ h₁ hδ₁.mem hδ₁.nonneg hin h₂n h₂z h₂c h₁n h₁z h₁c`. Establish `hin₁ : ∀ j, InRCone δ₁ (γ' j)` using `fun j => inRCone_trans hγδ₁ (hin j)`. Take `⟨s, hs, hsf⟩` from `GlobalTheory.T.eq_subfamily_of_face_simplicialCone_primitive H.bar δ₁ γ' hδ₁.mem hγ'.mem h hδ₁li hli' hδ₁p hp' hin₁ hn hz (fun i hi => hc _ (hδ₁.mem i) (hδ₁.nonneg i) (inRCone_self δ₁ i) hi)`. Establish `hγ'eq : γ' = fun j => δ₁ (s j)` using `funext hs`. Establish `hcut : IsFaceCut δ₁ s h` using `⟨hn, hsf⟩`.
+
+Establish `hφ' : IsCell H.bar φ γ'`. Rewrite using `[hγ'eq]`. Conclude with `GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q φ hφ X hX (hDom X) m' δ₁ hδ₁ _ s h hcut`. Use `⟨hφ', ?_, fun β hβ hβn hβc h1 => ?_⟩` and prove the remaining obligations. Establish `hliB : LinearIndependent ℤ (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms H.bar X))` using `LinearIndependent.of_comp (balForms H.bar X).subtype hδ₁li`.
+
+Establish `hrange : Set.range (fun j => (⟨γ' j, hφ'.mem j⟩ : balForms H.bar X)) ⊆ Set.range (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms H.bar X))`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨s j, Subtype.ext (hs j).symm⟩`. Establish `hdvd` using `GlobalTheory.T.natCard_torsion_quot_span_dvd_of_range_subset' (balForms H.bar X) _ _ hliB hrange`. Establish `hpos` using `GlobalTheory.T.balancedFormCellMultiplicity_pos H.bar (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms H.bar X))`.
+
+Establish `hle` using `SmoothEnd.cellMult_le_maxMult hX hδ₁ hδ₁li hδ₁p`. Establish `hle' : cellMult H.bar (fun i => (⟨δ₁ i, hδ₁.mem i⟩ : balForms H.bar X)) ≤ M`. Conclude with `hle.trans hM` after adjusting the coercions. Conclude with `(Nat.le_of_dvd hpos hdvd).trans hle'`. Rewrite `h1` using `[hw β hβ hβn (inRCone_trans hin hβc)]`.
+
+Conclude with `zero_ne_one h1`.
+-/
 theorem starOld_cell_mult_le (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (φ lab w ψ' : InvFun (𝓞 E))
     (hDom : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X],

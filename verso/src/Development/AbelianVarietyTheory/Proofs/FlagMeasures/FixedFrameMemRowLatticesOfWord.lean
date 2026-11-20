@@ -10,10 +10,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.RowFrame
 
+/- English proof (translation)
+The claim follows from `Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot`.
+-/
 theorem ddIdeal_ne_bot (D : D7) :
     (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) : Ideal (𝓞 D.host.E)) ≠ ⊥ :=
   Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot
 
+/- English proof (translation)
+Rewrite using `[zpow_neg, zpow_natCast, ddS, ← FractionalIdeal.coeIdeal_pow]`. Use `FractionalIdeal.one_mem_inv_coe_ideal ?_` and prove the remaining obligations. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact ddIdeal_ne_bot D)`.
+-/
 theorem one_mem_ddS_zpow_neg (D : D7) (m : ℕ) :
     (1 : D.host.E) ∈ (ddS D ^ (-(m : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
   rw [zpow_neg, zpow_natCast, ddS, ← FractionalIdeal.coeIdeal_pow]
@@ -21,6 +27,15 @@ theorem one_mem_ddS_zpow_neg (D : D7) (m : ℕ) :
   rw [← Ideal.zero_eq_bot]
   exact pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact ddIdeal_ne_bot D)
 
+/- English proof (translation)
+Take `⟨-, ⟨-, -, hz, -⟩, hX⟩` from `hΛ`. Establish `hXS : XS D F0 ≤ Λ`. Rewrite using `[← hX]`. Conclude with `inf_le_left`. Proceed by induction on `a using Fin.lastCases with`.
+
+Consider the case `last => show Fin.snoc (α := fun _ => (VS D).V) F0.e F0.z (Fin.last _) ∈ Λ`. Rewrite using `[Fin.snoc_last]`. Conclude with `hz.1`. Consider the case `cast i => show Fin.snoc (α := fun _ => (VS D).V) F0.e F0.z i.castSucc ∈ Λ`. Rewrite using `[Fin.snoc_castSucc]`.
+
+Apply `hXS` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨i, 1, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Establish `: -((D.R.rS : ℤ) - ((i : ℕ) : ℤ)) = -(((D.R.rS - (i : ℕ) : ℕ)) : ℤ)`. Rewrite using `[Nat.cast_sub i.isLt.le]`.
+
+Rewrite using `[this]`. Conclude with `one_mem_ddS_zpow_neg D _`.
+-/
 theorem frame_mem_rowLat (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : IsRowLat D F0 Λ) (a : Fin (D.R.rS + 1)) :
     frame (lf D F0) a ∈ Λ := by
@@ -42,6 +57,9 @@ theorem frame_mem_rowLat (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     rw [this]
     exact one_mem_ddS_zpow_neg D _
 
+/- English proof (translation)
+Introduce `D X Y u Λ hΛ a` and use `frame_mem_rowLat D (X.Fu u) Λ ((Y.rowsOK u).1 Λ hΛ) a`.
+-/
 theorem frame_mem_rows : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V),
     Λ ∈ Y.what₂ u → ∀ a, frame (lf D (X.Fu u)) a ∈ Λ :=
   fun D X Y u Λ hΛ a => frame_mem_rowLat D (X.Fu u) Λ ((Y.rowsOK u).1 Λ hΛ) a

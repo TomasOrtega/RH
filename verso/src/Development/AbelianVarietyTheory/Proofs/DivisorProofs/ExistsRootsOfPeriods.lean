@@ -16,6 +16,13 @@ namespace GlobalTheory.PerRoot
 
 open IsDedekindDomain Polynomial
 
+/- English proof (translation)
+Set `w` to `(IsDiscreteValuationRing.maximalIdeal V).valuation (FractionRing V)`. Establish `hw : ∀ x : (FractionRing V)ˣ, w x ≠ 0` using `fun x => by simp [w]`. Use `⟨MonoidHom.mk' (fun x => Multiplicative.ofAdd (-WithZero.log (w x))) fun x y => ?_, fun x hx => ?_, fun x a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← ofAdd_add, Units.val_mul, map_mul, WithZero.log_mul (hw x) (hw y), neg_add]`. Use `IsDiscreteValuationRing.exists_lift_of_le_one ?_` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.mk'_apply, toAdd_ofAdd, neg_nonneg] at hx`. Conclude with `(WithZero.log_le_log (hw x) one_ne_zero).1 (by simpa using hx)`. Simplify using `only [MonoidHom.mk'_apply, toAdd_ofAdd, neg_pos]`. Establish `h1 : WithZero.log (w x) < 0 ↔ w x < 1`. Simplify using `using WithZero.log_lt_log (hw x) one_ne_zero`.
+
+Rewrite using `[h1, ← ha]`. Conclude with `HeightOneSpectrum.valuation_lt_one_iff_mem _ a`.
+-/
 theorem exists_ord (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] :
     ∃ v : (FractionRing V)ˣ →* Multiplicative ℤ,
       (∀ x : (FractionRing V)ˣ, 0 ≤ (v x).toAdd → ∃ a : V, algebraMap V _ a = (x : FractionRing V)) ∧
@@ -35,6 +42,17 @@ theorem exists_ord (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing
     rw [h1, ← ha]
     exact HeightOneSpectrum.valuation_lt_one_iff_mem _ a
 
+/- English proof (translation)
+Set `K` to `FractionRing V`. Use `haveI : CharZero K := algebraRat.charZero _`. Set `p : I → K[X]` to `fun k => X ^ n - C (algebraMap V K (a k))`. Establish `hp : ∀ k, (p k).Monic` using `fun k => monic_X_pow_sub_C _ (by omega)`. Set `L` to `(∏ k, p k).SplittingField`.
+
+Establish `hsp : ((∏ k, p k).map (algebraMap K L)).Splits` using `SplittingField.splits _`. Establish `hroot : ∀ k, ∃ t : L, t ^ n = algebraMap K L (algebraMap V K (a k))` using `fun k => by`. Establish `h0 : (∏ k, p k).map (algebraMap K L) ≠ 0` using `((monic_prod_of_monic _ _ fun k _ => hp k).map _).ne_zero`. Establish `h1 : ((p k).map (algebraMap K L)).Splits` using `hsp.of_dvd h0 (Polynomial.map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ k)))`. Take `⟨t, ht⟩` from `h1.exists_eval_eq_zero (by`.
+
+Rewrite using `[(hp k).degree_map, degree_X_pow_sub_C (by omega)]`. Conclude with `(by omega : n ≠ 0))` after adjusting the coercions. Use `⟨t, ?_⟩` and prove the remaining obligations. Simplify `ht` using `[p, sub_eq_zero]`. Use `choose t ht using hroot`.
+
+Take `⟨W, _, _, _, _, _, _, _, hc, hfin, hinj, hloc, hint, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension V K L`. Establish `hs : ∀ k, t k ∈ Set.range (algebraMap W L)` using `fun k => hint _ ⟨X ^ n - C (a k), monic_X_pow_sub_C _ (by omega), by simp [ht]⟩`. Use `choose s hs using hs`. Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, algebraMap V W, s, hinj, RingHom.finite_algebraMap.2 hfin, hloc, fun k => IsFractionRing.injective W L ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hs, ht]`.
+
+Conclude with `(RingHom.congr_fun hc (a k)).symm`.
+-/
 theorem exists_nthRoots_ext (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [IsAdicComplete (maximalIdeal V) V] [CharZero V] {I : Type} [Fintype I] (a : I → V) {n : ℕ} (hn : 1 ≤ n) :
     ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W)
@@ -68,6 +86,9 @@ theorem exists_nthRoots_ext (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValu
   rw [map_pow, hs, ht]
   exact (RingHom.congr_fun hc (a k)).symm
 
+/- English proof (translation)
+Establish `hadd' : ∀ x y y', q x (y + y') = q x y * q x y'` using `fun x y y' => by`. Rewrite using `[hsym, hadd, hsym y, hsym y']`. Set `F : X → X →ₗ[ℤ] ℤ` to `fun x => (AddMonoidHom.mk' (fun y => (v (q x y)).toAdd) fun y y' => by simp [hadd']).toIntLinearMap`. Conclude with `⟨(AddMonoidHom.mk' F fun x x' => LinearMap.ext fun y => by simp [F, hadd]).toIntLinearMap, fun x y => rfl⟩`.
+-/
 theorem exists_form {G X : Type} [CommGroup G] [AddCommGroup X] (v : G →* Multiplicative ℤ) (q : X → X → G)
     (hsym : ∀ x y, q x y = q y x) (hadd : ∀ x x' y, q (x + x') y = q x y * q x' y) :
     ∃ β : LinearMap.BilinForm ℤ X, ∀ x y, β x y = (v (q x y)).toAdd := by
@@ -78,6 +99,9 @@ theorem exists_form {G X : Type} [CommGroup G] [AddCommGroup X] (v : G →* Mult
   exact ⟨(AddMonoidHom.mk' F fun x x' => LinearMap.ext fun y => by simp [F, hadd]).toIntLinearMap,
     fun x y => rfl⟩
 
+/- English proof (translation)
+Use `⟨fun k => mem_balForms_int.1 (ε k).2, ε.linearIndependent.map' (Submodule.subtype _) (by simp), fun β hβ => ?_⟩` and prove the remaining obligations. Establish `h` using `Submodule.mem_map_of_mem (f := (balForms (id : ℤ → ℤ) X).subtype) (ε.mem_span ⟨β, mem_balForms_int.2 hβ⟩)`. Rewrite `h` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem isSymBasis_of_basis {X I : Type} [AddCommGroup X] (ε : Module.Basis I ℤ (balForms (id : ℤ → ℤ) X)) :
     IsSymBasis fun k => (ε k : LinearMap.BilinForm ℤ X) := by
   refine ⟨fun k => mem_balForms_int.1 (ε k).2, ε.linearIndependent.map' (Submodule.subtype _) (by simp),
@@ -87,6 +111,29 @@ theorem isSymBasis_of_basis {X I : Type} [AddCommGroup X] (ε : Module.Basis I �
   rw [Submodule.map_span, ← Set.range_comp] at h
   exact h
 
+/- English proof (translation)
+Introduce `g n φ hφ hn V _ _ _ hV hD r hr q hsym hadd hpos`. Take `⟨-, -, hcomp, hchar⟩` from `hV`. Take `⟨v, hv1, hv2⟩` from `exists_ord V`. Take `⟨β, hβ⟩` from `exists_form v q hsym hadd`. Establish `hβs : ∀ x y, β x y = β y x` using `fun x y => by rw [hβ, hβ, hsym]`.
+
+Establish `hβp : ∀ x, x ≠ 0 → 0 < β x x` using `fun x hx => by`. Take `⟨w, hw, -, h⟩` from `hpos x hx`. Rewrite using `[hβ]`. Conclude with `(hv2 _ w h.symm).2 hw`. Establish `hβn : ∀ x, 0 ≤ β x x` using `fun x => by`.
+
+Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(hβp x hx).le`. Take `⟨m, ga, c, hga, hc, hβc⟩` from `GlobalTheory.ConeInterior.exists_pos_comb_int g φ hφ r hr β hβs (GlobalTheory.PolFan.TameZ.toReal_mem_psdCone_int (mem_balForms_int.2 hβs) hβn)`. Take `⟨N, ε, hε⟩` from `hga.basis`.
+
+Establish `hεga : ∀ k, (ε (.inl k) : LinearMap.BilinForm ℤ (Fin r → ℤ)) = ga k` using `fun k => by rw [hε]`. Establish `hsb` using `isSymBasis_of_basis ε`. Take `⟨u, hu, -⟩` from `existsUnique_coeff hsb q hsym hadd`. Establish `hβv : ∀ x y, β x y = ∑ j, (c j : ℤ) * ga j x y` using `fun x y => by`. Rewrite using `[hβc]`.
+
+Simplify using `[LinearMap.sum_apply]`. Establish `hvu : (fun k => v (u k)) = fun k => Multiplicative.ofAdd (Sum.elim (fun j => (c j : ℤ)) 0 k)`. Use `eq_of_prod_zpow hsb _ _ fun x y => ?_` and prove the remaining obligations. Repeatedly rewrite using `[← map_zpow, ← map_prod, ← hu]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises.
+
+Rewrite using `[← hβ, hβv, toAdd_prod, Fintype.sum_sum_type]`. Simplify using `[hεga, mul_comm]`. Establish `hvk : ∀ k, (v (u k)).toAdd = Sum.elim (fun j => (c j : ℤ)) 0 k` using `fun k => by`. Rewrite using `[congrFun hvu k]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `choose a ha using fun k => hv1 (u k) (by rw [hvk]; cases k <;> simp)`. Establish `ha0 : ∀ k, a k ≠ 0` using `fun k h => (u k).ne_zero (by rw [← ha, h, map_zero])`. Take `⟨W, _, _, _, _, f, s, hinj, hfin, hloc, hs⟩` from `exists_nthRoots_ext V a hn`. Establish `hinj' : Function.Injective ((algebraMap W (FractionRing W)).comp f)` using `(IsFractionRing.injective W _).comp hinj`. Establish `hfK : ∀ b, IsFractionRing.lift (K` using `FractionRing V) hinj' (algebraMap V _ b) = algebraMap W (FractionRing W) (f b) := fun b => IsFractionRing.lift_algebraMap hinj' b`.
+
+Use `⟨m, N, ε, by simpa only [hεga] using hga, fun x hx => ?_, W, inferInstance, inferInstance, inferInstance, f, IsFractionRing.lift hinj', s, ⟨inferInstance, inferInstance, inferInstance, ?_⟩, inferInstance, hinj, hfin, hloc, hfK, fun k => ⟨?_, fun h => ?_⟩, fun k => ?_, fun x y => …` and prove the remaining obligations. Assume the negation of the conclusion as `h push_neg at h`. Establish `h1` using `hβp x hx`. Rewrite `h1` using `[hβv]`. Conclude with `h1.not_ge (Finset.sum_nonpos fun j _ => mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg _) (hεga j ▸ h j))`.
+
+Conclude with `charZero_of_injective_ringHom hinj`. Establish `h1 : a (.inl k) ∈ maximalIdeal V` using `(hv2 _ _ (ha _)).1 (by rw [hvk]; simpa using hc k)`. Introduce `h`. Conclude with `h1 (isUnit_of_map_unit f _ (hs _ ▸ h.pow n))`. Use `ha0 (.inl k) (hinj ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hs, h, map_zero, zero_pow (by omega)]`. Establish `h1 : a (.inr k) ∉ maximalIdeal V` using `fun h => by`. Use `(hv2 _ _ (ha _)).2 h` as an intermediate fact. Rewrite `this` using `[hvk]`. Simplify using `at this`.
+
+Establish `h2 : IsUnit (s (.inr k) ^ n)` using `hs _ ▸ (not_not.1 h1 : IsUnit (a (.inr k))).map f`. Conclude with `(isUnit_pow_iff (by omega)).1 h2`. Rewrite using `[hu, Units.coe_prod, map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, ← ha, hfK, ← hs, map_pow, zpow_mul, zpow_natCast]`.
+-/
 theorem exists_roots_of_periods : ∀ (g n : ℕ) (φ : InvFun ℤ), IsPolFan id g φ → 1 ≤ n → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → IsDiscreteValuationRing V → ∀ (r : ℕ), r ≤ g → ∀ (q : (Fin r → ℤ) → (Fin r → ℤ) → (FractionRing V)ˣ), (∀ a b, q a b = q b a) → (∀ a a' b, q (a + a') b = q a b * q a' b) → (∀ a, a ≠ 0 → ∃ w ∈ maximalIdeal V, w ≠ 0 ∧ (q a a : FractionRing V) = algebraMap V _ w) → ∃ (m N : ℕ) (ε : Module.Basis (Fin m ⊕ Fin N) ℤ (balForms (id : ℤ → ℤ) (Fin r → ℤ))), IsCone id φ (fun k => (ε (.inl k) : LinearMap.BilinForm ℤ (Fin r → ℤ))) ∧ (∀ x, x ≠ 0 → ∃ k, 0 < (ε (.inl k) : LinearMap.BilinForm ℤ (Fin r → ℤ)) x x) ∧ ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (f : V →+* V') (fK : FractionRing V →+* FractionRing V') (s : Fin m ⊕ Fin N → V'), IsCN V' ∧ IsDiscreteValuationRing V' ∧ Function.Injective f ∧ f.Finite ∧ IsLocalHom f ∧ (∀ a, fK (algebraMap V _ a) = algebraMap V' _ (f a)) ∧ (∀ k, s (.inl k) ∈ maximalIdeal V' ∧ s (.inl k) ≠ 0) ∧ (∀ k, IsUnit (s (.inr k))) ∧ ∀ a b, fK (q a b : FractionRing V) = ∏ k, algebraMap V' _ (s k) ^ ((n : ℤ) * (ε k : LinearMap.BilinForm ℤ (Fin r → ℤ)) a b) := by
   intro g n φ hφ hn V _ _ _ hV hD r hr q hsym hadd hpos
   obtain ⟨-, -, hcomp, hchar⟩ := hV

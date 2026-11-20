@@ -9,6 +9,33 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 noncomputable section
 
 open Topology Filter GlobalTheory GlobalTheory.SecDivision GlobalTheory.Reg GlobalTheory.GenericFrames GlobalTheory.FlatLine GlobalTheory.FlagTan in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r σ U hσ hU h C m' ε hε e e' f g hf hg q hq hfg a b ha0 ha hb`. Use `haveI := C.sm`. Use `UpperTheory.holomorphic_family_nonvanishing c.F C.R σ m' ε hε a b ha0 fun m B φ hB hφσ hd z₀ hz₀ => ?_` and prove the remaining obligations. Set `mk : ∀ z ∈ B, C.R →ₐ[c.F] CAt σ` to `fun z hz => { (show C.R →+* CAt σ from φ z) with commutes' := fun a => RingHom.congr_fun (hφσ z hz) a }`. Set `φ' : (Fin m → ℂ) → (C.R →ₐ[c.F] CAt σ)` to `fun z => if hz : z ∈ B then mk z hz else mk z₀ hz₀`.
+
+Establish `hφ' : ∀ z ∈ B, ∀ u, toC (φ' z u) = φ z u`. Introduce `z hz u`. Simplify using `only [φ', dif_pos hz]`. Both sides reduce to the same expression. Use `choose y hy using fun z => exists_frMap (φ' z) C.y`.
+
+Take `⟨k, x₀, ⟨t₀, ht₀⟩, hnear⟩` from `exists_near_frames U hσ hU C.y φ' y hB (fun u => (hd u).congr fun z hz => hφ' z hz u) (fun z _ => hy z) hz₀`. Take `⟨n, hn, hev, η, hη, hη0⟩` from `exists_even_sec_evR_ne_zero E H Dw l Xo c σ (y z₀)`. Establish `hηc : ContinuousOn (rdU U η k) (U.X k).dom` using `(hU.2.2.2.2.1 0 n ⟨fun _ _ _ _ => le_rfl, hev⟩ η hη k).1.continuousOn`. Rewrite `hη` using `[← secZ_nat]`. Take `⟨w, -, hw⟩` from `GlobalTheory.DegCmp.fChart_exists_val C hη`.
+
+Establish `hBn : ∀ᶠ z in 𝓝 z₀, z ∈ B` using `hB.mem_nhds hz₀`. Establish `hdn : (U.X k).dom ∈ 𝓝 x₀.1` using `(FourierCoefficientDomain.isOpen_dom _).mem_nhds x₀.2`. Establish `hw0 : φ z₀ w ≠ 0`. Rewrite using `[← hφ' z₀ hz₀, ← hw _ _ _ (hy z₀)]`. Conclude with `hη0`.
+
+Establish `hx0 : rdU U η k x₀.1 ≠ 0`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Rewrite using `[rdU_apply]`. Introduce `h0`. Apply `hη0` to reduce the goal to its premises.
+
+Rewrite using `[evR_frBor hη ht₀, show evR Xo c η (U.un k x₀) = 0 from h0, mul_zero]`. Set `G : (Fin m → ℂ) × Frame (U.X k).Ψ r → ℝ` to `fun p => ‖(φ p.1 w / rdU U η k p.2) ^ (e' none - e none) * q k p.2 ^ n‖`. Establish `hG : ContinuousAt G (z₀, x₀.1)`. Establish `c1 : ContinuousAt (fun p : (Fin m → ℂ) × Frame (U.X k).Ψ r => φ p.1 w) (z₀, x₀.1)` using `ContinuousAt.comp (g := fun z => φ z w) ((hd w).continuousOn.continuousAt hBn) continuousAt_fst`. Establish `c2 : ContinuousAt (fun p : (Fin m → ℂ) × Frame (U.X k).Ψ r => rdU U η k p.2) (z₀, x₀.1)` using `ContinuousAt.comp (g := rdU U η k) (hηc.continuousAt hdn) continuousAt_snd`.
+
+Establish `c3 : ContinuousAt (fun p : (Fin m → ℂ) × Frame (U.X k).Ψ r => q k p.2) (z₀, x₀.1)` using `ContinuousAt.comp (g := q k) ((hq k).continuousAt hdn) continuousAt_snd`. Conclude with `(((c1.div c2 hx0).zpow₀ _ (Or.inl (div_ne_zero hw0 hx0))).mul (c3.pow n)).norm`. Establish `hlt : ∀ᶠ p in 𝓝 (z₀, x₀.1), G p < G (z₀, x₀.1) + 1` using `hG.eventually_lt continuousAt_const (lt_add_one _)`. Rewrite `hlt` using `[nhds_prod_eq, eventually_prod_iff]`. Take `⟨pa, hpa, pb, hpb, hlt⟩` from `hlt`.
+
+Establish `hV : ∀ᶠ x in 𝓝 x₀.1, pb x ∧ rdU U η k x ≠ 0` using `hpb.and ((hηc.continuousAt hdn).eventually_ne hx0)`. Use `⟨n, hn.ne', G (z₀, x₀.1) + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hBn, hpa, hnear _ hV] with z hz hza ⟨x, ⟨hx1, hx2⟩, t, ht, ht1⟩`. Establish `hon : LiesOn C.Z (U.un k x)` using `fun s => by`. Rewrite using `[← GlobalTheory.UnifComp.ptF_frBor ht, GlobalTheory.UnifComp.ptF_frMap (hy z), AlgebraicGeometry.Scheme.Hom.comp_apply]`.
+
+Conclude with `GlobalTheory.UnifComp.liesOn_chart C _`. Establish `e0 : ∑ j, ε j * rdU U (g j) k x.1 = q k x.1 * rdU U f k x.1` using `hfg ⟨k, x.1⟩ ⟨x.2, hon⟩`. Establish `e1` using `toC_evR_frBor hf ht ht1`. Establish `e2 : ∀ j, φ z (b j) = toC (t none : CAt σ) ^ e' none * rdU U (g j) k x.1` using `fun j => by`. Establish `e2` using `toC_evR_frBor (hg j) ht ht1`.
+
+Rewrite `e2` using `[hb j _ _ (hy z), hφ' z hz, ← rdU_apply]`. Then use the resulting hypothesis. Establish `e3` using `toC_evR_frBor hη ht ht1`. Rewrite `e1` using `[ha _ _ (hy z), hφ' z hz, ← rdU_apply]`. Rewrite `e3` using `[hw _ _ _ (hy z), hφ' z hz, ← rdU_apply]`. Establish `hT : toC (t none : CAt σ) ≠ 0` using `(show ℂˣ from t none).ne_zero`.
+
+Generalize the expression as in `toC (t none : CAt σ) = T at e1 e2 e3 hT`. Establish `e4 : φ z w / rdU U η k x.1 = T ^ n`. Rewrite using `[div_eq_iff hx2, e3, ← zpow_natCast]`. Both sides reduce to the same expression. Establish `e5 : ∑ j, ε j * φ z (b j) = T ^ (e' none - e none) * q k x.1 * φ z a`.
+
+Establish `e2' : ∑ j, ε j * φ z (b j) = T ^ e' none * ∑ j, ε j * rdU U (g j) k x.1`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [e2 j]; ring`. Rewrite using `[e1, e2', e0, zpow_sub₀ hT]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e6 : ‖∑ j, ε j * φ z (b j)‖ ^ n = G (z, x.1) * ‖φ z a‖ ^ n`. Simplify using `only [G]`. Rewrite using `[e4, e5, ← norm_pow, ← norm_pow, ← norm_mul, mul_pow, mul_pow, ← zpow_natCast T, ← zpow_mul, ← zpow_natCast (T ^ _), ← zpow_mul, mul_comm (n : ℤ)]`. Rewrite using `[e6]`. Conclude with `mul_le_mul_of_nonneg_right (hlt hza hx1).le (pow_nonneg (norm_nonneg _) _)`.
+-/
 theorem UpperTheory.unfolding_chart_linear_independence :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (σ : c.F →+* ℂ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (h : GenFrEx Xo c) (C : GlobalTheory.Reg.FChart h) (m : ℕ) (ε : Fin m → ℂ), (∀ a : Fin m → c.F, ∑ j, σ (a j) * ε j = 0 → a = 0) → ∀ (e e' : Formalism.L2.Pj.Ix Dw → ℤ) (f : Rul Xo c) (g : Fin m → Rul Xo c), f ∈ secZ Xo c e → (∀ j, g j ∈ secZ Xo c e') → ∀ q : FDSec U.X, (∀ k, ContinuousOn (q k) (U.X k).dom) → (∀ z ∈ framesOn U C.Z, ∑ j, ε j * rdU U (g j) z.1 z.2 = q z.1 z.2 * rdU U f z.1 z.2) → ∀ (a : C.R) (b : Fin m → C.R), a ≠ 0 → (∀ (ψ : C.R →ₐ[c.F] CAt σ) (z : FrPt Xo c (CAt σ)), FrMap ψ C.y z → evR Xo c f z = ψ a) → (∀ (j : Fin m) (ψ : C.R →ₐ[c.F] CAt σ) (z : FrPt Xo c (CAt σ)), FrMap ψ C.y z → evR Xo c (g j) z = ψ (b j)) → ∀ j, a ∣ b j := by
   intro E _ _ _ H Dw l Xo c r σ U hσ hU h C m' ε hε e e' f g hf hg q hq hfg a b ha0 ha hb

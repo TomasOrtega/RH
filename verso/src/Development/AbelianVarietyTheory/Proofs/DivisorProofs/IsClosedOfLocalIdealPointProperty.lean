@@ -10,6 +10,21 @@ noncomputable section
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory.PtClosed
 
+/- English proof (translation)
+Introduce `S P hBC hLoc hCov`. Establish `hrep : ∀ (V : S.Opens) (hV : IsAffineOpen V), Represents (ptQ P V hV) (killIdeal (ptQ P V hV))`. Introduce `V hV`. Take `⟨s, hs, hJ⟩` from `GlobalTheory.T.exists_basicOpen_cover_idealRepresents S P hCov V hV`. Establish `hQbc : ∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (f : Γ(S, V) →+* R'), ptQ P V hV R' f → ptQ P V hV R'' (g.comp f)`.
+
+Introduce `R' _ R'' _ g f hf`. Use `hBC R' R'' g _ hf` as an intermediate fact. Simplify `this` using `[ptQ, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hQloc : ∀ (R' : Type) [CommRing R'] (f : Γ(S, V) →+* R') (t : Finset R'), Ideal.span (t : Set R') = ⊤ → (∀ r ∈ t, ptQ P V hV (Localization.Away r) ((algebraMap R' (Localization.Away r)).comp f)) → ptQ P V hV R' f`. Introduce `R' _ f t ht H`.
+
+Use `hLoc R' _ t ht fun r hr ↦ ?_` and prove the remaining obligations. Use `H r hr` as an intermediate fact. Simplify `this` using `[ptQ, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Take `⟨J, hJ'⟩` from `GlobalTheory.T.idealRepresents_of_away_cover Γ(S, V) (ptQ P V hV) hQbc hQloc s hs hJ`. Conclude with `represents_killIdeal hJ'`.
+
+Set `I : S.IdealSheafData` to `{ ideal := fun V ↦ killIdeal (ptQ P V.1 V.2) map_ideal_basicOpen := fun U f ↦ by`. Establish `h1` using `represents_restrict S P U.1 (S.basicOpen f) U.2 (U.2.basicOpen f) (S.basicOpen_le f) _ (hrep U.1 U.2)`. Conclude with `(killIdeal_eq h1).symm }`. Use `⟨I.subscheme, I.subschemeι, inferInstance, fun R' _ x ↦ ?_⟩` and prove the remaining obligations. Establish `key : I ≤ x.ker ↔ P R' x`.
+
+Rewrite using `[Scheme.Hom.ker, Scheme.IdealSheafData.le_ofIdeals_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `GlobalTheory.T.affinePointProperty_of_le_ker_app S P hLoc hrep R' x fun V hV ↦ h ⟨V, hV⟩`. Introduce `h V`.
+
+Conclude with `GlobalTheory.T.idealKilledByRingMapsWithProperty_le_ker_app S P hBC R' x h V.1 V.2`. Rewrite using `[← key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `y.le_ker_comp I.subschemeι` as an intermediate fact.
+
+Rewrite `this` using `[Scheme.IdealSheafData.ker_subschemeι]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `⟨IsClosedImmersion.lift I.subschemeι x (by rwa [Scheme.IdealSheafData.ker_subschemeι]), IsClosedImmersion.lift_fac _ _ _⟩`.
+-/
 theorem closed_of_points : ∀ (S : Scheme.{0}) (P : ∀ (R' : Type) [CommRing R'], (Sp R' ⟶ S) → Prop),
   (∀ (R' : Type) [CommRing R'] (R'' : Type) [CommRing R''] (g : R' →+* R'') (x : Sp R' ⟶ S), P R' x → P R'' (spMap g ≫ x)) →
   (∀ (R' : Type) [CommRing R'] (x : Sp R' ⟶ S) (t : Finset R'), Ideal.span (t : Set R') = ⊤ →

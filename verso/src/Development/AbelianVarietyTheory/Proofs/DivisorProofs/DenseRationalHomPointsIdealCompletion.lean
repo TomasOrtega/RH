@@ -27,10 +27,18 @@ section General
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Idele.mem_adelicIdeal_iff hI).symm.trans (GlobalTheory.Idele.algebraMap_mem_adelicIdeal hI x)`.
+-/
 theorem inHat_algebraMap_iff {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) (x : E) :
     InHat I (algebraMap E (FiniteAdeleRing (𝓞 E) E) x) ↔ x ∈ I :=
   (GlobalTheory.Idele.mem_adelicIdeal_iff hI).symm.trans (GlobalTheory.Idele.algebraMap_mem_adelicIdeal hI x)
 
+/- English proof (translation)
+Establish `h` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (A := fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) fun v => Valued.isOpen_valuationSubring _`. Establish `e : {x : FiniteAdeleRing (𝓞 E) E | InHat 1 x} = {x : FiniteAdeleRing (𝓞 E) E | ∀ v, x v ∈ (v.adicCompletionIntegers E : Set (v.adicCompletion E))}`. Use extensionality with `x`. Conclude with `inHat_one_iff x`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem isOpen_inHat_one : IsOpen {x : FiniteAdeleRing (𝓞 E) E | InHat 1 x} := by
   have h := RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E)
     (A := fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) fun v => Valued.isOpen_valuationSubring _
@@ -41,6 +49,13 @@ theorem isOpen_inHat_one : IsOpen {x : FiniteAdeleRing (𝓞 E) E | InHat 1 x} :
   rw [e]
   exact h
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hI`. Use `set a : E := algebraMap (𝓞 E) E c with ha`. Establish `ha0 : a ≠ 0` using `by simpa [ha] using hc0`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`.
+
+Establish `hcont : Continuous fun x : FiniteAdeleRing (𝓞 E) E => (x - y) * algebraMap E (FiniteAdeleRing (𝓞 E) E) a⁻¹` using `(continuous_id.sub continuous_const).mul continuous_const`. Use `Filter.mem_of_superset ((isOpen_inHat_one.preimage hcont).mem_nhds ?_) fun x hx => ?_` and prove the remaining obligations. Use `show InHat 1 ((y - y) * _)`. Rewrite using `[sub_self, zero_mul]`. Conclude with `inHat_zero 1`.
+
+Establish `h1` using `InHat.mul_left hx ((inHat_algebraMap_iff hI a).2 hc)`. Rewrite `h1` using `[mul_assoc, ← map_mul, inv_mul_cancel₀ ha0, map_one, mul_one]`. Establish `h2` using `h1.add hy`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem isOpen_inHat {I : FractionalIdeal (𝓞 E)⁰ E} (hI : I ≠ 0) : IsOpen {x : FiniteAdeleRing (𝓞 E) E | InHat I x} := by
   obtain ⟨c, hc0, hc⟩ := FractionalIdeal.exists_ne_zero_mem_isInteger hI
   set a : E := algebraMap (𝓞 E) E c with ha
@@ -65,21 +80,36 @@ variable {D : D7}
 def lift (D : D7) (s : FA D) : AE D :=
   GlobalTheory.LFun.extZero D.host.F D.host.E ((GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm s)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LFun.continuous_extZero.comp GlobalTheory.LFun.continuous_finAdEquiv_symm`.
+-/
 theorem continuous_lift : Continuous (lift D) :=
   GlobalTheory.LFun.continuous_extZero.comp GlobalTheory.LFun.continuous_finAdEquiv_symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LFun.infTens_extZero _`.
+-/
 theorem infPart_lift (s : FA D) : infPart D (lift D s) = 0 := GlobalTheory.LFun.infTens_extZero _
 
+/- English proof (translation)
+Establish `: finPart D (lift D s) = (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm s` using `GlobalTheory.LFun.finTens_extZero _`. Rewrite using `[fe_apply, this, RingEquiv.apply_symm_apply]`.
+-/
 theorem fe_lift (s : FA D) : fe D (lift D s) = s := by
   have : finPart D (lift D s) = (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).symm s := GlobalTheory.LFun.finTens_extZero _
   rw [fe_apply, this, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `sub_eq_zero.1 (GlobalTheory.LatVac.eq_zero_of_parts _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub, infPart_lift, hx, sub_self]`. Apply `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← fe_apply, map_sub, fe_lift, sub_self]`.
+-/
 theorem lift_fe {x : AE D} (hx : infPart D x = 0) : lift D (fe D x) = x := by
   refine sub_eq_zero.1 (GlobalTheory.LatVac.eq_zero_of_parts _ ?_ ?_)
   · rw [RingHom.map_sub, infPart_lift, hx, sub_self]
   · apply (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective
     rw [map_zero, ← fe_apply, map_sub, fe_lift, sub_self]
 
+/- English proof (translation)
+Establish `h1 : infPart D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] γ) = 0` using `by show (0 : Ainf D.host.F) ⊗ₜ[D.host.F] γ = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `h2 : fe D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] γ) = algebraMap D.host.E (FA D) γ` using `by show GlobalTheory.LFun.toFinAd D.host.F D.host.E ((1 : Af D.host.F) ⊗ₜ[D.host.F] γ) = _`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]`. Rewrite using `[← h2, lift_fe h1]`.
+-/
 theorem lift_algebraMap (γ : D.host.E) :
     lift D (algebraMap D.host.E (FA D) γ) = pairA D.host.F 0 1 ⊗ₜ[D.host.F] γ := by
   have h1 : infPart D (pairA D.host.F 0 1 ⊗ₜ[D.host.F] γ) = 0 := by
@@ -90,6 +120,17 @@ theorem lift_algebraMap (γ : D.host.E) :
     rw [GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]
   rw [← h2, lift_fe h1]
 
+/- English proof (translation)
+Introduce `D S T r I hr hI U hU u hu`. Use `haveI hg : IsTopologicalAddGroup (WO S T) := inferInstance`. Use `haveI : ContinuousSub (WO S T) := IsTopologicalAddGroup.to_continuousSub`. Set `Φ : (Fin T.rank → Fin S.rank → FA D) → WO S T` to `fun y => Matrix.of fun i j => lift D (algebraMap D.host.E (FA D) r⁻¹ * y i j)`. Establish `hΦ : Continuous Φ` using `continuous_matrix fun i j => continuous_lift.comp (continuous_const.mul ((continuous_apply j).comp (continuous_apply i)))`.
+
+Establish `hd : DenseRange (Pi.map fun (_ : Fin T.rank) => Pi.map fun (_ : Fin S.rank) => algebraMap D.host.E (FA D))` using `DenseRange.piMap fun _ => DenseRange.piMap fun _ => PI.UnipApproxD.IntegersDenseFiniteAdeles.denseRange (R := 𝓞 D.host.E) (K := D.host.E)`. Establish `hO : IsOpen ({y | u - Φ y ∈ U} ∩ ⋂ i, ⋂ j, {y : Fin T.rank → Fin S.rank → FA D | InHat I (y i j)})` using `(hU.preimage (continuous_const.sub hΦ)).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (isOpen_inHat hI).preimage (f := fun y : Fin T.rank → Fin S.rank → FA D => y i j) ((continuous_apply j).comp (continuous_apply i)))`. Establish `h0 : Φ (fun i j => algebraMap D.host.E (FA D) r * fe D (u i j)) = u`. Use function extensionality and compare the values at `i j`. Use `show lift D (algebraMap D.host.E (FA D) r⁻¹ * (algebraMap D.host.E (FA D) r * fe D (u i j))) = u i j`.
+
+Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hr, map_one, one_mul]`. Conclude with `lift_fe (congrFun (congrFun hu.1 i) j)`. Take `⟨z, hz1, hz2⟩` from `hd.exists_mem_open hO ⟨fun i j => algebraMap D.host.E (FA D) r * fe D (u i j), by show u - Φ _ ∈ U`. Rewrite using `[h0, sub_self]`. Conclude with `U.zero_mem, Set.mem_iInter.2 fun i => Set.mem_iInter.2 fun j => hu.2 i j⟩`.
+
+Use `⟨Matrix.of fun i j => -z i j, fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `: z i j ∈ I` using `(inHat_algebraMap_iff hI _).1 (Set.mem_iInter.1 (Set.mem_iInter.1 hz2 i) j)`. Conclude with `(I : Submodule (𝓞 D.host.E) D.host.E).neg_mem this`. Establish `e : finPt (S` using `S) (T := T) rfl rfl r (Matrix.of fun i j => -z i j) = Φ (Pi.map (fun (_ : Fin T.rank) => Pi.map fun (_ : Fin S.rank) => algebraMap D.host.E (FA D)) z) := by`. Use function extensionality and compare the values at `i j`.
+
+Use `show pairA D.host.F 0 1 ⊗ₜ[D.host.F] (-(r⁻¹ * -z i j)) = lift D (algebraMap D.host.E (FA D) r⁻¹ * algebraMap D.host.E (FA D) (z i j))`. Rewrite using `[← map_mul, lift_algebraMap, mul_neg, neg_neg]`. Rewrite using `[e]`. Conclude with `hz1`.
+-/
 theorem exists_finPt_sub_mem : ∀ {D : D7} (S T : HSp D) (r : D.host.E) (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E), r ≠ 0 → I ≠ 0 →
   ∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∀ u : WO S T, HatPt r I u →
   ∃ z : Matrix (Fin T.rank) (Fin S.rank) D.host.E, (∀ i j, z i j ∈ I) ∧ u - finPt (S := S) (T := T) rfl rfl r z ∈ U := by

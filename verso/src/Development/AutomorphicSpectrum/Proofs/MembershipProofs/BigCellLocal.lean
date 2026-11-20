@@ -15,11 +15,19 @@ def Iso (D₁ D₂ M : Matrix ι ι A) : Prop := Mᵀ * D₁ * M.map σ = D₂
 variable {σ}
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Unfold `Iso at *`. Rewrite using `[transpose_mul, Matrix.map_mul, ← h', ← h]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem Iso.mul {D₁ D₂ D₃ M N : Matrix ι ι A} (h : Iso σ D₁ D₂ M) (h' : Iso σ D₂ D₃ N) : Iso σ D₁ D₃ (M * N) := by
   unfold Iso at *
   rw [transpose_mul, Matrix.map_mul, ← h', ← h]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `Iso at *`. Establish `h1 : M.map σ * N.map σ = 1`. Rewrite using `[← Matrix.map_mul, hN]`. Conclude with `Matrix.map_one _ (map_zero σ) (map_one σ)`. Establish `h2 : Nᵀ * Mᵀ = 1` using `by rw [← transpose_mul, hN, transpose_one]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Iso.inv {D₁ D₂ M N : Matrix ι ι A} (h : Iso σ D₁ D₂ M) (hN : M * N = 1) : Iso σ D₂ D₁ N := by
   unfold Iso at *
   have h1 : M.map σ * N.map σ = 1 := by
@@ -28,6 +36,9 @@ theorem Iso.inv {D₁ D₂ M N : Matrix ι ι A} (h : Iso σ D₁ D₂ M) (hN : 
   calc _ = (Nᵀ * Mᵀ) * D₁ * (M.map σ * N.map σ) := by rw [← h]; simp only [Matrix.mul_assoc]
     _ = D₁ := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `Iso at h`. Rewrite `hD` using `[← h, det_mul, det_mul, det_transpose]`. Conclude with `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hD)`.
+-/
 theorem Iso.isUnit_det {D₁ D₂ M : Matrix ι ι A} (h : Iso σ D₁ D₂ M) (hD : IsUnit D₂.det) : IsUnit M.det := by
   unfold Iso at h
   rw [← h, det_mul, det_mul, det_transpose] at hD
@@ -41,27 +52,64 @@ variable {A : Type} [CommRing A] {σ : A →+* A} {β : Type} [Fintype β] [Deci
 
 def Wm (A : Type) [CommRing A] (β : Type) [DecidableEq β] : Matrix (β ⊕ β) (β ⊕ β) A := fromBlocks 0 1 1 0
 
+/- English proof (translation)
+Simplify using `[Wm, fromBlocks_multiply]`.
+-/
 theorem Wm_mul_self : Wm A β * Wm A β = 1 := by
   simp [Wm, fromBlocks_multiply]
 
+/- English proof (translation)
+Use `congrArg det (Wm_mul_self (A := A) (β := β))` as an intermediate fact. Rewrite `this` using `[det_mul, det_one]`. Conclude with `IsUnit.of_mul_eq_one _ this`.
+-/
 theorem Wm_det : IsUnit (Wm A β).det := by
   have := congrArg det (Wm_mul_self (A := A) (β := β))
   rw [det_mul, det_one] at this
   exact IsUnit.of_mul_eq_one _ this
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero σ) (map_one σ)`.
+-/
 theorem map_one' : (1 : Matrix β β A).map σ = 1 := Matrix.map_one _ (map_zero σ) (map_one σ)
 
+/- English proof (translation)
+Simplify using `[Iso, Wm, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_map, map_one']`.
+-/
 theorem iso_Wm : Iso σ (Wm A β) (Wm A β) (Wm A β) := by
   simp [Iso, Wm, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_map, map_one']
 
+/- English proof (translation)
+Simplify using `[Iso, Wm, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_map, map_one', hs]`.
+-/
 theorem iso_n {s : Matrix β β A} (hs : s.map σ = -sᵀ) : Iso σ (Wm A β) (Wm A β) (fromBlocks 1 s 0 1) := by
   simp [Iso, Wm, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_map, map_one', hs]
 
+/- English proof (translation)
+Simplify using `only [Iso, Wm, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_map] at h`. Simplify using `using (fromBlocks_inj.mp h).1`.
+-/
 theorem iso_col {a b c d : Matrix β β A} (h : Iso σ (Wm A β) (Wm A β) (fromBlocks a b c d)) :
     cᵀ * a.map σ + aᵀ * c.map σ = 0 := by
   simp only [Iso, Wm, fromBlocks_multiply, fromBlocks_transpose, fromBlocks_map] at h
   simpa using (fromBlocks_inj.mp h).1
 
+/- English proof (translation)
+Use `haveI : IsLocalHom σ := ⟨fun x hx => by simpa [hσ] using hx.map σ⟩`. Use `set π := IsLocalRing.residue A with hπ`. Use `set τ := IsLocalRing.ResidueField.map σ with hτ`. Establish `hc : ∀ x, τ (π x) = π (σ x)` using `fun x => IsLocalRing.ResidueField.map_residue σ x`. Establish `hm : ∀ m : Matrix β β A, (m.map π).map τ = (m.map σ).map π` using `fun m => by`.
+
+Use extensionality with `i j`. Simplify using `[hc]`. Establish `hdet` using `(h.isUnit_det Wm_det).map π`. Rewrite `hdet` using `[RingHom.map_det, RingHom.mapMatrix_apply, fromBlocks_map]`. Take `⟨s, hs1, hs2⟩` from `GlobalTheory.CompanionTheory.CommonTransversal.exists_skew_isUnit_det τ (a.map π)ᵀ (c.map π)ᵀ (fun x => by`.
+
+Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective x`. Rewrite using `[← hπ, hc, hc, hσ])`. Use the proof step `⟨π z, fun e => by`. Use `hz.map π` as an intermediate fact. Rewrite `this` using `[map_sub, ← hc, e, sub_self]`.
+
+Conclude with `not_isUnit_zero this⟩`. Use the proof step `(by`. Use `congrArg (fun m => m.map π) (iso_col h)` as an intermediate fact. Simplify using `only [Matrix.map_add _ (map_add π), Matrix.map_mul, Matrix.map_zero _ (map_zero π)] at this`. Rewrite using `[transpose_map, transpose_map, transpose_transpose, transpose_transpose, hm, hm, add_comm]`.
+
+Conclude with `this)`. Use the proof step `(fun v h1 h2 => by`. Rewrite `h1`, `h2` using `[vecMul_transpose]`. Establish `h3 : fromBlocks (a.map π) (b.map π) (c.map π) (d.map π) *ᵥ Sum.elim v 0 = 0`. Rewrite using `[fromBlocks_mulVec]`.
+
+Simplify using `[h1, h2]`. Establish `h4` using `Matrix.eq_zero_of_mulVec_eq_zero hdet.ne_zero h3`. Use extensionality with `i`. Conclude with `congrFun h4 (Sum.inl i))`. Use `choose f hf using (IsLocalRing.residue_surjective (R := A))`.
+
+Use `⟨Matrix.of fun i j => w * f (s j i) - σ (w * f (s i j)), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hσ]`. Establish `e : (Matrix.of fun i j => w * f (s j i) - σ (w * f (s i j))).map π = sᵀ`. Use extensionality with `i j`.
+
+Establish `h5 : τ (s i j) = - s j i` using `congrFun (congrFun hs1 j) i`. Establish `h6 : π w + τ (π w) = 1` using `by rw [hc, ← map_add, hw, map_one]`. Establish `hf' : ∀ x, π (f x) = x` using `hf`. Simplify using `only [map_apply, of_apply, map_sub, ← hc, map_mul, hf', h5, transpose_apply]`. Take the linear combination `s j i * h6`.
+
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, ← hπ, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_add _ (map_add π), Matrix.map_mul, e, ← det_transpose, transpose_add, transpose_mul, transpose_transpose]`. Conclude with `hs2.ne_zero`.
+-/
 theorem exists_skew [IsLocalRing A] (hσ : ∀ z, σ (σ z) = z) {w : A} (hw : w + σ w = 1) {z : A} (hz : IsUnit (z - σ z))
     {a b c d : Matrix β β A} (h : Iso σ (Wm A β) (Wm A β) (fromBlocks a b c d)) :
     ∃ s : Matrix β β A, s.map σ = -sᵀ ∧ IsUnit (a + s * c).det := by
@@ -109,6 +157,21 @@ theorem exists_skew [IsLocalRing A] (hσ : ∀ z, σ (σ z) = z) {w : A} (hw : w
       Matrix.map_add _ (map_add π), Matrix.map_mul, e, ← det_transpose, transpose_add, transpose_mul, transpose_transpose]
     exact hs2.ne_zero
 
+/- English proof (translation)
+Rewrite `hh`, the goal using `[← fromBlocks_toBlocks h]`. Generalize the expression as in `h.toBlocks₁₁ = a at *`. Generalize the expression as in `h.toBlocks₁₂ = b at *`. Generalize the expression as in `h.toBlocks₂₁ = c at *`. Generalize the expression as in `h.toBlocks₂₂ = d at *`.
+
+Take `⟨s, hs, ha⟩` from `exists_skew hσ hw hz hh`. Establish `h1` using `(iso_n hs).mul hh`. Simplify using `only [fromBlocks_multiply, Matrix.one_mul, Matrix.zero_mul, zero_add] at h1`. Use `set a' := a + s * c with ha'`. Establish `h2` using `iso_col h1`.
+
+Establish `i1 : a' * a'⁻¹ = 1` using `mul_nonsing_inv _ ha`. Establish `i2 : a'⁻¹ * a' = 1` using `nonsing_inv_mul _ ha`. Establish `i3 : a'.map σ * a'⁻¹.map σ = 1` using `by rw [← Matrix.map_mul, i1, map_one']`. Establish `i4 : a'⁻¹ᵀ * a'ᵀ = 1` using `by rw [← transpose_mul, i1, transpose_one]`. Establish `hu : (c * a'⁻¹).map σ = -(c * a'⁻¹)ᵀ`.
+
+Use `congrArg (fun m => a'⁻¹ᵀ * m * a'⁻¹.map σ) h2` as an intermediate fact. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_zero, Matrix.zero_mul] at this`. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, i4, Matrix.mul_assoc _ (a'.map σ), i3]`. Rewrite using `[Matrix.map_mul, transpose_mul, eq_neg_iff_add_eq_zero, add_comm]`. Simplify using `using this`.
+
+Establish `hs' : (-s).map σ = -(-s)ᵀ` using `by rw [Matrix.map_neg _ (map_neg σ), hs, transpose_neg]`. Establish `hu' : (-(c * a'⁻¹)).map σ = -(-(c * a'⁻¹))ᵀ` using `by rw [Matrix.map_neg _ (map_neg σ), hu, transpose_neg]`. Establish `h3` using `((iso_Wm.mul (iso_n hu')).mul iso_Wm).mul h1`. Establish `e3 : Wm A β * fromBlocks 1 (-(c * a'⁻¹)) 0 1 * Wm A β * fromBlocks a' (b + s * d) c d = fromBlocks a' (b + s * d) 0 (d - c * a'⁻¹ * (b + s * d))`. Simplify using `[Wm, fromBlocks_multiply, Matrix.mul_assoc, i2, sub_eq_neg_add]`.
+
+Rewrite `h3` using `[e3]`. Use `⟨-s, c * a'⁻¹, a', _, _, iso_n hs', iso_n hu, h3, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc]`. Establish `e4 : Wm A β * fromBlocks 1 (c * a'⁻¹) 0 1 * Wm A β * fromBlocks a' (b + s * d) 0 (d - c * a'⁻¹ * (b + s * d)) = fromBlocks a' (b + s * d) c d`. Simplify using `[Wm, fromBlocks_multiply, Matrix.mul_assoc, i2]`.
+
+Rewrite using `[e4]`. Simplify using `[fromBlocks_multiply, ha']`.
+-/
 theorem decomp_split [IsLocalRing A] (hσ : ∀ z, σ (σ z) = z) {w : A} (hw : w + σ w = 1) {z : A} (hz : IsUnit (z - σ z))
     {h : Matrix (β ⊕ β) (β ⊕ β) A} (hh : Iso σ (Wm A β) (Wm A β) h) :
     ∃ s u t b d : Matrix β β A, Iso σ (Wm A β) (Wm A β) (fromBlocks 1 s 0 1) ∧

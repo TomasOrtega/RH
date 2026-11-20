@@ -44,6 +44,9 @@ def stepInTw (W : TwFormsTiedS D Tw T J F) (u : D.what₂.Word) (μ : D.what₂.
   loc := L.loc
   pos := L.pos
 
+/- English proof (translation)
+Break down `hw with h | h` into its components or cases. Conclude with `bad_notOver u w hg w' h`. Conclude with `hQ w' h`.
+-/
 theorem badQ_notOver (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (Q : Finset (HeightOneSpectrum (𝓞 D.host.F))) (hQ : okQ D Q w) (w' : HeightOneSpectrum (𝓞 D.host.F)) (hw : w' ∈ badQ D Q) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∉ w'.asIdeal := by

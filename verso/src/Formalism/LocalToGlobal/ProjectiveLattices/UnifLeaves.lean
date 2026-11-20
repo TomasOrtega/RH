@@ -19,6 +19,9 @@ section Fam
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Introduce `k _ hx` and use `⟨fun _ hb => dom_rmul _ hx hb, fun _ hγ => dom_lact _ hx ((M.X k).Γ_stab _ hγ)⟩`.
+-/
 theorem domStab_holds {g : ℕ} {ty : Fin g → (E →+* ℂ)} {σ' : KA l →+* ℂ} {F : FamilyUnif Xo σ' ty}
     (M : ModelsOf F r) : ∀ k, ∀ x ∈ (M.X k).dom, (∀ b ∈ Bor (M.X k).Ψ r, rmul x b ∈ (M.X k).dom) ∧
       ∀ γ ∈ (M.X k).Γ, lact γ x ∈ (M.X k).dom :=
@@ -35,6 +38,13 @@ def CoverTri {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
       ∀ τ (i : Fin (Dw.mult τ)), ∃ cf : Fin (Dw.mult τ) → CAt σ, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧
         IsCombAt y.x (v τ) cf (y.u τ i)
 
+/- English proof (translation)
+Introduce `y`. Take `⟨k, x, Pm, hPm, hxy, hv⟩` from `hT y`. Take `⟨Pm', hPm', -, hx', hd', -⟩` from `hun k x`. Establish `hP : Pm' = Pm`. Use extensionality with `a j`.
+
+Rewrite using `[hPm', hPm]`. Substitute `hP` using the available equality. Use `⟨k, x, ?_⟩` and prove the remaining obligations. Establish `hxx : y.x = (un k x).x` using `hxy.symm.trans hx'.symm`. Use `frBor_of_tri (un k x) y hxx fun τ i => ?_` and prove the remaining obligations.
+
+Take `⟨cf, h1, h2, h3⟩` from `hv (un k x).u hd' τ i`. Conclude with `⟨cf, h1, h2, by rw [← hxx]; exact h3⟩`.
+-/
 theorem coverU_of_coverTri {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : ∀ k x, FrameOK e F M k x (un k x))
@@ -68,6 +78,17 @@ def FibTri {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
       IsCombAt (F.u k Pm) (v τ) cf (v' τ i)) →
     ∃ γ ∈ (M.X k).Γ, ∃ b ∈ Bor (M.X k).Ψ r, (⟨k', x'.1⟩ : Σ k, Frame (M.X k).Ψ r) = ⟨k, rmul (lact γ x.1) b⟩
 
+/- English proof (translation)
+Introduce `k k' x x'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, hx, hu, -⟩`. Take `⟨Pm, hPm, -, hxP, hd, -⟩` from `hun.1 k x`. Take `⟨Pm', hPm', -, hxP', hd', -⟩` from `hun.1 k' x'`.
+
+Use `hB k k' x x' Pm Pm' (un k x).u (un k' x').u hPm hPm' (hxP.symm.trans (hx.symm.trans hxP')) hd hd' fun τ i => ?_` and prove the remaining obligations. Take `⟨cf, hcf, htri, hcomb⟩` from `hu τ i`. Use `⟨cf, by rw [hcf]; exact Units.isUnit _, htri, ?_⟩` and prove the remaining obligations. Establish `e1 : (unfOf e F M un).un k x = un k x` using `rfl`. Rewrite `hcomb` using `[e1, hxP]`.
+
+Conclude with `hcomb`. Introduce and unpack `⟨γ, hγ, b, hb, heq⟩`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 heq`. Establish `h3 : x'.1 = rmul (lact γ x.1) b` using `eq_of_heq h2`. Establish `hxg : lact γ x.1 ∈ (M.X k').dom` using `(domStab_holds M k' x.1 x.2).2 γ hγ`.
+
+Take `⟨t1, ht1, -⟩` from `hun.2.2.1 k' γ hγ x hxg`. Establish `hxb : rmul (⟨lact γ x.1, hxg⟩ : (M.X k').dom).1 b ∈ (M.X k').dom`. Establish `hx2` using `x'.2`. Rewrite `hx2` using `[h3]`. Conclude with `hx2`.
+
+Take `⟨t2, ht2, -⟩` from `hun.2.1 k' ⟨lact γ x.1, hxg⟩ b hb hxb`. Establish `hx' : (⟨rmul (lact γ x.1) b, hxb⟩ : (M.X k').dom) = x'` using `Subtype.ext h3.symm`. Rewrite `ht2` using `[hx']`. Conclude with `frBor_trans hT ht1 ht2`.
+-/
 theorem fibreU_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ)) (hun : FramesOK e F M un)
@@ -123,12 +144,18 @@ section Rows
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `coverU_of_coverTri _ _ _ hF.choose hF.choose_spec.1 hT`.
+-/
 theorem coverU_J {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} {hM : ModelEx hN Q hpq j hj σ hσ hR}
     (hF : FrameEx hM) (hT : CoverTri (letE (Q.Dw j)) (famJ hN Q hpq j σ hσ hR) (modelsJ hM)) :
     CoverU (unfJ hF) :=
   coverU_of_coverTri _ _ _ hF.choose hF.choose_spec.1 hT
 
+/- English proof (translation)
+The claim follows from `fibreU_of _ _ _ hF.choose hF.choose_spec hT hB`.
+-/
 theorem fibreU_J {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} {hM : ModelEx hN Q hpq j hj σ hσ hR}
     (hF : FrameEx hM) (hT : TanLin (Q.Xo j)) (hB : FibTri (letE (Q.Dw j)) (famJ hN Q hpq j σ hσ hR) (modelsJ hM)) :

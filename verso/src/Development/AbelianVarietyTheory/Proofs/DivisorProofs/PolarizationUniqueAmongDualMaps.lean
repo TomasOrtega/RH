@@ -17,6 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Closed
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw k _ _ _ t p _ GG tw I φ hext hφ`. Apply `hext` to reduce the goal to its premises. Introduce `x y n`. Establish `hskew : Dw.EF y x = -Dw.EF x y`. Establish `h` using `Dw.alt (x + y)`.
+
+Simplify using `only [map_add, LinearMap.add_apply, Dw.alt x, Dw.alt y, zero_add, add_zero] at h`. Use linear arithmetic over natural numbers and integers. Establish `hL : pairing GG k (tau tw I x) (tateMap GG GG.dual k (GG.bidual.hom ≫ dualHom GG GG.dual φ) (tau tw I y)) = pairing GG k (tau tw I y) (tateMap GG GG.dual k φ (tau tw I x))`. Rewrite using `[tateMap_comp, ← pairing_tateMap]`. Conclude with `GlobalTheory.PerfdLat.pairing_bidual GG (tau tw I y) _`.
+
+Establish `hR : pairing GG k (tau tw I x) (tateMap GG GG.dual k (-φ) (tau tw I y)) = -pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))`. Rewrite using `[map_neg, LinearMap.neg_apply, map_neg]`. Rewrite using `[hL, hR, hφ y x n]`. Establish `hinv : ∀ z : (mu p k).TateOver k, muRoot (-z) n * muRoot z n = 1` using `fun z => by`. Rewrite using `[← muRoot_add, neg_add_cancel, muRoot_zero]`.
+
+Establish `h1` using `hinv (pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y)))`. Rewrite `h1` using `[hφ x y n]`. Rewrite using `[hskew, zpow_neg, Units.val_inv_eq_inv_val]`. Conclude with `(eq_inv_of_mul_eq_one_left h1).symm`.
+-/
 theorem bidual_comp_dualHom_eq_neg : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k} (tw : GG.TorsionTower t.G) (I : GeomTate Dw t), ∀ φ : GG ⟶ GG.dual, (∀ ψ ψ' : GG ⟶ GG.dual, (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ (tau tw I y))) n = muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k ψ' (tau tw I y))) n) → ψ = ψ') → (∀ (x y : Dw.La) (n : ℕ), muRoot (pairing GG k (tau tw I x) (tateMap GG GG.dual k φ (tau tw I y))) n = ((I.ζ (p ^ n) ^ Dw.EF x y : kˣ) : k)) → GG.bidual.hom ≫ dualHom GG GG.dual φ = -φ := by
   intro E _ _ _ H Dw k _ _ _ t p _ GG tw I φ hext hφ
   apply hext

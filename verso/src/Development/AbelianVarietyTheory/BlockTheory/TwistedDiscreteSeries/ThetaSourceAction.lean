@@ -117,6 +117,9 @@ variable (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
 def IsAdapted {n : ℕ} (G s B : Mat n) : Prop :=
   ∃ ε : Fin n → Bool, Bᴴ * G * B = Formalism.REAL.Jm ε ∧ s * B = B * Formalism.REAL.Jm ε
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => true, by simp [Formalism.REAL.Jm], by simp [Formalism.REAL.Jm]⟩`.
+-/
 example (n : ℕ) : IsAdapted (1 : Mat n) 1 1 := ⟨fun _ => true, by simp [Formalism.REAL.Jm], by simp [Formalism.REAL.Jm]⟩
 
 def ptAt (τ : D.what₂.Tau) (sS : Mat S.rank) (sT : Mat T.rank) (BS : Mat S.rank) (BT : Mat T.rank) (f : WO S T → ℂ) :
@@ -141,6 +144,11 @@ structure IsFockAt (τ : D.what₂.Tau) (sS : Mat S.rank) (sT : Mat T.rank) (BS 
   ne : f ≠ 0
   vac : IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) f
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `h1 : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Use `⟨M.ε τ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← M.fr_gram τ, onb]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h1]; simp`. Rewrite using `[cart, onb, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+-/
 theorem isAdapted_model {V : HSp D} {P : D.what₂.Tau → SPar} (M : DSModel V P) (τ : D.what₂.Tau) :
     IsAdapted (gramAt D V τ) (cart M τ) (onb M τ) := by
   have hd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)

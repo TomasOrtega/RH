@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LiftSys
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Establish `hfg : ∀ y, f (g y) = y` using `fun y ↦ LinearMap.congr_fun hg y`. Use `⟨LinearMap.range g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `x hx ⟨y, rfl⟩`.
+
+Establish `: y = 0` using `(hfg y).symm.trans hx`. Rewrite using `[this, map_zero]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`. Establish `e : x = (x - g (f x)) + g (f x)` using `by abel`.
+
+Rewrite using `[e]`. Use `Submodule.add_mem_sup ?_ (LinearMap.mem_range_self g _)` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub, hfg, sub_self]`.
+-/
 theorem exists_isCompl_ker_of_projective {R : Type} {M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] [Module.Projective R N] (f : M →ₗ[R] N) (hf : Function.Surjective f) :
     ∃ C : Submodule R M, IsCompl (LinearMap.ker f) C := by
@@ -34,6 +41,11 @@ theorem exists_isCompl_ker_of_projective {R : Type} {M N : Type*} [CommRing R] [
     refine Submodule.add_mem_sup ?_ (LinearMap.mem_range_self g _)
     rw [LinearMap.mem_ker, map_sub, hfg, sub_self]
 
+/- English proof (translation)
+Use `letI := π.toAlgebra`. Substitute `hk` using the available equality. Set `f : (R ⧸ RingHom.ker π) ≃ₐ[R] R₀` to `Ideal.quotientKerAlgEquivOfSurjective (f := Algebra.ofId R R₀) hπ`. Set `E : R₀ ⊗[R] M ≃ₗ[R] M ⧸ (RingHom.ker π) • (⊤ : Submodule R M)` to `(TensorProduct.congr f.toLinearEquiv.symm (LinearEquiv.refl R M)).trans (TensorProduct.quotTensorEquivQuotSMul M (RingHom.ker π))`. Establish `h1 : E ((1 : R₀) ⊗ₜ[R] x) = Submodule.Quotient.mk x`.
+
+Establish `: f.symm (1 : R₀) = Ideal.Quotient.mk _ 1` using `by rw [map_one, map_one]`. Express the relevant statement in the definitionally equal form `TensorProduct.quotTensorEquivQuotSMul M (RingHom.ker π) (f.symm 1 ⊗ₜ[R] x) = _`. Rewrite using `[this, TensorProduct.quotTensorEquivQuotSMul_mk_tmul, one_smul]`. Rewrite `h1` using `[h, map_zero, eq_comm, Submodule.Quotient.mk_eq_zero]`. Conclude with `h1`.
+-/
 theorem mem_smul_top_of_tmul_eq_zero {R R₀ M : Type} [CommRing R] [CommRing R₀] [AddCommGroup M] [Module R M]
     (π : R →+* R₀) (hπ : Function.Surjective π) {I : Ideal R} (hk : RingHom.ker π = I) (x : M)
     (h : letI := π.toAlgebra; (1 : R₀) ⊗ₜ[R] x = 0) : x ∈ I • (⊤ : Submodule R M) := by
@@ -51,6 +63,29 @@ theorem mem_smul_top_of_tmul_eq_zero {R R₀ M : Type} [CommRing R] [CommRing R�
   rw [h, map_zero, eq_comm, Submodule.Quotient.mk_eq_zero] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `H HD R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg S hS`. Establish `hpb : IsPullback i' A₀.hom A'.hom (spMap π)` using `h'.1`. Take `⟨e, he1, he2⟩` from `GlobalTheory.T.hodge_cohomology_iso_presented_crystal R R₀ I hI π hπ hk A₀.left A₀.hom S A'.left A'.hom i' hpb hS`. Establish `hsm : Smooth A'.hom` using `hA.smooth`. Use `haveI : IsProper A'.hom := hA.proper`.
+
+Establish `hsep : IsSeparated A'.hom` using `inferInstance`. Establish `hqc : QuasiCompact A'.hom` using `inferInstance`. Establish `hw : i' ≫ A'.hom = (A₀.hom ≫ spMap π) ≫ spMap (RingHom.id R)`. Rewrite using `[Cris.spMap_id, Category.comp_id]`. Conclude with `hpb.w`.
+
+Set `m : IsMor (dp0 R) A'.hom (divided₂ hI) (A₀.hom ≫ spMap π) (RingHom.id R) i'` to `IsMor.of_dividedPowersZeroIdeal _ hw`. Establish `hm` using `(H.toCrystallineDeRham R I (divided₂ hI) (isDPNilpotent_squareZero hI) R₀ π hπ hk A'.left A₀.left A'.hom A₀.hom i' hsm hsep hqc hpb m).1`. Establish `hc` using `H.bijective_cechDeRhamComparison_degreeOne A'.hom hsm hsep hqc`. Take `⟨-, -, -, ⟨-, hproj, -⟩, ⟨-, -, hto⟩, hbc⟩` from `HD R A' g hA hg`. Establish `key : ∀ c, S.r hI (m.pull1 c) = e (toHO1 A'.hom (cmp1 A'.hom c))` using `fun c ↦ (he1 m c).symm`.
+
+Establish `hr : Function.Surjective (S.r hI)`. Introduce `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Take `⟨w, rfl⟩` from `hto x`. Take `⟨c, rfl⟩` from `hc.2 w`.
+
+Conclude with `⟨m.pull1 c, key c⟩`. Use `haveI : Module.Projective R (GlobalTheory.CatCoh.H1 S.F) := Module.Projective.of_equiv e`. Use `⟨?_, exists_isCompl_ker_of_projective (S.r hI) hr⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hz0 : S.redO.pullbackOneCocycle z = 0`.
+
+Use `Subtype.ext (funext fun U ↦ funext fun V ↦ funext fun a ↦ ?_)` and prove the remaining obligations. Conclude with `(S.ker V _).2 (hz U V a)`. Establish `h0 : S.redO.pull1 (H1.mk _ z) = 0`. Rewrite using `[CoefMap.pullCohomologyOne_class, hz0, map_zero]`. Use `set x := e.symm (H1.mk _ z) with hxdef`.
+
+Establish `hx0 : IsPullO hpb.w x 0`. Use `he2 x` as an intermediate fact. Rewrite `this` using `[hxdef, LinearEquiv.apply_symm_apply, h0]`. Then use the resulting hypothesis. Use `letI := π.toAlgebra`. Take `⟨-, -, e', he'⟩` from `hbc R₀ A₀.left A₀.hom i' hpb`.
+
+Establish `h1 : e' ((1 : R₀) ⊗ₜ[R] x) = 0`. Establish `a` using `he' x`. Unfold `IsPullO at a hx0`. Conclude with `(pairRes_injective i' A₀.hom).1 (a.symm.trans (hx0.trans (map_zero _).symm))`. Establish `hxI : x ∈ I • (⊤ : Submodule R (HO1 A'.hom))` using `mem_smul_top_of_tmul_eq_zero π hπ hk x ((LinearEquiv.map_eq_zero_iff e').1 h1)`.
+
+Establish `hzI : H1.mk _ z ∈ I • (⊤ : Submodule R (GlobalTheory.CatCoh.H1 S.F))`. Establish `: H1.mk _ z = e x` using `by rw [hxdef, LinearEquiv.apply_symm_apply]`. Rewrite using `[this]`. Establish `hm' : e.toLinearMap x ∈ Submodule.map e.toLinearMap (I • ⊤)` using `Submodule.mem_map_of_mem hxI`. Rewrite `hm'` using `[Submodule.map_smul'']`.
+
+Conclude with `Submodule.smul_mono le_rfl le_top hm'`. Establish `hsurjI : Submodule.map (S.r hI) (I • ⊤) = I • (⊤ : Submodule R (GlobalTheory.CatCoh.H1 S.F))`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 hr]`. Rewrite `hzI` using `[← hsurjI]`. Take `⟨c, hc, hcz⟩` from `hzI`.
+
+Conclude with `⟨c, hc, hcz⟩`.
+-/
 theorem full_and_isCompl : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (g : ℕ) (A₀ : Over (Sp R₀)) [GrpObj A₀] (A' : Over (Sp R)) [GrpObj A'] (i' : A₀.left ⟶ A'.left) (h' : IsGrpPullback A₀ A' (spMap π) i'), IsAbelianScheme A' → SmoothOfRelativeDimension g A'.hom → ∀ S : Sys I π A₀.hom, S.Presents A'.hom i' → S.Full hI ∧ ∃ N, IsCompl (S.K hI) N := by
   intro H HD R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg S hS
   have hpb : IsPullback i' A₀.hom A'.hom (spMap π) := h'.1

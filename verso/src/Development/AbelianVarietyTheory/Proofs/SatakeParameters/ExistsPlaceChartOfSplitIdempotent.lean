@@ -16,9 +16,15 @@ variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D}
 
 def sc (he : SplitAt D v e) (z : AE D) : Fv D.host.F v := (he.exists_scalar z).choose
 
+/- English proof (translation)
+The claim follows from `(he.exists_scalar z).choose_spec`.
+-/
 theorem sc_spec (he : SplitAt D v e) (z : AE D) : e * z = fj D (singleV D.host.F v (sc he z)) * e :=
   (he.exists_scalar z).choose_spec
 
+/- English proof (translation)
+Rewrite `h` using `[sc_spec he]`. Rewrite using `[← he.scalar_inj h, evalV_singleV_same]`.
+-/
 theorem sc_eq (he : SplitAt D v e) {z : AE D} {α : Af D.host.F} (h : e * z = fj D α * e) :
     sc he z = evalV D.host.F v α := by
   rw [sc_spec he] at h
@@ -39,23 +45,47 @@ def comp (he : SplitAt D v e) : AE D →+* Fv D.host.F v where
     rw [map_add]
     linear_combination sc_spec he x + sc_spec he y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_apply (he : SplitAt D v e) (z : AE D) : comp he z = sc he z := rfl
 
+/- English proof (translation)
+The claim follows from `sc_eq he (mul_comm _ _)`.
+-/
 theorem comp_fj (he : SplitAt D v e) (α : Af D.host.F) : comp he (fj D α) = evalV D.host.F v α :=
   sc_eq he (mul_comm _ _)
 
+/- English proof (translation)
+Rewrite using `[comp_apply, sc_eq he (α := 1) (by rw [he.one_mul', he.1]), map_one]`.
+-/
 theorem comp_self (he : SplitAt D v e) : comp he e = 1 := by
   rw [comp_apply, sc_eq he (α := 1) (by rw [he.one_mul', he.1]), map_one]
 
+/- English proof (translation)
+Rewrite using `[comp_apply, sc_eq he (α := y.2 * 1), mul_one]`. Rewrite using `[← algebraMap_mul_fj, mul_assoc, he.one_mul', mul_comm]`.
+-/
 theorem comp_algebraMap (he : SplitAt D v e) (y : AF D.host.F) :
     comp he (algebraMap (AF D.host.F) (AE D) y) = evalV D.host.F v y.2 := by
   rw [comp_apply, sc_eq he (α := y.2 * 1), mul_one]
   rw [← algebraMap_mul_fj, mul_assoc, he.one_mul', mul_comm]
 
+/- English proof (translation)
+The claim follows from `(map_isIntegral_int f hx).tower_top`.
+-/
 theorem isIntegral_of_int (O : Type) {K L : Type} [CommRing O] [CommRing K] [CommRing L] [Algebra O K]
     (f : L →+* K) {x : L} (hx : IsIntegral ℤ x) : IsIntegral O (f x) :=
   (map_isIntegral_int f hx).tower_top
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, o, rfl⟩` from `hw`. Establish `h1 : (pairA D.host.F 0 α ⊗ₜ[D.host.F] (o : D.host.E) : AE D) = fj D α * (1 : AF D.host.F) ⊗ₜ[D.host.F] (o : D.host.E)` using `by show _ = (_ ⊗ₜ _) * _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+
+Rewrite using `[h1, map_mul, comp_fj]`. Use `mul_mem (hα v) ?_` and prove the remaining obligations. Establish `h3 : IsIntegral (v.adicCompletionIntegers D.host.F) (comp he ((1 : AF D.host.F) ⊗ₜ[D.host.F] (o : D.host.E)))` using `isIntegral_of_int _ ((comp he).comp (Algebra.TensorProduct.includeRight (R := D.host.F) (A := AF D.host.F) (B := D.host.E)).toRingHom) o.2`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h3`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem comp_mem (he : SplitAt D v e) {z : AE D} (hz : z ∈ intL D) :
     comp he z ∈ v.adicCompletionIntegers D.host.F := by
   induction hz using AddSubgroup.closure_induction with
@@ -78,6 +108,11 @@ theorem comp_mem (he : SplitAt D v e) {z : AE D} (hz : z ∈ intL D) :
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, o, rfl⟩` from `hw`. Conclude with `AddSubgroup.subset_closure ⟨α, hα, o, rfl⟩`. Consider the case `zero => rw [RingHom.map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [RingHom.map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [RingHom.map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem finPart_mem {z : AE D} (hz : z ∈ intL D) : finPart D z ∈ intAE D := by
   induction hz using AddSubgroup.closure_induction with
   | mem w hw =>
@@ -87,6 +122,11 @@ theorem finPart_mem {z : AE D} (hz : z ∈ intL D) : finPart D z ∈ intAE D := 
   | add x y _ _ hx hy => rw [RingHom.map_add]; exact add_mem hx hy
   | neg x _ hx => rw [RingHom.map_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Use `⟨fun a => ⟨fj D (singleV D.host.F v a), by rw [comp_fj, evalV_singleV_same]⟩, fun a => ⟨fun h => ?_, fun h => ?_⟩, comp_algebraMap he, fun a => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h0 : singleV D.host.F v 0 = 0`. Rewrite using `[← sub_self (0 : Fv D.host.F v), singleV_sub, sub_self]`. Rewrite using `[sc_spec he, ← comp_apply, h, h0, map_zero, zero_mul]`. Rewrite using `[← one_mul (comp he a), ← comp_self he, ← map_mul, h, map_zero]`.
+
+Establish `h1` using `comp_mem he (inF_mem h)`. Rewrite `h1` using `[inF_finPart, ← mul_assoc, he.one_mul', map_mul, comp_self, one_mul]`. Conclude with `isInt_Ov.2 h1`. Rewrite using `[sc_spec he]`. Conclude with `finPart_mem (fj_mul_mem (singleV_mem_intAf D.host.F v ⟨_, isInt_Ov.1 h⟩) he.mem)`.
+-/
 theorem chart_comp (he : SplitAt D v e) : Chart e v (comp he) := by
   refine ⟨fun a => ⟨fj D (singleV D.host.F v a), by rw [comp_fj, evalV_singleV_same]⟩, fun a => ⟨fun h => ?_, fun h => ?_⟩,
     comp_algebraMap he, fun a => ⟨fun h => ?_, fun h => ?_⟩⟩
@@ -100,6 +140,9 @@ theorem chart_comp (he : SplitAt D v e) : Chart e v (comp he) := by
   · rw [sc_spec he]
     exact finPart_mem (fj_mul_mem (singleV_mem_intAf D.host.F v ⟨_, isInt_Ov.1 h⟩) he.mem)
 
+/- English proof (translation)
+Introduce `D e h`. Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 h`. Conclude with `⟨v, comp he, chart_comp he⟩`.
+-/
 theorem exists_chart : ∀ {D : D7} (e : AE D), IsSplitIdem D e →
     ∃ (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), Chart e v π := by
   intro D e h

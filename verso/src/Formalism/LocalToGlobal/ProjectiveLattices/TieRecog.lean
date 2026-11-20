@@ -19,6 +19,21 @@ section Fr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Take `⟨r, hr⟩` from `mem_AG.1 (hws i)`. Introduce `G hG`.
+
+Rewrite `hG` using `[hr, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs at hG with e`. Conclude with `⟨1, by rw [one_smul, e]⟩`. Conclude with `absurd rfl hG`. Consider the case `algebraMap r`.
+
+Introduce `G hG`. Rewrite `hG` using `[AddMonoidAlgebra.coe_algebraMap, Function.comp_apply, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs at hG with e`. Conclude with `⟨0, by rw [zero_smul, e]⟩`. Conclude with `absurd rfl hG`.
+
+Consider the case `add x y _ _ hx hy`. Introduce `G hG`. Rewrite `hG` using `[AddMonoidAlgebra.coeff_add, Finsupp.add_apply]`. Distinguish the cases in `h1 : x.coeff G = 0`. Rewrite `hG` using `[h1, zero_add]`.
+
+Conclude with `hy G hG`. Conclude with `hx G h1`. Consider the case `mul x y _ _ hx hy`. Introduce `G hG`. Rewrite `hG` using `[AddMonoidAlgebra.coeff_mul]`.
+
+Unfold `Finsupp.sum at hG`. Take `⟨g1, hg1, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hG`. Take `⟨g2, hg2, hne2⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Simplify using `only at hne2`. Use `split_ifs at hne2 with e`.
+
+Take `⟨m1, e1⟩` from `hx g1 (Finsupp.mem_support_iff.1 hg1)`. Take `⟨m2, e2⟩` from `hy g2 (Finsupp.mem_support_iff.1 hg2)`. Conclude with `⟨m1 + m2, by rw [← e, e1, e2, add_smul]⟩`. Conclude with `absurd rfl hne2`.
+-/
 theorem adjoin_weight {Z : Comp Xo c} {I : Type} {wL : WTZ E} {ws : I → AC Z} (hws : ∀ i, ws i ∈ AG Z wL)
     {p : AC Z} (hp : p ∈ Algebra.adjoin c.F (Set.range ws)) : ∀ G, p.coeff G ≠ 0 → ∃ m : ℕ, G = m • wL := by
   classical

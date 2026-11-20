@@ -14,11 +14,17 @@ section SlopeTestRemainingChoices
 
 variable {K : Type u} [NormedField K] {ι : Type v}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hf`.
+-/
 theorem wtGe_congr {pi : ℝ} {r : ι → ℝ} {wt wt' : ℝ} (h : wt = wt') {f : MvPowerSeries ι K}
     (hf : WtGe pi r wt f) : WtGe pi r wt' f := by
   subst h
   exact hf
 
+/- English proof (translation)
+Introduce `n`. Unfold `MonoWtGe`. Rewrite using `[map_zero, norm_zero]`. Conclude with `Real.rpow_nonneg h0.le _`.
+-/
 theorem wtGe_zero {pi : ℝ} (h0 : 0 < pi) (r : ι → ℝ) (wt : ℝ) :
     WtGe pi r wt (0 : MvPowerSeries ι K) := by
   intro n
@@ -26,10 +32,18 @@ theorem wtGe_zero {pi : ℝ} (h0 : 0 < pi) (r : ι → ℝ) (wt : ℝ) :
   rw [map_zero, norm_zero]
   exact Real.rpow_nonneg h0.le _
 
+/- English proof (translation)
+Unfold `dot`. Rewrite using `[Finsupp.sum_single_index (by simp)]`.
+-/
 theorem dot_single (i : ι) (k : ℕ) (r : ι → ℝ) : dot (Finsupp.single i k) r = k * r i := by
   unfold dot
   rw [Finsupp.sum_single_index (by simp)]
 
+/- English proof (translation)
+Introduce `n`. Unfold `MonoWtGe`. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Rewrite using `[mul_one, dot_single]`. Simplify using `only [Nat.cast_one, one_mul, sub_self, Real.rpow_zero]`. Conclude with `hc`. Rewrite using `[mul_zero, norm_zero]`. Conclude with `Real.rpow_nonneg h0.le _`.
+-/
 theorem wtGe_CX {pi : ℝ} (h0 : 0 < pi) (r : ι → ℝ) (i : ι) {c : K} (hc : ‖c‖ ≤ 1) :
     WtGe pi r (r i) (MvPowerSeries.C c * MvPowerSeries.X i) := by
   classical
@@ -44,6 +58,9 @@ theorem wtGe_CX {pi : ℝ} (h0 : 0 < pi) (r : ι → ℝ) (i : ι) {c : K} (hc :
   · rw [mul_zero, norm_zero]
     exact Real.rpow_nonneg h0.le _
 
+/- English proof (translation)
+Rewrite using `[mul_pow, mul_pow, ← map_pow, ← map_pow, MvPowerSeries.X_pow_eq, MvPowerSeries.X_pow_eq]`. Rewrite using `[mul_mul_mul_comm, ← map_mul]`. Use `first`. Consider the case `(rw [MvPowerSeries.monomial_mul_monomial, one_mul, ← MvPowerSeries.monomial_zero_eq_C_apply, MvPowerSeries.monomial_mul_monomial, zero_add, mul_one])`. Consider the case `(simp [MvPowerSeries.monomial_mul_monomial, ← MvPowerSeries.monomial_zero_eq_C_apply])`.
+-/
 theorem pow_pair_eq [DecidableEq ι] (i j : ι) (x y : K) (a b : ℕ) :
     (MvPowerSeries.C x * MvPowerSeries.X i) ^ a * (MvPowerSeries.C y * MvPowerSeries.X j) ^ b =
       MvPowerSeries.monomial (Finsupp.single i a + Finsupp.single j b) (x ^ a * y ^ b) := by
@@ -56,6 +73,11 @@ theorem pow_pair_eq [DecidableEq ι] (i j : ι) (x y : K) (a b : ℕ) :
 
 variable [IsUltrametricDist K]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, norm_mul]`. Use `mul_le_of_le_one_right (norm_nonneg _) ?_` and prove the remaining obligations. Use `first`. Consider the case `exact IsUltrametricDist.norm_natCast_le_one K m`.
+
+Consider the case `exact IsUltrametricDist.norm_natCast_le_one (R := K) m`.
+-/
 theorem norm_natCast_le_of_dvd {l k : ℕ} (h : l ∣ k) : ‖(k : K)‖ ≤ ‖(l : K)‖ := by
   obtain ⟨m, rfl⟩ := h
   rw [Nat.cast_mul, norm_mul]
@@ -64,6 +86,11 @@ theorem norm_natCast_le_of_dvd {l k : ℕ} (h : l ∣ k) : ‖(k : K)‖ ≤ ‖
     | exact IsUltrametricDist.norm_natCast_le_one K m
     | exact IsUltrametricDist.norm_natCast_le_one (R := K) m
 
+/- English proof (translation)
+Introduce `n`. Establish `hfn` using `hf n`. Unfold `MonoWtGe at hfn ⊢`. Use `first`. Consider the case `rw [show (k : MvPowerSeries ι K) = MvPowerSeries.C (k : K) from (map_natCast _ k).symm, MvPowerSeries.coeff_mul_C, norm_mul]`.
+
+Consider the case `rw [← map_natCast (MvPowerSeries.C (σ := ι) (R := K)) k, MvPowerSeries.coeff_mul_C, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show wt + 1 - dot n r = (wt - dot n r) + 1 by ring, Real.rpow_add_one h0.ne']`.
+-/
 theorem wtGe_mul_natCast {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {f : MvPowerSeries ι K}
     (hf : WtGe pi r wt f) {k : ℕ} (hk : ‖(k : K)‖ ≤ pi) :
     WtGe pi r (wt + 1) (f * (k : MvPowerSeries ι K)) := by
@@ -78,6 +105,13 @@ theorem wtGe_mul_natCast {pi : ℝ} (h0 : 0 < pi) {r : ι → ℝ} {wt : ℝ} {f
     _ = pi ^ (wt + 1 - dot n r) := by
       rw [show wt + 1 - dot n r = (wt - dot n r) + 1 by ring, Real.rpow_add_one h0.ne']
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k, l = k + 1 + 1` from `⟨l - 2, by have := hl.two_le; omega⟩`. Establish `key : (A + B) ^ l - A ^ l - B ^ l = ∑ m ∈ Finset.range (k + 1), A ^ (m + 1) * B ^ (l - (m + 1)) * (l.choose (m + 1) : MvPowerSeries ι K)`. Substitute `hk` using the available equality. Rewrite using `[add_pow, Finset.sum_range_succ _ (k + 1 + 1), Finset.sum_range_succ' _ (k + 1)]`. Simplify using `only [Nat.choose_self, Nat.choose_zero_right, Nat.sub_self, Nat.sub_zero, pow_zero, Nat.cast_one, mul_one, one_mul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Use `wtGe_sum hpi0 _ _ fun m hm => ?_` and prove the remaining obligations. Establish `hm' : m + 1 < l` using `by rw [Finset.mem_range] at hm; omega`. Establish `hdv : l ∣ l.choose (m + 1)` using `hl.dvd_choose_self (by omega) hm'`.
+
+Use `wtGe_congr ?_ (wtGe_mul_natCast hpi0 (wtGe_mul hpi0 (wtGe_pow hpi0 hA (m + 1)) (wtGe_pow hpi0 hB (l - (m + 1)))) (norm_natCast_le_of_dvd hdv))` and prove the remaining obligations. Rewrite using `[Nat.cast_sub hm'.le]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frob_two {l : ℕ} (hl : l.Prime) (hpi0 : 0 < ‖(l : K)‖) {r : ι → ℝ} {wt : ℝ}
     {A B : MvPowerSeries ι K} (hA : WtGe ‖(l : K)‖ r wt A) (hB : WtGe ‖(l : K)‖ r wt B) :
     WtGe ‖(l : K)‖ r ((l : ℝ) * wt + 1) ((A + B) ^ l - A ^ l - B ^ l) := by
@@ -97,6 +131,13 @@ theorem frob_two {l : ℕ} (hl : l.Prime) (hpi0 : 0 < ‖(l : K)‖) {r : ι →
     (wtGe_pow hpi0 hB (l - (m + 1)))) (norm_natCast_le_of_dvd hdv))
   rw [Nat.cast_sub hm'.le]; push_cast; ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, zero_pow hl.ne_zero, sub_zero]`. Conclude with `wtGe_zero hpi0 r _`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hS : WtGe ‖(l : K)‖ r wt (∑ i ∈ s, A i)` using `wtGe_sum hpi0 s A fun i hi => hA i (Finset.mem_insert_of_mem hi)`. Establish `h1` using `frob_two hl hpi0 (hA a (Finset.mem_insert_self a s)) hS`. Establish `h2` using `ih fun i hi => hA i (Finset.mem_insert_of_mem hi)`. Establish `h3` using `wtGe_add hpi0 hpi1 h1 h2`.
+
+Rewrite `h3` using `[min_self]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frob_sum {l : ℕ} (hl : l.Prime) (hpi0 : 0 < ‖(l : K)‖) (hpi1 : ‖(l : K)‖ ≤ 1)
     {r : ι → ℝ} {wt : ℝ} {α : Type w} (s : Finset α) (A : α → MvPowerSeries ι K)
     (hA : ∀ i ∈ s, WtGe ‖(l : K)‖ r wt (A i)) :
@@ -116,6 +157,23 @@ theorem frob_sum {l : ℕ} (hl : l.Prime) (hpi0 : 0 < ‖(l : K)‖) (hpi1 : ‖
     rw [min_self] at h3
     convert h3 using 1; ring
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [pow_zero, pow_one, sub_self]`. Conclude with `wtGe_zero hpi0 r _`. Consider the case `succ k ih => set P := ∑ i ∈ s, A i ^ (l ^ k) with hP set E := (∑ i ∈ s, A i) ^ (l ^ k) - P with hE`.
+
+Establish `hPw : WtGe ‖(l : K)‖ r (((l ^ k : ℕ) : ℝ) * wt) P` using `wtGe_sum hpi0 s _ fun i hi => wtGe_pow hpi0 (hA i hi) (l ^ k)`. Establish `hEw' : WtGe ‖(l : K)‖ r (((l ^ k : ℕ) : ℝ) * wt) E` using `wtGe_mono hpi0 hpi1 (by linarith) ih`. Establish `hPE : WtGe ‖(l : K)‖ r (((l ^ k : ℕ) : ℝ) * wt) (P + E)`. Use `wtGe_add hpi0 hpi1 hPw hEw'` as an intermediate fact. Rewrite `this` using `[min_self]`. Then use the resulting hypothesis.
+
+Establish `hG : WtGe ‖(l : K)‖ r (((l - 1 : ℕ) : ℝ) * (((l ^ k : ℕ) : ℝ) * wt)) (∑ i ∈ Finset.range l, (P + E) ^ i * P ^ (l - 1 - i))`. Use `wtGe_sum hpi0 _ _ fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ l - 1` using `by rw [Finset.mem_range] at hi; omega`. Use `wtGe_congr ?_ (wtGe_mul hpi0 (wtGe_pow hpi0 hPE i) (wtGe_pow hpi0 hPw (l - 1 - i)))` and prove the remaining obligations. Rewrite using `[← add_mul, ← Nat.cast_add, Nat.add_sub_cancel' hi']`.
+
+Establish `h1 : WtGe ‖(l : K)‖ r (((l ^ (k + 1) : ℕ) : ℝ) * wt + 1) ((P + E) ^ l - P ^ l)`. Rewrite using `[← geom_sum₂_mul, show P + E - P = E by abel]`. Use `wtGe_congr ?_ (wtGe_mul hpi0 hG ih)` and prove the remaining obligations. Establish `hl1 : 1 ≤ l` using `hl.one_lt.le`. Rewrite using `[Nat.cast_sub hl1]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : WtGe ‖(l : K)‖ r (((l ^ (k + 1) : ℕ) : ℝ) * wt + 1) (P ^ l - ∑ i ∈ s, A i ^ (l ^ (k + 1)))`. Use `frob_sum hl hpi0 hpi1 s (fun i => A i ^ (l ^ k)) fun i hi => wtGe_pow hpi0 (hA i hi) (l ^ k)` as an intermediate fact. Simplify using `only [← pow_mul, ← pow_succ] at this`.
+
+Use `wtGe_congr ?_ this` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `wtGe_add hpi0 hpi1 h1 h2`. Rewrite `h3` using `[min_self]`.
+
+Establish `e : (∑ i ∈ s, A i) ^ l ^ (k + 1) = (P + E) ^ l`. Rewrite using `[pow_succ, pow_mul, hE]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem frob_iter {l : ℕ} (hl : l.Prime) (hpi0 : 0 < ‖(l : K)‖) (hpi1 : ‖(l : K)‖ ≤ 1)
     {r : ι → ℝ} {wt : ℝ} {α : Type w} (s : Finset α) (A : α → MvPowerSeries ι K)
     (hA : ∀ i ∈ s, WtGe ‖(l : K)‖ r wt (A i)) (k : ℕ) :
@@ -160,6 +218,33 @@ theorem frob_iter {l : ℕ} (hl : l.Prime) (hpi0 : 0 < ‖(l : K)‖) (hpi1 : �
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ _ _ l d N0 N1 _ hl hlt ι _ _ M hM be hbe0 hW hNB`. Establish `h0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Establish `h1 : ‖(l : K)‖ ≤ 1` using `hlt.le`. Establish `hlin0 : ∀ x, MvPowerSeries.constantCoeff (linSub M x) = 0`. Introduce `x`.
+
+Simplify using `[linSub]`. Establish `hlinT : ∀ x i, WtGe ‖(l : K)‖ (fun _ => rho l) (rho l) (MvPowerSeries.C (M x i) * MvPowerSeries.X i)` using `fun x i => wtGe_CX h0 (fun _ => rho l) i (hM x i)`. Establish `hlin : ∀ x, WtGe ‖(l : K)‖ (fun _ => rho l) (rho l) (linSub M x)` using `fun x => wtGe_sum h0 Finset.univ _ fun i _ => hlinT x i`. Establish `hsub : ∀ ab : Fin N0 × Fin N1, MvPowerSeries.HasSubst (fun s : ZMod d => linSub M (s, ab.1, ab.2))` using `fun ab => MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => hlin0 _`. Establish `hp : ∀ (ab : Fin N0 × Fin N1) (n : ZMod d →₀ ℕ), WtGe ‖(l : K)‖ (fun _ : ι => rho l) (dot n (fun _ => rho l)) (n.prod fun s e => linSub M (s, ab.1, ab.2) ^ e)`.
+
+Introduce `ab n`. Use `wtGe_prod h0 n.support (fun s => (n s : ℝ) * rho l) (fun s => linSub M (s, ab.1, ab.2) ^ n s) fun s _ => wtGe_pow h0 (hlin _) (n s)` as an intermediate fact. Simplify `this` using `[dot, Finsupp.sum, Finsupp.prod]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `bSum`.
+
+Use `wtGe_sum h0 _ _ fun ab _ => ?_` and prove the remaining obligations. Conclude with `substitution_weight_bound K ‖(l : K)‖ h0 hlt (ZMod d) ι _ (fun _ => rho l) (fun _ => rho l) _ be (fun s => hlin0 _) (fun s => hlin _) hW`. Introduce `m hm`. Rewrite using `[monoWtGe_iff]`. Unfold `bSum`.
+
+Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg h0.le _) fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_subst (hsub ab)]`. Use `norm_finsum_le_of (Real.rpow_nonneg h0.le _) fun n => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`.
+
+Distinguish the cases in `hn : IsBiPower l n`. Take `⟨s, s', α, β, -, -, -, -, rfl⟩` from `hn`. Establish `hprod : (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β)).prod (fun t e => linSub M (t, ab.1, ab.2) ^ e) = linSub M (s, ab.1, ab.2) ^ (l ^ α) * linSub M (s', ab.1, ab.2) ^ (l ^ β)`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (by simp), Finsupp.prod_single_index (by simp)]`. Rewrite using `[hprod]`.
+
+Use `set A := linSub M (s, ab.1, ab.2) with hA`. Use `set B := linSub M (s', ab.1, ab.2) with hB`. Use `set P := ∑ i, (MvPowerSeries.C (M (s, ab.1, ab.2) i) * MvPowerSeries.X i) ^ (l ^ α) with hP`. Use `set P' := ∑ j, (MvPowerSeries.C (M (s', ab.1, ab.2) j) * MvPowerSeries.X j) ^ (l ^ β) with hP'`. Establish `hEA : WtGe ‖(l : K)‖ (fun _ => rho l) (((l ^ α : ℕ) : ℝ) * rho l + 1) (A ^ (l ^ α) - P)` using `frob_iter hl h0 h1 Finset.univ _ (fun i _ => hlinT (s, ab.1, ab.2) i) α`.
+
+Establish `hEB : WtGe ‖(l : K)‖ (fun _ => rho l) (((l ^ β : ℕ) : ℝ) * rho l + 1) (B ^ (l ^ β) - P')` using `frob_iter hl h0 h1 Finset.univ _ (fun i _ => hlinT (s', ab.1, ab.2) i) β`. Establish `hPw : WtGe ‖(l : K)‖ (fun _ => rho l) (((l ^ α : ℕ) : ℝ) * rho l) P` using `wtGe_sum h0 _ _ fun i _ => wtGe_pow h0 (hlinT _ i) _`. Establish `hBw : WtGe ‖(l : K)‖ (fun _ => rho l) (((l ^ β : ℕ) : ℝ) * rho l) (B ^ (l ^ β))` using `wtGe_pow h0 (hlin _) _`. Establish `hD : WtGe ‖(l : K)‖ (fun _ => rho l) ((((l ^ α : ℕ) : ℝ) * rho l + ((l ^ β : ℕ) : ℝ) * rho l) + 1) (A ^ (l ^ α) * B ^ (l ^ β) - P * P')`. Establish `e : A ^ (l ^ α) * B ^ (l ^ β) - P * P' = (A ^ (l ^ α) - P) * B ^ (l ^ β) + P * (B ^ (l ^ β) - P')` using `by ring`.
+
+Rewrite using `[e]`. Use `wtGe_add h0 h1 (wtGe_mul h0 hEA hBw) (wtGe_mul h0 hPw hEB)` as an intermediate fact. Use `wtGe_congr ?_ this` and prove the remaining obligations. Rewrite using `[show ((l ^ α : ℕ) : ℝ) * rho l + 1 + ((l ^ β : ℕ) : ℝ) * rho l = ((l ^ α : ℕ) : ℝ) * rho l + ((l ^ β : ℕ) : ℝ) * rho l + 1 by ring, show ((l ^ α : ℕ) : ℝ) * rho l + (((l ^ β : ℕ) : ℝ) * rho l + 1) = ((l ^ α : ℕ) : ℝ) * rho l + ((l ^ β : ℕ) : ℝ) * rho l + 1 by ring, min_self]`. Establish `hPP : MvPowerSeries.coeff m (P * P') = 0`.
+
+Rewrite using `[hP, hP', Finset.sum_mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_pair_eq, MvPowerSeries.coeff_monomial_ne]`.
+
+Conclude with `fun h => hm ⟨i, j, α, β, h⟩`. Establish `hcoef : MvPowerSeries.coeff m (A ^ (l ^ α) * B ^ (l ^ β)) = MvPowerSeries.coeff m (A ^ (l ^ α) * B ^ (l ^ β) - P * P')`. Rewrite using `[map_sub, hPP, sub_zero]`. Rewrite using `[hcoef]`. Establish `hdn : dot (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β)) (fun _ => rho l) = ((l ^ α : ℕ) : ℝ) * rho l + ((l ^ β : ℕ) : ℝ) * rho l`.
+
+Rewrite using `[dot_add, dot_single, dot_single]`. Establish `hbn` using `hW (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β))`. Rewrite `hbn` using `[monoWtGe_iff, hdn]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `hNB n hn`.
+
+Rewrite `hb` using `[monoWtGe_iff]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pure_cross_term_weight : PureCross.{u, v} := by
   intro K _ _ _ l d N0 N1 _ hl hlt ι _ _ M hM be hbe0 hW hNB
   classical

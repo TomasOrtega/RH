@@ -15,9 +15,15 @@ abbrev LaurUT (Ω : Type w) [Field Ω] : Type w := AddMonoidAlgebra Ω (ℤ × �
 abbrev tDeg (Ω : Type w) [Field Ω] (a : ℤ) : Submodule Ω (LaurUT Ω) :=
   gradeBy Ω (AddMonoidHom.snd ℤ ℤ) a
 
+/- English proof (translation)
+The claim follows from `single_mem_gradeBy (R := Ω) (AddMonoidHom.snd ℤ ℤ) k z`.
+-/
 theorem single_mem_tDeg {Ω : Type w} [Field Ω] (k : ℤ × ℤ) (z : Ω) : single k z ∈ tDeg Ω k.2 :=
   single_mem_gradeBy (R := Ω) (AddMonoidHom.snd ℤ ℤ) k z
 
+/- English proof (translation)
+Rewrite using `[coeff_single_mul_apply, neg_add_eq_sub]`.
+-/
 theorem coeff_single_mul_sub {Ω : Type w} [Field Ω] (g : ℤ × ℤ) (c : Ω) (v : LaurUT Ω) (k : ℤ × ℤ) :
     (single g c * v).coeff k = c * v.coeff (k - g) := by
   rw [coeff_single_mul_apply, neg_add_eq_sub]
@@ -37,18 +43,37 @@ variable (S) in
 def xyHom : Poly (MvPolynomial (Fin (r + 1)) S) N →+* LaurUT Ω :=
   eval₂Hom (yHom S η).toRingHom fun i => single ((0, 1) : ℤ × ℤ) (x i)
 
+/- English proof (translation)
+Simplify using `[xyHom]`.
+-/
 theorem xyHom_X (i : Fin (N + 1)) : xyHom S x η (X i) = single ((0, 1) : ℤ × ℤ) (x i) := by
   simp [xyHom]
 
+/- English proof (translation)
+Simplify using `[xyHom]`.
+-/
 theorem xyHom_C (c : MvPolynomial (Fin (r + 1)) S) : xyHom S x η (C c) = yHom S η c := by
   simp [xyHom]
 
+/- English proof (translation)
+Rewrite using `[yHom, aeval_C, coe_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem yHom_C (c : S) : yHom S η (C c) = single (0 : ℤ × ℤ) (algebraMap S Ω c) := by
   rw [yHom, aeval_C, coe_algebraMap]; rfl
 
+/- English proof (translation)
+Simplify using `[yHom]`.
+-/
 theorem yHom_X (j : Fin (r + 1)) : yHom S η (X j) = single ((1, 0) : ℤ × ℤ) (η j) := by
   simp [yHom]
 
+/- English proof (translation)
+Proceed by induction on `c using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[yHom_C]`. Conclude with `single_mem_tDeg (0 : ℤ × ℤ) _`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, yHom_X]`. Establish `h2 : single ((1, 0) : ℤ × ℤ) (η j) ∈ tDeg Ω 0` using `single_mem_tDeg ((1, 0) : ℤ × ℤ) _`. Use `SetLike.GradedMul.mul_mem hp h2` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem yHom_mem_tDeg (c : MvPolynomial (Fin (r + 1)) S) : yHom S η c ∈ tDeg Ω 0 := by
   induction c using MvPolynomial.induction_on with
   | C a =>
@@ -61,6 +86,13 @@ theorem yHom_mem_tDeg (c : MvPolynomial (Fin (r + 1)) S) : yHom S η c ∈ tDeg 
     have := SetLike.GradedMul.mul_mem hp h2
     rwa [add_zero] at this
 
+/- English proof (translation)
+Rewrite using `[p.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Establish `hdeg` using `hp (mem_support_iff.mp hα)`. Rewrite using `[xyHom, coe_eval₂Hom, eval₂_monomial]`. Establish `h1 : (yHom S η).toRingHom (coeff α p) ∈ tDeg Ω 0` using `yHom_mem_tDeg η _`.
+
+Establish `h2 : (α.prod fun i k => single ((0, 1) : ℤ × ℤ) (x i) ^ k) ∈ tDeg Ω (∑ i ∈ α.support, α i • (1 : ℤ))`. Rewrite using `[Finsupp.prod]`. Conclude with `SetLike.prod_mem_graded (tDeg Ω) (fun i => α i • (1 : ℤ)) _ fun i _ => SetLike.pow_mem_graded _ (single_mem_tDeg ((0, 1) : ℤ × ℤ) (x i))`. Establish `h3 : (∑ i ∈ α.support, α i • (1 : ℤ)) = d`. Rewrite using `[← hdeg]`.
+
+Simplify using `[Finsupp.weight_apply, Finsupp.sum]`. Rewrite `h2` using `[h3]`. Use `SetLike.GradedMul.mul_mem h1 h2` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem xyHom_mem_tDeg {p : Poly (MvPolynomial (Fin (r + 1)) S) N} {d : ℕ} (hp : p.IsHomogeneous d) :
     xyHom S x η p ∈ tDeg Ω d := by
   rw [p.as_sum, map_sum]
@@ -80,6 +112,13 @@ theorem xyHom_mem_tDeg {p : Poly (MvPolynomial (Fin (r + 1)) S) N} {d : ℕ} (hp
   have := SetLike.GradedMul.mul_mem h1 h2
   rwa [zero_add] at this
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, map_sum]`. Rewrite using `[show single ((0 : ℤ), (e : ℤ)) (∑ α ∈ f.support, aeval x (monomial α (coeff α f))) = ∑ α ∈ f.support, single ((0 : ℤ), (e : ℤ)) (aeval x (monomial α (coeff α f))) from map_sum (singleAddHom ((0 : ℤ), (e : ℤ))) _ _]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations.
+
+Establish `hdeg` using `hf (mem_support_iff.mp hα)`. Rewrite using `[map_monomial, xyHom, coe_eval₂Hom, eval₂_monomial, aeval_monomial]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, yHom_C, single_pow, finsuppProd_single, single_mul_single]`. Use `congr 1`. Rewrite using `[← hdeg]`.
+
+Apply the tactic sequence `ext <;> simp [Finsupp.weight_apply, Finsupp.sum, Prod.fst_sum, Prod.snd_sum]`.
+-/
 theorem xyHom_map_C {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     xyHom S x η (MvPolynomial.map (C : S →+* MvPolynomial (Fin (r + 1)) S) f) = single ((0 : ℤ), (e : ℤ)) (aeval x f) := by
   conv_lhs => rw [f.as_sum]
@@ -97,6 +136,13 @@ theorem xyHom_map_C {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
   rw [← hdeg]
   ext <;> simp [Finsupp.weight_apply, Finsupp.sum, Prod.fst_sum, Prod.snd_sum]
 
+/- English proof (translation)
+Proceed by induction on `n generalizing q with`. Consider the case `zero`. Rewrite `hq` using `[pow_zero, Set.mem_one]`. Substitute `hq` using the available equality. Conclude with `⟨1, by rw [map_one, AddMonoidAlgebra.one_def]; rfl⟩`.
+
+Consider the case `succ n ih`. Rewrite `hq` using `[pow_succ', Set.mem_mul]`. Take `⟨_, ⟨j, rfl⟩, q', hq', rfl⟩` from `hq`. Take `⟨p, hp⟩` from `ih hq'`. Use `⟨X j * p, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hp, yHom_X, single_mul_single]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [add_comm]`.
+-/
 theorem exists_yHom_eq {n : ℕ} {q : Ω} (hq : q ∈ Set.range η ^ n) :
     ∃ p : MvPolynomial (Fin (r + 1)) S, yHom S η p = single ((n : ℤ), (0 : ℤ)) q := by
   induction n generalizing q with
@@ -120,14 +166,29 @@ def twPart (M₀ : FinGradedSub (S := S) (x := x) Ω) (a b : ℤ) : Submodule S 
 
 variable {x}
 
+/- English proof (translation)
+Rewrite using `[twPart, if_pos (Int.natCast_nonneg n), Int.toNat_natCast]`.
+-/
 theorem twPart_of_nonneg (M₀ : FinGradedSub (S := S) (x := x) Ω) (a : ℤ) (n : ℕ) :
     twPart η M₀ a n = Submodule.span S ((M₀.piece a : Set Ω) * Set.range η ^ n) := by
   rw [twPart, if_pos (Int.natCast_nonneg n), Int.toNat_natCast]
 
+/- English proof (translation)
+Rewrite using `[twPart, if_neg (not_le.mpr hb)]`.
+-/
 theorem twPart_of_neg (M₀ : FinGradedSub (S := S) (x := x) Ω) (a : ℤ) {b : ℤ} (hb : b < 0) :
     twPart η M₀ a b = ⊥ := by
   rw [twPart, if_neg (not_le.mpr hb)]
 
+/- English proof (translation)
+Unfold `twPart at hz ⊢`. Use `split_ifs at hz ⊢ with hb`. Use `Submodule.span_induction (p := fun z _ => aeval x f * z ∈ Submodule.span S ((M₀.piece (a + d) : Set Ω) * Set.range η ^ b.toNat)) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, q, hq, rfl⟩`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `Submodule.subset_span (Set.mul_mem_mul (M₀.smul_mem d a f m hf hm) hq)`. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `u v _ _ hu hv`. Rewrite using `[mul_add]`.
+
+Conclude with `Submodule.add_mem _ hu hv`. Introduce `c u _ hu`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hu`. Rewrite `hz`, the goal using `[Submodule.mem_bot]`.
+
+Rewrite using `[hz, mul_zero]`.
+-/
 theorem twPart_form_mul (M₀ : FinGradedSub (S := S) (x := x) Ω) {a b : ℤ} {f : Poly S N} {d : ℕ}
     (hf : f.IsHomogeneous d) {z : Ω} (hz : z ∈ twPart η M₀ a b) :
     aeval x f * z ∈ twPart η M₀ (a + d) b := by
@@ -143,11 +204,25 @@ theorem twPart_form_mul (M₀ : FinGradedSub (S := S) (x := x) Ω) {a b : ℤ} {
     · intro c u _ hu; rw [mul_smul_comm]; exact Submodule.smul_mem _ c hu
   · rw [Submodule.mem_bot] at hz ⊢; rw [hz, mul_zero]
 
+/- English proof (translation)
+Use `twPart_form_mul η M₀ (isHomogeneous_X S i) hz` as an intermediate fact. Rewrite `this` using `[aeval_X, Nat.cast_one]`. Then use the resulting hypothesis.
+-/
 theorem twPart_x_mul (M₀ : FinGradedSub (S := S) (x := x) Ω) {a b : ℤ} (i : Fin (N + 1)) {z : Ω}
     (hz : z ∈ twPart η M₀ a b) : x i * z ∈ twPart η M₀ (a + 1) b := by
   have := twPart_form_mul η M₀ (isHomogeneous_X S i) hz
   rwa [aeval_X, Nat.cast_one] at this
 
+/- English proof (translation)
+Break down `lt_or_ge b 0 with hb | hb` into its components or cases. Rewrite `hz` using `[twPart_of_neg η M₀ a hb, Submodule.mem_bot]`. Rewrite using `[hz, mul_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hb`.
+
+Rewrite `hz` using `[twPart_of_nonneg]`. Rewrite using `[show (n : ℤ) + 1 = ((n + 1 : ℕ) : ℤ) by push_cast; rfl, twPart_of_nonneg]`. Use `Submodule.span_induction (p := fun z _ => η j * z ∈ Submodule.span S ((M₀.piece a : Set Ω) * Set.range η ^ (n + 1))) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, q, hq, rfl⟩`. Rewrite using `[mul_left_comm]`.
+
+Use `Submodule.subset_span (Set.mul_mem_mul hm ?_)` and prove the remaining obligations. Rewrite using `[pow_succ']`. Conclude with `Set.mul_mem_mul (Set.mem_range_self j) hq`. Rewrite using `[mul_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `u v _ _ hu hv`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hu hv`. Introduce `c u _ hu`. Rewrite using `[mul_smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ c hu`.
+-/
 theorem twPart_eta_mul (M₀ : FinGradedSub (S := S) (x := x) Ω) {a b : ℤ} (j : Fin (r + 1)) {z : Ω}
     (hz : z ∈ twPart η M₀ a b) : η j * z ∈ twPart η M₀ a (b + 1) := by
   rcases lt_or_ge b 0 with hb | hb
@@ -170,13 +245,22 @@ theorem twPart_eta_mul (M₀ : FinGradedSub (S := S) (x := x) Ω) {a b : ℤ} (j
 def IsTw (M₀ : FinGradedSub (S := S) (x := x) Ω) (v : LaurUT Ω) : Prop :=
   ∀ k : ℤ × ℤ, v.coeff k ∈ twPart η M₀ k.2 k.1
 
+/- English proof (translation)
+Introduce `k` and use `by rw [AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply]; exact Submodule.zero_mem _`.
+-/
 theorem isTw_zero (M₀ : FinGradedSub (S := S) (x := x) Ω) : IsTw η M₀ 0 := fun k => by
   rw [AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `k` and use `by rw [AddMonoidAlgebra.coeff_add, Finsupp.coe_add, Pi.add_apply]; exact Submodule.add_mem _ (hu k) (hv k)`.
+-/
 theorem isTw_add (M₀ : FinGradedSub (S := S) (x := x) Ω) {u v : LaurUT Ω} (hu : IsTw η M₀ u)
     (hv : IsTw η M₀ v) : IsTw η M₀ (u + v) := fun k => by
   rw [AddMonoidAlgebra.coeff_add, Finsupp.coe_add, Pi.add_apply]; exact Submodule.add_mem _ (hu k) (hv k)
 
+/- English proof (translation)
+Introduce `k'` and use `by classical rw [coeff_single, Finsupp.single_apply] split_ifs with h · subst h; exact hz · exact Submodule.zero_mem _`.
+-/
 theorem isTw_single (M₀ : FinGradedSub (S := S) (x := x) Ω) {k : ℤ × ℤ} {z : Ω}
     (hz : z ∈ twPart η M₀ k.2 k.1) : IsTw η M₀ (single k z) := fun k' => by
   classical
@@ -185,6 +269,19 @@ theorem isTw_single (M₀ : FinGradedSub (S := S) (x := x) Ω) {k : ℤ × ℤ} 
   · subst h; exact hz
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on generalizing v with`. Consider the case `C a`. Rewrite using `[xyHom_C]`. Proceed by induction on `a using MvPolynomial.induction_on generalizing v with`. Consider the case `C c`.
+
+Introduce `k`. Rewrite using `[yHom_C, coeff_single_mul_sub, sub_zero]`. Use `Submodule.smul_mem _ c (hv k)` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Consider the case `add p q hp hq => rw [map_add, add_mul]`.
+
+Conclude with `isTw_add η M₀ (hp hv) (hq hv)`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, mul_assoc]`. Apply `hp` to reduce the goal to its premises. Introduce `k`.
+
+Rewrite using `[yHom_X, coeff_single_mul_sub]`. Use `twPart_eta_mul η M₀ j (hv (k - (1, 0)))` as an intermediate fact. Simplify using `using this`. Consider the case `add p q hp hq => rw [map_add, add_mul]`. Conclude with `isTw_add η M₀ (hp hv) (hq hv)`.
+
+Consider the case `mul_X p i hp`. Rewrite using `[map_mul, mul_assoc]`. Apply `hp` to reduce the goal to its premises. Introduce `k`. Rewrite using `[xyHom_X, coeff_single_mul_sub]`.
+
+Use `twPart_x_mul η M₀ i (hv (k - (0, 1)))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem isTw_xyHom_mul (M₀ : FinGradedSub (S := S) (x := x) Ω)
     (p : Poly (MvPolynomial (Fin (r + 1)) S) N) {v : LaurUT Ω} (hv : IsTw η M₀ v) :
     IsTw η M₀ (xyHom S x η p * v) := by
@@ -231,6 +328,9 @@ def UT.ofL (v : LaurUT Ω) : UT x η := v
 instance : Algebra (Poly (MvPolynomial (Fin (r + 1)) S) N) (UT x η) :=
   RingHom.toAlgebra (show Poly (MvPolynomial (Fin (r + 1)) S) N →+* UT x η from xyHom S x η)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem UT.smul_def (p : Poly (MvPolynomial (Fin (r + 1)) S) N) (v : UT x η) :
     UT.toL (p • v) = xyHom S x η p * UT.toL v := rfl
 
@@ -257,26 +357,44 @@ instance (M₀ : FinGradedSub (S := S) (x := x) Ω) :
     rw [Algebra.smul_def, mul_smul]
 
 variable {η} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TwM.val_add {M₀ : FinGradedSub (S := S) (x := x) Ω} (m m' : TwM η M₀) :
     (m + m').val = m.val + m'.val := rfl
 
 variable {η} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TwM.val_zero {M₀ : FinGradedSub (S := S) (x := x) Ω} : (0 : TwM η M₀).val = 0 := rfl
 
 variable {η} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TwM.val_smul {M₀ : FinGradedSub (S := S) (x := x) Ω} (p : Poly (MvPolynomial (Fin (r + 1)) S) N)
     (m : TwM η M₀) : (p • m).val = xyHom S x η p * m.val := rfl
 
 variable {η} in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `xyHom S x η (C c) * m.val = _`. Rewrite using `[xyHom_C]`.
+-/
 theorem TwM.val_smul' {M₀ : FinGradedSub (S := S) (x := x) Ω} (c : MvPolynomial (Fin (r + 1)) S)
     (m : TwM η M₀) : (c • m).val = yHom S η c * m.val := by
   change xyHom S x η (C c) * m.val = _
   rw [xyHom_C]
 
 variable {η} in
+/- English proof (translation)
+The claim follows from `m.2`.
+-/
 theorem TwM.isTw {M₀ : FinGradedSub (S := S) (x := x) Ω} (m : TwM η M₀) : IsTw η M₀ m.val := m.2
 
 variable {η} in
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext h`.
+-/
 theorem TwM.val_injective {M₀ : FinGradedSub (S := S) (x := x) Ω} :
     Function.Injective (TwM.val (η := η) (M₀ := M₀)) := fun _ _ h => Subtype.ext h
 
@@ -286,6 +404,9 @@ def TwM.mk {M₀ : FinGradedSub (S := S) (x := x) Ω} (v : LaurUT Ω) (hv : IsTw
   ⟨UT.ofL v, hv⟩
 
 variable {η} in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TwM.val_mk {M₀ : FinGradedSub (S := S) (x := x) Ω} (v : LaurUT Ω) (hv : IsTw η M₀ v) :
     (TwM.mk v hv).val = v := rfl
 
@@ -301,9 +422,31 @@ def twPiece (M₀ : FinGradedSub (S := S) (x := x) Ω) (a : ℤ) :
     simpa using SetLike.GradedMul.mul_mem (yHom_mem_tDeg η c) hm
 
 variable {η} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_twPiece {M₀ : FinGradedSub (S := S) (x := x) Ω} {a : ℤ} {m : TwM η M₀} :
     m ∈ twPiece η M₀ a ↔ ∀ k : ℤ × ℤ, k ∈ m.val.coeff.support → k.2 = a := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_def]`. Introduce `a`. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `m hm hm'`. Establish `key : ∀ k : ℤ × ℤ, k.2 = a → m.val.coeff k = 0`. Use `Submodule.iSup_induction (motive := fun m => ∀ k : ℤ × ℤ, k.2 = a → m.val.coeff k = 0) _ hm' ?_ ?_ ?_` and prove the remaining obligations. Introduce `j m' hm'`. Distinguish the cases in `hj : j = a`.
+
+Substitute `hj` using the available equality. Simplify using `only [ne_eq, not_true_eq_false, iSup_false, Submodule.mem_bot] at hm'`. Substitute `hm'` using the available equality. Introduce `k _`. Rewrite using `[TwM.val_zero]`.
+
+Both sides reduce to the same expression. Rewrite `hm'` using `[iSup_pos hj]`. Introduce `k hk`. Assume the negation of the conclusion as `hne`. Conclude with `hj (mem_twPiece.mp hm' k (Finsupp.mem_support_iff.mpr hne) ▸ hk)`.
+
+Introduce `k _`. Rewrite using `[TwM.val_zero]`. Both sides reduce to the same expression. Introduce `m₁ m₂ h₁ h₂ k hk`. Rewrite using `[TwM.val_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h₁ k hk, h₂ k hk, add_zero]`.
+
+Apply `TwM.val_injective` to reduce the goal to its premises. Rewrite using `[TwM.val_zero]`. Use extensionality with `k`. Distinguish the cases in `hk : k.2 = a`. Conclude with `key k hk`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hk (mem_twPiece.mp hm k (Finsupp.mem_support_iff.mpr hne))`. Rewrite using `[eq_top_iff]`. Introduce `m _`. Establish `hsum : m = ∑ k ∈ m.val.coeff.support, TwM.mk (single k (m.val.coeff k)) (isTw_single η M₀ (m.isTw k))`.
+
+Apply `TwM.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `m.val = UT.toL ((∑ k ∈ m.val.coeff.support, _ : TwM η M₀) : UT x η)`. Rewrite using `[Submodule.coe_sum]`. Conclude with `(sum_coeff_single m.val).symm`. Rewrite using `[hsum]`.
+
+Use `Submodule.sum_mem _ fun k _ => Submodule.mem_iSup_of_mem k.2 ?_` and prove the remaining obligations. Conclude with `single_mem_gradeBy (R := Ω) (AddMonoidHom.snd ℤ ℤ) k _`.
+-/
 theorem twPiece_isInternal (M₀ : FinGradedSub (S := S) (x := x) Ω) :
     DirectSum.IsInternal (twPiece η M₀) := by
   classical
@@ -357,6 +500,33 @@ def twGraded (M₀ : FinGradedSub (S := S) (x := x) Ω) :
     rw [TwM.val_smul, add_comm]
     exact SetLike.GradedMul.mul_mem (xyHom_mem_tDeg x η hp) hm
 
+/- English proof (translation)
+Take `⟨n, deg, gen, hgen, hspan⟩` from `M₀.fg`. Set `g : Fin n → UT x η` to `fun j => UT.ofL (x := x) (η := η) (single ((0 : ℤ), deg j) (gen j))`. Use `⟨(Finset.univ.image g), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Use `isTw_single η M₀ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gen j ∈ twPart η M₀ (deg j) ((0 : ℕ) : ℤ)`. Rewrite using `[twPart_of_nonneg, pow_zero, mul_one]`. Conclude with `Submodule.subset_span (hgen j)`. Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ] set Sp := Submodule.span (Poly (MvPolynomial (Fin (r + 1)) S) N) (Set.range g) with hSp`.
+
+Establish `hsingle : ∀ (a : ℤ) (b : ℤ) (z : Ω), z ∈ twPart η M₀ a b → UT.ofL (x` using `x) (η := η) (single (b, a) z) ∈ Sp := by`. Introduce `a b z hz`. Break down `lt_or_ge b 0 with hb | hb` into its components or cases. Rewrite `hz` using `[twPart_of_neg η M₀ a hb, Submodule.mem_bot]`. Substitute `hz` using the available equality.
+
+Rewrite using `[single_zero]`. Conclude with `Submodule.zero_mem _`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hb`. Rewrite `hz` using `[twPart_of_nonneg]`. Use `Submodule.span_induction (p := fun z _ => UT.ofL (x := x) (η := η) (single ((k : ℤ), a) z) ∈ Sp) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨m, hm, q, hq, rfl⟩`. Take `⟨p, hp⟩` from `exists_yHom_eq (S := S) η hq`. Use `Submodule.span_induction (p := fun m _ => UT.ofL (x := x) (η := η) (single ((k : ℤ), a) (m * q)) ∈ Sp) ?_ ?_ ?_ ?_ (hspan a hm)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, f, e, hf, he, rfl⟩`. Establish `: UT.ofL (x` using `x) (η := η) (single ((k : ℤ), a) ((aeval x f • gen j) * q)) = (MvPolynomial.map (C : S →+* MvPolynomial (Fin (r + 1)) S) f * C p) • g j := by`.
+
+Express the relevant statement in the definitionally equal form `_ = xyHom S x η (MvPolynomial.map (C : S →+* MvPolynomial (Fin (r + 1)) S) f * C p) * single ((0 : ℤ), deg j) (gen j)`. Rewrite using `[map_mul, xyHom_map_C x η hf, xyHom_C, hp, single_mul_single, single_mul_single, smul_eq_mul]`. Establish `hidx : ((0 : ℤ), (e : ℤ)) + ((k : ℤ), 0) + (0, deg j) = ((k : ℤ), a)`. Apply the tactic sequence `ext <;> simp [← he]`. Rewrite using `[hidx, mul_right_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[zero_mul, single_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `u v _ _ hu hv`. Rewrite using `[add_mul, single_add]`. Conclude with `Submodule.add_mem _ hu hv`. Introduce `c u _ hu`. Establish `: UT.ofL (x` using `x) (η := η) (single ((k : ℤ), a) ((c • u) * q)) = (C (C c) : Poly (MvPolynomial (Fin (r + 1)) S) N) • UT.ofL (x := x) (η := η) (single ((k : ℤ), a) (u * q)) := by`.
+
+Express the relevant statement in the definitionally equal form `_ = xyHom S x η (C (C c)) * single ((k : ℤ), a) (u * q)`. Rewrite using `[xyHom_C, yHom_C, single_mul_single, zero_add, smul_mul_assoc, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hu`.
+
+Rewrite using `[single_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `u v _ _ hu hv`. Rewrite using `[single_add]`. Conclude with `Submodule.add_mem _ hu hv`.
+
+Introduce `c u _ hu`. Establish `: UT.ofL (x` using `x) (η := η) (single ((k : ℤ), a) (c • u)) = (C (C c) : Poly (MvPolynomial (Fin (r + 1)) S) N) • UT.ofL (x := x) (η := η) (single ((k : ℤ), a) u) := by`. Express the relevant statement in the definitionally equal form `_ = xyHom S x η (C (C c)) * single ((k : ℤ), a) u`. Rewrite using `[xyHom_C, yHom_C, single_mul_single, zero_add, Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hu`. Introduce `v hv`. Establish `hv' : IsTw η M₀ (UT.toL v)` using `hv`. Establish `: v = ∑ k ∈ (UT.toL v).coeff.support, UT.ofL (x` using `x) (η := η) (single k ((UT.toL v).coeff k)) := (sum_coeff_single (UT.toL v)).symm`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun k _ => hsingle k.2 k.1 _ (hv' k)`.
+-/
 theorem twSub_fg (M₀ : FinGradedSub (S := S) (x := x) Ω) : (twSub η M₀).FG := by
   classical
   obtain ⟨n, deg, gen, hgen, hspan⟩ := M₀.fg

@@ -63,6 +63,17 @@ def BoxVol : Prop :=
               (omAt σ J ψ v ((gramE σ J X0).map (inclR (Fv F v)))
                 (C v ∩ {X | gramR (Fv F v) σ J X = (gramE σ J X0).map (inclR (Fv F v))})).toReal)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ a X0 hT νX Λ μf hStd hdet ha hn hSWa hSWc hLat hOm _ _ _`. Take `⟨hKYm, hKYiff⟩` from `h1 F E σ n J a X0 Λ hStd.1 hStd.2.1 hLat`. Use `⟨hKYm, ?_⟩` and prove the remaining obligations. Introduce `μinf νinf fibInf hμ hν hfib hne ωf hdec`. Take `⟨hsupp, hbox⟩` from `h3 F E σ n J ψ a X0 hT νX hStd hdet ha hn hSWa hSWc hOm μinf νinf fibInf hμ hν hfib hne ωf hdec`.
+
+Take `⟨d, b, C, hSB, hCm, hCeq, hCa⟩` from `h2 F E σ n J a X0 Λ hStd.1 hStd.2.1 hdet hLat`. Establish `hae : ∀ᵐ x ∂ωf, ∀ v : HeightOneSpectrum (𝓞 F), gramR (Fv F v) σ J (projV v x) = (gramE σ J X0).map (inclR (Fv F v))` using `ae_iff.2 hsupp`. Establish `hset : ωf {x | ∃ k ∈ Kf σ J Λ, x = k • ratTup (Af F) X0} = ωf {x | ∀ v, projV v x ∈ C v}`. Apply `measure_congr` to reduce the goal to its premises. Use `filter_upwards [hae] with x hx`.
+
+Apply `propext` to reduce the goal to its premises. Use `show (∃ k ∈ Kf σ J Λ, x = k • ratTup (Af F) X0) ↔ ∀ v, projV v x ∈ C v`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Establish `h'` using `(hKYiff x).1 h v`.
+
+Rewrite `h'` using `[← hCeq v]`. Conclude with `h'.1`. Introduce `h`. Use `(hKYiff x).2 fun v => ?_` and prove the remaining obligations. Rewrite using `[← hCeq v]`.
+
+Conclude with `⟨h v, hx v⟩`. Rewrite using `[hset, hbox d b C hSB hCm hCa]`. Use `congr 1`. Conclude with `tprod_congr fun v => by rw [hCeq v]`.
+-/
 theorem omFinVol_of (h1 : KfOrb) (h2 : LocSB) (h3 : BoxVol) : Formalism.L2.SG.Pf.NcS.SplitSk.OmFinVol := by
   intro F E _ _ _ _ _ σ n J ψ a X0 hT νX Λ μf hStd hdet ha hn hSWa hSWc hLat hOm _ _ _
   obtain ⟨hKYm, hKYiff⟩ := h1 F E σ n J a X0 Λ hStd.1 hStd.2.1 hLat

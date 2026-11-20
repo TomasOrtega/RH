@@ -28,6 +28,13 @@ def UsedAsc : Prop :=
 
 namespace Re.Asc
 
+/- English proof (translation)
+Use `⟨fun w => ?_, h3 E N a d V π hN hV (GlobalTheory.SpehPair.isUnitary_of_isNormalised hn) hn e, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Take `⟨σ', hσ'⟩` from `GlobalTheory.DiscLocEx.exists_isLocCompGL hF E N V hV w`. Conclude with `⟨σ, σ', hσ, hσ'⟩`. Take `⟨m', hm'⟩` from `PInfInd2A.exists_hasInfCharGL hV τ`.
+
+Take `⟨m₀, hm₀, rfl⟩` from `infAsc_holds E N a d V π hV e τ m' hm'`. Use `⟨m₀, hm₀, ?_⟩` and prove the remaining obligations. Establish `e' : (∑ i : Fin d, m₀.map (· + (spehExp d i : ℂ))) = GlobalTheory.SphGal.spehInf d m₀`. Simplify using `only [GlobalTheory.SphGal.spehInf, spehExp]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[← e']`. Conclude with `hm'`.
+-/
 theorem hasSpehComp (h3 : Clause3Asc) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N a d : ℕ} (hN : 1 ≤ N)
     {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {π : CuspSub E a} (hn : IsNormalised π) (e : AscEmb V π d) :

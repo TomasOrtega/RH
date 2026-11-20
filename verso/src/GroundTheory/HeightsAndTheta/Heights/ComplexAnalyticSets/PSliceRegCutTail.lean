@@ -16,6 +16,27 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n e h W F u' ℓ ε hW hF hℓ hε`. Take `⟨hprime, hdim, -⟩` from `SliceIdeal.proof n (e + 1) W F ℓ hW hF hℓ`. Use `set I := W ⊔ Ideal.span {linForm ℓ - 1} with hIdef`. Establish `hmem : linForm ℓ - 1 ∈ I` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Unfold `varInt`.
+
+Use `split_ifs with hA`. Use `swap`. Conclude with `tendsto_const_nhds`. Use `set A := hA.choose`. Establish `hAf : IsFiniteProjection I A` using `hA.choose_spec`.
+
+Establish `hfin : ∀ y, (fibre I A y).Finite` using `fun y => (ComplexSets.FibreBound.proof n (e + 1) I A hprime hdim hAf y).2.1`. Establish `hne : zeroSet I ⊆ {x | x ≠ 0}` using `fun x hx hx0 => by`. Substitute `hx0` using the available equality. Use `hx _ hmem` as an intermediate fact. Simplify using `[linForm] at this`.
+
+Use `set φ : Fin (e + 1) → (Fin n → ℂ) → ℝ := vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x) with hφ`. Establish `hsm : ∀ i, SmoothNear (zeroSet I) (φ i)`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `⟨{x | x ≠ 0}, isOpen_ne, hne, by simpa [hφ] using contDiffOn_fsLogReg h u' hε⟩`.
+
+Conclude with `⟨{x | x ≠ 0}, isOpen_ne, hne, by simpa [hφ] using h.contDiffOn_log_dualNorm⟩`. Establish `hint : Integrable (chartAbsDens I A (fun _ => 1) φ)`. Rewrite using `[hφ, SliceCutOffLimit.vecCons_eq_affine h (fsLogReg h u' ε)]`. Use `hM n e h W F ℓ A _ _ _ hW hF hℓ hAf (fun _ _ _ => rfl) continuousOn_const (fun k t x ht => ?_) (fun k => ?_)` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations.
+
+Simplify using `using fsLogReg_smul h u' ε t x ht`. Simplify using the standard rewrite rules. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using contDiffOn_fsLogReg h u' hε`. Simplify using `using contDiffOn_const`.
+
+Unfold `chartInt`. Establish `key` using `tendsto_integral_of_dominated_convergence (f := fun _ => (0 : ℝ)) (F := fun k => chartDens I A (fun x => 1 - sliceCut h k x) φ) (chartAbsDens I A (fun _ => 1) φ) (fun k => (SheetSumMeasurable.proof n (e + 1) I A _ _ hprime hdim hAf (measurable_const.sub (SliceCut.measurable h k)) …`. Rewrite `key` using `[integral_zero]`. Then use the resulting hypothesis. Rewrite using `[Real.norm_eq_abs]`. Unfold `chartDens chartAbsDens`.
+
+Rewrite using `[CutOffDominated.sheetSum_eq_sum _ (hfin y), CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun x _ => ?_)` and prove the remaining obligations. Use `split_ifs with hs`. Establish `h01` using `SliceCut.mem_Icc h k x`. Rewrite using `[abs_mul, abs_mul, abs_one, one_mul, abs_of_nonneg (by linarith [h01.2])]`.
+
+Conclude with `mul_le_of_le_one_left (abs_nonneg _) (by linarith [h01.1])`. Simplify using the standard rewrite rules. Unfold `chartDens`. Simplify using `only [CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Establish `hterm : ∀ x, Tendsto (fun k : ℕ => if hs : ∃ s, IsSheetAt I A x s then (1 - sliceCut h k x) * ReciprocityTheory.AnForm.maDens (fun i => φ i ∘ hs.choose) y else 0) atTop (𝓝 0)` using `fun x => by split_ifs with hs`.
+
+Simplify using `using ((SliceCut.tendsto_one h x).const_sub 1).mul_const (ReciprocityTheory.AnForm.maDens (fun i => φ i ∘ hs.choose) y)`. Conclude with `tendsto_const_nhds`. Simplify using `using tendsto_finsetSum (hfin y).toFinset fun x _ => hterm x`.
+-/
 theorem SliceRegCutTail.proof (hM : SliceFormMass.Statement) : SliceRegCutTail.Statement := by
   classical
   intro n e h W F u' ℓ ε hW hF hℓ hε

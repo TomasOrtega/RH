@@ -23,6 +23,9 @@ def belowPl (P : HeightOneSpectrum (𝓞 D.host.E)) : HeightOneSpectrum (𝓞 D.
     obtain ⟨x, hxP, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot
     exact Ideal.comap_ne_bot_of_integral_mem hx0 hxP (Algebra.IsIntegral.isIntegral x)
 
+/- English proof (translation)
+Take `⟨e, he, ε, hε, heq⟩` from `idem_at P hP (belowPl P) rfl`. Use `⟨e, he, fun v hv => ⟨ε, ?_, heq⟩⟩` and prove the remaining obligations. Establish `hb : belowPl P = v` using `HeightOneSpectrum.ext hv`. Conclude with `hb ▸ hε`.
+-/
 theorem idem_exists_at (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsConjPl (D := D) P P) :
     ∃ e : AE D, Formalism.L2.NTheta.IsIdemAt e P ∧
       ∀ v : HeightOneSpectrum (𝓞 D.host.F), P.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = v.asIdeal →
@@ -32,6 +35,17 @@ theorem idem_exists_at (P : HeightOneSpectrum (𝓞 D.host.E)) (hP : ¬ Lev.IsCo
   have hb : belowPl P = v := HeightOneSpectrum.ext hv
   exact hb ▸ hε
 
+/- English proof (translation)
+Establish `hTS : TwoSplits D`. Conclude with `twoSplits D`. Establish `hinj : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Conclude with `FaithfulSMul.algebraMap_injective _ _`. Introduce `v hv`.
+
+Establish `hker : RingHom.ker (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) ≤ v.asIdeal`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp hinj]`. Conclude with `bot_le`. Use `haveI := v.isMaximal`. Take `⟨Q, hQm, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal hker`.
+
+Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQ, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).mp hinj]`. Set `P : HeightOneSpectrum (𝓞 D.host.E)` to `⟨Q, hQm.isPrime, hQ0⟩`.
+
+Establish `h2 : (2 : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `h2' : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) 2 ∈ Q`. Rewrite using `[← Ideal.mem_comap, hQ]`. Conclude with `hv`. Rewrite `h2'` using `[map_ofNat]`.
+
+Conclude with `h2'`. Take `⟨e, he, hall⟩` from `idem_exists_at P (hTS P h2)`. Take `⟨ε, hε, heq⟩` from `hall v hQ`. Conclude with `⟨e, ε, he.1, hε, heq⟩`.
+-/
 theorem twoSplitIdem (D : D7) : TwoSplitIdem D := by
   have hTS : TwoSplits D := by
     exact twoSplits D

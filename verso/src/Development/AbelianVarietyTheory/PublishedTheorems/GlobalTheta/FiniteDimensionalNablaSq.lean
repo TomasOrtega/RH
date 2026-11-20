@@ -23,6 +23,11 @@ end GlobalTheory.Published
 
 namespace GlobalTheory.WeylDimGL
 
+/- English proof (translation)
+Unfold `Formalism.CountingSumsFrames.weylDim`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.filter_lt_eq_Ioi, Finset.prod_filter]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem weylDim_eq_prod_Ioi (n : ℕ) (lam : Fin n → ℤ) :
     Formalism.CountingSumsFrames.weylDim n lam = ∏ i : Fin n, ∏ j ∈ Finset.Ioi i,
       ((lam i : ℚ) - (lam j : ℚ) + ((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) / (((j : ℕ) : ℚ) - ((i : ℕ) : ℚ)) := by
@@ -33,6 +38,9 @@ theorem weylDim_eq_prod_Ioi (n : ℕ) (lam : Fin n → ℤ) :
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨b, ⟨-, hb, -⟩, -⟩` from `Formalism.GradedWeylDivisibility.sSBasis K n n lam.natW`. Establish `: Finite (Formalism.GradedWeylDivisibility.ssIdx n n lam.natW)` using `(Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`. Unfold `nablaSq`. Rewrite using `[← hb]`. Conclude with `FiniteDimensional.span_of_finite K (Set.finite_range b)`.
+-/
 theorem finiteDimensional_nablaSq (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) :
     FiniteDimensional K (nablaSq K n lam) := by
   obtain ⟨b, ⟨-, hb, -⟩, -⟩ := Formalism.GradedWeylDivisibility.sSBasis K n n lam.natW
@@ -41,6 +49,11 @@ theorem finiteDimensional_nablaSq (K : Type) [Field K] (n : ℕ) (lam : DomWeigh
   rw [← hb]
   exact FiniteDimensional.span_of_finite K (Set.finite_range b)
 
+/- English proof (translation)
+Use `(Formalism.L2.G.Model.weyl_dualWeyl K n lam.natW (factNatW n lam).1).trans ?_` and prove the remaining obligations. Unfold `Formalism.CountingSumsFrames.weylDim`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← (factNatW n lam).2.1 i, ← (factNatW n lam).2.1 j]`. Use `push_cast`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_nablaSq (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) :
     (Module.finrank K (nablaSq K n lam) : ℚ) = Formalism.CountingSumsFrames.weylDim n lam.w := by
   refine (Formalism.L2.G.Model.weyl_dualWeyl K n lam.natW (factNatW n lam).1).trans ?_
@@ -51,6 +64,9 @@ theorem finrank_nablaSq (K : Type) [Field K] (n : ℕ) (lam : DomWeight n) :
   congr 2
   ring
 
+/- English proof (translation)
+Rewrite using `[← Formalism.L2.Col.nablaSq_eq_delSq K lam]`. Conclude with `finrank_nablaSq K n lam`.
+-/
 theorem finrank_delSq (K : Type) [Field K] [CharZero K] (n : ℕ) (lam : DomWeight n) :
     (Module.finrank K (delSq K n lam) : ℚ) = Formalism.CountingSumsFrames.weylDim n lam.w := by
   rw [← Formalism.L2.Col.nablaSq_eq_delSq K lam]

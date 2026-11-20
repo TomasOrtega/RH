@@ -11,6 +11,13 @@ namespace GlobalTheory.MixPer.JacHom
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hbt : (1 + T).BlockTriangular id` using `fun i j h => by`. Establish `h' : j < i` using `h`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (ne_of_gt h'), hT i j (le_of_lt h'), add_zero]`. Establish `hdiag : ∀ i, (1 + T) i i = 1` using `fun i => by`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, hT i i le_rfl, add_zero]`.
+
+Establish `hdet : (1 + T).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hbt]`. Simplify using `only [hdiag, Finset.prod_const_one]`. Establish `hu : IsUnit (1 + T)` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [hdet]; exact isUnit_one)`. Establish `hmem : hu.unit ∈ UX D ρ` using `mem_UX.2 fun i j => ⟨fun h => by rw [IsUnit.unit_spec]; exact hbt h, by rw [IsUnit.unit_spec]; exact hdiag i⟩`.
+
+Establish `h` using `hy _ hmem`. Rewrite `h` using `[IsUnit.unit_spec, Matrix.mul_add, Matrix.mul_one]`. Conclude with `add_left_cancel (h.trans (add_zero y).symm)`.
+-/
 theorem mul_strictUp_eq_zero {ρ m : ℕ} {y : Mx D m ρ} (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {T : Mx D ρ ρ}
     (hT : GlobalTheory.BesselChar.StrictUp T) : y ⬝ T = 0 := by
   have hbt : (1 + T).BlockTriangular id := fun i j h => by
@@ -32,27 +39,45 @@ section Sympl
 
 variable {S T : HSp D}
 
+/- English proof (translation)
+Unfold `symplOH`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew, mul_neg]`.
+-/
 theorem symplOH_skew (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   unfold symplOH
   rw [GlobalTheory.OrientedHeis.symplO_skew, mul_neg]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.OrientedHeis.symplOH_add_right x y (-y)`. Rewrite `h` using `[add_neg_cancel, symplOH_zero_right]`. Conclude with `eq_neg_of_add_eq_zero_right h.symm`.
+-/
 theorem symplOH_neg_right (x y : WO S T) : symplOH S T x (-y) = -symplOH S T x y := by
   have h := GlobalTheory.OrientedHeis.symplOH_add_right x y (-y)
   rw [add_neg_cancel, symplOH_zero_right] at h
   exact eq_neg_of_add_eq_zero_right h.symm
 
+/- English proof (translation)
+Rewrite using `[hO_eq_trace, hO_eq_trace, adj_mul]`. Establish `h` using `mt_unitary T g`. Use `congr 1`. Rewrite using `[Matrix.mul_assoc (adj v), ← Matrix.mul_assoc (gA T), ← Matrix.mul_assoc (adj (mt T g)), h]`.
+-/
 theorem hO_mt (g : GA D T) (x v : WO S T) : hO S T (mt T g ⬝ x) (mt T g ⬝ v) = hO S T x v := by
   rw [hO_eq_trace, hO_eq_trace, adj_mul]
   have h := mt_unitary T g
   congr 1
   rw [Matrix.mul_assoc (adj v), ← Matrix.mul_assoc (gA T), ← Matrix.mul_assoc (adj (mt T g)), h]
 
+/- English proof (translation)
+Rewrite using `[symplOH_eq, symplOH_eq, hO_mt]`.
+-/
 theorem symplOH_mt (g : GA D T) (x v : WO S T) : symplOH S T (mt T g ⬝ x) (mt T g ⬝ v) = symplOH S T x v := by
   rw [symplOH_eq, symplOH_eq, hO_mt]
 
+/- English proof (translation)
+Rewrite using `[← symplOH_mt g⁻¹ x (mt T g ⬝ v), ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`.
+-/
 theorem symplOH_mt_right (g : GA D T) (x v : WO S T) : symplOH S T x (mt T g ⬝ v) = symplOH S T (mt T g⁻¹ ⬝ x) v := by
   rw [← symplOH_mt g⁻¹ x (mt T g ⬝ v), ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h2 : x + x = 0`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, ← add_mul, ← map_add, add_halves, map_one, one_mul]`. Use `_ = 0 := by rw [h2, mul_zero]`.
+-/
 theorem eq_zero_of_eq_neg {x : AF D.host.F} (h : x = -x) : x = 0 := by
   have h2 : x + x = 0 := by
     calc x + x = -x + x := by rw [← h]
@@ -67,30 +92,56 @@ section Main
 
 variable (ψ : AddChar (AF D.host.F) ℂ) {T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (S : HSp D) (y : Mx D S.rank ρ)
 
+/- English proof (translation)
+Rewrite using `[d.incAdj_apply, d.incY_apply, ← Matrix.mul_assoc, d.pY_jY, Matrix.one_mul]`.
+-/
 theorem pY_incAdj : d.pY ⬝ d.incAdj S y = incA D (-D.host.xi0⁻¹) • (adj y ⬝ gA S) := by
   rw [d.incAdj_apply, d.incY_apply, ← Matrix.mul_assoc, d.pY_jY, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[pY_incAdj, d.incAdj_apply, d.incY_apply]`.
+-/
 theorem jY_pY_incAdj : d.jY ⬝ (d.pY ⬝ d.incAdj S y) = d.incAdj S y := by
   rw [pY_incAdj, d.incAdj_apply, d.incY_apply]
 
+/- English proof (translation)
+The claim follows from `d.wittDecomp_sympl_inclDual_inclAnisotropic S _ p`.
+-/
 theorem hom_space_symplectic_adjoint_inclusion_anisotropic_zero (p : WO S T₀) : symplOH S T (d.incAdj S y) (d.inc0 S p) = 0 :=
   d.wittDecomp_sympl_inclDual_inclAnisotropic S _ p
 
+/- English proof (translation)
+Rewrite using `[symplOH_skew, d.wittDecomp_sympl_inclIsotropic_inclAnisotropic, neg_zero]`.
+-/
 theorem hom_space_symplectic_anisotropic_isotropic_inclusion_zero (p : WO S T₀) (ξ : Mx D ρ S.rank) : symplOH S T (d.inc0 S p) (d.incX S ξ) = 0 := by
   rw [symplOH_skew, d.wittDecomp_sympl_inclIsotropic_inclAnisotropic, neg_zero]
 
+/- English proof (translation)
+Rewrite using `[ptT, inv_one, mt_one, Matrix.one_mul, d.incAdj_apply, d.incY_apply, ← Matrix.mul_assoc, d.p0_jY, Matrix.zero_mul]`.
+-/
 theorem ptT_one : ptT d S y 1 = 0 := by
   rw [ptT, inv_one, mt_one, Matrix.one_mul, d.incAdj_apply, d.incY_apply, ← Matrix.mul_assoc, d.p0_jY, Matrix.zero_mul]
 
+/- English proof (translation)
+Rewrite using `[cenT, inv_one, mt_one, Matrix.one_mul, GlobalTheory.OrientedHeis.symplOH_self]`.
+-/
 theorem cenT_one : cenT d S y 1 = 0 := by
   rw [cenT, inv_one, mt_one, Matrix.one_mul, GlobalTheory.OrientedHeis.symplOH_self]
 
+/- English proof (translation)
+Rewrite using `[mt_inv, d.pY_eq, Matrix.mul_assoc, gA_giA_cancel, ← Matrix.mul_assoc, ← adj_mul, h1, adj_add, adj_mul, Matrix.add_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem pY_mt_inv {n : GA D T} {U : Mx D ρ ρ} (h1 : mt T n ⬝ d.jX = d.jX + d.jX ⬝ U) :
     d.pY ⬝ mt T n⁻¹ = d.pY + adj U ⬝ d.pY := by
   rw [mt_inv, d.pY_eq, Matrix.mul_assoc, gA_giA_cancel, ← Matrix.mul_assoc, ← adj_mul, h1, adj_add, adj_mul,
     Matrix.add_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨U, b, hU, h1, -⟩` from `exists_blocks d hn`. Establish `hyU` using `mul_strictUp_eq_zero hy hU`. Establish `e` using `pY_mt_inv d h1`. Establish `e2 : d.pY ⬝ (mt T n⁻¹ ⬝ d.incAdj S y) = d.pY ⬝ d.incAdj S y + adj U ⬝ (d.pY ⬝ d.incAdj S y)`. Rewrite using `[← Matrix.mul_assoc, e, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Establish `e3 : adj U ⬝ (d.pY ⬝ d.incAdj S y) = 0`. Rewrite using `[pY_incAdj, Matrix.mul_smul, ← Matrix.mul_assoc (adj U), ← adj_mul y U, hyU, adj_zero, Matrix.zero_mul, smul_zero]`. Rewrite using `[e2, e3, add_zero]`.
+-/
 theorem pY_inv_incAdj (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n ∈ flagN d) :
     d.pY ⬝ (mt T n⁻¹ ⬝ d.incAdj S y) = d.pY ⬝ d.incAdj S y := by
   obtain ⟨U, b, hU, h1, -⟩ := exists_blocks d hn
@@ -102,6 +153,9 @@ theorem pY_inv_incAdj (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn :
     rw [pY_incAdj, Matrix.mul_smul, ← Matrix.mul_assoc (adj U), ← adj_mul y U, hyU, adj_zero, Matrix.zero_mul, smul_zero]
   rw [e2, e3, add_zero]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Matrix.one_mul (mt T n⁻¹ ⬝ d.incAdj S y), ← d.sum_eq_one]`. Rewrite using `[d.incX_apply, d.wittDecomp_inclAnisotropicHom_apply, ptT]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[pY_inv_incAdj d S y hy hn, jY_pY_incAdj]`. Normalize the expressions using the abelian group laws.
+-/
 theorem inv_incAdj (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n ∈ flagN d) :
     mt T n⁻¹ ⬝ d.incAdj S y = d.incAdj S y + d.incX S (d.pX ⬝ (mt T n⁻¹ ⬝ d.incAdj S y)) +
       d.inc0 S (ptT d S y n) := by
@@ -111,17 +165,26 @@ theorem inv_incAdj (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n 
   rw [pY_inv_incAdj d S y hy hn, jY_pY_incAdj]
   abel
 
+/- English proof (translation)
+Take `⟨U, b, -, h1, -⟩` from `exists_blocks d hg`. Rewrite using `[d.incX_apply, ← Matrix.mul_assoc (mt T g), h1]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, ← Matrix.mul_assoc, d.p0_jX, Matrix.zero_mul, add_zero]`.
+-/
 theorem witt_anisotropic_projection_flag_unipotent_isotropic_zero {g : GA D T} (hg : g ∈ flagN d) (ξ : Mx D ρ S.rank) : d.p0 ⬝ (mt T g ⬝ d.incX S ξ) = 0 := by
   obtain ⟨U, b, -, h1, -⟩ := exists_blocks d hg
   rw [d.incX_apply, ← Matrix.mul_assoc (mt T g), h1]
   simp only [Matrix.add_mul, Matrix.mul_add, ← Matrix.mul_assoc, d.p0_jX, Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Take `⟨U, b, -, -, h2⟩` from `exists_blocks d hg`. Rewrite using `[d.wittDecomp_inclAnisotropicHom_apply, ← Matrix.mul_assoc (mt T g), h2]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, ← Matrix.mul_assoc, d.p0_jX, d.p0_j0, Matrix.zero_mul, Matrix.one_mul, add_zero]`.
+-/
 theorem witt_anisotropic_projection_flag_unipotent_anisotropic {g : GA D T} (hg : g ∈ flagN d) (p : WO S T₀) : d.p0 ⬝ (mt T g ⬝ d.inc0 S p) = p := by
   obtain ⟨U, b, -, -, h2⟩ := exists_blocks d hg
   rw [d.wittDecomp_inclAnisotropicHom_apply, ← Matrix.mul_assoc (mt T g), h2]
   simp only [Matrix.add_mul, Matrix.mul_add, ← Matrix.mul_assoc, d.p0_jX, d.p0_j0, Matrix.zero_mul, Matrix.one_mul,
     add_zero]
 
+/- English proof (translation)
+Establish `e : ptT d S y (n * n') = d.p0 ⬝ (mt T n'⁻¹ ⬝ (mt T n⁻¹ ⬝ d.incAdj S y))`. Rewrite using `[ptT, _root_.mul_inv_rev, mt_mul, Matrix.mul_assoc]`. Establish `e2 : d.p0 ⬝ (mt T n'⁻¹ ⬝ d.incAdj S y) = ptT d S y n'` using `rfl`. Establish `hi` using `(flagN d).inv_mem hn'`. Rewrite using `[e, inv_incAdj d S y hy hn, Matrix.mul_add, Matrix.mul_add, Matrix.mul_add, Matrix.mul_add, witt_anisotropic_projection_flag_unipotent_isotropic_zero d S hi, witt_anisotropic_projection_flag_unipotent_anisotropic d S hi, add_zero, e2, add_comm]`.
+-/
 theorem ptT_mul (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n n' : GA D T} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
     ptT d S y (n * n') = ptT d S y n + ptT d S y n' := by
   have e : ptT d S y (n * n') = d.p0 ⬝ (mt T n'⁻¹ ⬝ (mt T n⁻¹ ⬝ d.incAdj S y)) := by
@@ -131,12 +194,18 @@ theorem ptT_mul (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n n' : GA D T} (hn : n 
   rw [e, inv_incAdj d S y hy hn, Matrix.mul_add, Matrix.mul_add, Matrix.mul_add, Matrix.mul_add, witt_anisotropic_projection_flag_unipotent_isotropic_zero d S hi,
     witt_anisotropic_projection_flag_unipotent_anisotropic d S hi, add_zero, e2, add_comm]
 
+/- English proof (translation)
+Establish `h` using `ptT_mul d S y hy ((flagN d).inv_mem hn) hn`. Rewrite `h` using `[inv_mul_cancel, ptT_one]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`.
+-/
 theorem ptT_inv (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n ∈ flagN d) :
     ptT d S y n⁻¹ = -ptT d S y n := by
   have h := ptT_mul d S y hy ((flagN d).inv_mem hn) hn
   rw [inv_mul_cancel, ptT_one] at h
   exact eq_neg_of_add_eq_zero_left h.symm
 
+/- English proof (translation)
+Establish `h` using `inv_incAdj d S y hy hn`. Rewrite using `[cenT]`. Use `conv_lhs => rw [h]`. Rewrite using `[GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_self, hom_space_symplectic_adjoint_inclusion_anisotropic_zero, zero_add, add_zero]`.
+-/
 theorem cenT_eq (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n ∈ flagN d) :
     cenT d S y n = symplOH S T (d.incAdj S y) (d.incX S (d.pX ⬝ (mt T n⁻¹ ⬝ d.incAdj S y))) := by
   have h := inv_incAdj d S y hy hn
@@ -145,6 +214,13 @@ theorem cenT_eq (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n ∈
   rw [GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right,
     GlobalTheory.OrientedHeis.symplOH_self, hom_space_symplectic_adjoint_inclusion_anisotropic_zero, zero_add, add_zero]
 
+/- English proof (translation)
+Establish `e : cenT d S y (n * n') = symplOH S T (d.incAdj S y) (mt T n'⁻¹ ⬝ (mt T n⁻¹ ⬝ d.incAdj S y))`. Rewrite using `[cenT, _root_.mul_inv_rev, mt_mul, Matrix.mul_assoc]`. Establish `hi` using `(flagN d).inv_mem hn'`. Establish `e' : mt T n' ⬝ d.incAdj S y = d.incAdj S y + d.incX S (d.pX ⬝ (mt T n' ⬝ d.incAdj S y)) + d.inc0 S (ptT d S y n'⁻¹)`. Establish `h` using `inv_incAdj d S y hy hi`.
+
+Rewrite `h` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hc' : symplOH S T (d.incAdj S y) (mt T n'⁻¹ ⬝ d.incAdj S y) = cenT d S y n'` using `rfl`. Rewrite using `[e, inv_incAdj d S y hy hn, Matrix.mul_add, Matrix.mul_add, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, symplOH_mt_right n'⁻¹ (d.incAdj S y) (d.incX S _), symplOH_mt_right n'⁻¹ (d.incAdj S y) (d.inc0 S _), inv_inv, e']`. Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_left, d.symplOH_incX_incX, d.wittDecomp_sympl_inclIsotropic_inclAnisotropic, hom_space_symplectic_adjoint_inclusion_anisotropic_zero, hom_space_symplectic_anisotropic_isotropic_inclusion_zero, d.wittDecomp_sympl_inclAnisotropic_inclAnis …`. Rewrite using `[hc', ← cenT_eq d S y hy hn, ptT_inv d S y hy hn', symplOH_skew, symplOH_neg_right, neg_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cenT_mul (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n n' : GA D T} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d) :
     cenT d S y (n * n') = cenT d S y n + cenT d S y n' + symplOH S T₀ (ptT d S y n) (ptT d S y n') := by
   have e : cenT d S y (n * n') =
@@ -164,6 +240,11 @@ theorem cenT_mul (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n n' : GA D T} (hn : n
   rw [hc', ← cenT_eq d S y hy hn, ptT_inv d S y hy hn', symplOH_skew, symplOH_neg_right, neg_neg]
   ring
 
+/- English proof (translation)
+Establish `hs : ∀ (c : ℂ) (p : WO S T₀) (g : WO S T₀ → ℂ), heisO ψ S T₀ p (c • g) = c • heisO ψ S T₀ p g`. Introduce `c p g`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[jacT, jacT, jacT, cenT_mul d S y hy hn hn', ptT_mul d S y hy hn hn', hs, GlobalTheory.OrientedHeis.heisO_heisO, smul_smul, smul_smul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]`.
+-/
 theorem jacT_mul (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n n' : GA D T} (hn : n ∈ flagN d) (hn' : n' ∈ flagN d)
     (f : WO S T₀ → ℂ) : jacT ψ d S y (n * n') f = jacT ψ d S y n (jacT ψ d S y n' f) := by
   have hs : ∀ (c : ℂ) (p : WO S T₀) (g : WO S T₀ → ℂ), heisO ψ S T₀ p (c • g) = c • heisO ψ S T₀ p g := by
@@ -174,6 +255,9 @@ theorem jacT_mul (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n n' : GA D T} (hn : n
   rw [jacT, jacT, jacT, cenT_mul d S y hy hn hn', ptT_mul d S y hy hn hn', hs, GlobalTheory.OrientedHeis.heisO_heisO,
     smul_smul, smul_smul, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `cenT_mul d S y hy hn ((flagN d).inv_mem hn)`. Rewrite `h` using `[mul_inv_cancel, cenT_one, ptT_inv d S y hy hn, symplOH_neg_right, GlobalTheory.OrientedHeis.symplOH_self, neg_zero, add_zero]`. Conclude with `eq_neg_of_add_eq_zero_right h.symm`.
+-/
 theorem cenT_inv (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n ∈ flagN d) :
     cenT d S y n⁻¹ = -cenT d S y n := by
   have h := cenT_mul d S y hy hn ((flagN d).inv_mem hn)
@@ -181,6 +265,9 @@ theorem cenT_inv (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {n : GA D T} (hn : n �
     add_zero] at h
   exact eq_neg_of_add_eq_zero_right h.symm
 
+/- English proof (translation)
+Use `set η := d.pY ⬝ d.incAdj S y with hη`. Establish `hw : d.incAdj S y = d.jY ⬝ η` using `(jY_pY_incAdj d S y).symm`. Rewrite using `[hw, d.nB_inv, ← Matrix.mul_assoc, d.nB_jY, plus_neg, d.incX_apply, d.wittDecomp_inclAnisotropicHom_apply]`. Simplify using `only [Matrix.sub_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg, neg_neg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem inv_nB_incAdj (b : Mx D ρ T₀.rank) :
     mt T (d.nB b)⁻¹ ⬝ d.incAdj S y = d.incAdj S y +
       d.incX S (-((half D • (b ⬝ plus T₀ b)) ⬝ (d.pY ⬝ d.incAdj S y))) +
@@ -191,12 +278,18 @@ theorem inv_nB_incAdj (b : Mx D ρ T₀.rank) :
   simp only [Matrix.sub_mul, Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg, neg_neg]
   abel
 
+/- English proof (translation)
+Rewrite using `[cenT, inv_nB_incAdj, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_self, hom_space_symplectic_adjoint_inclusion_anisotropic_zero, zero_add, add_zero]`.
+-/
 theorem cenT_nB_eq (b : Mx D ρ T₀.rank) :
     cenT d S y (d.nB b) = symplOH S T (d.incAdj S y)
       (d.incX S (-((half D • (b ⬝ plus T₀ b)) ⬝ (d.pY ⬝ d.incAdj S y)))) := by
   rw [cenT, inv_nB_incAdj, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_right,
     GlobalTheory.OrientedHeis.symplOH_self, hom_space_symplectic_adjoint_inclusion_anisotropic_zero, zero_add, add_zero]
 
+/- English proof (translation)
+Establish `h1 : cenT d S y (d.nB (-b)) = cenT d S y (d.nB b)`. Rewrite using `[cenT_nB_eq, cenT_nB_eq, plus_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg]`. Establish `h2` using `cenT_inv d S y hy (d.nB_mem_NFlag b)`. Rewrite `h2` using `[d.nB_inv, h1]`. Conclude with `eq_zero_of_eq_neg h2`.
+-/
 theorem cenT_nB (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) (b : Mx D ρ T₀.rank) : cenT d S y (d.nB b) = 0 := by
   have h1 : cenT d S y (d.nB (-b)) = cenT d S y (d.nB b) := by
     rw [cenT_nB_eq, cenT_nB_eq, plus_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg]
@@ -204,20 +297,34 @@ theorem cenT_nB (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) (b : Mx D ρ T₀.rank) 
   rw [d.nB_inv, h1] at h2
   exact eq_zero_of_eq_neg h2
 
+/- English proof (translation)
+Establish `h` using `ptT_nB_mul_nC d S y 0 c`. Rewrite `h` using `[d.nB_zero, one_mul, plus_zero, Matrix.zero_mul]`. Then use the resulting hypothesis.
+-/
 theorem ptT_nC (c : skewA D ρ) : ptT d S y (d.nC c) = 0 := by
   have h := ptT_nB_mul_nC d S y 0 c
   rwa [d.nB_zero, one_mul, plus_zero, Matrix.zero_mul] at h
 
+/- English proof (translation)
+Rewrite using `[cenT_mul d S y hy (d.nB_mem_NFlag b) (d.nC_mem_NFlag c), cenT_nB d S y hy, cenT_nC, ptT_nC, symplOH_zero_right, zero_add, add_zero]`.
+-/
 theorem cenT_nB_mul_nC (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) (b : Mx D ρ T₀.rank) (c : skewA D ρ) :
     cenT d S y (d.nB b * d.nC c) = d.qT S c y := by
   rw [cenT_mul d S y hy (d.nB_mem_NFlag b) (d.nC_mem_NFlag c), cenT_nB d S y hy, cenT_nC, ptT_nC,
     symplOH_zero_right, zero_add, add_zero]
 
+/- English proof (translation)
+Establish `h` using `levi_inv_incAdj d S y u⁻¹`. Rewrite `h` using `[map_inv, inv_inv, hy _ ((UX D ρ).inv_mem hu)]`. Then use the resulting hypothesis.
+-/
 theorem incAdj_levi (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     mt T (d.levi u) ⬝ d.incAdj S y = d.incAdj S y := by
   have h := levi_inv_incAdj d S y u⁻¹
   rwa [map_inv, inv_inv, hy _ ((UX D ρ).inv_mem hu)] at h
 
+/- English proof (translation)
+Establish `hp : ptT d S y (n * d.levi u) = ptT d S y n`. Rewrite using `[ptT, ptT, _root_.mul_inv_rev, mt_mul, Matrix.mul_assoc, ← Matrix.mul_assoc d.p0, ← map_inv, d.wittDecomp_projAnisotropic_levi]`. Establish `hc : cenT d S y (n * d.levi u) = cenT d S y n`. Rewrite using `[cenT, cenT, _root_.mul_inv_rev, mt_mul, Matrix.mul_assoc, symplOH_mt_right, inv_inv, incAdj_levi d S y hy hu]`. Use function extensionality and compare the values at `f`.
+
+Rewrite using `[jacT, jacT, hp, hc]`.
+-/
 theorem jacT_mul_levi (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) (n : GA D T) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     jacT ψ d S y (n * d.levi u) = jacT ψ d S y n := by
   have hp : ptT d S y (n * d.levi u) = ptT d S y n := by
@@ -227,9 +334,17 @@ theorem jacT_mul_levi (hy : ∀ u ∈ UX D ρ, y ⬝ u.1 = y) (n : GA D T) {u : 
   funext f
   rw [jacT, jacT, hp, hc]
 
+/- English proof (translation)
+Rewrite using `[d.incAdj_apply, d.incY_apply, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclY]`.
+-/
 theorem witt_embedded_anisotropic_fixes_adjoint_inclusion (g : GA D T₀) : mt T (d.emb0 g) ⬝ d.incAdj S y = d.incAdj S y := by
   rw [d.incAdj_apply, d.incY_apply, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclY]
 
+/- English proof (translation)
+Establish `hinv : (d.emb0 g * n * (d.emb0 g)⁻¹)⁻¹ = d.emb0 g * n⁻¹ * (d.emb0 g)⁻¹` using `by group`. Establish `he : mt T (d.emb0 g)⁻¹ ⬝ d.incAdj S y = d.incAdj S y` using `by rw [← map_inv]; exact witt_embedded_anisotropic_fixes_adjoint_inclusion d S y _`. Establish `hm : mt T (d.emb0 g * n * (d.emb0 g)⁻¹)⁻¹ ⬝ d.incAdj S y = mt T (d.emb0 g) ⬝ (mt T n⁻¹ ⬝ d.incAdj S y)`. Rewrite using `[hinv, mt_mul, mt_mul, Matrix.mul_assoc, he, Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[ptT, hm, ← Matrix.mul_assoc d.p0, d.wittDecomp_projAnisotropic_anisotropicEmbedding, actO_eq, inv_one, mt_one, Matrix.mul_one, ptT, Matrix.mul_assoc]`. Rewrite using `[cenT, hm, symplOH_mt_right, ← map_inv, witt_embedded_anisotropic_fixes_adjoint_inclusion, cenT]`.
+-/
 theorem heisenberg_target_point_central_conj_embedded_anisotropic (n : GA D T) (g : GA D T₀) :
     ptT d S y (d.emb0 g * n * (d.emb0 g)⁻¹) = actO S T₀ 1 g (ptT d S y n) ∧
       cenT d S y (d.emb0 g * n * (d.emb0 g)⁻¹) = cenT d S y n := by
@@ -247,6 +362,9 @@ end GlobalTheory.MixPer.JacHom
 
 open GlobalTheory.MixPer.JacHom in
 
+/- English proof (translation)
+Introduce `D ψ T T₀ S ρ d y hy`. Conclude with `⟨fun b c => cenT_nB_mul_nC d S y hy b c, fun n hn n' hn' => ⟨ptT_mul d S y hy hn hn', cenT_mul d S y hy hn hn', jacT_mul ψ d S y hy hn hn'⟩, fun n _ u hu => jacT_mul_levi ψ d S y hy n hu, fun n g => heisenberg_target_point_central_conj_embedded_anisotropic d S y n g⟩`.
+-/
 theorem GlobalTheory.MixPer.jacT_hom : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (T T₀ S : HSp D) (ρ : ℕ) (d : HypDec T T₀ ρ)
     (y : Mx D S.rank ρ), (∀ u ∈ UX D ρ, y ⬝ u.1 = y) → (∀ b c, cenT d S y (d.nB b * d.nC c) = d.qT S c y) ∧
     (∀ n ∈ flagN d, ∀ n' ∈ flagN d, ptT d S y (n * n') = ptT d S y n + ptT d S y n' ∧

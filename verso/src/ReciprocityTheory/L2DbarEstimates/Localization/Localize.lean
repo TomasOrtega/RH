@@ -9,6 +9,43 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `z hz H G D S hG hD hS hGD hGS hcG hcD hcS`. Use `loc_weaklyLocallyCompact n z hz` as an intermediate fact. Establish `hK : IsCompact (tsupport G ∪ tsupport D ∪ tsupport S)` using `(hcG.union hcD).union hcS`. Use `set K := tsupport G ∪ tsupport D ∪ tsupport S with hKdef`. Take `⟨K', hK', hKK'⟩` from `exists_compact_superset hK`.
+
+Take `⟨N, e, χ, he, hχs, hχc, hχsub, -, -, hχK⟩` from `exists_chart_partition n z hz K' univ hK' isOpen_univ (subset_univ _)`. Establish `hck : ∀ i, Ck n z 1 (fun y => (χ i y : ℂ))` using `fun i => SmoothR.ckR n z 1 (χ i) (hχs i)`. Establish `hoff : ∀ x, x ∉ K → G x = 0 ∧ D x = 0 ∧ S x = 0` using `fun x hx => ⟨image_eq_zero_of_notMem_tsupport fun h => hx (Or.inl (Or.inl h)), image_eq_zero_of_notMem_tsupport fun h => hx (Or.inl (Or.inr h)), image_eq_zero_of_notMem_tsupport fun h => hx (Or.inr h)⟩`. Establish `hone : ∀ x ∈ K, ∑ i, (χ i x : ℂ) = 1` using `fun x hx => by`. Rewrite using `[← Complex.ofReal_sum, hχK x (interior_subset (hKK' hx)), Complex.ofReal_one]`.
+
+Establish `hev : ∀ x ∈ K, (fun y => ∑ i, (χ i y : ℂ)) =ᶠ[𝓝 x] fun _ => (1 : ℂ)` using `fun x hx => by filter_upwards [isOpen_interior.mem_nhds (hKK' hx)] with y hy`. Rewrite using `[← Complex.ofReal_sum, hχK y (interior_subset hy), Complex.ofReal_one]`. Establish `hdz : ∀ x ∈ K, ∀ j, ∑ i, d n z j (fun y => (χ i y : ℂ)) x = 0` using `fun x hx j => by`. Rewrite using `[← loc_d_sum n z Finset.univ _ hck j x, loc_d_congr n z hz j _ _ x (hev x hx), d_const]`. Establish `hdbz : ∀ x ∈ K, ∀ j, ∑ i, db n z j (fun y => (χ i y : ℂ)) x = 0` using `fun x hx j => by`.
+
+Rewrite using `[← loc_db_sum n z Finset.univ _ hck j x, loc_db_congr n z hz j _ _ x (hev x hx), db_const]`. Establish `sG : ∀ x, G x = ∑ i, locG (χ i) G x` using `fun x => by`. Distinguish the cases in `hx : x ∈ K`. Simplify using `only [locG]`. Rewrite using `[← Finset.sum_smul, hone x hx, one_smul]`.
+
+Simplify using `[locG, (hoff x hx).1]`. Establish `sD : ∀ x, D x = ∑ i, locD n z (χ i) G D x` using `fun x => by`. Distinguish the cases in `hx : x ∈ K`. Simplify using `only [locD, Finset.sum_add_distrib, ← Finset.sum_mul, hone x hx, one_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [← Finset.sum_mul, hdz x hx, zero_mul, Finset.sum_const_zero, add_zero]`. Simplify using `[locD, (hoff x hx).1, (hoff x hx).2.1]`. Establish `sS : ∀ x j k, S x j k = ∑ i, locS n z (χ i) G S x j k` using `fun x j k => by`. Distinguish the cases in `hx : x ∈ K`. Simplify using `only [locS, wedge, Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.sum_mul, hone x hx, one_mul, hdbz x hx, zero_mul, sub_self, add_zero]`.
+
+Simplify using `[locS, wedge, (hoff x hx).1, (hoff x hx).2.2]`. Establish `hP` using `fun i => loc_piece n z hz hMD hMS (χ i) (hχs i) (hχc i) (e i).source ((hχsub i).trans inter_subset_left) G D S hG hD hS hGD hGS`. Use `choose K0 hK0 happ using fun i => H (e i) _ _ _ (he i) (hP i).1 (hP i).2.1 (hP i).2.2.1 (hP i).2.2.2.1 (hP i).2.2.2.2.1 (hP i).2.2.2.2.2.1 (hP i).2.2.2.2.2.2.1 (hP i).2.2.2.2.2.2.2.1 (hP i).2.2.2.2.2.2.2.2.1 (hP i).2.2.2.2.2.2.2.2.2.1 (hP i).2.2.2.2.2.2.2.2.2.2`. Use `⟨⋃ i, K0 i, isCompact_iUnion hK0, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨δ', hδ'0, hδ'⟩` from `ENNReal.exists_pos_mul_lt (a := (N : ℝ≥0∞) * N) (b := δ) (ENNReal.mul_ne_top (ENNReal.natCast_ne_top N) (ENNReal.natCast_ne_top N)) hδ.ne'`.
+
+Use `choose g hgT hg0 hg1 hg2 hg3 using fun i => happ i δ' hδ'0`. Establish `hgc : ∀ i j, Ck n z 2 (fun x => g i x j)` using `fun i j => (hgT i j).1`. Establish `hgc1 : ∀ i j, Ck n z (0 + 1) (fun x => g i x j)` using `fun i j => Ck.mono n z 1 2 (by norm_num) _ (hgc i j)`. Establish `hfun : ∀ j, (fun x => (∑ i, g i x) j) = fun x => ∑ i, g i x j` using `fun j =>`. Use function extensionality and compare the values at `fun x => loc_sum_apply _ j`.
+
+Establish `hvan : ∀ x, x ∉ ⋃ i, K0 i → ∑ i, g i x = 0` using `fun x hx => Finset.sum_eq_zero fun i _ => hg0 i x fun h => hx (mem_iUnion.2 ⟨i, h⟩)`. Establish `hgcont : ∀ i, Continuous (g i)` using `fun i => by`. Establish `: Continuous (fun x => WithLp.toLp 2 (fun j => g i x j))` using `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun j => Ck.continuous n z hz 2 _ (hgc i j))`. Conclude with `this`. Establish `hdivc : ∀ i, Continuous (divF n z (g i))` using `fun i => by`.
+
+Unfold `divF`. Conclude with `continuous_finsetSum _ fun j _ => Ck.continuous n z hz 0 _ (Ck.d n z 0 j _ (hgc1 i j))`. Establish `hsbc : ∀ i, Continuous (sbar n z (g i))` using `fun i => by`. Unfold `sbar`. Conclude with `continuous_pi fun j => continuous_pi fun k => (Ck.continuous n z hz 0 _ (Ck.db n z 0 j _ (hgc1 i k))).sub (Ck.continuous n z hz 0 _ (Ck.db n z 0 k _ (hgc1 i j)))`.
+
+Establish `hdiv : ∀ x, divF n z (fun x => ∑ i, g i x) x = ∑ i, divF n z (g i) x` using `fun x => by`. Simplify using `only [divF]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hfun j, loc_d_sum n z Finset.univ (fun i y => g i y j) (fun i => hgc1 i j) j x]`.
+
+Establish `hsb : ∀ x j k, sbar n z (fun x => ∑ i, g i x) x j k = ∑ i, sbar n z (g i) x j k` using `fun x j k => by`. Simplify using `only [sbar]`. Rewrite using `[hfun k, hfun j, loc_db_sum n z _ (fun i y => g i y k) (fun i => hgc1 i k) j x, loc_db_sum n z _ (fun i y => g i y j) (fun i => hgc1 i j) k x, Finset.sum_sub_distrib]`. Use `⟨fun x => ∑ i, g i x, fun j => ⟨?_, ?_⟩, hvan, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun j]`.
+
+Conclude with `loc_ck_sum n z 2 _ _ fun i => hgc i j`. Use `HasCompactSupport.intro (isCompact_iUnion hK0) fun x hx => ?_ show (∑ i, g i x) j = 0` and prove the remaining obligations. Rewrite using `[hvan x hx]`. Both sides reduce to the same expression. Unfold `nV`.
+
+Use `loc_lintegral_sum_lt (vol n z) _ (fun i x => ENNReal.ofReal (‖g i x - locG (χ i) G x‖ ^ 2 * Real.exp (-(fun _ : M => (0 : ℝ)) x))) (fun i => loc_aem _ _ ((hgcont i).aestronglyMeasurable.sub (hP i).1.1)) (fun x => ?_) δ' δ (fun i => hg1 i) hδ'` and prove the remaining obligations. Simplify using `only [neg_zero, Real.exp_zero, mul_one]`. Establish `: (∑ i, g i x) - G x = ∑ i, (g i x - locG (χ i) G x)`. Rewrite using `[Finset.sum_sub_distrib, ← sG x]`. Rewrite using `[this]`.
+
+Conclude with `loc_ofReal_le _ (fun i => by positivity) _ (loc_norm_sum_sq _)`. Unfold `wint`. Use `loc_lintegral_sum_lt (vol n z) _ (fun i x => ENNReal.ofReal (‖divF n z (g i) x - locD n z (χ i) G D x‖ ^ 2 * Real.exp (-(fun _ : M => (0 : ℝ)) x))) (fun i => loc_aem _ _ ((hdivc i).aestronglyMeasurable.sub (hP i).2.1.1)) (fun x => ?_) δ' δ (fun i => hg2 i) hδ'` and prove the remaining obligations. Simplify using `only [neg_zero, Real.exp_zero, mul_one]`. Establish `: divF n z (fun x => ∑ i, g i x) x - D x = ∑ i, (divF n z (g i) x - locD n z (χ i) G D x)`.
+
+Rewrite using `[hdiv x, Finset.sum_sub_distrib, ← sD x]`. Rewrite using `[this]`. Conclude with `loc_ofReal_le _ (fun i => by positivity) _ (loc_norm_sum_sq _)`. Unfold `n2`. Use `loc_lintegral_sum_lt (vol n z) _ (fun i x => ENNReal.ofReal (sq2 n (sbar n z (g i) x - locS n z (χ i) G S x) * Real.exp (-(fun _ : M => (0 : ℝ)) x))) (fun i => aemeasurable_unweighted_two_form _ _ ((hsbc i).aestronglyMeasurable.sub (hP i).2.2.1.1)) (fun x => ?_) δ' δ (fun i => hg …` and prove the remaining obligations.
+
+Simplify using `only [neg_zero, Real.exp_zero, mul_one]`. Establish `: sbar n z (fun x => ∑ i, g i x) x - S x = fun j k => ∑ i, (sbar n z (g i) x - locS n z (χ i) G S x) j k`. Use function extensionality and compare the values at `j k`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[hsb x j k, sS x j k, Finset.sum_sub_distrib]`.
+
+Rewrite using `[this]`. Conclude with `loc_ofReal_le _ (fun i => two_form_norm_sq_nonneg _ _) _ (two_form_sq_finset_sum_le _)`.
+-/
 theorem localize (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (hMD : MultDivStatement n M) (hMS : MultSStatement n M) :
     LocalizeStatement n M := by

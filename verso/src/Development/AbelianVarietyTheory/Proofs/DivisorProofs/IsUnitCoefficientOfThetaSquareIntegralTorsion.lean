@@ -15,6 +15,19 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.Poinc.Sep.Frames Glob
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `N₁ hN V₁ _ _ _ hV hunit D θ hθ C b hcov`. Set `K` to `AlgebraicClosure (ResidueField V₁)`. Set `ev : V₁ →+* K` to `(algebraMap (ResidueField V₁) K).comp (residue V₁)`. Establish `hθ' : ∃ j, (ThetaOne.pullTo D ev θ).f j ≠ 0` using `ThetaOne.exists_ne_zero D ev _ (hθ K ev _ (ThetaOne.isPullSecLC_pullTo D ev θ))`. Establish `hNK : (N₁ : K) ≠ 0`.
+
+Use `(hunit N₁ (by omega)).map ev` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨p, hp, hne⟩` from `GlobalTheory.Poinc.Sep.Coef.exists_torsion_ne D ev θ hθ' N₁ hN hNK`. Take `⟨c₁, hc⟩` from `hcov K (spMap ev) p hp`.
+
+Use `⟨c₁, fun G U hG => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hGu`. Establish `hG0 : ev G = 0` using `by show algebraMap (ResidueField V₁) K (residue V₁ G) = 0`. Rewrite using `[(residue_eq_zero_iff G).2 ((mem_maximalIdeal G).2 hGu), map_zero]`. Set `z : Sp K` to `IsLocalRing.closedPoint K`.
+
+Establish `hch : ∀ ψ : Sp K ⟶ D.P.A.left, ∃ i, ψ z ∈ D.P.L.U i` using `fun ψ => ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart D.P.isLB (ψ z)`. Use `choose J hJ using hch`. Establish `hgood : Good D.P.L z J` using `hJ`. Establish `e` using `hG (Sp K) (spMap ev) z J hgood`. Establish `e2 : gs (spMap ev) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom G) = toStk z (ev G)`.
+
+Use `GlobalTheory.Poinc.Sep.Coef.gs_ev ev ((Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom G) z` as an intermediate fact. Simplify using `using this`. Establish `hpl : p.left = spMap ev ≫ (b c₁).left` using `by rw [hc]; rfl`. Establish `h1` using `hne z J hgood`. Rewrite `h1` using `[hpl]`.
+
+Take `⟨y, hy⟩` from `GlobalTheory.Poinc.Sep.Coef.toStk_surj z (sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (spMap ev ≫ (b c₁).left) z J)`. Rewrite `e` using `[e2, hG0, map_zero, ← hy, ← map_pow]`. Establish `h3 : toStk z (y ^ 2) = 0` using `(Units.mul_left_eq_zero _).1 e.symm`. Establish `h4 : y ^ 2 = 0` using `(toStk z).injective (h3.trans (map_zero _).symm)`. Conclude with `h1 (by rw [← hy, pow_eq_zero_iff two_ne_zero |>.1 h4, map_zero])`.
+-/
 theorem GlobalTheory.Poinc.Sep.CoefInt.isUnit_of_theta_sq : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ →
     (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁)
     (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))),

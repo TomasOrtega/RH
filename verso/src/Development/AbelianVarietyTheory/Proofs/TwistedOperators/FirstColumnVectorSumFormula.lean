@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.FirstRowDatum
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Simplify using `only [Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`.
+-/
 private theorem prod_apply_update_eq_mul_prod_erase {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type}
     (F : ∀ i, X i → ℂ) (x : ∀ i, X i) (j : ι) (y : X j) :
     ∏ i, F i (Function.update x j y i) = F j y * ∏ i ∈ Finset.univ.erase j, F i (x i) := by
@@ -23,6 +26,17 @@ private theorem prod_apply_update_eq_mul_prod_erase {ι : Type} [Fintype ι] [De
   refine Finset.prod_congr rfl fun i hi => ?_
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert j s hj ih`. Introduce `x`. Establish `hg : (∑ d ∈ S, (c d * ∏ i ∈ Finset.univ.erase j, (if i ∈ s then Tm i (Φ d i) else Φ d i) (x i)) • Φ d j) = 0`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← ih (Function.update x j y)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[prod_apply_update_eq_mul_prod_erase (fun i => if i ∈ s then Tm i (Φ d i) else Φ d i) x j y]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, if_neg hj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hT` using `congrArg (fun g => Tm j g (x j)) hg`. Simplify using `only [map_sum, map_smul, map_zero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hT`. Rewrite using `[← hT]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`. Establish `h2 : ∏ i ∈ Finset.univ.erase j, (if i ∈ insert j s then Tm i (Φ d i) else Φ d i) (x i) = ∏ i ∈ Finset.univ.erase j, (if i ∈ s then Tm i (Φ d i) else Φ d i) (x i)`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hij : i ≠ j` using `Finset.ne_of_mem_erase hi`. Simplify using `only [Finset.mem_insert, hij, false_or]`.
+
+Rewrite using `[h2, if_pos (Finset.mem_insert_self j s)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_prod_ite_map_eq_zero_of_sum_prod_eq_zero {ι κ : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type}
     (Tm : ∀ i, (X i → ℂ) →ₗ[ℂ] (X i → ℂ)) (S : Finset κ) (c : κ → ℂ) (Φ : κ → ∀ i, X i → ℂ)
     (h : ∀ x : ∀ i, X i, ∑ d ∈ S, c d * ∏ i, Φ d i (x i) = 0) (s : Finset ι) :
@@ -54,6 +68,9 @@ private theorem sum_prod_ite_map_eq_zero_of_sum_prod_eq_zero {ι κ : Type} [Fin
     rw [h2, if_pos (Finset.mem_insert_self j s)]
     ring
 
+/- English proof (translation)
+Use `sum_prod_ite_map_eq_zero_of_sum_prod_eq_zero Tm S c Φ h Finset.univ x` as an intermediate fact. Simplify using `using this`.
+-/
 theorem sum_prod_map_eq_zero {ι κ : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type}
     (Tm : ∀ i, (X i → ℂ) →ₗ[ℂ] (X i → ℂ)) (S : Finset κ) (c : κ → ℂ) (Φ : κ → ∀ i, X i → ℂ)
     (h : ∀ x : ∀ i, X i, ∑ d ∈ S, c d * ∏ i, Φ d i (x i) = 0) (x : ∀ i, X i) :
@@ -61,6 +78,11 @@ theorem sum_prod_map_eq_zero {ι κ : Type} [Fintype ι] [DecidableEq ι] {X : �
   have := sum_prod_ite_map_eq_zero_of_sum_prod_eq_zero Tm S c Φ h Finset.univ x
   simpa using this
 
+/- English proof (translation)
+Establish `hx : ∀ (y : ∀ i, Y i) (x : ∀ j, X j), ∑ d ∈ S, (c d * ∏ i, Ψ d i (y i)) * ∏ j, TX j (Φ d j) (x j) = 0`. Introduce `y`. Use `sum_prod_map_eq_zero TX S (fun d => c d * ∏ i, Ψ d i (y i)) Φ (fun x => ?_)` and prove the remaining obligations. Rewrite using `[← h x y]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hy` using `sum_prod_map_eq_zero TY S (fun d => c d * ∏ j, TX j (Φ d j) (x j)) Ψ (fun y' => by`. Rewrite using `[← hx y' x]`. Conclude with `Finset.sum_congr rfl fun d _ => by ring) y`. Rewrite using `[← hy]`.
+-/
 theorem sum_prod_map_eq_zero₂ {κ : Type} {m : ℕ} {X Y : Fin m → Type} (TX : ∀ j, (X j → ℂ) →ₗ[ℂ] (X j → ℂ))
     (TY : ∀ i, (Y i → ℂ) →ₗ[ℂ] (Y i → ℂ)) (S : Finset κ) (c : κ → ℂ) (Φ : κ → ∀ j, X j → ℂ) (Ψ : κ → ∀ i, Y i → ℂ)
     (h : ∀ (x : ∀ j, X j) (y : ∀ i, Y i), ∑ d ∈ S, c d * (∏ j, Φ d j (x j)) * ∏ i, Ψ d i (y i) = 0)
@@ -80,6 +102,15 @@ theorem sum_prod_map_eq_zero₂ {κ : Type} {m : ℕ} {X Y : Fin m → Type} (TX
     exact Finset.sum_congr rfl fun d _ => by ring) y
   rw [← hy]
 
+/- English proof (translation)
+Establish `key` using `sum_prod_map_eq_zero₂ TX TY (S.disjSum S) (Sum.elim (fun d => u * c d) fun d => -c d) (Sum.elim Φ Φ) (Sum.elim Ψ Ψ') (fun x' y' => by`. Rewrite using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Establish `e1 : ∑ d ∈ S, u * c d * (∏ j, Φ d j (x' j)) * ∏ i, Ψ d i (y' i) = u * ∑ d ∈ S, c d * (∏ j, Φ d j (x' j)) * ∏ i, Ψ d i (y' i)`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Establish `e2 : ∑ d ∈ S, -c d * (∏ j, Φ d j (x' j)) * ∏ i, Ψ' d i (y' i) = -∑ d ∈ S, c d * (∏ j, Φ d j (x' j)) * ∏ i, Ψ' d i (y' i)`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Rewrite using `[e1, e2, h x' y', add_neg_cancel]) x y`.
+
+Rewrite `key` using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at key`. Establish `e1 : ∑ d ∈ S, u * c d * (∏ j, TX j (Φ d j) (x j)) * ∏ i, TY i (Ψ d i) (y i) = u * ∑ d ∈ S, c d * (∏ j, TX j (Φ d j) (x j)) * ∏ i, TY i (Ψ d i) (y i)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun d _ => by ring`.
+
+Establish `e2 : ∑ d ∈ S, -c d * (∏ j, TX j (Φ d j) (x j)) * ∏ i, TY i (Ψ' d i) (y i) = -∑ d ∈ S, c d * (∏ j, TX j (Φ d j) (x j)) * ∏ i, TY i (Ψ' d i) (y i)`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun d _ => by ring`. Rewrite `key` using `[e1, e2, add_neg_eq_zero]`. Conclude with `key`.
+-/
 private theorem mul_sum_prod_map_eq_of_sum_prod_eq {κ : Type} {m : ℕ} {X Y : Fin m → Type} (TX : ∀ j, (X j → ℂ) →ₗ[ℂ] (X j → ℂ))
     (TY : ∀ i, (Y i → ℂ) →ₗ[ℂ] (Y i → ℂ)) (S : Finset κ) (c : κ → ℂ) (u : ℂ) (Φ : κ → ∀ j, X j → ℂ)
     (Ψ Ψ' : κ → ∀ i, Y i → ℂ)
@@ -115,6 +146,9 @@ private theorem mul_sum_prod_map_eq_of_sum_prod_eq {κ : Type} {m : ℕ} {X Y : 
   rw [e1, e2, add_neg_eq_zero] at key
   exact key
 
+/- English proof (translation)
+Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne h]`.
+-/
 private theorem apply_update_eq_update_apply {ι : Type} [DecidableEq ι] {X : ι → Type} (Tm : ∀ i, (X i → ℂ) →ₗ[ℂ] (X i → ℂ))
     (F : ∀ i, X i → ℂ) (i₀ : ι) (g : X i₀ → ℂ) (i : ι) :
     Tm i (Function.update F i₀ g i) = Function.update (fun i => Tm i (F i)) i₀ (Tm i₀ g) i := by
@@ -124,6 +158,23 @@ private theorem apply_update_eq_update_apply {ι : Type} [DecidableEq ι] {X : �
   · simp only [Function.update_of_ne h]
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Take `⟨e, he, hsup, -⟩` from `id hτ`. Take `⟨c, hc, hmod⟩` from `GlobalTheory.FirstRowShift.rowShift0_model S hL ht he k hk`. Break down `τ.support.eq_empty_or_nonempty with hne | ⟨d₀, hd₀⟩` into its components or cases. Simplify using `only [Finsupp.sum, hne, Finset.sum_empty, mul_zero]`. Establish `hTXe : ∀ j : Fin D.R.m, ∃ Tm : (WO (G.pS (.top t j)) (G.pT (.top t j)) → ℂ) →ₗ[ℂ] (WO (G.pS (.top t j)) (G.pT (.top t j)) → ℂ), IsPlaceModel W.ψ (symplO _ _) (heisO W.ψ _ _) e (GlobalTheory.LastVertexMove.stdLat S (.top t j)) 1 (S.Z.vac (.top t j)) Tm`.
+
+Introduce `j`. Take `⟨f, ⟨Tm, hTm⟩, -⟩` from `(hv d₀ hd₀).1 j`. Rewrite `hTm` using `[((hsup d₀ hd₀).1 j).2.1]`. Conclude with `⟨Tm, hTm⟩`. Establish `hTYe : ∀ i : Fin D.R.m, ∃ Tm : (WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ) →ₗ[ℂ] (WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ), IsPlaceModel W.ψ (symplO _ _) (heisO W.ψ _ _) e (GlobalTheory.LastVertexMove.stdLat S (.chi i D.R.m) …`.
+
+Introduce `i`. Take `⟨f, ⟨Tm, hTm⟩, -⟩` from `(hv d₀ hd₀).2 i`. Rewrite `hTm` using `[((hsup d₀ hd₀).2 i).2.1]`. Conclude with `⟨Tm, hTm⟩`. Use `choose TX hTX using hTXe`.
+
+Use `choose TY hTY using hTYe`. Establish `hvx : ∀ d ∈ τ.support, ∀ j, S.Z.vec (d.1 j) = TX j (d.1 j).fn` using `fun d hd j => GlobalTheory.LastVertexTensor.vec_eq_model S (d.1 j) ((hv d hd).1 j) ((hsup d hd).1 j).2.2 (TX j) (by rw [((hsup d hd).1 j).2.1]; exact hTX j)`. Establish `hvy : ∀ d ∈ τ.support, ∀ i, S.Z.vec (d.2 i) = TY i (d.2 i).fn` using `fun d hd i => GlobalTheory.LastVertexTensor.vec_eq_model S (d.2 i) ((hv d hd).2 i) ((hsup d hd).2 i).2.2 (TY i) (by rw [((hsup d hd).2 i).2.1]; exact hTY i)`. Establish `key` using `mul_sum_prod_map_eq_of_sum_prod_eq TX TY τ.support (fun d => τ d) (s * c) (fun d j => (d.1 j).fn) (fun d => Function.update (fun i => (d.2 i).fn) (GlobalTheory.FirstRowVertex.firstIx D) (fun y => (d.2 (GlobalTheory.FirstRowVertex.firstIx D)).fn (actO (G.pS (.chi (GlobalTheory.Fir …`. Establish `hL' : ∀ d ∈ τ.support, τ d * (∏ j, S.Z.vec (d.1 j) (xs j)) * ∏ i, Function.update (fun i => S.Z.vec (d.2 i)) (GlobalTheory.FirstRowVertex.firstIx D) (GlobalTheory.FirstRowVertex.rowShift0 S k (S.Z.vec (d.2 (GlobalTheory.FirstRowVertex.firstIx D)))) i (ys i) = c * (τ d * (∏ j, TX …`.
+
+Introduce `d hd`. Establish `hsb : IsSBHalf e (latO (G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.pT (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.latS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T) : Set _) (G.latT (.chi (GlobalTheory.FirstRowVert …`. Establish `h0` using `(d.2 (GlobalTheory.FirstRowVertex.firstIx D)).sb`. Rewrite `h0` using `[((hsup d hd).2 (GlobalTheory.FirstRowVertex.firstIx D)).2.1]`. Conclude with `h0`.
+
+Rewrite using `[hvy d hd (GlobalTheory.FirstRowVertex.firstIx D), hmod (TY _) (hTY _) _ hsb]`. Simplify using `only [hvx d hd, hvy d hd]`. Rewrite using `[GlobalTheory.FirstRowVertex.prod_update_smul]`. Simplify using `only [apply_update_eq_update_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hR' : ∀ d ∈ τ.support, τ d * (∏ j, S.Z.vec (d.1 j) (xs j)) * ∏ i, S.Z.vec (d.2 i) (ys i) = τ d * (∏ j, TX j (d.1 j).fn (xs j)) * ∏ i, TY i (d.2 i).fn (ys i)`. Introduce `d hd`. Simplify using `only [hvx d hd, hvy d hd]`. Unfold `Finsupp.sum`. Rewrite using `[Finset.sum_congr rfl hL', Finset.sum_congr rfl hR', ← Finset.mul_sum, ← mul_assoc]`.
+
+Conclude with `key`.
+-/
 private theorem vec_law_lemma_5 {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {μ₀ : T} (hL : L.Is μ₀) {t : T} (ht : t ∈ U) {Φ : G.Datum} {β : CosFam G t}
     {τ : PureDat G t →₀ ℂ} (hτ : S.IsExpansion t Φ β τ)
@@ -202,6 +253,13 @@ private theorem vec_law_lemma_5 {D : D7} {T : Type} {L : LevCh D T} {sc : Consts
   rw [Finset.sum_congr rfl hL', Finset.sum_congr rfl hR', ← Finset.mul_sum, ← mul_assoc]
   exact key
 
+/- English proof (translation)
+Introduce `hP hS`. Take `⟨CF0, hB⟩` from `GlobalTheory.T.first_row_vertex_weil_value hP hS`. Take `⟨CF1, hO⟩` from `hS`. Use `⟨max CF0 CF1, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hB ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨x₁, hx1⟩` from `hO ε CF (le_trans (le_max_right _ _) hCF)`. Use `⟨max x₀ x₁, ?_⟩` and prove the remaining obligations. Introduce `D large₂ hε hxs Γ _ _ Pl0 T A Ks _ _ _ R F hSet ch hch hsc`. Establish `H` using `hx D large₂ hε (le_trans (le_max_left _ _) hxs) Γ Pl0 T A Ks R F hSet ch hch hsc`. Establish `HO` using `hx1 D large₂ hε (le_trans (le_max_right _ _) hxs) Γ Pl0 T A Ks R F hSet ch hch hsc`.
+
+Introduce `t a β hβ τ hτ k hk hkχ xs ys`. Conclude with `vec_law_lemma_5 ch.S.toGridChoice hSet.core.lev (Set.mem_univ t) hτ ((HO t a).vec β τ hτ) k hk _ (fun c hc => H t a β hβ τ hτ k hk hkχ c hc) xs ys`.
+-/
 theorem main_law : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →
     ∀ (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →

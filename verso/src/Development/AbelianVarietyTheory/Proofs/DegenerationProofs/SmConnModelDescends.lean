@@ -18,10 +18,16 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.ModelDescent
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+-/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C}
     {h : A →+* C} (e : g.comp f = h) : spMap g ≫ spMap f = spMap h := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, e]
 
+/- English proof (translation)
+Set `e : L ≃+* i.range` to `RingEquiv.ofBijective i.rangeRestrict ⟨fun x y hxy => hi (congrArg Subtype.val hxy), i.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (f.codRestrict i.range h), RingHom.ext fun t => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨f t, h t⟩)`.
+-/
 theorem exists_factor {T L C : Type} [CommRing T] [CommRing L] [CommRing C] (f : T →+* C) (i : L →+* C)
     (hi : Function.Injective i) (h : ∀ t, f t ∈ i.range) : ∃ g : T →+* L, i.comp g = f := by
   let e : L ≃+* i.range := RingEquiv.ofBijective i.rangeRestrict
@@ -29,6 +35,29 @@ theorem exists_factor {T L C : Type} [CommRing T] [CommRing L] [CommRing C] (f :
   refine ⟨e.symm.toRingHom.comp (f.codRestrict i.range h), RingHom.ext fun t => ?_⟩
   exact congrArg Subtype.val (e.apply_symm_apply ⟨f t, h t⟩)
 
+/- English proof (translation)
+Set `k : Subring C` to `a.range ⊔ b.range`. Set `a₀ : R₀ →+* k` to `a.codRestrict k fun x => (le_sup_left : _ ≤ k) ⟨x, rfl⟩`. Set `b₀ : K →+* k` to `b.codRestrict k fun x => (le_sup_right : _ ≤ k) ⟨x, rfl⟩`. Establish `ea : spMap (algebraMap k C) ≫ spMap a₀ = spMap a` using `spMap_comp_eq rfl`. Establish `eb : spMap (algebraMap k C) ≫ spMap b₀ = spMap b` using `spMap_comp_eq rfl`.
+
+Set `π' : X ⟶ pullback f₀ (spMap a₀)` to `pullback.lift π (f ≫ spMap (algebraMap k C)) (by rw [Category.assoc, ea, hp.w])`. Establish `hπ₁ : π' ≫ pullback.fst _ _ = π` using `pullback.lift_fst _ _ _`. Establish `hπ₂ : π' ≫ pullback.snd _ _ = f ≫ spMap (algebraMap k C)` using `pullback.lift_snd _ _ _`. Establish `hp' : IsPullback π' f (pullback.snd f₀ (spMap a₀)) (spMap (algebraMap k C))`. Use `IsPullback.of_right (h₁₂ := pullback.fst f₀ (spMap a₀)) (v₁₃ := f₀) (h₂₂ := spMap a₀) ?_ hπ₂ (.of_hasPullback _ _)` and prove the remaining obligations.
+
+Rewrite using `[hπ₁, ea]`. Conclude with `hp`. Set `φ' : X ⟶ pullback q (spMap b₀)` to `pullback.lift φ (f ≫ spMap (algebraMap k C)) (by rw [Category.assoc, eb, hφ])`. Establish `hφ₁ : φ' ≫ pullback.fst _ _ = φ` using `pullback.lift_fst _ _ _`. Establish `hφ₂ : φ' ≫ pullback.snd _ _ = f ≫ spMap (algebraMap k C)` using `pullback.lift_snd _ _ _`.
+
+Take `⟨T, ψ, ⟨s, rfl⟩, h₁, h₂⟩` from `Spread.exists_fg_comp_eq (A := C) (pullback.snd f₀ (spMap a₀)) (pullback.snd q (spMap b₀)) (hp'.isoPullback.inv ≫ φ') (by rw [Category.assoc, hφ₂, ← hπ₂, hp'.isoPullback_inv_fst_assoc])`. Use `⟨s, fun L _ i a' b' hi ha hb hs X₁ f₁ π₁ j w hj₁ hj₂ => ?_⟩` and prove the remaining obligations. Establish `hk : k ≤ i.range`. Apply the tactic sequence `refine sup_le ?_ ?_ <;> rintro _ ⟨x, rfl⟩`. Conclude with `⟨a' x, RingHom.congr_fun ha x⟩`.
+
+Conclude with `⟨b' x, RingHom.congr_fun hb x⟩`. Take `⟨g, hg⟩` from `exists_factor (Algebra.adjoin k (s : Set C)).val.toRingHom i hi (by`. Introduce and unpack `⟨x, hx⟩`. Express the relevant statement in the definitionally equal form `x ∈ i.range`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx => exact hs x hx`. Consider the case `algebraMap r => exact hk r.2`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy)`. Establish `hga : spMap g ≫ spMap (algebraMap k _) ≫ spMap a₀ = spMap a'`.
+
+Rewrite using `[spMap_comp_eq rfl]`. Conclude with `spMap_comp_eq (RingHom.ext fun x => hi ((RingHom.congr_fun hg _).trans (RingHom.congr_fun ha x).symm))`. Establish `hgb : spMap g ≫ spMap (algebraMap k _) ≫ spMap b₀ = spMap b'`. Rewrite using `[spMap_comp_eq rfl]`. Conclude with `spMap_comp_eq (RingHom.ext fun x => hi ((RingHom.congr_fun hg _).trans (RingHom.congr_fun hb x).symm))`.
+
+Establish `hg'` using `spMap_comp_eq hg`. Set `m₀ : X₁ ⟶ pullback f₀ (spMap a₀)` to `pullback.lift π₁ (f₁ ≫ spMap g ≫ spMap (algebraMap k _)) (by`. Rewrite using `[Category.assoc, Category.assoc, hga, w])`. Establish `n₁ : m₀ ≫ pullback.fst _ _ = π₁` using `pullback.lift_fst _ _ _`. Establish `n₂ : m₀ ≫ pullback.snd _ _ = f₁ ≫ spMap g ≫ spMap (algebraMap k _)` using `pullback.lift_snd _ _ _`.
+
+Set `m : X₁ ⟶ pullback (pullback.snd f₀ (spMap a₀)) (spMap (algebraMap k (Algebra.adjoin k (s : Set C))))` to `pullback.lift m₀ (f₁ ≫ spMap g) (by rw [Category.assoc, n₂])`. Establish `hm₁ : m ≫ pullback.fst _ _ = m₀` using `pullback.lift_fst _ _ _`. Establish `hm₂ : m ≫ pullback.snd _ _ = f₁ ≫ spMap g` using `pullback.lift_snd _ _ _`. Establish `hjm₀ : j ≫ m₀ = π'`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, n₁, hj₁, hπ₁]`. Rewrite using `[Category.assoc, n₂, reassoc_of% hj₂, reassoc_of% hg', Spread.spMap_algHom_comp, hπ₂]`. Establish `hjm : j ≫ m = hp'.isoPullback.hom ≫ Spread.bcMap _ (Algebra.adjoin k (s : Set C)).val`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hm₁, hjm₀, Category.assoc, Spread.bcMap_fst, hp'.isoPullback_hom_fst]`.
+
+Rewrite using `[Category.assoc, hm₂, reassoc_of% hj₂, hg', Category.assoc, Spread.bcMap_snd, hp'.isoPullback_hom_snd_assoc]`. Use `⟨m ≫ ψ ≫ pullback.fst _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% hjm, reassoc_of% h₂, Iso.hom_inv_id_assoc, hφ₁]`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, reassoc_of% h₁, reassoc_of% hm₁, reassoc_of% n₂, hgb]`.
+-/
 theorem exists_hom_descent {R₀ K C : Type} [CommRing R₀] [CommRing K] [CommRing C] (a : R₀ →+* C) (b : K →+* C)
     {X X₀ Y : Scheme.{0}} (f : X ⟶ Sp C) (f₀ : X₀ ⟶ Sp R₀) (q : Y ⟶ Sp K) [QuasiCompact f₀] [QuasiSeparated f₀]
     [LocallyOfFinitePresentation q] (π : X ⟶ X₀) (φ : X ⟶ Y) (hp : IsPullback π f f₀ (spMap a))
@@ -102,6 +131,15 @@ theorem exists_hom_descent {R₀ K C : Type} [CommRing R₀] [CommRing K] [CommR
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Set `u : H ⟶ (Over.pullback b).obj A` to `Over.homMk (pullback.lift ψ H.hom w) (pullback.lift_snd _ _ _)`. Establish `hu : u.left ≫ pullback.fst A.hom b = ψ` using `pullback.lift_fst _ _ _`. Establish `hs : IsSeparated ((Over.pullback b).obj A).hom`. Express the relevant statement in the definitionally equal form `IsSeparated (pullback.snd A.hom b)`. Use `infer_instance`.
+
+Establish `h₁ : IsGrpPullback H' ((Over.pullback b).obj A) i (j ≫ u.left)` using `(isGrpPullback_pullback A b).cancel (h.congr rfl (by rw [Category.assoc, hu])) (by rw [Category.assoc, Over.w]; exact hj.1.w)`. Establish `h₂ : IsMonHom u` using `ExtUnique.isMonHom_of_isGrpPullback hj h₁ (𝟙 _) u (by rw [Over.id_left, Category.id_comp])`. Establish `h₃ : IsPullback j (𝟙 _) u.left (j ≫ u.left)`. Use `IsPullback.of_bot ?_ (Category.id_comp _).symm h₁.1` and prove the remaining obligations. Rewrite using `[Category.id_comp, Over.w]`.
+
+Conclude with `hj.1`. Establish `hq : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (j ≫ u.left)` using `⟨⟨MorphismProperty.of_isPullback (P := @Surjective) h₁.1.flip ‹_›, MorphismProperty.of_isPullback (P := @Flat) h₁.1.flip ‹_›⟩, MorphismProperty.of_isPullback (P := @QuasiCompact) h₁.1.flip ‹_›⟩`. Establish `h₄ : IsIso u.left` using `MorphismProperty.of_isPullback_of_descendsAlong (P := MorphismProperty.isomorphisms Scheme.{0}) h₃.flip hq (MorphismProperty.isomorphisms.infer_property _)`. Establish `h₅ : IsIso ((Over.forget _).map u)` using `h₄`. Establish `h₆ : IsIso u` using `isIso_of_reflects_iso u (Over.forget _)`.
+
+Conclude with `⟨asIso u, h₂⟩`.
+-/
 theorem exists_iso_of_cover {S S' S'' : Scheme.{0}} (b : S' ⟶ S) (i : S'' ⟶ S') [Flat i] [Surjective i]
     [QuasiCompact i] [IsSchemeTheoreticallyDominant i] (A : Over S) [GrpObj A] [IsSeparated A.hom] (H : Over S')
     [GrpObj H] [Flat H.hom] (H' : Over S'') [GrpObj H'] (j : H'.left ⟶ H.left) (ψ : H.left ⟶ A.left)
@@ -132,6 +170,11 @@ theorem exists_iso_of_cover {S S' S'' : Scheme.{0}} (b : S' ⟶ S) (i : S'' ⟶ 
   have h₆ : IsIso u := isIso_of_reflects_iso u (Over.forget _)
   exact ⟨asIso u, h₂⟩
 
+/- English proof (translation)
+Use `⟨fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p.asIdeal = ⊥`. Use `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R), PrimeSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `Ideal.comap_bot_of_injective f hf`.
+
+Use `⟨IsLocalRing.closedPoint R, (IsLocalRing.comap_closedPoint f).trans (PrimeSpectrum.ext ?_)⟩` and prove the remaining obligations. Conclude with `(IsLocalRing.eq_maximalIdeal (p.isPrime.isMaximal hp)).symm`.
+-/
 theorem surjective_spMap {W R : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [CommRing R] [IsDomain R]
     [IsLocalRing R] (f : W →+* R) (hf : Function.Injective f) [IsLocalHom f] : Surjective (spMap f) := by
   refine ⟨fun p => ?_⟩
@@ -142,6 +185,13 @@ theorem surjective_spMap {W R : Type} [CommRing W] [IsDomain W] [IsDiscreteValua
   · refine ⟨IsLocalRing.closedPoint R, (IsLocalRing.comap_closedPoint f).trans (PrimeSpectrum.ext ?_)⟩
     exact (IsLocalRing.eq_maximalIdeal (p.isPrime.isMaximal hp)).symm
 
+/- English proof (translation)
+Establish `iW : Function.Injective ((algebraMap R K').comp w)` using `(IsFractionRing.injective R K').comp hw`. Set `i : L →+* K'` to `IsFractionRing.lift iW`. Establish `hi : i.comp (algebraMap W L) = (algebraMap R K').comp w` using `RingHom.ext fun x => IsFractionRing.lift_algebraMap iW x`. Establish `hiV : i.comp ((algebraMap W L).comp v) = a.comp (algebraMap V K)`. Rewrite using `[← RingHom.comp_assoc, hi, ← hc]`.
+
+Both sides reduce to the same expression. Establish `iV : Function.Injective ((algebraMap W L).comp v)`. Use `Function.Injective.of_comp (f := i) ?_` and prove the remaining obligations. Rewrite using `[← RingHom.coe_comp, hiV]`. Conclude with `a.injective.comp (IsFractionRing.injective V K)`.
+
+Set `b : K →+* L` to `IsFractionRing.lift iV`. Establish `hb : b.comp (algebraMap V K) = (algebraMap W L).comp v` using `RingHom.ext fun x => IsFractionRing.lift_algebraMap iV x`. Use `⟨b, i, hb.symm, hi, ?_⟩` and prove the remaining obligations. Apply `IsLocalization.ringHom_ext (nonZeroDivisors V)` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hb, hiV]`.
+-/
 theorem exists_fraction_maps {V K W L R K' : Type} [CommRing V] [IsDomain V] [Field K] [Algebra V K]
     [IsFractionRing V K] [CommRing W] [IsDomain W] [Field L] [Algebra W L] [IsFractionRing W L] [CommRing R]
     [Field K'] [Algebra R K'] [IsFractionRing R K'] (v : V →+* W) (w : W →+* R) (hw : Function.Injective w)
@@ -166,6 +216,13 @@ theorem exists_fraction_maps {V K W L R K' : Type} [CommRing V] [IsDomain V] [Fi
   apply IsLocalization.ringHom_ext (nonZeroDivisors V)
   rw [RingHom.comp_assoc, hb, hiV]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_hom_descent a b X.hom G₀.hom A.hom π φ hπ.1 hφ.1.w`. Use `⟨S, fun L _ i a' b' ha hb hs H _ π₁ h₁ => ?_⟩` and prove the remaining obligations. Establish `ea` using `spMap_comp_eq ha`. Set `j : X.left ⟶ H.left` to `h₁.1.lift π (X.hom ≫ spMap i) (by rw [Category.assoc, ea, hπ.1.w])`. Establish `hj₁ : j ≫ π₁ = π` using `h₁.1.lift_fst _ _ _`.
+
+Establish `hj₂ : j ≫ H.hom = X.hom ≫ spMap i` using `h₁.1.lift_snd _ _ _`. Take `⟨ψ, hψ₁, hψ₂⟩` from `hS L i a' b' i.injective ha hb hs H.left H.hom π₁ j h₁.1.w hj₁ hj₂`. Establish `f₁ : Flat (spMap i)`. Use `letI := i.toAlgebra`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`.
+
+Conclude with `(inferInstance : Module.Flat L C)`. Establish `f₂ : Surjective (spMap i)` using `⟨fun _ => ⟨default, Subsingleton.elim _ _⟩⟩`. Establish `f₃ : IsSchemeTheoreticallyDominant (spMap i)` using `.of_isDominant _`. Establish `f₄ : Smooth H.hom` using `MorphismProperty.of_isPullback (P := @Smooth) h₁.1 ‹_›`. Conclude with `exists_iso_of_cover (spMap b') (spMap i) A H X j ψ (h₁.cancel (hπ.congr ea.symm hj₁.symm) hj₂) (hφ.congr (spMap_comp_eq hb).symm hψ₁.symm) hψ₂`.
+-/
 theorem exists_iso_descent {R₀ K C : Type} [CommRing R₀] [CommRing K] [Field C] (a : R₀ →+* C) (b : K →+* C)
     (G₀ : Over (Sp R₀)) [GrpObj G₀] [Smooth G₀.hom] [IsSeparated G₀.hom] [QuasiCompact G₀.hom]
     (A : Over (Sp K)) [GrpObj A] [Smooth A.hom] [IsSeparated A.hom] (X : Over (Sp C)) [GrpObj X]
@@ -192,6 +249,11 @@ theorem exists_iso_descent {R₀ K C : Type} [CommRing R₀] [CommRing K] [Field
   exact exists_iso_of_cover (spMap b') (spMap i) A H X j ψ (h₁.cancel (hπ.congr ea.symm hj₁.symm) hj₂)
     (hφ.congr (spMap_comp_eq hb).symm hψ₁.symm) hψ₂
 
+/- English proof (translation)
+Establish `ec : spMap w ≫ spMap c = spMap (w.comp c)` using `spMap_comp_eq rfl`. Set `G` to `(Over.pullback (spMap c)).obj G₀`. Establish `q₀ : IsGrpPullback G G₀ (spMap c) (pullback.fst G₀.hom (spMap c))` using `isGrpPullback_pullback G₀ _`. Set `χ : G'.left ⟶ G.left` to `pullback.lift φ₀ (G'.hom ≫ spMap w) (by rw [Category.assoc, ec, hφ₀.1.w])`. Establish `hχ₁ : χ ≫ pullback.fst G₀.hom (spMap c) = φ₀` using `pullback.lift_fst _ _ _`.
+
+Establish `hχ₂ : χ ≫ G.hom = G'.hom ≫ spMap w` using `pullback.lift_snd _ _ _`. Establish `q₁ : IsGrpPullback G' G (spMap w) χ` using `q₀.cancel (hφ₀.congr ec.symm hχ₁.symm) hχ₂`. Take `⟨ε, hε, -⟩` from `grpPullback_iso (isGrpPullback_pullback G (spMap w)) q₁`. Conclude with `⟨G, inferInstance, ε, _, ⟨inferInstance, MorphismProperty.of_isPullback (P := @Smooth) q₀.1 ‹_›, MorphismProperty.of_isPullback (P := @IsSeparated) q₀.1 ‹_›, MorphismProperty.of_isPullback (P := @QuasiCompact) q₀.1 ‹_›, GrpFlatDesc.geometricallyConnected_of_isPullback q₁.1⟩, hε, …`.
+-/
 theorem exists_smConn_level {R₀ W R : Type} [CommRing R₀] [CommRing W] [CommRing R] (c : R₀ →+* W) (w : W →+* R)
     [Surjective (spMap w)] (G₀ : Over (Sp R₀)) [GrpObj G₀] [IsCommMonObj G₀] [Smooth G₀.hom] [IsSeparated G₀.hom]
     [QuasiCompact G₀.hom] (G' : Over (Sp R)) [GrpObj G'] [GeometricallyConnected G'.hom] (φ₀ : G'.left ⟶ G₀.left)
@@ -217,6 +279,21 @@ namespace GlobalTheory
 
 open ModelDescent
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ R K' _ _ _ _ _ _ _ _ hc A _ hA G' _ ⟨hcomm, hsm, hsep, hqc, hgc⟩ ⟨e, he⟩`. Take `⟨R₀, G₀, _, _, φ₀, -, ⟨t, ht⟩, s₁, s₂, s₃, hφ₀⟩` from `GlobalTheory.smooth_grpScheme_descends_to_fg_subring R G' ∅ hsm hsep hqc`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `p₁` using `isGrpPullback_pullback G' (spMap (algebraMap R K'))`.
+
+Establish `p₂` using `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback A (spMap (algebraMap K K')))).congr (Category.id_comp _) rfl`. Establish `p₃` using `(p₁.comp hφ₀).congr (spMap_comp_eq rfl) rfl`. Take `⟨S, hS⟩` from `exists_iso_descent _ (algebraMap K K') G₀ A _ _ _ p₃ p₂`. Use `choose num den hden hnd using fun x : K' => IsFractionRing.div_surjective R x`. Use `⟨t.image Subtype.val ∪ (S.image num ∪ S.image den), fun W hW hs hloc => ?_⟩` and prove the remaining obligations.
+
+Establish `hR₀ : ∀ x : R₀, R₀.subtype x ∈ W`. Introduce `x`. Establish `hx : x ∈ Algebra.adjoin ℤ (t : Set R₀)` using `ht ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hs (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hx))`.
+
+Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy => exact map_add R₀.subtype x y ▸ add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact map_mul R₀.subtype x y ▸ mul_mem hx hy`. Set `c : R₀ →+* W` to `R₀.subtype.codRestrict W hR₀`. Establish `hsurj` using `surjective_spMap W.val.toRingHom Subtype.val_injective`.
+
+Take `⟨G, iG, ε, π, hG, hε, hπ⟩` from `exists_smConn_level c W.val.toRingHom G₀ G' φ₀ hφ₀`. Take `⟨b, i, hb, hi, hib⟩` from `exists_fraction_maps (L := FractionRing W) (algebraMap V W) W.val.toRingHom Subtype.val_injective (algebraMap K K') hc`. Establish `hmem : ∀ x ∈ S, x ∈ i.range`. Introduce `x hx`. Establish `h₁ : num x ∈ W` using `hs (Finset.mem_union_right _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hx)))`.
+
+Establish `h₂ : den x ∈ W` using `hs (Finset.mem_union_right _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hx)))`. Use `⟨algebraMap W (FractionRing W) ⟨_, h₁⟩ / algebraMap W (FractionRing W) ⟨_, h₂⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀]`. Conclude with `(congrArg₂ (· / ·) (RingHom.congr_fun hi _) (RingHom.congr_fun hi _)).trans (hnd x)`. Establish `hm` using `hS (FractionRing W) i ((algebraMap W (FractionRing W)).comp c) b (by rw [← RingHom.comp_assoc, hi]; rfl) hib hmem _ _ (((isGrpPullback_pullback G (spMap (algebraMap W (FractionRing W)))).comp hπ).congr (spMap_comp_eq rfl) rfl)`.
+
+Conclude with `⟨G, iG, b.toAlgebra, ε, hG, hε, hb, hm⟩`.
+-/
 theorem smConn_model_descends : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (R K' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Algebra V R] [Field K'] [Algebra R K'] [IsFractionRing R K'] [Algebra K K'], (algebraMap R K').comp (algebraMap V R) = (algebraMap K K').comp (algebraMap V K) → ∀ (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (G' : Over (Sp R)) [GrpObj G'], SmConn G' → IsModel (L := K') A G' → ∃ s : Finset R, ∀ (W : Subalgebra V R) (_ : IsDiscreteValuationRing W), (↑s : Set R) ⊆ W → IsLocalHom W.val.toRingHom → ∃ (G : Over (Sp W)) (_ : GrpObj G) (_ : Algebra K (FractionRing W)) (ε : (Over.pullback (spMap W.val.toRingHom)).obj G ≅ G'), SmConn G ∧ IsMonHom ε.hom ∧ (algebraMap W (FractionRing W)).comp (algebraMap V W) = (algebraMap K (FractionRing W)).comp (algebraMap V K) ∧ IsModel (L := FractionRing W) A G := by
   intro V K _ _ _ _ _ _ R K' _ _ _ _ _ _ _ _ hc A _ hA G' _ ⟨hcomm, hsm, hsep, hqc, hgc⟩ ⟨e, he⟩
   classical

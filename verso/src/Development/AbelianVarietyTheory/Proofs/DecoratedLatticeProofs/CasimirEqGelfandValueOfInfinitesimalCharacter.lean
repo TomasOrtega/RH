@@ -13,6 +13,9 @@ open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTy
 
 namespace GlobalTheory.CoverDS
 
+/- English proof (translation)
+Unfold `GlobalTheory.Dec.gelf`. Rewrite using `[← Finset.sum_product', Finset.univ_product_univ]`. Use `Fintype.sum_equiv (finTwoArrowEquiv (Fin n)) _ _ (fun a => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.Dec.cycWord, Formalism.REAL.Eword, List.ofFn_succ]`.
+-/
 theorem gelf_one_eq_sum {n : ℕ} (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.Dec.gelf ε 1 f g = ∑ a, ∑ b, Formalism.REAL.Eab ε a b (Formalism.REAL.Eab ε b a f) g := by
@@ -21,6 +24,17 @@ theorem gelf_one_eq_sum {n : ℕ} (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin
   refine Fintype.sum_equiv (finTwoArrowEquiv (Fin n)) _ _ (fun a => ?_)
   simp [GlobalTheory.Dec.cycWord, Formalism.REAL.Eword, List.ofFn_succ]
 
+/- English proof (translation)
+Introduce `p q n e ε T R σ hb hf χ hχ v`. Take `⟨hU, -, hK, -⟩` from `GlobalTheory.T.coverFactoringRepresentation_unitaryGroup_dictionary p q n e ε T R.U σ hb hf`. Establish `hkf : ∀ u : R.HK.V, IsKFin ε σ (R.ι u)` using `fun u => (hK _).1 ((R.ι_range _).1 ⟨u, rfl⟩)`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε`. Simplify using `[UJset, Formalism.REAL.inUJ]`.
+
+Establish `hσ1 : σ 1 = 1` using `hU.1.1`. Establish `key : ∀ u : R.HK.V, inner ℂ (R.ι u) (R.ι (casimir R.HK.act v - GlobalTheory.Dec.gelfVal χ 2 • v)) = 0`. Introduce `u`. Establish `h` using `(hχ (R.ι v) (R.ι u) (hkf v) (hkf u)).2 1 1 h1`. Rewrite `h` using `[gelf_one_eq_sum, ← e.sum_comp]`.
+
+Establish `h2 : ∀ a b : Ix p q, Formalism.REAL.Eab ε (e a) (e b) (Formalism.REAL.Eab ε (e b) (e a) (fun g => inner ℂ (R.ι u) (σ g (R.ι v)))) 1 = inner ℂ (R.ι u) (R.ι (R.HK.act (Eab a b) (R.HK.act (Eab b a) v)))`. Introduce `a b`. Rewrite using `[Formalism.REAL.lie_derivative_congr (e a) (e b) (fun x hx => GlobalTheory.T.matrixUnitDerivative_discreteSeriesMatrixCoeff p q n e ε T R σ hb hf b a v (R.ι u) x hx) h1, GlobalTheory.T.matrixUnitDerivative_discreteSeriesMatrixCoeff p q n e ε T R σ hb hf a b _ (R.ι u) 1 h1, hσ1]`. Both sides reduce to the same expression. Establish `h3 : ∀ a : Ix p q, (∑ b : Fin n, Formalism.REAL.Eab ε (e a) b (Formalism.REAL.Eab ε b (e a) (fun g => inner ℂ (R.ι u) (σ g (R.ι v)))) 1) = ∑ b : Ix p q, inner ℂ (R.ι u) (R.ι (R.HK.act (Eab a b) (R.HK.act (Eab b a) v)))`.
+
+Introduce `a`. Rewrite using `[← e.sum_comp]`. Conclude with `Finset.sum_congr rfl (fun b _ => h2 a b)`. Simplify using `only [h3, hσ1] at h`. Rewrite using `[map_sub, map_smul, inner_sub_right, inner_smul_right, sub_eq_zero]`.
+
+Use `Eq.trans ?_ h` and prove the remaining obligations. Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, map_sum, inner_sum]`. Establish `h0` using `key (casimir R.HK.act v - GlobalTheory.Dec.gelfVal χ 2 • v)`. Rewrite `h0` using `[inner_self_eq_zero]`. Conclude with `sub_eq_zero.1 (R.ι_inj (h0.trans (map_zero _).symm))`.
+-/
 theorem casimir_eq_gelfVal_of_hasInfChar : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (R : DSRep T) (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e ε → Factors R.U e σ → ∀ χ : Fin n → ℂ, GlobalTheory.Dec.HasInfChar ε χ σ → ∀ v, casimir R.HK.act v = GlobalTheory.Dec.gelfVal χ 2 • v := by
   intro p q n e ε T R σ hb hf χ hχ v
   obtain ⟨hU, -, hK, -⟩ := GlobalTheory.T.coverFactoringRepresentation_unitaryGroup_dictionary p q n e ε T R.U σ hb hf

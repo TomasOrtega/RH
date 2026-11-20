@@ -13,6 +13,9 @@ section Coord
 
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `h : ((‖v‖ ^ 2 : ℝ) : ℂ) = ((∑ i, ‖e v i‖ ^ 2 : ℝ) : ℂ)` using `by rw [he v]`. Move the coercions through the operations in `at h`. Rewrite using `[h, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(Complex.conj_mul' _).symm`.
+-/
 theorem norm_sq_eq_dot (e : V ≃L[ℝ] (ι → ℂ)) (he : ∀ v, ‖v‖ ^ 2 = ∑ i, ‖e v i‖ ^ 2) (v : V) :
     (‖v‖ : ℂ) ^ 2 = star (e v) ⬝ᵥ e v := by
   have h : ((‖v‖ ^ 2 : ℝ) : ℂ) = ((∑ i, ‖e v i‖ ^ 2 : ℝ) : ℂ) := by rw [he v]
@@ -21,6 +24,9 @@ theorem norm_sq_eq_dot (e : V ≃L[ℝ] (ι → ℂ)) (he : ∀ v, ‖v‖ ^ 2 =
   refine Finset.sum_congr rfl fun i _ => ?_
   exact (Complex.conj_mul' _).symm
 
+/- English proof (translation)
+Establish `h : ((‖x + y‖ ^ 2 : ℝ) : ℂ) = ((‖x‖ ^ 2 + 2 * ⟪x, y⟫ + ‖y‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[norm_add_sq_real]`. Move the coercions through the operations in `at h`. Rewrite `h` using `[norm_sq_eq_dot e he (x + y), norm_sq_eq_dot e he x, norm_sq_eq_dot e he y, map_add, star_add, add_dotProduct, dotProduct_add, dotProduct_add]`. Take the linear combination `(-1 / 2 : ℂ) * h`.
+-/
 theorem inner_eq_dot (e : V ≃L[ℝ] (ι → ℂ)) (he : ∀ v, ‖v‖ ^ 2 = ∑ i, ‖e v i‖ ^ 2) (x y : V) :
     ((⟪x, y⟫ : ℝ) : ℂ) = (1 / 2 : ℂ) * (star (e x) ⬝ᵥ e y + star (e y) ⬝ᵥ e x) := by
   have h : ((‖x + y‖ ^ 2 : ℝ) : ℂ) = ((‖x‖ ^ 2 + 2 * ⟪x, y⟫ + ‖y‖ ^ 2 : ℝ) : ℂ) := by
@@ -30,16 +36,25 @@ theorem inner_eq_dot (e : V ≃L[ℝ] (ι → ℂ)) (he : ∀ v, ‖v‖ ^ 2 = �
     add_dotProduct, dotProduct_add, dotProduct_add] at h
   linear_combination (-1 / 2 : ℂ) * h
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, dotProduct_mulVec]`.
+-/
 theorem star_mulVec_dot (g : Matrix ι ι ℂ) (z w : ι → ℂ) :
     star (g *ᵥ z) ⬝ᵥ w = star z ⬝ᵥ gᴴ *ᵥ w := by
   rw [star_mulVec, dotProduct_mulVec]
 
 end Coord
 
+/- English proof (translation)
+The claim follows from `PosDef.one.add_posSemidef (posSemidef_conjTranspose_mul_self g)`.
+-/
 theorem posDef_one_add {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] (g : Matrix κ ι ℂ) :
     (1 + gᴴ * g).PosDef :=
   PosDef.one.add_posSemidef (posSemidef_conjTranspose_mul_self g)
 
+/- English proof (translation)
+Establish `hmp` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : ι ⊕ ι => ℂ)`. Establish `hF' : Integrable (fun p => F ((MeasurableEquiv.sumPiEquivProdPi fun _ : ι ⊕ ι => ℂ).symm p)) ((volume : Measure (ι → ℂ)).prod volume)` using `(hmp.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 hF`. Rewrite using `[← hmp.integral_comp' F, Measure.volume_eq_prod, integral_prod _ hF']`. Both sides reduce to the same expression.
+-/
 theorem integral_sum_elim {ι : Type} [Fintype ι] (F : (ι ⊕ ι → ℂ) → ℂ) (hF : Integrable F) :
     ∫ z : ι → ℂ, ∫ w : ι → ℂ, F (Sum.elim z w) = ∫ x, F x := by
   have hmp := volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : ι ⊕ ι => ℂ)
@@ -49,12 +64,18 @@ theorem integral_sum_elim {ι : Type} [Fintype ι] (F : (ι ⊕ ι → ℂ) → 
   rw [← hmp.integral_comp' F, Measure.volume_eq_prod, integral_prod _ hF']
   rfl
 
+/- English proof (translation)
+Establish `h2 : star (1 / 2 : ℂ) = 1 / 2`. Rewrite using `[Complex.star_def, map_div₀, map_one, map_ofNat]`. Rewrite using `[conjTranspose_smul, hX, h2, ← smul_add, GlobalTheory.RealWeil.PosDet.half_add_self]`.
+-/
 private lemma half_smul_add_conjTranspose_eq_of_hermitian {ι : Type} [Fintype ι] [DecidableEq ι] (X : Matrix ι ι ℂ) (hX : Xᴴ = X) :
     (1 / 2 : ℂ) • X + ((1 / 2 : ℂ) • X)ᴴ = X := by
   have h2 : star (1 / 2 : ℂ) = 1 / 2 := by
     rw [Complex.star_def, map_div₀, map_one, map_ofNat]
   rw [conjTranspose_smul, hX, h2, ← smul_add, GlobalTheory.RealWeil.PosDet.half_add_self]
 
+/- English proof (translation)
+Establish `h2 : star (1 / 2 : ℂ) = 1 / 2`. Rewrite using `[Complex.star_def, map_div₀, map_one, map_ofNat]`. Rewrite using `[conjTranspose_smul, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_sub, conjTranspose_one, hs, h2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, zero_add]`. Use `module`.
+-/
 private lemma half_cross_add_conjTranspose_eq_mul {ι : Type} [Fintype ι] [DecidableEq ι] (s a b : Matrix ι ι ℂ) (hs : sᴴ = s) :
     (1 / 2 : ℂ) • (aᴴ * (1 + s) * b) + ((1 / 2 : ℂ) • (bᴴ * (1 - s) * a))ᴴ = 0 + aᴴ * b := by
   have h2 : star (1 / 2 : ℂ) = 1 / 2 := by
@@ -65,6 +86,9 @@ private lemma half_cross_add_conjTranspose_eq_mul {ι : Type} [Fintype ι] [Deci
     Matrix.one_mul, Matrix.mul_assoc, zero_add]
   module
 
+/- English proof (translation)
+Establish `h2 : star (1 / 2 : ℂ) = 1 / 2`. Rewrite using `[Complex.star_def, map_div₀, map_one, map_ofNat]`. Rewrite using `[conjTranspose_smul, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_add, conjTranspose_one, hs, h2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, zero_add]`. Use `module`.
+-/
 private lemma half_cross_add_conjTranspose_eq_mul_swap {ι : Type} [Fintype ι] [DecidableEq ι] (s a b : Matrix ι ι ℂ) (hs : sᴴ = s) :
     (1 / 2 : ℂ) • (bᴴ * (1 - s) * a) + ((1 / 2 : ℂ) • (aᴴ * (1 + s) * b))ᴴ = 0 + bᴴ * a := by
   have h2 : star (1 / 2 : ℂ) = 1 / 2 := by
@@ -75,6 +99,37 @@ private lemma half_cross_add_conjTranspose_eq_mul_swap {ι : Type} [Fintype ι] 
     Matrix.one_mul, Matrix.mul_assoc, zero_add]
   module
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ ι _ _ e he s hs hss J hJ`. Establish `hmp` using `GlobalTheory.measurePreserving_of_norm_sq_eq_sum_complex_coords V ι e he`. Establish `hme : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Take `⟨hd1, hd2⟩` from `GlobalTheory.RealWeil.PosDet.detPlus_identities ι s hs hss`. Establish `hHerm : ∀ g : Matrix ι ι ℂ, (1 + gᴴ * g)ᴴ = 1 + gᴴ * g` using `fun g => by`.
+
+Rewrite using `[conjTranspose_add, conjTranspose_one, conjTranspose_mul, conjTranspose_conjTranspose]`. Use `⟨fun g k hg hk => ?_, fun g₁ g₂ k₁ k₂ hg₁ hg₂ hk₁ hk₂ => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩ : ∃ A : Matrix ι ι ℂ, A = (1 / 2 : ℂ) • (1 + gᴴ * g)` from `⟨_, rfl⟩`. Establish `hAA : A + Aᴴ = 1 + gᴴ * g` using `by rw [hA]; exact half_smul_add_conjTranspose_eq_of_hermitian _ (hHerm g)`. Take `⟨hA0, -, hAint⟩` from `GlobalTheory.T.integral_complexGaussian_posDef_hermitian_part ι A (by rw [hAA]; exact posDef_one_add g)`.
+
+Take `⟨hstar, hdet⟩` from `hd1 g hg`. Rewrite `hdet` using `[← hA]`. Establish `hpt : ∀ u, gau u * gau (k u) = cexp (-(π : ℂ) * (star (e u) ⬝ᵥ A *ᵥ e u))`. Introduce `u`. Simplify using `only [gau, ← Complex.exp_add]`.
+
+Use `congr 1`. Rewrite using `[norm_sq_eq_dot e he u, norm_sq_eq_dot e he (k u), hk u, star_mulVec_dot, hA, smul_mulVec, dotProduct_smul, add_mulVec, one_mulVec, ← mulVec_mulVec, dotProduct_add, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlam : lam k = A.det⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `lam`. Use `congr 1`. Use function extensionality and compare the values at `u`. Conclude with `hpt u`. Use `_ = ∫ z, cexp (-(π : ℂ) * (star z ⬝ᵥ A *ᵥ z)) := hmp.integral_comp hme (fun z => cexp (-(π : ℂ) * (star z ⬝ᵥ A *ᵥ z)))`.
+
+Use `_ = A.det⁻¹ := hAint`. Use `⟨fun h0 => hA0 (by rw [hdet, h0, zero_mul]), hstar, ?_⟩` and prove the remaining obligations. Rewrite using `[hlam, hdet]`. Take `⟨M, hM⟩ : ∃ M : Matrix (ι ⊕ ι) (ι ⊕ ι) ℂ, M = fromBlocks ((1 / 2 : ℂ) • (1 + g₁ᴴ * g₁)) ((1 / 2 : ℂ) • (g₁ᴴ * (1 + s) * g₂)) ((1 / 2 : ℂ) • (g₂ᴴ * (1 - s) * g₁)) ((1 / 2 : ℂ) • (1 + g₂ᴴ * g₂))` from `⟨_, rfl⟩`. Establish `hdet2` using `hd2 g₁ g₂ hg₁ hg₂`.
+
+Rewrite `hdet2` using `[← hM]`. Establish `hMM : M + Mᴴ = 1 + (fromCols g₁ g₂)ᴴ * fromCols g₁ g₂`. Rewrite using `[hM, conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols, fromBlocks_conjTranspose, fromBlocks_add, ← fromBlocks_one, fromBlocks_add, half_smul_add_conjTranspose_eq_of_hermitian _ (hHerm g₁), half_smul_add_conjTranspose_eq_of_hermitian _ (hHerm g₂), half_cross …`. Take `⟨-, hMi, hMint⟩` from `GlobalTheory.T.integral_complexGaussian_posDef_hermitian_part (ι ⊕ ι) M (by rw [hMM]; exact posDef_one_add _)`. Establish `hpt : ∀ u v, gau u * gau v * (cexp (π * I * (omJ J (k₁ u) (k₂ v) : ℂ)) * gau (k₁ u + k₂ v)) = cexp (-(π : ℂ) * (star (Sum.elim (e u) (e v)) ⬝ᵥ M *ᵥ Sum.elim (e u) (e v)))`.
+
+Introduce `u v`. Simplify using `only [gau, ← Complex.exp_add]`. Use `congr 1`. Establish `hsum : star (Sum.elim (e u) (e v)) = Sum.elim (star (e u)) (star (e v))`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `cases i <;> rfl`. Establish `hA1 : ∀ (g : Matrix ι ι ℂ) (z : ι → ℂ), star z ⬝ᵥ ((1 / 2 : ℂ) • (1 + gᴴ * g)) *ᵥ z = 1 / 2 * (star z ⬝ᵥ z + star (g *ᵥ z) ⬝ᵥ g *ᵥ z)`. Introduce `g z`. Rewrite using `[smul_mulVec, dotProduct_smul, add_mulVec, one_mulVec, ← mulVec_mulVec, dotProduct_add, ← star_mulVec_dot, smul_eq_mul]`. Establish `hB1 : star (e u) ⬝ᵥ ((1 / 2 : ℂ) • (g₁ᴴ * (1 + s) * g₂)) *ᵥ e v = 1 / 2 * (star (g₁ *ᵥ e u) ⬝ᵥ g₂ *ᵥ e v + star (g₁ *ᵥ e u) ⬝ᵥ s *ᵥ (g₂ *ᵥ e v))`.
+
+Rewrite using `[smul_mulVec, dotProduct_smul, ← mulVec_mulVec, ← mulVec_mulVec, ← star_mulVec_dot, add_mulVec, one_mulVec, dotProduct_add, smul_eq_mul]`. Establish `hC1 : star (e v) ⬝ᵥ ((1 / 2 : ℂ) • (g₂ᴴ * (1 - s) * g₁)) *ᵥ e u = 1 / 2 * (star (g₂ *ᵥ e v) ⬝ᵥ g₁ *ᵥ e u - star (g₂ *ᵥ e v) ⬝ᵥ s *ᵥ (g₁ *ᵥ e u))`. Rewrite using `[smul_mulVec, dotProduct_smul, ← mulVec_mulVec, ← mulVec_mulVec, ← star_mulVec_dot, sub_mulVec, one_mulVec, dotProduct_sub, smul_eq_mul]`. Establish `hJ1 : star (g₁ *ᵥ e u) ⬝ᵥ I • s *ᵥ (g₂ *ᵥ e v) = I * (star (g₁ *ᵥ e u) ⬝ᵥ s *ᵥ (g₂ *ᵥ e v))`. Rewrite using `[dotProduct_smul, smul_eq_mul]`.
+
+Establish `hJ2 : star (I • s *ᵥ (g₂ *ᵥ e v)) ⬝ᵥ g₁ *ᵥ e u = -I * (star (g₂ *ᵥ e v) ⬝ᵥ s *ᵥ (g₁ *ᵥ e u))`. Rewrite using `[star_smul, smul_dotProduct, star_mulVec_dot, hs, smul_eq_mul, Complex.star_def, Complex.conj_I]`. Establish `hN : star (g₁ *ᵥ e u + g₂ *ᵥ e v) ⬝ᵥ (g₁ *ᵥ e u + g₂ *ᵥ e v) = star (g₁ *ᵥ e u) ⬝ᵥ g₁ *ᵥ e u + star (g₁ *ᵥ e u) ⬝ᵥ g₂ *ᵥ e v + (star (g₂ *ᵥ e v) ⬝ᵥ g₁ *ᵥ e u + star (g₂ *ᵥ e v) ⬝ᵥ g₂ *ᵥ e v)`. Rewrite using `[star_add, add_dotProduct, dotProduct_add, dotProduct_add]`. Unfold `omJ`.
+
+Rewrite using `[inner_eq_dot e he, hJ, norm_sq_eq_dot e he u, norm_sq_eq_dot e he v, norm_sq_eq_dot e he (k₁ u + k₂ v), map_add, hk₁, hk₂, hJ1, hJ2, hN, hM, hsum, fromBlocks_mulVec, sumElim_dotProduct_sumElim]`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr, dotProduct_add]`. Rewrite using `[hA1, hA1, hB1, hC1]`. Take the linear combination `((π : ℂ) / 2 * (star (g₁ *ᵥ e u) ⬝ᵥ s *ᵥ (g₂ *ᵥ e v) - star (g₂ *ᵥ e v) ⬝ᵥ s *ᵥ (g₁ *ᵥ e u))) * Complex.I_sq`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `mu`. Use `congr 1`. Use function extensionality and compare the values at `u`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Conclude with `hpt u v`. Use `_ = ∫ u, ∫ w, cexp (-(π : ℂ) * (star (Sum.elim (e u) w) ⬝ᵥ M *ᵥ Sum.elim (e u) w)) := by`. Use `congr 1`. Use function extensionality and compare the values at `u`. Conclude with `hmp.integral_comp hme (fun w => cexp (-(π : ℂ) * (star (Sum.elim (e u) w) ⬝ᵥ M *ᵥ Sum.elim (e u) w)))`.
+
+Use `_ = ∫ z, ∫ w, cexp (-(π : ℂ) * (star (Sum.elim z w) ⬝ᵥ M *ᵥ Sum.elim z w)) := hmp.integral_comp hme (fun z => ∫ w, cexp (-(π : ℂ) * (star (Sum.elim z w) ⬝ᵥ M *ᵥ Sum.elim z w)))`. Use `_ = ∫ x, cexp (-(π : ℂ) * (star x ⬝ᵥ M *ᵥ x)) := integral_sum_elim _ hMi`. Use `_ = M.det⁻¹ := hMint`. Use `_ = (dP s g₁⁻¹ * dP s g₂ * dP s (g₂⁻¹ * g₁))⁻¹ := by rw [hdet2]`.
+-/
 theorem lam_mu_eq : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (ι : Type) [Fintype ι] [DecidableEq ι] (e : V ≃L[ℝ] (ι → ℂ)), (∀ v, ‖v‖ ^ 2 = ∑ i, ‖e v i‖ ^ 2) → ∀ (s : Matrix ι ι ℂ), sᴴ = s → s * s = 1 → ∀ J : V ≃ₗᵢ[ℝ] V, (∀ v, e (J v) = I • s *ᵥ e v) → (∀ (g : Matrix ι ι ℂ) (k : V → V), gᴴ * s * g = s → (∀ v, e (k v) = g *ᵥ e v) → dP s g ≠ 0 ∧ dP s g⁻¹ = star (dP s g) ∧ lam k = (dP s g * dP s g⁻¹)⁻¹) ∧ ∀ (g₁ g₂ : Matrix ι ι ℂ) (k₁ k₂ : V → V), g₁ᴴ * s * g₁ = s → g₂ᴴ * s * g₂ = s → (∀ v, e (k₁ v) = g₁ *ᵥ e v) → (∀ v, e (k₂ v) = g₂ *ᵥ e v) → mu J k₁ k₂ = (dP s g₁⁻¹ * dP s g₂ * dP s (g₂⁻¹ * g₁))⁻¹ := by
   intro V _ _ _ _ _ ι _ _ e he s hs hss J hJ
   have hmp := GlobalTheory.measurePreserving_of_norm_sq_eq_sum_complex_coords V ι e he

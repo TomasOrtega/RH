@@ -26,6 +26,23 @@ namespace GlobalTheory.TanBase
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t K L _ _ φ x x' hx J _ b hb`. Take `⟨n, D, hD, hst⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t K x`. Establish `e0 : spMap (RingHom.id K) ≫ x = x`. Rewrite using `[show spMap (RingHom.id K) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Use `haveI : Module.Finite K (TanM x t.G) := by`.
+
+Use `Module.finite_def.2 (Submodule.fg_def.2 ⟨Set.range fun i => tanOf (GlobalTheory.LieMet.isTan_map _ e0 (hD i)), Set.finite_range _, top_unique fun w _ => ?_⟩)` and prove the remaining obligations. Establish `h'` using `hst K (RingHom.id K) (tv w).left`. Rewrite `h'` using `[e0]`. Take `⟨a, ha, -⟩` from `h' (isTan_tv w)`. Rewrite using `[(GlobalTheory.LieMet.isComb_iff (fun i => tanOf (GlobalTheory.LieMet.isTan_map _ e0 (hD i))) a w).1 ha]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `B` to `Module.Basis.sumExtend hb`. Establish `hfin : Finite (J ⊕ Module.Basis.sumExtendIndex hb)` using `Module.Finite.finite_basis B`. Use `letI : Fintype (J ⊕ Module.Basis.sumExtendIndex hb) := Fintype.ofFinite _`. Set `e` to `Fintype.equivFin (J ⊕ Module.Basis.sumExtendIndex hb)`.
+
+Set `B2` to `B.reindex e`. Establish `hB : ∀ j, B2 (e (Sum.inl j)) = b j`. Introduce `j`. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_apply_apply]`. Simplify using `only [B, Module.Basis.sumExtend, Module.Basis.reindex_apply, Module.Basis.coe_extend, Equiv.symm_symm, Equiv.trans_apply, Equiv.sumCongr_apply]`.
+
+Both sides reduce to the same expression. Establish `hv : ∀ i, IsTanAtG t x (tv (B2 i)).left` using `fun i => isTan_tv (B2 i)`. Establish `hbas : ∀ w, IsTanAtG t x w → ∃! cf, IsCombAtG t x (fun i => (tv (B2 i)).left) cf w`. Introduce `w hw`. Establish `key : ∀ cf, IsCombAtG t x (fun i => (tv (B2 i)).left) cf w ↔ tanOf hw = ∑ i, cf i • B2 i` using `fun cf => GlobalTheory.LieMet.isComb_iff B2 cf (tanOf hw)`.
+
+Use `⟨B2.repr (tanOf hw), (key _).2 (B2.sum_repr _).symm, fun cf hcf => ?_⟩` and prove the remaining obligations. Conclude with `funext (Fintype.linearIndependent_iffₛ.1 B2.linearIndependent _ _ (((key _).1 hcf).symm.trans (B2.sum_repr _).symm))`. Establish `hv' : ∀ i, IsTanAtG t x' (spMap (dualMap φ) ≫ (tv (B2 i)).left)` using `fun i => GlobalTheory.LieMet.isTan_map φ hx (hv i)`. Establish `li` using `GlobalTheory.GradedPieces.linInd_of_basis hv' (GlobalTheory.GradedPieces.basis_map φ hx hv hbas)`. Establish `li2` using `li.comp (fun j => e (Sum.inl j)) (e.injective.comp Sum.inl_injective)`.
+
+Establish `hf : (fun j => GlobalTheory.LocM.Frm.bcTan (t` using `t) φ hx (b j)) = (fun i => tanOf (hv' i)) ∘ (fun j => e (Sum.inl j)) := by`. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp]`. Rewrite using `[← hB j]`. Both sides reduce to the same expression.
+
+Conclude with `hf ▸ li2`.
+-/
 theorem linearIndependent_bcTan : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} (t : SAB H X) {K L : Type} [Field K] [Field L] (φ : K →+* L) {x : Sp K ⟶ X} {x' : Sp L ⟶ X} (hx : spMap φ ≫ x = x') {J : Type} [Fintype J] (b : J → TanM x t.G), LinearIndependent K b → LinearIndependent L (fun i => bcTan (t := t) φ hx (b i)) := by
   intro E _ _ _ H X t K L _ _ φ x x' hx J _ b hb
   classical

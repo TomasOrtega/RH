@@ -18,6 +18,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.ShFam.Descent
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompHt.eigtau_sum_mem_latT_iff | exact GlobalTheory.CompHt.eigtau_sum_mem_latT_iff | (intros; apply GlobalTheory.CompHt.eigtau_sum_mem_latT_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_eigenvector_height_matrix : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p : ℕ) [Fact p.Prime]
     (δ : ℂ_[p]), δ ≠ 0 → ∀ (l : Level H) (c : Coeff l) [Algebra c.F ℂ_[p]],
     letI := H.starRing; ∀ (Q : PtP E p) (τ : Psi H),

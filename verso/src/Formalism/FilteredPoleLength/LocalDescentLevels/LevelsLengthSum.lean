@@ -6,6 +6,9 @@ namespace Formalism.LatticeBaseChangeAlt
 
 open Module
 
+/- English proof (translation)
+Introduce `O' _ _ ι _ Rr A _ _ _ _ _ _ _ _ x mm n F r R h0 hn hmono hinj hlen hsum`. Rewrite using `[Module.length_pi_of_fintype]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `h` using `filteredPoleLength O' (Rr z) (A z) (x z) (mm z) (n z) (F z) (r z) (h0 z) (hn z) (hmono z) (hinj z) (hlen z)`. Rewrite using `[h, hsum z]`.
+-/
 theorem levelsLengthSum : LevelsLengthSum := by
   intro O' _ _ ι _ Rr A _ _ _ _ _ _ _ _ x mm n F r R h0 hn hmono hinj hlen hsum
   rw [Module.length_pi_of_fintype]

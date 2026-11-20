@@ -9,6 +9,17 @@ namespace GlobalTheory.EtC
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 
+/- English proof (translation)
+Introduce `S U hU u`. Set `𝒰` to `U.left.affineOpenCover`. Take `⟨y, hy⟩` from `𝒰.covers u`. Set `R : CommRingCat` to `𝒰.X (𝒰.idx u)`. Set `f : Spec R ⟶ U.left` to `𝒰.f (𝒰.idx u)`.
+
+Use `haveI : IsOpenImmersion f := 𝒰.map_prop _`. Use `haveI := hU`. Set `j : Spec R ⟶ S` to `f ≫ U.hom`. Set `y' : Spec R` to `y`. Use `haveI := y'.isPrime`.
+
+Take `⟨O, hO, hAO, hloc, hsh, hind, hcomap⟩` from `_root_.GlobalTheory.StrictHensPrime.exists_sh_indEt R y'.asIdeal`. Set `φ : Spec (CommRingCat.of O) ⟶ Spec R` to `Spec.map (CommRingCat.ofHom (algebraMap R O))`. Use `⟨O, hO, φ ≫ j, Over.homMk (φ ≫ f) (by simp [j]), ⟨hsh, R, inferInstance, hAO, j, inferInstance, hind, rfl⟩, IsLocalRing.closedPoint O, ?_⟩` and prove the remaining obligations. Establish `hφ : φ (IsLocalRing.closedPoint O) = y'`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Rewrite using `[← hcomap]`. Both sides reduce to the same expression. Use `show (φ ≫ f) (IsLocalRing.closedPoint O) = u`. Express the relevant statement in the definitionally equal form `f (φ (IsLocalRing.closedPoint O)) = u`. Rewrite using `[hφ]`.
+
+Conclude with `hy`.
+-/
 theorem _root_.GlobalTheory.EtC.exists_isStalk_over_point : ∀ (S : Scheme.{0}) (U : Over S), Etale U.hom →
     ∀ u : U.left, ∃ (O : Type) (_ : CommRing O) (s : Spec (CommRingCat.of O) ⟶ S)
       (g : Over.mk s ⟶ U), _root_.GlobalTheory.EtC.IsStalk O s ∧ ∃ v, g.left v = u := by

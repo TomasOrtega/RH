@@ -5,6 +5,15 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.SwapCent
 
+/- English proof (translation)
+Introduce `H _ N`. Use extensionality with `⟨a, b⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : (a, b) * (N, (1 : H)) = (N, (1 : H)) * (b, a)` using `h`.
+
+Establish `h1 : a * N = N * b` using `congrArg Prod.fst h'`. Establish `h2 : b = a` using `by simpa using congrArg Prod.snd h'`. Substitute `h2` using the available equality. Conclude with `⟨b, h1, rfl⟩`. Introduce and unpack `⟨x, hx, hxe⟩`.
+
+Establish `hx' : x * N = N * x` using `hx`. Establish `e1 : x = a` using `congrArg Prod.fst hxe`. Establish `e2 : x = b` using `congrArg Prod.snd hxe`. Substitute `e1` using the available equality. Substitute `e2` using the available equality.
+
+Express the relevant statement in the definitionally equal form `(x, x) * (N, (1 : H)) = (N, (1 : H)) * (x, x)`. Simplify using `[hx']`.
+-/
 theorem twCent_swap : ∀ (H : Type) [Group H] (N : H),
     twCent ((MulEquiv.prodComm : H × H ≃* H × H).toMonoidHom) (N, (1 : H)) =
       (twCent (MonoidHom.id H) N).map ((MonoidHom.id H).prod (MonoidHom.id H)) := by

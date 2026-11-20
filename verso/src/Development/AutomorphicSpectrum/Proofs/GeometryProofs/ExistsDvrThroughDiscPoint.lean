@@ -31,9 +31,15 @@ variable {R : Type} [CommRing R] {n : ℕ} {ψ : (Fin n → ℂ) → (R →+* �
 
 def diagLine (z : Fin n → ℂ) (T : ℂ) : Fin n → ℂ := fun i => z i + T
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[diagLine]`.
+-/
 theorem diagLine_zero (z : Fin n → ℂ) : diagLine z 0 = z := by
   funext i; simp [diagLine]
 
+/- English proof (translation)
+Rewrite `hT`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[pi_norm_lt_iff one_pos]`. Introduce `i`. Establish `h₁` using `norm_le_pi_norm z i`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem diagLine_mem_ball (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) {T : ℂ}
     (hT : T ∈ Metric.ball (0 : ℂ) (1 - ‖z‖)) : diagLine z T ∈ Metric.ball (0 : Fin n → ℂ) 1 := by
   rw [mem_ball_zero_iff] at hT ⊢
@@ -43,16 +49,25 @@ theorem diagLine_mem_ball (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) {T : �
   calc ‖z i + T‖ ≤ ‖z i‖ + ‖T‖ := norm_add_le _ _
     _ < 1 := by linarith
 
+/- English proof (translation)
+Establish `hl : DifferentiableOn ℂ (diagLine z) (Metric.ball (0 : ℂ) (1 - ‖z‖))` using `(differentiable_pi.2 fun i => (differentiable_const (z i)).add differentiable_id).differentiableOn`. Conclude with `((h.2 x).comp hl fun T hT => diagLine_mem_ball hz hT).analyticOnNhd Metric.isOpen_ball`.
+-/
 theorem analyticOnNhd_diagLine (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) (x : R) :
     AnalyticOnNhd ℂ (fun T => ψ (diagLine z T) x) (Metric.ball (0 : ℂ) (1 - ‖z‖)) := by
   have hl : DifferentiableOn ℂ (diagLine z) (Metric.ball (0 : ℂ) (1 - ‖z‖)) :=
     (differentiable_pi.2 fun i => (differentiable_const (z i)).add differentiable_id).differentiableOn
   exact ((h.2 x).comp hl fun T hT => diagLine_mem_ball hz hT).analyticOnNhd Metric.isOpen_ball
 
+/- English proof (translation)
+Use `mem_ball_zero_iff.1 hz` as an intermediate fact. Simplify using `using this`.
+-/
 theorem zero_mem_ball_norm (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) : (0 : ℂ) ∈ Metric.ball (0 : ℂ) (1 - ‖z‖) := by
   have := mem_ball_zero_iff.1 hz
   simpa using this
 
+/- English proof (translation)
+The claim follows from `analyticOnNhd_diagLine h hz x 0 (zero_mem_ball_norm hz)`.
+-/
 theorem analyticAt_diagLine (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) (x : R) :
     AnalyticAt ℂ (fun T => ψ (diagLine z T) x) 0 :=
   analyticOnNhd_diagLine h hz x 0 (zero_mem_ball_norm hz)
@@ -72,6 +87,9 @@ def taylorHom (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z ∈ Metric.ball (0 : F
     simp only [map_add]
     exact Formalism.L2.Th1.F.Taylor.taylor0_add (analyticAt_diagLine h hz x) (analyticAt_diagLine h hz y)
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `e` using `Formalism.L2.Th1.F.Taylor.coeff_taylor0 (fun T => ψ (diagLine z T) x) 0`. Simplify using `only [iteratedDeriv_zero, Nat.factorial_zero, Nat.cast_one, div_one, diagLine_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply] at e`. Conclude with `e`.
+-/
 theorem constantCoeff_comp_taylorHom (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) :
     (PowerSeries.constantCoeff (R := ℂ)).comp (taylorHom h hz) = ψ z := by
   ext x
@@ -79,6 +97,9 @@ theorem constantCoeff_comp_taylorHom (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z
   simp only [iteratedDeriv_zero, Nat.factorial_zero, Nat.cast_one, div_one, diagLine_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply] at e
   exact e
 
+/- English proof (translation)
+Establish `h₀ : Formalism.L2.Th1.F.taylor0 (fun T => ψ (diagLine z T) x) = Formalism.L2.Th1.F.taylor0 (fun _ => (0 : ℂ))`. Rewrite using `[Formalism.L2.Th1.F.Taylor.taylor0_const, map_zero]`. Conclude with `hx`. Establish `he` using `Formalism.L2.Th1.F.Taylor.taylor0_inj (analyticAt_diagLine h hz x) analyticAt_const h₀`. Conclude with `(analyticOnNhd_diagLine h hz x).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected (zero_mem_ball_norm hz) he hT`.
+-/
 theorem eq_zero_of_taylorHom (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) {x : R}
     (hx : taylorHom h hz x = 0) {T : ℂ} (hT : T ∈ Metric.ball (0 : ℂ) (1 - ‖z‖)) : ψ (diagLine z T) x = 0 := by
   have h₀ : Formalism.L2.Th1.F.taylor0 (fun T => ψ (diagLine z T) x) = Formalism.L2.Th1.F.taylor0 (fun _ => (0 : ℂ)) := by
@@ -88,6 +109,11 @@ theorem eq_zero_of_taylorHom (h : IsHolPts (Metric.ball 0 1) ψ) (hz : z ∈ Met
   exact (analyticOnNhd_diagLine h hz x).eqOn_zero_of_preconnected_of_eventuallyEq_zero
     (convex_ball _ _).isPreconnected (zero_mem_ball_norm hz) he hT
 
+/- English proof (translation)
+Establish `hinf : (Metric.ball (0 : ℂ) (1 - ‖z‖)).Infinite` using `infinite_of_mem_nhds 0 (Metric.isOpen_ball.mem_nhds (zero_mem_ball_norm hz))`. Take `⟨T, hT, hn⟩` from `hinf.exists_notMem_finset (Finset.univ.image fun i : Fin n => -z i)`. Use `⟨T, hT, diagLine_mem_ball hz hT, fun i _ he => hn ?_⟩` and prove the remaining obligations. Use `Finset.mem_image.2 ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `: z i + T = 0` using `he`.
+
+Take the linear combination `-this`.
+-/
 theorem exists_diagLine_mem_punct (a : ℕ) (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) :
     ∃ T ∈ Metric.ball (0 : ℂ) (1 - ‖z‖), diagLine z T ∈ punct n a 1 := by
   have hinf : (Metric.ball (0 : ℂ) (1 - ‖z‖)).Infinite :=
@@ -102,6 +128,13 @@ end Curve
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Use `C.j_open` as an intermediate fact. Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨T, hT, hp⟩` from `exists_diagLine_mem_punct a hz`. Take `⟨s⟩ : Nonempty (Sp ℂ)` from `inferInstance`. Establish `hw : spMap (C.ψ (diagLine z T)) s ∈ Set.range C.j` using `⟨C.pt (diagLine z T) s, by rw [← (C.pt_eq _ hp).1, Scheme.Hom.comp_apply]⟩`.
+
+Use `Specializes.mem_open ?_ C.j.isOpenEmbedding.isOpen_range hw` and prove the remaining obligations. Use `(PrimeSpectrum.le_iff_specializes _ _).1 fun x hx => ?_` and prove the remaining obligations. Establish `hq : q.asIdeal = ⊥` using `(Ideal.eq_bot_or_top q.asIdeal).resolve_right q.isPrime.ne_top`. Rewrite `hx` using `[Scheme.Hom.comp_apply]`. Establish `h₁ : algebraMap (PowerSeries ℂ) (FractionRing (PowerSeries ℂ)) (taylorHom C.hol hz x) ∈ q.asIdeal` using `hx`.
+
+Rewrite `h₁` using `[hq, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Establish `h₂ : C.ψ (diagLine z T) x = 0` using `eq_zero_of_taylorHom C.hol hz h₁ hT`. Use `show C.ψ (diagLine z T) x ∈ s.asIdeal`. Rewrite using `[h₂]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem range_jK_taylorHom_subset {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : Flat.BdryChart Xo σ n a)
     {z : Fin n → ℂ} (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) :
     Set.range (Out.jK (PowerSeries ℂ) ≫ spMap (taylorHom C.hol hz)) ⊆ Set.range C.j := by
@@ -127,6 +160,13 @@ section Pulled
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, m₂, hm₂⟩` from `sabPull Out.CubePf.cubePull j' t'`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m₂`. Establish `cancel : ∀ (t₂ : SAB H (Sp K)) (p : Sp K ⟶ S) (_ : p = 𝟙 _ ≫ j) (_ : SABMap t₂ t p), Nonempty (SABMap t₂ u (𝟙 _ ≫ x))`. Introduce `t₂ p hp n`. Substitute `hp` using the available equality.
+
+Conclude with `⟨(sabComp pullCubComp E H _ _ _ _ _ _ _ _ mx (sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ mK n).choose).choose⟩`. Take `⟨m₃⟩` from `cancel _ _ (h.trans (Category.id_comp _).symm) n`. Establish `h₂ : LBIso PP'.L (t'.PP.L.pull m₂.φ)` using `m₂.lin.imp fun _ h => h.1`. Rewrite `h₂` using `[hm₂]`. Establish `h₃ : LBIso PP'.L (u.PP.L.pull m₃.φ)` using `m₃.lin.imp fun _ h => h.1`.
+
+Establish `hL` using `LB.isLB_pull t'.PP.isLB (pullback.fst t'.G.hom j')`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) m₃.cart.1 hp, amplePt _ _ (𝟙 _ ≫ x) _ _ m₃.φ m₃.cart _ _ u.PP.isLB hL (LBIso.trans hL PP'.isLB (LB.isLB_pull u.PP.isLB _) h₂.symm h₃) ha hk⟩`.
+-/
 theorem polAt_of_pulled {S S' X : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f)
     {K : Type} [Field K] {tK : SAB H (Sp K)} {j : Sp K ⟶ S} (mK : SABMap tK t j)
     {u : SAB H X} {x : Sp K ⟶ X} (mx : SABMap tK u x) (hp : IsProper u.G.hom) (ha : Out.RelAmple u.G u.PP.L)
@@ -150,6 +190,13 @@ theorem polAt_of_pulled {S S' X : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f :
 
 end Pulled
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo σ n a C z hz`. Use `C.j_open` as an intermediate fact. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap (taylorHom C.hol hz)) C.t`. Establish `hc : GlobalTheory.LN.CDvr (PowerSeries ℂ)` using `⟨inferInstance, by rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance, algebraRat.charZero _⟩`. Establish `hsurj : Function.Surjective (PowerSeries.constantCoeff (R` using `ℂ)) := fun c => ⟨PowerSeries.C c, by simp⟩`.
+
+Use `⟨PowerSeries ℂ, inferInstance, inferInstance, inferInstance, taylorHom C.hol hz, PowerSeries.constantCoeff (R := ℂ), _, m, hc, hsurj, ?_, constantCoeff_comp_taylorHom C.hol hz, ?_⟩` and prove the remaining obligations. Use `RingHom.ker_isMaximal_of_surjective _ hsurj` as an intermediate fact. Conclude with `IsLocalRing.eq_maximalIdeal this`. Establish `hr` using `range_jK_taylorHom_subset C hz`. Set `y` to `IsOpenImmersion.lift C.j _ hr`.
+
+Establish `hy : y ≫ C.j = Out.jK (PowerSeries ℂ) ≫ spMap (taylorHom C.hol hz)` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨_, _, _, _, _, m₀, -⟩` from `sabPull Out.CubePf.cubePull y C.tV`. Take `⟨mK, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.m₁ m₀`. Take `⟨mx, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.m₂ m₀`. Conclude with `polAt_of_pulled m mK mx Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (Out.jK (PowerSeries ℂ)) hy.symm`.
+-/
 theorem exists_curve_through_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a) (z : Fin n → ℂ), z ∈ Metric.ball (0 : Fin n → ℂ) 1 → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (f : C.R →+* V) (r : V →+* ℂ) (tV : SAB H (Sp V)) (_ : SABMap tV C.t (spMap f)), GlobalTheory.LN.CDvr V ∧ Function.Surjective r ∧ RingHom.ker r = IsLocalRing.maximalIdeal V ∧ r.comp f = C.ψ z ∧ GlobalTheory.LN.PolAt tV (Out.jK V) := by
   intro E _ _ _ H D l Xo σ n a C z hz
   have := C.j_open

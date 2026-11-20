@@ -12,6 +12,11 @@ variable {F : Type} [Field F] [NumberField F] {d β : F}
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Distinguish the cases in `h : u ∈ T`. Rewrite using `[if_pos h, Finset.sum_eq_single_of_mem u h]`. Conclude with `proj_inc_same u _`. Introduce `b _ hb`.
+
+Conclude with `proj_inc_ne (Ne.symm hb) _`. Rewrite using `[if_neg h]`. Conclude with `Finset.sum_eq_zero fun t ht => proj_inc_ne (fun e : u = t => h (by rwa [e])) _`.
+-/
 theorem proj_sum_inc (T : Finset (Pl F)) (c : (u : Pl F) → Kp u) (u : Pl F) :
     proj u (∑ t ∈ T, inc t (c t)) = if u ∈ T then c u else 0 := by
   rw [map_sum]
@@ -23,6 +28,9 @@ theorem proj_sum_inc (T : Finset (Pl F)) (c : (u : Pl F) → Kp u) (u : Pl F) :
   · rw [if_neg h]
     exact Finset.sum_eq_zero fun t ht => proj_inc_ne (fun e : u = t => h (by rwa [e])) _
 
+/- English proof (translation)
+Use `ext`. Conclude with `adele_ext fun u => congrArg QuaternionAlgebra.re (h u)`. Conclude with `adele_ext fun u => congrArg QuaternionAlgebra.imI (h u)`. Conclude with `adele_ext fun u => congrArg QuaternionAlgebra.imJ (h u)`. Conclude with `adele_ext fun u => congrArg QuaternionAlgebra.imK (h u)`.
+-/
 theorem q_ext {a b : Q d β (AF F)} (h : ∀ u : Pl F, qmap (proj u) a = qmap (proj u) b) : a = b := by
   ext
   · exact adele_ext fun u => congrArg QuaternionAlgebra.re (h u)
@@ -34,6 +42,11 @@ def glue (T : Finset (Pl F)) (y : (u : Pl F) → Q d β (Kp u)) : Q d β (AF F) 
   ⟨1 + ∑ t ∈ T, inc t ((y t).re - 1), ∑ t ∈ T, inc t (y t).imI, ∑ t ∈ T, inc t (y t).imJ,
     ∑ t ∈ T, inc t (y t).imK⟩
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `proj u (1 + ∑ t ∈ T, inc t ((y t).re - 1)) = (y u).re`. Rewrite using `[map_add, map_one, proj_sum_inc T (fun t => (y t).re - 1) u, if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `proj u (∑ t ∈ T, inc t (y t).imI) = (y u).imI`.
+
+Rewrite using `[proj_sum_inc T (fun t => (y t).imI) u, if_pos h]`. Express the relevant statement in the definitionally equal form `proj u (∑ t ∈ T, inc t (y t).imJ) = (y u).imJ`. Rewrite using `[proj_sum_inc T (fun t => (y t).imJ) u, if_pos h]`. Express the relevant statement in the definitionally equal form `proj u (∑ t ∈ T, inc t (y t).imK) = (y u).imK`. Rewrite using `[proj_sum_inc T (fun t => (y t).imK) u, if_pos h]`.
+-/
 theorem qmap_glue_mem (T : Finset (Pl F)) (y : (u : Pl F) → Q d β (Kp u)) {u : Pl F} (h : u ∈ T) :
     qmap (proj u) (glue T y) = y u := by
   classical
@@ -48,6 +61,11 @@ theorem qmap_glue_mem (T : Finset (Pl F)) (y : (u : Pl F) → Q d β (Kp u)) {u 
   · change proj u (∑ t ∈ T, inc t (y t).imK) = (y u).imK
     rw [proj_sum_inc T (fun t => (y t).imK) u, if_pos h]
 
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `proj u (1 + ∑ t ∈ T, inc t ((y t).re - 1)) = 1`. Rewrite using `[map_add, map_one, proj_sum_inc T (fun t => (y t).re - 1) u, if_neg h, add_zero]`. Express the relevant statement in the definitionally equal form `proj u (∑ t ∈ T, inc t (y t).imI) = 0`. Rewrite using `[proj_sum_inc T (fun t => (y t).imI) u, if_neg h]`.
+
+Express the relevant statement in the definitionally equal form `proj u (∑ t ∈ T, inc t (y t).imJ) = 0`. Rewrite using `[proj_sum_inc T (fun t => (y t).imJ) u, if_neg h]`. Express the relevant statement in the definitionally equal form `proj u (∑ t ∈ T, inc t (y t).imK) = 0`. Rewrite using `[proj_sum_inc T (fun t => (y t).imK) u, if_neg h]`.
+-/
 theorem qmap_glue_not_mem (T : Finset (Pl F)) (y : (u : Pl F) → Q d β (Kp u)) {u : Pl F}
     (h : u ∉ T) : qmap (proj u) (glue T y) = 1 := by
   classical
@@ -61,6 +79,15 @@ theorem qmap_glue_not_mem (T : Finset (Pl F)) (y : (u : Pl F) → Q d β (Kp u))
   · change proj u (∑ t ∈ T, inc t (y t).imK) = 0
     rw [proj_sum_inc T (fun t => (y t).imK) u, if_neg h]
 
+/- English proof (translation)
+Introduce `F _ _ d β T y`. Establish `hl : glue T (fun u => ((y u : (Q d β (Kp u))ˣ) : Q d β (Kp u))) * glue T (fun u => (((y u)⁻¹ : (Q d β (Kp u))ˣ) : Q d β (Kp u))) = 1`. Use `q_ext fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Distinguish the cases in `h : u ∈ T`.
+
+Rewrite using `[qmap_glue_mem T _ h, qmap_glue_mem T _ h]`. Conclude with `(y u).mul_inv`. Rewrite using `[qmap_glue_not_mem T _ h, qmap_glue_not_mem T _ h, one_mul]`. Establish `hr : glue T (fun u => (((y u)⁻¹ : (Q d β (Kp u))ˣ) : Q d β (Kp u))) * glue T (fun u => ((y u : (Q d β (Kp u))ˣ) : Q d β (Kp u))) = 1`. Use `q_ext fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_one]`. Distinguish the cases in `h : u ∈ T`. Rewrite using `[qmap_glue_mem T _ h, qmap_glue_mem T _ h]`. Conclude with `(y u).inv_mul`. Rewrite using `[qmap_glue_not_mem T _ h, qmap_glue_not_mem T _ h, one_mul]`.
+
+Conclude with `⟨⟨_, _, hl, hr⟩, fun u h => qmap_glue_mem T _ h, fun u h => qmap_glue_not_mem T _ h⟩`.
+-/
 theorem exists_adelic_unit : ∀ {F : Type} [Field F] [NumberField F] (d β : F) (T : Finset (Pl F))
     (y : (u : Pl F) → (Q d β (Kp u))ˣ),
     ∃ Y : (Q d β (AF F))ˣ, (∀ u ∈ T, qmap (proj u) (Y : Q d β (AF F)) = y u) ∧

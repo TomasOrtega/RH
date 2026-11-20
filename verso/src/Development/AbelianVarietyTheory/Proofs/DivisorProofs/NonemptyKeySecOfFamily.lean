@@ -23,6 +23,33 @@ namespace GlobalTheory.KeyCover
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `hT : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨ξ₀, hcc, hne, him⟩` from `GlobalTheory.IsUnfEx.exists_xi H`. Establish `hcc' : cc (-ξ₀) = -(-ξ₀)`. Unfold `cc at hcc ⊢`.
+
+Rewrite using `[map_neg, hcc]`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum E H Dw (-ξ₀) hcc' (neg_ne_zero.2 hne) (Dw.p + Dw.q) rfl`. Take `⟨M, hM, hξ, hMG⟩` from `GlobalTheory.ModelsExist.exists_modelsOf GlobalTheory.QNorm.hasseNormSt E H Dw l Xo _ _ _ F _ ξ₀ Gm φ hcc him hφ`. Establish `T : ∀ k, ThetaData e F M k` using `fun k => (GlobalTheory.T.nonempty_thetaData_flagDomainModels E H Dw l Xo c σ g e F _ M hσ hM hξ k).some`. Use `choose un hun using fun k => GlobalTheory.T.exists_normalisedFramedPoint_on_each_component hT E H Dw l Xo c σ g e F _ M k (T k)`.
+
+Establish `hok : FramesOK e F M un` using `⟨fun k => GlobalTheory.T.normalised_points_satisfy_single_frame hT E H Dw l Xo c σ g e F _ M k (T k) (un k) hσ hM hξ (hun k), fun k => GlobalTheory.T.normalisedFramedPoint_triangularFrame_weightRule hT E H Dw l Xo c σ g e F _ M un k (T k) hσ hM hξ (hun k), fun k => GlobalTheory.T …`. Establish `hU₀` using `isUnf_built hB E H Dw l Xo c σ g e F _ M un hσ hM hξ hok`. Establish `hC : (normConst (fun j => Formalism.L2.PjFree.relab c σ (e j).1) ξ₀ : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero]`. Use `(Real.sqrt_pos.2 (div_pos (by positivity) (Finset.prod_pos fun j _ => ?_))).ne'` and prove the remaining obligations.
+
+Establish `: Formalism.L2.PjFree.relab c σ (e j).1 ξ₀ ≠ 0` using `(map_ne_zero _).2 hne`. Check the signs of the components of the expression. Take `⟨κ, k₁, k₂, -, k₃, -, k₄, -⟩` from `GlobalTheory.KeyFamClosing.keyFam_one`. Take `⟨hL, -, h, hA⟩` from `evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨v, hv⟩` from `exists_chart_units k₁ k₂ k₄ e hpq h`.
+
+Establish `hroot : ∀ C : FChart h, ∃ (a : c.F) (b : C.R), a ≠ 0 ∧ ((kch C.t ^ 4 * v C.Z : (Om C.Z)ˣ) : Om C.Z) = a • (b : Om C.Z) ^ 4`. Introduce `C`. Take `⟨Φ, u, hΦ, hu, huv⟩` from `hv C`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Use `haveI := C.sm`.
+
+Use `haveI := GlobalTheory.GeomConn.isDomain_tensor C.R.val Subtype.val_injective (hF C.Z) ℂ`. Use `choose z hz using fun ψ : C.R →ₐ[c.F] CAt σ => hL.bc _ _ ψ C.y`. Establish `hex : ∀ ψ, ∃ w, RootVal (unfOf e F M un) (z ψ) w` using `fun ψ => by`. Take `⟨k, x, t, ht⟩` from `hU₀.2.2.1 (z ψ)`. Conclude with `⟨_, k, x, t, ht, rfl⟩`.
+
+Use `choose ρ hρ using hex`. Take `⟨a, b, ha, hab⟩` from `exists_eq_smul_pow (K := c.F) (A := C.R) (n := 4) (by norm_num) u (pow_ne_zero 4 (div_ne_zero hC (pow_ne_zero g Complex.two_pi_I_ne_zero))) ρ (fun m V s hV hs => GlobalTheory.T.continuousOn_keySection_complexValue E H Dw l Xo c σ g e F _ M T un hσ hM hξ hun hok C.R C.y m V s (fun …`. Take `⟨Ψ, hΨ⟩ : ∃ Ψ : FibKey Xo ℂ (z ψ).x, Tied (S` from `ℂ) e (z ψ).s (z ψ).u Ψ := @GlobalTheory.T.exists_universalTripleFibre_at_framedPoint E _ _ _ H Dw l Xo c g e ℂ _ _ σ.toAlgebra (z ψ) hpq`. Conclude with `(rule_eq_of_rootVal k₁ k₂ k₃ T hun hpq hC (fun k => by rw [(hMG k).2]) (hρ ψ) Ψ hΨ).trans (congrArg _ (hu ℂ _ _ (@GlobalTheory.T.universal_triple_fibres_base_change_key_data E _ _ _ H Dw l Xo c g e _ ℂ _ _ _ _ σ.toAlgebra ψ C.y (z ψ) Φ Ψ (hz ψ) hΦ hΨ))))`. Conclude with `⟨a, b, ha, by rw [← huv, hab]; rfl⟩`.
+
+Establish `hgen : ∀ Z : Comp Xo c, ∃ (a : c.F) (b : Om Z), a ≠ 0 ∧ (v Z : Om Z) = a • b ^ 4`. Introduce `Z`. Take `⟨C, ψ, z, t, h1, h2⟩` from `hA h (Om Z) (genFr h Z)`. Take `rfl` from `GlobalTheory.Reg.SecGlue.chart_comp Z C ψ z t h1 h2`. Take `⟨a, b, ha, hab⟩` from `hroot C`.
+
+Use `⟨a, b / ((kch C.t : (Om C.Z)ˣ) : Om C.Z), ha, ?_⟩` and prove the remaining obligations. Rewrite using `[div_pow, ← smul_div_assoc, ← hab, Units.val_mul, Units.val_pow_eq_pow_val, mul_div_cancel_left₀ _ (pow_ne_zero 4 (kch C.t).ne_zero)]`. Use `choose a b ha hab using hgen`. Establish `hb0 : ∀ Z, b Z ≠ 0` using `fun Z h0 => (v Z).ne_zero (by rw [hab, h0]; simp)`. Use `keySec_of_generic h b hb0 fun C => ?_` and prove the remaining obligations.
+
+Take `⟨-, u, -, -, huv⟩` from `hv C`. Use `haveI := C.sm`. Use `haveI : IsIntegrallyClosed C.R := isIntegrallyClosed_of_smooth c.F C.R`. Use `haveI := GlobalTheory.SupGeneric.isFractionRing_chart C`. Establish `hint : ∀ (x : Om C.Z) (y : C.R), x ^ 4 = y → x ∈ C.R` using `fun x y hxy => by`.
+
+Establish `hi : IsIntegral C.R (x ^ 4)` using `hxy ▸ isIntegral_algebraMap (R := C.R) (x := y)`. Take `⟨w, hw⟩` from `IsIntegrallyClosed.exists_algebraMap_eq_of_isIntegral_pow (by norm_num : 0 < 4) hi`. Conclude with `hw ▸ w.2`. Establish `hc : ∀ (x : c.F) (y : C.R), ((algebraMap c.F C.R x * y : C.R) : Om C.Z) = x • (y : Om C.Z)` using `fun x y => by`. Rewrite using `[Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Establish `e₁ : (((kch C.t : (Om C.Z)ˣ) : Om C.Z) * b C.Z) ^ 4 = (a C.Z)⁻¹ • ((u : C.R) : Om C.Z)`. Rewrite using `[huv, Units.val_mul, Units.val_pow_eq_pow_val, hab, mul_smul_comm, smul_smul, inv_mul_cancel₀ (ha _), one_smul, mul_pow]`. Use `⟨hint _ _ (e₁.trans (hc _ _).symm), hint _ (algebraMap c.F C.R (a C.Z) * ((u⁻¹ : (C.R)ˣ) : C.R)) ?_⟩` and prove the remaining obligations. Rewrite using `[inv_pow, e₁, hc]`.
+
+Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[smul_mul_smul_comm, inv_mul_cancel₀ (ha _), one_smul, ← Subalgebra.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem nonempty_keySec_of_family (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l)
     (c : Coeff l) (σ : c.F →+* ℂ) (hσ : Formalism.L2.PjFree.GoodEmb c σ) {g : ℕ}

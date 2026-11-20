@@ -18,6 +18,9 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GaussLine.pairInf_nondeg | exact GlobalTheory.GaussLine.pairInf_nondeg | (intros; apply GlobalTheory.GaussLine.pairInf_nondeg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tracePairingArchimedeanVars_nondegenerate_right : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (q : κ → mixedEmbedding.mixedSpace F),
     (∀ x, GlobalTheory.GaussLine.pairInf F κ x q = 0) → q = 0 := by
   first | exact @GlobalTheory.GaussLine.pairInf_nondeg | exact GlobalTheory.GaussLine.pairInf_nondeg | (intros; apply GlobalTheory.GaussLine.pairInf_nondeg <;> assumption)

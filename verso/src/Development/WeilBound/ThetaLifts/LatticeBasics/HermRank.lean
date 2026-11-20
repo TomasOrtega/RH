@@ -11,6 +11,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace Herm
 
+/- English proof (translation)
+Establish `d : ∀ t : ℝ, HasDerivAt (fun t : ℝ => f (t • x) * Complex.exp (-((t : ℂ) * t * c / 2))) 0 t` using `fun t => by`. Establish `h1` using `(f.hasFDerivAt (t • x)).comp_hasDerivAt t ((hasDerivAt_id t).smul_const x)`. Establish `h2 : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 t` using `Complex.ofRealCLM.hasDerivAt`. Use `(h1.mul (((h2.mul h2).mul_const c).div_const 2).neg.cexp).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [one_smul, h, Function.comp, id, Pi.neg_apply, Pi.mul_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `is_const_of_deriv_eq_zero (fun t => (d t).differentiableAt) (fun t => (d t).deriv) 1 0` as an intermediate fact. Simplify `this` using `[h0]`.
+-/
 theorem ode_zero {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap V ℂ) (h0 : f 0 = 0) (x : V) (c : ℂ)
     (h : ∀ t : ℝ, fderiv ℝ f (t • x) x = t * c * f (t • x)) : f x = 0 := by
   have d : ∀ t : ℝ, HasDerivAt (fun t : ℝ => f (t • x) * Complex.exp (-((t : ℂ) * t * c / 2))) 0 t := fun t => by
@@ -22,6 +27,11 @@ theorem ode_zero {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : Schw
   have := is_const_of_deriv_eq_zero (fun t => (d t).differentiableAt) (fun t => (d t).deriv) 1 0
   simpa [h0] using this
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `Module.Finite.iff_fg.1 ‹_›`. Use `⟨Submodule.span ℂ (Set.range fun z : List ι × s => (z.1.map D).prod z.2), Submodule.span_mono fun x hx => ⟨([], ⟨x, hx⟩), rfl⟩, (rank_span_le _).trans (Cardinal.mk_range_le.trans Cardinal.mk_le_aleph0), fun i => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨⟨l, x⟩, rfl⟩ := h; exact Submodule.subset_span ⟨(i :: l, x), by simp⟩`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ ha`.
+-/
 theorem exists_stable {M ι : Type} [AddCommGroup M] [Module ℂ M] [Countable ι] (D : ι → Module.End ℂ M) (G : Submodule ℂ M)
     [FiniteDimensional ℂ G] : ∃ N : Submodule ℂ M, G ≤ N ∧ Module.rank ℂ N ≤ ℵ₀ ∧ ∀ i, ∀ x ∈ N, D i x ∈ N := by
   obtain ⟨s, rfl⟩ := Module.Finite.iff_fg.1 ‹_›
@@ -49,9 +59,15 @@ def dL (p : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixed
       Complex.real_smul]
     ring
 
+/- English proof (translation)
+The claim follows from `dOp_apply _ _ _ _`.
+-/
 theorem dL_apply (p) (f : SInf F κ) (y) :
     dL p f y = fderiv ℝ f y p.1 + (-(2 * Real.pi * Complex.I)) * ((tr κ y p.2 : ℝ) : ℂ) * f y := dOp_apply _ _ _ _
 
+/- English proof (translation)
+Introduce `r hr x` and use `by have hab : ∀ t, evI F t = 0 → t • M.co.e u = 0 := fun t ht => by rw [← map_smul, hu t ht, map_zero] simp only [Model.heisLine, Darboux.rho, map_smul] exact hasDerivAt_dOp ψ hψ _ _ (fun t ht => congrArg Prod.fst (hab t ht)) (fun t ht => congrArg Prod.snd (hab t ht)) f r hr x`.
+-/
 theorem actsD_dL (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {u : Matrix (Fin n) (Fin d) (AE F E)}
     (hu : At (evI F) u) (f : SInf F (Fin n × Fin d)) :
     ActsD (evI F) (M.heisLine ψ u) f (dL (fun i => evI F ((M.co.e u).1 i), fun i => evI F ((M.co.e u).2 i)) f) := fun r hr x => by
@@ -59,6 +75,27 @@ theorem actsD_dL (M : Model σ X W) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) {
   simp only [Model.heisLine, Darboux.rho, map_smul]
   exact hasDerivAt_dOp ψ hψ _ _ (fun t ht => congrArg Prod.fst (hab t ht)) (fun t ht => congrArg Prod.snd (hab t ht)) f r hr x
 
+/- English proof (translation)
+Establish `h` using `hB.cm`. Take `⟨S, J, sAt, sev, sJ⟩` from `exists_real_structure σ h B.emb M.co.e fun w => ((ε w : ℤ) : ℝ) • cs (X.θ w) (W.θ w)`. Establish `hA : ∀ w, (X.J.map (B.emb w).1)ᴴ = X.J.map (B.emb w).1` using `fun w => by`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.map_apply, Matrix.map_apply, ← h.2.2.2, hX.herm]`.
+
+Establish `hC : ∀ w, (Complex.I • W.J.map (B.emb w).1)ᴴ = Complex.I • W.J.map (B.emb w).1` using `fun w => by`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, star_mul', ← h.2.2.2, hW.skew]`. Simplify using the standard rewrite rules. Establish `sj : Function.Surjective (LinearMap.fst ℝ _ _ ∘ₗ J ∘ₗ LinearMap.inr ℝ _ _)`.
+
+Use `LinearMap.injective_iff_surjective.1 ((injective_iff_map_eq_zero _).2 fun b hb => ?_)` and prove the remaining obligations. Establish `hb : (J (0, b)).1 = 0` using `hb`. Set `e : AF F` to `(fun w => ((ε w : ℤ) : w.Completion), 0)`. Establish `he : ∀ w, (e • S (0, b)).map (piInf (B.emb w)) = ((ε w : ℤ) : ℝ) • (S (0, b)).map (piInf (B.emb w))` using `fun w => by`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply]`. Rewrite using `[Algebra.smul_def, map_mul, show algebraMap (AF F) (AE F E) e = e ⊗ₜ 1 from rfl, piInf_tmul]`. Simplify using `[e]`. Establish `es : ∀ a b : AF F, evI F (a - b) = evI F a - evI F b` using `fun a b => map_sub (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Establish `t` using `trace_symp (X := X) (W := W) h B.emb (e • S (0, b)) (S (J (0, b)))`.
+
+Rewrite `t` using `[M.co.form, es, map_smul]`. Simplify using `only [dotProduct, evI_sum, evI_mul, Prod.smul_fst, Pi.smul_apply, smul_eq_mul, congrFun (sev _).1, hb, Pi.zero_apply, mul_zero, zero_mul, Finset.sum_const_zero, sub_zero, map_zero, he, sJ] at t`. Establish `q : ∀ w x, hf (X.J.map (B.emb w).1) (W.J.map (B.emb w).1) (((ε w : ℤ) : ℝ) • x) ((((ε w : ℤ) : ℝ) • cs (X.θ w) (W.θ w)) x) = hf (X.J.map (B.emb w).1) (W.J.map (B.emb w).1) x (cs (X.θ w) (W.θ w) x)` using `fun w x => by`. Apply the tactic sequence `rcases Int.units_eq_one_or (ε w) with h | h <;> simp [h, hf, Matrix.map_neg]`. Simplify using `only [q] at t`.
+
+Establish `nn : ∀ w, 0 ≤ -(2 * (hf (X.J.map (B.emb w).1) (W.J.map (B.emb w).1) ((S (0, b)).map (piInf (B.emb w))) (cs (X.θ w) (W.θ w) ((S (0, b)).map (piInf (B.emb w))))).re)` using `fun w => by`. Distinguish the cases in `hv : (S (0, b)).map (piInf (B.emb w)) = 0`. Simplify using `[hv, hf]`. Combine the linear relations using `[hf_neg (hA w) (hC w) (hX.cartan w) (hW.cartan w) hv]`. Establish `z : S (0, b) = 0` using `eq_of_piInf h B.emb (sAt _) (fun c _ => smul_zero c) fun w => by`.
+
+Assume the negation of the conclusion as `hv`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => nn w).1 t.symm w (Finset.mem_univ _)` as an intermediate fact. Combine the linear relations using `[hf_neg (hA w) (hC w) (hX.cartan w) (hW.cartan w) (x := (S (0, b)).map (piInf (B.emb w))) (by simpa using hv)]`. Use `(sev (0, b)).2` as an intermediate fact. Rewrite `this` using `[z, map_zero]`.
+
+Conclude with `this.symm.trans (funext fun _ => evI_zero)`. Use `⟨⨅ p, LinearMap.ker (dL (J p) - Complex.I • dL p), ?_, fun f₀ H => (Submodule.mem_iInf _).2 fun p => ?_⟩` and prove the remaining obligations. Set `ev : SInf F (Fin n × Fin d) →ₗ[ℂ] ℂ` to `⟨⟨fun f => f 0, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Use `Module.Finite.of_injective (ev ∘ₗ Submodule.subtype _) ((injective_iff_map_eq_zero _).2 fun f hf => ?_)` and prove the remaining obligations. Use extensionality with `x`.
+
+Take `⟨b, hb⟩` from `sj x`. Establish `hb : (J (0, b)).1 = x` using `hb`. Use `ode_zero f.1 hf x (2 * Real.pi * Complex.I * (tr _ x (J (0, b)).2 - Complex.I * tr _ x b)) fun t => ?_` and prove the remaining obligations. Establish `: dL (J (0, b)) f.1 (t • x) - Complex.I * dL (0, b) f.1 (t • x) = 0` using `DFunLike.congr_fun (show (dL (J (0, b)) - Complex.I • dL (0, b)) f.1 = 0 from (Submodule.mem_iInf _).1 f.2 (0, b)) (t • x)`. Simplify using `only [dL_apply, hb, map_zero, map_smul, LinearMap.smul_apply, smul_eq_mul, Complex.ofReal_mul] at this`.
+
+Take the linear combination `this`. Use `H _ _ (sAt p) (sAt (J p)) (fun w => by rw [sJ]; ext i j; simp [cs, mul_assoc]) _ _ (actsD_dL M hB.std (sAt p) f₀) (actsD_dL M hB.std (sAt (J p)) f₀)` as an intermediate fact. Rewrite `this` using `[(sev p).1, (sev p).2, (sev _).1, (sev _).2]`. Conclude with `sub_eq_zero.2 this`.
+-/
 theorem exists_vac (M : Model σ X W) {r s r' s' : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s')
     (ε : InfinitePlace F → ℤˣ) : ∃ G : Submodule ℂ (SInf F (Fin n × Fin d)), FiniteDimensional ℂ G ∧ ∀ f₀ : SInf F (Fin n × Fin d),
       (∀ u u' : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u → At (evI F) u' →
@@ -124,6 +161,17 @@ theorem exists_vac (M : Model σ X W) {r s r' s' : ℕ} (hB : B.IsGood σ) (hX :
 end Herm
 
 open Herm in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW`. Use `choose G h1 h2 using exists_vac M hB hX hW`. Set `b` to `Module.finBasis ℝ ((Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F))`. Take `⟨N, n1, n2, n3⟩` from `exists_stable (fun i => dL (b i)) (⨆ ε, G ε)`. Establish `all : ∀ p, ∀ f ∈ N, dL p f ∈ N` using `fun p f hf => by`.
+
+Proceed by induction on `b.mem_span p using Submodule.span_induction with`. Consider the case `mem p h => obtain ⟨i, rfl⟩ := h`. Conclude with `n3 i f hf`. Consider the case `zero => convert N.zero_mem`. Use extensionality with `y`.
+
+Simplify using `[dL_apply]`. Consider the case `add p q _ _ hp hq => convert N.add_mem hp hq`. Use extensionality with `y`. Simplify using `[dL_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `smul t p _ hp => convert N.smul_mem (t : ℂ) hp`. Use extensionality with `y`. Simplify using `[dL_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `(Submodule.rank_mono (show M.Pol B.ψ B.emb ≤ N from sInf_le ?_)).trans n2` and prove the remaining obligations.
+
+Use `⟨fun f₀ ⟨ε, H⟩ => n1 (Submodule.mem_iSup_of_mem ε (h2 ε f₀ H)), fun u hu f hf f₁ H => ?_⟩` and prove the remaining obligations. Rewrite using `[actsD_unique M hB.std hu H]`. Conclude with `all (_, _) f hf`.
+-/
 theorem polRank : PolRank := by
   intro F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW
   choose G h1 h2 using exists_vac M hB hX hW

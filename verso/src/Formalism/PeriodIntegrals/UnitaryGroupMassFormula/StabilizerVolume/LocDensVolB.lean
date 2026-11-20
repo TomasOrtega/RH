@@ -15,6 +15,11 @@ open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNo
 variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Algebra F E] {d : ℕ}
   (b : Module.Basis (Fin d) F E)
 
+/- English proof (translation)
+Unfold `Formalism.UG.hform`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj'`.
+
+Simplify using `[hj']`. Simplify using the standard rewrite rules. Introduce `i' _ hi'`. Simplify using `[hi']`. Simplify using the standard rewrite rules.
+-/
 theorem hform_single {A : Type} [CommRing A] {M : ℕ} (s : A →+* A) (Am : Matrix (Fin M) (Fin M) A)
     (i j : Fin M) (x y : A) :
     Formalism.UG.hform s Am (Pi.single i x) (Pi.single j y) = s x * Am i j * y := by
@@ -39,6 +44,13 @@ def cT {a M : ℕ} (v : HeightOneSpectrum (𝓞 F)) (Y : Fin a → Fin M → Fv 
 
 variable [FiniteDimensional F E] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Take `⟨p, i, k⟩` from `q`. Take `⟨p', j, l⟩` from `q'`. Simplify using `only [BR, eT]`. Rewrite using `[Finset.sum_eq_single p (fun p'' _ h => by simp [Pi.single_apply, h, hR, Formalism.UG.hform]) (by simp)]`. Simplify using `only [Pi.single_eq_same, gG]`.
+
+Distinguish the cases in `hp : p = p'`. Substitute `hp` using the available equality. Simplify using `only [Pi.single_eq_same, if_true, hR, hform_single, JR, Matrix.map_apply]`. Establish `e : sigR (Fv F v) σ ((1 : Fv F v) ⊗ₜ[F] b k) * inclR (Fv F v) (J i j) * ((1 : Fv F v) ⊗ₜ[F] b l) = (1 : Fv F v) ⊗ₜ[F] (σ (b k) * J i j * b l)`. Simplify using `[sigR, inclR, Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Rewrite using `[e, trace_one_tmul]`. Establish `hp' : p' ≠ p` using `fun h => hp h.symm`. Simplify using `[Pi.single_apply, hp, hR, Formalism.UG.hform]`.
+-/
 theorem BR_eT (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (q q' : Fin a × Fin M × Fin d) :
     BR (Fv F v) σ J (eT v b q) (eT v b q') = algebraMap F (Fv F v) (gG b σ J a q q') := by
@@ -58,6 +70,11 @@ theorem BR_eT (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E)
   · have hp' : p' ≠ p := fun h => hp h.symm
     simp [Pi.single_apply, hp, hR, Formalism.UG.hform]
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrArg (phiL (a := a) v b σ J) (sum_eT v b Y)) q`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Express the relevant statement in the definitionally equal form `BR (Fv F v) σ J (eT v b q) Y = _`. Establish `h2 : phiL (a` using `a) v b σ J Y q = BR (Fv F v) σ J (eT v b q) Y := rfl`. Rewrite using `[← h2, h]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, cT]`. Use `Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations. Establish `h3 : phiL (a` using `a) v b σ J (eT v b q') q = BR (Fv F v) σ J (eT v b q) (eT v b q') := rfl`. Rewrite using `[h3, BR_eT, mul_comm]`.
+-/
 theorem BR_eT_left (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (q : Fin a × Fin M × Fin d) (Y : Fin a → Fin M → Fv F v ⊗[F] E) :
     BR (Fv F v) σ J (eT v b q) Y =
@@ -72,6 +89,9 @@ theorem BR_eT_left (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) 
   have h3 : phiL (a := a) v b σ J (eT v b q') q = BR (Fv F v) σ J (eT v b q) (eT v b q') := rfl
   rw [h3, BR_eT, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[BR_expand v b σ J X Y]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[BR_eT_left]`. Both sides reduce to the same expression.
+-/
 theorem BR_eq_sum (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X Y : Fin a → Fin M → Fv F v ⊗[F] E) :
     BR (Fv F v) σ J X Y =
@@ -81,6 +101,9 @@ theorem BR_eq_sum (σ : E →ₐ[F] E) {M a : ℕ} (J : Matrix (Fin M) (Fin M) E
   rw [BR_eT_left]
   rfl
 
+/- English proof (translation)
+Use `⟨fun p i => (Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm (fun k => c (p, i, k)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Take `⟨p, i, k⟩` from `q`. Simplify using `only [cT, crd]`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem cT_surj {a M : ℕ} (c : Fin a × Fin M × Fin d → Fv F v) :
     ∃ Y : Fin a → Fin M → Fv F v ⊗[F] E, cT b v Y = c := by
   refine ⟨fun p i => (Algebra.TensorProduct.basis (Fv F v) b).equivFun.symm
@@ -90,6 +113,9 @@ theorem cT_surj {a M : ℕ} (c : Fin a × Fin M × Fin d → Fv F v) :
   simp only [cT, crd]
   rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h q`. Conclude with `h q.1 q.2.1 q.2.2`. Introduce `h p i k`. Conclude with `h (p, i, k)`.
+-/
 theorem mem_latV_iff {a M : ℕ} (Y : Fin a → Fin M → Fv F v ⊗[F] E) :
     Y ∈ latV (M := M) (n := a) b v ↔ ∀ q, cT b v Y q ∈ v.adicCompletionIntegers F := by
   constructor
@@ -98,6 +124,9 @@ theorem mem_latV_iff {a M : ℕ} (Y : Fin a → Fin M → Fv F v ⊗[F] E) :
   · intro h p i k
     exact h (p, i, k)
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Conclude with `sum_mem fun j _ => mul_mem (hA i j) (hw j)`.
+-/
 theorem mulVec_int {ι : Type} [Fintype ι] (A : Matrix ι ι F)
     (hA : ∀ i j, algebraMap F (Fv F v) (A i j) ∈ v.adicCompletionIntegers F)
     (w : ι → Fv F v) (hw : ∀ i, w i ∈ v.adicCompletionIntegers F) (i : ι) :
@@ -107,6 +136,13 @@ theorem mulVec_int {ι : Type} [Fintype ι] (A : Matrix ι ι F)
 
 include v in
 
+/- English proof (translation)
+Introduce `h0`. Use `set G := (gG b σ J a).map (algebraMap F (Fv F v)) with hG`. Establish `hdet : G.det = 0`. Rewrite using `[hG, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`.
+
+Take `⟨Y, hY⟩` from `cT_surj b v (a := a) (M := M) w`. Establish `hY0 : Y = 0`. Apply `nondeg_BR v σ hσ J hJ Y` to reduce the goal to its premises. Introduce `X`. Rewrite using `[BR_eq_sum, hY, hw]`.
+
+Simplify using the standard rewrite rules. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← hY, hY0]`. Use function extensionality and compare the values at `q`. Simplify using `[cT, crd]`.
+-/
 theorem det_gG [Algebra.IsSeparable F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M a : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0) : (gG b σ J a).det ≠ 0 := by
   classical
@@ -126,6 +162,17 @@ theorem det_gG [Algebra.IsSeparable F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (
   funext q
   simp [cT, crd]
 
+/- English proof (translation)
+Use `filter_upwards [ev_int_all (fun q : (Fin a × Fin M × Fin d) × (Fin a × Fin M × Fin d) => gG b σ J a q.1 q.2), ev_int_all (fun q : (Fin a × Fin M × Fin d) × (Fin a × Fin M × Fin d) => (gG b σ J a)⁻¹ q.1 q.2)] with v h1 h2`. Establish `hdet` using `det_gG b v σ hσ J hJ (a := a)`. Use `set g := gG b σ J a with hg`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hY`. Rewrite `hY` using `[Set.mem_setOf_eq]`. Rewrite using `[mem_latV_iff]`. Establish `hw : ∀ q, (g.map (algebraMap F (Fv F v))).mulVec (cT b v Y) q ∈ v.adicCompletionIntegers F`. Introduce `q`.
+
+Rewrite using `[← BR_eT_left]`. Conclude with `hY _ (eT_mem v b q)`. Establish `hinv : (g⁻¹.map (algebraMap F (Fv F v))).mulVec ((g.map (algebraMap F (Fv F v))).mulVec (cT b v Y)) = cT b v Y`. Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.map_mul, Matrix.nonsing_inv_mul g (isUnit_iff_ne_zero.2 hdet), Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`. Introduce `q`.
+
+Rewrite using `[← hinv]`. Conclude with `mulVec_int v g⁻¹ (fun i j => h2 (i, j)) _ hw q`. Introduce `hY`. Rewrite using `[Set.mem_setOf_eq]`. Introduce `X hX`.
+
+Rewrite using `[BR_eq_sum]`. Rewrite `hX`, `hY` using `[mem_latV_iff]`. Conclude with `sum_mem fun q _ => mul_mem (hX q) (mulVec_int v g (fun i j => h1 (i, j)) _ hY q)`.
+-/
 theorem ev_dual [Algebra.IsSeparable F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M a : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0) :
     ∀ᶠ v in cofinite, {Y | ∀ X ∈ latV (M := M) (n := a) b v,

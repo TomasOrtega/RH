@@ -11,20 +11,40 @@ open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.E
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
+/- English proof (translation)
+Introduce `_ hφ` and use `Submodule.mem_sInf.2 fun _ hU => hU.1 hφ`.
+-/
 theorem subset_hull {N : ℕ} (S : Set (Sm E N)) : S ⊆ (hull S : Set (Sm E N)) := fun _ hφ =>
   Submodule.mem_sInf.2 fun _ hU => hU.1 hφ
 
+/- English proof (translation)
+Use `le_bot_iff.1 (sInf_le ⟨fun φ hφ => ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[h φ hφ]`. Conclude with `Submodule.zero_mem _`. Introduce `o φ hφ`. Rewrite using `[(Submodule.mem_bot ℂ).1 hφ, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem hull_eq_bot {N : ℕ} {S : Set (Sm E N)} (h : ∀ φ ∈ S, φ = 0) : hull S = ⊥ := by
   refine le_bot_iff.1 (sInf_le ⟨fun φ hφ => ?_, ?_⟩)
   · rw [h φ hφ]; exact Submodule.zero_mem _
   · intro o φ hφ
     rw [(Submodule.mem_bot ℂ).1 hφ, map_zero]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `o φ hφ`. Rewrite `hφ`, the goal using `[hull, Submodule.mem_sInf]`. Conclude with `fun U hU => hU.2 o φ (hφ U hU)`.
+-/
 theorem isStable_hull {N : ℕ} (S : Set (Sm E N)) : IsStable (hull S) := by
   intro o φ hφ
   rw [hull, Submodule.mem_sInf] at hφ ⊢
   exact fun U hU => hU.2 o φ (hφ U hU)
 
+/- English proof (translation)
+Use `⟨fun u hu x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hF.1 u hu 1 K₂.one_mem (x, y)`. Simplify using `using h`. Set `L : (Kinf E a × Kinf E b → ℂ) →ₗ[ℂ] (Kinf E a → ℂ)` to `LinearMap.funLeft ℂ ℂ fun k => (k, 1)`. Establish `hle : Submodule.span ℂ {f | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k : Kinf E a × Kinf E b => w₁ k.1 * w₂ k.2} ≤ W₁.comap L`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w₁, hw₁, w₂, hw₂, rfl⟩`. Establish `h : L (fun k : Kinf E a × Kinf E b => w₁ k.1 * w₂ k.2) = w₂ 1 • w₁`. Use function extensionality and compare the values at `k`. Simplify using `[L, LinearMap.funLeft_apply, mul_comm]`.
+
+Use `show L _ ∈ W₁`. Rewrite using `[h]`. Conclude with `W₁.smul_mem _ hw₁`. Establish `h` using `hle (hF.2 (x, y))`. Rewrite `h` using `[Submodule.mem_comap]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[L, LinearMap.funLeft_apply]`.
+-/
 theorem type₁ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ}
     (hF : SpectralAccumulation.TypeH K₁ K₂ W₁ W₂ F) (y : GA E b) :
@@ -48,6 +68,15 @@ theorem type₁ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin 
     funext k
     simp [L, LinearMap.funLeft_apply]
 
+/- English proof (translation)
+Use `⟨fun u hu x => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `hF.1 1 K₁.one_mem u hu (y, x)`. Simplify using `using h`. Set `L : (Kinf E a × Kinf E b → ℂ) →ₗ[ℂ] (Kinf E b → ℂ)` to `LinearMap.funLeft ℂ ℂ fun k => (1, k)`. Establish `hle : Submodule.span ℂ {f | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k : Kinf E a × Kinf E b => w₁ k.1 * w₂ k.2} ≤ W₂.comap L`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w₁, hw₁, w₂, hw₂, rfl⟩`. Establish `h : L (fun k : Kinf E a × Kinf E b => w₁ k.1 * w₂ k.2) = w₁ 1 • w₂`. Use function extensionality and compare the values at `k`. Simplify using `[L, LinearMap.funLeft_apply]`.
+
+Use `show L _ ∈ W₂`. Rewrite using `[h]`. Conclude with `W₂.smul_mem _ hw₂`. Establish `h` using `hle (hF.2 (y, x))`. Rewrite `h` using `[Submodule.mem_comap]`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[L, LinearMap.funLeft_apply]`.
+-/
 theorem type₂ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ}
     (hF : SpectralAccumulation.TypeH K₁ K₂ W₁ W₂ F) (y : GA E a) :
@@ -71,6 +100,11 @@ theorem type₂ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin 
     funext k
     simp [L, LinearMap.funLeft_apply]
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℂ (Set.range fun x y => f i (x, y)) ≤ (Submodule.span ℂ (slices₂ f)).map (Sm E b).subtype`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨φ, hφ⟩` from `h₂ i x`. Conclude with `⟨φ, Submodule.subset_span (show ∃ j m, φ.1 = fun y => f j (m, y) from ⟨i, x, hφ⟩), hφ⟩`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem fd_range₂ {ι : Type} (f : ι → H E a b → ℂ) (i : ι) (h₂ : ∀ i m₁, ∃ φ : Sm E b, φ.1 = fun x => f i (m₁, x))
     (hfd : FiniteDimensional ℂ (Submodule.span ℂ (slices₂ f))) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun x y => f i (x, y))) := by
@@ -82,6 +116,11 @@ theorem fd_range₂ {ι : Type} (f : ι → H E a b → ℂ) (i : ι) (h₂ : �
     exact ⟨φ, Submodule.subset_span (show ∃ j m, φ.1 = fun y => f j (m, y) from ⟨i, x, hφ⟩), hφ⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℂ (Set.range fun y x => f i (x, y)) ≤ (Submodule.span ℂ (slices₁ f)).map (Sm E a).subtype`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨φ, hφ⟩` from `h₁ i y`. Conclude with `⟨φ, Submodule.subset_span (show ∃ j m, φ.1 = fun x => f j (x, m) from ⟨i, y, hφ⟩), hφ⟩`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem fd_range₁ {ι : Type} (f : ι → H E a b → ℂ) (i : ι) (h₁ : ∀ i m₂, ∃ φ : Sm E a, φ.1 = fun x => f i (x, m₂))
     (hfd : FiniteDimensional ℂ (Submodule.span ℂ (slices₁ f))) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun y x => f i (x, y))) := by
@@ -93,6 +132,11 @@ theorem fd_range₁ {ι : Type} (f : ι → H E a b → ℂ) (i : ι) (h₁ : �
     exact ⟨φ, Submodule.subset_span (show ∃ j m, φ.1 = fun x => f j (x, m) from ⟨i, y, hφ⟩), hφ⟩
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hCE E N (hull S) m hm`. Distinguish the cases in `h0 : ∃ φ ∈ S, φ ≠ 0`. Take `⟨φ, hφ, hne⟩` from `h0`. Use `⟨z, hCR E N φ.1 z (hc φ hφ) (fun h => hne (Subtype.ext h)) (hl φ hφ) (hz φ (subset_hull S hφ)), hz⟩` and prove the remaining obligations. Use `push Not at h0`.
+
+Use `⟨0, by simp, fun φ hφ t g => ?_⟩` and prove the remaining obligations. Rewrite `hφ` using `[hull_eq_bot h0, Submodule.mem_bot]`. Substitute `hφ` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem centIm {N : ℕ} (hCE : CentEig) (hCR : CentRe) (S : Set (Sm E N)) (m : (E →+* ℂ) → Multiset ℂ)
     (hm : ∀ τ, HasInfCharGL (hull S) τ (m τ)) (hc : ∀ φ ∈ S, Continuous φ.1) (hl : ∀ φ ∈ S, Loc φ.1) :
     SpectralAccumulation.CentIm (hull S) := by
@@ -112,6 +156,29 @@ namespace PositivityTheory.Rg.BcB.E.E3
 
 open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.E PositivityTheory.Rg.BcB.E.E3.asm
 
+/- English proof (translation)
+Introduce `hFin hLocSl hLNP hCE hCR hHA hHNP hPS E _ _ _ a b D ι _ M f K₁ K₂ W₁ W₂ m₁ m₂ hK₁ hK₂ hW₁ hW₂ hcont hinv hwl2 htype hs₁ hs₂ haut₁ haut₂ hinf₁ hinf₂`. Establish `fd₁ : FiniteDimensional ℂ (Submodule.span ℂ (slices₁ f))`. Use `hFin E a K₁ W₁ m₁ (slices₁ f) hK₁ hW₁ (fun φ hφ => ?_) hinf₁` and prove the remaining obligations. Take `⟨i, y, hφ'⟩` from `hφ`. Take `⟨hl, hk⟩` from `type₁ (htype i) y`.
+
+Use `⟨haut₁ φ ⟨i, y, hφ'⟩, fun u hu x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ']`. Conclude with `hl u hu x`. Rewrite using `[hφ']`. Conclude with `hk x`.
+
+Establish `fd₂ : FiniteDimensional ℂ (Submodule.span ℂ (slices₂ f))`. Use `hFin E b K₂ W₂ m₂ (slices₂ f) hK₂ hW₂ (fun φ hφ => ?_) hinf₂` and prove the remaining obligations. Take `⟨i, y, hφ'⟩` from `hφ`. Take `⟨hl, hk⟩` from `type₂ (htype i) y`. Use `⟨haut₂ φ ⟨i, y, hφ'⟩, fun u hu x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hφ']`. Conclude with `hl u hu x`. Rewrite using `[hφ']`. Conclude with `hk x`. Establish `hloc` using `fun i => hLocSl E a b D M (f i) (hcont i) (fun _ γ x => hinv i γ x) (fun _ => hwl2 i)`.
+
+Establish `loc₁ : ∀ φ ∈ slices₁ f, Loc φ.1`. Introduce `φ hφ`. Take `⟨i, y, hφ'⟩` from `hφ`. Rewrite using `[hφ']`. Conclude with `(hloc i).1 (fd_range₂ f i hs₂ fd₂) y`.
+
+Establish `loc₂ : ∀ φ ∈ slices₂ f, Loc φ.1`. Introduce `φ hφ`. Take `⟨i, y, hφ'⟩` from `hφ`. Rewrite using `[hφ']`. Conclude with `(hloc i).2 (fd_range₁ f i hs₁ fd₁) y`.
+
+Establish `cont₁ : ∀ φ ∈ slices₁ f, Continuous φ.1`. Introduce `φ hφ`. Take `⟨i, y, hφ'⟩` from `hφ`. Rewrite using `[hφ']`. Use `hcont i` as an intermediate fact.
+
+Use `fun_prop`. Establish `cont₂ : ∀ φ ∈ slices₂ f, Continuous φ.1`. Introduce `φ hφ`. Take `⟨i, y, hφ'⟩` from `hφ`. Rewrite using `[hφ']`.
+
+Use `hcont i` as an intermediate fact. Use `fun_prop`. Establish `ha₁` using `hHA E a (slices₁ f) haut₁`. Establish `ha₂` using `hHA E b (slices₂ f) haut₂`. Establish `inf₁ : ∀ τ, HasInfCharGL (hull (slices₁ f)) τ (m₁ τ)` using `fun τ => ha₁.2 τ (m₁ τ) (hinf₁ τ)`.
+
+Establish `inf₂ : ∀ τ, HasInfCharGL (hull (slices₂ f)) τ (m₂ τ)` using `fun τ => ha₂.2 τ (m₂ τ) (hinf₂ τ)`. Use `⟨isStable_hull _, isStable_hull _, ha₁.1, ha₂.1, hHNP E a (slices₁ f) fun φ hφ => ⟨haut₁ φ hφ, hLNP E a φ (haut₁ φ hφ) (loc₁ φ hφ)⟩, hHNP E b (slices₂ f) fun φ hφ => ⟨haut₂ φ hφ, hLNP E b φ (haut₂ φ hφ) (loc₂ φ hφ)⟩, centIm hCE hCR _ m₁ inf₁ cont₁ loc₁, centIm hCE hCR _ m₂ inf₂ c …` and prove the remaining obligations. Use `hPS E a b (f i) _ _ (fun y => ?_) (fun x => ?_) (fd_range₁ f i hs₁ fd₁)` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `hs₁ i y`. Conclude with `⟨φ, subset_hull _ ⟨i, y, hφ⟩, hφ⟩`.
+
+Take `⟨ψ, hψ⟩` from `hs₂ i x`. Conclude with `⟨ψ, subset_hull _ ⟨i, x, hψ⟩, hψ⟩`.
+-/
 theorem asm_holds : Asm := by
   intro hFin hLocSl hLNP hCE hCR hHA hHNP hPS E _ _ _ a b D ι _ M f K₁ K₂ W₁ W₂ m₁ m₂ hK₁ hK₂ hW₁ hW₂ hcont hinv
     hwl2 htype hs₁ hs₂ haut₁ haut₂ hinf₁ hinf₂

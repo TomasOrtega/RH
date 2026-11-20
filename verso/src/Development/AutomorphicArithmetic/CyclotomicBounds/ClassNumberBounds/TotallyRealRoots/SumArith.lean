@@ -8,6 +8,15 @@ private def sieveOK (n : ℕ) : Bool :=
 private def headF (n : ℕ) : ℕ :=
   if sieveOK n then (Nat.log2 (n ^ 256) + 1) * 1000000 / n ^ 2 + 1 else 0
 
+/- English proof (translation)
+Establish `hm0 : 0 < m` using `by linarith`. Establish `hL : 0 ≤ Real.log (m + 1)` using `Real.log_nonneg (by linarith)`. Establish `h1 : Real.log (m + 1) - Real.log m ≤ 1 / m`. Rewrite using `[← Real.log_div (by linarith) hm0.ne']`. Use `Real.log_le_sub_one_of_pos (x := (m + 1) / m) (by positivity)` as an intermediate fact.
+
+Establish `e : (m + 1) / m - 1 = 1 / m` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set L := Real.log (m + 1)`. Establish `h2 : (L - 1 / m + 2) / m ≤ (Real.log m + 2) / m`. Apply `div_le_div_of_nonneg_right _ hm0.le` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (L - 1 / m + 2) / m - (L + 2) / (m + 1) - L / (m + 1) ^ 2 = L / (m * (m + 1) ^ 2) + (m - 1) / (m ^ 2 * (m + 1))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 0 ≤ L / (m * (m + 1) ^ 2)` using `by positivity`.
+
+Establish `h5 : 0 ≤ (m - 1) / (m ^ 2 * (m + 1))` using `div_nonneg (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem tail_step (m : ℝ) (hm : 1 ≤ m) :
     Real.log (m + 1) / (m + 1) ^ 2 ≤ (Real.log m + 2) / m - (Real.log (m + 1) + 2) / (m + 1) := by
   have hm0 : 0 < m := by linarith
@@ -29,6 +38,11 @@ private theorem tail_step (m : ℝ) (hm : 1 ≤ m) :
   have h5 : 0 ≤ (m - 1) / (m ^ 2 * (m + 1)) := div_nonneg (by linarith) (by positivity)
   linarith
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← add_assoc (N + 1), Finset.sum_Ico_succ_top (by omega)]`. Establish `h` using `tail_step ((N + k : ℕ) : ℝ) (by exact_mod_cast (by omega : 1 ≤ N + k))`.
+
+Establish `e1 : ((N + 1 + k : ℕ) : ℝ) = ((N + k : ℕ) : ℝ) + 1` using `by push_cast; ring`. Establish `e2 : ((N + (k + 1) : ℕ) : ℝ) = ((N + k : ℕ) : ℝ) + 1` using `by push_cast; ring`. Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem tail_sum (N : ℕ) (hN : 1 ≤ N) (k : ℕ) :
     ∑ n ∈ Finset.Ico (N + 1) (N + 1 + k), Real.log n / (n : ℝ) ^ 2
       ≤ (Real.log N + 2) / N - (Real.log ((N + k : ℕ) : ℝ) + 2) / ((N + k : ℕ) : ℝ) := by

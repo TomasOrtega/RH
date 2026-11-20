@@ -14,12 +14,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 abbrev infSpan (φ : UA E n → ℂ) : Submodule ℂ (UA E n → ℂ) :=
   Submodule.span ℂ (Set.range fun k : infU E n => RU E n k φ)
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 theorem RU_RU (x y : UA E n) (φ : UA E n → ℂ) : RU E n x (RU E n y φ) = RU E n (x * y) φ := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨k, rfl⟩`.
+-/
 theorem mem_infSpan (φ : UA E n → ℂ) (k : infU E n) : RU E n k φ ∈ infSpan φ :=
   Submodule.subset_span ⟨k, rfl⟩
 
+/- English proof (translation)
+Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨l, rfl⟩` from `h`. Rewrite using `[RU_RU]`.
+
+Conclude with `mem_infSpan φ (k * l)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add _ _ _ _ h₁ h₂ => rw [map_add]`. Conclude with `Submodule.add_mem _ h₁ h₂`.
+
+Consider the case `smul c _ _ h => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c h`.
+-/
 theorem infSpan_stable (φ : UA E n → ℂ) (k : infU E n) : ∀ ψ ∈ infSpan φ, RU E n k ψ ∈ infSpan φ := by
   intro ψ hψ
   induction hψ using Submodule.span_induction with
@@ -45,6 +58,19 @@ def finStab (φ : UA E n → ℂ) : Subgroup (finU E n) where
     conv_lhs => rw [← show RU E n a φ = φ from ha]
     rw [RU_RU, inv_mul_cancel, map_one]; rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨l, rfl⟩` from `h`. Conclude with `hφ.cont.comp (continuous_mul_const l.1)`.
+
+Consider the case `zero => exact continuous_const`. Consider the case `add _ _ _ _ h₁ h₂ => exact h₁.add h₂`. Consider the case `smul c _ _ h => exact h.const_smul c`. Introduce `γ hγ g`. Proceed by induction on `hψ using Submodule.span_induction with`.
+
+Consider the case `mem _ h`. Take `⟨l, rfl⟩` from `h`. Express the relevant statement in the definitionally equal form `φ (γ * g * l) = φ (g * l)`. Rewrite using `[mul_assoc, hφ.left γ hγ]`. Consider the case `zero => rfl`.
+
+Consider the case `add _ _ _ _ h₁ h₂ => simp only [Pi.add_apply, h₁, h₂]`. Consider the case `smul c _ _ h => simp only [Pi.smul_apply, h]`. Use `Subgroup.isOpen_mono (H₁ := finStab φ) (H₂ := finStab ψ) (fun k hk => ?_) hφ.level` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RU E n k ψ = ψ`. Proceed by induction on `hψ using Submodule.span_induction with`.
+
+Consider the case `mem _ h`. Take `⟨l, rfl⟩` from `h`. Rewrite using `[RU_RU, ← hc l k.1 k.2, ← RU_RU, show RU E n k φ = φ from hk]`. Consider the case `zero => rw [map_zero]`. Consider the case `add _ _ _ _ h₁ h₂ => rw [map_add, h₁, h₂]`.
+
+Consider the case `smul c _ _ h => rw [map_smul, h]`. Use `hφ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := infSpan φ) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `infSpan_stable φ k ψ hψ`.
+-/
 theorem isAutFormU_of_mem (hc : ∀ k : infU E n, ∀ g ∈ finU E n, k.1 * g = g * k.1) {φ : UA E n → ℂ}
     (hφ : IsAutFormU φ) (ψ : UA E n → ℂ) (hψ : ψ ∈ infSpan φ) : IsAutFormU ψ := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -81,12 +107,18 @@ theorem isAutFormU_of_mem (hc : ∀ k : infU E n, ∀ g ∈ finU E n, k.1 * g = 
 def coeff (φ : UA E n → ℂ) (l : infSpan φ →ₗ[ℂ] ℂ) : infSpan φ →ₗ[ℂ] (infU E n → ℂ) :=
   LinearMap.pi fun k => l.comp ((RU E n k).restrict (infSpan_stable φ k))
 
+/- English proof (translation)
+Use `hφ.kfin` as an intermediate fact. Use `l.continuous_of_finiteDimensional.comp (Continuous.subtype_mk (continuous_pi fun g => ?_) _)` and prove the remaining obligations. Conclude with `hφ.cont.comp (continuous_const.mul continuous_subtype_val)`.
+-/
 theorem continuous_coeff {φ : UA E n → ℂ} (hφ : IsAutFormU φ) (l : infSpan φ →ₗ[ℂ] ℂ) :
     Continuous fun k : infU E n => l ⟨RU E n k φ, mem_infSpan φ k⟩ := by
   have := hφ.kfin
   refine l.continuous_of_finiteDimensional.comp (Continuous.subtype_mk (continuous_pi fun g => ?_) _)
   exact hφ.cont.comp (continuous_const.mul continuous_subtype_val)
 
+/- English proof (translation)
+Use `hφ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (coeff φ l)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨⟨_, mem_infSpan φ k⟩, funext fun x => congrArg l (Subtype.ext ?_)⟩` and prove the remaining obligations. Conclude with `RU_RU x.1 k.1 φ`.
+-/
 theorem finite_coeff {φ : UA E n → ℂ} (hφ : IsAutFormU φ) (l : infSpan φ →ₗ[ℂ] ℂ) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : infU E n => fun x : infU E n =>
       l ⟨RU E n (x * k : infU E n) φ, mem_infSpan φ (x * k)⟩)) := by
@@ -96,6 +128,11 @@ theorem finite_coeff {φ : UA E n → ℂ} (hφ : IsAutFormU φ) (l : infSpan φ
   refine ⟨⟨_, mem_infSpan φ k⟩, funext fun x => congrArg l (Subtype.ext ?_)⟩
   exact RU_RU x.1 k.1 φ
 
+/- English proof (translation)
+Use `hφ.kfin` as an intermediate fact. Set `b` to `Module.finBasis ℂ (infSpan φ)`. Use `⟨_, fun i k => b.coord i ⟨RU E n k φ, mem_infSpan φ k⟩, fun i => (b i).1, fun i => ⟨?_, ?_⟩, fun k g => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.UnitaryBC.rightFinite_mem_poly E n _ (continuous_coeff hφ _) (finite_coeff hφ _)`. Conclude with `isAutFormU_of_mem (GlobalTheory.UnitarySplit.dense_and_split E n).2.2.1 hφ _ (b i).2`.
+
+Establish `h` using `congrArg (fun v : infSpan φ => v.1 g) (b.sum_repr ⟨RU E n k φ, mem_infSpan φ k⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Conclude with `h.symm`.
+-/
 theorem exists_poly_mul_autForm (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (φ : UA E n → ℂ)
     (hφ : IsAutFormU φ) : ∃ (m : ℕ) (p : Fin m → infU E n → ℂ) (e : Fin m → UA E n → ℂ),
       (∀ i, p i ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}

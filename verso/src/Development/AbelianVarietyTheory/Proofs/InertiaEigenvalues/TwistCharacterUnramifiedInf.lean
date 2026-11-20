@@ -21,6 +21,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 set_option maxHeartbeats 1000000
 set_option synthInstance.maxHeartbeats 400000
 
+/- English proof (translation)
+Establish `hm` using `cf.isMu0 j`. Use `⟨C.e1.symm ⟨cf.mu0 j, hm.unitary⟩, by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[C.csd, Equiv.apply_symm_apply]`. Conclude with `GlobalTheory.CsdTriv.isCSD_of_trivOn _ _ _ hm.triv`. Introduce `w hw`.
+
+Use `⟨(C.unr_iff _ w).2 ?_, (C.unr_iff _ w).2 ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`. Use `hm.unr w fun k hk => hw ?_` and prove the remaining obligations. Conclude with `(Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) w hk).2.2.1`. Rewrite using `[C.etaTinv]`.
+
+Introduce `x hx`. Use `cf.isEta.unr w x hx` as an intermediate fact. Use `show ((cf.eta.loc w) x)⁻¹ = 1`. Rewrite using `[this, inv_one]`. Establish `hinf : (C.e1 D.naut.etaTinv).1.HasInfQ (embPsi D.host) (fun _ => -(1/2 : ℚ))`.
+
+Rewrite using `[C.etaTinv]`. Use `⟨fun _ => -1, fun _ => by norm_num, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `cf.isEta.inf k`. Use `show (((cf.eta.inf k)⁻¹ : ℂˣ) : ℂ) = _`. Rewrite using `[Units.val_inv_eq_inv_val, h]`.
+
+Simplify using `only [zpow_one, zpow_neg_one, Finset.prod_inv_distrib]`. Introduce `τ`. Take `⟨h1, h2⟩` from `C.infG _ _ hinf (D.eTau τ)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show D.naut.infG _ (embPsi D.host (D.eTau τ)) = _`.
+
+Rewrite using `[h1]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `show D.naut.infG _ ((starRingEnd ℂ).comp (embPsi D.host (D.eTau τ))) = _`.
+
+Rewrite using `[h2]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem charAt (D : D7) (cf : CharFrame D) (C : CharSide D cf) (j : Fin D.R.m) :
     ∃ μ : D.naut.CG 1, (C.e1 μ).1 = cf.mu0 j ∧ D.naut.csd μ ∧
       (∀ w, ¬ IsSplitPl D.host w → D.naut.unr (D.naut.locG μ w) ∧ D.naut.unr (D.naut.locG D.naut.etaTinv w)) ∧
@@ -61,6 +76,9 @@ theorem charAt (D : D7) (cf : CharFrame D) (C : CharSide D cf) (j : Fin D.R.m) :
       push_cast
       ring
 
+/- English proof (translation)
+Introduce `_ hL`. Unfold `GlobalTheory.LiftRef.AtRows OverRows EvLgG`. Use `evG_all fun K => lg_all K fun B f T _ => ?_` and prove the remaining obligations. Introduce `_ w _ Z Wt hX z p0 Y _ _ _ _ _ Rw a M tup Q _ _`. Conclude with `charAt _ _ a.chr`.
+-/
 theorem main : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.LiftRef.AtRows hL fun D cf _ _ a _ => ∀ j : Fin D.R.m, ∃ μ : D.naut.CG 1, (a.chr.e1 μ).1 = cf.mu0 j ∧ D.naut.csd μ ∧ (∀ w, ¬ IsSplitPl D.host w → D.naut.unr (D.naut.locG μ w) ∧ D.naut.unr (D.naut.locG D.naut.etaTinv w)) ∧ ∀ τ, D.naut.infG D.naut.etaTinv (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ) = {-(1 / 2 : ℂ)} ∧ D.naut.infG D.naut.etaTinv (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ) = {(1 / 2 : ℂ)} := by
   intro _ hL
   unfold GlobalTheory.LiftRef.AtRows OverRows EvLgG

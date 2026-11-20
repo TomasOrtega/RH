@@ -4,6 +4,19 @@ open Finset
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `N _ _ n Ω ν hν h w`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨fun s => s.elim0, fun s => s.elim0, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : Module.End ℂ N) = 0` using `by simpa using h`. Establish `h2 : w = 0`.
+
+Use `congrArg (fun f : Module.End ℂ N => f w) h1` as an intermediate fact. Simplify using `using this`. Simplify using `[h2]`. Establish `hne : (Finset.univ : Finset (Fin n)).Nonempty` using `⟨⟨0, hn⟩, Finset.mem_univ _⟩`. Establish `hinj : Set.InjOn (fun s => -ν s) (↑(Finset.univ : Finset (Fin n)))`.
+
+Introduce `a _ b _ hab`. Conclude with `hν (neg_injective hab)`. Establish `hsum` using `Lagrange.sum_basis hinj hne`. Use `⟨fun s => Polynomial.aeval (-Ω) (Lagrange.basis Finset.univ (fun s => -ν s) s) w, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`.
+
+Establish `key : (Polynomial.X + Polynomial.C (ν s)) * Lagrange.basis Finset.univ (fun s => -ν s) s = (∏ j ∈ Finset.univ.erase s, Polynomial.C ((-ν s - -ν j)⁻¹)) * ∏ s, (Polynomial.X + Polynomial.C (ν s))`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun s => Polynomial.X + Polynomial.C (ν s)) (Finset.mem_univ s), Lagrange.basis]`. Simplify using `only [Lagrange.basisDivisor, Finset.prod_mul_distrib, map_neg, sub_neg_eq_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (Polynomial.aeval (-Ω)) key`.
+
+Rewrite `h2` using `[map_mul, map_mul, h, mul_zero]`. Establish `h3` using `congrArg (fun f : Module.End ℂ N => f w) h2`. Simplify using `only [map_add, Polynomial.aeval_X, Polynomial.aeval_C, Module.End.mul_apply, LinearMap.add_apply, LinearMap.neg_apply, Module.algebraMap_end_apply, LinearMap.zero_apply] at h3`. Conclude with `(neg_add_eq_zero.mp h3)`. Establish `h2` using `congrArg (fun p => Polynomial.aeval (-Ω) p w) hsum`.
+
+Simplify using `only [map_sum, map_one, LinearMap.sum_apply, Module.End.one_apply] at h2`. Conclude with `h2.symm`.
+-/
 theorem sum_eigenvectors_of_aeval_prod_linear_eq_zero :
     ∀ (N : Type) [AddCommGroup N] [Module ℂ N] (n : ℕ) (Ω : Module.End ℂ N) (ν : Fin n → ℂ),
       Function.Injective ν →

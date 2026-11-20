@@ -20,12 +20,22 @@ def RatGL (D : D7) (u : D.what₂.Word) : Prop :=
       subP (fun τ => atInf (embT D) ((γ τ : GL (Fin (D.R.N 0)) D.host.E) :
         Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ) P ∈ RatSpan D ((D.fm u).lam 0)
 
+/- English proof (translation)
+Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `p ⟨r, f, -, hf, rfl⟩`. Conclude with `⟨r, f, hf, rfl⟩`.
+-/
 theorem intSpan_le_rat (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) :
     Formalism.L2.Forms.IntSpan D w lam ≤ RatSpan D lam := by
   apply AddSubgroup.closure_mono
   rintro p ⟨r, f, -, hf, rfl⟩
   exact ⟨r, f, hf, rfl⟩
 
+/- English proof (translation)
+Introduce `hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact (Formalism.L2.Forms.IntSpan D w lam).zero_mem`. Consider the case `add x y _ _ hx hy => exact (Formalism.L2.Forms.IntSpan D w lam).add_mem hx hy`.
+
+Consider the case `smul a x _ hx`. Take `⟨r, hr, hra⟩` from `Subring.mem_map.mp a.2`. Establish `ha : a • x = D.what₂.embLL r • x`. Rewrite using `[Subring.smul_def, hra]`. Rewrite using `[ha]`.
+
+Conclude with `Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_intSpan_smul (D := D) w lam r hr hx`.
+-/
 theorem mem_intSubm (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → DomWeight N)
     (p : MvPolynomial (D.what₂.Tau × Fin N × Fin N) ℂ) : p ∈ intSubm D w lam → p ∈ Formalism.L2.Forms.IntSpan D w lam := by
   intro hp
@@ -40,6 +50,15 @@ theorem mem_intSubm (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau →
     rw [ha]
     exact Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwG_intSpan_smul (D := D) w lam r hr hx
 
+/- English proof (translation)
+Set `φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ` to `fun c z => fnOf (gramC (gramN D 0 (Nat.zero_le _)) (embT D)) (shiftOf (lamT u 0)) (atInf (embT D) ((B c)⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1) (Q c) (T.val0.eY z)`. Establish `hFi : φ ∈ (D.fm u).Fi 0`. Rewrite using `[(D.fm u).Fi_zero, S0.mem_forms_level_zero_iff T hA φ]`. Introduce `c`. Take `⟨P, -, hPC, hPe⟩` from `hQ c`.
+
+Use `⟨P, hPC, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Establish `e` using `hPe y`. Rewrite `e` using `[lamT_zero]`. Simplify using `only [φ, LinearMap.funLeft_apply]`.
+
+Rewrite using `[lamT_zero, e]`. Conclude with `congrArg _ (T.val0.eY.apply_symm_apply y).symm`. Take `⟨x, hx⟩` from `(T.val0.rat φ).2 ⟨hFi, fun c => by`. Take `⟨P, hPR, -, hPe⟩` from `hQ c`. Conclude with `⟨P, hPR, fun z => (hPe _).symm⟩⟩`.
+
+Conclude with `⟨x, fun c z => by rw [hx]⟩`.
+-/
 theorem crd_surj (T : Forms0 D u) (hA : admS D u) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
     (Q : (D.mem u).C.cls 0 → MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ)
     (hQ : ∀ c, ∃ P ∈ RatSpan D ((D.fm u).lam 0), P ∈ Formalism.L2.Forms.CSpan ((D.fm u).lam 0) ∧
@@ -66,6 +85,13 @@ theorem crd_surj (T : Forms0 D u) (hA : admS D u) (B : (D.mem u).C.cls 0 → GL 
     exact ⟨P, hPR, fun z => (hPe _).symm⟩⟩
   exact ⟨x, fun c z => by rw [hx]⟩
 
+/- English proof (translation)
+Establish `key : ∀ (A z : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ) (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ), MvPolynomial.eval (fun x => z x.1 x.2.1 x.2.2) (subP A P) = MvPolynomial.eval (fun x => (A x.1 * z x.1) x.2.1 x.2.2) P`. Introduce `A z P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [subP]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`. Simplify using `[subP, Matrix.mul_apply]`. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, map_mul, MvPolynomial.eval_C, Pi.one_apply, Matrix.one_mul]`. Rewrite using `[key _ (fun τ => y.1 τ)]`.
+
+Simplify using `only [Matrix.det_mul, mul_zpow, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fnOf_frame (B : GL (Fin (D.R.N 0)) D.host.E)
     (Q : MvPolynomial (D.what₂.Tau × Fin (D.R.N 0) × Fin (D.R.N 0)) ℂ) (y) :
     fnOf (gramC (gramN D 0 (Nat.zero_le _)) (embT D)) (shiftOf (lamT u 0)) 1
@@ -91,6 +117,13 @@ theorem fnOf_frame (B : GL (Fin (D.R.N 0)) D.host.E)
   simp only [Matrix.det_mul, mul_zpow, mul_pow, Finset.prod_mul_distrib]
   ring
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hy' : ∀ c, ∃ q ∈ intSubm D w ((D.fm u).lam 0), (((D.mem u).A.T : ℂ) ^ b) • q = y c` using `fun c => hy c (Set.mem_univ c)`. Use `choose Q hQ hQy using hy'`. Establish `hQI : ∀ c, Q c ∈ Formalism.L2.Forms.IntSpan D w ((D.fm u).lam 0)` using `fun c => mem_intSubm w _ _ (hQ c)`. Take `⟨x₀, hx₀⟩` from `crd_surj T hA B Q fun c => ⟨_, hRG (fun _ => (B c)⁻¹) _ (intSpan_le_rat w _ (hQI c)), hRC _ (hRG (fun _ => (B c)⁻¹) _ (intSpan_le_rat w _ (hQI c))), fun y => fnOf_frame (B c) (Q c) y⟩`.
+
+Establish `hx₀S : x₀ ∈ (D.fm u).S 0 w` using `G0.local_global_lattice_level_zero D u T w hw 0 (Nat.zero_le _) rfl x₀ fun c => ⟨B c, hB c, Q c, hQI c, hx₀ c⟩`. Set `r : D.what₂.LL` to `((D.mem u).A.T : D.what₂.LL) ^ b`. Establish `hr : D.what₂.embLL r = ((D.mem u).A.T : ℂ) ^ b`. Simplify using `only [r, map_zpow₀, map_natCast]`. Use `⟨r • x₀, ⟨x₀, hx₀S, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.map_smulₛₗ, hr]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `c show crd T B (r • x₀) c = y c`. Rewrite using `[crd_smul T B r x₀ c, hr, crd_eq T B (hx₀ c), hQy c]`.
+-/
 theorem onto_tL (hRC : RatInC D u) (hRG : RatGL D u) (T : Forms0 D u) (hA : admS D u) (w : D.what₂.places.Pl)
     (hw : OverT D u w) (B : (D.mem u).C.cls 0 → GL (Fin (D.R.N 0)) D.host.E)
     (hB : ∀ c, IsLocBasis (D.mem u).A.T (Ld D u 0 (Nat.zero_le _) c : Set _) (B c)) (b : ℤ) :

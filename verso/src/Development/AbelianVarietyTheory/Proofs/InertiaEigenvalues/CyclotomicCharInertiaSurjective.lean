@@ -7,6 +7,9 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField Polynomial
 
 namespace GlobalTheory.CycInertia
 
+/- English proof (translation)
+Establish `hz` using `IsCyclotomicExtension.zeta_spec n K L`. Establish `hpow : IsPrimitiveRoot (IsCyclotomicExtension.zeta n K L ^ a) n` using `hz.pow_of_coprime a ha`. Conclude with `⟨IsCyclotomicExtension.fromZetaAut hpow hirr, IsCyclotomicExtension.zeta n K L, hz, IsCyclotomicExtension.fromZetaAut_spec hpow hirr⟩`.
+-/
 theorem exists_aut_pow {K L : Type} [Field K] [Field L] [Algebra K L]
     {n : ℕ} [NeZero n] [IsCyclotomicExtension {n} K L] (hirr : Irreducible (cyclotomic n K))
     {a : ℕ} (ha : a.Coprime n) :
@@ -16,6 +19,19 @@ theorem exists_aut_pow {K L : Type} [Field K] [Field L] [Algebra K L]
   exact ⟨IsCyclotomicExtension.fromZetaAut hpow hirr, IsCyclotomicExtension.zeta n K L, hz,
     IsCyclotomicExtension.fromZetaAut_spec hpow hirr⟩
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero k hl.ne_zero⟩`. Use `haveI : NeZero ((l : ℕ) : Ω) := ⟨by`. Establish `h` using `(algebraMap ℚ Ω).injective.ne (Nat.cast_ne_zero.mpr hl.ne_zero : (l : ℚ) ≠ 0)`.
+
+Simplify using `using h⟩`. Use `haveI : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ k)`. Establish `e : (IntermediateField.adjoin ℚ {ζ}).algebra' = (DivisionRing.toRatAlgebra : Algebra ℚ (IntermediateField.adjoin ℚ {ζ}))` using `Subsingleton.elim _ _`. Use `haveI : IsCyclotomicExtension {l ^ k} ℚ (IntermediateField.adjoin ℚ {ζ}) := by`.
+
+Rewrite using `[← e]`. Conclude with `hζ.intermediateField_adjoin_isCyclotomicExtension ℚ`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ {ζ}) := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral ζ)`. Use `haveI : IsGalois ℚ (IntermediateField.adjoin ℚ {ζ}) := IsCyclotomicExtension.isGalois {l ^ k} ℚ (IntermediateField.adjoin ℚ {ζ})`. Set `u : (ZMod (l ^ k))ˣ` to `Units.map (PadicInt.toZModPow k : ℤ_[l] →+* ZMod (l ^ k)).toMonoidHom v`.
+
+Establish `hu : (u : ZMod (l ^ k)) = PadicInt.toZModPow k (v : ℤ_[l])` using `rfl`. Take `⟨τ, z, hz, hτz⟩` from `exists_aut_pow (K := ℚ) (L := IntermediateField.adjoin ℚ {ζ}) (cyclotomic.irreducible_rat (Nat.pos_of_neZero (l ^ k))) (ZMod.val_coe_unit_coprime u)`. Take `⟨hτ₁, hτ₂⟩` from `GlobalTheory.T.cyclotomicPrimePow_automorphism_inertial_at_prime Ω l k A hA ζ hζ τ`. Take `⟨σ, hσ, hστ⟩` from `GlobalTheory.T.finiteGaloisInertia_lifts_absoluteInertia_rat Ω l A hA (IntermediateField.adjoin ℚ {ζ}) τ hτ₁ hτ₂`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations.
+
+Establish `hzΩ : IsPrimitiveRoot (z : Ω) (l ^ k)` using `IsPrimitiveRoot.coe_submonoidClass_iff.mpr hz`. Establish `h₁ : σ (z : Ω) = (z : Ω) ^ (PadicInt.toZModPow k ((cycZ ℚ Ω l σ : ℤ_[l]ˣ) : ℤ_[l])).val` using `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G ℚ Ω) Ω σ) (z : Ω) hzΩ.pow_eq_one`. Establish `h₂ : σ (z : Ω) = (z : Ω) ^ (u : ZMod (l ^ k)).val`. Rewrite using `[hστ z, hτz]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[← hu]`. Apply `ZMod.val_injective` to reduce the goal to its premises. Conclude with `hzΩ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h₁.symm.trans h₂)`.
+-/
 theorem exists_mem_Ine_toZModPow (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ)
     [Fact l.Prime] (A : ValuationSubring Ω) (hA : A.valuation (l : Ω) < 1) (v : ℤ_[l]ˣ) (k : ℕ) :
     ∃ σ ∈ Ine (F := ℚ) A, PadicInt.toZModPow k ((cycZ ℚ Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) =
@@ -60,6 +76,17 @@ theorem exists_mem_Ine_toZModPow (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgC
   apply ZMod.val_injective
   exact hzΩ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h₁.symm.trans h₂)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ A hA v`. Set `f : G ℚ Ω → ℤ_[l]` to `fun σ => ((cycZ ℚ Ω l σ : ℤ_[l]ˣ) : ℤ_[l])`. Establish `hf : Continuous f` using `Units.continuous_val.comp (continuous_cycZ ℚ Ω l)`. Set `t : ℕ → Set (G ℚ Ω)` to `fun k => (Ine (F := ℚ) A : Set (G ℚ Ω)) ∩ {σ | PadicInt.toZModPow k (f σ) = PadicInt.toZModPow k (v : ℤ_[l])}`. Establish `hcl : ∀ k, IsClosed (t k)`.
+
+Introduce `k`. Use `(isClosed_Ine (F := ℚ) A).inter ?_` and prove the remaining obligations. Establish `hset : {σ | PadicInt.toZModPow k (f σ) = PadicInt.toZModPow k (v : ℤ_[l])} = {σ | ‖f σ - (v : ℤ_[l])‖ ≤ (l : ℝ) ^ (-(k : ℤ))}`. Use extensionality with `σ`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[hset]`. Conclude with `isClosed_le (continuous_norm.comp (hf.sub continuous_const)) continuous_const`. Establish `hdec : ∀ k, t (k + 1) ⊆ t k`. Introduce and unpack `k σ ⟨h₁, h₂⟩`.
+
+Use `⟨h₁, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at h₂ ⊢`. Rewrite using `[← PadicInt.cast_toZModPow k (k + 1) (Nat.le_succ k) (f σ), ← PadicInt.cast_toZModPow k (k + 1) (Nat.le_succ k), h₂]`. Establish `hne : ∀ k, (t k).Nonempty` using `fun k => by`. Take `⟨σ, hσ, h⟩` from `exists_mem_Ine_toZModPow Ω l A hA v k`.
+
+Conclude with `⟨σ, hσ, h⟩`. Take `⟨σ, hσ⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed t hdec hne (hcl 0).isCompact hcl`. Rewrite `hσ` using `[Set.mem_iInter]`. Conclude with `⟨σ, (hσ 0).1, Units.ext (PadicInt.ext_of_toZModPow.mp fun k => (hσ k).2)⟩`.
+-/
 theorem cycZ_Ine_surjective : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ)
     [Fact l.Prime] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ v : ℤ_[l]ˣ,
     ∃ σ ∈ Ine (F := ℚ) A, cycZ (F := ℚ) (Ω := Ω) l σ = v := by

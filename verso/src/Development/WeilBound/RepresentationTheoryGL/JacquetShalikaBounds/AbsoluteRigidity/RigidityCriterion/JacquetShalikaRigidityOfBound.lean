@@ -14,10 +14,16 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 def twS (χ : HChar E) (p : Σ a, CG E a) : Σ a, CG E a := ⟨p.1, p.2.twist χ⟩
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Introduce `x hx` and use `by show (χ⁻¹).loc w x = 1 rw [HChar.loc_inv, h x hx, inv_one]`.
+-/
 theorem unrAt_inv {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (h : χ.UnrAt w) : (χ⁻¹).UnrAt w := fun x hx => by
   show (χ⁻¹).loc w x = 1
   rw [HChar.loc_inv, h x hx, inv_one]
 
+/- English proof (translation)
+Take `⟨l, rfl⟩ : ∃ l : List ℂˣ, (l : Multiset ℂˣ) = B` from `Quot.exists_rep B`. Establish `hl : l.length = d` using `by simpa using hB`. Substitute `hl` using the available equality. Use `⟨l.get, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.univ_val_map, List.ofFn_get]`.
+-/
 theorem exists_fin {d : ℕ} (B : Multiset ℂˣ) (hB : Multiset.card B = d) :
     ∃ f : Fin d → ℂˣ, Finset.univ.val.map f = B := by
   obtain ⟨l, rfl⟩ : ∃ l : List ℂˣ, (l : Multiset ℂˣ) = B := Quot.exists_rep B
@@ -26,6 +32,9 @@ theorem exists_fin {d : ℕ} (B : Multiset ℂˣ) (hB : Multiset.card B = d) :
   refine ⟨l.get, ?_⟩
   rw [Fin.univ_val_map, List.ofFn_get]
 
+/- English proof (translation)
+Rewrite using `[Multiset.map_map, Multiset.map_map, Finset.sum_eq_multiset_sum]`. Both sides reduce to the same expression.
+-/
 theorem sum_pow {d : ℕ} (f : Fin d → ℂˣ) (c : ℂˣ) (k : ℕ) :
     (((Finset.univ.val.map f).map (· * c)).map fun z : ℂˣ => ((z : ℂ)) ^ k).sum = ∑ a, ((f a : ℂ) * (c : ℂ)) ^ k := by
   rw [Multiset.map_map, Multiset.map_map, Finset.sum_eq_multiset_sum]
@@ -34,6 +43,43 @@ theorem sum_pow {d : ℕ} (f : Fin d → ℂˣ) (c : ℂˣ) (k : ℕ) :
 end RigidityLemmas
 
 open RigidityLemmas in
+/- English proof (translation)
+Introduce `hAR hUE hST hDO hPO hRSU hBd E _ _ _ ι κ _ _ m m' π π' hm hm' hw`. Take `⟨ν, hν, hdec⟩` from `hUE E`. Use `choose π0 t hu0 hπ0 using fun i => hdec (m i) (π i) (hm i)`. Use `choose π0' t' hu0' hπ0' using fun j => hdec (m' j) (π' j) (hm' j)`. Use `set u : ι → Σ a, CG E a := fun i => ⟨m i, π0 i⟩ with hu`.
+
+Use `set u' : κ → Σ a, CG E a := fun j => ⟨m' j, π0' j⟩ with hu'`. Set `X : Type` to `↥(Set.range u ∪ Set.range u')`. Establish `: Fintype X` using `Fintype.ofFinite X`. Establish `hX : ∀ x : X, 1 ≤ x.1.1 ∧ x.1.2.IsUnitary`. Introduce and unpack `⟨p, (⟨i, rfl⟩ | ⟨j, rfl⟩)⟩`.
+
+Conclude with `⟨hm i, hu0 i⟩`. Conclude with `⟨hm' j, hu0' j⟩`. Use `set S1 : Finset (HeightOneSpectrum (𝓞 E)) := (Filter.eventually_cofinite.1 hw).toFinset with hS1`. Use `choose S0 hS0 using fun x y : X => hRSU E x.1.1 y.1.1 x.1.2 y.1.2 (hX x).1 (hX y).1 (hX x).2 (hX y).2`. Use `set S : Finset (HeightOneSpectrum (𝓞 E)) := S1 ∪ Finset.univ.biUnion (fun p : X × X => S0 p.1 p.2) with hS`.
+
+Establish `hP : ∀ w : Off E S, ∃ (B : ι → Multiset ℂˣ) (B' : κ → Multiset ℂˣ), (∀ i, (π i).HasSat w.1 (B i)) ∧ (∀ j, (π' j).HasSat w.1 (B' j)) ∧ ∑ i, B i = ∑ j, B' j`. Introduce `w`. Assume the negation of the conclusion as `h`. Conclude with `w.2 (Finset.mem_union_left _ (by rw [hS1, Set.Finite.mem_toFinset]; exact h))`. Use `choose B B' hB hB' hsum using hP`.
+
+Establish `hsat0 : ∀ (w : Off E S) (i : ι), (π0 i).HasSat w.1 ((B w i).map (· * ((ν (t i))⁻¹).val w.1))`. Introduce `w i`. Establish `h` using `hST E (m i) (π i) ((ν (t i))⁻¹) w.1 (B w i) (unrAt_inv ((hν (t i)).1 w.1)) (hB w i)`. Rewrite `h` using `[hπ0 i, ← CG.twist_mul, mul_inv_cancel, CG.twist_one]`. Conclude with `h`.
+
+Establish `hsat0' : ∀ (w : Off E S) (j : κ), (π0' j).HasSat w.1 ((B' w j).map (· * ((ν (t' j))⁻¹).val w.1))`. Introduce `w j`. Establish `h` using `hST E (m' j) (π' j) ((ν (t' j))⁻¹) w.1 (B' w j) (unrAt_inv ((hν (t' j)).1 w.1)) (hB' w j)`. Rewrite `h` using `[hπ0' j, ← CG.twist_mul, mul_inv_cancel, CG.twist_one]`. Conclude with `h`.
+
+Establish `hex : ∀ (x : X) (w : Off E S), ∃ f : Fin x.1.1 → ℂˣ, x.1.2.HasSat w.1 (Finset.univ.val.map f)`. Introduce and unpack `⟨p, (⟨i, rfl⟩ | ⟨j, rfl⟩)⟩ w`. Take `⟨f, hf⟩` from `exists_fin _ (hsat0 w i).card`. Conclude with `⟨f, hf ▸ hsat0 w i⟩`. Take `⟨f, hf⟩` from `exists_fin _ (hsat0' w j).card`.
+
+Conclude with `⟨f, hf ▸ hsat0' w j⟩`. Use `choose α hα using hex`. Set `d : X → ℕ` to `fun x => x.1.1`. Set `A : ∀ x : X, Off E S → Fin (d x) → ℂ` to `fun x w a => (α x w a : ℂ)`. Establish `hsub : ∀ x y : X, S0 x y ⊆ S` using `fun x y z hz => Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨(x, y), Finset.mem_univ _, hz⟩)`.
+
+Establish `hSys : Sys nq X d A`. Use `⟨hPO E S, fun x => (hX x).1, fun x w a => ?_, fun x w => ?_, fun x y => ?_⟩` and prove the remaining obligations. Establish `h` using `(hBd E x.1.1 x.1.2 (hX x).2 w.1 _ (hα x w) (α x w a) (Multiset.mem_map_of_mem _ (Finset.mem_univ_val _))).2 show ‖((α x w a : ℂˣ) : ℂ)‖ ≤ Real.sqrt ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ)`. Rewrite using `[Real.sqrt_eq_rpow]`. Conclude with `h.le`.
+
+Establish `h` using `hDO E x.1.1 x.1.2 w.1 _ (hX x).2 (hα x w)`. Rewrite `h` using `[← Finset.prod_eq_multiset_prod, Units.coe_prod]`. Conclude with `h`. Take `⟨F, σ₀, hF, hFe⟩` from `hS0 x y S (hsub x y) (α x) (α y) (hα x) (hα y)`. Use `⟨F, σ₀, hF, fun σ hσ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hFe σ hσ]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg (fun h => hxy (Subtype.ext (by simpa using h))), if_neg hxy]`. Both sides reduce to the same expression. Set `x : ι → X × ℝ` to `fun i => (⟨u i, Or.inl ⟨i, rfl⟩⟩, t i)`. Set `y : κ → X × ℝ` to `fun j => (⟨u' j, Or.inr ⟨j, rfl⟩⟩, t' j)`. Establish `hBi : ∀ (w : Off E S) (i : ι), B w i = (Finset.univ.val.map (α (x i).1 w)).map (· * (ν (t i)).val w.1)`.
+
+Introduce `w i`. Establish `h1` using `hST E (m i) (π0 i) (ν (t i)) w.1 _ ((hν (t i)).1 w.1) (hα (x i).1 w)`. Rewrite `h1` using `[← hπ0 i]`. Conclude with `(hB w i).unique h1`. Establish `hBj : ∀ (w : Off E S) (j : κ), B' w j = (Finset.univ.val.map (α (y j).1 w)).map (· * (ν (t' j)).val w.1)`.
+
+Introduce `w j`. Establish `h1` using `hST E (m' j) (π0' j) (ν (t' j)) w.1 _ ((hν (t' j)).1 w.1) (hα (y j).1 w)`. Rewrite `h1` using `[← hπ0' j]`. Conclude with `(hB' w j).unique h1`. Establish `hRel : Rel nq A x y`.
+
+Introduce `w k`. Set `φ : Multiset ℂˣ →+ ℂ` to `Multiset.sumAddMonoidHom.comp (Multiset.mapAddMonoidHom fun z : ℂˣ => (z : ℂ) ^ k)`. Establish `hφ : ∀ M : Multiset ℂˣ, φ M = (M.map fun z : ℂˣ => (z : ℂ) ^ k).sum` using `fun M => rfl`. Establish `h` using `congrArg φ (hsum w)`. Rewrite `h` using `[map_sum, map_sum]`.
+
+Simplify using `only [hφ, hBi, hBj, sum_pow] at h`. Establish `ev : ∀ τ : ℝ, (((ν τ).val w.1 : ℂˣ) : ℂ) = (nq w : ℂ) ^ (-(τ : ℂ))` using `fun τ => (hν τ).2.1 w.1`. Simplify using `only [ev] at h`. Conclude with `h`. Take `⟨s, hs⟩` from `hAR (Off E S) nq X d A hSys ι κ x y hRel`.
+
+Use `⟨s, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : u i = u' (s i)` using `congrArg (fun z : X × ℝ => z.1.1) (hs i)`. Establish `h2 : t i = t' (s i)` using `congrArg Prod.snd (hs i)`. Rewrite using `[hπ0 i, hπ0' (s i)]`. Use `show twS (ν (t i)) (u i) = twS (ν (t' (s i))) (u' (s i))`.
+
+Rewrite using `[h1, h2]`.
+-/
 theorem jacquet_shalika_rigidity_of_bound : AbsRig → UnitEx → SatTw → DetOne → PrimeOff → RSU → GlobalTheory.Published.JacquetShalikaBound →
     GlobalTheory.Published.JacquetShalikaRigidity := by
   intro hAR hUE hST hDO hPO hRSU hBd E _ _ _ ι κ _ _ m m' π π' hm hm' hw

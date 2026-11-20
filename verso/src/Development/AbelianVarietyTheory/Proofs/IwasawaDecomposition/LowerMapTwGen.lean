@@ -11,6 +11,25 @@ set_option maxHeartbeats 4000000
 
 namespace GlobalTheory.Mem.Col2.LowerTie
 
+/- English proof (translation)
+Substitute `he` using the available equality. Take `⟨hW, hLv, hPd⟩` from `hTw`. Introduce `_ ψ c P _ hψ`. Establish `hS` using `hC u`. Establish `hPd' : I.StdP l Z l0 t.pt t.ptE` using `hPd`.
+
+Establish `hW' : I.StdW l Z l0 t.forms` using `hW`. Establish `hl : Formalism.MainNotions.product_first_zeroth_parts.lamTr (I.rec7 l Z) u = B.wts.lamTrue u B.R.m` using `funext (trueWeight_lastStep_trueColumns I l Z u)`. Establish `hs : Formalism.MainNotions.product_first_zeroth_parts.sgTr (I.rec7 l Z) u = B.wts.sgTrue` using `funext (trueRowWeight_trueColumns I l Z u)`. Establish `hl' : Formalism.L2.Forms.lamT (D` using `I.rec7 l Z) u (I.rec7 l Z).R.m = B.wts.lamTrue u B.R.m := hl`. Establish `hs' : Formalism.L2.Forms.sgT (D` using `I.rec7 l Z) u = B.wts.sgTrue := hs`.
+
+Establish `hI : ∀ τ i, 0 ≤ Br.bBr (N_m_succ B.R) (B.wts.lamTrue u B.R.m τ) (B.wts.sgTrue τ) i`. Introduce `τ i`. Establish `h` using `(Formalism.MainNotions.product_first_zeroth_parts.interlaceTr (I.rec7 l Z) u (sg_interlace (C.forms u).valP) τ i).1`. Rewrite `h` using `[hl, hs]`. Conclude with `sub_nonneg.2 h`.
+
+Establish `h1' : ψ c = fnOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) 1 (actP (B.wts.lamTrue u B.R.m) (lastAll (B.R.N B.R.m) (aT I l u)) P)`. Use `Eq.trans ?_ (fnOf_lastAll (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (B.wts.lamTrue u B.R.m) (aT I l u) P)` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Establish `h` using `hψ s`. Rewrite `h` using `[hPd'.eWz, hl', hPd'.z0 u a ha h1, mZ_std I l Z u hO hP (TC.z0 X u) (fun j => rfl)]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Establish `h2 : (Formalism.L2.Forms.twYS t.ch C.forms u a (I.rec7 l Z).R.m le_rfl s).1 = s.1`. Simplify using `only [Formalism.L2.Forms.twYS, Equiv.trans_apply, hW'.eY, Equiv.refl_symm, Equiv.refl_apply]`. Rewrite using `[Formalism.L2.Forms.eYS_end _ _ _ (Or.inr rfl)]`. Conclude with `hS.eY B.R.m le_rfl (Or.inr rfl) s`.
+
+Conclude with `congrArg (fnOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) _ P) (Subtype.ext h2)`. Establish `h3 : polOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) (Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m)) (ψ c) = actP (B.wts.lamTrue u B.R.m) (lastAll (B.R.N B.R.m) (aT I l u)) P`. Establish `e : (fun τ => ((Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m)).1 τ)⁻¹) = 1` using `funext fun τ => inv_one`. Establish `h` using `polOf_fnOf (Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m)) (shiftOf (B.wts.lamTrue u B.R.m)) (Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m)) (actP (B.wts.lamTrue u B.R.m) (lastAll (B.R.N B.R.m) (aT I l u)) P)`. Rewrite `h` using `[e]`.
+
+Rewrite using `[h1']`. Conclude with `h`. Establish `h4 : Formalism.L2.Ker.brTen (I.rec7 l Z) u P = (Br.brStdP (N_m_succ B.R) (B.wts.lamTrue u B.R.m) B.wts.sgTrue P : Pol ℂ (Tau B.R) (B.R.N B.R.m - 1))`. Establish `h` using `blk_brOne (ι := Tau B.R) (N_m_succ B.R) (B.wts.lamTrue u B.R.m) B.wts.sgTrue P`. Use `Eq.trans ?_ h` and prove the remaining obligations.
+
+Unfold `Formalism.L2.Ker.brTen`. Rewrite using `[hl, hs]`. Both sides reduce to the same expression. Establish `h5` using `branchingProjection_act_last (N_m_succ B.R) (B.wts.lamTrue u B.R.m) B.wts.sgTrue hI (aT I l u) P`. Use function extensionality and compare the values at `s`.
+
+Rewrite using `[hPd'.eW u a ha _ c s ⟨s.1, s.2⟩ rfl, hs', h4, ← h5, ← h3]`. Both sides reduce to the same expression.
+-/
 theorem lowerMap_tw_gen {B : Base} {X : PreX B.toPre} (I : TC B X) (hO : I.Ok) (hP : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (l0 : I.Law0 l) {cf : Formalism.L2.Host.CharFrame (I.rec7 l Z)} {nch : NChoice (I.rec7 l Z)}
     {tp : Formalism.L2.Host.TupTied (I.rec7 l Z) cf nch} {C : ColsTiedSym (I.rec7 l Z)} {Tw : TwForms (I.rec7 l Z)}
@@ -71,6 +90,9 @@ theorem lowerMap_tw_gen {B : Base} {X : PreX B.toPre} (I : TC B X) (hO : I.Ok) (
   rw [hPd'.eW u a ha _ c s ⟨s.1, s.2⟩ rfl, hs', h4, ← h5, ← h3]
   rfl
 
+/- English proof (translation)
+Introduce `I hO hP l Z l0 _ _ _ _ _ _ _ _ T he hC hTw u a ha h1` and use `lowerMap_tw_gen I hO hP l Z l0 T.tw he hC hTw u a ha h1`.
+-/
 theorem lowerMap_tieTw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (T : Formalism.L2.TiedDataSK ex) (he : ex.tw = I.tw l l0 Z), I.StdC l Z T.cols → I.StdTw l Z l0 (he ▸ T.tw) → ∀ u a (ha : a ≠ (I.rec7 l Z).what₂.mu0) (h1 : 1 ≤ B.R.m), Formalism.L2.Rows.LowerMapTieTw T u a ha h1 :=
   fun I hO hP l Z l0 _ _ _ _ _ _ _ _ T he hC hTw u a ha h1 => lowerMap_tw_gen I hO hP l Z l0 T.tw he hC hTw u a ha h1
 

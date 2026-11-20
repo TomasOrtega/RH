@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 
 namespace GlobalTheory.RealPlaceConj
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ w τ z`. Establish `hcomp : compInf F E w (cA σ z) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR _ σ (compInf F E w z)`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`.
+
+Simplify using `[cA, compInf, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w (cA σ z)) = star (infEmb τ (compInf F E w z))`. Rewrite using `[hcomp, ← GlobalTheory.AdelicU.infEmb_sigR hσ τ]`. Both sides reduce to the same expression.
+-/
 theorem piInf_cA_eq_star : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (w : InfinitePlace F) (τ : EmbOver E w) (z : AE F E), piInf τ (cA σ z) = star (piInf τ z) := by
   intro F E _ _ _ _ _ σ hσ w τ z

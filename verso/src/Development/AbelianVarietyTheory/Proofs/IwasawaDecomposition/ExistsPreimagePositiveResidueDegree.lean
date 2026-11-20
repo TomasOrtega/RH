@@ -9,6 +9,23 @@ namespace GlobalTheory
 
 set_option backward.isDefEq.respectTransparency.types false in
 
+/- English proof (translation)
+Take `⟨w₀, hw₀⟩` from `hz`. Set `F` to `g.fiber z`. Establish `hne : (Set.univ : Set F).Nonempty` using `⟨(g.fiberHomeo z).symm ⟨w₀, hw₀⟩, trivial⟩`. Take `⟨x, -, hx⟩` from `IsClosed.exists_closed_singleton isClosed_univ hne`. Establish `h₁ : LocallyOfFiniteType (F.fromSpecResidueField x)` using `isClosed_singleton_iff_locallyOfFiniteType.mp hx`.
+
+Establish `h₂ : LocallyOfFiniteType (g.fiberToSpecResidueField z)`. Conclude with `MorphismProperty.pullback_snd _ _ inferInstance`. Set `h : F ⟶ Z` to `g.fiberι z ≫ g`. Establish `e : h x = z`. Use `(g.range_fiberι z).le ⟨x, rfl⟩` as an intermediate fact.
+
+Simplify `this` using `[h]`. Set `β : Z.residueField z ⟶ F.residueField x` to `(Z.residueFieldCongr e.symm).hom ≫ h.residueFieldMap x`. Establish `hβ : Spec.map β = F.fromSpecResidueField x ≫ g.fiberToSpecResidueField z`. Rewrite using `[← cancel_mono (Z.fromSpecResidueField z)]`. Simplify using `only [β, Spec.map_comp, Category.assoc, Scheme.residueFieldCongr_fromSpecResidueField, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`.
+
+Simplify using `[h, Scheme.Hom.fiber_fac]`. Establish `hβft : β.hom.FiniteType`. Establish `: LocallyOfFiniteType (Spec.map β)` using `hβ ▸ inferInstance`. Conclude with `HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) |>.mp this`. Establish `hβf : β.hom.Finite`.
+
+Use `letI := β.hom.toAlgebra`. Use `haveI : Algebra.FiniteType (Z.residueField z) (F.residueField x) := hβft`. Conclude with `finite_of_finite_type_of_isJacobsonRing _ _`. Establish `hhf : (h.residueFieldMap x).hom.Finite`. Establish `: h.residueFieldMap x = (Z.residueFieldCongr e.symm).inv ≫ β` using `by simp [β]`.
+
+Rewrite using `[this, CommRingCat.hom_comp]`. Conclude with `hβf.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Z.residueFieldCongr e.symm).inv).2)`. Use `⟨g.fiberι z x, e, ?_⟩` and prove the remaining obligations. Rewrite `hhf` using `[show h.residueFieldMap x = g.residueFieldMap (g.fiberι z x) ≫ (g.fiberι z).residueFieldMap x from Scheme.residueFieldMap_comp _ _ _]`. Use `letI := (g.residueFieldMap (g.fiberι z x)).hom.toAlgebra`.
+
+Use `letI := ((g.fiberι z).residueFieldMap x).hom.toAlgebra`. Use `letI := (g.residueFieldMap (g.fiberι z x) ≫ (g.fiberι z).residueFieldMap x).hom.toAlgebra`. Use `haveI : IsScalarTower (Z.residueField (g (g.fiberι z x))) (W.residueField (g.fiberι z x)) (F.residueField x) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite (Z.residueField (g (g.fiberι z x))) (F.residueField x) := hhf`. Set `φ` to `IsScalarTower.toAlgHom (Z.residueField (g (g.fiberι z x))) (W.residueField (g.fiberι z x)) (F.residueField x)`.
+
+Use `haveI : Module.Finite (Z.residueField (g (g.fiberι z x))) (W.residueField (g.fiberι z x)) := Module.Finite.of_injective φ.toLinearMap φ.toRingHom.injective`. Conclude with `Module.finrank_pos`.
+-/
 theorem exists_residueDegree_pos_of_mem_range (W Z : Scheme.{0}) (g : W ⟶ Z) [QuasiCompact g]
     [LocallyOfFiniteType g] (z : Z) (hz : z ∈ Set.range g) :
     ∃ w, g w = z ∧ 0 < g.residueDegree w := by

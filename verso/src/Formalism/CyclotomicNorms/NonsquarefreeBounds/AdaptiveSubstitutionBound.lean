@@ -16,6 +16,11 @@ def pre (ℓ A : ℕ) (B : List ℕ → ℕ) : ℕ → List ℕ
   | 0 => []
   | n + 1 => pre ℓ A B n ++ [step ℓ A B (pre ℓ A B n)]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ_last]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+
+Rewrite using `[← ih]`. Both sides reduce to the same expression.
+-/
 theorem pre_eq (ℓ A : ℕ) (B : List ℕ → ℕ) (n : ℕ) :
     pre ℓ A B n = List.ofFn (fun i : Fin n => step ℓ A B (pre ℓ A B i)) := by
   induction n with
@@ -26,11 +31,29 @@ theorem pre_eq (ℓ A : ℕ) (B : List ℕ → ℕ) (n : ℕ) :
     rw [← ih]
     rfl
 
+/- English proof (translation)
+Rewrite using `[pre_eq ℓ A B n, List.mem_ofFn]`. Conclude with `⟨⟨i, h⟩, rfl⟩`.
+-/
 theorem mem_pre (ℓ A : ℕ) (B : List ℕ → ℕ) {i n : ℕ} (h : i < n) :
     step ℓ A B (pre ℓ A B i) ∈ pre ℓ A B n := by
   rw [pre_eq ℓ A B n, List.mem_ofFn]
   exact ⟨⟨i, h⟩, rfl⟩
 
+/- English proof (translation)
+Use `set A : ℕ := ∑ t, ∑ i, α t i with hA`. Establish `hαA : ∀ t, ∑ i, α t i ≤ A` using `fun t => Finset.single_le_sum (f := fun t' => ∑ i', α t' i') (fun _ _ => Nat.zero_le _) (mem_univ t)`. Establish `hℓpos : 0 < ℓ` using `by omega`. Use `⟨fun j => step ℓ A B (pre ℓ A B j), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+
+Establish `hab' : (a : ℕ) < b` using `hab`. Establish `hm` using `mem_pre ℓ A B hab'`. Establish `hle` using `List.le_sum_of_mem hm`. Simplify using `only [step] at hle ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `j`. Establish `: (List.ofFn fun i : Fin (j : ℕ) => step ℓ A B (pre ℓ A B (Fin.castLE (Nat.le_of_lt j.isLt) i : ℕ))) = pre ℓ A B j`. Rewrite using `[pre_eq ℓ A B j]`. Both sides reduce to the same expression. Simplify using `only`.
+
+Rewrite using `[this]`. Simplify using `only [step]`. Use linear arithmetic over natural numbers and integers. Introduce `t j set S := ((pre ℓ A B j).map (ℓ ^ ·)).sum with hS`. Establish `hterm : ∀ i ∈ univ.filter (· < j), α t i * ℓ ^ step ℓ A B (pre ℓ A B i) ≤ α t i * S`.
+
+Introduce `i hi`. Establish `hij : (i : ℕ) < j` using `by simpa using hi`. Apply `Nat.mul_le_mul_left` to reduce the goal to its premises. Conclude with `List.le_sum_of_mem (List.mem_map_of_mem (mem_pre ℓ A B hij))`. Establish `h1 : ∑ i ∈ univ.filter (· < j), α t i * ℓ ^ step ℓ A B (pre ℓ A B i) ≤ A * S`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : A * S < step ℓ A B (pre ℓ A B j)`. Simplify using `only [step, ← hS]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : step ℓ A B (pre ℓ A B j) < ℓ ^ step ℓ A B (pre ℓ A B j)` using `lt_of_lt_of_le Nat.lt_two_pow_self (Nat.pow_le_pow_left hℓ _)`.
+
+Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_exps_adaptive (ℓ : ℕ) {r s : ℕ} (hℓ : 2 ≤ ℓ) (α : Fin s → Fin r →₀ ℕ)
     (B : List ℕ → ℕ) :
     ∃ e : Fin r → ℕ, StrictMono e ∧
@@ -83,6 +106,15 @@ theorem exists_exps_adaptive (ℓ : ℕ) {r s : ℕ} (hℓ : 2 ≤ ℓ) (α : Fi
 end AdaptiveSubstitution
 
 open SubstitutionExponents AdaptiveSubstitution in
+/- English proof (translation)
+Introduce `k _ ℓ r s F B hℓ hF`. Establish `hne : ∀ t, {d | MvPowerSeries.coeff d (F t) ≠ 0}.Nonempty` using `fun t => (MvPowerSeries.ne_zero_iff_exists_coeff_ne_zero _).1 (hF t)`. Set `α : Fin s → (Fin r →₀ ℕ)` to `fun t => (revLex_wf (r := r)).min _ (hne t)`. Take `⟨e, he1, he2, he3⟩` from `exists_exps_adaptive ℓ hℓ α B`. Use `⟨e, he1, he2, fun t h0 => ?_⟩` and prove the remaining obligations.
+
+Establish `hn : ∀ j, ℓ ^ e j ≠ 0` using `fun j => pow_ne_zero _ (by omega)`. Establish `hc` using `congrArg (PowerSeries.coeff (weight (fun j => ℓ ^ e j) (α t))) h0`. Rewrite `hc` using `[coeff_subst_weight (fun j => ℓ ^ e j) hn, map_zero, finsum_eq_single _ (α t)]`. Rewrite `hc` using `[if_pos rfl]`. Conclude with `(revLex_wf (r := r)).min_mem _ (hne t) hc`.
+
+Introduce `d hd`. Distinguish the cases in `hw : weight (fun j => ℓ ^ e j) d = weight (fun j => ℓ ^ e j) (α t)`. Rewrite using `[if_pos hw]`. Assume the negation of the conclusion as `hcd`. Conclude with `hd (unique_of_min _ (α t) (he3 t) d ((revLex_wf (r := r)).not_lt_min _ (show d ∈ {d | MvPowerSeries.coeff d (F t) ≠ 0} from hcd)) hw)`.
+
+Rewrite using `[if_neg hw]`.
+-/
 theorem adaptive_substitution_bound : SubstitutionAdaptive := by
   intro k _ ℓ r s F B hℓ hF
   classical

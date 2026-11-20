@@ -20,6 +20,9 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 
 namespace GlobalTheory.MiTop
 
+/- English proof (translation)
+Introduce `hDS hCR hHC D L hT Gi Gl Kc Yd cX ex W hB hLv hFam hSv hPu`. Conclude with `GlobalTheory.T.joint_star_product_nonvanishing hDS hCR W hB (descent_eV_mem_level W hB hLv) (GlobalTheory.T.joint_of_family_and_service hCR hHC W hFam hSv) hPu`.
+-/
 theorem miStar2_of_families : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → LevHyp W → FamAllQ W → ServedQ W → PuNZ D → (cxW W).MIstar2 (W.Q.F.eV (cxW W).zs) W.Q.sEE := by
   intro hDS hCR hHC D L hT Gi Gl Kc Yd cX ex W hB hLv hFam hSv hPu
   exact GlobalTheory.T.joint_star_product_nonvanishing hDS hCR W hB (descent_eV_mem_level W hB hLv) (GlobalTheory.T.joint_of_family_and_service hCR hHC W hFam hSv) hPu

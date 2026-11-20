@@ -23,6 +23,9 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
+/- English proof (translation)
+Unfold `LevelOneLatticeAgreement`. Use `show Formalism.L2.SG.TermOp.Gam1 Y.TR = _`. Rewrite using `[Formalism.L2.SG.Pf.gamma_one_typed_places_holds X Y.TR]`. Both sides reduce to the same expression.
+-/
 theorem Gam1TieC_holds (Y : Formalism.L2.SG.Full.Full X) :
     LevelOneLatticeAgreement X hb hK FdN FdN' u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq := by
   unfold LevelOneLatticeAgreement

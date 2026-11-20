@@ -10,6 +10,13 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Establish `hl0 : l ≠ 0` using `by positivity`. Establish `e1 : l ^ (b * n + 2 * a) = 1`. Rewrite using `[zpow_add₀ hl0, zpow_mul, ← h4, zpow_natCast, mul_comm 2 a, zpow_mul]`. Establish `h5 : (t ^ 4) ^ n = (t ^ (2 * n)) ^ 2` using `by ring`. Establish `h6 : (l ^ a) ^ (2 : ℤ) = (l ^ a) ^ 2` using `by norm_cast`.
+
+Rewrite using `[h5, h6, ← mul_pow, h1, one_pow]`. Establish `e2 : b * n + 2 * a = 0` using `(zpow_eq_one_iff_right₀ (by positivity) hl.ne').1 e1`. Take `⟨k, hk⟩ : Odd n` from `Nat.not_even_iff_odd.1 (fun h => hn (even_iff_two_dvd.1 h))`. Substitute `hk` using the available equality. Move the coercions through the operations in `at e2`.
+
+Conclude with `⟨-a - b * k, by linarith⟩`.
+-/
 theorem valDiv2_even_of_pows {l t : ℝ} (hl : 1 < l) {a b : ℤ} {n : ℕ} (hn : ¬ 2 ∣ n)
     (h4 : t ^ 4 = l ^ b) (h1 : t ^ (2 * n) * l ^ a = 1) : ∃ m : ℤ, b = 2 * m := by
   have hl0 : l ≠ 0 := by positivity
@@ -24,6 +31,11 @@ theorem valDiv2_even_of_pows {l t : ℝ} (hl : 1 < l) {a b : ℤ} {n : ℕ} (hn 
   push_cast at e2
   exact ⟨-a - b * k, by linarith⟩
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `h : ¬ l ∣ 1728`. Introduce `h`. Establish `h12 : l ∣ 12` using `hl.dvd_of_dvd_pow (show l ∣ 12 ^ 3 by norm_num; exact h)`. Use `Nat.le_of_dvd (by norm_num) h12` as an intermediate fact.
+
+Apply the tactic sequence `interval_cases l <;> first | omega | exact absurd hl (by norm_num)`. Simplify using `using red_norm_natCast l h`.
+-/
 theorem norm_1728_eq_one_of_five_le (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) : ‖(1728 : ℂ_[l])‖ = 1 := by
   have hl : l.Prime := Fact.out
   have h : ¬ l ∣ 1728 := by
@@ -33,6 +45,11 @@ theorem norm_1728_eq_one_of_five_le (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) : �
     interval_cases l <;> first | omega | exact absurd hl (by norm_num)
   simpa using red_norm_natCast l h
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `h : ¬ l ∣ 27`. Introduce `h`. Establish `h12 : l ∣ 3` using `hl.dvd_of_dvd_pow (show l ∣ 3 ^ 3 by norm_num; exact h)`. Use `Nat.le_of_dvd (by norm_num) h12` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `using red_norm_natCast l h`.
+-/
 theorem valDiv2_norm_27 (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) : ‖(27 : ℂ_[l])‖ = 1 := by
   have hl : l.Prime := Fact.out
   have h : ¬ l ∣ 27 := by
@@ -42,6 +59,47 @@ theorem valDiv2_norm_27 (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) : ‖(27 : ℂ_[
     omega
   simpa using red_norm_natCast l h
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.one_lt`. Establish `n1728` using `norm_1728_eq_one_of_five_le l h5`. Establish `n27` using `valDiv2_norm_27 l h5`. Take `⟨J, hJdef⟩ : ∃ J, J = ι (jInv L)` from `⟨_, rfl⟩`.
+
+Rewrite `hJ`, `hJ1`, `h0`, the goal using `[← hJdef]`. Establish `hw0 : J - 1728 ≠ 0` using `sub_ne_zero.2 h0`. Establish `m1728 : (1728 : ℂ_[l]) ∈ MaximalUnramifiedExtension l`. Use `natCast_mem (MaximalUnramifiedExtension l) 1728` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `m27 : (27 : ℂ_[l]) ∈ MaximalUnramifiedExtension l`. Use `natCast_mem (MaximalUnramifiedExtension l) 27` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hwK : J - 1728 ∈ MaximalUnramifiedExtension l` using `sub_mem hJ m1728`. Take `⟨b, hb⟩` from `kur_val l hwK hw0`.
+
+Establish `hwle : ‖J - 1728‖ ≤ 1`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hJ1 (by rw [norm_neg, n1728]))`. Break down `hwle.eq_or_lt with h1 | hlt` into its components or cases. Conclude with `⟨0, by simpa using h1⟩`.
+
+Establish `nJ : ‖J‖ = 1`. Establish `h : J = (J - 1728) + 1728` using `by ring`. Rewrite using `[h, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [n1728]; exact hlt.ne), n1728, max_eq_right hlt.le]`. Establish `hJ0 : J ≠ 0`. Introduce `h`.
+
+Rewrite `nJ` using `[h, norm_zero]`. Conclude with `zero_ne_one nJ`. Establish `hj0 : jInv L ≠ 0` using `fun h => hJ0 (by rw [hJdef, h, map_zero])`. Establish `hj1 : jInv L ≠ 1728` using `fun h => h0 (by rw [hJdef, h, map_ofNat])`. Establish `h2 : L.g₂ ≠ 0` using `fun h => hj0 ((jInv_eq_zero_iff L).2 h)`.
+
+Establish `h3 : L.g₃ ≠ 0` using `fun h => hj1 ((jInv_eq_iff L).2 h)`. Take `⟨L0, hCM0, -, hg2, hg3⟩` from `exists_cm_lattice_equal_invariants d L hCM h2 h3`. Take `⟨c, hc⟩ : ∃ c : ℂ_[l], c = 27 * J / (J - 1728)` from `⟨_, rfl⟩`. Establish `ig2 : ι L0.g₂ = c`. Rewrite using `[hg2, hc, hJdef, map_div₀, map_mul, map_sub, map_ofNat, map_ofNat]`.
+
+Establish `ig3 : ι L0.g₃ = c`. Rewrite using `[hg3, hc, hJdef, map_div₀, map_mul, map_sub, map_ofNat, map_ofNat]`. Establish `mc : c ∈ MaximalUnramifiedExtension l`. Rewrite using `[hc]`. Conclude with `div_mem (mul_mem m27 hJ) hwK`.
+
+Take `⟨x, hx⟩ : ∃ x : ℝ, x = ‖J - 1728‖` from `⟨_, rfl⟩`. Rewrite `hb`, `hlt`, the goal using `[← hx]`. Establish `hx0 : 0 < x` using `by rw [hx]; exact norm_pos_iff.2 hw0`. Establish `nc : ‖c‖ = x⁻¹`. Rewrite using `[hc, norm_div, norm_mul, n27, nJ, ← hx]`.
+
+Simplify using the standard rewrite rules. Establish `iD : ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2) = c ^ 2 * (27 * 1728 / (J - 1728))`. Rewrite using `[map_sub, map_mul, map_pow, map_pow, ig2, ig3, map_ofNat, hc]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `nD : ‖ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2)‖ = (x⁻¹) ^ 3`. Rewrite using `[iD, norm_mul, norm_pow, nc, norm_div, norm_mul, n27, n1728, ← hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2) ≠ 0` using `norm_ne_zero_iff.1 (by rw [nD]; positivity)`. Take `⟨μ, hμ'⟩` from `IsAlgClosed.exists_pow_nat_eq (ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2))⁻¹ (n := 12) (by norm_num)`.
+
+Establish `hμ : μ ^ 12 * ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2) = 1`. Rewrite using `[hμ']`. Conclude with `inv_mul_cancel₀ hD0`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = ‖μ‖` from `⟨_, rfl⟩`. Establish `ht0 : 0 ≤ t` using `by rw [ht]; exact norm_nonneg _`.
+
+Establish `ht12 : (t ^ 4) ^ 3 = x ^ 3`. Establish `h` using `congrArg norm hμ`. Rewrite `h` using `[norm_mul, norm_pow, nD, norm_one, ← ht]`. Clear denominators, using `at h` for the nonvanishing conditions. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `ht4 : t ^ 4 = x` using `(pow_left_inj₀ (by positivity) hx0.le (by norm_num)).1 ht12`. Establish `ht1 : t < 1`. Assume the negation of the conclusion as `h`. Establish `: 1 ≤ t ^ 4` using `one_le_pow₀ (not_lt.1 h)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `n4 : ‖μ ^ 4 * ι L0.g₂‖ = 1`. Rewrite using `[ig2, norm_mul, norm_pow, nc, ← ht, ht4]`. Conclude with `mul_inv_cancel₀ hx0.ne'`. Establish `n6 : ‖μ ^ 6 * ι L0.g₃‖ = t ^ 2`.
+
+Rewrite using `[ig3, norm_mul, norm_pow, nc, ← ht]`. Establish `: t ^ 6 = x * t ^ 2` using `by rw [← ht4]; ring`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Establish `n6lt : ‖μ ^ 6 * ι L0.g₃‖ < 1`.
+
+Rewrite using `[n6]`. Conclude with `pow_lt_one₀ ht0 ht1 (by norm_num)`. Take `⟨N, T, hlN, h2N, h2T, hT, hk⟩` from `kerProd d L0 hsq hd4 hCM0 l hl h5 hld 2 (Or.inl rfl)`. Establish `hP : ι (∏ z ∈ T, L0.weierstrassP z) ∈ MaximalUnramifiedExtension l`. Use `hk ((MaximalUnramifiedExtension l).comap (ι : ℂ →+* ℂ_[l])) (by rw [Subfield.mem_comap]; simpa [ig2] using mc) (by rw [Subfield.mem_comap]; simpa [ig3] using mc) (by rw [Subfield.mem_comap]; exact omega_mem_kur d hsq hd4 l hld ι)` as an intermediate fact.
+
+Rewrite `this` using `[Subfield.mem_comap]`. Conclude with `this`. Establish `hU` using `unit_prod L0 l ι h5 μ hμ n4.le n6lt.le 2 N (Or.inr ⟨rfl, n6lt⟩) hlN h2N T hT`. Establish `hP0 : ι (∏ z ∈ T, L0.weierstrassP z) ≠ 0`. Introduce `h`.
+
+Rewrite `hU` using `[h, norm_zero, mul_zero]`. Conclude with `zero_ne_one hU`. Take `⟨a, ha⟩` from `kur_val l hP hP0`. Rewrite `hU` using `[ha, ← ht]`. Take `⟨m, hm⟩` from `valDiv2_even_of_pows hl1 h2T (ht4.trans hb) hU`.
+
+Conclude with `⟨m, by rw [hb, hm]⟩`.
+-/
 theorem valDiv2 (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3) (hCM : HasCMBy d L) (l : ℕ)
     [Fact l.Prime] (h5 : 5 ≤ l) (hld : ¬ l ∣ d) (ι : ℂ ≃+* ℂ_[l]) (hJ : ι (jInv L) ∈ MaximalUnramifiedExtension l)
     (hJ1 : ‖ι (jInv L)‖ ≤ 1) (h0 : ι (jInv L) ≠ 1728) :

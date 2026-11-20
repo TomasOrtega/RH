@@ -65,18 +65,34 @@ section Nval
 
 variable {T : CDVR}
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 lemma vV_one' : vV T.V (1 : T.Fr) = 0 := by simp [vV]
 
+/- English proof (translation)
+Establish `h` using `vV_mul (V := T.V) hb (inv_ne_zero hb)`. Rewrite `h` using `[mul_inv_cancel₀ hb, vV_one']`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma vV_inv' {b : T.Fr} (hb : b ≠ 0) : vV T.V b⁻¹ = - vV T.V b := by
   have h := vV_mul (V := T.V) hb (inv_ne_zero hb)
   rw [mul_inv_cancel₀ hb, vV_one'] at h
   omega
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [vV_one']`. Consider the case `succ n ih => rw [pow_succ, vV_mul (pow_ne_zero n hb) hb, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vV_pow' {b : T.Fr} (hb : b ≠ 0) (k : ℕ) : vV T.V (b ^ k) = k * vV T.V b := by
   induction k with
   | zero => simp [vV_one']
   | succ n ih => rw [pow_succ, vV_mul (pow_ne_zero n hb) hb, ih]; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[nval_of_ne hb]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[zero_mul, nval_zero, nval_zero]`. Establish `hk : (k : EReal) * (((vV T.V b : ℝ) / e : ℝ) : EReal) = ((k * ((vV T.V b : ℝ) / e) : ℝ) : EReal)`.
+
+Use `norm_cast`. Rewrite using `[hk, EReal.top_sub_coe, EReal.mul_top_of_pos (by exact_mod_cast he)]`. Establish `hab : a * (b⁻¹) ^ k ≠ 0` using `mul_ne_zero ha (pow_ne_zero k (inv_ne_zero hb))`. Rewrite using `[nval_of_ne hab, nval_of_ne ha, vV_mul ha (pow_ne_zero k (inv_ne_zero hb)), vV_pow' (inv_ne_zero hb), vV_inv' hb]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`.
+
+Establish `: (((vV T.V a : ℤ) + (k : ℤ) * -vV T.V b : ℤ) : ℝ) / ((1 : ℕ) : ℝ) = (e : ℝ) * ((vV T.V a : ℝ) / e - k * ((vV T.V b : ℝ) / e))` using `by push_cast; field_simp; ring`. Rewrite using `[this]`. Use `norm_cast`.
+-/
 lemma nval_frac {e : ℕ} (he : 0 < e) (a b : T.Fr) (hb : b ≠ 0) (k : ℕ) :
     nval T.V 1 (a * (b⁻¹) ^ k) = (e : EReal) * (nval T.V e a - (k : EReal) * nval T.V e b) := by
   rw [nval_of_ne hb]
@@ -96,6 +112,11 @@ lemma nval_frac {e : ℕ} (he : 0 < e) (a b : T.Fr) (hb : b ≠ 0) (k : ℕ) :
     rw [this]
     norm_cast
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx; rw [nval_zero, nval_zero, EReal.mul_top_of_pos (by exact_mod_cast he)]` using the available equality. Rewrite using `[nval_of_ne hx, nval_of_ne hx]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `: (e : ℝ) * ((vV T.V x : ℝ) / e) = (vV T.V x : ℝ) / ((1 : ℕ) : ℝ)`.
+
+Rewrite using `[Nat.cast_one, div_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← this]`. Use `norm_cast`.
+-/
 lemma e_mul_nval {e : ℕ} (he : 0 < e) (x : T.Fr) : (e : EReal) * nval T.V e x = nval T.V 1 x := by
   by_cases hx : x = 0
   · subst hx; rw [nval_zero, nval_zero, EReal.mul_top_of_pos (by exact_mod_cast he)]
@@ -107,12 +128,20 @@ lemma e_mul_nval {e : ℕ} (he : 0 < e) (x : T.Fr) : (e : EReal) * nval T.V e x 
 
 end Nval
 
+/- English proof (translation)
+Rewrite using `[nval_of_ne hb, EReal.toReal_coe]`. Establish `: (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma normalized_valuation_mul {T : CDVR} {e : ℕ} (he : 0 < e) (b : T.Fr) (hb : b ≠ 0) :
     (e : ℝ) * (nval T.V e b).toReal = (vV T.V b : ℝ) := by
   rw [nval_of_ne hb, EReal.toReal_coe]
   have : (e : ℝ) ≠ 0 := by exact_mod_cast he.ne'
   field_simp
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `top => simp [toE]`. Consider the case `coe m => show toE ((m + n : ℤ) : WithTop ℤ) = toE (m : WithTop ℤ) + ((n : ℝ) : EReal)`. Simplify using `only [toE]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 lemma toE_add_coe (a : WithTop ℤ) (n : ℤ) : toE (a + (n : WithTop ℤ)) = toE a + ((n : ℝ) : EReal) := by
   cases a with
   | top => simp [toE]
@@ -127,18 +156,32 @@ variable {ζ : PtsG G la} {y₀ : E.Pt' la} (h : SecPt ζ y₀)
 abbrev SecPt.lift : Lw (xplus X E hM) la G.w →+* h.T.Fr :=
   IsLocalization.Away.lift (sec (xplus X E hM) la G.w 0) h.s0
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ r`.
+-/
 lemma SecPt.lift_alg (r : Rp (xplus X E hM) la G.N) : h.lift (algebraMap _ _ r) = h.ev r :=
   IsLocalization.lift_eq _ r
 
+/- English proof (translation)
+Use `congrArg h.lift (section_mul_inverse_eq_one (xplus X E hM) la G.w)` as an intermediate fact. Rewrite `this` using `[map_mul, h.lift_alg, map_one]`. Conclude with `eq_inv_of_mul_eq_one_right this`.
+-/
 lemma SecPt.lift_w0inv : h.lift (w0inv (xplus X E hM) la G.w) = (h.ev (sec (xplus X E hM) la G.w 0))⁻¹ := by
   have := congrArg h.lift (section_mul_inverse_eq_one (xplus X E hM) la G.w)
   rw [map_mul, h.lift_alg, map_one] at this
   exact eq_inv_of_mul_eq_one_right this
 
+/- English proof (translation)
+Rewrite using `[frac_apply, map_mul, map_pow, h.lift_alg, h.lift_w0inv]`.
+-/
 lemma SecPt.lift_frac (k : ℕ) (g : Rp (xplus X E hM) la G.N) :
     h.lift (frac (xplus X E hM) la G.w k g) = h.ev g * (h.ev (sec (xplus X E hM) la G.w 0))⁻¹ ^ k := by
   rw [frac_apply, map_mul, map_pow, h.lift_alg, h.lift_w0inv]
 
+/- English proof (translation)
+Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Rewrite using `[coe_sfr, h.lift_frac, h.onS i, zero_mul]`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [Subalgebra.coe_add, map_add, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [smul_eq_mul, Subalgebra.coe_mul, map_mul, hx, mul_zero]`.
+-/
 lemma SecPt.lift_Jid {r : ↥(Frac0 (xplus X E hM) la G.w)} (hr : r ∈ Jid (xplus X E hM) la G.w) :
     h.lift (r : Lw (xplus X E hM) la G.w) = 0 := by
   induction hr using Submodule.span_induction with
@@ -149,6 +192,11 @@ lemma SecPt.lift_Jid {r : ↥(Frac0 (xplus X E hM) la G.w)} (hr : r ∈ Jid (xpl
   | add x y _ _ hx hy => rw [Subalgebra.coe_add, map_add, hx, hy, add_zero]
   | smul a x _ hx => rw [smul_eq_mul, Subalgebra.coe_mul, map_mul, hx, mul_zero]
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on (p := fun z : ↥(HK (xplus X E hM) la G.w u) => h.lift (z : Lw (xplus X E hM) la G.w) = 0) hz ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, map_mul]`. Establish `: h.lift (algebraMap ↥(Frac0 (xplus X E hM) la G.w) (Lw (xplus X E hM) la G.w) r) = 0` using `h.lift_Jid hr`. Rewrite using `[this, zero_mul]`.
+
+Introduce `x y hx hy`. Rewrite using `[Submodule.coe_add, map_add, hx, hy, add_zero]`.
+-/
 lemma SecPt.lift_JHK {u : WeightFamilies.Wt D j} {z : ↥(HK (xplus X E hM) la G.w u)}
     (hz : z ∈ Jid (xplus X E hM) la G.w • (⊤ : Submodule ↥(Frac0 (xplus X E hM) la G.w) ↥(HK (xplus X E hM) la G.w u))) :
     h.lift (z : Lw (xplus X E hM) la G.w) = 0 := by
@@ -163,6 +211,27 @@ lemma SecPt.lift_JHK {u : WeightFamilies.Wt D j} {z : ↥(HK (xplus X E hM) la G
 
 end Lift
 
+/- English proof (translation)
+Introduce `D B P j X E hM ka wL wF G la S y hs g0 hdep het hg0 hgen ζ`. Establish `hd` using `hdep ζ`. Establish `hg0'` using `hg0 ζ`. Establish `het' : j < D.R.m → (hs ζ).ev (emb (xplus X E hM) la G.N (X.inc _ G.et)) ≠ 0` using `fun hj => het hj ζ`. Use `set h := hs ζ with hh`.
+
+Establish `hb : h.ev (sec (xplus X E hM) la G.w 0) ≠ 0` using `h.s0.ne_zero`. Establish `he` using `h.ep_pos`. Establish `hvat : ∀ (w : WeightFamilies.Wt D j) (F : B.Cusp j w), (xplus X E hM).vAt la (.inr (y ζ)) ((xplus X E hM).inc w F) = nval h.T.V (ep (unifO (xplus X E hM) la G.N) ζ) (h.ev (emb (xplus X E hM) la G.N (X.inc w F)))` using `fun w F => h.hv w F`. Establish `hQy : (secQ y hs g0).y ζ = .inr (y ζ)` using `rfl`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hQy, hd, nval_of_ne hb]`. Conclude with `EReal.coe_ne_top _`. Rewrite using `[hQy, hd, nval_of_ne hb]`. Conclude with `EReal.coe_ne_bot _`. Introduce `hj`.
+
+Rewrite using `[hQy, hvat, nval_of_ne (het' hj)]`. Conclude with `EReal.coe_ne_top _`. Use `⟨vV h.T.V (h.ev (sec (xplus X E hM) la G.w 0)), ?_⟩` and prove the remaining obligations. Simplify using `only [LocalPointData.nu, hQy, hd]`. Conclude with `normalized_valuation_mul he _ (hs ζ).s0.ne_zero`.
+
+Express the relevant statement in the definitionally equal form `(((vV h.T.V (h.ev (emb (xplus X E hM) la G.N (X.inc wF g0))) : ℤ) : ℝ) : EReal) = (ep (unifO (xplus X E hM) la G.N) ζ : EReal) * (xplus X E hM).vAt la (.inr (y ζ)) ((xplus X E hM).inc wF g0)`. Rewrite using `[hvat, e_mul_nval he, nval_of_ne hg0']`. Simplify using the standard rewrite rules. Introduce `k g`. Rewrite using `[h.ord, coe_weightZeroFraction, h.lift_frac, nval_frac he _ _ hb, hQy, hvat, hd]`.
+
+Both sides reduce to the same expression. Introduce `k g`. Establish `hgen' : IsGen (OsK (xplus X E hM) la G.w) ((secQ y hs g0).e)` using `hgen`. Use `set a := toA0K (xplus X E hM) la G.w wF (toHK (xplus X E hM) la G.w wF k ⟨emb (xplus X E hM) la G.N ((xplus X E hM).inc _ g), emb_mem_Vw (xplus X E hM) la G.N _ g⟩) with ha`. Take `⟨x, hx⟩` from `toOsK_surjective (xplus X E hM) la G.w (coord ((secQ y hs g0).e) a)`.
+
+Establish `hca : coord ((secQ y hs g0).e) a • (secQ y hs g0).e = a` using `coord_smul_self hgen' a`. Establish `h1 : toA0K (xplus X E hM) la G.w wF (x • toHK0 (xplus X E hM) la G.w wF ⟨emb (xplus X E hM) la G.N (X.inc wF g0), emb_mem_Vw (xplus X E hM) la G.N wF g0⟩) = a`. Rewrite using `[map_smul, ← restriction_apply_eq_reduction, ← hca, ← hx]`. Conclude with `(algebraMap_smul (OsK (xplus X E hM) la G.w) x _).symm`. Establish `h2` using `(Submodule.Quotient.eq _).1 h1`.
+
+Establish `h3` using `h.lift_JHK h2`. Rewrite `h3` using `[Submodule.coe_sub, map_sub, sub_eq_zero, Submodule.coe_smul, Algebra.smul_def, map_mul, coe_toHK0, coe_toHK, h.lift_alg]`. Establish `h3' : h.lift (x : Lw (xplus X E hM) la G.w) * h.ev (emb (xplus X E hM) la G.N (X.inc wF g0)) = h.lift (frac (xplus X E hM) la G.w k (emb (xplus X E hM) la G.N ((xplus X E hM).inc _ g)))` using `h3`. Establish `hord` using `h.ord x`. Rewrite `hord` using `[hx]`.
+
+Simplify using `only [LocalPointData.ordA, ordV]`. Rewrite using `[toE_add_coe, hord]`. Express the relevant statement in the definitionally equal form `nval h.T.V 1 (h.lift (x : Lw (xplus X E hM) la G.w)) + (((vV h.T.V (h.ev (emb (xplus X E hM) la G.N (X.inc wF g0))) : ℤ) : ℝ) : EReal) = _`. Establish `hm` using `nval_mul (V := h.T.V) 1 (h.lift (x : Lw (xplus X E hM) la G.w)) (h.ev (emb (xplus X E hM) la G.N (X.inc wF g0)))`. Rewrite `hm` using `[h3', nval_of_ne hg0']`.
+
+Establish `hc : (((vV h.T.V (h.ev (emb (xplus X E hM) la G.N (X.inc wF g0))) : ℤ) : ℝ) : EReal) = (((vV h.T.V (h.ev (emb (xplus X E hM) la G.N (X.inc wF g0))) : ℝ) / ((1 : ℕ) : ℝ) : ℝ) : EReal)` using `by simp`. Rewrite using `[hc, ← hm, h.lift_frac, nval_frac he _ _ hb, hQy, hvat, hd]`. Both sides reduce to the same expression.
+-/
 theorem inTieSec : InTieSecSt := by
   intro D B P j X E hM ka wL wF G la S y hs g0 hdep het hg0 hgen ζ
   have hd := hdep ζ

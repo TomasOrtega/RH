@@ -10,6 +10,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k K k₁ _ _ _ _ _ _`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (K ⊗[k] k₁)`. Use `letI : Field ((K ⊗[k] k₁) ⧸ m) := Ideal.Quotient.field m`. Establish `hfin : FiniteDimensional K ((K ⊗[k] k₁) ⧸ m)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ K m).toLinearMap (Ideal.Quotient.mkₐ_surjective K m)`. Use `⟨(K ⊗[k] k₁) ⧸ m, inferInstance, inferInstance, hfin, (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight : k₁ →ₐ[k] K ⊗[k] k₁).toRingHom, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Algebra.TensorProduct.includeRight_apply, Ideal.Quotient.algebraMap_eq]`. Rewrite using `[IsScalarTower.algebraMap_apply K (K ⊗[k] k₁) ((K ⊗[k] k₁) ⧸ m), Algebra.TensorProduct.algebraMap_apply]`. Use `congr 1`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply', ← Algebra.TensorProduct.algebraMap_apply]`.
+
+Conclude with `IsScalarTower.algebraMap_apply k K (K ⊗[k] k₁) a`.
+-/
 theorem exists_finite_ext_compat_of_finite :
     ∀ (k K k₁ : Type) [Field k] [Field K] [Field k₁] [Algebra k K] [Algebra k k₁] [FiniteDimensional k k₁], ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : FiniteDimensional K K') (e : k₁ →+* K'), e.comp (algebraMap k k₁) = (algebraMap K K').comp (algebraMap k K) := by
   intro k K k₁ _ _ _ _ _ _

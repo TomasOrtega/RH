@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilM.schA_integrable | exact GlobalTheory.WeilM.schA_integrable | (intros; apply GlobalTheory.WeilM.schA_integrable <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_bruhat_integrable : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AF F) := borel _
     ∀ μY : Measure (κ → AF F), μY.IsAddHaarMeasure → ∀ φ ∈ schA F κ, Integrable φ μY := by

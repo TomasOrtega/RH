@@ -18,6 +18,9 @@ def intOf (b : 𝓞 E) : Formalism.L2.Herm.intAf F E :=
   ⟨Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (algebraMap (𝓞 E) E b),
     Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E b, b, rfl⟩, rfl⟩)⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show _ = Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (algebraMap (𝓞 E) E b) * Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (l i)`. Rewrite using `[← map_mul, Pi.smul_apply, Algebra.smul_def]`.
+-/
 theorem incl_smul (b : 𝓞 E) (l : Fin n → E) :
     (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) ((b • l) i)) =
       intOf (F := F) b • (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (l i)) := by
@@ -26,6 +29,9 @@ theorem incl_smul (b : 𝓞 E) (l : Fin n → E) :
     Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (l i)
   rw [← map_mul, Pi.smul_apply, Algebra.smul_def]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_add _ (a i) (b i)`.
+-/
 theorem incl_add (a b : Fin n → E) :
     (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) ((a + b) i)) =
       (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (a i)) +
@@ -33,6 +39,9 @@ theorem incl_add (a b : Fin n → E) :
   funext i
   exact map_add _ (a i) (b i)
 
+/- English proof (translation)
+Establish `e : r • v = (r : E ⊗[F] Formalism.L2.Herm.Af F) • v` using `rfl`. Establish `e' : r • (M *ᵥ v) = (r : E ⊗[F] Formalism.L2.Herm.Af F) • (M *ᵥ v)` using `rfl`. Rewrite using `[e, e', Matrix.mulVec_smul]`.
+-/
 theorem mulVec_intSmul (M : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (r : Formalism.L2.Herm.intAf F E) (v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
     M *ᵥ (r • v) = r • (M *ᵥ v) := by
@@ -40,6 +49,13 @@ theorem mulVec_intSmul (M : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.A
   have e' : r • (M *ᵥ v) = (r : E ⊗[F] Formalism.L2.Herm.Af F) • (M *ᵥ v) := rfl
   rw [e, e', Matrix.mulVec_smul]
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun z _ => intOf (F := F) b • z ∈ Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ)) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `Submodule.subset_span ⟨b • x, Submodule.smul_mem_smul hb hx, ?_⟩` and prove the remaining obligations. Conclude with `incl_smul b x`. Rewrite using `[smul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `a c _ _ ha hc`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hc`. Introduce `c a _ ha`.
+
+Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem intOf_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E))
     (𝔪 : Ideal (𝓞 E)) {b : 𝓞 E} (hb : b ∈ 𝔪) (z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
     (hz : z ∈ Formalism.L2.Herm.hatL (F := F) Λ) :
@@ -55,6 +71,15 @@ theorem intOf_smul_mem (Λ : Submodule (𝓞 E) (Fin n → E))
   · intro c a _ ha
     rw [smul_comm]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Establish `gen : ∀ w ∈ 𝔪 • L, uf *ᵥ (fun i => Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F) (w i)) ∈ Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ) := by`. Introduce `w hw`. Use `Submodule.smul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `b hb l hl`. Rewrite using `[incl_smul b l, mulVec_intSmul]`.
+
+Conclude with `intOf_smul_mem Λ 𝔪 hb _ (hL _ (Submodule.subset_span ⟨l, hl, rfl⟩))`. Introduce `a c ha hc`. Rewrite using `[incl_add, Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ ha hc`. Use `Submodule.span_induction (p := fun y _ => uf *ᵥ y ∈ Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ)) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `gen w hw`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `a c _ _ ha hc`.
+
+Rewrite using `[Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ ha hc`. Introduce `c a _ ha`. Rewrite using `[mulVec_intSmul]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem transportGen (uf : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L Λ : Submodule (𝓞 E) (Fin n → E))
     (hL : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := F) L → uf *ᵥ v ∈ Formalism.L2.Herm.hatL (F := F) Λ)
     (𝔪 : Ideal (𝓞 E)) (y : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)
@@ -81,6 +106,9 @@ theorem transportGen (uf : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af
 
 end Gen
 
+/- English proof (translation)
+Introduce `uf L Λ hL 𝔪 y hy` and use `transportGen uf.val L Λ hL 𝔪 y hy`.
+-/
 theorem transport : ∀ {D : D7} {n : ℕ} (uf : GL (Fin n) (Lev.EAf D)) (L Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), (∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) L → uf.val *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) → ∀ (𝔪 : Ideal (𝓞 D.host.E)) (y : Fin n → Lev.EAf D), y ∈ Formalism.L2.Herm.hatL (F := D.host.F) (𝔪 • L) → uf.val *ᵥ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) (𝔪 • Λ) :=
   fun uf L Λ hL 𝔪 y hy => transportGen uf.val L Λ hL 𝔪 y hy
 

@@ -15,15 +15,26 @@ namespace GlobalTheory.SpreadConn
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h` using `Over.w (η[G])`. Establish `h2 : (𝟙_ (Over S)).hom = 𝟙 S` using `rfl`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem unit_comp (G : Over S) [GrpObj G] : (η[G]).left ≫ G.hom = 𝟙 S := by
   have h := Over.w (η[G])
   have h2 : (𝟙_ (Over S)).hom = 𝟙 S := rfl
   rwa [h2] at h
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.comp_apply, unit_comp]`. Both sides reduce to the same expression.
+-/
 theorem hom_unit (G : Over S) [GrpObj G] (s : S) : G.hom ((η[G]).left s) = s := by
   rw [← Scheme.Hom.comp_apply, unit_comp]
   rfl
 
+/- English proof (translation)
+Establish `hu : (η[G]).left s ∈ G.hom ⁻¹' {s}` using `hom_unit G s`. Establish `he : connectedComponentIn (G.hom ⁻¹' {s}) ((η[G]).left s) = G.hom ⁻¹' {s}`. Use `(connectedComponentIn_subset _ _).antisymm fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `(hU x).1 (h hx)`. Establish `hx' : G.hom x = s` using `hx`.
+
+Rewrite `h1` using `[hx']`. Then use the resulting hypothesis. Rewrite using `[← he]`. Conclude with `isConnected_connectedComponentIn_iff.2 hu`.
+-/
 theorem isConnected_fibre (G : Over S) [GrpObj G] (U : Set G.left)
     (hU : ∀ x : G.left, x ∈ U ↔ x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x)))
     (s : S) (h : G.hom ⁻¹' {s} ⊆ U) : _root_.IsConnected (G.hom ⁻¹' {s}) := by
@@ -36,6 +47,9 @@ theorem isConnected_fibre (G : Over S) [GrpObj G] (U : Set G.left)
   rw [← he]
   exact isConnected_connectedComponentIn_iff.2 hu
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : G.hom x = s` using `hx`. Use `(hU x).2 ?_` and prove the remaining obligations. Rewrite using `[hx']`. Conclude with `h.subset_connectedComponentIn (hom_unit G s) subset_rfl hx`.
+-/
 theorem subset_of_isPreconnected (G : Over S) [GrpObj G] (U : Set G.left)
     (hU : ∀ x : G.left, x ∈ U ↔ x ∈ connectedComponentIn (G.hom ⁻¹' {G.hom x}) ((η[G]).left (G.hom x)))
     (s : S) (h : _root_.IsPreconnected (G.hom ⁻¹' {s})) : G.hom ⁻¹' {s} ⊆ U := by
@@ -45,6 +59,9 @@ theorem subset_of_isPreconnected (G : Over S) [GrpObj G] (U : Set G.left)
   rw [hx']
   exact h.subset_connectedComponentIn (hom_unit G s) subset_rfl hx
 
+/- English proof (translation)
+Establish `hc : ConnectedSpace (G.hom.fiber s)` using `(G.hom.fiberHomeo s).connectedSpace_iff.2 (isConnected_iff_connectedSpace.1 h)`. Conclude with `GlobalTheory.RatPointConn.geometricallyConnected_of_ratPoint (S.residueField s) (Over.mk (G.hom.fiberToSpecResidueField s)) (inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom (S.fromSpecResidueField s)))) (inferInstanceAs (QuasiCompact (pullback.snd G.hom (S.fromSpecResidu …`.
+-/
 theorem geometricallyConnected_fibre (G : Over S) [GrpObj G] [LocallyOfFiniteType G.hom]
     [QuasiCompact G.hom] (s : S) (h : _root_.IsConnected (G.hom ⁻¹' {s})) :
     GeometricallyConnected (G.hom.fiberToSpecResidueField s) := by
@@ -58,6 +75,9 @@ theorem geometricallyConnected_fibre (G : Over S) [GrpObj G] [LocallyOfFiniteTyp
       (by rw [Category.assoc, unit_comp, Category.comp_id, Category.id_comp]))
       (pullback.lift_snd _ _ _)⟩
 
+/- English proof (translation)
+Establish `hc : ConnectedSpace (f.fiber s)` using `GeometricallyConnected.connectedSpace_of_subsingleton (f.fiberToSpecResidueField s)`. Conclude with `isConnected_iff_connectedSpace.2 ((f.fiberHomeo s).connectedSpace_iff.1 hc)`.
+-/
 theorem isConnected_of_geometricallyConnected_fibre {X : Scheme.{0}} (f : X ⟶ S) (s : S)
     (h : GeometricallyConnected (f.fiberToSpecResidueField s)) : _root_.IsConnected (f ⁻¹' {s}) := by
   have hc : ConnectedSpace (f.fiber s) :=
@@ -68,6 +88,29 @@ end GlobalTheory.SpreadConn
 
 namespace GlobalTheory.SpreadConn
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ hs hq K _ e he hgc`. Take `⟨G₀, _, j, -, hjo, hj⟩` from `GlobalTheory.identityComponentOpen (Sp R) G hs`. Set `U : Set G.left` to `Set.range j.left`. Set `η₀ : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Establish `hη : η₀ ∈ Set.range (spMap e)` using `⟨(default : PrimeSpectrum K), by`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap e (default : PrimeSpectrum K).asIdeal = ⊥`. Establish `h0 : (default : PrimeSpectrum K).asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Rewrite using `[h0]`. Conclude with `Ideal.comap_bot_of_injective _ he⟩`.
+
+Establish `hgen : GeometricallyConnected (G.hom.fiberToSpecResidueField η₀)` using `GlobalTheory.GenericSplit.geometricallyConnected_snd_of_range_subset G.hom (spMap e) ((Sp R).fromSpecResidueField η₀) (by rw [Scheme.range_fromSpecResidueField]; exact Set.singleton_subset_iff.2 hη) hgc`. Establish `hsub0 : G.hom ⁻¹' {η₀} ⊆ U` using `subset_of_isPreconnected G U hj η₀ (isConnected_of_geometricallyConnected_fibre G.hom η₀ hgen).isPreconnected`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`. Establish `: IsNoetherian G.left` using `{}`.
+
+Establish `hUo : IsOpen U` using `j.left.isOpenEmbedding.isOpen_range`. Establish `hZ : Topology.IsConstructible Uᶜ` using `(IsRetrocompact.isConstructible hUo fun _ _ _ ↦ TopologicalSpace.NoetherianSpace.isCompact _).compl`. Establish `hC : Topology.IsConstructible (G.hom '' Uᶜ)` using `G.hom.isConstructible_image hZ`. Take `⟨V, hV, h1, h2⟩` from `GlobalTheory.exists_isOpen_inter_closure_subset_of_isConstructible continuous_id hC.compl`. Rewrite `h1`, `h2` using `[Set.preimage_id]`.
+
+Establish `hηC : η₀ ∈ (G.hom '' Uᶜ)ᶜ`. Introduce and unpack `⟨x, hx, hxη⟩`. Conclude with `hx (hsub0 hxη)`. Establish `hgenz : ∀ p : Sp R, η₀ ⤳ p` using `fun p => (PrimeSpectrum.le_iff_specializes (η₀ : PrimeSpectrum R) (p : PrimeSpectrum R)).1 (show (⊥ : Ideal R) ≤ (p : PrimeSpectrum R).asIdeal from bot_le)`. Establish `hcl : closure (G.hom '' Uᶜ)ᶜ = Set.univ`.
+
+Use `Set.eq_univ_of_forall fun p => ?_` and prove the remaining obligations. Conclude with `closure_mono (Set.singleton_subset_iff.2 hηC) (specializes_iff_mem_closure.1 (hgenz p))`. Rewrite `h1`, `h2` using `[hcl, Set.inter_univ]`. Establish `hVne : V.Nonempty`. Assume the negation of the conclusion as `hne`.
+
+Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Rewrite `h2` using `[hne, closure_empty]`. Conclude with `Set.empty_ne_univ h2`. Take `⟨p₀, hp₀⟩` from `hVne`. Establish `hηV : η₀ ∈ V` using `(hgenz p₀).mem_open hV hp₀`.
+
+Take `⟨_, ⟨f, rfl⟩, hf, hfV⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hηV hV`. Use `⟨f, fun h0 => (PrimeSpectrum.mem_basicOpen _ _).1 hf ?_, fun F _ ψ hψ => ?_⟩` and prove the remaining obligations. Rewrite using `[he (h0.trans (map_zero e).symm)]`. Conclude with `zero_mem _`. Set `p : Sp R` to `spMap ψ (default : PrimeSpectrum F)`.
+
+Establish `hpf : p ∈ (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))`. Use `(PrimeSpectrum.mem_basicOpen f (p : PrimeSpectrum R)).2 fun hfp => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ f ∈ (default : PrimeSpectrum F).asIdeal at hfp`. Conclude with `(default : PrimeSpectrum F).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hfp hψ)`. Establish `hpC : p ∉ G.hom '' Uᶜ` using `h1 (hfV hpf)`.
+
+Establish `hsub : G.hom ⁻¹' {p} ⊆ U` using `fun x hx => by`. Assume the negation of the conclusion as `hxU`. Conclude with `hpC ⟨x, hxU, hx⟩`. Establish `hfib` using `geometricallyConnected_fibre G p (isConnected_fibre G U hj p hsub)`. Use `GlobalTheory.GenericSplit.geometricallyConnected_snd_of_range_subset G.hom ((Sp R).fromSpecResidueField p) (spMap ψ) ?_ hfib` and prove the remaining obligations.
+
+Rewrite using `[Scheme.range_fromSpecResidueField]`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `show spMap ψ y = p`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum F) y default]`.
+-/
 theorem geometricallyConnected_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G], Smooth G.hom → QuasiCompact G.hom → ∀ (K : Type) [Field K] (e : R →+* K), Function.Injective e → GeometricallyConnected (pullback.snd G.hom (spMap e)) → ∃ f : R, e f ≠ 0 ∧ ∀ (F : Type) [Field F] (ψ : R →+* F), IsUnit (ψ f) → GeometricallyConnected (pullback.snd G.hom (spMap ψ)) := by
   intro R _ _ _ G _ hs hq K _ e he hgc
   obtain ⟨G₀, _, j, -, hjo, hj⟩ := GlobalTheory.identityComponentOpen (Sp R) G hs

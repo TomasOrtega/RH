@@ -8,6 +8,9 @@ namespace PI.UnitaryGroupMassFormula.DSIC
 open Finset
 open scoped Matrix
 
+/- English proof (translation)
+The claim follows from `| 0, f => by simp | t + 1, f => by rw [List.ofFn_succ, List.prod_cons, ofFn_prod_sum t, Finset.sum_mul_sum, ← (Fin.consEquiv fun _ : Fin (t + 1) => ι).sum_comp, Fintype.sum_prod_type] refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun c' _ => ?_ simp [List.ofFn_succ, …`.
+-/
 theorem ofFn_prod_sum {R : Type*} [Ring R] {ι : Type*} [Fintype ι] [DecidableEq ι] :
     ∀ (t : ℕ) (f : Fin t → ι → R),
       (List.ofFn fun k => ∑ c, f k c).prod = ∑ c : Fin t → ι, (List.ofFn fun k => f k (c k)).prod
@@ -18,6 +21,9 @@ theorem ofFn_prod_sum {R : Type*} [Ring R] {ι : Type*} [Fintype ι] [DecidableE
     refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun c' _ => ?_
     simp [List.ofFn_succ, Fin.consEquiv]
 
+/- English proof (translation)
+The claim follows from `| 0, a, x => by simp | t + 1, a, x => by have h := ofFn_prod_smul t (fun i => a i.succ) (fun i => x i.succ) rw [List.ofFn_succ, List.prod_cons, h, List.ofFn_succ (f := x), List.prod_cons, Fin.prod_univ_succ, smul_mul_smul_comm]`.
+-/
 theorem ofFn_prod_smul {R : Type*} [Ring R] [Algebra ℂ R] :
     ∀ (t : ℕ) (a : Fin t → ℂ) (x : Fin t → R),
       (List.ofFn fun k => a k • x k).prod = (∏ k, a k) • (List.ofFn x).prod
@@ -27,9 +33,17 @@ theorem ofFn_prod_smul {R : Type*} [Ring R] [Algebra ℂ R] :
     rw [List.ofFn_succ, List.prod_cons, h, List.ofFn_succ (f := x), List.prod_cons, Fin.prod_univ_succ,
       smul_mul_smul_comm]
 
+/- English proof (translation)
+Rewrite using `[← zsmul_eq_mul, Int.cast_smul_eq_zsmul]`.
+-/
 theorem intCast_mul_eq {R : Type*} [Ring R] [Algebra ℂ R] (z : ℤ) (y : R) : (z : R) * y = (z : ℂ) • y := by
   rw [← zsmul_eq_mul, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.map ⟨fun π : Equiv.Perm (Fin n) => (π : Fin n → Fin n), DFunLike.coe_injective⟩))]`. Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression. Introduce `c _ hc`. Apply `hf` to reduce the goal to its premises.
+
+Introduce `hinj`. Apply `hc` to reduce the goal to its premises. Rewrite using `[Finset.mem_map]`. Conclude with `⟨Equiv.ofBijective c hinj.bijective_of_finite, Finset.mem_univ _, rfl⟩`.
+-/
 theorem sum_fun_eq_sum_perm {M : Type*} [AddCommMonoid M] {n : ℕ} (f : (Fin n → Fin n) → M)
     (hf : ∀ c, ¬ Function.Injective c → f c = 0) :
     ∑ c, f c = ∑ π : Equiv.Perm (Fin n), f π := by
@@ -48,9 +62,15 @@ theorem sum_fun_eq_sum_perm {M : Type*} [AddCommMonoid M] {n : ℕ} (f : (Fin n 
 def qF {R : Type*} [Ring R] {n : ℕ} (F : ℂ → Fin n → Fin n → R) (u : ℂ) : R :=
   ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : R) * (List.ofFn fun k : Fin n => F (u - (k : ℂ)) (σ k) k).prod
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem qdet_eq_qF {R : Type*} [Ring R] [Algebra ℂ R] {n : ℕ} (E : Fin n → Fin n → R) (u : ℂ) :
     Formalism.REAL.qdet E u = qF (Formalism.REAL.Tm E) u := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem det_sub_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (c : Fin n → Fin n) :
     ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ k, A (σ k) (c k) = (A.submatrix id c).det := by
   rw [Matrix.det_apply]
@@ -58,11 +78,19 @@ theorem det_sub_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (c : Fin n → Fin
   rw [Units.smul_def, zsmul_eq_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨i, j, hij, hne⟩` from `Function.not_injective_iff.mp hc`. Conclude with `Matrix.det_zero_of_column_eq hne (fun k => by simp [hij])`.
+-/
 theorem det_sub_noninj {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) (c : Fin n → Fin n) (hc : ¬ Function.Injective c) :
     (A.submatrix id c).det = 0 := by
   obtain ⟨i, j, hij, hne⟩ := Function.not_injective_iff.mp hc
   exact Matrix.det_zero_of_column_eq hne (fun k => by simp [hij])
 
+/- English proof (translation)
+Unfold `qF`. Repeatedly rewrite using `[ofFn_prod_sum, ofFn_prod_smul, intCast_mul_eq, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, det_sub_eq]`. Rewrite using `[sum_fun_eq_sum_perm (fun c => (A.submatrix id c).det • (List.ofFn fun k : Fin n => F (u - (k : ℂ)) (c k) k).prod) (fun c hc => by rw [det_sub_noninj A c hc, zero_smul])]`.
+
+Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_permute', mul_comm, mul_smul]`.
+-/
 theorem qF_row {R : Type*} [Ring R] [Algebra ℂ R] {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ)
     (F : ℂ → Fin n → Fin n → R) (u : ℂ) :
     qF (fun x a b => ∑ c, A a c • F x c b) u = A.det • qF F u := by
@@ -76,6 +104,21 @@ theorem qF_row {R : Type*} [Ring R] [Algebra ℂ R] {n : ℕ} (A : Matrix (Fin n
   refine Finset.sum_congr rfl fun π _ => ?_
   rw [Matrix.det_permute', mul_comm, mul_smul]
 
+/- English proof (translation)
+Establish `hperm : ∀ π : Equiv.Perm (Fin n), Formalism.REAL.qminor E id (π : Fin n → Fin n) u = ((Equiv.Perm.sign π : ℤ) : R) * Formalism.REAL.qdet E u` using `fun π => Formalism.REAL.qSkewCol R n n E hE id id π u`. Establish `hzero : ∀ d : Fin n → Fin n, ¬ Function.Injective d → Formalism.REAL.qminor E id d u = 0`. Introduce `d hd`. Take `⟨i, j, hij, hne⟩` from `Function.not_injective_iff.mp hd`. Establish `hsw : d ∘ (Equiv.swap i j) = d`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`. Rewrite using `[h1, hij]`. Rewrite using `[h2, hij]`.
+
+Both sides reduce to the same expression. Establish `h` using `Formalism.REAL.qSkewCol R n n E hE id d (Equiv.swap i j) u`. Rewrite `h` using `[hsw, Equiv.Perm.sign_swap hne]`. Establish `h2 : (2 : ℂ) • Formalism.REAL.qminor E id d u = 0`. Rewrite using `[two_smul]`.
+
+Use `nth_rewrite 1 [h]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul]`. Evaluate the numerical expressions.
+
+Use `_ = 0 := by rw [h2, smul_zero]`. Unfold `qF`. Repeatedly rewrite using `[ofFn_prod_sum, ofFn_prod_smul, Finset.mul_sum, mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.smul_sum]`.
+
+Establish `hq : ∀ d : Fin n → Fin n, (∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : R) * (List.ofFn fun k : Fin n => Formalism.REAL.Tm E (u - (k : ℂ)) (σ k) (d k)).prod) = Formalism.REAL.qminor E id d u` using `fun d => rfl`. Repeatedly rewrite using `[hq]`. Rewrite using `[sum_fun_eq_sum_perm (fun d => (∏ k, B (d k) k) • Formalism.REAL.qminor E id d u) (fun d hd => by rw [hzero d hd, smul_zero])]`. Repeatedly rewrite using `[hperm, intCast_mul_eq, smul_smul, ← Finset.sum_smul]`. Use `congr 1`.
+
+Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul, mul_comm]`.
+-/
 theorem qF_col {R : Type} [Ring R] [Algebra ℂ R] {n : ℕ} (E : Fin n → Fin n → R) (hE : Formalism.REAL.GlRel E)
     (B : Matrix (Fin n) (Fin n) ℂ) (u : ℂ) :
     qF (fun x a b => ∑ d, B d b • Formalism.REAL.Tm E x a d) u = B.det • Formalism.REAL.qdet E u := by
@@ -118,6 +161,15 @@ theorem qF_col {R : Type} [Ring R] [Algebra ℂ R] {n : ℕ} (E : Fin n → Fin 
   refine Finset.sum_congr rfl fun σ _ => ?_
   rw [Units.smul_def, zsmul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `A _ _ n E hE g hg u`. Establish `hdet : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).mp hg`. Establish `hT : (Formalism.REAL.Tm fun a b => ∑ c, ∑ d, (g c a * g⁻¹ b d) • E c d) = fun x a b => ∑ c, gᵀ a c • ∑ d, (g⁻¹)ᵀ d b • Formalism.REAL.Tm E x c d`. Use function extensionality and compare the values at `x a b`. Simplify using `only [Formalism.REAL.Tm, Matrix.transpose_apply, smul_add, Finset.sum_add_distrib, Finset.smul_sum, smul_smul]`.
+
+Use `congr 1`. Simplify using `only [smul_ite, smul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_smul]`. Establish `h1 : ∑ c, g c a * g⁻¹ b c = (g⁻¹ * g) b a`. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Rewrite using `[h1, Matrix.nonsing_inv_mul _ hdet, Matrix.one_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hab, Ne.symm hab]`. Rewrite using `[qdet_eq_qF, hT, qF_row, qF_col E hE, smul_smul, Matrix.det_transpose, Matrix.det_transpose, ← Matrix.det_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.det_one, one_smul]`.
+-/
 theorem quasi_determinant_conj_inv : QdetConjInv := by
   intro A _ _ n E hE g hg u
   have hdet : IsUnit g.det := (Matrix.isUnit_iff_isUnit_det g).mp hg

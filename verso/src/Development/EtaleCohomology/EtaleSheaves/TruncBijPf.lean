@@ -12,16 +12,30 @@ variable {C : Type u} [Category.{v} C] [Preadditive C] {K K' L : CochainComplex 
 
 def preC (g : K ⟶ K') {j : ℤ} (z : Cochain K' L j) : Cochain K L j := (Cochain.ofHom g).comp z (zero_add j)
 
+/- English proof (translation)
+Simplify using `[preC]`.
+-/
 theorem preC_v (g : K ⟶ K') {j : ℤ} (z : Cochain K' L j) (p q : ℤ) (h : p + j = q) :
     (preC g z).v p q h = g.f p ≫ z.v p q h := by
   simp [preC]
 
+/- English proof (translation)
+The claim follows from `δ_ofHom_comp g z k`.
+-/
 theorem δ_preC (g : K ⟶ K') {j : ℤ} (z : Cochain K' L j) (k : ℤ) : δ j k (preC g z) = preC g (δ j k z) :=
   δ_ofHom_comp g z k
 
+/- English proof (translation)
+Simplify using `[preC]`.
+-/
 theorem preC_zero (g : K ⟶ K') (j : ℤ) : preC g (0 : Cochain K' L j) = 0 := by
   simp [preC]
 
+/- English proof (translation)
+Use extensionality with `p q hpq`. Distinguish the cases in `hq : q < 0`. Conclude with `(hL q hq).eq_of_tgt _ _`. Use `hg p (by omega)` as an intermediate fact. Establish `h'` using `congrArg (fun z : Cochain K L j => z.v p q hpq) h`.
+
+Simplify using `only [preC_v] at h'`. Conclude with `(cancel_epi (g.f p)).1 h'`.
+-/
 theorem preC_inj (g : K ⟶ K') (n : ℤ) (hg : ∀ p : ℤ, -(n + 1) ≤ p → IsIso (g.f p))
     (hL : ∀ q : ℤ, q < 0 → IsZero (L.X q)) {j : ℤ} (hj : j ≤ n + 1) {x y : Cochain K' L j}
     (h : preC g x = preC g y) : x = y := by
@@ -33,6 +47,11 @@ theorem preC_inj (g : K ⟶ K') (n : ℤ) (hg : ∀ p : ℤ, -(n + 1) ≤ p → 
     simp only [preC_v] at h'
     exact (cancel_epi (g.f p)).1 h'
 
+/- English proof (translation)
+Use `⟨Cochain.mk fun p q hpq => if h : -(n + 1) ≤ p then (haveI := hg p h; inv (g.f p)) ≫ y.v p q hpq else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `p q hpq`. Distinguish the cases in `hq : q < 0`. Conclude with `(hL q hq).eq_of_tgt _ _`. Establish `hp : -(n + 1) ≤ p` using `by omega`.
+
+Rewrite using `[preC_v, Cochain.mk_v, dif_pos hp, IsIso.hom_inv_id_assoc]`.
+-/
 theorem preC_surj (g : K ⟶ K') (n : ℤ) (hg : ∀ p : ℤ, -(n + 1) ≤ p → IsIso (g.f p))
     (hL : ∀ q : ℤ, q < 0 → IsZero (L.X q)) {j : ℤ} (hj : j ≤ n + 1) (y : Cochain K L j) :
     ∃ x : Cochain K' L j, preC g x = y := by
@@ -46,9 +65,15 @@ theorem preC_surj (g : K ⟶ K') (n : ℤ) (hg : ∀ p : ℤ, -(n + 1) ≤ p →
 
 end General
 
+/- English proof (translation)
+The claim follows from `CochainComplex.isZero_of_isStrictlyGE (injectiveResolution F).cochainComplex 0 q hq`.
+-/
 theorem res_isZero (R : Type) [CommRing R] (F : Shv R) (q : ℤ) (hq : q < 0) : IsZero ((res R F).X q) :=
   CochainComplex.isZero_of_isStrictlyGE (injectiveResolution F).cochainComplex 0 q hq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl, rfl⟩`.
+-/
 theorem pull_mk (R : Type) [CommRing R] (F : Shv R) {K K' : Cx R} (g : K ⟶ K') (m : ℤ) (x : Cocycle K' (res R F) m) :
     ∃ y : Cocycle K (res R F) m, HK.pull R g F m (CohomologyClass.mk x) = CohomologyClass.mk y ∧
       (y : Cochain K (res R F) m) = preC g (x : Cochain K' (res R F) m) :=
@@ -57,6 +82,17 @@ theorem pull_mk (R : Type) [CommRing R] (F : Shv R) {K K' : Cx R} (g : K ⟶ K')
 end LateralTheory.E.TruncBijPf
 
 open LateralTheory.E.TruncBijPf in
+/- English proof (translation)
+Introduce `R _ F K K' g n hg m hm`. Establish `hL` using `res_isZero R F`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Take `⟨y, hy, hy'⟩` from `pull_mk R F g m x`. Rewrite `hx` using `[hy, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (m - 1) (by omega)]`. Take `⟨β, hβ⟩` from `hx`. Take `⟨β', rfl⟩` from `preC_surj g n hg hL (by omega) β`.
+
+Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (m - 1) (by omega)]`. Use `⟨β', preC_inj g n hg hL (by omega) ?_⟩` and prove the remaining obligations. Rewrite using `[← δ_preC, hβ, hy']`. Introduce `y`. Take `⟨y, rfl⟩` from `y.mk_surjective`.
+
+Take `⟨x, hx⟩` from `preC_surj g n hg hL (j := m) (by omega) (y : Cochain K (res R F) m)`. Establish `hδ : δ m (m + 1) x = 0`. Apply `preC_inj g n hg hL (by omega)` to reduce the goal to its premises. Rewrite using `[← δ_preC, hx, preC_zero, Cocycle.δ_eq_zero]`. Take `⟨y', hy, hy'⟩` from `pull_mk R F g m (Cocycle.mk x (m + 1) rfl hδ)`.
+
+Use `⟨_, hy.trans (congrArg CohomologyClass.mk (Cocycle.ext ?_))⟩` and prove the remaining obligations. Rewrite using `[hy', ← hx]`. Both sides reduce to the same expression.
+-/
 theorem LateralTheory.E.TruncPf.TruncBij_of : LateralTheory.E.TruncPf.TruncBij := by
   intro R _ F K K' g n hg m hm
   have hL := res_isZero R F

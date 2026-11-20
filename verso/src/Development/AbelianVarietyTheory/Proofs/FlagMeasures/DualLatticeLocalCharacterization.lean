@@ -15,26 +15,50 @@ section Form
 
 variable {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A)
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_add_right σ J x y y'`.
+-/
 theorem add_right (x y y' : Fin n → A) : hform σ J x (y + y') = hform σ J x y + hform σ J x y' :=
   PI.SelfDualLoc.W.hform_add_right σ J x y y'
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_smul_right σ J x c y`.
+-/
 theorem smul_right (x : Fin n → A) (c : A) (y : Fin n → A) : hform σ J x (c • y) = c * hform σ J x y :=
   PI.SelfDualLoc.W.hform_smul_right σ J x c y
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_add_left σ J x x' y`.
+-/
 theorem add_left (x x' y : Fin n → A) : hform σ J (x + x') y = hform σ J x y + hform σ J x' y :=
   PI.SelfDualLoc.W.hform_add_left σ J x x' y
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_smul_left σ J c x y`.
+-/
 theorem smul_left (c : A) (x y : Fin n → A) : hform σ J (c • x) y = σ c * hform σ J x y :=
   PI.SelfDualLoc.W.hform_smul_left σ J c x y
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_zero_left σ J y`.
+-/
 theorem zero_left (y : Fin n → A) : hform σ J 0 y = 0 := PI.SelfDualLoc.W.hform_zero_left σ J y
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_zero_right σ J x`.
+-/
 theorem zero_right (x : Fin n → A) : hform σ J x 0 = 0 := PI.SelfDualLoc.W.hform_zero_right σ J x
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_sum_right σ J s x f`.
+-/
 theorem sum_right {ι : Type} (s : Finset ι) (x : Fin n → A) (f : ι → Fin n → A) :
     hform σ J x (∑ k ∈ s, f k) = ∑ k ∈ s, hform σ J x (f k) :=
   PI.SelfDualLoc.W.hform_sum_right σ J s x f
 
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_sum_left σ J s f y`.
+-/
 theorem sum_left {ι : Type} (s : Finset ι) (f : ι → Fin n → A) (y : Fin n → A) :
     hform σ J (∑ k ∈ s, f k) y = ∑ k ∈ s, hform σ J (f k) y :=
   PI.SelfDualLoc.W.hform_sum_left σ J s f y
@@ -45,6 +69,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+The claim follows from `PI.SelfDualLoc.W.hform_map (σ : E →+* E) J (sigR σ R) (inclE (F := F) R) (fun e => (PI.SelfDualLoc.W.sigR_inclE σ R e).symm) a b`.
+-/
 theorem hR_incl (R : Type) [CommRing R] [Algebra F R] (a b : Fin n → E) :
     hR σ J R (fun i => inclE (F := F) R (a i)) (fun i => inclE (F := F) R (b i)) =
       inclE (F := F) R (hform (σ : E →+* E) J a b) :=
@@ -52,6 +79,13 @@ theorem hR_incl (R : Type) [CommRing R] [Algebra F R] (a b : Fin n → E) :
     (fun e => (PI.SelfDualLoc.W.sigR_inclE σ R e).symm) a b
 
 omit [NumberField F] in
+/- English proof (translation)
+Use `⟨fun hy => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Introduce `x hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw => exact hw x hx`. Consider the case `zero => rw [zero_right]`.
+
+Conclude with `zero_mem _`. Consider the case `add w w' _ _ h1 h2 => rw [add_right]`. Conclude with `add_mem h1 h2`. Consider the case `smul c w _ h1`. Rewrite using `[PI.SelfDualLoc.W.LB.smul_OE, smul_right]`.
+
+Conclude with `mul_mem ⟨c, rfl⟩ h1`.
+-/
 theorem mem_dualL (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     y ∈ dualL σ J L ↔ ∀ x ∈ L, hform (σ : E →+* E) J x y ∈ intOE E := by
   refine ⟨fun hy => ?_, fun h => Submodule.subset_span h⟩
@@ -64,6 +98,15 @@ theorem mem_dualL (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → E) :
     rw [PI.SelfDualLoc.W.LB.smul_OE, smul_right]
     exact mul_mem ⟨c, rfl⟩ h1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `c ∈ Subring.closure _ at hc`. Proceed by induction on `hc using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩` into its components or cases. Conclude with `Subring.subset_closure (Or.inl ⟨⟨σ e, PI.SelfDualLoc.W.intOE_map σ he⟩, (PI.SelfDualLoc.W.sigR_tmul σ R e 1).symm⟩)`.
+
+Use `Subring.subset_closure (Or.inr ⟨⟨b, hb⟩, ?_⟩)` and prove the remaining obligations. Use `PI.SelfDualLoc.W.sigR_tmul σ R 1 b` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `this.symm`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `one => rw [map_one]`. Conclude with `one_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+-/
 theorem sig_int (R : Type) [CommRing R] [Algebra F R] (S : Subring R) (c : E ⊗[F] R)
     (hc : c ∈ tensInt (F := F) R (intOE E) S) : sigR σ R c ∈ tensInt (F := F) R (intOE E) S := by
   change c ∈ Subring.closure _ at hc
@@ -82,6 +125,15 @@ theorem sig_int (R : Type) [CommRing R] [Algebra F R] (S : Subring R) (c : E ⊗
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
+/- English proof (translation)
+Introduce `z hz`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span _ _ at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, rfl⟩` from `hw`.
+
+Conclude with `h a ha`. Consider the case `zero => unfold hR`. Rewrite using `[zero_left]`. Conclude with `zero_mem _`. Consider the case `add w w' _ _ h1 h2 => unfold hR at h1 h2 ⊢`.
+
+Rewrite using `[add_left]`. Conclude with `add_mem h1 h2`. Consider the case `smul c w _ h1`. Unfold `hR at h1 ⊢`. Rewrite using `[Subring.smul_def, smul_left]`.
+
+Conclude with `mul_mem (sig_int σ R S c c.2) h1`.
+-/
 theorem test_gen (R : Type) [CommRing R] [Algebra F R] (S : Subring R) (L : Submodule (𝓞 E) (Fin n → E))
     (y : Fin n → E ⊗[F] R)
     (h : ∀ a ∈ L, hR σ J R (fun i => inclE (F := F) R (a i)) y ∈ tensInt (F := F) R (intOE E) S) :
@@ -99,6 +151,15 @@ theorem test_gen (R : Type) [CommRing R] [Algebra F R] (S : Subring R) (L : Subm
     rw [Subring.smul_def, smul_left]
     exact mul_mem (sig_int σ R S c c.2) h1
 
+/- English proof (translation)
+Apply `test_gen` to reduce the goal to its premises. Introduce `a ha`. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span _ _ at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`.
+
+Take `⟨b, hb, rfl⟩` from `hw`. Rewrite using `[hR_incl]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, (mem_dualL σ J L b).1 hb a ha⟩, rfl⟩)`. Consider the case `zero => unfold hR`. Rewrite using `[zero_right]`.
+
+Conclude with `zero_mem _`. Consider the case `add w w' _ _ h1 h2 => unfold hR at h1 h2 ⊢`. Rewrite using `[add_right]`. Conclude with `add_mem h1 h2`. Consider the case `smul c w _ h1`.
+
+Unfold `hR at h1 ⊢`. Rewrite using `[Subring.smul_def, smul_right]`. Conclude with `mul_mem c.2 h1`.
+-/
 theorem fwd (R : Type) [CommRing R] [Algebra F R] (S : Subring R) (L : Submodule (𝓞 E) (Fin n → E))
     (y : Fin n → E ⊗[F] R) (hy : y ∈ latS (F := F) R (tensInt (F := F) R (intOE E) S) (dualL σ J L)) :
     ∀ z ∈ latS (F := F) R (tensInt (F := F) R (intOE E) S) L, hR σ J R z y ∈ tensInt (F := F) R (intOE E) S := by
@@ -118,6 +179,15 @@ theorem fwd (R : Type) [CommRing R] [Algebra F R] (S : Subring R) (L : Submodule
     exact mul_mem c.2 h1
 
 omit [NumberField F] [NumberField E] in
+/- English proof (translation)
+Establish `h1 : ∀ z : Fin n → E, hform (σ : E →+* E) J z w = 0`. Introduce `z`. Establish `hz : z ∈ Submodule.span E (Set.range x)` using `hx ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem a ha => obtain ⟨i, rfl⟩ := ha`.
+
+Conclude with `hw i`. Consider the case `zero => exact zero_left _ _ _`. Consider the case `add a b _ _ h1 h2 => rw [add_left, h1, h2, add_zero]`. Consider the case `smul c a _ h1 => rw [smul_left, h1, mul_zero]`. Apply `Matrix.eq_zero_of_mulVec_eq_zero hJ` to reduce the goal to its premises.
+
+Use extensionality with `i`. Use `h1 (Pi.single i 1)` as an intermediate fact. Unfold `hform at this`. Rewrite `this` using `[Finset.sum_eq_single i]`. Simplify `this` using `[Matrix.mulVec, dotProduct]`.
+
+Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+-/
 theorem nondeg (hJ : J.det ≠ 0) (x : Fin n → Fin n → E) (hx : Submodule.span E (Set.range x) = ⊤)
     (w : Fin n → E) (hw : ∀ i, hform (σ : E →+* E) J (x i) w = 0) : w = 0 := by
   have h1 : ∀ z : Fin n → E, hform (σ : E →+* E) J z w = 0 := by
@@ -138,6 +208,17 @@ theorem nondeg (hJ : J.det ≠ 0) (x : Fin n → Fin n → E) (hx : Submodule.sp
     simp [Pi.single_eq_of_ne hb]
   · simp
 
+/- English proof (translation)
+Take `⟨x, s, hs, hxL, hxs⟩` from `PI.SelfDualLoc.W.locBasis F E n v L hL.1 hL.2`. Establish `hsE : algebraMap F E (s : F) ≠ 0` using `PI.SelfDualLoc.W.LB.algF_ne_zero v hs`. Establish `hxspan : Submodule.span E (Set.range x) = ⊤`. Rewrite using `[eq_top_iff, ← hL.2, Submodule.span_le]`. Introduce `z hz`.
+
+Take `⟨a, ha⟩` from `hxs z hz`. Establish `hz' : z = (algebraMap F E (s : F))⁻¹ • ∑ i, ((a i : 𝓞 E) : E) • x i`. Rewrite using `[← ha, smul_smul, inv_mul_cancel₀ hsE, one_smul]`. Rewrite using `[hz']`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`.
+
+Take `⟨yb, hdu, hysp⟩` from `PI.SelfDualLoc.W.dualBasis F E n σ J x hxspan (nondeg σ J hJ x hxspan)`. Establish `hdu' : ∀ i j, hform (σ : E →+* E) J (x i) (yb j) = if i = j then 1 else 0` using `hdu`. Use `⟨x, yb, s, hs, hxL, hdu', hysp, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_dualL]`. Introduce `z hz`.
+
+Take `⟨a, ha⟩` from `hxs z hz`. Establish `hsz : hform (σ : E →+* E) J (algebraMap F E (s : F) • z) (yb j) = algebraMap F E (s : F) * hform (σ : E →+* E) J z (yb j)`. Rewrite using `[smul_left]`. Use `congr 1`. Conclude with `σ.commutes _`.
+
+Rewrite using `[smul_right, ← hsz, ha, sum_left]`. Simplify using `only [smul_left, hdu', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `PI.SelfDualLoc.W.intOE_map σ ⟨a j, rfl⟩`.
+-/
 theorem exists_dual_basis (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E)) (hL : IsLat L)
     (v : HeightOneSpectrum (𝓞 F)) :
     ∃ (x y : Fin n → Fin n → E) (s : 𝓞 F), s ∉ v.asIdeal ∧ (∀ i, x i ∈ L) ∧
@@ -170,6 +251,19 @@ theorem exists_dual_basis (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → 
   simp only [smul_left, hdu', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
   exact PI.SelfDualLoc.W.intOE_map σ ⟨a j, rfl⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField F)⟩`. Take `⟨x, y, s, hs, hxL, hdu, hysp, hyL⟩` from `exists_dual_basis σ J hJ L hL v`. Establish `hsE : algebraMap F E (s : F) ≠ 0` using `PI.SelfDualLoc.W.LB.algF_ne_zero v hs`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hle : dualL σ J L ≤ Submodule.span (𝓞 E) (Set.range y)`. Introduce `w hw`. Take `⟨c, hc⟩` from `hysp w`. Establish `hci : ∀ i, c i ∈ intOE E`. Introduce `i`.
+
+Use `(mem_dualL σ J L w).1 hw (x i) (hxL i)` as an intermediate fact. Rewrite `this` using `[hc, sum_right]`. Simplify `this` using `[smul_right, hdu]`. Use `choose a ha using hci`. Rewrite using `[hc]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ha j]`. Use `Submodule.smul_mem (Submodule.span (𝓞 E) (Set.range y)) (a j) (Submodule.subset_span ⟨j, rfl⟩)` as an intermediate fact. Rewrite `this` using `[PI.SelfDualLoc.W.LB.smul_OE]`. Then use the resulting hypothesis. Establish `hfg : (Submodule.span (𝓞 E) (Set.range y)).FG` using `Submodule.fg_span (Set.finite_range y)`.
+
+Conclude with `Module.Finite.iff_fg.mpr (hfg.of_le hle)`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Take `⟨c, hc⟩` from `hysp w`. Rewrite using `[hc]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem (Submodule.span E (dualL σ J L : Set (Fin n → E))) (c j * (algebraMap F E (s : F))⁻¹) (Submodule.subset_span (hyL j))` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_assoc, inv_mul_cancel₀ hsE, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem isLat_dual (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E)) (hL : IsLat L) : IsLat (dualL σ J L) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (𝓞 F)
   let v : HeightOneSpectrum (𝓞 F) :=
@@ -202,6 +296,23 @@ theorem isLat_dual (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E)) (hL
       (Submodule.subset_span (hyL j))
     rwa [smul_smul, mul_assoc, inv_mul_cancel₀ hsE, mul_one] at this
 
+/- English proof (translation)
+Take `⟨x, yb, s, hs, hxL, hdu, hysp, hyL⟩` from `exists_dual_basis σ J hJ L hL v`. Take `⟨us, husO, hus⟩` from `PI.SelfDualLoc.W.unitLoc F E v s hs`. Establish `husO' : us ∈ intV E v` using `husO`. Establish `hus' : inclE (F` using `F) (v.adicCompletion F) (algebraMap F E (s : F)) * us = 1 := hus`. Use `choose c hc using fun k : Fin n => hysp (Pi.single k 1 : Fin n → E)`.
+
+Take `⟨C, hyC⟩ : ∃ C : Fin n → E ⊗[F] v.adicCompletion F, y = ∑ j, C j • (fun i => inclE (F` from `F) (v.adicCompletion F) (yb j i)) := by`. Use `⟨fun j => ∑ k, y k * inclE (F := F) (v.adicCompletion F) (c k j), ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `h2 : ∀ k, ∑ j, y k * inclE (F` using `F) (v.adicCompletion F) (c k j) * inclE (F := F) (v.adicCompletion F) (yb j i) = y k * inclE (F := F) (v.adicCompletion F) ((Pi.single k 1 : Fin n → E) i) := by`. Introduce `k`. Rewrite using `[hc k]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum, mul_assoc]`. Simplify using `only [h2]`.
+
+Simplify using `[Pi.single_apply, apply_ite (inclE (F := F) (v.adicCompletion F))]`. Establish `hCO : ∀ j, C j ∈ intV E v`. Introduce `j`. Establish `h1` using `hy (x j) (hxL j)`. Establish `h3 : hR σ J (v.adicCompletion F) (fun i => inclE (F` using `F) (v.adicCompletion F) (x j i)) y = C j := by`.
+
+Establish `h4` using `fun k => hR_incl σ J (v.adicCompletion F) (x j) (yb k)`. Rewrite using `[hyC]`. Unfold `hR at h4 ⊢`. Rewrite using `[sum_right]`. Simplify using `only [smul_right, h4, hdu, apply_ite (inclE (F := F) (v.adicCompletion F)), map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Rewrite `h1` using `[h3]`. Conclude with `h1`. Rewrite using `[hyC]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `hg : (fun i => inclE (F` using `F) (v.adicCompletion F) ((algebraMap F E (s : F) • yb j) i)) ∈ loc v (dualL σ J L) := Submodule.subset_span ⟨_, hyL j, rfl⟩`.
+
+Establish `hmem` using `Submodule.smul_mem _ (⟨C j * us, mul_mem (hCO j) husO'⟩ : intV E v) hg`. Rewrite `hmem` using `[Subring.smul_def]`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`.
+
+Take the linear combination `(-(C j * inclE (F := F) (v.adicCompletion F) (yb j i))) * hus'`.
+-/
 theorem bwd_loc (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E)) (hL : IsLat L)
     (v : HeightOneSpectrum (𝓞 F)) (y : Fin n → E ⊗[F] v.adicCompletion F)
     (hy : ∀ a ∈ L, hR σ J (v.adicCompletion F) (fun i => inclE (F := F) (v.adicCompletion F) (a i)) y ∈ intV E v) :
@@ -251,9 +362,21 @@ theorem bwd_loc (hJ : J.det ≠ 0) (L : Submodule (𝓞 E) (Fin n → E)) (hL : 
   linear_combination (-(C j * inclE (F := F) (v.adicCompletion F) (yb j i))) * hus'
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prV_tmul (v : HeightOneSpectrum (𝓞 F)) (e : E) (a : Ad F) :
     prV (E := E) v (e ⊗ₜ[F] a) = e ⊗ₜ[F] (a v) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `c ∈ Subring.closure _ at hc`. Proceed by induction on `hc using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩` into its components or cases. Conclude with `Subring.subset_closure (Or.inl ⟨⟨e, he⟩, rfl⟩)`.
+
+Conclude with `Subring.subset_closure (Or.inr ⟨⟨b v, hb v⟩, rfl⟩)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `one => rw [map_one]`. Conclude with `one_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+
+Conclude with `mul_mem hx hy`.
+-/
 theorem prV_int (v : HeightOneSpectrum (𝓞 F)) (c : E ⊗[F] Ad F) (hc : c ∈ OAd F E) :
     prV (E := E) v c ∈ intV E v := by
   change c ∈ Subring.closure _ at hc
@@ -269,6 +392,9 @@ theorem prV_int (v : HeightOneSpectrum (𝓞 F)) (c : E ⊗[F] Ad F) (hc : c ∈
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold `hR hform prVec`. Simplify using `only [map_sum, map_mul, Matrix.map_apply]`. Both sides reduce to the same expression.
+-/
 theorem prV_hR (v : HeightOneSpectrum (𝓞 F)) (a : Fin n → E) (x : Fin n → E ⊗[F] Ad F) :
     prV (E := E) v (hR σ J (Ad F) (fun i => inclE (F := F) (Ad F) (a i)) x) =
       hR σ J (v.adicCompletion F) (fun i => inclE (F := F) (v.adicCompletion F) (a i)) (prVec v x) := by
@@ -280,6 +406,11 @@ end GlobalTheory.St.G.Dual
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm n J _ hJ L hL`. Establish `hD` using `Dual.isLat_dual cm.sig J hJ L hL`. Use `⟨hD, fun v x => ⟨fun hx => Dual.fwd cm.sig J _ _ L x hx, fun h => ?_⟩, fun x => ⟨fun hx => Dual.fwd cm.sig J _ _ L x hx, fun h => ?_⟩⟩` and prove the remaining obligations. Conclude with `Dual.bwd_loc cm.sig J hJ L hL v x fun a ha => h _ (Submodule.subset_span ⟨a, ha, rfl⟩)`. Rewrite using `[GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n _ hD]`.
+
+Introduce `v`. Use `Dual.bwd_loc cm.sig J hJ L hL v _ fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← Dual.prV_hR]`. Conclude with `Dual.prV_int v _ (h _ (Submodule.subset_span ⟨a, ha, rfl⟩))`.
+-/
 theorem dualL_local_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (L : Submodule (𝓞 E) (Fin n → E)), IsLat L → IsLat (dualL cm.sig J L) ∧ (∀ (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E ⊗[F] v.adicCompletion F), x ∈ loc v (dualL cm.sig J L) ↔ ∀ z ∈ loc v L, hR cm.sig J (v.adicCompletion F) z x ∈ intV E v) ∧ ∀ x : Fin n → E ⊗[F] Ad F, x ∈ hat F (dualL cm.sig J L) ↔ ∀ z ∈ hat F L, hR cm.sig J (Ad F) z x ∈ OAd F E := by
   intro F E _ _ _ _ _ _ cm n J _ hJ L hL
   have hD := Dual.isLat_dual cm.sig J hJ L hL

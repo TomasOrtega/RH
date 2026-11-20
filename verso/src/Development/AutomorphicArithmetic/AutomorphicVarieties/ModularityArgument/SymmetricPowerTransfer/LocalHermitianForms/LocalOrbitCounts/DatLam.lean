@@ -2,9 +2,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private theorem ofE_mul {K : Type} [Field K] (Δ τ : K) (x y : Etau K τ) : ofE Δ (x * y) = ofE Δ x * ofE Δ y := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Introduce `K _ Δ τ c hreg hc lam hlam z hz`. Use `show IsDat c (lam • ofE Δ (star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ))) 1`. Establish `hzu : (z : Etau K τ) * ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1` using `z.mul_inv`. Establish `hsz : star (z : Etau K τ) * star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1`. Rewrite using `[← star_mul, mul_comm _ (z : Etau K τ), hzu, star_one]`.
+
+Generalize the expression as in `star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = w at hsz ⊢`. Establish `hN : (z : Etau K τ) * star (z : Etau K τ) = algebraMap K (Etau K τ) (2 + τ)`. Rewrite using `[hz]`. Apply the tactic sequence `ext <;> simp <;> ring`. Establish `hzz : (z : Etau K τ) * (z : Etau K τ) = algebraMap K (Etau K τ) (2 + τ) * ω`.
+
+Rewrite using `[hz]`. Apply the tactic sequence `ext <;> simp <;> ring`. Establish `hzw : (z : Etau K τ) = algebraMap K (Etau K τ) (2 + τ) * w`. Rewrite using `[← hN, mul_assoc, hsz, mul_one]`. Establish `hNu : IsUnit (algebraMap K (Etau K τ) (2 + τ))` using `isUnit_of_mul_isUnit_left (hzw ▸ z.isUnit)`.
+
+Establish `ha : algebraMap K (Etau K τ) (2 + τ) * (w * w) = ω`. Apply `hNu.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hstarN : star (algebraMap K (Etau K τ) (2 + τ)) = algebraMap K (Etau K τ) (2 + τ)`. Apply the tactic sequence `ext <;> simp`.
+
+Establish `hs' : star (z : Etau K τ) = algebraMap K (Etau K τ) (2 + τ) * star w` using `by conv_lhs => rw [hzw]`. Rewrite using `[star_mul', hstarN]`. Establish `hb : algebraMap K (Etau K τ) (2 + τ) * (w * star w) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `ofE_one : ofE Δ (1 : Etau K τ) = 1`.
+
+Apply the tactic sequence `ext <;> simp [ofE]`. Establish `ofE_sm : ∀ (r : K) (y : Etau K τ), ofE Δ (algebraMap K (Etau K τ) r * y) = (algebraMap K (Lsq K Δ) r) • ofE Δ y`. Introduce `r y`. Apply the tactic sequence `ext <;> simp [ofE]`. Establish `sig_ofE : ∀ y : Etau K τ, sigL (ofE Δ y) = ofE Δ y`.
+
+Introduce `y`. Apply the tactic sequence `ext <;> simp [sigL, ofE]`. Establish `star_ofE : ∀ y : Etau K τ, star (ofE Δ y) = ofE Δ (star y)`. Introduce `y`. Apply the tactic sequence `ext <;> simp [ofE]`.
+
+Establish `sig_sm : ∀ (a : Lsq K Δ) (y : EL Δ τ), sigL (a • y) = star a • sigL y`. Introduce `a y`. Apply the tactic sequence `ext <;> simp [sigL]`. Establish `star_sm : ∀ (a : Lsq K Δ) (y : EL Δ τ), star (a • y) = a • star y`. Introduce `a y`.
+
+Apply the tactic sequence `ext <;> simp <;> ring`. Establish `sig_one : sigL (1 : EL Δ τ) = 1`. Apply the tactic sequence `ext <;> simp [sigL]`. Establish `hlam' : lam * star lam = algebraMap K (Lsq K Δ) (2 + τ)`. Rewrite using `[← algebraMap_norm_eq_mul_star, hlam]`.
+
+Use `⟨hreg, hc, ?_, isUnit_one, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sig_sm, sig_ofE, smul_mul_smul_comm, hlam', ← ofE_mul, ← ofE_sm, ha]`. Rewrite using `[sig_one, star_one]`. Rewrite using `[sig_one, one_mul, sig_sm, sig_ofE, star_sm, star_ofE, smul_mul_smul_comm, hlam', ← ofE_mul, ← ofE_sm, hb, ofE_one]`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.datLam : UpperTheory.V.Z.Sym.Loc.DatLam := by
   intro K _ Δ τ c hreg hc lam hlam z hz
   show IsDat c (lam • ofE Δ (star ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ))) 1

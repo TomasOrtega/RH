@@ -7,18 +7,27 @@ open CochainComplex CochainComplex.HomComplex
 
 namespace UpperTheory.EquivOfAffineBijective₂
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp]`.
+-/
 private lemma hk_id (R : Type) [CommRing R] (K : Cx R) (F : Shv R) (n : ℤ) (x : HK R K F n) :
     HK.pull R (𝟙 K) F n x = x := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `x.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Simplify using `[zcomp, Cochain.ofHom_comp]`.
+-/
 private lemma hk_comp (R : Type) [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (F : Shv R) (n : ℤ)
     (x : HK R M F n) : HK.pull R (f ≫ g) F n x = HK.pull R f F n (HK.pull R g F n x) := by
   obtain ⟨x, rfl⟩ := x.mk_surjective
   refine congrArg CohomologyClass.mk (Cocycle.ext ?_)
   simp [zcomp, Cochain.ofHom_comp]
 
+/- English proof (translation)
+Use `⟨Sieve.ofArrows _ U.affineCover.f, Scheme.zariskiTopology_le_etaleTopology _ U.affineCover.mem_grothendieckTopology, ?_⟩` and prove the remaining obligations. Introduce and unpack `V g ⟨A, k, c, ⟨i⟩, rfl⟩`. Conclude with `h _ (by dsimp [Scheme.affineCover]; infer_instance) _ _ _`.
+-/
 private lemma loc_of_affine (U : Scheme.{0}) (p : ∀ V : Scheme.{0}, (V ⟶ U) → Prop)
     (h : ∀ (A : Scheme.{0}), IsAffine A → ∀ (c : A ⟶ U) (W : Scheme.{0}) (k : W ⟶ A), p W (k ≫ c)) : Loc U p := by
   refine ⟨Sieve.ofArrows _ U.affineCover.f,
@@ -29,6 +38,15 @@ private lemma loc_of_affine (U : Scheme.{0}) (p : ∀ V : Scheme.{0}, (V ⟶ U) 
 end UpperTheory.EquivOfAffineBijective₂
 
 open UpperTheory.EquivOfAffineBijective₂ in
+/- English proof (translation)
+Introduce `R _ F P Q f hf`. Establish `hiso : IsIso ((free R).map f)`. Use `(GlobalTheory.T.freeEtaleModuleSheaf_map_mono_epi_iso R f).2.2 (fun U y => ?_) (fun U x x' hxx => ?_)` and prove the remaining obligations. Use `loc_of_affine U _ fun A hA c W k => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `(hf A hA).2 (Q.map c.op y)`.
+
+Use `⟨P.map k.op x, ?_⟩` and prove the remaining obligations. Rewrite using `[FunctorToTypes.naturality, hx, op_comp, FunctorToTypes.map_comp_apply]`. Use `loc_of_affine U _ fun A hA c W k => ?_` and prove the remaining obligations. Establish `h1 : P.map c.op x = P.map c.op x'`. Apply `(hf A hA).1` to reduce the goal to its premises.
+
+Rewrite using `[FunctorToTypes.naturality, FunctorToTypes.naturality, hxx]`. Rewrite using `[op_comp, FunctorToTypes.map_comp_apply, FunctorToTypes.map_comp_apply, h1]`. Establish `hc : IsIso ((chains R).map (disc.map f))` using `GlobalTheory.T.chains_iso_of_free_iso R _ fun _ => hiso`. Introduce `n`. Use `Function.bijective_iff_has_inverse.2 ⟨HK.pull R (inv ((chains R).map (disc.map f))) F n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `HK.pull R (inv ((chains R).map (disc.map f))) F n (HK.pull R ((chains R).map (disc.map f)) F n x) = x`. Rewrite using `[← hk_comp, IsIso.inv_hom_id, hk_id]`. Express the relevant statement in the definitionally equal form `HK.pull R ((chains R).map (disc.map f)) F n (HK.pull R (inv ((chains R).map (disc.map f))) F n x) = x`. Rewrite using `[← hk_comp, IsIso.hom_inv_id, hk_id]`.
+-/
 theorem UpperTheory.equiv_of_affine_bijective :
     ∀ (R : Type) [CommRing R] (F : Shv R) {P Q : PSh} (f : P ⟶ Q), (∀ T : Scheme.{0}, IsAffine T → Function.Bijective (f.app (op T))) → Eqv R (disc.map f) F := by
   intro R _ F P Q f hf

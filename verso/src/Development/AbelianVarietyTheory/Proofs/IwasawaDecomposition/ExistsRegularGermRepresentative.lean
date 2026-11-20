@@ -10,6 +10,25 @@ noncomputable section
 
 namespace GlobalTheory.GermSpread
 
+/- English proof (translation)
+Set `I : Ideal Γ(X, W)` to `LinearMap.ker (LinearMap.mulRight Γ(X, W) f₀)`. Take `⟨T, hT⟩` from `(IsNoetherian.noetherian I : I.FG)`. Establish `key : ∀ t ∈ T, ∃ m : Γ(X, W), IsUnit ((X.presheaf.germ W z hz).hom m) ∧ m * t = 0`. Introduce `t ht`. Establish `htI : t ∈ I` using `hT ▸ Submodule.subset_span ht`.
+
+Establish `h0 : t * f₀ = 0` using `htI`. Use `hX z` as an intermediate fact. Establish `hg : (X.presheaf.germ W z hz).hom t = 0`. Establish `e` using `congrArg (X.presheaf.germ W z hz).hom h0`. Rewrite `e` using `[map_mul, map_zero]`.
+
+Conclude with `(mul_eq_zero.1 e).resolve_right ha`. Use `letI : Algebra Γ(X, W) (X.presheaf.stalk z) := X.presheaf.algebra_section_stalk ⟨z, hz⟩`. Use `haveI := hW.isLocalization_stalk ⟨z, hz⟩`. Take `⟨m, hm⟩` from `(IsLocalization.map_eq_zero_iff (hW.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl (X.presheaf.stalk z) t).1 hg`. Conclude with `⟨m, IsLocalization.map_units (X.presheaf.stalk z) m, hm⟩`.
+
+Use `choose! m hm using key`. Establish `hkill : ∀ u ∈ I, (∏ t ∈ T, m t) * u = 0`. Introduce `u hu`. Rewrite `hu` using `[← hT]`. Set `K : Ideal Γ(X, W)` to `LinearMap.ker (LinearMap.mulLeft Γ(X, W) (∏ t ∈ T, m t))`.
+
+Establish `hle : Submodule.span Γ(X, W) (T : Set Γ(X, W)) ≤ K`. Use `Submodule.span_le.2 fun t ht => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem m ht`. Express the relevant statement in the definitionally equal form `(∏ t ∈ T, m t) * t = 0`. Rewrite using `[hc, mul_comm (m t) c, mul_assoc, (hm t ht).2, mul_zero]`.
+
+Conclude with `hle hu`. Use `⟨∏ t ∈ T, m t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[X.mem_basicOpen _ z hz, map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun t ht => (hm t ht).1)`. Introduce `x hx h0`.
+
+Establish `hxW` using `X.basicOpen_le _ hx`. Establish `hu` using `(X.mem_basicOpen _ x hxW).1 hx`. Use `hX x` as an intermediate fact. Use `letI : Algebra Γ(X, W) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hxW⟩`. Use `haveI := hW.isLocalization_stalk ⟨x, hxW⟩`.
+
+Take `⟨u, hu0⟩` from `(IsLocalization.map_eq_zero_iff (hW.primeIdealOf ⟨x, hxW⟩).asIdeal.primeCompl (X.presheaf.stalk x) f₀).1 h0`. Establish `huI : (u : Γ(X, W)) ∈ I` using `show (u : Γ(X, W)) * f₀ = 0 from hu0`. Establish `e` using `congrArg (X.presheaf.germ W x hxW).hom (hkill _ huI)`. Rewrite `e` using `[map_mul, map_zero]`. Establish `h1 : IsUnit ((X.presheaf.germ W x hxW).hom (u : Γ(X, W)))` using `IsLocalization.map_units (X.presheaf.stalk x) u`.
+
+Conclude with `not_isUnit_zero (e ▸ hu.mul h1)`.
+-/
 theorem exists_basicOpen_germ_ne_zero {X : Scheme.{0}} (hX : ∀ x : X, IsDomain (X.presheaf.stalk x))
     {W : X.Opens} (hW : IsAffineOpen W) [IsNoetherianRing Γ(X, W)] {z : X} (hz : z ∈ W)
     (f₀ : Γ(X, W)) (ha : (X.presheaf.germ W z hz).hom f₀ ≠ 0) :
@@ -60,6 +79,13 @@ theorem exists_basicOpen_germ_ne_zero {X : Scheme.{0}} (hX : ∀ x : X, IsDomain
       IsLocalization.map_units (X.presheaf.stalk x) u
     exact not_isUnit_zero (e ▸ hu.mul h1)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z z a ha`. Use `haveI := GlobalTheory.AmpleDown.isNoetherian_gmod Z`. Establish `hN` using `Z.normal`. Take `⟨V, hzV, f₀, rfl⟩` from `Z.X.presheaf.exists_germ_eq a`. Take `⟨W, hWa, hzW, hWV⟩` from `(Opens.isBasis_iff_nbhd.mp Z.X.isBasis_affineOpens) hzV`.
+
+Use `haveI : IsNoetherianRing Γ(Z.X, W) := IsLocallyNoetherian.component_noetherian ⟨W, hWa⟩`. Establish `hW : IsAffineOpen W` using `hWa`. Take `⟨s, hzs, hs⟩` from `exists_basicOpen_germ_ne_zero (fun x => (hN x).1) hW hzW (resG Z.X hWV f₀) (by rwa [germ_resG])`. Use `⟨Z.X.basicOpen s, hzs, resG Z.X ((Z.X.basicOpen_le s).trans hWV) f₀, by rw [germ_resG], ?_⟩` and prove the remaining obligations. Use `isRegularFn_iff_germ.2 fun x hx => ?_` and prove the remaining obligations.
+
+Use `(hN x).1` as an intermediate fact. Rewrite using `[germ_resG]`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Establish `h` using `hs x hx`. Rewrite `h` using `[germ_resG]`. Then use the resulting hypothesis.
+-/
 theorem exists_isRegularFn_germ_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) (z : Z.X) (a : Z.X.presheaf.stalk z), a ≠ 0 →
     ∃ (U : Z.X.Opens) (hz : z ∈ U) (f : Γ(Z.X, U)), (Z.X.presheaf.germ U z hz).hom f = a ∧ IsRegularFn f := by

@@ -13,9 +13,27 @@ section Gen
 
 variable (D : D7)
 
+/- English proof (translation)
+The claim follows from `(D.val_nonneg_iff w _).2 ((D.plEq w).valuation_le_one r)`.
+-/
 theorem intW_int (w : D.what₂.places.Pl) (r : 𝓞 D.what₂.LL) : (r : D.what₂.LL) ∈ intW D.what₂.places w :=
   (D.val_nonneg_iff w _).2 ((D.plEq w).valuation_le_one r)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨k, rfl⟩` from `hz`. Introduce `c`. Distinguish the cases in `h : c = k`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.basisFun_apply, Pi.single_apply, h]`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb => intro c`.
+
+Conclude with `add_mem (ha c) (hb c)`. Consider the case `smul r a _ ha => intro c`. Conclude with `mul_mem (intW_int D w r) (ha c)`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules.
+
+Consider the case `add a b _ _ ha hb => intro c`. Conclude with `add_mem (ha c) (hb c)`. Consider the case `smul r a _ ha => intro c`. Conclude with `mul_mem r.2 (ha c)`. Introduce `h`.
+
+Establish `hx : x = ∑ c, (⟨x c, h c⟩ : intW D.what₂.places w) • (Pi.basisFun D.what₂.LL ι c)`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Conclude with `(mul_one _).symm`. Rewrite using `[hx]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span (Submodule.subset_span ⟨c, rfl⟩))`.
+-/
 theorem mem_locW_std (w : D.what₂.places.Pl) {ι : Type} [Fintype ι] [DecidableEq ι] (x : ι → D.what₂.LL) :
     x ∈ locW D.what₂.places w (stdHLat D.what₂.LL ι).L ↔ ∀ c, x c ∈ intW D.what₂.places w := by
   constructor
@@ -52,6 +70,9 @@ open Classical in
 def indC {Lt : Type} [Fintype Lt] {N : ℕ} (nu : Lt → YoungDiagram) (I : KM.ColChoice N nu) (C : Type) [CommRing C] : C :=
   ∏ s, ∏ c : Fin ((nu s).rowLen 0), if ∀ k, (I s c k : ℕ) = k then 1 else 0
 
+/- English proof (translation)
+Unfold `indC`. Use `Finset.prod_induction _ (fun x : C => x = 0 ∨ x = 1) (fun a b ha hb => ?_) (Or.inr rfl) fun s _ => Finset.prod_induction _ (fun x : C => x = 0 ∨ x = 1) (fun a b ha hb => ?_) (Or.inr rfl) fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases ha with rfl | rfl <;> simp [hb]`. Apply the tactic sequence `rcases ha with rfl | rfl <;> simp [hb]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem indC_01 {Lt : Type} [Fintype Lt] {N : ℕ} (nu : Lt → YoungDiagram) (I : KM.ColChoice N nu) (C : Type) [CommRing C] :
     indC nu I C = 0 ∨ indC nu I C = 1 := by
   classical
@@ -65,6 +86,9 @@ theorem indC_01 {Lt : Type} [Fintype Lt] {N : ℕ} (nu : Lt → YoungDiagram) (I
 def initC {Lt : Type} {N : ℕ} (nu : Lt → YoungDiagram) (h : ∀ s c, (nu s).colLen c ≤ N) : KM.ColChoice N nu :=
   fun s c => Fin.castLEOrderEmb (h s c)
 
+/- English proof (translation)
+Unfold `indC`. Use `Finset.prod_eq_one fun s _ => Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos fun k => by simp [initC]]`.
+-/
 theorem indC_init {Lt : Type} [Fintype Lt] {N : ℕ} (nu : Lt → YoungDiagram) (h : ∀ s c, (nu s).colLen c ≤ N)
     (C : Type) [CommRing C] : indC nu (initC nu h) C = 1 := by
   classical
@@ -74,6 +98,9 @@ theorem indC_init {Lt : Type} [Fintype Lt] {N : ℕ} (nu : Lt → YoungDiagram) 
 
 end Ind
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[ColumnChain.Kmap, ColumnChain.divDe, ColumnChain.sharp, mulFun]`.
+-/
 theorem chainN_Kmap {R : Ranks} {Tau : Type} [Fintype Tau] (hc : Tau → HCParam R) (K : ClsPkg) (i : ℕ)
     (c : K.cls i) (c' : K.cls (i + 1)) (φ : Unit → ℂ) : (chainN hc K).Kmap i c c' φ = φ := by
   funext y
@@ -125,6 +152,9 @@ variable (Lb : Lbl H) (hT2 : ∀ u, T u ≠ 2) (per : ∀ u : W, Bool → FK ((K
 
 local notation "DR" => (hostLevelRecord H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 
+/- English proof (translation)
+Introduce `s c` and use `((nuD DR u i s).colLen_anti 0 c (Nat.zero_le _)).trans ((nuD_rows DR u i s).trans (by show R.k + i * (R.t + 1) ≤ R.k + j * (R.t + 1); have := Nat.mul_le_mul_right (R.t + 1) hj; omega))`.
+-/
 theorem row_nu_le (u : W) (i : ℕ) (j : ℕ) (hj : i ≤ j) :
     ∀ s c, (nuD DR u i s).colLen c ≤ R.N j := fun s c =>
   ((nuD DR u i s).colLen_anti 0 c (Nat.zero_le _)).trans ((nuD_rows DR u i s).trans
@@ -234,6 +264,9 @@ def levelRecordTwistEntries (P : EntPl DR) : KerEnt DR (levelRecordDivisor H u0 
         (ThE (R.N i) (R.N (i + 1)) _) (KM.Gxz (R.N i) (R.N (i + 1)) (nuD DR u i) I)))
     rw [e1, one_mul]
 
+/- English proof (translation)
+The claim follows from `(entPl_nonempty DR).map (levelRecordTwistEntries H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)`.
+-/
 theorem row_ent_nonempty : Nonempty (KerEnt DR (levelRecordDivisor H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat) (levelRecordTwistForms H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)) :=
   (entPl_nonempty DR).map (levelRecordTwistEntries H u0 hcW hv0 hb0 he0 hf0 hl0 Del hDel hgap lt hlt hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw d Dall d0 hd FT ft ft0 Lb hT2 per NuL gat hgat)
 

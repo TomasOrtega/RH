@@ -14,26 +14,41 @@ namespace GlobalTheory.RunIn.ScalSize
 
 variable {D : D7} {j : ℕ}
 
+/- English proof (translation)
+Establish `: 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem one_le_f (D : D7) : (1 : ℝ) ≤ D.R.f := by
   have : 1 ≤ D.R.f := by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `: 1 ≤ D.R.r` using `by unfold Ranks.r; have := D.R.two_le_m; omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem one_le_r (D : D7) : (1 : ℝ) ≤ D.R.r := by
   have : 1 ≤ D.R.r := by unfold Ranks.r; have := D.R.two_le_m; omega
   exact_mod_cast this
 
+/- English proof (translation)
+Unfold `WeightFamilies.Wt.size WeightAlgebra.DF degP`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem size_eq (w : WeightFamilies.Wt D j) :
     w.size = (WeightAlgebra.DF w : ℝ) + (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (w.n : ℝ) + 1 := by
   unfold WeightFamilies.Wt.size WeightAlgebra.DF degP
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[size_eq]`. Establish `h1 : (1 : ℝ) ≤ ((max (D.R.sigW j).2 1 : ℕ) : ℝ)` using `by exact_mod_cast le_max_right _ _`. Establish `h2 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) * (w.n : ℝ)` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 h2]`.
+-/
 theorem size_ge (w : WeightFamilies.Wt D j) : (WeightAlgebra.DF w : ℝ) + (D.R.f : ℝ) * (D.R.r : ℝ) * (w.n : ℝ) + 1 ≤ w.size := by
   rw [size_eq]
   have h1 : (1 : ℝ) ≤ ((max (D.R.sigW j).2 1 : ℕ) : ℝ) := by exact_mod_cast le_max_right _ _
   have h2 : 0 ≤ (D.R.f : ℝ) * (D.R.r : ℝ) * (w.n : ℝ) := by positivity
   nlinarith [mul_le_mul_of_nonneg_left h1 h2]
 
+/- English proof (translation)
+Establish `h` using `size_ge w`. Establish `h1 : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `one_le_mul_of_one_le_of_one_le (one_le_f D) (one_le_r D)`. Establish `h2 : (0 : ℝ) ≤ w.n` using `by positivity`. Establish `h3 : (0 : ℝ) ≤ WeightAlgebra.DF w` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 h2]`.
+-/
 theorem n_le_size (w : WeightFamilies.Wt D j) : (w.n : ℝ) ≤ w.size := by
   have h := size_ge w
   have h1 : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r := one_le_mul_of_one_le_of_one_le (one_le_f D) (one_le_r D)
@@ -41,6 +56,9 @@ theorem n_le_size (w : WeightFamilies.Wt D j) : (w.n : ℝ) ≤ w.size := by
   have h3 : (0 : ℝ) ≤ WeightAlgebra.DF w := by positivity
   nlinarith [mul_le_mul_of_nonneg_right h1 h2]
 
+/- English proof (translation)
+Unfold `WeightFamilies.Wt.size`. Simplify using `only [wadd, wsmul]`. Use `push_cast`. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, mul_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem size_comb (T : ℕ) (wL wF : WeightFamilies.Wt D j) :
     (wadd wF (wsmul T wL)).size + T = T * wL.size + wF.size := by
   unfold WeightFamilies.Wt.size
@@ -49,6 +67,11 @@ theorem size_comb (T : ℕ) (wL wF : WeightFamilies.Wt D j) :
   simp only [Finset.sum_add_distrib, ← Finset.mul_sum, mul_add]
   ring
 
+/- English proof (translation)
+Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `h` using `size_ge w`. Establish `h3 : (0 : ℝ) ≤ WeightAlgebra.DF w` using `by positivity`. Unfold `zOwnP`. Use `push_cast`.
+
+Rewrite using `[Real.log_pow]`. Use `push_cast`. Establish `: (WeightAlgebra.DF w : ℝ) + 2 * D.R.f * D.R.r * w.n ≤ 2 * w.size` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right this hl]`.
+-/
 theorem log_zOwn_le (p : ℕ) (hp : 0 < p) (w : WeightFamilies.Wt D j) :
     Real.log (zOwnP D p w : ℝ) ≤ 2 * Real.log p * w.size := by
   have hl : 0 ≤ Real.log p := Real.log_natCast_nonneg p
@@ -61,6 +84,9 @@ theorem log_zOwn_le (p : ℕ) (hp : 0 < p) (w : WeightFamilies.Wt D j) :
   have : (WeightAlgebra.DF w : ℝ) + 2 * D.R.f * D.R.r * w.n ≤ 2 * w.size := by nlinarith
   nlinarith [mul_le_mul_of_nonneg_right this hl]
 
+/- English proof (translation)
+Take `⟨-, -, h1, h2, -⟩` from `GlobalTheory.RunIn.pPow_size D j w`. Unfold `lamStar`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lamStar_nonneg (w : WeightFamilies.Wt D j) : 0 ≤ lamStar D := by
   obtain ⟨-, -, h1, h2, -⟩ := GlobalTheory.RunIn.pPow_size D j w
   unfold lamStar
@@ -70,6 +96,9 @@ noncomputable def comb (B : WeightFamilies.Prov D) (hinj : Function.Injective D.
     (G wL wF : WeightFamilies.Wt D j) (T : ℕ) : 𝓞 B.KO :=
   (zOwnP D p G : 𝓞 B.KO) * sOf B hinj EX wL ^ T * sOf B hinj EX wF
 
+/- English proof (translation)
+Unfold `comb sOf pPow`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comb_eq (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ)
     (G wL wF : WeightFamilies.Wt D j) (T : ℕ) :
     (zOwnP D p G : 𝓞 B.KO) * nnW B hinj EX wL ^ T * nnW B hinj EX wF *
@@ -79,12 +108,22 @@ theorem comb_eq (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `comb`. Use `mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL).1)) (GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wF).1` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne')`.
+-/
 theorem comb_ne_zero (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (hp : 0 < p)
     (G wL wF : WeightFamilies.Wt D j) (T : ℕ) : comb B hinj EX p G wL wF T ≠ 0 := by
   unfold comb
   refine mul_ne_zero (mul_ne_zero ?_ (pow_ne_zero _ (GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL).1)) (GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wF).1
   exact Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne')
 
+/- English proof (translation)
+Take `⟨hL0, hL⟩` from `GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL`. Take `⟨hF0, hF⟩` from `GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wF`. Establish `hL1` using `(hL σ).2.2.2`. Establish `hF1` using `(hF σ).2.2.2`. Establish `nz : ∀ x : 𝓞 B.KO, x ≠ 0 → ‖σ (x : B.KO)‖ ≠ 0` using `fun x hx => by`.
+
+Rewrite using `[norm_ne_zero_iff, map_ne_zero]`. Conclude with `hx` after adjusting the coercions. Establish `hz : (zOwnP D p G : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (pow_ne_zero _ hp.ne')`. Establish `e : ‖σ (comb B hinj EX p G wL wF T : B.KO)‖ = (zOwnP D p G : ℝ) * ‖σ (sOf B hinj EX wL : B.KO)‖ ^ T * ‖σ (sOf B hinj EX wF : B.KO)‖`. Unfold `comb`.
+
+Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_pow, map_natCast, norm_mul, norm_pow, Complex.norm_natCast]`. Rewrite using `[e, Real.log_mul (mul_ne_zero hz (pow_ne_zero _ (nz _ hL0))) (nz _ hF0), Real.log_mul hz (pow_ne_zero _ (nz _ hL0)), Real.log_pow]`. Establish `h1` using `log_zOwn_le p hp G`. Establish `hT : (0 : ℝ) ≤ T` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hL1 hT]`.
+-/
 theorem log_comb_le (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (hp : 0 < p)
     (G wL wF : WeightFamilies.Wt D j) (T : ℕ) (σ : B.KO →+* ℂ) :
     Real.log ‖σ (comb B hinj EX p G wL wF T : B.KO)‖ ≤
@@ -108,6 +147,13 @@ theorem log_comb_le (B : WeightFamilies.Prov D) (hinj : Function.Injective D.wha
   have hT : (0 : ℝ) ≤ T := by positivity
   nlinarith [mul_le_mul_of_nonneg_left hL1 hT]
 
+/- English proof (translation)
+Establish `h` using `log_comb_le B hinj EX p hp (wadd wF (wsmul T wL)) wL wF T σ`. Rewrite `h` using `[← size_comb]`. Establish `h1` using `n_le_size (wadd wF (wsmul T wL))`. Establish `h2 : T ≤ (wadd wF (wsmul T wL)).n`. Simplify using `only [wadd, wsmul]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : (T : ℝ) ≤ (wadd wF (wsmul T wL)).size` using `le_trans (by exact_mod_cast h2) h1`. Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `hΛ` using `lamStar_nonneg wL`. Establish `hs` using `(wadd wF (wsmul T wL)).one_le_size`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hΛ, mul_nonneg hl (le_trans zero_le_one hs)]`.
+-/
 theorem log_comb_le' (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (hp : 0 < p)
     (wL wF : WeightFamilies.Wt D j) (hn : 1 ≤ wL.n) (T : ℕ) (σ : B.KO →+* ℂ) :
     Real.log ‖σ (comb B hinj EX p (wadd wF (wsmul T wL)) wL wF T : B.KO)‖ ≤
@@ -124,6 +170,15 @@ theorem log_comb_le' (B : WeightFamilies.Prov D) (hinj : Function.Injective D.wh
   have hs := (wadd wF (wsmul T wL)).one_le_size
   nlinarith [mul_le_mul_of_nonneg_left h3 hΛ, mul_nonneg hl (le_trans zero_le_one hs)]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hF`. Take `⟨a, b, _, _, n, _⟩` from `ka`. Establish `e1 : a = (wadd wF (wsmul T wL)).aP` using `funext fun τ => funext fun i => by`. Use `h2 τ i` as an intermediate fact. Simplify using `only [wadd, wsmul] at this ⊢`.
+
+Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : b = (wadd wF (wsmul T wL)).aM` using `funext fun τ => funext fun i => by`. Use `h3 τ i` as an intermediate fact. Simplify using `only [wadd, wsmul] at this ⊢`.
+
+Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : n = (wadd wF (wsmul T wL)).n`. Simplify using `only [wadd, wsmul] at hn ⊢`. Rewrite using `[h1, hL, hn]`.
+
+Substitute `e1 e2 e3` using the available equality. Both sides reduce to the same expression.
+-/
 theorem wt_eq {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} (hF : IsF' ka wL wF T nP) (hL : wL.n = nW)
     (hn : ka.n = nP + T * nW) : ka = wadd wF (wsmul T wL) := by
   obtain ⟨h1, h2, h3⟩ := hF
@@ -148,6 +203,15 @@ end GlobalTheory.RunIn.ScalSize
 
 open GlobalTheory.RunIn.ScalSize in
 
+/- English proof (translation)
+Introduce `D B hinj EX j p ka wL wF Tn nP nW hp hW hL hF hn`. Establish `eF : (scalOfP B hinj EX p ka wL wF Tn).sF = comb B hinj EX p wF wL wF 0`. Unfold `comb sOf`. Simplify using `only [scalOfP, pow_zero, mul_one, mul_assoc]`. Establish `e0 : (scalOfP B hinj EX p ka wL wF Tn).s0 = comb B hinj EX p (wadd wF (wsmul (WeightFamilies.dimY D j) wL)) wL wF (WeightFamilies.dimY D j)` using `comb_eq ..`.
+
+Establish `eK : (scalOfP B hinj EX p ka wL wF Tn).sK = comb B hinj EX p ka wL wF Tn` using `comb_eq ..`. Establish `hn1 : 1 ≤ wL.n` using `hL ▸ hW`. Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Rewrite using `[eF, e0, eK, sW_eq_sOf]`. Use `⟨comb_ne_zero B hinj EX p hp _ _ _ _, comb_ne_zero B hinj EX p hp _ _ _ _, comb_ne_zero B hinj EX p hp _ _ _ _, fun σ => ⟨?_, ?_, log_comb_le' B hinj EX p hp wL wF hn1 _ σ, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h` using `((GlobalTheory.T.thetaLatticeWeightScalar_ne_zero_and_log_bounds D B hinj EX j wL).2 σ).2.2.2`. Use polynomial arithmetic with `[mul_nonneg hl (le_trans zero_le_one wL.one_le_size)]`. Establish `h` using `log_comb_le B hinj EX p hp wF wL wF 0 σ`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[wt_eq hF hL hn]`. Conclude with `log_comb_le' B hinj EX p hp wL wF hn1 _ σ`.
+-/
 theorem GlobalTheory.RunIn.scalOfP_size : ∀ (D : D7) (B : WeightFamilies.Prov D) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (j : ℕ) (p : ℕ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ), 0 < p → 1 ≤ nW → wL.n = nW → IsF' ka wL wF Tn nP → ka.n = nP + Tn * nW → (scalOfP B hinj EX p ka wL wF Tn).sF ≠ 0 ∧ (scalOfP B hinj EX p ka wL wF Tn).s0 ≠ 0 ∧ (scalOfP B hinj EX p ka wL wF Tn).sK ≠ 0 ∧ ∀ σ : B.KO →+* ℂ, (Real.log ‖σ ((scalOfP B hinj EX p ka wL wF Tn).sW : B.KO)‖ ≤ (lamStar D + 2 * Real.log p) * wL.size ∧ Real.log ‖σ ((scalOfP B hinj EX p ka wL wF Tn).sF : B.KO)‖ ≤ (lamStar D + 2 * Real.log p) * wF.size ∧ Real.log ‖σ ((scalOfP B hinj EX p ka wL wF Tn).s0 : B.KO)‖ ≤ 2 * (lamStar D + 2 * Real.log p) * (wadd wF (wsmul (WeightFamilies.dimY D j) wL)).size ∧ Real.log ‖σ ((scalOfP B hinj EX p ka wL wF Tn).sK : B.KO)‖ ≤ 2 * (lamStar D + 2 * Real.log p) * ka.size) := by
   intro D B hinj EX j p ka wL wF Tn nP nW hp hW hL hF hn
   have eF : (scalOfP B hinj EX p ka wL wF Tn).sF = comb B hinj EX p wF wL wF 0 := by

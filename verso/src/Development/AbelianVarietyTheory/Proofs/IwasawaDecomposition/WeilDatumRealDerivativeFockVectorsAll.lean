@@ -33,16 +33,27 @@ def frOf {D : D7} (V : HSp D) (s B : D.what₂.Tau → Matrix (Fin V.rank) (Fin 
 
 variable {D : D7} {V : HSp D} {s B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {p : D.what₂.Tau → ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `nonsing_inv_nonsing_inv _ (onb_facts (h τ)).1`.
+-/
 theorem frOf_onb (h : ∀ τ, IsONBasis (gramAt D V τ) (s τ) (B τ) (p τ)) : (frOf V s B p h).onb = B := by
   funext τ
   exact nonsing_inv_nonsing_inv _ (onb_facts (h τ)).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Take `⟨u, -, c⟩` from `onb_facts (h τ)`. Express the relevant statement in the definitionally equal form `((B τ)⁻¹)⁻¹ * Formalism.REAL.Jm (sgB (p τ)) * (B τ)⁻¹ = s τ`. Rewrite using `[nonsing_inv_nonsing_inv _ u, ← c, mul_nonsing_inv_cancel_right _ _ u]`.
+-/
 theorem frOf_cart (h : ∀ τ, IsONBasis (gramAt D V τ) (s τ) (B τ) (p τ)) : (frOf V s B p h).cart = s := by
   funext τ
   obtain ⟨u, -, c⟩ := onb_facts (h τ)
   change ((B τ)⁻¹)⁻¹ * Formalism.REAL.Jm (sgB (p τ)) * (B τ)⁻¹ = s τ
   rw [nonsing_inv_nonsing_inv _ u, ← c, mul_nonsing_inv_cancel_right _ _ u]
 
+/- English proof (translation)
+Establish `h : ∀ l : List ι, l.foldr (fun i g => A i g) (0 : X → ℂ) = 0` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.foldr_cons, ih, hA]`. Establish `hz : pureTensorL A (0 : X → ℂ) = 0` using `(MvPolynomial.basisMonomials ι ℂ).ext fun k => by`.
+
+Simplify using `only [pureTensorL, Module.Basis.constr_basis, LinearMap.zero_apply]`. Conclude with `h _`. Rewrite using `[hz, LinearMap.zero_apply]`.
+-/
 theorem pure_zero {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (hA : ∀ i, A i 0 = 0) (P : MvPolynomial ι ℂ) :
     pureTensorL A (0 : X → ℂ) P = 0 := by
   have h : ∀ l : List ι, l.foldr (fun i g => A i g) (0 : X → ℂ) = 0 := fun l => by
@@ -60,12 +71,40 @@ namespace GlobalTheory.WeilReal
 
 open GlobalTheory.ChainFr GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators GlobalTheory.WeilReal.QuadAlg Formalism.IndefR.Fock.Sk
 
+/- English proof (translation)
+Establish `e : q = a + b - h • P` using `eq_sub_of_add_eq hq.symm`. Rewrite using `[e]`. Use `module`.
+-/
 theorem comb {R : Type} [AddCommGroup R] [Module ℂ R] (a b q P : R) (h c d : ℂ) (hq : a + b = q + h • P) :
     q + (h + c - d) • P = (a + (-d) • P) + (b + c • P) := by
   have e : q = a + b - h • P := eq_sub_of_add_eq hq.symm
   rw [e]
   module
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hd _ θ sS sT BS BT pS pT hp τ αS αT hαS hαT XS XT hXS hXT f hf hv P x`. Take `⟨A, hA⟩ : ∃ A : Fr S, A = frOf S sS BS pS hp.onbS` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Fr T, B = frOf T sT BT pT hp.onbT` from `⟨_, rfl⟩`. Establish `cA : A.cart = sS` using `hA ▸ frOf_cart hp.onbS`. Establish `cB : B.cart = sT` using `hB ▸ frOf_cart hp.onbT`.
+
+Establish `oA : A.onb = BS` using `hA ▸ frOf_onb hp.onbS`. Establish `oB : B.onb = BT` using `hB ▸ frOf_onb hp.onbT`. Establish `eA : A.ε τ = sgB (pS τ)` using `by rw [hA]; rfl`. Establish `eB : B.ε τ = sgB (pT τ)` using `by rw [hB]; rfl`. Establish `rA : A.fr τ = (BS τ)⁻¹` using `by rw [hA]; rfl`.
+
+Establish `rB : B.fr τ = (BT τ)⁻¹` using `by rw [hB]; rfl`. Establish `pt : pureTensorO ψ θ S T sS sT BS BT f = ptF ψ θ A B f`. Rewrite using `[ptF, cA, cB, oA, oB]`. Rewrite using `[pt]`. Establish `lin : ∀ (g : WO S T → ℂ) (Q Q' : MvPolynomial (FVar D T.rank S.rank) ℂ), ptF ψ θ A B g (Q + Q') = ptF ψ θ A B g Q + ptF ψ θ A B g Q'` using `fun g Q Q' => map_add (pureTensorO ψ θ S T A.cart B.cart A.onb B.onb g) Q Q'`.
+
+Establish `lsm : ∀ (g : WO S T → ℂ) (c : ℂ) (Q : MvPolynomial (FVar D T.rank S.rank) ℂ), ptF ψ θ A B g (c • Q) = c • ptF ψ θ A B g Q` using `fun g c Q => map_smul (pureTensorO ψ θ S T A.cart B.cart A.onb B.onb g) c Q`. Distinguish the cases in `f0 : f = 0`. Substitute `f0` using the available equality. Establish `z0 : ∀ Q, ptF ψ θ A B 0 Q = 0` using `fun Q => by`. Use `pure_zero _ (fun k => ?_) Q` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `y`. Simplify using `[aPlusAll, aPlus, crea, Datum.dRho, heisO]`. Simplify using `only [z0, map_zero]`. Conclude with `hasDerivAt_const _ _`. Take `⟨f₀, hv0, hne⟩` from `GlobalTheory.T.exists_nonzero_fockVacuum_of_nonzero_thetaFunction D S T A B θ ψ hp.std hp.inf f hf f0`.
+
+Take `⟨κS, κT, hκ⟩` from `GlobalTheory.T.realLieAlgebra_acts_by_fockOperators_upToScalars D S T A B θ ψ χS χT om τ hp.inf hd`. Establish `k0` using `hκ f₀ hv0.1 (hv0.2 τ)`. Establish `all` using `GlobalTheory.T.lieAction_fockOperators_scalars_trace D S T A B θ ψ χS χT om f₀ τ αS αT hp.inf hd hαS hαT hv0`. Take `⟨z, hz⟩` from `Function.ne_iff.1 hne`. Establish `hz' : f₀ z ≠ 0` using `hz`.
+
+Establish `one : ∀ c : ℂ, ptF ψ θ A B f₀ (c • (1 : MvPolynomial _ ℂ)) z = c * f₀ z` using `fun c => by`. Rewrite using `[lsm]`. Establish `e1 : ptF ψ θ A B f₀ 1 = f₀` using `GlobalTheory.FockIndep.pure_one f₀`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+
+Establish `eS : κS XS = -((αT : ℂ) * XS.trace)`. Establish `e` using `(k0.1 XS hXS 1 z).unique (all.1 XS hXS 1 z)`. Rewrite `e` using `[lin, lin, Pi.add_apply, Pi.add_apply, add_right_inj, one, one]`. Conclude with `mul_right_cancel₀ hz' e`. Establish `eT : κT XT = (αS : ℂ) * XT.trace`.
+
+Establish `e` using `(k0.2 XT hXT 1 z).unique (all.2 XT hXT 1 z)`. Rewrite `e` using `[lin, lin, Pi.add_apply, Pi.add_apply, add_right_inj, one, one]`. Conclude with `mul_right_cancel₀ hz' e`. Establish `kf` using `hκ f hf (by rw [cA, cB]; exact hv)`. Establish `ht : IsThetaFunO ψ S T (ptF ψ θ A B f P)` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hp.std hp.inf _ _ _ _ hf P`.
+
+Establish `sm` using `GlobalTheory.T.weilDatum_realPlaceDerivatives_add D S T θ ψ χS χT om τ hp.inf hd XS hXS XT hXT _ _ _ ht (kf.1 XS hXS P) (kf.2 XT hXT P) x`. Establish `uS` using `(onb_facts (hp.onbS τ)).1`. Establish `uT` using `(onb_facts (hp.onbT τ)).1`. Establish `frA : (A.fr τ * XS * (A.fr τ)⁻¹) = (BS τ)⁻¹ * XS * BS τ`. Rewrite using `[rA, nonsing_inv_nonsing_inv _ uS]`.
+
+Establish `frB : (B.fr τ * XT * (B.fr τ)⁻¹) = (BT τ)⁻¹ * XT * BT τ`. Rewrite using `[rB, nonsing_inv_nonsing_inv _ uT]`. Establish `q` using `fock_eq_quad τ (pS τ) (pT τ) (hp.onbS τ) (hp.onbT τ) hXS hXT P`. Establish `e : ptF ψ θ A B f (quadOp τ (sS τ) (BS τ) XS (sT τ) (BT τ) XT (pS τ) (pT τ) P + (halfTrJ (sS τ) (BS τ) XS (sT τ) (BT τ) XT (pS τ) (pT τ) + (αS : ℂ) * XT.trace - (αT : ℂ) * XS.trace) • P) x = ptF ψ θ A B f (fockS τ (A.ε τ) (B.ε τ) ((A.fr τ * XS * (A.fr τ)⁻¹).map (starRingEnd ℂ)) P …`. Rewrite using `[← Pi.add_apply (ptF ψ θ A B f _), ← lin, frA, frB, eS, eT, eA, eB, comb _ _ _ _ _ _ _ q]`.
+
+Rewrite using `[e]`. Conclude with `sm`.
+-/
 theorem realAllO : ∀ D : D7, Formalism.IndefR.WeilFull.RealAllO D := by
   intro D ψ S T χS χT om hd _ θ sS sT BS BT pS pT hp τ αS αT hαS hαT XS XT hXS hXT f hf hv P x
   obtain ⟨A, hA⟩ : ∃ A : Fr S, A = frOf S sS BS pS hp.onbS := ⟨_, rfl⟩

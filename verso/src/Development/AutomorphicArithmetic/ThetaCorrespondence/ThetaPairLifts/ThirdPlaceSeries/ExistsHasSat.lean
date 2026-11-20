@@ -23,6 +23,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {a : ℕ}
 variable [IsTotallyComplex E] (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
 include hF in
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Establish `e : _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (Quotient.mk _ π) h = _` using `_root_.GlobalTheory.CuspRep.ParLaws.local_parameter_eq_reciprocity_of_is_local_component hL hσ h`. Rewrite `hu` using `[e]`. Take `⟨α, hα⟩` from `_root_.UpperTheory.One.M.exists_hasSatake_of_unr_alt (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h) hu`.
+
+Use `⟨Finset.univ.val.map α, hasSatGL_locRep hσ (GlobalTheory.LFun.SatCompare.hasSatGL_of_hasSatakeGL ((GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ _ _).2 ⟨α, rfl, hα⟩)), ?_⟩` and prove the remaining obligations. Rewrite using `[e, _root_.GlobalTheory.CuspRep.ParLaws.reciprocity_eq_diagonal_inv_of_has_satake (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h) hα, WD.frobEig_diag, Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 theorem exists_satake_frobenius_eigenvalues_eq_inv_of_unramified (π : CG E a) (h : IsPlaceOver A w) (hu : (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL π h).unr) :
     ∃ B : Multiset ℂˣ, π.HasSat w B ∧ (_root_.GlobalTheory.CuspRep.ParLawsT.locParT hL π h).frobEig = B.map fun b => ((b⁻¹ : ℂˣ) : ℂ) := by
   induction π using Quotient.inductionOn with | _ π =>

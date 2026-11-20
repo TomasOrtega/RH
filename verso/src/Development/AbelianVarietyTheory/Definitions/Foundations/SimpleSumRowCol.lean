@@ -10,11 +10,19 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx
 
 variable {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ}
 
+/- English proof (translation)
+Introduce `r s h`. Rewrite using `[hg r s h.le, Matrix.one_apply_ne]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`.
+-/
 theorem inN_tri {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : InN p g) : g.val.BlockTriangular (lev p) := by
   intro r s h
   rw [hg r s h.le, Matrix.one_apply_ne]
   rintro rfl; exact lt_irrefl _ h
 
+/- English proof (translation)
+Establish `: (g.val * h) r s = ((1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * h) r s`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Distinguish the cases in `ht : lev p t ≤ lev p r`. Rewrite using `[hg r t ht]`.
+
+Rewrite using `[hh (show lev p s < lev p t by omega)]; simp`. Rewrite using `[this, Matrix.one_mul]`.
+-/
 theorem mul_entry {p : ℕ} {g : GL (n ⊕ Fin c) k} (hg : InN p g) {h : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k}
     (hh : h.BlockTriangular (lev p)) (r s) (hrs : lev p s ≤ lev p r) : (g.val * h) r s = h r s := by
   have : (g.val * h) r s = ((1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) * h) r s := by
@@ -37,20 +45,32 @@ def Nsub (k : Type*) [Field k] (n : Type*) [Fintype n] [DecidableEq n] (c p : �
       exact Matrix.blockTriangular_inv_of_blockTriangular (inN_tri ha)
     rw [← mul_entry ha h1 r s hrs, Units.mul_inv]
 
+/- English proof (translation)
+Establish `: N k n c p = Nsub k n c p` using `Subgroup.closure_eq (Nsub k n c p)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem mem_N_iff {p : ℕ} {g : GL (n ⊕ Fin c) k} : g ∈ N k n c p ↔ InN p g := by
   have : N k n c p = Nsub k n c p := Subgroup.closure_eq (Nsub k n c p)
   rw [this]; rfl
 
+/- English proof (translation)
+Rewrite using `[mem_N_iff]`. Apply the tactic sequence `rintro (r | r) (s | s) h <;> simp [rowE, lowU, lev, Matrix.one_apply] at h ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rowE_mem (p : ℕ) (u : n → k) : rowE c p u ∈ N k n c (p + 1) := by
   rw [mem_N_iff]
   rintro (r | r) (s | s) h <;> simp [rowE, lowU, lev, Matrix.one_apply] at h ⊢
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_N_iff]`. Apply the tactic sequence `rintro (r | r) (s | s) h <;> simp [colE, upU, lev, Matrix.one_apply] at h ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem colE_mem (p : ℕ) (β : n → k) : colE c (p + 1) β ∈ N k n c p := by
   rw [mem_N_iff]
   rintro (r | r) (s | s) h <;> simp [colE, upU, lev, Matrix.one_apply] at h ⊢
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_N_iff]`. Introduce `h`. Apply `hu` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Simplify `h (Sum.inr l) (Sum.inl s) (by simp [lev])` using `[rowE, lowU]`.
+-/
 theorem rowE_not_mem (l : Fin c) (u : n → k) (hu : u ≠ 0) : rowE c (l.val + 1) u ∉ N k n c (l.val + 1) := by
   rw [mem_N_iff]
   intro h
@@ -58,6 +78,17 @@ theorem rowE_not_mem (l : Fin c) (u : n → k) (hu : u ≠ 0) : rowE c (l.val + 
   funext s
   simpa [rowE, lowU] using h (Sum.inr l) (Sum.inl s) (by simp [lev])
 
+/- English proof (translation)
+Establish `hne : (Sum.inr i : n ⊕ Fin c) ≠ Sum.inr j`. Introduce `e`. Use `Sum.inr.inj e` as an intermediate fact. Substitute `this` using the available equality. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Establish `key : ∀ t : n ⊕ Fin c, g.val (Sum.inr i) t * h.val t (Sum.inr j) = (if t = Sum.inr j then g.val (Sum.inr i) (Sum.inr j) else 0) + (if t = Sum.inr i then h.val (Sum.inr i) (Sum.inr j) else 0)`. Introduce `t`. Establish `li : lev p (Sum.inr i : n ⊕ Fin c) = i.val + 1` using `rfl`. Establish `lj : lev p (Sum.inr j : n ⊕ Fin c) = j.val + 1` using `rfl`.
+
+Distinguish the cases in `ht : lev p t ≤ i.val + 1`. Establish `htj : t ≠ Sum.inr j` using `by rintro rfl; omega`. Rewrite using `[hg _ t (by omega)]`. Distinguish the cases in `hti : t = Sum.inr i`. Substitute `hti` using the available equality.
+
+Simplify using `[htj]`. Simplify using `[htj, hti, Matrix.one_apply, Ne.symm hti]`. Establish `hti : t ≠ Sum.inr i` using `by rintro rfl; omega`. Rewrite using `[hh t _ (by omega)]`. Distinguish the cases in `htj : t = Sum.inr j`.
+
+Substitute `htj` using the available equality. Simplify using `[hti]`. Simplify using `[htj, hti, Matrix.one_apply]`. Simplify using `[key, Finset.sum_add_distrib]`.
+-/
 theorem simple_entry_mul {p : ℕ} {g h : GL (n ⊕ Fin c) k} (hg : InN p g) (hh : InN p h) (i j : Fin c)
     (hij : j.val = i.val + 1) : (g * h).val (Sum.inr i) (Sum.inr j) =
       g.val (Sum.inr i) (Sum.inr j) + h.val (Sum.inr i) (Sum.inr j) := by
@@ -83,6 +114,11 @@ theorem simple_entry_mul {p : ℕ} {g h : GL (n ⊕ Fin c) k} (hg : InN p g) (hh
       · simp [htj, hti, Matrix.one_apply]
   simp [key, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite `hg`, `hh` using `[mem_N_iff]`. Simplify using `only [simpleSum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hij`. Conclude with `simple_entry_mul hg hh i j hij`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem simpleSum_mul {p : ℕ} {g h : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c p) (hh : h ∈ N k n c p) :
     simpleSum (g * h) = simpleSum g + simpleSum h := by
   rw [mem_N_iff] at hg hh
@@ -92,6 +128,15 @@ theorem simpleSum_mul {p : ℕ} {g h : GL (n ⊕ Fin c) k} (hg : g ∈ N k n c p
   · exact simple_entry_mul hg hh i j hij
   · simp
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_N_iff]`. Rewrite using `[← map_inv]`. Establish `h11 : u.val.toBlocks₁₁ = 1`. Use extensionality with `r s`. Use `hu (Sum.inl r) (Sum.inl s) le_rfl` as an intermediate fact.
+
+Simplify `this` using `[Matrix.one_apply, toBlocks₁₁]`. Establish `hv : ((embX c g⁻¹) * u * embX c g).val = fromBlocks 1 ((g⁻¹).val * u.val.toBlocks₁₂) (u.val.toBlocks₂₁ * g.val) u.val.toBlocks₂₂`. Rewrite using `[Units.val_mul, Units.val_mul, ← fromBlocks_toBlocks u.val, h11]`. Simplify using `[embX, fromBlocks_multiply]`. Apply the tactic sequence `rintro (r | r) (s | s) h <;> rw [hv]`.
+
+Simplify using `[Matrix.one_apply]`. Establish `: ∀ t, u.val (Sum.inl t) (Sum.inr s) = 0` using `fun t => by`. Simplify using `using hu (Sum.inl t) (Sum.inr s) h`. Simplify using `[Matrix.mul_apply, toBlocks₁₂, this]`. Establish `: ∀ t, u.val (Sum.inr r) (Sum.inl t) = 0` using `fun t => by`.
+
+Simplify using `using hu (Sum.inr r) (Sum.inl t) h`. Simplify using `[Matrix.mul_apply, toBlocks₂₁, this]`. Simplify `hu (Sum.inr r) (Sum.inr s) h` using `[toBlocks₂₂]`.
+-/
 theorem conj_mem {p : ℕ} {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c p) (g : GL n k) :
     (embX c g)⁻¹ * u * embX c g ∈ N k n c p := by
   rw [mem_N_iff] at hu ⊢
@@ -114,6 +159,11 @@ theorem conj_mem {p : ℕ} {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c p) (g : 
     simp [Matrix.mul_apply, toBlocks₂₁, this]
   · simpa [toBlocks₂₂] using hu (Sum.inr r) (Sum.inr s) h
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Establish `hv : ∀ i j, ((embX c g⁻¹) * u * embX c g).val (Sum.inr i) (Sum.inr j) = u.val (Sum.inr i) (Sum.inr j)`. Introduce `i j`. Rewrite using `[Units.val_mul, Units.val_mul, ← fromBlocks_toBlocks u.val]`. Simplify using `[embX, fromBlocks_multiply]`.
+
+Simplify using `only [simpleSum, hv]`.
+-/
 theorem simpleSum_conj (u : GL (n ⊕ Fin c) k) (g : GL n k) :
     simpleSum ((embX c g)⁻¹ * u * embX c g) = simpleSum u := by
   rw [← map_inv]
@@ -123,6 +173,17 @@ theorem simpleSum_conj (u : GL (n ⊕ Fin c) k) (g : GL n k) :
     simp [embX, fromBlocks_multiply]
   simp only [simpleSum, hv]
 
+/- English proof (translation)
+Establish `hv : ∀ i j : Fin c, (rowE c (l.val + 1) u * colE c (l.val + 1 + 1) β * (rowE c (l.val + 1) u)⁻¹).val (Sum.inr i) (Sum.inr j) = (if i = l ∧ j.val = l.val + 1 then u ⬝ᵥ β else 0) + (1 : Matrix _ _ k) i j`. Introduce `i j`. Use `show ((fromBlocks 1 0 _ 1 * fromBlocks 1 _ 0 1 * fromBlocks 1 0 _ 1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)) _ _ = _`. Simplify using `only [fromBlocks_multiply, fromBlocks_apply₂₂]`. Apply the tactic sequence `by_cases hi : i = l <;> by_cases hj : j.val = l.val + 1 <;>`.
+
+Simplify using `[Matrix.mul_apply, Matrix.one_apply, dotProduct, hi, hj, Fin.val_inj]`. Simplify using `only [simpleSum, hv]`. Rewrite using `[Finset.sum_eq_single l, Finset.sum_eq_single ⟨l.val + 1, hl⟩]`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Introduce `j _ hj`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hj (Fin.ext h)`. Simplify using the standard rewrite rules. Introduce `i _ hi`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2`. Conclude with `absurd h2.1 hi`. Establish `: i ≠ j` using `by rintro rfl; omega`. Simplify using `[this]`.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem simpleSum_row_col (l : Fin c) (hl : l.val + 1 < c) (u β : n → k) :
     simpleSum (rowE c (l.val + 1) u * colE c (l.val + 1 + 1) β * (rowE c (l.val + 1) u)⁻¹) = u ⬝ᵥ β := by
   have hv : ∀ i j : Fin c, (rowE c (l.val + 1) u * colE c (l.val + 1 + 1) β * (rowE c (l.val + 1) u)⁻¹).val
@@ -147,11 +208,17 @@ theorem simpleSum_row_col (l : Fin c) (hl : l.val + 1 < c) (u β : n → k) :
     · rfl
   · simp
 
+/- English proof (translation)
+Simplify using `[affPt, basePt, Free]`.
+-/
 theorem affPt_block {n' : Type*} [Fintype n'] [DecidableEq n'] (p : ℕ) (x₀ : Matrix n n' k)
     (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) (r : n) (s : n') :
     affPt p x₀ e (Sum.inl r) (Sum.inl s) = x₀ r s := by
   simp [affPt, basePt, Free]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases r with r | r <;> simp [Free]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem free_last {n' : Type*} (p : ℕ) (hp : p ≤ c) (r : n ⊕ Fin c) :
     Free (n := n) (n' := n') p (r, Sum.inr (Fin.last c)) := by
   rcases r with r | r <;> simp [Free]
@@ -161,6 +228,11 @@ def mkN (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev p rs.1 < lev 
     Matrix (n ⊕ Fin c) (n ⊕ Fin c) k :=
   Matrix.of fun r s => if h : lev p r < lev p s then e ⟨(r, s), h⟩ else (1 : Matrix _ _ k) r s
 
+/- English proof (translation)
+Establish `ht : (mkN p e).BlockTriangular (lev p)`. Introduce `r s h`. Establish `: r ≠ s` using `by rintro rfl; exact lt_irrefl _ h`. Simplify using `[mkN, not_lt.2 h.le, this]`. Rewrite using `[ht.det]`.
+
+Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: (mkN p e).toSquareBlock (lev p) a = 1`. Use extensionality with `⟨r, hr⟩ ⟨s, hs⟩`. Simplify using `[toSquareBlock_def, mkN, hr, hs, Matrix.one_apply]`. Rewrite using `[this, det_one]`.
+-/
 theorem det_mkN (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev p rs.1 < lev p rs.2} → k) :
     (mkN p e).det = 1 := by
   have ht : (mkN p e).BlockTriangular (lev p) := by
@@ -184,6 +256,19 @@ def mkNel (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev p rs.1 < le
 section meas
 variable [MeasurableSpace k]
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (fun (g : N k n c p) (rs : {rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev p rs.1 < lev p rs.2}) => (g : GL (n ⊕ Fin c) k).val rs.1.1 rs.1.2)`. Introduce `e`. Use `⟨mkNel p e, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `rs`. Use `show mkN p e _ _ = _`.
+
+Simplify using `[mkN, rs.2]`. Use `⟨MeasurableEmbedding.of_measurable_inverse (g := mkNel (k := k) p) ?_ ?_ ?_ ?_, hs⟩` and prove the remaining obligations. Use `measurable_pi_lambda _ fun rs => ?_` and prove the remaining obligations. Establish `h1 : Measurable (fun g : GL (n ⊕ Fin c) k => g.val)` using `comap_measurable _`. Establish `h2 : Measurable (fun m : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k => m rs.1.1 rs.1.2)` using `(measurable_pi_apply rs.1.2).comp (measurable_pi_apply rs.1.1)`.
+
+Conclude with `h2.comp (h1.comp measurable_subtype_coe)`. Rewrite using `[hs.range_eq]`. Conclude with `MeasurableSet.univ`. Use `Measurable.subtype_mk ?_` and prove the remaining obligations. Use `measurable_comap_iff.2 ?_` and prove the remaining obligations.
+
+Use `measurable_pi_lambda _ fun r => measurable_pi_lambda _ fun s => ?_` and prove the remaining obligations. Use `show Measurable fun e : {rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev p rs.1 < lev p rs.2} → k => mkN (k := k) p e r s`. Distinguish the cases in `h : lev p r < lev p s`. Simplify using `only [mkN, Matrix.of_apply, dif_pos h]`. Conclude with `measurable_pi_apply _`.
+
+Simplify using `only [mkN, Matrix.of_apply, dif_neg h]`. Conclude with `measurable_const`. Introduce `g`. Use extensionality with `r s`. Use `show mkN (k := k) p (fun rs => (g : GL (n ⊕ Fin c) k).val rs.1.1 rs.1.2) r s = _`.
+
+Distinguish the cases in `h : lev p r < lev p s`. Simplify using `[mkN, h]`. Simplify using `only [mkN, Matrix.of_apply, dif_neg h]`. Conclude with `(mem_N_iff.1 g.2 r s (not_lt.1 h)).symm`.
+-/
 theorem coord_embedding (p : ℕ) : MeasurableEmbedding
     (fun (g : N k n c p) (rs : {rs : (n ⊕ Fin c) × (n ⊕ Fin c) // lev p rs.1 < lev p rs.2}) =>
       (g : GL (n ⊕ Fin c) k).val rs.1.1 rs.1.2) ∧ Function.Surjective
@@ -219,6 +304,11 @@ theorem coord_embedding (p : ℕ) : MeasurableEmbedding
     · simp only [mkN, Matrix.of_apply, dif_neg h]
       exact (mem_N_iff.1 g.2 r s (not_lt.1 h)).symm
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : volN ν n c p Set.univ = 0` using `by rw [h]; rfl`. Unfold `volN at h1`. Rewrite `h1` using `[(coord_embedding (k := k) (n := n) (c := c) p).1.comap_apply, Set.image_univ, (coord_embedding (k := k) (n := n) (c := c) p).2.range_eq, Measure.pi_univ]`. Take `⟨_, _, h2⟩` from `Finset.prod_eq_zero_iff.1 h1`.
+
+Conclude with `hν (Measure.measure_univ_eq_zero.1 h2)`.
+-/
 theorem volN_ne_zero (ν : Measure k) [SigmaFinite ν] (hν : ν ≠ 0) (p : ℕ) : volN ν n c p ≠ 0 := by
   classical
   intro h
@@ -237,6 +327,9 @@ open Classical in
 def chi (ψ : AddChar k Circle) (p : ℕ) (h : GL (n ⊕ Fin c) k) : ℂ :=
   if h ∈ N k n c p then (ψ (simpleSum h) : ℂ) else 0
 
+/- English proof (translation)
+Unfold `chi`. Distinguish the cases in `hh : h ∈ N k n c p`. Rewrite using `[if_pos hh, if_pos (mul_mem hu hh), simpleSum_mul hu hh, AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hh, if_neg (by rwa [Subgroup.mul_mem_cancel_left _ hu]), mul_zero]`.
+-/
 theorem chi_mul (ψ : AddChar k Circle) (p : ℕ) {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c p) (h) :
     chi ψ p (u * h) = (ψ (simpleSum u) : ℂ) * chi ψ p h := by
   unfold chi
@@ -249,9 +342,31 @@ def reg (G : Type*) [Group G] : Representation ℂ G (G →₀ ℂ) where
   map_one' := by ext; simp
   map_mul' g h := by ext; simp [mul_assoc]
 
+/- English proof (translation)
+Simplify using `[reg]`.
+-/
 theorem reg_single {G : Type*} [Group G] (g h : G) (x : ℂ) :
     reg G g (Finsupp.single h x) = Finsupp.single (g * h) x := by simp [reg]
 
+/- English proof (translation)
+Set `w : GL n k → ℂ` to `fun g => ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ)`. Establish `hw : ∀ g g', w (g * g') = w g * w g'`. Introduce `g g'`. Simplify using `only [w, nabs, map_mul, NNReal.coe_mul]`. Rewrite using `[Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Set `b : (GL n k →₀ ℂ) →ₗ[ℂ] (GL (n ⊕ Fin c) k →₀ ℂ) →ₗ[ℂ] ℂ` to `Finsupp.linearCombination ℂ fun g => Finsupp.linearCombination ℂ fun h => w g * chi ψ p ((embX c g)⁻¹ * h)`. Establish `hb : ∀ g h x y, b (Finsupp.single g x) (Finsupp.single h y) = x * (y * (w g * chi ψ p ((embX c g)⁻¹ * h)))`. Introduce `g h x y`.
+
+Simplify using `[b]`. Use `⟨b, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `φ u hu v`. Proceed by induction on `φ using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a a' h1 h2 => simp only [map_add, LinearMap.add_apply, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `single g x`. Proceed by induction on `v using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add a a' h1 h2 => simp only [map_add, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `single h y`. Rewrite using `[reg_single, hb, hb, show (embX c g)⁻¹ * (u * h) = ((embX c g)⁻¹ * u * embX c g) * ((embX c g)⁻¹ * h) by group, chi_mul ψ p (conj_mem hu g), simpleSum_conj]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `g' φ v`. Proceed by induction on `φ using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a a' h1 h2 => simp only [map_add, LinearMap.add_apply, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `single g x`. Proceed by induction on `v using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a a' h1 h2 => simp only [map_add, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `single h y`. Rewrite using `[reg_single, reg_single, hb, hb, hw, show (embX c (g' * g))⁻¹ * (embX c g' * h) = (embX c g)⁻¹ * h by rw [map_mul]; group]`. Simplify using `only [w]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h0`.
+
+Use `hb 1 1 1 1` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `[w, nabs, chi, one_mem] at this`. Conclude with `Circle.coe_ne_zero _ this.symm`.
+-/
 theorem exists_isPos (ψ : AddChar k Circle) (p : ℕ) :
     ∃ b : (GL n k →₀ ℂ) →ₗ[ℂ] (GL (n ⊕ Fin c) k →₀ ℂ) →ₗ[ℂ] ℂ,
       IsPos ψ p (reg (GL n k))

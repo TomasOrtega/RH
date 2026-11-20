@@ -10,20 +10,35 @@ def uEl : SL(2, ℤ) := ⟨!![0, -1; 1, 1], by norm_num [Matrix.det_fin_two_of]�
 
 noncomputable def μ : ℂ := ⟨1 / 2, Real.sqrt 3 / 2⟩
 
+/- English proof (translation)
+Establish `h3 : Real.sqrt 3 ^ 2 = 3` using `Real.sq_sqrt (by norm_num)`. Apply the tactic sequence `apply Complex.ext <;> simp [μ, pow_two] <;> nlinarith [h3]`.
+-/
 theorem μ_sq : μ ^ 2 = μ - 1 := by
   have h3 : Real.sqrt 3 ^ 2 = 3 := Real.sq_sqrt (by norm_num)
   apply Complex.ext <;> simp [μ, pow_two] <;> nlinarith [h3]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [μ, UpperHalfPlane.ρ] <;> norm_num`.
+-/
 theorem coe_ρ : (ρ : ℂ) = μ - 1 := by
   apply Complex.ext <;> simp [μ, UpperHalfPlane.ρ] <;> norm_num
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Complex.re h` as an intermediate fact. Simplify using `[μ] at this`.
+-/
 theorem μ_ne : μ ≠ 0 := by
   intro h; have := congrArg Complex.re h; simp [μ] at this
 
+/- English proof (translation)
+Simplify using `only [denom, Matrix.SpecialLinearGroup.coe_GL_coe_matrix, Matrix.SpecialLinearGroup.map_apply_coe]`. Simplify using `[uEl, coe_ρ]`.
+-/
 theorem denom_uEl : denom (uEl : GL (Fin 2) ℝ) ρ = μ := by
   simp only [denom, Matrix.SpecialLinearGroup.coe_GL_coe_matrix, Matrix.SpecialLinearGroup.map_apply_coe]
   simp [uEl, coe_ρ]
 
+/- English proof (translation)
+Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_specialLinearGroup_apply]`. Simplify using `[uEl, coe_ρ]`. Rewrite using `[div_eq_iff (by simpa using μ_ne), neg_eq_iff_eq_neg]`. Take the linear combination `μ_sq`.
+-/
 theorem uEl_smul_ρ : uEl • ρ = ρ := by
   apply UpperHalfPlane.ext
   rw [coe_specialLinearGroup_apply]
@@ -31,6 +46,13 @@ theorem uEl_smul_ρ : uEl • ρ = ρ := by
   rw [div_eq_iff (by simpa using μ_ne), neg_eq_iff_eq_neg]
   linear_combination μ_sq
 
+/- English proof (translation)
+Establish `h3 : μ ^ 3 = -1` using `by linear_combination (μ + 1) * μ_sq`. Establish `h5 : μ ^ 5 = 1 - μ` using `by linear_combination μ ^ 2 * h3 - μ_sq`. Establish `h6 : μ ^ (6 : ℤ) = 1`. Rewrite using `[zpow_ofNat]`. Take the linear combination `(μ ^ 3 - 1) * h3`.
+
+Establish `key : ∀ q t : ℤ, μ ^ (6 * q + t) = μ ^ t` using `fun q t => by`. Rewrite using `[zpow_add₀ μ_ne, zpow_mul, h6, one_zpow, one_mul]`. Establish `hre : μ.re = 1 / 2` using `rfl`. Take `⟨m, hm⟩` from `hw`. Establish `hc : -w = 6 * (-w / 6) + 1 ∨ -w = 6 * (-w / 6) + 3 ∨ -w = 6 * (-w / 6) + 5` using `by omega`.
+
+Break down `hc with h | h | h` into its components or cases. Rewrite using `[if_neg (by omega), h, key, zpow_one, hre]`. Rewrite using `[if_pos (by omega), h, key, zpow_ofNat, h3]; simp`. Rewrite using `[if_neg (by omega), h, key, zpow_ofNat, h5, Complex.sub_re, hre]; norm_num`.
+-/
 theorem re_μ_zpow {w : ℤ} (hw : Odd w) :
     (μ ^ (-w)).re = if (3 : ℤ) ∣ w then -1 else 1 / 2 := by
   have h3 : μ ^ 3 = -1 := by linear_combination (μ + 1) * μ_sq
@@ -47,6 +69,15 @@ theorem re_μ_zpow {w : ℤ} (hw : Odd w) :
   · rw [if_pos (by omega), h, key, zpow_ofNat, h3]; simp
   · rw [if_neg (by omega), h, key, zpow_ofNat, h5, Complex.sub_re, hre]; norm_num
 
+/- English proof (translation)
+Take `⟨h0, h1, -⟩` from `(CongruenceSubgroup.Gamma1_mem N γ).1 hγ`. Establish `htr : ((x * uEl * x⁻¹ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ).trace = 1`. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.trace_mul_comm, ← Matrix.SpecialLinearGroup.coe_mul, inv_mul_cancel_left]`. Simplify using `[uEl, Matrix.trace_fin_two]`. Introduce and unpack `(h | h)`.
+
+Rewrite `htr` using `[h, mul_inv_cancel_right, Matrix.trace_fin_two]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod N) htr`. Move the coercions through the operations in `at h2`. Establish `h3 : ((1 : ℕ) : ZMod N) = 0` using `by push_cast; linear_combination h2 - h0 - h1`. Use `Nat.le_of_dvd (by norm_num) ((ZMod.natCast_eq_zero_iff _ _).1 h3)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `htr` using `[h, neg_mul, mul_inv_cancel_right, Matrix.SpecialLinearGroup.coe_neg, Matrix.trace_neg, Matrix.trace_fin_two]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod N) htr`. Move the coercions through the operations in `at h2`. Establish `h3 : ((3 : ℕ) : ZMod N) = 0` using `by push_cast; linear_combination - h2 - h0 - h1`.
+
+Use `Nat.le_of_dvd (by norm_num) ((ZMod.natCast_eq_zero_iff _ _).1 h3)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_fixed {N : ℕ} (hN : 5 ≤ N) {γ x : SL(2, ℤ)} (hγ : γ ∈ CongruenceSubgroup.Gamma1 N) :
     ¬ (x * uEl = γ * x ∨ x * uEl = -(γ * x)) := by
   obtain ⟨h0, h1, -⟩ := (CongruenceSubgroup.Gamma1_mem N γ).1 hγ
@@ -71,6 +102,23 @@ theorem not_fixed {N : ℕ} (hN : 5 ≤ N) {γ x : SL(2, ℤ)} (hγ : γ ∈ Con
     have := Nat.le_of_dvd (by norm_num) ((ZMod.natCast_eq_zero_iff _ _).1 h3)
     omega
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `hs.exists_perm uEl`. Establish `hε : ∀ i, ∃ ε : ℂ, ∀ j, evM s w F ρ i j * μ ^ (-w j) = ε * evM s w F ρ (π i) j`. Introduce `i`. Establish `h0 : ∀ j, (F j ∣[w j] (s i * uEl)) ρ = evM s w F ρ i j * μ ^ (-w j)` using `fun j => by`. Rewrite using `[slash_mul_apply, uEl_smul_ρ, denom_uEl]`.
+
+Both sides reduce to the same expression. Take `⟨γ, hγ, h | h⟩` from `hπ i`. Use `⟨1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← h0, h, (hF j).2.slash_mul hγ, one_mul]`. Both sides reduce to the same expression.
+
+Use `⟨-1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← h0, h, slash_neg_of_odd (hF j).1, (hF j).2.slash_mul hγ, neg_one_mul]`. Both sides reduce to the same expression. Use `choose ε hε using hε`. Establish `hne : ∀ i, π i ≠ i` using `fun i hi => by`.
+
+Take `⟨γ, hγ, h⟩` from `hπ i`. Rewrite `h` using `[hi]`. Conclude with `not_fixed hN (hΓ hγ) h`. Use `set A := evM s w F ρ with hA`. Set `P : Matrix (Fin r) (Fin r) ℂ` to `Matrix.of fun i i' => if i' = π i then ε i else 0`.
+
+Establish `hAP : A * Matrix.diagonal (fun j => μ ^ (-w j)) = P * A`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, hε, Matrix.mul_apply]`. Simplify using `[P]`. Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hdet`.
+
+Establish `hD : Matrix.diagonal (fun j => μ ^ (-w j)) = A⁻¹ * (P * A)`. Rewrite using `[← hAP, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul]`. Establish `htr : ∑ j, μ ^ (-w j) = 0`. Rewrite using `[← Matrix.trace_diagonal, hD, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[P, (hne i).symm]`. Establish `hre` using `congrArg Complex.re htr`. Rewrite `hre` using `[Complex.re_sum, Finset.sum_congr rfl fun j _ => re_μ_zpow (hF j).1, Finset.sum_ite]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, Complex.zero_re] at hre`. Establish `hc` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin r))) (fun j => (3 : ℤ) ∣ w j)`.
+
+Rewrite `hc` using `[Finset.card_univ, Fintype.card_fin]`. Establish `hc'` using `congrArg (Nat.cast : ℕ → ℝ) hc`. Move the coercions through the operations in `at hc'`. Establish `: (3 : ℝ) * ((Finset.univ.filter fun j => (3 : ℤ) ∣ w j).card : ℝ) = r` using `by linarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem three_mul_card_dvd (N : ℕ) (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ)
     (F : Fin r → ℍ → ℂ) (hN : 5 ≤ N) (hΓ : Γ ≤ CongruenceSubgroup.Gamma1 N) (hs : IsReps Γ s)
     (hF : ∀ j, Odd (w j) ∧ IsMF Γ (w j) (F j)) (hdet : (evM s w F ρ).det ≠ 0) :

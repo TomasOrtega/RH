@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.C
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V.Z.J Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V
 
+/- English proof (translation)
+Use `set B := Submodule.comap (Z1 σ).subtype (B1 σ) with hB`. Establish `hBZ : B1 σ ≤ Z1 σ`. Introduce and unpack `f ⟨m, rfl⟩`. Establish `hfun : (d0 σ m : D → M) = fun g => σ g m - m` using `funext fun g => amitsur_d0_apply σ m g`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfun]`. Conclude with `(hσ.comp (Continuous.prodMk continuous_id continuous_const)).sub continuous_const`. Introduce `g h`. Rewrite using `[amitsur_d0_apply, amitsur_d0_apply, amitsur_d0_apply, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hker : LinearMap.ker (d0 σ) = H0 σ`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, mem_riemannRochSpace_iff_regularAt_everywhere, funext_iff]`. Simplify using `[amitsur_d0_apply, sub_eq_zero]`. Establish `hM : Nat.card M = Nat.card (H0 σ) * Nat.card (B1 σ)`.
+
+Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker (d0 σ)), Nat.card_congr (d0 σ).quotKerEquivRange.toEquiv, hker]`. Both sides reduce to the same expression. Establish `hZ : Nat.card (Z1 σ) = Nat.card B * Nat.card (H1 σ)` using `Submodule.card_eq_card_quotient_mul_card B`. Establish `hBc : Nat.card B = Nat.card (B1 σ)` using `Nat.card_congr (Submodule.comapSubtypeEquivOfLe hBZ).toEquiv`. Use `haveI : Finite (B1 σ) := by show Finite (LinearMap.range (d0 σ))`.
+
+Conclude with `Finite.of_surjective (d0 σ).rangeRestrict (LinearMap.surjective_rangeRestrict _)`. Establish `hB1pos : 0 < Nat.card (B1 σ)` using `Nat.card_pos`. Establish `hH1pos : 0 < Nat.card (H1 σ)` using `Nat.card_pos`. Use `⟨Nat.finite_of_card_ne_zero ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hZ, hBc]`.
+
+Check the signs of the components of the expression. Rewrite using `[hZ, hBc, hM]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cardZ {k D M : Type} [CommRing k] [Group D] [TopologicalSpace D] [AddCommGroup M] [Module k M]
     [Finite M] [TopologicalSpace M] [DiscreteTopology M] (σ : Representation k D M) (hσ : ContAction σ)
     [Finite (H1 σ)] : Finite (Z1 σ) ∧ Nat.card (Z1 σ) * Nat.card (H0 σ) = Nat.card (H1 σ) * Nat.card M := by
@@ -47,6 +60,17 @@ private def zRep (n : ℕ) {D M : Type} [Group D] [AddCommGroup M] [Module (ZMod
     show ρ (g * h) m = ρ g (ρ h m)
     rw [map_mul]; rfl
 
+/- English proof (translation)
+Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun φ => ⟨(φ.1 : M →ₗ[ZMod n] ZMod n).toAddMonoidHom, by`. Introduce `s x`. Establish `h1` using `(Representation.mem_invariants _ _).mp φ.2 s`. Establish `h2` using `congrArg (fun ψ : TDual (ZMod n) M => ψ (σ s x)) h1`.
+
+Establish `hinv : σ s⁻¹ (σ s x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, MonoidHom.id_apply, twDual_apply, hinv] at h2`. Conclude with `h2.symm⟩`. Use `invFun := fun f => ⟨f.1.toZModLinearMap n, by`.
+
+Use `(Representation.mem_invariants _ _).mpr ?_` and prove the remaining obligations. Introduce `g`. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Establish `h1` using `f.2 g (σ g⁻¹ m)`.
+
+Establish `hinv : σ g (σ g⁻¹ m) = m`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite `h1` using `[hinv]`. Conclude with `h1.symm⟩`. Use `left_inv := fun φ => Subtype.ext (TDual.ext fun m => rfl)`.
+
+Use `right_inv := fun f => Subtype.ext (AddMonoidHom.ext fun m => rfl) }`.
+-/
 private theorem cardInv {n : ℕ} {D M : Type} [Group D] [AddCommGroup M] [Module (ZMod n) M] (χ : D →* (ZMod n)ˣ)
     (σ : Representation (ZMod n) D M) :
     Nat.card (H0 ((twDual χ σ).comp (MonoidHom.id D))) =
@@ -74,6 +98,11 @@ private theorem cardInv {n : ℕ} {D M : Type} [Group D] [AddCommGroup M] [Modul
       left_inv := fun φ => Subtype.ext (TDual.ext fun m => rfl)
       right_inv := fun f => Subtype.ext (AddMonoidHom.ext fun m => rfl) }
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨(fun y => g⁻¹ * y) ⁻¹' (ρ.ker : Set D), h.preimage (continuous_const.mul continuous_id), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[MonoidHom.mem_ker]`. Introduce `x hx`.
+
+Establish `hk : ρ (g⁻¹ * x) = 1` using `MonoidHom.mem_ker.mp hx`. Establish `hx' : x = g * (g⁻¹ * x)` using `by group`. Rewrite using `[hx', map_mul, Module.End.mul_apply, hk, Module.End.one_apply]`.
+-/
 private theorem lc_orbit {D M : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [AddCommGroup M]
     (ρ : Representation ℤ D M) (h : IsOpen (ρ.ker : Set D)) (m : M) : IsLocallyConstant fun g => ρ g m := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -85,6 +114,27 @@ private theorem lc_orbit {D M : Type} [Group D] [TopologicalSpace D] [IsTopologi
     have hx' : x = g * (g⁻¹ * x) := by group
     rw [hx', map_mul, Module.End.mul_apply, hk, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `hFin hTD hEC l _ F Ω _ _ _ _ _ A v hAv hlv`. Unfold `UpperTheory.V.Z.J.LE`. Introduce `k hk N _ _ ρ hx hker`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `letI : Module (ZMod (l ^ k)) N := AddCommGroup.zmodModule hx`.
+
+Use `letI tN : TopologicalSpace N := ⊥`. Use `haveI : DiscreteTopology N := ⟨rfl⟩`. Set `σ : Representation (ZMod (l ^ k)) (Dec (F` to `F) A) N := zRep (l ^ k) ρ`. Establish `hcont : ContAction σ`. Unfold `ReciprocityTheory.Gal.ContAction`.
+
+Rewrite using `[← IsLocallyConstant.iff_continuous, IsLocallyConstant.iff_exists_open]`. Introduce and unpack `⟨g, x⟩`. Take `⟨U, hU, hgU, hUc⟩` from `(IsLocallyConstant.iff_exists_open _).mp (lc_orbit ρ hker x) g`. Use `⟨U ×ˢ {x}, hU.prod (isOpen_discrete _), ⟨hgU, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g', x'⟩ ⟨hg', hx'⟩`.
+
+Simplify using `only [Set.mem_singleton_iff] at hx'`. Substitute `hx'` using the available equality. Conclude with `hUc g' hg'`. Take `⟨hH0f, hH1f, hH2f, -⟩` from `hFin F Ω l k N A σ v hk hAv hcont`. Use `haveI := hH0f`.
+
+Use `haveI := hH1f`. Use `haveI := hH2f`. Establish `hec` using `(hEC F Ω l k N A σ v hk hAv hcont).1 hlv`. Take `⟨⟨e2⟩, -, -, -, hcup⟩` from `hTD F Ω l k N A σ v hk hAv hcont`. Take `⟨hZf, hZc⟩` from `cardZ σ hcont`.
+
+Use `haveI := hZf`. Use `haveI hDf : Finite (N →ₗ[ZMod (l ^ k)] ZMod (l ^ k)) := Finite.of_injective _ (LinearMap.coe_injective (R := ZMod (l ^ k)) (M := N) (M₃ := ZMod (l ^ k)))`. Use `haveI hTf : Finite (TDual (ZMod (l ^ k)) N) := hDf`. Establish `e1` using `Nat.card_congr ((Equiv.ofBijective _ hcup).trans (by exact (LinearEquiv.congrRight e2).toEquiv))`. Establish `e3` using `e1.trans (by exact (Th.dualZ (l ^ k) _).1)`.
+
+Establish `h2` using `e3.trans (by exact cardInv _ σ)`. Establish `h3 : Nat.card ↑(HomMu l k ((cycZ F Ω l).comp (Dec (F` using `F) A).subtype) ρ) = Nat.card (H2 σ) := h2.symm`. Establish `hZ : Zc ρ = ((Z1 σ : Submodule _ _) : Set ((Dec (F` using `F) A) → N)) := by`. Use extensionality with `z`. Use `show (IsLocallyConstant z ∧ _) ↔ (Continuous z ∧ _)`.
+
+Rewrite using `[IsLocallyConstant.iff_continuous]`. Both sides reduce to the same expression. Establish `key : ∀ {a b c n e d : ℕ}, a * b = c * n → c = b * e * n ^ d → 0 < b → a = n ^ (1 + d) * e`. Introduce `a b c n e d h1 h2 hb`. Apply `Nat.eq_of_mul_eq_mul_right hb` to reduce the goal to its premises.
+
+Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hZ]`. Conclude with `Set.toFinite _`.
+
+Rewrite using `[hZ, ← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq, h3]`. Conclude with `key hZc hec (by exact Nat.card_pos)`.
+-/
 theorem UpperTheory.V.Z.J.leOf :
     ReciprocityTheory.Gal.LocalFiniteness → ReciprocityTheory.Gal.LocalTateDuality → ReciprocityTheory.Gal.LocalEulerChar → ∀ (l : ℕ) [Fact l.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)), IsPlaceOver A v → ((l : ℕ) : NumberField.RingOfIntegers F) ∈ v.asIdeal → LE l (Dec (F := F) A) ((cycZ F Ω l).comp (Dec (F := F) A).subtype) (locDeg v) := by
   intro hFin hTD hEC l _ F Ω _ _ _ _ _ A v hAv hlv

@@ -25,6 +25,13 @@ section Frame
 
 variable {hR : Rd.ReadLimit} {π : Submodule ℂ (UA E n → ℂ)} {S T : Finset (Pl E)} {F₀ : Frame0 hR π S} (F : RunFrame F₀ T)
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp [BGen.wd, h0]`. Consider the case `cons g w ih`. Take `⟨ih1, ih2⟩` from `ih (fun g hg => hw g (List.mem_cons_of_mem _ hg))`. Break down `g with c | s` into its components or cases.
+
+Use `⟨ih1, ?_⟩` and prove the remaining obligations. Simplify using `only [BGen.wd, List.foldr_cons, Sum.elim_inl, List.map_cons, List.prod_cons, one_mul] at ih2 ⊢`. Conclude with `ih2`. Establish `hs : s.Ok` using `hw (Sum.inr s) List.mem_cons_self`. Establish `h` using `BlockFiniteConvolution.blkOp₀ E B s (BGen.wd w t₀) hs ih1`.
+
+Use `⟨h.2.2.1, ?_⟩` and prove the remaining obligations. Establish `e : BGen.wd (Sum.inr s :: w) t₀ = s.mul (BGen.wd w t₀)` using `rfl`. Rewrite using `[e, h.2.2.2.2.2.2.1, ih2, List.map_cons, List.prod_cons, Sum.elim_inr, mul_assoc]`.
+-/
 theorem wd_val {B : Block E} (w : List (BGen B)) (t₀ : PT B) (hw : ∀ g ∈ w, BGen.Ok g) (h0 : t₀.Ok)
     (χa : InfinitePlace E → Inf B.a) (χb : InfinitePlace E → Inf B.b) :
     (BGen.wd w t₀).Ok ∧ (BGen.wd w t₀).val χa χb = (w.map (Sum.elim (fun _ => 1) fun s => s.val χa χb)).prod * t₀.val χa χb := by
@@ -43,6 +50,9 @@ theorem wd_val {B : Block E} (w : List (BGen B)) (t₀ : PT B) (hw : ∀ g ∈ w
       rw [e, h.2.2.2.2.2.2.1, ih2, List.map_cons, List.prod_cons, Sum.elim_inr, mul_assoc]
 
 variable {F} in
+/- English proof (translation)
+Establish `h1 : (∏ v, coshT (F₀.A i).bump (cas ((F₀.A i).χa v))) * ∏ v, coshT (F₀.A i).bump (cas ((F₀.A i).χb v)) = 1` using `(F₀.A i).one`. Simplify using `only [PT.val, valA, Arch.pt, Arch.valW, Finset.prod_mul_distrib]`. Rewrite using `[mul_mul_mul_comm, h1, mul_one]`.
+-/
 theorem pt_val (i : F₀.C.ι) (wa wb : InfinitePlace E → List (Bool × ℕ)) (ψ : Matrix F.κ F.κ (Hf E (F₀.C.a i) (n - F₀.C.a i) → ℂ)) (r : ℝ) :
     ((F₀.A i).pt wa wb ψ r).val (F₀.A i).χa (F₀.A i).χb =
       (∏ v, zVal (wa v) ((F₀.A i).χa v)) * ∏ v, zVal (wb v) ((F₀.A i).χb v) := by
@@ -51,16 +61,33 @@ theorem pt_val (i : F₀.C.ι) (wa wb : InfinitePlace E → List (Bool × ℕ)) 
   simp only [PT.val, valA, Arch.pt, Arch.valW, Finset.prod_mul_distrib]
   rw [mul_mul_mul_comm, h1, mul_one]
 
+/- English proof (translation)
+The claim follows from `FBL.hermInf_holds _ _`.
+-/
 theorem hermA (i : F₀.C.ι) (v : InfinitePlace E) : IsHerm ((F₀.A i).χa v) := FBL.hermInf_holds _ _
+/- English proof (translation)
+The claim follows from `FBL.hermInf_holds _ _`.
+-/
 theorem hermB (i : F₀.C.ι) (v : InfinitePlace E) : IsHerm ((F₀.A i).χb v) := FBL.hermInf_holds _ _
 
+/- English proof (translation)
+Simplify using `[RunFrame.ptL, pt_val, zVal]`.
+-/
 theorem ptL_val (i : F₀.C.ι) (L : LM F.d.kap (F₀.C.a i) (n - F₀.C.a i)) :
     (F.ptL i L).val (F₀.A i).χa (F₀.A i).χb = 1 := by
   simp [RunFrame.ptL, pt_val, zVal]
 
+/- English proof (translation)
+Simplify using `[RunFrame.t₂, pt_val, zVal]`.
+-/
 theorem t₂_val (i : F₀.C.ι) : (F.t₂ i).val (F₀.A i).χa (F₀.A i).χb = 1 := by
   simp [RunFrame.t₂, pt_val, zVal]
 
+/- English proof (translation)
+Break down `x with u | x | x` into its components or cases. Simplify using `[RunFrame.g, RunFrame.ug, RunFrame.t₀, ptL_val]`. Simplify using `only [RunFrame.g, RunFrame.ug] split_ifs with h`. Substitute `h` using the available equality. Take `⟨j, v, s, m, side⟩` from `x`.
+
+Simplify using `only [Sum.elim_inr, Sum.elim_inl, id, one_mul, RunFrame.tD, pt_val, RunFrame.dval]`. Apply the tactic sequence `cases side <;> simp [zVal] <;>`. Apply the tactic sequence `rw [Finset.prod_eq_single v (fun b _ hb => by simp [hb]) (by simp)] <;> simp`. Simplify using the standard rewrite rules. Simplify using `[RunFrame.g, RunFrame.ug, ptL_val]`.
+-/
 theorem letter (i : F₀.C.ι) (x : F.Γ) :
     Sum.elim id (fun _ => 1) (F.g x i) * Sum.elim (fun _ => 1) (fun s : PT (F.B i) => s.val (F₀.A i).χa (F₀.A i).χb) (F.g x i) =
       Sum.elim id (fun _ => 1) (F.ug x) := by
@@ -76,6 +103,25 @@ theorem letter (i : F₀.C.ι) (x : F.Γ) :
     · simp
   · simp [RunFrame.g, RunFrame.ug, ptL_val]
 
+/- English proof (translation)
+Establish `hadj : ∀ g : BGen (F.B i), g.Ok → g.adj.Ok ∧ Sum.elim id (fun _ => 1) g.adj * Sum.elim (fun _ => 1) (fun s : PT (F.B i) => s.val (F₀.A i).χa (F₀.A i).χb) g.adj = starRingEnd ℂ (Sum.elim id (fun _ => 1) g * Sum.elim (fun _ => 1) (fun s : PT (F.B i) => s.val (F₀.A i).χa (F₀.A i).χb …`. Introduce and unpack `(c | t) hg`. Conclude with `⟨trivial, by simp [BGen.adj]⟩`. Establish `h` using `BlockFiniteConvolution.blkOp₀ E (F.B i) t t hg hg`. Use `⟨h.2.2.2.2.1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [BGen.adj, Sum.map_inr, Sum.elim_inr, one_mul]`. Conclude with `h.2.2.2.2.2.2.2 _ _ (hermA i) (hermB i)`. Establish `hl : ∀ p : F.Γ × Bool, (gl F i p).Ok ∧ Sum.elim id (fun _ => 1) (gl F i p) * Sum.elim (fun _ => 1) (fun s : PT (F.B i) => s.val (F₀.A i).χa (F₀.A i).χb) (gl F i p) = Sum.elim id (fun _ => 1) (ul F p)`. Introduce and unpack `⟨x, b⟩`. Establish `hx` using `letter F i x`.
+
+Consider the cases of `b`. Simplify using `only [gl, ul, Bool.false_eq_true, if_false]`. Conclude with `⟨hF.ok x i, hx⟩`. Simplify using `only [gl, ul, if_true]`. Use `⟨(hadj _ (hF.ok x i)).1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(hadj _ (hF.ok x i)).2, hx]`. Apply the tactic sequence `rcases F.ug x with c | u <;> simp [U.UGen.adj]`. Establish `hok : ∀ g ∈ Sum.inr (F.t₁ i) :: (ws.map (bw F i)).flatten, BGen.Ok g`. Introduce `g hg`. Break down `List.mem_cons.1 hg with rfl | hg` into its components or cases.
+
+Conclude with `(hF.tok i).1`. Take `⟨l, hl', hg⟩` from `List.mem_flatten.1 hg`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hl'`. Break down `List.mem_append.1 hg with hg | hg` into its components or cases. Rewrite using `[List.eq_of_mem_replicate hg]`.
+
+Conclude with `hF.βok i`. Take `⟨p, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `(hl p).1`. Take `⟨-, hv⟩` from `wd_val _ (F.t₂ i) hok (hF.tok i).2 (F₀.A i).χa (F₀.A i).χb`. Rewrite using `[tw, hv, t₂_val, List.map_cons, List.prod_cons, Sum.elim_inr, RunFrame.t₁, ptL_val, one_mul, mul_one, BGen.sc, ← List.prod_map_mul, U.UGen.sc, lU, List.map_map]`.
+
+Use `clear hok hv`. Proceed by induction on `ws with`. Consider the case `nil => simp`. Consider the case `cons w ws ih`. Rewrite using `[List.map_cons, List.flatten_cons, List.map_append, List.prod_append, ih, List.flatten_cons, List.map_append, List.prod_append]`.
+
+Use `congr 1`. Simplify using `only [bw, List.map_append, List.prod_append, List.map_replicate, List.map_map]`. Rewrite using `[List.prod_replicate, Sum.elim_inr, Sum.elim_inr, RunFrame.β, ptL_val]`. Simplify using `only [mul_one, one_pow, one_mul]`. Use `congr 1`.
+
+Conclude with `List.map_congr_left fun p _ => (hl p).2`.
+-/
 theorem val_eq (hF : F.Struct) (i : F₀.C.ι) (ws : List (List (F.Γ × Bool))) :
     BGen.sc (ws.map (bw F i)).flatten * (tw F i ws).val (F₀.A i).χa (F₀.A i).χb = U.UGen.sc (lU F ws) := by
   have hadj : ∀ g : BGen (F.B i), g.Ok → g.adj.Ok ∧
@@ -124,6 +170,9 @@ theorem val_eq (hF : F.Struct) (i : F₀.C.ι) (ws : List (List (F.Γ × Bool)))
     congr 1
     exact List.map_congr_left fun p _ => (hl p).2
 
+/- English proof (translation)
+Conclude with `(F₀.A i).lef v _ _ _ _ t.T (ht.ka v) (ht.kb v)`.
+-/
 theorem lef_pt (i : F₀.C.ι) (t : PT (F.B i)) (ht : t.Ok) (v : InfinitePlace E) :
     LefAt (F₀.C.νC (F₀.C.a i)) (F₀.C.νC (n - F₀.C.a i)) (F₀.C.l₁ i v) (F₀.C.l₂ i v)
       (t.va v ((F₀.A i).χa v) * t.vb v ((F₀.A i).χb v)) (t.arch (F₀.A i).Ta (F₀.A i).Tb v) := by

@@ -5,6 +5,9 @@ noncomputable section
 
 namespace ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+The claim follows from `nuExt_of fun _ _ _ _ _ hϖ _ _ hv _ _ _ hE _ hr f hf => secB_dvd_of_vge hϖ hv hE hr f hf`.
+-/
 theorem nuExt : NuExtSt :=
   nuExt_of fun _ _ _ _ _ hϖ _ _ hv _ _ _ hE _ hr f hf => secB_dvd_of_vge hϖ hv hE hr f hf
 

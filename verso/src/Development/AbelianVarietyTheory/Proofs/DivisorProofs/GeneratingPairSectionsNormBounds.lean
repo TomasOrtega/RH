@@ -15,6 +15,9 @@ namespace GlobalTheory.HSNef.GenLow
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty Y with h | h` into its components or cases. Conclude with `⟨1, 1, one_pos, one_pos, fun y => (h.false y).elim⟩`. Take `⟨a, -, ha⟩` from `isCompact_univ.exists_isMinOn Set.univ_nonempty hG.continuousOn`. Take `⟨b, -, hb⟩` from `isCompact_univ.exists_isMaxOn Set.univ_nonempty hG.continuousOn`. Conclude with `⟨G a, G b, hpos a, hpos b, fun y => ⟨ha (Set.mem_univ y), hb (Set.mem_univ y)⟩⟩`.
+-/
 theorem exists_pos_bounds {Y : Type} [TopologicalSpace Y] [CompactSpace Y] (G : Y → ℝ) (hG : Continuous G)
     (hpos : ∀ y, 0 < G y) : ∃ m U : ℝ, 0 < m ∧ 0 < U ∧ ∀ y, m ≤ G y ∧ G y ≤ U := by
   rcases isEmpty_or_nonempty Y with h | h
@@ -23,10 +26,18 @@ theorem exists_pos_bounds {Y : Type} [TopologicalSpace Y] [CompactSpace Y] (G : 
     obtain ⟨b, -, hb⟩ := isCompact_univ.exists_isMaxOn Set.univ_nonempty hG.continuousOn
     exact ⟨G a, G b, hpos a, hpos b, fun y => ⟨ha (Set.mem_univ y), hb (Set.mem_univ y)⟩⟩
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`.
+-/
 theorem nu_nonneg (P : Pair p) (a b : ℤ) (σ : k →+* ℂ) (y : CxPts p σ) (f : X.functionField) :
     0 ≤ P.nu a b σ y f :=
   mul_nonneg (norm_nonneg _) (Real.exp_pos _).le
 
+/- English proof (translation)
+Take `⟨e, -, hr, hn, -⟩` from `GlobalTheory.VolBr.RepDict.rep_dict k X p P a b M hM`. Take `⟨u, rfl⟩ : f ∈ Set.range e` from `hr ▸ hf`. Establish `h : (fun y : CxPts p σ => P.nu a b σ y (e u)) = fun y => Real.sqrt ((M.φ σ).nsq (secVal p σ u) y)`. Use function extensionality and compare the values at `y`. Rewrite using `[← hn u σ y, Real.sqrt_sq (nu_nonneg P a b σ y _)]`.
+
+Rewrite using `[h]`. Conclude with `((M.cInf σ).continuous_nsq u).sqrt`.
+-/
 theorem continuous_nu (P : Pair p) (a b : ℤ) (M : HermLB p) (hM : P.Rep a b M) (σ : k →+* ℂ)
     (f : X.functionField) (hf : f ∈ P.H a b) : Continuous fun y : CxPts p σ => P.nu a b σ y f := by
   obtain ⟨e, -, hr, hn, -⟩ := GlobalTheory.VolBr.RepDict.rep_dict k X p P a b M hM
@@ -37,6 +48,21 @@ theorem continuous_nu (P : Pair p) (a b : ℤ) (M : HermLB p) (hM : P.Rep a b M)
   rw [h]
   exact ((M.cInf σ).continuous_nsq u).sqrt
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P c ⟨n, v, hvH, hnz⟩`. Use `haveI : Finite (k →+* ℂ) := hX.finite_emb`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_hermitianRepresentative_integerCombination k X p P 0 c`. Establish `hb : ∀ σ : k →+* ℂ, ∃ m U : ℝ, 0 < m ∧ 0 < U ∧ ∀ y : CxPts p σ, m ≤ ∑ i, P.nu 0 c σ y (v i) ∧ ∑ i, P.nu 0 c σ y (v i) ≤ U`. Introduce `σ`.
+
+Use `haveI : CompactSpace (CxPts p σ) := hX.compactSpace σ`. Use `exists_pos_bounds _ (continuous_finsetSum _ fun i _ => continuous_nu P 0 c M hM σ (v i) (hvH i)) fun y => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hnz σ y`. Conclude with `lt_of_lt_of_le ((nu_nonneg P 0 c σ y _).lt_of_ne' hi) (Finset.single_le_sum (fun j _ => nu_nonneg P 0 c σ y (v j)) (Finset.mem_univ i))`. Use `choose m U hm hU hmU using hb`.
+
+Establish `hlow : ∃ m₀ : ℝ, 0 < m₀ ∧ ∀ σ, m₀ ≤ m σ`. Break down `isEmpty_or_nonempty (k →+* ℂ) with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun σ => (h.false σ).elim⟩`. Take `⟨σ, hσ⟩` from `Finite.exists_min m`. Conclude with `⟨m σ, hm σ, hσ⟩`.
+
+Establish `hup : ∃ U₀ : ℝ, 0 < U₀ ∧ ∀ σ, U σ ≤ U₀`. Break down `isEmpty_or_nonempty (k →+* ℂ) with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun σ => (h.false σ).elim⟩`. Take `⟨σ, hσ⟩` from `Finite.exists_max U`. Conclude with `⟨U σ, hU σ, hσ⟩`.
+
+Take `⟨m₀, hm₀, hm₀le⟩` from `hlow`. Take `⟨U₀, hU₀, hU₀le⟩` from `hup`. Establish `hn1 : (0 : ℝ) < ((max n 1 : ℕ) : ℝ)` using `by exact_mod_cast lt_max_of_lt_right one_pos`. Use `⟨n, v, min (m₀ / (max n 1 : ℕ)) U₀⁻¹, lt_min (div_pos hm₀ hn1) (inv_pos.2 hU₀), fun i => ⟨hvH i, fun σ y => ?_⟩, fun σ y => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨i₀, -⟩` from `hnz σ y`. Establish `hn : 1 ≤ n` using `Nat.one_le_iff_ne_zero.2 fun h => by subst h; exact i₀.elim0`. Establish `hmax : (max n 1 : ℕ) = n` using `max_eq_left hn`. Establish `hsum : ∑ _j : Fin n, m₀ / (max n 1 : ℕ) ≤ ∑ j, P.nu 0 c σ y (v j)`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, hmax, mul_div_cancel₀ _ (by exact_mod_cast (show n ≠ 0 by omega))]`.
+
+Conclude with `(hm₀le σ).trans (hmU σ y).1`. Take `⟨i, -, hi⟩` from `Finset.exists_le_of_sum_le ⟨i₀, Finset.mem_univ _⟩ hsum`. Conclude with `⟨i, (min_le_left _ _).trans hi⟩`.
+-/
 theorem gen_low : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (P : Pair p) (c : ℕ), GenAt P c → ∃ (n : ℕ) (v : Fin n → X.functionField) (ρ : ℝ), 0 < ρ ∧
       (∀ i, v i ∈ P.Bl 0 c ρ⁻¹) ∧ ∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ i, ρ ≤ P.nu 0 c σ y (v i) := by

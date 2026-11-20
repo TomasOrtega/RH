@@ -22,22 +22,37 @@ variable (p : ℕ) [Fact p.Prime]
 abbrev frobR (R : Type) [CommRing R] (hR : (p : R) = 0) : R →+* R :=
   GlobalTheory.SS.FrobField.powHom R p 1 Fact.out hR
 
+/- English proof (translation)
+The claim follows from `congrArg (x ^ ·) (pow_one p)`.
+-/
 theorem frobR_apply (R : Type) [CommRing R] (hR : (p : R) = 0) (x : R) : frobR p R hR x = x ^ p :=
   congrArg (x ^ ·) (pow_one p)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SS.FrobField.absFrob_spec R p 1 Fact.out h _ fun _ ↦ rfl`.
+-/
 theorem frob_sp (R : Type) [CommRing R] (hR : (p : R) = 0) (h : (p : Γ(Sp R, ⊤)) = 0) :
     GlobalTheory.VB.frob (Sp R) p h = spMap (frobR p R hR) :=
   GlobalTheory.SS.FrobField.absFrob_spec R p 1 Fact.out h _ fun _ ↦ rfl
 
+/- English proof (translation)
+Establish `h0 : (p : Γ(Sp R, ⊤)) = 0` using `GlobalTheory.SS.FrobField.cast_zero_sp R hR`. Rewrite using `[GlobalTheory.VB.frob_naturality p h0 f h, frob_sp p R hR h0]`.
+-/
 theorem frob_comp_hom (R : Type) [CommRing R] (hR : (p : R) = 0) {X : Scheme.{0}} (f : X ⟶ Sp R)
     (h : (p : Γ(X, ⊤)) = 0) : GlobalTheory.VB.frob X p h ≫ f = f ≫ spMap (frobR p R hR) := by
   have h0 : (p : Γ(Sp R, ⊤)) = 0 := GlobalTheory.SS.FrobField.cast_zero_sp R hR
   rw [GlobalTheory.VB.frob_naturality p h0 f h, frob_sp p R hR h0]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SS.FrobField.cast_zero_of_hom A.hom (GlobalTheory.SS.FrobField.cast_zero_sp R hR)`.
+-/
 theorem cast_left (R : Type) [CommRing R] (hR : (p : R) = 0) (A : Over (Sp R)) :
     (p : Γ(A.left, ⊤)) = 0 :=
   GlobalTheory.SS.FrobField.cast_zero_of_hom A.hom (GlobalTheory.SS.FrobField.cast_zero_sp R hR)
 
+/- English proof (translation)
+The claim follows from `isDPMorphism_of_eq_bot _ rfl _ _ base := by simp w := frob_comp_hom p R hR A.hom h mul T x y x₀ y₀ hx hy := by have hT : (p : Γ(T.left, ⊤)) = 0 := cast_left p R hR T let j : Over.mk (T.hom ≫ spMap (frobR p R hR)) ⟶ T := Over.homMk (GlobalTheory.VB.frob T.left p hT) (by simpa usin …`.
+-/
 theorem frobMor (R : Type) [CommRing R] (hR : (p : R) = 0) (A : Over (Sp R)) [GrpObj A]
     (h : (p : Γ(A.left, ⊤)) = 0) :
     GrpMor (dp0 R) (𝟙 _) A (dp0 R) (𝟙 _) A (frobR p R hR) (spMap (frobR p R hR))
@@ -83,6 +98,9 @@ def IsDRIso (H : T.Modules)
       φ ≫ pullback.fst A.hom hV.fromSpec = pullback.fst A.hom hV'.fromSpec →
       ∀ s : Γ(H, V), e V' hV' (GlobalTheory.Twist.resM H h s) = (GlobalTheory.Published.AbelianDeRham.bcMor hφ).pull (e V hV s)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isDeRhamSheaf_iff (H : T.Modules) : IsDeRhamSheaf A H ↔ ∃ e, IsDRIso A H e := Iff.rfl
 
 end GlobalTheory.DeRhamSheaf

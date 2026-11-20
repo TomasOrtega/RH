@@ -10,6 +10,13 @@ namespace Formalism.L2.SG.Pf.G2
 
 open Formalism.HermitianLattices.Ext.L3
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.smul_le]`. Introduce `r hr n _`. Rewrite using `[Submodule.mem_pi]`. Introduce `i _`.
+
+Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_pi]`. Rewrite using `[← Finset.univ_sum_single v]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations.
+
+Establish `h1 : Pi.single i (v i) ∈ (J • (⊤ : Submodule R (N i))).map (LinearMap.single R N i)` using `Submodule.mem_map_of_mem (hv i (Set.mem_univ i))`. Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h1`.
+-/
 theorem smul_top_pi {R : Type*} [CommRing R] {κ : Type*} [Fintype κ] [DecidableEq κ]
     {N : κ → Type*} [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)] (J : Ideal R) :
     (J • ⊤ : Submodule R (∀ i, N i)) =
@@ -29,12 +36,18 @@ theorem smul_top_pi {R : Type*} [CommRing R] {κ : Type*} [Fintype κ] [Decidabl
     rw [Submodule.map_smul''] at h1
     exact Submodule.smul_mono le_rfl le_top h1
 
+/- English proof (translation)
+Use `Nat.card_congr (Submodule.Quotient.equiv _ _ f ?_).toEquiv` and prove the remaining obligations. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range]`.
+-/
 theorem card_quot_smul_top_congr {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (f : M ≃ₗ[R] N) (J : Ideal R) :
     Nat.card (M ⧸ (J • ⊤ : Submodule R M)) = Nat.card (N ⧸ (J • ⊤ : Submodule R N)) := by
   refine Nat.card_congr (Submodule.Quotient.equiv _ _ f ?_).toEquiv
   rw [Submodule.map_smul'', Submodule.map_top, LinearEquiv.range]
 
+/- English proof (translation)
+Establish `h1 : (J • ⊤ : Submodule A (A ⧸ E)) = Submodule.map E.mkQ J` using `by conv_lhs => rw [← Submodule.range_mkQ E, LinearMap.range_eq_map, ← Submodule.map_smul'', Ideal.smul_eq_mul, Ideal.mul_top]`. Rewrite using `[h1]`. Conclude with `Nat.card_congr (Submodule.quotientQuotientEquivQuotientSup E J).toEquiv`.
+-/
 theorem card_quot_quot {A : Type*} [CommRing A] (E J : Ideal A) :
     Nat.card ((A ⧸ E) ⧸ (J • ⊤ : Submodule A (A ⧸ E))) = Nat.card (A ⧸ (E ⊔ J)) := by
   have h1 : (J • ⊤ : Submodule A (A ⧸ E)) = Submodule.map E.mkQ J := by
@@ -45,6 +58,17 @@ theorem card_quot_quot {A : Type*} [CommRing A] (E J : Ideal A) :
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Establish `hc` using `Formalism.HermitianLattices.Ext.L3.MeanB.comap_extP_pow (K := K) 𝔭 1`. Rewrite `hc` using `[pow_one, pow_one]`. Establish `h1 : extP K 𝔭 ≠ ⊤` using `fun h => h𝔭.ne_top (by rw [← hc, h, Ideal.comap_top])`. Establish `h0 : extP K 𝔭 ≠ ⊥`. Introduce `h`.
+
+Establish `hne : 𝔭 ≠ ⊥` using `fun h' => NumberField.RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.mpr (h' ▸ h𝔭))`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← hc, h]`. Use extensionality with `t`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `ht`. Establish `h2 : algebraMap F K (t : F) = 0`. Establish `h3` using `congrArg (algebraMap (𝓞 K) K) ht`. Rewrite `h3` using `[map_zero]`.
+
+Conclude with `h3`. Establish `h4 : (t : F) = 0` using `(algebraMap F K).injective (by rw [h2, map_zero])`. Conclude with `h4` after adjusting the coercions. Introduce `ht`. Rewrite using `[ht, map_zero]`.
+
+Establish `ha0 : Ideal.absNorm (extP K 𝔭) ≠ 0` using `fun h => h0 (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `ha1 : Ideal.absNorm (extP K 𝔭) ≠ 1` using `fun h => h1 (Ideal.absNorm_eq_one_iff.mp h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_absNorm {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : 2 ≤ Ideal.absNorm (extP K 𝔭) := by
   have hc := Formalism.HermitianLattices.Ext.L3.MeanB.comap_extP_pow (K := K) 𝔭 1
   rw [pow_one, pow_one] at hc
@@ -71,6 +95,11 @@ theorem two_le_absNorm {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) : 2 ≤ 
   have ha1 : Ideal.absNorm (extP K 𝔭) ≠ 1 := fun h => h1 (Ideal.absNorm_eq_one_iff.mp h)
   omega
 
+/- English proof (translation)
+Rewrite using `[smul_top_pi, Nat.card_congr (Submodule.quotientPi (fun i => (extP K 𝔭 ^ j • ⊤ : Submodule (𝓞 K) (𝓞 K ⧸ extP K 𝔭 ^ e i)))).toEquiv, Nat.card_pi, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Establish `hsup : extP K 𝔭 ^ e i ⊔ extP K 𝔭 ^ j = extP K 𝔭 ^ min (e i) j`. Break down `le_total (e i) j with h | h` into its components or cases. Rewrite using `[min_eq_left h, sup_eq_left.mpr (Ideal.pow_le_pow_right h)]`.
+
+Rewrite using `[min_eq_right h, sup_eq_right.mpr (Ideal.pow_le_pow_right h)]`. Rewrite using `[card_quot_quot, hsup, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, map_pow]`.
+-/
 theorem card_pi_quot (𝔭 : Ideal (𝓞 F)) {κ : Type} [Fintype κ] [DecidableEq κ] (e : κ → ℕ) (j : ℕ) :
     Nat.card ((∀ i, 𝓞 K ⧸ extP K 𝔭 ^ e i) ⧸
         (extP K 𝔭 ^ j • ⊤ : Submodule (𝓞 K) (∀ i, 𝓞 K ⧸ extP K 𝔭 ^ e i))) =

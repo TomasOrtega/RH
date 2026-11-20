@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DbarEqZeroOfHolomor
 open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.TorsionForm GlobalTheory.TorsionForm.FlatAcyc
 open scoped Real ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ScalarAcyc.vanish | exact GlobalTheory.ScalarAcyc.vanish | (intros; apply GlobalTheory.ScalarAcyc.vanish <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.periodic_metric_section_bound : ∀ {g : ℕ} (T : Matrix (Fin g) (Fin g) ℂ) (hT : GlobalTheory.IsSiegel T)
     (M : Submodule ℤ (Fl g)) (hM : IsLat M) (H : (Fin g → ℂ) → ℝ) (hH : ContDiff ℝ ∞ H)
     (hHpos : ∀ z, 0 < H z) (u : (Fin g → ℂ) → ℂ) (hu : ContDiff ℝ ∞ u)

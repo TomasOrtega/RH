@@ -44,6 +44,17 @@ section Main
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `set d := Matrix.GeneralLinearGroup.det (g : GL (Fin k) (AE F E)) with hd`. Establish `hJu : IsUnit (incM F J).det`. Establish `e0 : (incM F J).det = inclR (F` using `F) (AF F) J.det := (RingHom.map_det _ _).symm`. Rewrite using `[e0]`. Conclude with `(isUnit_iff_ne_zero.2 hJ).map _`.
+
+Establish `h` using `congrArg Matrix.det (show ((g : GL (Fin k) (AE F E)) : Matrix (Fin k) (Fin k) (AE F E))ᵀ * incM F J * ((g : GL (Fin k) (AE F E)) : Matrix (Fin k) (Fin k) (AE F E)).map (cA σ) = incM F J from g.2)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, show (((g : GL (Fin k) (AE F E)) : Matrix (Fin k) (Fin k) (AE F E)).map (cA σ)).det = cA σ ((g : GL (Fin k) (AE F E)) : Matrix (Fin k) (Fin k) (AE F E)).det from ((cA σ).toRingHom.map_det _).symm]`. Establish `h2 : (d : AE F E) * cA σ d = 1`. Rewrite using `[hd, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `hJu.mul_left_cancel (by linear_combination h)`.
+
+Establish `hc : Units.map (cA σ : AE F E →* AE F E) d = conjUnit σ d`. Use `ext`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression. Establish `h3 : d * Units.map (cA σ : AE F E →* AE F E) d = 1` using `Units.ext (by simpa using h2)`.
+
+Establish `h4 : absE F E d * absE F E d = 1` using `by nth_rewrite 2 [← absE_conjUnit σ d]`. Rewrite using `[← hc, ← map_mul, h3, map_one]`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Establish `h6 : (absE F E d : ℝ) * absE F E d = 1` using `by exact_mod_cast h4`. Establish `h7 : (0 : ℝ) ≤ absE F E d` using `(absE F E d).2`.
+
+Use `push_cast`. Conclude with `le_antisymm (by nlinarith) (by nlinarith)`.
+-/
 theorem absE_det_unitary {k : ℕ} {J : Matrix (Fin k) (Fin k) E} (hJ : J.det ≠ 0) (g : UA σ J) :
     absE F E (Matrix.GeneralLinearGroup.det (g : GL (Fin k) (AE F E))) = 1 := by
   set d := Matrix.GeneralLinearGroup.det (g : GL (Fin k) (AE F E)) with hd

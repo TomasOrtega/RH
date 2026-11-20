@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbDivPt
 
+/- English proof (translation)
+Introduce `S A _ hA k _ _ x n hn g`. Establish `hc` using `hA.comm`. Take `⟨hfin, -, hsurj⟩` from `GlobalTheory.KthRoot.finite_flat_surjective_mulN_any S A hA n hn`. Establish `: IsFinite (pullback.snd (mulN A n).left g.left)` using `by haveI := hfin; infer_instance`. Establish `: Surjective (pullback.snd (mulN A n).left g.left)` using `by haveI := hsurj; infer_instance`.
+
+Take `⟨t, ht⟩` from `ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_section (pullback.snd (mulN A n).left g.left)`. Establish `hb' : (t ≫ pullback.fst (mulN A n).left g.left) ≫ (mulN A n).left = g.left`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ht, Category.id_comp]`. Establish `hw : (t ≫ pullback.fst (mulN A n).left g.left) ≫ A.hom = (Over.mk x).hom`. Rewrite using `[← Over.w (mulN A n), ← Category.assoc, hb', Over.w g]`.
+
+Use `⟨Over.homMk _ hw, ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : Over.mk x ⟶ A, b ^ n = b ≫ mulN A n` using `fun b => by`. Rewrite using `[GlobalTheory.MulFlatSurj.mulN_eq_pow, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[e]`. Conclude with `Over.OverMorphism.ext hb'`.
+-/
 theorem exists_pow_eq_of_isAlgClosed : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A →
     ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (n : ℕ), 0 < n →
       ∀ g : Over.mk x ⟶ A, ∃ g' : Over.mk x ⟶ A, g' ^ n = g := by

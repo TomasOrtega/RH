@@ -14,10 +14,18 @@ def TestExP {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V]
 
 open MeasureTheory Complex Filter Topology
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_third_further.goal1 .. | (apply Bl.general_b_fact_third_further.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_further.goal1 <;> assumption)`.
+-/
 theorem char_real (f : ℝ → ℂ) (hc : Continuous f) (hadd : ∀ s t, f (s + t) = f s * f t)
     (hn : ∀ s, ‖f s‖ = 1) : ∃ b : ℝ, ∀ s : ℝ, f s = exp (↑(b * s) * I) := by
   first | exact Bl.general_b_fact_third_further.goal1 .. | (apply Bl.general_b_fact_third_further.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_further.goal1 <;> assumption)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `huv`. Establish `hne : u - v ≠ 0` using `sub_ne_zero.2 huv`. Establish `h1` using `h (Real.pi / (u - v))`. Establish `h2 : exp (↑((u - v) * (Real.pi / (u - v))) * I) = 1`. Establish `: (↑((u - v) * (Real.pi / (u - v))) : ℂ) * I = ↑(u * (Real.pi / (u - v))) * I - ↑(v * (Real.pi / (u - v))) * I` using `by push_cast; ring`.
+
+Rewrite using `[this, Complex.exp_sub, h1, div_self (Complex.exp_ne_zero _)]`. Rewrite `h2` using `[mul_div_cancel₀ _ hne, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions using `at h2`.
+-/
 theorem freq_unique {u v : ℝ} (h : ∀ s : ℝ, exp (↑(u * s) * I) = exp (↑(v * s) * I)) : u = v := by
   by_contra huv
   have hne : u - v ≠ 0 := sub_ne_zero.2 huv
@@ -44,21 +52,37 @@ structure IsBichar (χ : W → W → ℂ) : Prop where
   contL : ∀ y, Continuous fun x => χ x y
   contR : ∀ x, Continuous (χ x)
 
+/- English proof (translation)
+Establish `hne : χ 0 y ≠ 0` using `fun h0 => by have := h.norm1 0 y; rw [h0, norm_zero] at this; exact zero_ne_one this`. Establish `e` using `h.addL 0 0 y`. Rewrite `e` using `[add_zero]`. Conclude with `mul_left_cancel₀ hne (by rw [mul_one]; exact e.symm)`.
+-/
 theorem IsBichar.zero_left {χ : W → W → ℂ} (h : IsBichar χ) (y : W) : χ 0 y = 1 := by
   have hne : χ 0 y ≠ 0 := fun h0 => by have := h.norm1 0 y; rw [h0, norm_zero] at this; exact zero_ne_one this
   have e := h.addL 0 0 y
   rw [add_zero] at e
   exact mul_left_cancel₀ hne (by rw [mul_one]; exact e.symm)
 
+/- English proof (translation)
+The claim follows from `char_real (fun s => χ (s • v) y) ((h.contL y).comp (continuous_id.smul continuous_const)) (fun s t => by simp only [add_smul]; exact h.addL _ _ y) (fun s => h.norm1 _ y)`.
+-/
 theorem IsBichar.freq {χ : W → W → ℂ} (h : IsBichar χ) (v y : W) :
     ∃ β : ℝ, ∀ s : ℝ, χ (s • v) y = exp (↑(β * s) * I) :=
   char_real (fun s => χ (s • v) y) ((h.contL y).comp (continuous_id.smul continuous_const))
     (fun s t => by simp only [add_smul]; exact h.addL _ _ y) (fun s => h.norm1 _ y)
 
+/- English proof (translation)
+Rewrite using `[arg_exp_mul_I, toIocMod_eq_self]`. Conclude with `⟨h.1, by linarith [h.2, Real.pi_pos]⟩`.
+-/
 theorem arg_exp_small {θ : ℝ} (h : θ ∈ Set.Ioo (-Real.pi) Real.pi) : arg (exp (↑θ * I)) = θ := by
   rw [arg_exp_mul_I, toIocMod_eq_self]
   exact ⟨h.1, by linarith [h.2, Real.pi_pos]⟩
 
+/- English proof (translation)
+Set `g : ℕ → W → ℝ` to `fun m y => ((m : ℝ) + 1) * arg (χ ((1 / ((m : ℝ) + 1)) • v) y)`. Establish `hg : ∀ m, Measurable (g m)` using `fun m => measurable_const.mul (measurable_arg.comp (h.contR _).measurable)`. Use `measurable_of_tendsto_metrizable hg (tendsto_pi_nhds.2 fun y => ?_)` and prove the remaining obligations. Establish `ht : Tendsto (fun m : ℕ => β y * (1 / ((m : ℝ) + 1))) atTop (𝓝 (β y * 0))` using `(tendsto_one_div_add_atTop_nhds_zero_nat).const_mul (β y)`. Rewrite `ht` using `[mul_zero]`.
+
+Establish `hev` using `ht (Ioo_mem_nhds (neg_lt_zero.2 Real.pi_pos) Real.pi_pos)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev] with m hm`. Simplify using `only [g]`. Rewrite using `[hβ y, arg_exp_small hm]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem measurable_freq {χ : W → W → ℂ} (h : IsBichar χ) (v : W) (β : W → ℝ)
     (hβ : ∀ y, ∀ s : ℝ, χ (s • v) y = exp (↑(β y * s) * I)) : Measurable β := by
   let g : ℕ → W → ℝ := fun m y => ((m : ℝ) + 1) * arg (χ ((1 / ((m : ℝ) + 1)) • v) y)
@@ -75,6 +99,9 @@ theorem measurable_freq {χ : W → W → ℂ} (h : IsBichar χ) (v : W) (β : W
   rw [hβ y, arg_exp_small hm]
   field_simp
 
+/- English proof (translation)
+Use `freq_unique fun s => ?_` and prove the remaining obligations. Rewrite using `[← hβ, h.addR, hβ, hβ, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem freq_add {χ : W → W → ℂ} (h : IsBichar χ) (v : W) (β : W → ℝ)
     (hβ : ∀ y, ∀ s : ℝ, χ (s • v) y = exp (↑(β y * s) * I)) (y y' : W) :
     β (y + y') = β y + β y' := by
@@ -82,6 +109,21 @@ theorem freq_add {χ : W → W → ℂ} (h : IsBichar χ) (v : W) (β : W → �
   rw [← hβ, h.addR, hβ, hβ, ← Complex.exp_add]
   congr 1; push_cast; ring
 
+/- English proof (translation)
+Use `choose β hβ using fun v y => h.freq v y`. Set `b` to `stdOrthonormalBasis ℝ W`. Establish `hm : ∀ j, Measurable (fun y => β (b j) y)` using `fun j => measurable_freq h (b j) _ (fun y => hβ (b j) y)`. Establish `ha : ∀ j y y', β (b j) (y + y') = β (b j) y + β (b j) y'` using `fun j => freq_add h (b j) (fun y => β (b j) y) (fun y => hβ (b j) y)`. Set `Lf : W → W` to `fun y => ∑ j, (β (b j) y / (2 * Real.pi)) • b j`.
+
+Set `Lm : W →+ W` to `AddMonoidHom.mk' Lf fun y y' => by`. Simplify using `only [Lf, ha, add_div, add_smul, Finset.sum_add_distrib]`. Establish `hLm : Measurable Lm` using `by show Measurable fun y => ∑ j, (β (b j) y / (2 * Real.pi)) • b j`. Conclude with `Finset.measurable_sum Finset.univ fun j _ => ((hm j).div_const _).smul_const (b j)`. Establish `hLc : Continuous Lm` using `Measure.AddMonoidHom.continuous_of_measurable Lm hLm`.
+
+Use `⟨Lm.toRealLinearMap hLc, fun x y => ?_⟩` and prove the remaining obligations. Establish `hprod : ∀ s : Finset (Fin (Module.finrank ℝ W)), χ (∑ j ∈ s, ⟪b j, x⟫ • b j) y = ∏ j ∈ s, χ (⟪b j, x⟫ • b j) y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h.zero_left]`.
+
+Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, h.addL, ih]`. Establish `e1 : χ x y = χ (∑ j, ⟪b j, x⟫ • b j) y` using `by rw [b.sum_repr' x]`. Rewrite using `[e1, hprod]`. Establish `e2 : ∀ j, χ (⟪b j, x⟫ • b j) y = exp (↑(β (b j) y * ⟪b j, x⟫) * I)` using `fun j => hβ _ _ _`. Simplify using `only [e2]`.
+
+Rewrite using `[← Complex.exp_sum, Real.fourierChar_apply]`. Use `congr 1`. Establish `hLy : ⟪x, (Lm.toRealLinearMap hLc) y⟫ = ∑ j, β (b j) y / (2 * Real.pi) * ⟪b j, x⟫` using `by show ⟪x, Lf y⟫ = _`. Simplify using `only [Lf, inner_sum, inner_smul_right]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [real_inner_comm]`.
+
+Rewrite using `[hLy]`. Use `push_cast`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem bichar_eq {χ : W → W → ℂ} (h : IsBichar χ) :
     ∃ L : W →L[ℝ] W, ∀ x y, χ x y = (Real.fourierChar ⟪x, L y⟫ : ℂ) := by
   classical
@@ -131,6 +173,17 @@ open scoped RealInnerProductSpace FourierTransform SchwartzMap ContDiff
 variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
   [MeasurableSpace W] [BorelSpace W]
 
+/- English proof (translation)
+Establish `hpos : 0 < ‖t‖` using `norm_pos_iff.2 ht0`. Set `f : ContDiffBump (0 : W)` to `⟨‖t‖ / 4, ‖t‖ / 2, by positivity, by linarith⟩`. Set `φ : W → ℂ` to `fun x => ((f x : ℝ) : ℂ)`. Establish `hφc : Continuous φ` using `Complex.continuous_ofReal.comp f.continuous`. Establish `hφs : HasCompactSupport φ` using `f.hasCompactSupport.comp_left Complex.ofReal_zero`.
+
+Set `Φ : W → ℂ` to `fun x => φ (x + t) - φ x`. Establish `hΦc : Continuous Φ` using `(hφc.comp (continuous_id.add continuous_const)).sub hφc`. Establish `hΦs : HasCompactSupport Φ`. Establish `h1 : HasCompactSupport fun x => φ (x + t)` using `hφs.comp_homeomorph (Homeomorph.addRight t)`. Conclude with `h1.sub hφs`.
+
+Establish `hT : ∀ y, ∫ x, Φ x * χ x y ∂μ = 0`. Introduce `y`. Set `g : W → ℂ` to `fun x => φ x * χ x y`. Establish `hg : Integrable g μ` using `(hφc.mul (hc y)).integrable_of_hasCompactSupport hφs.mul_right`. Establish `e : (fun x => Φ x * χ x y) = fun x => g (x + t) - g x`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Φ, g, hadd, ht, mul_one, sub_mul]`. Rewrite using `[e, integral_sub (hg.comp_add_right t) hg, integral_add_right_eq_self, sub_self]`. Use `⟨Φ, hΦc, hΦs, ?_, 0, ?_⟩` and prove the remaining obligations. Establish `e : (fun y => ∫ x, Φ x * χ x y ∂μ) = fun _ => 0` using `funext hT`.
+
+Rewrite using `[e]`. Conclude with `integrable_zero _ _ _`. Simplify using `only [Φ, φ, neg_zero, zero_add]`. Rewrite using `[f.zero_of_le_dist (by rw [dist_zero_right]; show ‖t‖ / 2 ≤ ‖t‖; linarith), f.one_of_mem_closedBall (Metric.mem_closedBall_self (by positivity))]`. Evaluate the numerical expressions.
+-/
 theorem testEx_kernel (μ : Measure W) [μ.IsAddHaarMeasure] (χ : W → W → ℂ)
     (hadd : ∀ x x' y, χ (x + x') y = χ x y * χ x' y) (hc : ∀ y, Continuous fun x => χ x y)
     (t : W) (ht0 : t ≠ 0) (ht : ∀ y, χ t y = 1) : TestExP μ χ := by
@@ -159,6 +212,19 @@ theorem testEx_kernel (μ : Measure W) [μ.IsAddHaarMeasure] (χ : W → W → �
       f.one_of_mem_closedBall (Metric.mem_closedBall_self (by positivity))]
     norm_num
 
+/- English proof (translation)
+Set `f : ContDiffBump (0 : W)` to `⟨1, 2, one_pos, one_lt_two⟩`. Set `φ : W → ℂ` to `fun x => ((f x : ℝ) : ℂ)`. Establish `hφd : ContDiff ℝ ∞ φ` using `Complex.ofRealCLM.contDiff.comp f.contDiff`. Establish `hφs : HasCompactSupport φ` using `f.hasCompactSupport.comp_left Complex.ofReal_zero`. Set `S : 𝓢(W, ℂ)` to `hφs.toSchwartzMap hφd`.
+
+Set `B : W ≃L[ℝ] W` to `A.trans (ContinuousLinearEquiv.neg ℝ)`. Use `set c : NNReal := μ.addHaarScalarFactor volume`. Establish `hμ : μ = c • volume` using `Measure.isAddLeftInvariant_eq_smul μ volume`. Establish `hT : ∀ y, ∫ x, φ x * (Real.fourierChar ⟪x, A y⟫ : ℂ) ∂μ = ((c : ℝ) : ℂ) * (𝓕 S : 𝓢(W, ℂ)) (B y)`. Introduce `y`.
+
+Rewrite using `[hμ, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Use `congr 1`. Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `[B, S, φ, inner_neg_right, Circle.smul_def, mul_comm]`.
+
+Establish `hB : (Measure.map B μ).IsAddHaarMeasure` using `B.isAddHaarMeasure_map μ`. Establish `hI : Integrable (fun y => (𝓕 S : 𝓢(W, ℂ)) (B y)) μ`. Establish `h1 : Integrable (𝓕 S : 𝓢(W, ℂ)) (Measure.map B μ)` using `(𝓕 S).integrable`. Conclude with `(integrable_map_measure h1.aestronglyMeasurable B.continuous.measurable.aemeasurable).1 h1`. Use `⟨φ, hφd.continuous, hφs, ?_, 0, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (fun y => ∫ x, φ x * (Real.fourierChar ⟪x, A y⟫ : ℂ) ∂μ) = fun y => ((c : ℝ) : ℂ) * (𝓕 S : 𝓢(W, ℂ)) (B y)` using `funext hT`. Rewrite using `[e]`. Conclude with `hI.const_mul _`. Simplify using `only [φ, neg_zero]`. Rewrite using `[f.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+
+Evaluate the numerical expressions.
+-/
 theorem testEx_fourier (μ : Measure W) [μ.IsAddHaarMeasure] (A : W ≃L[ℝ] W) :
     TestExP μ (fun x y => (Real.fourierChar ⟪x, A y⟫ : ℂ)) := by
   let f : ContDiffBump (0 : W) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -189,6 +255,13 @@ theorem testEx_fourier (μ : Measure W) [μ.IsAddHaarMeasure] (A : W ≃L[ℝ] W
     rw [f.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]
     norm_num
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `bichar_eq h`. Distinguish the cases in `hs : Function.Surjective L`. Establish `hi : Function.Injective L` using `(LinearMap.injective_iff_surjective (f := (L : W →ₗ[ℝ] W))).2 hs`. Set `A : W ≃L[ℝ] W` to `(LinearEquiv.ofBijective (L : W →ₗ[ℝ] W) ⟨hi, hs⟩).toContinuousLinearEquiv`. Establish `e : χ = fun x y => (Real.fourierChar ⟪x, A y⟫ : ℂ)` using `funext₂ fun x y => by rw [hL x y]; rfl`.
+
+Rewrite using `[e]`. Conclude with `testEx_fourier μ A`. Establish `hK : (LinearMap.range (L : W →ₗ[ℝ] W))ᗮ ≠ ⊥`. Rewrite using `[Ne, Submodule.orthogonal_eq_bot_iff, LinearMap.range_eq_top]`. Conclude with `hs`.
+
+Take `⟨t, htK, ht0⟩` from `(Submodule.ne_bot_iff _).1 hK`. Use `testEx_kernel μ χ h.addL h.contL t ht0 fun y => ?_` and prove the remaining obligations. Establish `h0 : ⟪t, L y⟫ = 0` using `(Submodule.mem_orthogonal' _ t).1 htK _ (LinearMap.mem_range_self (L : W →ₗ[ℝ] W) y)`. Rewrite using `[hL, h0, AddChar.map_zero_eq_one, Circle.coe_one]`.
+-/
 theorem testEx_bichar (μ : Measure W) [μ.IsAddHaarMeasure] {χ : W → W → ℂ} (h : IsBichar χ) :
     TestExP μ χ := by
   obtain ⟨L, hL⟩ := bichar_eq h
@@ -208,6 +281,19 @@ theorem testEx_bichar (μ : Measure W) [μ.IsAddHaarMeasure] {χ : W → W → �
       (Submodule.mem_orthogonal' _ t).1 htK _ (LinearMap.mem_range_self (L : W →ₗ[ℝ] W) y)
     rw [hL, h0, AddChar.map_zero_eq_one, Circle.coe_one]
 
+/- English proof (translation)
+Set `ea : V ≃+ W` to `AddEquiv.mk' e.toEquiv he`. Establish `hs : ∀ u v : W, e.symm (u + v) = e.symm u + e.symm v` using `fun u v => ea.symm.map_add u v`. Set `ce : V ≃ₜ+ W` to `{ ea with continuous_toFun := e.continuous, continuous_invFun := e.symm.continuous }`. Set `em : V ≃ᵐ W` to `e.toMeasurableEquiv`. Set `μ' : Measure W` to `Measure.map em μ`.
+
+Establish `: μ'.IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map μ ce`. Set `χ' : W → W → ℂ` to `fun x y => χ (e.symm x) (e.symm y)`. Establish `hb : IsBichar χ'` using `{ addL := fun x x' y => by simp only [χ', hs, hL] addR := fun x y y' => by simp only [χ', hs, hR] norm1 := fun x y => hn _ _ contL := fun y => (hcL _).comp e.symm.continuous contR := fun x => (hcR _).comp e.symm.continuous }`. Take `⟨φ, hφc, hφs, hI, z, hz⟩` from `testEx_bichar μ' hb`. Establish `hT : ∀ y, ∫ x, φ (e x) * χ x y ∂μ = ∫ x, φ x * χ' x (e y) ∂μ'`.
+
+Introduce `y`. Rewrite using `[integral_map_equiv em]`. Simplify using `[χ', em]`. Use `⟨fun x => φ (e x), hφc.comp e.continuous, hφs.comp_homeomorph e, ?_, e.symm z, ?_⟩` and prove the remaining obligations. Use `show Integrable (fun y => ∫ x, φ (e x) * χ x y ∂μ) μ`.
+
+Establish `e1 : (fun y => ∫ x, φ (e x) * χ x y ∂μ) = (fun y => ∫ x, φ x * χ' x y ∂μ') ∘ em`. Use function extensionality and compare the values at `hT`. Rewrite using `[e1]`. Conclude with `(integrable_map_equiv em _).1 hI`. Use `show φ (e (-e.symm z)) ≠ 0`.
+
+Establish `h1 : e (-e.symm z) = -z`. Use `ea.map_neg (e.symm z)` as an intermediate fact. Express the relevant statement in the definitionally equal form `e (-e.symm z) = -e (e.symm z) at this`. Rewrite using `[this, e.apply_symm_apply]`. Rewrite using `[h1]`.
+
+Conclude with `hz`.
+-/
 theorem testEx_of_homeo {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (χ : V → V → ℂ)
     (e : V ≃ₜ W) (he : ∀ x y, e (x + y) = e x + e y)

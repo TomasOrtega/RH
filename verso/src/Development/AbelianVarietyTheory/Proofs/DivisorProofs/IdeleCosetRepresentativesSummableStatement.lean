@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdeleTate.Count.exists_representatives | exact GlobalTheory.IdeleTate.Count.exists_representatives | (intros; apply GlobalTheory.IdeleTate.Count.exists_representatives <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_coset_representatives_summable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (s m : ℕ), 2 ≤ s → 0 < m →
     ∃ b : ℕ → (AE F E)ˣ, (∀ j w, GlobalTheory.Doubling.unitInf F E w (b j) = 1) ∧
       (∀ l : (AE F E)ˣ, (∀ i v, evFin F v ((m : AF F) * GlobalTheory.IdeleDecay.coord F E l.1 i) ∈ v.adicCompletionIntegers F) →

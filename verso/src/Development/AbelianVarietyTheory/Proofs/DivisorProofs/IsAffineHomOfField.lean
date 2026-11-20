@@ -16,6 +16,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.CechKS
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ z ⁻¹ᵁ (m ⁻¹ᵁ O)`. Rewrite using `[valR_eq_ev _ _ h, valR_eq_ev (z ≫ m) O h, ← GlobalTheory.FlagMod.ev_appLE z m le_rfl h h, Scheme.Hom.appLE_eq_app]`. Rewrite using `[valR, valR, dif_neg h]`. Conclude with `dif_neg h`.
+-/
 theorem valR_comp_app {Y Z : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ Y) (m : Y ⟶ Z) (O : Z.Opens)
     (f : Γ(Z, O)) : valR (z ≫ m) O f = valR z (m ⁻¹ᵁ O) ((m.app O).hom f) := by
   by_cases h : ⊤ ≤ z ⁻¹ᵁ (m ⁻¹ᵁ O)
@@ -23,6 +26,15 @@ theorem valR_comp_app {Y Z : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ Y
   · rw [valR, valR, dif_neg h]
     exact dif_neg h
 
+/- English proof (translation)
+Introduce `p _`. Establish `hs : Function.Surjective (spMap (TrivSqZeroExt.fstHom B B B).toRingHom)`. Introduce `q`. Use `⟨spMap (algebraMap B (DualNumber B)) q, ?_⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (Ideal.ext fun c ↦ ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap B (DualNumber B) c.fst ∈ q.asIdeal ↔ c ∈ q.asIdeal`. Establish `hn : c - algebraMap B (DualNumber B) c.fst ∈ q.asIdeal`. Use `q.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (c - algebraMap B (DualNumber B) c.fst) ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Conclude with `⟨fun hc ↦ by simpa using add_mem hn hc, fun hc ↦ by simpa using sub_mem hc hn⟩`. Take `⟨q, rfl⟩` from `hs p`. Use `h (Set.mem_univ q)` as an intermediate fact.
+
+Rewrite `this` using `[← hw]`. Conclude with `this`.
+-/
 theorem le_preimage_of_red {Y : Scheme.{0}} {B : Type} [CommRing B] {x : Sp B ⟶ Y} {w : Sp (DualNumber B) ⟶ Y}
     (hw : spMap (TrivSqZeroExt.fstHom B B B).toRingHom ≫ w = x) {O : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ O) : ⊤ ≤ w ⁻¹ᵁ O := by
   intro p _
@@ -42,10 +54,20 @@ theorem le_preimage_of_red {Y : Scheme.{0}} {B : Type} [CommRing B] {x : Sp B �
   rw [← hw] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[valR_eq_ev _ _ h, valR_eq_ev _ _ (GlobalTheory.FlagMod.le_preimage_mono e h), GlobalTheory.FlagMod.ev_res]`.
+-/
 theorem valR_resG {Z : Scheme.{0}} {S : Type} [CommRing S] (z : Sp S ⟶ Z) {U V : Z.Opens} (e : V ≤ U)
     (h : ⊤ ≤ z ⁻¹ᵁ V) (a : Γ(Z, U)) : valR z V (resG Z e a) = valR z U a := by
   rw [valR_eq_ev _ _ h, valR_eq_ev _ _ (GlobalTheory.FlagMod.le_preimage_mono e h), GlobalTheory.FlagMod.ev_res]
 
+/- English proof (translation)
+Use `⟨fun U _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : (default : PrimeSpectrum K) ∈ x0 ⁻¹ᵁ U`. Establish `e : x0 ⁻¹ᵁ U = ⊤` using `eq_top_iff.2 fun p _ => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) p default]` and apply the resulting hypothesis. Rewrite using `[e]`.
+
+Conclude with `isAffineOpen_top _`. Establish `e : x0 ⁻¹ᵁ U = ⊥` using `eq_bot_iff.2 fun p hp => by`. Rewrite `hp` using `[Subsingleton.elim (α := PrimeSpectrum K) p default]`. Conclude with `(h hp).elim`. Rewrite using `[e]`.
+
+Conclude with `isAffineOpen_bot _`.
+-/
 theorem isAffineHom_of_field {K : Type} [Field K] {X : Scheme.{0}} (x0 : Sp K ⟶ X) : IsAffineHom x0 := by
   refine ⟨fun U _ => ?_⟩
   by_cases h : (default : PrimeSpectrum K) ∈ x0 ⁻¹ᵁ U
@@ -59,6 +81,11 @@ theorem isAffineHom_of_field {K : Type} [Field K] {X : Scheme.{0}} (x0 : Sp K �
     rw [e]
     exact isAffineOpen_bot _
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `hl`. Use `⟨h₁, GlobalTheory.FlagMod.le_preimage_mono h0 h₂, fun f => ?_⟩` and prove the remaining obligations. Establish `hxm : ⊤ ≤ (x ≫ m) ⁻¹ᵁ Ω₀` using `hxΩ`. Establish `hw : ∀ a, ⊤ ≤ (transl (baseMap K B) x (u a) ≫ m) ⁻¹ᵁ Ω₀` using `fun a => le_preimage_of_red ((isTransl_transl _ x hx (u a)).red (hut a)) hxΩ`. Rewrite using `[← valR_resG _ h0 h₂, h₃, chartVal, chartVal, hd.2.2 Ω Ω₀ h0 h1, valR_resG _ h0 hxm, valR_resG _ h0 hxm]`.
+
+Simplify using `only [valR_resG _ h0 (hw _)]`.
+-/
 theorem IsChartPt.of_le {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {A' : Over (Sp (DualNumber K))}
     {Z : Scheme.{0}} {m : A.left ⟶ Z} {m' : A'.left ⟶ Z} {W₀ : Z.Opens} {d : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)}
     (hd : LogKS.IsField W₀ d) {Ω₀ Ω : Z.Opens} (h0 : Ω₀ ≤ Ω) (h1 : Ω ≤ W₀) {n : ℕ} {u : Fin n → (epsR K ⟶ A)}

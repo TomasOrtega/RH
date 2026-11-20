@@ -10,6 +10,11 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hdim : finrank ℝ (EuclideanSpace ℂ (Fin m)) = 2 * m`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Establish `hμ : (Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) : Measure (EuclideanSpace ℂ (Fin m))) = Measure.hausdorffMeasure (finrank ℝ (EuclideanSpace ℂ (Fin m)) : ℝ)`. Rewrite using `[hdim]`. Rewrite `hs` using `[hμ]`.
+
+Conclude with `Measure.absolutelyContinuous_isAddHaarMeasure volume (Measure.hausdorffMeasure (finrank ℝ (EuclideanSpace ℂ (Fin m)) : ℝ)) hs`.
+-/
 theorem volume_null_of_hausdorff_null {m : ℕ} {s : Set (EuclideanSpace ℂ (Fin m))}
     (hs : Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) s = 0) : volume s = 0 := by
   have hdim : finrank ℝ (EuclideanSpace ℂ (Fin m)) = 2 * m := by
@@ -21,6 +26,9 @@ theorem volume_null_of_hausdorff_null {m : ℕ} {s : Set (EuclideanSpace ℂ (Fi
   exact Measure.absolutelyContinuous_isAddHaarMeasure volume
     (Measure.hausdorffMeasure (finrank ℝ (EuclideanSpace ℂ (Fin m)) : ℝ)) hs
 
+/- English proof (translation)
+Set `_ : MeasurableSpace α` to `⊤`. Establish `hm : ∀ t : Set α, MeasurableSet t` using `fun _ => MeasurableSpace.measurableSet_top`. Rewrite using `[← Measure.count_apply (hm _), measure_iUnion hs (fun _ => hm _)]`. Simplify using `only [Measure.count_apply (hm _)]`.
+-/
 theorem encard_iUnion_disjoint_nat {α : Type*} (s : ℕ → Set α) (hs : Pairwise (Function.onFun Disjoint s)) :
     (((⋃ i, s i).encard : ℕ∞) : ℝ≥0∞) = ∑' i, (((s i).encard : ℕ∞) : ℝ≥0∞) := by
   let _ : MeasurableSpace α := ⊤
@@ -28,6 +36,9 @@ theorem encard_iUnion_disjoint_nat {α : Type*} (s : ℕ → Set α) (hs : Pairw
   rw [← Measure.count_apply (hm _), measure_iUnion hs (fun _ => hm _)]
   simp only [Measure.count_apply (hm _)]
 
+/- English proof (translation)
+Use `volume_null_of_hausdorff_null (nonpos_iff_eq_zero.1 ?_)` and prove the remaining obligations. Establish `hL` using `(LinearMap.toContinuousLinearMap (linProjₗ π)).lipschitz.hausdorffMeasure_image_le (d := ((2 * m : ℕ) : ℝ)) (by positivity) s`. Rewrite `hL` using `[LinearMap.coe_toContinuousLinearMap', hs, mul_zero]`. Conclude with `hL`.
+-/
 theorem volume_linProj_image_null {m n : ℕ} (π : Fin m → Fin n → ℂ) {s : Set (EuclideanSpace ℂ (Fin n))}
     (hs : Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) s = 0) : volume (linProj π '' s) = 0 := by
   refine volume_null_of_hausdorff_null (nonpos_iff_eq_zero.1 ?_)
@@ -36,6 +47,21 @@ theorem volume_linProj_image_null {m n : ℕ} (π : Fin m → Fin n → ℂ) {s 
   rw [LinearMap.coe_toContinuousLinearMap', hs, mul_zero] at hL
   exact hL
 
+/- English proof (translation)
+Introduce `n m h J hJ hm hmn hfin π g hg`. Take `⟨e, Ω, Φ, hpc, hnull⟩` from `hCover n m h J hJ hm hmn hfin`. Set `S : ℕ → Set (EuclideanSpace ℂ (Fin n))` to `fun i => graphPt (e i) (Φ i) '' Ω i`. Set `D` to `disjointed S`. Establish `hSm : ∀ i, MeasurableSet (S i)` using `fun i => (hpc i).1.measurableSet.image_of_continuousOn_injOn (continuousOn_graphPt _ (hpc i).2.1.continuousOn) (graphPt_injective_of_graphBase _ _).injOn`.
+
+Establish `hDm : ∀ i, MeasurableSet (D i)` using `MeasurableSet.disjointed hSm`. Establish `hDS : ∀ i, D i ⊆ S i` using `disjointed_subset S`. Establish `hDd : Pairwise (Function.onFun Disjoint D)` using `disjoint_disjointed S`. Establish `hU : ⋃ i, D i = ⋃ i, S i` using `iUnion_disjointed`. Establish `hUC : ⋃ i, D i ⊆ coneSet h J` using `Set.iUnion_subset fun i => (hDS i).trans (hpc i).2.2.1`.
+
+Establish `hN : Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) (coneSet h J \ ⋃ i, D i) = 0`. Rewrite using `[hU]`. Conclude with `hnull`. Establish `hCae : coneSet h J =ᵐ[Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ)] ⋃ i, D i` using `ae_eq_set.2 ⟨hN, by rw [Set.sdiff_eq_empty.2 hUC]; exact measure_empty⟩`. Establish `hpiece` using `fun i => hArea m (n - m) n (e i) (Ω i) (Φ i) (hpc i).1 (hpc i).2.1 (D i) (hDS i) (hDm i) (coneTangent h J) (fun x hx _ => (hpc i).2.2.2 x hx) π`.
+
+Establish `hcount : ∀ᵐ w ∂(volume : Measure (EuclideanSpace ℂ (Fin m))), ((fibreCount h J π w : ℕ∞) : ℝ≥0∞) * g w = ∑' i, (({y | y ∈ D i ∧ linProj π y = w}.encard : ℕ∞) : ℝ≥0∞) * g w` using `by filter_upwards [measure_eq_zero_iff_ae_notMem.1 (volume_linProj_image_null π hN)] with w hw`. Rewrite using `[ENNReal.tsum_mul_right, fibreCount, ← encard_iUnion_disjoint_nat]`. Use `congr 3`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, rfl⟩`. Assume the negation of the conclusion as `hne`. Conclude with `hw ⟨y, ⟨hy, fun hyD => hne (by`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hyD`.
+
+Conclude with `⟨i, hi, rfl⟩)⟩, rfl⟩`. Introduce and unpack `⟨i, hi, hw'⟩`. Conclude with `⟨hUC (Set.mem_iUnion.2 ⟨i, hi⟩), hw'⟩`. Introduce `i j hij`. Conclude with `(hDd hij).mono (fun y hy => hy.1) (fun y hy => hy.1)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.restrict_congr_set hCae, lintegral_iUnion hDm hDd, ENNReal.tsum_mul_left]`. Use `_ = ∑' i, Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1) * ∫⁻ w, (({y | y ∈ D i ∧ linProj π y = w}.encard : ℕ∞) : ℝ≥0∞) * g w := tsum_congr fun i => (hpiece i).2 g hg`. Use `_ = Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1) * ∫⁻ w, ((fibreCount h J π w : ℕ∞) : ℝ≥0∞) * g w := by`. Rewrite using `[ENNReal.tsum_mul_left, ← lintegral_tsum (f := fun i w => (({y | y ∈ D i ∧ linProj π y = w}.encard : ℕ∞) : ℝ≥0∞) * g w) fun i => (hpiece i).1.mul hg.aemeasurable, lintegral_congr_ae hcount]`.
+-/
 theorem ConeAreaFormula.proof (hCover : ConeGraphCover.Statement) (hArea : GraphAreaFibre.Statement) :
     ConeAreaFormula.Statement := by
   intro n m h J hJ hm hmn hfin π g hg

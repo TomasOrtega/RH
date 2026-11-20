@@ -13,12 +13,21 @@ namespace PositivityTheory.RgDs
 
 open Formalism.BasicNotions.TH Formalism.L2.Theta GlobalTheory.CoverDS GlobalTheory.Dec
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.discreteSeriesUpqExists_iff_dsExists.2 hE`.
+-/
 theorem upqExists_of (hE : DSExists) : GlobalTheory.Published.DiscreteSeriesUpqExists :=
   GlobalTheory.Published.discreteSeriesUpqExists_iff_dsExists.2 hE
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.discreteSeriesExists_iff_upq.2 (upqExists_of hE)`.
+-/
 theorem exists_of (hE : DSExists) : GlobalTheory.Published.DiscreteSeriesExists :=
   GlobalTheory.Published.discreteSeriesExists_iff_upq.2 (upqExists_of hE)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.CoverSeries.of_upq (upqExists_of hE) (fun p q h T U hU => ((GlobalTheory.T.harishChandraModules_indefiniteUnitaryGroup.1 p q h T).1 U hU).2.1)`.
+-/
 theorem coverExists_of (hE : DSExists) : GlobalTheory.Published.DiscreteSeriesCoverExists :=
   GlobalTheory.Published.CoverSeries.of_upq (upqExists_of hE) (fun p q h T U hU => ((GlobalTheory.T.harishChandraModules_indefiniteUnitaryGroup.1 p q h T).1 U hU).2.1)
 

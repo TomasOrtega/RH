@@ -27,6 +27,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `: IsEmpty (Fin (A.sig (tauE D τ)).2)` using `by rw [hp]; exact Fin.isEmpty'`. Rewrite using `[Formalism.UG.Jpq, ← Matrix.fromBlocks_one]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem jpq_eq_one {A : HSp D} (hp : A.IsPosDef) (τ : D.what₂.Tau) :
     Formalism.UG.Jpq (A.sig (tauE D τ)).1 (A.sig (tauE D τ)).2 = 1 := by
   have : IsEmpty (Fin (A.sig (tauE D τ)).2) := by rw [hp]; exact Fin.isEmpty'
@@ -34,6 +37,11 @@ theorem jpq_eq_one {A : HSp D} (hp : A.IsPosDef) (τ : D.what₂.Tau) :
   congr 1
   exact Subsingleton.elim _ _
 
+/- English proof (translation)
+Take `⟨cA, hc⟩` from `exists_isCartanFrame A hA`. Take `⟨s, hs, hs'⟩` from `IP.Model.exists_cartan (hA (tauE D τ)).choose (J := Formalism.UG.Jpq (A.sig (tauE D τ)).1 (A.sig (tauE D τ)).2) (by rw [jpq_eq_one hp, Matrix.mul_one]) (by rw [jpq_eq_one hp, Matrix.conjTranspose_one]) (IP.Model.gramAt_unit A τ) (hc τ)`. Establish `h2 : gramAt D A τ * s = gramAt D A τ` using `by conv_lhs => rw [← hc τ, Matrix.mul_assoc, hs']`. Rewrite using `[← hc τ, jpq_eq_one hp]`. Simplify using the standard rewrite rules.
+
+Establish `h3 : s = 1`. Use `congrArg ((gramAt D A τ)⁻¹ * ·) h2` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (IP.Model.gramAt_unit A τ), Matrix.one_mul]`. Conclude with `h3 ▸ hs`.
+-/
 theorem isCartanInv_one {A : HSp D} (hA : A.SigOK) (hp : A.IsPosDef) (τ : D.what₂.Tau) : IsCartanInv (gramAt D A τ) 1 := by
   obtain ⟨cA, hc⟩ := exists_isCartanFrame A hA
   obtain ⟨s, hs, hs'⟩ := IP.Model.exists_cartan (hA (tauE D τ)).choose
@@ -47,6 +55,11 @@ theorem isCartanInv_one {A : HSp D} (hA : A.SigOK) (hp : A.IsPosDef) (τ : D.wha
     simpa only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (IP.Model.gramAt_unit A τ), Matrix.one_mul] using this
   exact h3 ▸ hs
 
+/- English proof (translation)
+Take `⟨cA, hc⟩` from `exists_isCartanFrame A hA`. Take `⟨a, ha, -, ha'⟩` from `exists_isMaj_frameInv_eq hθ (isCartanInv_one hA hp)`. Use `⟨cA, a, hθ, hA, hp, hc, isCartanInv_one hA hp, fun τ => by rw [jpq_eq_one hp]; simp, ha, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `(isMaj_iff hθ).1 ha τ`. Use `conv_lhs => rw [← show frameInv θ A a τ = 1 from ha' τ, frameInv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hε, diagonal_sign_mul_self]`.
+-/
 theorem exists_defin {θ : InfFam D} (hθ : IsInfFam θ) {A : HSp D} (hA : A.SigOK) (hp : A.IsPosDef) :
     ∃ cA a, Defin θ A cA a := by
   obtain ⟨cA, hc⟩ := exists_isCartanFrame A hA
@@ -58,6 +71,9 @@ theorem exists_defin {θ : InfFam D} (hθ : IsInfFam θ) {A : HSp D} (hA : A.Sig
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hε, diagonal_sign_mul_self]
 
+/- English proof (translation)
+Establish `hL` using `isLattice_frameLat_host A`. Take `⟨β, hβ⟩` from `GlobalTheory.AdelicFrame.exists_isFrame (F := D.host.F) (frameLat A) hL.fg hL.span_eq_top`. Conclude with `⟨β, fun Z h1 h2 => ⟨hβ, GlobalTheory.GridIdem.exists_isIdemSum Z (fun w hw => GlobalTheory.WeilAtPlace.exists_isIdemAt_of_split (h1 w hw) rfl) h2, IP.Model.isSplit_two⟩⟩`.
+-/
 theorem exists_places (A : HSp D) : ∃ β, ∀ Z : Finset (Formalism.L2.DIV.Pl D.host.E),
     (∀ w ∈ Z, Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (w.under (𝓞 D.host.F))) →
     (∀ w ∈ Z, ∀ w' ∈ Z, w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F) → w = w') → Places A β Z := by
@@ -66,6 +82,13 @@ theorem exists_places (A : HSp D) : ∃ β, ∀ Z : Finset (Formalism.L2.DIV.Pl 
   exact ⟨β, fun Z h1 h2 => ⟨hβ, GlobalTheory.GridIdem.exists_isIdemSum Z
     (fun w hw => GlobalTheory.WeilAtPlace.exists_isIdemAt_of_split (h1 w hw) rfl) h2, IP.Model.isSplit_two⟩⟩
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `exists_places A`. Establish `h2 : Ideal.span {(2 : 𝓞 D.host.E)} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `h`. Use `h.map (Algebra.norm ℤ)` as an intermediate fact.
+
+Rewrite `this` using `[show (2 : 𝓞 D.host.E) = algebraMap ℤ _ 2 from (map_ofNat _ 2).symm, Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff]`. Use linear arithmetic over natural numbers and integers. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ h2`. Establish `h2M : (2 : 𝓞 D.host.E) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Use `⟨β, ⟨M, hM.isPrime, fun h => by simp [h] at h2M⟩, hβ _ (fun w hw => ?_) fun w hw w' hw' _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.mem_singleton.1 hw]`. Use `IP.Model.isSplit_two _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) 2 ∈ M`. Rewrite using `[map_ofNat]` and apply the resulting hypothesis. Rewrite using `[Finset.mem_singleton.1 hw, Finset.mem_singleton.1 hw']`.
+-/
 theorem exists_places_singleton (A : HSp D) : ∃ β w, Places A β {w} := by
   obtain ⟨β, hβ⟩ := exists_places A
   have h2 : Ideal.span {(2 : 𝓞 D.host.E)} ≠ ⊤ := by
@@ -84,6 +107,11 @@ theorem exists_places_singleton (A : HSp D) : ∃ β w, Places A β {w} := by
     rwa [map_ofNat]
   · rw [Finset.mem_singleton.1 hw, Finset.mem_singleton.1 hw']
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.SphTheta.bcParam_map_mul 1 n (LFun.Model.rhoU hq n)`. Simplify using `only [one_mul, Multiset.map_id', LFun.Model.rhoU, ← zpow_neg] at h`. Rewrite using `[h, Fin.sum_univ_eq_sum_range (fun k : ℕ => ({Units.mk0 (q : ℂ) (by exact_mod_cast hq) ^ ((n : ℤ) - 1 - 2 * (k : ℤ)), Units.mk0 (q : ℂ) (by exact_mod_cast hq) ^ (-((n : ℤ) - 1 - 2 * (k : ℤ)))} : Multiset ℂˣ)) (n / 2)]`. Break down `Nat.even_or_odd' n with ⟨d, rfl | rfl⟩` into its components or cases. Rewrite using `[GlobalTheory.SphTheta.str_even _ d _ (by push_cast; rfl), show 2 * d / 2 = d by omega, show 2 * d % 2 = 0 by omega]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.SphTheta.str_odd _ d _ (by push_cast; rfl), show (2 * d + 1) / 2 = d by omega, show (2 * d + 1) % 2 = 1 by omega]`. Simplify using the standard rewrite rules.
+-/
 theorem bcParam_rho {q : ℕ} (hq : q ≠ 0) (n : ℕ) : GlobalTheory.LGrp.bcParam n (LFun.Model.rhoU hq n) =
     GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlace.str (Units.mk0 (q : ℂ) (by exact_mod_cast hq)) n := by
   have h := GlobalTheory.SphTheta.bcParam_map_mul 1 n (LFun.Model.rhoU hq n)
@@ -96,6 +124,13 @@ theorem bcParam_rho {q : ℕ} (hq : q ≠ 0) (n : ℕ) : GlobalTheory.LGrp.bcPar
   · rw [GlobalTheory.SphTheta.str_odd _ d _ (by push_cast; rfl), show (2 * d + 1) / 2 = d by omega, show (2 * d + 1) % 2 = 1 by omega]
     simp
 
+/- English proof (translation)
+Establish `hu : ∀ f : ℕ → ℂˣ, (Finset.range n).val.map f = ∑ i ∈ Finset.range n, ({f i} : Multiset ℂˣ)` using `fun f => by`. Rewrite using `[Finset.sum_eq_multiset_sum, ← Multiset.sum_map_singleton ((Finset.range n).val.map f), Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.SphTheta.str_eq_sum, Int.toNat_natCast, LFun.seg, hu, ← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hj` using `Finset.mem_range.1 hj`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[one_mul, LFun.coe_npowU, LFun.npow, h, Units.val_zpow_eq_zpow_val, Units.val_mk0, Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_pow, ← Complex.cpow_intCast, ← Complex.natCast_cpow_natCast_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seg_eq_str {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {q : ℕ} (hq : q ≠ 0)
     (h : Ideal.absNorm w.asIdeal = q ^ 2) (n : ℕ) :
     LFun.seg w 1 n = GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlace.str (Units.mk0 (q : ℂ) (by exact_mod_cast hq)) n := by
@@ -112,6 +147,15 @@ theorem seg_eq_str {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `v _ w h`. Establish `hH` using `isHermND_gram V`. Establish `hL` using `isLattice_frameLat_host V`. Establish `hd` using `GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D V v`. Establish `hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `D.host.E) v := fun P _ => by`.
+
+Use `GlobalTheory.BaseChangeExistsCompare.unram_of_cm D D.sp.cm P` as an intermediate fact. Conclude with `Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`. Establish `h0 : (fun _ : GA D V => (1 : ℂ)) ≠ 0` using `fun e => one_ne_zero (congrFun e 1)`. Break down `(LFun.exists_isInertChart _ (isCMExt_host D) v).1 hun with hs | ⟨w', hw'⟩` into its components or cases. Take `⟨e, he, -, -⟩` from `LFun.SplitChart.exists_isSplitChart (isCMExt_host D) hH hL.fg hL.span_eq_top h hs hd`.
+
+Conclude with `Or.inl ⟨hs, e, he, ((LFun.Model.hasSatGL_trivial w V.rank).2 1 (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) one_ne_zero).map (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0⟩`. Take `rfl` from `(GlobalTheory.LFun.InertChart.under_eq_iff hw' w).1 h`. Take `⟨-, ⟨τ, hτ, -⟩, -, -, hconj⟩` from `(LFun.exists_isInertChart _ (isCMExt_host D) v).2 w h hw'`. Take `⟨⟨ϖ, hϖ⟩, hch⟩` from `hconj τ hτ`. Take `⟨e, he, -, -⟩` from `hch V.rank V.gram (frameLat V) hH hL.fg hL.span_eq_top hd`.
+
+Use `Or.inr ⟨hw', τ, ϖ, e, _, hϖ, he, ((LFun.Model.hasSatU_trivial hϖ (LFun.qV_ne_zero v) V.rank).2 1 (GlobalTheory.LGrp.mem_fixed.2 fun _ _ => rfl) one_ne_zero).map hϖ (LinearMap.pi fun _ => LinearMap.id) (fun _ _ => rfl) h0, ?_⟩` and prove the remaining obligations. Rewrite using `[bcParam_rho]`. Conclude with `seg_eq_str (LFun.qV_ne_zero v) (LFun.InertChart.absNorm_eq D.sp.cm.deg2 hw') _`.
+-/
 theorem isParamFun_one (V : HSp D) (S : Set (FinPl D)) :
     LFun.IsParamFun D.sp.cm.sig V.gram (frameLat V) S (fun _ => (1 : ℂ)) (LFun.segFam 1 V.rank) := by
   intro v _ w h
@@ -135,6 +179,9 @@ theorem isParamFun_one (V : HSp D) (S : Set (FinPl D)) :
     rw [bcParam_rho]
     exact seg_eq_str (LFun.qV_ne_zero v) (LFun.InertChart.absNorm_eq D.sp.cm.deg2 hw') _
 
+/- English proof (translation)
+Establish `hcc : (fun _ => (1 : ℂ)) ∈ cuspCont A` using `⟨continuous_const, fun _ _ _ => rfl, fun r C hC => absurd hC (hA r C)⟩`. Establish `hv : LFun.val (F` using `D.host.F) (1 : (AE D)ˣ →* Circle) = 1 := funext fun w => by simp [LFun.val, LFun.locChar]`. Use `⟨⟨⟨isAutFunSm_const θ A 1, .of_invariant fun _ _ _ => rfl⟩, hcc⟩, fun _ _ _ => rfl, isParamFun_one A _, fun w _ x _ => by simp [LFun.locChar], 0, (under Z).finite_toSet, by omega, fun w _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.liftFam]`.
+-/
 theorem form_one (θ : InfFam D) {A : HSp D} (hA : IsAniso A) (h5 : 5 ≤ A.rank) (cA : CptF A)
     (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)) :
     Form θ A cA β Z 1 0 A.rank (fun _ => 1) (LFun.segFam 1 A.rank) := by
@@ -145,6 +192,9 @@ theorem form_one (θ : InfFam D) {A : HSp D} (hA : IsAniso A) (h5 : 5 ≤ A.rank
   rw [hv]
   simp [GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.liftFam]
 
+/- English proof (translation)
+Introduce `v ε hε _ x h1 h2 h3` and use `by have : infPart D ((x : AE D) - 1) = 0 := by rw [← h1, RingHom.map_mul, GlobalTheory.WeilProduct.infPart_placeIdem hε, zero_mul] rw [RingHom.map_sub, RingHom.map_one, sub_eq_zero] at this rw [MonoidHom.pow_apply, hη x this h2 h3, one_pow]`.
+-/
 theorem unrOff_pow {η : (AE D)ˣ →* Circle} (hη : UnramEverywhere D η) (n : ℕ) : GlobalTheory.StepLaw.UnrOff (η ^ n) ∅ :=
   fun v ε hε _ x h1 h2 h3 => by
     have : infPart D ((x : AE D) - 1) = 0 := by
@@ -152,6 +202,9 @@ theorem unrOff_pow {η : (AE D)ˣ →* Circle} (hη : UnramEverywhere D η) (n :
     rw [RingHom.map_sub, RingHom.map_one, sub_eq_zero] at this
     rw [MonoidHom.pow_apply, hη x this h2 h3, one_pow]
 
+/- English proof (translation)
+Establish `h : ((-1 : Matrix (Fin m) (Fin m) ℂ) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)ᵀ) = -1`. Rewrite using `[Matrix.transpose_one, ← neg_one_smul ℂ (1 : Matrix (Fin m) (Fin m) ℂ), Matrix.smul_kronecker, Matrix.one_kronecker_one, neg_one_smul]`. Rewrite using `[GlobalTheory.WeilParts.detPlus, h, add_neg_cancel, Matrix.zero_mul, smul_zero, zero_add, sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem detPlus_neg {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix (Fin m) (Fin m) ℂ) :
     GlobalTheory.WeilParts.detPlus 1 (-1) a b = 1 := by
   have h : ((-1 : Matrix (Fin m) (Fin m) ℂ) ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ)ᵀ) = -1 := by
@@ -160,6 +213,17 @@ theorem detPlus_neg {m n : ℕ} (a : Matrix (Fin n) (Fin n) ℂ) (b : Matrix (Fi
   rw [GlobalTheory.WeilParts.detPlus, h, add_neg_cancel, Matrix.zero_mul, smul_zero, zero_add, sub_neg_eq_add, ← two_smul ℂ, smul_smul]
   simp
 
+/- English proof (translation)
+Take `⟨-, ψ, hψ⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Establish `dA` using `GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A`. Establish `dW` using `GlobalTheory.WeilAtPlace.isSelfDualC_frameLat W`. Establish `cA` using `isCartanInv_one hA hp`.
+
+Take `⟨om, hom, -, hv⟩` from `GlobalTheory.WeilProduct.exists_weilDatum_etaTilde D ψ hψ A W θ hθ _ _ dA dW η hη`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.VacuumO.vacExists D ψ θ hψ hθ A W (fun _ => 1) (fun _ => -1) hA hW cA hn _ _ dA dW`. Establish `hL` using `isLattice_frameLat_host W`. Take `⟨γ, hγ⟩` from `GlobalTheory.AdelicFrame.exists_isFrame (F := D.host.F) (frameLat W) hL.fg hL.span_eq_top`. Use `⟨ψ, η, om, Φ, hη, hom, (IP.Model.isSphOff_of_vac hΦ ∅).2.2, fun β hβ Z m hm => ⟨hn, (IP.Model.isSphOff_of_vac hΦ ∅).1, (IP.Model.isSphOff_of_vac hΦ _).2.1, fun κ hκ => ?_, fun ν 𝓕 hν mR hR => ?_⟩⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.StepVecLaw.om_vac hom hA hW cA hn dA dW hβ hγ hΦ (P := ∅) (e := 0) ⟨⟨0, by simp, by simp⟩, zero_mul _⟩ (aS := 1) (aT := 1) (by simp) (by simp) (unrOff_pow hη.2.1 _) (unrOff_pow hη.2.1 _) (g := κ) (h := 1) hκ.1 (one_mem _) hκ.2.1.1.1.2 (by rw [map_one]; exact one_mem …` as an intermediate fact. Simplify using `using this`. Establish `: CompactSpace (GinfC A)` using `isCompact_iff_compactSpace.1 (Formalism.IndefR.Eqv.isCompact_GinfC hA fun τ => Or.inl (hp τ))`. Establish `h1 : ∀ b : GinfC A, wcoef om ν 𝓕 Φ Φ b = 1` using `fun b => by`. Use `hΦ.2.norm.2 (ν, 𝓕) hν` as an intermediate fact.
+
+Rewrite using `[wcoef, hv (fun _ => 1) (fun _ => -1) cA hn b b.2 1 (one_mem _) (by simp) (by simp) Φ hΦ.2.theta hΦ.2.fock, ip]`. Simplify using `only [detPlus_neg, Finset.prod_const_one, one_smul, Complex.mul_conj, Complex.normSq_eq_norm_sq, integral_complex_ofReal]`. Conclude with `this` after adjusting the coercions. Establish `h2 : ∀ b : GinfC A, rcoef m (fun _ => 1) (fun _ => 1) (b : GA D A) = ((autMeasure A m).real Set.univ : ℝ)` using `fun b => by`. Simplify using `[rcoef, petersson, pet, AutomorphicL2Unitary.descend, rTr, autMeasure]`.
+
+Simplify using `only [h1, h2, one_mul, integral_const, Complex.real_smul]`. Conclude with `mul_ne_zero (Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨NeZero.ne _, measure_ne_top _ _⟩)) (GlobalTheory.Eis.Model.vol_ne_zero A m)`.
+-/
 theorem exists_occ {θ : InfFam D} (hθ : IsInfFam θ) {A W : HSp D} (hA : A.SigOK) (hp : A.IsPosDef) (hW : W.SigOK)
     (hn : ∀ τ, IsCartanInv (gramAt D W τ) (-1)) : ∃ ψ η om Φ, GlobalTheory.WeilParts.IsEtaTilde D η ∧
       IsWeilDatumO ψ A W (η ^ A.rank) (η ^ W.rank) om ∧ Φ ≠ 0 ∧ ∀ β, Formalism.L2.DIV.IsFrame β (frameLat A) →
@@ -191,6 +255,9 @@ theorem exists_occ {θ : InfFam D} (hθ : IsInfFam θ) {A W : HSp D} (hA : A.Sig
     exact mul_ne_zero (Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨NeZero.ne _, measure_ne_top _ _⟩))
       (GlobalTheory.Eis.Model.vol_ne_zero A m)
 
+/- English proof (translation)
+Establish `e : gramAt D (GlobalTheory.NegSpace.neg W) τ = -gramAt D W τ` using `Matrix.ext fun i j => map_neg (tauE D τ) (W.gram i j)`. Establish `h` using `(isCartanInv_one hW hp τ).2.2`. Rewrite using `[e]`. Establish `key : ∀ {k : ℕ} (G : Matrix (Fin k) (Fin k) ℂ), (G * 1).PosDef → IsCartanInv (-G) (-1)` using `fun G h => ⟨by simp, by simp, by simpa using h⟩`. Conclude with `key _ h`.
+-/
 theorem isCartanInv_neg {W : HSp D} (hW : W.SigOK) (hp : W.IsPosDef) (τ : D.what₂.Tau) :
     IsCartanInv (gramAt D (GlobalTheory.NegSpace.neg W) τ) (-1) := by
   have e : gramAt D (GlobalTheory.NegSpace.neg W) τ = -gramAt D W τ := Matrix.ext fun i j => map_neg (tauE D τ) (W.gram i j)
@@ -200,6 +267,13 @@ theorem isCartanInv_neg {W : HSp D} (hW : W.SigOK) (hp : W.IsPosDef) (τ : D.wha
     ⟨by simp, by simp, by simpa using h⟩
   exact key _ h
 
+/- English proof (translation)
+Set `A : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n`. Set `W : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral r`. Take `⟨⟨θ, hθ⟩, -⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Establish `hA : A.SigOK` using `Examples₂.posSpace_sigOK _ _`. Establish `hW : W.SigOK` using `Examples₂.posSpace_sigOK _ _`.
+
+Establish `hW'` using `GlobalTheory.NegSpace.sigOK_neg _ W hW`. Take `⟨cA, a, hd⟩` from `exists_defin hθ hA fun _ => rfl`. Take `⟨β, w, hP⟩` from `exists_places_singleton A`. Take `⟨ψ, η, om, Φ, hη, hom, -, hO⟩` from `exists_occ (W := GlobalTheory.NegSpace.neg W) hθ hA (fun _ => rfl) hW' (isCartanInv_neg hW fun _ => rfl)`. Use `⟨ψ, θ, A, _, _, _, om, cA, a, β, w, Measure.haar, _, Φ, rfl, rfl, hd, hW', ⟨η, hη⟩, hom, hP, inferInstance, hO β hP.frame _ _ inferInstance, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl h5`. Conclude with `form_one θ (GlobalTheory.ThetaMean.Model.isAniso_posSpace n) h5 cA β _`.
+-/
 theorem hypotheses (D : D7) (n r : ℕ) : ∃ (ψ : _) (θ : _) (A W : HSp D) (χA χW : _) (om : WRep A W) (cA : _) (a : _) (β : _) (w : _)
     (m : Measure (GA D A)) (sW : RealMat W) (Φ : _), A.rank = n ∧ W.rank = r ∧ Defin θ A cA a ∧ W.SigOK ∧
     (∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) ∧ IsWeilDatumO ψ A W χA χW om ∧ Places A β {w} ∧ m.IsHaarMeasure ∧
@@ -220,6 +294,11 @@ theorem hypotheses (D : D7) (n r : ℕ) : ∃ (ψ : _) (θ : _) (A W : HSp D) (�
   rintro rfl h5
   exact form_one θ (GlobalTheory.ThetaMean.Model.isAniso_posSpace n) h5 cA β _
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ⟨hx.1.1.1, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => ?_⟩) (Formalism.L2.DIV.Kg_le_lev subset_rfl (Finset.empty_subset _))` and prove the remaining obligations. Establish `h1` using `Formalism.L2.DIV.mem_parah.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hx.1.1.2 PP) hP)`. Establish `h2 : Formalism.L2.DIV.upperLeftBlock le_rfl (Formalism.L2.DIV.redFn β PP x) = 1` using `congrFun (Subgroup.mem_bot.1 hx.2) ⟨PP, hP⟩`. Establish `h3` using `Formalism.L2.DIV.upper_block_val_submatrix le_rfl (Formalism.L2.DIV.blockTri_blkOf_le _ _ h1.2)`. Use `Formalism.L2.DIV.mem_princAt.2 ⟨h1.1, Units.ext ?_⟩` and prove the remaining obligations.
+
+Conclude with `h3.symm.trans (congrArg Units.val h2)`.
+-/
 theorem lev_prinDat (A : HSp D) (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E)) :
     Formalism.L2.DIV.lev D.sp.cm A.gram β (prinDat A Z) = Formalism.L2.DIV.Kg D.sp.cm A.gram β Z := by
   refine le_antisymm (fun x hx => ⟨hx.1.1.1, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => ?_⟩)
@@ -230,6 +309,9 @@ theorem lev_prinDat (A : HSp D) (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf 
   refine Formalism.L2.DIV.mem_princAt.2 ⟨h1.1, Units.ext ?_⟩
   exact h3.symm.trans (congrArg Units.val h2)
 
+/- English proof (translation)
+Rewrite using `[Eis.dblInt_of_factor (A := fun g => thetaKO om g x f₁) (B := fun g => thetaKO om g x f₂) fun g₁ g₂ => (((h f₁ f₂ h₁ h₂).2 g₁ g₂ x).2).trans (by rw [MonoidHom.inv_apply])]`. Simplify using `only [up, petersson, pet, AutomorphicL2Unitary.descend, ← integral_conj, map_mul, Complex.conj_conj]`. Use `congr 1`. Conclude with `integral_congr_ae (.of_forall fun q => mul_comm _ _)`.
+-/
 theorem dblInt_delta {ψ : AddChar (AF D.host.F) ℂ} {A W : HSp D} {χ : (AE D)ˣ →* Circle} {om : WRep A W}
     {omh : WRep (dblSp A) W} (h : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.ThetaClause ψ A W χ om omh) (m : Measure (GA D A)) [m.IsHaarMeasure] (u : GA D A → ℂ)
     {f₁ f₂ : WO A W → ℂ} (h₁ : IsThetaFunO ψ A W f₁) (h₂ : IsThetaFunO ψ A W f₂) (x : GA D W) :
@@ -241,16 +323,25 @@ theorem dblInt_delta {ψ : AddChar (AF D.host.F) ℂ} {A W : HSp D} {χ : (AE D)
   congr 1
   exact integral_congr_ae (.of_forall fun q => mul_comm _ _)
 
+/- English proof (translation)
+Introduce `f hf x` and use `by have := (dblInt_delta h m u hf hf x).symm.trans (hk _ (h f f hf hf).1 x) simpa using this`.
+-/
 theorem noLift_of_kills {ψ : AddChar (AF D.host.F) ℂ} {A W : HSp D} {χ : (AE D)ˣ →* Circle} {om : WRep A W}
     {omh : WRep (dblSp A) W} (h : GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero.ThetaClause ψ A W χ om omh) {m : Measure (GA D A)} [m.IsHaarMeasure] {u : GA D A → ℂ}
     (hk : Kills ψ χ omh m u) : NoLift ψ om m u := fun f hf x => by
   have := (dblInt_delta h m u hf hf x).symm.trans (hk _ (h f f hf hf).1 x)
   simpa using this
 
+/- English proof (translation)
+The claim follows from `h.str.choose_spec.2.1`.
+-/
 theorem gap_of_form {θ : InfFam D} {A : HSp D} {cA : CptF A} {β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)}
     {Z : Finset (Formalism.L2.DIV.Pl D.host.E)} {χ : (AE D)ˣ →* Circle} {r t : ℕ} {u : GA D A → ℂ} {par : LFun.Fam D.host.E}
     (h : Form θ A cA β Z χ r t u par) : r + 5 ≤ t := h.str.choose_spec.2.1
 
+/- English proof (translation)
+Introduce `h` and use `by have : CompactSpace (GinfC A) := isCompact_iff_compactSpace.1 (Formalism.IndefR.Eqv.isCompact_GinfC hA fun τ => Or.inl (hp τ)) obtain ⟨ν, 𝓕, hν⟩ := exists_isCovolOne D W.rank A.rank exact h.real ν 𝓕 hν Measure.haar inferInstance (by simp [rcoef, petersson, pet, AutomorphicL2Un …`.
+-/
 theorem not_occ_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A W : HSp D} (hA : A.SigOK) (hp : A.IsPosDef) (sW : RealMat W)
     (om : WRep A W) (m : Measure (GA D A)) (β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)) (Z : Finset (Formalism.L2.DIV.Pl D.host.E))
     (Φ : WO A W → ℂ) : ¬ Occ ψ θ sW om m β Z 0 Φ := fun h => by
@@ -258,6 +349,9 @@ theorem not_occ_zero {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A W : HSp
   obtain ⟨ν, 𝓕, hν⟩ := exists_isCovolOne D W.rank A.rank
   exact h.real ν 𝓕 hν Measure.haar inferInstance (by simp [rcoef, petersson, pet, AutomorphicL2Unitary.descend])
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨v, hv, ⟨τ⟩⟩ := GlobalTheory.Orb.exists_split_place_notMem (GlobalTheory.AdelicU.isCMExt_host D) (under Z) have hs := GlobalTheory.LFun.SplitChart.isSplit_of_algHom (GlobalTheory.AdelicU.isCMExt_host D) τ obtain ⟨w, -, -, hw, -⟩ := id hs have hw' : w.under (𝓞 D.host.F) …`.
+-/
 theorem not_form_one {θ : InfFam D} {A : HSp D} {cA : CptF A} {β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)}
     {Z : Finset (Formalism.L2.DIV.Pl D.host.E)} {χ : (AE D)ˣ →* Circle} {r t : ℕ} {par : LFun.Fam D.host.E}
     (hr : 0 < r) (hn : A.rank = r + t) : ¬ Form θ A cA β Z χ r t (fun _ => 1) par := fun h => by
@@ -296,6 +390,11 @@ theorem not_form_one {θ : InfFam D} {A : HSp D} {cA : CptF A} {β : GL (Fin A.r
     have : (0 : ℝ) ≤ i := Nat.cast_nonneg i
     linarith
 
+/- English proof (translation)
+Take `⟨v, hv, ⟨τ⟩⟩` from `GlobalTheory.Orb.exists_split_place_notMem (GlobalTheory.AdelicU.isCMExt_host D) (under Z)`. Establish `hs` using `GlobalTheory.LFun.SplitChart.isSplit_of_algHom (GlobalTheory.AdelicU.isCMExt_host D) τ`. Take `⟨w, -, -, hw, -⟩` from `id hs`. Establish `hw' : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hw`. Establish `e` using `h.param v (by simpa using hv) w hw'`.
+
+Take `⟨c, -, ht, hc⟩` from `h.str`. Take `⟨h1, -, -, -, hP⟩` from `hc w (by simpa [LFun.above, hw'] using hv)`. Use `⟨e.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← e.card, hP, GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.liftFam, mul_inv_cancel, LFun.twist_one, Pi.add_apply, Multiset.card_add, h1, LFun.segFam, LFun.card_seg]`.
+-/
 theorem form_ne_zero {θ : InfFam D} {A : HSp D} {cA : CptF A} {β : GL (Fin A.rank) (Formalism.IndefR.Lev.EAf D)}
     {Z : Finset (Formalism.L2.DIV.Pl D.host.E)} {χ : (AE D)ˣ →* Circle} {r t : ℕ} {par : LFun.Fam D.host.E} {u : GA D A → ℂ}
     (h : Form θ A cA β Z χ r t u par) : u ≠ 0 ∧ A.rank = r + t := by

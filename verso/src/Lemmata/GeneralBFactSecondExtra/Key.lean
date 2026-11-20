@@ -4,6 +4,19 @@ universe u_1 u_2
 
 namespace Bl.general_b_fact_second'''
 
+/- English proof (translation)
+Establish `hDR : D ≤ R` using `fun y hy => ((hD y).1 hy).1`. Establish `hES : E.comap R.subtype ≤ (S.comap R.subtype).comap LinearMap.id` using `fun x hx => ((hD x).1 (hE hx)).2`. Establish `hEE : E.comap D.subtype ≤ (E.comap R.subtype).comap (Submodule.inclusion hDR)` using `fun x hx => hx`. Set `f` to `Submodule.mapQ (E.comap D.subtype) (E.comap R.subtype) (Submodule.inclusion hDR) hEE`. Set `g` to `Submodule.mapQ (E.comap R.subtype) (S.comap R.subtype) LinearMap.id hES`.
+
+Rewrite using `[add_comm]`. Use `Module.length_eq_add_of_exact f g ?_ ?_ ?_` and prove the remaining obligations. Use `(injective_iff_map_eq_zero f).2 ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Simplify using `only [f, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hx ⊢`. Conclude with `hx`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk y, rfl⟩`.
+
+Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Simplify using `only [g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hy`.
+
+Establish `hyD : (y : Y) ∈ D` using `(hD y).2 ⟨y.2, hy⟩`. Conclude with `⟨Submodule.Quotient.mk ⟨y, hyD⟩, rfl⟩`. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[← hx]`.
+
+Simplify using `only [f, g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `((hD x).1 x.2).2`.
+-/
 private lemma key {O : Type*} {Y : Type*} [CommRing O] [AddCommGroup Y] [Module O Y]
     (R S D E : Submodule O Y) (hD : ∀ y, y ∈ D ↔ y ∈ R ∧ y ∈ S) (hE : E ≤ D) :
     Module.length O (R ⧸ E.comap R.subtype) =
@@ -38,6 +51,9 @@ private lemma key {O : Type*} {Y : Type*} [CommRing O] [AddCommGroup Y] [Module 
       simp only [f, g, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]
       exact ((hD x).1 x.2).2
 
+/- English proof (translation)
+Introduce `O Y _ _ _ R S D E hD hE`. Conclude with `key R S D E hD hE`.
+-/
 theorem goal1 :
   ∀ {O : Type u_1} {Y : Type u_2} [inst : CommRing.{u_1} O] [inst_1 : AddCommGroup.{u_2} Y]
   [inst_2 : Module.{u_1, u_2} O Y] (R S D E : Submodule.{u_1, u_2} O Y),

@@ -9,6 +9,19 @@ open scoped TensorProduct Classical
 
 namespace UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Use `set a : G.C := algebraMap ℚ G.C s with ha`. Establish `hcomm : ∀ x : G.C, a * x = x * a` using `fun x => Algebra.commutes s x`. Establish `hsh : sh G (u : G.C) = ((β⁻¹ : G.Cˣ) : G.C) * ((u⁻¹ : G.Cˣ) : G.C) * (a * β)`. Rewrite using `[← hy]`. Simplify using `[mul_assoc]`.
+
+Establish `key : sh G (u : G.C) * ((β⁻¹ : G.Cˣ) : G.C) * (u : G.C) = a * ((β⁻¹ : G.Cˣ) : G.C)`. Rewrite using `[hsh]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[mul_assoc]`. Use `_ = ((β⁻¹ : G.Cˣ) : G.C) * (((u⁻¹ : G.Cˣ) : G.C) * (u : G.C)) * a := by`.
+
+Rewrite using `[hcomm]`. Simplify using `only [mul_assoc]`. Use `_ = a * ((β⁻¹ : G.Cˣ) : G.C) := by`. Rewrite using `[hcomm]`. Simplify using the standard rewrite rules.
+
+Establish `hpa : G.psi v a = (s : ℂ) • (1 : Matrix (Fin G.n) (Fin G.n) ℂ)`. Rewrite using `[ha, IsScalarTower.algebraMap_apply ℚ G.F G.C, G.psi_F]`. Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Establish `hΓ : G.gram v * (G.gram v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (G.gram_det v))`.
+
+Establish `hUΓ : (G.psi v (u : G.C))ᴴ * G.gram v = G.gram v * G.psi v (sh G (u : G.C))`. Rewrite using `[show sh G (u : G.C) = MulOpposite.unop (G.star (u : G.C)) from rfl, G.psi_star]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hΓ, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, ← Matrix.mul_assoc, hUΓ]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (s : ℂ) • (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[key, map_mul, hpa, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]`.
+-/
 private theorem sim_herm {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β u : G.Cˣ) (s : ℚ)
     (hy : (u : G.C) * β * sh G u = algebraMap ℚ G.C s * β) :
     (G.psi v (u : G.C))ᴴ * (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C)) * G.psi v (u : G.C) =
@@ -43,6 +56,15 @@ private theorem sim_herm {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfiniteP
     _ = (s : ℂ) • (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C)) := by
         rw [key, map_mul, hpa, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]
 
+/- English proof (translation)
+Introduce `h`. Establish `hint : IsIntegral F (g : A)` using `Algebra.IsIntegral.isIntegral _`. Take `⟨q, hq⟩` from `Polynomial.X_dvd_iff.mpr h`. Establish `hmon : (minpoly F (g : A)).Monic` using `minpoly.monic hint`. Establish `hqmon : q.Monic`.
+
+Rewrite `hmon` using `[hq]`. Conclude with `Polynomial.monic_X.of_mul_monic_left hmon`. Establish `haeval : Polynomial.aeval (g : A) q = 0`. Establish `h0` using `minpoly.aeval F (g : A)`. Rewrite `h0` using `[hq, map_mul, Polynomial.aeval_X]`.
+
+Use `congrArg (fun y => ((g⁻¹ : Aˣ) : A) * y) h0` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Establish `hle` using `minpoly.min F (g : A) hqmon haeval`. Rewrite `hle` using `[hq, Polynomial.degree_mul, Polynomial.degree_X]`. Establish `hq0 : q ≠ 0` using `hqmon.ne_zero`.
+
+Rewrite `hle` using `[Polynomial.degree_eq_natDegree hq0]`. Normalize the coercions in `at hle`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem coeff_zero_ne {F A : Type} [Field F] [Ring A] [Algebra F A] [Algebra.IsIntegral F A] [Nontrivial A]
     (g : Aˣ) : (minpoly F (g : A)).coeff 0 ≠ 0 := by
   intro h
@@ -64,6 +86,15 @@ private theorem coeff_zero_ne {F A : Type} [Field F] [Ring A] [Algebra F A] [Alg
   norm_cast at hle
   omega
 
+/- English proof (translation)
+Introduce `p _ G P v`. Use `⟨coeff_zero_ne (F := G.F) (A := G.C) P.γ, (P.c : ℚ), ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hint : IsIntegral G.F (P.γ : G.C)` using `Algebra.IsIntegral.isIntegral _`. Establish `hev : eval₂ v.embedding z (minpoly G.F (P.γ : G.C)) = 0` using `(Polynomial.mem_roots_map (minpoly.ne_zero hint)).mp hz`.
+
+Take `⟨x, hx, hMx⟩` from `PolyArch.roots_eig_any p G v (P.γ : G.C) z hev`. Establish `hsim` using `sim_herm G v P.β P.γ (P.c : ℚ) P.sim`. Establish `hform` using `GlobalTheory.EigenvalueNormSignature.form_mulVec (G.psi v (P.γ : G.C)) (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) x x`. Rewrite `hform` using `[hsim, hMx]`. Establish `hQ : star x ⬝ᵥ (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) *ᵥ x ≠ 0`.
+
+Introduce `h0`. Take `⟨h1, h2⟩` from `P.posR v x hx`. Rewrite `h1`, `h2` using `[h0]`. Simplify using `at h1 h2`. Conclude with `h1 h2`.
+
+Simplify using `only [Matrix.mulVec_smul, Matrix.smul_mulVec, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at hform`. Apply `mul_right_cancel₀ hQ` to reduce the goal to its premises. Rewrite `hform` using `[Complex.star_def]`. Move the coercions through the operations in `at hform ⊢`. Take the linear combination `hform`.
+-/
 theorem dPairPol_of :
     DPairPol := by
   intro p _ G P v

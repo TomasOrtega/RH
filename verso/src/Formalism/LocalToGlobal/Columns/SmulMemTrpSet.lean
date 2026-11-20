@@ -70,6 +70,11 @@ def DecoSet.upSetA (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal) (d : DecoS
     Set (DecoSet E n ST SG) :=
   {d' | d' ∈ d.upAll P q ∧ d ∈ d'.dnSetA P q a}
 
+/- English proof (translation)
+Use `ext1`. Both sides reduce to the same expression. Use function extensionality and compare the values at `Q y`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
+
+Simplify using `only [Deco.repl, Deco.act, Function.update_self]`. Simplify using `only [Deco.repl, Deco.act, Function.update_of_ne hQ]`. Both sides reduce to the same expression.
+-/
 theorem Deco.repl_act (d : Deco E n ST SG) (g : Sp E n ≃ₗ[E] Sp E n) (h : GLG E n SG) (P : ST)
     (N' : Submodule (𝓞 E) (Sp E n)) (f' : Sp E n → 𝓞 E ⧸ P.1.asIdeal) :
     (d.act g h).repl P (gmap g N') (fun y => f' (g.symm y)) = (d.repl P N' f').act g h := by
@@ -83,6 +88,9 @@ theorem Deco.repl_act (d : Deco E n ST SG) (g : Sp E n ≃ₗ[E] Sp E n) (h : GL
     · simp only [Deco.repl, Deco.act, Function.update_of_ne hQ]
   · rfl
 
+/- English proof (translation)
+Use `⟨fun h => ?_, hr a d d'⟩` and prove the remaining obligations. Use `hr a⁻¹ _ _ h` as an intermediate fact. Rewrite `this` using `[inv_smul_smul, inv_smul_smul]`. Then use the resulting hypothesis.
+-/
 theorem DecoSet.rel_smul_iff {r : DecoSet E n ST SG → DecoSet E n ST SG → Prop}
     (hr : ∀ (a : UF E n × GLG E n SG) d d', r d d' → r (a • d) (a • d')) (a : UF E n × GLG E n SG)
     (d d' : DecoSet E n ST SG) : r (a • d) (a • d') ↔ r d d' := by
@@ -90,6 +98,9 @@ theorem DecoSet.rel_smul_iff {r : DecoSet E n ST SG → DecoSet E n ST SG → Pr
   have := hr a⁻¹ _ _ h
   rwa [inv_smul_smul, inv_smul_smul] at this
 
+/- English proof (translation)
+Use `DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.trSet P) (fun a d d' h => ?_) a d d'` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(d'.1.act a.1.1 a.2) = _`. Establish `h' : d'.1 = d.1.repl P d.1.N (d'.1.f P)` using `h`. Use `conv_lhs => rw [h']`. Conclude with `(d.1.repl_act a.1.1 a.2 P d.1.N (d'.1.f P)).symm`.
+-/
 theorem DecoSet.smul_mem_trSet (a : UF E n × GLG E n SG) (P : ST) (d d' : DecoSet E n ST SG) :
     a • d' ∈ (a • d).trSet P ↔ d' ∈ d.trSet P := by
   refine DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.trSet P) (fun a d d' h => ?_) a d d'
@@ -98,6 +109,9 @@ theorem DecoSet.smul_mem_trSet (a : UF E n × GLG E n SG) (P : ST) (d d' : DecoS
   conv_lhs => rw [h']
   exact (d.1.repl_act a.1.1 a.2 P d.1.N (d'.1.f P)).symm
 
+/- English proof (translation)
+Use `DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.dnAll P) (fun a d d' h => ?_) a d d'` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(d'.1.act a.1.1 a.2) = _`. Establish `h' : d'.1 = d.1.dn P (d'.1.f P)` using `h`. Use `conv_lhs => rw [h']`. Conclude with `(d.1.dn_act a.1.2 a.2 P (d'.1.f P)).symm`.
+-/
 theorem DecoSet.smul_mem_dnAll (a : UF E n × GLG E n SG) (P : ST) (d d' : DecoSet E n ST SG) :
     a • d' ∈ (a • d).dnAll P ↔ d' ∈ d.dnAll P := by
   refine DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.dnAll P) (fun a d d' h => ?_) a d d'
@@ -106,6 +120,9 @@ theorem DecoSet.smul_mem_dnAll (a : UF E n × GLG E n SG) (P : ST) (d d' : DecoS
   conv_lhs => rw [h']
   exact (d.1.dn_act a.1.2 a.2 P (d'.1.f P)).symm
 
+/- English proof (translation)
+Use `DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.upAll P q) (fun a d d' h => ?_) a d d'` and prove the remaining obligations. Simplify using `only [DecoSet.upAll, Set.mem_iUnion, exists_prop] at h ⊢`. Take `⟨d0, h0, h1⟩` from `h`. Conclude with `⟨a • d0, (DecoSet.smul_mem_trSet a P d d0).2 h0, (DecoSet.smul_mem_upSet a P q d0 d').2 h1⟩`.
+-/
 theorem DecoSet.smul_mem_upAll (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E) (d d' : DecoSet E n ST SG) :
     a • d' ∈ (a • d).upAll P q ↔ d' ∈ d.upAll P q := by
   refine DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.upAll P q) (fun a d d' h => ?_) a d d'
@@ -113,6 +130,9 @@ theorem DecoSet.smul_mem_upAll (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E) 
   obtain ⟨d0, h0, h1⟩ := h
   exact ⟨a • d0, (DecoSet.smul_mem_trSet a P d d0).2 h0, (DecoSet.smul_mem_upSet a P q d0 d').2 h1⟩
 
+/- English proof (translation)
+Use `DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.trpSet P q) (fun a d d' h => ?_) a d d'` and prove the remaining obligations. Simplify using `only [DecoSet.trpSet, Set.mem_iUnion, exists_prop] at h ⊢`. Take `⟨d0, h0, h1⟩` from `h`. Conclude with `⟨a • d0, (DecoSet.smul_mem_dnAll a P d d0).2 h0, (DecoSet.smul_mem_upSet a P q d0 d').2 h1⟩`.
+-/
 theorem DecoSet.smul_mem_trpSet (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E) (d d' : DecoSet E n ST SG) :
     a • d' ∈ (a • d).trpSet P q ↔ d' ∈ d.trpSet P q := by
   refine DecoSet.rel_smul_iff (r := fun d d' => d' ∈ d.trpSet P q) (fun a d d' h => ?_) a d d'
@@ -120,16 +140,31 @@ theorem DecoSet.smul_mem_trpSet (a : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E)
   obtain ⟨d0, h0, h1⟩ := h
   exact ⟨a • d0, (DecoSet.smul_mem_dnAll a P d d0).2 h0, (DecoSet.smul_mem_upSet a P q d0 d').2 h1⟩
 
+/- English proof (translation)
+The claim follows from `and_congr (DecoSet.smul_mem_upAll x P q d d') (DecoSet.smul_mem_dnSetA x P q a d' d)`.
+-/
 theorem DecoSet.smul_mem_upSetA (x : UF E n × GLG E n SG) (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal)
     (d d' : DecoSet E n ST SG) : x • d' ∈ (x • d).upSetA P q a ↔ d' ∈ d.upSetA P q a :=
   and_congr (DecoSet.smul_mem_upAll x P q d d') (DecoSet.smul_mem_dnSetA x P q a d' d)
 
+/- English proof (translation)
+The claim follows from `(DecoSet.finite_fibre (ST := ST) (SG := SG) d.1.N d.2.lat.fg).subset fun d' hd' => by have h1 : d'.1 = d.1.repl P d.1.N (d'.1.f P) := hd' have := congrArg Deco.N h1 exact this`.
+-/
 theorem DecoSet.trSet_finite (P : ST) (d : DecoSet E n ST SG) : (d.trSet P).Finite :=
   (DecoSet.finite_fibre (ST := ST) (SG := SG) d.1.N d.2.lat.fg).subset fun d' hd' => by
     have h1 : d'.1 = d.1.repl P d.1.N (d'.1.f P) := hd'
     have := congrArg Deco.N h1
     exact this
 
+/- English proof (translation)
+Distinguish the cases in `h : (d.1.dnN P).FG`. Conclude with `(DecoSet.finite_fibre (ST := ST) (SG := SG) (d.1.dnN P) h).subset fun d' hd' => by`. Establish `h1 : d'.1 = d.1.dn P (d'.1.f P)` using `hd'`. Use `congrArg Deco.N h1` as an intermediate fact. Conclude with `this`.
+
+Establish `he : d.dnAll P = ∅`. Use extensionality with `d'`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hd'`. Apply `h` to reduce the goal to its premises.
+
+Establish `h0 : d'.1 = d.1.dn P (d'.1.f P)` using `hd'`. Establish `h1 : d'.1.N = d.1.dnN P`. Use `congrArg Deco.N h0` as an intermediate fact. Conclude with `this`. Rewrite using `[← h1]`.
+
+Conclude with `d'.2.lat.fg`. Rewrite using `[he]`. Conclude with `Set.finite_empty`.
+-/
 theorem DecoSet.dnAll_finite (P : ST) (d : DecoSet E n ST SG) : (d.dnAll P).Finite := by
   by_cases h : (d.1.dnN P).FG
   · exact (DecoSet.finite_fibre (ST := ST) (SG := SG) (d.1.dnN P) h).subset fun d' hd' => by
@@ -150,12 +185,21 @@ theorem DecoSet.dnAll_finite (P : ST) (d : DecoSet E n ST SG) : (d.dnAll P).Fini
     rw [he]
     exact Set.finite_empty
 
+/- English proof (translation)
+The claim follows from `(d.trSet_finite P).biUnion fun d0 _ => DecoSet.upSet_finite d0 P q`.
+-/
 theorem DecoSet.upAll_finite (P : ST) (q : 𝓞 E) (d : DecoSet E n ST SG) : (d.upAll P q).Finite :=
   (d.trSet_finite P).biUnion fun d0 _ => DecoSet.upSet_finite d0 P q
 
+/- English proof (translation)
+The claim follows from `(d.dnAll_finite P).biUnion fun d0 _ => DecoSet.upSet_finite d0 P q`.
+-/
 theorem DecoSet.trpSet_finite (P : ST) (q : 𝓞 E) (d : DecoSet E n ST SG) : (d.trpSet P q).Finite :=
   (d.dnAll_finite P).biUnion fun d0 _ => DecoSet.upSet_finite d0 P q
 
+/- English proof (translation)
+The claim follows from `(d.upAll_finite P q).subset fun _ h => h.1`.
+-/
 theorem DecoSet.upSetA_finite (P : ST) (q : 𝓞 E) (a : 𝓞 E ⧸ P.1.asIdeal) (d : DecoSet E n ST SG) :
     (d.upSetA P q a).Finite := (d.upAll_finite P q).subset fun _ h => h.1
 

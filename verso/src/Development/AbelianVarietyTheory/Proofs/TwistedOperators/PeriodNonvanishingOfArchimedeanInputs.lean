@@ -35,6 +35,13 @@ variable {D : D7} {θ : InfFam D} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 open Classical in
 
+/- English proof (translation)
+Use `GlobalTheory.Core.Rk.TopOnto.real_induction hθ _ (fun v => ⟨v, fun T _ h => by rw [mul_one]⟩) (fun a b ha hb v => ?_) fun τ g hg v => ?_` and prove the remaining obligations. Take `⟨v₁, f1⟩` from `hb v`. Take `⟨v₂, f2⟩` from `ha v₁`. Conclude with `⟨v₂, fun T hT h => by rw [f2 T hT, f1 T hT, mul_assoc]⟩`. Proceed by induction on `v using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r v`. Set `w : M.sm τ` to `⟨M.rep τ g (v τ), GlobalTheory.Core.Rk.TopOnto.rep_mem_sm M τ hg _ (v τ).2⟩`. Use `⟨r • PiTensorProduct.tprod ℂ (Function.update v τ w), fun T hT h => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, GlobalTheory.Core.Rk.TopOnto.multT_rel v (Function.update v τ w) (h * atTau θ V τ g) h 1 (fun m hm => by`. Rewrite using `[one_mul]`.
+
+Conclude with `congrFun (hm.equiv τ g hg v w rfl) h) hT, one_mul]`. Consider the case `add a b ha hb`. Take `⟨a', f1⟩` from `ha`. Take `⟨b', f2⟩` from `hb`. Conclude with `⟨a' + b', fun T hT h => by rw [T.map_add, T.map_add, Pi.add_apply, Pi.add_apply, f1 T hT, f2 T hT]⟩`.
+-/
 theorem real_translate (hθ : IsInfFam θ) {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} :
     ∀ a ∈ GinfC V, ∀ v : SmT M, ∃ v' : SmT M, ∀ T ∈ MultT θ M J χ, ∀ h, T v' h = T v (h * a) := by
   refine GlobalTheory.Core.Rk.TopOnto.real_induction hθ _ (fun v => ⟨v, fun T _ h => by rw [mul_one]⟩) (fun a b ha hb v => ?_)
@@ -62,6 +69,21 @@ namespace GlobalTheory.PeriodNePf
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hθ` using `W.θ_is`. Take `⟨hμ, hfd⟩` from `(hM.row 0 (Nat.zero_le _)).haar_fund`. Set `vY : GlobalTheory.Unf.Vol (Yc D 0)` to `⟨M.ν (.grid 0 0), M.fd (.grid 0 0), hμ, hfd⟩`. Establish `hyv : ∀ a, RapidDec (G.V (.core 0)) (y a)` using `fun a => (GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hCR D _ _ MP W.θ hθ _ _ y hy a).2.2`. Establish `htw : RapidDec (Yc D 0) (t w)` using `(GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hCR D _ _ M₀ W.θ hθ _ _ t ht w).2.2`.
+
+Establish `hF : GlobalTheory.Unf.IsContAut (Yc D 0) (fun g => y v (stabilizerEmbedding G.sp.dec0 g))` using `⟨fun γ hγ g => by`. Simplify using `only [GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul]`. Conclude with `(hyv v).1 _ (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_rational _ γ hγ) _,`. Use the proof step `(hyv v).2.1.comp (GlobalTheory.UnitaryEmbeddingProperties.continuous_unitaryEmbedding _)⟩`. Establish `hB : ∃ C, ∀ g, ‖y v (stabilizerEmbedding G.sp.dec0 g)‖ ≤ C`.
+
+Take `⟨C, hC⟩` from `(hyv v).2.2 0`. Conclude with `⟨C, fun g => by simpa using hC (stabilizerEmbedding G.sp.dec0 g)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨h, hh, hne⟩ : ∃ h ∈ GinfC (Yc D 0), ∫ g in vY.𝓕, y v (stabilizerEmbedding G.sp.dec0 g) * t w (g * h) ∂vY.μ ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Conclude with `h0 (GlobalTheory.T.integral_eq_zero_of_orthogonal_real_translates hCR GlobalTheory.Mem.VolFin.finVol D W.θ hθ (Yc D 0) _ M₀ _ _ t ht vY _ hF hB w hw hn w')`. Establish `e1` using `GlobalTheory.QPl.LastOrb.setIntegral_mul_right vY (fun g => y v (stabilizerEmbedding G.sp.dec0 (g * h⁻¹)) * t w g) (fun γ hγ g => by`. Simplify using `only [mul_assoc, GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul]`. Rewrite using `[(hyv v).1 _ (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_rational _ γ hγ), htw.1 γ hγ g]) h`. Simplify using `only [mul_inv_cancel_right] at e1`.
+
+Establish `hinf : stabilizerEmbedding G.sp.dec0 h⁻¹ ∈ GinfC (G.V (.core 0))` using `GlobalTheory.RealType.Emb_mem_inf G.sp.dec0 (inv_mem hh)`. Take `⟨v', hv'⟩` from `real_translate hθ (M := MP) (J := (lev G (.core 0) : Set _)) (χ := 1) _ hinf v`. Establish `hp : per0 G M (y v') (t w) ≠ 0`. Unfold `per0`. Simplify using `only [hv' y hy]`.
+
+Rewrite `hne` using `[e1]`. Simplify using `only [GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul] at hne`. Conclude with `hne`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Establish `key` using `GlobalTheory.T.period_eq_zero_of_vanishing_on_kFinite_values hCR hHC D W.θ hθ (G.V (.core 0)) _ MP _ _ y hy (GA D (Yc D 0)) (vY.μ.restrict vY.𝓕) (stabilizerEmbedding G.sp.dec0) (t w) (GlobalTheory.UnitaryEmbeddingProperties.continuous_unitaryEmbedding _).measurable (htw.integrabl …`. Conclude with `hp key`.
+-/
 theorem exists_kf {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G) (hM : M.IsRow)
     (hCR : GlobalTheory.Published.CuspRapidDecay) (hHC : GlobalTheory.Published.HarishChandraModules)
     (M₀ : DSModel (Yc D 0) (parB (Ptw D) 0)) (MP : DSModel (G.V (.core 0)) (Node.par D sc.cGap (.core 0)))

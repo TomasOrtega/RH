@@ -22,6 +22,11 @@ section
 
 variable {P : Out.PolAV (Sp ℂ)} {g : ℕ} {u : HolUnif P.A P.L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
+/- English proof (translation)
+Use `P.isAb.smooth` as an intermediate fact. Use `isReduced_of_smooth_complex _ P.A.hom inferInstance` as an intermediate fact. Use `ComplexPoints.eq_of_valAt'_eq P.A.hom _ _ _ fun x hx hi => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk x hx)`. Take `rfl : (u.ex z).left = x` from `by rw [hz]; rfl`.
+
+Rewrite using `[h z hi, valAt'_zero]`.
+-/
 theorem eq_zero_of_val (u : HolUnif P.A P.L g) (U : P.A.left.Opens) (f : Γ(P.A.left, U))
     (h : ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ U → valAt' (u.ex z).left U f = 0) : f = 0 := by
   have := P.isAb.smooth
@@ -31,6 +36,17 @@ theorem eq_zero_of_val (u : HolUnif P.A P.L g) (U : P.A.left.Opens) (f : Γ(P.A.
   obtain rfl : (u.ex z).left = x := by rw [hz]; rfl
   rw [h z hi, valAt'_zero]
 
+/- English proof (translation)
+Take `⟨b, rfl⟩ : ∃ b : Fin g → ℂ, c = j • b` from `⟨(j : ℂ)⁻¹ • c, by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 (by omega))]⟩`. Take `⟨β, hβ⟩` from `PowSec.exists_basis_sections hT ℂ P j hj`. Use `choose φ hφ using h₁`. Establish `hle : thetaShift u Hm χ j (j • b) ≤ Submodule.span ℂ (Set.range fun i z => φ (β i) (z + b))`.
+
+Introduce `θ hθ`. Take `⟨s, hs⟩` from `h₂ _ (isThetaFn_sub hθ)`. Take `⟨a, ha, -⟩` from `hβ s`. Use `(Submodule.mem_span_range_iff_exists_fun ℂ).2 ⟨a, funext fun z => ?_⟩` and prove the remaining obligations. Establish `hi` using `FrameValue.le_chartAt P.isLB (u.ex (z + b)).left`.
+
+Use `set i := FrameValue.chartAt P.isLB (u.ex (z + b)).left`. Establish `hi' : ⊤ ≤ (u.ex (z + b)).left ⁻¹ᵁ (lbPow P.L j).U (fun _ => i)` using `fun p hp => mem_powChart.2 (hi hp)`. Establish `e` using `(valAt'_sum _ _ _ _).symm.trans ((congrArg (valAt' _ _) (ha fun _ => i)).symm.trans (hs (fun _ => i) (z + b) hi'))`. Simplify using `only [add_sub_cancel_right] at e`. Use `mul_right_cancel₀ (pow_ne_zero j (u.fr_ne i _ hi)) (Eq.trans ?_ e)` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) (valAt'_constFn _ _ (Over.w (u.ex (z + b))) _ _ hi') (hφ _ _ _ hi'))).symm` and prove the remaining obligations. Simplify using `[_root_.mul_assoc]`. Use `Module.Finite.span_of_finite ℂ (Set.finite_range fun i z => φ (β i) (z + b))` as an intermediate fact.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem finite_thetaShift (hT : Out.GlobalSectionsRankAlgClosed) {j : ℕ} (hj : 1 ≤ j)
     (h₁ : ∀ s, ∃ θ, u.IsFnPow j s θ) (h₂ : ∀ θ, u.IsThetaFn Hm χ j θ → ∃ s, u.IsFnPow j s θ) (c : Fin g → ℂ) :
     Module.Finite ℂ (thetaShift u Hm χ j c) := by
@@ -58,9 +74,17 @@ theorem finite_thetaShift (hT : Out.GlobalSectionsRankAlgClosed) {j : ℕ} (hj :
   have := Module.Finite.span_of_finite ℂ (Set.finite_range fun i z => φ (β i) (z + b))
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun l z => by rw [h.2 l z, FrameValue.hermForm_zero_left]; simp⟩`.
+-/
 theorem mem_thetaShift_zero {j : ℕ} {θ : (Fin g → ℂ) → ℂ} (h : u.IsThetaFn Hm χ j θ) : θ ∈ thetaShift u Hm χ j 0 :=
   ⟨h.1, fun l z => by rw [h.2 l z, FrameValue.hermForm_zero_left]; simp⟩
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `PowSec.exists_indep_sections hT P 1 le_rfl`. Establish `i₀ : Fin (1 ^ P.g)` using `⟨0, by simp⟩`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h0 : ∀ i j, (β i).f j = 0` using `fun i j => eq_zero_of_val u _ _ fun z hz => by`.
+
+Take `⟨θ, h, h'⟩` from `h₁ (β i)`. Rewrite using `[h' j z hz, hne θ h, Pi.zero_apply, zero_mul]`. Conclude with `one_ne_zero (congrFun (hβ 1 fun j => by simp [h0]) i₀)`.
+-/
 theorem exists_ne_zero (hT : Out.GlobalSectionsRankAlgClosed) (h₁ : ∀ s, ∃ θ, u.IsThetaFn Hm χ 1 θ ∧ u.IsFnPow 1 s θ) :
     ∃ θ, u.IsThetaFn Hm χ 1 θ ∧ θ ≠ 0 := by
   obtain ⟨β, hβ⟩ := PowSec.exists_indep_sections hT P 1 le_rfl
@@ -72,6 +96,13 @@ theorem exists_ne_zero (hT : Out.GlobalSectionsRankAlgClosed) (h₁ : ∀ s, ∃
     rw [h' j z hz, hne θ h, Pi.zero_apply, zero_mul]
   exact one_ne_zero (congrFun (hβ 1 fun j => by simp [h0]) i₀)
 
+/- English proof (translation)
+Take `⟨θ, h₂, h₃⟩` from `h₁ (secToPow th 1)`. Establish `hf : u.IsFn th θ` using `fun i z hi => by`. Establish `hi' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow P.L 1).U (fun _ => i)` using `fun p hp => mem_powChart.2 (hi hp)`. Establish `e` using `h₃ (fun _ => i) z hi'`. Rewrite `e` using `[pow_one]`.
+
+Use `Eq.trans ?_ e` and prove the remaining obligations. Conclude with `((valAt'_res _ _ (th.f i ^ 1) hi').trans (by rw [pow_one])).symm`. Use `⟨θ, h₂, ?_, hf⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨j, hj⟩` from `h`.
+
+Conclude with `hj (eq_zero_of_val u _ _ fun z hz => by rw [hf j z hz, Pi.zero_apply, zero_mul])`.
+-/
 theorem exists_isFn (h₁ : ∀ s, ∃ θ, u.IsThetaFn Hm χ 1 θ ∧ u.IsFnPow 1 s θ) (th : P.L.Sec) (h : ∃ j, th.f j ≠ 0) :
     ∃ θ, u.IsThetaFn Hm χ 1 θ ∧ θ ≠ 0 ∧ u.IsFn th θ := by
   obtain ⟨θ, h₂, h₃⟩ := h₁ (secToPow th 1)
@@ -88,6 +119,15 @@ theorem exists_isFn (h₁ : ∀ s, ∃ θ, u.IsThetaFn Hm χ 1 θ ∧ u.IsFnPow 
 
 end
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H _ D l c O _ β _ _ b a Λ`. Establish `hT` using `theta_eq_thetaShift Λ.A Λ.u (fun m => Λ.A.chi ⟨m.1, Λ.lam ▸ m.2⟩) Λ.lam (fun l l' e => congrArg Λ.A.chi (Subtype.ext e))`. Establish `h0 : Λ.A.ct 0 = 0` using `map_zero _`. Establish `hθ : ∀ n θ, Λ.u.IsThetaFn Λ.A.Hm (fun m => Λ.A.chi ⟨m.1, Λ.lam ▸ m.2⟩) n θ → ∃ s, Λ.u.IsFnPow n s θ` using `fun n θ h => ((Λ.pow n).2 θ h).exists`. Use `⟨fun j α hj => ?_, ⟨fun j α hj => ?_, ?_⟩, fun th h => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hT]`. Use `⟨fun s => secFn_mem Λ.ah (Λ.ct α) s, fun th hth => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_secFn_eq Λ.ah (by omega) (hθ j) (Λ.ct α) hth`. Conclude with `⟨s, hs, fun t ht => secFn_injective (Λ.ct α) (ht.trans hs.symm)⟩`. Rewrite using `[hT]`.
+
+Conclude with `finite_thetaShift hL.globalSectionsRank hj (fun s => ((Λ.pow j).1 s).exists.imp fun _ h => h.2) (hθ j) _`. Rewrite using `[hT, h0]`. Take `⟨θ, h₁, h₂⟩` from `exists_ne_zero hL.globalSectionsRank fun s => ((Λ.pow 1).1 s).exists`. Conclude with `⟨θ, mem_thetaShift_zero h₁, h₂⟩`. Rewrite using `[hT, h0]`.
+
+Take `⟨θ, h₁, h₂⟩` from `exists_isFn (fun s => ((Λ.pow 1).1 s).exists) th h`. Conclude with `⟨θ, mem_thetaShift_zero h₁, h₂⟩`.
+-/
 theorem sections_theta : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a), (∀ (j : ℕ) (α : Λ.A.X), 1 ≤ j → (∀ s, Λ.fn j α s ∈ Λ.A.Theta j α) ∧ ∀ th ∈ Λ.A.Theta j α, ∃! s, Λ.fn j α s = th) ∧ AnFin Λ.A ∧ ∀ th : a.D₀.P.L.Sec, (∃ j, th.f j ≠ 0) → ∃ θ ∈ Λ.A.Theta 1 0, θ ≠ 0 ∧ Λ.u.IsFn th θ := by
   intro hL _ E _ _ _ H _ D l c O _ β _ _ b a Λ
   have hT := theta_eq_thetaShift Λ.A Λ.u (fun m => Λ.A.chi ⟨m.1, Λ.lam ▸ m.2⟩) Λ.lam

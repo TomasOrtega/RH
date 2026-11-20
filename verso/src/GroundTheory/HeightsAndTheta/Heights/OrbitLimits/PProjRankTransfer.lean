@@ -10,6 +10,9 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Set `_ : ChartedSpace (Fin e → ℂ) X` to `{ atlas := Set.range A.chart chartAt := fun x => A.chart (chartIdx A x) mem_chart_source := fun x => Classical.choose_spec (A.cover x) chart_mem_atlas := fun x => ⟨_, rfl⟩ }`. Conclude with `ChartedSpace.locallyConnectedSpace (Fin e → ℂ) X`.
+-/
 theorem ProjRankTransfer.locallyConnectedSpace {e : ℕ} {X : Type*} [TopologicalSpace X]
     (A : FinHolAtlas e X) : LocallyConnectedSpace X := by
   let _ : ChartedSpace (Fin e → ℂ) X :=
@@ -19,6 +22,15 @@ theorem ProjRankTransfer.locallyConnectedSpace {e : ℕ} {X : Type*} [Topologica
       chart_mem_atlas := fun x => ⟨_, rfl⟩ }
   exact ChartedSpace.locallyConnectedSpace (Fin e → ℂ) X
 
+/- English proof (translation)
+Introduce `K _ ι _ P J n R Ψ V BV hH hC hΨ x hx`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Use `ProjRankTransfer.locallyConnectedSpace BV` as an intermediate fact. Establish `hCo : IsOpen (connectedComponent x)` using `isOpen_connectedComponent`.
+
+Establish `h1` using `hEq K ι P J n R Ψ V BV hH hC hΨ _ ⟨isClosed_connectedComponent, hCo⟩`. Establish `h2` using `hPos K ι P J n R V BV hH hC _ hCo ⟨x, mem_connectedComponent, hx⟩`. Establish `h3 : mInt BV (fun _ => projPot R Ψ V) ((connectedComponent x).indicator fun _ => (1 : ℝ)) = 0`. Unfold `mInt`. Use `split_ifs with hP`.
+
+Unfold `integralWith`. Use `Finset.sum_eq_zero fun j _ => setIntegral_eq_zero_of_forall_eq_zero fun u hu => ?_` and prove the remaining obligations. Distinguish the cases in `hm : (BV.chart j).symm u ∈ connectedComponent x`. Rewrite using `[hVan K ι P J n R Ψ V BV hH hΨ j u hu (hno _ hm), mul_zero]`. Rewrite using `[Set.indicator_of_notMem hm, mul_zero, zero_mul]`.
+
+Both sides reduce to the same expression. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ProjRankTransfer.of_found (hEq : ProjPotMassEq.Statement) (hPos : ProjPotMassPos.Statement)
     (hVan : ProjPotDensVanish.Statement) : ProjRankTransfer.Statement := by
   intro K _ ι _ P J n R Ψ V BV hH hC hΨ x hx

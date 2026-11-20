@@ -8,12 +8,20 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Re
 
 namespace FinKey
 
+/- English proof (translation)
+Rewrite using `[bind₁_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, map_mul, map_prod]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bind₁_scale_monomial {ι R : Type} [CommRing R] (a : ι → R) (ν : ι →₀ ℕ) (r : R) :
     bind₁ (fun x => C (a x) * X x) (monomial ν r) = monomial ν (r * ν.prod fun x e => a x ^ e) := by
   rw [bind₁_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, map_mul, map_prod]
   simp only [mul_pow, Finset.prod_mul_distrib, map_pow]
   ring
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' q ?_ ?_` and prove the remaining obligations. Introduce `ν r`. Rewrite using `[bind₁_scale_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Introduce `p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem coeff_bind₁_scale {ι R : Type} [CommRing R] (a : ι → R) (q : MvPolynomial ι R) (μ : ι →₀ ℕ) :
     coeff μ (bind₁ (fun x => C (a x) * X x) q) = (μ.prod fun x e => a x ^ e) * coeff μ q := by
   classical
@@ -38,6 +46,11 @@ def subA {K : Type} [Field K] (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ
     (y x : ArcLt Dw) : K :=
   ∑ k : Fin (Dw.mult y.1), if x = ⟨y.1, y.2.1, k⟩ then A y.1 k y.2.2 else 0
 
+/- English proof (translation)
+Simplify using `only [subA, map_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single ⟨y.1, y.2.1, k⟩]`. Rewrite using `[if_pos rfl]`.
+
+Introduce `b _ hb`. Rewrite using `[if_neg hb, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem subA_sum {K : Type} [Field K] (A : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K)
     (y : ArcLt Dw) :
     (∑ x : ArcLt Dw, C (subA A y x) * (X x : MvPolynomial (ArcLt Dw) K)) =

@@ -15,10 +15,42 @@ open scoped WithZero
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
   {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)}
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `v.valuation_surjective K γ`. Conclude with `⟨algebraMap K _ x, (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).trans hx⟩`.
+-/
 theorem exists_valued_eq (γ : ℤᵐ⁰) : ∃ c : v.adicCompletion K, Valued.v c = γ := by
   obtain ⟨x, hx⟩ := v.valuation_surjective K γ
   exact ⟨algebraMap K _ x, (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x).trans hx⟩
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Introduce `hfd x hx n`. Use `letI : NontriviallyNormedField (v.adicCompletion K) := Valued.toNontriviallyNormedField _ ℤᵐ⁰`. Use `haveI : IsUltrametricDist (v.adicCompletion K) := inferInstanceAs (@IsUltrametricDist (v.adicCompletion K) (Valued.toNormedField (v.adicCompletion K) ℤᵐ⁰).toDist)`. Use `haveI : CompleteSpace (v.adicCompletion K) := inferInstance`.
+
+Use `choose c hc using (exists_valued_eq (v := v) : ∀ γ : ℤᵐ⁰, ∃ c : v.adicCompletion K, Valued.v c = γ)`. Establish `hmono : ∀ a b : v.adicCompletion K, Valued.v a ≤ Valued.v b → ‖a‖ ≤ ‖b‖` using `fun a b h => Valued.toNormedField.norm_le_iff.2 h`. Establish `hnorm : ∀ a b : v.adicCompletion K, Valued.v a = Valued.v b → ‖a‖ = ‖b‖` using `fun a b h => le_antisymm (hmono a b h.le) (hmono b a h.ge)`. Establish `he' : (e : ℝ)⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast he.ne')`. Set `ρ : v'.adicCompletion L → ℝ` to `fun z => ‖c (Valued.v z)‖ ^ ((e : ℝ)⁻¹)`.
+
+Establish `ρ_nonneg : ∀ z, 0 ≤ ρ z` using `fun z => Real.rpow_nonneg (norm_nonneg _) _`. Establish `ρ_mul : ∀ a b, ρ (a * b) = ρ a * ρ b`. Introduce `a b`. Simplify using `only [ρ]`. Rewrite using `[← Real.mul_rpow (norm_nonneg _) (norm_nonneg _), ← norm_mul]`.
+
+Use `congr 1`. Apply `hnorm` to reduce the goal to its premises. Rewrite using `[hc, Valuation.map_mul, Valuation.map_mul, hc, hc]`. Establish `ρ_le : ∀ a b, Valued.v a ≤ Valued.v b → ρ a ≤ ρ b`. Introduce `a b h`.
+
+Conclude with `Real.rpow_le_rpow (norm_nonneg _) (hmono _ _ (by rw [hc, hc]; exact h)) (inv_nonneg.2 (Nat.cast_nonneg _))`. Establish `ρ_zero : ρ 0 = 0`. Simplify using `only [ρ]`. Establish `: c (Valued.v (0 : v'.adicCompletion L)) = 0`. Rewrite using `[← Valuation.zero_iff Valued.v, hc, Valuation.map_zero]`.
+
+Rewrite using `[this, norm_zero, Real.zero_rpow he']`. Establish `ρ_eq_zero : ∀ z, ρ z = 0 → z = 0`. Introduce `z hz`. Simplify using `only [ρ] at hz`. Rewrite `hz` using `[Real.rpow_eq_zero (norm_nonneg _) he', norm_eq_zero]`.
+
+Use `hc (Valued.v z)` as an intermediate fact. Rewrite `this` using `[hz, Valuation.map_zero]`. Conclude with `(Valuation.zero_iff _).1 this.symm`. Establish `ρ_f : ∀ a, ρ (f a) = ‖a‖`. Introduce `a`.
+
+Simplify using `only [ρ]`. Rewrite using `[hnorm _ (a ^ e) (by rw [hc, hfv, Valuation.map_pow]), norm_pow, Real.pow_rpow_inv_natCast (norm_nonneg _) he.ne']`. Establish `ρ_one : ρ 1 = 1`. Use `ρ_f 1` as an intermediate fact. Rewrite `this` using `[map_one, norm_one]`. Then use the resulting hypothesis.
+
+Set `N : AlgebraNorm (v.adicCompletion K) (v'.adicCompletion L)` to `{ toFun := ρ map_zero' := ρ_zero add_le' := fun a b => by`. Break down `le_total (Valued.v a) (Valued.v b) with h | h` into its components or cases. Use `ρ_le (a + b) b ((Valuation.map_add _ a b).trans (max_le h le_rfl))` as an intermediate fact. Combine the linear relations using `[ρ_nonneg a]`. Use `ρ_le (a + b) a ((Valuation.map_add _ a b).trans (max_le le_rfl h))` as an intermediate fact.
+
+Combine the linear relations using `[ρ_nonneg b]`. Use the proof step `neg' := fun a => by simp only [ρ, Valuation.map_neg]`. Use the proof step `mul_le' := fun a b => (ρ_mul a b).le`. Use the proof step `eq_zero_of_map_eq_zero' := ρ_eq_zero`. Use the proof step `smul' := fun a z => by`.
+
+Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, ρ_mul, ρ_f] }`. Establish `hN : ∀ z, N z = ρ z` using `fun _ => rfl`. Establish `hpm : IsPowMul N`. Introduce `a k hk`. Use `clear hk`.
+
+Rewrite using `[hN, hN]`. Proceed by induction on `k with`. Consider the case `zero => simp [ρ_one]`. Consider the case `succ k ih => rw [pow_succ, ρ_mul, ih, pow_succ]`. Establish `hu` using `spectralNorm_unique (K := v.adicCompletion K) (L := v'.adicCompletion L) hpm`.
+
+Establish `hsx : spectralNorm (v.adicCompletion K) (v'.adicCompletion L) x ≤ 1`. Rewrite using `[← spectralAlgNorm_def, ← hu, hN, ← ρ_one]`. Conclude with `ρ_le x 1 (by rw [Valuation.map_one]; exact hx)`. Establish `hxi : IsIntegral (v.adicCompletion K) x` using `Algebra.IsIntegral.isIntegral x`. Rewrite `hsx` using `[spectralNorm, spectralValue_le_one_iff (minpoly.monic hxi)]`.
+
+Conclude with `Valued.toNormedField.norm_le_one_iff.1 (hsx n)`.
+-/
 theorem valued_coeff_minpoly_le_one (e : ℕ) (he : 0 < e)
     (f : v.adicCompletion K →+* v'.adicCompletion L)
     (hfv : ∀ y, Valued.v (f y) = Valued.v y ^ e) :
@@ -107,6 +139,27 @@ namespace GlobalTheory.LocIntegral
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ v v' e f he hfv`. Use `letI := f.toAlgebra`. Introduce `hfd b₀ hb y`. Establish `hle : ∀ a ∈ v.adicCompletionIntegers K, f a ∈ v'.adicCompletionIntegers L`. Introduce `a ha`.
+
+Rewrite `ha`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[hfv]`. Conclude with `pow_le_one₀ zero_le' ha`. Set `g : v.adicCompletionIntegers K →+* v'.adicCompletionIntegers L` to `f.restrict (v.adicCompletionIntegers K) (v'.adicCompletionIntegers L) hle`. Establish `hg : ∀ a, ((g a : v'.adicCompletionIntegers L) : v'.adicCompletion L) = f a` using `fun _ => rfl`.
+
+Establish `hcomp : (algebraMap (v'.adicCompletionIntegers L) (Kbar v')).comp g = b₀.toRingHom.comp (algebraMap (v.adicCompletionIntegers K) (Kbar v))`. Use extensionality with `a`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[IsScalarTower.algebraMap_apply (v.adicCompletionIntegers K) (v.adicCompletion K) (Kbar v), IsScalarTower.algebraMap_apply (v'.adicCompletionIntegers L) (v'.adicCompletion L) (Kbar v'), hb]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `IsIntegral.map_of_comp_eq g b₀.toRingHom hcomp hy`. Introduce `hy`. Use `letI alg1 : Algebra (v.adicCompletionIntegers K) (v'.adicCompletionIntegers L) := g.toAlgebra`.
+
+Use `letI alg2 : Algebra (v'.adicCompletionIntegers L) (Kbar v) := (b₀.symm.toRingHom.comp (algebraMap (v'.adicCompletionIntegers L) (Kbar v'))).toAlgebra`. Use `haveI : IsScalarTower (v.adicCompletionIntegers K) (v'.adicCompletionIntegers L) (Kbar v) := by`. Use `IsScalarTower.of_algebraMap_eq fun a => ?_` and prove the remaining obligations. Establish `h` using `congrArg (fun φ => b₀.symm (φ a)) hcomp`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply] at h`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression. Use `haveI : Algebra.IsIntegral (v.adicCompletionIntegers K) (v'.adicCompletionIntegers L) := by`. Prove the components needed by the constructor for the conclusion. Introduce `a`.
+
+Establish `ha : Valued.v (a : v'.adicCompletion L) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 a.2`. Establish `hc` using `valued_coeff_minpoly_le_one e he f hfv hfd (a : v'.adicCompletion L) ha`. Establish `hai : IsIntegral (v.adicCompletion K) (a : v'.adicCompletion L)` using `Algebra.IsIntegral.isIntegral _`. Establish `hl : minpoly (v.adicCompletion K) (a : v'.adicCompletion L) ∈ Polynomial.lifts (algebraMap (v.adicCompletionIntegers K) (v.adicCompletion K))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+
+Introduce `n`. Conclude with `⟨⟨_, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hc n)⟩, rfl⟩`. Take `⟨q, hq, -, hm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (minpoly.monic hai)`. Use `⟨q, hm, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e1` using `Polynomial.hom_eval₂ q (algebraMap (v.adicCompletionIntegers K) (v'.adicCompletionIntegers L)) (v'.adicCompletionIntegers L).subtype a`. Establish `e2 : ((v'.adicCompletionIntegers L).subtype).comp (algebraMap (v.adicCompletionIntegers K) (v'.adicCompletionIntegers L)) = (algebraMap (v.adicCompletion K) (v'.adicCompletion L)).comp (algebraMap (v.adicCompletionIntegers K) (v.adicCompletion K))` using `by ext; rfl`. Rewrite `e1` using `[e2, ← Polynomial.eval₂_map, hq]`. Conclude with `e1.trans (minpoly.aeval (v.adicCompletion K) (a : v'.adicCompletion L))`. Establish `h1 : IsIntegral (v'.adicCompletionIntegers L) y`.
+
+Use `IsIntegral.map_of_comp_eq (RingHom.id (v'.adicCompletionIntegers L)) b₀.symm.toRingHom (by ext; rfl) hy` as an intermediate fact. Simplify using `using this`. Conclude with `isIntegral_trans y h1`.
+-/
 theorem isIntegral_iff_isIntegral_map : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (e : ℕ)
     (f : v.adicCompletion K →+* v'.adicCompletion L), 0 < e →

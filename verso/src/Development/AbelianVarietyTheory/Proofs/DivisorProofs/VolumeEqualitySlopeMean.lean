@@ -17,6 +17,17 @@ namespace GlobalTheory.MeanOne
 
 open GlobalTheory.LatChange in
 
+/- English proof (translation)
+Establish `hp2 : p ≠ 2` using `by rintro rfl; exact hd (dvd_mul_right _ _)`. Establish `hu : UnramE D p` using `fun h => hd (Dvd.dvd.mul_left h 2)`. Establish `hm : dimY Y + 1 - k + k = dimFl D.what₂.Tau Y.N + 1` using `Nat.sub_add_cancel (le_dim _ τ _ _ hkN)`. Establish `e1` using `h3 Sx R p hp hp2 hu hl τ k hk _ hm _ (tagDR_whom _ _ _ Q hQ)`. Establish `e2` using `ht Sx R p hp τ k hk Q`.
+
+Rewrite `e1` using `[collapse_tagDR]`. Establish `hf : (Nat.factorial k : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero k`. Establish `hf' : (Nat.factorial (k - 1) : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hfk : (Nat.factorial k : ℝ) = k * (Nat.factorial (k - 1) : ℝ)`. Conclude with `(Nat.mul_factorial_pred (by omega)).symm` after adjusting the coercions.
+
+Rewrite using `[← Y.arMix_DR, ← Y.arMix_HT, ← map_sub]`. Establish `key : tagDR D.what₂.Tau Y.N (pSum τ k * Q) - tagHT D.what₂.Tau Y.N (pSum τ k * Q) = (Nat.factorial k : ℝ) • ((tagDR D.what₂.Tau _ (C ((Nat.factorial k : ℝ)⁻¹) * pk D _ τ k) - tagHT D.what₂.Tau _ (C ((Nat.factorial k : ℝ)⁻¹) * pk D _ τ k)) * tagDR D.what₂.Tau _ Q) + tagHT D.what₂. …`. Rewrite using `[← smul_eq_C_mul, map_smul, map_smul, ← smul_sub, smul_mul_assoc, smul_smul, mul_inv_cancel₀ hf, one_smul, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `tagDR _ _ (pk D _ τ k) * _ - tagHT _ _ (pk D _ τ k) * _ = _`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key, map_add, map_smul, e1, e2, add_zero]`. Establish `e3 : Y.chern (chLie Y.j (k - 1) (Sum.inl τ) * Q) = (Nat.factorial (k - 1) : ℝ)⁻¹ * Y.chern (pLow Y.j τ (k - 1) * Q)`. Rewrite using `[← smul_eq_mul (Nat.factorial (k - 1) : ℝ)⁻¹, ← map_smul, smul_eq_C_mul, ← mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e3, smul_eq_mul]`.
+
+Generalize the expression as in `(∑' n : ℕ, ((p : ℝ) ^ k)⁻¹ ^ (n + 1) * Y.chern (chLie Y.j (k - 1) (frobEmb D p (n + 1) (Sum.inl τ)) * Q)) = T`. Rewrite using `[hfk]`. Establish `: (Nat.factorial (k - 1) : ℝ) * (Nat.factorial (k - 1) : ℝ)⁻¹ = 1` using `mul_inv_cancel₀ hf'`. Take the linear combination `(-(Real.log p / ((p : ℝ) - 1) * k * Y.chern (pLow Y.j τ (k - 1) * Q))) * this`.
+-/
 theorem one_term_at (D : D7) (Y : ShimX D.what₂.Tau) (h3 : DeRhamMinusHodgeTateGoodPrimesAt Y) (ht : DeRhamHodgeTateDifferenceKilledAt Y) (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (hp : p.Prime)
     (hd : ¬ p ∣ 2 * dE D) (hl : p ∉ Y.lev) (τ : D.what₂.Tau) (k : ℕ) (hk : 1 ≤ k) (hkN : k ≤ Y.N)
     (Q : Pol D.what₂.Tau Y.N) (hQ : Q.IsHomogeneous (dimY Y + 1 - k)) :
@@ -59,6 +70,21 @@ theorem one_term_at (D : D7) (Y : ShimX D.what₂.Tau) (h3 : DeRhamMinusHodgeTat
 
 open GlobalTheory.LatChange in
 
+/- English proof (translation)
+Introduce `D Y h3 ht h10 Sx R p hp hd hl Q hQ`. Establish `hjN` using `Y.j_lt`. Establish `hN : 1 ≤ Y.N` using `by omega`. Establish `hN' : (Y.N : ℝ) ≠ 0` using `by exact_mod_cast (by omega : Y.N ≠ 0)`. Establish `hc : ∀ Q, Y.chern Q = Y.vol * degFl D.what₂.Tau Y.N Q` using `h10`.
+
+Establish `hF` using `fun τ => GlobalTheory.T.shift_functional_decomposition D.what₂.Tau Y.N Y.j Q τ hN`. Establish `hI : Finset.Icc 1 Y.N = insert 1 (Finset.Icc 2 Y.N)`. Use extensionality with `k`. Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `lhs : Y.arDeg (Sx.erase p) R (comb _ Q) - Y.arDeg (insert p Sx) R (comb _ Q) = ∑ τ, ∑ k ∈ Finset.Icc 1 Y.N, (Y.arDeg (Sx.erase p) R (pSum τ k * Q τ k) - Y.arDeg (insert p Sx) R (pSum τ k * Q τ k))`. Simplify using `only [comb, map_sum, Finset.sum_sub_distrib]`. Rewrite using `[lhs]`. Unfold `shAll restTerm`. Simplify using `only [Finset.mul_sum (s := Finset.univ)]`.
+
+Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun k hk => one_term_at D Y h3 ht Sx R p hp hd hl τ k (Finset.mem_Icc.1 hk).1 (Finset.mem_Icc.1 hk).2 (Q τ k) (hQ τ k (Finset.mem_Icc.1 hk).1 (Finset.mem_Icc.1 hk).2)), Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `s1 : ∑ k ∈ Finset.Icc 1 Y.N, (k : ℝ) * Y.chern (pLow Y.j τ (k - 1) * Q τ k) = Y.vol * shF Y.j τ (comb _ Q)`. Unfold `comb`.
+
+Rewrite using `[(hF τ).1, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `s2 : (∑' n : ℕ, ((p : ℝ) ^ 1)⁻¹ ^ (n + 1) * Y.chern (chLie Y.j (1 - 1) (frobEmb D p (n + 1) (Sum.inl τ)) * Q τ 1)) = kap Y p τ * (Y.vol * degFl D.what₂.Tau Y.N (Q τ 1))`.
+
+Unfold `kap`. Rewrite using `[← tsum_mul_right]`. Use `tsum_congr (fun n => ?_)` and prove the remaining obligations. Rewrite using `[Nat.sub_self, chLie_zero _ _ hjN.le, ← smul_eq_C_mul, map_smul, smul_eq_mul, hc, pow_one, mul_assoc]`. Establish `s3 : totF τ (comb Y Q) = (Y.N : ℝ) * degFl D.what₂.Tau Y.N (Q τ 1)` using `(hF τ).2`.
+
+Rewrite using `[s1, s3, hI, Finset.sum_insert (by simp), s2]`. Simplify using `only [Nat.factorial_one, Nat.cast_one, one_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lattice_change_at : ∀ (D : D7) (Y : ShimX D.what₂.Tau), DeRhamMinusHodgeTateGoodPrimesAt Y → DeRhamHodgeTateDifferenceKilledAt Y → Propor Y → ∀ (Sx : Finset ℕ) (R : ℝ) (p : ℕ), p.Prime → ¬ p ∣ 2 * dE D → p ∉ Y.lev → ∀ Q, Cof Y Q → Y.arDeg (Sx.erase p) R (comb _ Q) - Y.arDeg (insert p Sx) R (comb _ Q) = -(Real.log p / ((p : ℝ) - 1)) * Y.vol * shAll _ (comb _ Q) + Real.log p / Y.N * Y.vol * (∑ τ, kap Y p τ * totF τ (comb _ Q)) + restTerm Y p Q := by
   intro D Y h3 ht h10 Sx R p hp hd hl Q hQ
   have hjN := Y.j_lt
@@ -99,6 +125,11 @@ theorem lattice_change_at : ∀ (D : D7) (Y : ShimX D.what₂.Tau), DeRhamMinusH
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `D Y h3 h4 h5 Φ hΦ B₀ B hB₀ hB Q hQ`. Take `⟨hsub, -, hnew, -⟩` from `GlobalTheory.T.new_primes_set_description D Y B₀ B (by linarith)`. Establish `hU : setB Y B₀ ∪ newPrimes Y B₀ B = setB Y B` using `Finset.union_sdiff_of_subset (hsub hB)`. Establish `t0` using `hΦ B₀ hB₀ (comb _ Q)`. Establish `t1` using `hΦ B (hB₀.trans hB) (comb _ Q)`.
+
+Use `tendsto_nhds_unique t0 ((t1.add_const _).congr fun R => ?_)` and prove the remaining obligations. Establish `key` using `telescope_finset (fun Sx => Y.arDeg Sx R (comb _ Q)) _ (setB Y B₀) (newPrimes Y B₀ B) Finset.disjoint_sdiff (fun p hp Sx => lattice_change_at D Y h3 h4 h5 Sx R p ((hnew p).1 hp).1 ((hnew p).1 hp).2.2.2.1 ((hnew p).1 hp).2.2.2.2 Q hQ)`. Rewrite `key` using `[hU]`. Conclude with `key.symm`.
+-/
 theorem change_at : ∀ (D : D7) (Y : ShimX D.what₂.Tau), DeRhamMinusHodgeTateGoodPrimesAt Y → DeRhamHodgeTateDifferenceKilledAt Y → Propor Y → ∀ Φ : ℝ → Fn Y, LimFam Φ → Change Φ := by
   intro D Y h3 h4 h5 Φ hΦ B₀ B hB₀ hB Q hQ
   obtain ⟨hsub, -, hnew, -⟩ := GlobalTheory.T.new_primes_set_description D Y B₀ B (by linarith)
@@ -142,6 +173,31 @@ def TailWeakAt {D : D7} (Y : ShimX D.what₂.Tau) (C5 : ℝ) : Prop := ∀ u g, 
 
 open Finset GlobalTheory.FlagHook GlobalTheory.TailBound in
 
+/- English proof (translation)
+Establish `hc : ∀ Q, Y.chern Q = Y.vol * degFl D.what₂.Tau Y.N Q` using `h10`. Introduce `u g hW Qs hQ hdec B`. Take `⟨hg, hreg, -, hsep⟩` from `hW`. Take `⟨hH, hB⟩` from `big_b0_lower_bound Y u g hg`. Establish `hN : (2 : ℝ) ≤ Y.N`.
+
+Establish `h1` using `Y.j_pos`. Establish `h2` using `Y.j_lt`. Conclude with `(by omega : 2 ≤ Y.N)` after adjusting the coercions. Establish `hB16 : 16 ≤ bigB0 Y u g` using `by nlinarith`. Generalize the expression as in `bigB0 Y u g = B0 at hB hB16 ⊢`.
+
+Establish `hdec' : IsDecomp u Qs` using `⟨hQ, hdec⟩`. Establish `hne : ∀ τ a b, a ≠ b → u τ a ≠ u τ b` using `fun τ a b hab => by`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `(hreg τ a b h).ne'`. Conclude with `(hreg τ b a h).ne`.
+
+Use `set U : D.what₂.Tau → ℝ := fun τ => (⨆ i, u τ i) - ⨅ i, u τ i with hU`. Establish `hU0 : ∀ τ, 0 ≤ U τ` using `fun τ => (spread_spec Y u τ).2.1`. Establish `hkap : ∀ τ k, 2 ≤ k → k ≤ Y.N → ∀ τ' i, inSmall Y i → |GlobalTheory.FlagHook.kap u k (X (τ', i) ^ (k - 1)) (Qs τ k)| ≤ U τ * (B0 / 2) ^ (k - 1)`. Introduce `τ k hk hkN τ' i hi`. Use `(GlobalTheory.T.kappa_hook_bound _ Y.N u Qs g (U τ) τ τ' i k hg hne hdec' hk hkN (spread_spec Y u τ).1 (fun a ha => hsep τ' i a hi (Ne.symm ha))).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : U τ / g ≤ 2 * (supAbs Y u / g)`. Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right (spread_spec Y u τ).2.2 hg.le`. Establish `h2 : 0 ≤ U τ / g` using `div_nonneg (hU0 τ) hg.le`. Establish `h3 : (2 * ((Y.N : ℝ) * (1 + U τ / g))) ^ (k - 1) ≤ (B0 / 2) ^ (k - 1)`.
+
+Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (2 : ℝ) ^ (k - 1) / (k.factorial : ℝ) ≤ 2 ^ (k - 1)` using `div_le_self (by positivity) (by exact_mod_cast k.factorial_pos)`. Establish `h5` using `hU0 τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hSU : 0 ≤ ∑ τ, U τ` using `sum_nonneg fun τ _ => hU0 τ`. Establish `hc0 : 0 ≤ 2 * B0 * (jS Y : ℝ) * ∑ τ, U τ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun p hp => ?_` and prove the remaining obligations. Establish `hp1 : B0 < (p : ℝ)` using `(mem_filter.1 hp).2.2.1`.
+
+Establish `hl : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (sum_le_sum fun τ _ => ?_) hl` and prove the remaining obligations. Use `sum_tsum_abs_le (p : ℝ) (B0 / 2) _ (by linarith) (by linarith) (by linarith) (mul_nonneg (Nat.cast_nonneg _) (hU0 τ)) Y.N _ ?_` and prove the remaining obligations. Introduce `k hk n`.
+
+Take `⟨hk2, hkN⟩` from `mem_Icc.1 hk`. Use `(abs_term_le Y hc u k (by omega) _ (by positivity) _ _).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `abs_kap_chLie_le Y u k (k - 1) (by omega) _ _ _ (hkap τ k hk2 hkN)`.
+
+Use `_ = _ := by`. Rewrite using `[mul_sum, mul_sum, sum_mul]`. Use `sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (2 * B0 * (jS Y : ℝ) * ∑ τ, U τ) * (4 * Real.log 4 / B0) := by`.
+
+Rewrite using `[← mul_sum]`. Use `mul_le_mul_of_nonneg_left (le_trans ?_ (GlobalTheory.sum_log_div_sq_primes_tail B0 B (by linarith))) hc0` and prove the remaining obligations. Use `sum_le_sum_of_subset_of_nonneg ?_ fun p _ _ => div_nonneg (Real.log_natCast_nonneg p) (by positivity)` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp`, the goal using `[mem_filter]`.
+
+Conclude with `⟨hp.1, hp.2.1, hp.2.2.1⟩`. Use `_ = _ := by`. Establish `: B0 ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tail_at (D : D7) (Y : ShimX D.what₂.Tau) (h10 : Propor Y) : TailAt Y (8 * Real.log 4) := by
   have hc : ∀ Q, Y.chern Q = Y.vol * degFl D.what₂.Tau Y.N Q := h10
   intro u g hW Qs hQ hdec B
@@ -215,6 +271,13 @@ theorem tail_at (D : D7) (Y : ShimX D.what₂.Tau) (h10 : Propor Y) : TailAt Y (
 
 open GlobalTheory.NefComparisonAlg in
 
+/- English proof (translation)
+Introduce `h u g hu Qs hQ hdec B`. Use `le_trans (Finset.sum_le_sum fun p hp => ?_) (h u g hu Qs hQ hdec B)` and prove the remaining obligations. Establish `hpp : p.Prime` using `(Finset.mem_filter.1 hp).2.1`. Establish `hlog : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Rewrite using `[mul_div_assoc, abs_mul, abs_of_nonneg hlog]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ hlog` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k hk => ?_)` and prove the remaining obligations.
+
+Establish `hk2 : 2 ≤ k` using `(Finset.mem_Icc.1 hk).1`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hpp.one_lt`. Establish `hpk : (1 : ℝ) < (p : ℝ) ^ k` using `one_lt_pow₀ hp1 (by omega)`. Conclude with `abs_tsum_geom_le (fun σ : EmbC D => Y.chern (chLie Y.j (k - 1) σ * Qs τ k)) (fun n => frobEmb D p (n + 1) (Sum.inl τ)) _ _ _ (by positivity) (inv_lt_one_of_one_lt₀ hpk)`.
+-/
 theorem weak_tail_at {D : D7} (Y : ShimX D.what₂.Tau) (C5 : ℝ) : TailAt Y C5 → TailWeakAt Y C5 := by
   intro h u g hu Qs hQ hdec B
   refine le_trans (Finset.sum_le_sum fun p hp => ?_) (h u g hu Qs hQ hdec B)
@@ -233,6 +296,45 @@ theorem weak_tail_at {D : D7} (Y : ShimX D.what₂.Tau) (C5 : ℝ) : TailAt Y C5
     (fun σ : EmbC D => Y.chern (chLie Y.j (k - 1) σ * Qs τ k))
     (fun n => frobEmb D p (n + 1) (Sum.inl τ)) _ _ _ (by positivity) (inv_lt_one_of_one_lt₀ hpk)
 
+/- English proof (translation)
+Introduce `r Cf C5`. Take `⟨C₁, hC₁, hA0⟩` from `GlobalTheory.T.lower_bound_linear_coefficient r`. Use `⟨C₁ + max Cf 0 + max C5 0, add_nonneg (add_nonneg hC₁ (le_max_right _ _)) (le_max_right _ _), ?_⟩` and prove the remaining obligations. Introduce `D Y hf hProp h5 hFew A Φ hh hDeg hFl hFV hFB hTV hEx u g hW`. Establish `h5w` using `h5 u g hW`.
+
+Take `⟨h48', -, hlg⟩` from `GlobalTheory.T.threshold_and_log_comparison D Y hf`. Establish `h48` using `h48' u g hW`. Use `set B₀ := bigB0 Y u g with hB₀`. Take `⟨a, b, hab⟩` from `hEx B₀ (by linarith)`. Establish `hvol : 0 < Y.vol`.
+
+Rewrite using `[hDeg.2.1]`. Use `haveI := Y.compNe`. Conclude with `Finset.sum_pos (fun c _ => hDeg.1 c) Finset.univ_nonempty`. Establish `ha` using `hA0 D Y Φ hh B₀ a b h48 hvol hProp hFew hTV hab`. Establish `hK` using `GlobalTheory.T.flat_value_coefficient_bound D Y A Φ hh Cf B₀ a b h48 hDeg hFl hFV hFB hab`.
+
+Establish `hreg : RegDom u` using `hW.2.1`. Establish `hdom : Dom u`. Introduce `τ x y hxy`. Break down `hxy.eq_or_lt with h | h` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `(hreg τ x y h).le`. Establish `hfd : 0 < flagDeg D.what₂.Tau Y.N u` using `(GlobalTheory.T.flag_degree_pos_regular_dominant _ _ u).1 hreg`. Establish `hgeo : geoDeg Y u = Y.vol * flagDeg D.what₂.Tau Y.N u` using `hProp _`. Establish `hgpos : 0 < geoDeg Y u` using `by rw [hgeo]; positivity`. Take `⟨Q, hQ, hF⟩` from `GlobalTheory.T.power_sum_decomposition_homogeneous D.what₂.Tau Y.N _ (linRoot_pow_homog_lower u (dimFl D.what₂.Tau Y.N + 1))`.
+
+Establish `hcomb : comb Y Q = linRoot u ^ (dimFl D.what₂.Tau Y.N + 1)` using `hF.symm`. Establish `hlim` using `hab Q hQ`. Establish `h5'` using `h5w Q hQ hF`. Establish `hN : 0 < Y.N` using `by have := Y.j_lt; omega`. Establish `hNR : (0 : ℝ) < Y.N` using `by exact_mod_cast hN`.
+
+Use `set D1 : ℝ := (dimY Y : ℝ) + 1 with hD1`. Establish `hD1pos : 0 < D1` using `by positivity`. Use `set Wd : ℝ := (jS Y : ℝ) * ∑ τ, ((⨆ i, u τ i) - ⨅ i, u τ i) with hWd`. Establish `hWd0 : 0 ≤ Wd`. Apply `mul_nonneg (Nat.cast_nonneg _)` to reduce the goal to its premises.
+
+Apply `Finset.sum_nonneg` to reduce the goal to its premises. Introduce `τ _`. Establish `h1 : u τ ⟨0, hN⟩ ≤ ⨆ i, u τ i` using `le_ciSup (Set.finite_range _).bddAbove _`. Establish `h2 : ⨅ i, u τ i ≤ u τ ⟨0, hN⟩` using `ciInf_le (Set.finite_range _).bddBelow _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpart : ∀ B : ℕ, |∑ p ∈ newPrimes Y B₀ B, restTerm Y p Q| ≤ max C5 0 * D1 * geoDeg Y u * Wd`. Introduce `B`. Establish `h1` using `h5' B`. Rewrite `h1` using `[← (GlobalTheory.T.new_primes_set_description D Y B₀ B (by linarith)).2.2.2 B]`. Establish `h2 : ∑ p ∈ newPrimes Y B₀ B, |restTerm Y p Q / (D1 * geoDeg Y u)| ≤ C5 * jS Y * ∑ τ, ((⨆ i, u τ i) - ⨅ i, u τ i)` using `h1`.
+
+Establish `hpos : 0 < D1 * geoDeg Y u` using `by positivity`. Establish `h3 : ∑ p ∈ newPrimes Y B₀ B, |restTerm Y p Q / (D1 * geoDeg Y u)| = (∑ p ∈ newPrimes Y B₀ B, |restTerm Y p Q|) / (D1 * geoDeg Y u)`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[abs_div, abs_of_pos hpos]`.
+
+Rewrite `h2` using `[h3, mul_assoc, ← hWd, div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hrest` using `le_of_tendsto' hlim.abs hpart`. Rewrite `hrest` using `[hcomb]`. Establish `hlog : 0 ≤ Real.log B₀` using `Real.log_nonneg (by linarith)`.
+
+Establish `hlgB` using `hlg B₀ (by linarith)`. Establish `hK' : |(Y.j : ℝ) * a + Y.N * b| ≤ max Cf 0 * Y.N * lg D B₀`. Use `hK.trans ?_` and prove the remaining obligations. Establish `: 0 ≤ lg D B₀` using `hlog.trans hlgB`. Use `gcongr`.
+
+Conclude with `le_max_left _ _`. Establish `hh0 : 0 ≤ Y.vol * hh (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1))` using `mul_nonneg hvol.le (hFl.2.1 u hdom)`. Establish `hlgB' : Real.log B₀ + Real.log D.host.rdE ≤ lg D B₀`. Establish `h1` using `(GlobalTheory.T.threshold_and_log_comparison D Y hf).2.1`. Unfold `lg`.
+
+Rewrite using `[Real.log_mul (by linarith) (by linarith)]`. Combine the linear relations using `[abs_nonneg (dlogL D 1)]`. Establish `key` using `GlobalTheory.lowerBound_numerical_end D.what₂.Tau (Φ B₀ (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1))) (Y.vol * hh (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1))) (geoDeg Y u) D1 a ((Y.j : ℝ) * a + Y.N * b) _ (Real.log B₀ + Real.log D.host.rdE) (lg D B₀) Wd (fun τ => (∑ i ∈ Finset.univ.fi …`. Unfold `atWt`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsh : shAll Y (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1)) = -(D1 * flagDeg D.what₂.Tau Y.N u) * ∑ τ, ∑ i ∈ Finset.univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j), u τ i`. Unfold `shAll`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.shift_functional_linear_root_power D.what₂.Tau Y.N Y.j u τ).1]`.
+
+Simplify using `only [hD1, dimY]`. Expand and normalize the polynomial expressions, which then agree. Establish `htot : totAll Y (linRoot u ^ (dimFl D.what₂.Tau Y.N + 1)) = -(D1 * flagDeg D.what₂.Tau Y.N u) * ∑ τ, ∑ i, u τ i`. Unfold `totAll`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.shift_functional_linear_root_power D.what₂.Tau Y.N Y.j u τ).2]`. Simplify using `only [hD1, dimY]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ τ, (a * ((∑ i ∈ Finset.univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j), u τ i) - Y.j * ((∑ i, u τ i) / Y.N)) + ((Y.j : ℝ) * a + Y.N * b) * ((∑ i, u τ i) / Y.N)) = a * (∑ τ, ∑ i ∈ Finset.univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j), u τ i) + b * ∑ τ, ∑ i, u τ i`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, hsh, htot, hgeo]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lower_at : ∀ r Cf C5 : ℝ, ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (Y : ShimX D.what₂.Tau), 2 < D.R.f * (Y.N - 1) → Propor Y → TailWeakAt Y C5 → FewBad Y → ∀ (A : SlopeTestRemainingChoices Y) (Φ : ℝ → Fn Y) (hh : Fn Y), Degrees A → FlagHt D.what₂.Tau _ hh → FlatVal A Φ → FlatBd Y Cf → TestVal Φ hh r → (∀ B₀ : ℝ, 2 ≤ B₀ → ∃ a b : ℝ, ExactAt Φ hh B₀ a b) → Lower Φ C := by
   intro r Cf C5
   obtain ⟨C₁, hC₁, hA0⟩ := GlobalTheory.T.lower_bound_linear_coefficient r
@@ -338,6 +440,13 @@ theorem lower_at : ∀ r Cf C5 : ℝ, ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (Y :
     rw [hsum, hsh, htot, hgeo]
     ring
 
+/- English proof (translation)
+Introduce `r Cf`. Take `⟨C, hC0, hC⟩` from `lower_at r Cf (8 * Real.log 4)`. Use `⟨C, hC0, ?_⟩` and prove the remaining obligations. Introduce `D Y hf h3 h1t h10 hF A Φ hh hI`. Take `⟨hLim, hPS, hAg, hPos, hSq, hHt, hDeg, hEq, hAnti, hFl, hRel, hFV, hFB, hTV⟩` from `hI`.
+
+Establish `hvol : 0 < Y.vol` using `vol_pos_assembly hDeg`. Establish `hWS` using `GlobalTheory.T.wall_smallness_of_degrees D _ A hf hPos hSq hHt hDeg`. Establish `hWB` using `GlobalTheory.T.wall_bound_of_poly_size D _ A Φ hf hPS hAg hWS`. Establish `hT` using `GlobalTheory.T.shape_of_antisymmetric_family D _ Φ hh hvol hAnti hFl hWB`. Establish `hCc` using `GlobalTheory.T.shape_change_of_relabelling D _ Φ hh hvol hRel hFl hT`.
+
+Establish `hFf` using `GlobalTheory.T.shape_final_of_shape_change D _ Φ hh hCc`. Establish `hCh` using `change_at D Y h3 h1t h10 Φ hLim`. Establish `hEx` using `GlobalTheory.T.exact_asymptotic_exists D _ Φ hh hvol hFf hCh`. Establish `hLow` using `hC D Y hf h10 (weak_tail_at Y _ (tail_at D Y h10)) hF A Φ hh hDeg hFl hFV hFB hTV hEx`. Conclude with `GlobalTheory.T.equal_volume_and_slope_mean D _ A Φ C hf hLim hPS hAg hDeg hEq h10 hLow`.
+-/
 theorem slopeMean_at : ∀ r Cf : ℝ, ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (Y : ShimX D.what₂.Tau), 2 < D.R.f * (Y.N - 1) →
     DeRhamMinusHodgeTateGoodPrimesAt Y → DeRhamHodgeTateDifferenceKilledAt Y → Propor Y → FewBad Y → ∀ (A : SlopeTestRemainingChoices Y) (Φ : ℝ → Fn Y) (hh : Fn Y), Inputs A Φ hh r Cf →
       GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.VolEq Y ∧ GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.SlopeMean Y C := by

@@ -9,10 +9,20 @@ section SelfDual
 
 variable {V : Type*} [AddCommGroup V] [Module ℚ V]
 
+/- English proof (translation)
+Introduce `_ hx y hy` and use `hx y (h hy)`.
+-/
 theorem dualSubmodule_le_dualSubmodule_of_le (B : LinearMap.BilinForm ℚ V)
     {M N : Submodule ℤ V} (h : M ≤ N) : B.dualSubmodule N ≤ B.dualSubmodule M :=
   fun _ hx y hy => hx y (h hy)
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ L := Module.Finite.iff_fg.2 hL`. Use `haveI := Module.IsTorsionFree.trans_faithfulSMul ℤ ℚ V`. Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `h1 : x ∈ L` using `by simpa using hx 1`. Establish `h2 : (⟨x, h1⟩ : L) = 0`.
+
+Use `b.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `set a := b.repr ⟨x, h1⟩ i with ha`. Establish `hn : (0 : ℤ) < |a| + 1` using `by positivity`. Establish `h3 : (⟨x, h1⟩ : L) = (|a| + 1) • (⟨((|a| + 1 : ℤ) : ℚ)⁻¹ • x, hx _⟩ : L)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hn.ne'), one_smul]`. Use `Int.eq_zero_of_abs_lt_dvd (m := |a| + 1) ⟨b.repr ⟨_, hx ((|a| + 1 : ℤ) : ℚ)⁻¹⟩ i, ?_⟩ (lt_add_one _)` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← Finsupp.smul_apply, ← map_smul, ← h3]`. Conclude with `congrArg Subtype.val h2`.
+-/
 theorem eq_zero_of_forall_rat_smul_mem (L : Submodule ℤ V) (hL : L.FG) {x : V}
     (hx : ∀ q : ℚ, q • x ∈ L) : x = 0 := by
   haveI : Module.Finite ℤ L := Module.Finite.iff_fg.2 hL
@@ -35,6 +45,13 @@ theorem eq_zero_of_forall_rat_smul_mem (L : Submodule ℤ V) (hL : L.FG) {x : V}
 
 variable [FiniteDimensional ℚ V]
 
+/- English proof (translation)
+Use `⟨hL, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Establish `h0 : (B.toDual hB).symm φ = 0`. Use `eq_zero_of_forall_rat_smul_mem _ hd fun q y hy => ?_` and prove the remaining obligations.
+
+Establish `h1 : B ((B.toDual hB).symm φ) y = 0`. Rewrite using `[LinearMap.BilinForm.apply_toDual_symm_apply]`. Conclude with `hle (Submodule.subset_span hy)`. Rewrite using `[map_smul, LinearMap.smul_apply, h1, smul_zero]`. Conclude with `zero_mem _`.
+
+Conclude with `hφ (by simpa using h0)`.
+-/
 theorem isLattice_of_fg_dualSubmodule (B : LinearMap.BilinForm ℚ V) (hB : B.Nondegenerate)
     (L : Submodule ℤ V) (hL : L.FG) (hd : (B.dualSubmodule L).FG) : L.IsLattice ℚ := by
   refine ⟨hL, ?_⟩
@@ -49,6 +66,11 @@ theorem isLattice_of_fg_dualSubmodule (B : LinearMap.BilinForm ℚ V) (hB : B.No
     exact zero_mem _
   exact hφ (by simpa using h0)
 
+/- English proof (translation)
+Establish `hr : finrank ℤ L = finrank ℚ V`. Set `b` to `Module.Free.chooseBasis ℤ L`. Rewrite using `[finrank_eq_card_basis b, finrank_eq_card_basis (b.extendOfIsLattice ℚ)]`. Set `b` to `Module.finBasisOfFinrankEq ℤ L hr`. Use `⟨b.extendOfIsLattice ℚ, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Set.range (b.extendOfIsLattice ℚ) = L.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Conclude with `funext fun i => b.extendOfIsLattice_apply ℚ i`. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`.
+-/
 theorem exists_basis_span_eq_of_isLattice (L : Submodule ℤ V) [L.IsLattice ℚ] :
     ∃ b : Basis (Fin (finrank ℚ V)) ℚ V, L = Submodule.span ℤ (Set.range b) := by
   have hr : finrank ℤ L = finrank ℚ V := by
@@ -62,11 +84,17 @@ theorem exists_basis_span_eq_of_isLattice (L : Submodule ℤ V) [L.IsLattice ℚ
     exact funext fun i => b.extendOfIsLattice_apply ℚ i
   rw [h1, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ L`. Rewrite using `[finrank_eq_card_basis b, finrank_eq_card_basis (b.extendOfIsLattice ℚ)]`.
+-/
 theorem finrank_eq_of_isLattice (L : Submodule ℤ V) [L.IsLattice ℚ] :
     finrank ℤ L = finrank ℚ V := by
   let b := Module.Free.chooseBasis ℤ L
   rw [finrank_eq_card_basis b, finrank_eq_card_basis (b.extendOfIsLattice ℚ)]
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `exists_basis_span_eq_of_isLattice L`. Rewrite using `[B.dualSubmodule_span_of_basis hB]`. Conclude with `⟨Submodule.fg_span (Set.finite_range _), by`. Rewrite using `[Submodule.span_span_of_tower, Basis.span_eq]⟩`.
+-/
 theorem isLattice_dualSubmodule (B : LinearMap.BilinForm ℚ V) (hB : B.Nondegenerate)
     (L : Submodule ℤ V) [L.IsLattice ℚ] : (B.dualSubmodule L).IsLattice ℚ := by
   obtain ⟨b, rfl⟩ := exists_basis_span_eq_of_isLattice L
@@ -76,6 +104,9 @@ theorem isLattice_dualSubmodule (B : LinearMap.BilinForm ℚ V) (hB : B.Nondegen
 
 omit [FiniteDimensional ℚ V] in
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.relIndex_eq_abs_det _ _ h b₁ b₂ (Submodule.span_int_eq_addSubgroupClosure _) (Submodule.span_int_eq_addSubgroupClosure _)`.
+-/
 theorem relIndex_span_basis_eq_abs_det {ι : Type*} [DecidableEq ι] [Fintype ι]
     (b₁ b₂ : Basis ι ℚ V)
     (h : Submodule.span ℤ (Set.range b₁) ≤ Submodule.span ℤ (Set.range b₂)) :
@@ -84,6 +115,11 @@ theorem relIndex_span_basis_eq_abs_det {ι : Type*} [DecidableEq ι] [Fintype ι
   AddSubgroup.relIndex_eq_abs_det _ _ h b₁ b₂ (Submodule.span_int_eq_addSubgroupClosure _)
     (Submodule.span_int_eq_addSubgroupClosure _)
 
+/- English proof (translation)
+Take `⟨b₁, rfl⟩` from `exists_basis_span_eq_of_isLattice M`. Take `⟨b₂, rfl⟩` from `exists_basis_span_eq_of_isLattice N`. Introduce `h0`. Establish `h1` using `relIndex_span_basis_eq_abs_det b₁ b₂ h`. Rewrite `h1` using `[h0, Nat.cast_zero, eq_comm, abs_eq_zero]`.
+
+Conclude with `(b₂.isUnit_det b₁).ne_zero h1`.
+-/
 theorem relIndex_ne_zero_of_isLattice {M N : Submodule ℤ V} [M.IsLattice ℚ] [N.IsLattice ℚ]
     (h : M ≤ N) : M.toAddSubgroup.relIndex N.toAddSubgroup ≠ 0 := by
   obtain ⟨b₁, rfl⟩ := exists_basis_span_eq_of_isLattice M
@@ -93,6 +129,13 @@ theorem relIndex_ne_zero_of_isLattice {M N : Submodule ℤ V} [M.IsLattice ℚ] 
   rw [h0, Nat.cast_zero, eq_comm, abs_eq_zero] at h1
   exact (b₂.isUnit_det b₁).ne_zero h1
 
+/- English proof (translation)
+Establish `h'` using `dualSubmodule_le_dualSubmodule_of_le B h`. Take `⟨b₁, rfl⟩` from `exists_basis_span_eq_of_isLattice M`. Take `⟨b₂, rfl⟩` from `exists_basis_span_eq_of_isLattice N`. Rewrite `h'`, the goal using `[B.dualSubmodule_span_of_basis hB, B.dualSubmodule_span_of_basis hB]`. Apply `Nat.cast_injective (R := ℚ)` to reduce the goal to its premises.
+
+Rewrite using `[relIndex_span_basis_eq_abs_det _ _ h, relIndex_span_basis_eq_abs_det _ _ h', Basis.det_apply, Basis.det_apply, ← Matrix.det_transpose (b₂.toMatrix b₁)]`. Use `congr 2`. Use extensionality with `i j`. Rewrite using `[Matrix.transpose_apply, Basis.toMatrix_apply, Basis.toMatrix_apply, LinearMap.BilinForm.dualBasis_repr_apply]`. Use `conv_lhs => rw [← b₂.sum_repr (b₁ i)]`.
+
+Simplify using `only [map_sum, map_smul, LinearMap.BilinForm.apply_dualBasis_left]`. Simplify using the standard rewrite rules.
+-/
 theorem relIndex_dualSubmodule (B : LinearMap.BilinForm ℚ V) (hB : B.Nondegenerate)
     {M N : Submodule ℤ V} [M.IsLattice ℚ] [N.IsLattice ℚ] (h : M ≤ N) :
     (B.dualSubmodule N).toAddSubgroup.relIndex (B.dualSubmodule M).toAddSubgroup =
@@ -112,6 +155,13 @@ theorem relIndex_dualSubmodule (B : LinearMap.BilinForm ℚ V) (hB : B.Nondegene
   simp only [map_sum, map_smul, LinearMap.BilinForm.apply_dualBasis_left]
   simp
 
+/- English proof (translation)
+Establish `h1` using `relIndex_dualSubmodule B hB (inf_le_left : L ⊓ L' ≤ L)`. Establish `h2` using `relIndex_dualSubmodule B hB (inf_le_right : L ⊓ L' ≤ L')`. Establish `l1` using `dualSubmodule_le_dualSubmodule_of_le B (inf_le_left : L ⊓ L' ≤ L)`. Establish `l2` using `dualSubmodule_le_dualSubmodule_of_le B (inf_le_right : L ⊓ L' ≤ L')`. Rewrite `h1`, `l1` using `[hL]`.
+
+Rewrite `h2`, `l2` using `[hL']`. Establish `m1` using `AddSubgroup.relIndex_mul_relIndex (L ⊓ L').toAddSubgroup L.toAddSubgroup (B.dualSubmodule (L ⊓ L')).toAddSubgroup (inf_le_left : L ⊓ L' ≤ L) l1`. Establish `m2` using `AddSubgroup.relIndex_mul_relIndex (L ⊓ L').toAddSubgroup L'.toAddSubgroup (B.dualSubmodule (L ⊓ L')).toAddSubgroup (inf_le_right : L ⊓ L' ≤ L') l2`. Rewrite `m1` using `[h1]`. Rewrite `m2` using `[h2, ← m1]`.
+
+Rewrite using `[h2]`. Conclude with `Nat.mul_self_inj.1 m2`.
+-/
 theorem relIndex_dualSubmodule_inf_of_selfDual (B : LinearMap.BilinForm ℚ V)
     (hB : B.Nondegenerate) {L L' : Submodule ℤ V} [L.IsLattice ℚ] [L'.IsLattice ℚ]
     (hL : B.dualSubmodule L = L) (hL' : B.dualSubmodule L' = L') :
@@ -134,6 +184,19 @@ theorem relIndex_dualSubmodule_inf_of_selfDual (B : LinearMap.BilinForm ℚ V)
 
 end SelfDual
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0` using `by omega`. Use `haveI : L.IsLattice ℚ := isLattice_of_fg_dualSubmodule B hB L hL (hLd.symm ▸ hL)`. Establish `hinf : ∀ L' : Submodule ℤ V, (L ⊓ L').toAddSubgroup.relIndex L.toAddSubgroup = L'.toAddSubgroup.relIndex L.toAddSubgroup` using `fun L' => AddSubgroup.inf_relIndex_left L.toAddSubgroup L'.toAddSubgroup`. Establish `hsub : {L' : Submodule ℤ V | L'.FG ∧ B.dualSubmodule L' = L' ∧ L'.toAddSubgroup.relIndex L.toAddSubgroup = m} ⊆ ⋃ M ∈ {M : Submodule ℤ V | M.IsLattice ℚ ∧ M ≤ L ∧ M.toAddSubgroup.relIndex L.toAddSubgroup = m}, {H | H ≤ B.dualSubmodule M ∧ H.toAddSubgroup.relIndex (B.dualSubmodule …`. Introduce and unpack `L' ⟨h1, h2, h3⟩`.
+
+Use `haveI : L'.IsLattice ℚ := isLattice_of_fg_dualSubmodule B hB L' h1 (h2.symm ▸ h1)`. Use `Set.mem_biUnion (x := L ⊓ L') ⟨inferInstance, inf_le_left, (hinf L').trans h3⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h2.ge.trans (dualSubmodule_le_dualSubmodule_of_le B inf_le_right)`. Rewrite using `[relIndex_dualSubmodule_inf_of_selfDual B hB hLd h2, hinf, h3]`. Establish `hcard : {L' : Submodule ℤ V | L'.FG ∧ B.dualSubmodule L' = L' ∧ L'.toAddSubgroup.relIndex L.toAddSubgroup = m}.encard ≤ ((m ^ (2 * finrank ℚ V) : ℕ) : ℕ∞)`.
+
+Rewrite using `[two_mul, pow_add]`. Use `(Set.encard_le_encard hsub).trans (encard_biUnion_le_mul _ _ _ _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[← finrank_eq_of_isLattice L]`. Conclude with `(Set.encard_le_encard fun M hM => hM.2).trans (encard_setOf_submodule_le_relIndex_eq_le L hm0)`. Introduce `M hM haveI := hM.1 haveI := isLattice_dualSubmodule B hB M`.
+
+Rewrite using `[← finrank_eq_of_isLattice (B.dualSubmodule M)]`. Conclude with `encard_setOf_submodule_le_relIndex_eq_le _ hm0`. Establish `hf` using `Set.finite_of_encard_le_coe hcard`. Use `⟨hf, ?_, fun L' h1 h2 => ⟨?_, fun h3 => ?_⟩⟩` and prove the remaining obligations. Rewrite `hcard` using `[← hf.cast_ncard_eq]`.
+
+Conclude with `hcard` after adjusting the coercions. Use `haveI : L'.IsLattice ℚ := isLattice_of_fg_dualSubmodule B hB L' h1 (h2.symm ▸ h1)`. Rewrite using `[← hinf]`. Conclude with `relIndex_ne_zero_of_isLattice inf_le_left`. Establish `h4 : L ≤ L'` using `AddSubgroup.relIndex_eq_one.1 h3`.
+
+Use `le_antisymm ?_ h4` and prove the remaining obligations. Use `dualSubmodule_le_dualSubmodule_of_le B h4` as an intermediate fact. Rewrite `this` using `[hLd, h2]`. Then use the resulting hypothesis.
+-/
 theorem card_selfDual_le {V : Type*} [AddCommGroup V] [Module ℚ V] [FiniteDimensional ℚ V] (B : LinearMap.BilinForm ℚ V) (hB : B.Nondegenerate) (hr : B.IsRefl)
     (hlr : ∀ x y, B x y = B y x ∨ B x y = - B y x) (L : Submodule ℤ V) (hL : L.FG) (hLd : B.dualSubmodule L = L) (m : ℕ) (hm : 1 ≤ m) :
     {L' : Submodule ℤ V | L'.FG ∧ B.dualSubmodule L' = L' ∧ L'.toAddSubgroup.relIndex L.toAddSubgroup = m}.Finite ∧

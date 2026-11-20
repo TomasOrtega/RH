@@ -11,10 +11,16 @@ open scoped Matrix ContDiff ComplexOrder
 noncomputable section
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[coordVec, EuclideanSpace.single_apply, Pi.single_apply]`.
+-/
 theorem eq_sum_ofLp_smul_complexCoordinateVector {n : ℕ} (w : V n) : w = ∑ a, w a • coordVec a := by
   ext i
   simp [coordVec, EuclideanSpace.single_apply, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace_mul_cycle, Matrix.trace]`. Simplify using `only [Matrix.diag, Matrix.mul_apply (M := Q * P), Matrix.map_apply, AddSubmonoidClass.coe_finset_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def, Subalgebra.coe_smul]`.
+-/
 theorem trace_mul_constMatrix_mul_evenForms_sum {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (P Q : Matrix r r (Ev n)) (C : Matrix r r ℂ) :
     (((P * C.map (algebraMap ℂ (Ev n)) * Q).trace : Ev n) : Alt n) = ∑ p, ∑ q, C p q • (((Q * P) q p : Ev n) : Alt n) := by
   rw [Matrix.trace_mul_cycle, Matrix.trace]
@@ -29,6 +35,17 @@ def connectionMatrixDifferenceLinearMap {n : ℕ} {r : Type} [Fintype r] [Decida
   map_add' ξ ξ' := by rw [conn_add_vec, conn_add_vec]; abel
   map_smul' c ξ := by rw [conn_smul_vec, conn_smul_vec, smul_sub]; rfl
 
+/- English proof (translation)
+Introduce `n n' r _ _ G G' φ w hφ hG hGu hG' hG'u k`. Establish `hI` using `(GlobalTheory.T.curvature_power_pullback_holomorphic n n' r G' φ w hφ hG' hG'u).1`. Establish `hφ1 : DifferentiableAt ℂ φ w` using `hφ.differentiableAt two_ne_zero`. Establish `h1 : MContDiffAt 1 G (φ w)` using `hG.of_le (by exact_mod_cast le_top)`. Establish `h1' : MContDiffAt 1 G' (φ w)` using `hG'.of_le (by exact_mod_cast le_top)`.
+
+Establish `hc : ∀ ξ, conn (fun x => G (φ x)) w ξ - conn (fun x => G' (φ x)) w ξ = ∑ b, fderiv ℂ φ w ξ b • connectionMatrixDifferenceLinearMap G G' (φ w) (coordVec b)`. Introduce `ξ`. Rewrite using `[conn_comp_holo h1 hφ1, conn_comp_holo h1' hφ1]`. Use `show connectionMatrixDifferenceLinearMap G G' (φ w) (fderiv ℂ φ w ξ) = _`. Use `conv_lhs => rw [eq_sum_ofLp_smul_complexCoordinateVector (fderiv ℂ φ w ξ)]`.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Establish `hd : ∀ b, conn G (φ w) (coordVec b) - conn G' (φ w) (coordVec b) = connectionMatrixDifferenceLinearMap G G' (φ w) (coordVec b)` using `fun _ => rfl`. Simplify using `only [transAt, hc, hd, map_sum, map_mul, (pull_dz _ _).1, trace_mul_constMatrix_mul_evenForms_sum, AlgHom.map_smul_of_tower]`. Simplify using `only [hI _ _ _ _ G hG hGu, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.sum_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, smul_smul, Finset.smul_sum]`.
+
+Use `conv_lhs => enter [2, a, 2, i, 2, p]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, a, 2, i]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, a]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_rhs => enter [2, b]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem transAt_comp_holo : ∀ (n n' : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (φ : V n' → V n) (w : V n'), ContDiffAt ℂ 2 φ w → MContDiffAt ∞ G (φ w) → IsUnit (G (φ w)).det → MContDiffAt ∞ G' (φ w) → IsUnit (G' (φ w)).det → ∀ k, transAt (fun x => G (φ x)) (fun x => G' (φ x)) w k = pull (fderiv ℂ φ w) (transAt G G' (φ w) k) := by
   intro n n' r _ _ G G' φ w hφ hG hGu hG' hG'u k
   have hI := (GlobalTheory.T.curvature_power_pullback_holomorphic n n' r G' φ w hφ hG' hG'u).1

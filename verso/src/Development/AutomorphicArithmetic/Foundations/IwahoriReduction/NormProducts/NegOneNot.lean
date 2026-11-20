@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.Foundations.IwahoriReduction.NormProduc
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups
 
+/- English proof (translation)
+Use `⟨H ⧸ G.subgroupOf H, Fintype.ofFinite _, fun q => ((q.out⁻¹ : H) : SL(2, ℤ)), fun q => (q.out⁻¹).2, fun d hd => ?_⟩` and prove the remaining obligations. Establish `key : ∀ q : H ⧸ G.subgroupOf H, d * (((q.out⁻¹ : H) : SL(2, ℤ)))⁻¹ ∈ H ⊓ G ↔ (QuotientGroup.mk (⟨d, hd⟩⁻¹ : H) : H ⧸ G.subgroupOf H) = q`. Introduce `q`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `only [Subgroup.mem_inf, Subgroup.coe_inv, inv_inv, Subgroup.coe_mul]`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨H.mul_mem hd q.out.2, h⟩⟩`. Conclude with `⟨_, (key _).2 rfl, fun q hq => ((key q).1 hq).symm⟩`.
+-/
 private theorem exTr (H G : Subgroup SL(2, ℤ)) [G.FiniteIndex] :
     ∃ (κ : Type) (_ : Fintype κ) (δ : κ → SL(2, ℤ)), IsTr (H ⊓ G) H δ := by
   classical
@@ -17,6 +22,11 @@ private theorem exTr (H G : Subgroup SL(2, ℤ)) [G.FiniteIndex] :
     exact ⟨fun h => h.2, fun h => ⟨H.mul_mem hd q.out.2, h⟩⟩
   exact ⟨_, (key _).2 rfl, fun q hq => ((key q).1 hq).symm⟩
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h1, h2, h3, h4⟩` from `hg`. Establish `e : ∀ z : ℤ, ((z : ℤ) : ZMod M) = ZMod.castHom h (ZMod M) (z : ZMod M')` using `fun z => (map_intCast _ z).symm`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, h1, map_one]`. Rewrite using `[e, h2, map_zero]`. Rewrite using `[e, h3, map_zero]`. Rewrite using `[e, h4, map_one]`.
+-/
 private theorem gamma_le {M M' : ℕ} (h : M ∣ M') : CongruenceSubgroup.Gamma M' ≤ CongruenceSubgroup.Gamma M := by
   intro g hg
   rw [CongruenceSubgroup.Gamma_mem] at hg ⊢
@@ -28,6 +38,11 @@ private theorem gamma_le {M M' : ℕ} (h : M ∣ M') : CongruenceSubgroup.Gamma 
   · rw [e, h3, map_zero]
   · rw [e, h4, map_one]
 
+/- English proof (translation)
+Introduce `h`. Establish `h'` using `gamma_le (dvd_pow_self l (by omega : n ≠ 0)) h`. Rewrite `h'` using `[CongruenceSubgroup.Gamma_mem]`. Establish `h1` using `h'.1`. Simplify using `only [Matrix.SpecialLinearGroup.coe_neg, Matrix.SpecialLinearGroup.coe_one, Matrix.neg_apply, Matrix.one_apply_eq, Int.cast_neg, Int.cast_one] at h1`.
+
+Establish `h3 : ((2 : ℕ) : ZMod l) = 0`. Use `push_cast`. Take the linear combination `-h1`. Rewrite `h3` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hl.out Nat.prime_two).1 h3)`.
+-/
 private theorem neg_one_not (l n : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2) (hn : 1 ≤ n) :
     (-1 : SL(2, ℤ)) ∉ CongruenceSubgroup.Gamma (l ^ n) := by
   intro h
@@ -45,11 +60,17 @@ private theorem neg_one_not (l n : ℕ) [hl : Fact l.Prime] (h2 : l ≠ 2) (hn :
 section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨c, -, hc, hv⟩` from `h.2.2 W hW`. Conclude with `⟨Units.mk0 c hc, hv⟩`.
+-/
 private theorem un_of (X : Tower Ω ε) {H : Subgroup SL(2, ℤ)} {m : ℕ} {a : X.Kˣ} (h : LUnH X H m (a : X.K)) : a ∈ X.Un m := by
   intro W hW
   obtain ⟨c, -, hc, hv⟩ := h.2.2 W hW
   exact ⟨Units.mk0 c hc, hv⟩
 
+/- English proof (translation)
+Introduce `g hg`. Conclude with `⟨1, by simpa using (mem_lev_iff X H _).1 h.2.1 g hg⟩`.
+-/
 private theorem inv_of (X : Tower Ω ε) {H : Subgroup SL(2, ℤ)} {m : ℕ} {a : X.Kˣ} (h : LUnH X H m (a : X.K)) : InvH X H m a := by
   intro g hg
   exact ⟨1, by simpa using (mem_lev_iff X H _).1 h.2.1 g hg⟩
@@ -59,6 +80,13 @@ private def St (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w : ℕ) (lam : Fin
     0 < M ∧ CongruenceSubgroup.Gamma M ≤ H ∧ H ≤ Gam N l ⊓ CongruenceSubgroup.Gamma (l ^ n) ∧ IsTr H (Gam N l) γ ∧
       LUnH X H (l ^ n) (a : X.K) ∧ Rep X l n a x ∧ t = trH X l w γ lam x
 
+/- English proof (translation)
+Take `⟨H, M, ι, _, γ, a, x, hM, hMH, hH, hγ, ha, hx, rfl⟩` from `ht`. Establish `hl0 : 0 < l` using `hl.out.pos`. Use `haveI : NeZero (l ^ (n + 1)) := ⟨(pow_pos hl0 _).ne'⟩`. Take `⟨κ, _, δ, hδ⟩` from `exTr H (CongruenceSubgroup.Gamma (l ^ (n + 1)))`. Establish `hM' : CongruenceSubgroup.Gamma (M * l ^ (n + 1)) ≤ H ⊓ CongruenceSubgroup.Gamma (l ^ (n + 1))` using `le_inf ((gamma_le (dvd_mul_right _ _)).trans hMH) (gamma_le (dvd_mul_left _ _))`.
+
+Establish `hMp : 0 < M * l ^ (n + 1)` using `Nat.mul_pos hM (pow_pos hl0 _)`. Take `⟨f', hf', h, hh, hprod⟩` from `step ε X H (H ⊓ CongruenceSubgroup.Gamma (l ^ (n + 1))) (M * l ^ (n + 1)) (l ^ n) l hMp (pow_pos hl0 _) hl0 hM' inf_le_left (fun h => neg_one_not l n h2 hn (hH h).2) (fun g hg d hd => ⟨H.mul_mem (H.mul_mem hg hd.1) (H.inv_mem hg), (CongruenceSubgroup.Gamma_normal _).conj_mem d hd …`. Rewrite `hf'` using `[← pow_succ]`. Set `a' : X.Kˣ` to `Units.mk0 f' hf'.1`. Set `x' : X.Khat l` to `AdicCompletion.of (idl l) (X.Kl l) ((1 : ℤ_[l]) ⊗ₜ Additive.ofMul a')`.
+
+Establish `hx' : ∀ k, Rep X l k a' x'` using `fun k => rfl`. Take `⟨htr, hc⟩` from `(trc ε X l N w n H hH ι γ hγ lam a x hx).2.2.2 _ κ δ inf_le_left hδ`. Use `⟨_, ⟨_, M * l ^ (n + 1), κ × ι, inferInstance, _, a', x', hMp, hM', ?_, htr, hf', hx' _, rfl⟩, hc a' (Units.mk0 h hh) x' (hx' _) hprod⟩` and prove the remaining obligations. Conclude with `inf_le_inf_right _ (hH.trans inf_le_left)`.
+-/
 private theorem St.next [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [hl : Fact l.Prime] (N w : ℕ) (lam : Fin 2 → ℤ) (h2 : l ≠ 2)
     (n : ℕ) (hn : 1 ≤ n) (t : X.Fn l) (ht : St X l N w lam n t) : ∃ t', St X l N w lam (n + 1) t' ∧ CgF X l n t' t := by
   obtain ⟨H, M, ι, _, γ, a, x, hM, hMH, hH, hγ, ha, hx, rfl⟩ := ht
@@ -83,6 +111,15 @@ private theorem St.next [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l : ℕ) [hl : 
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ N w h2`. Take `⟨c, hc⟩` from `lim ε X l N w`. Use `⟨c, fun n H M hn hM hMH hH ι _ γ hγ lam a x ha hx => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ (k : ℕ) (t : {t // St X l N w lam (n + k) t}), ∃ t' : {t // St X l N w lam (n + (k + 1)) t}, CgF X l (n + k) t'.1 t.1` using `fun k t => by`. Take `⟨t', h1, h3⟩` from `St.next X l N w lam h2 (n + k) (by omega) t.1 t.2`.
+
+Conclude with `⟨⟨t', h1⟩, h3⟩`. Use `choose F hF using hs`. Set `s : ∀ k : ℕ, {t // St X l N w lam (n + k) t}` to `fun k => Nat.rec (motive := fun k => {t // St X l N w lam (n + k) t}) ⟨trH X l w γ lam x, H, M, ι, inferInstance, γ, a, x, hM, hMH, hH, hγ, ha, hx, rfl⟩ F k`. Use `hc n (fun k => (s k).1) (fun k => ?_) (fun k => hF k (s k)) (fun k => ?_)` and prove the remaining obligations. Take `⟨H, M, ι, _, γ, a, x, hM, hMH, hH, hγ, ha, hx, e⟩` from `(s k).2 show PolMod X l w (n + k) (s k).1`.
+
+Rewrite using `[e]`. Conclude with `(trc ε X l N w (n + k) H hH ι γ hγ lam a x hx).1 (un_of X ha)`. Take `⟨H, M, ι, _, γ, a, x, hM, hMH, hH, hγ, ha, hx, e⟩` from `(s k).2`. Introduce `g hg`. Use `show CgF X l (n + k) (X.act l _ (s k).1) (s k).1`.
+
+Rewrite using `[e]`. Conclude with `(trc ε X l N w (n + k) H hH ι γ hγ lam a x hx).2.1 (inv_of X ha) g hg`.
+-/
 theorem UpperTheory.Kd.K4.liftL :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (l : ℕ) [Fact l.Prime] (N w : ℕ), l ≠ 2 → ∃ c : ℕ, ∀ (n : ℕ) (H : Subgroup SL(2, ℤ)) (M : ℕ), 1 ≤ n → 0 < M → CongruenceSubgroup.Gamma M ≤ H →
       H ≤ Gam N l ⊓ CongruenceSubgroup.Gamma (l ^ n) → ∀ (ι : Type) [Fintype ι] (γ : ι → SL(2, ℤ)), IsTr H (Gam N l) γ →

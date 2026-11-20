@@ -15,6 +15,19 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin n) (Fin d) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin d → AE F E))`. Establish `he : Continuous (M.co.e : Matrix (Fin n) (Fin d) (AE F E) → _)` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`. Establish `hm1 : Continuous fun g : UA σ X.J => mat g⁻¹` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_inv`. Establish `hm2 : Continuous fun g : UA σ W.J => mat g⁻¹` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_inv`.
+
+Establish `hm : Continuous fun p : UA σ X.J × UA σ W.J => (mat p.1⁻¹, mat p.2⁻¹)` using `(hm1.comp continuous_fst).prodMk (hm2.comp continuous_snd)`. Establish `h1 : ∀ᶠ u in 𝓝 (0 : Matrix (Fin n) (Fin d) (AE F E)), ∀ m ∈ (fun p : UA σ X.J × UA σ W.J => (mat p.1⁻¹, mat p.2⁻¹)) '' C, GlobalTheory.XTermFinParts.infOne F • M.co.e (m.1 * u * (m.2)ᵀ) = 0 → schr B.ψ (M.co.e (m.1 * u * (m.2)ᵀ)) Φ = Φ`. Use `(hCc.image hm).eventually_forall_of_forall_eventually fun m _ => ?_` and prove the remaining obligations. Establish `c : Continuous fun p : Matrix (Fin n) (Fin d) (AE F E) × (Matrix (Fin n) (Fin n) (AE F E) × Matrix (Fin d) (Fin d) (AE F E)) => M.co.e (p.2.1 * p.1 * (p.2.2)ᵀ)` using `he.comp ((continuous_snd.fst.matrix_mul continuous_fst).matrix_mul continuous_snd.snd.matrix_transpose)`. Conclude with `(c.tendsto' (0, m) 0 (by simp)).eventually (GlobalTheory.XTermFinParts.eventually_schr_eq hB.std hΦ)`.
+
+Use `filter_upwards [h1] with u hu h0 p hp`. Take `⟨k, h⟩` from `p`. Establish `h2` using `hu (mat k⁻¹, mat h⁻¹) ⟨(k, h), hp, rfl⟩ (by`. Rewrite using `[← map_smul, ← Matrix.smul_mul, ← Matrix.mul_smul, h0, Matrix.mul_zero, Matrix.zero_mul, map_zero])`. Establish `h3` using `(IsUWeilPair.isUSplitting hom).impl (k, h) (mat k⁻¹ * u * (mat h⁻¹)ᵀ) Φ hΦ`.
+
+Establish `h4 : actAB (cA σ) (k, h) (mat k⁻¹ * u * (mat h⁻¹)ᵀ) = u` using `by show mat k * (mat k⁻¹ * u * (mat h⁻¹)ᵀ) * (mat h)ᵀ = u`. Establish `a1 : mat k * mat k⁻¹ = 1` using `by show mat (k * k⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `a2 : mat h * mat h⁻¹ = 1` using `by show mat (h * h⁻¹) = 1`.
+
+Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, a1, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, a2, Matrix.transpose_one, Matrix.mul_one]`. Rewrite `h3` using `[h4]`. Rewrite using `[← h3]`.
+
+Conclude with `congrArg _ h2`.
+-/
 private theorem eventually_rho_om_eq_pair {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (hB : B.IsGood σ)
     {C : Set (UA σ X.J × UA σ W.J)} (hCc : IsCompact C) (M : Model σ X W) {χ χ' : Chr F E}
     {om : Rep σ X W} (hom : M.IsWeil B.ψ χ χ' om) {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) :
@@ -59,6 +72,13 @@ private theorem eventually_rho_om_eq_pair {B : Base F E} {n d : ℕ} {X : Spc F 
   rw [← h3]
   exact congrArg _ h2
 
+/- English proof (translation)
+Establish `h0 : ∀ a, ∑ i, ∑ k, incM F H.ι i a * incM F X.J i k * cA σ (incV F H.y k) = 0` using `fun a => by`. Establish `h` using `congrArg (inclR (F := F) (AF F)) (hH.orth (Pi.single a 1)).2`. Rewrite `h` using `[map_zero, Matrix.mulVec_single_one]`. Rewrite using `[← h]`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, mul_assoc]`.
+
+Both sides reduce to the same expression. Establish `h1 : hTens (cA σ) (incM F X.J) JB (incM F H.ι * z) (l • Matrix.vecMulVec (incV F H.y) y) = ∑ a, ∑ j, ∑ m, (∑ i, ∑ k, incM F H.ι i a * incM F X.J i k * cA σ (incV F H.y k)) * (z a j * JB j m * cA σ l * cA σ (y m))`. Simplify using `only [hTens, Matrix.mul_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul, Finset.sum_mul]`. Simplify using `only [← Finset.sum_product', Finset.univ_product_univ]`. Use `Fintype.sum_equiv ⟨fun p => (p.2.2.2.2, p.2.1, p.2.2.2.1, p.1, p.2.2.1), fun p => (p.2.2.2.1, p.2.1, p.2.2.2.2, p.2.2.1, p.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_fn_mk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[symp, h1]`. Simplify using `[h0]`.
+-/
 private theorem symp_eq_zero_y {B : Base F E} {n n₁ d : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ : ℕ}
     (hH : H.IsAdapted σ B X X₁ i₀ i₁) (JB : Matrix (Fin d) (Fin d) (AE F E)) (z : Matrix (Fin n₁) (Fin d) (AE F E))
     (l : AE F E) (y : Fin d → AE F E) :
@@ -83,6 +103,13 @@ private theorem symp_eq_zero_y {B : Base F E} {n n₁ d : ℕ} {X : Spc F E n} {
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e he X om om' om₁ om₁' hT _ Ψ hΨ C hCc`. Establish `hψ` using `hT.base.std`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hs : Continuous (G₁.M'.co.e.symm : _ → Matrix (Fin b) (Fin (a + b)) (AE F E))` using `IsModuleTopology.continuous_of_linearMap G₁.M'.co.e.symm.toLinearMap`. Establish `c : Continuous fun w => incM F H.ι * G₁.M'.co.e.symm w * (incM F H'.ι)ᵀ` using `(continuous_const.matrix_mul hs).matrix_mul continuous_const`.
+
+Establish `hN` using `(c.tendsto' 0 0 (by simp)).eventually (eventually_rho_om_eq_pair hT.base hCc G.M' hT.weil' hΨ)`. Take `⟨m, c, φ, hφ, hD⟩` from `GlobalTheory.XTermFinParts.exists_parts hψ hN`. Use `⟨m, c, φ, hφ, fun p hp l => hD _ fun w hw h0 => ?_⟩` and prove the remaining obligations. Establish `hΨ' : om' p Ψ ∈ schA F _` using `(IsUWeilPair.isUSplitting hT.weil').pres p Ψ hΨ`. Establish `h1` using `hw (by`.
+
+Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← map_smul, h0, map_zero, Matrix.mul_zero, Matrix.zero_mul]) p hp`. Establish `h2` using `he.Heisenberg₂ (G₁.M'.co.e.symm w) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hψ (shiftB σ H H' l) _ hΨ')`. Rewrite `h2` using `[GlobalTheory.XTermFinParts.rho_comm G.M'.co B.ψ (by rw [Matrix.mul_assoc]; exact symp_eq_zero_y hC.hH _ _ _ _), h1, show G₁.M'.co.rho B.ψ (G₁.M'.co.e.symm w) = schr B.ψ w from congrArg (schr B.ψ) (G₁.M'.co.e.apply_symm_apply w)]`. Conclude with `h2.symm`.
+-/
 theorem UpperTheory.theta_geometry_triple_integral :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
         (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

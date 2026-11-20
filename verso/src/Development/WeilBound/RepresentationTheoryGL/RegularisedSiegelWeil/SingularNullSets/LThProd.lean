@@ -18,11 +18,17 @@ namespace PositivityTheory.Rg.Rsw.L.LThProd
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a j`. Use `show y (Fin.natAdd m a) j = y (Fin.last m) j`. Rewrite using `[natAdd_one]`.
+-/
 theorem rowB_eq {m p : ℕ} (y : Mx D (m + 1) p) : rowB (r := m) (s := 1) y = y.submatrix (fun _ => Fin.last m) id := by
   funext a j
   show y (Fin.natAdd m a) j = y (Fin.last m) j
   rw [natAdd_one]
 
+/- English proof (translation)
+The claim follows from `| 0, b₀, hb, χ, hχ, hr, μ, 𝓕, hμ, η, hη => by obtain ⟨Ω, hT, h1⟩ := oneTh hW μ 𝓕 hμ hψ b₀ hb.2 hχ hr hθ (η 0) (hη 0) refine ⟨Ω, hT, fun y => ?_⟩ rw [Fin.prod_univ_one, h1] congr 1 funext a j rw [Fin.fin_one_eq_zero a] rfl | k + 1, b₀, hb, χ, hχ, hr, μ, 𝓕, hμ, η, hη => by obtain ⟨ …`.
+-/
 theorem succ (hW : L.WMaj) {p : ℕ} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {θ : InfFam D}
     (hθ : IsInfFam θ) : ∀ (k : ℕ) (b₀ : HermE D (k + 1)), IsDiagInv b₀ → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ →
     ResEta D χ (k + 1) → ∀ (μ : Measure (Mx D (k + 1) p)) (𝓕 : Set (Mx D (k + 1) p)), IsCovolOne (ratMx D (k + 1) p) μ 𝓕 →
@@ -58,6 +64,9 @@ end PositivityTheory.Rg.Rsw.L.LThProd
 
 namespace PositivityTheory.Rg.Rsw.L
 
+/- English proof (translation)
+Introduce `D ρ p m ψ hψ b₀ hb χ hχ hr hρ θ hθ η hη`. Take `⟨k, rfl⟩ : ∃ k, ρ = k + 1` from `⟨ρ - 1, by omega⟩`. Conclude with `LThProd.succ hW hψ hθ k b₀ hb χ hχ hr m.μ m.𝓕 m.hμ η hη`.
+-/
 theorem thProd (hW : WMaj) : ThProd := by
   intro D ρ p m ψ hψ b₀ hb χ hχ hr hρ θ hθ η hη
   obtain ⟨k, rfl⟩ : ∃ k, ρ = k + 1 := ⟨ρ - 1, by omega⟩

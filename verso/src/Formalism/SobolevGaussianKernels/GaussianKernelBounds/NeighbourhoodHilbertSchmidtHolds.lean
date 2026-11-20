@@ -8,12 +8,18 @@ namespace Formalism.SL.P
 open Finset Module LinearMap Formalism.CorankShareLayerCake.FR Formalism.SL.FU
 open scoped InnerProductSpace ComplexConjugate
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[LinearMap.sum_apply]`.
+-/
 lemma fu_sum_comp {ι M N Q : Type*} [AddCommMonoid M] [AddCommMonoid N] [AddCommMonoid Q]
     [Module ℂ M] [Module ℂ N] [Module ℂ Q] (s : Finset ι) (f : ι → N →ₗ[ℂ] Q) (g : M →ₗ[ℂ] N) :
     (∑ i ∈ s, f i) ∘ₗ g = ∑ i ∈ s, f i ∘ₗ g := by
   ext x
   simp [LinearMap.sum_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[LinearMap.sum_apply, map_sum]`.
+-/
 lemma fu_comp_sum {ι M N Q : Type*} [AddCommMonoid M] [AddCommMonoid N] [AddCommMonoid Q]
     [Module ℂ M] [Module ℂ N] [Module ℂ Q] (s : Finset ι) (g : N →ₗ[ℂ] Q) (f : ι → M →ₗ[ℂ] N) :
     g ∘ₗ (∑ i ∈ s, f i) = ∑ i ∈ s, g ∘ₗ f i := by
@@ -29,6 +35,15 @@ variable {G : Type*} [NormedAddCommGroup G] [InnerProductSpace ℂ G] [FiniteDim
 
 end HS
 
+/- English proof (translation)
+Introduce `ι _ V _ _ _ H _ _ _ B c`. Establish `kc : ∀ i j, trace ℂ H (B i ∘ₗ adjoint (B i) ∘ₗ B j ∘ₗ adjoint (B j)) = trace ℂ (V j) (adjoint (adjoint (B i) ∘ₗ B j) ∘ₗ adjoint (B i) ∘ₗ B j)`. Introduce `i j`. Rewrite using `[LinearMap.adjoint_comp, LinearMap.adjoint_adjoint]`. Establish `h` using `LinearMap.trace_comp_comm' (adjoint (B j)) (B i ∘ₗ adjoint (B i) ∘ₗ B j)`.
+
+Simplify using `only [LinearMap.comp_assoc] at h ⊢`. Conclude with `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[frQ.eq_1]`. Simplify using `only [fu_sum_comp, fu_comp_sum, LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.comp_assoc, map_sum, map_smul, smul_eq_mul, kc, Finset.mul_sum, Complex.re_sum, Complex.re_ofReal_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hs2.eq_1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[frQ.eq_1]`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul, Complex.re_sum, Complex.re_ofReal_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.trace_comp_comm']`.
+-/
 theorem frame_gram_holds : FrameGram := by
   intro ι _ V _ _ _ H _ _ _ B c
   have kc : ∀ i j, trace ℂ H (B i ∘ₗ adjoint (B i) ∘ₗ B j ∘ₗ adjoint (B j)) =

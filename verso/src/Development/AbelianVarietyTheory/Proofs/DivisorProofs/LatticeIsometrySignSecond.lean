@@ -29,9 +29,15 @@ namespace GlobalTheory.AdTh.MovedDatum
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← map_ofNat (incA D) 2, ← RingHom.map_mul, mul_inv_cancel₀ two_ne_zero, RingHom.map_one]`.
+-/
 theorem two_mul_half : (2 : AE D) * incA D (2⁻¹ : D.host.E) = 1 := by
   rw [← map_ofNat (incA D) 2, ← RingHom.map_mul, mul_inv_cancel₀ two_ne_zero, RingHom.map_one]
 
+/- English proof (translation)
+Establish `h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[symplOH, two_nsmul, GlobalTheory.LatVac.symplO_add_right]`. Take the linear combination `(symplO V W x c) * h2`.
+-/
 theorem symplOH_two (V W : HSp D) (x c : WO V W) : symplOH V W x (2 • c) = symplO V W x c := by
   have h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) * 2 = 1 := by
     rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]
@@ -39,6 +45,25 @@ theorem symplOH_two (V W : HSp D) (x c : WO V W) : symplOH V W x (2 • c) = sym
   rw [symplOH, two_nsmul, GlobalTheory.LatVac.symplO_add_right]
   linear_combination (symplO V W x c) * h2
 
+/- English proof (translation)
+Establish `ht` using `two_mul_half (D := D)`. Generalize the expression as in `incA D (2⁻¹ : D.host.E) = t at ht h2`. Establish `hd : u - e • X ∈ L₁`. Establish `: u - e • X = (u - X) + (1 - e) • X` using `by rw [sub_smul, one_smul]; abel`. Rewrite using `[this]`.
+
+Conclude with `add_mem h1 hoff`. Establish `htwo : ∀ y : WO V W, 2 • t • y = y` using `fun y => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (AE D), smul_smul, Nat.cast_ofNat, ht, one_smul]`. Establish `htwo' : ∀ y : WO V W, t • (2 * N) • y = N • y` using `fun y => by`. Rewrite using `[mul_nsmul', smul_comm t 2, htwo]`.
+
+Use `⟨t • (u - e • X), ?_, by rw [htwo]; abel, ?_⟩` and prove the remaining obligations. Establish `a1 : (2 * k₀) • t • (u - e • X) ∈ L'`. Rewrite using `[mul_nsmul, htwo]`. Conclude with `hk _ hd`. Establish `a2 : M ^ j • t • (u - e • X) ∈ L'`.
+
+Establish `b1 : M ^ j • X ∈ L₁`. Establish `: M ^ j • X = (2 * N) • w - M ^ j • (u - X)` using `by rw [← hj, smul_sub]; abel`. Rewrite using `[this]`. Conclude with `sub_mem (nsmul_mem hw _) (nsmul_mem h1 _)`. Establish `: M ^ j • t • (u - e • X) = N • w - e • (e * t) • M ^ j • X`.
+
+Rewrite using `[← htwo', ← hj, smul_smul e, ← mul_assoc, hee, smul_comm (M ^ j) t, smul_sub, smul_sub, smul_comm (M ^ j) e, smul_smul t e, mul_comm t e]`. Rewrite using `[this]`. Conclude with `sub_mem (hN _ hw) (he _ (hI _ h2 _ b1))`. Establish `hc : IsCoprime ((2 * k₀ : ℕ) : ℤ) ((M ^ j : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Coprime.mul_left (Nat.coprime_two_left.2 hM) hkM).pow_right j)`. Take `⟨a, b, hab⟩` from `hc`.
+
+Use `add_mem (zsmul_mem a1 a) (zsmul_mem a2 b)` as an intermediate fact. Rewrite `this` using `[← natCast_zsmul, ← natCast_zsmul _ (M ^ j), smul_smul a, smul_smul b, ← add_smul, hab, one_smul]`. Then use the resulting hypothesis. Take `⟨n, rfl⟩` from `hMN`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `hss : incA D s⁻¹ * incA D s = 1` using `by rw [← RingHom.map_mul, inv_mul_cancel₀ hs, RingHom.map_one]`.
+
+Establish `hu : t • u = incA D s⁻¹ • (M * n) • w'`. Rewrite using `[← htwo', ← hsu, smul_comm _ t, smul_smul _ (incA D s), hss, one_smul]`. Establish `key : cA D e • t • (u - e • X) = (M : AE D) • n • cA D e • (cA D e * incA D s⁻¹) • w'`. Rewrite using `[smul_sub, smul_sub, smul_comm t e, smul_smul _ e, mul_comm _ e, hec, zero_smul, sub_zero, hu, smul_smul (cA D e) (cA D e * _), ← mul_assoc, hcc, Nat.cast_smul_eq_nsmul, ← mul_nsmul', smul_smul, smul_comm (M * n)]`. Establish `e1 : symplO V W (e • X) (t • (u - e • X)) = symplO V W (e • M • X) (n • cA D e • (cA D e * incA D s⁻¹) • w')`.
+
+Establish `hM' : cA D (M : AE D) = M` using `map_natCast _ _`. Establish `q1` using `GlobalTheory.PlaceModel.symplO_smul V W e (e • X) (t • (u - e • X))`. Establish `q2` using `GlobalTheory.PlaceModel.symplO_smul V W (M : AE D) (e • X) (n • cA D e • (cA D e * incA D s⁻¹) • w')`. Rewrite `q1` using `[smul_smul e e, hee, key]`. Rewrite `q2` using `[hM', Nat.cast_smul_eq_nsmul, smul_comm M e]`.
+
+Conclude with `q1.trans q2.symm`. Rewrite using `[symplOH_two, e1]`. Conclude with `hψ _ (he _ hMX) _ (nsmul_mem (hce _ (hI _ hs' _ hw')) _)`.
+-/
 theorem core (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (L₁ L' : AddSubgroup (WO V W))
     (hI : ∀ w : AE D, finPart D w ∈ intAE D → ∀ x ∈ L₁, w • x ∈ L₁)
     (hψ : ∀ x ∈ L', ∀ y ∈ L', ψ (symplO V W x y) = 1)
@@ -97,6 +122,9 @@ theorem core (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (L₁ L' : AddSubgro
     rw [symplOH_two, e1]
     exact hψ _ (he _ hMX) _ (nsmul_mem (hce _ (hI _ hs' _ hw')) _)
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_mul, map_sum]`. Use `sum_mem fun PP hPP => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hs PP hPP (((hes PP hPP).2 s fun h0 => hs PP hPP (h0 ▸ zero_mem _)).2 h)`.
+-/
 theorem idem_div_mem {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) (s : 𝓞 D.host.E)
     (hs : ∀ PP ∈ P, s ∉ PP.asIdeal) : finPart D (e * incA D (s : D.host.E)⁻¹) ∈ intAE D := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he
@@ -105,6 +133,13 @@ theorem idem_div_mem {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he 
   by_contra h
   exact hs PP hPP (((hes PP hPP).2 s fun h0 => hs PP hPP (h0 ▸ zero_mem _)).2 h)
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, h0, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, h0, a, ha, _, h s hs, t, ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.of_apply, Pi.smul_apply, star_nsmul, smul_mul_assoc, ← Finset.smul_sum, mul_smul_comm]`. Rewrite using `[← Nat.cast_smul_eq_nsmul D.host.F, ← Nat.cast_smul_eq_nsmul D.host.F, TensorProduct.tmul_smul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem nsmul_mem_latO (V W : HSp D) (LV LV' : Set (Fin V.rank → D.host.E)) (LW : Set (Fin W.rank → D.host.E)) (n : ℕ)
     (h : ∀ s ∈ LV, n • s ∈ LV') (x : WO V W) (hx : x ∈ latO V W LV LW fun _ => True) :
     n • x ∈ latO V W LV' LW fun _ => True := by
@@ -120,6 +155,13 @@ theorem nsmul_mem_latO (V W : HSp D) (LV LV' : Set (Fin V.rank → D.host.E)) (L
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Introduce `s hs`. Establish `h1 : (fun j => star (s j)) ∈ Formalism.L2.Pj.stdLat D.host.E m`. Introduce `j hj`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (hs j hj)`. Use `Submodule.mem_one.2 ⟨Formalism.L2.Pj.barE D o, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((Formalism.L2.Pj.barE D o : 𝓞 D.host.E) : D.host.E) = star (s j)`. Rewrite using `[Formalism.L2.Pj.barE_eq_star, ← ho]`. Establish `h2` using `(hΛ _).1 (h (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) h1))`. Rewrite `h2` using `[Nat.cast_smul_eq_nsmul]`. Simplify using `only [Pi.smul_apply, star_nsmul, star_star] at h2`.
+
+Conclude with `h2`.
+-/
 theorem nsmul_std {m : ℕ} (Λ L : Submodule (𝓞 D.host.E) (Fin m → D.host.E))
     (hΛ : ∀ v, v ∈ Λ ↔ (fun j => star (v j)) ∈ L) (n : ℕ)
     (h : Ideal.span {(n : 𝓞 D.host.E)} • Formalism.L2.Pj.stdLat D.host.E m ≤ Λ) :
@@ -136,6 +178,19 @@ theorem nsmul_std {m : ℕ} (Λ L : Submodule (𝓞 D.host.E) (Fin m → D.host.
   simp only [Pi.smul_apply, star_nsmul, star_star] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hadd : ∀ x y, finVec W (x + y) = finVec W x + finVec W y` using `fun x y =>`. Use function extensionality and compare the values at `fun i => TensorProduct.tmul_add _ _ _`. Establish `hzero : finVec W 0 = 0` using `funext fun i => TensorProduct.tmul_zero _ _`. Establish `key : ∀ c : 𝓞 D.host.E, (finHom W k).1 *ᵥ finVec W (c • v) ∈ latGHat W (k * g)`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem w hw`. Take `⟨a, ha, v, ⟨z, hz, hv⟩, rfl⟩` from `hw`. Introduce `c`. Use `AddSubgroup.subset_closure ⟨(c : D.host.E) * a, Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) c ha, _, ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : finVec W (c • a • v) = ((1 : Af D.host.F) ⊗ₜ[D.host.F] ((c : D.host.E) * a)) • finVec W v`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(1 : Af D.host.F) ⊗ₜ[D.host.F] ((c : D.host.E) * (a * v i)) = _ * ((1 : Af D.host.F) ⊗ₜ[D.host.F] v i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_assoc]`. Rewrite using `[e1, Matrix.mulVec_smul, ← hv, map_mul, Units.val_mul, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+
+Consider the case `zero => intro c`. Rewrite using `[smul_zero, hzero, Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => intro c`. Rewrite using `[smul_add, hadd, Matrix.mulVec_add]`.
+
+Conclude with `add_mem (hx c) (hy c)`. Consider the case `smul a x _ hx => intro c`. Rewrite using `[smul_smul]`. Conclude with `hx _`. Use `key 1` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+-/
 theorem mulVec_finVec_mem (W : HSp D) (k g : GA D W) (v : Fin W.rank → D.host.E) (hv : v ∈ latG W g) :
     (finHom W k).1 *ᵥ finVec W v ∈ latGHat W (k * g) := by
   have hadd : ∀ x y, finVec W (x + y) = finVec W x + finVec W y := fun x y =>
@@ -161,11 +216,19 @@ theorem mulVec_finVec_mem (W : HSp D) (k g : GA D W) (v : Fin W.rank → D.host.
   have := key 1
   rwa [one_smul] at this
 
+/- English proof (translation)
+Use `mulVec_finVec_mem W 1 k v hv` as an intermediate fact. Rewrite `this` using `[map_one, Units.val_one, Matrix.one_mulVec, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem finVec_mem (W : HSp D) (k : GA D W) (v : Fin W.rank → D.host.E) (hv : v ∈ latG W k) :
     finVec W v ∈ latGHat W k := by
   have := mulVec_finVec_mem W 1 k v hv
   rwa [map_one, Units.val_one, Matrix.one_mulVec, one_mul] at this
 
+/- English proof (translation)
+Establish `h1 : f • Formalism.L2.Theta.mt V h = f • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))`. Rewrite using `[← sub_eq_zero, ← smul_sub]`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, ← hh i j, smul_eq_mul, ← mul_assoc, hf, zero_mul, Matrix.zero_apply]`. Establish `h2` using `congrArg (· * Formalism.L2.Theta.mt V h⁻¹) h1`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.one_mul] at h2`. Rewrite using `[← h2, ← GlobalTheory.AdelicLatMove.mt_mul, mul_inv_cancel, GlobalTheory.AdelicLatMove.mt_one]`.
+-/
 theorem smul_mt_inv (V : HSp D) (h : GA D V) (e' f : AE D) (hh : SuppAt e' V h) (hf : f * (e' + cA D e') = 0) :
     f • Formalism.L2.Theta.mt V h⁻¹ = f • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
   have h1 : f • Formalism.L2.Theta.mt V h = f • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := by
@@ -176,22 +239,34 @@ theorem smul_mt_inv (V : HSp D) (h : GA D V) (e' f : AE D) (hh : SuppAt e' V h) 
   simp only [Matrix.smul_mul, Matrix.one_mul] at h2
   rw [← h2, ← GlobalTheory.AdelicLatMove.mt_mul, mul_inv_cancel, GlobalTheory.AdelicLatMove.mt_one]
 
+/- English proof (translation)
+Unfold `actO`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_smul, hf, Matrix.mul_smul, Matrix.mul_one]`.
+-/
 theorem actO_smul (V W : HSp D) (h : GA D V) (k : GA D W) (f : AE D)
     (hf : f • Formalism.L2.Theta.mt V h⁻¹ = f • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))) (x : WO V W) :
     actO V W h k (f • x) = f • (Formalism.L2.Theta.mt W k * x) := by
   unfold actO
   rw [Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_smul, hf, Matrix.mul_smul, Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [actO, two_nsmul, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actO_two (V W : HSp D) (h : GA D V) (k : GA D W) (x : WO V W) :
     actO V W h k (2 • x) = 2 • actO V W h k x := by
   simp only [actO, two_nsmul, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Establish `: (GlobalTheory.LatVac.finTens (D` using `D) 1 ρ).map (infPart D) = 0 := by`. Use extensionality with `a b`. Conclude with `GlobalTheory.LatVac.infPart_pair _ _`. Rewrite using `[Matrix.map_mul, this, Matrix.mul_zero]`.
+-/
 theorem infPart_moved (V W : HSp D) (k : GA D W) (ρ : Matrix (Fin W.rank) (Fin V.rank) D.host.E) :
     (Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D := D) 1 ρ).map (infPart D) = 0 := by
   have : (GlobalTheory.LatVac.finTens (D := D) 1 ρ).map (infPart D) = 0 := by
     ext a b; exact GlobalTheory.LatVac.infPart_pair _ _
   rw [Matrix.map_mul, this, Matrix.mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mul_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => RingHom.map_mul _ _ _`.
+-/
 theorem finPart_moved (V W : HSp D) (k : GA D W) (ρ : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (b : Fin V.rank) :
     (fun a => finPart D ((Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D := D) 1 ρ) a b)) =
       (finHom W k).1 *ᵥ finVec W (fun a => ρ a b) := by
@@ -199,6 +274,9 @@ theorem finPart_moved (V W : HSp D) (k : GA D W) (ρ : Matrix (Fin W.rank) (Fin 
   rw [Matrix.mul_apply, map_sum]
   exact Finset.sum_congr rfl fun c _ => RingHom.map_mul _ _ _
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_smul]`. Use `congr 1`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] s) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ρ a b) = _ ⊗ₜ[D.host.F] (s * ρ a b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem smul_moved (V W : HSp D) (k : GA D W) (ρ : Matrix (Fin W.rank) (Fin V.rank) D.host.E) (s : D.host.E) :
     incA D s • (Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D := D) 1 ρ) =
       Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D := D) 1 (s • ρ) := by
@@ -208,19 +286,39 @@ theorem smul_moved (V W : HSp D) (k : GA D W) (ρ : Matrix (Fin W.rank) (Fin V.r
   change ((1 : AF D.host.F) ⊗ₜ[D.host.F] s) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ρ a b) = _ ⊗ₜ[D.host.F] (s * ρ a b)
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] s) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ρ a b) = _ ⊗ₜ[D.host.F] (s * ρ a b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem smul_finTens {m n : ℕ} (ρ : Matrix (Fin m) (Fin n) D.host.E) (s : D.host.E) :
     incA D s • GlobalTheory.LatVac.finTens (D := D) 1 ρ = GlobalTheory.LatVac.finTens (D := D) 1 (s • ρ) := by
   ext a b
   change ((1 : AF D.host.F) ⊗ₜ[D.host.F] s) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] ρ a b) = _ ⊗ₜ[D.host.F] (s * ρ a b)
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem incA_nat {m n : ℕ} (c : ℕ) (x : Mx D m n) : incA D (c : D.host.E) • x = c • x := by
   rw [map_natCast, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `GlobalTheory.LatVac.infPart_pair _ _`.
+-/
 theorem infPart_finTens {m n : ℕ} (ρ : Matrix (Fin m) (Fin n) D.host.E) :
     (GlobalTheory.LatVac.finTens (D := D) 1 ρ).map (infPart D) = 0 := by
   ext a b; exact GlobalTheory.LatVac.infPart_pair _ _
 
+/- English proof (translation)
+Establish `hex : ∃ c, c ∈ Mfr l ∧ c - 1 ∈ l.Mb`. Establish `: (1 : 𝓞 D.host.E) ∈ l.Mb ⊔ Mfr l` using `by rw [show l.Mb ⊔ Mfr l = ⊤ from l.coprime]; trivial`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 this`. Conclude with `⟨y, hy, by rw [← hxy, sub_add_cancel_right]; exact neg_mem hx⟩`. Establish `hc : cSep l ∈ Mfr l ∧ cSep l - 1 ∈ l.Mb`.
+
+Unfold `cSep`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `h1 : a - levRep q ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)` using `(Submodule.Quotient.eq _).1 (hq.trans (Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)).symm)`. Establish `hp : l.Mb * Mfr l = Ideal.span {(l.M : 𝓞 D.host.E)}` using `l.prod`.
+
+Establish `h2 : cSep l • (a - levRep q) - (cSep l - 1) • a ∈ Ideal.span {(l.M : 𝓞 D.host.E)} • (⊤ : Submodule (𝓞 D.host.E) Dw.La)`. Rewrite using `[← hp]`. Use `sub_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hc.1 h1`.
+
+Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hc.2 ha`. Rewrite `h2` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨z, -, hz⟩` from `h2`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 D.host.E), hz, smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem sub_sep_mem {H : Geo.Tor.Host D.host.E} {Dw : Datum H} (l : Geo.Tor.Level H) (q : LevQ Dw l) (a : Dw.La)
     (ha : a ∈ Mfr l • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) (hq : Submodule.Quotient.mk a = q) :
     ∃ z : Dw.La, a - cSep l • levRep q = l.M • z := by
@@ -245,6 +343,19 @@ theorem sub_sep_mem {H : Geo.Tor.Host D.host.E} {Dw : Datum H} (l : Geo.Tor.Leve
   rw [← Nat.cast_smul_eq_nsmul (𝓞 D.host.E), hz, smul_sub, sub_smul, one_smul]
   abel
 
+/- English proof (translation)
+Establish `hco : IsCoprime (l.Mb ^ (j + 1)) (Mfr l)` using `(Ideal.isCoprime_iff_sup_eq.2 l.coprime).pow_left`. Take `⟨x, hx, y, hy, hxy⟩` from `Ideal.isCoprime_iff_exists.1 hco`. Establish `hstar : ∀ a : 𝓞 D.host.E, ((H.bar a : 𝓞 D.host.E) : D.host.E) = star (a : D.host.E)` using `fun a => H.bar_eq a`. Establish `hbb : ∀ a : 𝓞 D.host.E, H.bar (H.bar a) = a` using `fun a => RingOfIntegers.coe_injective (by`. Express the relevant statement in the definitionally equal form `((H.bar (H.bar a) : 𝓞 D.host.E) : D.host.E) = (a : D.host.E)`.
+
+Rewrite using `[hstar, hstar, star_star])`. Establish `hy' : H.bar y ∈ l.Mb`. Take `⟨m, hm, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) H.bar.surjective).1 hy`. Express the relevant statement in the definitionally equal form `H.bar (H.bar m) ∈ _`. Rewrite using `[hbb]` and apply the resulting hypothesis.
+
+Establish `hM : (l.M : 𝓞 D.host.E) ∈ l.Mb * Mfr l`. Rewrite using `[show l.Mb * Mfr l = _ from l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Distinguish the cases in `h0 : x = 0`. Use `⟨l.M ^ (j + 1), Ideal.pow_mem_pow (Ideal.mul_le_left hM) _, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: l.M ≠ 0` using `by have := l.three_le; omega`. Conclude with `pow_ne_zero _ this` after adjusting the coercions. Establish `hP0 : ∀ PP, PP ∉ P` using `fun PP hPP => by`. Rewrite `hxy` using `[h0, zero_add]`. Rewrite `hy'` using `[hxy, map_one]`.
+
+Conclude with `PP.isPrime.one_notMem (hP PP hPP hy')`. Take `⟨⟨es, -, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_eq_zero fun PP hPP => absurd hPP (hP0 PP), RingHom.map_zero, zero_mul, RingHom.map_zero]`. Conclude with `zero_mem _`. Use `⟨x, hx, fun h => h0 (RingOfIntegers.coe_injective (h.trans (map_zero _).symm)), ?_⟩` and prove the remaining obligations.
+
+Use `GlobalTheory.MovedIdem.finPart_conj_mem (idem_div_mem he (H.bar x) fun PP hPP hm => by` as an intermediate fact. Use `add_mem hm (hP PP hPP hy')` as an intermediate fact. Rewrite `this` using `[← map_add, hxy, map_one]`. Conclude with `PP.isPrime.one_notMem this)`. Rewrite `this` using `[hstar, star_inv₀, star_star]`. Then use the resulting hypothesis.
+-/
 theorem exists_unit_conj {H : Geo.Tor.Host D.host.E} (l : Geo.Tor.Level H) {e : AE D}
     {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e P) (hP : ∀ PP ∈ P, l.Mb ≤ PP.asIdeal) (j : ℕ) :
     ∃ s ∈ l.Mb ^ (j + 1), (s : D.host.E) ≠ 0 ∧ finPart D (cA D e * incA D (s : D.host.E)⁻¹) ∈ intAE D := by
@@ -279,11 +390,65 @@ theorem exists_unit_conj {H : Geo.Tor.Host D.host.E} (l : Geo.Tor.Level H) {e : 
     exact PP.isPrime.one_notMem this)
   rwa [hstar, star_inv₀, star_star] at this
 
+/- English proof (translation)
+Establish `hM : (l.M : 𝓞 D.host.E) ∈ l.Mb * Mfr l`. Rewrite using `[show l.Mb * Mfr l = _ from l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.mul_le_left hM`.
+-/
 theorem natCast_mem_Mb {H : Geo.Tor.Host D.host.E} (l : Geo.Tor.Level H) : (l.M : 𝓞 D.host.E) ∈ l.Mb := by
   have hM : (l.M : 𝓞 D.host.E) ∈ l.Mb * Mfr l := by
     rw [show l.Mb * Mfr l = _ from l.prod]; exact Ideal.mem_span_singleton_self _
   exact Ideal.mul_le_left hM
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Establish `hR : ∀ v, v ∈ latR rfl (latG W k) → v ∈ latG W k`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hw`. Take `⟨m1, m2, m3, -, -, -⟩` from `GlobalTheory.MovedLat.moved_lattices D V W ΛV ΛW a1 a2 a3 a4 h k`.
+
+Take `⟨-, -, m4, -, m5, -⟩` from `GlobalTheory.MovedLat.moved_lattices D V W ΛV ΛW a1 a2 a3 a4 1 k`. Rewrite `m4` using `[show fin V 1 = 1 from map_one _, m5, a5]`. Take `⟨-, e', P', he', hP', hs'⟩` from `hh`. Establish `horth` using `GlobalTheory.T.idempotentSum_conjSum_orthogonal_dvd D e e' P P' bad he he' hbad hP'`. Establish `hee` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`.
+
+Establish `hec` using `he.2`. Establish `hcc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, hee]`. Establish `f1` using `smul_mt_inv V h e' e hs' (by linear_combination e * horth - (e' + cA D e') * (hee + hec))`. Establish `f2` using `smul_mt_inv V h e' (cA D e) hs' (by linear_combination cA D e * horth - (e' + cA D e') * (hcc + hec))`. Establish `i1 : finPart D e ∈ intAE D`.
+
+Use `idem_div_mem he 1 fun PP _ => PP.isPrime.one_notMem` as an intermediate fact. Rewrite `this` using `[show ((1 : 𝓞 D.host.E) : D.host.E) = 1 from rfl, inv_one, RingHom.map_one, mul_one]`. Then use the resulting hypothesis. Establish `i2 : finPart D (cA D e) ∈ intAE D`. Rewrite using `[GlobalTheory.MovedIdem.finPart_cA]`. Conclude with `GlobalTheory.MovedIdem.sigR_mem_intAE i1`.
+
+Establish `hmove : ∀ f : AE D, finPart D f ∈ intAE D → f • Formalism.L2.Theta.mt V h⁻¹ = f • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) → ∀ x ∈ latO V W (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) (Bridge.hLat W (fin W k) : Set (Fin W.rank → D.host.E)) fun _ => …`. Introduce `f hf hf' x hx`. Take `⟨x₀, hx₀, rfl⟩` from `(m4 x).1 hx`. Use `(m3 _).2 ⟨f • x₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[a5]`.
+
+Conclude with `GlobalTheory.LatticeStable.smul_mem_latO D V W _ _ _ f hf _ hx₀`. Rewrite using `[actO_smul V W h k f hf', actO, inv_one, GlobalTheory.AdelicLatMove.mt_one, Matrix.mul_one]`. Take `⟨k₀, hk₀, -, hk₁⟩` from `hT`. Take `⟨-, hMN, hN⟩` from `hL`. Establish `hM0 : (l.M : D.host.E) ≠ 0`.
+
+Establish `: l.M ≠ 0` using `by have := l.three_le; omega`. Conclude with `this` after adjusting the coercions. Use `set ρ : Matrix (Fin W.rank) (Fin V.rank) D.host.E := Matrix.of fun a b => (δ : D.host.E) * ι (cSep l • levRep (q b)) a / (l.M : D.host.E) with hρ`. Establish `hy : (Matrix.of fun a b => e * incA D ((δ : D.host.E) * ι (cSep l • levRep (q b)) a / (l.M : D.host.E)) : WO V W) = e • GlobalTheory.LatVac.finTens 1 ρ`. Apply the tactic sequence `refine GlobalTheory.AdTh.LatOf.eq_of_parts ?_ ?_ <;> ext a b`.
+
+Express the relevant statement in the definitionally equal form `infPart D (e * _) = infPart D (e * _)`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, GlobalTheory.PlaceDatum.infPart_idemSum he, zero_mul, zero_mul]`. Express the relevant statement in the definitionally equal form `finPart D (e * _) = finPart D (e * _)`. Rewrite using `[RingHom.map_mul, RingHom.map_mul]`. Both sides reduce to the same expression.
+
+Establish `hu' : u = GlobalTheory.LatVac.finTens 1 γ` using `GlobalTheory.AdTh.LatOf.eq_of_parts (hu.1.trans (infPart_finTens γ).symm) hu.2`. Establish `hγ' : ∀ a b, γ a b = (δ : D.host.E) * Y q b a` using `fun a b => by`. Use `congrFun (congrFun hγ b) a` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, zsmul_eq_mul]`. Conclude with `this`.
+
+Establish `hιm : ∀ z, (finHom W k).1 *ᵥ finVec W (ι z) ∈ latGHat W k` using `fun z => by`. Use `mulVec_finVec_mem W k 1 (ι z) (hι.2 ▸ LinearMap.mem_range_self ι z)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hX : ∀ s : 𝓞 D.host.E, (∀ b, ∃ z : Dw.La, s • (cSep l • levRep (q b)) = l.M • z) → incA D (s : D.host.E) • (Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D` using `D) 1 ρ) ∈ latO V W (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) (Bridge.hLat W (fin W k) : Set (Fin W.rank → D.host.E)) fun _ => True := by`. Introduce `s hs`.
+
+Rewrite using `[smul_moved]`. Use `GlobalTheory.T.finite_adelic_matrix_mem_lattice_of_columns D V W hV k _ (infPart_moved V W k _) fun b => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hs b`. Rewrite using `[finPart_moved]`. Use `hιm (δ • z) using 3` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `a`. Use `congrFun (congrArg ι hz) a` as an intermediate fact. Rewrite `this` using `[map_smul, map_nsmul, Pi.smul_apply, Pi.smul_apply, nsmul_eq_mul]`. Establish `t2 : (s : D.host.E) * ι (cSep l • levRep (q b)) a = l.M * ι z a` using `this`. Rewrite using `[map_zsmul, Pi.smul_apply, zsmul_eq_mul, Matrix.smul_apply, smul_eq_mul, hρ, Matrix.of_apply]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `(δ : D.host.E) * t2`. Use `choose j hj using fun b => (hY q b).2`. Establish `hU : ∀ s ∈ l.Mb ^ (∑ b, j b + 1), ∃ w ∈ latO V W (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) (Bridge.hLat W (fin W k) : Set (Fin W.rank → D.host.E)) fun _ => True, incA D (s : D.host.E) • u = (2 * N) • w`. Introduce `s hs`.
+
+Use `choose v hv hv' using fun b => hj b s (Ideal.pow_le_pow_right ((Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ b)).trans (Nat.le_succ _)) hs)`. Use `⟨GlobalTheory.LatVac.finTens 1 (Matrix.of fun a b => (δ • v b) a), GlobalTheory.T.finite_adelic_matrix_mem_lattice_of_columns D V W hV k _ (infPart_finTens _) fun b => finVec_mem W k _ (Submodule.smul_of_tower_mem _ δ (hR _ (hv b))), ?_⟩` and prove the remaining obligations. Rewrite using `[hu', smul_finTens, ← incA_nat, smul_finTens]`. Use `congr 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Use `congrFun (hv' b) a` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, Pi.smul_apply, nsmul_eq_mul]`. Establish `t2 : (s : D.host.E) * Y q b a = ((2 * N : ℕ) : D.host.E) * v b a` using `this`. Express the relevant statement in the definitionally equal form `(s : D.host.E) * γ a b = ((2 * N : ℕ) : D.host.E) * (δ • v b a)`. Rewrite using `[hγ', zsmul_eq_mul, mul_left_comm, t2, mul_left_comm]`.
+
+Establish `h1 : u - Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D` using `D) 1 ρ ∈ latO V W (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) (Bridge.hLat W (fin W k) : Set (Fin W.rank → D.host.E)) fun _ => True := by`. Use `GlobalTheory.T.finite_adelic_matrix_mem_lattice_of_columns D V W hV k _ ?_ fun b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_sub _ (RingHom.map_sub _), hu.1, infPart_moved, sub_zero]`. Take `⟨a, ha, haq, hYa⟩` from `(hY q b).1`. Take `⟨z, hz⟩` from `sub_sep_mem l (q b) a ha haq`.
+
+Take `⟨w, hw, hw'⟩` from `hmk a ha`. Establish `hm` using `zsmul_mem (add_mem (add_mem (finVec_mem W k _ (hR _ hYa)) hw) (hιm z)) δ`. Set `fv : (Fin W.rank → D.host.E) →+ (Fin W.rank → Af D.host.F ⊗[D.host.F] D.host.E)` to `AddMonoidHom.mk' (finVec W) fun x y => funext fun i => TensorProduct.tmul_add _ _ _`. Establish `hfv : ∀ x, finVec W x = fv x` using `fun _ => rfl`. Establish `e1 : (fun a => finPart D ((u - Formalism.L2.Theta.mt W k * GlobalTheory.LatVac.finTens (D` using `D) 1 ρ) a b)) = fv (fun a => γ a b) - (finHom W k).1 *ᵥ fv (fun a => ρ a b) := by`.
+
+Rewrite using `[← hfv, ← hfv, ← finPart_moved, hu']`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+
+Use `hm using 1` and compare the differences between its conclusion and the goal. Establish `hMu : IsUnit ((l.M : ℕ) : Af D.host.F ⊗[D.host.F] D.host.E)`. Rewrite using `[← map_natCast (Algebra.TensorProduct.includeRight (R := D.host.F) (A := Af D.host.F) (B := D.host.E))]`. Conclude with `(IsUnit.mk0 _ hM0).map _`. Apply `hMu.smul_left_cancel.1` to reduce the goal to its premises.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `g1 : l.M • (fun a => γ a b) = δ • l.M • Y q b`. Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `l.M • γ a b = δ • l.M • Y q b a`. Rewrite using `[hγ', smul_comm δ, zsmul_eq_mul]`.
+
+Establish `g2 : l.M • (fun a => ρ a b) = δ • (ι a - l.M • ι z)`. Rewrite using `[← map_nsmul, ← map_sub, ← hz, sub_sub_cancel]`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, hρ, Matrix.of_apply, nsmul_eq_mul, zsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `g3 : l.M • (Y q b - (l.M : D.host.E)⁻¹ • mk a) = l.M • Y q b - mk a`. Rewrite using `[smul_sub, ← Nat.cast_smul_eq_nsmul D.host.E _ (_ • _), smul_smul, mul_inv_cancel₀ hM0, one_smul]`. Establish `hw2 : l.M • w = fv (mk a) - (finHom W k).1 *ᵥ fv (ι a)` using `hw'.symm`. Rewrite using `[smul_comm l.M δ, smul_add l.M, smul_add l.M, hw2, hfv, hfv, ← map_nsmul fv, g3, smul_sub, ← map_nsmul fv, g1, ← Matrix.mulVec_smul, ← map_nsmul fv, g2]`. Simplify using `only [map_zsmul, map_sub, map_nsmul, Matrix.mulVec_smul, Matrix.mulVec_sub]`.
+
+Rewrite using `[← smul_sub δ]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Take `⟨w, hw, hw'⟩` from `hU _ (Ideal.pow_mem_pow (natCast_mem_Mb l) _)`. Take `⟨s, hs, hs0, hsi⟩` from `exists_unit_conj l he (fun PP hPP => (hP PP hPP).1) (∑ b, j b)`.
+
+Take `⟨w₂, hw₂, hw₂'⟩` from `hU s hs`. Establish `hMX` using `hX l.M fun b => ⟨_, Nat.cast_smul_eq_nsmul _ _ _⟩`. Rewrite `hMX` using `[show ((l.M : 𝓞 D.host.E) : D.host.E) = l.M from map_natCast (algebraMap _ _) _, incA_nat]`. Rewrite `hw'` using `[← Nat.cast_pow, show ∀ n : ℕ, ((n : 𝓞 D.host.E) : D.host.E) = n from map_natCast (algebraMap _ _), incA_nat]`. Take `⟨c, hc, hc1, hc2⟩` from `core ψ V W _ _ (GlobalTheory.LatticeStable.smul_mem_latO D V W _ _ _) (fun x hx y hy => GlobalTheory.LatVac.char_sympl_eq_one hψ m1 m2 hx hy) e hee hec (hmove e i1 f1) (hmove _ i2 f2) N k₀ l.M (nsmul_mem_latO V W _ _ _ N (nsmul_std Λ.La _ hΛ N (hN.trans inf_le_left))) (nsmul_mem_ …`.
+
+Take `⟨c₀, hc₀, rfl⟩` from `(m3 c).1 hc`. Rewrite using `[hy, actO_smul V W h k e f1]`. Conclude with `⟨c₀, hc₀, hc1, hc2⟩`.
+-/
 theorem step (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (V W : HSp D) (hV : V.gram = 1) {r : ℕ}
     (hr : W.rank = r) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (a1 : (ΛV : Set (Fin V.rank → D.host.E)) = L0c D V)
@@ -451,6 +616,21 @@ theorem step (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (V W :
   rw [hy, actO_smul V W h k e f1]
   exact ⟨c₀, hc₀, hc1, hc2⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i hV H Dw ι hι hiso`. Take `⟨δ, hδ⟩` from `GlobalTheory.T.lattice_isometry_sign_first D G Pl0 T0 A Ks R F hR i hV H Dw ι hι hiso`. Use `⟨δ, fun t l φ hφ hP bad N h k Λ mk hbad hh hΛ hT hL hmk Y γ u hY hu => ?_⟩` and prove the remaining obligations. Take `⟨e, he, -⟩` from `id hφ`. Take `⟨hp, -, a1, a2, a3, a4, a5⟩` from `GlobalTheory.T.theta_pair_characters_at_level D G Pl0 T0 A Ks R F hR i t hV`.
+
+Take `⟨hψ, hvac⟩` from `(hR.thP.vP i t).1`. Rewrite using `[hδ t l φ hφ hP e he, map_smul]`. Distinguish the cases in `hfin : Finite (Fin (Vc D i).rank → LevQ Dw l)`. Use `swap`. Use `haveI := not_finite_iff_infinite.1 hfin`.
+
+Rewrite using `[Nat.card_eq_zero_of_infinite, Nat.cast_zero, _root_.inv_zero, zero_smul, zero_smul]`. Rewrite using `[map_finsum _ (Set.toFinite _)]`. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Distinguish the cases in `hq : hatC l φ q = 0`. Rewrite using `[hq, zero_smul, zero_smul]`. Take `⟨c, hc, h1, h2⟩` from `step R.ψ hψ (Vc D i) (Wc D i) hp.std (rank_Wc i) (R.ΛV i) (R.ΛW i) a1 a2 a3 a4 a5 l ι hι δ _ e he (fun PP hPP => ⟨(hP PP (Finset.mem_union.1 hPP)).1, fun h2 => (hP PP (Finset.mem_union.1 hPP)).2 (by`. Take `⟨m, hm⟩` from `D.host.two_dvd_QS`. Rewrite using `[hm, mul_assoc, mul_assoc, Nat.cast_mul, Nat.cast_ofNat]`.
+
+Conclude with `Ideal.mul_mem_right _ _ h2)⟩)`. Use `bad N h k Λ mk (fun PP hPP => hbad PP (Finset.mem_union.1 hPP)) hh hΛ hT hL hmk Y hY q`. Use the proof step `(fun s hs => GlobalTheory.T.levelPoint_smul_integral_of_fourierCoeff_ne_zero D G Pl0 T0 A Ks R i H Dw ι t l φ hφ q hq s fun PP hPP => hs PP (Finset.mem_union.2 hPP))`. Use the proof step `(γ q) (u q) (hu q).1 (hu q).2`. Establish `h3 : heisO R.ψ (Vc D i) (Wc D i) (2 • actO (Vc D i) (Wc D i) h k c) (R.ωP i t (h, k) (R.vacP i)) = R.ωP i t (h, k) (R.vacP i)`.
+
+Rewrite using `[← actO_two, ← hp.weil.om_heis h k _ _ hvac.theta, hvac.lat.1 c hc]`. Establish `h4` using `GlobalTheory.PlaceModel.heisL_heisL (Vc D i) (Wc D i) R.ψ _ _ (R.ωP i t (h, k) (R.vacP i)) |>.trans (congrArg (· • _) h2)`. Rewrite `h4` using `[one_smul, ← h1]`. Rewrite using `[hp.weil.om_heis h k _ _ hvac.theta]`. Use `congr 1`.
+
+Use `Eq.trans ?_ h4` and prove the remaining obligations. Conclude with `congrArg _ h3.symm`.
+-/
 theorem moved_datum : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.Char F → ∀ (i : Fin D.R.m), VStd D i → ∀ (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)), LatEmb (Wc D i) ι → LatIsom (Wc D i) Dw.EF ι → ∃ δ : ℤˣ, ∀ (t : T0) (l₂ : Geo.Tor.Level H) (φ : (Fin (Vc D i).rank → LevQc Dw l₂) → ℂ), PhiIs R i (RingHom.id ℂ) t ι (Mfr l₂ • ⊤) φ → (∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → l₂.Mb ≤ PP.asIdeal ∧ ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ (bad N : ℕ) (h : GA D (Vc D i)) (k : GA D (Wc D i)) (Λ : GenLat D.host.E (Vc D i).rank) (mk : Dw.La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)), (∀ PP, PP ∈ R.Pg ∨ PP ∈ R.Q t → ((bad : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → SplitOffBad (Vc D i) bad h → (∀ v, v ∈ Λ.La ↔ (fun j => star (v j)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)) → Λ.TrivAt l₂.M → Λ.LevOK N l₂.M → MarkAd l₂ (Wc D i) (rank_Wc i) ι k mk → ∀ (Y : (Fin (Vc D i).rank → LevQ Dw l₂) → Matrix (Fin (Vc D i).rank) (Fin D.R.r) D.host.E) (γ : (Fin (Vc D i).rank → LevQ Dw l₂) → Matrix (Fin (Wc D i).rank) (Fin (Vc D i).rank) D.host.E) (u : (Fin (Vc D i).rank → LevQ Dw l₂) → WO (Vc D i) (Wc D i)), IsRoots l₂ (latR (rank_Wc i) (latG (Wc D i) k)) mk N Y → (∀ q, colsR (rank_Wc i) (γ q) = (δ : ℤ) • Y q ∧ IsFinOf (Vc D i) (Wc D i) (γ q) (u q)) → R.ωP i t (h, k) (R.vP i t) = ((Nat.card (Fin (Vc D i).rank → LevQ Dw l₂) : ℂ))⁻¹ • ∑ᶠ q : Fin (Vc D i).rank → LevQ Dw l₂, hatC l₂ φ q • heisO R.ψ (Vc D i) (Wc D i) (u q) (R.ωP i t (h, k) (R.vacP i)) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i hV H Dw ι hι hiso
   obtain ⟨δ, hδ⟩ := GlobalTheory.T.lattice_isometry_sign_first D G Pl0 T0 A Ks R F hR i hV H Dw ι hι hiso

@@ -12,6 +12,17 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.ObjPull
 
+/- English proof (translation)
+Introduce `hLie hAb E _ _ _ H D l B B' _ _ b b' j S S' s s' f hρ hζ hs o`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m⟩⟩ : ∃ t' : SAB H S', Nonempty (SABMap t' o.t f) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f o.t`. Conclude with `⟨_, ⟨m⟩⟩`. Establish `hL : LBIso t'.PP.L (o.t.PP.L.pull m.cm.F)`.
+
+Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Establish `hpr` using `o.proper`. Take `⟨-, hamp, hk⟩` from `hAb S S' o.t.G t'.G f m.cm.F o.t.PP.L t'.PP.L o.t.PP.isLB t'.PP.isLB (AbelianSchemeGerms.isAbelianScheme_of_proper o.t.G o.t.semi) m.cart hL`. Use `⟨{ t := t' proper := MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hpr ample := hamp o.ample ktriv := hk o.ktriv eta := fun a => secPull m.cart (o.eta a) eta_add := fun a c => by rw [o.eta_add, map_mul] eta_ker := fun a ha => by rw [o.eta_ker a ha, map_one] etaA := fun …` and prove the remaining obligations.
+
+Take `⟨hdet, I, hI, hA, hM⟩` from `o.geom k (x ≫ f) (β.comp j) (by rw [Category.assoc, hs, ← Category.assoc, hx, spMap_comp])`. Rewrite `hdet` using `[RingHom.comp_apply, hρ]`. Rewrite `hI` using `[RingHom.comp_apply, hζ]`. Use `⟨fun τ => ?_, tateMove (pushEquiv m.cart (Over.mk x)) (fun c g => ?_) (fun n g g' c hc => ?_) I, hI, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hLie _ S S' o.t.G t'.G f m.cm.F o.t.act t'.act m.cart m.act k x τ, hLie _ S S' o.t.G t'.G f m.cm.F o.t.act t'.act m.cart m.act k x τ]`.
+
+Conclude with `hdet τ`. Apply `Over.OverMorphism.ext show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _` to reduce the goal to its premises. Rewrite using `[Category.assoc, m.act, Category.assoc]`. Conclude with `(weilIs_grpPullback_of_comm S S' o.t.G t'.G f m.cm.F o.t.PP.L t'.PP.L o.t.PP.isLB t'.PP.isLB m.cart hL (Over.mk x) n g g' _ _ _ rfl rfl).2 hc`. Conclude with `(MulEquiv.eq_symm_apply _).2 ((pushEquiv_secPull m.cart _ _).trans (hA a))`.
+
+Conclude with `(MulEquiv.eq_symm_apply _).2 ((pushEquiv_secPull m.cart _ _).trans (hM a ha))`.
+-/
 theorem objPull_of_lie_of_ample : (∀ (O : Type) [CommRing O] (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (a : OAct O G) (a' : OAct O G'), IsGrpPullback G' G f φ → (∀ c, (a'.act c).left ≫ φ = φ ≫ (a.act c).left) → ∀ (k : Type) [Field k] (x : Sp k ⟶ S') (τ : O →+* k) (n : ℕ), LieMult a' x τ n ↔ LieMult a (x ≫ f) τ n) → (∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → IsAbelianScheme G → IsGrpPullback G' G f φ → LBIso L' (L.pull φ) → IsAbelianScheme G' ∧ (Out.RelAmple G L → Out.RelAmple G' L') ∧ (Out.KTriv G L → Out.KTriv G' L')) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' : Type) [CommRing B] [CommRing B'] (b : Base l B) (b' : Base l B') (j : B →+* B') (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (f : S' ⟶ S), j b.ρ = b'.ρ → j b.ζ = b'.ζ → f ≫ s = s' ≫ spMap j → ∀ o : Obj D l b s, ∃ o' : Obj D l b' s', Nonempty (ObjMap o' o f) := by
   intro hLie hAb E _ _ _ H D l B B' _ _ b b' j S S' s s' f hρ hζ hs o
   obtain ⟨t', ⟨m⟩⟩ : ∃ t' : SAB H S', Nonempty (SABMap t' o.t f) := by
@@ -56,6 +67,17 @@ end GlobalTheory.ObjPull
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL hpol E _ _ _ H D l B B' _ _ b b' S S' s s' o o' f _ m m' heta`. Take `⟨hA, hd, hr, hs⟩` from `hpol E H D l B' b' S' s' o'`. Take `⟨θ, hθ, hφ, hact, -, w, hw, -⟩` from `sabMap_iso m m' rfl rfl`. Establish `hη : ∀ a, o'.eta a ≫ θ.hom = o'.eta a` using `fun a => by`. Take `⟨σ, h₁, h₂⟩` from `heta a`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc]`. Conclude with `(congrArg _ hφ).trans (h₁.trans h₂.symm)`. Rewrite using `[Over.w, Over.w]`.
+
+Set `P : Out.PolAV S'` to `{ A := o'.t.G, g := _, smoothDim := hd, L := o'.t.PP.L, isLB := o'.t.PP.isLB, ample := o'.ample, ktriv := o'.ktriv, isAb := hA, rigid := hr, sym := hs }`. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hMu : IsUnit (l.M : Γ(S', ⊤))`. Simplify using `using (b'.unit _ hM).map ((Scheme.ΓSpecIso (CommRingCat.of B')).inv ≫ s'.appTop).hom`. Use `hA.smooth` as an intermediate fact.
+
+Establish `: Etale (Out.mulA o'.t.G l.M).left` using `GrpTangent.etale_id_pow o'.t.G hMu`. Establish `h : θ.hom = 𝟙 _`. Use `serre_any_base hL P l.M l.three_le θ hθ (fun _ => ⟨⊤, trivial, ?_⟩) (fix_torsion_of_forall_geometric o'.t.G l.M θ.hom (obj_aut_fix_geometric_torsion o' θ hact ⟨w, hw⟩ hη))` and prove the remaining obligations. Take `⟨t, ht⟩` from `gen_of_iso ((isGen_iff w).1 hw) (o'.t.G.hom ⁻¹ᵁ ⊤).ι`. Use `gen_chartPull (chartPullOut o'.t.PP.L _ _ _ _ fun n => ?_) t ht` and prove the remaining obligations.
+
+Use `fin_cases n`. Use `exacts [rfl, (Category.comp_id _).symm]`. Rewrite using `[← hφ, h, Over.id_left, Category.id_comp]`.
+-/
 theorem obj_rigid_of_laws : Out.Laws → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s), IsAbelianScheme o.t.G ∧ SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) o.t.G.hom ∧ Out.Rigidified o.t.G o.t.PP.L ∧ Out.Sym o.t.G o.t.PP.L) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' : Type) [CommRing B] [CommRing B'] (b : Base l B) (b' : Base l B') (S S' : Scheme.{0}) (s : S ⟶ Sp B) (s' : S' ⟶ Sp B') (o : Obj D l b s) (o' : Obj D l b' s') (f : S' ⟶ S), (IsReduced S' ∨ IsLocallyNoetherian S') → ∀ m m' : SABMap o'.t o.t f, (∀ a, ∃ σ, (o'.eta a).left ≫ m.φ = σ ∧ (o'.eta a).left ≫ m'.φ = σ) → m.φ = m'.φ := by
   intro hL hpol E _ _ _ H D l B B' _ _ b b' S S' s s' o o' f _ m m' heta
   obtain ⟨hA, hd, hr, hs⟩ := hpol E H D l B' b' S' s' o'
@@ -93,6 +115,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 
 section Main
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Use `⟨tateTransport I e (fun c p => Over.OverMorphism.ext ?_) (fun n p q c h => ?_), rfl, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (m.act c)`. Take `⟨w, hw, -⟩` from `(isPullCubical_iff m.cm t.cub t'.cub).1 m.lin`.
+
+Conclude with `(weilIs_grpPullback_of_comm _ _ _ _ f m.φ _ _ t.PP.isLB t'.PP.isLB m.cart ⟨w, (isGen_iff w).2 hw⟩ (Over.mk x) n p q (e p) (e q) _ (he p) (he q)).1 h`.
+-/
 theorem exists_tate_push_comm
     {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {k : Type} [Field k]
     (x : Sp k ⟶ S') (z : Sp k ⟶ S) (hz : x ≫ f = z) (e : (Over.mk x ⟶ t'.G) ≃* (Over.mk z ⟶ t.G))
@@ -111,6 +138,23 @@ theorem exists_tate_push_comm
 
 variable {l l₂ : Level H} {Xo : Moduli D l} {Xo₂ : Moduli D l₂}
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `exists_spMap (x ≫ Xo₂.s)`. Take `⟨-, I, hIζ, hIA, hI⟩` from `Xo₂.univ.geom k x β hβ`. Take `⟨-, I', hIζ', hIA', hI'⟩` from `Xo₂.univ.geom k x' β (hs.symm.trans hβ)`. Take `⟨e, he⟩` from `exists_ptEquiv m.cart x _ rfl`. Take `⟨e', he'⟩` from `exists_ptEquiv m.cart x' _ hr.symm`.
+
+Take `⟨J, hJζ, hJ⟩` from `exists_tate_push_comm m x _ rfl e he I`. Take `⟨J', hJζ', hJ'⟩` from `exists_tate_push_comm m x' _ hr.symm e' he' I'`. Take `⟨g, hg⟩` from `hDiff _ J J'`. Establish `key : ∀ (σ : 𝟙_ (Over Xo₂.X) ⟶ Xo₂.univ.t.G) (τ : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G) (d : ℕ), (σ ^ d).left ≫ m.φ = r ≫ τ.left → e (toUnit _ ≫ σ) ^ d = e' (toUnit _ ≫ σ) ^ d` using `fun σ τ d h => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← map_pow, ← map_pow, ← MonObj.comp_pow, ← MonObj.comp_pow, he, he', unit_left, unit_left, Category.assoc, Category.assoc]`. Conclude with `(congrArg _ h).trans (((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.left) hr).trans (Category.assoc _ _ _))).trans (congrArg _ h.symm))`. Take `⟨hin, hη⟩` from `inGam_of_diff l l₂ hd J J' g hg (by rw [hJζ, hJζ']; exact Units.ext (hIζ'.trans hIζ.symm)) (fun a => e (toUnit _ ≫ Xo₂.univ.eta a)) (fun a => e' (toUnit _ ≫ Xo₂.univ.eta a)) (fun a b => by rw [Xo₂.univ.eta_add, MonObj.comp_mul, map_mul]) (fun a b => by rw [Xo₂.univ.eta_add, MonOb …`. Establish `hηA : ∀ a, e' (toUnit _ ≫ Xo₂.univ.etaA a) = e (toUnit _ ≫ Xo₂.univ.etaA (g.f l₂.A a))` using `fun a => by`. Rewrite using `[hIA, hIA', ← hJ, ← hJ', (hg _ l₂.A_pos).1]`.
+
+Take `⟨ρ, hρ, hρr⟩` from `hLev g hin`. Use `⟨g, ρ, hin, hρ, hρr, ?_⟩` and prove the remaining obligations. Take `⟨hρs, ν, hν, hνA⟩` from `hρ`. Take `⟨o, ⟨p⟩⟩` from `hPull k x'`. Take `⟨n₁, hn₁⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m p.toSABMap`.
+
+Take `⟨n₂, hn₂⟩` from `sab_cast hr.symm n₁`. Take `⟨n, hn⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ r x m n₂`. Take `⟨n₃, hn₃⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν n`. Establish `lev : ∀ (s : 𝟙_ (Over (Sp k)) ⟶ o.t.G) (σ τ : 𝟙_ (Over Xo₂.X) ⟶ Xo₂.univ.t.G), s.left ≫ p.toSABMap.φ = x' ≫ σ.left → e' (toUnit _ ≫ σ) = e (toUnit _ ≫ τ) → τ.left ≫ ν.φ = ρ.hom ≫ σ.left → s.left ≫ n₃.φ = (x ≫ ρ.hom) ≫ σ.left` using `fun s σ τ h₁ h₂ h₃ => by`. Establish `h₄ : s.left ≫ n.φ = x ≫ τ.left`.
+
+Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Use `congrArg (fun w => w.left) h₂` as an intermediate fact. Simplify using `only [he, he', unit_left] at this`. Use `Eq.trans ?_ this` and prove the remaining obligations. Rewrite using `[← h₁, Category.assoc, Category.assoc]`.
+
+Conclude with `congrArg _ (hn.symm.trans (hn₂.trans hn₁))`. Rewrite using `[Category.assoc, Category.assoc, n.cart.1.w, ← Category.assoc, sec_w, sec_w]`. Conclude with `(Category.id_comp x).trans (Category.comp_id x).symm`. Rewrite using `[hn₃, ← Category.assoc, h₄, Category.assoc, Category.assoc]`. Conclude with `congrArg _ h₃`.
+
+Take `⟨f, -, hf⟩` from `Xo₂.rep (Sp k) (x' ≫ Xo₂.s) inferInstance o`. Rewrite using `[hf x' ⟨rfl, ⟨p⟩⟩]`. Use `(hf _ ⟨by rw [Category.assoc, hρs, hs], ⟨⟨n₃, fun a => ?_, fun a => ?_⟩⟩⟩).symm` and prove the remaining obligations. Conclude with `lev _ _ _ (p.eta a) (hη a) (hν a)`. Conclude with `lev _ _ _ (p.etaA a) (hηA a) (hνA a)`.
+-/
 theorem exists_sim_of_fibre_comm
     (hPull : ∀ (k : Type) [Field k] (z : Sp k ⟶ Xo₂.X), ∃ o' : Obj D l₂ (baseKA l₂) (z ≫ Xo₂.s), Nonempty (ObjMap o' Xo₂.univ z))
     {k : Type} [Field k] [IsAlgClosed k]
@@ -179,6 +223,15 @@ theorem exists_sim_of_fibre_comm
 
 end Main
 
+/- English proof (translation)
+Introduce `hL hPull _ hPol _ hRig _ hDiff _ hLev E _ _ _ H D l l₂ Xo Xo₂ hpq hd r jK m hm c c₂ hc rF hF₁ hF₂ k _ _ y y' hy`. Establish `pull : ∀ (l : Level H) (Xo : Moduli D l) (k : Type) [Field k] (z : Sp k ⟶ Xo.X), ∃ o' : Obj D l (baseKA l) (z ≫ Xo.s), Nonempty (ObjMap o' Xo.univ z)` using `fun l Xo k _ z => hPull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (z ≫ Xo.s) z rfl rfl (by rw [spMap_id', Category.comp_id]) Xo.univ`. Prove the components needed by the constructor for the conclusion. Establish `hr : (y ≫ pullback.fst _ _) ≫ r = (y' ≫ pullback.fst _ _) ≫ r`. Rewrite using `[Category.assoc, Category.assoc, ← hF₁, ← Category.assoc, ← Category.assoc, hy]`.
+
+Establish `hbij : Function.Bijective (IntermediateField.inclusion hc.le).toRingHom` using `⟨(IntermediateField.inclusion hc.le).toRingHom.injective, fun a => ⟨⟨a.1, hc.ge a.2⟩, rfl⟩⟩`. Establish `: IsIso (CommRingCat.ofHom (IntermediateField.inclusion hc.le).toRingHom)` using `(ConcreteCategory.isIso_iff_bijective _).2 hbij`. Establish `hsnd : y ≫ pullback.snd _ _ = y' ≫ pullback.snd _ _`. Rewrite using `[← cancel_mono (spMap (IntermediateField.inclusion hc.le).toRingHom), Category.assoc, Category.assoc, ← hF₂, ← Category.assoc, ← Category.assoc, hy]`. Establish `hs : (y ≫ pullback.fst _ _) ≫ Xo₂.s = (y' ≫ pullback.fst _ _) ≫ Xo₂.s`.
+
+Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc, hsnd]`. Take `⟨h₁, h₂, h₃, h₄⟩` from `hPol E H D l _ (baseKA l) _ Xo.s Xo.univ`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`.
+
+Set `P : Out.PolAV Xo.X` to `{ A := Xo.univ.t.G, isAb := h₁, g := _, smoothDim := h₂, L := Xo.univ.t.PP.L, isLB := Xo.univ.t.PP.isLB, rigid := h₃, sym := h₄, ample := Xo.univ.ample, ktriv := Xo.univ.ktriv }`. Take `⟨g, ρ, a₁, a₂, a₃, a₄⟩` from `exists_sim_of_fibre_comm (pull l₂ Xo₂) (k := k) (fun z => hDiff E H D k _ _ _ fun n p q a b _ hp hq ha hb => unitOn_injective (((hL.weil _ P n (Over.mk z)).1 p q hp hq).unique ha hb)) hd r m hm.2.2.1 hm.2.2.2 (hLev E H D l l₂ Xo Xo₂ hpq hd r jK m hm) _ _ hr hs`. Conclude with `⟨g, ρ, a₁, a₂, a₃, a₄.trans (Category.assoc _ _ _)⟩`. Introduce `g ρ hg hρ hx`. Conclude with `trivAt_of_fixed (pull l Xo) (fun k _ z o' => hRig E H D l _ _ _ _ _ _ _ _ Xo.univ o' z (Or.inl inferInstance)) hd r m hm.2.2.1 _ g ρ hg hρ ((Category.assoc _ _ _).trans hx)`.
+-/
 theorem levelMap_fibre_simply_transitive_of_laws :
     Out.Laws → (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l
         : Level H) (B B' : Type) [CommRing B] [CommRing B'] (b : Base l B) (b' : Base l B') (j

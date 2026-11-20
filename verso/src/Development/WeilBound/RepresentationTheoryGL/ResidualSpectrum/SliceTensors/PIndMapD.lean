@@ -15,6 +15,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ}
 def res (y : GA E (r + s)) : (GA E (r + s) → ℂ) →ₗ[ℂ] (GA E r × GA E s → ℂ) :=
   LinearMap.funLeft ℂ ℂ fun m => lev (Ad E) r s m * y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem res_apply (y : GA E (r + s)) (F : GA E (r + s) → ℂ) (m : GA E r × GA E s) :
     res y F m = F (lev (Ad E) r s m * y) := rfl
 
@@ -25,6 +28,9 @@ structure Good (U₁ : Submodule ℂ (Sm E r)) (U₂ : Submodule ℂ (Sm E s)) (
   hf₁ : ∀ o, ∀ ψ ∈ U₁, f₁ (act o ψ) = act o (f₁ ψ)
   hf₂ : ∀ o, ∀ ψ ∈ U₂, f₂ (act o ψ) = act o (f₂ ψ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hU₁, hU₂, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem good_id {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁) (hU₂ : IsStable U₂) :
     Good U₁ U₂ LinearMap.id LinearMap.id :=
   ⟨hU₁, hU₂, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
@@ -49,6 +55,9 @@ def indSub (U₁ : Submodule ℂ (Sm E r)) (U₂ : Submodule ℂ (Sm E s)) : Sub
       rw [hF.1]
     · exact Submodule.smul_mem _ c (hF.2 k g)
 
+/- English proof (translation)
+Take `⟨u, m, k, g, h⟩` from `exists_decomp x`. Conclude with `⟨(u, m, k, g), h⟩`.
+-/
 theorem exists_dec (x : GA E (r + s)) :
     ∃ q : (BlockIx (r + s) r → Ad E) × (GA E r × GA E s) × Kinf E (r + s) × GL (Fin (r + s)) (Af E),
       x = unip q.1 * lev (Ad E) r s q.2.1 * cf (r + s) q.2.2.1 q.2.2.2 := by
@@ -59,17 +68,35 @@ def ind (f₁ : Sm E r →ₗ[ℂ] Sm E r) (f₂ : Sm E s →ₗ[ℂ] Sm E s) : 
   LinearMap.pi fun x => LinearMap.proj (exists_dec x).choose.2.1 ∘ₗ tensOp f₁ f₂ ∘ₗ
     res (cf (r + s) (exists_dec x).choose.2.2.1 (exists_dec x).choose.2.2.2)
 
+/- English proof (translation)
+Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[cf_mul, mul_inv_cancel, mul_inv_cancel, cf, map_one, map_one, map_one, mul_one]`.
+-/
 theorem cf_inv (a : ℕ) (k : Kinf E a) (g : GL (Fin a) (Af E)) : (cf a k g)⁻¹ = cf a k⁻¹ g⁻¹ := by
   refine inv_eq_of_mul_eq_one_right ?_
   rw [cf_mul, mul_inv_cancel, mul_inv_cancel, cf, map_one, map_one, map_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[cf, map_one, map_one, map_one, mul_one]`.
+-/
 theorem cf_one (a : ℕ) : cf a (1 : Kinf E a) 1 = 1 := by
   rw [cf, map_one, map_one, map_one, mul_one]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.AffglAssembly.unip_eq_unipGL]`. Conclude with `GroundTheory.Automorphic.AutomorphicForm.unipGL_add x y`.
+-/
 theorem D.unip_add' {R : Type} [CommRing R] {a r : ℕ} (x y : BlockIx a r → R) : unip (x + y) = unip x * unip y := by
   simp only [GlobalTheory.CompanionTheory.AffglAssembly.unip_eq_unipGL]
   exact GroundTheory.Automorphic.AutomorphicForm.unipGL_add x y
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `lev_mul_unip m⁻¹ (-u + u')`. Establish `hu : unip (-u) * unip u = (1 : GA E (r + s))` using `by rw [← D.unip_add', neg_add_cancel, unip_zero]`. Establish `e1 : cf (r + s) k g = unip v * lev (Ad E) r s (m⁻¹ * m') * cf (r + s) k' g'`. Rewrite using `[map_mul, ← mul_assoc, ← hv, D.unip_add']`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc (unip (-u)), ← mul_assoc (unip (-u)), hu, one_mul, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`. Use `_ = _ := by rw [h]; simp only [mul_assoc]`. Establish `e2 : unip v * lev (Ad E) r s (m⁻¹ * m') = cf (r + s) (k * k'⁻¹) (g * g'⁻¹)`. Rewrite using `[← cf_mul, ← cf_inv, e1, mul_inv_cancel_right]`. Take `⟨k₁, g₁, k₂, g₂, hm⟩` from `levi_cf e2`.
+
+Establish `e3 : res (cf (r + s) k g) F = fun z => res (cf (r + s) k' g') F (z.1 * cf r k₁ g₁, z.2 * cf s k₂ g₂)`. Use function extensionality and compare the values at `z`. Take `⟨w, hw⟩` from `lev_mul_unip z v`. Rewrite using `[res_apply, res_apply, e1, ← mul_assoc, ← mul_assoc, hw, mul_assoc, mul_assoc, hF.1, ← mul_assoc, ← map_mul, hm]`. Both sides reduce to the same expression.
+
+Rewrite using `[e3, tensOp_translate H.hU₁ H.hU₂ H.hf₁ H.hf₂ (hF.2 k' g')]`. Establish `e4 : m' = (m.1 * cf r k₁ g₁, m.2 * cf s k₂ g₂)`. Rewrite using `[← mul_inv_cancel_left m m', hm]`. Both sides reduce to the same expression. Rewrite using `[e4]`.
+-/
 theorem D.indep {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {f₁ : Sm E r →ₗ[ℂ] Sm E r}
     {f₂ : Sm E s →ₗ[ℂ] Sm E s} (H : Good U₁ U₂ f₁ f₂) {F : GA E (r + s) → ℂ} (hF : IsInd U₁ U₂ F)
     {u u' : BlockIx (r + s) r → Ad E} {m m' : GA E r × GA E s} {k k' : Kinf E (r + s)} {g g' : GL (Fin (r + s)) (Af E)}
@@ -97,6 +124,9 @@ theorem D.indep {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} 
     rfl
   rw [e4]
 
+/- English proof (translation)
+Establish `hq` using `(exists_dec (unip u * lev (Ad E) r s m * cf (r + s) k g)).choose_spec`. Conclude with `(D.indep H hF hq).symm`.
+-/
 theorem ind_apply {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {f₁ : Sm E r →ₗ[ℂ] Sm E r}
     {f₂ : Sm E s →ₗ[ℂ] Sm E s} (H : Good U₁ U₂ f₁ f₂) {F : GA E (r + s) → ℂ} (hF : IsInd U₁ U₂ F)
     (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) :
@@ -104,12 +134,18 @@ theorem ind_apply {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)
   have hq := (exists_dec (unip u * lev (Ad E) r s m * cf (r + s) k g)).choose_spec
   exact (D.indep H hF hq).symm
 
+/- English proof (translation)
+Take `⟨v, m, k, g, rfl⟩` from `exists_decomp x`. Rewrite using `[← mul_assoc, ← mul_assoc, ← D.unip_add', ind_apply H hF, ind_apply H hF]`.
+-/
 theorem ind_left {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {f₁ : Sm E r →ₗ[ℂ] Sm E r}
     {f₂ : Sm E s →ₗ[ℂ] Sm E s} (H : Good U₁ U₂ f₁ f₂) {F : GA E (r + s) → ℂ} (hF : IsInd U₁ U₂ F)
     (u : BlockIx (r + s) r → Ad E) (x : GA E (r + s)) : ind f₁ f₂ F (unip u * x) = ind f₁ f₂ F x := by
   obtain ⟨v, m, k, g, rfl⟩ := exists_decomp x
   rw [← mul_assoc, ← mul_assoc, ← D.unip_add', ind_apply H hF, ind_apply H hF]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Use `ind_apply H hF 0 m k g` as an intermediate fact. Rewrite `this` using `[unip_zero, one_mul]`. Conclude with `this`.
+-/
 theorem ind_levi {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {f₁ : Sm E r →ₗ[ℂ] Sm E r}
     {f₂ : Sm E s →ₗ[ℂ] Sm E s} (H : Good U₁ U₂ f₁ f₂) {F : GA E (r + s) → ℂ} (hF : IsInd U₁ U₂ F)
     (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) :
@@ -119,6 +155,9 @@ theorem ind_levi {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)}
   rw [unip_zero, one_mul] at this
   exact this
 
+/- English proof (translation)
+Use `⟨fun u x => by beta_reduce; rw [mul_assoc, hF.1], fun k' g' => ?_⟩` and prove the remaining obligations. Use `hF.2 (k' * k) (g' * g) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Rewrite using `[res_apply, res_apply, mul_assoc, cf_mul]`.
+-/
 theorem isInd_rt {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {F : GA E (r + s) → ℂ}
     (hF : IsInd U₁ U₂ F) (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) :
     IsInd U₁ U₂ fun x => F (x * cf (r + s) k g) := by
@@ -127,6 +166,9 @@ theorem isInd_rt {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)}
   funext m
   rw [res_apply, res_apply, mul_assoc, cf_mul]
 
+/- English proof (translation)
+Take `⟨v, m, k', g', rfl⟩` from `exists_decomp x`. Rewrite using `[ind_apply H (isInd_rt hF k g), mul_assoc _ (cf (r + s) k' g'), cf_mul, ind_apply H hF]`. Use `congrArg (fun G => tensOp f₁ f₂ G m) (funext fun z => ?_)` and prove the remaining obligations. Rewrite using `[res_apply, res_apply, mul_assoc, cf_mul]`.
+-/
 theorem ind_rt {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {f₁ : Sm E r →ₗ[ℂ] Sm E r}
     {f₂ : Sm E s →ₗ[ℂ] Sm E s} (H : Good U₁ U₂ f₁ f₂) {F : GA E (r + s) → ℂ} (hF : IsInd U₁ U₂ F)
     (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) (x : GA E (r + s)) :
@@ -136,6 +178,9 @@ theorem ind_rt {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} {
   refine congrArg (fun G => tensOp f₁ f₂ G m) (funext fun z => ?_)
   rw [res_apply, res_apply, mul_assoc, cf_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Take `⟨v, m, k, g, rfl⟩` from `exists_decomp x`. Rewrite using `[mul_assoc, hF, hF']`. Conclude with `congrFun (e k g) m`.
+-/
 theorem ext_res {F F' : GA E (r + s) → ℂ} (hF : ∀ (u : BlockIx (r + s) r → Ad E) x, F (unip u * x) = F x)
     (hF' : ∀ (u : BlockIx (r + s) r → Ad E) x, F' (unip u * x) = F' x)
     (e : ∀ k g, res (cf (r + s) k g) F = res (cf (r + s) k g) F') : F = F' := by
@@ -144,11 +189,19 @@ theorem ext_res {F F' : GA E (r + s) → ℂ} (hF : ∀ (u : BlockIx (r + s) r �
   rw [mul_assoc, hF, hF']
   exact congrFun (e k g) m
 
+/- English proof (translation)
+Use `ext_res (ind_left (good_id hU₁ hU₂) hF) hF.1 fun k g => ?_` and prove the remaining obligations. Rewrite using `[ind_levi (good_id hU₁ hU₂) hF, tensOp_id (hF.2 k g)]`.
+-/
 theorem ind_id {U₁ : Submodule ℂ (Sm E r)} {U₂ : Submodule ℂ (Sm E s)} (hU₁ : IsStable U₁) (hU₂ : IsStable U₂)
     {F : GA E (r + s) → ℂ} (hF : IsInd U₁ U₂ F) : ind LinearMap.id LinearMap.id F = F := by
   refine ext_res (ind_left (good_id hU₁ hU₂) hF) hF.1 fun k g => ?_
   rw [ind_levi (good_id hU₁ hU₂) hF, tensOp_id (hF.2 k g)]
 
+/- English proof (translation)
+Establish `h : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k F))` using `hF`. Express the relevant statement in the definitionally equal form `FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k' => cptRep E (r + s) k' (rt E (r + s) (cf (r + s) k g) F)))`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k F)).map (rt E (r + s) (finGL E (r + s) g))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k', rfl⟩`. Use `⟨_, Submodule.subset_span ⟨k' * k, rfl⟩, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `F.1 (x * finGL E (r + s) g * infGL E (r + s) (Unitary.toUnits (k' * k))) = F.1 (x * infGL E (r + s) (Unitary.toUnits k') * cf (r + s) k g)`. Rewrite using `[cf, mul_assoc x, ← infGL_comm, map_mul, map_mul]`. Simplify using `only [mul_assoc]`.
+-/
 theorem finVec_rt {F : Sm E (r + s)} (hF : F ∈ finVec (cptRep E (r + s))) (k : Kinf E (r + s))
     (g : GL (Fin (r + s)) (Af E)) : rt E (r + s) (cf (r + s) k g) F ∈ finVec (cptRep E (r + s)) := by
   have h : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k F)) := hF

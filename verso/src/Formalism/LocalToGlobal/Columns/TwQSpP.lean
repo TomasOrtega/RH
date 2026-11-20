@@ -18,9 +18,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 abbrev qbPhi : E →+* (underPl F P).adicCompletion F :=
   (RingHom.fst _ _).comp (s.φ.toRingHom.comp (inclE (F := F) ((underPl F P).adicCompletion F)))
 
+/- English proof (translation)
+The claim follows from `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((s.int _).1 (Formalism.MainNotions.Gaps.LG.sc_left_mem _ r)).1`.
+-/
 theorem phi_integral_valuation_le_one (r : 𝓞 E) : Valued.v (qbPhi hc P ϖ s (algebraMap (𝓞 E) E r)) ≤ 1 :=
   (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((s.int _).1 (Formalism.MainNotions.Gaps.LG.sc_left_mem _ r)).1
 
+/- English proof (translation)
+Use `show (s.φ (algebraMap F E x ⊗ₜ[F] (1 : (underPl F P).adicCompletion F))).1 = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, s.alg]`.
+-/
 theorem qsp_sp_F (x : F) : qbPhi hc P ϖ s (algebraMap F E x) = algebraMap F ((underPl F P).adicCompletion F) x := by
   show (s.φ (algebraMap F E x ⊗ₜ[F] (1 : (underPl F P).adicCompletion F))).1 = _
   rw [Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, s.alg]
@@ -28,6 +34,15 @@ theorem qsp_sp_F (x : F) : qbPhi hc P ϖ s (algebraMap F E x) = algebraMap F ((u
 include hϖ hcϖ in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hval : Valued.v (gloPhi (underPl F P) s.φ (inclE (F` using `F) ((underPl F P).adicCompletion F) (algebraMap (𝓞 E) E ϖ))) < 1 := s.ori`. Establish `hker` using `glk_ker hc (underPl F P) s.φ s.alg P (qsp_isOver P) ϖ hcϖ hval`. Establish `key : ∀ a : 𝓞 E, a ∈ P.asIdeal → Valued.v (qbPhi hc P ϖ s (algebraMap (𝓞 E) E a)) < 1` using `fun a ha => by`. Establish `h1` using `hker a ha`. Rewrite `h1` using `[gloRho_oToS]`.
+
+Establish `h2` using `glk_val_lt (underPl F P) _ h1`. Conclude with `h2`. Use `⟨fun h => ?_, key r⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hr`. Take `⟨y, i, hi, e⟩` from `P.isMaximal.exists_inv hr`.
+
+Establish `h1 : qbPhi hc P ϖ s (algebraMap (𝓞 E) E y) * qbPhi hc P ϖ s (algebraMap (𝓞 E) E r) + qbPhi hc P ϖ s (algebraMap (𝓞 E) E i) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_add, ← map_add, e, map_one, map_one]`. Establish `h2 : Valued.v (qbPhi hc P ϖ s (algebraMap (𝓞 E) E y) * qbPhi hc P ϖ s (algebraMap (𝓞 E) E r)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (phi_integral_valuation_le_one hc P ϖ s y)) h`.
+
+Establish `h3` using `Valuation.map_add_lt Valued.v h2 (key i hi)`. Rewrite `h3` using `[h1, map_one]`. Conclude with `lt_irrefl _ h3`.
+-/
 theorem qsp_sp_P (r : 𝓞 E) : Valued.v (qbPhi hc P ϖ s (algebraMap (𝓞 E) E r)) < 1 ↔ r ∈ P.asIdeal := by
   have hval : Valued.v (gloPhi (underPl F P) s.φ (inclE (F := F) ((underPl F P).adicCompletion F) (algebraMap (𝓞 E) E ϖ))) < 1 := s.ori
   have hker := glk_ker hc (underPl F P) s.φ s.alg P (qsp_isOver P) ϖ hcϖ hval

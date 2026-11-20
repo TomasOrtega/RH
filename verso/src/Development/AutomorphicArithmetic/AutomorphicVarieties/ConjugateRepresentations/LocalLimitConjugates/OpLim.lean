@@ -7,6 +7,25 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha μ _ _ T P hT hP hlim T' P' hT' hP' φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨ψ, F, hψ, hF⟩` from `h`. Introduce `C hC`.
+
+Establish `hc : Continuous ψ.1` using `((testOps E a ψ).1 hψ.2).1`. Take `⟨-, hlin, -, hb⟩` from `cvAlg (GA E a) (latticeGL E a) μ ψ.1 hc hψ.1`. Take `⟨B, hB⟩` from `hb C hC`. Establish `h1 : ∀ k, (T' k φ).1 = cv ψ.1 (T k F)` using `fun k => liftCv E a ha μ (T k) (hT k) (T' k) (hT' k) ψ φ F hψ hF`. Establish `h2 : (P' φ).1 = cv ψ.1 (P F)` using `liftCv E a ha μ P hP P' hP' ψ φ F hψ hF`.
+
+Establish `h3 : Tendsto (fun k => B * ‖P F - T k F‖) atTop (𝓝 0)`. Establish `h4 : Tendsto (fun k => P F - T k F) atTop (𝓝 (P F - P F))` using `tendsto_const_nhds.sub (hlim F)`. Establish `h5` using `h4.norm.const_mul B`. Simplify using `using h5`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+
+Introduce `ε hε`. Use `filter_upwards [h3.eventually (gt_mem_nhds hε)] with k hk x hx`. Rewrite using `[h1, h2, dist_eq_norm]`. Establish `h6` using `congrFun (hlin (P F) (T k F) 1 (-1)) x`. Establish `h7 : (1 : ℂ) • P F + (-1 : ℂ) • T k F = P F - T k F`.
+
+Rewrite using `[one_smul, neg_one_smul, sub_eq_add_neg]`. Rewrite `h6` using `[h7]`. Establish `h8 : cv ψ.1 (P F) x - cv ψ.1 (T k F) x = cv ψ.1 (P F - T k F) x`. Rewrite using `[h6]`. Simplify using `[sub_eq_add_neg]`.
+
+Rewrite using `[h8]`. Conclude with `(hB _ x hx).trans_lt hk`. Consider the case `zero`. Introduce `C _`. Simplify using `only [map_zero]`.
+
+Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Conclude with `Eventually.of_forall fun k x _ => by simpa using hε`. Consider the case `add φ ψ _ _ h1 h2`. Introduce `C hC`.
+
+Simplify using `only [map_add]`. Conclude with `(h1 C hC).add (h2 C hC)`. Consider the case `smul c φ _ h`. Introduce `C hC`. Simplify using `only [map_smul]`.
+
+Conclude with `(uniformContinuous_const_smul c).comp_tendstoUniformlyOn (h C hC)`.
+-/
 theorem UpperTheory.V.Cj.H.opLim :
     UpperTheory.V.Cj.H.OpLim := by
   intro E _ _ _ a ha μ _ _ T P hT hP hlim T' P' hT' hP' φ hφ

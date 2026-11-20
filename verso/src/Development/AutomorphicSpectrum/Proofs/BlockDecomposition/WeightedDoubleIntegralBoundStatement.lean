@@ -8,6 +8,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.AbsIntegralTran
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegrablePhi
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Shear.integral_shear_le | exact GlobalTheory.CompanionTheory.Shear.integral_shear_le | (intros; apply GlobalTheory.CompanionTheory.Shear.integral_shear_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weighted_double_integral_bound : ∀ (g φ : ℝ → ℝ), Measurable g → Measurable φ → Integrable g → Integrable φ →
     (∀ x, 0 ≤ g x) → (∀ x, 0 ≤ φ x) → (∀ x, φ x ≤ 1) → ∀ α β : ℝ, α ≠ 0 → β ≠ 0 →
     Integrable (fun p : ℝ × ℝ => g (α * p.2 - β * p.1) * (φ p.1 * φ p.2)) ∧

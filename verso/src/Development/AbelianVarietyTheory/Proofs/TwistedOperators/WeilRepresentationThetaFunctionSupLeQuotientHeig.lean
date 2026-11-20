@@ -12,6 +12,13 @@ open GlobalTheory.Asc
 
 namespace GlobalTheory.SupThetaGrowth
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom f hf`. Take `⟨C, A, hC⟩` from `om_sup_growth D ψ S T χS χT om hom f hf`. Use `⟨max C 0 * 4 ^ A, A, fun g h w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h1⟩` from `exists_height_le_two_mul_quotHeight S g`. Take `⟨γ', hγ', h2⟩` from `exists_height_le_two_mul_quotHeight T h`.
+
+Establish `e` using `om_rat_mul D ψ S T χS χT om hom f hf γ⁻¹ (inv_mem hγ) γ'⁻¹ (inv_mem hγ') (γ * g) (γ' * h) w`. Rewrite `e` using `[inv_mul_cancel_left, inv_mul_cancel_left]`. Rewrite using `[e]`. Establish `p1` using `(height_pos S (γ * g)).le`. Establish `p2` using `(height_pos T (γ' * h)).le`.
+
+Establish `q1` using `(quotHeight_pos S g).le`. Combine the equalities or inequalities in the displayed calculation. Generalize the expression as in `quotHeight S g = a`. Generalize the expression as in `quotHeight T h = b`. Rewrite using `[show 2 * a * (2 * b) = 4 * (a * b) by ring, mul_pow, mul_assoc]`.
+-/
 theorem om_sup_quotHeight : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ f, IsThetaFunO ψ S T f → ∃ (C : ℝ) (A : ℕ), ∀ g h w, ‖om (g, h) f w‖ ≤ C * (quotHeight S g * quotHeight T h) ^ A := by
   intro D ψ S T χS χT om hom f hf
   obtain ⟨C, A, hC⟩ := om_sup_growth D ψ S T χS χT om hom f hf

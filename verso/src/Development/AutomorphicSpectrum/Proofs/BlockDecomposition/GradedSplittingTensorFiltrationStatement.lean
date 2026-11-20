@@ -5,6 +5,9 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GrTens.main | exact GlobalTheory.CompanionTheory.GrTens.main | (intros; apply GlobalTheory.CompanionTheory.GrTens.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.graded_splitting_tensor_filtration : ∀ {O A Γ : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing Γ] [Algebra O Γ] [Module.Flat O Γ]
     {I : Ideal A} (γ : DividedPowers I) (m : ℕ) (S : GrSplit O γ m),
     ∃ g : (∀ i, S.N i ⊗[O] Γ) ≃ₗ[O] A ⊗[O] Γ, (∀ i n x, g (Pi.single i (n ⊗ₜ x)) = S.ν i n ⊗ₜ x) ∧

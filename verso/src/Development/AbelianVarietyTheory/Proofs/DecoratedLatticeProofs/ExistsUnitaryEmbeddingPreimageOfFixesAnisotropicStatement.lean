@@ -13,5 +13,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf GlobalTheory.Unf.FB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_emb_of_fixes_lineVec | exact GlobalTheory.exists_emb_of_fixes_lineVec | (intros; apply GlobalTheory.exists_emb_of_fixes_lineVec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_unitaryEmbedding_preimage_of_fixes_anisotropicLine : ∀ (D : D7) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → ∀ k : GA D S, mt S k *ᵥ ratV (o.iB *ᵥ ζ) = ratV (o.iB *ᵥ ζ) → ∃ h : GA D A, k = o.emb (h, 1) := by
   first | exact @GlobalTheory.exists_emb_of_fixes_lineVec | exact GlobalTheory.exists_emb_of_fixes_lineVec | (intros; apply GlobalTheory.exists_emb_of_fixes_lineVec <;> assumption)

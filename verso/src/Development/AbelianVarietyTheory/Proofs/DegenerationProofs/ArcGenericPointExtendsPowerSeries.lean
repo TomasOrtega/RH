@@ -20,6 +20,11 @@ open GlobalTheory.LN
 
 namespace GlobalTheory.LN.ArcExtends
 
+/- English proof (translation)
+Establish `: CompactSpace ↥(pullback π x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd π x)`. Take `⟨p, -⟩` from `(pullback.snd π x).surjective (default : PrimeSpectrum K)`. Take `⟨q, -, hq⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback π x)) ⟨p, trivial⟩`. Use `isClosed_singleton_iff_isClosedImmersion.mp hq` as an intermediate fact. Take `⟨φ, hφ⟩` from `Spec.map_surjective ((pullback π x).fromSpecResidueField q ≫ pullback.snd π x)`.
+
+Establish `hf : IsFinite (Spec.map φ)` using `by rw [hφ]; infer_instance`. Use `⟨(pullback π x).residueField q, inferInstance, φ.hom, (pullback π x).fromSpecResidueField q ≫ pullback.fst π x, (IsFinite.SpecMap_iff φ).1 hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ← hφ]`. Both sides reduce to the same expression.
+-/
 theorem exists_lift_finite {K : Type} [Field K] {Z X : Scheme.{0}} (π : Z ⟶ X) [IsFinite π] [Surjective π]
     (x : Sp K ⟶ X) : ∃ (L : Type) (_ : Field L) (σ : K →+* L) (z : Sp L ⟶ Z), σ.Finite ∧ z ≫ π = spMap σ ≫ x := by
   have : CompactSpace ↥(pullback π x) := QuasiCompact.compactSpace_of_compactSpace (pullback.snd π x)
@@ -33,6 +38,9 @@ theorem exists_lift_finite {K : Type} [Field K] {Z X : Scheme.{0}} (π : Z ⟶ X
   rw [Category.assoc, pullback.condition, ← Category.assoc, ← hφ]
   rfl
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext h)`.
+-/
 theorem spMap_jK {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {g : R →+* R'}
     {gam : FractionRing R →+* FractionRing R'} (h : ∀ r, gam (algebraMap R _ r) = algebraMap R' _ (g r)) :
     spMap gam ≫ jK R = jK R' ≫ spMap g := by
@@ -41,6 +49,11 @@ theorem spMap_jK {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain
   congr 1
   exact CommRingCat.hom_ext (RingHom.ext h)
 
+/- English proof (translation)
+Use `letI := g.toAlgebra`. Use `letI := gam.toAlgebra`. Establish `: Module.Finite R R₁` using `hg`. Establish `: IsScalarTower R (FractionRing R) (FractionRing R₁)` using `IsScalarTower.of_algebraMap_eq fun r => (h r).symm`. Establish `: FaithfulSMul R R₁` using `(faithfulSMul_iff_algebraMap_injective R R₁).2 fun a b e => IsFractionRing.injective R (FractionRing R) (gam.injective (by`.
+
+Rewrite using `[h, h]`. Conclude with `congrArg _ e))`. Use `show Module.Finite (FractionRing R) (FractionRing R₁)`. Conclude with `Module.Finite.of_isLocalization R R₁ (nonZeroDivisors R)`.
+-/
 theorem finite_fractionRing {R R₁ : Type} [CommRing R] [IsDomain R] [CommRing R₁] [IsDomain R₁] {g : R →+* R₁}
     {gam : FractionRing R →+* FractionRing R₁} (h : ∀ r, gam (algebraMap R _ r) = algebraMap R₁ _ (g r))
     (hg : g.Finite) : gam.Finite := by
@@ -54,6 +67,17 @@ theorem finite_fractionRing {R R₁ : Type} [CommRing R] [IsDomain R] [CommRing 
   show Module.Finite (FractionRing R) (FractionRing R₁)
   exact Module.Finite.of_isLocalization R R₁ (nonZeroDivisors R)
 
+/- English proof (translation)
+Use `letI := (σ.comp gam).toAlgebra`. Use `letI := ((σ.comp gam).comp (algebraMap R (FractionRing R))).toAlgebra`. Establish `: IsScalarTower R (FractionRing R) L` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: FiniteDimensional (FractionRing R) L` using `hσ.comp (finite_fractionRing h hg)`. Take `⟨h₁, h₂, h₃, h₄, h₅⟩` from `GlobalTheory.integralClosure_finite_local_of_isAdicComplete R hc L`.
+
+Establish `hR : ∀ r, algebraMap R L r = σ (algebraMap R₁ _ (g r))` using `fun r => congrArg σ (h r)`. Establish `hi : ∀ r : R₁, (σ.comp (algebraMap R₁ (FractionRing R₁))) r ∈ integralClosure R L` using `fun r => by`. Take `⟨p, hp, e⟩` from `hg.to_isIntegral r`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (σ.comp (algebraMap R₁ (FractionRing R₁))) e`.
+
+Rewrite `e'` using `[Polynomial.hom_eval₂, map_zero]`. Rewrite using `[← e']`. Use `congr 1`. Conclude with `RingHom.ext hR`. Establish `hinj : Function.Injective (algebraMap R L)` using `(σ.comp gam).injective.comp (IsFractionRing.injective R (FractionRing R))`.
+
+Establish `: CharZero L` using `charZero_of_injective_algebraMap hinj`. Set `g₂ : R₁ →+* integralClosure R L` to `(σ.comp (algebraMap R₁ (FractionRing R₁))).codRestrict _ hi`. Use `⟨integralClosure R L, inferInstance, inferInstance, h₂, h₃, h₄, inferInstance, g₂, (FractionRing.algEquiv (integralClosure R L) L).symm.toRingHom, fun r => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(FractionRing.algEquiv (integralClosure R L) L).symm.commutes (g₂ r)`. Establish `e : g₂.comp g = algebraMap R (integralClosure R L)` using `RingHom.ext fun r => Subtype.ext (hR r).symm`.
+
+Rewrite using `[e]`. Conclude with `(RingHom.finite_algebraMap.2 h₁).to_isIntegral`.
+-/
 theorem exists_normalisation (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R]
     [CharZero R] (hc : IsAdicComplete (IsLocalRing.maximalIdeal R) R) {R₁ : Type} [CommRing R₁] [IsDomain R₁] {g : R →+* R₁}
     {gam : FractionRing R →+* FractionRing R₁} (h : ∀ r, gam (algebraMap R _ r) = algebraMap R₁ _ (g r))
@@ -86,6 +110,11 @@ theorem exists_normalisation (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R
     rw [e]
     exact (RingHom.finite_algebraMap.2 h₁).to_isIntegral
 
+/- English proof (translation)
+Break down `h with ⟨hF, -⟩ | ⟨hD, hi, hc⟩` into its components or cases. Use `letI := hF.toField`. Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Use `infer_instance`.
+
+Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[hi.maximalIdeal_eq]` and apply the resulting hypothesis.
+-/
 theorem arcBase_complete {O' : Type} [CommRing O'] [IsDomain O'] {ϖ : O'} (h : ArcBase O' ϖ) :
     ∃ _ : IsLocalRing O', IsPrincipalIdealRing O' ∧ IsAdicComplete (IsLocalRing.maximalIdeal O') O' := by
   rcases h with ⟨hF, -⟩ | ⟨hD, hi, hc⟩
@@ -96,6 +125,11 @@ theorem arcBase_complete {O' : Type} [CommRing O'] [IsDomain O'] {ϖ : O'} (h : 
   · refine ⟨inferInstance, inferInstance, ?_⟩
     rwa [hi.maximalIdeal_eq]
 
+/- English proof (translation)
+Establish `hm : IsGrpPullback Y.oF.t.G Y.t.G Y.j Y.m.φ` using `Y.m.cart`. Establish `hp` using `isGrpPullback_pullback Y.t.G (y ≫ Y.j)`. Set `ψ : ((Over.pullback (y ≫ Y.j)).obj Y.t.G).left ⟶ Y.oF.t.G.left` to `hm.1.lift (pullback.fst Y.t.G.hom (y ≫ Y.j)) (pullback.snd Y.t.G.hom (y ≫ Y.j) ≫ y) (by rw [Category.assoc]; exact pullback.condition)`. Establish `e₁ : ψ ≫ Y.m.φ = pullback.fst Y.t.G.hom (y ≫ Y.j)` using `hm.1.lift_fst _ _ _`. Establish `hq : IsGrpPullback ((Over.pullback (y ≫ Y.j)).obj Y.t.G) Y.oF.t.G y ψ` using `IsGrpPullback.cancel hm (hp.congr rfl e₁.symm) (hm.1.lift_snd _ _ _)`.
+
+Take `⟨w, hw, -⟩` from `Y.m.lin`. Establish `hI : LBIso (Y.oF.t.PP.L.pull ψ) (Y.t.PP.L.pull (pullback.fst Y.t.G.hom (y ≫ Y.j)))` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull Y.oF.t.PP.L ψ ψ rfl) (chartPullSame Y.t.PP.L _ _ _ ψ fun _ => e₁.symm) ⟨w, hw⟩`. Use `Y.oF.proper` as an intermediate fact. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) hq.1 Y.oF.proper, amplePt _ K y _ _ ψ hq _ _ Y.oF.t.PP.isLB (pull_isLB Y.t.PP.isLB _) hI.symm Y.oF.ample Y.oF.ktriv⟩`.
+-/
 theorem polAt_moduli {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) {K : Type} [Field K]
     (y : Sp K ⟶ Xo.XF c) : PolAt Y.t (y ≫ Y.j) := by
@@ -115,6 +149,19 @@ theorem polAt_moduli {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   exact ⟨MorphismProperty.of_isPullback (P := @IsProper) hq.1 Y.oF.proper,
     amplePt _ K y _ _ ψ hq _ _ Y.oF.t.PP.isLB (pull_isLB Y.t.PP.isLB _) hI.symm Y.oF.ample Y.oF.ktriv⟩
 
+/- English proof (translation)
+Introduce `hL hL₂ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a ϖ hO m Z π t mt hfin hsurj ⟨Am⟩ R₁ _ _ g y₁ gam hgam hg _ y hy hs ⟨θ₁, hθ₁⟩ ⟨n, f₁, hf₁⟩`. Take `⟨_, _, hc⟩` from `arcBase_complete hO`. Establish `: CharZero (PowerSeries O')` using `charZero_of_injective_ringHom (PowerSeries.C_injective (R := O'))`. Take `⟨L, _, σ, z, hσ, hz⟩` from `exists_lift_finite π (y₁ ≫ Y.j)`. Take `⟨R₂, _, _, _, _, _, hch, g₂, f, hf, hint⟩` from `exists_normalisation (PowerSeries O') ReciprocityTheory.P1.isAdicComplete_ps hgam hg hσ`.
+
+Establish `hx : (spMap f ≫ z) ≫ π = spMap (f.comp σ) ≫ y₁ ≫ Y.j`. Rewrite using `[Category.assoc, hz, spMap_comp, Category.assoc]`. Establish `hP` using `polAt_moduli Y y₁`. Take `⟨θ, hθ, bθ⟩` from `GlobalTheory.T.sectionFrames_move_to_cover_and_ringExtension hL hL₂ E H _ Z Y.t t π mt R₁ R₂ g₂ _ hf _ _ hx hP 1 1 _ hθ₁`. Take `⟨ff, hff, bff⟩` from `GlobalTheory.T.sectionFrames_move_to_cover_and_ringExtension hL hL₂ E H _ Z Y.t t π mt R₁ R₂ g₂ _ hf _ _ hx hP (m ^ 2) n _ hf₁`.
+
+Take `⟨θ', rfl⟩ : ∃ θ', θ = fun _ : Fin 1 => θ'` from `⟨θ 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Establish `hab : Set.range (spMap f ≫ z) ⊆ abLocus t.G`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `(abLocus_pullback abLocusOne Y.t.semi mt.cart.1 _).1 (abLocusOne _ Y.t.G Y.t.semi _ _ hP.1 ?_)` and prove the remaining obligations. Conclude with `⟨spMap (f.comp σ) p, (congrArg (fun q => q p) hx).symm⟩`.
+
+Take `⟨e, he, hE⟩` from `GlobalTheory.FrameGen.exists_gen_of_frames Z t.G t.PP.L t.PP.isLB (m ^ 2) Am Am.A rfl R₂ _ hab θ' n ff hθ hff bθ bff hch`. Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: CompactSpace Z` using `QuasiCompact.compactSpace_of_compactSpace (π ≫ Y.s)`. Establish `: QuasiSeparatedSpace Z` using `quasiSeparatedSpace_of_quasiSeparated (π ≫ Y.s)`. Establish `hG : ∀ r, ((f.comp σ).comp gam) (algebraMap (PowerSeries O') _ r) = algebraMap R₂ _ ((g₂.comp g) r)` using `fun r => (congrArg (f.comp σ) (hgam r)).trans (hf _)`.
+
+Establish `hx' : (spMap f ≫ z) ≫ π = spMap ((f.comp σ).comp gam) ≫ y ≫ Y.j`. Rewrite using `[hx, ← hy, spMap_comp gam]`. Simplify using `only [Category.assoc]`. Take `⟨χ₂, hχ₂⟩` from `GlobalTheory.ExtLB.exists_extension Z Am.A Am.isLB Am.ample R₂ _ e he fun V _ _ _ hV φ gV hgV => by`. Use `hV.1` as an intermediate fact.
+
+Take `⟨χ, hχ, -⟩` from `val_exists (π ≫ Y.s) (spMap gV ≫ spMap f ≫ z) (spMap φ ≫ spMap (g₂.comp g) ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b) (by`. Rewrite using `[Category.assoc, ← Category.assoc (spMap f ≫ z), hx', Category.assoc, Category.assoc, hs, ← Category.assoc (spMap _) (jK _), spMap_jK hG, Category.assoc, ← Category.assoc (spMap gV), spMap_jK hgV, Category.assoc])`. Conclude with `⟨χ, hχ.symm, hE V hV φ gV hgV χ hχ.symm⟩`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.extension_descends_of_isIntegral _ R₂ _ _ hG hint Y.X (y ≫ Y.j) (χ₂ ≫ π) (by rw [← Category.assoc, hχ₂, hx'])`. Conclude with `⟨χ, hχ⟩`.
+-/
 theorem exists_extension : Laws → Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype) (O' : Type) [CommRing O'] [IsDomain O'] [CharZero O'] (b : c.V W₀ →+* O') (a : ArcIn D l (c.V W₀).subtype O' b) (ϖ : O'), ArcBase O' ϖ → ∀ (m : ℕ) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (t : SAB H Z) (_ : SABMap t Y.t π), IsFinite π → Surjective π → Nonempty (AmpFrames t.G t.PP.L (m ^ 2)) → ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] (g : PowerSeries O' →+* R₁) (y₁ : Sp (FractionRing R₁) ⟶ Xo.XF c) (gam : FractionRing (PowerSeries O') →+* FractionRing R₁), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap R₁ _ (g r)) → g.Finite → IsIntegrallyClosed R₁ → ∀ y : Sp (FractionRing (PowerSeries O')) ⟶ Xo.XF c, spMap gam ≫ y = y₁ → y ≫ Y.j ≫ Y.s = jK _ ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b → (∃ θ, IsFrame Y.t.G Y.t.PP.L 1 (y₁ ≫ Y.j) (fun _ : Fin 1 => θ)) → (∃ (n : ℕ) (f : Fin n → _), IsFrame Y.t.G Y.t.PP.L (m ^ 2) (y₁ ≫ Y.j) f) → ∃ χ : Sp (PowerSeries O') ⟶ Y.X, jK _ ≫ χ = y ≫ Y.j := by
   intro hL hL₂ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b a ϖ hO m Z π t mt hfin hsurj ⟨Am⟩ R₁ _ _ g y₁ gam hgam hg _ y hy hs
     ⟨θ₁, hθ₁⟩ ⟨n, f₁, hf₁⟩

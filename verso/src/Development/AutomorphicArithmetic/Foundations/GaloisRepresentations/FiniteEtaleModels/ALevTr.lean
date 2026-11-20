@@ -11,12 +11,40 @@ open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 open GlobalTheory.UPel.HT.EtLev.HeckeLev
 
+/- English proof (translation)
+Use `h _ hn` as an intermediate fact. Rewrite `this` using `[map_natCast, act_natCast, MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.Gal.FiniteEtaleModels.pow_one_of_killed_tr {p : ℕ} [Fact p.Prime] {D : Datum p} {S : Scheme.{0}} {A T : Over S}
     [GrpObj A] (act : OActN D.O A) {I : Ideal (𝓞 D.F)} {n : ℕ} (hn : (n : 𝓞 D.F) ∈ I) (t : T ⟶ A)
     (h : ∀ c ∈ I, t ≫ act.act (algebraMap (𝓞 D.F) D.O c) = 1) : t ^ n = 1 := by
   have := h _ hn
   rwa [map_natCast, act_natCast, MonObj.comp_pow, Category.comp_id] at this
 
+/- English proof (translation)
+Introduce `q _ D R _ b f c k N 𝔟 hk hq S s o o' ψ lv hT hL`. Take `⟨e, he⟩` from `hq`. Take `⟨hψ, hact, -, hgal, -, -⟩` from `hT`. Take `⟨hadd, hlin, hkill, hgeo⟩` from `hL`. Use `haveI := hψ`.
+
+Establish `hnI : ((q ^ e : ℕ) : 𝓞 D.F) ∈ 𝔟` using `he`. Establish `hkn : k.Coprime (q ^ e)` using `Nat.Coprime.pow_right e hk`. Take `⟨m, -, hm⟩` from `Nat.exists_mul_mod_eq_of_coprime 1 hkn (pow_ne_zero e (Fact.out : q.Prime).ne_zero)`. Establish `hmod : ∀ {Q : Type} [Monoid Q] (z : Q) (n j : ℕ), z ^ n = 1 → z ^ j = z ^ (j % n)`. Introduce `Q _ z n j hz`.
+
+Conclude with `pow_eq_pow_mod j hz`. Establish `hlv0 : lv 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.mp this.symm`.
+
+Take `⟨φ, hφm, hψφ⟩` from `GlobalTheory.HomDescent.exists_desc S o.A o'.A o.A (heckeSubA o f N) ψ hψ hgal (𝟙 o.A ^ k) (isMonHom_idPow o.A k) (fun h hh => by`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Conclude with `HeckeAd.pow_eq_one_of_mem o f h hh)`. Use `haveI := hφm`. Use `haveI : Epi ψ := by haveI := GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hgal`.
+
+Conclude with `Over.epi_of_epi_left ψ`. Establish `hφψ : φ ≫ ψ = 𝟙 o'.A ^ k`. Apply `(cancel_epi ψ).1` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hψφ, pow_comp_hom, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Establish `hφact : ∀ a : D.O, φ ≫ o.act.act a = o'.act.act a ≫ φ`.
+
+Introduce `a`. Use `haveI := o.act.hom a`. Apply `(cancel_epi ψ).1` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hψφ, ← Category.assoc, ← hact a, Category.assoc, hψφ, pow_comp_hom, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x y beta_reduce`. Rewrite using `[hadd, MonObj.mul_comp]`. Introduce `a x beta_reduce`. Rewrite using `[hlin, Category.assoc, hact, Category.assoc]`. Introduce `x hx beta_reduce`.
+
+Rewrite using `[hkill x hx, MonObj.one_comp]`. Introduce `K _ _ x`. Take `⟨hA, hB⟩` from `hgeo K x`. Prove the components needed by the constructor for the conclusion. Introduce `y hy beta_reduce at hy`.
+
+Apply `hA` to reduce the goal to its premises. Establish `hPk : (toUnit (Over.mk x) ≫ lv y) ^ k = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Use `_ = (toUnit (Over.mk x) ≫ lv y ≫ ψ) ≫ φ := by rw [← hψφ]; simp only [Category.assoc]`.
+
+Use `_ = 1 := by rw [hy, MonObj.one_comp]`. Establish `hPn : (toUnit (Over.mk x) ≫ lv y) ^ (q ^ e) = 1` using `UpperTheory.Gal.FiniteEtaleModels.pow_one_of_killed_tr o.act hnI _ (fun c hc => by`. Rewrite using `[Category.assoc, ← hlin, hkill _ (Submodule.subset_span ⟨c, by rw [pow_one]; exact hc, y, rfl⟩), MonObj.comp_one])`. Combine the equalities or inequalities in the displayed calculation. Introduce `g hg`.
+
+Establish `hg0 : ∀ c ∈ 𝔟 ^ 1, (g ≫ φ) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1`. Introduce `c hc`. Rewrite using `[Category.assoc, hφact, ← Category.assoc, hg c hc, MonObj.one_comp]`. Take `⟨y0, hy0⟩` from `hB (g ≫ φ) hg0`. Establish `hgk : g ^ k = toUnit (Over.mk x) ≫ lv y0 ≫ ψ`.
+
+Rewrite using `[← Category.assoc, hy0, Category.assoc, hφψ, MonObj.comp_pow, Category.comp_id]`. Establish `hgn : g ^ (q ^ e) = 1` using `UpperTheory.Gal.FiniteEtaleModels.pow_one_of_killed_tr o'.act hnI g (fun c hc => hg c (by rw [pow_one]; exact hc))`. Use `⟨m • y0, ?_⟩` and prove the remaining obligations. Use `show toUnit (Over.mk x) ≫ lv (m • y0) ≫ ψ = g`. Rewrite using `[map_nsmul_pow lv hadd hlv0 m y0, pow_comp_hom, MonObj.comp_pow, ← hgk, ← pow_mul, hmod g _ _ hgn, hm, ← hmod g _ 1 hgn, pow_one]`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.levTr_holds :
     LevTr := by
   intro q _ D R _ b f c k N 𝔟 hk hq S s o o' ψ lv hT hL

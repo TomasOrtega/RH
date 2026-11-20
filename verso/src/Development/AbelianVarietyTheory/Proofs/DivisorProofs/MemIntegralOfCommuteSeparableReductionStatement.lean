@@ -7,6 +7,9 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IntMatSep.integral_of_commute_sep | exact GlobalTheory.IntMatSep.integral_of_commute_sep | (intros; apply GlobalTheory.IntMatSep.integral_of_commute_sep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mem_integral_of_commute_separable_reduction : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (n : ℕ) (P₀ : (w.adicCompletionIntegers E)[X]),
     IsCoprime P₀ (derivative P₀) →
     ∀ (A s : Matrix (Fin n) (Fin n) (w.adicCompletion E)), (∀ i j, A i j ∈ w.adicCompletionIntegers E) →

@@ -27,9 +27,17 @@ namespace GlobalTheory.CubeAxes
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [MonObj.mul_comp]`.
+-/
 theorem lift_mul_lift {Y : Over S} (a a' b b' : Y ⟶ G) : lift a b * lift a' b' = lift (a * a') (b * b') := by
   ext <;> simp [MonObj.mul_comp]
 
+/- English proof (translation)
+Establish `hGG` using `AbelianSchemeGerms.isAbelianScheme_tensor G G hG hG`. Establish `T` using `GlobalTheory.CubeTop.cubeTheorem S (G ⊗ G) hGG P hP Y a b c`. Establish `z` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 T`. Rewrite `z` using `[cls_linComb hP]`. Simplify using `only [Fin.sum_univ_eight, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at z`.
+
+Rewrite using `[← z]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cube_cls (hG : IsAbelianScheme G) {P : LB (G ⊗ G).left} (hP : P.IsLB) {Y : Over S} (a b c : Y ⟶ G ⊗ G) :
     CechPic.pull (a * b * c).left (cls P hP) - CechPic.pull (a * b).left (cls P hP) - CechPic.pull (a * c).left (cls P hP)
       - CechPic.pull (b * c).left (cls P hP) + CechPic.pull a.left (cls P hP) + CechPic.pull b.left (cls P hP)
@@ -42,6 +50,15 @@ theorem cube_cls (hG : IsAbelianScheme G) {P : LB (G ⊗ G).left} (hP : P.IsLB) 
   rw [← z]
   abel
 
+/- English proof (translation)
+Introduce `S G _ hG P hP h₁ h₂`. Establish `l : ∀ {Y : Over S} (a : Y ⟶ G), evc hP 1 a = 0` using `fun a ↦ evc_one_left hP h₁ a`. Establish `r : ∀ {Y : Over S} (a : Y ⟶ G), evc hP a 1 = 0` using `fun a ↦ evc_one_right hP h₂ a`. Establish `o : ∀ {Y : Over S}, (1 : Y ⟶ G ⊗ G) = lift 1 1`. Introduce `Y`.
+
+Apply the tactic sequence `ext <;> simp`. Use `⟨(isAdditive_iff hP).2 fun Y x x' y ↦ ?_, (GlobalTheory.BirigidLift.isAdditive_swap_iff hP).2 fun Y x y y' ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `cube_cls hG hP (lift x 1) (lift x' 1) (lift 1 y)`. Simplify using `only [lift_mul_lift, _root_.mul_one, _root_.one_mul, o] at e`. Express the relevant statement in the definitionally equal form `evc hP (x * x') y - evc hP (x * x') 1 - evc hP x y - evc hP x' y + evc hP x 1 + evc hP x' 1 + evc hP 1 y - evc hP 1 1 = 0 at e`.
+
+Rewrite `e` using `[r, r, r, r, l]`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `e` using `cube_cls hG hP (lift 1 y) (lift 1 y') (lift x 1)`. Simplify using `only [lift_mul_lift, _root_.mul_one, _root_.one_mul, o] at e`.
+
+Express the relevant statement in the definitionally equal form `evc hP x (y * y') - evc hP 1 (y * y') - evc hP x y - evc hP x y' + evc hP 1 y + evc hP 1 y' + evc hP x 1 - evc hP 1 1 = 0 at e`. Rewrite `e` using `[l, l, l, l, r]`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+-/
 theorem additive_of_triv_axes : ∀ {S : Scheme.{0}} {G : Over S} [GrpObj G], IsAbelianScheme G →
     ∀ {P : LB (G ⊗ G).left} (hP : P.IsLB), (∃ t : (P.pull (lift (1 : G ⟶ G) (𝟙 G)).left).Gen, t.IsGen) →
     (∃ t : (P.pull (lift (𝟙 G) (1 : G ⟶ G)).left).Gen, t.IsGen) → IsAdditive P ∧ IsAdditive (swap P) := by

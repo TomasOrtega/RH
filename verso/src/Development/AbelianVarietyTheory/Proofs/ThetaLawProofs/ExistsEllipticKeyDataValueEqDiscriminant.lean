@@ -28,6 +28,13 @@ namespace GlobalTheory.EllipticKey
 
 open Filter Topology GlobalTheory.WeierstrassCurve
 
+/- English proof (translation)
+Establish `hl : HasDerivAt (fun t : ℂ => t • w) w 0` using `by simpa using (hasDerivAt_id (0 : ℂ)).smul_const w`. Establish `hc : Tendsto (fun t : ℂ => t • w) (𝓝 0) (𝓝 0)` using `by simpa using hl.continuousAt.tendsto`. Establish `d : ∀ {F : (Fin g → ℂ) → ℂ}, DifferentiableAt ℂ F 0 → HasDerivAt (fun t : ℂ => F (t • w)) (fderiv ℂ F 0 w) 0` using `fun {F} hF => by`. Establish `h4 : HasFDerivAt F (fderiv ℂ F 0) ((0 : ℂ) • w)` using `by rw [zero_smul]; exact hF.hasFDerivAt`. Conclude with `h4.comp_hasDerivAt (0 : ℂ) hl`.
+
+Establish `hne : ∀ᶠ z in 𝓝 0, e z ≠ 0` using `he.continuousAt.eventually_ne (by rw [he0]; exact one_ne_zero)`. Establish `h1` using `(d hZ).div (d he) (by simp [he0])`. Simplify using `only [zero_smul, he0, hZ0, _root_.mul_one, zero_mul, sub_zero, one_pow, div_one] at h1`. Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hc h, hc hne] with t h1 h2`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at h1 h2`. Simplify using `only [Pi.div_apply, h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hasDerivAt_of_eq_unit_mul {g : ℕ} {Z e θ : (Fin g → ℂ) → ℂ} (hZ : DifferentiableAt ℂ Z 0)
     (he : DifferentiableAt ℂ e 0) (h : ∀ᶠ z in 𝓝 0, Z z = e z * θ z) (he0 : e 0 = 1) (hZ0 : Z 0 = 0)
     (w : Fin g → ℂ) : HasDerivAt (fun t : ℂ => θ (t • w)) (fderiv ℂ Z 0 w) 0 := by
@@ -46,6 +53,13 @@ theorem hasDerivAt_of_eq_unit_mul {g : ℕ} {Z e θ : (Fin g → ℂ) → ℂ} (
   simp only [Pi.div_apply, h1]
   field_simp
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℤ, (k : ℂ) = 2 * a 0 := by`. Break down `h with ⟨h, -⟩ | ⟨h | h, -⟩` into its components or cases. Use `exacts [⟨0, by simp [h]⟩, ⟨0, by simp [h]⟩, ⟨1, by simp [h]⟩]`. Unfold `thetaChar`. Rewrite using `[← (Equiv.subLeft (fun _ : Fin 1 => -k)).tsum_eq]`.
+
+Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Simplify using `only [dotProduct, Matrix.mulVec, Fin.sum_univ_one, Equiv.subLeft_apply, Pi.add_apply, Pi.sub_apply, Pi.neg_apply, Int.cast_sub, Int.cast_neg, hk]`. Break down `h with ⟨h, h'⟩ | ⟨-, h'⟩` into its components or cases. Conclude with `⟨-n 0, by rw [h, h']; push_cast; ring⟩`.
+
+Conclude with `⟨0, by rw [h']; push_cast; ring⟩`.
+-/
 theorem thetaChar_neg (τ : Matrix (Fin 1) (Fin 1) ℂ) (a b z : Fin 1 → ℂ)
     (h : (a 0 = 0 ∧ b 0 = 1 / 2) ∨ ((a 0 = 0 ∨ a 0 = 1 / 2) ∧ b 0 = 0)) :
     thetaChar τ a b (-z) = thetaChar τ a b z := by
@@ -62,6 +76,37 @@ theorem thetaChar_neg (τ : Matrix (Fin 1) (Fin 1) ℂ) (a b z : Fin 1 → ℂ)
   · exact ⟨-n 0, by rw [h, h']; push_cast; ring⟩
   · exact ⟨0, by rw [h']; push_cast; ring⟩
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Establish `him : 0 < (τ 0 0).im` using `by simpa using hτ.diag_pos (i := 0)`. Establish `hodd : a 0 = 1 / 2 ∧ b 0 = 1 / 2`. Assume the negation of the conclusion as `hn`.
+
+Establish `h` using `fun z => thetaChar_neg τ a b z (by have := hab.1 0; have := hab.2 0; tauto)`. Establish `h2 : HasDerivAt (fun t : ℂ => c * thetaChar τ a b (t • (2 * Real.pi * Complex.I)⁻¹ • M 0)) (-1) (-0)`. Rewrite using `[neg_zero]` and apply the resulting hypothesis. Establish `h3` using `h2.comp (0 : ℂ) (hasDerivAt_neg (0 : ℂ))`. Simplify using `only [Function.comp_def, neg_smul, h] at h3`.
+
+Use `h3.unique hd` as an intermediate fact. Evaluate the numerical expressions using `at this`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `hpi' : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Establish `hM : M 0 0 ≠ 0` using `fun h => by`.
+
+Establish `e : M 0 = 0` using `funext fun i => by rw [Subsingleton.elim i 0]; exact h`. Simplify using `only [e, smul_zero] at hd`. Simplify using `using hd.unique (hasDerivAt_const _ _)`. Establish `hc : c ≠ 0` using `fun h => by`. Simplify using `only [h, zero_mul] at hd`.
+
+Simplify using `using hd.unique (hasDerivAt_const _ _)`. Set `t : UpperHalfPlane` to `⟨τ 0 0, him⟩`. Use `set p : ℂ := 2 * Real.pi * Complex.I / M 0 0 with hp`. Establish `hD : HasDerivAt (fun z : ℂ => thetaChar (g` using `1) !![(t : ℂ)] ![1 / 2] ![1 / 2] ![z]) (c⁻¹ * (-1 * p)) 0 := by`. Establish `h2 : HasDerivAt (fun t : ℂ => c * thetaChar τ a b (t • (2 * Real.pi * Complex.I)⁻¹ • M 0)) (-1) (0 * p)`.
+
+Rewrite using `[zero_mul]` and apply the resulting hypothesis. Establish `h3` using `(h2.comp (0 : ℂ) (hasDerivAt_mul_const p)).const_mul c⁻¹`. Use `h3.congr_of_eventuallyEq (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Function.comp_apply, inv_mul_cancel_left₀ hc]`.
+
+Use `congr 1`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Both sides reduce to the same expression.
+
+Use extensionality with `i`. Use `fin_cases i`. Conclude with `hodd.1.symm`. Use extensionality with `i`. Use `fin_cases i`.
+
+Conclude with `hodd.2.symm`. Use extensionality with `i fin_cases i`. Express the relevant statement in the definitionally equal form `z = z * p * ((2 * Real.pi * Complex.I)⁻¹ * M 0 0)`. Rewrite using `[hp]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hJ` using `GlobalTheory.JacobiDeriv.deriv_thetaChar_pow_eight t`. Rewrite `hJ` using `[hD.deriv]`. Rewrite using `[← latticeCurve_Δ, latticeCurve_Δ_eq_discriminant (a := p) (τ := t) (div_ne_zero hpi hM) fun x => ?_]`. Establish `hI : Complex.I ^ 4 = 1` using `Complex.I_pow_four`. Establish `e : ModularForm.discriminant t = (c⁻¹ * (-1 * p)) ^ 8 / (2 * Real.pi) ^ 8`.
+
+Rewrite using `[hJ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, hp, Matrix.det_fin_one]`. Clear the denominators using the available nonvanishing facts. Conclude with `hI`.
+
+Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, h⟩`. Use `⟨n 0, m 0, ?_⟩` and prove the remaining obligations. Use `congrFun h 0` as an intermediate fact.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.add_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_one] at this`. Express the relevant statement in the definitionally equal form `p * (n 0 * τ 0 0 + m 0) = x`. Rewrite using `[add_comm, mul_comm _ (τ 0 0), ← this, hp]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨m, n, rfl⟩`.
+
+Use `⟨![n], ![m], funext fun i => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `p * (m * τ 0 0 + n) * ((2 * Real.pi * Complex.I)⁻¹ * M 0 0) = n + ∑ j, τ 0 j * ((![m] j : ℤ) : ℂ)`. Rewrite using `[Fin.sum_univ_one, Matrix.cons_val_zero, hp]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_pow_div_eq {g : ℕ} (hg : g = 1) (τ M : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (c : ℂ)
     (hab : charHalf g a b) (hτ : (τ.map Complex.im).PosDef) (i : Fin g)
     (hd : HasDerivAt (fun t : ℂ => c * thetaChar τ a b (t • (2 * Real.pi * Complex.I)⁻¹ • M i)) (-1) 0)
@@ -133,11 +178,21 @@ theorem det_pow_div_eq {g : ℕ} (hg : g = 1) (τ M : Matrix (Fin g) (Fin g) ℂ
       field_simp
       ring
 
+/- English proof (translation)
+Rewrite using `[(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]`. Simplify using `[eSec]`.
+-/
 theorem ex_zero_left {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) :
     (u.ex 0).left = eSec A := by
   rw [(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]
   simp [eSec]
 
+/- English proof (translation)
+Establish `hi : ⊤ ≤ (L.pull (eSec A)).U (fun _ => i)` using `fun y hy => Set.mem_iInter.2 fun _ => (h hy).2`. Establish `hj : ⊤ ≤ (N.pull (eSec A)).U (fun _ => j)` using `fun y hy => Set.mem_iInter.2 fun _ => (h hy).1`. Establish `hij : ⊤ ≤ 𝟙 (Sp ℂ) ⁻¹ᵁ ((N.pull (eSec A)).U (fun _ => j) ⊓ (L.pull (eSec A)).U (fun _ => i))` using `le_inf hj hi`. Establish `e` using `congrArg (fun a => valAt' (𝟙 (Sp ℂ)) _ (Units.val a)) (hw (fun _ => j, fun _ => i))`. Simplify using `only [Units.val_mul, valAt'_mul] at e`.
+
+Rewrite using `[hu (fun _ => i) hi]`. Use `Eq.trans ?_ (e.symm.trans ((valAt'_res _ inf_le_left _ hij).trans ((congrArg (fun a => valAt' (𝟙 (Sp ℂ)) _ (Units.val a)) (hr _)).trans (valAt'_one _ hj))))` and prove the remaining obligations. Use `congr 1`. Simplify using `only [LB.linCombIso, id, Finset.univ_unique, zpow_one]`. Use `Eq.symm ((congrArg (fun a => valAt' (𝟙 (Sp ℂ)) _ (Units.val a)) (Finset.prod_singleton _ _)).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(valAt'_appLE (𝟙 (Sp ℂ)) (eSec A) (N.U j ⊓ L.U i) _ (le_top.trans h) (w.s (j, i)).val hij).trans (by rw [Category.id_comp])`. Conclude with `(valAt'_res _ inf_le_right _ hij).symm`.
+-/
 theorem valAt'_iso_mul_fr {A : Over (Sp ℂ)} [GrpObj A] {L N : LB A.left} {g : ℕ} (u : HolUnif A L g)
     (w : LB.Iso L N) {rig : LB.Gen (L.pull (eSec A))} {r : LB.Gen (N.pull (eSec A))} (hr : ∀ j, r.s j = 1)
     (hu : u.IsRig rig) (hw : LB.Gen.Maps (LB.linCombIso w (K := PUnit) (fun _ => eSec A) (fun _ => 1)) rig r)
@@ -158,6 +213,25 @@ theorem valAt'_iso_mul_fr {A : Over (Sp ℂ)} [GrpObj A] {L N : LB A.left} {g : 
       (by rw [Category.id_comp])
   · exact (valAt'_res _ inf_le_right _ hij).symm
 
+/- English proof (translation)
+Establish `h0` using `ex_zero_left u`. Take `⟨i, hi⟩ : ∃ i, eSec A (default : PrimeSpectrum ℂ) ∈ L.U i` from `TopologicalSpace.Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ _))`. Set `j : ((originLB W).pull φ).ι` to `fun _ => true`. Set `V : A.left.Opens` to `((originLB W).pull φ).U j ⊓ L.U i`. Establish `hV : V ≤ φ ⁻¹ᵁ originOpen W` using `inf_le_left.trans (LB.wchart_le (originLB W) (fun _ => φ) j PUnit.unit)`.
+
+Establish `hz : ⊤ ≤ (eSec A ≫ φ) ⁻¹ᵁ originOpen W`. Rewrite using `[he, Scheme.Hom.comp_preimage, zero_preimage_originOpen]`. Conclude with `le_rfl`. Establish `hV0 : ⊤ ≤ eSec A ⁻¹ᵁ V` using `(top_le_preimage_iff_mem _ _).2 ⟨Set.mem_iInter.2 fun _ => (top_le_preimage_iff_mem _ _).1 hz, hi⟩`. Establish `hn : ∀ U : A.left.Opens, V ≤ U → {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ U} ∈ 𝓝 (0 : Fin g → ℂ)` using `fun U hU => (u.hol U 0).1.mem_nhds (by rw [Set.mem_setOf_eq, h0]; exact top_le_preimage_mono _ hU hV0)`.
+
+Set `U₁ : A.left.Opens` to `φ ⁻¹ᵁ coordOpen W 1`. Establish `hV1 : V ≤ U₁` using `hV.trans (φ.preimage_mono (originOpen_le W))`. Set `f : Γ(A.left, U₁)` to `(φ.app (coordOpen W 1)).hom (ratio W 1 0)`. Establish `hf : ∀ x : Sp ℂ ⟶ A.left, ⊤ ≤ x ⁻¹ᵁ V → valAt' x U₁ f = valAt' (x ≫ φ) (originOpen W) (originParam W)` using `fun x hx => (valAt'_comp x φ _ _).trans (valAt'_res (x ≫ φ) (originOpen_le W) (ratio W 1 0) (top_le_preimage_mono x hV hx)).symm`. Establish `key` using `hasDerivAt_of_eq_unit_mul (Z := fun z => valAt' (u.ex z).left U₁ f) (e := fun z => valAt' (u.ex z).left V (w.s (j, i)).val * u.fr i z) (θ := θ) ((u.hol U₁ f).2.differentiableAt (hn _ hV1)) (((u.hol V _).2.differentiableAt (hn _ le_rfl)).mul ((u.fr_hol i).differentiableAt (hn _ in …`.
+
+Establish `h1 : ⊤ ≤ ptHom W ((algebraMap ℂ (DualNumber ℂ)).comp s) ![DualNumber.eps, -1, 0] h ⁻¹ᵁ coordOpen W 1`. Rewrite using `[ptHom_preimage_coordOpen]`. Introduce `p _ hp`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hp isUnit_one.neg)`. Establish `h2 : ⊤ ≤ v.left ⁻¹ᵁ U₁`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, hv]`. Conclude with `h1`. Rewrite `key` using `[← hd _ h2]`. Establish `e` using `evalPt_ptHom_ratioOn_mul _ _ h le_rfl h1 0`. Establish `e2 : ∀ (k : Sp (DualNumber ℂ) ⟶ scheme W) (hk : ⊤ ≤ k ⁻¹ᵁ coordOpen W 1), v.left ≫ φ = k → (v.left.appLE U₁ ⊤ h2).hom f = (k.appLE (coordOpen W 1) ⊤ hk).hom (ratio W 1 0)`.
+
+Introduce and unpack `_ hk rfl`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Rewrite `key` using `[e2 _ h1 hv]`. Establish `e3` using `congrArg TrivSqZeroExt.snd e`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, mul_neg, _root_.mul_one, TrivSqZeroExt.snd_neg, DualNumber.snd_eps] at e3`. Conclude with `(neg_eq_iff_eq_neg.1 e3) ▸ key`. Use `filter_upwards [hn V le_rfl] with z hz`. Establish `e` using `congrArg (valAt' (u.ex z).left V) (hth j i hV)`. Rewrite using `[hf _ hz, _root_.mul_assoc, mul_comm _ (θ z), ← hθ i z (top_le_preimage_mono _ inf_le_right hz), ← valAt'_res _ (inf_le_right : V ≤ L.U i) _ hz]`.
+
+Conclude with `(valAt'_appLE _ φ _ V hV _ hz).symm.trans (e.trans (valAt'_mul _ V _ _))`. Use `beta_reduce`. Rewrite using `[h0, hf _ hV0, valAt'_eq_valAt _ hz]`. Establish `k : ∀ (x : Sp ℂ ⟶ scheme W) (hx : ⊤ ≤ x ⁻¹ᵁ originOpen W), x = spMap s ≫ zero W → TangentOrigin.evalPt x _ hx (originParam W) = 0`. Introduce and unpack `_ hx rfl`.
+
+Rewrite using `[TangentOrigin.evalPt_spMap_comp _ _ _ (zero_preimage_originOpen W).ge]`. Conclude with `(congrArg _ (originValue_originParam W)).trans (map_zero _)`. Conclude with `k _ hz he`.
+-/
 theorem hasDerivAt_originFn {R : Type} [CommRing R] (W : WeierstrassCurve R) (s : R →+* ℂ) {A : Over (Sp ℂ)} [GrpObj A]
     {L : LB A.left} (hL : L.IsLB) {g : ℕ} (u : HolUnif A L g) (φ : A.left ⟶ scheme W)
     (he : eSec A ≫ φ = spMap s ≫ zero W) (w : LB.Iso L ((originLB W).pull φ)) (th : L.Sec) (θ : (Fin g → ℂ) → ℂ)
@@ -230,6 +304,19 @@ theorem hasDerivAt_originFn {R : Type} [CommRing R] (W : WeierstrassCurve R) (s 
       exact (congrArg _ (originValue_originParam W)).trans (map_zero _)
     exact k _ hz he
 
+/- English proof (translation)
+Take `⟨v, ⟨h, hv⟩, hb⟩` from `exists_isLieBasis_ellPolAV W`. Establish `hr : LB.Gen.IsGen (L` using `(ellPolAV W).L.pull (eSec (ellPolAV W).A)) ⟨fun _ => 1⟩ := by`. Rewrite using `[eSec_ellPolAV]`. Conclude with `isGen_one_pull_zero W`. Use `⟨⟨ellPolAV W, le_rfl, _, hr, ellTheta W, fun p => ?_, ![v], hb⟩, rfl, ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx, hx'⟩` from `exists_mem_coordOpen_two W p`. Conclude with `⟨x, hx, (nonzeroLocus_originSec W).ge hx'⟩`. Introduce and unpack `s x' τ M a b c ⟨φ, he, w, hg, F, hpb, -, hrig, hth, hF, hF', hvec⟩ hab ⟨u, -, hτ, hΛ, hu, hθ, hd⟩`. Use `replace hg : x'.P.g = 1 := hg`. Set `i : Fin x'.P.g` to `(0 : Fin 1).cast hg.symm`.
+
+Establish `hρ : F.comp (algebraMap R (DualNumber R)) = (algebraMap ℂ (DualNumber ℂ)).comp s` using `RingHom.ext hF`. Establish `hP : (F ∘ ![DualNumber.eps, -1, 0]) = ![DualNumber.eps, -1, 0]` using `by ext1 j; fin_cases j`. Conclude with `hF'`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Establish `h'` using `h.map_comp F`. Rewrite `h'` using `[hρ, hP]`. Establish `he' : eSec x'.P.A ≫ φ = spMap s ≫ zero W` using `he.trans (congrArg _ (eSec_ellPolAV W))`. Establish `hv' : (x'.v i).left ≫ φ = ptHom W ((algebraMap ℂ (DualNumber ℂ)).comp s) ![DualNumber.eps, -1, 0] h'` using `(hvec i).trans ((congrArg (spMap F ≫ ·) hv).trans ((SpecMap_ptHom W _ _ h _).trans (ptHom_congr W _ _ _ hρ hP _)))`. Take `⟨hw, x, y, t, hx, hy, hper, heq, ht, ht0, ht1, hty, hlim⟩` from `UnifCoord.exists_coord_on_line R W s x'.P.A φ (x'.v i) h' hpb.1 he' hv' x'.P.L x'.P.g u _ (hd i)`.
+
+Take `⟨L, hL⟩` from `GlobalTheory.exists_periodPair_of_lattice_in_line x'.P.g u.Λ _ hg hw u.discrete u.full`. Establish `hset : (L.lattice : Set ℂ) = {z | z • (2 * Real.pi * Complex.I)⁻¹ • M i ∈ u.Λ}` using `Set.ext hL`. Establish `key` using `GlobalTheory.invariants_eq_of_periodic_solution L (W.map s) x y t 1 one_ne_zero (hset ▸ hx) (hset ▸ hy) (fun l hl => hper l ((hL l).1 hl)) (fun z hz => heq z fun e => hz ((hL z).2 e)) ht ht0 ht1 hty hlim`. Simplify using `only [one_pow, _root_.one_mul, WeierstrassCurve.map_Δ] at key`. Rewrite using `[key.2.2]`.
+
+Use `det_pow_div_eq hg τ M a b c hab hτ i ?_ L fun z => (hL z).trans (hΛ _)` and prove the remaining obligations. Conclude with `hasDerivAt_originFn W s x'.P.isLB u φ he' w x'.th _ hθ hth (valAt'_iso_mul_fr u w (fun _ => (congrArg _ (map_one _)).trans (map_one _)) hu hrig) (x'.v i) h' hv' _ (hd i)`.
+-/
 theorem exists_keyIn_value_eq_discriminant' (R : Type) [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     ∃ x : KeyIn R, x.P.g = 1 ∧ ∀ (s : R →+* ℂ) (x' : KeyIn ℂ) (τ M : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ)
       (a b : Fin x'.P.g → ℂ) (c : ℂ), KeyPB x' x s → charHalf x'.P.g a b → NormalAt x' τ M a b c →
@@ -268,6 +355,9 @@ theorem exists_keyIn_value_eq_discriminant' (R : Type) [CommRing R] (W : Weierst
   exact hasDerivAt_originFn W s x'.P.isLB u φ he' w x'.th _ hθ hth
     (valAt'_iso_mul_fr u w (fun _ => (congrArg _ (map_one _)).trans (map_one _)) hu hrig) (x'.v i) h' hv' _ (hd i)
 
+/- English proof (translation)
+Introduce `_ R _ W _`. Take `⟨x, hx, h⟩` from `exists_keyIn_value_eq_discriminant' R W`. Conclude with `⟨x, hx, fun s x' τ M a b c h₁ h₂ _ h₃ => h s x' τ M a b c h₁ h₂ h₃⟩`.
+-/
 theorem exists_keyIn_value_eq_discriminant : ThetaUnifAV → ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R) [W.IsElliptic], ∃ x : KeyIn R, x.P.g = 1 ∧ ∀ (s : R →+* ℂ) (x' : KeyIn ℂ) (τ M : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (a b : Fin x'.P.g → ℂ) (c : ℂ), KeyPB x' x s → charHalf x'.P.g a b → c ≠ 0 → NormalAt x' τ M a b c → M.det ^ 4 / c ^ 8 = s W.Δ := by
   intro _ R _ W _
   obtain ⟨x, hx, h⟩ := exists_keyIn_value_eq_discriminant' R W

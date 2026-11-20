@@ -19,9 +19,19 @@ open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 def vac_gen_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : Set (Mx F E d.m d.n → ℂ) :=
   {f | ∃ φ, Dense.Good φ ∧ f = _root_.PositivityTheory.SiegelWeilFormula.KWhit.genF_k R (fun _ => 1) (Dense.pf φ)}
+/- English proof (translation)
+Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `Submodule.subset_span ⟨Dense.pf φ, Dense.pf_mem hφ, rfl⟩`.
+-/
 theorem vac_gen_sub_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : _root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_k R ⊆ R.vac := by
   rintro _ ⟨φ, hφ, rfl⟩
   exact Submodule.subset_span ⟨Dense.pf φ, Dense.pf_mem hφ, rfl⟩
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `Dense.mem_span_pf hg` as an intermediate fact. Use `clear hg`. Establish `key : _root_.PositivityTheory.SiegelWeilFormula.KWhit.genL_k R (fun _ => 1) g ∈ Submodule.span ℂ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_k R)`.
+
+Proceed by induction on `this using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨φ, hφ, rfl⟩ := hx`. Conclude with `Submodule.subset_span ⟨φ, hφ, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Conclude with `key`.
+-/
 theorem vac_le_span_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) : R.vac ≤ Submodule.span ℂ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_k R) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨g, hg, rfl⟩
@@ -34,12 +44,22 @@ theorem vac_le_span_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R
     | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
     | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
   exact key
+/- English proof (translation)
+Use `⟨φ, fun v => hφ.1 v, hφ.2.mono fun v hv => hv, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem vac_isPureBy_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d)
     (φ : ∀ u : HeightOneSpectrum (𝓞 F), (Fin d.m × Fin d.n × Fin 2 → Fv F u) → ℂ) (hφ : Dense.Good φ) (Φ : d.Fn)
     (h : d.T Φ = _root_.PositivityTheory.SiegelWeilFormula.KWhit.genF_k R (fun _ => 1) (Dense.pf φ)) : ∃ gf, _root_.PositivityTheory.SiegelWeilFormula.KWhit.IsPureBy_k R Φ (fun _ => 1) gf := by
   refine ⟨φ, fun v => hφ.1 v, hφ.2.mono fun v hv => hv, ?_⟩
   rw [h]
   rfl
+/- English proof (translation)
+Introduce `hT hF hPK hVK F E _ _ _ _ _ σ d R Φ hΦ hTΦ`. Establish `hB` using `hT.1 F E σ d`. Establish `hvf : R.vac ≤ R.fock` using `(hVK F E σ d R).2.1`. Establish `h1 : d.T Φ ∈ Submodule.span ℂ (_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_k R)` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_le_span_k R hTΦ`. Take `⟨k, c, gs, hsum⟩` from `Submodule.mem_span_set'.1 h1`.
+
+Establish `hpre : ∀ i : Fin k, ∃ Ψ ∈ d.sch, d.T Ψ = (gs i : Mx F E d.m d.n → ℂ)` using `fun i => hB.2.1 _ ((hF F E σ d R).1 (hvf (_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_sub_k R (gs i).2)))`. Use `choose Φs hΦs hTs using hpre`. Use `⟨k, c, Φs, fun i => ⟨hPK F E σ d R (Φs i) (hΦs i) (hTs i ▸ hvf (_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_sub_k R (gs i).2)), hTs i ▸ _root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_gen_sub_k R (gs i).2, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `(gs i).2`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KWhit.vac_isPureBy_k R φ hφ (Φs i) ((hTs i).trans e)`.
+
+Establish `hmem : Φ - ∑ i, c i • Φs i ∈ d.sch` using `sub_mem hΦ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hΦs i))`. Establish `h0 : d.T (Φ - ∑ i, c i • Φs i) = 0`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KWhit.T_sub_k, _root_.PositivityTheory.SiegelWeilFormula.KWhit.T_sum_k, ← hsum]`. Simplify using `only [hTs, sub_self]`. Conclude with `(sub_eq_zero.1 (hB.2.2 _ hmem h0))`.
+-/
 theorem vacSpan_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.VacSpan_k := by
   intro hT hF hPK hVK F E _ _ _ _ _ σ d R Φ hΦ hTΦ
   have hB := hT.1 F E σ d

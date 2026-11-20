@@ -18,12 +18,18 @@ open GlobalTheory.KS
 noncomputable section
 namespace GlobalTheory.KS.VertReg
 
+/- English proof (translation)
+Use `show (X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom f = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem rmul_rmul' {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (f : Γ(X, U)) :
     resG X h' (resG X h f) = resG X (h'.trans h) f := by
   show (X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom f = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Use `⟨(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (x.appLE U ⊤ h).hom, fun f => ?_⟩` and prove the remaining obligations. Unfold `valAt'`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 private theorem exists_ringHom_eq_valAt'' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) :
     ∃ φ : Γ(Y, U) →+* ℂ, ∀ f, valAt' x U f = φ f := by
   refine ⟨(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom.comp (x.appLE U ⊤ h).hom, fun f => ?_⟩
@@ -31,6 +37,9 @@ private theorem exists_ringHom_eq_valAt'' {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) (U
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ x ⁻¹ᵁ U` using `fun _ ha => hVU (h ha)`. Unfold `valAt'`. Rewrite using `[dif_pos h, dif_pos h']`. Unfold `valAt`. Conclude with `congrArg (fun s => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom s) (congrArg (fun φ => CommRingCat.Hom.hom φ f) (Scheme.Hom.map_appLE x h (homOfLE hVU).op))`.
+-/
 private theorem valAt'_resG_of_le {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U V : Y.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V)
     (f : Γ(Y, U)) : valAt' x V (resG Y hVU f) = valAt' x U f := by
   have h' : ⊤ ≤ x ⁻¹ᵁ U := fun _ ha => hVU (h ha)
@@ -40,6 +49,11 @@ private theorem valAt'_resG_of_le {Y : Scheme.{0}} (x : Sp ℂ ⟶ Y) {U V : Y.O
   exact congrArg (fun s => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom s)
     (congrArg (fun φ => CommRingCat.Hom.hom φ f) (Scheme.Hom.map_appLE x h (homOfLE hVU).op))
 
+/- English proof (translation)
+Unfold `valAt'`. Distinguish the cases in `hh : ⊤ ≤ x ⁻¹ᵁ φ ⁻¹ᵁ U`. Establish `hh' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `hh`. Rewrite using `[dif_pos hh, dif_pos hh']`. Unfold `valAt`.
+
+Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `hh' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U` using `hh`. Rewrite using `[dif_neg hh, dif_neg hh']`.
+-/
 private theorem valAt'_app_eq_valAt'_comp_moduli {Y Z : Scheme.{0}} (x : Sp ℂ ⟶ Y) (φ : Y ⟶ Z) (U : Z.Opens) (f : Γ(Z, U)) :
     valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f := by
   unfold valAt'
@@ -52,6 +66,13 @@ private theorem valAt'_app_eq_valAt'_comp_moduli {Y Z : Scheme.{0}} (x : Sp ℂ 
   · have hh' : ¬ ⊤ ≤ (x ≫ φ) ⁻¹ᵁ U := hh
     rw [dif_neg hh, dif_neg hh']
 
+/- English proof (translation)
+Unfold `valAt' constFn`. Rewrite using `[dif_pos h]`. Unfold `valAt`. Establish `e2` using `congrArg (fun φ => CommRingCat.Hom.hom φ ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c)) (Scheme.Hom.appLE_comp_appLE y q ⊤ U ⊤ (fun x _ => trivial) h)`. Establish `key : ∀ (φ : Sp ℂ ⟶ Sp ℂ) (_ : φ = 𝟙 _) (e : ⊤ ≤ φ ⁻¹ᵁ ⊤), (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom ((φ.appLE ⊤ ⊤ e).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c)) = c`.
+
+Introduce and unpack `φ rfl e`. Simplify using `[Scheme.Hom.appLE]`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (((Sp ℂ).presheaf.map (𝟙 (Opposite.op ⊤))).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c)) = c`. Rewrite using `[CategoryTheory.Functor.map_id]`. Simplify using the standard rewrite rules.
+
+Conclude with `(congrArg (fun s => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom s) e2).trans (key _ hq _)`.
+-/
 private theorem valAt'_constFn' {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) (q : Y ⟶ Sp ℂ) (hq : y ≫ q = 𝟙 _) (U : Y.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ U) (c : ℂ) : valAt' y U (constFn q U c) = c := by
   unfold valAt' constFn
@@ -70,6 +91,13 @@ private theorem valAt'_constFn' {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) (q : Y ⟶ S
     simp
   exact (congrArg (fun s => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom s) e2).trans (key _ hq _)
 
+/- English proof (translation)
+Unfold `valAt' at hg`. Rewrite `hg` using `[dif_pos h]`. Unfold `valAt at hg`. Establish `hu : IsUnit ((y.appLE U ⊤ h).hom g)`. Establish `h1` using `(isUnit_iff_ne_zero.2 hg).map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`.
+
+Simplify using `using h1`. Establish `h1 : (Sp ℂ).basicOpen ((y.appLE U ⊤ h).hom g) = ⊤` using `Scheme.basicOpen_of_isUnit _ hu`. Establish `h2 : (Sp ℂ).basicOpen ((y.appLE U ⊤ h).hom g) ≤ y ⁻¹ᵁ Y.basicOpen g`. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `(Scheme.basicOpen_res (Sp ℂ) ((y.app U).hom g) (homOfLE h).op).le.trans inf_le_right`.
+
+Conclude with `h1.ge.trans h2`.
+-/
 private theorem top_le_preimage_basicOpen_of_valAt'_ne_zero {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (g : Γ(Y, U))
     (hg : valAt' y U g ≠ 0) : ⊤ ≤ y ⁻¹ᵁ Y.basicOpen g := by
   unfold valAt' at hg
@@ -84,10 +112,30 @@ private theorem top_le_preimage_basicOpen_of_valAt'_ne_zero {Y : Scheme.{0}} (y 
     exact (Scheme.basicOpen_res (Sp ℂ) ((y.app U).hom g) (homOfLE h).op).le.trans inf_le_right
   exact h1.ge.trans h2
 
+/- English proof (translation)
+Introduce `_ ha` and use `⟨h1 ha, h2 ha⟩`.
+-/
 private theorem top_le_preimage_preimage_inf {Y X : Scheme.{0}} (y : Sp ℂ ⟶ Y) (m : Y ⟶ X) {U V : X.Opens}
     (h1 : ⊤ ≤ y ⁻¹ᵁ m ⁻¹ᵁ U) (h2 : ⊤ ≤ y ⁻¹ᵁ m ⁻¹ᵁ V) : ⊤ ≤ y ⁻¹ᵁ m ⁻¹ᵁ (U ⊓ V) :=
   fun _ ha => ⟨h1 ha, h2 ha⟩
 
+/- English proof (translation)
+Establish `hb : Y.basicOpen J.det ⊓ O₂ ≤ O₁` using `inf_le_left.trans (Y.basicOpen_le _)`. Establish `hu : IsUnit (resG Y hb J.det)`. Establish `h0 : IsUnit (resG Y (Y.basicOpen_le J.det) J.det)` using `Y.toRingedSpace.isUnit_res_basicOpen J.det`. Establish `h1` using `h0.map (resG Y (inf_le_left : Y.basicOpen J.det ⊓ O₂ ≤ Y.basicOpen J.det))`. Rewrite `h1` using `[rmul_rmul']`. Then use the resulting hypothesis.
+
+Set `A : Matrix (Fin n) (Fin n) Γ(Y, Y.basicOpen J.det ⊓ O₂)` to `Matrix.transpose (J.map (resG Y hb))`. Set `v : Fin n → Γ(Y, Y.basicOpen J.det ⊓ O₂)` to `fun b => resG Y inf_le_right (e b)`. Establish `hA : A.det = resG Y hb J.det`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Use `⟨↑hu.unit⁻¹ * (Matrix.mulVec A.adjugate v) a, ?_⟩` and prove the remaining obligations. Introduce `y hy w hw`. Take `⟨φ, hφ⟩` from `exists_ringHom_eq_valAt'' y _ hy`. Establish `hJ : ∀ i b, valAt' y O₁ (J i b) = φ (A b i)` using `fun i b => by`. Rewrite using `[← hφ]`.
+
+Conclude with `(valAt'_resG_of_le y hb hy (J i b)).symm`. Establish `he : ∀ b, valAt' y O₂ (e b) = φ (v b)` using `fun b => by`. Rewrite using `[← hφ]`. Conclude with `(valAt'_resG_of_le y inf_le_right hy (e b)).symm`. Set `M` to `A.map φ`.
+
+Establish `hM : Matrix.mulVec M w = fun b => φ (v b)`. Use function extensionality and compare the values at `b`. Rewrite using `[← he, hw b]`. Simplify using `only [M, Matrix.mulVec, dotProduct, Matrix.map_apply, hJ]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+
+Establish `hdet : φ ↑hu.unit = M.det`. Rewrite using `[IsUnit.unit_spec, ← hA, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hne : M.det ≠ 0`. Rewrite using `[← hdet]`.
+
+Conclude with `(hu.unit.isUnit.map φ).ne_zero`. Establish `hadj : φ ((Matrix.mulVec A.adjugate v) a) = (Matrix.mulVec M.adjugate (Matrix.mulVec M w)) a`. Rewrite using `[RingHom.map_mulVec]`. Establish `hm : A.adjugate.map φ = M.adjugate` using `RingHom.map_adjugate φ A`. Rewrite using `[hm, hM]`.
+
+Both sides reduce to the same expression. Rewrite using `[hφ, map_mul, map_units_inv, hadj, hdet, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ hne]`.
+-/
 theorem exists_cramer {Y : Scheme.{0}} {n : ℕ} (O₁ O₂ : Y.Opens) (J : Matrix (Fin n) (Fin n) Γ(Y, O₁))
     (e : Fin n → Γ(Y, O₂)) (a : Fin n) :
     ∃ c : Γ(Y, Y.basicOpen J.det ⊓ O₂), ∀ y : Sp ℂ ⟶ Y, ⊤ ≤ y ⁻¹ᵁ (Y.basicOpen J.det ⊓ O₂) → ∀ w : Fin n → ℂ,
@@ -137,12 +185,18 @@ theorem exists_cramer {Y : Scheme.{0}} {n : ℕ} (O₁ O₂ : Y.Opens) (J : Matr
 variable {R : Type} [CommRing R] {Y X : Scheme.{0}} {q : Y ⟶ Sp ℂ} {p : X ⟶ Sp R} {m : Y ⟶ X}
   {W₀ : X.Opens} {d : ∀ W : X.Opens, Γ(X, W) → Γ(Y, m ⁻¹ᵁ W)}
 
+/- English proof (translation)
+Use `show (X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom f = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (f : Γ(X, U)) :
     resG X h' (resG X h f) = resG X (h'.trans h) f := by
   show (X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom f = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Unfold `constFn`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)) (Scheme.Hom.appLE_map p _ (homOfLE h).op)`.
+-/
 theorem resG_constFn {U V : X.Opens} (h : V ≤ U) (r : R) : resG X h (constFn p U r) = constFn p V r := by
   unfold constFn
   exact congrArg (fun φ => CommRingCat.Hom.hom φ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))
@@ -151,6 +205,9 @@ theorem resG_constFn {U V : X.Opens} (h : V ≤ U) (r : R) : resG X h (constFn p
 def ptOf (W₀ : X.Opens) (d : ∀ W : X.Opens, Γ(X, W) → Γ(Y, m ⁻¹ᵁ W)) (y : Sp ℂ ⟶ Y) (W : X.Opens) (f : Γ(X, W)) : ℂ :=
   valAt' y (m ⁻¹ᵁ (W ⊓ W₀)) (d (W ⊓ W₀) (resG X inf_le_left f))
 
+/- English proof (translation)
+Establish `hy1 : ⊤ ≤ y ⁻¹ᵁ m ⁻¹ᵁ W'` using `hy`. Rewrite using `[h.res W W' hW h0 f]`. Conclude with `valAt'_resG_of_le y (fun _ hx => hW hx) hy1 (d W f)`.
+-/
 theorem val_res {D : R → ℂ} (h : LocDer q p m D W₀ d) (y : Sp ℂ ⟶ Y) {W W' : X.Opens} (hW : W' ≤ W) (h0 : W ≤ W₀)
     (hy : ⊤ ≤ (y ≫ m) ⁻¹ᵁ W') (f : Γ(X, W)) :
     valAt' y (m ⁻¹ᵁ W') (d W' (resG X hW f)) = valAt' y (m ⁻¹ᵁ W) (d W f) := by
@@ -158,6 +215,15 @@ theorem val_res {D : R → ℂ} (h : LocDer q p m D W₀ d) (y : Sp ℂ ⟶ Y) {
   rw [h.res W W' hW h0 f]
   exact valAt'_resG_of_le y (fun _ hx => hW hx) hy1 (d W f)
 
+/- English proof (translation)
+Name the introduced variables `hW`. Take `⟨φ, hφ⟩` from `exists_ringHom_eq_valAt'' y (m ⁻¹ᵁ (W ⊓ W₀)) (top_le_preimage_preimage_inf y m hW hy)`. Unfold `ptOf`. Rewrite using `[map_add, h.add _ inf_le_right]`. Simplify using `only [hφ, map_add]`.
+
+Use `mul W hW f f' := by`. Establish `hh : ⊤ ≤ y ⁻¹ᵁ m ⁻¹ᵁ (W ⊓ W₀)` using `top_le_preimage_preimage_inf y m hW hy`. Take `⟨φ, hφ⟩` from `exists_ringHom_eq_valAt'' y (m ⁻¹ᵁ (W ⊓ W₀)) hh`. Establish `e1 : ∀ g : Γ(X, W), valAt' (y ≫ m) W g = φ ((m.app (W ⊓ W₀)).hom (resG X inf_le_left g))` using `fun g => by`. Rewrite using `[← hφ, valAt'_app_eq_valAt'_comp_moduli, valAt'_resG_of_le (y ≫ m) inf_le_left hh]`.
+
+Unfold `ptOf`. Rewrite using `[e1 f, e1 f', map_mul, h.mul _ inf_le_right]`. Simplify using `only [hφ, map_add, map_mul]`. Use `res W W' hle hW' f := by`. Unfold `ptOf`.
+
+Rewrite using `[resG_resG, ← val_res h y (inf_le_inf_right W₀ hle) inf_le_right (top_le_preimage_preimage_inf y m hW' hy) (resG X inf_le_left f), resG_resG]`.
+-/
 theorem ptDer_ptOf {D : R → ℂ} (h : LocDer q p m D W₀ d) (y : Sp ℂ ⟶ Y) (hy : ⊤ ≤ (y ≫ m) ⁻¹ᵁ W₀) :
     PtDer (y ≫ m) (ptOf W₀ d y) where
   add W _ f f' := by
@@ -179,6 +245,9 @@ theorem ptDer_ptOf {D : R → ℂ} (h : LocDer q p m D W₀ d) (y : Sp ℂ ⟶ Y
     rw [resG_resG, ← val_res h y (inf_le_inf_right W₀ hle) inf_le_right (top_le_preimage_preimage_inf y m hW' hy)
       (resG X inf_le_left f), resG_resG]
 
+/- English proof (translation)
+Unfold `ptOf`. Rewrite using `[resG_constFn, h.base _ inf_le_right r]`. Conclude with `valAt'_constFn' y q hq (m ⁻¹ᵁ (⊤ ⊓ W₀)) (fun a ha => ⟨trivial, hy ha⟩) (D r)`.
+-/
 theorem ptOf_const {D : R → ℂ} (h : LocDer q p m D W₀ d) (y : Sp ℂ ⟶ Y) (hq : y ≫ q = 𝟙 _)
     (hy : ⊤ ≤ (y ≫ m) ⁻¹ᵁ W₀) (r : R) : ptOf W₀ d y ⊤ (constFn p ⊤ r) = D r := by
   unfold ptOf
@@ -190,6 +259,33 @@ end GlobalTheory.KS.VertReg
 namespace GlobalTheory.KS
 open VertReg
 
+/- English proof (translation)
+Introduce `P₀ u Hm χ hG R _ x₀ X p m hsm hpb W₀ d hd`. Establish `hq : ∀ z, (u.ex z).left ≫ P₀.A.hom = 𝟙 _` using `fun z => by simp [Over.w (u.ex z)]`. Establish `hw : ∀ z, ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W₀ → ∃ w : Fin P₀.g → ℂ, ∀ W f, z ∈ dom u m W → ptOf W₀ d (u.ex z).left W f = fderiv ℂ (fn u m W f) z w` using `fun z hz => (GlobalTheory.T.existsUnique_uniformising_vector_vertical_tangent P₀ u Hm χ hG R x₀ X p m hsm hpb z _ (ptDer_ptOf hd _ hz) (fun r => ptOf_const hd _ (hq z) hz r)).exists`. Set `wf : (Fin P₀.g → ℂ) → Fin P₀.g → ℂ` to `fun z => if hz : ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W₀ then (hw z hz).choose else 0`. Establish `hwf : ∀ z (hz : ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W₀) W f, z ∈ dom u m W → ptOf W₀ d (u.ex z).left W f = fderiv ℂ (fn u m W f) z (wf z)`.
+
+Introduce `z hz W f hzW`. Simplify using `only [wf, dif_pos hz]`. Conclude with `(hw z hz).choose_spec W f hzW`. Establish `lin : ∀ (L : (Fin P₀.g → ℂ) →L[ℂ] ℂ) (v : Fin P₀.g → ℂ), L v = ∑ i, v i * L (Pi.single i 1)`. Introduce `L v`.
+
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hs : (Pi.single i (v i) : Fin P₀.g → ℂ) = v i • (Pi.single i (1 : ℂ) : Fin P₀.g → ℂ)`. Use extensionality with `j`.
+
+Apply the tactic sequence `by_cases hj : j = i <;> simp [hj]`. Rewrite using `[hs, map_smul, smul_eq_mul]`. Use `choose D _ hDv using fun i : Fin P₀.g => GlobalTheory.T.invariant_vectorField_abelianVariety_algebraic P₀ u Hm χ hG (Pi.single i 1)`. Establish `hfn : ∀ (W : X.Opens) (f : Γ(X, W)), (fun z' => valAt' (u.ex z').left (m ⁻¹ᵁ W) ((m.app W).hom f)) = fn u m W f` using `fun W f => by`. Use function extensionality and compare the values at `z'`.
+
+Conclude with `valAt'_app_eq_valAt'_comp_moduli _ m W f`. Establish `hc : ∀ a, ∃ c : Γ(P₀.A.left, m ⁻¹ᵁ W₀), ∀ z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (m ⁻¹ᵁ W₀) → valAt' (u.ex z).left (m ⁻¹ᵁ W₀) c = wf z a`. Introduce `a`. Use `(GlobalTheory.T.existsUnique_section_of_locally_given_values P₀ u Hm χ hG (m ⁻¹ᵁ W₀) (fun z => wf z a) ?_).exists` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨W, t, hzW, hdet⟩` from `GlobalTheory.T.exists_fibre_coords_det_fderiv_ne_zero_of_smooth P₀ u Hm χ hG R x₀ X p m hsm hpb z`. Establish `hzW' : ⊤ ≤ (u.ex z).left ⁻¹ᵁ ((𝟙 P₀.A.left) ⁻¹ᵁ (m ⁻¹ᵁ W))` using `hzW`. Set `J : Matrix (Fin P₀.g) (Fin P₀.g) Γ(P₀.A.left, (𝟙 P₀.A.left) ⁻¹ᵁ (m ⁻¹ᵁ W))` to `fun i b => D i (m ⁻¹ᵁ W) ((m.app W).hom (t b))`. Set `e : Fin P₀.g → Γ(P₀.A.left, m ⁻¹ᵁ (W ⊓ W₀))` to `fun b => d (W ⊓ W₀) (resG X inf_le_left (t b))`. Establish `hJv : ∀ z', ⊤ ≤ (u.ex z').left ⁻¹ᵁ (m ⁻¹ᵁ W) → ∀ i b, valAt' (u.ex z').left _ (J i b) = fderiv ℂ (fn u m W (t b)) z' (Pi.single i 1)`.
+
+Introduce `z' hz' i b`. Rewrite using `[← hfn]`. Conclude with `hDv i (m ⁻¹ᵁ W) _ z' hz'`. Take `⟨c, hcr⟩` from `exists_cramer _ _ J e a`. Use `⟨_, c, inf_le_right.trans (fun _ hx => (inf_le_right : W ⊓ W₀ ≤ W₀) hx), ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hb : ⊤ ≤ (u.ex z).left ⁻¹ᵁ P₀.A.left.basicOpen J.det`. Use `top_le_preimage_basicOpen_of_valAt'_ne_zero _ _ hzW' _ ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `exists_ringHom_eq_valAt'' _ _ hzW'`. Rewrite using `[hφ, RingHom.map_det]`. Use `hdet using 2` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, ← hφ, hJv z hzW i b]`. Both sides reduce to the same expression. Conclude with `fun x hx => ⟨hb hx, ⟨hzW hx, hz hx⟩⟩`. Introduce `z' hz'`.
+
+Establish `h2 : ⊤ ≤ (u.ex z').left ⁻¹ᵁ m ⁻¹ᵁ (W ⊓ W₀)` using `fun x hx => (hz' hx).2`. Establish `hW' : ⊤ ≤ ((u.ex z').left ≫ m) ⁻¹ᵁ W` using `fun x hx => (h2 hx).1`. Establish `hW0 : ⊤ ≤ ((u.ex z').left ≫ m) ⁻¹ᵁ W₀` using `fun x hx => (h2 hx).2`. Use `hcr (u.ex z').left hz' (wf z') fun b => ?_` and prove the remaining obligations. Establish `e1 : valAt' (u.ex z').left (m ⁻¹ᵁ (W ⊓ W₀)) (e b) = ptOf W₀ d (u.ex z').left W (t b)` using `rfl`.
+
+Rewrite using `[e1, hwf z' hW0 W (t b) hW', lin]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hJv z' hW' i b]`. Use `choose c hcv using hc`. Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce `W hW f z hz`.
+
+Establish `hz' : ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W` using `hz`. Establish `hz0 : ⊤ ≤ ((u.ex z).left ≫ m) ⁻¹ᵁ W₀` using `fun x hx => hW (hz' hx)`. Establish `e1 : valAt' (u.ex z).left (m ⁻¹ᵁ W) (d W f) = ptOf W₀ d (u.ex z).left W f` using `(val_res hd _ inf_le_left hW (top_le_preimage_preimage_inf _ m hz' hz0) f).symm`. Rewrite using `[e1, hwf z hz0 W f hz]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Conclude with `(hcv a z hz0).symm`.
+-/
 theorem locDer_regular_coeff : ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (R : Type) [CommRing R] (x₀ : R →+* ℂ) (X : Scheme.{0}) (p : X ⟶ Sp R) (m : P₀.A.left ⟶ X), Smooth p → IsPullback m P₀.A.hom p (spMap x₀) → ∀ (W₀ : X.Opens) (d : ∀ W : X.Opens, Γ(X, W) → Γ(P₀.A.left, m ⁻¹ᵁ W)), LocDer P₀.A.hom p m (fun _ => 0) W₀ d → ∃ c : Fin P₀.g → Γ(P₀.A.left, m ⁻¹ᵁ W₀), ∀ W, W ≤ W₀ → ∀ f, ∀ z ∈ dom u m W, valAt' (u.ex z).left (m ⁻¹ᵁ W) (d W f) = fderiv ℂ (fn u m W f) z (fun a => valAt' (u.ex z).left (m ⁻¹ᵁ W₀) (c a)) := by
   classical
   intro P₀ u Hm χ hG R _ x₀ X p m hsm hpb W₀ d hd

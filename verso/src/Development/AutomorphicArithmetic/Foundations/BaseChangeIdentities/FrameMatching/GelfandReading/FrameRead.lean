@@ -11,8 +11,14 @@ namespace UpperTheory.BaseChangeIdentities.GelfandReading
 
 open PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+The claim follows from `ident_of pDerVal (pInfMatch gamma_zeta_nabla_cancel.gelfInj)`.
+-/
 theorem ident : BC.Ident := ident_of pDerVal (pInfMatch gamma_zeta_nabla_cancel.gelfInj)
 
+/- English proof (translation)
+The claim follows from `frameRead_of (BC.block_candidates_of_inputs chiTr BC.limAt_holds ident) CandPlug.candTOut`.
+-/
 theorem frameRead : FrameRead :=
   frameRead_of (BC.block_candidates_of_inputs chiTr BC.limAt_holds ident) CandPlug.candTOut
 

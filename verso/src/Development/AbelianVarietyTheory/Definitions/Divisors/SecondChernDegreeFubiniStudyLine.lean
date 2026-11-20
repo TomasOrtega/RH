@@ -19,6 +19,9 @@ namespace GlobalTheory.ChTwoModel
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+The claim follows from `Met.ext_of_exists fun y => by obtain ⟨a, ha⟩ := Met.exists_adapted hS h₁ h₃ y refine ⟨a.quot, ha, ?_⟩ rw [h.quot_G hS h₁ h₃ a ha] ext i j refine Eq.trans ?_ (((h.map (asIso S.g)).form_frame a.quot ha i j).symm.trans (h.form_map (asIso S.g) (a.t i) (a.t j) ha)).symm simp [quotGram …`.
+-/
 theorem quot_eq_map {S : ShortComplex X.Modules} (h : Met p σ S.X₂ (0 + 1)) (hS : S.ShortExact)
     (h₁ : IsVB S.X₁ 0) (h₃ : IsVB S.X₃ 1) [IsIso S.g] :
     h.quot hS h₁ h₃ = h.map (asIso S.g) := Met.ext_of_exists fun y => by
@@ -30,6 +33,11 @@ theorem quot_eq_map {S : ShortComplex X.Modules} (h : Met p σ S.X₂ (0 + 1)) (
     (h.form_map (asIso S.g) (a.t i) (a.t j) ha)).symm
   simp [quotGram, toBlocks₂₂, Met.gram, VBExt.AdaptedChart.frame]
 
+/- English proof (translation)
+Establish `i₁ : IsIso (fl.ι (Fin.succ 0))` using `fl.isIso_last`. Establish `hS` using `VMetric.stepSeq_shortExact fl 0`. Establish `i₂ : IsIso (VMetric.stepSeq fl 0).g` using `hS.isIso_g_iff.2 (VB.isVB_zero_iff.1 (fl.isVB (Fin.castSucc 0)))`. Establish `H₁ : (h.stepMet fl 0).IsCInf` using `H.restrict _ _`. Apply the tactic sequence `have e₁ := CurveDens.det_isometric_of_isIsometry k X p _ _ 1 (h.stepMet fl 0) h H₁ H (asIso (fl.ι (Fin.succ 0))) fun σ V s t y hy => ((h.met σ).form_restrict (fl.isSubbundle _) _ s t hy).symm`.
+
+Apply the tactic sequence `have e₂ := CurveDens.det_isometric_of_isIsometry k X p _ _ 1 (h.stepMet fl 0) (h.grMet fl 0) H₁ (H.grMet fl 0) (asIso (VMetric.stepSeq fl 0).g) ((VMetric.isIsometry_iff _).2 (VMetric.ext (funext fun σ => quot_eq_map ((h.stepMet fl 0).met σ) hS (fl.isVB (Fin.castSucc 0)) _)))`. Conclude with `e₁.symm.trans e₂`.
+-/
 theorem isometric_grLB {E : X.Modules} {h : VMetric p E 1} (H : h.IsCInf) (fl : Vert.Flag E 1) :
     (VMetric.det H).Isometric (VMetric.grLB fl 0 H) := by
   have i₁ : IsIso (fl.ι (Fin.succ 0)) := fl.isIso_last
@@ -44,6 +52,11 @@ theorem isometric_grLB {E : X.Modules} {h : VMetric p E 1} (H : h.IsCInf) (fl : 
       (funext fun σ => quot_eq_map ((h.stepMet fl 0).met σ) hS (fl.isVB (Fin.castSucc 0)) _)))
   exact e₁.symm.trans e₂
 
+/- English proof (translation)
+Use `⟨⟨.self hX H (.ofRankOne h.isVB)⟩, fun M => (VMetric.isFlagCh2_rank_one _ _).2 ?_⟩` and prove the remaining obligations. Establish `h₁` using `(HC.2.2.2.2.1 k X M.Y p (M.ρ ≫ p) 1 hX.toIsArithVar M.reg.toIsArithVar M.ρ rfl M.generic M.finite).1 _ a ha`. Establish `h₂` using `((VMetric.isometric_det_pull H M.ρ rfl).symm.trans (isometric_grLB M.cInf M.flag)).isSelfInter M.reg.toIsArithVar h₁`. Use `h₂ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[RegCover.deg]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isCh2Deg_rank_one (HC : Published.ArCalc) [IsIntegral X] (hX : IsRegSurf p) {E : X.Modules}
     {h : VMetric p E 1} (H : h.IsCInf) {a : ℝ} (ha : (VMetric.det H).IsSelfInter a) :
     h.IsCh2Deg (a / 2) := by
@@ -56,11 +69,19 @@ theorem isCh2Deg_rank_one (HC : Published.ArCalc) [IsIntegral X] (hX : IsRegSurf
   rw [RegCover.deg]
   ring
 
+/- English proof (translation)
+The claim follows from `HermLB.isometric_of_chart (M := VMetric.det (VMetric.isCInf_ofLB L)) (Chart.ofLB L.isLB) (fun _ => le_rfl) (fun x i j _ _ => congrArg (gm (𝟙 X) x _) (TautFlag.detUnit_chartSec_eq L.isLB i j).symm) fun σ _ _ hy => Met.detWeight_ofWeight (L.φ σ) hy`.
+-/
 theorem isometric_det_ofLB (L : HermLB p) : L.Isometric (VMetric.det (VMetric.isCInf_ofLB L)) :=
   HermLB.isometric_of_chart (M := VMetric.det (VMetric.isCInf_ofLB L)) (Chart.ofLB L.isLB)
     (fun _ => le_rfl) (fun x i j _ _ => congrArg (gm (𝟙 X) x _) (TautFlag.detUnit_chartSec_eq L.isLB i j).symm)
     fun σ _ _ hy => Met.detWeight_ofWeight (L.φ σ) hy
 
+/- English proof (translation)
+Establish `h₁` using `HC.2.2.1 k X p 1 hX.toIsArithVar _ a (-t / 2) ha`. Establish `e : ((VMetric.det H).shift (fun _ => -t / 2) fun _ => rfl).Isometric (VMetric.det (H.scale t))` using `HermLB.isometric_of_chart (M := VMetric.det (H.scale t)) id (fun _ => le_rfl) (fun _ _ _ _ _ => rfl) fun σ c y hy => by`. Express the relevant statement in the definitionally equal form `-Real.log ((Real.exp t : ℂ) • (h.met σ).G c y).det.re = -Real.log _ + 2 * (-t / 2)`. Rewrite using `[det_smul, Fintype.card_fin, pow_one, Complex.re_ofReal_mul, Real.log_mul (by positivity) (det_re_pos ((h.met σ).posDef c y hy)).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `isCh2Deg_rank_one HC hX (H.scale t) (e.isSelfInter hX.toIsArithVar h₁) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[VMetric.firstChernIntegral_eq_degree H]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isCh2Deg_scale (HC : Published.ArCalc) [IsIntegral X] (hX : IsRegSurf p) {E : X.Modules}
     {h : VMetric p E 1} (H : h.IsCInf) {a : ℝ} (ha : (VMetric.det H).IsSelfInter a) (t : ℝ) :
     (h.scale t).IsCh2Deg (a / 2 - t / 2 * h.first_chern_integral) := by
@@ -77,6 +98,9 @@ theorem isCh2Deg_scale (HC : Published.ArCalc) [IsIntegral X] (hX : IsRegSurf p)
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `ProjSpace.isRegSurf_line.isIntegral (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).h.IsCh2Deg (1 / 4) ∧ (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).ch2Deg = 1 / 4 := by haveI := ProjSpace.isRegSurf_line.isIntegral have h := isCh2Deg_rank_one HC ProjSpace.isRegSurf_ …`.
+-/
 theorem secondChernDegree_fubiniStudy_line (HC : Published.ArCalc) :
     haveI := ProjSpace.isRegSurf_line.isIntegral
     (HermVB.ofLB (ProjSpace.hermitianTwistingSheaf ℤ 1)).h.IsCh2Deg (1 / 4) ∧
@@ -87,6 +111,11 @@ theorem secondChernDegree_fubiniStudy_line (HC : Published.ArCalc) :
   rw [show (1 / 2 / 2 : ℝ) = 1 / 4 by norm_num] at h
   exact ⟨h, h.ch2Deg_eq⟩
 
+/- English proof (translation)
+Set `φ` to `(Scheme.Modules.pullbackId X).app E`. Establish `e₁` using `(VMetric.isIsometry_pull_id_comp k X p E r h).1`. Apply the tactic sequence `have e₂ : h.IsIsometry (h.pull (𝟙 X) (Category.id_comp p)) φ.symm := fun σ V s t y hy => by`. Establish `u (s : Γ(E, V)) : φ.hom.app V (φ.inv.app V s) = s` using `congr(($(φ.inv_hom_id)).app V s)`. Conclude with `(e₁ σ V _ _ y hy).symm.trans (congrArg₂ ((h.met σ).form · · y) (u s) (u t))`.
+
+Establish `e₃` using `(VMetric.isFlagCh2_ofIso k X p _ _ r h _ φ.symm H (H.pull (𝟙 X) (Category.id_comp p)) fl b e₂).1 hb`. Establish `e₄ (q : X ⟶ Sp k) (e : 𝟙 X ≫ p = q) (fl') (H' : VMetric.IsFlagCh2 (H.pull (𝟙 X) e) fl' b) : VMetric.IsFlagCh2 (H.pull (𝟙 X) rfl) fl' b` using `by subst e; exact H'`. Establish `e₅` using `ha.eq_div (.self hX H fl) (e₄ _ _ _ e₃)`. Rewrite `e₅` using `[show (VMetric.FlagModel.self hX H fl).deg = 1 from RegCover.deg_self hX, Nat.cast_one, div_one]`. Then use the resulting hypothesis.
+-/
 theorem eq_of_isFlagCh2 [IsIntegral X] (hX : IsRegSurf p) {E : X.Modules} {r : ℕ} {h : VMetric p E r}
     {H : h.IsCInf} {fl : Vert.Flag E r} {a b : ℝ} (ha : h.IsCh2Deg a)
     (hb : VMetric.IsFlagCh2 H fl b) : a = b := by
@@ -103,6 +132,9 @@ theorem eq_of_isFlagCh2 [IsIntegral X] (hX : IsRegSurf p) {E : X.Modules} {r : �
   rwa [show (VMetric.FlagModel.self hX H fl).deg = 1 from RegCover.deg_self hX, Nat.cast_one,
     div_one] at e₅
 
+/- English proof (translation)
+The claim follows from `ProjSpace.isRegSurf_line.isIntegral (HermVB.std (PSpace.str ℤ 1) 2).h.IsCh2Deg a → a = 0 := haveI := ProjSpace.isRegSurf_line.isIntegral fun ha => have ⟨_, _, _, hf⟩ := TautFlag.exists_flag HC eq_of_isFlagCh2 ProjSpace.isRegSurf_line ha hf`.
+-/
 theorem eq_zero_of_isCh2Deg_std (HC : Published.ArCalc) {a : ℝ} :
     haveI := ProjSpace.isRegSurf_line.isIntegral
     (HermVB.std (PSpace.str ℤ 1) 2).h.IsCh2Deg a → a = 0 :=

@@ -16,6 +16,15 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.Glob PositivityTheory.Rg.Sw.G
   PositivityTheory.Rg.Sw.Glob.VacD PositivityTheory.Rg.Sw.Glob.VacE PositivityTheory.Rg.Sw.Glob.VacF PositivityTheory.Rg.Sw.Glob.VacG PositivityTheory.Rg.Sw.Glob.VacH
   PositivityTheory.Rg.Sw.Glob.VacI PositivityTheory.Rg.Sw.Glob.VacJ
 
+/- English proof (translation)
+Establish `inner : ∀ a, ∏ j, ((Real.cos (φ j) : ℂ) + Complex.I * (rhoT t ε a : ℂ) * (Real.sin (φ j) : ℂ)) = if epsT t ε a = true then ∏ j, Complex.exp (Complex.I * (φ j : ℂ)) else (∏ j, Complex.exp (Complex.I * (φ j : ℂ)))⁻¹`. Introduce `a`. Distinguish the cases in `h : epsT t ε a = true`. Rewrite using `[if_pos h]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [rhoT, if_pos h]`. Rewrite using `[show Complex.I * (φ j : ℂ) = (φ j : ℂ) * Complex.I by ring, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, ← Finset.prod_inv_distrib]`.
+
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [rhoT, if_neg h]`. Rewrite using `[← Complex.exp_neg, show -(Complex.I * (φ j : ℂ)) = (-(φ j : ℂ)) * Complex.I by ring, Complex.exp_mul_I, Complex.cos_neg, Complex.sin_neg, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.prod_congr rfl (fun a _ => inner a), Finset.prod_ite, Finset.prod_const, Finset.prod_const]`. Simplify using `only [cnt, Bool.not_eq_true]`.
+-/
 theorem prodF {m n : ℕ} (t : ℝ) (ε : Fin m → Bool) (φ : Fin n → ℝ) :
     ∏ a, ∏ j, ((Real.cos (φ j) : ℂ) + Complex.I * (rhoT t ε a : ℂ) * (Real.sin (φ j) : ℂ)) =
       (∏ j, Complex.exp (Complex.I * (φ j : ℂ))) ^ (cnt (epsT t ε) true) *
@@ -42,6 +51,11 @@ theorem prodF {m n : ℕ} (t : ℝ) (ε : Fin m → Bool) (φ : Fin n → ℝ) :
   rw [Finset.prod_congr rfl (fun a _ => inner a), Finset.prod_ite, Finset.prod_const, Finset.prod_const]
   simp only [cnt, Bool.not_eq_true]
 
+/- English proof (translation)
+Rewrite using `[inv_zpow', inv_zpow', neg_sub, zpow_sub₀ ha, zpow_sub₀ ha']`. Simplify using `only [zpow_neg, zpow_natCast, mul_zpow, inv_pow, mul_pow]`. Establish `hA : a ^ e ≠ 0` using `zpow_ne_zero e ha`. Establish `hA' : a' ^ e ≠ 0` using `zpow_ne_zero e ha'`. Establish `hXp : X ^ p ≠ 0` using `pow_ne_zero p hX`.
+
+Establish `hXq : X ^ q ≠ 0` using `pow_ne_zero q hX`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alg (a a' X : ℂ) (ha : a ≠ 0) (ha' : a' ≠ 0) (hX : X ≠ 0) (e : ℤ) (p q : ℕ) :
     1 * (a' ^ e * (a'⁻¹) ^ (((p + q : ℕ) : ℤ) - e)) * (X ^ p * (X⁻¹) ^ q) * (a ^ e * (a⁻¹) ^ (((p + q : ℕ) : ℤ) - e)) =
       (a * a * (a' * a')) ^ e * (a * X⁻¹ * a') ^ (-(p : ℤ)) * (a * X * a') ^ (-(q : ℤ)) := by

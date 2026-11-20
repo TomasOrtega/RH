@@ -3,11 +3,19 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd) ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)`.
+-/
 theorem pow_eq_of_associated_pow_irreducible {W : Type} [CommRing W] [IsDomain W] {ϖ : W}
     (hϖ : Irreducible ϖ) {k n : ℕ} (h : Associated (ϖ ^ k) (ϖ ^ n)) : k = n :=
   le_antisymm ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.dvd)
     ((pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 h.symm.dvd)
 
+/- English proof (translation)
+Establish `hirr : Irreducible (x ^ j)` using `h.symm.irreducible hϖ`. Take `⟨m, rfl⟩ : ∃ m, j = m + 1` from `⟨j - 1, by omega⟩`. Break down `m with _ | m` into its components or cases. Simplify using `using h`. It suffices to derive a contradiction.
+
+Rewrite `hirr` using `[pow_succ]`. Break down `hirr.isUnit_or_isUnit rfl with hu | hu` into its components or cases. Establish `hx : IsUnit x` using `isUnit_of_dvd_unit (dvd_pow_self x (Nat.succ_ne_zero m)) hu`. Conclude with `hirr.not_isUnit (hu.mul hx)`. Conclude with `hirr.not_isUnit ((hu.pow (m + 1)).mul hu)`.
+-/
 theorem associated_of_pow_associated_irreducible {W : Type} [CommRing W] [IsDomain W] {ϖ x : W}
     (hϖ : Irreducible ϖ) {j : ℕ} (hj : 1 ≤ j) (h : Associated (x ^ j) ϖ) : Associated x ϖ := by
   have hirr : Irreducible (x ^ j) := h.symm.irreducible hϖ
@@ -21,6 +29,21 @@ theorem associated_of_pow_associated_irreducible {W : Type} [CommRing W] [IsDoma
       exact hirr.not_isUnit (hu.mul hx)
     · exact hirr.not_isUnit ((hu.pow (m + 1)).mul hu)
 
+/- English proof (translation)
+Take `⟨π₀, hπ₀Q, hπ₀⟩` from `hπ`. Set `G : Localization.AtPrime Q →+* W` to `IsLocalization.lift (M := Q.primeCompl) (S := Localization.AtPrime Q) (g := g) (fun y => hu y y.2)`. Establish `hG : ∀ r, G (algebraMap R (Localization.AtPrime Q) r) = g r` using `fun r => IsLocalization.lift_eq _ r`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime Q)`. Establish `h2 : algebraMap R (Localization.AtPrime Q) π₀ ≠ 0`.
+
+Introduce `e`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Conclude with `hπ₀.eq_zero_iff.1 (by rw [← hG, e, map_zero])`. Establish `h1 : algebraMap R (Localization.AtPrime Q) h ≠ 0`. Introduce `e`.
+
+Apply `hh` to reduce the goal to its premises. Apply `hg` to reduce the goal to its premises. Rewrite using `[← hG, e, map_zero, map_zero]`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h1 hp`. Take `⟨j, hj⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h2 hp`.
+
+Establish `hj1 : 1 ≤ j`. Assume the negation of the conclusion as `hj0`. Establish `hj0' : j = 0` using `by omega`. Substitute `hj0'` using the available equality. Establish `hmem : algebraMap R (Localization.AtPrime Q) π₀ ∈ maximalIdeal (Localization.AtPrime Q)` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime Q) Q π₀).2 hπ₀Q`.
+
+Rewrite `hj` using `[pow_zero, associated_one_iff_isUnit]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hmem hj`. Establish `hGp : Associated (G p) ϖ`. Use `hj.map G` as an intermediate fact. Rewrite `this` using `[hG, map_pow]`.
+
+Conclude with `associated_of_pow_associated_irreducible hϖ hj1 (this.symm.trans hπ₀)`. Establish `hk' : Associated (g h) (ϖ ^ k)`. Use `hk.map G` as an intermediate fact. Rewrite `this` using `[hG, map_pow]`. Conclude with `this.trans (hGp.pow_pow)`.
+
+Establish `hkn : k = n` using `pow_eq_of_associated_pow_irreducible hϖ (hk'.symm.trans hn)`. Substitute `hkn` using the available equality. Rewrite using `[Ideal.map_span, Set.image_singleton, hp.maximalIdeal_eq, Ideal.span_singleton_pow]`. Conclude with `Ideal.span_singleton_eq_span_singleton.2 hk`.
+-/
 theorem span_map_localization_eq_maximalIdeal_pow {R : Type} [CommRing R] [IsDomain R]
     (Q : Ideal R) [Q.IsPrime] (hV : IsDiscreteValuationRing (Localization.AtPrime Q))
     {W : Type} [CommRing W] [IsDomain W] (ϖ : W) (hϖ : Irreducible ϖ) (g : R →+* W)

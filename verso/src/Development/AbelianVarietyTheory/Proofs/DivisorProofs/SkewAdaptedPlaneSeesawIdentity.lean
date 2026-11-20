@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.MixWTorus
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hm Φ hΦ`. Distinguish the cases in `h0 : ∃ Ψ ∈ schA F (Fin n × Fin d), e Ψ ≠ 0`. Take `⟨hmaps, hheis, hinv, hadm⟩` from `GlobalTheory.T.skew_adapted_pair_extension_eigen F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hm`. Take `⟨k, hk⟩` from `GlobalTheory.T.skew_adapted_pair_theta_integral hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he _ hmaps hheis hinv hadm`. Establish `hk' : ∀ Ψ ∈ schA F (Fin n × Fin d), e (om (1, m) Ψ) = k • e Ψ` using `fun Ψ hΨ => hk Ψ hΨ`.
+
+Rewrite using `[← GlobalTheory.T.skew_adapted_pair_local_factor hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hm k hk' h0]`. Conclude with `hk' Φ hΦ`. Use `push_neg at h0`. Establish `h1 : om (1, m) Φ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres (1, m) Φ hΦ`. Rewrite using `[h0 _ h1, h0 _ hΦ, smul_zero]`.
+-/
 theorem evalZero_torus : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

@@ -4,6 +4,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω Ω₁ Ω₂ _ _ _ i₁ i₂`. Use `letI : Algebra Ω Ω₁ := i₁.toAlgebra`. Use `letI : Algebra Ω Ω₂ := i₂.toAlgebra`. Use `haveI : Nontrivial (Ω₁ ⊗[Ω] Ω₂) := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (Ω₁ ⊗[Ω] Ω₂)`.
+
+Use `⟨(Ω₁ ⊗[Ω] Ω₂) ⧸ m, Ideal.Quotient.field m, (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeLeftRingHom), (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight (R := Ω) (A := Ω₁) (B := Ω₂)).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h : (algebraMap Ω Ω₁ x) ⊗ₜ[Ω] (1 : Ω₂) = (1 : Ω₁) ⊗ₜ[Ω] (algebraMap Ω Ω₂ x)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Conclude with `congrArg (Ideal.Quotient.mk m) h`.
+-/
 theorem exists_common_field_extension :
     ∀ (Ω Ω₁ Ω₂ : Type) [Field Ω] [Field Ω₁] [Field Ω₂] (i₁ : Ω →+* Ω₁) (i₂ : Ω →+* Ω₂),
       ∃ (Ω₃ : Type) (_ : Field Ω₃) (j₁ : Ω₁ →+* Ω₃) (j₂ : Ω₂ →+* Ω₃), j₁.comp i₁ = j₂.comp i₂ := by

@@ -15,10 +15,18 @@ variable {B : Type} [CommRing B]
 
 def ser (g : ℕ → B) (a : B) : B⟦X⟧ := PowerSeries.mk fun n ↦ a ^ n * g n
 
+/- English proof (translation)
+Use extensionality with `n`. Apply the tactic sequence `rcases n with _ | n <;> simp [ser, h0, coeff_one]`.
+-/
 theorem ser_zero {g : ℕ → B} (h0 : g 0 = 1) : ser g 0 = 1 := by
   ext n
   rcases n with _ | n <;> simp [ser, h0, coeff_one]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [ser, coeff_mul, coeff_mk, (Commute.all a b).add_pow', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp ↦ ?_` and prove the remaining obligations. Establish `e` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Use `hmul p.1 p.2` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Rewrite using `[nsmul_eq_mul]`. Take the linear combination `(-(a ^ p.1 * b ^ p.2)) * this`.
+-/
 theorem ser_add {g : ℕ → B} (hmul : ∀ m n, g m * g n = ((m + n).choose m : B) * g (m + n)) (a b : B) :
     ser g (a + b) = ser g a * ser g b := by
   ext n
@@ -30,12 +38,30 @@ theorem ser_add {g : ℕ → B} (hmul : ∀ m n, g m * g n = ((m + n).choose m :
   rw [nsmul_eq_mul]
   linear_combination (-(a ^ p.1 * b ^ p.2)) * this
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `only [ser, coeff_rescale, coeff_mk, mul_pow, mul_assoc]`.
+-/
 theorem ser_mul (g : ℕ → B) (a b : B) : ser g (a * b) = rescale a (ser g b) := by
   ext n
   simp only [ser, coeff_rescale, coeff_mk, mul_pow, mul_assoc]
 
 def IsExp (f : B⟦X⟧) : Prop := ∀ m n, coeff m f * coeff n f = ((m + n).choose m : B) * coeff (m + n) f
 
+/- English proof (translation)
+Introduce `m n`. Simplify using `only [coeff_mul]`. Establish `e : ((m + n).choose m : B) * ∑ p ∈ HasAntidiagonal.antidiagonal (m + n), coeff p.1 f * coeff p.2 g = ∑ i ∈ HasAntidiagonal.antidiagonal m, ∑ p ∈ HasAntidiagonal.antidiagonal (m + n), (p.1.choose i.1 : B) * (p.2.choose i.2 : B) * (coeff p.1 f * coeff p.2 g)`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p hp ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.1 hp, Nat.add_choose_eq, ← Finset.sum_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i hi ↦ ?_` and prove the remaining obligations.
+
+Establish `hi'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hi`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_of_injOn (fun k : ℕ × ℕ ↦ (i.1 + k.1, i.2 + k.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k _ l _ h`. Simplify using `only [Prod.mk.injEq, add_right_inj] at h`.
+
+Conclude with `Prod.ext h.1 h.2`. Introduce `k hk`. Use `Finset.HasAntidiagonal.mem_antidiagonal.1 hk` as an intermediate fact. Conclude with `Finset.HasAntidiagonal.mem_antidiagonal.2 (by simp only; omega)`. Introduce `p hp hn`.
+
+Establish `hp'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Distinguish the cases in `h1 : p.1 < i.1`. Simplify using `[Nat.choose_eq_zero_of_lt h1]`. Distinguish the cases in `h2 : p.2 < i.2`. Simplify using `[Nat.choose_eq_zero_of_lt h2]`.
+
+Use `absurd ⟨(p.1 - i.1, p.2 - i.2), Finset.mem_coe.2 (Finset.HasAntidiagonal.mem_antidiagonal.2 (by simp only; omega)), ?_⟩ hn` and prove the remaining obligations. Conclude with `Prod.ext (by simp only; omega) (by simp only; omega)`. Introduce `k _`. Establish `a` using `hf i.1 k.1`. Establish `b` using `hg i.2 k.2`.
+
+Simplify using `only`. Take the linear combination `(coeff i.2 g * coeff k.2 g) * a + (((i.1 + k.1).choose i.1 : B) * coeff (i.1 + k.1) f) * b`.
+-/
 theorem IsExp.mul {f g : B⟦X⟧} (hf : IsExp f) (hg : IsExp g) : IsExp (f * g) := by
   intro m n
   simp only [coeff_mul]
@@ -72,6 +98,35 @@ theorem IsExp.mul {f g : B⟦X⟧} (hf : IsExp f) (hg : IsExp g) : IsExp (f * g)
     simp only
     linear_combination (coeff i.2 g * coeff k.2 g) * a + (((i.1 + k.1).choose i.1 : B) * coeff (i.1 + k.1) f) * b
 
+/- English proof (translation)
+Set `Φ : (ι →₀ B) → B⟦X⟧` to `fun c ↦ c.prod fun i a ↦ ser (g i) a`. Set `l : (ι →₀ B) →ₗ[B] B` to `Finsupp.linearCombination B x`. Establish `hl : ∀ c, l c = c.sum fun i a ↦ a * x i` using `fun c ↦ rfl`. Establish `Φadd : ∀ c c', Φ (c + c') = Φ c * Φ c'` using `fun c c' ↦ Finsupp.prod_add_index' (fun i ↦ ser_zero (h0 i)) fun i ↦ ser_add (hmul i)`. Establish `Φ0 : Φ 0 = 1` using `Finsupp.prod_zero_index`.
+
+Establish `Φs : ∀ i a, Φ (Finsupp.single i a) = ser (g i) a` using `fun i a ↦ Finsupp.prod_single_index (ser_zero (h0 i))`. Establish `Φwd : ∀ c c', l c = l c' → Φ c = Φ c'` using `fun c c' h ↦ by`. Establish `: Φ (c - c') = 1` using `hrel _ (by rw [← hl, map_sub, h, sub_self])`. Rewrite using `[← sub_add_cancel c c', Φadd, this, one_mul]`. Establish `hJ : ∀ y, y ∈ Ideal.span (Set.range x) ↔ ∃ c, l c = y` using `fun y ↦ Finsupp.mem_span_range_iff_exists_finsupp`.
+
+Establish `Φsm : ∀ a c, Φ (a • c) = rescale a (Φ c)` using `fun a c ↦ by`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => rw [smul_zero, Φ0, map_one]`. Consider the case `add c c' h h' => rw [smul_add, Φadd, Φadd, h, h', map_mul]`. Consider the case `single i b => rw [Finsupp.smul_single, Φs, Φs, smul_eq_mul, ser_mul]`.
+
+Establish `key : ∀ c, coeff 0 (Φ c) = 1 ∧ coeff 1 (Φ c) = l c ∧ (∀ n, n ≠ 0 → coeff n (Φ c) ∈ Ideal.span (Set.range x)) ∧ IsExp (Φ c)` using `fun c ↦ by`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero`. Rewrite using `[Φ0]`. Use `⟨by simp, by simp, fun n hn ↦ by simp [coeff_one, hn], fun m n ↦ ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases m with _ | m <;> rcases n with _ | n <;> simp [coeff_one]`. Consider the case `add c c' h h'`. Rewrite using `[Φadd]`. Use `⟨by rw [coeff_mul]; simp [h.1, h'.1, -coeff_zero_eq_constantCoeff], ?_, fun n hn ↦ ?_, h.2.2.2.mul h'.2.2.2⟩` and prove the remaining obligations. Rewrite using `[coeff_mul, Finset.Nat.antidiagonal_succ]`.
+
+Simplify using `[h.1, h'.1, h.2.1, h'.2.1, -coeff_zero_eq_constantCoeff, add_comm]`. Rewrite using `[coeff_mul]`. Use `Ideal.sum_mem _ fun p hp ↦ ?_` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.1 hp` as an intermediate fact. Distinguish the cases in `h1 : p.1 = 0`.
+
+Conclude with `Ideal.mul_mem_left _ _ (h'.2.2.1 _ (by omega))`. Conclude with `Ideal.mul_mem_right _ _ (h.2.2.1 _ h1)`. Consider the case `single i b`. Rewrite using `[Φs]`. Use `⟨by simp [ser, h0], by simp [ser, h1, l], fun n hn ↦ ?_, fun m n ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ser, coeff_mk]`. Conclude with `Ideal.mul_mem_left _ _ (hm i n hn)`. Simplify using `only [ser, coeff_mk, pow_add]`. Take the linear combination `(b ^ m * b ^ n) * hmul i m n`. Set `γ : ℕ → B → B` to `fun n y ↦ if h : ∃ c, l c = y then coeff n (Φ h.choose) else 0`.
+
+Establish `hγ : ∀ n c, γ n (l c) = coeff n (Φ c)` using `fun n c ↦ by`. Establish `h : ∃ c', l c' = l c` using `⟨c, rfl⟩`. Simplify using `only [γ, dif_pos h, Φwd _ _ h.choose_spec]`. Use `⟨γ, ⟨fun n y hy ↦ dif_neg fun h ↦ hy ((hJ y).2 h), ?_, ?_, ?_, ?_, ?_, ?_⟩, fun i n ↦ ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Take `⟨c, rfl⟩` from `(hJ y).1 hy`. Rewrite using `[hγ, (key c).1]`. Introduce `y hy`. Take `⟨c, rfl⟩` from `(hJ y).1 hy`. Rewrite using `[hγ, (key c).2.1]`.
+
+Introduce `n hn y hy`. Take `⟨c, rfl⟩` from `(hJ y).1 hy`. Rewrite using `[hγ]`. Conclude with `(key c).2.2.1 n hn`. Introduce `n y hy z hz`.
+
+Take `⟨c, rfl⟩` from `(hJ y).1 hy`. Take `⟨c', rfl⟩` from `(hJ z).1 hz`. Simplify using `only [← map_add, hγ, Φadd, coeff_mul]`. Introduce `n a y hy`. Take `⟨c, rfl⟩` from `(hJ y).1 hy`.
+
+Rewrite using `[← smul_eq_mul, ← map_smul, hγ, hγ, Φsm, coeff_rescale]`. Introduce `m n y hy`. Take `⟨c, rfl⟩` from `(hJ y).1 hy`. Simplify using `only [hγ]`. Conclude with `(key c).2.2.2 m n`.
+
+Establish `: x i = l (Finsupp.single i 1)` using `by simp [l]`. Rewrite using `[this, hγ, Φs]`. Simplify using `[ser]`.
+-/
 theorem pre_of_gens (B ι : Type) [CommRing B] (x : ι → B) (g : ι → ℕ → B) (h0 : ∀ i, g i 0 = 1)
     (h1 : ∀ i, g i 1 = x i) (hm : ∀ i n, n ≠ 0 → g i n ∈ Ideal.span (Set.range x))
     (hmul : ∀ i m n, g i m * g i n = ((m + n).choose m : B) * g i (m + n))

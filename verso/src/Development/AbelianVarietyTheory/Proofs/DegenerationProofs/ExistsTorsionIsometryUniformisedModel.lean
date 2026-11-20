@@ -18,12 +18,18 @@ namespace GlobalTheory.ModelData.ModelTate
 
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨TorusExt.qkMk hB p.y (m • p.g) (by rw [← mul_nsmul', TorusExt.qk_nsmul hB p]), rfl, (TorusExt.isNsmul_iff_eq _ _ _).2 rfl⟩`.
+-/
 theorem exists_level_down {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F]
     [Algebra (FractionRing R) F] (hB : D.TauBimult) (n m : ℕ) (p : QkPt D F (n * m)) :
     ∃ q : QkPt D F n, q.y = p.y ∧ GtPtF.IsNsmul m p.g q.g :=
   ⟨TorusExt.qkMk hB p.y (m • p.g) (by rw [← mul_nsmul', TorusExt.qk_nsmul hB p]), rfl,
     (TorusExt.isNsmul_iff_eq _ _ _).2 rfl⟩
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `(weilIs_grpPullback_of_comm' _ _ _ _ _ _ _ _ hL hL' hp hw T k x y x₀ y₀ c ex ey).1 h`.
+-/
 theorem weilIs_of_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] [IsCommMonObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB) (hL' : L'.IsLB)
     (hp : IsGrpPullback G' G f φ) (hw : LBIso L' (L.pull φ)) (T : Over S') (g : T.left ⟶ S) (hg : g = T.hom ≫ f)
@@ -32,6 +38,27 @@ theorem weilIs_of_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G
   subst hg
   exact (weilIs_grpPullback_of_comm' _ _ _ _ _ _ _ _ hL hL' hp hw T k x y x₀ y₀ c ex ey).1 h
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H D C _ o M _ _`. Use `letI := H.starRing`. Use `o.closed` as an intermediate fact. Use `o.P.isAb.comm` as an intermediate fact. Establish `hB` using `M.P.D.tau_bimult`.
+
+Take `⟨hA, h0⟩` from `M.admissible_base_of_complete_dvr`. Take `⟨-, l₁, l₂, l₃, l₄⟩` from `GlobalTheory.twistBaseChange_and_valuation_statements`. Establish `hT` using `GlobalTheory.UT.torsionIso_of_pelUnif hL l₁ l₂ l₃ l₄ E H M.W _ hA M.t M.P`. Use `choose f f₁ f₂ f₃ f₄ f₅ f₆ using hT C`. Establish `hg : jFK (R` using `M.W) C = (baseOver (Sp C)).hom ≫ jFK (R := M.W) C := (Category.id_comp _).symm`.
+
+Take `⟨e, he⟩ : ∃ e : (baseOver (Sp C) ⟶ o.P.A) ≃* (TFK (R` from `M.W) C ⟶ M.P.A.A), ∀ x, (e x).left = x.left ≫ M.φ := LiePull.exists_pushEquiv M.cart (baseOver (Sp C)) _ hg`. Establish `eact : ∀ c x, e (x ≫ o.oa.act c) = e x ≫ M.P.oA.act c` using `fun c x => Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, M.act, Category.assoc])`. Establish `tors : ∀ n (hn : 0 < n) p, f n hn p ^ n = 1` using `fun n hn p => by`. Take `⟨w, hw⟩` from `M.P.U.ext`.
+
+Conclude with `((f₁ n hn p _).2 rfl w hw).1`. Establish `hev : ∀ n a, ∃ p : QkPt M.P.D.toPre C n, ∀ hn : 0 < n, f n hn p = e (o.I.ev n a)` using `fun n a => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨TorusExt.qkZero hB C 0, fun h => absurd h (lt_irrefl 0)⟩`. Take `⟨p, hp⟩` from `f₂ n hn (e (o.I.ev n a)) (by rw [← map_pow, (o.I.onto n hn _).2 ⟨a, rfl⟩, map_one])`.
+
+Conclude with `⟨p, fun _ => hp⟩`. Use `choose ev evp using hev`. Use `⟨{ ζ := o.I.ζ, ζ_prim := o.I.ζ_prim, ζ_pow := o.I.ζ_pow, ev := ev add := fun n hn a b => ?_, lin := fun n hn c a => ?_, ker := fun n hn a b => ?_, onto := fun n hn p => ?_, tower := fun n m hn hm a => ?_, isom := fun n hn a b => ?_ }, rfl, fun k hk x p' z h hz => ?_⟩` and prove the remaining obligations. Use `(TorusExt.qkAdd_iff hB _ _ _).2 ((f₃ n hn _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[f₄ n hn _ _ _ (TorusExt.qkAdd_qkAdd hB _ _), evp, evp, evp, o.I.add, map_mul]`.
+
+Take `⟨p, hp⟩` from `qkAct_exists hL.1.globalFns hB M.P.oD c (ev n a)`. Establish `h₁` using `f₅ n hn _ _ _ hp`. Take `⟨q, q₁, q₂, q₃⟩` from `hp`. Use `⟨q, q₁, q₂, TorusExt.equiv_trans hB q₃ ((f₃ n hn _ _).1 ?_)⟩` and prove the remaining obligations. Rewrite using `[h₁, evp, evp, o.I.lin, eact]`.
+
+Rewrite using `[← f₃ n hn, evp, evp, e.injective.eq_iff]`. Establish `h₁ : o.I.ev n a = o.I.ev n b * o.I.ev n (a - b)` using `by rw [← o.I.add, add_sub_cancel]`. Rewrite using `[h₁, mul_eq_left, o.I.ker n hn]`. Conclude with `exists_congr fun c => sub_eq_iff_eq_add'`. Take `⟨a, ha⟩` from `(o.I.onto n hn (e.symm (f n hn p))).1 (by rw [← map_pow, tors, map_one])`.
+
+Conclude with `⟨a, (f₃ n hn _ _).1 (by rw [evp, ha, MulEquiv.apply_symm_apply])⟩`. Take `⟨q, q₁, q₂⟩` from `exists_level_down hB n m (ev (n * m) a)`. Establish `hN` using `Nat.mul_pos hn hm`. Establish `h` using `(GlobalTheory.LevelCompat.qkToAkU_level hL M.W _ hA M.P.D M.P.A M.t.G M.t.semi M.P.U C n m _ hn hm rfl q (ev (n * m) a) _).2 q₁ q₂ ((f₁ _ hN _ _).2 rfl)`. Use `⟨q, q₁, q₂, (f₃ n hn _ _).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (f₁ n hn _ _).1 h, evp, evp, ← map_pow, o.I.tower n m hn hm]`. Use `(f₆ n hn _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[evp, evp]`. Conclude with `weilIs_of_pull M.P.A.isLB o.P.isLB M.cart M.lb (baseOver (Sp C)) _ hg n _ _ _ _ _ (he _) (he _) (o.I.isom n hn a b)`. Use `(f₁ k hk _ _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← (f₃ k hk _ _).2 h]`. Conclude with `(Over.OverMorphism.ext (hz.trans (he _).symm)).trans (evp k x hk).symm`.
+-/
 theorem exists_tateIsoQ_of_model : GlobalTheory.UT.LL → BrGtSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (C : Type) [NormedField C] (o : Full D C) (M : Mdl o) (N' : NumD C) (_ : NumOf M.P.D.toPre C N'), ∃ I : TateIsoQ D M.P.D.toPre M.P.oD C, I.ζ = o.I.ζ ∧ ∀ k, 0 < k → ∀ x p' (z : TFK (R := M.W) C ⟶ M.P.A.A), QkPt.Equiv _ C (I.ev k x) p' → z.left = (o.I.ev k x).left ≫ M.φ → M.P.ToA C k p' z := by
   intro hL _ E _ _ _ H D C _ o M _ _
   letI := H.starRing

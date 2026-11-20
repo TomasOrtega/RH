@@ -11,6 +11,9 @@ noncomputable section
 namespace GlobalTheory.TieIdem
 end GlobalTheory.TieIdem
 namespace GlobalTheory.TieIdem
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p hr _`. Conclude with `idemOf_props p.P.A3.A.X hr.ok.ok2.irr`.
+-/
 theorem tied_good_idem_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.PointConditions' → GlobalTheory.CovTop.RecTied D L →
     (∀ k : p.P.Gp, ∑ g, (idemOf p.P.A3.A.X).coeff g * (idemOf p.P.A3.A.X).coeff (g⁻¹ * k) = (idemOf p.P.A3.A.X).coeff k) ∧

@@ -11,17 +11,26 @@ variable (k : Type*) [CommRing k] (ι : Type*) (S : Type*) [CommRing S]
   [Algebra (MvPolynomial ι k) S] [Algebra k S] [IsScalarTower k (MvPolynomial ι k) S]
   [Algebra.FormallyEtale (MvPolynomial ι k) S]
 
+/- English proof (translation)
+The claim follows from `smul_mem_tangentDerivations k (Ideal.span ({coord k ι S h} : Set S)) (Ideal.mem_span_singleton_self (coord k ι S h)) (partialDeriv k ι S h)`.
+-/
 theorem coord_smul_partialDeriv_mem_tangentDerivations (h : ι) :
     coord k ι S h • partialDeriv k ι S h ∈
       tangentDerivations k (Ideal.span ({coord k ι S h} : Set S)) :=
   smul_mem_tangentDerivations k (Ideal.span ({coord k ι S h} : Set S))
     (Ideal.mem_span_singleton_self (coord k ι S h)) (partialDeriv k ι S h)
 
+/- English proof (translation)
+Rewrite using `[mem_tangentDerivations_span_singleton, partialDeriv_coord_of_ne k ι S i h hih]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem partialDeriv_mem_tangentDerivations_of_ne {i h : ι} (hih : i ≠ h) :
     partialDeriv k ι S i ∈ tangentDerivations k (Ideal.span ({coord k ι S h} : Set S)) := by
   rw [mem_tangentDerivations_span_singleton, partialDeriv_coord_of_ne k ι S i h hih]
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `hmem` using `derivation_apply_mem_logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) J (coord k ι S h • partialDeriv k ι S h) (coord_smul_partialDeriv_mem_tangentDerivations k ι S h) hg`. Simplify `hmem` using `[smul_eq_mul]`.
+-/
 theorem coord_mul_partialDeriv_mem_logDerivIdeal (h : ι) (J : Ideal S) {g : S} (hg : g ∈ J) :
     coord k ι S h * partialDeriv k ι S h g ∈
       logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) J := by
@@ -30,6 +39,9 @@ theorem coord_mul_partialDeriv_mem_logDerivIdeal (h : ι) (J : Ideal S) {g : S} 
     (coord_smul_partialDeriv_mem_tangentDerivations k ι S h) hg
   simpa [smul_eq_mul] using hmem
 
+/- English proof (translation)
+The claim follows from `derivation_apply_mem_logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) J (partialDeriv k ι S i) (partialDeriv_mem_tangentDerivations_of_ne k ι S hih) hg`.
+-/
 theorem partialDeriv_mem_logDerivIdeal_of_ne {i h : ι} (hih : i ≠ h) (J : Ideal S) {g : S}
     (hg : g ∈ J) :
     partialDeriv k ι S i g ∈ logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) J :=
@@ -39,19 +51,33 @@ theorem partialDeriv_mem_logDerivIdeal_of_ne {i h : ι} (hih : i ≠ h) (J : Ide
 def partialDerivIdeal (h : ι) (J : Ideal S) : Ideal S :=
   J ⊔ Ideal.span {x : S | ∃ g ∈ J, partialDeriv k ι S h g = x}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem partialDerivIdeal_def (h : ι) (J : Ideal S) :
     partialDerivIdeal k ι S h J =
       J ⊔ Ideal.span {x : S | ∃ g ∈ J, partialDeriv k ι S h g = x} := rfl
 
+/- English proof (translation)
+Rewrite using `[partialDerivIdeal_def]`. Conclude with `le_sup_left`.
+-/
 theorem le_partialDerivIdeal (h : ι) (J : Ideal S) : J ≤ partialDerivIdeal k ι S h J := by
   rw [partialDerivIdeal_def]
   exact le_sup_left
 
+/- English proof (translation)
+Rewrite using `[partialDerivIdeal_def]`. Conclude with `Submodule.mem_sup_right (Ideal.subset_span ⟨g, hg, rfl⟩)`.
+-/
 theorem partialDeriv_mem_partialDerivIdeal (h : ι) (J : Ideal S) {g : S} (hg : g ∈ J) :
     partialDeriv k ι S h g ∈ partialDerivIdeal k ι S h J := by
   rw [partialDerivIdeal_def]
   exact Submodule.mem_sup_right (Ideal.subset_span ⟨g, hg, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[partialDerivIdeal_def, sup_le_iff, Ideal.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun g hg => h2 ⟨g, hg, rfl⟩⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `h2 g hg`.
+-/
 theorem partialDerivIdeal_le_iff (h : ι) (J K : Ideal S) :
     partialDerivIdeal k ι S h J ≤ K ↔ J ≤ K ∧ ∀ g ∈ J, partialDeriv k ι S h g ∈ K := by
   rw [partialDerivIdeal_def, sup_le_iff, Ideal.span_le]
@@ -64,10 +90,16 @@ theorem partialDerivIdeal_le_iff (h : ι) (J K : Ideal S) :
     obtain ⟨g, hg, rfl⟩ := hx
     exact h2 g hg
 
+/- English proof (translation)
+The claim follows from `(partialDerivIdeal_le_iff k ι S h J K).mpr ⟨hJK, hD⟩`.
+-/
 theorem partialDerivIdeal_le (h : ι) {J K : Ideal S} (hJK : J ≤ K)
     (hD : ∀ g ∈ J, partialDeriv k ι S h g ∈ K) : partialDerivIdeal k ι S h J ≤ K :=
   (partialDerivIdeal_le_iff k ι S h J K).mpr ⟨hJK, hD⟩
 
+/- English proof (translation)
+Introduce `I J hIJ`. Rewrite using `[partialDerivIdeal_le_iff]`. Use `⟨hIJ.trans (le_partialDerivIdeal k ι S h J), fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `partialDeriv_mem_partialDerivIdeal k ι S h J (hIJ hg)`.
+-/
 theorem partialDerivIdeal_mono (h : ι) : Monotone (partialDerivIdeal k ι S h) := by
   intro I J hIJ
   rw [partialDerivIdeal_le_iff]
@@ -78,13 +110,22 @@ def partialDerivIdealIterate (h : ι) : ℕ → Ideal S → Ideal S
   | 0, J => J
   | l + 1, J => partialDerivIdeal k ι S h (partialDerivIdealIterate h l J)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partialDerivIdealIterate_zero (h : ι) (J : Ideal S) :
     partialDerivIdealIterate k ι S h 0 J = J := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partialDerivIdealIterate_succ (h : ι) (l : ℕ) (J : Ideal S) :
     partialDerivIdealIterate k ι S h (l + 1) J =
       partialDerivIdeal k ι S h (partialDerivIdealIterate k ι S h l J) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partialDerivIdealIterate_one (h : ι) (J : Ideal S) :
     partialDerivIdealIterate k ι S h 1 J = partialDerivIdeal k ι S h J := rfl
 
@@ -95,10 +136,16 @@ private def evalDerivationAddHom (g : S) : Derivation k S S →+ S where
 
 omit [Algebra (MvPolynomial ι k) S] [IsScalarTower k (MvPolynomial ι k) S]
   [Algebra.FormallyEtale (MvPolynomial ι k) S] in
+/- English proof (translation)
+The claim follows from `map_sum (evalDerivationAddHom k S g) f s`.
+-/
 private theorem derivation_sum_apply (s : Finset ι) (f : ι → Derivation k S S) (g : S) :
     (∑ i ∈ s, f i) g = ∑ i ∈ s, f i g :=
   map_sum (evalDerivationAddHom k S g) f s
 
+/- English proof (translation)
+Establish `h1 : D g = (∑ i, D (coord k ι S i) • partialDeriv k ι S i : Derivation k S S) g` using `congrArg (fun E : Derivation k S S => E g) (eq_sum_smul_partialDeriv k ι S D)`. Establish `h2 : (∑ i, D (coord k ι S i) • partialDeriv k ι S i : Derivation k S S) g = ∑ i, D (coord k ι S i) * partialDeriv k ι S i g` using `derivation_sum_apply k ι S Finset.univ (fun i => D (coord k ι S i) • partialDeriv k ι S i) g`. Conclude with `h1.trans h2`.
+-/
 theorem derivation_apply_eq_sum_partialDeriv [Fintype ι] (D : Derivation k S S) (g : S) :
     D g = ∑ i, D (coord k ι S i) * partialDeriv k ι S i g := by
   have h1 : D g = (∑ i, D (coord k ι S i) • partialDeriv k ι S i : Derivation k S S) g :=
@@ -108,6 +155,11 @@ theorem derivation_apply_eq_sum_partialDeriv [Fintype ι] (D : Derivation k S S)
     derivation_sum_apply k ι S Finset.univ (fun i => D (coord k ι S i) • partialDeriv k ι S i) g
   exact h1.trans h2
 
+/- English proof (translation)
+Rewrite using `[derivIdeal_le_iff]`. Use `⟨(le_logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) I).trans le_sup_left, ?_⟩` and prove the remaining obligations. Introduce `D g hg`. Rewrite using `[derivation_apply_eq_sum_partialDeriv k ι S D g]`. Use `Ideal.sum_mem _ ?_` and prove the remaining obligations.
+
+Introduce `i _`. Distinguish the cases in `hi : i = h`. Rewrite using `[hi]`. Conclude with `Submodule.mem_sup_right (Ideal.mul_mem_left _ _ (partialDeriv_mem_partialDerivIdeal k ι S h I hg))`. Conclude with `Submodule.mem_sup_left (Ideal.mul_mem_left _ _ (partialDeriv_mem_logDerivIdeal_of_ne k ι S hi I hg))`.
+-/
 private theorem derivIdeal_le_logDerivIdeal_sup_partialDerivIdeal [Fintype ι] (h : ι) (I : Ideal S) :
     derivIdeal k I ≤
       logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) I ⊔ partialDerivIdeal k ι S h I := by
@@ -148,9 +200,29 @@ private def idealInfComapPartialDeriv (h : ι) (K : Ideal S) : Ideal S where
     rw [hl]
     exact Submodule.add_mem K (Ideal.mul_mem_left K c hx2) (Ideal.mul_mem_right _ K hx1)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_idealInfComapPartialDeriv_iff (h : ι) (K : Ideal S) (g : S) :
     g ∈ idealInfComapPartialDeriv k ι S h K ↔ g ∈ K ∧ partialDeriv k ι S h g ∈ K := Iff.rfl
 
+/- English proof (translation)
+Establish `key : logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) I ≤ idealInfComapPartialDeriv k ι S h (logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) (partialDerivIdeal k ι S h I))`. Rewrite using `[logDerivIdeal_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `g hg`. Rewrite using `[mem_idealInfComapPartialDeriv_iff]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `le_logDerivIdeal k _ _ (le_partialDerivIdeal k ι S h I hg)`. Conclude with `le_logDerivIdeal k _ _ (partialDeriv_mem_partialDerivIdeal k ι S h I hg)`. Introduce `D hD y hy`. Rewrite using `[mem_idealInfComapPartialDeriv_iff]`.
+
+Establish `hDmem : D (coord k ι S h) ∈ Ideal.span ({coord k ι S h} : Set S)` using `(mem_tangentDerivations_span_singleton k (coord k ι S h) D).mp hD`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hDmem`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `logDerivIdeal_mono k _ (le_partialDerivIdeal k ι S h I) (derivation_apply_mem_logDerivIdeal k _ I D hD hy)`. Rewrite using `[derivation_apply_eq_sum_partialDeriv k ι S D y]`.
+
+Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[Derivation.leibniz]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i = h`. Rewrite using `[hi, smul_eq_mul, ← hc, mul_assoc]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Conclude with `coord_mul_partialDeriv_mem_logDerivIdeal k ι S h (partialDerivIdeal k ι S h I) (partialDeriv_mem_partialDerivIdeal k ι S h I hy)`. Rewrite using `[smul_eq_mul, partialDeriv_comm k ι S h i y]`.
+
+Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Conclude with `partialDeriv_mem_logDerivIdeal_of_ne k ι S hi (partialDerivIdeal k ι S h I) (partialDeriv_mem_partialDerivIdeal k ι S h I hy)`. Distinguish the cases in `hi : i = h`. Rewrite using `[hi, smul_eq_mul]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations.
+
+Conclude with `le_logDerivIdeal k _ _ (partialDeriv_mem_partialDerivIdeal k ι S h I hy)`. Rewrite using `[smul_eq_mul]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Conclude with `logDerivIdeal_mono k _ (le_partialDerivIdeal k ι S h I) (partialDeriv_mem_logDerivIdeal_of_ne k ι S hi I hy)`. Use `partialDerivIdeal_le k ι S h ?_ ?_` and prove the remaining obligations.
+
+Introduce `g hg`. Conclude with `((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).1`. Introduce `g hg`. Conclude with `((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).2`.
+-/
 private theorem partialDerivIdeal_logDerivIdeal_le [Fintype ι] [DecidableEq ι] (h : ι) (I : Ideal S) :
     partialDerivIdeal k ι S h
         (logDerivIdeal k (Ideal.span ({coord k ι S h} : Set S)) I) ≤
@@ -205,6 +277,9 @@ private theorem partialDerivIdeal_logDerivIdeal_le [Fintype ι] [DecidableEq ι]
   · intro g hg
     exact ((mem_idealInfComapPartialDeriv_iff k ι S h _ g).mp (key hg)).2
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact le_of_eq (by simp only [logDerivIdealIterate_zero])`. Consider the case `succ m ih`. Rewrite using `[logDerivIdealIterate_succ, logDerivIdealIterate_succ]`. Conclude with `(partialDerivIdeal_logDerivIdeal_le k ι S h _).trans (logDerivIdeal_mono k _ ih)`.
+-/
 private theorem partialDerivIdeal_logDerivIdealIterate_le [Fintype ι] [DecidableEq ι] (h : ι) (m : ℕ)
     (I : Ideal S) :
     partialDerivIdeal k ι S h
@@ -217,6 +292,15 @@ private theorem partialDerivIdeal_logDerivIdealIterate_le [Fintype ι] [Decidabl
       rw [logDerivIdealIterate_succ, logDerivIdealIterate_succ]
       exact (partialDerivIdeal_logDerivIdeal_le k ι S h _).trans (logDerivIdeal_mono k _ ih)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[derivIdealIterate_zero]`. Conclude with `le_iSup₂ (f := fun m (_ : m ≤ 0) => logDerivIdealIterate k (Ideal.span ({coord k ι S h} : Set S)) (0 - m) (partialDerivIdealIterate k ι S h m J)) 0 le_rfl`. Consider the case `succ n ih`.
+
+Rewrite using `[derivIdealIterate_succ]`. Use `le_trans (derivIdeal_mono k ih) ?_` and prove the remaining obligations. Use `le_trans (derivIdeal_iSup_le k _) ?_` and prove the remaining obligations. Use `iSup_le fun l => ?_` and prove the remaining obligations. Use `le_trans (derivIdeal_iSup_le k _) ?_` and prove the remaining obligations.
+
+Use `iSup_le fun hl => ?_` and prove the remaining obligations. Use `le_trans (derivIdeal_le_logDerivIdeal_sup_partialDerivIdeal k ι S h _) ?_` and prove the remaining obligations. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[← logDerivIdealIterate_succ, show n - l + 1 = n + 1 - l from by omega]`. Conclude with `le_iSup₂ (f := fun m (_ : m ≤ n + 1) => logDerivIdealIterate k (Ideal.span ({coord k ι S h} : Set S)) (n + 1 - m) (partialDerivIdealIterate k ι S h m J)) l (by omega)`.
+
+Use `le_trans (partialDerivIdeal_logDerivIdealIterate_le k ι S h (n - l) _) ?_` and prove the remaining obligations. Rewrite using `[← partialDerivIdealIterate_succ, show n - l = n + 1 - (l + 1) from by omega]`. Conclude with `le_iSup₂ (f := fun m (_ : m ≤ n + 1) => logDerivIdealIterate k (Ideal.span ({coord k ι S h} : Set S)) (n + 1 - m) (partialDerivIdealIterate k ι S h m J)) (l + 1) (by omega)`.
+-/
 theorem derivIdealIterate_le_iSup_logDerivIdealIterate_partialDerivIdealIterate [Fintype ι] [DecidableEq ι]
     (h : ι) (n : ℕ) (J : Ideal S) :
     derivIdealIterate k n J ≤

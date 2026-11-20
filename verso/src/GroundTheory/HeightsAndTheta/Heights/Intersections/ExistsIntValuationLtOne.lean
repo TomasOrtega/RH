@@ -16,6 +16,11 @@ def RegularityValuationCentre.Statement : Prop :=
     ∃ W : Ideal (MRing ι), IsMultiProjPrime W ∧ P ≤ W ∧ C n ∈ W ∧
       ∀ z : funField P, (z : FractionRing (MRing ι ⧸ P)) ∈ locRing P W → v z ≤ 1
 
+/- English proof (translation)
+Take `⟨x, hxv, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hc : v.asIdeal.comap (algebraMap ℤ (NumberField.RingOfIntegers F)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hx0 hxv (Algebra.IsIntegral.isIntegral x)`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hc`. Use `⟨n, hn0, ?_⟩` and prove the remaining obligations. Establish `e : (n : F) = algebraMap (NumberField.RingOfIntegers F) F (algebraMap ℤ _ n)` using `by simp`.
+
+Rewrite using `[e, IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hn`.
+-/
 theorem RegularityValuationCentre.exists_int_valuation_lt_one {F : Type*} [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     ∃ n : ℤ, n ≠ 0 ∧ v.valuation F (n : F) < 1 := by

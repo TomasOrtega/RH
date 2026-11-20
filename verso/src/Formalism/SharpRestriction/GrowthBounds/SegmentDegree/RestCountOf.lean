@@ -110,6 +110,13 @@ def RestSum (C₀ Crk : ℝ) : Prop :=
       ((p : ℝ) ^ n') ^ (-((r * K : ℕ) : ℤ)) * X.bound K Crk ≤
         ∑ la ∈ X.LA p K, ∑ e ∈ X.EE p K la, ∏ j : Fin X.F.J, G (j.val : ℤ) (X.bfam p K la e (j.val : ℤ))
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk`. Use `choose G hG using hS p n' r K X O S hX hLa hk`. Use `le_trans (hSum p n' r K X hX hLa hk G (fun j => (hG j).1) (fun j => (hG j).2.1) (fun j => (hG j).2.2.2)) ?_` and prove the remaining obligations. Use `le_trans ?_ (Nat.cast_le.mpr (hL p n' r K X O S hX hLa hk))` and prove the remaining obligations. Use `push_cast`.
+
+Use `Finset.sum_le_sum fun la hla => Finset.sum_le_sum fun e he => ?_` and prove the remaining obligations. Use `Finset.prod_le_prod (fun j _ => (hG _).1 _) fun j _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hP p n' r K X hX hLa hk la hla e he (j.val : ℤ)`. Use `(hG _).2.2.1 _ ?_ h1 h2` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `[Dat.bfam, hx]`.
+-/
 theorem restCount_of (C₀ Crk : ℝ) (hL : RestLam C₀) (hS : RestSeg C₀) (hP : RestPad C₀) (hSum : RestSum C₀ Crk) :
     RestCount C₀ Crk := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk

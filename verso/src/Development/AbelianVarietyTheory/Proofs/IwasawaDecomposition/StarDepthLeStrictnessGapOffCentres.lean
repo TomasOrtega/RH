@@ -9,6 +9,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan.StarGap
 
+/- English proof (translation)
+Establish `h1 : ∑ i : Fin (m + 1), (Fin.cons (-1) c : Fin (m + 1) → ℝ) i • toReal ((LinearMap.id : LinearMap.BilinForm ℤ X →ₗ[ℤ] LinearMap.BilinForm ℤ X) ((Fin.cons β γ : Fin (m + 1) → LinearMap.BilinForm ℤ X) i)) = 0`. Simplify using `[Fin.sum_univ_succ, hsum]`. Establish `h2` using `sum_mul_eq_zero_of_sum_toReal (j := LinearMap.id) (fun _ _ h => h) ℓ h1`. Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ] at h2`. Establish `h3 : φ.evalZ β = ∑ i, c i * φ.evalZ (γ i)`.
+
+Rewrite using `[← evalR_toReal, hsum]`. Conclude with `(linearOn_iff φ γ).1 hlin c hc`. Establish `h4 : (ℓ β : ℝ) = ∑ i, c i * ℓ (γ i)` using `by simp at h2; linarith`. Rewrite using `[h4, h3, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem gap_eq_sum {O : Type} [CommRing O] {φ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ)
     (hlin : φ.LinearOn γ) {β : LinearMap.BilinForm ℤ X} {c : Fin m → ℝ} (hc : ∀ i, 0 ≤ c i)
@@ -26,6 +31,25 @@ theorem gap_eq_sum {O : Type} [CommRing O] {φ : InvFun O} {X : Type} [AddCommGr
   rw [h4, h3, Finset.mul_sum, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H q ψ w hψ _ X _ _ _ _ hX m γ N ℓ _ hno _ hsw β hβ hp`. Establish `hfan` using `hψ X hX`. Take `⟨-, hge, heq⟩` from `hsw`. Establish `hmem : toReal β ∈ psdCone H.bar X`. Use `ConeSub.sum_smul_toReal_mem_psdCone (𝓞 E) H.bar X 1 ![β] ![1] (fun i => by fin_cases i; exact hβ) (fun i y => by fin_cases i; exact hp y) (fun i => by fin_cases i; norm_num)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨S, -, hS⟩` from `hfan.finite`. Take `⟨e, m', δ₀, c, hδ₀, -, hc, he⟩` from `hS _ hmem`. Use `set δ : Fin m' → LinearMap.BilinForm ℤ X := fun i => pull e.symm.toLinearMap (δ₀ i) with hδdef`. Establish `hδ : IsCell H.bar ψ δ` using `CarDim.isCell_pull_equiv hδ₀ e.symm`.
+
+Establish `hβc : toReal β = ∑ i, c i • toReal (δ i)` using `LinearMap.ext₂ fun a b => by`. Use `LinearMap.congr_fun₂ he (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[hδdef, LinearMap.sum_apply]`. Rewrite using `[← evalR_toReal]`. Use `evalR_starDepth_le _ H.bar ψ w X m' δ (toReal β) _ hδ ⟨c, hc, hβc⟩ (sub_nonneg.2 (hge β hβ hp)) ?_` and prove the remaining obligations.
+
+Introduce and unpack `v hv hvp hwv ⟨b, hb, hvb⟩ t ht ⟨d, hd, hdt⟩`. Establish `hv1 : (1 : ℝ) ≤ (ℓ v : ℝ) - N * ψ.evalZ v`. Take `⟨n, hn⟩` from `hfan.integral v hv hvp`. Establish `h0` using `hge v hv hvp`. Establish `hne : (N : ℝ) * ψ.evalZ v ≠ ℓ v` using `fun h => by`.
+
+Take `⟨k, a, hk, hka⟩` from `heq v hv hvp h`. Take `⟨g, hg, hgs⟩` from `StarUpper.sum_mem_rcone (δ := ![v]) (γ := γ) ![1] (fun i => by fin_cases i; norm_num) (fun i _ => by fin_cases i; exact ⟨k, a, hk, hka⟩)`. Use `hno v hv hvp ⟨g, hg, by simpa using hgs⟩` as an intermediate fact. Rewrite `this` using `[hwv]`. Conclude with `one_ne_zero this`.
+
+Establish `hlt` using `lt_of_le_of_ne h0 hne`. Rewrite `hlt`, the goal using `[hn]`. Establish `h1 : (N : ℤ) * n < ℓ v` using `by exact_mod_cast hlt`. Establish `h2 : (1 : ℤ) ≤ ℓ v - N * n` using `by omega`. Conclude with `h2` after adjusting the coercions.
+
+Establish `hβ' : toReal β = ∑ i, (t * b i + d i) • toReal (δ i)`. Establish `: toReal β = t • toReal v + (toReal β - t • toReal v)` using `by abel`. Rewrite using `[this, hdt, hvb, Finset.smul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [add_smul, smul_smul]`. Establish `e1` using `gap_eq_sum N ℓ hδ.linear (fun i => add_nonneg (mul_nonneg ht.le (hb i)) (hd i)) hβ'`.
+
+Establish `e2` using `gap_eq_sum N ℓ hδ.linear hb hvb`. Establish `e3 : 0 ≤ ∑ i, d i * ((ℓ (δ i) : ℝ) - N * ψ.evalZ (δ i))` using `Finset.sum_nonneg fun i _ => mul_nonneg (hd i) (sub_nonneg.2 (hge _ (hδ.mem i) (hδ.nonneg i)))`. Establish `e4 : (ℓ β : ℝ) - N * ψ.evalZ β = t * ((ℓ v : ℝ) - N * ψ.evalZ v) + ∑ i, d i * ((ℓ (δ i) : ℝ) - N * ψ.evalZ (δ i))`. Rewrite using `[e1, e2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+
+Rewrite using `[e4]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hv1 ht.le]`.
+-/
 theorem starDepth_le_gap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ w : InvFun (𝓞 E)), IsPolyFan H.bar q ψ → IsCentreSet H.bar q ψ w → ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsCell H.bar ψ γ → (∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone γ β → w.evalZ β = 0) → 0 < N → StrictWith H.bar ψ N ℓ γ → ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → (starDepth H.bar ψ w).evalZ β ≤ ℓ β - N * ψ.evalZ β := by
   intro E _ _ _ H q ψ w hψ _ X _ _ _ _ hX m γ N ℓ _ hno _ hsw β hβ hp
   have hfan := hψ X hX

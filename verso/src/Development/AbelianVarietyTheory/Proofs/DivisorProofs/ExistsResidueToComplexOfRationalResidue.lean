@@ -11,6 +11,15 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `K _ _ R h hr`. Use `haveI := h.isLocalRing`. Set `c0 : ℂ →+* R` to `(algebraMap ℂ K).codRestrict R h.const_mem`. Set `φ : ℂ →+* IsLocalRing.ResidueField R` to `(IsLocalRing.residue R).comp c0`. Establish `hφ : Function.Bijective φ`.
+
+Use `⟨φ.injective, fun y => ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨a, ha⟩` from `hr r r.2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `hn : NonUnit R ((r - c0 a : R) : K)` using `by simpa [c0] using ha`.
+
+Establish `hm : r - c0 a ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).2 ((nonUnit_iff (R := R) (r - c0 a)).1 hn)`. Use `(IsLocalRing.residue_eq_zero_iff (r - c0 a)).2 hm` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Set `e` to `RingEquiv.ofBijective φ hφ`.
+
+Use `⟨e.symm.toRingHom.comp (IsLocalRing.residue R), fun a => ?_, fun r => ?_⟩` and prove the remaining obligations. Use `show e.symm (φ a) = a`. Conclude with `e.symm_apply_apply a`. Rewrite using `[nonUnit_iff (R := R) r, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, map_eq_zero_iff _ e.symm.injective, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+-/
 theorem exists_residue_complex : ∀ {K : Type} [Field K] [Algebra ℂ K] (R : Subring K) (h : IsLocModel (algebraMap ℂ K) R),
   RatRes (algebraMap ℂ K) R →
   ∃ ε : R →+* ℂ, (∀ a : ℂ, ε ⟨algebraMap ℂ K a, h.const_mem a⟩ = a) ∧ ∀ r : R, ε r = 0 ↔ NonUnit R (r : K) := by

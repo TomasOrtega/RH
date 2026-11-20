@@ -10,6 +10,9 @@ namespace PositivityTheory.KB
 
 namespace LargePrimeDiscriminant
 
+/- English proof (translation)
+Unfold `IsCyc at hz ⊢`. Rewrite using `[hC.2.1 G H f m z, hz, map_zero]`.
+-/
 theorem isCyc_cmap (hC : SChain) {G H : Type} [Group G] [Group H] (f : G →* H) {m : ℕ}
     {z : Chn G (m + 1)} (hz : IsCyc z) : IsCyc (cmap f (m + 1) z) := by
   unfold IsCyc at hz ⊢

@@ -9,6 +9,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : MeasurableAdd (mixedEmbedding.mixedSpace F) := MeasurableAdd₂.toMeasurableAdd`. Use `haveI : (volume : Measure (κ → mixedEmbedding.mixedSpace F)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := Pi.borelSpace`. Set `eM` to `Q.toHomeomorph.toMeasurableEquiv`. Use `haveI : (Measure.map eM (volume : Measure (EuclideanSpace ℝ (Fin n)))).IsAddHaarMeasure := Q.isAddHaarMeasure_map _`.
+
+Take `⟨c, hc⟩ : ∃ c : NNReal, Measure.map eM (volume : Measure (EuclideanSpace ℝ (Fin n))) = c • (volume : Measure (κ → mixedEmbedding.mixedSpace F))` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`. Use `⟨(c : ℝ≥0∞), fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ x, ‖h (Q x)‖ₑ ^ 2 = ∫⁻ z, ‖h z‖ₑ ^ 2 ∂(Measure.map eM (volume : Measure (EuclideanSpace ℝ (Fin n))))`. Rewrite using `[lintegral_map_equiv]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, hc, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem lintegral_sq_comp_linearEquiv_mixed (F : Type) [Field F] [NumberField F] (κ : Type)
     [Fintype κ] (n : ℕ)
     (Q : EuclideanSpace ℝ (Fin n) ≃L[ℝ] (κ → mixedEmbedding.mixedSpace F)) :

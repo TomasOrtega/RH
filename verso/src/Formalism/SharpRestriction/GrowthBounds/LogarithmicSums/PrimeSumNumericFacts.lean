@@ -21,9 +21,127 @@ structure NumG5' (D : D7) (L : SizeData₂ D) (K : Consts) (C bo : ℝ) : Prop w
   n9 : (L.sc.X'' D.R.n * thS L + 2) * (Real.log (2 * L.sc.X'' D.R.n) * (thW D L.sc * L.sc.w'' D.R.n + L.Sc)) ≤
     L.sc.a / L.sc.x / 40
 
+/- English proof (translation)
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem zz_arith (z : ℝ) (h : 1 ≤ z) : z * (1 + z) ≤ 2 * (z * z) := by nlinarith
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Distinguish the cases in `he : 0 < eps ∧ eps < 1 / 52`. Use `swap`. Use `Filter.Eventually.of_forall fun x D L _ h2 => ?_` and prove the remaining obligations. Conclude with `absurd ⟨h2 ▸ L.sc.eps_pos, h2 ▸ L.sc.eps_lt⟩ he`. Take `⟨he0, he1⟩` from `he`.
+
+Establish `hτ : 0 < 23 * eps / 48` using `by positivity`. Establish `F1` using `ev_log 14 (23 * eps / 48) hτ`. Establish `F2` using `ev_const C (23 * eps / 48) hτ`. Establish `F3` using `ev_const 10 (23 * eps / 48) hτ`. Establish `F4` using `ev_log 1 eps he0`.
+
+Establish `F5` using `ev_pow 3 eps 1 (by linarith)`. Establish `F6` using `ev_pow 14 (23 * eps / 48) eps (by linarith)`. Establish `F7` using `ev_pow 4 (eps / 3) eps (by linarith)`. Establish `F8` using `ev_pow 4 (eps / 4) eps (by linarith)`. Establish `F9` using `ev_pow 4 (eps / 2) eps (by linarith)`.
+
+Establish `WorkedExample` using `ev_pow 8 0 eps he0`. Establish `LargeParameterEstimates` using `ev_log 40 (eps / 3) (by positivity)`. Establish `F12` using `ev_log (2 * (Real.log 4 * C * (rE eps : ℝ))) 1 one_pos`. Establish `InertPlaceConditions` using `ev_log (2 * (Real.log 4 * C)) 1 one_pos`. Establish `F14` using `ev_log (40 * C) 1 one_pos`.
+
+Establish `F15` using `ev_log (4 * C) 1 one_pos`. Establish `F16` using `ev_pow 120 eps 1 (by linarith)`. Establish `F17` using `ev_log 5 1 one_pos`. Use `filter_upwards [F1, F2, F3, F4, F5, F6, F7, F8, F9, WorkedExample, LargeParameterEstimates, F12, InertPlaceConditions, F14, F15, F16, F17, eventually_ge_atTop 16, eventually_ge_atTop 120] with x f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 f13 f14 f15 f16 f17 hx16 hx120 D L hx heps hS …`. Use `clear F1 F2 F3 F4 F5 F6 F7 F8 F9 WorkedExample LargeParameterEstimates F12 InertPlaceConditions F14 F15 F16 F17`.
+
+Substitute `hx` using the available equality. Substitute `heps` using the available equality. Establish `hx0` using `sc_x_pos L.sc`. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hlx0 : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hx1.le`.
+
+Establish `hk1` using `one_le_k D`. Establish `hk6` using `k_le_x_pow_six L hS`. Establish `hk0 : (0 : ℝ) < (D.R.k : ℝ)` using `by linarith only [hk1]`. Take `⟨_, hNmSc, hSc100⟩` from `Nm_le_Sc P`. Take `⟨hSN, hSM, hSK, -, -, -, -, hSTT, -, -, -, -, -, hSEta, -, -, hSDel, -⟩` from `hS`.
+
+Unfold `Formalism.MainNotions.SizeN Formalism.MainNotions.szTh at hSN`. Unfold `Formalism.MainNotions.SizeK Formalism.MainNotions.szTh at hSK`. Unfold `Formalism.MainNotions.SizeTT Formalism.MainNotions.szNst Formalism.MainNotions.szTh at hSTT`. Unfold `Formalism.MainNotions.SizeEta at hSEta`. Unfold `Formalism.MainNotions.SizeDel at hSDel`.
+
+Rewrite `f5`, `f12`, `f13`, `f14`, `f15`, `f16`, `f17` using `[Real.rpow_one]`. Rewrite `f10` using `[Real.rpow_zero]`. Establish `mono : ∀ u v : ℝ, u ≤ v → L.sc.x ^ u ≤ L.sc.x ^ v` using `fun u v h => Real.rpow_le_rpow_of_exponent_le hx1.le h`. Establish `nat4 : L.sc.x ^ (4 : ℝ) = L.sc.x ^ 4` using `by rw [show (4 : ℝ) = ((4 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `nat3 : L.sc.x ^ (3 : ℝ) = L.sc.x ^ 3` using `by rw [show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`.
+
+Establish `nat2 : L.sc.x ^ (2 : ℝ) = L.sc.x ^ 2` using `by rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `nat6 : L.sc.x ^ (6 : ℝ) = L.sc.x ^ 6` using `by rw [show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `natA : L.sc.x ^ Scale.A = L.sc.x ^ 26`. Unfold `Scale.A; rw [show (26 : ℝ) = ((26 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `natA2 : L.sc.x ^ (Scale.A / 2) = L.sc.x ^ 13`.
+
+Unfold `Scale.A; rw [show (26 / 2 : ℝ) = ((13 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Establish `hn3 : (D.R.n : ℝ) ≤ L.sc.x ^ 3` using `by rw [← nat3]; exact le_trans hSN.2 (mono _ _ (by linarith only [he0, he1]))`. Establish `hn2 : L.sc.x ^ 2 ≤ (D.R.n : ℝ)` using `by rw [← nat2]; exact le_trans (mono _ _ (by linarith only [he0, he1])) hSN.1`. Establish `hk4 : L.sc.x ^ 4 ≤ (D.R.k : ℝ)` using `by rw [← nat4]; exact le_trans (mono _ _ (by linarith only [he0, he1])) hSK.1`. Rewrite `hk6` using `[nat6]`.
+
+Establish `hn0 : (0 : ℝ) < (D.R.n : ℝ)` using `lt_of_lt_of_le (by positivity) hn2`. Establish `hxe1 : 1 ≤ L.sc.x ^ L.sc.eps` using `Real.one_le_rpow hx1.le he0.le`. Establish `hb : L.sc.b = Real.exp (L.sc.x ^ L.sc.eps)` using `rfl`. Establish `hb0 : 0 < L.sc.b` using `by rw [hb]; exact Real.exp_pos _`. Establish `ha : L.sc.a = L.sc.x * L.sc.b` using `rfl`.
+
+Establish `ha0 : 0 < L.sc.a` using `by rw [ha]; positivity`. Establish `hax : L.sc.a / L.sc.x = L.sc.b` using `by rw [ha]; field_simp`. Establish `hXd : L.sc.X' = Real.exp (L.sc.x ^ (L.sc.eps / 3))` using `rfl`. Establish `hX0 : 0 < L.sc.X'` using `by rw [hXd]; exact Real.exp_pos _`. Establish `hX1 : 1 ≤ L.sc.X'` using `by rw [hXd]; exact Real.one_le_exp (Real.rpow_nonneg hx0.le _)`.
+
+Establish `hb'X : L.sc.b' * L.sc.X' = L.sc.x * L.sc.b`. Unfold `Scale.b'`. Rewrite using `[div_mul_cancel₀ _ hX0.ne', ha]`. Establish `hb'0` using `sc_b'_nonneg L.sc`. Establish `hXpp : L.sc.X'' D.R.n = L.sc.X' * (L.sc.x * (D.R.n : ℝ))`.
+
+Unfold `Scale.X'' Scale.w'' Scale.b'`. Clear the denominators using the available nonvanishing facts. Establish `hlogX : Real.log L.sc.X' = L.sc.x ^ (L.sc.eps / 3)` using `by rw [hXd, Real.log_exp]`. Establish `hY10 : 10 ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `f3`. Establish `hY0 : 0 < (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `Real.exp_pos _`.
+
+Establish `pY : ∀ q : ℝ, ∀ M : ℕ, q ≤ L.sc.x ^ M → M ≤ 14 → q ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Introduce `q M hq hM`. Use `le_trans hq ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast]`. Apply `xpow_le_exp _ _ _ hx0` to reduce the goal to its premises.
+
+Establish `: (M : ℝ) ≤ 14` using `by exact_mod_cast hM`. Conclude with `le_trans (mul_le_mul_of_nonneg_right this hlx0) f1`. Establish `e_eta : L.etaSz ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Combine the equalities or inequalities in the displayed calculation. Establish `hT4 : L.sc.x ^ (L.sc.eps / 4) ≤ (L.sc.x ^ (23 * L.sc.eps / 48))` using `mono _ _ (by linarith only [he0, he1])`.
+
+Establish `e_Del : (D.s.Del : ℝ) ≤ Real.exp ((L.sc.x ^ (23 * L.sc.eps / 48)) / 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hDel0 : (0 : ℝ) ≤ (D.s.Del : ℝ)`. Establish `h` using `L.Sc_eq`. Assume the negation of the conclusion as `hneg`.
+
+Establish `: (D.R.k : ℝ) * (4 * (D.s.Del : ℝ)) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hk0.le (by linarith only [not_le.1 hneg])`. Combine the linear relations using `only [h, this, hSc100]`. Establish `h7 : L.sc.x * L.sc.x ^ 6 ≤ Real.exp ((L.sc.x ^ (23 * L.sc.eps / 48)) / 2)`. Establish `: L.sc.x * L.sc.x ^ 6 = L.sc.x ^ ((7 : ℕ) : ℝ)` using `by rw [Real.rpow_natCast]; ring`. Rewrite using `[this]`.
+
+Apply `xpow_le_exp _ _ _ hx0` to reduce the goal to its premises. Use `push_cast`. Combine the linear relations using `only [f1]`. Establish `hcG0 : 0 ≤ cG L` using `by unfold cG; linarith only [hSc100]`. Establish `e_c : cG L ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e_Nm : Nm D ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Establish `: Nm D ≤ cG L` using `by unfold Nm cG; linarith only [hNmSc, hSc100]`. Conclude with `le_trans this e_c`. Establish `hNm0 : 0 ≤ Nm D` using `by unfold Nm; exact Nat.cast_nonneg _`.
+
+Establish `e_xn : L.sc.x * (D.R.n : ℝ) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 4 (le_trans (mul_le_mul_of_nonneg_left hn3 hx0.le) (le_of_eq (by ring))) (by norm_num)`. Establish `e_f : (D.R.f : ℝ) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Establish `hf : (D.R.f : ℝ) = 2 * (D.R.n : ℝ)` using `by unfold Ranks.f; push_cast; ring`. Rewrite using `[hf]`. Conclude with `le_trans (mul_le_mul_of_nonneg_right (by linarith only [hx16]) hn0.le) e_xn`.
+
+Establish `hla : Real.log L.sc.a = Real.log L.sc.x + L.sc.x ^ L.sc.eps`. Rewrite using `[ha, hb, Real.log_mul hx0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `hxY : L.sc.x ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 1 (by rw [pow_one]) (by norm_num)`. Establish `e_la : Real.log L.sc.a ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `by rw [hla]; linarith only [hxY, f4, f5, hxe1]`. Establish `hla0 : 0 ≤ Real.log L.sc.a` using `by rw [hla]; linarith only [hlx0, hxe1]`.
+
+Establish `e_la2 : Real.log (2 * L.sc.a) ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))`. Rewrite using `[Real.log_mul (by norm_num) ha0.ne', hla]`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear relations using `only [this, hxY, f4, f5, hxe1]`. Establish `hla20 : 0 ≤ Real.log (2 * L.sc.a)` using `Real.log_nonneg (by have := sc_one_lt_a L.sc; linarith only [this])`.
+
+Establish `e7 : (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) ^ 7 * L.sc.X' ≤ L.sc.b`. Rewrite using `[hb, hXd, ← Real.exp_nat_mul, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `push_cast`. Combine the linear relations using `only [f6, f7, hxe1]`.
+
+Establish `hz1 : 1 ≤ L.sc.x ^ (L.sc.eps / 3)` using `Real.one_le_rpow hx1.le (by positivity)`. Establish `hzz : L.sc.x ^ (L.sc.eps / 3) * (1 + L.sc.x ^ (L.sc.eps / 3)) ≤ 2 * L.sc.x ^ (2 * L.sc.eps / 3)`. Establish `: L.sc.x ^ (2 * L.sc.eps / 3) = L.sc.x ^ (L.sc.eps / 3) * L.sc.x ^ (L.sc.eps / 3)` using `by rw [← Real.rpow_add hx0]; congr 1; ring`. Rewrite using `[this]`. Conclude with `zz_arith _ hz1`.
+
+Establish `hzx : L.sc.x ^ (2 * L.sc.eps / 3) ≤ L.sc.x`. Use `mono (2 * L.sc.eps / 3) 1 (by linarith only [he0, he1])` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hl4 : Real.log 4 ≤ 1387 / 1000`. Establish `h : Real.log 4 = 2 * Real.log 2`.
+
+Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear relations using `only [this, h]`. Establish `hl40 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, hx120, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `le_trans ?_ hSTT.1` and prove the remaining obligations. Establish `h1 : L.sc.x ^ (-(L.sc.eps / 100)) * L.sc.x ^ (2 + 8 * L.sc.eps - L.sc.eps / 100) * L.sc.delta1 ≤ L.sc.x ^ (-(L.sc.eps / 100)) * (D.R.n : ℝ) * L.sc.delta1` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hSN.1 (Real.rpow_nonneg hx0.le _)) (sc_delta1_pos L.sc).le`. Use `le_trans ?_ h1` and prove the remaining obligations. Unfold `Scale.delta1`. Rewrite using `[← Real.rpow_add hx0, ← Real.rpow_add hx0]`.
+
+Conclude with `Real.one_le_rpow hx1.le (by linarith only [he0, he1])`. Rewrite using `[hax, hXpp]`. Unfold `c1`. Conclude with `first_bound_arith C (cG L) L.etaSz _ _ _ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) _ hC hcG0 L.etaSz_pos.le hla20 (by positivity) f2 e_c e_eta e_la2 e_xn hX1 hY10 e7`. Rewrite using `[hax, hXpp]`.
+
+Unfold `cfl`. Conclude with `n1'_arith C _ (Nm D) _ _ _ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) _ hC (Nat.cast_nonneg _) hNm0 hla0 (by positivity) f2 e_f e_Nm e_la e_xn hX1 hY10 e7`. Rewrite using `[hax]`. Unfold `c2 Scale.p0`. Rewrite using `[natA, rG_rE]`.
+
+Establish `hW1 : (1 : ℝ) ≤ L.sc.x ^ 26` using `one_le_pow₀ hx1.le`. Establish `hW2 : L.sc.x ^ 2 ≤ L.sc.x ^ 26` using `pow_le_pow_right₀ hx1.le (by norm_num)`. Establish `hX40 : (D.R.k : ℝ) ^ 2 * L.sc.x ^ 26 * L.sc.x * L.sc.x ≤ L.sc.X'`. Establish `h1 : (D.R.k : ℝ) ^ 2 ≤ (L.sc.x ^ 6) ^ 2` using `pow_le_pow_left₀ hk0.le hk6 2`. Establish `h2 : (D.R.k : ℝ) ^ 2 * L.sc.x ^ 26 * L.sc.x * L.sc.x ≤ (L.sc.x ^ 6) ^ 2 * L.sc.x ^ 26 * L.sc.x * L.sc.x` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h1 (pow_pos hx0 26).le) hx0.le) hx0.le`.
+
+Establish `h3 : (L.sc.x ^ 6) ^ 2 * L.sc.x ^ 26 * L.sc.x * L.sc.x = L.sc.x ^ ((40 : ℕ) : ℝ)` using `by rw [Real.rpow_natCast]; ring`. Rewrite `h2` using `[h3]`. Use `le_trans h2 ?_` and prove the remaining obligations. Rewrite using `[hXd]`. Apply `xpow_le_exp _ _ _ hx0` to reduce the goal to its premises.
+
+Use `push_cast`. Conclude with `f11`. Establish `t1` using `second_bound_arith_a (Real.log 4 * C * (rE L.sc.eps : ℝ) * Real.log L.sc.x) (D.R.k : ℝ) (L.sc.x ^ 26) L.sc.x L.sc.b' L.sc.X' L.sc.b (by linarith only [f12]) hx0 (by positivity) hb'0 hX40 hb'X`. Establish `t2` using `second_bound_arith_b (Real.log 4 * C * Real.log L.sc.x) (D.R.k : ℝ) (L.sc.x ^ 26) L.sc.x L.sc.b (by linarith only [f13]) hx0 hk1 hW2 hW1 hb0.le`. Rewrite using `[ha]`.
+
+Establish `e0 : Real.log 4 * ((D.R.k : ℝ) ^ 2 * L.sc.x ^ 26) * (C * (rE L.sc.eps : ℝ) * L.sc.b' * Real.log L.sc.x + C * Real.log L.sc.x * (L.sc.x * L.sc.b * (((D.R.k : ℝ) * L.sc.x ^ 26) ^ 4)⁻¹)) = Real.log 4 * C * (rE L.sc.eps : ℝ) * Real.log L.sc.x * ((D.R.k : ℝ) ^ 2 * L.sc.x ^ 26) * L.sc. …` using `by ring`. Rewrite using `[e0]`. Conclude with `le_trans (add_le_add t1 t2) (le_of_eq (by ring))`. Rewrite using `[hax]`. Unfold `c3`.
+
+Establish `hbo : L.sc.b ^ (L.sc.x ^ (-(L.sc.eps / 2))) = Real.exp (L.sc.x ^ (L.sc.eps / 2))`. Rewrite using `[hb, ← Real.exp_mul, ← Real.rpow_add hx0]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbo]`.
+
+Establish `h3e : (40 : ℝ) ≤ Real.exp 4` using `forty_le_exp_four`. Establish `u0 : L.sc.X' * (L.sc.b' / L.sc.x) = L.sc.b`. Establish `: L.sc.X' * (L.sc.b' / L.sc.x) = (L.sc.b' * L.sc.X') / L.sc.x` using `by ring`. Rewrite using `[this, hb'X]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `u1 : 40 * (L.sc.X' * L.etaSz) ≤ L.sc.b`. Establish `hη : L.etaSz ≤ Real.exp (L.sc.x ^ (L.sc.eps / 4))` using `le_trans (Real.le_exp_log _) (Real.exp_le_exp.2 hSEta.2.2.1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hXd]`. Conclude with `mul_le_mul h3e (mul_le_mul_of_nonneg_left hη (Real.exp_pos _).le) (mul_nonneg (Real.exp_pos _).le L.etaSz_pos.le) (Real.exp_pos _).le`.
+
+Use `_ = Real.exp (4 + (L.sc.x ^ (L.sc.eps / 3) + L.sc.x ^ (L.sc.eps / 4))) := by rw [Real.exp_add, Real.exp_add]`. Use `_ ≤ L.sc.b := by rw [hb]; exact Real.exp_le_exp.2 (by linarith only [f7, f8, f10])`. Establish `u2 : 40 * (L.sc.X' * Real.exp (L.sc.x ^ (L.sc.eps / 2))) ≤ L.sc.b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hXd]`.
+
+Conclude with `mul_le_mul_of_nonneg_right h3e (mul_nonneg (Real.exp_pos _).le (Real.exp_pos _).le)`. Use `_ = Real.exp (4 + (L.sc.x ^ (L.sc.eps / 3) + L.sc.x ^ (L.sc.eps / 2))) := by rw [Real.exp_add, Real.exp_add]`. Use `_ ≤ L.sc.b := by rw [hb]; exact Real.exp_le_exp.2 (by linarith only [f7, f9, f10])`. Establish `u3 : 40 * (L.sc.X' * (C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1)) ≤ L.sc.b`. Establish `hd : 1 / L.sc.delta1 = L.sc.x ^ (L.sc.eps / 8)`.
+
+Unfold `Scale.delta1`. Rewrite using `[Real.rpow_neg hx0.le, one_div, inv_inv]`. Establish `hXw : L.sc.X' * L.sc.w'' D.R.n = L.sc.b / (D.R.n : ℝ)`. Unfold `Scale.w''`. Establish `: L.sc.X' * (L.sc.b' / (L.sc.x * (D.R.n : ℝ))) = (L.sc.b' * L.sc.X') / (L.sc.x * (D.R.n : ℝ))` using `by ring`.
+
+Rewrite using `[this, hb'X]`. Clear the denominators using the available nonvanishing facts. Establish `h8 : L.sc.x ^ (L.sc.eps / 8) ≤ L.sc.x`. Use `mono (L.sc.eps / 8) 1 (by linarith only [he0, he1])` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis.
+
+Establish `h80 : 0 ≤ L.sc.x ^ (L.sc.eps / 8)` using `Real.rpow_nonneg hx0.le _`. Establish `e1 : 40 * (L.sc.X' * (C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1)) = (40 * C * Real.log L.sc.x * (1 / L.sc.delta1)) * (L.sc.X' * L.sc.w'' D.R.n)` using `by ring`. Rewrite using `[e1, hd, hXw]`. Establish `h1 : 40 * C * Real.log L.sc.x * L.sc.x ^ (L.sc.eps / 8) ≤ (D.R.n : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Real.log 4 * L.sc.X' * (L.sc.b' / L.sc.x + L.etaSz + C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1 + Real.exp (L.sc.x ^ (L.sc.eps / 2))) = Real.log 4 * (L.sc.X' * (L.sc.b' / L.sc.x) + L.sc.X' * L.etaSz + L.sc.X' * (C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1) + L …` using `by ring`. Rewrite using `[e2, u0]`. Establish `h2b : L.sc.b + L.sc.X' * L.etaSz + L.sc.X' * (C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1) + L.sc.X' * Real.exp (L.sc.x ^ (L.sc.eps / 2)) ≤ 43 / 40 * L.sc.b` using `by linarith only [u1, u2, u3]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hlogX]`. Unfold `c4`. Establish `hLa0 : 0 ≤ La K L.sc`. Unfold `La; exact mul_nonneg (mul_nonneg hK.1 (by positivity)) hla0`. Establish `hLa1 : La K L.sc ≤ L.sc.x`.
+
+Use `mono (L.sc.eps + L.sc.eps / 48) 1 (by linarith only [he0, he1])` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Conclude with `le_trans h5.2.1 this`. Establish `hp0 : L.sc.x ^ 3 ≤ L.sc.p0 D.R.k`. Unfold `Scale.p0`.
+
+Rewrite using `[natA]`. Establish `h1 : L.sc.x ^ 3 ≤ L.sc.x ^ 26` using `pow_le_pow_right₀ hx1.le (by norm_num)`. Establish `h2 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ 2` using `one_le_pow₀ hk1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `fourth_bound_arith _ C _ _ _ _ _ L.sc.x hC hlx0 hLa0 ha0.le hx0 hk0 (by linarith only [hzz, hzx]) f15 (le_trans (mul_le_mul_of_nonneg_right hLa1 (pow_pos hx0 3).le) (le_trans (le_of_eq (by ring)) hk4)) hp0`.
+
+Establish `h2 : L.sc.x ^ (-2 + L.sc.eps) = L.sc.x ^ L.sc.eps * (L.sc.x ^ 2)⁻¹`. Rewrite using `[add_comm, Real.rpow_add hx0, Real.rpow_neg hx0.le, nat2]`. Rewrite using `[h2]`. Establish `h3 : L.sc.x ^ L.sc.eps ≤ L.sc.x / 120` using `by linarith only [f16]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hw0` using `sc_w''_nonneg L.sc D.R.n`. Take `⟨hw1, hw2⟩` from `w''_le L.sc D.R.n (Nat.cast_pos.1 hn0)`. Establish `hab` using `two_b'_le_a L.sc`. Establish `hwpos : 0 < L.sc.w'' D.R.n`. Unfold `Scale.w'' Scale.b'`.
+
+Check the signs of the components of the expression. Establish `hXw : L.sc.X'' D.R.n * L.sc.w'' D.R.n = L.sc.a`. Unfold `Scale.X''`. Conclude with `div_mul_cancel₀ _ hwpos.ne'`. Establish `hq : 480 * L.sc.x ^ 2 ≤ (D.R.k : ℝ) * L.sc.x ^ 13`.
+
+Establish `h0 : 480 ≤ L.sc.x * L.sc.x` using `le_trans (by norm_num) (mul_le_mul hx120 hx120 (by norm_num) hx0.le)`. Establish `h1 : 480 * L.sc.x ^ 2 ≤ (L.sc.x * L.sc.x) * L.sc.x ^ 2` using `mul_le_mul_of_nonneg_right h0 (by positivity)`. Establish `h2 : (L.sc.x * L.sc.x) * L.sc.x ^ 2 = L.sc.x ^ 4` using `by ring`. Establish `h3 : L.sc.x ^ 4 ≤ L.sc.x ^ 13` using `pow_le_pow_right₀ hx1.le (by norm_num)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hq1 : 1 ≤ (D.R.k : ℝ) * L.sc.x ^ 13` using `one_le_mul_of_one_le_of_one_le hk1 (one_le_pow₀ hx1.le)`. Establish `hθ : thW D L.sc = 1 / ((D.R.k : ℝ) * L.sc.x ^ 13)` using `by unfold thW; rw [natA2]`. Establish `hlg : Real.log (2 * L.sc.X'' D.R.n) ≤ 2 * L.sc.x`. Rewrite using `[hXpp, show 2 * (L.sc.X' * (L.sc.x * (D.R.n : ℝ))) = L.sc.X' * (2 * (L.sc.x * (D.R.n : ℝ))) by ring, Real.log_mul hX0.ne' (by positivity), hlogX]`. Establish `h1 : 2 * (L.sc.x * (D.R.n : ℝ)) ≤ L.sc.x ^ ((5 : ℕ) : ℝ)`.
+
+Rewrite using `[Real.rpow_natCast]`. Establish `h0` using `mul_le_mul_of_nonneg_left hn3 hx0.le`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Real.log_le_log (by positivity) h1`. Rewrite `h2` using `[Real.log_rpow hx0]`.
+
+Move the coercions through the operations in `at h2`. Establish `h3 : L.sc.x ^ (L.sc.eps / 3) ≤ L.sc.x`. Use `mono (L.sc.eps / 3) 1 (by linarith only [he0, he1])` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Combine the linear relations using `only [h2, h3, f17]`.
+
+Establish `hlg0 : 0 ≤ Real.log (2 * L.sc.X'' D.R.n)`. Apply `Real.log_nonneg` to reduce the goal to its premises. Rewrite using `[hXpp]`. Establish `hn1 : (1 : ℝ) ≤ (D.R.n : ℝ)` using `le_trans (one_le_pow₀ hx1.le) hn2`. Use `one_le_mul_of_one_le_of_one_le hX1 (one_le_mul_of_one_le_of_one_le hx1.le hn1)` as an intermediate fact.
+
+Combine the linear relations using `only [this]`. Take `⟨hSc1, hSc2⟩` from `Sc_facts P`. Establish `hXpp1 : 1 ≤ L.sc.X'' D.R.n`. Rewrite using `[hXpp]`. Establish `hn1 : (1 : ℝ) ≤ (D.R.n : ℝ)` using `le_trans (one_le_pow₀ hx1.le) hn2`.
+
+Conclude with `one_le_mul_of_one_le_of_one_le hX1 (one_le_mul_of_one_le_of_one_le hx1.le hn1)`. Establish `h2xY : 2 * L.sc.x ≤ (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48)))` using `pY _ 2 (by rw [sq]; exact mul_le_mul_of_nonneg_right (by linarith only [hx16]) hx0.le) (by norm_num)`. Rewrite using `[hax]`. Unfold `thS`. Conclude with `ninth_bound_arith_b _ _ _ _ L.sc.a L.sc.x L.Sc (Real.exp (L.sc.x ^ (23 * L.sc.eps / 48))) L.sc.X' L.sc.b hXw ha (by rw [hθ]; positivity) (by rw [hθ, div_le_one (by linarith only [hq1])]; exact hq1) hlg0 hlg (le_trans hlg h2xY) (by linarith only [hSc1, hSc2]) (by linarith only [hw …`.
+-/
 theorem prime_sum_facts_eventually (eps : ℝ) (K : Consts) (hK : K.Nonneg) (C : ℝ) (hC : 0 ≤ C) :
     ∀ᶠ x : ℝ in atTop, ∀ (D : D7) (L : SizeData₂ D), L.sc.x = x → L.sc.eps = eps → Formalism.MainNotions.SizesAt L →
       ParameterChoice' D L → adm5 D L K (eps / 48) → NumG5' D L K C (L.sc.b ^ (x ^ (-(eps / 2)))) := by
@@ -372,6 +490,19 @@ end Formalism.MainNotions.AuxBlock8.Pf.G5.Nu
 
 namespace Formalism.MainNotions.AuxBlock8.Pf.G5
 
+/- English proof (translation)
+Establish `hx` using `sc_x_pos L.sc`. Establish `e1 : c1 L (40 * C) = 40 * c1 L C` using `by unfold c1; ring`. Establish `e1' : cfl D L.sc (40 * C) = 40 * cfl D L.sc C` using `by unfold cfl; ring`. Establish `e2 : c2 L (40 * C) = 40 * c2 L C` using `by unfold c2; ring`. Establish `e4 : c4 K L (40 * C) = 40 * c4 K L C` using `by unfold c4; ring`.
+
+Establish `e3 : c3 L C bo ≤ c3 L (40 * C) bo`. Unfold `c3`. Establish `h0 : 0 ≤ L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1` using `div_nonneg (mul_nonneg (sc_w''_nonneg _ _) (logx_nonneg _)) (sc_delta1_pos _).le`. Establish `h1 : C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1 = C * (L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1)`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : 40 * C * L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1 = 40 * (C * (L.sc.w'' D.R.n * Real.log L.sc.x / L.sc.delta1))` using `by ring`. Rewrite using `[h1, h2]`. Use `mul_nonneg hC h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `n1` using `N.n1`.
+
+Establish `n1'` using `N.n1'`. Establish `n2` using `N.n2`. Establish `n4` using `N.n4`. Rewrite `n1` using `[e1]`. Rewrite `n1'` using `[e1']`.
+
+Rewrite `n2` using `[e2]`. Rewrite `n4` using `[e4]`. Establish `hl4X : 0 ≤ Real.log 4 * L.sc.X'` using `mul_nonneg (Real.log_nonneg (by norm_num)) (le_trans zero_le_one (one_le_X' L.sc))`. Use `⟨N.one_le_card_tops, by linarith, by linarith, by linarith, le_trans (mul_le_mul_of_nonneg_left e3 hl4X) N.n3, ?_, N.n5, N.n7, N.n9⟩` and prove the remaining obligations. Unfold `lX`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem prime_sum_facts_of_scaled {D : D7} {L : SizeData₂ D} {K : Consts} {C bo : ℝ} (hC : 0 ≤ C) (N : Nu.NumG5' D L K (40 * C) bo) :
     PrimeSumNumericFacts D L K C bo := by
   have hx := sc_x_pos L.sc
@@ -405,6 +536,13 @@ theorem prime_sum_facts_of_scaled {D : D7} {L : SizeData₂ D} {K : Consts} {C b
   unfold lX
   linarith
 
+/- English proof (translation)
+Establish `he : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Use `(Fm.L 0 i).sc.eps_pos` as an intermediate fact. Rewrite `this` using `[Fm.L_eps]`. Then use the resulting hypothesis. Take `⟨x1, _, H1⟩` from `hA (eps / 48) (by positivity)`.
+
+Take `⟨x2, H2⟩` from `Filter.eventually_atTop.1 (Nu.prime_sum_facts_eventually eps K hK (40 * C) (by positivity))`. Use `⟨max (Fm.x1 + 1) (max x1 x2), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h0 : Fm.x1 < x` using `by have := le_trans (le_max_left _ _) hx; linarith`. Establish `h1 : x ≥ x1` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `h2 : x ≥ x2` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`.
+
+Take `⟨_, _, _, _, a5, _, _, _, _, _, _, aSz⟩` from `H1 x h1 i`. Conclude with `prime_sum_facts_of_scaled hC (H2 x h2 (Fm.D x i) (Fm.L x i) (Fm.L_x x i h0) (Fm.L_eps x i) aSz.1 (Fm.params x h0 i) a5)`.
+-/
 theorem prime_sum_facts_along_family {eps : ℝ} (Fm : FamP eps) (K : Consts) (hK : K.Nonneg) (C31 Ce Cm : ℝ) (C : ℝ)
     (hC : 0 ≤ C) (X : ∀ x (i : Fm.Ix x), Inst (Fm.D x i) (Fm.L x i)) (Y : ∀ x (i : Fm.Ix x), LatInst (Fm.D x i))
     (hA : AdmFam Fm K X Y C31 Ce Cm) :

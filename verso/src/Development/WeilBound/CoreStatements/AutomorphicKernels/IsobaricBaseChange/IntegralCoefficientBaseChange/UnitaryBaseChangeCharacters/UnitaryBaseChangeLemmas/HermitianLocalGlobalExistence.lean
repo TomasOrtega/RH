@@ -10,11 +10,23 @@ noncomputable section
 
 namespace GlobalTheory.UsideLeaf.hermitian_local_global_existence
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `Valuation.mem_integer_iff _ _`.
+-/
 theorem mem_intL_iff {E : Type} [Field E] [NumberField E] (w : Pl E) (x : w.adicCompletion E) :
     x ∈ intL (w.adicCompletion E) ↔ x ∈ w.adicCompletionIntegers E := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
   exact Valuation.mem_integer_iff _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g0, rfl⟩`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_intL_iff]`. Conclude with `(g0.val i j).2`.
+
+Rewrite using `[← map_inv, mem_intL_iff]`. Conclude with `((g0⁻¹).val i j).2`. Introduce and unpack `⟨h1, h2⟩`. Set `O` to `Ov E w`. Establish `hO : ∀ x, x ∈ intL (w.adicCompletion E) → x ∈ O` using `fun x hx => (mem_intL_iff w x).1 hx`.
+
+Set `a : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, hO _ (h1 i j)⟩`. Set `b : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹ : GL (Fin n) _).val i j, hO _ (h2 i j)⟩`. Establish `hinj : Function.Injective (O.subtype.mapMatrix : Matrix (Fin n) (Fin n) O →+* _)` using `fun x y hxy => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun hxy i) j)`. Establish `ha : O.subtype.mapMatrix a = g.val` using `rfl`. Establish `hb : O.subtype.mapMatrix b = (g⁻¹ : GL (Fin n) _).val` using `rfl`.
+
+Establish `hab : a * b = 1` using `hinj (by rw [map_mul, ha, hb, map_one]; exact g.mul_inv)`. Establish `hba : b * a = 1` using `hinj (by rw [map_mul, ha, hb, map_one]; exact g.inv_mul)`. Use `⟨⟨a, b, hab, hba⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem mem_KGL_iff {E : Type} [Field E] [NumberField E] (w : Pl E) {n : ℕ} (g : GL (Fin n) (w.adicCompletion E)) :
     g ∈ GlobalTheory.LFun.KGL w n ↔ (∀ i j, g.val i j ∈ intL (w.adicCompletion E)) ∧
       (∀ i j, (g⁻¹ : GL (Fin n) (w.adicCompletion E)).val i j ∈ intL (w.adicCompletion E)) := by
@@ -44,17 +56,29 @@ section Util
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hσ]`.
+-/
 theorem cT_cT (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (M : Matrix (Fin n) (Fin n) A) : cT σ (cT σ M) = M := by
   ext i j; simp [cT, hσ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, h]`.
+-/
 theorem cT_map {E K : Type} [CommRing E] [CommRing K] (φ : E →+* K) (τ : E →+* E) (σ : K →+* K)
     (h : ∀ x, σ (φ x) = φ (τ x)) {n : ℕ} (M : Matrix (Fin n) (Fin n) E) : cT σ (M.map φ) = (cT τ M).map φ := by
   ext i j; simp [cT, h]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply]; exact S.sum_mem fun k _ => S.mul_mem (hM i k) (hN k j)`.
+-/
 theorem int_mul {K : Type} [Ring K] (S : Subring K) {n : ℕ} {M N : Matrix (Fin n) (Fin n) K}
     (hM : ∀ i j, M i j ∈ S) (hN : ∀ i j, N i j ∈ S) : ∀ i j, (M * N) i j ∈ S := fun i j => by
   rw [Matrix.mul_apply]; exact S.sum_mem fun k _ => S.mul_mem (hM i k) (hN k j)
 
+/- English proof (translation)
+Introduce `i j` and use `by have h := hM j i simp only [intL, Valuation.mem_integer_iff] at h ⊢ simp only [cT, Matrix.transpose_apply, Matrix.map_apply, hσ] exact h`.
+-/
 theorem int_cT {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K)
     (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {n : ℕ} {M : Matrix (Fin n) (Fin n) K}
     (hM : ∀ i j, M i j ∈ intL K) : ∀ i j, cT σ M i j ∈ intL K := fun i j => by
@@ -65,6 +89,13 @@ theorem int_cT {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (
 
 end Util
 
+/- English proof (translation)
+Set `γO : Matrix (Fin n) (Fin n) (intL K)` to `fun i j => ⟨γ i j, hγ i j⟩`. Establish `hγO : γO.map (intL K).subtype = γ` using `by ext i j; rfl`. Establish `hlift : ∀ C : K[X], (∀ i, C.coeff i ∈ intL K) → ∃ CO : (intL K)[X], CO.map (intL K).subtype = C`. Introduce `C hC`. Establish `: C ∈ Polynomial.lifts (intL K).subtype` using `(Polynomial.lifts_iff_coeff_lifts _).2 fun i => ⟨⟨_, hC i⟩, rfl⟩`.
+
+Take `⟨p, hp⟩` from `this`. Conclude with `⟨p, hp⟩`. Take `⟨AO, hAO⟩` from `hlift A hA`. Take `⟨BO, hBO⟩` from `hlift B hB`. Use `⟨γO.charpoly, by rw [← Matrix.charpoly_map, hγO], ?_⟩` and prove the remaining obligations.
+
+Use `⟨AO, BO, Polynomial.map_injective (intL K).subtype Subtype.val_injective ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, hAO, hBO, ← Matrix.charpoly_map, hγO, hAB, Polynomial.map_one]`.
+-/
 theorem sep_int {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] {n : ℕ} (γ : Matrix (Fin n) (Fin n) K)
     (hγ : ∀ i j, γ i j ∈ intL K) (A B : K[X]) (hA : ∀ i, A.coeff i ∈ intL K) (hB : ∀ i, B.coeff i ∈ intL K)
     (hAB : A * γ.charpoly + B * derivative γ.charpoly = 1) :
@@ -84,6 +115,39 @@ theorem sep_int {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] 
   rw [Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, hAO, hBO,
     ← Matrix.charpoly_map, hγO, hAB, Polynomial.map_one]
 
+/- English proof (translation)
+Use `set φ : E →+* (w.adicCompletion E) := algebraMap E (w.adicCompletion E) with hφ`. Use `set τ : E →+* E := (IsCMField.complexConj E).toRingEquiv.toRingHom with hτ`. Take `⟨-, hinv, hiso, hns, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨hext, ⟨ϖ, q, hUI, -⟩, -⟩` from `hns hw`. Establish `hext' : ∀ x, cj w (φ x) = φ (τ x)` using `hext`.
+
+Establish `hcT : ∀ M : Matrix (Fin n) (Fin n) E, cT (cj w) (M.map φ) = (cT τ M).map φ` using `cT_map φ τ (cj w) hext'`. Use `set γw := γ₀.val.map φ with hγw`. Use `set γiw := (γ₀⁻¹ : GL (Fin n) E).val.map φ with hγiw`. Use `set J := H₀.map φ with hJ`. Use `set Ji := H₀⁻¹.map φ with hJi`.
+
+Establish `hI : ∀ x : E, φ x ∈ w.adicCompletionIntegers E → φ x ∈ intL (w.adicCompletion E)` using `fun x hx => (mem_intL_iff w _).2 hx`. Establish `iγ : ∀ i j, γw i j ∈ intL (w.adicCompletion E)` using `fun i j => hI _ (h1 i j)`. Establish `iγi : ∀ i j, γiw i j ∈ intL (w.adicCompletion E)` using `fun i j => hI _ (h2 i j)`. Establish `iJ : ∀ i j, J i j ∈ intL (w.adicCompletion E)` using `fun i j => hI _ (h3 i j)`. Establish `iJi : ∀ i j, Ji i j ∈ intL (w.adicCompletion E)` using `fun i j => hI _ (h4 i j)`.
+
+Establish `hmap1 : (1 : Matrix (Fin n) (Fin n) E).map φ = 1` using `Matrix.map_one _ (map_zero φ) (map_one φ)`. Establish `hγγ : γw * γiw = 1` using `by rw [← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, hmap1]`. Establish `hJJ : J * Ji = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), hmap1]`. Establish `hJh : cT (cj w) J = J` using `by rw [hcT]; exact congrArg (fun M => M.map φ) hH₀`.
+
+Establish `hγJ : cT (cj w) γw * J * γw = J`. Rewrite using `[hcT, ← Matrix.map_mul, ← Matrix.map_mul, hγH]`. Establish `hABw : A.map φ * γw.charpoly + B.map φ * derivative γw.charpoly = 1`. Rewrite using `[hγw, Matrix.charpoly_map, Polynomial.derivative_map, ← Polynomial.map_mul, ← Polynomial.map_mul, ← Polynomial.map_add, hAB, Polynomial.map_one]`. Take `⟨Q₀, hch, hsep⟩` from `sep_int γw iγ (A.map φ) (B.map φ) (fun i => by rw [Polynomial.coeff_map]; exact hI _ (h5 i)) (fun i => by rw [Polynomial.coeff_map]; exact hI _ (h6 i)) hABw`.
+
+Take `⟨hk1, hk2⟩` from `(mem_KGL_iff w _).1 hk`. Establish `hkv : (k⁻¹ * GeneralLinearGroup.map φ γ₀ * k).val = (k⁻¹ : GL (Fin n) (w.adicCompletion E)).val * γw * k.val` using `rfl`. Establish `hkiv : ((k⁻¹ * GeneralLinearGroup.map φ γ₀ * k)⁻¹ : GL (Fin n) (w.adicCompletion E)).val = (k⁻¹ : GL (Fin n) (w.adicCompletion E)).val * γiw * k.val`. Rewrite using `[show (k⁻¹ * GeneralLinearGroup.map φ γ₀ * k)⁻¹ = k⁻¹ * GeneralLinearGroup.map φ γ₀⁻¹ * k by`. Rewrite using `[map_inv]`.
+
+Use the proof step `group]`. Both sides reduce to the same expression. Take `⟨a, g, hac, rfl, ig, igi⟩` from `GlobalTheory.UsideLeaf.UnitaryLocalCharpoly.lattice_step γw γiw Q₀ iγ iγi hγγ hch hsep k (fun i j => hkv ▸ hk1 i j) (fun i j => hkiv ▸ hk2 i j)`. Take `⟨im, imi⟩` from `(mem_KGL_iff w _).1 hm`. Use `set σ := cj w`.
+
+Use `set Hn := cT σ a.val * Hw * a.val with hHn`. Establish `hcTg : cT σ (g⁻¹ : GL (Fin n) (w.adicCompletion E)).val * cT σ g.val = 1`. Rewrite using `[← cT_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, cT_one]`. Establish `hHn' : Hn = cT σ (g⁻¹ : GL (Fin n) (w.adicCompletion E)).val * m.val * (g⁻¹ : GL (Fin n) (w.adicCompletion E)).val`. Rewrite using `[hkm, Units.val_mul, cT_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcTg, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = _ := by simp only [hHn, Matrix.mul_assoc]`. Use `set Hi := g.val * (m⁻¹ : GL (Fin n) (w.adicCompletion E)).val * cT σ g.val with hHi`. Establish `iH : ∀ i j, Hn i j ∈ intL (w.adicCompletion E)`.
+
+Rewrite using `[hHn']`. Conclude with `int_mul _ (int_mul _ (int_cT σ hiso igi) im) igi`. Establish `iHi : ∀ i j, Hi i j ∈ intL (w.adicCompletion E)` using `int_mul _ (int_mul _ ig imi) (int_cT σ hiso ig)`. Establish `hHH : Hn * Hi = 1`. Rewrite using `[hHn', hHi]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one, ← cT_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, cT_one]`. Establish `hHh : cT σ Hn = Hn`. Rewrite using `[hHn, cT_mul, cT_mul, cT_cT σ hinv, hHw.1, Matrix.mul_assoc]`. Establish `hγH' : cT σ γw * Hn * γw = Hn`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hHn, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (γw * a.val) * Hw * (γw * a.val) := by rw [hac]`. Use `_ = cT σ a.val * (cT σ γw * Hw * γw) * a.val := by rw [cT_mul]; simp only [Matrix.mul_assoc]`.
+
+Use `_ = Hn := by rw [hHw.2.2]`. Take `⟨b, hbc, hbJ⟩` from `GlobalTheory.UsideLeaf.UnitaryLocalCharpoly.norm_step σ ϖ q hUI γw J Ji Hn Hi Q₀ iγ iJ iJi iH iHi hJJ hHH hJh hHh hγJ hγH' hch hsep`. Use `⟨b * a⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `hai : (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val * γw = γw * (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val * (a.val * γw) * (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val := by rw [hac]`. Use `_ = _ := by rw [← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[Units.val_mul, Matrix.mul_assoc, hai, ← Matrix.mul_assoc, hbc, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, cT_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = cT σ (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val * Hn * (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val := by`. Rewrite using `[hHn, cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val * (cT σ b.val * J * b.val) * (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val := by rw [hbJ]`.
+
+Use `_ = _ := by rw [Units.val_mul, cT_mul]; simp only [Matrix.mul_assoc]`.
+-/
 theorem local_good (E : Type) [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (n : ℕ) (γ₀ : GL (Fin n) E)
     (H₀ : Matrix (Fin n) (Fin n) E) (hH₀ : IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀)
     (hd : H₀.det ≠ 0)
@@ -191,10 +255,18 @@ theorem local_good (E : Type) [Field E] [NumberField E] [IsCMField E] (hU : Unr 
       _ = cT σ (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val * (cT σ b.val * J * b.val) * (a⁻¹ : GL (Fin n) (w.adicCompletion E)).val := by rw [hbJ]
       _ = _ := by rw [Units.val_mul, cT_mul]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+The claim follows from `(algebraMap E (FiniteAdeleRing (𝓞 E) E) x).2`.
+-/
 theorem eventually_int {E : Type} [Field E] [NumberField E] (x : E) :
     ∀ᶠ w : Pl E in cofinite, algebraMap E (w.adicCompletion E) x ∈ w.adicCompletionIntegers E :=
   (algebraMap E (FiniteAdeleRing (𝓞 E) E) x).2
 
+/- English proof (translation)
+Establish `h` using `(Filter.eventually_all_finset A.support).2 fun i _ => eventually_int (A.coeff i)`. Use `filter_upwards [h] with w hw i`. Distinguish the cases in `hi : i ∈ A.support`. Conclude with `hw i hi`. Rewrite using `[Polynomial.notMem_support_iff.1 hi, map_zero]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem eventually_int_coeff {E : Type} [Field E] [NumberField E] (A : E[X]) :
     ∀ᶠ w : Pl E in cofinite, ∀ i, algebraMap E (w.adicCompletion E) (A.coeff i) ∈ w.adicCompletionIntegers E := by
   have h := (Filter.eventually_all_finset A.support).2 fun i _ => eventually_int (A.coeff i)
@@ -204,12 +276,18 @@ theorem eventually_int_coeff {E : Type} [Field E] [NumberField E] (A : E[X]) :
   · rw [Polynomial.notMem_support_iff.1 hi, map_zero]
     exact zero_mem _
 
+/- English proof (translation)
+The claim follows from `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_int (M i j)`.
+-/
 theorem eventually_int_mat {E : Type} [Field E] [NumberField E] {n : ℕ} (M : Matrix (Fin n) (Fin n) E) :
     ∀ᶠ w : Pl E in cofinite, ∀ i j, algebraMap E (w.adicCompletion E) (M i j) ∈ w.adicCompletionIntegers E :=
   Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => eventually_int (M i j)
 
 end GlobalTheory.UsideLeaf.hermitian_local_global_existence
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n γ₀ hEll H₀ hH₀ hd hγH H hH hlat`. Take `⟨A, B, hAB⟩` from `hEll.2.2.1`. Use `filter_upwards [hlat, GlobalTheory.UsideLeaf.hermitian_local_global_existence.eventually_int_mat γ₀.val, GlobalTheory.UsideLeaf.hermitian_local_global_existence.eventually_int_mat (γ₀⁻¹ : GL (Fin n) E).val, GlobalTheory.UsideLeaf.hermitian_local_global_existence.eventually_int_ma …`. Take `⟨k, m, hk, hm, hkm⟩` from `hw hns`. Conclude with `GlobalTheory.UsideLeaf.hermitian_local_global_existence.local_good E hU n γ₀ H₀ hH₀ hd hγH A B hAB w hns h1 h2 h3 h4 h5 h6 (H w) (hH w hns) k m hk hm hkm`.
+-/
 theorem GlobalTheory.UsideLeaf.hermitian_local_global_existence.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (γ₀ : GL (Fin n) E), γ₀.val.charpoly ∈ Ell E n → ∀ H₀ : Matrix (Fin n) (Fin n) E, IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ → H₀.det ≠ 0 → cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * H₀ * γ₀.val = H₀ → ∀ H : ∀ w : Pl E, Matrix (Fin n) (Fin n) (w.adicCompletion E), (∀ w, ¬ IsSplitAt w → IsHerm (cj w) (H w) ∧ (H w).det ≠ 0 ∧ cT (cj w) (γ₀.val.map (algebraMap E (w.adicCompletion E))) * H w * γ₀.val.map (algebraMap E (w.adicCompletion E)) = H w) → (∀ᶠ w in cofinite, ¬ IsSplitAt w → ∃ k m : GL (Fin n) (w.adicCompletion E), k⁻¹ * GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ * k ∈ GlobalTheory.LFun.KGL w n ∧ m ∈ GlobalTheory.LFun.KGL w n ∧ m.val = cT (cj w) k.val * H w * k.val) → (∀ᶠ w in cofinite, ¬ IsSplitAt w → ∃ c : GL (Fin n) (w.adicCompletion E), c.val * γ₀.val.map (algebraMap E (w.adicCompletion E)) = γ₀.val.map (algebraMap E (w.adicCompletion E)) * c.val ∧ H w = cT (cj w) c.val * H₀.map (algebraMap E (w.adicCompletion E)) * c.val) := by
   intro E _ _ _ hU n γ₀ hEll H₀ hH₀ hd hγH H hH hlat
   obtain ⟨A, B, hAB⟩ := hEll.2.2.1

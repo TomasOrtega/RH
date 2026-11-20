@@ -13,6 +13,15 @@ section MX
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite using `[mem_orth']`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨a, rfl⟩` from `hy`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y' hy'`. Take `⟨b, rfl⟩` from `hy'`. Conclude with `F'.fl.e_iso a b`.
+
+Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => simp [h1, h2]`. Consider the case `smul c y _ h1 => simp [h1]`. Consider the case `zero => simp`. Consider the case `add y y' _ _ h1 h2 => simp [h1, h2]`.
+
+Consider the case `smul c y _ h1 => simp [h1]`.
+-/
 theorem xsp_le_orth {T' : E} (F' : LFlag S r T') : Xsp F' ≤ orth S (Xsp F') := by
   intro v hv
   rw [mem_orth']
@@ -31,6 +40,39 @@ theorem xsp_le_orth {T' : E} (F' : LFlag S r T') : Xsp F' ≤ orth S (Xsp F') :=
   | add y y' _ _ h1 h2 => simp [h1, h2]
   | smul c y _ h1 => simp [h1]
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T' g F' Λ γ hτ hT hg hΛ hpos hA hXγ hz hcong v hv`. Establish `hX : ∀ w, γ w ∈ Xsp F' ↔ w ∈ Xsp F'`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite `h` using `[← hXγ]`. Take `⟨w', hw', he⟩` from `h`. Rewrite using `[← γ.injective he]`. Conclude with `hw'`. Introduce `h`.
+
+Rewrite using `[← hXγ]`. Conclude with `⟨w, h, rfl⟩`. Establish `hiso : ∀ x y, S.hT (γ x) (γ y) = S.hT x y` using `hA.1`. Establish `hU` using `orth_iff F' γ hiso hX`. Take `⟨n, hn, hpow⟩` from `γQ_finOrd F' hT hτ hpos Λ hΛ γ hA hU hX hz`.
+
+Set `φ : Qt F' →ₗ[E] Qt F'` to `(γQ F' γ hU hX : Qt F' →ₗ[E] Qt F')`. Establish `hφL : ∀ x ∈ Lb F' Λ, φ x ∈ Lb F' Λ`. Introduce `x hx`. Establish `h` using `γQ_Lb F' Λ γ hU hX hA`. Rewrite using `[← h]`.
+
+Conclude with `⟨x, hx, rfl⟩`. Establish `hk : ∀ (k : ℕ) (x : Qt F'), φ^[k] x = (γQ F' γ hU hX ^ k) x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
+
+Both sides reduce to the same expression. Consider the case `succ k ih`. Introduce `x`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ']`. Both sides reduce to the same expression.
+
+Establish `hpow' : ∀ x, φ^[n] x = x`. Introduce `x`. Rewrite using `[hk, hpow]`. Both sides reduce to the same expression. Establish `hgE : ((g : ℕ) : E) ≠ 0` using `by exact_mod_cast (show g ≠ 0 by omega)`.
+
+Establish `hcongQ : ∀ x ∈ Lb F' Λ, ∃ y ∈ Lb F' Λ, φ x - x = g • y`. Introduce `x hx`. Take `⟨a, ha, rfl⟩` from `(mem_Lb F' Λ).1 hx`. Establish `hw : (a : S.V) ∈ Lrep Λ F'` using `⟨ha, a.2⟩`. Take `⟨s, hs, ξ, hξ, hsξ⟩` from `Submodule.mem_sup.1 (hcong a hw)`.
+
+Rewrite `hs` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨l, hl, rfl⟩` from `hs`. Establish `hξX : ξ ∈ Xsp F'` using `hξ.2`. Establish `hgl : ((g : ℕ) : E) • l = γ a - a - ξ`. Rewrite using `[← hsξ, ← algebraMap_smul E ((g : ℕ) : 𝓞 E) l, map_natCast]`.
+
+Normalize the expressions using the abelian group laws. Establish `hlU : l ∈ Uo F'`. Establish `h1 : γ a - a - ξ ∈ Uo F'` using `sub_mem (sub_mem ((hU a).2 a.2) a.2) (xsp_le_orth F' hξX)`. Establish `: l = ((g : ℕ) : E)⁻¹ • (γ a - a - ξ)`. Rewrite using `[← hgl, smul_smul, inv_mul_cancel₀ hgE, one_smul]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h1`. Use `⟨Submodule.Quotient.mk ⟨l, hlU⟩, (mem_Lb F' Λ).2 ⟨⟨l, hlU⟩, hl, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show γQ F' γ hU hX (Submodule.Quotient.mk a) - Submodule.Quotient.mk a = g • (Submodule.Quotient.mk ⟨l, hlU⟩ : Qt F')`. Rewrite using `[γQ_mk, ← Submodule.Quotient.mk_sub, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`.
+
+Use `show ((γU F' γ hU a - a - g • (⟨l, hlU⟩ : Uo F') : Uo F') : S.V) ∈ Xsp F'`. Establish `hco : ((γU F' γ hU a - a - g • (⟨l, hlU⟩ : Uo F') : Uo F') : S.V) = ξ`. Establish `e2 : ((g • (⟨l, hlU⟩ : Uo F') : Uo F') : S.V) = g • l` using `by simp`. Rewrite using `[Submodule.coe_sub, Submodule.coe_sub, e2, γU_coe]`. Establish `e : (g • l : S.V) = ((g : ℕ) : E) • l` using `(Nat.cast_smul_eq_nsmul E g l).symm`.
+
+Rewrite using `[e, hgl]`. Normalize the expressions using the abelian group laws. Rewrite using `[hco]`. Conclude with `hξX`. Establish `hfix` using `mink_fix (Lb F' Λ) (Lb_lattice F' Λ hΛ).fg φ hφL n hn hpow' g hg hcongQ`.
+
+Establish `hall : ∀ q, φ q = q`. Establish `hle : Submodule.span E (Lb F' Λ : Set (Qt F')) ≤ LinearMap.ker (φ - LinearMap.id : Qt F' →ₗ[E] Qt F')`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, hfix x hx, sub_self]`.
+
+Introduce `q`. Establish `hq : q ∈ LinearMap.ker (φ - LinearMap.id : Qt F' →ₗ[E] Qt F')` using `hle (by rw [(Lb_lattice F' Λ hΛ).span_eq_top]; trivial)`. Rewrite `hq` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `hq`. Establish `h` using `hall (Submodule.Quotient.mk ⟨v, hv⟩)`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (γU F' γ hU ⟨v, hv⟩) = Submodule.Quotient.mk (p := Pk F') ⟨v, hv⟩ at h`. Rewrite `h` using `[Submodule.Quotient.eq]`. Conclude with `h`.
+-/
 theorem mod_lattice_absolute_value : ModXAbs := by
   intro E _ _ _ S r T' g F' Λ γ hτ hT hg hΛ hpos hA hXγ hz hcong v hv
   have hX : ∀ w, γ w ∈ Xsp F' ↔ w ∈ Xsp F' := by

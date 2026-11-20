@@ -12,6 +12,9 @@ namespace PI.ProdFormulaE.HaarBox
 
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+Break down `eq_or_ne a 0 with h | h` into its components or cases. Rewrite using `[h, modF_zero]`. Conclude with `(modF_pos h).le`.
+-/
 theorem modF_nonneg' (a : K) : 0 ≤ modF K a := by
   rcases eq_or_ne a 0 with h | h
   · rw [h, modF_zero]
@@ -24,6 +27,9 @@ def equivOfDet (b : Basis ι K E) (A : Matrix ι ι K) (hA : A.det ≠ 0) : E �
   LinearEquiv.ofIsUnitDet (f := Matrix.toLin b b A) (v := b) (v' := b)
     (by rw [LinearMap.toMatrix_toLin]; exact hA.isUnit)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_equivOfDet (b : Basis ι K E) (A : Matrix ι ι K) (hA : A.det ≠ 0) :
     ⇑(equivOfDet b A hA) = Matrix.toLin b b A := rfl
 
@@ -38,6 +44,9 @@ def TransvBox (b : Basis ι K E) : Prop :=
   ∀ t : Matrix.TransvectionStruct ι K, ∃ γ : ι → ValueGroupWithZero K, (∀ i, γ i ≠ 0) ∧
     Matrix.toLin b b t.toMatrix '' box b γ = box b γ
 
+/- English proof (translation)
+Rewrite using `[Matrix.toLin_mul b b b, LinearMap.coe_comp, Set.image_comp, hA, hB, Matrix.det_mul, modF_mul, ENNReal.ofReal_mul (modF_nonneg' _), mul_assoc]`.
+-/
 private theorem measure_toLin_mul_image_of_forall (b : Basis ι K E) (μ : Measure E) (A B : Matrix ι ι K)
     (hA : ∀ S : Set E, μ (Matrix.toLin b b A '' S) = ENNReal.ofReal (modF K A.det) * μ S)
     (hB : ∀ S : Set E, μ (Matrix.toLin b b B '' S) = ENNReal.ofReal (modF K B.det) * μ S)
@@ -46,6 +55,9 @@ private theorem measure_toLin_mul_image_of_forall (b : Basis ι K E) (μ : Measu
   rw [Matrix.toLin_mul b b b, LinearMap.coe_comp, Set.image_comp, hA, hB, Matrix.det_mul, modF_mul,
     ENNReal.ofReal_mul (modF_nonneg' _), mul_assoc]
 
+/- English proof (translation)
+Take `⟨γ, hγ, himg⟩` from `htrans t`. Establish `hdet : t.toMatrix.det ≠ 0` using `by rw [Matrix.TransvectionStruct.det]; exact one_ne_zero`. Rewrite using `[Matrix.TransvectionStruct.det, modF_one, ENNReal.ofReal_one, one_mul]`. Establish `h` using `image_eq_of_box b μ (equivOfDet b t.toMatrix hdet) γ hγ 1 (by rw [coe_equivOfDet, himg, one_mul]) S`. Rewrite `h` using `[coe_equivOfDet, one_mul]`. Then use the resulting hypothesis.
+-/
 private theorem measure_toLin_transvection_image (b : Basis ι K E) (μ : Measure E) [μ.IsAddHaarMeasure]
     (htrans : TransvBox b) (t : Matrix.TransvectionStruct ι K) (S : Set E) :
     μ (Matrix.toLin b b t.toMatrix '' S) = ENNReal.ofReal (modF K t.toMatrix.det) * μ S := by
@@ -56,6 +68,11 @@ private theorem measure_toLin_transvection_image (b : Basis ι K E) (μ : Measur
     (by rw [coe_equivOfDet, himg, one_mul]) S
   rwa [coe_equivOfDet, one_mul] at h
 
+/- English proof (translation)
+Establish `hdetv : (Matrix.diagonal (Function.update (1 : ι → K) i a)).det = a`. Rewrite using `[Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using the standard rewrite rules. Establish `hdet : (Matrix.diagonal (Function.update (1 : ι → K) i a)).det ≠ 0`. Rewrite using `[hdetv]`.
+
+Conclude with `ha`. Rewrite using `[hdetv, modF_of_ne ha, ENNReal.ofReal_coe_nnreal]`. Establish `h` using `image_eq_of_box b μ (equivOfDet b _ hdet) 1 (fun _ => by simp) _ (by rw [coe_equivOfDet]; exact hscale i a ha) S`. Rewrite `h` using `[coe_equivOfDet]`. Then use the resulting hypothesis.
+-/
 private theorem measure_toLin_diagonal_update_image (b : Basis ι K E) (μ : Measure E) [μ.IsAddHaarMeasure]
     (hscale : ScaleBox b μ) (i : ι) (a : K) (ha : a ≠ 0) (S : Set E) :
     μ (Matrix.toLin b b (Matrix.diagonal (Function.update 1 i a)) '' S) =
@@ -71,6 +88,21 @@ private theorem measure_toLin_diagonal_update_image (b : Basis ι K E) (μ : Mea
     (by rw [coe_equivOfDet]; exact hscale i a ha) S
   rwa [coe_equivOfDet] at h
 
+/- English proof (translation)
+It suffices to establish `h : ∀ s : Finset ι, ∀ D : ι → K, (∀ i, D i ≠ 0) → (∀ i ∉ s, D i = 1) → ∀ S : Set E, μ (Matrix.toLin b b (Matrix.diagonal D) '' S) = ENNReal.ofReal (modF K (Matrix.diagonal D).det) * μ S from h Finset.univ D hD (fun i hi => absurd (Finset.mem_univ i) hi) S`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `D _ h1 S`.
+
+Establish `hD1 : D = 1` using `funext fun i => h1 i (by simp)`. Substitute `hD1` using the available equality. Establish `h1' : Matrix.diagonal (1 : ι → K) = 1` using `Matrix.diagonal_one`. Rewrite using `[h1', Matrix.toLin_one, LinearMap.id_coe, Set.image_id, Matrix.det_one, modF_one, ENNReal.ofReal_one, one_mul]`. Consider the case `insert j s hj ih`.
+
+Introduce `D h0 h1 S`. Establish `hsplit : Matrix.diagonal D = Matrix.diagonal (Function.update D j 1) * Matrix.diagonal (Function.update 1 j (D j))`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Rewrite using `[hsplit]`.
+
+Use `measure_toLin_mul_image_of_forall b μ _ _ (ih _ ?_ ?_) (measure_toLin_diagonal_update_image b μ hscale j (D j) (h0 j)) S` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne h, h0 i]`. Introduce `i hi`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Function.update_of_ne h]`. Conclude with `h1 i (by simp [h, hi])`.
+-/
 private theorem measure_toLin_diagonal_image (b : Basis ι K E) (μ : Measure E) [μ.IsAddHaarMeasure]
     (hscale : ScaleBox b μ) (D : ι → K) (hD : ∀ i, D i ≠ 0) (S : Set E) :
     μ (Matrix.toLin b b (Matrix.diagonal D) '' S) =
@@ -111,6 +143,11 @@ private theorem measure_toLin_diagonal_image (b : Basis ι K E) (μ : Measure E)
       · rw [Function.update_of_ne h]
         exact h1 i (by simp [h, hi])
 
+/- English proof (translation)
+Use `revert S`. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ S : Set E, μ (Matrix.toLin b b M '' S) = ENNReal.ofReal (modF K M.det) * μ S) A hA ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD S`. Use `measure_toLin_diagonal_image b μ hscale D (fun i => ?_) S` and prove the remaining obligations. Rewrite `hD` using `[Matrix.det_diagonal]`.
+
+Conclude with `Finset.prod_ne_zero_iff.1 hD i (Finset.mem_univ i)`. Introduce `t S`. Conclude with `measure_toLin_transvection_image b μ htrans t S`. Introduce `A B _ _ hA hB S`. Conclude with `measure_toLin_mul_image_of_forall b μ A B hA hB S`.
+-/
 theorem image_toLin (b : Basis ι K E) (μ : Measure E) [μ.IsAddHaarMeasure]
     (hscale : ScaleBox b μ) (htrans : TransvBox b)
     (A : Matrix ι ι K) (hA : A.det ≠ 0) (S : Set E) :
@@ -135,6 +172,13 @@ namespace PI.ProdFormulaE.HaarAlgP
 
 open HaarBox
 
+/- English proof (translation)
+Introduce `K _ _ _ _ A _ _ _ _ _ _ _ _ μ _ y hy S`. Set `b` to `Module.finBasis K A`. Use `set M := LinearMap.toMatrix b b (LinearMap.mulLeft K y) with hM`. Establish `hdet : M.det = Algebra.norm K y`. Rewrite using `[hM, LinearMap.det_toMatrix, Algebra.norm_apply]`.
+
+Both sides reduce to the same expression. Establish `hdet0 : M.det ≠ 0`. Rewrite using `[hdet]`. Conclude with `(hy.map (Algebra.norm K)).ne_zero`. Establish `h` using `image_toLin b μ (hscale K A _ b μ) (htrans K A _ b) M hdet0 S`.
+
+Rewrite `h` using `[hdet, hM, Matrix.toLin_toMatrix]`. Conclude with `h`.
+-/
 theorem haarAlg_of
     (hscale : ∀ (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
       [IsNonarchimedeanLocalField K] (E : Type) [AddCommGroup E] [Module K E] [TopologicalSpace E]

@@ -14,6 +14,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.InOpenFiniteInf
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GrCech.Omega.basis | exact GlobalTheory.CompanionTheory.GrCech.Omega.basis | (intros; apply GlobalTheory.CompanionTheory.GrCech.Omega.basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_graded_form_on_affine_chart : KH.LocGr → KH.PolyTf → ∀ {O : Type} [CommRing O] (l s : ℕ) (hb : TFBase (dividedPowersBot O) l s) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) {W₀ : X.Opens} {d : ℕ}
     (c : Coord q W₀ d) (r : ℕ) (hr : r < s),
     ∃ ω : Idx r d → HU (GlobalTheory.CompanionTheory.GrCech.grF (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥)) r) (St (TF l s) {W₀}) r,

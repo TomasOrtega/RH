@@ -11,6 +11,11 @@ open scoped ENNReal TensorProduct
 
 namespace GlobalTheory.StabEmbClosed
 
+/- English proof (translation)
+Use `Function.LeftInverse.isClosedEmbedding (f := fun Y : Matrix m m ℂ => (N * Y * M).toBlocks₁₁) ?_ ?_ ?_` and prove the remaining obligations. Introduce `X`. Establish `: N * (M * fromBlocks X 0 0 (1 : Matrix Unit Unit ℂ) * N) * M = fromBlocks X 0 0 (1 : Matrix Unit Unit ℂ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hNM, Matrix.one_mul, Matrix.mul_one]`. Simplify using `only [this, toBlocks_fromBlocks₁₁]`. Establish `h : Continuous fun Y : Matrix m m ℂ => N * Y * M` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Conclude with `h.matrix_submatrix Sum.inl Sum.inl`. Conclude with `(continuous_const.matrix_mul (Continuous.matrix_fromBlocks continuous_id continuous_const continuous_const continuous_const)).matrix_mul continuous_const`.
+-/
 theorem isClosedEmbedding_conj_fromBlocks {m n : Type} [Fintype m] [Fintype n]
     [DecidableEq m] [DecidableEq n]
     (M : Matrix m (n ⊕ Unit) ℂ) (N : Matrix (n ⊕ Unit) m ℂ) (hNM : N * M = 1) :
@@ -32,6 +37,15 @@ theorem isClosedEmbedding_conj_fromBlocks {m n : Type} [Fintype m] [Fintype n]
       (Continuous.matrix_fromBlocks continuous_id continuous_const continuous_const
         continuous_const)).matrix_mul continuous_const
 
+/- English proof (translation)
+Introduce `P Q P' Q' hd x₀ hx j hj`. Take `⟨C, hC, hCx, hj⟩` from `hj`. Take `⟨N, B, hNM, hMN, -⟩` from `GlobalTheory.UnfoldingCompare.exists_frame_inv hd hx hC hCx`. Establish `key : ∀ g : UpqT P' Q', (j g).mat = C.fromCols (replicateCol Unit x₀) * fromBlocks g.mat 0 0 (1 : Matrix Unit Unit ℂ) * N`. Introduce `g`.
+
+Take `⟨h1, h2⟩` from `hj g`. Establish `h3 : (j g).mat * replicateCol Unit x₀ = replicateCol Unit x₀`. Rewrite using `[← replicateCol_mulVec, h1]`. Establish `h4 : (j g).mat * C.fromCols (replicateCol Unit x₀) = C.fromCols (replicateCol Unit x₀) * fromBlocks g.mat 0 0 (1 : Matrix Unit Unit ℂ)`. Rewrite using `[mul_fromCols, fromCols_mul_fromBlocks, h2, h3]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← h4, Matrix.mul_assoc, hMN, Matrix.mul_one]`. Use `IsClosedEmbedding.of_comp (GlobalTheory.UpqTopology.isClosedEmbedding_mat (P := P) (Q := Q)).isEmbedding ?_` and prove the remaining obligations. Use `(isClosedEmbedding_conj_fromBlocks _ N hNM).comp (GlobalTheory.UpqTopology.isClosedEmbedding_mat (P := P') (Q := Q'))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g`. Conclude with `key g`.
+-/
 theorem isClosedEmbedding_of_isStabEmb : ∀ (P Q P' Q' : ℕ), P' + Q' + 1 = P + Q → ∀ (x₀ : Fin P ⊕ Fin Q → ℂ), star x₀ ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x₀ ≠ 0 → ∀ j : UpqT P' Q' →* UpqT P Q, IsStabEmb x₀ j → IsClosedEmbedding j := by
   intro P Q P' Q' hd x₀ hx j hj
   obtain ⟨C, hC, hCx, hj⟩ := hj

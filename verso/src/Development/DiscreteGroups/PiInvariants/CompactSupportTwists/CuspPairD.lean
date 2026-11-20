@@ -21,9 +21,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 def bump (R : ℝ) (s : ℝ) : ℂ := ((max 0 (min 1 (R + 1 - |s|)) : ℝ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `Complex.continuous_ofReal.comp (continuous_const.max (continuous_const.min (continuous_const.sub continuous_abs)))`.
+-/
 theorem continuous_bump (R : ℝ) : Continuous (bump R) :=
   Complex.continuous_ofReal.comp (continuous_const.max (continuous_const.min (continuous_const.sub continuous_abs)))
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (isCompact_Icc (a := -(R + 1)) (b := R + 1)) fun s hs => ?_` and prove the remaining obligations. Establish `h : R + 1 < |s|`. Rewrite `hs` using `[mem_Icc, not_and_or, not_le, not_le]`. Break down `hs with h | h` into its components or cases. Use `neg_abs_le s` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `le_abs_self s` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [bump]`. Rewrite using `[max_eq_left (min_le_of_right_le (by linarith)), Complex.ofReal_zero]`.
+-/
 theorem hasCompactSupport_bump (R : ℝ) : HasCompactSupport (bump R) := by
   refine HasCompactSupport.intro (isCompact_Icc (a := -(R + 1)) (b := R + 1)) fun s hs => ?_
   have h : R + 1 < |s| := by
@@ -34,10 +42,22 @@ theorem hasCompactSupport_bump (R : ℝ) : HasCompactSupport (bump R) := by
   simp only [bump]
   rw [max_eq_left (min_le_of_right_le (by linarith)), Complex.ofReal_zero]
 
+/- English proof (translation)
+Simplify using `only [bump]`. Rewrite using `[min_eq_left (by linarith), max_eq_right zero_le_one, Complex.ofReal_one, norm_one]`.
+-/
 theorem norm_bump_eq_one {R s : ℝ} (hs : |s| ≤ R) : ‖bump R s‖ = 1 := by
   simp only [bump]
   rw [min_eq_left (by linarith), max_eq_right zero_le_one, Complex.ofReal_one, norm_one]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E n (muG D)`. Take `⟨K, hK, hKs⟩` from `tsum_shift_le (bump R) (continuous_bump R) (hasCompactSupport_bump R) _ (lg_e_pos (E := E) hn)`. Establish `hS : MeasurableSet {x : H E n 0 | |ldet x| ≤ R}` using `by haveI := borelSpace_H (E := E) (n := n)`. Conclude with `(isClosed_le (continuous_abs.comp continuous_ldet) continuous_const).measurableSet`. Establish `h1 : D.ν {x | |ldet x| ≤ R} ≤ ∫⁻ x, ‖bump R (lg x.1)‖ₑ ^ (2 : ℝ) ∂D.ν`.
+
+Rewrite using `[← lintegral_indicator_one hS]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ {x : H E n 0 | |ldet x| ≤ R}`. Rewrite using `[indicator_of_mem hx, Pi.one_apply, ← ofReal_norm_eq_enorm, norm_bump_eq_one (s := lg x.1) hx, ENNReal.ofReal_one, ENNReal.one_rpow]`. Rewrite using `[indicator_of_notMem hx]`.
+
+Conclude with `zero_le`. Establish `h2 : ∫⁻ x, ‖bump R (lg x.1)‖ₑ ^ (2 : ℝ) ∂D.ν = ∫⁻ g in stdDom (ratGL E n).range, ‖bump R (lg g)‖ₑ ^ (2 : ℝ) ∂muG D` using `lintegral_nu D (fun g => ‖bump R (lg g)‖ₑ ^ (2 : ℝ)) fun γ hγ g => by rw [lg_rat_mul γ hγ g]`. Establish `h3 : ∫⁻ g in stdDom (ratGL E n).range, ‖bump R (lg g)‖ₑ ^ (2 : ℝ) ∂muG D = ∫⁻ q, ∑' m : ℤ, ‖bump R (lg q.out + m * lg (splitCentre E n 1))‖ₑ ^ (2 : ℝ) ∂quotMeasure (latticeGL E n) (muG D)`. Establish `h` using `lintegral_unfold (muG D) hn (fun _ => 1) (by intro _ _ _; rfl) aemeasurable_const (fun s => ‖bump R s‖ₑ ^ (2 : ℝ)) ((continuous_bump R).measurable.enorm.pow_const _)`. Simplify `h` using `only [one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const]`. Conclude with `ENNReal.mul_lt_top hK.lt_top (measure_lt_top _ _)`.
+-/
 theorem cp_vol (hn : 1 ≤ n) (D : Dom E n 0) (R : ℝ) : D.ν {x | |ldet x| ≤ R} < ⊤ := by
   haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E n (muG D)
   obtain ⟨K, hK, hKs⟩ := tsum_shift_le (bump R) (continuous_bump R) (hasCompactSupport_bump R) _
@@ -70,6 +90,15 @@ theorem cp_vol (hn : 1 ≤ n) (D : Dom E n 0) (R : ℝ) : D.ν {x | |ldet x| ≤
         rw [lintegral_const]
         exact ENNReal.mul_lt_top hK.lt_top (measure_lt_top _ _)
 
+/- English proof (translation)
+Take `⟨Cu, hCu⟩` from `hu.bounded_above_of_compact_support hus`. Take `⟨R0, hR0⟩` from `bound_of_hasCompactSupport hus`. Take `⟨BΩ, hBΩ⟩` from `hΩ.exists_bound_of_continuousOn (DiscreteGroups.T1.G.continuous_logAbs_det (E := E) (n := n)).continuousOn`. Establish `hΩ2 : IsCompact (Ω⁻¹ * Ω)` using `hΩ.inv.mul hΩ`. Take `⟨C, hC⟩` from `cp_core hRD ψ φ hψ hZ hφ hΩ2 (R0 + BΩ)`.
+
+Use `⟨max C 0 * max Cu 0, fun x y hy y' hy' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : u (ldet x) = 0`. Rewrite using `[h0, mul_zero, zero_mul, norm_zero]`. Conclude with `mul_nonneg (le_max_right _ _) (le_max_right _ _)`. Establish `hl : |logAbs x.1.val.det| ≤ R0` using `hR0 _ h0`.
+
+Establish `hdet : |logAbs (x.1 * y).val.det| ≤ R0 + BΩ`. Rewrite using `[lAbs_mul]`. Establish `h` using `hBΩ y hy`. Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `(abs_add_le_abs_add_abs _ _).trans (add_le_add hl h)`.
+
+Establish `hyy : y⁻¹ * y' ∈ Ω⁻¹ * Ω` using `Set.mul_mem_mul (Set.inv_mem_inv.2 hy) hy'`. Establish `h1` using `hC (x.1 * y) hdet _ hyy`. Rewrite `h1` using `[show x.1 * y * (y⁻¹ * y') = x.1 * y' by group]`. Rewrite using `[norm_mul, norm_mul, mul_right_comm]`. Conclude with `mul_le_mul (h1.trans (le_max_left _ _)) ((hCu _).trans (le_max_left _ _)) (norm_nonneg _) (le_max_right _ _)`.
+-/
 theorem cp_pairG (hRD : GlobalTheory.Published.CuspRapidDecaySiegelGL) {ψ : Sm E n} (hψ : IsCuspForm ψ)
     (hZ : ∀ t g, ψ.1 (splitCentre E n t * g) = ψ.1 g) {φ : Sm E n} (hφ : IsAutForm φ)
     {u : ℝ → ℂ} (hu : Continuous u) (hus : HasCompactSupport u) {Ω : Set (GA E n)} (hΩ : IsCompact Ω) :
@@ -97,11 +126,17 @@ theorem cp_pairG (hRD : GlobalTheory.Published.CuspRapidDecaySiegelGL) {ψ : Sm 
   exact mul_le_mul (h1.trans (le_max_left _ _)) ((hCu _).trans (le_max_left _ _)) (norm_nonneg _)
     (le_max_right _ _)
 
+/- English proof (translation)
+Introduce `E _ _ _ n hn D ψ φ u Ω hψ hZ hφ hu hus hΩ`. Take `⟨C, hC⟩` from `cp_pairG PositivityTheory.S2.CuspBdd.cuspRapidDecaySiegelGL hψ hZ hφ hu hus hΩ`. Conclude with `⟨C, hC, cp_supp D (cp_vol hn D) hus⟩`.
+-/
 theorem pairBd_holds : PairBd := by
   intro E _ _ _ n hn D ψ φ u Ω hψ hZ hφ hu hus hΩ
   obtain ⟨C, hC⟩ := cp_pairG PositivityTheory.S2.CuspBdd.cuspRapidDecaySiegelGL hψ hZ hφ hu hus hΩ
   exact ⟨C, hC, cp_supp D (cp_vol hn D) hus⟩
 
+/- English proof (translation)
+The claim follows from `orthAct_of PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL pairBd_holds`.
+-/
 theorem orthAct_holds : OrthAct := orthAct_of PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL pairBd_holds
 
 end DiscreteGroups.T1.G.CP

@@ -17,6 +17,13 @@ def WSpan (l : List (Fin n' × (Fin k × Fin k))) (h : MvPolynomial (Fin n' × F
     Submodule R (MvPolynomial (Fin n' × Fin k) R) :=
   Submodule.span R {y | ∃ l' : List (Fin n' × (Fin k × Fin k)), l'.map Prod.fst = l.map Prod.fst ∧ y = opWord l' h}
 
+/- English proof (translation)
+Unfold `WSpan at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨l', hl', rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨(s, (c, c')) :: l', by simp [hl'], rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add, mul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a y _ hy`.
+
+Rewrite using `[Derivation.map_smul, mul_smul_comm]`. Conclude with `Submodule.smul_mem _ a hy`.
+-/
 theorem wspan_op (l : List (Fin n' × (Fin k × Fin k))) (h : MvPolynomial (Fin n' × Fin k) R) (s : Fin n')
     (x : Fin k × Fin k) (c c' : Fin k) {z : MvPolynomial (Fin n' × Fin k) R} (hz : z ∈ WSpan l h) :
     X (s, c) * pderiv (s, c') z ∈ WSpan ((s, x) :: l) h := by
@@ -33,6 +40,13 @@ theorem wspan_op (l : List (Fin n' × (Fin k × Fin k))) (h : MvPolynomial (Fin 
     rw [Derivation.map_smul, mul_smul_comm]
     exact Submodule.smul_mem _ a hy
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact Submodule.subset_span ⟨[], rfl, rfl⟩`. Consider the case `cons y l ih`. Take `⟨s, a, b⟩` from `y`.
+
+Use `show Lin N (X (s, a) * pderiv (s, b) (opWord l f)) ∈ _`. Rewrite using `[map_mul, Lin_X, Lin_pderiv N N' h, Finset.sum_mul]`. Use `Submodule.sum_mem _ fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm, MvPolynomial.C_mul', smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (wspan_op l _ s (a, b) b' c ih))`.
+-/
 theorem Lin_word (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1)
     (f : MvPolynomial (Fin n' × Fin k) R) :
     ∀ l : List (Fin n' × (Fin k × Fin k)), Lin N (opWord l f) ∈ WSpan l (Lin N f) := by
@@ -49,6 +63,13 @@ theorem Lin_word (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * 
     rw [mul_smul_comm, MvPolynomial.C_mul', smul_mul_assoc]
     exact Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (wspan_op l _ s (a, b) b' c ih))
 
+/- English proof (translation)
+Rewrite using `[WSpan, Submodule.span_le]`. Introduce and unpack `y ⟨l', hl', rfl⟩`. Use `Submodule.subset_span ⟨h, hh, l', ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hz' : z.1 ∈ l.map Prod.fst` using `hl' ▸ List.mem_map_of_mem hz`.
+
+Take `⟨z', hz'', e⟩` from `List.mem_map.1 hz'`. Conclude with `e ▸ h1 z' hz''`. Introduce `s`. Establish `e : ∀ L : List (Fin n' × (Fin k × Fin k)), (L.filter fun z => decide (z.1 = s)).length = ((L.map Prod.fst).filter fun t => decide (t = s)).length`. Introduce `L`.
+
+Rewrite using `[List.filter_map, List.length_map]`. Both sides reduce to the same expression. Rewrite using `[e, hl', ← e]`. Conclude with `h2 s`.
+-/
 theorem wspan_le_OpCl (TT : Finset (Fin n')) (c : ℕ) (M : Submodule R (MvPolynomial (Fin n' × Fin k) R))
     (l : List (Fin n' × (Fin k × Fin k))) (h1 : ∀ z ∈ l, z.1 ∈ TT) (h2 : ∀ s, (l.filter fun z => z.1 = s).length ≤ c)
     {h : MvPolynomial (Fin n' × Fin k) R} (hh : h ∈ M) : WSpan l h ≤ OpCl TT c M := by
@@ -68,6 +89,13 @@ theorem wspan_le_OpCl (TT : Finset (Fin n')) (c : ℕ) (M : Submodule R (MvPolyn
     rw [e, hl', ← e]
     exact h2 s
 
+/- English proof (translation)
+Introduce `f hf`. Unfold `OpCl at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f0, hf0, l, h1, h2, rfl⟩` from `hy`.
+
+Conclude with `wspan_le_OpCl TT c M' l h1 h2 (hM f0 hf0) (Lin_word N N' h f0 l)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem Lin_OpCl (N N' : Fin n' → Matrix (Fin k) (Fin k) R) (h : ∀ s, N s * N' s = 1) (TT : Finset (Fin n')) (c : ℕ)
     (M M' : Submodule R (MvPolynomial (Fin n' × Fin k) R)) (hM : ∀ f ∈ M, Lin N f ∈ M') :
     ∀ f ∈ OpCl TT c M, Lin N f ∈ OpCl TT c M' := by

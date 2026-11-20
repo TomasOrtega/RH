@@ -52,6 +52,11 @@ def shiftSub (c : ℂ) (k₀ : Γ) : Submodule ℂ (Γ → ℂ) :=
 
 variable {L u}
 
+/- English proof (translation)
+Take `⟨⟨a1, a2⟩, a3⟩` from `hΦ`. Establish `key : ∀ g' k', L g' k' → ∀ h, u (h * k') * Φ (h * k' * k) = u h * Φ (h * k' * k)` using `fun g' k' hk' h => by`. Rewrite using `[← a1 g k hk, mul_assoc, a1 _ _ (hmul _ _ _ _ hk' hk)]`. Use `⟨⟨key, fun g' k' k'' h1 h2 h => ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `show Φ (h * k' * k) = Φ (h * k'' * k)`.
+
+Rewrite using `[mul_assoc, mul_assoc, a2 _ _ _ (hmul _ _ _ _ h1 hk) (hmul _ _ _ _ h2 hk)]`. Use `show Φ (h * k) = c * u h * Φ (h * k₀ * k)`. Establish `e : L (z * g) (k * k₀)` using `(Subgroup.mem_center_iff.1 hz g) ▸ hmul _ _ _ _ hk h₀`. Rewrite using `[a3 (h * k), mul_assoc c, ← a1 z k₀ h₀, mul_assoc h, a1 _ _ e, a2 _ _ _ e (hmul _ _ _ _ h₀ hk), mul_assoc h, mul_assoc c]`.
+-/
 theorem shiftSub_translate (hmul : ∀ g g' k k', L g k → L g' k' → L (g * g') (k * k')) {c : ℂ} {z : G}
     (hz : z ∈ Subgroup.center G) {k₀ : Γ} (h₀ : L z k₀) {Φ : Γ → ℂ} (hΦ : Φ ∈ shiftSub L u c k₀) {g : G} {k : Γ}
     (hk : L g k) : (fun h => Φ (h * k)) ∈ shiftSub L u c k₀ := by
@@ -66,6 +71,11 @@ theorem shiftSub_translate (hmul : ∀ g g' k k', L g k → L g' k' → L (g * g
     rw [a3 (h * k), mul_assoc c, ← a1 z k₀ h₀, mul_assoc h, a1 _ _ e, a2 _ _ _ e (hmul _ _ _ _ h₀ hk), mul_assoc h, mul_assoc c]
 
 omit [Group G] in
+/- English proof (translation)
+Establish `e4 : ∑ j, a j * pE j (g * k) = u g * θ (g * k)`. Rewrite using `[← hu, e1]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, hr]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite `e3` using `[e4]`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `e3`.
+-/
 theorem shift_eq {n : ℕ} {θ : Γ → ℂ} {a : Fin n → ℂ} {p pE : Fin n → Γ → ℂ} {k g : Γ} {c ph : ℂ} (hph : ph ≠ 0)
     (e1 : θ = ∑ j, a j • p j) (hr : ∀ j h, pE j h = u h * p j h) (hu : u (g * k) * θ (g * k) = u g * θ (g * k))
     (e3 : ph * θ g = c * ∑ j, a j * pE j (g * k)) : θ g = c / ph * u g * θ (g * k) := by
@@ -81,6 +91,11 @@ end Abstract
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Set `q : AutQ W` to `Quotient.mk _ g`. Establish `hr : g * q.out⁻¹ ∈ GQ W` using `QuotientGroup.rightRel_apply.1 (Quotient.exact (Quotient.out_eq q))`. Establish `h1` using `hΦ _ hr q.out`. Establish `h2` using `hΨ _ hr q.out`. Rewrite `h1`, `h2` using `[inv_mul_cancel_right]`.
+
+Rewrite using `[h1, h2, h]`.
+-/
 theorem eq_of_out {W : HSp D} (Φ Ψ : GA D W → ℂ) (hΦ : ∀ γ ∈ GQ W, ∀ g, Φ (γ * g) = Φ g)
     (hΨ : ∀ γ ∈ GQ W, ∀ g, Ψ (γ * g) = Ψ g) (h : ∀ q : AutQ W, Φ q.out = Ψ q.out) (g : GA D W) : Φ g = Ψ g := by
   let q : AutQ W := Quotient.mk _ g
@@ -96,11 +111,17 @@ variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : 
 
 abbrev LiftW (g : G) (k : GA D (Wc D i)) : Prop := IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k
 
+/- English proof (translation)
+Use `⟨mul_mem h.1 h'.1, by rw [map_mul]; exact mul_mem h.2.1 h'.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Formalism.L2.DIV.rTup_mul h.2.1 h'.2.1, h.2.2, h'.2.2, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem liftW_mul (g g' : G) (k k' : GA D (Wc D i)) (h : LiftW R i g k) (h' : LiftW R i g' k') : LiftW R i (g * g') (k * k') := by
   refine ⟨mul_mem h.1 h'.1, by rw [map_mul]; exact mul_mem h.2.1 h'.2.1, ?_⟩
   rw [map_mul, Formalism.L2.DIV.rTup_mul h.2.1 h'.2.1, h.2.2, h'.2.2, map_mul]
   rfl
 
+/- English proof (translation)
+Unfold `levChi levFn`. Establish `h : ext1 (flagL (R.datWp i R.triv)).P.H (flagL (R.datWp i R.triv)).P.chi (rTup (R.βW i) (flagL (R.datWp i R.triv)) (finE (Wc D i) k)) = 1` using `subgroupCharExtension_one_apply _ _`. Rewrite using `[h]`. Use `show (((1 * (∏ PP ∈ R.Pg, ∏ c ∈ Finset.range 0, _) * ∏ PP ∈ ∅, _ : ℂˣ)) : ℂ) = 1`. Simplify using the standard rewrite rules.
+-/
 theorem levChi_flagW (k : GA D (Wc D i)) : levChi (Wc D i) (R.βW i) (flagL (R.datWp i R.triv)) k = 1 := by
   unfold levChi levFn
   have h : ext1 (flagL (R.datWp i R.triv)).P.H (flagL (R.datWp i R.triv)).P.chi
@@ -109,12 +130,18 @@ theorem levChi_flagW (k : GA D (Wc D i)) : levChi (Wc D i) (R.βW i) (flagL (R.d
   show (((1 * (∏ PP ∈ R.Pg, ∏ c ∈ Finset.range 0, _) * ∏ PP ∈ ∅, _ : ℂˣ)) : ℂ) = 1
   simp
 
+/- English proof (translation)
+Use `⟨hk.choose, hk.choose_spec, fun Φ h => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.SecLift.actL_apply (L := R.datWp i R.triv) hk Φ h).trans ?_` and prove the remaining obligations. Rewrite using `[levChi_flagW, inv_one, one_mul]`.
+-/
 theorem exists_liftW_act {g : G} (hk : ∃ k, LiftW R i g k) : ∃ k, LiftW R i g k ∧
     ∀ Φ h, Links.actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) Φ h = Φ (h * k) := by
   refine ⟨hk.choose, hk.choose_spec, fun Φ h => ?_⟩
   refine (GlobalTheory.SecLift.actL_apply (L := R.datWp i R.triv) hk Φ h).trans ?_
   rw [levChi_flagW, inv_one, one_mul]
 
+/- English proof (translation)
+The claim follows from `Units.coe_prod _ _`.
+-/
 theorem chiC_coe (g : G) : ((chiC R i g : ℂˣ) : ℂ) =
     ∏ PP : R.Pg, ((R.chi ((i : ℕ) + 1) PP.1 (Matrix.GeneralLinearGroup.det (R.eG g PP)) : ℂˣ) : ℂ) := Units.coe_prod _ _
 
@@ -130,15 +157,26 @@ variable {C : Formalism.L2.Pj.Core D} [Algebra C.Q.c.F D.what₂.LL] {R : RealDa
 
 def ratio (cE c0 : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (h : GA D (Wc D i)) : ℂ := cE (O.dict h).1 / c0 (O.dict h).1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (cc : (C.U ((i : ℕ) + 1) O.s0).Comp → ℂ) (f : C.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
     O.phi cc f h = cc (O.dict h).1 * O.mu h * rdU (C.U ((i : ℕ) + 1) O.s0) f (O.dict h).1 (O.dict h).2 := rfl
 
+/- English proof (translation)
+Rewrite using `[phi_apply, phi_apply, ratio]`. Use `h0 (O.dict h).1` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem phi_ratio (h0 : ∀ k, c0 k ≠ 0) (f : C.R ((i : ℕ) + 1)) (h : GA D (Wc D i)) :
     O.phi cE f h = ratio O cE c0 h * O.phi c0 f h := by
   rw [phi_apply, phi_apply, ratio]
   have := h0 (O.dict h).1
   field_simp
 
+/- English proof (translation)
+Use `⟨fun g k hk h => ?_, fun g k k' hk hk' h => ?_⟩` and prove the remaining obligations. Establish `e1` using `(hE g k hk f hf).2 h`. Establish `e2` using `(hE0 g k hk f hf).2 h`. Rewrite `e1`, `e2` using `[← chiC_coe]`. Rewrite `e1` using `[phi_ratio O h0, phi_ratio O h0 f, e2, mul_left_comm]`.
+
+Conclude with `(mul_left_cancel₀ (chiC R i g).ne_zero e1).symm`. Establish `e1` using `(hE0 g k hk f hf).2 h`. Establish `e2` using `(hE0 g k' hk' f hf).2 h`. Rewrite `e1`, `e2` using `[← chiC_coe]`. Conclude with `mul_left_cancel₀ (chiC R i g).ne_zero (e1.symm.trans e2)`.
+-/
 theorem phi_mem_liftSub (h0 : ∀ k, c0 k ≠ 0) (hE : O.EquivAt κ cE) (hE0 : O.EquivAt κ c0) {f : C.R ((i : ℕ) + 1)}
     (hf : f ∈ C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n) : O.phi c0 f ∈ liftSub (LiftW R i) (ratio O cE c0) := by
   refine ⟨fun g k hk h => ?_, fun g k k' hk hk' h => ?_⟩
@@ -154,6 +192,37 @@ theorem phi_mem_liftSub (h0 : ∀ k, c0 k ≠ 0) (hE : O.EquivAt κ cE) (hE0 : O
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨hEq, ⟨-, hBC, hAct, hcE, hph, z, hz, hrow⟩, -⟩` from `hE`. Take `⟨ze, -, ⟨m, hm, hze⟩, hrow⟩` from `hrow ()`. Establish `hze0 : ze ≠ 0` using `fun h => by`. Rewrite `hze` using `[h, zero_pow hm.ne']`. Conclude with `zero_ne_one hze`.
+
+Establish `hph0 : ph ≠ 0` using `fun h => by simp [h] at hph`. Establish `h0 : ∀ k, c0 k ≠ 0` using `fun k h => by simpa [h] using hS.1 k`. Establish `hE0' : ∀ k, cE k ≠ 0` using `fun k h => by simpa [h] using hcE k`. Establish `hl : ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (lieFac_pos _ _ _).ne'`. Establish `hlift : ∀ g, ∃ k, LiftW R i g k` using `fun g => (hP.lift.lev g).imp fun _ h => h.1`.
+
+Establish `hinvW : ∀ U ∈ R.Wall i (sg0 D A), ∀ γ ∈ GQ (Wc D i), ∀ g, U v₀ (γ * g) = U v₀ g` using `fun U hU => (GlobalTheory.mult_value_left_cont_level R.θ _ _ _ U hU v₀).1`. Establish `hinv : ∀ f ∈ C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n, ∀ γ ∈ GQ (Wc D i), ∀ g, O.phi cE f (γ * g) = O.phi cE f g`. Introduce `f hf γ hγ g`. Take `⟨U, hU, e⟩` from `hW f hf`. Conclude with `mul_left_cancel₀ hl (by rw [← e, ← e, hinvW U hU γ hγ])`.
+
+Use `⟨z, ze * chiC R i z / ph, div_ne_zero (mul_ne_zero hze0 (chiC R i z).ne_zero) hph0, hlift z, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hbase : ∀ y, R.thF i A.μ0 (jVx R i A.μ0 y) v₀ ∈ shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k`. Introduce `y`. Take `⟨hh, J', hrep, hPl, hth, hpl⟩` from `(hP.tuple ()).reps`. Take `⟨x, hx⟩` from `hPl y`.
+
+Take `⟨⟨f', hf', hcl⟩, hid⟩` from `hrow x ((hpl x).2 ⟨y, hx⟩)`. Establish `hs` using `hS.2.2 () hh J' hrep _ x hx f' hf'.1 hcl`. Establish `hq` using `hid f' hf'.1 hcl`. Establish `hth' : ∀ q : AutQ (Wc D i), O.thAd () x q = R.thF i A.μ0 (jVx R i A.μ0 y) v₀ q.out` using `fun q => congrFun (hth _ x hx) q`. Establish `hf'' : f' ∈ cusp (C.Q.Xo ((i : ℕ) + 1)) O.c' (unfBC O.hle (C.U ((i : ℕ) + 1))) (wtA κ) (Vc D i).rank` using `hf'`.
+
+Establish `hb` using `hBC (wtA κ) (Vc D i).rank f' hf''`. Take `⟨n, as, fs, hfs, hbc⟩` from `hb`. Establish `hbc'` using `hAct _ _ z n as fs f' hf'.1 (fun j => (hfs j).1) hbc`. Establish `hfs' : ∀ j, fs j ∈ C.cuspA ((i : ℕ) + 1) (wtA κ) κ.n` using `fun j => by rw [hn]; exact hfs j`. Establish `r1` using `rdU_unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') hbc`.
+
+Establish `r2` using `rdU_unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c') hbc'`. Establish `e1 : R.thF i A.μ0 (jVx R i A.μ0 y) v₀ = ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) • O.phi c0 (fs j)`. Use function extensionality and compare the values at `g`. Use `hs g` as an intermediate fact. Rewrite `this` using `[one_mul, r1]`.
+
+Rewrite using `[this]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, phi_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hmemL : R.thF i A.μ0 (jVx R i A.μ0 y) v₀ ∈ liftSub (LiftW R i) (ratio O cE c0)`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (phi_mem_liftSub O h0 hEq hE0 (hfs' j))`. Use `⟨hmemL, fun g => ?_⟩` and prove the remaining obligations. Establish `e2 : ∀ q : AutQ (Wc D i), ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ q.out = ze * chiC R i z * ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * O.phi cE (fs j) (q.out * k)`. Introduce `q`. Establish `h3 : ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ q.out = ze * cE (O.dict q.out).1 * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * (O.mu q.out * rdU (unfBC O.hle (C.U ((i : ℕ) + 1)) (inC O.c')) (actLev O.c' O.lev2 z f') (O.dict q.out).1 (O.dict q.out).2)` using `(congrArg (ph * ·) (hth' q)).symm.trans (hq q)`.
+
+Rewrite using `[h3, r2]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h2` using `(hEq z k hk (fs j) (hfs' j)).2 q.out`. Rewrite `h2` using `[← chiC_coe, phi_apply]`.
+
+Take the linear combination `(ze * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * h2`. Establish `e3 : ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ g = ze * chiC R i z * ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * O.phi cE (fs j) (g * k)`. Use `eq_of_out (fun g => ph * R.thF i A.μ0 (jVx R i A.μ0 y) v₀ g) (fun g => ze * chiC R i z * ∑ j, ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * inC O.c' (as j)) * O.phi cE (fs j) (g * k)) (fun γ hγ g => congrArg (ph * ·) (hinvW _ (hmem i A.μ0 _) γ hγ g)) (fun γ hγ g => ?_) e …` and prove the remaining obligations. Use `congrArg (ze * chiC R i z * ·) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc γ, hinv _ (hfs' j) γ hγ]`.
+
+Conclude with `shift_eq (pE := fun j => O.phi cE (fs j)) hph0 e1 (fun j h => phi_ratio O h0 (fs j) h) (hmemL.1 z k hk g) e3`. Set `ev : MMap (R.MW i (sg0 D A)) →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `{ toFun := fun U => U v₀, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hall : ∀ y, R.thF i A.μ0 y v₀ ∈ shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k` using `GlobalTheory.SecLift.span_of_pres (R.B.L i A.μ0).pres (R.HV i A.μ0).e (hHV i A.μ0).1 (hHV i A.μ0).2.1 (jVx R i A.μ0) (hjV i A.μ0) ((shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k).comap (ev ∘ₗ R.thF i A.μ0)) hbase`. Establish `hWall : R.Wall i (sg0 D A) ≤ (shiftSub (LiftW R i) (ratio O cE c0) (ze * chiC R i z / ph) k).comap ev`. Rewrite using `[← hsp]`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, y, rfl⟩`. Take `⟨k', hk', e⟩` from `exists_liftW_act R i (hlift g)`. Establish `h1` using `shiftSub_translate (liftW_mul R i) hz hk (hall y) hk'`. Rewrite `h1` using `[← funext (e (R.thF i A.μ0 y v₀))]`.
+
+Conclude with `h1`. Introduce `f hf h`. Take `⟨U, hU, e⟩` from `hW f hf`. Establish `h1 : U v₀ h = ze * chiC R i z / ph * ratio O cE c0 h * U v₀ (h * k)` using `(hWall hU).2 h`. Rewrite `h1` using `[e, e, phi_ratio O h0 f h]`.
+
+Establish `hr : ratio O cE c0 h ≠ 0` using `div_ne_zero (hE0' _) (h0 _)`. Use `mul_left_cancel₀ (mul_ne_zero hl hr) ?_` and prove the remaining obligations. Take the linear combination `h1`.
+-/
 theorem shift_of_span (hP : O.Pins κ v₀ ι x₀) (hn : κ.n = (Vc D i).rank) (hHV : R.models_HV) (hjV : R.models_jV)
     (hmem : R.thP_thF_mem) (hsp : GlobalTheory.IndefiniteRowSideFullHecke.ThetaTranslateSize.SpanAt R i A.μ0) {ph : ℂ} (hE : O.OneMapOf κ v₀ cE ph)
     (hE0 : O.EquivAt κ c0) (hS : GlobalTheory.AdTh.SerOf O κ v₀ c0 1)

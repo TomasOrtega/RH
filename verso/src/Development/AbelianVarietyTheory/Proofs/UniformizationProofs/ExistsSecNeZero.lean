@@ -23,12 +23,26 @@ noncomputable section
 namespace GlobalTheory.UT.NonVan
 open GlobalTheory.UT.CoefBasic
 
+/- English proof (translation)
+The claim follows from `map_zpow _ _ _`.
+-/
 theorem val_powFrame {S : Scheme.{0}} {A : Over S} (L : LB A.left) {T : Over S} (x : T ⟶ A)
     (τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))) (k : ℤ)
     {Z : Scheme.{0}} (r : Z ⟶ T.left) (z : Z) (J) :
     val (powFrame A L x τ k) r z J = val τ r z J ^ k :=
   map_zpow _ _ _
 
+/- English proof (translation)
+Introduce `hL R _ _ A F _ _ k hk x e he`. Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Take `⟨J', hJ'⟩` from `exists_good' A.isLB (Z := (TFK (R := R) F).left) z`. Take `⟨t, ht⟩` from `GlobalTheory.TwistUnit.unitAt_pow hL.1.ample A k hk (snd (TFK (R := R) F) A.A).left ((ptSecT A.A x).left z)`. Establish `hu` using `GlobalTheory.TwistUnit.isUnit_sval_of A.isLB t (ptSecT A.A x).left z ht J' hJ'`.
+
+Take `⟨c, hc⟩` from `cstH_surj z (hu.unit * (val e (𝟙 _) z J' ^ (k : ℤ))⁻¹).val`. Use `⟨t, c, fun h => ?_, fun z' J hJ => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[h, map_zero]`. Conclude with `Units.ne_zero _ hc.symm`. Take `rfl` from `pt_eq (R := R) z z'`.
+
+Establish `a₁` using `sval_tr t (ptSecT A.A x).left hJ hJ'`. Establish `a₂` using `val_tr he (𝟙 _) hJ hJ'`. Establish `hx : (ptSecT A.A x).left ≫ (snd (TFK (R` using `R) F) A.A).left = x.left := by`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`. Rewrite `a₁` using `[Fin.prod_univ_one, hx, ← hu.unit_spec]`.
+
+Rewrite `a₂` using `[Fin.prod_univ_one, Category.id_comp, zpow_one]`. Establish `a₃ : @id ((TFK (R` using `R) F).left.presheaf.stalk z) (cst (R := R) F z c) = (hu.unit * (val e (𝟙 _) z J' ^ (k : ℤ))⁻¹).val := (cst_eq z c).trans hc`. Use `a₁.trans ?_` and prove the remaining obligations. Rewrite using `[a₃, val_powFrame, a₂, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+-/
 theorem exists_sec_ne_zero : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ), 4 ≤ k → ∀ (x : TFK (R := R) F ⟶ A.A) (e : LB.Gen (LB.LinComb A.L (Y := (TFK (R := R) F).left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))), e.IsGen → ∃ (t : SecA A F k) (c : F), c ≠ 0 ∧ (∀ z J, Good A.L z J → sA t (ptSecT A.A x).left z J = @id ((TFK (R := R) F).left.presheaf.stalk z) (cst (R := R) F z c) * (val (powFrame A.A A.L x e k) (𝟙 _) z J).val) := by
   intro hL R _ _ A F _ _ k hk x e he
   obtain ⟨z⟩ := exists_pt (R := R) (F := F)

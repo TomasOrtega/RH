@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 
 open Finset UpperTheory.V.Bern UpperTheory.V
 
+/- English proof (translation)
+Introduce `M a _ ha Γ _ φ k`. Use `⟨?_, rfl, rfl, ?_⟩` and prove the remaining obligations. Establish `e : B4.sumEl φ (B4.Ek M k) = Stk.sumEl φ (Stk.Ev M k)` using `rfl`. Establish `hneg : ∀ f : ZMod M → ℚ, (Stk.sumEl φ fun b => -f b) = -Stk.sumEl φ f`. Introduce `f`.
+
+Simplify using `[Stk.sumEl, Finset.sum_neg_distrib]`. Establish `hE : Stk.Eva M k a = fun b => Stk.Ev M k b + -((a : ℚ) ^ k * Stk.Ev M k (Stk.yCl a b))`. Use function extensionality and compare the values at `b`. Simplify using `[Stk.Eva, sub_eq_add_neg]`. Simplify using `only [B4.yEl, B4.thetaEl]`.
+
+Rewrite using `[e, sub_mul, one_mul, mul_neg, Stk.single_inv_mul_groupRingSumOverUnitsInv, Stk.yForm, hE, Stk.sumEl_add, hneg]`. Normalize the expressions using the abelian group laws. Apply `MonoidAlgebra.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[B4.coefMap_single]`.
+
+Introduce `g`. Simplify using `[B4.coefMap_single]`.
+-/
 theorem UpperTheory.V.Stk.twistedStickelbergerElements_agree :
     ∀ (M a : ℕ) [NeZero M] (ha : a.Coprime M) (Γ : Type) [CommGroup Γ] (φ : (ZMod M)ˣ →* Γ) (k : ℕ),
       B4.yEl k a ha φ = Stk.yForm k a φ ∧ B4.ytEl k a φ = Stk.ytEl k a φ ∧ B4.xEl a φ = Stk.xEl a φ ∧

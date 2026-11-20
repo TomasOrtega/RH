@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueFixe
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Repeatedly rewrite using `[mul_pow]`. Rewrite using `[Finsupp.prod_mul]`. Use `congr 1`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, ofAdd_sum, map_prod, Units.coe_prod, Finsupp.prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ofAdd_nsmul, map_pow, Units.val_pow_eq_pow_val]`.
+-/
 private theorem tact_prod {X σ S : Type} [AddCommGroup X] [CommRing S] (wt : σ → X)
     (t : Multiplicative X →* Sˣ) (x : σ → S) (d : σ →₀ ℕ) :
     (d.prod fun i k => ((t (Multiplicative.ofAdd (wt i)) : S) * x i) ^ k) =
@@ -14,6 +19,11 @@ private theorem tact_prod {X σ S : Type} [AddCommGroup X] [CommRing S] (wt : σ
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [ofAdd_nsmul, map_pow, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+Rewrite using `[p.as_sum, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hd' : Finsupp.weight wt d = j`. Assume the negation of the conclusion as `h`. Conclude with `MvPolynomial.mem_support_iff.1 hd (hp d h)`.
+
+Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, tact_prod, hd']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem tact_aeval {O X σ S : Type} [CommRing O] [AddCommGroup X] [CommRing S] [Algebra O S]
     (wt : σ → X) (t : Multiplicative X →* Sˣ) (x : σ → S) (j : X) (p : MvPolynomial σ O)
     (hp : ∀ d, Finsupp.weight wt d ≠ j → MvPolynomial.coeff d p = 0) :
@@ -27,6 +37,11 @@ private theorem tact_aeval {O X σ S : Type} [CommRing O] [AddCommGroup X] [Comm
   rw [MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, tact_prod, hd']
   ring
 
+/- English proof (translation)
+Use `⟨(truncTotal n F).support.image (Finsupp.weight wt), nat_le_order fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sum]`. Simplify using `only [coeff_wcomp]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+
+Conclude with `sub_self _`. Rewrite using `[sub_zero]`. Assume the negation of the conclusion as `h0`. Use `h (Finset.mem_image_of_mem _ (MvPolynomial.mem_support_iff.2 ?_))` and prove the remaining obligations. Rewrite using `[coeff_truncTotal _ hd]` and apply the resulting hypothesis.
+-/
 private theorem tact_approx {O X σ : Type} [CommRing O] [AddCommGroup X] [Finite σ] (wt : σ → X)
     (F : MvPowerSeries σ O) (n : ℕ) :
     ∃ s : Finset X, (n : ℕ∞) ≤ (F - ∑ j ∈ s, wcomp O wt j F).order := by
@@ -42,6 +57,11 @@ private theorem tact_approx {O X σ : Type} [CommRing O] [AddCommGroup X] [Finit
     refine h (Finset.mem_image_of_mem _ (MvPolynomial.mem_support_iff.2 ?_))
     rwa [coeff_truncTotal _ hd]
 
+/- English proof (translation)
+Apply `GlobalTheory.eq_of_forall_sub_mem_ideal_pow J` to reduce the goal to its premises. Introduce `n`. Take `⟨s, hs⟩` from `tact_approx wt F n`. Establish `hm` using `GlobalTheory.algHom_mem_pow_of_le_order φ hφ hs`. Rewrite `hm` using `[map_sub, map_sum]`.
+
+Simplify `hm` using `[h]`.
+-/
 private theorem tact_vanish {O X σ S : Type} [CommRing O] [AddCommGroup X] [Finite σ] [CommRing S]
     [Algebra O S] (wt : σ → X) (J : Ideal S) [IsHausdorff J S] (φ : MvPowerSeries σ O →ₐ[O] S)
     (hφ : ∀ i, φ (MvPowerSeries.X i) ∈ J) (F : MvPowerSeries σ O) (h : ∀ j, φ (wcomp O wt j F) = 0) :
@@ -53,6 +73,31 @@ private theorem tact_vanish {O X σ S : Type} [CommRing O] [AddCommGroup X] [Fin
   rw [map_sub, map_sum] at hm
   simpa [h] using hm
 
+/- English proof (translation)
+Introduce `O _ _ X _ R _ _ _ W hz R' _ _ _ f t`. Use `haveI : Fintype W.σ := W.fin`. Use `haveI : IsAdicComplete (maximalIdeal R') R' := IsCO.complete (O := O)`. Establish `hf_max : ∀ x ∈ maximalIdeal R, f x ∈ maximalIdeal R'`. Introduce `x hx`.
+
+Rewrite using `[← res_eq_zero_iff O R' (f x), res_map f x, res_eq_zero_iff O R x]`. Conclude with `hx`. Set `xs : W.σ → R'` to `fun i => (t (Multiplicative.ofAdd (W.wt i)) : R') * f (W.π (MvPowerSeries.X i))`. Establish `hxs : ∀ i, xs i ∈ maximalIdeal R'` using `fun i => Ideal.mul_mem_left _ _ (hf_max _ (hz i))`. Take `⟨Ψ, hΨX, hΨtr⟩ : ∃ Ψ : MvPowerSeries W.σ O →ₐ[O] R', (∀ i, Ψ (MvPowerSeries.X i) = xs i) ∧ ∀ (n : ℕ) (G : MvPowerSeries W.σ O), Ψ G - MvPolynomial.aeval xs (truncTotal n G) ∈ maximalIdeal R' ^ n` from `⟨_, GlobalTheory.mvEvalAdic_X _ xs hxs, GlobalTheory.mvEvalAdic_sub_aeval_truncTotal_mem _ xs hxs⟩`.
+
+Establish `key : ∀ j, ∀ G ∈ wtPart O W.wt j, Ψ G = (t (Multiplicative.ofAdd j) : R') * f (W.π G)`. Introduce `j G hG`. Apply `GlobalTheory.eq_of_forall_sub_mem_ideal_pow (maximalIdeal R')` to reduce the goal to its premises. Introduce `n`. Establish `h1` using `hΨtr n G`.
+
+Establish `h2` using `GlobalTheory.algHom_sub_aeval_truncTotal_mem (f.comp W.π) (J := maximalIdeal R') (fun i => hf_max _ (hz i)) n G`. Simplify using `only [AlgHom.coe_comp, Function.comp_apply] at h2`. Establish `h3 : MvPolynomial.aeval xs (truncTotal n G) = (t (Multiplicative.ofAdd j) : R') * MvPolynomial.aeval (fun i => f (W.π (MvPowerSeries.X i))) (truncTotal n G)`. Use `tact_aeval W.wt t (fun i => f (W.π (MvPowerSeries.X i))) j _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[coeff_truncTotal_eq_ite]`.
+
+Use `split_ifs`. Conclude with `hG d hd`. Both sides reduce to the same expression. Establish `he : Ψ G - (t (Multiplicative.ofAdd j) : R') * f (W.π G) = (Ψ G - MvPolynomial.aeval xs (truncTotal n G)) - (t (Multiplicative.ofAdd j) : R') * (f (W.π G) - MvPolynomial.aeval (fun i => f (W.π (MvPowerSeries.X i))) (truncTotal n G))`. Rewrite using `[h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `Ideal.sub_mem _ h1 (Ideal.mul_mem_left _ _ h2)`. Establish `hker : ∀ F ∈ RingHom.ker W.π, Ψ F = 0`. Introduce `F hF`.
+
+Use `tact_vanish W.wt (maximalIdeal R') Ψ (fun i => by rw [hΨX]; exact hxs i) F fun j => ?_` and prove the remaining obligations. Rewrite using `[key j _ (wcomp_mem O W.wt j F)]`. Establish `h0 : W.π (wcomp O W.wt j F) = 0` using `RingHom.mem_ker.mp (W.homog F hF j)`. Rewrite using `[h0, map_zero, mul_zero]`. Set `f' : R →ₐ[O] R'` to `(Ideal.Quotient.liftₐ (RingHom.ker W.π) Ψ hker).comp (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm.toAlgHom`.
+
+Establish `hf'π : ∀ G, f' (W.π G) = Ψ G`. Introduce `G`. Establish `hs : (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π G) = Ideal.Quotient.mk (RingHom.ker W.π) G`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Use `show Ideal.Quotient.liftₐ (RingHom.ker W.π) Ψ hker ((Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π G)) = Ψ G`. Rewrite using `[hs]`. Both sides reduce to the same expression. Use `⟨f', ?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx`.
+
+Take `⟨G, hG, rfl⟩` from `Submodule.mem_map.mp hx`. Simplify using `only [AlgHom.toLinearMap_apply]`. Rewrite using `[hf'π, key j G hG]`. Introduce `g hg`. Establish `hgz : ∀ i, g (W.π (MvPowerSeries.X i)) = xs i` using `fun i => hg (W.wt i) (W.z i) (W.z_mem i)`.
+
+Establish `hcomp : g.comp W.π = Ψ`. Apply `GlobalTheory.mvPowerSeries_algHom_ext_of_isHausdorff (maximalIdeal R')` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, hgz]`. Conclude with `hxs i`.
+
+Introduce `i`. Rewrite using `[AlgHom.comp_apply, hgz, hΨX]`. Use extensionality with `x`. Take `⟨G, rfl⟩` from `W.surj x`. Rewrite using `[hf'π, ← AlgHom.comp_apply, hcomp]`.
+-/
 theorem UpperTheory.V.Alg.tact :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (X : Type) [AddCommGroup X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') (t : Multiplicative X →* R'ˣ),
       ∃! f' : R →ₐ[O] R', ∀ j, ∀ x ∈ W.part j, f' x = t (Multiplicative.ofAdd j) * f x := by

@@ -7,6 +7,19 @@ open MeasureTheory Set Topology
 
 namespace PositivityTheory.SiegelWeilFormula.Act.ComplexParameterFamilyContinuity
 
+/- English proof (translation)
+Use `letI mA : MeasurableSpace (Multiplicative A) := ‹MeasurableSpace A›`. Use `haveI : BorelSpace (Multiplicative A) := ⟨BorelSpace.measurable_eq (α := A)⟩`. Use `haveI : LocallyCompactSpace (Multiplicative A) := inferInstanceAs (LocallyCompactSpace A)`. Set `Γm : Subgroup (Multiplicative A)` to `AddSubgroup.toSubgroup Γ`. Establish `memΓm : ∀ x : Multiplicative A, x ∈ Γm ↔ Multiplicative.toAdd x ∈ Γ` using `fun x => Iff.rfl`.
+
+Set `g : Γm → Γ` to `fun x => ⟨Multiplicative.toAdd x.1, (memΓm x.1).1 x.2⟩`. Establish `hg : Continuous g` using `(continuous_toAdd.comp continuous_subtype_val).subtype_mk _`. Establish `hgi : Function.Injective g` using `fun x y h => Subtype.ext (by`. Use `congrArg Subtype.val h` as an intermediate fact. Conclude with `Multiplicative.toAdd.injective this)`.
+
+Use `haveI : DiscreteTopology Γm := DiscreteTopology.of_continuous_injective hg hgi`. Establish `hC' : IsCompact (Multiplicative.ofAdd '' C)` using `hC.image continuous_ofAdd`. Establish `hcov' : ∀ x : Multiplicative A, ∃ γ ∈ Γm, γ * x ∈ Multiplicative.ofAdd '' C`. Introduce `x`. Take `⟨γ, hγ, hγC⟩` from `hcov (Multiplicative.toAdd x)`.
+
+Conclude with `⟨Multiplicative.ofAdd γ, hγ, γ + Multiplicative.toAdd x, hγC, rfl⟩`. Take `⟨𝓕, L, hm, hL, hsub, hu⟩` from `GroundTheory.Heights₂.Theta.exists_isFundamentalDomain_of_isCompact (G := Multiplicative A) Γm hC' hcov'`. Set `L' : Set A` to `Multiplicative.toAdd '' L`. Establish `hL' : IsCompact L'` using `hL.image continuous_toAdd`. Use `⟨Multiplicative.ofAdd ⁻¹' 𝓕, hm, hL'.of_isClosed_subset isClosed_closure ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Use `closure_minimal (fun y hy => ⟨Multiplicative.ofAdd y, hsub hy, rfl⟩) hL'.isClosed` and prove the remaining obligations. Take `⟨γ, hγ, huniq⟩` from `hu (Multiplicative.ofAdd x)`. Use `⟨g γ, hγ, fun γ' hγ' => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨Multiplicative.ofAdd γ'.1, γ'.2⟩ : Γm) = γ` using `huniq _ hγ'`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[← h1]`. Both sides reduce to the same expression.
+-/
 theorem addFD_of_cover {A : Type} [AddGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A] [LocallyCompactSpace A]
     [T2Space A] [MeasurableSpace A] [BorelSpace A] (Γ : AddSubgroup A) [DiscreteTopology Γ] {C : Set A} (hC : IsCompact C)
     (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ C) :
@@ -41,6 +54,9 @@ theorem addFD_of_cover {A : Type} [AddGroup A] [TopologicalSpace A] [IsTopologic
     rw [← h1]
     rfl
 
+/- English proof (translation)
+Take `⟨𝓕, hm, hc, hu⟩` from `addFD_of_cover Γ hC hcov`. Conclude with `⟨𝓕, IsAddFundamentalDomain.mk' hm.nullMeasurableSet hu, hc⟩`.
+-/
 theorem addFD_of_cover' {A : Type} [AddGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A] [LocallyCompactSpace A]
     [T2Space A] [MeasurableSpace A] [BorelSpace A] (Γ : AddSubgroup A) [DiscreteTopology Γ] {C : Set A} (hC : IsCompact C)
     (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ C) (μ : Measure A) :

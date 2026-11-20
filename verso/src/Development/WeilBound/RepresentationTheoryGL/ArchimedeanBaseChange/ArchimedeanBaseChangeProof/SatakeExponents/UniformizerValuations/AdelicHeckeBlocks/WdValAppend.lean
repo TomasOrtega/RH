@@ -15,10 +15,18 @@ attribute [local instance] borelG borelF borelH
 
 namespace Word
 
+/- English proof (translation)
+Simplify using `[wdVal, List.map_append, List.prod_append]`.
+-/
 theorem wdVal_append {A Γ : Type} [Monoid A] [Star A] (gen : Γ → A) (u v : List (Γ × Bool)) :
     wdVal gen (u ++ v) = wdVal gen u * wdVal gen v := by
   simp [wdVal, List.map_append, List.prod_append]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simp [wdVal]`. Consider the case `cons p w ih`. Establish `e : wdVal gen (p :: w) = (if p.2 then star (gen p.1) else gen p.1) * wdVal gen w`. Simplify using `[wdVal]`.
+
+Rewrite using `[e, star_mul, ih, List.map_cons, List.reverse_cons, wdVal_append]`. Use `congr 1`. Take `⟨x, b⟩` from `p`. Apply the tactic sequence `cases b <;> simp [wdVal]`.
+-/
 theorem wdVal_star {A Γ : Type} [Monoid A] [StarMul A] (gen : Γ → A) (w : List (Γ × Bool)) :
     star (wdVal gen w) = wdVal gen (w.map fun p => (p.1, !p.2)).reverse := by
   induction w with
@@ -31,6 +39,11 @@ theorem wdVal_star {A Γ : Type} [Monoid A] [StarMul A] (gen : Γ → A) (w : Li
     obtain ⟨x, b⟩ := p
     cases b <;> simp [wdVal]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [wdVal]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', ih, Finset.sum_mul_sum, ← (Fin.consEquiv fun _ => J).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Fin.consEquiv, Equiv.coe_fn_mk, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, List.ofFn_succ, List.flatten_cons, wdVal_append, smul_mul_smul_comm]`.
+-/
 theorem pow_eq {A Γ J : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype J] (gen : Γ → A) (c : J → ℂ)
     (w : J → List (Γ × Bool)) (k : ℕ) :
     (∑ j, c j • wdVal gen (w j)) ^ k =
@@ -45,6 +58,21 @@ theorem pow_eq {A Γ J : Type} [Ring A] [StarRing A] [Algebra ℂ A] [Fintype J]
 
 end Word
 
+/- English proof (translation)
+Introduce `A Γ _ _ _ _ gen a ha`. It suffices to establish `h : ∃ (J : Type) (_ : Fintype J) (c : J → ℂ) (w : J → List (Γ × Bool)) (L : ℕ), (∀ j, (w j).length ≤ L) ∧ a = ∑ j, c j • wdVal gen (w j) by`. Take `⟨J, _, c, w, L, hL, rfl⟩` from `h`. Conclude with `⟨J, inferInstance, c, w, L, hL, rfl, Word.pow_eq gen c w⟩`. Proceed by induction on `ha using StarAlgebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨Unit, inferInstance, fun _ => 1, fun _ => [(i, false)], 1, fun _ => le_rfl, by simp [wdVal]⟩`. Consider the case `algebraMap r`. Conclude with `⟨Unit, inferInstance, fun _ => r, fun _ => [], 0, fun _ => le_rfl, by`.
+
+Simplify using `[wdVal, Algebra.algebraMap_eq_smul_one]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨J, _, c, w, L, hL, rfl⟩` from `hx`. Take `⟨J', _, c', w', L', hL', rfl⟩` from `hy`. Use `⟨J ⊕ J', inferInstance, Sum.elim c c', Sum.elim w w', max L L', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `(j | j)`. Conclude with `(hL j).trans (le_max_left _ _)`. Conclude with `(hL' j).trans (le_max_right _ _)`. Simplify using `[Fintype.sum_sum_type]`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨J, _, c, w, L, hL, rfl⟩` from `hx`. Take `⟨J', _, c', w', L', hL', rfl⟩` from `hy`. Use `⟨J × J', inferInstance, fun p => c p.1 * c' p.2, fun p => w p.1 ++ w' p.2, L + L', ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, j'⟩`. Simplify using `using Nat.add_le_add (hL j) (hL' j')`.
+
+Rewrite using `[Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[smul_mul_smul_comm, Word.wdVal_append]`. Consider the case `star x _ hx`.
+
+Take `⟨J, _, c, w, L, hL, rfl⟩` from `hx`. Use `⟨J, inferInstance, fun j => star (c j), fun j => ((w j).map fun p => (p.1, !p.2)).reverse, L, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`. Simplify using `using hL j`. Simplify using `[star_sum, star_smul, Word.wdVal_star]`.
+-/
 theorem adjWords : AdjWords := by
   intro A Γ _ _ _ _ gen a ha
   suffices h : ∃ (J : Type) (_ : Fintype J) (c : J → ℂ) (w : J → List (Γ × Bool)) (L : ℕ),
@@ -87,14 +115,41 @@ namespace Word
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {B : Block E}
 
+/- English proof (translation)
+Simplify using `[BGen.sc]`.
+-/
 theorem sc_inl (c : ℂ) (w : List (BGen B)) : BGen.sc (Sum.inl c :: w) = c * BGen.sc w := by
   simp [BGen.sc]
 
+/- English proof (translation)
+Simplify using `[BGen.sc]`.
+-/
 theorem sc_inr (s : PT B) (w : List (BGen B)) : BGen.sc (Sum.inr s :: w) = BGen.sc w := by
   simp [BGen.sc]
 
 end Word
 
+/- English proof (translation)
+Introduce `E _ _ _ B w t₀ R hw ht₀ hR hs`. Establish `hadj : ∀ g : BGen B, g.Ok → g.adj.Ok ∧ g.adj.op = ContinuousLinearMap.adjoint g.op`. Introduce and unpack `(c | s) hg`. Use `⟨trivial, ?_⟩ show (starRingEnd ℂ c) • (1 : B.Hb →L[ℂ] B.Hb) = ContinuousLinearMap.adjoint (c • 1)` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.map_smulₛₗ]`.
+
+Use `congr 1`. Conclude with `ContinuousLinearMap.adjoint_id.symm`. Conclude with `⟨(h E B s s hg hg).2.2.2.2.1, (h E B s s hg hg).2.2.2.2.2.1⟩`. It suffices to establish `main : (BGen.wd w t₀).Ok ∧ (w.map BGen.op).prod * t₀.op = BGen.sc w • (BGen.wd w t₀).op ∧ (BGen.wd w t₀).T ≤ t₀.T + w.length * R ∧ (BGen.wd w t₀).r ≤ t₀.r + w.length * R ∧ ∀ χa χb, (BGen.wd w t₀).val χa χb = (w.map (Sum.elim (fun _ => 1) fun s => s.val χa χb)).prod * t₀.val χa χb …`. Take `⟨m1, m2, m3, m4, m5⟩` from `main`.
+
+Conclude with `⟨m1, m2, m3, m4, hadj, m5⟩`. Proceed by induction on `w with`. Consider the case `nil => simp [BGen.wd, BGen.sc, ht₀]`. Consider the case `cons g w ih`. Take `⟨h1, h2, h3, h4, h5⟩` from `ih (fun g hg => hw g (List.mem_cons_of_mem _ hg)) (fun s hs' => hs s (List.mem_cons_of_mem _ hs'))`.
+
+Establish `hg` using `hw g List.mem_cons_self`. Break down `g with c | s` into its components or cases. Establish `ew : BGen.wd (Sum.inl c :: w) t₀ = BGen.wd w t₀` using `rfl`. Rewrite using `[ew, Word.sc_inl]`. Use `⟨h1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.map_cons, List.prod_cons, mul_assoc, h2] show (c • (1 : B.Hb →L[ℂ] B.Hb)) * _ = _`. Rewrite using `[smul_mul_assoc, one_mul, smul_smul]`. Simplify using `only [List.length_cons]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+
+Simplify using `only [List.length_cons]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Introduce `χa χb`. Simplify using `[h5]`.
+
+Establish `ew : BGen.wd (Sum.inr s :: w) t₀ = s.mul (BGen.wd w t₀)` using `rfl`. Establish `hsR` using `hs s List.mem_cons_self`. Establish `hop` using `h E B s (BGen.wd w t₀) hg h1`. Rewrite using `[ew, Word.sc_inr]`. Use `⟨hop.2.2.1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.map_cons, List.prod_cons, mul_assoc, h2, hop.2.2.2.1] show s.op * _ = _`. Rewrite using `[mul_smul_comm]`. Use `show s.T + (BGen.wd w t₀).T ≤ _`. Simplify using `only [List.length_cons]`. Use `push_cast`.
+
+Combine the linear relations using `[hsR.1]`. Use `show s.r + (BGen.wd w t₀).r + B.c ≤ _`. Simplify using `only [List.length_cons]`. Use `push_cast`. Combine the linear relations using `[hsR.2]`.
+
+Introduce `χa χb`. Rewrite using `[hop.2.2.2.2.2.2.1, h5]`. Simplify using `[mul_assoc]`.
+-/
 theorem blkWord (h : BlockOperatorsProductAdjoint) : BlockWordOperators := by
   intro E _ _ _ B w t₀ R hw ht₀ hR hs
   have hadj : ∀ g : BGen B, g.Ok → g.adj.Ok ∧ g.adj.op = ContinuousLinearMap.adjoint g.op := by
@@ -144,6 +199,11 @@ theorem blkWord (h : BlockOperatorsProductAdjoint) : BlockWordOperators := by
         rw [hop.2.2.2.2.2.2.1, h5]
         simp [mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ a b D Ma Mb κ _ μa μb ha hb`. Establish `: BorelSpace (G a)` using `⟨rfl⟩`. Establish `: BorelSpace (G b)` using `⟨rfl⟩`. Establish `: BorelSpace (Hf E a b)` using `⟨rfl⟩`. Take `⟨ν, hν, hν', hc⟩` from `h1 E a b D μa μb`.
+
+Take `⟨ca, hca⟩` from `(h2 E a).2.2.2`. Take `⟨cb, hcb⟩` from `(h2 E b).2.2.2`. Use `⟨ν, ha, hb, hν, hν', hc, max 0 (max ca cb), le_max_left _ _, fun g h => ?_, fun g h => ?_, rfl⟩` and prove the remaining obligations. Combine the linear relations using `[hca g h, le_max_left ca cb, le_max_right 0 (max ca cb)]`. Combine the linear relations using `[hcb g h, le_max_right ca cb, le_max_right 0 (max ca cb)]`.
+-/
 theorem blockEx (h1 : CompatEx) (h2 : SizeBasic) : BlockEx := by
   intro E _ _ _ a b D Ma Mb κ _ μa μb ha hb
   have : BorelSpace (G a) := ⟨rfl⟩

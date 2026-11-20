@@ -16,12 +16,22 @@ section Tools
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite `*` using `[mem_localized_one_iff]`. Conclude with `mul_mem ha hb`.
+-/
 theorem mul_mem_locP_one (w : HeightOneSpectrum (𝓞 K)) {a b : K}
     (ha : a ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) (hb : b ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)) :
     a * b ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K) := by
   rw [mem_localized_one_iff] at *
   exact mul_mem ha hb
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, lc_one_notMem w, by simp⟩`. Consider the case `insert a S _ ih`. Take `⟨s, hs, hS⟩` from `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`. Take `⟨t, ht, ha⟩` from `(lc_mem_locP w L _).1 (h a (Finset.mem_insert_self a S))`.
+
+Use `⟨s * t, lc_mul_notMem w hs ht, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem s ha`. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `L.smul_mem t (hS i hi)`.
+-/
 theorem pb_common_den {W α : Type} [AddCommGroup W] [Module (𝓞 K) W] (w : HeightOneSpectrum (𝓞 K))
     (L : Submodule (𝓞 K) W) (S : Finset α) (f : α → W) (h : ∀ i ∈ S, f i ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L) :
     ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ ∀ i ∈ S, s • f i ∈ L := by
@@ -38,6 +48,9 @@ theorem pb_common_den {W α : Type} [AddCommGroup W] [Module (𝓞 K) W] (w : He
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `show ((B : Matrix (Fin n) (Fin n) K)ᵀ *ᵥ x) a = _`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+-/
 theorem pb_invTr_inv_mulVec (B : GL (Fin n) K) (x : Fin n → K) (a : Fin n) :
     ((((inside₂ K n B)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) a =
       x ⬝ᵥ fun b => (B : Matrix (Fin n) (Fin n) K) b a := by
@@ -45,6 +58,23 @@ theorem pb_invTr_inv_mulVec (B : GL (Fin n) K) (x : Fin n → K) (a : Fin n) :
   simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply]
   exact Finset.sum_congr rfl fun b _ => mul_comm _ _
 
+/- English proof (translation)
+Unfold `IsBasisAt at hB ⊢`. Use extensionality with `x`. Rewrite using `[mem_localized_columnLattice_iff]`. Simplify using `only [pb_invTr_inv_mulVec]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx a`. Take `⟨s, hs, hx⟩` from `(lc_mem_locP w _ _).1 hx`. Establish `hc : (fun b => (B : Matrix (Fin n) (Fin n) K) b a) ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M`. Rewrite using `[hB]`. Conclude with `lc_le_locP w _ (lc_col_mem_colLat B a)`.
+
+Take `⟨t, ht, hc⟩` from `(lc_mem_locP w _ _).1 hc`. Use `(lc_mem_locP w _ _).2 ⟨s * t, lc_mul_notMem w hs ht, ?_⟩` and prove the remaining obligations. Establish `h` using `hx _ hc`. Rewrite `h` using `[smul_dotProduct, dotProduct_smul, smul_smul]`. Then use the resulting hypothesis. Introduce `h`.
+
+Establish `h1 : ∀ m ∈ M, x ⬝ᵥ m ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)`. Introduce `m hm`. Establish `hm' : m ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (colLat B)` using `by rw [← hB]; exact lc_le_locP w _ hm`. Rewrite `hm'` using `[mem_localized_columnLattice_iff]`. Establish `e : m = (B : Matrix (Fin n) (Fin n) K) *ᵥ (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ m)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e, Matrix.dotProduct_mulVec]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Conclude with `mul_mem_locP_one w (h a) (hm' a)`. Take `⟨S, hS⟩` from `hfg`.
+
+Take `⟨s, hs, hsS⟩` from `pb_common_den w (1 : Submodule (𝓞 K) K) S (fun m => x ⬝ᵥ m) fun m hm => h1 m (hS ▸ Submodule.subset_span hm)`. Use `(lc_mem_locP w _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[← hS]`. Rewrite using `[smul_dotProduct]`.
+
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm => exact hsS m hm`. Consider the case `zero => rw [dotProduct_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [dotProduct_add, smul_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [dotProduct_smul, smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem pb_isBasisAt_dualFr (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) (Fin n → K)) (hfg : M.FG)
     (B : GL (Fin n) K) (hB : IsBasisAt w M B) : IsBasisAt w (dualFr M) (inside₂ K n B) := by
   classical
@@ -90,32 +120,69 @@ section Dual
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def s (pairB lam x y), nb_osmul s x, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem pb_pairB_osmul_left (lam : ι → DomWeight n) (s : 𝓞 K) (x y : MvPolynomial (ι × Fin n × Fin n) K) :
     pairB lam (s • x) y = s • pairB lam x y := by
   rw [Algebra.smul_def s (pairB lam x y), nb_osmul s x, map_smul, LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def t (pairB lam x y), nb_osmul t y, map_smul, smul_eq_mul]`.
+-/
 theorem pb_pairB_osmul_right (lam : ι → DomWeight n) (t : 𝓞 K) (x y : MvPolynomial (ι × Fin n × Fin n) K) :
     pairB lam x (t • y) = t • pairB lam x y := by
   rw [Algebra.smul_def t (pairB lam x y), nb_osmul t y, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[pb_pairB_osmul_left, pb_pairB_osmul_right, smul_smul]`.
+-/
 theorem pb_pairB_osmul (lam : ι → DomWeight n) (s t : 𝓞 K) (x y : MvPolynomial (ι × Fin n × Fin n) K) :
     pairB lam (s • x) (t • y) = (s * t) • pairB lam x y := by
   rw [pb_pairB_osmul_left, pb_pairB_osmul_right, smul_smul]
 
+/- English proof (translation)
+Rewrite using `[nb_osmul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem pb_osmul_mem_VV (lam : ι → DomWeight n) (s : 𝓞 K) {x : MvPolynomial (ι × Fin n × Fin n) K} (hx : x ∈ VV K lam) :
     s • x ∈ VV K lam := by
   rw [nb_osmul]
   exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Rewrite using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`.
+-/
 theorem pb_act_inv (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (x : Pol K ι n) :
     actP lam g (actP lam g⁻¹ x) = x := by
   rw [← polyAction_mul, mul_inv_cancel, polyAction_one₂]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← pb_act_inv lam (invTrK B) x, ← pb_act_inv lam B y]`. Rewrite using `[pairingBInvariantK_holds]`.
+-/
 theorem pb_pairB_frames (lam : ι → DomWeight n) (B : ι → GL (Fin n) K) (x y : Pol K ι n) :
     pairB lam (actP lam (invTrK B)⁻¹ x) (actP lam B⁻¹ y) = pairB lam x y := by
   conv_rhs => rw [← pb_act_inv lam (invTrK B) x, ← pb_act_inv lam B y]
   rw [pairingBInvariantK_holds]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hxT y hy _`. Rewrite using `[← lc_iInf_locP (1 : Submodule (𝓞 K) K), Submodule.mem_iInf]`. Introduce `w`. Use `choose B hB using fun τ => latticeBasisExists_holds K n (M τ) (hM τ) w`.
+
+Establish `hBd : ∀ τ, IsBasisAt w (dualFr (M τ)) (invTrK B τ)` using `fun τ => pb_isBasisAt_dualFr w _ (hM τ).fg _ (hB τ)`. Take `⟨s, hs, hsx⟩` from `(nb_mem_locP w _ _).1 ((nb_mem_transLat lam T _ x).1 hxT w _ hBd)`. Take `⟨t, ht, hty⟩` from `(nb_mem_locP w _ _).1 ((nb_mem_transLat lam T' _ y).1 hy w _ hB)`. Establish `h` using `(hdual _ (hTV _ hsx)).1 hsx _ hty`. Rewrite `h` using `[pb_pairB_osmul, pb_pairB_frames]`.
+
+Conclude with `(lc_mem_locP w _ _).2 ⟨s * t, lc_mul_notMem w hs ht, h⟩`. Introduce `h`. Rewrite using `[nb_mem_transLat]`. Introduce `w B' hB'`. Use `choose B hB using fun τ => latticeBasisExists_holds K n (M τ) (hM τ) w`.
+
+Establish `hBd : ∀ τ, IsBasisAt w (dualFr (M τ)) (invTrK B τ)` using `fun τ => pb_isBasisAt_dualFr w _ (hM τ).fg _ (hB τ)`. Rewrite using `[hInd w _ B' (invTrK B) hB' hBd]`. Establish `hx0V : actP lam (invTrK B)⁻¹ x ∈ VV K lam` using `polyAction_mem_VV lam _ hx`. Establish `h1 : ∀ y0 ∈ T', pairB lam (actP lam (invTrK B)⁻¹ x) y0 ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)`. Introduce `y0 hy0`.
+
+Establish `h2 : actP lam B y0 ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (transLat lam T' M)`. Rewrite using `[hLoc M hM w B hB]`. Conclude with `⟨y0, lc_le_locP w _ hy0, rfl⟩`. Take `⟨t, ht, hty⟩` from `(nb_mem_locP w _ _).1 h2`. Establish `h3` using `h _ hty (pb_osmul_mem_VV lam t (polyAction_mem_VV lam B (hTV' _ hy0)))`.
+
+Rewrite `h3` using `[pb_pairB_osmul_right, ← pb_pairB_frames lam B, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `(lc_mem_locP w _ _).2 ⟨t, ht, h3⟩`. Take `⟨S, hS⟩` from `hfg`. Take `⟨s, hs, hsS⟩` from `pb_common_den w (1 : Submodule (𝓞 K) K) S (fun y0 => pairB lam (actP lam (invTrK B)⁻¹ x) y0) fun y0 hy0 => h1 y0 (hS ▸ Submodule.subset_span hy0)`. Use `(nb_mem_locP w _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hdual _ (pb_osmul_mem_VV lam s hx0V)]`. Introduce `y hy`. Rewrite `hy` using `[← hS]`. Rewrite using `[pb_pairB_osmul_left]`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact hsS y hy`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add, smul_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul c a _ ha => show s • pairB lam (actP lam (invTrK B)⁻¹ x) (c • a) ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[pb_pairB_osmul_right, smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem pb_dual_gen (lam : ι → DomWeight n) (T T' : Submodule (𝓞 K) (Pol K ι n))
     (hTV : ∀ x ∈ T, x ∈ VV K lam) (hTV' : ∀ x ∈ T', x ∈ VV K lam)
     (hdual : ∀ x ∈ VV K lam, (x ∈ T ↔ ∀ y ∈ T', pairB lam x y ∈ (1 : Submodule (𝓞 K) K)))
@@ -179,6 +246,17 @@ theorem pb_dual_gen (lam : ι → DomWeight n) (T T' : Submodule (𝓞 K) (Pol K
 
 end Dual
 
+/- English proof (translation)
+Introduce `hStd K _ _ ι _ n lam M hM x`. Establish `hnV : ∀ y ∈ nabStd K lam, y ∈ VV K lam` using `fun y hy => nb_nabStd_le_VV lam y hy`. Establish `hdV : ∀ y ∈ delStd K lam, y ∈ VV K lam` using `fun y hy => hnV y (delStd_le_nabStd K lam hy)`. Prove the components needed by the constructor for the conclusion. Establish `h` using `pb_dual_gen lam (delStd K lam) (nabStd K lam) hdV hnV (fun y hy => (hStd K ι n lam y hy).1) (nb_nabStd_fg lam) (fun w M B B' hB hB' F => deltaIndependence_holds K ι n lam w M B B' hB hB' F) (fun M hM w B hB => (nablaDeltaLocal_holds K ι n lam M hM w B hB).1) M hM x.1 x.2`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite using `[pairBK_apply]`. Conclude with `h.1 hx y.1 hy y.2`. Introduce `hx`.
+
+Use `h.2 fun y hy hyV => ?_` and prove the remaining obligations. Use `hx ⟨y, hyV⟩ hy` as an intermediate fact. Rewrite `this` using `[pairBK_apply]`. Then use the resulting hypothesis. Establish `h` using `pb_dual_gen lam (nabStd K lam) (delStd K lam) hnV hdV (fun y hy => (hStd K ι n lam y hy).2) (Submodule.FG.of_le (nb_nabStd_fg lam) (delStd_le_nabStd K lam)) (fun w M B B' hB hB' F => nablaIndependence_holds K ι n lam w M B B' hB hB' F) (fun M hM w B hB => (nablaDeltaLocal_holds K …`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx y hy`. Rewrite using `[pairBK_apply]`. Conclude with `h.1 hx y.1 hy y.2`. Introduce `hx`. Use `h.2 fun y hy hyV => ?_` and prove the remaining obligations.
+
+Use `hx ⟨y, hyV⟩ hy` as an intermediate fact. Rewrite `this` using `[pairBK_apply]`. Then use the resulting hypothesis.
+-/
 theorem pairBDualK_of : PairBDualStd → PairBDualK := by
   intro hStd K _ _ ι _ n lam M hM x
   have hnV : ∀ y ∈ nabStd K lam, y ∈ VV K lam := fun y hy => nb_nabStd_le_VV lam y hy
@@ -208,10 +286,16 @@ theorem pairBDualK_of : PairBDualStd → PairBDualK := by
       have := hx ⟨y, hyV⟩ hy
       rwa [pairBK_apply] at this
 
+/- English proof (translation)
+Introduce `hK E K _ _ _ _ ι _ n emb lam L hL x`. Conclude with `hK K ι n lam (fun τ => tauLat emb τ L) (fun τ => tauLatticeLattice_holds E K ι n emb τ L hL) x`.
+-/
 theorem pairBDual_of_K : PairBDualK → PairBDual := by
   intro hK E K _ _ _ _ ι _ n emb lam L hL x
   exact hK K ι n lam (fun τ => tauLat emb τ L) (fun τ => tauLatticeLattice_holds E K ι n emb τ L hL) x
 
+/- English proof (translation)
+Introduce `h` and use `pairBDual_of_K (pairBDualK_of h)`.
+-/
 theorem pairBDual_of : PairBDualStd → PairBDual := fun h => pairBDual_of_K (pairBDualK_of h)
 
 end Formalism.L2.DIV

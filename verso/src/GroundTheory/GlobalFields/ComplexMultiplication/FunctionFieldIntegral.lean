@@ -15,6 +15,9 @@ def functionFieldCongr {F : Type*} [Field F] {V V' : WeierstrassCurve F} (h : V 
   exact RingEquiv.refl _
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem functionFieldCongr_self {F : Type*} [Field F] {V : WeierstrassCurve F} (h : V = V)
     (x : V.toAffine.FunctionField) : functionFieldCongr h x = x :=
   rfl

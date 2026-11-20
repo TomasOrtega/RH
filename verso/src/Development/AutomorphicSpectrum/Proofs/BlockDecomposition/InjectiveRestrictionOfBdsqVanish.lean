@@ -20,14 +20,26 @@ section Alg
 
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem annL_apply (l : Lt n) (x : Cq n V) (A : Finset (Lt n)) :
     annL l x A = if l ∈ A then 0 else sgL l A • x (insert l A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem creL_apply (l : Lt n) (x : Cq n V) (A : Finset (Lt n)) :
     creL l x A = if l ∈ A then sgL l A • x (A.erase l) else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftL_apply (T : V →ₗ[ℂ] V) (x : Cq n V) (A : Finset (Lt n)) : liftL n T x A = T (x A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FtL_apply (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin n) (x : Cq n V) (A : Finset (Lt n)) :
     FtL E1 E2 c x A = kA E1 E2 c c (x A) + (wtL A c : ℂ) • x A := rfl
 
@@ -35,6 +47,9 @@ abbrev TriL (S : Lt n → Prop) (l m k : Lt n) : Prop :=
   S l ∧ S m ∧ l.2.1.2 = m.2.1.1 ∧ k.1 = xor l.1 m.1 ∧ k.2.1.1 = l.2.1.1 ∧ k.2.1.2 = m.2.1.2
 
 open Classical in
+/- English proof (translation)
+Simplify using `only [bdL, LinearMap.add_apply, Pi.add_apply, LinearMap.sum_apply, Finset.sum_apply]`. Use `congr 1`. Apply the tactic sequence `refine Finset.sum_congr rfl fun l _ => ?_ split_ifs <;> rfl`. Apply the tactic sequence `refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_ split_ifs <;> rfl`.
+-/
 theorem bdL_apply (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Cq n V) (A : Finset (Lt n)) :
     bdL S E1 E2 x A = (∑ l : Lt n, if S l then xL E1 E2 l (annL l x A) else 0) +
       ∑ l : Lt n, ∑ m : Lt n, ∑ k : Lt n, if TriL S l m k then creL k (annL m (annL l x)) A else 0 := by
@@ -45,18 +60,27 @@ theorem bdL_apply (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End �
   · refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_
     split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite `h` using `[annL_apply]`. Distinguish the cases in `hi : l ∈ A`. Simplify using `[hi] at h`. Conclude with `⟨hi, fun h0 => h (by simp [h0])⟩`.
+-/
 theorem annL_ne {l : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : annL l x A ≠ 0) : l ∉ A ∧ x (insert l A) ≠ 0 := by
   rw [annL_apply] at h
   by_cases hi : l ∈ A
   · simp [hi] at h
   · exact ⟨hi, fun h0 => h (by simp [h0])⟩
 
+/- English proof (translation)
+Rewrite `h` using `[creL_apply]`. Distinguish the cases in `hi : l ∈ A`. Conclude with `⟨hi, fun h0 => h (by simp [h0])⟩`. Simplify using `[hi] at h`.
+-/
 theorem creL_ne {l : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : creL l x A ≠ 0) : l ∈ A ∧ x (A.erase l) ≠ 0 := by
   rw [creL_apply] at h
   by_cases hi : l ∈ A
   · exact ⟨hi, fun h0 => h (by simp [h0])⟩
   · simp [hi] at h
 
+/- English proof (translation)
+The claim follows from `let h1 := creL_ne h let h2 := annL_ne h1.2 let h3 := annL_ne h2.2 ⟨h1.1, h2.1, h3.1, h3.2⟩`.
+-/
 theorem triL_ne {l m k : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : creL k (annL m (annL l x)) A ≠ 0) :
     k ∈ A ∧ m ∉ A.erase k ∧ l ∉ insert m (A.erase k) ∧ x (insert l (insert m (A.erase k))) ≠ 0 :=
   let h1 := creL_ne h
@@ -64,6 +88,15 @@ theorem triL_ne {l m k : Lt n} {x : Cq n V} {A : Finset (Lt n)} (h : creL k (ann
   let h3 := annL_ne h2.2
   ⟨h1.1, h2.1, h3.1, h3.2⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[bdL_apply, bdL_apply]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : S' l`. Rewrite using `[if_pos h1, if_pos (h0 _ h1)]`. Rewrite using `[if_neg h1] split_ifs with h2`. Rewrite using `[hc.1 l h2 h1, map_zero]`.
+
+Both sides reduce to the same expression. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : TriL S' l m k`. Rewrite using `[if_pos h1, if_pos ⟨h0 _ h1.1, h0 _ h1.2.1, h1.2.2⟩]`. Rewrite using `[if_neg h1] split_ifs with h2`.
+
+Conclude with `hc.2 l m k h2 fun a b => h1 ⟨a, b, h2.2.2⟩`. Both sides reduce to the same expression.
+-/
 theorem bdL_sub_ne {S S' : Lt n → Prop} (h0 : ∀ l, S' l → S l) (E1 E2 : Fin n → Fin n → Module.End ℂ V)
     (x : Cq n V) (A : Finset (Lt n)) (h : bdL S E1 E2 x A ≠ bdL S' E1 E2 x A) :
     (∃ l, S l ∧ ¬S' l ∧ annL l x A ≠ 0) ∨
@@ -89,6 +122,11 @@ theorem bdL_sub_ne {S S' : Lt n → Prop} (h0 : ∀ l, S' l → S l) (E1 E2 : Fi
       · exact hc.2 l m k h2 fun a b => h1 ⟨a, b, h2.2.2⟩
       · rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Rewrite using `[bdL_apply, Finset.sum_eq_zero, Finset.sum_eq_zero, add_zero]`. Use `fun l _ => Finset.sum_eq_zero fun m _ => Finset.sum_eq_zero fun k _ => ?_ split_ifs with h2` and prove the remaining obligations.
+
+Conclude with `hc.2 l m k h2`. Both sides reduce to the same expression. Introduce `l _ split_ifs with h2`. Rewrite using `[hc.1 l h2, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem bdL_ne (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (x : Cq n V) (A : Finset (Lt n))
     (h : bdL S E1 E2 x A ≠ 0) :
     (∃ l, S l ∧ annL l x A ≠ 0) ∨ ∃ l m k, TriL S l m k ∧ creL k (annL m (annL l x)) A ≠ 0 := by
@@ -106,17 +144,33 @@ theorem bdL_ne (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V
     · rw [hc.1 l h2, map_zero]
     · rfl
 
+/- English proof (translation)
+The claim follows from `filter_insert _ _ _`.
+-/
 theorem pPart_insert (l : Lt n) (A : Finset (Lt n)) :
     pPart (insert l A) = if l.1 = true then insert l (pPart A) else pPart A := filter_insert _ _ _
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [pPart, mem_filter, mem_erase]`. Conclude with `⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨fun e => hk (e ▸ h.2), h.1⟩, h.2⟩⟩`.
+-/
 theorem pPart_erase_of_not {k : Lt n} (hk : ¬k.1 = true) (A : Finset (Lt n)) : pPart (A.erase k) = pPart A := by
   ext a
   simp only [pPart, mem_filter, mem_erase]
   exact ⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨fun e => hk (e ▸ h.2), h.1⟩, h.2⟩⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_insert h`.
+-/
 theorem potL_insert {l : Lt n} {B : Finset (Lt n)} (h : l ∉ B) : potL (insert l B) = wP l + potL B :=
   Finset.sum_insert h
 
+/- English proof (translation)
+Introduce `A hA`. Break down `bdL_ne S E1 E2 x A hA with ⟨l, -, h1⟩ | ⟨l, m, k, -, h1⟩` into its components or cases. Take `⟨h2, h3⟩` from `annL_ne h1`. Use `hx _ h3` as an intermediate fact. Rewrite `this` using `[card_insert_of_notMem h2]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨h2, h3, h4, h5⟩` from `triL_ne h1`. Use `hx _ h5` as an intermediate fact. Rewrite `this` using `[card_insert_of_notMem h4, card_insert_of_notMem h3]`. Use `card_erase_add_one h2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem degL_bdL (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ V) {j : ℕ} {x : Cq n V}
     (hx : DegL (j + 1) x) : DegL j (bdL S E1 E2 x) := by
   intro A hA
@@ -131,6 +185,13 @@ theorem degL_bdL (S : Lt n → Prop) (E1 E2 : Fin n → Fin n → Module.End ℂ
     have := card_erase_add_one h2
     omega
 
+/- English proof (translation)
+Introduce `A hA`. Break down `bdL_ne isK E1 E2 x A hA with ⟨l, hl, h1⟩ | ⟨l, m, k, ht, h1⟩` into its components or cases. Take `⟨-, h3⟩` from `annL_ne h1`. Establish `e : pPart (insert l A) = B` using `hx _ h3`. Rewrite `e` using `[pPart_insert, if_neg (by simp [show l.1 = false from hl])]`.
+
+Conclude with `e`. Take `⟨-, -, -, h5⟩` from `triL_ne h1`. Establish `e : pPart (insert l (insert m (A.erase k))) = B` using `hx _ h5`. Establish `hl : l.1 = false` using `ht.1`. Establish `hm : m.1 = false` using `ht.2.1`.
+
+Establish `hk : k.1 = false` using `by rw [ht.2.2.2.1, hl, hm]; rfl`. Rewrite `e` using `[pPart_insert, if_neg (by simp [hl]), pPart_insert, if_neg (by simp [hm]), pPart_erase_of_not (by simp [hk])]`. Conclude with `e`.
+-/
 theorem partL_bdK (E1 E2 : Fin n → Fin n → Module.End ℂ V) {B : Finset (Lt n)} {x : Cq n V} (hx : PartL B x) :
     PartL B (bdL isK E1 E2 x) := by
   intro A hA
@@ -148,6 +209,11 @@ theorem partL_bdK (E1 E2 : Fin n → Fin n → Module.End ℂ V) {B : Finset (Lt
       pPart_erase_of_not (by simp [hk])] at e
     exact e
 
+/- English proof (translation)
+Introduce `A hA e he`. Break down `bdL_ne S E1 E2 x A hA with ⟨l, -, h1⟩ | ⟨l, m, k, ht, h1⟩` into its components or cases. Conclude with `hx _ (annL_ne h1).2 e (mem_insert_of_mem he)`. Establish `h5` using `(triL_ne h1).2.2.2`. Distinguish the cases in `hk : e = k`.
+
+Substitute `hk` using the available equality. Conclude with `hS l m e (hx _ h5 l (mem_insert_self _ _)) (hx _ h5 m (mem_insert_of_mem (mem_insert_self _ _))) ht.2.2.1 ht.2.2.2.1 (Prod.ext ht.2.2.2.2.1 ht.2.2.2.2.2)`. Conclude with `hx _ h5 e (mem_insert_of_mem (mem_insert_of_mem (mem_erase.2 ⟨hk, he⟩)))`.
+-/
 theorem suppL_bdL {S : Lt n → Prop}
     (hS : ∀ l m k : Lt n, S l → S m → l.2.1.2 = m.2.1.1 → k.1 = xor l.1 m.1 → k.2.1 = (l.2.1.1, m.2.1.2) → S k)
     (E1 E2 : Fin n → Fin n → Module.End ℂ V) {x : Cq n V} (hx : SuppL S x) : SuppL S (bdL S E1 E2 x) := by
@@ -161,6 +227,27 @@ theorem suppL_bdL {S : Lt n → Prop}
         ht.2.2.2.1 (Prod.ext ht.2.2.2.2.1 ht.2.2.2.2.2)
     · exact hx _ h5 e (mem_insert_of_mem (mem_insert_of_mem (mem_erase.2 ⟨hk, he⟩)))
 
+/- English proof (translation)
+Establish `hne : bdL (inRR lev) E1 E2 x A ≠ bdL isK E1 E2 x A` using `fun h => hA (by`. Rewrite using `[Pi.sub_apply, h, sub_self])`. Establish `hpos : ∀ l : Lt n, (l.2.1.1 : ℕ) < l.2.1.2 ∧ (l.2.1.2 : ℕ) < n` using `fun l => ⟨l.2.2, l.2.1.2.2⟩`. Break down `bdL_sub_ne (S := inRR lev) (S' := isK) (fun _ h => Or.inl h) E1 E2 x A hne with ⟨l, -, h2, h3⟩ | ⟨l, m, k, ht, h2, h3⟩` into its components or cases. Take `⟨h4, h5⟩` from `annL_ne h3`.
+
+Establish `e1 : pPart (insert l A) = B` using `hx _ h5`. Establish `hl : l.1 = true` using `by simpa [isK] using h2`. Rewrite `e1` using `[pPart_insert, if_pos hl]`. Rewrite using `[← e1, potL_insert (B := pPart A) (fun h => h4 (mem_filter.1 h).1)]`. Use `hpos l` as an intermediate fact.
+
+Simplify using `only [wP]`. Use linear arithmetic over natural numbers and integers. Take `⟨h4, h5, h6, h7⟩` from `triL_ne h3`. Establish `e1 : pPart (insert l (insert m (A.erase k))) = B` using `hx _ h7`. Take `⟨-, -, t1, t0, t2, t3⟩` from `ht`.
+
+Establish `pl` using `hpos l`. Establish `pm` using `hpos m`. Establish `pk` using `hpos k`. Establish `v1 : (l.2.1.2 : ℕ) = m.2.1.1` using `congrArg Fin.val t1`. Establish `v2 : (k.2.1.1 : ℕ) = l.2.1.1` using `congrArg Fin.val t2`.
+
+Establish `v3 : (k.2.1.2 : ℕ) = m.2.1.2` using `congrArg Fin.val t3`. Use `set R := pPart (A.erase k) with hR`. Establish `hmR : m ∉ R` using `fun h => h5 (mem_filter.1 h).1`. Establish `hlR : l ∉ R` using `fun h => h6 (mem_insert_of_mem (mem_filter.1 h).1)`. Establish `hlm : l ∉ insert m R` using `fun h => h6 (by`.
+
+Break down `mem_insert.1 h with h | h` into its components or cases. Conclude with `h ▸ mem_insert_self _ _`. Conclude with `absurd h hlR)`. Establish `hkR : k ∉ R` using `fun h => notMem_erase k A (mem_filter.1 h).1`. Establish `hA' : pPart A = if k.1 = true then insert k R else R` using `by conv_lhs => rw [← insert_erase h4, pPart_insert]`.
+
+Rewrite `e1` using `[pPart_insert, pPart_insert, ← hR]`. Rewrite using `[hA', ← e1]`. Apply the tactic sequence `cases hl : l.1 <;> cases hm : m.1`. Conclude with `absurd ⟨hl, hm⟩ h2`. Establish `hk : k.1 = true` using `by rw [t0, hl, hm]; rfl`.
+
+Simplify using `only [hk, if_true, Bool.false_eq_true, if_false]`. Rewrite using `[potL_insert hkR, potL_insert hmR]`. Simplify using `only [wP]`. Use linear arithmetic over natural numbers and integers. Establish `hk : k.1 = true` using `by rw [t0, hl, hm]; rfl`.
+
+Simplify using `only [hk, if_true, Bool.false_eq_true, if_false]`. Rewrite using `[potL_insert hkR, potL_insert hlR]`. Simplify using `only [wP]`. Use linear arithmetic over natural numbers and integers. Establish `hk : k.1 = false` using `by rw [t0, hl, hm]; rfl`.
+
+Simplify using `only [hk, if_true, Bool.false_eq_true, if_false]`. Rewrite using `[potL_insert hlm, potL_insert hmR]`. Simplify using `only [wP]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pot_lt (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) {B : Finset (Lt n)} {x : Cq n V}
     (hx : PartL B x) (A : Finset (Lt n)) (hA : (bdL (inRR lev) E1 E2 x - bdL isK E1 E2 x) A ≠ 0) :
     potL (pPart A) < potL B := by
@@ -218,12 +305,20 @@ theorem pot_lt (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ
 
 def alL (l : Lt n) (c : Fin n) : ℝ := (if l.2.1.1 = c then 1 else 0) - (if l.2.1.2 = c then 1 else 0)
 
+/- English proof (translation)
+Simplify using `only [wtL, alL, filter_insert]`. Establish `h1 : ∀ p : Lt n → Prop, ∀ [DecidablePred p], l ∉ A.filter p` using `fun p _ hh => h (mem_filter.1 hh).1`. Apply the tactic sequence `split_ifs <;> (try simp only [card_insert_of_notMem (h1 _)]) <;> push_cast <;> ring`.
+-/
 theorem wtL_insert {l : Lt n} {A : Finset (Lt n)} (h : l ∉ A) (c : Fin n) :
     wtL (insert l A) c = wtL A c + alL l c := by
   simp only [wtL, alL, filter_insert]
   have h1 : ∀ p : Lt n → Prop, ∀ [DecidablePred p], l ∉ A.filter p := fun p _ hh => h (mem_filter.1 hh).1
   split_ifs <;> (try simp only [card_insert_of_notMem (h1 _)]) <;> push_cast <;> ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Simplify using `only [FtL_apply, annL_apply, Pi.sub_apply, Pi.smul_apply]`. Distinguish the cases in `h : l ∈ A`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg h, wtL_insert h, map_smul]`.
+
+Use `push_cast`. Use `module`.
+-/
 theorem FtL_ann (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin n) (l : Lt n) (x : Cq n V) :
     FtL E1 E2 c (annL l x) = annL l (FtL E1 E2 c x) - (alL l c : ℂ) • annL l x := by
   funext A
@@ -234,6 +329,11 @@ theorem FtL_ann (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin n) (l : 
     push_cast
     module
 
+/- English proof (translation)
+Use function extensionality and compare the values at `A`. Simplify using `only [FtL_apply, creL_apply, Pi.add_apply, Pi.smul_apply]`. Distinguish the cases in `h : l ∈ A`. Establish `e : wtL A c = wtL (A.erase l) c + alL l c` using `by conv_lhs => rw [← insert_erase h]`. Conclude with `wtL_insert (notMem_erase l A) c`.
+
+Rewrite using `[if_pos h, if_pos h, e, map_smul]`. Use `push_cast`. Use `module`. Simplify using `[h]`.
+-/
 theorem FtL_cre (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin n) (l : Lt n) (x : Cq n V) :
     FtL E1 E2 c (creL l x) = creL l (FtL E1 E2 c x) + (alL l c : ℂ) • creL l x := by
   funext A
@@ -247,6 +347,13 @@ theorem FtL_cre (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin n) (l : 
     module
   · simp [h]
 
+/- English proof (translation)
+Use `LinearMap.congr_fun (h c c a b) x` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Rewrite using `[sub_eq_iff_eq_add.1 this]`. Distinguish the cases in `h1 : c = a`. Substitute `h1` using the available equality.
+
+Simplify using `[hab.symm, hab]`. Normalize the expressions using the abelian group laws. Distinguish the cases in `h2 : b = c`. Substitute `h2` using the available equality. Simplify using `[hab, Ne.symm hab]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `[h1, h2, Ne.symm h1]`.
+-/
 theorem gl_diag {F : Fin n → Fin n → Module.End ℂ V} (h : Formalism.REAL.GlRel F) {a b : Fin n} (hab : a ≠ b) (c : Fin n)
     (x : V) : F c c (F a b x) = F a b (F c c x) +
       ((((if a = c then 1 else 0) - (if b = c then 1 else 0) : ℝ)) : ℂ) • F a b x := by
@@ -263,6 +370,13 @@ theorem gl_diag {F : Fin n → Fin n → Module.End ℂ V} (h : Formalism.REAL.G
       abel
     · simp [h1, h2, Ne.symm h1]
 
+/- English proof (translation)
+Establish `hne : l.2.1.1 ≠ l.2.1.2` using `l.2.2.ne`. Establish `g1` using `gl_diag hP.1 hne c x`. Establish `g2` using `gl_diag hP.2.1 hne c x`. Establish `c1 : E1 c c (E2 l.2.1.1 l.2.1.2 x) = E2 l.2.1.1 l.2.1.2 (E1 c c x)` using `LinearMap.congr_fun (hP.2.2 c c l.2.1.1 l.2.1.2) x`. Establish `c2 : E2 c c (E1 l.2.1.1 l.2.1.2 x) = E1 l.2.1.1 l.2.1.2 (E2 c c x)` using `(LinearMap.congr_fun (hP.2.2 l.2.1.1 l.2.1.2 c c) x).symm`.
+
+Simplify using `only [xL, alL]`. Consider the cases of `hl : l.1`. Simplify using `only [kA, pA, Bool.false_eq_true, if_false, LinearMap.add_apply, map_add]`. Rewrite using `[g1, g2, c1, c2]`. Use `module`.
+
+Simplify using `only [kA, pA, if_true, LinearMap.add_apply, LinearMap.sub_apply, map_add, map_sub]`. Rewrite using `[g1, g2, c1, c2]`. Use `module`.
+-/
 theorem kA_xL {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 E2) (l : Lt n) (c : Fin n) (x : V) :
     kA E1 E2 c c (xL E1 E2 l x) = xL E1 E2 l (kA E1 E2 c c x) + (alL l c : ℂ) • xL E1 E2 l x := by
   have hne : l.2.1.1 ≠ l.2.1.2 := l.2.2.ne
@@ -281,6 +395,17 @@ theorem kA_xL {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 E2
     rw [g1, g2, c1, c2]
     module
 
+/- English proof (translation)
+Unfold `bdL`. Use `Commute.add_right (Commute.sum_right _ _ _ fun l _ => ?_) (Commute.sum_right _ _ _ fun l _ => Commute.sum_right _ _ _ fun m _ => Commute.sum_right _ _ _ fun k _ => ?_)` and prove the remaining obligations. Use `split_ifs with hi`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `e : ∀ y : Cq n V, FtL E1 E2 c (liftL n (xL E1 E2 l) y) = liftL n (xL E1 E2 l) (FtL E1 E2 c y) + (alL l c : ℂ) • liftL n (xL E1 E2 l) y`.
+
+Introduce `y`. Use function extensionality and compare the values at `A`. Simplify using `only [FtL_apply, liftL_apply, Pi.add_apply, Pi.smul_apply, map_add, map_smul, kA_xL hP]`. Use `module`. Simplify using `only [Module.End.mul_apply]`.
+
+Rewrite using `[e, FtL_ann, map_sub, map_smul, sub_add_cancel]`. Conclude with `Commute.zero_right _`. Use `split_ifs with ht`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`.
+
+Rewrite using `[FtL_cre, FtL_ann, FtL_ann]`. Establish `: (alL k c : ℂ) = alL l c + alL m c`. Rewrite using `[← Complex.ofReal_add]`. Simplify using `only [alL, ht.2.2.2.2.1, ht.2.2.2.2.2, ht.2.2.1]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_sub, map_smul, this]`. Use `module`. Conclude with `Commute.zero_right _`.
+-/
 theorem ftL_bdL {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 E2) (S : Lt n → Prop) (c : Fin n) :
     Commute (FtL E1 E2 c) (bdL S E1 E2) := by
   classical
@@ -311,6 +436,19 @@ theorem ftL_bdL {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 
       module
     · exact Commute.zero_right _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Establish `h1 : ((omN n).filter fun l => l.2.1.1 = c).card = (Ioi c).card`. Use `card_bij (fun l _ => l.2.1.2) (fun l hl => ?_) (fun l hl m hm h => ?_) (fun b hb => ?_)` and prove the remaining obligations. Conclude with `mem_Ioi.2 ((mem_filter.1 hl).2 ▸ l.2.2)`. Establish `a1` using `(mem_filter.1 hl).2`.
+
+Establish `a2` using `(mem_filter.1 hm).2`. Establish `a3` using `(mem_filter.1 (mem_filter.1 hl).1).2`. Establish `a4` using `(mem_filter.1 (mem_filter.1 hm).1).2`. Conclude with `Prod.ext (a3.trans a4.symm) (Subtype.ext (Prod.ext (a1.trans a2.symm) h))`. Conclude with `⟨(false, ⟨(c, b), mem_Ioi.1 hb⟩), by simp [omN], rfl⟩`.
+
+Establish `h2 : ((omN n).filter fun l => l.2.1.2 = c).card = (Iio c).card`. Use `card_bij (fun l _ => l.2.1.1) (fun l hl => ?_) (fun l hl m hm h => ?_) (fun b hb => ?_)` and prove the remaining obligations. Conclude with `mem_Iio.2 ((mem_filter.1 hl).2 ▸ l.2.2)`. Establish `a1` using `(mem_filter.1 hl).2`. Establish `a2` using `(mem_filter.1 hm).2`.
+
+Establish `a3` using `(mem_filter.1 (mem_filter.1 hl).1).2`. Establish `a4` using `(mem_filter.1 (mem_filter.1 hm).1).2`. Conclude with `Prod.ext (a3.trans a4.symm) (Subtype.ext (Prod.ext h (a1.trans a2.symm)))`. Conclude with `⟨(false, ⟨(b, c), mem_Iio.1 hb⟩), by simp [omN], rfl⟩`. Establish `h3 : (Ioi c).card + (c : ℕ) + 1 = n`.
+
+Use `c.2` as an intermediate fact. Rewrite using `[Fin.card_Ioi]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : (((Ioi c).card : ℕ) : ℝ) + (c : ℕ) + 1 = n` using `by exact_mod_cast h3`. Simplify using `only [wtL, Pi.smul_apply, smul_eq_mul, rhoV]`.
+
+Rewrite using `[h1, h2, Fin.card_Iio, ← h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wtL_omN (n : ℕ) : wtL (omN n) = (2 : ℝ) • rhoV n := by
   funext c
   have h1 : ((omN n).filter fun l => l.2.1.1 = c).card = (Ioi c).card := by
@@ -340,6 +478,13 @@ theorem wtL_omN (n : ℕ) : wtL (omN n) = (2 : ℝ) • rhoV n := by
   rw [h1, h2, Fin.card_Iio, ← h4]
   ring
 
+/- English proof (translation)
+Establish `g : ∀ {F : Fin n → Fin n → Module.End ℂ V}, Formalism.REAL.GlRel F → ∀ v, F c c (F d d v) = F d d (F c c v)`. Introduce `F h v`. Use `LinearMap.congr_fun (h c c d d) v` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at this`. Distinguish the cases in `hcd : c = d`.
+
+Substitute `hcd` using the available equality. Both sides reduce to the same expression. Rewrite `this` using `[if_neg hcd, if_neg (Ne.symm hcd)]`. Simplify `this` using `[sub_eq_zero]`. Establish `c1 : ∀ v, E1 c c (E2 d d v) = E2 d d (E1 c c v)` using `fun v => LinearMap.congr_fun (hP.2.2 c c d d) v`.
+
+Establish `c2 : ∀ v, E1 d d (E2 c c v) = E2 c c (E1 d d v)` using `fun v => LinearMap.congr_fun (hP.2.2 d d c c) v`. Simplify using `only [kA, LinearMap.add_apply, map_add, g hP.1, g hP.2.1, c1, c2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem kA_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 E2) (c d : Fin n) (v : V) :
     kA E1 E2 c c (kA E1 E2 d d v) = kA E1 E2 d d (kA E1 E2 c c v) := by
   have g : ∀ {F : Fin n → Fin n → Module.End ℂ V}, Formalism.REAL.GlRel F → ∀ v, F c c (F d d v) = F d d (F c c v) := by
@@ -355,6 +500,9 @@ theorem kA_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 
   simp only [kA, LinearMap.add_apply, map_add, g hP.1, g hP.2.1, c1, c2]
   abel
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, FtL_apply, map_add, map_smul, kA_comm hP c d, smul_add, smul_smul, mul_comm (wtL A c : ℂ)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem FtL_commute {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 E2) (c d : Fin n) :
     Commute (FtL E1 E2 c) (FtL E1 E2 d) := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -362,6 +510,13 @@ theorem FtL_commute {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA
     mul_comm (wtL A c : ℂ)]
   abel
 
+/- English proof (translation)
+Rewrite using `[← Finset.univ_sum_single t]`. Use `Submodule.sum_mem _ fun A _ => ?_` and prove the remaining obligations. Establish `hle : (⨆ μ : ℂ, (kA E1 E2 c c).eigenspace μ).map (LinearMap.single ℂ (fun _ : Finset (Lt n) => V) A) ≤ ⨆ μ : ℂ, (FtL E1 E2 c).eigenspace μ`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun μ => le_trans ?_ (le_iSup _ (μ + (wtL A c : ℂ)))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy'` using `Module.End.mem_eigenspace_iff.1 hy`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Use function extensionality and compare the values at `B`. Rewrite using `[FtL_apply]`.
+
+Distinguish the cases in `hB : B = A`. Substitute `hB` using the available equality. Simplify using `[hy', add_smul]`. Simplify using `[Pi.single_eq_of_ne hB]`. Conclude with `hle ⟨t A, h _, rfl⟩`.
+-/
 theorem chainL_mem_iSup (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin n)
     (h : ∀ v : V, v ∈ ⨆ μ : ℂ, (kA E1 E2 c c).eigenspace μ) (t : Cq n V) :
     t ∈ ⨆ μ : ℂ, (FtL E1 E2 c).eigenspace μ := by
@@ -385,6 +540,19 @@ theorem chainL_mem_iSup (E1 E2 : Fin n → Fin n → Module.End ℂ V) (c : Fin 
 
 end Alg
 
+/- English proof (translation)
+Establish `hdiag : ∀ c (x : Cq n V), x ∈ ⨆ μ : ℂ, (FtL E1 E2 c).eigenspace μ` using `fun c => chainL_mem_iSup E1 E2 c fun v => by`. Take `⟨S, hS, hv, hst⟩` from `hL v`. Use `haveI := hS`. Conclude with `GlobalTheory.CompanionTheory.LKWtProj.mem_iSup_eigenspace (kA E1 E2 c c) (fun x y => hU c x y) S (hst c) v hv`. Set `W : Submodule ℂ (Cq n V)` to `{ carrier := {x | ∀ A, t A = 0 → x A = 0} add_mem' := fun {a b} ha hb A hA => by simp [ha A hA, hb A hA] zero_mem' := fun A _ => rfl smul_mem' := fun c a ha A hA => by simp [ha A hA] }`.
+
+Establish `hW : ∀ c, ∀ x ∈ W, FtL E1 E2 c x ∈ W` using `fun c x hx A hA => by`. Establish `: x A = 0` using `hx A hA`. Rewrite using `[FtL_apply, this]`. Simplify using the standard rewrite rules. Establish `key : ∀ s : Finset (Fin n), ∃ t' : Cq n V, (∀ c ∈ s, FtL E1 E2 c t' = (τ c : ℂ) • t') ∧ D t' = D t ∧ t' ∈ W`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨t, by simp, rfl, fun A hA => hA⟩`. Consider the case `insert c s _ ih`. Take `⟨u, hu1, hu2, hu3⟩` from `ih`.
+
+Take `⟨P, hP1, hP2, hP3, hP4⟩` from `GlobalTheory.CompanionTheory.LKWtProj.exists_proj (FtL E1 E2 c) (τ c) u (hdiag c u)`. Use `⟨P u, fun d hd => ?_, ?_, hP2 W (hW c) u hu3⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hd with rfl | hd` into its components or cases. Conclude with `hP4`. Use `LinearMap.congr_fun (hP1 _ (FtL_commute hP c d)).eq u` as an intermediate fact.
+
+Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hu1 d hd, map_smul]`. Use `LinearMap.congr_fun (hP1 _ (hD c)).eq u` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hu2, hP3 _ (ht c)]`.
+
+Take `⟨t', h1, h2, h3⟩` from `key univ`. Conclude with `⟨t', fun c => h1 c (mem_univ c), h2, h3⟩`.
+-/
 theorem wtProjL {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {E1 E2 : Fin n → Fin n → Module.End ℂ V} (hP : IsPairA E1 E2)
     (hU : ∀ c (x y : V), inner ℂ (kA E1 E2 c c x) y = inner ℂ x (kA E1 E2 c c y))
@@ -424,6 +592,15 @@ theorem wtProjL {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace �
   obtain ⟨t', h1, h2, h3⟩ := key univ
   exact ⟨t', fun c => h1 c (mem_univ c), h2, h3⟩
 
+/- English proof (translation)
+Establish `m1 : lev l.2.1.1 ≤ lev l.2.1.2` using `hm l.2.2.le`. Establish `m2 : lev m.2.1.1 ≤ lev m.2.1.2` using `hm m.2.2.le`. Establish `m3 : lev l.2.1.2 = lev m.2.1.1` using `congrArg lev e`. Establish `k1 : k.2.1.1 = l.2.1.1` using `(Prod.ext_iff.1 e2).1`. Establish `k2 : k.2.1.2 = m.2.1.2` using `(Prod.ext_iff.1 e2).2`.
+
+Break down `hl with hl | hl` into its components or cases. Break down `hm' with hm' | hm'` into its components or cases. Use `left`. Rewrite using `[e1, hl, hm']`. Both sides reduce to the same expression.
+
+Use `right`. Use `show lev k.2.1.1 < lev k.2.1.2`. Rewrite using `[k1, k2]`. Use linear arithmetic over natural numbers and integers. Use `right show lev k.2.1.1 < lev k.2.1.2`.
+
+Rewrite using `[k1, k2]`. Apply the tactic sequence `rcases hm' with hm' | hm' <;> omega`.
+-/
 theorem inRR_closed {n : ℕ} {lev : Fin n → ℕ} (hm : Monotone lev) (l m k : Lt n) (hl : inRR lev l) (hm' : inRR lev m)
     (e : l.2.1.2 = m.2.1.1) (e1 : k.1 = xor l.1 m.1) (e2 : k.2.1 = (l.2.1.1, m.2.1.2)) : inRR lev k := by
   have m1 : lev l.2.1.1 ≤ lev l.2.1.2 := hm l.2.2.le
@@ -440,6 +617,9 @@ theorem inRR_closed {n : ℕ} {lev : Fin n → ℕ} (hm : Monotone lev) (l m k :
     rw [k1, k2]
     rcases hm' with hm' | hm' <;> omega
 
+/- English proof (translation)
+Introduce `A hA`. Distinguish the cases in `h : x A = 0`. Conclude with `hy A fun h' => hA (by simp [h, h'])`. Conclude with `hx A h`.
+-/
 theorem suppL_sub {n : ℕ} {V : Type} [AddCommGroup V] {P : Lt n → Prop} {x y : Cq n V} (hx : SuppL P x)
     (hy : SuppL P y) : SuppL P (x - y) := by
   intro A hA
@@ -447,6 +627,9 @@ theorem suppL_sub {n : ℕ} {V : Type} [AddCommGroup V] {P : Lt n → Prop} {x y
   · exact hy A fun h' => hA (by simp [h, h'])
   · exact hx A h
 
+/- English proof (translation)
+Introduce `A hA`. Rewrite `hA` using `[Finset.sum_apply]`. Take `⟨b, hb, h'⟩` from `exists_ne_zero_of_sum_ne_zero hA`. Conclude with `h b hb A h'`.
+-/
 theorem suppL_sum {n : ℕ} {V : Type} [AddCommGroup V] {ι : Type} {P : Lt n → Prop} (s : Finset ι) (f : ι → Cq n V)
     (h : ∀ b ∈ s, SuppL P (f b)) : SuppL P (∑ b ∈ s, f b) := by
   intro A hA
@@ -454,6 +637,65 @@ theorem suppL_sum {n : ℕ} {V : Type} [AddCommGroup V] {ι : Type} {P : Lt n �
   obtain ⟨b, hb, h'⟩ := exists_ne_zero_of_sum_ne_zero hA
   exact h b hb A h'
 
+/- English proof (translation)
+Introduce `n lam hanti lev hlev V _ _ E1 E2 hA u y hu hS hD hb`. Establish `hP : IsPairA E1 E2` using `⟨hA.gl1, hA.gl2, hA.comm⟩`. Establish `hcl : ∀ l m k : Lt n, inRR lev l → inRR lev m → l.2.1.2 = m.2.1.1 → k.1 = xor l.1 m.1 → k.2.1 = (l.2.1.1, m.2.1.2) → inRR lev k` using `inRR_closed hlev.1`. Use `set τ : Fin n → ℝ := muQ lam lev + (2 : ℝ) • rhoV n with hτ`. Establish `hsq : ∀ x, bdL (inRR lev) E1 E2 (bdL (inRR lev) E1 E2 x) = 0` using `fun x => LinearMap.congr_fun (hB n _ hcl V E1 E2 hP) x`.
+
+Establish `main : ∀ N (y : Cq n V), (∀ A, y A ≠ 0 → A.card = (omN n).card + 1 ∧ potL (pPart A) < N) → SuppL (inRR lev) y → WtL E1 E2 τ y → bdL (inRR lev) E1 E2 y = Pi.single (omN n) u → u = 0`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `y h _ _ hb`.
+
+Take `rfl : y = 0` from `funext fun A => by by_contra h'; exact Nat.not_lt_zero _ (h A h').2`. Simplify using `using (congrFun hb (omN n)).symm`. Consider the case `succ N ih`. Introduce `y h hys hw hb`. Set `r : Finset (Lt n) → Cq n V` to `fun B A => if pPart A = B then y A else 0`.
+
+Establish `hry : ∀ B A, r B A ≠ 0 → pPart A = B ∧ y A ≠ 0` using `fun B A hA => by`. Simplify using `only [r] at hA`. Use `split_ifs at hA with h1`. Conclude with `⟨h1, hA⟩`. Conclude with `absurd rfl hA`.
+
+Establish `hr : ∀ B, PartL B (r B)` using `fun B A hA => (hry B A hA).1`. Establish `hrD : ∀ B, DegL ((omN n).card + 1) (r B)` using `fun B A hA => (h A (hry B A hA).2).1`. Establish `hsum : y = ∑ B, r B` using `funext fun A => by simp [r, Finset.sum_apply]`. Establish `hrne : ∀ B A, r B A ≠ 0 → potL B < N + 1 ∧ B.Nonempty ∧ ∀ l ∈ B, l.1 = true ∧ inUU lev l` using `fun B A hA => by`. Take `⟨h3, h2⟩` from `hry B A hA`.
+
+Establish `h4` using `h A h2`. Use `⟨h3 ▸ h4.2, nonempty_iff_ne_empty.2 fun hB => ?_, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hsub : A ⊆ omN n` using `fun i hi => mem_filter.2 ⟨mem_univ _, by`. Assume the negation of the conclusion as `hc`. Establish `: i ∈ pPart A` using `mem_filter.2 ⟨hi, by simpa using hc⟩`.
+
+Rewrite `this` using `[h3, hB]`. Conclude with `notMem_empty i this⟩`. Use `card_le_card hsub` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hl` using `[← h3]`.
+
+Take `⟨hl1, hl2⟩` from `mem_filter.1 hl`. Use `⟨hl2, (hys A h2 l hl1).resolve_left ?_⟩` and prove the remaining obligations. Rewrite using `[hl2]`. Simplify using the standard rewrite rules. Establish `hrw : ∀ B, WtL E1 E2 τ (r B)` using `fun B c => funext fun A => by`.
+
+Use `congrFun (hw c) A` as an intermediate fact. Express the relevant statement in the definitionally equal form `kA E1 E2 c c (y A) + (wtL A c : ℂ) • y A = (τ c : ℂ) • y A at this`. Express the relevant statement in the definitionally equal form `kA E1 E2 c c (r B A) + (wtL A c : ℂ) • r B A = (τ c : ℂ) • r B A`. Simplify using `only [r]`. Use `split_ifs`.
+
+Conclude with `this`. Simplify using the standard rewrite rules. Establish `hz : ∀ B, potL B = N → bdL isK E1 E2 (r B) = 0`. Introduce `B hBN`. Use function extensionality and compare the values at `A`.
+
+Assume the negation of the conclusion as `hne`. Establish `hAB : pPart A = B` using `partL_bdK E1 E2 (hr B) A hne`. Establish `hr0 : r B ≠ 0` using `fun h0 => hne (by rw [h0, map_zero])`. Take `⟨A₀, hA₀⟩` from `Function.ne_iff.1 hr0`. Take `⟨-, hBn, -⟩` from `hrne B A₀ hA₀`.
+
+Establish `hAo : A ≠ omN n`. Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `hBn`. Rewrite `hi` using `[← hAB]`. Establish `h1` using `(mem_filter.1 hi).2`.
+
+Establish `h2` using `(mem_filter.1 (mem_filter.1 hi).1).2`. Rewrite `h2` using `[h1]`. Simplify using `at h2`. Establish `e` using `congrFun hb A`. Rewrite `e` using `[Pi.single_eq_of_ne hAo, hsum, map_sum, Finset.sum_apply, Finset.sum_eq_single B]`.
+
+Apply `hne` to reduce the goal to its premises. Assume the negation of the conclusion as `h'`. Use `pot_lt lev E1 E2 (hr B) A (by rw [Pi.sub_apply, e, zero_sub]; exact neg_ne_zero.2 h')` as an intermediate fact. Rewrite `this` using `[hAB]`. Conclude with `lt_irrefl _ this`.
+
+Introduce `B' _ hB'`. Distinguish the cases in `h1 : r B' = 0`. Simplify using `[h1]`. Take `⟨A₁, hA₁⟩` from `Function.ne_iff.1 h1`. Establish `h2` using `(hrne B' A₁ hA₁).1`.
+
+Establish `h3 : bdL isK E1 E2 (r B') A = 0`. Assume the negation of the conclusion as `h3`. Conclude with `hB' ((partL_bdK E1 E2 (hr B') A h3).symm.trans hAB)`. Assume the negation of the conclusion as `h4`. Use `pot_lt lev E1 E2 (hr B') A (by rw [Pi.sub_apply, h3, sub_zero]; exact h4)` as an intermediate fact.
+
+Rewrite `this` using `[hAB]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hex : ∀ B, ∃ t : Cq n V, WtL E1 E2 τ t ∧ (potL B = N → bdL isK E1 E2 t = r B) ∧ (potL B ≠ N → t = 0) ∧ (t = 0 ∨ PartL B t) ∧ DegL ((omN n).card + 1 + 1) t ∧ SuppL (inRR lev) t`. Introduce `B`.
+
+Distinguish the cases in `h0 : potL B = N ∧ r B ≠ 0`. Take `⟨A₀, hA₀⟩` from `Function.ne_iff.1 h0.2`. Take `⟨-, hBn, hBU⟩` from `hrne B A₀ hA₀`. Take `⟨t, t1, t2, t3, t4⟩` from `hV n lam hanti lev hlev V E1 E2 hA B _ (r B) hBn hBU (hr B) (hrD B) (hrw B) (hz B h0.1)`. Use `⟨t, t3, fun _ => t4, fun h => absurd h0.1 h, Or.inr t1, t2, fun A hA i hi => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hci : i.1 = false`. Conclude with `Or.inl hci`. Establish `: i ∈ pPart A` using `mem_filter.2 ⟨hi, by simpa using hci⟩`. Establish `e : pPart A = B` using `t1 A hA`. Rewrite `this` using `[e]`.
+
+Conclude with `Or.inr (hBU i this).2`. Use `⟨0, fun c => by simp, fun h => ?_, fun _ => rfl, Or.inl rfl, fun A hA => absurd rfl hA, fun A hA => absurd rfl hA⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Assume the negation of the conclusion as `h'`. Conclude with `h0 ⟨h, Ne.symm h'⟩`.
+
+Use `choose t t1 t2 t3 t4 t5d t5 using hex`. Use `ih (y - ∑ B, bdL (inRR lev) E1 E2 (t B)) (fun A hA => ?_) (suppL_sub hys (suppL_sum _ _ fun B _ => suppL_bdL hcl E1 E2 (t5 B))) (fun c => ?_) ?_` and prove the remaining obligations. Establish `e : (y - ∑ B, bdL (inRR lev) E1 E2 (t B)) A = ∑ B, ((if potL B = N then 0 else r B A) - (bdL (inRR lev) E1 E2 (t B) - bdL isK E1 E2 (t B)) A)`. Rewrite using `[Pi.sub_apply, congrFun hsum A, Finset.sum_apply, Finset.sum_apply, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h1`. Rewrite using `[Pi.sub_apply, t2 B h1]`. Normalize the expressions using the abelian group laws. Simplify using `[t3 B h1]`. Rewrite `hA` using `[e]`.
+
+Take `⟨B, -, hB⟩` from `exists_ne_zero_of_sum_ne_zero hA`. Distinguish the cases in `h1 : potL B = N`. Rewrite `hB` using `[if_pos h1, zero_sub, neg_ne_zero]`. Break down `t4 B with h2 | h2` into its components or cases. Simplify using `[h2] at hB`.
+
+Establish `h3` using `pot_lt lev E1 E2 h2 A hB`. Use `⟨?_, by omega⟩` and prove the remaining obligations. Rewrite `hB` using `[Pi.sub_apply]`. Distinguish the cases in `h4 : bdL (inRR lev) E1 E2 (t B) A = 0`. Use `degL_bdL isK E1 E2 (t5d B) A fun h5 => hB (by rw [h4, h5, sub_zero])` and prove the remaining obligations.
+
+Conclude with `degL_bdL _ E1 E2 (t5d B) A h4`. Rewrite `hB` using `[if_neg h1, t3 B h1]`. Establish `hB' : r B A ≠ 0` using `by simpa using hB`. Establish `h2` using `(hrne B A hB').1`. Establish `h3` using `(hry B A hB')`.
+
+Conclude with `⟨(h A h3.2).1, by rw [h3.1]; omega⟩`. Rewrite using `[map_sub, map_sum, hw c, smul_sub, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, (ftL_bdL hP _ c).eq, Module.End.mul_apply, t1 B c, map_smul]`.
+
+Rewrite using `[map_sub, map_sum, hb, Finset.sum_eq_zero, sub_zero]`. Conclude with `fun B _ => hsq _`. Take `⟨y', y1, y2, y3⟩` from `wtProjL hP (fun c x y => hA.unitK c c x y) (fun x => by`. Take `⟨S, h1, h2, h3⟩` from `hA.locFin x`. Conclude with `⟨S, h1, h2, fun c => h3 c c⟩) _ (fun c => ftL_bdL hP _ c) τ y (fun c => funext fun A => by`.
+
+Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `kA E1 E2 c c ((Pi.single (omN n) u : Cq n V) A) + (wtL A c : ℂ) • (Pi.single (omN n) u : Cq n V) A = (τ c : ℂ) • (Pi.single (omN n) u : Cq n V) A`. Distinguish the cases in `e : A = omN n`. Substitute `e` using the available equality. Establish `h1 : kA E1 E2 c c u = (muQ lam lev c : ℂ) • u` using `hu.1 c`.
+
+Rewrite using `[Pi.single_eq_same, h1, wtL_omN, ← add_smul, hτ]`. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne e])`. Use `main ((univ.sup fun A : Finset (Lt n) => potL A) + 1) y' (fun A hA => ⟨hD A fun h => hA (y3 A h), ?_⟩) (fun A hA => hS A fun h => hA (y3 A h)) y1 (y2.trans hb)` and prove the remaining obligations. Conclude with `Nat.lt_succ_of_le (Finset.le_sup (f := fun A : Finset (Lt n) => potL A) (mem_univ _))`.
+-/
 theorem injRL_of (hB : BdSqL) (hV : VanKL) : InjRL := by
   intro n lam hanti lev hlev V _ _ E1 E2 hA u y hu hS hD hb
   have hP : IsPairA E1 E2 := ⟨hA.gl1, hA.gl2, hA.comm⟩

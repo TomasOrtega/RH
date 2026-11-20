@@ -6,6 +6,47 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
 open GlobalTheory.Cong.LevelExt in
+/- English proof (translation)
+Introduce `E _ _ _ a w₀ hw K hK J hJo hJc`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w₀ hw`. Set `s : GL (Fin a) (w₀.adicCompletion E) → UA E a` to `fun h => ((e.symm h : locU a w₀) : UA E a)`. Establish `hs_mem : ∀ h, s h ∈ locU a w₀` using `fun h => (e.symm h).2`. Establish `hs_loc : ∀ h, cLoc w₀ (s h) = h` using `fun h => by`.
+
+Rewrite using `[← he]`. Conclude with `e.apply_symm_apply h`. Establish `hs_cont : Continuous s` using `continuous_subtype_val.comp e.symm.continuous`. Establish `hs_eq : ∀ x ∈ locU a w₀, s (cLoc w₀ x) = x` using `fun x hx => by`. Use `e.symm_apply_apply ⟨x, hx⟩` as an intermediate fact.
+
+Rewrite `this` using `[he]`. Conclude with `congrArg Subtype.val this`. Establish `hcont` using `GlobalTheory.BCT.GlobLev.continuous_cLoc (E := E) (n := a) w₀`. Establish `hnap : ¬ Apart w₀ w₀` using `not_apart_self w₀`. Establish `hloc : ∀ k ∈ K, ∀ x, cLoc w₀ (k * x) = cLoc w₀ x` using `fun k hk x => by`.
+
+Rewrite using `[map_mul, hK.one k hk w₀ hnap, one_mul]`. Establish `hnorm : ∀ J' : Subgroup (GL (Fin a) (w₀.adicCompletion E)), K ≤ Subgroup.normalizer ((locU a w₀ ⊓ J'.comap (cLoc w₀) : Subgroup (UA E a)) : Set (UA E a))`. Introduce `J'`. Establish `hKL : ∀ k ∈ K, ∀ l ∈ locU a w₀ ⊓ J'.comap (cLoc w₀), k * l * k⁻¹ ∈ locU a w₀ ⊓ J'.comap (cLoc w₀)`. Introduce and unpack `k hk l ⟨hl1, hl2⟩`.
+
+Establish `hl1'` using `(mem_locU_iff l).1 hl1`. Use `⟨(mem_locU_iff _).2 ⟨mul_mem (mul_mem (hK.fin hk) hl1'.1) (inv_mem (hK.fin hk)), fun u hu => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hl1'.2 u hu, mul_one, mul_inv_cancel]`. Use `show cLoc w₀ (k * l * k⁻¹) ∈ J'`. Simplify using `only [map_mul, map_inv, hK.one k hk w₀ hnap, one_mul, inv_one, mul_one]`.
+
+Conclude with `hl2`. Conclude with `fun k hk => Subgroup.mem_normalizer_iff.2 fun l => ⟨fun hl => hKL k hk l hl, fun hl => by`. Use `hKL k⁻¹ (inv_mem hk) _ hl` as an intermediate fact. Simplify `this⟩` using `[mul_assoc]`. Establish `hmem : ∀ (J' : Subgroup (GL (Fin a) (w₀.adicCompletion E))) (c : UA E a), c ∈ lev K w₀ J' ↔ ∃ k ∈ K, ∃ x ∈ locU a w₀, cLoc w₀ x ∈ J' ∧ c = k * x`.
+
+Introduce `J' c`. Use `show c ∈ K ⊔ (locU a w₀ ⊓ J'.comap (cLoc w₀)) ↔ _`. Rewrite using `[← SetLike.mem_coe, Subgroup.coe_mul_of_left_le_normalizer_right K _ (hnorm J'), Set.mem_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, x, hx, rfl⟩`.
+
+Conclude with `⟨k, hk, x, hx.1, hx.2, rfl⟩`. Introduce and unpack `⟨k, hk, x, hx, hxJ, rfl⟩`. Conclude with `⟨k, hk, x, ⟨hx, hxJ⟩, rfl⟩`. Establish `hJmem : ∀ c ∈ lev K w₀ J, cLoc w₀ c ∈ J`. Introduce `c hc`.
+
+Take `⟨k, hk, x, -, hxJ, rfl⟩` from `(hmem J c).1 hc`. Rewrite using `[hloc k hk]` and apply the resulting hypothesis. Establish `hLc : IsCompact ((locU a w₀ ⊓ J.comap (cLoc w₀) : Subgroup (UA E a)) : Set (UA E a))`. Establish `: ((locU a w₀ ⊓ J.comap (cLoc w₀) : Subgroup (UA E a)) : Set (UA E a)) = s '' (J : Set _)`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx1, hx2⟩`. Conclude with `⟨cLoc w₀ x, hx2, hs_eq x hx1⟩`. Introduce and unpack `⟨h, hh, rfl⟩`. Use `⟨hs_mem h, ?_⟩` and prove the remaining obligations.
+
+Use `show cLoc w₀ (s h) ∈ J`. Rewrite using `[hs_loc]`. Conclude with `hh`. Rewrite using `[this]`. Conclude with `hJc.image hs_cont`.
+
+Use `⟨⟨sup_le hK.fin (fun x hx => ((mem_locU_iff x).1 (Subgroup.mem_inf.1 hx).1).1), ?_, ?_⟩, hmem J, hJmem, ?_, fun y => ⟨s y, hs_mem y, hs_loc y⟩, ?_⟩` and prove the remaining obligations. Use `show IsCompact ((K ⊔ (locU a w₀ ⊓ J.comap (cLoc w₀)) : Subgroup (UA E a)) : Set (UA E a))`. Rewrite using `[Subgroup.coe_mul_of_left_le_normalizer_right K _ (hnorm J)]`. Conclude with `hK.compact.mul hLc`. Take `⟨N₀, hN₀o, hN₀1, hN₀⟩` from `hK.isOpen`.
+
+Set `k : UA E a → UA E a` to `fun x => x * (s (cLoc w₀ x))⁻¹`. Establish `hkc : Continuous k` using `continuous_id.mul ((hs_cont.comp hcont).inv)`. Establish `hs1 : s 1 = 1`. Use `hs_eq 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+
+Use `⟨k ⁻¹' N₀ ∩ cLoc w₀ ⁻¹' (J : Set _), (hN₀o.preimage hkc).inter (hJo.preimage hcont), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show k 1 ∈ N₀`. Establish `: k 1 = 1` using `by simp [k, hs1]`. Rewrite using `[this]`. Conclude with `hN₀1`.
+
+Use `show cLoc w₀ 1 ∈ J`. Rewrite using `[map_one]`. Conclude with `J.one_mem`. Introduce and unpack `x ⟨⟨hxN, hxJ⟩, hxf⟩`. Establish `hkx : k x ∈ K`.
+
+Use `hN₀ _ hxN ?_ ?_` and prove the remaining obligations. Conclude with `mul_mem hxf (inv_mem ((mem_locU_iff _).1 (hs_mem _)).1)`. Conclude with `one_of_cLoc hw _ (by simp only [k, map_mul, map_inv, hs_loc, mul_inv_cancel])`. Use `(hmem J x).2 ⟨k x, hkx, s (cLoc w₀ x), hs_mem _, ?_, by simp [k]⟩` and prove the remaining obligations. Rewrite using `[hs_loc]`.
+
+Conclude with `hxJ`. Introduce `c hc h1`. Take `⟨k, hk, x, hx, -, rfl⟩` from `(hmem J c).1 hc`. Rewrite `h1` using `[hloc k hk]`. Establish `hx1 : x = 1`.
+
+Establish `h2` using `hs_eq x hx`. Establish `hs1 : s 1 = 1`. Use `hs_eq 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis. Rewrite `h2` using `[h1, hs1]`.
+
+Conclude with `h2.symm`. Rewrite using `[hx1, mul_one]`. Conclude with `hk`. Introduce `J' c hc hcJ'`. Take `⟨k, hk, x, hx, -, rfl⟩` from `(hmem J c).1 hc`.
+
+Rewrite `hcJ'` using `[hloc k hk]`. Conclude with `(hmem J' _).2 ⟨k, hk, x, hx, hcJ', rfl⟩`.
+-/
 theorem UpperTheory.Gal.Gen.levFacts_pf :
     UpperTheory.Gal.Gen.LevFacts := by
   intro E _ _ _ a w₀ hw K hK J hJo hJc

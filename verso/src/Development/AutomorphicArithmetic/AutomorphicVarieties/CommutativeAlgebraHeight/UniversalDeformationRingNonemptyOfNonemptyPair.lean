@@ -16,6 +16,15 @@ private structure COb (O : Type) [CommRing O] [IsLocalRing O] : Type 1 where
 
 attribute [local instance] COb.ring COb.alg COb.co
 
+/- English proof (translation)
+Set `B' : Option T → Type` to `fun o => Option.rec A B o`. Set `iR : ∀ o, CommRing (B' o)` to `fun o => Option.rec (motive := fun o => CommRing (B' o)) (inferInstance : CommRing A) (fun t => (inferInstance : CommRing (B t))) o`. Set `iA : ∀ o, @Algebra O (B' o) _ (iR o).toCommSemiring.toSemiring` to `fun o => Option.rec (motive := fun o => @Algebra O (B' o) _ (iR o).toCommSemiring.toSemiring) (inferInstance : Algebra O A) (fun t => (inferInstance : Algebra O (B t))) o`. Establish `iC : ∀ o, @IsCO O (B' o) _ _ (iR o) (iA o)` using `fun o => Option.rec (motive := fun o => @IsCO O (B' o) _ _ (iR o) (iA o)) (inferInstance : IsCO O A) (fun t => (inferInstance : IsCO O (B t))) o`. Take `⟨R, iR', iA', iC', j, hj⟩` from `@co_coprod O _ _ _ _ (Option T) _ B' iR iA iC`.
+
+Use `⟨R, iR', iA', iC', j none, fun t => j (some t), ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _ fa f`. Set `F' : ∀ o, @AlgHom O (B' o) R' _ (iR o).toCommSemiring.toSemiring _ (iA o) _` to `fun o => Option.rec (motive := fun o => @AlgHom O (B' o) R' _ (iR o).toCommSemiring.toSemiring _ (iA o) _) fa f o`. Take `⟨g, hg, hu⟩` from `hj R' F'`. Use `⟨g, ⟨hg none, fun t => hg (some t)⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `g' ⟨h1, h2⟩`. Apply `hu` to reduce the goal to its premises. Introduce `o`. Consider the cases of `o with`. Consider the case `none => exact h1`.
+
+Consider the case `some t => exact h2 t`.
+-/
 private theorem coprod_opt (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (T : Type) [Finite T] (A : Type) [CommRing A] [Algebra O A] [IsCO O A]
     (B : T → Type) [∀ t, CommRing (B t)] [∀ t, Algebra O (B t)] [∀ t, IsCO O (B t)] :
@@ -51,6 +60,13 @@ section
 variable {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
   [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R')
 
+/- English proof (translation)
+Introduce `N`. Establish `hm : maximalIdeal R ≤ (maximalIdeal R').comap (f : R →+* R')`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← res_eq_zero_iff O R']`. Express the relevant statement in the definitionally equal form `res O R' (f x) = 0`.
+
+Rewrite using `[res_map, res_eq_zero_iff O R]`. Conclude with `hx`. Establish `hN : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R')`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hm) N`.
+
+Establish `hc` using `(hu N).comp (Ideal.quotientMap (maximalIdeal R' ^ N) (f : R →+* R') hN)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`.
+-/
 private theorem adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu : AdicCont (maximalIdeal R) u) :
     AdicCont (maximalIdeal R') fun g => f (u g) := by
   intro N
@@ -68,6 +84,15 @@ private theorem adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu : 
   funext g
   simp [Ideal.quotientMap_mk]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `h.cont`. Unfold `GDet.IsCont at hc ⊢`. Introduce `i`. Establish `e : ∀ g : G, (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1))`.
+
+Introduce `g`. Use `((d_gmap D).2.2.1 (f : R →+* R') (MonoidAlgebra.single g 1)).2 i` as an intermediate fact. Simplify `this` using `[MonoidAlgebra.mapRingHom_single]`. Simplify using `only [e]`. Conclude with `adic_map f (hc i)`.
+
+Rewrite using `[(d_gmap D).2.1]`. Establish `e : ((res O R' : R' →ₐ[O] ResidueField O) : R' →+* ResidueField O).comp (f : R →+* R') = (res O R : R →+* ResidueField O)`. Use extensionality with `x`. Conclude with `res_map f x`. Rewrite using `[e]`.
+
+Conclude with `h.red`.
+-/
 private theorem def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {Dbar : GDet n (ResidueField O) G}
     {D : GDet n R G} (h : IsDef O Dbar D) : IsDef O Dbar (D.map (f : R →+* R')) := by
   refine ⟨?_, ?_⟩
@@ -89,6 +114,13 @@ private theorem def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {Dba
 
 variable {l : ℕ} [Fact l.Prime] {F : GFrame l} [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `adic_map f h.cont`. Introduce `g`. Use `h.red g` as an intermediate fact. Simplify using `only [pushCh, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe]`.
+
+Rewrite using `[← this]`. Conclude with `res_map f _`. Introduce `g`. Simplify using `only [pushCh, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[h.mu g]`.
+
+Conclude with `f.commutes _`.
+-/
 private theorem psi_map {v : F.Vl} {i : Fin n} {ψ : F.Gv v →* Rˣ} (h : r.IsPsi v i ψ) :
     r.IsPsi v i (pushCh (f : R →+* R') ψ) := by
   refine ⟨?_, ?_, ?_⟩
@@ -104,6 +136,11 @@ private theorem psi_map {v : F.Vl} {i : Fin n} {ψ : F.Gv v →* Rˣ} (h : r.IsP
     exact f.commutes _
 
 omit [IsLocalRing O] [IsCO O R] [IsCO O R'] in
+/- English proof (translation)
+Unfold `GFrame.star GFrame.starOp`. Simplify using `only [MonoidAlgebra.lift_single, one_smul, MonoidHom.coe_mk, OneHom.coe_mk, MulOpposite.unop_op, MonoidAlgebra.mapRingHom_single]`. Use `congr 1`. Unfold `GFrame.eps`. Establish `hu : Units.map ((f : R →+* R') : R →* R') ((pushCh ((algebraMap O R).comp (algebraMap ℤ_[l] O)) (F.ε.comp F.η.ker.subtype)) g) = (pushCh ((algebraMap O R').comp (algebraMap ℤ_[l] O)) (F.ε.comp F.η.ker.subtype)) g`.
+
+Use `ext`. Simplify using `[pushCh]`. Rewrite using `[← hu, ← map_zpow (Units.map ((f : R →+* R') : R →* R'))]`. Both sides reduce to the same expression.
+-/
 private theorem star_map (g : F.G₀) :
     MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (F.star O R n (MonoidAlgebra.single g 1)) =
       F.star O R' n (MonoidAlgebra.single g 1) := by
@@ -121,6 +158,9 @@ private theorem star_map (g : F.G₀) :
   rfl
 
 omit [IsLocalRing O] [IsCO O R] [IsCO O R'] [Algebra ℤ_[l] O] in
+/- English proof (translation)
+Unfold `GFrame.oEl`. Rewrite using `[map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[MonoidAlgebra.mapRingHom_single, pushCh]`.
+-/
 private theorem oEl_map (v : F.Vl) (ψ : Fin n → F.Gv v →* Rˣ) (g : Fin n → F.Gv v) :
     MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (F.oEl v ψ g) =
       F.oEl v (fun i => pushCh (f : R →+* R') (ψ i)) g := by
@@ -136,6 +176,23 @@ private def rels (D : GDet n R F.G₀) (ψ : ∀ v, Fin n → F.Gv v →* Rˣ) :
     ∃ u, ∃ g ∈ r.Ip u, ∃ h : F.G₀, x = D.tr (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1))}
 
 omit [IsCO O R] [IsCO O R'] in
+/- English proof (translation)
+Establish `L : ∀ i (y : MonoidAlgebra R F.G₀), (D.map (f : R →+* R')).lam i (MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') y) = f (D.lam i y)` using `fun i y => ((d_gmap D).2.2.1 (f : R →+* R') y).2 i`. Establish `Tr : ∀ y : MonoidAlgebra R F.G₀, (D.map (f : R →+* R')).tr (MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') y) = f (D.tr y)`. Introduce `y`. Unfold `GDet.tr`. Conclude with `L 1 y`.
+
+Establish `s1 : ∀ g : F.G₀, MonoidAlgebra.mapRingHom F.G₀ (f : R →+* R') (MonoidAlgebra.single g 1) = MonoidAlgebra.single g 1`. Introduce `g`. Simplify using `[MonoidAlgebra.mapRingHom_single]`. Establish `A1 : ∀ i g, (D.map (f : R →+* R')).lam i (F.star O R' n (MonoidAlgebra.single g 1)) = f (D.lam i (F.star O R n (MonoidAlgebra.single g 1)))`. Introduce `i g`.
+
+Rewrite using `[← star_map f g, L]`. Establish `A2 : ∀ i (g : F.G₀), (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1))`. Introduce `i g`. Rewrite using `[← s1 g, L]`. Establish `B : ∀ v (g : Fin n → F.Gv v) (h : F.G₀), (D.map (f : R →+* R')).tr (MonoidAlgebra.single h 1 * F.oEl v (fun i => pushCh (f : R →+* R') (ψ v i)) g) = f (D.tr (MonoidAlgebra.single h 1 * F.oEl v (ψ v) g))`.
+
+Introduce `v g h`. Rewrite using `[← Tr, map_mul, s1, oEl_map]`. Establish `C : ∀ (g h : F.G₀), (D.map (f : R →+* R')).tr (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1)) = f (D.tr (MonoidAlgebra.single h 1 * (MonoidAlgebra.single g 1 - 1)))`. Introduce `g h`. Rewrite using `[← Tr, map_mul, map_sub, map_one, s1, s1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨fun i g => ?_, fun v g h => ?_, fun u g hg h => ?_⟩` and prove the remaining obligations. Rewrite using `[A1, A2, ← sub_eq_zero, ← map_sub]`. Conclude with `H _ (Or.inl ⟨i, g, rfl⟩)`.
+
+Rewrite using `[B]`. Conclude with `H _ (Or.inr (Or.inl ⟨v, g, h, rfl⟩))`. Rewrite using `[C]`. Conclude with `H _ (Or.inr (Or.inr ⟨u, g, hg, h, rfl⟩))`. Introduce and unpack `⟨H1, H2, H3⟩ x hx`.
+
+Break down `hx with ⟨i, g, rfl⟩ | ⟨v, g, h, rfl⟩ | ⟨u, g, hg, h, rfl⟩` into its components or cases. Rewrite using `[map_sub, ← A1, ← A2, H1, sub_self]`. Rewrite using `[← B]`. Conclude with `H2 v g h`. Rewrite using `[← C]`.
+
+Conclude with `H3 u g hg h`.
+-/
 private theorem rels_iff (D : GDet n R F.G₀) (ψ : ∀ v, Fin n → F.Gv v →* Rˣ) :
     (∀ x ∈ rels r D ψ, f x = 0) ↔
       (∀ i g, (D.map (f : R →+* R')).lam i (F.star O R' n (MonoidAlgebra.single g 1)) =
@@ -193,6 +250,21 @@ private theorem rels_iff (D : GDet n R F.G₀) (ψ : ∀ v, Fin n → F.Gv v →
 
 end
 
+/- English proof (translation)
+Use `haveI : CompactSpace F.G₀ := show CompactSpace F.η.ker from isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Take `⟨R₀, iR0, iA0, iC0, D₀, hD₀⟩` from `univDet_mf l O r.chib h0 r.chib_open r.chib_inj`. Establish `hb` using `fun t : F.Vl × Fin n => universalDeformationRing_localCharacters r t.1 t.2 (hv t.1)`. Use `choose Rv iRv iAv iCv ψv hψ hU using hb`. Take `⟨R, iR, iA, iC, a, j, hR⟩` from `@coprod_opt O _ _ _ _ (F.Vl × Fin n) _ R₀ iR0 iA0 iC0 Rv iRv iAv iCv`.
+
+Use `⟨R, iR, iA, iC, D₀.map (a : R₀ →+* R), fun v i => pushCh (j (v, i) : Rv (v, i) →+* R) (ψv (v, i)), def_map a hD₀.isDef, fun v i => psi_map (j (v, i)) r (hψ (v, i)), ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _ p`. Establish `hp : IsDef O (GDet.ofChars r.chib) p.D` using `⟨p.cont, p.red⟩`. Take `⟨fD, hfD, -⟩` from `hD₀.univ R' p.D hp`. Establish `hq` using `fun t : F.Vl × Fin n => hU t R' (p.ψ t.1 t.2) (p.psi t.1 t.2)`.
+
+Use `choose fv hfv using hq`. Establish `push : ∀ (t : F.Vl × Fin n) (h : R →ₐ[O] R'), pushCh (h : R →+* R') (pushCh (j t : Rv t →+* R) (ψv t)) = pushCh ((h.comp (j t) : Rv t →ₐ[O] R') : Rv t →+* R') (ψv t)`. Introduce `t h`. Use extensionality with `x`. Simplify using `[pushCh]`.
+
+Establish `dmap : ∀ h : R →ₐ[O] R', (D₀.map (a : R₀ →+* R)).map (h : R →+* R') = D₀.map ((h.comp a : R₀ →ₐ[O] R') : R₀ →+* R')`. Introduce `h`. Rewrite using `[(d_gmap D₀).2.1]`. Both sides reduce to the same expression. Take `⟨g, ⟨hga, hgj⟩, hgu⟩` from `hR R' fD (fun t => fv t)`.
+
+Use `⟨g, ⟨?_, fun v i => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dmap, hga]`. Conclude with `hfD`. Rewrite using `[push (v, i), hgj (v, i)]`. Conclude with `(hfv (v, i)).1`.
+
+Introduce and unpack `g' ⟨h1, h2⟩`. Apply `hgu` to reduce the goal to its premises. Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Conclude with `(hD₀.univ R' p.D hp).unique (by rw [← dmap]; exact h1) hfD`. Use `(hfv t).2 _ ?_ show pushCh ((g'.comp (j t) : Rv t →ₐ[O] R') : Rv t →+* R') (ψv t) = p.ψ t.1 t.2` and prove the remaining obligations.
+
+Rewrite using `[← push t]`. Conclude with `h2 t.1 t.2`.
+-/
 private theorem pre_univ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l]
     [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) (h0 : PhiCond F.G₀ l) (hv : ∀ v, PhiCond (F.Gv v) l) :
@@ -240,6 +312,31 @@ private theorem pre_univ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [Com
       rw [← push t]
       exact h2 t.1 t.2
 
+/- English proof (translation)
+Introduce `l _ F O _ _ _ _ _ _ _ n r h0 hv hex`. Take `⟨R0, iR0, iA0, iC0, ⟨p0⟩⟩` from `hex`. Take `⟨R, iR, iA, iC, D, ψ, hD, hψ, hU⟩` from `pre_univ r h0 hv`. Establish `kill : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (p : Pair r R') (f : R →ₐ[O] R'), D.map (f : R →+* R') = p.D → (∀ v i, pushCh (f : R →+* R') (ψ v i) = p.ψ v i) → ∀ x ∈ rels r D ψ, f x = 0`. Introduce `R' _ _ _ p f h1 h2`.
+
+Establish `h2' : ∀ v, (fun i => pushCh (f : R →+* R') (ψ v i)) = p.ψ v` using `fun v => funext (h2 v)`. Use `(rels_iff f r D ψ).mpr ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `fun i g => p.P i g`. Introduce `v g h`.
+
+Rewrite using `[h1, h2' v]`. Conclude with `p.Ord v g h`. Rewrite using `[h1]`. Conclude with `fun u g hg h => p.I u g hg h`. Set `I : Ideal R` to `Ideal.span (rels r D ψ)`.
+
+Establish `hkill : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (p : Pair r R') (f : R →ₐ[O] R'), D.map (f : R →+* R') = p.D → (∀ v i, pushCh (f : R →+* R') (ψ v i) = p.ψ v i) → I ≤ RingHom.ker (f : R →+* R')`. Introduce `R' _ _ _ p f h1 h2`. Conclude with `Ideal.span_le.mpr (fun x hx => kill R' p f h1 h2 x hx)`. Establish `hI : I ≠ ⊤`. Take `⟨f0, ⟨h1, h2⟩, -⟩` from `hU R0 p0`.
+
+Introduce `htop`. Establish `h1mem : (1 : R) ∈ RingHom.ker (f0 : R →+* R0)` using `hkill R0 p0 f0 h1 h2 (htop ▸ Submodule.mem_top)`. Rewrite `h1mem` using `[RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h1mem`. Use `haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hI`.
+
+Use `haveI : IsCO O (R ⧸ I) := co_quot O R (R ⧸ I) (Ideal.Quotient.mkₐ O I) (Ideal.Quotient.mkₐ_surjective O I)`. Establish `hzero : ∀ x ∈ rels r D ψ, Ideal.Quotient.mkₐ O I x = 0`. Introduce `x hx`. Rewrite using `[Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span hx`.
+
+Take `⟨hP, hO, hIp⟩` from `(rels_iff (Ideal.Quotient.mkₐ O I) r D ψ).mp hzero`. Use `⟨⟨R ⧸ I, ⟨D.map ((Ideal.Quotient.mkₐ O I : R →ₐ[O] R ⧸ I) : R →+* R ⧸ I), fun v i => pushCh ((Ideal.Quotient.mkₐ O I : R →ₐ[O] R ⧸ I) : R →+* R ⧸ I) (ψ v i), (def_map (Ideal.Quotient.mkₐ O I) hD).cont, (def_map (Ideal.Quotient.mkₐ O I) hD).red, fun v i => psi_map (Ideal.Quotient. …` and prove the remaining obligations. Introduce `R' _ _ _ p`. Take `⟨f, ⟨h1, h2⟩, hfu⟩` from `hU R' p`. Establish `hk : I ≤ RingHom.ker (f : R →+* R')` using `hkill R' p f h1 h2`.
+
+Establish `key : ∀ h : (R ⧸ I) →ₐ[O] R', ((D.map ((Ideal.Quotient.mkₐ O I : R →ₐ[O] R ⧸ I) : R →+* R ⧸ I)).map (h : R ⧸ I →+* R') = p.D ∧ ∀ v i, pushCh (h : R ⧸ I →+* R') (pushCh ((Ideal.Quotient.mkₐ O I : R →ₐ[O] R ⧸ I) : R →+* R ⧸ I) (ψ v i)) = p.ψ v i) ↔ (D.map ((h.comp (Ideal.Quotient.m …`. Introduce `h`. Establish `e1 : (D.map ((Ideal.Quotient.mkₐ O I : R →ₐ[O] R ⧸ I) : R →+* R ⧸ I)).map (h : R ⧸ I →+* R') = D.map ((h.comp (Ideal.Quotient.mkₐ O I) : R →ₐ[O] R') : R →+* R')`. Rewrite using `[(d_gmap D).2.1]`. Both sides reduce to the same expression.
+
+Establish `e2 : ∀ v i, pushCh (h : R ⧸ I →+* R') (pushCh ((Ideal.Quotient.mkₐ O I : R →ₐ[O] R ⧸ I) : R →+* R ⧸ I) (ψ v i)) = pushCh ((h.comp (Ideal.Quotient.mkₐ O I) : R →ₐ[O] R') : R →+* R') (ψ v i)`. Introduce `v i`. Use extensionality with `x`. Simplify using `[pushCh]`. Simplify using `only [e1, e2]`.
+
+Set `g : (R ⧸ I) →ₐ[O] R'` to `Ideal.Quotient.liftₐ I f (fun a ha => RingHom.mem_ker.mp (hk ha))`. Establish `hgc : g.comp (Ideal.Quotient.mkₐ O I) = f`. Use extensionality with `x`. Both sides reduce to the same expression. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+
+Unfold `Pair.Maps dsimp only`. Rewrite using `[key, hgc]`. Conclude with `⟨h1, h2⟩`. Introduce `g' hg'`. Unfold `Pair.Maps at hg'`.
+
+Simplify using `only at hg'`. Rewrite `hg'` using `[key]`. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Rewrite using `[hfu _ hg', hgc]`.
+-/
 theorem UpperTheory.V.CA.universalDeformationRing_nonempty_of_nonempty_pair :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n), PhiCond F.G₀ l → (∀ v, PhiCond (F.Gv v) l) → (∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R), Nonempty (Pair r R)) → Nonempty (UniversalOrdinaryDeterminantRing r) := by
   intro l _ F O _ _ _ _ _ _ _ n r h0 hv hex

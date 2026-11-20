@@ -13,27 +13,48 @@ noncomputable def polyChartHom :
   (IsScalarTower.toAlgHom K (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀))).comp
     (MvPolynomial.mapAlgHom R₀.val)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem polyChartHom_apply (p : MvPolynomial V R₀) :
     polyChartHom V R₀ p = algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀))
       (MvPolynomial.map (R₀.val : R₀ →+* F₀) p) := rfl
 
+/- English proof (translation)
+Introduce `p q h`. Rewrite `h` using `[polyChartHom_apply, polyChartHom_apply]`. Conclude with `MvPolynomial.map_injective _ Subtype.val_injective (IsFractionRing.injective (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) h)`.
+-/
 theorem polyChartHom_injective : Function.Injective (polyChartHom V R₀) := by
   intro p q h
   rw [polyChartHom_apply, polyChartHom_apply] at h
   exact MvPolynomial.map_injective _ Subtype.val_injective
     (IsFractionRing.injective (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) h)
 
+/- English proof (translation)
+Rewrite using `[polyChartHom_apply, MvPolynomial.map_C, IsScalarTower.algebraMap_apply F₀ (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀))]`. Both sides reduce to the same expression.
+-/
 theorem polyChartHom_C (a : R₀) :
     polyChartHom V R₀ (C a) = algebraMap F₀ (FractionRing (MvPolynomial V F₀)) a := by
   rw [polyChartHom_apply, MvPolynomial.map_C,
     IsScalarTower.algebraMap_apply F₀ (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀))]
   rfl
 
+/- English proof (translation)
+Rewrite using `[polyChartHom_apply, MvPolynomial.map_X]`.
+-/
 theorem polyChartHom_X (v : V) :
     polyChartHom V R₀ (X v) =
       algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) (X v) := by
   rw [polyChartHom_apply, MvPolynomial.map_X]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨p, rfl⟩`. Express the relevant statement in the definitionally equal form `polyChartHom V R₀ p ∈ _`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[polyChartHom_C]`. Conclude with `Algebra.subset_adjoin (Or.inl ⟨a, a.2, rfl⟩)`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp`.
+
+Rewrite using `[map_mul, polyChartHom_X]`. Conclude with `mul_mem hp (Algebra.subset_adjoin (Or.inr ⟨v, rfl⟩))`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ (⟨a, ha, rfl⟩ | ⟨v, rfl⟩)`. Conclude with `⟨C ⟨a, ha⟩, polyChartHom_C V R₀ ⟨a, ha⟩⟩`.
+
+Conclude with `⟨X v, polyChartHom_X V R₀ v⟩`.
+-/
 theorem polyChartHom_range :
     (polyChartHom V R₀).range = Algebra.adjoin K
       ((algebraMap F₀ (FractionRing (MvPolynomial V F₀))) '' (R₀ : Set F₀) ∪
@@ -55,6 +76,15 @@ theorem polyChartHom_range :
     · exact ⟨C ⟨a, ha⟩, polyChartHom_C V R₀ ⟨a, ha⟩⟩
     · exact ⟨X v, polyChartHom_X V R₀ v⟩
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C x`. Take `⟨a, ha, b, hb, hb0, e⟩` from `h x`. Use `⟨⟨b, hb⟩, hb0, C ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_C, ← map_mul]`.
+
+Conclude with `congrArg C e`. Consider the case `add p q hp hq`. Take `⟨b, hb, p', e⟩` from `hp`. Take `⟨c, hc, q', f⟩` from `hq`. Use `⟨b * c, mul_ne_zero hb hc, p' * C c + q' * C b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_mul, map_mul, MvPolynomial.map_C, MvPolynomial.map_C, ← e, ← f]`. Express the relevant statement in the definitionally equal form `(p + q) * C ((b : F₀) * c) = p * C (b : F₀) * C (c : F₀) + q * C (c : F₀) * C (b : F₀)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p v hp`.
+
+Take `⟨b, hb, p', e⟩` from `hp`. Use `⟨b, hb, p' * X v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.map_X, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem polyChart_clear (h : ∀ x : F₀, ∃ a ∈ R₀, ∃ b ∈ R₀, b ≠ 0 ∧ x * b = a)
     (p : MvPolynomial V F₀) :
     ∃ b : R₀, (b : F₀) ≠ 0 ∧ ∃ q : MvPolynomial V R₀,
@@ -81,6 +111,27 @@ theorem polyChart_clear (h : ∀ x : F₀, ∃ a ∈ R₀, ∃ b ∈ R₀, b ≠
 
 end PolyChart
 
+/- English proof (translation)
+Introduce `K F₀ V _ _ _ _ R₀ R hR`. Rewrite `hR` using `[← polyChartHom_range]`. Substitute `hR` using the available equality. Set `e : MvPolynomial V R₀ ≃ₐ[K] (polyChartHom V R₀).range` to `AlgEquiv.ofInjective _ (polyChartHom_injective V R₀)`. Establish `he : ∀ p, ((e p : (polyChartHom V R₀).range) : FractionRing (MvPolynomial V F₀)) = polyChartHom V R₀ p` using `fun p => rfl`.
+
+Establish `heC : ∀ (a : R₀) (h : algebraMap F₀ (FractionRing (MvPolynomial V F₀)) a ∈ (polyChartHom V R₀).range), (⟨_, h⟩ : (polyChartHom V R₀).range) = e (C a)` using `fun a h => Subtype.ext (polyChartHom_C V R₀ a).symm`. Establish `heX : ∀ (v : V) (h : algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) (X v) ∈ (polyChartHom V R₀).range), (⟨_, h⟩ : (polyChartHom V R₀).range) = e (X v)` using `fun v h => Subtype.ext (polyChartHom_X V R₀ v).symm`. Use `⟨fun hs => ?_, fun h x => ?_, fun S _ _ ψ t => ?_⟩` and prove the remaining obligations. Establish `: Algebra.Smooth R₀ (MvPolynomial V R₀)` using `⟨inferInstance, inferInstance⟩`. Establish `: Algebra.Smooth K (MvPolynomial V R₀)` using `Algebra.Smooth.comp K R₀ _`.
+
+Conclude with `Algebra.Smooth.of_equiv e`. Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial V F₀) x`. Take `⟨b, hb, p', e1⟩` from `polyChart_clear V R₀ h p`. Take `⟨c, hc, q', e2⟩` from `polyChart_clear V R₀ h q`. Establish `hq0 : algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`.
+
+Establish `hne : ∀ d : F₀, d ≠ 0 → algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) (C d) ≠ 0`. Introduce `d hd h0`. Rewrite `h0` using `[IsFractionRing.to_map_eq_zero_iff, MvPolynomial.C_eq_zero]`. Conclude with `hd h0`. Establish `h1 : polyChartHom V R₀ (p' * C c) = algebraMap (MvPolynomial V F₀) _ (p * C (b : F₀) * C (c : F₀))`.
+
+Rewrite using `[polyChartHom_apply, map_mul, MvPolynomial.map_C, e1]`. Both sides reduce to the same expression. Establish `h2 : polyChartHom V R₀ (q' * C b) = algebraMap (MvPolynomial V F₀) _ (q * C (c : F₀) * C (b : F₀))`. Rewrite using `[polyChartHom_apply, map_mul, MvPolynomial.map_C, e2]`. Both sides reduce to the same expression.
+
+Use `⟨_, ⟨_, h1⟩, _, ⟨_, h2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_ne_zero (mul_ne_zero hq0 (hne _ hc)) (hne _ hb)`. Simplify using `only [map_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Set `φ : MvPolynomial V R₀ →ₐ[K] S` to `MvPolynomial.aevalTower ψ t`. Use `⟨φ.comp e.symm.toAlgHom, ⟨fun a h => ?_, fun v h => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[heC]`. Simplify using `[φ]`. Rewrite using `[heX]`.
+
+Simplify using `[φ]`. Introduce and unpack `χ ⟨hC, hX⟩`. Establish `: χ.comp e.toAlgHom = φ`. Apply `MvPolynomial.algHom_ext'` to reduce the goal to its premises. Use extensionality with `a`.
+
+Establish `hm : algebraMap F₀ (FractionRing (MvPolynomial V F₀)) a ∈ (polyChartHom V R₀).range` using `⟨C a, polyChartHom_C V R₀ a⟩`. Use `(congrArg χ (heC a hm)).symm.trans (hC a hm)` as an intermediate fact. Simplify `this` using `[φ]`. Introduce `v`. Establish `hm : algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) (X v) ∈ (polyChartHom V R₀).range` using `⟨X v, polyChartHom_X V R₀ v⟩`.
+
+Use `(congrArg χ (heX v hm)).symm.trans (hX v hm)` as an intermediate fact. Simplify `this` using `[φ]`. Rewrite using `[← this]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem polyChart_smooth_fraction_lift : ∀ (K F₀ V : Type) [Field K] [Field F₀] [Algebra K F₀] [Finite V] (R₀ : Subalgebra K F₀) (R : Subalgebra K (FractionRing (MvPolynomial V F₀))), R = Algebra.adjoin K ((algebraMap F₀ (FractionRing (MvPolynomial V F₀))) '' (R₀ : Set F₀) ∪ Set.range fun v : V => algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) (MvPolynomial.X v)) → (Algebra.Smooth K R₀ → Algebra.Smooth K R) ∧ ((∀ x : F₀, ∃ a ∈ R₀, ∃ b ∈ R₀, b ≠ 0 ∧ x * b = a) → ∀ x : FractionRing (MvPolynomial V F₀), ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ x * b = a) ∧ ∀ (S : Type) [CommRing S] [Algebra K S] (ψ : R₀ →ₐ[K] S) (t : V → S), ∃! ψ' : R →ₐ[K] S, (∀ (a : R₀) (h : algebraMap F₀ (FractionRing (MvPolynomial V F₀)) a ∈ R), ψ' ⟨_, h⟩ = ψ a) ∧ ∀ (v : V) (h : algebraMap (MvPolynomial V F₀) (FractionRing (MvPolynomial V F₀)) (MvPolynomial.X v) ∈ R), ψ' ⟨_, h⟩ = t v := by
   intro K F₀ V _ _ _ _ R₀ R hR
   rw [← polyChartHom_range] at hR

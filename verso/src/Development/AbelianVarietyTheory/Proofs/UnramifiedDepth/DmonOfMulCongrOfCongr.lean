@@ -11,6 +11,13 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ d F I ι _ u f f' g h mo`. Establish `hsub : ∀ (m : ι →₀ ℕ) (a b : PS R 1 d), DmonOf F u m (a - b) = DmonOf F u m a - DmonOf F u m b` using `fun m a b => by`. Establish `e` using `ExpCong.along_add (fun l => Dof F (u l)) (fun l => GE.dof_add F (u l)) (ExpCong.grouped (Finset.univ : Finset ι).toList m).reverse (a - b) b`. Rewrite `e` using `[sub_add_cancel, ← ExpCong.dmonOf_eq_along, ← ExpCong.dmonOf_eq_along, ← ExpCong.dmonOf_eq_along]`. Rewrite using `[e, add_sub_cancel_right]`.
+
+Establish `key` using `ExpCong.along_mul_mem (fun l => Dof F (u l)) (constantCoeff : PS R 1 d →+* R) (fun a => GE.dof_add F (u a)) (fun a => GE.dof_mul F (u a)) Set.univ I.toAddSubgroup (fun s _ j hj => I.mul_mem_left s hj) (ExpCong.grouped (Finset.univ : Finset ι).toList mo).reverse g (f - f') (fun _ …`. Take `⟨m', hm'⟩` from `ExpCong.exists_along_eq_dmonOf F u mo v hv`. Rewrite using `[hm', hsub, map_sub]`. Conclude with `h m')`. Rewrite `key` using `[← ExpCong.dmonOf_eq_along, show g * (f - f') = f * g - f' * g by ring, hsub, map_sub]`.
+
+Conclude with `key`.
+-/
 theorem dmonOf_mul_congr_of_congr :
   (∀ (R : Type) [CommRing R] (d : ℕ) (F : Fin d → PS R 2 d) (I : Ideal R) (ι : Type) [Fintype ι] (u : ι → Fin d → R) (f f' g : PS R 1 d),
     (∀ mo : ι →₀ ℕ, constantCoeff (DmonOf F u mo f) - constantCoeff (DmonOf F u mo f') ∈ I) →

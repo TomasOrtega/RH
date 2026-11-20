@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.LocVacFix
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT`. Use `⟨(bad_finite F).toFinset ∪ X.T, fun v hv k hk => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or] at hv`. Take `⟨⟨hd, h6⟩, hvT⟩` from `hv`. Establish `hψ` using `GlobalTheory.StdCharUnrF.psiUnr_of_not_le F B.ψ hT.base.std v hd`.
+
+Take `⟨h2, h3⟩` from `two_three_of_six v h6`. Distinguish the cases in `hin : ∃ w, Formalism.UG.IsInertAt F E v w`. Take `⟨w, hw⟩` from `hin`. Conclude with `GlobalTheory.T.inert_place_lattice_stabiliser_fixes_vacuum F E σ B a a' G X om om' hT v w hw hvT k hk`. Use `push_neg at hin`.
+
+Conclude with `vac_fixed_split F E σ B a a' G X om om' hT v hin hvT hψ h2 h3 k hk`.
+-/
 theorem vacuum_fixed_at_cofinitely_many_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →
@@ -43,6 +50,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places | exact _root_.GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places | (intros; apply _root_.GlobalTheory.LocVacFix.vacuum_fixed_at_cofinitely_many_places <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.spherical_vector_fixed_at_almost_all_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →

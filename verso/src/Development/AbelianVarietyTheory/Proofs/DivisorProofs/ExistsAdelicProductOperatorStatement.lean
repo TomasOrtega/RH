@@ -22,6 +22,9 @@ attribute [local instance] GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAd
   GlobalTheory.DiagForm.measAf GlobalTheory.DiagForm.borelAf
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TensorGlue.exists_pure_operator | exact GlobalTheory.TensorGlue.exists_pure_operator | (intros; apply GlobalTheory.TensorGlue.exists_pure_operator <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_adelic_product_operator : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     (A : SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ →ₗ[ℂ] SchwartzMap (ι → mixedEmbedding.mixedSpace F) ℂ)
     (B : ((ι → FiniteAdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((ι → FiniteAdeleRing (𝓞 F) F) → ℂ)),

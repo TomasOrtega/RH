@@ -12,6 +12,33 @@ noncomputable section
 
 namespace GlobalTheory.HeckeEx
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo yx zx p ψp b g Λ Λ' e e' h hΛ hhe hhe' hadd hker hψ hΛΛ' hbn hbc hb0 hbd Hm χl fr hH hd hn hc h0 ha Hm' χl' fr' hHH hd' hc' h0' ha' w i j hi hj`. Establish `e0 : e 0 = 1` using `hker 0 (zero_mem Λ)`. Establish `hpow : ∀ (n : ℕ) z, e ((n : ℂ) • z) = e z ^ n`. Introduce `n z`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [Nat.cast_zero, zero_smul, e0, pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, hadd, ih, pow_succ]`. Establish `e'0 : e' 0 = 1` using `by rw [← map_zero h, hψ, e0, map_one]`. Establish `hpa : ∀ a ∈ Λ, (p : ℂ) • a ∈ Λ` using `fun a haa => by`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `nsmul_mem haa p`. Establish `per : ∀ a ∈ Λ, ∀ z, e (z + a) = e z` using `fun a haa z => by rw [hadd, hker a haa]; exact @_root_.mul_one _ (CategoryTheory.Hom.monoid).toMulOneClass _`. Establish `hsm : ∀ z a, hermForm Hm ((p : ℂ) • z) ((p : ℂ) • a) = (p : ℂ) ^ 2 * hermForm Hm z a` using `fun z a => by`. Rewrite using `[GlobalTheory.UnitFrameGen.hermForm_smul_left, GlobalTheory.UnitFrameGen.hermForm_smul_right, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ho1 : ∀ V, IsOpen {z | ⊤ ≤ (e z).left ⁻¹ᵁ V}` using `fun V => by simpa using (hhe V 0).1`. Establish `ho1' : ∀ V, IsOpen {z | ⊤ ≤ (e' z).left ⁻¹ᵁ V}` using `fun V => by simpa using (hhe' V 0).1`. Establish `hch : Continuous h` using `h.toLinearMap.continuous_of_finiteDimensional`. Establish `dh : Differentiable ℂ (fun z => h z)` using `(LinearMap.toContinuousLinearMap h.toLinearMap).differentiable`. Establish `dsm : Differentiable ℂ (fun z : Fin g → ℂ => (p : ℂ) • z)` using `differentiable_id.const_smul (p : ℂ)`.
+
+Establish `key` using `GlobalTheory.UnitFrameGen.frames_eq Λ hΛ (fun q : Xo.univ.t.PP.L.ι × Xo.univ.t.PP.L.ι => {w | ⊤ ≤ (e' (h w)).left ⁻¹ᵁ Xo.univ.t.PP.L.U q.1 ∧ ⊤ ≤ (e ((p : ℂ) • w)).left ⁻¹ᵁ Xo.univ.t.PP.L.U q.2}) (fun q => ((ho1' _).preimage hch).inter ((ho1 _).preimage (continuous_const_smul (p : …`. Take `⟨i', hi'⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (e' (h z)).left`. Take `⟨j', hj'⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (e ((p : ℂ) • z)).left`. Conclude with `⟨(i', j'), hi', hj'⟩)`. Use the proof step `(fun q a haa z hz => by`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hψ, per a haa, ← hψ]`. Conclude with `hz.1`. Rewrite using `[smul_add, per _ (hpa a haa)]`. Conclude with `hz.2)`.
+
+Use the proof step `(fun q z => b q.1 q.2 (e z) * fr q.2 ((p : ℂ) • z)) (fun q z => fr' q.1 (h z))`. Use the proof step `(fun q q' z => valAt' (e' (h z)).left (Xo.univ.t.PP.L.U q.1 ⊓ Xo.univ.t.PP.L.U q'.1) (Xo.univ.t.PP.L.g q.1 q'.1).val)`. Use the proof step `(fun a z => Real.exp (Real.pi * (hermForm Hm ((p : ℂ) • z) ((p : ℂ) • a)).re + Real.pi / 2 * (hermForm Hm ((p : ℂ) • a) ((p : ℂ) • a)).re))`. Use the proof step `(fun q => ((hbd q.1 q.2).mono fun z hz => ⟨by rw [← hψ]; exact hz.1, by rw [← hpow]; exact hz.2⟩).mul ((hd q.2).comp dsm.differentiableOn fun z hz => hz.2))`. Use the proof step `(fun q => (hd' q.1).comp dh.differentiableOn fun z hz => hz.1)`.
+
+Use the proof step `(fun q z hz => mul_ne_zero (hbn q.1 q.2 (e z) (by rw [← hψ]; exact hz.1) (by rw [← hpow]; exact hz.2)) (hn q.2 _ hz.2))`. Use the proof step `(fun q q' z h1 h2 => by`. Establish `e1` using `hc q.2 q'.2 ((p : ℂ) • z) ((top_le_preimage_inf _ _ _).2 ⟨h1.2, h2.2⟩)`. Establish `e2` using `hbc q.1 q.2 q'.1 q'.2 (e z) (by rw [← hψ]; exact (top_le_preimage_inf _ _ _).2 ⟨h1.1, h2.1⟩) (by rw [← hpow]; exact (top_le_preimage_inf _ _ _).2 ⟨h1.2, h2.2⟩)`. Rewrite `e1` using `[hpow]`.
+
+Rewrite using `[hψ, e1]`. Take the linear combination `e2 * fr q'.2 ((p : ℂ) • z))`. Use the proof step `(fun q q' z h1 h2 => hc' q.1 q'.1 (h z) ((top_le_preimage_inf _ _ _).2 ⟨h1.1, h2.1⟩))`. Use the proof step `(fun q hz => by`. Establish `z1` using `hz.1`.
+
+Establish `z2` using `hz.2`. Rewrite `z1` using `[map_zero]`. Rewrite `z2` using `[smul_zero]`. Rewrite using `[map_zero, smul_zero, h0' _ z1, h0 _ z2, e0]`. Rewrite `z1` using `[e'0]`.
+
+Rewrite `z2` using `[e0]`. Conclude with `hb0 q.1 q.2 z1 z2)`. Use the proof step `(fun q a haa z hz => by`. Use `GlobalTheory.UnitFrameGen.norm_factor Hm _ _ _ _ _ (ha _ (hpa a haa) q.2 ((p : ℂ) • z)).1 ((ha _ (hpa a haa) q.2 _).2 hz.2)` as an intermediate fact. Rewrite using `[per a haa, smul_add, norm_mul, norm_mul, this]`.
+
+Use the proof step `ring)`. Use the proof step `(fun q a haa z hz => by`. Use `GlobalTheory.UnitFrameGen.norm_factor Hm' _ _ _ _ _ (ha' _ (hΛΛ' a haa) q.1 (h z)).1 ((ha' _ (hΛΛ' a haa) q.1 (h z)).2 hz.1)` as an intermediate fact. Rewrite `this` using `[hHH, hHH]`. Rewrite using `[map_add, this, hsm, hsm])`.
+
+Conclude with `key (i, j) w ⟨hi, hj⟩`.
+-/
 theorem frame_pull_eq_transition_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (yx zx : Sp ℂ ⟶ Xo.X) (p : ℕ)
   (ψp : (Over.mk yx ⟶ Xo.univ.t.G) →* (Over.mk zx ⟶ Xo.univ.t.G)) (b : Xo.univ.t.PP.L.ι → Xo.univ.t.PP.L.ι → (Over.mk yx ⟶ Xo.univ.t.G) → ℂ)
   (g : ℕ) (Λ Λ' : AddSubgroup (Fin g → ℂ)) (e : (Fin g → ℂ) → (Over.mk yx ⟶ Xo.univ.t.G)) (e' : (Fin g → ℂ) → (Over.mk zx ⟶ Xo.univ.t.G))

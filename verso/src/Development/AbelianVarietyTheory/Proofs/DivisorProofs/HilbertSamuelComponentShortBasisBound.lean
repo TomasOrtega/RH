@@ -23,6 +23,13 @@ open Formalism.L2.Pj Formalism.NormVectorIdentities.Items
 
 namespace GlobalTheory.HSShort
 
+/- English proof (translation)
+Introduce `hQ E _ _ _ H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k Λ₀ hH`. Establish `hp` using `CompHS.compPresents_data E H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k`. Establish `hb : (h.data f₁ f₂ th k).Birational` using `hH.bir`. Establish `hd` using `ImageDegree.imageDeg_eq_del hQ c.F (h.data f₁ f₂ th k).toTuple _ _ _ _ _ (h.data f₁ f₂ th k).geom hb hp.2`. Establish `hh` using `GlobalTheory.T.height_birationalImage_eq_tuple_height hQ c.F (h.data f₁ f₂ th k).toTuple _ _ _ _ _ hH.totallyComplex (h.data f₁ f₂ th k).geom hb hp.2`.
+
+Establish `hc` using `GlobalTheory.T.arithmeticHilbertSamuelBound hQ c.F (h.data f₁ f₂ th k) Λ₀ hH _ hh`. Establish `hm` using `GlobalTheory.T.degree_supLattice_component_eq E H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k P.T le_rfl`. Establish `hD : (h.data f₁ f₂ th k).D = CompHt.dimFlag Dw` using `hp.1`. Take `⟨-, eT, -, en, eL, eb, eD, eT', -⟩` from `h.data_numbers f₁ f₂ th k`. Rewrite `hc` using `[← hd, h.d_eq f₁ f₂ th k, eT, en, eL, eb, eD, eT', hm, hD, Int.cast_natCast]`.
+
+Conclude with `hc`.
+-/
 theorem hsClaimS_component_geo : Quoted → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (X : GlobalTheory.FlagMod.FlagCover Y) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : CompHS.WtPar Dw) (R : CompHS.Choice X Z U P) (ω : CompHS.CanId R.toModif) (x : ℝ) (D : Formalism.BasicNotions.D7) (V : (c.F →+* ℂ) → Formalism.BasicNotions.TH.HSp D) (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (h : CompHS.Ready R ω x V dict) (f₁ : CompHS.CuspFrame Z U x V dict P.u₁) (f₂ : CompHS.CuspFrame Z U x V dict P.u₂) (th : R.L.Sec) (k : CompHS.Consts), ∀ Λ₀ : ℝ, GlobalTheory.HSShort.GeoHyp (h.data f₁ f₂ th k) Λ₀ → HSClaimS 26 P.T (CompHt.dimFlag Dw) f₁.n 1 k.abelian₂ k.beta k.LamD k.LamT (Real.log Λ₀) (CompHt.compDeg U Z (AllWt.wtOf Dw P.u₁ 0)) (CompHt.compHeight U x V dict Z (AllWt.wtOf Dw P.u₁ 0)) (Module.finrank c.F (AllWt.cuspOn U Z (AllWt.wtOf Dw (P.wt P.T) 0))) (AllWt.degOn U x V dict Z (AllWt.wtOf Dw (P.wt P.T) 0)) := by
   intro hQ E _ _ _ H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k Λ₀ hH
   have hp := CompHS.compPresents_data E H Dw l Xo c Y X Z r U P R ω x D V dict h f₁ f₂ th k

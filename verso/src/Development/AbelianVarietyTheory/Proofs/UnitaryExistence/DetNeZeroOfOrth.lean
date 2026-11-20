@@ -19,6 +19,11 @@ open scoped ENNReal
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1` using `congrArg Matrix.det (hy τ)`. Rewrite `h1` using `[FrameDegreeData.gram_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, sgnMat, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.2 (fun a _ => ?_) h1.symm` and prove the remaining obligations. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem det_ne_zero_of_orth (X : Data E r) {y : Frame X.Ψ r} (hy : y ∈ OrthFr X) (τ : X.Ψ) : (mat y τ).det ≠ 0 := by
   intro h0
   have h1 := congrArg Matrix.det (hy τ)
@@ -28,6 +33,13 @@ theorem det_ne_zero_of_orth (X : Data E r) {y : Frame X.Ψ r} (hy : y ∈ OrthFr
   unfold sgn
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `key : ∀ τ : X.Ψ, ∃ u : Upq r X.p0, mat z τ = mat y τ * ((u : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)`. Introduce `τ`. Establish `hb` using `det_ne_zero_of_orth X hy τ`. Establish `hd : ((mat y τ)⁻¹ * mat z τ).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+
+Conclude with `mul_ne_zero (inv_ne_zero hb) (det_ne_zero_of_orth X hz τ)`. Establish `e : mat z τ = mat y τ * ((mat y τ)⁻¹ * mat z τ)` using `(Matrix.mul_nonsing_inv_cancel_left _ _ hb.isUnit).symm`. Use `⟨⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd, ?_⟩, e⟩` and prove the remaining obligations. Establish `h1` using `hz τ`. Rewrite `h1` using `[e, FrameDegreeData.gram_mul, hy τ]`.
+
+Conclude with `h1`. Use `choose s hs using key`. Conclude with `⟨s, hs⟩`.
+-/
 theorem exists_real_of_orth (X : Data E r) {y z : Frame X.Ψ r} (hy : y ∈ OrthFr X) (hz : z ∈ OrthFr X) :
     ∃ s : RealGrp X, ∀ τ, mat z τ = mat y τ * ((s τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) := by
   have key : ∀ τ : X.Ψ, ∃ u : Upq r X.p0, mat z τ = mat y τ * ((u : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) := by
@@ -44,6 +56,15 @@ theorem exists_real_of_orth (X : Data E r) {y z : Frame X.Ψ r} (hy : y ∈ Orth
   choose s hs using key
   exact ⟨s, hs⟩
 
+/- English proof (translation)
+Set `Y : X.Ψ → GL (Fin r) ℂ` to `fun τ => Matrix.GeneralLinearGroup.mkOfDetNeZero _ (det_ne_zero_of_orth X hy τ)`. Set `φ : X.Ψ → G →* GL (Fin r) ℂ` to `fun τ => (MulAut.conj (Y τ)⁻¹).toMonoidHom.comp (ar τ).toHomUnits`. Establish `hφ : ∀ g τ, mat y τ * ((φ τ g : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = ar τ g * mat y τ`. Introduce `g τ`. Establish `: Y τ * φ τ g = (ar τ).toHomUnits g * Y τ` using `by simp [φ, mul_assoc]`.
+
+Conclude with `congrArg Units.val this`. Establish `hm : ∀ τ g, φ τ g ∈ Upq r X.p0`. Introduce `τ g`. Establish `h1 : gram τ.1 X.Gm (ar τ g * mat y τ) = sgnMat r X.p0`. Rewrite using `[← hy τ, FrameDegreeData.gram_eq, FrameDegreeData.gram_eq, Matrix.transpose_mul, Matrix.map_mul]`.
+
+Use `conv_rhs => rw [← ha τ g]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite `h1` using `[← hφ, FrameDegreeData.gram_mul, hy τ]`. Conclude with `h1`. Use `⟨MonoidHom.pi fun τ => (φ τ).codRestrict _ (hm τ), continuous_pi fun τ => Continuous.subtype_mk ?_ _, hφ⟩` and prove the remaining obligations.
+
+Establish `: Continuous (ar τ).toHomUnits` using `Units.continuous_iff.2 ⟨hc τ, ((hc τ).comp continuous_inv).congr fun g => by simp [← map_inv]⟩`. Conclude with `(continuous_const.mul this).mul continuous_const`.
+-/
 theorem exists_hom_real (X : Data E r) {y : Frame X.Ψ r} (hy : y ∈ OrthFr X) {G : Type} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] (ar : X.Ψ → G →* Matrix (Fin r) (Fin r) ℂ)
     (hc : ∀ τ, Continuous (ar τ))
@@ -75,6 +96,9 @@ variable {Comp : Type} (X : Comp → Data E r)
 
 def SameOrb (p q : Σ k, Frame (X k).Ψ r) : Prop := ∃ γ ∈ (X p.1).Γ, q = ⟨p.1, lact γ p.2⟩
 
+/- English proof (translation)
+Use `⟨fun p => ⟨1, one_mem _, by rw [lact_one]⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, x⟩ _ ⟨γ, hγ, rfl⟩`. Conclude with `⟨γ⁻¹, inv_mem hγ, by simp only [lact_inv]⟩`. Introduce and unpack `⟨k, x⟩ _ _ ⟨γ, hγ, rfl⟩ ⟨δ, hδ, rfl⟩`. Conclude with `⟨δ * γ, mul_mem hδ hγ, by simp only [lact_mul]⟩`.
+-/
 theorem sameOrb_equivalence : Equivalence (SameOrb X) := by
   refine ⟨fun p => ⟨1, one_mem _, by rw [lact_one]⟩, ?_, ?_⟩
   · rintro ⟨k, x⟩ _ ⟨γ, hγ, rfl⟩
@@ -82,18 +106,67 @@ theorem sameOrb_equivalence : Equivalence (SameOrb X) := by
   · rintro ⟨k, x⟩ _ _ ⟨γ, hγ, rfl⟩ ⟨δ, hδ, rfl⟩
     exact ⟨δ * γ, mul_mem hδ hγ, by simp only [lact_mul]⟩
 
+/- English proof (translation)
+The claim follows from `exists_congr fun _ => and_congr_right fun _ => by simp`.
+-/
 theorem sameOrb_mk {k : Comp} {x x' : Frame (X k).Ψ r} :
     SameOrb X ⟨k, x⟩ ⟨k, x'⟩ ↔ ∃ γ ∈ (X k).Γ, x' = lact γ x :=
   exists_congr fun _ => and_congr_right fun _ => by simp
 
 end Rel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h1 : mat x τ * mat b τ = mat x' τ * mat b τ` using `congrFun h τ`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).2 (hb τ).1.isUnit).mul_right_cancel h1`.
+-/
 theorem rmul_cancel {Ψ : Finset (E →+* ℂ)} {x x' b : Frame Ψ r} (hb : b ∈ Bor Ψ r) (h : rmul x b = rmul x' b) :
     x = x' := by
   funext τ
   have h1 : mat x τ * mat b τ = mat x' τ * mat b τ := congrFun h τ
   exact ((Matrix.isUnit_iff_isUnit_det _).2 (hb τ).1.isUnit).mul_right_cancel h1
 
+/- English proof (translation)
+Take `⟨hG, hgr⟩` from `GlobalTheory.T.unitFrame_real_unitary_orbit_gram_rigid E r Comp X G Gi dict (fun k g τ => ar τ.1 g) (fun k τ => J τ.1) x0 (fun k τ => hJ τ.1) hs d0 dI dD dU`. Use `choose t ht0 ht using hG`. Use `choose y hy b hb hxb using fun k => ReciprocityTheory.ChartRestriction.G.AR.Up.ortho_holds r (X k) (x0 k) (d0 k).1`. Use `replace hy : ∀ k, y k ∈ OrthFr (X k) := hy`. Establish `hyu : ∀ k τ, IsUnit (mat (y k) τ).det` using `fun k τ => (det_ne_zero_of_orth _ (hy k) τ).isUnit`.
+
+Establish `hJG : ∀ k (τ : (X k).Ψ) (u : Matrix (Fin r) (Fin r) ℂ), uᵀ * J τ.1 * u.map (starRingEnd ℂ) = J τ.1 ↔ uᵀ * (X k).Gm.map τ.1 * u.map (starRingEnd ℂ) = (X k).Gm.map τ.1`. Introduce `k τ u`. Rewrite using `[ht, Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `(smul_right_injective _ (Complex.ofReal_ne_zero.2 (ht0 k τ))).eq_iff.symm`. Use `choose ψ hψc hψ using fun k => exists_hom_real (X k) (hy k) (fun τ => ar τ.1) (hc k) fun τ g => (hJG k τ _).1 (hu k τ g)`.
+
+Use `choose s hsy using fun k => exists_real_of_orth (X k) (baseFr_mem (X k)) (hy k)`. Use `choose g hg using fun k => (d0 k).2`. Use `choose Λ hΛ hΛd using fun k => GlobalTheory.T.exists_discrete_arithGroupImage_realUnitary E r (X k)`. Establish `hfr : ∀ k h τ, mat (frameOf (X k) (s k * ψ k h)) τ = ar τ.1 h * mat (y k) τ`. Introduce `k h τ`.
+
+Rewrite using `[← hψ, hsy, mat_frameOf, Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hψ' : ∀ k h τ, mat (y k) τ * ((ψ k h τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (mat (y k) τ)⁻¹ = ar τ.1 h` using `fun k h τ => by rw [hψ, Matrix.mul_nonsing_inv_cancel_right _ _ (hyu k τ)]`. Establish `hinj : ∀ k (a a' : RealGrp (X k)), (∀ τ, mat (y k) τ * ((a τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (mat (y k) τ)⁻¹ = mat (y k) τ * ((a' τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (mat (y k) τ)⁻¹) → a = a'`. Introduce `k a a' h`.
+
+Use function extensionality and compare the values at `τ`. Establish `h2` using `congrArg (· * mat (y k) τ) (h τ)`. Simplify using `only [Matrix.nonsing_inv_mul_cancel_right _ _ (hyu k τ)] at h2`. Conclude with `Subtype.ext (Units.ext (((Matrix.isUnit_iff_isUnit_det _).2 (hyu k τ)).mul_left_cancel h2))`. Use `haveI : ∀ k, (haarR (X k)).IsHaarMeasure := fun k => by unfold haarR; infer_instance`.
+
+Use `Exists.elim (GlobalTheory.T.lintegral_unfold_arithmetic_quotient_doubleCosets G μ Γ H Kf 𝓕 h𝓕 h0 h1 hH (fun z hz => (hmem z).2 ⟨1, one_mem _, z, hz, (one_mul _).symm⟩) Comp (fun k => RealGrp (X k)) (fun k => haarR (X k)) ψ Λ s g _ (SameOrb X) dict (fun k a => ⟨k, rmul (frameOf (X …` and prove the remaining obligations. Use `rotate_right`. Introduce and unpack `κ ⟨D, hκ0, hκ1, hD, hI⟩`. Use `⟨κ, hκ0, hκ1, fun F hF hFΓ hFB => ?_⟩` and prove the remaining obligations. Establish `e : ∀ k a, F k (rmul (frameOf (X k) a) (b k)) = F k (frameOf (X k) a)` using `fun k a => hFB k _ (hb k) _ (frameOf_mem_dom _ a)`.
+
+Take `⟨h2, h3⟩` from `hI (fun p => F p.1 p.2) (by rintro x _ ⟨γ, hγ, rfl⟩; exact hFΓ _ γ hγ _ (dD x)) (fun k => by simp only [e]; exact (hF k).comp (measurable_frameOf _))`. Use `⟨h2, h3.trans ?_⟩` and prove the remaining obligations. Simplify using `only [e]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use `haveI := (hD k).1`. Rewrite using `[quotInt_eq _ (hΛ k) (hD k).2 (hFΓ k)]`. Introduce `k a`. Take `⟨h, hh, e⟩` from `hs k (fun τ => mat (y k) τ * ((a τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * (mat (y k) τ)⁻¹) fun τ => (hJG k τ _).2 (by`. Establish `h2 : gram τ.1 (X k).Gm (mat (y k) τ * ((a τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ)) = gram τ.1 (X k).Gm (mat (y k) τ)`.
+
+Rewrite using `[FrameDegreeData.gram_mul, hy k τ]`. Conclude with `(a τ).2`. Rewrite using `[← FrameDegreeData.gram_eq, FrameDegreeData.gram_mul, h2, ← FrameDegreeData.gram_mul, Matrix.mul_nonsing_inv _ (hyu k τ), FrameDegreeData.gram_eq]`. Use the proof step `simp)`. Conclude with `⟨h, (hmem h).2 ⟨h, hh, 1, one_mem _, (mul_one _).symm⟩, hinj k _ _ fun τ => (hψ' k h τ).trans (e τ)⟩`.
+
+Introduce `k z hz`. Use `hinj k _ _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[hψ', hK k τ z hz]`. Simplify using `[Matrix.mul_nonsing_inv _ (hyu k τ)]`. Introduce `k γ hγ h`.
+
+Use `hΓ k γ hγ fun τ => ?_` and prove the remaining obligations. Rewrite using `[← hψ' k, h]`. Simplify using `[Matrix.mul_nonsing_inv _ (hyu k τ)]`. Introduce `k k'`. Take `⟨e, α, u, he, hα, hαα, h⟩` from `GlobalTheory.T.exists_measurePreserving_frameChange_proportional_hermitian E r (X k) (X k') (y k) (y k') (hΨ k k').1 (hΨ k k').2 (hy k) (hy k') fun τ => by`.
+
+Establish `hτ : τ.1 ∈ (X k').Ψ` using `(hΨ k k').1 ▸ τ.2`. Use `⟨t k' ⟨τ.1, hτ⟩ / t k τ, div_ne_zero (ht0 _ _) (ht0 _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[ht k' ⟨τ.1, hτ⟩, ht k τ, smul_smul, ← Complex.ofReal_mul, div_mul_cancel₀ _ (ht0 _ _)]`. Use `⟨e, α, u, he, hα, fun x => hinj k' _ _ fun τ' => ?_, hαα⟩` and prove the remaining obligations. Establish `hτ : τ'.1 ∈ (X k).Ψ` using `(hΨ k' k).1 ▸ τ'.2`.
+
+Rewrite using `[h _ ⟨τ'.1, hτ⟩ τ' rfl, hψ', hψ']`. Use `fun x x' => ⟨dF x x', ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨γ, hγ, z, hz, rfl⟩`. Conclude with `(sameOrb_equivalence X).trans (dL γ hγ x) (dR z hz _)`. Introduce `k h hh`.
+
+Take `⟨a, ha, z, hz, rfl⟩` from `(hmem h).1 hh`. Rewrite using `[← mul_assoc]`. Use `(sameOrb_equivalence X).trans ((sameOrb_equivalence X).symm (dR z hz _)) ((sameOrb_equivalence X).symm ?_)` and prove the remaining obligations. Establish `h2` using `dI (g k) a ha`. Rewrite `h2` using `[hg k]`.
+
+Take `⟨γ, hγ, h2⟩` from `h2`. Use `⟨γ, hγ, h2.trans ?_⟩` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `τ`. Use `show mat (x0 k) τ * ((mat (x0 k) τ)⁻¹ * ar τ.1 a * mat (x0 k) τ) = mat (frameOf (X k) (s k * ψ k (a * z))) τ * mat (b k) τ`.
+
+Rewrite using `[hfr, map_mul, hK k τ z hz, mul_one, Matrix.mul_assoc (mat (x0 k) τ)⁻¹, Matrix.mul_nonsing_inv_cancel_left _ _ ((d0 k).1 τ).1.isUnit, Matrix.mul_assoc, hxb k]`. Both sides reduce to the same expression. Introduce `x`. Establish `h2` using `hgr x`. Generalize the expression as in `dict x = p at h2`.
+
+Take `⟨k, z⟩` from `p`. Establish `hbu : ∀ τ, IsUnit (mat (b k) τ).det` using `fun τ => (hb k τ).1.isUnit`. Take `⟨a, ha⟩` from `exists_real_of_orth (X k) (baseFr_mem (X k)) (z := fun τ => (mat z τ * (mat (b k) τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)) fun τ => by show gram τ.1 (X k).Gm (mat z τ * (mat (b k) τ)⁻¹) = _`. Establish `h3 : mat (x0 k) τ = mat (y k) τ * mat (b k) τ` using `congrFun (hxb k) τ`. Rewrite using `[FrameDegreeData.gram_mul, h2 τ, ← FrameDegreeData.gram_mul, h3, Matrix.mul_nonsing_inv_cancel_right _ _ (hbu τ), hy k τ]`.
+
+Use `⟨k, a, ?_⟩` and prove the remaining obligations. Establish `: rmul (frameOf (X k) a) (b k) = z`. Use function extensionality and compare the values at `τ`. Use `show mat (frameOf (X k) a) τ * mat (b k) τ = mat z τ`. Rewrite using `[mat_frameOf, ← ha τ]`.
+
+Conclude with `Matrix.nonsing_inv_mul_cancel_right _ _ (hbu τ)`. Rewrite using `[this]`. Conclude with `(sameOrb_equivalence X).refl _`. Introduce and unpack `k k' a a' ⟨γ, -, h⟩`. Conclude with `(congrArg Sigma.fst h).symm`.
+
+Introduce `k a a'`. Rewrite using `[sameOrb_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, h⟩`. Take `⟨w, hw⟩` from `exists_translation (X k) hγ`.
+
+Rewrite `h` using `[lact_rmul, lact_frameOf _ hw]`. Conclude with `⟨w, (hΛ k w).2 ⟨γ, hγ, hw⟩, frameOf_injective _ (rmul_cancel (hb k) h)⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨γ, hγ, e⟩` from `(hΛ k w).1 hw`. Conclude with `⟨γ, hγ, by rw [lact_rmul, lact_frameOf _ e]⟩`.
+-/
 theorem lintegral_dict {Comp : Type} [Fintype Comp] (X : Comp → Data E r) {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
     [μ.IsMulRightInvariant] (Γ Gi Kf H : Subgroup G) [Countable Γ] {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)

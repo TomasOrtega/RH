@@ -17,6 +17,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Introduce `D T h large₂ j hj w hP h2 hrn h16 σ hσ`. Take `⟨hg, hlrd, hd, hcc, hf, -, -, -, hn⟩` from `hP`. Take `⟨-, -, -, -, -, hfd, hdE, -, -, -, hsk, hne, -⟩` from `GlobalTheory.T.exists_clearing_integers_principalDatum_host D large₂.sc.L h2 hlrd hd hcc`. Take `⟨AA, hFG, hA, hdual⟩` from `GlobalTheory.T.principalDatum_fg_perfect_tracePairing D`. Take `⟨-, -, hM, -, -, -, hJ⟩` from `GlobalTheory.T.numerical_consequences_of_pins D T.Q h.pins`.
+
+Take `⟨-, hr, -⟩` from `hJ j hj`. Establish `hMg : T.Q.l.M = D.host.g 0 * D.host.g 1` using `h.pins.2.1.1`. Establish `hrL : Real.log D.R.r ≤ large₂.sc.L` using `le_trans (Real.log_le_log (by exact_mod_cast hr) (by exact_mod_cast hrn)) hn`. Establish `hML : Real.log T.Q.l.M' ≤ 30 * large₂.sc.L`. Rewrite using `[hM, hMg]`.
+
+Establish `h0` using `hg 0`. Establish `h1` using `hg 1`. Break down `Nat.eq_zero_or_pos (D.host.g 0) with a | a` into its components or cases. Rewrite using `[a]`. Simplify using the standard rewrite rules.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Break down `Nat.eq_zero_or_pos (D.host.g 1) with b | b` into its components or cases. Rewrite using `[b]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[Nat.cast_mul, Real.log_mul (by exact_mod_cast a.ne') (by exact_mod_cast b.ne')]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `GlobalTheory.log_card_comp_unf_le GlobalTheory.T.hasse_norm_theorem_quadratic_extension GlobalTheory.T.thetaUniformisation_complexAbelianVariety GlobalTheory.T.abelianScheme_laws_unconditional.1 D.host.E _ _ _ (T.Q.Xo j) T.Q.c σ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hr h …`. Rewrite `key` using `[hfd]`. Conclude with `key`.
+-/
 theorem log_card_comp_le : ∀ (D : D7) (T : Top D) (_h : LawsP T) (large₂ : SizeData₂ D) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → 16 ≤ D.R.f → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → Real.log (Fintype.card (T.U j σ).Comp) ≤ 41 * Zb D large₂ ^ 2 := by
   intro D T h large₂ j hj w hP h2 hrn h16 σ hσ
   obtain ⟨hg, hlrd, hd, hcc, hf, -, -, -, hn⟩ := hP

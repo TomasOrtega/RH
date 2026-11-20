@@ -24,6 +24,9 @@ def IsDRTriv (H : T.Modules)
       φ ≫ pullback.fst A.hom hV.fromSpec = pullback.fst A.hom hV'.fromSpec →
       ∀ s : Γ(H, V), e V' hV' (GlobalTheory.Twist.resM H h s) = (GlobalTheory.Published.AbelianDeRham.bcMor hφ).pull (e V hV s)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isDeRhamSheaf_iff (H : T.Modules) : IsDeRhamSheaf A H ↔ ∃ e, IsDRTriv A H e := Iff.rfl
 
 end GlobalTheory.HodgeSeqSheaf

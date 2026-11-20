@@ -14,34 +14,57 @@ namespace GlobalTheory.CompanionTheory.IwLevels
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[GlobalTheory.CompanionTheory.IwEntries.mem_KGL_iff, GlobalTheory.CompanionTheory.IwEntries.mem_KO_iff]`.
+-/
 theorem KGL_eq_KO (w : Pl E) (n : ℕ) :
     GlobalTheory.LFun.KGL w n = GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n) := by
   ext g
   rw [GlobalTheory.CompanionTheory.IwEntries.mem_KGL_iff, GlobalTheory.CompanionTheory.IwEntries.mem_KO_iff]
 
+/- English proof (translation)
+Rewrite using `[KGL_eq_KO]`. Conclude with `GlobalTheory.SplitFlip.isCompact_KO`.
+-/
 theorem isCompact_KGL (w : Pl E) (n : ℕ) : IsCompact (GlobalTheory.LFun.KGL w n : Set (GLw n w)) := by
   rw [KGL_eq_KO]
   exact GlobalTheory.SplitFlip.isCompact_KO
 
+/- English proof (translation)
+Rewrite using `[KGL_eq_KO]`. Conclude with `GlobalTheory.SmGL.iwahori_le_KO _ _`.
+-/
 theorem iwGL_le_KGL (w : Pl E) (n : ℕ) : iwGL n w ≤ GlobalTheory.LFun.KGL w n := by
   rw [KGL_eq_KO]
   exact GlobalTheory.SmGL.iwahori_le_KO _ _
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.UnitaryWitt.UL_eq_of_not_split hw]`. Conclude with `GlobalTheory.CompanionTheory.UnitaryWitt.isClosed_UJ_one n hc`.
+-/
 theorem isClosed_UL {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) (hc : Continuous (cj w)) :
     IsClosed (UL n w : Set (GLw n w)) := by
   rw [GlobalTheory.CompanionTheory.UnitaryWitt.UL_eq_of_not_split hw]
   exact GlobalTheory.CompanionTheory.UnitaryWitt.isClosed_UJ_one n hc
 
+/- English proof (translation)
+Establish `h : IsOpen (GlobalTheory.LFun.KGL w n : Set (GLw n w))`. Rewrite using `[KGL_eq_KO]`. Conclude with `GlobalTheory.SplitFlip.isOpen_KO`. Conclude with `h.preimage (continuous_subtype_val (p := (· ∈ UL n w)))`.
+-/
 theorem isOpen_KL (n : ℕ) (w : Pl E) : IsOpen (KL n w : Set (UL n w)) := by
   have h : IsOpen (GlobalTheory.LFun.KGL w n : Set (GLw n w)) := by
     rw [KGL_eq_KO]
     exact GlobalTheory.SplitFlip.isOpen_KO
   exact h.preimage (continuous_subtype_val (p := (· ∈ UL n w)))
 
+/- English proof (translation)
+The claim follows from `(isClosed_UL hw n hc).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_KGL w n)`.
+-/
 theorem isCompact_KL {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) (hc : Continuous (cj w)) :
     IsCompact (KL n w : Set (UL n w)) :=
   (isClosed_UL hw n hc).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_KGL w n)
 
+/- English proof (translation)
+Establish `ho : IsOpen (iwGL n w : Set (GLw n w))` using `GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin n)`. Establish `hcont : Continuous fun γ : UL n w => b⁻¹ * γ.1 * b` using `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Establish `e : (iwU n w b : Set (UL n w)) = (fun γ : UL n w => b⁻¹ * γ.1 * b) ⁻¹' (iwGL n w : Set (GLw n w))`. Use extensionality with `γ`. Conclude with `GlobalTheory.CompanionTheory.UnitaryWitt.mem_iwU_iff n w b γ`.
+
+Rewrite using `[e]`. Conclude with `ho.preimage hcont`.
+-/
 theorem isOpen_iwU (n : ℕ) (w : Pl E) (b : GLw n w) : IsOpen (iwU n w b : Set (UL n w)) := by
   have ho : IsOpen (iwGL n w : Set (GLw n w)) :=
     GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin n)
@@ -53,6 +76,9 @@ theorem isOpen_iwU (n : ℕ) (w : Pl E) (b : GLw n w) : IsOpen (iwU n w b : Set 
   rw [e]
   exact ho.preimage hcont
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `h1` using `iwGL_le_KGL w n ((GlobalTheory.CompanionTheory.UnitaryWitt.mem_iwU_iff n w b γ).1 hγ)`. Establish `h2 : γ.1 = b * (b⁻¹ * γ.1 * b) * b⁻¹` using `by group`. Rewrite using `[KL, Subgroup.mem_subgroupOf, h2]`. Conclude with `mul_mem (mul_mem hb h1) (inv_mem hb)`.
+-/
 theorem iwU_le_KL (n : ℕ) (w : Pl E) (b : GLw n w) (hb : b ∈ GlobalTheory.LFun.KGL w n) :
     iwU n w b ≤ KL n w := by
   intro γ hγ
@@ -61,6 +87,9 @@ theorem iwU_le_KL (n : ℕ) (w : Pl E) (b : GLw n w) (hb : b ∈ GlobalTheory.LF
   rw [KL, Subgroup.mem_subgroupOf, h2]
   exact mul_mem (mul_mem hb h1) (inv_mem hb)
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Set `U : OpenSubgroup K` to `⟨H.subgroupOf K, hH.preimage continuous_subtype_val⟩`. Use `haveI : Finite (K ⧸ (U : Subgroup K)) := Subgroup.quotient_finite_of_isOpen _ U.isOpen`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {H K : Subgroup G}
     (hH : IsOpen (H : Set G)) (hK : IsCompact (K : Set G)) : H.relIndex K ≠ 0 := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -68,6 +97,15 @@ theorem relIndex_ne_zero {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   haveI : Finite (K ⧸ (U : Subgroup K)) := Subgroup.quotient_finite_of_isOpen _ U.isOpen
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Use `set t : GLw n w := b * tdiag ϖ (wexp n l) * b⁻¹ with ht`. Establish `hI : IsCompact (iwU n w b : Set (UL n w))` using `GlobalTheory.CompanionTheory.UnitaryWitt.isCompact_iwU hw n b hc`. Establish `hS : IsCompact ((fun p : UL n w × UL n w => p.1.1 * t * p.2.1) '' ((iwU n w b : Set (UL n w)) ×ˢ (iwU n w b : Set (UL n w))))` using `(hI.prod hI).image (((continuous_subtype_val.comp continuous_fst).mul continuous_const).mul (continuous_subtype_val.comp continuous_snd))`. Establish `e : {g : UL n w | fU n w b ϖ l g ≠ 0} = Subtype.val ⁻¹' ((fun p : UL n w × UL n w => p.1.1 * t * p.2.1) '' ((iwU n w b : Set (UL n w)) ×ˢ (iwU n w b : Set (UL n w))))`. Use extensionality with `γ`.
+
+Simplify using `only [Set.mem_setOf_eq, fU, Set.mem_preimage, Set.mem_image, Set.mem_prod, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hn`. Use `h (if_neg ?_)` and prove the remaining obligations.
+
+Introduce and unpack `⟨x, hx, z, hz, e⟩`. Conclude with `hn ⟨(x, z), ⟨hx, hz⟩, e.symm⟩`. Introduce and unpack `⟨⟨x, z⟩, ⟨hx, hz⟩, e⟩`. Rewrite using `[if_pos ⟨x, hx, z, hz, e.symm⟩]`. Conclude with `one_ne_zero`.
+
+Rewrite using `[e]`. Conclude with `(isClosed_UL hw n hc).isClosedEmbedding_subtypeVal.isCompact_preimage hS`.
+-/
 theorem isCompact_support_fU {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw n w)
     (ϖ : (w.adicCompletion E)ˣ) (l : Fin (n / 2) → ℤ) (hc : Continuous (cj w)) :
     IsCompact {g : UL n w | fU n w b ϖ l g ≠ 0} := by
@@ -95,6 +133,9 @@ theorem isCompact_support_fU {w : Pl E} (hw : ¬ IsSplitAt w) (n : ℕ) (b : GLw
   rw [e]
   exact (isClosed_UL hw n hc).isClosedEmbedding_subtypeVal.isCompact_preimage hS
 
+/- English proof (translation)
+Introduce `E _ _ _ hU w hw n b hb ϖ l _ _`. Establish `hc : Continuous (cj w)` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`. Conclude with `⟨isOpen_KL n w, isCompact_KL hw n hc, ⟨isOpen_iwU n w b, iwU_le_KL n w b hb.1, fun k hk => hk⟩, relIndex_ne_zero (isOpen_iwU n w b) (isCompact_KL hw n hc), isCompact_support_fU hw n b ϖ l hc⟩`.
+-/
 theorem levels_unitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (n : ℕ) (b : GLw n w), IsWitt n w b → ∀ (ϖ : (w.adicCompletion E)ˣ) (l : Fin (n / 2) → ℤ), IsUnifAt ϖ → Cone l → IsOpen (KL n w : Set (UL n w)) ∧ IsCompact (KL n w : Set (UL n w)) ∧ IsLevel (MonoidHom.id _) (KL n w) (iwU n w b) ∧ (iwU n w b).relIndex (KL n w) ≠ 0 ∧ IsCompact {g : UL n w | fU n w b ϖ l g ≠ 0} := by
   intro E _ _ _ hU w hw n b hb ϖ l _ _
   have hc : Continuous (cj w) := (GlobalTheory.T.placeConjugation_properties_cmField E hU w).1

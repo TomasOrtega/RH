@@ -14,6 +14,11 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.OTY
 
+/- English proof (translation)
+Use `⟨fun j => ?_, fun j l y hy hj hl => ?_⟩` and prove the remaining obligations. Establish `hsub : (A.chart j).target ∩ (A.chart j).symm ⁻¹' W ⊆ ovl A.chart j i` using `fun v hv => ⟨hv.1, hW hv.2⟩`. Establish `h1` using `(A.holo_g la j i).mono hsub`. Establish `h2` using `hu.comp_differentiableOn ((A.holo_trans j i).mono hsub)`. Conclude with `h1.mul h2`.
+
+Use `show A.g la j i y * _ = A.g la j l y * (A.g la l i y * _)`. Rewrite using `[A.g_cocycle la j l i y hj hl (hW hy)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem peak_isSecOn {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y]
     [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La]
     (A : WeightedAtlas n Y ι La) (la : La) (i : ι) (W : Set Y) (hW : W ⊆ (A.chart i).source)
@@ -28,6 +33,37 @@ theorem peak_isSecOn {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y]
   · show A.g la j i y * _ = A.g la j l y * (A.g la l i y * _)
     rw [A.g_cocycle la j l i y hj hl (hW hy)]; ring
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A C H G i p ρ c q f hρ hc hball hq hf hpeak`. Take `⟨χ, hχs, hχsupp, hχ1⟩` from `GlobalTheory.T.smooth_bump_chart_ball_halfOne n Y ι La A i p ρ hρ hball`. Take `⟨K0, hK0, hcut⟩` from `GlobalTheory.T.n1_cutoff_mul_section_le_lintegral n Y ι La A C χ hχs`. Use `set W : Set Y := (A.chart i).source ∩ A.chart i ⁻¹' ball p ρ with hWdef`. Use `set Wi : Set Y := (A.chart i).source ∩ A.chart i ⁻¹' ball p (ρ / 2) with hWidef`.
+
+Establish `hWo : IsOpen W` using `(A.chart i).isOpen_inter_preimage isOpen_ball`. Establish `hWio : IsOpen Wi` using `(A.chart i).isOpen_inter_preimage isOpen_ball`. Establish `hWs : W ⊆ (A.chart i).source` using `Set.inter_subset_left`. Use `set Z : Set Y := W \ Wi with hZdef`. Establish `hZm : MeasurableSet Z` using `hWo.measurableSet.diff hWio.measurableSet`.
+
+Establish `hZloc : ∀ y, y ∉ Z → ∀ᶠ x in 𝓝 y, χ x = χ y`. Introduce `y hy`. Distinguish the cases in `hyW : y ∈ W`. Establish `hyi : y ∈ Wi`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hy ⟨hyW, h⟩`. Use `filter_upwards [hWio.mem_nhds hyi] with x hx`. Rewrite using `[hχ1 x hx.1 hx.2, hχ1 y hyi.1 hyi.2]`. Establish `hns : y ∉ tsupport χ` using `fun h => hyW (hχsupp h) filter_upwards [(isClosed_tsupport χ).isOpen_compl.mem_nhds hns] with x hx`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hns]`.
+
+Establish `hKc : IsCompact ((A.chart i).symm '' closedBall p ρ)` using `(isCompact_closedBall p ρ).image_of_continuousOn ((A.chart i).continuousOn_symm.mono hball)`. Establish `hWK : Z ∩ W ⊆ (A.chart i).symm '' closedBall p ρ` using `fun y hy => ⟨A.chart i y, ball_subset_closedBall hy.2.2, (A.chart i).left_inv hy.2.1⟩`. Establish `hfin : A.mu (Z ∩ W) ≠ ⊤` using `((measure_mono hWK).trans_lt (ap_mu_compact A _ hKc)).ne`. Establish `hcont : ContinuousOn (fun v => ‖f v‖ ^ 2 * Real.exp (-A.ph (A.kap + G) i ((A.chart i).symm v))) (closedBall p ρ)` using `(hf.continuous.continuousOn.norm.pow 2).mul (((A.smooth_ph (A.kap + G) i).continuousOn.mono hball).neg.rexp)`. Take `⟨M, hM⟩` from `(isCompact_closedBall p ρ).exists_bound_of_continuousOn hcont`.
+
+Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM p (mem_closedBall_self hρ.le))`. Use `⟨K0 * (M * (A.mu (Z ∩ W)).toReal), by positivity, fun k => ?_⟩` and prove the remaining obligations. Establish `hu : Differentiable ℂ (fun v => f v * Complex.exp (k * q v))` using `hf.mul ((hq.const_mul _).cexp)`. Establish `hsec` using `peak_isSecOn A (A.kap + (G + k • H)) i W hWs _ hu`. Use `⟨_, GlobalTheory.T.smoothSection_cutoff_mul_holomorphic n Y ι La A _ W χ _ hWo hχs hχsupp hsec, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Establish `hvt : v ∈ (A.chart i).target` using `hball (ball_subset_closedBall (ball_subset_ball (by linarith) hv))`. Establish `hs` using `(A.chart i).map_target hvt`. Establish `hr` using `(A.chart i).right_inv hvt`. Establish `h1 : χ ((A.chart i).symm v) = 1` using `hχ1 _ hs (by rw [hr]; exact hv)`.
+
+Simplify using `only [h1, A.g_self _ i hs, hr]`. Simplify using the standard rewrite rules. Introduce `j y hy`. Establish `hns : y ∉ tsupport χ` using `fun h => hy (hχsupp h)`. Simplify using `[image_eq_zero_of_notMem_tsupport hns]`.
+
+Use `(hcut (G + k • H) W Z _ hWo hχsupp hsec hZm hZloc).trans ?_` and prove the remaining obligations. Establish `hbd : ∀ y ∈ Z ∩ W, ENNReal.ofReal (A.nsq (A.kap + (G + k • H)) (fun j y => A.g (A.kap + (G + k • H)) j i y * (f (A.chart i y) * Complex.exp (k * q (A.chart i y)))) y) ≤ ENNReal.ofReal (M * Real.exp (-(c * ρ ^ 2 / 4) * k))`. Introduce `y hy`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hs : y ∈ (A.chart i).source` using `hy.2.1`.
+
+Establish `hcb : A.chart i y ∈ closedBall p ρ` using `ball_subset_closedBall hy.2.2`. Establish `hout : ρ / 2 ≤ ‖A.chart i y - p‖`. Assume the negation of the conclusion as `h`. Conclude with `hy.1.2 ⟨hs, by simpa [mem_ball, dist_eq_norm] using not_le.1 h⟩`. Rewrite using `[A.nsq_chart _ _ i hs (hsec.2 _ i y hy.2 (A.mem_pick y) hs)]`.
+
+Establish `h1` using `hM _ hcb`. Establish `h2` using `hpeak _ hcb`. Rewrite `h1`, `h2` using `[(A.chart i).left_inv hs]`. Rewrite `h1` using `[Real.norm_of_nonneg (by positivity)]`. Establish `h3 : c * ρ ^ 2 / 4 ≤ c * ‖A.chart i y - p‖ ^ 2`.
+
+Establish `: (ρ / 2) ^ 2 ≤ ‖A.chart i y - p‖ ^ 2` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `e : ‖A.g (A.kap + (G + k • H)) i i y * (f (A.chart i y) * Complex.exp (k * q (A.chart i y)))‖ ^ 2 * Real.exp (-A.ph (A.kap + (G + k • H)) i y) = (‖f (A.chart i y)‖ ^ 2 * Real.exp (-A.ph (A.kap + G) i y)) * Real.exp (-(A.ph H i y - 2 * (q (A.chart i y)).re) * k)`. Rewrite using `[A.g_self _ i hs, one_mul, norm_mul, Complex.norm_exp, ← add_assoc, A.ph_add _ (k • H) i y hs, A.aap_ph_nsmul H k i hs, mul_pow, ← Real.exp_nat_mul, mul_assoc, mul_assoc, ← Real.exp_add, ← Real.exp_add]`.
+
+Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `e.le.trans ?_` and prove the remaining obligations. Use `mul_le_mul h1 (Real.exp_le_exp.2 ?_) (Real.exp_pos _).le hM0` and prove the remaining obligations.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hint` using `setLIntegral_mono' (μ := A.mu) (hZm.inter hWo.measurableSet) hbd`. Rewrite `hint` using `[setLIntegral_const]`. Use `(mul_le_mul_right hint _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_toReal hfin, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hK0, ENNReal.toReal_ofReal ENNReal.toReal_nonneg]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem peak_section : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (C : Cover A) (H G : La) (i : ι) (p : V n) (ρ c : ℝ) (q f : V n → ℂ), 0 < ρ → 0 < c → closedBall p ρ ⊆ (A.chart i).target → Differentiable ℂ q → Differentiable ℂ f → (∀ v ∈ closedBall p ρ, c * ‖v - p‖ ^ 2 ≤ A.ph H i ((A.chart i).symm v) - 2 * (q v).re) → ∃ K : ℝ, 0 ≤ K ∧ ∀ k : ℕ, ∃ F0 : ι → Y → ℂ, A.IsSSec (A.kap + (G + k • H)) F0 ∧ (∀ v ∈ ball p (ρ / 2), F0 i ((A.chart i).symm v) = f v * Complex.exp (k * q v)) ∧ (∀ j y, y ∉ (A.chart i).source ∩ A.chart i ⁻¹' ball p ρ → F0 j y = 0) ∧ n1 C (G + k • H) F0 ≤ ENNReal.ofReal (K * Real.exp (-(c * ρ ^ 2 / 4) * k)) := by
   intro n Y _ _ _ _ _ ι La _ A C H G i p ρ c q f hρ hc hball hq hf hpeak
   obtain ⟨χ, hχs, hχsupp, hχ1⟩ := GlobalTheory.T.smooth_bump_chart_ball_halfOne n Y ι La A i p ρ hρ hball

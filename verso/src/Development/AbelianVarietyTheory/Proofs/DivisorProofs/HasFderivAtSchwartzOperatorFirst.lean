@@ -13,11 +13,23 @@ namespace GlobalTheory.SchwartzFstOp
 variable {V W V' E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup W] [NormedSpace ℝ W]
   [NormedAddCommGroup V'] [NormedSpace ℝ V'] [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[SchwartzMap.compSubConstCLM_apply]`.
+-/
 theorem sliceCLM_add_eq (x' v : V') (f : 𝓢(V × V', ℂ)) :
     sliceCLM (x' + v) f = sliceCLM x' (SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f) := by
   ext x
   simp [SchwartzMap.compSubConstCLM_apply]
 
+/- English proof (translation)
+Set `q : Seminorm ℂ 𝓢(V × V', ℂ)` to `(SchwartzMap.seminorm ℂ 0 0).comp (T.comp (sliceCLM x')).toLinearMap`. Establish `hq : Continuous q` using `((schwartz_withSeminorms ℂ W E).continuous_seminorm (0, 0)).comp (T.comp (sliceCLM x')).continuous`. Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ (V × V') ℂ) q hq`. Use `choose D hD using fun i : ℕ × ℕ => GlobalTheory.T.schwartz_translate_taylor_second_order f i.1 i.2`. Use `⟨(C : ℝ) * ∑ i ∈ s, |D i|, by positivity, fun v hv z => ?_⟩` and prove the remaining obligations.
+
+Use `set g := SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f - f - lineSnd v f with hg`. Establish `ha : ‖((0 : V), v)‖ = ‖v‖` using `by simp [Prod.norm_def]`. Establish `h1 : ‖T (sliceCLM x' g) z‖ ≤ q g` using `SchwartzMap.norm_le_seminorm ℂ _ _`. Establish `h2 : q g ≤ (C : ℝ) * (s.sup (schwartzSeminormFamily ℂ (V × V') ℂ)) g`. Use `hC g` as an intermediate fact.
+
+Simplify `this` using `[Seminorm.smul_apply, NNReal.smul_def]`. Establish `h3 : (s.sup (schwartzSeminormFamily ℂ (V × V') ℂ)) g ≤ (∑ i ∈ s, |D i|) * ‖v‖ ^ 2`. Apply `Seminorm.finset_sup_apply_le (by positivity)` to reduce the goal to its premises. Introduce `i hi`. Establish `hDi` using `hD i ((0 : V), v) (by rw [ha]; exact hv)`.
+
+Rewrite `hDi` using `[ha]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem remainder_bound (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V', ℂ)) (x' : V') :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ v : V', ‖v‖ ≤ 1 → ∀ z : W,
       ‖T (sliceCLM x' (SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f - f - lineSnd v f)) z‖
@@ -49,6 +61,9 @@ theorem remainder_bound (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V
     _ ≤ (C : ℝ) * ((∑ i ∈ s, |D i|) * ‖v‖ ^ 2) := by gcongr
     _ = (C : ℝ) * (∑ i ∈ s, |D i|) * ‖v‖ ^ 2 := by ring
 
+/- English proof (translation)
+Rewrite using `[opFst_apply, sliceCLM_add_eq]`. Use `conv_lhs => rw [show SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f = (SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f - f - lineSnd v f) + f + lineSnd v f by abel]`. Simplify using `only [map_add, SchwartzMap.add_apply]`.
+-/
 theorem opFst_add_decomp (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V', ℂ)) (y w : W) (x' v : V') :
     opFst T f (y + w, x' + v) =
       T (sliceCLM x' (SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f - f - lineSnd v f)) (y + w)
@@ -58,6 +73,21 @@ theorem opFst_add_decomp (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × 
       = (SchwartzMap.compSubConstCLM ℂ (-((0 : V), v)) f - f - lineSnd v f) + f + lineSnd v f by abel]
   simp only [map_add, SchwartzMap.add_apply]
 
+/- English proof (translation)
+Establish `hA : HasFDerivAt (fun q : W × V' => T (sliceCLM x' f) q.1) ((fderiv ℝ (T (sliceCLM x' f)) y).comp (ContinuousLinearMap.fst ℝ W V')) (y, x')` using `((T (sliceCLM x' f)).differentiableAt.hasFDerivAt).comp (y, x') hasFDerivAt_fst`. Rewrite `hA`, the goal using `[hasFDerivAt_iff_isLittleO_nhds_zero]`. Establish `hcont : Continuous fun z : W => dSndCLM T f (z, x')`. Rewrite using `[continuous_clm_apply]`. Introduce `v`.
+
+Conclude with `(T (sliceCLM x' (lineSnd v f))).continuous`. Establish `hB : (fun p : W × V' => dSndCLM T f (y + p.1, x') p.2 - dSndCLM T f (y, x') p.2) =o[𝓝 0] fun p => p`. Rewrite using `[Asymptotics.isLittleO_iff]`. Introduce `c hc`. Establish `ht : Tendsto (fun p : W × V' => dSndCLM T f (y + p.1, x')) (𝓝 0) (𝓝 (dSndCLM T f (y, x')))`.
+
+Establish `: Tendsto (fun p : W × V' => y + p.1) (𝓝 0) (𝓝 y)`. Use `(tendsto_const_nhds (x := y)).add ((continuous_fst.tendsto (0 : W × V')))` as an intermediate fact. Simplify using `using this`. Conclude with `(hcont.tendsto y).comp this`. Use `filter_upwards [(Metric.tendsto_nhds.mp ht) c hc] with p hp`.
+
+Rewrite using `[← ContinuousLinearMap.sub_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← dist_eq_norm]`. Conclude with `hp.le`. Conclude with `norm_snd_le p`.
+
+Take `⟨K, hK0, hK⟩` from `remainder_bound T f x'`. Establish `hC : (fun p : W × V' => T (sliceCLM x' (SchwartzMap.compSubConstCLM ℂ (-((0 : V), p.2)) f - f - lineSnd p.2 f)) (y + p.1)) =o[𝓝 0] fun p => p`. Establish `h1 : (fun p : W × V' => T (sliceCLM x' (SchwartzMap.compSubConstCLM ℂ (-((0 : V), p.2)) f - f - lineSnd p.2 f)) (y + p.1)) =O[𝓝 0] fun p : W × V' => ‖p‖ ^ 2`. Rewrite using `[Asymptotics.isBigO_iff]`. Use `⟨K, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [Metric.closedBall_mem_nhds (0 : W × V') one_pos] with p hp`. Rewrite `hp` using `[Metric.mem_closedBall, dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans_isLittleO (Asymptotics.isLittleO_norm_pow_id one_lt_two)`. Use `((hA.add hB).add hC).congr_left (fun p => ?_)` and prove the remaining obligations.
+
+Take `⟨w, v⟩` from `p`. Simplify using `only [Prod.mk_add_mk]`. Rewrite using `[opFst_add_decomp]`. Simplify using `only [opFst_apply, dSndCLM_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_fst', ContinuousLinearMap.coe_snd']`. Normalize the expressions using the abelian group laws.
+-/
 theorem hasFDerivAt_opFst [FiniteDimensional ℝ V'] (T : 𝓢(V, ℂ) →L[ℂ] 𝓢(W, E)) (f : 𝓢(V × V', ℂ))
     (y : W) (x' : V') :
     HasFDerivAt (opFst T f) ((fderiv ℝ (T (sliceCLM x' f)) y).comp (ContinuousLinearMap.fst ℝ W V')

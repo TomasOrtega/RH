@@ -4,6 +4,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.Mem.Col2.IdxEx
 
+/- English proof (translation)
+Unfold `Jat at hg`. Rewrite `hg` using `[if_pos hP]`. Unfold `lamYat`. Rewrite using `[if_pos hP]`. Use `split_ifs at hg`.
+
+Conclude with `hg.1`. Conclude with `hg.1`.
+-/
 theorem jat_le_stab_lamY {X : Fields} {Pr : Primes X} {R : Ranks} (sharp : Bool) (j : ℕ)
     (P : HeightOneSpectrum (𝓞 X.E)) (hP : P ∈ Pr.vGs) (g : AutY X R j) (hg : g ∈ Jat (Pr := Pr) sharp j P) :
     g ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) j P) := by
@@ -15,6 +20,15 @@ theorem jat_le_stab_lamY {X : Fields} {Pr : Primes X} {R : Ranks} (sharp : Bool)
   · exact hg.1
   · exact hg.1
 
+/- English proof (translation)
+Introduce `X Pr R sharp j P hP h hh g hg`. Take `⟨r, ⟨-, hr⟩, hrg⟩` from `hg`. Establish `e : (MulAut.conj h⁻¹).toMonoidHom r = h⁻¹ * r * h` using `by simp`. Establish `hr' : (MulAut.conj h⁻¹).toMonoidHom r ∈ Jat (Pr` using `Pr) sharp j P := hr`. Rewrite `hr'` using `[e]`.
+
+Establish `h1` using `jat_le_stab_lamY sharp j P hP _ hr'`. Establish `h2` using `mul_mem (mul_mem hh h1) (inv_mem hh)`. Establish `e2 : h * (h⁻¹ * r * h) * h⁻¹ = r` using `by group`. Rewrite `h2` using `[e2]`. Unfold `lamYat at h2`.
+
+Rewrite `h2` using `[if_pos hP]`. Establish `key : ∀ x : Sp X.E (R.N j), Loc.inX X.E (R.N j) (cOf R j) x ∈ LocE.lamY P (qOf P) (R.N j) (cOf R j) (fun i => i + 1) ↔ x ∈ stdAt X.E (R.N j) P` using `fun x => ⟨fun hx => by simpa only [GlobalTheory.CongLevel.resX_inX] using GlobalTheory.CongLevel.resX_mem P _ _ _ _ hx, GlobalTheory.CongLevel.inX_mem_lamY P _ _ _ x⟩`. Introduce `x`. Establish `h3` using `h2 (Loc.inX X.E (R.N j) (cOf R j) x)`. Rewrite `h3` using `[hrg x]`.
+
+Conclude with `(key _).symm.trans (h3.trans (key _))`.
+-/
 theorem prCat_le_GLint : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (sharp : Bool) (j : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), P ∈ Pr.vGs → ∀ h ∈ stabL X.E _ (lamYat (Pr := Pr) (R := R) j P), prCat (Pr := Pr) sharp j P h ≤ GLint X.E (R.N j) P := by
   intro X Pr R sharp j P hP h hh g hg
   obtain ⟨r, ⟨-, hr⟩, hrg⟩ := hg

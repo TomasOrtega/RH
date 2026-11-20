@@ -25,5 +25,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.MainNotions.StandardLattice Formalism.MainNotions.S Formalism.L2.DIV Formalism.L2.Indef Formalism.DivisionValues Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Cx
 open GlobalTheory.LiftRows
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MultEqTrace.multEq_of_trCusp | exact GlobalTheory.MultEqTrace.multEq_of_trCusp | (intros; apply GlobalTheory.MultEqTrace.multEq_of_trCusp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cuspidal_trace_multiplicity_given : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.GreenCuspidal → TRCusp → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.CuspMult.MultEq R := by
   first | exact @GlobalTheory.MultEqTrace.multEq_of_trCusp | exact GlobalTheory.MultEqTrace.multEq_of_trCusp | (intros; apply GlobalTheory.MultEqTrace.multEq_of_trCusp <;> assumption)

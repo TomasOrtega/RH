@@ -30,6 +30,11 @@ variable {H H' n V : Type} [Group H] [Group H'] [TopologicalSpace H] [Topologica
   [IsTopologicalGroup H] [SecondCountableTopology H] [LocallyCompactSpace H] [T2Space H]
   [IsTopologicalGroup H'] [SecondCountableTopology H'] [LocallyCompactSpace H'] [T2Space H']
 
+/- English proof (translation)
+Use `⟨comp_mem_ccMat hι h.mem, repOp_map e D' μ f' ▸ h.trace_self, fun U _ _ _ π h1 h2 h4 => ?_, fun s hs hT dt _ _ => ?_⟩` and prove the remaining obligations. Take `⟨π', rfl⟩ : ∃ π' : H' →* (U →L[ℂ] U), π = π'.comp (e : H →* H')` from `⟨π.comp (e.symm : H' →* H), MonoidHom.ext fun x => by simp⟩`. Rewrite using `[← repOp_map]`. Use `h.trace_other U π' ⟨fun g v => ?_, fun v => ?_⟩ ⟨h2.1, fun S hS => h2.2 S ⟨hS.1, fun g => hS.2 _⟩⟩ fun ⟨A, hA⟩ => h4 ⟨A, fun g => hA _⟩` and prove the remaining obligations. Simplify using `using h1.1 (e.symm g) v`.
+
+Simplify `(h1.2 v).comp (map_continuous e.symm)` using `[Function.comp_def]`. Conclude with `(hasOrbInt_map e rfl f' _).1.1 (h.orb_noncompact _ ((isRegSS_conj_iff ha hι s).2 hs) (mt (isCompact_cent_iff e s).1 hT) _)`.
+-/
 theorem isPCG_of_map (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {μ : Measure H} [μ.IsHaarMeasure]
     {D' : H' →* (V →L[ℂ] V)} {f' : H' → ℂ} (h : IsPCG ι' (μ.map e) D' f') :
     IsPCG ι μ (D'.comp (e : H →* H')) (f' ∘ e) := by
@@ -45,6 +50,9 @@ theorem isPCG_of_map (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹
   · exact (hasOrbInt_map e rfl f' _).1.1 (h.orb_noncompact _ ((isRegSS_conj_iff ha hι s).2 hs)
       (mt (isCompact_cent_iff e s).1 hT) _)
 
+/- English proof (translation)
+Use `h (dt.map (centEquiv e s rfl))` as an intermediate fact. Rewrite `this` using `[map_measureReal_apply (map_continuous _).measurable MeasurableSet.univ, preimage_univ]`. Conclude with `(hasOrbInt_map e rfl f' _).1.1 this`.
+-/
 theorem orb_of_map {μ : Measure H} [μ.IsHaarMeasure] {f' : H' → ℂ} {s : H} {c : ℂ}
     (h : ∀ (dt : Measure (cent (e s))) [dt.IsHaarMeasure] [dt.IsMulRightInvariant],
       HasOrbInt (μ.map e) (e s) dt f' (c / dt.real univ))
@@ -58,6 +66,9 @@ end General
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+The claim follows from `(M.ds ρ).1 IsPCG (ujMat (M.ε ρ)) (μ.map (frameEquiv M ρ)) (ujRep (M.ds ρ).2.2.1) f → IsPCG (matAt V ρ) μ (dsRep M ρ) (f ∘ frameEquiv M ρ) := haveI := (M.ds ρ).1 fun h => isPCG_of_map (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) h`.
+-/
 theorem isPCG_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ)))
     [μ.IsHaarMeasure] (f : Formalism.REAL.UJ (M.ε ρ) → ℂ) :
     haveI := (M.ds ρ).1
@@ -66,6 +77,9 @@ theorem isPCG_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch 
   haveI := (M.ds ρ).1
   fun h => isPCG_of_map (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) h
 
+/- English proof (translation)
+Establish `h2 : (frameEquiv M ρ y)⁻¹ * frameEquiv M ρ s * frameEquiv M ρ y = torusPt (M.ε ρ) θ`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Conclude with `Subtype.ext (Units.ext hy)`. Conclude with `orb_of_map (h _ ((isRegSS_conj_iff (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) s).2 hs) ((isCompact_cent_iff (frameEquiv M ρ) s).2 hT) _ θ h2) dt`.
+-/
 theorem orb_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ)))
     [μ.IsHaarMeasure] (f : Formalism.REAL.UJ (M.ε ρ) → ℂ)
     (h : ∀ s, IsRegSS (ujMat (M.ε ρ) s) → IsCompact (cent s : Set (Formalism.REAL.UJ (M.ε ρ))) →
@@ -84,6 +98,13 @@ theorem orb_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch D.
   exact orb_of_map (h _ ((isRegSS_conj_iff (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ) s).2 hs)
     ((isCompact_cent_iff (frameEquiv M ρ) s).2 hT) _ θ h2) dt
 
+/- English proof (translation)
+Establish `h1 : ∀ ρ, haveI` using `(M.ds ρ).1 ∃ f, IsPCG (matAt V ρ) (μa (placeOf D ρ)) (dsRep M ρ) f ∧ ∀ (s : GArch D.sp.cm.sig V.gram (placeOf D ρ)), IsRegSS (matAt V ρ s) → IsCompact (cent s : Set (GArch D.sp.cm.sig V.gram (placeOf D ρ))) → ∀ (y : GArch D.sp.cm.sig V.gram (placeOf D ρ)) (θ : Fin V.rank → ℝ), fr …`. Establish `e : M.lam ρ = fun a => (lam ρ a : ℝ)` using `funext (hlam ρ)`. Take `⟨f, hf⟩` from `hL V.rank hodd (M.ε ρ) (lam ρ) (hgap ρ) (M.H ρ) (M.σ ρ) (e ▸ M.ds ρ) ((μa (placeOf D ρ)).map (frameEquiv M ρ))`. Use `⟨f ∘ frameEquiv M ρ, isPCG_dsRep M ρ _ f hf.isPCG, fun s hs hT y θ hy dt _ _ => ?_⟩` and prove the remaining obligations. Conclude with `orb_dsRep M ρ _ f (by rw [e]; exact hf.2.2.2.2.2) s hs hT y θ hy dt`.
+
+Use `choose f hf using h1`. Set `p` to `Equiv.ofBijective _ (placeOf_bijective D)`. Establish `hp : ∀ ρ, Equiv.piCongrLeft (fun w => GArch D.sp.cm.sig V.gram w → ℂ) p f (placeOf D ρ) = f ρ` using `fun ρ => Equiv.piCongrLeft_apply_apply (fun w => GArch D.sp.cm.sig V.gram w → ℂ) p f ρ`. Use `⟨Equiv.piCongrLeft (fun w => GArch D.sp.cm.sig V.gram w → ℂ) p f, fun ρ => ?_, fun ρ => ?_⟩` and prove the remaining obligations. Conclude with `(hp ρ).symm ▸ (hf ρ).1`.
+
+Rewrite using `[hp ρ]`. Conclude with `(hf ρ).2`.
+-/
 theorem exists_testArch (hL : LocalPC) (M : DSModel V S) (lam : D.what₂.Tau → Fin V.rank → ℤ) (hodd : Odd V.rank)
     (hgap : ∀ ρ, GapG V.rank (lam ρ)) (hlam : ∀ ρ i, M.lam ρ i = lam ρ i)
     (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) [∀ w, (μa w).IsHaarMeasure] :
@@ -148,6 +169,11 @@ def ArchO (M : DSModel V S) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w))
     ∀ (dt : Measure (cent s)) [dt.IsHaarMeasure] [dt.IsMulRightInvariant],
     HasOrbInt (μa (placeOf D ρ)) s dt (fa (placeOf D ρ)) (conj (dsChar (M.ε ρ) (M.lam ρ) θ) / dt.real univ)
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `h1` using `h i j hij`. Establish `h2 : (r : ℤ) ≤ 100 * (r : ℤ) ^ 4`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `: (1 : ℤ) ≤ r` using `by exact_mod_cast hr`. Use polynomial arithmetic with `[pow_le_pow_left₀ (by positivity : (0:ℤ) ≤ 1) this 3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gap_of_gapG {r : ℕ} {lam : Fin r → ℤ} (h : GapG r lam) : Gap lam := by
   intro i j hij
   have h1 := h i j hij
@@ -158,6 +184,9 @@ theorem gap_of_gapG {r : ℕ} {lam : Fin r → ℤ} (h : GapG r lam) : Gap lam :
       nlinarith [pow_le_pow_left₀ (by positivity : (0:ℤ) ≤ 1) this 3]
   linarith
 
+/- English proof (translation)
+The claim follows from `(M.ds ρ).1 IsPCG (ujMat (M.ε ρ)) (μ.map (frameEquiv M ρ)) (ujRep (M.ds ρ).2.2.1) f → IsPCG (matAt V ρ) μ (dsRep M ρ) (f ∘ frameEquiv M ρ) := by exact ArchT.isPCG_dsRep M ρ μ f`.
+-/
 theorem isPCG_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ)))
     [μ.IsHaarMeasure] (f : Formalism.REAL.UJ (M.ε ρ) → ℂ) :
     haveI := (M.ds ρ).1
@@ -165,6 +194,9 @@ theorem isPCG_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch 
       IsPCG (matAt V ρ) μ (dsRep M ρ) (f ∘ frameEquiv M ρ) := by
   exact ArchT.isPCG_dsRep M ρ μ f
 
+/- English proof (translation)
+Conclude with `ArchT.orb_dsRep M ρ μ f h s hs hT y θ hy dt`.
+-/
 theorem orb_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ)))
     [μ.IsHaarMeasure] (f : Formalism.REAL.UJ (M.ε ρ) → ℂ)
     (h : ∀ s, IsRegSS (ujMat (M.ε ρ) s) → IsCompact (cent s : Set (Formalism.REAL.UJ (M.ε ρ))) →
@@ -179,6 +211,9 @@ theorem orb_dsRep (M : DSModel V S) (ρ : D.what₂.Tau) (μ : Measure (GArch D.
     HasOrbInt μ s dt (f ∘ frameEquiv M ρ) (conj (dsChar (M.ε ρ) (M.lam ρ) θ) / dt.real univ) := by
   exact ArchT.orb_dsRep M ρ μ f h s hs hT y θ hy dt
 
+/- English proof (translation)
+Conclude with `ArchT.exists_testArch hL M lam hodd hgap hlam μa`.
+-/
 theorem exists_testArch (hL : LocalPC) (M : DSModel V S) (lam : D.what₂.Tau → Fin V.rank → ℤ) (hodd : Odd V.rank)
     (hgap : ∀ ρ, GapG V.rank (lam ρ)) (hlam : ∀ ρ i, M.lam ρ i = lam ρ i)
     (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) [∀ w, (μa w).IsHaarMeasure] :
@@ -245,6 +280,21 @@ def TraceEqX : Prop :=
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V lam S M μa fa hodd hlam hM hμa hfa hO P ρ dt hdt`. Establish `hf` using `hfa ρ`. Use `(M.ds ρ).1` as an intermediate fact. Use `hμa (placeOf D ρ)` as an intermediate fact. Establish `hl : Formalism.QuantumDeterminants.IsHCParam (M.lam ρ)`.
+
+Take `⟨k, hk⟩` from `hodd`. Use `⟨fun a b hab => ?_, fun a => ⟨lam ρ a - k, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hM, hM]`. Conclude with `hlam ρ hab` after adjusting the coercions. Rewrite using `[hM, hk]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Phi, PhiReal]`. Use `split_ifs with hc`. Take `⟨hfin, y, θ, hbij, hexp, hconj⟩` from `GlobalTheory.T.compactRealPlace_torusClasses_signVectors V M ρ P hc`.
+
+Establish `hval : ∀ q : XSet P (placeOf D ρ).Completion V.gram, orbCls (J` using `V.gram) (μa (placeOf D ρ)) dt (fa (placeOf D ρ)) q = conj (dsChar (M.ε ρ) (M.lam ρ) (θ q)) / (dt.real univ : ℂ) := by`. Introduce `q`. Take `⟨hH, hR, hvol, hcpt⟩` from `GlobalTheory.T.centralizer_torusEllipticElement_realPlace V P ρ dt q.2.choose_spec.choose_spec.2`. Take `⟨g, hg⟩` from `hconj q`. Use `hO ρ _ (GlobalTheory.T.isRegularSemisimple_torusEllipticElement_realPlace V P ρ q.2.choose_spec.choose_spec.2) (hcpt.2 hc) g (θ q) hg (centMeas _ dt)` as an intermediate fact.
+
+Rewrite using `[orbCls, this.orbInt_eq, hvol]`. Establish `: Finite (XSet P (placeOf D ρ).Completion V.gram)` using `hfin.to_subtype`. Establish `hlam' : M.lam ρ = fun a => ((lam ρ a : ℤ) : ℝ)` using `funext (hM ρ)`. Establish `hinj : Function.Injective (cxRoots (embOverOf D ρ).1 P)`. Use `P.2.2.1.separable.map (f := (embOverOf D ρ).1)` as an intermediate fact.
+
+Rewrite `this` using `[cxRoots_spec]`. Conclude with `Polynomial.separable_prod_X_sub_C_iff.1 this`. Establish `h2` using `GlobalTheory.T.finsum_discreteSeriesCharacter_eq_weylCharacter V.rank (M.ε ρ) (lam ρ) (cxRoots (embOverOf D ρ).1 P) _ y θ hodd hinj hbij hexp`. Rewrite using `[finsum_congr hval, hlam', ← h2]`. Use `Fintype.ofFinite (XSet P (placeOf D ρ).Completion V.gram)` as an intermediate fact.
+
+Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum, Finset.sum_div]`. Use `(finsum_congr fun q => ?_).trans finsum_zero` and prove the remaining obligations. Take `⟨hH, hR, hvol, hcpt⟩` from `GlobalTheory.T.centralizer_torusEllipticElement_realPlace V P ρ dt q.2.choose_spec.choose_spec.2`. Conclude with `(hf.orb_noncompact _ (GlobalTheory.T.isRegularSemisimple_torusEllipticElement_realPlace V P ρ q.2.choose_spec.choose_spec.2) (mt hcpt.1 hc) _).orbInt_eq`.
+-/
 theorem realStableX : RealStableX := by
   intro D V lam S M μa fa hodd hlam hM hμa hfa hO P ρ dt hdt
   have hf := hfa ρ
@@ -279,6 +329,13 @@ theorem realStableX : RealStableX := by
     obtain ⟨hH, hR, hvol, hcpt⟩ := GlobalTheory.T.centralizer_torusEllipticElement_realPlace V P ρ dt q.2.choose_spec.choose_spec.2
     exact (hf.orb_noncompact _ (GlobalTheory.T.isRegularSemisimple_torusEllipticElement_realPlace V P ρ q.2.choose_spec.choose_spec.2) (mt hcpt.1 hc) _).orbInt_eq
 
+/- English proof (translation)
+Introduce `hE hP hR D V lam S M T U μa μf μ _ _ fa ff hT hO dta dtf dt hdt`. Take `⟨hOK, hfin, -, hint⟩` from `hP D V lam S M T U μa μf μ fa ff hT dta dtf dt hdt`. Establish `heq : ∀ P, GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb V μa μf fa ff P (dta P) (dtf P) (dt P) = GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term V lam μf ff P (dta P) (dtf P) (dt P)`. Introduce `P`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term`.
+
+Use `congr 1`. Rewrite using `[← (Equiv.ofBijective _ (GlobalTheory.AdelicU.placeOf_bijective D)).prod_comp]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Conclude with `hR D V lam S M μa fa hT.1 (fun ρ => GlobalTheory.TrMult.strictAnti_of_gap hT.1 (hT.2.1 ρ)) hT.2.2.1 hT.2.2.2.2.1.1 hT.2.2.2.2.2.1 hO P ρ (dta P (GlobalTheory.AdelicU.placeOf D ρ)) ((hdt P).1 _)`. Establish `hfun : (fun P => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb V μa μf fa ff P (dta P) (dtf P) (dt P)) = fun P => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term V lam μf ff P (dta P) (dtf P) (dt P)` using `funext heq`.
+
+Use `⟨fun P => (hOK P).1, hfun ▸ hfin, ?_⟩` and prove the remaining obligations. Establish `h1` using `hE D V lam S M T U μa μf μ fa ff hT`. Rewrite `h1` using `[hint, hfun]`. Conclude with `h1`.
+-/
 theorem geomExpansionX_of_parts : GlobalTheory.TrMult.EllTraceX → GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPartX → RealStableX →
     GeomExpansionX := by
   intro hE hP hR D V lam S M T U μa μf μ _ _ fa ff hT hO dta dtf dt hdt
@@ -298,6 +355,17 @@ theorem geomExpansionX_of_parts : GlobalTheory.TrMult.EllTraceX → GlobalTheory
   rw [hint, hfun] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `hG D V lam S M T U μa μf μ _ _ fa ff hTD hO V' hr S' M' hlam' j hj μa' μ' _ _ fa' hR' hA' hO'`. Take `⟨-, hTU⟩` from `GlobalTheory.T.testFunctions_transport_localLatticeIsometries D V V' hr j hj`. Take `⟨T', U', hNF, hTF⟩` from `hTU T U`. Take `⟨hodd, hgap, hMl, hnf, hRP, hTA, hTFin⟩` from `hTD`. Use `set lam' : D.what₂.Tau → Fin V'.rank → ℤ := fun ρ i => lam ρ (i.cast hr) with hlamdef`.
+
+Establish `hTD' : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.IsTestDataX V' lam' M' T' U' μa' (fun v => (μf v).map (j v)) μ' fa' (transfer j ff)`. Use `⟨hr ▸ hodd, ?_, hlam', hNF hnf, hR', hA', hTF μf ff hTFin⟩` and prove the remaining obligations. Introduce `ρ i k hik`. Establish `h` using `hgap ρ (i.cast hr) (k.cast hr) (by simpa using hik)`. Simplify `h` using `[hr, lam']`.
+
+Use `choose dta dtf dt hdt using fun (r : ℕ) (P : PPol D.sp.cm.sig r) => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.exists_isTorusMeas P`. Take `⟨hFin, -, hTr⟩` from `hG D V lam S M T U μa μf μ fa ff ⟨hodd, hgap, hMl, hnf, hRP, hTA, hTFin⟩ hO (dta _) (dtf _) (dt _) (hdt _)`. Take `⟨hFin', -, hTr'⟩` from `hG D V' lam' S' M' T' U' μa' _ μ' fa' _ hTD' hO' (dta _) (dtf _) (dt _) (hdt _)`. Establish `gen : ∀ (r : ℕ) (h : r = V.rank), (∀ (P : PPol D.sp.cm.sig r) v, PhiOK (J` using `V.gram) (μf v) (dtf r P v) (ff v)) ∧ ∑ᶠ P : PPol D.sp.cm.sig r, ((GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.torVol P (dt r P)).toReal : ℂ) * (∏ᶠ v, Phi (J := V.gram) (μf v) (dtf r P v) (ff v)) * ∏ ρ : D.what₂.Tau, PhiReal P (embOverOf D ρ) (fun i => lam ρ (i.cas …`. Introduce `r h`.
+
+Substitute `h` using the available equality. Conclude with `⟨fun P v => (hFin P).2.1 v, rfl⟩`. Use `⟨_, hTr, ?_⟩` and prove the remaining obligations. Use `hTr' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← (gen _ hr).2]`.
+
+Use `finsum_congr fun P => ?_` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term`. Use `congr 2`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Apply the tactic sequence `exact (GlobalTheory.T.stableOrbitalIntegral_preserved_latticeIsometry D V V' _ P v (j v) (hj v) (μf v) (dtf _ P v) (ff v) (hRP.2.1 v) ((hdt _ P).2.1 v) ((gen _ hr).1 P v) ((hFin' P).2.1 v)).symm`.
+-/
 theorem traceEqX_of_geomExpansionX : GeomExpansionX → TraceEqX := by
   intro hG D V lam S M T U μa μf μ _ _ fa ff hTD hO V' hr S' M' hlam' j hj μa' μ' _ _ fa' hR' hA' hO'
   obtain ⟨-, hTU⟩ := GlobalTheory.T.testFunctions_transport_localLatticeIsometries D V V' hr j hj
@@ -363,6 +431,45 @@ def TRCusp' : Prop :=
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D V lam S M T hodd hgap hlam hnf V' hr S' M' hlam' j hj Φ hΦ μ _ _ μ' _ _ W _ _ σ hirr hadm htv`. Take `⟨U, hU⟩` from `GlobalTheory.T.exists_splitPlaceHermitianSpace_notMem_finset D V T.S`. Set `μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)` to `fun v => haarLoc D.sp.cm.sig V.gram (frameLat V) v`. Establish `hμf : ∀ v, (μf v).IsHaarMeasure` using `fun v => inferInstance`. Establish `h1 : ∀ᶠ v in cofinite, μf v (Kv V v) = 1` using `Eventually.of_forall fun v => haarLoc_stabLoc _ _ _ v`.
+
+Establish `h1K : ∀ v, μf v (Kv V v) = 1` using `fun v => haarLoc_stabLoc _ _ _ v`. Use `clear_value μf`. Take `⟨⟨μa, hμa⟩, ν, hν⟩` from `GlobalTheory.T.exists_restrictedProduct_haar_given_finiteFactors D V μ μf hμf h1`. Take `⟨hjK, hTU⟩` from `GlobalTheory.T.testFunctions_transport_localLatticeIsometries D V V' hr j hj`. Take `⟨T', U', hNF', hTF'⟩` from `hTU T U`.
+
+Set `μf' : ∀ v, Measure (GLoc D.sp.cm.sig V'.gram v)` to `fun v => (μf v).map (j v)`. Establish `hμf' : ∀ v, (μf' v).IsHaarMeasure` using `fun v => (j v).isHaarMeasure_map (μf v)`. Establish `h1' : ∀ᶠ v in cofinite, μf' v (Kv V' v) = 1` using `Eventually.of_forall fun v => by`. Establish `hm : MeasurableSet (Kv V' v : Set (GLoc D.sp.cm.sig V'.gram v))` using `(isOpen_stabLoc _ _ _ v).measurableSet`. Rewrite using `[show μf' v (Kv V' v) = μf v ((j v) ⁻¹' (Kv V' v)) from Measure.map_apply (j v).continuous.measurable hm, show (j v) ⁻¹' (Kv V' v : Set _) = Kv V v from Set.ext fun g => hjK v g]`.
+
+Conclude with `h1K v`. Take `⟨⟨μa', hμa'⟩, -⟩` from `GlobalTheory.T.exists_restrictedProduct_haar_given_finiteFactors D V' μ' μf' hμf' h1'`. Use `clear hμf'`. Take `⟨hfinFn, hνmap⟩` from `GlobalTheory.T.transport_pureTensors_productMeasure_finiteAdelic D V V' j hjK Φ hΦ`. Establish `hν'` using `hνmap μf ν hν`.
+
+Set `lam' : D.what₂.Tau → Fin V'.rank → ℤ` to `fun ρ i => lam ρ (i.cast hr)`. Establish `hgap' : ∀ ρ, GapG V'.rank (lam' ρ)` using `fun ρ i k hik => by`. Use `hgap ρ (i.cast hr) (k.cast hr) (by simpa using hik)` as an intermediate fact. Rewrite using `[hr]`. Conclude with `this`.
+
+Establish `hodd' : Odd V'.rank` using `hr ▸ hodd`. Take `⟨fa, hfa, hfo⟩` from `haveI := (isRestrictedProd_iff.1 hμa).1`. Use `exists_testArch hL M lam hodd hgap hlam μa`. Take `⟨fa', hfa', hfo'⟩` from `haveI := (isRestrictedProd_iff.1 hμa').1`. Use `exists_testArch hL M' lam' hodd' hgap' hlam' μa'`.
+
+Take `⟨K, hKo, hKc, hK⟩` from `GlobalTheory.T.exists_openCompact_level_sphericalOffTypes D V T U`. Take `⟨hfin, hfam⟩` from `hF D V S M μ`. Take `⟨hfin', hfam'⟩` from `hF D V' S' M' μ'`. Take `⟨n₁, W₁, _, _, σ₁, hσ₁, hcov₁⟩` from `hfam K hKo`. Set `K' : Subgroup (GfC V')` to `K.map Φ.toMulEquiv.toMonoidHom`.
+
+Establish `hK'coe : (K' : Set (GfC V')) = Φ '' K` using `Subgroup.coe_map _ _`. Establish `hK'o : IsOpen (K' : Set (GfC V'))` using `hK'coe ▸ Φ.toHomeomorph.isOpenMap _ hKo`. Establish `hK'c : IsCompact (K' : Set (GfC V'))` using `hK'coe ▸ hKc.image Φ.continuous`. Take `⟨n₂, W₂, _, _, σ₂, hσ₂, hcov₂⟩` from `hfam' K' hK'o`. Set `B : ∀ i, Representation ℂ (GfC V) (W₂ i)` to `fun i => (σ₂ i).comp Φ.symm.symm.toMulEquiv.toMonoidHom`.
+
+Take `⟨m, Ws, _, _, τ, hne, hA, hB, hmem, j₀, hj₀⟩` from `exists_family σ₁ B σ`. Establish `hBi : ∀ i, (B i).IsIrreducible ∧ IsAdmissible (B i)` using `fun i =>`. Establish `h` using `GlobalTheory.T.representation_transport_topGroupEquiv _ _ Φ.symm (ν.map Φ) (W₂ i) (σ₂ i)`. Use the proof step `⟨h.1 (hσ₂.1 i), h.2.1 (hσ₂.2.1 i)⟩`. Establish `hτ : ∀ i, (τ i).IsIrreducible ∧ IsAdmissible (τ i)` using `hmem (fun X _ _ ρ => ρ.IsIrreducible ∧ IsAdmissible ρ) (fun i => ⟨hσ₁.1 i, hσ₁.2.1 i⟩) hBi ⟨hirr, hadm⟩`.
+
+Set `τ' : ∀ i, Representation ℂ (GfC V') (Ws i)` to `fun i => (τ i).comp Φ.symm.toMulEquiv.toMonoidHom`. Establish `hfamτ : IsIrrFam τ` using `⟨fun i => (hτ i).1, fun i => (hτ i).2, hne⟩`. Establish `hfamτ' : IsIrrFam τ'`. Use `⟨fun i => (GlobalTheory.T.representation_transport_topGroupEquiv _ _ Φ ν _ (τ i)).1 (hτ i).1, fun i => (GlobalTheory.T.representation_transport_topGroupEquiv _ _ Φ ν _ (τ i)).2.1 (hτ i).2, fun i k hik => ⟨fun e => (hne i k hik).false ?_⟩⟩` and prove the remaining obligations. Conclude with `(equivCompSymm (τ i) Φ.toMulEquiv).trans ((equivComp e Φ.toMulEquiv.toMonoidHom).trans (equivCompSymm (τ k) Φ.toMulEquiv).symm)`.
+
+Establish `cov : ∀ ff, IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff → (∀ k ∈ K, ∀ g, finFn V ff (k * g) = finFn V ff g) → ∀ (X : Type) [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GfC V) X), ρ.IsIrreducible → IsAdmissible ρ → mCuspDS μ ρ M ≠ 0 → ¬ GlobalTheory.IndefiniteRowSideFul …`. Introduce `ff hffin hKinv X _ _ ρ hi ha hm hz`. Use `haveI := hν.1`. Take `⟨x, hx0, hx⟩` from `(GlobalTheory.T.admissibleRep_hasTrace_finiteAdelicPureTensorFunction D V ν ff hffin X ρ ha).2 K hKo hKc hKinv hz`. Take `⟨i, ⟨e⟩⟩` from `hcov₁ X ρ hi ha hm ⟨x, hx0, hx⟩`.
+
+Take `⟨k, ⟨e'⟩⟩` from `hA i`. Conclude with `⟨k, ⟨e.trans e'⟩⟩`. Establish `cov' : ∀ ff, IsFinFamily D.sp.cm.sig V'.gram (frameLat V') (transfer j ff) → (∀ k ∈ K, ∀ g, finFn V ff (k * g) = finFn V ff g) → ∀ (X : Type) [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GfC V') X), ρ.IsIrreducible → IsAdmissible ρ → mCuspDS μ' ρ M' ≠ 0 → ¬ GlobalTheory.I …`. Introduce `ff hffin hKinv X _ _ ρ hi ha hm hz`. Use `haveI := hν'.1`.
+
+Establish `hKinv' : ∀ k ∈ K', ∀ g, finFn V' (transfer j ff) (k * g) = finFn V' (transfer j ff) g`. Introduce `k hk g`. Take `⟨k₀, hk₀, rfl⟩` from `Subgroup.mem_map.1 hk`. Take `⟨g₀, rfl⟩` from `Φ.surjective g`. Express the relevant statement in the definitionally equal form `finFn V' (transfer j ff) (Φ k₀ * Φ g₀) = _`.
+
+Rewrite using `[← map_mul, hfinFn, hfinFn, hKinv k₀ hk₀]`. Take `⟨x, hx0, hx⟩` from `(GlobalTheory.T.admissibleRep_hasTrace_finiteAdelicPureTensorFunction D V' (ν.map Φ) (transfer j ff) hffin X ρ ha).2 K' hK'o hK'c hKinv' hz`. Take `⟨i, ⟨e⟩⟩` from `hcov₂ X ρ hi ha hm ⟨x, hx0, hx⟩`. Take `⟨k, ⟨e'⟩⟩` from `hB i`. Conclude with `⟨k, ⟨e.trans ((equivCompSymm' (σ₂ i) Φ).trans (equivComp e' Φ.symm.toMulEquiv.toMonoidHom))⟩⟩`.
+
+Set `a : Fin m → ℂ` to `fun i => ((mCuspDS μ (τ i) M).toNat : ℂ) - ((mCuspDS μ' (τ' i) M').toNat : ℂ)`. Establish `key : ∀ ff, IsTestFin T U μf ff → SphRest T U ff → ∀ c : Fin m → ℂ, (∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace ν (τ i) (finFn V ff) (c i)) → ∑ i, a i * c i = 0`. Introduce `ff hff hsph c hc`. Take `⟨hffin, hKinv⟩` from `hK μf hμf ff hff hsph`. Use `clear hμf`.
+
+Establish `htd : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.IsTestDataX V lam M T U μa μf μ fa ff` using `⟨hodd, fun ρ => gap_of_gapG (hgap ρ), hlam, hnf, hμa, hfa, hff⟩`. Establish `h₁` using `hT D V lam S M T U μa μf μ fa ff htd ν hν m Ws τ hfamτ (cov ff hffin hKinv) c hc`. Establish `hff'` using `hTF' μf ff hff`. Establish `htd' : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.IsTestDataX V' lam' M' T' U' μa' μf' μ' fa' (transfer j ff)` using `⟨hodd', fun ρ => gap_of_gapG (hgap' ρ), hlam', hNF' hnf, hμa', hfa', hff'⟩`. Establish `hc' : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasTrace (ν.map Φ) (τ' i) (finFn V' (transfer j ff)) (c i)`.
+
+Introduce `i`. Take `⟨A, hA, hA'⟩` from `hc i`. Conclude with `⟨A, ((GlobalTheory.T.representation_transport_topGroupEquiv _ _ Φ ν _ (τ i)).2.2 (finFn V ff) (finFn V' (transfer j ff)) (hfinFn ff) A).2 hA, hA'⟩`. Establish `h₂` using `hT D V' lam' S' M' T' U' μa' μf' μ' fa' (transfer j ff) htd' (ν.map Φ) hν' m Ws τ' hfamτ' (cov' ff hff'.isFinFamily hKinv) c hc'`. Take `⟨c₀, hc₁, hc₂⟩` from `hE D V lam S M T U μa μf μ fa ff htd hfo V' hr S' M' hlam' j hj μa' μ' fa' hμa' hfa' hfo'`.
+
+Establish `e : ∑ i, ((mCuspDS μ (τ i) M).toNat : ℂ) * c i = ∑ i, ((mCuspDS μ' (τ' i) M').toNat : ℂ) * c i` using `h₁.2.symm.trans (hc₁.2.trans (hc₂.2.symm.trans h₂.2))`. Simplify using `only [a, sub_mul, Finset.sum_sub_distrib, e, sub_self]`. Take `⟨hm₁, hm₂, htv₀⟩` from `hj₀ (fun X _ _ ρ => mCuspDS μ ρ M = mCuspDS μ σ M ∧ mCuspDS μ' (ρ.comp Φ.symm.toMulEquiv.toMonoidHom) M' = mCuspDS μ' (σ.comp Φ.symm.toMulEquiv.toMonoidHom) M' ∧ HasTypeVec T ρ) ⟨rfl, rfl, htv⟩`. Establish `ha` using `hS D V T U hU μf hμf h1 ν hν m Ws τ hfamτ a key j₀ htv₀`. Establish `hnat : (mCuspDS μ σ M).toNat = (mCuspDS μ' (σ.comp Φ.symm.toMulEquiv.toMonoidHom) M').toNat`.
+
+Establish `: ((mCuspDS μ (τ j₀) M).toNat : ℂ) = ((mCuspDS μ' (τ' j₀) M').toNat : ℂ)` using `sub_eq_zero.1 ha`. Rewrite using `[← hm₁, ← hm₂]`. Conclude with `this` after adjusting the coercions. Establish `hσ'` using `GlobalTheory.T.representation_transport_topGroupEquiv _ _ Φ ν W σ`. Rewrite using `[← Cardinal.cast_toNat_of_lt_aleph0 (hfin W σ hirr hadm), ← Cardinal.cast_toNat_of_lt_aleph0 (hfin' W _ (hσ'.1 hirr) (hσ'.2.1 hadm)), hnat]`.
+-/
 theorem trCusp'_of_steps (hL : LocalPC) (hF : SpecFin) (hT : GlobalTheory.TrMult.SpecTraceX) (hS : Separation)
     (hE : TraceEqX) : TRCusp' := by
   intro D V lam S M T hodd hgap hlam hnf V' hr S' M' hlam' j hj Φ hΦ μ _ _ μ' _ _ W _ _ σ hirr hadm htv
@@ -499,6 +606,19 @@ noncomputable section
 
 namespace GlobalTheory.PsCo.Pc
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG i M₀`. Establish `hY : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), Nat.zero_min]`. Simplify using `[Ranks.rankY]`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`.
+
+Establish `key : ∀ ρ (n : ℕ), (((⌊Formalism.L2.NTheta.lamAt (D.hc ρ) n⌋ : ℤ) : ℚ)) = Formalism.L2.NTheta.lamAt (D.hc ρ) n`. Introduce `ρ n`. Take `⟨z, hz⟩` from `Formalism.L2.NTheta.lamAt_int (D.hc ρ) n`. Rewrite using `[hz, Int.floor_intCast]`. Establish `keyR : ∀ ρ (n : ℕ), (((⌊Formalism.L2.NTheta.lamAt (D.hc ρ) n⌋ : ℤ) : ℝ)) = ((Formalism.L2.NTheta.lamAt (D.hc ρ) n : ℚ) : ℝ)`.
+
+Introduce `ρ n`. Take `⟨z, hz⟩` from `Formalism.L2.NTheta.lamAt_int (D.hc ρ) n`. Rewrite using `[hz, Int.floor_intCast, Rat.cast_intCast]`. Use `⟨hW.trans hY.symm, fun ρ a => ⌊Formalism.L2.NTheta.lamAt (D.hc ρ) (a : ℕ)⌋, hY ▸ Formalism.L2.NTheta.odd_r D.R, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ a b hab`.
+
+Establish `hb : (b : ℕ) < D.R.r` using `lt_of_lt_of_eq b.2 hY`. Establish `h1` using `hG.gapR ρ a (by omega)`. Rewrite `h1` using `[← hab]`. Establish `: 100 * ((Yc D 0).rank : ℚ) ^ 4 ≤ ((⌊Formalism.L2.NTheta.lamAt (D.hc ρ) (a : ℕ)⌋ - ⌊Formalism.L2.NTheta.lamAt (D.hc ρ) (b : ℕ)⌋ : ℤ) : ℚ)`. Establish `hYq : ((Yc D 0).rank : ℚ) = (D.R.r : ℚ)` using `by exact_mod_cast hY`.
+
+Use `push_cast`. Rewrite using `[key, key, hYq]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Introduce `ρ a`.
+
+Rewrite using `[enum_fst (M₀.enum ρ) (fun a : Fin (Yc D 0).rank => Formalism.L2.NTheta.lamAt (D.hc ρ) a) (lamAt_anti_fin _ hY.le) (parA_fst D ρ hY) a, keyR]`. Introduce `ρ a`. Rewrite using `[enum_fst ((R.MW i (sg0 D A)).enum ρ) (fun a : Fin (Wc D i).rank => Formalism.L2.NTheta.lamAt (D.hc ρ) a) (lamAt_anti_fin _ hW.le) (parAt_fst R i ρ hW) a]`. Conclude with `(keyR ρ (a : ℕ)).symm`.
+-/
 theorem params_match' : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → ∀ (i : Fin D.R.m) (M₀ : DSModel (Yc D 0) (parA (Ptw D) 0)), ∃ (hr : (Wc D i).rank = (Yc D 0).rank) (lam : D.what₂.Tau → Fin (Yc D 0).rank → ℤ), Odd (Yc D 0).rank ∧ (∀ ρ, GapG (Yc D 0).rank (lam ρ)) ∧ (∀ ρ a, M₀.lam ρ a = lam ρ a) ∧ ∀ ρ a, (R.MW i (sg0 D A)).lam ρ a = lam ρ (a.cast hr) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG i M₀
   have hY : (Yc D 0).rank = D.R.r := by
@@ -534,6 +654,13 @@ theorem params_match' : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : T
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hRD hHC hDM hGC hTR D G _ _ Pl0 T A Ks _ _ _ R F hG`. Introduce `i M₀ j Φ hΦ W _ _ σ hirr hadm hgood`. Take `⟨Ty, hNF, hTV⟩` from `GlobalTheory.T.exists_typeVector_of_good_level_representation hGC R F hG W σ hadm hgood`. Apply the tactic sequence `obtain ⟨jl, Φ₀, b, hjl, hΦ₀, hb⟩ := GlobalTheory.T.exists_localIsometries_innerAut_adelicFrameIsometry R F hG i j Φ hΦ`. Take `⟨hr, lam, hodd, hgap, hM₀, hMW⟩` from `params_match' R F hG i M₀`.
+
+Establish `hinf : IsInfFam R.θ` using `hG.core.models.inf`. Set `μ : Measure (GA D (Yc D 0))` to `Measure.haar`. Set `μ' : Measure (GA D (Wc D i))` to `Measure.haar`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D _ μ inferInstance`. Use `haveI : μ'.IsMulRightInvariant := GlobalTheory.T.isMulRightInvariant_haar_adelicUnitaryGroup_hermitianSpace D _ μ' inferInstance`.
+
+Establish `hadm' : IsAdmissible (σ.comp Φ.symm.toMulEquiv.toMonoidHom)` using `GlobalTheory.CuspMult.isAdmissible_comp_equiv σ Φ.symm hadm`. Rewrite using `[GlobalTheory.T.cuspidalMultiplicity_eq_discreteSeriesModel_maps hRD hHC hDM D R.θ hinf (Yc D 0) _ M₀ μ W σ hadm.1, GlobalTheory.T.cuspidalMultiplicity_eq_discreteSeriesModel_maps hRD hHC hDM D R.θ hinf (Wc D i) _ (R.MW i (sg0 D A)) μ' W _ hadm'.1, hTR D (Yc D 0) lam _ M₀ Ty hodd …`. Conclude with `((mDS_congr (GlobalTheory.MultEqTrace.conjEquiv σ Φ.toMulEquiv Φ₀.toMulEquiv b hb)).2).symm`.
+-/
 theorem multEq_of_trCusp' : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.GreenCuspidal → TRCusp' → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.CuspMult.MultEq R := by
   intro hRD hHC hDM hGC hTR D G _ _ Pl0 T A Ks _ _ _ R F hG
   intro i M₀ j Φ hΦ W _ _ σ hirr hadm hgood
@@ -552,6 +679,9 @@ theorem multEq_of_trCusp' : GlobalTheory.Published.CuspRapidDecay → GlobalTheo
     hTR D (Yc D 0) lam _ M₀ Ty hodd hgap hM₀ hNF (Wc D i) hr _ (R.MW i (sg0 D A)) hMW jl hjl Φ₀ hΦ₀ μ μ' W σ hirr hadm hTV]
   exact ((mDS_congr (GlobalTheory.MultEqTrace.conjEquiv σ Φ.toMulEquiv Φ₀.toMulEquiv b hb)).2).symm
 
+/- English proof (translation)
+Introduce `hL rd hf dm gc hS hSep hE hP D G _ _ Pl0 T A Ks _ _ _ R F hG`. Conclude with `multEq_of_trCusp' rd hf dm gc (trCusp'_of_steps hL (GlobalTheory.T.cuspidal_spectrum_finiteness_of_decay_harishChandra rd hf dm) hS hSep (traceEqX_of_geomExpansionX (geomExpansionX_of_parts hE hP realStableX))) R F hG`.
+-/
 theorem multEq_of_sides : LocalPC → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DixmierMalliavinFactorisation → GlobalTheory.Published.GreenCuspidal → SpecTraceX → Separation → EllTraceX → GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPartX → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → GlobalTheory.CuspMult.MultEq R := by
   intro hL rd hf dm gc hS hSep hE hP D G _ _ Pl0 T A Ks _ _ _ R F hG
   exact multEq_of_trCusp' rd hf dm gc (trCusp'_of_steps hL (GlobalTheory.T.cuspidal_spectrum_finiteness_of_decay_harishChandra rd hf dm) hS hSep

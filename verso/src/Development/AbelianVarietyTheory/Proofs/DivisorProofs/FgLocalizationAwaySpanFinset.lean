@@ -4,6 +4,27 @@ namespace GlobalTheory
 
 open Submodule
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hN`. Establish `hA : ∀ (c : R) (z : A), algebraMap A A' (c • z) = algebraMap R A' c * algebraMap A A' z`. Introduce `c z`. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Establish `hsurj : ∀ n : A', ∃ e : A, ∃ k : ℕ, n * algebraMap R A' g ^ k = algebraMap A A' e`.
+
+Introduce `n`. Take `⟨k, e, h⟩` from `IsLocalization.Away.surj (algebraMap R A g) n`. Conclude with `⟨e, k, by rw [IsScalarTower.algebraMap_apply R A A']; exact h⟩`. Use `choose e k he using hsurj`. Use `⟨S.image e, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ y ∈ Submodule.span R' (S : Set A'), ∃ m : ℕ, ∃ z ∈ Submodule.span R ((S.image e : Finset A) : Set A), algebraMap A A' z = algebraMap R A' g ^ m * y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Use `⟨k x, e x, Submodule.subset_span ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Finset.coe_image]`. Conclude with `Set.mem_image_of_mem e hx`. Rewrite using `[← he, mul_comm]`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨m1, z1, hz1, h1⟩` from `hx`. Take `⟨m2, z2, hz2, h2⟩` from `hy`. Use `⟨m1 + m2, g ^ m2 • z1 + g ^ m1 • z2, add_mem (smul_mem _ _ hz1) (smul_mem _ _ hz2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hA, hA, h1, h2, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `smul r' x _ hx`. Take `⟨m, z, hz, h⟩` from `hx`. Take `⟨l, r, hr⟩` from `IsLocalization.Away.surj g r'`. Use `⟨m + l, r • z, smul_mem _ _ hz, ?_⟩` and prove the remaining obligations. Establish `hr' : algebraMap R A' r = algebraMap R' A' r' * algebraMap R A' g ^ l`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply R R' A', ← hr, map_mul, map_pow, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[hA, h, Algebra.smul_def, hr']`. Expand and normalize the polynomial expressions, which then agree. Introduce `b hb`. Take `⟨m, z, hz, h⟩` from `key _ hb`.
+
+Establish `h0 : algebraMap A A' (z - algebraMap R A g ^ m * b) = 0`. Rewrite using `[map_sub, h, map_mul, map_pow, ← IsScalarTower.algebraMap_apply, sub_self]`. Take `⟨⟨x, hx⟩, hc⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (algebraMap R A g)) A' _).1 h0`. Take `⟨c, rfl⟩` from `Submonoid.mem_powers_iff _ _ |>.1 hx`. Use `⟨c + m, ?_⟩` and prove the remaining obligations.
+
+Establish `hc' : algebraMap R A g ^ c * (z - algebraMap R A g ^ m * b) = 0` using `hc`. Establish `: algebraMap R A g ^ (c + m) * b = g ^ c • z`. Rewrite using `[Algebra.smul_def, map_pow]`. Take the linear combination `-hc'`. Rewrite using `[this]`.
+
+Conclude with `smul_mem _ _ hz`.
+-/
 theorem fg_localizationAway_span_finset
     {R A R' A' : Type} [CommRing R] [CommRing A] [CommRing R'] [CommRing A']
     [Algebra R A] [Algebra R R'] [Algebra R' A'] [Algebra A A'] [Algebra R A']

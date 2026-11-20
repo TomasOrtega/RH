@@ -9,11 +9,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LoopVol
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.HidaSetting.hJ`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+-/
 private theorem hJ_smul_right_flag_measures {n : ℕ} (ε : Fin n → Bool) (c : ℂ) (x y : Fin n → ℂ) :
     Formalism.L2.SG.HidaSetting.hJ ε x (c • y) = c * Formalism.L2.SG.HidaSetting.hJ ε x y := by
   unfold Formalism.L2.SG.HidaSetting.hJ
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `D X u' w γ s y τ q p hpq`. Take `⟨pq, hp⟩` from `p`. Take `⟨qq, hq⟩` from `q`. Simplify using `only at hpq`. Substitute `hpq` using the available equality.
+
+Establish `hconj : s⁻¹ * (s * y * s⁻¹) * s = y` using `by group`. Establish `hab : pq.1.val < pq.2.val` using `hp.1`. Establish `hbr : pq.2.val ≤ D.R.rS` using `Nat.lt_succ_iff.mp pq.2.isLt`. Establish `hrd : (D.host.rdE : ℂ) ≠ 0`. Establish `h1` using `GlobalTheory.RealPlaces.one_le_rdE D`.
+
+Conclude with `Complex.ofReal_ne_zero.mpr (by linarith)`. Unfold `GlobalTheory.LoopVol.ratCoord Formalism.L2.SG.RealObj.stCoord`. Rewrite using `[hconj]`. Unfold `Formalism.L2.SG.RealObj.frm Formalism.L2.SG.RealObj.famSc`. Simplify using `only [Complex.ofReal_one, one_pow, inv_one, one_smul, Matrix.mulVec_smul, hJ_smul_right_flag_measures]`.
+
+Establish `hsplit : D.R.rS - pq.1.val = (pq.2.val - pq.1.val) + (D.R.rS - pq.2.val)` using `by omega`. Rewrite using `[hsplit, pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ratCoord_conj_eq_stCoord : ∀ (D : D7) (X : HidaSetting D) (u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (γ s y : X.B.I.Ginf) (τ : D.what₂.Tau) (q : GlobalTheory.LoopV.roots (ptMat w)) (p : Formalism.L2.SG.RealObj.FreeE w), p.1 = q.1 → GlobalTheory.LoopVol.ratCoord X u' w γ s (s * y * s⁻¹) τ q = ((D.host.rdE : ℂ) ^ (q.1.2.1 - q.1.1.1))⁻¹ * Formalism.L2.SG.RealObj.stCoord X u' w γ y (X.pl.symm τ) p := by
   intro D X u' w γ s y τ q p hpq
   obtain ⟨pq, hp⟩ := p

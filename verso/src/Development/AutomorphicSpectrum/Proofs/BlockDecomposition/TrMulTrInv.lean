@@ -26,6 +26,9 @@ def trInv (M : LB X) {A : Type} (V : A → X.Opens) (j : A → M.ι) (hj : ∀ a
     Γ(X, V a ⊓ V b) :=
   rs X (inf_le_inf (hj a) (hj b)) (M.g (j a) (j b))⁻¹.val
 
+/- English proof (translation)
+Simplify using `only [tr, trInv, ← map_mul, Units.mul_inv, map_one]`.
+-/
 theorem tr_mul_trInv (M : LB X) {A : Type} (V : A → X.Opens) (j : A → M.ι)
     (hj : ∀ a, V a ≤ M.U (j a)) (a b : A) : tr M V j hj a b * trInv M V j hj a b = 1 := by
   simp only [tr, trInv, ← map_mul, Units.mul_inv, map_one]
@@ -34,14 +37,26 @@ section Triple
 
 variable {A : Type} (V : A → X.Opens) (a b d : A)
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem le₁₂ : V a ⊓ V b ⊓ V d ≤ V a ⊓ V b := inf_le_left
 
+/- English proof (translation)
+The claim follows from `le_inf (inf_le_left.trans inf_le_right) inf_le_right`.
+-/
 theorem le₂₃ : V a ⊓ V b ⊓ V d ≤ V b ⊓ V d := le_inf (inf_le_left.trans inf_le_right) inf_le_right
 
+/- English proof (translation)
+The claim follows from `le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+-/
 theorem le₁₃ : V a ⊓ V b ⊓ V d ≤ V a ⊓ V d := le_inf (inf_le_left.trans inf_le_left) inf_le_right
 
 end Triple
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun u => rs X (le_inf (le_inf ((inf_le_left.trans inf_le_left).trans (hj a)) ((inf_le_left.trans inf_le_right).trans (hj b))) (inf_le_right.trans (hj d)) : V a ⊓ V b ⊓ V d ≤ M.U (j a) ⊓ M.U (j b) ⊓ M.U (j d)) u.val) (hM.cocycle (j a) (j b) (j d))`. Establish `e : ∀ {U W : X.Opens} (h : W ≤ U) (u : Γ(X, U)ˣ), ((res h u : Γ(X, W)ˣ) : Γ(X, W)) = rs X h u` using `fun _ _ => rfl`. Simplify using `only [Units.val_mul, map_mul, e, GlobalTheory.AbLaw.rs_rs] at h`. Simplify using `only [tr, GlobalTheory.AbLaw.rs_rs]`. Conclude with `h`.
+-/
 theorem tr_cocycle {M : LB X} (hM : M.IsLB) {A : Type} (V : A → X.Opens) (j : A → M.ι)
     (hj : ∀ a, V a ≤ M.U (j a)) (a b d : A) :
     rs X (le₁₂ V a b d) (tr M V j hj a b) * rs X (le₂₃ V a b d) (tr M V j hj b d) =

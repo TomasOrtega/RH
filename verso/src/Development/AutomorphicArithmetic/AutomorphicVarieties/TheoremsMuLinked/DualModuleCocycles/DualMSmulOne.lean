@@ -8,12 +8,30 @@ variable {X : Type} [CommRing X] {n : ℕ}
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, dualM, TrivSqZeroExt.fst_sum]`. Simplify using `[Matrix.mul_apply, dualM, TrivSqZeroExt.snd_sum, Finset.sum_add_distrib, mul_comm]`.
+-/
 private theorem dualM_mul_dualM {X : Type} [CommRing X] {n : ℕ} (A B A' B' : Matrix (Fin n) (Fin n) X) :
     dualM A B * dualM A' B' = dualM (A * A') (A * B' + B * A') := by
   ext i j
   · simp [Matrix.mul_apply, dualM, TrivSqZeroExt.fst_sum]
   · simp [Matrix.mul_apply, dualM, TrivSqZeroExt.snd_sum, Finset.sum_add_distrib, mul_comm]
 
+/- English proof (translation)
+Introduce `O R X _ _ _ _ _ n G H _ x δ ρ τ c d φ ψ g hL h1 h2`. Establish `hbar1 : bar X (1 : Matrix (Fin n) (Fin n) O) = 1`. Simplify using `[bar]`. Establish `hd1 : d 1 = 0`. Use `hL.mul 1 1` as an intermediate fact.
+
+Simplify using `only [mul_one, map_one, hbar1, one_mul] at this`. Establish `h' : d 1 + d 1 = d 1 + 0` using `by rw [add_zero]; exact this.symm`. Conclude with `add_left_cancel h'`. Establish `hrep : ∀ (k : G) (r : R), repR x ρ (MonoidAlgebra.single k r) = x r • ρ k`. Introduce `k r`.
+
+Simplify using `[repR, GDet.repAlg]`. Establish `hs : ∀ r : R, MonoidAlgebra.single (1 : G) r = r • (1 : MonoidAlgebra R G)`. Introduce `r`. Simplify using `[MonoidAlgebra.one_def, MonoidAlgebra.smul_single']`. Set `Φ : MonoidAlgebra R G →* Matrix (Fin n) (Fin n) (DualNumber X)` to `{ toFun := fun a => dualM (bar X (repR x ρ a)) (d a) map_one' := by`.
+
+Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [dualM, hbar1, Matrix.one_apply, hij]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [dualM, hd1, Matrix.one_apply, hij]`. Use the proof step `map_mul' := by`. Introduce `a b`.
+
+Rewrite using `[dualM_mul_dualM, hL.mul, map_mul]`. Simplify using `[bar, Matrix.map_mul, add_comm] }`. Establish `key` using `map_list_prod Φ (List.ofFn fun i => MonoidAlgebra.single (φ (g i)) (1 : R) - MonoidAlgebra.single 1 (ψ i (g i)))`. Establish `hz : Φ (List.ofFn fun i => MonoidAlgebra.single (φ (g i)) (1 : R) - MonoidAlgebra.single 1 (ψ i (g i))).prod = 0` using `by show dualM _ _ = 0`. Rewrite using `[h1, h2]`.
+
+Apply the tactic sequence `ext i j <;> simp [dualM, bar]`. Rewrite `key` using `[hz, List.map_ofFn]`. Rewrite using `[key]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Use `show _ = dualM (bar X (repR x ρ (MonoidAlgebra.single (φ (g i)) 1 - MonoidAlgebra.single 1 (ψ i (g i))))) (d (MonoidAlgebra.single (φ (g i)) 1 - MonoidAlgebra.single 1 (ψ i (g i))))`. Rewrite using `[map_sub, map_sub, hrep, hrep, hs (ψ i (g i)), hL.smul, hd1, map_one, map_one, map_one, one_smul, hbar1]`. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [dualM, bar, Matrix.one_apply, hab]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [dualM, bar, Matrix.one_apply, hab]`.
+-/
 theorem UpperTheory.V.Th.Coc.rel :
     ∀ {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing X] [Algebra O X] {n : ℕ} {G H : Type} [Group G] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (ρ : G →* Matrix (Fin n) (Fin n) O) (τ : MonoidAlgebra R G → R) (c : O) (d : MonoidAlgebra R G →+ Matrix (Fin n) (Fin n) X) (φ : H → G) (ψ : Fin n → H → R) (g : Fin n → H), IsLift x δ (repR x ρ) τ c d → repR x ρ (List.ofFn fun i => MonoidAlgebra.single (φ (g i)) (1 : R) - MonoidAlgebra.single 1 (ψ i (g i))).prod = 0 → d (List.ofFn fun i => MonoidAlgebra.single (φ (g i)) (1 : R) - MonoidAlgebra.single 1 (ψ i (g i))).prod = 0 → (List.ofFn fun i => dualM (bar X (ρ (φ (g i)))) (d (MonoidAlgebra.single (φ (g i)) 1)) - (TrivSqZeroExt.inl (algebraMap O X (x (ψ i (g i)))) + TrivSqZeroExt.inr (c • δ (ψ i (g i))) : DualNumber X) • (1 : Matrix (Fin n) (Fin n) (DualNumber X))).prod = 0 := by
   intro O R X _ _ _ _ _ n G H _ x δ ρ τ c d φ ψ g hL h1 h2

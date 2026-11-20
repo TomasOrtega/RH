@@ -28,6 +28,9 @@ instance liesOver_below (w : HeightOneSpectrum (𝓞 L)) :
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl infer_instance`. Introduce `h`. Conclude with `HeightOneSpectrum.ext h.over.symm`.
+-/
 theorem below_eq_iff (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (𝓞 K)) :
     below K w = v ↔ w.asIdeal.LiesOver v.asIdeal := by
   constructor
@@ -36,11 +39,17 @@ theorem below_eq_iff (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (�
   · intro h
     exact HeightOneSpectrum.ext h.over.symm
 
+/- English proof (translation)
+The claim follows from `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v ↦ ((Set.finite_range (Subtype.val : PlacesOver L v → HeightOneSpectrum (𝓞 L))).subset fun w hw ↦ ⟨⟨w, (below_eq_iff w v).1 hw⟩, rfl⟩).to_subtype`.
+-/
 theorem tendsto_below : Tendsto (below K (L := L)) cofinite cofinite :=
   Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v ↦
     ((Set.finite_range (Subtype.val : PlacesOver L v → HeightOneSpectrum (𝓞 L))).subset
       fun w hw ↦ ⟨⟨w, (below_eq_iff w v).1 hw⟩, rfl⟩).to_subtype
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem completionMap_congr {v v' : HeightOneSpectrum (𝓞 K)} (h : v = v')
     (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal] [w.asIdeal.LiesOver v'.asIdeal]
     (a : FiniteAdeleRing (𝓞 K) K) :
@@ -48,6 +57,9 @@ theorem completionMap_congr {v v' : HeightOneSpectrum (𝓞 K)} (h : v = v')
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[valued_completionMap]`. Conclude with `pow_le_one' hx _`.
+-/
 theorem mapsTo_completionMap (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] :
     Set.MapsTo (completionMap v w) (v.adicCompletionIntegers K) (w.adicCompletionIntegers L) := by
@@ -66,14 +78,23 @@ def finiteAdeleMap : FiniteAdeleRing (𝓞 K) K →+* FiniteAdeleRing (𝓞 L) L
     (hφ := .of_forall fun w ↦ mapsTo_completionMap (below K w) w)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finiteAdeleMap_apply (x : FiniteAdeleRing (𝓞 K) K) (w : HeightOneSpectrum (𝓞 L)) :
     finiteAdeleMap K L x w = completionMap (below K w) w (x (below K w)) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.mapAlong_continuous _ _ (below K) tendsto_below _ (.of_forall fun w ↦ mapsTo_completionMap (below K w) w) fun w ↦ continuous_completionMap (below K w) w`.
+-/
 theorem continuous_finiteAdeleMap : Continuous (finiteAdeleMap K L) :=
   RestrictedProduct.mapAlong_continuous _ _ (below K) tendsto_below _
     (.of_forall fun w ↦ mapsTo_completionMap (below K w) w) fun w ↦ continuous_completionMap (below K w) w
 
+/- English proof (translation)
+Use `FiniteAdeleRing.ext (K := L) fun w ↦ ?_` and prove the remaining obligations. Conclude with `(completionMap_algebraMap (below K w) w k).trans (IsScalarTower.algebraMap_apply K L (w.adicCompletion L) k)`.
+-/
 theorem finiteAdeleMap_algebraMap (k : K) :
     finiteAdeleMap K L (algebraMap K _ k) = algebraMap L _ (algebraMap K L k) := by
   refine FiniteAdeleRing.ext (K := L) fun w ↦ ?_

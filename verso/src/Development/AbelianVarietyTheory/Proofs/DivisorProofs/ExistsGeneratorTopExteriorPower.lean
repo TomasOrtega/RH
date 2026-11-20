@@ -17,6 +17,13 @@ namespace GlobalTheory.DetSpan
 
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations
 
+/- English proof (translation)
+Unfold `ord_vw`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `h0 : (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R) (algebraMap R (FractionRing R) x) ≠ 0`.
+
+Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hx`. Establish `h1` using `(IsDiscreteValuationRing.maximalIdeal R).valuation_le_one (K := FractionRing R) x`. Use `(WithZero.log_le_log h0 one_ne_zero).2 h1` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_nonneg_of_int (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (x : R) :
     0 ≤ ord_vw R (algebraMap R (FractionRing R) x) := by
   unfold ord_vw
@@ -30,6 +37,15 @@ theorem ord_nonneg_of_int (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuat
     rw [WithZero.log_one] at this
     omega
 
+/- English proof (translation)
+Unfold `ord_vw`. Use `set v := (IsDiscreteValuationRing.maximalIdeal R).valuation (FractionRing R)`. Establish `inj` using `IsFractionRing.injective R (FractionRing R)`. Establish `hDn : D ^ n ≠ 0` using `pow_ne_zero _ hD`. Establish `hu : u ≠ 0` using `by rintro rfl; rw [mul_zero] at h; exact hDn h`.
+
+Establish `ne : ∀ y : R, y ≠ 0 → v (algebraMap R (FractionRing R) y) ≠ 0` using `fun y hy => by`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `(map_ne_zero_iff _ inj).2 hy`. Establish `e1 : v (algebraMap R (FractionRing R) D) ^ n = v (algebraMap R (FractionRing R) t) * v (algebraMap R (FractionRing R) u)`. Rewrite using `[← map_pow, ← map_pow, h, map_mul, map_mul]`.
+
+Establish `e2 : v (algebraMap R (FractionRing R) D) ^ n ≤ v (algebraMap R (FractionRing R) u)`. Rewrite using `[e1]`. Conclude with `mul_le_of_le_one_left' ((IsDiscreteValuationRing.maximalIdeal R).valuation_le_one (K := FractionRing R) t)`. Establish `e3` using `(WithZero.log_le_log (pow_ne_zero _ (ne D hD)) (ne u hu)).2 e2`. Rewrite `e3` using `[WithZero.log_pow, nsmul_eq_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ord_le (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (n : ℕ) (D t u : R)
     (h : D ^ n = t * u) (hD : D ≠ 0) :
     ord_vw R (algebraMap R (FractionRing R) u) ≤ n * ord_vw R (algebraMap R (FractionRing R) D) := by
@@ -49,6 +65,23 @@ theorem ord_le (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] 
   rw [WithZero.log_pow, nsmul_eq_mul] at e3
   linarith
 
+/- English proof (translation)
+Introduce `R _ _ _ L _ _ _ _ n hn e D hD hspan l`. Set `b` to `Module.finBasisOfFinrankEq R L hn`. Use `⟨b.det, Matrix.detRowAlternating.compLinearMap (LinearMap.pi e) b, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `f _`.
+
+Rewrite using `[AlternatingMap.eq_smul_basis_det b f]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Conclude with `AlternatingMap.eq_smul_basis_det b _`. Use `set u := Matrix.detRowAlternating.compLinearMap (LinearMap.pi e) b with hu_def choose t ht using fun k => (Submodule.mem_span_range_iff_exists_fun R).1 (hspan (b.coord k))`. Set `E : Matrix (Fin n) (Fin n) R` to `Matrix.of fun i j => e i (b j)`.
+
+Establish `hu : u = E.det`. Rewrite using `[← Matrix.det_transpose]`. Both sides reduce to the same expression. Establish `hm : Matrix.of t * E = D • (1 : Matrix (Fin n) (Fin n) R)`. Use extensionality with `k j`.
+
+Use `congrArg (fun f : L →ₗ[R] R => f (b j)) (ht k)` as an intermediate fact. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Module.Basis.coord_apply, Module.Basis.repr_self] at this`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, E, Matrix.smul_apply, Matrix.one_apply, this, smul_eq_mul, Finsupp.single_apply]`. Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hkj, Ne.symm hkj]`. Establish `hkey : D ^ n = (Matrix.of t).det * u`. Rewrite using `[hu, ← Matrix.det_mul, hm, Matrix.det_smul, Matrix.det_one, Fintype.card_fin, _root_.mul_one]`. Establish `hord` using `ord_le R n D _ u hkey hD`.
+
+Establish `hu0 : u ≠ 0`. Introduce and unpack `h0`. Rewrite `hkey` using `[h0, mul_zero]`. Conclude with `pow_ne_zero n hD hkey`. Establish `inj` using `IsFractionRing.injective R (FractionRing R)`.
+
+Establish `hc : (0 : ℚ) ≤ (ord_vw R ((l : ℕ) : FractionRing R) : ℚ)`. Rewrite using `[← map_natCast (algebraMap R (FractionRing R))]`. Conclude with `ord_nonneg_of_int R (l : R)` after adjusting the coercions. Unfold `val_vp`. Rewrite using `[if_neg ((map_ne_zero_iff _ inj).2 hu0), if_neg ((map_ne_zero_iff _ inj).2 hD), ← WithTop.coe_nsmul, WithTop.coe_le_coe, nsmul_eq_mul, ← mul_div_assoc]`.
+
+Apply `div_le_div_of_nonneg_right _ hc` to reduce the goal to its premises. Conclude with `hord` after adjusting the coercions.
+-/
 theorem wedge_eq_smul_gen_val_le : ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (L : Type) [AddCommGroup L] [Module R L]
     [Module.Free R L] [Module.Finite R L] (n : ℕ), Module.finrank R L = n →
     ∀ (e : Fin n → (L →ₗ[R] R)) (D : R), D ≠ 0 → (∀ ω : L →ₗ[R] R, D • ω ∈ Submodule.span R (Set.range e)) →

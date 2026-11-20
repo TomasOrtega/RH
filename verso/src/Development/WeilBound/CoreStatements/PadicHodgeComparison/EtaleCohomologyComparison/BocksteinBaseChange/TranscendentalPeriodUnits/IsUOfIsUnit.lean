@@ -12,18 +12,32 @@ namespace CrystallineSemistableComparison
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem σ_per (g : K.fixingSubgroup) (x : BdR l) : (per l K).σ g x = σD g.1 x := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨a, rfl⟩, f ha.unit⁻¹.1, ⟨_, rfl⟩, by rw [← map_mul, ha.mul_val_inv, map_one]⟩`.
+-/
 theorem isU_of_isUnit {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) {a : A} (ha : IsUnit a) :
     f a ∈ f.range ∧ ∃ y ∈ f.range, f a * y = 1 :=
   ⟨⟨a, rfl⟩, f ha.unit⁻¹.1, ⟨_, rfl⟩, by rw [← map_mul, ha.mul_val_inv, map_one]⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨c, rfl⟩, hc⟩` from `h`. Establish `h1 : a * c = 1` using `hf (by rw [map_mul, hc, map_one])`. Conclude with `⟨⟨a, c, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`.
+-/
 theorem isUnit_of_isU {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Injective f) {a : A}
     (h : ∃ y ∈ f.range, f a * y = 1) : IsUnit a := by
   obtain ⟨_, ⟨c, rfl⟩, hc⟩ := h
   have h1 : a * c = 1 := hf (by rw [map_mul, hc, map_one])
   exact ⟨⟨a, c, h1, by rw [mul_comm]; exact h1⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Rewrite `h` using `[← map_add]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (isUnit_of_isU f hf h.2) with ha | hb` into its components or cases. Conclude with `Or.inl (isU_of_isUnit f ha)`.
+
+Conclude with `Or.inr (isU_of_isUnit f hb)`.
+-/
 theorem loc_abs {A B : Type*} [CommRing A] [IsLocalRing A] [CommRing B] (f : A →+* B) (hf : Function.Injective f)
     (x y : B) (hx : x ∈ f.range) (hy : y ∈ f.range) (h : x + y ∈ f.range ∧ ∃ z ∈ f.range, (x + y) * z = 1) :
     (x ∈ f.range ∧ ∃ z ∈ f.range, x * z = 1) ∨ (y ∈ f.range ∧ ∃ z ∈ f.range, y * z = 1) := by
@@ -34,17 +48,29 @@ theorem loc_abs {A B : Type*} [CommRing A] [IsLocalRing A] [CommRing B] (f : A �
   · exact Or.inl (isU_of_isUnit f ha)
   · exact Or.inr (isU_of_isUnit f hb)
 
+/- English proof (translation)
+Establish `hb` using `period_ring_base.base l`. Rewrite using `[← hb.ι_q, ← hb.ι_σ, hb.σ_q]`.
+-/
 theorem σD_qQ (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (z : ℚ_[l]) : σD g (qQ l z) = qQ l z := by
   have hb := period_ring_base.base l
   rw [← hb.ι_q, ← hb.ι_σ, hb.σ_q]
 
+/- English proof (translation)
+Establish `hb` using `period_ring_base.base l`. Rewrite using `[← hb.ι_t, ← hb.ι_σ, hb.galois_t_transform, map_mul, hb.ι_q]`.
+-/
 theorem σD_tQ (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) : σD g (tQ l) = qQ l (period_ring_base.χ g) * tQ l := by
   have hb := period_ring_base.base l
   rw [← hb.ι_t, ← hb.ι_σ, hb.galois_t_transform, map_mul, hb.ι_q]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, mul_inv_cancel₀ hz, map_one]`.
+-/
 theorem qQ_mul_inv {z : ℚ_[l]} (hz : z ≠ 0) : qQ l z * qQ l z⁻¹ = 1 := by
   rw [← map_mul, mul_inv_cancel₀ hz, map_one]
 
+/- English proof (translation)
+Introduce `l _ K` and use `{ i_σ := fun g a => by show algebraMap (BdRp l) (BdR l) (ACris.iota ℂ_[l] l (ACris.galCris (IntermediateField.fixingSubgroupEquiv K g) a)) = galBdRField (IntermediateField.fixingSubgroupEquiv K g) (algebraMap (BdRp l) (BdR l) (ACris.iota ℂ_[l] l a)) rw [galBdRField_algebraMap, ← …`.
+-/
 theorem facts : PeriodRingFacts := fun l _ K =>
   { i_σ := fun g a => by
       show algebraMap (BdRp l) (BdR l) (ACris.iota ℂ_[l] l (ACris.galCris (IntermediateField.fixingSubgroupEquiv K g) a)) =

@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.ThW
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec]`. Rewrite using `[Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type_right, Finset.sum_eq_single w]`.
+
+Simplify using `[blockDiagonal_apply]`. Introduce `v _ hv`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[blockDiagonal_apply, hv.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem dotProduct_blockDiagonal_mulVec {R ι W : Type} [CommSemiring R] [Fintype ι] [DecidableEq ι]
     [Fintype W] [DecidableEq W] (f : W → Matrix ι ι R) (y : ι × W → R) :
     y ⬝ᵥ (blockDiagonal f *ᵥ y) = ∑ w, (fun i => y (i, w)) ⬝ᵥ (f w *ᵥ fun i => y (i, w)) := by
@@ -22,6 +27,9 @@ theorem dotProduct_blockDiagonal_mulVec {R ι W : Type} [CommSemiring R] [Fintyp
     simp [blockDiagonal_apply, hv.symm]
   · simp
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, Matrix.of_apply, Complex.ofReal_sum, Complex.ofReal_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dotProduct_block_ofReal {ι : Type} [Fintype ι] (a b : ℝ) (C P : Matrix ι ι ℝ)
     (y : ι → ℝ) :
     (fun i => (y i : ℂ)) ⬝ᵥ
@@ -38,11 +46,19 @@ def ZB {F : Type} [Field F] {ι : Type} {W : Type} (B : Matrix ι ι F) (ρ : W 
   Matrix.of fun i j =>
     ((τ w).re : ℂ) * ((ρ w (B i j) : ℝ) : ℂ) + Complex.I * ((τ w).im : ℂ) * ((P w i j : ℝ) : ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ZM_eq_blockDiagonal {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     [DecidableEq ι] [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F)
     (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)
     (τ : InfinitePlace F → ℂ) : ZM B ρ P τ = blockDiagonal (ZB B ρ P τ) := rfl
 
+/- English proof (translation)
+Rewrite using `[ZM_eq_blockDiagonal]`. Use extensionality with `⟨i, v⟩ ⟨j, u⟩`. Distinguish the cases in `h : v = u`. Substitute `h` using the available equality. Simplify using `[ZB, blockDiagonal_apply]`.
+
+Simplify using `[ZB, blockDiagonal_apply, h]`.
+-/
 theorem ZM_map_im {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
     [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (τ : InfinitePlace F → ℂ) :
@@ -54,6 +70,25 @@ theorem ZM_map_im {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] 
     simp [ZB, blockDiagonal_apply]
   · simp [ZB, blockDiagonal_apply, h]
 
+/- English proof (translation)
+Introduce and unpack `⟨-, -, hB, -, -, hP, -⟩ τ hτ`. Establish `hPs : ∀ w i j, P w j i = P w i j` using `fun w i j => by`. Simplify using `using (hP w).isHermitian.apply i j`. Use `⟨?_, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.IsSymm, ZM_eq_blockDiagonal, blockDiagonal_transpose]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `w`. Use extensionality with `i j`. Simplify using `only [transpose_apply, ZB, Matrix.of_apply]`. Rewrite using `[hB.apply i j, hPs w i j]`.
+
+Rewrite using `[ZM_map_im]`. Establish `hq : ∀ w (y : ι → ℝ), y ≠ 0 → 0 < y ⬝ᵥ (P w *ᵥ y)` using `fun w y hy => by`. Simplify using `using (hP w).dotProduct_mulVec_pos hy`. Use `posDef_iff_dotProduct_mulVec.2 ⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, v⟩ ⟨j, u⟩`.
+
+Distinguish the cases in `h : v = u`. Substitute `h` using the available equality. Simplify using `[blockDiagonal_apply, hPs v i j]`. Establish `h' : ¬ u = v` using `fun e => h e.symm`. Simplify using `[blockDiagonal_apply, h, h']`.
+
+Take `⟨⟨i, w⟩, hiw⟩` from `Function.ne_iff.1 hx`. Establish `hstar : star x = x`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[hstar, dotProduct_blockDiagonal_mulVec]`.
+
+Establish `hterm : ∀ v, (fun i => x (i, v)) ⬝ᵥ (((τ v).im • P v) *ᵥ fun i => x (i, v)) = (τ v).im * ((fun i => x (i, v)) ⬝ᵥ (P v *ᵥ fun i => x (i, v)))` using `fun v => by`. Simplify using `[smul_mulVec, dotProduct_smul]`. Simplify using `only [hterm]`. Use `Finset.sum_pos' (fun v _ => ?_) ⟨w, Finset.mem_univ w, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : (fun i => x (i, v)) = 0`.
+
+Simplify using `[hy]`. Conclude with `(mul_pos (hτ v) (hq v _ hy)).le`. Use `mul_pos (hτ w) (hq w _ fun h0 => hiw ?_)` and prove the remaining obligations. Simplify using `using congrFun h0 i`. Unfold `gauss`.
+
+Use `congr 1`. Rewrite using `[ZM_eq_blockDiagonal, dotProduct_blockDiagonal_mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h` using `dotProduct_block_ofReal (τ w).re (τ w).im (B.map (ρ w)) (P w) (cur x w)`. Simplify using `only [Matrix.map_apply] at h`.
+
+Establish `h2 : (fun i => ((x (i, w) : ℝ) : ℂ)) = fun i => ((cur x w i : ℝ) : ℂ)` using `rfl`. Establish `h3 : ZB B ρ P τ w = Matrix.of fun i j => ((τ w).re : ℂ) * ((ρ w (B i j) : ℝ) : ℂ) + Complex.I * ((τ w).im : ℂ) * ((P w i j : ℝ) : ℂ)` using `rfl`. Rewrite using `[h2, h3, h]`. Take the linear combination `((Real.pi : ℂ) * ((τ w).im : ℂ) * ((cur x w ⬝ᵥ (P w *ᵥ cur x w) : ℝ) : ℂ)) * Complex.I_mul_I`.
+-/
 theorem ZM_symm_posDef_gauss (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι]
     [DecidableEq ι] [DecidableEq (InfinitePlace F)] (M : ℕ) (B : Matrix ι ι F)
     (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ) :

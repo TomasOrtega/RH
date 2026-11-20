@@ -6,6 +6,9 @@ namespace Formalism.L2.KerInert
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 
+/- English proof (translation)
+The claim follows from `integral_inert_of_approx_basis weak_approximation_places local_orthonormal_basis`.
+-/
 theorem kernels_integral_inert : IntInert := integral_inert_of_approx_basis weak_approximation_places local_orthonormal_basis
 
 end Formalism.L2.KerInert

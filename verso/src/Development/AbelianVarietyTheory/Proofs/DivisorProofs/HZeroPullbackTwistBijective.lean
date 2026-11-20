@@ -11,26 +11,46 @@ namespace GlobalTheory.EtC.ConnectedGlobalSections
 
 variable {q : ℕ} [NeZero q] {i : ℤ}
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (y : Sec F U) :
     Sec.res (k ≫ g) y = Sec.res k (Sec.res g y) := by
   simp [Sec.res]
 
+/- English proof (translation)
+The claim follows from `map_nsmul ((F.obj.map g.op).hom) n t`.
+-/
 theorem res_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (n : ℕ) (t : Sec F U) :
     Sec.res g (n • t) = n • Sec.res g t := map_nsmul ((F.obj.map g.op).hom) n t
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 V U g ζ`.
+-/
 theorem res_twGen {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := (GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.2.1 V U g ζ
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Prim.map]`. Both sides reduce to the same expression.
+-/
 theorem prim_map_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     (ζ.map g.appTop.hom).map k.appTop.hom = ζ.map (k ≫ g).appTop.hom := by
   apply Subtype.ext
   simp [Prim.map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Both sides reduce to the same expression.
+-/
 theorem nsmul_eq_up {U : Scheme.{0}} (n : ℕ) (t : Sec (tw q i) U) : n • t = (ULift.up (n : ZMod q)) • t := by
   rw [← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]
   rfl
 
+/- English proof (translation)
+Establish `h0 : (c - d).val • twGen i ζ = 0`. Rewrite using `[nsmul_eq_up, ZMod.natCast_zmod_val]`. Rewrite `h` using `[nsmul_eq_up, nsmul_eq_up, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Establish `: (ULift.up (c - d) : ULift.{1} (ZMod q)) = ULift.up c - ULift.up d` using `rfl`. Rewrite using `[this, sub_smul, h, sub_self]`.
+
+Establish `hd` using `(GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.1 U ζ _ h0`. Establish `hv : (c - d).val = 0` using `Nat.eq_zero_of_dvd_of_lt hd (ZMod.val_lt _)`. Conclude with `sub_eq_zero.1 ((ZMod.val_eq_zero _).1 hv)`.
+-/
 theorem scalar_eq {U : Scheme.{0}} [Nonempty U] (ζ : Prim q Γ(U, ⊤)) (c d : ZMod q)
     (h : c.val • twGen i ζ = d.val • twGen i ζ) : c = d := by
   have h0 : (c - d).val • twGen i ζ = 0 := by
@@ -42,12 +62,40 @@ theorem scalar_eq {U : Scheme.{0}} [Nonempty U] (ζ : Prim q Γ(U, ⊤)) (c d : 
   have hv : (c - d).val = 0 := Nat.eq_zero_of_dvd_of_lt hd (ZMod.val_lt _)
   exact sub_eq_zero.1 ((ZMod.val_eq_zero _).1 hv)
 
+/- English proof (translation)
+Rewrite using `[nsmul_eq_up]`. Establish `: ((q * k : ℕ) : ZMod q) = 0` using `by simp`. Rewrite using `[this]`. Conclude with `zero_smul _ t`.
+-/
 theorem q_nsmul {U : Scheme.{0}} (t : Sec (tw q i) U) (k : ℕ) : (q * k) • t = 0 := by
   rw [nsmul_eq_up]
   have : ((q * k : ℕ) : ZMod q) = 0 := by simp
   rw [this]
   exact zero_smul _ t
 
+/- English proof (translation)
+Set `P : ∀ V : Scheme.{0}, (V ⟶ X) → ℕ → Prop` to `fun V g c => Sec.res g y = c • twGen i (ζ.map g.appTop.hom)`. Establish `hstab : ∀ c (V W : Scheme.{0}) (g : V ⟶ X) (k : W ⟶ V), P V g c → P W (k ≫ g) c`. Introduce `c V W g k h`. Simplify using `only [P] at h ⊢`. Rewrite using `[res_comp, h, res_nsmul, res_twGen, prim_map_comp]`.
+
+Establish `hloc` using `(loc_iff_etale_affine_points X (fun V g => ∃ c, P V g c) (fun V W g k ⟨c, h⟩ => ⟨c, hstab c V W g k h⟩)).1 ((GlobalTheory.T.tateTwist_sections_locally_generated q i).2.1 X ζ y)`. Set `S : ZMod q → Set X` to `fun c => {x | ∃ (V : Scheme.{0}) (g : V ⟶ X), IsAffine V ∧ Etale g ∧ x ∈ Set.range g ∧ P V g c.val}`. Establish `hopen : ∀ c, IsOpen (S c)`. Introduce `c`. Rewrite using `[isOpen_iff_forall_mem_open]`.
+
+Introduce and unpack `x ⟨V, g, hV, hg, hx, hP⟩`. Use `haveI := hg`. Use `⟨Set.range g, ?_, g.isOpenMap.isOpen_range, hx⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨V, g, hV, hg, ⟨v, rfl⟩, hP⟩`.
+
+Establish `hcov : ∀ x, ∃ c, x ∈ S c`. Introduce `x`. Take `⟨V, g, hV, hg, hx, n, hn⟩` from `hloc x`. Use `⟨(n : ZMod q), V, g, hV, hg, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [P] at hn ⊢`.
+
+Rewrite using `[hn, nsmul_eq_up, nsmul_eq_up, ZMod.natCast_zmod_val]`. Establish `hdisj : ∀ c d x, x ∈ S c → x ∈ S d → c = d`. Introduce and unpack `c d x ⟨V, g, -, -, ⟨v, rfl⟩, hP⟩ ⟨V', g', -, -, ⟨v', hv'⟩, hP'⟩`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := g) (g := g') v v' hv'.symm`. Use `haveI : Nonempty ↥(Limits.pullback g g') := ⟨z⟩`.
+
+Establish `h1` using `hstab _ _ _ g (pullback.fst g g') hP`. Establish `h2` using `hstab _ _ _ g' (pullback.snd g g') hP'`. Simplify using `only [P] at h1 h2`. Rewrite `h1` using `[pullback.condition]`. Conclude with `scalar_eq _ c d (h1.symm.trans h2)`.
+
+Take `⟨x0⟩` from `‹Nonempty X›`. Take `⟨c0, hx0⟩` from `hcov x0`. Establish `hcompl : (S c0)ᶜ = ⋃ d ∈ ({c0}ᶜ : Set (ZMod q)), S d`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_singleton_iff, exists_prop]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨d, hd⟩` from `hcov x`. Conclude with `⟨d, fun h => hx (h ▸ hd), hd⟩`. Introduce and unpack `⟨d, hd, hxd⟩ hx`.
+
+Conclude with `hd (hdisj d c0 x hxd hx)`. Establish `hclopen : IsClopen (S c0)`. Use `⟨?_, hopen c0⟩` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, hcompl]`. Conclude with `isOpen_biUnion fun d _ => hopen d`.
+
+Establish `huniv : S c0 = Set.univ`. Break down `hX _ hclopen with h | h` into its components or cases. Rewrite `hx0` using `[h]`. Conclude with `absurd hx0 (Set.notMem_empty _)`. Conclude with `h`.
+
+Use `⟨c0.val, (sec_ext_glue (ZMod q) (tw q i) X).1 _ _ ?_⟩` and prove the remaining obligations. Use `(loc_iff_etale_affine_points X (fun _ g => Sec.res g y = Sec.res g (c0.val • twGen i ζ)) (fun V W g k h => by rw [res_comp, res_comp, h])).2 ?_` and prove the remaining obligations. Introduce `x`. Take `⟨V, g, hV, hg, hx, hP⟩ : x ∈ S c0` from `huniv ▸ Set.mem_univ x`. Use `⟨V, g, hV, hg, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP, res_nsmul, res_twGen]`.
+-/
 theorem sec_eq_nsmul (X : Scheme.{0}) [Nonempty X] (hX : ∀ s : Set X, IsClopen s → s = ∅ ∨ s = Set.univ)
     (ζ : Prim q Γ(X, ⊤)) (y : Sec (tw q i) X) : ∃ c : ℕ, y = c • twGen i ζ := by
   classical
@@ -114,6 +162,11 @@ end GlobalTheory.EtC.ConnectedGlobalSections
 
 namespace GlobalTheory.EtC.ConnectedGlobalSections
 
+/- English proof (translation)
+Take `⟨e, he, h⟩` from `PrimeSpectrum.isClopen_iff.1 (show IsClopen (X := PrimeSpectrum B) s from hs)`. Break down `hB e he with rfl | rfl` into its components or cases. Use `left`. Express the relevant statement in the definitionally equal form `(s : Set (PrimeSpectrum B)) = ∅`. Apply the tactic sequence `rw [h]; simp <;> rfl`.
+
+Use `right`. Express the relevant statement in the definitionally equal form `(s : Set (PrimeSpectrum B)) = Set.univ`. Apply the tactic sequence `rw [h]; simp <;> rfl`.
+-/
 theorem clopen_of_idem (B : Type) [CommRing B] (hB : ∀ e : B, IsIdempotentElem e → e = 0 ∨ e = 1)
     (s : Set (Spec (CommRingCat.of B))) (hs : IsClopen s) : s = ∅ ∨ s = Set.univ := by
   obtain ⟨e, he, h⟩ := PrimeSpectrum.isClopen_iff.1 (show IsClopen (X := PrimeSpectrum B) s from hs)
@@ -129,6 +182,19 @@ end GlobalTheory.EtC.ConnectedGlobalSections
 
 open GlobalTheory.EtC.ConnectedGlobalSections in
 
+/- English proof (translation)
+Introduce `q _ A A' _ _ f hq ⟨ζ0, hζ0⟩ hA' hidA hidA' i`. Use `haveI : Nontrivial A := f.domain_nontrivial`. Take `⟨-, e, he, -⟩` from `GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero (ZMod q) (tw q i)`. Set `g : Spec (CommRingCat.of A') ⟶ Spec (CommRingCat.of A)` to `Spec.map (CommRingCat.ofHom f)`. Use `haveI : Nonempty (Spec (CommRingCat.of A)) := inferInstance`.
+
+Use `haveI : Nonempty (Spec (CommRingCat.of A')) := inferInstance`. Set `ζ : Prim q Γ(Spec (CommRingCat.of A), ⊤)` to `Prim.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ⟨ζ0, hq, hζ0⟩`. Establish `hres : Function.Bijective (Sec.res (F` using `tw q i) g) := by`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Function.Injective ((tw q i).obj.map g.op).hom`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨c, rfl⟩` from `sec_eq_nsmul _ (clopen_of_idem A hidA) ζ y`. Establish `h0 : c • twGen i (ζ.map g.appTop.hom) = 0`. Rewrite using `[← res_twGen, ← res_nsmul]`.
+
+Conclude with `hy`. Take `⟨k, rfl⟩` from `(GlobalTheory.T.tateTwist_sections_locally_generated q i).2.2.1 _ _ _ h0`. Conclude with `q_nsmul _ k`. Introduce `y`. Take `⟨c, rfl⟩` from `sec_eq_nsmul _ (clopen_of_idem A' hidA') (ζ.map g.appTop.hom) y`.
+
+Conclude with `⟨c • twGen i ζ, by rw [res_nsmul, res_twGen]⟩`. Establish `key : ∀ s, pull _ (spMap f) (tw q i) 0 (e _ s) = e _ (Sec.res g s)` using `fun s => he g s`. Establish `hfun : ⇑(pull _ (spMap f) (tw q i) 0) = e _ ∘ Sec.res g ∘ (e _).symm`. Use function extensionality and compare the values at `x`. Take `⟨s, rfl⟩` from `(e _).surjective x`.
+
+Simplify using `[key]`. Rewrite using `[hfun]`. Conclude with `(e _).bijective.comp (hres.comp (e _).symm.bijective)`.
+-/
 theorem GlobalTheory.EtC.h_zero_pull_bijective : ∀ (q : ℕ) [NeZero q] (A A' : Type) [CommRing A] [CommRing A'] (f : A →+* A'),
     IsUnit (q : A) → (∃ ζ : A, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0) → Nontrivial A' →
     (∀ e : A, IsIdempotentElem e → e = 0 ∨ e = 1) → (∀ e : A', IsIdempotentElem e → e = 0 ∨ e = 1) →

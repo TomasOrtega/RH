@@ -7,6 +7,9 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen
 open GroundTheory.Automorphic
 
+/- English proof (translation)
+Establish `hv : Valued.v x < 1`. Rewrite using `[hx]`. Conclude with `(by decide : (Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) < 1)` after adjusting the coercions. Conclude with `Valued.toNormedField.norm_lt_one_iff.mpr hv`.
+-/
 private theorem norm_unif_lt_one (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     {x : w.adicCompletion E} (hx : Formalism.UG.IsUnifV E w x) : ‖x‖ < 1 := by
   have hv : Valued.v x < 1 := by
@@ -14,6 +17,15 @@ private theorem norm_unif_lt_one (E : Type) [Field E] [NumberField E] (w : Heigh
     exact_mod_cast (by decide : (Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) < 1)
   exact Valued.toNormedField.norm_lt_one_iff.mpr hv
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use `set ϖ : w.adicCompletion E := (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E) with hϖ`. Establish `h0 : ϖ ≠ 0` using `Cartan.uniformizer_ne_zero _`. Establish `hf : Continuous fun x : GL (Fin a) (w.adicCompletion E) => (x : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i i` using `Continuous.matrix_elem Units.continuous_val i i`.
+
+Take `⟨C, hC⟩` from `(hZ.image hf).isBounded.exists_norm_le`. Apply the tactic sequence `have hentry : ∀ m : ℕ, ‖ϖ ^ ν i‖ ^ m ≤ C := by`. Introduce `m`. Establish `h : ‖((Cartan.diagPow (w.adicCompletion E) a ν ^ m : GL (Fin a) (w.adicCompletion E)) : Matrix (Fin a) (Fin a) (w.adicCompletion E)) i i‖ ≤ C` using `hC _ ⟨_, hν m, rfl⟩`. Rewrite `h` using `[Units.val_pow_eq_pow_val, Cartan.coe_diagPow, Matrix.diagonal_pow, Matrix.diagonal_apply_eq, Pi.pow_apply, norm_pow]`.
+
+Conclude with `h`. Establish `hgt : 1 < ‖ϖ ^ ν i‖`. Rewrite using `[norm_zpow]`. Establish `hp : 0 < ‖ϖ‖` using `norm_pos_iff.2 h0`. Conclude with `one_lt_zpow_of_neg₀ hp hU hneg`.
+
+Take `⟨m, hm⟩` from `((tendsto_pow_atTop_atTop_of_one_lt hgt).eventually (Filter.eventually_gt_atTop C)).exists`. Apply the tactic sequence `exact absurd (hentry m) (not_le.2 hm)`.
+-/
 private theorem nonneg_of_pow_mem (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (a : ℕ)
     (hU : ‖(GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E)‖ < 1)
     {Z : Set (GL (Fin a) (w.adicCompletion E))} (hZ : IsCompact Z) (ν : Fin a → ℤ)
@@ -40,6 +52,19 @@ private theorem nonneg_of_pow_mem (E : Type) [Field E] [NumberField E] (w : Heig
   obtain ⟨m, hm⟩ := ((tendsto_pow_atTop_atTop_of_one_lt hgt).eventually (Filter.eventually_gt_atTop C)).exists
   exact absurd (hentry m) (not_le.2 hm)
 
+/- English proof (translation)
+Introduce `E _ _ w a H Z hZ hHZ hKH g hg`. Take `⟨hK, hU, -⟩` from `UpperTheory.V.Af.Smo.sphDict E a w`. Take `⟨μ, -, k₁, hk₁, k₂, hk₂, rfl⟩` from `Cartan.exists_eq_mul_diagPow_mul (w.adicCompletion E) a g`. Rewrite `hk₁`, `hk₂` using `[hK]`. Establish `hD : Cartan.diagPow (w.adicCompletion E) a μ ∈ H`.
+
+Establish `h` using `H.mul_mem (H.mul_mem (H.inv_mem (hKH hk₁)) hg) (H.inv_mem (hKH hk₂))`. Simplify `h` using `[mul_assoc]`. Establish `hinv : Cartan.diagPow (w.adicCompletion E) a (-μ) = (Cartan.diagPow (w.adicCompletion E) a μ)⁻¹`. Use `eq_inv_of_mul_eq_one_left (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Cartan.coe_diagPow, Cartan.coe_diagPow, Matrix.diagonal_mul_diagonal, Units.val_one, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ (Cartan.uniformizer_ne_zero _)]`. Simplify using the standard rewrite rules. Establish `hn` using `norm_unif_lt_one E w hU`.
+
+Establish `h1` using `nonneg_of_pow_mem E w a hn hZ μ fun m => hHZ (H.pow_mem hD m)`. Establish `h2` using `nonneg_of_pow_mem E w a hn hZ (-μ) fun m => hHZ (hinv ▸ H.pow_mem (H.inv_mem hD) m)`. Establish `hμ : μ = 0`. Use function extensionality and compare the values at `i`. Use `h1 i` as an intermediate fact.
+
+Use `h2 i` as an intermediate fact. Simplify using `only [Pi.neg_apply] at *`. Simplify using `only [Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hone : Cartan.diagPow (w.adicCompletion E) a μ = 1`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Cartan.coe_diagPow, hμ]`. Simplify using the standard rewrite rules. Rewrite using `[hone, mul_one]`. Conclude with `(GlobalTheory.LFun.KGL w a).mul_mem hk₁ hk₂`.
+-/
 theorem UpperTheory.Gal.Gen.maxCpt_pf :
     UpperTheory.Gal.Gen.MaxCpt := by
   intro E _ _ w a H Z hZ hHZ hKH g hg

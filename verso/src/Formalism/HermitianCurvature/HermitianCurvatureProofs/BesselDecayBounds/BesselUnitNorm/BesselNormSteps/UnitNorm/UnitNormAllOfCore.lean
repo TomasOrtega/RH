@@ -18,6 +18,9 @@ def bInt {k r : ℕ} (L : LocBessel k r) (F : Mx k r → (L.Wq →L[ℂ] L.Wp)) 
 def bMeas {k r : ℕ} (L : LocBessel k r) : Measure ((Mt k r × Mt k r) × (Mt k r × Mt k r)) :=
   (L.μW.prod L.μN).prod (L.μW'.prod L.μN)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem J_eq {k r : ℕ} (L : LocBessel k r) (F : Mx k r → (L.Wq →L[ℂ] L.Wp)) (g : Mx k r) :
     L.J F g = ∫ x, bInt L F g x ∂(bMeas L) := rfl
 

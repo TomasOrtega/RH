@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `globalDual_of_basis S T hT (selfDual_basis S hS) γ h`.
+-/
 theorem globalDual (S T : HSp D) {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E)

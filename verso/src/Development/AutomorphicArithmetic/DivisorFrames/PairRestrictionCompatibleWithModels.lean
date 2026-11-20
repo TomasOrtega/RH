@@ -16,12 +16,20 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallUnf
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+-/
 private theorem rho_zero' {R : Type} [CommRing R] [Invertible (2 : R)] {U : Type} [AddCommGroup U] [Module R U]
     {B : U → U → R} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar R ℂ)
     (Φ : (κ → R) → ℂ) : co.rho ψ 0 Φ = Φ := by
   funext z
   simp [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem form_self_skew {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (ξ : Fin n → E) : σ (form σ J ξ ξ) = -form σ J ξ ξ := by
@@ -33,11 +41,33 @@ private theorem form_self_skew {F E : Type} [Field F] [NumberField F] [Field E] 
   rw [hJ]
   ring
 
+/- English proof (translation)
+Apply `invOf_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+-/
 private theorem invOf_two_eq' {F : Type} [Field F] [NumberField F] : ⅟(2 : AF F) = algebraMap F (AF F) (1 / 2) := by
   apply invOf_eq_right_inv
   rw [← map_ofNat (algebraMap F (AF F)) 2, ← map_mul]
   norm_num
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he μ 𝓕 hμ h𝓕 h1 Ψ hΨ w hw`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.AdelicU.cm_conj_conj hP.base.cm`. Take `⟨δ, hδ, hσδ⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hP.base.cm`. Use `set f : E := δ * form σ W.J w w with hf`.
+
+Establish `hf0 : f ≠ 0` using `mul_ne_zero hδ hw`. Establish `hσf : σ f = f`. Rewrite using `[hf, map_mul, hσδ, form_self_skew hσ hP.skew.skew w, neg_mul_neg]`. Establish `htr : Algebra.trace F E f ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `GlobalTheory.SplitAdeleTrace.add_conj_eq_trace hP.base.cm f`. Rewrite `h1` using `[hσf, h0, map_zero, ← two_mul]`. Conclude with `hf0 ((mul_eq_zero.1 h1).resolve_left two_ne_zero)`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.T.standard_adelic_char_exists_ne_one F B.ψ hP.base.std`. Use `set t : AF F := s₀ * algebraMap F (AF F) (2 / Algebra.trace F E f) with ht`.
+
+Use `set β : AE F E := t ⊗ₜ[F] δ with hβ`. Establish `hβ' : β = algebraMap (AF F) (AE F E) t * inclR (F` using `F) (AF F) δ := by`. Rewrite using `[hβ, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Use `show _ = (t ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] δ)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Establish `hβc : β + cA σ β = -GlobalTheory.UnipMass.hA σ X₁.J 0 0`. Rewrite using `[GlobalTheory.UnipMass.hA_zero_left, hβ', map_mul (cA σ), AlgHom.commutes, GlobalTheory.UnipMass.cA_inclR, hσδ, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨g, hgU, hgy, hgc⟩` from `UpperTheory.exists_unipotent_heisenberg F E σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hP.base hP.herm hP₂.herm hH 0 β hβc`. Establish `hph : ⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) (β * GlobalTheory.UnipMass.hA σ W.J (incV F w) (incV F w)) = s₀`.
+
+Establish `e3 : β * GlobalTheory.UnipMass.hA σ W.J (incV F w) (incV F w) = t ⊗ₜ[F] f`. Rewrite using `[GlobalTheory.UnipMass.hA_incV, hβ]`. Use `show (t ⊗ₜ[F] δ) * ((1 : AF F) ⊗ₜ[F] form σ W.J w w) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite using `[e3, GlobalTheory.SplitAdeleTrace.trace_baseChange_tmul, invOf_two_eq', ht, mul_assoc, ← map_mul, div_mul_cancel₀ _ htr, mul_left_comm, ← map_mul]`.
+
+Evaluate the numerical expressions. Establish `hsplit` using `IsUWeilPair.isUSplitting hP.weil`. Use `GlobalTheory.IsoPhase.setIntegral_eq_zero_of_mul_right σ X H μ 𝓕 h𝓕 h1 (fun u => thetaSum F (e₁ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u.1, 1) Ψ)))) (fun γ hγ x => UpperTheory.theta_pair_plane_integral hKP F E σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s …` and prove the remaining obligations. Establish `hΦ : om (x.1, 1) Ψ ∈ schA F (Fin n × Fin d)` using `hsplit.pres (x.1, 1) Ψ hΨ`. Establish `hmul : om (x.1 * g, 1) Ψ = om (g, 1) (om (x.1, 1) Ψ)`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, hgc rfl _ x.2]`. Establish `hm` using `UpperTheory.theta_pair_plane_compat hKP F E σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he g hgU 0 β hgy (incV F w) _ hΦ`. Rewrite `hm` using `[hph, Matrix.zero_vecMulVec, rho_zero']`. Use `show thetaSum F (e₁ (M.co.rho B.ψ _ (om (x.1 * g, 1) Ψ))) = _`. Rewrite using `[hmul, hm]`.
+
+Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+-/
 theorem UpperTheory.pair_restriction_compatible_with_models :
     GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
                  (n d n₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (M : Model σ X W) (M₂ : Model σ X₁ W) (H : Plane E n n₁) (j₀ j₁ : ℕ)

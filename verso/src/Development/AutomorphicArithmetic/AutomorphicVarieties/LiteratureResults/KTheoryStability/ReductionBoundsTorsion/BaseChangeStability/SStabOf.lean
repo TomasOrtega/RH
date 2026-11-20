@@ -8,6 +8,15 @@ open scoped TensorProduct
 
 namespace PositivityTheory.KB
 
+/- English proof (translation)
+Introduce `hC hB R _ _ k n n' h hn`. Take `⟨θ, hsurj, hker, hnat⟩` from `hB k`. Use `StabilizationIso.isIso_stab R (k + 1) n (by omega) n' h` as an intermediate fact. Take `⟨hinj, hsur⟩` from `StabilizationIso.baseChange_bijective (grpHMap (stab R n n' h) (k + 1))`. Establish `hcyc : ∀ z : Chn (GL (Fin n) R) (k + 1), IsCyc z → IsCyc (cmap (stab R n n' h) (k + 1) z)` using `fun z hz => by`.
+
+Unfold `IsCyc at hz ⊢`. Rewrite using `[hC.2.1, hz, map_zero]`. Use `⟨fun z hz hb => ?_, fun z' hz' => ?_⟩` and prove the remaining obligations. Establish `e` using `hnat _ _ (stab R n n' h) ⟨z, LinearMap.mem_ker.2 hz⟩ ⟨_, LinearMap.mem_ker.2 (hcyc z hz)⟩ rfl`. Rewrite `e` using `[(hker _ _).2 hb]`.
+
+Use `(hker _ ⟨z, LinearMap.mem_ker.2 hz⟩).1 (hinj ?_)` and prove the remaining obligations. Rewrite using `[← e, map_zero]`. Take `⟨y, hy⟩` from `hsur (θ _ ⟨z', LinearMap.mem_ker.2 hz'⟩)`. Take `⟨w, rfl⟩` from `hsurj _ y`. Use `⟨w.1, LinearMap.mem_ker.1 w.2, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `hnat _ _ (stab R n n' h) w ⟨_, LinearMap.mem_ker.2 (hcyc w.1 (LinearMap.mem_ker.1 w.2))⟩ rfl`. Conclude with `(hker _ (⟨_, LinearMap.mem_ker.2 (hcyc w.1 (LinearMap.mem_ker.1 w.2))⟩ - ⟨z', LinearMap.mem_ker.2 hz'⟩)).1 (by rw [map_sub, e, hy, sub_self])`.
+-/
 theorem sStab_of : SChain → SBridge → SStab := by
   intro hC hB R _ _ k n n' h hn
   obtain ⟨θ, hsurj, hker, hnat⟩ := hB k

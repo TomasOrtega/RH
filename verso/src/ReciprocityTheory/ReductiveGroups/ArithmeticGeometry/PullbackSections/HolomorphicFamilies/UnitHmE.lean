@@ -11,6 +11,9 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H}
 
+/- English proof (translation)
+Introduce `a b h`. Use extensionality with `x`. Establish `h1 : σ (embF c a x) = σ (embF c b x)` using `congrArg (fun f : E →+* ℂ => f x) h`. Establish `h2` using `σ.injective h1`. Conclude with `congrArg Subtype.val h2`.
+-/
 theorem relab_injective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injective (relab c σ) := by
   intro a b h
   ext x
@@ -18,6 +21,13 @@ theorem relab_injective (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injective 
   have h2 := σ.injective h1
   exact congrArg Subtype.val h2
 
+/- English proof (translation)
+Establish `e1 : (H.rt : E) ^ 2 = -(H.d : E)`. Establish `h` using `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq`. Simplify using `using h`. Establish `hsq : τ (H.rt : E) ^ 2 = H.rt0 ^ 2`. Rewrite using `[← map_pow, e1, map_neg, map_natCast, H.sqrt_neg_disc_sq]`.
+
+Establish `hcases : τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0` using `sq_eq_sq_iff_eq_or_eq_neg.mp hsq`. Establish `hg : σ ((IntermediateField.inclusion c.le) (baseKA l).ρ) = H.rt0` using `hσ`. Unfold `relab`. Rewrite using `[RingHom.comp_apply]`. Break down `hcases with h | h` into its components or cases.
+
+Establish `hy : embF c τ (H.rt : E) = (IntermediateField.inclusion c.le) (baseKA l).ρ` using `Subtype.ext h`. Rewrite using `[hy, hg, h]`. Establish `hy : embF c τ (H.rt : E) = -(IntermediateField.inclusion c.le) (baseKA l).ρ` using `Subtype.ext h`. Rewrite using `[hy, map_neg, hg, h]`.
+-/
 theorem relab_rt (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (τ : E →+* ℂ) :
     relab c σ τ (H.rt : E) = H.rt0 ↔ τ (H.rt : E) = H.rt0 := by
   have e1 : (H.rt : E) ^ 2 = -(H.d : E) := by
@@ -35,6 +45,17 @@ theorem relab_rt (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (τ : E
   · have hy : embF c τ (H.rt : E) = -(IntermediateField.inclusion c.le) (baseKA l).ρ := Subtype.ext h
     rw [hy, map_neg, hg, h]
 
+/- English proof (translation)
+Establish `hrel : ∀ τ : E →+* ℂ, Dw.mult τ = if relab c σ τ ∈ Ψ then Dw.p else Dw.q`. Introduce `τ`. Unfold `Datum.mult`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Rewrite using `[if_pos h, if_pos ((hΨ _).mpr ((relab_rt c σ hσ τ).mpr h))]`.
+
+Rewrite using `[if_neg h, if_neg (fun h' => h ((relab_rt c σ hσ τ).mp ((hΨ _).mp h')))]`. Establish `hinv : ∀ τ : E →+* ℂ, conjEmb (conjEmb τ) = τ` using `fun τ => RingHom.ext fun x => by simp [conjEmb]`. Rewrite using `[Equiv.sum_comp e (fun x => G (relab c σ x.1) x.2), Fintype.sum_sigma]`. Rewrite using `[Finset.sum_congr rfl (fun τ _ => Fin.sum_univ_eq_sum_range (G (relab c σ τ)) (Dw.mult τ))]`. Rewrite using `[Fintype.sum_bijective (relab c σ) (relab_injective c σ).bijective_of_finite (fun τ => ∑ n ∈ Finset.range (Dw.mult τ), G (relab c σ τ) n) (fun τ' => ∑ n ∈ Finset.range (if τ' ∈ Ψ then Dw.p else Dw.q), G τ' n) (fun τ => by rw [hrel τ])]`.
+
+Rewrite using `[← Finset.sum_add_sum_compl Ψ, Finset.sum_add_distrib]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun τ hτ => by rw [if_pos hτ])`. Use `Finset.sum_nbij' conjEmb conjEmb ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`.
+
+Conclude with `(hcm (conjEmb a)).mpr (by rw [hinv]; exact Finset.mem_compl.mp ha)`. Introduce `a ha`. Conclude with `Finset.mem_compl.mpr ((hcm a).mp ha)`. Introduce `a _`. Conclude with `hinv a`.
+
+Introduce `a _`. Conclude with `hinv a`. Introduce `a ha`. Rewrite using `[if_neg (Finset.mem_compl.mp ha), hinv]`.
+-/
 theorem letter_sum (c : Coeff l) (σ : c.F →+* ℂ) (hσ : GoodEmb c σ) (Dw : Datum H) {g : ℕ}
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0)

@@ -19,6 +19,11 @@ section Ring
 
 variable {R : Type} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[submatrix_fromBlocks_mul]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[Matrix.neg_apply, Matrix.one_apply]`.
+
+Simplify using `only [EmbeddingLike.apply_eq_iff_eq, blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.one_apply]`.
+-/
 theorem standard_symplectic_form_sq_neg_one :
     (blk4 0 1 (-1) 0 : Matrix (Fin (n + n)) (Fin (n + n)) R) * blk4 0 1 (-1) 0 = -1 := by
   rw [submatrix_fromBlocks_mul]
@@ -29,6 +34,13 @@ theorem standard_symplectic_form_sq_neg_one :
   simp only [EmbeddingLike.apply_eq_iff_eq, blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]
   rcases i with i | i <;> rcases j with j | j <;> simp [Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h1 : (-(J * A * J)) * M = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : M * (-(J * A * J)) = 1` using `mul_eq_one_comm.1 h1`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : M * J * A * (J * J) = -J`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: M * (J * A * J) = -1`. Use `congrArg Neg.neg h2` as an intermediate fact. Simplify using `using this`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Rewrite `h3` using `[hJ]`. Simplify using `using h3`.
+-/
 theorem flip_J {J M A : Matrix (Fin (n + n)) (Fin (n + n)) R} (h : A * J * M = J) (hJ : J * J = -1) :
     M * J * A = J := by
   have h1 : (-(J * A * J)) * M = 1 := by
@@ -47,12 +59,22 @@ theorem flip_J {J M A : Matrix (Fin (n + n)) (Fin (n + n)) R} (h : A * J * M = J
       rw [hJ] at h3
       simpa using h3
 
+/- English proof (translation)
+Simplify using `only [submatrix_fromBlocks_mul, mul_zero, mul_one, add_zero, zero_add, mul_neg, neg_mul] at h`. Establish `h4` using `(blockMatrixTwoByTwoFin_injective h).2.2.2`. Conclude with `(neg_add_eq_zero.1 h4).symm`.
+-/
 theorem symplectic_lower_block_relation {a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R}
     (h : blk4 a b c d * blk4 0 1 (-1) 0 * blk4 a' b' c' d' = blk4 0 1 (-1) 0) : c * d' = d * b' := by
   simp only [submatrix_fromBlocks_mul, mul_zero, mul_one, add_zero, zero_add, mul_neg, neg_mul] at h
   have h4 := (blockMatrixTwoByTwoFin_injective h).2.2.2
   exact (neg_add_eq_zero.1 h4).symm
 
+/- English proof (translation)
+Establish `he0 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `he0' : (1 - e) * e = 0` using `by rw [mul_comm, he0]`. Establish `he1 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, he0, sub_zero]`. Establish `h1 : (e • y + (1 - e) • (1 : Matrix (Fin n) (Fin n) R)) * (e • c + (1 - e) • (1 : Matrix (Fin n) (Fin n) R)) = 1`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, mul_one, one_mul, hy, smul_smul, he, he0, he0', he1, zero_smul, add_zero, zero_add]`.
+
+Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Establish `h3 : e • (c * y) + (1 - e) • (1 : Matrix (Fin n) (Fin n) R) = 1`. Simplify `h2` using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, mul_one, one_mul, smul_smul, he, he0, he0', he1, zero_smul, add_zero, zero_add]`. Rewrite using `[Matrix.mul_smul, eq_sub_of_add_eq h3, sub_smul, one_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem mul_smul_of_idem {e : R} (he : e * e = e) {y c : Matrix (Fin n) (Fin n) R}
     (hy : y * c = e • (1 : Matrix (Fin n) (Fin n) R)) : c * (e • y) = e • (1 : Matrix (Fin n) (Fin n) R) := by
   have he0 : e * (1 - e) = 0 := by rw [mul_sub, mul_one, he, sub_self]
@@ -72,6 +94,9 @@ theorem mul_smul_of_idem {e : R} (he : e * e = e) {y c : Matrix (Fin n) (Fin n) 
 
 end Ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem herm_core {A : Type} [Ring A] {E w c d c' d' w' : A} (hwc : w * c = E) (hcw : c' * w' = E)
     (H : c * d' = d * c') (hw : w * E = w) (hw' : E * w' = w') (hd : E * d = d * E)
     (hd' : E * d' = d' * E) : d' * w' = w * d := by
@@ -82,6 +107,15 @@ theorem herm_core {A : Type} [Ring A] {E w c d c' d' w' : A} (hwc : w * c = E) (
     _ = w * (E * d) := by rw [hcw, mul_assoc, ← hd]
     _ = w * d := by rw [← mul_assoc, hw]
 
+/- English proof (translation)
+Establish `hcw : c * (e • y) = e • (1 : Matrix (Fin n) (Fin n) R)` using `mul_smul_of_idem he hy`. Establish `hwc : (e • y) * c = e • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[Matrix.smul_mul, hy, smul_smul, he]`. Establish `hw : e • (e • y) = e • y` using `by rw [smul_smul, he]`. Establish `haw : e • ad (e • y) = ad (e • y)`.
+
+Use `ad_smul e (e • y)` as an intermediate fact. Rewrite `this` using `[hw, hc]`. Conclude with `this.symm`. Establish `hawc : ad c * ad (e • y) = e • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← ad_mul, hwc, ad_smul, ad_one, hc]`.
+
+Establish `hidem : e • ((e • y) * d) = (e • y) * d` using `by rw [← Matrix.smul_mul, hw]`. Establish `hcomm : ∀ z : Matrix (Fin n) (Fin n) R, (e • (1 : Matrix (Fin n) (Fin n) R)) * z = z * (e • (1 : Matrix (Fin n) (Fin n) R))` using `fun z => by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, one_mul, mul_one]`. Use `⟨hidem, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ad_mul]`.
+
+Use `herm_core hwc hawc H ?_ ?_ (hcomm d) (hcomm (ad d))` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, mul_one, hw]`. Rewrite using `[Matrix.smul_mul, one_mul, haw]`. Rewrite using `[← mul_assoc, hcw, Matrix.smul_mul, one_mul]`.
+-/
 theorem cell_core_ring {R : Type} [CommRing R] {n : ℕ} {s : R → R}
     (ad : Matrix (Fin n) (Fin n) R → Matrix (Fin n) (Fin n) R)
     (ad_mul : ∀ x y, ad (x * y) = ad y * ad x) (ad_smul : ∀ (a : R) x, ad (a • x) = s a • ad x)
@@ -111,12 +145,22 @@ theorem cell_core_ring {R : Type} [CommRing R] {n : ℕ} {s : R → R}
 
 variable {D : D7} {p : ℕ}
 
+/- English proof (translation)
+Establish `h : adj (mat g) * JR (AF D.host.F) (Jst D p) * mat g = JR (AF D.host.F) (Jst D p)` using `g.2`. Rewrite `h` using `[JR_Jst]`. Conclude with `flip_J h standard_symplectic_form_sq_neg_one`.
+-/
 theorem mat_J_adj (g : G D p) :
     mat g * blk4 0 1 (-1) 0 * adj (mat g) = (blk4 0 1 (-1) 0 : Mx D (p + p) (p + p)) := by
   have h : adj (mat g) * JR (AF D.host.F) (Jst D p) * mat g = JR (AF D.host.F) (Jst D p) := g.2
   rw [JR_Jst] at h
   exact flip_J h standard_symplectic_form_sq_neg_one
 
+/- English proof (translation)
+Take `⟨a, b, c, d, hM⟩` from `exists_blockMatrixTwoByTwoFin_eq (mat g)`. Establish `hc : lowC g = c`. Use extensionality with `i j`. Simplify using `only [lowC, hM, blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁]`. Establish `hd : lowD g = d`.
+
+Use extensionality with `i j`. Simplify using `only [lowD, hM, blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]`. Establish `h` using `mat_J_adj g`. Rewrite `h` using `[hM, adelicConjTranspose_blockMatrixTwoByTwoFin]`. Rewrite using `[hc, hd]`.
+
+Conclude with `symplectic_lower_block_relation h`.
+-/
 theorem lowC_mul_adj_lowD (g : G D p) : lowC g * adj (lowD g) = lowD g * adj (lowC g) := by
   obtain ⟨a, b, c, d, hM⟩ := exists_blockMatrixTwoByTwoFin_eq (mat g)
   have hc : lowC g = c := by
@@ -130,6 +174,9 @@ theorem lowC_mul_adj_lowD (g : G D p) : lowC g * adj (lowD g) = lowD g * adj (lo
   rw [hc, hd]
   exact symplectic_lower_block_relation h
 
+/- English proof (translation)
+Introduce `D p e he hc g hg`. Take `⟨y, hy⟩` from `id hg`. Take `⟨h1, h2, h3⟩` from `cell_core_ring (R := AE D) (n := p) (s := cA D) adj adj_mul adj_smul adj_one he hc (y := y) (c := lowC g) (d := lowD g) hy (lowC_mul_adj_lowD g)`. Conclude with `⟨⟨⟨(e • y) * lowD g, h2⟩, h1⟩, hg, h3⟩`.
+-/
 theorem exists_isB : ∀ {D : D7} {p : ℕ} {e : AE D} (he : e * e = e) (hc : cA D e = e) {g : G D p}
     (hg : InCell e g), ∃ x, IsB e g x := by
   intro D p e he hc g hg

@@ -12,5 +12,8 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TypePlacesCover.gPlaces_all | exact GlobalTheory.TypePlacesCover.gPlaces_all | (intros; apply GlobalTheory.TypePlacesCover.gPlaces_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.good_places_all_states : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => LA hL x → GPlaces (Dof x) := by
   first | exact @GlobalTheory.TypePlacesCover.gPlaces_all | exact GlobalTheory.TypePlacesCover.gPlaces_all | (intros; apply GlobalTheory.TypePlacesCover.gPlaces_all <;> assumption)

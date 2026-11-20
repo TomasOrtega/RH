@@ -12,6 +12,9 @@ namespace GlobalTheory.Published
 
 def HeckeLAdicCharacterAbove : Prop := GlobalTheory.TripleGal.CharAbove
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem heckeLAdicCharacterAbove_iff : HeckeLAdicCharacterAbove ↔
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
       (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (ι : Qbar l ≃+* ℂ)
@@ -32,6 +35,11 @@ end GlobalTheory.Published
 
 namespace GlobalTheory.HeckeGal
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `hs` using `Filter.eventually_cofinite.1 (hl.and (GlobalTheory.Mem.UnrAe.unr_ae_and_level E χ).1)`.
+
+Use `mul_inv_eq_one.1 (GlobalTheory.FrobDense.eq_one_of_frob E Ω art ha _ (μ * μ'⁻¹) (hμ.mul hμ'.inv) hs.toFinset fun v hv A hA σ hσ => ?_)` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset, Set.mem_ofPred_eq, not_not]`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_eq_one]`. Conclude with `Units.ext ((h.frob_unr ha (Or.inl hv.1) hv.2 hA hσ).trans (h'.frob_unr ha' (Or.inl hv.1) hv.2 hA hσ).symm)`.
+-/
 theorem IsLAdicOf.eq_of_isGlobalArtin {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {art art' : Ideles E →* Gab E Ω} (ha : IsGlobalArtin art)
     (ha' : IsGlobalArtin art') {ι : Qbar l ≃+* ℂ} {χ : HChar E} {n : (E →+* ℂ) → ℤ} {μ μ' : G E Ω →* (Qbar l)ˣ}

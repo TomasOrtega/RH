@@ -23,6 +23,11 @@ noncomputable section
 
 namespace GlobalTheory.RealDict
 
+/- English proof (translation)
+Introduce `hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨Xs, Ws, Mo, ψ', χX, χW, om, τ, hH, hR⟩` from `GlobalTheory.T.exists_weil_model_of_exponents hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE`. Take `⟨Φ, hi, hr, hF⟩` from `GlobalTheory.T.weil_model_archimedean_exponent hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE Xs Ws Mo ψ' χX χW om τ hH hR`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `hH`. Establish `hH : PublishedHyps D Xs Ws Mo ψ' χX χW om τ` using `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩`.
+
+Conclude with `⟨Xs, Ws, Mo, ψ', χX, χW, om, τ, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, Φ, hi, hr, GlobalTheory.T.weil_model_finite_exponent hP D ψ θ hψ hθ ε M X A B χS χT ω eS eT hW hE Xs Ws Mo ψ' χX χW om τ hH hR Φ hi hr hF, GlobalTheory.T.weil_model_character_match hP D ψ θ hψ …`.
+-/
 theorem dict : GlobalTheory.FunPr.Hypotheses₂ →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),

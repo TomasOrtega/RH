@@ -7,6 +7,13 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 
 namespace GlobalTheory.KZ.ES.DescInv
 
+/- English proof (translation)
+Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Establish `key : ∀ (x : ℤ) (c : ZMod b), (x : ZMod b) = c → (x : ZMod a) = ZMod.castHom h (ZMod a) c`. Introduce `x c hx`.
+
+Rewrite using `[← hx, map_intCast]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key _ _ h1, map_one]`. Simplify using `using key _ _ h2`. Simplify using `using key _ _ h3`.
+
+Rewrite using `[key _ _ h4, map_one]`.
+-/
 theorem gamma_anti {a b : ℕ} (h : a ∣ b) :
     CongruenceSubgroup.Gamma b ≤ CongruenceSubgroup.Gamma a := by
   intro γ hγ
@@ -22,9 +29,23 @@ theorem gamma_anti {a b : ℕ} (h : a ∣ b) :
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Introduce `γ hγ` and use `hf γ (gamma_anti h hγ)`.
+-/
 theorem lev_of_dvd {X : Tower Ω ε} {a b : ℕ} (h : a ∣ b) {f : X.K} (hf : Lev X a f) : Lev X b f :=
   fun γ hγ => hf γ (gamma_anti h hγ)
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `hN`. Distinguish the cases in `hc : Nat.Coprime M N`.
+
+Conclude with `⟨0, N, hN, hc, by simp⟩`. Establish `hd0 : Nat.gcd M N ≠ 0` using `(Nat.gcd_pos_of_pos_left N hM).ne'`. Establish `hd1 : 1 < Nat.gcd M N`. Establish `: Nat.gcd M N ≠ 1` using `hc`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨N', hN'⟩` from `Nat.gcd_dvd_right M N`. Establish `hN'pos : 0 < N'`. Break down `Nat.eq_zero_or_pos N' with h0 | h0` into its components or cases. Rewrite `hN'` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h0`. Establish `hlt : N' < N`. Rewrite using `[hN']`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨e, b, hb, hcop, hdiv⟩` from `ih N' hlt hN'pos`.
+
+Use `⟨e + 1, b, hb, hcop, ?_⟩` and prove the remaining obligations. Establish `: M ^ (e + 1) * b = M * (M ^ e * b)` using `by ring`. Rewrite using `[this, hN']`. Conclude with `Nat.mul_dvd_mul (Nat.gcd_dvd_left M N) hdiv`.
+-/
 theorem exists_dvd_pow_mul_coprime (M : ℕ) (hM : 0 < M) :
     ∀ N : ℕ, 0 < N → ∃ e b : ℕ, 0 < b ∧ Nat.Coprime M b ∧ N ∣ M ^ e * b := by
   intro N
@@ -54,6 +75,27 @@ end GlobalTheory.KZ.ES.DescInv
 
 open GlobalTheory.KZ.ES.DescInv in
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l n M hl hM h6 f hf`. Take `⟨M'', hM''pos, hM''⟩` from `X.level (f : X.K)`. Use `haveI : NeZero M'' := ⟨hM''pos.ne'⟩`. Establish `hex : ∀ r : SL(2, ZMod M''), ∃ (g : X.Kˣ) (L : ℕ), 0 < L ∧ Lev X L (g : X.K) ∧ ∀ γ ∈ CongruenceSubgroup.Gamma M, Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M'')) γ = r → X.sl (ofSL γ) (f : X.K) = f * (g : X.K) ^ (l ^ n)`. Introduce `r`.
+
+Distinguish the cases in `hr : ∃ γ₀ ∈ CongruenceSubgroup.Gamma M, Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M'')) γ₀ = r`. Take `⟨γ₀, hγ₀, hr0⟩` from `hr`. Take `⟨g, hg⟩` from `hf γ₀ hγ₀`. Take `⟨L, hL, hLg⟩` from `X.level (g : X.K)`. Use `⟨g, L, hL, hLg, fun γ _ hrγ => ?_⟩` and prove the remaining obligations.
+
+Establish `hδ : γ * γ₀⁻¹ ∈ CongruenceSubgroup.Gamma M''`. Rewrite using `[CongruenceSubgroup.Gamma_mem', map_mul, map_inv, hrγ, hr0, mul_inv_cancel]`. Establish `hγ : γ = (γ * γ₀⁻¹) * γ₀` using `by group`. Rewrite using `[hγ, map_mul, X.sl_mul, hM'' _ hδ, hg]`. Conclude with `⟨1, 1, one_pos, fun γ _ => by simp, fun γ hγ hrγ => absurd ⟨γ, hγ, hrγ⟩ hr⟩`.
+
+Use `choose G L hLpos hLev hG using hex`. Use `set L₀ : ℕ := ∏ r, L r with hL₀`. Establish `hL₀pos : 0 < L₀` using `Finset.prod_pos fun r _ => hLpos r`. Establish `hLdvd : ∀ r, L r ∣ L₀` using `fun r => Finset.dvd_prod_of_mem L (Finset.mem_univ r)`. Take `⟨e, b, hb, hcop, hdiv⟩` from `exists_dvd_pow_mul_coprime M hM (M'' * L₀) (Nat.mul_pos hM''pos hL₀pos)`.
+
+Establish `hdiv' : M'' * L₀ ∣ M ^ (e + 1) * b` using `hdiv.trans (Nat.mul_dvd_mul_right (pow_dvd_pow M (Nat.le_succ e)) b)`. Establish `hMa : 0 < M ^ (e + 1)` using `pow_pos hM _`. Establish `hMMa : M ∣ M ^ (e + 1)` using `dvd_pow_self M (Nat.succ_ne_zero e)`. Establish `h6a : 6 * l ∣ M ^ (e + 1)` using `h6.trans hMMa`. Establish `hcopa : Nat.Coprime (M ^ (e + 1)) b` using `Nat.Coprime.pow_left _ hcop`.
+
+Establish `hfLev : Lev X (M ^ (e + 1) * b) (f : X.K)` using `lev_of_dvd ((dvd_mul_right M'' L₀).trans hdiv') hM''`. Establish `hstep : ∀ γ ∈ CongruenceSubgroup.Gamma (M ^ (e + 1)), ∃ g : X.Kˣ, Lev X (M ^ (e + 1) * b) (g : X.K) ∧ X.sl (ofSL γ) (f : X.K) = f * (g : X.K) ^ (l ^ n)`. Introduce `γ hγ`. Establish `hγM : γ ∈ CongruenceSubgroup.Gamma M` using `gamma_anti hMMa hγ`. Set `r` to `Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M'')) γ`.
+
+Conclude with `⟨G r, lev_of_dvd (((hLdvd r).trans (dvd_mul_left L₀ M'')).trans hdiv') (hLev r), hG r γ hγM rfl⟩`. Take `⟨h, hh⟩` from `GlobalTheory.T.classInvariant_descent_coprimeLevel_modPow ε X l n (M ^ (e + 1)) b hl hMa hb h6a hcopa f hfLev hstep`. Establish `hFstep : ∀ γ ∈ CongruenceSubgroup.Gamma M, ∃ g : X.Kˣ, X.sl (ofSL γ) (((f ^ 4 * h ^ (l ^ n) : X.Kˣ)) : X.K) = (f ^ 4 * h ^ (l ^ n) : X.Kˣ) * (g : X.K) ^ (l ^ n)`. Introduce `γ hγ`. Take `⟨g, hg⟩` from `hf γ hγ`.
+
+Establish `hne : X.sl (ofSL γ) (h : X.K) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (X.sl (ofSL γ)).injective]`. Conclude with `h.ne_zero`. Use `⟨g ^ 4 * Units.mk0 _ hne * h⁻¹, ?_⟩` and prove the remaining obligations. Establish `hh0 : (h : X.K) ≠ 0` using `h.ne_zero`.
+
+Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_inv_eq_inv_val, map_mul, map_pow, hg, mul_pow, inv_pow]`. Establish `hp : (h : X.K) ^ (l ^ n) ≠ 0` using `pow_ne_zero _ hh0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, h', hh'⟩` from `GlobalTheory.T.exists_level_mul_pow_of_invariant_mod_pow ε X l n M (e + 1) hl hM (f ^ 4 * h ^ (l ^ n)) (by simpa using hh) hFstep`.
+
+Use `⟨k, h * h', ?_⟩` and prove the remaining obligations. Use `hh' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.KZ.ES.desc_pow_four : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     ∀ (l n M : ℕ), l.Prime → 0 < M → 6 * l ∣ M → ∀ f : X.Kˣ,
     (∀ γ ∈ CongruenceSubgroup.Gamma M, ∃ g : X.Kˣ, X.sl (ofSL γ) (f : X.K) = f * (g : X.K) ^ (l ^ n)) →

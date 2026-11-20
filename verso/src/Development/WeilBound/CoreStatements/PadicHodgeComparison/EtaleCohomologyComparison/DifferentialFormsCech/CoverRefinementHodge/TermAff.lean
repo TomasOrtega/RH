@@ -16,6 +16,13 @@ noncomputable section
 
 namespace CrystallineSemistableComparison.Om.Nt2.TermAff
 
+/- English proof (translation)
+Establish `a₂ : SemiHom (RingHom.id K) (α₂.comp α₁)` using `h₁.comp h₂`. Establish `a₃ : SemiHom (RingHom.id K) (α₃.comp (α₂.comp α₁))` using `a₂.comp h₃`. Establish `a₄ : SemiHom (RingHom.id K) (α₄.comp (α₃.comp (α₂.comp α₁)))` using `a₃.comp h₄`. Establish `b₂ : SemiHom (RingHom.id K) (β₂.comp β₁)` using `k₁.comp k₂`. Establish `b₃ : SemiHom (RingHom.id K) (β₃.comp (β₂.comp β₁))` using `b₂.comp k₃`.
+
+Establish `b₄ : SemiHom (RingHom.id K) (β₄.comp (β₃.comp (β₂.comp β₁)))` using `b₃.comp k₄`. Establish `e' : α₄.comp (α₃.comp (α₂.comp α₁)) = β₄.comp (β₃.comp (β₂.comp β₁))` using `RingHom.ext e`. Rewrite using `[SemiHom.mOm_mOm h₁ h₂ a₂ (fun _ => rfl), SemiHom.mOm_mOm a₂ h₃ a₃ (fun _ => rfl), SemiHom.mOm_mOm a₃ h₄ a₄ (fun _ => rfl), SemiHom.mOm_mOm k₁ k₂ b₂ (fun _ => rfl), SemiHom.mOm_mOm b₂ k₃ b₃ (fun _ => rfl), SemiHom.mOm_mOm b₃ k₄ b₄ (fun _ => rfl)]`. Establish `key : ∀ (γ δ : A →+* B₄) (hγ : SemiHom (RingHom.id K) γ) (hδ : SemiHom (RingHom.id K) δ), γ = δ → hγ.mOm j x = hδ.mOm j x`. Introduce `γ δ hγ hδ h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Conclude with `key _ _ a₄ b₄ e'`.
+-/
 theorem mOm_four {K A B₁ B₂ B₃ B₄ C₁ C₂ C₃ : Type} [CommRing K] [CommRing A] [Algebra K A]
     [CommRing B₁] [Algebra K B₁] [CommRing B₂] [Algebra K B₂] [CommRing B₃] [Algebra K B₃] [CommRing B₄] [Algebra K B₄]
     [CommRing C₁] [Algebra K C₁] [CommRing C₂] [Algebra K C₂] [CommRing C₃] [Algebra K C₃]
@@ -47,13 +54,26 @@ variable {K : Type} [CommRing K] {X Y : Scheme.{0}}
 def fb (q : X ⟶ Spec (CommRingCat.of K)) (V : X.Opens) (a : ℕ) : OmU q V a →ₗ[K] OmU (V.ι ≫ q) ⊤ a :=
   (formRes (V.ι ≫ q) (show (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V by simp) a).comp (formPull (f := V.ι) rfl V a)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.forms_restrict_open_bijective q V a`.
+-/
 theorem fb_bij (q : X ⟶ Spec (CommRingCat.of K)) (V : X.Opens) (a : ℕ) : Function.Bijective (fb q V a) :=
   GlobalTheory.T.forms_restrict_open_bijective q V a
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, hu]`.
+-/
 theorem over_res {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)} {u : X ⟶ Y} (hu : u ≫ p = q)
     {V : X.Opens} {W : Y.Opens} (h : V ≤ u ⁻¹ᵁ W) : u.resLE W V h ≫ (W.ι ≫ p) = V.ι ≫ q := by
   rw [← Category.assoc, Scheme.Hom.resLE_comp_ι, Category.assoc, hu]
 
+/- English proof (translation)
+Use `mOm_four (semiHom_appSec hu W) (SemiHom.of_algHom (Sec.res q h)) (semiHom_appSec rfl V) (SemiHom.of_algHom (Sec.res (V.ι ≫ q) _)) (semiHom_appSec rfl W) (SemiHom.of_algHom (Sec.res (W.ι ≫ p) _)) (semiHom_appSec (over_res hu h) ⊤) (SemiHom.of_algHom (Sec.res (V.ι ≫ q) _)) (fun b = …` and prove the remaining obligations. Establish `hT1 : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V` using `by simp`. Establish `hT2 : (⊤ : W.toScheme.Opens) ≤ W.ι ⁻¹ᵁ W` using `by simp`. Establish `hT3 : (⊤ : V.toScheme.Opens) ≤ (u.resLE W V h) ⁻¹ᵁ ⊤` using `by simp`. Establish `key : ∀ (f g : V.toScheme ⟶ Y) (hfg : f = g) (e : ⊤ ≤ f ⁻¹ᵁ W) (e' : ⊤ ≤ g ⁻¹ᵁ W), f.appLE W ⊤ e = g.appLE W ⊤ e'`.
+
+Introduce `f g hfg e e'`. Substitute `hfg` using the available equality. Both sides reduce to the same expression. Establish `e1` using `Scheme.Hom.appLE_comp_appLE V.ι u W V ⊤ h hT1`. Establish `e2` using `Scheme.Hom.appLE_comp_appLE (u.resLE W V h) W.ι W ⊤ ⊤ hT2 hT3`.
+
+Establish `e3` using `key _ _ (Scheme.Hom.resLE_comp_ι u h).symm (hT1.trans (V.ι.preimage_mono h)) ((hT3.trans ((u.resLE W V h).preimage_mono hT2)))`. Conclude with `congrArg (fun φ => φ.hom b) (e1.trans (e3.trans e2.symm))`.
+-/
 theorem fb_nat {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)} {u : X ⟶ Y} (hu : u ≫ p = q)
     {V : X.Opens} {W : Y.Opens} (h : V ≤ u ⁻¹ᵁ W) (a : ℕ) (ω : OmU p W a) :
     fb q V a (formRes q h a (formPull hu W a ω)) =
@@ -86,13 +106,22 @@ abbrev trM (q : X ⟶ Spec (CommRingCat.of K)) (s a : ℕ) :
     CH.Mor (HT.grT (smFun X q) a) ((KS q s {⊤}).ι ⋙ HT.grT (smFun X q) a) (RingHom.id K) :=
   CH.Mor.restrict (HT.grT (smFun X q) a) (KS q s {⊤}).ι
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.graded_restrict_pull_bijective q {⊤} (by simp) a s h n`.
+-/
 theorem trM_bij (q : X ⟶ Spec (CommRingCat.of K)) (s a : ℕ) (h : a < s) (n : ℕ) : Function.Bijective ((trM q s a).pull n) :=
   GlobalTheory.T.graded_restrict_pull_bijective q {⊤} (by simp) a s h n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hT.1, ⊤, rfl, le_of_eq rfl⟩`.
+-/
 theorem ks_top {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)} (r : X ⟶ Y) (hr : r ≫ p = q) (s a : ℕ)
     (T) (hT : KS q s {⊤} T) : KS p s {⊤} ((pullM r hr a).G.obj T) :=
   ⟨hT.1, ⊤, rfl, le_of_eq rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `(P.pull_comp (σ'' := RingHom.id K) (trM p s a) (morU (pullM r hr a) (U := KS p s {⊤}) (U' := KS q s {⊤}) hG) n z).1`. Establish `h2` using `(P.pull_comp (σ'' := RingHom.id K) (pullM r hr a) (trM q s a) n z).1`. Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem trM_nat {q : X ⟶ Spec (CommRingCat.of K)} {p : Y ⟶ Spec (CommRingCat.of K)} (r : X ⟶ Y) (hr : r ≫ p = q) (s a n : ℕ)
     (hG : ∀ T, KS q s {⊤} T → KS p s {⊤} ((pullM r hr a).G.obj T)) (z : CH.H (HT.grT (smFun Y p) a) n) :
     (morU (pullM r hr a) (U := KS p s {⊤}) (U' := KS q s {⊤}) hG).pull n ((trM p s a).pull n z) =
@@ -114,6 +143,9 @@ def tq (e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [IsAffine X
     (LinearEquiv.ofBijective ((trM (V.ι ≫ q) (a + 1) a).pull a) (trM_bij _ _ _ (Nat.lt_succ_self a) a)).symm ≪≫ₗ
       e (V.ι ≫ q) a ≪≫ₗ (LinearEquiv.ofBijective (fb q V a) (fb_bij q V a)).symm
 
+/- English proof (translation)
+The claim follows from `hV fb q V a (tq e m hm q V hV a ((m q V (a + 1) a).pull a ((trM (V.ι ≫ q) (a + 1) a).pull a z))) = e (V.ι ≫ q) a z := by haveI : IsAffine V.toScheme := hV have h1 := (LinearEquiv.ofBijective ((m q V (a + 1) a).pull a) (hm q V (a + 1) a a)).symm_apply_apply ((trM (V.ι ≫ q) (a + 1) …`.
+-/
 theorem tq_spec (e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [IsAffine X] [Smooth q] (a : ℕ), HT.Hdg q a a ≃ₗ[K] OmU q ⊤ a)
     (m : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (V : X.Opens) (s a : ℕ),
       CH.Mor ((KS (V.ι ≫ q) s {⊤}).ι ⋙ HT.grT (smFun V.toScheme (V.ι ≫ q)) a) ((KS q s {V}).ι ⋙ HT.grT (smFun X q) a)
@@ -137,6 +169,17 @@ end Main
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `K _ _`. Take `⟨e, ε, -, he, -, -⟩` from `CrystallineSemistableComparison.Om.L2.hodge_affine_iso_sign K`. Take `⟨m, hm, hn⟩` from `GlobalTheory.T.restrict_graded_pull_natural K`. Use `⟨fun q _ V hV a => tq (@e) (@m) (@hm) q V hV a, ?_⟩` and prove the remaining obligations. Introduce `X Y q p _ _ u hu V W hV hW h a hG x`.
+
+Use `haveI : IsAffine V.toScheme := hV`. Use `haveI : IsAffine W.toScheme := hW`. Take `⟨y, rfl⟩` from `(hm p W (a + 1) a a).2 x`. Take `⟨z, rfl⟩` from `(trM_bij (W.ι ≫ p) (a + 1) a (Nat.lt_succ_self a) a).2 y`. Establish `hh` using `over_res hu h`.
+
+Establish `hG'` using `ks_top (u.resLE W V h) hh (a + 1) a`. Use `(fb_bij q V a).1 ?_` and prove the remaining obligations. Establish `s1` using `hn q p u hu V W h hh (a + 1) a hG hG' a ((trM (W.ι ≫ p) (a + 1) a).pull a z)`. Establish `s2` using `trM_nat (u.resLE W V h) hh (a + 1) a a hG' z`. Establish `s3` using `tq_spec (@e) (@m) (@hm) q V hV a ((pullM (u.resLE W V h) hh a).pull a z)`.
+
+Establish `s4` using `tq_spec (@e) (@m) (@hm) p W hW a z`. Establish `s5` using `fb_nat hu h a (tq (@e) (@m) (@hm) p W hW a ((m p W (a + 1) a).pull a ((trM (W.ι ≫ p) (a + 1) a).pull a z)))`. Establish `s6` using `he _ _ (u.resLE W V h) hh a z`. Establish `s7` using `s1.symm.trans (congrArg ((m q V (a + 1) a).pull a) s2)`. Establish `s8` using `(congrArg (fun w => fb q V a (tq (@e) (@m) (@hm) q V hV a w)) s7).trans s3`.
+
+Establish `s9` using `s5.trans (congrArg (fun w => formRes (V.ι ≫ q) (show (⊤ : V.toScheme.Opens) ≤ (u.resLE W V h) ⁻¹ᵁ ⊤ by simp) a (formPull (over_res hu h) ⊤ a w)) s4)`. Conclude with `s8.trans (s6.trans s9.symm)`.
+-/
 theorem term_aff : ∀ (K : Type) [Field K] [CharZero K],
     ∃ t : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (V : X.Opens), IsAffineOpen V → ∀ a : ℕ,
       CH.H (FV q V a) a ≃ₗ[K] OmU q V a,
@@ -171,4 +214,7 @@ theorem term_aff : ∀ (K : Type) [Field K] [CharZero K],
 
 end CrystallineSemistableComparison.Om.Nt2.TermAff
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.Om.Nt2.TermAff.term_aff`.
+-/
 example : type_of% CrystallineSemistableComparison.Om.Nt2.TermAff.term_aff := CrystallineSemistableComparison.Om.Nt2.TermAff.term_aff

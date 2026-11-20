@@ -102,6 +102,9 @@ def SeriesRat : Prop :=
       ∃ ph : ℂ, ‖ph‖ = 1 ∧ ∀ C : Cover T ((i : ℕ) + 1) T.σ₀, GoodCover T R i C (κ i).n →
         SeriesRatOn T R i hV C (κ i) u (c0L i) ph
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨odd_one, squarefree_one, fun _ hp h => absurd (Nat.dvd_one.1 h) hp.ne_one, Nat.coprime_one_left _, Nat.coprime_one_left _⟩`.
+-/
 theorem auxiliarySplitSquarefreeLevel_one (M : ℕ) : IsAuxiliarySplitSquarefreeLevel D M 1 :=
   ⟨odd_one, squarefree_one, fun _ hp h => absurd (Nat.dvd_one.1 h) hp.ne_one, Nat.coprime_one_left _, Nat.coprime_one_left _⟩
 

@@ -22,6 +22,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
+/- English proof (translation)
+Introduce `p _ g C _ v R _ _ _ Oe _ _ σ cp hS H`. Use `⟨⟨hS.integers, hS.p_lt, hS.p_ne, hS.cp_val, fun _ => rfl⟩, { ρ := H.ρ.comp (Algebra.ofId _ _) ρL := H.ρL.comp (algebraMap _ _) P := H.P PL := H.PL E := H.E E_alternating := H.E_alternating isUnit_det_E := H.isUnit_det_E E_equivariant := fun a => ?_ projectors := ⟨H.projectors.1, …` and prove the remaining obligations. Use `H.E_equivariant (algebraMap ℤ_[p] Oe a)` as an intermediate fact. Rewrite `this` using `[σ.commutes]`. Conclude with `this`.
+
+Use `H.Ht_equivariant.1 (algebraMap ℤ_[p] Oe a)` as an intermediate fact. Rewrite `this` using `[σ.commutes]`. Conclude with `this`.
+-/
 theorem htd_restrict_coefficients : ∀ (p : ℕ) [Fact p.Prime] (g : ℕ) (C : Type) [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C] [Algebra ℤ_[p] R] (Oe : Type) [CommRing Oe] [Algebra ℤ_[p] Oe] (σ : Oe ≃ₐ[ℤ_[p]] Oe) (cp : R), HodgeTateSetting p v R Oe σ cp → ∀ H : HodgeTateDatum p g v R Oe σ cp, HodgeTateSetting p v R ℤ_[p] AlgEquiv.refl cp ∧ ∃ H' : HodgeTateDatum p g v R ℤ_[p] AlgEquiv.refl cp, H'.AA = H.AA ∧ H'.Ht = H.Ht ∧ H'.Bt = H.Bt ∧ H'.E = H.E := by
   intro p _ g C _ v R _ _ _ Oe _ _ σ cp hS H
   refine ⟨⟨hS.integers, hS.p_lt, hS.p_ne, hS.cp_val, fun _ => rfl⟩,

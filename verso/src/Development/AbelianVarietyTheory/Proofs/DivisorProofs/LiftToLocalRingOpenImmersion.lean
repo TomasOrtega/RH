@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic GlobalTheory.PadicComplexHost.isAdicComplete
 open GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `X U j _ A _ ξ 𝔭 h𝔭`. Establish `hopen : IsOpen (Set.range j)` using `j.isOpenEmbedding.isOpen_range`. Establish `hsub : Set.range (spMap (algebraMap A (Localization.AtPrime 𝔭.asIdeal)) ≫ ξ) ⊆ Set.range j`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ⤳ IsLocalRing.closedPoint (Localization.AtPrime 𝔭.asIdeal)` using `IsLocalRing.specializes_closedPoint x`.
+
+Establish `h2` using `hx.map (spMap (algebraMap A (Localization.AtPrime 𝔭.asIdeal)) ≫ ξ).continuous`. Use `h2.mem_open hopen ?_` and prove the remaining obligations. Establish `hc : (spMap (algebraMap A (Localization.AtPrime 𝔭.asIdeal))) (IsLocalRing.closedPoint (Localization.AtPrime 𝔭.asIdeal)) = 𝔭`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Conclude with `Localization.AtPrime.under_maximalIdeal`.
+
+Express the relevant statement in the definitionally equal form `ξ ((spMap (algebraMap A (Localization.AtPrime 𝔭.asIdeal))) (IsLocalRing.closedPoint (Localization.AtPrime 𝔭.asIdeal))) ∈ _`. Rewrite using `[hc]`. Conclude with `h𝔭`. Conclude with `⟨IsOpenImmersion.lift j _ hsub, IsOpenImmersion.lift_fac _ _ _⟩`.
+-/
 theorem GlobalTheory.openImmersion_factor_localization_atPrime : ∀ {X U : Scheme.{0}} (j : U ⟶ X) [IsOpenImmersion j] {A : Type} [CommRing A] (ξ : Sp A ⟶ X)
     (𝔭 : PrimeSpectrum A), ξ 𝔭 ∈ Set.range j →
     ∃ y : Sp (Localization.AtPrime 𝔭.asIdeal) ⟶ U, y ≫ j = spMap (algebraMap A _) ≫ ξ := by

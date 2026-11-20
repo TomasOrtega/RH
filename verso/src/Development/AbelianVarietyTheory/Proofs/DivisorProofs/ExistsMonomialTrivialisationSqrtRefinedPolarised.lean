@@ -21,6 +21,13 @@ namespace GlobalTheory.MonoTriv
 
 open GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues Formalism.L2.Pj
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `PsiCoordLocal.exists_chart_top D 0`. Establish `h` using `PsiCoordLocal.generic_le D 0 j hj`. Establish `hU` using `PsiCoordLocal.psiUnitOn_zero D hB`. Take `⟨s, -, e⟩` from `hU j ⊤ (isAffineOpen_top _) (Set.subset_univ _) hj h`. Take `⟨r, rfl⟩` from `PsiCoordLocal.toOpen_top_bijective.2 s`.
+
+Establish `hr : PsiCoord D 0 r` using `⟨j, hj, h, e⟩`. Establish `hu : IsUnit r` using `IsLocalRing.notMem_maximalIdeal.1 (PsiCoordLocal.not_mem_of_coord (𝔭 := closedPoint R) isOpen_univ trivial hU hr)`. Take `⟨x₀, hx₀, e₀⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D 0 r).1 hr`. Take `⟨v, hv⟩` from `IsPsiCoord.unique hx hx₀`. Use `⟨v * hu.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hv, Units.val_mul, e₀, Units.val_mul, IsUnit.unit_spec, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem psiCoord_zero {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (hB : D.TauBimult)
     (x : (FractionRing R)ˣ) (hx : IsPsiCoord D 0 x) :
     ∃ u : Rˣ, (x : FractionRing R) = algebraMap R (FractionRing R) u := by
@@ -38,6 +45,13 @@ theorem psiCoord_zero {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (D : 
   rw [hv, Units.val_mul, e₀, Units.val_mul, IsUnit.unit_spec, map_mul]
   rfl
 
+/- English proof (translation)
+Establish `hw : algebraMap R (FractionRing R) (w : R) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 w.ne_zero`. Establish `hg : g ≠ 0` using `by rintro rfl; exact hw (by rw [← h]; ring)`. Establish `int : ∀ (g : FractionRing R) (w : Rˣ), g ^ 2 = algebraMap R (FractionRing R) w → ∃ a : R, algebraMap R (FractionRing R) a = g` using `fun g w h => by`. Use `IsIntegrallyClosed.isIntegral_iff.1 ⟨Polynomial.X ^ 2 - Polynomial.C (w : R), Polynomial.monic_X_pow_sub_C _ two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[h]`.
+
+Take `⟨a, ha⟩` from `int g w h`. Take `⟨b, hb⟩` from `int g⁻¹ w⁻¹ (by`. Rewrite using `[inv_pow, h]`. Conclude with `inv_eq_of_mul_eq_one_right (by rw [← map_mul, Units.mul_inv, map_one]))`. Establish `hab : a * b = 1` using `IsFractionRing.injective R (FractionRing R) (by`.
+
+Rewrite using `[map_mul, ha, hb, mul_inv_cancel₀ hg, map_one])`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, ha.symm⟩`.
+-/
 theorem exists_unit_of_sq {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (g : FractionRing R) (w : Rˣ)
     (h : g ^ 2 = algebraMap R (FractionRing R) w) : ∃ a : Rˣ, g = algebraMap R (FractionRing R) a := by
   have hw : algebraMap R (FractionRing R) (w : R) ≠ 0 :=
@@ -56,6 +70,27 @@ theorem exists_unit_of_sq {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClos
     rw [map_mul, ha, hb, mul_inv_cancel₀ hg, map_one])
   exact ⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, ha.symm⟩
 
+/- English proof (translation)
+Introduce `R _ _ R' _ _ Q ρ D e _ m t r δ hCN hρ hH hE hB hQ hδ ht hr y`. Use `haveI : IsIntegrallyClosed R' := hCN.2.1`. Use `set n : Fin m → ℕ := fun i => (δ i (e y) (e y)).toNat with hn_def`. Establish `hn : ∀ i, δ i (e y) (e y) = n i` using `fun i => (Int.toNat_of_nonneg (hδ i (e y))).symm`. Take `⟨x, hx⟩` from `GlobalTheory.PsiFromTau.exists_isTauCoord R' D y (-y)`.
+
+Take `⟨k, hk, hkc⟩` from `hQ (e y) (e (-y))`. Take `⟨u₁, hu₁⟩` from `GlobalTheory.T.refining_degenerationData_tauCoordinate_unit R R' Q ρ D e hρ hH.refines y (-y) k hkc x hx`. Establish `h0 : IsPsiCoord D (y + -y) (psiCoord D 0)` using `by rw [add_neg_cancel]; exact psiCoord_spec D 0`. Take `⟨u₂, hu₂⟩` from `GlobalTheory.T.tauCoordinate_eq_unit_mul_psi_quotient R' D y (-y) x _ _ _ hx h0 (psiCoord_spec D y) (psiCoord_spec D (-y))`. Take `⟨u₃, hu₃⟩` from `GlobalTheory.T.psiEven_coordinates_neg_differ_by_unit R' D hE y _ _ (psiCoord_spec D y) (psiCoord_spec D (-y))`.
+
+Take `⟨u₄, hu₄⟩` from `psiCoord_zero D hB _ (psiCoord_spec D 0)`. Use `set X : FractionRing R' := (psiCoord D y : FractionRing R') with hX`. Establish `hX0 : X ≠ 0` using `(psiCoord D y).ne_zero`. Establish `hσ : ∀ s, IsFractionRing.lift (A` using `R) (K := FractionRing R) (g := (algebraMap R' (FractionRing R')).comp ρ) ((IsFractionRing.injective R' (FractionRing R')).comp hρ) (algebraMap R (FractionRing R) s) = algebraMap R' (FractionRing R') (ρ s) := fun s => IsFractionRing.lift_algebraMap _ s`. Establish `hneg : ∀ i, δ i (e y) (e (-y)) = -(n i : ℤ)` using `fun i => by`.
+
+Rewrite using `[map_neg, map_neg, hn]`. Establish `hr0 : ∀ i, algebraMap R' (FractionRing R') (r i) ≠ 0` using `fun i h => by`. Establish `: algebraMap R' (FractionRing R') (ρ (t i)) = 0` using `by rw [← hr i, map_pow, h, zero_pow two_ne_zero]`. Conclude with `ht i (hρ ((IsFractionRing.injective R' (FractionRing R')) (by rw [this, map_zero, map_zero])))`. Use `set P : FractionRing R' := ∏ i, algebraMap R' (FractionRing R') (r i) ^ n i with hP`.
+
+Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (hr0 i)`. Establish `hk' : IsFractionRing.lift (A` using `R) (K := FractionRing R) (g := (algebraMap R' (FractionRing R')).comp ρ) ((IsFractionRing.injective R' (FractionRing R')).comp hρ) (k : FractionRing R) = (P ^ 2)⁻¹ := by`. Rewrite using `[hk, map_prod, hP, ← Finset.prod_pow, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, hσ, hneg, ← hr i, map_pow, zpow_neg, zpow_natCast, ← pow_mul, ← pow_mul, mul_comm]`.
+
+Rewrite `hu₁` using `[hk']`. Rewrite `hu₂` using `[hu₄, hu₃]`. Establish `hsq : (X / P) ^ 2 = algebraMap R' (FractionRing R') (u₂ * u₄ * u₃⁻¹ * u₁⁻¹ : R'ˣ)`. Establish `h1` using `hu₁.symm.trans hu₂`. Establish `hu : ∀ u : R'ˣ, algebraMap R' (FractionRing R') (u : R') ≠ 0` using `fun u => (map_ne_zero_iff _ (IsFractionRing.injective R' (FractionRing R'))).2 u.ne_zero`.
+
+Simplify using `only [Units.val_mul, map_mul, map_units_inv]`. Use `hu u₁` as an intermediate fact. Use `hu u₂` as an intermediate fact. Use `hu u₃` as an intermediate fact. Use `hu u₄` as an intermediate fact.
+
+Establish `h1' : algebraMap R' (FractionRing R') (u₁ : R') = algebraMap R' (FractionRing R') (u₂ : R') * algebraMap R' (FractionRing R') (u₄ : R') * X⁻¹ * (algebraMap R' (FractionRing R') (u₃ : R') * X)⁻¹ * P ^ 2`. Rewrite using `[← h1, inv_mul_cancel_right₀ (pow_ne_zero 2 hP0)]`. Rewrite using `[h1']`. Clear the denominators using the available nonvanishing facts. Take `⟨a, ha⟩` from `exists_unit_of_sq (X / P) _ hsq`.
+
+Establish `hcoord : PsiCoord D y (a * ∏ i, r i ^ n i)` using `(GlobalTheory.PeriodFormCompare.psiCoord_iff D y _).2 ⟨psiCoord D y, psiCoord_spec D y, by`. Rewrite using `[map_mul, map_prod, ← ha]`. Simplify using `only [map_pow]`. Rewrite using `[← hP, div_mul_cancel₀ _ hP0]⟩`. Use `⟨a, n, fun i => ?_, hcoord⟩` and prove the remaining obligations.
+
+Simplify using `[pull, hn]`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] (Q : Data R) (ρ : R →+* R') (D : DegPre R') (e : D.X ≃+ Q.X) [IsLocalRing R'] (m : ℕ) (t : Fin m → R) (r : Fin m → R') (δ : Fin m → LinearMap.BilinForm ℤ Q.X), IsCN R' → Function.Injective ρ → Half Q ρ D e (fun _ _ => 1) → D.PsiEven → D.TauBimult → Q.IsMonomialTau t δ → (∀ i y, 0 ≤ δ i y y) → (∀ i, t i ≠ 0) → (∀ i, r i ^ 2 = ρ (t i)) → IsMonomial D r fun i => (2 : ℤ) • pull e.toIntLinearEquiv.toLinearMap (δ i) := by
   intro R _ _ R' _ _ Q ρ D e _ m t r δ hCN hρ hH hE hB hQ hδ ht hr y
   haveI : IsIntegrallyClosed R' := hCN.2.1

@@ -12,6 +12,13 @@ namespace GlobalTheory.LoopC.GramSize
 section Alg
 variable {K : Type} [Field K] {N n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Establish `hmap` using `Finset.sum_map Finset.univ ⟨M, hM⟩ (fun k => A (I i) k * B k (J j))`. Simplify using `only [Function.Embedding.coeFn_mk] at hmap`. Rewrite using `[← hmap]`.
+
+Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `k _ hk`. Apply `h` to reduce the goal to its premises. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `hk (Finset.mem_map_of_mem _ (Finset.mem_univ x))`.
+-/
 theorem sub_mul (A B : Matrix (Fin N) (Fin N) K) (I J M : Fin n → Fin N) (hM : Function.Injective M)
     (h : ∀ i j k, k ∉ Set.range M → A (I i) k * B k (J j) = 0) :
     (A * B).submatrix I J = A.submatrix I M * B.submatrix M J := by
@@ -27,16 +34,27 @@ theorem sub_mul (A B : Matrix (Fin N) (Fin N) K) (I J M : Fin n → Fin N) (hM :
   rintro ⟨x, rfl⟩
   exact hk (Finset.mem_map_of_mem _ (Finset.mem_univ x))
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular (L.submatrix I I) (fun i j hij => (h (I i) (I j)).1 (hI (OrderDual.toDual_lt_toDual.mp hij)))]`. Conclude with `Finset.prod_eq_one (fun i _ => (h (I i) (I i)).2 rfl)`.
+-/
 theorem det_lo {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) (I : Fin n → Fin N) (hI : StrictMono I) :
     (L.submatrix I I).det = 1 := by
   rw [Matrix.det_of_lowerTriangular (L.submatrix I I) (fun i j hij => (h (I i) (I j)).1 (hI (OrderDual.toDual_lt_toDual.mp hij)))]
   exact Finset.prod_eq_one (fun i _ => (h (I i) (I i)).2 rfl)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (M := U.submatrix I I) (fun i j hij => (h (I i) (I j)).1 (hI hij))]`. Conclude with `Finset.prod_eq_one (fun i _ => (h (I i) (I i)).2 rfl)`.
+-/
 theorem det_up {U : Matrix (Fin N) (Fin N) K} (h : IsUpUni U) (I : Fin n → Fin N) (hI : StrictMono I) :
     (U.submatrix I I).det = 1 := by
   rw [Matrix.det_of_upperTriangular (M := U.submatrix I I) (fun i j hij => (h (I i) (I j)).1 (hI hij))]
   exact Finset.prod_eq_one (fun i _ => (h (I i) (I i)).2 rfl)
 
+/- English proof (translation)
+Establish `hk' : n ≤ k.val`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hk ⟨⟨k.val, hlt⟩, Fin.ext rfl⟩`. Rewrite using `[Fin.lt_iff_val_lt_val, Fin.coe_castLE]`.
+
+Conclude with `lt_of_lt_of_le i.isLt hk'`.
+-/
 theorem lt_of_not_range (hn : n ≤ N) (i : Fin n) (k : Fin N) (hk : k ∉ Set.range (Fin.castLE hn)) :
     Fin.castLE hn i < k := by
   have hk' : n ≤ k.val := by
@@ -46,6 +64,9 @@ theorem lt_of_not_range (hn : n ≤ N) (i : Fin n) (k : Fin N) (hk : k ∉ Set.r
   rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE]
   exact lt_of_lt_of_le i.isLt hk'
 
+/- English proof (translation)
+Establish `hsub : (L * W).submatrix (Fin.castLE hn) J = L.submatrix (Fin.castLE hn) (Fin.castLE hn) * W.submatrix (Fin.castLE hn) J` using `GlobalTheory.LoopC.GramSize.sub_mul L W _ J (Fin.castLE hn) (Fin.castLE_injective hn) (fun i j k hk => by`. Rewrite using `[(h _ _).1 (lt_of_not_range hn i k hk), zero_mul])`. Rewrite using `[hsub, Matrix.det_mul, det_lo h _ (Fin.strictMono_castLE hn), one_mul]`.
+-/
 theorem det_lo_mul {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) (W : Matrix (Fin N) (Fin N) K)
     (hn : n ≤ N) (J : Fin n → Fin N) :
     ((L * W).submatrix (Fin.castLE hn) J).det = (W.submatrix (Fin.castLE hn) J).det := by
@@ -55,6 +76,11 @@ theorem det_lo_mul {L : Matrix (Fin N) (Fin N) K} (h : IsLoUni L) (W : Matrix (F
       rw [(h _ _).1 (lt_of_not_range hn i k hk), zero_mul])
   rw [hsub, Matrix.det_mul, det_lo h _ (Fin.strictMono_castLE hn), one_mul]
 
+/- English proof (translation)
+Unfold `leadMinorE`. Distinguish the cases in `hl : l ≤ N`. Rewrite using `[dif_pos hl, dif_pos hl, Matrix.mul_assoc, det_lo_mul hL (W * U) hl]`. Establish `hUt : IsLoUni Uᵀ` using `fun i j => ⟨(hU j i).1, fun e => (hU j i).2 e.symm⟩`. Establish `key` using `det_lo_mul hUt Wᵀ hl (Fin.castLE hl)`.
+
+Rewrite `key` using `[← Matrix.transpose_mul, ← Matrix.transpose_submatrix, ← Matrix.transpose_submatrix, Matrix.det_transpose, Matrix.det_transpose]`. Conclude with `key`. Rewrite using `[dif_neg hl, dif_neg hl]`.
+-/
 theorem lead_inv {L U : Matrix (Fin N) (Fin N) K} (hL : IsLoUni L) (hU : IsUpUni U)
     (W : Matrix (Fin N) (Fin N) K) (l : ℕ) : leadMinorE (L * W * U) l = leadMinorE W l := by
   unfold leadMinorE
@@ -67,6 +93,15 @@ theorem lead_inv {L U : Matrix (Fin N) (Fin N) K} (hL : IsLoUni L) (hU : IsUpUni
     exact key
   · rw [dif_neg hl, dif_neg hl]
 
+/- English proof (translation)
+Establish `h' : ∀ i, ∃ j, J j = σ (I i)` using `h`. Use `choose π hπ using h'`. Establish `hπi : Function.Injective π` using `fun a b hab => hI (σ.injective (by rw [← hπ a, ← hπ b, hab]))`. Use `set e : Equiv.Perm (Fin n) := Equiv.ofBijective π hπi.bijective_of_finite with he`. Establish `hsub : w.submatrix I J = Matrix.diagonal (fun i => d (I i)) * e.toPEquiv.toMatrix`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.submatrix_apply, hw, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply]`. Simplify using `only [Option.mem_def, Option.some.injEq]`. Establish `hiff : (J j = σ (I i)) ↔ (e i = j)`. Rewrite using `[← hπ i]`.
+
+Conclude with `⟨fun hh => (hJ hh).symm, fun hh => by rw [← hh]; rfl⟩`. Distinguish the cases in `hc : e i = j`. Rewrite using `[if_pos (hiff.mpr hc), if_pos hc, mul_one]`. Rewrite using `[if_neg (fun h2 => hc (hiff.mp h2)), if_neg hc, mul_zero]`. Rewrite using `[hsub, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_permutation, mul_pow]`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign e) with hs | hs <;> simp [hs]`.
+-/
 theorem det_mono_sq {w : Matrix (Fin N) (Fin N) K} {σ : Equiv.Perm (Fin N)} {d : Fin N → K}
     (hw : ∀ i j, w i j = if j = σ i then d i else 0) (I J : Fin n → Fin N) (hI : Function.Injective I)
     (hJ : Function.Injective J) (h : ∀ i, σ (I i) ∈ Set.range J) :
@@ -88,6 +123,11 @@ theorem det_mono_sq {w : Matrix (Fin N) (Fin N) K} {σ : Equiv.Perm (Fin N)} {d 
   rw [hsub, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_permutation, mul_pow]
   rcases Int.units_eq_one_or (Equiv.Perm.sign e) with hs | hs <;> simp [hs]
 
+/- English proof (translation)
+Establish `hsub : (ZhatOM Z).submatrix I J = Z.submatrix I J * Matrix.diagonal (fun j => (-1 : K) ^ (r - (J j).val))`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.submatrix_apply, Matrix.submatrix_apply]`. Simplify using `only [ZhatOM]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hsub, Matrix.det_mul, Matrix.det_diagonal, mul_pow, ← Finset.prod_pow, Finset.prod_eq_one (fun j _ => by rw [← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]), mul_one]`.
+-/
 theorem det_OM_sq {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (I J : Fin n → Fin (r + 1)) :
     ((ZhatOM Z).submatrix I J).det ^ 2 = (Z.submatrix I J).det ^ 2 := by
   have hsub : (ZhatOM Z).submatrix I J =
@@ -99,6 +139,19 @@ theorem det_OM_sq {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (I J : Fi
   rw [hsub, Matrix.det_mul, Matrix.det_diagonal, mul_pow, ← Finset.prod_pow,
     Finset.prod_eq_one (fun j _ => by rw [← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]), mul_one]
 
+/- English proof (translation)
+Proceed by induction on `bs with`. Consider the case `nil => exact absurd rfl hne`. Consider the case `cons b rest ih`. Take `⟨t0, s0⟩` from `b`. Establish `hb` using `h (t0, s0) List.mem_cons_self`.
+
+Simplify using `only at hb`. Distinguish the cases in `hr : rest = []`. Substitute `hr` using the available equality. Use `⟨0, t0, ?_, hb.1, fun i j hi _ => absurd hi (Nat.not_lt_zero _), fun i j _ _ hij => ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil] at hij`. Simplify using `only [ptEntry]`. Rewrite using `[if_pos ⟨by omega, by omega⟩, if_pos (by omega)]`. Take `⟨l, t, hl, ht, h1, h2⟩` from `ih (fun b hb' => h b (List.mem_cons_of_mem _ hb')) hr`.
+
+Simplify using `only [List.map_cons, List.sum_cons]`. Use `⟨s0 + l, t, by omega, ht, fun i j hi hj => ?_, fun i j hi hj hij => ?_⟩` and prove the remaining obligations. Simplify using `only [ptEntry]`. Rewrite using `[if_neg (by omega)]`. Distinguish the cases in `h3 : s0 ≤ i ∧ s0 ≤ j`.
+
+Rewrite using `[if_pos h3]`. Conclude with `h1 _ _ (by omega) (by omega)`. Rewrite using `[if_neg h3]`. Simplify using `only [ptEntry]`. Rewrite using `[if_neg (by omega), if_pos ⟨by omega, by omega⟩]`.
+
+Conclude with `h2 _ _ (by omega) (by omega) (by omega)`.
+-/
 theorem last_block (bs : List (K × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) (hne : bs ≠ []) :
     ∃ (l : ℕ) (t : K), l < (bs.map Prod.snd).sum ∧ t ≠ 0 ∧ (∀ i j, i < l → l ≤ j → ptEntry bs i j = 0) ∧
       ∀ i j, l ≤ i → l ≤ j → i + j + 1 = (bs.map Prod.snd).sum + l → ptEntry bs i j = t := by
@@ -129,12 +182,50 @@ theorem last_block (bs : List (K × ℕ)) (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤
         rw [if_neg (by omega), if_pos ⟨by omega, by omega⟩]
         exact h2 _ _ (by omega) (by omega) (by omega)
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_range_mul_prod_Ico e hlk, Finset.prod_congr rfl (fun i hi => h i (Finset.mem_Ico.mp hi).1 (Finset.mem_Ico.mp hi).2), Finset.prod_const, Nat.card_Ico]`.
+-/
 theorem prod_tail (e : ℕ → K) (t : K) (l k : ℕ) (hlk : l ≤ k) (h : ∀ i, l ≤ i → i < k → e i = t) :
     ∏ i ∈ Finset.range k, e i = (∏ i ∈ Finset.range l, e i) * t ^ (k - l) := by
   rw [← Finset.prod_range_mul_prod_Ico e hlk,
     Finset.prod_congr rfl (fun i hi => h i (Finset.mem_Ico.mp hi).1 (Finset.mem_Ico.mp hi).2),
     Finset.prod_const, Nat.card_Ico]
 
+/- English proof (translation)
+Take `⟨L, U, hL, hU, hZ⟩` from `hp`. Take `⟨σ, d, hd, hw⟩` from `GlobalTheory.LoopV.Cell.ptMat_monomial p`. Establish `hpne : p.1 ≠ []`. Introduce `hnil`. Establish `hs` using `p.2.2`.
+
+Rewrite `hs` using `[hnil]`. Simplify using `at hs`. Take `⟨l, t, hl, ht, h0, ht'⟩` from `last_block p.1 p.2.1 hpne`. Rewrite `hl`, `ht'` using `[p.2.2]`. Apply the tactic sequence `have hent : ∀ i j : Fin (r + 1), ptMat p i j = ptEntry p.1 i.val j.val := fun _ _ => rfl`.
+
+Establish `hσlast : ∀ i : Fin (r + 1), ∀ _hi : l ≤ i.val, σ i = ⟨r + l - i.val, by have` using `i.isLt; omega⟩ ∧ d i = t := by`. Introduce `i hi`. Establish `hi2` using `i.isLt`. Establish `hval : ptMat p i ⟨r + l - i.val, by omega⟩ = t`. Rewrite using `[hent]`.
+
+Conclude with `ht' _ _ hi (show l ≤ r + l - i.val by omega) (show i.val + (r + l - i.val) + 1 = r + 1 + l by omega)`. Rewrite `hval` using `[hw]`. Distinguish the cases in `hc : (⟨r + l - i.val, by omega⟩ : Fin (r + 1)) = σ i`. Rewrite `hval` using `[if_pos hc]`. Conclude with `⟨hc.symm, hval⟩`.
+
+Rewrite `hval` using `[if_neg hc]`. Conclude with `absurd hval.symm ht`. Establish `hσfirst : ∀ i : Fin (r + 1), i.val < l → (σ i).val < l`. Introduce `i hi`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Establish `hz` using `h0 i.val (σ i).val hi hc`. Rewrite `hz` using `[← hent, hw, if_pos rfl]`. Conclude with `hd i hz`. Take `⟨e, he⟩ : ∃ e : ℕ → K, ∀ k (hk : k < r + 1), e k = d ⟨k, hk⟩` from `⟨fun k => if hk : k < r + 1 then d ⟨k, hk⟩ else 0, fun k hk => dif_pos hk⟩`.
+
+Establish `hde : ∀ (n : ℕ) (hn : n ≤ r + 1) (i : Fin n), d (Fin.castLE hn i) = e i.val`. Introduce `n hn i`. Rewrite using `[he _ (lt_of_lt_of_le i.isLt hn)]`. Both sides reduce to the same expression. Establish `hde' : ∀ i : Fin r, d (Fin.castSucc i) = e i.val`.
+
+Introduce `i`. Rewrite using `[he _ (Nat.lt_succ_of_lt i.isLt)]`. Both sides reduce to the same expression. Establish `hLM : ∀ (n : ℕ) (hn : n ≤ r + 1), leadMinorE Z n ^ 2 = leadMinorE (ptMat p) n ^ 2`. Introduce `n hn`.
+
+Rewrite using `[← lead_inv hL hU (ptMat p) n, ← hZ]`. Unfold `leadMinorE`. Rewrite using `[dif_pos hn, dif_pos hn, det_OM_sq]`. Establish `hmono : ∀ (n : ℕ) (hn : n ≤ r + 1), (∀ i : Fin n, (σ (Fin.castLE hn i)).val < n) → leadMinorE (ptMat p) n ^ 2 = (∏ k ∈ Finset.range n, e k) ^ 2`. Introduce `n hn hσn`.
+
+Unfold `leadMinorE`. Rewrite using `[dif_pos hn, det_mono_sq hw _ _ (Fin.castLE_injective hn) (Fin.castLE_injective hn) (fun i => ⟨⟨(σ (Fin.castLE hn i)).val, hσn i⟩, Fin.ext rfl⟩), Finset.prod_congr rfl (fun i _ => hde n hn i), Fin.prod_univ_eq_prod_range]`. Establish `hlr : l ≤ r` using `by omega`. Establish `hlast : σ (Fin.last r) = ⟨l, hl⟩`. Rewrite using `[(hσlast (Fin.last r) (by rw [Fin.val_last]; omega)).1]`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `show r + l - (Fin.last r).val = l`. Rewrite using `[Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Establish `hσI : ∀ i : Fin r, σ (Fin.castSucc i) ≠ ⟨l, hl⟩`.
+
+Introduce `i hh`. Rewrite `hh` using `[← hlast]`. Conclude with `(Fin.castSucc_lt_last i).ne (σ.injective hh)`. Establish `hrowW : ((ptMat p * U).submatrix Fin.castSucc (Fin.succAbove ⟨l, hl⟩)).det = ((ptMat p).submatrix Fin.castSucc (Fin.succAbove ⟨l, hl⟩)).det`. Rewrite using `[GlobalTheory.LoopC.GramSize.sub_mul (ptMat p) U Fin.castSucc (Fin.succAbove ⟨l, hl⟩) (Fin.succAbove ⟨l, hl⟩) Fin.succAbove_right_injective ?_, Matrix.det_mul, det_up hU _ (Fin.strictMono_succAbove _), mul_one]`.
+
+Introduce `i j k hk`. Establish `hkb : k = ⟨l, hl⟩`. Assume the negation of the conclusion as `hne`. Take `⟨z, hz⟩` from `Fin.exists_succAbove_eq hne`. Conclude with `hk ⟨z, hz⟩`.
+
+Rewrite using `[hkb, hw, if_neg (fun hh => hσI i hh.symm), zero_mul]`. Establish `hcs : (Fin.castSucc : Fin r → Fin (r + 1)) = Fin.castLE (Nat.le_succ r)`. Use function extensionality and compare the values at `fun i => Fin.ext rfl`. Establish `hrow : ((Z.submatrix Fin.castSucc id).submatrix id (Fin.succAbove ⟨l, hl⟩)).det ^ 2 = (∏ k ∈ Finset.range r, e k) ^ 2`. Establish `h1 : (Z.submatrix Fin.castSucc id).submatrix id (Fin.succAbove ⟨l, hl⟩) = Z.submatrix Fin.castSucc (Fin.succAbove ⟨l, hl⟩)` using `rfl`.
+
+Rewrite using `[h1, ← det_OM_sq Z Fin.castSucc (Fin.succAbove ⟨l, hl⟩), hZ, Matrix.mul_assoc, hcs, det_lo_mul hL (ptMat p * U) (Nat.le_succ r), ← hcs, hrowW, det_mono_sq hw _ _ (Fin.castSucc_injective r) Fin.succAbove_right_injective (fun i => Fin.exists_succAbove_eq (hσI i)), Finset.prod_congr …`. Establish `hpt : ∀ k, l ≤ k → k < r + 1 → e k = t` using `fun k h1 h2 => by`. Rewrite using `[he k h2]`. Conclude with `(hσlast ⟨k, h2⟩ h1).2`. Use `⟨⟨l, hl⟩, l, ∏ k ∈ Finset.range l, e k, t, hlr, ?_, ht, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_range]`. Rewrite using `[he k (by omega)]`. Conclude with `hd _`.
+
+Rewrite using `[hrow, prod_tail e t l r hlr (fun k h1 h2 => hpt k h1 (by omega))]`. Rewrite using `[hLM l hl.le, hmono l hl.le (fun i => hσfirst _ i.isLt)]`. Rewrite using `[hLM (r + 1) le_rfl, hmono (r + 1) le_rfl (fun i => (σ _).isLt), prod_tail e t l (r + 1) hl.le (fun k h1 h2 => hpt k h1 h2)]`.
+-/
 theorem cell_minor {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (p : Point K (r + 1))
     (hp : IsInCell (ZhatOM Z) p) :
     ∃ (b₀ : Fin (r + 1)) (l : ℕ) (a t : K), l ≤ r ∧ a ≠ 0 ∧ t ≠ 0 ∧
@@ -238,10 +329,20 @@ theorem cell_minor {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (p : Poi
   · rw [hLM (r + 1) le_rfl, hmono (r + 1) le_rfl (fun i => (σ _).isLt),
       prod_tail e t l (r + 1) hl.le (fun k h1 h2 => hpt k h1 h2)]
 
+/- English proof (translation)
+Establish `h1 : ‖τ x‖ ^ 2 = ‖τ y‖ ^ 2` using `by rw [← norm_pow, ← map_pow, h, map_pow, norm_pow]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h1`.
+-/
 theorem norm_of_sq (τ : K →+* ℂ) {x y : K} (h : x ^ 2 = y ^ 2) : ‖τ x‖ = ‖τ y‖ := by
   have h1 : ‖τ x‖ ^ 2 = ‖τ y‖ ^ 2 := by rw [← norm_pow, ← map_pow, h, map_pow, norm_pow]
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h1
 
+/- English proof (translation)
+Take `⟨b₀, l, a, t, hl, ha, ht, h1, h2, h3⟩` from `cell_minor Z p hp`. Use `⟨b₀, l, hl, ?_, fun τ => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hnz : (a * t ^ (r - l)) ^ 2 ≠ 0` using `pow_ne_zero _ (mul_ne_zero ha (pow_ne_zero _ ht))`. Apply `hnz` to reduce the goal to its premises.
+
+Rewrite using `[← h1, h0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_of_sq τ h1, norm_of_sq τ h2, norm_of_sq τ h3]`. Simplify using `only [map_mul, map_pow, norm_mul, norm_pow]`. Break down `le_total ‖τ t‖ 1 with hT | hT` into its components or cases.
+
+Apply `le_max_of_le_left` to reduce the goal to its premises. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) hT)`. Apply `le_max_of_le_right` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hT (by omega)) (norm_nonneg _)`.
+-/
 theorem cell_minor_le {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (p : Point K (r + 1))
     (hp : IsInCell (ZhatOM Z) p) :
     ∃ (b₀ : Fin (r + 1)) (l : ℕ), l ≤ r ∧
@@ -265,6 +366,13 @@ theorem cell_minor_le {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (p : 
 
 end Alg
 
+/- English proof (translation)
+Take `⟨A, B, hA1, hA2, hB1, hB2, rfl⟩` from `h`. Apply `lead_inv` to reduce the goal to its premises. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.map_apply, hA1 i j hij]`.
+
+Substitute `hij` using the available equality. Simplify using `[Matrix.map_apply, hA2]`. Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.map_apply, hB1 i j hij]`.
+
+Substitute `hij` using the available equality. Simplify using `[Matrix.map_apply, hB2]`.
+-/
 theorem lead_zequiv {E : Type} [Field E] {n : ℕ} {Z Z₂ : Matrix (Fin n) (Fin n) E} (h : ZEquiv Z Z₂) (l : ℕ) :
     leadMinorE Z₂ l = leadMinorE Z l := by
   obtain ⟨A, B, hA1, hA2, hB1, hB2, rfl⟩ := h
@@ -280,14 +388,23 @@ theorem lead_zequiv {E : Type} [Field E] {n : ℕ} {Z Z₂ : Matrix (Fin n) (Fin
     · subst hij
       simp [Matrix.map_apply, hB2]
 
+/- English proof (translation)
+Use `⟨1, 1, fun a b hab => Matrix.one_apply_ne (ne_of_lt hab), fun a => Matrix.one_apply_eq a, fun a b hab => Matrix.one_apply_ne (ne_of_gt hab), fun a => Matrix.one_apply_eq a, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_one _ (by simp) (by simp), Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem zequiv_refl {E : Type} [Field E] {n : ℕ} (Z : Matrix (Fin n) (Fin n) E) : ZEquiv Z Z := by
   refine ⟨1, 1, fun a b hab => Matrix.one_apply_ne (ne_of_lt hab), fun a => Matrix.one_apply_eq a,
     fun a b hab => Matrix.one_apply_ne (ne_of_gt hab), fun a => Matrix.one_apply_eq a, ?_⟩
   rw [Matrix.map_one _ (by simp) (by simp), Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Conclude with `Finset.prod_induction f (fun x => 1 ≤ x) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl h`.
+-/
 theorem one_le_prod'' {ι : Type} (s : Finset ι) (f : ι → ℝ) (h : ∀ i ∈ s, 1 ≤ f i) : 1 ≤ ∏ i ∈ s, f i := by
   exact Finset.prod_induction f (fun x => 1 ≤ x) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl h
 
+/- English proof (translation)
+Unfold `frameExp`. Establish `h1 : ∑ a ∈ Finset.Icc 1 l, (r + 1 - a) ≤ ∑ a ∈ Finset.Icc 1 l, (r + 1)` using `Finset.sum_le_sum (fun a _ => Nat.sub_le _ _)`. Rewrite `h1` using `[Finset.sum_const, Nat.card_Icc, smul_eq_mul, show l + 1 - 1 = l by omega]`. Establish `h3 : l * (r + 1) ≤ (r + 1) * (r + 1)` using `Nat.mul_le_mul_right _ hl`. Use polynomial arithmetic with `[h1, h3]`.
+-/
 theorem frameExp_le (r l : ℕ) (hl : l ≤ r + 1) : 2 * frameExp r l ≤ (2 * r + 2) ^ 2 := by
   unfold frameExp
   have h1 : ∑ a ∈ Finset.Icc 1 l, (r + 1 - a) ≤ ∑ a ∈ Finset.Icc 1 l, (r + 1) :=
@@ -299,10 +416,28 @@ theorem frameExp_le (r l : ℕ) (hl : l ≤ r + 1) : 2 * frameExp r l ≤ (2 * r
 noncomputable def locSize (D : D7) (b C : ℝ) (Z : GramM D) (τ : D.what₂.Tau) : ℝ :=
   ∏ l ∈ Finset.Icc 1 (D.R.rS + 1), max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))
 
+/- English proof (translation)
+Unfold `locSize`. Conclude with `GlobalTheory.LoopC.GramSize.one_le_prod'' _ _ (fun l _ => le_max_left _ _)`.
+-/
 theorem one_le_locSize (D : D7) (b C : ℝ) (Z : GramM D) (τ : D.what₂.Tau) : 1 ≤ locSize D b C Z τ := by
   unfold locSize
   exact GlobalTheory.LoopC.GramSize.one_le_prod'' _ _ (fun l _ => le_max_left _ _)
 
+/- English proof (translation)
+Take `⟨-, -, -, hm, hrd1, -, -, -, -, -⟩` from `GlobalTheory.real_places_facts D`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hloc` using `one_le_locSize D b C Z τ`. Establish `hB1 : 1 ≤ b ^ ((C + 1) * (D.R.m : ℝ) ^ 2)` using `Real.one_le_rpow hb (mul_nonneg (by linarith) (sq_nonneg _))`. Break down `Nat.eq_zero_or_pos l with rfl | hl0` into its components or cases.
+
+Establish `h1 : leadMinorE Z 0 = 1`. Unfold `leadMinorE`. Rewrite using `[dif_pos (Nat.zero_le _)]`. Conclude with `Matrix.det_isEmpty`. Rewrite using `[h1, map_one, norm_one]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hmem : l ∈ Finset.Icc 1 (D.R.rS + 1)` using `Finset.mem_Icc.mpr ⟨hl0, hl⟩`. Establish `hP0 : 0 < b ^ (C * (D.R.m : ℝ) ^ 2)` using `Real.rpow_pos_of_pos hb0 _`. Establish `hfac : max 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2)) ≤ locSize D b C Z τ`. Unfold `locSize`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ hmem]`. Establish `hrest : 1 ≤ ∏ x ∈ (Finset.Icc 1 (D.R.rS + 1)).erase l, max 1 (absDl D Z x τ / b ^ (C * (D.R.m : ℝ) ^ 2))` using `GlobalTheory.LoopC.GramSize.one_le_prod'' _ _ (fun _ _ => le_max_left _ _)`. Establish `hm1` using `le_max_left 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : absDl D Z l τ ≤ b ^ (C * (D.R.m : ℝ) ^ 2) * locSize D b C Z τ`.
+
+Establish `h1` using `(div_le_iff₀ hP0).mp (le_max_right 1 (absDl D Z l τ / b ^ (C * (D.R.m : ℝ) ^ 2)))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hx : ‖embS D τ (leadMinorE Z l)‖ = absDl D Z l τ * D.host.rdE ^ (2 * (frameExp D.R.rS l : ℝ))`. Unfold `absDl absReal`. Rewrite using `[mul_assoc, ← Real.rpow_add (by linarith), neg_add_cancel, Real.rpow_zero, mul_one]`.
+
+Establish `hs : D.host.rdE ^ (2 * (frameExp D.R.rS l : ℝ)) ≤ b ^ ((D.R.m : ℝ) ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Establish `hfe` using `frameExp_le D.R.rS l hl`. Rewrite using `[hm]`.
+
+Conclude with `hfe` after adjusting the coercions. Rewrite using `[hx]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, one_mul, Real.rpow_add hb0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lead_le (D : D7) (b C : ℝ) (hb : 1 ≤ b) (hC : 0 ≤ C) (hrd : D.host.rdE ≤ b) (Z : GramM D)
     (τ : D.what₂.Tau) (l : ℕ) (hl : l ≤ D.R.rS + 1) :
     ‖embS D τ (leadMinorE Z l)‖ ≤ b ^ ((C + 1) * (D.R.m : ℝ) ^ 2) * locSize D b C Z τ := by
@@ -351,6 +486,15 @@ theorem lead_le (D : D7) (b C : ℝ) (hb : 1 ≤ b) (hC : 0 ≤ C) (hrd : D.host
           rw [add_mul, one_mul, Real.rpow_add hb0]
           ring
 
+/- English proof (translation)
+Take `⟨hcard, -, -, -, -, -, -, -, -, -⟩` from `GlobalTheory.real_places_facts D`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hS : 1 ≤ sizeZ D b C Z`. Unfold `sizeZ`. Conclude with `GlobalTheory.LoopC.GramSize.one_le_prod'' _ _ (fun τ _ => one_le_locSize D b C Z τ)`.
+
+Establish `hsz : sizeZ D b C Z = ∏ τ, locSize D b C Z τ` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hcard, Finset.prod_pow, ← hsz, ← Real.rpow_natCast (b ^ x) D.R.f, ← Real.rpow_mul hb0.le]`. Use `_ ≤ b ^ (2 * C ^ 2 * (D.R.m : ℝ) ^ 3 * D.R.f) * sizeZ D b C Z ^ 8 := by`. Apply `mul_le_mul (Real.rpow_le_rpow_of_exponent_le hb (mul_le_mul_of_nonneg_right hx (Nat.cast_nonneg _))) (pow_le_pow_right₀ hS (by norm_num)) (by positivity) (Real.rpow_pos_of_pos hb0 _).le` to reduce the goal to its premises.
+
+Use `_ = HHZ D b C Z ^ 2 := by`. Unfold `HHZ`. Rewrite using `[mul_pow, ← Real.rpow_mul hb0.le, ← Real.rpow_natCast (b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * (D.R.m : ℝ)))) 2, ← Real.rpow_mul hb0.le, ← pow_mul]`. Use `congr 1`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_le_HH (D : D7) (b C x : ℝ) (hb : 1 ≤ b) (Z : GramM D) (hx : x ≤ 2 * C ^ 2 * (D.R.m : ℝ) ^ 3)
     (X : D.what₂.Tau → ℝ) (h0 : ∀ τ, 0 ≤ X τ) (h : ∀ τ, X τ ≤ b ^ x * locSize D b C Z τ ^ 2) :
     ∏ τ, X τ ≤ HHZ D b C Z ^ 2 := by
@@ -379,6 +523,9 @@ theorem prod_le_HH (D : D7) (b C x : ℝ) (hb : 1 ≤ b) (Z : GramM D) (hx : x �
         push_cast
         ring
 
+/- English proof (translation)
+Establish `ha` using `abs_nonneg CT`. Establish `hm2 : m ≤ m ^ 2` using `by nlinarith`. Establish `hm3 : m ^ 2 ≤ m ^ 3` using `by nlinarith`. Establish `h1 : 2 * (C + 1) + 4 * |CT| ≤ 2 * C ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_ne_zero_smul_mem_of_mem_span' (C CT m : ℝ) (hC : 2 * |CT| + 3 ≤ C) (hm : 1 ≤ m) :
     2 * ((C + 1) * m ^ 2) + 4 * |CT| * m ≤ 2 * C ^ 2 * m ^ 3 := by
   have ha := abs_nonneg CT
@@ -390,9 +537,53 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' (C CT m : ℝ) (hC : 2 * |C
     _ ≤ 2 * C ^ 2 * m ^ 2 := by nlinarith
     _ ≤ 2 * C ^ 2 * m ^ 3 := by nlinarith
 
+/- English proof (translation)
+Rewrite using `[sq, ← Real.rpow_add (by linarith : (0 : ℝ) < b), two_mul]`.
+-/
 private theorem main_lemma_2 {b : ℝ} (hb : 1 ≤ b) (y : ℝ) : (b ^ y) ^ 2 = b ^ (2 * y) := by
   rw [sq, ← Real.rpow_add (by linarith : (0 : ℝ) < b), two_mul]
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Use `⟨2 * |CT| + 3, ?_⟩` and prove the remaining obligations. Introduce `C hC D large₂ u u' C' Cl hCl hH F0 Λ _ _ Z F' hRel hT hZ`. Take `⟨-, -, -, hm, hrd1, hstar, -⟩` from `GlobalTheory.real_places_facts D`. Take `⟨⟨hS0, -, -⟩, hSt, -⟩` from `hH`.
+
+Take `⟨-, -, -, -, -, -, -, -, -, -, hlog, -, -, -, -, -, -, -, -, -, -, -, hTr, -, -⟩` from `hS0`. Take `⟨-, -, -, hT3, hT3', -⟩` from `hSt`. Take `⟨⟨-, -, hG0⟩, -⟩` from `hT`. Establish `hCa : 0 ≤ |CT|` using `abs_nonneg CT`. Establish `hC0 : 0 ≤ C` using `by linarith`.
+
+Establish `hL0 : 0 ≤ large₂.sc.L` using `Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hb1 : 1 ≤ large₂.sc.b` using `Real.one_le_exp hL0`. Establish `hb0 : (0 : ℝ) ≤ large₂.sc.b` using `by linarith`. Establish `hrdb : D.host.rdE ≤ large₂.sc.b`. Establish `h0 : 0 < D.host.rdE` using `by linarith`.
+
+Establish `h1 : Real.log D.host.rdE ≤ large₂.sc.L` using `le_trans hlog (div_le_self hL0 hCl)`. Conclude with `(Real.log_le_iff_le_exp h0).1 h1`. Establish `hmN : 1 ≤ D.R.m` using `by omega`. Establish `hm1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `by exact_mod_cast hmN`. Establish `hmr : 2 * (D.R.rS : ℝ) ≤ (D.R.m : ℝ)`.
+
+Establish `: 2 * D.R.rS ≤ D.R.m` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hsz : 1 ≤ sizeZ D large₂.sc.b C Z` using `one_le_prod'' Finset.univ (fun τ => locSize D large₂.sc.b C Z τ) (fun τ _ => one_le_locSize D _ _ Z τ)`. Establish `hHb : 1 ≤ (large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f)) ^ (C * (D.R.m : ℝ))` using `Real.one_le_rpow (Real.one_le_rpow hb1 (by positivity)) (by positivity)`. Establish `hHH : 1 ≤ HHZ D large₂.sc.b C Z` using `one_le_mul_of_one_le_of_one_le hHb (one_le_pow₀ hsz)`.
+
+Establish `hHH2 : HHZ D large₂.sc.b C Z ≤ HHZ D large₂.sc.b C Z ^ 2` using `le_self_pow₀ hHH (by norm_num)`. Establish `hB : ∀ τ l, l ≤ D.R.rS + 1 → ‖embS D τ (leadMinorE Z l)‖ ≤ large₂.sc.b ^ ((C + 1) * (D.R.m : ℝ) ^ 2) * locSize D large₂.sc.b C Z τ` using `fun τ l hl => lead_le D large₂.sc.b C hb1 hC0 hrdb Z τ l hl`. Establish `hx` using `exists_ne_zero_smul_mem_of_mem_span' C CT (D.R.m : ℝ) hC hm1`. Use `⟨Z, zequiv_refl Z, one_le_pow₀ hHH, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : D.host.rdE ^ (2 * D.R.f * D.R.rS) ≤ large₂.sc.b ^ ((2 * D.R.f * D.R.rS : ℕ) : ℝ)`.
+
+Rewrite using `[Real.rpow_natCast]`. Conclude with `pow_le_pow_left₀ (by linarith) hrdb _`. Establish `e2 : large₂.sc.b ^ ((2 * D.R.f * D.R.rS : ℕ) : ℝ) ≤ (large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f)) ^ (C * (D.R.m : ℝ))`. Rewrite using `[← Real.rpow_mul hb0]`. Apply `Real.rpow_le_rpow_of_exponent_le hb1` to reduce the goal to its premises.
+
+Establish `hf : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hC2 : 1 ≤ C ^ 2` using `by nlinarith`. Establish `hm3' : (D.R.m : ℝ) ≤ (D.R.m : ℝ) ^ 3` using `by nlinarith`. Establish `hm3 : (D.R.m : ℝ) ≤ C ^ 2 * (D.R.m : ℝ) ^ 3`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hC2 (by positivity : (0 : ℝ) ≤ (D.R.m : ℝ) ^ 3)]`.
+
+Use `push_cast`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hmr hf, mul_le_mul_of_nonneg_right hm3 hf]`. Establish `e3 : (large₂.sc.b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f)) ^ (C * (D.R.m : ℝ)) ≤ HHZ D large₂.sc.b C Z`. Unfold `HHZ`. Conclude with `le_mul_of_one_le_right (by linarith) (one_le_pow₀ hsz)`.
+
+Conclude with `e1.trans (e2.trans (e3.trans hHH2))`. Take `⟨p, hp⟩` from `hRel`. Take `⟨b₀, l, hl, hne, hle⟩` from `cell_minor_le Z p hp`. Use `⟨b₀, hne, ?_⟩` and prove the remaining obligations. Use `prod_le_HH D large₂.sc.b C (2 * ((C + 1) * (D.R.m : ℝ) ^ 2)) hb1 Z (by have hcm := mul_nonneg hCa (le_trans zero_le_one hm1); linarith) (fun τ => ‖embS D τ (rowMinor D Z b₀)‖ ^ 2) (fun τ => by positivity) (fun τ => ?_)` and prove the remaining obligations.
+
+Establish `h1 : ‖embS D τ (rowMinor D Z b₀)‖ ≤ large₂.sc.b ^ ((C + 1) * (D.R.m : ℝ) ^ 2) * locSize D large₂.sc.b C Z τ` using `(hle (embS D τ)).trans (max_le (hB τ l (by omega)) (hB τ _ le_rfl))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, main_lemma_2 hb1]`. Unfold `Gmat`. Rewrite using `[lead_zequiv hZ, lead_zequiv hZ]`.
+
+Conclude with `hG0`. Establish `hTu : ∀ v : D.what₂.Word, (3 : ℝ) ≤ (Tu D v : ℝ) → (Tu D v : ℝ) ≤ large₂.sc.b ^ (|CT| * (D.R.m : ℝ))`. Introduce `v _`. Use `le_trans (hTr v).2 (Real.rpow_le_rpow_of_exponent_le hb1 ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self CT) (by positivity)`.
+
+Establish `t1 : (3 : ℝ) ≤ (Tu D u : ℝ)` using `by exact_mod_cast hT3`. Establish `t2 : (3 : ℝ) ≤ (Tu D u' : ℝ)` using `by exact_mod_cast hT3'`. Establish `hT1` using `hTu u t1`. Establish `hT2` using `hTu u' t2`. Use `prod_le_HH D large₂.sc.b C (2 * ((C + 1) * (D.R.m : ℝ) ^ 2) + 4 * |CT| * (D.R.m : ℝ)) hb1 Z hx (fun τ => ‖embS D τ (Gmat D ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) Z)‖) (fun τ => norm_nonneg _) (fun τ => ?_)` and prove the remaining obligations.
+
+Use `set B := large₂.sc.b ^ ((C + 1) * (D.R.m : ℝ) ^ 2) * locSize D large₂.sc.b C Z τ with hBdef`. Establish `h1` using `hB τ (D.R.rS + 1) le_rfl`. Establish `h2` using `hB τ D.R.rS (by omega)`. Establish `hst : ∀ a : D.host.E, ‖embS D τ (star a)‖ = ‖embS D τ a‖` using `fun a => by`. Rewrite using `[hstar, Complex.norm_conj]`.
+
+Establish `hG : ‖embS D τ (Gmat D ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) Z)‖ ≤ ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ * ‖embS D τ (leadMinorE Z (D.R.rS + 1))‖ + ((Tu D u : ℝ) * (Tu D u' : ℝ)) * (‖embS D τ (leadMinorE Z D.R.rS)‖ * ‖embS D τ (leadMinorE Z D.R.rS)‖)`. Unfold `Gmat`. Simplify using `only [map_sub, map_mul]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Simplify using `only [norm_mul, map_natCast, Complex.norm_natCast, hst, le_refl]`.
+
+Establish `hn1` using `norm_nonneg (embS D τ (leadMinorE Z (D.R.rS + 1)))`. Establish `hn2` using `norm_nonneg (embS D τ (leadMinorE Z D.R.rS))`. Establish `hTT : (1 : ℝ) + (Tu D u : ℝ) * (Tu D u' : ℝ) ≤ ((Tu D u : ℝ) * (Tu D u' : ℝ)) ^ 2`. Establish `h9 : (9 : ℝ) ≤ (Tu D u : ℝ) * (Tu D u' : ℝ)`. Use polynomial arithmetic with `[mul_le_mul t1 t2 (by norm_num) (by linarith)]`.
+
+Use polynomial arithmetic with `[h9]`. Establish `hTT2 : ((Tu D u : ℝ) * (Tu D u' : ℝ)) ^ 2 ≤ large₂.sc.b ^ (4 * |CT| * (D.R.m : ℝ))`. Establish `e : large₂.sc.b ^ (4 * |CT| * (D.R.m : ℝ)) = ((large₂.sc.b ^ (|CT| * (D.R.m : ℝ))) ^ 2) ^ 2`. Rewrite using `[main_lemma_2 hb1, main_lemma_2 hb1]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[e]`. Establish `hp : 0 ≤ (Tu D u : ℝ) * (Tu D u' : ℝ)` using `by positivity`. Use `pow_le_pow_left₀ hp ?_ 2` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `mul_le_mul hT1 hT2 (by positivity) (by positivity)`.
+
+Establish `hB0 : 0 ≤ B` using `mul_nonneg (Real.rpow_nonneg hb0 _) (le_trans zero_le_one (one_le_locSize D _ _ Z τ))`. Combine the equalities or inequalities in the displayed calculation. Use `hG.trans (add_le_add (mul_le_mul h1 h1 hn1 hB0) ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul h2 h2 hn2 hB0) (by positivity)`. Use `_ = (1 + (Tu D u : ℝ) * (Tu D u' : ℝ)) * B ^ 2 := by ring`.
+
+Use `_ ≤ large₂.sc.b ^ (4 * |CT| * (D.R.m : ℝ)) * B ^ 2 := mul_le_mul_of_nonneg_right (hTT.trans hTT2) (by positivity)`. Use `_ = large₂.sc.b ^ (2 * ((C + 1) * (D.R.m : ℝ) ^ 2) + 4 * |CT| * (D.R.m : ℝ)) * locSize D large₂.sc.b C Z τ ^ 2 := by`. Rewrite using `[hBdef, mul_pow, main_lemma_2 hb1, ← mul_assoc, ← Real.rpow_add (by linarith), add_comm]`.
+-/
 theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → ∀ (F0 : Fb D u) (Λ : LatV D), IsBase D u F0 → IsRowLat D F0 Λ → ∀ (Z : GramM D) (F' : FlagU D u'), RelZ D Z → IsTermF D Λ (lf D F0) F' → ZEquiv (ZhatL (lf D F0) F') Z → ∃ Z₁, ZEquiv Z Z₁ ∧ QOK D u u' Z₁ (HHZ D large₂.sc.b C Z ^ 2) := by
   intro Cg cb Cu cT CT C0 A
   refine ⟨2 * |CT| + 3, ?_⟩

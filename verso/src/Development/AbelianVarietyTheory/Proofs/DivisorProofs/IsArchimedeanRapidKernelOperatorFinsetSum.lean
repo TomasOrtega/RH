@@ -10,10 +10,16 @@ namespace GlobalTheory.JSW.MirCinf
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in exact Units.isOpenEmbedding_val (R := Matrix (Fin n) (Fin n) (Cinf E))`.
+-/
 theorem isOpenEmbedding_entriesGLInf :
     Topology.IsOpenEmbedding (fun g : GL (Fin n) (Cinf E) => fun i j => (g : Matrix (Fin n) (Fin n) (Cinf E)) i j) := by
   open scoped Matrix.Norms.Operator in exact Units.isOpenEmbedding_val (R := Matrix (Fin n) (Fin n) (Cinf E))
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (GL (Fin n) (Cinf E)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (Cinf E)) := ⟨rfl⟩`. Establish `h : Measurable γ` using `(isOpenEmbedding_entriesGLInf.measurableEmbedding.measurable_comp_iff).1 (measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => hγ i j)`. Conclude with `hF.measurable.comp h`.
+-/
 theorem measurable_comp_GLInf {X β : Type} [MeasurableSpace X] [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β]
     {F : GL (Fin n) (Cinf E) → β} (hF : Continuous F) {γ : X → GL (Fin n) (Cinf E)}
     (hγ : ∀ i j, Measurable fun x => (γ x : Matrix (Fin n) (Fin n) (Cinf E)) i j) : Measurable fun x => F (γ x) := by
@@ -23,10 +29,16 @@ theorem measurable_comp_GLInf {X β : Type} [MeasurableSpace X] [TopologicalSpac
     (measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => hγ i j)
   exact hF.measurable.comp h
 
+/- English proof (translation)
+Unfold `htInf`. Conclude with `Finset.prod_pos fun w _ => htGL_pos _`.
+-/
 theorem htInf_pos' (g : GL (Fin n) (Cinf E)) : 0 < htInf g := by
   unfold htInf
   exact Finset.prod_pos fun w _ => htGL_pos _
 
+/- English proof (translation)
+Unfold `htInf`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => (htGL_pos _).le) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `htGL_mul_le _ _`.
+-/
 theorem htInf_mul_le (g h : GL (Fin n) (Cinf E)) : htInf (g * h) ≤ htInf g * htInf h := by
   unfold htInf
   rw [← Finset.prod_mul_distrib]
@@ -34,6 +46,13 @@ theorem htInf_mul_le (g h : GL (Fin n) (Cinf E)) : htInf (g * h) ≤ htInf g * h
   rw [map_mul]
   exact htGL_mul_le _ _
 
+/- English proof (translation)
+Take `⟨hc, C, N, hC⟩` from `hW`. Establish `hC0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact. Conclude with `nonneg_of_mul_nonneg_left this (pow_pos (htInf_pos' _) _)`. Use `((h.2.2.2 N).const_mul (C * htInf g ^ N)).mono' ?_ (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Use `Measurable.aestronglyMeasurable ((h.1.mul ?_).mul ?_)` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp Real.continuous_fourierChar).measurable.comp (h.2.2.1 z)`. Conclude with `measurable_comp_GLInf (F := fun q => W (g * q)) (by fun_prop) h.2.1`. Rewrite using `[norm_mul, norm_mul, Circle.norm_coe, mul_one]`. Establish `h1 : htInf (g * γ x) ≤ htInf g * (htInf (γ x) * (1 + ‖η x‖))` using `(htInf_mul_le _ _).trans (mul_le_mul_of_nonneg_left (le_mul_of_one_le_right (htInf_pos' _).le (by linarith [norm_nonneg (η x)])) (htInf_pos' _).le)`.
+
+Establish `h2` using `pow_le_pow_left₀ (htInf_pos' _).le h1 N`. Rewrite `h2` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsRapidFInf.integrable {X Z : Type} [MeasurableSpace X] [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     {ν : Measure X} {k : X → ℂ} {γ : X → GL (Fin n) (Cinf E)} {η : X → Z →L[ℝ] ℝ} (h : IsRapidFInf ν k γ η)
     {W : GL (Fin n) (Cinf E) → ℂ} (hW : IsModGrowthInf W) (z : Z) (g : GL (Fin n) (Cinf E)) :
@@ -56,6 +75,9 @@ theorem IsRapidFInf.integrable {X Z : Type} [MeasurableSpace X] [NormedAddCommGr
           mul_le_mul_of_nonneg_left ((hC _).trans (mul_le_mul_of_nonneg_left h2 hC0)) (norm_nonneg _)
       _ = _ := by ring
 
+/- English proof (translation)
+Use `⟨Unit, inferInstance, 0, inferInstance, fun _ => 0, fun _ => 1, fun _ => 0, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨measurable_const, fun _ _ => measurable_const, fun _ => measurable_const, fun _ => integrable_zero_measure⟩`. Introduce `W _ z g`. Simplify using the standard rewrite rules.
+-/
 theorem isKerOpInf_zero_sum {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z] :
     IsKerOpInf (E := E) (n := n)
       (fun (_ : GL (Fin n) (Cinf E) → ℂ) (_ : Z) (_ : GL (Fin n) (Cinf E)) => (0 : ℂ)) := by
@@ -64,6 +86,19 @@ theorem isKerOpInf_zero_sum {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z
   · intro W _ z g
     simp
 
+/- English proof (translation)
+Take `⟨X, mX, ν, hν, k, γ, η, hr, hT⟩` from `hT`. Take `⟨X', mX', ν', hν', k', γ', η', hr', hT'⟩` from `hT'`. Establish `e1 : MeasurableEmbedding (Sum.inl : X → X ⊕ X')` using `⟨Sum.inl_injective, measurable_inl, fun _ hs => measurableSet_inl_image.2 hs⟩`. Establish `e2 : MeasurableEmbedding (Sum.inr : X' → X ⊕ X')` using `⟨Sum.inr_injective, measurable_inr, fun _ hs => measurableSet_inr_image.2 hs⟩`. Use `⟨X ⊕ X', inferInstance, ν.map Sum.inl + ν'.map Sum.inr, inferInstance, Sum.elim k k', Sum.elim γ γ', Sum.elim η η', ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨hr.1.sumElim hr'.1, fun i j => ?_, fun z => ?_, fun N => ?_⟩` and prove the remaining obligations. Establish `: (fun x : X ⊕ X' => ((Sum.elim γ γ' x : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E)) i j) = Sum.elim (fun x => (γ x : Matrix (Fin n) (Fin n) (Cinf E)) i j) (fun x => (γ' x : Matrix (Fin n) (Fin n) (Cinf E)) i j)`. Apply the tactic sequence `funext x; cases x <;> rfl`. Rewrite using `[this]`. Conclude with `(hr.2.1 i j).sumElim (hr'.2.1 i j)`.
+
+Establish `: (fun x : X ⊕ X' => Sum.elim η η' x z) = Sum.elim (fun x => η x z) (fun x => η' x z)`. Apply the tactic sequence `funext x; cases x <;> rfl`. Rewrite using `[this]`. Conclude with `(hr.2.2.1 z).sumElim (hr'.2.2.1 z)`. Rewrite using `[integrable_add_measure, e1.integrable_map_iff, e2.integrable_map_iff]`.
+
+Conclude with `⟨hr.2.2.2 N, hr'.2.2.2 N⟩`. Introduce `W hW z g`. Establish `i1` using `hr.integrable hW z g`. Establish `i2` using `hr'.integrable hW z g`. Use `show T W z g + T' W z g = _`.
+
+Rewrite using `[integral_add_measure, e1.integral_map, e2.integral_map, hT W hW z g, hT' W hW z g]`. Both sides reduce to the same expression. Rewrite using `[e1.integrable_map_iff]`. Conclude with `i1`. Rewrite using `[e2.integrable_map_iff]`.
+
+Conclude with `i2`.
+-/
 theorem isKerOpInf_add_sum {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     {T T' : (GL (Fin n) (Cinf E) → ℂ) → Z → GL (Fin n) (Cinf E) → ℂ} (hT : IsKerOpInf T) (hT' : IsKerOpInf T') :
     IsKerOpInf (fun W z g => T W z g + T' W z g) := by
@@ -95,6 +130,11 @@ theorem isKerOpInf_add_sum {Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     · rw [e1.integrable_map_iff]; exact i1
     · rw [e2.integrable_map_iff]; exact i2
 
+/- English proof (translation)
+It suffices to establish `h : ∀ s : Finset ι, IsKerOpInf (fun W z g => ∑ i ∈ s, T i W z g) from h Finset.univ`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isKerOpInf_zero_sum (E := E) (n := n) (Z := Z))`. Consider the case `insert a s ha ih`.
+
+Establish `: (fun W z g => ∑ i ∈ insert a s, T i W z g) = fun W z g => T a W z g + ∑ i ∈ s, T i W z g`. Use function extensionality and compare the values at `W z g`. Rewrite using `[Finset.sum_insert ha]`. Rewrite using `[this]`. Conclude with `isKerOpInf_add_sum (hT a) ih`.
+-/
 theorem isKerOpInf_fintype_sum (E : Type) [Field E] [NumberField E] (n : ℕ) (Z : Type) [NormedAddCommGroup Z]
     [NormedSpace ℝ Z] [FiniteDimensional ℝ Z] (ι : Type) [Fintype ι]
     (T : ι → (GL (Fin n) (Cinf E) → ℂ) → Z → GL (Fin n) (Cinf E) → ℂ) (hT : ∀ i, IsKerOpInf (T i)) :
@@ -110,6 +150,9 @@ theorem isKerOpInf_fintype_sum (E : Type) [Field E] [NumberField E] (n : ℕ) (Z
     rw [this]
     exact isKerOpInf_add_sum (hT a) ih
 
+/- English proof (translation)
+The claim follows from `isKerOpInf_fintype_sum`.
+-/
 example : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z]
     [FiniteDimensional ℝ Z] (ι : Type) [Fintype ι] (T : ι → (GL (Fin n) (Cinf E) → ℂ) → Z → GL (Fin n) (Cinf E) → ℂ),
     (∀ i, IsKerOpInf (T i)) → IsKerOpInf (fun W z g => ∑ i, T i W z g) := isKerOpInf_fintype_sum

@@ -22,6 +22,9 @@ def latticeOf (g : GL (Fin n) F) : Submodule O (Fin n → F) :=
   (stdLattice O F n).map
     ((Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) F)).restrictScalars O)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨v, rfl⟩, rfl⟩`. Conclude with `⟨v, rfl⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨_, ⟨v, rfl⟩, rfl⟩`.
+-/
 theorem mem_latticeOf (g : GL (Fin n) F) (x : Fin n → F) :
     x ∈ latticeOf O g ↔
       ∃ v : Fin n → O, (g : Matrix (Fin n) (Fin n) F) *ᵥ (fun i => algebraMap O F (v i)) = x := by
@@ -31,6 +34,11 @@ theorem mem_latticeOf (g : GL (Fin n) F) (x : Fin n → F) :
   · rintro ⟨v, rfl⟩
     exact ⟨_, ⟨v, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨k₀, rfl⟩` from `hk`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_latticeOf]`. Take `⟨v, rfl⟩` from `hx`. Use `⟨(k₀ : Matrix (Fin n) (Fin n) O) *ᵥ v, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem latticeOf_mul_le (g k : GL (Fin n) F) (hk : k ∈ integralGL O F n) :
     latticeOf O (g * k) ≤ latticeOf O g := by
   obtain ⟨k₀, rfl⟩ := hk
@@ -43,6 +51,9 @@ theorem latticeOf_mul_le (g k : GL (Fin n) F) (hk : k ∈ integralGL O F n) :
   funext i
   simp [Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Use `le_antisymm (latticeOf_mul_le O g k hk) ?_` and prove the remaining obligations. Establish `h` using `latticeOf_mul_le O (g * k) k⁻¹ (inv_mem hk)`. Rewrite `h` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem latticeOf_mul (g k : GL (Fin n) F) (hk : k ∈ integralGL O F n) :
     latticeOf O (g * k) = latticeOf O g := by
   refine le_antisymm (latticeOf_mul_le O g k hk) ?_
@@ -56,6 +67,9 @@ def latticeOfCoset (c : GL (Fin n) F ⧸ integralGL O F n) : Submodule O (Fin n 
     rw [mul_inv_cancel_left] at h
     exact h.symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem latticeOfCoset_mk (g : GL (Fin n) F) :
     latticeOfCoset O (QuotientGroup.mk g : GL (Fin n) F ⧸ integralGL O F n) = latticeOf O g := rfl
 
@@ -143,10 +157,18 @@ def MinusculeCosets : Prop :=
     [Finite (ResidueField O)] [Field F] [Algebra O F] [IsFractionRing O F]
     (ϖ : O) (hϖ : Irreducible ϖ) (n j : ℕ), j ≤ n → CosetsAt F hϖ n j
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[diagUnit]`.
+-/
 example {F : Type} [Field F] (n : ℕ) (u : Fˣ) : diagUnit n u 0 = 1 := by
   ext i j
   simp [diagUnit]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `w _`. Use `choose v hv using fun i => residue_surjective (w i)`. Use `⟨v, (mem_latticeOf O 1 _).2 ⟨v, ?_⟩, funext hv⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, Matrix.one_mulVec]`.
+
+Both sides reduce to the same expression.
+-/
 example (O F : Type) [CommRing O] [IsLocalRing O] [Field F] [Algebra O F] (n : ℕ) :
     reduction O (latticeOf O (1 : GL (Fin n) F)) = ⊤ := by
   rw [eq_top_iff]
@@ -156,6 +178,9 @@ example (O F : Type) [CommRing O] [IsLocalRing O] [Field F] [Algebra O F] (n : �
   rw [Units.val_one, Matrix.one_mulVec]
   rfl
 
+/- English proof (translation)
+The claim follows from `haveI : Finite (ResidueField ℤ_[p]) := Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv h ℤ_[p] ℚ_[p] _ _ n j hj`.
+-/
 example (p : ℕ) [Fact p.Prime] (h : MinusculeCosets) (n j : ℕ) (hj : j ≤ n) :
     CosetsAt ℚ_[p] (PadicInt.irreducible_p (p := p)) n j :=
   haveI : Finite (ResidueField ℤ_[p]) :=

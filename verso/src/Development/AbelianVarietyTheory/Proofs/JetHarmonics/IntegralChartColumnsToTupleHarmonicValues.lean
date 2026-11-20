@@ -22,6 +22,11 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [dLin, pt, coeff_X, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce `e`. Conclude with `h (congrArg Prod.snd (Finsupp.single_left_injective one_ne_zero e)).symm`.
+-/
 theorem dLin_id : dLin (pt R (n := 1) d 0) = 1 := by
   classical
   ext i j
@@ -32,12 +37,21 @@ theorem dLin_id : dLin (pt R (n := 1) d 0) = 1 := by
     intro e
     exact h (congrArg Prod.snd (Finsupp.single_left_injective one_ne_zero e)).symm
 
+/- English proof (translation)
+The claim follows from `funext fun i => ((Related.refl B).law i).trans (h.law i).symm`.
+-/
 theorem law_eq {B B' : FB R d O} {ε : PS R 2 d} (h : Related B B' (pt R (n := 1) d 0) (pt R (n := 1) d 0) ε) :
     B.G.F = B'.G.F := funext fun i => ((Related.refl B).law i).trans (h.law i).symm
 
+/- English proof (translation)
+The claim follows from `funext fun a => ((Related.refl B).act a).trans (h.act a).symm`.
+-/
 theorem act_eq {B B' : FB R d O} {ε : PS R 2 d} (h : Related B B' (pt R (n := 1) d 0) (pt R (n := 1) d 0) ε) :
     B.A.act = B'.A.act := funext fun a => ((Related.refl B).act a).trans (h.act a).symm
 
+/- English proof (translation)
+Establish `h1` using `congrArg constantCoeff h.ax1`. Rewrite `h1` using `[gt_const_ev_eq _ (pair_points_zero_constant (gp_pt 0) gp_zero₂), map_one]`. Unfold `diagSer`. Rewrite using `[gt_const_ev_eq _ (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ (B'.A.const w0) (gp_pt 0))), h1]`.
+-/
 theorem const_diagSer {B B' : FB R d O} {φ φi : Pt R 1 d} {ε : PS R 2 d} (h : Related B B' φ φi ε) (w0 : O) :
     constantCoeff (diagSer B' w0 ε) = 1 := by
   have h1 := congrArg constantCoeff h.ax1
@@ -45,6 +59,9 @@ theorem const_diagSer {B B' : FB R d O} {φ φi : Pt R 1 d} {ε : PS R 2 d} (h :
   unfold diagSer
   rw [gt_const_ev_eq _ (pair_points_zero_constant (gp_pt 0) (gp_comp1 _ _ (B'.A.const w0) (gp_pt 0))), h1]
 
+/- English proof (translation)
+Establish `hu : IsUnit (s ^ q)` using `(MvPowerSeries.isUnit_iff_constantCoeff.2 (hs ▸ isUnit_one)).pow q`. Take `⟨un, hun⟩` from `hu.exists_left_inv`. Use `⟨un, ?_, hun⟩` and prove the remaining obligations. Use `congrArg constantCoeff hun` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hs, one_pow, mul_one, map_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_inv_pow {σ : Type} (s : MvPowerSeries σ R) (hs : constantCoeff s = 1) (q : ℕ) :
     ∃ un : MvPowerSeries σ R, constantCoeff un = 1 ∧ un * s ^ q = 1 := by
   have hu : IsUnit (s ^ q) := (MvPowerSeries.isUnit_iff_constantCoeff.2 (hs ▸ isUnit_one)).pow q
@@ -53,11 +70,21 @@ theorem exists_inv_pow {σ : Type} (s : MvPowerSeries σ R) (hs : constantCoeff 
   have := congrArg constantCoeff hun
   rwa [map_mul, map_pow, hs, one_pow, mul_one, map_one] at this
 
+/- English proof (translation)
+Establish `h1` using `congrArg constantCoeff hh.ax1`. Rewrite `h1` using `[gt_const_ev_eq _ (pair_points_zero_constant (gp_pt 0) gp_zero₂), map_zero]`. Then use the resulting hypothesis.
+-/
 theorem const_gauge {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k] {B : FB R d O} {h : PS k 2 d}
     (hh : B.IsCanonGauge k h) : constantCoeff h = 0 := by
   have h1 := congrArg constantCoeff hh.ax1
   rwa [gt_const_ev_eq _ (pair_points_zero_constant (gp_pt 0) gp_zero₂), map_zero] at h1
 
+/- English proof (translation)
+Take `⟨h', hh', hv⟩` from `GlobalTheory.JetRoad.jetRoad.2.2.2.2.2.2.2.2.2.2.2.2.1 R d O B B' _ _ ε hr k h₀ hh`. Use `⟨h', (hG h').1 hh', fun w0 m f f' hf Λ _ u P => ?_⟩` and prove the remaining obligations. Establish `e : (fun i => FB.toK k (pt R (n` using `1) d 0 i)) = pt k (n := 1) d 0 := by`. Use function extensionality and compare the values at `i`. Simplify using `[pt]`.
+
+Establish `h1` using `hv w0 m f f' (by rw [e, gt_ev_pt_self]; exact hf) Λ u P`. Rewrite `h1` using `[dLin_id, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [Matrix.one_mulVec] at h1`. Rewrite using `[← h1]`. Unfold `FB.nabVal FB.hL`.
+
+Rewrite using `[hF, hA]`.
+-/
 theorem exists_gauge {B B' : FB R d O} {ε : PS R 2 d} (hr : Related B B' (pt R (n := 1) d 0) (pt R (n := 1) d 0) ε)
     {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k] {R' : Type} [CommRing R'] [Algebra R' k] (B₂ : FB R' d O)
     (hF : B'.FK k = B₂.FK k) (hA : ∀ a, B'.actK k a = B₂.actK k a)
@@ -78,6 +105,9 @@ theorem exists_gauge {B B' : FB R d O} {ε : PS R 2 d} (hr : Related B B' (pt R 
   unfold FB.nabVal FB.hL
   rw [hF, hA]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg (algebraMap R k) (congrFun h i)`. Simplify `h1` using `[Matrix.mulVec, dotProduct, dAct, FB.actK, coeff_map]`.
+-/
 theorem eig_map {k : Type} [CommRing k] [Algebra R k] (B : FB R d O) (a : O) (u : Fin d → R) (s : R)
     (h : (dAct R B a).mulVec u = s • u) :
     (dAct k B a).mulVec (fun i => algebraMap R k (u i)) = algebraMap R k s • fun i => algebraMap R k (u i) := by
@@ -85,6 +115,9 @@ theorem eig_map {k : Type} [CommRing k] [Algebra R k] (B : FB R d O) (a : O) (u 
   have h1 := congrArg (algebraMap R k) (congrFun h i)
   simpa [Matrix.mulVec, dotProduct, dAct, FB.actK, coeff_map] using h1
 
+/- English proof (translation)
+Take `⟨h', hh', hval⟩` from `exists_gauge hr B₂ hF hA hG h₀ hh₀`. Rewrite using `[nabValN_boxSer R' d O B₂ k h w0 (const_gauge hh) q n f' _ Ix e cp u u' hcp hu' Q, canonGauge_independence_harmonic R' d O k B₂ h h' hh hh' T r cc (fun _ => True) σ hcc (fun _ => Or.inl trivial) hσ hsep u hu n Q (fun τ _ => hQ τ) w0 q f']`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl fun b _ => hval w0 q (f b) (f' b) (hf b) _ u (MvPolynomial.monomial (colM mo b) 1)]`.
+-/
 theorem value_eq [Module.Free ℤ O] [Module.Finite ℤ O] [IsReduced O] {B B' : FB R d O} {ε : PS R 2 d}
     (hr : Related B B' (pt R (n := 1) d 0) (pt R (n := 1) d 0) ε)
     {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k] {R' : Type} [CommRing R'] [Algebra R' k] (B₂ : FB R' d O)
@@ -125,6 +158,23 @@ namespace GlobalTheory
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `L1 L2 L4 TW E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C hFr P tors ϖ hϖ Q hQ F _ _ _ _ _ _ v hv`. Use `letI := io.toAlgebra`. Use `haveI := T.cpl`.
+
+Take `⟨BT, e1, e2, e3, e4, e5, e6, e7⟩` from `integralChart_formalBiext E H Dw l Xo c T io y C`. Take `⟨hF, hA, hG, hcan⟩` from `e7 F`. Take `⟨τ, hτ, hEL, -⟩` from `frame1St_holds E H T.V C.I.G P (chD C.ch) C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT`. Take `⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, ε, hrel, hgerm⟩` from `GlobalTheory.T.chartFromPointDatum_of_laws L1 L2 L4 TW E H T.V T.cpl C.I.G P tors ϖ hϖ Q hQ F v hv (chD C.ch) BT C.tgT C.xT C.eT C.wPT (by rw [e1, e2]; exact C.chartT) (by rw [e1, e2, e3, e4, e5, e6]; exact C.frameT) C.primT (GlobalTheory.T.universal_statement E H Dw l Xo c T io …`. Use `⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, (Transfer.law_eq hrel).trans e1, (Transfer.act_eq hrel).trans e2, ?_⟩` and prove the remaining obligations.
+
+Introduce `g g' π hg hg' hπ n D' A' G' _ _ pD pA pG U' PU _ oD' hxe hon s s' t f hcol`. Take `⟨un, hun1, hun⟩` from `Transfer.exists_inv_pow _ (Transfer.const_diagSer hrel H.w0) (g' * g)`. Establish `hf : ∀ b, (f b * MvPowerSeries.map (algebraMap T.V F) un) * MvPowerSeries.map (algebraMap T.V F) (diagSer BT H.w0 ε) ^ (g' * g) = f b` using `fun b => by`. Rewrite using `[_root_.mul_assoc, ← map_pow, ← map_mul, hun, map_one, _root_.mul_one]`. Use `choose σ hσ1 hσ2 using fun b => hgerm (g' * g) (t b) (f b) _ (hcol b).2.2.2 (hf b)`.
+
+Use `choose p xx w ζ t₀ h1 h2 h3 h4 h5 h6 h7 using fun b => (hcol b).2.2.1`. Take `⟨S, S₂, p', w', ζ', x', T₀, T₁, σ', hbox, -⟩` from `GlobalTheory.T.boxTupSt_of_laws_of_twistBaseChange L1 L2 L4 TW E H Dw l Xo c T io y C P ϖ hϖ Q hQ F v g g' π hg hg' hπ τ hτ hEL n D' A' G' pD pA pG U' PU oD' hxe hon s s' t₀ t p w ζ xx σ (fun b => f b * MvPowerSeries.map (algebraMap T.V F) un) (fun b => ⟨(hcol b).1, (hcol b).2.1, …`. Use `⟨S, S₂, p', w', ζ', x', T₀, T₁, σ', _, un, hbox, hun1, rfl, ?_⟩` and prove the remaining obligations. Introduce `h₀ hh₀ rk hrk Pp hPp`. Establish `huv : ∀ ℓ i, algebraMap T.Fr F (C.ch.uvec ℓ i) = algebraMap T.V F (C.uvecT ℓ i)` using `fun ℓ i => by`.
+
+Rewrite using `[C.gen.1.2.2.2.2.2.2 ℓ i, ← IsScalarTower.algebraMap_apply]`. Use `Transfer.value_eq hrel C.ch.B hF hA hG h₀ _ hh₀ hcan rk ComplexEmbedding.conjugate (fun τ => (algebraMap T.Fr F).comp (io.comp (embK c τ))) (fun τ => ComplexEmbedding.involutive_conjugate E τ) ?_ ?_ (fun (l : Σ τ : E →+* ℂ, Fin (rk τ)) i => algebraMap T.V F (C.uvecT ⟨l.1, Fin.cas …` and prove the remaining obligations. Introduce `τ a`. Establish `h : embK c (ComplexEmbedding.conjugate τ) a = embK c τ (H.bar a)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[embK_coe, embK_coe, ComplexEmbedding.conjugate_coe_eq, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Conclude with `congrArg (fun z => algebraMap T.Fr F (io z)) h`. Introduce `τ τ' hne`. Take `⟨a, ha⟩` from `EigDir.embK_sep c τ τ' hne`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← map_sub, ← map_sub]`. Conclude with `((isUnit_iff_ne_zero.2 (sub_ne_zero.2 ha)).map io).map _`. Introduce `ℓ a`. Establish `h` using `Transfer.eig_map (k := F) C.ch.B a _ _ (eigDirSt E H Dw l Xo c T io y C a ⟨ℓ.1, Fin.castLE (hrk ℓ.1) ℓ.2⟩)`.
+
+Establish `e : (fun i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, Fin.castLE (hrk ℓ.1) ℓ.2⟩ i)) = fun i => algebraMap T.V F (C.uvecT ⟨ℓ.1, Fin.castLE (hrk ℓ.1) ℓ.2⟩ i)` using `funext fun i => huv _ i`. Conclude with `e ▸ h`.
+-/
 theorem transfer_columns : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), FrTrunc C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT C.eT → ∀ (P : PELUnif (maximalIdeal T.V) C.I.G) (tors : P.TorsionIso) (ϖ : T.V) (hϖ : Irreducible ϖ) (Q : P.D.toPre.X → ℤ) (hQ : IsQ P.D.toPre ϖ Q) (F : Type) [Field F] [IsAlgClosed F] [CharZero F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F] (v : AddValuation F (WithTop ℚ)) (hv : ValOver ϖ F v), letI := io.toAlgebra; ∃ x hx j hj u hu B hB ρ hρ, B.G.F = C.FT ∧ B.A.act = C.actT ∧ ∀ (g g' : ℕ) (π : 𝓞 E), 1 ≤ g → 1 ≤ g' → π * star π = (g : 𝓞 E) → ∀ (n : ℕ) (D' : DegData T.V (maximalIdeal T.V)) (A' : PolAV (Spec (CommRingCat.of T.Fr))) (G' : Over (Sp T.V)) [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre P.D.toPre n) (pA : IsPowPolAV A' P.A n) (pG : IsPowGrp G' C.I.G.G n) (U' : Unif (maximalIdeal T.V) D' A' G') (PU : UnifPowOf3 pD pA pG U' P.U) [Module (𝓞 E) D'.toPre.X] (oD' : D'.toPre.OAct (𝓞 E)), (∀ (a : 𝓞 E) (x : D'.toPre.X) (i : Fin n), pD.xe (a • x) i = a • pD.xe x i) → (∀ (a : 𝓞 E) (i : Fin n), oD'.onB.act a ≫ pD.pw.pr i = pD.pw.pr i ≫ P.oD.onB.act a) → ∀ (s : Fin n → Fam P.D.toPre F g') (s' t : Fin n → Fam P.D.toPre F (g' * g)) (f : Fin n → PS F 1 (chD C.ch)), (∀ b, NuGe P.D Q F v g' (s b) 0 ∧ PullAl P.D F P.oD (star π) g' g (s b) (s' b) ∧ (FamGerm.Pt1.mk ϖ hϖ T.cpl C.I.G P tors Q hQ v hv (chD C.ch) x hx j hj u hu B hB ρ hρ : FamGerm.Pt1 E H T.V F).Transl (g' * g) π (s' b) (t b) ∧ (FamGerm.Pt1.mk ϖ hϖ T.cpl C.I.G P tors Q hQ v hv (chD C.ch) x hx j hj u hu B hB ρ hρ : FamGerm.Pt1 E H T.V F).Germ (g' * g) (t b) (f b)) → ∃ (S : Fam D'.toPre F g') (S₂ : Fam D'.toPre F (g' * g)) (p' : QkPt D'.toPre F (g' * g)) (w' : LB.Gen (LB.LinComb D'.toPre.P.L (DegPre.lineφ D'.toPre F p'.g.b) (DegPre.lineε (g' * g)))) (ζ' : F) (x' : TFK (R := T.V) F ⟶ A'.A) (T₀ T₁ : Fam D'.toPre F (g' * g)) (σ' : U'.toUnifPre.SecGF F (g' * g)) (h : PS F n (chD C.ch)) (un : PS T.V 1 (chD C.ch)), BoxTup C P Q F v g g' π pG PU oD' S S₂ p' w' ζ' x' T₀ T₁ σ' h ∧ MvPowerSeries.constantCoeff un = 1 ∧ h = boxSer (fun b => f b * MvPowerSeries.map (algebraMap T.V F) un) ∧ ∀ h₀ : PS F 2 (chD C.ch), B.IsCanonGauge F h₀ → ∀ (rk : (E →+* ℂ) → ℕ) (hrk : ∀ τ, rk τ ≤ Dw.mult τ) (Pp : MvPolynomial ((Σ τ : E →+* ℂ, Fin (rk τ)) × Fin n) F), (∀ (τ : E →+* ℂ) (i : Fin (rk τ)) (i' : Fin (rk (ComplexEmbedding.conjugate τ))), ∑ b : Fin n, MvPolynomial.pderiv ((⟨τ, i⟩ : Σ τ : E →+* ℂ, Fin (rk τ)), b) (MvPolynomial.pderiv ((⟨ComplexEmbedding.conjugate τ, i'⟩ : Σ τ : E →+* ℂ, Fin (rk τ)), b) Pp) = 0) → nabValN C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 (g' * g) h (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i)) (MvPolynomial.rename (fun p : (Σ τ : E →+* ℂ, Fin (rk τ)) × Fin n => (⟨p.1.1, (Fin.castLE (hrk p.1.1) p.1.2, p.2)⟩ : LtN Dw n)) Pp) = (FamGerm.Pt1.mk ϖ hϖ T.cpl C.I.G P tors Q hQ v hv (chD C.ch) x hx j hj u hu B hB ρ hρ : FamGerm.Pt1 E H T.V F).colVal h₀ (g' * g) (fun (l : Σ τ : E →+* ℂ, Fin (rk τ)) i => algebraMap T.V F (C.uvecT ⟨l.1, Fin.castLE (hrk l.1) l.2⟩ i)) Pp f := by
   intro L1 L2 L4 TW E _ _ _ H Dw l Xo c
   letI := H.starRing

@@ -10,6 +10,15 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 
 namespace GlobalTheory.GenChar
 
+/- English proof (translation)
+Establish `hk` using `Nat.find_spec (hn x₀)`. Establish `hk0 : Nat.find (hn x₀) ≠ 0`. Introduce `h`. Rewrite `hk` using `[h, pow_zero, Matrix.one_mulVec]`. Conclude with `hw hk`.
+
+Take `⟨j, hj⟩` from `Nat.exists_eq_succ_of_ne_zero hk0`. Establish `hlt : ¬ ((n x₀) ^ j).mulVec w = 0` using `Nat.find_min (hn x₀) (by omega)`. Establish `key : ∀ (y : O) (k : ℕ), ((n y) ^ k).mulVec w = 0 → ((n y) ^ k).mulVec (((n x₀) ^ j).mulVec w) = 0`. Introduce `y k h`. Rewrite using `[Matrix.mulVec_mulVec, ((hc y x₀).pow_pow k j).eq, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]`.
+
+Use `⟨((n x₀) ^ j).mulVec w, hlt, fun x => ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, h⟩` from `hn x`. Conclude with `⟨k, key x k h⟩`. Rewrite using `[Matrix.mulVec_mulVec, ← pow_succ']`. Rewrite `hk` using `[hj]`.
+
+Conclude with `hk`. Use `key y 1 (by rwa [pow_one])` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+-/
 theorem step {C : Type} [Field C] {O κ : Type} [Fintype κ] [DecidableEq κ]
     (n : O → Matrix κ κ C) (hc : ∀ x y, Commute (n x) (n y)) (w : κ → C) (hw : w ≠ 0)
     (hn : ∀ x, ∃ k : ℕ, ((n x) ^ k).mulVec w = 0) (x₀ : O) :
@@ -37,6 +46,19 @@ theorem step {C : Type} [Field C] {O κ : Type} [Fintype κ] [DecidableEq κ]
   · have := key y 1 (by rwa [pow_one])
     rwa [pow_one] at this
 
+/- English proof (translation)
+Take `⟨i₀, hi₀⟩` from `Function.ne_iff.mp hu`. Take `⟨i, -, hi⟩` from `Finset.exists_min_image Finset.univ (fun i => V.v (u i)) ⟨i₀, Finset.mem_univ _⟩`. Establish `h0 : V.v (u i₀) ≠ ⊤`. Introduce `h`. Conclude with `hi₀ (by simpa using h)`.
+
+Establish `h1 : V.v (u i) ≠ ⊤` using `ne_top_of_le_ne_top h0 (hi i₀ (Finset.mem_univ _))`. Take `⟨t, ht⟩` from `WithTop.ne_top_iff_exists.mp h1`. Establish `h2 : V.Ge t (c * u i)`. Establish `: c * u i = ∑ j, A i j * u j`. Use `congrFun h i` as an intermediate fact.
+
+Simplify `this.symm` using `[Matrix.mulVec, dotProduct]`. Rewrite using `[this]`. Use `VF.Ge.sum fun j _ => (hA i j).mul_int ?_` and prove the remaining obligations. Unfold `VF.Ge`. Rewrite using `[ht]`.
+
+Conclude with `hi j (Finset.mem_univ _)`. Unfold `VF.Ge at h2 ⊢`. Rewrite `h2` using `[V.v.map_mul, ← ht]`. Proceed by induction on `hv : V.v c using WithTop.recTopCoe with`. Consider the case `top => exact le_top`.
+
+Consider the case `coe s`. Rewrite `h2` using `[hv]`. Establish `h' : ((t : ℝ) : WithTop ℝ) ≤ ((s + t : ℝ) : WithTop ℝ)`. Simplify `h2` using `[WithTop.coe_add]`. Establish `h'' : t ≤ s + t` using `by exact_mod_cast h'`.
+
+Establish `: (0 : ℝ) ≤ s` using `by linarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem ge_of_eigen {C : Type} [Field C] (V : VF C) {κ : Type} [Fintype κ]
     (A : Matrix κ κ C) (hA : ∀ i j, V.Ge 0 (A i j)) (c : C) (u : κ → C) (hu : u ≠ 0)
     (h : A.mulVec u = c • u) : V.Ge 0 c := by
@@ -70,6 +92,23 @@ theorem ge_of_eigen {C : Type} [Field C] (V : VF C) {κ : Type} [Fintype κ]
     have : (0 : ℝ) ≤ s := by linarith
     exact_mod_cast this
 
+/- English proof (translation)
+Introduce `C _ V O _ κ _ _ L hL χ w hw hn`. Use `set n : O → Matrix κ κ C := fun x => L x - χ x • (1 : Matrix κ κ C) with hndef`. Establish `hLc : ∀ x y, Commute (L x) (L y)` using `fun x y => (Commute.all x y).map L`. Establish `hc : ∀ x y, Commute (n x) (n y)` using `fun x y => ((hLc x y).sub_right ((Commute.one_right _).smul_right _)).sub_left ((Commute.one_left _).smul_left _)`. Establish `heig : ∀ (x : O) (u : κ → C), (n x).mulVec u = 0 → (L x).mulVec u = χ x • u`.
+
+Introduce `x u h`. Simplify using `only [hndef, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec] at h`. Conclude with `sub_eq_zero.mp h`. Establish `three : ∀ x y z : O, ∃ u : κ → C, u ≠ 0 ∧ (L x).mulVec u = χ x • u ∧ (L y).mulVec u = χ y • u ∧ (L z).mulVec u = χ z • u`. Introduce `x y z`.
+
+Take `⟨u₁, h1, h1n, h1x, -⟩` from `step n hc w hw hn x`. Take `⟨u₂, h2, h2n, h2y, h2p⟩` from `step n hc u₁ h1 h1n y`. Take `⟨u₃, h3, -, h3z, h3p⟩` from `step n hc u₂ h2 h2n z`. Conclude with `⟨u₃, h3, heig _ _ (h3p _ (h2p _ h1x)), heig _ _ (h3p _ h2y), heig _ _ h3z⟩`. Establish `h1 : χ 1 = 1`.
+
+Take `⟨u, hu, h, -, -⟩` from `three 1 1 1`. Rewrite `h` using `[map_one, Matrix.one_mulVec]`. Apply `smul_left_injective C hu` to reduce the goal to its premises. Simplify using `using h.symm`. Establish `h0 : χ 0 = 0`.
+
+Take `⟨u, hu, h, -, -⟩` from `three 0 0 0`. Rewrite `h` using `[map_zero, Matrix.zero_mulVec]`. Apply `smul_left_injective C hu` to reduce the goal to its premises. Simplify using `using h.symm`. Establish `hadd : ∀ x y, χ (x + y) = χ x + χ y`.
+
+Introduce `x y`. Take `⟨u, hu, hx, hy, h⟩` from `three x y (x + y)`. Rewrite `h` using `[map_add, Matrix.add_mulVec, hx, hy, ← add_smul]`. Conclude with `smul_left_injective C hu h.symm`. Establish `hmul : ∀ x y, χ (x * y) = χ x * χ y`.
+
+Introduce `x y`. Take `⟨u, hu, hx, hy, h⟩` from `three x y (x * y)`. Rewrite `h` using `[map_mul, ← Matrix.mulVec_mulVec, hy, Matrix.mulVec_smul, hx, smul_smul, mul_comm (χ y)]`. Conclude with `smul_left_injective C hu h.symm`. Use `⟨⟨⟨⟨χ, h1⟩, hmul⟩, h0, hadd⟩, fun _ => rfl, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu, h, -, -⟩` from `three x x x`. Conclude with `ge_of_eigen V (L x) (hL x) (χ x) u hu h`.
+-/
 theorem exists_character : ∀ (C : Type) [Field C] (V : VF C) (O : Type) [CommRing O] (κ : Type) [Fintype κ] [DecidableEq κ] (L : O →+* Matrix κ κ C), (∀ x i j, V.Ge 0 (L x i j)) → ∀ (χ : O → C) (w : κ → C), w ≠ 0 → (∀ x, ∃ k : ℕ, ((L x - χ x • (1 : Matrix κ κ C)) ^ k).mulVec w = 0) → ∃ ψ : O →+* C, (∀ x, ψ x = χ x) ∧ ∀ x, V.Ge 0 (ψ x) := by
   intro C _ V O _ κ _ _ L hL χ w hw hn
   set n : O → Matrix κ κ C := fun x => L x - χ x • (1 : Matrix κ κ C) with hndef

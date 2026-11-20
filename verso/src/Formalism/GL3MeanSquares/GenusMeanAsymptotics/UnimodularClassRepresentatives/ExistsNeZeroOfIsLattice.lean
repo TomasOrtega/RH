@@ -10,6 +10,11 @@ open Formalism.HermitianLatticesTheory Formalism.ThetaLiftIndependence
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h2 : Submodule.span K (A : Set K) = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Conclude with `hne`.
+
+Establish `h3 : (1 : K) ∈ Submodule.span K (A : Set K)`. Rewrite using `[hA.span_eq_top]`. Conclude with `Submodule.mem_top`. Rewrite `h3` using `[h2, Submodule.mem_bot]`. Conclude with `one_ne_zero h3`.
+-/
 theorem exists_ne_zero_of_isLattice {A : Submodule (𝓞 K) K} (hA : Submodule.IsLattice K A) :
     ∃ a ∈ A, a ≠ 0 := by
   by_contra hne
@@ -21,6 +26,9 @@ theorem exists_ne_zero_of_isLattice {A : Submodule (𝓞 K) K} (hA : Submodule.I
   rw [h2, Submodule.mem_bot] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : x = (x * a⁻¹) • a` using `by rw [smul_eq_mul, mul_assoc, inv_mul_cancel₀ h0, mul_one]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ha)`.
+-/
 theorem span_eq_top_of_ne_zero {A : Submodule (𝓞 K) K} {a : K} (ha : a ∈ A) (h0 : a ≠ 0) :
     Submodule.span K (A : Set K) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
@@ -28,12 +36,26 @@ theorem span_eq_top_of_ne_zero {A : Submodule (𝓞 K) K} {a : K} (ha : a ∈ A)
   rw [hx]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ha)
 
+/- English proof (translation)
+Take `⟨a, ha, ha0⟩` from `exists_ne_zero_of_isLattice hA`. Take `⟨b, hb, hb0⟩` from `exists_ne_zero_of_isLattice hB`. Conclude with `⟨hA.fg.mul hB.fg, span_eq_top_of_ne_zero (Submodule.mul_mem_mul ha hb) (mul_ne_zero ha0 hb0)⟩`.
+-/
 theorem isLattice_mul {A B : Submodule (𝓞 K) K} (hA : Submodule.IsLattice K A)
     (hB : Submodule.IsLattice K B) : Submodule.IsLattice K (A * B) := by
   obtain ⟨a, ha, ha0⟩ := exists_ne_zero_of_isLattice hA
   obtain ⟨b, hb, hb0⟩ := exists_ne_zero_of_isLattice hB
   exact ⟨hA.fg.mul hB.fg, span_eq_top_of_ne_zero (Submodule.mul_mem_mul ha hb) (mul_ne_zero ha0 hb0)⟩
 
+/- English proof (translation)
+Take `⟨a, ha, ha0⟩` from `exists_ne_zero_of_isLattice hA`. Set `I : FractionalIdeal (𝓞 K)⁰ K` to `⟨A, FractionalIdeal.isFractional_of_fg hA.fg⟩`. Establish `hI : I ≠ 0`. Introduce `h`. Establish `h' : a ∈ (I : Submodule (𝓞 K) K)` using `ha`.
+
+Rewrite `h'` using `[h, FractionalIdeal.coe_zero, Submodule.mem_bot]`. Conclude with `ha0 h'`. Establish `hmul : ((I⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) * A = 1`. Establish `e` using `congrArg (fun J : FractionalIdeal (𝓞 K)⁰ K => (J : Submodule (𝓞 K) K)) (inv_mul_cancel₀ hI)`. Establish `e2 : ((I⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) * (I : Submodule (𝓞 K) K) = 1`.
+
+Simplify `e` using `only [FractionalIdeal.coe_mul, FractionalIdeal.coe_one]`. Conclude with `e2`. Use `⟨_, ⟨FractionalIdeal.fg_of_isNoetherianRing le_rfl _, ?_⟩, hmul⟩` and prove the remaining obligations. Establish `hne : ((I⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) ≠ ⊥`. Introduce `hb`.
+
+Rewrite `hmul` using `[hb, Submodule.bot_mul]`. Establish `h1 : (1 : K) ∈ (1 : Submodule (𝓞 K) K)` using `Submodule.one_le.1 le_rfl`. Rewrite `h1` using `[← hmul, Submodule.mem_bot]`. Conclude with `one_ne_zero h1`. Take `⟨c, hc, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Conclude with `span_eq_top_of_ne_zero hc hc0`.
+-/
 theorem exists_inv {A : Submodule (𝓞 K) K} (hA : Submodule.IsLattice K A) :
     ∃ A' : Submodule (𝓞 K) K, Submodule.IsLattice K A' ∧ A' * A = 1 := by
   obtain ⟨a, ha, ha0⟩ := exists_ne_zero_of_isLattice hA
@@ -66,6 +88,13 @@ def mulE (I J : Submodule (𝓞 K) K) (hJI : J * I = 1) :
   left_inv M := by change J * (I * M) = M; rw [← mul_assoc, hJI, one_mul]
   right_inv M := by change I * (J * M) = M; rw [← mul_assoc, mul_comm I J, hJI, one_mul]
 
+/- English proof (translation)
+Establish `key : ∀ x y : K, g (x * y) = x * g y` using `fun x y => by`. Simplify `g.map_smul x y` using `only [smul_eq_mul]`. Unfold `gmap`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.mul_le.2 fun i hi y hy => ?_` and prove the remaining obligations.
+
+Take `⟨m, hm, rfl⟩` from `Submodule.mem_map.1 hy`. Use `Submodule.mem_map.2 ⟨i * m, Submodule.mul_mem_mul hi hm, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, key]`. Use `Submodule.map_le_iff_le_comap.2 (Submodule.mul_le.2 fun i hi m hm => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap]`.
+
+Simplify using `only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, key]`. Conclude with `Submodule.mul_mem_mul hi (Submodule.mem_map_of_mem hm)`.
+-/
 theorem gmap_mul (g : K ≃ₗ[K] K) (I M : Submodule (𝓞 K) K) : I * gmap g M = gmap g (I * M) := by
   have key : ∀ x y : K, g (x * y) = x * g y := fun x y => by
     simpa only [smul_eq_mul] using g.map_smul x y
@@ -80,11 +109,27 @@ theorem gmap_mul (g : K ≃ₗ[K] K) (I M : Submodule (𝓞 K) K) : I * gmap g M
     simp only [LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, key]
     exact Submodule.mul_mem_mul hi (Submodule.mem_map_of_mem hm)
 
+/- English proof (translation)
+Introduce `h0`. Conclude with `Formalism.HermitianLatticesTheory.genusBasic_hS (K := K) p hp s hs (by rw [h0]; exact p.zero_mem)`.
+-/
 theorem ne_zero_of_mem_hcompl {p : Ideal (𝓞 K)} (hp : p.IsMaximal) {s : 𝓞 K}
     (hs : s ∈ hcompl (K := K) p) : s ≠ 0 := by
   intro h0
   exact Formalism.HermitianLatticesTheory.genusBasic_hS (K := K) p hp s hs (by rw [h0]; exact p.zero_mem)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.mul_le.2 fun i hi y hy => ?_` and prove the remaining obligations. Establish `hy' : ∃ s ∈ hcompl (K` using `K) p, s • y ∈ M := hy`. Take `⟨s, hs, hsy⟩` from `hy'`. Use `show ∃ s ∈ hcompl (K := K) p, s • (i * y) ∈ I * M`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e : s • (i * y) = i * (s • y)` using `by rw [Algebra.smul_def, Algebra.smul_def]; ring`. Rewrite using `[e]`. Conclude with `Submodule.mul_mem_mul hi hsy`. Introduce `x hx`.
+
+Establish `hx' : ∃ s ∈ hcompl (K` using `K) p, s • x ∈ I * M := hx`. Take `⟨s, hs, hsx⟩` from `hx'`. Establish `hs0 : algebraMap (𝓞 K) K s ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]`. Conclude with `ne_zero_of_mem_hcompl hp hs`.
+
+Establish `hle : I * M ≤ (I * loc (K` using `K) p M).comap (LinearMap.mulLeft (𝓞 K) (algebraMap (𝓞 K) K s)⁻¹) := by`. Use `Submodule.mul_le.2 fun i hi m hm => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.mulLeft_apply]`. Establish `e : (algebraMap (𝓞 K) K s)⁻¹ * (i * m) = i * ((algebraMap (𝓞 K) K s)⁻¹ * m)` using `by ring`. Rewrite using `[e]`.
+
+Use `Submodule.mul_mem_mul hi ?_` and prove the remaining obligations. Use `show ∃ t ∈ hcompl (K := K) p, t • ((algebraMap (𝓞 K) K s)⁻¹ * m) ∈ M`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ← mul_assoc, mul_inv_cancel₀ hs0, one_mul]`. Conclude with `hm`.
+
+Establish `h2` using `hle hsx`. Rewrite `h2` using `[Submodule.mem_comap, LinearMap.mulLeft_apply, Algebra.smul_def, ← mul_assoc, inv_mul_cancel₀ hs0, one_mul]`. Conclude with `h2`.
+-/
 theorem loc_mul {p : Ideal (𝓞 K)} (hp : p.IsMaximal) (I M : Submodule (𝓞 K) K) :
     I * loc (K := K) p M = loc (K := K) p (I * M) := by
   apply le_antisymm
@@ -118,12 +163,22 @@ theorem loc_mul {p : Ideal (𝓞 K)} (hp : p.IsMaximal) (I M : Submodule (𝓞 K
       inv_mul_cancel₀ hs0, one_mul] at h2
     exact h2
 
+/- English proof (translation)
+Rewrite using `[show h x y = h (x • (1 : K)) (y • (1 : K)) by simp only [smul_eq_mul, mul_one], LinearMap.map_smulₛₗ₂, LinearMap.map_smul, starRingEnd_apply]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_eq (h : K →ₗ⋆[K] K →ₗ[K] K) (x y : K) : h x y = star x * y * h 1 1 := by
   rw [show h x y = h (x • (1 : K)) (y • (1 : K)) by simp only [smul_eq_mul, mul_one],
     LinearMap.map_smulₛₗ₂, LinearMap.map_smul, starRingEnd_apply]
   simp only [smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hg : ∀ x, g x = x * g 1` using `fun x => by`. Rewrite using `[show g x = g (x • (1 : K)) by rw [smul_eq_mul, mul_one], LinearEquiv.map_smul, smul_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `hm' : ∀ x y, h (g x) (g y) = h x y` using `hm`.
+
+Establish `e` using `hm' 1 1`. Rewrite `e` using `[form_eq h (g 1) (g 1)]`. Conclude with `mul_right_cancel₀ h1 (by rw [one_mul]; exact e)`. Introduce `he show ∀ x y, h (g x) (g y) = h x y`. Introduce `x y`.
+
+Rewrite using `[form_eq h (g x) (g y), form_eq h x y, hg x, hg y, star_mul']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_isom_iff {h : K →ₗ⋆[K] K →ₗ[K] K} (h1 : h 1 1 ≠ 0) (g : K ≃ₗ[K] K) :
     g ∈ isom h ↔ star (g 1) * g 1 = 1 := by
   have hg : ∀ x, g x = x * g 1 := fun x => by
@@ -141,6 +196,17 @@ theorem mem_isom_iff {h : K →ₗ⋆[K] K →ₗ[K] K} (h1 : h 1 1 ≠ 0) (g : 
     calc star x * star (g 1) * (y * g 1) * h 1 1 = star x * y * (star (g 1) * g 1) * h 1 1 := by ring
       _ = star x * y * h 1 1 := by rw [he, mul_one]
 
+/- English proof (translation)
+Take `⟨A', hA', hA'A⟩` from `exists_inv hA`. Take `⟨B', hB', hB'B⟩` from `exists_inv hB`. Establish `hC : Submodule.IsLattice K (B * A')` using `isLattice_mul hB hA'`. Establish `hJ : Submodule.IsLattice K (A * B')` using `isLattice_mul hA hB'`. Establish `hJC : (A * B') * (B * A') = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `t1 : ∀ g : K ≃ₗ[K] K, (Equiv.refl (K ≃ₗ[K] K)) g ∈ isom h₂ ↔ g ∈ isom h₁` using `fun g => by`. Rewrite using `[Equiv.refl_apply, mem_isom_iff hn₂, mem_isom_iff hn₁]`. Establish `t2 : ∀ (g : K ≃ₗ[K] K) (M : Submodule (𝓞 K) K), mulE (B * A') (A * B') hJC (gmap g M) = gmap ((Equiv.refl (K ≃ₗ[K] K)) g) (mulE (B * A') (A * B') hJC M)` using `fun g M => gmap_mul g (B * A') M`. Establish `t3 : ∀ (p : Ideal (𝓞 K)), p.IsMaximal → ∀ (M : Submodule (𝓞 K) K), mulE (B * A') (A * B') hJC (loc p M) = loc p (mulE (B * A') (A * B') hJC M)` using `fun p hp M => loc_mul hp (B * A') M`.
+
+Establish `t4 : ∀ (M : Submodule (𝓞 K) K), Submodule.IsLattice K (mulE (B * A') (A * B') hJC M) ↔ Submodule.IsLattice K M`. Introduce `M`. Use `show Submodule.IsLattice K (B * A' * M) ↔ Submodule.IsLattice K M`. Prove the components needed by the constructor for the conclusion. Introduce `hM`.
+
+Establish `e` using `isLattice_mul hJ hM`. Rewrite `e` using `[← mul_assoc, hJC, one_mul]`. Then use the resulting hypothesis. Introduce `hM`. Conclude with `isLattice_mul hC hM`. Establish `hΦA : mulE (B * A') (A * B') hJC A = B` using `by show B * A' * A = B`.
+
+Rewrite using `[mul_assoc, hA'A, mul_one]`. Establish `he` using `(mass_transfer (mulE (B * A') (A * B') hJC) (Equiv.refl _) t1 t2 t3 t4 hex).2`. Rewrite `he` using `[hΦA]`. Conclude with `he`.
+-/
 theorem mass_eq_of_lattices {h₁ h₂ : K →ₗ⋆[K] K →ₗ[K] K} (hn₁ : h₁ 1 1 ≠ 0) (hn₂ : h₂ 1 1 ≠ 0)
     {A B : Submodule (𝓞 K) K} (hA : Submodule.IsLattice K A) (hB : Submodule.IsLattice K B)
     (hex : ∃ s, IsClassReps h₁ A s) : mass h₂ B = mass h₁ A := by

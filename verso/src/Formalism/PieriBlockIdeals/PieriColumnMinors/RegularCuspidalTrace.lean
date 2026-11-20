@@ -9,6 +9,11 @@ open Finset
 
 namespace Formalism.CohomologicalDescent
 
+/- English proof (translation)
+Establish `hbp : Function.Injective (b ∘ pos)` using `fun s s' hs => hinj (hpos s' (pos s) hs)`. Establish `hdet` using `lw_det_inj (Φ.submatrix pos pos) (b ∘ pos) hΦ.submatrix hbp`. Simplify using `only [Matrix.submatrix_apply] at hdet`. Use `choose u hu using hdiag`. Rewrite `hdvd` using `[hdet, Finset.prod_congr rfl (fun s _ => hu s), Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← Units.coe_prod, Units.dvd_mul_left]`.
+
+Conclude with `(pow_dvd_pow_iff hπ.ne_zero hπ.not_unit).1 hdvd`.
+-/
 theorem le_sum_of_dvd_det_submatrix {R : Type*} [CommRing R] [IsDomain R] (π : R) (hπ : Prime π) {t n : ℕ}
     (Φ : Matrix (Fin n) (Fin n) R) (b : Fin n → ℕ) (pos : Fin t → Fin n)
     (hinj : Function.Injective pos) (hpos : ∀ s j, b j = b (pos s) → j = pos s)
@@ -23,6 +28,11 @@ theorem le_sum_of_dvd_det_submatrix {R : Type*} [CommRing R] [IsDomain R] (π : 
     Finset.prod_pow_eq_pow_sum, ← Units.coe_prod, Units.dvd_mul_left] at hdvd
   exact (pow_dvd_pow_iff hπ.ne_zero hπ.not_unit).1 hdvd
 
+/- English proof (translation)
+Use `haveI := Fact.mk hl`. Set `φ : ZMod l →+* F` to `ZMod.castHom (dvd_refl l) F`. Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `hψ : Function.Injective (fun z : ZMod l => -a * φ z)` using `fun z w hzw => hφ (mul_left_cancel₀ (neg_ne_zero.2 ha) hzw)`. Rewrite using `[← Multiset.map_le_map_iff hψ, Multiset.map_map, Multiset.map_map]`.
+
+Simplify `h` using `[Function.comp_def, φ, map_intCast]`.
+-/
 theorem map_cast_le_of_map_neg_mul_le (l : ℕ) (hl : l.Prime) (F : Type) [Field F] [CharP F l] (a : F) (ha : a ≠ 0)
     {α β : Type} (A : Multiset α) (B : Multiset β) (f : α → ℤ) (g : β → ℤ)
     (h : Multiset.map (fun x => -a * ((f x : ℤ) : F)) A ≤
@@ -36,6 +46,13 @@ theorem map_cast_le_of_map_neg_mul_le (l : ℕ) (hl : l.Prime) (F : Type) [Field
   rw [← Multiset.map_le_map_iff hψ, Multiset.map_map, Multiset.map_map]
   simpa [Function.comp_def, φ, map_intCast] using h
 
+/- English proof (translation)
+Use `haveI : Nonempty ι := ⟨i⟩`. Take `⟨i₀, hi₀⟩` from `Finite.exists_max (fun i => |kap i|)`. Establish `hσ : σ (σ.symm i₀) = i₀` using `σ.apply_symm_apply i₀`. Establish `h1` using `hd (σ.symm i₀)`. Rewrite `h1` using `[hσ]`.
+
+Establish `h2` using `hw (σ.symm i₀)`. Establish `hm : |kap (σ.symm i₀)| ≤ |kap i₀|` using `hi₀ (σ.symm i₀)`. Establish `hl2 : (2 : ℤ) ≤ l` using `by exact_mod_cast hl`. Establish `hl' : (0 : ℤ) ≤ (l : ℤ) - 1` using `by linarith`. Establish `key : (l : ℤ) * |kap i₀| ≤ |kap (σ.symm i₀)| + h`.
+
+Apply the tactic sequence `rcases abs_cases (kap i₀) with ⟨e0, _⟩ | ⟨e0, _⟩ <;>`. Apply the tactic sequence `rcases abs_cases (kap (σ.symm i₀)) with ⟨e1, _⟩ | ⟨e1, _⟩ <;> rw [e0, e1] <;> nlinarith`. Establish `h3 : ((l : ℤ) - 1) * |kap i₀| ≤ h` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma sub_one_mul_abs_kap_le {ι : Type} [Fintype ι] (σ : Equiv.Perm ι) (l h : ℕ) (hl : 2 ≤ l)
     (w kap : ι → ℤ) (hw : ∀ i, 0 ≤ w i ∧ w i ≤ (h : ℤ))
     (hd : ∀ i, 0 ≤ (l : ℤ) * kap (σ i) + w i - kap i ∧ (l : ℤ) * kap (σ i) + w i - kap i ≤ (h : ℤ))
@@ -56,6 +73,27 @@ private lemma sub_one_mul_abs_kap_le {ι : Type} [Fintype ι] (σ : Equiv.Perm �
   calc ((l : ℤ) - 1) * |kap i| ≤ ((l : ℤ) - 1) * |kap i₀| := mul_le_mul_of_nonneg_left (hi₀ i) hl'
     _ ≤ h := h3
 
+/- English proof (translation)
+Introduce `ι _ σ l h t n F _ _ W U' bot kap c hl hW hb hd`. Take `⟨ha, hinj, hpos, hΘ, hchar, hdiag, hΦ, hΦd, hc⟩` from `hW`. Establish `hbp : Function.Injective (W.b ∘ W.pos)` using `fun s s' hs => hinj (hpos s' (W.pos s) hs)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i s`.
+
+Conclude with `sub_one_mul_abs_kap_le σ l h hl.two_le (fun i => bot i + ((s : ℕ) : ℤ)) (fun i => kap i s) (fun i => hb i s) (fun i => hd i s) i`. Introduce `i`. Establish `hdvd : ∏ s, (Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s))) ∣ (W.Θ i).charpoly` using `by show _ ∣ (Matrix.charmatrix (W.Θ i)).det`. Rewrite using `[(hΘ i).charmatrix.det]`. Establish `e : ∏ s, (Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s))) = ∏ k ∈ Finset.univ.image (W.b ∘ W.pos), ((Matrix.charmatrix (W.Θ i)).toSquareBlock W.b k).det`.
+
+Rewrite using `[Finset.prod_image (fun s _ s' _ hs => hbp hs)]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[lw_det_block _ W.b (W.pos s) (hpos s), Matrix.charmatrix_apply_eq]`. Rewrite using `[e]`.
+
+Apply `Finset.prod_dvd_prod_of_subset` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Function.comp_apply] at hk ⊢`. Take `⟨s, rfl⟩` from `hk`. Conclude with `⟨W.pos s, rfl⟩`.
+
+Establish `hne : (W.Θ i).charpoly ≠ 0` using `(Matrix.charpoly_monic _).ne_zero`. Establish `hr` using `Polynomial.roots.le_of_dvd hne hdvd`. Rewrite `hr` using `[hchar i]`. Establish `r1 : (∏ s, (Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s)))).roots = Multiset.map (fun s => W.Θ i (W.pos s) (W.pos s)) Finset.univ.val`. Rewrite using `[Finset.prod_eq_multiset_prod]`.
+
+Rewrite using `[show Multiset.map (fun s => Polynomial.X - Polynomial.C (W.Θ i (W.pos s) (W.pos s))) Finset.univ.val = Multiset.map (fun a => Polynomial.X - Polynomial.C a) (Multiset.map (fun s => W.Θ i (W.pos s) (W.pos s)) Finset.univ.val) by`. Rewrite using `[Multiset.map_map]`. Use the proof step `rfl]`. Conclude with `Polynomial.roots_multiset_prod_X_sub_C _`. Establish `r2 : (∏ u, (Polynomial.X - Polynomial.C (-W.a * ((U' i u : ℤ) : F)))).roots = Multiset.map (fun u => -W.a * ((U' i u : ℤ) : F)) Finset.univ.val`.
+
+Rewrite using `[Finset.prod_eq_multiset_prod]`. Rewrite using `[show Multiset.map (fun u => Polynomial.X - Polynomial.C (-W.a * ((U' i u : ℤ) : F))) Finset.univ.val = Multiset.map (fun a => Polynomial.X - Polynomial.C a) (Multiset.map (fun u => -W.a * ((U' i u : ℤ) : F)) Finset.univ.val) by`. Rewrite using `[Multiset.map_map]`. Use the proof step `rfl]`. Conclude with `Polynomial.roots_multiset_prod_X_sub_C _`.
+
+Rewrite `hr` using `[r1, r2]`. Establish `e2 : Multiset.map (fun s => W.Θ i (W.pos s) (W.pos s)) Finset.univ.val = Multiset.map (fun s : Fin t => -W.a * (((bot i + ((s : ℕ) : ℤ) - kap i s : ℤ)) : F)) Finset.univ.val` using `Multiset.map_congr rfl (fun s _ => hdiag i s)`. Rewrite `hr` using `[e2]`. Conclude with `map_cast_le_of_map_neg_mul_le l hl F W.a ha Finset.univ.val Finset.univ.val (fun s : Fin t => bot i + ((s : ℕ) : ℤ) - kap i s) (U' i) hr`. Introduce `i`.
+
+Establish `hm` using `le_sum_of_dvd_det_submatrix (PowerSeries.X : PowerSeries F) PowerSeries.X_prime (W.Φ i) W.b W.pos hinj hpos (hΦ i) (fun s => ((l : ℤ) * kap (σ i) s + (bot i + ((s : ℕ) : ℤ)) - kap i s).toNat) (hΦd i) (c i) (hc i)`. Establish `hm' : ((c i : ℕ) : ℤ) ≤ ∑ s : Fin t, ((((l : ℤ) * kap (σ i) s + (bot i + ((s : ℕ) : ℤ)) - kap i s).toNat : ℕ) : ℤ)`. Conclude with `hm` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Int.toNat_of_nonneg (hd i s).1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twisted_block_bounds : LemmaWAssembled := by
   intro ι _ σ l h t n F _ _ W U' bot kap c hl hW hb hd
   obtain ⟨ha, hinj, hpos, hΘ, hchar, hdiag, hΦ, hΦd, hc⟩ := hW
@@ -121,6 +159,11 @@ theorem twisted_block_bounds : LemmaWAssembled := by
         rw [Int.toNat_of_nonneg (hd i s).1]
         ring
 
+/- English proof (translation)
+Introduce `ι _ σ k j t q l h F _ _ W U U' bot cst kap c τ hl hlt hW hb hd hU hU' hUb hprod hU0 hU'h hsum hblock hcτ`. Take `⟨h1, h2, h3⟩` from `twisted_block_bounds ι σ l h t (k + j + t + q) F W U' bot kap c hl hW hb hd`. Establish `hκ : ∀ i s, |kap i s| ≤ ((h / (l - 1) : ℕ) : ℤ)`. Introduce `i s`. Establish `hl2` using `hl.two_le`.
+
+Establish `hpos : (0 : ℤ) < ((l - 1 : ℕ) : ℤ)` using `by omega`. Establish `e : ((l - 1 : ℕ) : ℤ) = (l : ℤ) - 1` using `by omega`. Rewrite using `[Int.natCast_div, Int.le_ediv_iff_mul_le hpos, e, mul_comm]`. Conclude with `h1 i s`. Conclude with `weightExchangeChain_holds k j t q l h (h / (l - 1)) F (U τ) (U' τ) (U (σ τ)) (U' (σ τ)) (bot τ) (bot (σ τ)) (cst τ) (cst (σ τ)) (kap τ) (kap (σ τ)) hl hlt (hU τ) (hU' τ) (hU (σ τ)) (hU' (σ τ)) hU0 (fun a => (hU'h a).2) hsum hblock (hUb (σ τ)) (hprod τ) (hprod (σ τ)) (hκ τ) (hκ (σ …`.
+-/
 theorem weightExchangeFull_holds : WEFull := by
   intro ι _ σ k j t q l h F _ _ W U U' bot cst kap c τ hl hlt hW hb hd hU hU' hUb hprod hU0 hU'h
     hsum hblock hcτ

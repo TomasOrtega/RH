@@ -31,6 +31,19 @@ def BoxSquare (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (we : LB.Iso (L.pul
     bw w (r ≫ p') z jM jM' * Geo.Tor.gw we' r z jM' (fun _ => jL) =
       ∏ i, Geo.Tor.gw we (r ≫ h i) z (jM i) (fun _ => jL i)
 
+/- English proof (translation)
+Introduce `q V h₁ h₂`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Use `(gm_rp₁ m' x _ V h₁ hx _).trans (Eq.trans ?_ (gm_res (𝟙 T') x h₂ hx _).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Geo.Tor.gw we₁' m' x (q.1 ⟨⟩) (fun _ => q.2 ⟨⟩) = Geo.Tor.gw we' (𝟙 T') x (q.1 ⟨⟩) (fun _ => q.2 ⟨⟩)`.
+
+Take `⟨J, hJ⟩` from `exists_good_at hM x`. Establish `x₂` using `h₂ hx`. Establish `a₁ : ∀ i, pr i (p' x) ∈ M.U (J (p' ≫ pr i))` using `fun i => by simpa using hJ (p' ≫ pr i)`. Establish `b₁ : p' x ∈ M'.U (q.1 ⟨⟩)` using `mem_pull.mp x₂.1`. Establish `c₀ : f' x ∈ LB.wchart L prG (q.2 ⟨⟩)`.
+
+Use `mem_pull.mp x₂.2` as an intermediate fact. Conclude with `(Scheme.Hom.mem_preimage f').mp this`. Establish `c₁ : ∀ i, prG i (f' x) ∈ L.U (q.2 ⟨⟩ i)` using `fun i => LB.wchart_le L prG (q.2 ⟨⟩) i c₀`. Establish `ep : p₁' (m' x) = p' x` using `by rw [← hp']; rfl`. Establish `ef : f₁' (m' x) = f' x` using `by rw [← hf']; rfl`.
+
+Establish `e1` using `Q T' (𝟙 T') x (fun i => J (p' ≫ pr i)) (q.1 ⟨⟩) (q.2 ⟨⟩) (fun i => a₁ i) b₁ (fun i => c₁ i)`. Establish `e2` using `Q₁ T' m' x (fun i => J (p' ≫ pr i)) (q.1 ⟨⟩) (q.2 ⟨⟩) (fun i => by rw [ep]; exact a₁ i) (by rw [ep]; exact b₁) (fun i => by rw [ef]; exact c₁ i)`. Establish `e3 : ∏ i, Geo.Tor.gw we₁ (h i ≫ m) x (J (p' ≫ pr i)) (fun _ => q.2 ⟨⟩ i) = ∏ i, Geo.Tor.gw we (h i) x (J (p' ≫ pr i)) (fun _ => q.2 ⟨⟩ i)`. Use `Finset.prod_congr rfl fun i _ => H.stalk hf hp (h i) x _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← pt_of_eq (hE i) x]`.
+
+Conclude with `a₁ i`. Rewrite using `[pt_of_eq (hF i) x]`. Conclude with `c₁ i`. Simplify using `only [Category.id_comp] at e1`. Simplify using `only [hp', hm] at e2`.
+
+Conclude with `_root_.mul_left_cancel (e2.trans (e3.trans e1.symm))`.
+-/
 theorem compat_box (hM : M.IsLB) {p₁ : T₁ ⟶ B} {p₁' : T₁' ⟶ B'} {f₁ : T₁ ⟶ G} {f₁' : T₁' ⟶ G'}
     {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} {we : LB.Iso (L.pull f) (M.pull p)}
     {we' : LB.Iso ((LB.LinComb L prG (fun _ => 1)).pull f') (M'.pull p')} {h : Fin j → (T' ⟶ T)}
@@ -67,11 +80,23 @@ theorem compat_box (hM : M.IsLB) {p₁ : T₁ ⟶ B} {p₁' : T₁' ⟶ B'} {f�
   simp only [hp', hm] at e2
   exact _root_.mul_left_cancel (e2.trans (e3.trans e1.symm))
 
+/- English proof (translation)
+The claim follows from `(gm_linComb L (fun _ : PUnit => f) (fun _ => 1) r z (fun _ => a) (fun _ => b) h.1 h.2).trans (by simp)`.
+-/
 private theorem gm_pull_transition_eq_gm_comp {X T Z : Scheme.{0}} (L : LB X) (f : T ⟶ X) (r : Z ⟶ T) (z : Z) (a b : L.ι)
     (h : r z ∈ (L.pull f).U (fun _ => a) ⊓ (L.pull f).U (fun _ => b)) :
     gm r z _ ((L.pull f).g (fun _ => a) (fun _ => b)) = gm (r ≫ f) z (L.U a ⊓ L.U b) (L.g a b) :=
   (gm_linComb L (fun _ : PUnit => f) (fun _ => 1) r z (fun _ => a) (fun _ => b) h.1 h.2).trans (by simp)
 
+/- English proof (translation)
+Establish `hz : r z ∈ ((M.pull p).div (L.pull f)).U (fun _ => c, fun _ => a) ⊓ ((M.pull p).div (L.pull f)).U (fun _ => c, fun _ => b)` using `⟨⟨mem_pull.mpr h1, mem_pull.mpr h2⟩, ⟨mem_pull.mpr h1, mem_pull.mpr h3⟩⟩`. Establish `hp : (r ≫ p) z ∈ M.U c` using `h1`. Establish `gM : gm (r ≫ p) z (M.U c ⊓ M.U c) (M.g c c) = 1`. Establish `e0` using `congrArg (gm (r ≫ p) z _) (hM.g_self c)`. Rewrite `e0` using `[gm_res (r ≫ p) z _ hp, map_one]`.
+
+Conclude with `e0`. Establish `e` using `congrArg (gm r z _) (hwe (fun _ => c, fun _ => a) (fun _ => c, fun _ => b))`. Rewrite `e` using `[map_mul, gm_res r z _ hz, gm_res r z _ hz]`. Establish `eg : gm r z _ (((M.pull p).div (L.pull f)).g (fun _ => c, fun _ => a) (fun _ => c, fun _ => b)) = (gm (r ≫ f) z (L.U a ⊓ L.U b) (L.g a b))⁻¹`. Use `(map_mul (gm r z _) _ _).trans ?_` and prove the remaining obligations.
+
+Use `(congrArg₂ (· * ·) (gm_res r z _ hz _) ((map_inv (gm r z _) _).trans (congrArg (·⁻¹) (gm_res r z _ hz _)))).trans ?_` and prove the remaining obligations. Establish `hzM : r z ∈ (M.pull p).U (fun _ => c) ⊓ (M.pull p).U (fun _ => c)` using `⟨mem_pull.mpr h1, mem_pull.mpr h1⟩`. Establish `hzL : r z ∈ (L.pull f).U (fun _ => a) ⊓ (L.pull f).U (fun _ => b)` using `⟨mem_pull.mpr h2, mem_pull.mpr h3⟩`. Use `(congrArg₂ (· * ·) (gm_pull_transition_eq_gm_comp M p r z c c hzM) (congrArg (·⁻¹) (gm_pull_transition_eq_gm_comp L f r z a b hzL))).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (· * _) gM).trans (one_mul _)`.
+
+Rewrite `e` using `[eg]`. Express the relevant statement in the definitionally equal form `Geo.Tor.gw we r z c (fun _ => a) = _ * Geo.Tor.gw we r z c (fun _ => b) at e`. Rewrite using `[e, mul_comm]`. Conclude with `mul_inv_cancel_left _ _`.
+-/
 private theorem gw_mul_gm_transition_eq_gw_of_isGen {B G T Z : Scheme.{0}} {M : LB B} {L : LB G} {p : T ⟶ B} {f : T ⟶ G}
     (hM : M.IsLB) {we : LB.Iso (L.pull f) (M.pull p)} (hwe : we.IsGen) (r : Z ⟶ T) (z : Z) (c : M.ι)
     (a b : L.ι) (h1 : p (r z) ∈ M.U c) (h2 : f (r z) ∈ L.U a) (h3 : f (r z) ∈ L.U b) :
@@ -102,6 +127,13 @@ private theorem gw_mul_gm_transition_eq_gw_of_isGen {B G T Z : Scheme.{0}} {M : 
   rw [e, mul_comm]
   exact mul_inv_cancel_left _ _
 
+/- English proof (translation)
+Establish `hf : ∀ k, f (P k z) = φ k (m z)` using `fun k => pt_of_eq (c k) z`. Establish `ma : m z ∈ LB.wchart L φ a` using `Set.mem_iInter.2 fun k => ha k`. Establish `mb : m z ∈ LB.wchart L φ b` using `Set.mem_iInter.2 fun k => hb k`. Rewrite using `[gen_trans ht m z ma mb]`. Unfold `trF`.
+
+Rewrite using `[← _root_.mul_assoc, ← Finset.prod_mul_distrib]`. Use `congrArg (· * _) (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_zpow]`. Use `congrArg (· ^ ε k) ?_` and prove the remaining obligations. Establish `e` using `gw_mul_gm_transition_eq_gw_of_isGen hM hwe (P k) z (jM k) (a k) (b k) (hM' k) (by rw [hf k]; exact ha k) (by rw [hf k]; exact hb k)`.
+
+Rewrite `e` using `[c k]`. Conclude with `e`.
+-/
 theorem change_chart (hM : M.IsLB) {we : LB.Iso (L.pull f) (M.pull p)} (hwe : we.IsGen) {K : Type} [Fintype K]
     {ε : K → ℤ} {Z Y : Scheme.{0}} (z : Z) (P : K → (Z ⟶ T)) {φ : K → (Y ⟶ G)} {t : LB.Gen (LB.LinComb L φ ε)}
     (ht : t.IsGen) (m : Z ⟶ Y) (c : ∀ k, P k ≫ f = m ≫ φ k) (jM : K → M.ι) (a b : K → L.ι)
@@ -122,6 +154,9 @@ theorem change_chart (hM : M.IsLB) {we : LB.Iso (L.pull f) (M.pull p)} (hwe : we
   rw [c k] at e
   exact e
 
+/- English proof (translation)
+Apply `mul_left_cancel (a := ∏ k, A k ^ ε k)` to reduce the goal to its premises. Rewrite using `[e₁, Finset.prod_congr rfl (fun i _ => e₂ i), Finset.prod_mul_distrib, Finset.prod_comm, ← _root_.mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← mul_zpow, h, Finset.prod_zpow]`.
+-/
 theorem alg {U K I : Type} [CommGroup U] [Fintype K] [Fintype I] (ε : K → ℤ) (A W' : K → U) (W : K → I → U)
     (h : ∀ k, A k * W' k = ∏ i, W k i) {a' : U} {a b : I → U} (e₁ : (∏ k, A k ^ ε k) * a' = ∏ i, a i)
     (e₂ : ∀ i, a i = (∏ k, W k i ^ ε k) * b i) : a' = (∏ k, W' k ^ ε k) * ∏ i, b i := by
@@ -132,6 +167,19 @@ theorem alg {U K I : Type} [CommGroup U] [Fintype K] [Fintype I] (ε : K → ℤ
   refine Finset.prod_congr rfl (fun k _ => ?_)
   rw [← mul_zpow, h, Finset.prod_zpow]
 
+/- English proof (translation)
+Take `⟨J', hJ', hJ'e⟩` from `exists_good M' hM' z (fun k => mB ≫ ψ' k) jM' coh mM`. Take `⟨J, hJ⟩` from `exists_good_at hM z`. Take `⟨N, hN⟩` from `exists_good_at hL z`. Establish `hQ : ∀ k, om w z J J' (mB ≫ ψ' k) * Geo.Tor.gw we' (P k) z (jM' k) (fun _ => jL k) = ∏ i, Geo.Tor.gw we (P k ≫ h i) z (J (nB i ≫ ψ k)) (fun _ => jL k i)`. Introduce `k`.
+
+Establish `hk : ∀ i, (mB ≫ ψ' k) ≫ pr i = nB i ≫ ψ k` using `fun i => by`. Rewrite using `[← c₂ k, Category.assoc, hE i, ← Category.assoc, c₃ i k]`. Establish `e` using `Q Z (P k) z (fun i => J (nB i ≫ ψ k)) (jM' k) (jL k) (fun i => by`. Establish `eq : pr i (p' (P k z)) = (nB i ≫ ψ k) z`. Rewrite using `[← hk i, ← c₂ k]`.
+
+Both sides reduce to the same expression. Rewrite using `[eq]`. Conclude with `hJ (nB i ≫ ψ k))`. Use the proof step `(by rw [pt_of_eq (c₂ k) z]; exact mM k)`. Use the proof step `(fun i => by`.
+
+Use `mL k i` as an intermediate fact. Rewrite `this` using `[← pt_of_eq (c₁ i k) z]`. Rewrite using `[← pt_of_eq (hF i) (P k z)]`. Conclude with `this)`. Unfold `om`.
+
+Rewrite using `[hJ'e k]`. Simplify using `only [hk]`. Rewrite using `[← c₂ k]`. Conclude with `e`. Establish `he₂ : ∀ i, val tM (nB i) z J = (∏ k, Geo.Tor.gw we (P k ≫ h i) z (J (nB i ≫ ψ k)) (fun _ => jL k i) ^ ε k) * gm (nG i) z (LB.wchart L φ (fun k => jL k i)) (tL.s (fun k => jL k i))` using `fun i => (HU i J N hJ hN).trans (change_chart hM hwe z (fun k => P k ≫ h i) htL (nG i) (c₁ i) (fun k => J (nB i ≫ ψ k)) (fun k => N (nG i ≫ φ k)) (fun k => jL k i) (fun k => by rw [pt_of_eq (c₃ i k) z]; exact hJ _) (fun k => hN _) (fun k => mL k i))`.
+
+Use `(val_of tM' mB z J' jM' hJ'e).symm.trans ?_` and prove the remaining obligations. Conclude with `alg ε (fun k => om w z J J' (mB ≫ ψ' k)) (fun k => Geo.Tor.gw we' (P k) z (jM' k) (fun _ => jL k)) (fun k i => Geo.Tor.gw we (P k ≫ h i) z (J (nB i ≫ ψ k)) (fun _ => jL k i)) hQ (HM J J' hJ hJ') he₂`.
+-/
 theorem rel_box (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
     {w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))} {we : LB.Iso (L.pull f) (M.pull p)}
     {we' : LB.Iso ((LB.LinComb L prG (fun _ => 1)).pull f') (M'.pull p')} {h : Fin j → (T' ⟶ T)}
@@ -187,6 +235,9 @@ theorem rel_box (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB)
   exact alg ε (fun k => om w z J J' (mB ≫ ψ' k)) (fun k => Geo.Tor.gw we' (P k) z (jM' k) (fun _ => jL k))
     (fun k i => Geo.Tor.gw we (P k ≫ h i) z (J (nB i ≫ ψ k)) (fun _ => jL k i)) hQ (HM J J' hJ hJ') he₂
 
+/- English proof (translation)
+Use `(GlobalTheory.BoxSymmetry.gm_boxGen L F φ' ε _ r z jj h).trans (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Establish `hz : r z ∈ (L.pull (F i)).wchart φ' (fun k _ => jj k i)` using `Set.mem_iInter.2 fun k => mem_pull.2 (LB.wchart_le L F (jj k) i (Set.mem_iInter.1 h k))`. Conclude with `gm_res_pull r (ρ i) z _ hz _`.
+-/
 theorem gm_box_pull {X X' Y Y' Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (F : Fin j → (X' ⟶ X))
     {φ : Fin j → K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X')} {ε : K → ℤ} (ρ : Fin j → (Y' ⟶ Y))
     (hψ : ∀ i k, φ' k ≫ F i = ρ i ≫ φ i k) (t : ∀ i, LB.Gen (LB.LinComb L (φ i) ε)) (r : Z ⟶ Y') (z : Z)
@@ -199,6 +250,11 @@ theorem gm_box_pull {X X' Y Y' Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     Set.mem_iInter.2 fun k => mem_pull.2 (LB.wchart_le L F (jj k) i (Set.mem_iInter.1 h k))
   exact gm_res_pull r (ρ i) z _ hz _
 
+/- English proof (translation)
+Establish `m1 : r y ∈ LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J ((r ≫ φ' a) ≫ pr i))` using `Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun i => hJ ((r ≫ φ' a) ≫ pr i)`. Establish `m2 : r y ∈ LB.wchart M' φ' (fun a => J' (r ≫ φ' a))` using `hJ'.mem φ' r`. Establish `e` using `congrArg (gm r y _) (H (fun a i => J ((r ≫ φ' a) ≫ pr i), fun a => J' (r ≫ φ' a)))`. Simplify using `only at e`. Establish `m12 : r y ∈ (((M.LinComb pr fun _ => 1).LinComb φ' ε).U fun a i => J ((r ≫ φ' a) ≫ pr i)) ⊓ (M'.LinComb φ' ε).U fun a => J' (r ≫ φ' a)` using `⟨m1, m2⟩`.
+
+Rewrite `e` using `[map_mul, gm_res r y _ m12, gm_res r y _ m12]`. Establish `e2` using `(gm_box_pull M pr ρ hψ t r y _ m1).symm.trans (e.trans (congrArg (· * _) (gm_linCombIso w φ' ε r y _ _ m12)))`. Rewrite using `[Finset.prod_congr rfl fun i _ => val_of (t i) (r ≫ ρ i) y J (fun k => J ((r ≫ φ' k) ≫ pr i)) (fun k => congrArg J (by simp only [Category.assoc, hψ]))]`. Conclude with `e2.symm`.
+-/
 theorem maps_box_val (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K] {Y Y₀ Z : Scheme.{0}}
     {φ' : K → (Y ⟶ B')} {φ : Fin j → K → (Y₀ ⟶ B)} {ε : K → ℤ} {ρ : Fin j → (Y ⟶ Y₀)}
     (hψ : ∀ i a, φ' a ≫ pr i = ρ i ≫ φ i a) (t' : LB.Gen (LB.LinComb M' φ' ε)) (t : ∀ i, LB.Gen (LB.LinComb M (φ i) ε))
@@ -220,6 +276,11 @@ theorem maps_box_val (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [
     (fun k => congrArg J (by simp only [Category.assoc, hψ]))]
   exact e2.symm
 
+/- English proof (translation)
+Use `corr_of_val hM' fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at hM y`. Establish `A₁` using `maps_box_val w c₁ t₁' t₁ H₁ m' y hJ hJ'`. Establish `A₀` using `maps_box_val w c₀ t₀' t₀ H₀ (𝟙 _) y hJ hJ'`. Simplify using `only [Category.id_comp, c', hm] at A₁ A₀`.
+
+Establish `A₂ : ∏ i, val (t₁ i) (h₀ i ≫ m) y J = ∏ i, val (t₀ i) (h₀ i) y J` using `Finset.prod_congr rfl fun i _ => (val_pull hJ (t₁ i) m (h₀ i)).symm.trans (val_corr hJ (H i) (h₀ i))`. Rewrite using `[val_pull hJ' t₁' m' (𝟙 _), Category.id_comp]`. Conclude with `_root_.mul_left_cancel (A₁.trans (A₂.trans A₀.symm))`.
+-/
 theorem corr_box (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K]
     {ε : K → ℤ} {φ₀ : Fin j → K → (T ⟶ B)} {φ₁ : Fin j → K → (T₁ ⟶ B)} {φ₀' : K → (T' ⟶ B')} {φ₁' : K → (T₁' ⟶ B')}
     {t₀ : ∀ i, LB.Gen (LB.LinComb M (φ₀ i) ε)} {t₁ : ∀ i, LB.Gen (LB.LinComb M (φ₁ i) ε)}

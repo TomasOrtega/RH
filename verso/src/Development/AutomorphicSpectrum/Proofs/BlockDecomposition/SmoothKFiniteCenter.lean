@@ -24,6 +24,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Growth
 
+/- English proof (translation)
+Take `⟨D, hD, hden⟩` from `GlobalTheory.T.compact_adelic_integral_denominator E Q hQ`. Take `⟨C, N, hC⟩` from `GlobalTheory.T.integers_bounded_archimedean_count E`. Establish `hD1 : (1 : ℝ) ≤ D` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hD`. Establish `hDE : (D : E) ≠ 0` using `by exact_mod_cast hD`. Use `⟨|C| * (D : ℝ) ^ N, N, by positivity, fun R hR => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hf, hc⟩` from `hC (D * R) (by nlinarith)`. Use `set A := {r : 𝓞 E | ∀ w : InfinitePlace E, w (r : E) ≤ D * R}`. Use `set B := {x : E | algebraMap E (Af E) x ∈ Q ∧ ∀ w : InfinitePlace E, w x ≤ R}`. Establish `hsub : B ⊆ (fun r : 𝓞 E => (r : E) / D) '' A`. Introduce and unpack `x ⟨hx, hw⟩`.
+
+Take `⟨r, hr⟩` from `hden x hx`. Use `⟨r, fun w => ?_, by simp only [hr]; field_simp⟩` and prove the remaining obligations. Rewrite using `[hr, map_mul]`. Establish `: w (D : E) = D` using `by simpa using map_natCast w D`. Rewrite using `[this]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hw w) (by positivity)`. Establish `hfin : B.Finite` using `(hf.image _).subset hsub`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `h1 : B.ncard ≤ A.ncard` using `(Set.ncard_le_ncard hsub (hf.image _)).trans (Set.ncard_image_le hf)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem count_rational (E : Type) [Field E] [NumberField E] (Q : Set (Af E)) (hQ : IsCompact Q) :
     ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ R : ℝ, 1 ≤ R →
       {x : E | algebraMap E (Af E) x ∈ Q ∧ ∀ w : InfinitePlace E, w x ≤ R}.Finite ∧
@@ -52,6 +61,39 @@ theorem count_rational (E : Type) [Field E] [NumberField E] (Q : Set (Af E)) (hQ
     _ ≤ |C| * (D * R) ^ N := mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)
     _ = |C| * (D : ℝ) ^ N * R ^ N := by rw [mul_pow]; ring
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Establish `: Subsingleton (GA E 0)` using `inferInstance`. Use `⟨1, 0, fun y => ⟨Set.toFinite _, ?_⟩⟩` and prove the remaining obligations. Use `Set.ncard_le_ncard (Set.subset_univ {γ : GA E 0 | γ ∈ latticeGL E 0 ∧ (g₀ * infGL E 0 y)⁻¹ * γ * (g₀ * infGL E 0 y) ∈ Q}) (Set.toFinite _)` as an intermediate fact. Establish `h2 : (Set.univ : Set (GA E 0)).ncard = 1`.
+
+Rewrite using `[Set.ncard_univ, Nat.card_unique]`. Rewrite `this` using `[h2]`. Rewrite using `[pow_zero, mul_one]`. Conclude with `this` after adjusting the coercions. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.compact_conjugate_centre_power_bounded E a ha Q hQ`.
+
+Take `⟨Qf, C₁, hQf, hC₁, hent⟩` from `GlobalTheory.T.compact_conjugate_rational_entries_bounded E a g₀ Q hQ n₀`. Take `⟨C₂, N₂, hC₂, hcount⟩` from `count_rational E Qf hQf`. Take `⟨c₃, hc₃⟩ : ∃ c₃ : ℝ, c₃ = C₂ * (C₁ + 1) ^ N₂` from `⟨_, rfl⟩`. Establish `hc₃0 : 0 ≤ c₃` using `by rw [hc₃]; positivity`. Use `⟨(2 * n₀ + 1) * c₃ ^ (a * a), 2 * N₂ * (a * a), fun y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨H, hH⟩ : ∃ H : ℝ, H = height y` from `⟨_, rfl⟩`. Rewrite using `[← hH]`. Establish `hH1 : 1 ≤ H` using `hH ▸ one_le_height y`. Take `⟨R, hR⟩ : ∃ R : ℝ, R = (C₁ + 1) * H ^ 2` from `⟨_, rfl⟩`. Establish `hR1 : 1 ≤ R`.
+
+Establish `: 1 ≤ H ^ 2` using `one_le_pow₀ hH1`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hBf, hBc⟩` from `hcount R hR1`. Take `⟨B, hB⟩ : ∃ B : Finset E, B = hBf.toFinset` from `⟨_, rfl⟩`. Establish `hBmem : ∀ x, x ∈ B ↔ algebraMap E (Af E) x ∈ Qf ∧ ∀ w : InfinitePlace E, w x ≤ R` using `fun x => by`.
+
+Rewrite using `[hB, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `hBcard : (B.card : ℝ) ≤ c₃ * H ^ (2 * N₂)`. Establish `: B.card = {x : E | algebraMap E (Af E) x ∈ Qf ∧ ∀ w : InfinitePlace E, w x ≤ R}.ncard`. Rewrite using `[hB]`.
+
+Conclude with `(Set.ncard_eq_toFinset_card _ hBf).symm`. Rewrite using `[this]`. Use `hBc.trans_eq ?_` and prove the remaining obligations. Rewrite using `[hR, mul_pow, hc₃, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨P, hP⟩ : ∃ P : Finset (Fin a × Fin a → E), P = Fintype.piFinset fun _ => B` from `⟨_, rfl⟩`. Establish `hPcard : P.card = B.card ^ (a * a)`. Simplify using `[hP, Fintype.card_prod]`. Establish `hinj : Function.Injective (fun (δ : GL (Fin a) E) (p : Fin a × Fin a) => δ.val p.1 p.2)` using `fun x y e => Units.ext (Matrix.ext fun i j => congrFun e (i, j))`. Take `⟨D, hD⟩ : ∃ D : Finset (GL (Fin a) E), D = P.preimage (fun (δ : GL (Fin a) E) (p : Fin a × Fin a) => δ.val p.1 p.2) hinj.injOn` from `⟨_, rfl⟩`.
+
+Establish `hDmem : ∀ δ : GL (Fin a) E, δ ∈ D ↔ (fun p : Fin a × Fin a => δ.val p.1 p.2) ∈ P` using `fun δ => by`. Rewrite using `[hD, Finset.mem_preimage]`. Establish `hDcard : D.card ≤ P.card` using `Finset.card_le_card_of_injOn (fun (δ : GL (Fin a) E) (p : Fin a × Fin a) => δ.val p.1 p.2) (fun δ hδ => (hDmem δ).1 hδ) hinj.injOn`. Take `⟨J, hJ⟩ : ∃ J : Finset ℤ, J = Finset.Icc (-(n₀ : ℤ)) n₀` from `⟨_, rfl⟩`. Establish `hJcard : (J.card : ℝ) = 2 * n₀ + 1`.
+
+Rewrite using `[hJ, Int.card_Icc]`. Establish `: ((n₀ : ℤ) + 1 - -(n₀ : ℤ)).toNat = 2 * n₀ + 1` using `by omega`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨W, hW⟩ : ∃ W : Finset (GA E a), W = Finset.image₂ (fun (δ : GL (Fin a) E) (n : ℤ) => ratGL E a δ * splitCentre E a 1 ^ n) D J` from `⟨_, rfl⟩`. Establish `hsub : {γ : GA E a | γ ∈ latticeGL E a ∧ (g₀ * infGL E a y)⁻¹ * γ * (g₀ * infGL E a y) ∈ Q} ⊆ (W : Set (GA E a))`. Introduce and unpack `γ ⟨hγ, hq⟩`. Take `⟨δ, n, rfl⟩` from `mem_latticeGL_iff.1 hγ`. Establish `hn` using `hn₀ δ n _ hq`.
+
+Establish `he` using `hent y δ n hn hq`. Rewrite using `[Finset.mem_coe, hW, Finset.mem_image₂]`. Use `⟨δ, ?_, n, ?_, rfl⟩` and prove the remaining obligations. Use `(hDmem δ).2 ?_` and prove the remaining obligations. Rewrite using `[hP, Fintype.mem_piFinset]`.
+
+Introduce and unpack `⟨i, j⟩`. Use `(hBmem _).2 ⟨(he i j).1, fun w => ((he i j).2 w).trans ?_⟩` and prove the remaining obligations. Rewrite using `[hR, ← hH]`. Establish `: 0 ≤ H ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[hJ, Finset.mem_Icc]`. Conclude with `abs_le.1 hn`. Use `⟨W.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations. Establish `h1` using `Set.ncard_le_ncard hsub W.finite_toSet`. Rewrite `h1` using `[Set.ncard_coe_finset]`.
+
+Establish `h2 : W.card ≤ D.card * J.card` using `hW ▸ Finset.card_image₂_le _ _ _`. Establish `h3 : (D.card : ℝ) ≤ (c₃ * H ^ (2 * N₂)) ^ (a * a)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJcard]; exact mul_le_mul_of_nonneg_right h3 (by positivity)`.
+
+Use `_ = (2 * n₀ + 1) * c₃ ^ (a * a) * H ^ (2 * N₂ * (a * a)) := by`. Rewrite using `[mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_lattice (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (g₀ : GA E a)
     (Q : Set (GA E a)) (hQ : IsCompact Q) :
     ∃ (C : ℝ) (N : ℕ), ∀ y : GL (Fin a) (Cinf E),
@@ -141,6 +183,63 @@ theorem count_lattice (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] 
     _ = (2 * n₀ + 1) * c₃ ^ (a * a) * H ^ (2 * N₂ * (a * a)) := by
         rw [mul_pow, ← pow_mul]; ring
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ _ φ hl hc hlev hK hZ hL g`. Use `letI : MeasurableSpace (AutomorphicForm.archGroup E a) := borel _`. Use `haveI : BorelSpace (AutomorphicForm.archGroup E a) := ⟨rfl⟩`. Establish `hφc : Continuous φ.1` using `ContAut.continuous_of_isOpen_stab E a φ hlev`. Establish `h1O : (1 : AdelicGLn.FiniteAdelicGL E a) ∈ {k | finRep E a k φ = φ}`.
+
+Express the relevant statement in the definitionally equal form `finRep E a 1 φ = φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Take `⟨U, hU1, hUO, hUc⟩` from `local_compact_nhds (hlev.mem_nhds h1O)`. Take `⟨p, hpdef⟩ : ∃ p : GA E a → AutomorphicForm.archGroup E a, p = fun h => AutomorphicForm.archEquiv E a (AdelicGLn.prodEquiv E a h).1` from `⟨_, rfl⟩`.
+
+Take `⟨q, hqdef⟩ : ∃ q : GA E a → AdelicGLn.FiniteAdelicGL E a, q = fun h => (AdelicGLn.prodEquiv E a h).2` from `⟨_, rfl⟩`. Establish `hp : Continuous p`. Rewrite using `[hpdef]`. Conclude with `(AutomorphicForm.archEquiv E a).continuous.comp (continuous_fst.comp (AdelicGLn.prodEquiv E a).continuous)`. Establish `hq : Continuous q`.
+
+Rewrite using `[hqdef]`. Conclude with `continuous_snd.comp (AdelicGLn.prodEquiv E a).continuous`. Establish `hsplit : ∀ h, AutomorphicForm.infEmb E a (p h) * AutomorphicForm.finEmb E a (q h) = h` using `fun h => by`. Rewrite using `[hpdef, hqdef]`. Conclude with `AutomorphicForm.infEmb_mul_finEmb h`.
+
+Establish `hright : ∀ x h, q h ∈ U → φ.1 (x * AutomorphicForm.infEmb E a (p h)) = φ.1 (x * h)` using `fun x h hh => by`. Establish `hk : finRep E a (q h) φ = φ` using `hUO hh`. Use `congrFun (congrArg Subtype.val hk) (x * AutomorphicForm.infEmb E a (p h))` as an intermediate fact. Establish `e : x * AutomorphicForm.infEmb E a (p h) * finGL E a (q h) = x * h`. Rewrite using `[mul_assoc, ← GlobalTheory.CompanionTheory.AutLevel.finEmb_eq_finGL, hsplit]`.
+
+Conclude with `this.symm.trans (congrArg φ.1 e)`. Establish `hQm : MeasurableSet (q ⁻¹' U)` using `(hUc.isClosed.preimage hq).measurableSet`. Take `⟨ν, hν⟩ : ∃ ν : Measure (AutomorphicForm.archGroup E a), ν = (μ.restrict (q ⁻¹' U)).map p` from `⟨_, rfl⟩`. Use `haveI : ν.IsHaarMeasure := by`. Rewrite using `[hν, hpdef, hqdef]`.
+
+Conclude with `GlobalTheory.T.finite_adelic_restriction_measure E a μ U hUc hU1`. Take `⟨κ, hκc, hκs, hκ⟩` from `GlobalTheory.T.finite_z_span_integral_representation E a φ hK hZ ν`. Take `⟨S, hS⟩ : ∃ S, S = tsupport κ` from `⟨_, rfl⟩`. Establish `hSc : IsCompact S` using `hS ▸ hκs`. Establish `hSm : MeasurableSet S` using `hSc.isClosed.measurableSet`.
+
+Take `⟨T, hT⟩ : ∃ T : Set (GA E a), T = p ⁻¹' S ∩ q ⁻¹' U` from `⟨_, rfl⟩`. Establish `hTc : IsCompact T`. Set `Φ : GA E a ≃ₜ AutomorphicForm.archGroup E a × AdelicGLn.FiniteAdelicGL E a` to `(AdelicGLn.prodEquiv E a).toHomeomorph.trans ((AutomorphicForm.archEquiv E a).toHomeomorph.prodCongr (Homeomorph.refl _))`. Establish `e : T = Φ ⁻¹' (S ×ˢ U)`. Rewrite using `[hT, hpdef, hqdef]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Φ.isCompact_preimage.2 (hSc.prod hUc)`. Establish `hTm : MeasurableSet T` using `hTc.isClosed.measurableSet`. Take `⟨Q, hQ⟩ : ∃ Q : Set (GA E a), Q = (fun x : GA E a × GA E a => x.1 * x.2⁻¹) '' (T ×ˢ T)` from `⟨_, rfl⟩`.
+
+Establish `hQc : IsCompact Q` using `hQ ▸ (hTc.prod hTc).image (by fun_prop)`. Take `⟨C, N, hC⟩` from `count_lattice E a g Q hQc`. Establish `hF` using `isFundamentalDomain_stdDom (latticeGL E a) μ`. Take `⟨hli, hmem⟩` from `(memL2_iff_fundamental_domain hF).1 hL`. Take `⟨I, hI⟩ : ∃ I, I = ∫⁻ x in stdDom (latticeGL E a), ‖φ.1 x‖ₑ ^ 2 ∂μ` from `⟨_, rfl⟩`.
+
+Establish `hItop : I ≠ ⊤`. Establish `h` using `(eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (p := 2) (by norm_num) (by norm_num)).1 hmem.eLpNorm_lt_top`. Rewrite using `[hI]`. Simplify using `using h.ne`. Establish `hfm : Measurable fun x => ‖φ.1 x‖ₑ ^ 2` using `(hφc.enorm.measurable).pow_const 2`.
+
+Establish `hA : ∀ x, ∫⁻ s in S, ‖φ.1 (x * AutomorphicForm.infEmb E a s)‖ₑ ^ 2 ∂ν = ∫⁻ h in T, ‖φ.1 (x * h)‖ₑ ^ 2 ∂μ`. Introduce `x`. Establish `hG : Measurable fun s => ‖φ.1 (x * AutomorphicForm.infEmb E a s)‖ₑ ^ 2` using `((hφc.comp (continuous_const.mul AutomorphicForm.continuous_infEmb)).enorm.measurable).pow_const 2`. Rewrite using `[← lintegral_indicator hSm, hν, lintegral_map (hG.indicator hSm) hp.measurable, hT, ← Measure.restrict_restrict (hp.measurable hSm), ← lintegral_indicator (hp.measurable hSm)]`. Use `lintegral_congr_ae ((ae_restrict_mem hQm).mono fun h hh => ?_)` and prove the remaining obligations.
+
+Use `beta_reduce`. Distinguish the cases in `hs : p h ∈ S`. Rewrite using `[Set.indicator_of_mem hs, Set.indicator_of_mem (show h ∈ p ⁻¹' S from hs), hright x h hh]`. Rewrite using `[Set.indicator_of_notMem hs, Set.indicator_of_notMem (show h ∉ p ⁻¹' S from hs)]`. Establish `hMm : ∀ x : GA E a, MeasurableSet ((fun h => x⁻¹ * h) ⁻¹' T)` using `fun x => (continuous_const.mul continuous_id).measurable hTm`.
+
+Establish `hB : ∀ x, ∫⁻ h in T, ‖φ.1 (x * h)‖ₑ ^ 2 ∂μ = ∫⁻ h in (fun h => x⁻¹ * h) ⁻¹' T, ‖φ.1 h‖ₑ ^ 2 ∂μ`. Introduce `x`. Rewrite using `[← lintegral_indicator hTm, ← lintegral_indicator (hMm x), ← lintegral_mul_left_eq_self (fun h => ((fun h => x⁻¹ * h) ⁻¹' T).indicator (fun h => ‖φ.1 h‖ₑ ^ 2) h) x]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Distinguish the cases in `hh : h ∈ T`.
+
+Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem (show x * h ∈ (fun h => x⁻¹ * h) ⁻¹' T by simpa using hh)]`. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem (show x * h ∉ (fun h => x⁻¹ * h) ⁻¹' T by simpa using hh)]`. Establish `hcnt : ∀ y, ∫⁻ h in (fun h => (g * infGL E a y)⁻¹ * h) ⁻¹' T, ‖φ.1 h‖ₑ ^ 2 ∂μ ≤ ({γ : GA E a | γ ∈ latticeGL E a ∧ (g * infGL E a y)⁻¹ * γ * (g * infGL E a y) ∈ Q}.ncard : ℕ) * I`. Introduce `y`. Take `⟨x, hx⟩ : ∃ x, x = g * infGL E a y` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hx, hI]`. Use `GlobalTheory.T.fundamental_domain_integral_count_bound (latticeGL E a) μ _ hF _ (hMm x) _ hfm (fun γ hγ z => congrArg (fun u : ℂ => ‖u‖ₑ ^ 2) (hli γ hγ z)) _ fun z => ?_` and prove the remaining obligations. Take `⟨hfin, -⟩` from `hC y`. Rewrite `hfin` using `[← hx]`. Rewrite using `[hfin.cast_ncard_eq]`.
+
+Break down `Set.eq_empty_or_nonempty {γ : latticeGL E a | (γ : GA E a) * z ∈ (fun h => x⁻¹ * h) ⁻¹' T} with h0 | ⟨γ₀, h₀⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hinj : Set.InjOn (fun γ : latticeGL E a => (γ : GA E a) * (γ₀ : GA E a)⁻¹) {γ : latticeGL E a | (γ : GA E a) * z ∈ (fun h => x⁻¹ * h) ⁻¹' T}` using `fun u _ v _ e => Subtype.ext (mul_right_cancel e)`. Rewrite using `[← hinj.encard_image]`.
+
+Use `Set.encard_le_encard ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Use `⟨mul_mem γ.2 (inv_mem γ₀.2), ?_⟩` and prove the remaining obligations. Rewrite using `[hQ]`. Use `⟨(x⁻¹ * ((γ : GA E a) * z), x⁻¹ * ((γ₀ : GA E a) * z)), ⟨hγ, h₀⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Use `group`. Take `⟨c₀, hc₀⟩` from `hκc.bounded_above_of_compact_support hκs`. Establish `hker : ∀ x, ‖φ.1 x‖ₑ ≤ ENNReal.ofReal c₀ * (ν S + ∫⁻ s in S, ‖φ.1 (x * AutomorphicForm.infEmb E a s)‖ₑ ^ 2 ∂ν)`. Introduce `x`.
+
+Establish `hG : Measurable fun s => ‖φ.1 (x * AutomorphicForm.infEmb E a s)‖ₑ ^ 2` using `((hφc.comp (continuous_const.mul AutomorphicForm.continuous_infEmb)).enorm.measurable).pow_const 2`. Establish `hsq : ∀ u : ℝ≥0∞, u ≤ 1 + u ^ 2` using `fun u => by`. Break down `le_total u 1 with h | h` into its components or cases. Conclude with `h.trans le_self_add`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ S`. Rewrite using `[Set.indicator_of_mem hy, enorm_mul, mul_comm]`. Use `mul_le_mul' ?_ (hsq _)` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hc₀ y)`. Establish `h0 : κ y = 0` using `image_eq_zero_of_notMem_tsupport (by rwa [← hS])`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Use `_ = ENNReal.ofReal c₀ * ∫⁻ s in S, (1 + ‖φ.1 (x * AutomorphicForm.infEmb E a s)‖ₑ ^ 2) ∂ν := by`. Rewrite using `[lintegral_indicator hSm, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `_ = _ := by`. Rewrite using `[lintegral_add_left measurable_const, setLIntegral_one]`. Establish `hc₀0 : 0 ≤ c₀` using `(norm_nonneg _).trans (hc₀ 1)`.
+
+Establish `hνS : ν S ≠ ⊤` using `hSc.measure_lt_top.ne`. Use `⟨c₀ * ((ν S).toReal + C * I.toReal), N, fun y => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hn⟩` from `hC y`. Take `⟨n, hndef⟩ : ∃ n, n = {γ : GA E a | γ ∈ latticeGL E a ∧ (g * infGL E a y)⁻¹ * γ * (g * infGL E a y) ∈ Q}.ncard` from `⟨_, rfl⟩`. Establish `hbound` using `hcnt y`.
+
+Rewrite `hbound`, `hn` using `[← hndef]`. Establish `e1 : ‖φ.1 (g * infGL E a y)‖ₑ ≤ ENNReal.ofReal c₀ * (ν S + n * I)`. Use `(hker _).trans ?_` and prove the remaining obligations. Rewrite using `[hA, hB]`. Use `gcongr`.
+
+Establish `hH1 : 1 ≤ height y` using `one_le_height y`. Establish `hHN : 1 ≤ height y ^ N` using `one_le_pow₀ hH1`. Establish `e2 : ENNReal.ofReal c₀ * (ν S + n * I) = ENNReal.ofReal (c₀ * ((ν S).toReal + n * I.toReal))`. Rewrite using `[ENNReal.ofReal_mul hc₀0, ENNReal.ofReal_add ENNReal.toReal_nonneg (by positivity), ENNReal.ofReal_toReal hνS, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_toReal hItop, ENNReal.ofReal_natCast]`. Rewrite `e1` using `[e2, ← ofReal_norm_eq_enorm]`.
+
+Establish `e3` using `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hc₀0 (by positivity))).1 e1`. Use `e3.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hc₀0` and prove the remaining obligations. Establish `hv : 0 ≤ (ν S).toReal` using `ENNReal.toReal_nonneg`.
+
+Establish `hi : 0 ≤ I.toReal` using `ENNReal.toReal_nonneg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem moderate_growth : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (φ : Sm E a), (∀ γ g, φ.1 (ratGL E a γ * g) = φ.1 g) → (∀ t g, φ.1 (splitCentre E a t * g) = φ.1 g) → IsOpen {k | finRep E a k φ = φ} → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)) → FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) → MemL2Quotient (latticeGL E a) μ φ.1 → ∀ g, ∃ (C : ℝ) (N : ℕ), ∀ y, ‖φ.1 (g * infGL E a y)‖ ≤ C * height y ^ N := by
   intro E _ _ _ a μ _ _ φ hl hc hlev hK hZ hL g
   classical

@@ -30,6 +30,9 @@ def valAct1 {G' Θ B : Type} [Monoid G'] [AddCommGroup Θ] [Module ℂ Θ] [AddC
   map_one' := by ext; simp
   map_mul' p q := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valAct1_apply {G' Θ B : Type} [Monoid G'] [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup B] [Module ℂ B]
     (ω : G' →* Module.End ℂ Θ) (p : G') (φ : B →ₗ[ℂ] Θ) (b : B) : valAct1 ω p φ b = ω p (φ b) := rfl
 
@@ -39,11 +42,17 @@ def single1 {Θ B : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup B] [Mo
   map_add' f f' := by ext; simp
   map_smul' c f := by ext; simp [smul_comm c]
 
+/- English proof (translation)
+Use extensionality with `b`. Simplify using `[single1, valAct1_apply, map_smul]`.
+-/
 theorem single1_valAct1 {G' Θ B : Type} [Monoid G'] [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup B] [Module ℂ B]
     (ω : G' →* Module.End ℂ Θ) (β : B →ₗ[ℂ] ℂ) (p : G') (f : Θ) :
     single1 β (ω p f) = valAct1 ω p (single1 β f) := by
   ext b; simp [single1, valAct1_apply, map_smul]
 
+/- English proof (translation)
+Use `bB.ext fun l₀ => ?_` and prove the remaining obligations. Simplify using `only [single1, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.smulRight_apply, Module.Basis.coord_apply, Module.Basis.repr_self, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_eq_single l₀ (fun l _ hl => by simp [Ne.symm hl]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_sum_single1 {Θ B ιB : Type} [Fintype ιB] [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup B] [Module ℂ B]
     (bB : Module.Basis ιB ℂ B) (φ : B →ₗ[ℂ] Θ) : φ = ∑ l, single1 (bB.coord l) (φ (bB l)) := by
   refine bB.ext fun l₀ => ?_
@@ -59,14 +68,23 @@ def Good (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) : Prop :=
   (∀ F g, IntegrableOn (fun h => thetaKO om h g (φ (fV F h))) 𝓕V νV) ∧
     ∀ F y, IntegrableOn (fun g => star (yv y g) * thIn om fV νV 𝓕V φ F g) 𝓕W νW
 
+/- English proof (translation)
+Simplify using `[thetaKO, map_add]`.
+-/
 theorem thetaKO_add (h : Formalism.L2.Theta.GA D V) (g : Formalism.L2.Theta.GA D W) (f f' : WO V W → ℂ) :
     thetaKO om h g (f + f') = thetaKO om h g f + thetaKO om h g f' := by
   simp [thetaKO, map_add]
 
+/- English proof (translation)
+Simplify using `[thetaKO, map_smul]`.
+-/
 theorem thetaKO_smul (h : Formalism.L2.Theta.GA D V) (g : Formalism.L2.Theta.GA D W) (c : ℂ) (f : WO V W → ℂ) :
     thetaKO om h g (c • f) = c * thetaKO om h g f := by
   simp [thetaKO, map_smul]
 
+/- English proof (translation)
+Unfold `thIn`. Rewrite using `[← integral_add (hφ.1 F g) (hφ'.1 F g)]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[thetaKO_add]`.
+-/
 theorem thIn_add {φ φ' : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ)
     (hφ' : Good om fV yv νV 𝓕V νW 𝓕W φ') (F : Fm) (g : Formalism.L2.Theta.GA D W) :
     thIn om fV νV 𝓕V (φ + φ') F g = thIn om fV νV 𝓕V φ F g + thIn om fV νV 𝓕V φ' F g := by
@@ -76,6 +94,9 @@ theorem thIn_add {φ φ' : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV 
   funext h
   simp [thetaKO_add]
 
+/- English proof (translation)
+Unfold `thIn`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[thetaKO_smul]`.
+-/
 theorem thIn_smul (c : ℂ) (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (F : Fm) (g : Formalism.L2.Theta.GA D W) :
     thIn om fV νV 𝓕V (c • φ) F g = c * thIn om fV νV 𝓕V φ F g := by
   unfold thIn
@@ -84,6 +105,9 @@ theorem thIn_smul (c : ℂ) (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (F : Fm) (g
   funext h
   simp [thetaKO_smul]
 
+/- English proof (translation)
+Unfold `thIn`. Rewrite using `[← integral_add (hφ.1 F g) (hφ.1 F' g)]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[thetaKO_add]`.
+-/
 theorem thIn_addF {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ) (F F' : Fm)
     (g : Formalism.L2.Theta.GA D W) :
     thIn om fV νV 𝓕V φ (F + F') g = thIn om fV νV 𝓕V φ F g + thIn om fV νV 𝓕V φ F' g := by
@@ -93,6 +117,9 @@ theorem thIn_addF {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv 
   funext h
   simp [thetaKO_add]
 
+/- English proof (translation)
+Unfold `thIn`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[thetaKO_smul]`.
+-/
 theorem thIn_smulF (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (c : ℂ) (F : Fm) (g : Formalism.L2.Theta.GA D W) :
     thIn om fV νV 𝓕V φ (c • F) g = c * thIn om fV νV 𝓕V φ F g := by
   unfold thIn
@@ -101,6 +128,13 @@ theorem thIn_smulF (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (c : ℂ) (F : Fm) (
   funext h
   simp [thetaKO_smul]
 
+/- English proof (translation)
+Use `⟨fun F g => ?_, fun F y => ?_⟩` and prove the remaining obligations. Establish `e : (fun h => thetaKO om h g ((φ + φ') (fV F h))) = (fun h => thetaKO om h g (φ (fV F h))) + (fun h => thetaKO om h g (φ' (fV F h)))`. Use function extensionality and compare the values at `h`. Simplify using `only [LinearMap.add_apply, Pi.add_apply, thetaKO_add]`. Rewrite using `[e]`.
+
+Conclude with `(hφ.1 F g).add (hφ'.1 F g)`. Establish `e : (fun g => star (yv y g) * thIn om fV νV 𝓕V (φ + φ') F g) = (fun g => star (yv y g) * thIn om fV νV 𝓕V φ F g) + (fun g => star (yv y g) * thIn om fV νV 𝓕V φ' F g)`. Use function extensionality and compare the values at `g`. Rewrite using `[thIn_add om fV yv νV 𝓕V νW 𝓕W hφ hφ', Pi.add_apply, mul_add]`. Rewrite using `[e]`.
+
+Conclude with `(hφ.2 F y).add (hφ'.2 F y)`.
+-/
 theorem good_add {φ φ' : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ)
     (hφ' : Good om fV yv νV 𝓕V νW 𝓕W φ') : Good om fV yv νV 𝓕V νW 𝓕W (φ + φ') := by
   refine ⟨fun F g => ?_, fun F y => ?_⟩
@@ -114,6 +148,13 @@ theorem good_add {φ φ' : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV 
       funext g; rw [thIn_add om fV yv νV 𝓕V νW 𝓕W hφ hφ', Pi.add_apply, mul_add]
     rw [e]; exact (hφ.2 F y).add (hφ'.2 F y)
 
+/- English proof (translation)
+Use `⟨fun F g => ?_, fun F y => ?_⟩` and prove the remaining obligations. Establish `e : (fun h => thetaKO om h g ((c • φ) (fV F h))) = (fun h => c * thetaKO om h g (φ (fV F h)))`. Use function extensionality and compare the values at `h`. Simplify using `only [LinearMap.smul_apply, thetaKO_smul]`. Rewrite using `[e]`.
+
+Conclude with `(hφ.1 F g).const_mul c`. Establish `e : (fun g => star (yv y g) * thIn om fV νV 𝓕V (c • φ) F g) = (fun g => c * (star (yv y g) * thIn om fV νV 𝓕V φ F g))`. Use function extensionality and compare the values at `g`. Rewrite using `[thIn_smul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `(hφ.2 F y).const_mul c`.
+-/
 theorem good_smul (c : ℂ) {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ) :
     Good om fV yv νV 𝓕V νW 𝓕W (c • φ) := by
   refine ⟨fun F g => ?_, fun F y => ?_⟩
@@ -126,6 +167,13 @@ theorem good_smul (c : ℂ) {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good
       funext g; rw [thIn_smul]; ring
     rw [e]; exact (hφ.2 F y).const_mul c
 
+/- English proof (translation)
+Establish `h0 : ∀ F g, thIn om fV νV 𝓕V (0 : TauV →ₗ[ℂ] (WO V W → ℂ)) F g = 0`. Introduce `F g`. Use `thIn_smul om fV νV 𝓕V 0 (0 : TauV →ₗ[ℂ] (WO V W → ℂ)) F g` as an intermediate fact. Simplify using `using this`. Use `⟨fun F g => ?_, fun F y => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (fun h => thetaKO om h g ((0 : TauV →ₗ[ℂ] (WO V W → ℂ)) (fV F h))) = fun _ => 0`. Use function extensionality and compare the values at `h`. Simplify using `using thetaKO_smul om h g 0 0`. Rewrite using `[e]`. Conclude with `integrableOn_zero`.
+
+Simplify using `only [h0, mul_zero]`. Conclude with `integrableOn_zero`.
+-/
 theorem good_zero : Good om fV yv νV 𝓕V νW 𝓕W (0 : TauV →ₗ[ℂ] (WO V W → ℂ)) := by
   have h0 : ∀ F g, thIn om fV νV 𝓕V (0 : TauV →ₗ[ℂ] (WO V W → ℂ)) F g = 0 := by
     intro F g
@@ -162,6 +210,9 @@ def OmSub : Submodule ℂ (TauV →ₗ[ℂ] (WO V W → ℂ)) where
       exact Formalism.IndefR.Fock.CCR.theta_smul ((hφ p).1 v) c,
       good_smul om fV yv νV 𝓕V νW 𝓕W c (hφ p).2⟩
 
+/- English proof (translation)
+Introduce `p`. Establish `: valAct1 ω p (valAct1 ω q φ) = valAct1 ω (p * q) φ` using `by rw [map_mul, Module.End.mul_apply]`. Rewrite using `[this]`. Conclude with `hφ (p * q)`.
+-/
 theorem valAct_mem {φ} (hφ : φ ∈ OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω) (q : G) :
     valAct1 ω q φ ∈ OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω := by
   intro p
@@ -173,10 +224,16 @@ def omSub : G →* Module.End ℂ ↥(OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω) 
   map_one' := by ext φ : 1; apply Subtype.ext; simp
   map_mul' p q := by ext φ : 1; apply Subtype.ext; simp [map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omSub_apply (q : G) (φ : ↥(OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω)) :
     ((omSub om fV yv νV 𝓕V νW 𝓕W ψ ω q φ : ↥(OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω)) :
       TauV →ₗ[ℂ] (WO V W → ℂ)) = valAct1 ω q φ := rfl
 
+/- English proof (translation)
+Simplify using `using (hφ 1).2`.
+-/
 theorem good_of_mem {φ} (hφ : φ ∈ OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω) : Good om fV yv νV 𝓕V νW 𝓕W φ := by
   simpa using (hφ 1).2
 
@@ -202,6 +259,9 @@ def lamV (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (F : Fm) (y : C) : ℂ :=
   c * ∫ g in 𝓕W, star (yv y g) * thIn om fV νV 𝓕V φ F g ∂νW
 
 variable {om fV yv νV 𝓕V νW 𝓕W} in
+/- English proof (translation)
+Unfold `lamV`. Rewrite using `[← mul_add, ← integral_add (hφ.2 F y) (hφ'.2 F y)]`. Use `congr 2`. Use function extensionality and compare the values at `g`. Rewrite using `[thIn_add om fV yv νV 𝓕V νW 𝓕W hφ hφ', mul_add]`.
+-/
 theorem lamV_addφ {φ φ' : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ)
     (hφ' : Good om fV yv νV 𝓕V νW 𝓕W φ') (F : Fm) (y : C) :
     lamV om fV yv νV 𝓕V νW 𝓕W c (φ + φ') F y =
@@ -212,6 +272,11 @@ theorem lamV_addφ {φ φ' : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om f
   funext g
   rw [thIn_add om fV yv νV 𝓕V νW 𝓕W hφ hφ', mul_add]
 
+/- English proof (translation)
+Unfold `lamV`. Establish `e : (fun g => star (yv y g) * thIn om fV νV 𝓕V (a • φ) F g) = fun g => a * (star (yv y g) * thIn om fV νV 𝓕V φ F g)`. Use function extensionality and compare the values at `g`. Rewrite using `[thIn_smul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamV_smulφ (a : ℂ) (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (F : Fm) (y : C) :
     lamV om fV yv νV 𝓕V νW 𝓕W c (a • φ) F y = a * lamV om fV yv νV 𝓕V νW 𝓕W c φ F y := by
   unfold lamV
@@ -221,6 +286,9 @@ theorem lamV_smulφ (a : ℂ) (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (F : Fm) 
   rw [e, integral_const_mul]; ring
 
 variable {om fV yv νV 𝓕V νW 𝓕W} in
+/- English proof (translation)
+Unfold `lamV`. Rewrite using `[← mul_add, ← integral_add (hφ.2 F y) (hφ.2 F' y)]`. Use `congr 2`. Use function extensionality and compare the values at `g`. Rewrite using `[thIn_addF om fV yv νV 𝓕V νW 𝓕W hφ, mul_add]`.
+-/
 theorem lamV_addF {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ) (F F' : Fm)
     (y : C) :
     lamV om fV yv νV 𝓕V νW 𝓕W c φ (F + F') y =
@@ -231,6 +299,11 @@ theorem lamV_addF {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv 
   funext g
   rw [thIn_addF om fV yv νV 𝓕V νW 𝓕W hφ, mul_add]
 
+/- English proof (translation)
+Unfold `lamV`. Establish `e : (fun g => star (yv y g) * thIn om fV νV 𝓕V φ (a • F) g) = fun g => a * (star (yv y g) * thIn om fV νV 𝓕V φ F g)`. Use function extensionality and compare the values at `g`. Rewrite using `[thIn_smulF]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamV_smulF (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (a : ℂ) (F : Fm) (y : C) :
     lamV om fV yv νV 𝓕V νW 𝓕W c φ (a • F) y = a * lamV om fV yv νV 𝓕V νW 𝓕W c φ F y := by
   unfold lamV
@@ -240,6 +313,9 @@ theorem lamV_smulF (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (a : ℂ) (F : Fm) (
   rw [e, integral_const_mul]; ring
 
 variable {om fV yv νV 𝓕V νW 𝓕W} in
+/- English proof (translation)
+Unfold `lamV`. Rewrite using `[← mul_add, ← integral_add (hφ.2 F y) (hφ.2 F y')]`. Use `congr 2`. Use function extensionality and compare the values at `g`. Simplify using `only [map_add, Pi.add_apply, star_add, add_mul]`.
+-/
 theorem lamV_addY {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv νV 𝓕V νW 𝓕W φ) (F : Fm)
     (y y' : C) :
     lamV om fV yv νV 𝓕V νW 𝓕W c φ F (y + y') =
@@ -250,6 +326,11 @@ theorem lamV_addY {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφ : Good om fV yv 
   funext g
   simp only [map_add, Pi.add_apply, star_add, add_mul]
 
+/- English proof (translation)
+Unfold `lamV`. Establish `e : (fun g => star (yv (a • y) g) * thIn om fV νV 𝓕V φ F g) = fun g => starRingEnd ℂ a * (star (yv y g) * thIn om fV νV 𝓕V φ F g)`. Use function extensionality and compare the values at `g`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, star_mul', Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamV_smulY (φ : TauV →ₗ[ℂ] (WO V W → ℂ)) (F : Fm) (a : ℂ) (y : C) :
     lamV om fV yv νV 𝓕V νW 𝓕W c φ F (a • y) = starRingEnd ℂ a * lamV om fV yv νV 𝓕V νW 𝓕W c φ F y := by
   unfold lamV
@@ -365,6 +446,11 @@ open MeasureTheory Formalism.IndefR.Datum GlobalTheory.ThetaLoc
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n r : ℕ}
 
+/- English proof (translation)
+Establish `hle : (⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] Θ) (_ : IsLinAt ω₁ s μ η ι ∧ ∀ Φ, P (ι Φ)), LinearMap.range ι).map T ≤ ⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] Ω) (_ : IsLinAt ω₂ s μ η ι ∧ …`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun ι => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun hι => ?_` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.range_comp]`. Conclude with `le_iSup₂_of_le (T ∘ₗ ι) ⟨isLinAt_comp ω₁ ω₂ P T hT s μ η ι hι.2 hι.1, fun Φ => hTQ _ (hι.2 Φ)⟩ le_rfl`. Conclude with `hle (Submodule.mem_map_of_mem hf)`.
+-/
 theorem map_mem_iSup_isLinAt' {Θ Ω : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup Ω] [Module ℂ Ω]
     (ω₁ : GAf E n × GAf E r →* Module.End ℂ Θ) (ω₂ : GAf E n × GAf E r →* Module.End ℂ Ω)
     (P : Θ → Prop) (Q : Ω → Prop) (T : Θ →ₗ[ℂ] Ω) (hT : ∀ p f, P f → T (ω₁ p f) = ω₂ p (T f))
@@ -385,6 +471,9 @@ theorem map_mem_iSup_isLinAt' {Θ Ω : Type} [AddCommGroup Θ] [Module ℂ Θ] [
     exact le_iSup₂_of_le (T ∘ₗ ι) ⟨isLinAt_comp ω₁ ω₂ P T hT s μ η ι hι.2 hι.1, fun Φ => hTQ _ (hι.2 Φ)⟩ le_rfl
   exact hle (Submodule.mem_map_of_mem hf)
 
+/- English proof (translation)
+Set `bB` to `Module.finBasis ℂ B`. Rewrite using `[eq_sum_single1 bB φ]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Conclude with `map_mem_iSup_isLinAt' ω (valAct1 ω) P Q (single1 (bB.coord l)) (fun p f _ => single1_valAct1 ω _ p f) (fun f hf => hQ _ f hf) s μ η (hφ _)`.
+-/
 theorem mem_iSup_isLinAt_lin' {Θ B : Type} [AddCommGroup Θ] [Module ℂ Θ] [AddCommGroup B] [Module ℂ B]
     [FiniteDimensional ℂ B] (ω : GAf E n × GAf E r →* Module.End ℂ Θ) (P : Θ → Prop) (Q : (B →ₗ[ℂ] Θ) → Prop)
     (hQ : ∀ β f, P f → Q (single1 β f))
@@ -408,6 +497,15 @@ variable {D : D7} {V W : Formalism.BasicNotions.TH.HSp D}
   (𝓕W : Set (Formalism.L2.Theta.GA D W)) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ)
   (ω : GAf E n × GAf E r →* Module.End ℂ (WO V W → ℂ))
 
+/- English proof (translation)
+Use `set S := OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω`. Use `set N := ⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] ↥S) (_ : IsLinAt (omSub om fV yv νV 𝓕V νW 𝓕W ψ ω) s μ η ι), LinearMap.range ι`. Establish `hle : (⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] (TauV →ₗ[ℂ] (WO V W → ℂ))) (_ : IsLinAt (valAct1 ω) s μ η ι ∧ ∀ Φ, ι Φ ∈ S), LinearMap.range ι) ≤ N.map S.subtype`. Use `iSup_le fun ι => iSup_le fun hι => ?_` and prove the remaining obligations. Set `ι'` to `ι.codRestrict S hι.2`.
+
+Establish `hι' : IsLinAt (omSub om fV yv νV 𝓕V νW 𝓕W ψ ω) s μ η ι'`. Take `⟨c, hc, hc', h⟩` from `hι.1`. Use `⟨c, hc, hc', fun h₁ g₁ hh hg Φ Φ' hΦ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [omSub_apply, SetLike.val_smul]`.
+
+Conclude with `h h₁ g₁ hh hg Φ Φ' hΦ`. Establish `: LinearMap.range ι = (LinearMap.range ι').map S.subtype`. Rewrite using `[← LinearMap.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `Submodule.map_mono (le_iSup₂_of_le ι' hι' le_rfl)`. Take `⟨x, hx, hxφ⟩` from `Submodule.mem_map.1 (hle hφ)`. Establish `: x = ⟨φ, hφS⟩` using `Subtype.ext hxφ`. Rewrite using `[← this]`. Conclude with `hx`.
+-/
 theorem mem_iSup_isLinAt_omSub (s : SplitPlace E) (μ η : (s.w.adicCompletion E)ˣ →* ℂˣ)
     {φ : TauV →ₗ[ℂ] (WO V W → ℂ)} (hφS : φ ∈ OmSub om fV yv νV 𝓕V νW 𝓕W ψ ω)
     (hφ : φ ∈ ⨆ (ι : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin r) (s.w.adicCompletion E)) →ₗ[ℂ] (TauV →ₗ[ℂ] (WO V W → ℂ)))

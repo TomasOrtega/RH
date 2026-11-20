@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnipCTLevi.constantTerm_levi | exact GlobalTheory.UnipCTLevi.constantTerm_levi | (intros; apply GlobalTheory.UnipCTLevi.constantTerm_levi <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.parabolic_unfolding_rational_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁) (f : UA σ Y.J → ℂ),
     (∀ γ ∈ ratU σ Y.J, ∀ x, f (γ * x) = f x) → ∀ (γ : UA σ Y₁.J) (m₀ : UA σ Y.J), m₀ ∈ ratU σ Y.J →

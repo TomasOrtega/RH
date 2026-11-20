@@ -35,6 +35,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   (Rl : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) {S : RatDat D.ntw}
   (YS : NExpRealS Rl cG S) (H : NExpRealH Rl cG S YS)
 
+/- English proof (translation)
+Take `⟨α, Rc, ha, hRc⟩` from `GlobalTheory.HeckeSupSt.exists_heckeElt hR.lev hR.fam i' hso hkr`. Establish `hd : GlobalTheory.IndefiniteRowSideFullHecke.LatticesOverBalls.IsHkData Rl.toRealDat i' P k α Rc` using `⟨hso, hg, hkr, ha, hRc⟩`. Set `hL' : (Fin (Rl.nW i') → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (Rl.nW i') → D.what₂.LL)` to `(YS.fi i').e.toLinearMap ∘ₗ H.hL ((i' : ℕ) + 1) k P ∘ₗ (YS.fi i').e.symm.toLinearMap`. Establish `hH : Formalism.L2.Pj.HeckeJ.IsHkJ (sg0 D A3.A) ((Rl.FW i').j (sg0 D A3.A)) (Rl.HW i' (sg0 D A3.A)).e (heckeOn (Rl.MW i' (sg0 D A3.A)) Rc) ((((Rl.C.mu0 i').val P : ℂˣ) : ℂ)⁻¹ ^ k * (((Nat.card (Formalism.L2.DIV.kP P) : ℕ) : ℂ) ^ (k * (D.R.nV / 2)))⁻¹) hL'`. Introduce `y`.
+
+Establish `h` using `hX.tie i' k P hsp hso hi h2 hkr α Rc ha hRc ((YS.fi i').e.symm y) rfl`. Simplify using `only [hL', LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h ⊢`. Conclude with `h`. Establish `hc` using `GlobalTheory.HeckeSup.comm_rho_cl (hR.lev.βW i') hR.fam.Sb hR.models.HW hR.models.gW (sg0 D A3.A) hd (GlobalTheory.ExportPin.Model.j_injective Rl hU i' _) (hU i' (sg0 D A3.A)).2.2 hH ((YS.fi i').eG g)`. Apply `(YS.fi i').e.injective` to reduce the goal to its premises.
+
+Establish `h` using `LinearMap.congr_fun hc ((YS.fi i').e x)`. Simplify using `only [hL', LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at h`. Rewrite using `[(YS.fi i').rho, ← h, ← (YS.fi i').rho, LinearEquiv.symm_apply_apply]`.
+-/
 theorem hL_comm_raw (hR : Rl.Char3 F) (hU : Rl.toRealDat.LUnif)
     (hX : NExpHeckeRowX Rl cG S YS H fun _ => LinearMap.id) (i' : Fin D.R.m) (k : ℕ) (P : PlE D.host)
     (hsp : IsSplitPl D.host P) (hso : Bridge.SplitOff P (Rl.Sb : Set (Pl D.host.E))) (hi : ∃ i, P ∉ D.ntw.S0 i)
@@ -60,6 +67,25 @@ theorem hL_comm_raw (hR : Rl.Char3 F) (hU : Rl.toRealDat.LUnif)
   simp only [hL', LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at h
   rw [(YS.fi i').rho, ← h, ← (YS.fi i').rho, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Establish `hidx : ∀ j, 1 ≤ j → j ≤ D.R.m → ∃ i' : Fin D.R.m, (i' : ℕ) + 1 = j` using `fun j h1 h2 => ⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j hj b k P hk g x`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i', rfl⟩` from `hidx j h1 h2`.
+
+Take `⟨-, hkr, hsp, hS0⟩` from `hk`. Take `⟨-, -, -, -, hso, -, h2P, -⟩` from `GlobalTheory.ConjPlaceOff.exists_conj_off D (D.ntw.S0 i) Rl.Sb P (hS0c i) (hS02 i) (hS0b i) hsp hS0`. Establish `hg : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Introduce `h`. Rewrite `h` using `[Nat.cast_mul]`.
+
+Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `hS0 (D.ntw.placesOver_subset_exceptional i 0 h)`. Conclude with `hS0 (D.ntw.placesOver_subset_exceptional i 1 h)`. Establish `hc` using `hL_comm_raw Rl F cG YS H hR hU hX i' k P hsp hso ⟨i, hS0⟩ h2P hg hkr`. Use `(YS.eF i _ b h1 h2).injective ?_` and prove the remaining obligations.
+
+Rewrite using `[YS.act, H.hkEq i _ b h1 h2 k P _ hS0 hsp hkr, H.hkEq i _ b h1 h2 k P _ hS0 hsp hkr, YS.act, map_smul, hkFR_act S i _ b (H.hL _) (H.hs _ h1 h2) k P (YS.rho _ h1 h2) (YS.chi _ h1 h2) hc]`. Introduce `i j hj b`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i', rfl⟩` from `hidx j h1 h2`. Establish `hF` using `iso_span (YS.fi i') (hI i').2.1.2`.
+
+Establish `hB` using `Bsup_span S i ((i' : ℕ) + 1) b hF`. Take `⟨c, hc0, -, hc2⟩` from `YS.bsup i ((i' : ℕ) + 1) b h1 h2`. Set `e` to `YS.eF i ((i' : ℕ) + 1) b h1 h2`. Establish `hc0' : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) c ≠ 0`. Introduce `h0`.
+
+Apply `hc0` to reduce the goal to its premises. Apply `IsFractionRing.injective (D.ntw.O i) (FractionRing (D.ntw.O i))` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Establish `hle : Submodule.span (FractionRing (D.ntw.O i)) (Bsup S i ((i' : ℕ) + 1) b : Set (Fm S i ((i' : ℕ) + 1) b)) ≤ (Submodule.span (FractionRing (D.ntw.O i)) (D.nexp.Bsup i ((i' : ℕ) + 1) b : Set (D.nexp.Fm i ((i' : ℕ) + 1) b))).comap e.symm.toLinearMap`. Use `Submodule.span_le.2 fun z hz => ?_` and prove the remaining obligations.
+
+Establish `hm : c • e.symm z ∈ D.nexp.Bsup i ((i' : ℕ) + 1) b` using `hc2 _ (by simpa [e] using hz)`. Establish `hm' : algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) c • e.symm z ∈ Submodule.span (FractionRing (D.ntw.O i)) (D.nexp.Bsup i ((i' : ℕ) + 1) b : Set (D.nexp.Fm i ((i' : ℕ) + 1) b))`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.subset_span hm`. Use `Submodule.smul_mem _ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)) c)⁻¹ hm'` as an intermediate fact.
+
+Rewrite `this` using `[inv_smul_smul₀ hc0']`. Conclude with `this`. Use `eq_top_iff.2 fun t _ => ?_` and prove the remaining obligations. Establish `ht : e t ∈ Submodule.span (FractionRing (D.ntw.O i)) (Bsup S i ((i' : ℕ) + 1) b : Set (Fm S i ((i' : ℕ) + 1) b))`. Rewrite using `[hB]`.
+
+Conclude with `Submodule.mem_top`. Use `hle ht` as an intermediate fact. Simplify using `using this`.
+-/
 theorem commAll_fullAll_raw (hR : Rl.Char3 F) (hU : Rl.toRealDat.LUnif) (hI : Rl.toRealDat.LIntegral)
     (hX : NExpHeckeRowX Rl cG S YS H fun _ => LinearMap.id)
     (hS0c : ∀ i P P', P ∈ D.ntw.S0 i → IsConjPl D.host P P' → P' ∈ D.ntw.S0 i)
@@ -115,6 +141,11 @@ theorem commAll_fullAll_raw (hR : Rl.Char3 F) (hU : Rl.toRealDat.LUnif) (hI : Rl
 
 end Raw
 
+/- English proof (translation)
+Introduce `_ _ hL`. Use `⟨1, one_pos, fun eps C8 C5 c6 Cb _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => ?_⟩` and prove the remaining obligations. Introduce `_ w Z Wt p0 t nch n xd c ⟨e⟩ _ _`. Establish `hS0b : ∀ i, ∀ Q ∈ t.r.z.R.Sb, Q ∈ (w.st Z).toD7.ntw.S0 i`.
+
+Introduce `i P hP`. Establish `hA : t.r.z.R.Sb = t.r.z.R.Pg` using `t.r.z.pins.char.allPl`. Take `⟨k, hk⟩` from `e.ser.ex.good.Pg i ⟨0, lt_of_lt_of_le two_pos B.R.two_le_m⟩ true P (by rw [e.ser.ex.pin.Pg]; exact hA ▸ hP)`. Conclude with `(w.st Z).toD7.ntw.placesOver_subset_exceptional i k hk`. Conclude with `commAll_fullAll_raw (D := (w.st Z).toD7) t.r.z.R t.r.z.F t.r.z.cG c.row.nexp c.row.hecke (RealDat3.characterisation_of_weak t.r.z.pins.char t.exAt) t.r.intersectionNumber_baseChange.prim.unif t.r.intersectionNumber_baseChange.aux.integral e.hecke (fun i P P' hP hc => e.ser.ex.goo …`.
+-/
 theorem commAll_fullAll_layer : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c =>
     GlobalTheory.TwInputs.CommAll (w.D Z) ∧ GlobalTheory.TwInputs.FullAll (w.D Z) := by
   intro _ _ hL

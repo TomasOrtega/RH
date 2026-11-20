@@ -17,14 +17,23 @@ namespace GlobalTheory.AnnConjHalf
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem symplO_add_right' (S T : HSp D) (x u v : WO S T) :
     symplO S T x (u + v) = symplO S T x u + symplO S T x v := by
   simp only [symplO, hO, Matrix.add_apply, map_add, mul_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.neg_apply, map_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem symplO_neg_right' (S T : HSp D) (x u : WO S T) :
     symplO S T x (-u) = -symplO S T x u := by
   simp only [symplO, hO, Matrix.neg_apply, map_neg, mul_neg, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [symplO, hO, Matrix.zero_apply, map_zero, mul_zero, zero_mul, Finset.sum_const_zero]`.
+-/
 theorem symplO_zero_right' (S T : HSp D) (x : WO S T) : symplO S T x 0 = 0 := by
   simp only [symplO, hO, Matrix.zero_apply, map_zero, mul_zero, zero_mul, Finset.sum_const_zero]
 
@@ -50,9 +59,19 @@ def stdHalf (S T : HSp D) (f : AE D) : AddSubgroup (WO S T) where
     rintro u ⟨hu, hu'⟩
     exact ⟨neg_mem hu, fun i j => by rw [Matrix.neg_apply, mul_neg, hu' i j]⟩
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hu i j]`.
+-/
 theorem half_nsmul {m n : ℕ} {f : AE D} {u : Mx D m n} (hu : IsHalf f u) (N : ℕ) : IsHalf f (N • u) :=
   fun i j => by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hu i j]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij : N • v i j = 0`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply]`. Then use the resulting hypothesis. Establish `hF : (N : D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`.
+
+Establish `hu : IsUnit ((N : ℕ) : AE D)`. Use `(isUnit_iff_ne_zero.2 hF).map (algebraMap D.host.F (AE D))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Rewrite `hij` using `[nsmul_eq_mul]`. Rewrite using `[Matrix.zero_apply]`.
+
+Conclude with `(hu.mul_right_eq_zero).1 hij`.
+-/
 theorem nsmul_eq_zero_WO (S T : HSp D) {N : ℕ} (hN : 0 < N) (v : WO S T) (h : N • v = 0) : v = 0 := by
   ext i j
   have hij : N • v i j = 0 := by
@@ -66,6 +85,15 @@ theorem nsmul_eq_zero_WO (S T : HSp D) {N : ℕ} (hN : 0 < N) (v : WO S T) (h : 
   rw [Matrix.zero_apply]
   exact (hu.mul_right_eq_zero).1 hij
 
+/- English proof (translation)
+Introduce `D ψ hψ S T Q E₂ hE k hk`. Take `⟨N, hN, hup⟩` from `GlobalTheory.T.exists_nsmul_annihilator_half_mem_standardHom D ψ hψ S T Q E₂ hE`. Take `⟨M, hM, hlow⟩` from `GlobalTheory.StdHomOrth.exists_nsmul_orth D ψ hψ S T`. Take `⟨Q', hQ'⟩` from `GlobalTheory.T.exists_isIdemSum_conj_of_isIdemSum D Q E₂ hE`. Establish `hAL : ∀ a ∈ annHalf ψ S T E₂, N • a ∈ stdHalf S T (cA D E₂)` using `fun a ha => ⟨hup a ha.1 ha.2, half_nsmul ha.1 N⟩`.
+
+Establish `hLA : ∀ l ∈ stdHalf S T (cA D E₂), M • l ∈ annHalf ψ S T E₂` using `fun l hl => ⟨half_nsmul hl.2 M, fun x hx _ => hlow x hx l hl.1⟩`. Establish `hfin : ∀ j : ℕ, 0 < j → ∃ R : Finset (WO S T), ∀ u ∈ stdHalf S T (cA D E₂), ∃ r ∈ R, ∃ v ∈ stdHalf S T (cA D E₂), u = r + j • v`. Introduce `j hj`. Take `⟨R, hR⟩` from `GlobalTheory.HalfStdFin.exists_reps_half_stdHom D S T Q' (cA D E₂) hQ' j hj`. Use `⟨R, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, hr, v, hv, hvh, huv⟩` from `hR u hu.1 hu.2`. Conclude with `⟨r, hr, v, ⟨hv, hvh⟩, huv⟩`. Take `⟨R, hR⟩` from `GlobalTheory.addSubgroup_finite_quot_of_commensurable (WO S T) (annHalf ψ S T E₂) (stdHalf S T (cA D E₂)) N M hN hM (nsmul_eq_zero_WO S T hN) hAL hLA hfin k hk`. Use `⟨R, fun u hu hann => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, v, hv, huv⟩` from `hR u ⟨hu, hann⟩`.
+
+Conclude with `⟨r, hr, v, hv.1, hv.2, huv⟩`.
+-/
 theorem ann_conj_half_finite : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (E₂ : AE D), IsIdemSum E₂ Q → ∀ k : ℕ, 0 < k → ∃ R : Finset (WO S T), ∀ u : WO S T, IsHalf (cA D E₂) u → (∀ x ∈ stdHom S T, IsHalf E₂ x → ψ (symplO S T x u) = 1) → ∃ r ∈ R, ∃ v : WO S T, IsHalf (cA D E₂) v ∧ (∀ x ∈ stdHom S T, IsHalf E₂ x → ψ (symplO S T x v) = 1) ∧ u = r + k • v := by
   intro D ψ hψ S T Q E₂ hE k hk
   obtain ⟨N, hN, hup⟩ := GlobalTheory.T.exists_nsmul_annihilator_half_mem_standardHom D ψ hψ S T Q E₂ hE

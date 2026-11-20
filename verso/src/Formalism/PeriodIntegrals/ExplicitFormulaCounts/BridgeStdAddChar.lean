@@ -5,6 +5,17 @@ open NumberField
 
 namespace PI.Bridge
 
+/- English proof (translation)
+Establish `h` using `stdCharTR`. Unfold `PI.StdCharTR.Target at h`. Unfold `HeckeCharacterZeroLocus.StdAdditiveCharExists`. Introduce `F _ _ hF`. Take `⟨ψ, hψ, hinf⟩` from `h F hF`.
+
+Unfold `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF at hψ`. Take `⟨hc, hn, hk, x₀, hx₀⟩` from `hψ`. Use `⟨ψ.compAddMonoidHom (-(AddMonoidHom.id _)), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous (fun x => ψ (-x))`. Conclude with `hc.comp continuous_neg`.
+
+Introduce `x`. Express the relevant statement in the definitionally equal form `‖ψ (-x)‖ = 1`. Conclude with `hn _`. Introduce `a`. Express the relevant statement in the definitionally equal form `ψ (-(algebraMap F _ a)) = 1`.
+
+Rewrite using `[← map_neg]`. Conclude with `hk (-a)`. Use `⟨-x₀, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (- -x₀) ≠ 1`. Rewrite using `[neg_neg]`.
+
+Conclude with `hx₀`. Introduce `x`. Express the relevant statement in the definitionally equal form `ψ (-_) = _`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.exp_neg, ← hinf x]`. Both sides reduce to the same expression.
+-/
 theorem bridge_stdAddChar : HeckeCharacterZeroLocus.StdAdditiveCharExists := by
   have h := stdCharTR
   unfold PI.StdCharTR.Target at h

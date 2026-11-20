@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Introduce `hP K Ct hCt ψ`. Take `⟨C, r₁, r₂, hr₁, hr₂, hmain⟩` from `hP ψ (fun l => Nat.log l (K.Rl l (Lchi ψ l)) + 3)`. Use `⟨(C : ℝ), r₁, r₂, hr₁, hr₂, ?_⟩` and prove the remaining obligations. Introduce `eps A1 heps _`. Establish `hJ : 0 < Jchi K Ct eps ψ` using `BConst.J_pos K hCt heps _ _ _`.
+
+Use `⟨(2 : ℝ) ^ Jchi K Ct eps ψ, ?_⟩` and prove the remaining obligations. Introduce `e t hadm X hX q d hpair hq hd hlist _ Y hwin x hYx hxY`. Take `⟨⟨hXY, hYX⟩, hwin'⟩` from `hwin`. Establish `hXY' : X ^ (1 / Jchi K Ct eps ψ) ≤ Y` using `hXY`. Establish `h1 : ((2 : ℝ) ^ Jchi K Ct eps ψ) ^ (1 / Jchi K Ct eps ψ) ≤ X ^ (1 / Jchi K Ct eps ψ)` using `Real.rpow_le_rpow (by positivity) hX (by positivity)`.
+
+Rewrite `h1` using `[one_div, Real.rpow_rpow_inv (by norm_num) hJ.ne']`. Rewrite `hXY'` using `[one_div]`. Establish `hx2 : (2 : ℝ) ≤ x` using `by linarith`. Take `⟨he2, -, ht2, htx⟩` from `hadm x hx2`. Establish `hxX : x ≤ X` using `le_trans hxY hYX`.
+
+Establish `htX : (t x : ℝ) ≤ X ^ Ct` using `le_trans htx (Real.rpow_le_rpow (by linarith) hxX hCt.le)`. Introduce `E _ _ _ hE`. Establish `hB` using `hwin' x hYx hxY`. Establish `hq' : 2 * t x + 1 < q` using `by exact_mod_cast (show (2 * (t x : ℝ) + 1) < q by linarith)`. Establish `hd' : 2 * t x + 1 < d` using `by exact_mod_cast (show (2 * (t x : ℝ) + 1) < d by linarith)`.
+
+Establish `hbig : Host.Big ⟨ψ, e x, q, d, he2, hpair⟩ (t x)`. Use `⟨hq', hd', ?_⟩` and prove the remaining obligations. Introduce `y hy`. Apply `hlist y` to reduce the goal to its premises. Simplify using `only [Host.q, Host.o, List.mem_cons, List.not_mem_nil] at hy ⊢`.
+
+The claim follows by propositional logic. Establish `key` using `hmain ⟨ψ, e x, q, d, he2, hpair⟩ rfl (hlist r₁ (by simp)).1 (hlist r₁ (by simp)).2 (hlist r₂ (by simp)).1 (hlist r₂ (by simp)).2 (t x) ht2 hbig (Real.exp (x ^ (4 * eps / 5))) (Real.exp_pos _).le (fun l hl _ => hB.2 l hl) E hE`. Rewrite using `[hostCond ⟨ψ, e x, q, d, he2, hpair⟩ E hE]`. Simplify `key` using `[Real.rpow_natCast]`.
+-/
 theorem UpperTheory.V.HV.thmHV :
     PointHV → ∀ (K : BConst) (Ct : ℝ), 0 < Ct → ThmHV K Ct := by
   intro hP K Ct hCt ψ

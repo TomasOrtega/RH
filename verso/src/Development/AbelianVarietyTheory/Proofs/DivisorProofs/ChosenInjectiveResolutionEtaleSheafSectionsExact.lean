@@ -8,6 +8,11 @@ namespace GlobalTheory.EtC
 abbrev secEvalFun (R : Type) [CommRing R] (U : Scheme.{0}) : Shv R ⥤ ModuleCat.{1} (ULift.{1} R) :=
   sheafToPresheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)) ⋙ (evaluation _ _).obj (op U)
 
+/- English proof (translation)
+Use `set I := injectiveResolution F`. Establish `hlim` using `KernelFork.mapIsLimit _ I.isLimitKernelFork (secEvalFun R U)`. Set `S : ShortComplex (ModuleCat.{1} (ULift.{1} R))` to `ShortComplex.mk ((secEvalFun R U).map (I.ι.f 0)) ((secEvalFun R U).map (I.cocomplex.d 0 1)) (by rw [← Functor.map_comp, I.ι_f_zero_comp_complex_d, Functor.map_zero])`. Establish `hS : S.Exact` using `S.exact_of_f_is_kernel hlim`. Use `⟨fun w hw => (ShortComplex.moduleCat_exact_iff S).1 hS w hw, ?_⟩` and prove the remaining obligations.
+
+Establish `: Mono ((secEvalFun R U).map (I.ι.f 0))` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 this`.
+-/
 theorem injectiveResolution_sections_degree_zero_kernel (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) :
     (∀ w : Sec ((injectiveResolution F).cocomplex.X 0) U,
       Sec.map ((injectiveResolution F).cocomplex.d 0 1) w = 0 →
@@ -23,21 +28,53 @@ theorem injectiveResolution_sections_degree_zero_kernel (R : Type) [CommRing R] 
   have : Mono ((secEvalFun R U).map (I.ι.f 0)) := inferInstance
   exact (ModuleCat.mono_iff_injective _).1 this
 
+/- English proof (translation)
+Simplify using `[resι, InjectiveResolution.ι'_f_zero]`. Both sides reduce to the same expression.
+-/
 theorem chosenInjectiveResolutionAugmentation_eq_iota_comp (R : Type) [CommRing R] (F : Shv R) :
     resι R F = (injectiveResolution F).ι.f 0 ≫ ((injectiveResolution F).cochainComplexXIso 0 0 rfl).inv := by
   simp [resι, InjectiveResolution.ι'_f_zero]
   rfl
 
+/- English proof (translation)
+The claim follows from `InjectiveResolution.cochainComplex_d _ 0 1 0 1 rfl rfl`.
+-/
 theorem chosenInjectiveResolutionEtaleSheaf_d_zero_one_eq (R : Type) [CommRing R] (F : Shv R) :
     (res R F).d 0 1 = ((injectiveResolution F).cochainComplexXIso 0 0 rfl).hom ≫
       (injectiveResolution F).cocomplex.d 0 1 ≫ ((injectiveResolution F).cochainComplexXIso 1 1 rfl).inv :=
   InjectiveResolution.cochainComplex_d _ 0 1 0 1 rfl rfl
 
+/- English proof (translation)
+Establish `h : ((CochainComplex.singleFunctor (Shv R) 0).obj F).ExactAt n` using `HomologicalComplex.exactAt_single_obj (ComplexShape.up ℤ) 0 F n hn`. Conclude with `(quasiIsoAt_iff_exactAt (injectiveResolution F).ι' n h).1 inferInstance`.
+-/
 theorem chosenInjectiveResolutionEtaleSheaf_exactAt_ne_zero (R : Type) [CommRing R] (F : Shv R) (n : ℤ) (hn : n ≠ 0) : (res R F).ExactAt n := by
   have h : ((CochainComplex.singleFunctor (Shv R) 0).obj F).ExactAt n :=
     HomologicalComplex.exactAt_single_obj (ComplexShape.up ℤ) 0 F n hn
   exact (quasiIsoAt_iff_exactAt (injectiveResolution F).ι' n h).1 inferInstance
 
+/- English proof (translation)
+Take `⟨hker, hinj⟩` from `injectiveResolution_sections_degree_zero_kernel R F U`. Use `set I := injectiveResolution F`. Use `set e0 := I.cochainComplexXIso 0 0 rfl`. Use `set e1 := I.cochainComplexXIso 1 1 rfl`. Establish `hι : ∀ a : Sec F U, Sec.map (resι R F) a = Sec.map e0.inv (Sec.map (I.ι.f 0) a)`.
+
+Introduce `a`. Rewrite using `[chosenInjectiveResolutionAugmentation_eq_iota_comp]`. Both sides reduce to the same expression. Establish `hd : ∀ z : Sec ((res R F).X 0) U, Sec.map ((res R F).d 0 1) z = Sec.map e1.inv (Sec.map (I.cocomplex.d 0 1) (Sec.map e0.hom z))`. Introduce `z`.
+
+Rewrite using `[chosenInjectiveResolutionEtaleSheaf_d_zero_one_eq]`. Both sides reduce to the same expression. Establish `he0 : ∀ z : Sec ((res R F).X 0) U, Sec.map e0.inv (Sec.map e0.hom z) = z`. Introduce `z`. Express the relevant statement in the definitionally equal form `Sec.map (e0.hom ≫ e0.inv) z = z`.
+
+Rewrite using `[e0.hom_inv_id]`. Both sides reduce to the same expression. Establish `he0' : ∀ w : Sec (I.cocomplex.X 0) U, Sec.map e0.hom (Sec.map e0.inv w) = w`. Introduce `w`. Express the relevant statement in the definitionally equal form `Sec.map (e0.inv ≫ e0.hom) w = w`.
+
+Rewrite using `[e0.inv_hom_id]`. Both sides reduce to the same expression. Establish `he1 : ∀ w : Sec (I.cocomplex.X 1) U, Sec.map e1.hom (Sec.map e1.inv w) = w`. Introduce `w`. Express the relevant statement in the definitionally equal form `Sec.map (e1.inv ≫ e1.hom) w = w`.
+
+Rewrite using `[e1.inv_hom_id]`. Both sides reduce to the same expression. Use `⟨fun z => ⟨fun hz => ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[hd]`. Establish `hz' : Sec.map (I.cocomplex.d 0 1) (Sec.map e0.hom z) = 0`.
+
+Use `congrArg (Sec.map e1.hom) hz` as an intermediate fact. Rewrite `this` using `[he1]`. Conclude with `this.trans (map_zero (e1.hom.hom.app (op U)).hom)`. Take `⟨a, ha⟩` from `hker _ hz'`. Conclude with `⟨a, by rw [hι, ha, he0]⟩`.
+
+Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hd, hι, he0']`. Express the relevant statement in the definitionally equal form `Sec.map e1.inv (Sec.map (I.ι.f 0 ≫ I.cocomplex.d 0 1) a) = 0`. Rewrite using `[I.ι_f_zero_comp_complex_d]`. Conclude with `map_zero _`.
+
+Introduce `a b hab`. Rewrite `hab` using `[hι, hι]`. Use `congrArg (Sec.map e0.hom) hab` as an intermediate fact. Rewrite `this` using `[he0', he0']`. Conclude with `hinj this`.
+
+Introduce `m n k hn hmn z hnk hz`. Establish `hex : ((res R F).sc' m n k).Exact` using `(HomologicalComplex.exactAt_iff' _ m n k (by simp; omega) (by simp; omega)).1 (chosenInjectiveResolutionEtaleSheaf_exactAt_ne_zero R F n (by omega))`. Conclude with `(GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally R ((res R F).sc' m n k)).1 hex U z hz`. Introduce `n hn haveI : (res R F).IsStrictlyGE 0 := (inferInstance : I.cochainComplex.IsStrictlyGE 0)`. Establish `h0 : IsZero ((res R F).X n)` using `CochainComplex.isZero_of_isStrictlyGE _ 0 n hn`.
+
+Conclude with `ModuleCat.isZero_iff_subsingleton.1 ((secEvalFun R U).map_isZero h0)`.
+-/
 theorem resSec (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}) :
     (∀ z : Sec ((res R F).X 0) U, Sec.map ((res R F).d 0 1) z = 0 ↔ ∃ a : Sec F U, Sec.map (resι R F) a = z) ∧
     Function.Injective (Sec.map (resι R F) (U := U)) ∧

@@ -13,6 +13,17 @@ noncomputable section
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Introduce `F _ Y W hW q _ y e h`. Use `letI := algebraΓOfHom (W.p₁ ≫ Y.str)`. Establish `hp : IsProjOver (strHom F W.Z)`. Rewrite using `[strHom_eq (f := W.p₁ ≫ Y.str) fun _ => rfl]`. Conclude with `W.proj`.
+
+Establish `hd : topologicalKrullDim W.Z ≤ (0 + (Y.dim + 1) : ℕ)`. Rewrite using `[Nat.zero_add]`. Conclude with `hW`. Establish `hg : topologicalKrullDim (closure ({q (genericPoint W.Z)} : Set Y.X)) < (Y.dim + 1 : ℕ)`. Use `lt_of_le_of_lt (topologicalKrullDim_subspace_le _ _) ?_` and prove the remaining obligations.
+
+Rewrite using `[Y.topologicalKrullDim_eq]`. Conclude with `Nat.lt_succ_self _` after adjusting the coercions. Establish `key` using `GlobalTheory.PullVanish.interNum_pull_eq_zero F 0 (Y.dim + 1) W.Z Y.X hp hd q hg Fin.elim0 (fun i => i.elim0) (fun i => toLB (e i)) (fun i => isLB_toLB _)`. Establish `hL : ∀ x, (Sum.elim (Fin.elim0 : Fin 0 → LB W.Z) (fun a => (toLB (e a)).pull q) x).IsLB`. Introduce and unpack `(i | a)`.
+
+Conclude with `i.elim0`. Conclude with `pull_isLB (isLB_toLB _) q`. Rewrite `key` using `[← interNum_comp_equiv F _ hL (Equiv.emptySum (Fin 0) (Fin (Y.dim + 1))).symm]`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `interNum_congr_cls F _ (fun i => isLB_toLB _) (fun i => hL _) fun i => ?_` and prove the remaining obligations.
+
+Conclude with `((cls_pull (isLB_toLB (e i)) q (pull_isLB (isLB_toLB _) q)).trans (GlobalTheory.Cartier.PullPres.pull_cls_toLB _ _ q (y i) (e i) (h i))).symm`.
+-/
 theorem Dbl.num_eq_zero_of_isPull : ∀ (F : Type) [Field F] (Y : Var F) (W : Dbl Y), W.Small → ∀ (q : W.Z ⟶ Y.X) [IsDominant q] (y : Fin (Y.dim + 1) → CartierDiv W.Z) (e : Fin (Y.dim + 1) → Y.Dv), (∀ i, IsPull q (y i) (e i)) → W.num y = 0 := by
   intro F _ Y W hW q _ y e h
   letI := algebraΓOfHom (W.p₁ ≫ Y.str)

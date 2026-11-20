@@ -8,6 +8,29 @@ open GlobalTheory.NT Formalism.MainNotions Formalism.MainNotions.GlobalTheoryThe
 
 namespace GlobalTheory.OrbitTerms
 
+/- English proof (translation)
+Unfold `Formalism.G0.markedBound`. Use `set u := Formalism.MainNotions.G.goodU δ with hu`. Establish `hlo : 1 / δ ≤ (u : ℝ)` using `Nat.le_ceil _`. Establish `hhi : (u : ℝ) < 1 / δ + 1` using `Nat.ceil_lt_add_one (by positivity)`. Establish `hlo' : 1 ≤ (u : ℝ) * δ` using `by rwa [div_le_iff₀ h0] at hlo`.
+
+Establish `hhi' : (u : ℝ) * δ ≤ 1 + δ`. Use `mul_le_mul_of_nonneg_right hhi.le h0.le` as an intermediate fact. Rewrite `this` using `[add_mul, one_div, inv_mul_cancel₀ h0.ne', one_mul]`. Then use the resulting hypothesis. Establish `hu1 : 1 ≤ u`. Break down `Nat.eq_zero_or_pos u with h | h` into its components or cases.
+
+Rewrite `hlo'` using `[h]`. Evaluate the numerical expressions using `at hlo'`. Conclude with `h`. Establish `hd0 : 0 ≤ 1 - δ` using `by linarith`. Establish `hd1 : 1 - δ ≤ 1` using `by linarith`.
+
+Establish `hv1 : (2 * ((u / 2 : ℕ) : ℝ) ≤ u)`. Establish `: 2 * (u / 2) ≤ u` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hv2 : ((u : ℝ) ≤ 2 * ((u / 2 : ℕ) : ℝ) + 1)`. Establish `: u ≤ 2 * (u / 2) + 1` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Use `set v : ℕ := u / 2 with hv`. Establish `hB : (12 / 25 : ℝ) ≤ (1 - δ) ^ (v + 1)`. Use `one_add_mul_le_pow (a := -δ) (by linarith) (v + 1)` as an intermediate fact. Establish `e : (1 + -δ) = 1 - δ` using `by ring`.
+
+Rewrite `this` using `[e]`. Move the coercions through the operations in `at this`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA : (1 / 5 : ℝ) ≤ (1 - δ) ^ u`. Establish `h2 : (1 - δ) ^ ((v + 1) * 2) ≤ (1 - δ) ^ u` using `pow_le_pow_of_le_one hd0 hd1 (by omega)`.
+
+Rewrite `h2` using `[pow_mul]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA1 : (1 - δ) ^ u ≤ 1` using `pow_le_one₀ hd0 hd1`. Establish `hC1 : (1 - δ) ^ (u - 1) ≤ 1` using `pow_le_one₀ hd0 hd1`. Establish `hC0 : 0 ≤ (1 - δ) ^ (u - 1)` using `pow_nonneg hd0 _`.
+
+Establish `hCe : (1 - δ) * (1 - δ) ^ (u - 1) = (1 - δ) ^ u`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hvd : (1 - δ) / 2 ≤ (v : ℝ) * δ` using `by nlinarith`.
+
+Establish `hvd1 : (v : ℝ) * δ ≤ 1` using `by nlinarith`. Establish `hvd0 : 0 ≤ (v : ℝ) * δ` using `by positivity`. Establish `hD : (1 / 10 : ℝ) ≤ (v : ℝ) * δ * (1 - δ) ^ (u - 1)`. Use `mul_le_mul_of_nonneg_right hvd hC0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hD1 : (v : ℝ) * δ * (1 - δ) ^ (u - 1) ≤ 1` using `mul_le_one₀ hvd1 hC0 hC1`. Prove the components needed by the constructor for the conclusion. Establish `e : (1 / 10 : ℝ) ^ (6 * r + 1) = (1 / 10) ^ (3 * r + 1) * (1 / 10) ^ (3 * r)`. Rewrite using `[← pow_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul (pow_le_pow_left₀ (by norm_num) (by linarith) _) (pow_le_pow_left₀ (by norm_num) hD _) (by positivity) (by positivity)`. Conclude with `mul_le_one₀ (pow_le_one₀ (by positivity) hA1) (by positivity) (pow_le_one₀ (by positivity) hD1)`.
+-/
 theorem markedBound_bounds (δ : ℝ) (r : ℕ) (h0 : 0 < δ) (h1 : δ ≤ 1 / 100) :
     (1 / 10 : ℝ) ^ (6 * r + 1) ≤ Formalism.G0.markedBound δ r (Formalism.MainNotions.G.goodU δ) ∧
       Formalism.G0.markedBound δ r (Formalism.MainNotions.G.goodU δ) ≤ 1 := by
@@ -64,6 +87,23 @@ theorem markedBound_bounds (δ : ℝ) (r : ℕ) (h0 : 0 < δ) (h1 : δ ≤ 1 / 1
   · exact mul_le_one₀ (pow_le_one₀ (by positivity) hA1) (by positivity)
       (pow_le_one₀ (by positivity) hD1)
 
+/- English proof (translation)
+Establish `hd0 : 0 ≤ 1 - δ` using `by linarith`. Use `set t : ℝ := Real.exp 2 with ht`. Establish `ht1 : 1 ≤ t` using `Real.one_le_exp (by norm_num)`. Establish `hs : Formalism.G0.binUpper G δ N * t ^ N ≤ (t * δ + (1 - δ)) ^ G`. Unfold `Formalism.G0.binUpper`.
+
+Rewrite using `[add_pow, Finset.sum_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `(Finset.mem_Icc.1 hj).1`. Establish `: t ^ N ≤ t ^ j` using `pow_le_pow_right₀ ht1 hj'`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ _ := by`. Use `Finset.sum_le_sum_of_subset_of_nonneg ?_ fun j _ _ => by positivity` and prove the remaining obligations. Introduce `j hj`. Use `(Finset.mem_Icc.1 hj).2` as an intermediate fact.
+
+Conclude with `Finset.mem_range.2 (by omega)`. Establish `h2 : (t * δ + (1 - δ)) ^ G ≤ Real.exp (N : ℝ)`. Establish `a1 : t * δ + (1 - δ) ≤ Real.exp (t * δ)`. Use `Real.add_one_le_exp (t * δ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_le_exp.2 (le_trans ?_ hN)` and prove the remaining obligations. Establish `e1 : t = Real.exp 1 * Real.exp 1` using `by rw [ht, ← Real.exp_add]; norm_num`. Establish `e2 : Real.exp 1 ≤ 6` using `by have := Real.exp_one_lt_d9; linarith`. Establish `e3 : t ≤ 6 * Real.exp 1`.
+
+Rewrite using `[e1]`. Conclude with `mul_le_mul_of_nonneg_right e2 (Real.exp_pos _).le`. Establish `: (G : ℝ) * δ * t ≤ (G : ℝ) * δ * (6 * Real.exp 1)` using `mul_le_mul_of_nonneg_left e3 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : t ^ N = Real.exp (2 * N)` using `by rw [ht, ← Real.exp_nat_mul]; congr 1; ring`.
+
+Establish `h4 : Real.exp (-(N : ℝ)) * t ^ N = Real.exp (N : ℝ)`. Rewrite using `[h3, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : Formalism.G0.binUpper G δ N * t ^ N ≤ Real.exp (-(N : ℝ)) * t ^ N`.
+
+Rewrite using `[h4]`. Conclude with `hs.trans h2`. Conclude with `le_of_mul_le_mul_right h5 (by positivity)`.
+-/
 theorem binUpper_le (G N : ℕ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1)
     (hN : 6 * Real.exp 1 * (G : ℝ) * δ ≤ N) :
     Formalism.G0.binUpper G δ N ≤ Real.exp (-(N : ℝ)) := by
@@ -110,6 +150,11 @@ theorem binUpper_le (G N : ℕ) (δ : ℝ) (h0 : 0 ≤ δ) (h1 : δ ≤ 1)
     rw [h4]; exact hs.trans h2
   exact le_of_mul_le_mul_right h5 (by positivity)
 
+/- English proof (translation)
+Establish `h1` using `(isLittleO_log_rpow_atTop ha).bound (c := 1 / (2 * C)) (by positivity)`. Establish `h2` using `(tendsto_rpow_atTop ha).eventually_ge_atTop (2 * C)`. Establish `h3` using `Filter.eventually_ge_atTop (1 : ℝ)`. Take `⟨x₀, hx⟩` from `Filter.eventually_atTop.1 (h1.and (h2.and h3))`. Use `⟨x₀, fun x hxx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b1, b2, b3⟩` from `hx x hxx`. Rewrite `b1` using `[Real.norm_of_nonneg (Real.log_nonneg b3), Real.norm_of_nonneg (by positivity)]`. Establish `: C * Real.log x ≤ x ^ a / 2`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_log_le_rpow (C a : ℝ) (hC : 0 < C) (ha : 0 < a) :
     ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → C * (Real.log x + 1) ≤ x ^ a := by
   have h1 := (isLittleO_log_rpow_atTop ha).bound (c := 1 / (2 * C)) (by positivity)
@@ -124,6 +169,57 @@ theorem exists_log_le_rpow (C a : ℝ) (hC : 0 < C) (ha : 0 < a) :
       _ = x ^ a / 2 := by field_simp
   linarith
 
+/- English proof (translation)
+Introduce `eps he he'`. Take `⟨h, hh⟩ : ∃ h : ℝ, h = 2 + 8 * eps` from `⟨_, rfl⟩`. Take `⟨K, hK⟩ : ∃ K : ℕ, K = ⌈8 * (h + 2) / eps⌉₊` from `⟨_, rfl⟩`. Take `⟨r, hr⟩ : ∃ r : ℕ, r = K + 1` from `⟨_, rfl⟩`. Establish `hh0 : 0 < h` using `by rw [hh]; positivity`.
+
+Take `⟨P, hP⟩ : ∃ P : ℝ, P = (h + 3) * 10 ^ (6 * r + 1)` from `⟨_, rfl⟩`. Establish `hP0 : 0 < P` using `by rw [hP]; positivity`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = ((6 * r + 1 : ℕ) : ℝ)` from `⟨_, rfl⟩`. Establish `hc0 : 0 < c` using `by rw [hc]; positivity`. Take `⟨x₀, hx₀⟩` from `exists_log_le_rpow ((P + 2) * c * 2 + 100) (eps / 8) (by positivity) (by positivity)`.
+
+Use `⟨2 * 2 ^ ⌈1242 / eps⌉₊ + 4, x₀, by positivity, fun s hs hx n L₂ hn1 hn2 hL => ?_⟩` and prove the remaining obligations. Establish `ehG : Formalism.MainNotions.G.hG s = h` using `by rw [hh, ← hs]; rfl`. Establish `eKG : Formalism.MainNotions.G.KG s = K` using `by rw [hK, ← ehG, ← hs]; rfl`. Establish `erG : Formalism.MainNotions.G.rG s = r` using `by rw [hr, ← eKG]; rfl`. Establish `eδ : s.delta1 = s.x ^ (-(eps / 8))` using `by rw [← hs]; rfl`.
+
+Rewrite `hn2` using `[ehG]`. Rewrite using `[ehG, eKG, erG]`. Establish `hx1` using `s.one_lt_alt`. Establish `hbig` using `hx₀ _ hx`. Generalize the expression as in `s.delta1 = δ at *`.
+
+Generalize the expression as in `s.x = x at *`. Establish `hxp : 0 < x` using `by linarith`. Establish `hlog : 0 ≤ Real.log x` using `Real.log_nonneg hx1.le`. Take `⟨y, hy⟩ : ∃ y : ℝ, y = x ^ (eps / 8)` from `⟨_, rfl⟩`. Rewrite `hbig` using `[← hy]`.
+
+Establish `hPc : 0 < (P + 2) * c * 2` using `by positivity`. Establish `hy100 : 100 ≤ y`. Use `mul_nonneg hPc.le hlog` as an intermediate fact. Combine the linear relations using `only [this, hbig, hlog, hPc]`. Establish `hδy : δ = y⁻¹` using `by rw [eδ, hy, Real.rpow_neg hxp.le]`.
+
+Establish `hδ0 : 0 < δ` using `by rw [hδy]; positivity`. Establish `hδ1 : δ ≤ 1 / 100`. Rewrite using `[hδy, ← one_div]; exact one_div_le_one_div_of_le (by norm_num) hy100`. Establish `hMe : (h + 3) * Real.log x / (10 : ℝ) ^ (-((6 * r + 1 : ℕ) : ℤ)) = P * Real.log x`. Rewrite using `[zpow_neg, zpow_natCast, hP, div_inv_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hM1 : P * Real.log x ≤ (Formalism.MainNotions.G.orbitSmallMultiplicity r h x : ℝ)`. Unfold `Formalism.MainNotions.G.orbitSmallMultiplicity`. Rewrite using `[hMe]`. Conclude with `Nat.le_ceil _`.
+
+Establish `hM2 : (Formalism.MainNotions.G.orbitSmallMultiplicity r h x : ℝ) ≤ P * Real.log x + 1`. Unfold `Formalism.MainNotions.G.orbitSmallMultiplicity; rw [hMe]; exact (Nat.ceil_lt_add_one (by positivity)).le`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`. Establish `hkey : ∀ T : ℝ, T ≤ Real.exp (-((h + 2) * Real.log x)) → (n : ℝ) * T ≤ 2 * x ^ (-2 : ℝ)`. Introduce `T hT`.
+
+Establish `e : Real.exp (-((h + 2) * Real.log x)) = x ^ (-(h + 2))`. Rewrite using `[Real.rpow_def_of_pos hxp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hT` using `[e]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.rpow_add hxp]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion.
+
+Establish `hu : (Formalism.MainNotions.G.goodU δ : ℝ) ≤ 2 * y`. Unfold `Formalism.MainNotions.G.goodU`. Establish `e : 1 / δ = y` using `by rw [hδy, one_div, inv_inv]`. Rewrite using `[e]`. Use `(Nat.ceil_lt_add_one (show (0 : ℝ) ≤ y by linarith)).le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyy : y * y = x ^ (eps / 4)`. Rewrite using `[hy, ← Real.rpow_add hxp]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hM3 : (Formalism.MainNotions.G.orbitSmallMultiplicity r h x : ℝ) + 1 ≤ (P + 2) * (Real.log x + 1)`. Combine the linear relations using `only [hM2, hlog, hP0]`. Establish `: ((Formalism.MainNotions.G.orbitSmallMultiplicity r h x : ℝ) + 1) * (c * (Formalism.MainNotions.G.goodU δ : ℝ)) ≤ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[hc]`.
+
+Conclude with `this` after adjusting the coercions. Establish `t1 : (n : ℝ) * δ ^ K ≤ 2 * x ^ (-2 : ℝ)`. Apply `hkey` to reduce the goal to its premises. Establish `e : δ ^ K = Real.exp (-(eps / 8 * K * Real.log x))`. Rewrite using `[eδ, ← Real.rpow_mul_natCast hxp.le, Real.rpow_def_of_pos hxp]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Real.exp_le_exp.2 (neg_le_neg (mul_le_mul_of_nonneg_right ?_ hlog))` and prove the remaining obligations. Establish `: 8 * (h + 2) / eps ≤ (K : ℝ)` using `by rw [hK]; exact Nat.le_ceil _`.
+
+Rewrite `this` using `[div_le_iff₀ he]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1 : (L₂.choose K : ℝ) ≤ 2 ^ ⌈1242 / eps⌉₊`. Establish `a1 : L₂ ≤ ⌈1242 / eps⌉₊`. Use `hL.trans (Nat.le_ceil _)` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Establish `a2 : L₂.choose K ≤ 2 ^ ⌈1242 / eps⌉₊` using `(Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right (by norm_num) a1)`. Conclude with `a2` after adjusting the coercions. Establish `t1' : (n : ℝ) * (L₂.choose K : ℝ) * δ ^ K ≤ 2 ^ ⌈1242 / eps⌉₊ * (2 * x ^ (-2 : ℝ))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `t2 : (n : ℝ) * (1 - Formalism.G0.markedBound δ r (Formalism.MainNotions.G.goodU δ)) ^ Formalism.MainNotions.G.orbitSmallMultiplicity r h x ≤ 2 * x ^ (-2 : ℝ)`. Apply `hkey` to reduce the goal to its premises. Take `⟨m1, m2⟩` from `markedBound_bounds δ r hδ0 hδ1`. Take `⟨q, hq⟩ : ∃ q : ℝ, q = (1 / 10 : ℝ) ^ (6 * r + 1)` from `⟨_, rfl⟩`. Rewrite `m1` using `[← hq]`.
+
+Establish `hq0 : 0 < q` using `by rw [hq]; positivity`. Establish `hPq : P * q = h + 3`. Rewrite using `[hP, hq, mul_assoc, ← mul_pow]`. Evaluate the numerical expressions. Establish `a1 : 1 - Formalism.G0.markedBound δ r (Formalism.MainNotions.G.goodU δ) ≤ Real.exp (-q)`.
+
+Use `Real.add_one_le_exp (-q)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `a2` using `mul_le_mul_of_nonneg_right hM1 hq0.le`.
+
+Establish `a3 : P * Real.log x * q = (h + 3) * Real.log x` using `by rw [← hPq]; ring`. Combine the linear relations using `only [a2, a3, hlog]`. Establish `t3 : (n : ℝ) * Formalism.G0.binUpper (Formalism.MainNotions.G.goodG' r δ h x) δ (Formalism.MainNotions.G.orbitWindowCount r δ h x - 1) ≤ 2 * x ^ (-2 : ℝ)`. Apply `hkey` to reduce the goal to its premises. Unfold `Formalism.MainNotions.G.orbitWindowCount`.
+
+Rewrite using `[Nat.add_sub_cancel]`. Establish `b0` using `Nat.le_ceil (max (6 * Real.exp 1 * (Formalism.MainNotions.G.goodG' r δ h x : ℝ) * δ) ((h + 3) * Real.logb 2 x))`. Use `(binUpper_le _ _ δ hδ0.le (by linarith) ((le_max_left _ _).trans b0)).trans ?_` and prove the remaining obligations. Use `Real.exp_le_exp.2 (neg_le_neg (le_trans ?_ ((le_max_right _ _).trans b0)))` and prove the remaining obligations. Establish `l2 : Real.log x ≤ Real.logb 2 x`.
+
+Unfold `Real.logb`. Establish `p1 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `p2 : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`. Rewrite using `[le_div_iff₀ p1]`. Conclude with `mul_le_of_le_one_right hlog p2`.
+
+Conclude with `mul_le_mul (by linarith only) l2 hlog (by linarith only [hh0])`. Combine the linear relations using `only [t1', t2, t3]`.
+-/
 theorem orbit_terms_le : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ Cb x₀ : ℝ, 0 < Cb ∧ ∀ s : Scale, s.eps = eps → x₀ ≤ s.x → ∀ n L₂ : ℕ, s.x ^ (eps / 4) ≤ (n : ℝ) → (n : ℝ) ≤ 2 * s.x ^ Formalism.MainNotions.G.hG s → (L₂ : ℝ) ≤ 1242 / eps → (Formalism.MainNotions.G.orbitSmallMultiplicity (Formalism.MainNotions.G.rG s) (Formalism.MainNotions.G.hG s) s.x + 1) * ((6 * Formalism.MainNotions.G.rG s + 1) * Formalism.MainNotions.G.goodU s.delta1) ≤ n ∧ (n : ℝ) * (L₂.choose (Formalism.MainNotions.G.KG s) : ℝ) * s.delta1 ^ Formalism.MainNotions.G.KG s + n * (1 - Formalism.G0.markedBound s.delta1 (Formalism.MainNotions.G.rG s) (Formalism.MainNotions.G.goodU s.delta1)) ^ Formalism.MainNotions.G.orbitSmallMultiplicity (Formalism.MainNotions.G.rG s) (Formalism.MainNotions.G.hG s) s.x + n * Formalism.G0.binUpper (Formalism.MainNotions.G.goodG' (Formalism.MainNotions.G.rG s) s.delta1 (Formalism.MainNotions.G.hG s) s.x) s.delta1 (Formalism.MainNotions.G.orbitWindowCount (Formalism.MainNotions.G.rG s) s.delta1 (Formalism.MainNotions.G.hG s) s.x - 1) ≤ Cb * s.x ^ (-2 : ℝ) := by
   intro eps he he'
   obtain ⟨h, hh⟩ : ∃ h : ℝ, h = 2 + 8 * eps := ⟨_, rfl⟩

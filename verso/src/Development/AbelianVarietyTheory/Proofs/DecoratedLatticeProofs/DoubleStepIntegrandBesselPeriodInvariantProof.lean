@@ -36,19 +36,39 @@ namespace GlobalTheory.FinPl.HandInvPf
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `h1 : ‖ψ x‖ = 1` using `hψ.1.2.1 x`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_star_psi (hψ : IsStdChar D ψ (-1)) (x : AF D.host.F) : ψ x * star (ψ x) = 1 := by
   have h1 : ‖ψ x‖ = 1 := hψ.1.2.1 x
   rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, h1]; simp
 
+/- English proof (translation)
+Establish `h1` using `mul_star_psi hψ (-x)`. Establish `h2 : ψ x * ψ (-x) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Take the linear combination `ψ x * h1 - star (ψ (-x)) * h2`.
+-/
 theorem star_psi_neg (hψ : IsStdChar D ψ (-1)) (x : AF D.host.F) : star (ψ (-x)) = ψ x := by
   have h1 := mul_star_psi hψ (-x)
   have h2 : ψ x * ψ (-x) = 1 := by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
   linear_combination ψ x * h1 - star (ψ (-x)) * h2
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]`.
+-/
 theorem om_mul {S T : HSp D} (om : Om S T) (a b : GA D S) (a' b' : GA D T) (f : WO S T → ℂ) :
     om (a * b, a' * b') f = om (a, a') (om (b, b') f) := by
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]
 
+/- English proof (translation)
+Establish `hmix : ∀ (f : WO S T → ℂ) w₀, d.mixT S ψ v.μ v.𝓕 f 0 w₀ = ∫ ξ in v.𝓕, f (d.incX S ξ + d.inc0 S w₀) ∂v.μ`. Introduce `f w₀`. Express the relevant statement in the definitionally equal form `∫ ξ in v.𝓕, heisO ψ S T (d.incX S ξ) (heisO ψ S T (d.incAdj S 0) (heisO ψ S T (d.inc0 S w₀) f)) 0 ∂v.μ = _`. Use `congr 1`. Use function extensionality and compare the values at `ξ`.
+
+Rewrite using `[HypDec.integrandT_eq, map_zero, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, add_zero]`. Use function extensionality and compare the values at `w₀`. Establish `hper : ∀ γ ∈ ratMx D ρ S.rank, ∀ ξ, g (d.incX S (γ + ξ) + d.inc0 S (w₀ + w)) = g (d.incX S ξ + d.inc0 S (w₀ + w))`. Introduce `γ hγ ξ`. Establish `h` using `d.integrandT_periodic hg 0 (w₀ + w) γ hγ ξ`.
+
+Rewrite `h` using `[HypDec.integrandT_eq, HypDec.integrandT_eq, map_zero, symplOH_zero_right, symplOH_zero_right, AddChar.map_zero_eq_one, one_mul, one_mul, add_zero, add_zero]`. Then use the resulting hypothesis. Rewrite using `[hmix, Pi.smul_apply, heisO, hmix, ← covolOne_integral_add v.covol (fun ξ => g (d.incX S ξ + d.inc0 S (w₀ + w))) hper η, smul_eq_mul, ← mul_assoc, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `ξ`. Establish `e1 : symplOH S T (d.incX S ξ + d.inc0 S w₀) (d.incX S η + d.inc0 S w) = symplOH S T₀ w₀ w`.
+
+Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, HypDec.symplOH_incX_incX, HypDec.wittDecomp_sympl_inclIsotropic_inclAnisotropic, HypDec.wittDecomp_sympl_inclAnisotropic_inclAnisotropic, zero_add]`. Rewrite using `[symplOH_skew S T (d.incX S _) (d.inc0 S _), HypDec.wittDecomp_sympl_inclIsotropic_inclAnisotropic, neg_zero, zero_add]`. Establish `e2 : d.incX S ξ + d.inc0 S w₀ + (d.incX S η + d.inc0 S w) = d.incX S (ξ + η) + d.inc0 S (w₀ + w)`. Rewrite using `[map_add, map_add]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[heisO, e1, e2, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixT_zero_heis {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (v : VolM D ρ S.rank) {g : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) (c : ℂ) (η : Mx D ρ S.rank) (w : WO S T₀) :
     d.mixT S ψ v.μ v.𝓕 (heisO ψ S T (d.incX S η + d.inc0 S w) (c • g)) 0 =
@@ -78,6 +98,9 @@ theorem mixT_zero_heis {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ) (v :
   rw [heisO, e1, e2, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, h⟩` from `GlobalTheory.T.fourierBesselBasePoint_isUnfoldingBasePoint_spec D σ B`. Take `⟨n, -, hn, -⟩` from `(GlobalTheory.T.flagUnipotentRadical_surjects_unitriangular_characters_agree D σ B).1 v`. Rewrite using `[← h S S₀ d c, ← cenS_nC, ← cenS_nC, ← neg_inj, LinkPoint.neg_cenS_eq, LinkPoint.neg_cenS_eq, ← hn, GlobalTheory.MixPer.Decomp.gram_mt]`.
+-/
 theorem fourierBessel_centralTerm_const_on_orbit {σ : ℕ} (B : BesLev D σ) {S S₀ : HSp D} (d : HypDec S S₀ (σ + 1)) (c : skewA D (σ + 1))
     (v : UX D (σ + 1)) : d.qS B.V c (x0 B ⬝ v.1.1) = d.qS B.L c (zl B) := by
   obtain ⟨-, -, -, -, -, h⟩ := GlobalTheory.T.fourierBesselBasePoint_isUnfoldingBasePoint_spec D σ B
@@ -87,6 +110,31 @@ theorem fourierBessel_centralTerm_const_on_orbit {σ : ℕ} (B : BesLev D σ) {S
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hψ` using `s.weil.std`. Take `⟨u, hu, b, c, rfl⟩` from `GlobalTheory.MixPer.Decomp.flag_decomp J.d hn`. Take `⟨om', hom'⟩` from `(GlobalTheory.Desc.weil_data_descend D ψ J.W B.V s.χV s.χW s.om s.weil).1 J.W₀ (σ + 1) J.d`. Establish `FS` using `fun f hf => GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ J.W J.W₀ B.V (σ + 1) J.d s.χV s.χW s.om om' s.weil hom' s.vS.μ s.vS.𝓕 s.vS.covol f hf`. Establish `MV` using `fun x => (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ).1 J.W J.W₀ B.V (σ + 1) J.d s.vS.μ s.vS.𝓕 s.vS.covol Ψ hΨ x`.
+
+Establish `hz : ∀ u ∈ UX D (σ + 1), zl B ⬝ u.1 = zl B` using `fun u hu => zEll_mul B.L B.ζ hu`. Establish `hx : J.d.extX B.L (zl B) ⬝ mt J.W (J.d.levi u * (J.d.nB b * J.d.nC c)) = J.d.extX B.L (zl B) ⬝ mt J.W (J.d.nB b * J.d.nC c)`. Rewrite using `[mt_mul, ← Matrix.mul_assoc, J.d.extX_levi, hz u hu]`. Establish `hpt : ptS J.d B.L (zl B) (J.d.levi u * (J.d.nB b * J.d.nC c)) = zl B ⬝ b`. Rewrite using `[← ptS_nB_mul_nC J.d B.L (zl B) b c, ptS, ptS, hx]`.
+
+Establish `hcen : cenS J.d B.L (zl B) (J.d.levi u * (J.d.nB b * J.d.nC c)) = J.d.qS B.L c (zl B)`. Rewrite using `[← (GlobalTheory.JacHom.jacS_hom D ψ J.W J.W₀ B.L (σ + 1) J.d (zl B) hz).1 b c, cenS, cenS, hx]`. Establish `hfl : psiFlag ψ J.d (J.d.levi u * (J.d.nB b * J.d.nC c)) = psiUni ψ u` using `psiFlag_levi_mul ψ J.d u (radX_le_stabX J.d (mul_mem (nB_mem_radX J.d b) (nC_mem_radX J.d c)))`. Establish `hdet : Matrix.GeneralLinearGroup.det u = 1`. Establish `bt : Matrix.BlockTriangular u.1 id` using `fun a b h => (hu a b).1 h`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular bt, Units.val_one]`. Conclude with `Finset.prod_eq_one fun i _ => (hu i i).2`. Establish `hmod : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod B.V.rank u = 1`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, hdet, map_one, NNReal.coe_one, Real.one_rpow]`.
+
+Establish `h1` using `s.weil.om_pres (J.d.nC c, 1) Ψ hΨ`. Establish `h2` using `s.weil.om_pres (J.d.nB b, 1) _ h1`. Establish `e : s.om (J.d.levi u * (J.d.nB b * J.d.nC c), 1) Ψ = s.om (J.d.levi u, 1) (s.om (J.d.nB b, 1) (s.om (J.d.nC c, 1) Ψ))`. Rewrite using `[← om_mul, ← om_mul, mul_assoc, mul_one, mul_one]`. Set `u' : UX D (σ + 1)` to `⟨u, hu⟩`.
+
+Establish `key : ∀ v : UX D (σ + 1), evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (J.d.levi u * (J.d.nB b * J.d.nC c), 1) Ψ) (x0 B ⬝ v.1.1) 0 = ψ (J.d.qS B.L c (zl B)) • heisO ψ J.W₀ B.V₀ ((B.o.resT J.W₀).symm (0, zl B ⬝ b)) (evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (x0 B ⬝ (v * …`. Introduce `v`. Establish `ex : x0 B ⬝ v.1.1 ⬝ u.1 = x0 B ⬝ (v * u').1.1`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`. Establish `ez : zl B ⬝ ((v * u').1.1 ⬝ b) = zl B ⬝ b` using `by rw [← Matrix.mul_assoc, hz _ (v * u').2]`.
+
+Establish `t1` using `(FS _ h2).levi u (x0 B ⬝ v.1.1)`. Rewrite `t1` using `[hdet, hmod, map_one, inv_one, Circle.coe_one, Complex.ofReal_one, mul_one, one_smul, ex]`. Establish `t2` using `(FS _ h1).unip b (x0 B ⬝ (v * u').1.1)`. Rewrite `t2` using `[Matrix.mul_assoc (x0 B), fourierBesselBasePoint_mul_eq, ez]`. Establish `t3 : J.d.mixS B.V ψ s.vS.μ s.vS.𝓕 (s.om (J.d.nC c, 1) Ψ) (x0 B ⬝ (v * u').1.1) = ψ (J.d.qS B.V c (x0 B ⬝ (v * u').1.1)) • J.d.mixS B.V ψ s.vS.μ s.vS.𝓕 Ψ (x0 B ⬝ (v * u').1.1)` using `(FS _ hΨ).centre c _`.
+
+Rewrite `t3` using `[fourierBessel_centralTerm_const_on_orbit]`. Unfold `evalAt`. Rewrite using `[e, t1, t2, t3]`. Conclude with `mixT_zero_heis B.d s.vT (MV _) _ _ _`. Establish `: BorelSpace (UX D (σ + 1))` using `⟨rfl⟩`.
+
+Take `⟨i1, i2, i3⟩` from `GlobalTheory.UnitU.topology D (σ + 1)`. Use `(GlobalTheory.UnitU.isUnitU_exists_unique_rightInvariant D (σ + 1)).2.2 _ s.vU.unit` as an intermediate fact. Establish `hmul : ∀ v : UX D (σ + 1), psiUni ψ (v * u').1 = psiUni ψ v.1 * psiUni ψ u` using `fun v => by`. Rewrite using `[← ThLaws.psiFlag_levi ψ J.d, ← ThLaws.psiFlag_levi ψ J.d, ← ThLaws.psiFlag_levi ψ J.d, Subgroup.coe_mul, map_mul, psiFlag_mul J.d ψ (J.d.levi_mem_NFlag v.2) (J.d.levi_mem_NFlag hu)]`. Establish `hu1 : psiUni ψ u * star (psiUni ψ u) = 1` using `mul_star_psi hψ _`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[hpt, hcen, hfl]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, heisO]`. Express the relevant statement in the definitionally equal form `∫ v, star (psiUni ψ v.1) * evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (s.om (J.d.levi u * (J.d.nB b * J.d.nC c), 1) Ψ) (x0 B ⬝ v.1.1) 0 w ∂s.vU.ν = _ * (_ * ∫ v, star (psiUni ψ v.1) * evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (x0 B ⬝ v.1.1) 0 _ ∂s.vU.ν)`. Use `conv_rhs => rw [← integral_mul_right_eq_self _ u', ← mul_assoc, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[key, hmul, star_mul']`. Simplify using `only [Pi.smul_apply, smul_eq_mul, heisO]`. Generalize the expression as in `evalAt ψ J.d B.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 Ψ (x0 B ⬝ (v * u').1.1) 0 _ = z`.
+
+Generalize the expression as in `ψ (symplOH J.W₀ B.V₀ w _) = y`. Take the linear combination `(-(star (psiUni ψ v.1) * ψ (J.d.qS B.L c (zl B)) * y * z)) * hu1`.
+-/
 theorem flatFB_source {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B) {Ψ : WO J.W B.V → ℂ}
     (hΨ : IsThetaFunO ψ J.W B.V Ψ) {n : GA D J.W} (hn : n ∈ flagN J.d) :
     flatFB s (s.om (n, 1) Ψ) = (psiFlag ψ J.d n * ψ (cenS J.d B.L (zl B) n)) •
@@ -160,6 +208,13 @@ theorem flatFB_source {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : 
   generalize ψ (symplOH J.W₀ B.V₀ w _) = y
   linear_combination (-(star (psiUni ψ v.1) * ψ (J.d.qS B.L c (zl B)) * y * z)) * hu1
 
+/- English proof (translation)
+Establish `hψ` using `s.weil.std`. Establish `hτ` using `(GlobalTheory.Unf.LinkGram.link_gram D ρ B B'.L B'.ζ B'.line l).1`. Establish `hκ` using `(GlobalTheory.LinkKappa.kappa_props D B.L B'.L J.W₀ l.τ 1 hτ (l.κ J.W₀) (fun _ => rfl)).2.2.2.1 h₀ p`. Establish `hact : ∀ x : GA D B.A, actO B.V₀ J.W₀ (B.o.emb (x, 1)) h₀ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ p)) = (B.o.resS J.W₀).symm (0, l.κ J.W₀ (p ⬝ mt J.W₀ h₀⁻¹))` using `fun x => by`. Apply `(B.o.resS J.W₀).injective` to reduce the goal to its premises.
+
+Rewrite using `[B.o.resS_actO, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, hκ]`. Simplify using `only [actO_eq, inv_one, mt_one, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul]`. Establish `key : ∀ x : GA D B.A, s.om₀ (B.o.emb (x, 1), h₀) (a • heisO ψ B.V₀ J.W₀ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ p)) (s.om₀ (1, h) Ξ)) ((B.o.resS J.W₀).symm (0, l.κ J.W₀ w)) = a * ψ (-symplOH J.W₀ B'.L w (p ⬝ mt J.W₀ h₀⁻¹)) * s.om₀ (B.o.emb (x, 1), h₀ * h) Ξ ((B.o.resS J.W₀).symm (0, l …` using `fun x => by`. Rewrite using `[map_smul, s.weil₀.om_heis _ _ _ _ (s.weil₀.om_pres _ _ hΞ), hact, ← om_mul, mul_one, Pi.smul_apply, smul_eq_mul, heisO, B.o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add, ContrHeis.symplOH_kappa, ← map_add, Prod.mk_add_mk, add_ze …`. Unfold `handBF`.
+
+Simplify using `only [key]`. Rewrite using `[← star_psi_neg hψ (symplOH J.W₀ B'.L w (p ⬝ mt J.W₀ h₀⁻¹)), ← star_mul', ← star_mul', ← integral_const_mul]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem handBF_heis {ρ σ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} {B' : BesLev D σ} (s : StepBF ψ B J)
     (l : Link B B'.L B'.ζ) (φ : GA D B.A → ℂ) {Ξ : WO B.V₀ J.W₀ → ℂ} (hΞ : IsThetaFunO ψ B.V₀ J.W₀ Ξ) (a : ℂ)
     (p : WO J.W₀ B'.L) (h h₀ : GA D J.W₀) (w : WO J.W₀ B'.L) :
@@ -187,6 +242,23 @@ theorem handBF_heis {ρ σ : ℕ} {B : BesLev D ρ} {J : JacLev D ρ} {B' : BesL
   funext x
   ring
 
+/- English proof (translation)
+Establish `hψ` using `s.weil.std`. Establish `hT : ∀ c d : WO J.W₀ B.L, symplOH J.W₀ B.V₀ ((B.o.resT J.W₀).symm (0, c)) ((B.o.resT J.W₀).symm (0, d)) = symplOH J.W₀ B.L c d`. Introduce `c d`. Rewrite using `[B.o.symplOH_resT, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, symplOH_zero_left, zero_add]`. Establish `hact : actO J.W₀ B.V₀ h₀ (B.o.emb (x, 1)) ((B.o.resT J.W₀).symm (0, p)) = (B.o.resT J.W₀).symm (0, p ⬝ mt J.W₀ h₀⁻¹)`.
+
+Apply `(B.o.resT J.W₀).injective` to reduce the goal to its premises. Rewrite using `[B.o.resT_actO, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Simplify using `only [actO_eq, mt_one, Matrix.one_mul, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hF` using `s.weil₀.om_pres (h₀ * h, B.o.emb (x, 1)) Ξ hΞ`. Establish `e : s.om₀ (h₀, B.o.emb (x, 1)) (b • heisO ψ J.W₀ B.V₀ ((B.o.resT J.W₀).symm (0, p)) (s.om₀ (h, 1) Ξ)) = b • heisO ψ J.W₀ B.V₀ ((B.o.resT J.W₀).symm (0, p ⬝ mt J.W₀ h₀⁻¹)) (s.om₀ (h₀ * h, B.o.emb (x, 1)) Ξ)`.
+
+Rewrite using `[map_smul, s.weil₀.om_heis _ _ _ _ (s.weil₀.om_pres _ _ hΞ), hact, ← om_mul, mul_one]`. Unfold `pairKer`. Rewrite using `[e]`. Generalize the expression as in `s.om₀ (h₀ * h, B.o.emb (x, 1)) Ξ = F at hF`. Establish `hper : ∀ γ ∈ ratMx D B.L.rank J.W₀.rank, ∀ w, F ((B.o.resT J.W₀).symm (0, γ + w)) * star (Y (h₀ * h) (γ + w)) = F ((B.o.resT J.W₀).symm (0, w)) * star (Y (h₀ * h) w)`.
+
+Introduce `γ hγ w`. Establish `r2 : (B.o.resT J.W₀).symm (0, γ) ∈ ratMx D B.V₀.rank J.W₀.rank`. Use `(B.o.mem_ratL_resT J.W₀ _).2 ?_` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `⟨zero_mem _, hγ⟩`.
+
+Take `⟨γ₂, hγ₂⟩` from `r2`. Take `⟨γ₁, hγ₁⟩` from `hγ`. Establish `q2` using `hF.quasi γ₂ ((B.o.resT J.W₀).symm (0, w))`. Establish `q1` using `hY.quasi (h₀ * h) γ₁ w`. Establish `e2 : ratW B.V₀ J.W₀ γ₂ = (B.o.resT J.W₀).symm (0, γ)` using `hγ₂`.
+
+Establish `e1 : ratW B.L J.W₀ γ₁ = γ` using `hγ₁`. Rewrite `q2` using `[e2, ← map_add, Prod.mk_add_mk, zero_add, hT]`. Rewrite `q1` using `[e1]`. Rewrite using `[q2, q1, star_mul', mul_mul_mul_comm, mul_star_psi hψ, one_mul]`. Simplify using `only [contractT, thPair]`.
+
+Rewrite using `[← covolOne_integral_add vL.covol (fun w => F ((B.o.resT J.W₀).symm (0, w)) * star (Y (h₀ * h) w)) hper (p ⬝ mt J.W₀ h₀⁻¹)]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[hY', Pi.smul_apply, smul_eq_mul, heisO, hT, ← map_add, Prod.mk_add_mk, add_zero, star_mul', star_mul', star_star]`. Establish `h1` using `mul_star_psi hψ (symplOH J.W₀ B.L w (p ⬝ mt J.W₀ h₀⁻¹))`.
+
+Generalize the expression as in `F _ = z`. Generalize the expression as in `star (Y _ _) = y`. Generalize the expression as in `star (ψ (symplOH J.W₀ B.L w (p ⬝ mt J.W₀ h₀⁻¹))) = t' at h1 ⊢`. Generalize the expression as in `ψ (symplOH J.W₀ B.L w (p ⬝ mt J.W₀ h₀⁻¹)) = t at h1 ⊢`. Take the linear combination `(a * b * z * y) * h1 + (z * y) * hab`.
+-/
 theorem pairKer_heis {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : StepFB ψ J B)
     (vL : VolM D B.L.rank J.W₀.rank) {Y Y' : GA D J.W₀ → WO J.W₀ B.L → ℂ} (hY : IsQuasiFam ψ J.W₀ B.L Y)
     {Ξ : WO J.W₀ B.V₀ → ℂ} (hΞ : IsThetaFunO ψ J.W₀ B.V₀ Ξ) (a b : ℂ) (hab : a * b = 1) (p : WO J.W₀ B.L) (h : GA D J.W₀)
@@ -242,6 +314,13 @@ theorem pairKer_heis {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ} (s : S
   generalize ψ (symplOH J.W₀ B.L w (p ⬝ mt J.W₀ h₀⁻¹)) = t at h1 ⊢
   linear_combination (a * b * z * y) * h1 + (z * y) * hab
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, smul_eq_mul, rTrans]`. Unfold `handFB`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `h₀`. Establish `e : s.om₀ (h₀, B.o.emb (x, 1)) (c • s.om₀ (1, B.o.emb (h, 1)) Ξ) = c • s.om₀ (h₀, B.o.emb (x * h, 1)) Ξ`. Rewrite using `[map_smul, ← om_mul, ← map_mul, Prod.mk_mul_mk, mul_one, mul_one]`. Unfold `pairKer`. Rewrite using `[e]`.
+
+Simplify using `only [contractT, thPair, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem handFB_smul_om {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ}
     (s : StepFB ψ J B) (vL : VolM D B.L.rank J.W₀.rank) (Y : GA D J.W₀ → WO J.W₀ B.L → ℂ) (Ξ : WO J.W₀ B.V₀ → ℂ)
     (c : ℂ) (h : GA D B.A) :
@@ -262,6 +341,15 @@ theorem handFB_smul_om {σ : ℕ} {J : JacLev D (σ + 1)} {B : BesLev D σ}
   funext w
   ring
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.V`. Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag B.V (isIsoSub_e B.d)`. Take `⟨u1, u2, u3⟩` from `B.vN.unit`. Use `GlobalTheory.UnitU.isMulRightInvariant_of_fundamentalDomain _ B.vN.ν u2 (by rw [u3]; exact one_ne_zero) (by rw [u3]; exact ENNReal.one_ne_top)` as an intermediate fact. Unfold `BesLev.per besPer`.
+
+Use `congr 1`. Use function extensionality and compare the values at `h`. Establish `hK : ∀ γ' ∈ NFlagQ B.V B.d.e, ∀ m : flagN B.d, besFun ψ 1 B.d B.o B.ζ φ f h (γ' * m) = besFun ψ 1 B.d B.o B.ζ φ f h m` using `fun γ' hγ' m => by`. Establish `hγ'Q : (γ' : GA D B.V) ∈ GQ B.V` using `Subgroup.mem_subgroupOf.1 hγ'`. Simplify using `only [besFun, Subgroup.coe_mul]`.
+
+Rewrite using `[psiBes_mul B.d ψ 1 _ γ'.2 m.2, GlobalTheory.CharLaws.psiBes_rat ψ B.d hψ.1.2.2.1 1 _ hγ'Q, one_mul, mul_assoc (γ' : GA D B.V), hf _ hγ'Q]`. Establish `hm` using `GlobalTheory.CharLaws.embA_conj_mem B.d B.o h hn`. Rewrite using `[← (GlobalTheory.fundamentalDomain_integral_mul_right B.vN.ν _ _ _ (⟨_, hm⟩ : flagN B.d) u2 hK).2]`. Use `congr 1`. Use function extensionality and compare the values at `m`.
+
+Simplify using `only [besFun, Subgroup.coe_mul, rTrans, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[psiBes_mul B.d ψ 1 _ m.2 hm, GlobalTheory.CharLaws.psiBes_conj, star_mul', mul_assoc (m : GA D B.V) (_ * _ * _), inv_mul_cancel_right, mul_assoc (m : GA D B.V)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem per_flag {ρ : ℕ} (B : BesLev D ρ) (hψ : IsStdChar D ψ (-1)) (φ : GA D B.A → ℂ) {f : GA D B.V → ℂ}
     (hf : ∀ γ ∈ GQ B.V, ∀ g, f (γ * g) = f g) {n : GA D B.V} (hn : n ∈ flagN B.d) :
     B.per ψ (star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) • φ) (rTrans n f) = B.per ψ φ f := by
@@ -288,6 +376,27 @@ theorem per_flag {ρ : ℕ} (B : BesLev D ρ) (hψ : IsStdChar D ψ (-1)) (φ : 
     inv_mul_cancel_right, mul_assoc (m : GA D B.V)]
   ring
 
+/- English proof (translation)
+Introduce `D ψ σ B J B' s₁ s₂ l vL Φ₁ Φ₂ hΦ₁ hΦ₂ φ hφ g h₁ h₂`. Establish `hψ` using `s₁.weil.std`. Establish `hD : Descent D` using `GlobalTheory.Desc.weil_data_descend D`. Establish `hth` using `GlobalTheory.Unf.FlatTheta.flat_isThetaFun D (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D) ψ`. Establish `hΨ₁` using `s₁.weil.om_pres (g, h₁) Φ₁ hΦ₁`.
+
+Establish `hΨ₂` using `s₂.weil.om_pres (h₁, h₂) Φ₂ hΦ₂`. Establish `hΞ₁` using `hth.1 _ B J s₁ _ hΨ₁`. Establish `hΞ₂` using `hth.2 _ J B' s₂ _ hΨ₂`. Establish `hY` using `GlobalTheory.HandFam.handBF_isQuasiFam D ψ _ B J s₁ B'.L B'.ζ B'.line l φ _ hφ hΞ₁`. Use `⟨fun r hr => ?_, fun G hG r hr => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, hn, h, rfl⟩` from `(GlobalTheory.MixPer.Decomp.mem_jacGrp_iff J.d).1 hr`. Take `⟨om', hom'⟩` from `(hD ψ B.V J.W s₁.χV s₁.χW s₁.om s₁.weil).1 B.V₀ _ B.d`. Take `⟨hp, hc⟩` from `LinkPoint.link_point D (σ + 1) (σ + 1) B B'.L B'.ζ B'.line l J.W J.W₀ J.d n hn`. Establish `hp' : ptT J.d B.V₀ (yZero B.V₀ (σ + 1) (vecB B.o B.ζ)) n = (B.o.resS J.W₀).symm (0, l.κ J.W₀ (ptS J.d B'.L (zl B') n))`. Rewrite using `[zl, hp, ← ptT_yZero_vecB B.o J.d B.ζ n, AddEquiv.symm_apply_apply]`.
+
+Establish `e1 : flatBF s₁ (s₁.om (g, n * J.d.emb0 h * h₁) Φ₁) = (star (psiFlag ψ J.d n) * ψ (-cenS J.d B'.L (zl B') n)) • heisO ψ B.V₀ J.W₀ ((B.o.resS J.W₀).symm (0, l.κ J.W₀ (ptS J.d B'.L (zl B') n))) (s₁.om₀ (1, h) (flatBF s₁ (s₁.om (g, h₁) Φ₁)))`. Establish `e` using `GlobalTheory.T.besselToJacobiFlatSchwartz_equivariant D ψ _ B J s₁ om' hom' _ hΨ₁ 1 n hn h`. Establish `a1 : embA B.d B.o 1 = 1` using `map_one _`. Establish `a2 : B.o.emb (1, 1) = 1` using `map_one _`. Rewrite `e` using `[a1, a2, ← om_mul, one_mul, show s₁.om₀ (1, 1) = 1 from map_one _, Module.End.one_apply, opA, jacT, cenT_yZero_vecB, hc, hp', smul_smul]`.
+
+Conclude with `e`. Establish `e2 : flatFB s₂ (s₂.om (n * J.d.emb0 h * h₁, h₂) Φ₂) = (psiFlag ψ J.d n * ψ (cenS J.d B'.L (zl B') n)) • heisO ψ J.W₀ B'.V₀ ((B'.o.resT J.W₀).symm (0, ptS J.d B'.L (zl B') n)) (s₂.om₀ (h, 1) (flatFB s₂ (s₂.om (h₁, h₂) Φ₂)))`. Establish `c` using `GlobalTheory.T.jacobiToBesselFlat_intertwines_weilAction D hD ψ σ J B' s₂ _ hΨ₂ h 1`. Establish `a1 : embA B'.d B'.o 1 = 1` using `map_one _`. Establish `a2 : B'.o.emb (1, 1) = 1` using `map_one _`.
+
+Rewrite `c` using `[a1, a2]`. Rewrite using `[← c, ← flatFB_source s₂ (s₂.weil.om_pres _ _ hΨ₂) hn, ← om_mul, ← om_mul, one_mul, one_mul]`. Establish `hab : star (psiFlag ψ J.d n) * ψ (-cenS J.d B'.L (zl B') n) * (psiFlag ψ J.d n * ψ (cenS J.d B'.L (zl B') n)) = 1`. Establish `b1 : psiFlag ψ J.d n * star (psiFlag ψ J.d n) = 1` using `mul_star_psi hψ _`. Rewrite using `[mul_mul_mul_comm, mul_comm (star _), b1, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+
+Use function extensionality and compare the values at `x`. Unfold `Chain.hand handFB`. Rewrite using `[e1, e2]`. Establish `k` using `pairKer_heis s₂ vL hY hΞ₂ _ _ hab (ptS J.d B'.L (zl B') n) h (fun h₀ w => handBF_heis s₁ l φ hΞ₁ _ (ptS J.d B'.L (zl B') n) h h₀ w)`. Simplify using `only [k]`.
+
+Conclude with `GlobalTheory.ChainOnto.setIntegral_fd_mul_right D J.W₀ J.v0.μ J.v0.𝓕 J.v0.haar J.v0.fund (fun h₀ => pairKer s₂ vL _ _ h₀ x) (fun γ hγ h₀ => (GlobalTheory.PairKer.pairKer_law D ψ σ J B' s₂ vL _ _ hY hΞ₂).2.1 γ hγ h₀ x) h`. Take `⟨n, hn, h, rfl⟩` from `(GlobalTheory.CharLaws.mem_besGrp B'.d B'.o r).1 hr`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B'.V`. Establish `e : flatFB s₂ (s₂.om (h₁, n * embA B'.d B'.o h * h₂) Φ₂) = star (psiBes ψ B'.d 1 (vecB B'.o B'.ζ) n) • s₂.om₀ (1, B'.o.emb (h, 1)) (flatFB s₂ (s₂.om (h₁, h₂) Φ₂))`. Establish `c` using `GlobalTheory.T.jacobiToBesselFlat_intertwines_weilAction D hD ψ σ J B' s₂ _ hΨ₂ 1 h`.
+
+Rewrite `c` using `[map_one]`. Rewrite using `[← c, ← GlobalTheory.T.flatSchwartz_targetUnipotent_conj_besselCharacter D hD ψ σ J B' s₂ _ (s₂.weil.om_pres _ _ hΨ₂) n hn, ← om_mul, ← om_mul, one_mul, one_mul]`. Establish `hG' : IsContAut B'.V (rTrans h₂ G)` using `⟨fun γ hγ x => by rw [rTrans, rTrans, mul_assoc, hG.1 γ hγ], hG.2.comp (continuous_mul_const h₂)⟩`. Establish `eG : rTrans (n * embA B'.d B'.o h * h₂) G = rTrans n (rTrans (embA B'.d B'.o h) (rTrans h₂ G))`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [rTrans, mul_assoc]`. Unfold `Chain.hand`. Rewrite using `[e, handFB_smul_om, eG, per_flag B' hψ _ (fun γ hγ x => by simp only [rTrans, mul_assoc, hG.1 γ hγ]) hn]`. Conclude with `GlobalTheory.Core.Mi.per_rTrans D ψ σ B' _ _ h hψ (GlobalTheory.handFBLaw D ψ σ J B' s₂ vL _ _ hY hΞ₂) hG'`.
+-/
 theorem handInv : ∀ D : D7, GlobalTheory.FinPl.HandInv D := by
   intro D ψ σ B J B' s₁ s₂ l vL Φ₁ Φ₂ hΦ₁ hΦ₂ φ hφ g h₁ h₂
   have hψ := s₁.weil.std

@@ -9,6 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.GlueStable
 
+/- English proof (translation)
+Introduce `D U M g hg Λ hΛ`. Take `⟨hgI, hgU⟩` from `hg`. Take `⟨hlat, huni, hcap⟩` from `hΛ`. Establish `H` using `Formalism.HermitianLatticesTheory.isomAct _ _ _ (VS D).hT g hgI Λ`. Use `⟨H.2.2.2.2.mpr hlat, H.2.2.2.1.mpr huni, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hcap]`. Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem, Formalism.HermitianLatticesTheory.isomAct_mem_gmap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Establish `e : g.symm x = x` using `by conv_lhs => rw [← hgU x h2]`. Simplify using the standard rewrite rules. Conclude with `⟨e ▸ h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : g.symm x = x` using `by conv_lhs => rw [← hgU x h2]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨e.symm ▸ h1, h2⟩`.
+-/
 theorem glueSet_gmap_mem : ∀ (D : D7) (U : Submodule D.host.E (VS D).V) (M : Submodule (𝓞 D.host.E) (VS D).V), ∀ g ∈ Formalism.L2.SG.Pf.Cnt.isomFix (VS D).hT U, ∀ Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT U M, Formalism.HermitianLatticesTheory.gmap g Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT U M := by
   intro D U M g hg Λ hΛ
   obtain ⟨hgI, hgU⟩ := hg

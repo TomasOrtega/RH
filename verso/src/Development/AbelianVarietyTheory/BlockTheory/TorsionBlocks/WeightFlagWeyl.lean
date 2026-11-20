@@ -31,14 +31,23 @@ def IsFrameExtremalUnit (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix
   ‖w‖ = 1 ∧ w ∈ lowKSub ε lam σ ∧
     ∃ s : Equiv.Perm (Fin n), IsFlagWeyl ε s ∧ IsWtOn (Formalism.REAL.Kset ε) σ (Formalism.QuantumDeterminants.lowK ε lam ∘ s) w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.imp fun _ hs => ⟨hs.1.1, hs.2⟩⟩`.
+-/
 theorem IsFrameExtremalUnit.extremal {ε : Fin n → Bool} {lam : Fin n → ℝ}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {w : H} (h : IsFrameExtremalUnit ε lam σ w) :
     IsExtremalUnit ε lam σ w :=
   ⟨h.1, h.2.1, h.2.2.imp fun _ hs => ⟨hs.1.1, hs.2⟩⟩
 
+/- English proof (translation)
+Unfold `IsFlagWeyl IsWeylK`. Evaluate the decidable proposition.
+-/
 example : IsFlagWeyl ![true, false, false] (Equiv.swap (1 : Fin 3) 2) := by
   unfold IsFlagWeyl IsWeylK; decide
 
+/- English proof (translation)
+Unfold `IsFlagWeyl IsWeylK`. Evaluate the decidable proposition.
+-/
 example : ¬ IsFlagWeyl ![true, false, false] (1 : Equiv.Perm (Fin 3)) := by
   unfold IsFlagWeyl IsWeylK; decide
 

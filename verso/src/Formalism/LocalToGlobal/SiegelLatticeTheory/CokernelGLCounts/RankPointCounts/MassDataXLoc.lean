@@ -17,6 +17,11 @@ namespace Formalism.L2.SG.Pf.MassDataX
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Introduce `h`. Establish `hall : ∀ a : X.B.I.E, a ∈ (⊥ : Subalgebra X.B.I.F X.B.I.E)`. Introduce `a`. Establish `h1 : X.B.I.cm.sig a = a` using `by rw [h]; rfl`. Take `⟨c, hc⟩` from `(X.B.I.cm.fixed a).1 h1`.
+
+Conclude with `Algebra.mem_bot.2 ⟨c, hc⟩`. Establish `htop : (⊥ : Subalgebra X.B.I.F X.B.I.E) = ⊤` using `eq_top_iff.2 fun a _ => hall a`. Establish `h1 : Module.finrank X.B.I.F X.B.I.E = 1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 htop`. Establish `h2` using `X.B.I.cm.deg2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sig_ne_id : X.B.I.cm.sig ≠ AlgHom.id X.B.I.F X.B.I.E := by
   intro h
   have hall : ∀ a : X.B.I.E, a ∈ (⊥ : Subalgebra X.B.I.F X.B.I.E) := by
@@ -29,6 +34,13 @@ theorem sig_ne_id : X.B.I.cm.sig ≠ AlgHom.id X.B.I.F X.B.I.E := by
   have h2 := X.B.I.cm.deg2
   omega
 
+/- English proof (translation)
+Take `⟨θ, -⟩` from `MassDataIdxSteps.splitTheta_of X ⟨v, hv⟩ (MassDataIdxSteps.embP_holds X ⟨v, hv⟩)`. Use `⟨θ.symm (1, 0), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+
+Introduce `h0`. Use `congrArg θ h0` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply, map_zero]`. Conclude with `one_ne_zero (congrArg Prod.fst this)`. Introduce `h1`.
+
+Use `congrArg θ h1` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply, map_one]`. Conclude with `zero_ne_one (congrArg Prod.snd this)`.
+-/
 theorem idem_typed (v : PlX X) (hv : TypAt X v) :
     ∃ x : Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E, x * x = x ∧ x ≠ 0 ∧ x ≠ 1 := by
   obtain ⟨θ, -⟩ := MassDataIdxSteps.splitTheta_of X ⟨v, hv⟩ (MassDataIdxSteps.embP_holds X ⟨v, hv⟩)
@@ -45,6 +57,11 @@ theorem idem_typed (v : PlX X) (hv : TypAt X v) :
     rw [AlgEquiv.apply_symm_apply, map_one] at this
     exact zero_ne_one (congrArg Prod.snd this)
 
+/- English proof (translation)
+Introduce `hdiv`. Distinguish the cases in `h : TypAt X v`. Simplify using `only [ZZX, jacX, localVolumeUnit, PPX, if_pos h]`. Conclude with `locJacTyp X.B.I.cm.sig ψ v _ _ _ _ _ _ _ X.B.I.cm.deg2 (sig_ne_id X) h (gAt_prime X v).pos (idem_typed X v h) (LJP.herm X u v) (LJP.herm X u' v) (LJP.integral X u u' v h (hdiv h)) (hdiv h)`. Simplify using `only [ZZX, jacX, localVolumeUnit, PPX, if_neg h]`.
+
+Conclude with `locJacOrd ψ v _ _ _ X.B.I.cm.deg2 h`.
+-/
 theorem jacLocAt_holds (u u' : D.what₂.Word) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) (v : PlX X) :
     JacLocAt X u u' ψ v := by
   intro hdiv
@@ -55,9 +72,15 @@ theorem jacLocAt_holds (u u' : D.what₂.Word) (ψ : AddChar (Formalism.MainNoti
   · simp only [ZZX, jacX, localVolumeUnit, PPX, if_neg h]
     exact locJacOrd ψ v _ _ _ X.B.I.cm.deg2 h
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.finJac_of X u u' ψ (jacLocAt_holds X u u' ψ)`.
+-/
 theorem finJac_holds (u u' : D.what₂.Word) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) : FinJac X u u' ψ :=
   Formalism.L2.SG.Pf.finJac_of X u u' ψ (jacLocAt_holds X u u' ψ)
 
+/- English proof (translation)
+Introduce `p` and use `locMassTyp _ _ _ _ _ _ _ _`.
+-/
 theorem typLocX_holds (u u' : D.what₂.Word) (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ) :
     TypLocX X u u' ψ := fun p => locMassTyp _ _ _ _ _ _ _ _
 

@@ -12,19 +12,33 @@ namespace GlobalTheory.HL.GlueInt
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩⟩`.
+-/
 theorem nonempty_place' : Nonempty (HeightOneSpectrum (𝓞 F)) := by
   obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 F)
   exact ⟨⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)⟩⟩
 
+/- English proof (translation)
+The claim follows from `Module.nontrivial_of_finrank_pos (R := (A.loc p).Fp) (by rw [(A.loc p).rank]; norm_num)`.
+-/
 theorem nontrivial_Ep (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) : Nontrivial (A.loc p).Ep :=
   Module.nontrivial_of_finrank_pos (R := (A.loc p).Fp) (by rw [(A.loc p).rank]; norm_num)
 
+/- English proof (translation)
+Take `⟨p⟩` from `nonempty_place' (F := F)`. Use `haveI := nontrivial_Ep A p`. Apply `(A.loc p).ιE.injective` to reduce the goal to its premises. Rewrite using `[← (A.loc p).cj_ιE, ← (A.loc p).cj_ιE, ← A.L_cj, (A.L p).cj_cj]`.
+-/
 theorem sig_sig (A : Places F E sig) (y : E) : sig (sig y) = y := by
   obtain ⟨p⟩ := nonempty_place' (F := F)
   haveI := nontrivial_Ep A p
   apply (A.loc p).ιE.injective
   rw [← (A.loc p).cj_ιE, ← (A.loc p).cj_ιE, ← A.L_cj, (A.L p).cj_cj]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨p⟩` from `nonempty_place' (F := F)`. Establish `hcj : (A.L p).cj.toLinearMap = LinearMap.id` using `LinearMap.ext_on_range (A.loc p).span fun y => by`. Simplify using `[A.L_cj, (A.loc p).cj_ιE, h]`. Establish `hall : ∀ z : (A.loc p).Ep, ∃ c : (A.loc p).Fp, c • (1 : (A.loc p).Ep) = z` using `fun z => by`.
+
+Take `⟨a, ha⟩` from `((A.L p).cj_fix z).1 (by simpa using LinearMap.congr_fun hcj z)`. Conclude with `⟨a, by rw [← ha, Algebra.algebraMap_eq_smul_one]⟩`. Use `finrank_le_one (1 : (A.loc p).Ep) hall` as an intermediate fact. Rewrite `this` using `[(A.loc p).rank]`. Evaluate the numerical expressions using `at this`.
+-/
 theorem sig_ne_id (A : Places F E sig) : ¬ ∀ y, sig y = y := by
   intro h
   obtain ⟨p⟩ := nonempty_place' (F := F)
@@ -38,6 +52,17 @@ theorem sig_ne_id (A : Places F E sig) : ¬ ∀ y, sig y = y := by
   rw [(A.loc p).rank] at this
   norm_num at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `sig_ne_id A` to reduce the goal to its premises. Establish `hli : LinearIndependent F ![(1 : E), s]`. Rewrite using `[LinearIndependent.pair_iff]`.
+
+Introduce `a b hab`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Simplify using `at hab`. Conclude with `⟨hab, rfl⟩`.
+
+It suffices to derive a contradiction. Establish `hb' : algebraMap F E b ≠ 0` using `(map_ne_zero _).2 hb`. Establish `hab' : algebraMap F E a + algebraMap F E b * s = 0`. Rewrite `hab` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Conclude with `hab`.
+
+Apply `hno (-a / b)` to reduce the goal to its premises. Rewrite using `[map_div₀, map_neg, div_eq_iff hb']`. Take the linear combination `(-1 : E) * hab'`. Establish `hspan : Submodule.span F (Set.range ![(1 : E), s]) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises.
+
+Rewrite using `[finrank_span_eq_card hli, A.quad]`. Simplify using the standard rewrite rules. Apply the tactic sequence `have hid : sig.toLinearMap = LinearMap.id := LinearMap.ext_on_range hspan fun i => by fin_cases i <;> simp [hs]`. Conclude with `fun y => LinearMap.congr_fun hid y`.
+-/
 theorem fix_mem (A : Places F E sig) (s : E) (hs : sig s = s) : ∃ t : F, algebraMap F E t = s := by
   by_contra hno
   push_neg at hno
@@ -65,6 +90,13 @@ theorem fix_mem (A : Places F E sig) (s : E) (hs : sig s = s) : ∃ t : F, algeb
       fin_cases i <;> simp [hs]
   exact fun y => LinearMap.congr_fun hid y
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.mem_integers_of_valuation_le_one` to reduce the goal to its premises. Introduce `p`. Use `haveI := nontrivial_Ep A p`. Establish `h1` using `h p`. Rewrite `h1` using `[(A.loc p).compat, (A.L p).O_def]`.
+
+Establish `h2 : IsIntegral 𝒪[(A.loc p).Fp] ((A.loc p).ιF t)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[(A.loc p).Fp] (A.loc p).Fp (A.loc p).Ep) (algebraMap (A.loc p).Fp (A.loc p).Ep).injective).1 h1`. Establish `h3` using `(Valuation.integer.integers (valuation (A.loc p).Fp)).mem_of_integral h2`. Establish `h4 : (A.loc p).ιF t ≤ᵥ (A.loc p).ιF 1`. Rewrite using `[map_one]`. Conclude with `(Valuation.Compatible.vle_iff_le (v := valuation (A.loc p).Fp) _ _).2 (by rw [map_one]; exact (Valuation.mem_integer_iff _ _).1 h3)`.
+
+Simplify using `using ((A.loc p).val t 1).1 h4`.
+-/
 theorem int_of_loc (A : Places F E sig) (t : F)
     (h : ∀ p, (A.loc p).ιE (algebraMap F E t) ∈ (A.L p).O) : t ∈ (algebraMap (𝓞 F) F).range := by
   apply HeightOneSpectrum.mem_integers_of_valuation_le_one
@@ -81,11 +113,17 @@ theorem int_of_loc (A : Places F E sig) (t : F)
     exact (Valuation.Compatible.vle_iff_le (v := valuation (A.loc p).Fp) _ _).2 (by rw [map_one]; exact (Valuation.mem_integer_iff _ _).1 h3)
   simpa using ((A.loc p).val t 1).1 h4
 
+/- English proof (translation)
+Rewrite using `[← (A.loc p).cj_ιE, ← A.L_cj, (A.L p).O_def]`. Conclude with `(((A.L p).O_def _).1 hy).map ((A.L p).cj.toAlgHom.restrictScalars 𝒪[(A.loc p).Fp])`.
+-/
 theorem sig_mem (A : Places F E sig) (y : E) (p : HeightOneSpectrum (𝓞 F))
     (hy : (A.loc p).ιE y ∈ (A.L p).O) : (A.loc p).ιE (sig y) ∈ (A.L p).O := by
   rw [← (A.loc p).cj_ιE, ← A.L_cj, (A.L p).O_def]
   exact (((A.L p).O_def _).1 hy).map ((A.L p).cj.toAlgHom.restrictScalars 𝒪[(A.loc p).Fp])
 
+/- English proof (translation)
+Establish `hR : IsIntegral (integralClosure ℤ E) y`. Use `⟨Polynomial.X ^ 2 - Polynomial.C (⟨a, ha⟩ : integralClosure ℤ E) * Polynomial.X + Polynomial.C (⟨b, hb⟩ : integralClosure ℤ E), by monicity!, ?_⟩` and prove the remaining obligations. Simplify `h` using `[Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul]`. Conclude with `isIntegral_trans y hR`.
+-/
 theorem isIntegral_of_quadratic (y a b : E) (ha : IsIntegral ℤ a) (hb : IsIntegral ℤ b)
     (h : y ^ 2 - a * y + b = 0) : IsIntegral ℤ y := by
   have hR : IsIntegral (integralClosure ℤ E) y := by
@@ -98,6 +136,13 @@ end GlobalTheory.HL.GlueInt
 
 open GlobalTheory.HL.GlueInt in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig A y hy`. Take `⟨a, ha⟩` from `fix_mem A (y + sig y) (by rw [map_add, sig_sig A, add_comm])`. Take `⟨b, hb⟩` from `fix_mem A (y * sig y) (by rw [map_mul, sig_sig A, mul_comm])`. Take `⟨a0, rfl⟩` from `int_of_loc A a fun p => by`. Rewrite using `[ha, map_add]`.
+
+Conclude with `(A.L p).O.add_mem (hy p) (sig_mem A y p (hy p))`. Take `⟨b0, rfl⟩` from `int_of_loc A b fun p => by`. Rewrite using `[hb, map_mul]`. Conclude with `(A.L p).O.mul_mem (hy p) (sig_mem A y p (hy p))`. Use `isIntegral_of_quadratic y _ _ ((RingOfIntegers.isIntegral_coe a0).map (algebraMap F E).toIntAlgHom) ((RingOfIntegers.isIntegral_coe b0).map (algebraMap F E).toIntAlgHom) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `y ^ 2 - algebraMap F E (algebraMap (𝓞 F) F a0) * y + algebraMap F E (algebraMap (𝓞 F) F b0) = 0`. Rewrite using `[ha, hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.HL.isIntegral_of_forall_mem_O : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (y : E), (∀ p, (A.loc p).ιE y ∈ (A.L p).O) →
     IsIntegral ℤ y := by

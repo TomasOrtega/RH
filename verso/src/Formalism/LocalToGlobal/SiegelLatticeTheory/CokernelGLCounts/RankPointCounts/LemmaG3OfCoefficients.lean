@@ -16,6 +16,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨iω, iς, i3⟩` from `lemmaG3_of_inputs Y hT hT' t0 t1 t2 h0 h1 h2 hR1 hR2 hG1 hG2 σ s' hσ hs' he ha ha'`. Establish `hγ1 : t1.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t1.rep.2.2.1`. Establish `hGF1 : Gflag (X.Fu u) t1.frame.fl ≠ 0` using `G_ne_of_Gt Y h1`. Establish `hTE : ((Tu D u : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hTE' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+
+Establish `hσ'` using `SRat_inv (lf D (X.Fu u)) hσ`. Establish `hs''` using `SRat_inv (lf D (X.Fu u')) hs'`. Use `set ς := t1.lin * s'⁻¹ * t1.lin⁻¹ with hς`. Establish `hςx : ∀ x, ς x = t1.lin (s'.symm (t1.lin.symm x))` using `fun x => rfl`. Establish `hςf : ∀ x ∈ t1.frame.fl.X, ς x - x ∈ t1.frame.fl.X`.
+
+Introduce `x hx`. Use `(mem_frameX Y t1 _).2 ?_` and prove the remaining obligations. Establish `hx0` using `(mem_frameX Y t1 x).1 hx`. Rewrite using `[map_sub, hςx, LinearEquiv.symm_apply_apply]`. Conclude with `Submodule.sub_mem _ (X_pres (lf D (X.Fu u')) hs''.2.1 _ hx0) hx0`.
+
+Establish `hςz : ς t1.frame.fl.z - t1.frame.fl.z ∈ t1.frame.fl.X`. Use `(mem_frameX Y t1 _).2 ?_` and prove the remaining obligations. Rewrite using `[map_sub, hςx, LinearEquiv.symm_apply_apply, frame_z_eq_lin_zu, LinearEquiv.symm_apply_apply]`. Conclude with `hs''.2.2`. Take `⟨τ, hτi, hτA, P1, P2⟩` from `tau_exists (X.Fu u) t1.frame.fl hGF1 hTE (star_natCast _) hTE' (star_natCast _) σ ς hσ.1 (fun x hx => Submodule.sub_mem _ (X_pres (lf D (X.Fu u)) hσ.2.1 x hx) hx) (fun x hx => X_pres (lf D (X.Fu u)) hσ'.2.1 x hx) hσ.2.2 hςf hςz iω iς i3`.
+
+Establish `hτX : ∀ x ∈ (X.Fu u).X, τ x = x` using `fun x hx => hτA x (X_le_Asp _ _ hx)`. Establish `hτX1 : ∀ x ∈ t1.frame.fl.X, τ x = x` using `fun x hx => hτA x (by rw [← Asp_symm]; exact X_le_Asp _ _ hx)`. Establish `hτs : ∀ x ∈ (X.Fu u).X, τ.symm x = x` using `fun x hx => by conv_lhs => rw [← hτX x hx]`. Simplify using the standard rewrite rules. Use `set n := σ * τ⁻¹ with hn`.
+
+Use `set n' := t1.lin⁻¹ * τ * t1.lin * s' with hn'`. Establish `hnN : n ∈ NRat (lf D (X.Fu u))`. Use `⟨(Formalism.HermitianLatticesTheory.isom _).mul_mem hσ.1 ((Formalism.HermitianLatticesTheory.isom _).inv_mem hτi), fun j x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hxX : x ∈ (X.Fu u).X` using `Xflag_le_X (lf D (X.Fu u)) (j + 1) hx show σ (τ.symm x) - x ∈ _`. Rewrite using `[hτs x hxX]`.
+
+Conclude with `hσ.2.1 j x hx`. Establish `hτi' : τ.symm ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom _).inv_mem hτi`. Establish `hz : τ.symm y ∈ orth (VS D) (Xsp (lf D (X.Fu u)))` using `perp_pres (lf D (X.Fu u)) hτi' (fun x hx => by rw [LinearEquiv.symm_symm, hτX x hx]; exact hx) y hy`. Use `P1 _ hz` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+
+Use `show σ (τ.symm y) - y ∈ _`. Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ this`. Establish `hn'N : n' ∈ NRat (lf D (X.Fu u'))`. Use `⟨(Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).inv_mem hγ1) hτi) hγ1) hs'.1, fun j x hx => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hxX : x ∈ (X.Fu u').X` using `Xflag_le_X (lf D (X.Fu u')) (j + 1) hx`. Establish `hsx : s' x ∈ (X.Fu u').X` using `X_pres (lf D (X.Fu u')) hs'.2.1 x hxX`. Establish `h1x : t1.lin (s' x) ∈ t1.frame.fl.X` using `(mem_frameX Y t1 _).2 (by rw [LinearEquiv.symm_apply_apply]; exact hsx)`. Use `show t1.lin.symm (τ (t1.lin (s' x))) - x ∈ _`. Rewrite using `[hτX1 _ h1x, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `hs'.2.1 j x hx`. Establish `hsy : s' y ∈ orth (VS D) (Xsp (lf D (X.Fu u')))` using `perp_pres (lf D (X.Fu u')) hs'.1 (fun x hx => X_pres (lf D (X.Fu u')) hs''.2.1 x hx) y hy`. Establish `hv : t1.lin (s' y) ∈ Lat.orth (VS D) t1.frame.fl.X`. Use `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth _).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[show x = t1.lin (t1.lin.symm x) by simp, hγ1]`.
+
+Conclude with `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth _).1 hsy _ ((mem_frameX Y t1 x).1 hx)`. Establish `h` using `P2 _ hv`. Rewrite `h` using `[hςx, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Establish `h'` using `(mem_frameX Y t1 _).1 h`. Rewrite `h'` using `[map_sub, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `h'`. Establish `heq : t2.lin = n * t1.lin * n'`. Rewrite using `[he, hn, hn']`. Use `group`. Use extensionality with `δ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, m', hm', rfl⟩`. Use `⟨m * n⁻¹, NRat_mul _ hm (NRat_inv _ hnN), n'⁻¹ * m', NRat_mul _ (NRat_inv _ hn'N) hm', ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Use `group`.
+
+Introduce and unpack `⟨m, hm, m', hm', rfl⟩`. Use `⟨m * n, NRat_mul _ hm hnN, n' * m', NRat_mul _ hn'N hm', ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Use `group`.
+-/
 theorem lemmaG3_of_coefficients (hT : 3 ≤ Tu D u) (hT' : 3 ≤ Tu D u') (t0 t1 t2 : TauC Y u u') (h0 : Gt t0 ≠ 0) (h1 : Gt t1 ≠ 0)
     (h2 : Gt t2 ≠ 0) (hR1 : RelC Y u u' t0 t1) (hR2 : RelC Y u u' t0 t2) (hG1 : t1.G = t0.G) (hG2 : t2.G = t0.G)
     (σ s' : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hσ : σ ∈ SRat (lf D (X.Fu u))) (hs' : s' ∈ SRat (lf D (X.Fu u')))
@@ -99,6 +128,11 @@ theorem lemmaG3_of_coefficients (hT : 3 ≤ Tu D u) (hT' : 3 ≤ Tu D u') (t0 t1
     rw [heq]
     group
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hc t0 t1 t2 h0 h1 h2 hR1 hR2 hG1 hG2 hσs ha ha' => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, s', hs', he⟩` from `hσs`. Establish `hT : 3 ≤ Tu D u ∧ 3 ≤ Tu D u'` using `by clear * - hc`. Unfold `Ctx at hc`.
+
+Take `⟨-, -, -, h3, h3', -⟩` from `hc.2.1`. Conclude with `⟨h3, h3'⟩`. Conclude with `lemmaG3_of_coefficients Y hT.1 hT.2 t0 t1 t2 h0 h1 h2 hR1 hR2 hG1 hG2 σ s' hσ hs' he ha ha'`.
+-/
 theorem normalsLemmaG3_holds : UnitaryNormalVectorCount := by
   intro Cg cb Cw cT CT C0
   refine ⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hc t0 t1 t2 h0 h1 h2 hR1 hR2 hG1 hG2 hσs ha ha' => ?_⟩

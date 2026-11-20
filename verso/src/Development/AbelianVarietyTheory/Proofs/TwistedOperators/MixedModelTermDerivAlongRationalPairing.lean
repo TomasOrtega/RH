@@ -15,6 +15,19 @@ namespace GlobalTheory.MixedTerm.DerLaw
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1 : ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) = ∑ σ : D.host.E →+* ℂ, σ e`. Use `trace_eq_sum_embeddings (K := ℚ) (L := D.host.E) ℂ (x := e)` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom D.host.E ℂ) _ _ fun _ => rfl).symm`.
+
+Establish `hi` using `GlobalTheory.StdRat.tauE_injective D`. Establish `hcm` using `GlobalTheory.StdRat.tauE_cm D`. Establish `hb : Function.Bijective (Sum.elim (tauE D) fun t => ComplexEmbedding.conjugate (tauE D t))`. Establish `hc : ∀ σ : D.host.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Prove the components needed by the constructor for the conclusion.
+
+Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`. Conclude with `absurd ⟨a, h⟩ ((hcm (tauE D b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, h.symm⟩ ((hcm (tauE D a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact.
+
+Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`. Introduce `σ`. Distinguish the cases in `h : ∃ t, tauE D t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`.
+
+Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(hcm σ).2 h`. Conclude with `⟨Sum.inl t, ht⟩`. Establish `h4` using `hb.sum_comp fun σ : D.host.E →+* ℂ => σ e`. Rewrite `h4` using `[Fintype.sum_sum_type, ← h1]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq] at h4`. Rewrite using `[Finset.sum_add_distrib, h4]`.
+-/
 theorem sum_tauE_add_conj (D : D7) (e : D.host.E) :
     ∑ t, (tauE D t e + starRingEnd ℂ (tauE D t e)) = ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) := by
   classical
@@ -47,18 +60,33 @@ theorem sum_tauE_add_conj (D : D7) (e : D.host.E) :
   simp only [Sum.elim_inl, Sum.elim_inr, ComplexEmbedding.conjugate_coe_eq] at h4
   rw [Finset.sum_add_distrib, h4]
 
+/- English proof (translation)
+Rewrite using `[← sum_tauE_add_conj]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.add_conj]`.
+-/
 theorem sum_two_re_tauE (D : D7) (e : D.host.E) :
     ∑ t, (((2 * (tauE D t e).re : ℝ)) : ℂ) = ((Algebra.trace ℚ D.host.E e : ℚ) : ℂ) := by
   rw [← sum_tauE_add_conj]
   refine Finset.sum_congr rfl fun t _ => ?_
   rw [Complex.add_conj]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+-/
 theorem trace_map_mul (D : D7) (τ : D.what₂.Tau) {m n : ℕ} (P : Matrix (Fin m) (Fin n) D.host.E)
     (x : Matrix (Fin n) (Fin m) D.host.E) :
     Matrix.trace (P.map (tauE D τ) * x.map (tauE D τ)) = tauE D τ (Matrix.trace (P * x)) := by
   rw [← Matrix.map_mul]
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
+/- English proof (translation)
+Introduce `D V V' W r C C' B hiso hCC ψ hψ θ hθ μ 𝓨 hcov G hG x y`. Establish `hlin` using `GlobalTheory.T.mixedModelTerm_linear_thetaFunctions D V V' W r C C' B ψ hψ μ 𝓨 hcov y`. Establish `hder` using `fun τ => GlobalTheory.T.mixedModelTerm_derivative_isotropicDirection D V V' W r C C' B hiso hCC ψ hψ θ hθ μ 𝓨 hcov G hG τ (x.map (tauE D τ)) y`. Use `set f : D.what₂.Tau → WO V W → ℂ := fun τ => Formalism.IndefR.Datum.dRho (heisO ψ V W) θ τ (dirAt V W C τ (x.map (tauE D τ))) G with hf`. Establish `hft : ∀ τ, IsThetaFunO ψ V W (f τ)` using `fun τ => GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ _ hG`.
+
+Establish `hsum : ∀ s : Finset D.what₂.Tau, term ψ V V' W C C' B μ 𝓨 (∑ τ ∈ s, f τ) y = ∑ τ ∈ s, term ψ V V' W C C' B μ 𝓨 (f τ) y`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0` using `hlin.2 0 G hG`.
+
+Rewrite `h0` using `[zero_smul, zero_mul]`. Simplify using `using h0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hlin.1 _ _ (hft a) (GlobalTheory.Size.theta_finsetSum s fun i _ => hft i), ih]`. Use `show term ψ V V' W C C' B μ 𝓨 (∑ τ, f τ) y = _`.
+
+Rewrite using `[hsum, Finset.sum_congr rfl fun τ _ => hder τ, ← Finset.sum_mul, ← Finset.mul_sum]`. Use `congr 2`. Simplify using `only [trace_map_mul, sum_two_re_tauE, ratPair, Complex.ofReal_ratCast]`.
+-/
 theorem term_derAlong : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C C' : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → adj D C * V.gram * C' = 1 → ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ G : WO V W → ℂ, IsThetaFunO ψ V W G → ∀ x y : Matrix (Fin W.rank) (Fin r) D.host.E, term ψ V V' W C C' B μ 𝓨 (derAlong ψ θ V W C x G) y = (2 * Real.pi * Complex.I * (ratPair W y x : ℂ)) * term ψ V V' W C C' B μ 𝓨 G y := by
   intro D V V' W r C C' B hiso hCC ψ hψ θ hθ μ 𝓨 hcov G hG x y
   have hlin := GlobalTheory.T.mixedModelTerm_linear_thetaFunctions D V V' W r C C' B ψ hψ μ 𝓨 hcov y

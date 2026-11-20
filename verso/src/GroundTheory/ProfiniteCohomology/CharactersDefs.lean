@@ -32,6 +32,9 @@ def locallyConstantHomQZEquiv : locallyConstantHom G (AddCircle (1 : ℚ)) ≃+ 
 
 variable {G} in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem locallyConstantHomQZEquiv_apply (χ : locallyConstantHom G (AddCircle (1 : ℚ)))
     (g : Additive G) :
     locallyConstantHomQZEquiv G χ g = QZ.toAddCircle.symm (χ.1 g) :=

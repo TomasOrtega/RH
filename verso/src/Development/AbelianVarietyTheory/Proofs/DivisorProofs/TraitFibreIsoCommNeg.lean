@@ -12,6 +12,23 @@ open GlobalTheory.Mum GlobalTheory.ThetaMove
 
 namespace GlobalTheory.ThetaMove
 
+/- English proof (translation)
+Introduce `R _ _ _ D C W _ _ _ T F _ _ _ f hf1 hf2`. Establish `gB : IsGrpPullback T.A.A C.G (jK W ≫ T.ξ) (T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β)` using `((GlobalTheory.ThetaBaseChange.grp_generic T.U.toUnifPre).comp T.cart).congr rfl (by simp only [Category.assoc])`. Establish `gA` using `C.α_cart`. Establish `nfA : negT C.A.A (TFK (R` using `R) F) ≫ fst (TFK (R := R) F) C.A.A = fst _ _ := by unfold negT; exact lift_fst _ _`. Establish `nsA : negT C.A.A (TFK (R` using `R) F) ≫ snd (TFK (R := R) F) C.A.A = snd _ _ ≫ GrpObj.inv := by`.
+
+Unfold `negT`. Conclude with `lift_snd _ _`. Establish `nfB : negT T.A.A (TFK (R` using `W) F) ≫ fst (TFK (R := W) F) T.A.A = fst _ _ := by unfold negT; exact lift_fst _ _`. Establish `nsB : negT T.A.A (TFK (R` using `W) F) ≫ snd (TFK (R := W) F) T.A.A = snd _ _ ≫ GrpObj.inv := by`. Unfold `negT`.
+
+Conclude with `lift_snd _ _`. Establish `hw : f ≫ (TFK (R` using `R) F ⊗ C.A.A).hom ≫ C.gp = (TFK (R := W) F ⊗ T.A.A).hom ≫ jK W ≫ T.ξ := by`. Establish `e` using `congrArg (· ≫ C.G.hom) hf2`. Establish `wB` using `gB.1.w`. Simplify using `only [Category.assoc] at e wB`.
+
+Rewrite `e` using `[gA.1.w, wB, ← Category.assoc (snd (TFK (R := R) F) C.A.A).left, ← Category.assoc (snd (TFK (R := W) F) T.A.A).left, Over.w, Over.w]`. Conclude with `e`. Set `ρ : Over.mk ((TFK (R` to `W) F ⊗ T.A.A).hom ≫ jK W ≫ T.ξ) ⟶ Over.mk ((TFK (R := R) F ⊗ C.A.A).hom ≫ C.gp) := Over.homMk f hw`. Establish `key : ρ ≫ pushHom gA _ (snd _ _) = pushHom gB _ (snd _ _)` using `Over.OverMorphism.ext (by show f ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α = (snd (TFK (R := W) F) T.A.A).left ≫ _`. Conclude with `hf2)`.
+
+Establish `keyi : ρ ≫ pushHom gA _ (snd _ _ ≫ GrpObj.inv) = pushHom gB _ (snd _ _ ≫ GrpObj.inv)`. Establish `i1 : (snd (TFK (R` using `R) F) C.A.A ≫ GrpObj.inv) = (snd _ _)⁻¹ := rfl`. Establish `i2 : (snd (TFK (R` using `W) F) T.A.A ≫ GrpObj.inv) = (snd _ _)⁻¹ := rfl`. Rewrite using `[i1, i2, map_inv, map_inv, GrpObj.comp_inv, key]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `(f ≫ (negT C.A.A (TFK (R := R) F)).left) ≫ (fst (TFK (R := R) F) C.A.A).left = ((negT T.A.A (TFK (R := W) F)).left ≫ f) ≫ (fst (TFK (R := R) F) C.A.A).left`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, nfA, hf1, ← Over.comp_left, nfB]`. Express the relevant statement in the definitionally equal form `(f ≫ (negT C.A.A (TFK (R := R) F)).left) ≫ (snd (TFK (R := R) F) C.A.A).left = ((negT T.A.A (TFK (R := W) F)).left ≫ f) ≫ (snd (TFK (R := R) F) C.A.A).left`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, nsA]`. Apply `gA.1.hom_ext` to reduce the goal to its premises.
+
+Establish `k : f ≫ (snd (TFK (R` using `R) F) C.A.A ≫ GrpObj.inv).left ≫ C.α = (snd (TFK (R := W) F) T.A.A ≫ GrpObj.inv).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β := congrArg Over.Hom.left keyi`. Rewrite using `[Category.assoc, k]`. Simplify using `only [Category.assoc]`. Rewrite using `[hf2, ← Category.assoc (negT T.A.A (TFK (R := W) F)).left, ← Over.comp_left, nsB]`. Rewrite using `[Category.assoc, Over.w, Category.assoc, Category.assoc, Over.w]`.
+
+Rewrite using `[← Over.w (fst (TFK (R := R) F) C.A.A), ← Category.assoc, hf1, ← Category.assoc (negT T.A.A (TFK (R := W) F)).left, ← Over.comp_left, nfB]`.
+-/
 theorem negT_fibre_comm : ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {D : DegData R (maximalIdeal R)} (C : LabCover D) {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing W) F] (f : (TFK (R := W) F ⊗ T.A.A).left ⟶ (TFK (R := R) F ⊗ C.A.A).left) (hf1 : f ≫ (fst (TFK (R := R) F) C.A.A).left = (fst (TFK (R := W) F) T.A.A).left) (hf2 : f ≫ (snd (TFK (R := R) F) C.A.A).left ≫ C.α = (snd (TFK (R := W) F) T.A.A).left ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK W) ≫ T.β), f ≫ (negT C.A.A (TFK (R := R) F)).left = (negT T.A.A (TFK (R := W) F)).left ≫ f := by
   intro R _ _ _ D C W _ _ _ T F _ _ _ f hf1 hf2
   have gB : IsGrpPullback T.A.A C.G (jK W ≫ T.ξ)

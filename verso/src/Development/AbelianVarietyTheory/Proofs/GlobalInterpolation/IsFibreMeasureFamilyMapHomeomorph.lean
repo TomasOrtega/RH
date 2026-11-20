@@ -9,6 +9,19 @@ open scoped ENNReal TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V V' X X' _ _ _ _ _ _ _ _ _ _ _ _ e r μ ν f f' B fib hf h`. Take `⟨h1, h2, h3⟩` from `h`. Establish `he : MeasurableEmbedding e` using `e.measurableEmbedding`. Establish `hr : MeasurableEmbedding r` using `r.measurableEmbedding`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφ hc _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he.map_apply]`. Use `h1 (r.symm b) using 2` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, Set.inter_univ, Set.mem_singleton_iff, id, hf]`. Conclude with `not_congr r.eq_symm_apply.symm`.
+
+Use `h2 (fun v => φ (e v)) (hφ.comp he.measurable)` as an intermediate fact. Rewrite `this`, the goal using `[Measure.restrict_univ]`. Rewrite using `[he.lintegral_map, hr.lintegral_map, this]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[he.lintegral_map, r.symm_apply_apply]`.
+
+Take `⟨h4, h5⟩` from `h3 (φ ∘ e) (hφ.comp e.continuous) (hc.comp_homeomorph e) (Set.subset_univ _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[he.integrable_map_iff, r.symm_apply_apply]`. Conclude with `h4 b hb`.
+
+Establish `h6` using `h5.comp (s := r '' B) r.symm.continuous.continuousOn (by`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[r.symm_apply_apply]`. Conclude with `hb)`. Use `h6.congr fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp]`. Rewrite using `[he.integral_map]`.
+-/
 theorem isFibreFamily_map_homeomorph : ∀ (V V' X X' : Type) [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V] [TopologicalSpace V'] [MeasurableSpace V'] [BorelSpace V'] [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [TopologicalSpace X'] [MeasurableSpace X'] [BorelSpace X'] (e : V ≃ₜ V') (r : X ≃ₜ X') (μ : Measure V) (ν : Measure X) (f : V → X) (f' : V' → X') (B : Set X) (fib : X → Measure V), (∀ v, f' (e v) = r (f v)) → IsFibreFamily μ f id Set.univ ν B fib → IsFibreFamily (μ.map e) f' id Set.univ (ν.map r) (r '' B) fun b => (fib (r.symm b)).map e := by
   intro V V' X X' _ _ _ _ _ _ _ _ _ _ _ _ e r μ ν f f' B fib hf h
   obtain ⟨h1, h2, h3⟩ := h

@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory.ProductZpowAdd
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun j _ => zpow_add₀ (hx j) _ _`.
+-/
 theorem prod_zpow_add {F : Type} [inst : Field F] {d : ℕ} (x : Fin (d + 1) → F)
     (hx : ∀ i : Fin (d + 1), x i ≠ 0) (m n : Fin (d + 1) → ℤ) :
     ∏ j : Fin (d + 1), x j ^ (m j + n j)

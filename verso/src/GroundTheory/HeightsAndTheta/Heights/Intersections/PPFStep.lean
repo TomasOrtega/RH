@@ -18,6 +18,13 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Establish `e : A'.h = A.h ∘ fun z' p => z' (v p)` using `funext h.2`. Unfold `IsSmoothHerm`. Rewrite using `[e]`. Use `hA.comp (contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)).contDiffOn ?_` and prove the remaining obligations. Introduce `z' hz'`.
+
+Simplify using `only [Set.mem_ofPred_eq] at hz' ⊢`. Introduce `k`. Take `⟨i', hi'⟩` from `hz' (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hv.1 (by rw [← hv.2.2.1 p, hp])`.
+
+Take `⟨pk, pi⟩` from `p`. Simplify using `only at h2`. Substitute `h2` using the available equality. Conclude with `⟨pi, by rw [hp]; exact hi'⟩`.
+-/
 theorem isSmoothHerm_of_isPullHerm' {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {A : HermLine ι} {A' : HermLine ι'} (hA : IsSmoothHerm A) (h : IsPullHerm κ v A A') :
     IsSmoothHerm A' := by
@@ -36,6 +43,15 @@ theorem isSmoothHerm_of_isPullHerm' {κ : K → K'} {v : (Σ k, ι k) → (Σ k'
   subst h2
   exact ⟨pi, by rw [hp]; exact hi'⟩
 
+/- English proof (translation)
+Take `⟨f, hfQ, hfP⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hle hne)`. Use `hP.2.1.1` as an intermediate fact. Establish `hf0 : Ideal.Quotient.mk P f ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hf0)`. Establish `h2 : ringKrullDim (MRing ι ⧸ Q) ≤ ringKrullDim ((MRing ι ⧸ P) ⧸ Ideal.span {Ideal.Quotient.mk P f})`.
+
+Use `ringKrullDim_le_of_surjective (Ideal.Quotient.lift _ (Ideal.Quotient.factor hle) ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Rewrite using `[map_mul, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.mpr hfQ, mul_zero]`. Introduce `z`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨Ideal.Quotient.mk _ (Ideal.Quotient.mk P z), rfl⟩`. Rewrite `h1` using `[hP.2.2.2]`. Rewrite `h2` using `[hQ.2.2.2]`. Establish `h3 : ((d₀ + Fintype.card K : ℕ) : WithBot ℕ∞) + 1 ≤ ((d + Fintype.card K : ℕ) : WithBot ℕ∞)` using `le_trans (by gcongr) h1`.
+
+Establish `h4 : ((d₀ + Fintype.card K + 1 : ℕ) : WithBot ℕ∞) ≤ ((d + Fintype.card K : ℕ) : WithBot ℕ∞)`. Conclude with `h3` after adjusting the coercions. Establish `h5 : d₀ + Fintype.card K + 1 ≤ d + Fintype.card K` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem arithDim_lt_of_lt {P Q : Ideal (MRing ι)} {d d₀ : ℕ} (hP : IsArithVar P d) (hQ : IsArithVar Q d₀)
     (hle : P ≤ Q) (hne : P ≠ Q) : d₀ < d := by
   obtain ⟨f, hfQ, hfP⟩ := SetLike.exists_of_lt (lt_of_le_of_ne hle hne)
@@ -62,6 +78,19 @@ theorem arithDim_lt_of_lt {P Q : Ideal (MRing ι)} {d d₀ : ℕ} (hP : IsArithV
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `I hI r hr`. Use `hSec I hI r ?_` and prove the remaining obligations. Introduce `K _ ι _ K' _ ι' _ κ v P' d G J L L' N s a hv hP' hP hJ hL hL' hN ha hs hsP`. Establish `hP1 : IsArithVar P' (d + r + 1)` using `hP'`. Establish `hsec : IsSectionOn P' (N (Fin.last r)) s` using `⟨a, ha, hs, hsP⟩`.
+
+Establish `hM : ∀ j, IsSmoothHerm (Fin.append L' (Fin.init N) j)`. Introduce `j`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left i => rw [Fin.append_left]`. Conclude with `isSmoothHerm_of_isPullHerm' hv (hL i) (hL' i)`.
+
+Consider the case `right i => rw [Fin.append_right]`. Conclude with `hN _`. Establish `hR` using `(hI K' ι').2.2 P' (d + r) (Fin.append L' (Fin.init N)) (N (Fin.last r)) s a hP1 hM (hN _) ha hs hsP`. Rewrite `hR` using `[← Fin.append_snoc, Fin.snoc_init_self]`. Use `hR.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[recR_eq, hInt K ι K' ι' κ v P' d r L L' (Fin.init N) (N (Fin.last r)) s hv hP1 hP hL hL', sub_zero, cycR, ← hSum K ι K' ι' κ v P' d r G J N s a hv hP1 hP hJ ha hs hsP, finsum_mem_mul]`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hh : IsHorizontal W`. Establish `hWa : IsArithVar W (d + r)` using `(divSuppArith K' ι' P' (d + r) (N (Fin.last r)) s W hP1 hsec hW).1 hh`. Distinguish the cases in `hd : imageZ v W = imageZ v P'`.
+
+Rewrite using `[if_pos hh, if_pos ⟨hh, hd⟩, hHor I r hr K ι K' ι' κ v P' W d G J L L' (Fin.init N) hv hWa hd hP hJ hL hL' (fun j => hN _)]`. Conclude with `(mul_assoc _ _ _).symm`. Rewrite using `[if_pos hh, if_neg (fun h => hd h.2), mul_zero, zero_mul]`. Take `⟨d₀, -, hd₀⟩` from `hIm K ι K' ι' κ v W (d + r) hP.1 hv hWa`. Establish `hle : imageZ v P' ≤ imageZ v W` using `Ideal.comap_mono (le_sup_left.trans hW.1.1.2)`.
+
+Rewrite using `[hCM I hI K ι K' ι' κ v W d₀ d r L L' (Fin.init N) hv hWa hd₀ (arithDim_lt_of_lt hP hd₀ hle (Ne.symm hd)) hL hL' (fun j => hN _), mul_zero]`. Rewrite using `[if_neg hh, if_neg (fun h => hh h.1), hVert K ι K' ι' κ v P' d r L L' (Fin.init N) s a W hv hP1 hP hL' hs hsP hW hh]`. Simplify using the standard rewrite rules.
+-/
 theorem PFStep.proof (hSec : PFSecRed.Statement) (hVert : PFVert.Statement) (hInt : PFIntZero.Statement)
     (hHor : PFHoriz.Statement) (hSum : PFFibreSum.Statement) (hIm : ImageArithStatement) (hCM : ContractMixedStatement) : PFStep.Statement := by
   intro I hI r hr

@@ -18,6 +18,9 @@ variable {V U W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Modul
   {ρ : Representation ℂ (GL (Fin n) F) U} {σ : Representation ℂ (GL (Fin n) F) W}
   {ω : GL (Fin n) F → ℂ}
 
+/- English proof (translation)
+Take `⟨K, hKc, hKo, f, hf, v, hv, w₀, hw₀⟩` from `exists_coeffSum_ne_zero hπ hsc hωπ`. Take `⟨c, hc⟩` from `exists_coeffSum_eq_smul hπ hsc hKo hωπ hf hv`. Use `⟨K, hKc, hKo, f, hf, v, hv, c, fun h0 => hw₀ ?_, hc⟩` and prove the remaining obligations. Rewrite using `[hc, h0, zero_smul]`.
+-/
 theorem exists_coeffSum_eq_smul_ne_zero [π.IsIrreducible] (hπ : IsSmooth π)
     (hsc : IsSupercuspidal π) (hωπ : HasCentralChar π ω) :
     ∃ K : Subgroup (GL (Fin n) F), IsCompact (K : Set (GL (Fin n) F)) ∧
@@ -28,6 +31,9 @@ theorem exists_coeffSum_eq_smul_ne_zero [π.IsIrreducible] (hπ : IsSmooth π)
   refine ⟨K, hKc, hKo, f, hf, v, hv, c, fun h0 => hw₀ ?_, hc⟩
   rw [hc, h0, zero_smul]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨u, rfl⟩` from `hp y`. Use `Subgroup.isOpen_mono (fun g hg => ?_) (hρ u)` and prove the remaining obligations. Rewrite `hg`, the goal using `[mem_stabilizerOf]`. Rewrite using `[← Representation.IntertwiningMap.isIntertwining, hg]`.
+-/
 theorem isSmooth_of_surjective (hρ : IsSmooth ρ) (p : Representation.IntertwiningMap ρ σ)
     (hp : Surjective p) : IsSmooth σ := by
   intro y
@@ -36,6 +42,13 @@ theorem isSmooth_of_surjective (hρ : IsSmooth ρ) (p : Representation.Intertwin
   rw [mem_stabilizerOf] at hg ⊢
   rw [← Representation.IntertwiningMap.isIntertwining, hg]
 
+/- English proof (translation)
+Take `⟨K, hKc, hKo, f, hf, v, hv, c, hc0, hc⟩` from `exists_coeffSum_eq_smul_ne_zero hπ hsc hωπ`. Take `⟨u₀, hu₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `hω : ∀ z ∈ Subgroup.center (GL (Fin n) F), ω z⁻¹ * ω z = 1` using `fun z hz => hωπ.inv_mul hu₀ hz`. Establish `hσ` using `isSmooth_of_surjective hρ p hp`. Establish `hφv : φ v ∈ fixedVectors σ K` using `map_mem_fixedVectors π φ hv`.
+
+Take `⟨u, hu⟩` from `fixedMap_surjective hρ hσ hKc hKo hp ⟨φ v, hφv⟩`. Establish `hpu : p (u : U) = φ v` using `congrArg Subtype.val hu`. Use `⟨c⁻¹ • coeffMap hπ hsc hKo hωπ hωρ hω hf u.2, ?_⟩` and prove the remaining obligations. Use `Representation.IntertwiningMap.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p (c⁻¹ • coeffSum π ρ K f (u : U) w) = φ w`.
+
+Rewrite using `[map_smul, map_coeffSum hπ hsc hKo hf, hpu, ← map_coeffSum hπ hsc hKo hf, hc, map_smul, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+-/
 theorem exists_lift_of_isSupercuspidal [π.IsIrreducible] (hπ : IsSmooth π)
     (hsc : IsSupercuspidal π) (hωπ : HasCentralChar π ω) (hρ : IsSmooth ρ)
     (hωρ : HasCentralChar ρ ω) (p : Representation.IntertwiningMap ρ σ) (hp : Surjective p)
@@ -65,6 +78,9 @@ def pairingSum (K : Subgroup (GL (Fin n) F)) (ψ : Module.Dual ℂ W) (v : V) (b
 
 variable {K : Subgroup (GL (Fin n) F)} {ψ : Module.Dual ℂ W} {v : V}
 
+/- English proof (translation)
+The claim follows from `finite_support_centerSup (Φ := fun g => ψ (σ g⁻¹ b) * (ũ : Module.Dual ℂ V) (π g v)) hKo (isCompactModCenter_matrixCoeff hπ hsc v ũ.2) fun g h0 => by change (ũ : Module.Dual ℂ V) (π g v) = 0 at h0 simp only [h0, mul_zero]`.
+-/
 theorem finite_support_pairingSum (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
     (hKo : IsOpen (K : Set (GL (Fin n) F))) (b : W) (ũ : smoothVectors (Representation.dual π)) :
     HasFiniteSupport fun q : GL (Fin n) F ⧸ centerSup K =>
@@ -74,6 +90,11 @@ theorem finite_support_pairingSum (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
       change (ũ : Module.Dual ℂ V) (π g v) = 0 at h0
       simp only [h0, mul_zero]
 
+/- English proof (translation)
+Use `rightInv_centerSup (Φ := fun g => ψ (σ g⁻¹ b) * (ũ : Module.Dual ℂ V) (π g v)) (fun g z hz => ?_) (fun g k hk => ?_)` and prove the remaining obligations. Establish `e1 : σ (g * z)⁻¹ b = ω z⁻¹ • σ g⁻¹ b`. Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply, hωσ _ (inv_mem hz)]`. Establish `e2 : π (g * z) v = ω z • π g v`. Rewrite using `[map_mul, Module.End.mul_apply, hωπ z hz, map_smul]`.
+
+Simplify using `only [e1, e2, map_smul, smul_eq_mul]`. Take the linear combination `ψ (σ g⁻¹ b) * (ũ : Module.Dual ℂ V) (π g v) * hω z hz`. Establish `e1 : σ (g * k)⁻¹ b = σ k⁻¹ (σ g⁻¹ b)`. Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply]`. Simplify using `only [e1, hψ _ (inv_mem hk), map_mul, Module.End.mul_apply, hv k hk]`.
+-/
 theorem pairingSum_summand_rightInv (hωπ : HasCentralChar π ω) (hωσ : HasCentralChar σ ω)
     (hω : ∀ z ∈ Subgroup.center (GL (Fin n) F), ω z⁻¹ * ω z = 1)
     (hψ : ∀ k ∈ K, ∀ x, ψ (σ k x) = ψ x) (hv : v ∈ fixedVectors π K) (b : W)
@@ -102,6 +123,9 @@ include hπ hsc hωπ hωσ hω hKo hψ hv
 
 omit hπ hsc hKo in
 
+/- English proof (translation)
+Unfold `pairingSum`. Rewrite using `[← quotSum_mul_left (pairingSum_summand_rightInv hωπ hωσ hω hψ hv (σ h b) ũ) h]`. Use `quotSum_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[contragredient_apply_apply, inv_inv, mul_inv_rev, map_mul, Module.End.mul_apply, ← Module.End.mul_apply (σ h⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_mul, Module.End.mul_apply]`.
+-/
 theorem pairingSum_act (h : GL (Fin n) F) (b : W) (ũ : smoothVectors (Representation.dual π)) :
     pairingSum π σ K ψ v (σ h b) ũ = pairingSum π σ K ψ v b (contragredient π h⁻¹ ũ) := by
   unfold pairingSum
@@ -112,6 +136,9 @@ theorem pairingSum_act (h : GL (Fin n) F) (b : W) (ũ : smoothVectors (Represent
     map_mul, Module.End.mul_apply]
 
 omit hωπ hωσ hω hψ hv in
+/- English proof (translation)
+Unfold `pairingSum quotSum`. Rewrite using `[← finsum_add_distrib (finite_support_pairingSum hπ hsc hKo b ũ₁) (finite_support_pairingSum hπ hsc hKo b ũ₂)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, LinearMap.add_apply, mul_add]`.
+-/
 theorem pairingSum_add (b : W) (ũ₁ ũ₂ : smoothVectors (Representation.dual π)) :
     pairingSum π σ K ψ v b (ũ₁ + ũ₂) = pairingSum π σ K ψ v b ũ₁ + pairingSum π σ K ψ v b ũ₂ := by
   unfold pairingSum quotSum
@@ -121,6 +148,9 @@ theorem pairingSum_add (b : W) (ũ₁ ũ₂ : smoothVectors (Representation.dual
   simp only [Submodule.coe_add, LinearMap.add_apply, mul_add]
 
 omit hωπ hωσ hω hψ hv in
+/- English proof (translation)
+Unfold `pairingSum quotSum`. Rewrite using `[smul_finsum' c (finite_support_pairingSum hπ hsc hKo b ũ)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [SetLike.val_smul, LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairingSum_smul (b : W) (c : ℂ) (ũ : smoothVectors (Representation.dual π)) :
     pairingSum π σ K ψ v b (c • ũ) = c • pairingSum π σ K ψ v b ũ := by
   unfold pairingSum quotSum
@@ -130,6 +160,9 @@ theorem pairingSum_smul (b : W) (c : ℂ) (ũ : smoothVectors (Representation.du
   ring
 
 omit hωπ hωσ hω hψ hv in
+/- English proof (translation)
+Unfold `pairingSum quotSum`. Rewrite using `[← finsum_add_distrib (finite_support_pairingSum hπ hsc hKo b₁ ũ) (finite_support_pairingSum hπ hsc hKo b₂ ũ)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [map_add, add_mul]`.
+-/
 theorem pairingSum_add_left (b₁ b₂ : W) (ũ : smoothVectors (Representation.dual π)) :
     pairingSum π σ K ψ v (b₁ + b₂) ũ = pairingSum π σ K ψ v b₁ ũ + pairingSum π σ K ψ v b₂ ũ := by
   unfold pairingSum quotSum
@@ -139,6 +172,9 @@ theorem pairingSum_add_left (b₁ b₂ : W) (ũ : smoothVectors (Representation.
   simp only [map_add, add_mul]
 
 omit hωπ hωσ hω hψ hv in
+/- English proof (translation)
+Unfold `pairingSum quotSum`. Rewrite using `[smul_finsum' c (finite_support_pairingSum hπ hsc hKo b ũ)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairingSum_smul_left (c : ℂ) (b : W) (ũ : smoothVectors (Representation.dual π)) :
     pairingSum π σ K ψ v (c • b) ũ = c • pairingSum π σ K ψ v b ũ := by
   unfold pairingSum quotSum
@@ -154,6 +190,11 @@ def pairingForm (b : W) : Module.Dual ℂ (smoothVectors (Representation.dual π
   map_add' := pairingSum_add hπ hsc hKo b
   map_smul' c ũ := pairingSum_smul hπ hsc hKo b c ũ
 
+/- English proof (translation)
+Rewrite using `[mem_smoothVectors]`. Use `Subgroup.isOpen_mono (fun h hh => ?_) (hσ b)` and prove the remaining obligations. Rewrite `hh`, the goal using `[mem_stabilizerOf]`. Use `LinearMap.ext fun ũ => ?_` and prove the remaining obligations. Rewrite using `[dual_apply_apply]`.
+
+Express the relevant statement in the definitionally equal form `pairingSum π σ K ψ v b (contragredient π h⁻¹ ũ) = pairingSum π σ K ψ v b ũ`. Rewrite using `[← pairingSum_act hωπ hωσ hω hψ hv, hh]`.
+-/
 theorem pairingForm_mem (hσ : IsSmooth σ) (b : W) :
     pairingForm (σ := σ) hπ hsc hKo (K := K) (ψ := ψ) (v := v) b ∈
       smoothVectors (Representation.dual (contragredient π)) := by
@@ -180,6 +221,9 @@ def pairingMap (hπ : IsSmooth π) (hsc : IsSupercuspidal π) (hωπ : HasCentra
     exact pairingSum_act hωπ hωσ hω hψ hv h b ũ)
 
 omit hπ hsc hωπ hωσ hω hKo hψ hv in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairingMap_apply_apply (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
     (hωπ : HasCentralChar π ω) (hωσ : HasCentralChar σ ω)
     (hω : ∀ z ∈ Subgroup.center (GL (Fin n) F), ω z⁻¹ * ω z = 1)
@@ -192,6 +236,21 @@ theorem pairingMap_apply_apply (hπ : IsSmooth π) (hsc : IsSupercuspidal π)
 
 end Injective
 
+/- English proof (translation)
+Take `⟨K, hKc, hKo, f, hf, v, hv, c, hc0, hc⟩` from `exists_coeffSum_eq_smul_ne_zero hπ hsc hωπ`. Take `⟨u₀, hu₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `hω : ∀ z ∈ Subgroup.center (GL (Fin n) F), ω z⁻¹ * ω z = 1` using `fun z hz => hωπ.inv_mul hu₀ hz`. Take `⟨l, hl⟩` from `LinearMap.exists_leftInverse_of_injective i.toLinearMap (LinearMap.ker_eq_bot.2 hi)`. Set `ψ : Module.Dual ℂ W` to `(f ∘ₗ φ.toLinearMap ∘ₗ l) ∘ₗ (fixedVectors σ K).subtype ∘ₗ fixedProj σ hσ hKc hKo`.
+
+Establish `hψ : ∀ k ∈ K, ∀ x, ψ (σ k x) = ψ x` using `fun k hk x => by`. Simplify using `only [ψ, LinearMap.comp_apply, fixedProj_apply_act hσ hKc hKo hk]`. Establish `hψi : ∀ u, ψ (i u) = f (φ u)`. Establish `h` using `eq_of_invariant_of_eqOn hρ hKc hKo (f := ψ ∘ₗ i.toLinearMap) (g := f ∘ₗ φ.toLinearMap) (fun k hk u => by`. Simplify using `only [LinearMap.comp_apply, Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining, hψ k hk])`.
+
+Use the proof step `(fun k hk u => by`. Simplify using `only [LinearMap.comp_apply, Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining, hf k hk])`. Use the proof step `(fun u hu => by`. Establish `hiu : i u ∈ fixedVectors σ K` using `map_mem_fixedVectors ρ i hu`. Establish `hl' : l (i u) = u` using `LinearMap.congr_fun hl u`.
+
+Simplify using `only [ψ, LinearMap.comp_apply, Representation.IntertwiningMap.toLinearMap_apply, Submodule.subtype_apply, fixedProj_apply_of_mem hσ hKc hKo hiu, hl'])`. Conclude with `fun u => LinearMap.congr_fun h u`. Establish `hπa` using `isAdmissible_of_isIrreducible hπ`. Set `e` to `(toDoubleContragredient hπa.1).ofBijective (toDoubleContragredient_bijective hπa)`. Set `Φ₀` to `pairingMap hπ hsc hωπ hωσ hω hKo hψ hv hσ`.
+
+Use `⟨c⁻¹ • (e.symm.toIntertwiningMap.comp Φ₀), ?_⟩` and prove the remaining obligations. Establish `key : ∀ u, Φ₀ (i u) = c • toDoubleContragredient hπa.1 (φ u)` using `fun u => Subtype.ext (LinearMap.ext fun ũ => by`. Rewrite using `[pairingMap_apply_apply]`. Express the relevant statement in the definitionally equal form `pairingSum π σ K ψ v (i u) ũ = c * (ũ : Module.Dual ℂ V) (φ u)`. Unfold `pairingSum`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Representation.IntertwiningMap.isIntertwining, hψi, Representation.IntertwiningMap.isIntertwining, map_smul, smul_eq_mul]`. Use `_ = (ũ : Module.Dual ℂ V) (coeffSum π π K f v (φ u)) := (linearMap_finsum _ (finite_support_coeffSum hπ hsc hKo hf (φ u))).symm`. Use `_ = c * (ũ : Module.Dual ℂ V) (φ u) := by rw [hc, map_smul, smul_eq_mul])`. Use `Representation.IntertwiningMap.ext (LinearMap.ext fun u => ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `c⁻¹ • e.symm (Φ₀ (i u)) = φ u`. Rewrite using `[key, map_smul]`. Express the relevant statement in the definitionally equal form `c⁻¹ • c • e.symm (e (φ u)) = φ u`. Rewrite using `[Representation.Equiv.symm_apply_apply, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+-/
 theorem exists_extend_of_isSupercuspidal [π.IsIrreducible] (hπ : IsSmooth π)
     (hsc : IsSupercuspidal π) (hωπ : HasCentralChar π ω) (hρ : IsSmooth ρ) (hσ : IsSmooth σ)
     (hωσ : HasCentralChar σ ω) (i : Representation.IntertwiningMap ρ σ) (hi : Injective i)

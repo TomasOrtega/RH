@@ -20,12 +20,18 @@ noncomputable def cupPairingCochains (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r +
     (cochainsComplex A).X r →ₗ[k] (cochainsComplex B).X s →ₗ[k] (cochainsComplex C).X n :=
   (cupLocallyConstant h).compr₂ ((cochainsMap μ).f n).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainOf_cupPairingCochains (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n)
     (x : (cochainsComplex A).X r) (y : (cochainsComplex B).X s) :
     cochainOf C (cupPairingCochains μ h x y) =
       fun σ => μ.hom (cupCochain h (cochainOf A x) (cochainOf B y) σ) :=
   rfl
 
+/- English proof (translation)
+Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_add, cochainOf_smul]`. Conclude with `(cochainOf_d _).trans ((d_cupCochain h _ _).trans (by`. Rewrite using `[← cochainOf_d, ← cochainOf_d]`. Use the proof step `rfl))`.
+-/
 theorem d_cupLocallyConstant {r s n : ℕ} (h : r + s = n) (x : (cochainsComplex A).X r)
     (y : (cochainsComplex B).X s) :
     ((cochainsComplex (A ⊗ B)).d n (n + 1)).hom (cupLocallyConstant h x y) =
@@ -50,6 +56,11 @@ noncomputable def cupLeibniz (μ : A ⊗ B ⟶ C) :
     rw [hom_apply_hom_apply_eq_of_comp_eq ((cochainsMap μ).comm n (n + 1)),
       d_cupLocallyConstant, map_add, map_smul]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Use `((cupLeibniz μ).homology_homologyπ h x y).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cupPairing_cohomologyπ μ h x y).symm` and prove the remaining obligations. Use `congr 1`.
+
+Apply `iCycles_hom_injective` to reduce the goal to its premises. Rewrite using `[LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply]`. Conclude with `congrArg ((cochainsMap μ).f n).hom (cocycleι_cupCocycles h x y).symm`.
+-/
 theorem cupLeibniz_homology (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n) (x : cohomology A r)
     (y : cohomology B s) : (cupLeibniz μ).homology h x y = cupPairing μ h x y := by
   obtain ⟨x, rfl⟩ := homologyπ_hom_surjective _ r x
@@ -84,10 +95,18 @@ noncomputable def pi : LeibnizPairing (piComplex K) (piComplex N) (piComplex P) 
     rw [piComplex_d_hom_apply, piComplex_d_hom_apply]
     exact (μs v).leibniz h (x v) (y v)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pi_μ_apply {r s n : ℕ} (h : r + s = n) (x : (piComplex K).X r) (y : (piComplex N).X s)
     (v : ι) : (pi μs).μ h x y v = (μs v).μ h (x v) (y v) :=
   rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `homologyπ_hom_surjective _ r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective _ s y`. Rewrite using `[piHomologyIso_hom_apply, piHomologyIso_hom_apply, piHomologyIso_hom_apply, homology_homologyπ, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+
+Rewrite using `[iCycles_cyclesMap_apply, iCycles_cycles, iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem piHomologyIso_hom_pi_homology {r s n : ℕ} (h : r + s = n)
     (x : (piComplex K).homology r) (y : (piComplex N).homology s) (v : ι) :
     (piHomologyIso P n).hom.hom ((pi μs).homology h x y) v =
@@ -115,6 +134,11 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   [∀ v, IsDiscreteRep (Cᵥ v)] {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v}
   {b : ∀ v, Rep.res (φ v).toMonoidHom B ⟶ Bᵥ v} {c : ∀ v, Rep.res (φ v).toMonoidHom C ⟶ Cᵥ v}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Express the relevant statement in the definitionally equal form `(c v).hom (μ.hom (cupCochain h (cochainOf A x) (cochainOf B z) (⇑(φ v).toMonoidHom ∘ σ))) = (μᵥ v).hom (cupCochain h (fun τ => (a v).hom (cochainOf A x (⇑(φ v).toMonoidHom ∘ τ))) (fun τ => (b v).hom (cochainOf B z (⇑(φ v).toMonoidHom ∘ τ))) σ)`. Rewrite using `[cupCochain_apply, cupCochain_apply, ← Rep.hom_comm_apply, partialProd_comp_monoidHom]`.
+
+Conclude with `congrArg (fun F : Rep.res (φ v).toMonoidHom (A ⊗ B) ⟶ Cᵥ v => F.hom ((cochainOf A x fun i => (⇑(φ v).toMonoidHom ∘ σ) ⟨i, by omega⟩) ⊗ₜ[k] B.ρ ((φ v).toMonoidHom (Fin.partialProd σ ⟨r, by omega⟩)) (cochainOf B z fun j => (⇑(φ v).toMonoidHom ∘ σ) ⟨r + j, by omega⟩) : (A ⊗ B : Rep …`.
+-/
 theorem localRes_cupPairingCochains (μ : A ⊗ B ⟶ C) (μᵥ : ∀ v, Aᵥ v ⊗ Bᵥ v ⟶ Cᵥ v)
     (hμ : ∀ v, (Rep.resFunctor (φ v).toMonoidHom).map μ ≫ c v =
       resTensorHom (φ v).toMonoidHom (a v) (b v) ≫ μᵥ v)

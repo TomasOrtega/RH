@@ -31,6 +31,9 @@ noncomputable def chosenCoverData (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAd
     MaxContactReduction.FiniteOpenCoverWithIdeals T :=
   MaxContactReduction.maxContactCover T hv.locallyOfFiniteType (balancedTunedIdeal T hv) (tunedMult T)
 
+/- English proof (translation)
+Establish `he : MaxContactReduction.maxContactCover T hft W μ = h.choose` using `dif_pos h`. Rewrite using `[he]`. Conclude with `h.choose_spec`.
+-/
 theorem isMaxContactCover_maxContactCover (T : MarkedIdealWithBoundary.{u})
     (hft : LocallyOfFiniteType T.structMap) (W : T.scheme.IdealSheafData) (μ : ℕ)
     (h : ∃ D : MaxContactReduction.FiniteOpenCoverWithIdeals T, MaxContactReduction.IsMaxContactCover T D hft W μ) :
@@ -39,6 +42,9 @@ theorem isMaxContactCover_maxContactCover (T : MarkedIdealWithBoundary.{u})
   rw [he]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `isMaxContactCover_maxContactCover T hv.locallyOfFiniteType (balancedTunedIdeal T hv) (tunedMult T) h`.
+-/
 theorem isMaxContactCover_chosenCoverData (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible)
     (h : ∃ D : MaxContactReduction.FiniteOpenCoverWithIdeals T,
       MaxContactReduction.IsMaxContactCover T D hv.locallyOfFiniteType (balancedTunedIdeal T hv) (tunedMult T)) :
@@ -50,9 +56,15 @@ theorem isMaxContactCover_chosenCoverData (T : MarkedIdealWithBoundary.{u}) (hv 
     (chosenCoverData T hv).disjointUnion ⟶ T.scheme :=
   (chosenCoverData T hv).disjointUnionMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coverMap_eq_sigmaOpensDesc (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     coverMap T hv = sigmaOpensDesc T.scheme (chosenCoverData T hv).opens := rfl
 
+/- English proof (translation)
+Rewrite using `[coverMap_eq_sigmaOpensDesc]`. Conclude with `etale_sigmaOpensDesc T.scheme (chosenCoverData T hv).opens`.
+-/
 theorem etale_coverMap_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     Etale (coverMap T hv) := by
   rw [coverMap_eq_sigmaOpensDesc]
@@ -62,6 +74,9 @@ instance instEtaleCoverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissibl
     Etale (coverMap T hv) :=
   etale_coverMap_of_isAdmissible T hv
 
+/- English proof (translation)
+Establish `: Etale (coverMap T hv)` using `etale_coverMap_of_isAdmissible T hv`. Use `infer_instance`.
+-/
 theorem smooth_coverMap_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     AlgebraicGeometry.Smooth (coverMap T hv) := by
   have : Etale (coverMap T hv) := etale_coverMap_of_isAdmissible T hv
@@ -71,6 +86,9 @@ instance instSmoothCoverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissib
     AlgebraicGeometry.Smooth (coverMap T hv) :=
   smooth_coverMap_of_isAdmissible T hv
 
+/- English proof (translation)
+Establish `: Etale (coverMap T hv)` using `etale_coverMap_of_isAdmissible T hv`. Use `infer_instance`.
+-/
 theorem flat_coverMap_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     AlgebraicGeometry.Flat (coverMap T hv) := by
   have : Etale (coverMap T hv) := etale_coverMap_of_isAdmissible T hv
@@ -80,6 +98,9 @@ instance instFlatCoverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible
     AlgebraicGeometry.Flat (coverMap T hv) :=
   flat_coverMap_of_isAdmissible T hv
 
+/- English proof (translation)
+Rewrite using `[coverMap_eq_sigmaOpensDesc]`. Conclude with `locallyOfFiniteType_sigmaOpensDesc T.scheme (chosenCoverData T hv).opens`.
+-/
 theorem locallyOfFiniteType_coverMap (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     LocallyOfFiniteType (coverMap T hv) := by
   rw [coverMap_eq_sigmaOpensDesc]
@@ -96,24 +117,45 @@ instance instLocallyOfFiniteTypeCoverMap (T : MarkedIdealWithBoundary.{u}) (hv :
 noncomputable def coverTriple (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) : MarkedIdealWithBoundary.{u} :=
   (chosenCoverData T hv).markedTriple (balancedTunedIdeal T hv) (tunedMult T)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_scheme (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).scheme = (chosenCoverData T hv).disjointUnion := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_baseField (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).base = T.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_structureMorphism (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).structMap = coverMap T hv ≫ T.structMap := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_ideal (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).ideal = (balancedTunedIdeal T hv).comap (coverMap T hv) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_mult (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).mult = tunedMult T := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_boundary (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).boundary = T.boundary.map (fun D => D.comap (coverMap T hv)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coverTriple_dim (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) :
     (coverTriple T hv).krullDimSucc = krullDimSucc (chosenCoverData T hv).disjointUnion := rfl
 
@@ -123,11 +165,19 @@ noncomputable def coverMarkedBlowupData (T : MarkedIdealWithBoundary.{u}) (hv : 
       (coverTriple T hv).mult (coverTriple T hv).boundary :=
   MaxContactReduction.reduceAlongHypersurface hinv T rc (coverTriple T hv) (coverMaxContactIdeal T hv)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cover_eq_reduceAlongHypersurface (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hinv : ComapIsoInvariance.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) :
     coverMarkedBlowupData T hv hinv rc =
       MaxContactReduction.reduceAlongHypersurface hinv T rc (coverTriple T hv) (coverMaxContactIdeal T hv) := rfl
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ e : BlowupSequenceData T.scheme, IsStrictPullbackBlowupSeq φ s.toBlowupSequenceData.toSequenceOfBlowups e.toSequenceOfBlowups`. Establish `he : MaxContactReduction.descendStrictPullback T S φ s = some hex.choose` using `dif_pos hex`. Rewrite `hd` using `[he]`. Establish `h2 : hex.choose = d` using `Option.some.inj hd`. Conclude with `h2 ▸ hex.choose_spec`.
+
+Establish `he : MaxContactReduction.descendStrictPullback T S φ s = none` using `dif_neg hex`. Rewrite `hd` using `[he]`. Simplify using `at hd`.
+-/
 theorem isStrictPullbackBlowupSeq_of_descendStrictPullback_eq_some {T S : MarkedIdealWithBoundary.{u}} (φ : S.scheme ⟶ T.scheme)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary) {d : BlowupSequenceData T.scheme}
     (hd : MaxContactReduction.descendStrictPullback T S φ s = some d) :
@@ -141,24 +191,38 @@ theorem isStrictPullbackBlowupSeq_of_descendStrictPullback_eq_some {T S : Marked
     rw [he] at hd
     simp at hd
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.choose, dif_pos h⟩`.
+-/
 theorem exists_descendStrictPullback_eq_some {T S : MarkedIdealWithBoundary.{u}} (φ : S.scheme ⟶ T.scheme)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
     (h : ∃ d : BlowupSequenceData T.scheme, IsStrictPullbackBlowupSeq φ s.toBlowupSequenceData.toSequenceOfBlowups d.toSequenceOfBlowups) :
     ∃ d : BlowupSequenceData T.scheme, MaxContactReduction.descendStrictPullback T S φ s = some d :=
   ⟨h.choose, dif_pos h⟩
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem asMarkedSeq_eq_toMarkedSequence_of_isMarked (T : MarkedIdealWithBoundary.{u}) (d : BlowupSequenceData T.scheme)
     (h : d.IsMarked T.structMap T.ideal T.mult T.boundary) :
     MaxContactReduction.asMarkedSeq T d =
       (d.toMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary h).toMarkedSequenceOfBlowups :=
   dif_pos h
 
+/- English proof (translation)
+Rewrite using `[asMarkedSeq_eq_toMarkedSequence_of_isMarked T d h, BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]`.
+-/
 theorem asMarkedSeq_toSequenceOfBlowups (T : MarkedIdealWithBoundary.{u}) (d : BlowupSequenceData T.scheme)
     (h : d.IsMarked T.structMap T.ideal T.mult T.boundary) :
     (MaxContactReduction.asMarkedSeq T d).toSequenceOfBlowups = d.toSequenceOfBlowups := by
   rw [asMarkedSeq_eq_toMarkedSequence_of_isMarked T d h,
     BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups]
 
+/- English proof (translation)
+Establish `key : MaxContactReduction.reduceOrderOfValid hinv T rc hv = MaxContactReduction.asMarkedSeq T d` using `by show (match MaxContactReduction.descendStrictPullback (MaxContactReduction.dropTrivialBoundary T) (coverTriple (MaxContactReduction.dropTrivialBoundary T) htrim) (coverMap (MaxContactReduction.dropTrivialBoundary T) htrim) (coverMarkedBlowupData (MaxContactReduction.dropTrivia …`. Consider the case `some e => MaxContactReduction.asMarkedSeq T e`. Consider the case `none => MaxContactReduction.emptyMarkedSeq T) = MaxContactReduction.asMarkedSeq T d`. Rewrite using `[hd]`. Unfold `MaxContactReduction.reduceOrder`.
+
+Rewrite using `[dif_pos hv, if_neg hne, key]`.
+-/
 theorem reduceOrder_eq_asMarkedSeq (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (hv : T.IsAdmissible)
     (hne : orderAtLeastLocus T.ideal T.mult ≠ ∅)
@@ -179,6 +243,9 @@ theorem reduceOrder_eq_asMarkedSeq (hinv : ComapIsoInvariance.{u}) (T : MarkedId
   unfold MaxContactReduction.reduceOrder
   rw [dif_pos hv, if_neg hne, key]
 
+/- English proof (translation)
+Rewrite using `[reduceOrder_eq_asMarkedSeq hinv T rc hv hne htrim d hd, asMarkedSeq_eq_toMarkedSequence_of_isMarked T d hm]`.
+-/
 theorem reduceOrder_eq_toMarkedSequence (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (hv : T.IsAdmissible)
     (hne : orderAtLeastLocus T.ideal T.mult ≠ ∅)
@@ -192,6 +259,9 @@ theorem reduceOrder_eq_toMarkedSequence (hinv : ComapIsoInvariance.{u}) (T : Mar
       (d.toMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary hm).toMarkedSequenceOfBlowups := by
   rw [reduceOrder_eq_asMarkedSeq hinv T rc hv hne htrim d hd, asMarkedSeq_eq_toMarkedSequence_of_isMarked T d hm]
 
+/- English proof (translation)
+The claim follows from `emptyMarkedBlowupSequenceData_toMarkedSequence_length T.structMap T.ideal T.mult T.boundary`.
+-/
 @[simp] theorem emptyMarkedSeq_length (T : MarkedIdealWithBoundary.{u}) :
     (MaxContactReduction.emptyMarkedSeq T).length = 0 :=
   emptyMarkedBlowupSequenceData_toMarkedSequence_length T.structMap T.ideal T.mult T.boundary
@@ -201,12 +271,18 @@ section
 variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)}
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem asMarkedData_eq_some_of_isMarked (s : MarkedBlowupSequenceData p I m E) (d : BlowupSequenceData (s.obj s.length))
     (h : d.IsMarked (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length)) :
     MaxContactReduction.asMarkedData s d =
       some (d.toMarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length) h) :=
   dif_pos h
 
+/- English proof (translation)
+Establish `hr` using `asMarkedData_eq_some_of_isMarked s d h`. Use `show (match MaxContactReduction.asMarkedData s d with`. Consider the case `some t => s.append t hinv`. Consider the case `none => s) = _`. Rewrite using `[hr]`.
+-/
 theorem concatOfIsMarked_eq_append_of_isMarked (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
     (d : BlowupSequenceData (s.obj s.length))
     (h : d.IsMarked (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length)) :
@@ -227,30 +303,45 @@ noncomputable def derivedTriple (S : MarkedIdealWithBoundary.{u})
     (extra : List (s.obj s.length).IdealSheafData) (keep : ℕ) : MarkedIdealWithBoundary.{u} :=
   MaxContactReduction.tunedTriple S s hft extra keep
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem derivedTriple_scheme (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
     (hft : LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
     (extra : List (s.obj s.length).IdealSheafData) (keep : ℕ) :
     (derivedTriple S s hft extra keep).scheme = s.obj s.length := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem derivedTriple_mult (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
     (hft : LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
     (extra : List (s.obj s.length).IdealSheafData) (keep : ℕ) :
     (derivedTriple S s hft extra keep).mult = tuningExponent S.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem derivedTriple_boundary (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
     (hft : LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
     (extra : List (s.obj s.length).IdealSheafData) (keep : ℕ) :
     (derivedTriple S s hft extra keep).boundary = extra ++ (s.boundary s.length).drop keep := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem derivedTriple_structureMorphism (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
     (hft : LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
     (extra : List (s.obj s.length).IdealSheafData) (keep : ℕ) :
     (derivedTriple S s hft extra keep).structMap = s.proj s.length ≫ S.structMap := rfl
 
+/- English proof (translation)
+Unfold `MaxContactReduction.appendLowerDimReduction`. Rewrite using `[dif_pos hft]`. Conclude with `dif_pos hdim`.
+-/
 theorem appendLowerDimReduction_eq_concatOfIsMarked (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -264,6 +355,9 @@ theorem appendLowerDimReduction_eq_concatOfIsMarked (hinv : ComapIsoInvariance.{
   rw [dif_pos hft]
   exact dif_pos hdim
 
+/- English proof (translation)
+Unfold `MaxContactReduction.appendLowerDimReduction`. Conclude with `dif_neg hft`.
+-/
 theorem appendLowerDimReduction_of_not_locallyOfFiniteType (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -273,16 +367,25 @@ theorem appendLowerDimReduction_of_not_locallyOfFiniteType (hinv : ComapIsoInvar
   unfold MaxContactReduction.appendLowerDimReduction
   exact dif_neg hft
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem separateBoundary_zero (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (S : MarkedIdealWithBoundary.{u}) :
     MaxContactReduction.separateBoundary hinv T rc S 0 =
       emptyMarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem separateBoundary_succ (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (S : MarkedIdealWithBoundary.{u}) (j : ℕ) :
     MaxContactReduction.separateBoundary hinv T rc S (j + 1) =
       MaxContactReduction.appendLowerDimReduction hinv T rc S (MaxContactReduction.separateBoundary hinv T rc S j) [] 0 j := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reduceAlongHypersurface_eq_appendLowerDimReduction (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups) (S : MarkedIdealWithBoundary.{u})
     (H : S.scheme.IdealSheafData) :

@@ -11,11 +11,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.FreeQuotGlue
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.isPullback q V.ι em π hc (by rw [hpre, Scheme.Opens.opensRange_ι])`.
+-/
 theorem isPullback_of_preimage_opensRange {X Y Y' : Scheme.{0}} (π : X ⟶ Y') (V : X.Opens)
     (q : V.toScheme ⟶ Y) (em : Y ⟶ Y') [IsOpenImmersion em] (hc : V.ι ≫ π = q ≫ em)
     (hpre : π ⁻¹ᵁ em.opensRange = V) : IsPullback q V.ι em π :=
   IsOpenImmersion.isPullback q V.ι em π hc (by rw [hpre, Scheme.Opens.opensRange_ι])
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, a', ha', hsq⟩` from `h`. Establish `h1 : IsPullback (b ∣_ V) (a' ≫ V.ι) (V.ι ≫ π) π`. Establish `h0` using `hsq.paste_horiz (isPullback_of_preimage_opensRange π V q em hc hpre).flip`. Rewrite `h0` using `[← hc]`. Conclude with `h0.flip`.
+
+Establish `h2 : IsPullback (pullback.snd π π ∣_ V) ((pullback.snd π π ⁻¹ᵁ V).ι ≫ pullback.fst π π) (V.ι ≫ π) π` using `(isPullback_morphismRestrict (pullback.snd π π) V).paste_vert (IsPullback.of_hasPullback π π).flip`. Establish `hdom : pullback.lift a b w ⁻¹ᵁ (pullback.snd π π ⁻¹ᵁ V) = b ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, pullback.lift_snd]`. Establish `key : pullback.lift a b w ∣_ (pullback.snd π π ⁻¹ᵁ V) = (P.isoOfEq hdom).hom ≫ (h1.isoIsPullback _ _ h2).hom`. Apply `h2.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_mono V.ι]`. Simplify using `only [Category.assoc]`. Rewrite using `[IsPullback.isoIsPullback_hom_fst_assoc]`. Simplify using `only [morphismRestrict_ι, morphismRestrict_ι_assoc, pullback.lift_snd, Scheme.isoOfEq_hom_ι_assoc]`. Rewrite using `[morphismRestrict_ι_assoc, pullback.lift_fst, Category.assoc, IsPullback.isoIsPullback_hom_snd, ha', Scheme.isoOfEq_hom_ι_assoc]`.
+
+Rewrite using `[key]`. Use `infer_instance`.
+-/
 theorem IsChart.isIso_restrict_lift {P X Y Y' : Scheme.{0}} {a b : P ⟶ X} {π : X ⟶ Y'} {V : X.Opens}
     {q : V.toScheme ⟶ Y} {em : Y ⟶ Y'} [IsOpenImmersion em] (h : IsChart a b V q)
     (hc : V.ι ≫ π = q ≫ em) (hpre : π ⁻¹ᵁ em.opensRange = V) (w : a ≫ π = b ≫ π) :
@@ -46,6 +58,17 @@ theorem IsChart.isIso_restrict_lift {P X Y Y' : Scheme.{0}} {a b : P ⟶ X} {π 
   rw [key]
   infer_instance
 
+/- English proof (translation)
+Establish `hV : iSup V = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨j, z, hz⟩` from `hcov (π x)`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+
+Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpre j, Scheme.Hom.mem_preimage]`. Conclude with `⟨z, hz⟩`. Establish `hw : a ≫ π = b ≫ π`. Use `Scheme.Cover.hom_ext (P.openCoverOfIsOpenCover (fun j => b ⁻¹ᵁ V j) (by unfold TopologicalSpace.IsOpenCover; exact b.iSup_preimage_eq_top hV)) _ _ fun j => ?_` and prove the remaining obligations.
+
+Take `⟨-, -, -, -, -, a', ha', hsq⟩` from `hch j`. Express the relevant statement in the definitionally equal form `(b ⁻¹ᵁ V j).ι ≫ a ≫ π = (b ⁻¹ᵁ V j).ι ≫ b ≫ π`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, ← ha', Category.assoc]`. Use `_ = a' ≫ q j ≫ em j := by rw [hc j]`.
+
+Use `_ = (b ∣_ V j) ≫ q j ≫ em j := by rw [← Category.assoc, hsq.w, Category.assoc]`. Use `_ = (b ∣_ V j) ≫ (V j).ι ≫ π := by rw [hc j]`. Use `_ = (b ⁻¹ᵁ V j).ι ≫ b ≫ π := by rw [morphismRestrict_ι_assoc]`. Establish `hiso : IsIso (pullback.lift a b hw)`. Rewrite using `[← MorphismProperty.isomorphisms.iff, IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := MorphismProperty.isomorphisms Scheme) (fun j => pullback.snd π π ⁻¹ᵁ V j) ((pullback.snd π π).iSup_preimage_eq_top hV)]`.
+
+Introduce `j`. Rewrite using `[MorphismProperty.isomorphisms.iff]`. Conclude with `IsChart.isIso_restrict_lift (hch j) (hc j) (hpre j) hw`. Conclude with `IsPullback.of_iso_pullback ⟨hw⟩ (asIso (pullback.lift a b hw)) (pullback.lift_fst _ _ _) (pullback.lift_snd _ _ _)`.
+-/
 theorem isPullback_of_isChart {P X Y' : Scheme.{0}} (a b : P ⟶ X) (π : X ⟶ Y') {J : Type}
     (V : J → X.Opens) (Y : J → Scheme.{0}) (q : ∀ j, (V j).toScheme ⟶ Y j) (em : ∀ j, Y j ⟶ Y')
     [∀ j, IsOpenImmersion (em j)] (hch : ∀ j, IsChart a b (V j) (q j))

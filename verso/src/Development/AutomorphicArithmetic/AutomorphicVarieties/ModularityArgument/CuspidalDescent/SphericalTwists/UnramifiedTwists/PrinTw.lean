@@ -22,6 +22,9 @@ private def prinTw {n : ℕ} (χ : Fin n → kˣ →* ℂˣ) {μ : kˣ →* ℂ�
     simp [torusChar_apply, det_leviEmb, map_prod, Finset.prod_mul_distrib]
     exact mul_comm _ _))
 
+/- English proof (translation)
+Establish `e : (fun i => ω i * μ * absPow k (((n : ℂ) - 1) / 2)) = fun i => ω i * absPow k (((n : ℂ) - 1) / 2) * μ`. Use function extensionality and compare the values at `fun i => mul_right_comm _ _ _`. Use `show Nonempty ((twist (Hi.PS ω) (detChar (Fin n) μ)).Equiv (prinSeries fun i => ω i * μ * absPow k (((n : ℂ) - 1) / 2)))`. Rewrite using `[e]`. Conclude with `⟨prinTw _ hμ⟩`.
+-/
 private theorem ps_tw {n : ℕ} (ω : Fin n → kˣ →* ℂˣ) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ) :
     Nonempty ((twist (Hi.PS ω) (detChar (Fin n) μ)).Equiv (Hi.PS fun i => ω i * μ)) := by
   have e : (fun i => ω i * μ * absPow k (((n : ℂ) - 1) / 2)) = fun i => ω i * absPow k (((n : ℂ) - 1) / 2) * μ :=
@@ -35,6 +38,13 @@ end Lc
 end UpperTheory.V.Z.Desc.W
 
 open UpperTheory.V.Z.Desc.W in
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ _ l _ ι n art κ μ hart hμ hL w A h a ha τ τ' ω hh ψ ⟨e⟩ ho ⟨e'⟩`. Establish `hs : IsSmoothChar (κ.loc w)` using `GlobalTheory.HeckeComp.smooth_loc κ w`. Take `⟨E⟩` from `ps_tw ω hs`. Use `⟨fun i => ω i * κ.loc w, ⟨(e'.trans (twistEquiv e _)).trans E⟩, fun i => ⟨(ho i).smooth.mul hs, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(ho i).cont.mul (hμ.comp continuous_subtype_val)`.
+
+Introduce `s g hg _`. Establish `v` using `(ho i).val s g hg trivial`. Establish `m` using `hL.loc_away (Or.inr rfl) (a s) (g : G K Ω) (by rw [hg]; exact ha.glob art hart s)`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Units.coeHom_apply, MonoidHom.mul_apply, Units.val_mul, Subgroup.coe_subtype, map_mul] at v ⊢`. Rewrite using `[v, m]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Desc.W.ordTw :
     UpperTheory.V.Z.Desc.W.OrdTw := by
   intro K Ω _ _ _ _ _ _ l _ ι n art κ μ hart hμ hL w A h a ha τ τ' ω hh ψ ⟨e⟩ ho ⟨e'⟩

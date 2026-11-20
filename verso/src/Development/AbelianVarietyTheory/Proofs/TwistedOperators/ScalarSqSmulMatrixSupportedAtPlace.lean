@@ -23,6 +23,23 @@ open GlobalTheory.SplitDblGen
 
 namespace GlobalTheory.SplitDblGen
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v hsp _ h2 k hk`. Take `⟨c, hcσ, hcAt, hc2, hcL⟩` from `GlobalTheory.T.exists_antiInvariant_sign_adele_splitPlace F E σ B hTr.base v hsp`. Take `⟨p, hp, hpm⟩` from `GlobalTheory.T.exists_parD_matD_eq_diagonalFixingDoublingMatrix F E σ _ G.W v h2 c hcσ hcAt (hcL _ G.W)`. Take `⟨n, hn, hnm⟩` from `GlobalTheory.T.nablaUnipotent_mem_integralDoubledUnipotent F E σ _ G.W v h2 c hcσ (hcL _ G.W) k hk`. Establish `hg` using `GlobalTheory.T.doubledFirstFactor_mem_doubledLatticeStabilizer F E σ _ G.W v k hk`.
+
+Establish `hKK' : mat k * mat k⁻¹ = 1` using `congrArg (fun g : UA σ G.W.J => g.1.1) (mul_inv_cancel k)`. Establish `hK'K : mat k⁻¹ * mat k = 1` using `congrArg (fun g : UA σ G.W.J => g.1.1) (inv_mul_cancel k)`. Establish `hAtK : At (evFin F v) (mat k - 1)` using `hk.1`. Establish `hAtK' : At (evFin F v) (mat k⁻¹ - 1)`. Introduce `u hu`.
+
+Establish `e : mat k⁻¹ - 1 = -(mat k⁻¹ * (mat k - 1))` using `by rw [Matrix.mul_sub, hK'K, Matrix.mul_one, neg_sub]`. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hAtK u hu, Matrix.mul_zero, neg_zero]`. Establish `hc2M : ∀ M : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E), At (evFin F v) M → (c * c) • M = M`. Introduce `M hM`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `hc2 _ (fun u hu => by`. Establish `h0` using `congrFun (congrFun (hM u hu) i) j`. Simplify using `using h0)`. Establish `ht` using `GlobalTheory.T.splitDoublingTMatrix_mul_inverse_eq_one F E _ c (mat k) (mat k⁻¹) hKK' (hc2M _ hAtK)`.
+
+Establish `ht'` using `GlobalTheory.T.splitDoublingTMatrix_mul_inverse_eq_one F E _ c (mat k⁻¹) (mat k) hK'K (hc2M _ hAtK')`. Establish `hid` using `GlobalTheory.T.diagonalFixingDoublingMatrix_mul_fromBlocks_mul_diagCols F E _ c (mat k) (mat k⁻¹) hKK' hK'K (hc2M _ hAtK)`. Set `T : GL (Fin (a + a')) (AE F E)` to `⟨tMat c (mat k), tMat c (mat k⁻¹), ht, ht'⟩`. Establish `hinv : GlobalTheory.InertDbl.matD n⁻¹ * GlobalTheory.InertDbl.matD n = 1` using `GlobalTheory.DblVacFlip.matD_inv_mul n`. Establish `hq : n⁻¹ * p * GlobalTheory.InertDbl.inlD σ G.W k ∈ GlobalTheory.InertDbl.ParD σ G.W v`.
+
+Use `⟨GlobalTheory.DblVacFlip.mul_mem_KD (GlobalTheory.DblVacFlip.mul_mem_KD (GlobalTheory.DblVacFlip.inv_mem_KD hn.1) hp.1) hg, T, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.InertDbl.matD n⁻¹ * GlobalTheory.InertDbl.matD p * GlobalTheory.InertDbl.matD (GlobalTheory.InertDbl.inlD σ G.W k) * diagCols (Fin (a + a')) = diagCols (Fin (a + a')) * tMat c (mat k)`. Establish `h3` using `congrArg (fun M => GlobalTheory.InertDbl.matD n⁻¹ * M) hid`. Simplify using `only [← Matrix.mul_assoc] at h3`. Rewrite using `[GlobalTheory.InertDbl.matD_inlD, hpm]`.
+
+Use `h3.trans ?_` and prove the remaining obligations. Rewrite using `[← hnm, hinv]`. Conclude with `congrArg (· * tMat c (mat k)) (Matrix.one_mul _)`. Establish `e : GlobalTheory.InertDbl.inlD σ G.W k = p⁻¹ * n * (n⁻¹ * p * GlobalTheory.InertDbl.inlD σ G.W k)` using `by group`. Rewrite using `[e]`.
+
+Establish `s : ∀ x, x ∈ GlobalTheory.InertDbl.ParD σ G.W v ∪ GlobalTheory.InertDbl.NabD σ G.W v → x ∈ Subgroup.closure (GlobalTheory.InertDbl.ParD σ G.W v ∪ GlobalTheory.InertDbl.NabD σ G.W v)` using `fun x hx => Subgroup.subset_closure hx`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ (s _ (Or.inl hp))) (s _ (Or.inr hn))) (s _ (Or.inl hq))`.
+-/
 theorem inlD_mem_closure_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

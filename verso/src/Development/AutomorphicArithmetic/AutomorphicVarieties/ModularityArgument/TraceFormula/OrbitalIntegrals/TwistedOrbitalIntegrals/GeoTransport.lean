@@ -4,14 +4,25 @@ open MeasureTheory NumberField IsDedekindDomain PositivityTheory.Rg.Tf.Loc Upper
 open PositivityTheory.Rg.Tf.Geo (mapGL incFin galFin)
 open scoped ENNReal
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => e _)`.
+-/
 private theorem map_comp_apply {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (n : ℕ) (f : A →+* B) (g : B →+* C) (h : A →+* C)
     (e : ∀ x, g (f x) = h x) (x : GL (Fin n) A) : mapGL n g (mapGL n f x) = mapGL n h x :=
   Units.ext (Matrix.ext fun i j => e _)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map hf)`.
+-/
 private theorem cont_map {A B : Type} [CommRing A] [CommRing B] [TopologicalSpace A] [TopologicalSpace B] (n : ℕ) (f : A →+* B)
     (hf : Continuous f) : Continuous (mapGL n f) :=
   Continuous.units_map _ (continuous_id.matrix_map hf)
 
+/- English proof (translation)
+Establish `hp : ∀ m x, e ((θ ^ m) x) = (θ' ^ m) (e x)` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ m ih => intro x`.
+
+Rewrite using `[pow_succ_apply', pow_succ_apply', h, ih]`. Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ l ih => rw [twNorm_succ, twNorm_succ, map_mul, ih, hp]`.
+-/
 private theorem twNorm_hom {G G' : Type} [Group G] [Group G'] (e : G →* G') (θ : Monoid.End G) (θ' : Monoid.End G')
     (h : ∀ x, e (θ x) = θ' (e x)) (l : ℕ) (δ : G) : e (twNorm θ l δ) = twNorm θ' l (e δ) := by
   have hp : ∀ m x, e ((θ ^ m) x) = (θ' ^ m) (e x) := fun m => by
@@ -22,6 +33,17 @@ private theorem twNorm_hom {G G' : Type} [Group G] [Group G'] (e : G →* G') (�
   | zero => simp
   | succ l ih => rw [twNorm_succ, twNorm_succ, map_mul, ih, hp]
 
+/- English proof (translation)
+Introduce `R S S' _ _ _ _ _ _ _ _ e he he' ι ι' s s' hι hs n l _ _ _ _ _ μ μR`. Set `ε : GL (Fin n) S ≃ₜ* GL (Fin n) S'` to `{ toFun := mapGL n (e : S →+* S') invFun := mapGL n (e.symm : S' →+* S) left_inv := fun x => Units.ext (Matrix.ext fun i j => e.symm_apply_apply _) right_inv := fun x => Units.ext (Matrix.ext fun i j => e.apply_symm_apply _) map_mul' := map_mul _ continuous_toFun := cont_map n _ …`. Establish `hε : ∀ x, mapGL n (e : S →+* S') x = ε x` using `fun _ => rfl`. Establish `hi : ∀ t : GL (Fin n) R, ε (mapGL n ι t) = mapGL n ι' t` using `fun t => map_comp_apply n _ _ _ hι t`. Use `⟨fun hμ => ε.isHaarMeasure_map μ, fun γ => ⟨fun δ => ?_, fun ν ρ' => ⟨?_, fun Φ => ?_⟩⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← twNorm_hom (mapGL n (e : S →+* S')) (mapGL n s) (mapGL n s') (fun x => Units.ext (Matrix.ext fun i j => hs _)) l δ, ← hi, hε]`. Conclude with `ε.injective.eq_iff.symm`. Establish `hm : Measurable ε` using `ε.continuous.measurable`. Establish `hm' : Measurable ε.symm` using `ε.symm.continuous.measurable`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1.comp hm, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [id, hε, map_mul, hi]`. Conclude with `h2 _`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use `h1.comp hm'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[hε]`.
+
+Use `h2 (ε.symm x)` as an intermediate fact. Simplify using `only [id, hε, map_mul, hi, ContinuousMulEquiv.apply_symm_apply] at this`. Conclude with `this`. Conclude with `(ε.toHomeomorph.measurableEmbedding).integral_map _`.
+-/
 theorem UpperTheory.V.Z.Tf.Orb.geoTransport :
     UpperTheory.V.Z.Tf.Orb.GeoTransport := by
   intro R S S' _ _ _ _ _ _ _ _ e he he' ι ι' s s' hι hs n l _ _ _ _ _ μ μR

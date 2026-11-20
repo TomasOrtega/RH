@@ -22,6 +22,9 @@ section Loc3
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Introduce `x hx` and use `by have e1 : μ x = 1 := h hx have e2 : μ' x = 1 := h' hx rw [MonoidHom.mem_ker, MonoidHom.mul_apply, e1, e2, one_mul]`.
+-/
 theorem unr_mul {μ μ' : Fˣ →* ℂˣ} (h : IsUnramifiedChar μ) (h' : IsUnramifiedChar μ') :
     IsUnramifiedChar (μ * μ') := fun x hx => by
   have e1 : μ x = 1 := h hx
@@ -38,6 +41,9 @@ open scoped Classical
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, GodementSection.coe_localChar, GodementSection.coe_localChar]`. Both sides reduce to the same expression.
+-/
 theorem localChar_inv (c : HeckeCharacter K) (v : PlK K) : localChar c⁻¹ v = (localChar c v)⁻¹ := by
   ext a
   rw [MonoidHom.inv_apply, Units.val_inv_eq_inv_val, GodementSection.coe_localChar, GodementSection.coe_localChar]

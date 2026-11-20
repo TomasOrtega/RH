@@ -13,12 +13,18 @@ section Orbit
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use `⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[← mul_assoc, inv_mul_cancel₀ (hc p.1)]`.
+-/
 theorem orbit_symm {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') : SameOrbit z' z := by
   obtain ⟨c, hc, rfl⟩ := h
   refine ⟨fun k => (c k)⁻¹, fun k => inv_ne_zero (hc k), ?_⟩
   funext p
   simp [← mul_assoc, inv_mul_cancel₀ (hc p.1)]
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Take `⟨c', hc', rfl⟩` from `h'`. Use `⟨fun k => c k * c' k, fun k => mul_ne_zero (hc k) (hc' k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `[mul_assoc]`.
+-/
 theorem orbit_trans {a b d : (Σ k, ι k) → ℂ} (h : SameOrbit a b) (h' : SameOrbit b d) :
     SameOrbit a d := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -27,12 +33,22 @@ theorem orbit_trans {a b d : (Σ k, ι k) → ℂ} (h : SameOrbit a b) (h' : Sam
   funext p
   simp [mul_assoc]
 
+/- English proof (translation)
+Take `⟨c, -, rfl⟩` from `h`. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem orbit_cross {z w : (Σ k, ι k) → ℂ} (h : SameOrbit z w) (k : K) (i i' : ι k) :
     z ⟨k, i⟩ * w ⟨k, i'⟩ = z ⟨k, i'⟩ * w ⟨k, i⟩ := by
   obtain ⟨c, -, rfl⟩ := h
   simp only
   ring
 
+/- English proof (translation)
+Use `choose p hp using hw`. Use `⟨fun k => z ⟨k, p k⟩ / w ⟨k, p k⟩, fun k => ?_, ?_⟩` and prove the remaining obligations. Use `div_ne_zero (fun h0 => ?_) (hp k)` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz k`. Use `h k i (p k)` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul]`. Conclude with `(mul_ne_zero hi (hp k)) this`. Use function extensionality and compare the values at `⟨k, i⟩`. Use `h k i (p k)` as an intermediate fact. Establish `hk` using `hp k`.
+
+Simplify using `only`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+-/
 theorem orbit_of_cross {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0)
     (h : ∀ k (i i' : ι k), z ⟨k, i⟩ * w ⟨k, i'⟩ = z ⟨k, i'⟩ * w ⟨k, i⟩) : SameOrbit z w := by
@@ -50,6 +66,9 @@ theorem orbit_of_cross {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, 
     field_simp
     linear_combination this
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Use function extensionality and compare the values at `q`. Simplify using `only [affCoord]`. Conclude with `mul_div_mul_left _ _ (hc q.1)`.
+-/
 theorem affCoord_eq {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (p : (k : K) → ι k) :
     affCoord p z = affCoord p z' := by
   obtain ⟨c, hc, rfl⟩ := h
@@ -57,6 +76,9 @@ theorem affCoord_eq {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') (p : (k :
   simp only [affCoord]
   exact mul_div_mul_left _ _ (hc q.1)
 
+/- English proof (translation)
+Introduce `h`. Use `h.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`.
+-/
 theorem not_mem_mcPts_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
   intro h
   have := h.2 1 Submodule.mem_top
@@ -66,6 +88,11 @@ end Orbit
 
 section Analysis
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : AnalyticAt ℂ (g ∘ (A.chart j).symm) (A.chart j x)` using `hg j _ ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`. Establish `h2 : ContinuousAt ((g ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `ContinuousAt.comp (f := A.chart j) h1.continuousAt ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`.
+
+Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem continuousAt_of_holoOn {e : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas e X)
     {U : Set X} {g : X → ℂ} (hg : A.HoloOn U g) {x : X} (hx : x ∈ U) : ContinuousAt g x := by
   obtain ⟨j, hj⟩ := A.cover x
@@ -77,6 +104,13 @@ theorem continuousAt_of_holoOn {e : ℕ} {X : Type*} [TopologicalSpace X] (A : F
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective ((fderiv ℂ a w₀ : (Fin D → ℂ) →L[ℂ] E) : (Fin D → ℂ) →ₗ[ℂ] E) (by simpa using hker)`. Set `L : E →L[ℂ] Fin D → ℂ` to `LinearMap.toContinuousLinearMap g`. Establish `hf : AnalyticAt ℂ (L ∘ a) w₀` using `L.analyticAt _ |>.comp ha`. Establish `hcd : ContDiffAt ℂ ⊤ (L ∘ a) w₀` using `hf.contDiffAt`. Establish `hd : HasFDerivAt (L ∘ a) ((ContinuousLinearEquiv.refl ℂ (Fin D → ℂ) : (Fin D → ℂ) ≃L[ℂ] (Fin D → ℂ)) : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ)) w₀`.
+
+Establish `h1` using `L.hasFDerivAt.comp w₀ ha.differentiableAt.hasFDerivAt`. Use `h1.congr_fderiv ?_` and prove the remaining obligations. Use `ext1 v`. Use `congrArg (fun T : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ) => T v) hg` as an intermediate fact. Simplify `this` using `[L]`.
+
+Establish `hn : (⊤ : WithTop ℕ∞) ≠ 0` using `by simp`. Use `⟨hcd.localInverse hd hn ∘ L, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hcd.to_localInverse hd hn).analyticAt`. Conclude with `AnalyticAt.comp (g := hcd.localInverse hd hn) (f := L) h1 (L.analyticAt _)`. Conclude with `(hcd.hasStrictFDerivAt' hd hn).eventually_left_inverse`.
+-/
 theorem exists_analytic_retraction {D : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {a : (Fin D → ℂ) → E} {w₀ : Fin D → ℂ} (ha : AnalyticAt ℂ a w₀)
     (hker : (fderiv ℂ a w₀).ker = ⊥) :
@@ -106,11 +140,17 @@ section Factor
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Take `⟨c, -, rfl⟩` from `h`. Conclude with `right_ne_zero_of_mul hq`.
+-/
 theorem orbit_ne {z w : (Σ k, ι k) → ℂ} (h : SameOrbit z w) {q : Σ k, ι k} (hq : z q ≠ 0) :
     w q ≠ 0 := by
   obtain ⟨c, -, rfl⟩ := h
   exact right_ne_zero_of_mul hq
 
+/- English proof (translation)
+Use `AnalyticAt.pi fun q => ?_` and prove the remaining obligations. Conclude with `AnalyticAt.div (hf q j w ⟨hw, hU⟩) (hf ⟨q.1, p q.1⟩ j w ⟨hw, hU⟩) (hp q.1)`.
+-/
 theorem analyticAt_affCoord {e : ℕ} {Z : Type*} [TopologicalSpace Z] (A : FinHolAtlas e Z)
     {U : Set Z} {f : Z → (Σ k, ι k) → ℂ} (hf : ∀ q, A.HoloOn U fun z => f z q) (j : Fin A.n)
     {w : Fin e → ℂ} (hw : w ∈ (A.chart j).target) (hU : (A.chart j).symm w ∈ U)
@@ -124,6 +164,9 @@ variable {P : Ideal (MRing ι)} {D e : ℕ} (R : AnLogRes P ⊤ D) {Y : Type*} [
 
 include R in
 
+/- English proof (translation)
+The claim follows from `orbit_trans (R.compat x (h y') (h y') ⟨h1, R.mem_U _⟩) (orbit_trans (hh y') (hc y' y y' ⟨hVm y', h2⟩))`.
+-/
 theorem local_orbit (hVm : ∀ y, y ∈ V y)
     (hc : ∀ y y', ∀ u ∈ V y ∩ V y', SameOrbit (μ y u) (μ y' u))
     (hh : ∀ y, SameOrbit (R.lift (h y) (h y)) (μ y y)) {x : R.X} {y y' : Y}
@@ -131,6 +174,15 @@ theorem local_orbit (hVm : ∀ y, y ∈ V y)
   orbit_trans (R.compat x (h y') (h y') ⟨h1, R.mem_U _⟩)
     (orbit_trans (hh y') (hc y' y y' ⟨hVm y', h2⟩))
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Rewrite using `[ContinuousAt, tendsto_iff_ultrafilter]`. Introduce `F hF`. Take `⟨x, -, hx⟩` from `isCompact_univ.ultrafilter_le_nhds (F.map h) (by simp)`.
+
+Establish `hth : Tendsto h F (𝓝 x)` using `hx`. Establish `hUx : ∀ᶠ y' in (F : Filter Y), h y' ∈ R.U x` using `hth ((R.isOpen_U x).mem_nhds (R.mem_U x))`. Establish `hVy : ∀ᶠ y' in (F : Filter Y), y' ∈ V y` using `hF ((hVo y).mem_nhds (hVm y))`. Establish `hcr : ∀ k (i i' : ι k), R.lift x x ⟨k, i⟩ * μ y y ⟨k, i'⟩ = R.lift x x ⟨k, i'⟩ * μ y y ⟨k, i⟩`. Introduce `k i i'`.
+
+Establish `t1 : ∀ q, Tendsto (fun y' => R.lift x (h y') q) F (𝓝 (R.lift x x q))` using `fun q => (continuousAt_of_holoOn R.A (R.holo x q) (R.mem_U x)).tendsto.comp hth`. Establish `t2 : ∀ q, Tendsto (fun y' => μ y y' q) F (𝓝 (μ y y q))` using `fun q => (continuousAt_of_holoOn B (hμ y q) (hVm y)).tendsto.mono_left hF`. Use `tendsto_nhds_unique ((t1 ⟨k, i⟩).mul (t2 ⟨k, i'⟩)) (((t1 ⟨k, i'⟩).mul (t2 ⟨k, i⟩)).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [hUx, hVy] with y' h1 h2`. Conclude with `orbit_cross (local_orbit R hVm hc hh h1 h2) k i' i`.
+
+Establish `hxy : SameOrbit (R.lift x x) (μ y y)` using `orbit_of_cross (R.mem x x (R.mem_U x)).1 (hmem y y (hVm y)).1 hcr`. Establish `hxe : x = h y` using `R.inj x (h y) (not_mem_mcPts_top _) (orbit_trans hxy (orbit_symm (hh y)))`. Rewrite using `[← hxe]`. Conclude with `hx`.
+-/
 theorem continuous_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
     (hμ : ∀ y q, B.HoloOn (V y) fun u => μ y u q) (hmem : ∀ y, ∀ u ∈ V y, μ y u ∈ mcPts P)
     (hc : ∀ y y', ∀ u ∈ V y ∩ V y', SameOrbit (μ y u) (μ y' u))
@@ -160,6 +212,21 @@ theorem continuous_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
   rw [← hxe]
   exact hx
 
+/- English proof (translation)
+Introduce and unpack `u ⟨hu, hsrc⟩`. Establish `hsrc' : h ((B.chart j).symm u) ∈ (R.A.chart k).source` using `hsrc`. Take `⟨y₀, hy₀⟩ : ∃ y₀, y₀ = (B.chart j).symm u` from `⟨_, rfl⟩`. Rewrite `hsrc'` using `[← hy₀]`. Take `⟨x₀, hx₀⟩ : ∃ x₀, x₀ = h y₀` from `⟨_, rfl⟩`.
+
+Rewrite `hsrc'` using `[← hx₀]`. Establish `hz₀` using `R.mem x₀ x₀ (R.mem_U x₀)`. Use `choose p hp using hz₀.1`. Establish `hlw : (R.A.chart k).symm (R.A.chart k x₀) = x₀` using `(R.A.chart k).left_inv hsrc'`. Establish `hA : AnalyticAt ℂ (fun w => affCoord p (R.lift x₀ ((R.A.chart k).symm w))) (R.A.chart k x₀)` using `analyticAt_affCoord R.A (R.holo x₀) k ((R.A.chart k).map_source hsrc') (by rw [hlw]; exact R.mem_U x₀) p (by rw [hlw]; exact hp)`.
+
+Take `⟨G, hG, hGl⟩` from `exists_analytic_retraction hA (R.immersion x₀ (not_mem_mcPts_top _) p hp k hsrc')`. Establish `horb : SameOrbit (R.lift x₀ x₀) (μ y₀ y₀)` using `by rw [hx₀]; exact hh y₀`. Establish `hB : AnalyticAt ℂ (fun u' => affCoord p (μ y₀ ((B.chart j).symm u'))) u` using `analyticAt_affCoord B (hμ y₀) j hu (by rw [← hy₀]; exact hVm y₀) p (by rw [← hy₀]; exact fun k' => orbit_ne horb (hp k'))`. Establish `hbu : affCoord p (μ y₀ ((B.chart j).symm u)) = affCoord p (R.lift x₀ ((R.A.chart k).symm (R.A.chart k x₀)))`. Rewrite using `[hlw, ← hy₀]`.
+
+Conclude with `(affCoord_eq horb p).symm`. Establish `hGb : AnalyticAt ℂ (G ∘ fun u' => affCoord p (μ y₀ ((B.chart j).symm u'))) u`. Use `AnalyticAt.comp ?_ hB` and prove the remaining obligations. Simplify using `only [hbu]`. Conclude with `hG`.
+
+Use `hGb.congr ?_` and prove the remaining obligations. Establish `c1 : ContinuousAt (B.chart j).symm u` using `(B.chart j).continuousAt_symm hu`. Establish `e1 : ∀ᶠ u' in 𝓝 u, (B.chart j).symm u' ∈ V y₀` using `c1.eventually_mem ((hVo y₀).mem_nhds (by rw [← hy₀]; exact hVm y₀))`. Establish `c2 : ContinuousAt (fun u' => h ((B.chart j).symm u')) u` using `hcont.continuousAt.comp c1`. Establish `e2 : ∀ᶠ u' in 𝓝 u, h ((B.chart j).symm u') ∈ R.U x₀ ∩ (R.A.chart k).source` using `c2.eventually_mem (((R.isOpen_U x₀).inter (R.A.chart k).open_source).mem_nhds (by rw [← hy₀, ← hx₀]; exact ⟨R.mem_U _, hsrc'⟩))`.
+
+Establish `c3 : Tendsto (fun u' => R.A.chart k (h ((B.chart j).symm u'))) (𝓝 u) (𝓝 (R.A.chart k x₀))`. Use `((R.A.chart k).continuousAt hsrc').tendsto` as an intermediate fact. Use `this.comp ?_` and prove the remaining obligations. Establish `t` using `c2.tendsto`. Rewrite `t` using `[← hy₀, ← hx₀]`. Then use the resulting hypothesis.
+
+Establish `e3` using `c3.eventually hGl`. Use `filter_upwards [e1, e2, e3] with u' h1 h2 h3`. Simplify using `only [Function.comp]`. Rewrite using `[← h3, (R.A.chart k).left_inv h2.2]`. Conclude with `congrArg G (affCoord_eq (local_orbit R hVm hc hh h2.1 h1) p).symm`.
+-/
 theorem analytic_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
     (hμ : ∀ y q, B.HoloOn (V y) fun u => μ y u q)
     (hc : ∀ y y', ∀ u ∈ V y ∩ V y', SameOrbit (μ y u) (μ y' u))
@@ -213,6 +280,9 @@ theorem analytic_of_orbit (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
   rw [← h3, (R.A.chart k).left_inv h2.2]
   exact congrArg G (affCoord_eq (local_orbit R hVm hc hh h2.1 h1) p).symm
 
+/- English proof (translation)
+Establish `hex : ∀ y, ∃ x, SameOrbit (R.lift x x) (μ y y)` using `fun y => R.surj _ (hmem y y (hVm y)) (not_mem_mcPts_top _)`. Use `choose h hh using hex`. Establish `hcont` using `continuous_of_orbit R B hVo hVm hμ hmem hc hh`. Conclude with `⟨h, ⟨hcont, analytic_of_orbit R B hVo hVm hμ hc hh hcont⟩, hh⟩`.
+-/
 theorem exists_holoMap_of_local_lifts (hVo : ∀ y, IsOpen (V y)) (hVm : ∀ y, y ∈ V y)
     (hμ : ∀ y q, B.HoloOn (V y) fun u => μ y u q) (hmem : ∀ y, ∀ u ∈ V y, μ y u ∈ mcPts P)
     (hc : ∀ y y', ∀ u ∈ V y ∩ V y', SameOrbit (μ y u) (μ y' u)) :
@@ -230,6 +300,13 @@ section Block
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Take `⟨hκ, -, hblk, hsurj⟩` from `hb`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i', hi'⟩` from `hz.1 (κ k)`. Take `⟨q, hq⟩` from `hsurj ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `hk : q.1 = k` using `hκ (by rw [← hblk q, hq])`.
+
+Substitute `hk` using the available equality. Use `⟨q.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z (v q) ≠ 0`. Rewrite using `[hq]`. Conclude with `hi'`.
+
+Establish `h1 : rename v f ∈ P'` using `hP hf`. Establish `h2` using `hz.2 _ h1`. Rewrite `h2` using `[map_rename, eval_rename]`. Then use the resulting hypothesis.
+-/
 theorem comp_mem_mcPts {κ : K → K'} {v : (Σ k, ι k) → (Σ k, ι' k)} {P : Ideal (MRing ι)}
     {P' : Ideal (MRing ι')} (hb : IsBlockMap κ v) (hP : P ≤ imageZ v P')
     {z : (Σ k, ι' k) → ℂ} (hz : z ∈ mcPts P') : z ∘ v ∈ mcPts P := by
@@ -249,6 +326,11 @@ theorem comp_mem_mcPts {κ : K → K'} {v : (Σ k, ι k) → (Σ k, ι' k)} {P :
 
 end Block
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P P' J' D D' R R' hb hP`. Use `exists_holoMap_of_local_lifts R R'.A (V := R'.U) (μ := fun y u => R'.lift y u ∘ v) R'.isOpen_U R'.mem_U (fun y q => R'.holo y (v q)) (fun y u hu => comp_mem_mcPts hb hP (R'.mem y u hu)) ?_` and prove the remaining obligations. Introduce `y y' u hu`. Take `⟨c, hc, e⟩` from `R'.compat y y' u hu`. Use `⟨c ∘ κ, fun k => hc _, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `p`. Use `congrFun e (v p)` as an intermediate fact. Simplify `this` using `[hb.2.2.1 p]`.
+-/
 theorem holoMap_of_blockProj : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (κ : K → K') (v : (Σ k, ι k) → (Σ k, ι' k)) (P : Ideal (MRing ι)) (P' J' : Ideal (MRing ι')) (D D' : ℕ) (R : AnLogRes P ⊤ D) (R' : AnLogRes P' J' D'), IsBlockMap κ v → P ≤ imageZ v P' → ∃ h : R'.X → R.X, HoloMap R'.A R.A h ∧ ∀ x, SameOrbit (R.lift (h x) (h x)) (R'.lift x x ∘ v) := by
   intro K _ ι _ K' _ ι' _ κ v P P' J' D D' R R' hb hP
   refine exists_holoMap_of_local_lifts R R'.A (V := R'.U) (μ := fun y u => R'.lift y u ∘ v)

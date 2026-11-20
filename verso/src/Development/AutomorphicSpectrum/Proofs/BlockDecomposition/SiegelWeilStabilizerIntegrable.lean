@@ -13,6 +13,9 @@ open scoped HeckeCharacterZeroLocus.SiegelWeilU
 
 namespace GlobalTheory.CompanionTheory.WhitFree.CoefLim
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+-/
 theorem repr_map {F E A B : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [CommRing B] [Algebra F A]
     [Algebra F B] (f : A →ₐ[F] B) {d : ℕ} (b : Module.Basis (Fin d) F E) (y : A ⊗[F] E) (k : Fin d) :
     (Algebra.TensorProduct.basis B b).repr (Algebra.TensorProduct.map f (AlgHom.id F E) y) k =
@@ -28,14 +31,23 @@ section Cont
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   [TopologicalSpace R] [IsTopologicalRing R]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+-/
 theorem continuous_linear (L : (R ⊗[F] E) →ₗ[R] R) : Continuous L := by
   haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩
   exact IsModuleTopology.continuous_of_linearMap L
 
+/- English proof (translation)
+The claim follows from `(continuous_id.matrix_elem a c).comp continuous_subtype_val`.
+-/
 theorem continuous_entry (σ : E →ₐ[F] E) {n : ℕ} (a c : Fin n) :
     Continuous fun B : HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n => (B : Matrix (Fin n) (Fin n) (R ⊗[F] E)) a c :=
   (continuous_id.matrix_elem a c).comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `h : (fun B : HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n => Algebra.trace R (R ⊗[F] E) (Matrix.trace (T * (B : Matrix (Fin n) (Fin n) (R ⊗[F] E))))) = fun B : HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n => ∑ a, ∑ c, (Algebra.trace R (R ⊗[F] E) ∘ₗ LinearMap.mulLeft R (T a …`. Use function extensionality and compare the values at `B`. Simplify using `[Matrix.trace, Matrix.mul_apply, map_sum]`. Rewrite using `[h]`. Apply the tactic sequence `exact continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun c _ => (continuous_linear _).comp (continuous_entry σ c a)`.
+-/
 theorem continuous_trace_pair [FiniteDimensional F E] (σ : E →ₐ[F] E) {n : ℕ}
     (T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     Continuous fun B : HeckeCharacterZeroLocus.SiegelWeilU.HermR R σ n => Algebra.trace R (R ⊗[F] E)
@@ -56,6 +68,11 @@ section Adelic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `key : ∀ (v : HeightOneSpectrum (𝓞 F)) (a i : Fin n) (k : Fin d), (Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) b).repr (HeckeCharacterZeroLocus.SiegelWeilU.projV v (HeckeCharacterZeroLocus.SiegelWeilU.projFin (fun a i => (B : Matrix (Fin n) (Fin n) (He …`. Introduce `v a i k`. Simplify using `only [HeckeCharacterZeroLocus.SiegelWeilU.projV, HeckeCharacterZeroLocus.SiegelWeilU.projFin]`. Rewrite using `[repr_map, repr_map]`. Both sides reduce to the same expression.
+
+Simplify using `only [intH, HeckeCharacterZeroLocus.SiegelWeilU.latV, Set.mem_setOf_eq, key]`.
+-/
 theorem mem_intH_iff (σ : E →ₐ[F] E) {d n : ℕ} (b : Module.Basis (Fin d) F E)
     (S : Finset (HeightOneSpectrum (𝓞 F))) (B : HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.AF F) σ n) :
     B ∈ intH σ b S ↔ ∀ v, v ∉ S → ∀ a i k, (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr
@@ -71,6 +88,13 @@ theorem mem_intH_iff (σ : E →ₐ[F] E) {d n : ℕ} (b : Module.Basis (Fin d) 
     rfl
   simp only [intH, HeckeCharacterZeroLocus.SiegelWeilU.latV, Set.mem_setOf_eq, key]
 
+/- English proof (translation)
+Use `haveI : BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.AF F) σ n) := ⟨rfl⟩`. Use `haveI := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.placesCountable F`. Establish `hset : intH (n` using `n) σ b S = ⋂ v : HeightOneSpectrum (𝓞 F), ⋂ _ : v ∉ S, ⋂ a : Fin n, ⋂ i : Fin n, ⋂ k : Fin d, {B : HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.AF F) σ n | (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZ …`. Use extensionality with `B`. Simplify using `only [mem_intH_iff, Set.mem_iInter, Set.mem_setOf_eq]`.
+
+Rewrite using `[hset]`. Use `MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ => MeasurableSet.iInter fun a => MeasurableSet.iInter fun i => MeasurableSet.iInter fun k => ?_` and prove the remaining obligations. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hev : Continuous fun y : HeckeCharacterZeroLocus.SiegelWeilU.Af F => y v` using `RestrictedProduct.continuous_eval v`. Establish `hsnd : Continuous (fun c : HeckeCharacterZeroLocus.SiegelWeilU.AF F => HeckeCharacterZeroLocus.SiegelWeilU.sndA F c)` using `continuous_snd`.
+
+Apply the tactic sequence `have hc : Continuous fun B : HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.AF F) σ n => (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr ((B : Matrix (Fin n) (Fin n) (Heck …`. Conclude with `(hO.preimage hc).measurableSet`.
+-/
 theorem measurableSet_intH (σ : E →ₐ[F] E) {d n : ℕ} (b : Module.Basis (Fin d) F E)
     (S : Finset (HeightOneSpectrum (𝓞 F))) : MeasurableSet (intH (n := n) σ b S) := by
   haveI : BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.AF F) σ n) := ⟨rfl⟩
@@ -92,6 +116,11 @@ theorem measurableSet_intH (σ : E →ₐ[F] E) {d n : ℕ} (b : Module.Basis (F
       (Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr.toLinearMap)).comp (continuous_entry σ a i)))
   exact (hO.preimage hc).measurableSet
 
+/- English proof (translation)
+Establish `hfin : ∀ (a i : Fin n) (k : Fin d), {v : HeightOneSpectrum (𝓞 F) | ¬ (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr ((B : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)) a i) k …` using `fun a i k => (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr ((B : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)) a i) k)).2`. Establish `hall : ∀ (a i : Fin n) (k : Fin d), ∀ᶠ S : Finset (HeightOneSpectrum (𝓞 F)) in Filter.atTop, ∀ v, v ∉ S → (HeckeCharacterZeroLocus.SiegelWeilU.sndA F ((Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) b).repr ((B : Matrix (Fin n) (Fin n) (HeckeCharacterZeroL …`. Introduce `a i k`. Use `filter_upwards [Filter.eventually_ge_atTop (hfin a i k).toFinset] with S hS v hv`. Assume the negation of the conclusion as `hcon`.
+
+Conclude with `hv (hS ((hfin a i k).mem_toFinset.2 hcon))`. Establish `hall'` using `Filter.eventually_all.2 fun a : Fin n => Filter.eventually_all.2 fun i : Fin n => Filter.eventually_all.2 fun k : Fin d => hall a i k`. Use `filter_upwards [hall'] with S hS`. Conclude with `(mem_intH_iff σ b S B).2 fun v hv a i k => hS a i k v hv`.
+-/
 theorem eventually_mem_intH (σ : E →ₐ[F] E) {d n : ℕ} (b : Module.Basis (Fin d) F E) (B : HeckeCharacterZeroLocus.SiegelWeilU.HermR (HeckeCharacterZeroLocus.SiegelWeilU.AF F) σ n) :
     ∀ᶠ S : Finset (HeightOneSpectrum (𝓞 F)) in Filter.atTop, B ∈ intH σ b S := by
   have hfin : ∀ (a i : Fin n) (k : Fin d), {v : HeightOneSpectrum (𝓞 F) |
@@ -113,6 +142,17 @@ theorem eventually_mem_intH (σ : E →ₐ[F] E) {d n : ℕ} (b : Module.Basis (
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ M J _ n _ _ ψ hψ dx db d b Φ hI T`. Use `haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩`. Use `haveI := GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.placesCountable F`. Take `⟨hψc, hψn, -, -⟩` from `hψ`. Establish `hchar : Continuous fun B : HermR (AF F) σ n => ψ (-(algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace (T.map (inclR (AF F)) * (B : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))))))` using `hψc.comp ((continuous_const.mul (continuous_trace_pair σ _)).neg)`.
+
+Establish `hf` using `hI.aestronglyMeasurable.mul hchar.aestronglyMeasurable`. Unfold `coefS coefN`. Use `tendsto_integral_filter_of_dominated_convergence (fun B => ‖starN σ J ψ dx Φ B‖) ?_ ?_ hI.norm ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun S => ?_` and prove the remaining obligations. Establish `hind : Measurable ((intH (n` using `n) σ b S).indicator (fun _ => (1 : ℂ))) := measurable_const.indicator (measurableSet_intH σ b S)`.
+
+Conclude with `hind.aestronglyMeasurable.mul hf`. Use `Filter.Eventually.of_forall fun S => Filter.Eventually.of_forall fun B => ?_` and prove the remaining obligations. Establish `h1 : ‖(intH (n` using `n) σ b S).indicator (fun _ => (1 : ℂ)) B‖ ≤ 1 := by`. Apply the tactic sequence `by_cases h : B ∈ intH (n := n) σ b S <;> simp [h]`. Rewrite using `[norm_mul, norm_mul, hψn, mul_one]`.
+
+Conclude with `mul_le_of_le_one_left (norm_nonneg _) h1`. Use `Filter.Eventually.of_forall fun B => ?_` and prove the remaining obligations. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_mem_intH σ b B] with S hS`. Simplify using `only [Set.indicator_of_mem hS, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coefS_tendsto : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (db : Measure (HermR (AF F) σ n)) (d : ℕ) (b : Module.Basis (Fin d) F E) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ), Integrable (starN σ J ψ dx Φ) db → ∀ T : Matrix (Fin n) (Fin n) E, Filter.Tendsto (fun S => coefS σ J ψ dx db Φ T b S) Filter.atTop (nhds (coefN σ J ψ dx db Φ T)) := by
   intro F E _ _ _ _ _ σ _ M J _ n _ _ ψ hψ dx db d b Φ hI T
   haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩

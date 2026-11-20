@@ -29,6 +29,9 @@ def blockUpper {α : Type*} [LinearOrder α] (β : Fin n → α) : Subgroup (GL 
     simp only [Set.mem_ofPred_eq, coe_units_inv]
     exact blockTriangular_inv_of_blockTriangular hg
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_blockUpper {α : Type*} [LinearOrder α] {β : Fin n → α} {g : GL (Fin n) F} :
     g ∈ blockUpper F n β ↔ (g : Matrix (Fin n) (Fin n) F).BlockTriangular β :=
   Iff.rfl
@@ -36,14 +39,25 @@ theorem mem_blockUpper {α : Type*} [LinearOrder α] {β : Fin n → α} {g : GL
 def borel : Subgroup (GL (Fin n) F) :=
   blockUpper F n id
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_borel {g : GL (Fin n) F} :
     g ∈ borel F n ↔ (g : Matrix (Fin n) (Fin n) F).IsUpperTriangular :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_ hg _ _ hij` and use `hg (hβ.reflect_lt hij)`.
+-/
 theorem borel_le_blockUpper {α : Type*} [LinearOrder α] {β : Fin n → α} (hβ : Monotone β) :
     borel F n ≤ blockUpper F n β :=
   fun _ hg _ _ hij => hg (hβ.reflect_lt hij)
 
+/- English proof (translation)
+Rewrite using `[mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hC h, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem upper_mul_apply_self {A C : Matrix (Fin n) (Fin n) F} (hA : A.IsUpperTriangular)
     (hC : C.IsUpperTriangular) (i : Fin n) : (A * C) i i = A i i * C i i := by
   rw [mul_apply, Finset.sum_eq_single i]
@@ -53,11 +67,17 @@ theorem upper_mul_apply_self {A C : Matrix (Fin n) (Fin n) F} (hA : A.IsUpperTri
     · rw [hC h, mul_zero]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul]`. Conclude with `upper_mul_apply_self F n hg hh i`.
+-/
 theorem mul_apply_self_of_mem_borel {g h : GL (Fin n) F} (hg : g ∈ borel F n)
     (hh : h ∈ borel F n) (i : Fin n) : (g * h : GL (Fin n) F) i i = g i i * h i i := by
   rw [Units.val_mul]
   exact upper_mul_apply_self F n hg hh i
 
+/- English proof (translation)
+Establish `hdet : (g : Matrix (Fin n) (Fin n) F).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp g.isUnit).ne_zero`. Rewrite `hdet` using `[det_of_isUpperTriangular hg, Finset.prod_ne_zero_iff]`. Conclude with `hdet i (Finset.mem_univ _)`.
+-/
 theorem apply_self_ne_zero_of_mem_borel {g : GL (Fin n) F} (hg : g ∈ borel F n) (i : Fin n) :
     g i i ≠ 0 := by
   have hdet : (g : Matrix (Fin n) (Fin n) F).det ≠ 0 :=
@@ -65,6 +85,9 @@ theorem apply_self_ne_zero_of_mem_borel {g : GL (Fin n) F} (hg : g ∈ borel F n
   rw [det_of_isUpperTriangular hg, Finset.prod_ne_zero_iff] at hdet
   exact hdet i (Finset.mem_univ _)
 
+/- English proof (translation)
+Establish `h` using `mul_apply_self_of_mem_borel F n ((borel F n).inv_mem hg) hg i`. Rewrite `h` using `[inv_mul_cancel, Units.val_one, one_apply_eq]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+-/
 theorem inv_apply_self_of_mem_borel {g : GL (Fin n) F} (hg : g ∈ borel F n) (i : Fin n) :
     (g⁻¹ : GL (Fin n) F) i i = (g i i)⁻¹ := by
   have h := mul_apply_self_of_mem_borel F n ((borel F n).inv_mem hg) hg i
@@ -79,10 +102,16 @@ def unipotent : Subgroup (GL (Fin n) F) where
   inv_mem' {g} hg := ⟨(borel F n).inv_mem hg.1, fun i => by
     rw [inv_apply_self_of_mem_borel F n hg.1, hg.2, inv_one]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unipotent {g : GL (Fin n) F} :
     g ∈ unipotent F n ↔ (g : Matrix (Fin n) (Fin n) F).IsUpperTriangular ∧ ∀ i, g i i = 1 :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_ hg` and use `hg.1`.
+-/
 theorem unipotent_le_borel : unipotent F n ≤ borel F n := fun _ hg => hg.1
 
 def diagGL : (Fin n → Fˣ) →* GL (Fin n) F where
@@ -92,14 +121,23 @@ def diagGL : (Fin n → Fˣ) →* GL (Fin n) F where
   map_mul' d e := Units.ext (by simp [diagonal_mul_diagonal])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_diagGL (d : Fin n → Fˣ) :
     ((diagGL F n d : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = diagonal fun i => (d i : F) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_borel, coe_diagGL]`. Conclude with `blockTriangular_diagonal _`.
+-/
 theorem diagGL_mem_borel (d : Fin n → Fˣ) : diagGL F n d ∈ borel F n := by
   rw [mem_borel, coe_diagGL]
   exact blockTriangular_diagonal _
 
+/- English proof (translation)
+Rewrite using `[mul_apply_self_of_mem_borel F n ((borel F n).mul_mem (diagGL_mem_borel F n a) hu.1) (diagGL_mem_borel F n c), mul_apply_self_of_mem_borel F n (diagGL_mem_borel F n a) hu.1, hu.2]`. Simplify using the standard rewrite rules.
+-/
 theorem diagGL_mul_mul_diagGL_apply_self {u : GL (Fin n) F} (hu : u ∈ unipotent F n)
     (a c : Fin n → Fˣ) (i : Fin n) :
     (diagGL F n a * u * diagGL F n c : GL (Fin n) F) i i = a i * c i := by
@@ -108,6 +146,9 @@ theorem diagGL_mul_mul_diagGL_apply_self {u : GL (Fin n) F} (hu : u ∈ unipoten
     hu.2]
   simp
 
+/- English proof (translation)
+Use `⟨(borel F n).mul_mem ((borel F n).mul_mem (diagGL_mem_borel F n d) hu.1) ((borel F n).inv_mem (diagGL_mem_borel F n d)), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, diagGL_mul_mul_diagGL_apply_self F n hu]`. Simplify using the standard rewrite rules.
+-/
 theorem diagGL_mul_mul_inv_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ unipotent F n)
     (d : Fin n → Fˣ) : diagGL F n d * u * (diagGL F n d)⁻¹ ∈ unipotent F n := by
   refine ⟨(borel F n).mul_mem ((borel F n).mul_mem (diagGL_mem_borel F n d) hu.1)
@@ -121,6 +162,11 @@ section Integral
 
 variable [ValuativeRel F]
 
+/- English proof (translation)
+Establish `hinv : ∀ i, (((e i : 𝒪[F]) : F))⁻¹ = ((((e i)⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F)` using `fun i => (eq_inv_of_mul_eq_one_left (by`. Establish `h` using `congrArg Subtype.val (e i).inv_mul`. Rewrite using `[MulMemClass.coe_mul, OneMemClass.coe_one] at h)).symm` and apply the resulting hypothesis. Rewrite using `[mem_integralGL_iff, ← map_inv]`. Apply the tactic sequence `constructor <;> intro i j <;> rw [coe_diagGL, diagonal_apply] <;> split_ifs <;>`.
+
+Simplify using `[Units.coe_map, hinv]`.
+-/
 theorem diagGL_map_mem_integralGL (e : Fin n → (𝒪[F])ˣ) :
     diagGL F n (fun i => Units.map (𝒪[F]).subtype.toMonoidHom (e i)) ∈ integralGL F n := by
   have hinv : ∀ i, (((e i : 𝒪[F]) : F))⁻¹ = ((((e i)⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) := fun i =>
@@ -131,6 +177,15 @@ theorem diagGL_map_mem_integralGL (e : Fin n → (𝒪[F])ˣ) :
   constructor <;> intro i j <;> rw [coe_diagGL, diagonal_apply] <;> split_ifs <;>
     simp [Units.coe_map, hinv]
 
+/- English proof (translation)
+Establish `hint` using `Valuation.integer.integers (valuation F)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hB, hK⟩`. Take `⟨h1, h2⟩` from `(mem_integralGL_iff F n).1 hK`. Use `⟨hB, h1, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h2'` using `h2 i i`. Rewrite `h2'` using `[inv_apply_self_of_mem_borel F n hB]`. Establish `hne` using `apply_self_ne_zero_of_mem_borel F n hB i`. Establish `hu : IsUnit (⟨g i i, h1 i i⟩ : 𝒪[F])` using `isUnit_iff_exists_inv.2 ⟨⟨(g i i)⁻¹, h2'⟩, Subtype.ext (mul_inv_cancel₀ hne)⟩`. Conclude with `hint.isUnit_iff_valuation_eq_one.1 hu`.
+
+Introduce and unpack `⟨hB, h1, h2⟩`. Use `⟨hB, ?_⟩` and prove the remaining obligations. Set `A : Matrix (Fin n) (Fin n) 𝒪[F]` to `Matrix.of fun i j => ⟨g i j, h1 i j⟩`. Establish `hAu : A.IsUpperTriangular` using `fun i j hij => Subtype.ext (hB hij)`. Establish `hdet : IsUnit A.det`.
+
+Rewrite using `[det_of_isUpperTriangular hAu]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => hint.isUnit_iff_valuation_eq_one.2 (h2 i)`. Use `⟨((Matrix.isUnit_iff_isUnit_det A).2 hdet).unit, Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations. Rewrite using `[integralGLHom_apply, IsUnit.unit_spec]`. Both sides reduce to the same expression.
+-/
 theorem mem_borel_inf_integralGL_iff {g : GL (Fin n) F} :
     g ∈ borel F n ⊓ integralGL F n ↔
       g ∈ borel F n ∧ (∀ i j, g i j ∈ 𝒪[F]) ∧ ∀ i, valuation F (g i i) = 1 := by
@@ -157,6 +212,9 @@ theorem mem_borel_inf_integralGL_iff {g : GL (Fin n) F} :
     rw [integralGLHom_apply, IsUnit.unit_spec]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, hK⟩`. Conclude with `⟨hN, ((mem_integralGL_iff F n).1 hK).1⟩`. Introduce and unpack `⟨hN, h1⟩`. Conclude with `⟨hN, ((mem_borel_inf_integralGL_iff F n).2 ⟨hN.1, h1, fun i => by rw [hN.2 i, map_one]⟩).2⟩`.
+-/
 theorem mem_unipotent_inf_integralGL_iff {g : GL (Fin n) F} :
     g ∈ unipotent F n ⊓ integralGL F n ↔ g ∈ unipotent F n ∧ ∀ i j, g i j ∈ 𝒪[F] := by
   constructor
@@ -176,20 +234,36 @@ def uniformizerUnit : Fˣ :=
   Units.mk0 (GLnLocal.uniformizer F : F) fun h => (irreducible_uniformizer F).ne_zero (Subtype.ext h)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_uniformizerUnit : ((uniformizerUnit F : Fˣ) : F) = GLnLocal.uniformizer F :=
   rfl
 
 def torusPow (l : Fin n → ℤ) : GL (Fin n) F :=
   diagGL F n fun i => uniformizerUnit F ^ l i
 
+/- English proof (translation)
+Simplify using `[torusPow, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem coe_torusPow (l : Fin n → ℤ) :
     ((torusPow F n l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
       diagonal fun i => (GLnLocal.uniformizer F : F) ^ l i := by
   simp [torusPow, Units.val_zpow_eq_zpow_val]
 
+/- English proof (translation)
+The claim follows from `diagGL_mem_borel F n _`.
+-/
 theorem torusPow_mem_borel (l : Fin n → ℤ) : torusPow F n l ∈ borel F n :=
   diagGL_mem_borel F n _
 
+/- English proof (translation)
+Establish `hlt` using `valuation_uniformizer_lt_one F`. Establish `hpow : ∀ k : ℕ, valuation F (GLnLocal.uniformizer F : F) ^ (k + 1) < 1` using `fun k => lt_of_le_of_lt (by simpa using pow_le_pow_right_of_le_one' hlt.le (Nat.le_add_left 1 k)) hlt`. Rewrite `h` using `[map_zpow₀]`. Break down `z with k | k` into its components or cases. Break down `k with _ | k` into its components or cases.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ ^ ((k + 1 : ℕ) : ℤ) = 1 at h`. Rewrite `h` using `[zpow_natCast]`. Conclude with `absurd h (hpow k).ne`. Rewrite `h` using `[zpow_negSucc, inv_eq_one]`.
+
+Conclude with `absurd h (hpow k).ne`.
+-/
 theorem eq_zero_of_valuation_zpow_uniformizer_eq_one {z : ℤ}
     (h : valuation F ((GLnLocal.uniformizer F : F) ^ z) = 1) : z = 0 := by
   have hlt := valuation_uniformizer_lt_one F
@@ -205,6 +279,13 @@ theorem eq_zero_of_valuation_zpow_uniformizer_eq_one {z : ℤ}
   · rw [zpow_negSucc, inv_eq_one] at h
     exact absurd h (hpow k).ne
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(eventually_pow_mul_mem F x).exists`. Establish `hπ : (GLnLocal.uniformizer F : F) ≠ 0` using `(uniformizerUnit F).ne_zero`. Establish `hy : (⟨_, hm⟩ : 𝒪[F]) ≠ 0` using `fun h => by`. Establish `h'` using `congrArg Subtype.val h`. Simplify using `only [ZeroMemClass.coe_zero] at h'`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hπ) hx h'`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy (irreducible_uniformizer F)`. Use `⟨(k : ℤ) - m, u, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val hu`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow] at h`.
+
+Rewrite using `[zpow_sub₀ hπ, zpow_natCast, zpow_natCast, div_mul_eq_mul_div, eq_div_iff (pow_ne_zero _ hπ), mul_comm, h, mul_comm]`.
+-/
 theorem exists_zpow_mul_unit {x : F} (hx : x ≠ 0) :
     ∃ (z : ℤ) (u : (𝒪[F])ˣ), x = (GLnLocal.uniformizer F : F) ^ z * ((u : 𝒪[F]) : F) := by
   obtain ⟨m, hm⟩ := (eventually_pow_mul_mem F x).exists
@@ -223,6 +304,49 @@ theorem exists_zpow_mul_unit {x : F} (hx : x ≠ 0) :
 
 section Decomposition
 
+/- English proof (translation)
+Use `set L := mapSubmodule F n g (standardLattice F n) with hL`. Establish `hπ : (GLnLocal.uniformizer F : F) ≠ 0` using `(uniformizerUnit F).ne_zero`. Take `⟨m, hm⟩ : ∃ m : ℕ, ∀ i j, (GLnLocal.uniformizer F : F) ^ m * g i j ∈ 𝒪[F]` from `(eventually_all.mpr fun i => eventually_all.mpr fun j => eventually_pow_mul_mem F (g i j)).exists`. Use `set d : F := (GLnLocal.uniformizer F : F) ^ m with hd`. Establish `hd0 : d ≠ 0` using `pow_ne_zero _ hπ`.
+
+Establish `hbdd : ∀ v ∈ L, ∀ i, d * v i ∈ 𝒪[F]`. Introduce and unpack `_ ⟨w, hw, rfl⟩ i`. Rewrite using `[glLin_apply, mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Subring.sum_mem _ fun j _ => by`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `Subring.mul_mem _ (hm i j) (hw j)`. Establish `hfull : ∀ j, ∃ c : F, c ≠ 0 ∧ c • Pi.single j (1 : F) ∈ L`. Introduce `j`. Take `⟨m', hm'⟩ : ∃ m' : ℕ, ∀ i, (GLnLocal.uniformizer F : F) ^ m' * (g⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F]` from `(eventually_all.mpr fun i => eventually_pow_mul_mem F ((g⁻¹ : GL (Fin n) F) i j)).exists`. Use `⟨(GLnLocal.uniformizer F : F) ^ m', pow_ne_zero _ hπ, ?_⟩` and prove the remaining obligations.
+
+Use `⟨((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) *ᵥ ((GLnLocal.uniformizer F : F) ^ m' • Pi.single j 1), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_smul, mulVec_single_one, Pi.smul_apply, col_apply, smul_eq_mul]`. Conclude with `hm' i`. Rewrite using `[glLin_apply, mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mulVec]`. Set `Z : Fin n → Submodule 𝒪[F] (Fin n → F)` to `fun j => ⨅ (i : Fin n) (_ : j < i), LinearMap.ker (LinearMap.proj i : (Fin n → F) →ₗ[𝒪[F]] F)`.
+
+Establish `hZ : ∀ j v, v ∈ Z j ↔ ∀ i, j < i → v i = 0`. Introduce `j v`. Simplify using `[Z, Submodule.mem_iInf]`. Set `S : Fin n → Submodule 𝒪[F] F` to `fun j => (L ⊓ Z j).map (LinearMap.proj j : (Fin n → F) →ₗ[𝒪[F]] F)`. Establish `hS : ∀ j t, t ∈ S j ↔ ∃ v ∈ L, (∀ i, j < i → v i = 0) ∧ v j = t`.
+
+Introduce `j t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, ⟨hvL, hvZ⟩, rfl⟩`. Conclude with `⟨v, hvL, (hZ j v).1 hvZ, rfl⟩`. Introduce and unpack `⟨v, hvL, hvZ, rfl⟩`.
+
+Conclude with `⟨v, ⟨hvL, (hZ j v).2 hvZ⟩, rfl⟩`. Establish `hgen : ∀ j, ∃ t ∈ S j, ∀ s ∈ S j, ∃ r : 𝒪[F], s = (r : F) * t`. Introduce `j`. Set `J : Ideal 𝒪[F]` to `(S j).comap (LinearMap.toSpanSingleton 𝒪[F] F d⁻¹)`. Establish `: J.IsPrincipal` using `IsPrincipalIdealRing.principal J`.
+
+Use `⟨((Submodule.IsPrincipal.generator J : 𝒪[F]) : F) * d⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `h : LinearMap.toSpanSingleton 𝒪[F] F d⁻¹ (Submodule.IsPrincipal.generator J) ∈ S j` using `Submodule.IsPrincipal.generator_mem J`. Rewrite `h` using `[LinearMap.toSpanSingleton_apply, Subring.smul_def, smul_eq_mul]`. Then use the resulting hypothesis. Introduce `s hs`. Take `⟨v, hvL, -, rfl⟩` from `(hS j s).1 hs`.
+
+Establish `hmem : (⟨d * v j, hbdd v hvL j⟩ : 𝒪[F]) ∈ J` using `by show LinearMap.toSpanSingleton 𝒪[F] F d⁻¹ _ ∈ S j`. Rewrite using `[LinearMap.toSpanSingleton_apply, Subring.smul_def, smul_eq_mul]`. Use `hs using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Take `⟨r, hr⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator J).1 hmem`.
+
+Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val hr`. Simplify using `only [smul_eq_mul, MulMemClass.coe_mul] at h`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h`.
+
+Use `choose t htS htgen using hgen`. Use `choose v hvL hvZ hvt using fun j => (hS j (t j)).1 (htS j)`. Establish `ht0 : ∀ j, t j ≠ 0`. Introduce `j h`. Take `⟨c, hc, hcL⟩` from `hfull j`.
+
+Establish `hcS : c ∈ S j` using `(hS j c).2 ⟨_, hcL, fun i hi => by simp [hi.ne'], by simp⟩`. Take `⟨r, hr⟩` from `htgen j c hcS`. Conclude with `hc (by rw [hr, h, mul_zero])`. Establish `hspan : ∀ x ∈ L, x ∈ Submodule.span 𝒪[F] (Set.range v)`. It suffices to establish `∀ k : ℕ, ∀ x ∈ L, (∀ i : Fin n, k ≤ (i : ℕ) → x i = 0) → x ∈ Submodule.span 𝒪[F] (Set.range v) from fun x hx => this n x hx fun i hi => absurd i.isLt (not_lt.mpr hi)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _ hx`. Rewrite using `[show x = 0 from funext fun i => hx i (Nat.zero_le _)]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ k ih`. Introduce `x hxL hx`. Distinguish the cases in `hk : k < n`. Take `⟨r, hr⟩` from `htgen ⟨k, hk⟩ (x ⟨k, hk⟩) ((hS _ _).2 ⟨x, hxL, fun i hi => hx i (by`.
+
+Rewrite `hi` using `[Fin.lt_def]`. Simplify using `only at hi`. Use the proof step `omega), rfl⟩)`. Establish `h1 : x - r • v ⟨k, hk⟩ ∈ Submodule.span 𝒪[F] (Set.range v)`. Use `ih _ (L.sub_mem hxL (L.smul_mem r (hvL _))) fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.sub_apply, Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Break down `Nat.lt_or_eq_of_le hi with h | h` into its components or cases. Establish `hji : (⟨k, hk⟩ : Fin n) < i`. Rewrite using `[Fin.lt_def]`. Conclude with `h`.
+
+Rewrite using `[hx i (by omega), hvZ _ i hji, mul_zero, sub_zero]`. Take `rfl : i = ⟨k, hk⟩` from `Fin.ext h.symm`. Rewrite using `[hvt, ← hr, sub_self]`. Establish `h2` using `Submodule.add_mem _ h1 (Submodule.smul_mem _ r (Submodule.subset_span ⟨⟨k, hk⟩, rfl⟩))`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `ih x hxL fun i _ => absurd i.isLt (by omega)`. Set `B : Matrix (Fin n) (Fin n) F` to `Matrix.of fun i j => v j i`. Establish `hBu : B.IsUpperTriangular` using `fun i j hij => hvZ j i hij`. Establish `hBdet : B.det ≠ 0`. Rewrite using `[det_of_isUpperTriangular hBu, Finset.prod_ne_zero_iff]`.
+
+Introduce `i _`. Simplify using `only [B, of_apply, hvt]`. Conclude with `ht0 i`. Set `b : GL (Fin n) F` to `nonsingInvUnit B (isUnit_iff_ne_zero.mpr hBdet)`. Establish `hb : (b : Matrix (Fin n) (Fin n) F) = B` using `rfl`.
+
+Establish `hbL : mapSubmodule F n b (standardLattice F n) = L`. Rewrite using `[mapSubmodule, standardLattice_eq_span, Submodule.map_span, ← Set.range_comp]`. Establish `: (glLin F n b ∘ fun j => Pi.single j (1 : F)) = v` using `funext fun j => by`. Use extensionality with `i`. Simplify using `only [Function.comp, glLin_apply, mulVec_single_one, col_apply, hb, B, of_apply]`.
+
+Rewrite using `[this]`. Conclude with `le_antisymm (Submodule.span_le.mpr (Set.range_subset_iff.mpr hvL)) hspan`. Use `⟨b, hBu, b⁻¹ * g, ?_, (mul_inv_cancel_left b g).symm⟩` and prove the remaining obligations. Rewrite using `[← mapSubmodule_standardLattice_eq_iff, mapSubmodule_mul, ← hL, ← hbL, mapSubmodule_inv_mapSubmodule]`.
+-/
 theorem exists_borel_mul_integralGL (g : GL (Fin n) F) :
     ∃ b ∈ borel F n, ∃ k ∈ integralGL F n, g = b * k := by
   classical
@@ -349,18 +473,27 @@ theorem exists_borel_mul_integralGL (g : GL (Fin n) F) :
   rw [← mapSubmodule_standardLattice_eq_iff, mapSubmodule_mul, ← hL, ← hbL,
     mapSubmodule_inv_mapSubmodule]
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨b, hb, k, hk, rfl⟩` from `exists_borel_mul_integralGL F n g`. Conclude with `Set.mul_mem_mul hb hk`.
+-/
 theorem borel_mul_integralGL :
     (borel F n : Set (GL (Fin n) F)) * (integralGL F n : Set (GL (Fin n) F)) = Set.univ := by
   refine Set.eq_univ_of_forall fun g => ?_
   obtain ⟨b, hb, k, hk, rfl⟩ := exists_borel_mul_integralGL F n g
   exact Set.mul_mem_mul hb hk
 
+/- English proof (translation)
+Take `⟨b, hb, k, hk, rfl⟩` from `exists_borel_mul_integralGL F n g`. Conclude with `⟨b, borel_le_blockUpper F n hβ hb, k, hk, rfl⟩`.
+-/
 theorem exists_blockUpper_mul_integralGL {α : Type*} [LinearOrder α] {β : Fin n → α}
     (hβ : Monotone β) (g : GL (Fin n) F) :
     ∃ p ∈ blockUpper F n β, ∃ k ∈ integralGL F n, g = p * k := by
   obtain ⟨b, hb, k, hk, rfl⟩ := exists_borel_mul_integralGL F n g
   exact ⟨b, borel_le_blockUpper F n hβ hb, k, hk, rfl⟩
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Take `⟨p, hp, k, hk, rfl⟩` from `exists_blockUpper_mul_integralGL F n hβ g`. Conclude with `Set.mul_mem_mul hp hk`.
+-/
 theorem blockUpper_mul_integralGL {α : Type*} [LinearOrder α] {β : Fin n → α}
     (hβ : Monotone β) :
     (blockUpper F n β : Set (GL (Fin n) F)) * (integralGL F n : Set (GL (Fin n) F)) =
@@ -373,12 +506,24 @@ end Decomposition
 
 section Coordinates
 
+/- English proof (translation)
+Rewrite using `[torusPow, torusPow, ← map_inv]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.zpow_neg]`.
+-/
 theorem torusPow_neg (l : Fin n → ℤ) : torusPow F n (-l) = (torusPow F n l)⁻¹ := by
   rw [torusPow, torusPow, ← map_inv]
   congr 1
   funext i
   simp [_root_.zpow_neg]
 
+/- English proof (translation)
+Take `⟨b, hb, k, hk, rfl⟩` from `exists_borel_mul_integralGL F n g`. Establish `hne` using `apply_self_ne_zero_of_mem_borel F n hb`. Use `choose l e he using fun i => exists_zpow_mul_unit F (hne i)`. Set `δ : Fin n → Fˣ` to `fun i => Units.mk0 (b i i) (hne i)`. Set `E : GL (Fin n) F` to `diagGL F n fun i => Units.map (𝒪[F]).subtype.toMonoidHom (e i)`.
+
+Establish `hDE : diagGL F n δ = torusPow F n l * E`. Rewrite using `[torusPow, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `ext`.
+
+Simplify using `[δ, he i, Units.val_zpow_eq_zpow_val, Units.coe_map]`. Establish `hDinv : (diagGL F n δ)⁻¹ ∈ borel F n` using `(borel F n).inv_mem (diagGL_mem_borel F n δ)`. Use `⟨b * (diagGL F n δ)⁻¹, ⟨(borel F n).mul_mem hb hDinv, fun i => ?_⟩, l, E * k, (integralGL F n).mul_mem (diagGL_map_mem_integralGL F n e) hk, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_apply_self_of_mem_borel F n hb hDinv, ← map_inv, coe_diagGL, diagonal_apply_eq]`. Simplify using `[δ, hne i]`.
+
+Rewrite using `[show b * (diagGL F n δ)⁻¹ * torusPow F n l * (E * k) = b * (diagGL F n δ)⁻¹ * (torusPow F n l * E) * k by group, ← hDE] group`.
+-/
 theorem exists_iwasawa (g : GL (Fin n) F) :
     ∃ u ∈ unipotent F n, ∃ l : Fin n → ℤ, ∃ k ∈ integralGL F n, g = u * torusPow F n l * k := by
   obtain ⟨b, hb, k, hk, rfl⟩ := exists_borel_mul_integralGL F n g
@@ -401,6 +546,19 @@ theorem exists_iwasawa (g : GL (Fin n) F) :
       b * (diagGL F n δ)⁻¹ * (torusPow F n l * E) * k by group, ← hDE]
     group
 
+/- English proof (translation)
+Establish `hπ : (GLnLocal.uniformizer F : F) ≠ 0` using `(uniformizerUnit F).ne_zero`. Establish `hx : (torusPow F n l')⁻¹ * (u'⁻¹ * u) * torusPow F n l = k' * k⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hw : u'⁻¹ * u ∈ unipotent F n` using `(unipotent F n).mul_mem ((unipotent F n).inv_mem hu') hu`. Establish `hxBK : (torusPow F n l')⁻¹ * (u'⁻¹ * u) * torusPow F n l ∈ borel F n ⊓ integralGL F n`.
+
+Use `⟨?_, hx ▸ (integralGL F n).mul_mem hk' ((integralGL F n).inv_mem hk)⟩` and prove the remaining obligations. Conclude with `(borel F n).mul_mem ((borel F n).mul_mem ((borel F n).inv_mem (torusPow_mem_borel F n l')) hw.1) (torusPow_mem_borel F n l)`. Establish `hll : l = l'`. Use function extensionality and compare the values at `i`. Establish `hv` using `((mem_borel_inf_integralGL_iff F n).1 hxBK).2.2 i`.
+
+Rewrite `hv` using `[torusPow, torusPow, ← map_inv, diagGL_mul_mul_diagGL_apply_self F n hw]`. Establish `h0 : valuation F ((GLnLocal.uniformizer F : F) ^ (l i - l' i)) = 1`. Rewrite using `[← hv]`. Use `congr 1`. Rewrite using `[zpow_sub₀ hπ]`.
+
+Simplify using `[Units.val_zpow_eq_zpow_val, div_eq_mul_inv, mul_comm]`. Use `eq_zero_of_valuation_zpow_uniformizer_eq_one F h0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `hll` using the available equality. Use `⟨rfl, (torusPow F n l)⁻¹ * (u⁻¹ * u') * torusPow F n l, ⟨?_, ?_⟩, by group⟩` and prove the remaining obligations.
+
+Use `diagGL_mul_mul_inv_mem_unipotent F n ((unipotent F n).mul_mem ((unipotent F n).inv_mem hu) hu') (fun i => uniformizerUnit F ^ l i)⁻¹` as an intermediate fact. Rewrite `this` using `[map_inv, inv_inv]`. Conclude with `this`. Establish `: (torusPow F n l)⁻¹ * (u⁻¹ * u') * torusPow F n l = ((torusPow F n l)⁻¹ * (u'⁻¹ * u) * torusPow F n l)⁻¹` using `by group`. Rewrite using `[this, hx]`.
+
+Conclude with `(integralGL F n).inv_mem ((integralGL F n).mul_mem hk' ((integralGL F n).inv_mem hk))`.
+-/
 theorem iwasawa_unique {u u' k k' : GL (Fin n) F} {l l' : Fin n → ℤ}
     (hu : u ∈ unipotent F n) (hu' : u' ∈ unipotent F n)
     (hk : k ∈ integralGL F n) (hk' : k' ∈ integralGL F n)
@@ -445,27 +603,42 @@ theorem iwasawa_unique {u u' k k' : GL (Fin n) F} {l l' : Fin n → ℤ}
 def iwasawaExponent (g : GL (Fin n) F) : Fin n → ℤ :=
   (exists_iwasawa F n g).choose_spec.2.choose
 
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `(exists_iwasawa F n g).choose_spec.2.choose_spec`. Conclude with `⟨_, (exists_iwasawa F n g).choose_spec.1, k, hk, h⟩`.
+-/
 theorem exists_eq_mul_torusPow_iwasawaExponent (g : GL (Fin n) F) :
     ∃ u ∈ unipotent F n, ∃ k ∈ integralGL F n,
       g = u * torusPow F n (iwasawaExponent F n g) * k := by
   obtain ⟨k, hk, h⟩ := (exists_iwasawa F n g).choose_spec.2.choose_spec
   exact ⟨_, (exists_iwasawa F n g).choose_spec.1, k, hk, h⟩
 
+/- English proof (translation)
+Take `⟨u', hu', k', hk', h⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n (u * torusPow F n l * k)`. Conclude with `(iwasawa_unique F n hu' hu hk' hk h.symm).1`.
+-/
 theorem iwasawaExponent_eq {u k : GL (Fin n) F} {l : Fin n → ℤ} (hu : u ∈ unipotent F n)
     (hk : k ∈ integralGL F n) : iwasawaExponent F n (u * torusPow F n l * k) = l := by
   obtain ⟨u', hu', k', hk', h⟩ :=
     exists_eq_mul_torusPow_iwasawaExponent F n (u * torusPow F n l * k)
   exact (iwasawa_unique F n hu' hu hk' hk h.symm).1
 
+/- English proof (translation)
+Simplify using `using iwasawaExponent_eq F n (unipotent F n).one_mem (integralGL F n).one_mem (l := l)`.
+-/
 theorem iwasawaExponent_torusPow (l : Fin n → ℤ) : iwasawaExponent F n (torusPow F n l) = l := by
   simpa using iwasawaExponent_eq F n (unipotent F n).one_mem (integralGL F n).one_mem (l := l)
 
+/- English proof (translation)
+Take `⟨u, hu, k', hk', h⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `conv_lhs => rw [h, mul_assoc]`. Conclude with `iwasawaExponent_eq F n hu ((integralGL F n).mul_mem hk' hk)`.
+-/
 theorem iwasawaExponent_mul_of_mem_integralGL (g : GL (Fin n) F) {k : GL (Fin n) F}
     (hk : k ∈ integralGL F n) : iwasawaExponent F n (g * k) = iwasawaExponent F n g := by
   obtain ⟨u, hu, k', hk', h⟩ := exists_eq_mul_torusPow_iwasawaExponent F n g
   conv_lhs => rw [h, mul_assoc]
   exact iwasawaExponent_eq F n hu ((integralGL F n).mul_mem hk' hk)
 
+/- English proof (translation)
+Take `⟨u', hu', k', hk', h⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `conv_lhs => rw [h, ← mul_assoc, ← mul_assoc]`. Conclude with `iwasawaExponent_eq F n ((unipotent F n).mul_mem hu hu') hk'`.
+-/
 theorem iwasawaExponent_mul_of_mem_unipotent {u : GL (Fin n) F} (hu : u ∈ unipotent F n)
     (g : GL (Fin n) F) : iwasawaExponent F n (u * g) = iwasawaExponent F n g := by
   obtain ⟨u', hu', k', hk', h⟩ := exists_eq_mul_torusPow_iwasawaExponent F n g

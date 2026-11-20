@@ -15,17 +15,26 @@ namespace GlobalTheory.CompanionTheory.RankinSelberg.Unfolded
 
 open Ad3 Ad3.R
 
+/- English proof (translation)
+Use extensionality with `a`. Both sides reduce to the same expression.
+-/
 theorem localChar_inv' (c : HeckeCharacter ℚ) (v : Pl) :
     localChar c⁻¹ v = (localChar c v)⁻¹ := by
   ext a
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[GroundTheory.Automorphic.GodementSection.glAt_apply, AdelicGLn.prodEquiv_apply_snd]`.
+-/
 theorem glAt_prodEquiv (v : Pl) (g : G2) :
     glAt v (AdelicGLn.prodEquiv ℚ 2 g).2 = finAt v g := by
   apply Units.ext
   ext i j
   simp [GroundTheory.Automorphic.GodementSection.glAt_apply, AdelicGLn.prodEquiv_apply_snd]
 
+/- English proof (translation)
+Unfold `Wh`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← mul_assoc, h, mul_assoc]`.
+-/
 theorem wh_mul_right {φ : G2 → ℂ} {r : G2} {u : ℂ} (h : ∀ g, φ (g * r) = u * φ g) (g : G2) :
     Wh φ (g * r) = u * Wh φ g := by
   unfold Wh
@@ -34,6 +43,11 @@ theorem wh_mul_right {φ : G2 → ℂ} {r : G2} {u : ℂ} (h : ∀ g, φ (g * r)
   funext x
   rw [← mul_assoc, h, mul_assoc]
 
+/- English proof (translation)
+Take `⟨u, hu, hru⟩` from `hφ.rot r hr hd`. Establish `hu1 : u * conj u = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hu]`. Simplify using the standard rewrite rules. Use `show Wh φ (realEmb (dg2 t 1 * r)) * conj (Wh φ (realEmb (dg2 t 1 * r))) = _`.
+
+Rewrite using `[map_mul, wh_mul_right hru, hW, map_mul]`. Take the linear combination `(WR k t * conj (WR k t)) * hu1`.
+-/
 theorem q_torus {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : HeckeCharacter ℚ} {φ : G2 → ℂ}
     (hφ : Lift k N f ω φ) (hW : ∀ t : ℝˣ, Wh φ (realEmb (dg2 t 1)) = WR k t) (t : ℝˣ) (r : GL (Fin 2) ℝ)
     (hr : r.val * r.valᵀ = 1) (hd : r.det.val = 1) :
@@ -46,6 +60,9 @@ theorem q_torus {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : HeckeC
   rw [map_mul, wh_mul_right hru, hW, map_mul]
   linear_combination (WR k t * conj (WR k t)) * hu1
 
+/- English proof (translation)
+Establish `hW : W2 (ψ v) μ₁ μ₂ φ₀ ∈ V2 (ψ v) μ₁ μ₂` using `Submodule.subset_span ⟨φ₀, hφ₀, rfl⟩`. Establish `hW'` using `(hL (Qv v) (ψ v) hψ μ₁ μ₂ h₁ h₂).1.stable _ hW (uni2 x)`. Establish `h` using `hA (Qv v) (ψ v) hψ m μ₁ μ₂ c h₁ h₂ hc _ hW _ hW'`. Conclude with `((h.2 Ψ hΨ).1 s hs).mul ((h.1 s hs).2)`.
+-/
 theorem locConst_section (hL : Loc2) (hA : A10) {ψ : ∀ v : Pl, AddChar (Qv v) Circle} (v : Pl) (hψ : IsStd (ψ v))
     (m : Measure (integralGL (Qv v) 2)) [m.IsHaarMeasure] [IsProbabilityMeasure m]
     {μ₁ μ₂ c : (Qv v)ˣ →* ℂˣ} (h₁ : IsUnit1 μ₁) (h₂ : IsUnit1 μ₂) (hc : IsUnit1 c)
@@ -57,6 +74,23 @@ theorem locConst_section (hL : Loc2) (hA : A10) {ψ : ∀ v : Pl, AddChar (Qv v)
   have h := hA (Qv v) (ψ v) hψ m μ₁ μ₂ c h₁ h₂ hc _ hW _ hW'
   exact ((h.2 Ψ hΨ).1 s hs).mul ((h.1 s hs).2)
 
+/- English proof (translation)
+Introduce `hL hB hA hE2 hE3 hE5 hE6a hF2 k N _ hk χ hχ f a hf ha ω φ hω hφ μ₁ μ₂ φ₀ hM mK _ _ m hm γ hγ`. Take `⟨C, hC0, hC⟩` from `hE5 k (by omega)`. Use `⟨C, hC0, ?_⟩` and prove the remaining obligations. Introduce `S hS c δ hc hδ hun x h hx Ψ hΨ s hs`. Establish `hcu : ∀ v, IsUnit1 (localChar c v)` using `fun v => (hB.1 v).2.2.2.2.2.2 c`.
+
+Establish `hun' : ∀ v ∉ S, IsUnramifiedChar (localChar c⁻¹ v)` using `fun v hv => by`. Rewrite using `[localChar_inv']`. Conclude with `isUnramifiedChar_inv_iff.2 (hun v hv)`. Establish `hc1` using `((hE2 S s hs).1 c hun).1`. Establish `hc2` using `((hE2 S s hs).1 c⁻¹ hun').1`.
+
+Establish `hW` using `(hF2 k N hk χ hχ f a hf ha ω φ hω hφ).2.2.2`. Establish `hs0 : 0 < s.re` using `by linarith`. Use `set A : ∀ v : S, GL (Fin 2) (Qv v.1) → ℂ := fun v g => GodementSectionLocal.localSection (localChar c v.1) (localChar c v.1)⁻¹ s (Ψ v) g * Av (W2 (localAdelicChar ℚ v.1) (μ₁ v.1) (μ₂ v.1) (φ₀ v.1)) (fun g => W2 (localAdelicChar ℚ v.1) (μ₁ v.1) (μ₂ v.1) (φ₀ v.1) (g * uni2 (x v))) …`. Establish `hAlc : ∀ v, IsLocallyConstant (A v)` using `fun v => by`. Use `(hm v.1).1` as an intermediate fact.
+
+Use `(hm v.1).2` as an intermediate fact. Conclude with `locConst_section (ψ := fun v => localAdelicChar ℚ v) hL hA v.1 (hB.1 v.1).1 (m v.1) (hM.u₁ v.1) (hM.u₂ v.1) (hcu v.1) (hM.sb v.1) (hΨ v) (x v) hs0`. Use `set T : ℂ := (∏' v : {v : Pl // v ∉ S}, lf3 (μ₁ v.1 * (μ₂ v.1)⁻¹) (localChar c v.1) s) * Lp c S s with hT`. Establish `hpt : ∀ κ : KA, godementSection c c⁻¹ s (tst γ S Ψ) κ.1 * Ag (fun g => Wh φ g * conj (Wh φ (g * h))) c s κ.1 = (C * (if δ then -1 else 1) * GG k s * T) * ∏ v : S, A v (finAt v.1 κ.1)`. Introduce `κ`.
+
+Establish `e1` using `GroundTheory.Automorphic.GodementSection.godementSection_tensor c c⁻¹ s γ (restrictedTensor2 S Ψ) κ.1`. Establish `e2` using `GroundTheory.Automorphic.GodementSection.finSection_restrictedTensor2 c c⁻¹ S hΨ hc1 hc2 (s := s) (by linarith) (g := (AdelicGLn.prodEquiv ℚ 2 κ.1).2) (fun v _ => by rw [glAt_prodEquiv]; exact κ.2.2 v)`. Establish `e3` using `hE6a k N hk χ hχ f a hf ha ω φ hω hφ μ₁ μ₂ φ₀ hM S hS c hun x h hx s hs κ`. Establish `e4` using `hC γ hγ c δ hc hδ s hs κ (fun y => Wh φ (realEmb y) * conj (Wh φ (realEmb y))) (fun t r hr hd => q_torus hφ hW t r hr hd)`. Simplify using `only [inv_inv, localChar_inv', glAt_prodEquiv] at e2`.
+
+Establish `e0 : godementSection c c⁻¹ s (tst γ S Ψ) κ.1 = _` using `e1`. Rewrite using `[e0, e2]`. Simplify using `only [hAdef, Finset.prod_mul_distrib]`. Take the linear combination `(archSection c c⁻¹ s γ (AdelicGLn.prodEquiv ℚ 2 κ.1).1 * ∏ v : S, GodementSectionLocal.localSection (localChar c v.1) (localChar c v.1)⁻¹ s (Ψ v) (finAt v.1 κ.1)) * e3 + ((∏ v : S, GodementSectionLocal.localSection (localChar c v.1) (localChar c v.1)⁻¹ s (Ψ v) (finAt v.1 κ.1)) * …`. Establish `hJ : Jg mK (fun g => Wh φ g * conj (Wh φ (g * h))) c (tst γ S Ψ) s = (C * (if δ then -1 else 1) * GG k s * T) * ∫ κ : KA, ∏ v : S, A v (finAt v.1 κ.1) ∂mK`.
+
+Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Eventually.of_forall hpt)`. Rewrite using `[hJ, hE3 mK m hm S A hAlc]`. Establish `hZ : ZS m μ₁ μ₂ φ₀ S x Ψ c s = ∏ v : S, ∫ κ, A v κ.1 ∂m v.1` using `rfl`. Rewrite using `[hZ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem e6 : Ad3.Loc2 → Ad3.R.B0 → Ad3.R.A10 → Ad3.R.E2 → Ad3.R.E3 → Ad3.R.E5 → Ad3.R.UnramifiedEulerProductIntegral → Ad3.R.F2 → Ad3.R.E6 := by
   intro hL hB hA hE2 hE3 hE5 hE6a hF2 k N _ hk χ hχ f a hf ha ω φ hω hφ μ₁ μ₂ φ₀ hM mK _ _ m hm γ hγ
   obtain ⟨C, hC0, hC⟩ := hE5 k (by omega)

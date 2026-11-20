@@ -8,30 +8,45 @@ section Words
 
 variable {R B : Type} [CommRing R] [Ring B] [Algebra R B]
 
+/- English proof (translation)
+Unfold `Formalism.YangianSpanCharacter.T.E1`. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+-/
 theorem first_embedding_mul (M N : Matrix (Fin 2) (Fin 2) B) : E1 (M * N) = E1 M * E1 N := by
   unfold Formalism.YangianSpanCharacter.T.E1
   ext ⟨i, k⟩ ⟨j, l⟩
   fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>
     simp [Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `Formalism.YangianSpanCharacter.T.E2`. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+-/
 theorem entries_mem_mul (M N : Matrix (Fin 2) (Fin 2) B) : E2 (M * N) = E2 M * E2 N := by
   unfold Formalism.YangianSpanCharacter.T.E2
   ext ⟨i, k⟩ ⟨j, l⟩
   fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>
     simp [Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `Formalism.YangianSpanCharacter.T.E1`. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+-/
 theorem first_embedding_one : E1 (1 : Matrix (Fin 2) (Fin 2) B) = 1 := by
   unfold Formalism.YangianSpanCharacter.T.E1
   ext ⟨i, k⟩ ⟨j, l⟩
   fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>
     simp [Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `Formalism.YangianSpanCharacter.T.E2`. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]`.
+-/
 theorem entries_mem_one : E2 (1 : Matrix (Fin 2) (Fin 2) B) = 1 := by
   unfold Formalism.YangianSpanCharacter.T.E2
   ext ⟨i, k⟩ ⟨j, l⟩
   fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>
     simp [Matrix.mul_apply, Matrix.one_apply, Fintype.sum_prod_type, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `Formalism.YangianSpanCharacter.T.E1 Formalism.YangianSpanCharacter.T.E2`. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, h]`.
+-/
 theorem first_second_embedding_commute (A C : Matrix (Fin 2) (Fin 2) B)
     (h : ∀ i j k l, A i j * C k l = C k l * A i j) : E1 A * E2 C = E2 C * E1 A := by
   unfold Formalism.YangianSpanCharacter.T.E1 Formalism.YangianSpanCharacter.T.E2
@@ -39,17 +54,26 @@ theorem first_second_embedding_commute (A C : Matrix (Fin 2) (Fin 2) B)
   fin_cases i <;> fin_cases k <;> fin_cases j <;> fin_cases l <;>
     simp [Matrix.mul_apply, Fintype.sum_prod_type, Fin.sum_univ_two, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, h]`.
+-/
 theorem transpose_mul_of_comm (A C : Matrix (Fin 2) (Fin 2) B)
     (h : ∀ i j k l, A i j * C k l = C k l * A i j) : (A * C)ᵀ = Cᵀ * Aᵀ := by
   ext i j
   simp [Matrix.mul_apply, Fin.sum_univ_two, h]
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.W.IsDet`. Simplify using `only [algebraMap_smul]`.
+-/
 theorem isDet_iff (M : R → Matrix (Fin 2) (Fin 2) B) (q : R → R) :
     IsDet M q ↔ ∀ Y : R, (M (Y + 1))ᵀ * Formalism.YangianSpanCharacter.T.J B * M Y = q Y • Formalism.YangianSpanCharacter.T.J B ∧
       M Y * Formalism.YangianSpanCharacter.T.J B * (M (Y + 1))ᵀ = q Y • Formalism.YangianSpanCharacter.T.J B := by
   unfold Formalism.FourierDecayAlt.W.IsDet
   simp only [algebraMap_smul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem rtt_relation_mul_of_rtt_of_commute {A : Type*} [Ring A] (P a b c d : A) (hM : P * a * c = c * a * P)
     (hN : P * b * d = d * b * P) (c1 : b * c = c * b) (c2 : a * d = d * a) :
     P * (a * b) * (c * d) = c * d * (a * b) * P := by
@@ -63,6 +87,9 @@ private theorem rtt_relation_mul_of_rtt_of_commute {A : Type*} [Ring A] (P a b c
     _ = c * (d * a) * b * P := by rw [c2]
     _ = c * d * (a * b) * P := by simp only [mul_assoc]
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.W.IsRTT at *`. Introduce `Y Y'`. Simplify using `only [first_embedding_mul, entries_mem_mul]`. Conclude with `rtt_relation_mul_of_rtt_of_commute _ _ _ _ _ (hM Y Y') (hN Y Y') (first_second_embedding_commute _ _ (fun i j k l => (hc Y Y' k l i j).symm)) (first_second_embedding_commute _ _ (fun i j k l => hc Y' Y i j k l))`.
+-/
 theorem isRTT_mul (M N : R → Matrix (Fin 2) (Fin 2) B) (hM : IsRTT M) (hN : IsRTT N)
     (hc : EntriesCommute M N) : IsRTT (fun Y => M Y * N Y) := by
   unfold Formalism.FourierDecayAlt.W.IsRTT at *
@@ -71,6 +98,9 @@ theorem isRTT_mul (M N : R → Matrix (Fin 2) (Fin 2) B) (hM : IsRTT M) (hN : Is
   exact rtt_relation_mul_of_rtt_of_commute _ _ _ _ _ (hM Y Y') (hN Y Y')
     (first_second_embedding_commute _ _ (fun i j k l => (hc Y Y' k l i j).symm)) (first_second_embedding_commute _ _ (fun i j k l => hc Y' Y i j k l))
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mul_Jm_mul_eq_smul_of_Jm_similitudes_left {A : Type*} [Ring A] [Algebra R A] (a a' b b' Jm : A) (s t : R)
     (h1 : a' * Jm * a = s • Jm) (h3 : b' * Jm * b = t • Jm) : b' * a' * Jm * (a * b) = (s * t) • Jm := by
   calc b' * a' * Jm * (a * b) = b' * (a' * Jm * a) * b := by simp only [mul_assoc]
@@ -79,6 +109,9 @@ private theorem mul_Jm_mul_eq_smul_of_Jm_similitudes_left {A : Type*} [Ring A] [
     _ = s • (t • Jm) := by rw [h3]
     _ = (s * t) • Jm := by rw [smul_smul]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mul_Jm_mul_eq_smul_of_Jm_similitudes_right {A : Type*} [Ring A] [Algebra R A] (a a' b b' Jm : A) (s t : R)
     (h2 : a * Jm * a' = s • Jm) (h4 : b * Jm * b' = t • Jm) : a * b * Jm * (b' * a') = (s * t) • Jm := by
   calc a * b * Jm * (b' * a') = a * (b * Jm * b') * a' := by simp only [mul_assoc]
@@ -87,6 +120,13 @@ private theorem mul_Jm_mul_eq_smul_of_Jm_similitudes_right {A : Type*} [Ring A] 
     _ = t • (s • Jm) := by rw [h2]
     _ = (s * t) • Jm := by rw [smul_smul, mul_comm]
 
+/- English proof (translation)
+Rewrite `hM`, `hN`, the goal using `[isDet_iff]`. Introduce `Y`. Take `⟨h1, h2⟩` from `hM Y`. Take `⟨h3, h4⟩` from `hN Y`. Establish `ht` using `transpose_mul_of_comm (M (Y + 1)) (N (Y + 1)) (fun i j k l => hc (Y + 1) (Y + 1) i j k l)`.
+
+Apply the tactic sequence `try beta_reduce`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `mul_Jm_mul_eq_smul_of_Jm_similitudes_left _ _ _ _ _ _ _ h1 h3`. Rewrite using `[ht]`.
+
+Conclude with `mul_Jm_mul_eq_smul_of_Jm_similitudes_right _ _ _ _ _ _ _ h2 h4`.
+-/
 theorem isDet_mul (M N : R → Matrix (Fin 2) (Fin 2) B) (q qN : R → R) (hM : IsDet M q)
     (hN : IsDet N qN) (hc : EntriesCommute M N) :
     IsDet (fun Y => M Y * N Y) (fun Y => q Y * qN Y) := by
@@ -102,6 +142,13 @@ theorem isDet_mul (M N : R → Matrix (Fin 2) (Fin 2) B) (q qN : R → R) (hM : 
   · rw [ht]
     exact mul_Jm_mul_eq_smul_of_Jm_similitudes_right _ _ _ _ _ _ _ h2 h4
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.W.EntriesCommute at *`. Introduce `Y Y' i j k l`. Proceed by induction on `L generalizing k l with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Consider the case `cons x t ih`. Simplify using `only [List.map_cons, List.prod_cons, Matrix.mul_apply]`. Establish `hx` using `h x (by simp)`. Establish `ht : ∀ y ∈ t, ∀ (Y Y' : R) (i j k l : Fin 2), M Y i j * y.1 Y' k l = y.1 Y' k l * M Y i j` using `fun y hy => h y (by simp [hy])`.
+
+Conclude with `(Commute.sum_right _ _ _ (fun m _ => Commute.mul_right (hx Y Y' i j k m) (ih ht m l))).eq`.
+-/
 theorem entriesCommute_prod (M : R → Matrix (Fin 2) (Fin 2) B)
     (L : List ((R → Matrix (Fin 2) (Fin 2) B) × (R → R)))
     (h : ∀ y ∈ L, EntriesCommute M y.1) :
@@ -121,6 +168,17 @@ theorem entriesCommute_prod (M : R → Matrix (Fin 2) (Fin 2) B)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.W.IsRTT`. Introduce `Y Y'`.
+
+Simplify using `[first_embedding_one, entries_mem_one]`. Rewrite using `[isDet_iff]`. Introduce `Y`. Simplify using the standard rewrite rules. Consider the case `cons x t ih`.
+
+Establish `hx` using `h x (by simp)`. Establish `ht : ∀ y ∈ t, IsRTT y.1 ∧ IsDet y.1 y.2` using `fun y hy => h y (by simp [hy])`. Rewrite `hp` using `[List.pairwise_cons]`. Take `⟨ih1, ih2⟩` from `ih ht hp.2`. Establish `hc` using `entriesCommute_prod x.1 t hp.1`.
+
+Establish `e1` using `isRTT_mul x.1 _ hx.1 ih1 hc`. Establish `e2` using `isDet_mul x.1 _ x.2 _ hx.2 ih2 hc`. Simplify using `only [List.map_cons, List.prod_cons]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact e1`. Consider the case `simpa using e1`. Use `first`. Consider the case `exact e2`. Consider the case `simpa using e2`.
+-/
 theorem wordFusion_list (L : List ((R → Matrix (Fin 2) (Fin 2) B) × (R → R)))
     (h : ∀ x ∈ L, IsRTT x.1 ∧ IsDet x.1 x.2)
     (hp : L.Pairwise (fun x y => EntriesCommute x.1 y.1)) :
@@ -156,6 +214,21 @@ end Words
 
 section Norm
 
+/- English proof (translation)
+Establish `hsp : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l ≤ b` using `FractionalIdeal.spanSingleton_le_iff_mem.mpr hl`. Establish `hs0 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `hl0`. Establish `hbc : b * (b⁻¹ * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l) = FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ hb, one_mul]`. Establish `hc1 : b⁻¹ * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact FractionalIdeal.mul_left_mono _ hsp`. Consider the case `exact mul_le_mul_left' hsp _`.
+
+Consider the case `exact mul_le_mul' le_rfl hsp`. Consider the case `exact mul_le_mul_left hsp _`. Consider the case `(rw [← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_mul, FractionalIdeal.coe_mul]`. Conclude with `Submodule.mul_le_mul_right (FractionalIdeal.coe_le_coe.mpr hsp))`. Use `_ = 1 := inv_mul_cancel₀ hb`.
+
+Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hc1`. Establish `hI0 : I ≠ ⊥`. Introduce and unpack `rfl`. Apply `hs0` to reduce the goal to its premises. Rewrite using `[← hbc, ← hI]`.
+
+Simplify using the standard rewrite rules. Establish `key : FractionalIdeal.absNorm b * FractionalIdeal.absNorm (b⁻¹ * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l) = |Algebra.norm ℚ l|`. Rewrite using `[← map_mul, hbc, FractionalIdeal.absNorm_span_singleton]`. Establish `hx : (1 : ℚ) ≤ FractionalIdeal.absNorm (b⁻¹ * FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) l)`. Rewrite using `[← hI, FractionalIdeal.coeIdeal_absNorm]`.
+
+Establish `: Ideal.absNorm I ≠ 0` using `fun h0 => hI0 (Ideal.absNorm_eq_zero_iff.mp h0)`. Conclude with `Nat.one_le_iff_ne_zero.mpr this` after adjusting the coercions. Establish `ha : (0 : ℚ) ≤ FractionalIdeal.absNorm b` using `FractionalIdeal.absNorm_nonneg b`. Establish `hq : (FractionalIdeal.absNorm b : ℚ) ≤ |Algebra.norm ℚ l|`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hq` after adjusting the coercions.
+-/
 theorem absNorm_le_norm {E : Type} [Field E] [NumberField E]
     (b : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hb : b ≠ 0) (l : E) (hl : l ∈ b) (hl0 : l ≠ 0) :
     (FractionalIdeal.absNorm b : ℝ) ≤ |(Algebra.norm ℚ l : ℝ)| := by
@@ -206,11 +279,27 @@ namespace Formalism.FourierDecayAlt.P
 
 open NumberField
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.W.WordFusion`. Introduce `R B _ _ _ L h hp`. Conclude with `Formalism.FourierDecayAlt.P.W.wordFusion_list L h hp`.
+-/
 theorem word_fusion : Formalism.FourierDecayAlt.W.WordFusion := by
   unfold Formalism.FourierDecayAlt.W.WordFusion
   intro R B _ _ _ L h hp
   exact Formalism.FourierDecayAlt.P.W.wordFusion_list L h hp
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.W.NormLower`. Introduce `E _ _ _ aa l hl hl0`. Establish `hb : aa ≠ 0`. Introduce and unpack `rfl`. Use `first`.
+
+Consider the case `exact hl0 ((FractionalIdeal.mem_zero_iff _).mp hl)`. Consider the case `exact hl0 (FractionalIdeal.mem_zero_iff.mp hl)`. Consider the case `(simp at hl; exact hl0 hl)`. Establish `h1` using `Formalism.FourierDecayAlt.P.W.absNorm_le_norm aa hb l hl hl0`. Establish `hsq : (∏ w : NumberField.InfinitePlace E, w l) ^ 2 = ∏ w : NumberField.InfinitePlace E, w l ^ w.mult`.
+
+Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Establish `hc : ¬ w.IsReal` using `NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (NumberField.IsTotallyComplex.isComplex w)`. Use `first`. Consider the case `rw [NumberField.InfinitePlace.mult, if_neg hc]`.
+
+Consider the case `simp [NumberField.InfinitePlace.mult, hc]`. Establish `hprod : (∏ w : NumberField.InfinitePlace E, w l) ^ 2 = |(Algebra.norm ℚ l : ℝ)|`. Rewrite using `[hsq, NumberField.InfinitePlace.prod_eq_abs_norm]`. Use `first`. Consider the case `rfl`.
+
+Consider the case `simp`. Consider the case `(push_cast; rfl)`. Establish `hnn : 0 ≤ ∏ w : NumberField.InfinitePlace E, w l`. Use `Finset.prod_nonneg (fun w _ => ?_)` and prove the remaining obligations. Use `first`.
+
+Consider the case `positivity`. Consider the case `exact w.nonneg l`. Consider the case `exact AbsoluteValue.nonneg _ _`. Rewrite using `[← Real.sqrt_sq hnn, hprod]`. Conclude with `Real.sqrt_le_sqrt h1`.
+-/
 theorem norm_lower_bound : Formalism.FourierDecayAlt.W.NormLower := by
   unfold Formalism.FourierDecayAlt.W.NormLower
   intro E _ _ _ aa l hl hl0

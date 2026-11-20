@@ -13,6 +13,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 section Order
 
 variable (K) in
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `h0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Conclude with `⟨Units.mk0 _ h0, by rw [Units.val_mk0]; exact ord_uniformizer hϖ⟩`.
+-/
 theorem exists_units_ord_eq_one : ∃ π : Kˣ, ord (π : K) = 1 := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
   have h0 : (ϖ : K) ≠ 0 := by exact_mod_cast hϖ.ne_zero
@@ -22,21 +25,43 @@ variable (K) in
 
 def unifUnit : Kˣ := (exists_units_ord_eq_one K).choose
 
+/- English proof (translation)
+The claim follows from `(exists_units_ord_eq_one K).choose_spec`.
+-/
 theorem ord_unifUnit : ord (unifUnit K : K) = 1 := (exists_units_ord_eq_one K).choose_spec
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, ord_mul u.ne_zero v.ne_zero]`.
+-/
 theorem ord_units_mul (u v : Kˣ) : ord ((u * v : Kˣ) : K) = ord (u : K) + ord (v : K) := by
   rw [Units.val_mul, ord_mul u.ne_zero v.ne_zero]
 
+/- English proof (translation)
+Rewrite using `[Units.val_zpow_eq_zpow_val]`. Simplify using `[ord, map_zpow₀, WithZero.log_zpow]`.
+-/
 theorem ord_units_zpow (u : Kˣ) (k : ℤ) : ord ((u ^ k : Kˣ) : K) = k * ord (u : K) := by
   rw [Units.val_zpow_eq_zpow_val]
   simp [ord, map_zpow₀, WithZero.log_zpow]
 
+/- English proof (translation)
+Rewrite using `[Units.val_inv_eq_inv_val, ord_inv u.ne_zero]`.
+-/
 theorem ord_units_inv (u : Kˣ) : ord ((u⁻¹ : Kˣ) : K) = -ord (u : K) := by
   rw [Units.val_inv_eq_inv_val, ord_inv u.ne_zero]
 
+/- English proof (translation)
+Rewrite using `[ord_units_zpow, ord_unifUnit, mul_one]`.
+-/
 theorem ord_unifUnit_zpow (k : ℤ) : ord ((unifUnit K ^ k : Kˣ) : K) = k := by
   rw [ord_units_zpow, ord_unifUnit, mul_one]
 
+/- English proof (translation)
+Establish `h0` using `mem_valBall_iff_le_ord (n := 0) hx`. Establish `h1` using `mem_valBall_iff_le_ord (n := 1) hx`. Rewrite `h0` using `[mem_valBall_zero_iff, Valuation.mem_integer_iff]`. Rewrite `h1` using `[mem_valBall_one_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `a` using `h0.mp h.le`. Establish `b : ¬ 1 ≤ ord x` using `fun hb => (h1.mpr hb).ne h`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+
+Use `le_antisymm (h0.mpr h.ge) (not_lt.mp fun hl => ?_)` and prove the remaining obligations. Use `h1.mp hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_eq_one_iff_ord_eq_zero {x : K} (hx : x ≠ 0) :
     valuation K x = 1 ↔ ord x = 0 := by
   have h0 := mem_valBall_iff_le_ord (n := 0) hx
@@ -53,6 +78,9 @@ theorem valuation_eq_one_iff_ord_eq_zero {x : K} (hx : x ≠ 0) :
     have := h1.mp hl
     omega
 
+/- English proof (translation)
+Rewrite using `[mem_unitFiltrationUnits_zero_iff, valuation_eq_one_iff_ord_eq_zero u.ne_zero]`.
+-/
 theorem mem_unitFiltrationUnits_zero_iff_ord {u : Kˣ} :
     u ∈ unitFiltrationUnits K 0 ↔ ord (u : K) = 0 := by
   rw [mem_unitFiltrationUnits_zero_iff, valuation_eq_one_iff_ord_eq_zero u.ne_zero]
@@ -65,22 +93,37 @@ variable (K) in
 
 def ordShell (k : ℤ) : Set Kˣ := {u | ord (u : K) = k}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ordShell {k : ℤ} {u : Kˣ} : u ∈ ordShell K k ↔ ord (u : K) = k := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `u`. Rewrite using `[SetLike.mem_coe, mem_unitFiltrationUnits_zero_iff_ord]`. Both sides reduce to the same expression.
+-/
 theorem ordShell_zero : ordShell K 0 = (unitFiltrationUnits K 0 : Set Kˣ) := by
   ext u
   rw [SetLike.mem_coe, mem_unitFiltrationUnits_zero_iff_ord]
   rfl
 
+/- English proof (translation)
+Simplify using `only [mem_ordShell, ord_units_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mul_mem_ordShell_iff (v : Kˣ) {k : ℤ} {u : Kˣ} :
     v * u ∈ ordShell K (ord (v : K) + k) ↔ u ∈ ordShell K k := by
   simp only [mem_ordShell, ord_units_mul]
   omega
 
+/- English proof (translation)
+Introduce `i j hij`. Conclude with `Set.disjoint_left.mpr fun u hi hj => hij (hi.symm.trans hj)`.
+-/
 theorem pairwise_disjoint_ordShell : Pairwise (Function.onFun Disjoint (ordShell K)) := by
   intro i j hij
   exact Set.disjoint_left.mpr fun u hi hj => hij (hi.symm.trans hj)
 
+/- English proof (translation)
+The claim follows from `Set.eq_univ_of_forall fun _ => Set.mem_iUnion.mpr ⟨_, rfl⟩`.
+-/
 theorem iUnion_ordShell : ⋃ k, ordShell K k = Set.univ :=
   Set.eq_univ_of_forall fun _ => Set.mem_iUnion.mpr ⟨_, rfl⟩
 
@@ -90,6 +133,9 @@ section Measure
 
 variable [MeasurableSpace K] [BorelSpace K]
 
+/- English proof (translation)
+The claim follows from `measurableEmbedding_units_val.measurable`.
+-/
 theorem measurable_units_val : Measurable (Units.val : Kˣ → K) :=
   measurableEmbedding_units_val.measurable
 
@@ -110,6 +156,11 @@ instance instBorelSpaceUnitsLocalField : BorelSpace Kˣ := by
     _ = borel Kˣ := by
         rw [(Units.isEmbedding_val₀ (G₀ := K)).isInducing.eq_induced, borel_comap]
 
+/- English proof (translation)
+Establish `: ordShell K k = Units.val ⁻¹' ((valBall K k : Set K) \ valBall K (k + 1))`. Use extensionality with `u`. Simplify using `only [mem_ordShell, Set.mem_preimage, Set.mem_sdiff, SetLike.mem_coe, mem_valBall_iff_le_ord u.ne_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+
+Conclude with `((measurableSet_valBall k).diff (measurableSet_valBall (k + 1))).preimage measurable_units_val`.
+-/
 theorem measurableSet_ordShell (k : ℤ) : MeasurableSet (ordShell K k) := by
   have : ordShell K k = Units.val ⁻¹' ((valBall K k : Set K) \ valBall K (k + 1)) := by
     ext u
@@ -120,6 +171,9 @@ theorem measurableSet_ordShell (k : ℤ) : MeasurableSet (ordShell K k) := by
   exact ((measurableSet_valBall k).diff (measurableSet_valBall (k + 1))).preimage
     measurable_units_val
 
+/- English proof (translation)
+Establish `h : (fun u => unifUnit K ^ k * u) ⁻¹' ordShell K k = ordShell K 0`. Use extensionality with `u`. Use `mul_mem_ordShell_iff (K := K) (unifUnit K ^ k) (k := 0) (u := u)` as an intermediate fact. Rewrite `this` using `[ord_unifUnit_zpow, add_zero]`. Then use the resulting hypothesis. Rewrite using `[← measure_preimage_mul (multHaar K) (unifUnit K ^ k), h, ordShell_zero, multHaar_unitFiltrationUnits_zero]`.
+-/
 theorem multHaar_ordShell (k : ℤ) : multHaar K (ordShell K k) = 1 := by
   have h : (fun u => unifUnit K ^ k * u) ⁻¹' ordShell K k = ordShell K 0 := by
     ext u
@@ -135,11 +189,17 @@ instance instSigmaFiniteMultHaar : SigmaFinite (multHaar K) := by
     exact ENNReal.one_lt_top
   · rw [Set.sUnion_range, iUnion_ordShell]
 
+/- English proof (translation)
+Rewrite using `[← lintegral_iUnion measurableSet_ordShell pairwise_disjoint_ordShell, iUnion_ordShell, Measure.restrict_univ]`.
+-/
 theorem lintegral_multHaar_eq_tsum (g : Kˣ → ℝ≥0∞) :
     ∫⁻ u, g u ∂multHaar K = ∑' k : ℤ, ∫⁻ u in ordShell K k, g u ∂multHaar K := by
   rw [← lintegral_iUnion measurableSet_ordShell pairwise_disjoint_ordShell, iUnion_ordShell,
     Measure.restrict_univ]
 
+/- English proof (translation)
+Rewrite using `[lintegral_multHaar_eq_tsum]`. Use `ENNReal.tsum_le_tsum fun k => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_multHaar_le_tsum (g : Kˣ → ℝ≥0∞) (a : ℤ → ℝ≥0∞)
     (h : ∀ u, g u ≤ a (ord (u : K))) : ∫⁻ u, g u ∂multHaar K ≤ ∑' k, a k := by
   rw [lintegral_multHaar_eq_tsum]
@@ -148,6 +208,9 @@ theorem lintegral_multHaar_le_tsum (g : Kˣ → ℝ≥0∞) (a : ℤ → ℝ≥0
         setLIntegral_mono' (measurableSet_ordShell k) fun u hu => (h u).trans_eq (by rw [hu])
     _ = a k := by rw [setLIntegral_const, multHaar_ordShell, mul_one]
 
+/- English proof (translation)
+Use `hasSum_integral_iUnion (μ := multHaar K) (measurableSet_ordShell (K := K)) (pairwise_disjoint_ordShell (K := K)) (by rw [iUnion_ordShell]; exact hF.integrableOn)` as an intermediate fact. Rewrite `this` using `[iUnion_ordShell, Measure.restrict_univ]`. Then use the resulting hypothesis.
+-/
 theorem hasSum_setIntegral_ordShell {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {F : Kˣ → E} (hF : Integrable F (multHaar K)) :
     HasSum (fun k : ℤ => ∫ u in ordShell K k, F u ∂multHaar K) (∫ u, F u ∂multHaar K) := by
@@ -155,6 +218,11 @@ theorem hasSum_setIntegral_ordShell {E : Type*} [NormedAddCommGroup E] [NormedSp
     (pairwise_disjoint_ordShell (K := K)) (by rw [iUnion_ordShell]; exact hF.integrableOn)
   rwa [iUnion_ordShell, Measure.restrict_univ] at this
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator (measurableSet_ordShell _), ← integral_indicator (measurableSet_ordShell _), ← integral_mul_left_eq_self _ v]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u ∈ ordShell K k`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem ((mul_mem_ordShell_iff v).mpr hu)]`.
+
+Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem (mt (mul_mem_ordShell_iff v).mp hu)]`.
+-/
 theorem setIntegral_ordShell_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (F : Kˣ → E) (v : Kˣ) (k : ℤ) :
     ∫ u in ordShell K (ord (v : K) + k), F u ∂multHaar K =
@@ -170,6 +238,9 @@ theorem setIntegral_ordShell_mul {E : Type*} [NormedAddCommGroup E] [NormedSpace
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [MeasurableSpace K]
   [BorelSpace K] in
 
+/- English proof (translation)
+Use `eq_zero_of_eq_mul_of_ne_one ha ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_eq_zero_of_mul_eq {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (μ : Measure G) [μ.IsMulLeftInvariant] (F : G → ℂ) (v : G) {a : ℂ} (ha : a ≠ 1)
     (hF : ∀ u, F (v * u) = a * F u) : ∫ u, F u ∂μ = 0 := by
@@ -178,6 +249,11 @@ theorem integral_eq_zero_of_mul_eq {G : Type*} [Group G] [MeasurableSpace G] [Me
     _ = ∫ u, a * F u ∂μ := by simp only [hF]
     _ = a * ∫ u, F u ∂μ := integral_const_mul a _
 
+/- English proof (translation)
+Rewrite using `[← integral_indicator (measurableSet_ordShell k)]`. Use `integral_eq_zero_of_mul_eq _ _ v ha fun u => ?_` and prove the remaining obligations. Establish `hiff : v * u ∈ ordShell K k ↔ u ∈ ordShell K k`. Use `mul_mem_ordShell_iff (K := K) v (k := k) (u := u)` as an intermediate fact. Rewrite `this` using `[hv, zero_add]`. Then use the resulting hypothesis.
+
+Distinguish the cases in `hu : u ∈ ordShell K k`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem (hiff.mpr hu), hF u hu]`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem (mt hiff.mp hu), mul_zero]`.
+-/
 theorem setIntegral_ordShell_eq_zero (F : Kˣ → ℂ) {v : Kˣ} (hv : ord (v : K) = 0) {a : ℂ}
     (ha : a ≠ 1) (k : ℤ) (hF : ∀ u ∈ ordShell K k, F (v * u) = a * F u) :
     ∫ u in ordShell K k, F u ∂multHaar K = 0 := by
@@ -194,12 +270,23 @@ end Measure
 
 section Power
 
+/- English proof (translation)
+Conclude with `zero_lt_one.trans one_lt_residueCard` after adjusting the coercions.
+-/
 theorem residueCard_pos_real : (0 : ℝ) < residueCard K := by
   exact_mod_cast zero_lt_one.trans one_lt_residueCard
 
+/- English proof (translation)
+Conclude with `residueCard_ne_zero` after adjusting the coercions.
+-/
 theorem residueCard_ne_zero_complex : (residueCard K : ℂ) ≠ 0 := by
   exact_mod_cast residueCard_ne_zero
 
+/- English proof (translation)
+Establish `hq` using `residueCard_pos_real (K := K)`. Rewrite using `[modulus_of_ne_zero u.ne_zero, NNReal.coe_zpow, NNReal.coe_natCast]`. Establish `hpos : (0 : ℝ) < (residueCard K : ℝ) ^ (-ord (u : K))` using `zpow_pos hq _`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast hpos.ne'), Complex.cpow_def_of_ne_zero residueCard_ne_zero_complex, ← Complex.exp_int_mul, ← Complex.ofReal_log hpos.le, Real.log_zpow, ← Complex.ofReal_natCast, ← Complex.ofReal_log hq.le]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem modulus_cpow_eq_zpow (u : Kˣ) (s : ℂ) :
     ((modulus (u : K) : ℝ) : ℂ) ^ s = ((residueCard K : ℂ) ^ (-s)) ^ ord (u : K) := by
   have hq := residueCard_pos_real (K := K)
@@ -212,10 +299,16 @@ theorem modulus_cpow_eq_zpow (u : Kˣ) (s : ℂ) :
   push_cast
   ring_nf
 
+/- English proof (translation)
+Rewrite using `[← Complex.ofReal_natCast, Complex.norm_cpow_eq_rpow_re_of_pos residueCard_pos_real, Complex.neg_re]`.
+-/
 theorem norm_qpow (s : ℂ) : ‖(residueCard K : ℂ) ^ (-s)‖ = (residueCard K : ℝ) ^ (-s.re) := by
   rw [← Complex.ofReal_natCast, Complex.norm_cpow_eq_rpow_re_of_pos residueCard_pos_real,
     Complex.neg_re]
 
+/- English proof (translation)
+Rewrite using `[Complex.cpow_def_of_ne_zero residueCard_ne_zero_complex]`. Conclude with `Complex.exp_ne_zero _`.
+-/
 theorem qpow_ne_zero (s : ℂ) : (residueCard K : ℂ) ^ (-s) ≠ 0 := by
   rw [Complex.cpow_def_of_ne_zero residueCard_ne_zero_complex]
   exact Complex.exp_ne_zero _

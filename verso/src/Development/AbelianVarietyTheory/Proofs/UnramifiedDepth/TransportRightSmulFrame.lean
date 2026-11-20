@@ -13,40 +13,72 @@ namespace GlobalTheory
 section
 variable {R₀ : Type} [CommRing R₀] (B : BX R₀) {R : LAlg R₀}
 
+/- English proof (translation)
+The claim follows from `(B.trans w (B.smul l' w)).unique h rfl`.
+-/
 private lemma smul_inj {x y : B.G R} (w : B.P R x y) {l l' : (R : Type)ˣ}
     (h : B.smul l w = B.smul l' w) : l = l' :=
   (B.trans w (B.smul l' w)).unique h rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma transport_left_smul_frame (b : ∀ x y, B.P R x y) {x x' y : B.G R} (h : x = x') (l : (R : Type)ˣ) :
     B.tr1 h (B.smul l (b x y)) = B.smul l (b x' y) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma transport_right_smul_frame (b : ∀ x y, B.P R x y) {x y y' : B.G R} (h : y = y') (l : (R : Type)ˣ) :
     B.tr2 h (B.smul l (b x y)) = B.smul l (b x y') := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `eq_of_heq e`.
+-/
 private lemma transport_left_of_heq {x x' y : B.G R} (h : x = x') {u : B.P R x y} {w : B.P R x' y}
     (e : HEq u w) : B.tr1 h u = w := by
   subst h; exact eq_of_heq e
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `eq_of_heq e`.
+-/
 private lemma transport_right_of_heq {x y y' : B.G R} (h : y = y') {u : B.P R x y} {w : B.P R x y'}
     (e : HEq u w) : B.tr2 h u = w := by
   subst h; exact eq_of_heq e
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma heq_transport_left {x x' y : B.G R} (h : x = x') (u : B.P R x y) : HEq (B.tr1 h u) u := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma heq_transport_right {x y y' : B.G R} (h : y = y') (u : B.P R x y) : HEq (B.tr2 h u) u := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma add_left_transport_heq {x x' x'' y : B.G R} (h : x = x') (u : B.P R x y) (w : B.P R x'' y) :
     HEq (B.add1 (B.tr1 h u) w) (B.add1 u w) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private lemma add_right_transport_heq {x y y' y'' : B.G R} (h : y = y') (u : B.P R x y) (w : B.P R x y'') :
     HEq (B.add2 (B.tr2 h u) w) (B.add2 u w) := by
   subst h; rfl
 
+/- English proof (translation)
+Take `⟨l, hl, -⟩` from `B.trans (b 0 y) (B.zero1 y)`. Establish `h1` using `transport_left_of_heq B (zero_add (0 : B.G R)) (B.zeroFst_add (B.zero1 y))`. Rewrite `h1` using `[← hl, B.addFst_smul, h, ← B.mul_smul, transport_left_smul_frame]`. Establish `h2` using `smul_inj B _ h1`. Establish `h3 : t 0 0 y * l = 1`.
+
+Rewrite `h2` using `[_root_.mul_assoc, mul_eq_left]`. Rewrite using `[mul_comm, h2]`. Rewrite using `[← hl, ← B.mul_smul, h3, B.one_smul]`.
+-/
 private lemma frame_zero1 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G R → (R : Type)ˣ)
     (h : ∀ x x' y, B.add1 (b x y) (b x' y) = B.smul (t x x' y) (b (x + x') y)) (y : B.G R) :
     b 0 y = B.smul (t 0 0 y) (B.zero1 y) := by
@@ -59,6 +91,11 @@ private lemma frame_zero1 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G 
     rw [mul_comm, h2]
   rw [← hl, ← B.mul_smul, h3, B.one_smul]
 
+/- English proof (translation)
+Take `⟨l, hl, -⟩` from `B.trans (b x 0) (B.zero2 x)`. Establish `h1` using `transport_right_of_heq B (zero_add (0 : B.G R)) (B.zeroSnd_add (B.zero2 x))`. Rewrite `h1` using `[← hl, B.addSnd_smul, h, ← B.mul_smul, transport_right_smul_frame]`. Establish `h2` using `smul_inj B _ h1`. Establish `h3 : t x 0 0 * l = 1`.
+
+Rewrite `h2` using `[_root_.mul_assoc, mul_eq_left]`. Rewrite using `[mul_comm, h2]`. Rewrite using `[← hl, ← B.mul_smul, h3, B.one_smul]`.
+-/
 private lemma frame_zero2 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G R → (R : Type)ˣ)
     (h : ∀ x y y', B.add2 (b x y) (b x y') = B.smul (t x y y') (b x (y + y'))) (x : B.G R) :
     b x 0 = B.smul (t x 0 0) (B.zero2 x) := by
@@ -71,6 +108,11 @@ private lemma frame_zero2 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G 
     rw [mul_comm, h2]
   rw [← hl, ← B.mul_smul, h3, B.one_smul]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[Finset.prod_range_zero, ← transport_left_smul_frame B b (show x = (0 + 1) • x by simp), B.one_smul]`. Apply `eq_of_heq` to reduce the goal to its premises. Unfold `BX.nsmul1 BX.nsmul1`.
+
+Conclude with `(heq_transport_left B _ _).trans ((add_left_transport_heq B _ _ _).trans ((B.zeroFst_add _).trans (heq_transport_left B _ _).symm))`. Consider the case `succ N ih`. Rewrite using `[BX.nsmul1, ih, Finset.prod_range_succ]`. Use `conv_lhs => rw [← B.one_smul (b x y), B.addFst_smul, h, ← B.mul_smul, transport_left_smul_frame, _root_.mul_one]`.
+-/
 private lemma frame_nsmul1 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G R → (R : Type)ˣ)
     (h : ∀ x x' y, B.add1 (b x y) (b x' y) = B.smul (t x x' y) (b (x + x') y)) (x y : B.G R)
     (N : ℕ) : B.nsmul1 (b x y) (N + 1) =
@@ -86,6 +128,11 @@ private lemma frame_nsmul1 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G
     rw [BX.nsmul1, ih, Finset.prod_range_succ]
     conv_lhs => rw [← B.one_smul (b x y), B.addFst_smul, h, ← B.mul_smul, transport_left_smul_frame, _root_.mul_one]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero`. Rewrite using `[Finset.prod_range_zero, ← transport_right_smul_frame B b (show y = (0 + 1) • y by simp), B.one_smul]`. Apply `eq_of_heq` to reduce the goal to its premises. Unfold `BX.nsmul2 BX.nsmul2`.
+
+Conclude with `(heq_transport_right B _ _).trans ((add_right_transport_heq B _ _ _).trans ((B.zeroSnd_add _).trans (heq_transport_right B _ _).symm))`. Consider the case `succ N ih`. Rewrite using `[BX.nsmul2, ih, Finset.prod_range_succ]`. Use `conv_lhs => rw [← B.one_smul (b x y), B.addSnd_smul, h, ← B.mul_smul, transport_right_smul_frame, _root_.mul_one]`.
+-/
 private lemma frame_nsmul2 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G R → (R : Type)ˣ)
     (h : ∀ x y y', B.add2 (b x y) (b x y') = B.smul (t x y y') (b x (y + y'))) (x y : B.G R)
     (N : ℕ) : B.nsmul2 (b x y) (N + 1) =
@@ -101,6 +148,9 @@ private lemma frame_nsmul2 (b : ∀ x y, B.P R x y) (t : B.G R → B.G R → B.G
     rw [BX.nsmul2, ih, Finset.prod_range_succ]
     conv_lhs => rw [← B.one_smul (b x y), B.addSnd_smul, h, ← B.mul_smul, transport_right_smul_frame, _root_.mul_one]
 
+/- English proof (translation)
+Rewrite `h` using `[← eq_inv_mul_iff_mul_eq]`. Rewrite using `[h, ← mul_inv, ← _root_.mul_assoc r⁻¹, _root_.mul_assoc (m * m') (p * q)⁻¹, mul_comm (p * q)⁻¹, mul_inv_cancel_right, _root_.mul_assoc (m * m'), mul_comm t]`.
+-/
 private lemma coboundary_rearrange {G : Type*} [CommGroup G] (m m' p q r s t : G) (h : r * s = t * (p * q)) :
     m * m' * t * r⁻¹ = m * m' * (p⁻¹ * q⁻¹) * s := by
   rw [← eq_inv_mul_iff_mul_eq] at h
@@ -111,6 +161,9 @@ private noncomputable def frameEquiv {x y : B.G R} (w : B.P R x y) : (R : Type)�
   Equiv.ofBijective (fun l => B.smul l w)
     ⟨fun _ _ h => smul_inj B w h, fun v => (B.trans w v).exists⟩
 
+/- English proof (translation)
+Establish `: B.smul l w = frameEquiv B w l` using `rfl`. Rewrite using `[this, Equiv.trans_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 private lemma frameEquiv_trans {x y x' y' : B.G R} (w : B.P R x y) (w' : B.P R x' y')
     (l : (R : Type)ˣ) :
     ((frameEquiv B w).symm.trans (frameEquiv B w')) (B.smul l w) = B.smul l w' := by
@@ -120,6 +173,19 @@ private lemma frameEquiv_trans {x y x' y' : B.G R} (w : B.P R x y) (w' : B.P R x
 
 end
 
+/- English proof (translation)
+Introduce `R₀ _ B b t₁ t₂ h₁ h₂`. Use `⟨fun R N x y z => ?_, fun O a a' u hu₁ hu₂ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (hx : (N + 1) • x = 0) (hy : (N + 1) • y = 0), B.IsPairing (N + 1) x y ((t₁ R 0 0 y * ∏ k ∈ Finset.range N, t₁ R ((k + 1) • x) x y) / (t₂ R x 0 0 * ∏ k ∈ Finset.range N, t₂ R x ((k + 1) • y) y))`. Introduce `hx hy`. Use `⟨hx, hy, b R x y, _, _, ?_, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[frame_nsmul1 B (b R) (t₁ R) (h₁ R), transport_left_smul_frame, frame_zero1 B (b R) (t₁ R) (h₁ R), ← B.mul_smul, mul_comm]`. Rewrite using `[frame_nsmul2 B (b R) (t₂ R) (h₂ R), transport_right_smul_frame, frame_zero2 B (b R) (t₂ R) (h₂ R), ← B.mul_smul, mul_comm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.1, h.2.1, B.pairing_unique _ _ _ _ _ h (key h.1 h.2.1)⟩`.
+
+Introduce and unpack `⟨hx, hy, rfl⟩`. Conclude with `key hx hy`. Use `⟨⟨a, a', fun {R} s x z => (frameEquiv B (b R (a.f s x) z)).symm.trans (frameEquiv B (B.smul (u s x z)⁻¹ (b R x (a'.f s z)))), ?_, ?_, ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Introduce `R s x z l v`. Take `⟨m, rfl, -⟩` from `B.trans (b R (a.f s x) z) v`.
+
+Rewrite using `[← B.mul_smul, frameEquiv_trans, frameEquiv_trans, B.mul_smul]`. Introduce `R s x x' z v v'`. Take `⟨m, rfl, -⟩` from `B.trans (b R (a.f s x) z) v`. Take `⟨m', rfl, -⟩` from `B.trans (b R (a.f s x') z) v'`. Rewrite using `[B.addFst_smul, h₁, ← B.mul_smul, transport_left_smul_frame, frameEquiv_trans, frameEquiv_trans, frameEquiv_trans, B.addFst_smul, B.addFst_smul, h₁, ← B.mul_smul, ← B.mul_smul, ← B.mul_smul]`.
+
+Use `congr 1`. Use `hu₁ s x x' z` as an intermediate fact. Conclude with `coboundary_rearrange _ _ _ _ _ _ _ this`. Introduce `R s x z z' v v'`. Take `⟨m, rfl, -⟩` from `B.trans (b R (a.f s x) z) v`.
+
+Take `⟨m', rfl, -⟩` from `B.trans (b R (a.f s x) z') v'`. Rewrite using `[B.addSnd_smul, h₂, ← B.mul_smul, frameEquiv_trans, frameEquiv_trans, frameEquiv_trans, B.addSnd_smul, B.addSnd_smul, h₂, ← B.mul_smul, ← B.mul_smul, ← B.mul_smul, transport_right_smul_frame]`. Use `congr 1`. Use `hu₂ s x z z'` as an intermediate fact. Conclude with `coboundary_rearrange _ _ _ _ _ _ _ this`.
+-/
 theorem bx_frame_pairing_adj :
   (∀ {R₀ : Type} [CommRing R₀] (B : BX R₀) (b : ∀ R x y, B.P R x y) (t₁ t₂ : ∀ R : LAlg R₀, B.G R → B.G R → B.G R → (R : Type)ˣ),
     (∀ R x x' y, B.add1 (b R x y) (b R x' y) = B.smul (t₁ R x x' y) (b R (x + x') y)) →

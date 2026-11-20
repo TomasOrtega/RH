@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StabCpt.isCompact_of_isStab | exact GlobalTheory.StabCpt.isCompact_of_isStab | (intros; apply GlobalTheory.StabCpt.isCompact_of_isStab <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.stabilizer_compact : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ) (K : Subgroup (UA σ X.J)),
     B.IsGood σ → X.IsHerm σ B r s → IsStab B K → IsCompact (K : Set (UA σ X.J)) := by
   first | exact @GlobalTheory.StabCpt.isCompact_of_isStab | exact GlobalTheory.StabCpt.isCompact_of_isStab | (intros; apply GlobalTheory.StabCpt.isCompact_of_isStab <;> assumption)

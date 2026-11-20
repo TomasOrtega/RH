@@ -18,13 +18,22 @@ namespace UpperTheory.V.Z.Mult.Pi
 
 open UpperTheory.V.Z.GSp4Splitting UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
+/- English proof (translation)
+The claim follows from `twisted_trace_global_bound_of_archimedean avgEx (absGlobA multiFac lieStab projEx avgFacts (onePlace coreG lieStab projEx avgFacts (avgTr avgFacts))) lowIso2 heckeMem (rlEx petEx heckeMem) rlPair rlChar rlK rlTheta rlComm (rlHecke heckeMem) (rlSimple heckeMem lieStab rlK) rlFin ( …`.
+-/
 theorem global_twisted_trace_bound : GlobalTwistedTraceBound :=
   twisted_trace_global_bound_of_archimedean avgEx (absGlobA multiFac lieStab projEx avgFacts (onePlace coreG lieStab projEx avgFacts (avgTr avgFacts))) lowIso2 heckeMem
     (rlEx petEx heckeMem) rlPair rlChar rlK rlTheta rlComm (rlHecke heckeMem) (rlSimple heckeMem lieStab rlK) rlFin
     (rlLow heckeMem lowType) (opFormA locAct)
 
+/- English proof (translation)
+The claim follows from `absCoreA_pf (absCore_pf traceForm_pf) rankOne_pf corner_pf minIdem_pf`.
+-/
 theorem absCoreA : AbsCoreA := absCoreA_pf (absCore_pf traceForm_pf) rankOne_pf corner_pf minIdem_pf
 
+/- English proof (translation)
+The claim follows from `levelTrA adm (zTrA adm pfHecke prodOp locComm yLoc zSimple (ySwap_pf slotFacts pfHecke prodOp) (isot_pf slotFacts) (simpleFix_pf cvOp) absCoreA) (seenTrA trLevel adm cvOp) tTr`.
+-/
 theorem levelTrA_holds : LevelTrA :=
   levelTrA adm (zTrA adm pfHecke prodOp locComm yLoc zSimple (ySwap_pf slotFacts pfHecke prodOp) (isot_pf slotFacts)
     (simpleFix_pf cvOp) absCoreA) (seenTrA trLevel adm cvOp) tTr
@@ -32,6 +41,9 @@ theorem levelTrA_holds : LevelTrA :=
 end UpperTheory.V.Z.Mult.Pi
 
 open UpperTheory.V.Z.Mult.Pi UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm in
+/- English proof (translation)
+The claim follows from `piTermA_of global_twisted_trace_bound UpperTheory.V.Z.Tf.GOne.thetaFixOf wtEx_pf levTop levFix lcLevel_pf (toYdA slotFacts levTop translF_pf heckeSum_pf lvShift_pf) levelTrA_holds twUniq_pf (levIdx_pf slotFacts levTop) volIdx_pf (kf_top slotFacts levTop places)`.
+-/
 theorem UpperTheory.V.Z.Mult.piTermA : UpperTheory.V.Z.Mult.PiTermA :=
   piTermA_of global_twisted_trace_bound UpperTheory.V.Z.Tf.GOne.thetaFixOf wtEx_pf levTop levFix lcLevel_pf
     (toYdA slotFacts levTop translF_pf heckeSum_pf lvShift_pf) levelTrA_holds twUniq_pf (levIdx_pf slotFacts levTop) volIdx_pf

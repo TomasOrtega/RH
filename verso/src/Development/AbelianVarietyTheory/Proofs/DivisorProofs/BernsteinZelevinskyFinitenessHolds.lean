@@ -4,6 +4,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.GlobalTheory.Bernstein
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`.
+-/
 theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
   GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness
 

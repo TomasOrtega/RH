@@ -122,6 +122,9 @@ def ProductFrame : Prop :=
 def GaugeBelowResChar : Prop :=
   LogIntegral ∧ GaugeIntegral ∧ AdjointGauge ∧ ProductFrame
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 example : CompleteSpace ℂ_[3] ∧ IsAlgClosed ℂ_[3] ∧ CharZero ℂ_[3] ∧ IsUltrametricDist ℂ_[3] :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
 

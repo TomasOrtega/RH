@@ -19,6 +19,11 @@ open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 variable (N : _root_.GlobalTheory.Ex.NumD O) in
 
+/- English proof (translation)
+Establish `hsum : β.be (x + y) (x + y) = β.be x x + β.be y y + 2 * β.be x y`. Simplify using `only [map_add, LinearMap.add_apply, β.symm y x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx : (2 : ℤ) ∣ β.be x x` using `dvd_trans (dvd_mul_right 2 (k : ℤ)) (β.dvd x x)`. Establish `hy : (2 : ℤ) ∣ β.be y y` using `dvd_trans (dvd_mul_right 2 (k : ℤ)) (β.dvd y y)`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.Ex.NumD.Form.half_add {N : _root_.GlobalTheory.Ex.NumD O} {k : ℕ}
     (β : N.Form k) (x y : N.X) :
     β.be (x + y) (x + y) / 2 =
@@ -38,6 +43,9 @@ open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 variable (N : _root_.GlobalTheory.Ex.NumD O) in
 
+/- English proof (translation)
+The claim follows from `Int.ediv_mul_cancel (dvd_trans (Int.natCast_dvd_natCast.2 hj) (dvd_trans (dvd_mul_left (k : ℤ) 2) (β.dvd x y)))`.
+-/
 theorem _root_.GlobalTheory.Ex.NumD.Form.div_mul {N : _root_.GlobalTheory.Ex.NumD O}
     {k : ℕ} (β : N.Form k) {j : ℕ} (hj : j ∣ k)
     (x y : N.X) :
@@ -49,6 +57,9 @@ open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 variable (N : _root_.GlobalTheory.Ex.NumD O) in
 
+/- English proof (translation)
+Rewrite using `[map_add]`. Conclude with `Int.add_ediv_of_dvd_left (dvd_trans (Int.natCast_dvd_natCast.2 hj) (dvd_trans (dvd_mul_left (k : ℤ) 2) (β.dvd x y)))`.
+-/
 theorem _root_.GlobalTheory.Ex.NumD.Form.div_add {N : _root_.GlobalTheory.Ex.NumD O} {k : ℕ}
     (β : N.Form k) {j : ℕ} (hj : j ∣ k)
     (x y z : N.X) :
@@ -77,6 +88,9 @@ open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 variable (N : _root_.GlobalTheory.Ex.NumD O) in
 
+/- English proof (translation)
+Use `show N.ψ (x + y) * u ^ (β.be (x + y) (x + y) / 2) / (N.ψ x * u ^ (β.be x x / 2)) / (N.ψ y * u ^ (β.be y y / 2)) = N.ψ (x + y) / N.ψ x / N.ψ y * u ^ β.be x y`. Rewrite using `[β.half_add, zpow_add, zpow_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+-/
 theorem _root_.GlobalTheory.Ex.NumD.twist_τ {k : ℕ} (β : N.Form k) (u : Oˣ)
     (x y : N.X) :
     (N.twist β u).τ x y =
@@ -99,6 +113,19 @@ open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 variable (N : _root_.GlobalTheory.Ex.NumD O) in
 
+/- English proof (translation)
+Establish `hθ : ∀ a b c, (N.twist β u).θ a b c = N.θ a b c` using `fun _ _ _ => rfl`. Establish `hc : ∀ χ, (N.twist β u).c χ = N.c χ` using `fun _ => rfl`. Establish `hb : (N.twG β u g l hl).b = g.b` using `rfl`. Establish `hs : ∀ z, (N.twG β u g l hl).s z = g.s z * u ^ l z` using `fun _ => rfl`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, pow_zero, _root_.GlobalTheory.Ex.NumD.Gt.one_b (N := N.twist β u), _root_.GlobalTheory.Ex.NumD.Gt.one_b (N := N)]`. Both sides reduce to the same expression. Rewrite using `[pow_zero, pow_zero]`.
+
+Use `(_root_.GlobalTheory.Ex.NumD.Gt.generator_inv_base (N := N.twist β u) z).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Ex.NumD.Gt.generator_inv_base (N := N)]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, pow_succ, _root_.GlobalTheory.Ex.NumD.Gt.mul_b (N := N.twist β u), _root_.GlobalTheory.Ex.NumD.Gt.mul_b (N := N), ih.1, hb]`. Both sides reduce to the same expression. Rewrite using `[pow_succ, pow_succ]`. Use `(_root_.GlobalTheory.Ex.NumD.Gt.mul_s (N := N.twist β u) (N.twG β u g l hl ^ n) (N.twG β u g l hl) z).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Ex.NumD.Gt.mul_s (N := N), hθ]`.
+
+Use `erw [hc, ih.1, ih.2 z, hb, hs]`. Use `push_cast`. Rewrite using `[mul_add, mul_one, zpow_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem _root_.GlobalTheory.Ex.NumD.twG_pow {k : ℕ} (β : N.Form k) (u : Oˣ)
     (g : N.Gt) (l : N.X → ℤ)
     (hl : ∀ a b, l (a + b) = l a + l b) (n : ℕ) :
@@ -229,6 +256,9 @@ def tateBe (q : Oˣ) (k : ℕ) (hk : k ≠ 0) : (tate q).Form k where
     positivity
   dvd (y z : ℤ) := ⟨y * z, rfl⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `q ^ n ^ 2 * u ^ ((2 * k : ℤ) * (n * n) / 2) = (q * u ^ k) ^ n ^ 2`. Rewrite using `[mul_assoc, Int.mul_ediv_cancel_left _ two_ne_zero, mul_zpow, ← zpow_natCast, ← zpow_mul, sq]`.
+-/
 theorem twist_tate_ψ (q u : Oˣ) (k : ℕ) (hk : k ≠ 0) (n : ℤ) :
     ((tate q).twist (tateBe q k hk) u).ψ n = (tate (q * u ^ k)).ψ n := by
   change q ^ n ^ 2 * u ^ ((2 * k : ℤ) * (n * n) / 2) = (q * u ^ k) ^ n ^ 2
@@ -246,6 +276,9 @@ def homOfIso {N N' : NumD O} (I : NumD.Iso N N') : NumD.Hom (RingHom.id O) N N' 
   c_eq := I.c_eq
   ψ_eq := I.ψ_eq
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem homOfIso_rel {N N' : NumD O} (I : NumD.Iso N N') (g : N.Gt) (g' : N'.Gt) :
     (homOfIso I).Rel g g' ↔ I.Rel g g' := Iff.rfl
 
@@ -273,6 +306,9 @@ def tateHom {O' : Type} [CommRing O'] (f : O →+* O') (q : Oˣ) :
 open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Ex.NumD.evT _root_.GlobalTheory.Ex.NumD.txT`. Simplify using `only [_root_.GlobalTheory.Ex.NumD.Gt.generator_inv_base, _root_.GlobalTheory.Ex.NumD.Gt.one_b, one_mul, N.cub.N_one]`.
+-/
 theorem _root_.GlobalTheory.Ex.TateInh.evT_one (N : _root_.GlobalTheory.Ex.NumD O) (m : ℕ)
     (p : N.QT (m ^ 2)) (χ : N.X) :
     N.evT m p 1 χ = N.txT m p χ := by
@@ -281,6 +317,9 @@ theorem _root_.GlobalTheory.Ex.TateInh.evT_one (N : _root_.GlobalTheory.Ex.NumD 
   simp only [_root_.GlobalTheory.Ex.NumD.Gt.generator_inv_base,
     _root_.GlobalTheory.Ex.NumD.Gt.one_b, one_mul, N.cub.N_one]
 
+/- English proof (translation)
+Establish `a` using `congrArg Additive.ofMul (h.mult p.1.1.toAdd α)`. Rewrite using `[NumB.uV, N.cub.N_split k (N.c α), N.QT_pow_b, NumD.Gt.mul_s, N.cub.s01 (N.c α) (N.c _) h.b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at a ⊢`. Take the linear combination `(norm := abel) a`.
+-/
 theorem phi_factor (N : NumD O) {k : ℕ} (p : N.QT k) (h : N.Gt) (α : N.X) :
     h.s (p.1.1.toAdd + α) * N.uV k (N.c α) p.1.2.b h.b * p.1.2.s α =
       h.s p.1.1.toAdd * cubN N.θ k 1 p.1.2.b h.b * (h * p.1.2).s α := by
@@ -290,6 +329,17 @@ theorem phi_factor (N : NumD O) {k : ℕ} (p : N.QT k) (h : N.Gt) (α : N.X) :
   simp only [ofMul_mul, ofMul_div] at a ⊢
   linear_combination (norm := abel) a
 
+/- English proof (translation)
+Use `set y := p.1.1.toAdd with hy`. Establish `h'` using `N.twG_pow β u p.1.2 (fun z => β.be y z / ((m ^ 2 : ℕ) : ℤ)) (β.div_add hm _) m`. Establish `hd : ∀ a b, (2 * m ^ 2 : ℤ) ∣ β.be a b` using `fun a b => (mul_dvd_mul_left 2 (by exact_mod_cast hm)).trans (β.dvd a b)`. Take `⟨a, ha⟩` from `hd y y`. Take `⟨b, hb⟩` from `hd y χ`.
+
+Take `⟨c, hc⟩` from `hd χ χ`. Take `⟨r, hr⟩ : Odd (m ^ 2)` from `ho.pow`. Establish `hm0 : (m : ℤ) ≠ 0` using `by exact_mod_cast ho.pos.ne'`. Establish `hr' : (m : ℤ) ^ 2 = 2 * r + 1` using `by exact_mod_cast hr`. Establish `e0 : β.be (y + m • χ) (y + m • χ) / (2 * m ^ 2) = a + 2 * b * m + c * m ^ 2`.
+
+Simplify using `only [map_add, LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, β.symm χ y, ha, hb, hc, nsmul_eq_mul]`. Conclude with `Int.ediv_eq_of_eq_mul_right (by positivity) (by ring)`. Establish `e1 : β.be y y / 2 = a * (2 * r + 1)` using `Int.ediv_eq_of_eq_mul_right two_ne_zero (by rw [ha, hr']; ring)`. Establish `e2 : β.be χ χ / 2 = c * m ^ 2` using `Int.ediv_eq_of_eq_mul_right two_ne_zero (by rw [hc]; ring)`. Establish `e3 : β.be y y / ((m ^ 2 : ℕ) : ℤ) = 2 * a` using `Int.ediv_eq_of_eq_mul_right (by push_cast; positivity) (by rw [ha]; push_cast; ring)`.
+
+Establish `e4 : β.be y χ / ((m ^ 2 : ℕ) : ℤ) = 2 * b` using `Int.ediv_eq_of_eq_mul_right (by push_cast; positivity) (by rw [hb]; push_cast; ring)`. Establish `e5 : (m ^ 2 - 1) / 2 = r` using `by omega`. Express the relevant statement in the definitionally equal form `((N.ψ y * u ^ (β.be y y / 2) * mulq N.θ N.σ (m ^ 2) p.1.2.b / (p.1.2.s y * u ^ (β.be y y / ((m ^ 2 : ℕ) : ℤ)) * cubN N.θ (m ^ 2) 1 p.1.2.b p.1.2.b / dbl N.θ N.σ p.1.2.b ^ (m ^ 2)) ^ ((m ^ 2 - 1) / 2) / mulq N.θ N.σ m p.1.2.b : Oˣ) : O) * ((N.ψ χ * u ^ (β.be χ χ / 2) * (N.twG β u …`. Use `erw [h'.1, h'.2]`. Rewrite using `[ e0, e1, e2, e3, e4]`.
+
+Simplify using `only [NumD.txT, NumD.vt, NumD.wQ, NumB.wS, ← hy, e5, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_pow, ofMul_zpow]`. Use `module`.
+-/
 theorem txT_twist (N : NumD O) {k : ℕ} (β : N.Form k) (u : Oˣ) (m : ℕ) (hm : m ^ 2 ∣ k) (ho : Odd m)
     (p : N.QT (m ^ 2)) (χ : N.X) :
     (N.twist β u).txT m (N.twQ β u hm p) χ =
@@ -329,39 +379,66 @@ def sv {q : Oˣ} (g : (tate q).Gt) (a : ℤ) : Oˣ := g.s a
 
 def yv {q : Oˣ} {k : ℕ} (p : (tate q).QT k) : ℤ := p.1.1.toAdd
 
+/- English proof (translation)
+The claim follows from `(mul_one _).symm.trans (g.mult a b)`.
+-/
 theorem sv_add {q : Oˣ} (g : (tate q).Gt) (a b : ℤ) : sv g (a + b) = sv g a * sv g b :=
   (mul_one _).symm.trans (g.mult a b)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun _ _ => rfl`.
+-/
 theorem tate_cub {q : Oˣ} (k : ℕ) (a b x : (tate q).A) : cubN (tate q).θ k a b x = 1 :=
   Finset.prod_eq_one fun _ _ => rfl
 
+/- English proof (translation)
+Use `g.pow_s k a` as an intermediate fact. Rewrite `this` using `[tate_cub, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem sv_pow {q : Oˣ} (g : (tate q).Gt) (k : ℕ) (a : ℤ) : sv (g ^ k) a = sv g a ^ k := by
   have := g.pow_s k a
   rwa [tate_cub, mul_one] at this
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [Nat.cast_zero, zero_mul, pow_zero]`. Conclude with `g.s_zero`. Consider the case `succ k ih => rw [Nat.cast_succ, add_mul, one_mul, sv_add, ih, pow_succ]`.
+-/
 theorem sv_mul {q : Oˣ} (g : (tate q).Gt) (k : ℕ) (a : ℤ) : sv g (k * a) = sv g a ^ k := by
   induction k with
   | zero => rw [Nat.cast_zero, zero_mul, pow_zero]; exact g.s_zero
   | succ k ih => rw [Nat.cast_succ, add_mul, one_mul, sv_add, ih, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[← sv_pow, (tate q).mem_QT.1 p.2]`. Conclude with `tate_τ q _ a`.
+-/
 theorem sv_q {q : Oˣ} {k : ℕ} (p : (tate q).QT k) (a : ℤ) : sv p.1.2 a ^ k = q ^ (2 * yv p * a) := by
   rw [← sv_pow, (tate q).mem_QT.1 p.2]; exact tate_τ q _ a
 
+/- English proof (translation)
+Take `⟨z, h1, h2⟩` from `h`. Use `⟨z, h1.trans (congrArg (yv p + ·) (nsmul_eq_mul k (show ℤ from z))), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `(div_one _).trans (congrArg (sv p.1.2 a * ·) (tate_τ q z a))`.
+-/
 theorem tate_qeq {q : Oˣ} {k : ℕ} {p p' : (tate q).QT k} (h : (tate q).QEq p p') :
     ∃ z : ℤ, yv p' = yv p + k * z ∧ ∀ a : ℤ, sv p'.1.2 a = sv p.1.2 a * q ^ (2 * z * a) := by
   obtain ⟨z, h1, h2⟩ := h
   refine ⟨z, h1.trans (congrArg (yv p + ·) (nsmul_eq_mul k (show ℤ from z))), fun a => ?_⟩
   rw [h2]; exact (div_one _).trans (congrArg (sv p.1.2 a * ·) (tate_τ q z a))
 
+/- English proof (translation)
+Simplify using `only [NumD.wp, NumD.tk, tate_cub, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem tate_wp_eq {q : Oˣ} {k : ℕ} (p r : (tate q).QT k) : (tate q).wp p r = sv p.1.2 (yv r) / sv r.1.2 (yv p) := by
   simp only [NumD.wp, NumD.tk, tate_cub, mul_one]; rfl
 
+/- English proof (translation)
+Take `⟨z, h1, h2⟩` from `tate_qeq h`. Rewrite using `[tate_wp_eq, tate_wp_eq, h2, h1, sv_add, sv_mul, sv_q, mul_right_comm 2 z, mul_right_comm 2 (yv r), mul_right_comm 2 z, mul_div_mul_right_eq_div]`.
+-/
 theorem tate_wp {q : Oˣ} {k : ℕ} {p p' : (tate q).QT k} (h : (tate q).QEq p p') (r : (tate q).QT k) :
     (tate q).wp p' r = (tate q).wp p r := by
   obtain ⟨z, h1, h2⟩ := tate_qeq h
   rw [tate_wp_eq, tate_wp_eq, h2, h1, sv_add, sv_mul, sv_q, mul_right_comm 2 z, mul_right_comm 2 (yv r),
     mul_right_comm 2 z, mul_div_mul_right_eq_div]
 
+/- English proof (translation)
+Establish `a : ∀ x, dbl (tate q).θ (tate q).σ x = 1` using `fun x => div_self' (1 : Oˣ)`. Establish `b : ∀ n x, mulq (tate q).θ (tate q).σ n x = 1` using `fun n x => by simp [mulq, a, tate_cub]`. Simplify using `only [NumD.txT, NumD.vt, NumD.wQ, NumB.wS, a, b, tate_cub, mul_one, one_pow, div_one]`. Rewrite using `[← sv_pow p.1.2 m, Units.val_mul _ (q ^ χ ^ 2 * _)]`. Conclude with `congrArg _ (mul_one (_ : O))`.
+-/
 theorem tate_txT {q : Oˣ} (m : ℕ) (p : (tate q).QT (m ^ 2)) (χ : ℤ) : (tate q).txT m p χ =
     ((q ^ yv p ^ 2 / sv p.1.2 (yv p) ^ ((m ^ 2 - 1) / 2) * (q ^ χ ^ 2 * sv p.1.2 χ ^ m) : Oˣ) : O) := by
   have a : ∀ x, dbl (tate q).θ (tate q).σ x = 1 := fun x => div_self' (1 : Oˣ)
@@ -370,6 +447,13 @@ theorem tate_txT {q : Oˣ} (m : ℕ) (p : (tate q).QT (m ^ 2)) (χ : ℤ) : (tat
   rw [← sv_pow p.1.2 m, Units.val_mul _ (q ^ χ ^ 2 * _)]
   exact congrArg _ (mul_one (_ : O))
 
+/- English proof (translation)
+Take `⟨z, h1, h2⟩` from `tate_qeq h`. Take `⟨r, hr⟩ : Odd (m ^ 2)` from `ho.pow`. Establish `hr' : (m : ℤ) ^ 2 = 2 * r + 1` using `by exact_mod_cast hr`. Establish `e5 : (m ^ 2 - 1) / 2 = r` using `by omega`. Use `Eq.trans (tsum_congr fun (χ : ℤ) => ?_) ((Equiv.addRight (m * z : ℤ)).tsum_eq fun χ : ℤ => (tate q).txT m p χ)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(tate q).txT m p' χ = (tate q).txT m p (χ + m * z : ℤ)`. Rewrite using `[tate_txT, tate_txT, e5]`. Use `congr 1`. Establish `hz` using `sv_q p z`. Rewrite using `[h2, h2, h1, sv_add, sv_add, sv_mul, sv_mul, hz, mul_pow (sv p.1.2 χ) (sv p.1.2 z ^ m), ← pow_mul, ← sq, hz]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_pow, ofMul_zpow, Nat.cast_pow]`. Use `match_scalars`. Take the linear combination `(2 * yv p * z + (m : ℤ) ^ 2 * z ^ 2) * hr'`. Apply the tactic sequence `all_goals ring`.
+-/
 theorem tate_tx [TopologicalSpace O] {q : Oˣ} {m : ℕ} (ho : Odd m) {p p' : (tate q).QT (m ^ 2)} (h : (tate q).QEq p p') :
     (tate q).tx m p' = (tate q).tx m p := by
   obtain ⟨z, h1, h2⟩ := tate_qeq h
@@ -388,6 +472,9 @@ theorem tate_tx [TopologicalSpace O] {q : Oˣ} {m : ℕ} (ho : Odd m) {p p' : (t
   · linear_combination (2 * yv p * z + (m : ℤ) ^ 2 * z ^ 2) * hr'
   all_goals ring
 
+/- English proof (translation)
+Use `exists_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[a, b, c, d, toAdd_pow, toAdd_pow, mul_comm k, mul_smul, ← smul_add]`. Simplify using `only [← natCast_zsmul]`. Conclude with `and_congr_left' (smul_right_inj (Int.natCast_ne_zero.2 hk)).symm`.
+-/
 theorem qEq_incl (N : NumD O) {k k' : ℕ} (p p' : N.QT k) (q q' : N.QT (k * k')) (hk : k' ≠ 0)
     (a : q.1.1 = p.1.1 ^ k') (b : q.1.2 = p.1.2) (c : q'.1.1 = p'.1.1 ^ k') (d : q'.1.2 = p'.1.2) :
     N.QEq p p' ↔ N.QEq q q' := by
@@ -399,6 +486,11 @@ theorem qEq_incl (N : NumD O) {k k' : ℕ} (p p' : N.QT k) (q q' : N.QT (k * k')
 open scoped BigOperators in
 variable {O : Type} [CommRing O] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Ex.NumD.QEq at *`. Take `⟨z, hz1, hz2⟩` from `h`. Take `⟨z', hz1', hz2'⟩` from `h'`. Use `⟨z + z', ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Prod.fst_mul, toAdd_mul, hz1, hz1', smul_add]`.
+
+Normalize the expressions using the abelian group laws. Simplify using `only [Subgroup.coe_mul, Prod.snd_mul, hz2, hz2', N.io_add]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem _root_.GlobalTheory.Ex.TateInh.qEq_mul (N : _root_.GlobalTheory.Ex.NumD O) {k : ℕ}
     {p p' q q' : N.QT k} (h : N.QEq p p')
     (h' : N.QEq q q') :
@@ -427,6 +519,13 @@ def tateMatch {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) : Matc
   c₀_ne := one_ne_zero
   tx _ _ _ h := by rw [one_mul]; exact tate_tx hn.pow h
 
+/- English proof (translation)
+Introduce `h`. Establish `h2 : ((2 : ℕ) : ℂ_[2]) ≠ 0` using `Nat.cast_ne_zero.2 two_ne_zero`. Establish `n2 : ‖((2 : ℕ) : ℂ_[2])‖ < 1`. Establish `: ‖((2 : ℕ) : ℂ_[2])‖ = ‖((2 : ℕ) : ℚ_[2])‖`. Rewrite using `[← map_natCast (algebraMap ℚ_[2] ℂ_[2]), norm_algebraMap']`.
+
+Rewrite using `[this]`. Conclude with `Padic.norm_p_lt_one`. Establish `n3 : ‖((3 : ℕ) : ℂ_[2])‖ = 1`. Rewrite using `[← map_natCast (algebraMap ℚ_[2] ℂ_[2]), norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.2 (by norm_num)`.
+
+Use `h ℂ_[2] (tate (Units.mk0 _ h2)) (tate (Units.mk0 _ h2)) _ _ 3 0 0 Nat.prime_three (by decide) n3 (tate_int _ n2) (tate_int _ n2) (tate_tors _ _) (tate_tors _ _) (tateMatch _ 3 (by decide))` as an intermediate fact. Conclude with `absurd (show (0 : ℤ) = 1 from this.elim (0 : ℤ) (1 : ℤ)) zero_ne_one`.
+-/
 theorem not_allMatch_rank_zero : ¬ AllMatch fun {_} _ {N} {_} {_} _ _ _ => Subsingleton N.X := by
   intro h
   have h2 : ((2 : ℕ) : ℂ_[2]) ≠ 0 := Nat.cast_ne_zero.2 two_ne_zero
@@ -441,6 +540,9 @@ theorem not_allMatch_rank_zero : ¬ AllMatch fun {_} _ {N} {_} {_} _ _ _ => Subs
     (tate_int _ n2) (tate_int _ n2) (tate_tors _ _) (tate_tors _ _) (tateMatch _ 3 (by decide))
   exact absurd (show (0 : ℤ) = 1 from this.elim (0 : ℤ) (1 : ℤ)) zero_ne_one
 
+/- English proof (translation)
+Use `⟨norm_one, fun j p p' h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨z, h1, -⟩` from `h`. Conclude with `⟨fun ⟨w, hw⟩ => ⟨w + z, by rw [h1, hw, smul_add]⟩, fun ⟨w, hw⟩ => ⟨w - z, by rw [smul_sub, ← hw, h1, add_sub_cancel_right]⟩⟩`. Establish `E` using `(tate q).qEq_equivalence (n ^ j)`. Conclude with `⟨fun ⟨r, a, b⟩ => ⟨r, E.trans (E.symm h) a, b⟩, fun ⟨r, a, b⟩ => ⟨r, E.trans h a, b⟩⟩`.
+-/
 theorem tateMatch_A {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) : (tateMatch q n hn).A := by
   refine ⟨norm_one, fun j p p' h => ⟨?_, ?_⟩⟩
   · obtain ⟨z, h1, -⟩ := h
@@ -448,9 +550,17 @@ theorem tateMatch_A {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) 
   · have E := (tate q).qEq_equivalence (n ^ j)
     exact ⟨fun ⟨r, a, b⟩ => ⟨r, E.trans (E.symm h) a, b⟩, fun ⟨r, a, b⟩ => ⟨r, E.trans h a, b⟩⟩
 
+/- English proof (translation)
+Introduce `_ _ _ ⟨z, h, _⟩` and use `⟨z, h⟩`.
+-/
 theorem tateMatch_B {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) : (tateMatch q n hn).B (AddEquiv.refl _) :=
   fun _ _ _ ⟨z, h, _⟩ => ⟨z, h⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨z, hz⟩` from `h 1 (tateQ r _ 1) (tateQ r _ 1) (((tate _).qEq_equivalence _).refl _)`. Establish `key : ∀ w : ℤ, ¬ (1 : ℤ) = -1 + (3 ^ 1 : ℕ) • w` using `fun w => by`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `key z hz`.
+-/
 theorem tateMatch_not_B (r : ℂˣ) : ¬ (tateMatch (r ^ 3 ^ 1) 3 (by decide)).B (AddEquiv.neg ℤ) := by
   intro h
   obtain ⟨z, hz⟩ := h 1 (tateQ r _ 1) (tateQ r _ 1) (((tate _).qEq_equivalence _).refl _)
@@ -458,6 +568,11 @@ theorem tateMatch_not_B (r : ℂˣ) : ¬ (tateMatch (r ^ 3 ^ 1) 3 (by decide)).B
     simp only [nsmul_eq_mul]; push_cast; omega
   exact key z hz
 
+/- English proof (translation)
+Introduce and unpack `j p p' ⟨z, h1, h2⟩ a b χ`. Rewrite `h1` using `[a, b, toAdd_one, zero_add]`. Establish `hz : z = 0`. Establish `key : ∀ w : ℤ, 0 = (n ^ j) ^ 2 • w → w = 0` using `fun w hw => (smul_eq_zero_iff_right (pow_ne_zero _ (pow_ne_zero _ hn.pos.ne'))).1 hw.symm`. Conclude with `key z h1`.
+
+Rewrite `h2` using `[hz, NumD.io_zero, mul_one]`. Establish `: p' = p` using `Subtype.ext (Prod.ext (b.trans a.symm) h2)`. Rewrite using `[this]`. Conclude with `(one_mul _).symm`.
+-/
 theorem tateMatch_term {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) : (tateMatch q n hn).Term (AddEquiv.refl _) := by
   rintro j p p' ⟨z, h1, h2⟩ a b χ
   rw [a, b, toAdd_one, zero_add] at h1
@@ -481,13 +596,24 @@ def isoRefl (N : NumD O) : NumD.Iso N N where
   c_eq _ := rfl
   ψ_eq _ := mul_one _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => NumD.Gt.ext h.1 (funext fun χ => by simpa [isoRefl] using h.2 χ), by rintro rfl; exact ⟨rfl, fun χ => by simp [isoRefl]⟩⟩`.
+-/
 theorem isoRefl_rel (N : NumD O) (g g' : N.Gt) : (isoRefl N).Rel g g' ↔ g' = g :=
   ⟨fun h => NumD.Gt.ext h.1 (funext fun χ => by simpa [isoRefl] using h.2 χ), by
     rintro rfl; exact ⟨rfl, fun χ => by simp [isoRefl]⟩⟩
 
+/- English proof (translation)
+Introduce `_ _ _ a b` and use `⟨0, by rw [smul_zero, add_zero]; exact a, by rw [NumD.io_zero, mul_one]; exact (isoRefl_rel _ _ _).1 b⟩`.
+-/
 theorem tateMatch_onQ {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) : (tateMatch q n hn).OnQ (isoRefl _) :=
   fun _ _ _ a b => ⟨0, by rw [smul_zero, add_zero]; exact a, by rw [NumD.io_zero, mul_one]; exact (isoRefl_rel _ _ _).1 b⟩
 
+/- English proof (translation)
+Introduce and unpack `j p p' ⟨z, h1, h2⟩ a b`. Rewrite `h1` using `[a, b, toAdd_one, zero_add]`. Establish `key : ∀ w : ℤ, 0 = (n ^ j) • w → w = 0` using `fun w hw => (smul_eq_zero_iff_right (pow_ne_zero _ hn.pos.ne')).1 hw.symm`. Establish `hz : z = 0` using `key z h1`. Rewrite `h2` using `[hz, NumD.io_zero, mul_one]`.
+
+Conclude with `(isoRefl_rel _ _ _).2 h2`.
+-/
 theorem tateMatch_onG {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) : (tateMatch q n hn).OnG (isoRefl _) := by
   rintro j p p' ⟨z, h1, h2⟩ a b
   rw [a, b, toAdd_one, zero_add] at h1
@@ -497,12 +623,26 @@ theorem tateMatch_onG {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n
   rw [hz, NumD.io_zero, mul_one] at h2
   exact (isoRefl_rel _ _ _).2 h2
 
+/- English proof (translation)
+Introduce and unpack `⟨z, hz⟩`. Establish `key : ∀ w : ℤ, ¬ (1 : ℤ) = (3 : ℕ) • w` using `fun w => by`. Simplify using `only [nsmul_eq_mul]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `key z hz`.
+-/
 theorem not_inG (r : Oˣ) : ¬ (tate (r ^ 3)).InG (tateQ r 3 1) := by
   rintro ⟨z, hz⟩
   have key : ∀ w : ℤ, ¬ (1 : ℤ) = (3 : ℕ) • w := fun w => by
     simp only [nsmul_eq_mul]; push_cast; omega
   exact key z hz
 
+/- English proof (translation)
+Rewrite using `[NumD.arcTx, PowerSeries.coeff_mk]`. Establish `e : ∀ χ : ℤ, (tate (1 : ℤˣ)).txT 1 1 χ = 1` using `fun χ => by`. Rewrite using `[tate_txT]`. Establish `: sv (1 : (tate (1 : ℤˣ)).QT (1 ^ 2)).1.2 χ = 1` using `rfl`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Establish `: (∑ᶠ (χ : ℤ) (_ : χ ∈ ({1, -1} : Finset ℤ)), (1 : ℤ)) = 2`. Rewrite using `[finsum_mem_finset_eq_sum]`. Both sides reduce to the same expression. Use `Eq.trans ?_ this` and prove the remaining obligations.
+
+Use `finsum_congr fun (χ : ℤ) => ?_` and prove the remaining obligations. Rewrite using `[e]`. Use `finsum_congr_Prop (propext ?_) fun _ => rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(2 * (1 : ℕ) : ℤ) * ((0 + 1 • χ) * (0 + 1 • χ)) / (2 * ((1 : ℕ) : ℤ) ^ 2) = ((1 : ℕ) : ℤ) ↔ _`. Simplify using `only [Nat.cast_one, mul_one, one_pow, zero_add, one_smul, Finset.mem_insert, Finset.mem_singleton]`.
+
+Rewrite using `[Int.mul_ediv_cancel_left _ two_ne_zero, mul_self_eq_one_iff]`.
+-/
 theorem arcTx_coeff_one :
     PowerSeries.coeff 1 ((tate (1 : ℤˣ)).arcTx (tateBe 1 1 one_ne_zero).be 1 1) = 2 := by
   rw [NumD.arcTx, PowerSeries.coeff_mk]
@@ -520,9 +660,15 @@ theorem arcTx_coeff_one :
   simp only [Nat.cast_one, mul_one, one_pow, zero_add, one_smul, Finset.mem_insert, Finset.mem_singleton]
   rw [Int.mul_ediv_cancel_left _ two_ne_zero, mul_self_eq_one_iff]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _` and use `rfl`.
+-/
 theorem tateMatch_onB {C : Type} [NormedField C] (q : Cˣ) (n : ℕ) (hn : Odd n) :
     (tateMatch q n hn).OnB (isoRefl _).toIso := fun _ _ _ _ _ _ => rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (N : NumD O) (h : N.A → Oˣ) (h₁ : h 1 = 1) : (homOfIso (N.regaugeIso h h₁)).h = h := rfl
 end TateInh
 end GlobalTheory.Ex

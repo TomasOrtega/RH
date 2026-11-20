@@ -22,11 +22,17 @@ section Pairing
 
 variable {μ : Measure G2} {𝓕 : Set G2} {mK : Measure KA} {𝓓 : Set Jd} {φ : G2 → ℂ}
 
+/- English proof (translation)
+The claim follows from `(hc.comp (continuous_id.mul continuous_const)).mul (Complex.continuous_conj.comp (hc.comp (continuous_id.mul continuous_const)))`.
+-/
 theorem trans_cont (hc : Continuous φ) (A B : G2) :
     Continuous fun g => φ (g * A) * conj (φ (g * B)) :=
   (hc.comp (continuous_id.mul continuous_const)).mul
     (Complex.continuous_conj.comp (hc.comp (continuous_id.mul continuous_const)))
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hb`. Use `⟨C * C, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul (hC _) (hC _) (norm_nonneg _) ((norm_nonneg _).trans (hC 1))`.
+-/
 theorem trans_bdd (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (A B : G2) :
     ∃ C : ℝ, ∀ g, ‖φ (g * A) * conj (φ (g * B))‖ ≤ C := by
   obtain ⟨C, hC⟩ := hb
@@ -34,20 +40,32 @@ theorem trans_bdd (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (A B : G2) :
   rw [norm_mul, RCLike.norm_conj]
   exact mul_le_mul (hC _) (hC _) (norm_nonneg _) ((norm_nonneg _).trans (hC 1))
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (μ.restrict (𝓕 ∩ band)) := ⟨by simpa using hS.vol⟩`. Take `⟨C, hC⟩` from `trans_bdd hb A B`. Conclude with `Integrable.of_bound (trans_cont hc A B).aestronglyMeasurable C (ae_of_all _ hC)`.
+-/
 theorem trans_integrable (hS : Set0 μ 𝓕 mK 𝓓) (hc : Continuous φ) (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (A B : G2) :
     Integrable (fun g => φ (g * A) * conj (φ (g * B))) (μ.restrict (𝓕 ∩ band)) := by
   haveI : IsFiniteMeasure (μ.restrict (𝓕 ∩ band)) := ⟨by simpa using hS.vol⟩
   obtain ⟨C, hC⟩ := trans_bdd hb A B
   exact Integrable.of_bound (trans_cont hc A B).aestronglyMeasurable C (ae_of_all _ hC)
 
+/- English proof (translation)
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_conj_circle (w : Circle) : (w : ℂ) * conj (w : ℂ) = 1 := by
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Circle.norm_coe]; simp
 
+/- English proof (translation)
+Introduce `γ g`. Simplify using `only [mul_assoc]`. Rewrite using `[hl, hl]`.
+-/
 theorem trans_linv (hl : LInv φ) (A B : G2) : LInv fun g => φ (g * A) * conj (φ (g * B)) := by
   intro γ g
   simp only [mul_assoc]
   rw [hl, hl]
 
+/- English proof (translation)
+Introduce `z g`. Establish `hw` using `mul_conj_circle (ω.toIdele z)`. Simplify using `only [mul_assoc, hz, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem trans_cinv {ω : HeckeCharacter ℚ} (hz : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (A B : G2) :
     CInv fun g => φ (g * A) * conj (φ (g * B)) := by
   intro z g
@@ -56,6 +74,9 @@ theorem trans_cinv {ω : HeckeCharacter ℚ} (hz : ∀ (z : Jd) g, φ (dg2 z z *
   calc _ = ((ω.toIdele z : ℂ) * conj (ω.toIdele z : ℂ)) * (φ (g * A) * conj (φ (g * B))) := by ring
     _ = _ := by rw [hw, one_mul]
 
+/- English proof (translation)
+Use `(hG μ 𝓕 mK 𝓓 hS _ (trans_cont hc A B) (trans_bdd hb A B) (trans_linv hl A B)).1 (trans_cinv hz A B) h` as an intermediate fact. Simplify using `only [mul_assoc] at this`. Simplify `this` using `only [pr, mul_assoc]`.
+-/
 theorem pr_trans (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ} (hc : Continuous φ)
     (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (hl : LInv φ)
     (hz : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (A B h : G2) :
@@ -65,6 +86,9 @@ theorem pr_trans (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ}
   simp only [mul_assoc] at this
   simpa only [pr, mul_assoc] using this
 
+/- English proof (translation)
+Establish `: ∀ g, φ (g * (Y * X)) * conj (φ (g * 1)) = w * (φ (g * Y) * conj (φ (g * 1)))` using `fun g => by`. Rewrite using `[← mul_assoc g, hX]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [pr, this]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem pr_right {Y X : G2} {w : ℂ} (hX : ∀ g, φ (g * X) = w * φ g) :
     pr μ 𝓕 φ (Y * X) 1 = w * pr μ 𝓕 φ Y 1 := by
   have : ∀ g, φ (g * (Y * X)) * conj (φ (g * 1)) = w * (φ (g * Y) * conj (φ (g * 1))) := fun g => by
@@ -72,6 +96,15 @@ theorem pr_right {Y X : G2} {w : ℂ} (hX : ∀ g, φ (g * X) = w * φ g) :
   simp only [pr, this]
   exact integral_const_mul _ _
 
+/- English proof (translation)
+Establish `h1` using `pr_trans hS hG hc hb hl hz Y X⁻¹ X`. Rewrite `h1` using `[mul_inv_cancel]`. Rewrite using `[h1]`. Establish `hw0 : w ≠ 0` using `by intro h; simp [h] at hw`. Establish `hww : w * conj w = 1`.
+
+Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hw]`. Simplify using the standard rewrite rules. Establish `hinv : ∀ g, φ (g * X⁻¹) = w⁻¹ * φ g` using `fun g => by`. Use `hX (g * X⁻¹)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`.
+
+Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Establish `hcw : conj (w⁻¹) = w`. Rewrite using `[map_inv₀]`. Conclude with `inv_eq_of_mul_eq_one_left hww`.
+
+Establish `: ∀ g, φ (g * Y) * conj (φ (g * X⁻¹)) = w * (φ (g * Y) * conj (φ (g * 1)))` using `fun g => by`. Rewrite using `[hinv, map_mul, hcw, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [pr, this]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem pr_left (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ} (hc : Continuous φ)
     (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (hl : LInv φ)
     (hz : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) {Y X : G2} {w : ℂ} (hw : ‖w‖ = 1)
@@ -95,6 +128,11 @@ theorem pr_left (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ} 
   simp only [pr, this]
   exact integral_const_mul _ _
 
+/- English proof (translation)
+Establish `h1` using `pr_left (Y := Y) hS hG hc hb hl hz hw hX`. Rewrite `h1` using `[hcomm, pr_right hX']`. Establish `: (w' - w) * pr μ 𝓕 φ Y 1 = 0` using `by rw [sub_mul, h1, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h).symm hne`.
+
+Conclude with `h`.
+-/
 theorem pr_zero (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ} (hc : Continuous φ)
     (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (hl : LInv φ)
     (hz : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) {Y X X' : G2} {w w' : ℂ} (hw : ‖w‖ = 1)
@@ -107,6 +145,9 @@ theorem pr_zero (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ} 
   · exact absurd (sub_eq_zero.1 h).symm hne
   · exact h
 
+/- English proof (translation)
+Establish `key : ∀ g, Λ * conj Λ * (φ (g * 1) * conj (φ (g * 1))) = ∑ b ∈ B, ∑ b' ∈ B, φ (g * t b) * conj (φ (g * t b'))` using `fun g => by`. Rewrite using `[← Finset.sum_mul_sum, ← map_sum, hsum, map_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_expand {α : Type} (hS : Set0 μ 𝓕 mK 𝓓) (hc : Continuous φ)
     (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (B : Finset α) (t : α → G2) (Λ : ℂ)
     (hsum : ∀ g, ∑ b ∈ B, φ (g * t b) = Λ * φ g) :
@@ -123,6 +164,15 @@ theorem sum_expand {α : Type} (hS : Set0 μ 𝓕 mK 𝓓) (hc : Continuous φ)
     _ = _ := Finset.sum_congr rfl fun b _ =>
         integral_finset_sum _ fun b' _ => trans_integrable hS hc hb _ _
 
+/- English proof (translation)
+Use `set F : G2 → ℂ := fun g => ((‖φ g‖ : ℝ) : ℂ) with hF`. Establish `hFc : Continuous F` using `Complex.continuous_ofReal.comp hc.norm`. Establish `hFb : ∃ C : ℝ, ∀ g, ‖F g‖ ≤ C`. Take `⟨C, hC⟩` from `hb`. Conclude with `⟨C, fun g => by simpa [hF] using hC g⟩`.
+
+Establish `hFl : LInv F` using `fun γ g => by simp only [hF, hl γ g]`. Establish `hFz : CInv F` using `fun z g => by simp only [hF, hz, norm_mul, Circle.norm_coe, one_mul]`. Establish `hF0 : F ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Use `congrFun h g` as an intermediate fact. Simplify `this` using `[hF]`. Use `(hG μ 𝓕 mK 𝓓 hS F hFc hFb hFl).2.2 hFz hF0` as an intermediate fact. Establish `heq : ∀ g, F g * conj (F g) = φ (g * 1) * conj (φ (g * 1))` using `fun g => by`.
+
+Simplify using `only [hF, mul_one, Complex.conj_ofReal, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify `this` using `only [pr, heq]`.
+-/
 theorem pr_self_ne (hS : Set0 μ 𝓕 mK 𝓓) (hG : G1) {ω : HeckeCharacter ℚ} (hc : Continuous φ)
     (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (hl : LInv φ)
     (hz : ∀ (z : Jd) g, φ (dg2 z z * g) = (ω.toIdele z : ℂ) * φ g) (h0 : φ ≠ 0) :
@@ -150,11 +200,23 @@ end Pairing
 
 section Local
 
+/- English proof (translation)
+Rewrite using `[← normalizedValuation_le_one_iff, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zero, WithZero.exp_le_exp, neg_nonpos]`.
+-/
 theorem mem_integer_iff_ord {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     {x : F} (hx : x ≠ 0) : x ∈ 𝒪[F] ↔ 0 ≤ ord x := by
   rw [← normalizedValuation_le_one_iff, normalizedValuation_eq_exp_ord hx, ← WithZero.exp_zero,
     WithZero.exp_le_exp, neg_nonpos]
 
+/- English proof (translation)
+Take `⟨h1, hint, huniq⟩` from `hR`. Use `set y : F := ((ϖ⁻¹ : Fˣ) : F) * (b - b') with hy`. Establish `hyO : y ∉ 𝒪[F]`. Introduce `hmem`. Apply `hne` to reduce the goal to its premises.
+
+Use `(huniq b (hint b hb)).unique ⟨hb, ?_⟩ ⟨hb', hmem⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hy0 : y ≠ 0` using `fun h => hyO (h ▸ zero_mem _)`. Establish `hϖ0 : (ϖ : F) ≠ 0` using `ϖ.ne_zero`. Establish `hprod : (ϖ : F) * y = b - b'`.
+
+Rewrite using `[hy, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `hmem : (ϖ : F) * y ∈ 𝒪[F]`. Rewrite using `[hprod]`. Conclude with `sub_mem (hint b hb) (hint b' hb')`. Rewrite `hmem` using `[mem_integer_iff_ord (mul_ne_zero hϖ0 hy0), ord_mul hϖ0 hy0, h1]`.
+
+Rewrite `hyO` using `[mem_integer_iff_ord hy0, not_le]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem reps_ord {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     {ϖ : Fˣ} {B : Finset F} (hR : Reps ϖ B) {b b' : F} (hb : b ∈ B) (hb' : b' ∈ B) (hne : b ≠ b') :
     ord (((ϖ⁻¹ : Fˣ) : F) * (b - b')) = -1 := by
@@ -175,6 +237,9 @@ theorem reps_ord {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsN
   rw [mem_integer_iff_ord hy0, not_le] at hyO
   omega
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[upm, uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem upm_mul {F : Type} [Field F] (ϖ : Fˣ) (b b' : F) :
     upm ϖ b' * uni2 (((ϖ⁻¹ : Fˣ) : F) * (b - b')) = upm ϖ b := by
   apply Units.ext
@@ -182,17 +247,26 @@ theorem upm_mul {F : Type} [Field F] (ϖ : Fˣ) (b b' : F) :
   fin_cases i <;> fin_cases j <;>
     simp [upm, uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [GroundTheory.Automorphic.Reduction.finAt_mul, hx.1, hy.1], fun v' hv => by rw [GroundTheory.Automorphic.Reduction.finAt_mul, hx.2.1 v' hv, hy.2.1 v' hv, one_mul], fun w => by rw [GroundTheory.Automorphic.Reduction.infAt_mul, hx.2.2 w, hy.2.2 w, one_mul]⟩`.
+-/
 theorem loc_mul {v : Pl} {x y : GL (Fin 2) (Qv v)} {h h' : G2} (hx : IsLoc2 v x h) (hy : IsLoc2 v y h') :
     IsLoc2 v (x * y) (h * h') :=
   ⟨by rw [GroundTheory.Automorphic.Reduction.finAt_mul, hx.1, hy.1],
    fun v' hv => by rw [GroundTheory.Automorphic.Reduction.finAt_mul, hx.2.1 v' hv, hy.2.1 v' hv, one_mul],
    fun w => by rw [GroundTheory.Automorphic.Reduction.infAt_mul, hx.2.2 w, hy.2.2 w, one_mul]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simpa using GroundTheory.Automorphic.Reduction.finAt_mul v (1 : G2) 1, fun v' _ => by simpa using GroundTheory.Automorphic.Reduction.finAt_mul v' (1 : G2) 1, fun w => by simpa using GroundTheory.Automorphic.Reduction.infAt_mul w (1 : G2) 1⟩`.
+-/
 theorem loc_one (v : Pl) : IsLoc2 v 1 (1 : G2) :=
   ⟨by simpa using GroundTheory.Automorphic.Reduction.finAt_mul v (1 : G2) 1,
    fun v' _ => by simpa using GroundTheory.Automorphic.Reduction.finAt_mul v' (1 : G2) 1,
    fun w => by simpa using GroundTheory.Automorphic.Reduction.infAt_mul w (1 : G2) 1⟩
 
+/- English proof (translation)
+The claim follows from `hinj h h' (fun v' => by by_cases e : v' = v · subst e; rw [hx.1, hx'.1] · rw [hx.2.1 v' e, hx'.2.1 v' e]) fun w => by rw [hx.2.2 w, hx'.2.2 w]`.
+-/
 theorem loc_unique (hinj : ∀ g g' : G2, (∀ v, finAt v g = finAt v g') → (∀ w, infAt w g = infAt w g') → g = g')
     {v : Pl} {x : GL (Fin 2) (Qv v)} {h h' : G2} (hx : IsLoc2 v x h) (hx' : IsLoc2 v x h') : h = h' :=
   hinj h h' (fun v' => by
@@ -202,14 +276,41 @@ theorem loc_unique (hinj : ∀ g g' : G2, (∀ v, finAt v g = finAt v g') → (�
 
 end Local
 
+/- English proof (translation)
+Unfold `WR`. Rewrite using `[if_pos (by simp)]`. Conclude with `Complex.ofReal_ne_zero.2 (mul_ne_zero (pow_ne_zero _ (by simp)) (Real.exp_ne_zero _))`.
+-/
 theorem wr_ne (k : ℕ) : WR k (-1) ≠ 0 := by
   unfold WR
   rw [if_pos (by simp)]
   exact Complex.ofReal_ne_zero.2 (mul_ne_zero (pow_ne_zero _ (by simp)) (Real.exp_ne_zero _))
 
+/- English proof (translation)
+Simplify using `[Wh]`.
+-/
 theorem wh_zero (g : G2) : Wh 0 g = 0 := by
   simp [Wh]
 
+/- English proof (translation)
+Introduce `hB0 hC1 hU2 hG0 hG1 hF0b hF1 hF2 hF3 hF5 k N _ hk χ hχ f a hf ha ω φ hω hφ v hv`. Take `⟨hloc, -, -, hinj, -⟩` from `hB0`. Take `⟨hstd, hres, hprime, -, -, hex, hunit⟩` from `hloc v`. Take `⟨hpar, -⟩` from `hF1 k N χ f a hf ha.2.1 ω hω`. Establish `hcond` using `(hF0b k N χ hχ hpar ω hω).bad v hv`.
+
+Establish `hn : 1 ≤ N.factorization (pOf v)` using `hprime.factorization_pos_of_dvd (NeZero.ne N) hv`. Establish `hHk : Hk k N a ω φ` using `hF3 k N hk χ hχ f a hf ha ω φ hω hφ`. Establish `hF2'` using `hF2 k N hk χ hχ f a hf ha ω φ hω hφ`. Take `⟨hbd, -⟩` from `hF5 k N hk χ hχ f a hf ha ω φ hω hφ`. Take `⟨μ, 𝓕, mK, 𝓓, hS⟩` from `hG0`.
+
+Use `choose ι hι using hex`. Establish `hfn : ∀ g, LocFn v φ g (fun x => φ (g * ι x))` using `fun g x h hx => by show φ (g * ι x) = _`. Rewrite using `[loc_unique hinj (hι x) hx]`. Establish `hT` using `fun g => hHk.bad v hv g _ (hfn g)`. Establish `hι1 : ι 1 = 1` using `loc_unique hinj (hι 1) (loc_one v)`.
+
+Establish `hK : ∀ x d, GammaZeroLevelMembership (N.factorization (pOf v)) x d → ∀ g, φ (g * ι x) = ((localChar ω v d : ℂˣ) : ℂ) * φ g` using `fun x d hx g => by`. Use `(hT g).1 x d hx 1` as an intermediate fact. Simplify `this` using `[hι1]`. Take `⟨⟨ϖ, B, hR⟩, hcard, -⟩` from `hC1 (Qv v) (localAdelicChar ℚ v) hstd`. Establish `hsum : ∀ g, ∑ b ∈ B, φ (g * ι (upm ϖ b)) = lamOf k a v * φ g` using `fun g => by`.
+
+Use `(hT g).2 ϖ B hR 1` as an intermediate fact. Simplify `this` using `[hι1]`. Establish `hoff : ∀ b ∈ B, ∀ b' ∈ B, b ≠ b' → pr μ 𝓕 φ (ι (upm ϖ b)) (ι (upm ϖ b')) = 0`. Introduce `b hb b' hb' hne`. Take `⟨x, d, x', d', hx, hx', hcomm, hdne⟩` from `hU2 (Qv v) (localAdelicChar ℚ v) hstd (localChar ω v) (hunit ω).1 (by rw [hcond]; exact hn) _ (reps_ord hR hb hb' hne)`.
+
+Rewrite `hx`, `hx'` using `[hcond]`. Establish `hY : ι (upm ϖ b') * ι (uni2 (((ϖ⁻¹ : (Qv v)ˣ) : Qv v) * (b - b'))) = ι (upm ϖ b)` using `loc_unique hinj (loc_mul (hι _) (hι _)) (by rw [upm_mul]; exact hι _)`. Establish `hcomm' : ι x * ι (uni2 (((ϖ⁻¹ : (Qv v)ˣ) : Qv v) * (b - b'))) = ι (uni2 (((ϖ⁻¹ : (Qv v)ˣ) : Qv v) * (b - b'))) * ι x'` using `loc_unique hinj (loc_mul (hι _) (hι _)) (by rw [hcomm]; exact loc_mul (hι _) (hι _))`. Establish `h2` using `pr_trans hS hG1 hφ.cont hbd hφ.left hφ.cen (ι (uni2 (((ϖ⁻¹ : (Qv v)ˣ) : Qv v) * (b - b')))) 1 (ι (upm ϖ b'))`. Rewrite `h2` using `[hY, mul_one]`.
+
+Rewrite using `[h2]`. Conclude with `pr_zero hS hG1 hφ.cont hbd hφ.left hφ.cen ((hunit ω).2 d) (hK x d hx) (hK x' d' hx') hcomm' fun h => hdne (Units.ext h)`. Establish `hdiag : ∀ b, pr μ 𝓕 φ (ι (upm ϖ b)) (ι (upm ϖ b)) = pr μ 𝓕 φ 1 1` using `fun b => by`. Simplify using `using pr_trans hS hG1 hφ.cont hbd hφ.left hφ.cen 1 1 (ι (upm ϖ b))`. Establish `h0 : φ ≠ 0`.
+
+Introduce and unpack `rfl`. Establish `h` using `hF2'.2.2.2 (-1)`. Rewrite `h` using `[wh_zero]`. Conclude with `wr_ne k h.symm`. Establish `hne` using `pr_self_ne hS hG1 hφ.cont hbd hφ.left hφ.cen h0`.
+
+Establish `hexp` using `sum_expand hS hφ.cont hbd B (fun b => ι (upm ϖ b)) (lamOf k a v) hsum`. Establish `hdd : ∑ b ∈ B, ∑ b' ∈ B, pr μ 𝓕 φ (ι (upm ϖ b)) (ι (upm ϖ b')) = (B.card : ℂ) * pr μ 𝓕 φ 1 1`. Rewrite using `[Finset.sum_congr rfl (fun b hb => (Finset.sum_eq_single_of_mem b hb (fun b' hb' hne => hoff b hb b' hb' hne.symm)).trans (hdiag b))]`. Simplify using the standard rewrite rules. Establish `hfin` using `mul_right_cancel₀ hne (hexp.trans hdd)`.
+
+Rewrite `hfin` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hcard ϖ B hR, hres]`. Conclude with `hfin` after adjusting the coercions.
+-/
 theorem abs_eigenvalue_sq : B0 → C1 → U2 → G0 → G1 → F0b → F1 → F2 → F3 → F5 → F4 := by
   intro hB0 hC1 hU2 hG0 hG1 hF0b hF1 hF2 hF3 hF5 k N _ hk χ hχ f a hf ha ω φ hω hφ v hv
   obtain ⟨hloc, -, -, hinj, -⟩ := hB0

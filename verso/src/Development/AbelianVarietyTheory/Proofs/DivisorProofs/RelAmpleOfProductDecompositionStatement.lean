@@ -13,5 +13,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase (IsPrincipalPol sqT
 open MonObj
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ProdAmple.relAmple_of_cls_eq_add | exact GlobalTheory.ProdAmple.relAmple_of_cls_eq_add | (intros; apply GlobalTheory.ProdAmple.relAmple_of_cls_eq_add <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rel_ample_of_product_decomposition : ∀ {T : Scheme.{0}} [IsAffine T] {C B₁ B₂ : Over T} [GrpObj C] [GrpObj B₁] [GrpObj B₂], IsAbelianScheme B₁ → IsAbelianScheme B₂ → ∀ (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂), IsLimit (BinaryFan.mk q₁ q₂) → ∀ {L₁ : LB B₁.left} (hL₁ : L₁.IsLB), Out.RelAmple B₁ L₁ → ∀ {L₂ : LB B₂.left} (hL₂ : L₂.IsLB), Out.RelAmple B₂ L₂ → ∀ {L : LB C.left} (hL : L.IsLB), cls L hL = pull q₁.left (cls L₁ hL₁) + pull q₂.left (cls L₂ hL₂) → Out.RelAmple C L := by
   first | exact @GlobalTheory.ProdAmple.relAmple_of_cls_eq_add | exact GlobalTheory.ProdAmple.relAmple_of_cls_eq_add | (intros; apply GlobalTheory.ProdAmple.relAmple_of_cls_eq_add <;> assumption)

@@ -12,30 +12,54 @@ noncomputable def ent (a b : Fin 2) (k : U2) : ℂ := (k : Matrix (Fin 2) (Fin 2
 
 noncomputable def detU (k : U2) : ℂ := (k : Matrix (Fin 2) (Fin 2) ℂ).det
 
+/- English proof (translation)
+The claim follows from `(continuous_apply b).comp ((continuous_apply a).comp continuous_subtype_val)`.
+-/
 theorem continuous_ent (a b : Fin 2) : Continuous (ent a b) :=
   (continuous_apply b).comp ((continuous_apply a).comp continuous_subtype_val)
 
+/- English proof (translation)
+The claim follows from `Continuous.matrix_det continuous_subtype_val`.
+-/
 theorem continuous_detU : Continuous detU :=
   Continuous.matrix_det continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `det_ne_zero_of_U2 k`.
+-/
 theorem detU_ne_zero (k : U2) : detU k ≠ 0 := det_ne_zero_of_U2 k
 
+/- English proof (translation)
+The claim follows from `Matrix.det_fin_two _`.
+-/
 theorem detU_eq (k : U2) : detU k = ent 0 0 k * ent 1 1 k - ent 0 1 k * ent 1 0 k :=
   Matrix.det_fin_two _
 
+/- English proof (translation)
+The claim follows from `continuous_detU.zpow₀ q fun k => Or.inl (detU_ne_zero k)`.
+-/
 theorem continuous_detU_zpow (q : ℤ) : Continuous fun k => detU k ^ q :=
   continuous_detU.zpow₀ q fun k => Or.inl (detU_ne_zero k)
 
 noncomputable def mono (α β γ δ : ℕ) (k : U2) : ℂ :=
   ent 0 0 k ^ α * ent 0 1 k ^ β * ent 1 0 k ^ γ * ent 1 1 k ^ δ
 
+/- English proof (translation)
+The claim follows from `((((continuous_ent 0 0).pow α).mul ((continuous_ent 0 1).pow β)).mul ((continuous_ent 1 0).pow γ)).mul ((continuous_ent 1 1).pow δ)`.
+-/
 theorem continuous_mono (α β γ δ : ℕ) : Continuous (mono α β γ δ) :=
   ((((continuous_ent 0 0).pow α).mul ((continuous_ent 0 1).pow β)).mul
     ((continuous_ent 1 0).pow γ)).mul ((continuous_ent 1 1).pow δ)
 
+/- English proof (translation)
+The claim follows from `(BoundedContinuousFunction.mkOfCompact ⟨f, hf⟩).integrable μK`.
+-/
 theorem integrable_of_continuous {f : U2 → ℂ} (hf : Continuous f) : Integrable f μK :=
   (BoundedContinuousFunction.mkOfCompact ⟨f, hf⟩).integrable μK
 
+/- English proof (translation)
+The claim follows from `(BoundedContinuousFunction.mkOfCompact ⟨f, hf⟩).integrable μK`.
+-/
 theorem integrable_of_continuous' {f : U2 → ℝ} (hf : Continuous f) : Integrable f μK :=
   (BoundedContinuousFunction.mkOfCompact ⟨f, hf⟩).integrable μK
 
@@ -45,35 +69,58 @@ noncomputable def abelian₂ (q : ℤ) (f : U2 → ℂ) : ℂ := ∫ k, f k * de
 
 variable {g}
 
+/- English proof (translation)
+The claim follows from `integrable_of_continuous ((hf.mul (continuous_detU_zpow q)).mul hg)`.
+-/
 theorem integrable_Lam (hg : Continuous g) (q : ℤ) {f : U2 → ℂ} (hf : Continuous f) :
     Integrable (fun k => f k * detU k ^ q * g k) μK :=
   integrable_of_continuous ((hf.mul (continuous_detU_zpow q)).mul hg)
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[← integral_sub (integrable_Lam hg q hf) (integrable_Lam hg q hf')]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Lam_sub (hg : Continuous g) (q : ℤ) {f f' : U2 → ℂ} (hf : Continuous f)
     (hf' : Continuous f') : abelian₂ g q (fun k => f k - f' k) = abelian₂ g q f - abelian₂ g q f' := by
   unfold abelian₂
   rw [← integral_sub (integrable_Lam hg q hf) (integrable_Lam hg q hf')]
   congr 1; funext k; ring
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Lam_const_mul (q : ℤ) (c : ℂ) (f : U2 → ℂ) :
     abelian₂ g q (fun k => c * f k) = c * abelian₂ g q f := by
   unfold abelian₂
   rw [← integral_const_mul]
   congr 1; funext k; ring
 
+/- English proof (translation)
+Unfold `abelian₂`. Rewrite using `[← integral_finset_sum s (fun i _ => integrable_Lam hg q (hf i))]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`.
+-/
 theorem Lam_sum (hg : Continuous g) (q : ℤ) {ι : Type*} (s : Finset ι) {f : ι → U2 → ℂ}
     (hf : ∀ i, Continuous (f i)) : abelian₂ g q (fun k => ∑ i ∈ s, f i k) = ∑ i ∈ s, abelian₂ g q (f i) := by
   unfold abelian₂
   rw [← integral_finset_sum s (fun i _ => integrable_Lam hg q (hf i))]
   congr 1; funext k; rw [Finset.sum_mul, Finset.sum_mul]
 
+/- English proof (translation)
+Unfold `abelian₂`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[h]`.
+-/
 theorem Lam_congr (q : ℤ) {f f' : U2 → ℂ} (h : ∀ k, f k = f' k) : abelian₂ g q f = abelian₂ g q f' := by
   unfold abelian₂; congr 1; funext k; rw [h]
 
+/- English proof (translation)
+Simplify using `only [mono, detU_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mono_shift (α β γ δ : ℕ) (k : U2) :
     mono (α + 1) β γ (δ + 1) k - mono α (β + 1) (γ + 1) δ k = mono α β γ δ k * detU k := by
   simp only [mono, detU_eq]; ring
 
+/- English proof (translation)
+Rewrite using `[← Lam_sub hg q (continuous_mono _ _ _ _) (continuous_mono _ _ _ _)]`. Unfold `abelian₂`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only`.
+
+Rewrite using `[mono_shift, zpow_add_one₀ (detU_ne_zero k)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Lam_shift (hg : Continuous g) (q : ℤ) (α β γ δ : ℕ) :
     abelian₂ g q (mono (α + 1) β γ (δ + 1)) - abelian₂ g q (mono α (β + 1) (γ + 1) δ) =
       abelian₂ g (q + 1) (mono α β γ δ) := by
@@ -82,6 +129,15 @@ theorem Lam_shift (hg : Continuous g) (q : ℤ) (α β γ δ : ℕ) :
   simp only
   rw [mono_shift, zpow_add_one₀ (detU_ne_zero k)]; ring
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `α β γ δ α' β' γ' δ' _ he h1 h2 h3`. Establish `: α' = α ∧ β' = β ∧ γ' = γ ∧ δ' = δ` using `by omega`.
+
+Take `⟨rfl, rfl, rfl, rfl⟩` from `this`. Both sides reduce to the same expression. Consider the case `succ e ih`. Introduce `α β γ δ α' β' γ' δ' hN he h1 h2 h3`. Take `⟨a, rfl⟩ : ∃ a, α' = a + 1` from `⟨α' - 1, by omega⟩`.
+
+Take `⟨d, rfl⟩ : ∃ d, δ' = d + 1` from `⟨δ' - 1, by omega⟩`. Establish `hsh` using `Lam_shift hg q a β' γ' d`. Establish `hlow : abelian₂ g (q + 1) (mono a β' γ' d) = 0` using `hS _ _ _ _ (by omega) _`. Rewrite `hsh` using `[hlow, sub_eq_zero]`. Rewrite using `[hsh]`.
+
+Conclude with `ih α β γ δ a (β' + 1) (γ' + 1) d hN (by omega) (by omega) (by omega) (by omega)`.
+-/
 theorem Lam_class (hg : Continuous g) {N : ℕ}
     (hS : ∀ α β γ δ : ℕ, α + β + γ + δ < N → ∀ q : ℤ, abelian₂ g q (mono α β γ δ) = 0)
     (q : ℤ) : ∀ (e : ℕ) (α β γ δ α' β' γ' δ' : ℕ), α + β + γ + δ = N → δ' = δ + e →
@@ -108,6 +164,9 @@ noncomputable def coef (N m d : ℕ) (k : U2) : ℂ :=
   ∑ ij ∈ antidiagonal d, ((m.choose ij.1 * (N - m).choose ij.2 : ℕ) : ℂ) *
     mono (N - m - ij.2) ij.2 (m - ij.1) ij.1 k
 
+/- English proof (translation)
+Break down `le_total δ δ' with h | h` into its components or cases. Conclude with `Lam_class hg hS q (δ' - δ) α β γ δ α' β' γ' δ' hN (by omega) h1 h2 h3`. Conclude with `(Lam_class hg hS q (δ - δ') α' β' γ' δ' α β γ δ hN' (by omega) h1.symm h2.symm h3.symm).symm`.
+-/
 theorem Lam_class' (hg : Continuous g) {N : ℕ}
     (hS : ∀ α β γ δ : ℕ, α + β + γ + δ < N → ∀ q : ℤ, abelian₂ g q (mono α β γ δ) = 0)
     (q : ℤ) {α β γ δ α' β' γ' δ' : ℕ} (hN : α + β + γ + δ = N) (hN' : α' + β' + γ' + δ' = N)
@@ -118,6 +177,21 @@ theorem Lam_class' (hg : Continuous g) {N : ℕ}
   · exact (Lam_class hg hS q (δ - δ') α' β' γ' δ' α β γ δ hN' (by omega) h1.symm h2.symm
       h3.symm).symm
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `α β γ δ hN q`. Establish `hS : ∀ α β γ δ : ℕ, α + β + γ + δ < N → ∀ q : ℤ, abelian₂ g q (mono α β γ δ) = 0` using `fun a b c d h q => ih _ h a b c d rfl q`.
+
+Use `set m := γ + δ with hm`. Use `set d := β + δ with hd`. Establish `hc` using `hcoef N m d q (by omega) (by omega)`. Establish `hsum : abelian₂ g q (coef N m d) = ((N.choose d : ℕ) : ℂ) * abelian₂ g q (mono α β γ δ)`. Unfold `coef`.
+
+Rewrite using `[Lam_sum hg q (antidiagonal d) (f := fun (ij : ℕ × ℕ) k => ((m.choose ij.1 * (N - m).choose ij.2 : ℕ) : ℂ) * mono (N - m - ij.2) ij.2 (m - ij.1) ij.1 k) (fun ij => continuous_const.mul (continuous_mono _ _ _ _))]`. Repeatedly rewrite using `[Lam_const_mul]`. Establish `hterm : ∀ ij ∈ antidiagonal d, ((m.choose ij.1 * (N - m).choose ij.2 : ℕ) : ℂ) * abelian₂ g q (mono (N - m - ij.2) ij.2 (m - ij.1) ij.1) = ((m.choose ij.1 * (N - m).choose ij.2 : ℕ) : ℂ) * abelian₂ g q (mono α β γ δ)`. Introduce `ij hij`. Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Distinguish the cases in `hv : ij.1 ≤ m ∧ ij.2 ≤ N - m`. Rewrite using `[Lam_class' hg hS q hN (by omega) (by omega) (by omega) (by omega)]`. Establish `h0 : m.choose ij.1 * (N - m).choose ij.2 = 0`. Break down `not_and_or.1 hv with h | h` into its components or cases. Rewrite using `[Nat.choose_eq_zero_of_lt (n := m) (k := ij.1) (by omega), zero_mul]`.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt (n := N - m) (k := ij.2) (by omega), mul_zero]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.sum_mul]`. Use `congr 1`.
+
+Establish `hv` using `Nat.add_choose_eq m (N - m) d`. Rewrite `hv` using `[show m + (N - m) = N by omega]`. Rewrite using `[hv]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite `hc` using `[hsum]`. Establish `hne : ((N.choose d : ℕ) : ℂ) ≠ 0`. Conclude with `(Nat.choose_pos (by omega)).ne'` after adjusting the coercions. Conclude with `(mul_eq_zero.1 hc).resolve_left hne`.
+-/
 theorem Lam_mono_eq_zero (hg : Continuous g)
     (hcoef : ∀ (N m d : ℕ) (q : ℤ), m ≤ N → d ≤ N → abelian₂ g q (coef N m d) = 0) :
     ∀ (N α β γ δ : ℕ), α + β + γ + δ = N → ∀ q : ℤ, abelian₂ g q (mono α β γ δ) = 0 := by
@@ -159,6 +233,13 @@ theorem Lam_mono_eq_zero (hg : Continuous g)
     exact_mod_cast (Nat.choose_pos (by omega)).ne'
   exact (mul_eq_zero.1 hc).resolve_left hne
 
+/- English proof (translation)
+Introduce `i hi`. Use `set p : ℂ[X] := ∑ j ∈ range (N + 1), C (a j) * X ^ j with hp`. Establish `hp0 : p = 0`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `s`.
+
+Rewrite using `[hp, eval_finset_sum, eval_zero, ← h s]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[eval_mul, eval_C, eval_pow, eval_X, mul_comm]`. Establish `h1` using `congrArg (fun p : ℂ[X] => p.coeff i) hp0`. Simplify using `only [hp, finset_sum_coeff, coeff_C_mul_X_pow, coeff_zero] at h1`.
+
+Rewrite `h1` using `[Finset.sum_eq_single i (fun j _ hj => if_neg (Ne.symm hj)) (fun hi' => absurd (Finset.mem_range.2 (Nat.lt_succ_of_le hi)) hi'), if_pos rfl]`. Conclude with `h1`.
+-/
 theorem coeff_eq_zero_of_forall {N : ℕ} {a : ℕ → ℂ}
     (h : ∀ s : ℂ, ∑ i ∈ range (N + 1), s ^ i * a i = 0) : ∀ i ≤ N, a i = 0 := by
   intro i hi
@@ -175,6 +256,13 @@ theorem coeff_eq_zero_of_forall {N : ℕ} {a : ℕ → ℂ}
     (fun hi' => absurd (Finset.mem_range.2 (Nat.lt_succ_of_le hi)) hi'), if_pos rfl] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[add_pow]`. Establish `e : ∀ j ∈ range (m + 1), (C a * X) ^ j * C b ^ (m - j) * (m.choose j : ℂ[X]) = C (a ^ j * b ^ (m - j) * (m.choose j : ℂ)) * X ^ j`. Introduce `j _`. Simplify using `only [mul_pow, ← C_pow, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl e, finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Distinguish the cases in `him : i ≤ m`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => if_neg (Ne.symm hj)) (fun hi' => absurd (Finset.mem_range.2 (Nat.lt_succ_of_le him)) hi'), if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_eq_zero (fun j hj => if_neg (by`. Use `Finset.mem_range.1 hj; omega)), Nat.choose_eq_zero_of_lt (by omega)]` as an intermediate fact. Simplify using the standard rewrite rules.
+-/
 theorem coeff_linear_pow (a b : ℂ) (m i : ℕ) :
     ((C a * X + C b) ^ m).coeff i = (m.choose i : ℂ) * a ^ i * b ^ (m - i) := by
   rw [add_pow]
@@ -192,11 +280,23 @@ theorem coeff_linear_pow (a b : ℂ) (m i : ℕ) :
       have := Finset.mem_range.1 hj; omega)), Nat.choose_eq_zero_of_lt (by omega)]
     simp
 
+/- English proof (translation)
+Use `(natDegree_pow_le).trans ?_` and prove the remaining obligations. Establish `: (C a * X + C b).natDegree ≤ 1` using `natDegree_linear_le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem natDegree_linear_pow_le (a b : ℂ) (m : ℕ) : ((C a * X + C b) ^ m).natDegree ≤ m := by
   refine (natDegree_pow_le).trans ?_
   have : (C a * X + C b).natDegree ≤ 1 := natDegree_linear_le
   nlinarith
 
+/- English proof (translation)
+Establish `hdeg : ((C (ent 1 1 k) * X + C (ent 1 0 k)) ^ m * (C (ent 0 1 k) * X + C (ent 0 0 k)) ^ (N - m)).natDegree < N + 1`. Use `(natDegree_mul_le (p := (C (ent 1 1 k) * X + C (ent 1 0 k)) ^ m) (q := (C (ent 0 1 k) * X + C (ent 0 0 k)) ^ (N - m))).trans (add_le_add (natDegree_linear_pow_le _ _ m) (natDegree_linear_pow_le _ _ (N - m)))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set p : ℂ[X] := (C (ent 1 1 k) * X + C (ent 1 0 k)) ^ m * (C (ent 0 1 k) * X + C (ent 0 0 k)) ^ (N - m) with hp`. Establish `hev : p.eval r = (ent 1 0 k + r * ent 1 1 k) ^ m * (ent 0 0 k + r * ent 0 1 k) ^ (N - m)`.
+
+Simplify using `[hp]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hev, eval_eq_sum_range' hdeg]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Use `congr 1`. Rewrite using `[hp, coeff_mul, coef]`. Use `Finset.sum_congr rfl fun ij _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_linear_pow, coeff_linear_pow, mono]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coef_expand (N m : ℕ) (hm : m ≤ N) (r : ℂ) (k : U2) :
     (ent 1 0 k + r * ent 1 1 k) ^ m * (ent 0 0 k + r * ent 0 1 k) ^ (N - m) =
       ∑ d ∈ range (N + 1), r ^ d * coef N m d k := by
@@ -219,10 +319,24 @@ theorem coef_expand (N m : ℕ) (hm : m ≤ N) (r : ℂ) (k : U2) :
   rw [coeff_linear_pow, coeff_linear_pow, mono]
   push_cast; ring
 
+/- English proof (translation)
+Unfold `coef`. Conclude with `continuous_finset_sum _ fun ij _ => continuous_const.mul (continuous_mono _ _ _ _)`.
+-/
 theorem continuous_coef (N m d : ℕ) : Continuous (coef N m d) := by
   unfold coef
   exact continuous_finset_sum _ fun ij _ => continuous_const.mul (continuous_mono _ _ _ _)
 
+/- English proof (translation)
+Introduce `N m d q hm hd`. Establish `h1 : ∀ r : ℂ, abelian₂ g q (fun k => (ent 1 0 k + r * ent 1 1 k) ^ m * (ent 0 0 k + r * ent 0 1 k) ^ (N - m)) = 0`. Introduce `r`. Establish `hB : Continuous fun k => ent 1 0 k + r * ent 1 1 k` using `(continuous_ent 1 0).add (continuous_const.mul (continuous_ent 1 1))`. Establish `hA : Continuous fun k => ent 0 0 k + r * ent 0 1 k` using `(continuous_ent 0 0).add (continuous_const.mul (continuous_ent 0 1))`.
+
+Establish `hc : ∀ s : ℂ, ∑ j ∈ range (N + 1), s ^ j * ((N.choose j : ℂ) * abelian₂ g q (fun k => (ent 1 0 k + r * ent 1 1 k) ^ j * (ent 0 0 k + r * ent 0 1 k) ^ (N - j))) = 0`. Introduce `s`. Establish `e : ∀ k, (ent 0 0 k + r * ent 0 1 k + s * ent 1 0 k + s * r * ent 1 1 k) ^ N = ∑ j ∈ range (N + 1), s ^ j * ((N.choose j : ℂ) * ((ent 1 0 k + r * ent 1 1 k) ^ j * (ent 0 0 k + r * ent 0 1 k) ^ (N - j)))`. Introduce `k`. Rewrite using `[show ent 0 0 k + r * ent 0 1 k + s * ent 1 0 k + s * r * ent 1 1 k = s * (ent 1 0 k + r * ent 1 1 k) + (ent 0 0 k + r * ent 0 1 k) by ring, add_pow]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `h0 N q s r` as an intermediate fact. Rewrite `this` using `[Lam_congr q e, Lam_sum hg q _ (f := fun (j : ℕ) k => s ^ j * ((N.choose j : ℂ) * ((ent 1 0 k + r * ent 1 1 k) ^ j * (ent 0 0 k + r * ent 0 1 k) ^ (N - j)))) (fun j => continuous_const.mul (continuous_const.mul ((hB.pow j).mul (hA.pow _))))]`.
+
+Rewrite `this` using `[Lam_const_mul]`. Conclude with `this`. Establish `h` using `coeff_eq_zero_of_forall hc m hm`. Establish `hne : (N.choose m : ℂ) ≠ 0` using `by exact_mod_cast (Nat.choose_pos hm).ne'`. Conclude with `(mul_eq_zero.1 h).resolve_left hne`.
+
+Use `coeff_eq_zero_of_forall (N := N) (a := fun j => abelian₂ g q (coef N m j)) (fun r => ?_) d hd` and prove the remaining obligations. Use `h1 r` as an intermediate fact. Rewrite `this` using `[Lam_congr q (coef_expand N m hm r), Lam_sum hg q _ (f := fun (j : ℕ) k => r ^ j * coef N m j k) (fun j => continuous_const.mul (continuous_coef N m j))]`. Rewrite `this` using `[Lam_const_mul]`. Conclude with `this`.
+-/
 theorem Lam_coef_eq_zero (hg : Continuous g)
     (h0 : ∀ (n : ℕ) (q : ℤ) (s r : ℂ), abelian₂ g q (fun k =>
       (ent 0 0 k + r * ent 0 1 k + s * ent 1 0 k + s * r * ent 1 1 k) ^ n) = 0) :
@@ -287,6 +401,11 @@ noncomputable def colU (p q : ℂ) (h : normSq p + normSq q = 1) : U2 :=
       simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.star_eq_conjTranspose] <;>
       first | linear_combination h' | ring⟩
 
+/- English proof (translation)
+Establish `hpos : 0 < 1 + normSq s` using `by have := normSq_nonneg s; linarith`. Establish `hsq : Real.sqrt (1 + normSq s) ^ 2 = 1 + normSq s` using `Real.sq_sqrt hpos.le`. Establish `hne : Real.sqrt (1 + normSq s) ≠ 0` using `(Real.sqrt_pos.2 hpos).ne'`. Rewrite using `[map_mul, ← Complex.ofReal_inv, Complex.normSq_ofReal]`. Clear the denominators using the available nonvanishing facts.
+
+Use polynomial arithmetic with `[hsq]`.
+-/
 theorem normSq_unit (s : ℂ) :
     normSq ((Real.sqrt (1 + normSq s))⁻¹ : ℂ) + normSq (s * (Real.sqrt (1 + normSq s))⁻¹ : ℂ) = 1 := by
   have hpos : 0 < 1 + normSq s := by have := normSq_nonneg s; linarith
@@ -296,6 +415,9 @@ theorem normSq_unit (s : ℂ) :
   field_simp
   nlinarith [hsq]
 
+/- English proof (translation)
+Simplify using `only [Matrix.UnitaryGroup.mul_val, rowU, colU, ent, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem corner_rowU_mul_colU (s r : ℂ) (k : U2) :
     (((rowU _ _ (normSq_unit s) * k * colU _ _ (normSq_unit r) : U2) : Matrix (Fin 2) (Fin 2) ℂ) 0 0) =
       ((Real.sqrt (1 + normSq s))⁻¹ * (Real.sqrt (1 + normSq r))⁻¹ : ℂ) *
@@ -304,6 +426,15 @@ theorem corner_rowU_mul_colU (s r : ℂ) (k : U2) :
   simp
   ring
 
+/- English proof (translation)
+Introduce `n q s r`. Establish `h1` using `h n q (rowU _ _ (normSq_unit s)) (colU _ _ (normSq_unit r))`. Rewrite `h1` using `[corner_rowU_mul_colU]`. Use `set c : ℂ := ((Real.sqrt (1 + normSq s))⁻¹ * (Real.sqrt (1 + normSq r))⁻¹ : ℂ) with hc`. Establish `hc0 : c ≠ 0`.
+
+Establish `h1 : 0 < 1 + normSq s` using `by have := normSq_nonneg s; linarith`. Establish `h2 : 0 < 1 + normSq r` using `by have := normSq_nonneg r; linarith`. Rewrite using `[hc]`. Conclude with `mul_ne_zero (Complex.ofReal_ne_zero.2 (inv_pos.2 (Real.sqrt_pos.2 h1)).ne') (Complex.ofReal_ne_zero.2 (inv_pos.2 (Real.sqrt_pos.2 h2)).ne')`. Establish `e : (∫ k, (c * (ent 0 0 k + r * ent 0 1 k + s * ent 1 0 k + s * r * ent 1 1 k)) ^ n * ((k : Matrix (Fin 2) (Fin 2) ℂ).det) ^ q * g k ∂μK) = c ^ n * abelian₂ g q (fun k => (ent 0 0 k + r * ent 0 1 k + s * ent 1 0 k + s * r * ent 1 1 k) ^ n)`.
+
+Rewrite using `[← Lam_const_mul]`. Unfold `abelian₂`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [detU, mul_pow]`.
+
+Rewrite `h1` using `[e]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (pow_ne_zero n hc0)`.
+-/
 theorem Lam_rankOne_eq_zero (hg : Continuous g)
     (h : ∀ (n : ℕ) (q : ℤ) (l₁ l₂ : U2), ∫ k, ((((l₁ * k * l₂ : U2) : Matrix (Fin 2) (Fin 2) ℂ) 0 0) ^ n *
       ((k : Matrix (Fin 2) (Fin 2) ℂ).det) ^ q * g k) ∂μK = 0) :
@@ -326,6 +457,9 @@ theorem Lam_rankOne_eq_zero (hg : Continuous g)
   rw [e] at h1
   exact (mul_eq_zero.1 h1).resolve_left (pow_ne_zero n hc0)
 
+/- English proof (translation)
+Establish `h1 : star (k : Matrix (Fin 2) (Fin 2) ℂ) = (k : Matrix (Fin 2) (Fin 2) ℂ)⁻¹` using `(Matrix.inv_eq_left_inv (Matrix.UnitaryGroup.star_mul_self k)).symm`. Rewrite using `[h1, Matrix.inv_def, Ring.inverse_eq_inv']`. Both sides reduce to the same expression.
+-/
 theorem star_eq_adjugate (k : U2) :
     star (k : Matrix (Fin 2) (Fin 2) ℂ) = (detU k)⁻¹ • (k : Matrix (Fin 2) (Fin 2) ℂ).adjugate := by
   have h1 : star (k : Matrix (Fin 2) (Fin 2) ℂ) = (k : Matrix (Fin 2) (Fin 2) ℂ)⁻¹ :=
@@ -333,6 +467,11 @@ theorem star_eq_adjugate (k : U2) :
   rw [h1, Matrix.inv_def, Ring.inverse_eq_inv']
   rfl
 
+/- English proof (translation)
+Establish `h` using `star_eq_adjugate k`. Establish `e : ∀ a b : Fin 2, (starRingEnd ℂ) (ent a b k) = ((detU k)⁻¹ • (k : Matrix (Fin 2) (Fin 2) ℂ).adjugate) b a`. Introduce `a b`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [e] <;> simp [Matrix.adjugate_fin_two, ent]`.
+-/
 theorem conj_ent (k : U2) :
     (starRingEnd ℂ) (ent 0 0 k) = (detU k)⁻¹ * ent 1 1 k ∧
     (starRingEnd ℂ) (ent 0 1 k) = (detU k)⁻¹ * -ent 1 0 k ∧
@@ -345,6 +484,11 @@ theorem conj_ent (k : U2) :
     rw [← h]; rfl
   refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [e] <;> simp [Matrix.adjugate_fin_two, ent]
 
+/- English proof (translation)
+Establish `h : (star (k : Matrix (Fin 2) (Fin 2) ℂ)).det = (detU k)⁻¹`. Rewrite using `[star_eq_adjugate, Matrix.det_smul, Matrix.det_adjugate, Fintype.card_fin]`. Establish `hd` using `detU_ne_zero k`. Simplify using `only [detU] at hd ⊢`. Evaluate the numerical expressions.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← h, Matrix.star_eq_conjTranspose, Matrix.det_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem conj_detU (k : U2) : (starRingEnd ℂ) (detU k) = (detU k)⁻¹ := by
   have h : (star (k : Matrix (Fin 2) (Fin 2) ℂ)).det = (detU k)⁻¹ := by
     rw [star_eq_adjugate, Matrix.det_smul, Matrix.det_adjugate, Fintype.card_fin]
@@ -357,11 +501,17 @@ theorem conj_detU (k : U2) : (starRingEnd ℂ) (detU k) = (detU k)⁻¹ := by
 noncomputable def monoDet (α β γ δ : ℕ) (q : ℤ) : C(U2, ℂ) :=
   ⟨fun k => mono α β γ δ k * detU k ^ q, (continuous_mono _ _ _ _).mul (continuous_detU_zpow q)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem monoDet_apply (α β γ δ : ℕ) (q : ℤ) (k : U2) :
     monoDet α β γ δ q k = mono α β γ δ k * detU k ^ q := rfl
 
 def monoSet : Set C(U2, ℂ) := {f | ∃ (α β γ δ : ℕ) (q : ℤ), f = monoDet α β γ δ q}
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `only [ContinuousMap.mul_apply, monoDet_apply, mono, pow_add, zpow_add₀ (detU_ne_zero k)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem monoDet_mul (α β γ δ α' β' γ' δ' : ℕ) (q q' : ℤ) :
     monoDet α β γ δ q * monoDet α' β' γ' δ' q' =
       monoDet (α + α') (β + β') (γ + γ') (δ + δ') (q + q') := by
@@ -370,6 +520,11 @@ theorem monoDet_mul (α β γ δ α' β' γ' δ' : ℕ) (q q' : ℤ) :
     zpow_add₀ (detU_ne_zero k)]
   ring
 
+/- English proof (translation)
+Use extensionality with `k`. Take `⟨h00, h01, h10, h11⟩` from `conj_ent k`. Establish `hd` using `detU_ne_zero k`. Establish `hz : detU k ^ (-((α + β + γ + δ : ℕ) : ℤ) - q) = (detU k)⁻¹ ^ (α + β + γ + δ) * (detU k)⁻¹ ^ q`. Rewrite using `[zpow_sub₀ hd, _root_.zpow_neg, zpow_natCast, inv_pow, _root_.inv_zpow, div_eq_mul_inv]`.
+
+Simplify using `only [ContinuousMap.star_apply, monoDet_apply, ContinuousMap.smul_apply, smul_eq_mul, mono, star_mul', star_pow, Complex.star_def, h00, h01, h10, h11, map_zpow₀, conj_detU, hz]`. Simplify using `only [mul_pow]`. Rewrite using `[neg_pow (ent 1 0 k), neg_pow (ent 0 1 k)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem star_monoDet (α β γ δ : ℕ) (q : ℤ) :
     star (monoDet α β γ δ q) = ((-1 : ℂ) ^ (β + γ)) •
       monoDet δ γ β α (-((α + β + γ + δ : ℕ) : ℤ) - q) := by
@@ -409,8 +564,18 @@ noncomputable def monoAlg : StarSubalgebra ℂ C(U2, ℂ) :=
       | add x y _ _ hx hy => rw [star_add]; exact Submodule.add_mem _ hx hy
       | smul c x _ hx => rw [star_smul]; exact Submodule.smul_mem _ _ hx }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_monoAlg_iff {f : C(U2, ℂ)} : f ∈ monoAlg ↔ f ∈ Submodule.span ℂ monoSet := Iff.rfl
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `: ∃ a b, (x : Matrix (Fin 2) (Fin 2) ℂ) a b ≠ (y : Matrix (Fin 2) (Fin 2) ℂ) a b`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hxy (Matrix.UnitaryGroup.ext x y hc)`.
+
+Take `⟨a, b, hab⟩` from `this`. Establish `hmem : ∀ (α β γ δ : ℕ), (monoDet α β γ δ 0 : C(U2, ℂ)) ∈ monoAlg` using `fun α β γ δ => Submodule.subset_span ⟨α, β, γ, δ, 0, rfl⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `⟨_, ⟨monoDet 1 0 0 0 0, hmem 1 0 0 0, rfl⟩, by simpa [mono, ent] using hab⟩`. Conclude with `⟨_, ⟨monoDet 0 1 0 0 0, hmem 0 1 0 0, rfl⟩, by simpa [mono, ent] using hab⟩`.
+
+Conclude with `⟨_, ⟨monoDet 0 0 1 0 0, hmem 0 0 1 0, rfl⟩, by simpa [mono, ent] using hab⟩`. Conclude with `⟨_, ⟨monoDet 0 0 0 1 0, hmem 0 0 0 1, rfl⟩, by simpa [mono, ent] using hab⟩`.
+-/
 theorem monoAlg_separatesPoints : (monoAlg.toSubalgebra).SeparatesPoints := by
   intro x y hxy
   have : ∃ a b, (x : Matrix (Fin 2) (Fin 2) ℂ) a b ≠ (y : Matrix (Fin 2) (Fin 2) ℂ) a b := by
@@ -426,6 +591,9 @@ theorem monoAlg_separatesPoints : (monoAlg.toSubalgebra).SeparatesPoints := by
   · exact ⟨_, ⟨monoDet 0 0 1 0 0, hmem 0 0 1 0, rfl⟩, by simpa [mono, ent] using hab⟩
   · exact ⟨_, ⟨monoDet 0 0 0 1 0, hmem 0 0 0 1, rfl⟩, by simpa [mono, ent] using hab⟩
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Gwa7.eq_zero_of_forall_integral_coeff hg h`.
+-/
 theorem eq_zero_of_forall_integral_coeff {g : U2 → ℂ} (hg : Continuous g)
     (h : ∀ (n : ℕ) (q : ℤ) (l₁ l₂ : U2), ∫ k, ((((l₁ * k * l₂ : U2) : Matrix (Fin 2) (Fin 2) ℂ) 0 0) ^ n *
       ((k : Matrix (Fin 2) (Fin 2) ℂ).det) ^ q * g k) ∂μK = 0) : g = 0 :=

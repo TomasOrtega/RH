@@ -6,12 +6,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
+/- English proof (translation)
+Rewrite using `[tor_val, tor_val, Matrix.mul_diagonal, Matrix.diagonal_mul, wt, _root_.zpow_sub, Units.val_mul, _root_.inv_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem tor_conj_apply {R : Type} [CommRing R] (t : Rˣ) (X : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3) :
     ((tor R t).val * X * (tor R t⁻¹).val) a b = ((t ^ wt a b : Rˣ) : R) * X a b := by
   rw [tor_val, tor_val, Matrix.mul_diagonal,
     Matrix.diagonal_mul, wt, _root_.zpow_sub, Units.val_mul, _root_.inv_zpow]
   ring
 
+/- English proof (translation)
+Establish `h1 : IsUnit ((p : O) - 1)` using `isUnit_of_mul_isUnit_left (y := (p : O) + 1) (by convert hp using 1; ring)`. Establish `e : (p : O) * ((p⁻¹ : Oˣ) : O) = 1` using `p.mul_inv`. Establish `h2 : IsUnit ((1 : O) - ((p⁻¹ : Oˣ) : O))`. Use `h1.mul (p⁻¹).isUnit using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-1 : O) * e`.
+
+Establish `h3 : IsUnit ((p : O) - ((p⁻¹ : Oˣ) : O))`. Use `hp.mul (p⁻¹).isUnit using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(p : O)) * e`. Establish `w0 : wt1 0 = 1` using `rfl`. Establish `w1 : wt1 1 = 0` using `rfl`.
+
+Establish `w2 : wt1 2 = -1` using `rfl`. Establish `k : ∀ c : Fin 3, c = 0 ∨ c = 1 ∨ c = 2` using `by decide`. Apply the tactic sequence `rcases k a with rfl | rfl | rfl <;> rcases k b with rfl | rfl | rfl <;>`. Apply the tactic sequence `simp only [w0, w1, w2, zpow_one, zpow_zero, _root_.zpow_neg_one, Units.val_one] <;>`. Use `first`.
+
+Consider the case `exact absurd rfl hab`. Consider the case `assumption`. Consider the case `(rw [← neg_sub, IsUnit.neg_iff]; assumption)`.
+-/
 private theorem unit_diff {O : Type} [CommRing O] (p : Oˣ) (hp : IsUnit ((p : O) ^ 2 - 1)) (a b : Fin 3)
     (hab : a ≠ b) : IsUnit (((p ^ wt1 a : Oˣ) : O) - ((p ^ wt1 b : Oˣ) : O)) := by
   have h1 : IsUnit ((p : O) - 1) :=
@@ -34,6 +46,13 @@ private theorem unit_diff {O : Type} [CommRing O] (p : Oˣ) (hp : IsUnit ((p : O
     | assumption
     | (rw [← neg_sub, IsUnit.neg_iff]; assumption)
 
+/- English proof (translation)
+Establish `hd : ∀ a, (r x).mat a a - algebraMap O R ((Ψ x ^ wt1 a : Oˣ) : O) ∈ maximalIdeal R` using `fun a => by`. Use `hr.red x a a` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.map_apply, GG.mat, GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_eq]`. Then use the resulting hypothesis. Use `⟨fun a b hab => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Establish `h1 : (r x).mat a a - (r x).mat b b ∈ maximalIdeal R` using `hn`. Establish `h2` using `(unit_diff (Ψ x) hx a b hab).map (algebraMap O R)`. Establish `h3` using `Ideal.add_mem _ (Ideal.sub_mem _ h1 (hd a)) (hd b)`. Use `h3 ?_` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Use `hr.red x a b` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.map_apply, GG.mat, GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_ne _ hab, map_zero, sub_zero]`. Then use the resulting hypothesis.
+-/
 private theorem red_diag {O R D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [Algebra O R]
     [Group D] {η : D →* ℤˣ} {Ψ : D →* Oˣ} {r : D →* GG 3 R} (hr : Red η Ψ r) {x : D}
     (hx : IsUnit ((Ψ x : O) ^ 2 - 1)) :
@@ -54,6 +73,9 @@ private theorem red_diag {O R D : Type} [CommRing O] [IsLocalRing O] [CommRing R
     rwa [Matrix.sub_apply, Matrix.map_apply, GG.mat, GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_ne _ hab,
       map_zero, sub_zero] at this
 
+/- English proof (translation)
+Use `⟨fun y hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h1 : y ∈ maximalIdeal R` using `hn`. Rewrite `h1` using `[← res_eq_zero_iff O, ← res_map f, res_eq_zero_iff]`. Conclude with `h1 hy`.
+-/
 private theorem local_of_co {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R') : IsLocalHom (f : R →+* R') := by
   refine ⟨fun y hy => ?_⟩
@@ -62,6 +84,17 @@ private theorem local_of_co {O R R' : Type} [CommRing O] [IsLocalRing O] [CommRi
   rw [← res_eq_zero_iff O, ← res_map f, res_eq_zero_iff] at h1
   exact h1 hy
 
+/- English proof (translation)
+Establish `key : ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f f' : R →ₐ[O] R') (t : R'ˣ), push f' u = conjBy (tor R' t) (push f u) → GeneralLinearGroup.map (f' : R →+* R') h = tor R' t * GeneralLinearGroup.map (f : R →+* R') h * tor R' t⁻¹`. Introduce `R' _ _ _ f f' t e`. Use `haveI := local_of_co f`. Use `haveI := local_of_co f'`. Establish `c1` using `canon_map.1 (f' : R →+* R') _ h hc`.
+
+Establish `c2` using `canon_map.2 _ _ t (canon_map.1 (f : R →+* R') _ h hc)`. Establish `e1 : (tor R' t).val * ((u x).mat.map (f : R →+* R')) * (tor R' t⁻¹).val = (u x).mat.map (f' : R →+* R')`. Use extensionality with `a b`. Rewrite using `[tor_conj_apply]`. Conclude with `(entry_mem u x a b R' f f' t e).symm`.
+
+Rewrite `c2` using `[e1]`. Use `canon_unique _ _ _ (fun a b hab => ?_) c1 c2` and prove the remaining obligations. Use `(hu a b hab).map (f' : R →+* R')` as an intermediate fact. Rewrite `this` using `[map_sub]`. Then use the resulting hypothesis. Use `⟨fun a b R' _ _ _ f f' t e => ?_, fun a b R' _ _ _ f f' t e => ?_⟩` and prove the remaining obligations.
+
+Establish `k` using `congrArg (fun g : GL (Fin 3) R' => g.val a b) (key R' f f' t e)`. Simplify using `only [Units.val_mul, tor_conj_apply] at k`. Conclude with `k`. Establish `k0 : GeneralLinearGroup.map (f' : R →+* R') h⁻¹ = tor R' t * GeneralLinearGroup.map (f : R →+* R') h⁻¹ * tor R' t⁻¹`. Rewrite using `[map_inv, key R' f f' t e, map_inv, map_inv]`.
+
+Use `group`. Establish `k` using `congrArg (fun g : GL (Fin 3) R' => g.val a b) k0`. Simplify using `only [Units.val_mul, tor_conj_apply] at k`. Conclude with `k`.
+-/
 private theorem canon_wpart {O R Γ : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R]
     [Group Γ] (u : Γ →* GG 3 R) (x : Γ) (hu : ∀ a b, a ≠ b → IsUnit ((u x).mat a a - (u x).mat b b))
     (h : GL (Fin 3) R) (hc : Canon (u x).mat h) :
@@ -96,6 +129,11 @@ private theorem canon_wpart {O R Γ : Type} [CommRing O] [IsLocalRing O] [CommRi
     simp only [Units.val_mul, tor_conj_apply] at k
     exact k
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF g₁ _ R _ _ _ u hu v hv`. Take `⟨x, hη, hx⟩` from `hF.x v hv`. Establish `hred : Red (F.ηv v) (F.Ψv v) (u.comp (F.loc v))` using `⟨fun g => hu.pt.mult (F.loc v g), fun g => hu.pt.red (F.loc v g)⟩`. Take `⟨h1, h2⟩` from `red_diag hred hx`. Take `⟨h, hc⟩` from `exists_canon _ h1 h2`.
+
+Establish `hg` using `canon_wpart (O := O) u (F.loc v x) h1 h hc`. Establish `hi` using `cond_iff_canon (F.ηv v) (F.Ψv v) (F.Iv v) _ x h hred hη hx hc`. Conclude with `⟨h, hc.hat, hg.1, hg.2, fun e => hi.1.1 ((hu.pt.loc v).1 e), fun e => hi.2.1 ((hu.pt.loc v).2.1 e)⟩`.
+-/
 theorem UpperTheory.V.UnitaryThreeInertia.exists_graded_basis :
     ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]
       {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]

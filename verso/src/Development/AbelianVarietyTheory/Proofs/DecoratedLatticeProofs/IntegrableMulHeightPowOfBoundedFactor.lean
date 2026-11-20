@@ -14,6 +14,17 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `G _ _ _ μ z m H C b t hz hm hH hpos htb hbound`. Establish `hmeas : AEStronglyMeasurable (fun g => z g * ((H g : ℝ) : ℂ) ^ (((0:ℝ):ℂ) - (t:ℂ)/2)) μ`. Use `hz.aestronglyMeasurable.mul ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp hH.measurable).pow_const _).aestronglyMeasurable`. Use `Integrable.mono' (hm.norm.const_mul (max C 0)) hmeas ?_` and prove the remaining obligations.
+
+Use `Filter.Eventually.of_forall (fun g => ?_)` and prove the remaining obligations. Take `⟨h0, h1⟩` from `hpos g`. Establish `hre : (((0:ℝ):ℂ) - (t:ℂ)/2).re = -(t:ℝ)/2` using `by simp; ring`. Establish `hcpow : ‖((H g : ℝ) : ℂ) ^ (((0:ℝ):ℂ) - (t:ℂ)/2)‖ = H g ^ (-(t:ℝ)/2)`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos h0, hre]`.
+
+Rewrite using `[norm_mul, hcpow]`. Establish `hw : 0 ≤ H g ^ (-(t:ℝ)/2)` using `Real.rpow_nonneg h0.le _`. Establish `hprod : H g ^ ((b:ℝ)/2) * H g ^ (-(t:ℝ)/2) = H g ^ (((b:ℝ) - t)/2)`. Rewrite using `[← Real.rpow_add h0]`. Put the polynomial expressions in normal form.
+
+Establish `htb' : (t:ℝ) ≤ b` using `by exact_mod_cast htb`. Establish `hle1 : H g ^ (((b:ℝ) - t)/2) ≤ 1` using `Real.rpow_le_one h0.le h1 (by linarith)`. Establish `hnn : 0 ≤ H g ^ (((b:ℝ) - t)/2)` using `Real.rpow_nonneg h0.le _`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ (norm_nonneg _)` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.realZeta_integrable_mul_heightPow : ∀ {G : Type} [MeasurableSpace G] [TopologicalSpace G] [OpensMeasurableSpace G] (μ : Measure G) (z m : G → ℂ) (H : G → ℝ) (C : ℝ) (b t : ℕ), Integrable z μ → Integrable m μ → Continuous H → (∀ g, 0 < H g ∧ H g ≤ 1) → t ≤ b → (∀ g, ‖z g‖ ≤ C * H g ^ ((b : ℝ) / 2) * ‖m g‖) → Integrable (fun g => z g * ((H g : ℝ) : ℂ) ^ (((0 : ℝ) : ℂ) - (t : ℂ) / 2)) μ := by
   intro G _ _ _ μ z m H C b t hz hm hH hpos htb hbound
   have hmeas : AEStronglyMeasurable (fun g => z g * ((H g : ℝ) : ℂ) ^ (((0:ℝ):ℂ) - (t:ℂ)/2)) μ := by

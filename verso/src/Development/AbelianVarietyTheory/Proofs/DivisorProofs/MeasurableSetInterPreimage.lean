@@ -15,17 +15,26 @@ def truncCoord (n d : ℕ) : (Fin d → ℂ) →L[ℂ] (Fin n → ℂ) :=
   ContinuousLinearMap.pi fun k : Fin n =>
     if h : (k : ℕ) < d then ContinuousLinearMap.proj (⟨k, h⟩ : Fin d) else 0
 
+/- English proof (translation)
+Unfold `truncCoord`. Apply the tactic sequence `by_cases h : (k : ℕ) < d <;> simp [h]`.
+-/
 theorem truncCoord_apply (n d : ℕ) (v : Fin d → ℂ) (k : Fin n) :
     truncCoord n d v k = if h : (k : ℕ) < d then v ⟨k, h⟩ else 0 := by
   unfold truncCoord
   by_cases h : (k : ℕ) < d <;> simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Establish `hk : (k : ℕ) < d` using `lt_of_lt_of_le k.2 hnd`. Simplify using `[truncCoord_apply, hk, padZero]`.
+-/
 theorem truncCoord_padZero {n d : ℕ} (hnd : n ≤ d) (z : Fin n → ℂ) :
     truncCoord n d (padZero n d z) = z := by
   funext k
   have hk : (k : ℕ) < d := lt_of_lt_of_le k.2 hnd
   simp [truncCoord_apply, hk, padZero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : (k : ℕ) < n`. Simplify using `[padZero, hk, truncCoord_apply, k.2]`. Simplify using `[padZero, hk, hv k (not_lt.1 hk)]`.
+-/
 theorem padZero_truncCoord {n d : ℕ} (v : Fin d → ℂ) (hv : ∀ k : Fin d, n ≤ (k : ℕ) → v k = 0) :
     padZero n d (truncCoord n d v) = v := by
   funext k
@@ -44,6 +53,11 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `A.cover (μ ((B.chart j).symm w))`. Establish `hh : AnalyticAt ℂ (A.chart k ∘ μ ∘ (B.chart j).symm) w` using `hμ.2 j k w ⟨hw, hk⟩`. Establish `hψk : AnalyticAt ℂ (ψ ∘ (A.chart k).symm) ((A.chart k ∘ μ ∘ (B.chart j).symm) w)` using `(hψ.2.1 k).1 _ ⟨(A.chart k).map_source hk, by`. Simplify using `only [Function.comp_apply, Set.mem_preimage, (A.chart k).left_inv hk]`. Conclude with `hwψ⟩`.
+
+Establish `hc : AnalyticAt ℂ (truncCoord n d ∘ (ψ ∘ (A.chart k).symm) ∘ (A.chart k ∘ μ ∘ (B.chart j).symm)) w` using `(truncCoord n d).analyticAt _ |>.comp (hψk.comp hh)`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [ReciprocityTheory.AnForm.M.holoMap_preimage_mem_nhds hμ j k hw hk] with w' hw'`. Simplify using `only [Function.comp_apply, (A.chart k).left_inv hw'.2]`.
+-/
 theorem analyticAt_trunc_comp {d n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (A : FinHolAtlas d X) (Z : Set X) (ψ : OpenPartialHomeomorph X (Fin d → ℂ))
     (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (j : Fin B.n) (w : Fin n → ℂ)
@@ -61,6 +75,13 @@ theorem analyticAt_trunc_comp {d n : ℕ} {X Y : Type} [TopologicalSpace X] [Top
   filter_upwards [ReciprocityTheory.AnForm.M.holoMap_preimage_mem_nhds hμ j k hw hk] with w' hw'
   simp only [Function.comp_apply, (A.chart k).left_inv hw'.2]
 
+/- English proof (translation)
+Use `contDiff_pi.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `h : (k : ℕ) < n`. Establish `: (fun z : Fin n → ℂ => padZero n d z k) = fun z => z ⟨k, h⟩`. Use function extensionality and compare the values at `z`. Simplify using `[padZero, h]`.
+
+Rewrite using `[this]`. Conclude with `contDiff_apply ℝ ℂ _`. Establish `: (fun z : Fin n → ℂ => padZero n d z k) = fun _ => 0`. Use function extensionality and compare the values at `z`. Simplify using `[padZero, h]`.
+
+Rewrite using `[this]`. Conclude with `contDiff_const`.
+-/
 theorem padZero_contDiff (n d : ℕ) : ContDiff ℝ ⊤ (padZero n d) := by
   refine contDiff_pi.2 fun k => ?_
   by_cases h : (k : ℕ) < n
@@ -71,6 +92,27 @@ theorem padZero_contDiff (n d : ℕ) : ContDiff ℝ ⊤ (padZero n d) := by
       funext z; simp [padZero, h]
     rw [this]; exact contDiff_const
 
+/- English proof (translation)
+Take `⟨O, hO, hxO, hsmO⟩` from `hsm`. Use `set x0 := μ ((B.chart j).symm w) with hx0`. Use `set τ : (Fin n → ℂ) → (Fin n → ℂ) := fun w' => truncCoord n d (ψ (μ ((B.chart j).symm w'))) with hτ_def`. Use `set g : (Fin n → ℂ) → ℝ := fun z' => Φ.φ x0 (param n ψ z') with hg_def`. Establish `hpar : ∀ w', μ ((B.chart j).symm w') ∈ ψ.source → param n ψ (τ w') = μ ((B.chart j).symm w')`.
+
+Introduce `w' hs`. Establish `hz : μ ((B.chart j).symm w') ∈ Z ∩ ψ.source` using `⟨hZ ⟨_, rfl⟩, hs⟩`. Rewrite `hz` using `[hψ.2.2]`. Simplify using `only [param, hτ_def]`. Rewrite using `[padZero_truncCoord _ hz.2, ψ.left_inv hs]`.
+
+Establish `hpadτ : padZero n d (τ w) = ψ x0`. Establish `hz : x0 ∈ Z ∩ ψ.source` using `⟨hZ ⟨_, rfl⟩, hwψ⟩`. Rewrite `hz` using `[hψ.2.2]`. Conclude with `padZero_truncCoord _ hz.2`. Establish `hτa : AnalyticAt ℂ τ w` using `analyticAt_trunc_comp A Z ψ B μ hμ j w hψ hw hwψ`.
+
+Take `⟨k, hk⟩` from `A.cover x0`. Establish `hg2 : ContDiffAt ℝ 2 g (τ w)`. Establish `h1 : ContDiffAt ℝ 2 (Φ.φ x0 ∘ (A.chart k).symm) (A.chart k x0)`. Establish `hmem : (A.chart k).target ∩ (A.chart k).symm ⁻¹' O ∈ nhds (A.chart k x0)` using `((A.chart k).isOpen_inter_preimage_symm hO).mem_nhds ⟨(A.chart k).map_source hk, by simp only [Set.mem_preimage, (A.chart k).left_inv hk]; exact hxO⟩`. Apply the tactic sequence `exact ((hsmO k).contDiffAt hmem).of_le (by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp | exact WithTop.coe_le_coe.2 le_top)`.
+
+Establish `h2 : ContDiffAt ℝ 2 (A.chart k ∘ ψ.symm) (ψ x0)`. Establish `ha : AnalyticAt ℂ (A.chart k ∘ ψ.symm) (ψ x0)` using `(hψ.2.1 k).2 _ ⟨ψ.map_source hwψ, by simp only [Set.mem_preimage, ψ.left_inv hwψ]; exact hk⟩`. Conclude with `(ha.contDiffAt.restrict_scalars ℝ)`. Establish `h3 : ContDiffAt ℝ 2 ((Φ.φ x0 ∘ (A.chart k).symm) ∘ (A.chart k ∘ ψ.symm) ∘ padZero n d) (τ w)`. Establish `h23 : ContDiffAt ℝ 2 ((A.chart k ∘ ψ.symm) ∘ padZero n d) (τ w)`.
+
+Use `ContDiffAt.comp (τ w) ?_ ((padZero_contDiff n d).contDiffAt.of_le le_top)` and prove the remaining obligations. Rewrite using `[hpadτ]`. Conclude with `h2`. Use `ContDiffAt.comp (τ w) ?_ h23` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hpadτ, ψ.left_inv hwψ]`.
+
+Conclude with `h1`. Use `h3.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `hopen : IsOpen (padZero n d ⁻¹' (ψ.target ∩ ψ.symm ⁻¹' (A.chart k).source))` using `(ψ.isOpen_inter_preimage_symm (A.chart k).open_source).preimage (padZero_contDiff n d).continuous`. Use `filter_upwards [hopen.mem_nhds (show τ w ∈ _ from by`. Rewrite using `[Set.mem_preimage, hpadτ]`.
+
+Conclude with `⟨ψ.map_source hwψ, by simp only [Set.mem_preimage, ψ.left_inv hwψ]; exact hk⟩)] with z hz`. Simplify using `only [hg_def, Function.comp_apply, param, (A.chart k).left_inv hz.2]`. Establish `hev : (fun w' => Φ.φ x0 (μ ((B.chart j).symm w'))) =ᶠ[nhds w] g ∘ τ`. Establish `hopen : IsOpen ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (μ ⁻¹' ψ.source))` using `(B.chart j).isOpen_inter_preimage_symm (ψ.open_source.preimage hμ.1)`. Use `filter_upwards [hopen.mem_nhds ⟨hw, hwψ⟩] with w' hw'`.
+
+Simplify using `only [Function.comp_apply, hg_def, hpar w' hw'.2]`. Establish `hL : locDens B (fun _ => Φ.pullback μ hμ.1) j w = maDens (fun _ => g) (τ w) * Complex.normSq (ReciprocityTheory.AnForm.A.jacC τ w).det`. Unfold `locDens`. Use `(maDens_congr_eventuallyEq (fun _ => hev)).trans ?_` and prove the remaining obligations. Conclude with `ReciprocityTheory.AnForm.A.maDens_comp (fun _ => g) τ w hτa (fun _ => hg2)`.
+
+Establish `hP : paramDens n Φ ψ (τ w) = maDens (fun _ => g) (τ w)`. Unfold `paramDens`. Rewrite using `[hpar w hwψ]`. Rewrite using `[hL, hP, norm_mul, Real.norm_of_nonneg (Complex.normSq_nonneg _), mul_comm]`.
+-/
 theorem norm_locDens_pullback_eq {d n : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     (A : FinHolAtlas d X) (Z : Set X) (ψ : OpenPartialHomeomorph X (Fin d → ℂ))
     (B : FinHolAtlas n Y) (μ : Y → X) (hμ : HoloMap B A μ) (Φ : LocPot X) (j : Fin B.n)
@@ -142,15 +184,46 @@ theorem norm_locDens_pullback_eq {d n : ℕ} {X Y : Type} [TopologicalSpace X] [
     rw [hpar w hwψ]
   rw [hL, hP, norm_mul, Real.norm_of_nonneg (Complex.normSq_nonneg _), mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z k`. Apply the tactic sequence `by_cases h : (k : ℕ) < n <;> simp [padZero, h]`.
+-/
 theorem padZero_eq_clm (n d : ℕ) : padZero n d = ⇑(ContinuousLinearMap.pi fun k : Fin d =>
     if h : (k : ℕ) < n then ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) (⟨k, h⟩ : Fin n)
     else (0 : (Fin n → ℂ) →L[ℂ] ℂ)) := by
   funext z k
   by_cases h : (k : ℕ) < n <;> simp [padZero, h]
 
+/- English proof (translation)
+Rewrite using `[padZero_eq_clm]`. Conclude with `ContinuousLinearMap.analyticAt _ _`.
+-/
 theorem padZero_analyticAt (n d : ℕ) (z : Fin n → ℂ) : AnalyticAt ℂ (padZero n d) z := by
   rw [padZero_eq_clm]; exact ContinuousLinearMap.analyticAt _ _
 
+/- English proof (translation)
+Establish `hpc : Continuous (padZero n d)` using `(padZero_contDiff n d).continuous`. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `z ⟨hzt, hzS⟩`. Use `set x := param n ψ z with hx`. Establish `hxs : x ∈ ψ.source` using `ψ.map_target hzt`.
+
+Take `⟨W, hWo, hxW, r, f, hf, hSW⟩` from `hS x`. Take `⟨k, hk⟩` from `A.cover x`. Use `set U := padZero n d ⁻¹' (ψ.target ∩ ψ.symm ⁻¹' (W ∩ (A.chart k).source)) with hU`. Establish `hUo : IsOpen U` using `(ψ.isOpen_inter_preimage_symm (hWo.inter (A.chart k).open_source)).preimage hpc`. Establish `hzU : z ∈ U` using `⟨hzt, hxW, hk⟩`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hUo z hzU`. Establish `han : ∀ i, AnalyticOnNhd ℂ (fun z' => f i (param n ψ z')) (Metric.ball z ε)`. Introduce `i z' hz'`. Establish `hz'U` using `hball hz'`. Establish `hp : param n ψ z' ∈ (A.chart k).source` using `hz'U.2.2`.
+
+Establish `h1 : AnalyticAt ℂ (f i ∘ (A.chart k).symm) (((A.chart k ∘ ψ.symm) ∘ padZero n d) z')` using `hf i k _ ⟨(A.chart k).map_source hp, by show (A.chart k).symm (A.chart k (param n ψ z')) ∈ W`. Rewrite using `[(A.chart k).left_inv hp]`. Conclude with `hz'U.2.1⟩`. Establish `h2 : AnalyticAt ℂ (A.chart k ∘ ψ.symm) (padZero n d z')` using `(hψ.2.1 k).2 _ ⟨hz'U.1, hz'U.2.2⟩`. Establish `h3 : AnalyticAt ℂ ((f i ∘ (A.chart k).symm) ∘ (A.chart k ∘ ψ.symm) ∘ padZero n d) z'` using `h1.comp (h2.comp (padZero_analyticAt n d z'))`.
+
+Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [hUo.mem_nhds hz'U] with z'' hz''`. Simplify using `only [Function.comp_apply, param, (A.chart k).left_inv hz''.2.2]`. Establish `hex : ∃ i, ∃ w ∈ Metric.ball z ε, f i (param n ψ w) ≠ 0`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Use `set O := ψ.source ∩ ψ ⁻¹' (truncCoord n d ⁻¹' Metric.ball z ε) with hO`. Establish `hOo : IsOpen O` using `ψ.isOpen_inter_preimage (Metric.isOpen_ball.preimage (truncCoord n d).continuous)`. Establish `hψx : ψ x = padZero n d z` using `ψ.right_inv hzt`. Establish `hxO : x ∈ O` using `⟨hxs, by`.
+
+Simplify using `only [Set.mem_preimage, hψx, truncCoord_padZero hψ.1]`. Conclude with `Metric.mem_ball_self hε⟩`. Establish `hxZ : x ∈ Z`. Establish `: x ∈ {y ∈ ψ.source | ∀ k : Fin d, n ≤ (k : ℕ) → ψ y k = 0}`. Use `⟨hxs, fun k hk' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hψx]`. Simplify using `[padZero, not_lt.2 hk']`. Rewrite `this` using `[← hψ.2.2]`. Conclude with `this.1`. Take `⟨y, hyO, hyZ, hyS⟩` from `mem_closure_iff.1 (hdense hxZ) O hOo hxO`.
+
+Establish `hyt : ∀ k : Fin d, n ≤ (k : ℕ) → ψ y k = 0`. Establish `: y ∈ Z ∩ ψ.source` using `⟨hyZ, hyO.1⟩`. Rewrite `this` using `[hψ.2.2]`. Conclude with `this.2`. Use `set w := truncCoord n d (ψ y) with hw`.
+
+Establish `hwb : w ∈ Metric.ball z ε` using `hyO.2`. Establish `hpw : param n ψ w = y`. Simplify using `only [param, hw, padZero_truncCoord _ hyt, ψ.left_inv hyO.1]`. Establish `hyW : y ∈ W` using `by rw [← hpw]; exact (hball hwb).2.1`. Establish `: y ∈ S ∩ W`.
+
+Rewrite using `[hSW]`. Conclude with `⟨hyW, fun i => by rw [← hpw]; exact hcon i w hwb⟩`. Conclude with `hyS this.1`. Take `⟨i, w, hwb, hne⟩` from `hex`. Use `⟨Metric.ball z ε, Metric.isOpen_ball, Metric.mem_ball_self hε, (convex_ball z ε).isPreconnected, fun z' => f i (param n ψ z'), han i, ⟨w, hwb, hne⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `z' ⟨⟨-, hz'S⟩, hz'b⟩`. Establish `: param n ψ z' ∈ S ∩ W` using `⟨hz'S, (hball hz'b).2.1⟩`. Rewrite `this` using `[hSW]`. Conclude with `this.2 i`.
+-/
 theorem volume_param_preimage_null {d : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas d X)
     (Z : Set X) (n : ℕ) (ψ : OpenPartialHomeomorph X (Fin d → ℂ)) (S : Set X)
     (hψ : IsStraightening A Z n ψ) (hS : A.IsAnalyticSubset S) (hdense : Z ⊆ closure (Z \ S)) :
@@ -220,6 +293,11 @@ theorem volume_param_preimage_null {d : ℕ} {X : Type} [TopologicalSpace X] (A 
   rw [hSW] at this
   exact this.2 i
 
+/- English proof (translation)
+Establish `hm : Measurable (U.piecewise g fun _ => 0)` using `hg.measurable_piecewise continuousOn_const hU.measurableSet`. Establish `: U ∩ g ⁻¹' s = U ∩ (U.piecewise g fun _ => 0) ⁻¹' s`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hs⟩`.
+
+Conclude with `⟨hw, by simpa [Set.piecewise_eq_of_mem _ _ _ hw] using hs⟩`. Introduce and unpack `⟨hw, hs⟩`. Conclude with `⟨hw, by simpa [Set.piecewise_eq_of_mem _ _ _ hw] using hs⟩`. Rewrite using `[this]`. Conclude with `hU.measurableSet.inter (hm hs)`.
+-/
 theorem measurableSet_inter_preimage {m : ℕ} {U : Set (Fin m → ℂ)} (hU : IsOpen U)
     {g : (Fin m → ℂ) → (Fin m → ℂ)} (hg : ContinuousOn g U) {s : Set (Fin m → ℂ)}
     (hs : MeasurableSet s) : MeasurableSet (U ∩ g ⁻¹' s) := by
@@ -236,6 +314,41 @@ theorem measurableSet_inter_preimage {m : ℕ} {U : Set (Fin m → ℂ)} (hU : I
   rw [this]
   exact hU.measurableSet.inter (hm hs)
 
+/- English proof (translation)
+Introduce `d X _ _ _ A Z n Y _ _ _ B μ hμ S V hrange hS hdense hinj _ _ Φ hΦ f`. Establish `hSc : IsClosed S` using `isClosed_of_isAnalyticSubset A hS`. Unfold `regIntegral`. Use `iSup_le fun k => iSup_le fun ψ => iSup_le fun Bp => iSup_le fun hP => ?_` and prove the remaining obligations. Use `set m : Fin B.n → (Fin n → ℂ) → X := fun j w => μ ((B.chart j).symm w) with hm_def`.
+
+Use `set τ : Fin k → Fin B.n → (Fin n → ℂ) → (Fin n → ℂ) := fun i j w => truncCoord n d (ψ i (m j w)) with hτ_def`. Use `set E : Fin k → Fin B.n → Set (Fin n → ℂ) := fun i j => (B.chart j).target ∩ m j ⁻¹' ((ψ i).source ∩ Sᶜ) ∩ τ i j ⁻¹' Bp i with hE_def`. Use `set N : Fin k → Set (Fin n → ℂ) := fun i => {z | padZero n d z ∈ (ψ i).target ∧ param n (ψ i) z ∈ S} with hN_def`. Use `set F : Fin k → (Fin n → ℂ) → ℝ≥0∞ := fun i z => f (param n (ψ i) z) * ‖paramDens n Φ (ψ i) z‖ₑ with hF_def`. Use `set G : Fin B.n → (Fin n → ℂ) → ℝ≥0∞ := fun j w => f (m j w) * ‖locDens B (fun _ => Φ.pullback μ hμ.1) j w‖ₑ with hG_def`.
+
+Establish `hψ : ∀ i, IsStraightening A Z n (ψ i)` using `hP.1`. Establish `hmc : ∀ j, ContinuousOn (m j) (B.chart j).target` using `fun j => hμ.1.comp_continuousOn (B.chart j).continuousOn_symm`. Establish `hparam : ∀ i j w, m j w ∈ (ψ i).source → param n (ψ i) (τ i j w) = m j w`. Introduce `i j w hs`. Establish `hZ : m j w ∈ Z ∩ (ψ i).source` using `⟨hrange ▸ ⟨_, rfl⟩, hs⟩`.
+
+Rewrite `hZ` using `[(hψ i).2.2]`. Simplify using `only [param, hτ_def]`. Rewrite using `[padZero_truncCoord _ hZ.2, (ψ i).left_inv hs]`. Establish `hOpen : ∀ i j, IsOpen ((B.chart j).target ∩ m j ⁻¹' ((ψ i).source ∩ Sᶜ))` using `fun i j => (hmc j).isOpen_inter_preimage (B.chart j).open_target ((ψ i).open_source.inter hSc.isOpen_compl)`. Establish `hmeas : ∀ i j, MeasurableSet (E i j)`.
+
+Introduce `i j`. Use `measurableSet_inter_preimage (hOpen i j) ?_ (hP.2.1 i)` and prove the remaining obligations. Use `(truncCoord n d).continuous.comp_continuousOn ?_` and prove the remaining obligations. Conclude with `(ψ i).continuousOn.comp ((hmc j).mono Set.inter_subset_left) (fun w hw => hw.2.1)`. Establish `hinjE : ∀ i j, Set.InjOn (τ i j) (E i j)`.
+
+Introduce `i j w₁ h₁ w₂ h₂ heq`. Establish `e₁` using `hparam i j w₁ h₁.1.2.1`. Establish `e₂` using `hparam i j w₂ h₂.1.2.1`. Establish `hme : m j w₁ = m j w₂` using `by rw [← e₁, ← e₂, heq]`. Establish `hy : (B.chart j).symm w₁ = (B.chart j).symm w₂` using `hinj (fun h => h₁.1.2.2 h) (fun h => h₂.1.2.2 h) hme`.
+
+Conclude with `(B.chart j).symm.injOn h₁.1.1 h₂.1.1 hy`. Establish `han : ∀ i j, ∀ w ∈ E i j, AnalyticAt ℂ (τ i j) w` using `fun i j w hw => analyticAt_trunc_comp A Z (ψ i) B μ hμ j w (hψ i) hw.1.1 hw.1.2.1`. Establish `hnotV : ∀ i j, ∀ w ∈ E i j, m j w ∉ V`. Introduce `i j w hw`. Establish `h` using `((hP.2.2.1 i (τ i j w) hw.2).2).2`.
+
+Rewrite `h` using `[hparam i j w hw.1.2.1]`. Then use the resulting hypothesis. Establish `hdens : ∀ i j, ∀ w ∈ E i j, ENNReal.ofReal (Complex.normSq (ReciprocityTheory.AnForm.A.jacC (τ i j) w).det) * F i (τ i j w) = G j w`. Introduce `i j w hw`. Take `⟨O, hO, hxO, -, hsm⟩` from `hΦ (m j w) (hnotV i j w hw)`. Establish `h` using `norm_locDens_pullback_eq A Z (ψ i) B μ hμ Φ j w (hψ i) hrange.le hw.1.1 hw.1.2.1 ⟨O, hO, hxO, hsm⟩`.
+
+Simplify using `only [hF_def, hG_def]`. Rewrite using `[hparam i j w hw.1.2.1, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, h, ENNReal.ofReal_mul (Complex.normSq_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcov : ∀ i, Bp i \ N i ⊆ ⋃ j, τ i j '' E i j`. Introduce `i z ⟨hzB, hzN⟩`.
+
+Establish `hzt` using `(hP.2.2.1 i z hzB).1`. Establish `hzS : param n (ψ i) z ∉ S` using `fun h => hzN ⟨hzt, h⟩`. Take `⟨y, hy⟩ : param n (ψ i) z ∈ Set.range μ` from `hrange ▸ (hP.2.2.1 i z hzB).2.1.1`. Take `⟨j, hj⟩` from `B.cover y`. Establish `hmw : m j (B.chart j y) = param n (ψ i) z`.
+
+Simplify using `only [hm_def, (B.chart j).left_inv hj, hy]`. Establish `hsrc : param n (ψ i) z ∈ (ψ i).source` using `(ψ i).map_target hzt`. Establish `hτw : τ i j (B.chart j y) = z`. Simplify using `only [hτ_def, hmw, param, (ψ i).right_inv hzt]`. Conclude with `truncCoord_padZero (hψ i).1 z`.
+
+Use `Set.mem_iUnion.2 ⟨j, B.chart j y, ⟨⟨(B.chart j).map_source hj, ?_⟩, ?_⟩, hτw⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, hmw]`. Conclude with `⟨hsrc, hzS⟩`. Rewrite using `[Set.mem_preimage, hτw]`. Conclude with `hzB`.
+
+Establish `hdisj : ∀ j, Pairwise (Function.onFun Disjoint fun i => E i j)`. Introduce `j i i' hii'`. Use `Set.disjoint_left.2 fun w hw hw' => ?_` and prove the remaining obligations. Establish `h1 : m j w ∈ param n (ψ i) '' Bp i` using `⟨_, hw.2, hparam i j w hw.1.2.1⟩`. Establish `h2 : m j w ∈ param n (ψ i') '' Bp i'` using `⟨_, hw'.2, hparam i' j w hw'.1.2.1⟩`.
+
+Conclude with `Set.disjoint_left.1 (hP.2.2.2 hii') h1 h2`. Establish `hsub : ∀ j, (⋃ i, E i j) ⊆ (B.chart j).target ∩ (B.chart j).symm ⁻¹' (μ ⁻¹' V)ᶜ`. Introduce `j w hw`. Take `⟨i, hw⟩` from `Set.mem_iUnion.1 hw`. Conclude with `⟨hw.1.1, hnotV i j w hw⟩`.
+
+Establish `hpiece : ∀ i, ∫⁻ z in Bp i, F i z ≤ ∑ j, ∫⁻ w in E i j, G j w`. Introduce `i`. Establish `hN0 : volume (N i) = 0` using `volume_param_preimage_null A Z n (ψ i) S (hψ i) hS hdense`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_image_eq_lintegral_abs_det_fderiv_mul volume (hmeas i j) (fun w hw => ((han i j w hw).differentiableAt.restrictScalars ℝ).hasFDerivAt.hasFDerivWithinAt) (hinjE i j) (F i)]`. Use `setLIntegral_congr_fun (hmeas i j) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.AnForm.A.det_fderiv_real_eq_normSq _ _ (han i j w hw).differentiableAt, abs_of_nonneg (Complex.normSq_nonneg _)]`. Conclude with `hdens i j w hw`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_iUnion (fun i => hmeas i j) (hdisj j), tsum_fintype]`. Use `_ ≤ ∑ j, ∫⁻ w in (B.chart j).target ∩ (B.chart j).symm ⁻¹' (μ ⁻¹' V)ᶜ, G j w := Finset.sum_le_sum fun j _ => lintegral_mono_set (hsub j)`. Use `_ = chartSumInt B (Φ.pullback μ hμ.1) (μ ⁻¹' V)ᶜ (fun y => f (μ y)) := rfl`.
+-/
 theorem regIntegral_le_chartSumInt :
     ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (Z : Set X) (n : ℕ) (Y : Type) [TopologicalSpace Y] [CompactSpace Y] [T2Space Y]

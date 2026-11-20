@@ -26,19 +26,33 @@ def cong (n : ℕ) : Subgroup Kˣ where
       rw [Units.val_inv_eq_inv_val]; field_simp; ring
     rw [this, v.map_neg, map_mul, map_inv₀, ha.1, inv_one, one_mul]; exact ha.2⟩
 
+/- English proof (translation)
+Introduce `_ hx` and use `⟨hx.1, hx.2.trans (WithZero.exp_le_exp.2 (by omega))⟩`.
+-/
 theorem cong_anti {m n : ℕ} (h : m ≤ n) : cong v n ≤ cong v m := fun _ hx =>
   ⟨hx.1, hx.2.trans (WithZero.exp_le_exp.2 (by omega))⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => push_cast; exact v.map_add_le ih (by simp)`.
+-/
 theorem val_nat_le (n : ℕ) : v (n : K) ≤ 1 := by
   induction n with
   | zero => simp
   | succ n ih => push_cast; exact v.map_add_le ih (by simp)
 
+/- English proof (translation)
+Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify using `using val_nat_le v m`. Simplify using `using val_nat_le v m`.
+-/
 theorem val_int_le (n : ℤ) : v (n : K) ≤ 1 := by
   obtain ⟨m, rfl | rfl⟩ := n.eq_nat_or_neg
   · simpa using val_nat_le v m
   · simpa using val_nat_le v m
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `: (1 + t) ^ (n + 1) - 1 - ((n + 1 : ℕ) : K) * t = (1 + t) * ((1 + t) ^ n - 1 - n * t) + n * (t * t)` using `by push_cast; ring`. Rewrite using `[this]`.
+
+Use `v.map_add_le ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' (v.map_add_le (by simp) ht) ih).trans (by rw [one_mul])`. Rewrite using `[map_mul, map_mul]`. Conclude with `(mul_le_mul' (val_nat_le v n) le_rfl).trans (by rw [one_mul])`.
+-/
 theorem val_binom {t : K} (ht : v t ≤ 1) (n : ℕ) : v ((1 + t) ^ n - 1 - n * t) ≤ v t * v t := by
   induction n with
   | zero => simp
@@ -52,12 +66,43 @@ theorem val_binom {t : K} (ht : v t ≤ 1) (n : ℕ) : v ((1 + t) ^ n - 1 - n * 
     · rw [map_mul, map_mul]
       exact (mul_le_mul' (val_nat_le v n) le_rfl).trans (by rw [one_mul])
 
+/- English proof (translation)
+Rewrite using `[← WithZero.exp_add]`. Evaluate the numerical expressions.
+-/
 theorem exp_one_sq : WithZero.exp (-1 : ℤ) * WithZero.exp (-1 : ℤ) = WithZero.exp (-2 : ℤ) := by
   rw [← WithZero.exp_add]; norm_num
 
+/- English proof (translation)
+Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions.
+-/
 theorem exp_one_le : WithZero.exp (-1 : ℤ) ≤ (1 : ℤᵐ⁰) := by
   rw [← WithZero.exp_zero, WithZero.exp_le_exp]; norm_num
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨p, hp, k, hk⟩` from `Nat.exists_prime_and_dvd (n := orderOf z) (fun h => hne (orderOf_eq_one_iff.1 h))`. Establish `hpos` using `hz.orderOf_pos`. Establish `hk0 : k ≠ 0` using `by rintro rfl; omega`. Establish `hη : z ^ k ≠ 1` using `pow_ne_one_of_lt_orderOf hk0 (by`.
+
+Rewrite using `[hk]`. Use `hp.two_le` as an intermediate fact. Use polynomial arithmetic with `[Nat.pos_of_ne_zero hk0])`. Establish `hηp : (z ^ k) ^ p = 1` using `by rw [← pow_mul, mul_comm, ← hk, pow_orderOf_eq_one]`. Establish `hc` using `(cong v 1).pow_mem h1 k`.
+
+Generalize the expression as in `z ^ k = y at hη hηp hc`. Take `⟨t, ht⟩ : ∃ t : K, (y : K) = 1 + t` from `⟨y - 1, by ring⟩`. Establish `ht0 : t ≠ 0` using `by rintro rfl; exact hη (Units.ext (by simpa using ht))`. Establish `ht1 : v t ≤ WithZero.exp (-1 : ℤ)` using `by simpa [ht] using hc.2`. Establish `hp1 : (1 + t) ^ p = 1` using `by rw [← ht, ← Units.val_pow_eq_pow_val, hηp, Units.val_one]`.
+
+Establish `hvp : v (p : K) ≤ WithZero.exp (-1 : ℤ)`. Use `val_binom v (ht1.trans exp_one_le) p` as an intermediate fact. Rewrite `this` using `[hp1, sub_self, zero_sub, v.map_neg, map_mul]`. Conclude with `(le_of_mul_le_mul_right this (zero_lt_iff.2 (by simpa using ht0))).trans ht1`. Establish `hpl : p = l`.
+
+Assume the negation of the conclusion as `hpl`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hl).2 hpl)`. Establish `e : (1 : K) = (a : K) * p + (b : K) * l` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) hab.symm`. Establish `: v (1 : K) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[e]`.
+
+Apply the tactic sequence `refine v.map_add_le ?_ ?_ <;> rw [map_mul]`. Conclude with `(mul_le_mul' (val_int_le v a) hvp).trans (by rw [one_mul])`. Conclude with `(mul_le_mul' (val_int_le v b) hv.le).trans (by rw [one_mul])`. Rewrite `this` using `[map_one, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `hpl` using the available equality. Take `⟨m, hm⟩` from `hp.odd_of_ne_two h2`. Establish `hs : ∑ i ∈ Finset.range p, (1 + t) ^ i = 0`. Use `geom_sum_mul (1 + t) p` as an intermediate fact. Rewrite `this` using `[hp1, sub_self, add_sub_cancel_left]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_right ht0`. Establish `hsum : ∑ i ∈ Finset.range p, i = p * m`. Use `Finset.sum_range_id_mul_two p` as an intermediate fact. Establish `e : p - 1 = 2 * m` using `by omega`. Rewrite `this` using `[e]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsum' : ∑ i ∈ Finset.range p, (i : K) = p * m`. Use `congrArg (Nat.cast : ℕ → K) hsum` as an intermediate fact. Rewrite `this` using `[Nat.cast_sum, Nat.cast_mul]`. Then use the resulting hypothesis. Establish `e : (p : K) = -(∑ i ∈ Finset.range p, ((1 + t) ^ i - 1 - i * t)) - (m : K) * (p * t)`.
+
+Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, hs, ← Finset.sum_mul, hsum']`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `: v (p : K) ≤ WithZero.exp (-2 : ℤ)`. Rewrite using `[e, ← exp_one_sq]`.
+
+Use `v.map_sub_le ?_ ?_` and prove the remaining obligations. Rewrite using `[v.map_neg]`. Conclude with `v.map_sum_le fun i _ => (val_binom v (ht1.trans exp_one_le) i).trans (mul_le_mul' ht1 ht1)`. Rewrite using `[map_mul, map_mul]`. Conclude with `(mul_le_mul' (val_nat_le v m) (mul_le_mul' hv.le ht1)).trans (by rw [one_mul])`.
+
+Rewrite `this` using `[hv, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_one_of_cong {l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (hv : v (l : K) = WithZero.exp (-1 : ℤ)) {z : Kˣ}
     (hz : IsOfFinOrder z) (h1 : z ∈ cong v 1) : z = 1 := by
   by_contra hne
@@ -116,6 +161,11 @@ theorem eq_one_of_cong {l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (hv : v (l : K) =
 end Local
 
 open WithZeroTopology in
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ _`. Establish `ho : IsOpen {x : K | Valued.v x < MonoidWithZeroHom.ValueGroup₀.embedding γ.1}` using `WithZeroTopology.isOpen_Iio.preimage (Valued.continuous_valuation_of_surjective hK)`. Use `filter_upwards [ho.mem_nhds (by simp [zero_lt_iff])] with x hx`.
+
+Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hf]`. Conclude with `hx`.
+-/
 theorem continuous_of_val {K L : Type} [Field K] [Field L] [Valued K ℤᵐ⁰] [Valued L ℤᵐ⁰]
     (hK : Function.Surjective (Valued.v : K → ℤᵐ⁰)) (f : K →+* L) (hf : ∀ x, Valued.v (f x) = Valued.v x) :
     Continuous f := by
@@ -131,11 +181,21 @@ theorem continuous_of_val {K L : Type} [Field K] [Field L] [Valued K ℤᵐ⁰] 
 variable {E : Type} [Field E] [NumberField E]
 
 open WithZeroTopology in
+/- English proof (translation)
+The claim follows from `Valued.continuous_valuation_of_surjective (w.valuedAdicCompletion_surjective E)`.
+-/
 theorem continuous_val (w : HeightOneSpectrum (𝓞 E)) : Continuous fun x : w.adicCompletion E => Valued.v x :=
   Valued.continuous_valuation_of_surjective (w.valuedAdicCompletion_surjective E)
 
 open WithZeroTopology in
 
+/- English proof (translation)
+Establish `hc : Continuous (WithVal.map (w'.valuation E) (w.valuation E) σ.toRingHom)` using `continuous_of_val (fun γ => by`. Take `⟨y, hy⟩` from `w'.valuation_surjective E γ`. Conclude with `⟨WithVal.toVal _ y, hy⟩) _ (fun x => (h x.ofVal).symm)`. Set `c : w'.adicCompletion E →+* w.adicCompletion E` to `((HeightOneSpectrum.adicCompletion.equiv E w).symm.toRingHom.comp (UniformSpace.Completion.mapRingHom _ hc)).comp (HeightOneSpectrum.adicCompletion.equiv E w').toRingHom`. Establish `hcc : Continuous c` using `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion E w).comp (UniformSpace.Completion.continuous_map.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion E w'))`.
+
+Establish `ha : ∀ y, c (algebraMap E _ y) = algebraMap E _ (σ y)` using `fun y => by`. Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Conclude with `UniformSpace.Completion.mapRingHom_coe hc (WithVal.toVal _ y)`. Use `⟨c, hcc, ha, fun x => ?_⟩` and prove the remaining obligations. Use `congrFun ((w'.denseRange_algebraMap E).equalizer ((continuous_val w).comp hcc) (continuous_val w') ?_) x` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply, ha]`. Conclude with `(w.valuedAdicCompletion_eq_valuation' (σ y)).trans ((h y).symm.trans (w'.valuedAdicCompletion_eq_valuation' y).symm)`.
+-/
 theorem exists_locMap (σ : E ≃+* E) (w w' : HeightOneSpectrum (𝓞 E)) (h : ∀ y, w'.valuation E y = w.valuation E (σ y)) :
     ∃ c : w'.adicCompletion E →+* w.adicCompletion E, Continuous c ∧
       (∀ y, c (algebraMap E _ y) = algebraMap E _ (σ y)) ∧ ∀ x, Valued.v (c x) = Valued.v x := by
@@ -158,6 +218,9 @@ theorem exists_locMap (σ : E ≃+* E) (w w' : HeightOneSpectrum (𝓞 E)) (h : 
   exact (w.valuedAdicCompletion_eq_valuation' (σ y)).trans ((h y).symm.trans (w'.valuedAdicCompletion_eq_valuation' y).symm)
 
 open WithZeroTopology in
+/- English proof (translation)
+Establish `h1 : IsOpen ({1} : Set ℤᵐ⁰)` using `WithZeroTopology.isOpen_iff.2 (Or.inl (by simp))`. Establish `h2 : IsOpen (Set.Iic (WithZero.exp (-(n : ℤ))))` using `WithZeroTopology.isOpen_iff.2 (Or.inr ⟨_, WithZero.exp_ne_zero, Set.Iio_subset_Iic_self⟩)`. Conclude with `(h1.preimage ((continuous_val w).comp Units.continuous_val)).inter (h2.preimage ((continuous_val w).comp (Units.continuous_val.sub continuous_const)))`.
+-/
 theorem isOpen_cong (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     IsOpen (cong (Valued.v : Valuation (w.adicCompletion E) ℤᵐ⁰) n : Set (w.adicCompletion E)ˣ) := by
   have h1 : IsOpen ({1} : Set ℤᵐ⁰) := WithZeroTopology.isOpen_iff.2 (Or.inl (by simp))
@@ -166,6 +229,15 @@ theorem isOpen_cong (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
   exact (h1.preimage ((continuous_val w).comp Units.continuous_val)).inter
     (h2.preimage ((continuous_val w).comp (Units.continuous_val.sub continuous_const)))
 
+/- English proof (translation)
+Establish `hP` using `w.isPrime`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hun : Algebra.IsUnramifiedAt ℤ w.asIdeal` using `(NumberField.not_dvd_discr_iff_forall_mem E (𝓞 E) hp).mp hd _ hP (by simpa using hw)`. Establish `hov : w.asIdeal.LiesOver (Ideal.span {(l : ℤ)})` using `(Ideal.liesOver_span_iff hP.ne_top hp).mpr (by simpa using hw)`. Establish `hmap : (Ideal.span {(l : ℤ)}).map (algebraMap ℤ (𝓞 E)) = Ideal.span {(l : 𝓞 E)}`.
+
+Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules. Establish `hl0 : (l : 𝓞 E) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hne : (Ideal.span {(l : ℤ)}).map (algebraMap ℤ (𝓞 E)) ≠ ⊥`. Rewrite using `[hmap]`.
+
+Simplify using `using hl.ne_zero`. Establish `h1` using `Ideal.ramificationIdx_eq_one w.asIdeal ℤ`. Rewrite `h1` using `[Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count _ _ hne, hmap]`. Establish `e : (l : E) = algebraMap (𝓞 E) E l` using `by simp`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap, w.intValuation_eq_exp_neg_multiplicity hl0]`.
+
+Use `UniqueFactorizationMonoid.emultiplicity_eq_count_normalizedFactors w.irreducible (b := Ideal.span {(l : 𝓞 E)}) (by simpa using hl.ne_zero)` as an intermediate fact. Rewrite `this` using `[normalize_eq, h1]`. Rewrite using `[multiplicity_eq_of_emultiplicity_eq_some this]`. Both sides reduce to the same expression.
+-/
 theorem val_prime {l : ℕ} (hl : l.Prime) (hd : ¬ (l : ℤ) ∣ discr E) (w : HeightOneSpectrum (𝓞 E))
     (hw : (l : 𝓞 E) ∈ w.asIdeal) : w.valuation E (l : E) = WithZero.exp (-1 : ℤ) := by
   have hP := w.isPrime
@@ -191,9 +263,33 @@ theorem val_prime {l : ℕ} (hl : l.Prime) (hd : ¬ (l : ℤ) ∣ discr E) (w : 
 def toLoc (w : HeightOneSpectrum (𝓞 E)) : Eˣ →* (w.adicCompletion E)ˣ :=
   Units.map (algebraMap E (w.adicCompletion E)).toMonoidHom
 
+/- English proof (translation)
+The claim follows from `w.valuedAdicCompletion_eq_valuation' y`.
+-/
 theorem val_alg (w : HeightOneSpectrum (𝓞 E)) (y : E) :
     Valued.v (algebraMap E (w.adicCompletion E) y) = w.valuation E y := w.valuedAdicCompletion_eq_valuation' y
 
+/- English proof (translation)
+Establish `hω` using `Complex.isPrimitiveRoot_exp l hl.ne_zero`. Establish `hω1` using `hω.norm'_eq_one hl.ne_zero`. Generalize the expression as in `Complex.exp (2 * Real.pi * Complex.I / l) = ω at hω hω1`. Set `ω' : ℂˣ` to `Units.mk0 ω (hω.ne_zero hl.ne_zero)`. Establish `hω' : ω' ^ l = 1` using `Units.ext (by simpa [ω'] using hω.pow_eq_one)`.
+
+Establish `hmem : ∀ n (k : Eˣ), toLoc w k ∈ cong (Valued.v : Valuation (w.adicCompletion E) ℤᵐ⁰) n ↔ k ∈ cong (w.valuation E) n` using `fun n k => by`. Express the relevant statement in the definitionally equal form `(Valued.v (algebraMap E (w.adicCompletion E) k) = 1 ∧ Valued.v (algebraMap E (w.adicCompletion E) k - 1) ≤ _) ↔ _`. Rewrite using `[← map_one (algebraMap E (w.adicCompletion E)), ← map_sub, val_alg, val_alg]`. Both sides reduce to the same expression. Establish `hlt : w.valuation E (l : E) < 1`.
+
+Rewrite using `[hv, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `hu1 : u ∈ cong (w.valuation E) 1` using `⟨by rw [hu]; exact Valuation.map_one_add_of_lt _ hlt, by`. Rewrite using `[hu, add_sub_cancel_left, hv]`. Use the proof step `simp⟩`.
+
+Establish `hu2 : u ∉ cong (w.valuation E) 2` using `fun h => by`. Use `h.2` as an intermediate fact. Rewrite `this` using `[hu, add_sub_cancel_left, hv, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hul : u ^ l ∈ cong (w.valuation E) 2` using `⟨((cong _ 1).pow_mem hu1 l).1, by`.
+
+Establish `e : ((u ^ l : Eˣ) : E) - 1 = ((1 + (l : E)) ^ l - 1 - l * l) + l * l`. Rewrite using `[Units.val_pow_eq_pow_val, hu]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : w.valuation E (l : E) * w.valuation E (l : E) = WithZero.exp (-((2 : ℕ) : ℤ))`. Rewrite using `[hv, exp_one_sq]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, ← e2]`. Conclude with `Valuation.map_add_le _ (val_binom _ hlt.le l) (map_mul _ _ _).le⟩`. Use `haveI := Fact.mk hl`. Establish `hord : orderOf (QuotientGroup.mk' (cong (w.valuation E) 2) u) = l` using `orderOf_eq_prime (by rw [← map_pow]; exact (QuotientGroup.eq_one_iff _).2 hul) (fun h => hu2 ((QuotientGroup.eq_one_iff _).1 h))`.
+
+Take `⟨ch, h1, h3, h4, h5⟩` from `exists_unitary_char_of_open_subgroup_and_hom _ (CommGroup.torsion Eˣ × Multiplicative ℤ) _ (isOpen_cong w 2) ((toLoc w).comp ((CommGroup.torsion Eˣ).subtype.coprod (zpowersHom _ u))) ((θ.comp (CommGroup.torsion Eˣ).subtype).coprod (zpowersHom _ ω')) 1 continuous_const (by simp) ( …`. Establish `hθ : ‖((θ y.1 : ℂˣ) : ℂ)‖ = 1` using `(((Units.coeHom ℂ).comp θ).isOfFinOrder y.1.2).norm_eq_one`. Simplify using `[hθ, ω', hω1]) (fun y hy => by`. Establish `hy' : (y.1 : Eˣ) * u ^ y.2.toAdd ∈ cong (w.valuation E) 2` using `(hmem 2 _).1 hy`. Establish `hz : (y.1 : Eˣ) = 1` using `eq_one_of_cong _ hl h2 hv y.1.2 ((Subgroup.mul_mem_cancel_right _ ((cong _ 1).zpow_mem hu1 _)).1 (cong_anti _ (by norm_num) hy'))`.
+
+Rewrite `hy'` using `[hz, one_mul, ← QuotientGroup.eq_one_iff]`. Establish `hd : ((orderOf (QuotientGroup.mk' (cong (w.valuation E) 2) u) : ℕ) : ℤ) ∣ y.2.toAdd` using `orderOf_dvd_iff_zpow_eq_one.2 (by rw [← map_zpow]; exact hy')`. Rewrite `hd` using `[hord]`. Take `⟨m, hm⟩` from `hd`. Express the relevant statement in the definitionally equal form `θ (y.1 : Eˣ) * ω' ^ y.2.toAdd = 1`.
+
+Rewrite using `[hz, hm, zpow_mul, zpow_natCast, hω']`. Use the proof step `simp)`. Use `⟨ch, h1, h3, h4, fun z hz => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using h5 (⟨z, hz⟩, 1)`. Use `h5 (1, Multiplicative.ofAdd 1)` as an intermediate fact.
+
+Simplify using `only [MonoidHom.comp_apply, MonoidHom.coprod_apply, map_one, one_mul, zpowersHom_apply, toAdd_ofAdd, zpow_one] at this`. Rewrite using `[this]`. Conclude with `fun h => hω.ne_one hl.one_lt (congrArg Units.val h)`.
+-/
 theorem exists_locChar {l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (w : HeightOneSpectrum (𝓞 E))
     (hv : w.valuation E (l : E) = WithZero.exp (-1 : ℤ)) (θ : Eˣ →* ℂˣ)
     (u : Eˣ) (hu : (u : E) = 1 + l) :
@@ -254,6 +350,13 @@ theorem exists_locChar {l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (w : HeightOneSpe
     rw [this]
     exact fun h => hω.ne_one hl.one_lt (congrArg Units.val h)
 
+/- English proof (translation)
+Establish `h0 : ∀ k : E, InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk φ) (algebraMap E _ k) = (InfinitePlace.mk φ).embedding k` using `fun k => InfinitePlace.Completion.extensionEmbedding_coe (InfinitePlace.mk φ) (WithAbs.toAbs _ k)`. Establish `hc` using `(InfinitePlace.Completion.isometry_extensionEmbedding (InfinitePlace.mk φ)).continuous`. Set `e : InfiniteAdeleRing E →+* ℂ` to `(InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk φ)).comp (Pi.evalRingHom _ (InfinitePlace.mk φ))`. Establish `he : Continuous e` using `hc.comp (continuous_apply _)`. Establish `h1 : ∀ k, e (algebraMap E _ k) = (InfinitePlace.mk φ).embedding k` using `h0`.
+
+Establish `h2 : ∀ x y : InfiniteAdeleRing E, x (InfinitePlace.mk φ) = y (InfinitePlace.mk φ) → e x = e y` using `fun x y h => congrArg (InfinitePlace.Completion.extensionEmbedding (InfinitePlace.mk φ)) h`. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Conclude with `⟨e, he, fun k => by rw [h1, h], h2⟩`. Use `⟨(starRingEnd ℂ).comp e, Complex.continuous_conj.comp he, fun k => ?_, fun x y h => congrArg (starRingEnd ℂ) (h2 x y h)⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, h1, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_infExt (φ : E →+* ℂ) :
     ∃ e : InfiniteAdeleRing E →+* ℂ, Continuous e ∧ (∀ k : E, e (algebraMap E _ k) = φ k) ∧
       ∀ x y : InfiniteAdeleRing E, x (InfinitePlace.mk φ) = y (InfinitePlace.mk φ) → e x = e y := by
@@ -274,6 +377,19 @@ theorem exists_infExt (φ : E →+* ℂ) :
     rw [RingHom.comp_apply, h1, h]
     simp
 
+/- English proof (translation)
+Use `choose e he he' he2 using fun i => exists_infExt (φ i)`. Set `ψ : (InfiniteAdeleRing E)ˣ →* ℂˣ` to `∏ i, (Units.map (e i).toMonoidHom / Units.map ((starRingEnd ℂ).comp (e i)).toMonoidHom) ^ m i`. Establish `h0 : ∀ x, ψ x = ∏ i, (Units.map (e i).toMonoidHom x / Units.map ((starRingEnd ℂ).comp (e i)).toMonoidHom x) ^ m i` using `fun x => by simp only [ψ, MonoidHom.finsetProd_apply]; rfl`. Establish `h1 : ∀ x, (ψ x : ℂ) = ∏ i, (e i x / starRingEnd ℂ (e i x)) ^ m i` using `fun x => by`. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Use `⟨ψ, ?_, fun x => ?_, fun k => ?_, fun k hk x hx => Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[show (ψ : _ → _) = _ from funext h0]`. Conclude with `continuous_finsetProd _ fun i _ => ((Continuous.units_map _ (he i)).div' (Continuous.units_map _ (Complex.continuous_conj.comp (he i)))).zpow _`. Rewrite using `[h1, norm_prod]`.
+
+Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `: e i x ≠ 0` using `(x.isUnit.map (e i)).ne_zero`. Rewrite using `[norm_zpow, norm_div, Complex.norm_conj, div_self (by simpa using this), one_zpow]`. Rewrite using `[h1]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← he']`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h2 : e i x ≠ 0` using `(x.isUnit.map (e i)).ne_zero`.
+
+Establish `h3 : starRingEnd ℂ (e i x) = e i x`. Break down `hx (InfinitePlace.mk (φ i)) with h | h` into its components or cases. Rewrite using `[he2 i _ _ h, map_one, map_one]`. Rewrite using `[he2 i _ _ h, he']`. Conclude with `hk (φ i)`.
+
+Rewrite using `[h3, div_self h2, one_zpow]`.
+-/
 theorem exists_infChar {I : Type} [Fintype I] (φ : I → E →+* ℂ) (m : I → ℤ) :
     ∃ ψ : (InfiniteAdeleRing E)ˣ →* ℂˣ, Continuous ψ ∧ (∀ x, ‖((ψ x : ℂˣ) : ℂ)‖ = 1) ∧
       (∀ k : Eˣ, ((ψ (Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom k) : ℂˣ) : ℂ) =
@@ -316,9 +432,17 @@ local notation "cc" => IsCMField.complexConj E
 def bar (w : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (𝓞 E) :=
   w.comap (RingOfIntegers.mapRingEquiv (cc).toRingEquiv : 𝓞 E →+* 𝓞 E) (RingOfIntegers.mapRingEquiv (cc).toRingEquiv).surjective
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.QNorm.valuation_of_eq_comap _ w _ rfl y`.
+-/
 theorem val_bar (w : HeightOneSpectrum (𝓞 E)) (y : E) : (bar w).valuation E y = w.valuation E ((cc).toRingEquiv y) :=
   GlobalTheory.QNorm.valuation_of_eq_comap _ w _ rfl y
 
+/- English proof (translation)
+Unfold `Over at h ⊢`. Rewrite using `[← h]`. Use extensionality with `y`. Establish `: RingOfIntegers.mapRingEquiv (cc).toRingEquiv (algebraMap (OF E) (𝓞 E) y) = algebraMap (OF E) (𝓞 E) y` using `RingOfIntegers.ext ((cc).commutes (y : maximalRealSubfield E))`. Express the relevant statement in the definitionally equal form `RingOfIntegers.mapRingEquiv (cc).toRingEquiv (algebraMap (OF E) (𝓞 E) y) ∈ w.asIdeal ↔ algebraMap (OF E) (𝓞 E) y ∈ w.asIdeal`.
+
+Rewrite using `[this]`.
+-/
 theorem over_bar {w : HeightOneSpectrum (𝓞 E)} {v : HeightOneSpectrum (OF E)} (h : Over w v) : Over (bar w) v := by
   unfold Over at h ⊢
   rw [← h]
@@ -329,6 +453,15 @@ theorem over_bar {w : HeightOneSpectrum (𝓞 E)} {v : HeightOneSpectrum (OF E)}
     algebraMap (OF E) (𝓞 E) y ∈ w.asIdeal
   rw [this]
 
+/- English proof (translation)
+Establish `hsub : (P.asIdeal : Set (𝓞 E)) ⊆ (w.asIdeal : Set (𝓞 E)) ∪ (bar w).asIdeal` using `fun x hx => by`. Set `y : 𝓞 E` to `x * RingOfIntegers.mapRingEquiv (cc).toRingEquiv x`. Establish `hy : (y : E) ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`. Express the relevant statement in the definitionally equal form `cc ((x : E) * cc (x : E)) = (x : E) * cc (x : E)`.
+
+Rewrite using `[map_mul, IsCMField.complexConj_apply_apply, mul_comm]`. Establish `hint : IsIntegral ℤ (⟨y, hy⟩ : maximalRealSubfield E)` using `(isIntegral_algebraMap_iff (algebraMap (maximalRealSubfield E) E).injective).1 y.isIntegral_coe`. Take `⟨a, hn⟩ : ∃ a : OF E, algebraMap (OF E) (𝓞 E) a = y` from `⟨⟨_, hint⟩, RingOfIntegers.ext rfl⟩`. Establish `h1 : a ∈ v.asIdeal`. Rewrite using `[← hP, Ideal.mem_comap, hn]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hx`. Rewrite `h1` using `[← h, Ideal.mem_comap, hn]`. Conclude with `w.isPrime.mem_or_mem h1`. Break down `Ideal.subset_union.1 hsub with h | h` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext (P.isMaximal.eq_of_le w.isPrime.ne_top h))`.
+
+Conclude with `Or.inr (HeightOneSpectrum.ext (P.isMaximal.eq_of_le (bar w).isPrime.ne_top h))`.
+-/
 theorem eq_or_eq_bar {w P : HeightOneSpectrum (𝓞 E)} {v : HeightOneSpectrum (OF E)} (h : Over w v) (hP : Over P v) :
     P = w ∨ P = bar w := by
   have hsub : (P.asIdeal : Set (𝓞 E)) ⊆ (w.asIdeal : Set (𝓞 E)) ∪ (bar w).asIdeal := fun x hx => by
@@ -349,6 +482,11 @@ theorem eq_or_eq_bar {w P : HeightOneSpectrum (𝓞 E)} {v : HeightOneSpectrum (
   · exact Or.inl (HeightOneSpectrum.ext (P.isMaximal.eq_of_le w.isPrime.ne_top h))
   · exact Or.inr (HeightOneSpectrum.ext (P.isMaximal.eq_of_le (bar w).isPrime.ne_top h))
 
+/- English proof (translation)
+Establish `e : ((k / Units.map (cc).toRingEquiv.toMonoidHom k : Eˣ) : E) = (k : E) / cc (k : E)` using `by simp`. Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E ((k : E) / cc (k : E)) fun w => by`. Use `h w` as an intermediate fact. Rewrite `this` using `[val_bar]`. Rewrite using `[map_div₀, ← this]`.
+
+Conclude with `div_self_le_one _`. Take `⟨n, hn, h1⟩` from `Embeddings.pow_eq_one_of_norm_eq_one E ℂ (x := (k : E) / cc (k : E)) (ha ▸ a.isIntegral_coe) fun σ => by`. Rewrite using `[map_div₀, IsCMField.complexEmbedding_complexConj, norm_div, Complex.norm_conj, div_self (by simp)]`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, Units.ext (by rw [Units.val_pow_eq_pow_val, e, h1, Units.val_one])⟩`.
+-/
 theorem isOfFinOrder_div (k : Eˣ) (h : ∀ w : HeightOneSpectrum (𝓞 E), (bar w).valuation E k = w.valuation E k) :
     IsOfFinOrder (k / Units.map (cc).toRingEquiv.toMonoidHom k) := by
   have e : ((k / Units.map (cc).toRingEquiv.toMonoidHom k : Eˣ) : E) = (k : E) / cc (k : E) := by simp
@@ -366,6 +504,9 @@ end CM
 def locU (P : HeightOneSpectrum (𝓞 E)) : (Af E)ˣ →* (P.adicCompletion E)ˣ :=
   Units.map { toFun := fun x : Af E => x P, map_one' := rfl, map_mul' := fun _ _ => rfl }
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (RestrictedProduct.continuous_eval P)`.
+-/
 theorem continuous_locU (P : HeightOneSpectrum (𝓞 E)) : Continuous (locU P) :=
   Continuous.units_map _ (RestrictedProduct.continuous_eval P)
 
@@ -373,18 +514,34 @@ def finOf : Ideles E →* (Af E)ˣ := Units.map (MonoidHom.snd (InfiniteAdeleRin
 
 def infOf : Ideles E →* (InfiniteAdeleRing E)ˣ := Units.map (MonoidHom.fst (InfiniteAdeleRing E) (Af E))
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ continuous_snd`.
+-/
 theorem continuous_finOf : Continuous (finOf (E := E)) := Continuous.units_map _ continuous_snd
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ continuous_fst`.
+-/
 theorem continuous_infOf : Continuous (infOf (E := E)) := Continuous.units_map _ continuous_fst
 
 def unitI : Subgroup (Ideles E) :=
   ⨅ P : HeightOneSpectrum (𝓞 E), (cong (Valued.v : Valuation (P.adicCompletion E) ℤᵐ⁰) 0).comap ((locU P).comp finOf)
 
+/- English proof (translation)
+Simplify using `only [unitI, Subgroup.mem_iInf, Subgroup.mem_comap]`. Use `forall_congr' fun P => ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Conclude with `Valuation.map_sub_le _ h.le (by simp)`.
+-/
 theorem mem_unitI {x : Ideles E} : x ∈ unitI ↔ ∀ P, Valued.v ((finOf x : Af E) P) = 1 := by
   simp only [unitI, Subgroup.mem_iInf, Subgroup.mem_comap]
   refine forall_congr' fun P => ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩
   exact Valuation.map_sub_le _ h.le (by simp)
 
+/- English proof (translation)
+Establish `hO : IsOpen {a : Af E | ∀ v, a v ∈ v.adicCompletionIntegers E}` using `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`. Use `(hO.preimage (Units.continuous_val.comp continuous_finOf)).inter (hO.preimage (Units.continuous_val.comp (continuous_finOf.comp continuous_inv))) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨fun P => (mem_unitI.1 h P).le, fun P => (mem_unitI.1 (unitI.inv_mem h) P).le⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `mem_unitI.2 fun P => le_antisymm (h1 P) ?_` and prove the remaining obligations. Establish `h3 : Valued.v (((locU P (finOf x⁻¹) : (P.adicCompletion E)ˣ)) : P.adicCompletion E) ≤ 1` using `h2 P`. Rewrite `h3` using `[map_inv, map_inv, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Conclude with `(inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 (locU P (finOf x)).ne_zero))).1 h3`.
+-/
 theorem isOpen_unitI : IsOpen (unitI (E := E) : Set (Ideles E)) := by
   have hO : IsOpen {a : Af E | ∀ v, a v ∈ v.adicCompletionIntegers E} :=
     RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)
@@ -400,9 +557,15 @@ theorem isOpen_unitI : IsOpen (unitI (E := E) : Set (Ideles E)) := by
     rw [map_inv, map_inv, Units.val_inv_eq_inv_val, map_inv₀] at h3
     exact (inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 (locU P (finOf x)).ne_zero))).1 h3
 
+/- English proof (translation)
+The claim follows from `Units.ext (h w hw)`.
+-/
 theorem locU_of_supp {P w : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt P y) (hw : w ≠ P) : locU w y = 1 :=
   Units.ext (h w hw)
 
+/- English proof (translation)
+The claim follows from `mem_unitI.2 fun w => by change Valued.v ((y : Af E) w) = 1 by_cases hw : w = P · rw [hw, h1] · rw [h w hw, map_one]`.
+-/
 theorem finIdele_mem {P : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt P y) (h1 : Valued.v ((y : Af E) P) = 1) :
     finIdele E y ∈ unitI := mem_unitI.2 fun w => by
   change Valued.v ((y : Af E) w) = 1
@@ -410,16 +573,25 @@ theorem finIdele_mem {P : HeightOneSpectrum (𝓞 E)} {y : (Af E)ˣ} (h : SuppAt
   · rw [hw, h1]
   · rw [h w hw, map_one]
 
+/- English proof (translation)
+Introduce `m` and use `⟨fun h => by by_contra hm exact h1 fun y a b => h y a (b.trans (WithZero.exp_le_exp.2 (by omega))), fun hm y a b => h2 y a (b.trans (WithZero.exp_le_exp.2 (by omega)))⟩`.
+-/
 theorem expAt_two {χ : HChar E} {P : HeightOneSpectrum (𝓞 E)} (h2 : LevelLe χ P 2) (h1 : ¬ LevelLe χ P 1) : ExpAt χ P 2 :=
   fun m => ⟨fun h => by
     by_contra hm
     exact h1 fun y a b => h y a (b.trans (WithZero.exp_le_exp.2 (by omega))),
     fun hm y a b => h2 y a (b.trans (WithZero.exp_le_exp.2 (by omega)))⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (single_self P x)`.
+-/
 theorem locU_single (P : HeightOneSpectrum (𝓞 E)) (x : (P.adicCompletion E)ˣ) : locU P (single P x) = x :=
   Units.ext (single_self P x)
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[map_prod]`. Use `split_ifs with h`. Rewrite using `[Finset.prod_eq_single_of_mem Q h fun P _ hP => locU_of_supp (suppAt_single P _) hP.symm, locU_single]`. Conclude with `Finset.prod_eq_one fun P hP => locU_of_supp (suppAt_single P _) (fun e => h (e ▸ hP))`.
+-/
 theorem locU_prod (S : Finset (HeightOneSpectrum (𝓞 E))) (k : Eˣ) (Q : HeightOneSpectrum (𝓞 E)) :
     locU Q (∏ P ∈ S, single P (toLoc P k)) = if Q ∈ S then toLoc Q k else 1 := by
   rw [map_prod]
@@ -427,6 +599,55 @@ theorem locU_prod (S : Finset (HeightOneSpectrum (𝓞 E))) (k : Eˣ) (Q : Heigh
   · rw [Finset.prod_eq_single_of_mem Q h fun P _ hP => locU_of_supp (suppAt_single P _) hP.symm, locU_single]
   · exact Finset.prod_eq_one fun P hP => locU_of_supp (suppAt_single P _) (fun e => h (e ▸ hP))
 
+/- English proof (translation)
+Take `⟨⟨w, w', hne, hw, hw'⟩, -, l, hl, h2, hlv, hd, -⟩` from `hv.2.2 v (dvd_pow_self _ two_ne_zero)`. Establish `hbw : bar w ≠ w` using `fun h => (eq_or_eq_bar hw hw').elim (fun e => hne e.symm) (fun e => hne (e.trans h).symm)`. Establish `hval : ∀ P, Over P v → P.valuation E (l : E) = WithZero.exp (-1 : ℤ)` using `fun P hP => val_prime hl hd P (by`. Rewrite `hlv` using `[← hP, Ideal.mem_comap, map_natCast]`. Conclude with `hlv)`.
+
+Take `⟨ψi, hi1, hi2, hi3, hi4⟩` from `exists_infChar φ (fun i => (κ i : ℤ) + s)`. Set `u : Eˣ` to `Units.mk0 (1 + l) (by exact_mod_cast (by omega : 1 + l ≠ 0))`. Take `⟨ch, hc1, hc2, hc3, hc4, hc5⟩` from `exists_locChar hl h2 w (hval w hw) (∏ i, Units.map (φ i).toMonoidHom ^ ((κ i : ℤ) + s))⁻¹ u rfl`. Use `choose c hcc hca hcv using fun P : HeightOneSpectrum (𝓞 E) => exists_locMap (IsCMField.complexConj E).toRingEquiv P (bar P) (val_bar P)`. Establish `hcF : ∀ P (k : Eˣ), (k : E) ∈ maximalRealSubfield E → Units.map (c P).toMonoidHom (toLoc (bar P) k) = toLoc P k` using `fun P k hk => Units.ext ((hca P k).trans (congrArg _ ((IsCMField.complexConj_eq_self_iff E (k : E)).2 hk)))`.
+
+Set `Fx : Subgroup (Af E)ˣ` to `⨅ P, ((Units.map (c P).toMonoidHom).comp (locU (bar P))).eqLocus (locU P)`. Establish `hFx : ∀ y, y ∈ Fx ↔ ∀ P, Units.map (c P).toMonoidHom (locU (bar P) y) = locU P y` using `fun y => Subgroup.mem_iInf`. Set `ρ : (Af E)ˣ →* (w.adicCompletion E)ˣ` to `locU w / (Units.map (c w).toMonoidHom).comp (locU (bar w))`. Establish `hρ : ∀ y, ρ y = locU w y / Units.map (c w).toMonoidHom (locU (bar w) y)` using `fun _ => rfl`. Set `ψ : Ideles E →* ℂˣ` to `ψi.comp infOf * ch.comp (ρ.comp finOf)`.
+
+Establish `hψ : ∀ x, ψ x = ψi (infOf x) * ch (ρ (finOf x))` using `fun _ => rfl`. Establish `hρF : ∀ y ∈ Fx, ρ y = 1` using `fun y hy => by rw [hρ, (hFx y).1 hy w, div_self']`. Take `⟨χ, h1, h3, h4, h5⟩` from `exists_unitary_char_of_open_subgroup_and_hom (Ideles E) (Eˣ × Fx) unitI isOpen_unitI ((Neutral.B1.diagUnits E).coprod ((finIdele E).comp (Subgroup.subtype _))) 1 ψ ((hi1.comp continuous_infOf).mul (hc1.comp (((continuous_locU w).div' ((Continuous.units_map _ (hcc w)).comp (contin …`. Introduce and unpack `⟨k, y⟩ hy`. Establish `hk : ∀ P : HeightOneSpectrum (𝓞 E), P.valuation E k * Valued.v (locU P y.1 : P.adicCompletion E) = 1` using `fun P => by`.
+
+Rewrite using `[← val_alg, ← map_mul]`. Conclude with `mem_unitI.1 hy P`. Establish `hfin` using `isOfFinOrder_div k fun P => by`. Establish `e1` using `hk P`. Establish `e2` using `hk (bar P)`.
+
+Establish `e3 : c P (locU (bar P) y.1 : (bar P).adicCompletion E) = locU P y.1` using `congrArg Units.val ((hFx _).1 y.2 P)`. Rewrite `e2` using `[← hcv, e3]`. Conclude with `(eq_inv_of_mul_eq_one_left e2).trans (eq_inv_of_mul_eq_one_left e1).symm`. Establish `e1 : infOf (((Neutral.B1.diagUnits E).coprod ((finIdele E).comp (Subgroup.subtype _))) (k, y)) = Units.map (algebraMap E (InfiniteAdeleRing E)).toMonoidHom k` using `Units.ext (mul_one _)`. Establish `e2 : finOf (((Neutral.B1.diagUnits E).coprod ((finIdele E).comp (Subgroup.subtype _))) (k, y)) = Units.map (algebraMap E (Af E)).toMonoidHom k * y.1` using `Units.ext rfl`.
+
+Establish `e3 : ρ (Units.map (algebraMap E (Af E)).toMonoidHom k) = toLoc w (k / Units.map (IsCMField.complexConj E).toRingEquiv.toMonoidHom k)`. Rewrite using `[hρ, map_div]`. Use `congr 1`. Conclude with `Units.ext (hca w k)`. Rewrite using `[hψ, e1, e2, map_mul, hρF _ y.2, mul_one, e3, hc4 _ hfin]`.
+
+Rewrite using `[MonoidHom.inv_apply, MonoidHom.one_apply, eq_comm, mul_inv_eq_one, MonoidHom.finsetProd_apply]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hi3, Units.coe_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← IsCMField.complexEmbedding_complexConj]`.
+
+Use the proof step `simp)`. Set `X : HChar E` to `⟨χ, h1, fun k => by simpa using h5 (k, 1)⟩`. Establish `hloc : ∀ P (x : (P.adicCompletion E)ˣ), Valued.v (x : P.adicCompletion E) = 1 → X.loc P x = ch (ρ (single P x))`. Introduce `P x hx`. Establish `e1 : infOf (finIdele E (single P x)) = 1` using `Units.ext rfl`.
+
+Establish `e2 : finOf (finIdele E (single P x)) = single P x` using `Units.ext rfl`. Express the relevant statement in the definitionally equal form `χ (finIdele E (single P x)) = _`. Rewrite using `[h4 _ (finIdele_mem (suppAt_single P x) (by rw [single_self, hx])), hψ, e1, e2, map_one, one_mul]`. Establish `hinf : ∀ x : Ideles E, finOf x = 1 → χ x = ψi (infOf x)` using `fun x hx => by`. Rewrite using `[h4 _ (mem_unitI.2 fun P => by rw [hx]; exact map_one _), hψ, hx, map_one, map_one, mul_one]`.
+
+Establish `hu1 : ∀ P, Over P v → toLoc P u ∈ cong (Valued.v : Valuation (P.adicCompletion E) ℤᵐ⁰) 1` using `fun P hP => by`. Establish `e : (toLoc P u : P.adicCompletion E) = 1 + algebraMap E _ (l : E)`. Express the relevant statement in the definitionally equal form `algebraMap E _ (1 + (l : E)) = _`. Rewrite using `[map_add, map_one]`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [e]`.
+
+Use `Valuation.map_one_add_of_lt _ ?_` and prove the remaining obligations. Rewrite using `[val_alg, hval P hP, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Rewrite using `[add_sub_cancel_left, val_alg, hval P hP]`. Simplify using the standard rewrite rules.
+
+Use `⟨X, h3, ⟨fun q k => ?_, fun q k => ?_⟩, (hasInfRatio_iff _ _ _).2 fun k => ?_, fun q P hP => ⟨by simp, fun _ => ?_⟩⟩` and prove the remaining obligations. Establish `hm : ∀ Q, Q ∈ Formalism.L2.Host.aboveF (L` using `E) (maximalRealSubfield E) q ↔ Over Q q := fun Q => by`. Unfold `Formalism.L2.Host.aboveF`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `HeightOneSpectrum.ext_iff`.
+
+Establish `hy : ∏ P ∈ Formalism.L2.Host.aboveF (L` using `E) (maximalRealSubfield E) q, single P (toLoc P (Formalism.L2.Host.upF (maximalRealSubfield E) k)) ∈ Fx := (hFx _).2 fun Q => by`. Rewrite using `[locU_prod, locU_prod]`. Distinguish the cases in `hQ : Over Q q`. Rewrite using `[if_pos ((hm _).2 hQ), if_pos ((hm _).2 (over_bar hQ))]`. Conclude with `hcF Q _ (k : maximalRealSubfield E).2`.
+
+Rewrite using `[if_neg (fun h => hQ ((hm _).1 h)), if_neg, map_one]`. Introduce `h`. Establish `e : Over (bar Q) (Q.under (OF E))` using `over_bar rfl`. Conclude with `hQ (Eq.trans (Eq.symm e) ((hm _).1 h))`. Use `h5 (1, ⟨_, hy⟩)` as an intermediate fact.
+
+Simplify using `only [MonoidHom.coprod_apply, map_one, one_mul, MonoidHom.comp_apply, Subgroup.subtype_apply, map_prod, MonoidHom.one_apply] at this`. Unfold `Formalism.L2.Host.HChar.resFin`. Rewrite using `[MonoidHom.finsetProd_apply]`. Conclude with `this`. Unfold `Formalism.L2.Host.HChar.resInf`.
+
+Rewrite using `[MonoidHom.finsetProd_apply]`. Use `Finset.prod_eq_one fun t _ => ?_` and prove the remaining obligations. Use `(hinf _ (Units.ext rfl)).trans (hi4 _ (k : maximalRealSubfield E).2 _ fun t' => ?_)` and prove the remaining obligations. Distinguish the cases in `h : t' = t`. Substitute `h` using the available equality.
+
+Conclude with `Or.inr (Pi.mulSingle_eq_same (M := fun w : InfinitePlace E => w.Completion) _ _)`. Conclude with `Or.inl (Pi.mulSingle_eq_of_ne (M := fun w : InfinitePlace E => w.Completion) h _)`. Rewrite using `[← hi3]`. Express the relevant statement in the definitionally equal form `((χ (infDiag k) : ℂˣ) : ℂ) = _`. Rewrite using `[infDiag_eq]`.
+
+Conclude with `congrArg Units.val (hinf _ (Units.ext rfl))`. Distinguish the cases in `hq : q = v`. Substitute `hq` using the available equality. Establish `e : expIn (q.asIdeal ^ 2) q = 2` using `multiplicity_pow_self q.ne_bot (fun h => q.isPrime.ne_top (Ideal.isUnit_iff.1 h)) 2`. Rewrite using `[e]`.
+
+Break down `eq_or_eq_bar hw hP with rfl | rfl` into its components or cases. Establish `e2 : ∀ x, ρ (single P x) = x` using `fun x => by`. Rewrite using `[hρ, locU_single, locU_of_supp (suppAt_single P x) hbw, map_one, div_one]`. Use `expAt_two (fun x h h' => ?_) (fun h => hc5 ?_)` and prove the remaining obligations. Rewrite using `[hloc P x h, e2]`.
+
+Conclude with `hc3 x ⟨h, h'⟩`. Rewrite using `[← e2 (toLoc P u), ← hloc P _ (hu1 P hP).1]`. Conclude with `h _ (hu1 P hP).1 (hu1 P hP).2`. Establish `e2 : ∀ x, ρ (single (bar w) x) = (Units.map (c w).toMonoidHom x)⁻¹` using `fun x => by`. Rewrite using `[hρ, locU_single, locU_of_supp (suppAt_single _ x) hbw.symm, one_div]`.
+
+Use `expAt_two (fun x h h' => ?_) (fun h => hc5 ?_)` and prove the remaining obligations. Rewrite using `[hloc _ x h, e2, map_inv, inv_eq_one]`. Use `hc3 _ ⟨(hcv w _).trans h, ?_⟩` and prove the remaining obligations. Rewrite `h'` using `[← hcv w, map_sub, map_one]`. Conclude with `h'`.
+
+Use `h _ (hu1 _ hP).1 (hu1 _ hP).2` as an intermediate fact. Rewrite `this` using `[hloc _ _ (hu1 _ hP).1, e2, map_inv, inv_eq_one, hcF w u (add_mem (one_mem _) (natCast_mem _ l))]`. Then use the resulting hypothesis. Establish `e : expIn (v.asIdeal ^ 2) q = 0` using `multiplicity_eq_zero.2 fun h => hq (HeightOneSpectrum.ext (v.isMaximal.eq_of_le q.isPrime.ne_top (Ideal.dvd_iff_le.1 (q.prime.dvd_of_dvd_pow h))).symm)`. Establish `hn : ∀ Q, Over Q v → Q ≠ P` using `fun Q hQ h => hq (HeightOneSpectrum.ext (Eq.trans (Eq.symm hP) (h ▸ hQ)))`. Rewrite using `[e, expAt_zero_iff]`.
+
+Introduce `x hx`. Rewrite using `[hloc P x hx, hρ, locU_of_supp (suppAt_single P x) (hn w hw), locU_of_supp (suppAt_single P x) (hn _ (over_bar hw))]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isValChar (E : Type) [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I] (φ : I → E →+* ℂ)
     (_hφ : IsCMType φ) (s : ℕ) (κ : I → ℕ) (v : HeightOneSpectrum (OF E)) (hv : IsBaseCond (v.asIdeal ^ 2)) :
     ∃ χ : HChar E, IsValChar φ s κ (v.asIdeal ^ 2) ∅ χ := by

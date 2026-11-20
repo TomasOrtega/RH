@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ ρ v h`. Set `H : Subgroup G` to `{ carrier := {k : G | ρ k v = v} one_mem' := by simp mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`.
+
+Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `h1 : ρ a⁻¹ (ρ a v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Rewrite using `[ha] at h1 }` and apply the resulting hypothesis. Conclude with `H.isOpen_of_mem_nhds h`.
+-/
 theorem UpperTheory.Reformulated.B.StabilizerIsOpen.stab_open.{u_1, u_2} :
     ∀ {G : Type u_1} {V : Type u_2} [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G]
     [inst_3 : AddCommGroup V] [inst_4 : _root_.Module ℂ V] (ρ : Representation ℂ G V) (v : V),

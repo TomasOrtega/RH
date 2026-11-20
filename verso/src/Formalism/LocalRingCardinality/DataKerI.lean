@@ -52,6 +52,9 @@ def nuD (D : D7) (u : D.what₂.Word) (i : ℕ) (z : Bool × HH D) : YoungDiagra
     refine ⟨⟨lt_of_le_of_lt hb1 h1, lt_of_le_of_lt hb2 h2⟩, fun r' hr' => ?_⟩
     exact lt_of_le_of_lt (by exact_mod_cast hb2) (h3 r' (le_trans hr' hb1))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Establish `hmem : (D.R.N i, 0) ∈ nuD D u i z` using `YoungDiagram.mem_iff_lt_colLen.2 (not_le.1 hlt)`. Establish `: (D.R.N i, 0) ∈ (nuD D u i z).cells` using `hmem`. Simplify using `only [nuD, Finset.mem_filter, Finset.mem_product, Finset.mem_range, lt_irrefl, false_and] at this`.
+-/
 theorem nuD_rows (D : D7) (u : D.what₂.Word) (i : ℕ) (z : Bool × HH D) : (nuD D u i z).colLen 0 ≤ D.R.N i := by
   by_contra hlt
   have hmem : (D.R.N i, 0) ∈ nuD D u i z := YoungDiagram.mem_iff_lt_colLen.2 (not_le.1 hlt)

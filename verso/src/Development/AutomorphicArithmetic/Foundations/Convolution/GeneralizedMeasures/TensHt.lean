@@ -9,10 +9,16 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.Spherical
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocalHeightDeterminant.norm_det_le_pow g`.
+-/
 private theorem norm_det_le_pow {R : Type*} [NormedField R] [IsUltrametricDist R] {n : ℕ} (g : GL (Fin n) R) :
     ‖(g : Matrix (Fin n) (Fin n) R).det‖ ≤ locHeight g ^ n :=
   _root_.UpperTheory.Reformulated.B.LocalHeightDeterminant.norm_det_le_pow g
 
+/- English proof (translation)
+Use `congrArg norm (show (h : Matrix (Fin n) (Fin n) R).det * ((h⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).det = 1 by` as an intermediate fact. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one])`. Rewrite `this` using `[norm_mul, H, one_mul, norm_one]`. Then use the resulting hypothesis.
+-/
 private theorem norm_det_inv {R : Type*} [NormedField R] {n : ℕ} (h : GL (Fin n) R)
     (H : ‖(h : Matrix (Fin n) (Fin n) R).det‖ = 1) :
     ‖((h⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).det‖ = 1 := by
@@ -25,6 +31,11 @@ section SlopeTestRemainingChoices
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Use `le_antisymm (Valued.toNormedField.norm_le_one_iff.2 h.le) ?_` and prove the remaining obligations. Establish `h2 : ‖y⁻¹‖ ≤ 1` using `Valued.toNormedField.norm_le_one_iff.2 (by rw [map_inv₀, h, inv_one])`.
+
+Rewrite `h2` using `[norm_inv]`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 hy)).1 h2`.
+-/
 private theorem norm_eq_one_of_v {w : Pl E} {y : w.adicCompletion E} (h : Valued.v y = 1) : ‖y‖ = 1 := by
   have hy : y ≠ 0 := by
     rintro rfl
@@ -34,25 +45,52 @@ private theorem norm_eq_one_of_v {w : Pl E} {y : w.adicCompletion E} (h : Valued
   rw [norm_inv] at h2
   exact (inv_le_one₀ (norm_pos_iff.2 hy)).1 h2
 
+/- English proof (translation)
+Use `show (AdelicGLn.infiniteEquiv E n (AdelicGLn.prodEquiv E n (finEmb E n x)).1) w = 1`. Rewrite using `[AutomorphicForm.prodEquiv_finEmb, map_one]`. Both sides reduce to the same expression.
+-/
 private theorem infAt_finEmb' (w : InfinitePlace E) (x : AdelicGLn.FiniteAdelicGL E n) :
     infAt w (finEmb E n x) = 1 := by
   show (AdelicGLn.infiniteEquiv E n (AdelicGLn.prodEquiv E n (finEmb E n x)).1) w = 1
   rw [AutomorphicForm.prodEquiv_finEmb, map_one]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Prove the components needed by the constructor for the conclusion. Both sides reduce to the same expression.
+-/
 private theorem liesOver_of_below {w : Pl E} {q : Pl F} (h : AdeleBaseChange.below F w = q) :
     w.asIdeal.LiesOver q.asIdeal := by
   subst h
   constructor
   rfl
 
+/- English proof (translation)
+Simplify using `only [heightOff, infAt_inv, finAt_inv, locHeight_inv]`.
+-/
 private theorem heightOff_inv (q : Pl F) (g : AdelicGLn.AdelicGL E n) : heightOff q g⁻¹ = heightOff q g := by
   simp only [heightOff, infAt_inv, finAt_inv, locHeight_inv]
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (Finset.prod_nonneg fun w _ => pow_nonneg (locHeight_pos _).le _) (finprod_nonneg fun w => finprod_nonneg fun _ => (locHeight_pos _).le)`.
+-/
 private theorem heightOff_nonneg (q : Pl F) (g : AdelicGLn.AdelicGL E n) : 0 ≤ heightOff q g :=
   mul_nonneg (Finset.prod_nonneg fun w _ => pow_nonneg (locHeight_pos _).le _)
     (finprod_nonneg fun w => finprod_nonneg fun _ => (locHeight_pos _).le)
 
+/- English proof (translation)
+Use `set X := finEmb E n x with hX`. Establish `hi : ∀ w : InfinitePlace E, ((AdelicGLn.det E n X : AdeleRing (𝓞 E) E)).1 w = 1` using `fun w => by`. Establish `h : ((AdelicGLn.det E n X : AdeleRing (𝓞 E) E)).1 w = (infAt w X : Matrix (Fin n) (Fin n) w.Completion).det`. Rewrite using `[AdelicGLn.coe_det, ← infEval_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Rewrite using `[h, hX, infAt_finEmb']`. Simplify using the standard rewrite rules. Establish `hf : ∀ v : Pl E, ((AdelicGLn.det E n X : AdeleRing (𝓞 E) E)).2 v = (finAt v X : Matrix (Fin n) (Fin n) (v.adicCompletion E)).det` using `fun v => by`. Rewrite using `[AdelicGLn.coe_det, ← finEval_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+
+Establish `hg : ∀ w : Pl E, (∏ᶠ (_ : AdeleBaseChange.below F w ≠ q), locHeight (finAt w X)) = if AdeleBaseChange.below F w ≠ q then locHeight (finAt w X) else 1` using `fun w => finprod_eq_if`. Establish `hP : (∏ w : InfinitePlace E, locHeight (infAt w X) ^ w.mult) = 1` using `Finset.prod_eq_one fun w _ => by rw [hX, infAt_finEmb', locHeight_one, one_pow]`. Establish `h1` using `IdeleGroup.finite_mulSupport_norm (AdelicGLn.det E n X)`. Establish `h2` using `finite_mulSupport_locHeight_finAt X`. Establish `e1` using `finprod_eq_prod_of_mulSupport_subset (fun v : Pl E => ‖((AdelicGLn.det E n X : AdeleRing (𝓞 E) E)).2 v‖) (s := (h1.union h2).toFinset) (fun v hv => by simp only [Set.Finite.coe_toFinset]; exact Or.inl hv)`.
+
+Establish `e2` using `finprod_eq_prod_of_mulSupport_subset (fun w : Pl E => if AdeleBaseChange.below F w ≠ q then locHeight (finAt w X) else 1) (s := (h1.union h2).toFinset) (fun v hv => by`. Simplify using `only [Set.Finite.coe_toFinset]`. Use `Or.inr fun h3 => hv ?_` and prove the remaining obligations. Simplify using `only`. Use `split_ifs`.
+
+Conclude with `h3`. Use the proof step `rfl)`. Rewrite using `[show (detModule E n X : ℝ) = (IdeleGroup.ideleModule E (AdelicGLn.det E n X) : ℝ) from rfl, IdeleGroup.ideleModule_eq, heightOff, hP, one_mul]`. Simplify using `only [hg, hi, norm_one, one_pow, Finset.prod_const_one, one_mul]`. Rewrite using `[e1, e2, ← Finset.prod_pow]`.
+
+Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hf]`. Distinguish the cases in `hb : AdeleBaseChange.below F v = q`. Use `hq ⟨v, liesOver_of_below hb⟩` as an intermediate fact. Simplify using `only [ne_eq, hb, not_true_eq_false, if_false, one_pow]`.
+
+Conclude with `this.le`. Rewrite using `[if_pos hb]`. Conclude with `norm_det_le_pow _`.
+-/
 private theorem module_le (q : Pl F) (x : AdelicGLn.FiniteAdelicGL E n)
     (hq : ∀ w : PlacesOver E q, ‖((finAt w.1 (finEmb E n x) : GL (Fin n) (w.1.adicCompletion E)) :
       Matrix (Fin n) (Fin n) (w.1.adicCompletion E)).det‖ = 1) :
@@ -100,6 +138,41 @@ private theorem module_le (q : Pl F) (x : AdelicGLn.FiniteAdelicGL E n)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n hn q`. Take `⟨D, N, -, hD⟩` from `UpperTheory.adelicNorm_det_le_height_pow E n`. Use `set m := 2 * Fintype.card (InfinitePlace E) with hm`. Use `⟨N * m + 1, fun Yf hYf => ?_⟩` and prove the remaining obligations. Use `set M : ℝ := max 1 D with hMdef`.
+
+Establish `hM : 1 ≤ M` using `le_max_left _ _`. Establish `hM0 : 0 ≤ M` using `zero_le_one.trans hM`. Establish `hYf0 : 0 ≤ Yf` using `zero_le_one.trans hYf`. Use `⟨heightConst E n * M ^ m * Yf ^ (n * m) * Yf, one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le one_le_heightConst (one_le_pow₀ hM)) (one_le_pow₀ hYf)) hYf, fun β e Y hY hβ he g hg => ?_⟩` and prove the remaining obligations. Establish `hY0 : 0 ≤ Y` using `zero_le_one.trans hY`.
+
+Establish `hg' : kbar β (infPart E n (g : AdelicGLn.AdelicGL E n)) * e (finPart E n (g : AdelicGLn.AdelicGL E n)) ≠ 0`. Use `(UpperTheory.ConvolutionTheory.Tf.tensApply E n hn β e).1 g` as an intermediate fact. Rewrite `hg` using `[this]`. Conclude with `hg`. Establish `he0 : e (finPart E n (g : AdelicGLn.AdelicGL E n)) ≠ 0` using `right_ne_zero_of_mul hg'`.
+
+Use `⟨?_, he0⟩` and prove the remaining obligations. Establish `hk` using `left_ne_zero_of_mul hg'`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, β (infPart E n (g : AdelicGLn.AdelicGL E n) * zInf E n s) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hk (by simp [kbar, hc])`. Use `set x := finPart E n (g : AdelicGLn.AdelicGL E n) with hx`. Use `set G := infEmb E n (infPart E n (g : AdelicGLn.AdelicGL E n)) with hG`. Use `set X := finEmb E n x with hX`. Establish `hGX : G * X = (g : AdelicGLn.AdelicGL E n)` using `infEmb_infPart_mul_finEmb_finPart _`.
+
+Use `set A := infEmb E n (infPart E n (g : AdelicGLn.AdelicGL E n) * zInf E n s) with hAdef`. Establish `hA : A = G * centralSection E n s` using `by rw [hAdef, map_mul, infEmb_zInf]`. Establish `hAY : AutomorphicForm.height A ≤ Y` using `hβ _ hs`. Take `⟨hXY, hdet⟩` from `he x he0`. Establish `hq : ∀ w : PlacesOver E q, ‖((finAt w.1 (finEmb E n x) : GL (Fin n) (w.1.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.1.adicCompletion E)).det‖ = 1` using `fun w => norm_eq_one_of_v (hdet w)`.
+
+Establish `hq' : ∀ w : PlacesOver E q, ‖((finAt w.1 (finEmb E n x⁻¹) : GL (Fin n) (w.1.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.1.adicCompletion E)).det‖ = 1` using `fun w => by`. Rewrite using `[map_inv, finAt_inv]`. Conclude with `norm_det_inv _ (hq w)`. Establish `hg1 : detModule E n (g : AdelicGLn.AdelicGL E n) = 1` using `mem_normOneGL_iff_detModule.1 g.2`. Establish `hGX1 : detModule E n G * detModule E n X = 1` using `by rw [← map_mul, hGX, hg1]`.
+
+Establish `hs_eq : detModule E n A * detModule E n X = s`. Rewrite using `[hA, map_mul, detModule_centralSection hn, mul_right_comm, hGX1, one_mul]`. Establish `hsR : (detModule E n A : ℝ) * (detModule E n X : ℝ) = s` using `congrArg Subtype.val hs_eq`. Establish `hsR' : (detModule E n A⁻¹ : ℝ) * (detModule E n X⁻¹ : ℝ) = (s : ℝ)⁻¹`. Rewrite using `[map_inv, map_inv, Positive.coe_inv, Positive.coe_inv, ← mul_inv, hsR]`.
+
+Establish `hb : ∀ B : AdelicGLn.AdelicGL E n, AutomorphicForm.height B ≤ Y → (detModule E n B : ℝ) ≤ M * Y ^ N` using `fun B hB => (hD B).trans (mul_le_mul (le_max_right _ _) (pow_le_pow_left₀ (height_pos B).le hB N) (pow_nonneg (height_pos B).le N) hM0)`. Establish `hxb : (detModule E n X : ℝ) ≤ Yf ^ n` using `(module_le q x hq).trans (pow_le_pow_left₀ (heightOff_nonneg q _) hXY n)`. Establish `hxb' : (detModule E n X⁻¹ : ℝ) ≤ Yf ^ n`. Establish `h` using `module_le q x⁻¹ hq'`. Rewrite `h` using `[map_inv, heightOff_inv]`.
+
+Conclude with `h.trans (pow_le_pow_left₀ (heightOff_nonneg q _) hXY n)`. Use `set L : ℝ := M * Y ^ N * Yf ^ n with hL`. Establish `hL1 : 1 ≤ L` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hM (one_le_pow₀ hY)) (one_le_pow₀ hYf)`. Establish `hMY : 0 ≤ M * Y ^ N` using `mul_nonneg hM0 (pow_nonneg hY0 N)`. Establish `hsL : (s : ℝ) ≤ L`.
+
+Rewrite using `[← hsR]`. Conclude with `mul_le_mul (hb A hAY) hxb (detModule E n X).2.le hMY`. Establish `hsL' : (s : ℝ)⁻¹ ≤ L`. Rewrite using `[← hsR']`. Conclude with `mul_le_mul (hb A⁻¹ (by rwa [height_inv])) hxb' (detModule E n X⁻¹).2.le hMY`.
+
+Establish `hZ : AutomorphicForm.height (centralSection E n s) ≤ L ^ m` using `by set ee : ℝ := ((n * Module.finrank ℚ E : ℝ))⁻¹ with hee`. Establish `he0' : 0 ≤ ee` using `by positivity`. Establish `he1 : ee ≤ 1`. Rewrite using `[hee, ← Nat.cast_mul]`. Conclude with `Nat.cast_inv_le_one _`.
+
+Establish `key : ∀ y : ℝ, 0 ≤ y → y ≤ L → y ^ ee ≤ L` using `fun y hy hyL =>`. Combine the equalities or inequalities in the displayed calculation. Use `height_diagUnits_posIdele_le (K := E) (n := n) (ρ := fun _ => (s : ℝ) ^ ee) (fun _ => Real.rpow_pos_of_pos s.2 ee) hL1 fun _ => ⟨key _ s.2.le hsL, ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.inv_rpow s.2.le]`. Conclude with `key _ (inv_pos.2 s.2).le hsL'`.
+
+Establish `hGh : AutomorphicForm.height G ≤ heightConst E n * Y * L ^ m`. Establish `h1 : G = A * (centralSection E n s)⁻¹` using `by rw [hA, mul_inv_cancel_right]`. Rewrite using `[h1]`. Use `(height_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[height_inv]`.
+
+Establish `hc0 : 0 ≤ heightConst E n` using `zero_le_one.trans one_le_heightConst`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left hAY hc0) hZ (height_pos _).le (mul_nonneg hc0 hY0)`. Establish `e1 : ∀ w, infAt w (g : AdelicGLn.AdelicGL E n) = infAt w G` using `fun w => by`. Rewrite using `[← hGX, infAt_mul, hX, infAt_finEmb', mul_one]`. Establish `e2 : ∀ w, finAt w (g : AdelicGLn.AdelicGL E n) = finAt w X` using `fun w => by`.
+
+Rewrite using `[← hGX, finAt_mul, hG, finAt_infEmb, one_mul]`. Establish `hsplit : heightOff q (g : AdelicGLn.AdelicGL E n) = (∏ w : InfinitePlace E, locHeight (infAt w G) ^ w.mult) * heightOff q X`. Unfold `heightOff`. Simplify using `only [e1, e2, hX, infAt_finEmb', locHeight_one, one_pow, Finset.prod_const_one, one_mul]`. Establish `hPG : (∏ w : InfinitePlace E, locHeight (infAt w G) ^ w.mult) ≤ AutomorphicForm.height G` using `le_mul_of_one_le_right (zero_le_one.trans (one_le_prod_locHeight G)) (one_le_finprod_locHeight G)`.
+
+Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hL, mul_pow, mul_pow, ← pow_mul, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.GM.tensHt : TensHt := by
   classical
   intro F E _ _ _ _ _ n hn q

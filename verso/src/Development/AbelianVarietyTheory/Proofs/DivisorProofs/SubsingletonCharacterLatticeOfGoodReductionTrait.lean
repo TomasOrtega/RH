@@ -18,6 +18,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.GoodRed
 
+/- English proof (translation)
+Introduce `g n o _ ζ F T ξ hξ`. Establish `hB` using `GlobalTheory.isAbelianScheme_pullback_obj ξ F.univ.A F.univ.ab`. Use `haveI := T.U.gen_hom`. Establish `h₁` using `((isGrpPullback_of_iso T.U.gen).comp T.cart).congr ((Category.id_comp _).trans hξ.symm) rfl`. Establish `h₂` using `(isGrpPullback_pullback ((Over.pullback ξ).obj F.univ.A) (jK T.V)).comp (isGrpPullback_pullback F.univ.A ξ)`.
+
+Take `⟨e, he, -⟩` from `grpPullback_iso h₁ h₂`. Take `⟨E, -, -⟩` from `TraitUniq.extIso T.semi (GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hB) e he`. Establish `hp : IsProper T.G.hom`. Use `hB.proper` as an intermediate fact. Establish `: IsIso E.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map E.hom))`.
+
+Rewrite using `[← Over.w E.hom]`. Use `infer_instance`. Establish `hmax : (maximalIdeal T.V ^ (0 + 1)).IsMaximal`. Rewrite using `[zero_add, pow_one]`. Use `infer_instance`.
+
+Establish `hF : IsField (T.V ⧸ maximalIdeal T.V ^ (0 + 1))` using `(Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 hmax`. Use `letI := hF.toField`. Set `k` to `T.U.gt 0`. Establish `m : Mono k.i` using `⟨fun a b h => k.isKernel.hom_ext h (CartesianMonoidalCategory.toUnit_unique _ _)⟩`. Conclude with `ArcNotAbelian.subsingleton_of_mem_abLocus T.G T.semi _ hF _ (closedPoint _) (fun _ _ _ _ _ => inferInstance) T.D.toPre.X k.i k.i_hom`.
+-/
 theorem subsingleton_lattice_of_extends : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (T : Trait F)
     (ξ : Sp T.V ⟶ F.X), jK T.V ≫ ξ = T.y → Subsingleton T.D.toPre.X := by
   intro g n o _ ζ F T ξ hξ

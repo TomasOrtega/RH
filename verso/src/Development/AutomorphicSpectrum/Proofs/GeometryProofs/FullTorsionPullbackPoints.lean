@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.TorsPull
 
+/- English proof (translation)
+Establish `: IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom i))` using `GlobalTheory.CompanionTheory.Ar.LieEx.std_of_inj (CommRingCat.ofHom i) i.injective`. Use `GlobalTheory.CompanionTheory.Ar.LieEx.epi_of_surj (Spec.map (CommRingCat.ofHom i)) ?_ a b h` and prove the remaining obligations. Introduce `y`. Establish `hs : Subsingleton (Spec (CommRingCat.of Ω))` using `inferInstanceAs (Subsingleton (PrimeSpectrum Ω))`. Take `⟨x⟩ : Nonempty (Spec (CommRingCat.of Ω'))` from `inferInstanceAs (Nonempty (PrimeSpectrum Ω'))`.
+
+Conclude with `⟨x, Subsingleton.elim _ _⟩`.
+-/
 theorem spMap_cancel {Ω Ω' : Type} [Field Ω] [Field Ω'] (i : Ω →+* Ω') {Z : Scheme.{0}}
     (a b : Spec (CommRingCat.of Ω) ⟶ Z) (h : spMap i ≫ a = spMap i ≫ b) : a = b := by
   have : IsSchemeTheoreticallyDominant (Spec.map (CommRingCat.ofHom i)) :=
@@ -30,12 +35,32 @@ theorem spMap_cancel {Ω Ω' : Type} [Field Ω] [Field Ω'] (i : Ω →+* Ω') {
     inferInstanceAs (Nonempty (PrimeSpectrum Ω'))
   exact ⟨x, Subsingleton.elim _ _⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨u, rfl, hu⟩`.
+-/
 theorem tr_pow {S : Scheme.{0}} {T : Scheme.{0}} {G : Over S} [GrpObj G] {a b : T ⟶ S} (h : a = b)
     (n : ℕ) (u : Over.mk a ⟶ G) (hu : u ^ n = 1) :
     ∃ u' : Over.mk b ⟶ G, u'.left = u.left ∧ u' ^ n = 1 := by
   subst h
   exact ⟨u, rfl, hu⟩
 
+/- English proof (translation)
+Introduce `X X' Ω Ω' _ _ ξ ξ' f i hd G _ _ G' _ _ φ h n hf`. Establish `hd' : ξ' ≫ f = spMap i ≫ ξ` using `hd`. Set `u : Over.mk (ξ' ≫ f) ⟶ Over.mk ξ` to `Over.homMk (spMap i) (by simpa using hd'.symm)`. Set `P : (Over.mk ξ' ⟶ G') →* (Over.mk (ξ' ≫ f) ⟶ G)` to `pushHom h (Over.mk ξ')`. Set `Q : (Over.mk ξ ⟶ G) →* (Over.mk (ξ' ≫ f) ⟶ G)` to `preHom u`.
+
+Establish `rel : ∀ (a : Over.mk ξ' ⟶ G') (c : Over.mk ξ ⟶ G), a.left ≫ φ = spMap i ≫ c.left → P a = Q c` using `fun a c e => Over.OverMorphism.ext e`. Establish `lerp : ∀ (a : Over.mk ξ' ⟶ G') (c : Over.mk ξ ⟶ G), P a = Q c → a.left ≫ φ = spMap i ≫ c.left` using `fun a c e => congrArg (fun z => z.left) e`. Establish `Pinj : Function.Injective P`. Introduce `a a' e`. Establish `e1 : a.left ≫ φ = a'.left ≫ φ` using `congrArg (fun z => z.left) e`.
+
+Establish `w : ∀ b : Over.mk ξ' ⟶ G', b.left ≫ G'.hom = ξ'` using `fun b => by simpa using Over.w b`. Conclude with `Over.OverMorphism.ext (h.1.hom_ext e1 ((w a).trans (w a').symm))`. Establish `Qinj : Function.Injective Q`. Introduce `c c' e`. Establish `e1 : spMap i ≫ c.left = spMap i ≫ c'.left` using `congrArg (fun z => z.left) e`.
+
+Conclude with `Over.OverMorphism.ext (spMap_cancel i _ _ e1)`. Use `⟨GlobalTheory.CompanionTheory.Ar.HcptPull.fullTorsion_of_dominates X X' Ω Ω' ξ ξ' f i G G' φ n hd h hf, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hxw : y.left ≫ G.hom = ξ` using `by simpa using Over.w y`. Establish `hw : (spMap i ≫ y.left) ≫ G.hom = ξ' ≫ f` using `by rw [Category.assoc, hxw, hd']`.
+
+Set `y' : Over.mk ξ' ⟶ G'` to `Over.homMk (h.1.lift (spMap i ≫ y.left) ξ' hw) (h.1.lift_snd _ _ _)`. Establish `e : y'.left ≫ φ = spMap i ≫ y.left` using `h.1.lift_fst _ _ _`. Use `⟨y', Pinj ?_, e⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_one, rel y' y e, ← map_pow, hy, map_one]`. Introduce `y' hy'`.
+
+Establish `hP : (P y') ^ n = 1` using `by rw [← map_pow, hy', map_one]`. Take `⟨g, hl, hg⟩` from `tr_pow hd' n (P y') hP`. Take `⟨y, hy⟩` from `hf Ω' i g hg`. Establish `e : y'.left ≫ φ = spMap i ≫ y.left` using `hl.symm.trans hy`. Use `⟨y, Qinj ?_, e⟩` and prove the remaining obligations.
+
+Rewrite using `[map_pow, map_one, ← rel y' y e, hP]`. Introduce `a a' c c' e e'`. Apply `lerp` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, rel a c e, rel a' c' e']`. Introduce `a a' c e e'`.
+
+Conclude with `Pinj ((rel a c e).trans (rel a' c e').symm)`. Introduce `a c c' e e'`. Conclude with `Qinj ((rel a c e).symm.trans (rel a c' e'))`.
+-/
 theorem torsion_of_pullback : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω'), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → ∀ (G : Over X) [GrpObj G] [IsCommMonObj G] (G' : Over X') [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ n : ℕ, FullTorsion G ξ n →
   FullTorsion G' ξ' n ∧
   (∀ y : Over.mk ξ ⟶ G, y ^ n = 1 → ∃ y' : Over.mk ξ' ⟶ G', y' ^ n = 1 ∧ y'.left ≫ φ = spMap i ≫ y.left) ∧

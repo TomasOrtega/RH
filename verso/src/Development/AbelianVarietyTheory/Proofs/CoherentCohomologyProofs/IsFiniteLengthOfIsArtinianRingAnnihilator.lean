@@ -22,6 +22,11 @@ section Topology
 
 variable {T : Type*} [TopologicalSpace T] [QuasiSober T] [NoetherianSpace T]
 
+/- English proof (translation)
+Take `⟨C, hC, hc, hi, rfl⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hZ`. Use `hC.to_subtype` as an intermediate fact. Use `⟨Set.range fun c : C => (hi c.1 c.2).genericPoint, Set.finite_range _, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨c.1, c.2, ((hi c.1 c.2).isGenericPoint_genericPoint (hc c.1 c.2)).mem⟩`.
+
+Introduce and unpack `x ⟨c, hc', hx⟩`. Conclude with `⟨_, ⟨⟨c, hc'⟩, rfl⟩, ((hi c hc').isGenericPoint_genericPoint (hc c hc')).specializes hx⟩`.
+-/
 theorem exists_finite_specializes_of_isClosed {Z : Set T} (hZ : IsClosed Z) :
     ∃ S : Set T, S.Finite ∧ S ⊆ Z ∧ ∀ x ∈ Z, ∃ y ∈ S, y ⤳ x := by
   obtain ⟨C, hC, hc, hi, rfl⟩ := NoetherianSpace.exists_finite_set_isClosed_irreducible hZ
@@ -32,6 +37,17 @@ theorem exists_finite_specializes_of_isClosed {Z : Set T} (hZ : IsClosed Z) :
   · rintro x ⟨c, hc', hx⟩
     exact ⟨_, ⟨⟨c, hc'⟩, rfl⟩, ((hi c hc').isGenericPoint_genericPoint (hc c hc')).specializes hx⟩
 
+/- English proof (translation)
+Proceed by induction on `n generalizing Z with`. Consider the case `zero`. Establish `h : IsEmpty Z` using `topologicalKrullDim_eq_bot_iff.1 (WithBot.lt_coe_bot.1 hn)`. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun x hx => h.elim ⟨x, hx⟩⟩`. Consider the case `succ n ih`.
+
+Take `⟨S, hS, hSZ, hgen⟩` from `exists_finite_specializes_of_isClosed hZ`. Take `⟨A, hA, hSA⟩` from `hP S hS`. Establish `hZ' : IsClosed (Z \ A)` using `hZ.sdiff A.2`. Establish `h₁ : topologicalKrullDim (Z \ A :) + 1 ≤ topologicalKrullDim Z` using `topologicalKrullDim_add_one_le hZ' hZ fun x hx =>`. Establish `⟨y, hy, hyx⟩` using `hgen x hx.1`.
+
+Use the proof step `⟨y, hSZ hy, fun h => h.2 (hSA hy), hyx⟩`. Establish `h₂ : topologicalKrullDim (Z \ A :) < n` using `by by_contra! h`. Use `(h₁.trans_lt hn).not_ge ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_succ]`. Conclude with `add_le_add_left h 1`.
+
+Take `⟨U, hU, hc⟩` from `ih hZ' h₂`. Use `⟨Fin.cons A U, fun i => Fin.cases hA hU i, fun x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxA : x ∈ A`. Conclude with `⟨0, hxA⟩`. Take `⟨i, hi⟩` from `hc x ⟨hx, hxA⟩`.
+
+Conclude with `⟨i.succ, hi⟩`.
+-/
 theorem exists_cover_of_topologicalKrullDim_lt (P : Opens T → Prop)
     (hP : ∀ S : Set T, S.Finite → ∃ A, P A ∧ S ⊆ A) (n : ℕ) {Z : Set T} (hZ : IsClosed Z)
     (hn : topologicalKrullDim Z < n) :
@@ -66,11 +82,17 @@ section Vanishing
 
 variable {X : Scheme.{u}} {F : X.Modules}
 
+/- English proof (translation)
+The claim follows from `subsingleton_of_forall_eq 0 fun s => section_eq_zero_of_germ s fun x hx => (notMem_support_iff.1 (h x hx)).elim _ _`.
+-/
 theorem QCoh.subsingleton_sections_of_notMem_support {W : X.Opens}
     (h : ∀ x ∈ W, x ∉ support F) : Subsingleton Γ(F, W) :=
   subsingleton_of_forall_eq 0 fun s => section_eq_zero_of_germ s fun x hx =>
     (notMem_support_iff.1 (h x hx)).elim _ _
 
+/- English proof (translation)
+Establish `hz : IsZero (F.restrict W.ι)`. Rewrite using `[← support_eq_empty_iff, support_restrict]`. Conclude with `Set.eq_empty_iff_forall_notMem.2 fun y hy => h _ y.2 hy`. Use `cohOn.subsingleton_of_isZero hz ⊤ n` as an intermediate fact. Conclude with `(cohOn.restrictEquiv ℤ (fun r => (map_intCast _ r).trans (eq_intCast _ r).symm) F W.ι_image_top n).toEquiv.subsingleton`.
+-/
 theorem cohOn.subsingleton_of_notMem_support {W : X.Opens} (h : ∀ x ∈ W, x ∉ support F) (n : ℕ) :
     Subsingleton (cohOn F W n) := by
   have hz : IsZero (F.restrict W.ι) := by
@@ -80,6 +102,19 @@ theorem cohOn.subsingleton_of_notMem_support {W : X.Opens} (h : ∀ x ∈ W, x �
   exact (cohOn.restrictEquiv ℤ (fun r => (map_intCast _ r).trans (eq_intCast _ r).symm) F
     W.ι_image_top n).toEquiv.subsingleton
 
+/- English proof (translation)
+Set `W : X.Opens` to `⟨Zᶜ, hZ.isOpen_compl⟩`. Set `U' : Option ι → X.Opens` to `fun o => o.elim W U`. Establish `hW (s : Finset (Option ι)) (hs : none ∈ s) : ∀ x ∈ cechOpen ⊤ U' s, x ∉ support F` using `fun x hx h => (show cechOpen ⊤ U' s ≤ W from inf_le_right.trans (iInf₂_le none hs)) hx (hF h)`. Establish `hcov : ⊤ ≤ ⨆ o, U' o` using `fun x _ => Opens.mem_iSup.2 <| by`. Distinguish the cases in `hx : x ∈ Z`.
+
+Take `⟨i, hi⟩` from `hc x hx`. Conclude with `⟨some i, hi⟩`. Conclude with `⟨none, hx⟩`. Establish `ha : CechAcyclicMod ⊤ U' F` using `fun s hs q => by`. Distinguish the cases in `h : none ∈ s`.
+
+Conclude with `cohOn.subsingleton_of_notMem_support (hW s h) _`. Use `cohOn.subsingleton_of_isAffineOpen F ?_ q.succ_pos` and prove the remaining obligations. Take `⟨t, rfl⟩ : ∃ t : Finset ι, t.map Function.Embedding.some = s` from `⟨s.eraseNone, by rw [Finset.map_some_eraseNone, Finset.erase_eq_of_notMem h]⟩`. Rewrite using `[cechOpen_of_nonempty (fun _ => le_top) hs]`. Rewrite using `[Finset.map_eq_image, Finset.iInf_finset_image]`.
+
+Conclude with `hU t (Finset.map_nonempty.1 hs)`. Use `letI : LinearOrder (Option ι) := LinearOrder.lift' _ (Fintype.equivFin _).injective`. Establish `h₀ : IsZero ((cech ℤ F ⊤ U').X n)`. Rewrite using `[cech_X, ModuleCat.isZero_iff_subsingleton]`. Use `@Pi.instSubsingleton _ _ fun s => ?_` and prove the remaining obligations.
+
+Use `(sectionsOn.toΓ F _).toEquiv.subsingleton_congr.2 (subsingleton_sections_of_notMem_support (hW s.1 ?_))` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `Finset.card_le_univ s.1.eraseNone` as an intermediate fact. Rewrite `this` using `[Finset.card_eraseNone_of_not_mem h, s.2]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h₁ : IsZero (cechH ℤ F ⊤ U' n)` using `((cech ℤ F ⊤ U').exactAt_iff_isZero_homology n).1 (ShortComplex.exact_of_isZero_X₂ _ h₀)`. Use `ModuleCat.isZero_iff_subsingleton.1 h₁` as an intermediate fact. Conclude with `(cechHEquivCohOn ℤ hcov ha n).symm.toEquiv.subsingleton`.
+-/
 theorem coh.subsingleton_of_support_subset {ι : Type} [Fintype ι] {U : ι → X.Opens}
     (hU : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)) [F.IsQuasicoherent]
     {Z : Set X} (hZ : IsClosed Z) (hF : support F ⊆ Z) (hc : ∀ x ∈ Z, ∃ i, x ∈ U i) {n : ℕ}
@@ -124,6 +159,11 @@ section Ample
 
 variable {X : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Take `⟨U, hU, hc⟩` from `exists_cover_of_topologicalKrullDim_lt (fun A : X.Opens => ∃ m, 1 ≤ m ∧ ∃ s : (lbPow L m).Sec, nonzeroLocus s = A ∧ IsAffineOpen A) (fun S hS => by`. Take `⟨m, hm, s, h₁, -, h₂⟩` from `h.exists_affine_finite_subset hS (U := ⊤) (Set.subset_univ _)`. Conclude with `⟨_, ⟨m, hm, s, rfl, h₂⟩, h₁⟩) n hZ hn`. Use `choose m hm s hs ha using hU`. Take `⟨N, hN, t, ht⟩` from `exists_common_pow m hm s`.
+
+Apply the tactic sequence `refine ⟨N, hN, t, fun i => ?_, fun x hx => ?_⟩ <;> simp only [ht, hs]`. Use `exacts [ha i, hc x hx]`.
+-/
 theorem IsAmpleLB.exists_cover_of_dim_lt [NoetherianSpace X] (h : IsAmpleLB L) {Z : Set X}
     (hZ : IsClosed Z) {n : ℕ} (hn : topologicalKrullDim Z < n) :
     ∃ N, 1 ≤ N ∧ ∃ s : Fin n → (lbPow L N).Sec, (∀ i, IsAffineOpen (nonzeroLocus (s i))) ∧
@@ -138,6 +178,9 @@ theorem IsAmpleLB.exists_cover_of_dim_lt [NoetherianSpace X] (h : IsAmpleLB L) {
   refine ⟨N, hN, t, fun i => ?_, fun x hx => ?_⟩ <;> simp only [ht, hs]
   exacts [ha i, hc x hx]
 
+/- English proof (translation)
+Proceed by induction on `ht using Finset.Nonempty.cons_induction with`. Consider the case `singleton i => simpa using ha i`. Consider the case `cons i t hi _ ih => classical`. Rewrite using `[Finset.cons_eq_insert, Finset.iInf_insert]`. Conclude with `isAffineOpen_nonzeroLocus_inf hL _ ih`.
+-/
 theorem isAffineOpen_finset_biInf_nonzeroLocus {ι : Type*} (hL : L.IsLB) {s : ι → L.Sec}
     (ha : ∀ i, IsAffineOpen (nonzeroLocus (s i))) (t : Finset ι) (ht : t.Nonempty) :
     IsAffineOpen (⨅ i ∈ t, nonzeroLocus (s i)) := by
@@ -148,6 +191,9 @@ theorem isAffineOpen_finset_biInf_nonzeroLocus {ι : Type*} (hL : L.IsLB) {s : �
     rw [Finset.cons_eq_insert, Finset.iInf_insert]
     exact isAffineOpen_nonzeroLocus_inf hL _ ih
 
+/- English proof (translation)
+Take `⟨N, -, s, ha, hc⟩` from `h.exists_cover_of_dim_lt hZ hn`. Conclude with `coh.subsingleton_of_support_subset (isAffineOpen_finset_biInf_nonzeroLocus (isLB_lbPow h.isLB N) ha) hZ hF hc (Fintype.card_fin n).le`.
+-/
 theorem IsAmpleLB.subsingleton_coh_of_support_subset [NoetherianSpace X] (h : IsAmpleLB L)
     (F : X.Modules) [F.IsQuasicoherent] {Z : Set X} (hZ : IsClosed Z) (hF : support F ⊆ Z) {n : ℕ}
     (hn : topologicalKrullDim Z < n) : Subsingleton (coh F n) := by
@@ -155,11 +201,17 @@ theorem IsAmpleLB.subsingleton_coh_of_support_subset [NoetherianSpace X] (h : Is
   exact coh.subsingleton_of_support_subset
     (isAffineOpen_finset_biInf_nonzeroLocus (isLB_lbPow h.isLB N) ha) hZ hF hc (Fintype.card_fin n).le
 
+/- English proof (translation)
+The claim follows from `have := h.compactSpace have : AlgebraicGeometry.IsNoetherian X := {} inferInstance`.
+-/
 theorem IsAmpleLB.noetherianSpace [IsLocallyNoetherian X] (h : IsAmpleLB L) : NoetherianSpace X :=
   have := h.compactSpace
   have : AlgebraicGeometry.IsNoetherian X := {}
   inferInstance
 
+/- English proof (translation)
+The claim follows from `have := h.noetherianSpace h.subsingleton_coh_of_support_subset F isClosed_univ (Set.subset_univ _) ((topologicalKrullDim_subspace_le X _).trans_lt hn)`.
+-/
 theorem IsAmpleLB.subsingleton_coh_of_dim_lt [IsLocallyNoetherian X] (h : IsAmpleLB L)
     (F : X.Modules) [F.IsQuasicoherent] {n : ℕ} (hn : topologicalKrullDim X < n) :
     Subsingleton (coh F n) :=
@@ -167,11 +219,17 @@ theorem IsAmpleLB.subsingleton_coh_of_dim_lt [IsLocallyNoetherian X] (h : IsAmpl
   h.subsingleton_coh_of_support_subset F isClosed_univ (Set.subset_univ _)
     ((topologicalKrullDim_subspace_le X _).trans_lt hn)
 
+/- English proof (translation)
+The claim follows from `have := h.noetherianSpace h.subsingleton_coh_of_support_subset F (isClosed_support F) subset_rfl hn`.
+-/
 theorem IsAmpleLB.subsingleton_coh_of_suppDim_lt [IsLocallyNoetherian X] (h : IsAmpleLB L)
     (F : X.Modules) [IsFiniteQC F] {n : ℕ} (hn : suppDim F < n) : Subsingleton (coh F n) :=
   have := h.noetherianSpace
   h.subsingleton_coh_of_support_subset F (isClosed_support F) subset_rfl hn
 
+/- English proof (translation)
+The claim follows from `have := ((isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hf).1 have := LocallyOfFiniteType.isLocallyNoetherian f have := QuasiCompact.compactSpace_of_compactSpace f {}`.
+-/
 theorem isNoetherian_of_isProjOver {R : Type} [CommRing R] [IsNoetherianRing R] {f : X ⟶ Sp R}
     (hf : IsProjOver f) : AlgebraicGeometry.IsNoetherian X :=
   have := ((isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hf).1
@@ -179,6 +237,9 @@ theorem isNoetherian_of_isProjOver {R : Type} [CommRing R] [IsNoetherianRing R] 
   have := QuasiCompact.compactSpace_of_compactSpace f
   {}
 
+/- English proof (translation)
+The claim follows from `have := isNoetherian_of_isProjOver hf have ⟨_, h⟩ := exists_isAmpleLB_of_isProjOver hf h.subsingleton_coh_of_suppDim_lt F hn`.
+-/
 theorem subsingleton_coh_of_isProjOver {R : Type} [CommRing R] [IsNoetherianRing R] {f : X ⟶ Sp R}
     (hf : IsProjOver f) (F : X.Modules) [IsFiniteQC F] {n : ℕ} (hn : suppDim F < n) :
     Subsingleton (coh F n) :=
@@ -190,6 +251,13 @@ end Ample
 
 section Annihilator
 
+/- English proof (translation)
+Use `le_antisymm (Ideal.map_le_iff_le_comap.2 fun a ha => Module.mem_annihilator.2 fun n => ?_) fun b hb => ?_` and prove the remaining obligations. Take `⟨⟨m, t⟩, rfl⟩` from `IsLocalizedModule.mk'_surjective T f n`. Rewrite using `[algebraMap_smul, Function.uncurry_apply_pair, ← IsLocalizedModule.mk'_smul, Module.mem_annihilator.1 ha, IsLocalizedModule.mk'_zero]`. Take `⟨⟨a, t⟩, rfl⟩` from `IsLocalization.mk'_surjective T b`. Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin (R := A) (M := M)`.
+
+Establish `h (i : Fin n) : ∃ u : T, u • a • g i = 0` using `(IsLocalizedModule.eq_zero_iff T f).1 <| by`. Rewrite using `[map_smul, ← algebraMap_smul B, ← IsLocalization.mk'_spec' B a t, mul_smul, Module.mem_annihilator.1 hb, smul_zero]`. Use `choose u hu using h`. Use `(IsLocalization.mk'_mem_map_algebraMap_iff T B _ _ _).2 ⟨_, (∏ i, u i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.annihilator_top, ← hg, Submodule.mem_annihilator_span]`.
+
+Introduce and unpack `⟨_, i, rfl⟩`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem u (Finset.mem_univ i)`. Rewrite using `[hc, mul_comm (u i), Submonoid.coe_mul, mul_smul, mul_smul]`. Conclude with `(congrArg _ (hu i)).trans (smul_zero _)`.
+-/
 theorem map_annihilator_of_isLocalizedModule {A B M N : Type*} [CommRing A] [CommRing B]
     [Algebra A B] (T : Submonoid A) [IsLocalization T B] [AddCommGroup M] [Module A M]
     [Module.Finite A M] [AddCommGroup N] [Module A N] [Module B N] [IsScalarTower A B N]
@@ -213,6 +281,9 @@ theorem map_annihilator_of_isLocalizedModule {A B M N : Type*} [CommRing A] [Com
     rw [hc, mul_comm (u i), Submonoid.coe_mul, mul_smul, mul_smul]
     exact (congrArg _ (hu i)).trans (smul_zero _)
 
+/- English proof (translation)
+Establish `h : Module.IsTorsionBySet A M (Module.annihilator A M)` using `fun m a => Module.mem_annihilator.1 a.2 m`. Use `letI := h.module`. Use `haveI : Module.Finite (A ⧸ Module.annihilator A M) M := .of_restrictScalars_finite A _ _`. Conclude with `isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨inferInstance, isArtinian_of_surjective_algebraMap (R := A ⧸ Module.annihilator A M) Ideal.Quotient.mk_surjective⟩`.
+-/
 theorem isFiniteLength_of_isArtinianRing_annihilator {A M : Type*} [CommRing A]
     [IsNoetherianRing A] [AddCommGroup M] [Module A M] [Module.Finite A M]
     [IsArtinianRing (A ⧸ Module.annihilator A M)] : IsFiniteLength A M := by
@@ -224,6 +295,11 @@ theorem isFiniteLength_of_isArtinianRing_annihilator {A M : Type*} [CommRing A]
     isArtinian_of_surjective_algebraMap (R := A ⧸ Module.annihilator A M)
       Ideal.Quotient.mk_surjective⟩
 
+/- English proof (translation)
+Use `revert iR iT`. Proceed by induction on `h with`. Consider the case `of_subsingleton => intros`. Simplify using the standard rewrite rules. Consider the case `@of_simple_quotient M _ _ N hs _ ih`.
+
+Introduce `iR iT`. Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hs`. Take `rfl` from `IsLocalRing.eq_maximalIdeal hm`. Rewrite using `[Module.length_eq_add_of_exact (N.subtype.restrictScalars R) (N.mkQ.restrictScalars R) N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), Module. …`. Both sides reduce to the same expression.
+-/
 theorem length_eq_mul_length_residueField (R : Type*) {S M : Type*} [CommRing R] [CommRing S]
     [Algebra R S] [IsLocalRing S] [AddCommGroup M] [Module S M] (h : IsFiniteLength S M)
     [iR : Module R M] [iT : IsScalarTower R S M] :
@@ -254,9 +330,15 @@ def QCoh.annihilatorSheaf : X.IdealSheafData where
     map_annihilator_of_isLocalizedModule (B := Γ(X, X.basicOpen f)) (N := Γ(F, X.basicOpen f))
       (.powers f) (resBasicOpen F f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem QCoh.annihilatorSheaf_ideal (U : X.affineOpens) :
     (annihilatorSheaf F).ideal U = Module.annihilator Γ(X, U) Γ(F, U) := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨U, hU, hx⟩` from `exists_affine_mem x`. Rewrite using `[SetLike.mem_coe, Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨U, hU⟩) hx]`. Conclude with `⟨fun h => ((support_inter_eq_zeroLocus F hU).ge ⟨h, hx⟩).1, fun h => ((support_inter_eq_zeroLocus F hU).le ⟨h, hx⟩).1⟩`.
+-/
 theorem QCoh.coe_support_annihilatorSheaf :
     ((annihilatorSheaf F).support : Set X) = support F := by
   ext x
@@ -265,10 +347,16 @@ theorem QCoh.coe_support_annihilatorSheaf :
   exact ⟨fun h => ((support_inter_eq_zeroLocus F hU).ge ⟨h, hx⟩).1,
     fun h => ((support_inter_eq_zeroLocus F hU).le ⟨h, hx⟩).1⟩
 
+/- English proof (translation)
+The claim follows from `(annihilatorSheaf F).range_subschemeι.trans (coe_support_annihilatorSheaf F)`.
+-/
 theorem QCoh.range_annihilatorSheaf_subschemeι :
     Set.range (annihilatorSheaf F).subschemeι = support F :=
   (annihilatorSheaf F).range_subschemeι.trans (coe_support_annihilatorSheaf F)
 
+/- English proof (translation)
+Rewrite using `[suppDim, ← range_annihilatorSheaf_subschemeι]`. Conclude with `(annihilatorSheaf F).subschemeι.isClosedEmbedding.isEmbedding.toHomeomorph.isHomeomorph |>.topologicalKrullDim_eq`.
+-/
 theorem QCoh.topologicalKrullDim_annihilatorSheaf_subscheme :
     topologicalKrullDim (annihilatorSheaf F).subscheme = suppDim F := by
   rw [suppDim, ← range_annihilatorSheaf_subschemeι]
@@ -310,6 +398,17 @@ section General
 
 variable {X : Scheme.{u}} {F : X.Modules}
 
+/- English proof (translation)
+Use `letI := hf.fintype`. Use `⟨fun s t e => sub_eq_zero.1 (section_eq_zero_of_germ _ fun x hx => ?_), fun t => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : x ∈ support F`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun e ⟨x, h⟩`.
+
+Conclude with `(notMem_support_iff.1 h).elim _ _`. Establish `key (x : support F) : ∃ s : Γ(F, ⊤), F.presheaf.germ ⊤ x.1 (Opens.mem_top _) s = t x ∧ ∀ y : support F, y ≠ x → F.presheaf.germ ⊤ y.1 (Opens.mem_top _) s = 0`. Take `⟨V, hx, u, hu⟩` from `F.presheaf.exists_germ_eq (t x)`. Establish `hC : IsClosed (support F \ {x.1})`. Rewrite using `[← Set.biUnion_of_singleton (support F \ {x.1})]`.
+
+Conclude with `(hf.subset Set.diff_subset).isClosed_biUnion fun y hy => hc y hy.1`. Set `U : X.Opens` to `V ⊓ ⟨_, hC.isOpen_compl⟩`. Set `W : X.Opens` to `⟨_, (hc x x.2).isOpen_compl⟩`. Establish `hxU : x.1 ∈ U` using `⟨hx, fun h => h.2 rfl⟩`. Establish `: Subsingleton Γ(F, U ⊓ W)` using `subsingleton_sections_of_notMem_support fun y hy h => hy.1.2 ⟨h, hy.2⟩`.
+
+Take `⟨s, h₁, h₂⟩` from `Qcqs.exists_section_glue₂ F (V₁ := U) (V₂ := W) (W := ⊤) le_top le_top (fun y _ => (eq_or_ne y x.1).elim (fun e => Or.inl (e ▸ hxU)) Or.inr) (F.presheaf.map (homOfLE inf_le_left).op u) 0 (Subsingleton.elim _ _)`. Use `⟨s, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← F.presheaf.germ_res_apply (homOfLE (le_top : U ≤ ⊤)) x.1 hxU, h₁, F.presheaf.germ_res_apply, hu]`. Rewrite using `[← F.presheaf.germ_res_apply (homOfLE (le_top : W ≤ ⊤)) y.1 fun e => hy (Subtype.ext e), h₂, map_zero]`. Use `choose s h₁ h₂ using key`.
+
+Use `⟨∑ x, s x, funext fun y => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_sum, Finset.sum_eq_single y (fun x _ hx => h₂ x y hx.symm) (by simp), h₁]`.
+-/
 theorem QCoh.germ_support_bijective (hf : (support F).Finite)
     (hc : ∀ x ∈ support F, IsClosed ({x} : Set X)) :
     Function.Bijective fun (s : Γ(F, ⊤)) (x : support F) =>
@@ -352,28 +451,45 @@ abbrev residueFieldAlgebraOver (x : X) : Algebra R (X.residueField x) :=
 
 variable [IsLocallyNoetherian X] [IsFiniteQC F]
 
+/- English proof (translation)
+The claim follows from `have := LocallyOfFiniteType.isLocallyNoetherian (annihilatorSheaf F).subschemeι .of_topologicalKrullDim_le_zero ((topologicalKrullDim_annihilatorSheaf_subscheme F).trans_le h)`.
+-/
 theorem QCoh.isLocallyArtinian_annihilatorSheaf (h : suppDim F ≤ 0) :
     IsLocallyArtinian (annihilatorSheaf F).subscheme :=
   have := LocallyOfFiniteType.isLocallyNoetherian (annihilatorSheaf F).subschemeι
   .of_topologicalKrullDim_le_zero ((topologicalKrullDim_annihilatorSheaf_subscheme F).trans_le h)
 
+/- English proof (translation)
+Use `isLocallyArtinian_annihilatorSheaf h` as an intermediate fact. Take `⟨z, rfl⟩` from `(range_annihilatorSheaf_subschemeι F).ge hx`. Simplify using `using (annihilatorSheaf F).subschemeι.isClosedEmbedding.isClosedMap _ (isClosed_discrete {z})`.
+-/
 theorem QCoh.isClosed_singleton_of_suppDim_le_zero (h : suppDim F ≤ 0) {x : X}
     (hx : x ∈ support F) : IsClosed ({x} : Set X) := by
   have := isLocallyArtinian_annihilatorSheaf h
   obtain ⟨z, rfl⟩ := (range_annihilatorSheaf_subschemeι F).ge hx
   simpa using (annihilatorSheaf F).subschemeι.isClosedEmbedding.isClosedMap _ (isClosed_discrete {z})
 
+/- English proof (translation)
+The claim follows from `{ toIsLocallyArtinian := isLocallyArtinian_annihilatorSheaf h toCompactSpace := QuasiCompact.compactSpace_of_compactSpace (annihilatorSheaf F).subschemeι }`.
+-/
 theorem QCoh.isArtinianScheme_annihilatorSheaf [CompactSpace X] (h : suppDim F ≤ 0) :
     IsArtinianScheme (annihilatorSheaf F).subscheme :=
   { toIsLocallyArtinian := isLocallyArtinian_annihilatorSheaf h
     toCompactSpace := QuasiCompact.compactSpace_of_compactSpace (annihilatorSheaf F).subschemeι }
 
+/- English proof (translation)
+Use `isArtinianScheme_annihilatorSheaf h` as an intermediate fact. Rewrite using `[← range_annihilatorSheaf_subschemeι]`. Conclude with `Set.finite_range _`.
+-/
 theorem QCoh.finite_support_of_suppDim_le_zero [CompactSpace X] (h : suppDim F ≤ 0) :
     (support F).Finite := by
   have := isArtinianScheme_annihilatorSheaf h
   rw [← range_annihilatorSheaf_subschemeι]
   exact Set.finite_range _
 
+/- English proof (translation)
+Use `isLocallyArtinian_annihilatorSheaf h` as an intermediate fact. Use `finite_sections F hU` as an intermediate fact. Establish `: IsNoetherianRing Γ(X, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Set `I` to `annihilatorSheaf F`. Establish `: IsArtinianRing Γ(I.subscheme, I.subschemeι ⁻¹ᵁ U)` using `IsLocallyArtinian.isArtinianRing_presheaf_obj ⟨_, hU.preimage I.subschemeι⟩`.
+
+Establish `: IsArtinianRing (Γ(X, U) ⧸ Module.annihilator Γ(X, U) Γ(F, U))` using `((Ideal.quotEquivOfEq (I.ker_subschemeι_app ⟨U, hU⟩).symm).trans (RingHom.quotientKerEquivOfSurjective (I.subschemeι_app_surjective ⟨U, hU⟩))).symm.isArtinianRing`. Conclude with `isFiniteLength_of_isArtinianRing_annihilator`.
+-/
 theorem QCoh.isFiniteLength_sections (h : suppDim F ≤ 0) {U : X.Opens} (hU : IsAffineOpen U) :
     IsFiniteLength Γ(X, U) Γ(F, U) := by
   have := isLocallyArtinian_annihilatorSheaf h
@@ -388,6 +504,11 @@ theorem QCoh.isFiniteLength_sections (h : suppDim F ≤ 0) {U : X.Opens} (hU : I
         (I.subschemeι_app_surjective ⟨U, hU⟩))).symm.isArtinianRing
   exact isFiniteLength_of_isArtinianRing_annihilator
 
+/- English proof (translation)
+Take `⟨U, hU, hx⟩` from `exists_affine_mem x`. Take `⟨x, rfl⟩ : ∃ x' : U, x' = x` from `⟨⟨x, hx⟩, rfl⟩`. Use `hU.isLocalization_stalk x` as an intermediate fact. Use `isLocalizedModule_germLinear F hU x` as an intermediate fact. Establish `hl` using `isFiniteLength_sections h hU`.
+
+Rewrite using `[← Module.length_ne_top_iff, length_eq_length_localizedModule (hU.primeIdealOf x).asIdeal.primeCompl _ (germLinear F x)]`. Conclude with `ne_top_of_le_ne_top (Module.length_ne_top_iff.2 hl) (length_localizedModule_atPrime_le _ hl)`.
+-/
 theorem QCoh.isFiniteLength_stalk (h : suppDim F ≤ 0) (x : X) :
     IsFiniteLength (X.presheaf.stalk x) (F.presheaf.stalk x :) := by
   obtain ⟨U, hU, hx⟩ := exists_affine_mem x
@@ -400,6 +521,13 @@ theorem QCoh.isFiniteLength_stalk (h : suppDim F ≤ 0) (x : X) :
   exact ne_top_of_le_ne_top (Module.length_ne_top_iff.2 hl)
     (length_localizedModule_atPrime_le _ hl)
 
+/- English proof (translation)
+Establish `hf` using `finite_support_of_suppDim_le_zero h`. Use `letI := hf.fintype`. Use `letI (x : X) := baseModuleStalk F (algebraMap R Γ(X, ⊤)) x`. Set `l : sectionsOn F ⊤ →ₗ[R] ∀ x : support F, (F.presheaf.stalk x.1 :)` to `{ toFun := fun s x => F.presheaf.germ ⊤ x.1 (Opens.mem_top _) (sectionsOn.toΓ F ⊤ s) map_add' := fun s t => funext fun x => by rw [map_add, map_add]; rfl map_smul' := fun r s => funext fun x => by`. Rewrite using `[sectionsOn.toΓ_smul, restrictGlobal_top, germ_smul]`.
+
+Use `rfl }`. Establish `hl : Function.Bijective l` using `(germ_support_bijective hf fun x hx => isClosed_singleton_of_suppDim_le_zero h hx).comp (sectionsOn.toΓ F ⊤).bijective`. Rewrite using `[((cohOn.zeroEquiv R F ⊤).trans (LinearEquiv.ofBijective l hl)).length_eq, Module.length_pi_of_fintype, Finset.sum_subtype (p := (· ∈ support F)) _ fun _ => hf.mem_toFinset]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `letI : Algebra R (X.presheaf.stalk x.1) := ((X.presheaf.germ ⊤ x.1 trivial).hom.comp (algebraMap R Γ(X, ⊤))).toAlgebra`.
+
+Use `haveI : IsScalarTower R (X.presheaf.stalk x.1) (F.presheaf.stalk x.1 :) := .of_algebraMap_smul fun _ _ => rfl`. Conclude with `length_eq_mul_length_residueField R (isFiniteLength_stalk h x.1)`.
+-/
 theorem length_coh_zero_eq_sum [CompactSpace X] (h : suppDim F ≤ 0) :
     Module.length R (coh F 0) = ∑ x ∈ (finite_support_of_suppDim_le_zero h).toFinset,
       Module.length (X.presheaf.stalk x) (F.presheaf.stalk x :) *
@@ -427,6 +555,9 @@ end General
 
 variable {X : Scheme.{0}} {F : X.Modules} [AlgebraicGeometry.IsNoetherian X] [IsFiniteQC F]
 
+/- English proof (translation)
+Use `isArtinianScheme_annihilatorSheaf h` as an intermediate fact. Use `cohOn.subsingleton_of_isAffineOpen (onAnnihilator F) (isAffineOpen_top _) hn` as an intermediate fact. Conclude with `((cohOn.mapIso ℤ ⊤ n (isoPushforwardOnAnnihilator F)).trans (coh.pushforwardEquiv ℤ (fun r => (map_intCast _ r).trans (eq_intCast _ r).symm) (onAnnihilator F) n)).toEquiv.subsingleton`.
+-/
 theorem subsingleton_coh_of_suppDim_le_zero (h : suppDim F ≤ 0) {n : ℕ} (hn : 0 < n) :
     Subsingleton (coh F n) := by
   have := isArtinianScheme_annihilatorSheaf h
@@ -435,12 +566,18 @@ theorem subsingleton_coh_of_suppDim_le_zero (h : suppDim F ≤ 0) {n : ℕ} (hn 
     (coh.pushforwardEquiv ℤ (fun r => (map_intCast _ r).trans (eq_intCast _ r).symm)
       (onAnnihilator F) n)).toEquiv.subsingleton
 
+/- English proof (translation)
+Take `⟨s, hs, -, -⟩` from `exists_sec_finite_subset_of_isQuasiAffine hM Set.finite_univ (U := ⊤) (Set.subset_univ _)`. Conclude with `exists_isGen_of_nonzeroLocus_eq_top s (top_le_iff.1 hs)`.
+-/
 theorem exists_isGen_of_finite {Z : Scheme.{0}} [Finite Z] [IsAffine Z] {M : LB Z} (hM : M.IsLB) :
     ∃ t : M.Gen, t.IsGen := by
   obtain ⟨s, hs, -, -⟩ := exists_sec_finite_subset_of_isQuasiAffine hM Set.finite_univ (U := ⊤)
     (Set.subset_univ _)
   exact exists_isGen_of_nonzeroLocus_eq_top s (top_le_iff.1 hs)
 
+/- English proof (translation)
+Use `isArtinianScheme_annihilatorSheaf h` as an intermediate fact. Establish `hM'` using `LB.isLB_pull hM (annihilatorSheaf F).subschemeι`. Take `⟨t, ht⟩` from `exists_isGen_of_finite hM'`. Conclude with `⟨(twistFunctor M).mapIso (isoPushforwardOnAnnihilator F) ≪≫ (Twist.projIso M _ (onAnnihilator F)).symm ≪≫ (Scheme.Modules.pushforward _).mapIso (Twist.genIso _ hM' t ht).symm ≪≫ (isoPushforwardOnAnnihilator F).symm⟩`.
+-/
 theorem nonempty_twist_iso_of_suppDim_le_zero (h : suppDim F ≤ 0) {M : LB X} (hM : M.IsLB) :
     Nonempty (twist F M ≅ F) := by
   have := isArtinianScheme_annihilatorSheaf h
@@ -457,6 +594,13 @@ section Field
 
 variable {X : Scheme.{0}} {k : Type} [Field k] (f : X ⟶ Sp k)
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `letI := residueFieldAlgebraOver k x`. Use `letI := (f.residueFieldMap x).hom.toAlgebra`. Set `φ : k →+* (Sp k).residueField (f x)` to `((Scheme.ΓSpecIso (.of k)).inv ≫ (Sp k).Γevaluation (f x)).hom`. Establish `hφ : Function.Surjective φ`.
+
+Establish `: Subsingleton (Sp k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Introduce `a`. Take `⟨b, rfl⟩` from `(Sp k).residue_surjective _ a`. Take `⟨U, hU, c, rfl⟩` from `(Sp k).presheaf.exists_germ_eq b`. Take `rfl : U = ⊤` from `top_le_iff.1 fun y _ => Subsingleton.elim (f x) y ▸ hU`.
+
+Take `⟨r, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of k)).inv).2 c`. Conclude with `⟨r, rfl⟩`. Use `(Algebra.finrank_eq_of_equiv_equiv (RingEquiv.ofBijective φ ⟨φ.injective, hφ⟩) (RingEquiv.refl (X.residueField x)) (RingHom.ext fun r => ?_)).symm` and prove the remaining obligations. Conclude with `Scheme.Γevaluation_naturality_apply f x _`.
+-/
 theorem residueDegree_eq_finrank (x : X) :
     f.residueDegree x =
       letI := algebraΓOfHom f
@@ -483,10 +627,16 @@ variable [LocallyOfFiniteType f] [CompactSpace X] {F : X.Modules} [IsFiniteQC F]
 
 include f in
 
+/- English proof (translation)
+The claim follows from `have := LocallyOfFiniteType.isLocallyNoetherian f {}`.
+-/
 theorem isNoetherian_of_locallyOfFiniteType_field : AlgebraicGeometry.IsNoetherian X :=
   have := LocallyOfFiniteType.isLocallyNoetherian f
   {}
 
+/- English proof (translation)
+Use `isNoetherian_of_locallyOfFiniteType_field f` as an intermediate fact. Use `isArtinianScheme_annihilatorSheaf h` as an intermediate fact. Establish `: LocallyQuasiFinite ((annihilatorSheaf F).subschemeι ≫ f)` using `.of_finite_preimage_singleton _ fun _ => Set.toFinite _`. Conclude with `.of_locallyQuasiFinite _`.
+-/
 theorem isFinite_annihilatorSheaf (h : suppDim F ≤ 0) :
     IsFinite ((annihilatorSheaf F).subschemeι ≫ f) := by
   have := isNoetherian_of_locallyOfFiniteType_field f
@@ -495,6 +645,11 @@ theorem isFinite_annihilatorSheaf (h : suppDim F ≤ 0) :
     .of_finite_preimage_singleton _ fun _ => Set.toFinite _
   exact .of_locallyQuasiFinite _
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `isNoetherian_of_locallyOfFiniteType_field f` as an intermediate fact. Use `isArtinianScheme_annihilatorSheaf h` as an intermediate fact. Use `isFinite_annihilatorSheaf f h` as an intermediate fact. Use `letI := algebraΓOfHom ((annihilatorSheaf F).subschemeι ≫ f)`.
+
+Establish `: Module.Finite k Γ((annihilatorSheaf F).subscheme, ⊤)` using `(((annihilatorSheaf F).subschemeι ≫ f).finite_appTop).comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of k)).inv).2)`. Conclude with `((finiteCohTwists_of_isAffine_of_finite k (onAnnihilator F)).pushforward_of_isAffineHom (appTop_algebraΓOfHom _ f rfl)).of_iso (isoPushforwardOnAnnihilator F).symm`.
+-/
 theorem finiteCohTwists_of_suppDim_le_zero (h : suppDim F ≤ 0) :
     letI := algebraΓOfHom f
     FiniteCohTwists k F := by
@@ -509,6 +664,13 @@ theorem finiteCohTwists_of_suppDim_le_zero (h : suppDim F ≤ 0) :
   exact ((finiteCohTwists_of_isAffine_of_finite k (onAnnihilator F)).pushforward_of_isAffineHom
     (appTop_algebraΓOfHom _ f rfl)).of_iso (isoPushforwardOnAnnihilator F).symm
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `letI := residueFieldAlgebraOver k x`. Use `isNoetherian_of_locallyOfFiniteType_field f` as an intermediate fact. Use `(finiteCohTwists_of_suppDim_le_zero f h).finiteCoh.finite 0` as an intermediate fact. Establish `h₀ : Module.length k (coh F 0) ≠ ⊤` using `Module.length_ne_top`.
+
+Rewrite `h₀` using `[length_coh_zero_eq_sum k h]`. Establish `h₁` using `WithTop.sum_ne_top.1 h₀ x ((Set.Finite.mem_toFinset _).2 hx)`. Use `mem_support_iff.1 hx` as an intermediate fact. Establish `h₂ : Module.length k (X.residueField x) ≠ ⊤` using `fun e => h₁ (by rw [e]; exact ENat.mul_top Module.length_pos.ne')`. Use `(isFiniteLength_iff_isNoetherian_isArtinian.1 (Module.length_ne_top_iff.1 h₂)).1` as an intermediate fact.
+
+Use `infer_instance`.
+-/
 theorem finite_residueField_of_suppDim_le_zero (h : suppDim F ≤ 0) {x : X} (hx : x ∈ support F) :
     letI := algebraΓOfHom f
     letI := residueFieldAlgebraOver k x
@@ -526,6 +688,13 @@ theorem finite_residueField_of_suppDim_le_zero (h : suppDim F ≤ 0) {x : X} (hx
   have := (isFiniteLength_iff_isNoetherian_isArtinian.1 (Module.length_ne_top_iff.1 h₂)).1
   infer_instance
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `isNoetherian_of_locallyOfFiniteType_field f` as an intermediate fact. Use `(finiteCohTwists_of_suppDim_le_zero f h).finiteCoh.finite 0` as an intermediate fact. Rewrite using `[hdim_def, ← Module.length_eq_finrank, length_coh_zero_eq_sum k h, ← Finset.sum_subset ((finite_support_of_suppDim_le_zero h).toFinset_subset.2 hS)]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Use `letI := residueFieldAlgebraOver k x`. Use `finite_residueField_of_suppDim_le_zero f h ((Set.Finite.mem_toFinset _).1 hx)` as an intermediate fact. Rewrite using `[residueDegree_eq_finrank, Module.length_eq_finrank]`. Introduce `x _ hx`. Use `notMem_support_iff.1 (mt (Set.Finite.mem_toFinset _).2 hx)` as an intermediate fact.
+
+Rewrite using `[Module.length_eq_zero, zero_mul]`.
+-/
 theorem hdim_zero_eq_sum (h : suppDim F ≤ 0) {S : Finset X} (hS : support F ⊆ S) :
     letI := algebraΓOfHom f
     (hdim k F 0 : ℕ∞) = ∑ x ∈ S,
@@ -543,6 +712,9 @@ theorem hdim_zero_eq_sum (h : suppDim F ≤ 0) {S : Finset X} (hS : support F �
     have := notMem_support_iff.1 (mt (Set.Finite.mem_toFinset _).2 hx)
     rw [Module.length_eq_zero, zero_mul]
 
+/- English proof (translation)
+Use `isNoetherian_of_locallyOfFiniteType_field f` as an intermediate fact. Use `Nat.cast_injective (R := ℕ∞) ((hdim_zero_eq_sum f h hS).trans ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ENat.coe_toNat (Module.length_ne_top_iff.2 (isFiniteLength_stalk h x))]`.
+-/
 theorem hdim_zero_eq_sum_toNat (h : suppDim F ≤ 0) {S : Finset X} (hS : support F ⊆ S) :
     letI := algebraΓOfHom f
     hdim k F 0 = ∑ x ∈ S,
@@ -562,18 +734,32 @@ variable {X : Scheme.{0}} [AlgebraicGeometry.IsNoetherian X] (k : Type v) [Field
 
 include h
 
+/- English proof (translation)
+The claim follows from `(nonempty_twist_iso_of_suppDim_le_zero h hM).elim (hdim_congr k n)`.
+-/
 theorem hdim_twist_of_suppDim_le_zero {M : LB X} (hM : M.IsLB) (n : ℕ) :
     hdim k (twist F M) n = hdim k F n :=
   (nonempty_twist_iso_of_suppDim_le_zero h hM).elim (hdim_congr k n)
 
+/- English proof (translation)
+The claim follows from `(nonempty_twist_iso_of_suppDim_le_zero h hM).elim (chi_congr k)`.
+-/
 theorem chi_twist_of_suppDim_le_zero {M : LB X} (hM : M.IsLB) : chi k (twist F M) = chi k F :=
   (nonempty_twist_iso_of_suppDim_le_zero h hM).elim (chi_congr k)
 
+/- English proof (translation)
+The claim follows from `chi_eq_hdim_zero k fun _ hn => subsingleton_coh_of_suppDim_le_zero h hn`.
+-/
 theorem chi_eq_hdim_zero_of_suppDim_le_zero : chi k F = hdim k F 0 :=
   chi_eq_hdim_zero k fun _ hn => subsingleton_coh_of_suppDim_le_zero h hn
 
 end Twists
 
+/- English proof (translation)
+Establish `: Module.Finite (CommRingCat.of ℤ) (ModuleCat.of ℤ (ℤ ⧸ I))` using `inferInstanceAs (Module.Finite ℤ (ℤ ⧸ I))`. Establish `: IsFiniteQC (tildeIntQuotient I)` using `(isFiniteQC_tilde_iff _).2 this`. Use `nonempty_twist_iso_of_suppDim_le_zero (le_of_eq ?_) hM` and prove the remaining obligations. Rewrite using `[suppDim_tilde]`. Use `(Module.supportDim_quotient_eq_ringKrullDim I).trans ?_` and prove the remaining obligations.
+
+Use `letI := Ideal.Quotient.field I`. Conclude with `ringKrullDim_eq_zero_of_field _`.
+-/
 example (I : Ideal ℤ) [I.IsMaximal] (M : LB (Sp ℤ)) (hM : M.IsLB) :
     Nonempty (twist (tildeIntQuotient I) M ≅ tildeIntQuotient I) := by
   have : Module.Finite (CommRingCat.of ℤ) (ModuleCat.of ℤ (ℤ ⧸ I)) :=

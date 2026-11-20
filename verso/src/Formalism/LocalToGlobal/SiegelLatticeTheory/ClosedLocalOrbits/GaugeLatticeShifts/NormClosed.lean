@@ -41,15 +41,26 @@ def NeatC : Prop :=
 def LeviOntoC : Prop :=
   ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), Formalism.L2.SG.Pf.NormSteps.LeviOntoS Y.TR (Y.cs u)
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.NormSteps.column_lattice_representatives (Y.cs u) Y.hK (Y.rowsOK u)`.
+-/
 theorem colLatRepC (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) :
     Formalism.L2.SG.Pf.NormSteps.ColLatRepS (Y.cs u) Y.hK :=
   Formalism.L2.SG.Pf.NormSteps.column_lattice_representatives (Y.cs u) Y.hK (Y.rowsOK u)
 
 def MassAC : Prop := ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word), MassA Y.TR (X.Fu u) (Y.cs u)
 
+/- English proof (translation)
+Introduce `_ X Y u u'` and use `chiNIndep_of_frameTie (cs := Y.cs u) (cs' := Y.cs u') (hTF := Full.frameTie (X := X) u u')`.
+-/
 theorem chiNIndepC_holds : ChiNIndepC := fun _ X Y u u' =>
   chiNIndep_of_frameTie (cs := Y.cs u) (cs' := Y.cs u') (hTF := Full.frameTie (X := X) u u')
 
+/- English proof (translation)
+Introduce `D X Y u u' _ _ _ hAbs`. Take `⟨hSg, hSn⟩` from `hS D X Y u u' ‹_› ‹_› ‹_›`. Establish `hTF` using `Full.frameTie (X := X) u u'`. Establish `hF` using `colFree_steps (TR := Y.TR) (F0 := X.Fu u) (cs := Y.cs u) (hK := Y.hK) (hR := Y.colReps u) (hCL := hCL D X Y u) (hO := hO D X Y u) (hRep := colLatRepC D X Y u) (hMass := hM D X Y u)`. Establish `hF'` using `colFree_steps (TR := Y.TR) (F0 := X.Fu u') (cs := Y.cs u') (hK := Y.hK) (hR := Y.colReps u') (hCL := hCL D X Y u') (hO := hO D X Y u') (hRep := colLatRepC D X Y u') (hMass := hM D X Y u')`.
+
+Conclude with `normExpSat_of (TR := Y.TR) (cs := Y.cs u) (cs' := Y.cs u') (FdN := Y.FN u) (FdN' := Y.FN u') (hHS := hilbert_schmidt_blocks) (hGam := Formalism.L2.SG.NormCut.gamma_product_sum_holds) (hPsi := Formalism.L2.SG.NormCut.psi_natural_equiv_holds) (hAbs := hAbs) (hChi := chiNIndep_of_fr …`.
+-/
 theorem normExpSatC'_of (hCL : NeatC) (hO : LeviOntoC) (hM : MassAC) (hS : SatGramC') : NormExpSatC' := by
   intro D X Y u u' _ _ _ hAbs
   obtain ⟨hSg, hSn⟩ := hS D X Y u u' ‹_› ‹_› ‹_›

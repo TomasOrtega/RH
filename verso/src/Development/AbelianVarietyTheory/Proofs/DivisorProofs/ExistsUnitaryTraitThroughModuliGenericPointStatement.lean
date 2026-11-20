@@ -10,5 +10,8 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UTraitExt.uTraitExtSt | exact GlobalTheory.UTraitExt.uTraitExtSt | (intros; apply GlobalTheory.UTraitExt.uTraitExtSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint : UTraitExtSt := by
   first | exact @GlobalTheory.UTraitExt.uTraitExtSt | exact GlobalTheory.UTraitExt.uTraitExtSt | (intros; apply GlobalTheory.UTraitExt.uTraitExtSt <;> assumption)

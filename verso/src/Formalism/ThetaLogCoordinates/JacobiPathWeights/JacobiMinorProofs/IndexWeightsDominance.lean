@@ -12,6 +12,17 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 
 namespace A3comb
 
+/- English proof (translation)
+Establish `key` using `hI c`. Rewrite `hc` using `[Finset.mem_Icc]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Use extensionality with `x`.
+
+Conclude with `x.elim0`. Establish `hM0 : 0 ≤ M` using `le_trans (abs_nonneg _) (hM ⟨0, hn⟩)`. Rewrite using `[← Finset.card_eq_zero, key]`. Distinguish the cases in `h1 : 1 ≤ c`. Rewrite using `[if_pos h1]`.
+
+Unfold `colHeight`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `m _`. Use `hM m` as an intermediate fact. Rewrite `this` using `[abs_le]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1]`. Establish `hall : colHeight μ c = n`. Unfold `colHeight`. Rewrite using `[Finset.filter_true_of_mem, Finset.card_univ, Fintype.card_fin]`.
+
+Introduce `m _`. Use `hM m` as an intermediate fact. Rewrite `this` using `[abs_le]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem idx_empty {n : ℕ} {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hI : IsIndex μ I) (M : ℤ)
     (hM : ∀ m, |μ m| ≤ M) (c : ℤ) (hc : c ∉ Finset.Icc (-M) M) : I c = ∅ := by
   have key := hI c
@@ -40,9 +51,19 @@ theorem idx_empty {n : ℕ} {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (h
         omega
       omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∑ m, |μ m|, fun m => Finset.single_le_sum (f := fun m => |μ m|) (fun i _ => abs_nonneg _) (Finset.mem_univ m)⟩`.
+-/
 theorem exists_bound {n : ℕ} (μ : Fin n → ℤ) : ∃ M : ℤ, ∀ m, |μ m| ≤ M := ⟨∑ m, |μ m|, fun m =>
   Finset.single_le_sum (f := fun m => |μ m|) (fun i _ => abs_nonneg _) (Finset.mem_univ m)⟩
 
+/- English proof (translation)
+Use `congr 1`. Rewrite using `[← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_filter]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, h1, h2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcS`. Rewrite `h2` using `[hS c hcS]`.
+
+Simplify using `at h2`. Introduce and unpack `⟨_, h1, h2⟩`. Conclude with `⟨h1, h2⟩`.
+-/
 private theorem ncard_eq_filter_lemma {n : ℕ} (I : ℤ → Finset (Fin n)) (S : Finset ℤ)
     (hS : ∀ c, c ∉ S → I c = ∅) (m : Fin n) (p : ℤ → Prop) [DecidablePred p] :
     ({c : ℤ | p c ∧ m ∈ I c}.ncard : ℤ) = ((S.filter fun c => p c ∧ m ∈ I c).card : ℤ) := by
@@ -60,6 +81,13 @@ private theorem ncard_eq_filter_lemma {n : ℕ} (I : ℤ → Finset (Fin n)) (S 
   · rintro ⟨_, h1, h2⟩
     exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Unfold `idxWeight`. Rewrite using `[ncard_eq_filter_lemma I S hS m (fun c => 1 ≤ c), ncard_eq_filter_lemma I S hS m (fun c => c ≤ 0), Finset.card_filter, Finset.card_filter]`. Use `push_cast`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hm : m ∈ I c`. Distinguish the cases in `hc : 1 ≤ c`. Establish `h0 : ¬ c ≤ 0` using `by omega`. Simplify using `[hm, hc, h0]`. Establish `h0 : c ≤ 0` using `by omega`.
+
+Simplify using `[hm, hc, h0]`. Simplify using `[hm]`.
+-/
 theorem idxWeight_eq {n : ℕ} (I : ℤ → Finset (Fin n)) (S : Finset ℤ) (hS : ∀ c, c ∉ S → I c = ∅)
     (m : Fin n) :
     idxWeight I m = ∑ c ∈ S, (if m ∈ I c then (if 1 ≤ c then (1 : ℤ) else -1) else 0) := by
@@ -77,6 +105,11 @@ theorem idxWeight_eq {n : ℕ} (I : ℤ → Finset (Fin n)) (S : Finset ℤ) (hS
       simp [hm, hc, h0]
   · simp [hm]
 
+/- English proof (translation)
+Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x.2 = m`. Substitute `hx` using the available equality. Apply the tactic sequence `by_cases hv : isVec x.1 <;> simp [torusW, hv]`.
+
+Establish `hx' : m ≠ x.2` using `fun h => hx h.symm`. Apply the tactic sequence `by_cases hv : isVec x.1 <;> simp [torusW, hv, hx, hx', Pi.single_apply]`.
+-/
 theorem weight_torus {n : ℕ} (isVec : ℕ → Bool) (e : ℕ × Fin n →₀ ℕ) (m : Fin n) :
     Finsupp.weight (torusW isVec) e m =
       Finsupp.weight
@@ -92,6 +125,57 @@ theorem weight_torus {n : ℕ} (isVec : ℕ → Bool) (e : ℕ × Fin n →₀ �
 end A3comb
 
 open A3comb in
+/- English proof (translation)
+Introduce `R _ n N isVec B μ I hp hI`. Establish `hmon : ∀ (d : ℕ × Fin n →₀ ℕ) (r : R), IsWeightedHomogeneous (torusW isVec) (MvPolynomial.monomial d r) (Finsupp.weight (torusW isVec) d)` using `fun d r => MvPolynomial.isWeightedHomogeneous_monomial _ _ _ rfl`. Establish `hXw : ∀ x : ℕ × Fin n, IsWeightedHomogeneous (torusW isVec) (X x : MvPolynomial (ℕ × Fin n) R) (torusW isVec x)`. Introduce `x`. Use `hmon (Finsupp.single x 1) 1` as an intermediate fact.
+
+Simplify using `only [Finsupp.weight_apply, Finsupp.sum_single_index, zero_smul, one_smul] at this`. Conclude with `this`. Establish `wedgeW : ∀ (c : ℤ) (k : ℕ) (J : Finset (Fin n)) (m : Fin n), m ∈ J → (isVec k == decide (1 ≤ c)) = true → (fun a => if a ∈ J then (if 1 ≤ c then (1 : ℤ) else -1) else 0) = (fun a => if a ∈ J.erase m then (if 1 ≤ c then (1 : ℤ) else -1) else 0) + torusW isVec (k, m)`. Introduce `c k J m hm hup`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [Pi.add_apply, torusW, ite_apply, Finset.mem_erase, Pi.single_apply, Pi.neg_apply]`. Distinguish the cases in `hc : 1 ≤ c`. Simplify using `only [if_pos hc, decide_eq_true hc] at hup ⊢`. Apply the tactic sequence `by_cases hv : isVec k = true <;> by_cases ha : a = m <;> simp_all`. Simplify using `only [if_neg hc, decide_eq_false hc] at hup ⊢`.
+
+Apply the tactic sequence `by_cases hv : isVec k = true <;> by_cases ha : a = m <;> simp_all`. Establish `contrW : ∀ (c : ℤ) (k : ℕ) (J : Finset (Fin n)) (m : Fin n), m ∉ J → ¬ (isVec k == decide (1 ≤ c)) = true → (fun a => if a ∈ J then (if 1 ≤ c then (1 : ℤ) else -1) else 0) = torusW isVec (k, m) + (fun a => if a ∈ insert m J then (if 1 ≤ c then (1 : ℤ) else -1) else 0)`. Introduce `c k J m hm hup`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, torusW, ite_apply, Finset.mem_insert, Pi.single_apply, Pi.neg_apply]`.
+
+Distinguish the cases in `hc : 1 ≤ c`. Simplify using `only [if_pos hc, decide_eq_true hc] at hup ⊢`. Apply the tactic sequence `by_cases hv : isVec k = true <;> by_cases ha : a = m <;> simp_all`. Simplify using `only [if_neg hc, decide_eq_false hc] at hup ⊢`. Apply the tactic sequence `by_cases hv : isVec k = true <;> by_cases ha : a = m <;> simp_all`.
+
+Establish `key : ∀ c : ℤ, ∀ k : ℕ, ∀ J : Finset (Fin n), IsWeightedHomogeneous (torusW isVec) (pathWord isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) R)) k J) (fun a => if a ∈ J then (if 1 ≤ c then (1 : ℤ) else -1) else 0)`. Introduce `c k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `J`.
+
+Simplify using `only [pathWord, oneF]`. Distinguish the cases in `hJ : J = ∅`. Substitute `hJ` using the available equality. Rewrite using `[if_pos rfl]`. Establish `h0 : (fun a : Fin n => if a ∈ (∅ : Finset (Fin n)) then (if 1 ≤ c then (1 : ℤ) else -1) else 0) = 0`.
+
+Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Use `hmon 0 1` as an intermediate fact. Rewrite `this` using `[map_zero]`.
+
+Conclude with `this`. Rewrite using `[if_neg hJ]`. Conclude with `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mp (Submodule.zero_mem _)`. Consider the case `succ k ih`. Introduce `J`.
+
+Simplify using `only [pathWord]`. Distinguish the cases in `hcol : colHeight (μ (k + 1)) c = colHeight (μ k) c`. Rewrite using `[if_pos hcol]`. Conclude with `ih J`. Rewrite using `[if_neg hcol]`.
+
+Unfold `stepF`. Distinguish the cases in `hup : (isVec k == decide (1 ≤ c)) = true`. Rewrite using `[if_pos hup]`. Unfold `wedgeF`. Use `beta_reduce`.
+
+Apply `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mp` to reduce the goal to its premises. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← zsmul_eq_mul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Apply `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mpr` to reduce the goal to its premises.
+
+Rewrite using `[wedgeW c k J m hm hup]`. Conclude with `(ih (J.erase m)).mul (hXw (k, m))`. Rewrite using `[if_neg hup]`. Unfold `contrF`. Use `beta_reduce`.
+
+Apply `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mp` to reduce the goal to its premises. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← zsmul_eq_mul]`. Use `zsmul_mem ?_ _` and prove the remaining obligations. Apply `(MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mpr` to reduce the goal to its premises.
+
+Rewrite using `[contrW c k J m (Finset.mem_compl.mp hm) hup]`. Conclude with `(hXw (k, m)).mul (ih (insert m J))`. Choose the witnesses or unpack the hypotheses as in `⟨T, hb⟩ : ∃ T : ℤ, ∀ k ≤ N, ∀ m, |μ k m| ≤ T := by`. Use `⟨∑ k ∈ range (N + 1), ∑ m, |μ k m|, fun k hk m => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hS : ∀ c, c ∉ Finset.Icc (-T) T → I c = ∅` using `fun c hc => idx_empty hI T (hb N le_rfl) c hc`. Establish `hone : ∀ c, c ∉ Finset.Icc (-T) T → ∀ k ≤ N, pathWord isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) R)) k = oneF`. Introduce `c hc k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `_`. Simplify using `only [pathWord]`. Consider the case `succ k ih`. Introduce `hk`. Rewrite `hc` using `[Finset.mem_Icc]`.
+
+Establish `hcol : colHeight (μ (k + 1)) c = colHeight (μ k) c`. Distinguish the cases in `hcT : T < c`. Establish `e : ∀ k' ≤ N, colHeight (μ k') c = 0`. Introduce `k' hk'`. Unfold `colHeight`.
+
+Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `m _`. Use `hb k' hk' m` as an intermediate fact. Rewrite `this` using `[abs_le]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[e (k + 1) hk, e k (by omega)]`. Establish `e : ∀ k' ≤ N, colHeight (μ k') c = n`. Introduce `k' hk'`. Unfold `colHeight`. Rewrite using `[Finset.filter_true_of_mem, Finset.card_univ, Fintype.card_fin]`.
+
+Introduce `m _`. Use `hb k' hk' m` as an intermediate fact. Rewrite `this` using `[abs_le]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e (k + 1) hk, e k (by omega)]`.
+
+Simplify using `only [pathWord]`. Rewrite using `[if_pos hcol]`. Conclude with `ih (by omega)`. Establish `hsupp : Function.mulSupport (fun c => pathWord isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) R)) N (I c)) ⊆ ↑(Finset.Icc (-T) T)`. Introduce `c hc`.
+
+Rewrite `hc` using `[Function.mem_mulSupport]`. Assume the negation of the conclusion as `hcS`. Apply `hc` to reduce the goal to its premises. Rewrite using `[hone c hcS N le_rfl, hS c hcS]`. Simplify using `[oneF]`.
+
+Unfold `psiPath`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsupp]`. Establish `hprod` using `MvPolynomial.IsWeightedHomogeneous.prod (Finset.Icc (-T) T) _ _ (fun c _ => key c N (I c))`. Use `hprod using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[Finset.sum_apply, idxWeight_eq I (Finset.Icc (-T) T) hS a]`.
+-/
 theorem psi_weight : PsiWeight := by
   intro R _ n N isVec B μ I hp hI
   have hmon : ∀ (d : ℕ × Fin n →₀ ℕ) (r : R), IsWeightedHomogeneous (torusW isVec)
@@ -241,6 +325,11 @@ theorem psi_weight : PsiWeight := by
 
 namespace A3comb
 
+/- English proof (translation)
+Repeatedly rewrite using `[idxWeight_eq I S hS]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_filter]`. Use `push_cast`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hm : m ∈ I c <;> simp [hm]`.
+-/
 theorem sum_idxWeight {n : ℕ} (I : ℤ → Finset (Fin n)) (S : Finset ℤ) (hS : ∀ c, c ∉ S → I c = ∅)
     (F : Finset (Fin n)) :
     ∑ m ∈ F, idxWeight I m =
@@ -254,6 +343,11 @@ theorem sum_idxWeight {n : ℕ} (I : ℤ → Finset (Fin n)) (S : Finset ℤ) (h
   refine Finset.sum_congr rfl fun m _ => ?_
   by_cases hm : m ∈ I c <;> simp [hm]
 
+/- English proof (translation)
+Establish `e : (univ.filter fun m : Fin n => m.val < k).map Fin.valEmbedding = range k`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Conclude with `ha`. Introduce `hx`. Conclude with `⟨⟨x, by omega⟩, hx, rfl⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, e, Finset.card_range]`.
+-/
 private theorem card_lt_lemma (n k : ℕ) (hk : k ≤ n) :
     (univ.filter fun m : Fin n => m.val < k).card = k := by
   have e : (univ.filter fun m : Fin n => m.val < k).map Fin.valEmbedding = range k := by
@@ -267,6 +361,17 @@ private theorem card_lt_lemma (n k : ℕ) (hk : k ≤ n) :
       exact ⟨⟨x, by omega⟩, hx, rfl⟩
   rw [← Finset.card_map Fin.valEmbedding, e, Finset.card_range]
 
+/- English proof (translation)
+Establish `hmn` using `m.isLt`. Unfold `colHeight`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hc`.
+
+Establish `hsub : (univ.filter fun m' : Fin n => c ≤ μ m') ⊆ univ.filter fun m' : Fin n => m'.val < m.val`. Introduce `m' hm'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm' ⊢`. Assume the negation of the conclusion as `hle`. Use `h (Fin.le_iff_val_le_val.mpr (by omega : m.val ≤ m'.val))` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[card_lt_lemma n m.val (by omega)]`. Use linear arithmetic over natural numbers and integers. Introduce `hc`.
+
+Establish `hsub : (univ.filter fun m' : Fin n => m'.val < m.val + 1) ⊆ univ.filter fun m' : Fin n => c ≤ μ m'`. Introduce `m' hm'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm' ⊢`. Conclude with `le_trans hc (h (Fin.le_iff_val_le_val.mpr (by omega : m'.val ≤ m.val)))`. Establish `h1` using `Finset.card_le_card hsub`.
+
+Rewrite `h1` using `[card_lt_lemma n (m.val + 1) (by omega)]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem lt_colHeight_iff_lemma {n : ℕ} {μ : Fin n → ℤ} (h : Antitone μ) (c : ℤ) (m : Fin n) :
     m.val < colHeight μ c ↔ c ≤ μ m := by
   have hmn := m.isLt
@@ -294,6 +399,23 @@ private theorem lt_colHeight_iff_lemma {n : ℕ} {μ : Fin n → ℤ} (h : Antit
     rw [card_lt_lemma n (m.val + 1) (by omega)] at h1
     omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Unfold `idxWeight`. Establish `h1 : {c : ℤ | 1 ≤ c ∧ m ∈ canIdx μ c} = Set.Icc 1 (μ m)`. Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Icc]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, hm⟩`. Unfold `canIdx at hm`. Rewrite `hm` using `[if_pos hc]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm`.
+
+Conclude with `⟨hc, (lt_colHeight_iff_lemma h c m).mp hm⟩`. Introduce and unpack `⟨hc, hcm⟩`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Unfold `canIdx`. Rewrite using `[if_pos hc]`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `(lt_colHeight_iff_lemma h c m).mpr hcm`. Establish `h2 : {c : ℤ | c ≤ 0 ∧ m ∈ canIdx μ c} = Set.Ioc (μ m) 0`. Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, Set.mem_Ioc]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, hm⟩`. Unfold `canIdx at hm`. Rewrite `hm` using `[if_neg (show ¬ (1 ≤ c) by omega)]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm`.
+
+Establish `h3 : ¬ c ≤ μ m` using `fun h' => absurd ((lt_colHeight_iff_lemma h c m).mpr h') (by omega)`. Conclude with `⟨by omega, hc⟩`. Introduce and unpack `⟨hlt, hc⟩`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Unfold `canIdx`.
+
+Rewrite using `[if_neg (show ¬ (1 ≤ c) by omega)]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Assume the negation of the conclusion as `hlt2`. Use `(lt_colHeight_iff_lemma h c m).mp (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h1, h2, ← Finset.coe_Icc, ← Finset.coe_Ioc, Set.ncard_coe_finset, Set.ncard_coe_finset, Int.card_Icc, Int.card_Ioc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem idxWeight_can {n : ℕ} {μ : Fin n → ℤ} (h : Antitone μ) : idxWeight (canIdx μ) = μ := by
   funext m
   unfold idxWeight
@@ -336,6 +458,11 @@ theorem idxWeight_can {n : ℕ} {μ : Fin n → ℤ} (h : Antitone μ) : idxWeig
 
 def rowsLt (n j : ℕ) : Finset (Fin n) := univ.filter fun m => m.val < j
 
+/- English proof (translation)
+Unfold `rowsLt`. Break down `le_total k n with hk | hk` into its components or cases. Rewrite using `[card_lt_lemma n k hk]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.filter_true_of_mem, Finset.card_univ, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `m _`. Use `m.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem card_rowsLt_lemma (n k : ℕ) : (rowsLt n k).card = min k n := by
   unfold rowsLt
   rcases le_total k n with hk | hk
@@ -347,6 +474,11 @@ private theorem card_rowsLt_lemma (n k : ℕ) : (rowsLt n k).card = min k n := b
       have := m.isLt
       omega
 
+/- English proof (translation)
+Establish `e : ((rowsLt n j).filter fun m => m ∈ rowsLt n h) = rowsLt n (min j h)`. Use extensionality with `m`. Simplify using `[rowsLt, lt_min_iff]`. Rewrite using `[e, card_rowsLt_lemma]`. Establish `h1` using `Finset.card_le_card (Finset.filter_subset (fun m => m ∈ J) (rowsLt n j))`.
+
+Establish `h2 : ((rowsLt n j).filter fun m => m ∈ J).card ≤ J.card` using `Finset.card_le_card (fun x hx => (Finset.mem_filter.mp hx).2)`. Rewrite `h1`, `hJ` using `[card_rowsLt_lemma]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cnt_init {n : ℕ} (J : Finset (Fin n)) (h j : ℕ) (hJ : J.card = (rowsLt n h).card) :
     ((rowsLt n j).filter fun m => m ∈ J).card ≤ ((rowsLt n j).filter fun m => m ∈ rowsLt n h).card := by
   have e : ((rowsLt n j).filter fun m => m ∈ rowsLt n h) = rowsLt n (min j h) := by
@@ -359,6 +491,19 @@ theorem cnt_init {n : ℕ} (J : Finset (Fin n)) (h j : ℕ) (hJ : J.card = (rows
   rw [card_rowsLt_lemma] at h1 hJ
   omega
 
+/- English proof (translation)
+Establish `f1 : ((rowsLt n j).filter fun m => m ∈ (rowsLt n h)ᶜ) = rowsLt n j ∩ (rowsLt n h)ᶜ`. Use extensionality with `m`. Simplify using the standard rewrite rules. Establish `f2 : ((rowsLt n j).filter fun m => m ∈ J) = rowsLt n j ∩ J`. Use extensionality with `m`.
+
+Simplify using the standard rewrite rules. Rewrite using `[f1, f2]`. Break down `le_total j h with hjh | hjh` into its components or cases. Establish `e : rowsLt n j ∩ (rowsLt n h)ᶜ = ∅`. Use extensionality with `m`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hm`. Simplify using `only [rowsLt, Finset.mem_inter, Finset.mem_compl, Finset.mem_filter, Finset.mem_univ, true_and] at hm`. Conclude with `absurd hm (by omega)`. Introduce `hm`.
+
+Simplify using `at hm`. Rewrite using `[e, Finset.card_empty]`. Conclude with `Nat.zero_le _`. Establish `hu : rowsLt n j ∪ (rowsLt n h)ᶜ = univ`. Use extensionality with `m`.
+
+Simplify using `only [rowsLt, Finset.mem_union, Finset.mem_compl, Finset.mem_filter, Finset.mem_univ, true_and, iff_true]`. Use linear arithmetic over natural numbers and integers. Establish `e1` using `Finset.card_union_add_card_inter (rowsLt n j) ((rowsLt n h)ᶜ)`. Establish `e2` using `Finset.card_union_add_card_inter (rowsLt n j) J`. Establish `e3` using `Finset.card_le_univ (rowsLt n j ∪ J)`.
+
+Rewrite `e1` using `[hu, Finset.card_univ, Fintype.card_fin]`. Rewrite `e3` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_filter_lt_le_alt {n : ℕ} (J : Finset (Fin n)) (h j : ℕ) (hJ : J.card = ((rowsLt n h)ᶜ).card) :
     ((rowsLt n j).filter fun m => m ∈ (rowsLt n h)ᶜ).card ≤ ((rowsLt n j).filter fun m => m ∈ J).card := by
   have f1 : ((rowsLt n j).filter fun m => m ∈ (rowsLt n h)ᶜ) = rowsLt n j ∩ (rowsLt n h)ᶜ := by
@@ -392,11 +537,17 @@ theorem card_filter_lt_le_alt {n : ℕ} (J : Finset (Fin n)) (h j : ℕ) (hJ : J
     rw [Fintype.card_fin] at e3
     omega
 
+/- English proof (translation)
+Unfold `canIdx rowsLt`. Rewrite using `[if_pos hc]`.
+-/
 theorem can_pos {n : ℕ} (μ : Fin n → ℤ) {c : ℤ} (hc : 1 ≤ c) :
     canIdx μ c = rowsLt n (colHeight μ c) := by
   unfold canIdx rowsLt
   rw [if_pos hc]
 
+/- English proof (translation)
+Unfold `canIdx rowsLt`. Rewrite using `[if_neg hc]`. Use extensionality with `m`. Simplify using the standard rewrite rules.
+-/
 theorem can_neg {n : ℕ} (μ : Fin n → ℤ) {c : ℤ} (hc : ¬ 1 ≤ c) :
     canIdx μ c = (rowsLt n (colHeight μ c))ᶜ := by
   unfold canIdx rowsLt
@@ -404,6 +555,15 @@ theorem can_neg {n : ℕ} (μ : Fin n → ℤ) {c : ℤ} (hc : ¬ 1 ≤ c) :
   ext m
   simp
 
+/- English proof (translation)
+Establish `hle : colHeight μ c ≤ n`. Unfold `colHeight`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`. Establish `key` using `hI c`. Distinguish the cases in `hc : 1 ≤ c`.
+
+Rewrite `key`, the goal using `[if_pos hc]`. Rewrite using `[can_pos μ hc]`. Use `cnt_init (I c) (colHeight μ c) j (by rw [key, card_rowsLt_lemma]; omega)` as an intermediate fact. Simplify using `only [one_mul]`. Conclude with `this` after adjusting the coercions.
+
+Rewrite `key`, the goal using `[if_neg hc]`. Rewrite using `[can_neg μ hc]`. Use `card_filter_lt_le_alt (I c) (colHeight μ c) j (by rw [key, Finset.card_compl, Fintype.card_fin, card_rowsLt_lemma]; omega)` as an intermediate fact. Establish `h' : (((rowsLt n j).filter fun m => m ∈ (rowsLt n (colHeight μ c))ᶜ).card : ℤ) ≤ (((rowsLt n j).filter fun m => m ∈ I c).card : ℤ)`. Conclude with `this` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem col_le {n : ℕ} {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hI : IsIndex μ I) (c : ℤ) (j : ℕ) :
     (if 1 ≤ c then (1 : ℤ) else -1) * (((rowsLt n j).filter fun m => m ∈ I c).card : ℤ) ≤
       (if 1 ≤ c then (1 : ℤ) else -1) * (((rowsLt n j).filter fun m => m ∈ canIdx μ c).card : ℤ) := by
@@ -426,6 +586,19 @@ theorem col_le {n : ℕ} {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hI :
       exact_mod_cast this
     linarith
 
+/- English proof (translation)
+Establish `hle : colHeight μ c ≤ n`. Unfold `colHeight`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`. Establish `key` using `hI c`. Distinguish the cases in `hc : 1 ≤ c`.
+
+Rewrite `key` using `[if_pos hc]`. Rewrite `h`, the goal using `[can_pos μ hc]`. Establish `f1 : ((rowsLt n (colHeight μ c)).filter fun m => m ∈ I c) ⊆ I c` using `fun x hx => (Finset.mem_filter.mp hx).2`. Establish `f2 : ((rowsLt n (colHeight μ c)).filter fun m => m ∈ I c) ⊆ rowsLt n (colHeight μ c)` using `Finset.filter_subset _ _`. Establish `e : ((rowsLt n (colHeight μ c)).filter fun m => m ∈ rowsLt n (colHeight μ c)) = rowsLt n (colHeight μ c)` using `Finset.filter_true_of_mem fun x hx => hx`.
+
+Rewrite `h` using `[e, card_rowsLt_lemma]`. Establish `g1` using `Finset.eq_of_subset_of_card_le f1 (by omega)`. Establish `g2` using `Finset.eq_of_subset_of_card_le f2 (by rw [card_rowsLt_lemma]; omega)`. Conclude with `g1.symm.trans g2`. Rewrite `key` using `[if_neg hc]`.
+
+Rewrite `h`, the goal using `[can_neg μ hc]`. Establish `e : ((rowsLt n (colHeight μ c)).filter fun m => m ∈ (rowsLt n (colHeight μ c))ᶜ) = ∅`. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite `h` using `[e, Finset.card_empty]`.
+
+Establish `hsub : I c ⊆ (rowsLt n (colHeight μ c))ᶜ`. Introduce `x hx`. Rewrite using `[Finset.mem_compl]`. Introduce `hxR`. Establish `hmem : x ∈ (rowsLt n (colHeight μ c)).filter fun m => m ∈ I c` using `Finset.mem_filter.mpr ⟨hxR, hx⟩`.
+
+Rewrite `hmem` using `[Finset.card_eq_zero.mp h]`. Simplify using `at hmem`. Conclude with `Finset.eq_of_subset_of_card_le hsub (by rw [Finset.card_compl, Fintype.card_fin, card_rowsLt_lemma, key]; omega)`.
+-/
 theorem col_eq {n : ℕ} {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hI : IsIndex μ I) (c : ℤ)
     (h : ((rowsLt n (colHeight μ c)).filter fun m => m ∈ I c).card =
       ((rowsLt n (colHeight μ c)).filter fun m => m ∈ canIdx μ c).card) : I c = canIdx μ c := by
@@ -467,6 +640,27 @@ theorem col_eq {n : ℕ} {μ : Fin n → ℤ} {I : ℤ → Finset (Fin n)} (hI :
 end A3comb
 
 open A3comb in
+/- English proof (translation)
+Introduce `n μ I hμ hI`. Take `⟨M, hM⟩` from `exists_bound μ`. Establish `hS : ∀ c, c ∉ Finset.Icc (-M) M → I c = ∅` using `fun c hc => idx_empty hI M hM c hc`. Establish `hle : ∀ c, colHeight μ c ≤ n` using `fun c => by`. Unfold `colHeight`.
+
+Conclude with `(Finset.card_filter_le _ _).trans (by simp)`. Establish `hcan : IsIndex μ (canIdx μ)`. Introduce `c`. Use `hle c` as an intermediate fact. Distinguish the cases in `hc : 1 ≤ c`.
+
+Rewrite using `[if_pos hc, can_pos μ hc, card_rowsLt_lemma]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hc, can_neg μ hc, Finset.card_compl, Fintype.card_fin, card_rowsLt_lemma]`. Use linear arithmetic over natural numbers and integers. Establish `hS' : ∀ c, c ∉ Finset.Icc (-M) M → canIdx μ c = ∅` using `fun c hc => idx_empty hcan M hM c hc`.
+
+Establish `hsum : ∀ j, ∑ m ∈ rowsLt n j, idxWeight I m ≤ ∑ m ∈ rowsLt n j, μ m`. Introduce `j`. Rewrite using `[show (∑ m ∈ rowsLt n j, μ m) = ∑ m ∈ rowsLt n j, idxWeight (canIdx μ) m by`. Rewrite using `[idxWeight_can hμ], sum_idxWeight I _ hS, sum_idxWeight (canIdx μ) _ hS']`. Conclude with `Finset.sum_le_sum fun c _ => col_le hI c j`.
+
+Establish `e : (Finset.univ : Finset (Fin n)) = rowsLt n n`. Use extensionality with `m`. Simplify using `[rowsLt]`. Establish `g : ∀ X : Finset (Fin n), ((rowsLt n n).filter fun m => m ∈ X) = X`. Introduce `X`.
+
+Rewrite using `[← e]`. Use extensionality with `m`. Simplify using the standard rewrite rules. Establish `htot : ∑ m, idxWeight I m = ∑ m, μ m`. Rewrite using `[e, show (∑ m ∈ rowsLt n n, μ m) = ∑ m ∈ rowsLt n n, idxWeight (canIdx μ) m by`.
+
+Rewrite using `[idxWeight_can hμ], sum_idxWeight I _ hS, sum_idxWeight (canIdx μ) _ hS']`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[g, g, hI c, hcan c]`. Use `⟨?_, fun hw => ?_⟩` and prove the remaining obligations. Unfold `DomLe`.
+
+Conclude with `⟨htot, fun j => hsum j⟩`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hcS : c ∈ Finset.Icc (-M) M`. Apply `col_eq hI c` to reduce the goal to its premises. Establish `hsum0 : ∑ c' ∈ Finset.Icc (-M) M, ((if 1 ≤ c' then (1 : ℤ) else -1) * (((rowsLt n (colHeight μ c)).filter fun m => m ∈ I c').card : ℤ) - (if 1 ≤ c' then (1 : ℤ) else -1) * (((rowsLt n (colHeight μ c)).filter fun m => m ∈ canIdx μ c').card : ℤ)) = 0`.
+
+Rewrite using `[Finset.sum_sub_distrib, ← sum_idxWeight I _ hS, ← sum_idxWeight (canIdx μ) _ hS', idxWeight_can hμ, hw, sub_self]`. Rewrite `hsum0` using `[Finset.sum_eq_zero_iff_of_nonpos (fun c' _ => sub_nonpos.mpr (col_le hI c' (colHeight μ c)))]`. Establish `h0` using `hsum0 c hcS`. Apply the tactic sequence `have h1 : (((rowsLt n (colHeight μ c)).filter fun m => m ∈ I c).card : ℤ) = (((rowsLt n (colHeight μ c)).filter fun m => m ∈ canIdx μ c).card : ℤ) := by split_ifs at h0 <;> linarith`. Conclude with `h1` after adjusting the coercions.
+
+Rewrite using `[hS c hcS, hS' c hcS]`.
+-/
 theorem index_weights_dominance : IndexWeightsDominance := by
   intro n μ I hμ hI
   obtain ⟨M, hM⟩ := exists_bound μ
@@ -524,6 +718,13 @@ theorem index_weights_dominance : IndexWeightsDominance := by
 
 namespace A3comb
 
+/- English proof (translation)
+Use `Finsupp.induction_linear e ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f g hf hg`. Simplify using `only [map_add, hf, hg, Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]`. Introduce and unpack `⟨x1, x2⟩ k`.
+
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_single_index]`. Distinguish the cases in `hi : x1 = i`. Substitute `hi` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `[Finsupp.single_apply, hi]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem weight_letter {n : ℕ} (i : ℕ) (e : ℕ × Fin n →₀ ℕ) :
     Finsupp.weight (fun x : ℕ × Fin n => if x.1 = i then 1 else 0) e = ∑ a, e (i, a) := by
   refine Finsupp.induction_linear e ?_ ?_ ?_
@@ -546,14 +747,23 @@ def mkMon {n N : ℕ} (d : Fin N → (Fin n →₀ ℕ)) : ℕ × Fin n →₀ �
     by_contra h
     exact hx (dif_neg h))
 
+/- English proof (translation)
+Simplify using `[mkMon]`.
+-/
 theorem mkMon_apply {n N : ℕ} (d : Fin N → (Fin n →₀ ℕ)) (i : Fin N) (a : Fin n) :
     mkMon d (i.val, a) = d i a := by
   simp [mkMon]
 
+/- English proof (translation)
+Simplify using `[mkMon, hi]`.
+-/
 theorem mkMon_apply_ge {n N : ℕ} (d : Fin N → (Fin n →₀ ℕ)) (i : ℕ) (hi : ¬ i < N) (a : Fin n) :
     mkMon d (i, a) = 0 := by
   simp [mkMon, hi]
 
+/- English proof (translation)
+Introduce `d d' h`. Use function extensionality and compare the values at `i`. Use extensionality with `a`. Use `DFunLike.congr_fun h (i.val, a)` as an intermediate fact. Rewrite `this` using `[mkMon_apply, mkMon_apply]`. Then use the resulting hypothesis.
+-/
 theorem mkMon_inj {n N : ℕ} : Function.Injective (mkMon (n := n) (N := N)) := by
   intro d d' h
   funext i
@@ -561,6 +771,15 @@ theorem mkMon_inj {n N : ℕ} : Function.Injective (mkMon (n := n) (N := N)) := 
   have := DFunLike.congr_fun h (i.val, a)
   rwa [mkMon_apply, mkMon_apply] at this
 
+/- English proof (translation)
+Use extensionality with `e`. Simplify using `only [Set.mem_setOf_eq, Finset.coe_image, Set.mem_image, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true]`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Use `⟨fun i => Finsupp.equivFunOnFinite.symm fun a => e (i.val, a), fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using he i.val`. Use extensionality with `⟨j, a⟩`. Distinguish the cases in `hj : j < N`. Conclude with `(mkMon_apply _ ⟨j, hj⟩ a).trans (by simp)`. Rewrite using `[mkMon_apply_ge _ _ hj]`.
+
+Use `he j` as an intermediate fact. Rewrite `this` using `[if_neg hj, Finset.sum_eq_zero_iff]`. Conclude with `(this a (Finset.mem_univ a)).symm`. Introduce and unpack `⟨d, hd, rfl⟩ i`. Distinguish the cases in `hi : i < N`.
+
+Rewrite using `[if_pos hi]`. Conclude with `(Finset.sum_congr rfl fun a _ => mkMon_apply d ⟨i, hi⟩ a).trans (hd ⟨i, hi⟩)`. Rewrite using `[if_neg hi]`. Conclude with `Finset.sum_eq_zero fun a _ => mkMon_apply_ge d i hi a`.
+-/
 theorem monSet_eq (n N : ℕ) (B : ℕ → ℕ) :
     {e : ℕ × Fin n →₀ ℕ | ∀ i, ∑ a, e (i, a) = if i < N then B i else 0} =
       ↑((Fintype.piFinset fun i : Fin N => (univ : Finset (Fin n)).finsuppAntidiag (B i)).image
@@ -589,6 +808,23 @@ theorem monSet_eq (n N : ℕ) (B : ℕ → ℕ) :
 end A3comb
 
 open A3comb in
+/- English proof (translation)
+Introduce `n N B`. Establish `hcard : ∀ k : ℕ, ((univ : Finset (Fin n)).finsuppAntidiag k).card = (n + k - 1).choose k`. Introduce `k`. Rewrite using `[show n + k - 1 = Fintype.card (Fin n) + k - 1 by simp, ← Sym.card_sym_eq_choose, ← Fintype.card_coe]`. Conclude with `Fintype.card_congr (Equiv.subtypeEquiv ({ toFun := fun f => Finsupp.toMultiset f, invFun := fun s => Multiset.toFinsupp s, left_inv := fun f => by simp, right_inv := fun s => by simp } : (Fin n →₀ ℕ) ≃ Multiset (Fin n)) (fun f => by`.
+
+Simplify using `only [Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true, Equiv.coe_fn_mk, Finsupp.card_toMultiset]`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Use the proof step `rfl) : _ ≃ Sym (Fin n) k)`. Establish `hset` using `monSet_eq n N B`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hset, Set.ncard_coe_finset, Finset.card_image_of_injective _ mkMon_inj, Fintype.card_piFinset, Fin.prod_univ_eq_prod_range (fun i => ((univ : Finset (Fin n)).finsuppAntidiag (B i)).card) N]`. Conclude with `Finset.prod_congr rfl fun i _ => hcard (B i)`. Rewrite using `[hset]`. Conclude with `Finset.finite_toSet _`. Introduce `R _`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Unfold `polB at hp`. Rewrite `hp` using `[Submodule.mem_iInf]`. Rewrite using `[p.as_sum]`.
+
+Use `Submodule.sum_mem _ fun e he => ?_` and prove the remaining obligations. Establish `heS : ∀ i, ∑ a, e (i, a) = if i < N then B i else 0`. Introduce `i`. Rewrite using `[← weight_letter]`. Conclude with `((MvPolynomial.mem_weightedHomogeneousSubmodule _ _ _ _).mp (hp i)) (MvPolynomial.mem_support_iff.mp he)`.
+
+Rewrite using `[show MvPolynomial.monomial e (MvPolynomial.coeff e p) = MvPolynomial.coeff e p • MvPolynomial.monomial e (1 : R) by`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_image_of_mem (fun e => MvPolynomial.monomial e (1 : R)) heS))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨e, he, rfl⟩`.
+
+Establish `he' : ∀ i, ∑ a, e (i, a) = if i < N then B i else 0` using `he`. Unfold `polB`. Rewrite using `[SetLike.mem_coe, Submodule.mem_iInf]`. Introduce `i`. Rewrite using `[MvPolynomial.mem_weightedHomogeneousSubmodule]`.
+
+Apply `MvPolynomial.isWeightedHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[weight_letter]`. Conclude with `he' i`.
+-/
 theorem polynomial_b_rank : PolBRank := by
   intro n N B
   have hcard : ∀ k : ℕ, ((univ : Finset (Fin n)).finsuppAntidiag k).card = (n + k - 1).choose k := by
@@ -641,6 +877,9 @@ theorem polynomial_b_rank : PolBRank := by
 
 namespace A3comb
 
+/- English proof (translation)
+Take `⟨h1, _, h3⟩` from `h`. Use `⟨h1 m, ?_⟩` and prove the remaining obligations. Establish `: ν m - μ m ≤ ∑ m', (ν m' - μ m')` using `Finset.single_le_sum (f := fun m' => ν m' - μ m') (fun i _ => sub_nonneg.mpr (h1 i)) (Finset.mem_univ m)`. Rewrite `this` using `[Finset.sum_sub_distrib, h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem strip_bound {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip ν μ b) (m : Fin n) :
     μ m ≤ ν m ∧ ν m ≤ μ m + b := by
   obtain ⟨h1, _, h3⟩ := h
@@ -651,6 +890,15 @@ theorem strip_bound {n : ℕ} {ν μ : Fin n → ℤ} {b : ℕ} (h : HStrip ν �
   rw [Finset.sum_sub_distrib, h3] at this
   linarith
 
+/- English proof (translation)
+Take `⟨h0, _, hstep⟩` from `hp`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ m`.
+
+Simplify using `[h0]`. Consider the case `succ i ih`. Introduce `hi m`. Establish `ih'` using `ih (by omega) m`. Establish `hs` using `hstep i (by omega)`.
+
+Rewrite using `[Finset.sum_range_succ, Nat.cast_add]`. Use `split_ifs at hs with hv`. Use `strip_bound hs m` as an intermediate fact. Rewrite `ih'`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`.
+
+Use `strip_bound hs m` as an intermediate fact. Rewrite `ih'`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`.
+-/
 theorem path_bound {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ N) : ∀ i ≤ N, ∀ m, |μ i m| ≤ ((∑ k ∈ range i, B k : ℕ) : ℤ) := by
   obtain ⟨h0, _, hstep⟩ := hp
@@ -672,6 +920,9 @@ theorem path_bound {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : �
       rw [abs_le] at ih' ⊢
       constructor <;> linarith [this.1, this.2]
 
+/- English proof (translation)
+The claim follows from `|μ i m| ≤ ((∑ k ∈ range N, B k : ℕ) : ℤ) := by have := path_bound hp i hi m have h2 : (∑ k ∈ range i, B k) ≤ ∑ k ∈ range N, B k := Finset.sum_le_sum_of_subset (Finset.range_mono hi) have h3 : ((∑ k ∈ range i, B k : ℕ) : ℤ) ≤ ((∑ k ∈ range N, B k : ℕ) : ℤ) := by exact_mod_cast h2 …`.
+-/
 theorem path_bound' {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ N) (i : ℕ) (hi : i ≤ N) (m : Fin n) :
     |μ i m| ≤ ((∑ k ∈ range N, B k : ℕ) : ℤ) := by
@@ -685,6 +936,17 @@ theorem path_bound' {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : �
 end A3comb
 
 open A3comb in
+/- English proof (translation)
+Introduce `n N isVec B`. Establish `hb : ∀ x : PathIdx n N isVec B, ∀ i : Fin (N + 1), ∀ m, x.1.1 i m ∈ Finset.Icc (-((∑ k ∈ range N, B k : ℕ) : ℤ)) ((∑ k ∈ range N, B k : ℕ) : ℤ)`. Introduce `x i m`. Rewrite using `[Finset.mem_Icc, ← abs_le]`. Conclude with `path_bound' x.2.1 i.val (Nat.lt_succ_iff.mp i.isLt) m`.
+
+Use `Finite.of_injective (fun x : PathIdx n N isVec B => ((fun (i : Fin (N + 1)) (m : Fin n) => (⟨x.1.1 i m, hb x i m⟩ : Finset.Icc (-((∑ k ∈ range N, B k : ℕ) : ℤ)) ((∑ k ∈ range N, B k : ℕ) : ℤ))), fun c : Finset.Icc (-((∑ k ∈ range N, B k : ℕ) : ℤ)) ((∑ k ∈ range N, B k : ℕ) : ℤ) = …` and prove the remaining obligations. Introduce and unpack `⟨⟨μ, I⟩, hp, hz, hstd⟩ ⟨⟨μ', I'⟩, hp', hz', hstd'⟩ h`. Simplify using `only at hp hz hstd hp' hz' hstd' h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`.
+
+Establish `hμ : μ = μ'`. Use function extensionality and compare the values at `i m`. Distinguish the cases in `hi : i ≤ N`. Use `congrArg Subtype.val (congrFun (congrFun h1 ⟨i, Nat.lt_succ_of_le hi⟩) m)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hz i (by omega), hz' i (by omega)]`. Establish `hI : I = I'`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ Finset.Icc (-((∑ k ∈ range N, B k : ℕ) : ℤ)) ((∑ k ∈ range N, B k : ℕ) : ℤ)`. Conclude with `congrFun h2 ⟨c, hc⟩`.
+
+Rewrite using `[idx_empty hstd.1 _ (fun m => path_bound' hp N le_rfl m) c hc, idx_empty hstd'.1 _ (fun m => path_bound' hp' N le_rfl m) c hc]`. Substitute `hμ hI` using the available equality. Both sides reduce to the same expression.
+-/
 theorem path_index_finite : PathIdxFinite := by
   intro n N isVec B
   have hb : ∀ x : PathIdx n N isVec B, ∀ i : Fin (N + 1), ∀ m,

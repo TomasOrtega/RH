@@ -25,8 +25,18 @@ open GlobalTheory.ThK.PlaneEv
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one_eq {n : ℕ} : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Introduce `f`. Set `b : ContDiffBump (0 : Fin n × Fin 2 → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hs : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Take `⟨g, hg⟩` from `GlobalTheory.ThK.EvAt0.SchwartzProd.exists_prod hd (hs.toSchwartzMap hc) f`.
+
+Use `⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ei_apply, hg]`. Establish `h2 : b 0 = 1` using `b.one_of_mem_closedBall (by simp [b])`. Establish `e1 : (fun p => ins0 hd x ((GlobalTheory.ThK.EvAt0.idx hd).symm (Sum.inr p))) = 0` using `funext fun p => planeZeroInsertion_apply_inr hd x p`.
+
+Establish `e2 : (fun q => ins0 hd x ((GlobalTheory.ThK.EvAt0.idx hd).symm (Sum.inl q))) = x` using `funext fun q => planeZeroInsertion_apply_inl hd x q`. Rewrite using `[e1, e2]`. Simplify using `[h2]`.
+-/
 theorem ei_surjective {n d d₁ : ℕ} (hd : d = d₁ + 2) : Function.Surjective (ei (n := n) F hd) := by
   classical
   intro f
@@ -44,6 +54,31 @@ theorem ei_surjective {n d d₁ : ℕ} (hd : d = d₁ + 2) : Function.Surjective
   rw [e1, e2]
   simp [h2]
 
+/- English proof (translation)
+Establish `hd : d = d₁ + 2` using `hH.rank`. Take `⟨co, hco⟩` from `GlobalTheory.T.adapted_plane_darboux_coordinates_exist F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁`. Take `⟨vac, hvac, hstd, hres⟩` from `GlobalTheory.T.exists_vacuum_family_eventually_indicator_ev_eq F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M₁ hd hB hX hW hH hM₁ co hco`. Take `⟨hlow, hmulX, -, hrat⟩` from `hco`. Set `Ma : Model σ X W` to `⟨co, vac, M.μ, M.dom⟩`.
+
+Establish `hMa : Ma.IsGood B.ψ` using `⟨hrat, hvac, hstd, hM.haar, hM.dom⟩`. Take `⟨e₁, h₁, ei₁, ev₁, hs₁, -, hv₁, hl₁⟩` from `GlobalTheory.T.exists_eigen_intertwiner_models hP F E σ B n d r s r' s' X W M Ma hB hX hW hM hMa`. Establish `heis₂ : ∀ z, ∀ Φ ∈ schA F (Fin n × Fin d), evA F hd (Ma.co.rho B.ψ (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) Φ) = M₁.co.rho B.ψ z (evA F hd Φ)`. Introduce `z Φ _`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [evA_apply, Darboux.rho, schr, incM_one_eq, Matrix.one_mul, Ma]`. Rewrite using `[hlow z, ins0_dotProduct_ins0, ins0_dotProduct_ins0, ← ins0_add]`. Establish `hinv₂ : ∀ u ∈ iso0 (F` using `F) n H', ∀ Φ ∈ schA F (Fin n × Fin d), evA F hd (Ma.co.rho B.ψ u Φ) = evA F hd Φ := by`. Introduce and unpack `u ⟨y, rfl⟩ Φ _`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [evA_apply, Darboux.rho, schr, Ma]`. Establish `h0 : (fun p => (co.e (Matrix.vecMulVec y (incV F H'.x))).2 ((idx hd).symm (Sum.inl p))) = 0`. Use function extensionality and compare the values at `(hmulX y).2`. Rewrite using `[(hmulX y).1, ins0_dotProduct, h0, dotProduct_zero, zero_dotProduct, mul_zero, add_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`. Establish `heis₁ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), e₁ (M.co.rho B.ψ u Φ) = Ma.co.rho B.ψ u (e₁ Φ)`.
+
+Introduce `u Φ hΦ`. Use `h₁.Heisenberg₂ u Φ hΦ` as an intermediate fact. Rewrite `this` using `[incM_one_eq, incM_one_eq, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Set `ei₀ : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁)` to `(ei F hd).comp ei₁`. Set `ev₀ : ∀ v : Pl F, ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Fin n × Fin d₁ → Fv F v) → ℂ` to `fun v => (ev hd v).comp (ev₁ v)`.
+
+Establish `hs₀ : Function.Surjective ei₀` using `(ei_surjective hd).comp hs₁`. Establish `hne₀ : ei₀ ≠ 0`. Introduce `h0`. Apply `ei_ne_zero (n := n) (F := F) hd` to reduce the goal to its premises. Use `ext1 g`.
+
+Take `⟨g', rfl⟩` from `hs₁ g`. Conclude with `congrArg (fun S : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d₁) => S g') h0`. Establish `hv₀ : ∀ v, ev₀ v (M.vac v) = M₁.vac v ∧ (SB _).map (ev₀ v) = SB _` using `fun v => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ev hd v (ev₁ v (M.vac v)) = M₁.vac v`.
+
+Rewrite using `[(hv₁ v).1]`. Conclude with `hres v`. Use `show (SB _).map ((ev hd v).comp (ev₁ v)) = SB _`. Rewrite using `[Submodule.map_comp, (hv₁ v).2, GlobalTheory.T.local_evaluation_schwartz_bruhat_image F n d d₁ hd v]`. Establish `hl₀ : ∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = M.vac v) → (evA F hd ∘ₗ e₁) (pure f φ) = pure (ei₀ f) fun v => ev₀ v (φ v)`.
+
+Introduce `f φ hφ hc`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hl₁ f φ hφ hc, evA_pure]`. Both sides reduce to the same expression. Establish `hE : IsEv B M M₁ 1 H'.ι (iso0 n H') (evA F hd ∘ₗ e₁)`.
+
+Use `⟨fun Φ hΦ => GlobalTheory.T.adelic_evaluation_preserves_schwartz F n d d₁ hd _ (h₁.maps Φ hΦ), fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_, ⟨ei₀, ev₀, hne₀, hv₀, hl₀⟩⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[heis₁ _ Φ hΦ, heis₂ z _ (h₁.maps Φ hΦ)]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[heis₁ _ Φ hΦ, hinv₂ u hu _ (h₁.maps Φ hΦ)]`.
+
+Establish `hR₀` using `GlobalTheory.ThK.EvUniq.infRel_of_isEv F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ _ hE ei₀ ev₀ hne₀ hv₀ hl₀`. Take `⟨c, hc⟩` from `GlobalTheory.T.eigen_intertwiner_archimedean hP F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ T ei₀ hT hR hR₀`. Introduce `g`. Take `⟨f, hf⟩` from `hs₀ g`. Use `⟨c • f, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← ContinuousLinearMap.smul_apply, ← hc, hf]`.
+-/
 theorem infRel_surjective (hP : GlobalTheory.FunPr.Hypotheses₂) (B : Base F E) {n d d₁ r s r' s' i₀ i₁ : ℕ} {X : Spc F E n} {W : Spc F E d}
     {W₁ : Spc F E d₁} {H' : Plane E d d₁} {M : Model σ X W} {M₁ : Model σ X W₁} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s)
     (hW : W.IsSkew σ B r' s') (hM : M.IsGood B.ψ) (hH : H'.IsAdapted σ B W W₁ i₀ i₁) (hM₁ : M₁.IsGood B.ψ)
@@ -112,6 +147,15 @@ theorem infRel_surjective (hP : GlobalTheory.FunPr.Hypotheses₂) (B : Base F E)
   refine ⟨c • f, ?_⟩
   rw [map_smul, ← ContinuousLinearMap.smul_apply, ← hc, hf]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M χX χW om r s r' s' hPr H H' j₀ j₁ i₀ i₁ Ma oma r₁ s₁ M₁ hH hH' hPa hM₁ e₁ e₂ he₁ he₂`. Take `⟨ei₁, ev₁, hei₁, hv₁, hl₁⟩` from `he₁.loc`. Take `⟨ei₂, ev₂, hei₂, hv₂, hl₂⟩` from `he₂.loc`. Establish `hR` using `GlobalTheory.ThK.EvUniq.infRel_of_isEv F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M Ma hPr.base hPr.herm hPr.skew hPr.good hH' hPa.good e₁ he₁ ei₁ ev₁ hei₁ hv₁ hl₁`. Establish `hsurj` using `infRel_surjective hP B hPr.base hPr.herm hPr.skew hPr.good hH' hPa.good ei₁ hei₁ hR`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, ei₂ g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hei₂ (ContinuousLinearMap.ext h)`. Take `⟨f, rfl⟩` from `hsurj g`.
+
+Establish `hvacM : ∀ v, M.vac v ∈ SB _` using `fun v => (hPr.good.vac v).1`. Use `⟨pure f M.vac, GlobalTheory.TensUniq.pure_mem_schA f M.vac hvacM hPr.good.std, ?_⟩` and prove the remaining obligations. Rewrite using `[hl₁ f M.vac hvacM (Filter.Eventually.of_forall fun _ => rfl)]`. Establish `e1 : (fun v => ev₁ v (M.vac v)) = Ma.vac` using `funext fun v => (hv₁ v).1`. Rewrite using `[e1, hl₂ (ei₁ f) Ma.vac (fun v => (hPa.good.vac v).1) (Filter.Eventually.of_forall fun _ => rfl)]`.
+
+Establish `e2 : (fun v => ev₂ v (Ma.vac v)) = M₁.vac` using `funext fun v => (hv₂ v).1`. Rewrite using `[e2]`. Conclude with `GlobalTheory.ThK.EvNeZero.pure_ne_zero (ei₂ (ei₁ f)) hg M₁.vac (fun v => (hM₁.vac v).2.1) hM₁.std`.
+-/
 theorem comp_ne_zero : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' → ∀ (H : Plane E n n₁) (H' : Plane E d d₁) (j₀ j₁ i₀ i₁ : ℕ) (Ma : Model σ X W₁) (oma : Rep σ X W₁) (r₁ s₁ : ℕ)

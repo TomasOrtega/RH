@@ -46,10 +46,28 @@ def LeafBaseChangePreR : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω]
       IsPullback r2 (e2 ≫ e1 ≫ q') (d2 ≫ d1 ≫ q) (incl hR) ∧
       w0 ≫ r0 = v0 ∧ e1 ≫ r0 = r1 ≫ d1 ∧ e2 ≫ r1 = r2 ≫ d2
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem incl_toK {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (hR : R ≤ R') :
     incl hR ≫ Spec.map (CommRingCat.ofHom (algebraMap k R)) = Spec.map (CommRingCat.ofHom (algebraMap k R')) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `k _ X p _ Ω _ _ R hR C0 C1 C2 c0 γ1 γ2 e he hc0 h1 h2 qf0 qf1 qf2 D0 D1 D2 q d1 d2 f v0 v1 v2 hf hpre hve`. Take `⟨f0, f1, f2, p0, p1, p2, m1, m2⟩` from `id hpre`. Take `⟨S0, a0, g0, H0⟩` from `hSep k Ω R hR c0 q v0 f0 hc0.2.1.toIsSeparated p0`. Take `⟨S1, a1, g1, H1⟩` from `hSep k Ω R hR (γ1 ≫ c0) (d1 ≫ q) v1 f1 h1.2.1.toIsSeparated p1`. Take `⟨S2, a2, g2, H2⟩` from `hSep k Ω R hR (γ2 ≫ γ1 ≫ c0) (d2 ≫ d1 ≫ q) v2 f2 h2.2.1.toIsSeparated p2`.
+
+Take `⟨T0, b0, k0, K0⟩` from `hSm k Ω R hR c0 q v0 f0 hc0.2.2 p0`. Take `⟨T1, b1, k1, K1⟩` from `hSm k Ω R hR (γ1 ≫ c0) (d1 ≫ q) v1 f1 h1.2.2 p1`. Take `⟨T2, b2, k2, K2⟩` from `hSm k Ω R hR (γ2 ≫ γ1 ≫ c0) (d2 ≫ d1 ≫ q) v2 f2 h2.2.2 p2`. Take `⟨G, aG, gG, HG⟩` from `hG k p Ω R hR c0 q v0 f e he hf f0 p0 hve qf0`. Take `⟨M1, aM1, gM1, HM1⟩` from `hM k Ω R hR c0 γ1 q d1 v1 v0 f0 f1 p0 p1 m1 qf1`.
+
+Take `⟨M2, aM2, gM2, HM2⟩` from `hM k Ω R hR (γ1 ≫ c0) γ2 (d1 ≫ q) d2 v2 v1 f1 f2 p1 p2 m2 qf2`. Set `T` to `S0 ⊔ S1 ⊔ S2 ⊔ T0 ⊔ T1 ⊔ T2 ⊔ G ⊔ M1 ⊔ M2`. Establish `gT : T.FG` using `((((((((g0.sup g1).sup g2).sup k0).sup k1).sup k2).sup gG).sup gM1).sup gM2)`. Establish `lS0 : S0 ≤ T` using `(((((((le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left`. Establish `literatureStatementsS1 : S1 ≤ T` using `(((((((le_sup_right).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left`.
+
+Establish `logSupBoundLevelFree : S2 ≤ T` using `((((((le_sup_right).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left`. Establish `lT0 : T0 ≤ T` using `(((((le_sup_right).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left`. Establish `lT1 : T1 ≤ T` using `((((le_sup_right).trans le_sup_left).trans le_sup_left).trans le_sup_left).trans le_sup_left`. Establish `lT2 : T2 ≤ T` using `(((le_sup_right).trans le_sup_left).trans le_sup_left).trans le_sup_left`. Establish `lG : G ≤ T` using `((le_sup_right).trans le_sup_left).trans le_sup_left`.
+
+Establish `familyMassFirstBound : M1 ≤ T` using `(le_sup_right).trans le_sup_left`. Establish `familyMassSecondBound : M2 ≤ T` using `le_sup_right`. Establish `hRT : R ≤ T` using `a0.trans lS0`. Take `⟨E0, E1, E2, q', e1, e2, w0, w1, w2, r0, r1, r2, ⟨P0, P1, P2, c1, c2⟩, Q0, Q1, Q2, n0, n1, n2⟩` from `hB k Ω R T hRT c0 γ1 γ2 q d1 d2 v0 v1 v2 hpre`. Establish `hf' : (r0 ≫ f) ≫ p = q' ≫ Spec.map (CommRingCat.ofHom (algebraMap k T))`.
+
+Rewrite using `[Category.assoc, hf, ← Category.assoc, Q0.w, Category.assoc, incl_toK]`. Use `haveI := f0.2.1`. Use `haveI := f1.2.1`. Use `haveI := f2.2.1`. Use `⟨T, gT, E0, E1, E2, q', e1, e2, r0 ≫ f, w0, w1, w2, hf', ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨H0 T lS0 hRT E0 q' r0 Q0, MorphismProperty.of_isPullback (P := @QuasiCompact) Q0 inferInstance, K0 T lT0 hRT E0 q' r0 Q0, H1 T literatureStatementsS1 hRT E1 (e1 ≫ q') r1 Q1, MorphismProperty.of_isPullback (P := @QuasiCompact) Q1 inferInstance, K1 T lT1 hRT E1 (e1 ≫ q') r1 Q1, H2 …`.
+-/
 theorem LeafSpreadQF_of (hSep : LateralTheory.E.LeafSpreadProperPf.LeafSpreadSeparated) (hSm : LeafSpreadSmooth1)
     (hG : LeafSpreadLQFGraph) (hM : LeafSpreadLQFMap) (hB : LeafBaseChangePreR) :
     LateralTheory.E.QuasiFiniteDescent.LeafSpreadQF := by

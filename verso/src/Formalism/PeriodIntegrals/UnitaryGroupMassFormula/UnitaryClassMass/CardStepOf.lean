@@ -30,10 +30,16 @@ instance nontrivialAF : Nontrivial (AF F) := by
   | exact inferInstanceAs (Nontrivial (Ainf F × Af F))
   | exact (Prod.nontrivial_left : Nontrivial (Ainf F × Af F))
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E) (algebraMap F (AF F)).injective`.
+-/
 theorem inclR_injective : Function.Injective (inclR (AF F) : E →+* AF F ⊗[F] E) :=
   Algebra.TensorProduct.includeRight_injective (R := F) (A := AF F) (B := E)
     (algebraMap F (AF F)).injective
 
+/- English proof (translation)
+Introduce `a a' e`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrArg (fun g : GL (Fin M) (AF F ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j) e` as an intermediate fact. Conclude with `inclR_injective this`.
+-/
 theorem bc_injective {M : ℕ} :
     Function.Injective (bc (n := Fin M) (inclR (AF F) : E →+* AF F ⊗[F] E)) := by
   intro a a' e
@@ -42,6 +48,9 @@ theorem bc_injective {M : ℕ} :
   have := congrArg (fun g : GL (Fin M) (AF F ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j) e
   exact inclR_injective this
 
+/- English proof (translation)
+The claim follows from `bc_injective (ratMat_spec σ J _).2`.
+-/
 theorem ratMat_emb (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (U : UJ (σ : E →+* E) J) :
     ratMat σ J ⟨PI.UnitaryGroupMassFormula.UJClassFin.emb σ J U, PI.UnitaryGroupMassFormula.UJClassFin.emb_mem σ J U⟩ = U :=
   bc_injective (ratMat_spec σ J _).2
@@ -62,6 +71,9 @@ def matGL {M : ℕ} (b : Module.Basis (Fin M) E V) (u : V ≃ₗ[E] V) : GL (Fin
     rw [← LinearMap.toMatrix_comp, show (u.symm : V →ₗ[E] V).comp (u : V →ₗ[E] V) = LinearMap.id from
       by ext; simp, LinearMap.toMatrix_id]
 
+/- English proof (translation)
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `v`. Express the relevant statement in the definitionally equal form `Matrix.toLin b b (LinearMap.toMatrix b b (u : V →ₗ[E] V)) v = u v`. Rewrite using `[Matrix.toLin_toMatrix]`. Both sides reduce to the same expression.
+-/
 theorem linOf_matGL {M : ℕ} (b : Module.Basis (Fin M) E V) (u : V ≃ₗ[E] V) : linOf b (matGL b u) = u := by
   apply LinearEquiv.ext
   intro v
@@ -69,6 +81,9 @@ theorem linOf_matGL {M : ℕ} (b : Module.Basis (Fin M) E V) (u : V ≃ₗ[E] V)
   rw [Matrix.toLin_toMatrix]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun w : V ≃ₗ[E] V => LinearMap.toMatrix b b (w : V →ₗ[E] V)) e` as an intermediate fact. Simplify `this` using `[linOf, LinearMap.toMatrix_toLin]`.
+-/
 theorem linOf_inj {M : ℕ} (b : Module.Basis (Fin M) E V) {U U' : GL (Fin M) E}
     (e : linOf b U = linOf b U') : U = U' := by
   apply Units.ext
@@ -81,6 +96,9 @@ section Gram
 
 variable {E V : Type} [Field E] [StarRing E] [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+Rewrite using `[linOf_basis, linOf_basis]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mul_apply, cT, Matrix.map_apply, Matrix.transpose_apply, gramOf, Finset.mul_sum, Finset.sum_mul, AlgHom.coe_toRingHom, hσ, starRingEnd_apply]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations. Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_linOf {F : Type} [Field F] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ a = star a)
     (h : V →ₗ⋆[E] V →ₗ[E] E) {M : ℕ} (b : Module.Basis (Fin M) E V) (U : GL (Fin M) E) (i j : Fin M) :
     h (linOf b U (b i)) (linOf b U (b j)) =
@@ -93,6 +111,9 @@ theorem gram_linOf {F : Type} [Field F] [Algebra F E] (σ : E →ₐ[F] E) (hσ 
   simp only [RingHom.id_apply]
   ring
 
+/- English proof (translation)
+Use `show cT (σ : E →+* E) ((matGL b u : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) * gramOf h b * ((matGL b u : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) = gramOf h b`. Use extensionality with `i j`. Rewrite using `[← gram_linOf σ hσ h b, linOf_matGL]`. Conclude with `hu (b i) (b j)`.
+-/
 theorem matGL_mem {F : Type} [Field F] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ a = star a)
     (h : V →ₗ⋆[E] V →ₗ[E] E) {M : ℕ} (b : Module.Basis (Fin M) E V) {u : V ≃ₗ[E] V} (hu : u ∈ isom h) :
     matGL b u ∈ UJ (σ : E →+* E) (gramOf h b) := by
@@ -109,6 +130,13 @@ section Sets
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V]
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨b.equivFun w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[equivFun_linOf]`.
+
+Introduce and unpack `⟨x, hx, hxv⟩`. Use `⟨b.equivFun.symm x, ?_, ?_⟩` and prove the remaining obligations. Use `show b.equivFun (b.equivFun.symm x) ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ J (crdOf b L0) g`. Rewrite using `[LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis. Apply `b.equivFun.injective` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `b.equivFun (linOf b _ _) = _`. Rewrite using `[equivFun_linOf, LinearEquiv.apply_symm_apply]`. Conclude with `hxv`.
+-/
 theorem image_latSet (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (b : Module.Basis (Fin M) E V)
     (L0 : Submodule (𝓞 E) V) (U : GL (Fin M) E) (g : HA (AF F) σ J) :
     (linOf b U : V → V) '' latSet σ J b L0 g =
@@ -128,6 +156,9 @@ theorem image_latSet (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) 
       rw [equivFun_linOf, LinearEquiv.apply_symm_apply]
       exact hxv
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h1 : b.equivFun.symm x ∈ {v : V | b.equivFun v ∈ A} ↔ b.equivFun.symm x ∈ {v : V | b.equivFun v ∈ A'}`. Rewrite using `[e]`. Simplify `h1` using `only [Set.mem_setOf_eq, LinearEquiv.apply_symm_apply]`.
+-/
 theorem set_of_coords_inj {M : ℕ} (b : Module.Basis (Fin M) E V) {A A' : Set (Fin M → E)}
     (e : {v : V | b.equivFun v ∈ A} = {v | b.equivFun v ∈ A'}) : A = A' := by
   ext x
@@ -137,6 +168,13 @@ theorem set_of_coords_inj {M : ℕ} (b : Module.Basis (Fin M) E V) {A A' : Set (
 
 end Sets
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ _ _ _ _ hL _ g g' u hu e`. Take `⟨hb1, hb2⟩` from `hC F E V M b L0 hL`. Establish `hR'` using `hR F E σ M (gramOf h b) (crdOf b L0) hb1 hb2`. Use `set U : UJ (σ : E →+* E) (gramOf h b) := ⟨matGL b u, matGL_mem σ hσ h b hu⟩ with hUdef`. Establish `e1 : (linOf b (matGL b u) : V → V) '' latSet σ (gramOf h b) b L0 g' = latSet σ (gramOf h b) b L0 g`.
+
+Rewrite using `[linOf_matGL]`. Conclude with `e`. Rewrite `e1` using `[image_latSet]`. Establish `e2` using `set_of_coords_inj b e1`. Establish `e3 : PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) (PI.UnitaryGroupMassFormula.UJClassFin.emb σ (gramOf h b) U * g') = PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) g`.
+
+Rewrite using `[PI.UnitaryGroupMassFormula.UJClassFin.Lam_emb_mul]`. Conclude with `e2`. Establish `hk` using `PI.UnitaryGroupMassFormula.UJClassFin.sfin_of_Lam_eq σ (gramOf h b) (crdOf b L0) hR' _ _ e3`. Use `⟨⟨_, PI.UnitaryGroupMassFormula.UJClassFin.emb_mem σ (gramOf h b) U⟩, ⟨_, hk⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_inv_cancel_left]`.
+-/
 theorem injStep_of (hR : PI.UnitaryGroupMassFormula.UJClassFin.RatDense) (hC : CrdBounds) : InjStep := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ _ _ _ _ hL _ g g' u hu e
   obtain ⟨hb1, hb2⟩ := hC F E V M b L0 hL
@@ -153,6 +191,23 @@ theorem injStep_of (hR : PI.UnitaryGroupMassFormula.UJClassFin.RatDense) (hC : C
   refine ⟨⟨_, PI.UnitaryGroupMassFormula.UJClassFin.emb_mem σ (gramOf h b) U⟩, ⟨_, hk⟩, ?_⟩
   simp only [mul_inv_cancel_left]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hn hL hsig g`. Take `⟨hb1, hb2⟩` from `hC F E V M b L0 hL`. Establish `hR'` using `hR F E σ M (gramOf h b) (crdOf b L0) hb1 hb2`. Establish `wd : ∀ γ : stab (GamG σ (gramOf h b)) (SFin σ (gramOf h b) (crdOf b L0)) g, iotaG σ (gramOf h b) b γ.1 ∈ isom h ∧ (iotaG σ (gramOf h b) b γ.1 : V → V) '' latSet σ (gramOf h b) b L0 g = latSet σ (gramOf h b) b L0 g`. Introduce `γ`.
+
+Use `⟨isomStep F E σ V h M b L0 hσ hθ hτ hs hn hL hsig γ.1, ?_⟩` and prove the remaining obligations. Establish `e1` using `equivStep F E σ V h M b L0 hσ hθ hτ hs hn hL hsig g γ.1 1`. Rewrite using `[← e1]`. Establish `e2 : ((γ.1 : GamG σ (gramOf h b)) : HA (AF F) σ (gramOf h b)) * g * ((1 : SFin σ (gramOf h b) (crdOf b L0)) : HA (AF F) σ (gramOf h b)) = g * ((⟨_, γ.2⟩ : SFin σ (gramOf h b) (crdOf b L0)) : HA (AF F) σ (gramOf h b))`. Simplify using `only [OneMemClass.coe_one, mul_one, mul_inv_cancel_left]`.
+
+Rewrite using `[e2]`. Use `show {v | b.equivFun v ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) (g * _)} = {v | b.equivFun v ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) g}`. Rewrite using `[Lam_mul_sfin]`. Set `f : stab (GamG σ (gramOf h b)) (SFin σ (gramOf h b) (crdOf b L0)) g → {u : V ≃ₗ[E] V // u ∈ isom h ∧ (u : V → V) '' latSet σ (gramOf h b) b L0 g = latSet σ (gramOf h b) b L0 g}` to `fun γ => ⟨iotaG σ (gramOf h b) b γ.1, wd γ⟩`. Apply `Nat.card_eq_of_bijective f` to reduce the goal to its premises.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `γ γ' e`. Establish `e1 : iotaG σ (gramOf h b) b γ.1 = iotaG σ (gramOf h b) b γ'.1` using `congrArg Subtype.val e`. Establish `e2 : ratMat σ (gramOf h b) γ.1 = ratMat σ (gramOf h b) γ'.1` using `linOf_inj b e1`. Establish `e3 : ratU σ (gramOf h b) γ.1 = ratU σ (gramOf h b) γ'.1` using `Subtype.ext e2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← emb_ratU σ (gramOf h b) γ.1, ← emb_ratU σ (gramOf h b) γ'.1, e3]`. Introduce and unpack `⟨u, hu, hl⟩ set U : UJ (σ : E →+* E) (gramOf h b) := ⟨matGL b u, matGL_mem σ hσ h b hu⟩ with hUdef`. Set `γ : GamG σ (gramOf h b)` to `⟨PI.UnitaryGroupMassFormula.UJClassFin.emb σ (gramOf h b) U, PI.UnitaryGroupMassFormula.UJClassFin.emb_mem σ (gramOf h b) U⟩`.
+
+Establish `hι : iotaG σ (gramOf h b) b γ = u` using `by show linOf b (ratMat σ (gramOf h b) γ) = u`. Rewrite using `[ratMat_emb]`. Conclude with `linOf_matGL b u`. Establish `e1 : (linOf b (matGL b u) : V → V) '' latSet σ (gramOf h b) b L0 g = latSet σ (gramOf h b) b L0 g`. Rewrite using `[linOf_matGL]`.
+
+Conclude with `hl`. Rewrite `e1` using `[image_latSet]`. Establish `e2` using `set_of_coords_inj b e1`. Establish `e3 : PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) g = PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) ((γ : HA (AF F) σ (gramOf h b)) * g)`. Rewrite using `[PI.UnitaryGroupMassFormula.UJClassFin.Lam_emb_mul]`.
+
+Conclude with `e2.symm`. Establish `hk` using `PI.UnitaryGroupMassFormula.UJClassFin.sfin_of_Lam_eq σ (gramOf h b) (crdOf b L0) hR' _ _ e3`. Use `⟨⟨γ, hk⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext hι`.
+-/
 theorem cardStep_of (hR : PI.UnitaryGroupMassFormula.UJClassFin.RatDense) (hC : CrdBounds) : CardStep := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hs hn hL hsig g
   obtain ⟨hb1, hb2⟩ := hC F E V M b L0 hL
@@ -203,6 +258,9 @@ theorem cardStep_of (hR : PI.UnitaryGroupMassFormula.UJClassFin.RatDense) (hC : 
     refine ⟨⟨γ, hk⟩, ?_⟩
     exact Subtype.ext hι
 
+/- English proof (translation)
+The claim follows from `uJClassMass_of s1 isomStep equivStep (injStep_of hR hC) s4 (cardStep_of hR hC)`.
+-/
 theorem uJClassMass_of_deep (hR : PI.UnitaryGroupMassFormula.UJClassFin.RatDense) (hC : CrdBounds) (s1 : LatStep) (s4 : SurjStep) :
     PI.UJClassMass2.UJClassMass :=
   uJClassMass_of s1 isomStep equivStep (injStep_of hR hC) s4 (cardStep_of hR hC)

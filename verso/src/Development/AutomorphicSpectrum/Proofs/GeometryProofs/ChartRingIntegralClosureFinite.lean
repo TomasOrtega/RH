@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.ChartFinite
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h.bij.2 a`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `e : X.presheaf.stalkSpecializes (specializes_rfl : genPt ξ ⤳ genPt ξ) = 𝟙 _` using `TopCat.Presheaf.stalkSpecializes_refl _ _`. Simplify using `only [genMap]`. Rewrite using `[e]`.
+
+Use `erw [Category.id_comp]`. Conclude with `hs`.
+-/
 theorem mem_regAt_genPt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (h : IsCptGen ξ) (a : Ω) : a ∈ regAt ξ ⟨genPt ξ, specializes_rfl⟩ := by
   obtain ⟨s, hs⟩ := h.bij.2 a
@@ -23,6 +28,9 @@ theorem mem_regAt_genPt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Comm
   erw [Category.id_comp]
   exact hs
 
+/- English proof (translation)
+Establish `hp : InChart M.ξ x c ⟨genPt M.ξ, specializes_rfl⟩` using `⟨hc, fun c' => mem_regAt_genPt M.tie.gen _⟩`. Take `⟨u, hu, v, hv, -, e⟩` from `((GlobalTheory.T.regAt_chart_localization o Ω κ x M c _ hp).2 a).1 (mem_regAt_genPt M.tie.gen a)`. Conclude with `⟨u, hu, v, hv, e⟩`.
+-/
 theorem exists_eq_div_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type}
     [Finite κ] {x : κ → Ω} (M : PModel o x) {c : κ} (hc : x c ≠ 0) (a : Ω) :
     ∃ u ∈ chRing o x c, ∃ v ∈ chRing o x c, a = u / v := by
@@ -32,6 +40,21 @@ theorem exists_eq_div_chRing {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Alg
     ((GlobalTheory.T.regAt_chart_localization o Ω κ x M c _ hp).2 a).1 (mem_regAt_genPt M.tie.gen a)
   exact ⟨u, hu, v, hv, e⟩
 
+/- English proof (translation)
+Set `φ : Ω →ₐ[o] Ω'` to `IsScalarTower.toAlgHom o Ω Ω'`. Establish `hφ : Function.Injective φ` using `φ.toRingHom.injective`. Establish `hmap : (chRing o x c).map φ = chRing o (fun k => algebraMap Ω Ω' (x k)) c`. Simplify using `only [chRing]`. Rewrite using `[AlgHom.map_adjoin, ← Set.range_comp]`.
+
+Use `congr 2`. Use extensionality with `j`. Simplify using `[φ]`. Set `e : chRing o x c ≃ₐ[o] chRing o (fun k => algebraMap Ω Ω' (x k)) c` to `((chRing o x c).equivMapOfInjective φ hφ).trans (Subalgebra.equivOfEq _ _ hmap)`. Establish `he : ∀ a, ((e a : chRing o (fun k => algebraMap Ω Ω' (x k)) c) : Ω') = algebraMap Ω Ω' (a : Ω)` using `fun a => rfl`.
+
+Use `haveI : Algebra.FiniteType o (chRing o (fun k => algebraMap Ω Ω' (x k)) c) := by`. Rewrite using `[← Subalgebra.fg_iff_finiteType]`. Conclude with `Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩`. Use `haveI : Algebra.EssFiniteType o (chRing o (fun k => algebraMap Ω Ω' (x k)) c) := Algebra.EssFiniteType.of_finiteType _ _`. Use `haveI : Algebra.EssFiniteType ℤ (chRing o (fun k => algebraMap Ω Ω' (x k)) c) := Algebra.EssFiniteType.comp ℤ o _`.
+
+Use `letI : Algebra (chRing o (fun k => algebraMap Ω Ω' (x k)) c) Ω := ((chRing o x c).val.toRingHom.comp e.symm.toRingEquiv.toRingHom).toAlgebra`. Establish `hmapΩ : ∀ a : chRing o x c, algebraMap (chRing o (fun k => algebraMap Ω Ω' (x k)) c) Ω (e a) = (a : Ω)`. Introduce `a`. Express the relevant statement in the definitionally equal form `((e.symm (e a) : chRing o x c) : Ω) = a`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Use `haveI : IsScalarTower (chRing o (fun k => algebraMap Ω Ω' (x k)) c) Ω Ω' := IsScalarTower.of_algebraMap_eq fun a => by`. Take `⟨b, rfl⟩` from `e.surjective a`. Rewrite using `[hmapΩ]`. Conclude with `he b`. Use `haveI : FaithfulSMul (chRing o (fun k => algebraMap Ω Ω' (x k)) c) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 fun a b h => by`.
+
+Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Rewrite `h` using `[hmapΩ, hmapΩ]`. Rewrite using `[Subtype.ext h]`. Use `haveI : IsFractionRing (chRing o (fun k => algebraMap Ω Ω' (x k)) c) Ω := IsFractionRing.of_field _ _ fun z => by`.
+
+Take `⟨u, hu, v, hv, rfl⟩` from `exists_eq_div_chRing M hc z`. Conclude with `⟨e ⟨u, hu⟩, e ⟨v, hv⟩, by rw [hmapΩ, hmapΩ]⟩`. Conclude with `GlobalTheory.T.integral_closure_finite _ Ω Ω'`.
+-/
 theorem finite_integralClosure_chRing {o : Type} [CommRing o] [Algebra.EssFiniteType ℤ o] {Ω : Type}
     [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ → Ω} (M : PModel o x) (Ω' : Type) [Field Ω']
     [Algebra Ω Ω'] [FiniteDimensional Ω Ω'] [Algebra o Ω'] [IsScalarTower o Ω Ω'] (c : κ)

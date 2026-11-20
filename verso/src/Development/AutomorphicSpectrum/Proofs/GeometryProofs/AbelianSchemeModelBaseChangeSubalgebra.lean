@@ -14,6 +14,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
+/- English proof (translation)
+Introduce `k V _ _ _ A _ A₀ _ φ h R`. Establish `es : spMap R.val.toRingHom ≫ spMap (algebraMap k R) = spMap (algebraMap k V)`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+
+Establish `w : φ ≫ A₀.hom = (A.hom ≫ spMap R.val.toRingHom) ≫ spMap (algebraMap k R)`. Rewrite using `[Category.assoc, es]`. Conclude with `h.1.w`. Set `inst : GrpObj (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R))))` to `inferInstanceAs (GrpObj ((Over.pullback (spMap (algebraMap k R))).obj A₀))`. Establish `h₁ : IsGrpPullback (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R)))) A₀ (spMap (algebraMap k R)) (pullback.fst _ _)` using `isGrpPullback_pullback A₀ (spMap (algebraMap k R))`.
+
+Establish `hf : pullback.lift φ (A.hom ≫ spMap R.val.toRingHom) w ≫ pullback.fst _ _ = φ` using `pullback.lift_fst _ _ _`. Use `⟨inst, pullback.lift φ (A.hom ≫ spMap R.val.toRingHom) w, h₁, ?_, hf⟩` and prove the remaining obligations. Conclude with `IsGrpPullback.cancel h₁ (h.congr es.symm hf.symm) (pullback.lift_snd _ _ _)`.
+-/
 theorem model_passes_to_subalgebra : ∀ (k V : Type) [CommRing k] [CommRing V] [Algebra k V] (A : Over (Sp V)) [GrpObj A] (A₀ : Over (Sp k)) [GrpObj A₀] (φ : A.left ⟶ A₀.left), IsGrpPullback A A₀ (spMap (algebraMap k V)) φ → ∀ R : Subalgebra k V, ∃ (_ : GrpObj (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R))))) (φ₁ : A.left ⟶ pullback A₀.hom (spMap (algebraMap k R))), IsGrpPullback (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R)))) A₀ (spMap (algebraMap k R)) (pullback.fst _ _) ∧ IsGrpPullback A (Over.mk (pullback.snd A₀.hom (spMap (algebraMap k R)))) (spMap R.val.toRingHom) φ₁ ∧ φ₁ ≫ pullback.fst _ _ = φ := by
   intro k V _ _ _ A _ A₀ _ φ h R
   have es : spMap R.val.toRingHom ≫ spMap (algebraMap k R) = spMap (algebraMap k V) := by

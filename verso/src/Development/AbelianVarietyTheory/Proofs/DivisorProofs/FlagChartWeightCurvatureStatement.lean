@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HodgeFrameGram
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VertChart.vert_chart_iff | exact GlobalTheory.VertChart.vert_chart_iff | (intros; apply GlobalTheory.VertChart.vert_chart_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_chart_weight_curvature : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))
     (H : (ι → ℂ) → Matrix (Fin n) (Fin n) ℂ) (Y : Set E) (π : E → ι → ℂ)

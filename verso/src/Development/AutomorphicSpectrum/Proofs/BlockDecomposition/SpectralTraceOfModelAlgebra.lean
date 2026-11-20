@@ -12,6 +12,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.SpecModel
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, h7, -⟩` from `hL E n w σ _ hlev f f hf hf`. Take `⟨h8, -, -, -, -, -, -, h9⟩` from `hL E n w σ _ hlev _ _ h7 h7`. Establish `e : ((KL n w : Set (UL n w)).indicator fun _ => (((KL n w).relIndex (KL n w) : ℕ) : ℂ)) = (KL n w : Set (UL n w)).indicator 1`. Rewrite using `[Subgroup.relIndex_self]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `_`. Simplify using the standard rewrite rules. Rewrite `h8`, `h9` using `[e]`. Establish `: FiniteDimensional ℂ (fixed σ.ρ (KL n w))` using `Module.finite_of_finrank_pos (by omega)`. Rewrite using `[h8, h9, LinearMap.trace_one, h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem twTr_unit (hL : LocAlg) {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E}
     (σ : SmIrr (UL n w)) (hlev : IsLevel (MonoidHom.id _) (KL n w) (KL n w))
     (h1 : Module.finrank ℂ (fixed σ.ρ (KL n w)) = 1) {f : UL n w → ℂ} (hf : IsHecke (KL n w) f) :
@@ -29,6 +36,11 @@ theorem twTr_unit (hL : LocAlg) {E : Type} [Field E] [NumberField E] [IsCMField 
   rw [h8, h9, LinearMap.trace_one, h1]
   simp
 
+/- English proof (translation)
+Establish `hon : ((↑B : Set P) ∩ Function.mulSupport F).Finite` using `B.finite_toSet.inter_of_left _`. Establish `hB' : ∏ᶠ w ∈ (↑B : Set P), F w = ∏ w, T w`. Rewrite using `[finprod_mem_coe_finset, ← Finset.prod_coe_sort]`. Conclude with `Finset.prod_congr rfl fun w _ => (hT w).symm`. Establish `hC : ∏ᶠ w ∈ S \ ↑B, F w = ∏ᶠ w ∈ S \ ↑B, G w` using `finprod_mem_congr rfl fun w hw => hG w hw.1 hw.2`.
+
+Establish `hS : ↑B ∪ (S \ ↑B) = S` using `Set.union_sdiff_cancel hB`. Rewrite using `[← hS, finprod_mem_union' Set.disjoint_sdiff_right hon hfin, hS, hB', hC, mul_comm]`.
+-/
 theorem finprod_split {P : Type} (S : Set P) (B : Finset P) (hB : (↑B : Set P) ⊆ S) (F G : P → ℂ)
     (T : {w // w ∈ B} → ℂ) (hT : ∀ w, T w = F w.1) (hG : ∀ w ∈ S, w ∉ B → F w = G w)
     (hfin : ((S \ ↑B) ∩ Function.mulSupport F).Finite) :
@@ -42,6 +54,19 @@ theorem finprod_split {P : Type} (S : Set P) (B : Finset P) (hB : (↑B : Set P)
   have hS : ↑B ∪ (S \ ↑B) = S := Set.union_sdiff_cancel hB
   rw [← hS, finprod_mem_union' Set.disjoint_sdiff_right hon hfin, hS, hB', hC, mul_comm]
 
+/- English proof (translation)
+Introduce `hU hL E _ _ _ n S B hB K' hK' hKB ι _ σ hfd hone g`. Establish `: ∀ (i : ι) (w : {w // w ∈ B}), FiniteDimensional ℂ (fixed (σ i w.1).ρ (K' w.1))` using `fun i w => hfd i w.1 (hB w.2)`. Take `⟨d, blk, u, h1, h2, h3⟩` from `hU ι {w // w ∈ B} (fun i w => ↥(fixed (σ i w.1).ρ (K' w.1))) (fun i w => locOp (σ i w.1) (K' w.1) (g w.1))`. Use `⟨d, blk, u, h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `k f hf hloc`.
+
+Rewrite using `[h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hoff : ((S \ ↑B) ∩ Function.mulSupport fun w => twTr (σ i w).ρ (KL n w) (K' w) (f w) LinearMap.id).Finite`. Establish `hev` using `hK'.2.and hf.2`. Rewrite `hev` using `[Filter.eventually_cofinite]`.
+
+Use `hev.subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨⟨hwS, hwB⟩, hne⟩ ⟨e1, e2⟩`. Apply `hne` to reduce the goal to its premises. Establish `hlev` using `hK'.1 w`. Establish `hH` using `hf.1 w`.
+
+Rewrite `hlev`, `hH` using `[e1]`. Use `show twTr (σ i w).ρ (KL n w) (K' w) (f w) LinearMap.id = 1`. Rewrite using `[e1, e2]`. Conclude with `twTr_unit hL (σ i w) hlev (hone i w hwS hwB) hH`. Use `finprod_split S B hB (fun w => twTr (σ i w).ρ (KL n w) (K' w) (f w) LinearMap.id) (fun w => twTr (σ i w).ρ (KL n w) (KL n w) (f w) LinearMap.id) (fun w => LinearMap.trace ℂ _ (locOp (σ i w.1) (K' w.1) (g w.1) ^ k)) ?_ ?_ hoff` and prove the remaining obligations.
+
+Introduce `w show LinearMap.trace ℂ _ (locOp (σ i w.1) (K' w.1) (g w.1) ^ k) = twTr (σ i w.1).ρ (KL n w.1) (K' w.1) (f w.1) LinearMap.id`. Rewrite using `[← hloc i w.1 w.2]`. Conclude with `(hL E n w.1 (σ i w.1) (K' w.1) (hK'.1 w.1) (f w.1) (f w.1) (hf.1 w.1) (hf.1 w.1)).1.symm`. Introduce `w hwS hwB show twTr (σ i w).ρ (KL n w) (K' w) (f w) LinearMap.id = twTr (σ i w).ρ (KL n w) (KL n w) (f w) LinearMap.id`. Rewrite using `[hKB w hwS hwB]`.
+
+Introduce `i₀ hi`. Conclude with `h3 i₀ fun w => hi w.1 w.2`.
+-/
 theorem specTrace : UModel → LocAlg → SpecTrace := by
   intro hU hL E _ _ _ n S B hB K' hK' hKB ι _ σ hfd hone g
   have : ∀ (i : ι) (w : {w // w ∈ B}), FiniteDimensional ℂ (fixed (σ i w.1).ρ (K' w.1)) :=

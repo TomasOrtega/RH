@@ -6,6 +6,11 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Establish `hd : HasStrictDerivAt (fun r : K => y * r ^ p) (y * ((p : K) * 1 ^ (p - 1))) 1` using `(hasStrictDerivAt_pow p (1 : K)).const_mul y`. Establish `hne : y * ((p : K) * 1 ^ (p - 1)) ≠ 0`. Establish `: (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne'`. Simplify using `[hy, this]`. Establish `h` using `hd.map_nhds_eq hne`.
+
+Simplify using `only [one_pow, mul_one] at h`. Use `Filter.inter_mem (isOpen_ne.mem_nhds hy) ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `Filter.mem_map.2 (Filter.Eventually.of_forall fun r => ⟨r, rfl⟩)`.
+-/
 theorem mul_pow_mem_nhds {K : Type*} [NontriviallyNormedField K] [CompleteSpace K] [CharZero K]
     {p : ℕ} (hp : 0 < p) {y : K} (hy : y ≠ 0) :
     {a : K | a ≠ 0 ∧ ∃ r : K, a = y * r ^ p} ∈ nhds y := by
@@ -20,6 +25,13 @@ theorem mul_pow_mem_nhds {K : Type*} [NontriviallyNormedField K] [CompleteSpace 
   rw [← h]
   exact Filter.mem_map.2 (Filter.Eventually.of_forall fun r => ⟨r, rfl⟩)
 
+/- English proof (translation)
+Introduce `p F _ _ S y hp hy`. Set `U : Set (((v : S) → v.1.adicCompletion F) × ((F →+* ℝ) → ℝ))` to `⋂ v : S, {q | q.1 v ≠ 0 ∧ ∃ r : v.1.adicCompletion F, q.1 v = y v.1 * r ^ p}`. Establish `hU : U ∈ nhds ((fun v : S => y v.1), (0 : (F →+* ℝ) → ℝ))`. Use `Filter.iInter_mem.2 fun v => ?_` and prove the remaining obligations. Establish `hc : Continuous fun q : ((v : S) → v.1.adicCompletion F) × ((F →+* ℝ) → ℝ) => q.1 v` using `(continuous_apply v).comp continuous_fst`.
+
+Establish `: CharZero (v.1.adicCompletion F)` using `charZero_of_injective_algebraMap (algebraMap F (v.1.adicCompletion F)).injective`. Use `letI : NontriviallyNormedField (v.1.adicCompletion F) := Valued.toNontriviallyNormedField (v.1.adicCompletion F) ℤᵐ⁰`. Conclude with `hc.continuousAt.preimage_mem_nhds (mul_pow_mem_nhds (K := v.1.adicCompletion F) hp (hy v.1))`. Take `⟨x, hx⟩` from `(GlobalTheory.LocalQuad.denseRange_finite_real F S).mem_nhds hU`. Establish `h1 : ∀ v : S, algebraMap F (v.1.adicCompletion F) x ≠ 0 ∧ ∃ r : v.1.adicCompletion F, algebraMap F (v.1.adicCompletion F) x = y v.1 * r ^ p` using `fun v => Set.mem_iInter.1 hx v`.
+
+Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Conclude with `⟨1, one_ne_zero, fun v hv => absurd (map_zero _) (h1 ⟨v, hv⟩).1⟩`. Conclude with `⟨x, hx0, fun v hv => (h1 ⟨v, hv⟩).2⟩`.
+-/
 theorem exists_approx_mod_powers :
     ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] (S : Finset (HeightOneSpectrum (𝓞 F))) (y : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F), 0 < p → (∀ v, y v ≠ 0) → ∃ x : F, x ≠ 0 ∧ ∀ v ∈ S, ∃ r : v.adicCompletion F, algebraMap F (v.adicCompletion F) x = y v * r ^ p := by
   intro p F _ _ S y hp hy

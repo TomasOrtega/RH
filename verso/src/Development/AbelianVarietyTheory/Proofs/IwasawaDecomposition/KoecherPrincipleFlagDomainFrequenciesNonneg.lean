@@ -12,6 +12,31 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 
 open MajorantConjugateTransfer TwoSidedBoostBounds MinimumGrowthBounds FractionalSliceDomains in
 
+/- English proof (translation)
+Take `⟨bs, hω⟩` from `FlowMeanContinuity.exists_basis X la`. Establish `hωp : ∀ j, bs j ∈ X.periods la`. Introduce `j`. Establish `: bs j ∈ Submodule.span ℤ (Set.range bs)` using `Submodule.subset_span ⟨j, rfl⟩`. Rewrite `this` using `[hω]`.
+
+Conclude with `this`. Establish `hrepr : ∀ (v : X.Ψ → ℝ) τ, ∑ j, bs.repr v j * bs j τ = v τ`. Introduce `v τ`. Use `conv_rhs => rw [← bs.sum_repr v]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+
+Distinguish the cases in `hf : ∀ j, ∃ k : ℤ, 2 * ∑ τ, ν τ * bs j τ = k`. Use `swap`. Establish `h0 : X.fj la ξ ν P x = 0`. Unfold `Data.fj`. Rewrite using `[if_neg]`.
+
+Introduce `hall`. Conclude with `hf fun j => hall _ (hωp j)`. Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `(norm_nonneg _).trans (hM 0)`. Use `choose k hk using hf`.
+
+Rewrite using `[FlowMeanContinuity.fj_eq_fourCoeff X la P hP hξ hx bs hω ν k hk]`. Express the relevant statement in the definitionally equal form `‖ReciprocityTheory.L2DbarEstimates.Y.fourCoeff (hfun X P ξ x bs) 0 k‖ * _ ≤ _`. Establish `hm : ∀ τ, 0 < X.maj x τ (Data.emb τ.1 ξ)` using `fun τ => X.maj_pos hx τ (emb_ne_zero τ.1 hξ.2.2)`. Establish `hc` using `c_pos X`. Use `set b' : Fin (Fintype.card X.Ψ) → ℝ := fun j => bs.repr y j with hb'`.
+
+Establish `hb'ω : ∀ τ, ∑ j, b' j * bs j τ = y τ` using `hrepr y`. Establish `hb'Ω : b' ∈ FractionalSliceDomains.Om X ξ x bs` using `by show (fun τ => ∑ j, b' j * bs j τ) ∈ AdmissibleHermitianColumns.admissibleImaginary X ξ x`. Rewrite using `[mem_admissibleImaginary_iff X hx hξ]`. Introduce `τ`. Rewrite using `[hb'ω]`.
+
+Establish `h1` using `mul_pos (hc τ) (hm τ)`. Establish `h2` using `mul_pos (hy τ) h1`. Establish `e : (X.tt ξ x τ + y τ) * (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) = 1 + X.c τ * y τ * X.maj x τ (Data.emb τ.1 ξ)`. Rewrite using `[Data.tt, add_mul, one_div_mul_cancel h1.ne']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `hind` using `ReciprocityTheory.L2DbarEstimates.Y.four_indep (Fintype.card X.Ψ) (FractionalSliceDomains.Om X ξ x bs) (hfun X P ξ x bs) (Om_open_conn X bs hx).1 (Om_open_conn X bs hx).2 (hfun_diff X bs P la hP hx hξ) (hfun_periodic X bs P la hP hx hξ hω) 0 (zero_mem_Om X bs hx hξ) b' hb'Ω k`. Rewrite using `[hind]`. Establish `hslice : ∀ t : Fin (Fintype.card X.Ψ) → ℝ, ‖hfun X P ξ x bs (fun k => (t k : ℂ) + (b' k : ℂ) * Complex.I)‖ ≤ M`. Introduce `t`.
+
+Establish `h` using `hM (fun τ => ∑ j, t j * bs j τ)`. Unfold `hfun`. Use `h using 4` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Rewrite using `[← hb'ω τ]`.
+
+Use `push_cast`. Rewrite using `[Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `hbd` using `ReciprocityTheory.L2DbarEstimates.Y.four_bound (Fintype.card X.Ψ) (hfun X P ξ x bs) b' k _ hslice`. Establish `hsum : ∑ j, (k j : ℝ) * b' j = 2 * ∑ τ, ν τ * ∑ j, b' j * bs j τ`.
+
+Simplify using `only [← hk, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `hbd` using `[hsum]`.
+
+Simplify using `only [hb'ω] at hbd`. Use `hbd using 3` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fj_le_slice (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) (ξ : Fin r → E) (hξ : X.IsIso ξ)
     (ν : X.Ψ → ℝ) (x : Frame X.Ψ r) (hx : x ∈ X.dom) (y : X.Ψ → ℝ) (M : ℝ)
     (hy : ∀ τ, 0 < X.tt ξ x τ + y τ)
@@ -83,6 +108,15 @@ theorem fj_le_slice (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la
   convert hbd using 3
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hsub : (Finset.univ : Finset (E →+* ℂ)) ⊆ {τ₀.1, ComplexEmbedding.conjugate τ₀.1}`. Introduce `τ _`. Distinguish the cases in `hτ : τ ∈ X.Ψ`.
+
+Use `congrArg Subtype.val (hne ⟨τ, hτ⟩)` as an intermediate fact. Simplify using `only at this`. Simplify using `[this]`. Establish `h2 : ComplexEmbedding.conjugate τ ∈ X.Ψ`. Assume the negation of the conclusion as `h3`.
+
+Conclude with `hτ ((X.cmType τ).mpr h3)`. Use `congrArg Subtype.val (hne ⟨_, h2⟩)` as an intermediate fact. Simplify using `only at this`. Establish `h4 : τ = ComplexEmbedding.conjugate τ₀.1`. Rewrite using `[← this]`.
+
+Conclude with `(star_star τ).symm`. Simplify using `[h4]`. Establish `h1` using `(Finset.card_le_card hsub).trans Finset.card_le_two`. Rewrite `h1` using `[Finset.card_univ, NumberField.Embeddings.card]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ne (h : 1 < Module.finrank ℚ E / 2) (τ₀ : X.Ψ) : ∃ τ₁ : X.Ψ, τ₁ ≠ τ₀ := by
   classical
   by_contra hne
@@ -106,6 +140,11 @@ theorem exists_ne (h : 1 < Module.finrank ℚ E / 2) (τ₀ : X.Ψ) : ∃ τ₁ 
   rw [Finset.card_univ, NumberField.Embeddings.card] at h1
   omega
 
+/- English proof (translation)
+Establish `ht` using `(tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero A b hb).const_mul (K * Real.exp c)`. Rewrite `ht` using `[mul_zero]`. Use `le_antisymm (ge_of_tendsto ht ?_) ha` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with L hL`. Establish `h1` using `mul_le_mul_of_nonneg_right (h L hL) (Real.exp_pos (c - b * L)).le`.
+
+Rewrite `h1` using `[mul_assoc, ← Real.exp_add]`. Simplify using `only [sub_add_sub_cancel', sub_self, Real.exp_zero, mul_one] at h1`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg, Real.exp_add, neg_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eq_zero_of_exp_le {a b c K A : ℝ} (ha : 0 ≤ a) (hb : 0 < b)
     (h : ∀ L : ℝ, 1 ≤ L → a * Real.exp (b * L - c) ≤ K * L ^ A) : a = 0 := by
   have ht := (tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero A b hb).const_mul (K * Real.exp c)
@@ -125,6 +164,37 @@ namespace GlobalTheory
 
 open Koecher FjCauchy in
 
+/- English proof (translation)
+Introduce `hO E _ _ _ r X la P hE hP hT ξ hξ ν x hx hne τ₀`. Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`. Take `⟨τ₁, h10⟩` from `exists_ne X hE τ₀`. Take `⟨ε, hε, hth⟩` from `hO E r X ξ hξ x hx`.
+
+Take `⟨S, hS⟩` from `hT ε hε`. Establish `ht` using `tt_pos X hξ hx`. Establish `hn` using `FlowCoefficientBounds.nfac_pos X hx la`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← norm_eq_zero]`.
+
+Use `eq_zero_of_exp_le (b := 4 * Real.pi * (-ν τ₀ * X.tt ξ x τ₀)) (c := 4 * Real.pi * (-ν τ₀ * X.tt ξ x τ₀ + |ν τ₁| * X.tt ξ x τ₁)) (K := |S| / X.nfac la x) (A := ∑ τ, |X.spread la τ / 2|) (norm_nonneg _) (mul_pos (by positivity) (mul_pos (by linarith) (ht _))) fun L hL => ?_` and prove the remaining obligations. Establish `hL0 : 0 < L` using `by linarith`. Establish `hLi : L⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hL`. Set `q : X.Ψ → ℝ` to `fun τ => (if τ = τ₀ then L else 1) * (if τ = τ₁ then L⁻¹ else 1)`. Establish `hq0 : ∀ τ, 0 < q τ` using `fun τ => by`.
+
+Simplify using `only [q]`. Apply the tactic sequence `split_ifs <;> positivity`. Establish `hqm : ∀ τ, max (q τ) (q τ)⁻¹ ≤ L` using `fun τ => by`. Simplify using `only [q]`. Use `split_ifs with h1 h2 h2`.
+
+Conclude with `absurd (h2.symm.trans h1) h10`. Simplify using `[hLi.trans hL]`. Simplify using `[hLi.trans hL]`. Simplify using `[hL]`. Establish `hq1 : ∀ τ, 1 ≤ max (q τ) (q τ)⁻¹` using `fun τ => by`.
+
+Break down `le_total 1 (q τ) with h | h` into its components or cases. Conclude with `le_max_of_le_left h`. Conclude with `le_max_of_le_right ((one_le_inv₀ (hq0 τ)).mpr h)`. Establish `hqp : ∏ τ, q τ = 1`. Simplify using `only [q, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+
+Conclude with `mul_inv_cancel₀ hL0.ne'`. Set `y : X.Ψ → ℝ` to `fun τ => (q τ - 1) * X.tt ξ x τ`. Establish `hty : ∀ τ, X.tt ξ x τ + y τ = q τ * X.tt ξ x τ` using `fun τ => by simp only [y]; ring`. Establish `hy : ∀ τ, 0 < X.tt ξ x τ + y τ` using `fun τ => by rw [hty]; exact mul_pos (hq0 τ) (ht τ)`. Use `le_trans ?_ (fj_le_slice X la P hP ξ hξ ν x hx y _ hy fun u => ?_)` and prove the remaining obligations.
+
+Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) (norm_nonneg _)` and prove the remaining obligations. Establish `e : ∑ τ, ν τ * y τ = ν τ₀ * ((L - 1) * X.tt ξ x τ₀) + ν τ₁ * ((L⁻¹ - 1) * X.tt ξ x τ₁)`. Rewrite using `[Fintype.sum_eq_add τ₀ τ₁ h10.symm]`. Simplify using `[y, q, h10, h10.symm]`. Introduce and unpack `τ ⟨h1, h2⟩`.
+
+Simplify using `[y, q, h1, h2]`. Rewrite using `[e]`. Establish `h1 : ν τ₁ * ((L⁻¹ - 1) * X.tt ξ x τ₁) ≤ |ν τ₁| * X.tt ξ x τ₁`. Use `(le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_pos (ht τ₁)]`.
+
+Use `mul_le_mul_of_nonneg_left (mul_le_of_le_one_left (ht τ₁).le ?_) (abs_nonneg _)` and prove the remaining obligations. Use `inv_pos.mpr hL0` as an intermediate fact. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Use polynomial arithmetic with `[Real.pi_pos]`.
+
+Use `set s : X.Ψ → ℂ := fun τ => (u τ : ℂ) + (y τ : ℂ) * I with hs`. Establish `him : ∀ τ, (s τ).im = y τ` using `fun τ => by simp [hs]`. Establish `hd : X.flow ξ s x ∈ X.dom` using `flow_mem_dom X hξ hx s fun τ => by rw [him]; exact hy τ`. Establish `hprod : ∏ τ, X.tt ξ (X.flow ξ s x) τ = ∏ τ, X.tt ξ x τ`. Simplify using `only [tt_flow X hξ hx s hd, him, hty]`.
+
+Rewrite using `[Finset.prod_mul_distrib, hqp, one_mul]`. Establish `hb : ‖P (X.flow ξ s x)‖ * X.nfac la (X.flow ξ s x) ≤ S` using `hS _ hd (hth s hd hprod)`. Establish `hn'` using `FlowCoefficientBounds.nfac_pos X hd la`. Establish `hN : X.nfac la x / X.nfac la (X.flow ξ s x) ≤ ∏ τ, max (1 + (s τ).im / X.tt ξ x τ) (1 + (s τ).im / X.tt ξ x τ)⁻¹ ^ (X.spread la τ / 2)` using `(m3bNorm_holds r X _ (isIsoV_embV X hξ) la x hx s hd).2`. Establish `hqe : ∀ τ, 1 + (s τ).im / X.tt ξ x τ = q τ` using `fun τ => by`.
+
+Rewrite using `[him]`. Simplify using `only [y]`. Rewrite using `[mul_div_cancel_right₀ _ (ht τ).ne']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hqe] at hN`.
+
+Establish `hN2 : ∏ τ, max (q τ) (q τ)⁻¹ ^ (X.spread la τ / 2) ≤ L ^ ∑ τ, |X.spread la τ / 2|`. Rewrite using `[Real.rpow_sum_of_pos hL0]`. Use `Finset.prod_le_prod (fun τ _ => Real.rpow_nonneg (zero_le_one.trans (hq1 τ)) _) fun τ _ => ?_` and prove the remaining obligations. Conclude with `(Real.rpow_le_rpow_of_exponent_le (hq1 τ) (le_abs_self _)).trans (Real.rpow_le_rpow (zero_le_one.trans (hq1 τ)) (hqm τ) (abs_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[le_div_iff₀ hn']`. Conclude with `hb.trans (le_abs_self S)`. Use `_ = |S| / X.nfac la x * (X.nfac la x / X.nfac la (X.flow ξ s x)) := by field_simp`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left (hN.trans hN2) (by positivity)`.
+-/
 theorem freqNonneg_of_thickBdd : OrbitThickSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ), 1 < Module.finrank ℚ E / 2 → X.IsSec la P →
     ThickBdd X (X.pnorm la P) → FreqNonneg X la P := by

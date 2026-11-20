@@ -27,6 +27,9 @@ section Ring
 
 variable {R : Type} [CommRing R] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ε * (1 - ε) = 0` using `by linear_combination -hε`. Establish `h2 : (1 - ε) * (1 - ε) = 1 - ε` using `by linear_combination hε`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hε, h1, h2, mul_comm (1 - ε) ε, zero_smul, add_zero, zero_add]`.
+-/
 theorem part_mul {ε : R} (hε : ε * ε = ε) (A A' B B' : Matrix (Fin n) (Fin n) R) :
     (ε • A + (1 - ε) • A') * (ε • B + (1 - ε) • B') = ε • (A * B) + (1 - ε) • (A' * B') := by
   have h1 : ε * (1 - ε) = 0 := by linear_combination -hε
@@ -34,9 +37,19 @@ theorem part_mul {ε : R} (hε : ε * ε = ε) (A A' B B' : Matrix (Fin n) (Fin 
   simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, hε, h1, h2,
     mul_comm (1 - ε) ε, zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem part_self (ε : R) (A : Matrix (Fin n) (Fin n) R) : ε • A + (1 - ε) • A = A := by
   rw [← add_smul, add_sub_cancel, one_smul]
 
+/- English proof (translation)
+Use `⟨⟨⟨ε • g.1.1 + (1 - ε) • 1, ε • (g.1⁻¹).1 + (1 - ε) • 1, ?_, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[part_mul hε, Units.mul_inv, Matrix.mul_one, part_self]`. Rewrite using `[part_mul hε, Units.inv_mul, Matrix.mul_one, part_self]`. Establish `h : Formalism.UG.cT c g.1.1 * J * g.1.1 = J` using `g.2`. Establish `h1 : Formalism.UG.cT c (ε • g.1.1 + (1 - ε) • 1) = ε • Formalism.UG.cT c g.1.1 + (1 - ε) • 1`.
+
+Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hc, Matrix.one_apply, eq_comm (a := j)]`. Apply the tactic sequence `split_ifs <;> simp`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT c (ε • g.1.1 + (1 - ε) • 1) * J * (ε • g.1.1 + (1 - ε) • 1) = J`. Rewrite using `[h1]`.
+
+Generalize the expression as in `g.1.1 = M at h`. Use `conv_lhs => rw [← part_self ε J]`. Rewrite using `[part_mul hε, part_mul hε, h, Matrix.one_mul, Matrix.mul_one, part_self]`.
+-/
 theorem part_mem (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) {ε : R} (hε : ε * ε = ε) (hc : c ε = ε)
     (g : Formalism.UG.UJ c J) : ∃ g₀ : Formalism.UG.UJ c J, g₀.1.1 = ε • g.1.1 + (1 - ε) • 1 := by
   refine ⟨⟨⟨ε • g.1.1 + (1 - ε) • 1, ε • (g.1⁻¹).1 + (1 - ε) • 1, ?_, ?_⟩, ?_⟩, rfl⟩
@@ -54,6 +67,11 @@ theorem part_mem (c : R →+* R) (J : Matrix (Fin n) (Fin n) R) {ε : R} (hε : 
     conv_lhs => rw [← part_self ε J]
     rw [part_mul hε, part_mul hε, h, Matrix.one_mul, Matrix.mul_one, part_self]
 
+/- English proof (translation)
+Establish `h1` using `congrArg Matrix.det h`. Establish `h2 : e * e ^ Fintype.card (Fin n) = e`. Rewrite using `[← pow_succ']`. Conclude with `IsIdempotentElem.pow_succ_eq _ he`. Rewrite `h1` using `[Matrix.det_smul, Matrix.det_smul]`.
+
+Rewrite using `[← h2, mul_assoc, h1, ← mul_assoc]`.
+-/
 theorem idem_det {e : R} (he : e * e = e) {A B : Matrix (Fin n) (Fin n) R} (h : e • A = e • B) :
     e * A.det = e * B.det := by
   have h1 := congrArg Matrix.det h
@@ -71,6 +89,13 @@ open GlobalTheory.AdLat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨α * a, fun v => mul_mem (hα v) (ha v), x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `neg y _ hy => rw [smul_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem tmul_smul_mem (L : Set (Fin n → E)) {α : FiniteAdeleRing (𝓞 F) F}
     (hα : ∀ v, α v ∈ v.adicCompletionIntegers F) {z : Fin n → RA F E} (hz : z ∈ hat F L) :
     (α ⊗ₜ[F] (1 : E) : RA F E) • z ∈ hat F L := by
@@ -85,9 +110,23 @@ theorem tmul_smul_mem (L : Set (Fin n → E)) {α : FiniteAdeleRing (𝓞 F) F}
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩`.
+-/
 theorem hat_mono {L L' : Set (Fin n → E)} (h : L ⊆ L') : hat F L ≤ hat F L' :=
   AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩
 
+/- English proof (translation)
+Establish `hM : Submodule.IsLattice E ((A ⊓ B) ⊓ C : Submodule (𝓞 E) (Fin n → E))`. Use `⟨hC.fg.of_le inf_le_right, eq_top_iff.2 fun x _ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, h1⟩` from `cap_exists_denom A hA.span_eq_top x`. Take `⟨b, hb, h2⟩` from `cap_exists_denom B hB.span_eq_top (a • x)`. Take `⟨c, hc, h3⟩` from `cap_exists_denom C hC.span_eq_top (b • a • x)`.
+
+Establish `h4 : c • b • a • x ∈ (A ⊓ B) ⊓ C` using `⟨⟨nsmul_mem (nsmul_mem h1 b) c, nsmul_mem h2 c⟩, h3⟩`. Establish `h5 : x = ((c * b * a : ℕ) : E)⁻¹ • c • b • a • x`. Rewrite using `[smul_smul c, smul_smul (c * b), ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ (Nat.cast_ne_zero.2 (by positivity))]`. Rewrite using `[h5]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h4)`.
+
+Take `⟨x, hx⟩` from `(hat_rational_points_and_approx F E n _ hM.fg hM.span_eq_top).2.2.1 z`. Use `⟨x, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (hat_rational_points_and_approx F E n _ hA.fg hA.span_eq_top).1, ← sub_sub_cancel z (fv F x)]`. Conclude with `sub_mem h1 (hat_mono (fun _ h => h.1.1) hx)`. Rewrite using `[← (hat_rational_points_and_approx F E n _ hB.fg hB.span_eq_top).1, ← sub_sub_cancel z (fv F x)]`.
+
+Conclude with `sub_mem h2 (hat_mono (fun _ h => h.1.2) hx)`. Rewrite using `[← (hat_rational_points_and_approx F E n _ hC.fg hC.span_eq_top).1]`. Establish `: fv F (v - x) = (fv F v - z) + (z - fv F x)`. Use function extensionality and compare the values at `i`. Simplify using `[fv, TensorProduct.tmul_sub]`.
+
+Rewrite using `[this]`. Conclude with `add_mem h3 (hat_mono (fun _ h => h.2) hx)`.
+-/
 theorem exists_split {A B C : Submodule (𝓞 E) (Fin n → E)} (hA : Submodule.IsLattice E A)
     (hB : Submodule.IsLattice E B) (hC : Submodule.IsLattice E C) {v : Fin n → E} {z : Fin n → RA F E}
     (h1 : z ∈ hat F (A : Set (Fin n → E))) (h2 : z ∈ hat F (B : Set (Fin n → E)))
@@ -123,6 +162,11 @@ open GlobalTheory.SW.TensVac
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {w : E} {A B C : AddSubgroup (Matrix (Fin n) (Fin r) E)}
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, u, hu, rfl⟩`. Take `⟨x, h0, h1, h2⟩` from `h v hv`. Establish `e : vecMulVec v u = vecMulVec x u + vecMulVec (v - x) u`. Use extensionality with `i j`.
+
+Simplify using `only [vecMulVec_apply, Matrix.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `AddSubgroup.add_mem_sup ⟨AddSubgroup.subset_closure ⟨x, h1, u, hu, rfl⟩, AddSubgroup.subset_closure ⟨x, h0, u, hu, rfl⟩⟩ ⟨AddSubgroup.subset_closure ⟨_, sub_mem hv h1, u, hu, rfl⟩, AddSubgroup.subset_closure ⟨_, h2, u, hu, rfl⟩⟩`.
+-/
 theorem tens_le {Λ₀ Λ Λ₁ : Lt E n} (L : Lt E r) (h : ∀ v ∈ Λ, ∃ x, x ∈ Λ₀ ∧ x ∈ Λ ∧ v - x ∈ Λ₁) :
     tens Λ L ≤ (tens Λ L ⊓ tens Λ₀ L) ⊔ (tens Λ L ⊓ tens Λ₁ L) := by
   refine (AddSubgroup.closure_le _).2 ?_
@@ -138,14 +182,27 @@ theorem tens_le {Λ₀ Λ Λ₁ : Lt E n} (L : Lt E r) (h : ∀ v ∈ Λ, ∃ x,
 variable (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas) (hn : Even n)
 include idx hs hn
 
+/- English proof (translation)
+Take `⟨v, hv, -⟩` from `hA.vac hs`. Rewrite using `[(hA.proj idx hs hn (sb_smul c hφ) hv).2, (hA.proj idx hs hn hφ hv).2, ip_smul_left c hφ hv.1, mul_smul]`.
+-/
 theorem projA_smul (hA : Good X w A) (c : ℂ) {φ : TF n g} (hφ : GlobalTheory.SW.IsSB φ) :
     projA X bas w A (c • φ) = c • projA X bas w A φ := by
   obtain ⟨v, hv, -⟩ := hA.vac hs
   rw [(hA.proj idx hs hn (sb_smul c hφ) hv).2, (hA.proj idx hs hn hφ hv).2, ip_smul_left c hφ hv.1, mul_smul]
 
+/- English proof (translation)
+Rewrite using `[(hA.proj idx hs hn hv.1 hv).2, hv.2.1, one_smul]`.
+-/
 theorem projA_vac (hA : Good X w A) {v : TF n g} (hv : IsVac X bas w A v) : projA X bas w A v = v := by
   rw [(hA.proj idx hs hn hv.1 hv).2, hv.2.1, one_smul]
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `hA.vac hs`. Take `⟨b, hb, -⟩` from `hB.vac hs`. Take `⟨c, hc, -⟩` from `hC.vac hs`. Establish `h` using `ProjProj.proj_proj_of_good idx hs hn hB hC hle ha`. Rewrite `h` using `[(hB.proj idx hs hn ha.1 hb).2, projA_smul idx hs hn hC _ hb.1, (hC.proj idx hs hn hb.1 hc).2, (hC.proj idx hs hn ha.1 hc).2, smul_smul]`.
+
+Establish `h'` using `congrArg (fun t => ‖SW.ip t c‖) h`. Simplify using `only [ip_smul_left _ hc.1 hc.1, hc.2.1, mul_one, norm_mul] at h'`. Establish `h1` using `hC.overlap idx hs hn hA hc ha`. Establish `h2` using `hC.overlap idx hs hn hB hc hb`. Establish `h3` using `hB.overlap idx hs hn hA hb ha`.
+
+Rewrite `h1` using `[ip_conj ha.1 hc.1, Complex.norm_conj, ← h']`. Rewrite `h2` using `[ip_conj hb.1 hc.1, Complex.norm_conj]`. Rewrite `h3` using `[ip_conj ha.1 hb.1, Complex.norm_conj]`. Take the linear combination `((B.relIndex C : ℝ) * A.relIndex B) * h1 - (A.relIndex C : ℝ) * h2 - ((A.relIndex C : ℝ) * B.relIndex C * ‖SW.ip b c‖ ^ 2) * h3`.
+-/
 theorem relIndex_mul (hA : Good X w A) (hB : Good X w B) (hC : Good X w C) (hle : B ≤ (B ⊓ A) ⊔ (B ⊓ C)) :
     (A.relIndex C : ℝ) = B.relIndex C * A.relIndex B := by
   obtain ⟨a, ha, -⟩ := hA.vac hs
@@ -165,6 +222,9 @@ theorem relIndex_mul (hA : Good X w A) (hB : Good X w B) (hC : Good X w C) (hle 
   linear_combination ((B.relIndex C : ℝ) * A.relIndex B) * h1 - (A.relIndex C : ℝ) * h2 -
     ((A.relIndex C : ℝ) * B.relIndex C * ‖SW.ip b c‖ ^ 2) * h3
 
+/- English proof (translation)
+Take `⟨b, hb, -⟩` from `hB.vac hs`. Rewrite using `[projA_smul idx hs hn hB _ hv.1, smul_smul _ κ, projA_smul idx hs hn hC _ (hB.proj idx hs hn hv.1 hb).1, ProjProj.proj_proj_of_good idx hs hn hB hC hle hv, projA_smul idx hs hn hC _ hv.1, smul_smul, smul_smul, relIndex_mul idx hs hn hA hB hC hle, Real.sqrt_mul (Nat.cast_nonneg _) …`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proj_step (hA : Good X w A) (hB : Good X w B) (hC : Good X w C) (hle : B ≤ (B ⊓ A) ⊔ (B ⊓ C))
     {v : TF n g} (hv : IsVac X bas w A v) (κ s t : ℂ) :
     (s * (Real.sqrt (B.relIndex C : ℝ) : ℂ)) • projA X bas w C
@@ -186,13 +246,24 @@ open GlobalTheory.AdLat Formalism.IndefR
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext e)`.
+-/
 theorem mt_inj {V : HSp D} {g h : GA D V} (e : Formalism.L2.Theta.mt V g = Formalism.L2.Theta.mt V h) : g = h :=
   Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+The claim follows from `part_mem (cA D) (JR (AF D.host.F) V.gram) hε hc h`.
+-/
 theorem exists_part (V : HSp D) {ε : AE D} (hε : ε * ε = ε) (hc : cA D ε = ε) (h : GA D V) :
     ∃ h₀ : GA D V, Formalism.L2.Theta.mt V h₀ = ε • Formalism.L2.Theta.mt V h + (1 - ε) • 1 :=
   part_mem (cA D) (JR (AF D.host.F) V.gram) hε hc h
 
+/- English proof (translation)
+Establish `h1 : (Formalism.L2.Theta.mt V h).det * (Formalism.L2.Theta.mt V h⁻¹).det = 1`. Rewrite using `[← Matrix.det_mul, ← AdelicLatMove.mt_mul, mul_inv_cancel, AdelicLatMove.mt_one, Matrix.det_one]`. Establish `h2 : (e * (Formalism.L2.Theta.mt V h).det + (1 - e)) * (e * (Formalism.L2.Theta.mt V h⁻¹).det + (1 - e)) = 1`. Generalize the expression as in `(Formalism.L2.Theta.mt V h).det = a at h1`. Generalize the expression as in `(Formalism.L2.Theta.mt V h⁻¹).det = b at h1`.
+
+Take the linear combination `(a * b - a - b + 1) * he + e * h1`. Conclude with `⟨⟨_, _, h2, (mul_comm _ _).trans h2⟩, rfl⟩`.
+-/
 theorem exists_detAt (V : HSp D) {e : AE D} (he : e * e = e) (h : GA D V) : ∃ y, IsDetAt e V h y := by
   have h1 : (Formalism.L2.Theta.mt V h).det * (Formalism.L2.Theta.mt V h⁻¹).det = 1 := by
     rw [← Matrix.det_mul, ← AdelicLatMove.mt_mul, mul_inv_cancel, AdelicLatMove.mt_one, Matrix.det_one]
@@ -202,10 +273,26 @@ theorem exists_detAt (V : HSp D) {e : AE D} (he : e * e = e) (h : GA D V) : ∃ 
     linear_combination (a * b - a - b + 1) * he + e * h1
   exact ⟨⟨_, _, h2, (mul_comm _ _).trans h2⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← Matrix.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem suppAt_iff (e : AE D) (V : HSp D) (g : GA D V) :
     SuppAt e V g ↔ (e + cA D e) • (Formalism.L2.Theta.mt V g - 1) = Formalism.L2.Theta.mt V g - 1 := by
   rw [← Matrix.ext_iff]; rfl
 
+/- English proof (translation)
+Establish `hε : (a + c) * (a + c) = a + c` using `by linear_combination h1 + h2 + 2 * h3`. Establish `hM' : ∀ i j, (a + a' + (c + c')) * (M i j - (1 : Matrix (Fin n) (Fin n) R) i j) = M i j - (1 : Matrix (Fin n) (Fin n) R) i j` using `fun i j => congrFun (congrFun hM i) j`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h₀, h', sub_sub_cancel, add_comm ((1 - (a + c)) • M), part_mul hε, Matrix.mul_one, Matrix.one_mul, part_self]`. Use extensionality with `i j`.
+
+Simplify using `only [h₀, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * hε`. Use extensionality with `i j`. Simplify using `only [h', Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(1 - (a + c)) * hM' i j + (M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * hε`.
+
+Establish `d1 : a * M₀.det = a * M.det` using `idem_det h1 (by`. Use extensionality with `i j`. Simplify using `only [h₀, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * (h1 + h3))`. Establish `d2 : a' * M'.det = a' * M.det` using `idem_det h4 (by`.
+
+Use extensionality with `i j`. Simplify using `only [h', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(-(M i j - (1 : Matrix (Fin n) (Fin n) R) i j)) * (h7 + h10))`. Rewrite using `[d1, d2]`. Take the linear combination `(-(M.det - 1) ^ 2) * h7`.
+
+Use extensionality with `i j`. Simplify using `only [h', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(-(M i j - (1 : Matrix (Fin n) (Fin n) R) i j)) * hε`. Use extensionality with `i j`. Simplify using `only [h', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+
+Take the linear combination `(M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * hε`.
+-/
 theorem alg_parts {R : Type} [CommRing R] {n : ℕ} {a c a' c' : R} (h1 : a * a = a) (h2 : c * c = c) (h3 : a * c = 0)
     (h4 : a' * a' = a') (h5 : c' * c' = c') (h6 : a' * c' = 0) (h7 : a * a' = 0) (h8 : c * c' = 0) (h9 : a * c' = 0)
     (h10 : c * a' = 0) {M M₀ M' : Matrix (Fin n) (Fin n) R} (hM : (a + a' + (c + c')) • (M - 1) = M - 1)
@@ -241,6 +328,9 @@ theorem alg_parts {R : Type} [CommRing R] {n : ℕ} {a c a' c' : R} (h1 : a * a 
     simp only [h', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     linear_combination (M i j - (1 : Matrix (Fin n) (Fin n) R) i j) * hε
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `MovedLat.fwd V g _ (MovedLat.bwd V g' z hz)`.
+-/
 theorem move_hat (V : HSp D) (g g' : GA D V) :
     ∀ z ∈ hat D.host.F (Bridge.hLat V (FWT.fin V g') : Set (Fin V.rank → D.host.E)),
       (finHom V (g * g'⁻¹)).1 *ᵥ z ∈ hat D.host.F (Bridge.hLat V (FWT.fin V g) : Set (Fin V.rank → D.host.E)) := by
@@ -248,6 +338,13 @@ theorem move_hat (V : HSp D) (g g' : GA D V) :
   rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]
   exact MovedLat.fwd V g _ (MovedLat.bwd V g' z hz)
 
+/- English proof (translation)
+Establish `hW : ∀ z ∈ hat D.host.F (ΛW : Set (Fin W.rank → D.host.E)), (finHom W 1).1 *ᵥ z ∈ hat D.host.F (ΛW : Set (Fin W.rank → D.host.E))` using `fun z hz => by`. Rewrite using `[map_one, Units.val_one, Matrix.one_mulVec]` and apply the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `h` using `move_hat V g' (k * g')`.
+
+Rewrite `h` using `[_root_.mul_inv_rev, mul_inv_cancel_left]`. Conclude with `⟨_, MovedLat.actO_mem V W k⁻¹ 1⁻¹ _ _ _ _ h (by rwa [inv_one]) u hu, (AdelicLatMove.actO_actO_inv V W k 1 u).symm⟩`. Introduce and unpack `⟨u₀, hu, rfl⟩`. Establish `h` using `move_hat V (k * g') g'`. Rewrite `h` using `[mul_inv_cancel_right]`.
+
+Conclude with `MovedLat.actO_mem V W k 1 _ _ _ _ h hW u₀ hu`.
+-/
 theorem latO_move (V W : HSp D) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (k g' : GA D V) (u : WO V W) :
     u ∈ (latO V W (Bridge.hLat V (FWT.fin V (k * g')) : Set (Fin V.rank → D.host.E))
         (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) ↔
@@ -267,6 +364,23 @@ theorem latO_move (V W : HSp D) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank →
     rw [mul_inv_cancel_right] at h
     exact MovedLat.actO_mem V W k 1 _ _ _ _ h hW u₀ hu
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨-, -, p, ε, ⟨α, rfl, a1, a0⟩, h3⟩` from `he`. Establish `hα : ∀ q, α q ∈ q.adicCompletionIntegers D.host.F` using `fun q => by`. Distinguish the cases in `hq : q = p`. Substitute `hq` using the available equality.
+
+Establish `: α q = 1` using `a1`. Rewrite using `[this]`. Conclude with `one_mem _`. Establish `: α q = 0` using `a0 q hq`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Establish `ht : finPart D (e + cA D e) = α ⊗ₜ[D.host.F] (1 : D.host.E)` using `by rw [h3]; rfl`. Generalize the expression as in `e + cA D e = t at h1 h2 ht`. Establish `hst : ∀ (L : Set (Fin V.rank → D.host.E)), ∀ z ∈ hat D.host.F L, finPart D t • z ∈ hat D.host.F L` using `fun L z hz => by rw [ht]; exact tmul_smul_mem L hα hz`. Establish `hv' : fv D.host.F v ∈ hat D.host.F (Bridge.hLat V (FWT.fin V h') : Set (Fin V.rank → D.host.E))` using `cap_fv_mem D.host.F _ v hv`.
+
+Establish `hw` using `MovedLat.bwd V h' _ hv'`. Use `set w := (finHom V h'⁻¹).1 *ᵥ fv D.host.F v with hwd`. Establish `e0 : fv D.host.F v = (finHom V h').1 *ᵥ w`. Rewrite using `[hwd, Matrix.mulVec_mulVec, map_inv, Units.mul_inv, Matrix.one_mulVec]`. Establish `key : ∀ (s : AE D) (M M' : Matrix (Fin V.rank) (Fin V.rank) (AE D)), s • M = s • M' → finPart D s • M.map (finPart D) *ᵥ w = M'.map (finPart D) *ᵥ (finPart D s • w)` using `fun s M M' hM => by`.
+
+Rewrite using `[Matrix.mulVec_smul, ← Matrix.smul_mulVec, ← Matrix.smul_mulVec]`. Use `congr 1`. Use extensionality with `i j`. Use `congrArg (finPart D) (congrFun (congrFun hM i) j)` as an intermediate fact. Simplify `this` using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, map_mul]`.
+
+Use `exists_split (F := D.host.F) (GlobalTheory.RepsCompare.isLattice_hLat V _) (GlobalTheory.RepsCompare.isLattice_hLat V _) (GlobalTheory.RepsCompare.isLattice_hLat V _) (z := finPart D t • fv D.host.F v) ?_ (hst _ _ hv') ?_` and prove the remaining obligations. Use `key _ _ _ h1` as an intermediate fact. Rewrite using `[e0]`. Conclude with `this ▸ MovedLat.fwd V 1 _ (hst _ _ hw)`. Use `key _ _ _ h2` as an intermediate fact.
+
+Establish `e1 : fv D.host.F v - finPart D t • fv D.host.F v = finPart D (1 - t) • fv D.host.F v`. Rewrite using `[RingHom.map_sub, RingHom.map_one, sub_smul, one_smul]`. Establish `e2 : finPart D (1 - t) • w ∈ hat D.host.F (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E))`. Rewrite using `[RingHom.map_sub, RingHom.map_one, sub_smul, one_smul]`. Conclude with `sub_mem hw (hst _ _ hw)`.
+
+Rewrite using `[e1, e0]`. Conclude with `this ▸ MovedLat.fwd V h _ e2`.
+-/
 theorem hLat_split (V : HSp D) {e : AE D} (he : IsSplitIdem D e) {h h' : GA D V}
     (h1 : (e + cA D e) • Formalism.L2.Theta.mt V h' = (e + cA D e) • 1)
     (h2 : (1 - (e + cA D e)) • Formalism.L2.Theta.mt V h' = (1 - (e + cA D e)) • Formalism.L2.Theta.mt V h) :
@@ -312,9 +426,21 @@ theorem hLat_split (V : HSp D) {e : AE D} (he : IsSplitIdem D e) {h h' : GA D V}
     rw [e1, e0]
     exact this ▸ MovedLat.fwd V h _ e2
 
+/- English proof (translation)
+The claim follows from `(RingOfIntegers.isIntegral_coe a).map (D.sp.cm.sig.toRingHom.toIntAlgHom)`.
+-/
 theorem star_int (a : 𝓞 D.host.E) : IsIntegral ℤ (star (a : D.host.E)) :=
   (RingOfIntegers.isIntegral_coe a).map (D.sp.cm.sig.toRingHom.toIntAlgHom)
 
+/- English proof (translation)
+Use `⟨⟨⟨⟨{v | (fun j => star (v j)) ∈ B}, fun {a b} ha hb => ?_⟩, ?_⟩, fun c v hv => ?_⟩, fun _ => Iff.rfl⟩` and prove the remaining obligations. Use `B.add_mem ha hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Set.mem_setOf_eq]`. Use `congr! 1`.
+
+Use function extensionality and compare the values at `j`. Conclude with `star_add _ _`. Express the relevant statement in the definitionally equal form `(fun j => star ((0 : Fin n → D.host.E) j)) ∈ B`. Use `B.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Conclude with `star_zero _`. Use `B.smul_mem ⟨_, star_int c⟩ hv` as an intermediate fact. Express the relevant statement in the definitionally equal form `(fun j => star ((c • v) j)) ∈ B`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Conclude with `star_mul' _ _`.
+-/
 theorem exists_conj {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) :
     ∃ Λ : Lt D.host.E n, ∀ v : Fin n → D.host.E, v ∈ Λ ↔ (fun j => star (v j)) ∈ B := by
   refine ⟨⟨⟨⟨{v | (fun j => star (v j)) ∈ B}, fun {a b} ha hb => ?_⟩, ?_⟩, fun c v hv => ?_⟩, fun _ => Iff.rfl⟩
@@ -331,6 +457,9 @@ theorem exists_conj {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E
     convert this using 1
     funext j; exact star_mul' _ _
 
+/- English proof (translation)
+Establish `key : ∀ v : Fin n → D.host.E, v ∈ Formalism.L2.Pj.stdLat D.host.E n → (fun j => star (v j)) ∈ Formalism.L2.Pj.stdLat D.host.E n` using `fun v hv j hj => by`. Take `⟨a, ha⟩` from `Submodule.mem_one.1 (hv j hj)`. Conclude with `Submodule.mem_one.2 ⟨⟨_, star_int a⟩, congrArg star ha⟩`. Use `⟨key v, fun h => ?_⟩` and prove the remaining obligations. Simplify `key _ h` using `only [star_star]`.
+-/
 theorem conj_std {n : ℕ} (v : Fin n → D.host.E) :
     v ∈ Formalism.L2.Pj.stdLat D.host.E n ↔ (fun j => star (v j)) ∈ Formalism.L2.Pj.stdLat D.host.E n := by
   have key : ∀ v : Fin n → D.host.E, v ∈ Formalism.L2.Pj.stdLat D.host.E n →
@@ -344,6 +473,53 @@ end Adelic
 
 open Formalism.IndefR in
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH ΛV ΛW Λ₁ L hV0 hV hW hstd hL x s hx hinv f hf φ hφ e P h y he hsupp hdet hΛ₁`. Establish `hV1 : Bridge.hLat V (FWT.fin V 1) = ΛV`. Establish `: FWT.fin V 1 = 1` using `map_one (finHom V).rangeRestrict`. Rewrite using `[this, MovedLat.hLat_one]`. Conclude with `SetLike.coe_injective ((GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq V).trans hV0.symm)`.
+
+Establish `hVs : ΛV = Formalism.L2.Pj.stdLat D.host.E V.rank` using `SetLike.coe_injective hstd`. Use `set S := Formalism.L2.Pj.stdLat D.host.E V.rank with hS`. Establish `hS1 : ∀ v : Fin V.rank → D.host.E, v ∈ S ↔ (fun j => star (v j)) ∈ Bridge.hLat V (FWT.fin V 1)` using `fun v => by`. Rewrite using `[hV1, hVs]`. Conclude with `conj_std v`.
+
+Establish `hw0 : (H.w0 : D.host.E) + cc (H.w0 : D.host.E) = 1`. Establish `h1 : 2 * (H.w0 : D.host.E) = 1 + D.host.sqrtMinusD`. Rewrite using `[← hH]`. Conclude with `congrArg Subtype.val H.two_weight_eq_one_add_root`. Establish `h2` using `congrArg star h1`.
+
+Rewrite `h2` using `[star_mul', star_add, star_one, star_ofNat, SplitIdem.star_eq_conj D D.host.sqrtMinusD, D.host.conj_sqrtMinusD]`. Express the relevant statement in the definitionally equal form `_ + star (H.w0 : D.host.E) = 1`. Take the linear combination `(1 / 2 : D.host.E) * h1 + (1 / 2 : D.host.E) * h2`. Establish `hlat : ∀ (k : GA D V) (Λ : Lt D.host.E V.rank), (∀ v : Fin V.rank → D.host.E, v ∈ Λ ↔ (fun j => star (v j)) ∈ Bridge.hLat V (FWT.fin V k)) → SelfD X L ∧ Λ ∈ Vset D.host.E V.rank 1` using `fun k Λ hΛ => by`. Take `⟨-, a, b, c⟩` from `LatOf.isLatOf_tens D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hX hs _ ΛW Λ L (MovedLat.isSelfDualC_hLat V _) hW hΛ hL`.
+
+Conclude with `⟨a, VacProj.mem_vset ⟨Λ⟩ b c⟩`. Establish `hLs` using `(hlat 1 S hS1).1`. Establish `hgood : ∀ Λ ∈ Vset D.host.E V.rank 1, TensVac.Good X (H.w0 : D.host.E) (tens Λ L)` using `fun Λ hΛ => by`. Take `⟨a1, a2, a3, -⟩` from `TensLat.tens_selfDual_semichar_index _ r X g bas idx _ hs hP.even _ H.w0.isIntegral_coe hw0 L hLs 1 _ hΛ`. Conclude with `⟨a1, a2, a3⟩`.
+
+Establish `hidx : ∀ Λ ∈ Vset D.host.E V.rank 1, ∀ Λ' ∈ Vset D.host.E V.rank 1, (((Λ ⊓ Λ').toAddSubgroup.addSubgroupOf Λ.toAddSubgroup).index : ℝ) ^ r = ((tens Λ' L).relIndex (tens Λ L) : ℝ)`. Introduce `Λ hΛ Λ' hΛ'`. Take `⟨-, -, -, -, -, a4⟩` from `TensLat.tens_selfDual_semichar_index _ r X g bas idx _ hs hP.even _ H.w0.isIntegral_coe hw0 L hLs 1 _ hΛ`. Rewrite using `[a4 _ hΛ', ← AddSubgroup.inf_relIndex_left, Nat.cast_pow]`. Both sides reduce to the same expression.
+
+Establish `hSv` using `(hlat 1 S hS1).2`. Take `⟨v, hv, -⟩` from `(hgood S hSv).vac hs`. Take `⟨κ, -, hκ⟩` from `GlobalTheory.T.adelicVacuum_reads_multiple_classicalVacuum D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hX hs H hH ΛV ΛW S L hP.sigV hP.sigW hV hW (hV1 ▸ hS1) hL x s hx hinv f hf v hv`. Take `rfl : φ = κ • v` from `(reads_linear_injective D ψ θ V W r g hr X bas idx hP.weil.std hP.inf hP.std hP.even hX hs x hx f f _ _ hφ hκ).2.1 rfl`. Rewrite using `[hidx _ (hlat h Λ₁ hΛ₁).2 _ hSv]`.
+
+Take `⟨ι, Q, es, h1, h2, rfl⟩` from `PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `h3` using `he.2`. Use `clear he`. Proceed by induction on `Q using Finset.induction_on generalizing h y Λ₁ with`. Consider the case `empty`.
+
+Rewrite `hsupp`, `hdet` using `[Finset.sum_empty]`. Take `rfl : h = 1` from `mt_inj (by`. Use `(suppAt_iff _ _ _).1 hsupp` as an intermediate fact. Rewrite `this` using `[RingHom.map_zero, add_zero, zero_smul, eq_comm, sub_eq_zero]`. Conclude with `this)`.
+
+Take `rfl : y = 1` from `Units.ext (by`. Establish `: (y : AE D) = _` using `hdet`. Rewrite using `[this, zero_mul, zero_add, sub_zero, Units.val_one])`. Take `rfl : Λ₁ = S` from `Submodule.ext fun v => (hΛ₁ v).trans (hS1 v).symm`. Establish `e1 : om (1, 1) f = f`.
+
+Rewrite using `[show ((1, 1) : GA D V × GA D W) = 1 from rfl, map_one]`. Both sides reduce to the same expression. Rewrite using `[e1, AddSubgroup.relIndex_self, map_one, projA_smul idx hs hP.even (hgood _ hSv) _ hv.1, projA_vac idx hs hP.even (hgood _ hSv) hv]`. Simplify using `using hφ`. Consider the case `insert i Q hi ih`.
+
+Rewrite `hsupp`, `hdet`, `h3` using `[Finset.sum_insert hi]`. Establish `hsp` using `h1 i (Finset.mem_insert_self _ _)`. Establish `h1' : ∀ j ∈ Q, IsSplitIdem D (es j)` using `fun j hj => h1 j (Finset.mem_insert_of_mem hj)`. Establish `h2' : ∀ j ∈ Q, ∀ k ∈ Q, k ≠ j → es j * es k = 0` using `fun j hj k hk => h2 j (Finset.mem_insert_of_mem hj) k (Finset.mem_insert_of_mem hk)`. Establish `o4 : (∑ j ∈ Q, es j) * (∑ j ∈ Q, es j) = ∑ j ∈ Q, es j` using `PlaceModelSum.IsOrthSum.idem ⟨ι, Q, es, h1', h2', rfl⟩`.
+
+Establish `o7 : es i * ∑ j ∈ Q, es j = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => h2 i (Finset.mem_insert_self _ _) j (Finset.mem_insert_of_mem hj) fun hji => hi (hji ▸ hj)`. Use `set a := es i with ha`. Use `set a' := ∑ j ∈ Q, es j with ha'`.
+
+Establish `o1 : a * a = a` using `hsp.1`. Establish `o3 : a * cA D a = 0` using `hsp.2.1`. Establish `o2 : cA D a * cA D a = cA D a` using `by rw [← RingHom.map_mul, o1]`. Establish `o5 : cA D a' * cA D a' = cA D a'` using `by rw [← RingHom.map_mul, o4]`. Establish `o8 : cA D a * cA D a' = 0` using `by rw [← RingHom.map_mul, o7, RingHom.map_zero]`.
+
+Rewrite `h3` using `[RingHom.map_add]`. Establish `o9 : a * cA D a' = 0`. Take the linear combination `(a * cA D a') * h3 - (cA D a' * (cA D a + cA D a')) * o1 - (cA D a' * (cA D a + cA D a')) * o7 - a * o8 - a * o5`. Establish `o10 : cA D a * a' = 0`. Use `congrArg (cA D) o9` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_mul, cA_cA, RingHom.map_zero]`. Then use the resulting hypothesis. Establish `o6 : a' * cA D a' = 0` using `by linear_combination h3 - o3 - o9 - o10`. Establish `hε : (a + cA D a) * (a + cA D a) = a + cA D a` using `by linear_combination o1 + o2 + 2 * o3`. Establish `hcε : cA D (a + cA D a) = a + cA D a` using `by rw [RingHom.map_add, cA_cA, add_comm]`. Take `⟨h₀, e₀⟩` from `exists_part V hε hcε h`.
+
+Take `⟨h', e'⟩` from `exists_part V (ε := 1 - (a + cA D a)) (by linear_combination hε) (by rw [RingHom.map_sub, RingHom.map_one, hcε]) h`. Establish `hsupp'` using `(suppAt_iff _ _ _).1 hsupp`. Rewrite `hsupp'` using `[RingHom.map_add]`. Take `⟨b1, b2, b3, b4, b5, b6⟩` from `alg_parts o1 o2 o3 o4 o5 o6 o7 o8 o9 o10 hsupp' e₀ e'`. Take `⟨y₀, hy₀⟩` from `exists_detAt V o1 h₀`.
+
+Take `⟨y', hy'⟩` from `exists_detAt V o4 h'`. Take `rfl : y = y₀ * y'` from `Units.ext (by`. Rewrite using `[Units.val_mul, show (y : AE D) = _ from hdet, show (y₀ : AE D) = _ from hy₀, show (y' : AE D) = _ from hy', b4])`. Establish `hsplit` using `hLat_split V hsp b5 b6`. Use `clear e₀ e' b4 b5 b6 hsupp' hsupp hdet`.
+
+Take `rfl : h = h₀ * h'` from `mt_inj (b1.trans (AdelicLatMove.mt_mul V h₀ h').symm)`. Take `⟨Λ', hΛ'⟩` from `exists_conj (Bridge.hLat V (FWT.fin V h'))`. Establish `ih'` using `ih Λ' h' y' hΛ' h1' h2' ((suppAt_iff _ _ _).2 b3) hy' o6`. Establish `hmv` using `latO_move V W ΛW h' 1`. Rewrite `hmv` using `[mul_one, hV1]`.
+
+Establish `hvac` using `WeilVacMove.isVacO_om D ψ θ V W χV χW om hP.weil hP.inf (fun _ => 1) (fun _ => 1) s s _ _ _ _ h' 1 (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => by`. Establish `: compAt θ τ (Formalism.L2.Theta.mt W 1) = 1`. Rewrite using `[AdelicLatMove.mt_one]`. Conclude with `Matrix.map_one _ (RingHom.map_zero ((θ τ).comp (infPart D))) (RingHom.map_one ((θ τ).comp (infPart D)))`. Rewrite using `[this, Matrix.one_mul, Matrix.mul_one]) hmv f hf`.
+
+Establish `hc` using `GlobalTheory.T.weilDatum_split_place_reads_theta_classically D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH _ ΛW _ Λ' Λ₁ L (MovedLat.isSelfDualC_hLat V _) (MovedLat.isSelfDualC_hLat V _) hW hΛ' hΛ₁ hL x s hx hinv _ hvac _ ih' a h₀ y₀ hsp ((suppAt_iff _ _ _).2 b2) hy₀ (latO_mov …`. Establish `hle : tens Λ' L ≤ (tens Λ' L ⊓ tens S L) ⊔ (tens Λ' L ⊓ tens Λ₁ L)` using `tens_le L fun u hu => by`. Take `⟨t, t1, t2, t3⟩` from `hsplit _ ((hΛ' u).1 hu)`. Use `⟨fun j => star (t j), (hS1 _).2 ?_, (hΛ' _).2 ?_, (hΛ₁ _).2 ?_⟩` and prove the remaining obligations. Simplify `t1` using `only [star_star]`.
+
+Simplify `t2` using `only [star_star]`. Use `t3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.sub_apply, star_sub, star_star]`. Rewrite `hc` using `[hidx _ (hlat _ Λ₁ hΛ₁).2 _ (hlat _ Λ' hΛ').2, proj_step idx hs hP.even (hgood _ hSv) (hgood _ (hlat _ Λ' hΛ').2) (hgood _ (hlat _ Λ₁ hΛ₁).2) hle hv]`.
+
+Establish `e1 : om (h₀ * h', 1) f = om (h₀, 1) (om (h', 1) f)`. Rewrite using `[show ((h₀ * h', 1) : GA D V × GA D W) = (h₀, 1) * (h', 1) from Prod.ext rfl (mul_one _).symm, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e1, map_mul, Circle.coe_mul, mul_inv]`. Conclude with `hc`.
+-/
 theorem om_reads_projA : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsMod W hr X → IsSympl X bas → ∀ (H : Geo.Tor.Host D.host.E), (H.rt : D.host.E) = D.host.sqrtMinusD → ∀ (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (Λ₁ : Lt D.host.E V.rank) (L : Lt D.host.E r), (ΛV : Set (Fin V.rank → D.host.E)) = L0c D V → IsSelfDualC V ΛV → IsSelfDualC W ΛW → (ΛV : Set (Fin V.rank → D.host.E)) = (Formalism.L2.Pj.stdLat D.host.E V.rank : Set (Fin V.rank → D.host.E)) → (∀ L₀ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E), L₀ = Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ ΛW, w = a • v} → L = latR hr L₀) → ∀ (x : Frame X.Ψ r) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), IsONFr X x → IsInvOf W hr X x s → ∀ f, IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f → ∀ φ : TF V.rank g, Reads θ V W hr X bas idx f φ x → ∀ (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (h : GA D V) (y : (AE D)ˣ), IsIdemSum e P → SuppAt e V h → IsDetAt e V h y → (∀ v : Fin V.rank → D.host.E, v ∈ Λ₁ ↔ (fun j => star (v j)) ∈ (Formalism.IndefR.Bridge.hLat V (Formalism.IndefR.FWT.fin V h))) → Reads θ V W hr X bas idx (om (h, 1) f) ((((χW y : Circle) : ℂ)⁻¹ * (Real.sqrt ((((Λ₁ ⊓ Formalism.L2.Pj.stdLat D.host.E V.rank).toAddSubgroup.addSubgroupOf Λ₁.toAddSubgroup).index : ℝ) ^ r) : ℂ)) • projA X bas (H.w0 : D.host.E) (tens Λ₁ L) φ) x := by
   intro D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH ΛV ΛW Λ₁ L hV0 hV hW hstd hL x s hx hinv f hf φ hφ
     e P h y he hsupp hdet hΛ₁

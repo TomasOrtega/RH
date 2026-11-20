@@ -19,6 +19,25 @@ section Abstract
 variable {C : Type} [Field C] {v : Valuation C NNReal} {O : Type} [CommRing O] [Algebra O C]
   {V : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] {h q : ℕ}
 
+/- English proof (translation)
+Establish `hzm : ∀ i, z i ∈ L ⊓ S.restrictScalars O` using `fun i => hz.le (Submodule.subset_span ⟨i, rfl⟩)`. Establish `k3 : ∀ t ∈ U, (∀ w ∈ L, w ∈ S → B w t = 0) → A t = 0`. Introduce `t ht H`. Use `k2 t ht fun w hw => ?_` and prove the remaining obligations. Take `⟨a, ha, haw⟩` from `hLS w hw`.
+
+Establish `h1` using `H _ haw (by rw [← algebraMap_smul C a]; exact S.smul_mem _ hw)`. Rewrite `h1` using `[← algebraMap_smul C a, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left fun h0 => ha (hv.hom_inj (by rw [h0, map_zero]))`. Establish `hsum : ∀ (c : Fin q → C) (i : Fin q), B (z i) (∑ j, c j • x j) = c i`. Introduce `c i`.
+
+Simplify using `[map_sum, hx]`. Use `⟨Fintype.linearIndependent_iff.2 fun c hc i => ?_, le_antisymm ?_ fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum c i]`. Conclude with `k1 _ (hzm i).2 _ (by simpa [map_sum] using hc)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨F, hF, hF'⟩` from `GlobalTheory.T.integral_functional_extension C v O V L S (B.flip (x j)) hv hL (by`. Introduce `w hw hw'`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 (hz.ge ⟨hw, hw'⟩)`. Use `⟨c j, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ∀ i, B (c i • z i) (x j) = if i = j then algebraMap O C (c i) else 0` using `fun i => by`. Rewrite using `[← algebraMap_smul C (c i), map_smul, LinearMap.smul_apply, hx, smul_eq_mul, mul_ite, _root_.mul_one, mul_zero]`. Rewrite using `[LinearMap.flip_apply, map_sum, LinearMap.sum_apply]`. Simplify using `only [e1, Finset.sum_ite_eq', Finset.mem_univ, if_true])`. Take `⟨t, ht⟩` from `rep F`.
+
+Use `(hM _).2 ⟨t, fun w hw => ht w ▸ hF w hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `k3 _ (U.sub_mem (heU t) (hxU j)) fun w hw hw' => ?_` and prove the remaining obligations. Rewrite using `[map_sub, heS w hw', ht, hF' w hw hw', LinearMap.flip_apply, sub_self]`. Take `⟨t, ht, rfl⟩` from `(hM m).1 hm choose c hc using fun i => ht (z i) (hzm i).1`.
+
+Establish `h0 : A (e t - ∑ j, algebraMap O C (c j) • x j) = 0`. Use `k3 _ (U.sub_mem (heU t) (U.sum_mem fun j _ => U.smul_mem _ (hxU j))) fun w hw hw' => ?_` and prove the remaining obligations. Take `⟨d, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 (hz.ge ⟨hw, hw'⟩)`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul C (d i), map_smul, LinearMap.smul_apply, map_sub, hsum, heS _ (hzm i).2, hc, sub_self, smul_zero]`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[h0, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem isBasisOf_dual (hv : v.Integers O) (B : V →ₗ[C] V →ₗ[C] C)
     (rep : ∀ F : V →ₗ[C] C, ∃ x, ∀ w, B w x = F w) (e : V →ₗ[C] V) (A : V →ₗ[C] (Fin h → C))
     (S U : Submodule C V) (heU : ∀ x, e x ∈ U) (heS : ∀ w ∈ S, ∀ x, B w (e x) = B w x)
@@ -77,6 +96,11 @@ theorem isBasisOf_dual (hv : v.Integers O) (B : V →ₗ[C] V →ₗ[C] C)
 
 omit [Module O V] [IsScalarTower O C V] in
 
+/- English proof (translation)
+Establish `: ∀ j, ∃ x, ∀ i, B (z i) x = if i = j then 1 else 0`. Introduce `j`. Take `⟨F, hF⟩` from `LinearMap.exists_extend ((Module.Basis.span hz).coord j)`. Take `⟨x, hx⟩` from `rep F`. Use `⟨x, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun hF (Module.Basis.span hz i)` as an intermediate fact. Rewrite `this` using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.span_apply]`. Rewrite using `[hx, this]`. Use `choose x hx using this`. Conclude with `⟨x, fun i j => hx j i⟩`.
+-/
 theorem exists_dual_family (B : V →ₗ[C] V →ₗ[C] C)
     (rep : ∀ F : V →ₗ[C] C, ∃ x, ∀ w, B w x = F w) (z : Fin q → V) (hz : LinearIndependent C z) :
     ∃ x : Fin q → V, ∀ i j, B (z i) (x j) = if i = j then 1 else 0 := by
@@ -92,6 +116,9 @@ theorem exists_dual_family (B : V →ₗ[C] V →ₗ[C] C)
   choose x hx using this
   exact ⟨x, fun i j => hx j i⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Take `⟨b, hb⟩` from `hs ((algebraMap O C a)⁻¹ * s⁻¹)`. Use `ha (IsUnit.of_mul_eq_one b (hv.hom_inj ?_))` and prove the remaining obligations. Rewrite using `[map_mul, hb, map_one]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem eq_zero_of_forall_mul_mem (hv : v.Integers O) {a : O} (ha : ¬IsUnit a)
     (ha0 : algebraMap O C a ≠ 0) {s : C} (hs : ∀ c : C, c * s ∈ (algebraMap O C).range) : s = 0 := by
   by_contra h0
@@ -108,10 +135,18 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O] (C : Type) [Field C] [Algebra O C]
   {ε : PreTilt O p} {h : ℕ} {Γ : Type} [CommRing Γ] [Algebra ℤ_[p] Γ] (D : Datum ε h Γ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[bC, redC, incl, Datum.bb, Matrix.mulVec, dotProduct, map_sum]`.
+-/
 theorem bC_incl (u : Fin h → O) : bC C D (incl C h u) = incl C h (D.bb u) := by
   funext i
   simp [bC, redC, incl, Datum.bb, Matrix.mulVec, dotProduct, map_sum]
 
+/- English proof (translation)
+Establish `hX : ∀ l, D.F.map (WittVector.fontaineTheta O p) * actT D l = actH D l * D.F.map (WittVector.fontaineTheta O p)`. Introduce `l`. Use `congrArg (fun X => X.map (WittVector.fontaineTheta O p)) (D.F_act l)` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Conclude with `this`.
+
+Conclude with `(eig_map_equivariant C O Γ h _ _ _ hX).1 σ (Submodule.mem_map_of_mem hu)`.
+-/
 theorem alC_mem_eig (σ : Γ →+* O) {u : Fin h → C} (hu : u ∈ eig C (actT D) σ) :
     alC C D u ∈ eig C (actH D) σ := by
   have hX : ∀ l, D.F.map (WittVector.fontaineTheta O p) * actT D l =
@@ -122,6 +157,9 @@ theorem alC_mem_eig (σ : Γ →+* O) {u : Fin h → C} (hu : u ∈ eig C (actT 
     exact this
   exact (eig_map_equivariant C O Γ h _ _ _ hX).1 σ (Submodule.mem_map_of_mem hu)
 
+/- English proof (translation)
+Use `GlobalTheory.iSupIndep_eig C O Γ h ((RingHom.mapMatrix (WittVector.fontaineTheta O p)).comp D.ρM) hi σ` as an intermediate fact. Rewrite `this` using `[iSup_subtype']`. Conclude with `this`.
+-/
 theorem disjoint_eigH (hi : Function.Injective (algebraMap O C)) (σ : Γ →+* O) :
     Disjoint (eig C (actH D) σ) (⨆ τ : {τ : Γ →+* O // τ ≠ σ}, eig C (actH D) τ.1) := by
   have := GlobalTheory.iSupIndep_eig C O Γ h
@@ -137,6 +175,11 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C NNReal} 
   [CommRing O] [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] [Algebra ℤ_[p] C]
   [IsAlgClosed C] [CharZero C] (P : Point p v O Λ)
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `P.existsUnique_pairV ((F.restrictScalars ℤ_[p]) ∘ₗ TensorProduct.mk ℤ_[p] C P.T 1)`. Use `⟨-x, fun w => ?_⟩` and prove the remaining obligations. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, LinearMap.add_apply, ha, hb, map_add]`.
+
+Consider the case `tmul c t`. Establish `e : (c ⊗ₜ t : P.V) = c • (1 ⊗ₜ t)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e, map_smul, map_smul, LinearMap.smul_apply, map_neg, ← P.pairV_swap, hx]`. Both sides reduce to the same expression.
+-/
 theorem exists_pairV_eq (F : P.V →ₗ[C] C) : ∃ x, ∀ w, P.pairV w x = F w := by
   obtain ⟨x, hx, -⟩ := P.existsUnique_pairV
     ((F.restrictScalars ℤ_[p]) ∘ₗ TensorProduct.mk ℤ_[p] C P.T 1)
@@ -150,6 +193,9 @@ theorem exists_pairV_eq (F : P.V →ₗ[C] C) : ∃ x, ∀ w, P.pairV w x = F w 
     rw [e, map_smul, map_smul, LinearMap.smul_apply, map_neg, ← P.pairV_swap, hx]
     rfl
 
+/- English proof (translation)
+Establish `h1` using `P.pairV_act a w x`. Rewrite `h1` using `[EigenSplit.mem_eigenSub.1 hw, EigenSplit.mem_eigenSub.1 hx, map_smul, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `(mul_eq_mul_right_iff.1 h1).resolve_left ha`.
+-/
 theorem pairV_eq_zero {χ χ' : Λ →+* C} {w x : P.V} (hw : w ∈ EigenSplit.eigenSub P.actV χ)
     (hx : x ∈ EigenSplit.eigenSub P.actV χ') {a : Λ} (ha : χ a ≠ χ' (star a)) :
     P.pairV w x = 0 := by
@@ -160,6 +206,15 @@ theorem pairV_eq_zero {χ χ' : Λ →+* C} {w x : P.V} (hw : w ∈ EigenSplit.e
 
 variable [Algebra ℤ_[p] O] [IsScalarTower ℤ_[p] O C]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `ht _ ⟨w, rfl⟩`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, LinearMap.add_apply]`.
+
+Conclude with `add_mem ha hb`. Consider the case `tmul c s`. Take `⟨d, hd⟩` from `(P.mem_latT_iff t).1 ht s`. Establish `e : (algebraMap O C c ⊗ₜ s : P.V) = algebraMap O C c • (1 ⊗ₜ s)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+
+Use `⟨-(c * d), ?_⟩` and prove the remaining obligations. Rewrite using `[P.inclT_tmul, e, map_smul, LinearMap.smul_apply, P.pairV_swap, ← hd]`. Simplify using the standard rewrite rules. Introduce `H`. Use `(P.mem_latT_iff t).2 fun s => ?_` and prove the remaining obligations.
+
+Take `⟨d, hd⟩` from `H _ (P.one_tmul_mem_latT s)`. Conclude with `⟨-d, by rw [map_neg, hd, ← P.pairV_swap]⟩`.
+-/
 theorem mem_latT_iff_pair (t : P.V) :
     t ∈ P.latT ↔ ∀ w ∈ P.latT, P.pairV w t ∈ (algebraMap O C).range := by
   constructor
@@ -183,12 +238,20 @@ variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
   {ε : PreTilt O p} {h : ℕ} {Γ : Type} [CommRing Γ] [Algebra ℤ_[p] Γ] {P} {D : Datum ε h Γ}
   {j : Λ →+* Γ} {φ : P.V ≃ₗ[C] (Fin h → C)}
 
+/- English proof (translation)
+Take `⟨_, ⟨u, rfl⟩, hu⟩` from `(T.lie x).1 hx`. Rewrite using `[T.ker, ← hu, ← bC_incl]`. Conclude with `(GlobalTheory.T.sandwich_kernel_range_exact p C v O P.integers ε hε Γ h D).2.ge ⟨_, rfl⟩`.
+-/
 theorem latLie_le_W (T : IsTie P D j φ) (hε : IsPrimitiveRoot (root ε).untilt p) {x : P.V}
     (hx : x ∈ P.latLie) : x ∈ P.W := by
   obtain ⟨_, ⟨u, rfl⟩, hu⟩ := (T.lie x).1 hx
   rw [T.ker, ← hu, ← bC_incl]
   exact (GlobalTheory.T.sandwich_kernel_range_exact p C v O P.integers ε hε Γ h D).2.ge ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `(GlobalTheory.T.sandwich_kernel_range_exact p C v O P.integers ε hε Γ h D).2.le ((T.ker x).1 hx)`. Take `⟨a, ha, hau⟩` from `P.exists_smul_mem_latT (φ.symm u)`. Use `choose u₀ hu₀ using (T.lat _).1 hau`. Use `⟨a, ha, (T.lie _).2 ⟨D.bb u₀, ⟨u₀, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Establish `e : incl C h u₀ = algebraMap O C a • u`.
+
+Use function extensionality and compare the values at `i`. Use `(hu₀ i).trans ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul C a, map_smul, φ.apply_symm_apply]`. Rewrite using `[← bC_incl, e, map_smul, hu, ← algebraMap_smul C a x, map_smul]`.
+-/
 theorem exists_smul_mem_latLie (T : IsTie P D j φ) (hε : IsPrimitiveRoot (root ε).untilt p)
     {x : P.V} (hx : x ∈ P.W) : ∃ a : O, a ≠ 0 ∧ a • x ∈ P.latLie := by
   obtain ⟨u, hu⟩ := (GlobalTheory.T.sandwich_kernel_range_exact p C v O P.integers ε hε Γ h D).2.le ((T.ker x).1 hx)
@@ -201,6 +264,13 @@ theorem exists_smul_mem_latLie (T : IsTie P D j φ) (hε : IsPrimitiveRoot (root
     rw [← algebraMap_smul C a, map_smul, φ.apply_symm_apply]
   rw [← bC_incl, e, map_smul, hu, ← algebraMap_smul C a x, map_smul]
 
+/- English proof (translation)
+Establish `hp : ¬IsUnit (p : O)` using `Fact.out`. Establish `hp0 : algebraMap O C p ≠ 0`. Rewrite using `[map_natCast]`. Conclude with `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H w hw`. Use `eq_zero_of_forall_mul_mem P.integers hp hp0 fun c => ?_` and prove the remaining obligations. Use `(T.fil (c • x)).1 (fun i => by rw [map_smul, map_smul, H]; simp) w hw` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Introduce `H`.
+
+Use function extensionality and compare the values at `i`. Use `eq_zero_of_forall_mul_mem P.integers hp hp0 fun c => ?_` and prove the remaining obligations. Use `(T.fil (c • x)).2 (fun w hw => by rw [map_smul, H w hw]; simp) i` as an intermediate fact. Rewrite `this` using `[map_smul, map_smul, Pi.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem alC_eq_zero_iff (T : IsTie P D j φ) (x : P.V) :
     alC C D (φ x) = 0 ↔ ∀ w ∈ P.latLie, P.pairV w x = 0 := by
   have hp : ¬IsUnit (p : O) := Fact.out
@@ -217,6 +287,11 @@ theorem alC_eq_zero_iff (T : IsTie P D j φ) (x : P.V) :
     have := (T.fil (c • x)).2 (fun w hw => by rw [map_smul, H w hw]; simp) i
     rwa [map_smul, map_smul, Pi.smul_apply, smul_eq_mul] at this
 
+/- English proof (translation)
+Establish `e : P.latLie = (D.Lie.map (incl C h)).map ((φ.symm : (Fin h → C) →ₗ[C] P.V).restrictScalars O)`. Use extensionality with `x`. Rewrite using `[T.lie]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hx => ⟨_, hx, φ.symm_apply_apply x⟩`.
+
+Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu`. Rewrite using `[e]`. Conclude with `((Module.Finite.iff_fg.1 (Module.Finite.range D.bb)).map _).map _`.
+-/
 theorem fg_latLie (T : IsTie P D j φ) : P.latLie.FG := by
   have e : P.latLie = (D.Lie.map (incl C h)).map
       ((φ.symm : (Fin h → C) →ₗ[C] P.V).restrictScalars O) := by
@@ -229,6 +304,11 @@ theorem fg_latLie (T : IsTie P D j φ) : P.latLie.FG := by
   rw [e]
   exact ((Module.Finite.iff_fg.1 (Module.Finite.range D.bb)).map _).map _
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) ?_` and prove the remaining obligations. Use `P.wRec_le τ hx` as an intermediate fact. Conclude with `⟨this.1, latLie_le_W T hε this.1, this.2⟩`. Introduce and unpack `_ ⟨⟨x, rfl⟩, -, hx⟩`. Use `⟨⟨x, fun a => T.lieInj ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[P.bLie_act, P.bLie_scale, EigenSplit.mem_eigenSub.1 hx a, RingHom.comp_apply, algebraMap_smul]`.
+-/
 theorem wRec_eq (T : IsTie P D j φ) (hε : IsPrimitiveRoot (root ε).untilt p) (τ : Λ →+* O) :
     P.wRec τ = P.latLie ⊓ (P.eigW τ).restrictScalars O := by
   refine le_antisymm (fun x hx => ?_) ?_
@@ -241,6 +321,57 @@ theorem wRec_eq (T : IsTie P D j φ) (hε : IsPrimitiveRoot (root ε).untilt p) 
 
 end Pt
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ E _ _ _ P ε h D φ hε T σ ψ hσ q y g' hq hy hg`. Establish `hv` using `P.integers`. Take `⟨-, -, -, hE⟩` from `GlobalTheory.T.datum_tie_number_field_point p C v O E P ε h D φ hε T`. Take `⟨hE1, -, hE3, -⟩` from `hE σ ψ hσ`. Set `sp` to `isSplitting_embO (E := E) hv`.
+
+Set `e : (E →+* C) → P.V →ₗ[C] P.V` to `fun i => EigenSplit.proj sp P.actV i`. Establish `hemem : ∀ i x, e i x ∈ P.eigV (embO hv i)` using `fun i x => EigenSplit.proj_mem sp P.actV i x`. Establish `hesum : ∀ x, ∑ i, e i x = x` using `fun x => EigenSplit.sum_proj sp P.actV x`. Establish `hsplit : ∀ x, x - e ψ x = ∑ i ∈ Finset.univ.erase ψ, e i x` using `fun x => by`. Rewrite using `[sub_eq_iff_eq_add, Finset.sum_erase_add _ _ (Finset.mem_univ ψ), hesum]`.
+
+Establish `hinj : ∀ i i' : E →+* C, (∀ a, embO hv i a = embO hv i' a) → i = i'` using `fun i i' H => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => by`. Use `congrArg (algebraMap O C) (H a)` as an intermediate fact. Rewrite using `[algebraMap_embO, algebraMap_embO] at this)` and apply the resulting hypothesis. Use `set τ : 𝓞 E →+* O := (embO P.integers ψ).comp (starRingEnd (𝓞 E)) with hτ`. Set `A : P.V →ₗ[C] (Fin h → C)` to `alC C D ∘ₗ (φ : P.V →ₗ[C] (Fin h → C))`.
+
+Establish `heS : ∀ w ∈ P.eigW τ, ∀ x, P.pairV w (e ψ x) = P.pairV w x`. Introduce `w hw x`. Rewrite using `[eq_comm, ← sub_eq_zero, ← map_sub, hsplit, map_sum]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `not_forall.1 fun H => Finset.ne_of_mem_erase hi (hinj i ψ H)`.
+
+Use `pairV_eq_zero P hw.2 (hemem i x) (a := star a) fun H => ha (hv.hom_inj ?_)` and prove the remaining obligations. Simplify `H.symm` using `[hτ, starRingEnd_apply]`. Establish `k1 : ∀ w ∈ P.eigW τ, ∀ x, A x = 0 → P.pairV w x = 0`. Introduce `w hw x hx`. Take `⟨a, ha, haw⟩` from `exists_smul_mem_latLie T hε hw.1`.
+
+Establish `h1` using `(alC_eq_zero_iff T x).1 hx _ haw`. Rewrite `h1` using `[← algebraMap_smul C a, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left fun h0 => ha (hv.hom_inj (by rw [h0, map_zero]))`. Establish `k2 : ∀ x ∈ P.eigV (embO hv ψ), (∀ w ∈ P.eigW τ, P.pairV w x = 0) → A x = 0`. Introduce `x hx H`.
+
+Use `(alC_eq_zero_iff T x).2 fun w hw => ?_` and prove the remaining obligations. Establish `hW` using `latLie_le_W T hε hw`. Rewrite `hW` using `[← P.iSup_eigW (σ := fun i : E →+* C => embO hv i) sp]`. Use `Submodule.iSup_induction _ (motive := fun w => P.pairV w x = 0) hW (fun i w hw => ?_) (by simp) (fun a b ha hb => by` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, ha, hb, add_zero])`.
+
+Distinguish the cases in `hi : embO hv i = τ`. Conclude with `H w (hi ▸ hw)`. Take `⟨a, ha⟩` from `not_forall.1 fun H => hi (RingHom.ext H)`. Conclude with `pairV_eq_zero P hw.2 hx (a := a) fun H => ha (hv.hom_inj H)`. Establish `hAe : ∀ x, A (e ψ x) ∈ eig C (actH D) σ` using `fun x => alC_mem_eig C D σ (hE1.le (Submodule.mem_map_of_mem (hemem ψ x)))`.
+
+Establish `hAr : ∀ x, A x - A (e ψ x) ∈ ⨆ s : {s : ℤ_[p] ⊗[ℤ] 𝓞 E →+* O // s ≠ σ}, eig C (actH D) s.1`. Introduce `x`. Rewrite using `[← map_sub, hsplit, map_sum]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Set `s : ℤ_[p] ⊗[ℤ] 𝓞 E →+* O` to `(Algebra.TensorProduct.lift (algebraMap ℤ_[p] O).toIntAlgHom (embO hv i).toIntAlgHom fun _ _ => Commute.all _ _).toRingHom`.
+
+Establish `hs : s.comp (Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] ℤ_[p] ⊗[ℤ] 𝓞 E).toRingHom = embO hv i`. Use extensionality with `a`. Simplify using `[s]`. Establish `hne : s ≠ σ` using `fun H => Finset.ne_of_mem_erase hi (hinj i ψ fun a => by`. Rewrite using `[← hs, H, hσ])`.
+
+Conclude with `Submodule.mem_iSup_of_mem ⟨s, hne⟩ (alC_mem_eig C D s ((hE s i hs).1.le (Submodule.mem_map_of_mem (hemem i x))))`. Establish `hFil : ∀ m, m ∈ filQuot C D σ ↔ ∃ t, (∀ w ∈ P.latLie, P.pairV w t ∈ (algebraMap O C).range) ∧ A (e ψ t) = m`. Introduce `m`. Establish `hex` using `(GlobalTheory.T.sandwich_kernel_range_exact p C v O hv ε hε _ h D).1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hm, hm'⟩`. Take `⟨_, ⟨f, hf, rfl⟩, r, hr, hfr⟩` from `Submodule.mem_sup.1 hm'`. Take `⟨u, hu⟩ : incl C h f ∈ LinearMap.range (alC C D)` from `hex.le (by`. Rewrite using `[LinearMap.mem_ker, bC_incl, show D.bb f = 0 from hf, map_zero])`. Establish `hA : A (φ.symm u) = incl C h f` using `by simpa [A] using hu`.
+
+Use `⟨φ.symm u, (T.fil _).1 fun i => ⟨f i, (congrFun hA i).symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_comm, ← sub_eq_zero]`. Use `(Submodule.disjoint_def.1 (disjoint_eigH C D hv.hom_inj σ)) _ (Submodule.sub_mem _ hm (hAe _)) ?_` and prove the remaining obligations. Establish `: m - A (e ψ (φ.symm u)) = r + (A (φ.symm u) - A (e ψ (φ.symm u)))`. Rewrite using `[hA, ← hfr]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hr (hAr _)`. Introduce and unpack `⟨t, ht, rfl⟩ choose f hf using (T.fil t).2 ht`. Establish `hA : incl C h f = A t` using `funext hf`.
+
+Establish `hf0 : f ∈ D.Fil`. Establish `h1 : bC C D (A t) = 0` using `hex.ge ⟨_, rfl⟩`. Rewrite `h1` using `[← hA, bC_incl]`. Conclude with `funext fun i => hv.hom_inj ((congrFun h1 i).trans (map_zero _).symm)`. Use `⟨hAe t, Submodule.mem_sup.2 ⟨_, ⟨f, hf0, rfl⟩, _, Submodule.neg_mem _ (hAr t), ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hA]`. Normalize the expressions using the abelian group laws. Establish `hAl : ∀ m, m ∈ alQuot C D σ ↔ ∃ t, (∀ w ∈ P.latT, P.pairV w t ∈ (algebraMap O C).range) ∧ A (e ψ t) = m`. Introduce `m`. Rewrite using `[alQuot, ← hE3]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨_, ⟨t, ht, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨t, (mem_latT_iff_pair P t).1 ht, rfl⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨t, (mem_latT_iff_pair P t).2 ht, rfl⟩, rfl⟩, rfl⟩`.
+
+Establish `hy'` using `hy.trans (wRec_eq T hε τ)`. Establish `hyS : ∀ i, y i ∈ P.eigW τ` using `fun i => (hy'.le (Submodule.subset_span ⟨i, rfl⟩)).2`. Use `haveI : FiniteDimensional C P.V := φ.symm.finiteDimensional`. Establish `hsp : Submodule.span C (Set.range fun i => ∑ j, g' i j • y j) = P.eigW τ`. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hyS j)`. Rewrite using `[finrank_span_eq_card hg.1, hq, Fintype.card_fin]`. Establish `hz : Submodule.span O (Set.range fun i => ∑ j, g' i j • y j) = P.latT ⊓ (P.eigW τ).restrictScalars O`. Rewrite using `[hg.2, hsp]`.
+
+Conclude with `le_antisymm (fun x hx => ⟨hx.1.1, hx.2⟩) fun x hx => ⟨⟨hx.1, hx.2.2⟩, hx.2⟩`. Take `⟨x₀, hx₀⟩` from `exists_dual_family P.pairV (exists_pairV_eq P) _ hg.1`. Set `x : Fin q → P.V` to `fun l => e ψ (x₀ l)`. Set `N : Matrix (Fin q) (Fin q) C` to `Matrix.of fun i l => P.pairV (y i) (x l)`. Establish `hx : ∀ i l, P.pairV (∑ j, g' i j • y j) (x l) = if i = l then 1 else 0` using `fun i l => by`.
+
+Rewrite using `[← hx₀]`. Conclude with `heS _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hyS j)) _`. Establish `hgN : g' * N = 1`. Use extensionality with `i l`. Rewrite using `[Matrix.one_apply, ← hx, Matrix.mul_apply, map_sum, LinearMap.sum_apply]`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, N, Matrix.of_apply]`. Establish `hNg : N * g' = 1` using `mul_eq_one_comm.1 hgN`. Use `⟨fun j => A (∑ l, g' l j • x l), Nᵀ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `isBasisOf_dual hv P.pairV (exists_pairV_eq P) (e ψ) A _ _ (hemem ψ) heS k1 k2 _ (fg_latLie T) (fun w hw => exists_smul_mem_latLie T hε hw.1) y hy' _ (fun j => Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hemem ψ _)) (fun i j => ?_) _ hFil` and prove the remaining obligations. Rewrite using `[← Matrix.one_apply, ← hNg, Matrix.mul_apply, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by rw [map_smul, smul_eq_mul, mul_comm]; rfl`. Establish `e1 : (fun i => ∑ j, Nᵀ i j • A (∑ l, g' l j • x l)) = fun i => A (x i)`. Use function extensionality and compare the values at `i`. Establish `e2 : ∀ l, ∑ j, N j i * g' l j = if l = i then 1 else 0` using `fun l => by`. Rewrite using `[← Matrix.one_apply, ← hgN, Matrix.mul_apply]`.
+
+Simplify using `only [mul_comm]`. Simplify using `only [map_sum, map_smul, Finset.smul_sum, smul_smul, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, e2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1]`. Conclude with `isBasisOf_dual hv P.pairV (exists_pairV_eq P) (e ψ) A _ _ (hemem ψ) heS k1 k2 _ P.fg_latT (fun w _ => P.exists_smul_mem_latT w) _ hz _ (fun j => hemem ψ _) hx _ hAl`. Rewrite using `[Matrix.det_transpose, ← Matrix.det_mul, hNg, Matrix.det_one]`.
+-/
 theorem fil_al_dual : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E)) (ε : PreTilt O p) (h : ℕ) (D : Datum ε h (ℤ_[p] ⊗[ℤ] 𝓞 E)) (φ : P.V ≃ₗ[C] (Fin h → C)), IsPrimitiveRoot (root ε).untilt p → IsTie P D (Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] ℤ_[p] ⊗[ℤ] 𝓞 E).toRingHom φ → ∀ (σ : ℤ_[p] ⊗[ℤ] 𝓞 E →+* O) (ψ : E →+* C), σ.comp (Algebra.TensorProduct.includeRight : 𝓞 E →ₐ[ℤ] ℤ_[p] ⊗[ℤ] 𝓞 E).toRingHom = embO P.integers ψ → ∀ (q : ℕ) (y : Fin q → P.V) (g' : Matrix (Fin q) (Fin q) C), Module.finrank C (P.eigW ((embO P.integers ψ).comp (starRingEnd (𝓞 E)))) = q → Submodule.span O (Set.range y) = P.wRec ((embO P.integers ψ).comp (starRingEnd (𝓞 E))) → IsLatBasis C (P.latTSub ((embO P.integers ψ).comp (starRingEnd (𝓞 E)))) (fun i => ∑ j, g' i j • y j) → ∃ (m : Fin q → Fin h → C) (k : Matrix (Fin q) (Fin q) C), IsBasisOf C (filQuot C D σ) m ∧ IsBasisOf C (alQuot C D σ) (fun i => ∑ j, k i j • m j) ∧ k.det * g'.det = 1 := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ E _ _ _ P ε h D φ hε T σ ψ hσ q y g' hq hy hg
   classical

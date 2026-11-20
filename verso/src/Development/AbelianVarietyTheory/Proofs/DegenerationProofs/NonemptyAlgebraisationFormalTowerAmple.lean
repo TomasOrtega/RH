@@ -23,9 +23,17 @@ open GlobalTheory.AbLaw
 noncomputable section
 namespace GlobalTheory.TowerAlg
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem isPullback_of_grp {S S' : Scheme.{0}} {B : Over S} {B' : Over S'} [GrpObj B] [GrpObj B'] {f : S' ⟶ S}
     {F : B'.left ⟶ B.left} (h : IsGrpPullback B' B f F) : IsPullback F B'.hom B.hom f := h.1
 
+/- English proof (translation)
+Establish `hN : IsNoetherianRing R` using `hA.1.1`. Establish `hI : I ≠ ⊤` using `hA.2.2.2.1.ne_top`. Establish `hc : IsAdicComplete I R` using `hA.1.2.2.2`. Use `choose hβ v hv using h`. Take `⟨B, M, b, hp, hs, hM, ha, hb, hβb, hiso⟩` from `hE.1 R I hI hc hA.2.1 Y β (fun e => (N e).L.L) v (fun e => isPullback_of_grp (hβ e)) (fun e => (hY e).smooth) (fun e => ⟨(N e).L.isLB, (hv e).gen⟩) hamp`.
+
+Take `⟨g, hB, hg⟩` from `GlobalTheory.T.isAbelianScheme_of_abelian_thickenings hE R I hA Y β hY hβ B b hp hs hb hβb`. Establish `c` using `hB.comm`. Take `⟨Q, hQ, hq⟩` from `exists_cp_alg hG hE.2.2.1 hI hc N hB hp hg hM hiso hY`. Conclude with `⟨B, g, c, Q, b, hB, by rw [hQ]; exact ha, hq, hβb⟩`.
+-/
 theorem exists_alg (hG : GlobalFnsSt) (hE : Ega) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R}
     (hA : admitted R I) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) [∀ e, GrpObj (Y e)]
     [∀ e, IsCommMonObj (Y e)] (hY : ∀ e, IsAbelianScheme (Y e)) (N : ∀ e, CP (Y e))
@@ -46,6 +54,9 @@ theorem exists_alg (hG : GlobalFnsSt) (hE : Ega) {R : Type} [CommRing R] [IsDoma
   obtain ⟨Q, hQ, hq⟩ := exists_cp_alg hG hE.2.2.1 hI hc N hB hp hg hM hiso hY
   exact ⟨B, g, c, Q, b, hB, by rw [hQ]; exact ha, hq, hβb⟩
 
+/- English proof (translation)
+Introduce `hL _ hE R _ _ _ I hA G _ _ P X _ T hamp`. Take `⟨B, _, _, Q, b, h₁, h₂, h₃, h₄⟩` from `exists_alg hL.globalFns hE hA (fun e => (T.l e).Q.B) (fun e => (T.l e).Q.isAb) (fun e => (T.l e).D.M) T.β T.β_pb hamp`. Conclude with `⟨⟨B, h₁, Q, h₂, b, h₃, h₄⟩⟩`.
+-/
 theorem nonempty_alg : Laws → Laws2 → Ega → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), admitted R I → ∀ (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : CP G) (X : Type) [AddCommGroup X] (T : TowerR I P X), RelAmple (T.l 0).Q.B (T.l 0).D.M.L.L → Nonempty T.Alg := by
   intro hL _ hE R _ _ _ I hA G _ _ P X _ T hamp
   obtain ⟨B, _, _, Q, b, h₁, h₂, h₃, h₄⟩ := exists_alg hL.globalFns hE hA (fun e => (T.l e).Q.B)

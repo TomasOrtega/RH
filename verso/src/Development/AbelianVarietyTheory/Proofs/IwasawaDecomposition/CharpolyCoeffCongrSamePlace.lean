@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.HeightCounting
 
+/- English proof (translation)
+Establish `h : ∀ a b, ∀ᶠ g in nhds g0, M g a b - M g0 a b ∈ IsLocalRing.maximalIdeal O`. Introduce `a b`. Establish `hc : Continuous fun g => M g a b - M g0 a b` using `(hM.matrix_elem a b).sub continuous_const`. Conclude with `hc.continuousAt.preimage_mem_nhds (hO.mem_nhds (by simp))`. Establish `h2 : ∀ᶠ g in nhds g0, ∀ a b, M g a b - M g0 a b ∈ IsLocalRing.maximalIdeal O`.
+
+Rewrite using `[Filter.eventually_all]`. Introduce `a`. Rewrite using `[Filter.eventually_all]`. Conclude with `h a`. Use `filter_upwards [h2] with g hg`.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply]`. Conclude with `(Ideal.Quotient.eq).2 (hg a b)`.
+-/
 theorem eventually_map_residue_eq {Γ O : Type} [TopologicalSpace Γ] [CommRing O] [IsLocalRing O]
     [TopologicalSpace O] [IsTopologicalRing O]
     (hO : IsOpen ((IsLocalRing.maximalIdeal O : Ideal O) : Set O)) {r : ℕ}
@@ -23,11 +30,35 @@ theorem eventually_map_residue_eq {Γ O : Type} [TopologicalSpace Γ] [CommRing 
   simp only [Matrix.map_apply]
   exact (Ideal.Quotient.eq).2 (hg a b)
 
+/- English proof (translation)
+Rewrite `*` using `[ValuationSubring.mem_nonunits_iff]`. Conclude with `lt_of_le_of_lt (A.valuation.map_sub x y) (max_lt hx hy)`.
+-/
 theorem sub_mem_nonunits_vs {K : Type} [Field K] (A : ValuationSubring K) {x y : K}
     (hx : x ∈ A.nonunits) (hy : y ∈ A.nonunits) : x - y ∈ A.nonunits := by
   rw [ValuationSubring.mem_nonunits_iff] at *
   exact lt_of_le_of_lt (A.valuation.map_sub x y) (max_lt hx hy)
 
+/- English proof (translation)
+Introduce `D Rw Pl X Y hCheb hRw hPl σ i i' hw Sig Sig' ρ ρ' hP hR hP' hR' g n`. Establish `key : ∀ (j : X.nd.Loc) (y y' : X.nd.O j), IsLocalRing.residue (X.nd.O j) y = IsLocalRing.residue (X.nd.O j) y' → iotaO X.nd Y.naut j y - iotaO X.nd Y.naut j y' ∈ (Pl.plB (X.nd.w j)).nonunits`. Introduce `j y y' hyy`. Take `⟨h1, e1⟩` from `hPl j y`. Take `⟨h2, e2⟩` from `hPl j y'`.
+
+Establish `hres : IsLocalRing.residue (Pl.plB (X.nd.w j)) ⟨_, h1⟩ = IsLocalRing.residue (Pl.plB (X.nd.w j)) ⟨_, h2⟩`. Apply `(Pl.plκ (X.nd.w j)).injective` to reduce the goal to its premises. Apply `(fbCast (X.nd.w_l j) (D.what₂.places.resChar_prime (X.nd.w j)) (X.nd.lPrime j).out).injective` to reduce the goal to its premises. Rewrite using `[e1, e2, hyy]`. Establish `hm` using `(Ideal.Quotient.eq).1 hres`.
+
+Establish `hv` using `(ValuationSubring.valuation_lt_one_iff _ _).1 hm`. Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Simplify using `using hv`. Establish `key'` using `key i'`. Rewrite `key'` using `[← hw]`.
+
+Establish `hO : ∀ j, IsOpen ((IsLocalRing.maximalIdeal (X.nd.O j) : Ideal (X.nd.O j)) : Set (X.nd.O j))` using `fun j => by`. Simplify using `using (isAdic_iff.1 (X.nd.O_adic j)).1 1`. Establish `hclosed : IsClosed {g : G D.host.E X.nd.Om | iotaO X.nd Y.naut i ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n) - iotaO X.nd Y.naut i' ((ρ' g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i')).charpoly.coeff n) ∈ (Pl.plB (X.nd.w i)).nonunits}`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `g0 hg0`.
+
+Establish `e1` using `eventually_map_residue_eq (hO i) (fun g => (ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i))) hR.1 g0`. Establish `e2` using `eventually_map_residue_eq (hO i') (fun g => (ρ' g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i'))) hR'.1 g0`. Use `filter_upwards [e1, e2] with g h1 h2`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq] at hg0 ⊢`. Introduce `hg`.
+
+Apply `hg0` to reduce the goal to its premises. Establish `c1 : IsLocalRing.residue (X.nd.O i) ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n) = IsLocalRing.residue (X.nd.O i) ((ρ g0 : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n)`. Rewrite using `[← Polynomial.coeff_map, ← Polynomial.coeff_map, ← Matrix.charpoly_map, ← Matrix.charpoly_map, h1]`. Establish `c2 : IsLocalRing.residue (X.nd.O i') ((ρ' g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i')).charpoly.coeff n) = IsLocalRing.residue (X.nd.O i') ((ρ' g0 : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i')).charpoly.coeff n)`. Rewrite using `[← Polynomial.coeff_map, ← Polynomial.coeff_map, ← Matrix.charpoly_map, ← Matrix.charpoly_map, h2]`.
+
+Use `sub_mem_nonunits_vs _ hg (sub_mem_nonunits_vs _ (key i _ _ c1) (key' _ _ c2))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hfin` using `Filter.eventually_cofinite.1 hR.2.2`. Establish `hfin'` using `Filter.eventually_cofinite.1 hR'.2.2`.
+
+Establish `hdense` using `hCheb (hfin.toFinset ∪ hfin'.toFinset)`. Establish `hE` using `hdense.mono (s₂ := {g : G D.host.E X.nd.Om | iotaO X.nd Y.naut i ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n) - iotaO X.nd Y.naut i' ((ρ' g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i')).charpoly.coeff n) ∈ (Pl.plB (X.nd.w i)).nonunits}) (fun s hs => by`. Take `⟨w, hwS, hsplit, B, hB, hF⟩` from `hs`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not] at hwS`. Take `⟨q1, q2⟩` from `hwS`.
+
+Establish `r1` using `q1 B s hB hF`. Establish `r2` using `q2 B s hB hF`. Establish `eqloc : isoLoc X.nd Y.naut Sig w = isoLoc X.nd Y.naut Sig' w` using `(hP.2.2 w hsplit).trans ((hRw i σ w).trans ((hRw i' σ w).symm.trans (hP'.2.2 w hsplit).symm))`. Rewrite using `[Set.mem_setOf_eq, ← Polynomial.coeff_map, ← Polynomial.coeff_map, r1, r2, eqloc, sub_self, ValuationSubring.mem_nonunits_iff, map_zero]`. Conclude with `zero_lt_one)`.
+
+Establish `hc` using `hE.closure_eq`. Rewrite `hc` using `[hclosed.closure_eq]`. Conclude with `Set.eq_univ_iff_forall.1 hc g`.
+-/
 theorem charpoly_coeff_congr_same_place : ∀ (D : D7) (Rw : RowSide D) (Pl : PlSide D) (X : LocNd (lay0 D)) (Y : LocAut X), GlobalTheory.RowTie.ChebSplit D.nd → (∀ i σ w, Y.locW i σ w = Rw.locR σ w) → (∀ (i : X.nd.Loc) (y : X.nd.O i), ∃ h : iotaO X.nd Y.naut i y ∈ Pl.plB (X.nd.w i), fbCast (X.nd.w_l i) (D.what₂.places.resChar_prime (X.nd.w i)) (X.nd.lPrime i).out (Pl.plκ (X.nd.w i) (IsLocalRing.residue (Pl.plB (X.nd.w i)) ⟨_, h⟩)) = Y.naut.kFbar i (IsLocalRing.residue (X.nd.O i) y)) → ∀ (σ : D.what₂.FT) (i i' : X.nd.Loc), X.nd.w i = X.nd.w i' → ∀ (Sig Sig' : List (Formalism.BasicNotions.Part Y.naut.CG)) (ρ : G D.host.E X.nd.Om →* GL (Fin D.R.r) (X.nd.O i)) (ρ' : G D.host.E X.nd.Om →* GL (Fin D.R.r) (X.nd.O i')), HasParamW X.nd Y.naut i σ Sig → IsRepOfSig X.nd Y.naut i Sig ρ → HasParamW X.nd Y.naut i' σ Sig' → IsRepOfSig X.nd Y.naut i' Sig' ρ' → ∀ (g : G D.host.E X.nd.Om) (n : ℕ), iotaO X.nd Y.naut i ((ρ g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i)).charpoly.coeff n) - iotaO X.nd Y.naut i' ((ρ' g : Matrix (Fin D.R.r) (Fin D.R.r) (X.nd.O i')).charpoly.coeff n) ∈ (Pl.plB (X.nd.w i)).nonunits := by
   classical
   intro D Rw Pl X Y hCheb hRw hPl σ i i' hw Sig Sig' ρ ρ' hP hR hP' hR' g n

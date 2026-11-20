@@ -8,6 +8,9 @@ section Inert
 
 variable {L : Type} [Field L] [Fintype L] [DecidableEq L] {q : ℕ}
 
+/- English proof (translation)
+Establish `h` using `Fintype.one_lt_card (α := L)`. Rewrite `h` using `[hq]`. Assume the negation of the conclusion as `h'`. Use `push Not at h'`. Apply the tactic sequence `interval_cases q <;> simp at h`.
+-/
 lemma q_two_le (hq : Fintype.card L = q ^ 2) : 2 ≤ q := by
   have h := Fintype.one_lt_card (α := L)
   rw [hq] at h
@@ -15,6 +18,11 @@ lemma q_two_le (hq : Fintype.card L = q ^ 2) : 2 ≤ q := by
   push Not at h'
   interval_cases q <;> simp at h
 
+/- English proof (translation)
+Take `⟨n, hp, hn⟩` from `FiniteField.card L (ringChar L)`. Establish `hd : q ∣ ringChar L ^ (n : ℕ)`. Rewrite using `[← hn, hq]`. Conclude with `Dvd.intro _ (pow_two q).symm`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).1 hd`.
+
+Substitute `hk` using the available equality. Establish `: Fact (ringChar L).Prime` using `⟨hp⟩`. Conclude with `sub_pow_char_pow a b k`.
+-/
 lemma frob_sub (hq : Fintype.card L = q ^ 2) (a b : L) : (a - b) ^ q = a ^ q - b ^ q := by
   obtain ⟨n, hp, hn⟩ := FiniteField.card L (ringChar L)
   have hd : q ∣ ringChar L ^ (n : ℕ) := by
@@ -24,12 +32,23 @@ lemma frob_sub (hq : Fintype.card L = q ^ 2) (a b : L) : (a - b) ^ q = a ^ q - b
   have : Fact (ringChar L).Prime := ⟨hp⟩
   exact sub_pow_char_pow a b k
 
+/- English proof (translation)
+Rewrite using `[← hq]`. Conclude with `FiniteField.pow_card x`.
+-/
 lemma pow_q_sq (hq : Fintype.card L = q ^ 2) (x : L) : x ^ (q ^ 2) = x := by
   rw [← hq]; exact FiniteField.pow_card x
 
+/- English proof (translation)
+Rewrite using `[← pow_mul, show (q + 1) * q = q ^ 2 + q by ring, pow_add, pow_q_sq hq, ← pow_succ']`.
+-/
 lemma norm_fixed (hq : Fintype.card L = q ^ 2) (x : L) : (x ^ (q + 1)) ^ q = x ^ (q + 1) := by
   rw [← pow_mul, show (q + 1) * q = q ^ 2 + q by ring, pow_add, pow_q_sq hq, ← pow_succ']
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Apply `card_le_card` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [mem_filter, mem_univ, true_and] at hx`. Simplify using `[Multiset.mem_toFinset, Polynomial.mem_nthRoots hd, hx]`.
+
+Use `_ ≤ Multiset.card (Polynomial.nthRoots d c) := Multiset.toFinset_card_le _`. Use `_ ≤ d := Polynomial.card_nthRoots d c`.
+-/
 lemma root_bound (d : ℕ) (hd : 0 < d) (c : L) : (univ.filter (fun x : L => x ^ d = c)).card ≤ d := by
   calc _ ≤ (Polynomial.nthRoots d c).toFinset.card := by
         apply card_le_card
@@ -44,6 +63,9 @@ def Sfix (L : Type) [Field L] [Fintype L] [DecidableEq L] (q : ℕ) : Finset L :
 
 def fib (q : ℕ) (d : L) : Finset L := (univ.erase 0).filter (fun u : L => u ^ (q + 1) = d)
 
+/- English proof (translation)
+Introduce `u hu`. Simplify using `only [coe_erase, coe_univ, Set.mem_sdiff, Set.mem_univ, Set.mem_singleton_iff, true_and] at hu`. Simplify using `only [Sfix, coe_filter, mem_univ, true_and, Set.mem_ofPred_eq]`. Conclude with `⟨pow_ne_zero _ hu, norm_fixed hq u⟩`.
+-/
 lemma norm_maps (hq : Fintype.card L = q ^ 2) :
     ((univ.erase (0 : L) : Finset L) : Set L).MapsTo (fun u => u ^ (q + 1)) (Sfix L q) := by
   intro u hu
@@ -51,6 +73,23 @@ lemma norm_maps (hq : Fintype.card L = q ^ 2) :
   simp only [Sfix, coe_filter, mem_univ, true_and, Set.mem_ofPred_eq]
   exact ⟨pow_ne_zero _ hu, norm_fixed hq u⟩
 
+/- English proof (translation)
+Establish `h2` using `q_two_le hq`. Establish `htot` using `card_eq_sum_card_fiberwise (norm_maps hq)`. Rewrite `htot` using `[card_erase_of_mem (mem_univ _), card_univ, hq]`. Establish `hfib : ∀ d ∈ Sfix L q, (fib q d).card ≤ q + 1`. Introduce `d _`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `card_le_card` to reduce the goal to its premises. Introduce `x`. Simplify using `only [fib, mem_filter, mem_erase, mem_univ, and_true, true_and]`. Conclude with `fun h => h.2`.
+
+Use `_ ≤ q + 1 := root_bound _ (by omega) d`. Establish `hS : (Sfix L q).card ≤ q - 1`. Combine the equalities or inequalities in the displayed calculation. Apply `card_le_card` to reduce the goal to its premises. Introduce `c hc`.
+
+Simplify using `only [Sfix, mem_filter, mem_univ, true_and] at hc ⊢`. Take `⟨h0, h1⟩` from `hc`. Establish `: c ^ (q - 1) * c = 1 * c`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (by omega), h1, one_mul]`. Conclude with `mul_right_cancel₀ h0 this`.
+
+Use `_ ≤ q - 1 := root_bound _ (by omega) 1`. Establish `hle : ∑ d ∈ Sfix L q, (fib q d).card ≤ ∑ d ∈ Sfix L q, (q + 1)` using `sum_le_sum hfib`. Rewrite `hle` using `[sum_const, smul_eq_mul]`. Establish `htot' : q ^ 2 - 1 = ∑ d ∈ Sfix L q, (fib q d).card` using `htot`. Take `⟨r, rfl⟩ : ∃ r, q = r + 2` from `⟨q - 2, by omega⟩`.
+
+Establish `hsq : (r + 2) ^ 2 - 1 = (r + 1) * (r + 3)`. Establish `: (r + 2) ^ 2 = (r + 1) * (r + 3) + 1` using `by ring`. Use linear arithmetic over natural numbers and integers. Establish `hS' : (Sfix L (r + 2)).card = r + 1`. Establish `h3 : (r + 1) * (r + 3) ≤ (Sfix L (r + 2)).card * (r + 3)`.
+
+Rewrite using `[← hsq, htot']`. Conclude with `hle`. Establish `h4 : (Sfix L (r + 2)).card ≤ r + 1` using `by simpa using hS`. Establish `h5` using `Nat.le_of_mul_le_mul_right h3 (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨by simpa using hS', ?_⟩` and prove the remaining obligations. Establish `heq : ∑ d ∈ Sfix L (r + 2), (fib (r + 2) d).card = ∑ d ∈ Sfix L (r + 2), (r + 2 + 1)`. Rewrite using `[← htot', hsq, sum_const, smul_eq_mul, hS']`. Conclude with `(sum_eq_sum_iff_of_le hfib).1 heq`.
+-/
 lemma pigeon (hq : Fintype.card L = q ^ 2) :
     (Sfix L q).card = q - 1 ∧ ∀ d ∈ Sfix L q, (fib q d).card = q + 1 := by
   have h2 := q_two_le hq

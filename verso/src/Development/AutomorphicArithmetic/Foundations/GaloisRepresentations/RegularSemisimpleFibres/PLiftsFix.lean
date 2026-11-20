@@ -5,6 +5,11 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ n X Y h x`. Proceed by induction on `h with`. Consider the case `refl => exact ⟨x, rfl⟩`. Consider the case `@tail B C _ hs ih`. Take `⟨y, hy⟩` from `ih`.
+
+Take `⟨i₁, i₂, -⟩` from `hs`. Use `⟨algebraMap B.K C.K y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `(IsScalarTower.algebraMap_apply B.K C.K Ω y).symm`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.liftsFix :
     LiftsFix := by
   intro E Ω _ _ _ n X Y h x

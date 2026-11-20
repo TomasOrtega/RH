@@ -4,6 +4,19 @@ open GlobalTheory.Cong
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro k _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+
+Introduce `k hk`. Establish `h1 : (l : R) ∣ (k : R)` using `(dvd_pow_self _ (Nat.succ_ne_zero m)).trans hk`. Establish `h2 : l ∣ k`. Assume the negation of the conclusion as `hnd`. Establish `hcop : Nat.Coprime l k` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hnd`.
+
+Establish `hg` using `Nat.gcd_eq_gcd_ab l k`. Rewrite `hg` using `[hcop]`. Apply `hu` to reduce the goal to its premises. Take `⟨c, hc⟩` from `h1`. Use `isUnit_of_dvd_one ⟨(Nat.gcdA l k : R) + (Nat.gcdB l k : R) * c, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun z : ℤ => (z : R)) hg` as an intermediate fact. Simplify using `only [Nat.cast_one, Int.cast_one, Int.cast_add, Int.cast_mul, Int.cast_natCast] at this`. Rewrite using `[this, hc]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k', rfl⟩` from `h2`.
+
+Establish `hl0 : (l : R) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hk' : (l : R) ^ m ∣ (k' : R)`. Take `⟨c, hc⟩` from `hk`. Use `⟨c, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hl0` to reduce the goal to its premises.
+
+Rewrite `hc` using `[Nat.cast_mul]`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ, mul_comm]`. Conclude with `mul_dvd_mul_left l (ih k' hk')`.
+-/
 theorem natCast_dvd_of_pow_dvd_of_not_isUnit (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     (l : ℕ) (hl : l.Prime) (hu : ¬ IsUnit (l : R)) :
     ∀ (m k : ℕ), (l : R) ^ m ∣ (k : R) → l ^ m ∣ k := by
@@ -35,6 +48,29 @@ theorem natCast_dvd_of_pow_dvd_of_not_isUnit (R : Type) [CommRing R] [IsDomain R
     rw [pow_succ, mul_comm]
     exact mul_dvd_mul_left l (ih k' hk')
 
+/- English proof (translation)
+Introduce `R _ _ _ l m hl hu`. Establish `: NeZero (l ^ m)` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Use `set I : Ideal R := Ideal.span {(l : R) ^ m} with hI`. Establish `hlI : (((l ^ m : ℕ) : ℤ) : R ⧸ I) = 0`. Rewrite using `[Int.cast_natCast, ← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem, hI, Nat.cast_pow]`.
+
+Conclude with `Ideal.subset_span rfl`. Set `f : ZMod (l ^ m) →+ R ⧸ I` to `ZMod.lift (l ^ m) ⟨Int.castAddHom (R ⧸ I), by`. Simplify using `using hlI⟩`. Establish `hf_nat : ∀ k : ℕ, f (k : ZMod (l ^ m)) = (k : R ⧸ I)`. Introduce `k`.
+
+Use `ZMod.lift_coe (l ^ m) ⟨Int.castAddHom (R ⧸ I), by simpa using hlI⟩ (k : ℤ)` as an intermediate fact. Simplify using `using this`. Establish `hinj : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Rewrite `hx` using `[← ZMod.natCast_zmod_val x, hf_nat, ← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton]`. Establish `hd` using `natCast_dvd_of_pow_dvd_of_not_isUnit R l hl hu m _ hx`. Establish `hlt` using `ZMod.val_lt x`. Establish `h0 : x.val = 0` using `Nat.eq_zero_of_dvd_of_lt hd hlt`. Rewrite using `[← ZMod.natCast_zmod_val x, h0, Nat.cast_zero]`.
+
+Take `⟨Λ, hΛ⟩` from `(Module.Baer.of_divisible UnitAddCircle).extension_property_addMonoidHom f hinj (ZMod.toAddCircle (N := l ^ m))`. Establish `hΛ' : ∀ z, Λ (f z) = ZMod.toAddCircle z` using `fun z => DFunLike.congr_fun hΛ z`. Establish `htor : ∀ q : R ⧸ I, ∃ k : ZMod (l ^ m), ZMod.toAddCircle k = Λ q`. Introduce `q`. Establish `h0 : (l ^ m) • Λ q = 0`.
+
+Rewrite using `[← map_nsmul]`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite using `[nsmul_eq_mul, ← map_natCast (Ideal.Quotient.mk I), ← map_mul, Ideal.Quotient.eq_zero_iff_mem.2, map_zero]`. Rewrite using `[hI, Ideal.mem_span_singleton, Nat.cast_pow]`. Conclude with `dvd_mul_right _ _`.
+
+Take `⟨k, -, hk⟩` from `(AddCircle.nsmul_eq_zero_iff (pow_pos hl.pos _)).1 h0`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.toAddCircle_natCast, ← hk, mul_one]`. Use `choose a ha using htor`. Set `A : R ⧸ I →+ ZMod (l ^ m)` to `AddMonoidHom.mk' a (by`.
+
+Introduce `x y`. Apply `ZMod.toAddCircle_injective` to reduce the goal to its premises. Rewrite using `[map_add, ha, ha, ha, map_add])`. Use `⟨A.comp (Ideal.Quotient.mk I).toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Use `show a (Ideal.Quotient.mk I 1) = 1`.
+
+Apply `ZMod.toAddCircle_injective` to reduce the goal to its premises. Rewrite using `[ha, map_one]`. Use `hΛ' 1` as an intermediate fact. Rewrite `this` using `[show (1 : ZMod (l ^ m)) = ((1 : ℕ) : ZMod (l ^ m)) by simp, hf_nat]`. Simplify using `using this`.
+
+Introduce `x show a (Ideal.Quotient.mk I ((l : R) ^ m * x)) = 0`. Establish `hmem : (l : R) ^ m * x ∈ I`. Rewrite using `[hI]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hmem]`.
+
+Apply `ZMod.toAddCircle_injective` to reduce the goal to its premises. Rewrite using `[ha, map_zero, map_zero]`.
+-/
 theorem exists_addHom_zmod_pow_one_of_not_isUnit :
     ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (l m : ℕ), l.Prime → ¬ IsUnit (l : R) →
       ∃ φ : R →+ ZMod (l ^ m), φ 1 = 1 ∧ ∀ x, φ ((l : R) ^ m * x) = 0 := by

@@ -19,6 +19,15 @@ namespace GlobalTheory.DenseCubeExt
 
 open GlobalTheory.CubTransport GlobalTheory.PolExtension GlobalTheory.CechPic
 
+/- English proof (translation)
+Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ k => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, hf U k, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+
+Take `⟨a, ha⟩ : ∃ a, a = (res le (t.s PEmpty.elim)).val` from `⟨_, rfl⟩`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J → (val u r z J * (val u' r z J)⁻¹).val = gs r z ⊤ a`. Introduce `Z r z J hJ`. Rewrite using `[← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans (congrArg (gs r z ⊤) ha.symm))`.
+
+Establish `a1 : a = 1` using `hinj ((fn_ext (V := ⊤) fun y _ => by choose I hI using fun χ : Y' ⟶ X => exists_chart hM (χ y)`. Use `key _ h y I hI` as an intermediate fact. Rewrite `this` using `[H y I hI, mul_inv_cancel]`. Use `(gs_pull (𝟙 Y') h y ⊤ trivial a).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← this, gs_eq _ y ⊤ trivial, map_one, map_one, Units.val_one]).trans (map_one _).symm)`.
+
+Use `key Z r z J hJ` as an intermediate fact. Rewrite `this` using `[a1, gs_eq _ z ⊤ trivial, map_one, map_one]`. Conclude with `mul_inv_eq_one.1 (Units.ext this)`.
+-/
 theorem val_eq_of_inj {X Y Y' : Scheme.{0}} (h : Y' ⟶ Y) (hinj : Function.Injective h.appTop.hom)
     {M : LB X} (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (hf : FormEq φ ε φ' ε')
@@ -48,6 +57,9 @@ theorem val_eq_of_inj {X Y Y' : Scheme.{0}} (h : Y' ⟶ Y) (hinj : Function.Inje
   rw [a1, gs_eq _ z ⊤ trivial, map_one, map_one] at this
   exact mul_inv_eq_one.1 (Units.ext this)
 
+/- English proof (translation)
+Use `GlobalTheory.IsNormalScheme.of_pred hS` as an intermediate fact. Use `GlobalTheory.isNormalScheme_of_smooth q` as an intermediate fact. Use `IsSchemeTheoreticallyDominant.of_isDominant j` as an intermediate fact. Conclude with `(pullback.fst q j).app_injective ⊤`.
+-/
 theorem appTop_injective_fst {S U T : Scheme.{0}} [IsLocallyNoetherian S] (hS : Geo.Tor.IsNormalScheme S)
     (j : U ⟶ S) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (q : T ⟶ S) [Smooth q] :
     Function.Injective (pullback.fst q j).appTop.hom := by
@@ -62,6 +74,9 @@ variable {S U : Scheme.{0}} [IsLocallyNoetherian S] (hS : Geo.Tor.IsNormalScheme
   [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j]
 include hS
 
+/- English proof (translation)
+The claim follows from `corr_of_val hL fun y J hJ => val_eq_of_inj (pullback.fst T.hom j) (appTop_injective_fst hS j T.hom) hL hf ht ht' H _ _ y J hJ`.
+-/
 theorem corr_of_open {X : Scheme.{0}} (T : Over S) [Smooth T.hom]
     {L : LB X} (hL : L.IsLB) {I I' : Type} [Fintype I] [Fintype I']
     {φ : I → (T.left ⟶ X)} {ε : I → ℤ} {φ' : I' → (T.left ⟶ X)} {ε' : I' → ℤ} (hf : FormEq φ ε φ' ε')
@@ -82,6 +97,27 @@ variable [IsLocallyNoetherian S] (hS : Geo.Tor.IsNormalScheme S) {U : Scheme.{0}
   [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] [Smooth G.hom] [GeometricallyConnected G.hom]
 include hS
 
+/- English proof (translation)
+Establish `s₂` using `CubeExtension.smooth_tensor G G`. Establish `s₃` using `CubeExtension.smooth_tensor G (G ⊗ G)`. Establish `s₄` using `CubeExtension.smooth_tensor G (G ⊗ G ⊗ G)`. Establish `c₂` using `CubeExtension.geometricallyConnected_tensor G G`. Establish `c₃` using `CubeExtension.geometricallyConnected_tensor G (G ⊗ G)`.
+
+Establish `c₄` using `CubeExtension.geometricallyConnected_tensor G (G ⊗ G ⊗ G)`. Set `ρ : ∀ T : Over S, Over.mk (pullback.snd T.hom j ≫ j) ⟶ T` to `fun T => Over.homMk (pullback.fst T.hom j) pullback.condition`. Establish `v : ∀ (T : Over S) (y : (pullback T.hom j :)) J, Good L.L y J → ∀ a b c : T ⟶ G, val (LB.pullGen L.L (thφ G (x3 G)) thε t (lift a (lift b c)).left) (pullback.fst T.hom j) y J = thV t (T` using `Over.mk (pullback.snd T.hom j ≫ j)) y J (ρ T ≫ a) (ρ T ≫ b) (ρ T ≫ c) := by`. Introduce `T y J hJ a b c`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[thV, ← comp_lift, ← comp_lift]`. Both sides reduce to the same expression. Establish `e : lift (x3 G 0) (lift (x3 G 1) (x3 G 2)) = 𝟙 (G3 G)`. Apply the tactic sequence `ext <;> simp [x3]`. Establish `v' : ∀ (y : (pullback (G3 G).hom j :)) J, val (L` using `L.L) (φ := thφ G (x3 G)) (ε := thε) t (pullback.fst (G3 G).hom j) y J = thV t (T := Over.mk (pullback.snd (G3 G).hom j ≫ j)) y J (ρ _ ≫ x3 G 0) (ρ _ ≫ x3 G 1) (ρ _ ≫ x3 G 2) := by`.
+
+Introduce `y J`. Rewrite using `[thV, ← comp_lift, ← comp_lift, e, Category.comp_id]`. Both sides reduce to the same expression. Establish `w : ∀ (V : Type) [CommGroup V] (k : ((G3 G).left ⟶ G.left) → V), ∏ I : thK, k (thφ G (x3 G) I) ^ thε I = ∏ I : thK, k ((lift (x3 G 0) (lift (x3 G 1) (x3 G 2))).left ≫ thφ G (x3 G) I) ^ thε I` using `fun V _ k => by`. Rewrite using `[e]`.
+
+Conclude with `Finset.prod_congr rfl fun I _ => congrArg (fun q => k q ^ thε I) (Category.id_comp _).symm`. Establish `g : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G3 G).left), (LB.pullGen L.L (thφ G (x3 G)) thε t r).IsGen` using `fun r => DVR.pullGen_isGen _ _ _ _ ht r`. Use `⟨⟨t, ht, fun i => corr_of_open hS j (G2 G) L.isLB (fun V _ k => ?_) (g _) (LB.isGen_oneGen _) fun y J hJ => ?_, corr_of_open hS j (G3 G) L.isLB (fun V _ k => ?_) ht (g _) fun y J hJ => ?_, corr_of_open hS j (G3 G) L.isLB (fun V _ k => ?_) ht (g _) fun y J hJ => ?_, corr_of_open h …` and prove the remaining obligations. Use `Eq.trans ?_ (Fintype.prod_empty _).symm` and prove the remaining obligations. Establish `C` using `GlobalTheory.NormalCubeExt.isCub_formal (G := G) (G2 G) k`.
+
+Use `fin_cases i`. Conclude with `C.face _ _`. Conclude with `C.face₂ _ _`. Conclude with `C.face₃ _ _`. Use `Eq.trans ?_ (val_one _).symm` and prove the remaining obligations.
+
+Establish `C` using `h (Over.mk (pullback.snd (G2 G).hom j)) y J hJ`. Establish `o : ρ (G2 G) ≫ pzero G _ = 1` using `map_one (preHom (ρ (G2 G)))`. Use `fin_cases i`. Conclude with `(v _ y J hJ _ _ _).trans (by rw [o]; exact C.face _ _)`. Conclude with `(v _ y J hJ _ _ _).trans (by rw [o]; exact C.face₂ _ _)`.
+
+Conclude with `(v _ y J hJ _ _ _).trans (by rw [o]; exact C.face₃ _ _)`. Conclude with `(w V k).trans ((GlobalTheory.NormalCubeExt.isCub_formal (G := G) (G3 G) k).s01 _ _ _)`. Conclude with `(v' y J).trans (((h (Over.mk (pullback.snd (G3 G).hom j)) y J hJ).s01 _ _ _).trans (v _ y J hJ _ _ _).symm)`. Conclude with `(w V k).trans ((GlobalTheory.NormalCubeExt.isCub_formal (G := G) (G3 G) k).s12 _ _ _)`. Conclude with `(v' y J).trans (((h (Over.mk (pullback.snd (G3 G).hom j)) y J hJ).s12 _ _ _).trans (v _ y J hJ _ _ _).symm)`.
+
+Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_sum_type _).symm)` and prove the remaining obligations. Conclude with `(GlobalTheory.NormalCubeExt.isCub_formal (G := G) (G4 G) k).coc (x4 G 0) (x4 G 1) (x4 G 2) (x4 G 3)`. Establish `C` using `h (Over.mk (pullback.snd (G4 G).hom j)) y J hJ`. Establish `m : ∀ a b : G4 G ⟶ G, ρ (G4 G) ≫ padd G a b = (ρ (G4 G) ≫ a) * (ρ (G4 G) ≫ b)` using `fun a b => MonObj.comp_mul _ _ _`. Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v _ y J hJ _ _ _) (v _ y J hJ _ _ _))).trans (Eq.trans ?_ ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (v _ y J hJ _ _ _) (v _ y J hJ _ _ _))).symm)` and prove the remaining obligations.
+
+Rewrite using `[m, m]`. Conclude with `C.coc _ _ _ _`.
+-/
 theorem exists_cubical_of_open (L : RigLB G) (t : LB.Gen (Theta G L.L)) (ht : t.IsGen)
     (h : ∀ (T : Over U) (z : T.left) (J), Good L.L z J →
       IsCub (thV t (T := Over.mk (T.hom ≫ j)) z J)) : ∃ c : CubicalStr G L, c.t = t := by
@@ -150,6 +186,17 @@ theorem exists_cubical_of_open (L : RigLB G) (t : LB.Gen (Theta G L.L)) (ht : t.
 
 end Group
 
+/- English proof (translation)
+Establish `key : ∀ (ψ : K → (HU ⟶ X)) (_ : ∀ k, φ' k ≫ F = ψ k), ∃ t : LB.Gen (LB.LinComb L ψ ε), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ HU) (z : Z) (p : K → L.ι) (q : K → L'.ι), r z ∈ LB.wchart L ψ p → r z ∈ LB.wchart L' φ' q → gm r z (LB.wchart L ψ p) (t.s p) = pw w φ' ε r z p q * gm r z ( …`. Introduce `ψ hψ`. Take `rfl : (fun k => φ' k ≫ F) = ψ` from `funext hψ`. Conclude with `exists_up hw hL hL' s hg`. Take `⟨t, ht, hv⟩` from `key _ hφ`.
+
+Take `⟨ρ, hρ, vρ⟩` from `exists_gen hL f₁ (LB.oneGen L) (LB.isGen_oneGen L)`. Take `⟨c, ⟨hc₁, hc₂⟩, -⟩` from `GlobalTheory.T.existsUnique_generator_extend_dense_proOpen S U H HU X j hS p e jH pU eU hs (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hs hc) he hp heU L hL K φ ε t ρ ht hρ (corr_of_val hL fun y J hJ => by`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_pull hJ ρ _ _).trans ((vρ _ _ y J hJ).trans (val_one _))).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Use `choose J' hJ' using fun χ : U ⟶ X' => exists_chart hL' (χ y)`.
+
+Use `(hv _ eU y _ _ (hJ.mem _ _) (Good.mem hJ' _ _)).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ?_ (h1 y J' hJ')).trans (_root_.mul_one 1)` and prove the remaining obligations. Use `Eq.trans ?_ ((f₂ _ (fun q => gw w q y (J (q ≫ F)) (J' q))).symm.trans (Fintype.prod_empty _))` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun k _ => by rw [Category.assoc, hφ])`. Substitute `hc₂` using the available equality.
+
+Use `⟨c, hc₁, fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Establish `hm : r z ∈ LB.wchart L (fun k => jH ≫ φ k) p` using `Set.mem_iInter.2 fun k => by show φ k (jH (r z)) ∈ L.U (p k)`. Rewrite using `[pt_eq hφ]`. Conclude with `hp k`. Use `Eq.trans ?_ (hv Z r z p q hm (Set.mem_iInter.2 hq))` and prove the remaining obligations.
+
+Conclude with `((gm_res r z _ hm _).trans (gm_pull r jH z (LB.wchart L φ p) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hm k) _)).symm`.
+-/
 theorem exists_extension {S : Scheme.{0}} [IsLocallyNoetherian S] (hS : Geo.Tor.IsNormalScheme S)
     {U H HU X X' : Scheme.{0}} (j : U ⟶ S) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j] (p : H ⟶ S) (e : S ⟶ H) (jH : HU ⟶ H)
     (pU : HU ⟶ U) (eU : U ⟶ HU) (hs : Smooth p) (hc : GeometricallyConnected p) (he : e ≫ p = 𝟙 _)
@@ -198,6 +245,17 @@ variable {S U : Scheme.{0}} {j : U ⟶ S} {G : Over S} [GrpObj G] [IsCommMonObj 
 variable [IsLocallyNoetherian S] [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j]
   [Smooth G.hom] [GeometricallyConnected G.hom]
 
+/- English proof (translation)
+Establish `s₂` using `CubeExtension.smooth_tensor G G`. Establish `s₃` using `CubeExtension.smooth_tensor G (G ⊗ G)`. Establish `c₂` using `CubeExtension.geometricallyConnected_tensor G G`. Establish `c₃` using `CubeExtension.geometricallyConnected_tensor G (G ⊗ G)`. Establish `hc : ∀ I : thK.{0}, thφ A (x3 A) I ≫ F = (cubeMapOf gp).F3 ≫ thφ G (x3 G) I` using `fun I => (cubeMapOf gp).psum_comm I.down`.
+
+Take `⟨t, ht, Ht⟩` from `exists_extension hS j (G3 G).hom (eSec (G3 G)) (cubeMapOf gp).F3 (G3 A).hom (eSec (G3 A)) s₃ c₃ (CubeExtension.eSec_comp _) (GlobalTheory.NormalCubeExt.isPullback_tripleProduct_groupPullback gp) (by`. Rewrite using `[CubeExtension.eSec_three, GlobalTheory.NormalCubeExt.groupPullback_tripleProductMap_lift, map_one, CubeExtension.eSec_three]`. Use `hom_ext_triple _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [x3, Hom.one_def]) L'.isLB L.isLB hw (thφ G (x3 G)) (thφ A (x3 A)) thε hc`.
+
+Use the proof step `(CubeExtension.formEq_origin G) (CubeExtension.formEq_origin A) c.t c.isGen (fun y J hJ => by`. Rewrite using `[CubeExtension.eSec_three]`. Conclude with `(isCub_cubV c (T := 𝟙_ _) hJ).face 1 1)`. Take `⟨c', rfl⟩` from `exists_cubical_of_open hS j L' t ht fun T z J hJ => by`. Use `isCub_of_surjective (pushHom gp T) (fun a => ?_) ?_` and prove the remaining obligations.
+
+Conclude with `⟨Over.homMk (gp.1.lift a.left T.hom (Over.w a)) (gp.1.lift_snd _ _ _), Over.OverMorphism.ext (gp.1.lift_fst _ _ _)⟩`. Use `choose J' hJ' using fun χ : T.left ⟶ A.left => exists_chart L.isLB (χ z)`. Use `isCub_mul_diff (isCub_cubV c hJ') (fun q => gw w q.left z (J (q.left ≫ F)) (J' q.left)) fun a b d => ?_` and prove the remaining obligations. Establish `e` using `val_pmaps hc Ht (lift a (lift b d)).left hJ hJ'`. Rewrite `e` using `[GlobalTheory.NormalCubeExt.groupPullback_tripleProductMap_lift]`.
+
+Conclude with `e.trans (congrArg₂ (· * ·) (prod_cub a b d (fun q => gw w q z (J (q ≫ F)) (J' q))) rfl)`. Conclude with `⟨c', Ht⟩`.
+-/
 theorem exists_cubical (hS : Geo.Tor.IsNormalScheme S) (gp : IsGrpPullback A G j F) {L : RigLB A} (c : CubicalStr A L)
     (L' : RigLB G) {w : LB.Iso L.L (L'.L.pull F)} (hw : PGen w) :
     ∃ c' : CubicalStr G L', PMaps w (thφ A (x3 A)) (thφ G (x3 G)) thε c.t c'.t (cubeMapOf gp).F3 := by
@@ -227,6 +285,17 @@ theorem exists_cubical (hS : Geo.Tor.IsNormalScheme S) (gp : IsGrpPullback A G j
       exact e.trans (congrArg₂ (· * ·) (prod_cub a b d (fun q => gw w q z (J (q ≫ F)) (J' q))) rfl)
   exact ⟨c', Ht⟩
 
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `(isSymmetric_iff_exists_gen U A L).1 h`. Establish `hι : (ι[A]).left ≫ F = F ≫ (ι[G]).left`. Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom gp A) (𝟙 A))`. Simplify using `only [Hom.inv_def, Category.id_comp] at e`. Use `e.trans ?_` and prove the remaining obligations.
+
+Use `show (𝟙 _ ≫ F) ≫ _ = _`. Rewrite using `[Category.id_comp]`. Establish `e₁ : eSec A ≫ (ι[A]).left = eSec A`. Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`. Establish `e₂ : eSec G ≫ (ι[G]).left = eSec G`.
+
+Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`. Take `⟨t, ht, -⟩` from `exists_extension hS j G.hom (eSec G) F A.hom (eSec A) inferInstance inferInstance (CubeExtension.eSec_comp _) gp.1 (cubeMapOf gp).e_comm L'.isLB L.isLB hw (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![(ι[A]).left, 𝟙 A.left] ![1, -1] (fun k => by fin_cases k`. Conclude with `hι`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm)`. Use the proof step `(fun V _ k => by simp [Fin.prod_univ_two, e₂]) (fun V _ k => by simp [Fin.prod_univ_two, e₁]) s hs`.
+
+Use the proof step `(fun y J hJ => by`. Use `(val_pull hJ s (eSec A) (𝟙 _)).symm.trans ((val_corr hJ h1 (𝟙 _)).trans (val_one _))` as an intermediate fact. Rewrite using `[Category.id_comp] at this)` and apply the resulting hypothesis. Establish `z` using `(cls_eq_zero_iff (LB.isLB_linComb L'.isLB _ _)).2 ⟨t, ht⟩`. Rewrite `z` using `[cls_linComb L'.isLB, Fin.sum_univ_two]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_id, ← sub_eq_add_neg, sub_eq_zero] at z`. Establish `he : eSec G ≫ (ι[G]).left = 𝟙 _ ≫ eSec G` using `e₂.trans (Category.id_comp _).symm`. Conclude with `⟨he, Unif.RigidifyIso.exists_rigidified_iso S S (𝟙 S) G G _ he L' L' ((cls_eq_iff L'.isLB (pull_isLB L'.isLB _)).1 z.symm)⟩`.
+-/
 theorem isSymmetric (hS : Geo.Tor.IsNormalScheme S) (gp : IsGrpPullback A G j F) {L : RigLB A}
     (L' : RigLB G) {w : LB.Iso L.L (L'.L.pull F)} (hw : PGen w) (h : L.IsSymmetric) : L'.IsSymmetric := by
   obtain ⟨s, hs, h1⟩ := (isSymmetric_iff_exists_gen U A L).1 h
@@ -260,6 +329,11 @@ theorem isSymmetric (hS : Geo.Tor.IsNormalScheme S) (gp : IsGrpPullback A G j F)
 
 end Main
 
+/- English proof (translation)
+Introduce `Y U _ j _ _ _ _ hY G _ _ _ _ A _ _ a gp L c M hM H`. Take `⟨L', h'⟩` from `GlobalTheory.NormalCubeExt.exists_rigidified gp L hM H`. Take `⟨w, hw, hr⟩` from `Unif.RigidifyIso.exists_rigidified_iso Y U j G A a (cubeMapOf gp).e_comm L' L h'`. Establish `hw'` using `(isGen_iff w).1 hw`. Take `⟨c', hc'⟩` from `exists_cubical hY gp c L' hw'`.
+
+Use `⟨L', c', cubeMapOf gp, rfl, rfl, ⟨w, hw, hr, ?_⟩, isSymmetric hY gp L' hw'⟩` and prove the remaining obligations. Conclude with `(maps_iff w _ (thφ G (x3 G)) _ c.t c'.t (cubeMapOf gp).F3 _ ((cubeMapOf gp).theta_le L'.L) (fun _ => rfl)).2 hc'`.
+-/
 theorem exists_cubical_extension : ∀ (Y U : Scheme.{0}) [IsLocallyNoetherian Y] (j : U ⟶ Y) [IsPreimmersion j] [Flat j] [IsDominant j] [QuasiCompact j], Geo.Tor.IsNormalScheme Y → ∀ (G : Over Y) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [GeometricallyConnected G.hom] (A : Over U) [GrpObj A] [IsCommMonObj A] (a : A.left ⟶ G.left), IsGrpPullback A G j a → ∀ (L : RigLB A) (c : CubicalStr A L) (M : LB G.left), M.IsLB → LBIso (M.pull a) L.L → ∃ (L' : RigLB G) (c' : CubicalStr G L') (m : CubeMap A G), m.F = a ∧ m.e = j ∧ m.IsPullCubical c c' ∧ (L.IsSymmetric → L'.IsSymmetric) := by
   intro Y U _ j _ _ _ _ hY G _ _ _ _ A _ _ a gp L c M hM H
   obtain ⟨L', h'⟩ := GlobalTheory.NormalCubeExt.exists_rigidified gp L hM H

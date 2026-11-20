@@ -23,6 +23,9 @@ def embUnitsMorZ :
       (Units.ext (decompHom_apply (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val) σ _))⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embUnitsMorZ_hom_apply (y : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     ((Additive.toMul ((embUnitsMorZ S ι).hom y) : (AlgebraicClosure (v.adicCompletion K.1))ˣ) :
       AlgebraicClosure (v.adicCompletion K.1)) =

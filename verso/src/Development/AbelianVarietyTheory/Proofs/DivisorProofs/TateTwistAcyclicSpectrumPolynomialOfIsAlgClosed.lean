@@ -7,6 +7,21 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `q _ K _ _ hq n i hn`. Establish `hqA : IsUnit (q : Polynomial K)`. Simplify using `using hq.map (Polynomial.C : K →+* Polynomial K)`. Distinguish the cases in `h2 : 2 ≤ n`. Conclude with `GlobalTheory.T.smooth_affine_curve_etale_cohomologicalDimension_le_one q K (Polynomial K) hq n i h2`.
+
+Establish `hn1 : n = 1` using `by omega`. Substitute `hn1` using the available equality. Establish `hζ : ∃ ζ : Polynomial K, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0`. Establish `hdeg : (Polynomial.cyclotomic q K).degree ≠ 0`. Rewrite using `[Polynomial.degree_cyclotomic]`.
+
+Use `Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q))` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root _ hdeg`. Use `⟨Polynomial.C z, ?_⟩` and prove the remaining obligations. Establish `hz' : Polynomial.aeval z (Polynomial.cyclotomic q ℤ) = 0`.
+
+Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hz`. Establish `hC : Polynomial.C z = algebraMap K (Polynomial K) z` using `rfl`. Rewrite using `[hC, Polynomial.aeval_algebraMap_apply, hz', map_zero]`. Take `⟨e⟩` from `GlobalTheory.T.tateTwistCohomology_spec_twist_independent q (Polynomial K) hqA hζ 1 i 1`.
+
+Establish `hs : Subsingleton (Ht q (sp (Polynomial K)) 1 1)`. Use `GlobalTheory.T.kummer_etale_vanishing q (Polynomial K) hqA ?_ ?_` and prove the remaining obligations. Introduce `u`. Take `⟨r, hr, hru⟩` from `Polynomial.isUnit_iff.1 u.isUnit`. Take `⟨v, hv⟩` from `IsAlgClosed.exists_pow_nat_eq r (Nat.pos_of_ne_zero (NeZero.ne q))`.
+
+Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Rewrite `hv` using `[zero_pow (NeZero.ne q)]`. Conclude with `hr.ne_zero hv.symm`. Use `⟨Units.map (Polynomial.C : K →+* Polynomial K).toMonoidHom (Units.mk0 v hv0), ?_⟩` and prove the remaining obligations.
+
+Use `ext`. Simplify using `[← hru, ← hv]`. Introduce `c _`. Conclude with `Subsingleton.elim _ _`. Conclude with `e.toEquiv.subsingleton`.
+-/
 theorem acyc_polynomial_of_isAlgClosed : ∀ (q : ℕ) [NeZero q] (K : Type) [Field K] [IsAlgClosed K],
     IsUnit (q : K) → Acyc q (sp (Polynomial K)) := by
   intro q _ K _ _ hq n i hn

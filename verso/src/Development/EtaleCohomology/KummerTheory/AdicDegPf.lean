@@ -17,6 +17,9 @@ def AdicAlg : Prop := ∀ (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ), Module
   ∃ (r : ℕ) (c : Fin r → Hl l E n i) (N : ℕ), 0 < N ∧ QBasis l c ∧
     ∀ k, IsoUpTo N (comb (l ^ k) fun s => lev l (c s) k)
 
+/- English proof (translation)
+Introduce `hA l _ E i hB hF n`. Take `⟨hfin, hker, M, hM, hcok⟩` from `h1 hA l E i hB hF n`. Conclude with `h2 l E n i hfin hker M hM hcok`.
+-/
 theorem AdicDeg_of (h1 : AdicLim) (h2 : AdicAlg) : AdicDeg := by
   intro hA l _ E i hB hF n
   obtain ⟨hfin, hker, M, hM, hcok⟩ := h1 hA l E i hB hF n

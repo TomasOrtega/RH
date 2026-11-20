@@ -5,10 +5,22 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 section
 variable (O : Type) [CommRing O] (k : Type) [Field k] [Algebra O k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Alg.FormData.JR, form, J4]`.
+-/
 private theorem spDim_JR : (form O).JR k = J4 k := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Alg.FormData.JR, form, J4]
 
+/- English proof (translation)
+Establish `e : Y ∈ (form O).gw k j ↔ (Y.transpose * (form O).JR k + (form O).JR k * Y = 0 ∧ ∀ a b, (form O).blk a ≠ (form O).blk b → Y a b = 0) ∧ ∀ a b, wt a b ≠ j → Y a b = 0` using `Iff.rfl`. Rewrite using `[e, spDim_JR]`. Use `and_congr_left fun _ => ⟨fun ⟨h, _⟩ => ?_, fun ⟨h1, h2, h3, h4, h5, h6⟩ => ⟨?_, fun a b h => absurd rfl h⟩⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h 0) 1`. Establish `h2` using `congrFun (congrFun h 0) 2`.
+
+Establish `h3` using `congrFun (congrFun h 0) 3`. Establish `h4` using `congrFun (congrFun h 1) 2`. Establish `h5` using `congrFun (congrFun h 1) 3`. Establish `h6` using `congrFun (congrFun h 2) 3`. Simplify using `[J4, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_four] at h1 h2 h3 h4 h5 h6`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `h1`. Take the linear combination `h2`. Take the linear combination `h3`. Take the linear combination `h4`.
+
+Take the linear combination `h5`. Take the linear combination `-h6`. Apply the tactic sequence `ext a b fin_cases a <;> fin_cases b <;> simp [J4, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_four, h1, h2, h3, h4, h5, h6]`.
+-/
 private theorem spDim_mem (j : ℤ × ℤ) (Y : M4 k) : Y ∈ (form O).gw k j ↔
     (Y 3 1 = Y 2 0 ∧ Y 3 2 = -Y 1 0 ∧ Y 3 3 = -Y 0 0 ∧ Y 2 2 = -Y 1 1 ∧ Y 2 3 = -Y 0 1 ∧ Y 1 3 = Y 0 2) ∧
       ∀ a b, wt a b ≠ j → Y a b = 0 := by
@@ -33,6 +45,11 @@ private theorem spDim_mem (j : ℤ × ℤ) (Y : M4 k) : Y ∈ (form O).gw k j �
   · ext a b
     fin_cases a <;> fin_cases b <;> simp [J4, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_four, h1, h2, h3, h4, h5, h6]
 
+/- English proof (translation)
+Use `finrank_eq_one (⟨B, hB⟩ : (form O).gw k j) ?_ ?_` and prove the remaining obligations. Introduce `e`. Establish `: B = 0` using `congrArg Subtype.val e`. Rewrite `hab` using `[this]`. Simplify using `at hab`.
+
+Introduce `Y`. Use `⟨Y.1 a b, Subtype.ext ?_⟩` and prove the remaining obligations. Use `h (Y.1 a b • B - Y.1) (Submodule.sub_mem _ (Submodule.smul_mem _ _ hB) Y.2) (by simp [hab])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+-/
 private theorem spDim_one (j : ℤ × ℤ) (B : M4 k) (a b : Fin 4) (hB : B ∈ (form O).gw k j) (hab : B a b = 1)
     (h : ∀ Y ∈ (form O).gw k j, Y a b = 0 → Y = 0) : finrank k ((form O).gw k j) = 1 := by
   refine finrank_eq_one (⟨B, hB⟩ : (form O).gw k j) ?_ ?_
@@ -45,6 +62,11 @@ private theorem spDim_one (j : ℤ × ℤ) (B : M4 k) (a b : Fin 4) (hB : B ∈ 
     have := h (Y.1 a b • B - Y.1) (Submodule.sub_mem _ (Submodule.smul_mem _ _ hB) Y.2) (by simp [hab])
     exact sub_eq_zero.mp this
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Use `spDim_one O k _ B a b hB hab fun Y hY h0 => ?_` and prove the remaining obligations. Take `⟨y1, y2⟩` from `(spDim_mem O k _ Y).1 hY`. Use extensionality with `c d`. Distinguish the cases in `e : wt c d = wt a b`.
+
+Break down `h' c d e with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `h0`. Conclude with `h Y y1 h0`. Conclude with `y2 c d e`.
+-/
 private theorem spDim_root (j : ℤ × ℤ) (B : M4 k) (a b : Fin 4) (hj : wt a b = j)
     (hB : B ∈ (form O).gw k (wt a b)) (hab : B a b = 1)
     (h : ∀ Y : M4 k, (Y 3 1 = Y 2 0 ∧ Y 3 2 = -Y 1 0 ∧ Y 3 3 = -Y 0 0 ∧ Y 2 2 = -Y 1 1 ∧ Y 2 3 = -Y 0 1 ∧ Y 1 3 = Y 0 2) →
@@ -61,6 +83,15 @@ private theorem spDim_root (j : ℤ × ℤ) (B : M4 k) (a b : Fin 4) (hj : wt a 
     · exact h Y y1 h0
   · exact y2 c d e
 
+/- English proof (translation)
+Set `f : (form O).gw k 0 →ₗ[k] k × k` to `{ toFun := fun Y => (Y.1 0 0, Y.1 1 1) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `Y hY`.
+
+Establish `h0 : Y.1 0 0 = 0` using `congrArg Prod.fst hY`. Establish `h1 : Y.1 1 1 = 0` using `congrArg Prod.snd hY`. Take `⟨⟨-, -, y3, y4, -, -⟩, y2⟩` from `(spDim_mem O k _ Y.1).1 Y.2`. Use extensionality with `c d`. Distinguish the cases in `e : c = d`.
+
+Apply the tactic sequence `subst e fin_cases c <;> simp [h0, h1, y3, y4]`. Conclude with `y2 c d fun n => e ((wt_eq_zero c d).1 n)`. Introduce and unpack `⟨x, y⟩`. Use `⟨⟨Matrix.diagonal ![x, y, -y, -x], (spDim_mem O k _ _).2 ⟨by simp, fun a b h => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.diagonal_apply_ne _ fun n => h ((wt_eq_zero a b).2 n)`.
+
+Both sides reduce to the same expression. Rewrite using `[(LinearEquiv.ofBijective f hf).finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 private theorem spDim_zero : finrank k ((form O).gw k 0) = 2 := by
   let f : (form O).gw k 0 →ₗ[k] k × k :=
     { toFun := fun Y => (Y.1 0 0, Y.1 1 1)
@@ -85,6 +116,9 @@ private theorem spDim_zero : finrank k ((form O).gw k 0) = 2 := by
   rw [(LinearEquiv.ofBijective f hf).finrank_eq]
   simp
 
+/- English proof (translation)
+Use `(spDim_mem O k _ _).2 ⟨h, fun c d e => h' c d ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `e rfl`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `e (wt_rev _ _)`.
+-/
 private theorem spDim_B (a b : Fin 4) (B : M4 k)
     (h : B 3 1 = B 2 0 ∧ B 3 2 = -B 1 0 ∧ B 3 3 = -B 0 0 ∧ B 2 2 = -B 1 1 ∧ B 2 3 = -B 0 1 ∧ B 1 3 = B 0 2)
     (h' : ∀ c d, ¬ (c = a ∧ d = b) → ¬ (c = b.rev ∧ d = a.rev) → B c d = 0) : B ∈ (form O).gw k (wt a b) := by
@@ -94,6 +128,29 @@ private theorem spDim_B (a b : Fin 4) (B : M4 k)
 
 end
 
+/- English proof (translation)
+Introduce `O _ k _ _ j`. Unfold `dimP`. Use `split_ifs with h0 hw`. Substitute `h0` using the available equality. Conclude with `spDim_zero O k`.
+
+Establish `key : ∀ (a b : Fin 4) (B : M4 k), wt a b = j → B a b = 1 → (B 3 1 = B 2 0 ∧ B 3 2 = -B 1 0 ∧ B 3 3 = -B 0 0 ∧ B 2 2 = -B 1 1 ∧ B 2 3 = -B 0 1 ∧ B 1 3 = B 0 2) → (∀ c d, ¬ (c = a ∧ d = b) → ¬ (c = b.rev ∧ d = a.rev) → B c d = 0) → (∀ Y : M4 k, (Y 3 1 = Y 2 0 ∧ Y 3 2 = -Y 1 0 ∧ Y 3 …` using `fun a b B e h1 h2 h3 h4 h5 => spDim_root O k j B a b e (spDim_B O k a b B h2 h3) h1 h4 h5`. Simplify using `only [wts, oddRoots, Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hw`. Break down `hw with (rfl | rfl | rfl | rfl | rfl | rfl) | rfl | rfl | rfl` into its components or cases. Use `key 0 1 !![0, 1, 0, 0; 0, 0, 0, 0; 0, 0, 0, -1; 0, 0, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 2 3 = 0`. Simplify using `[*]`. Use `key 1 0 !![0, 0, 0, 0; 1, 0, 0, 0; 0, 0, 0, 0; 0, 0, -1, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 3 2 = 0`. Simplify using `[*]`. Use `key 1 2 !![0, 0, 0, 0; 0, 0, 1, 0; 0, 0, 0, 0; 0, 0, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 1 2 = 0`. Simplify using `[*]`. Use `key 2 1 !![0, 0, 0, 0; 0, 0, 0, 0; 0, 1, 0, 0; 0, 0, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 2 1 = 0`. Simplify using `[*]`. Use `key 0 3 !![0, 0, 0, 1; 0, 0, 0, 0; 0, 0, 0, 0; 0, 0, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 0 3 = 0`. Simplify using `[*]`. Use `key 3 0 !![0, 0, 0, 0; 0, 0, 0, 0; 0, 0, 0, 0; 1, 0, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 3 0 = 0`. Simplify using `[*]`. Use `key 0 2 !![0, 0, 1, 0; 0, 0, 0, 1; 0, 0, 0, 0; 0, 0, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 1 3 = 0`. Simplify using `[*]`. Use `key 2 0 !![0, 0, 0, 0; 0, 0, 0, 0; 1, 0, 0, 0; 0, 1, 0, 0] (by decide) rfl (by simp) ?_ ?_ (by decide)` and prove the remaining obligations. Apply the tactic sequence `intro c d h1 h2 fin_cases c <;> fin_cases d <;> first | rfl | exact absurd ⟨rfl, rfl⟩ h1 | exact absurd ⟨rfl, rfl⟩ h2`.
+
+Introduce and unpack `Y ⟨y1, y2, y3, y4, y5, y6⟩ h`. Express the relevant statement in the definitionally equal form `Y 3 1 = 0`. Simplify using `[*]`. Conclude with `absurd rfl h0`. Rewrite using `[Submodule.finrank_eq_zero, eq_bot_iff]`.
+
+Introduce `Y hY`. Take `⟨-, y2⟩` from `(spDim_mem O k _ Y).1 hY`. Use extensionality with `c d`. Conclude with `y2 c d fun n => hw (n ▸ wt_mem c d)`.
+-/
 theorem UpperTheory.V.X.spDim :
     ∀ (O : Type) [CommRing O] (k : Type) [Field k] [Algebra O k] (j : ℤ × ℤ), finrank k ((form O).gw k j) = dimP j := by
   intro O _ k _ _ j

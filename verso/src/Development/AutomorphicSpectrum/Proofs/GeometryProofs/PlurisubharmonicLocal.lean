@@ -6,12 +6,42 @@ namespace GlobalTheory.CompanionTheory.AnForm.PshLocal
 
 open Filter Topology ReciprocityTheory.AnForm.A
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.AnForm.A.IsPsh at h ⊢`. Take `⟨hu, hm⟩` from `h`. Conclude with `⟨hu.mono hWV, fun z w hzw => hm z w fun ζ hζ => hWV (hzw ζ hζ)⟩`.
+-/
 theorem isPsh_mono {n : ℕ} {V W : Set (Fin n → ℂ)} {φ : (Fin n → ℂ) → ℝ} (hWV : W ⊆ V)
     (h : IsPsh V φ) : IsPsh W φ := by
   unfold ReciprocityTheory.AnForm.A.IsPsh at h ⊢
   obtain ⟨hu, hm⟩ := h
   exact ⟨hu.mono hWV, fun z w hzw => hm z w fun ζ hζ => hWV (hzw ζ hζ)⟩
 
+/- English proof (translation)
+Introduce `n U φ hU hloc`. Establish `hloc' : ∀ p ∈ U, ∃ W : Set (Fin n → ℂ), IsOpen W ∧ p ∈ W ∧ W ⊆ U ∧ IsPsh W φ`. Introduce `p hp`. Take `⟨V, hV, hpV, hψ⟩` from `hloc p hp`. Conclude with `⟨V ∩ U, hV.inter hU, ⟨hpV, hp⟩, Set.inter_subset_right, isPsh_mono Set.inter_subset_left hψ⟩`.
+
+Establish `hlocg : ∀ k : ℕ, ∀ p ∈ U, ∃ W : Set (Fin n → ℂ), IsOpen W ∧ p ∈ W ∧ W ⊆ U ∧ IsPsh W (fun x => max (φ x) (-(k : ℝ)))`. Introduce `k p hp`. Take `⟨W, hW, hpW, hWU, hψ⟩` from `hloc' p hp`. Conclude with `⟨W, hW, hpW, hWU, GroundTheory.Heights₂.Heights.NineStatements.PshLocal.isPsh_max hψ _⟩`. Establish `husc` using `GroundTheory.Heights₂.Heights.NineStatements.PshLocal.usc hloc'`.
+
+Unfold `ReciprocityTheory.AnForm.A.IsPsh`. Use `⟨husc, ?_⟩` and prove the remaining obligations. Introduce `z w hzw`. Establish `h2π : (0 : ℝ) ≤ 2 * Real.pi` using `by positivity`. Establish `hpi : (0 : ℝ) < 2 * Real.pi` using `by positivity`.
+
+Set `μ : MeasureTheory.Measure ℝ` to `MeasureTheory.volume.restrict (Set.Ioc 0 (2 * Real.pi))`. Set `F : ℝ → ℝ` to `fun θ => φ (z + circleMap 0 1 θ • w)`. Set `f : ℕ → ℝ → ℝ` to `fun k θ => max (F θ) (-(k : ℝ))`. Establish `hcore : ∀ k : ℕ, IntervalIntegrable (f k) MeasureTheory.volume 0 (2 * Real.pi) ∧ max (φ z) (-(k : ℝ)) ≤ (2 * Real.pi)⁻¹ * ∫ θ in (0 : ℝ)..2 * Real.pi, f k θ` using `fun k => GroundTheory.Heights₂.Heights.NineStatements.PshLocal.core hU (hlocg k) z w hzw (c := -(k : ℝ)) (fun θ => le_max_right _ _)`. Establish `hint : ∀ k, MeasureTheory.Integrable (f k) μ` using `fun k => (intervalIntegrable_iff_integrableOn_Ioc_of_le h2π).mp (hcore k).1`.
+
+Establish `hanti : ∀ θ, Antitone fun k : ℕ => f k θ`. Introduce `θ`. Use `antitone_nat_of_succ_le fun k => ?_` and prove the remaining obligations. Use `show max (F θ) (-(((k + 1 : ℕ)) : ℝ)) ≤ max (F θ) (-(k : ℝ))`. Use `push_cast`.
+
+Conclude with `max_le_max le_rfl (by linarith)`. Establish `htend : ∀ θ, Tendsto (fun k : ℕ => f k θ) atTop (𝓝 (F θ))`. Introduce `θ`. Use `tendsto_atTop_of_eventually_const (i₀ := ⌈-F θ⌉₊) fun k hk => ?_` and prove the remaining obligations. Establish `hc` using `Nat.le_ceil (-F θ)`.
+
+Establish `hk' : ((⌈-F θ⌉₊ : ℕ) : ℝ) ≤ k` using `by exact_mod_cast hk`. Conclude with `max_eq_left (by linarith)`. Establish `hlow : ∀ k : ℕ, 2 * Real.pi * φ z ≤ ∫ θ, f k θ ∂μ`. Introduce `k`. Establish `h1` using `le_trans (le_max_left (φ z) (-(k : ℝ))) (hcore k).2`.
+
+Rewrite `h1` using `[intervalIntegral.integral_of_le h2π]`. Establish `h3` using `mul_le_mul_of_nonneg_left h1 h2π`. Rewrite `h3` using `[← mul_assoc, mul_inv_cancel₀ hpi.ne', one_mul]`. Then use the resulting hypothesis. Establish `hFmeas : MeasureTheory.AEStronglyMeasurable F μ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun k => (hint k).aestronglyMeasurable) (Filter.Eventually.of_forall htend)`. Establish `hGnn : ∀ (k : ℕ) θ, 0 ≤ f 0 θ - f k θ` using `fun k θ => sub_nonneg.mpr (hanti θ (Nat.zero_le k))`.
+
+Establish `hFle : ∀ θ, F θ ≤ f 0 θ` using `fun θ => le_max_left _ _`. Establish `hGint : MeasureTheory.Integrable (fun θ => f 0 θ - F θ) μ`. Use `⟨(hint 0).aestronglyMeasurable.sub hFmeas, ?_⟩` and prove the remaining obligations. Rewrite using `[MeasureTheory.hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun θ => sub_nonneg.mpr (hFle θ))]`. Establish `hlim : ∀ θ, Tendsto (fun k : ℕ => ENNReal.ofReal (f 0 θ - f k θ)) atTop (𝓝 (ENNReal.ofReal (f 0 θ - F θ)))` using `fun θ => (ENNReal.continuous_ofReal.tendsto _).comp ((htend θ).const_sub _)`.
+
+Establish `hterm : ∀ k : ℕ, ∫⁻ θ, ENNReal.ofReal (f 0 θ - f k θ) ∂μ ≤ ENNReal.ofReal (∫ θ, f 0 θ ∂μ - 2 * Real.pi * φ z)`. Introduce `k`. Establish `e` using `MeasureTheory.ofReal_integral_eq_lintegral_ofReal (f := fun θ => f 0 θ - f k θ) ((hint 0).sub (hint k)) (Filter.Eventually.of_forall (hGnn k))`. Rewrite using `[← e, MeasureTheory.integral_sub (hint 0) (hint k)]`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [hlow k])`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `θ`. Conclude with `((hlim θ).liminf_eq).symm`. Use `_ ≤ liminf (fun k : ℕ => ∫⁻ θ, ENNReal.ofReal (f 0 θ - f k θ) ∂μ) atTop := MeasureTheory.lintegral_liminf_le' fun k => ((hint 0).sub (hint k)).aemeasurable.ennreal_ofReal`.
+
+Use `_ ≤ ENNReal.ofReal (∫ θ, f 0 θ ∂μ - 2 * Real.pi * φ z) := Filter.liminf_le_of_frequently_le' (Filter.Frequently.of_forall hterm)`. Use `_ < ⊤ := ENNReal.ofReal_lt_top`. Establish `hFint : MeasureTheory.Integrable F μ` using `((hint 0).sub hGint).congr (Filter.Eventually.of_forall fun θ => by simp)`. Establish `hlimI` using `MeasureTheory.integral_tendsto_of_tendsto_of_antitone hint hFint (Filter.Eventually.of_forall hanti) (Filter.Eventually.of_forall htend)`. Establish `hge : 2 * Real.pi * φ z ≤ ∫ θ, F θ ∂μ` using `ge_of_tendsto' hlimI hlow`.
+
+Use `⟨(intervalIntegrable_iff_integrableOn_Ioc_of_le h2π).mpr hFint, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.circleAverage_def, smul_eq_mul, intervalIntegral.integral_of_le h2π]`. Establish `h4` using `mul_le_mul_of_nonneg_left hge (inv_nonneg.mpr h2π)`. Rewrite `h4` using `[← mul_assoc, inv_mul_cancel₀ hpi.ne', one_mul]`. Then use the resulting hypothesis.
+-/
 theorem isPsh_of_locally :
     ∀ (n : ℕ) (U : Set (Fin n → ℂ)) (φ : (Fin n → ℂ) → ℝ), IsOpen U →
       (∀ z ∈ U, ∃ V : Set (Fin n → ℂ), IsOpen V ∧ z ∈ V ∧ ReciprocityTheory.AnForm.A.IsPsh V φ) →

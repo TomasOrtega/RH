@@ -11,6 +11,35 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory.PolFan.StarLab
 
+/- English proof (translation)
+Introduce `E _ _ _ H q φ lab w ψ' hDom hφ hlab hSL hw hC _ _ hS`. Use `⟨starLab lab w, isTwInv_starLab H hlab hw, fun X _ _ _ _ hX β hβ hp k hk => starLab_evalZ_smul lab w β hk (hSL.1 X hX β hβ hp k hk), fun X _ _ _ _ hX n γ' hγ' => ?_⟩` and prove the remaining obligations. Break down `hS.2.2 X hX n γ' hγ' with ⟨m, γ, hγ, hfree, hin⟩ | ⟨m, γ, β₀, m', s, h, hγ, hb₀, hp₀, hw₀, hin₀, hf, hpos, hin⟩` into its components or cases. Take `⟨m₁, δ, hδ, hli, hinj, hγδ⟩` from `hSL.2 X hX m γ hγ`. Take `⟨g, hg1, hg2, hg3⟩` from `exists_cut_of_cell_le (𝓞 E) H.bar φ X m₁ m δ γ hδ hγ hγδ`.
+
+Take `⟨m₂, s, hfs⟩` from `exists_isFaceCut δ g hg1`. Establish `hδs : IsCell H.bar φ (fun j => δ (s j))` using `GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q φ hφ X hX (hDom X) m₁ δ hδ m₂ s g hfs`. Establish `hfree' : ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → InRCone (fun j => δ (s j)) β → w.evalZ β = 0` using `fun β hb hp hc => hfree β hb hp (hg3 β hb hp (inRCone_of_sub s hc) (IsFaceCut.apply_eq_zero hfs hc))`. Establish `hcell'` using `hS.1 X hX m₂ _ hδs hfree'`. Establish `hnc : ∀ j, ¬ IsCentreRay w X (fun a b => (δ (s j) a b : ℝ))` using `fun j hc => by`.
+
+Take `⟨t, ht, β', hb', hp', hw', e⟩` from `exists_of_isCentreRay w (hδs.mem j) (hδs.nonneg j) hc`. Use `hfree' β' hb' hp' (InRCone.of_toReal_eq_smul (inRCone_self (fun j => δ (s j)) j) ht.le e)` as an intermediate fact. Rewrite `this` using `[hw']`. Evaluate the numerical expressions using `at this`. Use `⟨m₂, _, hcell', hli.comp _ s.injective, fun i j hij => ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [starLab_evalZ_of_not lab w (hnc i), starLab_evalZ_of_not lab w (hnc j)] at hij`. Conclude with `s.injective (hinj (Real.exp_injective (by linarith)))`. Conclude with `inRCone_trans (fun k => inRCone_face hfs (hγδ k) (hg2 k)) (hin j)`. Take `⟨m₁, δ, hδ, hli, hinj, hγδ⟩` from `hSL.2 X hX m γ hγ`. Establish `hγs : IsCell H.bar φ (fun j => γ (s j))` using `GlobalTheory.T.polyFan_face_cut_by_intLinearForm_isCell E H q φ hφ X hX (hDom X) m γ hγ m' s h hf`.
+
+Take `⟨g, hg1, hg2, hg3⟩` from `exists_cut_of_cell_le (𝓞 E) H.bar φ X m₁ m' δ (fun j => γ (s j)) hδ hγs (fun k => hγδ (s k))`. Take `⟨m₂, s', hfs⟩` from `exists_isFaceCut δ g hg1`. Establish `hβ₀δ : InRCone δ β₀` using `inRCone_trans hγδ hin₀`. Establish `hgpos : 0 < g β₀`. Break down `(hβ₀δ.apply_nonneg g hg1).lt_or_eq with h' | h'` into its components or cases.
+
+Conclude with `h'`. Conclude with `(hpos.ne' (IsFaceCut.apply_eq_zero hf (hg3 β₀ hb₀ hp₀ hβ₀δ h'.symm))).elim`. Establish `hcell'` using `hS.2.1 X hX m₁ δ hδ β₀ hb₀ hp₀ hw₀ hβ₀δ m₂ s' g hfs hgpos`. Establish `hnc : ∀ j, ¬ IsCentreRay w X (fun a b => (δ (s' j) a b : ℝ))` using `fun j hc => by`. Take `⟨t, ht, β', hb', hp', hw', e⟩` from `exists_of_isCentreRay w (hδ.mem (s' j)) (hδ.nonneg (s' j)) hc`.
+
+Establish `hβ'δ : InRCone δ β'` using `InRCone.of_toReal_eq_smul (inRCone_self δ (s' j)) ht.le e`. Establish `heq : β' = β₀` using `(hC X hX).2.2 m₁ δ hδ β' hb' hp' β₀ hb₀ hp₀ hw' hw₀ hβ'δ hβ₀δ`. Establish `h0 : g β' = 0` using `IsFaceCut.apply_eq_zero hfs (InRCone.of_toReal_eq_smul (inRCone_self (fun j => δ (s' j)) j) ht.le e)`. Rewrite `h0` using `[heq]`. Conclude with `hgpos.ne' h0`.
+
+Establish `hv0 : (starLab lab w).evalZ β₀ = -1` using `starLab_evalZ_of_eq_one lab w hw₀`. Establish `hvs : ∀ j, (starLab lab w).evalZ (δ (s' j)) = Real.exp (lab.evalZ (δ (s' j))) - 1` using `fun j => starLab_evalZ_of_not lab w (hnc j)`. Establish `hsp : Submodule.span ℤ (Set.range fun j => δ (s' j)) ≤ LinearMap.ker g` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact LinearMap.mem_ker.2 ((hfs.2 (s' j)).2 ⟨j, rfl⟩))`. Establish `hself : ∀ j, InRCone (Fin.cons β₀ fun j => δ (s' j) : Fin (m₂ + 1) → LinearMap.BilinForm ℤ X) (δ (s' j))` using `fun j => by simpa using inRCone_self (Fin.cons β₀ fun j => δ (s' j) : Fin (m₂ + 1) → LinearMap.BilinForm ℤ X) j.succ`. Use `⟨m₂ + 1, Fin.cons β₀ fun j => δ (s' j), hcell', ?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Use `LinearIndependent.fin_cons' β₀ _ (hli.comp _ s'.injective) fun c y hy hz => ?_` and prove the remaining obligations. Establish `h1 : g y = 0` using `LinearMap.mem_ker.1 (hsp hy)`. Establish `h2` using `congrArg g hz`. Rewrite `h2` using `[map_add, map_smul, h1, add_zero, map_zero, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_right hgpos.ne'`.
+
+Introduce `i j hij`. Simplify using `only at hij`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Consider the cases of `j using Fin.cases with`.
+
+Consider the case `zero => rfl`. Consider the case `succ j`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hv0, hvs] at hij`. Combine the linear relations using `[Real.exp_pos (lab.evalZ (δ (s' j)))]`. Consider the case `succ i`.
+
+Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, hv0, hvs] at hij`. Combine the linear relations using `[Real.exp_pos (lab.evalZ (δ (s' i)))]`. Consider the case `succ j`.
+
+Simplify using `only [Fin.cons_succ, hvs] at hij`. Conclude with `congrArg Fin.succ (s'.injective (hinj (Real.exp_injective (by linarith))))`. Use `inRCone_trans (fun k => ?_) (hin j)` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `using inRCone_self (Fin.cons β₀ fun j => δ (s' j) : Fin (m₂ + 1) → LinearMap.BilinForm ℤ X) 0`.
+
+Simplify using `only [Fin.cons_succ]`. Conclude with `inRCone_trans hself (inRCone_face hfs (hγδ (s k)) (hg2 k))`.
+-/
 theorem exists_isTwInv_simpLab_star : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (φ lab w ψ' : InvFun (𝓞 E)),
     (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) →
     IsPolyFan H.bar q φ → IsTwInv H lab → SimpLab H.bar q φ lab → IsTwInv H w → IsCentreSet H.bar q φ w →

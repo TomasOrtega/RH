@@ -11,10 +11,18 @@ namespace Formalism.L2.SG.Pf.Cnt.DualityBasisChange
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Rewrite using `[Valuation.mem_integer_iff]`. Conclude with `(Valuation.vle_one_iff (v := valuation K)).symm`.
+-/
 theorem mem_integer_iff_vle {K : Type} [Field K] [ValuativeRel K] (x : K) : x ∈ 𝒪[K] ↔ x ≤ᵥ 1 := by
   rw [Valuation.mem_integer_iff]
   exact (Valuation.vle_one_iff (v := valuation K)).symm
 
+/- English proof (translation)
+Use `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one D.host.F s fun p => ?_` and prove the remaining obligations. Establish `h1` using `hs p`. Rewrite `h1` using `[(D.s.atP p).compat]`. Establish `hint` using `((D.s.atP p).O_def _).1 h1`. Establish `hnt : Nontrivial (D.s.atP p).Ep` using `Module.nontrivial_of_finrank_pos (R := (D.s.atP p).Fp) (by rw [(D.s.atP p).rank]; norm_num)`.
+
+Establish `hinj : Function.Injective (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep)` using `by haveI := hnt; exact (algebraMap (D.s.atP p).Fp (D.s.atP p).Ep).injective`. Establish `h2 : (D.s.atP p).ιF s ∈ 𝒪[(D.s.atP p).Fp]` using `PI.IntegralDiscriminantMembership.mem_integer_of_isIntegral ((isIntegral_algebraMap_iff hinj).1 hint)`. Rewrite `h2` using `[mem_integer_iff_vle, ← map_one (D.s.atP p).ιF, (D.s.atP p).val, map_one]`. Conclude with `h2`.
+-/
 theorem mem_OF_of_loc (D : Formalism.BasicNotions.D7) (s : D.host.F)
     (hs : ∀ p : PlF D, (D.s.atP p).ιE (algebraMap D.host.F D.host.E s) ∈ (D.s.atP p).O) :
     s ∈ (algebraMap (𝓞 D.host.F) D.host.F).range := by
@@ -31,6 +39,19 @@ theorem mem_OF_of_loc (D : Formalism.BasicNotions.D7) (s : D.host.F)
   rw [mem_integer_iff_vle, ← map_one (D.s.atP p).ιF, (D.s.atP p).val, map_one] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `D x hx`. Establish `hcjO : ∀ p : PlF D, (D.s.atP p).ιE (star x) ∈ (D.s.atP p).O` using `fun p => by`. Rewrite using `[PI.UnitaryGroupMassFormula.CntFormula.star_eq_conjF, ← (D.s.atP p).cj_ιE, (D.s.atP p).O_def]`. Conclude with `((D.s.atP p).O_def _).1 (hx p) |>.map ((D.s.atP p).cj.toAlgHom.restrictScalars 𝒪[(D.s.atP p).Fp])`. Take `⟨t, ht⟩` from `(D.sp.cm.fixed (x + star x)).1 (by rw [star_add, star_star, add_comm])`.
+
+Take `⟨n, hn⟩` from `(D.sp.cm.fixed (x * star x)).1 (by rw [star_mul, star_star, mul_comm])`. Take `⟨t', ht'⟩` from `mem_OF_of_loc D t fun p => by`. Rewrite using `[ht, map_add]`. Conclude with `(D.s.atP p).O.add_mem (hx p) (hcjO p)`. Take `⟨n', hn'⟩` from `mem_OF_of_loc D n fun p => by`.
+
+Rewrite using `[hn, map_mul]`. Conclude with `(D.s.atP p).O.mul_mem (hx p) (hcjO p)`. Establish `hT : IsIntegral ℤ (x + star x)`. Rewrite using `[← ht, ← ht']`. Conclude with `map_isIntegral_int (algebraMap D.host.F D.host.E) (map_isIntegral_int _ (RingOfIntegers.isIntegral t'))`.
+
+Establish `hN : IsIntegral ℤ (x * star x)`. Rewrite using `[← hn, ← hn']`. Conclude with `map_isIntegral_int (algebraMap D.host.F D.host.E) (map_isIntegral_int _ (RingOfIntegers.isIntegral n'))`. Use `set a : 𝓞 D.host.E := ⟨x + star x, hT⟩`. Use `set b : 𝓞 D.host.E := ⟨x * star x, hN⟩`.
+
+Establish `hx' : IsIntegral (𝓞 D.host.E) x`. Use `⟨Polynomial.X ^ 2 - Polynomial.C a * Polynomial.X + Polynomial.C b, by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Use `show x ^ 2 - (x + star x) * x + x * star x = 0`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hx'`. Conclude with `Submodule.mem_one.2 ⟨y, hy⟩`.
+-/
 theorem locGlobIntE : LocGlobIntE := by
   intro D x hx
   have hcjO : ∀ p : PlF D, (D.s.atP p).ιE (star x) ∈ (D.s.atP p).O := fun p => by
@@ -60,6 +81,9 @@ theorem locGlobIntE : LocGlobIntE := by
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 hx'
   exact Submodule.mem_one.2 ⟨y, hy⟩
 
+/- English proof (translation)
+The claim follows from `notIntDens_of_steps h1 hF locGlobIntE`.
+-/
 theorem not_integral_density_of_self_dual (h1 : LocSelfDual) (hF : FrameBasisL) : NotIntDens :=
   notIntDens_of_steps h1 hF locGlobIntE
 

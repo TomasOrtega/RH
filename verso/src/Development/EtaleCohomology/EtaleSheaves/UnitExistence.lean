@@ -18,6 +18,11 @@ def LeafCocycleOfSec : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc)
   ∃ α : Cocycle ((chains R).obj E) (res R F) 0,
     ∀ (U : Scheme.{0}) (x : Sx E 0 U), ev α.1 0 0 (by simp) U x = Sec.map (resι R F) (s U ⟨x⟩)
 
+/- English proof (translation)
+Introduce `q _ E hE`. Take `⟨one, hnat, hone⟩` from `hU q`. Take `⟨α, hα⟩` from `hC (ZMod q) (tw q 0) E (fun U h => one U (hE U h)) (fun V U g hU' hV' => hnat V U g _ _)`. Use `⟨α, fun U x ζ => ?_⟩` and prove the remaining obligations. Rewrite using `[hα U x, hone U _ ζ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem LeafOneExists_of (hU : LeafUnitSec) (hC : LeafCocycleOfSec) : LateralTheory.E.LeafOneSpecPf.LeafOneExists := by
   intro q _ E hE
   obtain ⟨one, hnat, hone⟩ := hU q

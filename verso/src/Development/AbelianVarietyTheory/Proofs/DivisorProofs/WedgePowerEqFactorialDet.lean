@@ -6,6 +6,9 @@ namespace GlobalTheory.PfaffBlock
 
 open Equiv Finset
 
+/- English proof (translation)
+Establish `h` using `α.toAlternatingMap.map_swap ![w, u] (i := 0) (j := 1) (by decide)`. Establish `e : (![w, u] ∘ ⇑(Equiv.swap (0 : Fin 2) 1)) = ![u, w]`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`. Rewrite `h` using `[e]`. Simplify using `using h`.
+-/
 theorem alt_antisymm {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
     (α : T [⋀^Fin 2]→L[ℝ] ℝ) (u w : T) : α ![u, w] = -α ![w, u] := by
   have h := α.toAlternatingMap.map_swap ![w, u] (i := 0) (j := 1) (by decide)
@@ -14,10 +17,22 @@ theorem alt_antisymm {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
   rw [e] at h
   simpa using h
 
+/- English proof (translation)
+Establish `: (Finset.univ : Finset (Perm (Fin 2))) = {1, swap 0 1}` using `by decide`. Rewrite using `[this, Finset.sum_pair (by decide)]`.
+-/
 theorem sum_perm_fin_two (f : Perm (Fin 2) → ℝ) : ∑ c, f c = f 1 + f (swap 0 1) := by
   have : (Finset.univ : Finset (Perm (Fin 2))) = {1, swap 0 1} := by decide
   rw [this, Finset.sum_pair (by decide)]
 
+/- English proof (translation)
+Establish `h2 : ∀ (σ : Perm (Fin g × Fin 2)) i, A (σ (i, 0)) (σ (i, 1)) = ∑ c : Perm (Fin 2), ((Perm.sign c : ℤ) : ℝ) * A' (σ (i, c 0)) (σ (i, c 1))`. Introduce `σ i`. Rewrite using `[hA, sum_perm_fin_two, Perm.sign_swap (by decide)]`. Simplify using `[sub_eq_add_neg]`. Establish `key : ∀ σ : Perm (Fin g × Fin 2), ∏ i, A (σ (i, 0)) (σ (i, 1)) = ∑ C : Fin g → Perm (Fin 2), ((Perm.sign (prodCongrRight C) : ℤ) : ℝ) * ∏ i, A' ((σ * prodCongrRight C) (i, 0)) ((σ * prodCongrRight C) (i, 1))`.
+
+Introduce `σ`. Repeatedly rewrite using `[h2 σ, Finset.prod_univ_sum, Perm.sign_prodCongrRight]`. Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Simplify using `[Finset.prod_mul_distrib, Perm.mul_apply, prodCongrRight_apply]`. Repeatedly rewrite using `[key, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `hC : ∀ C : Fin g → Perm (Fin 2), ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * (((Perm.sign (prodCongrRight C) : ℤ) : ℝ) * ∏ i, A' ((σ * prodCongrRight C) (i, 0)) ((σ * prodCongrRight C) (i, 1))) = ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * ∏ i, A' (σ (i, 0)) ( …`. Introduce `C`. Use `Fintype.sum_equiv (Equiv.mulRight (prodCongrRight C)) _ _ (fun σ => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Perm.sign_mul, Units.val_mul, Int.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun C _ => hC C, Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_perm, nsmul_eq_mul]`. Simplify using `[Finset.mul_sum]`.
+-/
 theorem sum_sign_prod_split {g : ℕ} (A A' : Fin g × Fin 2 → Fin g × Fin 2 → ℝ)
     (hA : ∀ x y, A x y = A' x y - A' y x) :
     ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * ∏ i, A (σ (i, 0)) (σ (i, 1)) =
@@ -56,6 +71,11 @@ def half {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (x y : Fin g × Fin 2) : ℝ
 def colPerm {g : ℕ} (p : Perm (Fin g) × Perm (Fin g)) : Perm (Fin g × Fin 2) :=
   prodCongrLeft fun c => if c = 0 then p.1 else p.2
 
+/- English proof (translation)
+Introduce `p q h`. Establish `h0 : ∀ i, p.1 i = q.1 i` using `fun i => by`. Use `congrArg (fun s : Perm (Fin g × Fin 2) => (s (i, 0)).1) h` as an intermediate fact. Simplify `this` using `[colPerm]`. Establish `h1 : ∀ i, p.2 i = q.2 i` using `fun i => by`.
+
+Use `congrArg (fun s : Perm (Fin g × Fin 2) => (s (i, 1)).1) h` as an intermediate fact. Simplify `this` using `[colPerm]`. Conclude with `Prod.ext (Equiv.ext h0) (Equiv.ext h1)`.
+-/
 theorem colPerm_injective {g : ℕ} : Function.Injective (colPerm (g := g)) := by
   intro p q h
   have h0 : ∀ i, p.1 i = q.1 i := fun i => by
@@ -66,6 +86,17 @@ theorem colPerm_injective {g : ℕ} : Function.Injective (colPerm (g := g)) := b
     simpa [colPerm] using this
   exact Prod.ext (Equiv.ext h0) (Equiv.ext h1)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hprod : ∏ i, half S (σ (i, 0)) (σ (i, 1)) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hcol : ∀ i, (σ (i, 0)).2 = 0 ∧ (σ (i, 1)).2 = 1`. Introduce `i`. Use `Finset.prod_ne_zero_iff.1 hprod i (Finset.mem_univ _)` as an intermediate fact.
+
+Unfold `half at this`. Assume the negation of the conclusion as `h`. Conclude with `this (if_neg h)`. Establish `hinj : ∀ c : Fin 2, Function.Injective fun i => (σ (i, c)).1`. Introduce `c i j hij`.
+
+Establish `hc : (σ (i, c)).2 = (σ (j, c)).2` using `by fin_cases c`. Simplify using `[(hcol i).1, (hcol j).1]`. Simplify using `[(hcol i).2, (hcol j).2]`. Use `σ.injective (Prod.ext hij hc)` as an intermediate fact. Conclude with `congrArg Prod.fst this`.
+
+Set `a : Perm (Fin g)` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (hinj 0))`. Set `b : Perm (Fin g)` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.1 (hinj 1))`. Apply `hσ` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨(a, b), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, c⟩`.
+
+Apply the tactic sequence `fin_cases c <;> simp [colPerm, a, b]`. Use `fin_cases c`. Simplify using `[colPerm, (hcol i).1]`. Simplify using `[colPerm, (hcol i).2]`.
+-/
 theorem half_term_eq_zero {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (σ : Perm (Fin g × Fin 2))
     (hσ : σ ∉ Finset.univ.image (colPerm (g := g))) :
     ((Perm.sign σ : ℤ) : ℝ) * ∏ i, half S (σ (i, 0)) (σ (i, 1)) = 0 := by
@@ -95,11 +126,21 @@ theorem half_term_eq_zero {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (σ : Perm 
     · simp [colPerm, (hcol i).1]
     · simp [colPerm, (hcol i).2]
 
+/- English proof (translation)
+Simplify using `[colPerm, half, Perm.sign_prodCongrLeft, Fin.prod_univ_two]`.
+-/
 theorem half_term_colPerm {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) (p : Perm (Fin g) × Perm (Fin g)) :
     ((Perm.sign (colPerm p) : ℤ) : ℝ) * ∏ i, half S (colPerm p (i, 0)) (colPerm p (i, 1)) =
       ((Perm.sign p.1 : ℤ) : ℝ) * ((Perm.sign p.2 : ℤ) : ℝ) * ∏ i, S (p.1 i) (p.2 i) := by
   simp [colPerm, half, Perm.sign_prodCongrLeft, Fin.prod_univ_two]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image (colPerm (g := g)))) (fun σ _ hσ => half_term_eq_zero S σ hσ), Finset.sum_image (fun p _ q _ h => colPerm_injective h)]`. Repeatedly rewrite using `[half_term_colPerm]`. Rewrite using `[Fintype.sum_prod_type]`. Establish `inner : ∀ a : Perm (Fin g), ∑ b : Perm (Fin g), ((Perm.sign a : ℤ) : ℝ) * ((Perm.sign b : ℤ) : ℝ) * ∏ i, S (a i) (b i) = S.det`. Introduce `a`.
+
+Rewrite using `[← Matrix.det_transpose, Matrix.det_apply']`. Use `(Fintype.sum_equiv (Equiv.mulRight a) _ _ (fun c => ?_)).symm` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulRight, Perm.mul_apply, Matrix.transpose_apply]`. Rewrite using `[Equiv.prod_comp a (fun j => S j (c j))]`. Establish `hs : ((Perm.sign a : ℤ) : ℝ) * ((Perm.sign (c * a) : ℤ) : ℝ) = ((Perm.sign c : ℤ) : ℝ)`.
+
+Rewrite using `[Perm.sign_mul, ← Int.cast_mul, ← Units.val_mul, mul_comm (Perm.sign c), ← mul_assoc, Int.units_mul_self, one_mul]`. Rewrite using `[hs]`. Repeatedly rewrite using `[inner]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, Fintype.card_fin, nsmul_eq_mul]`.
+-/
 theorem sum_half {g : ℕ} (S : Matrix (Fin g) (Fin g) ℝ) :
     ∑ σ : Perm (Fin g × Fin 2), ((Perm.sign σ : ℤ) : ℝ) * ∏ i, half S (σ (i, 0)) (σ (i, 1)) =
       (g.factorial : ℝ) * S.det := by
@@ -128,6 +169,11 @@ namespace GlobalTheory
 
 open GlobalTheory.PfaffBlock
 
+/- English proof (translation)
+Establish `hA : ∀ x y, α ![v x, v y] = half S x y - half S y x`. Introduce and unpack `⟨i, c⟩ ⟨j, d⟩`. Apply the tactic sequence `fin_cases c <;> fin_cases d`. Simplify using `[half, h0]`. Simplify using `[half, h01]`.
+
+Simplify using `[half, alt_antisymm α (v (i, 1)), h01]`. Simplify using `[half, h1]`. Unfold `wedgePow`. Rewrite using `[sum_sign_prod_split (fun x y => α ![v x, v y]) (half S) hA, sum_half, ← mul_assoc, one_div, inv_mul_cancel₀ (pow_ne_zero _ two_ne_zero), one_mul]`.
+-/
 theorem wedgePow_block_eq {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
     (α : T [⋀^Fin 2]→L[ℝ] ℝ) (g : ℕ) (v : Fin g × Fin 2 → T) (S : Matrix (Fin g) (Fin g) ℝ)
     (h0 : ∀ i j, α ![v (i, 0), v (j, 0)] = 0) (h1 : ∀ i j, α ![v (i, 1), v (j, 1)] = 0)
@@ -144,6 +190,9 @@ theorem wedgePow_block_eq {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T]
   rw [sum_sign_prod_split (fun x y => α ![v x, v y]) (half S) hA, sum_half, ← mul_assoc,
     one_div, inv_mul_cancel₀ (pow_ne_zero _ two_ne_zero), one_mul]
 
+/- English proof (translation)
+Introduce `α g v S` and use `wedgePow_block_eq α g v S`.
+-/
 example : ∀ {T : Type} [NormedAddCommGroup T] [NormedSpace ℝ T] (α : T [⋀^Fin 2]→L[ℝ] ℝ) (g : ℕ)
     (v : Fin g × Fin 2 → T) (S : Matrix (Fin g) (Fin g) ℝ), (∀ i j, α ![v (i, 0), v (j, 0)] = 0) →
     (∀ i j, α ![v (i, 1), v (j, 1)] = 0) → (∀ i j, α ![v (i, 0), v (j, 1)] = S i j) →

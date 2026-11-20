@@ -26,6 +26,15 @@ namespace GlobalTheory.FramePointMove
 
 open scoped Matrix
 
+/- English proof (translation)
+Establish `hinj : Function.Injective J.1.mulVec` using `fun a b h => by`. Use `congrArg (fun z => (J⁻¹).1 *ᵥ z) h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`. Establish `mem : ∀ z, J.1 *ᵥ z ∈ Q ↔ z ∈ P` using `fun z => by`. Rewrite using `[← hJ, hinj.mem_set_image]`.
+
+Establish `e : ∀ w, (J * x * J⁻¹).1 *ᵥ (J.1 *ᵥ w) = J.1 *ᵥ (x.1 *ᵥ w)` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Simplify using `[Matrix.mul_assoc]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h w hw`. Use `h _ ((mem w).2 hw)` as an intermediate fact. Rewrite `this` using `[e, mem]`. Then use the resulting hypothesis. Introduce `h y hy`. Rewrite `hy` using `[← hJ]`.
+
+Take `⟨w, hw, rfl⟩` from `hy`. Rewrite using `[e, mem]`. Conclude with `h w hw`.
+-/
 theorem conj_maps_iff {A : Type} [CommRing A] {n : ℕ} (J x : GL (Fin n) A) {P Q : Set (Fin n → A)}
     (hJ : J.1.mulVec '' P = Q) :
     (∀ y ∈ Q, (J * x * J⁻¹).1 *ᵥ y ∈ Q) ↔ ∀ w ∈ P, x.1 *ᵥ w ∈ P := by
@@ -48,6 +57,9 @@ theorem conj_maps_iff {A : Type} [CommRing A] {n : ℕ} (J x : GL (Fin n) A) {P 
     rw [e, mem]
     exact h w hw
 
+/- English proof (translation)
+Establish `hinv : (J * x * J⁻¹)⁻¹ = J * x⁻¹ * J⁻¹` using `by group`. Rewrite using `[hinv]`. Conclude with `conj_maps_iff J x⁻¹ hJ`.
+-/
 theorem conj_maps_inv_iff {A : Type} [CommRing A] {n : ℕ} (J x : GL (Fin n) A) {P Q : Set (Fin n → A)}
     (hJ : J.1.mulVec '' P = Q) :
     (∀ y ∈ Q, ((J * x * J⁻¹)⁻¹).1 *ᵥ y ∈ Q) ↔ ∀ w ∈ P, (x⁻¹).1 *ᵥ w ∈ P := by
@@ -57,6 +69,15 @@ theorem conj_maps_inv_iff {A : Type} [CommRing A] {n : ℕ} (J x : GL (Fin n) A)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D V β Λ N hβ`. Take `⟨β₀, -, hβ₀⟩` from `GlobalTheory.T.exists_baseFrame_selfDual_hermitianFrameLattice D V`. Take `⟨j, hj, -⟩` from `GlobalTheory.FinAdIdent.exists_latIsom V V rfl (frameLat V) Λ β₀ β 1 N hβ₀ hβ ∅ (fun _ h => absurd h (Set.notMem_empty _))`. Take `⟨j', h1, h2⟩` from `GlobalTheory.FinAdIdent.exists_inv hj.1.1`. Set `J : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)` to `⟨j, j', h1, h2⟩`.
+
+Establish `hJ : J ∈ Formalism.L2.DIV.UA D.sp.cm V.gram` using `hj.1.2`. Take `⟨k, hk, e⟩` from `GlobalTheory.AdIsomCorrection.exists_finE V J hJ`. Use `⟨⟨k, hk⟩, ?_, fun g => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsLatIsom V V (frameLat V) Λ (finE V k).val`. Rewrite using `[e]`.
+
+Conclude with `hj`. Establish `hg : finE V ((⟨k, hk⟩ * g * ⟨k, hk⟩⁻¹ : GfC V) : GA D V) = J * finE V (g : GA D V) * J⁻¹`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, e]`. Establish `hJP : J.1.mulVec '' (Formalism.L2.Herm.hatL (F` using `D.host.F) (frameLat V) : Set _) = (Formalism.L2.Herm.hatL (F := D.host.F) Λ : Set _) := hj.2`. Rewrite using `[hg, GlobalTheory.LevSplit.mem_St_iff β Λ hβ.1]`.
+
+Establish `hs` using `GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β₀ (frameLat V) hβ₀.1 (g : GA D V)`. Rewrite `hs` using `[GlobalTheory.LevSplit.mem_St_iff β₀ (frameLat V) hβ₀.1]`. Use `Iff.trans ?_ hs` and prove the remaining obligations. Conclude with `and_congr (conj_maps_iff J _ hJP) (conj_maps_inv_iff J _ hJP)`.
+-/
 theorem exists_point_carrying_frameLat : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsBaseFrame V β Λ N → ∃ a : GfC V, GlobalTheory.IndefiniteRowSideFullHecke.IsometryCarriesCharacter.IsLatIsom V V (frameLat V) Λ (finE V (a : GA D V)).val ∧ ∀ g : GfC V, finE V ((a * g * a⁻¹ : GfC V) : GA D V) ∈ St β ↔ ∀ v, finLoc V v g ∈ Kv V v := by
   intro D V β Λ N hβ
   obtain ⟨β₀, -, hβ₀⟩ := GlobalTheory.T.exists_baseFrame_selfDual_hermitianFrameLattice D V

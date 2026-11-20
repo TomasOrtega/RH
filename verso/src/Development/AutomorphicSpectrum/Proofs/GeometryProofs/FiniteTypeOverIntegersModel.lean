@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.ChartFType
 
+/- English proof (translation)
+Establish `hC : (algebraMap ℤ C).FiniteType` using `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `hE : (E.symm.toRingHom).FiniteType` using `RingHom.FiniteType.of_surjective _ E.symm.surjective`. Establish `h1 : ((E.symm.toRingHom).comp (algebraMap ℤ C)).FiniteType` using `hE.comp hC`. Establish `h2 : f.comp (Int.castRingHom A) = (E.symm.toRingHom).comp (algebraMap ℤ C)` using `RingHom.ext_int _ _`. Rewrite `h1` using `[← h2]`.
+
+Conclude with `RingHom.FiniteType.of_comp_finiteType h1`.
+-/
 theorem finiteType_of_equiv {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra ℤ C]
     [Algebra.FiniteType ℤ C] (E : B ≃+* C) (g : ℤ →+* A) (f : A →+* B) : f.FiniteType := by
   have hC : (algebraMap ℤ C).FiniteType := RingHom.finiteType_algebraMap.2 inferInstance
@@ -18,6 +23,17 @@ theorem finiteType_of_equiv {A B C : Type} [CommRing A] [CommRing B] [CommRing C
   rw [← h2] at h1
   exact RingHom.FiniteType.of_comp_finiteType h1
 
+/- English proof (translation)
+Introduce `X Ω _ ξ κ _ x hall T`. Use `⟨specZIsTerminal.from X, ?_, ?_, specZIsTerminal.hom_ext _ _⟩` and prove the remaining obligations. Establish `hQ` using `(RingHom.finiteType_stableUnderComposition.stableUnderCompositionWithLocalizationAway RingHom.finiteType_holdsForLocalizationAway).1`. Rewrite using `[HasRingHomProperty.iff_exists_appLE (P := @LocallyOfFiniteType) hQ]`. Introduce `q`.
+
+Take `⟨c, hcq⟩` from `T.cover ⟨q, hall q⟩`. Take `⟨U, hUa, hU⟩` from `T.affine c hcq.1`. Establish `hqU : q ∈ U` using `(hU q).2 ⟨hall q, hcq⟩`. Establish `hg : genPt ξ ∈ U` using `(hall q).mem_open U.isOpen hqU`. Take `⟨E, -⟩` from `GlobalTheory.CompanionTheory.Ar.ChartSmooth.exists_secEquiv hall T hcq.1 hU hg`.
+
+Use `haveI : Algebra.FiniteType ℤ (Algebra.adjoin ℤ (Set.range fun j => x j / x c)) := (Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩)`. Conclude with `⟨⟨⊤, isAffineOpen_top _⟩, ⟨U, hUa⟩, hqU, by simp, finiteType_of_equiv E (Int.castRingHom _) _⟩`. Rewrite using `[quasiCompact_iff_compactSpace] choose U hUa hU using T.affine`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hcov : (Set.univ : Set X) = ⋃ (c : κ) (hc : x c ≠ 0), (U c hc : Set X)`.
+
+Use extensionality with `q`. Simplify using `only [Set.mem_univ, Set.mem_iUnion, true_iff]`. Take `⟨c, hcq⟩` from `T.cover ⟨q, hall q⟩`. Conclude with `⟨c, hcq.1, (hU c hcq.1 q).2 ⟨hall q, hcq⟩⟩`. Rewrite using `[hcov]`.
+
+Conclude with `isCompact_iUnion fun c => isCompact_iUnion fun hc => (hUa c hc).isCompact`.
+-/
 theorem main : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (κ : Type) [Finite κ] (x : κ → Ω), (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ x → ∃ s : X ⟶ Spec (CommRingCat.of ℤ), LocallyOfFiniteType s ∧ QuasiCompact s ∧ ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap ℤ Ω)) := by
   intro X Ω _ ξ κ _ x hall T
   refine ⟨specZIsTerminal.from X, ?_, ?_, specZIsTerminal.hom_ext _ _⟩

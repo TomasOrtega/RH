@@ -60,6 +60,9 @@ structure TwPAtG {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : �
   chi_g : ∀ u μ hμ (κ : (P.cls u μ hμ).lev.U) (κ' : (F u).clsP.lev.U), κ.1 = κ'.1 →
     (∀ v ∈ T.Q μ, bc (prV (E := D.host.E) v) κ.1 = 1) → (P.cls u μ hμ).lev.chi κ = (F u).clsP.lev.chi κ'
 
+/- English proof (translation)
+The claim follows from `(P.val u μ hμ).lat w (Or.inr hw) x`.
+-/
 theorem TwPTied.latT {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : ∀ u, FormsTied D u} {W : TwFormsTied D Tw T F}
     {Lv : TwistedLevelData W} (P : TwPTied Lv) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) (w : D.what₂.places.Pl)
     (hw : D.what₂.places.resChar w = (D.mem u).A.T) (x : (Tw.fm u μ).ptLat.V) :
@@ -70,6 +73,13 @@ theorem TwPTied.latT {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F 
           fnOf _ (shiftOf (sgTG (Tw.fm u μ))) (atInf (embT D) (B⁻¹ : GL (Fin (D.R.N D.R.m - 1)) D.host.E).1) Pc :=
   (P.val u μ hμ).lat w (Or.inr hw) x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Establish `h : ((Tw.fm u μ).sg τ).w = ((D.fm u).sg τ).w`. Use function extensionality and compare the values at `i`. Establish `h1` using `(P.val u μ hμ).sg τ i`. Establish `h2` using `(F u).valP.sg τ i`.
+
+Conclude with `h1.trans h2.symm` after adjusting the coercions. Consider the cases of `h1 : (Tw.fm u μ).sg τ`. Consider the cases of `h2 : (D.fm u).sg τ`. Simplify using `only [h1, h2] at h`. Substitute `h` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem TwPTied.sg_eq {Tw : TwForms D} {T : Formalism.L2.Herm.TwChTied D inQ} {F : ∀ u, FormsTied D u} {W : TwFormsTied D Tw T F}
     {Lv : TwistedLevelData W} (P : TwPTied Lv) (u : D.what₂.Word) (μ : D.what₂.Tup) (hμ : μ ≠ D.what₂.mu0) :
     (Tw.fm u μ).sg = (D.fm u).sg := by

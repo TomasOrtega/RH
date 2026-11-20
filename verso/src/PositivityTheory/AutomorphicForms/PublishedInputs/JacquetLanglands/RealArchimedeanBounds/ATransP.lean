@@ -8,6 +8,13 @@ open scoped Matrix NNReal
 
 namespace UpperTheory.Esk
 
+/- English proof (translation)
+Introduce `F _ _ _`. Set `b` to `mixedEmbedding.latticeBasis F`. Use `⟨(∑ i, ‖b i‖) + 1, by positivity, fun x => ?_⟩` and prove the remaining obligations. Set `p : mixedEmbedding.mixedSpace F` to `(fun w => x w.1, 0)`. Establish `hm : (ZSpan.floor b p : mixedEmbedding.mixedSpace F) ∈ Submodule.span ℤ (Set.range b)` using `(ZSpan.floor b p).2`.
+
+Rewrite `hm` using `[mixedEmbedding.mem_span_latticeBasis]`. Take `⟨s, hs⟩` from `hm`. Use `⟨-(s : F), (RingOfIntegers.isIntegral_coe s).neg, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `ZSpan.norm_fract_le b p`. Establish `h2 : (ZSpan.fract b p).1 ⟨v, IsTotallyReal.isReal v⟩ = x v + sg v (-(s : F))`.
+
+Rewrite using `[ZSpan.fract_apply, ← hs]`. Simplify using `[p, sg, sub_eq_add_neg]`. Establish `h3 : ‖(ZSpan.fract b p).1 ⟨v, IsTotallyReal.isReal v⟩‖ ≤ ‖ZSpan.fract b p‖` using `(norm_le_pi_norm _ _).trans (norm_fst_le _)`. Rewrite `h3` using `[h2, Real.norm_eq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem aTrans : ATrans := by
   intro F _ _ _
   classical

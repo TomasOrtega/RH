@@ -18,6 +18,9 @@ def rig0 (L : LvDat C0 CE1 CE2 mu X β) (a0 : Fin (numSeg X.TT) → ℕ) (j0 : F
 def rig (L : LvDat C0 CE1 CE2 mu X β) (a0 : Fin (numSeg X.TT) → ℕ) (j0 : Fin (numSeg X.TT)) : MonH X :=
   rig0 L a0 j0 + Finsupp.single ((topStart X j0, true), 0) X.c
 
+/- English proof (translation)
+Rewrite using `[← Finsupp.smul_single_one, map_nsmul, smul_eq_mul]`. Use `congr 1`. Use `show degUS (hhLetters X.TT) 1 (Finsupp.single v 1) = wN X v`. Rewrite using `[Formalism.MainNotions.LemmaBAlt.degUS_single]`. Both sides reduce to the same expression.
+-/
 theorem ndHom_single (v : VarH X) (n : ℕ) : ndHom X (Finsupp.single v n) = n * wN X v := by
   rw [← Finsupp.smul_single_one, map_nsmul, smul_eq_mul]
   congr 1
@@ -25,12 +28,30 @@ theorem ndHom_single (v : VarH X) (n : ℕ) : ndHom X (Finsupp.single v n) = n *
   rw [Formalism.MainNotions.LemmaBAlt.degUS_single]
   rfl
 
+/- English proof (translation)
+Use `show ndHom X (rig L a0 j0) = 0`. Unfold `rig rig0 rPl`. Simplify using `only [map_add, map_sum, ndHom_single, normal_weight_vector_zero_eq_zero, wN_covS, mul_zero, Finset.sum_const_zero, add_zero]`.
+-/
 theorem nd_rig (L : LvDat C0 CE1 CE2 mu X β) (a0 : Fin (numSeg X.TT) → ℕ) (j0 : Fin (numSeg X.TT)) :
     ndM X (rig L a0 j0) = 0 := by
   show ndHom X (rig L a0 j0) = 0
   unfold rig rig0 rPl
   simp only [map_add, map_sum, ndHom_single, normal_weight_vector_zero_eq_zero, wN_covS, mul_zero, Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Establish `h1 : Std = ∑ j, stdE L j`. Establish `: (monomial Std (1 : KK O) : RHH O X) = monomial (∑ j, stdE L j) 1`. Rewrite using `[hStd, monomial_sum_one]`. Conclude with `Finset.prod_congr rfl fun j _ => stdPoly_eq O L j (hsg j)`. Conclude with `monomial_left_injective (one_ne_zero) this`.
+
+Rewrite using `[h1]`. Use `set u1 : Fin (numSeg X.TT) → ℕ := fun j => X.p ^ segG X.TT j * (∑ i : Fin (segS X.TT j), (β j).sg i) + (∑ i : Fin (segS X.TT j), X.p ^ (segDists X.TT j).get i * ((∑ c : Fin X.m, (β j).rz i c.succ) + (β j).ry i 0)) + X.c * (X.m * (X.p ^ segG X.TT j - 1)) with hu1`. Establish `hb : ∀ j, bMk C0 CE1 CE2 X β j = Finsupp.single ((topStart X j, true), 0) (u1 j) + nPart C0 CE1 CE2 X β j`. Introduce `j`. Unfold `bMk nPart`.
+
+Rewrite using `[add_assoc]`. Establish `hus : ∀ j, usedX X β a0 j0 j = (X.seg C0 CE1 CE2 j).Qj X.p * a0 j + u1 j + (if j = j0 then X.c else 0)`. Introduce `j`. Unfold `usedX`. Use `show _ = X.p ^ segG X.TT j * a0 j + u1 j + _`.
+
+Simplify using `only [hu1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hX : ∑ j, Finsupp.single ((topStart X j, true), (0 : Fin (X.m + 1))) (usedX X β a0 j0 j) = (∑ j, Finsupp.single ((topStart X j, true), (0 : Fin (X.m + 1))) ((X.seg C0 CE1 CE2 j).Qj X.p * a0 j)) + (∑ j, Finsupp.single ((topStart X j, true), (0 : Fin (X.m + 1))) (u1 j)) + Finsupp.s …`. Simplify using `only [hus, Finsupp.single_add, Finset.sum_add_distrib]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_eq_single j0]`. Rewrite using `[if_pos rfl]`. Introduce `j _ hj`. Rewrite using `[if_neg hj, Finsupp.single_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Establish `hrot : ∑ j, Finsupp.single ((topStart X j, true), (0 : Fin (X.m + 1))) (usedX X β a0 j0 j) = ∑ j, Finsupp.single ((topEnd X j, true), (0 : Fin (X.m + 1))) (usedX X β a0 j0 (rot _ j))` using `((Equiv.ofBijective _ (rot_bij (numSeg X.TT))).sum_comp (fun j => Finsupp.single ((topStart X j, true), (0 : Fin (X.m + 1))) (usedX X β a0 j0 j))).symm`. Establish `hz : ∑ j, Finsupp.single ((topEnd X j, true), (0 : Fin (X.m + 1))) (segAPlus X.TT X.aT j - (β j).oPlus) = (∑ j, Finsupp.single ((topEnd X j, true), (0 : Fin (X.m + 1))) (segAPlus X.TT X.aT j - (β j).oPlus - usedX X β a0 j0 (rot _ j))) + ∑ j, Finsupp.single ((topEnd X j, true), (0 …`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finsupp.single_add, Nat.sub_add_cancel (hroom j)]`. Unfold `rig rig0 stdE`. Simplify using `only [hb, Finset.sum_add_distrib]`. Rewrite using `[hz, ← hrot, hX]`. Normalize the expressions using the abelian group laws.
+-/
 theorem std_eq (O : Type) [CommRing O] [IsDomain O] (L : LvDat C0 CE1 CE2 mu X β) (a0 : Fin (numSeg X.TT) → ℕ)
     (j0 : Fin (numSeg X.TT))
     (hsg : ∀ j (i : Fin (segS X.TT j)), ¬ (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma → (β j).sg i = 0)
@@ -92,6 +113,9 @@ section Tot
 variable {σ K : Type} [CommRing K] {J : Type} [Fintype J] {A : J → Type} [∀ j, Fintype (A j)] {B : J → Type}
   [∀ j, Fintype (B j)] {M : Type} [Fintype M]
 
+/- English proof (translation)
+Establish `h1` using `IsWeightedHomogeneous.prod Finset.univ (fun j => ∏ a, sC j a) (fun j => ∑ a, dC j a) (fun j _ => IsWeightedHomogeneous.prod Finset.univ (sC j) (dC j) fun a _ => hC j a)`. Establish `h2` using `IsWeightedHomogeneous.prod Finset.univ (fun j => ∏ i, sH j i ^ lv j i) (fun j => ∑ i, lv j i * dH j i) (fun j _ => IsWeightedHomogeneous.prod Finset.univ (fun i => sH j i ^ lv j i) (fun i => lv j i * dH j i) fun i _ => by simpa only [smul_eq_mul] using (hH j i).pow (lv j i))`. Establish `h3` using `IsWeightedHomogeneous.prod Finset.univ (fun a => sM a ^ mult a) (fun a => mult a * dM a) fun a _ => by simpa only [smul_eq_mul] using (hM a).pow (mult a)`. Conclude with `hR.mul (h1.mul (h2.mul h3))`.
+-/
 theorem wh_total (ω : σ → ℕ) {sR : MvPolynomial σ K} {dR : ℕ} (hR : IsWeightedHomogeneous ω sR dR)
     {sC : ∀ j, A j → MvPolynomial σ K} {dC : ∀ j, A j → ℕ} (hC : ∀ j a, IsWeightedHomogeneous ω (sC j a) (dC j a))
     {sH : ∀ j, B j → MvPolynomial σ K} {dH : ∀ j, B j → ℕ} (hH : ∀ j i, IsWeightedHomogeneous ω (sH j i) (dH j i))

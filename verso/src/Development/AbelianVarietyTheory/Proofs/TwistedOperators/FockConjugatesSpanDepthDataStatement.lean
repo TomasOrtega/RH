@@ -8,5 +8,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Asc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjDataTotal.fockTot | exact GlobalTheory.ConjDataTotal.fockTot | (intros; apply GlobalTheory.ConjDataTotal.fockTot <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fockConjugates_span_depth_data : FockTot := by
   first | exact @GlobalTheory.ConjDataTotal.fockTot | exact GlobalTheory.ConjDataTotal.fockTot | (intros; apply GlobalTheory.ConjDataTotal.fockTot <;> assumption)

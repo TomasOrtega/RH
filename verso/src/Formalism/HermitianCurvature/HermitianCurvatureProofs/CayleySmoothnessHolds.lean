@@ -28,18 +28,29 @@ def cayMC {m : ℕ} (g₀ X : MC m) : MC m := g₀ * ((1 + X) * Ring.inverse (1 
 
 def cinvMC {m : ℕ} (a Y : MC m) : MC m := (a * Y - 1) * Ring.inverse (a * Y + 1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `X`. Use `show g₀ * ((1 + X) * (1 - X)⁻¹) = g₀ * ((1 + X) * Ring.inverse (1 - X))`. Rewrite using `[Matrix.nonsing_inv_eq_ringInverse]`.
+-/
 theorem cay_eq_MC {k r : ℕ} (g₀ : B.Mat k r) :
     (fun X : B.Mat k r => g₀ * cay X) = fun X => (toMC _).symm (cayMC (toMC _ g₀) (toMC _ X)) := by
   funext X
   show g₀ * ((1 + X) * (1 - X)⁻¹) = g₀ * ((1 + X) * Ring.inverse (1 - X))
   rw [Matrix.nonsing_inv_eq_ringInverse]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Use `show (g₀⁻¹ * m - 1) * (g₀⁻¹ * m + 1)⁻¹ = (g₀⁻¹ * m - 1) * Ring.inverse (g₀⁻¹ * m + 1)`. Rewrite using `[Matrix.nonsing_inv_eq_ringInverse (g₀⁻¹ * m + 1)]`.
+-/
 theorem cayInv_eq_MC {k r : ℕ} (g₀ : B.Mat k r) :
     (fun m : B.Mat k r => cayInv (g₀⁻¹ * m)) = fun m => (toMC _).symm (cinvMC (toMC _ g₀⁻¹) (toMC _ m)) := by
   funext m
   show (g₀⁻¹ * m - 1) * (g₀⁻¹ * m + 1)⁻¹ = (g₀⁻¹ * m - 1) * Ring.inverse (g₀⁻¹ * m + 1)
   rw [Matrix.nonsing_inv_eq_ringInverse (g₀⁻¹ * m + 1)]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hX`. Establish `h1 : ContDiffAt ℝ ∞ (fun Y : MC m => Ring.inverse (1 - Y)) X`. Use `contDiffAt_ringInverse (𝕜 := ℝ) (n := ∞) u` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this.comp X (contDiffAt_const.sub contDiffAt_id)`.
+
+Conclude with `contDiffAt_const.mul ((contDiffAt_const.add contDiffAt_id).mul h1)`.
+-/
 theorem cayMC_contDiffAt {m : ℕ} (g₀ X : MC m) (hX : IsUnit (1 - X)) : ContDiffAt ℝ ∞ (cayMC g₀) X := by
   obtain ⟨u, hu⟩ := hX
   have h1 : ContDiffAt ℝ ∞ (fun Y : MC m => Ring.inverse (1 - Y)) X := by
@@ -48,6 +59,11 @@ theorem cayMC_contDiffAt {m : ℕ} (g₀ X : MC m) (hX : IsUnit (1 - X)) : ContD
     exact this.comp X (contDiffAt_const.sub contDiffAt_id)
   exact contDiffAt_const.mul ((contDiffAt_const.add contDiffAt_id).mul h1)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hY`. Establish `h1 : ContDiffAt ℝ ∞ (fun Z : MC m => Ring.inverse (a * Z + 1)) Y`. Use `contDiffAt_ringInverse (𝕜 := ℝ) (n := ∞) u` as an intermediate fact. Rewrite `this` using `[hu]`. Conclude with `this.comp Y ((contDiffAt_const.mul contDiffAt_id).add contDiffAt_const)`.
+
+Conclude with `((contDiffAt_const.mul contDiffAt_id).sub contDiffAt_const).mul h1`.
+-/
 theorem cinvMC_contDiffAt {m : ℕ} (a Y : MC m) (hY : IsUnit (a * Y + 1)) : ContDiffAt ℝ ∞ (cinvMC a) Y := by
   obtain ⟨u, hu⟩ := hY
   have h1 : ContDiffAt ℝ ∞ (fun Z : MC m => Ring.inverse (a * Z + 1)) Y := by
@@ -56,6 +72,13 @@ theorem cinvMC_contDiffAt {m : ℕ} (a Y : MC m) (hY : IsUnit (a * Y + 1)) : Con
     exact this.comp Y ((contDiffAt_const.mul contDiffAt_id).add contDiffAt_const)
   exact ((contDiffAt_const.mul contDiffAt_id).sub contDiffAt_const).mul h1
 
+/- English proof (translation)
+Introduce `k r g₀`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((Units.isOpen (R := MC (2 * r + k + 1))).preimage (continuous_const.sub continuous_id)).preimage (toMC _).continuous`. Conclude with `((Units.isOpen (R := MC (2 * r + k + 1))).preimage ((continuous_const.mul continuous_id).add continuous_const)).preimage (toMC _).continuous`. Rewrite using `[cay_eq_MC g₀]`.
+
+Introduce `X hX`. Establish `hX' : IsUnit (1 - toMC _ X)` using `hX`. Conclude with `((toMC _).symm.contDiff.contDiffAt.comp X ((cayMC_contDiffAt (toMC _ g₀) _ hX').comp X (toMC _).contDiff.contDiffAt)).contDiffWithinAt`. Rewrite using `[cayInv_eq_MC g₀]`. Introduce `m hm`.
+
+Establish `hm' : IsUnit (toMC _ g₀⁻¹ * toMC _ m + 1)` using `hm`. Conclude with `((toMC _).symm.contDiff.contDiffAt.comp m ((cinvMC_contDiffAt (toMC _ g₀⁻¹) _ hm').comp m (toMC _).contDiff.contDiffAt)).contDiffWithinAt`.
+-/
 theorem cayley_smoothness_holds : CaySmooth := by
   intro k r g₀
   refine ⟨?_, ?_, ?_, ?_⟩

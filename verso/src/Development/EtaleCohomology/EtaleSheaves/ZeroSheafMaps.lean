@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.E.LeafShMapZeroPf
 open LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Set `R : ∀ ⦃Y : B.Etale⦄ ⦃f : Y ⟶ U⦄, S f → Sieve Y` to `fun Y f hf => Classical.choose (hPQ Y f (hP Y f hf))`. Use `⟨Sieve.bind S R, (EtTop B).bind_covering hS (fun Y f hf => (Classical.choose_spec (hPQ Y f (hP Y f hf))).1), ?_⟩` and prove the remaining obligations. Introduce and unpack `U'' _ ⟨Y, g, f, hf, hg, rfl⟩`. Conclude with `(Classical.choose_spec (hPQ Y f (hP Y f hf))).2 U'' g hg`.
+-/
 theorem Cov.trans {B : Scheme.{0}} {U : B.Etale} {P Q : ∀ U' : B.Etale, (U' ⟶ U) → Prop} (h : Cov U P)
     (hPQ : ∀ U' a, P U' a → Cov U' (fun U'' b => Q U'' (b ≫ a))) : Cov U Q := by
   obtain ⟨S, hS, hP⟩ := h
@@ -27,6 +30,11 @@ def LeafGen : Prop := ∀ (B : Scheme.{0}) (q : ℕ) (H H' : SShv B q) (g : H �
   (∀ (U : B.Etale) (s : (DerivedCategory.homologyFunctor (SShv B q) 0).obj ((OU B q).obj U) ⟶ H),
     Cov U (fun U' a => (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ s ≫ g = 0)) → g = 0
 
+/- English proof (translation)
+Apply `hB B q _ _ _` to reduce the goal to its premises. Introduce `U s`. Use `Cov.trans (hA B q K U s) ?_` and prove the remaining obligations. Introduce and unpack `U' a ⟨x, hx⟩`. Use `(h U' x).mono fun U'' b hb => ?_` and prove the remaining obligations.
+
+Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, reassoc_of% hx, ← Functor.map_comp, ← Functor.map_comp, hb, Functor.map_zero]`.
+-/
 theorem zero_of (hA : EtaleLift') (hB : LeafGen) (B : Scheme.{0}) (q : ℕ) (K K' : DerivedCategory (SShv B q))
     (f : K ⟶ K')
     (h : ∀ (U : B.Etale) (x : (OU B q).obj U ⟶ K), Cov U (fun U' a => (OU B q).map a ≫ x ≫ f = 0)) :
@@ -39,6 +47,11 @@ theorem zero_of (hA : EtaleLift') (hB : LeafGen) (B : Scheme.{0}) (q : ℕ) (K K
   rw [Functor.map_comp, Functor.map_comp, Category.assoc, reassoc_of% hx, ← Functor.map_comp,
     ← Functor.map_comp, hb, Functor.map_zero]
 
+/- English proof (translation)
+Introduce `B q K K' f m h`. Establish `h0` using `zero_of hA hB B q _ _ ((shiftFunctor _ m).map f) h`. Establish `e` using `(DerivedCategory.homologyFunctor (SShv B q) (0 : ℤ)).shiftIso_hom_naturality m (0 : ℤ) m (by simp) f`. Establish `h0' : ((DerivedCategory.homologyFunctor (SShv B q) (0 : ℤ)).shift (0 : ℤ)).map ((shiftFunctor _ m).map f) = 0` using `h0`. Express the relevant statement in the definitionally equal form `((DerivedCategory.homologyFunctor (SShv B q) (0 : ℤ)).shift m).map f = 0`.
+
+Rewrite using `[← cancel_epi (((DerivedCategory.homologyFunctor (SShv B q) (0 : ℤ)).shiftIso m (0 : ℤ) m (by simp)).hom.app K), comp_zero, ← e, h0', zero_comp]`.
+-/
 theorem LeafShMapZero_of (hA : EtaleLift') (hB : LeafGen) : LeafShMapZero := by
   intro B q K K' f m h
   have h0 := zero_of hA hB B q _ _ ((shiftFunctor _ m).map f) h

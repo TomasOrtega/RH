@@ -15,6 +15,25 @@ section Abstract
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `choose tt yy hty using H`. Set `step : {W : Submodule ℂ V // FiniteDimensional ℂ W} → {W : Submodule ℂ V // FiniteDimensional ℂ W}` to `fun A => ⟨A.1 ⊔ Z (tt A.1 A.2), by haveI := A.2; haveI := hZ (tt A.1 A.2); infer_instance⟩`. Set `acc : ℕ → {W : Submodule ℂ V // FiniteDimensional ℂ W}` to `fun n => Nat.rec ⟨⊥, inferInstance⟩ (fun _ A => step A) n`. Establish `hacc : ∀ n, (acc (n + 1)).1 = (acc n).1 ⊔ Z (tt (acc n).1 (acc n).2)` using `fun n => rfl`. Set `Wn : ℕ → Submodule ℂ V` to `fun n => (acc n).1`.
+
+Set `t : ℕ → T` to `fun n => tt (acc n).1 (acc n).2`. Set `y : ℕ → ι` to `fun n => yy (acc n).1 (acc n).2`. Establish `hnot : ∀ n, s (t n) (y n) ∉ Wn n` using `fun n => hty (acc n).1 (acc n).2`. Establish `hmono : Monotone Wn` using `monotone_nat_of_le_succ fun n => by show (acc n).1 ≤ (acc (n + 1)).1`. Rewrite using `[hacc]`.
+
+Conclude with `le_sup_left`. Establish `hZle : ∀ n, Z (t n) ≤ Wn (n + 1)` using `fun n => by show Z (t n) ≤ (acc (n + 1)).1`. Rewrite using `[hacc]`. Conclude with `le_sup_right`. Set `Winf : Submodule ℂ V` to `⨆ n, Wn n`.
+
+Establish `hWle : ∀ n, Wn n ≤ Winf` using `fun n => le_iSup Wn n`. Take `⟨Q, hQ⟩` from `Submodule.exists_isCompl Winf`. Establish `hnot' : ∀ n, s (t n) (y n) ∉ Wn n ⊔ Q`. Introduce `n hmem`. Take `⟨w, hw, q, hq, hwq⟩` from `Submodule.mem_sup.1 hmem`.
+
+Establish `hh : s (t n) (y n) ∈ Winf` using `hWle (n + 1) (hZle n (hs _ _))`. Establish `hqW : q ∈ Winf`. Establish `: q = s (t n) (y n) - w` using `by rw [← hwq]; abel`. Rewrite using `[this]`. Conclude with `Winf.sub_mem hh (hWle n hw)`.
+
+Establish `hq0 : q = 0` using `(Submodule.disjoint_def.1 hQ.disjoint) q hqW hq`. Apply `hnot n` to reduce the goal to its premises. Rewrite using `[← hwq, hq0, add_zero]`. Conclude with `hw`. Establish `key : ∀ n, ∃ b : Module.Dual ℂ V, b (s (t n) (y n)) = 1 ∧ ∀ v ∈ Wn n ⊔ Q, b v = 0`.
+
+Introduce `n`. Take `⟨f, hf, hmap⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem (hnot' n) inferInstance`. Use `⟨(f (s (t n) (y n)))⁻¹ • f, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hf]`. Establish `h1 : f v ∈ (Wn n ⊔ Q).map f` using `Submodule.mem_map_of_mem hv`.
+
+Rewrite `h1` using `[hmap]`. Rewrite using `[LinearMap.smul_apply, (Submodule.mem_bot ℂ).1 h1, smul_zero]`. Use `choose β hβ1 hβ0 using key`. Use `⟨t, y, β, hβ1, fun n m hnm v hv => hβ0 m v (Submodule.mem_sup_left (hmono hnm (hZle n hv))), fun v => ?_⟩` and prove the remaining obligations. Establish `hv : v ∈ Winf ⊔ Q` using `by rw [hQ.sup_eq_top]; exact Submodule.mem_top`.
+
+Take `⟨w, hw, q, hq, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨N, hN⟩` from `(Submodule.mem_iSup_of_directed Wn hmono.directed_le).1 hw`. Use `eventually_atTop.2 ⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hβ0 n w (Submodule.mem_sup_left (hmono hn hN)), hβ0 n q (Submodule.mem_sup_right hq), add_zero]`.
+-/
 theorem glide {T ι : Type} (Z : T → Submodule ℂ V) (hZ : ∀ t, FiniteDimensional ℂ (Z t))
     (s : T → ι → V) (hs : ∀ t y, s t y ∈ Z t)
     (H : ∀ W : Submodule ℂ V, FiniteDimensional ℂ W → ∃ t y, s t y ∉ W) :
@@ -69,6 +88,9 @@ noncomputable def triSol (c : ℕ → ℕ → ℂ) : ℕ → ℂ
   | n => (n : ℂ) - ∑ m : Fin n, triSol c m * c n m
 decreasing_by exact m.2
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_succ, hc, mul_one]`. Use `conv_lhs => rw [triSol]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun m => triSol c m * c n m) n]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem triSol_sum (c : ℕ → ℕ → ℂ) (hc : ∀ n, c n n = 1) (n : ℕ) :
     ∑ m ∈ Finset.range (n + 1), triSol c m * c n m = n := by
   rw [Finset.sum_range_succ, hc, mul_one]
@@ -76,6 +98,9 @@ theorem triSol_sum (c : ℕ → ℕ → ℂ) (hc : ∀ n, c n n = 1) (n : ℕ) :
   rw [Fin.sum_univ_eq_sum_range (fun m => triSol c m * c n m) n]
   ring
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `eventually_atTop.1 h`. Use `(Set.finite_Iio N).subset fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hn (show a n * u n = 0 by rw [hN n (not_lt.1 hc), mul_zero])`.
+-/
 theorem support_finite_of_eventually {u : ℕ → ℂ} (h : ∀ᶠ n in atTop, u n = 0) (a : ℕ → ℂ) :
     (Function.support fun n => a n * u n).Finite := by
   obtain ⟨N, hN⟩ := eventually_atTop.1 h
@@ -94,12 +119,24 @@ def slice (y : κ → Ainf F) : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → Af 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Both sides reduce to the same expression.
+-/
 theorem slice_pureA (y : κ → Ainf F) (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     (g : (κ → Af F) → ℂ) :
     slice F y (pureA F f g) = f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y i)) • g := by
   funext z
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, -, rfl⟩` from `hx`. Use `⟨ℂ ∙ g, inferInstance, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[slice_pureA]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self g)`. Consider the case `zero => exact ⟨⊥, inferInstance, fun y => by rw [map_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨W, hW, hxW⟩` from `hx`. Take `⟨W', hW', hxW'⟩` from `hx'`.
+
+Conclude with `⟨W ⊔ W', inferInstance, fun y => by`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (hxW y) (hxW' y)⟩`. Consider the case `smul a x _ hx`. Take `⟨W, hW, hxW⟩` from `hx`.
+
+Conclude with `⟨W, hW, fun y => by rw [map_smul]; exact Submodule.smul_mem _ _ (hxW y)⟩`.
+-/
 theorem slices_finDim (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) :
     ∃ W : Submodule ℂ ((κ → Af F) → ℂ), FiniteDimensional ℂ W ∧ ∀ y, slice F y Φ ∈ W := by
   induction hΦ using Submodule.span_induction with
@@ -120,6 +157,31 @@ theorem slices_finDim (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) :
 
 end Slices
 
+/- English proof (translation)
+Introduce `F _ _ κ _ T Ψ hΨ hb`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `choose Z hZ hZs using fun t => slices_finDim F (Ψ t) (hΨ t)`. Take `⟨t, y, β, h1, h2, h3⟩` from `glide Z hZ (fun t y => slice F y (Ψ t)) hZs (fun W hW => by obtain ⟨t, y, h⟩ := hne W hW; exact ⟨t, y, h⟩)`.
+
+Establish `hev : ∀ Φ ∈ schA F κ, ∀ᶠ n in atTop, β n (slice F (y n) Φ) = 0`. Introduce `Φ hΦ`. Take `⟨W, hW, hyW⟩` from `slices_finDim F Φ hΦ`. Take `⟨S, hS⟩` from `(Submodule.fg_iff_finiteDimensional W).2 hW`. Establish `hS' : ∀ᶠ n in atTop, ∀ x ∈ S, β n x = 0` using `(Filter.eventually_all_finset S).2 fun x _ => h3 x`.
+
+Use `filter_upwards [hS'] with n hn`. Establish `hle : W ≤ LinearMap.ker (β n)`. Rewrite using `[← hS, Submodule.span_le]`. Conclude with `fun x hx => hn x hx`. Conclude with `hle (hyW (y n))`.
+
+Set `c : ℕ → ℕ → ℂ` to `fun n m => β m (slice F (y m) (Ψ (t n)))`. Set `a : ℕ → ℂ` to `triSol c`. Set `l₀ : schA F κ →ₗ[ℂ] ℂ` to `{ toFun := fun Φ => ∑ᶠ n, a n * β n (slice F (y n) Φ.1) map_add' := fun Φ Φ' => by`. Simplify using `only [Submodule.coe_add, map_add, mul_add]`. Conclude with `finsum_add_distrib (support_finite_of_eventually (hev Φ.1 Φ.2) a) (support_finite_of_eventually (hev Φ'.1 Φ'.2) a)`.
+
+Use the proof step `map_smul' := fun r Φ => by`. Simplify using `only [Submodule.coe_smul, map_smul, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[mul_finsum]`. Conclude with `finsum_congr fun n => by ring }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend l₀`.
+
+Establish `hlv : ∀ Φ (hΦ : Φ ∈ schA F κ), l Φ = ∑ᶠ n, a n * β n (slice F (y n) Φ)` using `fun Φ hΦ => LinearMap.congr_fun hl ⟨Φ, hΦ⟩`. Establish `hadm : l ∈ (adeleClass F).adm κ`. Introduce `g hg`. Take `⟨N, hN⟩` from `eventually_atTop.1 (h3 g)`. Set `pt : ℕ → κ → mixedEmbedding.mixedSpace F` to `fun n i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y n i)`.
+
+Use `⟨∑ n ∈ Finset.range N, (a n * β n g) • (BoundedContinuousFunction.evalCLM ℂ (pt n)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => ?_⟩` and prove the remaining obligations. Establish `hmem : pureA F (⇑f) g ∈ schA F κ` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Rewrite using `[hlv _ hmem, ContinuousLinearMap.sum_apply]`. Establish `hterm : ∀ n, a n * β n (slice F (y n) (pureA F (⇑f) g)) = (a n * β n g) * f (pt n)` using `fun n => by`. Rewrite using `[slice_pureA, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hterm]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range N) ?_]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, BoundedContinuousFunction.evalCLM_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, smul_eq_mul]`.
+
+Introduce `n hn`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hc`. Conclude with `hn (show a n * β n g * f (pt n) = 0 by rw [hN n (not_lt.1 hc), mul_zero, zero_mul])`. Establish `hval : ∀ n, l (Ψ (t n)) = n`.
+
+Introduce `n`. Rewrite using `[hlv _ (hΨ (t n))]`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := Finset.range (n + 1)) ?_]`. Conclude with `triSol_sum c (fun n => h1 n) n`. Introduce `m hm`.
+
+Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hc`. Conclude with `hm (show a m * β m (slice F (y m) (Ψ (t n))) = 0 by`. Rewrite using `[h2 n m (by omega) _ (hZs (t n) (y m)), mul_zero])`. Take `⟨C, hC⟩` from `hb l hadm`.
+
+Take `⟨n, hn⟩` from `exists_nat_gt C`. Use `hC (t n)` as an intermediate fact. Rewrite `this` using `[hval, Complex.norm_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem slices_of_bounded : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (T : Type) (Ψ : T → (κ → AF F) → ℂ), (∀ t, Ψ t ∈ schA F κ) →
     (∀ l ∈ (adeleClass F).adm κ, ∃ C : ℝ, ∀ t, ‖l (Ψ t)‖ ≤ C) →
     ∃ W : Submodule ℂ ((κ → Af F) → ℂ), FiniteDimensional ℂ W ∧

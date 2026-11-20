@@ -17,6 +17,23 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 8000000
 
 open RhoH in
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL e hvac k hk`. Take `⟨𝓕, hμ⟩` from `hC.hμ`. Establish `hΨ0m : psi0 θ V n l s τ ∈ awayA θ V n l s τ` using `unitaryFinitePointsToGLFiniteAdeles_isUnitary θ V l s τ`. Establish `hl0 : ∀ τ, l τ ≠ 0` using `l_ne_zero D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl`. Establish `hmem : ∀ P : PX V.rank n, tens θ τ fr (fP (cLoc l τ) P) (psi0 θ V n l s τ) ∈ schwartzA θ V.rank n ∧ tens θ τ fr (fP (cLoc l τ) P) (psi0 θ V n l s τ) ∈ fockA θ V n l s` using `fun P => hT D n V θ l s τ ε fr hC.hθ hl0 hC.hs hC.hfr _ hΨ0m P`.
+
+Establish `hM : ∀ τ, (gramAt D V τ * s τ).IsHermitian` using `fun τ => (hC.hs τ).2.2.1`. Establish `hann1 : ∀ X, annS V l s θ τ X (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) 1).1 = 0`. Introduce `X`. Rewrite using `[phiS_val (hmem 1).1]`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[annS_tens hC.hθ hC.hfr hM l]`. Simplify using the standard rewrite rules. Establish `hann2` using `annS_stable D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs τ _ hann1 (ι k) (iota_mem_K hC.hθ hC.hι k hk)`. Rewrite `hann2` using `[hL k _ hΨ0m 1]`. Establish `hΦ : (phiS θ τ fr (cLoc l τ) (psi0 θ V n l s τ) 1).1 ∈ fockA θ V n l s`.
+
+Rewrite using `[phiS_val (hmem 1).1]`. Conclude with `(hmem 1).2`. Establish `hst` using `fock_stable D n V ψ hC.hψ χ hC.hχ hC.hη θ hC.hθ μ 𝓕 hμ ω hC.hω l hC.hl s hC.hs _ hΦ (ι k) (iota_mem_K hC.hθ hC.hι k hk)`. Rewrite `hst` using `[hL k _ hΨ0m 1]`. Take `⟨Q, hQ⟩` from `tens_slice hC.hθ hC.hfr l _ hst`.
+
+Rewrite `hann2` using `[hQ]`. Establish `hQc` using `const_of_annS hC.hθ hC.hfr hM l Q hann2`. Use `set a := evX Q 0 with ha`. Establish `hL1 : L k (fP (cLoc l τ) 1) = a • fP (cLoc l τ) 1`. Rewrite using `[hQ, hQc]`.
+
+Use function extensionality and compare the values at `u`. Simplify using `[fP, evX]`. Establish `hv` using `hvac k`. Unfold `sLd at hv`. Rewrite `hv` using `[hL1]`.
+
+Establish `hg0 : gs (cLoc l τ) (0 : Fin V.rank → Fin n → ℂ) = 1`. Simplify using `[gs]`. Establish `hf0 : fP (cLoc l τ) (1 : PX V.rank n) 0 = 1`. Simplify using `[fP, evX, hg0]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hf0, mul_one] at hv`.
+
+Rewrite using `[hL1, hv]`.
+-/
 theorem lIkvac : LIkvac := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL e hvac k hk
   classical

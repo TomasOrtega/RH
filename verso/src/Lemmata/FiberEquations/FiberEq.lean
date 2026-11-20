@@ -5,6 +5,13 @@ open scoped ComplexConjugate nonZeroDivisors
 
 namespace Bl.FiberEquations
 
+/- English proof (translation)
+Use extensionality with `φ`. Simplify using `only [mem_filter, mem_univ, true_and, mem_insert, mem_singleton]`. Use `conv_lhs => rw [← InfinitePlace.mk_embedding w, InfinitePlace.mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`.
+
+Conclude with `Or.inl h`. Use `right`. Rewrite using `[← h, ComplexEmbedding.involutive_conjugate E φ]`. Introduce and unpack `(h | h)`. Conclude with `Or.inl h`.
+
+Use `right`. Rewrite using `[h, ComplexEmbedding.involutive_conjugate E]`.
+-/
 private lemma fiber_eq {E : Type} [Field E] (w : InfinitePlace E) [DecidableEq (InfinitePlace E)]
     [DecidableEq (E →+* ℂ)] [Fintype (E →+* ℂ)] :
     ({φ | InfinitePlace.mk φ = w} : Finset (E →+* ℂ)) =
@@ -22,6 +29,13 @@ private lemma fiber_eq {E : Type} [Field E] (w : InfinitePlace E) [DecidableEq (
     · right
       rw [h, ComplexEmbedding.involutive_conjugate E]
 
+/- English proof (translation)
+Establish `h1 : ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ φ : E →+* ℂ, φ x`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := x)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Conclude with `Fintype.sum_equiv (RingHom.equivRatAlgHom (R := E) (S := ℂ)).symm _ _ (fun σ => rfl)`.
+
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, h1, Complex.ofReal_sum, ← Finset.sum_fiberwise univ (fun φ : E →+* ℂ => InfinitePlace.mk φ) (fun φ => φ x)]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Establish `hne : w.embedding ≠ ComplexEmbedding.conjugate w.embedding`. Introduce `h`.
+
+Conclude with `IsTotallyComplex.complexEmbedding_not_isReal w.embedding (ComplexEmbedding.isReal_iff.mpr h.symm)`. Rewrite using `[fiber_eq w, Finset.sum_pair hne, ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]`.
+-/
 theorem goal1 (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℝ) = ∑ w : InfinitePlace E, 2 * (w.embedding x).re := by
   classical

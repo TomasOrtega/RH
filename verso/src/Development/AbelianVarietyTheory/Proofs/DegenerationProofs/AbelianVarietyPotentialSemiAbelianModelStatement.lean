@@ -12,5 +12,8 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.SS
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SS.potModel_isSemiAbelian | exact GlobalTheory.SS.potModel_isSemiAbelian | (intros; apply GlobalTheory.SS.potModel_isSemiAbelian <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianVariety_potential_semiAbelian_model : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (K : Type) [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K] (A : Over (Spec (CommRingCat.of K))) [GrpObj A], IsAbelianScheme A → PotModel V K A (fun _ _ _ G _ => IsSemiAbelian G) := by
   first | exact @GlobalTheory.SS.potModel_isSemiAbelian | exact GlobalTheory.SS.potModel_isSemiAbelian | (intros; apply GlobalTheory.SS.potModel_isSemiAbelian <;> assumption)

@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.HodgePullBack
 
+/- English proof (translation)
+Introduce `E _ _ _ H S S' t t' f m z v' w' v w c hv hw` and use `hodgeInnerProduct_tripleMap_iff E H S t S' t' f m z v' w' v w c hv.symm hw.symm`.
+-/
 theorem hodgeInnerProduct_iff_of_abelianSchemeMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0})
     (t : SAB H S) (t' : SAB H S') (f : S' ⟶ S) (m : SABMap t' t f) (z : Sp ℂ ⟶ S') (v' w' : epsAt z ⟶ t'.G)
     (v w : epsAt (z ≫ f) ⟶ t.G) (c : ℂ), v'.left ≫ m.φ = v.left → w'.left ≫ m.φ = w.left →

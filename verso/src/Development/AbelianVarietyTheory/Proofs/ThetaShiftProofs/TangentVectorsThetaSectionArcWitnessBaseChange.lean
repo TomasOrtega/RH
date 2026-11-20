@@ -33,6 +33,9 @@ def Sq (w : LB.Iso M (M₀.pull φ)) (wD : LB.Iso M' (M.pull Φ)) (wp : LB.Iso M
 variable {w : LB.Iso M (M₀.pull φ)} {wD : LB.Iso M' (M.pull Φ)} {wp : LB.Iso M₀' (M₀.pull π)}
   {w' : LB.Iso M' (M₀'.pull φ')}
 
+/- English proof (translation)
+Introduce `Z r z j i i' k hj hi hi' hk`. Establish `hj' : π (φ' (r z)) ∈ M₀.U j` using `(congrArg (fun g => g (r z) ∈ M₀.U j) hs).mpr hj`. Rewrite using `[← T₁ Z r z j i k hj hi hk, ← T₂ Z r z j i' k hj' hi' hk]`. Conclude with `gw_heq hs.symm e r z j k`.
+-/
 theorem sq_of_tri (hs : φ' ≫ π = Φ ≫ φ) {w₁ : LB.Iso M' (M₀.pull (Φ ≫ φ))} {w₂ : LB.Iso M' (M₀.pull (φ' ≫ π))}
     (e : HEq w₁ w₂) (T₁ : Tri w wD w₁) (T₂ : Tri wp w' w₂) : Sq w wD wp w' := by
   intro Z r z j i i' k hj hi hi' hk
@@ -40,6 +43,15 @@ theorem sq_of_tri (hs : φ' ≫ π = Φ ≫ φ) {w₁ : LB.Iso M' (M₀.pull (Φ
   rw [← T₁ Z r z j i k hj hi hk, ← T₂ Z r z j i' k hj' hi' hk]
   exact gw_heq hs.symm e r z j k
 
+/- English proof (translation)
+Establish `P` using `ConstGrp.pmaps_of_genRelR ((isGen_iff w).1 hw) hM hM₀ (DVR.pullGen_isGen _ _ _ _ ht v) (DVR.pullGen_isGen _ _ _ _ hν κ) H`. Use `(genRelR_iff w' _ _).2 ⟨hp, fun j j₀ h₀ h₁ => congrArg Units.val ?_⟩` and prove the remaining obligations. Use `set z := cpt A'`. Use `choose i hi using fun k => exists_chart hM (Φ ((v' ≫ o' k) z))`. Use `choose p hp' using fun k => exists_chart hM₀ (φ (Φ ((v' ≫ o' k) z)))`.
+
+Establish `c₁ : ∀ k, (v' ≫ o' k) ≫ Φ = q ≫ v ≫ o k` using `fun k => by`. Rewrite using `[Category.assoc, ho, ← Category.assoc, hv, Category.assoc]`. Establish `c₂ : ∀ k, (v ≫ o k) (q z) = Φ ((v' ≫ o' k) z)` using `fun k => congrArg (fun f => f z) (c₁ k).symm`. Establish `c₃ : ∀ k, g' k (κ' z) = φ' ((v' ≫ o' k) z)` using `fun k => congrArg (fun f => f z) (hp k).symm`. Establish `c₄ : ∀ y, π (φ' y) = φ (Φ y)` using `fun y => congrArg (fun f => f y) hs`.
+
+Establish `e₁` using `Hν _ κ' z p j₀ (fun k => by rw [c₃, c₄]; exact hp' k) (fun k => by rw [c₃]; exact h₀ k)`. Establish `e₂` using `P _ q z p i (fun k => by rw [c₂]; exact hp' k) (fun k => by rw [c₂]; exact hi k)`. Establish `e₃` using `Ht _ v' z i j hi h₁`. Rewrite `e₂` using `[Category.comp_id, gm_pullGen', gm_pullGen', ← hκ, e₁, ← hv, e₃, ← _root_.mul_assoc, ← Finset.prod_mul_distrib]`. Establish `e₄ : ∀ k, gw w (q ≫ v ≫ o k) z (p k) (i k) ^ ε k * gw wD (v' ≫ o' k) z (i k) (j k) ^ ε k = gw wp (κ' ≫ g' k) z (p k) (j₀ k) ^ ε k * gw w' (v' ≫ o' k) z (j₀ k) (j k) ^ ε k` using `fun k => by`.
+
+Rewrite using `[← mul_zpow, ← mul_zpow, ← c₁, ← hp, S _ (v' ≫ o' k) z _ _ _ _ (hp' k) (hi k) (h₀ k) (h₁ k)]`. Rewrite `e₂` using `[Finset.prod_congr rfl fun k _ => e₄ k, Finset.prod_mul_distrib, _root_.mul_assoc]`. Rewrite using `[gm_pullGen', gm_pullGen', Category.id_comp, Category.id_comp]`. Conclude with `(mul_left_cancel e₂).symm`.
+-/
 theorem genRelR_baseChange (hs : φ' ≫ π = Φ ≫ φ) (S : Sq w wD wp w') (hw : w.IsGen) (hM : M.IsLB) (hM₀ : M₀.IsLB)
     {K : Type} [Fintype K] {ε : K → ℤ} {T T' N N' : Scheme.{0}} {o : K → (T ⟶ B)} {o' : K → (T' ⟶ B')}
     {g : K → (N ⟶ B₀)} {g' : K → (N' ⟶ B₀')} {t : LB.Gen (LB.LinComb M o ε)} {t' : LB.Gen (LB.LinComb M' o' ε)}
@@ -74,6 +86,9 @@ theorem genRelR_baseChange (hs : φ' ≫ π = Φ ≫ φ) (S : Sq w wD wp w') (hw
   rw [gm_pullGen', gm_pullGen', Category.id_comp, Category.id_comp]
   exact (mul_left_cancel e₂).symm
 
+/- English proof (translation)
+Rewrite `H` using `[Category.assoc]`. Simplify using `only [Category.assoc]`. Rewrite using `[hs, reassoc_of% ho, reassoc_of% hv, H, hg, reassoc_of% hκ]`.
+-/
 theorem comp_eq_of_squares {T T' N N' Z Z' : Scheme.{0}} (hs : φ' ≫ π = Φ ≫ φ) {o : T ⟶ B} {o' : T' ⟶ B'}
     {g : N ⟶ B₀} {g' : N' ⟶ B₀'} {h : T' ⟶ T} {d : N' ⟶ N} (ho : o' ≫ Φ = h ≫ o) (hg : g' ≫ π = d ≫ g)
     {q : Z' ⟶ Z} {v : Z ⟶ T} {v' : Z' ⟶ T'} {κ : Z ⟶ N} {κ' : Z' ⟶ N'} (hv : v' ≫ h = q ≫ v) (hκ : κ' ≫ d = q ≫ κ)
@@ -92,6 +107,11 @@ def SRel (w : LB.Iso L' (L.pull F)) (s : L.Sec) (s' : L'.Sec) : Prop :=
   ∀ (Z : Scheme.{0}) (r : Z ⟶ X') (z : Z) (j : L.ι) (k : L'.ι), F (r z) ∈ L.U j → r z ∈ L'.U k →
     gs (r ≫ F) z (L.U j) (s.f j) = (gw w r z j k).val * gs r z (L'.U k) (s'.f k)
 
+/- English proof (translation)
+Introduce `Z r z j k hj hk`. Establish `hm : r z ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Establish `le : (L.pull F).U (fun _ => j) ≤ F ⁻¹ᵁ L.U j` using `fun _ hx => mem_pull.1 hx`. Establish `e` using `congrArg (gs r z _) (h₂ (fun _ => j) k)`. Rewrite `e` using `[gs_res r z _ hm, gs_mul r z _ hm, gs_res r z _ hm, h₁ (fun _ => j) le]`.
+
+Conclude with `(gs_appLE F _ _ le r z hm.1 _).symm.trans (e.trans (congrArg (· * _) (gs_unit r z _ hm _)))`.
+-/
 theorem srel_of {w : LB.Iso L' (L.pull F)} {s : L.Sec} {s' : L'.Sec} {s₂ : (L.pull F).Sec} (h₁ : PullSec F s s₂)
     (h₂ : IsoMaps w s' s₂) : SRel w s s' := by
   intro Z r z j k hj hk
@@ -101,6 +121,9 @@ theorem srel_of {w : LB.Iso L' (L.pull F)} {s : L.Sec} {s' : L'.Sec} {s₂ : (L.
   rw [gs_res r z _ hm, gs_mul r z _ hm, gs_res r z _ hm, h₁ (fun _ => j) le] at e
   exact (gs_appLE F _ _ le r z hm.1 _).symm.trans (e.trans (congrArg (· * _) (gs_unit r z _ hm _)))
 
+/- English proof (translation)
+Establish `le : LB.wchart L (fun _ : Fin 1 => 𝟙 X) p ≤ L.U (p 0)` using `fun y hy => Set.mem_iInter.1 hy 0`. Rewrite using `[h p le]`. Conclude with `gs_res r z le (Set.mem_iInter.2 fun k => by rw [Subsingleton.elim k 0]; exact hp) _`.
+-/
 theorem gs_h0Sec {σ : Out.H0 L 1} {θ : L.Sec} (h : SectionOfLineBundleOne σ θ) {Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (p : Fin 1 → L.ι)
     (hp : r z ∈ L.U (p 0)) :
     gs r z (LB.wchart L (fun _ : Fin 1 => 𝟙 X) p) (σ.f p) = gs r z (L.U (p 0)) (θ.f (p 0)) := by
@@ -108,6 +131,9 @@ theorem gs_h0Sec {σ : Out.H0 L 1} {θ : L.Sec} (h : SectionOfLineBundleOne σ �
   rw [h p le]
   exact gs_res r z le (Set.mem_iInter.2 fun k => by rw [Subsingleton.elim k 0]; exact hp) _
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `ThetaUnit.exists_powerSection_of_chartFunctions θ`. Use `⟨t, fun j h => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j 0, funext fun i => congrArg j (Subsingleton.elim i 0)⟩`. Establish `hy' : (𝟙 X : X ⟶ X) y ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k)` using `hy`. Conclude with `(ht _ (𝟙 X) y k (h hy')).trans (gs_res (𝟙 X) y h hy' _).symm`.
+-/
 theorem exists_h0Sec (θ : L.Sec) : ∃ σ : Out.H0 L 1, SectionOfLineBundleOne σ θ := by
   obtain ⟨t, ht⟩ := ThetaUnit.exists_powerSection_of_chartFunctions θ
   refine ⟨t, fun j h => fn_ext fun y hy => ?_⟩
@@ -115,6 +141,9 @@ theorem exists_h0Sec (θ : L.Sec) : ∃ σ : Out.H0 L 1, SectionOfLineBundleOne 
   have hy' : (𝟙 X : X ⟶ X) y ∈ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => k) := hy
   exact (ht _ (𝟙 X) y k (h hy')).trans (gs_res (𝟙 X) y h hy' _).symm
 
+/- English proof (translation)
+Substitute `hL hL' hΨ he` using the available equality. Consider the cases of `hθ`. Take `rfl : w₁ = w₂` from `iso_eq_of_maps_along_section (S := S') (exists_chart L₁'.isLB) (fun y => (exists_chart L₁.isLB (Ψ₂ y)).elim fun j hj => ⟨fun _ => j, mem_pull.2 hj⟩) G'.hom (eSec G') (Over.w _) hs g₁ g₂ m₁ m₂`. Conclude with `⟨θ₂', HEq.rfl, H⟩`.
+-/
 theorem srel_of_rig {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] (hs : Function.Surjective G'.hom.appTop.hom) {L₁ L₂ : RigLB G} {L₁' L₂' : RigLB G'}
     (hL : L₁ = L₂) (hL' : L₁' = L₂') {Ψ₁ Ψ₂ : G'.left ⟶ G.left} (hΨ : Ψ₂ = Ψ₁) {e₁ e₂} (he : e₂ = e₁)
@@ -142,6 +171,13 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {D 
   {Φ : D'.P.A.left ⟶ D.P.A.left} {π : B₀' ⟶ B₀} {w : LB.Iso D.P.L (M₀.pull φ)} {wD : LB.Iso D'.P.L (D.P.L.pull Φ)}
   {wp : LB.Iso M₀' (M₀.pull π)} {w' : LB.Iso D'.P.L (M₀'.pull φ')} {th : M₀.Sec} {th' : M₀'.Sec}
 
+/- English proof (translation)
+Establish `e₁ : r ≫ D.famφB 0 1 = r` using `by rw [ThetaUnit.famφB_zero_one, Category.comp_id]`. Set `j : Fin 4 → D.P.L.ι` to `fun k => J (r ≫ D.famφB 0 k)`. Establish `hj : j 1 = J r` using `congrArg J e₁`. Set `V` to `LB.wchart D.P.L (D.famφB 0) j ⊓ ((M₀.pull φ).U (fun _ => j₀) ⊓ D.P.L.U (j 1))`. Establish `hm : r z ∈ V` using `⟨hJ.mem _ r, mem_pull.2 hy, hj ▸ hJ r⟩`.
+
+Establish `h₃ : V ≤ φ ⁻¹ᵁ M₀.U j₀` using `fun z hz => mem_pull.1 hz.2.1`. Establish `e` using `congrArg (gs r z V) (h j j₀ V inf_le_left inf_le_right h₃ fun k k' e => congrArg (fun q => J (r ≫ q)) e)`. Use `(gs_appLE φ _ _ h₃ r z hm _).symm.trans (e.trans ((gs_mul r z V hm _ _).trans ?_))` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((gs_res r z inf_le_right hm _).trans (gs_unit r z _ hm.2 _)) (gs_res r z inf_le_left hm _)).trans ?_` and prove the remaining obligations. Rewrite using `[← hj]`.
+
+Both sides reduce to the same expression.
+-/
 theorem val_of_isPullTerm {t : D.SecB 1 0} (h : ThetaUnit.IsPullTerm D φ w th t) {Z : Scheme.{0}}
     (r : Z ⟶ D.P.A.left) (z : Z) {J} (hJ : Good D.P.L z J) (j₀ : M₀.ι) (hy : φ (r z) ∈ M₀.U j₀) :
     gs (r ≫ φ) z _ (th.f j₀) = (gw w r z j₀ (J r)).val * sval t r z J := by
@@ -158,6 +194,13 @@ theorem val_of_isPullTerm {t : D.SecB 1 0} (h : ThetaUnit.IsPullTerm D φ w th t
   rw [← hj]
   rfl
 
+/- English proof (translation)
+Use `ThetaUnit.isPullTerm_iff.2 fun y J' j₀ hJ' hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : D'.P.A.left ⟶ D.P.A.left => exists_chart D.P.isLB (ψ y)`. Establish `hJ : Good D.P.L y J` using `hJ`. Take `⟨p, hp⟩` from `exists_chart hM₀ (φ (Φ y))`. Establish `e₁` using `hth _ φ' y p j₀ ((congrArg (fun g => g y ∈ M₀.U p) hs).mpr hp) hy`.
+
+Establish `e₂` using `val_of_isPullTerm h Φ y hJ p hp`. Establish `e₃` using `ExpTrans.sec_val wD _ _ _ Φ hc t t' (𝟙 _) y (ht _ (𝟙 _) y) hJ hJ'`. Establish `e₄` using `S _ (𝟙 _) y p (J Φ) j₀ (J' (𝟙 _)) hp (hJ Φ) hy (hJ' (𝟙 _))`. Simplify using `only [Category.id_comp] at e₃ e₄`. Rewrite `e₃` using `[IndivisibleSection.prod_fam_zero D' (ExpTrans.om wD y J J'), ExpTrans.om, Category.id_comp]`.
+
+Rewrite `e₂` using `[← hs, e₁, e₃, ← _root_.mul_assoc, ← Units.val_mul, e₄, Units.val_mul, _root_.mul_assoc]`. Conclude with `(Units.mul_right_inj _).1 e₂`.
+-/
 theorem isPullTerm_baseChange (hs : φ' ≫ π = Φ ≫ φ) (S : Sq w wD wp w') (hM₀ : M₀.IsLB) (hth : SRel wp th th')
     (hc : ∀ κ, D'.famφB 0 κ ≫ Φ = Φ ≫ D.famφB 0 κ) {t : D.SecB 1 0} {t' : D'.SecB 1 0}
     (ht : ∀ (Z : Scheme.{0}) (r : Z ⟶ D'.P.A.left) (z : Z) (p : Fin 4 → D.P.L.ι) (q : Fin 4 → D'.P.L.ι),
@@ -185,20 +228,37 @@ section Dual
 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by have e : a = TrivSqZeroExt.inl a.fst + TrivSqZeroExt.inl a.snd * DualNumber.eps := by ext <;> simp rw [e, map_add, map_add, map_mul, map_mul, h, h, he]`.
+-/
 theorem dual_hom_ext {ρ ρ' : DualNumber R →+* R'} (h : ∀ r, ρ (TrivSqZeroExt.inl r) = ρ' (TrivSqZeroExt.inl r))
     (he : ρ DualNumber.eps = ρ' DualNumber.eps) : ρ = ρ' := RingHom.ext fun a => by
   have e : a = TrivSqZeroExt.inl a.fst + TrivSqZeroExt.inl a.snd * DualNumber.eps := by ext <;> simp
   rw [e, map_add, map_add, map_mul, map_mul, h, h, he]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_inl (φ : R →+* R') (a : R) : dualMap φ (TrivSqZeroExt.inl a) = TrivSqZeroExt.inl (φ a) := by
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_eps' (φ : R →+* R') : dualMap φ DualNumber.eps = DualNumber.eps := by
   ext <;> simp [dualMap]
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem spMap_comp' {R'' : Type} [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Establish `hI : Ideal.span {(PowerSeries.X : PowerSeries A)} ^ (n + 1) ≠ ⊤` using `fun h => by`. Establish `h' : Ideal.span {(PowerSeries.X : PowerSeries A)} = ⊤` using `top_le_iff.1 (h.symm.le.trans (Ideal.pow_le_self n.succ_ne_zero))`. Use `(Ideal.span_singleton_eq_top.1 h').map (PowerSeries.constantCoeff (R := A))` as an intermediate fact. Simplify using `at this`. Use `Ideal.Quotient.nontrivial_iff.2 hI` as an intermediate fact.
+
+Conclude with `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`.
+-/
 theorem isLocalRing_trunc (A : Type) [CommRing A] [IsLocalRing A] (n : ℕ) :
     IsLocalRing (PowerSeries A ⧸ Ideal.span {(PowerSeries.X : PowerSeries A)} ^ (n + 1)) := by
   have hI : Ideal.span {(PowerSeries.X : PowerSeries A)} ^ (n + 1) ≠ ⊤ := fun h => by
@@ -226,6 +286,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `n ρ' κ' vn' hρ₁ hρ₂ hκ₁ hκ₂ hb hf x`. Take `⟨wL, -, -, -, lev⟩` from `(isPullUnif_iff_stalks _ _ _ _ _ _ _ hD _ _ _ _ bc _ _).1 hU`. Take `⟨h, hh, ⟨-, ht⟩, -⟩` from `lev n`. Take `⟨ho, Ht⟩` from `ht (W'.e x)`. Rewrite `ho`, `Ht` using `[he]`.
+
+Take `⟨hg, Hν⟩` from `hν.2 x`. Establish `Hν` using `(maps_iff p.w _ _ _ _ _ _ _ (Out.GeneratorPullback.pullAlong_le _ _ _ _ _ hg) (fun _ => rfl)).1 Hν`. Use `isLocalRing_trunc A n` as an intermediate fact. Use `isLocalRing_trunc A' n` as an intermediate fact. Use `ConstTan.isLocalRing_dual (PowerSeries A ⧸ Ideal.span {(PowerSeries.X : PowerSeries A)} ^ (n + 1))` as an intermediate fact.
+
+Use `ConstTan.isLocalRing_dual (PowerSeries A' ⧸ Ideal.span {(PowerSeries.X : PowerSeries A')} ^ (n + 1))` as an intermediate fact. Set `I : Ideal (PowerSeries A)` to `Ideal.span {PowerSeries.X}`. Set `ρ : DualNumber (PowerSeries A) →+* DualNumber (PowerSeries A ⧸ I ^ (n + 1))` to `dualMap (Ideal.Quotient.mk _)`. Set `κ : DualNumber A →+* DualNumber (PowerSeries A ⧸ I ^ (n + 1))` to `dualMap ((Ideal.Quotient.mk _).comp (PowerSeries.C (R := A)))`. Set `s : Sp (DualNumber (PowerSeries A ⧸ I ^ (n + 1))) ⟶ Sp (PowerSeries A ⧸ I ^ (n + 1))` to `spMap (algebraMap _ _)`.
+
+Establish `hs₀ : s ≫ Out.thick (PowerSeries A) I n = spMap ρ ≫ (epsR (PowerSeries A)).hom` using `((spMap_comp' _ _).trans (congrArg spMap (RingHom.ext fun r => (dualMap_inl (Ideal.Quotient.mk (I ^ (n + 1))) r).symm : _ = ρ.comp (algebraMap _ _)))).trans (spMap_comp' _ _).symm`. Set `vn : Sp (DualNumber (PowerSeries A ⧸ I ^ (n + 1))) ⟶ (Out.thickObj (PowerSeries A) I n W.t.G).left` to `pullback.lift (spMap ρ ≫ v.left) s (by rw [Category.assoc, Over.w v, hs₀])`. Establish `hx : vn ≫ (Out.fstG I n W.t.G).left = spMap ρ ≫ v.left` using `pullback.lift_fst _ _ _`. Establish `G` using `hv n ρ κ vn (dualMap_inl _) (dualMap_eps' _) (dualMap_inl _) (dualMap_eps' _) (pullback.lift_snd _ _ _) hx (p.xe x)`. Set `q` to `spMap (dualMap (truncMap f n))`.
+
+Establish `hρ : spMap ρ' ≫ spMap (dualMap (PowerSeries.map f)) = q ≫ spMap ρ`. Rewrite using `[spMap_comp', spMap_comp']`. Use `congrArg spMap (dual_hom_ext (fun r => ?_) ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, ρ, dualMap_inl, hρ₁]`. Both sides reduce to the same expression.
+
+Simplify using `only [RingHom.comp_apply, ρ, dualMap_eps', hρ₂]`. Establish `hκ : spMap κ' ≫ spMap (dualMap f) = q ≫ spMap κ`. Rewrite using `[spMap_comp', spMap_comp']`. Use `congrArg spMap (dual_hom_ext (fun r => ?_) ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, κ, dualMap_inl, hκ₁]`.
+
+Rewrite using `[← PowerSeries.map_C]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, κ, dualMap_eps', hκ₂]`. Establish `hvn : vn' ≫ h = q ≫ vn`. Use `thick_mono (PowerSeries A) I n` as an intermediate fact.
+
+Establish `: Mono (Out.fstG I n W.t.G).left` using `inferInstanceAs (Mono (pullback.fst _ _))`. Rewrite using `[← cancel_mono (Out.fstG I n W.t.G).left, Category.assoc, hh, ← Category.assoc, hf, Category.assoc]`. Use `erw [hv']`. Rewrite using `[← Category.assoc, hρ, Category.assoc, Category.assoc, hx]`. Use `genRelR_baseChange hs S W.spec.2.1 W.P.D.toPre.P.isLB a.D₀.P.isLB ((W.P.U.gt n).t_gen _) (ν.isGen _) ho Ht Hν hvn hκ (fun k => (pull_grp p).1.hom_ext ?_ ?_) G` and prove the remaining obligations.
+
+Conclude with `comp_eq_of_squares hs (ho k) (hg k) hvn hκ (G.1 k)`. Apply the tactic sequence `have a₁ : W'.P.D.toPre.Oφ (W'.P.U.gt n).pG (W'.e x) k ≫ W'.P.D.toPre.P.A.hom = (Out.thickObj (PowerSeries A') (Ideal.span {PowerSeries.X}) n W'.t.G).hom ≫ Out.thick _ _ n := by fin_cases k <;> exact Over.w _`. Apply the tactic sequence `have a₂ : Out.DegPre.gtφT a'.D₀ (epsR A') ν'.b x k ≫ a'.D₀.P.A.hom = spMap (algebraMap A' (DualNumber A')) := by fin_cases k <;> exact Over.w _`. Establish `a₃ : W'.φ ≫ a'.D₀.P.A.hom = W'.P.D.toPre.P.A.hom ≫ spMap (PowerSeries.C (R` using `A')) := W'.spec.1.1.w`. Use `(Category.assoc _ _ _).trans (Eq.trans ?_ ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) a₂)).symm)` and prove the remaining obligations.
+
+Rewrite using `[a₃, Category.assoc, reassoc_of% a₁, reassoc_of% hb]`. Use `(congrArg (_ ≫ ·) (spMap_comp' _ _)).trans ((spMap_comp' _ _).trans (Eq.trans ?_ (spMap_comp' _ _).symm))` and prove the remaining obligations. Conclude with `congrArg spMap (RingHom.ext fun r => (hκ₁ r).symm)`.
+-/
 theorem lieImg_baseChange [IsLocalRing A] [IsLocalRing A']
     (hU : Out.IsPullUnif (PowerSeries.map f) hD bc W.P.U W'.P.U) (he : ∀ y, hD.xe (W'.e y) = W.e (p.xe y))
     (hs : W'.φ ≫ prj p = prj hD ≫ W.φ) (S : Sq W.w hD.w p.w W'.w)
@@ -294,6 +375,13 @@ theorem lieImg_baseChange [IsLocalRing A] [IsLocalRing A']
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨σ, fam, θ₁, hE, hT, h0, hθ⟩` from `hθ`. Take `⟨th₂, t₁, t₂⟩` from `hth`. Take `⟨wL, gL, heL, mL, lev⟩` from `(isPullUnif_iff_stalks _ _ _ _ _ _ _ hD _ _ _ _ bc _ _).1 hU`. Take `⟨θ₁', hθ', R⟩` from `srel_of_rig (UT.PullDescent.surj_base W'.P.U.toUnifPre hG).1 W.P.bundle W'.P.bundle hm m.base gL hw.1 mL hw.2 hθ (srel_of h₁ h₂)`. Take `⟨σ', h0'⟩` from `exists_h0Sec θ₁'`.
+
+Use `choose fam' hf' using fun x => (SecPull.existsUnique_secPull _ _ _ _ _ _ _ W.P.D.toPre.P.isLB W'.P.D.toPre.P.isLB hD.w hD.w_gen (Fin 4) (W'.P.D.toPre.famφB x) (W.P.D.toPre.famφB (hD.xe x)) (Out.DegPre.famε 1) _ (ExpGTrans.famφB_pull hD x) (fam (hD.xe x))).exists`. Use `⟨σ', fam', θ₁', fun n => ?_, ?_, h0', hθ'⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `lev n`. Use `expandsAt_transport _ _ _ _ _ _ _ _ _ _ W.P.U.toUnifPre W'.P.U.toUnifPre _ hD.w hD.xe _ wL hD.w_gen gL (ExpGTrans.famφB_pull hD) n n 1 h hh σ σ' fam fam' (fun Z r z i j hi hj => ?_) hf' (hE n)` and prove the remaining obligations. Rewrite using `[gs_h0Sec h0 _ z i (hi 0), gs_h0Sec h0' _ z j (hj 0), R Z r z _ _ (hi 0) (hj 0)]`.
+
+Simplify using `only [Fin.prod_univ_one, Category.comp_id, Nat.cast_one, zpow_one]`. Establish `a₁` using `hf' 0`. Establish `a₂` using `ExpGTrans.famφB_pull hD 0`. Rewrite `a₁`, `a₂` using `[map_zero]`. Conclude with `isPullTerm_baseChange hs S a.D₀.P.isLB (srel_of t₁ t₂) a₂ a₁ hT`.
+-/
 theorem thetaOf_baseChange (hG : Out.GlobalFnsSt)
     (hU : Out.IsPullUnif (PowerSeries.map f) hD bc W.P.U W'.P.U)
     (hs : W'.φ ≫ prj p = prj hD ≫ W.φ) (S : Sq W.w hD.w p.w W'.w) (m : SABMap W'.t W.t (spMap (PowerSeries.map f)))
@@ -321,6 +409,11 @@ theorem thetaOf_baseChange (hG : Out.GlobalFnsSt)
     rw [map_zero] at a₁ a₂
     exact isPullTerm_baseChange hs S a.D₀.P.isLB (srel_of t₁ t₂) a₂ a₁ hT
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W A' _ _ _ _ b' a' f p W' _ ⟨hD, bc, _, hU, hφ, he, hs, w₁, w₂, e, T₁, T₂⟩`. Take `⟨m, hm⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ W.m W'.m`. Establish `hm' : m.φ = bc.hom.left ≫ pullback.fst W.t.G.hom (Out.specOf (PowerSeries.map f))`. Use `W.m.cart.1.hom_ext (hm.symm.trans hφ) (m.cart.1.w.trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ _) (Over.w bc.hom).symm`. Establish `S` using `sq_of_tri hs e T₁ T₂`. Conclude with `⟨m, hm, fun ν ν' v v' hν hv hv' => lieImg_baseChange hU he hs S hν hv (hm' ▸ hv'), fun w th th' θ θ' θ₂ hw hth hθ h₁ h₂ => thetaOf_baseChange hL.globalFns hU hs S m hm' hw hth hθ h₁ h₂⟩`.
+-/
 theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (A' : Type) [CommRing A'] [IsDomain A'] [IsLocalRing A'] [IsNoetherianRing A'] (b' : O →+* A') (a' : ArcIn Dw l β A' b') (f : A →+* A') (p : Out.IsPullDeg f a.D₀ a'.D₀) (W' : Wit Y a' (spMap (PowerSeries.map f) ≫ χ)), InBC f a a' p → WitBC f p W W' → ∃ m : SABMap W'.t W.t (spMap (PowerSeries.map f)), W'.m.φ = m.φ ≫ W.m.φ ∧ (∀ ν ν' v (v' : epsR (PowerSeries A') ⟶ W'.t.G), LetBC p ν ν' → LieImg W ν v → v'.left ≫ m.φ = spMap (dualMap (PowerSeries.map f)) ≫ v.left → LieImg W' ν' v') ∧ ∀ (w : LB.Iso W'.t.PP.L (W.t.PP.L.pull m.φ)) th th' θ (θ' : LB.Sec W'.t.PP.L) θ₂, RigIso m w → ThBC p th th' → ThetaOf W th θ → PullSec m.φ θ θ₂ → IsoMaps w θ' θ₂ → ThetaOf W' th' θ' := by
   intro hL _ E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W A' _ _ _ _ b' a' f p W' _
     ⟨hD, bc, _, hU, hφ, he, hs, w₁, w₂, e, T₁, T₂⟩

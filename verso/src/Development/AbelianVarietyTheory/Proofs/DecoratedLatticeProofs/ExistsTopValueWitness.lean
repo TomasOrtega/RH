@@ -19,6 +19,11 @@ def DatVal {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.La
       ∀ (h : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') y, HasMat h y → IsUni B y →
         (R.HX t).e (R.jX t x) ((finHom (I.rec7 l Z).sp.X').rangeRestrict h) = c (val φ (latOf I (tup t) y))
 
+/- English proof (translation)
+Use `⟨Formalism.L2.Forms.rankP D, fun i j i' j' hi hj => ?_⟩` and prove the remaining obligations. Establish `e1 : finCongr (Formalism.L2.Forms.rankP D) i = i'` using `Fin.ext hi`. Establish `e2 : finCongr (Formalism.L2.Forms.rankP D) j = j'` using `Fin.ext hj`. Rewrite using `[← e1, ← e2, ← hm.2 i j]`. Unfold `R3.matIn`.
+
+Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+-/
 theorem matEq_of_hasMat {D : D7} {h : GA D D.sp.X'} {y} (hm : HasMat h y) :
     GlobalTheory.Mem.R3.MatEq (R3.matIn D.sp.X' 1 ((finHom D.sp.X').rangeRestrict h)) y := by
   refine ⟨Formalism.L2.Forms.rankP D, fun i j i' j' hi hj => ?_⟩
@@ -31,6 +36,17 @@ theorem matEq_of_hasMat {D : D7} {h : GA D D.sp.X'} {y} (hm : HasMat h y) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨c, h1, h2, -, -⟩` from `hs.1`. Establish `h3` using `t.r.z.pins.char.base.models.jX`. Establish `h4` using `t.r.z.lev.beta.2`. Use `⟨c, fun γ γE g hr hm v => h1 γ γE g hr hm v, fun s => ?_⟩` and prove the remaining obligations. Establish `h5 : w.I.tup (t.r.Y.tup s) = s.1` using `(congrArg w.I.tup (t.r.tup_ix s)).trans (R3.tup_ixOf w.I s)`.
+
+Establish `key : ∀ (a : w.I.ι), w.I.tup a = s.1 → ∀ (φ : Frm w.I a) (x : (R3.famT t).A.fam.amb.FR s), IsRes φ x → ∀ (h : GA (w.D Z) (w.D Z).sp.X') y, HasMat h y → IsUni B y → t.r.z.R.B.jR s x ((finHom (w.D Z).sp.X').rangeRestrict h) = c (val φ (latOf w.I a y))`. Introduce `a ha`. Take `⟨s, hs'⟩` from `s`. Express the relevant statement in the definitionally equal form `w.I.tup a = s at ha`. Substitute `ha` using the available equality.
+
+Introduce and unpack `φ x ⟨ok, hx⟩ h y hm hu`. Establish `hx' : ((by with_unfolding_all exact ((mtildeKGSD (Pr` using `B.primes w.px) B.wts w.I.Ch w.I.sel (w.I.tup a)).res ok φ :)) : (R3.famT t).A.fam.amb.FR ⟨w.I.tup a, hs'⟩) = x := by`. Apply `eq_of_heq` to reduce the goal to its premises. Conclude with `(by with_unfolding_all exact (hx :))`. Establish `hM` using `matEq_of_hasMat hm`.
+
+Establish `e` using `h2 B.sp.cm ⟨w.I.tup a, hs'⟩ ⟨⟨ok⟩, φ⟩ ((finHom (w.D Z).sp.X').rangeRestrict h) ⟨y, hu⟩ (by rw [h4]; exact hM)`. Establish `e2` using `decoPt_mk B.sp.cm (B.R.N B.R.m - 1) ∅ (rowSG (B.primes w.px) w.I.sel (w.I.tup a)) ⟨y, hu⟩`. Rewrite using `[← hx']`. Use `Eq.trans ((by with_unfolding_all exact (e :))) (congrArg (fun d => c (val φ d)) e2)` and prove the remaining obligations. Introduce `φ x hx h y hm hu`.
+
+Conclude with `(congrFun (h3 s x) _).trans (key _ h5 φ x hx h y hm hu)`.
+-/
 theorem datVal_rows (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt)
     (Wt : Set B.places.Pl) (p0 : BaseLevelRowSide (w.D Z)) (t : Bl.RowsT K w Z Wt p0) (hs : t.r.z.Std) :
     DatVal w.I w.l Z (aK := t.r.z.alg) t.r.z.R.toRealDat t.r.Y.tup := by
@@ -60,6 +76,13 @@ theorem datVal_rows (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre) (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h` using `datVal_rows K B f T w Z Wt ex.p0 t hs`. Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`.
+
+Consider the cases of `pack`. Establish `hT' : Y.tup = t.r.Y.tup` using `eq_of_heq htup`. Rewrite `h` using `[← hT']`. Take `⟨c, h1, h2⟩` from `h`. Use `⟨(by with_unfolding_all exact (c :)), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(by with_unfolding_all exact (h1 :))`. Conclude with `(by with_unfolding_all exact (h2 :))`.
+-/
 theorem datVal_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt)
     (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : G.Inst (w.st Z).toD7 L)
     (Gl : G.LatInst (w.st Z).toD7) (Kc : G.Consts) (Yd : DivX (w.st Z).toD7) (cX : ExtraC)
@@ -80,6 +103,13 @@ theorem datVal_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Top.Fr B.toPre)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hL p K q c b hw hs`. Take `⟨x, a, ax, y, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Establish `h0` using `datVal_twArgs _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a hs`. Establish `h1 : DatVal q.w.I q.w.l q.Z (aK` using `x.alg) x.R.toRealDat x.Y.tup := by`.
+
+Substitute `hx` using the available equality. Conclude with `h0`. Establish `h2 : (fun k : Bl.RPk b.R b.S => DatVal q.w.I q.w.l q.Z (aK` using `k.B.alg) k.B.Q.Rl.toRealDat k.P.I.tup) (Bl.rpkB b) := by`. Rewrite using `[y.eq]`. Conclude with `h1`.
+
+Take `⟨cv, h3, h4⟩` from `h2`. Conclude with `⟨cv, h3, h4⟩`.
+-/
 theorem pkVal_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → q.x.what₂.r.z.Std → ∃ cv, GlobalTheory.TopVal.ValEqv (I := q.w.I) (l := q.w.l) (Z := q.Z) (packB b) cv ∧ GlobalTheory.TopVal.PkVal (I := q.w.I) (l := q.w.l) (Z := q.Z) (packB b) cv := by
   intro hL p K q c b hw hs
   obtain ⟨x, a, ax, y, -⟩ := hw

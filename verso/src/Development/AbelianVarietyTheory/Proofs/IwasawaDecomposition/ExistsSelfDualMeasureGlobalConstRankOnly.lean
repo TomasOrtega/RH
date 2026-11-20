@@ -28,6 +28,13 @@ def mulHomeo {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] 
   continuous_toFun := continuous_const.mul continuous_id
   continuous_invFun := continuous_const.mul continuous_id
 
+/- English proof (translation)
+Take `⟨hpos, hm⟩` from `(GlobalTheory.GaugeEx.modu_basic R).1 a ha`. Establish `h1` using `GlobalTheory.T.selfDual_sqrt_smul_comp_of_invariant R ν (fun s t => ψ0 (s * t)) (mulHomeo ha.unit) (modu R a) hpos.ne' (hm ν hν.1) (fun x y => by show ψ0 (x * (a * y)) = ψ0 ((a * x) * y)`. Use `congr 1`. Use the proof step `ring) hν`. Establish `h2 : (fun s t : R => ψ (s * t)) = fun x y => ψ0 (x * mulHomeo ha.unit y)`.
+
+Use function extensionality and compare the values at `x y`. Use `show ψ (x * y) = ψ0 (x * (a * y))`. Rewrite using `[h]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `SdR`. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem sdR_change (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
     (ψ0 ψ : R → ℂ) (a : R) (ha : IsUnit a) (h : ∀ x, ψ x = ψ0 (a * x)) (ν : Measure R)
@@ -45,6 +52,9 @@ theorem sdR_change (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRi
   rw [h2]
   exact h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[lrAct, Matrix.one_apply]`.
+-/
 theorem lrAct_one {S : Type} [CommRing S] {n M : ℕ} (g : Matrix (Fin M) (Fin M) S)
     (X : Fin n → Fin M → S) : lrAct g (1 : Matrix (Fin n) (Fin n) S) X = fun a => g.mulVec (X a) := by
   funext a
@@ -69,20 +79,32 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ}
 
+/- English proof (translation)
+Unfold `hR JR Formalism.UG.hform`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem hR_one (x y : Fin M → R ⊗[F] E) :
     hR R σ (1 : Matrix (Fin M) (Fin M) E) x y = ∑ i, sigR R σ (x i) * y i := by
   unfold hR JR Formalism.UG.hform
   rw [Matrix.map_one _ (map_zero _) (map_one _)]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (e : E) : sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Rewrite using `[hR_one]`. Simplify using `only [hR, Formalism.UG.hform, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hR_one_mulVec (J : Matrix (Fin M) (Fin M) E) (x y : Fin M → R ⊗[F] E) :
     hR R σ (1 : Matrix (Fin M) (Fin M) E) x ((JR R J).mulVec y) = hR R σ J x y := by
   rw [hR_one]
   simp only [hR, Formalism.UG.hform, Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hR_one]`. Simplify using `only [hR, Formalism.UG.hform, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul, JR, Matrix.map_apply, sigR_inclR, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+-/
 theorem hR_one_mulVec' (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)
     (x y : Fin M → R ⊗[F] E) :
     hR R σ (1 : Matrix (Fin M) (Fin M) E) ((JR R J).mulVec x) y = hR R σ J x y := by
@@ -92,6 +114,11 @@ theorem hR_one_mulVec' (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) 
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Unfold `BR`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_mul, ← map_smul]`. Use `congr 1`.
+
+Establish `e : ∀ e : E, inclR R (a • e) = (algebraMap F R a) • (inclR R e : R ⊗[F] E)`. Introduce `e`. Simplify using `only [inclR, algebraMap_smul]`. Conclude with `map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) a e`. Simplify using `only [hR, Formalism.UG.hform, JR, Matrix.map_apply, Matrix.smul_apply, e, Finset.smul_sum, mul_smul_comm, smul_mul_assoc]`.
+-/
 theorem BR_smul {n : ℕ} (a : F) (J : Matrix (Fin M) (Fin M) E) (X Y : Fin n → Fin M → R ⊗[F] E) :
     BR R σ (a • J) X Y = algebraMap F R a * BR R σ J X Y := by
   unfold BR
@@ -108,6 +135,9 @@ theorem BR_smul {n : ℕ} (a : F) (J : Matrix (Fin M) (Fin M) E) (X Y : Fin n �
 
 end Alg
 
+/- English proof (translation)
+Use `⟨fun i j => by simp [hJ.1], ?_⟩` and prove the remaining obligations. Establish `: a • J = (algebraMap F E a) • J` using `by rw [algebraMap_smul]`. Rewrite using `[this, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by simpa using ha)) hJ.2`.
+-/
 theorem herm_smul {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (a : F) (ha : a ≠ 0) :
     IsHermND σ (a • J) := by
@@ -116,6 +146,9 @@ theorem herm_smul {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   rw [this, Matrix.det_smul]
   exact mul_ne_zero (pow_ne_zero _ (by simpa using ha)) hJ.2
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, by simp⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, h, Ne.symm h]`.
+-/
 theorem herm_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) :
     IsHermND σ (1 : Matrix (Fin M) (Fin M) E) := by
   refine ⟨fun i j => ?_, by simp⟩
@@ -123,6 +156,9 @@ theorem herm_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F
   · subst h; simp
   · simp [Matrix.one_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Unfold `tupMeas`. Use `haveI h1 : (Measure.pi fun _ : Fin M => lam).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+-/
 theorem tup_haar {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing S] [T2Space S]
     [LocallyCompactSpace S] [SecondCountableTopology S] [MeasurableSpace S] [BorelSpace S]
     (lam : Measure S) (h : lam.IsAddHaarMeasure) (n M : ℕ) : (tupMeas lam n M).IsAddHaarMeasure := by
@@ -130,6 +166,19 @@ theorem tup_haar {S : Type} [CommRing S] [TopologicalSpace S] [IsTopologicalRing
   haveI h1 : (Measure.pi fun _ : Fin M => lam).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
   exact Measure.pi.isAddHaarMeasure _
 
+/- English proof (translation)
+Establish `hJ'` using `herm_smul σ J hJ a ha`. Take `⟨h1, h2, -⟩` from `GlobalTheory.GaugeEx.nice_tensor F E R hR`. Establish `hdet : (JR (F` using `F) R (a • J)).det = inclR R (a • J).det := by`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+
+Establish `hu : IsUnit (JR (F` using `F) R (a • J)).det := by`. Rewrite using `[hdet]`. Conclude with `(Ne.isUnit hJ'.2).map _`. Establish `hm` using `GlobalTheory.T.vectorTupleProductMeasure_two_sided_action (R ⊗[F] E) h1 h2 lam hl 1 M (JR R (a • J)) 1 hu (by simp)`. Take `⟨hb, -, hone, -⟩` from `GlobalTheory.GaugeEx.modu_basic (R ⊗[F] E)`.
+
+Establish `hT : lrAct (JR (F` using `F) R (a • J)) (1 : Matrix (Fin 1) (Fin 1) _) = actHomeo (n := 1) _ hu := by`. Use function extensionality and compare the values at `X`. Rewrite using `[lrAct_one]`. Both sides reduce to the same expression. Rewrite `hm` using `[Matrix.det_one, hone, one_pow, pow_one, mul_one, hT, hdet]`.
+
+Establish `hpos` using `(hb _ hu).1`. Rewrite `hpos` using `[hdet]`. Establish `h3` using `GlobalTheory.T.selfDual_sqrt_smul_comp_of_invariant _ (r • tupMeas lam 1 M) (fun X Y => ψ0 (BR R σ 1 X Y)) (actHomeo (n := 1) _ hu) _ hpos.ne' (by rw [Measure.map_smul, smul_comm, ← hm]) (fun X Y => by show ψ0 (BR R σ 1 X fun c => (JR R (a • J)).mulVec (Y c)) = ψ0 (BR R σ 1 (fun …`. Simplify using `only [BR, hR_one_mulVec, hR_one_mulVec' R σ _ hJ'.1]) hμ`. Establish `h4 : (fun X Y : Fin 1 → Fin M → R ⊗[F] E => ψ (BR R σ J X Y)) = fun X Y => ψ0 (BR R σ 1 X (actHomeo (n` using `1) _ hu Y)) := by`.
+
+Use function extensionality and compare the values at `X Y`. Use `show _ = ψ0 (BR R σ 1 X fun c => (JR R (a • J)).mulVec (Y c))`. Rewrite using `[h, ← BR_smul]`. Simplify using `only [BR, hR_one_mulVec]`. Unfold `SdW`.
+
+Rewrite using `[h4]`. Conclude with `h3`.
+-/
 theorem sdW_change (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
     [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
@@ -167,6 +216,9 @@ theorem sdW_change (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   rw [h4]
   exact h3
 
+/- English proof (translation)
+Unfold `psiInf`. Rewrite using `[h]`. Use `congr 1`. Conclude with `Prod.ext rfl (mul_zero (algebraMap F (Af F) a))`.
+-/
 theorem psiInf_mul (F : Type) [Field F] [NumberField F] (ψ0 ψ : AddChar (AF F) ℂ) (a : F)
     (h : ∀ x, ψ x = ψ0 (algebraMap F (AF F) a * x)) (x : Ainf F) :
     psiInf F ψ x = psiInf F ψ0 (algebraMap F (Ainf F) a * x) := by
@@ -175,6 +227,13 @@ theorem psiInf_mul (F : Type) [Field F] [NumberField F] (ψ0 ψ : AddChar (AF F)
   congr 1
   exact Prod.ext rfl (mul_zero (algebraMap F (Af F) a))
 
+/- English proof (translation)
+Unfold `psiV`. Rewrite using `[h]`. Use `congr 1`. Use `Prod.ext (mul_zero (algebraMap F (Ainf F) a)) ?_` and prove the remaining obligations. Use `show algebraMap F (Af F) a * singleV F v x = singleV F v (algebraMap F (Fv F v) a * x)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Use `show algebraMap F (Fv F w) a * Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => Fv F w) v x w = Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => Fv F w) v (algebraMap F (Fv F v) a * x) w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hw]`.
+-/
 theorem psiV_mul (F : Type) [Field F] [NumberField F] (ψ0 ψ : AddChar (AF F) ℂ) (a : F)
     (h : ∀ x, ψ x = ψ0 (algebraMap F (AF F) a * x)) (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) :
     psiV F ψ v x = psiV F ψ0 v (algebraMap F (Fv F v) a * x) := by
@@ -192,6 +251,9 @@ theorem psiV_mul (F : Type) [Field F] [NumberField F] (ψ0 ψ : AddChar (AF F) �
   · subst hw; simp
   · simp [Pi.single_eq_of_ne hw]
 
+/- English proof (translation)
+Use `⟨Measure.addHaarScalarFactor μ ν, (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure μ ν).ne', Measure.isAddLeftInvariant_eq_smul μ ν, fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `Measure.addHaarScalarFactor_self μ`.
+-/
 theorem exists_smul_haar {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
     (μ ν : Measure V) (hμ : μ.IsAddHaarMeasure) (hν : ν.IsAddHaarMeasure) :
@@ -201,6 +263,9 @@ theorem exists_smul_haar {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTop
   subst h
   exact Measure.addHaarScalarFactor_self μ
 
+/- English proof (translation)
+Use `⟨hA.subset fun v hv h1 => hv (by simp [h1]), ?_⟩` and prove the remaining obligations. Use `MonoidHom.map_finprod (NNReal.sqrtHom : ℝ≥0 →*₀ ℝ≥0).toMonoidHom hA` as an intermediate fact. Establish `h2 : NNReal.sqrt (∏ᶠ v, A v) = ∏ᶠ v, NNReal.sqrt (A v)` using `this`. Rewrite using `[← h2, ← NNReal.sqrt_mul, h, NNReal.sqrt_one]`.
+-/
 theorem sqrt_prod {ι : Type} (A : ι → ℝ≥0) (a : ℝ≥0) (hA : (Function.mulSupport A).Finite)
     (h : a * ∏ᶠ v, A v = 1) :
     (Function.mulSupport fun v => NNReal.sqrt (A v)).Finite ∧
@@ -210,6 +275,11 @@ theorem sqrt_prod {ι : Type} (A : ι → ℝ≥0) (a : ℝ≥0) (hA : (Function
   have h2 : NNReal.sqrt (∏ᶠ v, A v) = ∏ᶠ v, NNReal.sqrt (A v) := this
   rw [← h2, ← NNReal.sqrt_mul, h, NNReal.sqrt_one]
 
+/- English proof (translation)
+Establish `e : (fun v => (A v * r v) / (B v * t v)) = fun v => (A v / B v) * (r v / t v)`. Use function extensionality and compare the values at `v`. Rewrite using `[mul_div_mul_comm]`. Establish `hAB : (Function.mulSupport fun v => A v / B v).Finite` using `(hA.union hB).subset (Function.mulSupport_div A B)`. Rewrite using `[e]`.
+
+Use `⟨(hAB.union hrt).subset (Function.mulSupport_mul _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_mul_distrib hAB hrt, finprod_div_distrib hA hB, mul_div_mul_comm, mul_mul_mul_comm, ← mul_div_mul_comm, h1, h2, div_one, one_mul]`.
+-/
 theorem final_prod {ι : Type} (A B r t : ι → ℝ≥0) (a b ri ti : ℝ≥0)
     (hA : (Function.mulSupport A).Finite) (hB : (Function.mulSupport B).Finite)
     (hrt : (Function.mulSupport fun v => r v / t v).Finite)
@@ -225,6 +295,29 @@ theorem final_prod {ι : Type} (A B r t : ι → ℝ≥0) (a b ri ti : ℝ≥0)
   rw [finprod_mul_distrib hAB hrt, finprod_div_distrib hA hB, mul_div_mul_comm, mul_mul_mul_comm,
     ← mul_div_mul_comm, h1, h2, div_one, one_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM d b s M`. Use `haveI : IsTotallyReal F := hCM.1`. Take `⟨ψ0, hψ0⟩` from `GlobalTheory.T.exists_nontrivial_adeleChar_trivial_on_totallyReal F`. Establish `h1` using `herm_one σ M`. Take `⟨⟨ν0i, hν0i, -⟩, hWi⟩` from `GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hCM ψ0 hψ0`.
+
+Take `⟨μ0i, hμ0i, -⟩` from `hWi M 1 h1`. Take `⟨ri, hri, eri, -⟩` from `exists_smul_haar μ0i _ hμ0i.1 (tup_haar s.lamI s.haar_lamI 1 M)`. Take `⟨ti, hti, eti, -⟩` from `exists_smul_haar ν0i _ hν0i.1 s.haar_nuI`. Establish `hr : ∀ v : HeightOneSpectrum (𝓞 F), ∃ c : ℝ≥0, c ≠ 0 ∧ SdW F E σ M 1 (Fv F v) (psiV F ψ0 v) 1 (c • tupMeas (s.lamV v) 1 M) ∧ (SdW F E σ M 1 (Fv F v) (psiV F ψ0 v) 1 (tupMeas (s.lamV v) 1 M) → c = 1)`. Introduce `v`.
+
+Take `⟨μ, hμ, hu⟩` from `(GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ0 hψ0 v).2 M 1 h1`. Take `⟨c, hc, ec, h⟩` from `exists_smul_haar μ _ hμ.1 (tup_haar (s.lamV v) (s.haar_lamV v) 1 M)`. Conclude with `⟨c, hc, ec ▸ hμ, fun h' => h (hu _ h').symm⟩`. Establish `ht : ∀ v : HeightOneSpectrum (𝓞 F), ∃ c : ℝ≥0, c ≠ 0 ∧ SdR (Fv F v) (psiV F ψ0 v) (c • s.nuV v) ∧ (SdR (Fv F v) (psiV F ψ0 v) (s.nuV v) → c = 1)`. Introduce `v`.
+
+Take `⟨μ, hμ, hu⟩` from `(GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ0 hψ0 v).1`. Take `⟨c, hc, ec, h⟩` from `exists_smul_haar μ _ hμ.1 (s.haar_nuV v)`. Conclude with `⟨c, hc, ec ▸ hμ, fun h' => h (hu _ h').symm⟩`. Use `choose r hr0 hrs hr1 using hr`. Use `choose t ht0 hts ht1 using ht`.
+
+Rewrite `hμ0i` using `[eri]`. Rewrite `hν0i` using `[eti]`. Establish `hfin : (Function.mulSupport fun v => r v / t v).Finite`. Use `Filter.eventually_cofinite.1 (GlobalTheory.T.eventually_normalizedLocalHaar_selfDual F E σ hCM d b s ψ0 hψ0 M 1 h1)` as an intermediate fact. Use `this.subset fun v hv h => hv ?_` and prove the remaining obligations.
+
+Use `show r v / t v = 1`. Rewrite using `[hr1 v h.2, ht1 v h.1, div_one]`. Use `⟨ri / ti * ∏ᶠ v, r v / t v, mul_ne_zero (div_ne_zero hri hti) ?_, ?_⟩` and prove the remaining obligations. Conclude with `finprod_induction (fun x : ℝ≥0 => x ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun v => div_ne_zero (hr0 v) (ht0 v)`. Introduce `ψ J hψ hJ μi νi μv νv hμi hνi hμv hνv`.
+
+Take `⟨a, ha, hψa⟩` from `GlobalTheory.T.exists_ne_zero_adele_char_eq_comp_mul_totally_real F ψ0 ψ hψ0 hψ`. Establish `hJ'` using `herm_smul σ J hJ a ha`. Take `⟨hNi, hNv⟩` from `GlobalTheory.GaugeEx.nice_ainf_fv F`. Take `⟨hB, hB1⟩` from `GlobalTheory.GaugeProdFormula.prod_modu_eq_one F a ha`. Take `⟨hA, hA1⟩` from `GlobalTheory.T.product_formula_haarModulus_cmField_element F E σ hCM _ hJ'.2`.
+
+Take `⟨hB', hB1'⟩` from `sqrt_prod _ _ hB hB1`. Take `⟨hA', hA1'⟩` from `sqrt_prod _ _ hA hA1`. Take `⟨hf, he⟩` from `final_prod _ _ r t _ _ ri ti hA' hB' hfin hA1' hB1'`. Use `⟨_, _, _, _, ?_, ?_, fun v => ?_, fun v => ?_, ?_, ?_, fun v => ?_, fun v => ?_, hf, he⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`.
+
+Conclude with `((GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hCM ψ hψ).2 M J hJ).unique hμi (sdW_change F E σ _ hNi _ _ a ha (psiInf_mul F ψ0 ψ a hψa) M J hJ _ s.haar_lamI ri hμ0i)`. Rewrite using `[mul_smul]`. Conclude with `(GlobalTheory.T.existsUnique_selfDual_haar_measure_infinite_adeles F E σ hCM ψ hψ).1.unique hνi (sdR_change _ _ _ _ ((Ne.isUnit ha).map _) (psiInf_mul F ψ0 ψ a hψa) _ hν0i)`. Rewrite using `[mul_smul]`. Conclude with `((GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ hψ v).2 M J hJ).unique (hμv v) (sdW_change F E σ _ (hNv v) _ _ a ha (psiV_mul F ψ0 ψ a hψa v) M J hJ _ (s.haar_lamV v) _ (hrs v))`.
+
+Rewrite using `[mul_smul]`. Conclude with `(GlobalTheory.T.existsUnique_selfDual_measures_finitePlace F E σ hCM ψ hψ v).1.unique (hνv v) (sdR_change _ _ _ _ ((Ne.isUnit ha).map _) (psiV_mul F ψ0 ψ a hψa v) _ (hts v))`. Conclude with `mul_ne_zero (left_ne_zero_of_mul_eq_one hA1') hri`. Conclude with `mul_ne_zero (left_ne_zero_of_mul_eq_one hB1') hti`. Use `mul_ne_zero ?_ (hr0 v)` and prove the remaining obligations.
+
+Rewrite using `[Ne, NNReal.sqrt_eq_zero]`. Conclude with `(((GlobalTheory.GaugeEx.modu_basic _).1 _ ((Ne.isUnit hJ'.2).map _)).1).ne'`. Use `mul_ne_zero ?_ (ht0 v)` and prove the remaining obligations. Rewrite using `[Ne, NNReal.sqrt_eq_zero]`. Conclude with `(((GlobalTheory.GaugeEx.modu_basic _).1 _ ((Ne.isUnit ha).map _)).1).ne'`.
+-/
 theorem selfDual_const : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ), ∃ κ : ℝ≥0, κ ≠ 0 ∧ ∀ (ψ : AddChar (AF F) ℂ) (J : Matrix (Fin M) (Fin M) E), IsCharAF F ψ → IsHermND σ J → ∀ (μi : Measure (Fin 1 → Fin M → Ainf F ⊗[F] E)) (νi : Measure (Ainf F)) (μv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)) (νv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), SdW F E σ M J (Ainf F) (psiInf F ψ) 1 μi → SdR (Ainf F) (psiInf F ψ) νi → (∀ v, SdW F E σ M J (Fv F v) (psiV F ψ v) 1 (μv v)) → (∀ v, SdR (Fv F v) (psiV F ψ v) (νv v)) → ∃ (ri ti : ℝ≥0) (r t : HeightOneSpectrum (𝓞 F) → ℝ≥0), μi = ri • tupMeas s.lamI 1 M ∧ νi = ti • s.nuI ∧ (∀ v, μv v = r v • tupMeas (s.lamV v) 1 M) ∧ (∀ v, νv v = t v • s.nuV v) ∧ ri ≠ 0 ∧ ti ≠ 0 ∧ (∀ v, r v ≠ 0) ∧ (∀ v, t v ≠ 0) ∧ (Function.mulSupport fun v => r v / t v).Finite ∧ ri / ti * ∏ᶠ v, r v / t v = κ := by
   intro F E _ _ _ _ _ σ hCM d b s M
   haveI : IsTotallyReal F := hCM.1

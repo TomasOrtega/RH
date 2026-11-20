@@ -7,6 +7,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.TypeSum in
 
+/- English proof (translation)
+Introduce `D hex huniq θ hθ V hV τ S hS`. Take `⟨lam₀, ε₀, hE₀, hP₀, hp, hq⟩` from `hS`. Use `⟨(GlobalTheory.TypeAtTest.isTypeAt_zero θ V).2 ?_, fun φ φ' _ _ h h' => ?_⟩` and prove the remaining obligations. Take `⟨H, i1, i2, σ, hσ⟩` from `hex _ ε₀ lam₀ hP₀`. Take `⟨P, h1, h2⟩` from `GlobalTheory.Published.exists_frame_of_hasSignature (hV (tauE D τ)) ε₀ hp hq`.
+
+Conclude with `⟨H, i1, i2, σ, lam₀, ε₀, P, hE₀, hσ, h1, h2⟩`. Take `⟨H, i1, i2, σ, lam, ε, P, hE, hσ, hP, hG, hx⟩` from `h`. Take `⟨H', j1, j2, σ', lam', ε', P', hE', hσ', hP', hG', hx'⟩` from `h'`. Take `⟨rfl, rfl⟩` from `GlobalTheory.SignedParTest.isEnum_unique hE hE₀`. Take `⟨rfl, rfl⟩` from `GlobalTheory.SignedParTest.isEnum_unique hE' hE₀`.
+
+Take `⟨U, hU⟩` from `huniq _ _ _ hP₀ H' H σ' σ hσ' hσ`. Use `⟨H, i1, i2, σ, _, _, P, hE, hσ, hP, hG, fun x => ?_⟩` and prove the remaining obligations. Conclude with `hasTypeAll_iff.1 (hasTypeAll_add_of_equiv hσ.2.2.1 U hU hP hP' hG hG' (f := fun g => φ (x * atTau θ V τ g)) (f' := fun g => φ' (x * atTau θ V τ g)) (hasTypeAll_iff.2 (hx x)) (hasTypeAll_iff.2 (hx' x)))`.
+-/
 theorem GlobalTheory.TypeSum.typAdd_of_discreteSeries : ∀ D : D7, (∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam → ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.MainNotions.S.IsDS ε lam σ) → (∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam → ∀ (H H' : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (σ' : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')), Formalism.MainNotions.S.IsDS ε lam σ → Formalism.MainNotions.S.IsDS ε lam σ' → ∃ U : H ≃ₗᵢ[ℂ] H', ∀ g ∈ Formalism.MainNotions.S.UJset ε, ∀ v, U (σ g v) = σ' g (U v)) → TypAdd D := by
   intro D hex huniq θ hθ V hV τ S hS
   obtain ⟨lam₀, ε₀, hE₀, hP₀, hp, hq⟩ := hS

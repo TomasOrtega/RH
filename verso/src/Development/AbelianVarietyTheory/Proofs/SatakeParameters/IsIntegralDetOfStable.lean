@@ -5,6 +5,27 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNoti
 
 namespace GlobalTheory.DetStab
 
+/- English proof (translation)
+Set `N : Submodule R E` to `Submodule.span R {x | ∃ w : Fin n → L, x = (Matrix.of fun i => (w i : Fin n → E)).det}`. Set `M : Submodule R E` to `⨆ j : Fin n, L.map (LinearMap.proj j : (Fin n → E) →ₗ[R] E)`. Establish `hM : M.FG` using `Submodule.fg_iSup _ fun j => hfg.map (LinearMap.proj j : (Fin n → E) →ₗ[R] E)`. Establish `hprod : ∀ (s : Finset (Fin n)) (f : Fin n → E), (∀ i, f i ∈ M) → ∏ i ∈ s, f i ∈ M ^ s.card`. Introduce `s f hf`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.card_empty, pow_zero]`. Conclude with `Submodule.one_le.1 le_rfl`. Consider the case `insert a s ha ih`.
+
+Rewrite using `[Finset.prod_insert ha, Finset.card_insert_of_notMem ha, pow_succ']`. Conclude with `Submodule.mul_mem_mul (hf a) ih`. Establish `hle : N ≤ M ^ (Finset.univ : Finset (Fin n)).card`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Matrix.det_apply]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Submodule.smul_of_tower_mem _ _ (hprod _ _ fun i => ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem i ⟨_, (w (σ i)).2, rfl⟩`.
+
+Establish `hN : N.FG` using `(hM.pow _).of_le hle`. Establish `hne : N ≠ ⊥`. Introduce `h`. Establish `h0 : (Matrix.detRowAlternating (n` using `Fin n) (R := E)).toMultilinearMap = 0 := by`. Use `MultilinearMap.ext_of_span_eq_top (g := fun _ (x : L) => (x : Fin n → E)) (fun _ => ?_) fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hsp]`. Use `congr 1`. Conclude with `Subtype.range_coe`. Establish `: (Matrix.of fun i => (w i : Fin n → E)).det ∈ N` using `Submodule.subset_span ⟨w, rfl⟩`. Rewrite `this` using `[h]`.
+
+Conclude with `this`. Establish `h1` using `congrArg (fun f => f (1 : Matrix (Fin n) (Fin n) E)) h0`. Establish `h2 : (1 : Matrix (Fin n) (Fin n) E).det = 0` using `h1`. Simplify using `at h2`. Use `isIntegral_of_smul_mem_submodule N hne hN _ fun x hx => ?_` and prove the remaining obligations.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨fun i => ⟨γ.mulVec (w i), hγ _ (w i).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm, ← Matrix.det_transpose γ, ← Matrix.det_mul]`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `N.add_mem hx hy`. Consider the case `smul r x _ hx => rw [smul_comm]`. Conclude with `N.smul_mem r hx`.
+-/
 theorem isIntegral_det_of_stable {R E : Type} [CommRing R] [IsNoetherianRing R] [Field E] [Algebra R E] {n : ℕ}
     (L : Submodule R (Fin n → E)) (hfg : L.FG) (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤)
     (γ : Matrix (Fin n) (Fin n) E) (hγ : ∀ v ∈ L, γ.mulVec v ∈ L) : IsIntegral R γ.det := by
@@ -54,6 +75,23 @@ theorem isIntegral_det_of_stable {R E : Type} [CommRing R] [IsNoetherianRing R] 
   | add x y _ _ hx hy => rw [smul_add]; exact N.add_mem hx hy
   | smul r x _ hx => rw [smul_comm]; exact N.smul_mem r hx
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Take `⟨hfg, hsp, -⟩` from `hL`. Establish `hstar : ∀ x : D.host.E, star x = D.host.conj x`. Introduce `x`. Use `haveI := D.host.isCMField_hostE`.
+
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[Formalism.HC.HostAx.conjE_apply]`. Conclude with `IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ x`. Establish `hd : γ.det * (adj D γ).det = 1` using `by rw [← Matrix.det_mul, hu, Matrix.det_one]`. Establish `hadj : (adj D γ).det = D.host.conj γ.det`.
+
+Unfold `adj`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(RingHom.map_det (D.host.conj : D.host.E →+* D.host.E) γ).symm`. Establish `hz : γ.det ∈ unitary D.host.E`. Rewrite using `[Unitary.mem_iff, hstar, ← hadj]`.
+
+Conclude with `⟨by rw [mul_comm, hd], hd⟩`. Establish `i1` using `isIntegral_det_of_stable L hfg hsp γ fun v hv => (hs v).1 hv`. Establish `i2` using `isIntegral_det_of_stable L hfg hsp (adj D γ) fun v hv => (hs _).2 (by`. Rewrite using `[Matrix.mulVec_mulVec, hu, Matrix.one_mulVec]`. Conclude with `hv)`.
+
+Take `⟨a, ha⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := 𝓞 D.host.E)).1 i1`. Take `⟨b, hb⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := 𝓞 D.host.E)).1 i2`. Establish `hspan : Submodule.span (𝓞 D.host.E) {γ.det} = Submodule.span (𝓞 D.host.E) {(1 : D.host.E)}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`.
+
+Conclude with `⟨a, by rw [Algebra.smul_def, ha, mul_one]⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem, Submodule.mem_span_singleton]`. Conclude with `⟨b, by rw [Algebra.smul_def, hb, mul_comm, hd]⟩`. Establish `e1` using `hχ.2 ⟨γ.det, hz⟩`. Establish `e2` using `hχ.2 1`.
+
+Establish `e3 : ∏ τ, (embT D τ γ.det)⁻¹ = 1`. Establish `e1' : χ (Submodule.span (𝓞 D.host.E) {γ.det}) = ∏ τ, (embT D τ γ.det)⁻¹` using `e1`. Establish `e2' : χ (Submodule.span (𝓞 D.host.E) {(1 : D.host.E)}) = ∏ τ, (embT D τ 1)⁻¹` using `e2`. Rewrite using `[← e1', hspan, e2']`. Simplify using the standard rewrite rules.
+
+Rewrite `e3` using `[Finset.prod_inv_distrib, inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem prod_emb_det_eq_one (D : D7) (χ : IdE D → ℂ) (hχ : IsChi D χ) (n : ℕ)
     (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (hL : SD D L) (γ : Matrix (Fin n) (Fin n) D.host.E)
     (hu : γ * adj D γ = 1) (hs : ∀ v, v ∈ L ↔ γ.mulVec v ∈ L) : ∏ τ, embT D τ γ.det = 1 := by

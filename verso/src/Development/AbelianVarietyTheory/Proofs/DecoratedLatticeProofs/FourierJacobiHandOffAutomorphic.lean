@@ -14,6 +14,11 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D`. Unfold `HandFBLaw`. Introduce `ψ σ J B s vL Y Ξ hY hΞ`. Take `⟨hc, hl, hr⟩` from `GlobalTheory.T.pairedThetaKernel_continuous_and_rationally_invariant D ψ σ J B s vL Y Ξ hY hΞ`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [handFB, hr γ hγ]`. Conclude with `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D J.W₀ J.cpt J.v0 (GA D B.A) (pairKer s vL Y Ξ) hc hl).2.1`.
+-/
 theorem handFBLaw : ∀ D : D7, HandFBLaw D := by
   intro D
   unfold HandFBLaw

@@ -8,20 +8,32 @@ open scoped TensorProduct
 
 namespace UpperTheory.Gal.KunnethLefschetz
 
+/- English proof (translation)
+Introduce `U hU`. Take `⟨y⟩` from `hU`. Set `y' : U ⟶ X` to `y`. Simplify using `using hl.map y'.appTop.hom`.
+-/
 private theorem inv_of_unit {q : ℕ} {X : Scheme.{0}} (hl : IsUnit (q : Γ(X, ⊤))) : Inv q (sch.obj X) := by
   intro U hU
   obtain ⟨y⟩ := hU
   let y' : U ⟶ X := y
   simpa using hl.map y'.appTop.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cancel_lemma {q : ℕ} {E : Spc} {n i : ℤ} (h1 : n = n) (h2 : i = i) (x : Ht q E n i) :
     Ht.cast h1 h2 x = x := rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[LRingPf.cast_cast, cancel_lemma]`.
+-/
 private theorem eq_of_mul_mul_eq_of_det_ne_zero {q : ℕ} {E : Spc} {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') (x : Ht q E n i)
     (y : Ht q E n' i') (h : Ht.cast h1 h2 x = y) : x = Ht.cast h1.symm h2.symm y := by
   subst h
   rw [LRingPf.cast_cast, cancel_lemma]
 
+/- English proof (translation)
+Take `⟨hone, hassoc, -⟩` from `h6 q E`. Establish `e1` using `hassoc a b c`. Rewrite `e1` using `[eq_of_mul_mul_eq_of_det_ne_zero _ _ _ _ hab, cup_cast_left, hone hi, LRingPf.cast_cast]`. Establish `e3` using `eq_of_mul_mul_eq_of_det_ne_zero _ _ _ _ e1.symm`. Rewrite using `[cup_cast_right, LRingPf.cast_cast, e3, LRingPf.cast_cast, LRingPf.cast_cast, cancel_lemma]`.
+-/
 private theorem cancel {q : ℕ} [NeZero q] (h6 : DivisorRingCompatibility) {E : Spc} (hi : Inv q E) {i i' : ℤ} (hs : i + i' = 0)
     (a : Ht q E 0 i) (b : Ht q E 0 i') (hab : (cup q a b).cast (add_zero 0) hs = one q E) {n j w : ℤ}
     (h1 : i' + j = w) (h2 : i + w = j) (c : Ht q E n j) :
@@ -32,12 +44,20 @@ private theorem cancel {q : ℕ} [NeZero q] (h6 : DivisorRingCompatibility) {E :
   have e3 := eq_of_mul_mul_eq_of_det_ne_zero _ _ _ _ e1.symm
   rw [cup_cast_right, LRingPf.cast_cast, e3, LRingPf.cast_cast, LRingPf.cast_cast, cancel_lemma]
 
+/- English proof (translation)
+Rewrite using `[(h6 q E).2.2 b a, cast_usmul, LRingPf.cast_cast, hab]`. Simplify using the standard rewrite rules.
+-/
 private theorem swap {q : ℕ} [NeZero q] (h6 : DivisorRingCompatibility) {E : Spc} {i i' : ℤ} (hs : i + i' = 0) (hs' : i' + i = 0)
     (a : Ht q E 0 i) (b : Ht q E 0 i') (hab : (cup q a b).cast (add_zero 0) hs = one q E) :
     (cup q b a).cast (add_zero 0) hs' = one q E := by
   rw [(h6 q E).2.2 b a, cast_usmul, LRingPf.cast_cast, hab]
   simp
 
+/- English proof (translation)
+Establish `hX : Inv q (sch.obj X)` using `inv_of_unit (LPdCut.unit_of p hq)`. Establish `hS : Inv q (sch.obj (S k))` using `inv_of_unit (LPdCut.unit_of (𝟙 (S k)) hq)`. Establish `hUV : (cup q (pull _ (sch.map p) _ 0 u) (pull _ (sch.map p) _ 0 v)).cast (add_zero 0) hs = one q (sch.obj X)`. Rewrite using `[← (hI.a6nat q).2.1 (sch.map p) hS, ← huv, pull_cast, (hI.a6nat q).1]`. Establish `hs' : i' + i = 0` using `by omega`.
+
+Establish `hVU` using `swap hI.a6ring hs hs' _ _ hUV`. Establish `h : i' + w = j` using `by omega`. Use `Function.bijective_iff_has_inverse.2 ⟨twMul q p h v n, fun c => ?_, fun c => ?_⟩` and prove the remaining obligations. Conclude with `cancel hI.a6ring hX hs' _ _ hVU hw h c`. Conclude with `cancel hI.a6ring hX hs _ _ hUV h hw c`.
+-/
 private theorem bij_of (hI : In) {k : Type} [Field k] {q : ℕ} [NeZero q] (hq : IsUnit (q : k)) {i i' : ℤ}
     (hs : i + i' = 0) (u : Ht q (sch.obj (S k)) 0 i) (v : Ht q (sch.obj (S k)) 0 i')
     (huv : (cup q u v).cast (add_zero 0) hs = one q (sch.obj (S k))) {X : Scheme.{0}} (p : X ⟶ S k) (n j w : ℤ)
@@ -53,6 +73,9 @@ private theorem bij_of (hI : In) {k : Type} [Field k] {q : ℕ} [NeZero q] (hq :
   · exact cancel hI.a6ring hX hs' _ _ hVU hw h c
   · exact cancel hI.a6ring hX hs _ _ hUV h hw c
 
+/- English proof (translation)
+Unfold `TwBij`. Introduce `hI k _ q _ hq i u v huv X p n j w`. Establish `hvu` using `swap hI.a6ring (add_neg_cancel i) (neg_add_cancel i) u v huv`. Conclude with `⟨fun hw => bij_of hI hq (neg_add_cancel i) v u hvu p n j w hw, fun hw => bij_of hI hq (add_neg_cancel i) u v huv p n j w hw⟩`.
+-/
 theorem twBij_holds : TwBij := by
   unfold TwBij
   intro hI k _ q _ hq i u v huv X p n j w

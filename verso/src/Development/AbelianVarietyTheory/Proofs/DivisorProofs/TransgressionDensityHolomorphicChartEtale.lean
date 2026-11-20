@@ -13,6 +13,31 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Introduce `F _ σ X m E O H H₀ hM hM₀ ρ hρ e he c y hy hey hcy A hA`. Use `set A' := (E.nonempty (under y)).choose with hA'def`. Establish `hA' : A' ∈ E.S (under y)` using `(E.nonempty (under y)).choose_spec`. Establish `hy₀ : y ∈ ptsIn X.str σ (⊤ : X.X.Opens)` using `GlobalTheory.CxPts.mem_ptsIn_top`. Use `set φ : V X.dim → V X.dim := c.e ∘ e.symm with hφ`.
+
+Establish `ho` using `isOpen_over e c.e.open_source`. Establish `hm` using `mem_over e hey hcy`. Establish `e₂ : φ (e y) = c.e y` using `congrArg c.e (e.left_inv hey)`. Establish `hφa : AnalyticAt ℂ φ (e y)` using `GlobalTheory.SCV.analyticAt_of_differentiableOn (GlobalTheory.T.differentiableOn_holomorphicChart_trans_etaleChart he c) (ho.mem_nhds hm)`. Use `set ρc : V X.dim → ℝ := fun v => ρ (c.e.symm v)`.
+
+Use `set G₀ : Mat (fun _ : Unit => m) X.Fn → V X.dim → Matrix (Fin m) (Fin m) ℂ := fun B v => H₀ B (c.e.symm v) ()`. Use `set G₁ : Mat (fun _ : Unit => m) X.Fn → V X.dim → Matrix (Fin m) (Fin m) ℂ := fun B v => H B (c.e.symm v) ()`. Establish `hback : ∀ w ∈ e.target ∩ e.symm ⁻¹' c.e.source, c.e.symm (φ w) = e.symm w` using `fun w hw => c.e.left_inv hw.2`. Establish `step1 : corrC (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()) (e y) = corrC (fun v => ρc (φ v)) (fun v => G₀ A (φ v)) (fun v => G₁ A (φ v)) (e y)`. Apply `GlobalTheory.T.transgressionTopCoeffComplex_germ_congr` to reduce the goal to its premises.
+
+Use `filter_upwards [ho.mem_nhds hm] with w hw`. Simplify using `only [ρc, hback w hw]`. Use `filter_upwards [ho.mem_nhds hm] with w hw`. Simplify using `only [G₀, hback w hw]`. Use `filter_upwards [ho.mem_nhds hm] with w hw`.
+
+Simplify using `only [G₁, hback w hw]`. Establish `hρc : ContDiffAt ℝ ∞ ρc (c.e y)` using `GlobalTheory.T.contDiffAt_holomorphicComplexChart_of_smoothAt c.holo hcy (hρ y)`. Establish `hG₀` using `hM₀.mContDiffAt_chart hy₀ c hcy hA ()`. Establish `hG₀u` using `hM₀.isUnit_det_chart hy₀ c hcy hA ()`. Establish `hG₁` using `hM.mContDiffAt_chart hy c hcy hA ()`.
+
+Establish `hG₁u` using `hM.isUnit_det_chart hy c hcy hA ()`. Establish `step2 : corrC (fun v => ρc (φ v)) (fun v => G₀ A (φ v)) (fun v => G₁ A (φ v)) (e y) = ((‖(fderiv ℂ φ (e y)).det‖ ^ 2 : ℝ) : ℂ) * corrC ρc (G₀ A) (G₁ A) (φ (e y))`. Apply `GlobalTheory.T.transgressionTopCoeff_comp_holomorphic_jacobian_sq (hφa.contDiffAt)` to reduce the goal to its premises. Rewrite using `[e₂]; exact hρc.differentiableAt (by simp)`. Rewrite using `[e₂]`.
+
+Conclude with `hG₀`. Rewrite using `[e₂]`. Conclude with `hG₀u`. Rewrite using `[e₂]`. Conclude with `hG₁`.
+
+Rewrite using `[e₂]`. Conclude with `hG₁u`. Take `⟨hQ, hQu, hQh⟩` from `GlobalTheory.T.changeOfFrame_holomorphic_invertible_holomorphicChart E (e := c.e) c.holo hcy hA hA'`. Establish `step3 : corrC ρc (G₀ A) (G₁ A) (c.e y) = corrC ρc (G₀ A') (G₁ A') (c.e y)`. Rewrite using `[← GlobalTheory.T.transgressionTopCoeff_holomorphic_frame_change ρc hG₀ hG₀u hG₁ hG₁u hQ hQu hQh]`.
+
+Establish `hO : ∀ᶠ z in 𝓝 y, z ∈ ptsIn X.str σ O` using `(isOpen_ptsIn O).mem_nhds hy`. Establish `hev` using `(c.e.tendsto_symm hcy).eventually (hO.and ((GlobalTheory.FrameLift.eventually_mem hA).and (GlobalTheory.FrameLift.eventually_mem hA')))`. Apply `GlobalTheory.T.transgressionTopCoeffComplex_germ_congr` to reduce the goal to its premises. Conclude with `Filter.EventuallyEq.rfl`. Use `filter_upwards [hev] with w hw`.
+
+Simplify using `only [G₀, Matrix.transpose_transpose]`. Rewrite using `[hM₀.trans _ GlobalTheory.CxPts.mem_ptsIn_top A hw.2.1 A' hw.2.2 ()]`. Use `congr 1`. Use `filter_upwards [hev] with w hw`. Simplify using `only [G₁, Matrix.transpose_transpose]`.
+
+Rewrite using `[hM.trans _ hw.1 A hw.2.1 A' hw.2.2 ()]`. Use `congr 1`. Simplify using `only [corrTop, corrDens]`. Rewrite using `[← hA'def]`. Rewrite using `[step1, step2, e₂, step3, Complex.re_ofReal_mul]`.
+
+Establish `hT : transDet e c.e y = (fderiv ℂ φ (e y)).det` using `rfl`. Rewrite using `[hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem corrTop_holoChart_trans : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H H₀ : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → IsMetricOn E ⊤ H₀ → ∀ {ρ : CxPts X.str σ → ℝ}, (∀ y, CInfAt ρ y) → ∀ {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)}, IsHoloChart e → ∀ (c : AlgChart X.str σ X.dim) {y : CxPts X.str σ}, y ∈ ptsIn X.str σ O → y ∈ e.source → y ∈ c.e.source → ∀ {A : Mat (fun _ : Unit => m) X.Fn}, A ∈ E.S (under y) → corrTop (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()) (e y) = ‖transDet e c.e y‖ ^ 2 * corrDens E H₀ H ρ c y := by
   intro F _ σ X m E O H H₀ hM hM₀ ρ hρ e he c y hy hey hcy A hA
   set A' := (E.nonempty (under y)).choose with hA'def

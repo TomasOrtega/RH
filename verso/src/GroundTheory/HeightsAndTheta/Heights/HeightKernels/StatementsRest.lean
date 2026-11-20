@@ -208,11 +208,20 @@ def RestCutCaseSharp.Statement : Prop :=
         |∑' p : primesAbove P B₀, restAt f j k I vol φ Q p.1| ≤
           1.6 * ((f * j * k : ℕ) + 1) * vol * |I (degreeInput f j k)|
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by norm_num⟩`.
+-/
 example : (1 : ℕ) ≤ 2 ∧ (1 : ℕ) < 2 := ⟨by norm_num, by norm_num⟩
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨1, 0, le_rfl, by norm_num, rfl⟩`.
+-/
 theorem restPsumIdeal_example : RestTerms.blockPowerSum 1 (1 + 1) 1 0 ∈ restPsumIdeal 1 (1 + 1) :=
   Ideal.subset_span ⟨1, 0, le_rfl, by norm_num, rfl⟩
 
+/- English proof (translation)
+Establish `h : flagDim 1 1 1 = 1` using `by decide`. Rewrite using `[h]`. Conclude with `IsHomogeneous.sum _ _ _ fun i _ => by`. Simplify using `using isHomogeneous_X_pow (R := ℚ) ((0 : Fin 1), i) 1`.
+-/
 theorem restPsum_example_isHomogeneous :
     (RestTerms.blockPowerSum 1 (1 + 1) 1 0).IsHomogeneous (flagDim 1 1 1) := by
   have h : flagDim 1 1 1 = 1 := by decide
@@ -220,20 +229,34 @@ theorem restPsum_example_isHomogeneous :
   exact IsHomogeneous.sum _ _ _ fun i _ => by
     simpa using isHomogeneous_X_pow (R := ℚ) ((0 : Fin 1), i) 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isFlagIntegral_one, restPsumIdeal_example, restPsum_example_isHomogeneous⟩`.
+-/
 example : IsFlagIntegral 1 1 1 flagIntegralOne ∧
     RestTerms.blockPowerSum 1 (1 + 1) 1 0 ∈ restPsumIdeal 1 (1 + 1) ∧
     (RestTerms.blockPowerSum 1 (1 + 1) 1 0).IsHomogeneous (flagDim 1 1 1) :=
   ⟨isFlagIntegral_one, restPsumIdeal_example, restPsum_example_isHomogeneous⟩
 
+/- English proof (translation)
+Simplify using `[restStair, Fin.prod_univ_two]`.
+-/
 theorem restStair_one_two : restStair 1 (1 + 1) = X ((0 : Fin 1), (1 : Fin (1 + 1))) := by
   simp [restStair, Fin.prod_univ_two]
 
+/- English proof (translation)
+Establish `h` using `RestTerms.inh_J_eq`. Rewrite `h` using `[RestTerms.fibreDegree, RestTerms.inh_mu_eq, RestTerms.inh_fib_eq]`. Rewrite using `[restStair_one_two]`. Simplify using `using h`.
+-/
 theorem flagIntegral_restStair_one_two : RestTerms.flagIntegral 1 (1 + 1) (restStair 1 (1 + 1)) = -1 := by
   have h := RestTerms.inh_J_eq
   rw [RestTerms.fibreDegree, RestTerms.inh_mu_eq, RestTerms.inh_fib_eq] at h
   rw [restStair_one_two]
   simpa using h
 
+/- English proof (translation)
+Use `⟨?_, ?_, isFlagIntegral_one, by rw [flagIntegral_restStair_one_two]; norm_num⟩` and prove the remaining obligations. Establish `h : RestTerms.topDegree 1 (1 + 1) = 1` using `by decide`. Rewrite using `[h]`. Conclude with `isHomogeneous_X _ _`. Rewrite using `[← restStair_one_two, flagIntegral_restStair_one_two]`.
+
+Evaluate the numerical expressions.
+-/
 example : (X ((0 : Fin 1), (1 : Fin (1 + 1))) : RestTerms.RootRing 1 (1 + 1)).IsHomogeneous
       (RestTerms.topDegree 1 (1 + 1)) ∧
     RestTerms.flagIntegral 1 (1 + 1) (X ((0 : Fin 1), (1 : Fin (1 + 1)))) ≠ 0 ∧
@@ -246,6 +269,9 @@ example : (X ((0 : Fin 1), (1 : Fin (1 + 1))) : RestTerms.RootRing 1 (1 + 1)).Is
   · rw [← restStair_one_two, flagIntegral_restStair_one_two]
     norm_num
 
+/- English proof (translation)
+Use `⟨RestTerms.inh_decomp, ?_, le_rfl⟩` and prove the remaining obligations. Rewrite using `[RestTerms.inh_F_eq]`. Conclude with `isHomogeneous_X_pow _ _`.
+-/
 example : RestTerms.IsPowerSumDecomposition 1 (1 + 1) (RestTerms.restPolynomial 1 1 1 .last)
       (fun k _ => if k = 1 then C (2⁻¹) * (RestTerms.flagTwoSecondRoot - RestTerms.flagTwoFirstRoot)
         else if k = 2 then C (2⁻¹) else 0) ∧
@@ -254,6 +280,9 @@ example : RestTerms.IsPowerSumDecomposition 1 (1 + 1) (RestTerms.restPolynomial 
   rw [RestTerms.inh_F_eq]
   exact isHomogeneous_X_pow _ _
 
+/- English proof (translation)
+Use `⟨?_, isHomogeneous_one _ _⟩` and prove the remaining obligations. Establish `hI : Finset.Icc 1 (1 + 1) = ({1, 2} : Finset ℕ)` using `by decide`. Rewrite using `[hI]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 example : ∑ l ∈ Finset.Icc 1 (1 + 1), ∑ σ : Fin 1,
       map (algebraMap ℚ ℝ) (RestTerms.blockPowerSum 1 (1 + 1) l σ) *
         (fun (l : ℕ) (σ : Fin 1) => if l = 1 then map (algebraMap ℚ ℝ) (RestTerms.blockPowerSum 1 (1 + 1) 2 σ)

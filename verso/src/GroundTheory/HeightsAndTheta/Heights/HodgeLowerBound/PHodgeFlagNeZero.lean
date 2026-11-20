@@ -8,6 +8,39 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H B τ i`. Set `BE : Module.Basis (Fin D.N) Ω (E τ)` to `Module.Basis.mk (B.e_indep τ) (B.e_span τ).ge`. Set `w : ⋀[Ω]^((i : ℕ) + 1) (E τ)` to `exteriorPower.ιMulti Ω _ (B.e τ ∘ Fin.castLE (step_le i))`. Establish `hw : w ≠ 0`. Establish `h` using `(BE.exteriorPower ((i : ℕ) + 1)).ne_zero (Set.powersetCard.ofFinEmbEquiv (Fin.castLEOrderEmb (step_le i)))`.
+
+Rewrite `h` using `[exteriorPower.basis_apply, exteriorPower.ιMulti_family, Equiv.symm_apply_apply]`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[BE, Fin.castLEOrderEmb]`. Use `choose cX hcX using D.arith.2.1.2.2`.
+
+Establish `hy : ∀ k, D.y ⟨k, cX k⟩ ≠ 0`. Introduce `k h0`. Apply `hcX k` to reduce the goal to its premises. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0, map_zero, zero_mul]`. Establish `hseg : segreCoord D.y cX ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`.
+
+Take `⟨M, f, cc, -, -, hsum, hPr⟩` from `Pl.generates τ i cX hseg`. Establish `hM : 0 < M`. Break down `Nat.eq_zero_or_pos M with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hsum`.
+
+Conclude with `h`. Take `⟨b, -, hbspan, hA⟩` from `hPr ⟨0, hM⟩`. Establish `: Module.Finite Ω (E τ)` using `Module.Finite.of_basis BE`. Establish `hbi : LinearIndependent Ω b` using `linearIndependent_of_top_le_span_of_card_eq_finrank hbspan.ge (by rw [Module.finrank_eq_card_basis BE])`. Set `Bw` to `(Module.Basis.mk hbi hbspan.ge).exteriorPower ((i : ℕ) + 1)`.
+
+Establish `hm : ∃ m, Pl.gen τ i m w ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hw` to reduce the goal to its premises. Use `Bw.forall_coord_eq_zero_iff.1 fun t => ?_` and prove the remaining obligations.
+
+Take `⟨a, -, ha⟩` from `hA _ (Set.powersetCard.ofFinEmbEquiv.symm t).strictMono`. Set `ψ : Module.Dual Ω (⋀[Ω]^((i : ℕ) + 1) (E τ))` to `∑ m, (a m * chartMono D.y cX (-Pl.bdeg τ i)) • Pl.gen τ i m`. Establish `hψ : ψ = Bw.coord t`. Use `Bw.ext fun u => ?_` and prove the remaining obligations. Establish `h1` using `ha _ (Set.powersetCard.ofFinEmbEquiv.symm u).strictMono`.
+
+Rewrite using `[Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [Bw, exteriorPower.basis_apply, exteriorPower.ιMulti_family, ψ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Module.Basis.coe_mk]`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `htu : t = u`. Substitute `htu` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg fun h' => htu (Set.powersetCard.ofFinEmbEquiv.symm.injective (DFunLike.coe_injective h')).symm]`. Simplify using `[Ne.symm htu]`. Rewrite using `[← hψ]`. Simplify using `[ψ, hcon]`.
+
+Take `⟨m0, hm0⟩` from `hm`. Use `⟨m0, ?_⟩` and prove the remaining obligations. Set `c0 : Fin ((i : ℕ) + 1) → Fin D.N` to `Fin.castLE (step_le i)`. Set `v : (Fin ((i : ℕ) + 1) → Fin D.N) → Fin ((i : ℕ) + 1) → Ψ × Fin D.N × Fin D.N` to `fun c a => (τ, headIdx (step_le i) a, c a)`. Set `μ : (Fin ((i : ℕ) + 1) → Fin D.N) → (Ψ × Fin D.N × Fin D.N) →₀ ℕ` to `fun c => ∑ a, Finsupp.single (v c a) 1`.
+
+Set `g : (Fin ((i : ℕ) + 1) → Fin D.N) → Ω` to `fun c => Pl.gen τ i m0 (exteriorPower.ιMulti Ω _ (B.e τ ∘ c))`. Set `z : (Fin ((i : ℕ) + 1) → Fin D.N) → Ω` to `fun c => ∏ a, if ((headIdx (step_le i) a : ℕ) < D.j ∧ D.j ≤ (c a : ℕ)) then 0 else 1`. Set `P : MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω` to `∑ c, monomial (μ c) (z c * g c)`. Establish `hP : Pl.pluecker0 B τ i m0 = algebraMap _ Pl.ΩY P`. Simplify using `only [PlueckerData.pluecker0, PlueckerData.gvar0, PlueckerData.gvar, PlueckerData.ofΩ, P, map_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hfac : ∀ a, (if ((headIdx (step_le i) a : ℕ) < D.j ∧ D.j ≤ (c a : ℕ)) then (0 : Pl.ΩY) else algebraMap (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY (X (τ, headIdx (step_le i) a, c a))) = algebraMap (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY (C (if ((headIdx (step_le i) a : …`. Introduce `a`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.prod_congr rfl fun a _ => hfac a, ← map_prod, ← map_mul]`.
+
+Use `congr 1`. Rewrite using `[show monomial (μ c) (z c * g c) = C (z c * g c) * monomial (μ c) 1 by rw [C_mul_monomial, mul_one], monomial_sum_one, Finset.prod_mul_distrib]`. Simplify using `only [z, g, map_mul, map_prod, v, MvPolynomial.X]`. Expand and normalize the polynomial expressions, which then agree. Establish `hμ : ∀ c, μ c = μ c0 → c = c0`.
+
+Introduce `c h`. Use function extensionality and compare the values at `a`. Establish `h2` using `congrArg (fun φ : (Ψ × Fin D.N × Fin D.N) →₀ ℕ => φ (τ, headIdx (step_le i) a, c0 a)) h`. Simplify using `only [μ, v, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply, Prod.mk.injEq, true_and, headIdx, Fin.castLE_inj] at h2`. Rewrite `h2` using `[Finset.sum_eq_single a (fun a' _ h' => if_neg fun h'' => h' h''.1) (by simp), Finset.sum_eq_single a (fun a' _ h' => if_neg fun h'' => h' h''.1) (by simp)]`.
+
+Assume the negation of the conclusion as `hne`. Simplify using `[hne] at h2`. Establish `hz : z c0 = 1` using `Finset.prod_eq_one fun a _ => if_neg fun h => lt_irrefl _ (h.1.trans_le h.2)`. Establish `hcoeff : coeff (μ c0) P = g c0`. Simplify using `only [P, coeff_sum, coeff_monomial]`.
+
+Rewrite using `[Finset.sum_eq_single c0 (fun c _ hc => if_neg fun h => hc (hμ c h)) (by simp), if_pos rfl, hz, one_mul]`. Establish `hPne : P ≠ 0` using `fun h => hm0 (by rw [h, coeff_zero] at hcoeff; exact hcoeff.symm)`. Rewrite using `[hP]`. Conclude with `fun h => hPne (IsFractionRing.injective (MvPolynomial (Ψ × Fin D.N × Fin D.N) Ω) Pl.ΩY (by rw [h, map_zero]))`.
+-/
 theorem HodgeFlagNeZero.proof : HodgeFlagNeZero.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H B τ i
   classical

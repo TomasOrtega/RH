@@ -25,6 +25,9 @@ def IsSympLev {A : Over S} [GrpObj A] (P : LB (G2 A).left) (h M : ℕ) {B : Type
       ∀ a b, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) M (toUnit (Over.mk x) ≫ lev a) (toUnit _ ≫ lev b)
         (unitOn (z ^ (2 * omegaStd a b)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨c.lev_add, c.lev_tors, c.geom⟩`.
+-/
 theorem SiegPre.isSympLev {h M : ℕ} {B : Type} [CommRing B] {ζ : B} {s : S ⟶ Sp B} (c : SiegPre h M ζ s) :
     IsSympLev c.P h M ζ s c.lev :=
   ⟨c.lev_add, c.lev_tors, c.geom⟩
@@ -45,6 +48,17 @@ def HasLevelStructureOfLevel (b : Base D R) (N h M : ℕ) : Prop :=
       (l : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ o.A)), IsSympLev o.P h M (zetaAway M) t₁ l →
       ∃! f : S ⟶ X, f ≫ s = t ∧ f ≫ s₁ = t₁ ∧ ∃ m : ObjMap o u f, ∀ a, (l a).left ≫ m.φ = f ≫ (lev a).left
 
+/- English proof (translation)
+Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Establish `hF : 0 < Module.finrank ℚ D.F` using `Module.finrank_pos`. Establish `hpos : 0 < Module.finrank ℤ D.La`. Rewrite using `[D.rankLa]`.
+
+Conclude with `Nat.mul_pos (Nat.mul_pos D.m_pos D.n_pos) hF`. Assume the negation of the conclusion as `hlt`. Establish `h1 : Module.finrank ℤ D.La = 1` using `by omega`. Set `bs` to `Module.finBasisOfFinrankEq ℤ D.La h1`. Establish `hzero : ∀ x y : D.La, D.EF x y = 0`.
+
+Introduce `x y`. Establish `hx : x = bs.repr x 0 • bs 0` using `by conv_lhs => rw [← bs.sum_repr x]`. Simplify using the standard rewrite rules. Establish `hy : y = bs.repr y 0 • bs 0` using `by conv_lhs => rw [← bs.sum_repr y]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hx, hy, LinearMap.map_smul, LinearMap.map_smul, LinearMap.smul_apply, D.alt, smul_zero, smul_zero]`. Establish `hsub : ∀ x : D.La, x = 0`. Introduce `x`. Apply `D.nondeg` to reduce the goal to its premises. Use extensionality with `y`.
+
+Simplify using `[hzero]`. Establish `: Module.finrank ℤ D.La = 0` using `by haveI : Subsingleton D.La := ⟨fun a b => by rw [hsub a, hsub b]⟩`. Conclude with `Module.finrank_zero_of_subsingleton`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Datum.two_le_finrank_La {p : ℕ} [Fact p.Prime] (D : Datum p) : 2 ≤ Module.finrank ℤ D.La := by
   haveI := D.freeLa
   haveI := D.finLa

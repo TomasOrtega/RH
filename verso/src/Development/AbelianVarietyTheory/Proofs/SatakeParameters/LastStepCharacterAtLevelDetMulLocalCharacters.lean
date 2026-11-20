@@ -16,6 +16,11 @@ section Cong
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
   {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `ha`. Take `⟨r, hr, h2⟩` from `hb`. Establish `hi : ∀ x : 𝓞 E, iA F E (algebraMap (𝓞 E) E x) ∈ Formalism.L2.Herm.intAf F E` using `fun x => (toRInt F E x).2`. Use `⟨s * r, fun h => (P.isPrime.mem_or_mem h).elim hs hr, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * r)) * (a + b) = iA F E (algebraMap (𝓞 E) E r) * (iA F E (algebraMap (𝓞 E) E s) * a) + iA F E (algebraMap (𝓞 E) E s) * (iA F E (algebraMap (𝓞 E) E r) * b)`.
+
+Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (hi r) h1) (mul_mem (hi s) h2)`.
+-/
 theorem intAtA_add {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F := F) P a) (hb : IntAtA (F := F) P b) :
     IntAtA (F := F) P (a + b) := by
   obtain ⟨s, hs, h1⟩ := ha
@@ -29,6 +34,11 @@ theorem intAtA_add {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F :
   rw [e]
   exact add_mem (mul_mem (hi r) h1) (mul_mem (hi s) h2)
 
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `ha`. Take `⟨r, hr, h2⟩` from `hb`. Use `⟨s * r, fun h => (P.isPrime.mem_or_mem h).elim hs hr, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * r)) * (a * b) = (iA F E (algebraMap (𝓞 E) E s) * a) * (iA F E (algebraMap (𝓞 E) E r) * b)`. Rewrite using `[map_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem h1 h2`.
+-/
 theorem intAtA_mul {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F := F) P a) (hb : IntAtA (F := F) P b) :
     IntAtA (F := F) P (a * b) := by
   obtain ⟨s, hs, h1⟩ := ha
@@ -40,6 +50,9 @@ theorem intAtA_mul {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F :
   rw [e]
   exact mul_mem h1 h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rw [map_one, map_one, one_mul]; exact (toRInt F E x).2⟩`.
+-/
 theorem intAtA_int (x : 𝓞 E) : IntAtA (F := F) P (iA F E (algebraMap (𝓞 E) E x)) :=
   ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by
     rw [map_one, map_one, one_mul]; exact (toRInt F E x).2⟩
@@ -56,6 +69,27 @@ def intAtSub (P : HeightOneSpectrum (𝓞 E)) :
     have := intAtA_mul (intAtA_int (F := F) (P := P) (-1)) ha
     simpa using this
 
+/- English proof (translation)
+Use `set S := intAtSub (F := F) P with hS`. Establish `hq : ((qOf P : ℕ) : E) ≠ 0`. Establish `: qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Use `set Q := iA F E ((qOf P : ℕ) : E) with hQ`.
+
+Establish `hcQ : iA F E ((qOf P : ℕ) : E)⁻¹ * Q = 1` using `by rw [hQ, ← map_mul, inv_mul_cancel₀ hq, map_one]`. Establish `hQS : Q ∈ S`. Use `intAtA_int (F := F) (P := P) ((qOf P : ℕ) : 𝓞 E)` as an intermediate fact. Simplify `this` using `[hQ]`. Establish `hZ : ∀ a b, Q ^ (d - 1) * (iA F E (((qOf P : ℕ) : E) ^ d)⁻¹ * ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a b) ∈ S` using `fun a b => S.mul_mem (S.pow_mem hQS _) (h a b)`.
+
+Establish `hZe : ∀ a b, Q * (Q ^ (d - 1) * (iA F E (((qOf P : ℕ) : E) ^ d)⁻¹ * ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a b)) = ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a b`. Introduce `a b`. Establish `e : Q * Q ^ (d - 1) * iA F E (((qOf P : ℕ) : E) ^ d)⁻¹ = 1`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hd, hQ, ← map_pow, ← map_mul, mul_inv_cancel₀ (pow_ne_zero _ hq), map_one]`. Rewrite using `[← mul_assoc, ← mul_assoc, e, one_mul]`.
+
+Set `Z : Matrix (Fin N) (Fin N) S` to `fun a b => ⟨_, hZ a b⟩`. Set `q' : S` to `⟨Q, hQS⟩`. Set `M : Matrix (Fin N) (Fin N) S` to `1 + q' • Z`. Establish `hM : M.map S.subtype = (k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Use extensionality with `a b`.
+
+Establish `e1 : S.subtype ((1 : Matrix (Fin N) (Fin N) S) a b) = (1 : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b`. Apply the tactic sequence `rw [Matrix.one_apply, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[Matrix.map_apply]`. Simplify using `only [M]`. Rewrite using `[Matrix.add_apply, map_add, e1, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+
+Use `show _ + Q * (Q ^ (d - 1) * _) = _`. Rewrite using `[hZe, Matrix.sub_apply]`. Put the polynomial expressions in normal form. Use `set I : Ideal S := Ideal.span {q'}`. Establish `hMI : M.map (Ideal.Quotient.mk I) = 1`.
+
+Use extensionality with `a b`. Establish `hq0 : Ideal.Quotient.mk I q' = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`. Rewrite using `[Matrix.map_apply]`. Simplify using `only [M]`. Rewrite using `[Matrix.add_apply, map_add, Matrix.smul_apply, smul_eq_mul, map_mul, hq0, zero_mul, add_zero, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : Ideal.Quotient.mk I M.det = Ideal.Quotient.mk I 1`. Rewrite using `[RingHom.map_det, map_one]`. Use `show (M.map (Ideal.Quotient.mk I)).det = 1`. Rewrite using `[hMI, Matrix.det_one]`.
+
+Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hdet)`. Establish `hk : ((Matrix.GeneralLinearGroup.det k : (E ⊗[F] FiniteAdeleRing (𝓞 F) F)ˣ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) = S.subtype M.det`. Rewrite using `[RingHom.map_det, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `congrArg Matrix.det hM.symm`. Establish `e2 : iA F E ((qOf P : ℕ) : E)⁻¹ * (((Matrix.GeneralLinearGroup.det k : (E ⊗[F] FiniteAdeleRing (𝓞 F) F)ˣ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) - 1) = (w : _)`.
+
+Rewrite using `[hk, show S.subtype M.det - 1 = S.subtype (M.det - 1) by simp, ← hw, map_mul]`. Use `show iA F E ((qOf P : ℕ) : E)⁻¹ * ((w : _) * Q) = _`. Rewrite using `[mul_comm (w : E ⊗[F] FiniteAdeleRing (𝓞 F) F), ← mul_assoc, hcQ, one_mul]`. Rewrite using `[e2]`. Conclude with `w.2`.
+-/
 theorem det_congAt {d : ℕ} (hd : 1 ≤ d) {k : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (h : CongAt P d k) :
     IntAtA (F := F) P (iA F E ((qOf P : ℕ) : E)⁻¹ *
       (((Matrix.GeneralLinearGroup.det k : (E ⊗[F] FiniteAdeleRing (𝓞 F) F)ˣ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) - 1)) := by
@@ -124,6 +158,9 @@ section Rat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_ratA (g : GL (Fin n) E) :
     ((Matrix.GeneralLinearGroup.det (ratA F g) : (E ⊗[F] FiniteAdeleRing (𝓞 F) F)ˣ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) =
       iA F E ((Matrix.GeneralLinearGroup.det g : Eˣ) : E) := by
@@ -138,6 +175,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Fields} (s : Seam D X)
 
+/- English proof (translation)
+Establish `h : ((seamGL s g : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) = (LinearMap.toMatrix' g.toLinearMap).map (s.iE : X.E →+* D.host.E)` using `rfl`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, h, ← RingHom.mapMatrix_apply, ← RingHom.map_det, LinearMap.det_toMatrix', LinearEquiv.coe_det]`. Both sides reduce to the same expression.
+-/
 theorem det_seamGL {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n) :
     ((Matrix.GeneralLinearGroup.det (seamGL s g) : D.host.Eˣ) : D.host.E) = s.iE ((LinearEquiv.det g : X.Eˣ) : X.E) := by
   have h : ((seamGL s g : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) =
@@ -148,6 +188,11 @@ theorem det_seamGL {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n) :
 
 variable {i : ℕ} {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (fb : SB → GL (Fin (D.R.N i)) D.host.E) (dep : SB → ℕ)
 
+/- English proof (translation)
+Establish `H` using `det_congAt hd h`. Establish `e : ((Matrix.GeneralLinearGroup.det (((ratA D.host.F (fb P))⁻¹ * κ * ratA D.host.F (fb P))⁻¹ * ratA D.host.F (seamGL s g)) : (AfE D.host.F D.host.E)ˣ) : AfE D.host.F D.host.E) = (((Matrix.GeneralLinearGroup.det κ)⁻¹ : (AfE D.host.F D.host.E)ˣ) : AfE D.host.F D.host.E) * iA D.host …`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, map_inv, Units.val_mul, det_ratA, det_seamGL]`. Use `congr 2`. Rewrite using `[mul_comm, mul_inv_cancel_left]`.
+
+Rewrite using `[← e]`. Conclude with `H`.
+-/
 theorem det_inFrame {P : SB} {κ : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)}
     {g : Sp X.E (D.R.N i) ≃ₗ[X.E] Sp X.E (D.R.N i)} (hd : 1 ≤ dep P) (h : InFrame s fb dep P κ g) :
     IntAtA (F := D.host.F) (seamP s P.1) (iA D.host.F D.host.E ((qOf (seamP s P.1) : D.host.E))⁻¹ *
@@ -170,6 +215,13 @@ end GlobalTheory.TopMuDet
 
 end
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hMu hi β β' κ κ' g z g' z' hg hg'`. Establish `hlt : t.m2 + 1 < D.R.m` using `by omega`. Establish `hok` using `(t.idx_ok μ).cst_ok`. Take `⟨h1, -⟩` from `GlobalTheory.T.muCharacter_det_level_eq_local_tame_product A dtU a hPin hTie hMu (t.m2 + 1) hlt (t.m2 + 1) (Nat.le_of_succ_le hi) β κ (fun P => ((LinearEquiv.det (g P) : t.X.Eˣ) : t.X.E)) (fun P => GlobalTheory.TopMuDet.det_inFrame t.seam _ _ (hok.D_pos P) (hg P).2)`. Establish `hdep : ∀ P : SB t μ, 1 ≤ topDep t.sel (t.tup μ) (t.cst μ) P`.
+
+Introduce `P`. Unfold `topDep`. Use `split_ifs`. Conclude with `le_rfl`. Use `hok.M_pos` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨-, h2⟩` from `GlobalTheory.T.muCharacter_det_level_eq_local_tame_product A dtU a hPin hTie hMu (t.m2 + 1) hlt (t.m2 + 1 + 1) hi β' κ' (fun P => ((LinearEquiv.det (g' P) : t.X.Eˣ) : t.X.E)) (fun P => GlobalTheory.TopMuDet.det_inFrame t.seam _ _ (hdep P) (hg' P).2)`. Rewrite using `[Finset.prod_mul_distrib, map_mul, ← mul_assoc, h1, one_mul, h2]`.
+-/
 theorem GlobalTheory.TwTop.muOf_det_top : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => MuLaw t u μ dtU →
   ∀ (hi : t.m2 + 1 + 1 ≤ D.R.m) (β : (St (t.m2 + 1) (Nat.le_of_succ_le hi)).Ch) (β' : (St (t.m2 + 1 + 1) hi).Ch)
     (κ : ((St (t.m2 + 1) (Nat.le_of_succ_le hi)).K β).lev.U) (κ' : ((St (t.m2 + 1 + 1) hi).K β').lev.U)

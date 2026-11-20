@@ -5,6 +5,11 @@ open NumberField MeasureTheory GlobalTheory.CuspRep
 
 namespace GlobalTheory.CapelliIntertw
 
+/- English proof (translation)
+Unfold `Formalism.REAL.qdet Formalism.REAL.qminor Formalism.REAL.Tm`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 2`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply, map_add, apply_ite, AlgHom.commutes, map_zero]`.
+-/
 theorem qdet_map {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (f : A →ₐ[ℂ] B) {n : ℕ}
     (E : Fin n → Fin n → A) (u : ℂ) :
     f (Formalism.REAL.qdet E u) = Formalism.REAL.qdet (fun a b => f (E a b)) u := by
@@ -35,6 +40,13 @@ def intertw : Subalgebra ℂ (Module.End ℂ M × Module.End ℂ M') where
 
 end GlobalTheory.CapelliIntertw
 
+/- English proof (translation)
+Introduce `M M' _ _ _ _ T n X Y hXY u p v`. Set `S` to `GlobalTheory.CapelliIntertw.intertw T`. Set `Z : Fin n → Fin n → S` to `fun a b => ⟨(X a b, Y a b), fun w => hXY a b w⟩`. Set `q : S` to `Polynomial.aeval (Formalism.REAL.qdet Z u) p`. Establish `h1 : ((q : Module.End ℂ M × Module.End ℂ M').1) = Polynomial.aeval (Formalism.REAL.qdet X u) p`.
+
+Use `Polynomial.aeval_algHom_apply ((AlgHom.fst ℂ _ _).comp S.val) (Formalism.REAL.qdet Z u) p` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CapelliIntertw.qdet_map]`. Conclude with `this.symm`. Establish `h2 : ((q : Module.End ℂ M × Module.End ℂ M').2) = Polynomial.aeval (Formalism.REAL.qdet Y u) p`. Use `Polynomial.aeval_algHom_apply ((AlgHom.snd ℂ _ _).comp S.val) (Formalism.REAL.qdet Z u) p` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.CapelliIntertw.qdet_map]`. Conclude with `this.symm`. Rewrite using `[← h1, ← h2]`. Conclude with `q.2 v`.
+-/
 theorem GlobalTheory.capelli_intertw : ∀ (M M' : Type) [AddCommGroup M] [Module ℂ M] [AddCommGroup M'] [Module ℂ M'] (T : M →ₗ[ℂ] M') (n : ℕ) (X : Fin n → Fin n → Module.End ℂ M) (Y : Fin n → Fin n → Module.End ℂ M'), (∀ i j v, T (X i j v) = Y i j (T v)) → ∀ (u : ℂ) (p : Polynomial ℂ) (v : M), T (Polynomial.aeval (Formalism.REAL.qdet X u) p v) = Polynomial.aeval (Formalism.REAL.qdet Y u) p (T v) := by
   intro M M' _ _ _ _ T n X Y hXY u p v
   let S := GlobalTheory.CapelliIntertw.intertw T

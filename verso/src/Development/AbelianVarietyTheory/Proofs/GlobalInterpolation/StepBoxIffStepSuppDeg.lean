@@ -15,6 +15,9 @@ section Clauses
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `M.smul_mem _ (M.smul_mem _ hz)`.
+-/
 theorem mulLat_le_divLat {H : Type} [AddCommGroup H] [Module (𝓞 E) H] (cA cB : ℕ) (M : Submodule (𝓞 E) H) :
     mulLat cB M ≤ divLat cA M := by
   rintro _ ⟨z, hz, rfl⟩
@@ -22,6 +25,11 @@ theorem mulLat_le_divLat {H : Type} [AddCommGroup H] [Module (𝓞 E) H] (cA cB 
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)`. Establish `hy'` using `mulLat_le_divLat cA cB _ hy`. Establish `: x + y ∈ divLat cA (homAt S N N') ↔ x ∈ divLat cA (homAt S N N')` using `Submodule.add_mem_iff_left _ hy'`.
+
+Simplify using `only [this]`.
+-/
 theorem inRange_indicator (K : Type) [Field K] {a b : ℕ} (S : Finset (HeightOneSpectrum (𝓞 E))) (cA cB : ℕ)
     (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) :
     MovementLaw.InRangeOf S cA cB N N' (fun x => if x ∈ divLat cA (homAt S N N') then (1 : K) else 0) := by
@@ -36,6 +44,11 @@ end Clauses
 
 open Classical in
 
+/- English proof (translation)
+Unfold `IndexExponentDegree.degAt`. Rewrite using `[Finset.sum_filter, Finset.sum_subset (Finset.subset_univ m.support) (by`. Introduce `k _ hk`. Simplify using `[Finsupp.notMem_support_iff.1 hk]), Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Simplify using the standard rewrite rules. Introduce `σ _ hσ`. Simplify using `[hσ]`. Simplify using the standard rewrite rules.
+-/
 theorem degAt_eq {X : Fields} {a b : ℕ} (m : DVar X.Tau a b →₀ ℕ) (τ : X.Tau) :
     IndexExponentDegree.degAt m τ = ∑ k ∈ m.support.filter (fun k => k.1 = τ), m k := by
   unfold IndexExponentDegree.degAt
@@ -48,6 +61,19 @@ theorem degAt_eq {X : Fields} {a b : ℕ} (m : DVar X.Tau a b →₀ ℕ) (τ : 
     simp [hσ]
   · simp
 
+/- English proof (translation)
+Establish `hpos : 0 < R.N i` using `R.N_pos i`. Establish `hlt : R.N i < R.N R.m`. Unfold `Ranks.N`. Conclude with `Nat.add_lt_add_left (Nat.mul_lt_mul_of_pos_right hi (Nat.succ_pos R.t)) _`. Establish `hb : Examples₂.blkN R (R.N i) = i`.
+
+Unfold `Examples₂.blkN Ranks.N`. Rewrite using `[Nat.add_sub_cancel_left, Nat.mul_div_cancel _ (Nat.succ_pos _)]`. Establish `h1 : Examples₂.wtN (W.hc u τ) (R.N i) = -wG R ((W.hc u τ).e ⟨i, hi⟩) (i + 1)`. Unfold `Examples₂.wtN`. Rewrite using `[dif_neg (by unfold Ranks.N; omega), dif_pos (by rw [hb]; exact hi)]`.
+
+Simplify using `only [hb]`. Establish `h2` using `Examples₂.wtN_anti (W.hc u τ) (Nat.sub_le (R.N i) 1) hlt`. Establish `h3` using `Examples₂.lamOf_eq (W.hc u τ) i hi.le ⟨R.N i - 1, by omega⟩`. Rewrite `h3` using `[Examples₂.wtQ_eq_wtN]`. Establish `h4 : (W.nuW u (i + 1) τ).detShift = (Examples₂.lamOf (W.hc u τ) i).w ⟨R.N i - 1, by omega⟩ + ⌊wG R ((W.hc u τ).e ⟨i, hi⟩) (i + 1)⌋`.
+
+Unfold `DomWeight.detShift`. Rewrite using `[dif_pos (show 0 < R.N (i + 1 - 1) from hpos)]`. Simplify using `only [Wts.nuW, shiftW, Wts.lamN, RowPar.eAt, RowPar.of, Nat.add_sub_cancel, hi, dif_pos]`. Both sides reduce to the same expression. Rewrite using `[h4]`.
+
+Establish `h5 : -(Examples₂.lamOf (W.hc u τ) i).w ⟨R.N i - 1, by omega⟩ ≤ ⌊wG R ((W.hc u τ).e ⟨i, hi⟩) (i + 1)⌋`. Rewrite using `[Int.le_floor]`. Use `push_cast`. Rewrite using `[h3]`. Simplify using `only at h2 ⊢`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nuW_detShift_nonneg {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R) (u : Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
     0 ≤ (W.nuW u (i + 1) τ).detShift := by
   have hpos : 0 < R.N i := R.N_pos i
@@ -79,6 +105,11 @@ theorem nuW_detShift_nonneg {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Wo
     linarith
   omega
 
+/- English proof (translation)
+Establish `hpos : 0 < R.N i` using `R.N_pos i`. Unfold `IndexExponentDegree.degNu nuLast`. Rewrite using `[Int.toNat_of_nonneg (nuW_detShift_nonneg W u hi τ)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Unfold `DomWeight.detShift`.
+
+Rewrite using `[dif_pos (show 0 < R.N (i + 1 - 1) from hpos), dif_pos hpos]`. Use `show ((W.lamN u i τ).w s + _) - ((W.lamN u i τ).w ⟨R.N i - 1, _⟩ + _) + ((W.lamN u i τ).w ⟨R.N i - 1, _⟩ + _) = (W.lamN u i τ).w s + _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degNu_eq {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (u : Pr.Word) {i : ℕ} (hi : i < R.m) (τ : X.Tau) :
     IndexExponentDegree.degNu (W.lamTrue u i) (nuLast W u i) τ = ∑ k, (W.nuW u (i + 1) τ).w k := by
   have hpos : 0 < R.N i := R.N_pos i
@@ -91,6 +122,13 @@ theorem degNu_eq {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) 
     (W.lamN u i τ).w s + _
   ring
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h1 : B.L.ω₁ ∈ TaylorLogMetric.lamOf D cc 0`. Rewrite using `[← B.lat]`. Conclude with `B.L.ω₁_mem_lattice`. Establish `h2 : TaylorLogMetric.lamOf D cc 0 ≤ ⊥`.
+
+Unfold `TaylorLogMetric.lamOf`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w ⟨c, -, rfl⟩`. Simplify using the standard rewrite rules. Establish `h3 : B.L.ω₁ = 0` using `h2 h1`.
+
+Conclude with `B.L.indep.ne_zero 0 (by simpa using h3)`.
+-/
 theorem delta_ne_zero {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) : δ ≠ 0 := by
   rintro rfl
   have h1 : B.L.ω₁ ∈ TaylorLogMetric.lamOf D cc 0 := by
@@ -111,6 +149,11 @@ variable {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (�
 def JetsAll (deg : X.Tau → ℤ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) : Prop :=
   ∀ Ξ : HomE X.E a b → X.K, MovementLaw.InRangeOf S cA cB N N' Ξ → MovementLaw.JetsIn A S cB deg N N' Ξ
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hJ Ξ hΞ x hx m hm`. Use `hJ x (hΞ.1 x hx) m fun τ => ?_` and prove the remaining obligations. Rewrite using `[degAt_eq, h τ, ← hm τ]`. Introduce `hJ x hx m hm`.
+
+Use `hJ _ (inRange_indicator X.K S cA cB N N') x (by simp [hx]) m fun τ => ?_` and prove the remaining obligations. Rewrite using `[← h τ, ← hm τ, degAt_eq]`.
+-/
 theorem jetsIn_iff (lam : X.Tau → DomWeight a) (n : X.Tau → ℕ) (deg : X.Tau → ℤ) (h : ∀ τ, IndexExponentDegree.degNu lam n τ = deg τ)
     (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) :
     IndexExponentDegree.JetsIn A S cA cB lam n N N' ↔ JetsAll A S cA cB deg N N' := by
@@ -129,6 +172,11 @@ def JetsDeg (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 X.E))) (M : ℕ) (d
     ∀ m : DVar X.Tau a b →₀ ℕ, (∀ τ, ((∑ k ∈ m.support.filter (fun k => k.1 = τ), m k : ℕ) : ℤ) = deg τ) →
       ∃ k : X.K, A.σ₀ k = (A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd S N N' c x) m
 
+/- English proof (translation)
+Introduce `Ξ hΞ x hx m hm`. Use `h N N' cB x ⟨hN, hN', hB, Dvd.intro_left _ rfl, ?_⟩ m hm` and prove the remaining obligations. Establish `h1 : ((cA : ℕ) : 𝓞 X.E) • x ∈ homAt S N N'` using `hΞ.1 x hx`. Use `show ((cA * cB : ℕ) : 𝓞 X.E) • x ∈ homAt S N N'`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ h1`.
+-/
 theorem jetsAll_of_deg (deg : X.Tau → ℤ) (h : JetsDeg A a b S (cA * cB) deg) (hB : 0 < cB)
     {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N') :
     JetsAll A S cA cB deg N N' := by
@@ -141,6 +189,9 @@ theorem jetsAll_of_deg (deg : X.Tau → ℤ) (h : JetsDeg A a b S (cA * cB) deg)
 
 end Jets
 
+/- English proof (translation)
+Unfold `cBof`. Use `Nat.mul_pos (hP.T_prime u).pos (pow_pos (Finset.prod_pos fun P _ => ?_) _)` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (by unfold Formalism.L2.Col.qOf; rw [Ne, Ideal.absNorm_eq_zero_iff]; exact P.1.ne_bot)`.
+-/
 theorem cBof_pos {X : Fields} {Pr : Primes X} (hP : Pr.Ok) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (u : Pr.Word) : 0 < cBof sel mu cst u := by
   unfold cBof

@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(GDet.repAlg (diagRep χ) (Polynomial k) _).det = _`. Rewrite using `[← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [GDet.repAlg, diagRep, Matrix.one_apply, Matrix.diagonal_apply, h]`.
+-/
 private theorem chi_diag {n : ℕ} {k G : Type} [CommRing k] [Group G] (χ : Fin n → G →* kˣ) (g : G) :
     (GDet.ofRep (diagRep χ)).chi (MonoidAlgebra.single g 1) =
       ∏ i, (Polynomial.X - Polynomial.C (χ i g : k)) := by
@@ -14,6 +17,13 @@ private theorem chi_diag {n : ℕ} {k G : Type} [CommRing k] [Group G] (χ : Fin
   ext i j : 2
   by_cases h : i = j <;> simp [GDet.repAlg, diagRep, Matrix.one_apply, Matrix.diagonal_apply, h]
 
+/- English proof (translation)
+Introduce `l _ F n O _ _ _ r B _ _ _ u g ut hut`. Establish `hm : (u.D.chi (MonoidAlgebra.single g 1)).Monic`. Rewrite using `[← (UpperTheory.V.CA.d_toDet u.D _).1]`. Conclude with `(UpperTheory.V.CA.d_chi _ _).2.2.2.2.1`. Establish `h1 : (u.D.chi (MonoidAlgebra.single g 1)).map (res O B : B →+* ResidueField O) = ∏ i, (Polynomial.X - Polynomial.C (residue O (ut i)))`.
+
+Rewrite using `[← ((UpperTheory.V.CA.d_gmap u.D).2.2.1 _ _).1, u.red, MonoidAlgebra.mapRingHom_single, map_one, Resid.Dbar, chi_diag]`. Simplify using `only [hut]`. Establish `hc : (ResidueField.map (algebraMap O B)).comp (res O B : B →+* ResidueField O) = residue B`. Use extensionality with `x`. Conclude with `(RingEquiv.ofBijective _ (resMap_bijective O B)).apply_symm_apply (residue B x)`.
+
+Establish `h2 : (u.D.chi (MonoidAlgebra.single g 1)).map (residue B) = ∏ i, (Polynomial.X - Polynomial.C (residue B (algebraMap O B (ut i))))` using `by conv_lhs => rw [← hc, ← Polynomial.map_map, h1]`. Simplify using `[Polynomial.map_prod, ResidueField.map_residue]`. Use `⟨hm, ?_, h2⟩` and prove the remaining obligations. Rewrite using `[← hm.natDegree_map (residue B), h2, Polynomial.natDegree_prod_of_monic _ _ fun i _ => Polynomial.monic_X_sub_C _]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Pa.Core.chiRes :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid F O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (g : F.G₀) (ut : Fin n → O), (∀ i, residue O (ut i) = r.chib i g) → (u.D.chi (MonoidAlgebra.single g 1)).Monic ∧ (u.D.chi (MonoidAlgebra.single g 1)).natDegree = n ∧ (u.D.chi (MonoidAlgebra.single g 1)).map (residue B) = ∏ i, (Polynomial.X - Polynomial.C (residue B (algebraMap O B (ut i)))) := by
   intro l _ F n O _ _ _ r B _ _ _ u g ut hut

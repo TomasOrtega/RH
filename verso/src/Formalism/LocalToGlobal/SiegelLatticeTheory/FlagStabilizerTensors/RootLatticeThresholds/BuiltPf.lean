@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 def chiStd (x : ℝ) : ℝ := Real.smoothTransition (2 * x - 1)
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.C6.IsCut0`. Use `⟨?_, ⟨1 / 2, by norm_num, fun x hx => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use `show ContDiff ℝ _ (Real.smoothTransition ∘ fun x : ℝ => 2 * x - 1)`. Conclude with `Real.smoothTransition.contDiff.comp (by fun_prop)`. Conclude with `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+
+Conclude with `Real.smoothTransition.one_of_one_le (by linarith)`.
+-/
 theorem isCut0_chiStd : Formalism.FourierDecayAlt.C6.IsCut0 chiStd := by
   unfold Formalism.FourierDecayAlt.C6.IsCut0
   refine ⟨?_, ⟨1 / 2, by norm_num, fun x hx => ?_⟩, fun x hx => ?_⟩
@@ -31,10 +36,16 @@ def towerOf (B : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (h1 : B.μ
     (h3 : B.μN = Formalism.FourierDecayAlt.D.muN k r) : Formalism.FourierDecayAlt.D.LevTower k r Wp Wq :=
   (Formalism.FourierDecayAlt.P.exists_level_tower k r Wp Wq B h1 h2 h3).choose
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.exists_level_tower k r Wp Wq B h1 h2 h3).choose_spec.1`.
+-/
 theorem towerOf_base (B : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (h1 : B.μW Set.univ = 1) (h2 : B.μW' Set.univ = 1)
     (h3 : B.μN = Formalism.FourierDecayAlt.D.muN k r) : (towerOf B h1 h2 h3).base = B :=
   (Formalism.FourierDecayAlt.P.exists_level_tower k r Wp Wq B h1 h2 h3).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.exists_level_tower k r Wp Wq B h1 h2 h3).choose_spec.2`.
+-/
 theorem towerOf_norm (B : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (h1 : B.μW Set.univ = 1) (h2 : B.μW' Set.univ = 1)
     (h3 : B.μN = Formalism.FourierDecayAlt.D.muN k r) : Formalism.FourierDecayAlt.D.TowerNormalised (towerOf B h1 h2 h3) :=
   (Formalism.FourierDecayAlt.P.exists_level_tower k r Wp Wq B h1 h2 h3).choose_spec.2
@@ -49,6 +60,9 @@ def sgOf {nf : ℕ} (G : Formalism.FourierDecayAlt.Sz.Glob (InfinitePlace D.host
     (T T' : ℝ) (de de' : ℕ → ℝ) (l : ℕ) (v : Fin nf) : ℂ :=
   Formalism.FourierDecayAlt.M.sgn ⟨G.k, G.r, T, T', (G.place (pl v)).u de, (G.place (pl v)).u de'⟩ l
 
+/- English proof (translation)
+Introduce `v`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem sg_of (I : CarrierIn X u u')
     (h : I.sg = sgOf I.G I.pl ((D.mem u).A.T : ℝ) ((D.mem u').A.T : ℝ) I.de I.de' (I.l + 1)) :
     ∀ v, I.sg v = Formalism.FourierDecayAlt.M.sgn (par I v) ((sOf I).l + 1) := by
@@ -73,6 +87,11 @@ def CoefCap (I : CarrierIn X u u') : Prop :=
   ∀ v (Y : ℝ), ∀ g ∈ Formalism.FourierDecayAlt.B.GV I.G.k I.G.r,
     Formalism.FourierDecayAlt.Q.CV I.G.k I.G.r (Y : ℂ) (I.fc v) g = (((sOf I).P v Y : ℝ) : ℂ) • I.fc v g
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.Q.IsPlace`. Take `⟨h1, h2, h3⟩` from `hN v`. Take `⟨t1, t2⟩` from `hty v`. Take `⟨e1, e2⟩` from `I.hT v`. Establish `p1` using `(I.T v).base.T_pos`.
+
+Establish `p2` using `(I.T v).base.T'_pos`. Rewrite `p1` using `[e1]`. Rewrite `p2` using `[e2]`. Conclude with `⟨⟨(I.T v).base.k_pos, p1, p2, h1, h2, h3⟩, (I.T v).base.z_mem, (I.T v).base.z'_mem, e1, e2, t1, t2⟩`.
+-/
 theorem isPlace_of (I : CarrierIn X u u') (hN : ParNums I) (hty : Types I) (v : Fin I.nf) :
     Formalism.FourierDecayAlt.Q.IsPlace (par I v) (I.T v).base.z (I.T v).base.z' (I.T v).base.π (I.T v).base.π' := by
   unfold Formalism.FourierDecayAlt.Q.IsPlace

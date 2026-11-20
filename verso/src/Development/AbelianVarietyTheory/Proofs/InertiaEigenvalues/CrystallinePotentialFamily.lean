@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.Pass.LocDualU
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LT', hLT', by rw [GlobalTheory.TopSteps.FinSummand.finrank_h1fT PD LT' hopen]; exact h⟩`.
+-/
 theorem dualLatLe_of {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
     {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B]
@@ -30,6 +33,17 @@ theorem dualLatLe_of {G : Type} [Group G] [TopologicalSpace G] [CompactSpace G] 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D hF hDR hBK i r hR Xs w hw hK n hPot k M hSub`. Establish `hSum` using `GlobalTheory.T.isComplementedSubrep_localMatrixRep_twistedSum D i r hR Xs w hw k M hSub`. Take `⟨hU, X', PX, hD1, hSF⟩` from `GlobalTheory.T.potential_family_summand_restriction D hF hDR i r hR Xs w hw n hPot _ hSum`. Establish `hX'` using `GlobalTheory.T.tateDual_twistedSumSummand_isDeRham D hF hDR i r hR Xs w hw n hPot _ hSum X' PX hD1`. Establish `hGood` using `goodO_ringOfIntegers (D.nd.l i) (D.nbr i w hw).LL`.
+
+Establish `hcyc : ∀ g, ∃ u : (Br.OLL D.nbr i w hw)ˣ, ((cycLL (Br.PD D.loc D.nbr i w hw) (Br.LL D.nbr i w hw) g : (Br.LL D.nbr i w hw)ˣ) : Br.LL D.nbr i w hw) = algebraMap (Br.OLL D.nbr i w hw) (Br.LL D.nbr i w hw) (u : Br.OLL D.nbr i w hw)`. Introduce `g`. Rewrite using `[← GlobalTheory.CycBridge.locChi_epsU_eq_cycLL D i w hw]`. Conclude with `⟨Units.map (D.nbr i w hw).eO.toRingHom.toMonoidHom (epsU D.nd i ((decS D.nd w) (Br.iota D.nbr i w hw g))), rfl⟩`. Take `⟨LT', hLT', hopen⟩` from `GlobalTheory.T.exists_dualLattice_isOpen_perfectPairing (Br.PD D.loc D.nbr i w hw) hGood hcyc _ X' PX hD1 (Br.locLat D.nbr i w hw M)`.
+
+Use `⟨hU, X', PX, hSF, ?_⟩` and prove the remaining obligations. Take `⟨⟨hdom, -, hfr⟩, -⟩` from `hGood`. Use `haveI := hdom`. Use `haveI := hfr`. Use `haveI : CompactSpace (Br.G D.nbr i w hw) := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK _`.
+
+Use `dualLatLe_of _ _ X' _ PX LT' hLT' hopen _ ?_` and prove the remaining obligations. Establish `h2` using `GlobalTheory.Pass.RankDeRham.finrank_H1f_le (D.nd.l i) (D.loc (D.nd.l i)) (D.nbr i w hw).Kw (D.nbr i w hw).LL hK (hBK (D.nd.l i) (D.nbr i w hw).Kw) X' hX'`. Establish `h3 : finrank (Br.LL D.nbr i w hw) X'.V = k`. Rewrite using `[← hD1.2.2.2]`. Conclude with `Module.finrank_fin_fun _`.
+
+Establish `h4 : finrank (Br.OLL D.nbr i w hw) ↥(Br.locLat D.nbr i w hw M).T = k`. Establish `e` using `LinearEquiv.ofInjective _ (stdG_inj (O := Br.OLL D.nbr i w hw) (LL := Br.LL D.nbr i w hw) Subtype.val_injective k)`. Conclude with `(LinearEquiv.finrank_eq e).symm.trans (Module.finrank_fin_fun _)`. Establish `h5 : finrank (Br.LL D.nbr i w hw) (FiniteCohomology (Br.PD D.loc D.nbr i w hw) X'.ρ) ≤ k` using `h3 ▸ h2`. Conclude with `le_trans (Nat.add_le_add h5 h4.le) (by omega)`.
+-/
 theorem main : ∀ (D : D7), FontaineAtPlacesOverL (D := D) → PotDRL D.loc → admBK (D := D) → ∀ (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))), GoodR D.nd i r →
     ∀ (Xs : Set (D.nd.X i)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)),

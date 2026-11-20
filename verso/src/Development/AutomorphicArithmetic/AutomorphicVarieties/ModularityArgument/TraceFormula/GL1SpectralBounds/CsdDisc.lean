@@ -11,6 +11,11 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CuspRapidDecayS
 open NumberField IsDedekindDomain
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.DiscSpec PositivityTheory.Rg.Rs PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.F UpperTheory.V.Z.Tf.GOne
 
+/- English proof (translation)
+Introduce `E _ _ _ n _ π h`. Establish `hc : π.IsCsd` using `GlobalTheory.CsdBack.isCsd_of_paired CuspFormAutomorphicBounds.automorphicFormsFiniteGL E n π (PositivityTheory.JMult1.gelfandKazhdanDual_of_rigidity PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL E n π) h`. Establish `hn : IsNormalised π` using `GlobalTheory.BcSpehCompare.isNormalised_of_isCsd hc`. Use `isDiscrete_of_cuspSub π fun φ hφ => ?_` and prove the remaining obligations. Take `⟨C, hC⟩` from `GlobalTheory.CompanionTheory.CuspFinGL.cuspFormsBoundedGL.of_invariant (π.cusp φ hφ) (hn φ hφ)`.
+
+Conclude with `GlobalTheory.DiscChar.isSqInt_of_bounded (hn φ hφ) (C := C) fun g => by simpa using hC g`.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.csdDisc :
     CsdDisc := by
   intro E _ _ _ n _ π h

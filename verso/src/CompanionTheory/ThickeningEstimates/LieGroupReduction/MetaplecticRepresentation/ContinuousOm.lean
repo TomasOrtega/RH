@@ -37,6 +37,9 @@ structure Mem (x : Amb l) : Prop where
   dRho : ∀ w f, x.2.2.1 (dRho w f) = dRho (x.1.1 *ᵥ w) (x.2.2.1 f)
   nrm : Nrm x.1.1 x.2.2.1
 
+/- English proof (translation)
+Introduce `j` and use `by rw [← mulVec_mulVec, ← mulVec_mulVec, ← h, ← h, hf j, map_smul]`.
+-/
 theorem Ann.map {s s' : Mat l} {U : Sch l →L[ℂ] Sch l} (h : ∀ w f, U (dRho w f) = dRho (s *ᵥ w) (U f)) {f : Sch l}
     (hf : Ann s' f) : Ann (s * s') (U f) := fun j => by
   rw [← mulVec_mulVec, ← mulVec_mulVec, ← h, ← h, hf j, map_smul]
@@ -92,27 +95,51 @@ def om : G l →* (L2 l ≃ₗᵢ[ℂ] L2 l) := (MonoidHom.fst _ _).comp ((Monoi
 def omS : G l →* (Sch l →L[ℂ] Sch l) :=
   (Units.coeHom _).comp ((MonoidHom.snd _ _).comp ((MonoidHom.snd _ _).comp (sub l).subtype))
 
+/- English proof (translation)
+The claim follows from `Subtype.property (p := (· ∈ sub l)) g`.
+-/
 theorem mem (g : G l) : Mem (Subtype.val (p := (· ∈ sub l)) g) := Subtype.property (p := (· ∈ sub l)) g
 
+/- English proof (translation)
+The claim follows from `(mem g).compat f`.
+-/
 theorem om_sch (g : G l) (f : Sch l) : om g (schwartzToL2 l f) = schwartzToL2 l (omS g f) := (mem g).compat f
 
+/- English proof (translation)
+The claim follows from `(mem g).rho w f`.
+-/
 theorem om_rho (g : G l) (w : l ⊕ l → ℝ) (f : L2 l) : om g (rho w f) = rho ((pr g).1 *ᵥ w) (om g f) := (mem g).rho w f
 
+/- English proof (translation)
+The claim follows from `(mem g).dRho w f`.
+-/
 theorem omS_dRho (g : G l) (w : l ⊕ l → ℝ) (f : Sch l) : omS g (dRho w f) = dRho ((pr g).1 *ᵥ w) (omS g f) :=
   (mem g).dRho w f
 
+/- English proof (translation)
+The claim follows from `(mem g).nrm`.
+-/
 theorem omS_nrm (g : G l) : Nrm (pr g).1 (omS g) := (mem g).nrm
 
 instance : TopologicalSpace (G l) :=
   TopologicalSpace.induced (fun g => ((pr g, fun f => om g f) : Sp l × (L2 l → L2 l))) inferInstance
 
+/- English proof (translation)
+The claim follows from `continuous_induced_dom`.
+-/
 theorem continuous_pair : Continuous fun g : G l => ((pr g, fun f => om g f) : Sp l × (L2 l → L2 l)) :=
   continuous_induced_dom
 
+/- English proof (translation)
+Establish `h` using `(continuous_pair (l := l)).fst`. Conclude with `h`.
+-/
 theorem continuous_pr : Continuous (pr : G l → Sp l) := by
   have h := (continuous_pair (l := l)).fst
   exact h
 
+/- English proof (translation)
+Establish `h` using `(continuous_apply f).comp (continuous_pair (l := l)).snd`. Conclude with `h`.
+-/
 theorem continuous_om (f : L2 l) : Continuous fun g : G l => om g f := by
   have h := (continuous_apply f).comp (continuous_pair (l := l)).snd
   exact h
@@ -162,6 +189,9 @@ def OnePar : Prop := ∀ X ∈ LieAlgebra.Symplectic.sp l ℝ, ∃ γ : ℝ → 
 
 end CompanionTheory.ThKR.Mp
 
+/- English proof (translation)
+Introduce `l _ _ _` and use `by obtain ⟨h1, h2, h3, h4, h5, h6⟩ := h l exact ⟨Mp.G l, inferInstance, inferInstance, h1, Mp.pr, Mp.om, Mp.omS, ⟨h2, h3, h4⟩, Mp.continuous_om, Mp.om_rho, Mp.om_sch, h5, h6⟩`.
+-/
 theorem CompanionTheory.ThKR.Mp.realMetaplectic_of_forall
     (h : ∀ (l : Type) [Fintype l] [DecidableEq l] [Nonempty l], Mp.TopG l ∧ Mp.Cover l ∧ Mp.Surj l ∧ Mp.Ker l ∧
       Mp.Smooth l ∧ Mp.OnePar l) : GlobalTheory.Published.RealMetaplecticRepresentation := fun l _ _ _ => by

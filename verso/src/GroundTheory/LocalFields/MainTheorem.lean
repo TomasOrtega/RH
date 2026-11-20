@@ -15,6 +15,9 @@ section Main
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   (Ω : Type*) [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨continuous_localArtinMap, fun _ hπ => restrictAb_localArtinMap_uniformizer hπ, fun L _ _ => ⟨ker_restrictAb_localArtinMap L, surjective_restrictAb_localArtinMap L⟩⟩`.
+-/
 theorem localArtinMap_spec :
     Continuous (localArtinMap K Ω) ∧
       (∀ π : Kˣ, ord (π : K) = 1 →
@@ -27,6 +30,9 @@ theorem localArtinMap_spec :
   ⟨continuous_localArtinMap, fun _ hπ => restrictAb_localArtinMap_uniformizer hπ,
     fun L _ _ => ⟨ker_restrictAb_localArtinMap L, surjective_restrictAb_localArtinMap L⟩⟩
 
+/- English proof (translation)
+The claim follows from `have := hL.1 have := hL.isGalois restrictAb_localArtinMap_of_le_maximalUnramifiedExtension L hL.le_maximalUnramifiedExtension x`.
+-/
 theorem localArtinMap_unramified (L : IntermediateField K Ω) (hL : IsUnramifiedSubextension L)
     (x : Kˣ) :
     have := hL.1
@@ -44,11 +50,17 @@ section Functoriality
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {K' : Type*} [Field K'] [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K']
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsSepClosure.sep_closed K', Algebra.IsSeparable.trans K K' Ω⟩`.
+-/
 theorem isSepClosure_of_isSeparable (K K' Ω : Type*) [Field K] [Field K'] [Field Ω] [Algebra K K']
     [Algebra K Ω] [Algebra K' Ω] [IsScalarTower K K' Ω] [Algebra.IsSeparable K K'] [IsSepClosure K' Ω] :
     IsSepClosure K Ω :=
   ⟨IsSepClosure.sep_closed K', Algebra.IsSeparable.trans K K' Ω⟩
 
+/- English proof (translation)
+Introduce `_ hy`. Conclude with `localArtinMap_apply_of_algebra x hy`.
+-/
 theorem localArtinMap_norm [Algebra K K'] [ValuativeExtension K K'] [FiniteDimensional K K']
     [Algebra.IsSeparable K K'] {Ω : Type*} [Field Ω] [Algebra K Ω] [Algebra K' Ω]
     [IsScalarTower K K' Ω] [IsSepClosure K' Ω] (x : K'ˣ) {y : Ω} :
@@ -60,6 +72,9 @@ theorem localArtinMap_norm [Algebra K K'] [ValuativeExtension K K'] [FiniteDimen
   intro _ hy
   exact localArtinMap_apply_of_algebra x hy
 
+/- English proof (translation)
+The claim follows from `transport_localArtinMap_apply e he ε hε x hy`.
+-/
 theorem localArtinMap_transport {Ω Ω' : Type*} [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K' Ω']
     [IsSepClosure K Ω] [IsSepClosure K' Ω'] (e : K ≃+* K') (he : ∀ x y : K, e x ≤ᵥ e y ↔ x ≤ᵥ y)
     (ε : Ω ≃+* Ω') (hε : ∀ x : K, ε (algebraMap K Ω x) = algebraMap K' Ω' (e x)) (x : Kˣ) {y : Ω}

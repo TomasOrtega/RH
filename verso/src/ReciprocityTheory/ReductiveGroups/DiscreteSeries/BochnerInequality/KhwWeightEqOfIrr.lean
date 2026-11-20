@@ -34,6 +34,9 @@ def kirrPs (k : ℕ) (μ : Fin n → ℝ) : ℝ := ∑ a ∈ univ.filter (fun a 
 def kirrH (A : Fin n → Fin n → Module.End ℂ X) (k : ℕ) : Module.End ℂ X :=
   ∑ a ∈ univ.filter (fun a : Fin n => a.val < k), A a a
 
+/- English proof (translation)
+The claim follows from `eq_add_of_sub_eq' (by have h := LinearMap.congr_fun (hA a b c d) v rw [LinearMap.sub_apply] at h exact h)`.
+-/
 private theorem glRep_apply_commutator (hA : IsGlRep A) (a b c d : Fin n) (v : X) :
     A a b (A c d v) = A c d (A a b v) + ((if b = c then A a d else 0) - if d = a then A c b else 0) v :=
   eq_add_of_sub_eq' (by
@@ -41,6 +44,9 @@ private theorem glRep_apply_commutator (hA : IsGlRep A) (a b c d : Fin n) (v : X
     rw [LinearMap.sub_apply] at h
     exact h)
 
+/- English proof (translation)
+The claim follows from `| [], a => by simpa [kirrWord, kirrWt] using hu a | p :: l, a => by obtain ⟨b, c⟩ := p have ih := kirrWord_wt hA hu l a have key := LinearMap.congr_fun (hA a a b c) (kirrWord A u l) simp only [LinearMap.sub_apply, Module.End.mul_apply] at key simp only [kirrWord, kirrWt] rw [sub_ …`.
+-/
 theorem kirrWord_wt (hA : IsGlRep A) {ν : Fin n → ℝ} {u : X} (hu : ∀ a, A a a u = (ν a : ℂ) • u) :
     ∀ l a, A a a (kirrWord A u l) = (kirrWt ν l a : ℂ) • kirrWord A u l
   | [], a => by simpa [kirrWord, kirrWt] using hu a
@@ -58,9 +64,17 @@ theorem kirrWord_wt (hA : IsGlRep A) {ν : Fin n → ℝ} {u : X} (hu : ∀ a, A
     · subst h2; (simp [root, h1, add_smul]; abel)
     · simp [root, h1, h2, Ne.symm h2]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨l, hl, rfl⟩`.
+-/
 theorem kirrWord_mem (u : X) {l : List (Fin n × Fin n)} (hl : KirrLow ε l) :
     kirrWord A u l ∈ kirrSpan ε A u := Submodule.subset_span ⟨l, hl, rfl⟩
 
+/- English proof (translation)
+Establish `h : kirrSpan ε A u ≤ (kirrSpan ε A u).comap (A a b)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `Submodule.subset_span ⟨(a, b) :: l, fun p hp => by`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases. Conclude with `⟨hba, hab⟩`.
+
+Conclude with `hl p hp, rfl⟩)`. Conclude with `h hx`.
+-/
 theorem kirr_low_mem {u : X} {a b : Fin n} (hba : b < a) (hab : ε a = ε b) {x : X}
     (hx : x ∈ kirrSpan ε A u) : A a b x ∈ kirrSpan ε A u := by
   have h : kirrSpan ε A u ≤ (kirrSpan ε A u).comap (A a b) := Submodule.span_le.2 (by
@@ -71,6 +85,23 @@ theorem kirr_low_mem {u : X} {a b : Fin n} (hba : b < a) (hab : ε a = ε b) {x 
       · exact hl p hp, rfl⟩)
   exact h hx
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ a b hab`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases.
+
+Use `show A a b u ∈ _`. Rewrite using `[hu.2 a b h hab]`. Conclude with `Submodule.zero_mem _`. Use `show A a a u ∈ _`. Rewrite using `[hu.1 a]`.
+
+Conclude with `Submodule.smul_mem _ _ (kirrWord_mem (l := []) u (fun p hp => by simp at hp))`. Conclude with `kirrWord_mem (l := [(a, b)]) u (fun p hp => by`. Rewrite `hp` using `[List.mem_singleton]`. Substitute `hp` using the available equality. Conclude with `⟨h, hab⟩)`.
+
+Consider the case `cons p l ih`. Introduce `hl a b hab`. Take `⟨x, y⟩` from `p`. Establish `hl' : KirrLow ε l` using `fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Establish `hxy : y < x ∧ ε x = ε y` using `hl (x, y) (by simp)`.
+
+Establish `hw` using `ih hl'`. Use `show A a b (A x y (kirrWord A u l)) ∈ _`. Rewrite using `[glRep_apply_commutator hA]`. Use `Submodule.add_mem _ (kirr_low_mem hxy.1 hxy.2 (hw a b hab)) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply]`.
+
+Use `Submodule.sub_mem _ ?_ ?_` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hw _ _ (hab.trans hxy.2)`. Rewrite using `[LinearMap.zero_apply]`.
+
+Conclude with `Submodule.zero_mem _`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hw _ _ (hxy.2.trans hab)`. Rewrite using `[LinearMap.zero_apply]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem kirr_compact_word (hA : IsGlRep A) {ν : Fin n → ℝ} {u : X} (hu : IsKHWVec ε A ν u) :
     ∀ l, KirrLow ε l → ∀ a b, ε a = ε b → A a b (kirrWord A u l) ∈ kirrSpan ε A u := by
   intro l
@@ -103,6 +134,9 @@ theorem kirr_compact_word (hA : IsGlRep A) {ν : Fin n → ℝ} {u : X} (hu : Is
       · subst h; exact hw _ _ (hxy.2.trans hab)
       · rw [LinearMap.zero_apply]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `a b hab v hv`. Establish `h : kirrSpan ε A u ≤ (kirrSpan ε A u).comap (A a b)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `kirr_compact_word hA hu l hl a b hab)`. Conclude with `h hv`.
+-/
 theorem kirrSpan_kStable (hA : IsGlRep A) {ν : Fin n → ℝ} {u : X} (hu : IsKHWVec ε A ν u) :
     IsKStableSub ε A (kirrSpan ε A u) := by
   intro a b hab v hv
@@ -111,6 +145,11 @@ theorem kirrSpan_kStable (hA : IsGlRep A) {ν : Fin n → ℝ} {u : X} (hu : IsK
     exact kirr_compact_word hA hu l hl a b hab)
   exact h hv
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Proceed by induction on `l with`. Consider the case `nil => exact hu`. Consider the case `cons p l ih`.
+
+Conclude with `hV p.1 p.2 (hl p (by simp)).2 _ (ih (fun q hq => hl q (List.mem_cons_of_mem _ hq)))`.
+-/
 theorem kirrSpan_le (hV : IsKStableSub ε A V) {u : X} (hu : u ∈ V) : kirrSpan ε A u ≤ V := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨l, hl, rfl⟩
@@ -119,6 +158,9 @@ theorem kirrSpan_le (hV : IsKStableSub ε A V) {u : X} (hu : u ∈ V) : kirrSpan
   | cons p l ih =>
     exact hV p.1 p.2 (hl p (by simp)).2 _ (ih (fun q hq => hl q (List.mem_cons_of_mem _ hq)))
 
+/- English proof (translation)
+The claim follows from `| [], _ => le_rfl | p :: l, hl => by have ih := kirrPs_wt k ν l fun q hq => hl q (List.mem_cons_of_mem _ hq) have hp := hl p List.mem_cons_self have hr : kirrPs k (root p.1 p.2) ≤ 0 := by unfold kirrPs root simp only [Pi.sub_apply, Finset.sum_sub_distrib, Finset.sum_pi_single', F …`.
+-/
 theorem kirrPs_wt (k : ℕ) (ν : Fin n → ℝ) :
     ∀ l, KirrLow ε l → kirrPs k (kirrWt ν l) ≤ kirrPs k ν
   | [], _ => le_rfl
@@ -135,11 +177,25 @@ theorem kirrPs_wt (k : ℕ) (ν : Fin n → ℝ) :
       simp [kirrPs, kirrWt, Finset.sum_add_distrib]
     linarith
 
+/- English proof (translation)
+Rewrite using `[kirrH, LinearMap.sum_apply]`. Simplify using `only [hx, kirrPs, Complex.ofReal_sum, Finset.sum_smul]`.
+-/
 theorem kirrH_apply (k : ℕ) {μ : Fin n → ℝ} {x : X} (hx : ∀ a, A a a x = (μ a : ℂ) • x) :
     kirrH A k x = (kirrPs k μ : ℂ) • x := by
   rw [kirrH, LinearMap.sum_apply]
   simp only [hx, kirrPs, Complex.ofReal_sum, Finset.sum_smul]
 
+/- English proof (translation)
+Take `⟨-, hVs, hirr, -⟩` from `id hV`. Establish `hspan : kirrSpan ε A u = V`. Break down `hirr _ (kirrSpan_le hVs hu) (kirrSpan_kStable hA hν) with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ kirrWord_mem (l := []) u (fun p hp => by simp at hp))) hu0`. Conclude with `h`.
+
+Establish `hle : kirrSpan ε A u ≤ ⨆ z ∈ {z : ℂ | ∃ r : ℝ, r ≤ kirrPs k ν ∧ z = r}, Module.End.eigenspace (kirrH A k) z` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Use `Submodule.mem_iSup_of_mem ((kirrPs k (kirrWt ν l) : ℝ) : ℂ) (Submodule.mem_iSup_of_mem (Set.mem_setOf.2 ⟨_, kirrPs_wt k ν l hl, rfl⟩) ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `kirrH_apply k (kirrWord_wt hA hν.1 l))`.
+
+Establish `hwS` using `hle (by rw [hspan]; exact hw)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hwE : w ∈ Module.End.eigenspace (kirrH A k) ((kirrPs k μ : ℝ) : ℂ)`. Rewrite using `[Module.End.mem_eigenspace_iff]`.
+
+Conclude with `kirrH_apply k hμ`. Establish `hx : ((kirrPs k μ : ℝ) : ℂ) ∉ {z : ℂ | ∃ r : ℝ, r ≤ kirrPs k ν ∧ z = r}`. Introduce and unpack `⟨r, hr, he⟩`. Use `Complex.ofReal_injective he` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hd : Disjoint (Module.End.eigenspace (kirrH A k) ((kirrPs k μ : ℝ) : ℂ)) (⨆ z ∈ {z : ℂ | ∃ r : ℝ, r ≤ kirrPs k ν ∧ z = r}, Module.End.eigenspace (kirrH A k) z)` using `by first`. Consider the case `exact (Module.End.eigenspaces_iSupIndep (kirrH A k)).disjoint_biSup hx`. Consider the case `exact (Module.End.eigenspaces_independent (kirrH A k)).disjoint_biSup hx`. Conclude with `hw0 (Submodule.disjoint_def.1 hd w hwE hwS)`.
+-/
 theorem kirrPs_le (hA : IsGlRep A) (hV : IsKIrrHW ε A Λ V) {u : X} (hu : u ∈ V) (hu0 : u ≠ 0)
     {ν : Fin n → ℝ} (hν : IsKHWVec ε A ν u) {w : X} (hw : w ∈ V) (hw0 : w ≠ 0) {μ : Fin n → ℝ}
     (hμ : ∀ a, A a a w = (μ a : ℂ) • w) (k : ℕ) : kirrPs k μ ≤ kirrPs k ν := by
@@ -173,24 +229,44 @@ theorem kirrPs_le (hA : IsGlRep A) (hV : IsKIrrHW ε A Λ V) {u : X} (hu : u ∈
       | exact (Module.End.eigenspaces_independent (kirrH A k)).disjoint_biSup hx
   exact hw0 (Submodule.disjoint_def.1 hd w hwE hwS)
 
+/- English proof (translation)
+Simplify using `only [kirrPs]`. Rewrite using `[show univ.filter (fun b : Fin n => b.val < a.val + 1) = insert a (univ.filter (fun b : Fin n => b.val < a.val)) by`. Use extensionality with `b`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use the proof step `omega]`.
+
+Rewrite using `[Finset.sum_insert (by simp), add_comm]`.
+-/
 private theorem kirrPs_succ (μ : Fin n → ℝ) (a : Fin n) : kirrPs (a.val + 1) μ = kirrPs a.val μ + μ a := by
   simp only [kirrPs]
   rw [show univ.filter (fun b : Fin n => b.val < a.val + 1) = insert a (univ.filter (fun b : Fin n => b.val < a.val)) by
     ext b; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]; omega]
   rw [Finset.sum_insert (by simp), add_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `h1` using `h (a.val + 1)`. Rewrite `h1` using `[kirrPs_succ, kirrPs_succ, h a.val]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kirr_eq_of_ps {μ ν : Fin n → ℝ} (h : ∀ k, kirrPs k μ = kirrPs k ν) : μ = ν := by
   funext a
   have h1 := h (a.val + 1)
   rw [kirrPs_succ, kirrPs_succ, h a.val] at h1
   linarith
 
+/- English proof (translation)
+Take `⟨-, -, -, w, hw, hw0, hwΛ⟩` from `id hV`. Conclude with `kirr_eq_of_ps fun k => le_antisymm (kirrPs_le hA hV hw hw0 hwΛ hu hu0 hν.1 k) (kirrPs_le hA hV hu hu0 hν hw hw0 hwΛ.1 k)`.
+-/
 theorem khw_weight_eq_of_irr (hA : IsGlRep A) (hV : IsKIrrHW ε A Λ V) {u : X} (hu : u ∈ V)
     (hu0 : u ≠ 0) {ν : Fin n → ℝ} (hν : IsKHWVec ε A ν u) : ν = Λ := by
   obtain ⟨-, -, -, w, hw, hw0, hwΛ⟩ := id hV
   exact kirr_eq_of_ps fun k =>
     le_antisymm (kirrPs_le hA hV hw hw0 hwΛ hu hu0 hν.1 k) (kirrPs_le hA hV hu hu0 hν hw hw0 hwΛ.1 k)
 
+/- English proof (translation)
+Take `⟨-, hst, hirr, w, hwV, hw0, hwK⟩` from `hV`. Set `S : Submodule ℂ X` to `V ⊓ (casimirK ε A).eigenspace (casValK ε Λ : ℂ)`. Establish `hS : IsKStableSub ε A S`. Introduce `a b hab v hv`. Establish `hv2` using `Module.End.mem_eigenspace_iff.1 hv.2`.
+
+Use `⟨hst a b hab v hv.1, Module.End.mem_eigenspace_iff.2 ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (casimirK_comm ε hA a b hab) v` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hv2, map_smul]`. Break down `hirr S inf_le_left hS with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `hwS : w ∈ S` using `⟨hwV, Module.End.mem_eigenspace_iff.2 (casimirK_khwVec ε hA hwK)⟩`. Rewrite `hwS` using `[h]`. Conclude with `hw0 ((Submodule.mem_bot ℂ).1 hwS)`. Introduce `v hv`.
+
+Rewrite `hv` using `[← h]`. Conclude with `Module.End.mem_eigenspace_iff.1 hv.2`.
+-/
 theorem casimirK_irr (hA : IsGlRep A) (hV : IsKIrrHW ε A Λ V) :
     ∀ v ∈ V, casimirK ε A v = (casValK ε Λ : ℂ) • v := by
   obtain ⟨-, hst, hirr, w, hwV, hw0, hwK⟩ := hV

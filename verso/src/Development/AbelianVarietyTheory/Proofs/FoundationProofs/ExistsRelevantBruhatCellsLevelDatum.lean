@@ -16,25 +16,50 @@ def en (d : ℕ → F) (b : ℕ) : ℕ := sInf {a | b < a ∧ d a ≠ 0}
 
 def sg (k : ℕ) (d : ℕ → F) (b : ℕ) : ℕ := if b < k then k - en d b + (b - st d b) else b
 
+/- English proof (translation)
+The claim follows from `Nat.findGreatest_le b`.
+-/
 lemma st_le (d : ℕ → F) (b : ℕ) : st d b ≤ b := Nat.findGreatest_le b
 
+/- English proof (translation)
+The claim follows from `Nat.findGreatest_spec (P := fun a => d a ≠ 0) (Nat.zero_le b) h.1`.
+-/
 lemma st_ne {k : ℕ} {d : ℕ → F} (h : Good k d) (b : ℕ) : d (st d b) ≠ 0 :=
   Nat.findGreatest_spec (P := fun a => d a ≠ 0) (Nat.zero_le b) h.1
 
+/- English proof (translation)
+The claim follows from `Nat.le_findGreatest (P := fun a => d a ≠ 0) hab ha`.
+-/
 lemma le_st {d : ℕ → F} {a b : ℕ} (hab : a ≤ b) (ha : d a ≠ 0) : a ≤ st d b :=
   Nat.le_findGreatest (P := fun a => d a ≠ 0) hab ha
 
+/- English proof (translation)
+Establish `: ({a | b < a ∧ d a ≠ 0} : Set ℕ).Nonempty` using `⟨b + k + 1, by omega, by rw [h.2 _ (by omega)]; exact one_ne_zero⟩`. Conclude with `Nat.sInf_mem this`.
+-/
 lemma en_spec {k : ℕ} {d : ℕ → F} (h : Good k d) (b : ℕ) : b < en d b ∧ d (en d b) ≠ 0 := by
   have : ({a | b < a ∧ d a ≠ 0} : Set ℕ).Nonempty :=
     ⟨b + k + 1, by omega, by rw [h.2 _ (by omega)]; exact one_ne_zero⟩
   exact Nat.sInf_mem this
 
+/- English proof (translation)
+The claim follows from `Nat.sInf_le (show a ∈ {a | b < a ∧ d a ≠ 0} from ⟨hab, ha⟩)`.
+-/
 lemma en_le {d : ℕ → F} {a b : ℕ} (hab : b < a) (ha : d a ≠ 0) : en d b ≤ a :=
   Nat.sInf_le (show a ∈ {a | b < a ∧ d a ≠ 0} from ⟨hab, ha⟩)
 
+/- English proof (translation)
+The claim follows from `en_le hb (by rw [h.2 _ le_rfl]; exact one_ne_zero)`.
+-/
 lemma en_le_k {k : ℕ} {d : ℕ → F} (h : Good k d) {b : ℕ} (hb : b < k) : en d b ≤ k :=
   en_le hb (by rw [h.2 _ le_rfl]; exact one_ne_zero)
 
+/- English proof (translation)
+Distinguish the cases in `h1 : en d c ≤ b`. Conclude with `Or.inr (le_st h1 (en_spec h c).2)`. Use `left`. Establish `h2` using `en_le (d := d) (b := c) (a := en d b) (by have := (en_spec h b).1; omega) (en_spec h b).2`. Establish `h3` using `en_le (d := d) (b := b) (a := en d c) (by omega) (en_spec h c).2`.
+
+Establish `h4` using `le_st (d := d) (a := st d c) (b := b) (by have := st_le d c; omega) (st_ne h c)`. Use `⟨?_, by omega⟩` and prove the remaining obligations. Distinguish the cases in `h5 : st d b ≤ c`. Use `le_st h5 (st_ne h b)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Use `en_le (d := d) (b := c) (a := st d b) (by omega) (st_ne h b)` as an intermediate fact. Use `st_le d b` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 lemma dich {k : ℕ} {d : ℕ → F} (h : Good k d) {c b : ℕ} (hcb : c < b) :
     (st d c = st d b ∧ en d c = en d b) ∨ en d c ≤ st d b := by
   by_cases h1 : en d c ≤ b
@@ -49,13 +74,24 @@ lemma dich {k : ℕ} {d : ℕ → F} (h : Good k d) {c b : ℕ} (hcb : c < b) :
     · have := en_le (d := d) (b := c) (a := st d b) (by omega) (st_ne h b)
       have := st_le d b; omega
 
+/- English proof (translation)
+Use `en_spec h b` as an intermediate fact. Use `en_le_k h hb` as an intermediate fact. Use `st_le d b` as an intermediate fact. Simplify using `only [sg, if_pos hb]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma sg_lt {k : ℕ} {d : ℕ → F} (h : Good k d) {b : ℕ} (hb : b < k) : sg k d b < k := by
   have := en_spec h b; have := en_le_k h hb; have := st_le d b
   simp only [sg, if_pos hb]; omega
 
+/- English proof (translation)
+Simplify using `only [sg, if_neg (not_lt.2 hb)]`.
+-/
 lemma sg_ge {k : ℕ} (d : ℕ → F) {b : ℕ} (hb : k ≤ b) : sg k d b = b := by
   simp only [sg, if_neg (not_lt.2 hb)]
 
+/- English proof (translation)
+Establish `hc : c < k` using `by omega`. Use `en_spec h b` as an intermediate fact. Use `en_le_k h hb` as an intermediate fact. Use `st_le d b` as an intermediate fact. Use `en_spec h c` as an intermediate fact.
+
+Use `en_le_k h hc` as an intermediate fact. Use `st_le d c` as an intermediate fact. Simplify using `only [sg, if_pos hb, if_pos hc]`. Apply the tactic sequence `rcases dich h hcb with h1 | h1 <;> omega`.
+-/
 lemma sg_dich {k : ℕ} {d : ℕ → F} (h : Good k d) {c b : ℕ} (hcb : c < b) (hb : b < k) :
     (st d c = st d b ∧ sg k d c + b = sg k d b + c) ∨ (c < st d b ∧ sg k d b < sg k d c) := by
   have hc : c < k := by omega
@@ -64,6 +100,13 @@ lemma sg_dich {k : ℕ} {d : ℕ → F} (h : Good k d) {c b : ℕ} (hcb : c < b)
   simp only [sg, if_pos hb, if_pos hc]
   rcases dich h hcb with h1 | h1 <;> omega
 
+/- English proof (translation)
+Introduce `c b hcb`. Use `wlog hlt : c < b generalizing c b`. Break down `Nat.lt_or_ge b c with h1 | h1` into its components or cases. Conclude with `(this hcb.symm h1).symm`. Use linear arithmetic over natural numbers and integers.
+
+Distinguish the cases in `hb : b < k`. Use `sg_dich h hlt hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hcb` using `[sg_ge d (not_lt.1 hb)]`. Distinguish the cases in `hc : c < k`.
+
+Use `sg_lt h hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hcb` using `[sg_ge d (not_lt.1 hc)]`. Then use the resulting hypothesis.
+-/
 lemma sg_inj {k : ℕ} {d : ℕ → F} (h : Good k d) : Function.Injective (sg k d) := by
   intro c b hcb
   wlog hlt : c < b generalizing c b
@@ -77,15 +120,34 @@ lemma sg_inj {k : ℕ} {d : ℕ → F} (h : Good k d) : Function.Injective (sg k
     · have := sg_lt h hc; omega
     · rwa [sg_ge d (not_lt.1 hc)] at hcb
 
+/- English proof (translation)
+Use `le_st (d := d) hb (by rw [h.2 _ le_rfl]; exact one_ne_zero)` as an intermediate fact. Conclude with `h.2 _ this`.
+-/
 lemma st_ge {k : ℕ} {d : ℕ → F} (h : Good k d) {b : ℕ} (hb : k ≤ b) : d (st d b) = 1 := by
   have := le_st (d := d) hb (by rw [h.2 _ le_rfl]; exact one_ne_zero)
   exact h.2 _ this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `st_ne h b` as an intermediate fact. Rewrite `this` using `[h1]`. Then use the resulting hypothesis. Introduce `h1`.
+
+Conclude with `le_antisymm (st_le d b) (le_st le_rfl h1)`.
+-/
 lemma st_eq_iff {k : ℕ} {d : ℕ → F} (h : Good k d) (b : ℕ) : st d b = b ↔ d b ≠ 0 := by
   constructor
   · intro h1; have := st_ne h b; rwa [h1] at this
   · intro h1; exact le_antisymm (st_le d b) (le_st le_rfl h1)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b < k`. Use `swap`. Rewrite using `[h.2 b (not_lt.1 hb), h'.2 b (not_lt.1 hb)]`. Establish `key : st d b = b ↔ st d' b = b`.
+
+Use `st_le d b` as an intermediate fact. Use `st_le d' b` as an intermediate fact. Break down `Nat.eq_zero_or_pos b with h0 | h0` into its components or cases. Use linear arithmetic over natural numbers and integers. Use `sg_dich h (c := b - 1) (b := b) (by omega) hb` as an intermediate fact.
+
+Use `sg_dich h' (c := b - 1) (b := b) (by omega) hb` as an intermediate fact. Use `(H b hb).1` as an intermediate fact. Use `(H (b - 1) (by omega)).1` as an intermediate fact. Use `st_le d (b - 1)` as an intermediate fact. Use `st_le d' (b - 1)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h1 : st d b = b`. Use `(H b hb).2` as an intermediate fact. Rewrite `this` using `[h1, key.1 h1]`. Then use the resulting hypothesis. Establish `h2 : ¬ st d' b = b` using `fun h2 => h1 (key.2 h2)`.
+
+Rewrite `h1` using `[st_eq_iff h, not_not]`. Rewrite `h2` using `[st_eq_iff h', not_not]`. Rewrite using `[h1, h2]`.
+-/
 lemma ext_of {k : ℕ} {d d' : ℕ → F} (h : Good k d) (h' : Good k d')
     (H : ∀ b < k, sg k d b = sg k d' b ∧ d (st d b) = d' (st d' b)) : d = d' := by
   funext b
@@ -131,9 +193,15 @@ def mono {N : ℕ} (σ : Equiv.Perm (Fin N)) (t : Fin N → F) (ht : ∀ b, t b 
     · intro x _ hx; simp [hx]
     · simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mono_val {N : ℕ} (σ : Equiv.Perm (Fin N)) (t : Fin N → F) (ht : ∀ b, t b ≠ 0) (a b : Fin N) :
     (mono σ t ht).val a b = if a = σ b then t b else 0 := rfl
 
+/- English proof (translation)
+Use `congrArg (fun x : GL (Fin N) F => x.val (σ c) b) h` as an intermediate fact. Simplify `this` using `[Units.val_mul, Matrix.mul_apply, mono_val]`.
+-/
 lemma mono_rel {N : ℕ} (σ : Equiv.Perm (Fin N)) (t : Fin N → F) (ht : ∀ b, t b ≠ 0) (u u' : GL (Fin N) F)
     (h : u * mono σ t ht = mono σ t ht * u') (c b : Fin N) : u.val (σ c) (σ b) * t b = t c * u'.val c b := by
   have := congrArg (fun x : GL (Fin N) F => x.val (σ c) b) h
@@ -146,6 +214,9 @@ def perm {k N : ℕ} (hk : k < N) {d : ℕ → F} (h : Good k d) : Equiv.Perm (F
       · rw [sg_ge d (not_lt.1 hb)]; exact b.2⟩)
     (Finite.injective_iff_bijective.1 fun a b hab => Fin.ext (sg_inj h (congrArg Fin.val hab)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma perm_val {k N : ℕ} (hk : k < N) {d : ℕ → F} (h : Good k d) (b : Fin N) : (perm hk h b : ℕ) = sg k d b := rfl
 
 def cell {k N : ℕ} (hk : k < N) {d : ℕ → F} (h : Good k d) : GL (Fin N) F :=
@@ -154,11 +225,19 @@ def cell {k N : ℕ} (hk : k < N) {d : ℕ → F} (h : Good k d) : GL (Fin N) F 
 def dat (k : ℕ) (p : Fˣ × (Fin (k - 1) → F)) (a : ℕ) : F :=
   if k ≤ a then 1 else if a = 0 then (p.1 : F) else if h : a - 1 < k - 1 then p.2 ⟨a - 1, h⟩ else 1
 
+/- English proof (translation)
+Use `⟨?_, fun a ha => by simp [dat, ha]⟩` and prove the remaining obligations. Unfold `dat`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 lemma dat_good (k : ℕ) (p : Fˣ × (Fin (k - 1) → F)) : Good k (dat k p) := by
   refine ⟨?_, fun a ha => by simp [dat, ha]⟩
   unfold dat
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Introduce `p q h`. Use extensionality with `i`. Use `congrFun h 0` as an intermediate fact. Simplify `this` using `[dat, hk.ne']`. Use `congrFun h (i + 1)` as an intermediate fact.
+
+Establish `hi` using `i.2`. Establish `h1 : ¬ k ≤ i + 1` using `by omega`. Simplify `this` using `[dat, h1]`.
+-/
 lemma dat_inj {k : ℕ} (hk : 0 < k) : Function.Injective (dat (F := F) k) := by
   intro p q h
   ext i
@@ -169,6 +248,11 @@ lemma dat_inj {k : ℕ} (hk : 0 < k) : Function.Injective (dat (F := F) k) := by
     have h1 : ¬ k ≤ i + 1 := by omega
     simpa [dat, h1] using this
 
+/- English proof (translation)
+Use `ext_of h h' fun b hb => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun x : GL (Fin N) F => x.val (perm hk h ⟨b, by omega⟩) ⟨b, by omega⟩) H`. Simplify using `only [cell, mono_val, if_true] at h1`. Use `split_ifs at h1 with h2`. Conclude with `⟨congrArg Fin.val h2, h1⟩`.
+
+Conclude with `absurd h1 (st_ne h b)`.
+-/
 lemma cell_inj {k N : ℕ} (hk : k < N) {d d' : ℕ → F} (h : Good k d) (h' : Good k d') (H : cell hk h = cell hk h') :
     d = d' := by
   refine ext_of h h' fun b hb => ?_
@@ -180,6 +264,29 @@ lemma cell_inj {k N : ℕ} (hk : k < N) {d d' : ℕ → F} (h : Good k d) (h' : 
 
 end Comb
 
+/- English proof (translation)
+Introduce `g _ N L hs hco k hk0 hk`. Use `⟨Finset.univ.image fun p : (ZMod g)ˣ × (Fin (k - 1) → ZMod g) => cell hk (dat_good k p), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective _ fun p q h => dat_inj hk0 (cell_inj hk _ _ h)]`. Simplify using `[Nat.totient_prime (Fact.out : g.Prime)]`. Introduce `w hw`.
+
+Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hw`. Establish `h` using `dat_good k p`. Use `⟨fun a b hab => ?_, perm hk h, fun a b hab => ?_⟩` and prove the remaining obligations. Simplify using `only [cell, mono_val, Fin.ext_iff, perm_val]`. Distinguish the cases in `hb : (b : ℕ) < k`.
+
+Use `sg_lt h hb` as an intermediate fact. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Rewrite using `[sg_ge _ (not_lt.1 hb), st_ge h (not_lt.1 hb)]`. Assume the negation of the conclusion as `h1`. Conclude with `hab (by simp only [cell, mono_val]; exact if_neg h1)`.
+
+Introduce `w hw u u' hu hu' hb hb' H`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hw`. Establish `h` using `dat_good k p`. Use `set d := dat k p`. Establish `rel` using `mono_rel _ _ _ u u' H`.
+
+Unfold `Lev.chi`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp (perm hk h)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (perm hk h)]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `r` using `rel c b`. Simplify using `only [Lev.Edge, hs, hco, Units.val_one, one_mul, Bool.false_eq_true, if_false, perm_val]`. Establish `tb` using `st_ne h b`. Establish `tc` using `st_ne h c`.
+
+Establish `hσ : ∀ x : Fin N, (x : ℕ) < k → sg k d x < k` using `fun x hx => sg_lt h hx`. Establish `hσ' : ∀ x : Fin N, k ≤ (x : ℕ) → sg k d x = x` using `fun x hx => sg_ge d hx`. Establish `z : c ≠ b → (k ≤ (b : ℕ) ∨ b < c ∨ sg k d b < sg k d c) → u.val (perm hk h c) (perm hk h b) = 0 ∧ u'.val c b = 0`. Introduce `hne hh`. Establish `e1 : u'.val c b = 0 → u.val (perm hk h c) (perm hk h b) = 0 ∧ u'.val c b = 0` using `fun e => ⟨by rw [e, mul_zero] at r; exact (mul_eq_zero.1 r).resolve_right tb, e⟩`.
+
+Break down `hh with hh | hh | hh` into its components or cases. Conclude with `e1 (by rw [hb' c b (Or.inr hh), if_neg hne])`. Conclude with `e1 (hu'.2 _ _ hh)`. Establish `e : u.val (perm hk h c) (perm hk h b) = 0` using `hu.2 _ _ hh`. Conclude with `⟨e, by rw [e, zero_mul] at r; exact (mul_eq_zero.1 r.symm).resolve_left tc⟩`.
+
+Distinguish the cases in `hne : c = b`. Substitute `hne` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `hh : k ≤ (b : ℕ) ∨ b < c ∨ sg k d b < sg k d c`. Take `⟨z1, z2⟩` from `z hne hh`.
+
+Simplify using `[z1, z2]`. Establish `hne' : (c : ℕ) ≠ b` using `fun e => hne (Fin.ext e)`. Simplify using `only [not_or, Fin.lt_def] at hh`. Break down `sg_dich h (c := c) (b := b) (by omega) (by omega) with ⟨e1, e2⟩ | e` into its components or cases. Establish `e3 : u.val (perm hk h c) (perm hk h b) = u'.val c b`.
+
+Rewrite `r` using `[e1, mul_comm]`. Conclude with `mul_left_cancel₀ tb r`. Rewrite using `[e3]`. Conclude with `if_congr (by omega) rfl rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relevant_cells : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (L : Lev g N), L.sharp = false → (∀ a, L.co a = 1) → ∀ k : ℕ, 0 < k → k < N → ∃ R : Finset (GG g N), (g - 1) * g ^ (k - 1) ≤ R.card ∧ (∀ w ∈ R, (∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → (w : GG g N).val a b = if a = b then 1 else 0) ∧ ∃ σ : Equiv.Perm (Fin N), ∀ a b, w.val a b ≠ 0 → a = σ b) ∧ ∀ w ∈ R, ∀ u u' : GG g N, IsUp g N u → IsUp g N u' → (∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → (u : GG g N).val a b = if a = b then 1 else 0) → (∀ a b : Fin N, (k ≤ (a : ℕ) ∨ k ≤ (b : ℕ)) → (u' : GG g N).val a b = if a = b then 1 else 0) → u * w = w * u' → L.chi u = L.chi u' := by
   intro g _ N L hs hco k hk0 hk
   refine ⟨Finset.univ.image fun p : (ZMod g)ˣ × (Fin (k - 1) → ZMod g) => cell hk (dat_good k p), ?_, ?_, ?_⟩

@@ -19,6 +19,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.FunObj
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j w hS hQ`. Establish `hmu : (L.C.mu0 j).UnrAt w` using `(L.C.isMu0 j).unr _ fun k hk => hS (by`. Establish `h : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`.
+
+Use `G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_))` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h))`. Establish `hxi : (L.xiH t).UnrAt w`.
+
+Assume the negation of the conclusion as `hc`. Break down `(hL.Q_ram t _).1 hc with h | ⟨P, h, hc'⟩` into its components or cases. Conclude with `hQ _ h rfl`. Conclude with `hQ P h (GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc')`. Establish `h1` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.mu0 j) w).2 hmu`.
+
+Establish `h2` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.xi t) w).2 hxi`. Establish `h3` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 (L.C.isEta.unr w)`. Establish `h4 : ∀ n : ℕ, GlobalTheory.LFun.UnrAt (F` using `D.host.F) (E := D.host.E) (L.eta ^ n) w := fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`.
+
+Conclude with `fun _ _ => Units.ext rfl`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h3`. Conclude with `(h1.mul h2).mul (h4 _)`.
+-/
 theorem alpha_unrAt : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) ∉ G.pl.S0 →
       (∀ P ∈ L.Q t, P.under (𝓞 D.host.F) ≠ w.under (𝓞 D.host.F)) → GlobalTheory.LFun.UnrAt (F := D.host.F) (E := D.host.E) (alpha G t i j) w := by

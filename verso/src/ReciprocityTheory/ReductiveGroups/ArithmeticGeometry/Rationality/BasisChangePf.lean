@@ -10,6 +10,9 @@ variable {K : Type*} [NormedField K] [IsUltrametricDist K] {ι : Type*}
 
 def CB (Q : MvPolynomial ι K) (c : ℝ) : Prop := ∀ μ, ‖coeff μ Q‖ ≤ c
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[MvPolynomial.coeff_sum]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc (fun a ha => h a ha μ)`.
+-/
 lemma cb_sum {α : Type*} (s : Finset α) (g : α → MvPolynomial ι K) {c : ℝ} (hc : 0 ≤ c)
     (h : ∀ a ∈ s, CB (g a) c) : CB (∑ a ∈ s, g a) c := by
   classical
@@ -17,6 +20,9 @@ lemma cb_sum {α : Type*} (s : Finset α) (g : α → MvPolynomial ι K) {c : �
   rw [MvPolynomial.coeff_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hc (fun a ha => h a ha μ)
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[MvPolynomial.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc hd) (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hQ _) (hR _) (norm_nonneg _) hc`.
+-/
 lemma cb_mul {Q R : MvPolynomial ι K} {c d : ℝ} (hc : 0 ≤ c) (hQ : CB Q c) (hR : CB R d)
     (hd : 0 ≤ d) : CB (Q * R) (c * d) := by
   classical
@@ -26,12 +32,18 @@ lemma cb_mul {Q R : MvPolynomial ι K} {c d : ℝ} (hc : 0 ≤ c) (hQ : CB Q c) 
   rw [norm_mul]
   exact mul_le_mul (hQ _) (hR _) (norm_nonneg _) hc
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[MvPolynomial.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma cb_one : CB (1 : MvPolynomial ι K) 1 := by
   classical
   intro μ
   rw [MvPolynomial.coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using (cb_one : CB (1 : MvPolynomial ι K) 1)`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `cb_mul (pow_nonneg hc n) ih hQ hc`.
+-/
 lemma cb_pow {Q : MvPolynomial ι K} {c : ℝ} (hc : 0 ≤ c) (hQ : CB Q c) (n : ℕ) : CB (Q ^ n) (c ^ n) := by
   induction n with
   | zero => simpa using (cb_one : CB (1 : MvPolynomial ι K) 1)
@@ -39,6 +51,9 @@ lemma cb_pow {Q : MvPolynomial ι K} {c : ℝ} (hc : 0 ≤ c) (hQ : CB Q c) (n :
     rw [pow_succ, pow_succ]
     exact cb_mul (pow_nonneg hc n) ih hQ hc
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (cb_one : CB (1 : MvPolynomial ι K) 1)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `cb_mul (hc a) (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb)) (Finset.prod_nonneg fun b _ => hc b)`.
+-/
 lemma cb_prod {α : Type*} (s : Finset α) (g : α → MvPolynomial ι K) (c : α → ℝ) (hc : ∀ a, 0 ≤ c a)
     (h : ∀ a ∈ s, CB (g a) (c a)) : CB (∏ a ∈ s, g a) (∏ a ∈ s, c a) := by
   classical
@@ -50,12 +65,20 @@ lemma cb_prod {α : Type*} (s : Finset α) (g : α → MvPolynomial ι K) (c : �
       (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
       (Finset.prod_nonneg fun b _ => hc b)
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[MvPolynomial.coeff_C_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hQ μ) (norm_nonneg a)`.
+-/
 lemma cb_C_mul (a : K) {Q : MvPolynomial ι K} {c : ℝ} (hQ : CB Q c) : CB (C a * Q) (‖a‖ * c) := by
   classical
   intro μ
   rw [MvPolynomial.coeff_C_mul, norm_mul]
   exact mul_le_mul_of_nonneg_left (hQ μ) (norm_nonneg a)
 
+/- English proof (translation)
+Use `cb_sum _ _ hc (fun k _ => fun μ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (norm_nonneg _)` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_X']`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `_ ≤ c := by simpa using hA i k`.
+-/
 lemma cb_lin [Fintype ι] (A : ι → ι → K) {c : ℝ} (hc : 0 ≤ c) (hA : ∀ i k, ‖A i k‖ ≤ c) (i : ι) :
     CB (∑ k, C (A i k) * X k) c := by
   classical
@@ -70,6 +93,17 @@ lemma cb_lin [Fintype ι] (A : ι → ι → K) {c : ℝ} (hc : 0 ≤ c) (hA : �
 end BasisChangePf
 
 open BasisChangePf in
+/- English proof (translation)
+Introduce `K _ _ ι _ P d hP hP1 A C hC hA μ`. Establish `hC0 : (0 : ℝ) ≤ C` using `by linarith`. Establish `hL : ∀ i, CB (∑ k, MvPolynomial.C (A i k) * MvPolynomial.X k : MvPolynomial ι K) C` using `fun i => cb_lin A hC0 hA i`. Establish `key : CB (MvPolynomial.bind₁ (fun i => ∑ k, MvPolynomial.C (A i k) * MvPolynomial.X k) P) (C ^ d)` using `by conv => arg 1; rw [P.as_sum]`. Rewrite using `[map_sum]`.
+
+Use `cb_sum _ _ (pow_nonneg hC0 d) (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.bind₁_monomial]`. Establish `hdeg : v.degree = d`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hP (MvPolynomial.mem_support_iff.1 hv)`.
+
+Establish `hprod : CB (∏ i ∈ v.support, (∑ k, MvPolynomial.C (A i k) * MvPolynomial.X k) ^ v i) (∏ i ∈ v.support, C ^ v i)` using `cb_prod _ _ _ (fun i => pow_nonneg hC0 _) (fun i _ => cb_pow hC0 (hL i) (v i))`. Establish `hb` using `cb_C_mul (MvPolynomial.coeff v P) hprod`. Establish `hpow : ∏ i ∈ v.support, C ^ v i = C ^ d`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← hdeg]`. Both sides reduce to the same expression.
+
+Introduce `ν`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpow]`. Conclude with `mul_le_mul_of_nonneg_right (hP1 v) (pow_nonneg hC0 d)`. Use `_ = C ^ d := one_mul _`.
+
+Conclude with `key μ`.
+-/
 theorem basisChange_holds : BasisChangeStatement := by
   intro K _ _ ι _ P d hP hP1 A C hC hA μ
   classical

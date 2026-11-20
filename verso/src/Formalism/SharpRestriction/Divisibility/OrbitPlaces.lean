@@ -65,6 +65,9 @@ def LevelFree (Dx : DivX D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.wha
   D.what₂.places.resChar w ≠ (D.mem u).A.T ∧ D.what₂.places.resChar w ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ) ∧
     D.what₂.places.resChar w ∉ Dx.Qp μ
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem levelFree_iff (Dx : DivX D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) :
     LevelFree Dx u μ w ↔ LevFree Dx u μ w := Iff.rfl
 
@@ -284,10 +287,16 @@ structure CLarge (C6 Cd : ℝ) (K : Consts) (ce : ErrC) : Prop where
 
   dig : 3 * Cd ≤ ce.dig
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, by rw [h6]; norm_num, by rw [h1]; norm_num, by rw [h1]; norm_num, h2, by rw [hd]; norm_num⟩`.
+-/
 theorem cLarge_of_fixed {K : Consts} {ce : ErrC} (h6 : ce.c6 = 12) (hd : ce.dig = 3) (h1 : K.dl1 = 5) (h2 : 0 ≤ K.dl2) :
     CLarge 11 1 K ce :=
   ⟨by norm_num, by rw [h6]; norm_num, by rw [h1]; norm_num, by rw [h1]; norm_num, h2, by rw [hd]; norm_num⟩
 
+/- English proof (translation)
+Establish `h : Even (D.R.N i)` using `by show Even (D.R.k + i * (D.R.t + 1))`. Conclude with `D.R.k_even.add (D.R.t_odd.add_one.mul_left i)`. Conclude with `h.mul_right _`.
+-/
 theorem nEven (D : D7) (i : ℕ) : Even (D.R.N i * D.R.N (i + 1)) := by
   have h : Even (D.R.N i) := by
     show Even (D.R.k + i * (D.R.t + 1))
@@ -323,11 +332,17 @@ def Cor2 (Lo : product_zeroth_first_parts.Loc) (C6 Cd : ℝ) : Prop :=
           C6 * (∑ s, w s) / (Lo.l : ℝ) - product_zeroth_first_parts.gam Lo.l * (∑ s ∈ Lo.TT, (Lo.Wc s : ℝ)) -
           Cd * ((Lo.d : ℝ) * Lo.N0 * Lo.N1 * (Real.logb Lo.l a + 1)))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem corollary_two_same_constant (Lo : product_zeroth_first_parts.Loc) (C : ℝ) : Cor2 Lo C C ↔ Lo.Cor C := Iff.rfl
 
 def OrbitLetterBoundsAll (C6 Cd : ℝ) : Prop :=
   (∀ Lo : product_zeroth_first_parts.Loc, Lo.AdmB → Lo.ThmA Cd ∧ Cor2 Lo C6 Cd) ∧ ∀ Lo : product_zeroth_first_parts.Loc1, Lo.AdmB → Lo.ThmOne Cd
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem twoConstantBounds_of_one {C : ℝ} (h : product_zeroth_first_parts.ExportAllConjugates C) : OrbitLetterBoundsAll C C := h
 
 def OrbitBoundWithoutOperator (E : Ent D) (X : Inst D L) (K : Consts) : Prop :=
@@ -451,15 +466,27 @@ def LiftIntegrality (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : Prop :=
     ∀ μ, DV.Used D μ → μ ≠ D.what₂.mu0 → D.what₂.places.resChar w ∉ Dx.Qp μ →
       KGeTw T u μ w i (-((if i = 0 then 1 - sp else 1) * vDG D u w))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem noOperatorOrbit_iff (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (T : TwForms D) (lev : LevelData D)
     (Xe : ErrX D) (ce : ErrC) (sp : ℝ) : WeilJacquetShalikaLaw.OrbitsWithoutOperator D L X K Dx T lev Xe ce sp = NoOperatorOrbitBound D L X K Dx T lev Xe ce sp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orbitBoundAtC_iff (D : D7) (L : SizeData₂ D) (K : Consts) (Dx : DivX D) (T : TwForms D) (lev : LevelData D)
     (Xe : ErrX D) (ce : ErrC) (sp : ℝ) : WeilJacquetShalikaLaw.MediumInertPrimeLengthBound D L K Dx T lev Xe ce sp = JetConsequence D L K Dx T lev Xe ce sp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valuationAtDiscriminant_iff (D : D7) (L : SizeData₂ D) (K : Consts) (Dx : DivX D) (T : TwForms D) (lev : LevelData D)
     (Xe : ErrX D) (ce : ErrC) (sp : ℝ) : WeilJacquetShalikaLaw.LossAtDiscriminant D L K Dx T lev Xe ce sp = ValuationAtDiscriminant D L K Dx T lev Xe ce sp := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftIntegrality_iff (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : WeilJacquetShalikaLaw.IsotypicPartsInternalDirectSum D Dx T sp = LiftIntegrality D Dx T sp := rfl
 
 def JetTie (E : Ent D) (Dx : DivX D) (Xp : product_zeroth_first_parts.Prov D) : Prop :=
@@ -502,6 +529,11 @@ def LiftBoundsWithValues (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts
 def KudlaFamilyStatement (C6 Cd : ℝ) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   ∀ x (_hx : Fm.x1 < x) (i : Fm.Ix x), Stmt (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Fm.GK (Fm.X x i) C6 Cd
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ]`. Use `le_trans (le_min ih ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem val_nat_nonneg (w : D.what₂.places.Pl) (n : ℕ) : (0 : WithTop ℤ) ≤ D.what₂.places.val w (n : D.what₂.LL) := by
   induction n with
   | zero => simp
@@ -510,6 +542,9 @@ theorem val_nat_nonneg (w : D.what₂.places.Pl) (n : ℕ) : (0 : WithTop ℤ) �
     refine le_trans (le_min ih ?_) (AddValuation.map_add _ _ _)
     simp
 
+/- English proof (translation)
+Consider the cases of `z with`. Consider the case `ofNat n => simpa using val_nat_nonneg w n`. Consider the case `negSucc n`. Rewrite using `[Int.cast_negSucc, AddValuation.map_neg]`. Conclude with `val_nat_nonneg w (n + 1)`.
+-/
 theorem val_int_nonneg (w : D.what₂.places.Pl) (z : ℤ) : (0 : WithTop ℤ) ≤ D.what₂.places.val w (z : D.what₂.LL) := by
   cases z with
   | ofNat n => simpa using val_nat_nonneg w n
@@ -517,6 +552,15 @@ theorem val_int_nonneg (w : D.what₂.places.Pl) (z : ℤ) : (0 : WithTop ℤ) �
     rw [Int.cast_negSucc, AddValuation.map_neg]
     exact val_nat_nonneg w (n + 1)
 
+/- English proof (translation)
+Establish `hb : ((n : ℤ) * Nat.gcdA n (D.what₂.places.resChar w) + (D.what₂.places.resChar w : ℤ) * Nat.gcdB n (D.what₂.places.resChar w)) = 1`. Use `Nat.gcd_eq_gcd_ab n (D.what₂.places.resChar w)` as an intermediate fact. Rewrite `this` using `[Nat.Coprime.gcd_eq_one h]`. Simplify using `using this.symm`. Establish `hb' : ((n : D.what₂.LL) * ((Nat.gcdA n (D.what₂.places.resChar w) : ℤ) : D.what₂.LL) + ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) * ((Nat.gcdB n (D.what₂.places.resChar w) : ℤ) : D.what₂.LL)) = 1`.
+
+Conclude with `congrArg (Int.cast : ℤ → D.what₂.LL) hb` after adjusting the coercions. Establish `hm` using `AddValuation.map_add (D.what₂.places.val w) ((n : D.what₂.LL) * ((Nat.gcdA n (D.what₂.places.resChar w) : ℤ) : D.what₂.LL)) (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) * ((Nat.gcdB n (D.what₂.places.resChar w) : ℤ) : D.what₂.LL))`. Rewrite `hm` using `[hb', AddValuation.map_one]`. Establish `hp : (0 : WithTop ℤ) < D.what₂.places.val w (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) * ((Nat.gcdB n (D.what₂.places.resChar w) : ℤ) : D.what₂.LL))`. Rewrite using `[AddValuation.map_mul, D.what₂.places.val_resChar w]`.
+
+Conclude with `add_pos_of_pos_of_nonneg (by exact_mod_cast D.what₂.places.ramIdx_pos w) (val_int_nonneg w _)`. Establish `h1 : D.what₂.places.val w ((n : D.what₂.LL) * ((Nat.gcdA n (D.what₂.places.resChar w) : ℤ) : D.what₂.LL)) ≤ 0`. Break down `min_le_iff.1 hm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (not_le.2 hp)`.
+
+Rewrite `h1` using `[AddValuation.map_mul]`. Conclude with `le_antisymm (le_trans (le_add_of_nonneg_right (val_int_nonneg w _)) h1) (val_nat_nonneg w n)`.
+-/
 theorem val_coprime (w : D.what₂.places.Pl) (n : ℕ) (h : Nat.Coprime n (D.what₂.places.resChar w)) :
     D.what₂.places.val w (n : D.what₂.LL) = 0 := by
   have hb : ((n : ℤ) * Nat.gcdA n (D.what₂.places.resChar w) +
@@ -542,26 +586,43 @@ theorem val_coprime (w : D.what₂.places.Pl) (n : ℕ) (h : Nat.Coprime n (D.wh
   rw [AddValuation.map_mul] at h1
   exact le_antisymm (le_trans (le_add_of_nonneg_right (val_int_nonneg w _)) h1) (val_nat_nonneg w n)
 
+/- English proof (translation)
+Establish `h` using `(D.what₂.places.val w).map_mul a b`. Rewrite `h` using `[D.val_eq w _ (mul_ne_zero ha hb), D.val_eq w _ ha, D.val_eq w _ hb, ← WithTop.coe_add]`. Conclude with `WithTop.coe_injective h`.
+-/
 theorem vAdd_mul (w : D.what₂.places.Pl) {a b : D.what₂.LL} (ha : a ≠ 0) (hb : b ≠ 0) :
     vAdd (D.plEq w) (a * b) = vAdd (D.plEq w) a + vAdd (D.plEq w) b := by
   have h := (D.what₂.places.val w).map_mul a b
   rw [D.val_eq w _ (mul_ne_zero ha hb), D.val_eq w _ ha, D.val_eq w _ hb, ← WithTop.coe_add] at h
   exact WithTop.coe_injective h
 
+/- English proof (translation)
+Establish `h` using `(D.what₂.places.val w).map_one`. Rewrite `h` using `[D.val_eq w _ one_ne_zero]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem vAdd_one (w : D.what₂.places.Pl) : vAdd (D.plEq w) (1 : D.what₂.LL) = 0 := by
   have h := (D.what₂.places.val w).map_one
   rw [D.val_eq w _ one_ne_zero] at h
   exact_mod_cast h
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 (D.what₂.places.resChar_prime w).ne_zero`.
+-/
 theorem p_ne (w : D.what₂.places.Pl) : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0 :=
   Nat.cast_ne_zero.2 (D.what₂.places.resChar_prime w).ne_zero
 
+/- English proof (translation)
+Establish `h` using `D.what₂.places.val_resChar w`. Rewrite `h` using `[D.val_eq w _ (p_ne w)]`. Conclude with `WithTop.coe_injective h`.
+-/
 theorem vAdd_p (w : D.what₂.places.Pl) :
     vAdd (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ) := by
   have h := D.what₂.places.val_resChar w
   rw [D.val_eq w _ (p_ne w)] at h
   exact WithTop.coe_injective h
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [vAdd_one]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, vAdd_mul w (pow_ne_zero _ (p_ne w)) (p_ne w), ih, vAdd_p]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vAdd_pow (w : D.what₂.places.Pl) (k : ℕ) :
     vAdd (D.plEq w) (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k) = (k : ℤ) * (D.what₂.places.ramIdx w : ℤ) := by
   induction k with
@@ -575,6 +636,39 @@ section Layer
 variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
   {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P} {w : D.what₂.places.Pl}
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨a, ha, hpair⟩` from `hP`. Establish `hφ` using `(V.lat_iff i hi.le (M.emb i x)).1 ⟨x, Submodule.subset_span hx, rfl⟩`. Distinguish the cases in `ha0 : a = 0`. Use `⟨0, ?_, 0, 0, Submodule.zero_mem _, by simp, Or.inl rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Use function extensionality and compare the values at `c'`. Use `show (0 : C.Y (i + 1) → ℂ) = ∑ c, C.wt i c • C.Kmap i c c' (M.emb i x c)`. Use `symm`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Take `⟨g, _, hg⟩` from `hpair c c' _ (hφ.2 c)`. Rewrite using `[hg, ha0, map_zero, zero_smul, smul_zero]`. Use `choose g hgmem hg using fun c c' => hpair c c' _ (hφ.2 c)`. Establish `hpp` using `D.what₂.places.resChar_prime w`. Take `⟨k, hk⟩ : ∃ k, k = padicValNat (D.what₂.places.resChar w) n` from `⟨_, rfl⟩`.
+
+Take `⟨n', hn'⟩ : ∃ n', n' = n / D.what₂.places.resChar w ^ n.factorization (D.what₂.places.resChar w)` from `⟨_, rfl⟩`. Establish `hfac : n.factorization (D.what₂.places.resChar w) = k` using `by rw [hk, Nat.factorization_def n hpp]`. Establish `hprod : D.what₂.places.resChar w ^ k * n' = n`. Rewrite using `[hn', ← hfac]`. Conclude with `Nat.ordProj_mul_ordCompl_eq_self n _`.
+
+Establish `hcop : Nat.Coprime n' (D.what₂.places.resChar w)`. Rewrite using `[hn']`. Conclude with `(Nat.coprime_ordCompl hpp hn).symm`. Establish `hn'0 : n' ≠ 0` using `by rintro rfl; simp at hprod; exact hn hprod.symm`. Establish `hcard : ∀ c, Nat.card (C.stab i c) ≠ 0` using `fun c => Nat.card_pos.ne'`.
+
+Establish `hq : ∀ c, n / Nat.card (C.stab i c) * Nat.card (C.stab i c) = D.what₂.places.resChar w ^ k * n'` using `fun c => by`. Rewrite using `[hprod]`. Conclude with `Nat.div_mul_cancel (hdiv c)`. Establish `hq0 : ∀ c, n / Nat.card (C.stab i c) ≠ 0` using `fun c h0 => by`. Use `hq c` as an intermediate fact.
+
+Rewrite `this` using `[h0, zero_mul, hprod]`. Conclude with `hn this.symm`. Set `r : C.cls i → D.what₂.LL` to `fun c => ((n / Nat.card (C.stab i c) : ℕ) : D.what₂.LL) * ((n' : ℕ) : D.what₂.LL)⁻¹`. Establish `hr : ∀ c, r c ∈ intW D.what₂.places w` using `fun c => by show (0 : WithTop ℤ) ≤ D.what₂.places.val w (r c)`. Rewrite using `[AddValuation.map_mul, AddValuation.map_inv, val_coprime w n' hcop, neg_zero, add_zero]`.
+
+Conclude with `val_nat_nonneg w _`. Set `pk : D.what₂.LL` to `((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k`. Establish `hpk : pk ≠ 0` using `pow_ne_zero _ (p_ne w)`. Establish `hwt : ∀ c, C.wt i c = D.what₂.embLL (pk⁻¹ * r c)` using `fun c => by`. Establish `e1 : ((n / Nat.card (C.stab i c) : ℕ) : ℂ) * ((Nat.card (C.stab i c) : ℕ) : ℂ) = ((D.what₂.places.resChar w : ℕ) : ℂ) ^ k * ((n' : ℕ) : ℂ)` using `by exact_mod_cast hq c`.
+
+Establish `c1 : ((Nat.card (C.stab i c) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (hcard c)`. Establish `c2 : ((n / Nat.card (C.stab i c) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (hq0 c)`. Establish `c3 : ((D.what₂.places.resChar w : ℕ) : ℂ) ^ k ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hpp.ne_zero)`. Establish `c4 : ((n' : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn'0`. Use `show (((Nat.card (C.stab i c) : ℕ) : ℂ))⁻¹ = _`.
+
+Simplify using `only [pk, r, map_mul, map_inv₀, map_pow, map_natCast]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : ℂ) * e1`. Set `b : D.what₂.LL` to `a * pk⁻¹`. Establish `hb0 : b ≠ 0` using `mul_ne_zero ha0 (inv_ne_zero hpk)`.
+
+Set `ψ : C.cls (i + 1) → C.Y (i + 1) → ℂ` to `fun c' => ∑ c, D.what₂.embLL (r c) • g c c'`. Establish `hK : C.K i (M.emb i x) = D.what₂.embLL b • ψ`. Use function extensionality and compare the values at `c'`. Use `show ∑ c, C.wt i c • C.Kmap i c c' (M.emb i x c) = D.what₂.embLL b • ∑ c, D.what₂.embLL (r c) • g c c'`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hg c c', hwt c, smul_smul, smul_smul, ← map_mul, ← map_mul]`. Use `congr 2`. Simplify using `only [b]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hbC : D.what₂.embLL b ≠ 0` using `(map_ne_zero D.what₂.embLL).2 hb0`. Establish `hψF : ψ ∈ M.Fi (i + 1)`. Establish `: ψ = (D.what₂.embLL b)⁻¹ • C.K i (M.emb i x)` using `by rw [hK, smul_smul, inv_mul_cancel₀ hbC, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hF _ hφ.1)`.
+
+Take `⟨z, hz, hzψ⟩` from `(V.lat_iff (i + 1) hi ψ).2 ⟨hψF, fun c' => AddSubgroup.sum_mem _ fun c _ => V.val_smul _ _ _ (hr c) _ (hgmem c c')⟩`. Use `⟨b • z, ?_, b, z, hz, rfl, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, hzψ, hK]`. Establish `h1` using `ha.resolve_left ha0`. Establish `h2 : vAdd (D.plEq w) a = vAdd (D.plEq w) b + (k : ℤ) * (D.what₂.places.ramIdx w : ℤ)`.
+
+Rewrite using `[← vAdd_pow w k, ← vAdd_mul w hb0 hpk]`. Use `congr 1`. Simplify using `only [b]`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hpk, mul_one]`. Rewrite using `[← hk]`.
+
+Establish `h3 : (vAdd (D.plEq w) a : ℝ) = (vAdd (D.plEq w) b : ℝ) + (k : ℝ) * (D.what₂.places.ramIdx w : ℝ)`. Conclude with `h2` after adjusting the coercions. Unfold `ur at h1 ⊢`. Use polynomial arithmetic with `[h1, h3]`.
+-/
 theorem classSum (V : ValLat M w) {i : ℕ} (hi : i < D.R.m) {s : ℝ} {n : ℕ} (hn : n ≠ 0)
     (hdiv : ∀ c, Nat.card (C.stab i c) ∣ n) (hF : ∀ φ ∈ M.Fi i, C.K i φ ∈ M.Fi (i + 1)) (hP : PairGe V i s) :
     KG M w i (s - (padicValNat (D.what₂.places.resChar w) n : ℝ)) := by
@@ -656,6 +750,21 @@ theorem classSum (V : ValLat M w) {i : ℕ} (hi : i < D.R.m) {s : ℝ} {n : ℕ}
 
 end Layer
 
+/- English proof (translation)
+Introduce `hG u μ w hUs hL i hi B hB`. Establish `key0 : B - (if i = 0 then 1 - sp else 1) * vDG D u w = B - vDG D u w ∨ (i = 0 ∧ sp = 1 ∧ Stab0 D)`. Distinguish the cases in `h0 : i = 0`. Break down `hsp with h | h` into its components or cases. Use `left`.
+
+Rewrite using `[if_pos h0, h]`. Expand and normalize the polynomial expressions, which then agree. Use `right`. Conclude with `⟨h0, h.1, h.2⟩`. Use `left`.
+
+Rewrite using `[if_neg h0]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun hμ => ?_, fun hμ => ?_⟩` and prove the remaining obligations. Substitute `hμ` using the available equality. Establish `hE'` using `hE.1 u w hL i hi B hB`.
+
+Break down `key0 with h | ⟨h0, h1, hS⟩` into its components or cases. Rewrite using `[h]`. Conclude with `classSum (V.v0 u w hL) hi (D.mem u).C.DGam_pos.ne' (fun c => (D.mem u).C.dvd_DGam i hi.le c) (hK.1 u i hi) hE'`. Substitute `h0` using the available equality. Use `classSum (V.v0 u w hL) hi one_ne_zero (fun c => by rw [hS.1 u c]) (hK.1 u 0 hi) hE'` as an intermediate fact.
+
+Establish `e : B - (if (0 : ℕ) = 0 then 1 - sp else 1) * vDG D u w = B - (padicValNat (D.what₂.places.resChar w) 1 : ℝ)` using `by simp [h1]`. Rewrite using `[e]`. Conclude with `this`. Establish `hE'` using `hE.2 u μ hUs hμ w hL i hi B hB`. Break down `key0 with h | ⟨h0, h1, hS⟩` into its components or cases.
+
+Rewrite using `[h]`. Use `classSum (V.vT u μ w hL) hi (D.chTw u μ).DGam_pos.ne' (fun c => (D.chTw u μ).dvd_DGam i hi.le c) (hK.2 u μ hUs i hi) hE'` as an intermediate fact. Rewrite `this` using `[hG.one u u μ]`. Conclude with `this`. Substitute `h0` using the available equality.
+
+Use `classSum (V.vT u μ w hL) hi one_ne_zero (fun c => by rw [hS.2 u μ hUs c]) (hK.2 u μ hUs 0 hi) hE'` as an intermediate fact. Establish `e : B - (if (0 : ℕ) = 0 then 1 - sp else 1) * vDG D u w = B - (padicValNat (D.what₂.places.resChar w) 1 : ℝ)` using `by simp [h1]`. Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem kform_of (E : Ent D) (Dx : DivX D) (T : TwForms D) (V : Vals D Dx T) (hE : EntPair E Dx T V) (hK : KFi D T)
     {sp : ℝ} (hsp : sp = 0 ∨ (sp = 1 ∧ Stab0 D)) : KForm E Dx T sp := by
   intro hG u μ w hUs hL i hi B hB
@@ -691,6 +800,9 @@ theorem kform_of (E : Ent D) (Dx : DivX D) (T : TwForms D) (V : Vals D Dx T) (hE
       rw [e]
       exact this
 
+/- English proof (translation)
+Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w a`. Rewrite using `[D.val_eq w _ ha]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem mem_intW (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) (h : 0 ≤ vAdd (D.plEq w) a) :
     a ∈ intW D.what₂.places w := by
   show (0 : WithTop ℤ) ≤ D.what₂.places.val w a
@@ -701,12 +813,21 @@ section V
 variable {w : D.what₂.places.Pl} {V : Type} [AddCommGroup V] [Module D.what₂.LL V] [Module (𝓞 D.what₂.LL) V]
   {Λ : Submodule (𝓞 D.what₂.LL) V}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, Submodule.zero_mem _, by simp, Or.inl rfl⟩`.
+-/
 theorem VGe.zero (s : ℝ) : VGe D w Λ (0 : V) s := ⟨0, 0, Submodule.zero_mem _, by simp, Or.inl rfl⟩
 
+/- English proof (translation)
+The claim follows from `(locW D.what₂.places w Λ).smul_mem ⟨c, hc⟩ hz`.
+-/
 theorem locW_smul {z : V} (hz : z ∈ locW D.what₂.places w Λ) {c : D.what₂.LL} (hc : c ∈ intW D.what₂.places w) :
     c • z ∈ locW D.what₂.places w Λ :=
   (locW D.what₂.places w Λ).smul_mem ⟨c, hc⟩ hz
 
+/- English proof (translation)
+Establish `hc : a1⁻¹ * a2 ≠ 0` using `mul_ne_zero (inv_ne_zero n1) n2`. Establish `hv : vAdd (D.plEq w) a2 = vAdd (D.plEq w) a1 + vAdd (D.plEq w) (a1⁻¹ * a2)`. Rewrite using `[← vAdd_mul w n1 hc, mul_inv_cancel_left₀ n1]`. Use `⟨a1, z1 + (a1⁻¹ * a2) • z2, Submodule.add_mem _ h1 (locW_smul h2 (mem_intW w hc (by omega))), ?_, Or.inr v1⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_smul, mul_inv_cancel_left₀ n1]`.
+-/
 theorem VGe.torsion_combination_smul_eq_zero {s : ℝ} {a1 a2 : D.what₂.LL} {z1 z2 : V} (h1 : z1 ∈ locW D.what₂.places w Λ)
     (h2 : z2 ∈ locW D.what₂.places w Λ) (n1 : a1 ≠ 0) (n2 : a2 ≠ 0) (v1 : ur D w s ≤ (vAdd (D.plEq w) a1 : ℝ))
     (hle : vAdd (D.plEq w) a1 ≤ vAdd (D.plEq w) a2) : VGe D w Λ (a1 • z1 + a2 • z2) s := by
@@ -716,6 +837,15 @@ theorem VGe.torsion_combination_smul_eq_zero {s : ℝ} {a1 a2 : D.what₂.LL} {z
   refine ⟨a1, z1 + (a1⁻¹ * a2) • z2, Submodule.add_mem _ h1 (locW_smul h2 (mem_intW w hc (by omega))), ?_, Or.inr v1⟩
   rw [smul_add, smul_smul, mul_inv_cancel_left₀ n1]
 
+/- English proof (translation)
+Take `⟨a1, z1, hz1, rfl, ha1⟩` from `h1`. Take `⟨a2, z2, hz2, rfl, ha2⟩` from `h2`. Distinguish the cases in `n1 : a1 = 0`. Substitute `n1` using the available equality. Rewrite using `[zero_smul, zero_add]`.
+
+Conclude with `⟨a2, z2, hz2, rfl, ha2⟩`. Distinguish the cases in `n2 : a2 = 0`. Substitute `n2` using the available equality. Rewrite using `[zero_smul, add_zero]`. Conclude with `⟨a1, z1, hz1, rfl, ha1⟩`.
+
+Establish `v1` using `ha1.resolve_left n1`. Establish `v2` using `ha2.resolve_left n2`. Break down `le_total (vAdd (D.plEq w) a1) (vAdd (D.plEq w) a2) with h | h` into its components or cases. Conclude with `VGe.torsion_combination_smul_eq_zero hz1 hz2 n1 n2 v1 h`. Rewrite using `[add_comm]`.
+
+Conclude with `VGe.torsion_combination_smul_eq_zero hz2 hz1 n2 n1 v2 h`.
+-/
 theorem VGe.add {s : ℝ} {y1 y2 : V} (h1 : VGe D w Λ y1 s) (h2 : VGe D w Λ y2 s) : VGe D w Λ (y1 + y2) s := by
   obtain ⟨a1, z1, hz1, rfl, ha1⟩ := h1
   obtain ⟨a2, z2, hz2, rfl, ha2⟩ := h2
@@ -729,6 +859,15 @@ theorem VGe.add {s : ℝ} {y1 y2 : V} (h1 : VGe D w Λ y1 s) (h2 : VGe D w Λ y2
   · exact VGe.torsion_combination_smul_eq_zero hz1 hz2 n1 n2 v1 h
   · rw [add_comm]; exact VGe.torsion_combination_smul_eq_zero hz2 hz1 n2 n1 v2 h
 
+/- English proof (translation)
+Take `⟨a, z, hz, rfl, ha⟩` from `h`. Use `⟨c * a, z, hz, by rw [smul_smul], ?_⟩` and prove the remaining obligations. Distinguish the cases in `n1 : c = 0`. Use `left`. Rewrite using `[n1, zero_mul]`.
+
+Distinguish the cases in `n2 : a = 0`. Use `left`. Rewrite using `[n2, mul_zero]`. Use `right`. Rewrite using `[vAdd_mul w n1 n2]`.
+
+Establish `h1` using `hc.resolve_left n1`. Establish `h2` using `ha.resolve_left n2`. Establish `: ur D w (s0 + s) = ur D w s0 + ur D w s` using `by unfold ur; ring`. Rewrite using `[this]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem VGe.smul {s s0 : ℝ} {y : V} (h : VGe D w Λ y s) {c : D.what₂.LL}
     (hc : c = 0 ∨ ur D w s0 ≤ (vAdd (D.plEq w) c : ℝ)) : VGe D w Λ (c • y) (s0 + s) := by
   obtain ⟨a, z, hz, rfl, ha⟩ := h
@@ -750,6 +889,13 @@ section Chain
 variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {P : PeriodMap D.R C}
   (M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A P) (w : D.what₂.places.Pl)
 
+/- English proof (translation)
+Unfold `locW at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact ⟨0, by rw [map_zero, map_zero]; exact ((C.Klin i).map_zero).symm, VGe.zero s⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨y1, e1, v1⟩` from `hx`. Take `⟨y2, e2, v2⟩` from `hy`. Conclude with `⟨y1 + y2, by rw [map_add, map_add, e1, e2]; exact ((C.Klin i).map_add _ _).symm, VGe.add v1 v2⟩`. Consider the case `smul r x _ hx`. Take `⟨y1, e1, v1⟩` from `hx`.
+
+Use `⟨(r : D.what₂.LL) • y1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, e1]`. Conclude with `((C.Klin i).map_smul _ _).symm`. Take `⟨a, z, hz, rfl, ha⟩` from `v1`. Conclude with `⟨a, (r : D.what₂.LL) • z, locW_smul hz r.2, by rw [smul_comm], ha⟩`.
+-/
 theorem KG.loc {i : ℕ} {s : ℝ} (h : KG M w i s) (z : (M.lat i).V) (hz : z ∈ locW D.what₂.places w (M.lat i).L) :
     ∃ y, M.emb (i + 1) y = C.K i (M.emb i z) ∧ VGe D w (M.lat (i + 1)).L y s := by
   unfold locW at hz
@@ -768,6 +914,9 @@ theorem KG.loc {i : ℕ} {s : ℝ} (h : KG M w i s) (z : (M.lat i).V) (hz : z �
     · obtain ⟨a, z, hz, rfl, ha⟩ := v1
       exact ⟨a, (r : D.what₂.LL) • z, locW_smul hz r.2, by rw [smul_comm], ha⟩
 
+/- English proof (translation)
+Take `⟨a, z, hz, rfl, ha⟩` from `hx`. Take `⟨y, e, v⟩` from `h.loc M w z hz`. Use `⟨a • y, ?_, VGe.smul v ha⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, e]`. Conclude with `((C.Klin i).map_smul _ _).symm`.
+-/
 theorem KG.step {i : ℕ} {s s0 : ℝ} (h : KG M w i s) (x : (M.lat i).V) (hx : VGe D w (M.lat i).L x s0) :
     ∃ y, M.emb (i + 1) y = C.K i (M.emb i x) ∧ VGe D w (M.lat (i + 1)).L y (s0 + s) := by
   obtain ⟨a, z, hz, rfl, ha⟩ := hx
@@ -776,6 +925,13 @@ theorem KG.step {i : ℕ} {s s0 : ℝ} (h : KG M w i s) (x : (M.lat i).V) (hx : 
   rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, e]
   exact ((C.Klin i).map_smul _ _).symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨x, rfl, 1, x, hx, (one_smul _ _).symm, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[vAdd_one]`. Simplify using `[ur]`.
+
+Consider the case `succ n ih`. Take `⟨y, e, v⟩` from `ih (fun i hi => h i (Nat.lt_succ_of_lt hi))`. Take `⟨y', e', v'⟩` from `(h n (Nat.lt_succ_self n)).step M w y v`. Use `⟨y', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e', e]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finset.sum_Icc_succ_top (Nat.le_add_left 1 n)]`. Conclude with `v'`.
+-/
 theorem chain_ge (s : ℕ → ℝ) (n : ℕ) (h : ∀ i < n, KG M w i (s (i + 1))) (x : (M.lat 0).V)
     (hx : x ∈ locW D.what₂.places w (M.lat 0).L) :
     ∃ y, M.emb n y = Formalism.ThetaLiftIndependence.chainOpM C.wt C.Kmap n (M.emb 0 x) ∧ VGe D w (M.lat n).L y (∑ j ∈ Finset.Icc 1 n, s j) := by
@@ -792,6 +948,11 @@ theorem chain_ge (s : ℕ → ℝ) (n : ℕ) (h : ∀ i < n, KG M w i (s (i + 1)
 
 end Chain
 
+/- English proof (translation)
+Unfold `locW at hx2 ⊢`. Proceed by induction on `hx2 using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ((T.twist_preserves_base_lattice u μ x).1 hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[Subring.smul_def, map_smul]`. Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem base_map_mem_local_lattice (T : TwForms D) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.what₂.places.Pl) (x : ((D.fm u).lat 0).V)
     (hx2 : x ∈ locW D.what₂.places w ((D.fm u).lat 0).L) : T.e0 u μ x ∈ locW D.what₂.places w ((T.fm u μ).lat 0).L := by
   unfold locW at hx2 ⊢
@@ -803,6 +964,11 @@ theorem base_map_mem_local_lattice (T : TwForms D) (u : D.what₂.Word) (μ : D.
     rw [Subring.smul_def, map_smul]
     exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Introduce `u μ w s h x hx`. Use `⟨fun hμ => ?_, fun hμ => ?_⟩` and prove the remaining obligations. Conclude with `chain_ge (D.fm u) w s D.R.m (fun i hi => (h i hi).1 hμ) x hx`. Establish `hx'` using `base_map_mem_local_lattice T u μ w x hx`. Take `⟨y, e, v⟩` from `chain_ge (T.fm u μ) w s D.R.m (fun i hi => (h i hi).2 hμ) (T.e0 u μ x) hx'`.
+
+Conclude with `⟨y, by rw [e, T.embed_mul_block_embedding]; rfl, v⟩`.
+-/
 theorem compose (D : D7) (T : TwForms D) : ValuationComposition D T := by
   intro u μ w s h x hx
   refine ⟨fun hμ => ?_, fun hμ => ?_⟩
@@ -811,17 +977,28 @@ theorem compose (D : D7) (T : TwForms D) : ValuationComposition D T := by
     obtain ⟨y, e, v⟩ := chain_ge (T.fm u μ) w s D.R.m (fun i hi => (h i hi).2 hμ) (T.e0 u μ x) hx'
     exact ⟨y, by rw [e, T.embed_mul_block_embedding]; rfl, v⟩
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]`.
+-/
 theorem bs_iter (X : Inst D L) (h t : HH D) (i : ℕ) : X.bs h (t + i • h) = X.bs h t := by
   induction i with
   | zero => simp
   | succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `X.bs_orb h t`. Use `bs_iter X h (X.bs h t) i` as an intermediate fact. Rewrite `this` using `[hi]`. Conclude with `this.symm`.
+-/
 theorem bs_idem (X : Inst D L) (h t : HH D) : X.bs h (X.bs h t) = X.bs h t := by
   obtain ⟨i, hi⟩ := X.bs_orb h t
   have := bs_iter X h (X.bs h t) i
   rw [hi] at this
   exact this.symm
 
+/- English proof (translation)
+Unfold `reps`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, _, rfl⟩`. Conclude with `bs_idem X _ s`.
+
+Introduce `h`. Conclude with `⟨t, Finset.mem_univ _, h⟩`.
+-/
 theorem mem_reps {X : Inst D L} {p : ℕ} {t : HH D} : t ∈ reps X p ↔ X.bs (stepP D p) t = t := by
   unfold reps
   rw [Finset.mem_image]
@@ -829,9 +1006,45 @@ theorem mem_reps {X : Inst D L} {p : ℕ} {t : HH D} : t ∈ reps X p ↔ X.bs (
   · rintro ⟨s, _, rfl⟩; exact bs_idem X _ s
   · intro h; exact ⟨t, Finset.mem_univ _, h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem posPl_eq (D : D7) (p : ℕ) (b : Bool) (t : HH D) (e : ℕ) :
     posPl D p (b, t) e = (xor b (decide (IsSg D p ∧ Odd e)), t + e • hP D p) := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨β, t⟩`. Distinguish the cases in `hs : IsSg D p`. Establish `hst : stepP D p = 2 • hP D p` using `if_pos hs`. Establish `hR : ∀ r : Pl D, r ∈ repsPl X p ↔ r.1 = false ∧ X.bs (2 • hP D p) r.2 = r.2`. Introduce `r`.
+
+Unfold `repsPl`. Rewrite using `[if_pos hs, Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs', rfl⟩; exact ⟨rfl, by rw [← hst]; exact mem_reps.1 hs'⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨r.2, mem_reps.2 (by rw [hst]; exact h2), Prod.ext h1.symm rfl⟩`.
+
+Consider the cases of `β with`. Consider the case `false`. Take `⟨i, hi⟩` from `X.bs_orb (2 • hP D p) t`. Use `⟨(false, X.bs (2 • hP D p) t), ⟨(hR _).2 ⟨rfl, bs_idem X _ t⟩, 2 * i, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[posPl_eq]`.
+
+Establish `: ¬ (IsSg D p ∧ Odd (2 * i))` using `fun h => (Nat.not_odd_iff_even.2 (even_two_mul i)) h.2`. Rewrite using `[decide_eq_false this, mul_comm, mul_smul, hi]`. Both sides reduce to the same expression. Introduce and unpack `⟨b, t1⟩ ⟨hr, e, he⟩`. Take `⟨h1, h2⟩` from `(hR _).1 hr`.
+
+Simplify using `only at h1 h2`. Substitute `h1` using the available equality. Rewrite `he` using `[posPl_eq]`. Establish `he1` using `congrArg Prod.fst he`. Establish `he2 : t1 + e • hP D p = t` using `congrArg Prod.snd he`.
+
+Establish `hev : Even e`. Assume the negation of the conclusion as `hne`. Establish `: IsSg D p ∧ Odd e` using `⟨hs, Nat.not_even_iff_odd.1 hne⟩`. Simplify using `[this] at he1`. Take `⟨c, rfl⟩` from `hev`.
+
+Establish `: t = t1 + c • (2 • hP D p)` using `by rw [← he2, ← mul_smul, mul_two]`. Rewrite using `[this, bs_iter, h2]`. Consider the case `true`. Take `⟨i, hi⟩` from `X.bs_orb (2 • hP D p) (t - hP D p)`. Use `⟨(false, X.bs (2 • hP D p) (t - hP D p)), ⟨(hR _).2 ⟨rfl, bs_idem X _ _⟩, 2 * i + 1, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[posPl_eq]`. Establish `: IsSg D p ∧ Odd (2 * i + 1)` using `⟨hs, odd_two_mul_add_one i⟩`. Rewrite using `[decide_eq_true this, add_smul, one_smul, ← add_assoc, mul_comm, mul_smul, hi]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨b, t1⟩ ⟨hr, e, he⟩`.
+
+Take `⟨h1, h2⟩` from `(hR _).1 hr`. Simplify using `only at h1 h2`. Substitute `h1` using the available equality. Rewrite `he` using `[posPl_eq]`. Establish `he1` using `congrArg Prod.fst he`.
+
+Establish `he2 : t1 + e • hP D p = t` using `congrArg Prod.snd he`. Establish `hod : Odd e`. Assume the negation of the conclusion as `hne`. Establish `: ¬ (IsSg D p ∧ Odd e)` using `fun h => hne h.2`. Simplify using `[this] at he1`.
+
+Take `⟨c, rfl⟩` from `hod`. Establish `: t - hP D p = t1 + c • (2 • hP D p)`. Rewrite using `[← he2, add_smul, one_smul, ← mul_smul, mul_comm c 2]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, bs_iter, h2]`.
+
+Establish `hst : stepP D p = hP D p` using `if_neg hs`. Establish `hR : ∀ r : Pl D, r ∈ repsPl X p ↔ X.bs (hP D p) r.2 = r.2`. Introduce `r`. Unfold `repsPl`. Rewrite using `[if_neg hs, Finset.mem_union, Finset.mem_image, Finset.mem_image]`.
+
+Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (⟨s, hs', rfl⟩ | ⟨s, hs', rfl⟩) <;> (rw [← hst]; exact mem_reps.1 hs')`. Introduce `h2`. Establish `hm : r.2 ∈ reps X p` using `mem_reps.2 (by rw [hst]; exact h2)`. Consider the cases of `hb : r.1 with`.
+
+Consider the case `false => exact Or.inl ⟨r.2, hm, Prod.ext hb.symm rfl⟩`. Consider the case `true => exact Or.inr ⟨r.2, hm, Prod.ext hb.symm rfl⟩`. Establish `hdec : ∀ e : ℕ, decide (IsSg D p ∧ Odd e) = false` using `fun e => decide_eq_false fun h => hs h.1`. Take `⟨i, hi⟩` from `X.bs_orb (hP D p) t`. Use `⟨(β, X.bs (hP D p) t), ⟨(hR _).2 (bs_idem X _ t), i, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[posPl_eq, hdec, hi]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨b, t1⟩ ⟨hr, e, he⟩`. Establish `h2` using `(hR _).1 hr`. Simplify using `only at h2`.
+
+Rewrite `he` using `[posPl_eq, hdec]`. Establish `he1 : xor b false = β` using `congrArg Prod.fst he`. Establish `he2 : t1 + e • hP D p = t` using `congrArg Prod.snd he`. Rewrite `he1` using `[Bool.xor_false]`. Rewrite using `[← he2, bs_iter, h2, he1]`.
+-/
 theorem isReps_repsPl (X : Inst D L) (p : ℕ) : IsReps D p (repsPl X p) := by
   rintro ⟨β, t⟩
   by_cases hs : IsSg D p
@@ -910,12 +1123,23 @@ theorem isReps_repsPl (X : Inst D L) (p : ℕ) : IsReps D p (repsPl X p) := by
       rw [Bool.xor_false] at he1
       rw [← he2, bs_iter, h2, he1]
 
+/- English proof (translation)
+Unfold `SizeData₂.lifts; rw [Finset.mem_Icc]; exact ⟨le_refl 1, by have := D.R.two_le_m; omega⟩`.
+-/
 theorem one_mem_lifts (D : D7) : 1 ∈ SizeData₂.lifts D := by
   unfold SizeData₂.lifts; rw [Finset.mem_Icc]; exact ⟨le_refl 1, by have := D.R.two_le_m; omega⟩
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_ite_eq' (SizeData₂.lifts D) 1 (fun _ => c)]`. Simplify using `[one_mem_lifts D]`.
+-/
 theorem sum_ite_one (D : D7) (c : ℝ) : ∑ j ∈ SizeData₂.lifts D, (if j = 1 then c else 0) = c := by
   rw [Finset.sum_ite_eq' (SizeData₂.lifts D) 1 (fun _ => c)]; simp [one_mem_lifts D]
 
+/- English proof (translation)
+Introduce `hF hE u w hT hI hX hX2 μ hUs hQ x hx`. Establish `h` using `hc u μ w (fun j => WeilJacquetShalikaLaw.g0S X K (D.what₂.places.resChar w) j + (L.F j w - ES L Xe K ce u j w) + (if j = 1 then sp else 0) * vDG D u w) (fun i hi => by`. Use `hl hF hE u w hT hI hX hX2 μ hUs hQ i hi` as an intermediate fact. Simplify using `using this) x hx.1`. Establish `e : (∑ j ∈ SizeData₂.lifts D, (WeilJacquetShalikaLaw.g0S X K (D.what₂.places.resChar w) j + (L.F j w - ES L Xe K ce u j w) + (if j = 1 then sp else 0) * vDG D u w)) = (∑ j ∈ SizeData₂.lifts D, WeilJacquetShalikaLaw.g0S X K (D.what₂.places.resChar w) j) + lowS L Xe K ce sp u w`.
+
+Unfold `lowS`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.sum_mul, sum_ite_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem noOp_of {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {sp : ℝ}
     (hc : ValuationComposition D T) (hl : OneLiftInertBound D L X K Dx T lev Xe ce sp) : NoOperatorOrbitBound D L X K Dx T lev Xe ce sp := by
   intro hF hE u w hT hI hX hX2 μ hUs hQ x hx
@@ -931,6 +1155,11 @@ theorem noOp_of {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {lev :
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Introduce `hG u w hd hg hT i him`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hL : LevelFree Dx u D.what₂.mu0 w` using `⟨hT, hg, by rw [Dx.degreeZero_partial_set_empty]; simp⟩`. Use `(hk hG u D.what₂.mu0 w (Or.inl rfl) hL i him 0 (hi u D.what₂.mu0 w hL hd i him (nEven D i))).1 rfl` as an intermediate fact. Simplify using `using this`.
+
+Introduce `μ hUs hμ hQ`. Establish `hL : LevelFree Dx u μ w` using `⟨hT, hg, hQ⟩`. Use `(hk hG u μ w hUs hL i him 0 (hi u μ w hL hd i him (nEven D i))).2 hμ` as an intermediate fact. Simplify using `using this`.
+-/
 theorem int_of {E : Ent D} {Dx : DivX D} {T : TwForms D} {sp : ℝ} (hk : KForm E Dx T sp) (hi : JetIntegralityBis E Dx) :
     LiftIntegrality D Dx T sp := by
   intro hG u w hd hg hT i him
@@ -943,6 +1172,9 @@ theorem int_of {E : Ent D} {Dx : DivX D} {T : TwForms D} {sp : ℝ} (hk : KForm 
     have := (hk hG u μ w hUs hL i him 0 (hi u μ w hL hd i him (nEven D i))).2 hμ
     simpa using this
 
+/- English proof (translation)
+Take `⟨a, z, hz, hy, ha⟩` from `h`. Use `⟨a, z, hz, hy, ha.imp id fun h => le_trans ?_ h⟩` and prove the remaining obligations. Unfold `ur`. Conclude with `mul_le_mul_of_nonneg_left hs (Nat.cast_nonneg _)`.
+-/
 theorem VGe.mono {w : D.what₂.places.Pl} {V : Type} [AddCommGroup V] [Module D.what₂.LL V] [Module (𝓞 D.what₂.LL) V]
     {Λ : Submodule (𝓞 D.what₂.LL) V} {y : V} {s s' : ℝ} (h : VGe D w Λ y s) (hs : s' ≤ s) : VGe D w Λ y s' := by
   obtain ⟨a, z, hz, hy, ha⟩ := h
@@ -950,14 +1182,25 @@ theorem VGe.mono {w : D.what₂.places.Pl} {V : Type} [AddCommGroup V] [Module D
   unfold ur
   exact mul_le_mul_of_nonneg_left hs (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hμ x hx => by obtain ⟨y, hy, hv⟩ := h.1 hμ x hx; exact ⟨y, hy, VGe.mono hv hs⟩, fun hμ x hx => by obtain ⟨y, hy, hv⟩ := h.2 hμ x hx; exact ⟨y, hy, VGe.mono hv hs⟩⟩`.
+-/
 theorem KGe.mono {T : TwForms D} {u μ} {w : D.what₂.places.Pl} {i : ℕ} {s s' : ℝ} (h : KGe T u μ w i s) (hs : s' ≤ s) :
     KGe T u μ w i s' :=
   ⟨fun hμ x hx => by obtain ⟨y, hy, hv⟩ := h.1 hμ x hx; exact ⟨y, hy, VGe.mono hv hs⟩,
    fun hμ x hx => by obtain ⟨y, hy, hv⟩ := h.2 hμ x hx; exact ⟨y, hy, VGe.mono hv hs⟩⟩
 
+/- English proof (translation)
+Unfold `SizeData₂.lifts`. Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem succ_mem_lifts {i : ℕ} (hi : i < D.R.m) : i + 1 ∈ SizeData₂.lifts D := by
   unfold SizeData₂.lifts; rw [Finset.mem_Icc]; omega
 
+/- English proof (translation)
+Introduce `hp`. Apply `h` to reduce the goal to its premises. Unfold `Exc`. Rewrite `hp` using `[Finset.mem_insert, Finset.mem_singleton]`. Break down `hp with rfl | rfl` into its components or cases.
+
+Conclude with `Dvd.dvd.mul_right (Dvd.intro_left _ rfl) _`. Conclude with `Dvd.intro_left _ rfl`.
+-/
 theorem not_g_of_not_exc {p : ℕ} (h : ¬ Exc D p) : p ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ) := by
   intro hp
   apply h
@@ -967,6 +1210,27 @@ theorem not_g_of_not_exc {p : ℕ} (h : ¬ Exc D p) : p ∉ ({D.host.g 0, D.host
   · exact Dvd.dvd.mul_right (Dvd.intro_left _ rfl) _
   · exact Dvd.intro_left _ rfl
 
+/- English proof (translation)
+Introduce `hF hE u w hT hI hX hX2 μ hUs hQ i hi`. Establish `hg` using `not_g_of_not_exc hX`. Establish `hL : LevelFree Dx u μ w` using `⟨hT, hg, hQ⟩`. Establish `hg0 : D.what₂.places.resChar w ≠ D.host.g 0` using `fun h => hg (by simp [h])`. Establish `hg1 : D.what₂.places.resChar w ≠ D.host.g 1` using `fun h => hg (by simp [h])`.
+
+Establish `hin : IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)` using `hI.imp (fun h => h.1) id`. Establish `hr : D.host.cls (D.what₂.places.resChar w) ≠ PrimeClass.ramD`. Break down `hin with h | h` into its components or cases. Establish `h3 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.inertClass` using `h`. Rewrite using `[h3]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.signal` using `h`. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Establish `hc : ¬ (IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) = 0)`.
+
+Introduce and unpack `⟨h1, h2⟩`. Break down `hI with h | h` into its components or cases. Conclude with `h.2 h2`. Establish `h3 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.inertClass` using `h1`. Establish `h4 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.signal` using `h`.
+
+Rewrite `h3` using `[h4]`. Simplify using `at h3`. Establish `eF : L.F (i + 1) w = FInert D (i + 1) (D.what₂.places.resChar w)`. Rewrite using `[hF (i + 1) (succ_mem_lifts hi) w]`. Unfold `Fval FvalP SizeData₂.gTypes`.
+
+Rewrite using `[if_neg hg, if_neg hr, if_pos ⟨hin, hX2⟩]`. Establish `eE : ES L Xe K ce u (i + 1) w = vDG D u w + EatI L K ce (i + 1) (D.what₂.places.resChar w)`. Unfold `ES Eval vDG`. Simplify using `only [if_neg hT, if_neg hg0, if_neg hg1, if_neg hr, if_pos (And.intro hin hX2), if_neg hc]`. Distinguish the cases in `hcs : IsCs D (D.what₂.places.resChar w)`.
+
+Take `⟨h1, h2⟩` from `hS _ (ho.2 _ (D.what₂.places.resChar_prime w) hcs.1) hcs hX2 u i hi`. Use `(hk hE.dgam u μ w hUs hL i hi _ (fun Lc Lc' => h1 _ (hb.2 u μ w hL hcs i hi (nEven D i) Lc Lc'))).mono ?_` and prove the remaining obligations. Establish `hsum` using `h2 hE.large`. Rewrite using `[eF, eE, WeilJacquetShalikaLaw.g0S, if_pos hcs]`. Distinguish the cases in `h0 : i = 0`.
+
+Simplify using `only [if_pos h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI' : (IsResidueClassZero D (D.what₂.places.resChar w) ∧ HEv D (D.what₂.places.resChar w)) ∨ IsSg D (D.what₂.places.resChar w)` using `hI.imp (fun h => ⟨h.1, ((class_zero_trichotomy h.1).resolve_right (fun h' => h'.elim h.2 hcs))⟩) id`.
+
+Use `(hk hE.dgam u μ w hUs hL i hi _ (he u μ w hL hI' hX2 i hi)).mono ?_` and prove the remaining obligations. Establish `hsum` using `hs _ (D.what₂.places.resChar_prime w) hI' (i + 1) (succ_mem_lifts hi)`. Rewrite using `[eF, eE, WeilJacquetShalikaLaw.g0S, if_neg hcs]`. Distinguish the cases in `h0 : i = 0`. Simplify using `only [if_pos h0]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem liftI_of {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D} {Xe : ErrX D}
     {ce : ErrC} {sp : ℝ} (hk : KForm E Dx T sp) (he : EntriesAtInert E Dx X K ce) (hs : OrbitSumBound X K ce)
     (ho : OrbitParityCond D) (hb : EvenConditionsAtC E Dx) (hS : ScaledGeneratorsInSup E L K ce) :
@@ -1014,6 +1278,15 @@ theorem liftI_of {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : 
   · simp only [if_pos h0]; linarith
   · simp only [if_neg h0]; linarith
 
+/- English proof (translation)
+Introduce `hF hE u w hT hc0 hh hX hX2 μ hUs hQ i hi`. Establish `hg` using `not_g_of_not_exc hX`. Establish `hL : LevelFree Dx u μ w` using `⟨hT, hg, hQ⟩`. Use `(hk hE.dgam u μ w hUs hL i hi _ (he u μ w hL hc0 hh hX2 i hi)).mono ?_` and prove the remaining obligations. Establish `hsum` using `hs _ (D.what₂.places.resChar_prime w) (ho.2 _ (D.what₂.places.resChar_prime w) hc0) hc0 hh hX2 u i hi`.
+
+Establish `hr : D.host.cls (D.what₂.places.resChar w) ≠ PrimeClass.ramD`. Establish `h3 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.inertClass` using `hc0`. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Establish `eF : L.F (i + 1) w = FInert D (i + 1) (D.what₂.places.resChar w)`.
+
+Rewrite using `[hF (i + 1) (succ_mem_lifts hi) w]`. Unfold `Fval FvalP SizeData₂.gTypes`. Rewrite using `[if_neg hg, if_neg hr, if_pos ⟨Or.inl hc0, hX2⟩]`. Rewrite using `[eF]`. Distinguish the cases in `h0 : i = 0`.
+
+Simplify using `only [if_pos h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg h0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem liftC_of {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D} {Xe : ErrX D}
     {ce : ErrC} {sp C : ℝ} (hk : KForm E Dx T sp) (ho : OrbitParityCond D) (he : EntriesAtC E Dx L C) (hs : ValuationSumBound E L ce C) :
     OneLiftAtC D L K Dx T lev Xe ce sp := by
@@ -1034,6 +1307,17 @@ theorem liftC_of {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : L
   · simp only [if_pos h0]; linarith
   · simp only [if_neg h0]; linarith
 
+/- English proof (translation)
+Introduce `hF hE u w hT hd μ hUs hQ i hi`. Establish `hpd` using `cls_ramD hd`. Establish `hg : D.what₂.places.resChar w ∉ ({D.host.g 0, D.host.g 1} : Finset ℕ)`. Rewrite using `[Finset.mem_insert, Finset.mem_singleton]`. Introduce and unpack `(h | h)`.
+
+Conclude with `hgd 0 (h.symm.trans hpd)`. Conclude with `hgd 1 (h.symm.trans hpd)`. Establish `hL : LevelFree Dx u μ w` using `⟨hT, hg, hQ⟩`. Use `(hk hE.dgam u μ w hUs hL i hi _ (he u μ w hL hd i hi)).mono ?_` and prove the remaining obligations. Establish `eF : L.F (i + 1) w = FRamD D (i + 1)`.
+
+Rewrite using `[hF (i + 1) (succ_mem_lifts hi) w]`. Unfold `Fval FvalP SizeData₂.gTypes`. Rewrite using `[if_neg hg, if_pos hd]`. Establish `hsup : ∑ t : HH D, ctD D u (i + 1) t ≤ Finset.univ.sup' ⟨D.u₀, Finset.mem_univ _⟩ fun u : D.what₂.Word => ∑ t : HH D, ctD D u (i + 1) t` using `Finset.le_sup' (fun u : D.what₂.Word => ∑ t : HH D, ctD D u (i + 1) t) (Finset.mem_univ u)`. Rewrite using `[eF]`.
+
+Unfold `EatD`. Distinguish the cases in `h0 : i = 0`. Simplify using `only [if_pos h0]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [if_neg h0]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem liftD_of {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D} {Xe : ErrX D}
     {ce : ErrC} {sp : ℝ} (hk : KForm E Dx T sp) (hgd : TypePrimeNotDiscriminant D) (he : EntriesAtDiscriminant E Dx) :
     OneLiftAtDiscriminant D L K Dx T lev Xe ce sp := by
@@ -1059,10 +1343,18 @@ theorem liftD_of {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : L
   · simp only [if_pos h0]; linarith
   · simp only [if_neg h0]; linarith
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_add_distrib, sum_ite_one]`.
+-/
 theorem sum_shape (D : D7) (f : ℕ → ℝ) (c : ℝ) :
     ∑ j ∈ SizeData₂.lifts D, (f j + (if j = 1 then c else 0)) = (∑ j ∈ SizeData₂.lifts D, f j) + c := by
   rw [Finset.sum_add_distrib, sum_ite_one]
 
+/- English proof (translation)
+Introduce `hF hE u w hT hc0 hh hX hX2 μ hUs hQ x hx`. Establish `h` using `hc u μ w (fun j => (L.F j w - EatC L ce j (D.what₂.places.resChar w) - vDG D u w) + (if j = 1 then sp * vDG D u w else 0)) (fun i hi => by`. Use `hl hF hE u w hT hc0 hh hX hX2 μ hUs hQ i hi` as an intermediate fact. Distinguish the cases in `h0 : i = 0`. Simplify `this` using `[h0]`.
+
+Simplify `this) x hx.1` using `[h0]`. Rewrite `h` using `[sum_shape]`. Conclude with `h`.
+-/
 theorem c_of {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {sp : ℝ}
     (hc : ValuationComposition D T) (hl : OneLiftAtC D L K Dx T lev Xe ce sp) : JetConsequence D L K Dx T lev Xe ce sp := by
   intro hF hE u w hT hc0 hh hX hX2 μ hUs hQ x hx
@@ -1075,6 +1367,11 @@ theorem c_of {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe 
   rw [sum_shape] at h
   exact h
 
+/- English proof (translation)
+Introduce `hF hE u w hT hd μ hUs hQ x hx`. Establish `h` using `hc u μ w (fun j => (L.F j w - EatD D j - vDG D u w) + (if j = 1 then sp * vDG D u w else 0)) (fun i hi => by`. Use `hl hF hE u w hT hd μ hUs hQ i hi` as an intermediate fact. Distinguish the cases in `h0 : i = 0`. Simplify `this` using `[h0]`.
+
+Simplify `this) x hx.1` using `[h0]`. Rewrite `h` using `[sum_shape]`. Conclude with `h`.
+-/
 theorem atD_of {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {Xe : ErrX D} {ce : ErrC} {sp : ℝ}
     (hc : ValuationComposition D T) (hl : OneLiftAtDiscriminant D L K Dx T lev Xe ce sp) : ValuationAtDiscriminant D L K Dx T lev Xe ce sp := by
   intro hF hE u w hT hd μ hUs hQ x hx
@@ -1087,6 +1384,21 @@ theorem atD_of {K : Consts} {Dx : DivX D} {T : TwForms D} {lev : LevelData D} {X
   rw [sum_shape] at h
   exact h
 
+/- English proof (translation)
+Introduce `u μ w hL hI hX i hi Lc Lc'`. Establish `hok` using `ho.1 _ (D.what₂.places.resChar_prime w) hI`. Take `⟨hbe, hth⟩` from `hb u μ w hL hI _ (hR _)`. Use `ha _ hok u i hi _ (hR _) (E.ep w) (E.sg w) (E.be w) hbe _ ?_ _ (hth i hi (nEven D i) Lc Lc')` and prove the remaining obligations. Introduce `r hr`.
+
+Unfold `betaI`. Distinguish the cases in `hk : r ∈ kindA D (D.what₂.places.resChar w)`. Rewrite using `[if_pos hk]`. Establish `hk'` using `(Finset.mem_filter.1 hk).2`. Establish `hc0 : IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) ≠ 0` using `(hI.resolve_right hk'.1).imp id HEv.ne_zero`.
+
+Establish `hr' : r.2 ∈ reps X (D.what₂.places.resChar w)`. Unfold `repsPl at hr`. Rewrite `hr` using `[if_neg hk'.1, Finset.mem_union, Finset.mem_image, Finset.mem_image]`. Break down `hr with ⟨t, ht, rfl⟩ | ⟨t, ht, rfl⟩` into its components or cases. Conclude with `ht`.
+
+Conclude with `ht`. Use `hA w hok hc0.1 hc0.2 hX u i hi r.2 hr'` as an intermediate fact. Establish `e : r = (false, r.2)` using `Prod.ext hk'.2 rfl`. Unfold `g0Pl`. Rewrite using `[if_pos hk'.2]`.
+
+Rewrite using `[e]`. Conclude with `this`. Rewrite using `[if_neg hk]`. Establish `hbc : r ∈ kindBC D (D.what₂.places.resChar w)`. Unfold `kindBC`.
+
+Unfold `kindA at hk`. Rewrite `hk`, the goal using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Apply the tactic sequence `exact hk ⟨Finset.mem_univ _, hcon.1, by cases h : r.1 <;> simp_all⟩`. Take `⟨h1, h2, h3⟩` from `hbe`. Take `⟨b1, b2, b3, b4⟩` from `h3 r hr`. Conclude with `hf _ hok (hI.imp (fun h => ⟨h.1, h.2.ne_zero⟩) id) hX u i hi r hr hbc (E.ep w) (E.sg w r) (E.be w r) h1 (h2 r hr) b1 b2 b3 b4`.
+-/
 theorem entI_of {X : Inst D L} {K : Consts} {Dx : DivX D} {E : Ent D} {ce : ErrC}
     (hR : ∀ p, IsReps D p (repsPl X p)) (ho : OrbitParityCond D) (hb : EvenConditionsInert E Dx) (ha : OrbitsAddLowerBound E) (hf : OrbitValuationBound E X K ce)
     (hA : OrbitBoundWithoutOperator E X K) : EntriesAtInert E Dx X K ce := by
@@ -1126,6 +1438,11 @@ theorem entI_of {X : Inst D L} {K : Consts} {Dx : DivX D} {E : Ent D} {ce : ErrC
     obtain ⟨b1, b2, b3, b4⟩ := h3 r hr
     exact hf _ hok (hI.imp (fun h => ⟨h.1, h.2.ne_zero⟩) id) hX u i hi r hr hbc (E.ep w) (E.sg w r) (E.be w r) h1 (h2 r hr) b1 b2 b3 b4
 
+/- English proof (translation)
+Establish `hs : ¬ IsSg D p`. Introduce `h`. Establish `h3 : D.host.cls p = PrimeClass.inertClass` using `h1`. Establish `h4 : D.host.cls p = PrimeClass.signal` using `h`. Rewrite `h3` using `[h4]`.
+
+Simplify using `at h3`. Unfold `nP`. Rewrite using `[if_neg hs, h2, addOrderOf_zero]`.
+-/
 theorem nP_eq_one {p : ℕ} (h1 : IsResidueClassZero D p) (h2 : hP D p = 0) : nP D p = 1 := by
   have hs : ¬ IsSg D p := by
     intro h
@@ -1135,10 +1452,18 @@ theorem nP_eq_one {p : ℕ} (h1 : IsResidueClassZero D p) (h2 : hP D p = 0) : nP
   unfold nP
   rw [if_neg hs, h2, addOrderOf_zero]
 
+/- English proof (translation)
+Establish `h : Fintype.card D.R.A = D.R.ord` using `D.R.card_A`. Simplify using `[Pl, HH, Fintype.card_prod, Ranks.f, Ranks.n, h]`.
+-/
 theorem card_Pl (D : D7) : (Fintype.card (Pl D) : ℝ) = (D.R.f : ℝ) := by
   have h : Fintype.card D.R.A = D.R.ord := D.R.card_A
   simp [Pl, HH, Fintype.card_prod, Ranks.f, Ranks.n, h]
 
+/- English proof (translation)
+Introduce `u μ w hL hc0 hh hX i hi Lc Lc'`. Establish `h5` using `ho.2 _ (D.what₂.places.resChar_prime w) hc0`. Use `ha _ h5 (nP_eq_one hc0 hh) u i hi (fun z => product_zeroth_first_parts.rho (D.what₂.places.resChar w) * E.size u i z - C * ((D.R.N i : ℝ) * D.R.N (i + 1) * (Real.logb (D.what₂.places.resChar w) (L.sc.a ^ 2) + 1))) (fun z Th hTh => hall.2 (oneLoc E _ h5 u i z Th) hTh (L.sc.a ^ 2) …` as an intermediate fact. Establish `e : (∑ z : Pl D, (product_zeroth_first_parts.rho (D.what₂.places.resChar w) * E.size u i z - C * ((D.R.N i : ℝ) * D.R.N (i + 1) * (Real.logb (D.what₂.places.resChar w) (L.sc.a ^ 2) + 1)))) = product_zeroth_first_parts.rho (D.what₂.places.resChar w) * (∑ z : Pl D, E.size u i z) - …`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, card_Pl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem entC_of {X : Inst D L} {Dx : DivX D} {E : Ent D} {C6 C : ℝ}
     (ho : OrbitParityCond D) (hb : EvenConditionsAtC E Dx) (ha : OrbitsAddAtConjugate E) (hall : OrbitLetterBoundsAll C6 C) (hS : Shape D L X E) : EntriesAtC E Dx L C := by
   intro u μ w hL hc0 hh hX i hi Lc Lc'
@@ -1157,12 +1482,22 @@ theorem entC_of {X : Inst D L} {Dx : DivX D} {E : Ent D} {C6 C : ℝ}
   rw [e] at this
   exact this
 
+/- English proof (translation)
+Use `Finset.sum_bij (fun s _ => s.val) (fun s _ => Finset.mem_range.2 (ZMod.val_lt s)) (fun a _ b _ h => ZMod.val_injective n h) ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `a ha`. Conclude with `⟨(a : ZMod n), Finset.mem_univ _, ZMod.val_natCast_of_lt (Finset.mem_range.1 ha)⟩`.
+-/
 theorem sum_zmod (n : ℕ) [NeZero n] (g : ℕ → ℝ) : ∑ s : ZMod n, g s.val = ∑ a ∈ Finset.range n, g a := by
   refine Finset.sum_bij (fun s _ => s.val) (fun s _ => Finset.mem_range.2 (ZMod.val_lt s))
     (fun a _ b _ h => ZMod.val_injective n h) ?_ (fun _ _ => rfl)
   intro a ha
   exact ⟨(a : ZMod n), Finset.mem_univ _, ZMod.val_natCast_of_lt (Finset.mem_range.1 ha)⟩
 
+/- English proof (translation)
+Establish `hpos : 0 < nP D p` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `h1 : ∑ x ∈ R ×ˢ Finset.range (nP D p), f (posPl D p x.1 x.2) = ∑ z : Pl D, f z`. Use `Finset.sum_bij (fun x _ => posPl D p x.1 x.2) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨r, a⟩ hx ⟨r', b⟩ hx' h`. Rewrite `hx`, `hx'` using `[Finset.mem_product, Finset.mem_range]`.
+
+Establish `hr : r = r'` using `(hR (posPl D p r a)).unique ⟨hx.1, a, rfl⟩ ⟨hx'.1, b, h.symm⟩`. Substitute `hr` using the available equality. Rewrite using `[posPl_inj D p r a b hx.2 hx'.2 h]`. Introduce `z _`. Take `⟨r, ⟨hr, e, he⟩, -⟩` from `hR z`.
+
+Conclude with `⟨(r, e % nP D p), Finset.mem_product.2 ⟨hr, Finset.mem_range.2 (Nat.mod_lt _ hpos)⟩, by rw [posPl_mod, he]⟩`. Rewrite using `[← h1, Finset.sum_product]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Conclude with `sum_zmod (nP D p) (fun a => f (posPl D p r a))`.
+-/
 theorem sum_orb (p : ℕ) (f : Pl D → ℝ) (R : Finset (Pl D)) (hR : IsReps D p R) :
     ∑ r ∈ R, ∑ s : ZMod (nP D p), f (orbMap D p r s) = ∑ z, f z := by
   have hpos : 0 < nP D p := Nat.pos_of_ne_zero (NeZero.ne _)
@@ -1181,10 +1516,16 @@ theorem sum_orb (p : ℕ) (f : Pl D → ℝ) (R : Finset (Pl D)) (hR : IsReps D 
   refine Finset.sum_congr rfl fun r _ => ?_
   exact sum_zmod (nP D p) (fun a => f (posPl D p r a))
 
+/- English proof (translation)
+Take `⟨b, t⟩` from `z`. Rewrite using `[posPl_eq, decide_eq_false (fun h => hs h.1)]`. Simplify using the standard rewrite rules.
+-/
 theorem fst_posPl {p : ℕ} (hs : ¬ IsSg D p) (z : Pl D) (e : ℕ) : (posPl D p z e).1 = z.1 := by
   obtain ⟨b, t⟩ := z
   rw [posPl_eq, decide_eq_false (fun h => hs h.1)]; simp
 
+/- English proof (translation)
+Unfold `kindA orbMap`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by rw [← fst_posPl h1 r s.val]; exact h2⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨h1, by rw [fst_posPl h1 r s.val]; exact h2⟩`.
+-/
 theorem memA_orb (p : ℕ) (r : Pl D) (s : ZMod (nP D p)) : orbMap D p r s ∈ kindA D p ↔ r ∈ kindA D p := by
   unfold kindA orbMap
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
@@ -1192,6 +1533,15 @@ theorem memA_orb (p : ℕ) (r : Pl D) (s : ZMod (nP D p)) : orbMap D p r s ∈ k
   · rintro ⟨h1, h2⟩; exact ⟨h1, by rw [← fst_posPl h1 r s.val]; exact h2⟩
   · rintro ⟨h1, h2⟩; exact ⟨h1, by rw [fst_posPl h1 r s.val]; exact h2⟩
 
+/- English proof (translation)
+Unfold `kindA kindBC`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Distinguish the cases in `h : IsSg D p`. Prove the components needed by the constructor for the conclusion. Introduce `_ h2`.
+
+Conclude with `h2.1 h`. Introduce `_`. Conclude with `Or.inl h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h1 | h1) h2`.
+
+Conclude with `h h1`. Rewrite `h2` using `[h1]`. Simplify using `at h2`. Introduce `h2 right`. Consider the cases of `hz : z.1 with`.
+
+Consider the case `true => rfl`. Consider the case `false => exact absurd ⟨h, hz⟩ h2`.
+-/
 theorem memBC_iff (p : ℕ) (z : Pl D) : z ∈ kindBC D p ↔ z ∉ kindA D p := by
   unfold kindA kindBC
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
@@ -1209,6 +1559,13 @@ theorem memBC_iff (p : ℕ) (z : Pl D) : z ∈ kindBC D p ↔ z ∉ kindA D p :=
       | true => rfl
       | false => exact absurd ⟨h, hz⟩ h2
 
+/- English proof (translation)
+Establish `h` using `sum_orb p (fun z => if z ∉ kindA D p then f z else 0) R hR`. Rewrite using `[Finset.sum_filter]`. Establish `e2 : ∑ z ∈ kindBC D p, f z = ∑ z, (if z ∉ kindA D p then f z else 0)`. Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+
+Use extensionality with `z`. Simplify using `[memBC_iff]`. Rewrite using `[e2, ← h]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r ∈ kindA D p`.
+
+Simplify using `[hr, memA_orb]`. Simplify using `[hr, memA_orb]`.
+-/
 theorem sum_orbBC (p : ℕ) (f : Pl D → ℝ) (R : Finset (Pl D)) (hR : IsReps D p R) :
     ∑ r ∈ R.filter (fun r => r ∉ kindA D p), ∑ s : ZMod (nP D p), f (orbMap D p r s) = ∑ z ∈ kindBC D p, f z := by
   have h := sum_orb p (fun z => if z ∉ kindA D p then f z else 0) R hR
@@ -1223,6 +1580,13 @@ theorem sum_orbBC (p : ℕ) (f : Pl D → ℝ) (R : Finset (Pl D)) (hR : IsReps 
   · simp [hr, memA_orb]
   · simp [hr, memA_orb]
 
+/- English proof (translation)
+Establish `hn : (nP D p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne _)`. Establish `h` using `sum_orb p (fun z => if z ∈ kindA D p then FOrb D j p z else 0) R hR`. Establish `e2 : ∑ z ∈ kindA D p, FOrb D j p z = ∑ z, (if z ∈ kindA D p then FOrb D j p z else 0)`. Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations.
+
+Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[e2, ← h, Finset.sum_filter, Finset.sum_div]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r ∈ kindA D p`.
+
+Establish `hc : ∀ s : ZMod (nP D p), (if orbMap D p r s ∈ kindA D p then FOrb D j p (orbMap D p r s) else 0) = FOrb D j p r` using `fun s => by rw [if_pos ((memA_orb p r s).2 hr)]; exact FOrb_step D j p r s.val`. Rewrite using `[if_pos hr, Finset.sum_congr rfl (fun s _ => hc s), Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, mul_div_cancel_left₀ _ hn]`. Simplify using `[hr, memA_orb]`.
+-/
 theorem sum_orbA (p j : ℕ) (R : Finset (Pl D)) (hR : IsReps D p R) :
     (∑ z ∈ kindA D p, FOrb D j p z) / (nP D p : ℝ) = ∑ r ∈ R.filter (fun r => r ∈ kindA D p), FOrb D j p r := by
   have hn : (nP D p : ℝ) ≠ 0 := Nat.cast_ne_zero.2 (NeZero.ne _)
@@ -1240,12 +1604,22 @@ theorem sum_orbA (p j : ℕ) (R : Finset (Pl D)) (hR : IsReps D p R) :
       mul_div_cancel_left₀ _ hn]
   · simp [hr, memA_orb]
 
+/- English proof (translation)
+Establish `h` using `sum_orbBC p (fun _ => (1 : ℝ)) R hR`. Simplify using `only [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, mul_one] at h ⊢`. Conclude with `h`.
+-/
 theorem card_BC (p : ℕ) (R : Finset (Pl D)) (hR : IsReps D p R) :
     ∑ _r ∈ R.filter (fun r => r ∉ kindA D p), (nP D p : ℝ) = ((kindBC D p).card : ℝ) := by
   have h := sum_orbBC p (fun _ => (1 : ℝ)) R hR
   simp only [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, mul_one] at h ⊢
   exact h
 
+/- English proof (translation)
+Establish `h` using `sum_orbBC p (fun z => if IsTopPl D z then (1 : ℝ) else 0) R hR`. Establish `e1 : ∀ r : Pl D, (topsOrb D p r : ℝ) = ∑ s : ZMod (nP D p), (if IsTopPl D (orbMap D p r s) then (1 : ℝ) else 0)`. Introduce `r`. Unfold `topsOrb`. Rewrite using `[Finset.card_filter]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `e2 : ((topsBC D p).card : ℝ) = ∑ z ∈ kindBC D p, (if IsTopPl D z then (1 : ℝ) else 0)`. Unfold `topsBC`. Rewrite using `[Finset.card_filter]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e2, ← h]`. Conclude with `Finset.sum_congr rfl fun r _ => e1 r`.
+-/
 theorem tops_BC (p : ℕ) (R : Finset (Pl D)) (hR : IsReps D p R) :
     ∑ r ∈ R.filter (fun r => r ∉ kindA D p), (topsOrb D p r : ℝ) = ((topsBC D p).card : ℝ) := by
   have h := sum_orbBC p (fun z => if IsTopPl D z then (1 : ℝ) else 0) R hR
@@ -1256,6 +1630,13 @@ theorem tops_BC (p : ℕ) (R : Finset (Pl D)) (hR : IsReps D p R) :
   rw [e2, ← h]
   exact Finset.sum_congr rfl fun r _ => e1 r
 
+/- English proof (translation)
+Establish `inj : ∀ b : Bool, Function.Injective (fun t : HH D => ((b, t) : Pl D))` using `fun b x y h => (Prod.ext_iff.1 h).2`. Unfold `repsPl`. Distinguish the cases in `hs : IsSg D p`. Rewrite using `[if_pos hs, Finset.sum_image (fun x _ y _ h => inj false h)]`. Conclude with `Finset.sum_congr rfl fun t _ => by simp [g0Pl]`.
+
+Rewrite using `[if_neg hs, Finset.sum_union, Finset.sum_image (fun x _ y _ h => inj false h), Finset.sum_image (fun x _ y _ h => inj true h)]`. Establish `: ∑ t ∈ reps X p, g0Pl X K p j (true, t) = 0` using `Finset.sum_eq_zero fun t _ => by simp [g0Pl]`. Rewrite using `[this, add_zero]`. Conclude with `Finset.sum_congr rfl fun t _ => by simp [g0Pl]`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `a ha hb`. Rewrite `ha`, `hb` using `[Finset.mem_image]`. Take `⟨t, _, rfl⟩` from `ha`. Take `⟨t', _, h⟩` from `hb`. Simplify using `at h`.
+-/
 theorem sum_g0Pl (X : Inst D L) (K : Consts) (p j : ℕ) :
     ∑ r ∈ repsPl X p, g0Pl X K p j r = ∑ t0 ∈ reps X p, max (g0 X K (aL L) (bL L) p j t0) 0 := by
   have inj : ∀ b : Bool, Function.Injective (fun t : HH D => ((b, t) : Pl D)) := fun b x y h => (Prod.ext_iff.1 h).2
@@ -1275,6 +1656,23 @@ theorem sum_g0Pl (X : Inst D L) (K : Consts) (p j : ℕ) :
       obtain ⟨t', _, h⟩ := hb
       simp at h
 
+/- English proof (translation)
+Introduce `p _ hI j _`. Establish `hR` using `isReps_repsPl X p`. Establish `hc : ¬ (IsResidueClassZero D p ∧ hP D p = 0)`. Introduce and unpack `⟨h1, h2⟩`. Break down `hI with h | h` into its components or cases.
+
+Conclude with `h.2.ne_zero h2`. Establish `h3 : D.host.cls p = PrimeClass.inertClass` using `h1`. Establish `h4 : D.host.cls p = PrimeClass.signal` using `h`. Rewrite `h3` using `[h4]`. Simplify using `at h3`.
+
+Establish `eF : FInert D j p = ∑ r ∈ repsPl X p, FOrb D j p r`. Unfold `FInert`. Rewrite using `[if_neg hc]`. Conclude with `sum_orbits D j p _ hR`. Establish `eB : ∑ r ∈ repsPl X p, betaI X K ce j p r = (∑ r ∈ repsPl X p, g0Pl X K p j r) + ∑ r ∈ (repsPl X p).filter (fun r => r ∉ kindA D p), (FOrb D j p r - errF L K ce j p r)`.
+
+Rewrite using `[Finset.sum_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Unfold `betaI`. Distinguish the cases in `hr : r ∈ kindA D p`. Simplify using `[hr]`.
+
+Simplify using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `eS : ∑ r ∈ repsPl X p, FOrb D j p r = (∑ r ∈ (repsPl X p).filter (fun r => r ∈ kindA D p), FOrb D j p r) + ∑ r ∈ (repsPl X p).filter (fun r => r ∉ kindA D p), FOrb D j p r` using `(Finset.sum_filter_add_sum_filter_not _ _ _).symm`. Establish `eE : ∑ r ∈ (repsPl X p).filter (fun r => r ∉ kindA D p), errF L K ce j p r = gam p * ((topsBC D p).card : ℝ) * (L.sc.b + L.etaSz + 1 + 3 * L.Sc) + ce.c6 * (∑ z ∈ kindBC D p, wPl D j z) / (p : ℝ) + ((kindBC D p).card : ℝ) * (D.R.N (j - 1) : ℝ) * (D.R.N j : ℝ) * (Real.logb p (4 * ( …`. Rewrite using `[← tops_BC p _ hR, ← card_BC p _ hR, ← sum_orbBC p (wPl D j) _ hR]`.
+
+Unfold `errF`. Simplify using `only [Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, Finset.sum_div]`. Rewrite using `[eB, sum_g0Pl, Finset.sum_sub_distrib, eE, eF, eS]`. Unfold `EatI`. Rewrite using `[sum_orbA p j _ hR]`.
+
+Establish `hm` using `le_max_right (0 : ℝ) (∑ r ∈ (repsPl X p).filter (fun r => r ∈ kindA D p), FOrb D j p r)`. Establish `hx : EatX L ce j p = 0` using `EatX_of_not L ce j (fun h => by`. Break down `hI with h' | h'` into its components or cases. Conclude with `h'.2.not_isCs h`. Establish `h3 : D.host.cls p = PrimeClass.inertClass` using `h.1`.
+
+Establish `h4 : D.host.cls p = PrimeClass.signal` using `h'`. Rewrite `h3` using `[h4]`. Simplify using `at h3)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sumI (X : Inst D L) (K : Consts) (ce : ErrC) : OrbitSumBound X K ce := by
   intro p _ hI j _
   have hR := isReps_repsPl X p
@@ -1323,6 +1721,11 @@ theorem sumI (X : Inst D L) (K : Consts) (ce : ErrC) : OrbitSumBound X K ce := b
 def Core (D : D7) (L : SizeData₂ D) (X : Inst D L) (K : Consts) (Dx : DivX D) (E : Ent D) (ce : ErrC) (C : ℝ) : Prop :=
   OrbitsAddLowerBound E ∧ OrbitsAddAtConjugate E ∧ OrbitRestriction E ∧ OrbitRestrictionAtConjugate E ∧ OrbitValuationBound E X K ce ∧ EntriesAtDiscriminant E Dx ∧ ValuationSumBound E L ce C ∧ ScaledGeneratorsInSup E L K ce
 
+/- English proof (translation)
+Take `⟨ho, hgd, hb, hbc, hall, ha', hint, _, hS, _⟩` from `hA`. Take `⟨c2, c3, c4, c5, c6, c7, c9, c10⟩` from `hC`. Establish `c1` using `compose D T`. Establish `c8` using `sumI X K ce`. Establish `eI` using `entI_of (isReps_repsPl X) ho hb c2 c6 ha'`.
+
+Establish `eC` using `entC_of ho hbc c3 hall hS`. Establish `lI : OneLiftInertBound D L X K Dx T lev Xe ce sp` using `liftI_of hk eI c8 ho hbc c10`. Establish `lC : OneLiftAtC D L K Dx T lev Xe ce sp` using `liftC_of hk ho eC c9`. Establish `lD : OneLiftAtDiscriminant D L K Dx T lev Xe ce sp` using `liftD_of hk hgd c7`. Conclude with `⟨c1, c2, c3, c4, c5, c6, eI, eC, c7, c8, c9, lI, lC, lD, noOp_of c1 lI, c_of c1 lC, atD_of c1 lD, int_of hk hint⟩`.
+-/
 theorem lift_bounds_of_kernelForm {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D} {Xe : ErrX D}
     {ce : ErrC} {sp C6 C : ℝ} (hk : KForm E Dx T sp) (hA : AdmK D L X K Dx E ce C6 C) (hC : Core D L X K Dx E ce C) :
     Conclusion₂ D L X K Dx T E lev Xe ce sp C := by
@@ -1337,15 +1740,24 @@ theorem lift_bounds_of_kernelForm {X : Inst D L} {K : Consts} {Dx : DivX D} {T :
   have lD : OneLiftAtDiscriminant D L K Dx T lev Xe ce sp := liftD_of hk hgd c7
   exact ⟨c1, c2, c3, c4, c5, c6, eI, eC, c7, c8, c9, lI, lC, lD, noOp_of c1 lI, c_of c1 lC, atD_of c1 lD, int_of hk hint⟩
 
+/- English proof (translation)
+The claim follows from `lift_bounds_of_kernelForm hA.1 hA.2 hC`.
+-/
 theorem lift_bounds_of_essential {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {lev : LevelData D}
     {Xe : ErrX D} {ce : ErrC} {sp C6 C : ℝ} (hA : admitted D L X K Dx T E ce sp C6 C) (hC : Core D L X K Dx E ce C) :
     Conclusion₂ D L X K Dx T E lev Xe ce sp C :=
   lift_bounds_of_kernelForm hA.1 hA.2 hC
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨kform_of E Dx T V hA.1 hA.2.1 hA.2.2.1, hA.2.2.2⟩`.
+-/
 theorem kernelAdm_of_values {X : Inst D L} {K : Consts} {Dx : DivX D} {T : TwForms D} {E : Ent D} {V : Vals D Dx T} {ce : ErrC} {sp C6 C : ℝ}
     (hA : AdmV D L X K Dx T E V ce sp C6 C) : admitted D L X K Dx T E ce sp C6 C :=
   ⟨kform_of E Dx T V hA.1 hA.2.1 hA.2.2.1, hA.2.2.2⟩
 
+/- English proof (translation)
+Introduce `T E _ lev Xe ce sp hsp hA` and use `⟨(kernelAdm_of_values hA).1, h T E lev Xe ce sp hsp (kernelAdm_of_values hA)⟩`.
+-/
 theorem stmtV_of_stmt {X : Inst D L} {K : Consts} {Dx : DivX D} {C6 C : ℝ} (h : Stmt D L X K Dx C6 C) : LiftBoundsWithValues D L X K Dx C6 C :=
   fun T E _ lev Xe ce sp hsp hA => ⟨(kernelAdm_of_values hA).1, h T E lev Xe ce sp hsp (kernelAdm_of_values hA)⟩
 
@@ -1374,12 +1786,20 @@ def Mu0Tie (D : D7) (T : TwForms D) : Prop :=
 def KernelFormRational (hν : NuRowOK D) (Ek : KerEnt D Dx T) (sp : ℝ) : Prop :=
   ConclusionW D → Ek.UnUnit → KmapRat Ek → KFi D T → SupSpansPsiPart D sp → ∀ ep be sg, KForm (ofKer hν Ek ep be sg) Dx T sp
 
+/- English proof (translation)
+Establish `h` using `vAdd_mul w ha (inv_ne_zero ha)`. Rewrite `h` using `[mul_inv_cancel₀ ha, vAdd_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vAdd_inv (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) :
     vAdd (D.plEq w) a⁻¹ = - vAdd (D.plEq w) a := by
   have h := vAdd_mul w ha (inv_ne_zero ha)
   rw [mul_inv_cancel₀ ha, vAdd_one] at h
   omega
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [vAdd_one]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, vAdd_mul w (pow_ne_zero _ ha) ha, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vAdd_npow (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) (k : ℕ) :
     vAdd (D.plEq w) (a ^ k) = (k : ℤ) * vAdd (D.plEq w) a := by
   induction k with
@@ -1388,6 +1808,9 @@ theorem vAdd_npow (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) (k
     rw [pow_succ, vAdd_mul w (pow_ne_zero _ ha) ha, ih]
     push_cast; ring
 
+/- English proof (translation)
+Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w a ↔ _`. Rewrite using `[D.val_eq w _ ha, ← WithTop.coe_zero, WithTop.coe_le_coe]`.
+-/
 theorem mem_intW_iff (w : D.what₂.places.Pl) {a : D.what₂.LL} (ha : a ≠ 0) :
     a ∈ intW D.what₂.places w ↔ 0 ≤ vAdd (D.plEq w) a := by
   show (0 : WithTop ℤ) ≤ D.what₂.places.val w a ↔ _
@@ -1399,6 +1822,9 @@ variable (w : D.what₂.places.Pl) (iL : D.what₂.LL →+* ℂ_[D.what₂.place
   (hint : ∀ x, x ∈ intW D.what₂.places w ↔ ‖iL x‖ ≤ 1)
 
 include hint in
+/- English proof (translation)
+Establish `hYn : 0 < ‖iL Y‖` using `norm_pos_iff.2 ((map_ne_zero iL).2 hY)`. Establish `h1 : ‖iL (X * Y⁻¹)‖ = ‖iL X‖ / ‖iL Y‖` using `by rw [map_mul, map_inv₀, norm_mul, norm_inv, div_eq_mul_inv]`. Rewrite using `[← div_le_one hYn, ← h1, ← hint, mem_intW_iff w (mul_ne_zero hX (inv_ne_zero hY)), vAdd_mul w hX (inv_ne_zero hY), vAdd_inv w hY]`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+-/
 theorem norm_le_iff {X Y : D.what₂.LL} (hX : X ≠ 0) (hY : Y ≠ 0) :
     ‖iL X‖ ≤ ‖iL Y‖ ↔ vAdd (D.plEq w) Y ≤ vAdd (D.plEq w) X := by
   have hYn : 0 < ‖iL Y‖ := norm_pos_iff.2 ((map_ne_zero iL).2 hY)
@@ -1407,6 +1833,11 @@ theorem norm_le_iff {X Y : D.what₂.LL} (hX : X ≠ 0) (hY : Y ≠ 0) :
     vAdd_mul w hX (inv_ne_zero hY), vAdd_inv w hY]
   constructor <;> intro h <;> omega
 
+/- English proof (translation)
+Rewrite using `[map_natCast]`. Establish `h : ‖(((D.what₂.places.resChar w : ℚ_[D.what₂.places.resChar w]) : ℚ_[D.what₂.places.resChar w]) : ℂ_[D.what₂.places.resChar w])‖ = ‖(D.what₂.places.resChar w : ℚ_[D.what₂.places.resChar w])‖` using `PadicComplex.norm_extends' _ _`. Establish `h2 : (((D.what₂.places.resChar w : ℚ_[D.what₂.places.resChar w]) : ℚ_[D.what₂.places.resChar w]) : ℂ_[D.what₂.places.resChar w]) = (D.what₂.places.resChar w : ℂ_[D.what₂.places.resChar w])` using `by simp`. Rewrite `h` using `[h2]`. Rewrite using `[h]`.
+
+Conclude with `Padic.norm_p`.
+-/
 theorem norm_p : ‖iL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)‖ = ((D.what₂.places.resChar w : ℕ) : ℝ)⁻¹ := by
   rw [map_natCast]
   have h : ‖(((D.what₂.places.resChar w : ℚ_[D.what₂.places.resChar w]) : ℚ_[D.what₂.places.resChar w]) :
@@ -1420,6 +1851,17 @@ theorem norm_p : ‖iL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)‖ = 
 
 include hint in
 
+/- English proof (translation)
+Take `⟨k1, k2, hn⟩ : ∃ k1 k2 : ℕ, vAdd (D.plEq w) b = (k1 : ℤ) - (k2 : ℤ)` from `⟨(vAdd (D.plEq w) b).toNat, (-(vAdd (D.plEq w) b)).toNat, by omega⟩`. Establish `hp0` using `p_ne w`. Establish `hP1 : (1 : ℝ) < ((D.what₂.places.resChar w : ℕ) : ℝ)` using `by exact_mod_cast (D.what₂.places.resChar_prime w).one_lt`. Establish `hP0 : (0 : ℝ) < ((D.what₂.places.resChar w : ℕ) : ℝ)` using `lt_trans one_pos hP1`. Establish `hX : b ^ D.what₂.places.ramIdx w * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k2 ≠ 0` using `mul_ne_zero (pow_ne_zero _ hb) (pow_ne_zero _ hp0)`.
+
+Establish `hY : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k1 ≠ 0` using `pow_ne_zero _ hp0`. Establish `hv : vAdd (D.plEq w) (b ^ D.what₂.places.ramIdx w * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k2) = vAdd (D.plEq w) (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k1)`. Rewrite using `[vAdd_mul w (pow_ne_zero _ hb) (pow_ne_zero _ hp0), vAdd_npow w hb, vAdd_pow, vAdd_pow, hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `hE : ‖iL (b ^ D.what₂.places.ramIdx w * ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k2)‖ = ‖iL (((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k1)‖` using `le_antisymm ((norm_le_iff w iL hint hX hY).2 hv.symm.le) ((norm_le_iff w iL hint hY hX).2 hv.le)`.
+
+Rewrite `hE` using `[map_mul, map_pow, map_pow, map_pow, norm_mul, norm_pow, norm_pow, norm_pow, norm_p]`. Establish `hinv : ∀ k : ℕ, (((D.what₂.places.resChar w : ℕ) : ℝ)⁻¹) ^ k = ((D.what₂.places.resChar w : ℕ) : ℝ) ^ (-(k : ℝ))` using `fun k => by`. Rewrite using `[Real.rpow_neg hP0.le, Real.rpow_natCast, inv_pow]`. Establish `hle : ‖iL b‖ ^ D.what₂.places.ramIdx w ≤ ((D.what₂.places.resChar w : ℕ) : ℝ) ^ (-B * (D.what₂.places.ramIdx w : ℝ))`. Rewrite using `[Real.rpow_mul hP0.le, Real.rpow_natCast]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) h _`. Rewrite `hE` using `[hinv, hinv]`. Establish `h3 : ((D.what₂.places.resChar w : ℕ) : ℝ) ^ (-(k1 : ℝ)) ≤ ((D.what₂.places.resChar w : ℕ) : ℝ) ^ (-B * (D.what₂.places.ramIdx w : ℝ) + -(k2 : ℝ))`. Rewrite using `[Real.rpow_add hP0, ← hE]`. Conclude with `mul_le_mul_of_nonneg_right hle (Real.rpow_nonneg hP0.le _)`.
+
+Establish `h4` using `(Real.rpow_le_rpow_left_iff hP1).1 h3`. Establish `h5 : (vAdd (D.plEq w) b : ℝ) = (k1 : ℝ) - (k2 : ℝ)` using `by exact_mod_cast hn`. Unfold `ur`. Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_vAdd_of_norm_le {b : D.what₂.LL} (hb : b ≠ 0) {B : ℝ}
     (h : ‖iL b‖ ≤ ((D.what₂.places.resChar w : ℕ) : ℝ) ^ (-B)) : ur D w B ≤ (vAdd (D.plEq w) b : ℝ) := by
   obtain ⟨k1, k2, hn⟩ : ∃ k1 k2 : ℕ, vAdd (D.plEq w) b = (k1 : ℤ) - (k2 : ℤ) :=
@@ -1461,6 +1903,51 @@ def EntK (E : KerEnt D Dx T) (u : D.what₂.Word) (μ : D.what₂.Tup) (w : D.wh
   ∀ (c : (D.chTw u μ).cls i) (c' : (D.chTw u μ).cls (i + 1)),
     product_zeroth_first_parts.ExpansionCoeffValuationGe (D.R.N i) (D.R.N (i + 1)) (D.what₂.places.resChar w) (nuD D u i) (E.Th u μ w i c c') B
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨hFi, hv⟩` from `(E.lat_S u μ w hL i hi ((T.fm u μ).emb i x)).1 ⟨x, Submodule.subset_span hx, rfl⟩`. Use `choose v hvev hvint using hv`. Use `choose v' hv' using fun c c' => hR u μ w hUs hL i hi c c' (v c)`. Establish `hP1 : (1 : ℝ) < ((D.what₂.places.resChar w : ℕ) : ℝ)` using `by exact_mod_cast (D.what₂.places.resChar_prime w).one_lt`.
+
+Establish `hP0 : (0 : ℝ) < ((D.what₂.places.resChar w : ℕ) : ℝ)` using `lt_trans one_pos hP1`. Establish `hB : ∀ c c' I, ‖E.prT u μ w i c' (v' c c') I‖ ≤ ((D.what₂.places.resChar w : ℕ) : ℝ) ^ (-B)`. Introduce `c c' I`. Rewrite using `[E.kform u μ w hL i hi c c' (v c) (v' c c') (hv' c c') I, norm_mul, hU u μ w hL i hi c c', one_mul]`. Take `⟨cf, hcf, heq⟩` from `hE c c' I`.
+
+Establish `heq' : KM.applyAt0 (D.R.N i) (D.R.N (i + 1)) (D.what₂.places.resChar w) (E.Th u μ w i c c') (KM.Gxz (D.R.N i) (D.R.N (i + 1)) (nuD D u i) I) = cf.sum fun J a => a • MvPolynomial.map (Int.castRingHom ℂ_[D.what₂.places.resChar w]) (KM.nablaX (D.R.N i) (nuD D u i) J)` using `heq`. Rewrite using `[heq', Finsupp.sum, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg hP0.le _) fun J _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨a, hav⟩` from `D.what₂.places.val_surj w ⌈ur D w B⌉`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hav` using `[AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe hav`.
+
+Establish `hva : vAdd (D.plEq w) a = ⌈ur D w B⌉`. Rewrite `hav` using `[D.val_eq w _ ha0]`. Conclude with `WithTop.coe_injective hav`. Establish `hBa : ∀ c c' I, ‖E.iL w a⁻¹‖ * ‖E.prT u μ w i c' (v' c c') I‖ ≤ 1`. Introduce `c c' I`.
+
+Take `⟨b0, hb0⟩` from `E.prT_val u μ w hL i hi c' (v' c c') I`. Establish `han : 0 < ‖E.iL w a‖` using `norm_pos_iff.2 ((map_ne_zero (E.iL w)).2 ha0)`. Rewrite using `[map_inv₀, norm_inv, hb0, inv_mul_le_iff₀ han, mul_one]`. Distinguish the cases in `hb : b0 = 0`. Rewrite using `[hb, map_zero, norm_zero]`.
+
+Conclude with `han.le`. Use `(norm_le_iff w (E.iL w) (E.iL_int w) hb ha0).2 ?_` and prove the remaining obligations. Establish `h1` using `le_vAdd_of_norm_le w (E.iL w) (E.iL_int w) hb (hb0 ▸ hB c c' I)`. Rewrite using `[hva]`. Conclude with `Int.ceil_le.2 h1`.
+
+Establish `hpp` using `D.what₂.places.resChar_prime w`. Take `⟨k, hk⟩ : ∃ k, k = padicValNat (D.what₂.places.resChar w) n` from `⟨_, rfl⟩`. Take `⟨n', hn'⟩ : ∃ n', n' = n / D.what₂.places.resChar w ^ n.factorization (D.what₂.places.resChar w)` from `⟨_, rfl⟩`. Establish `hfac : n.factorization (D.what₂.places.resChar w) = k` using `by rw [hk, Nat.factorization_def n hpp]`. Establish `hprod : D.what₂.places.resChar w ^ k * n' = n`.
+
+Rewrite using `[hn', ← hfac]`. Conclude with `Nat.ordProj_mul_ordCompl_eq_self n _`. Establish `hcop : Nat.Coprime n' (D.what₂.places.resChar w)`. Rewrite using `[hn']`. Conclude with `(Nat.coprime_ordCompl hpp hn).symm`.
+
+Establish `hn'0 : n' ≠ 0` using `by rintro rfl; simp at hprod; exact hn hprod.symm`. Establish `hcard : ∀ c, Nat.card ((D.chTw u μ).stab i c) ≠ 0` using `fun c => Nat.card_pos.ne'`. Establish `hq : ∀ c, n / Nat.card ((D.chTw u μ).stab i c) * Nat.card ((D.chTw u μ).stab i c) = D.what₂.places.resChar w ^ k * n'` using `fun c => by`. Rewrite using `[hprod]`. Conclude with `Nat.div_mul_cancel (hdiv c)`.
+
+Establish `hq0 : ∀ c, n / Nat.card ((D.chTw u μ).stab i c) ≠ 0` using `fun c h0 => by`. Use `hq c` as an intermediate fact. Rewrite `this` using `[h0, zero_mul, hprod]`. Conclude with `hn this.symm`. Set `r : (D.chTw u μ).cls i → D.what₂.LL` to `fun c => ((n / Nat.card ((D.chTw u μ).stab i c) : ℕ) : D.what₂.LL) * ((n' : ℕ) : D.what₂.LL)⁻¹`.
+
+Establish `hr : ∀ c, r c ∈ intW D.what₂.places w` using `fun c => by show (0 : WithTop ℤ) ≤ D.what₂.places.val w (r c)`. Rewrite using `[AddValuation.map_mul, AddValuation.map_inv, val_coprime w n' hcop, neg_zero, add_zero]`. Conclude with `val_nat_nonneg w _`. Set `pk : D.what₂.LL` to `((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ^ k`. Establish `hpk : pk ≠ 0` using `pow_ne_zero _ (p_ne w)`.
+
+Establish `hwt : ∀ c, (D.chTw u μ).wt i c = D.what₂.embLL (pk⁻¹ * r c)` using `fun c => by`. Establish `e1 : ((n / Nat.card ((D.chTw u μ).stab i c) : ℕ) : ℂ) * ((Nat.card ((D.chTw u μ).stab i c) : ℕ) : ℂ) = ((D.what₂.places.resChar w : ℕ) : ℂ) ^ k * ((n' : ℕ) : ℂ)` using `by exact_mod_cast hq c`. Establish `c1 : ((Nat.card ((D.chTw u μ).stab i c) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (hcard c)`. Establish `c2 : ((n / Nat.card ((D.chTw u μ).stab i c) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (hq0 c)`. Establish `c3 : ((D.what₂.places.resChar w : ℕ) : ℂ) ^ k ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hpp.ne_zero)`.
+
+Establish `c4 : ((n' : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn'0`. Use `show (((Nat.card ((D.chTw u μ).stab i c) : ℕ) : ℂ))⁻¹ = _`. Simplify using `only [pk, r, map_mul, map_inv₀, map_pow, map_natCast]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-1 : ℂ) * e1`.
+
+Set `b : D.what₂.LL` to `a * pk⁻¹`. Establish `hb0 : b ≠ 0` using `mul_ne_zero ha0 (inv_ne_zero hpk)`. Set `V' : ∀ c' : (D.chTw u μ).cls (i + 1), E.VQ u μ (i + 1) c'` to `fun c' => ∑ c, (r c * a⁻¹) • v' c c'`. Set `ψ : (D.chTw u μ).cls (i + 1) → (D.chTw u μ).Y (i + 1) → ℂ` to `fun c' => E.ev u μ (i + 1) c' (V' c')`. Establish `hK : (D.chTw u μ).K i ((T.fm u μ).emb i x) = D.what₂.embLL b • ψ`.
+
+Use function extensionality and compare the values at `c'`. Use `show ∑ c, (D.chTw u μ).wt i c • (D.chTw u μ).Kmap i c c' ((T.fm u μ).emb i x c) = D.what₂.embLL b • E.ev u μ (i + 1) c' (∑ c, (r c * a⁻¹) • v' c c')`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← hvev c, ← hv' c c', hwt c, LinearMap.map_smulₛₗ, smul_smul, ← map_mul]`.
+
+Use `congr 2`. Simplify using `only [b]`. Clear the denominators using the available nonvanishing facts. Establish `hbC : D.what₂.embLL b ≠ 0` using `(map_ne_zero D.what₂.embLL).2 hb0`. Establish `hψF : ψ ∈ (T.fm u μ).Fi (i + 1)`.
+
+Establish `: ψ = (D.what₂.embLL b)⁻¹ • (D.chTw u μ).K i ((T.fm u μ).emb i x)`. Rewrite using `[hK, smul_smul, inv_mul_cancel₀ hbC, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (hF _ hFi)`. Establish `hV' : ∀ c' I, ‖E.prT u μ w i c' (V' c') I‖ ≤ 1`.
+
+Introduce `c' I`. Use `show ‖E.prT u μ w i c' (∑ c, (r c * a⁻¹) • v' c c') I‖ ≤ 1`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, Pi.smul_apply, smul_eq_mul, map_mul, norm_mul, norm_mul, mul_assoc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨z, hz, hzψ⟩` from `(E.levelFree_lattice_condition u μ w hL i hi ψ).2 ⟨hψF, fun c' => ⟨V' c', rfl, hV' c'⟩⟩`. Use `⟨b • z, ?_, b, z, hz, rfl, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, hzψ, hK]`. Establish `h1 : ur D w B ≤ (vAdd (D.plEq w) a : ℝ)` using `by rw [hva]; exact Int.le_ceil _`.
+
+Establish `h2 : vAdd (D.plEq w) a = vAdd (D.plEq w) b + (k : ℤ) * (D.what₂.places.ramIdx w : ℤ)`. Rewrite using `[← vAdd_pow w k, ← vAdd_mul w hb0 hpk]`. Use `congr 1`. Simplify using `only [b]`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hpk, mul_one]`.
+
+Rewrite using `[← hk]`. Establish `h3 : (vAdd (D.plEq w) a : ℝ) = (vAdd (D.plEq w) b : ℝ) + (k : ℝ) * (D.what₂.places.ramIdx w : ℝ)`. Conclude with `h2` after adjusting the coercions. Unfold `ur at h1 ⊢`. Use polynomial arithmetic with `[h1, h3]`.
+-/
 theorem kgeTw_of (E : KerEnt D Dx T) (hU : E.UnUnit) (hR : KmapRat E) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl}
     (hUs : DV.Used D μ) (hL : LevFree Dx u μ w) {i : ℕ} (hi : i < D.R.m) {B : ℝ} (hE : EntK E u μ w i B) {n : ℕ} (hn : n ≠ 0)
     (hdiv : ∀ c, Nat.card ((D.chTw u μ).stab i c) ∣ n)
@@ -1584,11 +2071,21 @@ theorem kgeTw_of (E : KerEnt D Dx T) (hU : E.UnUnit) (hR : KmapRat E) {u : D.wha
     unfold ur at h1 ⊢
     nlinarith [h1, h3]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hφ]`.
+-/
 theorem K_heq {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C C' : ColumnChain R ι hc} (h : C = C') (i : ℕ)
     {φ : C.cls i → C.Y i → ℂ} {φ' : C'.cls i → C'.Y i → ℂ} (hφ : HEq φ φ') : HEq (C.K i φ) (C'.K i φ') := by
   subst h
   rw [eq_of_heq hφ]
 
+/- English proof (translation)
+Unfold `locW at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Conclude with `Submodule.subset_span ((T.eMu0_lat u j hj _).2 (by rw [LinearEquiv.apply_symm_apply]; exact hx))`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[Subring.smul_def, map_smul]`.
+
+Conclude with `Submodule.smul_mem _ r hx`.
+-/
 theorem eMu0_symm_loc (T : TwForms D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (j : ℕ) (hj : j ≤ D.R.m)
     (z : ((T.fm u D.what₂.mu0).lat j).V) (hz : z ∈ locW D.what₂.places w ((T.fm u D.what₂.mu0).lat j).L) :
     (T.eMu0 u j hj).symm z ∈ locW D.what₂.places w ((D.fm u).lat j).L := by
@@ -1602,6 +2099,11 @@ theorem eMu0_symm_loc (T : TwForms D) (u : D.what₂.Word) (w : D.what₂.places
     rw [Subring.smul_def, map_smul]
     exact Submodule.smul_mem _ r hx
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y', e', a, z', hz', rfl, ha⟩` from `h _ ((T.eMu0_lat u i hi.le x).1 hx)`. Use `⟨(T.eMu0 u (i + 1) hi).symm (a • z'), ?_, a, (T.eMu0 u (i + 1) hi).symm z', eMu0_symm_loc T u w (i + 1) hi z' hz', by rw [map_smul], ha⟩` and prove the remaining obligations. Establish `h1` using `T.eMu0_emb u (i + 1) hi ((T.eMu0 u (i + 1) hi).symm (a • z'))`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`.
+
+Establish `h3` using `K_heq (D.memberColumns_twistedChain_base u) i (T.eMu0_emb u i hi.le x)`. Conclude with `eq_of_heq (h1.symm.trans ((heq_of_eq e').trans h3))`.
+-/
 theorem kernelValuation_of_twisted (T : TwForms D) (u : D.what₂.Word) (w : D.what₂.places.Pl) {i : ℕ} (hi : i < D.R.m) {s : ℝ}
     (h : KGeTw T u D.what₂.mu0 w i s) : KGe0 D u w i s := by
   intro x hx
@@ -1618,6 +2120,23 @@ def SB (E : KerEnt D Dx T) : Prop :=
     product_zeroth_first_parts.KvalGe (D.R.N i) (D.R.N (i + 1)) (D.what₂.places.resChar w) (nuD D u i) (E.Th u μ w i c c') B →
     product_zeroth_first_parts.ExpansionCoeffValuationGe (D.R.N i) (D.R.N (i + 1)) (D.what₂.places.resChar w) (nuD D u i) (E.Th u μ w i c c') B
 
+/- English proof (translation)
+Introduce `hG u μ w hUs hL i hi B hB`. Establish `hEK : EntK E u μ w i B`. Introduce `c c'`. Use `hB c c'` as an intermediate fact. Rewrite `this` using `[hν u i, hTh]`.
+
+Conclude with `hSB u μ w i c c' B this`. Establish `key : KGeTw T u μ w i (B - (if i = 0 then 1 - sp else 1) * vDG D u w)`. Distinguish the cases in `h0 : i = 0 ∧ sp = 1`. Take `⟨h0, h1⟩` from `h0`. Establish `hS : Stab0 D`.
+
+Break down `hsp with h | h` into its components or cases. Rewrite `h` using `[h1]`. Evaluate the numerical expressions using `at h`. Conclude with `h.2`. Substitute `h0` using the available equality.
+
+Use `kgeTw_of E hU hR hUs hL hi hEK one_ne_zero (fun c => by rw [hS.2 u μ hUs c]) (hK.2 u μ hUs 0 hi)` as an intermediate fact. Establish `e : B - (if (0 : ℕ) = 0 then 1 - sp else 1) * vDG D u w = B - (padicValNat (D.what₂.places.resChar w) 1 : ℝ)` using `by simp [h1]`. Rewrite using `[e]`. Conclude with `this`. Establish `e : B - (if i = 0 then 1 - sp else 1) * vDG D u w = B - vDG D u w`.
+
+Distinguish the cases in `hi0 : i = 0`. Establish `hs0 : sp = 0`. Break down `hsp with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd ⟨hi0, h.1⟩ h0`.
+
+Rewrite using `[if_pos hi0, hs0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hi0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Use `kgeTw_of E hU hR hUs hL hi hEK (D.chTw u μ).DGam_pos.ne' (fun c => (D.chTw u μ).dvd_DGam i hi.le c) (hK.2 u μ hUs i hi)` as an intermediate fact. Rewrite `this` using `[hG.one u u μ]`. Conclude with `this`. Use `⟨fun hμ => ?_, fun _ => key⟩` and prove the remaining obligations. Substitute `hμ` using the available equality.
+
+Conclude with `kernelValuation_of_twisted T u w hi key`.
+-/
 theorem kform_of_ker (E : KerEnt D Dx T) (Ee : Ent D) (hν : ∀ u i, Ee.nu u i = nuD D u i) (hTh : Ee.Th = E.Th)
     (hSB : SB E) (hU : E.UnUnit) (hR : KmapRat E) (hK : KFi D T) {sp : ℝ} (hsp : SupSpansPsiPart D sp) : KForm Ee Dx T sp := by
   intro hG u μ w hUs hL i hi B hB
@@ -1655,6 +2174,9 @@ theorem kform_of_ker (E : KerEnt D Dx T) (Ee : Ent D) (hν : ∀ u i, Ee.nu u i 
   subst hμ
   exact kernelValuation_of_twisted T u w hi key
 
+/- English proof (translation)
+Introduce `hW hU hR hK hsp ep be sg`. Conclude with `kform_of_ker Ek (ofKer hν Ek ep be sg) (fun _ _ => rfl) rfl (fun u μ w i c c' B h => (hW _ _ _ _ _ B).1 h) hU hR hK hsp`.
+-/
 theorem stmtK (hν : NuRowOK D) (Ek : KerEnt D Dx T) (sp : ℝ) : KernelFormRational hν Ek sp := by
   intro hW hU hR hK hsp ep be sg
   exact kform_of_ker Ek (ofKer hν Ek ep be sg) (fun _ _ => rfl) rfl

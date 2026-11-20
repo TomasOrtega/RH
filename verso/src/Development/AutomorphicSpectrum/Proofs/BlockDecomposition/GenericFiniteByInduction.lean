@@ -11,6 +11,21 @@ namespace GlobalTheory.CompanionTheory.AffglAssembly
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `φ.1 _ + ψ.1 _ = φ.1 _ + ψ.1 _`. Rewrite using `[h.left, h'.left]`. Use `level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset ((h.level.inter h'.level).mem_nhds ⟨by simp, by simp⟩) fun k hk => by`. Establish `h1 : finRep E a k φ = φ` using `hk.1`. Establish `h2 : finRep E a k ψ = ψ` using `hk.2`.
+
+Express the relevant statement in the definitionally equal form `finRep E a k (φ + ψ) = φ + ψ`. Rewrite using `[map_add, h1, h2]`. Use `kfin := by`. Use `h.kfin` as an intermediate fact. Use `h'.kfin` as an intermediate fact.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k => cptRep E a k φ) ⊔ Submodule.span ℂ (Set.range fun k => cptRep E a k ψ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only [map_add]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨k, rfl⟩) (Submodule.subset_span ⟨k, rfl⟩)`. Use `zfin := by`.
+
+Use `h.zfin` as an intermediate fact. Use `h'.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a) ⊔ Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z ψ) '' Zalg E a)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [map_add]`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.subset_span ⟨z, hz, rfl⟩)`. Use `growth g := by`. Take `⟨C, N, h1⟩` from `h.growth g`. Take `⟨C', N', h2⟩` from `h'.growth g`. Use `⟨|C| + |C'|, N + N', fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `hy` using `one_le_height y`. Establish `e1 : height y ^ N ≤ height y ^ (N + N')` using `pow_le_pow_right₀ hy (by omega)`. Establish `e2 : height y ^ N' ≤ height y ^ (N + N')` using `pow_le_pow_right₀ hy (by omega)`. Establish `hp : 0 ≤ height y ^ N` using `by positivity`. Establish `hp' : 0 ≤ height y ^ N'` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `add_le_add ?_ ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self C) hp).trans (mul_le_mul_of_nonneg_left e1 (abs_nonneg C))`. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self C') hp').trans (mul_le_mul_of_nonneg_left e2 (abs_nonneg C'))`. Use `_ = (|C| + |C'|) * height y ^ (N + N') := by ring`.
+-/
 theorem isAutForm_add {φ ψ : Sm E a} (h : IsAutForm φ) (h' : IsAutForm ψ) : IsAutForm (φ + ψ) where
   left γ g := by
     change φ.1 _ + ψ.1 _ = φ.1 _ + ψ.1 _
@@ -57,6 +72,17 @@ theorem isAutForm_add {φ ψ : Sm E a} (h : IsAutForm φ) (h' : IsAutForm ψ) : 
             (mul_le_mul_of_nonneg_left e2 (abs_nonneg C'))
       _ = (|C| + |C'|) * height y ^ (N + N') := by ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `c • φ.1 _ = c • φ.1 _`. Rewrite using `[h.left]`. Use `level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset (h.level.mem_nhds (by simp)) fun k hk => by`. Establish `h1 : finRep E a k φ = φ` using `hk`. Express the relevant statement in the definitionally equal form `finRep E a k (c • φ) = c • φ`.
+
+Rewrite using `[map_smul, h1]`. Use `kfin := by`. Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k => cptRep E a k φ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Simplify using `only [map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `zfin := by`. Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨z, hz, rfl⟩)`. Use `growth g := by`. Take `⟨C, N, h1⟩` from `h.growth g`.
+
+Use `⟨‖c‖ * C, N, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖c * φ.1 (g * infGL E a y)‖ ≤ _`. Rewrite using `[norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h1 y) (norm_nonneg c)`.
+-/
 theorem isAutForm_smul (c : ℂ) {φ : Sm E a} (h : IsAutForm φ) : IsAutForm (c • φ) where
   left γ g := by
     change c • φ.1 _ = c • φ.1 _
@@ -111,21 +137,42 @@ def genSub (L : Subgroup (GL (Fin a) (Af E))) {W : Type} [AddCommGroup W] [Modul
       funext k; rw [map_smul]; rfl
     rw [e]; exact Submodule.smul_mem _ c (h3 g)
 
+/- English proof (translation)
+The claim follows from `(continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp continuous_fst`.
+-/
 theorem continuous_pInf : Continuous (pInf E) :=
   (continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
       (continuous_apply w)).comp continuous_fst
 
+/- English proof (translation)
+The claim follows from `continuous_snd`.
+-/
 theorem continuous_pFin : Continuous (pFin E) := continuous_snd
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_pInf)`.
+-/
 theorem continuous_mapInf :
     Continuous (GeneralLinearGroup.map (n := Fin a) (pInf E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_pInf)
 
+/- English proof (translation)
+The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_pFin)`.
+-/
 theorem continuous_mapFin :
     Continuous (GeneralLinearGroup.map (n := Fin a) (pFin E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_pFin)
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : GA E a => g₀⁻¹ * g` using `continuous_const.mul continuous_id`. Set `f : GA E a → ℂ` to `fun g => chart φ.1 g₀ (toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val)`. Establish `e1 : ∀ᶠ g in 𝓝 g₀, f g = φ.1 g`. Establish `hS : {g : GA E a | GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g) ∈ {k | finRep E a k φ = φ}} ∈ 𝓝 g₀` using `((continuous_mapFin.comp hc).continuousAt).preimage_mem_nhds (h.mem_nhds (by simp))`.
+
+Use `filter_upwards [hS] with g hg`. Establish `hg' : finRep E a (GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)) φ = φ` using `hg`. Establish `e2` using `congrFun (congrArg Subtype.val hg') (g₀ * infGL E a (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)))`. Establish `e3 : g₀ * infGL E a (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)) * finGL E a (GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)) = g`. Rewrite using `[mul_assoc, infGL_mul_finGL, mul_inv_cancel_left]`.
+
+Express the relevant statement in the definitionally equal form `φ.1 (_ * finGL E a _) = _ at e2`. Rewrite `e2` using `[e3]`. Simplify using `only [f]`. Rewrite using `[chart_val, e2]`. Use `ContinuousAt.congr ?_ e1` and prove the remaining obligations.
+
+Establish `hx : toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g₀)).val ∈ invSet E a` using `val_mem_invSet _`. Establish `h1 : ContinuousAt (chart φ.1 g₀) (toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g₀)).val)` using `(contDiffAt_chart φ.2 g₀ hx).continuousAt`. Establish `h3 : Continuous fun g : GA E a => ((GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g) : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E))` using `Units.continuous_val.comp (continuous_mapInf.comp hc)`. Establish `h2 : Continuous fun g : GA E a => toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val` using `h3`. Conclude with `ContinuousAt.comp (f := fun g : GA E a => toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val) h1 h2.continuousAt`.
+-/
 theorem continuous_of_level {φ : Sm E a} (h : IsOpen {k | finRep E a k φ = φ}) : Continuous φ.1 := by
   refine continuous_iff_continuousAt.2 fun g₀ => ?_
   have hc : Continuous fun g : GA E a => g₀⁻¹ * g := continuous_const.mul continuous_id
@@ -154,13 +201,26 @@ theorem continuous_of_level {φ : Sm E a} (h : IsOpen {k | finRep E a k φ = φ}
   have h2 : Continuous fun g : GA E a => toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val := h3
   exact ContinuousAt.comp (f := fun g : GA E a => toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val) h1 h2.continuousAt
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem unip_eq_unipGL {R : Type} [CommRing R] {r : ℕ} (x : BlockIx a r → R) :
     unip x = AutomorphicForm.unipGL x := Units.ext rfl
 
+/- English proof (translation)
+The claim follows from `BorelSpace.measurable_eq`.
+-/
 theorem pi_eq_borel (r : ℕ) :
     (MeasurableSpace.pi : MeasurableSpace (BlockIx a r → Ad E)) = borel (BlockIx a r → Ad E) :=
   BorelSpace.measurable_eq
 
+/- English proof (translation)
+Introduce `r hr hr' inst1 inst2 μ 𝓕 hμ hF g`. Take `rfl : inst1 = MeasurableSpace.pi` from `inst2.measurable_eq.trans (pi_eq_borel r).symm`. Establish `: (AutomorphicForm.unipMeasure E a r).IsAddHaarMeasure` using `inferInstance`. Establish `hc` using `Measure.isAddLeftInvariant_eq_smul μ (AutomorphicForm.unipMeasure E a r)`. Establish `: Countable (ratN E a r)` using `AutomorphicForm.countable_unipLattice (K := E) (n := a) (r := r)`.
+
+Establish `hF0 : IsAddFundamentalDomain (ratN E a r) (AutomorphicForm.unipFundamentalDomain E a r) μ` using `IsAddFundamentalDomain.mono AutomorphicForm.isAddFundamentalDomain_unipFundamentalDomain (hc ▸ Measure.smul_absolutelyContinuous)`. Establish `hinv : ∀ (ξ : ratN E a r) (x : BlockIx a r → Ad E), φ (unip (ξ +ᵥ x) * g) = φ (unip x * g)`. Introduce and unpack `⟨_, ξ, rfl⟩ x`. Express the relevant statement in the definitionally equal form `φ (unip ((fun p => algebraMap E (Ad E) (ξ p)) + x) * g) = _`. Rewrite using `[unip_add, unip_algebraMap, mul_assoc, hl]`.
+
+Rewrite using `[hF.setIntegral_eq hF0 hinv, hc, Measure.restrict_smul, integral_smul_nnreal_measure, h0 r hr hr' g, smul_zero]`.
+-/
 theorem isCuspidal_of_constantTerm {φ : GA E a → ℂ} (hl : ∀ γ g, φ (ratGL E a γ * g) = φ g)
     (h0 : ∀ r : ℕ, 0 < r → r < a → ∀ g, ∫ x in AutomorphicForm.unipFundamentalDomain E a r, φ (unip x * g)
       ∂AutomorphicForm.unipMeasure E a r = 0) : IsCuspidal φ := by
@@ -178,6 +238,9 @@ theorem isCuspidal_of_constantTerm {φ : GA E a → ℂ} (hl : ∀ γ g, φ (rat
     rw [unip_add, unip_algebraMap, mul_assoc, hl]
   rw [hF.setIntegral_eq hF0 hinv, hc, Measure.restrict_smul, integral_smul_nnreal_measure, h0 r hr hr' g, smul_zero]
 
+/- English proof (translation)
+Establish `e : (fun x : BlockIx a r → Ad E => φ (unip x * g)) = fun X => φ (AutomorphicForm.unipGL X * g)`. Use function extensionality and compare the values at `fun x => by rw [unip_eq_unipGL]`. Rewrite using `[e]`. Conclude with `AutomorphicForm.integrableOn_constantTerm hφ g`.
+-/
 theorem integrableOn_unip {φ : GA E a → ℂ} (hφ : Continuous φ) (r : ℕ) (g : GA E a) :
     IntegrableOn (fun x => φ (unip x * g)) (AutomorphicForm.unipFundamentalDomain E a r)
       (AutomorphicForm.unipMeasure E a r) := by
@@ -196,6 +259,17 @@ def ctMap (L : Subgroup (GL (Fin a) (Af E))) {W : Type} [AddCommGroup W] [Module
       (integrableOn_unip (continuous_of_level ψ'.2.1.level) r g)
   map_smul' c ψ := funext fun g => integral_smul c _
 
+/- English proof (translation)
+Introduce `L hL W _ _ _ ρ hρ J hJ`. Set `R` to `{r : ℕ // 0 < r ∧ r < a}`. Establish `: Finite R` using `Finite.of_injective (fun r : R => (⟨r.1, r.2.2⟩ : Fin a)) fun x y h => Subtype.ext (congrArg (fun z : Fin a => z.1) h)`. Establish `ct` using `fun r : R => hT r.1 r.2.1 r.2.2 L hL W ρ hρ J hJ`. Use `choose V hVf hV using ct`.
+
+Establish `: ∀ r, FiniteDimensional ℂ (V r)` using `hVf`. Establish `hm : ∀ (r : R) (ψ : genSub L ρ J), ctMap L ρ J r.1 ψ ∈ V r` using `fun r ψ => hV r ψ.1 ψ.2 (AutomorphicForm.unipMeasure E a r.1) (AutomorphicForm.unipFundamentalDomain E a r.1) inferInstance AutomorphicForm.isAddFundamentalDomain_unipFundamentalDomain`. Set `Φ : genSub L ρ J →ₗ[ℂ] (∀ r : R, V r)` to `LinearMap.pi fun r => (ctMap L ρ J r.1).codRestrict (V r) (hm r)`. Establish `hker : FiniteDimensional ℂ (LinearMap.ker Φ)`. Establish `hC'` using `hC L hL W ρ hρ J hJ`.
+
+Establish `hle : (LinearMap.ker Φ).map (genSub L ρ J).subtype ≤ Submodule.span ℂ {φ | φ ∈ genSpace L ρ J ∧ IsCuspidal φ.1}`. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Use `Submodule.subset_span ⟨ψ.2, isCuspidal_of_constantTerm ψ.2.1.left fun r h0 h1 g => ?_⟩` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val (congrFun (LinearMap.mem_ker.1 hψ) ⟨r, h0, h1⟩)) g`. Establish `: FiniteDimensional ℂ ((LinearMap.ker Φ).map (genSub L ρ J).subtype)` using `Submodule.finiteDimensional_of_le hle`.
+
+Conclude with `Module.Finite.equiv (Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) (LinearMap.ker Φ)).symm`. Establish `hfin : FiniteDimensional ℂ (genSub L ρ J)`. Establish `: Module.Finite ℂ (genSub L ρ J ⧸ LinearMap.ker Φ)` using `Module.Finite.equiv Φ.quotKerEquivRange.symm`. Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker Φ)`. Rewrite using `[show Submodule.span ℂ (genSpace L ρ J) = genSub L ρ J from Submodule.span_eq (genSub L ρ J)]`.
+
+Conclude with `hfin`.
+-/
 theorem genFin_step (hC : CuspFin E a) (hT : ∀ r, 0 < r → r < a → CTFin E a r) : GenFin E a := by
   intro L hL W _ _ _ ρ hρ J hJ
   let R := {r : ℕ // 0 < r ∧ r < a}
@@ -226,6 +300,9 @@ theorem genFin_step (hC : CuspFin E a) (hT : ∀ r, 0 < r → r < a → CTFin E 
   rw [show Submodule.span ℂ (genSpace L ρ J) = genSub L ρ J from Submodule.span_eq (genSub L ρ J)]
   exact hfin
 
+/- English proof (translation)
+Introduce `hC hT E _ _ _ a`. Proceed by induction on `a using Nat.strong_induction_on with`. Consider the case `_ a ih => exact genFin_step (hC E a) (hT E a ih)`.
+-/
 theorem genFin_of_chapters :
     (∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), CuspFin E a) →
     (∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), (∀ b < a, GenFin E b) →

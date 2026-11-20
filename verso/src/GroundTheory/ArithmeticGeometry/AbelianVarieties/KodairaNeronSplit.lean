@@ -12,6 +12,33 @@ section Node
 
 variable {F : Type*} [Field F] (V : WeierstrassCurve F)
 
+/- English proof (translation)
+Distinguish the cases in `h2 : (2 : F) = 0`. Establish `ha : V.a₁ ≠ 0`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Simplify using `only [WeierstrassCurve.c₄, WeierstrassCurve.b₂, WeierstrassCurve.b₄, h0]`.
+
+Take the linear combination `(8 * V.a₂ ^ 2 - 24 * V.a₄) * h2`. Use `set x₀ := V.a₃ / V.a₁ with hx₀`. Use `set y₀ := (x₀ ^ 2 + V.a₄) / V.a₁ with hy₀`. Use `⟨x₀, y₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Affine.equation_iff']`.
+
+Establish `key : V.a₁ ^ 6 * (y₀ ^ 2 + V.a₁ * x₀ * y₀ + V.a₃ * y₀ - (x₀ ^ 3 + V.a₂ * x₀ ^ 2 + V.a₄ * x₀ + V.a₆)) = V.Δ + 2 * (6 * V.a₁ ^ 4 * V.a₂ * V.a₆ - 4 * V.a₁ ^ 3 * V.a₂ * V.a₃ * V.a₄ - 18 * V.a₁ ^ 3 * V.a₃ * V.a₆ + 4 * V.a₁ ^ 2 * V.a₂ ^ 2 * V.a₃ ^ 2 + 24 * V.a₁ ^ 2 * V.a₂ ^ 2 * V.a₆ - …`. Rewrite using `[hy₀, hx₀]`. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `key` using `[hΔ, h2, zero_mul, add_zero]`. Conclude with `(mul_eq_zero.1 key).resolve_left (pow_ne_zero 6 ha)`. Rewrite using `[hy₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(x₀ ^ 2) - V.a₂ * x₀) * h2`.
+
+Rewrite using `[hx₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(y₀ + V.a₃) * h2`. Use `set x₀ := (18 * V.b₆ - V.b₂ * V.b₄) / V.c₄ with hx₀`. Establish `hD : V.b₂ ^ 2 * (V.b₂ * V.b₆ - V.b₄ ^ 2) + 32 * V.b₄ ^ 3 + 108 * V.b₆ ^ 2 - 36 * V.b₂ * V.b₄ * V.b₆ = 0`.
+
+Use `V.b_relation` as an intermediate fact. Rewrite `hΔ` using `[WeierstrassCurve.Δ]`. Take the linear combination `-4 * hΔ - V.b₂ ^ 2 * this`. Establish `hc4 : V.c₄ = V.b₂ ^ 2 - 24 * V.b₄` using `rfl`. Establish `h4 : (4 : F) ≠ 0` using `by rw [show (4 : F) = 2 * 2 by norm_num]; exact mul_ne_zero h2 h2`.
+
+Establish `hf : 4 * x₀ ^ 3 + V.b₂ * x₀ ^ 2 + 2 * V.b₄ * x₀ + V.b₆ = 0`. Establish `key : V.c₄ ^ 3 * (4 * x₀ ^ 3 + V.b₂ * x₀ ^ 2 + 2 * V.b₄ * x₀ + V.b₆) = (V.b₂ ^ 3 - 36 * V.b₂ * V.b₄ + 216 * V.b₆) * (V.b₂ ^ 2 * (V.b₂ * V.b₆ - V.b₄ ^ 2) + 32 * V.b₄ ^ 3 + 108 * V.b₆ ^ 2 - 36 * V.b₂ * V.b₄ * V.b₆)`. Rewrite using `[hx₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hc4]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hD, mul_zero]`. Conclude with `(mul_eq_zero.1 key).resolve_left (pow_ne_zero 3 hc)`. Establish `hf' : 12 * x₀ ^ 2 + 2 * V.b₂ * x₀ + 2 * V.b₄ = 0`. Establish `key : V.c₄ ^ 2 * (12 * x₀ ^ 2 + 2 * V.b₂ * x₀ + 2 * V.b₄) = 36 * (V.b₂ ^ 2 * (V.b₂ * V.b₆ - V.b₄ ^ 2) + 32 * V.b₄ ^ 3 + 108 * V.b₆ ^ 2 - 36 * V.b₂ * V.b₄ * V.b₆)`.
+
+Rewrite using `[hx₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hc4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hD, mul_zero]`.
+
+Conclude with `(mul_eq_zero.1 key).resolve_left (pow_ne_zero 2 hc)`. Use `⟨x₀, -(V.a₁ * x₀ + V.a₃) / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Affine.equation_iff']`. Establish `: (-(V.a₁ * x₀ + V.a₃) / 2) ^ 2 + V.a₁ * x₀ * (-(V.a₁ * x₀ + V.a₃) / 2) + V.a₃ * (-(V.a₁ * x₀ + V.a₃) / 2) - (x₀ ^ 3 + V.a₂ * x₀ ^ 2 + V.a₄ * x₀ + V.a₆) = -(4 * x₀ ^ 3 + V.b₂ * x₀ ^ 2 + 2 * V.b₄ * x₀ + V.b₆) / 4`. Simplify using `only [WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hf]`. Simplify using the standard rewrite rules. Establish `: V.a₁ * (-(V.a₁ * x₀ + V.a₃) / 2) - (3 * x₀ ^ 2 + 2 * V.a₂ * x₀ + V.a₄) = -(12 * x₀ ^ 2 + 2 * V.b₂ * x₀ + 2 * V.b₄) / 4`.
+
+Simplify using `only [WeierstrassCurve.b₂, WeierstrassCurve.b₄]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hf']`. Simplify using the standard rewrite rules.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_node (hΔ : V.Δ = 0) (hc : V.c₄ ≠ 0) :
     ∃ x y : F, V.toAffine.Equation x y ∧
       V.a₁ * y - (3 * x ^ 2 + 2 * V.a₂ * x + V.a₄) = 0 ∧ 2 * y + V.a₁ * x + V.a₃ = 0 := by
@@ -90,6 +117,21 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
   (hπ : Irreducible π) (W : WeierstrassCurve 𝒪)
 include hπ
 
+/- English proof (translation)
+Establish `hγ : IsUnit (12 * V.a₃ - V.a₁ ^ 3)`. Rewrite using `[isUnit_iff_not_dvd hπ]`. Introduce `h`. Apply `(isUnit_iff_not_dvd hπ).1 (he.pow 3)` to reduce the goal to its premises. Use `dvd_sub (dvd_mul_of_dvd_right h3 12) h` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Take `⟨t, dt, ht⟩` from `exists_root_cubic hπ (α := 0) (β := 12) hγ (δ := 3 * V.a₃ ^ 2 + V.a₁ ^ 2 * V.a₄) (dvd_add (dvd_mul_of_dvd_right (dvd_pow h3 two_ne_zero) 3) (dvd_mul_of_dvd_right h4 _))`. Take `⟨r, hr⟩ : ∃ r, V.a₁ * r = -(V.a₃ + 2 * t)` from `⟨-(V.a₃ + 2 * t) * ↑he.unit⁻¹, by`. Rewrite using `[mul_comm, mul_assoc, IsUnit.val_inv_mul, mul_one]⟩`.
+
+Establish `dr : π ∣ r`. Establish `h1 : π ∣ V.a₁ * r` using `by rw [hr]; exact dvd_neg.2 (dvd_add h3 (dvd_mul_of_dvd_right dt 2))`. Conclude with `(he.dvd_mul_left).1 h1`. Take `⟨s, ds, hs⟩` from `exists_root_cubic hπ (α := 0) (β := 1) he (δ := -(3 * r)) (dvd_neg.2 (dvd_mul_of_dvd_right dr 3))`. Use `⟨r, s, t, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [variableChange_a₂, inv_one, Units.val_one, one_pow, one_mul, h2]`. Take the linear combination `-hs`. Simplify using `only [variableChange_a₃, inv_one, Units.val_one, one_pow, one_mul]`. Take the linear combination `hr`. Simplify using `only [variableChange_a₄, inv_one, Units.val_one, one_pow, one_mul, h2]`.
+
+Establish `hk : V.a₁ ^ 2 * (V.a₄ - t * V.a₁ + 3 * r ^ 2 - s * (V.a₁ * r + V.a₃ + 2 * t)) = 0`. Take the linear combination `ht + (3 * (V.a₁ * r - V.a₃ - 2 * t) - V.a₁ ^ 2 * s) * hr`. Establish `hk'` using `(mul_eq_zero.1 hk).resolve_left (pow_ne_zero 2 he.ne_zero)`. Take the linear combination `hk'`. Simplify using `only [variableChange_a₁, inv_one, Units.val_one, one_mul]`.
+
+Rewrite using `[isUnit_iff_not_dvd hπ]`. Introduce `h`. Apply `(isUnit_iff_not_dvd hπ).1 he` to reduce the goal to its premises. Use `dvd_sub h (dvd_mul_of_dvd_right ds 2)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Simplify using `only [variableChange_a₆, inv_one, Units.val_one, one_pow, one_mul, h2]`. Conclude with `dvd_sub (dvd_sub (dvd_sub (dvd_add (dvd_add (dvd_add h6 (dvd_mul_of_dvd_left dr _)) (dvd_mul_of_dvd_left (dvd_pow dr two_ne_zero) _)) (dvd_pow dr three_ne_zero)) (dvd_mul_of_dvd_left dt _)) (dvd_pow dt two_ne_zero)) (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left dr _) _)`.
+-/
 theorem tate_step2 (V : WeierstrassCurve 𝒪) (h2 : V.a₂ = 0) (he : IsUnit V.a₁) (h3 : π ∣ V.a₃)
     (h4 : π ∣ V.a₄) (h6 : π ∣ V.a₆) :
     ∃ r s t : 𝒪, ((⟨1, r, s, t⟩ : VariableChange 𝒪) • V).a₂ = 0 ∧
@@ -135,6 +177,21 @@ theorem tate_step2 (V : WeierstrassCurve 𝒪) (h2 : V.a₂ = 0) (he : IsUnit V.
       (dvd_mul_of_dvd_left dt _)) (dvd_pow dt two_ne_zero)) (dvd_mul_of_dvd_left
       (dvd_mul_of_dvd_left dr _) _)
 
+/- English proof (translation)
+Establish `hb4 : π ∣ W.b₄`. Rewrite using `[WeierstrassCurve.b₄]`. Conclude with `dvd_add (dvd_mul_of_dvd_right h4 2) (dvd_mul_of_dvd_right h3 _)`. Establish `hb2 : ¬π ∣ W.b₂` using `fun h => hc (by`. Rewrite using `[WeierstrassCurve.c₄]`.
+
+Conclude with `dvd_sub (dvd_pow h two_ne_zero) (dvd_mul_of_dvd_right hb4 24))`. Establish `hγ₁ : IsUnit (2 * s₀ + W.a₁)`. Rewrite using `[isUnit_iff_not_dvd hπ]`. Introduce `h`. Apply `hb2` to reduce the goal to its premises.
+
+Establish `: W.b₂ = (2 * s₀ + W.a₁) ^ 2 - 4 * (s₀ ^ 2 + W.a₁ * s₀ - W.a₂)`. Rewrite using `[WeierstrassCurve.b₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `dvd_sub (dvd_pow h two_ne_zero) (dvd_mul_of_dvd_right hs₀ 4)`.
+
+Take `⟨Z, -, hZ⟩` from `exists_root_cubic hπ (α := 0) (β := 1) hγ₁ hs₀`. Establish `hs₁ : (s₀ + Z) ^ 2 + W.a₁ * (s₀ + Z) - W.a₂ = 0` using `by linear_combination hZ`. Use `⟨s₀ + Z, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [variableChange_a₂, inv_one, Units.val_one, one_pow, one_mul]`. Take the linear combination `-hs₁`.
+
+Simplify using `only [variableChange_a₁, inv_one, Units.val_one, one_mul]`. Rewrite using `[isUnit_iff_not_dvd hπ]`. Introduce `h`. Apply `hb2` to reduce the goal to its premises. Establish `: W.b₂ = (W.a₁ + 2 * (s₀ + Z)) ^ 2 - 4 * ((s₀ + Z) ^ 2 + W.a₁ * (s₀ + Z) - W.a₂)`.
+
+Rewrite using `[WeierstrassCurve.b₂]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hs₁, mul_zero, sub_zero]`. Conclude with `dvd_pow h two_ne_zero`. Simplify using `only [variableChange_a₃, inv_one, Units.val_one, one_pow, one_mul, zero_mul, add_zero, mul_zero]`.
+
+Conclude with `h3`. Simplify using `only [variableChange_a₄, inv_one, Units.val_one, one_pow, one_mul, zero_mul, add_zero, mul_zero, sub_zero, zero_pow two_ne_zero]`. Conclude with `dvd_sub h4 (dvd_mul_of_dvd_right h3 _)`. Simplify using `only [variableChange_a₆, inv_one, Units.val_one, one_pow, one_mul, zero_mul, add_zero, mul_zero, sub_zero, zero_pow two_ne_zero, zero_pow three_ne_zero]`. Conclude with `h6`.
+-/
 theorem tate_step1 (W : WeierstrassCurve 𝒪) (hc : ¬π ∣ W.c₄) (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄)
     (h6 : π ∣ W.a₆) {s₀ : 𝒪} (hs₀ : π ∣ s₀ ^ 2 + W.a₁ * s₀ - W.a₂) :
     ∃ s₁ : 𝒪, ((⟨1, 0, s₁, 0⟩ : VariableChange 𝒪) • W).a₂ = 0 ∧
@@ -190,6 +247,33 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
 local notation "ι" => algebraMap 𝒪 K
 local notation "v" => addVal 𝒪
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_irreducible 𝒪`. Establish `hm` using `hs.toHasMultiplicativeReduction`. Establish `hc` using `not_dvd_c₄_of_hasMultiplicativeReduction K W hπ hm`. Establish `hΔ` using `dvd_Δ_of_hasMultiplicativeReduction K W hπ hm`. Establish `hres : ∀ {a : 𝒪}, π ∣ a ↔ residue 𝒪 a = 0` using `dvd_iff_residue_eq_zero hπ`.
+
+Take `⟨xb, yb, heb, hAb, hBb⟩` from `exists_node (W.map (residue 𝒪)) (by rw [map_Δ]; exact hres.1 hΔ) (by rw [map_c₄]; exact fun h => hc (hres.2 h))`. Take `⟨x₀, rfl⟩` from `IsLocalRing.residue_surjective xb`. Take `⟨y₀, rfl⟩` from `IsLocalRing.residue_surjective yb`. Rewrite `heb` using `[Affine.equation_iff']`. Use `set C₀ : VariableChange 𝒪 := ⟨1, x₀, 0, y₀⟩ with hC₀`.
+
+Establish `h3 : π ∣ (C₀ • W).a₃`. Rewrite using `[hres]`. Simplify using `only [hC₀, variableChange_a₃, inv_one, Units.val_one, one_pow, one_mul, map_add, map_mul, map_ofNat]`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃] at hBb`. Take the linear combination `hBb`.
+
+Establish `h4 : π ∣ (C₀ • W).a₄`. Rewrite using `[hres]`. Simplify using `only [hC₀, variableChange_a₄, inv_one, Units.val_one, one_pow, one_mul, map_add, map_mul, map_sub, map_pow, map_ofNat, zero_mul, mul_zero, add_zero, sub_zero]`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄] at hAb`. Take the linear combination `-hAb`.
+
+Establish `h6 : π ∣ (C₀ • W).a₆`. Rewrite using `[hres]`. Simplify using `only [hC₀, variableChange_a₆, inv_one, Units.val_one, one_pow, one_mul, map_add, map_mul, map_sub, map_pow]`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at heb`. Take the linear combination `-heb`.
+
+Establish `hc₀ : ¬π ∣ (C₀ • W).c₄`. Rewrite using `[variableChange_c₄]`. Simplify `hc` using `[hC₀]`. Establish `hsp` using `hs.splitMultiplicativeReduction`. Rewrite `hsp` using `[integralModel_map, splitPoly_origin W hπ h3 h4 h6]`.
+
+Establish `hc4r : residue 𝒪 W.c₄ ≠ 0` using `fun h => hc (hres.2 h)`. Establish `hdeg : (C (residue 𝒪 W.c₄) * (X ^ 2 + C (residue 𝒪 (C₀ • W).a₁) * X - C (residue 𝒪 (C₀ • W).a₂))).degree ≠ 0`. Rewrite using `[degree_C_mul hc4r, show (X ^ 2 + C (residue 𝒪 (C₀ • W).a₁) * X - C (residue 𝒪 (C₀ • W).a₂) : Polynomial (ResidueField 𝒪)) = C 1 * X ^ 2 + C (residue 𝒪 (C₀ • W).a₁) * X + C (-residue 𝒪 (C₀ • W).a₂) by simp [sub_eq_add_neg], degree_quadratic one_ne_zero]`. Evaluate the decidable proposition. Take `⟨sb, hsb⟩` from `hsp.exists_eval_eq_zero hdeg`.
+
+Take `⟨s₀, rfl⟩` from `IsLocalRing.residue_surjective sb`. Establish `hs₀ : π ∣ s₀ ^ 2 + (C₀ • W).a₁ * s₀ - (C₀ • W).a₂`. Rewrite using `[hres]`. Simplify using `only [eval_mul, eval_C, eval_sub, eval_add, eval_pow, eval_X] at hsb`. Use `(mul_eq_zero.1 hsb).resolve_left hc4r` as an intermediate fact.
+
+Simplify using `only [map_sub, map_add, map_mul, map_pow]`. Conclude with `this`. Take `⟨s₁, t2, te, t3, t4, t6⟩` from `tate_step1 hπ (C₀ • W) hc₀ h3 h4 h6 hs₀`. Take `⟨r, s, t, g2, g3, g4, ge, g6⟩` from `tate_step2 hπ _ t2 te t3 t4 t6`. Use `set W₂ := (⟨1, r, s, t⟩ : VariableChange 𝒪) • ((⟨1, 0, s₁, 0⟩ : VariableChange 𝒪) • (C₀ • W))`.
+
+Establish `eT` using `tateQuotientEquiv K hπ g2 g3 g4 ge g6`. Establish `hΔ₂ : W₂.Δ = W.Δ` using `by simp only [W₂, hC₀, vc_Δ_one]`. Establish `hq0 : W₂.a₆ ≠ 0` using `a₆_ne_zero K g2 g3 g4`. Establish `hv : v W₂.a₆ = v W.Δ`. Rewrite using `[← hΔ₂]`.
+
+Establish `: W₂.Δ = W₂.a₆ * -(W₂.a₁ ^ 6 + 432 * W₂.a₆)`. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈, g2, g3, g4]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : IsUnit (-(W₂.a₁ ^ 6 + 432 * W₂.a₆))`. Rewrite using `[IsUnit.neg_iff, isUnit_iff_not_dvd hπ]`.
+
+Introduce `h`. Apply `(isUnit_iff_not_dvd hπ).1 (ge.pow 6)` to reduce the goal to its premises. Use `dvd_sub h (dvd_mul_of_dvd_right g6 432)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[this, addVal_mul, v_unit hu, add_zero]`.
+
+Conclude with `⟨(quotientE0VariableChangeEquiv K W C₀).trans ((quotientE0VariableChangeEquiv K (C₀ • W) ⟨1, 0, s₁, 0⟩).trans ((quotientE0VariableChangeEquiv K _ ⟨1, r, s, t⟩).trans (eT.trans (ZMod.ringEquivCongr (by rw [hv])).toAddEquiv)))⟩`.
+-/
 theorem split_equiv [IsMinimal 𝒪 (W.map (algebraMap 𝒪 K))]
     (hs : (W.map (algebraMap 𝒪 K)).HasSplitMultiplicativeReduction 𝒪) :
     Nonempty ((curveK K W).Point ⧸ E0 K W ≃+ ZMod (v W.Δ).toNat) := by
@@ -267,6 +351,15 @@ theorem split_equiv [IsMinimal 𝒪 (W.map (algebraMap 𝒪 K))]
     ((quotientE0VariableChangeEquiv K _ ⟨1, r, s, t⟩).trans
       (eT.trans (ZMod.ringEquivCongr (by rw [hv])).toAddEquiv)))⟩
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_irreducible 𝒪`. Distinguish the cases in `hs : (W.map (algebraMap 𝒪 K)).HasSplitMultiplicativeReduction 𝒪`. Take `⟨e⟩` from `split_equiv K W hs`. Establish `hΔ0 : W.Δ ≠ 0` using `Δ_ne_zero_of_isElliptic K W`. Establish `hn : v W.Δ ≠ ⊤` using `v_ne_top hΔ0`.
+
+Establish `hn1 : 1 ≤ (v W.Δ).toNat`. Establish `h1` using `(one_le_v_iff hπ).2 (dvd_Δ_of_hasMultiplicativeReduction K W hπ hs.toHasMultiplicativeReduction)`. Use `lift v W.Δ to ℕ using hn with m hm`. Simplify using `only [ENat.toNat_natCast]`. Conclude with `h1` after adjusting the coercions.
+
+Establish `: NeZero (v W.Δ).toNat` using `⟨by omega⟩`. Use `⟨Finite.of_equiv _ e.toEquiv.symm, fun h => absurd hs h, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `isAddCyclic_of_surjective e.symm.toAddMonoidHom e.symm.surjective`. Rewrite using `[Nat.card_congr e.toEquiv, Nat.card_zmod, ENat.natCast_toNat hn]`. Establish `hb` using `knBound_of_not_split K W hπ hs`.
+
+Conclude with `⟨hb.1, fun _ => hb.2, fun h => absurd h hs⟩`.
+-/
 theorem kodaira_neron [IsMinimal 𝒪 (W.map (algebraMap 𝒪 K))] :
     Finite ((curveK K W).Point ⧸ E0 K W) ∧
     (¬(W.map (algebraMap 𝒪 K)).HasSplitMultiplicativeReduction 𝒪 →

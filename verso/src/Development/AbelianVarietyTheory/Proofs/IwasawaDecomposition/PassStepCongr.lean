@@ -8,11 +8,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Top.GroupRetwisting
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hf]`.
+-/
 theorem pass_step_congr {α : Type*} (g : ∀ P : Pre, Fr P → α) {P P' : Pre} {f : Fr P} {f' : Fr P'} (h : P = P') (hf : HEq f f') :
     g P f = g P' f' := by
   subst h
   rw [eq_of_heq hf]
 
+/- English proof (translation)
+Introduce `KP Q r r' hK hR hS`. Use `(EvG.inter hS hR).imp fun K _ _ _ _ H => ?_` and prove the remaining obligations. Take `⟨hs, hr⟩` from `H`. Establish `hs' : large₂ K fun B f T => KP B f → r K B f T → r' K B f T` using `(hs.inter (lg_forced K)).imp fun _ _ _ _ G a b => G.1 a G.2 b`. Take `⟨S₁, P₁, A₀, S₂₀, a₁, a₂, hlg⟩` from `hs'`.
+
+Establish `hb : large₂ K fun B f T => (∀ z ∈ S₁ B.toPre f B.KsC, z ∈ B.fixedCoefficientFieldInComplex) ∧ P₁ B.toPre f B.KsC B.fixedCoefficientFieldInComplex ⊆ T.pl` using `⟨S₁, P₁, fun _ _ _ _ _ => ∅, S₂₀, a₁, a₂, fun _ _ _ _ h p _ => ⟨h.1, p⟩⟩`. Use `(hr.inter hb).imp ?_` and prove the remaining obligations. Introduce and unpack `B f T hO ⟨hr, h₁, hp⟩ hKP hT C W V S N G c q hx A S₂ hS₂`. Take `⟨B', f', T', e, hf, hpl, hAv, hS', hr'⟩` from `hr hKP hT C W V S N G c q hx (fun l => A l ∪ A₀ B.toPre f B.KsC B.fixedCoefficientFieldInComplex l) (fun P g Ξ => S₂ P g Ξ ∪ S₂₀ P g B.KsC B.fixedCoefficientFieldInComplex Ξ) (fun P g Ξ z hz => (Finset.mem_union.1 hz).elim (hS₂ P g Ξ z) (a₂ P g _ _ Ξ z))`. Establish `hP : B'.toPre = B.toPre` using `e.1`.
+
+Establish `hk : B'.KsC = B.KsC` using `e.KsC_eq`. Establish `hl : B'.fixedCoefficientFieldInComplex = B.fixedCoefficientFieldInComplex` using `e.fixedCoefficientField_eq`. Establish `hO' : K.Over B'.toPre` using `hP ▸ hO`. Establish `hLL : ∀ z ∈ S₂₀ B'.toPre f' B'.KsC B'.fixedCoefficientFieldInComplex (T'.set f'), z ∈ B'.LLC`. Introduce `z hz`.
+
+Rewrite `hz` using `[hk, hl]`. Take `⟨x, rfl⟩` from `hS' z (Finset.mem_union_right _ hz)`. Conclude with `⟨x, rfl⟩`. Establish `r''` using `hlg B' f' T' hO' ⟨by rw [hk, hl, pass_step_congr S₁ hP hf]; exact h₁, hLL⟩ (by rw [hk, hl, pass_step_congr P₁ hP hf, hpl]; exact hp) (fun w v hv hA => hAv w v hv (Finset.mem_union_right _ (by`. Rewrite `hA` using `[hk, hl, pass_step_congr A₀ hP hf]`.
+
+Conclude with `hA)))`. Use the proof step `(hK.enl B B' f f' e hf hKP) hr'`. Conclude with `⟨B', f', T', e, hf, hpl, fun w v hv hA => hAv w v hv (Finset.mem_union_left _ hA), fun z hz => hS' z (Finset.mem_union_left _ hz), r''⟩`.
+-/
 theorem pass_step : ∀ (KP : BaseP) (Q : V4.Slot) (r r' : AtP), BaseCond KP → Pass KP Q r → Step KP r r' → Pass KP Q r' := by
   classical
   intro KP Q r r' hK hR hS

@@ -73,6 +73,13 @@ def GTSS : Prop :=
 
 def GenTransferOfCut : Prop := GTFn → GTKap → GTConn → GTSS → GenTransfer
 
+/- English proof (translation)
+Introduce `hFn hKap hConn hSS Wp Wq _ _ _ _ _ _ P Bs hpl hk hcs X d hL hS hR hQ`. Establish `hyp : GTHyp P Bs X d`. Unfold `GTHyp`. Conclude with `⟨hpl, hk, hcs, hL, hS, hR, hQ⟩`. Take `⟨e₀, hf₀, hk₀⟩` from `hKap Wp Wq P Bs X d hyp`.
+
+Take `⟨e₁, hf₁, hk₁, hn₁⟩` from `hConn Wp Wq P Bs X d hyp e₀ hf₀ hk₀`. Take `⟨e, hf, hke, hne, hse⟩` from `hSS Wp Wq P Bs X d hyp e₁ hf₁ hk₁ hn₁`. Use `⟨e, hf, fun Φ => ?_⟩` and prove the remaining obligations. Take `⟨a₁, a₂, a₃, a₄, a₅, a₆⟩` from `hFn Wp Wq P Bs X d hyp e Φ`. Take `⟨b₁, b₂⟩` from `hne Φ`.
+
+Conclude with `⟨a₁, a₂, a₃, a₄, a₅, a₆, b₁, b₂, fun f => hke f Φ, fun l hl => (hse l hl Φ).1, fun l hl => (hse l hl Φ).2⟩`.
+-/
 theorem genTransfer_of_cut : GenTransferOfCut := by
   intro hFn hKap hConn hSS Wp Wq _ _ _ _ _ _ P Bs hpl hk hcs X d hL hS hR hQ
   have hyp : GTHyp P Bs X d := by

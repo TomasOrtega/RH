@@ -10,6 +10,11 @@ namespace Formalism.H
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℤ, (n : ℝ) = ⟪μ, (l : V)⟫ := by`. Establish `hm : innerₗ V μ (l : V) ∈ (1 : Submodule ℤ ℝ)` using `hμ (l : V) l.2`. Take `⟨n, hn⟩` from `Submodule.mem_one.mp hm`. Conclude with `⟨n, by simpa using hn⟩`. Rewrite using `[hper l y, inner_add_right, ← hn]`.
+
+Establish `h1 : Complex.exp (((-n : ℤ) : ℂ) * (2 * Real.pi * Complex.I)) = 1` using `Complex.exp_int_mul_two_pi_mul_I (-n)`. Rewrite using `[← mul_one (Complex.exp (-(2 * Real.pi * Complex.I * (⟪μ, y⟫ : ℝ)))), ← h1, ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_integrand_periodic (Λ : Submodule ℤ V) (G : V → ℂ)
     (hper : ∀ (l : Λ) (x : V), G ((l : V) + x) = G x) (μ : V) (hμ : μ ∈ dual Λ) (l : Λ) (y : V) :
     G ((l : V) + y) * Complex.exp (-(2 * Real.pi * Complex.I * (⟪μ, (l : V) + y⟫ : ℝ))) =
@@ -26,6 +31,27 @@ theorem coeff_integrand_periodic (Λ : Submodule ℤ V) (G : V → ℂ)
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `Λ _ _ G hG hper D hD hsum x`. Establish `: Module.Free ℤ Λ` using `ZLattice.module_free ℝ Λ`. Establish `: Module.Finite ℤ Λ` using `ZLattice.module_finite ℝ Λ`. Set `b` to `Module.Free.chooseBasis ℤ Λ`. Set `e` to `b.ofZLatticeBasis ℝ Λ`.
+
+Establish `he : Submodule.span ℤ (Set.range e) = Λ` using `b.ofZLatticeBasis_span ℝ Λ`. Establish `hper' : ∀ l ∈ Submodule.span ℤ (Set.range e), ∀ x, G (l + x) = G x`. Introduce `l hl x`. Rewrite `hl` using `[he]`. Conclude with `hper ⟨l, hl⟩ x`.
+
+Use `set c : V → ℂ := fun μ => ∫ y in D, G y * Complex.exp (-(2 * Real.pi * Complex.I * (⟪μ, y⟫ : ℝ))) with hc`. Establish `hF : IsAddFundamentalDomain Λ (ZSpan.fundamentalDomain e) volume`. Establish `h` using `ZSpan.isAddFundamentalDomain e volume`. Rewrite `h` using `[he]`. Conclude with `h`.
+
+Establish `: MeasurableVAdd Λ V` using `(inferInstance : MeasurableVAdd Λ.toAddSubgroup V)`. Establish `: VAddInvariantMeasure Λ V volume` using `(inferInstance : VAddInvariantMeasure Λ.toAddSubgroup V volume)`. Establish `hcov : ZLattice.covolume Λ = volume.real (ZSpan.fundamentalDomain e)` using `ZLattice.covolume_eq_measure_fundamentalDomain Λ volume hF`. Establish `hcov0 : (ZLattice.covolume Λ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (ZLattice.covolume_ne_zero Λ volume)`. Set `g` to `torusFunC e G hG hper'`.
+
+Establish `hmem : ∀ m, dualVec e m ∈ dual Λ` using `fun m => by`. Establish `h` using `dualVec_mem e m`. Rewrite `h` using `[he]`. Conclude with `h`. Establish `hcoef : ∀ m, c (dualVec e m) = (ZLattice.covolume Λ : ℂ) * UnitAddTorus.mFourierCoeff g m`.
+
+Introduce `m`. Simplify using `only [hc]`. Rewrite using `[hD.setIntegral_eq hF (fun l y => coeff_integrand_periodic Λ G hper _ (hmem m) l y), integral_fundamentalDomain_eq, hcov, mFourierCoeff_torusFunC]`. Set `E : (Module.Free.ChooseBasisIndex ℤ Λ → ℤ) ≃ dual Λ` to `(dualEquiv e).trans (Equiv.subtypeEquivRight (fun v => by rw [he]))`. Establish `hE : ∀ m, ((E m : dual Λ) : V) = dualVec e m` using `fun m => rfl`.
+
+Establish `hsumE : Summable (fun m => c (dualVec e m))`. Use `(E.summable_iff (f := fun μ : dual Λ => c μ)).2 hsum` as an intermediate fact. Conclude with `this`. Establish `hsg : Summable (UnitAddTorus.mFourierCoeff g)`. Use `(hsumE.mul_left ((ZLattice.covolume Λ : ℂ)⁻¹)).congr fun m => ?_` and prove the remaining obligations.
+
+Rewrite using `[hcoef, ← mul_assoc, inv_mul_cancel₀ hcov0, one_mul]`. Establish `hx` using `UnitAddTorus.hasSum_mFourier_series_apply_of_summable hsg (torusProj _ (e.equivFunL x))`. Establish `hgx : g (torusProj _ (e.equivFunL x)) = G x` using `by show torusFun e G _ = _`. Rewrite using `[torusFun_proj e G hper', ContinuousLinearEquiv.symm_apply_apply]`. Rewrite `hx` using `[hgx]`.
+
+Rewrite using `[← E.hasSum_iff]`. Use `hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp_apply, hE, smul_eq_mul, mFourier_torusProj e, ContinuousLinearEquiv.symm_apply_apply]`. Use `hcoef m` as an intermediate fact.
+
+Simplify using `only [hc] at this`. Rewrite using `[this, ← mul_assoc, inv_mul_cancel₀ hcov0, one_mul]`.
+-/
 theorem lattice_fourier_series (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] : LatticeFourierSeries V := by
   intro Λ _ _ G hG hper D hD hsum x

@@ -9,6 +9,21 @@ noncomputable section
 
 open scoped ENNReal
 
+/- English proof (translation)
+Establish `hTm : MeasurableSet T` using `hT.measurableSet`. Establish `hsm : AEMeasurable s ((volume.restrict T).withDensity fun y => ENNReal.ofReal (w y))` using `(hs.aemeasurable hTm).mono_ac (withDensity_absolutelyContinuous _ _)`. Establish `hGm` using `hG.aestronglyMeasurable (μ := ((volume.restrict T).withDensity fun y => ENNReal.ofReal (w y)).map s)`. Establish `h1 : ((volume.restrict T).withDensity fun y => ENNReal.ofReal (w y)) (T ∩ O) = 0`. Rewrite using `[withDensity_apply _ (hTm.inter hO)]`.
+
+Use `(setLIntegral_congr_fun (g := fun _ => 0) (hTm.inter hO) ?_).trans (by simp)` and prove the remaining obligations. Introduce `y hy`. Conclude with `ENNReal.ofReal_of_nonpos (hw0 y hy)`. Establish `h2 : ((volume.restrict T).withDensity fun y => ENNReal.ofReal (w y)) Tᶜ = 0` using `withDensity_absolutelyContinuous _ _ (by`. Rewrite using `[Measure.restrict_apply hTm.compl]`.
+
+Use the proof step `simp)`. Establish `hae : (G ∘ s) =ᵐ[(volume.restrict T).withDensity fun y => ENNReal.ofReal (w y)] C.indicator (G ∘ s)`. Establish `h3` using `measure_union_null h1 h2`. Use `measure_mono_null (fun y hy => ?_) h3` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`.
+
+Simplify using `only [Set.mem_union, Set.mem_inter_iff, Set.mem_compl_iff, not_or, not_and, not_not] at hcon`. Establish `hyT : y ∈ T` using `hcon.2`. Establish `hyO : y ∉ O` using `hcon.1 hyT`. Apply `hy` to reduce the goal to its premises. Distinguish the cases in `hyC : y ∈ C`.
+
+Simplify using `[Set.indicator_of_mem hyC]`. Simplify using `[Set.indicator_of_notMem hyC, hGz y hyT hyO hyC]`. Establish `hrest : ((volume.restrict T).withDensity fun y => ENNReal.ofReal (w y)).restrict C = (volume.restrict C).withDensity fun y => ENNReal.ofReal (w y)`. Rewrite using `[restrict_withDensity hCm, Measure.restrict_restrict hCm, Set.inter_eq_left.2 hCT]`. Establish `hwm : AEMeasurable (fun y => (w y).toNNReal) (volume.restrict C)` using `(hw.aemeasurable hCm).real_toNNReal`.
+
+Establish `hofR : (fun y => ENNReal.ofReal (w y)) = fun y => ((w y).toNNReal : ℝ≥0∞)` using `rfl`. Establish `hsm2 : (fun y => (w y).toNNReal • (G ∘ s) y) = fun y => G (s y) * max (w y) 0`. Use function extensionality and compare the values at `y`. Simplify using `[NNReal.smul_def, Real.coe_toNNReal', mul_comm]`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[integrable_map_measure hGm hsm, integrable_congr hae, integrable_indicator_iff hCm, IntegrableOn, hrest, hofR, integrable_withDensity_iff_integrable_smul₀ hwm, hsm2]`. Both sides reduce to the same expression. Rewrite using `[integral_map hsm hGm]`. Use `Eq.trans (integral_congr_ae hae) ?_` and prove the remaining obligations. Rewrite using `[integral_indicator hCm, hrest, hofR, integral_withDensity_eq_integral_smul₀ hwm, hsm2]`.
+-/
 theorem cpt_chart_piece {e : ℕ} {X : Type} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
     {T O C : Set (Fin e → ℂ)} (hT : IsOpen T) {s : (Fin e → ℂ) → X} (hs : ContinuousOn s T)
     {w : (Fin e → ℂ) → ℝ} (hO : MeasurableSet O) (hCm : MeasurableSet C) (hCT : C ⊆ T)
@@ -71,27 +86,42 @@ def cptW (A : FinHolAtlas e X) (P : ChartPartition A) (Φ : Fin e → LocPot X) 
     (y : Fin e → ℂ) : ℝ :=
   P.χ j ((A.chart j).symm y) * locDens A Φ j y
 
+/- English proof (translation)
+Take `⟨x, ⟨hxK, hxs⟩, rfl⟩` from `hy`. Rewrite using `[(A.chart j).left_inv (P.tsupport_subset j hxs)]`. Conclude with `hxK`.
+-/
 theorem cptSet_symm_mem (A : FinHolAtlas e X) (P : ChartPartition A) (K : Set X) (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ cptSet A P K j) : (A.chart j).symm y ∈ K := by
   obtain ⟨x, ⟨hxK, hxs⟩, rfl⟩ := hy
   rw [(A.chart j).left_inv (P.tsupport_subset j hxs)]
   exact hxK
 
+/- English proof (translation)
+Introduce and unpack `y ⟨x, ⟨-, hxs⟩, rfl⟩`. Conclude with `(A.chart j).map_source (P.tsupport_subset j hxs)`.
+-/
 theorem cptSet_subset_target (A : FinHolAtlas e X) (P : ChartPartition A) (K : Set X) (j : Fin A.n) :
     cptSet A P K j ⊆ (A.chart j).target := by
   rintro y ⟨x, ⟨-, hxs⟩, rfl⟩
   exact (A.chart j).map_source (P.tsupport_subset j hxs)
 
+/- English proof (translation)
+Conclude with `(hK.isCompact.inter_right (isClosed_tsupport _)).image_of_continuousOn ((A.chart j).continuousOn.mono fun x hx => P.tsupport_subset j hx.2)`.
+-/
 theorem cptSet_compact [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartition A) {K : Set X}
     (hK : IsClosed K) (j : Fin A.n) : IsCompact (cptSet A P K j) := by
   exact (hK.isCompact.inter_right (isClosed_tsupport _)).image_of_continuousOn
     ((A.chart j).continuousOn.mono fun x hx => P.tsupport_subset j hx.2)
 
+/- English proof (translation)
+Introduce `y hy`. Conclude with `⟨cptSet_subset_target A P K j hy, hKU (cptSet_symm_mem A P K j hy)⟩`.
+-/
 theorem cptSet_subset (A : FinHolAtlas e X) (P : ChartPartition A) {K U : Set X} (hKU : K ⊆ U)
     (j : Fin A.n) : cptSet A P K j ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U := by
   intro y hy
   exact ⟨cptSet_subset_target A P K j hy, hKU (cptSet_symm_mem A P K j hy)⟩
 
+/- English proof (translation)
+Establish `hχ : ContinuousOn (fun y => P.χ j ((A.chart j).symm y)) (cptSet A P K j)` using `((P.smooth j) j).continuousOn.mono fun y hy => ⟨cptSet_subset_target A P K j hy, Set.mem_univ _⟩`. Conclude with `hχ.mul (hc.mono (cptSet_subset A P hKU j))`.
+-/
 theorem cptW_continuousOn (A : FinHolAtlas e X) (P : ChartPartition A) (Φ : Fin e → LocPot X)
     {K U : Set X} (hKU : K ⊆ U) (j : Fin A.n)
     (hc : ContinuousOn (locDens A Φ j) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U)) :
@@ -102,6 +132,15 @@ theorem cptW_continuousOn (A : FinHolAtlas e X) (P : ChartPartition A) (Φ : Fin
 
 variable [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Establish `key` using `cpt_chart_piece (w := cptW A P Φ j) (s := (A.chart j).symm) (G := G) (T := (A.chart j).target) (C := cptSet A P K j) (O := (A.chart j).target ∩ (A.chart j).symm ⁻¹' (tsupport (P.χ j))ᶜ) (A.chart j).open_target (A.chart j).continuousOn_symm ((A.chart j).isOpen_inter_preimage_symm …`. Introduce and unpack `y ⟨-, -, hy⟩`. Establish `h0 : P.χ j ((A.chart j).symm y) = 0` using `image_eq_zero_of_notMem_tsupport hy`. Simplify using `[cptW, h0])`. Use `hG`.
+
+Use the proof step `(by`. Introduce `y hy hyO hyC`. Assume the negation of the conclusion as `hne`. Establish `hxK : (A.chart j).symm y ∈ K`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hne (hGK _ h)`. Establish `hxs : (A.chart j).symm y ∈ tsupport (P.χ j)`. Assume the negation of the conclusion as `h`. Conclude with `hyO ⟨hy, h⟩`. Conclude with `hyC ⟨_, ⟨hxK, hxs⟩, (A.chart j).right_inv hy⟩)`.
+
+Conclude with `key`.
+-/
 theorem cpt_chartMeasure [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartition A)
     (Φ : Fin e → LocPot X) {K U : Set X} (hK : IsClosed K) (hKU : K ⊆ U) (j : Fin A.n)
     (hc : ContinuousOn (locDens A Φ j) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U))
@@ -134,6 +173,9 @@ theorem cpt_chartMeasure [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartit
       exact hyC ⟨_, ⟨hxK, hxs⟩, (A.chart j).right_inv hy⟩)
   exact key
 
+/- English proof (translation)
+Establish `hCm : MeasurableSet (cptSet A P K j)` using `(cptSet_compact A P hK j).isClosed.measurableSet`. Establish `hs : ContinuousOn (A.chart j).symm (cptSet A P K j)` using `(A.chart j).continuousOn_symm.mono (cptSet_subset_target A P K j)`. Establish `h1 : AEMeasurable (fun y => G ((A.chart j).symm y)) (volume.restrict (cptSet A P K j))` using `hG.comp_aemeasurable (hs.aemeasurable hCm)`. Establish `h2 : AEMeasurable (fun y => max (cptW A P Φ j y) 0) (volume.restrict (cptSet A P K j))` using `((cptW_continuousOn A P Φ hKU j hc).aemeasurable hCm).max aemeasurable_const`. Conclude with `(h1.mul h2).aestronglyMeasurable`.
+-/
 theorem cpt_aesm [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartition A)
     (Φ : Fin e → LocPot X) {K U : Set X} (hK : IsClosed K) (hKU : K ⊆ U) (j : Fin A.n)
     (hc : ContinuousOn (locDens A Φ j) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U))
@@ -149,6 +191,9 @@ theorem cpt_aesm [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartition A)
     ((cptW_continuousOn A P Φ hKU j hc).aemeasurable hCm).max aemeasurable_const
   exact (h1.mul h2).aestronglyMeasurable
 
+/- English proof (translation)
+The claim follows from `|max (c * a) 0| ≤ B := by have hB : 0 ≤ B := le_trans (abs_nonneg a) h rw [abs_of_nonneg (le_max_right _ _)] refine max_le ?_ hB calc c * a ≤ |c * a| := le_abs_self _ _ = c * |a| := by rw [abs_mul, abs_of_nonneg hc] _ ≤ 1 * |a| := mul_le_mul_of_nonneg_right hc1 (abs_nonneg a) _ ≤ …`.
+-/
 theorem cpt_abs_max {c a B : ℝ} (hc : 0 ≤ c) (hc1 : c ≤ 1) (h : |a| ≤ B) :
     |max (c * a) 0| ≤ B := by
   have hB : 0 ≤ B := le_trans (abs_nonneg a) h
@@ -159,6 +204,11 @@ theorem cpt_abs_max {c a B : ℝ} (hc : 0 ≤ c) (hc1 : c ≤ 1) (h : |a| ≤ B)
     _ ≤ 1 * |a| := mul_le_mul_of_nonneg_right hc1 (abs_nonneg a)
     _ ≤ B := by rw [one_mul]; exact h
 
+/- English proof (translation)
+Establish `hCc` using `cptSet_compact A P hK j`. Take `⟨L, hL⟩` from `hCc.exists_bound_of_continuousOn (hc.mono (cptSet_subset A P hKU j))`. Use `haveI : IsFiniteMeasure (volume.restrict (cptSet A P K j)) := ⟨by simpa using hCc.measure_lt_top⟩`. Use `Integrable.of_bound (cpt_aesm A P Φ hK hKU j hc hG) (B * L) (ae_restrict_of_forall_mem hCc.measurableSet fun y hy => ?_)` and prove the remaining obligations. Establish `hx` using `cptSet_symm_mem A P K j hy`.
+
+Establish `a2 : |max (cptW A P Φ j y) 0| ≤ L` using `cpt_abs_max (P.nonneg j _) (chi_le_one P j _) (by simpa [Real.norm_eq_abs] using hL y hy)`. Rewrite using `[Real.norm_eq_abs, abs_mul]`. Conclude with `mul_le_mul (hB _ hx) a2 (abs_nonneg _) ((abs_nonneg _).trans (hB _ hx))`.
+-/
 theorem cpt_integrableOn [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartition A)
     (Φ : Fin e → LocPot X) {K U : Set X} (hK : IsClosed K) (hKU : K ⊆ U) (j : Fin A.n)
     (hc : ContinuousOn (locDens A Φ j) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U))
@@ -177,6 +227,9 @@ theorem cpt_integrableOn [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartit
   rw [Real.norm_eq_abs, abs_mul]
   exact mul_le_mul (hB _ hx) a2 (abs_nonneg _) ((abs_nonneg _).trans (hB _ hx))
 
+/- English proof (translation)
+Establish `hint : ∀ j, Integrable G (chartMeasure A hne.some Φ j)` using `fun j => (cpt_chartMeasure A hne.some Φ hK hKU j (hc j) hG hGK).1.2 (cpt_integrableOn A hne.some Φ hK hKU j (hc j) hG hB)`. Rewrite using `[maMeasure_eq_sum A Φ hne]`. Use `⟨integrable_finset_sum_measure.2 fun j _ => hint j, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finset_sum_measure fun j _ => hint j]`. Conclude with `Finset.sum_congr rfl fun j _ => (cpt_chartMeasure A hne.some Φ hK hKU j (hc j) hG hGK).2`.
+-/
 theorem cpt_maMeasure [CompactSpace X] (A : FinHolAtlas e X) (hne : Nonempty (ChartPartition A))
     (Φ : Fin e → LocPot X) {K U : Set X} (hK : IsClosed K) (hKU : K ⊆ U)
     (hc : ∀ j, ContinuousOn (locDens A Φ j) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U))
@@ -193,6 +246,11 @@ theorem cpt_maMeasure [CompactSpace X] (A : FinHolAtlas e X) (hne : Nonempty (Ch
   rw [integral_finset_sum_measure fun j _ => hint j]
   exact Finset.sum_congr rfl fun j _ => (cpt_chartMeasure A hne.some Φ hK hKU j (hc j) hG hGK).2
 
+/- English proof (translation)
+Establish `h1 : Measurable (U.piecewise f 0)` using `hf.measurable_piecewise (continuousOn_const (c := (0 : ℝ))) hU.measurableSet`. Establish `h2 : S.indicator f = S.indicator (U.piecewise f 0)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, Set.piecewise_eq_of_mem _ _ _ (hSU hx)]`.
+
+Simplify using `only [Set.indicator_apply, hx, if_false]`. Rewrite using `[h2]`. Conclude with `h1.indicator hS`.
+-/
 theorem cpt_meas {U S : Set X} (hU : IsOpen U) (hS : MeasurableSet S) (hSU : S ⊆ U) {f : X → ℝ}
     (hf : ContinuousOn f U) : Measurable (S.indicator f) := by
   classical
@@ -206,6 +264,11 @@ theorem cpt_meas {U S : Set X} (hU : IsOpen U) (hS : MeasurableSet S) (hSU : S �
   rw [h2]
   exact h1.indicator hS
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hf.mono hKU)`. Establish `hb : ∀ x ∈ K, |S.indicator f x| ≤ M` using `fun x hx => by`. Distinguish the cases in `hxS : x ∈ S`. Simplify `hM x hx` using `[Set.indicator_of_mem hxS, Real.norm_eq_abs]`. Rewrite using `[Set.indicator_of_notMem hxS, abs_zero]`.
+
+Conclude with `(norm_nonneg _).trans (hM x hx)`. Establish `key` using `cpt_maMeasure A hne Φ hK.isClosed hKU hc (cpt_meas hU hS (hSK.trans hKU) hf) (fun x hx => Set.indicator_of_notMem (fun h => hx (hSK h)) _) hb`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_indicator hS]`. Conclude with `key.2`.
+-/
 theorem cpt_ind [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (hne : Nonempty (ChartPartition A)) (Φ : Fin e → LocPot X) {K U S : Set X} (hU : IsOpen U)
     (hK : IsCompact K) (hKU : K ⊆ U)
@@ -226,6 +289,25 @@ theorem cpt_ind [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
   rw [← integral_indicator hS]
   exact key.2
 
+/- English proof (translation)
+Establish `hCc` using `cptSet_compact A P hKc j`. Establish `hCm` using `hCc.measurableSet`. Establish `hCV` using `cptSet_subset A P hKU j`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn (hgc.mono hKU)`. Take `⟨L, hL⟩` from `hCc.exists_bound_of_continuousOn (hc.mono hCV)`.
+
+Use `tendsto_integral_filter_of_dominated_convergence (fun _ => (M + 1) * (L + 1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hpot] with t ht`. Conclude with `cpt_aesm A P (ΦT t) hKc hKU j ((locDensCont A _ ht j).mono Set.inter_subset_left) (cpt_meas hU hE (hEK.trans hKU) (hgT t))`. Establish `h1` using `Metric.tendstoUniformlyOn_iff.1 hgU 1 one_pos`. Establish `h2` using `Metric.tendstoUniformlyOn_iff.1 hld 1 one_pos`.
+
+Use `filter_upwards [h1, h2] with t ht1 ht2`. Use `ae_restrict_of_forall_mem hCm fun y hy => ?_` and prove the remaining obligations. Establish `hx` using `cptSet_symm_mem A P K j hy`. Establish `hMx` using `hM _ hx`. Establish `hLy` using `hL y hy`.
+
+Rewrite `hMx`, `hLy` using `[Real.norm_eq_abs]`. Establish `hd1` using `ht1 _ hx`. Establish `hd2` using `ht2 y hy`. Rewrite `hd1`, `hd2` using `[Real.dist_eq, abs_lt]`. Establish `a1 : |E.indicator (gT t) ((A.chart j).symm y)| ≤ M + 1`.
+
+Distinguish the cases in `hxE : (A.chart j).symm y ∈ E`. Rewrite using `[Set.indicator_of_mem hxE]`. Rewrite `hMx`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [hd1.1, hd1.2, hMx.1, hMx.2]`. Rewrite using `[Set.indicator_of_notMem hxE, abs_zero]`.
+
+Combine the linear relations using `[abs_nonneg (g ((A.chart j).symm y))]`. Establish `a2 : |max (cptW A P (ΦT t) j y) 0| ≤ L + 1`. Use `cpt_abs_max (P.nonneg j _) (chi_le_one P j _) ?_` and prove the remaining obligations. Rewrite `hLy`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [hd2.1, hd2.2, hLy.1, hLy.2]`.
+
+Rewrite using `[Real.norm_eq_abs, abs_mul]`. Conclude with `mul_le_mul a1 a2 (abs_nonneg _) ((abs_nonneg _).trans a1)`. Conclude with `integrableOn_const hCc.measure_lt_top.ne`. Use `ae_restrict_of_forall_mem hCm fun y hy => ?_` and prove the remaining obligations. Establish `hx` using `cptSet_symm_mem A P K j hy`.
+
+Establish `l1 : Tendsto (fun t => E.indicator (gT t) ((A.chart j).symm y)) (𝓝[>] 0) (𝓝 (E.indicator g ((A.chart j).symm y)))`. Distinguish the cases in `hxE : (A.chart j).symm y ∈ E`. Simplify using `only [Set.indicator_of_mem hxE]`. Conclude with `hgU.tendsto_at hx`. Simplify using `only [Set.indicator_of_notMem hxE]`.
+
+Conclude with `tendsto_const_nhds`. Establish `l2 : Tendsto (fun t => locDens A (ΦT t) j y) (𝓝[>] 0) (𝓝 (locDens A Φ j y))` using `hld.tendsto_at hy`. Conclude with `l1.mul (((l2.const_mul _)).max tendsto_const_nhds)`.
+-/
 theorem cpt_chart_tendsto [CompactSpace X] (A : FinHolAtlas e X) (P : ChartPartition A)
     (Φ : Fin e → LocPot X) (ΦT : ℝ → Fin e → LocPot X) {K U E : Set X} (hU : IsOpen U)
     (hK : IsCompact K) (hKc : IsClosed K) (hKU : K ⊆ U) (j : Fin A.n)
@@ -287,6 +369,15 @@ theorem cpt_chart_tendsto [CompactSpace X] (A : FinHolAtlas e X) (P : ChartParti
       hld.tendsto_at hy
     exact l1.mul (((l2.const_mul _)).max tendsto_const_nhds)
 
+/- English proof (translation)
+Introduce `e X _ _ _ _ _ A U Φ ΦT hU hc hpot hunif g gT hgT hlim K E hK hKU hE hEK`. Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Establish `hKc : IsClosed K` using `hK.isClosed`. Establish `hKm : MeasurableSet K` using `hKc.measurableSet`. Establish `hgc : ContinuousOn g U` using `hlim.continuousOn (Eventually.of_forall hgT).frequently`.
+
+Establish `hgU : TendstoUniformlyOn gT g (𝓝[>] 0) K` using `(tendstoLocallyUniformlyOn_iff_tendstoUniformlyOn_of_compact hK).1 (hlim.mono hKU)`. Establish `c1` using `cpt_ind A hne Φ hU hK hKU hc hKm subset_rfl (f := fun _ => (1 : ℝ)) continuousOn_const`. Establish `c2` using `cpt_ind A hne Φ hU hK hKU hc hKm subset_rfl hgc`. Establish `c3` using `cpt_ind A hne Φ hU hK hKU hc hE hEK hgc`. Use `⟨?_, (integrable_indicator_iff hKm).1 c2.1, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(integrable_indicator_iff hKm).1 c1.1`. Conclude with `((integrableOn_const_iff (by simp)).1 h).resolve_left (by simp)`. Rewrite using `[c3.2]`. Use `Tendsto.congr' ?_ (tendsto_finset_sum _ fun j _ => cpt_chart_tendsto A hne.some Φ ΦT hU hK hKc hKU j (hc j) hpot (hunif j _ (cptSet_subset A hne.some hKU j) (cptSet_compact A hne.some hKc j)) hgT hgc hgU hE hEK)` and prove the remaining obligations. Use `filter_upwards [hpot] with t ht`.
+
+Conclude with `(cpt_ind A hne (ΦT t) hU hK hKU (fun j => (locDensCont A _ ht j).mono Set.inter_subset_left) hE hEK (hgT t)).2.symm`.
+-/
 theorem compact_part_integrals_tendsto :
     ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X]
       [BorelSpace X] (A : FinHolAtlas e X) (U : Set X) (Φ : Fin e → LocPot X)

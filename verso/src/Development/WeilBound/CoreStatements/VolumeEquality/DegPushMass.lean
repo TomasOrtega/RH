@@ -22,6 +22,15 @@ open Filter Topology
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo
 open GroundTheory.Heights₂.Heights.LowerBoundFree GroundTheory.Heights₂.Heights.HilbertSamuel GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp
 
+/- English proof (translation)
+Introduce `hG hP E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or hII`. Establish `: Nonempty (CMType H)` using `(GlobalTheory.T.cm_host_rank_bounds E H).2.1`. Take `⟨U, M, S, S', -, h0, ht, hS, hS', -⟩` from `GlobalTheory.T.cusp_weight_regularisations_tied hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or`. Take `⟨Cd, rfl⟩` from `GlobalTheory.T.exists_cusp_data_for_torus_invariant K J II _ Ω W Dc U h0 ht`. Set `X : ComponentSetting Dc ℤ (Fin 2 → ℤ)` to `⟨Hd, Cd, M, S, hS, S', hS', 0, 0⟩`.
+
+Establish `hA` using `(GlobalTheory.T.height_comparison_between_models hG hP K J II _ Ω W Dc Hd M M S S 0 hII hS hS).1`. Establish `hL` using `(GlobalTheory.T.measure_limit_statement_holds II _ K J Ω W Dc ℤ (Fin 2 → ℤ) X 0 hII.1 hA).2`. Establish `hSm` using `MuRegSmooth.proof HermExtend.proof (ProjSmoothAlong.proof HoloInjDerivInj.proof GlobalTheory.T.local_orbit_chart_statement_holds) (VertFactorSmooth.proof VertFactorPos.proof) VertFactorPos.proof II _ K J Ω W Dc ℤ (Fin 2 → ℤ) X 0`. Establish `hg` using `GlobalTheory.T.generic_degree_eq_geometric_degree ⟨II, hII⟩ hG.2.2.2.2.1`. Use `tendsto_nhds_unique hL (tendsto_const_nhds.congr' ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [hSm] with t hs`. Establish `hvert : ∀ p ∈ Dc.SB 0, p.Prime ∧ IsVerticalDivisorAt (mCoordIdeal Dc.y) p (Dc.vdeg p) (Dc.vnum p) (Dc.vden p)` using `fun p hp => ⟨Dc.S_prime p (Finset.mem_filter.1 hp).1, Dc.vertical p (Finset.mem_filter.1 hp).1⟩`. Establish `ha : (muReg X.H X.S 0 t).a = Hd.aMu + ∑ p ∈ Dc.SB 0, Dc.vdeg p`. Rewrite using `[muReg, smoothRep_a]`. Both sides reduce to the same expression.
+
+Rewrite using `[hg K J Ω Dc.y Dc.n _ Dc.arith hs, ha, VerticalTwistGenDeg.proof K J (mCoordIdeal Dc.y) Dc.n Hd.aMu (Dc.SB 0) Dc.vdeg Dc.vnum Dc.vden Dc.arith hvert]`.
+-/
 theorem muMass : MuMass := by
   intro hG hP E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or hII
   classical

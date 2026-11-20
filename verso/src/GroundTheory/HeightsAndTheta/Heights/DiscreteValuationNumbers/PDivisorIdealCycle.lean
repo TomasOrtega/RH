@@ -15,6 +15,11 @@ section General
 
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Unfold `idealCycle`. Distinguish the cases in `h : U ∈ J.minimalPrimes ∧ IsRelevant U`. Establish `h' : U ∈ J'.minimalPrimes ∧ IsRelevant U` using `⟨mem_minimalPrimes_of_mul_mem hs ht hsJ htJ h.1, h.2⟩`. Rewrite using `[dif_pos h, dif_pos h']`. Establish `: U.IsPrime` using `h.1.1.1`.
+
+Unfold `multAt`. Rewrite using `[length_localized_eq_of_mul_mem hs ht hsJ htJ]`. Establish `h' : ¬ (U ∈ J'.minimalPrimes ∧ IsRelevant U)` using `fun h' => h ⟨mem_minimalPrimes_of_mul_mem ht hs htJ hsJ h'.1, h'.2⟩`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 theorem idealCycle_eq_of_mul_mem {J J' U : Ideal (MRing ι R)} {s t : MRing ι R} (hs : s ∉ U)
     (ht : t ∉ U) (hsJ : ∀ x ∈ J, s * x ∈ J') (htJ : ∀ x ∈ J', t * x ∈ J) :
     idealCycle J U = idealCycle J' U := by
@@ -30,6 +35,9 @@ theorem idealCycle_eq_of_mul_mem {J J' U : Ideal (MRing ι R)} {s t : MRing ι R
       h ⟨mem_minimalPrimes_of_mul_mem ht hs htJ hsJ h'.1, h'.2⟩
     rw [dif_neg h, dif_neg h']
 
+/- English proof (translation)
+Unfold `divCycle`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨h, -⟩`. Conclude with `hx (h.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x)))`.
+-/
 theorem divCycle_eq_zero_of_not_mem {W U : Ideal (MRing ι R)} {x : MRing ι R} (hx : x ∉ U) :
     divCycle W x U = 0 := by
   unfold divCycle
@@ -39,6 +47,31 @@ theorem divCycle_eq_zero_of_not_mem {W U : Ideal (MRing ι R)} {x : MRing ι R} 
 
 end General
 
+/- English proof (translation)
+Introduce `R _ _ K _ _ ι _ P W f g u v hP hW hPW hg hloc hu hv huv`. Use function extensionality and compare the values at `U`. Distinguish the cases in `hU : U.IsPrime ∧ W ≤ U ∧ IsRelevant U`. Take `⟨hUp, hWU, hUrel⟩` from `hU`. Take `⟨u', v', hu'U, hloc'⟩` from `hloc U hUp hWU hUrel`.
+
+Establish `hu'W : u' ∉ W` using `fun h => hu'U (hWU h)`. Establish `h1U : (1 : MRing ι R) ∉ U` using `(Ideal.ne_top_iff_one U).mp hUp.ne_top`. Establish `hcross : u * v' - u' * v ∈ P`. Establish `hmem : (u * v' - u' * v) * g ∈ P`. Rewrite using `[show (u * v' - u' * v) * g = u' * (u * f - v * g) - u * (u' * f - v' * g) by ring]`.
+
+Conclude with `P.sub_mem (P.mul_mem_left _ huv) (P.mul_mem_left _ hloc')`. Conclude with `(hP.mem_or_mem hmem).resolve_right hg`. Establish `hv'W : v' ∉ W`. Introduce `h`. Establish `hmem : u' * v ∈ W`.
+
+Rewrite using `[show u' * v = u * v' - (u * v' - u' * v) by ring]`. Conclude with `W.sub_mem (W.mul_mem_left u h) (hPW hcross)`. Conclude with `(hW.mem_or_mem hmem).elim hu'W hv`. Establish `hmul` using `congrFun (DivCycleMul.proof R K ι W u' v hW hu'W hv) U`. Establish `hmul'` using `congrFun (DivCycleMul.proof R K ι W u v' hW hu hv'W) U`.
+
+Establish `heq : divCycle W (u' * v) U = divCycle W (u * v') U` using `divCycle_eq_of_mul_sub_mem (P := W) (W := U) (u := 1) (v := 1) h1U h1U (by`. Rewrite using `[show 1 * (u' * v) - 1 * (u * v') = -(u * v' - u' * v) by ring]`. Conclude with `W.neg_mem (hPW hcross))`. Establish `hu'0 : divCycle W u' U = 0` using `divCycle_eq_zero_of_not_mem hu'U`. Simplify using `only [Pi.add_apply] at hmul hmul'`.
+
+Establish `hv'D : v' ∈ divisorIdeal P f g`. Rewrite using `[divisorIdeal, Submodule.mem_colon_singleton, smul_eq_mul, show v' * g = u' * f - (u' * f - v' * g) by ring]`. Conclude with `Submodule.sub_mem _ (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self f))) (Ideal.mem_sup_left hloc')`. Establish `hsJ : ∀ x ∈ W ⊔ Ideal.span {v'}, 1 * x ∈ W ⊔ divisorIdeal P f g`. Introduce `x hx`.
+
+Rewrite using `[one_mul]`. Conclude with `sup_le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr hv'D) W hx`. Establish `htJ : ∀ x ∈ W ⊔ divisorIdeal P f g, u' * x ∈ W ⊔ Ideal.span {v'}`. Introduce `x hx`. Take `⟨w, hw, d, hd, rfl⟩` from `Submodule.mem_sup.mp hx`.
+
+Rewrite `hd` using `[divisorIdeal, Submodule.mem_colon_singleton, smul_eq_mul]`. Take `⟨p, hp, r, hr, hpr⟩` from `Submodule.mem_sup.mp hd`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Establish `h1 : (u' * d - a * v') * g ∈ P`. Establish `e : (u' * d - a * v') * g = u' * p + a * (u' * f - v' * g)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `P.add_mem (P.mul_mem_left _ hp) (P.mul_mem_left _ hloc')`. Establish `h2 : u' * d - a * v' ∈ P` using `(hP.mem_or_mem h1).resolve_right hg`. Rewrite using `[show u' * (w + d) = (u' * w + (u' * d - a * v')) + a * v' by ring]`.
+
+Conclude with `Submodule.add_mem_sup (W.add_mem (W.mul_mem_left _ hw) (hPW h2)) (Ideal.mem_span_singleton'.mpr ⟨a, rfl⟩)`. Establish `hR : idealCycle (W ⊔ divisorIdeal P f g) U = divCycle W v' U`. Rewrite using `[divCycle_eq_idealCycle]`. Conclude with `(idealCycle_eq_of_mul_mem h1U hu'U hsJ htJ).symm`. Rewrite using `[hR]`.
+
+Use `show divCycle W v U - divCycle W u U = divCycle W v' U`. Use linear arithmetic over natural numbers and integers. Establish `hcomp : ∀ J : Ideal (MRing ι R), W ≤ J → ¬ (U ∈ J.minimalPrimes ∧ IsRelevant U)`. Introduce and unpack `J hWJ ⟨h, hrel⟩`. Conclude with `hU ⟨h.1.1, hWJ.trans h.1.2, hrel⟩`.
+
+Use `show divCycle W v U - divCycle W u U = idealCycle (W ⊔ divisorIdeal P f g) U`. Unfold `divCycle idealCycle`. Rewrite using `[dif_neg (hcomp _ le_sup_left), dif_neg (hcomp _ le_sup_left), dif_neg (hcomp _ le_sup_left), sub_self]`.
+-/
 theorem DivisorIdealCycle.proof : DivisorIdealCycle.Statement.{u} := by
   intro R _ _ K _ _ ι _ P W f g u v hP hW hPW hg hloc hu hv huv
   funext U

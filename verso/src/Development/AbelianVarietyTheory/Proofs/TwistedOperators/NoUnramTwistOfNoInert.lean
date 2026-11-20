@@ -14,6 +14,11 @@ open ValuativeRel Matrix MeasureTheory in
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SplitWeil.KO at hg`. Take `⟨h, rfl⟩` from `hg`. Establish `hdet : (GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap (𝒪[k]) k) h) : k) = algebraMap (𝒪[k]) k (GeneralLinearGroup.det h : 𝒪[k])`. Simplify using `[GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Rewrite using `[hdet]`.
+
+Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`.
+-/
 theorem _root_.GlobalTheory.InertSupp.Unram.valuation_det_KO {m : Type} [Fintype m] [DecidableEq m] {g : GL m k}
     (hg : g ∈ _root_.GlobalTheory.SplitWeil.KO k m) :
     valuation k (GeneralLinearGroup.det g : k) = 1 := by

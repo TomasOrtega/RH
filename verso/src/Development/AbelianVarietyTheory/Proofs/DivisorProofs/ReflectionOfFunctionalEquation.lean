@@ -20,6 +20,13 @@ namespace GlobalTheory.ReflVal
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hcm` using `hFE.cm`. Establish `h1` using `hcm E I φ m χ a Λ Λ hφ hu hi hm0 ha hΛ (GlobalTheory.T.isPrimitiveHeckeLFunction_inv_of_trivialOnMaxReal E χ Λ ht hΛ) s hs hs'`. Establish `h0` using `hcm E I φ m χ₀ a₀ Λ₀ Λ₀ hφ hu₀ hi₀ hm0 ha₀ hΛ₀ (GlobalTheory.T.isPrimitiveHeckeLFunction_inv_of_trivialOnMaxReal E χ₀ Λ₀ ht₀ hΛ₀) s hs hs'`. Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)`. Establish `hL : LInf m s ≠ 0`.
+
+Use `Finset.prod_ne_zero_iff.2 fun i _ => mul_ne_zero (mul_ne_zero two_ne_zero ?_) (Complex.Gamma_ne_zero (hs i))` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. The claim follows by propositional logic. Rewrite `h1` using `[he]`. Use `mul_left_cancel₀ hL ?_` and prove the remaining obligations.
+
+Take the linear combination `Λ₀ (1 - s) * h1 - e * Λ (1 - s) * h0`.
+-/
 theorem reflect_of_finEps (hFE : GlobalTheory.Published.HeckeTateFunctionalEquation) [IsCMField E] {I : Type} [Fintype I]
     {φ : I → E →+* ℂ} (hφ : IsCMType φ) {m : I → ℤ} (hm0 : ∃ i, m i ≠ 0) {χ χ₀ : HChar E} (hu : IsUnitary χ)
     (hu₀ : IsUnitary χ₀) (hi : HasInf χ φ m) (hi₀ : HasInf χ₀ φ m) (ht : TrivOnF χ) (ht₀ : TrivOnF χ₀)
@@ -44,6 +51,13 @@ namespace GlobalTheory.ReflVal
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `choose g hg he using h`. Use `set S := (finite_mulSupport_locEps χ a s).toFinset ∪ (finite_mulSupport_locEps χ₀ a₀ s).toFinset ∪ hcf.toFinset`. Establish `hS1 : Function.mulSupport (fun w => locEps χ w (a w) s) ⊆ S` using `fun w hw => by simp [S, hw]`. Establish `hS2 : Function.mulSupport (fun w => locEps χ₀ w (a₀ w) s) ⊆ S` using `fun w hw => by simp [S, hw]`. Establish `hS3 : Function.mulSupport c ⊆ S` using `fun w hw => by simp [S, hw]`.
+
+Establish `hP : ∀ T : Finset (HeightOneSpectrum (𝓞 E)), P (∏ w ∈ T, g w)` using `fun T => by`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using h1`. Consider the case `insert x T hx ih => rw [Finset.prod_insert hx]`. Conclude with `hmul _ _ (hg x) ih`.
+
+Use `⟨∏ w ∈ S, g w, hP S, ?_⟩` and prove the remaining obligations. Rewrite `*` using `[finEps, finEps, finprod_eq_prod_of_mulSupport_subset _ hS1, finprod_eq_prod_of_mulSupport_subset _ hS2, finprod_eq_prod_of_mulSupport_subset _ hS3]`. Rewrite using `[Finset.prod_congr rfl fun w _ => he w, Finset.prod_mul_distrib, Finset.prod_mul_distrib, hc, mul_one, map_prod]`.
+-/
 theorem finEps_eq_of_local {K : Type} [Field K] (σ : K →+* ℂ) (P : K → Prop) (h1 : P 1)
     (hmul : ∀ x y, P x → P y → P (x * y)) (χ χ₀ : HChar E) (a a₀ : HeightOneSpectrum (𝓞 E) →₀ ℕ) (s : ℂ)
     (c : HeightOneSpectrum (𝓞 E) → ℂ) (hcf : (Function.mulSupport c).Finite) (hc : ∏ᶠ w, c w = 1)
@@ -64,6 +78,11 @@ theorem finEps_eq_of_local {K : Type} [Field K] (σ : K →+* ℂ) (P : K → Pr
     finprod_eq_prod_of_mulSupport_subset _ hS3] at *
   rw [Finset.prod_congr rfl fun w _ => he w, Finset.prod_mul_distrib, Finset.prod_mul_distrib, hc, mul_one, map_prod]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Mem.UnrAe.exists_levelLe χ`. Establish `hE : ∀ w, ExpAt χ w (Nat.find (h w))` using `fun w m => ⟨fun hm => Nat.find_min' (h w) hm, fun hm x hx hx' => Nat.find_spec (h w) x hx (hx'.trans (by`. Rewrite using `[WithZero.exp_le_exp]`. Use the proof step `omega))⟩`. Establish `hsub : Function.support (fun w => Nat.find (h w)) ⊆ {v | ¬ χ.UnrAt v}` using `fun w hw hu => hw ((hE w).unique ((expAt_zero_iff χ w).2 hu))`.
+
+Conclude with `⟨Finsupp.ofSupportFinite _ ((GlobalTheory.Mem.UnrAe.finite_ramified χ).subset hsub), fun w => hE w⟩`.
+-/
 theorem exists_finsupp_expAt (χ : HChar E) : ∃ a : HeightOneSpectrum (𝓞 E) →₀ ℕ, ∀ w, ExpAt χ w (a w) := by
   classical
   have h := GlobalTheory.Mem.UnrAe.exists_levelLe χ
@@ -74,6 +93,9 @@ theorem exists_finsupp_expAt (χ : HChar E) : ∃ a : HeightOneSpectrum (𝓞 E)
     hw ((hE w).unique ((expAt_zero_iff χ w).2 hu))
   exact ⟨Finsupp.ofSupportFinite _ ((GlobalTheory.Mem.UnrAe.finite_ramified χ).subset hsub), fun w => hE w⟩
 
+/- English proof (translation)
+Introduce `m` and use `by rw [← hn m] constructor · intro h' x hx hx' have := h' x hx hx' rwa [Formalism.L2.Host.HChar.loc_mul, h x hx, mul_one] at this · intro h' x hx hx' rw [Formalism.L2.Host.HChar.loc_mul, h' x hx hx', h x hx, one_mul]`.
+-/
 theorem expAt_mul_of_unrAt {χ ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (h : ξ.UnrAt w) {n : ℕ} (hn : ExpAt χ w n) :
     ExpAt (χ * ξ) w n := fun m => by
   rw [← hn m]
@@ -84,6 +106,9 @@ theorem expAt_mul_of_unrAt {χ ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (h
   · intro h' x hx hx'
     rw [Formalism.L2.Host.HChar.loc_mul, h' x hx hx', h x hx, one_mul]
 
+/- English proof (translation)
+Introduce `m` and use `by constructor · intro h by_contra c obtain rfl : m = 0 := by omega exact hr ((ξ.unrAt_iff w).2 h) · intro hm x hx hx' exact ht x hx (hx'.trans (by rw [WithZero.exp_le_exp]; omega))`.
+-/
 theorem expAt_one_of_tame {ξ : HChar E} {w : HeightOneSpectrum (𝓞 E)} (ht : ξ.TameAt w) (hr : ¬ ξ.UnrAt w) :
     ExpAt ξ w 1 := fun m => by
   constructor
@@ -100,6 +125,17 @@ namespace GlobalTheory.ReflVal
 
 open Formalism.L2.Host (unif atFin)
 
+/- English proof (translation)
+Introduce `E _ _ χ ξ w a s hU`. Establish `hloc : ∀ x : Eˣ, (χ * ξ).locK w x = χ.locK w x * ξ.locK w x` using `fun x => rfl`. Establish `hG : a ≠ 0 → gaussSumAt (χ * ξ) w a (unif w ^ (a + diffExp w)) = gaussSumAt χ w a (unif w ^ (a + diffExp w))`. Introduce `ha`. Unfold `gaussSumAt`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `hy` using `out_notMem w ha y`. Use `set z : 𝓞 E := Quotient.out (y : 𝓞 E ⧸ w.asIdeal ^ a)`. Establish `hz1 : w.valuation E (z : E) = 1` using `(w.valuation_eq_one_iff_notMem (K := E)).2 hy`.
+
+Establish `hz0 : (z : E) ≠ 0` using `fun h => by rw [h, map_zero] at hz1; exact zero_ne_one hz1`. Unfold `gaussTerm`. Rewrite using `[dif_neg hz0, dif_neg hz0, hloc]`. Establish `h1 : ξ.locK w (Units.mk0 _ hz0) = 1` using `hU _ (by show Valued.v (((z : E) : w.adicCompletion E)) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hz1])`.
+
+Rewrite using `[h1, mul_one]`. Unfold `locEps`. Use `split_ifs with ha`. Rewrite using `[hloc, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hloc, Units.val_mul, hG ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locEps_mul_of_unrAt : ∀ (E : Type) [Field E] [NumberField E] (χ ξ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (a : ℕ)
     (s : ℂ), ξ.UnrAt w → locEps (χ * ξ) w a s = ((ξ.locK w (unif w ^ (a + diffExp w)) : ℂˣ) : ℂ) * locEps χ w a s := by
   intro E _ _ χ ξ w a s hU
@@ -132,6 +168,9 @@ open Formalism.L2.Host (unif atFin)
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `h : (ξ ^ N).locK w y = 1` using `by rw [show ξ ^ N = 1 from hf]; rfl`. Establish `h2 : (ξ ^ N).locK w y = ξ.locK w y ^ N` using `by show (ξ.1 ^ N) _ = _`. Rewrite using `[MonoidHom.pow_apply]`. Both sides reduce to the same expression. Rewrite using `[← Units.val_pow_eq_pow_val, ← h2, h, Units.val_one]`.
+-/
 theorem locK_pow_eq_one {ξ : HChar E} {N : ℕ} (hf : ξ.OrderDvd N) (w : HeightOneSpectrum (𝓞 E)) (y : Eˣ) :
     ((ξ.locK w y : ℂˣ) : ℂ) ^ N = 1 := by
   have h : (ξ ^ N).locK w y = 1 := by rw [show ξ ^ N = 1 from hf]; rfl
@@ -140,6 +179,9 @@ theorem locK_pow_eq_one {ξ : HChar E} {N : ℕ} (hf : ξ.OrderDvd N) (w : Heigh
     rw [MonoidHom.pow_apply]; rfl
   rw [← Units.val_pow_eq_pow_val, ← h2, h, Units.val_one]
 
+/- English proof (translation)
+Use `(GlobalTheory.Square.isAwayUnit_closure K m hm).1 g N hN (σ.injective ?_)` and prove the remaining obligations. Rewrite using `[map_pow, hg, locK_pow_eq_one hf, map_one]`.
+-/
 theorem isAwayUnit_of_locK {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) {ξ : HChar E} {N : ℕ}
     (hN : 0 < N) (hf : ξ.OrderDvd N) (w : HeightOneSpectrum (𝓞 E)) (y : Eˣ) {g : K} (hg : σ g = ((ξ.locK w y : ℂˣ) : ℂ))
     {m : ℕ} (hm : 0 < m) : GlobalTheory.Square.IsAwayUnit m g := by
@@ -153,6 +195,41 @@ namespace GlobalTheory.SqTop
 open Formalism.BasicNotions Formalism.IndefR.Links GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTheory.RowTest GlobalTheory.ReflVal
 open Formalism.L2.Host (unif atFin)
 
+/- English proof (translation)
+Use `set ξ := Lc.xiH t with hξ`. Use `set ν₀ := nuH G μ₀ i j with hν₀`. Establish `e : nuH G t i j = ν₀ * ξ`. Simplify using `only [ν₀, ξ, nuH, hL.xi_base, mul_one]`. Conclude with `mul_div_right_comm _ _ _`.
+
+Establish `hv` using `GlobalTheory.FunObj.SqNum.Model.isValChar_nu hL G i j (Nat.zero_le (halfRank D i j))`. Take `⟨N, hN, hf⟩` from `hL.xi_fin t`. Establish `hu : IsUnitary (nuH G t i j)` using `GlobalTheory.ChrEqUnique.isUnitary_of_chrEq D _ _ (chrEq_nu G t i j hL)`. Establish `hm : HasInf (nuH G t i j) (cmPhi D) (fun τ => ((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ))`. Introduce `k`.
+
+Rewrite using `[e, Formalism.L2.Host.HChar.inf_mul, GlobalTheory.TypeValues.inf_eq_one ξ hN hf k, mul_one]`. Conclude with `hv.1.2.2.1 k`. Establish `ht : TrivOnF (nuH G t i j)` using `by rw [e]; exact hv.1.2.1.mul (hL.xi_triv t)`. Take `⟨a, ha⟩` from `exists_finsupp_expAt (nuH G t i j)`. Take `⟨a₀, ha₀⟩` from `exists_finsupp_expAt ν₀`.
+
+Establish `hbig : ∀ τ, (e0 D i j : ℤ) < ((kap D sc.cGap i j 0 τ : ℕ) : ℤ)` using `fun τ => by`. Establish `a0` using `(GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (Nat.zero_le (halfRank D i j))).1`. Establish `a1` using `GlobalTheory.FunObj.SqNum.Model.kap_add D sc.cGap i j τ (le_refl (halfRank D i j))`. Establish `a2 : e0 D i j ≤ halfRank D i j` using `by unfold e0 halfRank botBig botSmall; omega`. Use linear arithmetic over natural numbers and integers.
+
+Choose the witnesses or unpack the hypotheses as in `⟨τ₀⟩ : Nonempty D.what₂.Tau := by`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.E)` from `inferInstance`. Take `⟨τ, -⟩` from `hφ w.embedding`. Conclude with `⟨τ⟩`. Establish `hm0 : ∃ τ, ((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ) ≠ 0` using `⟨τ₀, by have := hbig τ₀; omega⟩`.
+
+Establish `hs : ∀ τ (k : ℕ), (s : ℂ) + ((|((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ)| : ℤ) : ℂ) ≠ -k`. Introduce `τ k h`. Establish `h2 : ((s + |((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ)| + k : ℤ) : ℂ) = 0` using `by push_cast; linear_combination h`. Establish `h3` using `Int.cast_eq_zero.1 h2`. Use `hbig τ` as an intermediate fact.
+
+Rewrite `h3` using `[abs_of_nonneg (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hs' : ∀ τ (k : ℕ), 1 - (s : ℂ) + ((|((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ)| : ℤ) : ℂ) ≠ -k`. Introduce `τ k h`. Establish `h2 : ((1 - s + |((kap D sc.cGap i j 0 τ : ℕ) : ℤ) + ((0 : ℕ) : ℤ)| + k : ℤ) : ℂ) = 0` using `by push_cast; linear_combination h`.
+
+Establish `h3` using `Int.cast_eq_zero.1 h2`. Use `hbig τ` as an intermediate fact. Rewrite `h3` using `[abs_of_nonneg (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hQn : 0 < Qn G t` using `Finset.prod_pos fun w _ => Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Set `c : HeightOneSpectrum (𝓞 D.host.E) → ℂ` to `fun w => ∏ᶠ (_ : ¬ ξ.UnrAt w ∧ ν₀.UnrAt w), ((ν₀.val w : ℂˣ) : ℂ)`. Establish `hc1 : ∀ w, ξ.UnrAt w → c w = 1` using `fun w h => by`. Simplify using `only [c]`. Rewrite using `[finprod_eq_if, if_neg (fun h' => h'.1 h)]`. Establish `hcf : (Function.mulSupport c).Finite` using `(GlobalTheory.Mem.UnrAe.finite_ramified ξ).subset fun w hw h => hw (hc1 w h)`.
+
+Establish `hcprod : ∏ᶠ w, c w = 1` using `GlobalTheory.T.finprod_nu_values_twist_only_ramified_eq_one G hL i j t`. Establish `hloc : ∀ w, ∃ g, GlobalTheory.Square.IsAwayUnit (Qn G t) g ∧ locEps (nuH G t i j) w (a w) (s : ℂ) = D.what₂.embLL g * c w * locEps ν₀ w (a₀ w) (s : ℂ)`. Introduce `w`. Establish `hxi : ∀ y : D.host.Eˣ, ((ξ.locK w y : ℂˣ) : ℂ) ∈ Set.range D.what₂.embLL` using `fun y => hc.xi t w (atFin w y)`. Distinguish the cases in `hU : ξ.UnrAt w`.
+
+Establish `hE` using `expAt_mul_of_unrAt hU (ha₀ w)`. Rewrite `hE` using `[← e]`. Rewrite using `[(ha w).unique hE, e, locEps_mul_of_unrAt _ ν₀ ξ w _ _ hU, hc1 w hU]`. Take `⟨g, hg⟩` from `hxi (unif w ^ (a₀ w + diffExp w))`. Conclude with `⟨g, isAwayUnit_of_locK D.what₂.embLL hN hf w _ hg hQn, by rw [hg, mul_one]⟩`.
+
+Distinguish the cases in `hU0 : ν₀.UnrAt w`. Take `⟨q, hq, hcard, hqQ, w', hw', hw'N⟩` from `GlobalTheory.T.twist_only_ramified_place_prime_residue_dvd_norm G hL i j t w hU hU0`. Establish `h1` using `expAt_one_of_tame (hL.xi_tame t w) hU`. Establish `hroot : ∀ z : ℂ, z ^ q = 1 → z ∈ Set.range D.what₂.embLL` using `fun z hz => by`. Use `hr t w' hw' z ?_` and prove the remaining obligations.
+
+Establish `hd : 1 ≤ depthAt G w'` using `le_max_right _ _`. Rewrite using `[hw'N, ← Nat.sub_add_cancel hd, pow_succ, pow_mul', hz, one_pow]`. Take `⟨hE, g, hg, hge⟩` from `GlobalTheory.T.localEpsilonFactor_tame_finiteOrder_twist _ _ D.what₂.embLL ν₀ ξ w q (Qn G t) N s hq hcard hqQ hN hf hU0 h1 hxi hroot hs0`. Rewrite `hE` using `[← e]`. Establish `h0 : ExpAt ν₀ w 0` using `(expAt_zero_iff ν₀ w).2 hU0`.
+
+Rewrite using `[(ha w).unique hE, (ha₀ w).unique h0, e, hge]`. Establish `hcw : c w = ((ν₀.val w : ℂˣ) : ℂ)`. Simplify using `only [c]`. Rewrite using `[finprod_eq_if, if_pos ⟨hU, hU0⟩]`. Conclude with `⟨g, hg, by rw [hcw]⟩`.
+
+Take `⟨q, hq, hcard, hsq, h2⟩` from `GlobalTheory.T.twist_and_nu_ramified_place_degree_one_exponent_two G hL hb i j t w hU hU0`. Take `⟨hE, y, hy⟩` from `GlobalTheory.T.tateLocalEpsilonFactor_mul_tameChar _ ν₀ ξ w q (s : ℂ) hq hcard hsq h2 (hL.xi_tame t w)`. Rewrite `hE` using `[← e]`. Rewrite using `[(ha w).unique hE, (ha₀ w).unique h2, e, hy]`. Establish `hcw : c w = 1` using `by simp only [c]; rw [finprod_eq_if, if_neg (fun h' => hU0 h'.2)]`.
+
+Take `⟨g, hg⟩` from `hxi y`. Conclude with `⟨g, isAwayUnit_of_locK D.what₂.embLL hN hf w y hg hQn, by rw [hcw, hg, mul_one]⟩`. Take `⟨g, hg, hge⟩` from `finEps_eq_of_local D.what₂.embLL (GlobalTheory.Square.IsAwayUnit (Qn G t)) (GlobalTheory.Square.IsAwayUnit.one _) (fun x y hx hy => hx.mul hy) (nuH G t i j) ν₀ a a₀ (s : ℂ) c hcf hcprod hloc`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use `reflect_of_finEps hFE hφ hm0 hu hv.1.1 hm hv.1.2.2.1 ht hv.1.2.1 ha ha₀ hΛ hΛ₀ hs hs' hge` as an intermediate fact.
+
+Use `push_cast`. Conclude with `this`.
+-/
 theorem refl_square (hFE : GlobalTheory.Published.HeckeTateFunctionalEquation) {D : D7} {T : Type} {Lc : LevCh D T}
     {sc : GlobalTheory.ChiGrid.Consts} [IsCMField D.host.E] (hφ : IsCMType (cmPhi D)) {μ₀ : T} (hL : Lc.Is μ₀)
     (G : GridData Lc sc) (hb : IsBaseCond (condF G.pl)) (hc : CharsIn G D.what₂.embLL)
@@ -249,6 +326,11 @@ theorem refl_square (hFE : GlobalTheory.Published.HeckeTateFunctionalEquation) {
   push_cast
   exact this
 
+/- English proof (translation)
+Introduce `hFE hFD _`. Take `⟨CF0, h⟩` from `hFD`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, h'⟩` from `h ε CF hCF`. Use `⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hCM, -, hFd, hb, -⟩` from `h' C hC D large₂ he hx hR T Lc μ₀ hL G`. Take `⟨-, -, -, -, -, -, hφ, -⟩` from `hFd`. Introduce `W S hN i j t Λ Λ₀ hΛ hΛ₀ s hs1 hs0`. Conclude with `refl_square hFE hφ hL G hb hN.chars hN.roots i j t hΛ hΛ₀ s hs1 hs0`.
+-/
 theorem refl_of_functionalEquation : GlobalTheory.Published.HeckeTateFunctionalEquation → FieldDat → LNe → Refl := by
   intro hFE hFD _
   obtain ⟨CF0, h⟩ := hFD

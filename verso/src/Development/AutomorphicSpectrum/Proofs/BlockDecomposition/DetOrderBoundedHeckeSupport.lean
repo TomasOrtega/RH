@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.CtS
 
+/- English proof (translation)
+Establish `hN : M = (Ov E w).subtype.mapMatrix (Matrix.of fun i j => (⟨M i j, hM i j⟩ : Ov E w))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[hN, ← RingHom.map_det]`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem det_mem_Ov {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     {M : Matrix (Fin n) (Fin n) (w.adicCompletion E)} (hM : IsInt w M) : M.det ∈ Ov E w := by
   have hN : M = (Ov E w).subtype.mapMatrix (Matrix.of fun i j => (⟨M i j, hM i j⟩ : Ov E w)) := by
@@ -21,12 +24,24 @@ theorem det_mem_Ov {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (
   rw [hN, ← RingHom.map_det]
   exact SetLike.coe_mem _
 
+/- English proof (translation)
+Establish `h : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Rewrite using `[ordL, dif_neg h, neg_neg, ofAdd_toAdd, WithZero.coe_unzero]`.
+-/
 private theorem v_eq_ofAdd_lemma {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
     (x : w.adicCompletion E) (hx : x ≠ 0) :
     Valued.v x = ((Multiplicative.ofAdd (-ordL x) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
   have h : Valued.v x ≠ 0 := (Valuation.ne_zero_iff _).mpr hx
   rw [ordL, dif_neg h, neg_neg, ofAdd_toAdd, WithZero.coe_unzero]
 
+/- English proof (translation)
+Introduce `E _ _ w n ϖ hϖ g hg hgi`. Establish `hd : g.val.det ∈ Ov E w` using `det_mem_Ov hg`. Establish `hdi : (ϖ • (g⁻¹).val).det ∈ Ov E w` using `det_mem_Ov hgi`. Establish `hmul : g.val.det * (g⁻¹).val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`.
+
+Establish `hd0 : g.val.det ≠ 0` using `left_ne_zero_of_mul_eq_one hmul`. Establish `hdi0 : (g⁻¹).val.det ≠ 0` using `right_ne_zero_of_mul_eq_one hmul`. Rewrite `hdi` using `[Matrix.det_smul, Fintype.card_fin]`. Simplify using `only [Ov, ValuationSubring.mem_toSubring, HeightOneSpectrum.mem_adicCompletionIntegers] at hd hdi`. Rewrite `hdi` using `[map_mul, map_pow, show Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) from hϖ, v_eq_ofAdd_lemma _ hdi0, ← WithZero.coe_pow, ← WithZero.coe_mul, ← ofAdd_nsmul, ← ofAdd_add, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Mul …`.
+
+Rewrite `hd` using `[v_eq_ofAdd_lemma _ hd0, ← WithZero.coe_one, WithZero.coe_le_coe, ← ofAdd_zero, Multiplicative.ofAdd_le]`. Establish `hm` using `congrArg Valued.v hmul`. Rewrite `hm` using `[map_mul, map_one, v_eq_ofAdd_lemma _ hd0, v_eq_ofAdd_lemma _ hdi0, ← WithZero.coe_mul, ← ofAdd_add, ← WithZero.coe_one, WithZero.coe_inj, ofAdd_eq_one]`. Use `⟨(ordL g.val.det).toNat, ?_, ?_⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordL_det_range : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ g : GL (Fin n) (w.adicCompletion E), IsInt w g.val → IsInt w (ϖ • (g⁻¹).val) → ∃ i ≤ n, ordL g.val.det = (i : ℤ) := by
   intro E _ _ w n ϖ hϖ g hg hgi
   have hd : g.val.det ∈ Ov E w := det_mem_Ov hg

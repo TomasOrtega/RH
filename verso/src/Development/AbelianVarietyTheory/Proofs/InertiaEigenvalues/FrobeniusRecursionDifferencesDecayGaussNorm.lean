@@ -9,35 +9,59 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 def CoeffBd (ρ b : ℝ) (f : K⟦X⟧) : Prop := ∀ m, ‖coeff m f‖ * ρ ^ m ≤ b
 
+/- English proof (translation)
+Introduce `m` and use `norm_coeff_mul_le (w := fun m => ρ ^ m) (fun n => pow_nonneg hρ n) (fun i j => (pow_add ρ i j).le) ha hb hf hg m`.
+-/
 theorem bd_mul {ρ a b : ℝ} {f g : K⟦X⟧} (hρ : 0 ≤ ρ) (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hf : CoeffBd ρ a f) (hg : CoeffBd ρ b g) : CoeffBd ρ (a * b) (f * g) := fun m =>
   norm_coeff_mul_le (w := fun m => ρ ^ m) (fun n => pow_nonneg hρ n)
     (fun i j => (pow_add ρ i j).le) ha hb hf hg m
 
+/- English proof (translation)
+Introduce `m` and use `(norm_coeff_add_le (w := fun m => ρ ^ m) (fun n => pow_nonneg hρ n) f g m).trans (max_le (hf m) (hg m))`.
+-/
 theorem bd_add {ρ b : ℝ} {f g : K⟦X⟧} (hρ : 0 ≤ ρ) (hf : CoeffBd ρ b f) (hg : CoeffBd ρ b g) :
     CoeffBd ρ b (f + g) := fun m =>
   (norm_coeff_add_le (w := fun m => ρ ^ m) (fun n => pow_nonneg hρ n) f g m).trans
     (max_le (hf m) (hg m))
 
+/- English proof (translation)
+Introduce `m` and use `by simp [hb]`.
+-/
 theorem bd_zero {ρ b : ℝ} (hb : 0 ≤ b) : CoeffBd ρ b (0 : K⟦X⟧) := fun m => by simp [hb]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (CoeffBd ρ b) (fun _ _ => bd_add hρ) (bd_zero hb) h`.
+-/
 theorem bd_sum {α : Type} (s : Finset α) (f : α → K⟦X⟧) {ρ b : ℝ} (hρ : 0 ≤ ρ) (hb : 0 ≤ b)
     (h : ∀ i ∈ s, CoeffBd ρ b (f i)) : CoeffBd ρ b (∑ i ∈ s, f i) :=
   Finset.sum_induction f (CoeffBd ρ b) (fun _ _ => bd_add hρ) (bd_zero hb) h
 
+/- English proof (translation)
+Introduce `m` and use `by rw [coeff_C] split_ifs with h · subst h; simp · simp`.
+-/
 theorem bd_C {ρ : ℝ} (x : K) : CoeffBd ρ ‖x‖ (C x) := fun m => by
   rw [coeff_C]
   split_ifs with h
   · subst h; simp
   · simp
 
+/- English proof (translation)
+Introduce `m` and use `(hf m).trans hbb`.
+-/
 theorem bd_le {ρ b b' : ℝ} {f : K⟦X⟧} (hbb : b ≤ b') (hf : CoeffBd ρ b f) : CoeffBd ρ b' f :=
   fun m => (hf m).trans hbb
 
+/- English proof (translation)
+Introduce `m` and use `(mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hρ h m) (norm_nonneg _)).trans (hf m)`.
+-/
 theorem bd_mono {ρ ρ' b : ℝ} {f : K⟦X⟧} (hρ : 0 ≤ ρ') (h : ρ' ≤ ρ) (hf : CoeffBd ρ b f) :
     CoeffBd ρ' b f := fun m =>
   (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hρ h m) (norm_nonneg _)).trans (hf m)
 
+/- English proof (translation)
+Introduce `m` and use `by rw [coeff_frob] split_ifs with h · obtain ⟨q, rfl⟩ := h rw [Nat.mul_div_cancel_left _ (Fact.out : l.Prime).pos, pow_mul] exact hf q · simpa using hb`.
+-/
 theorem bd_frob (l : ℕ) [Fact l.Prime] {ρ b : ℝ} {f : K⟦X⟧} (hb : 0 ≤ b)
     (hf : CoeffBd (ρ ^ l) b f) : CoeffBd ρ b (frob K l f) := fun m => by
   rw [coeff_frob]
@@ -47,6 +71,9 @@ theorem bd_frob (l : ℕ) [Fact l.Prime] {ρ b : ℝ} {f : K⟦X⟧} (hb : 0 ≤
     exact hf q
   · simpa using hb
 
+/- English proof (translation)
+Introduce `m` and use `by have hN : 0 ≤ N := (mul_nonneg (norm_nonneg _) (pow_nonneg hr.le 0)).trans (hf 0) cases m with | zero => simpa [h0] using mul_nonneg (div_nonneg hN hr.le) hρ | succ m => have key : ρ ^ (m + 1) * r ≤ r ^ (m + 1) * ρ := by have h1 := pow_le_pow_left₀ hρ hρr m calc ρ ^ (m + 1) * …`.
+-/
 theorem bd_of_coeff_zero {r ρ N : ℝ} {f : K⟦X⟧} (hr : 0 < r) (hρ : 0 ≤ ρ) (hρr : ρ ≤ r)
     (hf : CoeffBd r N f) (h0 : coeff 0 f = 0) : CoeffBd ρ (N / r * ρ) f := fun m => by
   have hN : 0 ≤ N := (mul_nonneg (norm_nonneg _) (pow_nonneg hr.le 0)).trans (hf 0)
@@ -68,6 +95,27 @@ end GlobalTheory.BK.FrobDecay
 
 open GlobalTheory.BK.FrobDecay
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ l a _ _ ι _ _ k hk B c Z hB h0 hrec hX`. Establish `hr : 0 < rad l k` using `rad_pos l k`. Establish `hr1 : rad l k ≤ 1` using `rad_le_one l hk.le`. Establish `hmem : ∀ n τ i j, Z n τ i j ∈ R O K l k`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `τ i j`. Rewrite using `[h0, Matrix.map_apply]`. Conclude with `HasK.C_mem _`.
+
+Consider the case `succ n ih`. Introduce `τ i j`. Rewrite using `[hrec, Matrix.mul_apply]`. Use `Subalgebra.sum_mem _ fun q _ => mul_mem ?_ (by rw [Matrix.map_apply]; exact HasK.C_mem _)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `Subalgebra.sum_mem _ fun p _ => mul_mem (hB _ _ _) (by rw [Matrix.map_apply]; exact frob_mem_R l hk.le (ih _ _ _))`. Establish `hnn : ∀ f ∈ R O K l k, 0 ≤ normR l k f` using `fun f hf => (mul_nonneg (norm_nonneg _) (pow_nonneg hr.le 0)).trans (le_normR hf 0)`. Set `D : ℕ → ZMod a → Matrix ι ι K⟦X⟧` to `fun n τ => Z (n + 1) τ - Z n τ`. Establish `hD : ∀ n τ i j, D (n + 1) τ i j = ∑ q, (∑ p, B τ i p * frob K l (D n (τ - 1) p q)) * C (c τ q j)`. Introduce `n τ i j`.
+
+Simplify using `only [D, Matrix.sub_apply]`. Rewrite using `[hrec (n + 1) τ, hrec n τ]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, ← Finset.sum_sub_distrib, ← sub_mul, ← mul_sub, map_sub, Matrix.sub_apply]`. Take `⟨β, hβ0, hBbd⟩ : ∃ β : ℝ, 0 ≤ β ∧ ∀ τ i j, CoeffBd (rad l k) β (B τ i j)` from `⟨∑ x : ZMod a × ι × ι, normR l k (B x.1 x.2.1 x.2.2), Finset.sum_nonneg fun x _ => hnn _ (hB _ _ _), fun τ i j m => (le_normR (hB τ i j) m).trans (Finset.single_le_sum (f := fun x : ZMod a × ι × ι => normR l k (B x.1 x.2.1 x.2.2)) (fun x _ => hnn _ (hB _ _ _)) (Finset.mem_univ (τ …`. Take `⟨γ, hγ0, hcbd⟩ : ∃ γ : ℝ, 0 ≤ γ ∧ ∀ τ i j, ‖c τ i j‖ ≤ γ` from `⟨∑ x : ZMod a × ι × ι, ‖c x.1 x.2.1 x.2.2‖, Finset.sum_nonneg fun x _ => norm_nonneg _, fun τ i j => Finset.single_le_sum (f := fun x : ZMod a × ι × ι => ‖c x.1 x.2.1 x.2.2‖) (fun x _ => norm_nonneg _) (Finset.mem_univ (τ, i, j))⟩`.
+
+Establish `hD0mem : ∀ τ i j, D 0 τ i j ∈ R O K l k` using `fun τ i j => sub_mem (hmem 1 τ i j) (hmem 0 τ i j)`. Take `⟨N, hN0, hNbd⟩ : ∃ N : ℝ, 0 ≤ N ∧ ∀ τ i j, CoeffBd (rad l k) N (D 0 τ i j)` from `⟨∑ x : ZMod a × ι × ι, normR l k (D 0 x.1 x.2.1 x.2.2), Finset.sum_nonneg fun x _ => hnn _ (hD0mem _ _ _), fun τ i j m => (le_normR (hD0mem τ i j) m).trans (Finset.single_le_sum (f := fun x : ZMod a × ι × ι => normR l k (D 0 x.1 x.2.1 x.2.2)) (fun x _ => hnn _ (hD0mem _ _ _)) (Fi …`. Establish `key : ∀ n, ∀ ρ : ℝ, 0 ≤ ρ → ρ ≤ rad l k → ∀ τ i j, CoeffBd ρ (N / rad l k * (β * γ) ^ n * ρ ^ (l ^ n)) (D n τ i j)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `ρ hρ hρr τ i j`. Simplify using `only [pow_zero, mul_one, pow_one]`. Use `bd_of_coeff_zero hr hρ hρr (hNbd τ i j) ?_` and prove the remaining obligations. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`.
+
+Conclude with `X_dvd_iff.1 (hX τ i j)`. Consider the case `succ n ih`. Introduce `ρ hρ hρr τ i j`. Rewrite using `[hD]`. Establish `hρl : ρ ^ l ≤ rad l k` using `(pow_le_of_le_one hρ (hρr.trans hr1) (Fact.out : l.Prime).ne_zero).trans hρr`.
+
+Establish `hM0 : 0 ≤ N / rad l k * (β * γ) ^ n * (ρ ^ l) ^ (l ^ n)` using `mul_nonneg (mul_nonneg (div_nonneg hN0 hr.le) (pow_nonneg (mul_nonneg hβ0 hγ0) _)) (pow_nonneg (pow_nonneg hρ _) _)`. Establish `bnd : N / rad l k * (β * γ) ^ (n + 1) * ρ ^ (l ^ (n + 1)) = (β * (N / rad l k * (β * γ) ^ n * (ρ ^ l) ^ (l ^ n))) * γ`. Rewrite using `[← pow_mul, ← pow_succ']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[bnd]`.
+
+Use `bd_sum _ _ hρ (mul_nonneg (mul_nonneg hβ0 hM0) hγ0) fun q _ => bd_mul hρ (mul_nonneg hβ0 hM0) hγ0 ?_ (bd_le (hcbd τ q j) (bd_C (c τ q j)))` and prove the remaining obligations. Conclude with `bd_sum _ _ hρ (mul_nonneg hβ0 hM0) fun p _ => bd_mul hρ hβ0 hM0 (bd_mono hρ hρr (hBbd τ i p)) (bd_frob l hM0 (ih (ρ ^ l) (pow_nonneg hρ _) hρl (τ - 1) p q))`. Use `⟨N / rad l k, β * γ, mul_nonneg hβ0 hγ0, fun n τ i j => ⟨hmem n τ i j, ?_⟩⟩` and prove the remaining obligations. Conclude with `ciSup_le fun m => key n (rad l k) hr.le le_rfl τ i j m`.
+-/
 theorem GlobalTheory.BK.frob_recursion_decay : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (l a : ℕ) [Fact l.Prime] [NeZero a] (ι : Type) [Fintype ι] [DecidableEq ι] (k : ℝ), 0 < k → ∀ (B : ZMod a → Matrix ι ι K⟦X⟧) (c : ZMod a → Matrix ι ι K) (Z : ℕ → ZMod a → Matrix ι ι K⟦X⟧), (∀ τ i j, B τ i j ∈ R O K l k) → (∀ τ, Z 0 τ = (c τ).map C) → (∀ n τ, Z (n + 1) τ = B τ * (Z n (τ - 1)).map (frob K l) * (c τ).map C) → (∀ τ i j, (X : K⟦X⟧) ∣ Z 1 τ i j - Z 0 τ i j) → ∃ M β : ℝ, 0 ≤ β ∧ ∀ n τ i j, Z n τ i j ∈ R O K l k ∧ normR l k (Z (n + 1) τ i j - Z n τ i j) ≤ M * β ^ n * rad l k ^ (l ^ n) := by
   intro O K _ _ _ _ _ l a _ _ ι _ _ k hk B c Z hB h0 hrec hX
   have hr : 0 < rad l k := rad_pos l k

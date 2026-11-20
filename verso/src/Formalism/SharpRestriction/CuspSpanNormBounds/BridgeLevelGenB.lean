@@ -10,10 +10,26 @@ open scoped TensorProduct
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[PI.WAU.val_algebraMap_F, valuation_of_algebraMap]`.
+-/
 theorem val_int (v : HeightOneSpectrum (𝓞 F)) (a : 𝓞 F) :
     Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) = v.intValuation a := by
   rw [PI.WAU.val_algebraMap_F, valuation_of_algebraMap]
 
+/- English proof (translation)
+Establish `hγ : v.intValuation g ≠ 0` using `intValuation_ne_zero v g hg`. Use `set w : v.adicCompletion F := algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F g) with hw`. Establish `hwv : Valued.v w = v.intValuation g` using `val_int v g`. Establish `hw0 : w ≠ 0`. Introduce `h`.
+
+Rewrite `hwv` using `[h, map_zero]`. Conclude with `hγ hwv.symm`. Establish `hr0 : (Valued.v : Valuation (v.adicCompletion F) _).restrict w ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `hw0`.
+
+Establish `hnhds : {y : v.adicCompletion F | Valued.v (y - x) < Valued.v w} ∈ 𝓝 x`. Rewrite using `[Valued.mem_nhds]`. Conclude with `⟨Units.mk0 _ hr0, fun y hy => (Valuation.restrict_lt_iff _).1 hy⟩`. Take `⟨_, hy, ⟨k, rfl⟩⟩` from `mem_closure_iff_nhds.mp ((denseRange_algebraMap (R := 𝓞 F) F v) x) _ hnhds`. Simplify using `only [Set.mem_ofPred_eq] at hy`.
+
+Rewrite `hy` using `[hwv]`. Establish `hg1 : v.intValuation g ≤ 1` using `intValuation_le_one v g`. Establish `hk : v.valuation F k ≤ 1`. Rewrite using `[← PI.WAU.val_algebraMap_F]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨a, ha⟩` from `exists_valuation_sub_lt_of_integer v hk (Units.mk0 _ hγ)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h2 : Valued.v (algebraMap F (v.adicCompletion F) k - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) < v.intValuation g`. Rewrite using `[← map_sub, PI.WAU.val_algebraMap_F, ← Valuation.map_neg, neg_sub]`. Simplify using `using ha`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `max_lt ?_ h2` and prove the remaining obligations. Rewrite using `[← Valuation.map_neg, neg_sub]`. Conclude with `hy`.
+-/
 theorem exists_int_close (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion F) (hx : Valued.v x ≤ 1)
     {g : 𝓞 F} (hg : g ≠ 0) :
     ∃ a : 𝓞 F, Valued.v (x - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F a)) < v.intValuation g := by
@@ -54,6 +70,25 @@ theorem exists_int_close (v : HeightOneSpectrum (𝓞 F)) (x : v.adicCompletion 
       refine max_lt ?_ h2
       rw [← Valuation.map_neg, neg_sub]; exact hy
 
+/- English proof (translation)
+Use `set gO : 𝓞 F := (g : 𝓞 F) with hgO`. Establish `hg0 : gO ≠ 0` using `by rw [hgO]; exact Nat.cast_ne_zero.2 (by omega)`. Establish `hI : Ideal.span {gO} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hg0`.
+
+Use `set T := (Ideal.finite_factors hI).toFinset with hT`. Establish `hyv : ∀ v : HeightOneSpectrum (𝓞 F), Valued.v (y v) ≤ 1` using `fun v => (mem_adicCompletionIntegers (𝓞 F) F v).1 (hy v)`. Use `choose a ha using fun v : HeightOneSpectrum (𝓞 F) => exists_int_close v (y v) (hyv v) hg0`. Use `set k : HeightOneSpectrum (𝓞 F) → ℕ := fun v => (Associates.mk v.asIdeal).count (Associates.mk (Ideal.span {gO})).factors with hk`. Take `⟨s, hs⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := T) (fun v => v.asIdeal) k (fun v _ => v.prime) (fun v _ w _ hvw h => hvw (HeightOneSpectrum.ext h)) (fun v => a v.1)`.
+
+Establish `hval : ∀ v : HeightOneSpectrum (𝓞 F), Valued.v (y v - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F s)) ≤ v.intValuation gO`. Introduce `v`. Distinguish the cases in `hv : v ∈ T`. Establish `h1` using `hs v hv`. Establish `h2 : v.intValuation (s - a v) ≤ v.intValuation gO`.
+
+Rewrite using `[intValuation_if_neg v hg0]`. Conclude with `(intValuation_le_pow_iff_mem v _ _).2 h1`. Establish `h3 : Valued.v (algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F (a v)) - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F s)) ≤ v.intValuation gO`. Rewrite using `[← map_sub, ← map_sub, val_int, ← Valuation.map_neg, neg_sub]`. Conclude with `h2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hgv : gO ∉ v.asIdeal`. Introduce `hm`. Apply `hv` to reduce the goal to its premises. Rewrite using `[hT, Set.Finite.mem_toFinset]`.
+
+Use `show v.asIdeal ∣ Ideal.span {gO}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hm`. Establish `h1 : v.intValuation gO = 1` using `le_antisymm (intValuation_le_one v gO) (not_lt.1 fun h => hgv ((intValuation_lt_one_iff_mem v gO).1 h))`. Rewrite using `[h1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hgF : algebraMap (𝓞 F) F gO ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 F) F)]`. Conclude with `hg0`. Use `⟨s, algebraMap F _ (algebraMap (𝓞 F) F gO)⁻¹ * (y - algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F s)), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v show algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F gO)⁻¹ * (y v - algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F s)) ∈ _`. Rewrite using `[mem_adicCompletionIntegers, map_mul, map_inv₀, map_inv₀, val_int]`. Establish `hne : v.intValuation gO ≠ 0` using `intValuation_ne_zero v gO hg0`. Combine the equalities or inequalities in the displayed calculation. Establish `e : (g : FiniteAdeleRing (𝓞 F) F) = algebraMap F _ (algebraMap (𝓞 F) F gO)`.
+
+Rewrite using `[hgO, map_natCast, map_natCast]`. Rewrite using `[e, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hgF, map_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dense_mod (g : ℕ) (hg : 1 ≤ g) (y : FiniteAdeleRing (𝓞 F) F) (hy : y ∈ Formalism.UG.intAd F) :
     ∃ s : 𝓞 F, ∃ c ∈ Formalism.UG.intAd F,
       y = algebraMap F (FiniteAdeleRing (𝓞 F) F) (algebraMap (𝓞 F) F s) + (g : FiniteAdeleRing (𝓞 F) F) * c := by
@@ -121,6 +156,23 @@ theorem dense_mod (g : ℕ) (hg : 1 ≤ g) (y : FiniteAdeleRing (𝓞 F) F) (hy 
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `gen1 : ∀ b ∈ Formalism.UG.intOE E, b ⊗ₜ[F] (1 : Af F) ∈ IntAf F E` using `fun b hb => Subring.subset_closure (Or.inl ⟨⟨b, hb⟩, rfl⟩)`. Establish `gen2 : ∀ y ∈ Formalism.UG.intAd F, (1 : E) ⊗ₜ[F] y ∈ IntAf F E` using `fun y hy => Subring.subset_closure (Or.inr ⟨⟨y, hy⟩, rfl⟩)`. Establish `hgI : (g : E ⊗[F] Af F) ∈ IntAf F E` using `natCast_mem _ g`. Proceed by induction on `ha using Subring.closure_induction with`. Consider the case `mem x hx`.
+
+Break down `hx with ⟨⟨b, hb⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Conclude with `⟨b, hb, 0, zero_mem _, by simp⟩`. Take `⟨s, c, hc, e⟩` from `dense_mod g hg y hy`. Establish `hint : IsIntegral ℤ (algebraMap F E (algebraMap (𝓞 F) F s))` using `(RingOfIntegers.isIntegral_coe s).algebraMap`. Use `⟨algebraMap F E (algebraMap (𝓞 F) F s), ⟨⟨_, hint⟩, rfl⟩, (1 : E) ⊗ₜ[F] c, gen2 c hc, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (g : E ⊗[F] Af F) = (1 : E) ⊗ₜ[F] (g : Af F)`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_natCast]`. Establish `e2 : algebraMap F E (algebraMap (𝓞 F) F s) ⊗ₜ[F] (1 : Af F) = (1 : E) ⊗ₜ[F] algebraMap F (Af F) (algebraMap (𝓞 F) F s)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one (A := Af F), TensorProduct.smul_tmul]`. Use `show (1 : E) ⊗ₜ[F] y = _`.
+
+Rewrite using `[e1, e2, Algebra.TensorProduct.tmul_mul_tmul, one_mul, ← TensorProduct.tmul_add, ← e]`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`. Consider the case `one => exact ⟨1, one_mem _, 0, zero_mem _, by simp [Algebra.TensorProduct.one_def]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨b, hb, c, hc, rfl⟩` from `hx`.
+
+Take `⟨b', hb', c', hc', rfl⟩` from `hy`. Use `⟨b + b', add_mem hb hb', c + c', add_mem hc hc', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.add_tmul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`.
+
+Take `⟨b, hb, c, hc, rfl⟩` from `hx`. Use `⟨-b, neg_mem hb, -c, neg_mem hc, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.neg_tmul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨b, hb, c, hc, rfl⟩` from `hx`. Take `⟨b', hb', c', hc', rfl⟩` from `hy`. Use `⟨b * b', mul_mem hb hb', b ⊗ₜ[F] (1 : Af F) * c' + c * b' ⊗ₜ[F] (1 : Af F) + (g : E ⊗[F] Af F) * c * c', ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (add_mem (mul_mem (gen1 b hb) hc') (mul_mem hc (gen1 b' hb'))) (mul_mem (mul_mem hgI hc) hc')`. Rewrite using `[show (b * b') ⊗ₜ[F] (1 : Af F) = b ⊗ₜ[F] (1 : Af F) * b' ⊗ₜ[F] (1 : Af F) by`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dense_modE (g : ℕ) (hg : 1 ≤ g) (a : E ⊗[F] Af F) (ha : a ∈ IntAf F E) :
     ∃ b ∈ Formalism.UG.intOE E, ∃ c ∈ IntAf F E, a = b ⊗ₜ[F] (1 : Af F) + (g : E ⊗[F] Af F) * c := by
   have gen1 : ∀ b ∈ Formalism.UG.intOE E, b ⊗ₜ[F] (1 : Af F) ∈ IntAf F E := fun b hb =>

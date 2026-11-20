@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalDualGenerator.EpSe
 
 namespace PI.LocDualGen.Of
 
+/- English proof (translation)
+The claim follows from `PI.LocDualGen.Top.stmt_of PI.LocDualGen.Psi.addCharKernel PI.LocDualGen.FpD.existsDifferentGenerator h PI.LocDualGen.EpG.quadraticSelfDual`.
+-/
 theorem locDualGen_of (h : PI.LocDualGen.W.FpDualUnram) : PI.LocDualGen.Stmt :=
   PI.LocDualGen.Top.stmt_of PI.LocDualGen.Psi.addCharKernel PI.LocDualGen.FpD.existsDifferentGenerator h
     PI.LocDualGen.EpG.quadraticSelfDual

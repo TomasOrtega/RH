@@ -12,6 +12,9 @@ open Formalism.L2.SG.Pf.MainEqSteps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.NGCut.NormalInvariants.Gen.stepNormalsG_of (Formalism.L2.SG.Pf.nmlInvG_of Formalism.L2.SG.NGCut.NormalVectorPairings.NmlLine_holds Formalism.L2.SG.NGCut.NormalIntegrality.NmlInt_holds Formalism.L2.SG.NGCut.NormalVectorPairings.NmlSep_holds) Formalism.L2.SG.NGCut.N …`.
+-/
 theorem stepNormalsG_holds : StepNormalsG :=
   Formalism.L2.SG.NGCut.NormalInvariants.Gen.stepNormalsG_of
     (Formalism.L2.SG.Pf.nmlInvG_of Formalism.L2.SG.NGCut.NormalVectorPairings.NmlLine_holds

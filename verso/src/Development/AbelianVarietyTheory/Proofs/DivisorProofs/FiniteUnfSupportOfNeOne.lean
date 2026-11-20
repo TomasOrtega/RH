@@ -16,6 +16,9 @@ variable {k : Type} [Field k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype
 def symLev (c : ℕ) : n ⊕ Fin c → ℕ := if Even c then midLev (c / 2) else lev (c / 2 + 1)
 
 omit [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Unfold `symLev at h`. Use `split_ifs at h`. Conclude with `h`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;> simp [lev, midLev] at h ⊢ <;> omega`.
+-/
 theorem midLev_lt_of_symLev_lt {r s : n ⊕ Fin c} (h : symLev c r < symLev c s) :
     midLev (c / 2) r < midLev (c / 2) s := by
   unfold symLev at h
@@ -23,6 +26,11 @@ theorem midLev_lt_of_symLev_lt {r s : n ⊕ Fin c} (h : symLev c r < symLev c s)
   · exact h
   · rcases r with r | r <;> rcases s with s | s <;> simp [lev, midLev] at h ⊢ <;> omega
 
+/- English proof (translation)
+Unfold `symLev at hg`. Use `split_ifs at hg with h`. Take `⟨ρ, rfl⟩` from `h`. Establish `e1 : (ρ + ρ) / 2 = ρ` using `by omega`. Establish `e2 : (ρ + ρ + 1) / 2 = ρ` using `by omega`.
+
+Rewrite `hg` using `[e1]`. Rewrite using `[symN, e1, e2]`. Conclude with `((fj_unipotent k n (ρ + ρ) ρ (by omega) (by omega)).2.1 g).2 hg`. Conclude with `Subgroup.mem_sup_right (Subgroup.subset_closure hg)`.
+-/
 theorem mem_symN (hc : 1 ≤ c) {g : GL (n ⊕ Fin c) k}
     (hg : ∀ r s, symLev c s ≤ symLev c r → g.val r s = (1 : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k) r s) :
     g ∈ symN k n c := by
@@ -38,6 +46,13 @@ theorem mem_symN (hc : 1 ≤ c) {g : GL (n ⊕ Fin c) k}
 
 omit [Fintype n'] [DecidableEq n'] in
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inr j)]`. Simplify using `[stepPt, basePt, Free, Kept]`. Introduce `s _ hs`. Distinguish the cases in `hl : midLev (c / 2) s < midLev (c / 2) r`. Rewrite using `[hb hl, zero_mul]`.
+
+Unfold `symLev at h`. Break down `s with s | l` into its components or cases. Apply the tactic sequence `have : ¬ (c / 2 + 1 < j.val + 1 ∨ (Even c ∧ j.val = c / 2)) := by split_ifs at h with he <;> rcases r with r | r <;> simp [lev, midLev, he] at h hl ⊢ <;> omega`. Establish `h0 : stepPt x₀ e (Sum.inl s) (Sum.inr j.castSucc) = 0`. Rewrite using `[stepPt, Matrix.add_apply, of_apply, dif_neg (by exact this)]; simp [basePt]`.
+
+Rewrite using `[h0, mul_zero]`. Apply the tactic sequence `have h1 : ¬ l.val < j.val := by split_ifs at h with he <;> rcases r with r | r <;> simp [lev, midLev] at h hl ⊢ <;> omega`. Establish `h2 : l.val ≠ j.val` using `fun e => hs (by rw [Fin.ext e])`. Simplify using `[stepPt, basePt, Free, Kept, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_stepPt_apply {b : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k} (hb : b.BlockTriangular (midLev (c / 2)))
     (x₀ : Matrix n n' k) (e : StepVar n c n' → k) (r : n ⊕ Fin c) (j : Fin c)
     (h : symLev c r = symLev c (Sum.inr j : n ⊕ Fin c)) :
@@ -64,6 +79,35 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 omit [Fintype n'] in
 
+/- English proof (translation)
+Take `⟨b, hb', κ, hκ, rfl⟩` from `iwasawa_blockTriangular k (n ⊕ Fin c) (midLev (c / 2)) h`. Establish `hb : b.val.BlockTriangular (symLev c)` using `fun r s hrs => hb' (midLev_lt_of_symLev_lt hrs)`. Establish `hκ1 : Bd 1 κ.val` using `bd_of_mem_KO hκ`. Establish `hκ2 : Bd 1 (κ⁻¹).val` using `bd_of_mem_KO (inv_mem hκ)`. Establish `hdiag : ∀ i : Fin c, valuation k (b.val (Sum.inr i) (Sum.inr i)) ≤ γ`.
+
+Introduce `i`. Use `hψ _ fun t ht => ?_` and prove the remaining obligations. Use `set E : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k := Matrix.single (Sum.inr i) (Sum.inr i.succ) t with hE`. Establish `hEb : Bd δ E`. Introduce `r s`.
+
+Simplify using `only [hE, Matrix.single, Matrix.of_apply]`. Use `split_ifs`. Conclude with `ht`. Simplify using the standard rewrite rules. Establish `hd1 : ∀ r, (b.val * E) r (Sum.inr i.succ) = b.val r (Sum.inr i) * t` using `fun r => by`.
+
+Rewrite using `[hE, Matrix.mul_single_apply_same]`. Establish `hd2 : ∀ r s, s ≠ Sum.inr i.succ → (b.val * E) r s = 0` using `fun r s hs => by`. Rewrite using `[hE, Matrix.mul_single_apply_of_ne _ _ _ _ _ hs]`. Use `h2 (b.val * E) ?_ (fun r s => hd2 _ _ (by simp)) ?_` as an intermediate fact. Establish `hc : ch (b.val * E) = b.val (Sum.inr i) (Sum.inr i) * t`.
+
+Rewrite using `[ch, Finset.sum_eq_single i, hd1]`. Introduce `l _ hl; exact hd2 _ _ (by simpa using hl)`. Simplify using the standard rewrite rules. Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Introduce `r s hf`.
+
+Distinguish the cases in `hs : s = Sum.inr i.succ`. Substitute `hs` using the available equality. Rewrite using `[hd1, hb' (i := r) (j := Sum.inr i), zero_mul]`. Apply the tactic sequence `rcases r with r | r <;> simp [midLev, Free] at hf ⊢ <;> omega`. Conclude with `hd2 r s hs`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`. Simplify using `using hκ2.mul hEb`. Establish `hbx : Bd γ ((b⁻¹).val * stepPt x₀ e)`. Use `hκ1.mul h1` as an intermediate fact. Rewrite `this` using `[one_mul, ← Matrix.mul_assoc, ← Units.val_mul, _root_.mul_inv_rev, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `m0 : ∀ i s, (levi (symLev c) b hb).val (Sum.inr i) (Sum.inl s) = 0`. Introduce `i s`. Express the relevant statement in the definitionally equal form `(if _ then _ else _) = _`. Use `split_ifs with hl`. Apply `hb'` to reduce the goal to its premises.
+
+Unfold `symLev at hl`. Apply the tactic sequence `split_ifs at hl <;> simp [lev, midLev] at hl ⊢ <;> omega`. Both sides reduce to the same expression. Establish `m1 : ∀ i j, valuation k ((levi (symLev c) b hb).val (Sum.inr i) (Sum.inr j)) ≤ γ`. Introduce `i j`.
+
+Express the relevant statement in the definitionally equal form `valuation k (if _ then _ else _) ≤ _`. Use `split_ifs with hl`. Take `rfl : i = j` from `Fin.ext (by`. Unfold `symLev at hl`. Apply the tactic sequence `split_ifs at hl <;> simpa [lev, midLev] using hl)`.
+
+Conclude with `hdiag i`. Simplify using the standard rewrite rules. Establish `m2 : ∀ r j, valuation k (((levi (symLev c) b hb)⁻¹).val r (Sum.inr j)) ≤ γ`. Introduce `r j`. Express the relevant statement in the definitionally equal form `valuation k (if _ then _ else _) ≤ _`.
+
+Use `split_ifs with hl`. Rewrite using `[← mul_stepPt_apply (inv_blockTriangular hb') x₀ e r j hl]`. Conclude with `hbx _ _`. Simplify using the standard rewrite rules. Take `⟨x, w, hxw, hw1, hw2⟩` from `exists_embX_mul (levi (symLev c) b hb) (γ := γ) m0 hγ m1 m2`.
+
+Use `⟨b * (levi (symLev c) b hb)⁻¹ * embX c x, mul_mem (Subgroup.mem_sup_right (mem_symN hc ?_)) (Subgroup.mem_sup_left ⟨x, rfl⟩), w * κ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r s hrs`. Express the relevant statement in the definitionally equal form `(b.val * diagPart (symLev c) (b⁻¹).val) r s = _`. Rewrite using `[mul_diagPart_apply hb (inv_blockTriangular hb) hrs, b.mul_inv]`. Simplify using `using hw1.mul hκ1`.
+
+Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Simplify using `using hκ2.mul hw2`. Rewrite using `[mul_assoc, ← mul_assoc (embX c x), ← hxw] group`.
+-/
 theorem exists_symR_mul (hc : 1 ≤ c) (ψ : AddChar k Circle) {γ δ : ValueGroupWithZero k} (hγ : 1 ≤ γ)
     (hψ : ∀ a : k, (∀ t, valuation k t ≤ δ → ψ (a * t) = 1) → valuation k a ≤ γ)
     (h : GL (n ⊕ Fin c) k) (x₀ : Matrix n n' k) (e : StepVar n c n' → k)
@@ -155,6 +199,11 @@ def IsAuxiliaryHeckeCharacter (d : Shifts G) : Prop :=
 
 def shiftVars (d : Shifts G) : Vars G := fun j rs => d j rs.1.1 rs.1.2
 
+/- English proof (translation)
+Use extensionality with `r s`. Simplify using `only [stepPt, Matrix.add_apply, of_apply]`. Use `split_ifs with h`. Simplify using `only [shiftVars, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[(hd j).1 r s fun h' => h (Or.inl h'), add_zero, add_zero]`.
+-/
 theorem stepPt_shift {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d) (x : ColArgs G) (e : Vars G) (j : Fin (G.m - 1)) :
     stepPt (x j) ((shiftVars d + e) j) = stepPt (x j) (e j) + d j := by
   ext r s
@@ -163,6 +212,13 @@ theorem stepPt_shift {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d) (x : ColA
   · simp only [shiftVars, Pi.add_apply]; ring
   · rw [(hd j).1 r s fun h' => h (Or.inl h'), add_zero, add_zero]
 
+/- English proof (translation)
+Establish `h1 : ∀ j s, rowVar x (shiftVars d + e) j s = rowVar x e j s` using `fun j s => by`. Unfold `rowVar`. Use `split_ifs with h`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `stepPt_shift hd x e ⟨j, h⟩` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[this, Matrix.add_apply, (hd ⟨j, h⟩).2, add_zero]`. Both sides reduce to the same expression. Establish `h2 : ∀ j r, colVar x (shiftVars d + e) j r = colVar x e j r` using `fun j r => by`. Rewrite using `[colVar, colVar, stepPt_shift hd, Matrix.add_apply, (hd j).1 _ _ (by simp [Free]), add_zero]`.
+
+Establish `h3 : ∀ j : Fin (G.m - 1), ch (stepPt (x j) ((shiftVars d + e) j)) = ch (stepPt (x j) (e j)) + ch (d j)` using `fun j => by rw [stepPt_shift hd]; simp [ch, Finset.sum_add_distrib]`. Simplify using `only [phase, h1, h2, h3, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem phase_shift {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d) (x : ColArgs G) (e : Vars G) :
     phase x (shiftVars d + e) = phase x e + ∑ j, ch (d j) := by
   have h1 : ∀ j s, rowVar x (shiftVars d + e) j s = rowVar x e j s := fun j s => by
@@ -180,16 +236,27 @@ theorem phase_shift {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d) (x : ColAr
   simp only [phase, h1, h2, h3, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val, transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem moveArgs_theta (g : G.VertexGroup) (z : G.Args) (i j : ℕ) : G.moveArgs .one g z (.theta i j) =
     (((g (i, j + 1))⁻¹).val * (z (.theta i j))ᵀ * (g (i, j)).val)ᵀ := by
   simp only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val, transpose_mul, transpose_transpose,
     Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [Grid.moveArgs, Pi.sub_apply, Matrix.mul_sub, Matrix.sub_mul]`.
+-/
 theorem moveArgs_sub (g : G.VertexGroup) (z z' : G.Args) :
     G.moveArgs .one g (z - z') = G.moveArgs .one g z - G.moveArgs .one g z' := by
   funext b
   simp only [Grid.moveArgs, Pi.sub_apply, Matrix.mul_sub, Matrix.sub_mul]
 
+/- English proof (translation)
+Unfold `downMap`. Use `split_ifs with h`. Use `stepPt_shift hd x e ⟨j, h⟩ dsimp only at this` as an intermediate fact. Rewrite using `[this]`. Use extensionality with `r s`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem downMap_shift {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d) (x : ColArgs G) (e : Vars G) (j : ℕ) :
     downMap hs x (shiftVars d + e) j - downMap hs x e j = if h : j < G.m - 1 then
       (d ⟨j, h⟩).reindex (frame (by have := topRank_add hs (j + 1); dsimp only; omega))
@@ -208,15 +275,27 @@ end Shift
 section Frame
 variable {k : Type} [Field k] {a c b : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameGL_val (h : a + c = b) (g : GL (Fin b) k) : (frameGL h g).val = g.val.submatrix (frame h) (frame h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameGL_symm_val (h : a + c = b) (g : GL (Fin a ⊕ Fin c) k) :
     ((frameGL h).symm g).val = g.val.submatrix (frame h).symm (frame h).symm := rfl
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Both sides reduce to the same expression.
+-/
 theorem comap_symR_congr {c' : ℕ} (hc : c = c') (h : a + c = b) (h' : a + c' = b) :
     (symR k (Fin a) c).comap (frameGL h).toMonoidHom = (symR k (Fin a) c').comap (frameGL h').toMonoidHom := by
   subst hc; rfl
 
+/- English proof (translation)
+Rewrite using `[frameGL_val, reindex_apply, reindex_apply, ← Matrix.submatrix_mul_equiv _ _ _ (Equiv.refl _)]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_reindex {ι : Type} {a' : ℕ} (h : a + c = b) (f : ι ≃ Fin a') (g : GL (Fin b) k)
     (D : Matrix (Fin a ⊕ Fin c) ι k) :
     g.val * D.reindex (frame h) f = ((frameGL h g).val * D).reindex (frame h) f := by
@@ -225,13 +304,22 @@ theorem mul_reindex {ι : Type} {a' : ℕ} (h : a + c = b) (f : ι ≃ Fin a') (
 
 variable [ValuativeRel k]
 
+/- English proof (translation)
+Introduce `_ _` and use `hx _ _`.
+-/
 theorem bd_submatrix {ι κ ι' κ' : Type} {γ : ValueGroupWithZero k} {x : Matrix ι κ k} (hx : Bd γ x) (f : ι' → ι)
     (g : κ' → κ) : Bd γ (x.submatrix f g) := fun _ _ => hx _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h r s => by simpa using h (f r) (g s), fun h _ _ => h _ _⟩`.
+-/
 theorem bd_reindex_iff {ι κ ι' κ' : Type} {γ : ValueGroupWithZero k} {x : Matrix ι κ k} (f : ι ≃ ι')
     (g : κ ≃ κ') : Bd γ (x.reindex f g) ↔ Bd γ x :=
   ⟨fun h r s => by simpa using h (f r) (g s), fun h _ _ => h _ _⟩
 
+/- English proof (translation)
+Introduce `i` and use `by rw [stdLat, smul_diagLat] exact fun j => by simpa using hx j i`.
+-/
 theorem transpose_mem_matLat [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι κ : Type} (u : kˣ) {x : Matrix κ ι k} (hx : Bd (valuation k (u : k)) x) :
     xᵀ ∈ matLat ι (u • stdLat k κ) := fun i => by
   rw [stdLat, smul_diagLat]
@@ -244,6 +332,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] {G : Grid k} (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k)
   [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI : (varsVol G ν).IsAddLeftInvariant := by unfold varsVol; infer_instance`. Establish `key` using `integral_add_left_eq_self (μ := varsVol G ν) (flatIntegrand hs ψ S x y) (shiftVars d)`. Simplify using `only [flatIntegrand, hS, phase_shift hd, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul, ← mul_assoc] at key`. Rewrite `key` using `[integral_mul_const]`.
+
+Establish `h1 : (ψ (-∑ j, ch (d j)) : ℂ) = 1`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[mul_one]`. Conclude with `key`. Establish `h2 : ψ (-∑ j, ch (d j)) = 1` using `Circle.coe_eq_one.1 h1`.
+
+Rewrite `h2` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem char_eq_one {S : G.Args → ℂ} {x : ColArgs G} {y : RowArgs G} (hne : flatTensor hs ψ ν S x y ≠ 0)
     {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d) (hS : ∀ e, S (fill hs x y (shiftVars d + e)) = S (fill hs x y e)) :
     ψ (∑ j, ch (d j)) = 1 := by
@@ -262,6 +357,13 @@ theorem char_eq_one {S : G.Args → ℂ} {x : ColArgs G} {y : RowArgs G} (hne : 
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Rewrite using `[← hT.2.2 (G.moveArgs .one g (fill hs x y v)) (G.moveArgs .one g (fill hs x y (shiftVars d + v) - fill hs x y v)), moveArgs_sub, add_sub_cancel]`. Introduce and unpack `(⟨i, l⟩ | ⟨i, l⟩)`. Rewrite using `[moveArgs_theta]`. Use `transpose_mem_matLat _ ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = G.m`.
+
+Substitute `hi` using the available equality. Rewrite using `[Pi.sub_apply, fill_theta, fill_theta, ← transpose_sub, transpose_transpose, downMap_shift hs hd]`. Use `split_ifs with hl`. Conclude with `hb l hl`. Simplify using `using bd_zero _`.
+
+Establish `: (fill hs x y (shiftVars d + v) - fill hs x y v) (.theta i l) = 0` using `by simp [fill, hi]`. Rewrite using `[this]`. Simplify using `using bd_zero _`. Establish `: (fill hs x y (shiftVars d + v) - fill hs x y v) (.ex i l) = 0` using `sub_self _`. Simplify using `only [Grid.moveArgs, this, Matrix.mul_zero, Matrix.zero_mul, zero_mem]`.
+-/
 theorem tensor_shift {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T)
     (g : G.VertexGroup) (x : ColArgs G) (y : RowArgs G) (v : Vars G) {d : Shifts G} (hd : IsAuxiliaryHeckeCharacter d)
     (hb : ∀ (j : ℕ) (h : j < G.m - 1), Bd (valuation k ((ϖ ^ e : kˣ) : k)) (((g (G.m, j + 1))⁻¹).val *
@@ -285,6 +387,29 @@ theorem tensor_shift {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor 
   · have : (fill hs x y (shiftVars d + v) - fill hs x y v) (.ex i l) = 0 := sub_self _
     simp only [Grid.moveArgs, this, Matrix.mul_zero, Matrix.zero_mul, zero_mem]
 
+/- English proof (translation)
+Take `⟨γ₂, hγ₂⟩` from `exists_bd_of_char ψ hψ (ϖ ^ e * s⁻¹)`. Use `set γ : ValueGroupWithZero k := max 1 (max (valuation k (s : k)) γ₂) with hγ`. Establish `g0 : 1 ≤ γ` using `le_max_left _ _`. Establish `g1 : valuation k (s : k) ≤ γ` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `g2 : γ₂ ≤ γ` using `(le_max_right _ _).trans (le_max_right _ _)`.
+
+Use `⟨γ * γ, fun keep g x y j hj hne hb1 hb2 => ?_⟩` and prove the remaining obligations. Establish `hj1 : j < G.m - 1` using `by omega`. Establish `hf1 : topRank G (j + 1) + (G.m - 2 - j) = G.rank (G.m, j + 1)` using `by have := topRank_add hs (j + 1); omega`. Establish `hf2 : topRank G j + (G.m - 2 - j + 1) = G.rank (G.m, j)` using `by have := topRank_add hs j; omega`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : Vars G, T (G.moveArgs .one g (fill hs x y v)) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hne` to reduce the goal to its premises. Simplify using `only [flatTensor, flatIntegrand, moved, Grid.pathAct, hcon, mul_zero, zero_mul, integral_zero]`. Establish `hint : Bd 1 (((g (G.m, j + 1))⁻¹).val * downMap hs x v j * (g (G.m, j)).val)`.
+
+Establish `h1 : G.moveArgs .one g (fill hs x y v) (.theta G.m j) ∈ matLat _ (stdLat k _)`. Assume the negation of the conclusion as `hc`. Conclude with `hv (hT.2.1 _ _ (by simp [oppositePath]; omega) hc)`. Rewrite `h1` using `[moveArgs_theta, fill_theta, transpose_transpose, mem_matLat_stdLat]`. Conclude with `fun r t => h1 t r`.
+
+Establish `h1 : Bd γ (((frameGL hf1 (g (G.m, j + 1)))⁻¹).val * stepPt (c` using `G.m - 2 - j) (x j) (v ⟨j, hj1⟩)) := by`. Establish `h2` using `hint.mul hb2`. Rewrite `h2` using `[one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, downMap, dif_pos hj1, mul_reindex hf1, bd_reindex_iff, map_inv]`. Conclude with `h2.mono g1`. Take `⟨r, hr, w, hw1, hw2, hrw⟩` from `exists_symR_mul (δ := valuation k ((ϖ ^ e * s⁻¹ : kˣ) : k)) (by omega) ψ g0 (fun a ha => (hγ₂ a ha).trans g2) _ _ _ h1 fun d hd1 hd2 hd3 => by`.
+
+Establish `hd : IsAuxiliaryHeckeCharacter (Pi.single (⟨j, hj1⟩ : Fin (G.m - 1)) d : Shifts G)` using `fun i => by`. Distinguish the cases in `hi : i = ⟨j, hj1⟩`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `⟨hd1, hd2⟩`.
+
+Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `⟨fun _ _ _ => rfl, fun _ _ => rfl⟩`. Establish `h3` using `char_eq_one hs ψ ν hne hd fun v => ?_`. Rewrite `h3` using `[Finset.sum_eq_single (⟨j, hj1⟩ : Fin (G.m - 1)), Pi.single_eq_same]`. Conclude with `h3`.
+
+Introduce `i _ hi`. Rewrite using `[Pi.single_eq_of_ne hi]`. Simplify using `[ch]`. Simplify using the standard rewrite rules. Establish `h5` using `tensor_shift hs hT g x y v hd fun l hl => ?_`.
+
+Simplify using `only [moved, Grid.pathAct, h5]`. Distinguish the cases in `hl' : l = j`. Substitute `hl'` using the available equality. Rewrite using `[Pi.single_eq_same, mul_reindex hf1, map_inv]`. Establish `h4` using `((bd_reindex_iff (frame hf1) (frame hf2)).2 hd3).mul hb1`.
+
+Simplify `h4` using `[mul_assoc]`. Rewrite using `[Pi.single_eq_of_ne (fun h => hl' (congrArg Fin.val h))]`. Simplify using `using bd_zero _`. Use `⟨(frameGL hf1).symm r, ?_, (frameGL hf1).symm w, bd_submatrix hw1 _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rowR, toFrame, comap_symR_congr (c' := G.m - 2 - j) (by omega) _ hf1]`.
+
+Simplify using `using hr`. Rewrite using `[← map_inv]`. Conclude with `bd_submatrix hw2 _ _`. Rewrite using `[← map_mul, ← hrw, MulEquiv.symm_apply_apply]`.
+-/
 theorem exists_rowR_mul (hψ : ψ ≠ 1) {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ} (hT : G.IsTensor ϖ e (oppositePath G.m) T)
     (s : kˣ) : ∃ δ : ValueGroupWithZero k, ∀ (keep : Bool) (g : G.VertexGroup) (x : ColArgs G) (y : RowArgs G)
       (j : ℕ) (hj : j < G.m - 2), flatTensor hs ψ ν (moved G keep g T) x y ≠ 0 →
@@ -344,6 +469,9 @@ theorem exists_rowR_mul (hψ : ψ ≠ 1) {ϖ : kˣ} {e : ℕ} {T : G.Args → �
 
 end Step
 
+/- English proof (translation)
+Take `⟨t, -, ht, hc⟩` from `hΩ.elim_finite_subcover_image (b := Ω) (c := fun a => (fun z => a⁻¹ * z) ⁻¹' (U : Set A)) (fun a _ => hU.preimage (continuous_const.mul continuous_id)) (fun a ha => Set.mem_biUnion ha (by simp))`. Use `(ht.image (DoubleCoset.mk H U)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨a, ha, haz⟩` from `Set.mem_iUnion₂.1 (hc hz)`. Conclude with `⟨a, ha, (DoubleCoset.eq H U a z).2 ⟨1, one_mem _, a⁻¹ * z, haz, by simp⟩⟩`.
+-/
 theorem finite_image_mk {A : Type*} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] (H U : Subgroup A)
     (hU : IsOpen (U : Set A)) {Ω : Set A} (hΩ : IsCompact Ω) : (DoubleCoset.mk H U '' Ω).Finite := by
   obtain ⟨t, -, ht, hc⟩ := hΩ.elim_finite_subcover_image (b := Ω) (c := fun a => (fun z => a⁻¹ * z) ⁻¹' (U : Set A))
@@ -357,6 +485,11 @@ theorem finite_image_mk {A : Type*} [Group A] [TopologicalSpace A] [IsTopologica
 section Main
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `exists_bd_of_isCompact ((hS.image fun g => g.val).union (hS.image fun g => (g⁻¹).val)).isCompact`. Take `⟨t, ht⟩` from `ValuativeRel.valuation_surjective (max 1 γ)`. Establish `h0 : t ≠ 0`. Introduce and unpack `rfl`. Establish `: (1 : ValueGroupWithZero k) ≤ 0` using `by simpa using (le_max_left 1 γ).trans ht.ge`.
+
+Simplify using `at this`. Establish `h1 : γ ≤ valuation k t` using `ht ▸ le_max_right _ _`. Conclude with `⟨Units.mk0 t h0, fun g hg => ⟨(hγ _ (Or.inl ⟨g, hg, rfl⟩)).mono h1, (hγ _ (Or.inr ⟨g, hg, rfl⟩)).mono h1⟩⟩`.
+-/
 theorem exists_unit_bd {ι : Type} [Fintype ι] [DecidableEq ι] {S : Set (GL ι k)} (hS : S.Finite) :
     ∃ s : kˣ, ∀ g ∈ S, Bd (valuation k (s : k)) g.val ∧ Bd (valuation k (s : k)) (g⁻¹).val := by
   obtain ⟨γ, hγ⟩ := exists_bd_of_isCompact
@@ -372,6 +505,19 @@ theorem exists_unit_bd {ι : Type} [Fintype ι] [DecidableEq ι] {S : Set (GL ι
 variable [MeasurableSpace k] [BorelSpace k] {G : Grid k} {hs : 1 ≤ G.s} {ψ : AddChar k Circle} (ν : Measure k)
   [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Establish `step : ∀ i : Fin (G.m - 2), ((fun β => ρ.elt β (G.m, i)) '' unfSupport ψ ν keep ρ T).Finite → ((fun β => β i) '' unfSupport ψ ν keep ρ T).Finite`. Introduce `i hi`. Take `⟨s, hs'⟩` from `exists_unit_bd hi`. Take `⟨δ, hδ⟩` from `exists_rowR_mul hs ψ ν hψ hT s`. Use `(finite_image_mk (rowR hs (j := i + 1) (by omega)) _ (hJ (i + 1) (by omega) (by omega)) (isCompact_bd δ)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨β, hβ, rfl⟩`. Take `⟨x, hx⟩` from `Function.ne_iff.1 hβ`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hx`. Take `⟨b1, b2⟩` from `hs' _ ⟨β, hβ, rfl⟩`. Take `⟨r, hr, w, w1, w2, hw⟩` from `hδ keep (ρ.elt β) x y i i.2 hy b1 b2`.
+
+Use `⟨w, ⟨w1, w2⟩, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[Reps.elt, onColumn_apply]`. Simplify using `only [i.2, dif_pos] at hw`. Use `Eq.trans ?_ (ρ.mk_rep i (β i))` and prove the remaining obligations. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨r, hr, 1, one_mem _, by rw [mul_one]; exact hw⟩`.
+
+Establish `col : ∀ j, j ≤ G.m - 2 → ((fun β => ρ.elt β (G.m, j)) '' unfSupport ψ ν keep ρ T).Finite`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Use `fun _ => (Set.finite_singleton ρ.base).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨β, -, rfl⟩`. Conclude with `onColumn_apply _ 0`. Consider the case `succ j ih`. Introduce `hj`. Use `((step ⟨j, hj⟩ (ih (by omega))).image (ρ.rep ⟨j, hj⟩)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨β, hβ, rfl⟩`. Use `⟨_, ⟨β, hβ, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Reps.elt, onColumn_apply, show j < G.m - 2 from hj, dif_pos]`. Conclude with `(Set.Finite.pi' fun i => step i (col i i.2.le)).subset fun β hβ i => ⟨β, hβ, rfl⟩`.
+-/
 theorem finite_unfSupport_of_ne_one (hψ : ψ ≠ 1) {ϖ : kˣ} {e : ℕ} {T : G.Args → ℂ}
     (hT : G.IsTensor ϖ e (oppositePath G.m) T) {J : G.Level}
     (hJ : ∀ j, 0 < j → j < G.m → IsOpen (J (G.m, j) : Set (GL (Fin (G.rank (G.m, j))) k)))
@@ -410,6 +556,9 @@ theorem finite_unfSupport_of_ne_one (hψ : ψ ≠ 1) {ϖ : kˣ} {e : ℕ} {T : G
 
 end Main
 
+/- English proof (translation)
+Introduce `_ _ hψ hT hJ keep ρ` and use `finite_unfSupport_of_ne_one ν hψ.ne_one hT hJ keep ρ`.
+-/
 theorem finite_unfSupport {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (G : Grid k) (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k)
     [ν.IsAddHaarMeasure] (ϖ : kˣ) (e : ℕ) (T : G.Args → ℂ) (J : G.Level) :

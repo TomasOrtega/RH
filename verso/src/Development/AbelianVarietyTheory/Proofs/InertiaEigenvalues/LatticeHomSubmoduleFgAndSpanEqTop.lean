@@ -5,6 +5,15 @@ noncomputable section
 
 namespace GlobalTheory.StableLatCount
 
+/- English proof (translation)
+Establish `ha : a ∈ Submodule.span E (M : Set A)` using `hM ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_mem _, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨d₁, hd₁, h₁⟩` from `hx`. Take `⟨d₂, hd₂, h₂⟩` from `hy`. Use `⟨d₂ * d₁, mul_mem hd₂ hd₁, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm d₂ d₁ y]`. Conclude with `M.add_mem (M.smul_mem _ h₁) (M.smul_mem _ h₂)`.
+
+Consider the case `smul e x _ hx`. Take `⟨d, hd, h⟩` from `hx`. Take `⟨⟨o, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors O) e`. Establish `h1 : (s : O) • (e • x) = o • x`. Rewrite using `[← algebraMap_smul E (s : O) (e • x), smul_smul, mul_comm, hs, algebraMap_smul]`.
+
+Use `⟨(s : O) * d, mul_mem s.2 hd, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, h1, smul_comm d o x]`. Conclude with `M.smul_mem o h`.
+-/
 theorem exists_smul_mem_of_span_eq_top (O : Type) [CommRing O] [IsDomain O] (E : Type) [Field E] [Algebra O E]
     [IsFractionRing O E] {A : Type} [AddCommGroup A] [Module E A] [Module O A] [IsScalarTower O E A]
     (M : Submodule O A) (hM : Submodule.span E (M : Set A) = ⊤) (a : A) :
@@ -28,6 +37,13 @@ theorem exists_smul_mem_of_span_eq_top (O : Type) [CommRing O] [IsDomain O] (E :
     rw [mul_comm, mul_smul, h1, smul_comm d o x]
     exact M.smul_mem o h
 
+/- English proof (translation)
+Use `Finset.induction_on t ⟨1, one_mem _, by simp⟩ ?_` and prove the remaining obligations. Introduce `a t _ ih`. Take `⟨d₁, hd₁, h₁⟩` from `ih`. Take `⟨d₂, hd₂, h₂⟩` from `exists_smul_mem_of_span_eq_top O E M hM a`. Use `⟨d₁ * d₂, mul_mem hd₁ hd₂, ?_⟩` and prove the remaining obligations.
+
+Introduce `b hb`. Break down `Finset.mem_insert.mp hb with rfl | hb` into its components or cases. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem _ h₂`. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `M.smul_mem _ (h₁ b hb)`.
+-/
 theorem exists_smul_mem_finset_of_span_eq_top (O : Type) [CommRing O] [IsDomain O] (E : Type) [Field E]
     [Algebra O E] [IsFractionRing O E] {A : Type} [AddCommGroup A] [Module E A] [Module O A]
     [IsScalarTower O E A] (M : Submodule O A) (hM : Submodule.span E (M : Set A) = ⊤) (t : Finset A) :
@@ -43,6 +59,23 @@ theorem exists_smul_mem_finset_of_span_eq_top (O : Type) [CommRing O] [IsDomain 
   · rw [mul_smul]; exact M.smul_mem _ h₂
   · rw [mul_comm, mul_smul]; exact M.smul_mem _ (h₁ b hb)
 
+/- English proof (translation)
+Introduce `h₁ h₂`. Take `⟨h₁fg, h₁sp⟩` from `h₁`. Take `⟨h₂fg, h₂sp⟩` from `h₂`. Take `⟨s, hs⟩` from `h₂fg`. Establish `hsE : Submodule.span E (s : Set A₂) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← h₂sp, Submodule.span_le, ← hs]`. Conclude with `fun x hx => Submodule.span_le_restrictScalars O E _ hx`. Establish `memH : ∀ ψ ∈ homLat E M₁ M₂, ∀ x ∈ M₂, ψ x ∈ M₁` using `fun ψ hψ => hψ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : Module.Finite O M₁ := Module.Finite.iff_fg.mpr h₁fg`.
+
+Set `f : homLat E M₁ M₂ →ₗ[O] (s → M₁)` to `{ toFun := fun ψ x => ⟨ψ.1 x, memH ψ.1 ψ.2 x (hs ▸ Submodule.subset_span x.2)⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hf : Function.Injective f`. Introduce `ψ φ h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext_on hsE` to reduce the goal to its premises.
+
+Introduce `x hx`. Conclude with `congrArg Subtype.val (congrFun h ⟨x, hx⟩)`. Use `haveI := Module.Finite.of_injective f hf`. Conclude with `Module.Finite.iff_fg.mp this`. Rewrite using `[eq_top_iff]`.
+
+Introduce `ψ _`. Take `⟨d, hd, hdψ⟩` from `exists_smul_mem_finset_of_span_eq_top O E M₁ h₁sp (s.image ψ)`. Establish `hmem : d • ψ ∈ homLat E M₁ M₂` using `by show ∀ x ∈ M₂, (d • ψ) x ∈ M₁`. Introduce `x hx`. Rewrite `hx` using `[← hs]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => rw [LinearMap.smul_apply]`. Conclude with `hdψ _ (Finset.mem_image_of_mem _ hy)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `M₁.add_mem hy hz`. Consider the case `smul o y _ hy => rw [LinearMap.map_smul_of_tower]`. Conclude with `M₁.smul_mem o hy`. Establish `hd' : algebraMap O E d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `hψ : ψ = (algebraMap O E d)⁻¹ • (d • ψ)`.
+
+Rewrite using `[← algebraMap_smul E d ψ, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[hψ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem homLat_fg_and_span_eq_top (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (E : Type)
     [Field E] [Algebra O E] [IsFractionRing O E] (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂] [Algebra E A₁]
     [Algebra E A₂] [Algebra O A₁] [Algebra O A₂] [IsScalarTower O E A₁] [IsScalarTower O E A₂]

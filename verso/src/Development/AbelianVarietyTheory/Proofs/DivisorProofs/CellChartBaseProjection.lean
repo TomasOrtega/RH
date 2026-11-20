@@ -15,6 +15,17 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.ArchLim
 
+/- English proof (translation)
+Introduce `k _ B Y q p π w n r D ε σ c c' h`. Take `⟨h₁, h₂, h₃⟩` from `h`. Establish `first : ∀ v ∈ c'.e.target, PtsOver.map π w (spMap σ) (c'.e.symm v) = c.e.symm (base ε v)`. Introduce `v hvt`. Establish `hy` using `c'.e.map_target hvt`.
+
+Establish `h₄` using `h₃ _ hy`. Rewrite `h₄` using `[c'.e.right_inv hvt]`. Establish `h₅ : PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ c.e.source` using `(h₁ ▸ hy).1`. Rewrite using `[h₄, c.e.left_inv h₅]`. Use `⟨first, fun A hA => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hy, hy'⟩, rfl⟩`. Conclude with `⟨_, hy, (h₃ y hy').symm⟩`. Introduce and unpack `⟨a, ha, hv⟩`.
+
+Establish `hvt : v ∈ c'.e.target`. Rewrite using `[h₂]`. Express the relevant statement in the definitionally equal form `base ε v ∈ c.e.target`. Rewrite using `[← hv]`. Conclude with `c.e.map_source (hA ha)`.
+
+Use `⟨c'.e.symm v, ⟨?_, c'.e.map_target hvt⟩, c'.e.right_inv hvt⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `PtsOver.map π w (spMap σ) (c'.e.symm v) ∈ A`. Rewrite using `[first v hvt, ← hv, c.e.left_inv (hA ha)]`. Conclude with `ha`.
+-/
 theorem cell_proj_and_image_eq : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) (c : AlgChart q σ n) (c' : AlgChart p σ D), IsCell ε π w c c' → (∀ v ∈ c'.e.target, PtsOver.map π w (spMap σ) (c'.e.symm v) = c.e.symm (base ε v)) ∧ ∀ A : Set (CxPts q σ), A ⊆ c.e.source → c'.e '' (PtsOver.map π w (spMap σ) ⁻¹' A ∩ c'.e.source) = base ε ⁻¹' (c.e '' A) := by
   intro k _ B Y q p π w n r D ε σ c c' h
   obtain ⟨h₁, h₂, h₃⟩ := h

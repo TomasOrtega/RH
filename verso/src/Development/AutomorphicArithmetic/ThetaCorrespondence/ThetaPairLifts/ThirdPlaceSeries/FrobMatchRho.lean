@@ -30,6 +30,11 @@ variable {D : D7} {T : WDTie D.nd D.naut} {C₀ C : CharFrame D} (S : CharSide D
   {ρ : Reading D.ntw i (D.ntw.side i s)} {σ : D.what₂.FT} {π : D.naut.CG D.R.r}
   {r : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* GL (Fin D.R.r) (Qbar (D.ntw.l i))} {ν : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.GalE D →* (D.ntw.O0 i)ˣ}
   {w : D.what₂.places.Pl} {red : GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting.Zbar (D.ntw.l i) →+* FbAt D w}
+/- English proof (translation)
+Use `filter_upwards [(D.ntw.S0 i).finite_toSet.compl_mem_cofinite] with P hP B g hB hg`. Take `⟨h1, h2⟩` from `twBy_unr S C.isEta.unitary.inv (h.unr_of_notMem hP) (C.isEta.unr P).inv`. Use `(h.charpoly_frob ha (fun hl => hP (D.ntw.twistExcludedPlaces_contains_residueChar i hl)) (fun k hk => hP (D.ntw.placesOver_subset_exceptional i k hk)) hB hg).trans ?_` and prove the remaining obligations. Rewrite using `[D.naut.frobEig_tw _ _ h1, h2, Multiset.map_map, Multiset.map_map]`. Use `congrArg _ (Multiset.map_congr rfl fun a _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[shiftChar_val, cpow_add_real, Complex.ofReal_neg, Complex.cpow_neg, HChar.val_inv, Units.val_inv_eq_inv_val]`. Use `congr 2`. Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frobMatch_rhoS_of_isTripleWith (ha : GlobalTheory.HeckeGal.IsGlobalArtin art) (h : _root_.GlobalTheory.Triple.IsGaloisTripleWithReduction C art ρ s σ π r ν w red) :
     FrobMatch D (twBy S π C.isEta.unitary.inv) (rd i (ρ.ι.toRingHom.comp ρ.κ)) (D.ntw.rhoS i s)
       (-((D.R.t : ℝ) / 2) + (1 - (D.R.r : ℝ)) / 2) := by

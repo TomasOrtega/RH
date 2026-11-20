@@ -16,14 +16,23 @@ open GlobalTheory.ZM GlobalTheory.SiegelTor
 
 namespace GlobalTheory.UPel.HT.SiegFactor
 
+/- English proof (translation)
+Rewrite using `[MonObj.comp_pow, Category.comp_id]`.
+-/
 theorem comp_id_pow {S : Scheme.{0}} {T A : Over S} [GrpObj A] (x : T ⟶ A) (k : ℕ) :
     x ≫ (𝟙 A) ^ k = x ^ k := by
   rw [MonObj.comp_pow, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[MonObj.pow_comp, Category.id_comp, comp_id_pow]`.
+-/
 theorem id_pow_comp {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (χ : A ⟶ B) [IsMonHom χ]
     (k : ℕ) : ((𝟙 A) ^ k) ≫ χ = χ ≫ (𝟙 B) ^ k := by
   rw [MonObj.pow_comp, Category.id_comp, comp_id_pow]
 
+/- English proof (translation)
+Use `hA.comm` as an intermediate fact. Establish `hm : IsMonHom ((𝟙 A) ^ k)` using `GlobalTheory.AbLaw.MulN.isMonHom_mulA A k`. Take `⟨hfl, hsu, hqc⟩` from `SiegUniqBase.flat_surjective_qc_pow S A hA k hk`. Conclude with `⟨hm, (GlobalTheory.exists_monHom_factor_of_flat_surjective S A A A _ _ hm hm hfl hsu hqc fun _ _ h => h).2⟩`.
+-/
 theorem isMonHom_epi_id_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) {k : ℕ}
     (hk : 0 < k) : IsMonHom ((𝟙 A) ^ k) ∧ Epi ((𝟙 A) ^ k) := by
   have := hA.comm

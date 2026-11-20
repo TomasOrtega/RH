@@ -22,6 +22,9 @@ namespace GlobalTheory.LatFinGen
 
 open GlobalTheory.LatVac GlobalTheory.LatFinMod
 
+/- English proof (translation)
+Establish `hp : pairA F 0 α * pairA F 0 1 = pairA F 0 α` using `Prod.ext (mul_zero _) (mul_one _)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `congrArg (· ⊗ₜ[F] x) hp`.
+-/
 theorem pair_smul_tmul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (α : Af F) (x : E) :
     algebraMap (AF F) (AF F ⊗[F] E) (pairA F 0 α) * (pairA F 0 1 ⊗ₜ[F] x) = pairA F 0 α ⊗ₜ[F] x := by
@@ -29,10 +32,22 @@ theorem pair_smul_tmul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra
   rw [Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul]
   exact congrArg (· ⊗ₜ[F] x) hp
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => pair_smul_tmul α (M i j)`.
+-/
 theorem smul_finTens_one {D : D7} {m n : ℕ} (α : Af D.host.F) (M : Matrix (Fin m) (Fin n) D.host.E) :
     algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) • finTens 1 M = finTens α M :=
   Matrix.ext fun i j => pair_smul_tmul α (M i j)
 
+/- English proof (translation)
+Introduce `D S T ΛS ΛT hS hT`. Take `⟨A, hA, hA1, hA2⟩` from `exists_int_gen (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) (FractionalIdeal.fg_of_isNoetherianRing le_rfl _)`. Take `⟨B, hB, hB1, hB2⟩` from `exists_int_gen ΛS hS.1.fg`. Take `⟨C, hC, hC1, hC2⟩` from `exists_int_gen ΛT hT.1.fg`. Use `⟨finTens 1 '' ((fun p : _ × _ × _ => genMap S T p.1 p.2.1 p.2.2) '' (A ×ˢ B ×ˢ C)), ((hA.prod (hB.prod hC)).image _).image _, ?_, fun U hU u hu => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨⟨a, s, t⟩, ⟨ha, hs, ht⟩, rfl⟩, rfl⟩`. Use `AddSubgroup.subset_closure ⟨1, fun v => ?_, fun v hv => absurd trivial hv, a, hA1 ha, s, hB1 hs, t, hC1 ht, rfl⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `one_mem _`. Use `(AddSubgroup.closure_le U).2 ?_ hu` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩`. Set `φ : Matrix (Fin T.rank) (Fin S.rank) D.host.E →ₗ[ℤ] WO S T` to `(AddMonoidHom.mk' (finTens α) (finTens_add α)).toIntLinearMap`. Establish `hle : Submodule.span ℤ ((fun p : _ × _ × _ => genMap S T p.1 p.2.1 p.2.2) '' (A ×ˢ B ×ˢ C)) ≤ U.toIntSubmodule.comap φ`. Use `Submodule.span_le.2 fun M hM => ?_` and prove the remaining obligations. Use `hU α hα _ ⟨M, hM, rfl⟩` as an intermediate fact.
+
+Rewrite `this` using `[smul_finTens_one]`. Conclude with `this`. Conclude with `hle (genMap_mem_span S T (hA2 _ ha) (hB2 _ hs) (hC2 _ ht))`.
+-/
 theorem latO_finitely_generated : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∃ G : Set (WO S T), G.Finite ∧ (∀ u ∈ G, u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True)) ∧ ∀ U : AddSubgroup (WO S T), (∀ α ∈ intAf D.host.F, ∀ u ∈ G, algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) • u ∈ U) → ∀ u ∈ (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True), u ∈ U := by
   intro D S T ΛS ΛT hS hT
   obtain ⟨A, hA, hA1, hA2⟩ := exists_int_gen (D.host.AA : Submodule (𝓞 D.host.E) D.host.E)

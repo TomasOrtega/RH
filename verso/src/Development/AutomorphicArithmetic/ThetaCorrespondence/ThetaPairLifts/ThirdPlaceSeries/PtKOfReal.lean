@@ -43,6 +43,11 @@ def InpAtAlt [IsTotallyComplex D.what₂.LL] {Rc : _root_.Formalism.L2.RecTAlt e
           (RecNums.ofNum (ofRecord D L Del h0) eJ (letterOf D L Del h0 u) ((D.mem u).A.T) L.Nc lam0 C0 ce Ch Sw C1 (H u))
           (I.wU u) (Cons.nuOf L u (I.eNu u)) (sgRec L u),
         ∃ hQ : ∀ u, ChainTie (inp u).ch (c.memQ (I.wU u)), ∀ u, FirstCols c.hE (hQ u)
+/- English proof (translation)
+Establish `hZs : (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks Q R.ok1 hsep Cl CHl hP hI).Zs = R.P.Zs` using `Q.zs`. Establish `hS0 : HEq (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks Q R.ok1 hsep Cl CHl hP hI).core.base.toIndefData R.P.S0` using `Q.s0`. Establish `hS1 : HEq (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks Q R.ok1 hsep Cl CHl hP hI).core.cols.toIndefData R.P.S1` using `Q.s1`. Establish `hRows : HEq (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks Q R.ok1 hsep Cl CHl hP hI).core.base.toIndefRows (Classical.choose R.hr.rows0)` using `rows_heq hZs _ _ (hS0.trans (heq_of_eq (Classical.choose_spec R.hr.rows0).symm))`. Establish `hDc : HEq (R.c.face (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks Q R.ok1 hsep Cl CHl hP hI).Zs) R.P.Dc` using `(congr_arg_heq R.c.face hZs).trans (heq_of_eq R.colTie.1)`.
+
+Conclude with `_root_.Formalism.L2.DIV.pkg_of_rowsK_alt R hR C Cabs Cl CHl _ (_root_.Formalism.L2.RowDataTransport.packageOfPrimitiveLinks Q R.ok1 hsep Cl CHl hP hI) hZs hRows hS1 Q.col Del h0 lam0 C0 ce Ch Sw C1 eJ H (fun NuC I hT' hI' => ⟨Formalism.L2.G.ServJointF.brTied_of hT' ⟨1, R.ok1.ok2⟩ …`.
+-/
 theorem ptK_of_real_alt [IsTotallyComplex D.what₂.LL] (Rc : _root_.Formalism.L2.RecTAlt ex) (R : _root_.Formalism.L2.DIV.DivisionKernelData ex) (hT : R.T = Rc.T)
     (hpin : _root_.Formalism.L2.Rows.RowSideDeterminedAlt Rc.T R.P) (hkap : RowsHoldKap3 R.P) (hPt : RowsHoldDcPt3 R.P)
     (hR : DivRows3 D R.P.A3 R.P.P0 R.P.ψ0 R.P.Ps R.P.ψs R.P.Zs R.P.S0 R.P.S1 ex.p0 R.P.C R.P.NuC R.P.I) (S : _root_.Formalism.L2.SG.SpectralTiesReal.STiesRAlt Rc) {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

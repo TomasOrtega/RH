@@ -4,6 +4,13 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.Cont
 
+/- English proof (translation)
+Unfold `phaseM`. Use `continuous_finset_sum _ fun w _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, gramC]`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Use `continuous_const.mul ?_` and prove the remaining obligations.
+
+Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun X : W → Fin n → Fin M → ℂ => X w c i` using `by fun_prop`. Establish `h2 : Continuous fun X : W → Fin n → Fin M → ℂ => X w a j` using `by fun_prop`. Use `first`. Consider the case `exact ((Complex.continuous_conj.comp h1).mul continuous_const).mul (by fun_prop)`.
+
+Consider the case `exact ((Complex.continuous_conj.comp h2).mul continuous_const).mul (by fun_prop)`.
+-/
 theorem continuous_phaseM_X {W : Type} [Fintype W] {n M : ℕ}
     (J : W → Matrix (Fin M) (Fin M) ℂ) (B : W → Matrix (Fin n) (Fin n) ℂ) :
     Continuous (phaseM J B) := by
@@ -19,6 +26,11 @@ theorem continuous_phaseM_X {W : Type} [Fintype W] {n M : ℕ}
     | exact ((Complex.continuous_conj.comp h1).mul continuous_const).mul (by fun_prop)
     | exact ((Complex.continuous_conj.comp h2).mul continuous_const).mul (by fun_prop)
 
+/- English proof (translation)
+Unfold `phaseM`. Use `continuous_finset_sum _ fun w _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply]`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Use `Continuous.mul ?_ continuous_const` and prove the remaining obligations.
+
+Establish `h0 : Continuous fun b : W → hermC n => (b w : Matrix (Fin n) (Fin n) ℂ)` using `continuous_subtype_val.comp (continuous_apply w)`. Establish `h1 : Continuous fun m : Matrix (Fin n) (Fin n) ℂ => m a c` using `(continuous_apply c).comp (continuous_apply a)`. Conclude with `h1.comp h0`.
+-/
 theorem continuous_phaseM_b {W : Type} [Fintype W] {n M : ℕ}
     (J : W → Matrix (Fin M) (Fin M) ℂ) (X : W → Fin n → Fin M → ℂ) :
     Continuous fun b : W → hermC n =>
@@ -34,6 +46,11 @@ theorem continuous_phaseM_b {W : Type} [Fintype W] {n M : ℕ}
     (continuous_apply c).comp (continuous_apply a)
   exact h1.comp h0
 
+/- English proof (translation)
+Use `haveI : (Measure.map e μ).IsAddHaarMeasure := e.isAddHaarMeasure_map μ he hes`. Establish `hs` using `Measure.isAddLeftInvariant_eq_smul (Measure.map e μ) (volume : Measure (Fin N → ℝ))`. Establish `hi : Integrable f (Measure.map e μ)`. Rewrite using `[hs]`. Conclude with `(f.integrable (μ := volume)).smul_measure_nnreal`.
+
+Conclude with `hi.comp_measurable he.measurable`.
+-/
 theorem integrable_comp {E : Type} [AddCommGroup E] [TopologicalSpace E]
     [IsTopologicalAddGroup E] [MeasurableSpace E] [BorelSpace E]
     (N : ℕ) (e : E ≃+ (Fin N → ℝ)) (he : Continuous e) (hes : Continuous e.symm)
@@ -49,6 +66,15 @@ theorem integrable_comp {E : Type} [AddCommGroup E] [TopologicalSpace E]
 
 end GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.Cont
 
+/- English proof (translation)
+Establish `hint` using `Cont.integrable_comp N e he hes f μ`. Establish `hg : Continuous fun X => f (e X)` using `f.continuous.comp he`. Establish `hnorm : ∀ t : ℝ, ‖Complex.exp (2 * Real.pi * Complex.I * (t : ℂ))‖ = 1`. Introduce `t`. Establish `: (2 * Real.pi * Complex.I * (t : ℂ)) = ((2 * Real.pi * t : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`.
+
+Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Unfold `coreC`. Use `continuous_of_dominated (bound := fun X => ‖f (e X)‖) ?_ ?_ hint.norm ?_` and prove the remaining obligations. Introduce `b`. Use `Continuous.aestronglyMeasurable (hg.mul ?_)` and prove the remaining obligations.
+
+Use `Cont.continuous_phaseM_X J (fun w => (b w : Matrix (Fin n) (Fin n) ℂ))` as an intermediate fact. Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp this))`. Introduce `b`. Use `Filter.Eventually.of_forall fun X => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hnorm, mul_one]`.
+
+Use `Filter.Eventually.of_forall fun X => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Cont.continuous_phaseM_b J X))))`.
+-/
 theorem GlobalTheory.CompanionTheory.SiegelND.Integ.Arch.continuous_coreC_schwartz
     (W : Type) [Fintype W] (n M : ℕ) (J : W → Matrix (Fin M) (Fin M) ℂ)
     (N : ℕ) (e : (W → Fin n → Fin M → ℂ) ≃+ (Fin N → ℝ)) (he : Continuous e)

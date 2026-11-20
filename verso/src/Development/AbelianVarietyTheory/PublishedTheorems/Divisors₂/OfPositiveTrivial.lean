@@ -14,8 +14,14 @@ namespace GaussBonnet
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul {P Q : ℕ} (g g' : UpqT P Q) : UpqT.mat (g * g') = UpqT.mat g * UpqT.mat g' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one {P Q : ℕ} : UpqT.mat (1 : UpqT P Q) = 1 := rfl
 
 def IsOrthFrame (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {P Q : ℕ}
@@ -47,6 +53,13 @@ def realImage (Ψ : Finset (E →+* ℂ)) {P Q : Ψ → ℕ}
           rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
       _ = _ := by rw [← ha, Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hJ : Formalism.UG.Jpq P Q * Formalism.UG.Jpq P Q = 1`. Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`. Establish `h1 : Bᴴ * ((G.map τ).map (starRingEnd ℂ) * B) = Formalism.UG.Jpq P Q`. Use extensionality with `a b`. Establish `h` using `congrArg (starRingEnd ℂ) (hB a b)`.
+
+Establish `h' : starRingEnd ℂ (Formalism.UG.Jpq P Q a b) = Formalism.UG.Jpq P Q a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.one_apply, apply_ite]`. Rewrite `h` using `[h']`. Rewrite using `[← h]`. Simplify using `[hermC, Matrix.mul_apply, Finset.mul_sum, mul_assoc]`.
+
+Establish `h2 : (Formalism.UG.Jpq P Q * (Bᴴ * (G.map τ).map (starRingEnd ℂ))) * B = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, hJ]`. Use `⟨h1, _, h2, ?_⟩` and prove the remaining obligations. Conclude with `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by simp [hr])).1 h2`.
+-/
 theorem IsOrthFrame.exists_inv {τ : E →+* ℂ} {G : Matrix (Fin r) (Fin r) E} {P Q : ℕ}
     {B : Matrix (Fin r) (Fin P ⊕ Fin Q) ℂ} (hB : IsOrthFrame τ G B) (hr : P + Q = r) :
     Bᴴ * ((G.map τ).map (starRingEnd ℂ) * B) = Formalism.UG.Jpq P Q ∧

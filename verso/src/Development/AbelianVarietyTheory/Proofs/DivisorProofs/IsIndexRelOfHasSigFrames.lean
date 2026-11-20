@@ -18,6 +18,9 @@ variable {O C : Type} [CommRing O] [Field C] [Algebra O C]
   {U : Type} [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] {v : Valuation C ℝ≥0}
 
 omit [Module O U] [IsScalarTower O C U] in
+/- English proof (translation)
+The claim follows from `(Matrix.linearIndependent_rows_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det a).2 ha.isUnit)).map' (Fintype.linearCombination C w) (LinearMap.ker_eq_bot.2 fun s t h => funext (Fintype.linearIndependent_iffₛ.1 hw s t h))`.
+-/
 theorem indep_comb {n : ℕ} {w : Fin n → U} (hw : LinearIndependent C w) {a : Matrix (Fin n) (Fin n) C}
     (ha : a.det ≠ 0) : LinearIndependent C fun i => ∑ j, a i j • w j :=
   (Matrix.linearIndependent_rows_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det a).2 ha.isUnit)).map'
@@ -25,6 +28,9 @@ theorem indep_comb {n : ℕ} {w : Fin n → U} (hw : LinearIndependent C w) {a :
     (LinearMap.ker_eq_bot.2 fun s t h => funext (Fintype.linearIndependent_iffₛ.1 hw s t h))
 
 omit [Module O U] [IsScalarTower O C U] in
+/- English proof (translation)
+Establish `h` using `comb_comb (x := fun i => ∑ j, a⁻¹ i j • ∑ k, a j k • w k) (y := fun j => ∑ k, a j k • w k) (z := w) (fun _ => rfl) (fun _ => rfl) i`. Rewrite `h` using `[Matrix.nonsing_inv_mul _ ha.isUnit]`. Simplify `h.symm` using `[Matrix.one_apply]`.
+-/
 theorem eq_inv_comb {n : ℕ} (w : Fin n → U) {a : Matrix (Fin n) (Fin n) C} (ha : a.det ≠ 0) (i : Fin n) :
     w i = ∑ j, a⁻¹ i j • ∑ k, a j k • w k := by
   have h := comb_comb (x := fun i => ∑ j, a⁻¹ i j • ∑ k, a j k • w k) (y := fun j => ∑ k, a j k • w k) (z := w)
@@ -33,6 +39,9 @@ theorem eq_inv_comb {n : ℕ} (w : Fin n → U) {a : Matrix (Fin n) (Fin n) C} (
   simpa [Matrix.one_apply] using h.symm
 
 omit [Module O U] [IsScalarTower O C U] in
+/- English proof (translation)
+The claim follows from `le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 fun _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))) (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => (eq_inv_comb w ha i).symm ▸ Submodule.sum_mem _ fun j _ => Submodule.sm …`.
+-/
 theorem span_comb {n : ℕ} (w : Fin n → U) {a : Matrix (Fin n) (Fin n) C} (ha : a.det ≠ 0) :
     Submodule.span C (Set.range fun i => ∑ j, a i j • w j) = Submodule.span C (Set.range w) :=
   le_antisymm
@@ -41,6 +50,11 @@ theorem span_comb {n : ℕ} (w : Fin n → U) {a : Matrix (Fin n) (Fin n) C} (ha
     (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => (eq_inv_comb w ha i).symm ▸ Submodule.sum_mem _ fun j _ =>
       Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)))
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_matrix (C := C) (Submodule.span_le.2 (Set.range_subset_iff.2 hm))`. Establish `e : algebraMap O C g.det = a.det` using `by rw [RingHom.map_det, comb_inj hw hx hg]; rfl`. Use `⟨g.det, e, w, g, hw, rfl, ?_, fun h => ha (by rw [← e, h, map_zero]), rfl⟩` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [hg i, Matrix.map_apply, algebraMap_smul]`.
+-/
 theorem exists_hasIndex {n : ℕ} {w x : Fin n → U} (hw : LinearIndependent C w) {a : Matrix (Fin n) (Fin n) C}
     (ha : a.det ≠ 0) (hx : ∀ i, x i = ∑ j, a i j • w j) (hm : ∀ i, x i ∈ Submodule.span O (Set.range w)) :
     ∃ d : O, algebraMap O C d = a.det ∧
@@ -52,6 +66,31 @@ theorem exists_hasIndex {n : ℕ} {w x : Fin n → U} (hw : LinearIndependent C 
   funext i
   simp only [hg i, Matrix.map_apply, algebraMap_smul]
 
+/- English proof (translation)
+Set `e : Fin p ⊕ Fin q ≃ Fin (p + q)` to `finSumFinEquiv`. Set `b : Fin (p + q) → U` to `Sum.elim u u' ∘ e.symm`. Establish `hb : Submodule.span O (Set.range b) = Submodule.span O (Set.range u) ⊔ Submodule.span O (Set.range u')`. Rewrite using `[e.symm.surjective.range_comp, Set.Sum.elim_range, Submodule.span_union]`. Establish `hle` using `hI.le`.
+
+Take `⟨w, g₀, hw, hL, hL', hg₀, -⟩` from `id hI`. Establish `hd₀ : (g₀.map (algebraMap O C)).det ≠ 0` using `fun h => hg₀ (hv.hom_inj (by rw [RingHom.map_det, map_zero]; exact h))`. Establish `hbw : Submodule.span C (Set.range b) = Submodule.span C (Set.range w)`. Rewrite using `[← Submodule.span_span_of_tower O C, hb, ← hL', Submodule.span_span_of_tower, ← span_comb w hd₀]`. Simplify using `only [Matrix.map_apply, algebraMap_smul]`.
+
+Establish `hbi : LinearIndependent C b`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, hbw, finrank_span_eq_card hw]`. Take `⟨g, g1, g2, g3⟩` from `FlagBasis.exists_adapted_basis O C U v hv (p + q) L (hL ▸ Submodule.fg_span (Set.finite_range w)) b hbi fun j => ⟨1, one_ne_zero, by rw [one_smul]; exact hle (hb ▸ Submodule.subset_span ⟨j, rfl⟩)⟩`. Establish `hg : g.det ≠ 0`. Rewrite using `[Matrix.det_of_lowerTriangular _ fun i j hij => g1 i j hij]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => g2 i`. Establish `ht : Submodule.span O (Set.range fun i => ∑ j, g i j • b j) = L`. Rewrite using `[g3.2, span_comb b hg, hbw, inf_eq_left, ← hL]`. Conclude with `Submodule.span_le_restrictScalars O C _`. Take `⟨d, hd, hd'⟩` from `hI.det hv.hom_inj ht hb (eq_inv_comb b hg)`.
+
+Set `G` to `g.submatrix e e`. Establish `h12 : G.toBlocks₁₂ = 0` using `Matrix.ext fun i j => g1 _ _ (by`. Simplify using `only [e, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`. Use the proof step `omega)`. Establish `hdet : g.det = G.toBlocks₁₁.det * G.toBlocks₂₂.det`.
+
+Rewrite using `[← Matrix.det_submatrix_equiv_self e, ← Matrix.det_fromBlocks_zero₁₂ _ G.toBlocks₂₁, ← h12, Matrix.fromBlocks_toBlocks]`. Establish `hs : ∀ s, ∑ j, g (e s) j • b j = ∑ j, G s (.inl j) • u j + ∑ j, G s (.inr j) • u' j` using `fun s => by`. Rewrite using `[← e.sum_comp, Fintype.sum_sum_type]`. Simplify using `[b, G]`. Establish `hl : ∀ i, ∑ j, g (e (.inl i)) j • b j = ∑ j, G.toBlocks₁₁ i j • u j` using `fun i => by`.
+
+Establish `: ∀ j, G (.inl i) (.inr j) = 0` using `fun j => congrFun (congrFun h12 i) j`. Simplify using `only [hs, this, zero_smul, Finset.sum_const_zero, add_zero]`. Both sides reduce to the same expression. Establish `hsup : Submodule.span O (Set.range fun i => ∑ j, G.toBlocks₁₁ i j • u j) ⊔ Submodule.span O (Set.range fun i => ∑ j, G.toBlocks₂₁ i j • u j + ∑ j, G.toBlocks₂₂ i j • u' j) = L`. Rewrite using `[← ht, ← e.surjective.range_comp, ← Submodule.span_union, ← Set.Sum.elim_range]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `s`. Break down `s with i | i` into its components or cases. Use `exacts [(hl i).symm, (hs (.inr i)).symm]`. Establish `h1 : G.toBlocks₁₁.det ≠ 0` using `left_ne_zero_of_mul (hdet ▸ hg)`.
+
+Use `⟨G.toBlocks₁₁, G.toBlocks₂₁, G.toBlocks₂₂, d, ?_, ?_, hd', le_antisymm (le_inf (le_sup_left.trans hsup.le) ?_) ?_, hsup⟩` and prove the remaining obligations. Simplify `hbi.comp (e ∘ .inl) (e.injective.comp Sum.inl_injective)` using `[b, Function.comp_def]`. Rewrite using `[hd, ← hdet, Matrix.det_nonsing_inv_mul_det _ hg.isUnit]`. Rewrite using `[← span_comb u h1]`. Conclude with `Submodule.span_le_restrictScalars O C _`.
+
+Introduce and unpack `x ⟨hx, hx'⟩`. Rewrite `hx'` using `[← span_comb u h1]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hx'`. Use `(g3.sum_mem_iff (Sum.elim c 0 ∘ e.symm)).1 (by` as an intermediate fact. Rewrite using `[← e.sum_comp, Fintype.sum_sum_type]`.
+
+Simplify `hx)` using `[hl]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `this (e (.inl i))`. Establish `ho' : c i = algebraMap O C o` using `by simpa using ho.symm`. Rewrite using `[ho', algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem exists_block_basis (hv : v.Integers O) {p q : ℕ} {L : Submodule O U} {u : Fin p → U} {u' : Fin q → U}
     {I : Ideal O} (hI : HasIndex C (p + q) L (Submodule.span O (Set.range u) ⊔ Submodule.span O (Set.range u')) I) :
     ∃ (g₁ : Matrix (Fin p) (Fin p) C) (g' : Matrix (Fin q) (Fin p) C) (g₂ : Matrix (Fin q) (Fin q) C) (d : O),
@@ -123,6 +162,29 @@ theorem exists_block_basis (hv : v.Integers O) {p q : ℕ} {L : Submodule O U} {
     rw [ho', algebraMap_smul]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Take `⟨g₁, g', g₂, d, hui, hd, rfl, h₁, h₂⟩` from `exists_block_basis hv hI`. Establish `hne : g₁.det * g₂.det ≠ 0` using `right_ne_zero_of_mul (hd ▸ one_ne_zero)`. Establish `hg₁` using `left_ne_zero_of_mul hne`. Establish `hspan : ∀ {n : ℕ} {x : Fin n → U} {F : Submodule C U}, LinearIndependent C x → (∀ a, x a ∈ F) → Module.finrank C F = n → Submodule.span C (Set.range x) = F` using `fun hx hF hn => Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 (Set.range_subset_iff.2 hF)) (by rw [finrank_span_eq_card hx, Fintype.card_fin, hn])`. Rewrite `h₁` using `[hspan hui hu hW]`.
+
+Take `⟨d₁, hd₁, hI₁⟩` from `exists_hasIndex (O := O) (indep_comb hui hg₁) (Matrix.isUnit_nonsing_inv_det _ hg₁.isUnit).ne_zero (eq_inv_comb u hg₁) fun i => h₁.ge ⟨hI.le (Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)), hu i⟩`. Rewrite `hI₁` using `[h₁]`. Establish `hGC : (G.map (algebraMap O C)).det = algebraMap O C G.det` using `(RingHom.map_det _ _).symm`. Set `Q` to `(g₂ * G.map (algebraMap O C)).transpose`. Establish `hQd : Q.det = g₂.det * algebraMap O C G.det` using `by rw [Matrix.det_transpose, Matrix.det_mul, hGC]`.
+
+Establish `hQ : Q.det ≠ 0` using `hQd ▸ mul_ne_zero (right_ne_zero_of_mul hne) fun h => hG (hv.hom_inj (by rw [h, map_zero]))`. Set `t : Fin q → U` to `fun i => ∑ j, g' i j • u j + ∑ j, g₂ i j • u' j`. Set `x : Fin q → U` to `fun k => ∑ b, Q⁻¹ k b • z b`. Establish `htz : ∀ j b, B (t j) (z b) = Q b j` using `fun j b => by`. Simplify using `only [t, map_add, map_sum, map_smul, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, horth, hGram, smul_zero, Finset.sum_const_zero, zero_add]`.
+
+Both sides reduce to the same expression. Establish `htx : ∀ j (c : Fin q → C), B (t j) (∑ k, c k • x k) = c j` using `fun j c => by`. Establish `: ∀ k, B (t j) (x k) = (1 : Matrix _ _ C) k j` using `fun k => by`. Rewrite using `[← Matrix.nonsing_inv_mul _ hQ.isUnit]`. Simplify using `[x, htz, Matrix.mul_apply]`.
+
+Simplify using `[this, Matrix.one_apply]`. Establish `hxi : LinearIndependent C x` using `Fintype.linearIndependent_iff.2 fun c hc j => by rw [← htx j c, hc, map_zero]`. Establish `hxW : ∀ k, x k ∈ W'` using `fun k => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hz b)`. Establish `hzx : ∀ b, z b = ∑ k, Q b k • x k` using `fun b => by`. Use `eq_inv_comb z (Matrix.isUnit_nonsing_inv_det _ hQ.isUnit).ne_zero b` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ hQ.isUnit]`. Then use the resulting hypothesis. Establish `hx : Submodule.span O (Set.range x) = S ⊓ W'.restrictScalars O`. Use `le_antisymm (Submodule.span_le.2 (Set.range_subset_iff.2 fun k => ⟨(hS _ (hxW k)).2 fun l hl => ?_, hxW k⟩)) ?_` and prove the remaining obligations. Establish `: L ≤ (LinearMap.range (Algebra.linearMap O C)).comap ((B.flip (x k)).restrictScalars O)`. Rewrite using `[← h₂]`.
+
+Use `sup_le (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => ⟨0, ?_⟩)) (Submodule.span_le.2 (Set.range_subset_iff.2 fun i => ⟨(Pi.single k 1 : Fin q → O) i, ?_⟩))` and prove the remaining obligations. Simplify using `[x, horth]`. Use `htx i (Pi.single k 1)` as an intermediate fact. Simplify using `only [Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at this`. Conclude with `Eq.trans (by simp [Pi.single_apply, apply_ite]) this.symm`.
+
+Conclude with `this hl`. Introduce and unpack `y ⟨hy, hy'⟩`. Establish `hy'' : y ∈ Submodule.span C (Set.range x)` using `(hspan hxi hxW hW').ge hy'`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hy''`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨o, ho⟩` from `(hS _ hy').1 hy (t i) (h₂.le (Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)))`. Rewrite `ho` using `[htx]`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨d₂, hd₂, hI₂⟩` from `exists_hasIndex (O := O) hxi hQ hzx fun b => hx.ge ⟨hzS b, hz b⟩`.
+
+Rewrite `hI₂` using `[hx]`. Use `⟨_, _, hI₁, hI₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton]`. Use `congr 2`. Use `hv.hom_inj ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, hd₁, hd₂, hQd, Matrix.det_nonsing_inv, Ring.inverse_eq_inv, eq_inv_of_mul_eq_one_left hd]`. Clear denominators, using `[right_ne_zero_of_mul hne]` for the nonvanishing conditions.
+-/
 theorem index_mul_gram [FiniteDimensional C U] (hv : v.Integers O) {p q : ℕ} (B : U →ₗ[C] U →ₗ[C] C)
     {L S : Submodule O U} {W W' : Submodule C U} {u : Fin p → U} {u' z : Fin q → U} {I : Ideal O}
     (hI : HasIndex C (p + q) L (Submodule.span O (Set.range u) ⊔ Submodule.span O (Set.range u')) I)
@@ -192,11 +254,21 @@ theorem index_mul_gram [FiniteDimensional C U] (hv : v.Integers O) {p q : ℕ} (
   rw [map_mul, map_mul, hd₁, hd₂, hQd, Matrix.det_nonsing_inv, Ring.inverse_eq_inv, eq_inv_of_mul_eq_one_left hd]
   field_simp [right_ne_zero_of_mul hne]
 
+/- English proof (translation)
+Simplify using `only [Submodule.map_span, Set.image_singleton, Submodule.span_range_eq_iSup]`.
+-/
 theorem iSup_map_span {U U' : Type} [AddCommGroup U] [Module O U] [AddCommGroup U'] [Module O U'] {n : ℕ}
     (f : Fin n → (U →ₗ[O] U')) (y : U) :
     ⨆ a, (Submodule.span O {y}).map (f a) = Submodule.span O (Set.range fun a => f a y) := by
   simp only [Submodule.map_span, Set.image_singleton, Submodule.span_range_eq_iSup]
 
+/- English proof (translation)
+Establish `e` using `hb.2`. Establish `e'` using `hb'.2`. Rewrite `e` using `[span_comb x hg, hx]`. Rewrite `e'` using `[span_comb y hc, hy, Set.range_unique]`. Rewrite `h` using `[← e', iSup_map_span]`.
+
+Use `h.val_det hv e rfl (a := c.det • (m * g⁻¹)) fun a => by` as an intermediate fact. Establish `h1` using `comb_comb hm (eq_inv_comb x hg) a`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, ← h1]`. Simplify using the standard rewrite rules. Rewrite using `[← this, Matrix.det_smul, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv, Fintype.card_fin, ← map_pow, ← map_mul, ← map_mul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem val_det_frame (hv : v.Integers O) {U' : Type} [AddCommGroup U'] [Module C U'] [Module O U']
     [IsScalarTower O C U'] {n : ℕ} {La : Submodule O U} {F : Submodule C U} {La' : Submodule O U'} {F' : Submodule C U'}
     {f : Fin n → (U' →ₗ[C] U)} {d : O} (h : HasIndex C n (La ⊓ F.restrictScalars O)
@@ -229,6 +301,13 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] [IsAlgClosed C] [Char
   [Algebra ℤ_[ℓ] C] [IsScalarTower ℤ_[ℓ] O C] {Λ : Type} [CommRing Λ] [StarRing Λ]
   {J : Type} [DecidableEq J] {σ : J → Λ →+* O} (hs : IsSplitting (embC C σ)) (k : J)
 
+/- English proof (translation)
+Establish `hle : P.eigW (σ k) ≤ Submodule.span C {y}` using `fun x hx => by`. Take `⟨a, ha, h⟩` from `P.exists_smul_mem_latT x`. Establish `ha' : algebraMap O C a ≠ 0` using `fun h0 => ha (P.integers.hom_inj (by rw [h0, map_zero]))`. Establish `h1 : a • x ∈ Submodule.span O {y}` using `hy.ge (P.latTSub_le_latTQuot hs k ⟨h, by rw [← algebraMap_smul C]; exact (P.eigV (σ k)).smul_mem _ hx.2⟩)`. Establish `h2` using `Submodule.span_le_restrictScalars O C _ h1`.
+
+Rewrite `h2` using `[← algebraMap_smul C]`. Conclude with `(Submodule.smul_mem_iff _ ha').1 h2`. Establish `he : P.eigW (σ k) = Submodule.span C {y}` using `Submodule.eq_of_le_of_finrank_le hle (hW ▸ (finrank_span_le_card _).trans (by simp))`. Use `⟨he.ge (Submodule.mem_span_singleton_self y), ?_⟩` and prove the remaining obligations. Rewrite using `[Point.wHT, ← hy, he, inf_eq_left]`.
+
+Conclude with `Submodule.span_le_restrictScalars O C _`.
+-/
 theorem wHT_eq_of_rank_one (P : Point ℓ v O Λ) {y : P.V} (hy : Submodule.span O {y} = P.latTQuot hs k)
     (hW : Module.finrank C (P.eigW (σ k)) = 1) : y ∈ P.eigW (σ k) ∧ P.wHT hs k = Submodule.span O {y} := by
   have hle : P.eigW (σ k) ≤ Submodule.span C {y} := fun x hx => by
@@ -245,6 +324,19 @@ theorem wHT_eq_of_rank_one (P : Point ℓ v O Λ) {y : P.V} (hy : Submodule.span
   rw [Point.wHT, ← hy, he, inf_eq_left]
   exact Submodule.span_le_restrictScalars O C _
 
+/- English proof (translation)
+Take `⟨⟨z₀, hz₀⟩, h0, hgen⟩` from `finrank_eq_one_iff'.1 hW`. Establish `hne : P.pairV y z₀ ≠ 0` using `fun h => h0 (Subtype.ext (P.eq_of_pairV fun t => by`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hy.ge ⟨_, P.one_tmul_mem_latT t, rfl⟩)`. Establish `e` using `Model.pairV_proj P hs k (1 ⊗ₜ t) hz₀.2`. Express the relevant statement in the definitionally equal form `_ = proj hs P.actV k (1 ⊗ₜ t) at hc`.
+
+Rewrite `e` using `[← hc, ← algebraMap_smul C, map_smul, LinearMap.smul_apply, h, smul_zero]`. Express the relevant statement in the definitionally equal form `P.pairV z₀ _ = P.pairV 0 _`. Rewrite using `[P.pairV_swap, ← e, neg_zero, map_zero, LinearMap.zero_apply]))`. Establish `hz` using `(P.eigW _).smul_mem (P.pairV y z₀)⁻¹ hz₀`. Establish `h1 : P.pairV y ((P.pairV y z₀)⁻¹ • z₀) = 1` using `by rw [map_smul, smul_eq_mul, inv_mul_cancel₀ hne]`.
+
+Establish `hgen' : ∀ x ∈ P.eigW ((σ k).comp (starRingEnd Λ)), ∃ c : C, c • (P.pairV y z₀)⁻¹ • z₀ = x` using `fun x hx => by`. Take `⟨c, hc⟩` from `hgen ⟨x, hx⟩`. Conclude with `⟨c * P.pairV y z₀, by`. Rewrite using `[smul_smul, mul_assoc, mul_inv_cancel₀ hne, mul_one]`. Conclude with `congrArg Subtype.val hc⟩`.
+
+Generalize the expression as in `(P.pairV y z₀)⁻¹ • z₀ = z at hz h1 hgen'`. Use `⟨z, hz, h1, le_antisymm ?_ ((Submodule.span_singleton_le_iff_mem _ _).2 ⟨?_, hz⟩)⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hx'⟩`. Take `⟨c, rfl⟩` from `hgen' x hx'`. Take `⟨o, ho⟩` from `(Model.mem_latTSub_iff P hs k hx'.2).1 hx y (hy.le (Submodule.mem_span_singleton_self y))`.
+
+Rewrite `ho` using `[map_smul, h1, smul_eq_mul, mul_one]`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self z)`. Use `(Model.mem_latTSub_iff P hs k hz.2).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 (hy.ge hx)`.
+
+Conclude with `⟨o, by rw [← algebraMap_smul C, map_smul, LinearMap.smul_apply, h1, smul_eq_mul, mul_one]⟩`.
+-/
 theorem exists_dual_of_rank_one (P : Point ℓ v O Λ) {y : P.V} (hy : Submodule.span O {y} = P.latTQuot hs k)
     (hW : Module.finrank C (P.eigW ((σ k).comp (starRingEnd Λ))) = 1) :
     ∃ z ∈ P.eigW ((σ k).comp (starRingEnd Λ)), P.pairV y z = 1 ∧
@@ -276,6 +368,11 @@ theorem exists_dual_of_rank_one (P : Point ℓ v O Λ) {y : P.V} (hy : Submodule
     obtain ⟨o, rfl⟩ := Submodule.mem_span_singleton.1 (hy.ge hx)
     exact ⟨o, by rw [← algebraMap_smul C, map_smul, LinearMap.smul_apply, h1, smul_eq_mul, mul_one]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `wHT_eq_of_rank_one hs k A hy hA`. Take `⟨z, h3, h4, h5⟩` from `exists_dual_of_rank_one hs k A' hy' hA'`. Establish `h6 : y' ∈ A'.eigV (σ k)` using `eigQuotLat_le A'.actV hs k A'.latT (hy'.le (Submodule.mem_span_singleton_self y'))`. Rewrite `hI` using `[← hy, ← hy', iSup_map_span, iSup_map_span]`. Rewrite using `[h2, h5, iSup_map_span, iSup_map_span, RingHom.map_det]`.
+
+Use `index_mul_gram B.integers B.pairV hI hB hB' (fun a => hφ a y h1) (fun b => hφ' b z h3) (fun b => hT b z (h5.ge (Submodule.mem_span_singleton_self z)).1) (fun x hx => Model.mem_latTSub_iff B hs k hx.2) (fun a b => horth a b y z) (by rwa [← RingHom.map_det]) fun a b => (hGram a b y …` and prove the remaining obligations. Rewrite using `[mem_eigenSub.1 h6, map_smul, LinearMap.smul_apply, h4, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem index_points {A A' B : Point ℓ v O Λ} {p q : ℕ} (φ : Fin p → (A.V →ₗ[C] B.V)) (φ' : Fin q → (A'.V →ₗ[C] B.V))
     {I : Ideal O} (hI : HasIndex C (p + q) (B.latTQuot hs k)
       ((⨆ a, (A.latTQuot hs k).map ((φ a).restrictScalars O)) ⊔
@@ -326,6 +423,9 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {C : Type} [Field C] [IsAlgClosed C] [Char
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨-, x, x', g, g', h1, h2, -, -, -, -, -, -, h3, h4, h5, h6⟩` from `h`. Rewrite using `[← h1, ← h2, ← h5, ← h6, finrank_span_eq_card h3, finrank_span_eq_card h4, Submodule.span_span_of_tower, Submodule.span_span_of_tower]`. Simplify using the standard rewrite rules.
+-/
 theorem eigW_of_hasSigFrames [StarRing (𝓞 E)] {P : Point ℓ v O (𝓞 E)} {rt : 𝓞 E} {τ : E →+* C} {p q : ℕ}
     (h : HasSigFrames P rt τ p q) :
     (Module.finrank C (P.eigW (embO P.integers τ)) = p ∧
@@ -339,6 +439,9 @@ theorem eigW_of_hasSigFrames [StarRing (𝓞 E)] {P : Point ℓ v O (𝓞 E)} {r
   simp
 
 omit [IsCMField E] [NumberField E] in
+/- English proof (translation)
+Rewrite using `[h, h']`. Conclude with `fun x hx => (Submodule.span_le (p := (Submodule.span C (P'.wRec χ : Set P'.V)).comap f)).2 (fun y hy => Submodule.subset_span (hf y hy)) hx`.
+-/
 theorem map_mem_eigW [StarRing (𝓞 E)] {P P' : Point ℓ v O (𝓞 E)} {χ : 𝓞 E →+* O} (f : P.V →ₗ[C] P'.V)
     (h : P.eigW χ = Submodule.span C (P.wRec χ)) (h' : P'.eigW χ = Submodule.span C (P'.wRec χ))
     (hf : ∀ x ∈ P.wRec χ, f x ∈ P'.wRec χ) : ∀ x ∈ P.eigW χ, f x ∈ P'.eigW χ := by
@@ -367,6 +470,13 @@ variable {gP : Matrix (Fin p) (Fin p) (𝓞 E)} {gQ : Matrix (Fin q) (Fin q) (�
 
 open Classical in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Introduce `hB hP hQ I hI`. Take `⟨⟨b1, b2⟩, b3, b4⟩` from `eigW_of_hasSigFrames hB`. Take `⟨⟨p1, p2⟩, -⟩` from `eigW_of_hasSigFrames hP`. Take `⟨-, q1, q2⟩` from `eigW_of_hasSigFrames hQ`.
+
+Take `⟨y, -, hy⟩` from `exists_basis_latTQuot_pure hv ε i X (σ := fun φ : E →+* C => embO hv φ) (isSplitting_embO hv) τ true`. Take `⟨y', -, hy'⟩` from `exists_basis_latTQuot_pure hv ε i X (σ := fun φ : E →+* C => embO hv φ) (isSplitting_embO hv) τ false`. Rewrite `hy`, `hy'` using `[Set.range_unique]`. Use `index_points (σ := fun φ : E →+* C => embO hv φ) (isSplitting_embO hv) τ (A := pointA hv ε i X true) (A' := pointA hv ε i X false) (B := pointB hv ε i X) (phiVP hv ε i X) (phiVQ hv ε i X) hI hy hy' p1 q1 b1 b3 (fun a => map_mem_eigW _ p2 b2 (patV_mem_wRec (T := X.A true) hv ε i ( …` and prove the remaining obligations. Establish `h1` using `algebraMap_embO hv τ gQ.det`.
+
+Rewrite `h1` using `[show embO hv τ gQ.det = 0 from h0, map_zero, eq_comm, map_eq_zero]`. Conclude with `RingOfIntegers.coe_injective h1`.
+-/
 theorem isIndexRel_of_hasSigFrames (h : IsGram X gP gQ) (τ : E →+* C) : letI := H.starRing
     HasSigFrames (pointB hv ε i X) H.rt τ p q → HasSigFrames (pointA hv ε i X true) H.rt τ 1 0 →
     HasSigFrames (pointA hv ε i X false) H.rt τ 0 1 → ∀ I : Ideal O,
@@ -396,6 +506,13 @@ theorem isIndexRel_of_hasSigFrames (h : IsGram X gP gQ) (τ : E →+* C) : letI 
 variable {hv ε i X} in
 open Classical in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Introduce `x x' y y' g m g' m' c c' a1 a2 a3 a4 b1 b2 b3 b4 c1 c2 c3 c4 d1 d2`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Take `⟨I₁, I₂, h₁, h₂, e⟩` from `h`. Take `⟨-, g₁, -, -, -, -, rfl⟩` from `id h₁`.
+
+Take `⟨-, g₂, -, -, -, -, rfl⟩` from `id h₂`. Rewrite `e` using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_eq_span_singleton]`. Take `⟨u, hu⟩` from `e`. Establish `e` using `congrArg (fun z => v (algebraMap O C z)) hu`. Simplify using `only [map_mul, hv.one_of_isUnit u.isUnit, mul_one] at e`.
+
+Rewrite using `[val_det_frame hv h₁ a1 b1 c1 a3 b3 c3 d1, val_det_frame hv h₂ a2 b2 c2 a4 b4 c4 d2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsIndexRel.val_det {τ : E →+* C} {n δ : O} (h : IsIndexRel hv ε i X τ (Ideal.span {n}) δ) : letI := H.starRing
     ∀ (x : Fin p → LieG (pointB hv ε i X).Gt) (x' : Fin q → LieG (pointB hv ε i X).Gt)
       (y : Fin 1 → LieG (pointA hv ε i X true).Gt) (y' : Fin 1 → LieG (pointA hv ε i X false).Gt)

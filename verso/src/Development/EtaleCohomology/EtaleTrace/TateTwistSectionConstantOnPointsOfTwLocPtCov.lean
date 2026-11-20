@@ -19,6 +19,31 @@ def PtLift : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] {X : Scheme.{0}} (
   (R : ∀ V : Scheme.{0}, (V ⟶ X) → Prop), Loc X R →
     ∃ (V : Scheme.{0}) (g : V ⟶ X) (w : S k ⟶ V), R V g ∧ w ≫ g = z
 
+/- English proof (translation)
+Introduce `X hX P Q hPs hQs hE hD hL`. Take `⟨Sv, hSv, hSs⟩` from `hL`. Take `⟨𝒰, h𝒰⟩` from `Scheme.exists_cover_of_mem_grothendieckTopology hSv`. Establish `hi : ∀ i, P (𝒰.X i) (𝒰.f i) ∨ Q (𝒰.X i) (𝒰.f i)` using `fun i => hSs _ _ (h𝒰 _ _ (Presieve.ofArrows.mk i))`. Establish `hcov` using `((Scheme.presieve₀_mem_precoverage_iff _).mp 𝒰.mem₀).1`.
+
+Establish `hop : ∀ i, IsOpen (Set.range (𝒰.f i))` using `fun i => by haveI : Etale (𝒰.f i) := 𝒰.map_prop i`. Conclude with `(𝒰.f i).isOpenMap.isOpen_range`. Set `A : Set X` to `⋃ (i) (_ : P (𝒰.X i) (𝒰.f i)), Set.range (𝒰.f i)`. Set `B : Set X` to `⋃ (i) (_ : ¬ P (𝒰.X i) (𝒰.f i)), Set.range (𝒰.f i)`. Establish `hAo : IsOpen A` using `isOpen_iUnion fun i => isOpen_iUnion fun _ => hop i`.
+
+Establish `hBo : IsOpen B` using `isOpen_iUnion fun i => isOpen_iUnion fun _ => hop i`. Establish `hAB : ∀ x, x ∈ A ∨ x ∈ B`. Introduce `x`. Take `⟨i, hx⟩` from `hcov x`. Distinguish the cases in `h : P (𝒰.X i) (𝒰.f i)`.
+
+Conclude with `Or.inl (Set.mem_iUnion₂.2 ⟨i, h, hx⟩)`. Conclude with `Or.inr (Set.mem_iUnion₂.2 ⟨i, h, hx⟩)`. Establish `hdis : ∀ x, x ∈ A → x ∈ B → False`. Introduce `x hA hB`. Take `⟨i, hPi, a, ha⟩` from `Set.mem_iUnion₂.1 hA`.
+
+Take `⟨j, hPj, b, hb⟩` from `Set.mem_iUnion₂.1 hB`. Establish `hQj : Q (𝒰.X j) (𝒰.f j)` using `(hi j).resolve_left hPj`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := 𝒰.f i) (g := 𝒰.f j) a b (ha.trans hb.symm)`. Establish `h1` using `hPs _ _ _ (pullback.fst (𝒰.f i) (𝒰.f j)) hPi`. Establish `h2` using `hQs _ _ _ (pullback.snd (𝒰.f i) (𝒰.f j)) hQj`.
+
+Rewrite `h2` using `[← pullback.condition]`. Conclude with `(hD _ _ h1 h2).false z`. Establish `hAc : IsClosed A`. Establish `: A = Bᶜ`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hA hB`. Conclude with `hdis x hA hB`. Introduce `hB`. Conclude with `(hAB x).resolve_right hB`.
+
+Rewrite using `[this]`. Conclude with `hBo.isClosed_compl`. Establish `hmem` using `Scheme.Cover.mem_grothendieckTopology 𝒰`. Break down `isClopen_iff.1 ⟨hAc, hAo⟩ with h0 | h1` into its components or cases. Use `right`.
+
+Use `⟨_, hmem, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨W, h, g', ⟨i⟩, rfl⟩` from `hg`. Apply `hQs` to reduce the goal to its premises. Distinguish the cases in `hP : P (𝒰.X i) (𝒰.f i)`. Use `(hE _ _ ⟨fun a => ?_⟩).2` and prove the remaining obligations.
+
+Establish `: 𝒰.f i a ∈ A` using `Set.mem_iUnion₂.2 ⟨i, hP, a, rfl⟩`. Rewrite `this` using `[h0]`. Conclude with `this`. Conclude with `(hi i).resolve_left hP`. Use `left`.
+
+Use `⟨_, hmem, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨W, h, g', ⟨i⟩, rfl⟩` from `hg`. Apply `hPs` to reduce the goal to its premises. Distinguish the cases in `hP : P (𝒰.X i) (𝒰.f i)`. Conclude with `hP`.
+
+Use `(hE _ _ ⟨fun a => ?_⟩).1` and prove the remaining obligations. Establish `hb : 𝒰.f i a ∈ B` using `Set.mem_iUnion₂.2 ⟨i, hP, a, rfl⟩`. Establish `ha : 𝒰.f i a ∈ A` using `by rw [h1]; trivial`. Conclude with `hdis _ ha hb`.
+-/
 theorem ConnLoc_pf : ConnLoc := by
   intro X hX P Q hPs hQs hE hD hL
   obtain ⟨Sv, hSv, hSs⟩ := hL
@@ -76,14 +101,27 @@ theorem ConnLoc_pf : ConnLoc := by
       have ha : 𝒰.f i a ∈ A := by rw [h1]; trivial
       exact hdis _ ha hb
 
+/- English proof (translation)
+Simplify using `only [Sec.res, op_id]`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem res_id' {q : ℕ} {U : Scheme.{0}} (x : Sec (tw q 0) U) : Sec.res (𝟙 U) x = x := by
   simp only [Sec.res, op_id]
   rw [CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 theorem res_sub' {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec (tw q 0) U) :
     Sec.res g (a - b) = Sec.res g a - Sec.res g b := map_sub _ _ _
 
+/- English proof (translation)
+Introduce `k _ _ X z R hR`. Take `⟨Sv, hSv, hSs⟩` from `hR`. Establish `hpb : Sv.pullback z ∈ Scheme.etaleTopology (S k)` using `Scheme.etaleTopology.pullback_stable z hSv`. Take `⟨T, hT, hTs⟩` from `hC k (𝟙 (S k)) inferInstance (Sv.pullback z) hpb`. Take `⟨𝒰, h𝒰⟩` from `Scheme.exists_cover_of_mem_grothendieckTopology hT`.
+
+Establish `hne : Nonempty (S k)` using `inferInstance`. Take `⟨i, -⟩` from `((Scheme.presieve₀_mem_precoverage_iff _).mp 𝒰.mem₀).1 (Classical.choice hne)`. Take `⟨U, g', h, hg', -, w, hw⟩` from `hTs _ (𝒰.f i) (h𝒰 _ _ (Presieve.ofArrows.mk i))`. Use `⟨U, g' ≫ z, w, hSs _ _ hg', ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[Category.comp_id]`.
+
+Rewrite using `[← Category.assoc, hw, Category.id_comp]`.
+-/
 theorem PtLift_of (hC : PtCov) : PtLift := by
   intro k _ _ X z R hR
   obtain ⟨Sv, hSv, hSs⟩ := hR
@@ -97,6 +135,31 @@ theorem PtLift_of (hC : PtCov) : PtLift := by
   rw [Category.comp_id] at hw
   rw [← Category.assoc, hw, Category.id_comp]
 
+/- English proof (translation)
+Introduce `l _ k _ _ hl j X p hp s hX y y'`. Use `haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hq : ((l ^ j : ℕ) : k) ≠ 0` using `by push_cast; exact pow_ne_zero _ hl`. Take `⟨ζ0⟩` from `primK k (l ^ j) hq`. Set `φ : k →+* Γ(X, ⊤)` to `(p.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`.
+
+Set `v0` to `Sec.res y.1 s`. Set `t` to `s - Sec.res p v0`. Establish `key : ∀ z : Pt p, Sec.res z.1 t = Sec.res z.1 s - v0`. Introduce `z`. Use `show Sec.res z.1 (s - Sec.res p v0) = _`.
+
+Rewrite using `[res_sub', ← res_comp, z.2, res_id']`. Establish `hne : Nonempty (S k)` using `inferInstance`. Set `P : ∀ V : Scheme.{0}, (V ⟶ X) → Prop` to `fun V g => ∀ (W : Scheme.{0}) (h : W ⟶ V), Nonempty W → Sec.res (h ≫ g) t = 0`. Set `Q : ∀ V : Scheme.{0}, (V ⟶ X) → Prop` to `fun V g => ∀ (W : Scheme.{0}) (h : W ⟶ V), Nonempty W → Sec.res (h ≫ g) t ≠ 0`. Establish `hPs : ∀ (V W : Scheme.{0}) (g : V ⟶ X) (h : W ⟶ V), P V g → P W (h ≫ g)`.
+
+Introduce `V W g h hg W' h' hW'`. Rewrite using `[← Category.assoc]`. Conclude with `hg W' (h' ≫ h) hW'`. Establish `hQs : ∀ (V W : Scheme.{0}) (g : V ⟶ X) (h : W ⟶ V), Q V g → Q W (h ≫ g)`. Introduce `V W g h hg W' h' hW'`.
+
+Rewrite using `[← Category.assoc]`. Conclude with `hg W' (h' ≫ h) hW'`. Establish `hE : ∀ (V : Scheme.{0}) (g : V ⟶ X), IsEmpty V → P V g ∧ Q V g`. Introduce `V g hV`. Conclude with `⟨fun W h hW => (hV.false (h.base (Classical.choice hW))).elim, fun W h hW => (hV.false (h.base (Classical.choice hW))).elim⟩`.
+
+Establish `hD : ∀ (V : Scheme.{0}) (g : V ⟶ X), P V g → Q V g → IsEmpty V`. Introduce `V g hPg hQg`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_isEmpty_iff]`. Conclude with `hQg V (𝟙 V) hV (hPg V (𝟙 V) hV)`.
+
+Establish `hPQ : Loc X (fun V g => P V g ∨ Q V g)`. Take `⟨Sv, hSv, hSs⟩` from `(hT (l ^ j) 0).1 X (ζ0.map φ) t`. Use `⟨Sv, hSv, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hSs V g hg`. Distinguish the cases in `hqc : l ^ j ∣ c`.
+
+Use `left`. Introduce `W h _`. Rewrite using `[res_comp, hc, res_nsmul]`. Take `⟨m, rfl⟩` from `hqc`. Rewrite using `[mul_comm]`.
+
+Use `first`. Consider the case `(rw [mul_nsmul, q_nsmul, nsmul_zero])`. Consider the case `(rw [mul_nsmul', q_nsmul, nsmul_zero])`. Consider the case `(rw [mul_nsmul', q_nsmul, smul_zero])`. Consider the case `(rw [mul_nsmul, q_nsmul, smul_zero])`.
+
+Use `right`. Introduce `W h hW hz`. Use `haveI := hW`. Apply `hqc` to reduce the goal to its premises. Rewrite `hz` using `[res_comp, hc, res_nsmul, (hT (l ^ j) 0).2.2]`.
+
+Conclude with `(hT (l ^ j) 0).2.1 W _ c hz`. Establish `hy0 : Sec.res y.1 t = 0` using `by rw [key]; exact sub_self _`. Break down `hL hX P Q hPs hQs hE hD hPQ with hLP | hLQ` into its components or cases. Take `⟨V, g, w, hg, hw⟩` from `hP k y'.1 P hLP`. Establish `h1` using `hg (S k) w hne`.
+
+Rewrite `h1` using `[hw, key, sub_eq_zero]`. Conclude with `h1.symm`. Take `⟨V, g, w, hg, hw⟩` from `hP k y.1 Q hLQ`. Conclude with `absurd (by rw [hw]; exact hy0) (hg (S k) w hne)`.
+-/
 theorem tateTwistSection_constantOnPoints_of_connLoc_lift (hT : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc) (hL : ConnLoc) (hP : PtLift) : EtaleTateTwistSectionConstantOnPointsOfConnectedProper := by
   intro l _ k _ _ hl j X p hp s hX y y'
   haveI : NeZero (l ^ j) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
@@ -157,6 +220,9 @@ theorem tateTwistSection_constantOnPoints_of_connLoc_lift (hT : LateralTheory.Et
   · obtain ⟨V, g, w, hg, hw⟩ := hP k y.1 Q hLQ
     exact absurd (by rw [hw]; exact hy0) (hg (S k) w hne)
 
+/- English proof (translation)
+The claim follows from `tateTwistSection_constantOnPoints_of_connLoc_lift hT ConnLoc_pf (PtLift_of hC)`.
+-/
 theorem tateTwistSection_constantOnPoints_of_twLoc_ptCov (hT : LateralTheory.EtaleFoundations.CongruenceLocalDecomposition.TwLoc) (hC : PtCov) : EtaleTateTwistSectionConstantOnPointsOfConnectedProper :=
   tateTwistSection_constantOnPoints_of_connLoc_lift hT ConnLoc_pf (PtLift_of hC)
 

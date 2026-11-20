@@ -32,6 +32,9 @@ def QuotIntegrable {E : Type} [NormedAddCommGroup E] (T : Subgroup G) (μ : Meas
 
 omit [MeasurableSpace G] in
 
+/- English proof (translation)
+Establish `h` using `Quotient.mk_out (s := QuotientGroup.rightRel T) x`. Rewrite `h` using `[QuotientGroup.rightRel_apply]`. Use `hF _ h (Quotient.out (Quotient.mk (QuotientGroup.rightRel T) x))` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Conclude with `this.symm`.
+-/
 theorem apply_out_mk {T : Subgroup G} {α : Type} {F : G → α} (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) (x : G) :
     F (Quotient.out (Quotient.mk (QuotientGroup.rightRel T) x)) = F x := by
   have h := Quotient.mk_out (s := QuotientGroup.rightRel T) x
@@ -40,6 +43,9 @@ theorem apply_out_mk {T : Subgroup G} {α : Type} {F : G → α} (hF : ∀ t ∈
   rw [inv_mul_cancel_right] at this
   exact this.symm
 
+/- English proof (translation)
+Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Establish `: (fun c : RCoset T => F (Quotient.out c)) ∘ Quotient.mk'' = F` using `funext (apply_out_mk hF)`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem measurable_comp_out {T : Subgroup G} {α : Type} [MeasurableSpace α] {F : G → α} (hm : Measurable F)
     (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) : Measurable fun c : RCoset T => F (Quotient.out c) := by
   refine measurable_from_quotient.2 ?_
@@ -54,6 +60,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
 
 omit [SecondCountableTopology G] in
 
+/- English proof (translation)
+Take `⟨β, hc, h0, -, h1⟩` from `GlobalTheory.bruhatFunctionExists_closedSubgroup G T hT μT inferInstance`. Establish `hcont : Continuous fun x => (β x⁻¹).toNNReal` using `continuous_real_toNNReal.comp (hc.comp continuous_inv)`. Use `⟨fun x => (β x⁻¹).toNNReal, hcont, hcont.measurable, fun x => ?_⟩` and prove the remaining obligations. Establish `hi : Integrable (fun h : T => β (x⁻¹ * h)) μT`. Assume the negation of the conclusion as `hn`.
+
+Use `h1 x⁻¹` as an intermediate fact. Rewrite `this` using `[integral_undef hn]`. Conclude with `zero_ne_one this`. Establish `h2` using `ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun h => h0 _)`. Rewrite `h2` using `[h1, ENNReal.ofReal_one, ← lintegral_inv_eq_self]`.
+
+Rewrite using `[h2]`. Simplify using `[ENNReal.ofReal]`.
+-/
 theorem exists_isCosetCutoff [LocallyCompactSpace G] [T2Space G] (hT : IsClosed (T : Set G)) [μT.IsHaarMeasure]
     [μT.IsInvInvariant] : ∃ β : G → NNReal, Continuous β ∧ IsCosetCutoff T μT β := by
   obtain ⟨β, hc, h0, -, h1⟩ := GlobalTheory.bruhatFunctionExists_closedSubgroup G T hT μT inferInstance
@@ -69,6 +82,17 @@ theorem exists_isCosetCutoff [LocallyCompactSpace G] [T2Space G] (hT : IsClosed 
   rw [h2]
   simp [ENNReal.ofReal]
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hb : Measurable fun x => (β x : ℝ≥0∞)` using `hβ.1.coe_nnreal_ennreal`. Establish `hmul : Measurable fun p : G × T => (p.2 : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd).mul measurable_fst`. Establish `hmul' : Measurable fun p : G × T => ((p.2⁻¹ : T) : G) * p.1` using `(measurable_subtype_coe.comp measurable_snd.inv).mul measurable_fst`. Establish `: μT.IsMulRightInvariant`.
+
+Rewrite using `[← Measure.inv_eq_self μT]`. Use `infer_instance`. Establish `hF : Measurable fun x => ∫⁻ t : T, f (t * x) ∂μT` using `(hf.comp hmul).lintegral_prod_right'`. Establish `hinv : ∀ s ∈ T, ∀ x, ∫⁻ t : T, f (t * (s * x)) ∂μT = ∫⁻ t : T, f (t * x) ∂μT` using `fun s hs x => by`. Rewrite using `[← lintegral_mul_right_eq_self (μ := μT) (fun t : T => f (t * x)) ⟨s, hs⟩]`.
+
+Simplify using `[mul_assoc]`. Establish `hmk : Measurable (Quotient.mk (QuotientGroup.rightRel T))` using `measurable_quotient_mk''`. Rewrite using `[lintegral_map (measurable_comp_out hF hinv) hmk, lintegral_withDensity_eq_lintegral_mul _ hb (g := fun a => ∫⁻ t : T, f (t * Quotient.out (Quotient.mk (QuotientGroup.rightRel T) a)) ∂μT) ((measurable_comp_out hF hinv).comp hmk)]`. Establish `e1 : ∀ x, ((fun x => (β x : ℝ≥0∞)) * fun a => ∫⁻ t : T, f (t * Quotient.out (Quotient.mk (QuotientGroup.rightRel T) a)) ∂μT) x = ∫⁻ t : T, β x * f (t * x) ∂μT` using `fun x => by`. Rewrite using `[Pi.mul_apply, apply_out_mk (F := fun x => ∫⁻ t : T, f (t * x) ∂μT) hinv, lintegral_const_mul' _ _ ENNReal.coe_ne_top]`.
+
+Rewrite using `[lintegral_congr e1, lintegral_lintegral_swap ((hb.comp measurable_fst).mul (hf.comp hmul)).aemeasurable]`. Establish `e2 : ∀ t : T, ∫⁻ x, β x * f (t * x) ∂μ = ∫⁻ x, β ((t⁻¹ : T) * x) * f x ∂μ` using `fun t => by`. Rewrite using `[← lintegral_mul_left_eq_self (μ := μ) (fun x => β ((t⁻¹ : T) * x) * f x) t]`. Simplify using the standard rewrite rules. Rewrite using `[lintegral_congr e2, ← lintegral_lintegral_swap (f := fun x (t : T) => β ((t⁻¹ : T) * x) * f x) ((hb.comp hmul').mul (hf.comp measurable_fst)).aemeasurable]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const _ (f := fun t : T => (β ((t⁻¹ : T) * x) : ℝ≥0∞)) (hb.comp (hmul'.comp (measurable_prodMk_left))), lintegral_inv_eq_self (μ := μT) (fun t : T => (β (t * x) : ℝ≥0∞)), hβ.2, one_mul]`.
+-/
 theorem IsCosetCutoff.isQuotMeasure [SFinite μ] [μ.IsMulLeftInvariant] [SFinite μT] [μT.IsMulLeftInvariant]
     [μT.IsInvInvariant] {β : G → NNReal} (hβ : IsCosetCutoff T μT β) :
     IsQuotMeasure T μ μT ((μ.withDensity fun x => β x).map (Quotient.mk (QuotientGroup.rightRel T))) := by
@@ -104,6 +128,13 @@ theorem IsCosetCutoff.isQuotMeasure [SFinite μ] [μ.IsMulLeftInvariant] [SFinit
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [BorelSpace G] in
 
+/- English proof (translation)
+Establish `hb : Measurable fun x => (β x : ℝ≥0∞)` using `hβ.1.coe_nnreal_ennreal`. Use extensionality with `S hS`. Establish `hS' : MeasurableSet (Quotient.mk (QuotientGroup.rightRel T) ⁻¹' S)` using `measurable_quotient_mk'' hS`. Rewrite using `[Measure.map_apply measurable_quotient_mk'' hS, withDensity_apply _ hS', ← lintegral_indicator hS', hν _ (hb.indicator hS'), ← lintegral_indicator_one hS]`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations.
+
+Establish `hq : ∀ t : T, Quotient.mk (QuotientGroup.rightRel T) (t * c.out) = c` using `fun t => by conv_rhs => rw [← c.out_eq]`. Use `Quotient.sound (QuotientGroup.rightRel_apply.2 ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Distinguish the cases in `hc : c ∈ S`. Simplify using `[Set.indicator, hq, hc, hβ.2]`.
+
+Simplify using `[Set.indicator, hq, hc]`.
+-/
 theorem IsQuotMeasure.eq_map {ν : Measure (RCoset T)} (hν : IsQuotMeasure T μ μT ν) {β : G → NNReal}
     (hβ : IsCosetCutoff T μT β) :
     ν = (μ.withDensity fun x => β x).map (Quotient.mk (QuotientGroup.rightRel T)) := by
@@ -123,17 +154,26 @@ theorem IsQuotMeasure.eq_map {ν : Measure (RCoset T)} (hν : IsQuotMeasure T μ
 
 variable [LocallyCompactSpace G] [T2Space G] [SFinite μ] [μ.IsMulLeftInvariant] [μT.IsHaarMeasure] [μT.IsInvInvariant]
 
+/- English proof (translation)
+Take `⟨β, -, hβ⟩` from `exists_isCosetCutoff (μT := μT) hT`. Establish `: LocallyCompactSpace T` using `hT.locallyCompactSpace`. Establish `: SecondCountableTopology T` using `TopologicalSpace.Subtype.secondCountableTopology (T : Set G)`. Conclude with `Classical.epsilon_spec ⟨_, hβ.isQuotMeasure⟩`.
+-/
 theorem isQuotMeasure_quotMeas (hT : IsClosed (T : Set G)) : IsQuotMeasure T μ μT (quotMeas T μ μT) := by
   obtain ⟨β, -, hβ⟩ := exists_isCosetCutoff (μT := μT) hT
   have : LocallyCompactSpace T := hT.locallyCompactSpace
   have : SecondCountableTopology T := TopologicalSpace.Subtype.secondCountableTopology (T : Set G)
   exact Classical.epsilon_spec ⟨_, hβ.isQuotMeasure⟩
 
+/- English proof (translation)
+Take `⟨β, -, hβ⟩` from `exists_isCosetCutoff (μT := μT) hT`. Rewrite using `[hν.eq_map hβ, (isQuotMeasure_quotMeas hT).eq_map hβ]`.
+-/
 theorem IsQuotMeasure.eq_quotMeas (hT : IsClosed (T : Set G)) {ν : Measure (RCoset T)} (hν : IsQuotMeasure T μ μT ν) :
     ν = quotMeas T μ μT := by
   obtain ⟨β, -, hβ⟩ := exists_isCosetCutoff (μT := μT) hT
   rw [hν.eq_map hβ, (isQuotMeasure_quotMeas hT).eq_map hβ]
 
+/- English proof (translation)
+Rewrite using `[quotInt, (isQuotMeasure_quotMeas hT).eq_map hβ, integral_map measurable_quotient_mk''.aemeasurable (measurable_comp_out hm hF).aestronglyMeasurable, integral_withDensity_eq_integral_smul hβ.1]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [apply_out_mk hF]; rfl)`.
+-/
 theorem quotInt_eq_cutoff (hT : IsClosed (T : Set G)) {β : G → NNReal} (hβ : IsCosetCutoff T μT β) {F : G → ℂ}
     (hm : Measurable F) (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) : quotInt T μ μT F = ∫ x, (β x : ℝ) • F x ∂μ := by
   rw [quotInt, (isQuotMeasure_quotMeas hT).eq_map hβ,
@@ -141,6 +181,9 @@ theorem quotInt_eq_cutoff (hT : IsClosed (T : Set G)) {β : G → NNReal} (hβ :
     integral_withDensity_eq_integral_smul hβ.1]
   exact integral_congr_ae (Filter.Eventually.of_forall fun x => by simp only [apply_out_mk hF]; rfl)
 
+/- English proof (translation)
+Rewrite using `[QuotIntegrable, (isQuotMeasure_quotMeas hT).eq_map hβ, integrable_map_measure (measurable_comp_out hm hF).aestronglyMeasurable measurable_quotient_mk''.aemeasurable, integrable_withDensity_iff_integrable_smul hβ.1]`. Conclude with `integrable_congr (Filter.Eventually.of_forall fun x => by simp only [Function.comp, apply_out_mk hF]; rfl)`.
+-/
 theorem quotIntegrable_iff_cutoff (hT : IsClosed (T : Set G)) {β : G → NNReal} (hβ : IsCosetCutoff T μT β) {F : G → ℂ}
     (hm : Measurable F) (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) :
     QuotIntegrable T μ μT F ↔ Integrable (fun x => (β x : ℝ) • F x) μ := by
@@ -149,6 +192,11 @@ theorem quotIntegrable_iff_cutoff (hT : IsClosed (T : Set G)) {β : G → NNReal
     integrable_withDensity_iff_integrable_smul hβ.1]
   exact integrable_congr (Filter.Eventually.of_forall fun x => by simp only [Function.comp, apply_out_mk hF]; rfl)
 
+/- English proof (translation)
+Establish `: CompactSpace T` using `isCompact_iff_compactSpace.1 hT`. Establish `h0 : μT Set.univ ≠ 0` using `(isOpen_univ.measure_pos μT ⟨1, trivial⟩).ne'`. Establish `h1 : μT Set.univ ≠ ⊤` using `measure_ne_top _ _`. Establish `hβ : IsCosetCutoff T μT fun _ => (μT Set.univ).toNNReal⁻¹` using `⟨measurable_const, fun x => by`. Rewrite using `[lintegral_const, ENNReal.coe_inv (ENNReal.toNNReal_ne_zero.2 ⟨h0, h1⟩), ENNReal.coe_toNNReal h1, ENNReal.inv_mul_cancel h0 h1]⟩`.
+
+Rewrite using `[quotInt_eq_cutoff hT.isClosed hβ hm hF, integral_smul]`. Simplify using `[Measure.real, ENNReal.toReal]`.
+-/
 theorem quotInt_of_isCompact (hT : IsCompact (T : Set G)) {F : G → ℂ} (hm : Measurable F)
     (hF : ∀ t ∈ T, ∀ x, F (t * x) = F x) : quotInt T μ μT F = ((μT.real Set.univ : ℝ) : ℂ)⁻¹ * ∫ x, F x ∂μ := by
   have : CompactSpace T := isCompact_iff_compactSpace.1 hT
@@ -162,6 +210,9 @@ theorem quotInt_of_isCompact (hT : IsCompact (T : Set G)) {F : G → ℂ} (hm : 
 
 end Exist
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨measurable_const, fun _ => by simp⟩`.
+-/
 example {G : Type} [Group G] [MeasurableSpace G] : IsCosetCutoff (⊥ : Subgroup G) (Measure.dirac 1) fun _ => 1 :=
   ⟨measurable_const, fun _ => by simp⟩
 

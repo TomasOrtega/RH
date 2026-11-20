@@ -15,38 +15,62 @@ open GlobalTheory.SgInf.FrameBound
 
 variable {n : ℕ} {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Rewrite using `[eucl_eq, eucl_eq, eucl_eq]`. Conclude with `norm_add_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)`.
+-/
 theorem eucl_add_le (u v : Fin n → ℂ) : eucl (u + v) ≤ eucl u + eucl v := by
   rw [eucl_eq, eucl_eq, eucl_eq]
   exact norm_add_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)
 
+/- English proof (translation)
+Rewrite using `[eucl_eq, eucl_eq, eucl_eq]`. Conclude with `norm_sub_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)`.
+-/
 theorem eucl_sub_le (u v : Fin n → ℂ) : eucl (u - v) ≤ eucl u + eucl v := by
   rw [eucl_eq, eucl_eq, eucl_eq]
   exact norm_sub_le (WithLp.toLp 2 u : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)
 
+/- English proof (translation)
+Rewrite using `[eucl_eq, eucl_eq]`. Conclude with `norm_smul c (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))`.
+-/
 theorem eucl_smul (c : ℂ) (v : Fin n → ℂ) : eucl (c • v) = ‖c‖ * eucl v := by
   rw [eucl_eq, eucl_eq]
   exact norm_smul c (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))
 
+/- English proof (translation)
+Simplify using `only [eucl_eq]`. Rewrite using `[WithLp.toLp_sum]`. Conclude with `norm_sum_le _ _`.
+-/
 theorem eucl_sum_le {κ : Type} (s : Finset κ) (f : κ → Fin n → ℂ) :
     eucl (∑ i ∈ s, f i) ≤ ∑ i ∈ s, eucl (f i) := by
   simp only [eucl_eq]
   rw [WithLp.toLp_sum]
   exact norm_sum_le _ _
 
+/- English proof (translation)
+Establish `h` using `norm_inner_le_norm (𝕜 := ℂ) (WithLp.toLp 2 w : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)`. Rewrite `h` using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq, ← eucl_eq]`. Conclude with `h`.
+-/
 theorem norm_star_dot_le (w v : Fin n → ℂ) : ‖star w ⬝ᵥ v‖ ≤ eucl w * eucl v := by
   have h := norm_inner_le_norm (𝕜 := ℂ) (WithLp.toLp 2 w : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)
   rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq, ← eucl_eq] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))`. Rewrite `h` using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq]`. Rewrite using `[h]`. Use `norm_cast`.
+-/
 theorem star_dot_self (v : Fin n → ℂ) : star v ⬝ᵥ v = ((eucl v ^ 2 : ℝ) : ℂ) := by
   have h := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin n))
   rw [EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq] at h
   rw [h]; norm_cast
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, dotProduct_mulVec]`.
+-/
 theorem star_dot_mulVec (H : Matrix (Fin n) (Fin n) ℂ) (w v : Fin n → ℂ) :
     star (H *ᵥ w) ⬝ᵥ v = star w ⬝ᵥ (Hᴴ *ᵥ v) := by
   rw [star_mulVec, dotProduct_mulVec]
 
+/- English proof (translation)
+Establish `h1` using `star_dot_self (H *ᵥ v)`. Rewrite `h1` using `[star_dot_mulVec, mulVec_mulVec, hH, one_mulVec, star_dot_self]`. Establish `h2 : eucl (H *ᵥ v) ^ 2 = eucl v ^ 2` using `by exact_mod_cast h1.symm`. Conclude with `(pow_left_inj₀ (eucl_nonneg _) (eucl_nonneg _) two_ne_zero).1 h2`.
+-/
 theorem eucl_mulVec_of_unitary {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * H = 1) (v : Fin n → ℂ) :
     eucl (H *ᵥ v) = eucl v := by
   have h1 := star_dot_self (H *ᵥ v)
@@ -56,22 +80,34 @@ theorem eucl_mulVec_of_unitary {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * H =
 
 def fam (b : ι → Fin n → ℂ) : Matrix (Fin n) ι ℂ := fun p i => b i p
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[fam, mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+-/
 theorem fam_mulVec (b : ι → Fin n → ℂ) (x : ι → ℂ) : fam b *ᵥ x = ∑ i, x i • b i := by
   funext p
   simp [fam, mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `[fam, mulVec, dotProduct, conjTranspose_apply]`.
+-/
 theorem famH_mulVec_apply (b : ι → Fin n → ℂ) (y : Fin n → ℂ) (j : ι) :
     ((fam b)ᴴ *ᵥ y) j = star (b j) ⬝ᵥ y := by
   simp [fam, mulVec, dotProduct, conjTranspose_apply]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use extensionality with `p i`. Simplify using `[fam, mul_apply, mulVec, dotProduct]`.
+-/
 theorem mul_fam (s : Matrix (Fin n) (Fin n) ℂ) (b : ι → Fin n → ℂ) :
     s * fam b = fam (fun i => s *ᵥ b i) := by
   ext p i
   simp [fam, mul_apply, mulVec, dotProduct]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `only [herm, Matrix.mul_apply, fam, mulVec, dotProduct, conjTranspose_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem famH_mul_mul_fam (H : Matrix (Fin n) (Fin n) ℂ) (b : ι → Fin n → ℂ) (m i : ι) :
     ((fam b)ᴴ * H * fam b) m i = herm H (b i) (b m) := by
   simp only [herm, Matrix.mul_apply, fam, mulVec, dotProduct, conjTranspose_apply, Finset.mul_sum, Finset.sum_mul]
@@ -79,6 +115,11 @@ theorem famH_mul_mul_fam (H : Matrix (Fin n) (Fin n) ℂ) (b : ι → Fin n → 
   refine Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_
   simp only [Pi.star_apply]; ring
 
+/- English proof (translation)
+Rewrite using `[fam_mulVec]`. Use `(eucl_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eucl_smul, mul_comm]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hM i) (norm_nonneg _)`.
+-/
 theorem eucl_fam_mulVec_le (b : ι → Fin n → ℂ) (M : ℝ) (hM : ∀ i, eucl (b i) ≤ M) (x : ι → ℂ) :
     eucl (fam b *ᵥ x) ≤ M * ∑ i, ‖x i‖ := by
   rw [fam_mulVec]
@@ -88,6 +129,11 @@ theorem eucl_fam_mulVec_le (b : ι → Fin n → ℂ) (M : ℝ) (hM : ∀ i, euc
   rw [eucl_smul, mul_comm]
   exact mul_le_mul_of_nonneg_right (hM i) (norm_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Simplify using `only [mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hY j) (norm_nonneg _)`.
+-/
 theorem sum_norm_mulVec_le (Ti : Matrix ι ι ℂ) (y : ι → ℂ) (Y : ℝ) (hY : ∀ j, ‖y j‖ ≤ Y) :
     ∑ i, ‖(Ti *ᵥ y) i‖ ≤ (∑ i, ∑ j, ‖Ti i j‖) * Y := by
   rw [Finset.sum_mul]
@@ -99,20 +145,32 @@ theorem sum_norm_mulVec_le (Ti : Matrix ι ι ℂ) (y : ι → ℂ) (Y : ℝ) (h
   exact mul_le_mul_of_nonneg_left (hY j) (norm_nonneg _)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Simplify using `[fam, vecMul, dotProduct]`.
+-/
 theorem vecMul_fam (c : ι → Fin n → ℂ) (y : Fin n → ℂ) (i : ι) : (y ᵥ* fam c) i = y ⬝ᵥ c i := by
   simp [fam, vecMul, dotProduct]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[mulVec_mulVec, dotProduct_mulVec, mul_fam]`. Simplify using `only [dotProduct, vecMul_fam]`.
+-/
 theorem herm_fam_mulVec (H : Matrix (Fin n) (Fin n) ℂ) (c : ι → Fin n → ℂ) (x : ι → ℂ) (v : Fin n → ℂ) :
     herm H (fam c *ᵥ x) v = ∑ i, herm H (c i) v * x i := by
   unfold herm
   rw [mulVec_mulVec, dotProduct_mulVec, mul_fam]
   simp only [dotProduct, vecMul_fam]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_dotProduct, star_dot_mulVec, hH]`.
+-/
 theorem herm_swap {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (v w : Fin n → ℂ) :
     herm H v w = star (herm H w v) := by
   unfold herm
   rw [star_dotProduct, star_dot_mulVec, hH]
 
+/- English proof (translation)
+Simplify using `only [herm, mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, star_sub, star_smul, sub_dotProduct, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_sub_smul {H : Matrix (Fin n) (Fin n) ℂ} (v w : Fin n → ℂ) (t : ℂ) :
     herm H (v - t • w) (v - t • w) =
       herm H v v - t * herm H w v - star t * herm H v w + star t * t * herm H w w := by
@@ -120,6 +178,9 @@ theorem herm_sub_smul {H : Matrix (Fin n) (Fin n) ℂ} (v w : Fin n → ℂ) (t 
     sub_dotProduct, smul_dotProduct, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Unfold `herm`. Use `(norm_star_dot_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[eucl_mulVec_of_unitary hH, sq]`.
+-/
 theorem herm_re_le {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * H = 1) (w : Fin n → ℂ) :
     (herm H w w).re ≤ eucl w ^ 2 := by
   refine (Complex.re_le_norm _).trans ?_
@@ -130,9 +191,17 @@ theorem herm_re_le {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * H = 1) (w : Fin
 def gram (H : Matrix (Fin n) (Fin n) ℂ) (b : ι → Fin n → ℂ) : Matrix ι ι ℂ := fun m i => herm H (b i) (b m)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use extensionality with `m i`. Rewrite using `[famH_mul_mul_fam]`. Both sides reduce to the same expression.
+-/
 theorem gram_eq (H : Matrix (Fin n) (Fin n) ℂ) (b : ι → Fin n → ℂ) : gram H b = (fam b)ᴴ * H * fam b := by
   ext m i; rw [famH_mul_mul_fam]; rfl
 
+/- English proof (translation)
+Use `(eucl_fam_mulVec_le b' M' hb' _).trans (mul_le_mul_of_nonneg_left ?_ hM')` and prove the remaining obligations. Use `sum_norm_mulVec_le Ti _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[famH_mulVec_apply]`. Use `(norm_star_dot_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[eucl_mulVec_of_unitary hH]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hM j) (eucl_nonneg _)`.
+-/
 theorem eucl_proj_le {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * H = 1) (b b' : ι → Fin n → ℂ)
     (Ti : Matrix ι ι ℂ) (M M' : ℝ) (hM' : 0 ≤ M') (hM : ∀ i, eucl (b i) ≤ M) (hb' : ∀ i, eucl (b' i) ≤ M')
     (u : Fin n → ℂ) :
@@ -146,6 +215,15 @@ theorem eucl_proj_le {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * H = 1) (b b' 
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Establish `hH' : Hᴴ * H = 1` using `by rw [hH, hH2]`. Use `set t : ℝ := 1 / a ^ 2 with ht`. Establish `hy : ∀ i, herm H (v - (t : ℂ) • w) (b' i) = 0` using `fun i => by`. Simplify using `only [herm, mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `herm H v (b' i) - _ * herm H w (b' i) = 0`.
+
+Rewrite using `[hv, hw, mul_zero, sub_zero]`. Establish `h0` using `hpos _ hy`. Rewrite `h0` using `[herm_sub_smul, herm_swap hH v w, hwv]`. Establish `hW` using `herm_re_le hH' w`. Establish `ht0 : 0 < t` using `by positivity`.
+
+Establish `hwa : eucl w ^ 2 ≤ a ^ 2 * eucl v ^ 2`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (eucl_nonneg _) hw2 2`. Simplify using `only [Complex.add_re, Complex.sub_re, Complex.star_def, Complex.conj_ofReal, mul_assoc, Complex.re_ofReal_mul, Complex.ofReal_re] at h0`. Establish `hta : t * a ^ 2 = 1` using `by rw [ht]; field_simp`.
+
+Establish `h1 : t * (t * (herm H w w).re) ≤ t * eucl v ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : t * eucl v ^ 2 ≤ (herm H v v).re` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sq_le_of_pos {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (hH2 : H * H = 1)
     (b' : ι → Fin n → ℂ) (hpos : ∀ y, (∀ i, herm H y (b' i) = 0) → 0 ≤ (herm H y y).re)
     (v w : Fin n → ℂ) (hv : ∀ i, herm H v (b' i) = 0) (hw : ∀ i, herm H w (b' i) = 0)
@@ -180,6 +258,11 @@ def proj (H : Matrix (Fin n) (Fin n) ℂ) (b : ι → Fin n → ℂ) (Ti : Matri
     Fin n → ℂ :=
   fam b *ᵥ (Ti *ᵥ ((fam b)ᴴ *ᵥ (H *ᵥ u)))
 
+/- English proof (translation)
+Establish `e : ∀ x : Fin n → ℂ, herm H x (b m) = ((fam b)ᴴ *ᵥ (H *ᵥ x)) m` using `fun x => by`. Rewrite using `[famH_mulVec_apply]`. Both sides reduce to the same expression. Rewrite using `[e, proj]`. Simplify using `only [mulVec_sub, mulVec_mulVec, ← Matrix.mul_assoc]`.
+
+Rewrite using `[← gram_eq, hTi, Matrix.one_mul, sub_self, Pi.zero_apply]`.
+-/
 theorem herm_sub_proj {H : Matrix (Fin n) (Fin n) ℂ} {b : ι → Fin n → ℂ} {Ti : Matrix ι ι ℂ}
     (hTi : gram H b * Ti = 1) (u : Fin n → ℂ) (m : ι) : herm H (u - proj H b Ti u) (b m) = 0 := by
   have e : ∀ x : Fin n → ℂ, herm H x (b m) = ((fam b)ᴴ *ᵥ (H *ᵥ x)) m := fun x => by
@@ -188,6 +271,15 @@ theorem herm_sub_proj {H : Matrix (Fin n) (Fin n) ℂ} {b : ι → Fin n → ℂ
   simp only [mulVec_sub, mulVec_mulVec, ← Matrix.mul_assoc]
   rw [← gram_eq, hTi, Matrix.one_mul, sub_self, Pi.zero_apply]
 
+/- English proof (translation)
+Establish `hH' : Hᴴ * H = 1` using `by rw [hH, hH2]`. Use `set N := ∑ i, ∑ j, ‖Ti i j‖ with hN`. Establish `hN0 : 0 ≤ N` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Use `set u' := H *ᵥ v with hu'`. Use `set w := u' - proj H b' Ti u' with hw`.
+
+Use `sq_le_of_pos hH hH2 b' hpos v w hv (herm_sub_proj hTi u') ?_ _ (by positivity) ?_` and prove the remaining obligations. Establish `e : herm H (u' - proj H b' Ti u') v = herm H u' v - herm H (proj H b' Ti u') v`. Simplify using `only [herm, mulVec_sub, dotProduct_sub]`. Rewrite using `[hw, e, proj, herm_fam_mulVec, Finset.sum_eq_zero fun i _ => by rw [herm_swap hH, hv i, star_zero, zero_mul], sub_zero]`. Unfold `herm`.
+
+Rewrite using `[hu', mulVec_mulVec, hH2, one_mulVec, star_dot_self]`. Use `(eucl_sub_le _ _).trans ?_` and prove the remaining obligations. Establish `h1 : eucl u' = eucl v` using `eucl_mulVec_of_unitary hH' v`. Establish `h2` using `eucl_proj_le hH' b' b' Ti β β hβ hb' hb' u'`. Rewrite `h2`, the goal using `[h1]`.
+
+Establish `h2' : eucl (proj H b' Ti u') ≤ β * (N * (β * eucl v))` using `h2`. Establish `e : β * (N * (β * eucl v)) = N * β ^ 2 * eucl v` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sq_le_compl {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (hH2 : H * H = 1)
     (b' : ι → Fin n → ℂ) (Ti : Matrix ι ι ℂ) (hTi : gram H b' * Ti = 1)
     (hpos : ∀ y, (∀ i, herm H y (b' i) = 0) → 0 ≤ (herm H y y).re)
@@ -213,6 +305,11 @@ theorem sq_le_compl {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (hH2 : H * 
     have e : β * (N * (β * eucl v)) = N * β ^ 2 * eucl v := by ring
     linarith
 
+/- English proof (translation)
+Establish `h1 : H.det * H.det = 1` using `by rw [← det_mul, hH2, det_one]`. Establish `h2` using `congrArg Matrix.det hs`. Rewrite `h2` using `[det_mul, det_mul]`. Establish `hH0 : H.det ≠ 0` using `fun h => by rw [h, zero_mul] at h1; exact zero_ne_one h1`. Establish `h3 : H.det * (s.det * sᴴ.det) = H.det * 1` using `by rw [mul_one]; linear_combination h2`.
+
+Conclude with `IsUnit.of_mul_eq_one _ (mul_left_cancel₀ hH0 h3)`.
+-/
 theorem det_isUnit_of_herm {H s : Matrix (Fin n) (Fin n) ℂ} (hH2 : H * H = 1) (hs : sᴴ * H * s = H) :
     IsUnit s.det := by
   have h1 : H.det * H.det = 1 := by rw [← det_mul, hH2, det_one]
@@ -222,12 +319,34 @@ theorem det_isUnit_of_herm {H s : Matrix (Fin n) (Fin n) ℂ} (hH2 : H * H = 1) 
   have h3 : H.det * (s.det * sᴴ.det) = H.det * 1 := by rw [mul_one]; linear_combination h2
   exact IsUnit.of_mul_eq_one _ (mul_left_cancel₀ hH0 h3)
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← Matrix.mul_assoc, hs, ← dotProduct_mulVec]`.
+-/
 theorem herm_mulVec_mulVec {H s : Matrix (Fin n) (Fin n) ℂ} (hs : sᴴ * H * s = H) (x y : Fin n → ℂ) :
     herm H (s *ᵥ x) (s *ᵥ y) = herm H x y := by
   unfold herm
   rw [star_mulVec, mulVec_mulVec, dotProduct_mulVec, vecMul_vecMul, ← Matrix.mul_assoc, hs,
     ← dotProduct_mulVec]
 
+/- English proof (translation)
+Establish `hH' : Hᴴ * H = 1` using `by rw [hH, hH2]`. Use `set N := ∑ i, ∑ j, ‖Ti i j‖ with hN`. Establish `hN0 : 0 ≤ N` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Establish `hβ0 : 0 ≤ β` using `zero_le_one.trans hβ1`. Use `set b' : ι → Fin n → ℂ := fun i => s *ᵥ b i with hb'`.
+
+Establish `hiso : ∀ x y, herm H (s *ᵥ x) (s *ᵥ y) = herm H x y` using `herm_mulVec_mulVec hs`. Establish `hgram : gram H b' = gram H b` using `by ext m i; exact hiso _ _`. Establish `hdet` using `det_isUnit_of_herm hH2 hs`. Establish `hpos' : ∀ y, (∀ i, herm H y (b' i) = 0) → 0 ≤ (herm H y y).re` using `fun y hy => by`. Establish `e : y = s *ᵥ (s⁻¹ *ᵥ y)` using `by rw [mulVec_mulVec, mul_nonsing_inv _ hdet, one_mulVec]`.
+
+Use `hpos (s⁻¹ *ᵥ y) fun i => by rw [← hiso, ← e]; exact hy i` as an intermediate fact. Rewrite `this` using `[← hiso, ← e]`. Then use the resulting hypothesis. Use `set y := u - proj H b Ti u with hy`. Establish `hyb : ∀ i, herm H y (b i) = 0` using `herm_sub_proj hTi u`. Establish `hv : ∀ i, herm H (s *ᵥ y) (b' i) = 0` using `fun i => by show herm H (s *ᵥ y) (s *ᵥ b i) = 0`.
+
+Rewrite using `[hiso]`. Conclude with `hyb i`. Establish `esplit : s *ᵥ u = s *ᵥ proj H b Ti u + s *ᵥ y` using `by rw [hy, mulVec_sub, add_sub_cancel]`. Establish `h1 : eucl (s *ᵥ proj H b Ti u) ≤ β * (N * (M * eucl u))`. Rewrite using `[proj, mulVec_mulVec, mul_fam]`.
+
+Conclude with `eucl_proj_le hH' b b' Ti M β hβ0 hM hβ u`. Establish `hy2 : eucl y ≤ (1 + N * M ^ 2) * eucl u`. Use `(eucl_sub_le _ _).trans ?_` and prove the remaining obligations. Use `eucl_proj_le hH' b b Ti M M hM0 hM hM u` as an intermediate fact. Rewrite using `[proj]`.
+
+Establish `e : M * (N * (M * eucl u)) = N * M ^ 2 * eucl u` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `sq_le_compl hH hH2 b' Ti (hgram ▸ hTi) hpos' β hβ0 hβ (s *ᵥ y) hv`. Rewrite `h2` using `[hiso]`. Establish `h3 : (herm H y y).re ≤ eucl y ^ 2` using `herm_re_le hH' y`.
+
+Establish `hA : 0 ≤ 1 + N * β ^ 2` using `add_nonneg zero_le_one (mul_nonneg hN0 (sq_nonneg _))`. Establish `hB : 0 ≤ 1 + N * M ^ 2` using `add_nonneg zero_le_one (mul_nonneg hN0 (sq_nonneg _))`. Establish `h4 : eucl (s *ᵥ y) ^ 2 ≤ ((1 + N * β ^ 2) * ((1 + N * M ^ 2) * eucl u)) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : eucl (s *ᵥ y) ≤ (1 + N * β ^ 2) * ((1 + N * M ^ 2) * eucl u)` using `(pow_le_pow_iff_left₀ (eucl_nonneg _) (mul_nonneg hA (mul_nonneg hB (eucl_nonneg _))) two_ne_zero).1 h4`.
+
+Rewrite using `[esplit]`. Use `(eucl_add_le _ _).trans ?_` and prove the remaining obligations. Establish `hu0` using `eucl_nonneg u`. Establish `hb2 : β ≤ β ^ 2` using `by nlinarith`. Establish `hb3 : 1 + N * β ^ 2 ≤ (1 + N) * β ^ 2` using `by nlinarith`.
+
+Establish `e1 : β * (N * (M * eucl u)) ≤ β ^ 2 * (N * (M * eucl u))` using `mul_le_mul_of_nonneg_right hb2 (mul_nonneg hN0 (mul_nonneg hM0 hu0))`. Establish `e2 : (1 + N * β ^ 2) * ((1 + N * M ^ 2) * eucl u) ≤ ((1 + N) * β ^ 2) * ((1 + N * M ^ 2) * eucl u)` using `mul_le_mul_of_nonneg_right hb3 (mul_nonneg hB hu0)`. Establish `e3 : β ^ 2 * (N * (M * eucl u)) + ((1 + N) * β ^ 2) * ((1 + N * M ^ 2) * eucl u) = (N * M + (1 + N) * (1 + N * M ^ 2)) * β ^ 2 * eucl u` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem core {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (hH2 : H * H = 1)
     (b : ι → Fin n → ℂ) (Ti : Matrix ι ι ℂ) (hTi : gram H b * Ti = 1)
     (hpos : ∀ y, (∀ i, herm H y (b i) = 0) → 0 ≤ (herm H y y).re)
@@ -295,6 +414,9 @@ namespace GlobalTheory.SgInf
 
 open IsomBound FrameBound
 
+/- English proof (translation)
+Unfold `eucl`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => Complex.continuous_normSq.comp (continuous_apply i))`.
+-/
 theorem continuous_eucl {N : ℕ} : Continuous (eucl : (Fin N → ℂ) → ℝ) := by
   unfold eucl
   exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ =>
@@ -302,12 +424,18 @@ theorem continuous_eucl {N : ℕ} : Continuous (eucl : (Fin N → ℂ) → ℝ) 
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Consider the cases of `i with`. Consider the case `inl a => exact continuous_const`. Consider the case `inr b => exact continuous_id.matrix_mulVec continuous_const`.
+-/
 theorem continuous_gramVec (z z' : Fin (2 * r + k + 1) → ℂ) (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     Continuous fun γ : Mat k r => gramVec k r z z' γ i := by
   cases i with
   | inl a => exact continuous_const
   | inr b => exact continuous_id.matrix_mulVec continuous_const
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Unfold `gramM herm`. Conclude with `(continuous_gramVec z z' i).star.dotProduct (continuous_const.matrix_mulVec (continuous_gramVec z z' j))`.
+-/
 theorem continuous_gramM (z z' : Fin (2 * r + k + 1) → ℂ) :
     Continuous fun γ : Mat k r => gramM k r z z' γ := by
   refine continuous_matrix fun i j => ?_
@@ -320,6 +448,13 @@ def isomConst (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r) : ℝ :=
     (1 + ∑ i, ∑ j, ‖(gramM k r z z' γ)⁻¹ i j‖) *
       (1 + (∑ i, ∑ j, ‖(gramM k r z z' γ)⁻¹ i j‖) * (∑ i, eucl (gramVec k r z z' γ i)) ^ 2)
 
+/- English proof (translation)
+Establish `hM : Continuous fun γ : Mat k r => ∑ i, eucl (gramVec k r z z' γ i)` using `continuous_finsetSum _ fun i _ => continuous_eucl.comp (continuous_gramVec z z' i)`. Establish `hN : ContinuousOn (fun γ : Mat k r => ∑ i, ∑ j, ‖(gramM k r z z' γ)⁻¹ i j‖) C`. Use `continuousOn_finsetSum _ fun i _ => continuousOn_finsetSum _ fun j _ => ContinuousOn.norm ?_` and prove the remaining obligations. Establish `e : ∀ γ ∈ C, (gramM k r z z' γ)⁻¹ i j = (gramM k r z z' γ).det⁻¹ * (gramM k r z z' γ).adjugate i j` using `fun γ _ => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv]`.
+
+Both sides reduce to the same expression. Use `ContinuousOn.congr ?_ e` and prove the remaining obligations. Use `ContinuousOn.mul (ContinuousOn.inv₀ ((continuous_gramM z z').matrix_det.continuousOn) fun γ hγ => (hC γ hγ).ne_zero) ?_` and prove the remaining obligations. Conclude with `((continuous_gramM z z').matrix_adjugate.matrix_elem i j).continuousOn`. Unfold `isomConst`.
+
+Conclude with `(hN.mul hM.continuousOn).add ((continuousOn_const.add hN).mul (continuousOn_const.add (hN.mul (hM.pow 2).continuousOn)))`.
+-/
 theorem continuousOn_isomConst (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r))
     (hC : ∀ γ ∈ C, IsUnit (gramM k r z z' γ).det) : ContinuousOn (isomConst z z') C := by
   have hM : Continuous fun γ : Mat k r => ∑ i, eucl (gramVec k r z z' γ i) :=
@@ -337,6 +472,23 @@ theorem continuousOn_isomConst (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Ma
   exact (hN.mul hM.continuousOn).add ((continuousOn_const.add hN).mul
     (continuousOn_const.add (hN.mul (hM.pow 2).continuousOn)))
 
+/- English proof (translation)
+Introduce `k r z z' C hz hz' hT hT' hC hreg`. Establish `hR` using `fun γ (hγ : γ ∈ C) => regular_pos_compl k r z z' γ hz hz' hT hT' (hreg γ hγ).1 (hreg γ hγ).2`. Take `⟨C0, hC0⟩` from `hC.exists_bound_of_continuousOn (continuousOn_isomConst z z' C fun γ hγ => (hR γ hγ).2.2.1)`. Use `⟨C0, fun γ hγ s hs B hB1 hB => ?_⟩` and prove the remaining obligations. Take `⟨hH1, hH2, -⟩` from `hpkFacts k r`.
+
+Use `set N := ∑ i, ∑ j, ‖(gramM k r z z' γ)⁻¹ i j‖ with hN`. Use `set M := ∑ i, eucl (gramVec k r z z' γ i) with hM`. Establish `hN0 : 0 ≤ N` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => norm_nonneg _`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun i _ => eucl_nonneg _`. Establish `hMi : ∀ i, eucl (gramVec k r z z' γ i) ≤ M` using `fun i => Finset.single_le_sum (f := fun i => eucl (gramVec k r z z' γ i)) (fun _ _ => eucl_nonneg _) (Finset.mem_univ i)`.
+
+Establish `hTi : gram (Hpk k r) (gramVec k r z z' γ) * (gramM k r z z' γ)⁻¹ = 1`. Establish `e : gram (Hpk k r) (gramVec k r z z' γ) = gramM k r z z' γ` using `rfl`. Rewrite using `[e]`. Conclude with `mul_nonsing_inv _ (hR γ hγ).2.2.1`. Establish `hpos : ∀ y, (∀ i, herm (Hpk k r) y (gramVec k r z z' γ i) = 0) → 0 ≤ (herm (Hpk k r) y y).re` using `fun y hy => by`.
+
+Distinguish the cases in `h0 : y = 0`. Substitute `h0` using the available equality. Simplify using `[herm]`. Conclude with `((hR γ hγ).2.2.2 y h0 hy).le`. Establish `key` using `fun u => core hH1 hH2 (gramVec k r z z' γ) (gramM k r z z' γ)⁻¹ hTi hpos M hM0 hMi s hs B hB1 hB u`.
+
+Establish `eK : isomConst z z' γ = N * M + (1 + N) * (1 + N * M ^ 2)` using `rfl`. Establish `hK0 : 0 ≤ isomConst z z' γ`. Rewrite using `[eK]`. Conclude with `add_nonneg (mul_nonneg hN0 hM0) (mul_nonneg (add_nonneg zero_le_one hN0) (add_nonneg zero_le_one (mul_nonneg hN0 (sq_nonneg _))))`. Establish `hK : isomConst z z' γ ≤ C0` using `(le_abs_self _).trans (Real.norm_eq_abs _ ▸ hC0 γ hγ)`.
+
+Establish `hB0 : 0 ≤ B ^ 2` using `sq_nonneg _`. Establish `hopn : opn s ≤ isomConst z z' γ * B ^ 2`. Unfold `opn`. Use `ContinuousLinearMap.opNorm_le_bound _ (mul_nonneg hK0 hB0) fun x => ?_` and prove the remaining obligations. Establish `h` using `key (WithLp.ofLp x)`.
+
+Establish `e1 : eucl (s *ᵥ WithLp.ofLp x) = ‖Matrix.toEuclideanCLM (𝕜` using `ℂ) s x‖ := by rw [eucl_eq]; rfl`. Establish `e2 : eucl (WithLp.ofLp x) = ‖x‖` using `by rw [eucl_eq]`. Rewrite `h` using `[e1, e2]`. Rewrite using `[eK]`. Conclude with `h`.
+
+Conclude with `hopn.trans (mul_le_mul_of_nonneg_right hK hB0)`.
+-/
 theorem isom_frame_bound : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (C : Set (Mat k r)), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → IsCompact C → (∀ γ ∈ C, γ ∈ GG k r ∧ Gf k r z z' γ ≠ 0) → ∃ C0 : ℝ, ∀ γ ∈ C, ∀ s ∈ GG k r, ∀ B : ℝ, 1 ≤ B → (∀ i, eucl (s *ᵥ gramVec k r z z' γ i) ≤ B) → opn s ≤ C0 * B ^ 2 := by
   intro k r z z' C hz hz' hT hT' hC hreg
   have hR := fun γ (hγ : γ ∈ C) =>

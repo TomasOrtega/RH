@@ -16,6 +16,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S` and use `by obtain ⟨L, L2, L3, L4, L5, -⟩ := GlobalTheory.allSixLaws exact GlobalTheory.T.semiAbelianScheme_uniformisation_exists_geometric GlobalTheory.homExtension_semiAbelian_dvr S GlobalTheory.ZH.thmU_and_uTors.1 L L2 L3 L4 L5 GlobalTheory.ZH.thmU_and_uTors.2`.
+-/
 theorem zhGeo_of_semistableReduction :
     GlobalTheory.Published.SemistableReductionSt → GlobalTheory.ZH.ZHGeoSt := fun S => by
   obtain ⟨L, L2, L3, L4, L5, -⟩ := GlobalTheory.allSixLaws

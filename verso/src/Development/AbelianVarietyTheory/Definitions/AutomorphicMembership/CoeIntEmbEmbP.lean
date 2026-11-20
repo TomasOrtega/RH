@@ -22,6 +22,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RayEv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mapLinear_coe {R S O : Type} [CommRing R] [CommRing S] [CommRing O] (f : R →+* S) {G B : Over (Sp R)}
     [GrpObj G] [IsCommMonObj G] [GrpObj B] [IsCommMonObj B] {a : OAct O G} {b : OAct O B} {q : G ⟶ B}
     (hq : IsLinearHom a b q) (σ : O →+* S) (v : LieEig f a σ) :
@@ -35,6 +38,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 variable (C) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Subtype.val_injective, fun x => x.2, fun {r} hr => ⟨⟨r, hr⟩, rfl⟩⟩`.
+-/
 theorem integers : (NormedField.valuation (K := ↥C.S)).Integers ↥(intO ↥C.S) :=
   ⟨Subtype.val_injective, fun x => x.2, fun {r} hr => ⟨⟨r, hr⟩, rfl⟩⟩
 
@@ -44,6 +50,9 @@ def embP (τ : E →+* ℂ) : E →+* ↥C.S := P.fK.comp (embF c τ)
 
 abbrev intEmb (φ : E →+* ↥C.S) : 𝓞 E →+* ↥(intO ↥C.S) := HTLat.embO (integers C) φ
 
+/- English proof (translation)
+The claim follows from `HTLat.algebraMap_embO (integers C) _ x`.
+-/
 theorem coe_intEmb_embP (τ : E →+* ℂ) (x : 𝓞 E) : (intEmb (embP P τ) x : ↥C.S) = P.emb τ x :=
   HTLat.algebraMap_embO (integers C) _ x
 
@@ -81,8 +90,14 @@ instance (τ : E →+* ℂ) : AddCommGroup (LieT A τ) :=
 instance (τ : E →+* ℂ) : Module ↥(intO ↥C.S) (LieT A τ) :=
   inferInstanceAs (Module ↥(intO ↥C.S) (LieEig A.f (actT A) (intEmb (embP P τ))))
 
+/- English proof (translation)
+The claim follows from `letI := H.starRing; (ray A).q_linear`.
+-/
 theorem q_lin : letI := H.starRing; IsLinearHom (actGt A) (actAb A) (ray A).q := letI := H.starRing; (ray A).q_linear
 
+/- English proof (translation)
+The claim follows from `letI := H.starRing; (ray A).i_linear`.
+-/
 theorem i_lin : letI := H.starRing; IsLinearHom (actT A) (actGt A) (ray A).i := letI := H.starRing; (ray A).i_linear
 
 def resB (τ : E →+* ℂ) : LieGt A τ →ₗ[↥(intO ↥C.S)] LieB A τ := eigMap A.f (q_lin A) _
@@ -106,11 +121,17 @@ def kapGt (τ : E →+* ℂ) (u u' : LieGt A τ) : ↥C.S :=
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem kapB_of (h : Nonempty (Split A)) (τ : E →+* ℂ) (u u' : LieB A τ) :
     kapB A τ u u' = kapAb h.some (HTLat.isSplitting_embO (integers C)) (embP P τ) u.1 u'.1 := dif_pos h
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem kapGt_of (h : Nonempty (Split A)) (τ : E →+* ℂ) (u u' : LieGt A τ) : kapGt A τ u u' =
     kapExt (isLinearHom_pull A.f (q_lin A)) h.some (HTLat.isSplitting_embO (integers C)) (embP P τ) u.1 u'.1 :=
   dif_pos h
@@ -144,11 +165,17 @@ structure SecAt : Type where
 def SecAt.zero (k : ℕ) (hk : 0 < k) : SecAt A :=
   ⟨k, hk, fun _ => ⟨fun _ => 0, fun _ _ => by rw [map_zero, map_zero, mul_zero]⟩⟩
 
+/- English proof (translation)
+The claim follows from `A.U.bundle`.
+-/
 theorem LG_eq : A.U.U.LG = A.t.PP := A.U.bundle
 
 def HarmAt.pow (u : ∀ t, LieGt A (emb (t, false))) (n : ℕ) (t : T) (k : Fin n) (m : ℕ) : HarmAt A emb :=
   ⟨1, 0, n, fun t _ => u t, fun _ => Fin.elim0, MvPolynomial.X (Harm.xVar t 0 k) ^ m, fun _ _ b => b.elim0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, 2, fun t _ => u t, fun t _ => w t, MvPolynomial.X (Harm.xVar t 0 0) * MvPolynomial.X (Harm.yVar t 0 1), fun t' a b => by classical simp [Harm.laplacian_apply, MvPolynomial.pderiv_X, Pi.single_apply, apply_ite (MvPolynomial.pderiv _)]⟩`.
+-/
 example (u : ∀ t, LieGt A (emb (t, false))) (w : ∀ t, LieGt A (emb (t, true))) (t : T) : HarmAt A emb :=
   ⟨1, 1, 2, fun t _ => u t, fun t _ => w t,
     MvPolynomial.X (Harm.xVar t 0 0) * MvPolynomial.X (Harm.yVar t 0 1), fun t' a b => by
@@ -193,10 +220,16 @@ open Classical in
 
 def evGt (s : SecAt A) : ↥C.S := if h : ∃! v, Q.IsValG s v then h.choose else 1
 
+/- English proof (translation)
+Rewrite using `[evA, dif_pos h]`. Conclude with `⟨fun e => e ▸ h.choose_spec.1, fun e => (h.choose_spec.2 v e).symm⟩`.
+-/
 theorem evA_eq {s : SecAt A} (h : ∃! v, Q.IsValA s v) {v : ↥C.S} : Q.evA s = v ↔ Q.IsValA s v := by
   rw [evA, dif_pos h]
   exact ⟨fun e => e ▸ h.choose_spec.1, fun e => (h.choose_spec.2 v e).symm⟩
 
+/- English proof (translation)
+Rewrite using `[evGt, dif_pos h]`. Conclude with `⟨fun e => e ▸ h.choose_spec.1, fun e => (h.choose_spec.2 v e).symm⟩`.
+-/
 theorem evGt_eq {s : SecAt A} (h : ∃! v, Q.IsValG s v) {v : ↥C.S} : Q.evGt s = v ↔ Q.IsValG s v := by
   rw [evGt, dif_pos h]
   exact ⟨fun e => e ▸ h.choose_spec.1, fun e => (h.choose_spec.2 v e).symm⟩
@@ -205,10 +238,16 @@ end HarmAt
 
 variable (A)
 
+/- English proof (translation)
+The claim follows from `letI := H.starRing eigMap_exact A.f (i_lin A) (q_lin A) (ray A).isKernel _`.
+-/
 theorem incT_exact (τ : E →+* ℂ) : Function.Injective (incT A τ) ∧ Function.Exact (incT A τ) (resB A τ) :=
   letI := H.starRing
   eigMap_exact A.f (i_lin A) (q_lin A) (ray A).isKernel _
 
+/- English proof (translation)
+Distinguish the cases in `h : Nonempty (Split A)`. Rewrite using `[kapGt_of A h, kapB_of A h, kapExt_eq]`. Conclude with `congrArg₂ (kapAb h.some _ _) (mapLinear_coe A.f (q_lin A) _ u) (mapLinear_coe A.f (q_lin A) _ u')`. Establish `e : ∀ v v', kapB A τ v v' = 0` using `fun _ _ => dif_neg h`. Conclude with `(dif_neg h).trans (e _ _).symm`.
+-/
 theorem kapGt_eq (τ : E →+* ℂ) (u u' : LieGt A τ) : kapGt A τ u u' = kapB A τ (resB A τ u) (resB A τ u') := by
   classical
   by_cases h : Nonempty (Split A)

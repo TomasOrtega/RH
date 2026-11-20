@@ -14,15 +14,24 @@ section Cast
 
 def castSp (E : Type) [Field E] {a b : ℕ} (h : a = b) : Sp E a →ₗ[E] Sp E b := LinearMap.funLeft E E (Fin.cast h.symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castSp_apply {E : Type} [Field E] {a b : ℕ} (h : a = b) (x : Sp E a) (i : Fin b) :
     castSp E h x i = x (Fin.cast h.symm i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem castSp_comp {E : Type} [Field E] {a b : ℕ} (x : HomE E a b) : castSp E rfl ∘ₗ x = x := rfl
 
 def castV {ι : Type} {a b b' : ℕ} (h : b = b') (z : VCx ι a b) : VCx ι a b' := fun τ r c => z τ (Fin.cast h.symm r) c
 
 end Cast
 
+/- English proof (translation)
+Establish `h : ∀ v : VCx ι a b, onV emb δ (fun _ => 0) v = 0` using `fun v => by`. Unfold `onV`. Apply the tactic sequence `split_ifs <;> rfl`. Use function extensionality and compare the values at `z`. Simplify using `[thC, xiV, xiL, xiS, hatS, Formalism.L2.Th1.H.sumU, Formalism.L2.Th1.H.opU, h]`.
+-/
 theorem thC_zero {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [Fintype ι] {a b : ℕ} (emb : ι → E →+* ℂ) (δ : ℂ)
     (d : ℕ) (sc : ℝ) (AA : Submodule (𝓞 E) E) (SS : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E a))
     (N' : Submodule (𝓞 E) (Sp E b)) (c : ℕ) (θ : VCx ι a b → ℂ) : thC emb δ d sc AA SS N N' c (fun _ => 0) θ = 0 := by
@@ -32,6 +41,19 @@ theorem thC_zero {E : Type} [Field E] [NumberField E] [StarRing E] {ι : Type} [
   funext z
   simp [thC, xiV, xiL, xiS, hatS, Formalism.L2.Th1.H.sumU, Formalism.L2.Th1.H.opU, h]
 
+/- English proof (translation)
+Establish `supp : ∀ y : HomE E (n' + c') (n + 0), LocE.PhiQ (qOf P) ξ k₀ r c' n' 0 n y ≠ 0 → ∀ s : Fin n', y (Pi.single ⟨s.1, by omega⟩ 1) ∈ stdAt E n P` using `fun y hy s => by`. Use `TopStep.mem_stdAt.2 fun l => ?_` and prove the remaining obligations. Unfold `LocE.PhiQ at hy`. Use `split_ifs at hy with h`. Use `h.1 l.1 s.1 l.2 (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[TopStep.entB_zero _ _ _ _ _ hc, dif_pos ⟨l.2, s.2⟩]`. Then use the resulting hypothesis. Conclude with `absurd rfl hy`. Distinguish the cases in `hy : ∀ s : Fin n', x (Pi.single ⟨s.1, by omega⟩ 1) ∈ stdAt E n P`. Establish `h : ∀ p p', TopStep.CongQ P (LocE.entB (qOf P) k₀ c' n' 0 n 0 0 (κ.1.toLinearMap ∘ₗ x : HomE E (n' + c') (n + 0)) p p') (LocE.entB (qOf P) k₀ c' n' 0 n 0 0 x p p')` using `fun p p' => by`. Rewrite using `[TopStep.entB_zero _ _ _ _ _ hc, TopStep.entB_zero _ _ _ _ _ hc]`.
+
+Use `split_ifs with h`. Establish `h1` using `TopStep.mem_stdAt.1 (TopStep.glint_mem κ (hy ⟨p', h.2⟩)) ⟨p, h.1⟩`. Establish `h2` using `TopStep.mem_stdAt.1 (hy ⟨p', h.2⟩) ⟨p, h.1⟩`. Use `⟨h1, h2, TopStep.intAt_div_of_redP hq (TopStep.intAt_sub h1 h2) ?_⟩` and prove the remaining obligations. Establish `h3` using `congrFun (TopStep.redV_redGL κ (hy ⟨p', h.2⟩)) ⟨p, h.1⟩`.
+
+Rewrite `h3` using `[hκ, Units.val_one, Matrix.one_mulVec]`. Conclude with `(TopStep.reduction_sub h1 h2).trans (sub_eq_zero.2 h3)`. Conclude with `TopStep.congQ_zero`. Unfold `LocE.PhiQ`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ ?_ rfl` and prove the remaining obligations.
+
+Simplify using `only [(h _ _).1, (h _ _).2.1, (h _ _).div_iff]`. Conclude with `TopStep.unitV_det_congr _ fun s s' => h s.1 s'.1`. Establish `h1 : LocE.PhiQ (qOf P) ξ k₀ r c' n' 0 n x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hy (supp _ h)`.
+
+Establish `h2 : LocE.PhiQ (qOf P) ξ k₀ r c' n' 0 n (κ.1.toLinearMap ∘ₗ x) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hy fun s => (κ.2 _).1 (supp _ h s)`. Rewrite using `[h1, h2]`.
+-/
 theorem PhiQ_comp_of_red {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
     (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' n' n : ℕ) (hc : c' = 0) (κ : GLint E n P)
     (hκ : TopStep.redGL n P κ = 1) (x : HomE E (n' + c') (n + 0)) :
@@ -86,19 +108,31 @@ def Idx.top {j : ℕ} (h : R.m ≤ j) : Idx sel mu L j := ⟨none, iff_of_false 
 
 variable {sel mu L} in
 
+/- English proof (translation)
+The claim follows from `Option.some_get _`.
+-/
 theorem Idx.some_get {j : ℕ} (b : Idx sel mu L j) (h : j < R.m) : some (b.get h) = b.1 := Option.some_get _
 
 variable {sel mu L} in
 
+/- English proof (translation)
+The claim follows from `Option.some_injective _ ((b.some_get h).trans e)`.
+-/
 theorem Idx.get_eq {j : ℕ} {b : Idx sel mu L j} {al : L.β j} (e : b.1 = some al) (h : j < R.m) : b.get h = al :=
   Option.some_injective _ ((b.some_get h).trans e)
 
 variable {sel mu L} in
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (b.some_get h)`.
+-/
 theorem Idx.of_get {j : ℕ} (b : Idx sel mu L j) (h h' : j < R.m) : Idx.of (b.get h) h' = b := Subtype.ext (b.some_get h)
 
 variable {sel mu L} in
 
+/- English proof (translation)
+Take `⟨_ | b, hb⟩` from `b`. Both sides reduce to the same expression. Conclude with `absurd (hb.1 rfl) (by omega)`.
+-/
 theorem Idx.eq_top {j : ℕ} (b : Idx sel mu L j) (h : R.m ≤ j) : b = Idx.top sel mu L h := by
   obtain ⟨_ | b, hb⟩ := b
   · rfl
@@ -109,10 +143,16 @@ variable (R) in
 abbrev PtAt (u : Pr.Word) (j : ℕ) : Type :=
   PtY (Pr.vT u) Pr.vGs (QE sel (mu : Chr X.F X.E X.K)) (ysAt R sel mu cst j)
 
+/- English proof (translation)
+Rewrite using `[ysAt, if_pos h]`.
+-/
 theorem ysAt_ys_of_eq {j : ℕ} (h : j + 1 = R.m) (N : Submodule (𝓞 X.E) (Sp X.E (R.N j))) :
     (ysAt R sel mu cst j).ys N = ybSet sel mu cst N := by
   rw [ysAt, if_pos h]
 
+/- English proof (translation)
+Rewrite using `[ysAt, if_neg h]`. Both sides reduce to the same expression.
+-/
 theorem ysAt_ys_of_ne {j : ℕ} (h : j + 1 ≠ R.m) (N : Submodule (𝓞 X.E) (Sp X.E (R.N j))) :
     (ysAt R sel mu cst j).ys N = {∅} := by
   rw [ysAt, if_neg h]
@@ -120,15 +160,24 @@ theorem ysAt_ys_of_ne {j : ℕ} (h : j + 1 ≠ R.m) (N : Submodule (𝓞 X.E) (S
 
 variable {sel mu cst} in
 
+/- English proof (translation)
+The claim follows from `ysAt_ys_of_eq sel mu cst h _ ▸ p.2`.
+-/
 theorem PtAt.mem_ybSet {u : Pr.Word} {j : ℕ} (p : PtAt R sel mu cst u j) (h : j + 1 = R.m) :
     p.1.2 ∈ ybSet sel mu cst p.1.1.deco.1.N := ysAt_ys_of_eq sel mu cst h _ ▸ p.2
 
 variable {sel mu cst} in
 
+/- English proof (translation)
+Take `⟨y, -, hy⟩` from `p.mem_ybSet h`. Conclude with `Classical.epsilon_spec (p := fun y => y ∈ p.1.2) ⟨y, by rw [hy]; simp⟩`.
+-/
 theorem PtAt.repY_mem {u : Pr.Word} {j : ℕ} (p : PtAt R sel mu cst u j) (h : j + 1 = R.m) : repY p.1.2 ∈ p.1.2 := by
   obtain ⟨y, -, hy⟩ := p.mem_ybSet h
   exact Classical.epsilon_spec (p := fun y => y ∈ p.1.2) ⟨y, by rw [hy]; simp⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : j + 1 = R.m`. Take `⟨Y, hY⟩ : (ybSet sel mu cst q.deco.1.N).Nonempty` from `⟨_, 0, zero_mem _, rfl⟩`. Conclude with `⟨⟨(q, Y), by rw [ysAt_ys_of_eq sel mu cst h]; exact hY⟩, rfl⟩`. Conclude with `⟨⟨(q, ∅), by rw [ysAt_ys_of_ne sel mu cst h]; rfl⟩, rfl⟩`.
+-/
 theorem exists_ptAt {u : Pr.Word} {j : ℕ} (q : ChPt (R := R) sel mu u j) : ∃ p : PtAt R sel mu cst u j, p.1.1 = q := by
   by_cases h : j + 1 = R.m
   · obtain ⟨Y, hY⟩ : (ybSet sel mu cst q.deco.1.N).Nonempty := ⟨_, 0, zero_mem _, rfl⟩
@@ -138,6 +187,9 @@ theorem exists_ptAt {u : Pr.Word} {j : ℕ} (q : ChPt (R := R) sel mu u j) : ∃
 def tilAt (u : Pr.Word) {j : ℕ} (h : j = R.m) (d : XPt Pr R sel mu) : ChPt (R := R) sel mu u j :=
   tilFr (N_succ_of_eq h) (Pr.piT u) d
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `heq_iff_eq.symm`.
+-/
 theorem eq_tilAt_iff {u : Pr.Word} {j : ℕ} (h : j = R.m) (p' : ChPt (R := R) sel mu u j) (d : XPt Pr R sel mu) :
     p' = tilAt sel mu u h d ↔ HEq p' (tilF sel mu u d) := by
   subst h
@@ -161,6 +213,21 @@ def xiAt (u : Pr.Word) (i : ℕ) (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1)
   else if h : i + 1 = R.m then xiLast Ch sel mu cst i h p.1.1 p.1.2 p'.1.1
   else 0
 
+/- English proof (translation)
+Establish `hQ : ∀ P : QE sel (mu : Chr X.F X.E X.K), Pr.piT u ∉ P.1.asIdeal` using `fun P => H.2.1 (TopStep.inQ Pr sel mu P)`. Establish `e : (tilF sel mu u d).deco = (TopStep.tilTop H (toRow sel mu d)).deco`. Rewrite using `[← forgetFr_res (tilF sel mu u d), forgetFr_tilF sel mu hPr u hQ]`. Both sides reduce to the same expression. Rewrite using `[← TopStep.XiTop_tilTop hX hPr hm hc H p hY]`.
+
+Use function extensionality and compare the values at `x`. Unfold `TopStep.XiTop`. Rewrite using `[e]`. Use `congrArg _ (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`.
+
+Establish `e1 : frsF sel mu (tilF sel mu u d) P = frsF sel mu (TopStep.tilTop H (toRow sel mu d)) P`. Unfold `frsF`. Rewrite using `[dif_pos hP, dif_pos hP, e]`. Rewrite using `[e1]`. Take `⟨κ, hκ, e2⟩` from `TopStep.exists_of_isLiftFr (TopStep.liftFr_spec (toRow sel mu d).2 P) (isLiftFr_toRow sel mu d P hP)`.
+
+Establish `e1 : frsF sel mu (tilF sel mu u d) P = TopStep.sumE (N_m_succ R) (d.fr (rightOf P hP)) (TopStep.piU H P)`. Unfold `frsF`. Rewrite using `[dif_neg hP, tilF_fr sel mu hPr u hQ]`. Use `congr 1`. Conclude with `Units.ext (unitOf_val (H.2.1 P))`.
+
+Rewrite using `[e1, TopStep.frsF_tilTop_Q H _ P hP, TopStep.tilFr]`. Unfold `TopStep.locTop`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Unfold `PhiTop`. Rewrite using `[if_neg hP, ← PhiQ_comp_of_red (ColPeriod.levelPrimes X Pr sel S mu hX hPr hsel P).1.2 _ _ _ _ _ _ (show cOf R (n + 1) = 0 by unfold cOf; omega) κ hκ (prXp X.E R ∘ₗ inFr _ (TopStep.sumE _ ((toRow sel mu d).1.liftFr P) _) x ∘ₗ _)]`.
+
+Use `congr 1`. Use `LinearMap.ext fun v => (TopStep.prH_sumE_symm (N_m_succ R) _ _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg κ.1 (TopStep.prH_sumE_symm (N_m_succ R) _ _ _)).symm` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `(κ.1.apply_symm_apply _).symm`.
+
+Use `congr 1`. Use `LinearMap.ext fun v => (TopStep.atNL_last _).trans ((TopStep.sumE_symm_last (N_m_succ R) _ _ _).trans ?_)` and prove the remaining obligations. Conclude with `((TopStep.atNL_last _).trans (TopStep.sumE_symm_last (N_m_succ R) _ _ _)).symm`.
+-/
 theorem XiTop_tilF {u : Pr.Word} (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) (hc : cst.Ok) (H : TopStep.TilOk Pr sel mu u) {n : ℕ}
     (hm : R.m = n + 2) (p : ChPt (R := R) sel mu u (n + 1)) {Y : Set (Sp X.E (R.N (n + 1)))} (hY : Y ∈ ybSet sel mu cst p.deco.1.N)
     (d : XPt Pr R sel mu) :
@@ -205,6 +272,9 @@ section Over
 
 variable {u : Pr.Word} (n : ℕ) {j : ℕ} (h : j = R.m) (p : ChPt (R := R) sel mu u (n + 1))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xiOver_rfl (Y : Set (Sp X.E (R.N (n + 1)))) (p' : ChPt (R := R) sel mu u R.m) :
     xiOver Ch sel mu cst n rfl p Y p' = TopStep.XiTop Ch sel mu cst n p Y p' := rfl
 
@@ -214,16 +284,25 @@ section Unfold
 
 variable {u : Pr.Word} {i : ℕ} {b : Idx sel mu L i} {b' : Idx sel mu L (i + 1)}
 
+/- English proof (translation)
+Rewrite using `[xiAt, dif_pos h, Idx.get_eq e, Idx.get_eq e']`.
+-/
 theorem xiAt_entry (h : i + 2 < R.m) {al : L.β i} {be : L.β (i + 1)} (e : b.1 = some al) (e' : b'.1 = some be)
     (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) :
     xiAt Ch sel mu cst L u i b b' p p' = XiEntry Ch sel mu cst L i al be p.1.1 p'.1.1 := by
   rw [xiAt, dif_pos h, Idx.get_eq e, Idx.get_eq e']
 
+/- English proof (translation)
+Rewrite using `[xiAt, dif_neg (by omega), dif_pos h, Idx.get_eq e]`.
+-/
 theorem xiAt_penultimate_eq_xiCpl1 (h : i + 2 = R.m) {al : L.β i} (e : b.1 = some al) (p : PtAt R sel mu cst u i)
     (p' : PtAt R sel mu cst u (i + 1)) :
     xiAt Ch sel mu cst L u i b b' p p' = XiCpl1 Ch sel mu cst L i al p.1.1 p'.1.1 p'.1.2 := by
   rw [xiAt, dif_neg (by omega), dif_pos h, Idx.get_eq e]
 
+/- English proof (translation)
+Rewrite using `[xiAt, dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]`.
+-/
 theorem xiAt_of_le (h : R.m ≤ i) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) :
     xiAt Ch sel mu cst L u i b b' p p' = 0 := by
   rw [xiAt, dif_neg (by omega), dif_neg (by omega), dif_neg (by omega)]
@@ -235,12 +314,22 @@ section UnfoldLast
 variable {u : Pr.Word} {n : ℕ} {b : Idx sel mu L (n + 1)} {b' : Idx sel mu L (n + 1 + 1)} (h : n + 1 + 1 = R.m)
   (p : PtAt R sel mu cst u (n + 1)) (p' : PtAt R sel mu cst u (n + 1 + 1))
 
+/- English proof (translation)
+Rewrite using `[xiAt, dif_neg (by omega), dif_neg (by omega), dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem xiAt_last : xiAt Ch sel mu cst L u (n + 1) b b' p p' = xiOver Ch sel mu cst n h p.1.1 p.1.2 p'.1.1 := by
   rw [xiAt, dif_neg (by omega), dif_neg (by omega), dif_pos h]
   rfl
 
 end UnfoldLast
 
+/- English proof (translation)
+Establish `key : phiT X.K p.1.1.deco.1 p'.1.1.deco.1 x ≠ 0`. Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases. Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h (b.some_get (by omega)).symm (b'.some_get (by omega)).symm] at hx`. Conclude with `left_ne_zero_of_mul hx`. Rewrite `hx` using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm]`.
+
+Conclude with `left_ne_zero_of_mul hx`. Distinguish the cases in `h1 : i + 1 = R.m`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by have := R.two_le_m; omega⟩`. Rewrite `hx` using `[xiAt_last Ch sel mu cst L h1]`. Conclude with `left_ne_zero_of_mul hx`.
+
+Rewrite `hx` using `[xiAt_of_le Ch sel mu cst L (by omega)]`. Conclude with `absurd rfl hx`. Assume the negation of the conclusion as `hn`. Conclude with `key (if_neg fun h => hn (h P))`.
+-/
 theorem phiT_of_xiAt_ne_zero {u : Pr.Word} {i : ℕ}
     {b : Idx sel mu L i} {b' : Idx sel mu L (i + 1)} {p : PtAt R sel mu cst u i} {p' : PtAt R sel mu cst u (i + 1)}
     {x : HomE X.E (R.N i) (R.N (i + 1))} (hx : xiAt Ch sel mu cst L u i b b' p p' x ≠ 0) (P : Pr.vT u) :
@@ -266,6 +355,9 @@ def thOf (u : Pr.Word) {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : S
     (Ξ : HomE X.E a b → X.K) : VCx X.Tau a b → ℂ :=
   thC (X.embC A.σ₀) A.δ A.d A.sc A.AA (Sall sel mu u) N N' (levC sel mu cst u) (fun x => A.σ₀ (Ξ x)) (A.e a b N N')
 
+/- English proof (translation)
+Simplify using `only [thOf, Pi.zero_apply, map_zero]`. Conclude with `thC_zero ..`.
+-/
 theorem thOf_zero (u : Pr.Word) {a b : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) :
     thOf sel mu cst A u N N' 0 = 0 := by
   simp only [thOf, Pi.zero_apply, map_zero]
@@ -279,6 +371,9 @@ section ThUnfold
 
 variable {u : Pr.Word} {i : ℕ} {b : Idx sel mu L i} {b' : Idx sel mu L (i + 1)}
 
+/- English proof (translation)
+Rewrite using `[thAt, xiAt_of_le Ch sel mu cst L h, thOf_zero]`.
+-/
 theorem thAt_of_le (h : R.m ≤ i) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) :
     thAt Ch sel mu cst L A u i b b' p p' = 0 := by
   rw [thAt, xiAt_of_le Ch sel mu cst L h, thOf_zero]
@@ -296,6 +391,9 @@ section Ker
 
 variable {u : Pr.Word} {n : ℕ} (T : ChTh W sel mu u n)
 
+/- English proof (translation)
+Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h rfl rfl]`. Both sides reduce to the same expression.
+-/
 theorem matK_eq_xiAt {i : ℕ} (h : i + 2 < R.m) (al : L.β i) (be : L.β (i + 1)) (p : PtAt R sel mu cst u i)
     (p' : PtAt R sel mu cst u (i + 1)) : matK W Ch sel mu cst L T i al be p.1.1 p'.1.1 =
       kerOf (T.th i) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.1.1.deco.1.N (frsF sel mu p.1.1) p'.1.1.deco.1.N
@@ -303,12 +401,18 @@ theorem matK_eq_xiAt {i : ℕ} (h : i + 2 < R.m) (al : L.β i) (be : L.β (i + 1
   rw [xiAt_entry Ch sel mu cst L h rfl rfl]
   rfl
 
+/- English proof (translation)
+Rewrite using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h rfl, cp1K, if_pos (p'.mem_ybSet h)]`.
+-/
 theorem firstCoupledKernel_eq_columnChainDatum (h : n + 2 = R.m) (al : L.β n) (b' : Idx sel mu L (n + 1)) (p : PtAt R sel mu cst u n)
     (p' : PtAt R sel mu cst u (n + 1)) : cp1K W Ch sel mu cst L T al p.1.1 p'.1.1 p'.1.2 =
       kerOf (T.th n) (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.1.1.deco.1.N (frsF sel mu p.1.1) p'.1.1.deco.1.N
         (frsF sel mu p'.1.1) (xiAt Ch sel mu cst L u n (Idx.of al (by omega)) b' p p') := by
   rw [xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h rfl, cp1K, if_pos (p'.mem_ybSet h)]
 
+/- English proof (translation)
+The claim follows from `if_pos (p.mem_ybSet h)`.
+-/
 theorem k2top_eq_xiOver (h : n + 1 + 1 = R.m) (p : PtAt R sel mu cst u (n + 1)) (q : ChPt (R := R) sel mu u R.m) :
     TopStep.topDegreeKTwo W Ch sel mu cst T p.1.1 p.1.2 q =
       kerOf T.top (Sall sel mu u) (cAof sel mu cst) (cBof sel mu cst u) p.1.1.deco.1.N (frsF sel mu p.1.1) q.deco.1.N
@@ -316,9 +420,15 @@ theorem k2top_eq_xiOver (h : n + 1 + 1 = R.m) (p : PtAt R sel mu cst u (n + 1)) 
 
 end Ker
 
+/- English proof (translation)
+The claim follows from `chainAt sel mu cst L (topLev Ch sel mu cst P) u (fun _ _ _ => 1) (fun _ _ _ => 1) A.cD (thAt Ch sel mu cst L A u)`.
+-/
 example (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) : ChainIn X.E X.K X.Tau R :=
   chainAt sel mu cst L (topLev Ch sel mu cst P) u (fun _ _ _ => 1) (fun _ _ _ => 1) A.cD (thAt Ch sel mu cst L A u)
 
+/- English proof (translation)
+Establish `h : R.m - 2 + 1 + 1 = R.m` using `by have := R.two_le_m; omega`. Establish `: NeZero (R.N (R.m - 2 + 1))` using `⟨by have := R.m_add_three_le_k; unfold Ranks.N; omega⟩`. Take `⟨p, -⟩` from `exists_ptAt (R := R) sel mu cst (u := u) (j := R.m - 2 + 1) (DecoF.base _ _ _ _ _)`. Take `⟨p', hp'⟩` from `exists_ptAt sel mu cst (tilAt sel mu u h (DecoF.base _ _ _ _ _))`. Conclude with `⟨_, h, p, p', _, hp'⟩`.
+-/
 example (u : Pr.Word) : ∃ (n : ℕ) (h : n + 1 + 1 = R.m) (_ : PtAt R sel mu cst u (n + 1)) (p' : PtAt R sel mu cst u (n + 1 + 1))
     (d : XPt Pr R sel mu), p'.1.1 = tilAt sel mu u h d := by
   have h : R.m - 2 + 1 + 1 = R.m := by have := R.two_le_m; omega
@@ -327,6 +437,11 @@ example (u : Pr.Word) : ∃ (n : ℕ) (h : n + 1 + 1 = R.m) (_ : PtAt R sel mu c
   obtain ⟨p', hp'⟩ := exists_ptAt sel mu cst (tilAt sel mu u h (DecoF.base _ _ _ _ _))
   exact ⟨_, h, p, p', _, hp'⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Establish `h` using `phiT_of_xiAt_ne_zero Ch sel mu cst L hx P`. Take `⟨y, -, hy⟩` from `p.1.1.deco.2.f_ne P`. Establish `h0` using `p'.1.1.deco.2.f_add P 0 (zero_mem _) 0 (zero_mem _)`. Rewrite `h0` using `[add_zero, left_eq_add]`.
+
+Conclude with `hy ((h y (by_contra fun hn => hy (p.1.1.deco.2.f_off P y hn))).2.symm.trans h0)`.
+-/
 example {u : Pr.Word} (P : Pr.vT u) (i : ℕ)
     (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1)) (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) :
     xiAt Ch sel mu cst L u i b b' p p' 0 = 0 := by
@@ -337,6 +452,9 @@ example {u : Pr.Word} (P : Pr.vT u) (i : ℕ)
   rw [add_zero, left_eq_add] at h0
   exact hy ((h y (by_contra fun hn => hy (p.1.1.deco.2.f_off P y hn))).2.symm.trans h0)
 
+/- English proof (translation)
+Break down `lt_trichotomy (i + 2) R.m with h | h | h` into its components or cases. Apply the tactic sequence `rw [xiAt_entry Ch sel mu cst L h (b.some_get (by omega)).symm (b'.some_get (by omega)).symm, XiEntry, Fintype.prod_empty, mul_one]`. Rewrite using `[xiAt_penultimate_eq_xiCpl1 Ch sel mu cst L h (b.some_get (by omega)).symm, XiCpl1, Fintype.prod_empty, mul_one]`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by have := R.two_le_m; omega⟩`. Rewrite using `[xiAt_last Ch sel mu cst L (by omega), xiOver, Fintype.prod_empty, mul_one]`.
+-/
 example [IsEmpty (rowSG Pr sel mu)] {u : Pr.Word} {i : ℕ} (h : i < R.m) (b : Idx sel mu L i) (b' : Idx sel mu L (i + 1))
     (p : PtAt R sel mu cst u i) (p' : PtAt R sel mu cst u (i + 1)) (x : HomE X.E (R.N i) (R.N (i + 1))) :
     xiAt Ch sel mu cst L u i b b' p p' x = phiT X.K p.1.1.deco.1 p'.1.1.deco.1 x := by

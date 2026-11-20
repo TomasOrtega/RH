@@ -4,6 +4,9 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.SecGlue
 
+/- English proof (translation)
+Use `show algebraMap S (Localization.Away s) s ∉ x.asIdeal`. Introduce `h`. Conclude with `x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit s))`.
+-/
 theorem spMap_away_mem_basicOpen {S : Type} [CommRing S] (s : S)
     (x : Sp (Localization.Away s)) :
     (spMap (algebraMap S (Localization.Away s))).base x ∈ PrimeSpectrum.basicOpen s := by
@@ -11,6 +14,17 @@ theorem spMap_away_mem_basicOpen {S : Type} [CommRing S] (s : S)
   intro h
   exact x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.Away.algebraMap_isUnit s))
 
+/- English proof (translation)
+Set `T : Set S` to `{s | ∃ W : Y.Opens, IsAffineOpen W ∧ ∀ x : Sp S, x ∈ PrimeSpectrum.basicOpen s → u.base x ∈ W}`. Establish `hT : Ideal.span T = ⊤`. Rewrite using `[← PrimeSpectrum.iSup_basicOpen_eq_top_iff', eq_top_iff]`. Introduce `x _`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (u.base x)) isOpen_univ`.
+
+Take `⟨_, ⟨s, rfl⟩, hxs, hsW⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hxW (u ⁻¹ᵁ W).isOpen`. Establish `hsT : s ∈ T` using `⟨W, hW, fun y hy => hsW hy⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨s, TopologicalSpace.Opens.mem_iSup.mpr ⟨hsT, hxs⟩⟩`. Take `⟨F, hFT, hF⟩` from `(Ideal.span_eq_top_iff_finite T).mp hT`. Establish `hW : ∀ t : F, ∃ W : Y.Opens, IsAffineOpen W ∧ ∀ x : Sp S, x ∈ PrimeSpectrum.basicOpen (t : S) → u.base x ∈ W` using `fun t => hFT t.2`.
+
+Use `choose Wf hWa hWs using hW`. Use `⟨F.card, fun i => (F.equivFin.symm i : S), fun i => Wf (F.equivFin.symm i), ?_, fun i => hWa _, fun i => ?_⟩` and prove the remaining obligations. Establish `: Set.range (fun i => (F.equivFin.symm i : S)) = (F : Set S)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `(F.equivFin.symm i).2`. Introduce `hy`. Conclude with `⟨F.equivFin ⟨y, hy⟩, by simp⟩`. Rewrite using `[this, hF]`.
+
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `hWs _ _ (spMap_away_mem_basicOpen _ x)`.
+-/
 theorem exists_basicOpen_cover_affine (S : Type) [CommRing S] (Y : Scheme.{0}) (u : Sp S ⟶ Y) :
     ∃ (n : ℕ) (s : Fin n → S) (W : Fin n → Y.Opens), Ideal.span (Set.range s) = ⊤ ∧
       (∀ i, IsAffineOpen (W i)) ∧ ∀ i, (spMap (algebraMap S (Localization.Away (s i))) ≫ u) ⁻¹ᵁ W i = ⊤ := by

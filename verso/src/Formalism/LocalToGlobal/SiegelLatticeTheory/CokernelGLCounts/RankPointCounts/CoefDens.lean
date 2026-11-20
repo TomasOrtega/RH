@@ -34,6 +34,9 @@ def GaPlusTh : Prop :=
 
 end Steps
 
+/- English proof (translation)
+Introduce `hA hT hPH ϖ _ w w' Z Z' hk hZ hZ' p hne heq`. Take `⟨A, hAO, hAd, hGa⟩` from `hG hA hT hPH w w' Z Z' hk hZ hZ' p hne heq`. Unfold `CntLocal.densP`. Rewrite using `[hGa]`. Conclude with `(hC (D.s.atP p).Fp (D.s.atP p).Ep (M p) (L.V p) (L.H p) (ϖ p) (CntLocal.lattice₂ L p (VS D).L0) (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (CntLocal.GaPlus M δ p (CntLocal.Tn u) (CntLocal.Tn u') Z) A hAO hAd).symm`.
+-/
 theorem densTh_of {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     {δ : ∀ p : PlF D, (D.s.atP p).Fp} {L : CntLocal.LocSp D M} {u u' : D.what₂.Word}
     (hC : DensCong) (hG : GaPlusTh M δ u u') : FCount.DensTh M δ L u u' := by

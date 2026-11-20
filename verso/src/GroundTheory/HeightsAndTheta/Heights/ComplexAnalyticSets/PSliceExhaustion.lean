@@ -13,6 +13,11 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial Filter Topology Matrix ComplexSets
 open scoped ContDiff
 
+/- English proof (translation)
+Distinguish the cases in `hA : ∃ A : Matrix (Fin d) (Fin n) ℂ, IsFiniteProjection I A`. Simplify using `only [varInt, dif_pos hA]`. Use `CutOffDominated.proof n d I hA.choose 1 (sliceCut h) (fun _ => 1) (fun _ x => Real.log (h.dualNorm x)) hI hdim hA.choose_spec one_ne_zero (SliceCut.measurable h) (SliceCut.mem_Icc h) (fun x _ _ => SliceCut.tendsto_one h x) continuousOn_const (fun _ => hsm) (hM n d h I ℓ hA.choose …` as an intermediate fact. Simplify `this` using `only [mul_one]`. Simplify using `only [varInt, dif_neg hA]`.
+
+Conclude with `tendsto_const_nhds`.
+-/
 theorem SliceExhaustion.varInt_tendsto_sliceCut {n d : ℕ} (h : HermNorm n)
     (I : Ideal (MvPolynomial (Fin n) ℂ)) (ℓ : Fin n → ℂ) (hM : SliceMassFinite.Statement)
     (hI : I.IsPrime) (hℓ : linForm ℓ - 1 ∈ I) (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ I) = d)
@@ -29,6 +34,11 @@ theorem SliceExhaustion.varInt_tendsto_sliceCut {n d : ℕ} (h : HermNorm n)
   · simp only [varInt, dif_neg hA]
     exact tendsto_const_nhds
 
+/- English proof (translation)
+Introduce `n e h J F u ℓ hJ hF hu hℓ hℓW`. Take `⟨hprime, hdim, huJ⟩` from `hI n (e + 1) J F ℓ hJ hF hℓ`. Take `⟨-, himg, -⟩` from `hC n J u ℓ hJ hℓW`. Establish `hmem1 : ∀ K : Ideal (MvPolynomial (Fin n) ℂ), linForm ℓ - 1 ∈ K ⊔ Ideal.span {linForm ℓ - 1}` using `fun _ => Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Use `⟨sliceCut h, SliceCut.contDiff h, SliceCut.hasCompactSupport h, SliceCut.mem_Icc h, SliceCut.tendsto_one h, SliceExhaustion.varInt_tendsto_sliceCut h _ ℓ hM hprime (hmem1 J) hdim (smoothNear_log_dualNorm_slice h J ℓ), fun W hW => ?_, hE n e h J F u ℓ hJ hF hu hℓ hℓW⟩` and prove the remaining obligations.
+
+Establish `hmin : W ⊔ Ideal.span {linForm ℓ - 1} ∈ (J ⊔ Ideal.span {linForm ℓ - 1} ⊔ Ideal.span {linForm u}).minimalPrimes`. Rewrite using `[← himg]`. Conclude with `Set.mem_image_of_mem _ (Finset.mem_coe.mpr hW)`. Conclude with `SliceExhaustion.varInt_tendsto_sliceCut h _ ℓ hM hmin.1.1 (hmem1 W) (IndefiniteRowSideFullHecke.ComplexSets.dim_component_linForm hprime hdim (huJ u hu) hmin) (smoothNear_log_dualNorm_slice h W ℓ)`.
+-/
 theorem SliceExhaustion.proof (hI : SliceIdeal.Statement) (hC : SliceComponents.Statement)
     (hM : SliceMassFinite.Statement) (hE : SliceLelongError.Statement) : SliceExhaustion.Statement := by
   intro n e h J F u ℓ hJ hF hu hℓ hℓW

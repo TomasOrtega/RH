@@ -11,6 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Introduce `D n V θ l s τ ε fr hθ hs hfr hl Ψ hΨ`. Use `⟨fun x x' hx hf => AwayPf.dep θ V l s τ hΨ x x' hx hf, fun f hf => ?_⟩` and prove the remaining obligations. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨p, g, hg, hp, rfl⟩` from `hφ`.
+
+Conclude with `AwayPf.gen_sch θ V l s τ fr hfr.1 hs hl p hp g hg f hf`. Consider the case `zero`. Establish `: tens θ τ fr f (0 : Mx D V.rank n → ℂ) = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Establish `: tens θ τ fr f (a + b) = tens θ τ fr f a + tens θ τ fr f b`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [tens, Pi.add_apply, mul_add]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Establish `: tens θ τ fr f (c • a) = c • tens θ τ fr f a`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem awayIn : AwayIn := by
   intro D n V θ l s τ ε fr hθ hs hfr hl Ψ hΨ
   refine ⟨fun x x' hx hf => AwayPf.dep θ V l s τ hΨ x x' hx hf, fun f hf => ?_⟩

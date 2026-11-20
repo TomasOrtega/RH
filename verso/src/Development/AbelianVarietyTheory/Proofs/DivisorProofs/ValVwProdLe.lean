@@ -41,6 +41,15 @@ end GlobalTheory.CovHt.HTDiag
 
 namespace GlobalTheory.CovHt.HTDiag
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hlp : 0 < Real.log p` using `Real.log_pos hp1`. Rewrite using `[val_vw_of_ne la p _ (Units.ne_zero _), EReal.coe_le_coe_iff, GlobalTheory.PadicComplexHost.valuation_coe_eq_norm, GlobalTheory.PadicComplexHost.valuation_coe_eq_norm, GlobalTheory.PadicComplexHost.norm_p, Real.log_inv, Units.coe_prod, norm_prod, Real.log_prod]`. Simplify using `only [Units.val_zpow_eq_zpow_val, norm_zpow, Real.log_zpow, Fintype.sum_option, h0, Int.cast_zero, zero_mul, zero_add]`. Rewrite using `[_root_.mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ he` and prove the remaining obligations. Rewrite using `[div_neg, ← neg_div, ← Finset.sum_neg_distrib, div_le_iff₀ hlp, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `ht s`. Establish `hl0 : 0 ≤ Real.log ‖(t (some s) : ℂ_[p])‖` using `Real.log_nonneg h1`.
+
+Establish `hl1 : Real.log ‖(t (some s) : ℂ_[p])‖ ≤ h * Real.log p`. Rewrite using `[← Real.log_rpow (by linarith)]`. Conclude with `Real.log_le_log (by linarith) h2`. Use `neg_abs_le (ex (some s) : ℝ)` as an intermediate fact. Use polynomial arithmetic with `[abs_nonneg (ex (some s) : ℝ)]`.
+
+Introduce `i _`. Conclude with `norm_ne_zero_iff.2 (t i ^ ex i).ne_zero`.
+-/
 theorem val_vw_prod_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ) [Fact p.Prime]
     (t : Ix Dw → ℂ_[p]ˣ) (ex : Ix Dw → ℤ) (h : ℝ) (h0 : ex none = 0)

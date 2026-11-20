@@ -11,6 +11,9 @@ noncomputable section
 
 universe u w
 
+/- English proof (translation)
+Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line, twistMul_sub, twistMul_sub, twistMul_sub, pow_add, ← twistSys_sub_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem twistMul_twist_twistMul {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
     {x : Fin (N + 1) → Ω} (M : SubSystem S x Ω) (a a' : ℕ) (c c' : ℤ) :
     (twistMul M a c).twist (twistMul M a' c') = twistMul M (a + a') (c + c') := by
@@ -19,6 +22,11 @@ theorem twistMul_twist_twistMul {S : Type u} [CommRing S] {Ω : Type w} [Field �
     ← twistSys_sub_mul]
   ring
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x M p q m m' b₁ b₂ h`. Rewrite using `[pow_twistMul, pow_twistMul, pow_twistMul, twistMul_twist_twistMul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`.
+
+Take the linear combination `(b₁ : ℤ) * h`.
+-/
 theorem TwistAlg.proof : TwistAlg.Statement.{u, w} := by
   intro S _ Ω _ _ N x M p q m m' b₁ b₂ h
   rw [pow_twistMul, pow_twistMul, pow_twistMul, twistMul_twist_twistMul]

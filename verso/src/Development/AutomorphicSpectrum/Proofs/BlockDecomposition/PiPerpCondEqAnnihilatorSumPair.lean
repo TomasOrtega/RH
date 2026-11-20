@@ -5,6 +5,15 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.Duality
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ r M _ _ _ _ _ S Av μ ρ hρ j hj L`. Use extensionality with `y`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies, forall_const, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply, ReciprocityTheory.Gal.perpCond, PositivityTheory.S2pt.sumPair, Finset.sum_apply, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, Li …`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+
+Use `Finset.sum_eq_zero fun v _ => ?_` and prove the remaining obligations. Rewrite using `[h v (x v) (hx v), map_zero]`. Introduce `h v x0 hx0`. Apply `hj v` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Establish `hs` using `h (Pi.single v x0) (fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `using hx0`. Simplify using `[Pi.single_eq_of_ne hw])`.
+
+Rewrite `hs` using `[Finset.sum_eq_single v]`. Simplify using `using hs`. Introduce `w _ hw`. Simplify using `[Pi.single_eq_of_ne hw]`. Simplify using the standard rewrite rules.
+-/
 theorem pi_perpCond_eq_annihilator_sumPair : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 F))) (Av : S → ValuationSubring Ω) (μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ) (ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M) (hρ : ContAction ρ), ∀ (j : ∀ v : S, H2 ((charRep μ).comp (locFam S Av v)) →ₗ[ZMod (l ^ r)] ZMod (l ^ r)), (∀ v, Function.Injective (j v)) → ∀ L : LocCond ρ (locFam S Av), Submodule.pi Set.univ (perpCond μ ρ (locFam S Av) (fun v => hρ.comp' (continuous_locFam S Av v)) L) = ⨅ x ∈ Submodule.pi Set.univ L, LinearMap.ker ((sumPair S Av μ j ρ hρ).flip x) := by
   classical
   intro F Ω _ _ _ _ _ l _ r M _ _ _ _ _ S Av μ ρ hρ j hj L

@@ -18,6 +18,13 @@ section Generic
 
 variable {K : Type} [Field K] {τ : Type}
 
+/- English proof (translation)
+Rewrite using `[add_pow, map_sum, Finset.sum_eq_single k]`. Rewrite using `[X_pow_eq, X_pow_eq, monomial_mul_monomial, Nat.add_sub_cancel_left, ← nsmul_eq_mul', map_nsmul, coeff_monomial_same]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[X_pow_eq, X_pow_eq, monomial_mul_monomial, ← nsmul_eq_mul', map_nsmul, coeff_monomial, if_neg, smul_zero]`.
+
+Introduce `h`. Use `congrArg (fun d => d ((0 : Fin 2), (0 : ZMod 1))) h` as an intermediate fact. Simplify using `at this`. Conclude with `hj this.symm`. Introduce `h`.
+
+Conclude with `absurd (mem_range.2 (by omega)) h`.
+-/
 lemma coeff_add_pow (k m : ℕ) :
     coeff (mon k m) ((X ((0 : Fin 2), (0 : ZMod 1)) + X ((1 : Fin 2), (0 : ZMod 1)) :
       MvPowerSeries (Fin 2 × ZMod 1) K) ^ (k + m)) = ((k + m).choose k : K) := by

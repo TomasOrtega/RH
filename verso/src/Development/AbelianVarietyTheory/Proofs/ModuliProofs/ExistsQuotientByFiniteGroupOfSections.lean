@@ -21,6 +21,9 @@ open PointQuot
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Set `k` to `AlgebraicClosure (Z.left.residueField z)`. Set `p : Sp k ⟶ Z.left` to `Spec.map (CommRingCat.ofHom (algebraMap (Z.left.residueField z) k)) ≫ Z.left.fromSpecResidueField z`. Conclude with `⟨k, inferInstance, inferInstance, p ≫ Z.hom, ⟨Over.homMk p rfl⟩⟩`.
+-/
 lemma exists_geomPt (Z : Over S) (z : Z.left) :
     ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (t : Sp k ⟶ S), Nonempty (Over.mk t ⟶ Z) := by
   let k := AlgebraicClosure (Z.left.residueField z)
@@ -29,6 +32,11 @@ lemma exists_geomPt (Z : Over S) (z : Z.left) :
       Z.left.fromSpecResidueField z
   exact ⟨k, inferInstance, inferInstance, p ≫ Z.hom, ⟨Over.homMk p rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨fun {Z} f g h => hom_ext_local f g fun z => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `locally_const f z`. Take `⟨W, hW, d, hd⟩` from `locally_const g z`. Establish `hc'` using `const_of_le (inf_le_left : V ⊓ W ≤ V) hc`. Establish `hd'` using `const_of_le (inf_le_right : V ⊓ W ≤ W) hd`.
+
+Take `⟨k, _, _, t, ⟨p⟩⟩` from `exists_geomPt (openObj Z (V ⊓ W)) (⟨z, hV, hW⟩ : (V ⊓ W : Z.left.Opens))`. Choose the witnesses or unpack the hypotheses as in `rfl : c = d := by`. Apply `hx k t` to reduce the goal to its premises. Rewrite using `[toUnit_unique (toUnit _) (p ≫ toUnit _), Category.assoc, Category.assoc, ← constPt_desc x c, ← constPt_desc x d, ← reassoc_of% hc', ← reassoc_of% hd', h]`. Conclude with `⟨V ⊓ W, ⟨hV, hW⟩, hc'.trans hd'.symm⟩`.
+-/
 lemma mono_constDesc_of_geom {I : Type} {A : Over S} (x : I → (𝟙_ (Over S) ⟶ A))
     (hx : ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S) (c d : I),
       toUnit (Over.mk t) ≫ x c = toUnit (Over.mk t) ≫ x d → c = d) : Mono (constDesc x) := by
@@ -49,6 +57,21 @@ end SectionQuot
 
 open PointQuot SectionQuot in
 
+/- English proof (translation)
+Introduce `R _ _ P C _ _ i hi`. Establish `L : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin C`. Set `x : Fin n → (𝟙_ (Over (Sp R)) ⟶ P.A)` to `fun c => i (e.symm c)`. Establish `hr : Set.range x = i.range`.
+
+Use extensionality with `y`. Conclude with `⟨by rintro ⟨c, rfl⟩; exact ⟨e.symm c, rfl⟩, by rintro ⟨c, rfl⟩; exact ⟨e c, by simp [x]⟩⟩`. Establish `hmono : Mono (constDesc x)` using `mono_constDesc_of_geom x fun k _ _ t c d h => by`. Apply `e.symm.injective` to reduce the goal to its premises. Rewrite using `[← div_eq_one]`.
+
+Apply `hi k t` to reduce the goal to its premises. Rewrite using `[map_div, GrpObj.comp_div, div_eq_one]`. Conclude with `h`. Take `⟨_, hhom⟩` from `exists_grpObj_constObj x i.range hr`. Establish `hs : FinEt.IsSplitOfRank (constObj (Sp R) (Fin n)).hom n` using `(FinEt.isSplitOfRank_iff_exists_iso _ _).mpr ⟨Iso.refl _, Category.id_comp _⟩`.
+
+Establish `het` using `hs.etale`. Take `⟨B, _, hB, q, hq, hfin, hflat, hsurj, hker⟩` from `L.quotient R P (constObj (Sp R) (Fin n)) (constDesc x) hhom hmono hs.isFinite inferInstance`. Establish `hw : constDesc x ≫ q = 1` using `hker.w`. Establish `hkill : ∀ c, i c ≫ q = 1` using `fun c => by`. Establish `: i c = x (e c)` using `by simp [x]`.
+
+Rewrite using `[this, ← constPt_desc x (e c), Category.assoc, hw, MonObj.comp_one]`. Use `⟨B, inferInstance, q, hB, hq, hfin, ?_, hsurj, hkill, fun k _ _ t y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Etale) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback (constDesc x) q hker).map (Over.forget _)).flip ⟨⟨hsurj, hflat⟩, inferInstanceAs (QuasiCompact q.left)⟩ ?_` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @Etale) (IsPullback.of_hasPullback _ _) het`. Take `⟨z⟩ : Nonempty (Over.mk t).left` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`.
+
+Establish `: Subsingleton (Over.mk t).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Take `⟨V, hV, c, hc⟩` from `locally_const_desc x (hker.lift y (toUnit _) hy) z`. Rewrite `hc` using `[hker.lift_fst]`. Use `⟨e.symm c, hom_ext_local _ _ fun z' => ⟨V, Subsingleton.elim z z' ▸ hV, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hc, ← Category.assoc, toUnit_unique (_ ≫ toUnit _) (toUnit _)]`.
+
+Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Category.assoc, hkill, MonObj.comp_one]`.
+-/
 theorem exists_quotient_by_finite_group_of_sections :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (P : Out.PolAV (Sp R)) (C : Type) [CommGroup C] [Finite C] (i : C →* (𝟙_ (Over (Sp R)) ⟶ P.A)), (∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (c : C), toUnit (Over.mk t) ≫ i c = 1 → c = 1) → ∃ (B : Over (Sp R)) (_ : GrpObj B) (ψ : P.A ⟶ B), IsAbelianScheme B ∧ IsMonHom ψ ∧ IsFinite ψ.left ∧ Etale ψ.left ∧ Surjective ψ.left ∧ (∀ c, i c ≫ ψ = 1) ∧ ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (x : Over.mk t ⟶ P.A), x ≫ ψ = 1 ↔ ∃ c, x = toUnit _ ≫ i c := by
   intro R _ _ P C _ _ i hi

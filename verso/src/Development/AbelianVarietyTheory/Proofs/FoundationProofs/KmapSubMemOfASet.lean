@@ -10,9 +10,15 @@ namespace GlobalTheory.KZ.GalCont
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+The claim follows from `X.exp.toRingHom.injective`.
+-/
 theorem exp_inj (X : Tower Ω ε) : Function.Injective X.exp :=
   X.exp.toRingHom.injective
 
+/- English proof (translation)
+Apply `exp_inj X` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[X.gal_exp]`. Conclude with `h r`.
+-/
 theorem gal_eq_of_coeff (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K)
     (h : ∀ r, s ((X.exp f).coeff r) = (X.exp f).coeff r) : X.gal s f = f := by
   apply exp_inj X
@@ -20,11 +26,19 @@ theorem gal_eq_of_coeff (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K)
   rw [X.gal_exp]
   exact h r
 
+/- English proof (translation)
+Rewrite using `[HahnSeries.algebraMap_apply']`. Simplify using `[PowerSeries.algebraMap_apply, HahnSeries.coeff_single, eq_comm]`.
+-/
 theorem coeff_alg (c : Ω) (r : ℚ) :
     ((algebraMap Ω (HahnSeries ℚ Ω)) c).coeff r = if r = 0 then c else 0 := by
   rw [HahnSeries.algebraMap_apply']
   simp [PowerSeries.algebraMap_apply, HahnSeries.coeff_single, eq_comm]
 
+/- English proof (translation)
+Apply `gal_eq_of_coeff` to reduce the goal to its premises. Introduce `r`. Rewrite using `[AlgHom.commutes, coeff_alg]`. Use `split_ifs`. Conclude with `hc`.
+
+Conclude with `map_zero s`.
+-/
 theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) (hc : s c = c) :
     X.gal s (algebraMap Ω X.K c) = algebraMap Ω X.K c := by
   apply gal_eq_of_coeff
@@ -34,6 +48,9 @@ theorem gal_algebraMap (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) (c : Ω) (hc : 
   · exact hc
   · exact map_zero s
 
+/- English proof (translation)
+Apply `gal_eq_of_coeff` to reduce the goal to its premises. Introduce `r`. Take `⟨n, hn⟩` from `X.j_exp.2.2 r`. Rewrite using `[hn, map_intCast]`.
+-/
 theorem gal_j (X : Tower Ω ε) (s : Ω ≃ₐ[ℚ] Ω) : X.gal s X.jK = X.jK := by
   apply gal_eq_of_coeff
   intro r
@@ -62,10 +79,30 @@ def fixField (X : Tower Ω ε) : IntermediateField Ω X.K where
     rintro a ⟨E, hE⟩
     exact ⟨E, fun s hs => by rw [map_inv₀, hE s hs]⟩
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Conclude with `⟨∅, fun s _ => gal_j X s⟩`.
+-/
 theorem adjoin_le_fix (X : Tower Ω ε) : IntermediateField.adjoin Ω {X.jK} ≤ fixField X := by
   rw [IntermediateField.adjoin_simple_le_iff]
   exact ⟨∅, fun s _ => gal_j X s⟩
 
+/- English proof (translation)
+Take `⟨p, hp0, hpf⟩` from `X.alg_j f`. Take `⟨q, hq⟩ : ∃ q : Polynomial X.K, q = p.map (algebraMap (IntermediateField.adjoin Ω {X.jK}) X.K)` from `⟨_, rfl⟩`. Establish `hq0 : q ≠ 0` using `hq ▸ (Polynomial.map_ne_zero_iff (algebraMap (IntermediateField.adjoin Ω {X.jK}) X.K).injective).2 hp0`. Establish `hqf : q.eval f = 0`. Rewrite using `[hq, Polynomial.eval_map_algebraMap]`.
+
+Conclude with `hpf`. Establish `hcoef : ∀ i, ∃ E : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E, s x = x) → X.gal s (q.coeff i) = q.coeff i`. Introduce `i`. Rewrite using `[hq, Polynomial.coeff_map]`. Conclude with `adjoin_le_fix X (p.coeff i).2`.
+
+Use `choose Ec hEc using hcoef`. Establish `hex : ∀ g : X.K, g ≠ f → ∃ r, (X.exp g).coeff r ≠ (X.exp f).coeff r`. Introduce `g hg`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hg (exp_inj X (HahnSeries.ext (funext h)))`. Use `choose rr hrr using hex`. Set `E1 : Finset Ω` to `q.support.biUnion Ec`. Set `E2 : Finset Ω` to `q.roots.toFinset.image (fun g => if h : g = f then 0 else (X.exp f).coeff (rr g h))`. Use `⟨E1 ∪ E2, fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hmap : q.map (X.gal s).toRingHom = q`. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_map]`. Distinguish the cases in `hi : i ∈ q.support`. Conclude with `hEc i s (fun x hx => hs x (Finset.mem_union_left _ (Finset.mem_biUnion.2 ⟨i, hi, hx⟩)))`.
+
+Rewrite using `[Polynomial.notMem_support_iff.1 hi, map_zero]`. Establish `hroot : X.gal s f ∈ q.roots`. Rewrite using `[Polynomial.mem_roots hq0, Polynomial.IsRoot.def]`. Use `Polynomial.eval₂_hom (X.gal s).toRingHom f (p := q)` as an intermediate fact. Rewrite `this` using `[← Polynomial.eval_map, hmap]`.
+
+Simplify `this` using `[hqf]`. Assume the negation of the conclusion as `hne`. Establish `hmem : (X.exp f).coeff (rr _ hne) ∈ E2` using `Finset.mem_image.2 ⟨X.gal s f, Multiset.mem_toFinset.2 hroot, by rw [dif_neg hne]⟩`. Apply `hrr _ hne` to reduce the goal to its premises. Rewrite using `[X.gal_exp]`.
+
+Conclude with `hs _ (Finset.mem_union_right _ hmem)`.
+-/
 theorem fix_fin (X : Tower Ω ε) (f : X.K) :
     ∃ E : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E, s x = x) → X.gal s f = f := by
   classical
@@ -108,6 +145,11 @@ theorem fix_fin (X : Tower Ω ε) (f : X.K) :
   rw [X.gal_exp]
   exact hs _ (Finset.mem_union_right _ hmem)
 
+/- English proof (translation)
+Take `⟨f, -, hf⟩` from `ha n`. Take `⟨E, hE⟩` from `fix_fin X (f : X.K)`. Use `⟨E, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton _), LinearMap.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[AdicCompletion.eval_apply, AdicCompletion.eval_apply]`.
+
+Express the relevant statement in the definitionally equal form `(AdicCompletion.map _ _ a).val n = a.val n`. Rewrite using `[AdicCompletion.map_val_apply, ← AdicCompletion.eval_apply, hf]`. Rewrite using `[Tower.cls, LinearMap.reduceModIdeal_apply, LinearMap.baseChange_tmul]`. Establish `hu : Units.map (X.gal s).toMonoidHom f = f` using `Units.ext (hE s hs)`. Use `congr 2`.
+-/
 theorem kmap_sub_mem_of_ASet (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (a : X.Khat l) (ha : a ∈ X.ASet l)
     (n : ℕ) : ∃ E : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E, s x = x) →
       X.kmap l (X.gal s) a - a ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l)) := by
@@ -123,6 +165,15 @@ theorem kmap_sub_mem_of_ASet (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (a : X.K
   have hu : Units.map (X.gal s).toMonoidHom f = f := Units.ext (hE s hs)
   congr 2
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨∅, fun _ _ => by simp⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : NeZero ((l : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero⟩`.
+
+Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`. Use `⟨{ζ}, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1` using `cyclotomicCharacter.spec l (n := n) s.toRingEquiv ζ hζ.pow_eq_one`. Establish `hsz : s.toRingEquiv ζ = ζ` using `hs ζ (Finset.mem_singleton_self ζ)`.
+
+Rewrite `h1` using `[hsz]`. Use `set v := (cyclotomicCharacter Ω l s.toRingEquiv).val.toZModPow n with hv`. Establish `h2 : v = 1`. Establish `hlt : 1 < l ^ n` using `Nat.one_lt_pow hn.ne' (Fact.out : l.Prime).one_lt`. Establish `hval : v.val = 1` using `hζ.pow_inj (ZMod.val_lt v) hlt (by rw [pow_one]; exact h1.symm)`.
+
+Rewrite using `[← ZMod.natCast_zmod_val v, hval, Nat.cast_one]`. Rewrite using `[idl, Ideal.span_singleton_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, ← hv, h2, map_one, sub_self]`.
+-/
 theorem cyc_sub_one_mem [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) :
     ∃ E : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E, s x = x) →
       ((cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) - 1) ∈ (idl l) ^ n := by
@@ -145,6 +196,15 @@ theorem cyc_sub_one_mem [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (n : ℕ)
   rw [idl, Ideal.span_singleton_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, ← hv, h2,
     map_one, sub_self]
 
+/- English proof (translation)
+Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem a ha => exact kmap_sub_mem_of_ASet X l a ha n`. Consider the case `zero => exact ⟨∅, fun s _ => by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨E, hE⟩` from `ha`.
+
+Take `⟨F, hF⟩` from `hb`. Use `⟨E ∪ F, fun s hs => ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ (hE s fun x hx => hs x (Finset.mem_union_left _ hx)) (hF s fun x hx => hs x (Finset.mem_union_right _ hx))` as an intermediate fact. Rewrite using `[map_add]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Consider the case `smul r a _ ha`. Take `⟨E, hE⟩` from `ha`. Use `⟨E, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_sub]`.
+
+Conclude with `Submodule.smul_mem _ r (hE s hs)`.
+-/
 theorem kmap_sub_mem_A (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (c : X.Khat l) (hc : c ∈ X.A l) (n : ℕ) :
     ∃ E : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E, s x = x) →
       X.kmap l (X.gal s) c - c ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l)) := by
@@ -167,6 +227,17 @@ theorem kmap_sub_mem_A (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (c : X.Khat l)
     rw [map_smul, ← smul_sub]
     exact Submodule.smul_mem _ r (hE s hs)
 
+/- English proof (translation)
+Take `⟨c, hcA, hbc⟩` from `hb`. Use `choose Ec hEc using fun i => kmap_sub_mem_A X l (c i) (hcA i) n`. Take `⟨Ez, hEz⟩` from `cyc_sub_one_mem (Ω := Ω) l n`. Use `⟨Ez ∪ Finset.univ.biUnion Ec, fun s hs u => ?_⟩` and prove the remaining obligations. Establish `hχ` using `hEz s (fun x hx => hs x (Finset.mem_union_left _ hx))`.
+
+Establish `hk : ∀ i, X.kmap l (X.gal s) (c i) - c i ∈ (idl l) ^ n • (⊤ : Submodule ℤ_[l] (X.Khat l))` using `fun i => hEc i s (fun x hx => hs x (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hx⟩)))`. Use `set χ := (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) with hχdef`. Establish `hgal : X.galB l s b u = X.kmap l (X.gal s) (b ![u 0, χ * u 1])` using `rfl`. Rewrite using `[Pi.sub_apply, hgal, hbc, hbc, map_sum, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [map_smul, Matrix.cons_val_zero, Matrix.cons_val_one]`. Establish `hpow : χ ^ (w - (i : ℕ)) - 1 ∈ (idl l) ^ n`. Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow χ 1 (w - (i : ℕ))`. Rewrite `hd` using `[one_pow]`. Rewrite using `[hd]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hχ`. Establish `heq : (u 0 ^ (i : ℕ) * (χ * u 1) ^ (w - (i : ℕ))) • X.kmap l (X.gal s) (c i) - (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • c i = (u 0 ^ (i : ℕ) * (χ * u 1) ^ (w - (i : ℕ))) • (X.kmap l (X.gal s) (c i) - c i) + ((u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) * (χ ^ (w - (i : ℕ)) - 1)) • c i`. Rewrite using `[mul_pow]`. Use `module`. Rewrite using `[heq]`.
+
+Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (hk i)) (Submodule.smul_mem_smul (Ideal.mul_mem_left _ _ hpow) Submodule.mem_top)`.
+-/
 theorem galB_sub_mem_of_Pol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l w : ℕ) [Fact l.Prime] (b : X.Fn l)
     (hb : b ∈ X.Pol l w) (n : ℕ) :
     ∃ E : Finset Ω, ∀ s : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E, s x = x) →
@@ -200,6 +271,15 @@ theorem galB_sub_mem_of_Pol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) (l w : ℕ) 
   exact Submodule.add_mem _ (Submodule.smul_mem _ _ (hk i))
     (Submodule.smul_mem_smul (Ideal.mul_mem_left _ _ hpow) Submodule.mem_top)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X _ _ N l w _ _ _ _ _ b hb n`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb => exact galB_sub_mem_of_Pol X l w b hb.1 n`. Consider the case `zero => exact ⟨∅, fun s _ u => by simp⟩`. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨E, hE⟩` from `ha`. Take `⟨F, hF⟩` from `hb`. Use `⟨E ∪ F, fun s hs u => ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ (hE s (fun x hx => hs x (Finset.mem_union_left _ hx)) u) (hF s (fun x hx => hs x (Finset.mem_union_right _ hx)) u)` as an intermediate fact. Rewrite using `[map_add]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.sub_apply, Pi.add_apply, Pi.sub_apply]`. Normalize the expressions using the abelian group laws. Consider the case `smul r a _ ha`. Take `⟨E, hE⟩` from `ha`.
+
+Use `⟨E, fun s hs u => ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem _ r (hE s hs u)` as an intermediate fact. Rewrite using `[map_smul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.sub_apply, Pi.smul_apply, Pi.sub_apply, smul_sub]`.
+-/
 theorem galB_cont : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε),
     Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
     ∀ (N l w : ℕ) [Fact l.Prime], l ≠ 2 → 5 ≤ N → Nat.Coprime N l → Odd w → ∀ b ∈ X.B N l w, ∀ n : ℕ,

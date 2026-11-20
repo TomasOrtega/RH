@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Crys
 
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual UpperTheory.V UpperTheory.V.TR UpperTheory.V.Sd UpperTheory.V.Af.Gk GlobalTheory.LFun
 
+/- English proof (translation)
+Introduce `π H hH w α β hB`. Establish `hB0 : HasSatGL w (π.locRep w) {α, β}` using `hB`. Establish `hK : ∀ k ∈ KGL w 2, GlobalTheory.CuspRep.invT 2 _ k ∈ KGL w 2`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨GlobalTheory.CuspRep.invT 2 _ k, InvT.map_invT _ k⟩`.
+
+Establish `hB' : HasSatGL w ((π.locRep w).comp (GlobalTheory.CuspRep.invT 2 (w.adicCompletion ℚ))) (({α, β} : Multiset ℂˣ).map (·⁻¹))` using `InvT.hasSatGL_invT (ρ := π.locRep w) (LinearEquiv.refl ℂ π.V) (fun _ _ => rfl) hB0`. Take `⟨x, hx'⟩` from `hB0.exists_vec`. Establish `hx` using `hx'.2.1`. Establish `h0` using `hx'.1`. Establish `hfix` using `GlobalTheory.LGrp.mem_fixed.1 hx`.
+
+Establish `h2` using `hB'.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hfix _ (hK k hk)) h0`. Establish `hϖ` using `unif_spec w`. Establish `e` using `heckeAdj ℚ 2 w π.V (π.locRep w) H (fun g => hH.fin (GlobalTheory.CuspRep.locGL ℚ 2 w g)) x hx _ hϖ 1`. Rewrite `e` using `[hx'.2.2.2 _ hϖ 1 (by norm_num), h2.2.2.2 _ hϖ 1 (by norm_num), H.map_smulₛₗ, (H x).map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `e'` using `mul_right_cancel₀ (fun h => h0 (hH.definite x h)) e`.
+
+Establish `hq : 0 < Formalism.UG.qV ℚ w` using `Nat.pos_of_ne_zero (qV_ne_zero w)`. Establish `hc : ∀ B, satEig (Formalism.UG.qV ℚ w) 2 B 1 = ((((Formalism.UG.qV ℚ w : ℝ) ^ (1 / 2 : ℝ) : ℝ)) : ℂ) * (B.map fun b : ℂˣ => (b : ℂ)).esymm 1` using `fun B => by`. Rewrite using `[Complex.ofReal_cpow (by positivity), satEig]`. Evaluate the numerical expressions. Establish `hne : ((((Formalism.UG.qV ℚ w : ℝ) ^ (1 / 2 : ℝ) : ℝ)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (by positivity)`.
+
+Rewrite `e'` using `[hc, hc, map_mul, Complex.conj_ofReal]`. Establish `e''` using `mul_left_cancel₀ hne e'`. Establish `e3 : (starRingEnd ℂ) ((α : ℂ) + β) = (α : ℂ)⁻¹ + (β : ℂ)⁻¹`. Simplify `e''` using `[Multiset.esymm, Multiset.powersetCard_one, add_comm]`. Rewrite using `[e3, Units.val_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Af.Rn.satHerm :
     UpperTheory.V.Af.Rn.SatHerm := by
   intro π H hH w α β hB

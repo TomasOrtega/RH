@@ -14,5 +14,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdemSumChar.char_eq_prod | exact GlobalTheory.IdemSumChar.char_eq_prod | (intros; apply GlobalTheory.IdemSumChar.char_eq_prod <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.heckeCharacter_conjHalfIdele_eq_prod_local : ∀ (D : D7) (Q : Finset (Pl D.host.E)) (eQ : AE D), IsIdemSum eQ Q → ∀ (k : D.host.Eˣ) (y : (AE D)ˣ), (y : AE D) = Formalism.L2.JoinChr.locE D (cA D eQ) (k : D.host.E) → ∀ (c : (AE D)ˣ →* Circle) (ψ : Formalism.L2.Host.HChar D.host.E), ChrEq c ψ → ((c y : Circle) : ℂ) = ∏ P ∈ Q, ((ψ.locK (conjPl P) k : ℂˣ) : ℂ) := by
   first | exact @GlobalTheory.IdemSumChar.char_eq_prod | exact GlobalTheory.IdemSumChar.char_eq_prod | (intros; apply GlobalTheory.IdemSumChar.char_eq_prod <;> assumption)

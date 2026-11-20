@@ -12,18 +12,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeeSaw
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons, mul_pow, ih, h]`.
+-/
 private theorem list_prod_map_pow_eq {α : Type} (l : List α) (f g : α → ℂ) (n : ℕ) (h : ∀ a, f a ^ n = g a ^ n) :
     (l.map f).prod ^ n = (l.map g).prod ^ n := by
   induction l with
   | nil => simp
   | cons a l ih => simp only [List.map_cons, List.prod_cons, mul_pow, ih, h]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp only [List.map_cons, List.prod_cons]`. Conclude with `mul_ne_zero (h a) ih`.
+-/
 private theorem list_prod_map_ne_zero {α : Type} (l : List α) (f : α → ℂ) (h : ∀ a, f a ≠ 0) :
     (l.map f).prod ≠ 0 := by
   induction l with
   | nil => simp
   | cons a l ih => simp only [List.map_cons, List.prod_cons]; exact mul_ne_zero (h a) ih
 
+/- English proof (translation)
+Unfold `TDat.mono`. Apply `list_prod_map_pow_eq` to reduce the goal to its premises. Introduce `i`. Simplify using `only [mul_pow, chrPow]`. Use `congr 1`.
+
+Establish `key : ∀ μ : (AE D)ˣ →* Circle, ((μ ((o.p i).idele o.q.unit) ^ e i : Circle) : ℂ) ^ n = ((((μ ^ n) ((o.p i).idele o.q.unit)) ^ e i : Circle) : ℂ)`. Introduce `μ`. Rewrite using `[MonoidHom.pow_apply, ← Circle.coe_pow, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]`. Rewrite using `[key χ, key χ', hn]`.
+-/
 theorem mono_pow_eq {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : Type} (o : TDat c k ι) (r : ι → ℝ) (e : ι → ℤ)
     (χ χ' : (AE D)ˣ →* Circle) (n : ℕ) (hn : χ ^ n = χ' ^ n) :
@@ -39,6 +50,11 @@ theorem mono_pow_eq {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] 
     rw [MonoidHom.pow_apply, ← Circle.coe_pow, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm]
   rw [key χ, key χ', hn]
 
+/- English proof (translation)
+Unfold `TDat.mono`. Apply `list_prod_map_ne_zero` to reduce the goal to its premises. Introduce `i`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Conclude with `(hr i).ne'` after adjusting the coercions.
+
+Conclude with `Circle.coe_ne_zero _`.
+-/
 theorem mono_ne_zero {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {ι : Type} (o : TDat c k ι) (r : ι → ℝ) (e : ι → ℤ)
     (χ : (AE D)ˣ →* Circle) (hr : ∀ i, 0 < r i) : o.mono r e χ ≠ 0 := by
@@ -49,6 +65,9 @@ theorem mono_ne_zero {D : D7} {c : Comm D} {k : Type} [Field k] [ValuativeRel k]
   · exact_mod_cast (hr i).ne'
   · exact Circle.coe_ne_zero _
 
+/- English proof (translation)
+Introduce `D c k _ _ _ _ ι o r e χ χ' S hr ⟨n, hn, hχ⟩`. Conclude with `(GlobalTheory.T.isRootOfSUnitRatioUpToRootOfUnity_closure_laws S).2.2.1 _ _ n (mono_ne_zero o r e χ' hr) hn (mono_pow_eq o r e χ χ' n hχ)`.
+-/
 theorem mono_unitRatio : ∀ (D : D7) (c : Comm D) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι) (r : ι → ℝ) (e : ι → ℤ) (χ χ' : (AE D)ˣ →* Circle)
     (S : ℕ → Prop), (∀ i, 0 < r i) → (∃ n : ℕ, 0 < n ∧ χ ^ n = χ' ^ n) → UnitRatio S (o.mono r e χ) (o.mono r e χ') := by

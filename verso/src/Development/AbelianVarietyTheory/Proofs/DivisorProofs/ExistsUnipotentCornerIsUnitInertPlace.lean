@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.InertTransv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n r s X hB hX v w hvw g hg`. Take `⟨Z, hZs, hZl, hZn, hdet, hinv⟩` from `GlobalTheory.T.exists_inertPlace_transversal_of_localCore GlobalTheory.T.exists_isotropic_graph_unitary_isUnit_lowerBlock F E σ B n r s X hB hX v w hvw g hg`. Establish `h2 : (2 : 𝓞 F) ∉ v.asIdeal` using `(hB.inert v w hvw).1`. Take `⟨u, huK, huP, hu⟩` from `GlobalTheory.T.halfSkewUnipotent_mem_doubledLatticeStabilizer F E σ n X v h2 Z hZs hZl hZn`. Use `set N : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E) := GlobalTheory.DblVac.antiCols (F := F) (E := E) n with hN`.
+
+Use `set Δ : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E) := diagCols (Fin n) with hΔ`. Establish `hNN : Nᵀ * N = (2 : AF F) • (1 : Matrix (Fin n) (Fin n) (AE F E))`. Rewrite using `[hN, GlobalTheory.DblVac.antiCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.transpose_neg, Matrix.transpose_one, Matrix.fromCols_mul_fromRows]`. Simplify using `[two_smul]`. Establish `hmul : GlobalTheory.DblVac.matD (g * u) = GlobalTheory.DblVac.matD g * GlobalTheory.DblVac.matD u` using `rfl`.
+
+Establish `key : Nᵀ * GlobalTheory.DblVac.matD (g * u) * N = Nᵀ * GlobalTheory.DblVac.matD g * N + Nᵀ * GlobalTheory.DblVac.matD g * Δ * Z`. Rewrite using `[hmul, hu]`. Establish `: Nᵀ * (GlobalTheory.DblVac.matD g * (1 + (⅟(2 : AF F)) • (Δ * Z * Nᵀ))) * N = Nᵀ * GlobalTheory.DblVac.matD g * N + (⅟(2 : AF F)) • (Nᵀ * GlobalTheory.DblVac.matD g * Δ * Z * (Nᵀ * N))`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[this, hNN, Matrix.mul_smul, smul_smul, invOf_mul_self, one_smul, Matrix.mul_one]`.
+
+Use `⟨u, huK, huP, ?_, ?_⟩` and prove the remaining obligations. Use `hdet using 2` and compare the differences between its conclusion and the goal. Conclude with `congrArg Matrix.det key`. Introduce `z hz`. Use `hinv z hz using 3` and compare the differences between its conclusion and the goal.
+
+Conclude with `key`.
+-/
 theorem exists_unip_corner_isUnit : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n r s : ℕ) (X : Spc F E n), B.IsGood σ → X.IsHerm σ B r s →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → ∀ g ∈ GlobalTheory.DblVac.KD σ X v,

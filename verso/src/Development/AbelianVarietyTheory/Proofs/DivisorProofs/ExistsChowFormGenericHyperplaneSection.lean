@@ -24,6 +24,9 @@ set_option autoImplicit false in
 open MvPolynomial Filter in
 open scoped ENNReal in
 attribute [local instance] MvPolynomial.gradedAlgebra MvPolynomial.algebraMvPolynomial in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.ChowSpec.lastSubst]`.
+-/
 @[simp] theorem _root_.GlobalTheory.ChowSpec.lastSubst_last {A : Type} [CommRing A] {N : ℕ} (D : ℕ)
     (t : Fin N → A) (j : Fin N) : _root_.GlobalTheory.ChowSpec.lastSubst D t (Fin.last D, j) = C (t j) := by
   simp [_root_.GlobalTheory.ChowSpec.lastSubst]
@@ -32,6 +35,9 @@ set_option autoImplicit false in
 open MvPolynomial Filter in
 open scoped ENNReal in
 attribute [local instance] MvPolynomial.gradedAlgebra MvPolynomial.algebraMvPolynomial in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.ChowSpec.lastSubst]`.
+-/
 @[simp] theorem _root_.GlobalTheory.ChowSpec.lastSubst_castSucc {A : Type} [CommRing A] {N : ℕ} (D : ℕ)
     (t : Fin N → A) (i : Fin D) (j : Fin N) :
     _root_.GlobalTheory.ChowSpec.lastSubst D t (i.castSucc, j) = X (i, j) := by
@@ -55,6 +61,11 @@ set_option autoImplicit false in
 open MvPolynomial Filter in
 open scoped ENNReal in
 attribute [local instance] MvPolynomial.gradedAlgebra MvPolynomial.algebraMvPolynomial in
+/- English proof (translation)
+Rewrite using `[p.as_sum, map_sum, ← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ fun s hs => ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule, aeval_monomial, Finsupp.prod]`. Establish `hw : Finsupp.weight w s = m` using `hp (mem_support_iff.mp hs)`. Establish `hm : g m = 0 + ∑ v ∈ s.support, s v • g (w v)`.
+
+Rewrite using `[zero_add, ← hw, Finsupp.weight_apply, Finsupp.sum, map_sum]`. Simplify using `[map_nsmul]`. Rewrite using `[hm, MvPolynomial.algebraMap_apply]`. Conclude with `(isWeightedHomogeneous_C w' _).mul (IsWeightedHomogeneous.prod _ _ _ fun v _ => (hφ v).pow _)`.
+-/
 private theorem isWeightedHomogeneous_aeval_of_forall {R S σ τ Γ Δ : Type} [CommSemiring R]
     [CommSemiring S] [Algebra R S] [AddCommMonoid Γ] [AddCommMonoid Δ] {w : σ → Γ}
     {w' : τ → Δ} (g : Γ →+ Δ) {p : MvPolynomial σ R} {m : Γ}
@@ -77,6 +88,55 @@ open MvPolynomial Filter in
 open scoped ENNReal in
 attribute [local instance] MvPolynomial.gradedAlgebra MvPolynomial.algebraMvPolynomial in
 
+/- English proof (translation)
+Introduce `K L _ _ N _ _ _ _ P D δ f hP hf`. Use `set t : Fin N → L := fun j => algebraMap (MvPolynomial (Fin N) K) L (X j) with ht`. Use `set φ := _root_.GlobalTheory.ChowSpec.lastSubst (D + 1) t with hφ`. Use `set f' : MvPolynomial (Fin (D + 1) × Fin N) L := aeval (R := K) φ f with hf'`. Establish `hfhom : _root_.GlobalTheory.Chow.IsBlockHomogeneous f (fun _ => δ)` using `_root_.GlobalTheory.ChowHt.isMultiHomogeneous_iff_block.1 hf.homog`.
+
+Establish `hf'hom : _root_.GlobalTheory.Chow.IsBlockHomogeneous f' (fun _ => δ)`. Unfold `_root_.GlobalTheory.Chow.IsBlockHomogeneous at hfhom ⊢`. Set `g : (Fin (D + 1 + 1) → ℕ) →+ (Fin (D + 1) → ℕ)` to `{ toFun := fun a i => a i.castSucc, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Use `isWeightedHomogeneous_aeval_of_forall (S := L) g hfhom φ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `hg : g (_root_.GlobalTheory.Chow.blockWeight (Fin.last (D + 1), j)) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[g, _root_.GlobalTheory.Chow.blockWeight, Pi.single_apply, Fin.castSucc_ne_last]`.
+
+Rewrite using `[hφ, _root_.GlobalTheory.ChowSpec.lastSubst_last, hg]`. Conclude with `isWeightedHomogeneous_C _ _`. Consider the case `cast i`. Establish `hg : g (_root_.GlobalTheory.Chow.blockWeight (i.castSucc, j)) = _root_.GlobalTheory.Chow.blockWeight (i, j)`. Use function extensionality and compare the values at `i'`.
+
+Simplify using `[g, _root_.GlobalTheory.Chow.blockWeight, Pi.single_apply]`. Rewrite using `[hφ, _root_.GlobalTheory.ChowSpec.lastSubst_castSucc, hg]`. Conclude with `isWeightedHomogeneous_X _ _ _`. Use `⟨f', _root_.GlobalTheory.ChowHt.isMultiHomogeneous_iff_block.2 hf'hom, ?_, ?_⟩` and prove the remaining obligations. Establish `hkey : MvPolynomial.map (algebraMap (MvPolynomial (Fin N) K) L) (_root_.GlobalTheory.ChowSpec.lastEquiv K N (D + 1) f) = f'`.
+
+Rewrite using `[hf']`. Express the relevant statement in the definitionally equal form `((MvPolynomial.map (algebraMap (MvPolynomial (Fin N) K) L)).comp (_root_.GlobalTheory.ChowSpec.lastEquiv K N (D + 1)).toRingHom) f = (aeval φ).toRingHom f`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.ChowSpec.lastEquiv, MvPolynomial.algebraMap_apply, IsScalarTower.algebraMap_apply K (MvPolynomial (Fin N) K) L]`.
+
+Break down `v with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [_root_.GlobalTheory.ChowSpec.lastEquiv, hφ, ht]`. Use `set F := _root_.GlobalTheory.ChowSpec.lastEquiv K N (D + 1) f with hF`. Establish `hFirr : Irreducible F` using `(MulEquiv.irreducible_iff (_root_.GlobalTheory.ChowSpec.lastEquiv K N (D + 1))).2 hf.irred`. Establish `hF0 : F ≠ 0` using `hFirr.ne_zero`.
+
+Establish `hFprime : Prime F` using `UniqueFactorizationMonoid.irreducible_iff_prime.1 hFirr`. Establish `hδ : 0 < δ`. Break down `Nat.eq_zero_or_pos δ with h | h` into its components or cases. It suffices to derive a contradiction. Substitute `h` using the available equality.
+
+Establish `hh` using `hfhom.isHomogeneous`. Simplify using `only [Finset.sum_const_zero] at hh`. Establish `hf0` using `hf.ne_zero`. Establish `hC : f = C (coeff 0 f)` using `(totalDegree_eq_zero_iff_eq_C).1 (by simpa using hh.totalDegree hf0)`. Establish `hc : coeff 0 f ≠ 0` using `fun h0 => hf0 (by rw [hC, h0, C_0])`.
+
+Apply `hf.irred.not_isUnit` to reduce the goal to its premises. Rewrite using `[hC]`. Conclude with `hc.isUnit.map C`. Conclude with `h`. Establish `hf'0 : f' ≠ 0`.
+
+Rewrite using `[← hkey]`. Conclude with `fun h => hF0 ((map_eq_zero_iff _ (MvPolynomial.map_injective _ (IsFractionRing.injective (MvPolynomial (Fin N) K) L))).1 h)`. Establish `hnotunit : ¬ IsUnit f'`. Introduce `hu`. Take `⟨r, hr, hfr⟩` from `(MvPolynomial.isUnit_iff_eq_C_of_isReduced).1 hu`.
+
+Establish `hh` using `hf'hom.isHomogeneous`. Rewrite `hh` using `[hfr]`. Establish `h0` using `hh (show coeff 0 (C r) ≠ 0 by simpa using hr.ne_zero)`. Simplify using `at h0`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hdisj : Disjoint ((Submonoid.map (C : MvPolynomial (Fin N) K →+* MvPolynomial (Fin (D + 1) × Fin N) (MvPolynomial (Fin N) K)) (nonZeroDivisors (MvPolynomial (Fin N) K))) : Set (MvPolynomial (Fin (D + 1) × Fin N) (MvPolynomial (Fin N) K))) (↑(Ideal.span {F}) : Set (MvPolynomial (F …`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hmem`. Take `⟨g, hg⟩` from `Ideal.mem_span_singleton'.1 hmem`. Apply `hnotunit` to reduce the goal to its premises.
+
+Establish `hs0 : algebraMap (MvPolynomial (Fin N) K) L s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`. Establish `hmapped` using `congrArg (MvPolynomial.map (algebraMap (MvPolynomial (Fin N) K) L)) hg`. Rewrite `hmapped` using `[map_mul, hkey, map_C]`. Conclude with `isUnit_of_mul_isUnit_right (hmapped ▸ hs0.isUnit.map C)`. Establish `hprime` using `IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.map (C : MvPolynomial (Fin N) K →+* MvPolynomial (Fin (D + 1) × Fin N) (MvPolynomial (Fin N) K)) (nonZeroDivisors (MvPolynomial (Fin N) K))) (MvPolynomial (Fin (D + 1) × Fin N) L) (Ideal.span {F}) ((Ideal.span_singleton_prime …`.
+
+Rewrite `hprime` using `[Ideal.map_span, Set.image_singleton]`. Establish `hF' : algebraMap (MvPolynomial (Fin (D + 1) × Fin N) (MvPolynomial (Fin N) K)) (MvPolynomial (Fin (D + 1) × Fin N) L) F = f'` using `hkey`. Rewrite `hprime` using `[hF']`. Conclude with `((Ideal.span_singleton_prime hf'0).1 hprime).irreducible`. Introduce `u set ũ : Fin (D + 1 + 1) × Fin N → AlgebraicClosure L := fun v => Fin.lastCases (motive := fun _ => AlgebraicClosure L) (algebraMap L (AlgebraicClosure L) (t v.2)) (fun i => u (i, v.2)) v.1 with hũ`.
+
+Establish `hev : aeval u f' = aeval ũ f`. Rewrite using `[hf']`. Express the relevant statement in the definitionally equal form `((aeval u).restrictScalars K) (aeval φ f) = aeval ũ f`. Rewrite using `[← AlgHom.comp_apply, comp_aeval]`. Use `congrArg (fun x => (aeval x) f) (funext fun v => ?_)` and prove the remaining obligations.
+
+Break down `v with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `induction i using Fin.lastCases <;> simp [hφ, hũ]`. Establish `hPhom : Ideal.IsHomogeneous (homogeneousSubmodule (Fin N) K) P`. Introduce `i r hr`. Use `hP r hr i using 1` and compare the differences between its conclusion and the goal.
+
+Use `conv_lhs => rw [← sum_homogeneousComponent r]`. Rewrite using `[DirectSum.decompose_sum, DFinsupp.finset_sum_apply, AddSubmonoidClass.coe_finset_sum, Finset.sum_eq_single i]`. Conclude with `DirectSum.decompose_of_mem_same _ (homogeneousComponent_mem i r)`. Introduce `b _ hb`. Conclude with `DirectSum.decompose_of_mem_ne _ (homogeneousComponent_mem b r) hb`.
+
+Introduce `hi`. Establish `h0 : homogeneousComponent i r = 0` using `homogeneousComponent_eq_zero i r (by simp at hi; omega)`. Rewrite using `[h0, DirectSum.decompose_zero]`. Both sides reduce to the same expression. Establish `hideal : ∀ y : Fin N → AlgebraicClosure L, (∀ g ∈ P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L) ⊔ Ideal.span {(∑ j : Fin N, C (t j) * X j : MvPolynomial (Fin N) L)}, aeval y g = 0) ↔ (∀ g ∈ P, aeval y g = 0) ∧ ∑ j, ũ (Fin.last (D + …`.
+
+Introduce `y`. Establish `hmap : ∀ g : MvPolynomial (Fin N) K, aeval y (MvPolynomial.map (algebraMap K L) g) = aeval y g` using `fun g => aeval_map_algebraMap L y g`. Establish `hlin : aeval y (∑ j : Fin N, C (t j) * X j : MvPolynomial (Fin N) L) = ∑ j, ũ (Fin.last (D + 1), j) * y j`. Simplify using `[hũ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H`. Use `⟨fun g hg => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap]`. Conclude with `H _ (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg))`. Rewrite using `[← hlin]`.
+
+Conclude with `H _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Introduce and unpack `⟨H1, H2⟩ g hg`. Establish `hle : P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L) ⊔ Ideal.span {(∑ j : Fin N, C (t j) * X j : MvPolynomial (Fin N) L)} ≤ RingHom.ker (aeval y : MvPolynomial (Fin N) L →ₐ[L] AlgebraicClosure L)`. Use `sup_le (Ideal.map_le_iff_le_comap.2 fun g hg => ?_) ((Ideal.span_singleton_le_iff_mem _).2 ?_)` and prove the remaining obligations. Simplify `H1 g hg` using `[RingHom.mem_ker, hmap]`.
+
+Simplify `H2` using `[RingHom.mem_ker, hlin]`. Conclude with `RingHom.mem_ker.1 (hle hg)`. Rewrite using `[hev, hf.zero_iff_of_isAlgClosed hPhom ũ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy0, hyP, hyu⟩`.
+
+Rewrite `hyu` using `[Fin.forall_fin_succ']`. Conclude with `⟨y, hy0, (hideal y).2 ⟨hyP, hyu.2⟩, fun i => by simpa [hũ] using hyu.1 i⟩`. Introduce and unpack `⟨y, hy0, hyI, hyu⟩`. Take `⟨hyP, hyh⟩` from `(hideal y).1 hyI`. Conclude with `⟨y, hy0, hyP, Fin.forall_fin_succ'.2 ⟨fun i => by simpa [hũ] using hyu i, hyh⟩⟩`.
+-/
 theorem _root_.GlobalTheory.ChowSpec.exists_isChowFormInt_generic_section : ∀ (K L : Type) [Field K] [Field L] (N : ℕ) [Algebra K L] [Algebra (MvPolynomial (Fin N) K) L] [IsScalarTower K (MvPolynomial (Fin N) K) L] [IsFractionRing (MvPolynomial (Fin N) K) L] (P : Ideal (MvPolynomial (Fin N) K)) (D δ : ℕ) (f : MvPolynomial (Fin (D + 1 + 1) × Fin N) K), (∀ g ∈ P, ∀ n : ℕ, homogeneousComponent n g ∈ P) → _root_.GlobalTheory.ChowHt.IsChowFormInt P (D + 1) δ f → ∃ f' : MvPolynomial (Fin (D + 1) × Fin N) L, _root_.GlobalTheory.ChowHt.IsChowFormInt (P.map (MvPolynomial.map (algebraMap K L) : MvPolynomial (Fin N) K →+* MvPolynomial (Fin N) L) ⊔ Ideal.span {(∑ j : Fin N, C (algebraMap (MvPolynomial (Fin N) K) L (X j)) * X j : MvPolynomial (Fin N) L)}) D δ f' := by
   intro K L _ _ N _ _ _ _ P D δ f hP hf
   set t : Fin N → L := fun j => algebraMap (MvPolynomial (Fin N) K) L (X j) with ht

@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM l b hb h hh`. Take `⟨hmem, hgood, hnorm, -⟩` from `FC.bvec_good K ι Φ y Ψ N j M n BM l b hb`. Establish `e` using `basePart_flagPt M (BM.F l) (FC.bvec BM l b) h`. Use `CPts.flag_back M (BM.isFrame l) (by rw [e]; exact hmem) (by rw [e]; exact hgood) (h := h) ⟨fun k => by rw [e]; exact hnorm k, hh, fun p k hp => ⟨1, one_ne_zero, fun m => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e, one_mul]`.
+
+Conclude with `flagPt_step M (BM.F l) (FC.bvec BM l b) h hp m`.
+-/
 theorem flagPt_mem_mcPts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ) (BM : BaseMetric M n) (l : Fin BM.q), ∀ b ∈ BM.O l, ∀ h : Ψ → Matrix (Fin N) (Fin N) ℂ, (∀ τ', IsBlockDiag j (h τ') ∧ (h τ').det ≠ 0) → FC.flagPt M (BM.F l) (FC.bvec BM l b) h ∈ mcPts (mCoordIdeal y) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n BM l b hb h hh
   obtain ⟨hmem, hgood, hnorm, -⟩ := FC.bvec_good K ι Φ y Ψ N j M n BM l b hb

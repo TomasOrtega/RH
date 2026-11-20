@@ -17,6 +17,9 @@ def SmModUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (f : U
     (∀ (g : UA σ J) (g' : GAd σ (c₀ • J.map σ)), g.1 = g'.1 → φ' g' = f g) →
     GlobalTheory.SiegelSet.IsSmoothModerate σ (c₀ • J.map σ) φ'
 
+/- English proof (translation)
+Use `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) (GlobalTheory.SiegelSet.sigma_sigma hσ) hc₀` as an intermediate fact. Take `⟨x, hx⟩` from `g'`. Conclude with `⟨⟨x, (SetLike.ext_iff.1 this x).2 hx⟩, rfl⟩`.
+-/
 theorem exists_val_eq (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hσ : IsCMExt F E σ) {c₀ : E}
     (hc₀ : c₀ ≠ 0) (g' : GAd σ (c₀ • J.map σ)) : ∃ g : UA σ J, g.1 = g'.1 := by
   have := GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) (GlobalTheory.SiegelSet.sigma_sigma hσ) hc₀

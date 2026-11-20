@@ -25,14 +25,31 @@ open GlobalTheory.WeilParts
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `x h1 h2 h3`. Rewrite using `[MonoidHom.mul_apply, ha x h1 h2 h3, hb x h1 h2 h3, one_mul]`.
+-/
 theorem unramAt_mul {e : AF D.host.F} {a b : (AE D)ˣ →* Circle} (ha : UnramAt e a) (hb : UnramAt e b) : UnramAt e (a * b) := by
   intro x h1 h2 h3
   rw [MonoidHom.mul_apply, ha x h1 h2 h3, hb x h1 h2 h3, one_mul]
 
+/- English proof (translation)
+Introduce `x h1 h2 h3`. Rewrite using `[MonoidHom.pow_apply, ha x h1 h2 h3, one_pow]`.
+-/
 theorem unramAt_pow {e : AF D.host.F} {a : (AE D)ˣ →* Circle} (ha : UnramAt e a) (n : ℕ) : UnramAt e (a ^ n) := by
   intro x h1 h2 h3
   rw [MonoidHom.pow_apply, ha x h1 h2 h3, one_pow]
 
+/- English proof (translation)
+Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hr T Lc μ₀ hμ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X _ t v e he`. Distinguish the cases in `hS : v ∈ G.pl.S0 ∨ ∃ PP ∈ Lc.Q t, PP.under (𝓞 D.host.F) = v`. Use `right`. Rewrite using `[mul_div_mul_right_eq_div]`.
+
+Break down `hS with hS | ⟨PP, hPP, hPv⟩` into its components or cases. Use `⟨GlobalTheory.T.small_place_not_nonsplit G μ₀ hμ t v e he hS, ?_, ?_⟩` and prove the remaining obligations. Break down `G.pl.mem_S0_of_sum_eq.1 hS with h0 | h1` into its components or cases. Conclude with `GlobalTheory.T.not_unramAt_mu_div_chi_at_base_place G μ₀ hμ t v e he h0 i j`. Conclude with `GlobalTheory.T.large_place_ratio_ramified G μ₀ hμ t v e he h1 i j`.
+
+Break down `G.pl.mem_S0_of_sum_eq.1 hS with h0 | h1` into its components or cases. Substitute `h0` using the available equality. Conclude with `GlobalTheory.T.auxiliary_place_not_dvd_different_base_field G`. Conclude with `GlobalTheory.T.large_place_not_dvd_different large₂ hr v h1`. Use `⟨GlobalTheory.T.twist_place_under_not_nonSplit G μ₀ hμ t v e he PP hPP hPv, ?_, hPv ▸ GlobalTheory.T.twist_place_under_not_dvd_differentIdeal Lc μ₀ hμ t PP hPP⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h0 : v ∈ G.pl.S0`. Break down `G.pl.mem_S0_of_sum_eq.1 h0 with h0 | h1` into its components or cases. Conclude with `GlobalTheory.T.not_unramAt_mu_div_chi_at_base_place G μ₀ hμ t v e he h0 i j`. Conclude with `GlobalTheory.T.large_place_ratio_ramified G μ₀ hμ t v e he h1 i j`. Conclude with `GlobalTheory.T.square_mu_div_chi_ramified_at_twist_place G μ₀ hμ t v e he h0 PP hPP hPv i j`.
+
+Use `left push_neg at hS`. Take `⟨h1, h2⟩` from `GlobalTheory.T.grid_characters_unramified G μ₀ hμ t v e he hS.1 i`. Conclude with `⟨unramAt_mul (GlobalTheory.T.level_character_unramified_mu G μ₀ hμ t v e he hS.1 hS.2 j) (unramAt_pow h2 _), unramAt_mul h1 (unramAt_pow h2 _)⟩`.
+-/
 theorem bottom_ram : GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (e : AF D.host.F), IsPlaceIdem D v e → (GlobalTheory.WeilParts.UnramAt e (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2)) ∧ GlobalTheory.WeilParts.UnramAt e (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2))) ∨ (¬ GlobalTheory.WeilParts.NonSplitAt D v e ∧ ¬ GlobalTheory.WeilParts.UnramAt e (Lc.mu t (j + 1) * Lc.eta ^ (rankV D i j % 2) / (G.ch.chi (D.R.m - i) * Lc.eta ^ (rankV D i j % 2))) ∧ ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 D.host.F)) := by
   refine ⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ hr T Lc μ₀ hμ G => ?_⟩⟩
   intro W i j A A' WW X _ t v e he

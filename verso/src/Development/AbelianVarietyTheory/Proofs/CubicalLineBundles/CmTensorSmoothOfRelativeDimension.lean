@@ -14,6 +14,11 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.CM.TenDim
 
+/- English proof (translation)
+Establish `: Module.FinitePresentation O M` using `Module.finitePresentation_of_projective O M`. Establish `key : ∀ (K : Type) [Field K] [Algebra O K], Module.finrank K (K ⊗[O] M) = Module.rankAtStalk M (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O)` using `fun K _ _ => by`. Establish `h` using `Module.rankAtStalk_baseChange (R := O) (M := M) (S := K) ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `h.trans ((Module.isLocallyConstant_rankAtStalk (R := O) (M := M)).apply_eq_of_preconnectedSpace _ _)`.
+
+Rewrite using `[key k, ← key (FractionRing O), (TensorProduct.isBaseChange O M (FractionRing O)).finrank_eq]`.
+-/
 theorem finrank_fibre (O M k : Type) [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     [Module.Finite O M] [Module.Projective O M] [Field k] [Algebra O k] :
     Module.finrank k (k ⊗[O] M) = Module.finrank O M := by
@@ -25,11 +30,21 @@ theorem finrank_fibre (O M k : Type) [CommRing O] [IsDomain O] [AddCommGroup M] 
     exact h.trans ((Module.isLocallyConstant_rankAtStalk (R := O) (M := M)).apply_eq_of_preconnectedSpace _ _)
   rw [key k, ← key (FractionRing O), (TensorProduct.isBaseChange O M (FractionRing O)).finrank_eq]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `ObjDim.univChart_of_relativeDimension G h`. Conclude with `⟨_, Chart.basis_of_chart hx⟩`.
+-/
 theorem exists_isLieBasis {k : Type} [Field k] (G : Over (Sp k)) [GrpObj G] [IsCommMonObj G] {n : ℕ}
     (h : SmoothOfRelativeDimension n G.hom) : ∃ v : Fin n → (epsR k ⟶ G), IsLieBasis v := by
   obtain ⟨x, hx⟩ := ObjDim.univChart_of_relativeDimension G h
   exact ⟨_, Chart.basis_of_chart hx⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_isLieBasis G hG`. Take `⟨w, hw⟩` from `exists_isLieBasis A hA`. Establish `h1 : Module.finrank k (Serre.Lie a) = 1` using `(Module.finrank_eq_card_basis (Serre.Lie.basis a hv)).trans (Fintype.card_fin 1)`. Establish `hb : Function.Bijective (algebraMap k (Module.End k (Serre.Lie a)))`. Use `Module.Finite.of_basis (Serre.Lie.basis a hv)` as an intermediate fact.
+
+Rewrite using `[← Algebra.finrank_eq_one_iff_bijective_algebraMap, Module.finrank_linearMap, h1]`. Set `e` to `RingEquiv.ofBijective _ hb`. Set `τ : O →+* k` to `e.symm.toRingHom.comp (Module.toModuleEnd k (Serre.Lie a))`. Establish `hτ : Serre.Lie.eig a τ = ⊤` using `eq_top_iff.2 fun u _ => Serre.Lie.mem_eig_iff.2 fun x => (LinearMap.congr_fun (e.apply_symm_apply (Module.toModuleEnd k (Serre.Lie a) x)) u).symm`. Use `letI : Algebra O k := τ.toAlgebra`.
+
+Establish `e'` using `t.lieEquivScalar b (N := k) ((Serre.Lie.basis a hv).equivFun ≪≫ₗ LinearEquiv.funUnique (Fin 1) k k).symm hτ`. Rewrite using `[← finrank_fibre O M k, e'.finrank_eq, Module.finrank_eq_card_basis (Serre.Lie.basis b hw), Fintype.card_fin]`.
+-/
 theorem dim_eq_field {k O M : Type} [Field k] [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     [Module.Finite O M] [Module.Projective O M] {G A : Over (Sp k)} [GrpObj G] [IsCommMonObj G]
     [GrpObj A] [IsCommMonObj A] {a : OAct O G} {b : OAct O A} (t : Serre.IsTensor A b G a M)
@@ -52,6 +67,15 @@ theorem dim_eq_field {k O M : Type} [Field k] [CommRing O] [IsDomain O] [AddComm
   rw [← finrank_fibre O M k, e'.finrank_eq, Module.finrank_eq_card_basis (Serre.Lie.basis b hw),
     Fintype.card_fin]
 
+/- English proof (translation)
+Establish `hA : IsAbelianScheme A` using `t.isAbelianScheme hab`. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Use `choose n W hW hd using H1.exists_dim A.hom`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension (Module.finrank O M))` using `HasRingHomProperty.instIsZariskiLocalAtSource`.
+
+Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension (Module.finrank O M)) W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hW y⟩) fun y => ?_` and prove the remaining obligations. Set `k` to `A.left.residueField y`. Set `z : Sp k ⟶ A.left` to `A.left.fromSpecResidueField y`. Establish `hz : ∀ u, z u = y` using `fun u => Scheme.fromSpecResidueField_apply y _`. Set `x : Sp k ⟶ S` to `z ≫ A.hom`.
+
+Establish `: ConnectedSpace ↥(pullback A.hom x)` using `GeometricallyConnected.geometrically_connectedSpace (f := A.hom) x _ _ (IsPullback.of_hasPullback _ _)`. Set `z' : Sp k ⟶ pullback A.hom x` to `pullback.lift z (𝟙 _) (Category.id_comp _).symm`. Take `⟨m, hm⟩` from `exists_dim_of_preconnected (pullback.snd A.hom x) (z' (default : PrimeSpectrum k))`. Establish `e₁ : n y = m` using `H1.dim_base (IsPullback.of_hasPullback _ _) (hd y) hm (z' (default : PrimeSpectrum k)) (by`. Establish `e : z' ≫ pullback.fst A.hom x = z` using `pullback.lift_fst _ _ _`.
+
+Establish `e'` using `(congrArg (fun q : Sp k ⟶ A.left => q (default : PrimeSpectrum k)) e).trans (hz _)`. Conclude with `(congrArg (fun u => u ∈ W y) e').mpr (hW y))`. Establish `hG' : SmoothOfRelativeDimension 1 (pullback.snd G.hom x)` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hG`. Rewrite using `[← dim_eq_field (t.pullback x) hG' hm, ← e₁]`. Conclude with `hd y`.
+-/
 theorem smoothOfRelativeDimension {S : Scheme.{0}} {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M]
     [Module O M] [Module.Finite O M] [Module.Projective O M] {G A : Over S} [GrpObj G] [IsCommMonObj G]
     [GrpObj A] [IsCommMonObj A] {a : OAct O G} {b : OAct O A} (t : Serre.IsTensor A b G a M)
@@ -86,6 +110,9 @@ end GlobalTheory.CM.TenDim
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ H R _ ω C D A _ _ b ⟨t⟩`. Take `⟨h1, h2, h3⟩` from `(OK_isDedekindDomain_and_projective E H).2.2.2.2.2 D.La D.fin D.proj`. Rewrite using `[← D.rank, ← h3]`. Conclude with `TenDim.smoothOfRelativeDimension t C.P.isAb (C.dim ▸ C.P.smoothDim)`.
+-/
 theorem tensor_smoothOfRelativeDimension :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (ω : R) (C : Ell H R ω) (D : Datum H) (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (b : OAct (OK H) A), Nonempty (Serre.IsTensor A b C.P.A C.act D.La) → SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) A.hom := by
   rintro E _ _ _ H R _ ω C D A _ _ b ⟨t⟩

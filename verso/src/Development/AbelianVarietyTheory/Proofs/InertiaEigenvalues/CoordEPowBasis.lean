@@ -19,6 +19,9 @@ variable {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O]
   [NormedField K] [NormedAlgebra ℚ_[l] K] [Algebra O K]
   {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul s x`. Simplify using `only [TWincl, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem tWincl_smul' {R R' : Type} [CommRing R] [CommRing R'] [Algebra O R] [Algebra O R'] (f : R →ₐ[O] R')
     (T : LocLat G ℚ_[l] K O) (r : R) (z : TW R T) : TWincl f T (r • z) = f r • TWincl f T z := by
   induction z using TensorProduct.induction_on with
@@ -32,6 +35,27 @@ end GlobalTheory.BKGal.HatVal.BasisCoord
 
 open GlobalTheory.BKGal.HatVal.BasisCoord in
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R ε δ hε hδ j`. Set `ej : Vec K a ι` to `fun _ => Pi.single j 1`. Establish `hej : ej ∈ D.toPhiMod.M` using `mem_tot.2 fun τ i => by`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `only [ej, Pi.single_eq_same]`. Conclude with `one_mem _`. Simplify using `only [ej, Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Establish `hL : E K l e ^ H • ej ∈ D.toPhiMod.L` using `D.lower _ hej`.
+
+Take `⟨c, hc⟩` from `toW_mem_LA t ϖ D.toPhiMod hL`. Establish `hw : toW t ϖ D.toPhiMod ⟨ej, mem_ME_of_mem_M hej⟩ = (Pi.single j 1 : ι → OW l O)` using `by ext1 i`. Rewrite using `[toW_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.single_eq_same]`. Use `map_one (ϖ.iW t K) using 1` and compare the differences between its conclusion and the goal. Conclude with `congrArg _ (funext fun τ => Subtype.ext (by simp [ej]))`. Rewrite using `[Pi.single_eq_of_ne h]`. Use `map_zero (ϖ.iW t K) using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `congrArg _ (funext fun τ => Subtype.ext (by simp [ej, Pi.single_eq_of_ne h]))`. Establish `hE : ϖ.iW t K (fun _ => ⟨E K l e ^ H, le_away _ _ (pow_mem (E_mem l e _) H)⟩) = inclO l O (((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H)`. Establish `h1` using `ϖ.iW_of_mem t K (fun _ => EIn l e (A O K) ^ H)`. Establish `h2 : ϖ.iTot t K (fun _ => EIn l e (A O K) ^ H) = ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H`. Rewrite using `[show (fun _ : ZMod a => EIn l e (A O K) ^ H) = (fun _ => EIn l e (A O K)) ^ H from rfl, map_pow, PiSys.iTot_E t K ϖ]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[← h1]`. Conclude with `congrArg _ (funext fun τ => Subtype.ext (by simp [EIn]))`. Establish `hwE : toW t ϖ D.toPhiMod ⟨E K l e ^ H • ej, mem_ME_of_mem_L hL⟩ = inclO l O (((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H) • (Pi.single j 1 : ι → OW l O)`. Rewrite using `[toW_smul t ϖ D.toPhiMod (fun _ => ⟨E K l e ^ H, le_away _ _ (pow_mem (E_mem l e _) H)⟩) ⟨ej, mem_ME_of_mem_M hej⟩ _ (fun τ => rfl), hE, hw]`.
+
+Establish `h1 : inclL t ϖ D.toPhiMod c = inclO l O (((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H) • (Pi.single j 1 : ι → OW l O)` using `hc.trans hwE`. Use `⟨c, h1, ?_⟩` and prove the remaining obligations. Take `⟨-, hK2, -, -⟩` from `GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι D.toPhiMod T R.I η H D.upper D.lower ε δ hε hδ`. Establish `hv : (Pi.single j 1 : ι → OW l O) ∈ MA D.toPhiMod` using `⟨Pi.single j 1, funext fun i => by`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `[inclV]`. Simplify using `[inclV, Pi.single_eq_of_ne h]⟩`. Take `⟨z, hz⟩` from `hK2 _ hv`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Use `set m : OA l O := (1 : O) ⊗ₜ[ℤ_[l]] (muOf δ ^ η) with hm`. Use `set Eh : OA l O := ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H with hEh`. Establish `hB` using `R.cmp (fun i => m * c i) (Eh • z) (by`. Rewrite using `[inclL_smul_coord, h1, smul_comm, map_smul, hz, tWincl_smul'])`. Establish `e1 : (fun i => toB l O (m * c i)) = toB l O m • fun i => toB l O (c i)`.
+
+Use function extensionality and compare the values at `fun i => by simp only [map_mul, Pi.smul_apply, smul_eq_mul]`. Rewrite `hB` using `[e1, map_smul]`. Conclude with `hB`.
+-/
 theorem GlobalTheory.BKGal.HatVal.coord_E_pow_basis : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T) (ε δ : OCb l), IsEps ε → δ ^ l = ε → ∀ j : ι, ∃ c : ι → OA l O, inclL t ϖ D.toPhiMod c = inclO l O (((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H) • (Pi.single j 1 : ι → OW l O) ∧ ∃ z : TW (OA l O) T, toB l O ((1 : O) ⊗ₜ[ℤ_[l]] (muOf δ ^ η)) • R.jB (fun i => toB l O (c i)) = TWincl (toB l O) T (((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H • z) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R ε δ hε hδ j
 

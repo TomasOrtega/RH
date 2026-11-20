@@ -22,6 +22,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PrincipalPolPairing
 
+/- English proof (translation)
+Introduce `hDu hC hP2 _ T A _ g hA hg ⟨c, hc⟩ H e he`. Establish `hD : AbelianDeRham` using `hP2.p5`. Establish `hπ (V : T.Opens) (hV : IsAffineOpen V) : IsGrpPullback (onAff A hV) A hV.fromSpec (pullback.fst A.hom hV.fromSpec)` using `isGrpPullback_pullback A _`. Use `choose P hP eP dP using fun (V : T.Opens) (hV : IsAffineOpen V) ↦ principalPol_selfDual hDu hC _ (onAff A hV) (DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV) _ (PPAS.isPrincipalPol_pull (hπ V hV) hc)`. Use `choose φ b hφ pφ pb k iso using fun (V : T.Opens) (hV : IsAffineOpen V) ↦ exists_pairing hD (DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV) (DeRhamSheaf.VB.smooth_onAff A hg hV) (hP V hV) (eP V hV ▸ PPAS.isPrincipalPol_pull (hπ V hV) hc)`.
+
+Use `⟨fun V hV ↦ (b V hV).flip.compl₁₂ (e V hV).toLinearMap (e V hV).toLinearMap, fun V V' hV hV' h s t ↦ ?_, fun V hV ↦ ?_, fun V hV ↦ ⟨P V hV, dP V hV, φ V hV, hφ V hV, ?_⟩⟩` and prove the remaining obligations. Use `letI := resAlg h`. Take `⟨π, hπ', eπ⟩` from `DeRhamSheaf.VB.exists_transition A hV hV' h`. Establish `hAV` using `DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV`. Establish `hgV` using `DeRhamSheaf.VB.smooth_onAff A hg hV`.
+
+Take `⟨_, _, -⟩` from `Free.prim hD.1 hAV hgV`. Simplify using `only [LinearMap.compl₁₂_apply, LinearEquiv.coe_coe, LinearMap.flip_apply]`. Rewrite using `[he V V' hV hV' h π hπ' eπ, he V V' hV hV' h π hπ' eπ]`. Use `inverse_bc (hD.2.2.1 _ _ g hAV hgV _ _ π hπ').1 (pφ V' hV') (corr_bc hD.1 (DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV') (DeRhamSheaf.VB.smooth_onAff A hg hV') hπ' (hP V hV) (hP V' hV') ?_ (hφ V hV) (hφ V' hV')) (k V hV) (k V' hV') _ _` and prove the remaining obligations. Rewrite using `[eP, eP, ← CechPic.pull_comp]`.
+
+Use `congr 2`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [sqMap, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, eπ]`. Simplify using `only [sqMap, pullback.map, Category.assoc, pullback.lift_snd, pullback.lift_snd_assoc, eπ]`. Use `pb V hV` as an intermediate fact.
+
+Establish `: (b V hV).flip.IsPerfPair` using `inferInstance`. Conclude with `LinearMap.IsPerfPair.congr (b V hV).flip (e V hV) (e V hV) _ (by ext; simp)`. Introduce `x y u v hx hy`. Establish `ex : x = b V hV (e V hV u)` using `LinearMap.ext fun w ↦ by`. Take `⟨w, rfl⟩` from `(e V hV).surjective w`.
+
+Conclude with `hx w`. Rewrite using `[ex, k, hy]`.
+-/
 theorem exists_affine_pairings : GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → GlobalTheory.CovTop.Hypotheses2 →
     GlobalTheory.Published.PoincareDeRhamDuality → ∀ {T : Scheme.{0}} (A : Over T) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → (∃ c, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.IsPrincipalPol A c) → ∀ (H : T.Modules)

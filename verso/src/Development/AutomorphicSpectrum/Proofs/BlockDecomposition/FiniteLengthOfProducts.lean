@@ -11,6 +11,9 @@ open MeasureTheory GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.SplitWeil Po
 
 namespace GlobalTheory.CompanionTheory.ProdLen
 
+/- English proof (translation)
+Introduce `F _ _ _ _ ι _ _ α _ _ m _ _ e X _ _ σ hs hi`. Establish `hirr : (piTensor σ).IsIrreducible` using `GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur σ hi fun a φ hφ => GlobalTheory.SchurAdm.schur_admissible (GL (m a) F) (KO F (m a)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO (X a) (σ a) (hi a) (GlobalTheory.CompanionTheory.SmGLBridge.irred …`. Conclude with `GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength F α ι m e _ (piTensor σ) (isSmooth_piTensor hs) (hasFiniteLength_of_isIrreducible hirr)`.
+-/
 theorem prodFinLen : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (ι : Type) [Fintype ι] [DecidableEq ι], ProdFinLen F ι := by
   intro F _ _ _ _ ι _ _ α _ _ m _ _ e X _ _ σ hs hi

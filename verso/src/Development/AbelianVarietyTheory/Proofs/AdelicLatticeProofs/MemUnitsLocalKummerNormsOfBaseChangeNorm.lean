@@ -6,6 +6,9 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Establish `h1 : IsUnit (Algebra.lmul L A y)`. Rewrite using `[LinearMap.isUnit_iff_isUnit_det]`. Conclude with `isUnit_iff_ne_zero.mpr (by rwa [Algebra.norm_apply] at h)`. Take `⟨z, hz⟩` from `((Module.End.isUnit_iff _).mp h1).surjective 1`. Conclude with `IsUnit.of_mul_eq_one z (by simpa using hz)`.
+-/
 theorem isUnit_of_norm_ne_zero {L A : Type} [Field L] [CommRing A] [Algebra L A]
     [Module.Finite L A] (y : A) (h : Algebra.norm L y ≠ 0) : IsUnit y := by
   have h1 : IsUnit (Algebra.lmul L A y) := by
@@ -14,6 +17,21 @@ theorem isUnit_of_norm_ne_zero {L A : Type} [Field L] [CommRing A] [Algebra L A]
   obtain ⟨z, hz⟩ := ((Module.End.isUnit_iff _).mp h1).surjective 1
   exact IsUnit.of_mul_eq_one z (by simpa using hz)
 
+/- English proof (translation)
+Establish `hp` using `h.prime`. Establish `hmin` using `h.minpoly_eq`. Establish `hint : IsIntegral F θ` using `⟨X ^ p - C δ, monic_X_pow_sub_C δ hp.ne_zero, by simp [h.pow]⟩`. Set `pb : PowerBasis F E` to `PowerBasis.ofAdjoinEqTop hint h.gen`. Establish `hgen : pb.gen = θ` using `PowerBasis.ofAdjoinEqTop_gen hint h.gen`.
+
+Use `set g : L[X] := X ^ p - C (algebraMap F L δ) with hg`. Establish `hroot : AdjoinRoot.root g ^ p = algebraMap F (AdjoinRoot g) δ`. Use `AdjoinRoot.eval₂_root g` as an intermediate fact. Rewrite `this` using `[hg, eval₂_sub, eval₂_X_pow, eval₂_C, sub_eq_zero]`. Rewrite using `[IsScalarTower.algebraMap_apply F L (AdjoinRoot g)]`.
+
+Conclude with `this`. Set `ψ : E →ₐ[F] AdjoinRoot g` to `pb.lift (AdjoinRoot.root g) (by`. Rewrite using `[hgen, hmin]`. Simplify using `[hroot])`. Establish `hψ : ψ θ = AdjoinRoot.root g` using `(congrArg _ hgen.symm).trans (pb.lift_gen _ _)`.
+
+Set `a : (L ⊗[F] E) →ₐ[L] AdjoinRoot g` to `Algebra.TensorProduct.lift (Algebra.ofId L _) ψ (fun _ _ => Commute.all _ _)`. Set `b : AdjoinRoot g →ₐ[L] (L ⊗[F] E)` to `AdjoinRoot.liftAlgHom g (Algebra.ofId L _) ((1 : L) ⊗ₜ[F] θ) (by`. Rewrite using `[hg, eval₂_sub, eval₂_X_pow, eval₂_C, sub_eq_zero, Algebra.TensorProduct.tmul_pow, one_pow, h.pow]`. Express the relevant statement in the definitionally equal form `_ = algebraMap L (L ⊗[F] E) (algebraMap F L δ)`. Rewrite using `[← IsScalarTower.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply',])`.
+
+Establish `hb : b (AdjoinRoot.root g) = (1 : L) ⊗ₜ[F] θ` using `AdjoinRoot.liftAlgHom_root ..`. Establish `ha : a ((1 : L) ⊗ₜ[F] θ) = AdjoinRoot.root g`. Simplify using `[a, hψ]`. Use `⟨AlgEquiv.ofAlgHom a b ?_ ?_⟩` and prove the remaining obligations. Apply `AdjoinRoot.algHom_ext` to reduce the goal to its premises.
+
+Simplify using `[ha, hb]`. Apply `Algebra.TensorProduct.ext` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _`. Apply `pb.algHom_ext` to reduce the goal to its premises. Rewrite using `[hgen]`.
+
+Simplify using `[ha, hb]`.
+-/
 theorem IsKum.nonempty_tensor_equiv {p : ℕ} {F E : Type} [Field F] [Field E] [Algebra F E]
     {ζ δ : F} {θ : E} {σ : E ≃ₐ[F] E} (h : IsKum p ζ δ θ σ) (L : Type) [Field L] [Algebra F L] :
     Nonempty ((L ⊗[F] E) ≃ₐ[L] AdjoinRoot (X ^ p - C (algebraMap F L δ) : L[X])) := by
@@ -52,6 +70,11 @@ theorem IsKum.nonempty_tensor_equiv {p : ℕ} {F E : Type} [Field F] [Field E] [
       rw [hgen]
       simp [ha, hb]
 
+/- English proof (translation)
+Introduce `p F E L _ _ _ _ _ _ ζ δ θ σ h x ⟨y, hy⟩`. Take `⟨e⟩` from `h.nonempty_tensor_equiv L`. Establish `: Module.Finite L (AdjoinRoot (X ^ p - C (algebraMap F L δ) : L[X]))` using `(AdjoinRoot.powerBasis' (monic_X_pow_sub_C _ h.prime.ne_zero)).finite`. Establish `hn : Algebra.norm L (e y) = algebraMap F L x`. Rewrite using `[Algebra.norm_eq_of_algEquiv, hy]`.
+
+Establish `hu : IsUnit (e y)` using `isUnit_of_norm_ne_zero _ (by`. Rewrite using `[hn]`. Conclude with `(_root_.map_ne_zero _).mpr x.ne_zero)`. Rewrite using `[mem_kNorm]`. Conclude with `⟨hu.unit, hn⟩`.
+-/
 theorem mem_kNorm_of_tNorm : ∀ (p : ℕ) (F E L : Type) [Field F] [CharZero F] [Field E] [Algebra F E] [Field L] [Algebra F L] (ζ δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsKum p ζ δ θ σ → ∀ x : Fˣ, TNorm F E L (x : F) → x ∈ kNorm p (algebraMap F L) δ := by
   intro p F E L _ _ _ _ _ _ ζ δ θ σ h x ⟨y, hy⟩
   obtain ⟨e⟩ := h.nonempty_tensor_equiv L

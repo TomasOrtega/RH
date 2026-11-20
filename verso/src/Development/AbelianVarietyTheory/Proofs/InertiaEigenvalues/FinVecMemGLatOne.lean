@@ -22,6 +22,11 @@ namespace GlobalTheory.LatRatStd
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq, SetLike.mem_coe]`. Take `⟨h1, -, hfg, hsp, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D T`. Rewrite using `[← ((GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E T.rank _ hfg hsp).1 v), ← h1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`.
+
+Rewrite `e` using `[map_one, Units.val_one, Matrix.one_mulVec]`. Substitute `e` using the available equality. Conclude with `hz`. Introduce `h`. Conclude with `⟨_, h, by rw [map_one, Units.val_one, Matrix.one_mulVec]; rfl⟩`.
+-/
 theorem finVec_mem_gLat_one (T : HSp D) (v : Fin T.rank → D.host.E) :
     Formalism.L2.Pj.finVec T v ∈ Formalism.L2.Pj.gLat T 1 ↔ v ∈ L0c D T := by
   rw [← GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq, SetLike.mem_coe]
@@ -35,6 +40,27 @@ theorem finVec_mem_gLat_one (T : HSp D) (v : Fin T.rank → D.host.E) :
   · intro h
     exact ⟨_, h, by rw [map_one, Units.val_one, Matrix.one_mulVec]; rfl⟩
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Establish `hg : ∀ (s : Fin S.rank → D.host.E) j, ∑ k, star (s k) * S.gram k j = star (s j)` using `fun s j => by`. Rewrite using `[hG, Finset.sum_eq_single j (fun k _ hk => by rw [Matrix.one_apply_ne hk, mul_zero]) (by simp), Matrix.one_apply_eq, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hM b`.
+
+Proceed by induction on `hM using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, s, hs, t, ht, rfl⟩` from `hw`. Take `⟨c, hc⟩` from `Submodule.mem_one.1 ((Submodule.mem_pi.1 (SetLike.mem_coe.1 hs)) b trivial)`. Take `⟨c', hc'⟩` from `GlobalTheory.DatumFourier.star_int c`.
+
+Establish `h1 : a • t ∈ Formalism.L2.Pj.latG T 1` using `Submodule.subset_span ⟨a, ha, t, (finVec_mem_gLat_one T t).2 ht, rfl⟩`. Use `Submodule.smul_mem _ c' h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `a * t i * _ = (c' : D.host.E) * (a * t i)`. Rewrite using `[hg, hc', ← hc, mul_comm]`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`. Introduce `h`. Establish `key : ∀ b, ∀ v ∈ Formalism.L2.Pj.latG T 1, (Matrix.of fun a j => v a * (Pi.single b 1 : Fin S.rank → D.host.E) j) ∈ GlobalTheory.LatVac.latRat S T (Formalism.L2.Pj.stdLat D.host.E S.rank : Set (Fin S.rank → D.host.E)) (L0c D T)`.
+
+Introduce `b v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, t, ht, rfl⟩` from `hv`. Use `AddSubgroup.subset_closure ⟨a, ha, Pi.single b 1, ?_, t, (finVec_mem_gLat_one T t).1 ht, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[SetLike.mem_coe, Formalism.L2.Pj.stdLat, Submodule.mem_pi]`. Introduce `k _`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`.
+
+Conclude with `zero_mem _`. Use extensionality with `i j`. Simplify using `only [GlobalTheory.LatVac.genMap, Matrix.of_apply, hg, Pi.smul_apply, smul_eq_mul, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `zero => convert (GlobalTheory.LatVac.latRat S T _ _).zero_mem using 1`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => convert add_mem hx hy`. Use extensionality with `i j`. Simplify using `[add_mul]`.
+
+Consider the case `smul c x _ hx`. Use `GlobalTheory.LatVac.smul_mem_latRat c hx using 1` and compare the differences between its conclusion and the goal. Conclude with `Matrix.ext fun i j => mul_assoc (c : D.host.E) (x i) _`. Establish `e : M = ∑ b, Matrix.of fun a j => M a b * (Pi.single b 1 : Fin S.rank → D.host.E) j`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.sum_apply, Pi.single_apply]`. Rewrite using `[e]`. Conclude with `sum_mem fun b _ => key b _ (h b)`.
+-/
 theorem mem_latRat_iff_cols {S T : HSp D} (hG : S.gram = 1) {LS : Set (Fin S.rank → D.host.E)}
     {LT : Set (Fin T.rank → D.host.E)}
     (hS : LS = (Formalism.L2.Pj.stdLat D.host.E S.rank : Set (Fin S.rank → D.host.E))) (hT : LT = L0c D T)

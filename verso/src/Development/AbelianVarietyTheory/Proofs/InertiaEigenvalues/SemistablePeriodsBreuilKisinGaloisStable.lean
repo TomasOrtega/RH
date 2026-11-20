@@ -23,6 +23,9 @@ namespace GlobalTheory.BKLim.GalStab
 section Alg
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `hd : A.det * B.det = c ^ Fintype.card n`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one]`. Introduce `h0`. Rewrite `hd` using `[h0, zero_mul]`. Conclude with `pow_ne_zero _ hc hd.symm`.
+-/
 theorem det_ne_zero_of_mul_eq_smul [IsDomain R] {A B : Matrix n n R} {c : R} (hc : c ≠ 0) (h : A * B = c • 1) :
     A.det ≠ 0 := by
   have hd : A.det * B.det = c ^ Fintype.card n := by
@@ -32,12 +35,18 @@ theorem det_ne_zero_of_mul_eq_smul [IsDomain R] {A B : Matrix n n R} {c : R} (hc
   exact pow_ne_zero _ hc hd.symm
 
 omit [Fintype n] [DecidableEq n] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_smul_hom {R' : Type} [CommRing R'] (f : R →+* R') (c : R) (M : Matrix n n R) :
     (c • M).map f = f c • M.map f := by
   ext i j; simp
 
 end Alg
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `hc.mul_left_cancel this`.
+-/
 theorem smul_cancel_of_isUnit {R : Type} [CommRing R] {n : Type} {c : R} (hc : IsUnit c) {M M' : Matrix n n R}
     (h : c • M = c • M') : M = M' := by
   ext i j
@@ -47,6 +56,13 @@ theorem smul_cancel_of_isUnit {R : Type} [CommRing R] {n : Type} {c : R} (hc : I
 
 variable {l : ℕ} [hl : Fact l.Prime] {K : FinExt l}
 
+/- English proof (translation)
+Establish `key : ∀ h : GQ l, bk.ev bk.E ∣ Per.σA h (bk.ev bk.E)` using `fun h => by`. Rewrite using `[← Ideal.mem_span_singleton, bk.span_ev, RingHom.mem_ker, GlobalTheory.RingBasics.θ_σA]`. Establish `: Per.θ l (bk.ev bk.E) = 0`. Rewrite using `[← RingHom.mem_ker, ← bk.span_ev]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Rewrite using `[this, map_zero]`. Use `haveI : IsDomain (Ainf l) := inclW_injective.isDomain (inclW l)`. Establish `h2 : Per.σA g (bk.ev bk.E) ∣ bk.ev bk.E`. Use `map_dvd (Per.σA g) (key g⁻¹)` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.RingBasics.σA_mul, mul_inv_cancel, GlobalTheory.RingBasics.σA_one]`. Then use the resulting hypothesis.
+
+Take `⟨w, hw⟩` from `associated_of_dvd_dvd (key g) h2`. Conclude with `⟨w, hw.symm⟩`.
+-/
 theorem gal_E (bk : BK K) (g : GQ l) : ∃ w : (Ainf l)ˣ, Per.σA g (bk.ev bk.E) = bk.ev bk.E * w := by
   have key : ∀ h : GQ l, bk.ev bk.E ∣ Per.σA h (bk.ev bk.E) := fun h => by
     rw [← Ideal.mem_span_singleton, bk.span_ev, RingHom.mem_ker, GlobalTheory.RingBasics.θ_σA]
@@ -60,11 +76,17 @@ theorem gal_E (bk : BK K) (g : GQ l) : ∃ w : (Ainf l)ˣ, Per.σA g (bk.ev bk.E
   obtain ⟨w, hw⟩ := associated_of_dvd_dvd (key g) h2
   exact ⟨w, hw.symm⟩
 
+/- English proof (translation)
+Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Conclude with `map_zlW l _ z`.
+-/
 theorem frob_zl (z : ℤ_[l]) :
     WittVector.frobenius (algebraMap ℤ_[l] (Ainf l) z) = algebraMap ℤ_[l] (Ainf l) z := by
   rw [WittVector.frobenius_eq_map_frobenius]
   exact map_zlW l _ z
 
+/- English proof (translation)
+Apply `inclW_injective` to reduce the goal to its premises. Rewrite using `[← galW_inclW, ← frobW_inclW, ← frobW_inclW, ← galW_inclW]`. Use `WittVector.ext fun n => ?_` and prove the remaining obligations. Simplify using `[galW, mapAlgEquivW, mapEquivW, frobW, WittVector.map_coeff, frobenius_def, map_pow]`.
+-/
 theorem σA_frob (g : GQ l) (a : Ainf l) :
     Per.σA g (WittVector.frobenius a) = WittVector.frobenius (Per.σA g a) := by
   apply inclW_injective
@@ -72,6 +94,13 @@ theorem σA_frob (g : GQ l) (a : Ainf l) :
   refine WittVector.ext fun n => ?_
   simp [galW, mapAlgEquivW, mapEquivW, frobW, WittVector.map_coeff, frobenius_def, map_pow]
 
+/- English proof (translation)
+Apply `Matrix.map_injective inclW_injective` to reduce the goal to its premises. Use `beta_reduce`. Establish `hfτ : frobW l (inclW l τ) = inclW l (bk.ev bk.E) * inclW l τ` using `by rw [frobW_inclW, hτ.1, map_mul]`. Establish `h1 : (Y.map WittVector.frobenius).map (inclW l) = (Y.map (inclW l)).map (frobW l)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, frobW_inclW]`. Establish `hA : (F.A.map bk.ev).map (inclW l) = F.A.map bk.evW` using `by rw [Matrix.map_map]; rfl`. Establish `hφ : inclW l (bk.ev bk.E) ^ N • F.T.map (frobW l) = F.T * F.A.map bk.evW` using `F.φ`. Establish `h2 : (inclW l τ ^ M • F.T).map (frobW l) = (inclW l (bk.ev bk.E) * inclW l τ) ^ M • F.T.map (frobW l)`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, hfτ]`. Rewrite using `[map_smul_hom, map_smul_hom, h1, Matrix.map_mul, hY, h2, hA, Matrix.smul_mul, ← hφ, smul_smul, smul_smul, smul_smul, map_pow, map_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frob_Y (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d N : ℕ} {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]}
     (F : Pre bk N d ρ) (M : ℕ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (hY : Y.map (inclW l) = inclW l τ ^ M • F.T) :
     bk.ev bk.E ^ N • Y.map WittVector.frobenius = bk.ev bk.E ^ M • (Y * F.A.map bk.ev) := by
@@ -89,6 +118,9 @@ theorem frob_Y (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d N : ℕ} {ρ : �
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_semistable_disc_cocycle l K bk τ hτ d ρ s Y Z i hZ hi hWZ g G hG`.
+-/
 theorem disc_cocycle (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d : ℕ} {ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]}
     (s : WSeed bk d ρ τ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (Z : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀))
     (i : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀) (hZ : IsUnit Z) (hi : IsDiscMap bk.ev i) (hWZ : s.W * Z.map i = Y.map bk.iA)
@@ -100,6 +132,9 @@ theorem disc_cocycle (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d : ℕ} {ρ
         bk.iA τ ^ s.N • (((ρ g).map (algebraMap ℤ_[l] (Ainf l))).map bk.iA * (Y.map (Per.σA (g : GQ l))).map bk.iA) :=
   GlobalTheory.T.exists_semistable_disc_cocycle l K bk τ hτ d ρ s Y Z i hZ hi hWZ g G hG
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.breuilKisin_disc_cocycle_frobenius_equation l K bk τ hτ d M N Y A A' hA hφ hdet g G Φ hG hΦ w hw P hP e he`.
+-/
 theorem frob_eq (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d : ℕ} (M N : ℕ) (Y : Matrix (Fin d) (Fin d) (Ainf l))
     (A A' : Matrix (Fin d) (Fin d) bk.S) (hA : A * A' = bk.E ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) bk.S))
     (hφ : bk.ev bk.E ^ N • Y.map WittVector.frobenius = bk.ev bk.E ^ M • (Y * A.map bk.ev))
@@ -112,6 +147,15 @@ theorem frob_eq (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d : ℕ} (M N : �
       (((↑w⁻¹ : Ainf l) ^ N) • A.map bk.ev).map bk.iA * e.map Φ * ((A'.map bk.ev).map (Per.σA g)).map bk.iA :=
   GlobalTheory.T.breuilKisin_disc_cocycle_frobenius_equation l K bk τ hτ d M N Y A A' hA hφ hdet g G Φ hG hΦ w hw P hP e he
 
+/- English proof (translation)
+Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.BSP.AinfTopBasis.main l K bk`. Establish `hφX : WittVector.frobenius (bk.ev X) = bk.ev X ^ l` using `by rw [← bk.ev_frob, frobS_X, map_pow]`. Establish `hj : ∀ j : Fin d × Fin d, HasSum (fun x : Fin d × Fin d => Φ (e x.1 x.2) * bk.iA (C j.1 x.1 * B x.2 j.2)) (bk.iS bk.E ^ h * e j.1 j.2)`. Introduce `j`. Use `hasSum_fintype _ using 1` and compare the differences between its conclusion and the goal.
+
+Use `congrFun (congrFun he j.1) j.2` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.map_apply] at this`. Rewrite using `[this, Fintype.sum_prod_type, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, v, hv, -⟩` from `GlobalTheory.BSP.exists_bounded_of_phi_equation l K bk (Ainf l) bk.ev ι tb WittVector.frobenius hφX Φ hΦ (Fin d × Fin d) (fun x j => C j.1 x.1 * B x.2 j.2) (fun _ _ => Set.toFinite _) h (fun x => e x.1 x.2) (by rw [Filter.cofinite_eq_bot]; exact Filter.tendsto_bot) hj`. Use `⟨k, Matrix.of fun a b => v (a, b), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hv (a, b)`.
+-/
 theorem bounded (bk : BK K) {d : ℕ} (h : ℕ) (C B : Matrix (Fin d) (Fin d) (Ainf l))
     (Φ : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (hΦ : IsDiscMap WittVector.frobenius Φ) (e : Matrix (Fin d) (Fin d) (bk.DA bk.ρ₀))
     (he : bk.iS bk.E ^ h • e = C.map bk.iA * e.map Φ * B.map bk.iA) :
@@ -137,6 +181,25 @@ theorem bounded (bk : BK K) {d : ℕ} (h : ℕ) (C B : Matrix (Fin d) (Fin d) (A
   simp only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]
   exact hv (a, b)
 
+/- English proof (translation)
+Establish `hτu` using `GlobalTheory.BSP.isUnit_inclW_of_isPer l K bk τ hτ`. Establish `hTd : IsUnit T.det` using `(Matrix.isUnit_iff_isUnit_det T).1 hT`. Use `set P' := P.map (algebraMap ℤ_[l] (WCb l)) with hP'`. Establish `hPA : (P.map (algebraMap ℤ_[l] (Ainf l))).map (inclW l) = P'`. Conclude with `Matrix.ext fun i j => (inclWA l).commutes (P i j)`.
+
+Establish `hgY : (Y.map (Per.σA g)).map (inclW l) = inclW l (Per.σA g τ) ^ M • T.map (galW l g)`. Establish `: (Y.map (Per.σA g)).map (inclW l) = (Y.map (inclW l)).map (galW l g)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, galW_inclW]`. Rewrite using `[this, hY]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, galW_inclW]`. Establish `hW` using `congrArg (fun M => M.map (inclW l)) hv`. Use `beta_reduce at hW`. Rewrite `hW` using `[map_smul_hom, map_smul_hom, map_smul_hom, Matrix.map_mul, Matrix.map_mul, hY, hPA, hgY, map_pow, map_pow, map_pow, map_natCast]`.
+
+Establish `hu : IsUnit (inclW l (Per.σA g τ) ^ M * inclW l τ ^ M)` using `((hτu.2.2.2 g).pow M).mul (hτu.1.pow M)`. Establish `hW2 : T * v.map (inclW l) = T * ((l : WCb l) ^ k • (T⁻¹ * (P' * T.map (galW l g))))`. Apply `smul_cancel_of_isUnit hu` to reduce the goal to its premises. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hTd, Matrix.one_mul]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Use `congrFun (congrFun hW i) j` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.smul_mul, Matrix.mul_smul] at this ⊢`. Take the linear combination `this`. Establish `hW3 : v.map (inclW l) = (l : WCb l) ^ k • (T⁻¹ * (P' * T.map (galW l g)))`. Use `congrArg (fun M => T⁻¹ * M) hW2` as an intermediate fact.
+
+Use `beta_reduce at this`. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hTd, Matrix.one_mul, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `hx : ∀ i j, ∃ a : Ainf l, (T⁻¹ * (P' * T.map (galW l g))) i j = inclW l (1 * a) ∧ (l : Ainf l) ^ k * a = v i j`. Introduce `i j`. Establish `hij : (l : WCb l) ^ k * (T⁻¹ * (P' * T.map (galW l g))) i j = inclW l (v i j)`.
+
+Use `congrFun (congrFun hW3 i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`. Take `⟨a, ha⟩` from `GlobalTheory.T.ainf_principal_ideal_saturated_closed l 1 (by rw [map_one]; exact isUnit_one) k _ (fun n => ⟨v i j, by rw [hij, one_mul, sub_self]; exact dvd_zero _⟩)`. Use `⟨a, ha, inclW_injective ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_pow, map_natCast, ← hij, ha, one_mul]`. Use `choose a ha1 ha2 using hx`. Use `⟨Matrix.of a, ?_, ?_⟩` and prove the remaining obligations. Establish `: (Matrix.of a).map (inclW l) = T⁻¹ * (P' * T.map (galW l g))`. Conclude with `Matrix.ext fun i j => by simp only [Matrix.map_apply, Matrix.of_apply, ha1, one_mul]`.
+
+Rewrite using `[this, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hTd, Matrix.one_mul]`. Conclude with `Matrix.ext fun i j => by simp only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, ha2]`.
+-/
 theorem descend (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d : ℕ} (M k : ℕ) (Y v : Matrix (Fin d) (Fin d) (Ainf l))
     (T : Matrix (Fin d) (Fin d) (WCb l)) (hT : IsUnit T) (hY : Y.map (inclW l) = inclW l τ ^ M • T) (g : GQ l)
     (P : Matrix (Fin d) (Fin d) ℤ_[l])
@@ -188,6 +251,23 @@ theorem descend (bk : BK K) {τ : Ainf l} (hτ : bk.IsPer τ) {d : ℕ} (M k : �
     rw [this, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hTd, Matrix.one_mul]
   · exact Matrix.ext fun i j => by simp only [Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, ha2]
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d ρ hρ s N F Y Z hY hZ hWZ`. Take `⟨ι, ⟨tb⟩⟩` from `GlobalTheory.BSP.AinfTopBasis.main l K bk`. Take `⟨hmaps, hgal, -, hρ0, hρ1, -⟩` from `GlobalTheory.BSP.exists_discMaps l K bk`. Establish `hinj : Function.Injective bk.iA` using `(GlobalTheory.BSP.toDisc_injective_of_topBasis l K bk (Ainf l) bk.ev ι tb bk.ρ₀ hρ0 hρ1).1`. Use `haveI : IsDomain (bk.DA bk.ρ₀) := (GlobalTheory.BSP.discAinf_isDomain l K bk bk.ρ₀ hρ0 hρ1).1`.
+
+Take `⟨i₀, hi₀⟩` from `hmaps bk.S (Ainf l) bk.ev X (bk.ev X) bk.ρ₀ bk.ρ₀ 1 hρ0 (by rw [pow_one]) (by rw [pow_one])`. Take `⟨Φ, hΦ⟩` from `hmaps (Ainf l) (Ainf l) WittVector.frobenius (bk.ev X) (bk.ev X) bk.ρ₀ bk.ρ₀ 1 hρ0 (by rw [pow_one, ← bk.ev_frob, frobS_X, map_pow]; exact dvd_pow_self _ (Fact.out : l.Prime).ne_zero) (by rw [pow_one])`. Establish `hτu` using `GlobalTheory.BSP.isUnit_inclW_of_isPer l K bk τ hτ`. Establish `hYφ` using `frob_Y bk hτ F s.N Y hY`. Establish `hdet : (Y.map bk.iA).det ≠ 0`.
+
+Rewrite using `[← hWZ i₀ hi₀, Matrix.det_mul]`. Use `mul_ne_zero (det_ne_zero_of_mul_eq_smul (pow_ne_zero _ hτu.2.1) s.W_mul) ?_` and prove the remaining obligations. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (hZ.map (RingHom.mapMatrix i₀))).ne_zero`. Establish `key : ∀ g : ↥(GK K), ∃ a : Matrix (Fin d) (Fin d) (Ainf l), zW (ρ g) * F.T.map (galW l (g : GQ l)) = F.T * a.map (inclW l) ∧ ∀ (G : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (i : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀), IsDiscMap (Per.σA (g : GQ l)) G → IsDiscMap bk.ev i → G (bk.iS bk.E) ^ s.N • (s.X.ma …`. Introduce `g`.
+
+Take `⟨G, hG⟩` from `hgal bk.ρ₀ hρ0 (g : GQ l)`. Take `⟨e, heA, heD⟩` from `disc_cocycle bk hτ s Y Z i₀ hZ hi₀ (hWZ i₀ hi₀) g G hG`. Take `⟨w, hw⟩` from `gal_E bk (g : GQ l)`. Establish `hP : ((ρ g).map (algebraMap ℤ_[l] (Ainf l))).map WittVector.frobenius = (ρ g).map (algebraMap ℤ_[l] (Ainf l))`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, frob_zl]`. Establish `hφe` using `frob_eq bk hτ s.N N Y F.A F.A' F.A_mul hYφ hdet (g : GQ l) G Φ hG hΦ w hw _ hP e heD`. Take `⟨k, v, hv⟩` from `bounded bk (2 * N) _ _ Φ hΦ e hφe`. Establish `hvA : Per.σA (g : GQ l) τ ^ s.N • (Y * v) = (l : Ainf l) ^ k • τ ^ s.N • ((ρ g).map (algebraMap ℤ_[l] (Ainf l)) * Y.map (Per.σA (g : GQ l)))`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises.
+
+Use `beta_reduce`. Simplify using `only [map_smul_hom, Matrix.map_mul, hv, map_pow, map_natCast]`. Rewrite using `[Matrix.mul_smul, smul_smul, mul_comm, ← smul_smul, heD, smul_comm]`. Take `⟨a, ha1, ha2⟩` from `descend bk hτ s.N k Y v F.T F.unit hY (g : GQ l) (ρ g) hvA`. Establish `hae : a.map bk.iA = e`.
+
+Use `smul_cancel_of_isUnit ((isUnit_l_disc l (bk.ev X) bk.ρ₀).pow k) ?_` and prove the remaining obligations. Rewrite using `[← hv, ← ha2, map_smul_hom, map_pow, map_natCast]`. Use `⟨a, ha1, fun G' i hG' hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hG'.unique hG, hi.unique hi₀, hae]`. Conclude with `heA`.
+
+Use `choose ε hε using key`. Conclude with `⟨{ F with ε := ε, gal := fun g => (hε g).1 }, rfl, fun g G i hG hi => (hε g).2 G i hG hi⟩`.
+-/
 theorem galois_stable : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])), (∀ g, IsUnit (ρ g)) → ∀ (s : WSeed bk d ρ τ) (N : ℕ) (F : Pre bk N d ρ) (Y : Matrix (Fin d) (Fin d) (Ainf l)) (Z : Matrix (Fin d) (Fin d) (bk.DS bk.ρ₀)), Y.map (inclW l) = inclW l τ ^ s.N • F.T → IsUnit Z → (∀ i : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev i → s.W * Z.map i = Y.map bk.iA) → ∃ F₀ : Frame bk N d ρ, F₀.toPre = F ∧ ∀ (g : ↥(GK K)) (G : bk.DA bk.ρ₀ →+* bk.DA bk.ρ₀) (i : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀), IsDiscMap (Per.σA (g : GQ l)) G → IsDiscMap bk.ev i → G (bk.iS bk.E) ^ s.N • (s.X.map bk.iS * Z.map i * (F₀.ε g).map bk.iA) = bk.iS bk.E ^ s.N • (s.κ g * (s.X.map bk.iS * Z.map i).map G) := by
   intro l _ K bk τ hτ d ρ hρ s N F Y Z hY hZ hWZ
   obtain ⟨ι, ⟨tb⟩⟩ := GlobalTheory.BSP.AinfTopBasis.main l K bk

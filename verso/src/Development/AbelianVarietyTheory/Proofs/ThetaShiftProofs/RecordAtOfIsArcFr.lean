@@ -22,6 +22,11 @@ section Val
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Establish `h1 : valV V x ≤ 1`. Use `(WithZero.log_le_log (valV_ne_zero (V := V) hx) one_ne_zero).1 (by simp only [vV] at h; simp; omega)` as an intermediate fact. Conclude with `this`.
+
+Conclude with `IsDiscreteValuationRing.exists_lift_of_le_one h1`.
+-/
 theorem mem_of_vV_nonneg {x : K'} (h : 0 ≤ vV V x) : x ∈ Set.range (algebraMap V K') := by
   by_cases hx : x = 0
   · exact ⟨0, by simp [hx]⟩
@@ -30,6 +35,11 @@ theorem mem_of_vV_nonneg {x : K'} (h : 0 ≤ vV V x) : x ∈ Set.range (algebraM
     exact this
   exact IsDiscreteValuationRing.exists_lift_of_le_one h1
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by simp [hx]⟩`. Rewrite `h` using `[nval_of_ne hx, EReal.coe_nonneg]`. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `: (0 : ℝ) ≤ vV V x`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `absurd h (not_le.2 (div_neg_of_neg_of_pos (not_le.1 hc) he'))`. Conclude with `mem_of_vV_nonneg (by exact_mod_cast this)`.
+-/
 theorem mem_of_nval_nonneg {e : ℕ} (he : 0 < e) {x : K'} (h : 0 ≤ nval V e x) : x ∈ Set.range (algebraMap V K') := by
   by_cases hx : x = 0
   · exact ⟨0, by simp [hx]⟩
@@ -40,17 +50,31 @@ theorem mem_of_nval_nonneg {e : ℕ} (he : 0 < e) {x : K'} (h : 0 ≤ nval V e x
     exact absurd h (not_le.2 (div_neg_of_neg_of_pos (not_le.1 hc) he'))
   exact mem_of_vV_nonneg (by exact_mod_cast this)
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_one : vV V (1 : K') = 0 := by simp [vV]
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit`. Simplify using `[vV, this]`.
+-/
 theorem vV_unit (u : Vˣ) : vV V (algebraMap V K' u) = 0 := by
   have : valV V (algebraMap V K' u) = 1 := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]
     exact fun h => (IsLocalRing.mem_maximalIdeal _).1 h u.isUnit
   simp [vV, this]
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_pow {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   simp [vV]
 
+/- English proof (translation)
+Establish `h0 : algebraMap V K' a ≠ 0` using `by simpa using ha`. Establish `: valV V (algebraMap V K' a) < 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hu`. Use `(WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this` as an intermediate fact.
+
+Simplify using `only [vV]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap V K' a) := by
   have h0 : algebraMap V K' a ≠ 0 := by simpa using ha
   have : valV V (algebraMap V K' a) < 1 := by
@@ -59,12 +83,28 @@ theorem vV_pos {a : V} (ha : a ≠ 0) (hu : ¬ IsUnit a) : 0 < vV V (algebraMap 
   have := (WithZero.log_lt_log (valV_ne_zero (V := V) h0) one_ne_zero).2 this
   simp only [vV]; simp at this; omega
 
+/- English proof (translation)
+Establish `: valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ)`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq`. Simplify using `[vV, this]`.
+-/
 theorem vV_irr {a : V} (ha : Irreducible a) : vV V (algebraMap V K' a) = 1 := by
   have : valV V (algebraMap V K' a) = WithZero.exp (-1 : ℤ) := by
     rw [valV, HeightOneSpectrum.valuation_of_algebraMap]
     exact HeightOneSpectrum.intValuation_singleton _ ha.ne_zero ha.maximalIdeal_eq
   simp [vV, this]
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `inj : ∀ v, v ≠ 0 → algebraMap V' K'' (j v) ≠ 0` using `fun v hv => by`. Rewrite using `[← hi]`. Simplify using `using hv`. Establish `pos : 0 < vV V' (algebraMap V' K'' (j p))` using `vV_pos (fun h => inj p hp.ne_zero (by simp [h])) (fun h => hp.not_isUnit (isUnit_of_map_unit j p h))`.
+
+Take `⟨r, hr⟩` from `Int.eq_ofNat_of_zero_le pos.le`. Establish `key : ∀ v : V, v ≠ 0 → vV V' (i (algebraMap V K' v)) = (r : ℤ) * vV V (algebraMap V K' v)`. Introduce `v hv`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hv hp`. Establish `h1 : algebraMap V K' p ≠ 0` using `by simpa using hp.ne_zero`.
+
+Establish `h2 : algebraMap V K' u ≠ 0` using `by simp`. Rewrite using `[hi, map_mul, map_mul, map_mul, map_pow, map_pow, map_pow, vV_mul (inj _ u.ne_zero) (pow_ne_zero _ (inj p hp.ne_zero)), vV_mul h2 (pow_ne_zero _ h1), vV_pow (inj p hp.ne_zero), vV_pow h1, vV_unit, vV_irr hp, hr]`. Use `vV_unit (K' := K'') (Units.map j.toMonoidHom u)` as an intermediate fact. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at this`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨r, by omega, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Simplify using `[hx, vV]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`.
+
+Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `hb1 : algebraMap V K' b ≠ 0` using `by simpa using hb0`. Establish `e : algebraMap V K' a / algebraMap V K' b * algebraMap V K' b = algebraMap V K' a` using `div_mul_cancel₀ _ hb1`. Establish `e1` using `vV_mul (V := V) hx hb1`.
+
+Establish `e2` using `vV_mul (V := V') ((map_ne_zero i).2 hx) ((map_ne_zero i).2 hb1)`. Rewrite `e2` using `[← map_mul, e, key a ha0, key b hb0]`. Rewrite `e1` using `[e]`. Rewrite `e2` using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_index {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K'']
     [Algebra V' K''] [IsFractionRing V' K''] (j : V →+* V') [IsLocalHom j] (i : K' →+* K'')
     (hi : ∀ v, i (algebraMap V K' v) = algebraMap V' K'' (j v)) :
@@ -103,6 +143,9 @@ theorem exists_index {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValu
 
 end Val
 
+/- English proof (translation)
+Establish `h0 : f v ≠ 0` using `fun h0 => by simp [h0] at hv`. Take `⟨u, hu⟩` from `h' (f v)⁻¹ (by rw [norm_inv, hv]; simp) ⟨v, mul_inv_cancel₀ h0⟩`. Conclude with `IsUnit.of_mul_eq_one u (hf (by rw [map_mul, hu, map_one, mul_inv_cancel₀ h0]))`.
+-/
 theorem isUnit_of_norm {V K : Type} [CommRing V] [IsLocalRing V] [NormedField K] (f : V →+* K) (h : ∀ v, ‖f v‖ ≤ 1)
     (h' : ∀ x : K, ‖x‖ ≤ 1 → (∃ v, f v * x = 1) → ∃ v, f v = x) (hf : Function.Injective f) {v : V} (hv : ‖f v‖ = 1) :
     IsUnit v := by
@@ -119,6 +162,45 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `hL hL2 E _ _ _ H Dw l Xo c hev K₁ _ _ _ d w Z Dv O _ β Y b aw χ W ρ e th y₀ la eL hS hO hρ hpin hP hB hth hmono hy hchg a n F hF t ht Yv hYv hdet ev hev1 hev2`. Take `⟨T', j, i', hfin, hloc, hj, hnorm, hs⟩` from `hS (insert t (Finset.univ.image Yv)) (by`. Introduce `x hx`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `⟨Or.inr ht, (Z.S_disc _ ht).2.le⟩`.
+
+Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨Or.inl (hYv x).1, (hYv x).2⟩)`. Take `⟨t', ht'⟩` from `hs t (Finset.mem_insert_self _ _)`. Use `choose Y' hY' using fun x => hs (Yv x) (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ x)))`. Establish `hϖ : Dv.ϖ ≠ 0` using `Dv.ϖ_irr.ne_zero`.
+
+Take `⟨e₀, e₁, he₀, he₁, he₁X, hev'⟩` from `GlobalTheory.ArcQ.eval_factors_through_cdvr E H Dw Dv.Tv T' Dv.ϖ Z.K Dv.ιT j i' hϖ hj hnorm t' Y' ev (ht' ▸ (Z.S_disc _ ht).2) (fun p => by rw [ht']; exact hev1 p) (fun x => by rw [hY']; exact hev2 x)`. Establish `hinj : Function.Injective ((algebraMap T'.V T'.Fr).comp j)`. Introduce `x y hxy`. Use `congrArg i' hxy` as an intermediate fact. Simplify using `only [RingHom.comp_apply, hj] at this`.
+
+Conclude with `IsFractionRing.injective _ _ (Dv.ιT.injective this)`. Set `i : Dv.Tv.Fr →+* T'.Fr` to `IsFractionRing.lift hinj`. Establish `hi : ∀ v, i (algebraMap Dv.Tv.V Dv.Tv.Fr v) = algebraMap T'.V T'.Fr (j v)` using `fun v => IsFractionRing.lift_algebraMap hinj v`. Take `⟨r, hr, hri⟩` from `RecFr.exists_index j i hi`. Set `io' : c.F →+* T'.Fr` to `i.comp (Dv.io.comp (algebraMap c.F K₁))`.
+
+Establish `hO' : OverLa la T'.V io' (r * eL)` using `hO.bc i hr hri`. Use `letI := io'.toAlgebra`. Establish `he₁C : ∀ v, e₁ (arcιR Dw Dv.Tv.V Dv.ϖ (PowerSeries.C (R` using `Dv.Tv.V) v)) = algebraMap T'.V T'.Fr (j v) := fun v => (RingHom.congr_fun he₁ _).trans (congrArg (algebraMap T'.V T'.Fr) (RingHom.congr_fun he₀ v))`. Establish `hcomm : ∀ x : c.F, e₁ (algebraMap c.F _ x) = io' x`. Introduce `x`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v, m, hv⟩ : ∃ (v : Dv.Tv.V) (m : ℕ), (Dv.io.comp (algebraMap c.F K₁)) x * algebraMap Dv.Tv.V Dv.Tv.Fr Dv.ϖ ^ m = algebraMap Dv.Tv.V Dv.Tv.Fr v := by`. Take `⟨p, q, hq, hpq⟩` from `IsFractionRing.div_surjective (A := Dv.Tv.V) ((Dv.io.comp (algebraMap c.F K₁)) x)`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hq) Dv.ϖ_irr`. Use `⟨p * ((u⁻¹ : Dv.Tv.Vˣ) : Dv.Tv.V), m, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap Dv.Tv.V Dv.Tv.Fr Dv.ϖ ≠ 0` using `by simpa using hϖ`.
+
+Establish `h2 : algebraMap Dv.Tv.V Dv.Tv.Fr u ≠ 0` using `by simp`. Rewrite using `[← hpq, map_mul, map_mul, map_pow, map_units_inv]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `congrArg e₁ (hpin x v m hv)`. Establish `h2` using `congrArg i hv`.
+
+Rewrite `h1` using `[map_mul, map_pow, he₁C, he₁C]`. Rewrite `h2` using `[map_mul, map_pow, hi, hi, ← h1]`. Establish `h3 : algebraMap T'.V T'.Fr (j Dv.ϖ) ≠ 0` using `fun h => hϖ (hinj (h.trans (map_zero _).symm))`. Conclude with `(mul_right_cancel₀ (pow_ne_zero _ h3) h2).symm`. Set `φ : ArcSR Dw Dv.Tv.V Dv.ϖ →ₐ[c.F] T'.Fr` to `{ e₁ with commutes' := hcomm }`.
+
+Take `⟨z₀, hz₀⟩` from `hev.bc _ _ φ y₀`. Take `⟨z₁, hz₁⟩` from `hev.bc _ _ φ Dv.yR`. Establish `hA : IsArcFr W e th ((algebraMap T'.V T'.Fr).comp e₀) z₀`. Rewrite using `[← he₁]`. Establish `key` using `(GlobalTheory.T.arcFramedPoint_unique_and_baseChange hL hL2 E H Dw l Xo c O β Y Dv.Tv.V b aw χ W e th hth _ _ y₀ hy).2`.
+
+Use `first`. Consider the case `exact key hmono _ φ z₀ hz₀`. Consider the case `exact key _ φ z₀ hz₀`. Establish `hI₀ : Integral T' io' z₀`. Establish `key` using `GlobalTheory.T.arc_framedPoint_integral_open_disc hL hL2 E H Dw l Xo c O β Y Dv.Tv.V b aw χ W ρ e th hB hth hP`.
+
+Establish `h1 : Function.Injective (e₀.comp (PowerSeries.C (R` using `Dv.Tv.V))) := by`. Rewrite using `[he₀]`. Conclude with `Function.Injective.of_comp (f := algebraMap T'.V T'.Fr) hinj`. Establish `h2 : ∀ τ x, io' (embK c τ x) = algebraMap T'.V T'.Fr (e₀ (PowerSeries.C (R` using `Dv.Tv.V) (ρ τ x))) := fun τ x => by`. Rewrite using `[show e₀ (PowerSeries.C (R := Dv.Tv.V) (ρ τ x)) = j (ρ τ x) from RingHom.congr_fun he₀ _, ← hi, hρ]`.
+
+Both sides reduce to the same expression. Conclude with `key T' io' e₀ h1 h2 z₀ hA`. Establish `hc` using `((GlobalTheory.Frames.frChg_calculus E H Dw l Xo c (ArcSR Dw Dv.Tv.V Dv.ϖ)).2.2.1 T'.Fr φ _ _ y₀ Dv.yR z₀ z₁ hchg hz₀).1 hz₁`. Set `f : T'.V →+* Z.K` to `i'.comp (algebraMap T'.V T'.Fr)`. Establish `hf : ∀ v, ‖f v‖ ≤ 1` using `fun v => (hnorm _).2 ⟨v, rfl⟩`.
+
+Establish `finj : Function.Injective f` using `i'.injective.comp (IsFractionRing.injective _ _)`. Set `g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) T'.V` to `fun τ => Matrix.of fun p q => Y' ⟨τ, p, q⟩`. Establish `hg : IsUnit (∏ τ, (g τ).det)`. Use `RecFr.isUnit_of_norm f hf ?_ finj ?_` and prove the remaining obligations. Introduce and unpack `x hx ⟨v, hv⟩`.
+
+Establish `hx' : x = i' (algebraMap T'.V T'.Fr v)⁻¹`. Rewrite using `[map_inv₀]`. Conclude with `eq_inv_of_mul_eq_one_right hv`. Take `⟨u, hu⟩` from `(hnorm _).1 (hx' ▸ hx)`. Conclude with `⟨u, by rw [hx', ← hu]; rfl⟩`.
+
+Rewrite using `[← hdet, map_prod]`. Use `congr 2`. Use function extensionality and compare the values at `τ`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `p q`. Conclude with `hY' _`. Establish `hI₁ : Integral T' io' z₁`. Use `GlobalTheory.ArcQ.IntChg.integral_of_frChg E H Dw l Xo c T' io' g 1 (fun τ => ?_) isUnit_one z₀ z₁ ?_ hI₀` and prove the remaining obligations. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun τ => (g τ).det) (Finset.mem_univ τ)) hg`.
+
+Establish `e1 : (fun τ => (g τ).map (algebraMap T'.V T'.Fr)) = fun τ => (letMR Dw Dv.Tv.V Dv.ϖ τ).map φ`. Use function extensionality and compare the values at `τ`. Use extensionality with `p q`. Conclude with `(he₁X ⟨τ, p, q⟩).symm`. Rewrite using `[e1, map_one]`.
+
+Rewrite `hc` using `[map_one]`. Then use the resulting hypothesis. Set `yI : IntFr Xo c T' io'` to `⟨z₁, hev.test _ z₁, hI₁⟩`. Establish `h0 : 0 ≤ nval T'.V (r * eL) (evI yI F)` using `hF.2 _ ⟨PtV.mk (cls := Formalism.L2.PjFree.algCls Xo c) (lies := fun _ _ _ _ => True) la hO' yI hfin () trivial, rfl⟩`. Use `haveI := (GlobalTheory.LetterDenom.main E H Dw Dv.Tv Dv.ϖ hϖ).1`. Establish `hnat` using `(GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a n F hF.1 (ArcSR Dw Dv.Tv.V Dv.ϖ)).1 T'.Fr φ Dv.yR z₁ hz₁`.
+
+Rewrite using `[← hev']`. Use `(hnorm _).2 (RecFr.mem_of_nval_nonneg hO'.1 h0)` as an intermediate fact. Rewrite `this` using `[show evI yI F = e₁ (evR Xo c F Dv.yR) from hnat]`. Conclude with `this`.
+-/
 theorem recordAt_of_isArcFr : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), GlobalTheory.Reg.EvLaws Xo c → ∀ (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (w : HeightOneSpectrum (𝓞 K₁)) (Z : FinSite K₁ w) (Dv : DvrFrame d w Z) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (b : O →+* Dv.Tv.V) (aw : ArcIn Dw l β Dv.Tv.V b) (χ : Sp (PowerSeries Dv.Tv.V) ⟶ Y.X) (W : Wit Y aw χ) (ρ : (E →+* ℂ) → (𝓞 E →+* Dv.Tv.V)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt aw.D₀ (epsR Dv.Tv.V)) (th : aw.D₀.P.L.Sec) (y₀ : FrPt Xo c (ArcSR Dw Dv.Tv.V Dv.ϖ)) (la : HeightOneSpectrum (𝓞 c.F)) (eL : ℕ), SiteAlg Z Dv.Tv Dv.ιT → OverLa la Dv.Tv.V (Dv.io.comp (algebraMap c.F K₁)) eL → (∀ τ x, algebraMap Dv.Tv.V Dv.Tv.Fr (ρ τ x) = Dv.io (algebraMap c.F K₁ (embK c τ x))) → (∀ (x : c.F) (v : Dv.Tv.V) (n : ℕ), (Dv.io.comp (algebraMap c.F K₁)) x * algebraMap Dv.Tv.V Dv.Tv.Fr Dv.ϖ ^ n = algebraMap Dv.Tv.V Dv.Tv.Fr v → algebraMap c.F (ArcSR Dw Dv.Tv.V Dv.ϖ) x * arcιR Dw Dv.Tv.V Dv.ϖ (PowerSeries.C (R := Dv.Tv.V) Dv.ϖ) ^ n = arcιR Dw Dv.Tv.V Dv.ϖ (PowerSeries.C (R := Dv.Tv.V) v)) → PushInvertible Y.t.G Y.t.PP.L → ArcBasis W ρ e → ThNZ th → Mono Y.j → IsArcFr W e th (arcιR Dw Dv.Tv.V Dv.ϖ) y₀ → FrChg (letMR Dw Dv.Tv.V Dv.ϖ) 1 y₀ Dv.yR → ∀ a n, RecordAt Dv (intAt Xo c a n la) := by
   intro hL hL2 E _ _ _ H Dw l Xo c hev K₁ _ _ _ d w Z Dv O _ β Y b aw χ W ρ e th y₀ la eL hS hO hρ hpin hP hB hth hmono hy hchg
     a n F hF t ht Yv hYv hdet ev hev1 hev2

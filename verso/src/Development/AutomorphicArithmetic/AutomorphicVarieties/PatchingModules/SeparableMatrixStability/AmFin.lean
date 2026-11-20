@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Set `f : PowerSeries K →+ (Fin m → K)` to `{ toFun := fun p i => PowerSeries.coeff (i : ℕ) p map_zero' := by ext; simp map_add' := by intro a b; ext; simp }`. Establish `hs : Function.Surjective f`. Introduce `v`. Use `⟨PowerSeries.mk fun i => if h : i < m then v ⟨i, h⟩ else 0, ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using `[f]`. Establish `hk : (Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}).toAddSubgroup = f.ker`. Use extensionality with `p`. Rewrite using `[Submodule.mem_toAddSubgroup, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff, AddMonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use extensionality with `i`. Conclude with `h i i.2`. Introduce `h i hi`. Conclude with `congrFun h ⟨i, hi⟩`.
+
+Conclude with `⟨((QuotientAddGroup.quotientAddEquivOfEq hk).trans (QuotientAddGroup.quotientKerEquivOfSurjective f hs)).toEquiv⟩`.
+-/
 private theorem quot_equiv (K : Type) [Field K] (m : ℕ) :
     Nonempty ((PowerSeries K ⧸ Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}) ≃ (Fin m → K)) := by
   let f : PowerSeries K →+ (Fin m → K) :=
@@ -22,6 +31,15 @@ private theorem quot_equiv (K : Type) [Field K] (m : ℕ) :
   exact ⟨((QuotientAddGroup.quotientAddEquivOfEq hk).trans
     (QuotientAddGroup.quotientKerEquivOfSurjective f hs)).toEquiv⟩
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `CharP.exists K`. Establish `hp0 : p ≠ 0` using `CharP.char_ne_zero_of_finite K p`. Establish `hpp : p.Prime` using `(CharP.char_is_prime_or_zero K p).resolve_right hp0`. Distinguish the cases in `hpl : p = l`. Substitute `hpl` using the available equality.
+
+Conclude with `CharP.cast_eq_zero K p`. It suffices to derive a contradiction. Establish `hu : IsUnit (p : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) ?_` and prove the remaining obligations.
+
+Establish `h1 : ¬ ‖((p : ℤ) : ℤ_[l])‖ < 1`. Rewrite using `[PadicInt.norm_int_lt_one_iff_dvd]`. Introduce `hd`. Establish `e` using `(Nat.prime_dvd_prime_iff_eq (Fact.out : l.Prime) hpp).1 (Int.natCast_dvd_natCast.1 hd)`. Conclude with `hpl e.symm`.
+
+Use `push_neg at h1`. Simplify using `using h1`. Establish `hu'` using `hu.map φ`. Rewrite `hu'` using `[map_natCast, CharP.cast_eq_zero K p]`. Conclude with `not_isUnit_zero hu'`.
+-/
 private theorem l_zero (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] (φ : ℤ_[l] →+* K) : (l : K) = 0 := by
   obtain ⟨p, hp⟩ := CharP.exists K
   have hp0 : p ≠ 0 := CharP.char_ne_zero_of_finite K p
@@ -44,6 +62,11 @@ private theorem l_zero (l : ℕ) [Fact l.Prime] (K : Type) [Field K] [Finite K] 
     rw [map_natCast, CharP.cast_eq_zero K p] at hu'
     exact not_isUnit_zero hu'
 
+/- English proof (translation)
+Introduce `l _ F n x m g`. Take `⟨e⟩` from `quot_equiv x.K m`. Establish `hn : IsNilpotent (algebraMap x.A (x.Am m) x.t)` using `⟨m, by`. Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)⟩`.
+
+Use `⟨Finite.of_equiv _ e.symm, ?_, hn, hn.map (DD.C : x.Am m →+* DD (x.Am m) g), ?_, Finite.one_lt_card⟩` and prove the remaining obligations. Rewrite using `[Nat.card_congr e, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin m), Fintype.card_fin]`. Establish `h` using `l_zero l x.K (algebraMap ℤ_[l] x.K)`. Rewrite using `[← map_natCast (PowerSeries.C (R := x.K)), h, map_zero]`.
+-/
 theorem UpperTheory.V.Pa.am_fin :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (m g : ℕ), Finite (x.Am m) ∧ Nat.card (x.Am m) = Nat.card x.K ^ m ∧ IsNilpotent (algebraMap x.A (x.Am m) x.t) ∧ IsNilpotent (algebraMap x.A (DD (x.Am m) g) x.t) ∧ (l : x.A) = 0 ∧ 1 < Nat.card x.K := by
   intro l _ F n x m g

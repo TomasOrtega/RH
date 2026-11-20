@@ -10,6 +10,27 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Apply the tactic sequence `have hεε : ε * ε = 1 := by rcases hε with rfl | rfl <;> simp`. Apply the tactic sequence `have hεv : ∀ v, Valued.v (τ v ε) = 1 := fun v => by rcases hε with rfl | rfl <;> simp`. Establish `hεD : ∀ a ∈ D, ε * a ∈ D` using `fun a ha => by`. Break down `hε with rfl | rfl` into its components or cases. Simplify using `using ha`.
+
+Simplify using `using ha`. Establish `sw : ∀ a b, form σ J b a = ε * σ (form σ J a b)` using `fun a b => by`. Rewrite using `[form_swap h hJ, ← mul_assoc, hεε, one_mul]`. Establish `hne : ∃ z ∈ L, formL (σ` using `σ) J x₀ z ≠ 0 := by`. Assume the negation of the conclusion as `H`.
+
+Use `push Not at H`. Establish `h0 : formL (σ` using `σ) J x₀ = 0 := LinearMap.ext_on hlat.span_eq_top fun z hz => H z hz`. Establish `h1 : J *ᵥ (fun i => σ (x₀ i)) = 0`. Use function extensionality and compare the values at `k`. Use `LinearMap.congr_fun h0 (Pi.single k 1)` as an intermediate fact.
+
+Simplify `this` using `[formL, form]`. Establish `h2` using `Matrix.eq_zero_of_mulVec_eq_zero hdet h1`. Conclude with `hx₀ (funext fun i => by simpa using congrFun h2 i)`. Set `S : Finset (HeightOneSpectrum (𝓞 E))` to `Finset.univ.image (fun v : P => splitPrime (τ v)) ∪ Finset.univ.image (fun v : P => splitPrime ((τ v).comp σ))`. Take `⟨z₀, hz₀, hc0, hmax⟩` from `exists_max_val L hlat.fg (formL (σ := σ) J x₀) hne S`.
+
+Express the relevant statement in the definitionally equal form `form σ J z₀ x₀ ≠ 0 at hc0`. Use `set c₀ := form σ J z₀ x₀ with hc₀`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxx, hz₀x, hle⟩ : ∃ x, form σ J x x = 0 ∧ form σ J z₀ x = 1 ∧ ∀ w ∈ S, ∀ z ∈ L, w.valuation E (form σ J z x) ≤ 1 := by`. Use `⟨σ c₀⁻¹ • x₀, by rw [form_smul_left, form_smul_right, hxx₀]; simp, by rw [form_smul_right, sigma_sigma h, inv_mul_cancel₀ hc0], fun w hw z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[form_smul_right, sigma_sigma h, map_mul, map_inv₀]`.
+
+Conclude with `inv_mul_le_one_of_le₀ (hmax w hw z hz) zero_le`. Take `⟨y, hyy, hxy, hL⟩` from `exists_partner h hε hJ D L hlat.fg hd θ hθ x hxx z₀ hz₀ (by rw [hz₀x]; exact one_ne_zero)`. Establish `hyx : form σ J y x = ε` using `by rw [sw, hxy, map_one, mul_one]`. Use `⟨x, y, hxx, hyy, hxy, hL, fun v => ⟨⟨fun c hc => ?_, ?_⟩, fun c hc => ?_, 1, ?_, by simp⟩⟩` and prove the remaining obligations. Use `hεD _ ((hd _).1 hc z₀ hz₀)` as an intermediate fact.
+
+Rewrite `this` using `[form_smul_left, sw z₀ x, hz₀x, map_one, mul_one, mul_left_comm, hεε, mul_one]`. Conclude with `hDτ v c this`. Take `⟨d, hdw, hdC⟩` from `exists_denom (L.map ((formL (σ := σ) J x).restrictScalars (𝓞 E))) (hlat.fg.map _) (splitPrime ((τ v).comp σ)) (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hle _ (by simp [S]) z hz)`.
+
+Use `⟨σ d, (hd _).2 fun z hz => ?_, ?_⟩` and prove the remaining obligations. Take `⟨o, ho⟩` from `hdC _ ⟨z, hz, rfl⟩`. Express the relevant statement in the definitionally equal form `(d : E) * form σ J z x = o at ho`. Rewrite using `[form_smul_left, sw z x, mul_left_comm, ← map_mul, ho]`. Use `hεD _ ?_` and prove the remaining obligations.
+
+Use `D.smul_mem (conjInt σ o) hD1` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E, smul_eq_mul, mul_one]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `Valued.v (((τ v).comp σ) d) = 1`. Rewrite using `[valued_apply_eq_valuation]`. Conclude with `((splitPrime ((τ v).comp σ)).valuation_eq_one_iff_notMem (K := E)).2 hdw`.
+
+Use `hle (splitPrime (τ v)) (by simp [S]) _ hc` as an intermediate fact. Rewrite `this` using `[form_smul_left, hyx, ← valued_apply_eq_valuation, map_mul, map_mul, hεv, mul_one]`. Then use the resulting hypothesis. Use `(hL z₀ hz₀).1` as an intermediate fact. Rewrite `this` using `[hz₀x]`. Then use the resulting hypothesis.
+-/
 theorem exists_adapted_pair (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hdet : J.det ≠ 0) {ε : E}
     (hε : ε = 1 ∨ ε = -1) (hJ : ∀ i j, σ (J j i) = ε * J i j) (D : Submodule (𝓞 E) E) (hD1 : (1 : E) ∈ D)
     (L : Submodule (𝓞 E) (Fin n → E)) (hlat : L.IsLattice E) (hd : ∀ y, y ∈ L ↔ ∀ x ∈ L, form σ J y x ∈ D)

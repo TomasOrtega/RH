@@ -21,6 +21,11 @@ open GlobalTheory.FieldBaseChange (constVal gs_scal)
 
 section Geo
 
+/- English proof (translation)
+Use `hinj _ (fn_ext fun y hy => ?_)` and prove the remaining obligations. Use `choose J hJ using fun ψ : Y' ⟶ X => exists_chart hL (ψ y)`. Establish `hJ' : Good L y J` using `hJ`. Establish `hy' : (𝟙 Y' ≫ h) y ∈ LB.wchart L φ j` using `hy`. Establish `m` using `hJ'.mem φ (𝟙 Y' ≫ h)`.
+
+Use `(gs_pull (𝟙 Y') h y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') h y _ hy _).symm)` and prove the remaining obligations. Conclude with `(sec_trans s _ y hy' m).trans ((congrArg _ (H y J hJ')).trans (sec_trans s' _ y hy' m).symm)`.
+-/
 theorem sec_ext_of_inj {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {s s' : LB.Sec (LB.LinComb L φ ε)} {h : Y' ⟶ Y}
     (hinj : ∀ W : Y.Opens, Function.Injective (h.app W))
@@ -33,6 +38,15 @@ theorem sec_ext_of_inj {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type}
   refine (gs_pull (𝟙 Y') h y _ hy _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') h y _ hy _).symm)
   exact (sec_trans s _ y hy' m).trans ((congrArg _ (H y J hJ')).trans (sec_trans s' _ y hy' m).symm)
 
+/- English proof (translation)
+Establish `he : eSec G ≫ f.left = eSec G`. Simplify using `only [eSec, ← Over.comp_left, IsMonHom.one_hom]`. Take `⟨t, ht, vt⟩` from `exists_gen Lr.isLB (K' := PUnit) (φ' := fun _ => eSec G) (ε' := fun _ => ((N - 1 : ℕ) : ℤ) * 1) (fun U _ g => by`. Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, he, Finset.univ_unique, Finset.prod_singleton]`.
+
+Rewrite using `[← zpow_add]`. Use `congr 1`. Use the proof step `omega)`. Use the proof step `(LB.pullGen Lr.L _ _ mu (eSec G)) (DVR.pullGen_isGen _ _ _ _ hmu _)`. Take `⟨c, hc, vc⟩` from `FrameGeo.exists_ratio Lr.isLB (𝟙 _) (𝟙 _) (Category.comp_id _) (by rw [Scheme.Hom.id_appTop]; exact Function.surjective_id) (FrameGeo.powGen_isGen Lr.L _ _ Lr.rig Lr.rigGen (N - 1)) ht`.
+
+Use `⟨scaleGen (hc.map G.hom.appTop.hom).unit mu, scaleGen_isGen _ _ hmu, fun Z r z J hJ => Units.ext ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (vc Z r z J hJ).symm` and prove the remaining obligations. Rewrite using `[vt Z r z J hJ, val_pull hJ]`. Use `(congrArg Units.val ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res (r ≫ eSec G) z le_top (hJ.mem _ (r ≫ eSec G)) _) rfl))).trans ?_` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ rfl` and prove the remaining obligations.
+
+Use `(gs_unit (r ≫ eSec G) z ⊤ trivial _).symm.trans ((gs_pull (r ≫ eSec G) G.hom z ⊤ trivial c).trans ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, show eSec G ≫ G.hom = 𝟙 _ from Over.w η[G]]`.
+-/
 theorem exists_norm {S : Scheme.{0}} {G : Over S} [GrpObj G] (Lr : RigLB G) (f : G ⟶ G) [IsMonHom f] {N : ℕ}
     (hN : 1 ≤ N) (mu : LB.Gen (LB.LinComb Lr.L (K := Fin 2) ![𝟙 G.left, f.left] ![(N : ℤ), -1])) (hmu : mu.IsGen) :
     ∃ mu' : LB.Gen (LB.LinComb Lr.L (K := Fin 2) ![𝟙 G.left, f.left] ![(N : ℤ), -1]), mu'.IsGen ∧
@@ -65,10 +79,20 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G]
 
 omit [IsDomain V] [IsDiscreteValuationRing V] [GrpObj G] [IsCommMonObj G] in
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem endK_gK (f : G ⟶ G) : endK f ≫ gK = gK ≫ f.left := pullback.lift_fst _ _ _
 
 omit [IsDomain V] [IsDiscreteValuationRing V] [IsCommMonObj G] in
 
+/- English proof (translation)
+Take `⟨u, hu, vu⟩` from `exists_gen Lr.isLB (K' := Fin 2) (φ' := ![gK, endK f ≫ gK]) (ε' := ![((k * N : ℕ) : ℤ), -(k : ℤ)]) (fun U _ g => by`. Rewrite using `[Fin.prod_univ_two, Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, endK_gK, Nat.cast_mul, mul_neg, _root_.mul_one])`. Use the proof step `(LB.pullGen Lr.L _ _ (GeneratorPullback.powGen Lr.L _ _ mu k) gK)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ (FrameGeo.powGen_isGen _ _ _ _ hmu k) _)`.
+
+Establish `vu' : ∀ (Z : Scheme.{0}) (r : Z ⟶ pullback G.hom (jK V)) (z : Z) (J), Good Lr.L z J → val u r z J = val mu (r ≫ gK) z J ^ k` using `fun Z r z J hJ => by`. Rewrite using `[vu Z r z J hJ, val_pull hJ, FrameGeo.val_powGen]`. Use `⟨u, hu, corr_of_val Lr.isLB fun y J hJ => ?_, vu'⟩` and prove the remaining obligations. Establish `e : (𝟙 _ ≫ unitK) ≫ (gK : _ ⟶ G.left) = (𝟙 _ ≫ jK V) ≫ eSec G`. Rewrite using `[Category.id_comp, Category.id_comp]`.
+
+Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[val_pull hJ, val_pull hJ, vu' _ _ y J hJ, e, hn _ _ y J hJ, FrameGeo.val_powGen, FrameGeo.val_powGen, ← pow_mul, mul_comm]`.
+-/
 theorem exists_generic (Lr : RigLB G) (f : G ⟶ G) (N k : ℕ)
     (mu : LB.Gen (LB.LinComb Lr.L (K := Fin 2) ![𝟙 G.left, f.left] ![(N : ℤ), -1])) (hmu : mu.IsGen)
     (hn : ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of V)) (z : Z) (J), Good Lr.L z J →
@@ -96,6 +120,13 @@ theorem exists_generic (Lr : RigLB G) (f : G ⟶ G) (N k : ℕ)
 
 omit [IsDiscreteValuationRing V] [GrpObj G] [IsCommMonObj G] in
 
+/- English proof (translation)
+Establish `hk` using `FrameGeo.powGen_isGen _ _ _ _ hmu k`. Take `⟨τ, hτ⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => 𝟙 G.left) (ε' := fun _ => ((k * N : ℕ) : ℤ)) (fun W _ g => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Finset.univ_unique, Finset.prod_singleton, Matrix.cons_val_zero, Matrix.cons_val_one, mul_neg, _root_.mul_one, zpow_neg, Category.comp_id, Nat.cast_mul]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one])`. Use the proof step `(pullMulSec σ f.left _ hk)`.
+
+Establish `v : ∀ (Z : Scheme.{0}) (r : Z ⟶ G.left) (z : Z) (J), Good L z J → sval (SecOps.secScale (scal G.hom t) τ) r z J = constVal (r ≫ G.hom) z t * (sval σ (r ≫ f.left) z J * (val mu r z J).val ^ k)` using `fun Z r z J hJ => by`. Rewrite using `[PullExpField.sval_secScale _ _ _ _ hJ, gs_scal, hτ Z r z J hJ, sval_pullMulSec _ _ _ hk r z hJ, FrameGeo.val_powGen, Units.val_pow_eq_pow_val]`. Establish `: IsDominant (jK V)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V))).le.trans bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK V)` as an intermediate fact. Establish `e` using `sec_ext_of_inj hL (s := σ') (s' := SecOps.secScale (scal G.hom t) τ) (h := (gK : pullback G.hom (jK V) ⟶ G.left)) (fun W => (pullback.fst G.hom (jK V)).app_injective W) (fun y J hJ => by`.
+
+Rewrite using `[H _ _ y J hJ, v _ _ y J hJ, Units.val_pow_eq_pow_val]`. Simplify using `only [Category.assoc, endK_gK, pullback.condition])`. Conclude with `(congrArg (gs r z _) (e _)).trans (v Z r z J hJ)`.
+-/
 theorem sval_of_generic [Flat G.hom] {L : LB G.left} (hL : L.IsLB) (f : G ⟶ G) (N k : ℕ)
     (mu : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 G.left, f.left] ![(N : ℤ), -1])) (hmu : mu.IsGen)
     (σ : H0 L k) (σ' : H0 L (k * N)) (t : V)
@@ -133,6 +164,9 @@ section Series
 
 open GlobalTheory.JetSer GlobalTheory.JetSer.FBOf ReciprocityTheory.ChartRestriction.G.Chart
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z U (h trivial), fnVal, dif_pos h]`. Establish `e : ∀ b, (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom b) = b` using `fun b => congrArg (fun q => q.hom b) (Scheme.ΓSpecIso (CommRingCat.of A)).hom_inv_id`. Rewrite using `[e]`. Conclude with `(TopCat.Presheaf.germ_res_apply (Spec (CommRingCat.of A)).presheaf (homOfLE h) z trivial _).symm`.
+-/
 theorem gs_eq_germ_fnVal {A : Type} [CommRing A] {X : Scheme.{0}} (r : Spec (CommRingCat.of A) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ r ⁻¹ᵁ U) (a : Γ(X, U)) (z : Spec (CommRingCat.of A)) :
     gs r z U a = ((Spec (CommRingCat.of A)).presheaf.germ ⊤ z trivial).hom
@@ -145,17 +179,28 @@ theorem gs_eq_germ_fnVal {A : Type} [CommRing A] {X : Scheme.{0}} (r : Spec (Com
 
 variable {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {d : ℕ}
 
+/- English proof (translation)
+Establish `: (![pt R d 0] : Fin 1 → Pt R 1 d) = fun j => pt R d j`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[this, FBOf.ev_self]`.
+-/
 theorem ev_pt_zero (s : PS R 1 d) : ev (n := 1) ![pt R d 0] s = s := by
   have : (![pt R d 0] : Fin 1 → Pt R 1 d) = fun j => pt R d j := by
     funext j; fin_cases j; rfl
   rw [this, FBOf.ev_self]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(MvPowerSeries.substAlgHom (R := R) (FramePull.hasSubst_points ha)).toRingHom, fun f => (congrFun (MvPowerSeries.coe_substAlgHom (FramePull.hasSubst_points ha)) f).symm, fun c => (MvPowerSeries.substAlgHom (R := R) (FramePull.hasSubst_points ha)).commutes c⟩`.
+-/
 theorem exists_evHom {m n : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) :
     ∃ Ψ : PS R m d →+* PS R n d, (∀ f, ev a f = Ψ f) ∧ ∀ c, Ψ (MvPowerSeries.C c) = MvPowerSeries.C c :=
   ⟨(MvPowerSeries.substAlgHom (R := R) (FramePull.hasSubst_points ha)).toRingHom,
     fun f => (congrFun (MvPowerSeries.coe_substAlgHom (FramePull.hasSubst_points ha)) f).symm,
     fun c => (MvPowerSeries.substAlgHom (R := R) (FramePull.hasSubst_points ha)).commutes c⟩
 
+/- English proof (translation)
+Take `⟨-, -, j3, -⟩` from `hJet R (Fin 1 × Fin d)`. Take `⟨r1, -⟩` from `hRep R G d x hx (Fin 1 × Fin d)`. Take `⟨Y, hY, -⟩` from `r1 (pt R (n := 1) d 0) (TB.WickVanishing.gp_pt 0)`. Use `j3 g g' fun m => ?_` and prove the remaining obligations. Use `(h 1 _ _ hY m).2.symm.trans (h' 1 _ _ hY m).2` as an intermediate fact.
+
+Rewrite `this` using `[ev_pt_zero, ev_pt_zero]`. Then use the resulting hypothesis.
+-/
 theorem isSer1_unique (hJet : JetAlgSt) (hRep : RepSt) {x : JetSer.Fam G (Fin d)} (hx : IsUnivChart G d x)
     {U : G.left.Opens} {f : Γ(G.left, U)} {g g' : PS R 1 d} (h : IsSer1 x U f g) (h' : IsSer1 x U f g') :
     g = g' := by
@@ -166,6 +211,21 @@ theorem isSer1_unique (hJet : JetAlgSt) (hRep : RepSt) {x : JetSer.Fam G (Fin d)
   have := (h 1 _ _ hY m).2.symm.trans (h' 1 _ _ hY m).2
   rwa [ev_pt_zero, ev_pt_zero] at this
 
+/- English proof (translation)
+Take `⟨j1, -, j3, -⟩` from `hJet R (Fin 1 × Fin d)`. Take `⟨r1, -⟩` from `hRep R G d x hx (Fin 1 × Fin d)`. Take `⟨Y, hY, -⟩` from `r1 (pt R (n := 1) d 0) (TB.WickVanishing.gp_pt 0)`. Establish `hA : Rep x α (fun m => Y m ≫ f)`. Use `hα.2 1 _ _ hY` as an intermediate fact.
+
+Rewrite `this` using `[TB.WickVanishing.gt_comp1_pt_right]`. Then use the resulting hypothesis. Use `j3 _ _ fun m => ?_` and prove the remaining obligations. Take `⟨τ, hτ, -⟩` from `j1 m`. Use `eq_of_germ fun z => ?_` and prove the remaining obligations. Take `⟨J, hJ, hJ'⟩` from `exists_good_const L hL j z`.
+
+Rewrite using `[← hτ, ← hτ]`. Set `Φ` to `(((Spec (CommRingCat.of (JetR R (Fin 1 × Fin d) m))).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of (JetR R (Fin 1 × Fin d) m))).inv.hom).comp τ.toRingHom`. Establish `sv : ∀ (n : ℕ) (s : H0 L n) (r : Spec (CommRingCat.of (JetR R (Fin 1 × Fin d) m)) ⟶ G.left) (g : PS R 1 d), (⊤ ≤ r ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => j) ∧ fnVal r _ (s.f (fun _ => j)) = toJet m g) → Φ g = sval s r z J` using `fun n s r g h => by`. Rewrite using `[sval_of s r z J (fun _ => j) fun i => hJ' _ (Set.mem_iInter.1 (h.1 (trivial : z ∈ (⊤ : _))) i)]`. Use `Eq.trans ?_ (gs_eq_germ_fnVal _ _ h.1 _ z).symm` and prove the remaining obligations.
+
+Conclude with `congrArg _ (congrArg _ ((hτ _).trans h.2.symm))`. Establish `e₁` using `sv _ σ' _ _ (hS' 1 _ _ hY m)`. Establish `e₂` using `sv _ σ _ _ (hS 1 _ _ hA m)`. Establish `e₃ : Φ (ev (n` using `1) ![pt R d 0] M) = (val mu (Y m).left z J).val := by`. Take `⟨h1, h2⟩` from `hM 1 _ _ hY m`.
+
+Use `Eq.trans ?_ (congrArg Units.val (val_const hJ' mu _ h1)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (gm_eq_germ_fnVal _ _ h1 _ z).symm` and prove the remaining obligations. Conclude with `congrArg _ (congrArg _ ((hτ _).trans h2.symm))`. Establish `e₄ : Φ (MvPowerSeries.C t) = constVal ((Y m).left ≫ G.hom) z t`. Rewrite using `[Over.w (Y m), constVal, gs_eq _ z ⊤ trivial]`.
+
+Establish `a₁ : τ (MvPowerSeries.C t) = algebraMap R _ t` using `τ.commutes t`. Establish `a₂` using `congrArg (fun q => q.hom t) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R (JetR R (Fin 1 × Fin d) m))))`. Conclude with `congrArg _ ((congrArg _ a₁).trans a₂)`. Rewrite `e₁`, `e₃` using `[ev_pt_zero]`. Use `show Φ S' = Φ _`.
+
+Rewrite using `[map_mul, map_mul, map_pow, e₁, e₂, e₃, e₄]`. Conclude with `H _ _ z J hJ`.
+-/
 theorem series_pull (hJet : JetAlgSt) (hRep : RepSt) {x : JetSer.Fam G (Fin d)} (hx : IsUnivChart G d x)
     {L : LB G.left} (hL : L.IsLB) (j : L.ι) {f : G ⟶ G} {α : Pt R 1 d} (hα : IsMapOf x x f α) {N k q : ℕ}
     (mu : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 G.left, f.left] ![(N : ℤ), -1]))
@@ -215,6 +275,9 @@ theorem series_pull (hJet : JetAlgSt) (hRep : RepSt) {x : JetSer.Fam G (Fin d)} 
 
 end Series
 
+/- English proof (translation)
+Introduce `f` and use `by obtain ⟨c, hc⟩ := h ((fst G G).left.appTop.hom f) refine ⟨c, ?_⟩ have e := congrArg (lift (𝟙 G) (𝟙 G)).left.appTop.hom hc rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, Over.w, ← Over.comp_left, lift_fst] at e simpa …`.
+-/
 theorem surjective_appTop {S : Scheme.{0}} {G : Over S} [GrpObj G]
     (h : Function.Surjective (G ⊗ G).hom.appTop.hom) : Function.Surjective G.hom.appTop.hom := fun f => by
   obtain ⟨c, hc⟩ := h ((fst G G).left.appTop.hom f)
@@ -224,6 +287,35 @@ theorem surjective_appTop {S : Scheme.{0}} {G : Over S} [GrpObj G]
     Over.w, ← Over.comp_left, lift_fst] at e
   simpa using e
 
+/- English proof (translation)
+Introduce `hL _ _ hJet hRep hSer hEx hRos _ E _ _ _ H V _ _ _ F _ _ _ _ _ _ y a N k hN hk ha h hh`. Set `_` to `H.starRing`. Use `y.P.U.smooth` as an intermediate fact. Use `y.t.act.hom a` as an intermediate fact. Establish `hLB` using `y.P.U.LG.isLB`.
+
+Take `⟨s₂, s₃⟩` from `surjective_appTop_sq_cube y.P.U.toUnifPre`. Take `⟨⟨mu₀, hmu₀⟩, hgeo⟩` from `FrameGeo.frame_pullback_geo hJet hRep hSer hEx hRos V y.t.G (surjective_appTop s₂) s₂ s₃ y.P.U.LG y.P.U.cubG (𝓞 E) y.t.act y.u y.hu y.d y.x y.hx y.j y.hj y.B y.hB H.w0 y.ρ y.hρ a N ha`. Take `⟨mu, hmu, hn⟩` from `exists_norm y.P.U.LG (y.t.act.act a) hN mu₀ hmu₀`. Take `⟨u, hu, hc, vu⟩` from `exists_generic y.P.U.LG (y.t.act.act a) N k mu hmu hn`. Take `⟨r, hr⟩` from `y.exists_frameSer`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, JetSer.IsSer1 y.x _ (mu.s (fun _ => y.j)).val M := by`. Use `((hEx V y.t.G y.d y.x y.hx).1 _ (fun z hz => Set.mem_iInter.2 fun i => ?_) _).exists` and prove the remaining obligations. Establish `key : η[y.t.G].left ≫ (![𝟙 y.t.G.left, (y.t.act.act a).left] : Fin 2 → _) i = η[y.t.G].left` using `by fin_cases i`. Conclude with `Category.comp_id _`. Use `show η[y.t.G].left ≫ (y.t.act.act a).left = _`.
+
+Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Establish `: (η[y.t.G].left ≫ (![𝟙 y.t.G.left, (y.t.act.act a).left] : Fin 2 → _) i) z ∈ y.P.U.LG.L.U y.j`. Rewrite using `[key]`. Conclude with `y.hj hz`. Conclude with `this`.
+
+Take `⟨w, κ, hw, hexp⟩` from `hgeo mu hmu M r hM hr`. Use `⟨w, κ⁻¹ ^ k, hexp F h hh, ?_⟩` and prove the remaining obligations. Introduce and unpack `s s' _ hP ⟨l, c, σ, f, g, r', h₁, h₂, hr', h₃, rfl⟩`. Take `rfl` from `isSer1_unique hJet hRep y.hx hr hr'`. Establish `hB` using `GlobalTheory.T.expansion_commutes_pullback_cmEndo_four_le hL V E H y.t y.P a N ha hN k hk`.
+
+Establish `T` using `PullExpField.term hL y.P.U y.P.oD a (y.t.act.act a) k N (by omega) hB u hu hc F`. Use `choose t τ f' θ θ' ht hτ hθ hθ' hPi hv using fun i => T (σ i) (f i) (h₁ i)`. Establish `hs` using `(PullExpField.secLin_iff_comb c hθ s).1 h₂`. Set `c' : Fin l → F` to `fun i => c i * (PullExpField.toF V F (t i))⁻¹`. Establish `hc' : ∀ i, c' i * PullExpField.toF V F (t i) = c i` using `fun i => inv_mul_cancel_right₀ (PullExpField.toF_ne_zero F (ht i)) _`.
+
+Establish `hs' : s' = ∑ i, c' i • θ' i`. Use `PullLin.pullAl_unique hL.globalFns _ a k N hP ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos l with rfl | hl` into its components or cases. Use `PullLin.pullAl_smul _ a k N (0 : F) hP` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`.
+
+Rewrite using `[hs, Fin.sum_univ_zero, Fin.sum_univ_zero]`. Conclude with `this`. Use `GlobalTheory.T.pullAl_linear_combination hL.globalFns V y.P.D F _ y.P.oD a k N l hl c' _ _ hPi` as an intermediate fact. Simplify using `only [smul_smul, hc'] at this`. Rewrite using `[hs]`.
+
+Conclude with `this`. Establish `cz` using `FramePull.cz1 (y.B.A.const a)`. Take `⟨Ψ, hΨ, -⟩` from `exists_evHom cz`. Use `⟨l, c', τ, f', fun i => MvPowerSeries.C (t i) * (MvPowerSeries.C ((κ⁻¹ ^ k : Vˣ) : V) * (ev (n := 1) ![y.B.A.act a] (g i) * w ^ k)), r, hτ, (PullExpField.secLin_iff_comb c' hθ' _).2 hs', hr, fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨S, hS, e⟩` from `h₃ i`.
+
+Take `⟨S', hS'⟩ : ∃ S', JetSer.IsSer1 y.x _ ((τ i).f (fun _ => y.j)) S'` from `((hEx V y.t.G y.d y.x y.hx).1 (LB.wchart y.P.U.LG.L (fun _ : Fin 1 => 𝟙 y.t.G.left) (fun _ => y.j)) (fun z hz => Set.mem_iInter.2 fun _ => y.hj hz) _).exists`. Use `⟨S', hS', ?_⟩` and prove the remaining obligations. Rewrite using `[series_pull hJet hRep y.hx hLB y.j (y.hB.map a) mu (σ i) (τ i) (t i) (sval_of_generic hLB _ N k mu hmu _ _ _ fun Z q z J hJ => by rw [hv i Z q z J hJ, vu Z q z J hJ]) hM hS hS', ← e, hΨ (g i * r ^ k), map_mul, map_pow, ← hΨ, ← hΨ]`. Establish `hκ : (MvPowerSeries.C ((κ⁻¹ ^ k : Vˣ) : V) : PS V 1 y.d) * MvPowerSeries.C (κ : V) ^ k = 1`. Rewrite using `[← map_pow, ← map_mul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow, inv_mul_cancel, one_pow, Units.val_one, map_one]`.
+
+Establish `hwk` using `congrArg (· ^ k) hw`. Simplify using `only [mul_pow] at hwk`. Rewrite using `[mul_comm k N, pow_mul]`. Take the linear combination `(MvPowerSeries.C (t i) * MvPowerSeries.C ((κ⁻¹ ^ k : Vˣ) : V) * ev (n := 1) ![y.B.A.act a] (g i)) * hwk + (MvPowerSeries.C (t i) * ev (n := 1) ![y.B.A.act a] (g i) * M ^ k * ev (n := 1) ![y.B.A.act a] r ^ k) * hκ`. Establish `eV : TWO.algVF (V` using `V) (F := F) = algebraMap V F := (IsScalarTower.algebraMap_eq V _ F).symm`.
+
+Establish `czK` using `FramePull.cz1 (FramePull.constantCoeff_actK (k := F) y.B a)`. Take `⟨Θ, hΘ, hΘ'⟩` from `exists_evHom czK`. Rewrite using `[hΘ, map_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (fun j i => MvPowerSeries.map (algebraMap V F) ((![y.B.A.act a] : Fin 1 → Pt V 1 y.d) j i)) = ![y.B.actK F a]`.
+
+Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression. Establish `e' : algebraMap V F (t i) = PullExpField.toF V F (t i)` using `IsScalarTower.algebraMap_apply V _ F _`. Rewrite using `[eV, map_mul Θ, hΘ', ← hΘ, ← hc' i, map_mul _ (c' i), map_mul (MvPowerSeries.map _), map_mul (MvPowerSeries.map _), map_mul (MvPowerSeries.map _), map_pow (MvPowerSeries.map _), MvPowerSeries.map_C, MvPowerSeries.map_C, FramePull.map_ev_eq _ cz, e, e']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem germ_pullback : Laws → Laws4 → TwistBCSpanStatement → JetSer.JetAlgSt → JetSer.RepSt → JetSer.SerSt →
     JetSer.SerExSt → JetSer.RosIdSt → FamGerm.GermExSt → PullGermSt := by
   intro hL _ _ hJet hRep hSer hEx hRos _ E _ _ _ H V _ _ _ F _ _ _ _ _ _ y a N k hN hk ha h hh

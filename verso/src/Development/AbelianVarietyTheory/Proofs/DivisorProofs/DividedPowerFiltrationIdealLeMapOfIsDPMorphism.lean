@@ -7,6 +7,27 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 
 namespace GlobalTheory.PDA
 
+/- English proof (translation)
+Introduce `B _ J δ C _ J' δ' f hf hJ N`. Substitute `hJ` using the available equality. Establish `hmul : ∀ {m n : ℕ} {a b : C}, a ∈ (fil δ m).map f → b ∈ (fil δ n).map f → a * b ∈ (fil δ (m + n)).map f`. Introduce `m n a b ha hb`. Establish `: (fil δ m).map f * (fil δ n).map f ≤ (fil δ (m + n)).map f`.
+
+Rewrite using `[← Ideal.map_mul]`. Conclude with `Ideal.map_mono (Ideal.mul_le.2 fun x hx y hy ↦ ExpBij.mul_mem_dpFil δ hx hy)`. Conclude with `this (Ideal.mul_mem_mul ha hb)`. Establish `hzero : ∀ c : C, c ∈ (fil δ 0).map f`. Introduce `c`.
+
+Rewrite using `[fil_zero_eq_top, Ideal.map_top]`. Discharge the goal by the elementary cases of `trivial`. Establish `hdp : ∀ y ∈ J.map f, ∀ n, δ'.dpow n y ∈ (fil δ n).map f`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `y ∈ Ideal.span (f '' (J : Set B)) at hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Introduce `n`. Rewrite using `[hf.dpow_comp a ha]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (ExpBij.dpow_mem_dpFil δ ha n)`. Consider the case `zero`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `hzero _`.
+
+Rewrite using `[δ'.dpow_eval_zero hn.ne']`. Conclude with `Ideal.zero_mem _`. Consider the case `add x y hx hy ihx ihy`. Introduce `n`. Rewrite using `[δ'.dpow_add hx hy]`.
+
+Use `Ideal.sum_mem _ fun k hk ↦ ?_` and prove the remaining obligations. Establish `hk' : k.1 + k.2 = n` using `by simpa using hk`. Rewrite using `[← hk']`. Conclude with `hmul (ihx k.1) (ihy k.2)`. Consider the case `smul c x hx ih`.
+
+Introduce `n`. Rewrite using `[smul_eq_mul, δ'.dpow_mul hx]`. Conclude with `Ideal.mul_mem_left _ _ (ih n)`. Establish `hprod : ∀ l : List (ℕ × C), (∀ p ∈ l, p.2 ∈ J.map f) → (l.map fun p ↦ δ'.dpow p.1 p.2).prod ∈ (fil δ (l.map Prod.fst).sum).map f`. Introduce `l hl`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact hzero _`. Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `hmul (hdp p.2 (hl p (by simp)) p.1) (ih fun q hq ↦ hl q (by simp [hq]))`.
+
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Conclude with `Ideal.map_mono (ExpBij.dpFil_anti δ h2) (hprod l h1)`.
+-/
 theorem fil_le_map_fil : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (C : Type) [CommRing C]
     (J' : Ideal C) (δ' : DividedPowers J') (f : B →+* C), IsDPMorphism δ δ' f → J' = J.map f →
     ∀ N, fil δ' N ≤ (fil δ N).map f := by

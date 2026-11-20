@@ -5,6 +5,13 @@ open Module
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hq'` using `posDef_realExt_of_tendsto q hq`. Take `⟨e, h1, -, -⟩` from `exists_reduced_basis_unique_min_of_le hd hg q hq'`. Establish `hp` using `posDef_of_posDef_realExt hq'`. Use `set c := (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) with hc`. Establish `hc0 : 0 ≤ c` using `by positivity`.
+
+Establish `hN' : 1 + 4 * c < ((N : ℤ) : ℝ)`. Rewrite using `[hc, ← mul_assoc]`. Conclude with `hN` after adjusting the coercions. Use `⟨e, fun i j μ hμ => ?_⟩` and prove the remaining obligations. Rewrite using `[← natCast_zsmul]`.
+
+Use `⟨(lt_add_smul_of_abs_polar_le q hc0 (by linarith) (hp μ hμ) (h1 i μ)).1, (lt_add_smul_of_abs_polar_le q (c := 2 * c) (by positivity) (by linarith) (hp μ hμ) ?_).1⟩` and prove the remaining obligations. Rewrite using `[QuadraticMap.polar_add_left]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Combine the linear relations using `[h1 i μ, h1 j μ]`.
+-/
 theorem exists_basis_unique_min_pair_sums (X : Type) [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (q : QuadraticMap ℤ X ℝ)
     (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) (d g N : ℕ) (hd : finrank ℤ X = d)

@@ -12,6 +12,11 @@ open GlobalTheory.TwistChoice (Reading ReadsAt)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `hP : Pr`. Conclude with `⟨φ, h hP, fun _ => rfl⟩`. Use `⟨ZMod.stdAddChar, ?_, fun h' => absurd h' hP⟩` and prove the remaining obligations. Introduce `h1`. Establish `hprim` using `ZMod.isPrimitive_stdAddChar p`.
+
+Apply `hprim (a := 1) one_ne_zero` to reduce the goal to its premises. Rewrite using `[AddChar.mulShift_one, h1]`.
+-/
 theorem exists_nontrivial_addChar_eq_of_ne (p : ℕ) [Fact p.Prime] (Pr : Prop) (φ : AddChar (ZMod p) ℂ) (h : Pr → φ ≠ 1) :
     ∃ ψ' : AddChar (ZMod p) ℂ, ψ' ≠ 1 ∧ (Pr → ψ' = φ) := by
   by_cases hP : Pr

@@ -20,6 +20,19 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {e : ℕ} [NeZero e]
   (K : Type) [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
   [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a]
 
+/- English proof (translation)
+Set `ζ : rootsOfUnity e K` to `rootsOfUnity.mkOfPowEq (algebraMap O K (t (WittVector.teichmuller l z))) (by`. Rewrite using `[← map_pow, ← map_pow, ← map_pow, hze, map_one, map_one, map_one])`. Use `⟨⟨ζ, Multiplicative.ofAdd s⟩, fun f f' hf' => ?_⟩` and prove the remaining obligations. Use `set m : ℕ := s.val with hmdef`. Establish `hms : ((m : ℕ) : ZMod a) = s` using `ZMod.natCast_zmod_val s`.
+
+Use `set c : ZMod a → O := fun τ => emb t τ (WittVector.teichmuller l z) with hc`. Establish `hroot : ∀ τ, TameGal.root (⟨ζ, Multiplicative.ofAdd s⟩ : TameGal K l e a) τ = algebraMap O K (c τ)` using `fun τ => by`. Establish `h1 : c τ = t (WittVector.teichmuller l z) ^ l ^ (-τ).val`. Express the relevant statement in the definitionally equal form `t ((sigma l a ^ (-τ).val) (WittVector.teichmuller l z)) = _`. Rewrite using `[sigma_pow_teich, map_pow]`.
+
+Rewrite using `[h1, map_pow]`. Express the relevant statement in the definitionally equal form `(((ζ ^ l ^ (-τ).val : rootsOfUnity e K) : Kˣ) : K) = _`. Rewrite using `[SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, rootsOfUnity.coe_mkOfPowEq]`. Establish `hf'' : ∀ τ, f' τ = equivA O K (rescale (c τ) ((equivA O K).symm (f (τ - m))))` using `fun τ => by`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[hf' τ, ringAct_apply, hroot, coe_equivA, ← rescale_map, ← coe_equivA, AlgEquiv.apply_symm_apply, hms]`. Both sides reduce to the same expression. Establish `hRHS : ϖ.iTot t K f' = ∑ τ, idem (constA t) τ * ϖ.evO O (rescale (c τ) ((equivA O K).symm (f (τ - m))))`. Rewrite using `[PiSys.iTot, glue_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf'' τ, PiSys.iA_equivA]`. Rewrite using `[hRHS, PiSys.iTot, glue_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.addRight (m : ZMod a)) _ _ fun σ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, galOA_idem t hs, Equiv.coe_addRight, add_sub_cancel_right]`. Express the relevant statement in the definitionally equal form `_ * galOA O k (ϖ.evO O ((equivA O K).symm (f σ))) = _`.
+
+Rewrite using `[galOA_evO t ϖ z hz.symm, idem_mul_glue]`.
+-/
 theorem covers_of_sigma_teich {k : GQ l} (s : ZMod a) (z : Fq l a) (hze : z ^ e = 1)
     (hs : ∀ w : Wq l a, Per.σA k (wA l a w) = wA l a ((sigma l a ^ s.val) w))
     (hz : ϖ.kummer k = Fq.val l a z) : ∃ γ : TameGal K l e a, Covers K t ϖ k γ := by
@@ -54,5 +67,8 @@ theorem covers_of_sigma_teich {k : GQ l} (s : ZMod a) (z : Fq l a) (hze : z ^ e 
 
 end GlobalTheory.CoverGen
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ K _ _ _ _ _ _ _ _ _ _ t ϖ _ s z hze hs hz` and use `GlobalTheory.CoverGen.covers_of_sigma_teich t ϖ K s z hze hs hz`.
+-/
 theorem GlobalTheory.CoverGen.exists_covers_of_sigma_teich : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (k : GQ l) (s : ZMod a) (z : Fq l a), z ^ e = 1 → (∀ w : Wq l a, Per.σA k (wA l a w) = wA l a ((sigma l a ^ s.val) w)) → ϖ.kummer k = Fq.val l a z → ∃ γ : TameGal K l e a, Covers K t ϖ k γ :=
   fun _ _ _ _ _ _ _ K _ _ _ _ _ _ _ _ _ _ t ϖ _ s z hze hs hz => GlobalTheory.CoverGen.covers_of_sigma_teich t ϖ K s z hze hs hz

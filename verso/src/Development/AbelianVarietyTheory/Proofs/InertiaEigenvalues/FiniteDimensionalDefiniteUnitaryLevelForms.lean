@@ -9,6 +9,11 @@ namespace GlobalTheory.UnitaryBC
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hk' : Matrix.GeneralLinearGroup.map (pInf E) (k : GA E n) = 1` using `MonoidHom.mem_ker.1 hk`. Establish `hy' : Matrix.GeneralLinearGroup.map (pFin E) (y : GA E n) = 1` using `MonoidHom.mem_ker.1 hy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `ga_ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, map_mul, hk', one_mul, mul_one]`.
+
+Simplify using `only [Subgroup.coe_mul, map_mul, hy', one_mul, mul_one]`.
+-/
 theorem finU_mul_infU_comm (k y : UA E n) (hk : k ∈ finU E n) (hy : y ∈ infU E n) : k * y = y * k := by
   have hk' : Matrix.GeneralLinearGroup.map (pInf E) (k : GA E n) = 1 := MonoidHom.mem_ker.1 hk
   have hy' : Matrix.GeneralLinearGroup.map (pFin E) (y : GA E n) = 1 := MonoidHom.mem_ker.1 hy
@@ -38,6 +43,17 @@ end GlobalTheory.UnitaryBC
 
 open GlobalTheory.UnitaryBC in
 
+/- English proof (translation)
+Introduce `E _ _ _ n hS L hL C _`. Take `⟨S, hS⟩` from `hS L hL`. Set `M` to `levelForms L C`. Establish `hle : Submodule.span ℂ {ψ : UA E n → ℂ | (∀ γ ∈ ratU E n, ∀ g, ψ (γ * g) = ψ g) ∧ (∀ k ∈ L, ∀ g, ψ (g * (k : UA E n)) = ψ g) ∧ ∀ g, (fun y : infU E n => ψ (g * (y : UA E n))) ∈ C} ≤ M` using `Submodule.span_le.2 fun ψ h => h`. Establish `key : ∀ ψ ∈ M, ∀ g, ∃ s ∈ S, ∃ y ∈ infU E n, ψ g = ψ (s * y)`.
+
+Introduce and unpack `ψ ⟨h1, h2, -⟩ g`. Take `⟨γ, hγ, s, hs, k, hk, y, hy, rfl⟩` from `hS g`. Use `⟨s, hs, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, h1 γ hγ, finU_mul_infU_comm _ _ k.2 hy, ← mul_assoc, h2 k hk]`. Set `f : M →ₗ[ℂ] (S → C)` to `{ toFun := fun ψ s => ⟨fun y : infU E n => ψ.1 ((s : UA E n) * (y : UA E n)), ψ.2.2.2 s⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Establish `hf : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨s, hs, y, hy, e⟩` from `key (a.1 - b.1) (M.sub_mem a.2 b.2) g`.
+
+Use `congrArg (fun F : S → C => ((F ⟨s, hs⟩ : C) : infU E n → ℂ) ⟨y, hy⟩) hab` as an intermediate fact. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk] at this`. Establish `e' : a.1 g - b.1 g = a.1 (s * y) - b.1 (s * y)` using `e`. Rewrite `e'` using `[this, sub_self, sub_eq_zero]`. Conclude with `e'`.
+
+Use `haveI : FiniteDimensional ℂ M := Module.Finite.of_injective f hf`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem GlobalTheory.UnitaryBC.finiteDimensional_levelForms : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), (∀ L : Subgroup (finU E n), IsOpen (L : Set (finU E n)) → ∃ S : Finset (UA E n), ∀ g : UA E n, ∃ γ ∈ ratU E n, ∃ s ∈ S, ∃ k ∈ L, ∃ y ∈ infU E n, g = γ * s * (k : UA E n) * y) → ∀ L : Subgroup (finU E n), IsOpen (L : Set (finU E n)) → ∀ C : Submodule ℂ (infU E n → ℂ), FiniteDimensional ℂ C → FiniteDimensional ℂ (Submodule.span ℂ {ψ : UA E n → ℂ | (∀ γ ∈ ratU E n, ∀ g, ψ (γ * g) = ψ g) ∧ (∀ k ∈ L, ∀ g, ψ (g * (k : UA E n)) = ψ g) ∧ ∀ g, (fun y : infU E n => ψ (g * (y : UA E n))) ∈ C}) := by
   intro E _ _ _ n hS L hL C _
   obtain ⟨S, hS⟩ := hS L hL

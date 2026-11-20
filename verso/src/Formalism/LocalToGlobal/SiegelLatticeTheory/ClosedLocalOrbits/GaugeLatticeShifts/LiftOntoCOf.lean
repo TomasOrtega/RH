@@ -7,6 +7,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+Introduce `D X Y u u'` and use `Act.liftOnto (hLI D) (ratPt_holds D X) Y u u' (toTermRel_holds X u u' _ _)`.
+-/
 theorem liftOntoC_of (hLI : ∀ D : Formalism.BasicNotions.D7, Formalism.L2.SG.TermTieOf.LatIso D) : Formalism.L2.SG.Pf.SatGram.LiftOntoC :=
   fun D X Y u u' => Act.liftOnto (hLI D) (ratPt_holds D X) Y u u' (toTermRel_holds X u u' _ _)
 

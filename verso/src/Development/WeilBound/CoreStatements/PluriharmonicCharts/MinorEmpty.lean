@@ -19,16 +19,27 @@ def facM {R : Type} [CommRing R] (j : ℕ) (a : Fin N) (h : Matrix (Fin N) (Fin 
   if (i : ℕ) + 1 = j then (if (a : ℕ) < j then minorIJ h (wIdx N j) (wIdx N j) else 1)
   else minorIJ h (omIdx N j) (omIdx N j)
 
+/- English proof (translation)
+Unfold `facM`. Apply the tactic sequence `split_ifs <;> simp [minorIJ_map]`.
+-/
 theorem facM_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (h : Matrix (Fin N) (Fin N) R) (i : Fin N) :
     facM j a (h.map f) i = f (facM j a h i) := by
   unfold facM
   split_ifs <;> simp [minorIJ_map]
 
+/- English proof (translation)
+Unfold `detFac`. Apply the tactic sequence `split_ifs <;> simp [minorIJ_map]`.
+-/
 theorem detFac_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (h : Matrix (Fin N) (Fin N) R) (i : Fin N) :
     detFac j i (h.map f) = f (detFac j i h) := by
   unfold detFac
   split_ifs <;> simp [minorIJ_map]
 
+/- English proof (translation)
+Establish `h : ∀ i, D i ^ xiCoef τ a (τ, i) = (if (i : ℕ) + 1 = a then D i else 1) * (if i = b then D i else 1) * if i = a then (D i)⁻¹ ^ 2 else 1` using `fun i => by`. Establish `e1 : i = b ↔ (i : ℕ) = a + 1` using `by rw [Fin.ext_iff, hb]`. Establish `e2 : i = a ↔ (i : ℕ) = a` using `Fin.ext_iff`. Simplify using `only [xiCoef, if_true, e1, e2]`. Apply the tactic sequence `split_ifs <;> first | omega | (simp; done) | (simp; rfl)`.
+
+Simplify using `only [h, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem prod_xi {Ψ : Type} [DecidableEq Ψ] (τ : Ψ) (hb : (b : ℕ) = a + 1) (D : Fin N → L) :
     ∏ i, D i ^ xiCoef τ a (τ, i) = (∏ i : Fin N, if (i : ℕ) + 1 = a then D i else 1) * D b * (D a)⁻¹ ^ 2 := by
   have h : ∀ i, D i ^ xiCoef τ a (τ, i) = (if (i : ℕ) + 1 = a then D i else 1) * (if i = b then D i else 1) *
@@ -39,11 +50,19 @@ theorem prod_xi {Ψ : Type} [DecidableEq Ψ] (τ : Ψ) (hb : (b : ℕ) = a + 1) 
     split_ifs <;> first | omega | (simp; done) | (simp; rfl)
   simp only [h, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_prod_type, Finset.prod_eq_single τ (fun τ' _ h => ?_) (by simp)]`. Conclude with `Finset.prod_eq_one fun i _ => by simp [xiCoef, h]`.
+-/
 theorem prod_xi' {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] (τ : Ψ) (D : Ψ × Fin N → L) :
     ∏ p, D p ^ xiCoef τ a p = ∏ i, D (τ, i) ^ xiCoef τ a (τ, i) := by
   rw [Fintype.prod_prod_type, Finset.prod_eq_single τ (fun τ' _ h => ?_) (by simp)]
   exact Finset.prod_eq_one fun i _ => by simp [xiCoef, h]
 
+/- English proof (translation)
+Distinguish the cases in `e : (a : ℕ) = 0`. Rewrite using `[h0 e, mul_one]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [if_neg (by omega), if_neg (by omega)]`. Set `a' : Fin N` to `⟨a - 1, by have := a.2; omega⟩`. Establish `ha' : (a' : ℕ) + 1 = a` using `by simp only [a']; omega`.
+
+Establish `hh : ∀ i : Fin N, (i : ℕ) + 1 = a ↔ i = a'` using `fun i => by rw [Fin.ext_iff]; omega`. Simplify using `only [hh, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Conclude with `h a' ha'`.
+-/
 theorem prod_prev (D D' : Fin N → L) (c : L) (h : ∀ a' : Fin N, (a' : ℕ) + 1 = a → D a' = D' a' * c)
     (h0 : (a : ℕ) = 0 → c = 1) :
     (∏ i : Fin N, if (i : ℕ) + 1 = a then D i else 1) = (∏ i : Fin N, if (i : ℕ) + 1 = a then D' i else 1) * c := by
@@ -56,10 +75,70 @@ theorem prod_prev (D D' : Fin N → L) (c : L) (h : ∀ a' : Fin N, (a' : ℕ) +
     simp only [hh, Finset.prod_ite_eq', Finset.mem_univ, if_true]
     exact h a' ha'
 
+/- English proof (translation)
+Rewrite using `[MinorCalc.minorIJ_eq_det h ∅ ∅ 0 rfl rfl]`. Conclude with `det_isEmpty`.
+-/
 theorem minor_empty' {R : Type} [CommRing R] (h : Matrix (Fin N) (Fin N) R) : minorIJ h ∅ ∅ = 1 := by
   rw [MinorCalc.minorIJ_eq_det h ∅ ∅ 0 rfl rfl]
   exact det_isEmpty
 
+/- English proof (translation)
+Establish `hbN` using `b.2`. Establish `hca'` using `hca`. Unfold `lastCol at hca'`. Establish `hpa : IsProperStep N j a` using `⟨by omega, by omega⟩`. Establish `hcaS : ca ∈ stepCols N j a`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs at hca' ⊢ <;> omega`. Establish `hcbS : cb ∉ stepCols N j a`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs at hca' ⊢ <;> omega`.
+
+Establish `hSb : stepCols N j b = insert cb (stepCols N j a)`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Apply the tactic sequence `split_ifs at hca' ⊢ <;> omega`. Establish `hκ : detFac j a T ≠ 0` using `detFac_ne_zero hj a hT hTd`.
+
+Establish `hW : minorIJ T (wIdx N j) (wIdx N j) * minorIJ B (wIdx N j) (wIdx N j) = minorIJ g (wIdx N j) (wIdx N j) * ∏ c ∈ wIdx N j, U c c`. Rewrite using `[← MinorCalc.minorIJ_mul_of_support T B _ _ (MinorCalc.support_wIdx hB), e, MinorCalc.minorIJ_mul_of_support g U _ _ (MinorCalc.support_wIdx hU), MinorCalc.minorIJ_self_of_triangular U hUt]`. Establish `hO : minorIJ T (omIdx N j) (omIdx N j) * minorIJ B (omIdx N j) (omIdx N j) = minorIJ g (omIdx N j) (omIdx N j) * ∏ c ∈ omIdx N j, U c c`. Rewrite using `[← MinorCalc.minorIJ_mul_of_support T B _ _ (MinorCalc.support_omIdx hB), e, MinorCalc.minorIJ_mul_of_support g U _ _ (MinorCalc.support_omIdx hU), MinorCalc.minorIJ_self_of_triangular U hUt]`. Establish `hne : ∀ S : Finset (Fin N), ∏ c ∈ S, U c c ≠ 0` using `fun S => Finset.prod_ne_zero_iff.2 fun c _ => hUd c`.
+
+Use `set um := ∏ c ∈ (stepCols N j a).erase ca, U c c with hum`. Establish `hum0 : um ≠ 0` using `hne _`. Establish `hUa : ∏ c ∈ stepCols N j a, U c c = U ca ca * um` using `(Finset.mul_prod_erase _ _ hcaS).symm`. Establish `hUb : ∏ c ∈ stepCols N j b, U c c = U cb cb * (U ca ca * um)` using `by rw [hSb, Finset.prod_insert hcbS, hUa]`. Establish `hVa : ∏ c ∈ stepCols N j a, V c c = (U ca ca + s * U ca cb) * um`.
+
+Establish `hne' : ca ≠ cb` using `fun h => hcbS (h ▸ hcaS)`. Establish `ent : ∀ c, c ≠ cb → V c c = U c c + if c = ca then U c cb * s else 0` using `fun c hc => by`. Use `congrFun (congrFun hV c) c` as an intermediate fact. Rewrite `this` using `[Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.add_apply, Matrix.add_apply, Matrix.single_mul_apply_of_ne _ _ _ _ _ hc, add_zero]`. Rewrite using `[this]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.mul_single_apply_same]`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ h]`. Rewrite using `[← Finset.mul_prod_erase _ _ hcaS, ent ca hne', if_pos rfl, mul_comm s]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun c hc => ?_` and prove the remaining obligations. Rewrite using `[ent c (fun h => hcbS (h ▸ Finset.mem_of_mem_erase hc)), if_neg (Finset.ne_of_mem_erase hc), add_zero]`. Rewrite using `[prod_xi τ hb, prod_prev _ (fun i => if IsProperStep N j i then 1 else υ i * facM j a B i) (detFac j a T * um)⁻¹ (fun a' ha' => ?_) (fun h0 => ?_)]`. Establish `hnb : (if IsProperStep N j b then (detFac j b T * ∏ c ∈ stepCols N j b, U c c)⁻¹ else υ b / detFac j b T * facM j a g b) = (if IsProperStep N j b then 1 else υ b * facM j a B b) * (detFac j a T * ∏ c ∈ stepCols N j b, U c c)⁻¹` using `by split_ifs with hp`.
+
+Rewrite using `[one_mul]`. Use `congr 2`. Take `⟨h1, h2⟩` from `hp`. Unfold `detFac`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+
+Establish `hdb : detFac j b T ≠ 0` using `detFac_ne_zero hj b hT hTd`. Establish `hn` using `hne (stepCols N j b)`. Distinguish the cases in `h1 : (b : ℕ) + 1 = j`. Establish `hS : stepCols N j b = wIdx N j`. Use extensionality with `c`.
+
+Use `c.2` as an intermediate fact. Simplify using `only [stepCols, wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `d1 : detFac j a T = 1`. Unfold `detFac`.
+
+Rewrite using `[if_neg (by omega), if_neg (by omega), one_mul]`. Establish `d2 : detFac j b T = minorIJ T (wIdx N j) (wIdx N j)`. Unfold `detFac`. Rewrite using `[if_pos (by omega)]`. Use `split_ifs with h2`.
+
+Establish `: omIdx N j = ∅`. Use extensionality with `c`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, minor_empty', mul_one]`.
+
+Rewrite using `[mul_one]`. Rewrite `hdb` using `[d2]`. Rewrite `hn` using `[hS]`. Simplify using `only [facM, if_pos h1, if_pos (show (a : ℕ) < j by omega), d1, d2, hS]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-υ b) * hW`. Establish `h2 : (b : ℕ) + 1 = N`. Assume the negation of the conclusion as `h2`. Conclude with `hp ⟨h1, h2⟩`. Establish `hS : stepCols N j b = omIdx N j`.
+
+Use extensionality with `c`. Simplify using `only [stepCols, omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `d1 : detFac j a T = minorIJ T (wIdx N j) (wIdx N j)`. Unfold `detFac`.
+
+Rewrite using `[if_pos (by omega), if_neg (by omega), mul_one]`. Establish `d2 : detFac j b T = minorIJ T (wIdx N j) (wIdx N j) * minorIJ T (omIdx N j) (omIdx N j)`. Unfold `detFac`. Rewrite using `[if_pos (by omega), if_pos h2]`. Rewrite `hdb` using `[d2]`.
+
+Rewrite `hn` using `[hS]`. Establish `q1` using `left_ne_zero_of_mul hdb`. Establish `q2` using `right_ne_zero_of_mul hdb`. Simplify using `only [facM, if_neg h1, d1, d2, hS]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-υ b) * hO`. Rewrite using `[hnb, if_pos hpa, hUb, hUa, hVa]`. Establish `q1` using `hUd ca`. Establish `q2` using `hUd cb`. Generalize the expression as in `(∏ i : Fin N, if (i : ℕ) + 1 = a then (if IsProperStep N j i then 1 else υ i * facM j a B i) else 1) = P`.
+
+Generalize the expression as in `(if IsProperStep N j b then 1 else υ b * facM j a B b) = Q`. Establish `hs : s = x * (U ca ca + s * U ca cb) / U cb cb` using `by rw [hx]; field_simp`. Generalize the expression as in `U ca ca + s * U ca cb = w at hs ⊢`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts.
+
+Use `split_ifs with hp`. Rewrite using `[one_mul]`. Take `⟨h1, h2⟩` from `hp`. Use `congr 2`. Apply the tactic sequence `unfold detFac split_ifs <;> first | rfl | omega`.
+
+Rewrite using `[hum]`. Use `congr 1`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase, ne_eq, Fin.ext_iff]`. Apply the tactic sequence `split_ifs at hca' ⊢ <;> omega`.
+
+Establish `h1 : (a' : ℕ) + 1 = j`. Assume the negation of the conclusion as `h1; exact hp ⟨h1, by omega⟩`. Establish `hE : (stepCols N j a).erase ca = ∅`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase, ne_eq, Fin.ext_iff, Finset.notMem_empty, iff_false]`.
+
+Apply the tactic sequence `split_ifs at hca' ⊢ <;> omega`. Establish `d : detFac j a' T = detFac j a T`. Unfold `detFac`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Simplify using `only [facM, if_pos h1, if_neg (show ¬ (a : ℕ) < j by omega), d, hum, hE, Finset.prod_empty, mul_one, div_eq_mul_inv]`.
+
+Establish `hE : (stepCols N j a).erase ca = ∅`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase, ne_eq, Fin.ext_iff, Finset.notMem_empty, iff_false]`. Apply the tactic sequence `split_ifs at hca' ⊢ <;> omega`. Establish `d : detFac j a T = 1`.
+
+Unfold `detFac`. Rewrite using `[if_neg (show ¬ (a : ℕ) + 1 = N by omega), mul_one]`. Use `split_ifs with h`. Establish `: wIdx N j = ∅`. Use extensionality with `c`.
+
+Use `c.2` as an intermediate fact. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, minor_empty']`. Both sides reduce to the same expression.
+
+Rewrite using `[d, hum, hE, Finset.prod_empty, mul_one, _root_.inv_one]`.
+-/
 theorem scal_main {Ψ : Type} [DecidableEq Ψ] (τ : Ψ) (hj : j ≤ N) (hb : (b : ℕ) = a + 1)
     (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ)) (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1)
     {T B g U V : Matrix (Fin N) (Fin N) L} (hT : IsBlockDiag j T) (hTd : T.det ≠ 0) (hB : IsBlockDiag j B)
@@ -226,6 +305,13 @@ section Deg
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} (M : FlagModel y Ψ N j) {L : Type} [Field L]
 
+/- English proof (translation)
+Establish `h : ∀ k, e k ^ M.dy p k = (if h : ∀ p', M.blk p' ≠ some k then (e k ^ M.b p ⟨k, h⟩)⁻¹ else 1) * if M.blk p = some k then e k else 1` using `fun k => by`. Unfold `FlagModel.dy`. Use `split_ifs with h1 h2 h3`. Conclude with `absurd h2 (h1 p)`. Rewrite using `[_root_.zpow_neg, mul_one]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [h, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[← Finset.prod_inv_distrib, Finset.prod_dite]`.
+
+Simplify using `only [Finset.prod_const_one, mul_one]`. Conclude with `Fintype.prod_equiv (Equiv.subtypeEquivRight fun k => by simp) _ _ fun k => rfl`. Consider the cases of `M.blk p with`. Consider the case `none => simp`. Consider the case `some k₁ => simp`.
+-/
 theorem prod_dy (e : K → L) (p : Ψ × Fin N) :
     ∏ k, e k ^ M.dy p k = (∏ k : NonPluckerBlocks M.blk, e k.1 ^ M.b p k)⁻¹ * (M.blk p).elim 1 e := by
   have h : ∀ k, e k ^ M.dy p k = (if h : ∀ p', M.blk p' ≠ some k then (e k ^ M.b p ⟨k, h⟩)⁻¹ else 1) *
@@ -245,12 +331,26 @@ theorem prod_dy (e : K → L) (p : Ψ × Fin N) :
     | none => simp
     | some k₁ => simp
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]`.
+-/
 theorem zpow_sum' {σ : Type} (S : Finset σ) {x : L} (hx : x ≠ 0) (n : σ → ℤ) :
     x ^ (∑ p ∈ S, n p) = ∏ p ∈ S, x ^ n p := by
   induction S using Finset.induction_on with
   | empty => simp
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, zpow_add₀ hx, ih]
 
+/- English proof (translation)
+Simplify using `only [← prod_dy M (fun k => e (some k)), ← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm, Fintype.prod_option, Fintype.prod_option]`. Establish `h0 : e none ^ dh none * e none = e none ^ dg none`. Establish `: dg none = dh none + 1` using `by have := hd none; simp only [Option.elim] at this; omega`. Rewrite using `[this, pow_succ]`.
+
+Establish `h1 : ∀ k, e (some k) ^ dh (some k) = e (some k) ^ dg (some k) * (if k = k₀ then e (some k₀) else 1) * ∏ p, (e (some k) ^ M.dy p k) ^ xiCoef τ a p` using `fun k => by`. Use `hd (some k)` as an intermediate fact. Simplify using `only [Option.elim, hk, Option.some.injEq] at this`. Simplify using `only [← _root_.zpow_mul, mul_comm (M.dy _ k), ← zpow_sum' _ (he _)]`. Rewrite using `[← zpow_natCast, ← zpow_natCast]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite `this` using `[if_pos rfl]`. Rewrite using `[← zpow_add_one₀ (he _), ← zpow_add₀ (he _)]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[if_neg (Ne.symm h)]`. Rewrite using `[mul_one, ← zpow_add₀ (he _)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [h1, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true, ← h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_deg {τ : Ψ} {a : Fin N} {k₀ : K} (hk : M.blk (τ, a) = some k₀) (e : Option K → L) (he : ∀ o, e o ≠ 0)
     {dg dh : Option K → ℕ} (hd : ∀ o : Option K, (dg o : ℤ) - dh o = o.elim 1 fun k =>
       -(fun k => ∑ p, xiCoef τ a p * M.dy p k) k - (if M.blk (τ, a) = some k then 1 else 0)) :

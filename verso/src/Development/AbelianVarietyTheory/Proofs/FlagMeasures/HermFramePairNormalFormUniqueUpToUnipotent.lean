@@ -14,10 +14,18 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {H : 
 
 def Cmp (H : HermSpace K V) (p q : V × V) : Prop := H.B p.1 q.1 = H.B p.2 q.2
 
+/- English proof (translation)
+Unfold `Cmp at *`. Rewrite using `[← H.herm, h, H.herm]`.
+-/
 theorem Cmp.symm {p q : V × V} (h : Cmp H p q) : Cmp H q p := by
   unfold Cmp at *
   rw [← H.herm, h, H.herm]
 
+/- English proof (translation)
+Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp [Cmp]`. Consider the case `add x y _ _ h1 h2 => simp only [Cmp] at *`.
+
+Simplify using `[h1, h2]`. Consider the case `smul a x _ h1 => simp only [Cmp] at *`. Simplify using `[h1]`.
+-/
 theorem cmp_span_left {S : Set (V × V)} {q : V × V} (h : ∀ p ∈ S, Cmp H p q) :
     ∀ p ∈ Submodule.span K S, Cmp H p q := by
   intro p hp
@@ -27,6 +35,21 @@ theorem cmp_span_left {S : Set (V × V)} {q : V × V} (h : ∀ p ∈ S, Cmp H p 
   | add x y _ _ h1 h2 => simp only [Cmp] at *; simp [h1, h2]
   | smul a x _ h1 => simp only [Cmp] at *; simp [h1]
 
+/- English proof (translation)
+Establish `hG : ∀ p ∈ Submodule.span K S, ∀ q ∈ Submodule.span K S, Cmp H p q` using `fun p hp q hq => cmp_span_left (fun p hp => (cmp_span_left (fun q hq => h q hq p hp) q hq).symm) p hp`. Use `set G := Submodule.span K S with hGdef`. Establish `s1 : ∀ v : V, ∃ p : G, p.1.1 = v` using `fun v => by`. Take `⟨p, hp, e⟩` from `Submodule.mem_map.1 (h1.symm ▸ Submodule.mem_top (x := v))`. Conclude with `⟨⟨p, hp⟩, e⟩`.
+
+Establish `s2 : ∀ v : V, ∃ p : G, p.1.2 = v` using `fun v => by`. Take `⟨p, hp, e⟩` from `Submodule.mem_map.1 (h2.symm ▸ Submodule.mem_top (x := v))`. Conclude with `⟨⟨p, hp⟩, e⟩`. Establish `b1 : Function.Bijective ((LinearMap.fst K V V).comp G.subtype)`. Use `⟨(injective_iff_map_eq_zero _).2 fun p hp => ?_, s1⟩` and prove the remaining obligations.
+
+Establish `e1 : p.1.1 = 0` using `hp`. Use `Subtype.ext (Prod.ext e1 (H.nondeg _ fun y => ?_))` and prove the remaining obligations. Take `⟨q, rfl⟩` from `s2 y`. Use `hG _ p.2 _ q.2` as an intermediate fact. Rewrite `this` using `[Cmp, e1]`.
+
+Simplify using `using this.symm`. Establish `b2 : Function.Bijective ((LinearMap.snd K V V).comp G.subtype)`. Use `⟨(injective_iff_map_eq_zero _).2 fun p hp => ?_, s2⟩` and prove the remaining obligations. Establish `e1 : p.1.2 = 0` using `hp`. Use `Subtype.ext (Prod.ext (H.nondeg _ fun y => ?_) e1)` and prove the remaining obligations.
+
+Take `⟨q, rfl⟩` from `s1 y`. Use `hG _ p.2 _ q.2` as an intermediate fact. Rewrite `this` using `[Cmp, e1]`. Simplify using `using this`. Establish `key : ∀ p : G, ((LinearEquiv.ofBijective _ b1).symm.trans (LinearEquiv.ofBijective _ b2)) p.1.1 = p.1.2`.
+
+Introduce `p`. Establish `: (LinearEquiv.ofBijective _ b1).symm p.1.1 = p` using `(LinearEquiv.symm_apply_eq _).2 rfl`. Rewrite using `[LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression. Use `⟨_, fun x y => ?_, fun p hp => key ⟨p, Submodule.subset_span hp⟩⟩` and prove the remaining obligations.
+
+Take `⟨p, rfl⟩` from `s1 x`. Take `⟨q, rfl⟩` from `s1 y`. Rewrite using `[key, key]`. Conclude with `Eq.symm (hG _ p.2 _ q.2)`.
+-/
 theorem exists_isometry (S : Set (V × V)) (h : ∀ p ∈ S, ∀ q ∈ S, Cmp H p q)
     (h1 : (Submodule.span K S).map (LinearMap.fst K V V) = ⊤)
     (h2 : (Submodule.span K S).map (LinearMap.snd K V V) = ⊤) :
@@ -67,6 +90,9 @@ theorem exists_isometry (S : Set (V × V)) (h : ∀ p ∈ S, ∀ q ∈ S, Cmp H 
   rw [key, key]
   exact Eq.symm (hG _ p.2 _ q.2)
 
+/- English proof (translation)
+Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) a <;> refine Fin.lastCases ?_ (fun b => ?_) b`. Rewrite using `[F.zz, G.zz, hT]`. Rewrite using `[B_swap0 H (F.zperp b), B_swap0 H (G.zperp b)]`. Rewrite using `[F.zperp, G.zperp]`. Rewrite using `[F.iso, G.iso]`.
+-/
 theorem gram_eq {F G : FlagD H r} (hT : F.T = G.T) (a b : Fin (r + 1)) :
     H.B (F.e a) (F.e b) = H.B (G.e a) (G.e b) := by
   refine Fin.lastCases ?_ (fun a => ?_) a <;> refine Fin.lastCases ?_ (fun b => ?_) b
@@ -75,12 +101,21 @@ theorem gram_eq {F G : FlagD H r} (hT : F.T = G.T) (a b : Fin (r + 1)) :
   · rw [F.zperp, G.zperp]
   · rw [F.iso, G.iso]
 
+/- English proof (translation)
+The claim follows from `Fin.lastCases (lastVector_mem_jointSpan_left F F') (fun a => isotropicSpan_le_jointSpan_left _ _ (e_mem_X _ a)) a`.
+-/
 theorem flag_vector_mem_base_lattice (F F' : FlagD H r) (a : Fin (r + 1)) : F.e a ∈ V0 F F' :=
   Fin.lastCases (lastVector_mem_jointSpan_left F F') (fun a => isotropicSpan_le_jointSpan_left _ _ (e_mem_X _ a)) a
 
+/- English proof (translation)
+The claim follows from `Fin.lastCases (lastVector_mem_jointSpan_right F F') (fun a => isotropicSpan_le_jointSpan_right _ _ (e_mem_X _ a)) a`.
+-/
 theorem hermFlag_secondFrame_mem_frameSpan (F F' : FlagD H r) (a : Fin (r + 1)) : F'.e a ∈ V0 F F' :=
   Fin.lastCases (lastVector_mem_jointSpan_right F F') (fun a => isotropicSpan_le_jointSpan_right _ _ (e_mem_X _ a)) a
 
+/- English proof (translation)
+Establish `h1` using `perp_X F (fun b => hw b.castSucc) _ (Xa_le_X F _ (h a))`. Simplify `h1` using `[hw a]`.
+-/
 theorem perp_transfer {F G : FlagD H r} (h : SameGr F G) {w : V} (hw : ∀ a, H.B (F.e a) w = 0) (a : Fin (r + 1)) :
     H.B (G.e a) w = 0 := by
   have h1 := perp_X F (fun b => hw b.castSucc) _ (Xa_le_X F _ (h a))
@@ -88,17 +123,31 @@ theorem perp_transfer {F G : FlagD H r} (h : SameGr F G) {w : V} (hw : ∀ a, H.
 
 variable [NumberField K]
 
+/- English proof (translation)
+The claim follows from `(NFGeom.mem_perp' _ _).1 hw _ (Submodule.mem_sup_left (flag_vector_mem_base_lattice _ _ a))`.
+-/
 theorem wt_e (N : NF H r) {w : V} (hw : w ∈ N.Wt) (a : Fin (r + 1)) : H.B (N.F.e a) w = 0 :=
   (NFGeom.mem_perp' _ _).1 hw _ (Submodule.mem_sup_left (flag_vector_mem_base_lattice _ _ a))
 
+/- English proof (translation)
+The claim follows from `(NFGeom.mem_perp' _ _).1 hw _ (Submodule.mem_sup_left (hermFlag_secondFrame_mem_frameSpan _ _ a))`.
+-/
 theorem wt_e' (N : NF H r) {w : V} (hw : w ∈ N.Wt) (a : Fin (r + 1)) : H.B (N.F'.e a) w = 0 :=
   (NFGeom.mem_perp' _ _).1 hw _ (Submodule.mem_sup_left (hermFlag_secondFrame_mem_frameSpan _ _ a))
 
+/- English proof (translation)
+The claim follows from `(NFGeom.mem_perp' _ _).1 hw _ (Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩))`.
+-/
 theorem wt_ist (N : NF H r) {w : V} (hw : w ∈ N.Wt) (b : Fin r) (hb : N.j ≤ b.val) : H.B (N.ist b) w = 0 :=
   (NFGeom.mem_perp' _ _).1 hw _ (Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩))
 
 variable [FiniteDimensional K V]
 
+/- English proof (translation)
+Take `⟨x, hx, hp⟩` from `(NFGeom.full N).2.2.2.2.2.2.2.1 w hw`. Take `⟨u, hu, i, hi, e⟩` from `Submodule.mem_sup.1 ((NFGeom.isLift N).2.2 _ hp)`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `: u - w = -(x + i)` using `by rw [← sub_eq_zero, ← sub_eq_zero.2 e]; abel`. Rewrite using `[this]`.
+
+Conclude with `Submodule.neg_mem _ (Submodule.add_mem _ hx hi.1)`.
+-/
 theorem decomp (N : NF H r) {w : V} (hw : ∀ a, H.B (N.F.e a) w = 0) : ∃ w' ∈ N.Wt, w' - w ∈ N.F.X := by
   obtain ⟨x, hx, hp⟩ := (NFGeom.full N).2.2.2.2.2.2.2.1 w hw
   obtain ⟨u, hu, i, hi, e⟩ := Submodule.mem_sup.1 ((NFGeom.isLift N).2.2 _ hp)
@@ -107,6 +156,13 @@ theorem decomp (N : NF H r) {w : V} (hw : ∀ a, H.B (N.F.e a) w = 0) : ∃ w' �
   rw [this]
   exact Submodule.neg_mem _ (Submodule.add_mem _ hx hi.1)
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← (NFGeom.isCompl N).sup_eq_top, NFGeom.Pi_eq]`. Apply the tactic sequence `refine sup_le h4 (sup_le (sup_le (sup_le ?_ ?_) ?_) ?_) <;> refine Submodule.span_le.2 ?_`. Introduce and unpack `_ ⟨b, -, rfl⟩`. Conclude with `h1 _`. Introduce and unpack `_ ⟨b, -, rfl⟩`.
+
+Conclude with `h2 _`. Introduce and unpack `_ (rfl | rfl)`. Conclude with `h1 _`. Conclude with `h2 _`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+
+Conclude with `h3 b hb`.
+-/
 theorem eq_top (N : NF H r) (M : Submodule K V) (h1 : ∀ a, N.F.e a ∈ M) (h2 : ∀ a, N.F'.e a ∈ M)
     (h3 : ∀ b : Fin r, N.j ≤ b.val → N.ist b ∈ M) (h4 : N.Wt ≤ M) : M = ⊤ := by
   rw [eq_top_iff, ← (NFGeom.isCompl N).sup_eq_top, NFGeom.Pi_eq]
@@ -118,6 +174,43 @@ theorem eq_top (N : NF H r) (M : Submodule K V) (h1 : ∀ a, N.F.e a ∈ M) (h2 
     · exact h2 _
   · rintro _ ⟨b, hb, rfl⟩; exact h3 b hb
 
+/- English proof (translation)
+Establish `hX : N₁.F.X = N₀.F.X` using `AdaptInv.x_eq h`. Establish `ee` using `gram_eq (F := N₀.F) (G := N₁.F) (by rw [N₀.hT, N₁.hT, hT])`. Establish `e'e'` using `gram_eq (F := N₀.F') (G := N₁.F') (by rw [N₀.hT', N₁.hT', hT])`. Establish `ee' : ∀ a b, H.B (N₀.F.e a) (N₀.F'.e b) = H.B (N₁.F.e a) (N₁.F'.e b)`. Introduce `a b`.
+
+Distinguish the cases in `hb : N₀.j ≤ b.val`. Rewrite using `[N₀.same b hb, N₁.same b (hj ▸ hb)]`. Simplify using `[ee, hc]`. Distinguish the cases in `ha : N₀.j ≤ a.val`. Rewrite using `[NFGeom.e_eq N₀ a ha, NFGeom.e_eq N₁ a (hj ▸ ha)]`.
+
+Simplify using `[e'e', hc]`. Use `congrFun (congrFun hM a) b` as an intermediate fact. Simplify `this` using `[pairM, ← hj, not_le.1 ha, not_le.1 hb]`. Establish `ei : ∀ a (b : Fin r), N₀.j ≤ b.val → H.B (N₀.F.e a) (N₀.ist b) = H.B (N₁.F.e a) (N₁.ist b)`. Introduce `a b hb`.
+
+Use `Fin.lastCases ?_ (fun a => ?_) a` and prove the remaining obligations. Conclude with `(N₀.normalForm_dual_orthogonal_last b hb).trans (N₁.normalForm_dual_orthogonal_last b (hj ▸ hb)).symm`. Rewrite using `[N₀.ist_e a b hb, N₁.ist_e a b (hj ▸ hb)]`. Establish `e'i : ∀ a (b : Fin r), N₀.j ≤ b.val → H.B (N₀.F'.e a) (N₀.ist b) = H.B (N₁.F'.e a) (N₁.ist b)`. Introduce `a b hb`.
+
+Distinguish the cases in `ha : N₀.j ≤ a.val`. Rewrite using `[N₀.same a ha, N₁.same a (hj ▸ ha)]`. Simplify using `[ei a b hb, hc]`. Establish `hl : a.val < r` using `lt_of_lt_of_le (not_le.1 ha) N₀.j_le`. Conclude with `(N₀.ist_e' ⟨a.val, hl⟩ b (not_le.1 ha) hb).trans (N₁.ist_e' ⟨a.val, hl⟩ b (hj ▸ not_le.1 ha) (hj ▸ hb)).symm`.
+
+Establish `ww : ∀ p q : V × V, p.1 ∈ N₀.Wt → q.1 ∈ N₀.Wt → p.2 - p.1 ∈ N₀.F.X → q.2 - q.1 ∈ N₀.F.X → Cmp H p q`. Introduce `p q hp hq hp' hq'`. Establish `a1` using `perp_X N₀.F (fun b => wt_e N₀ hq b.castSucc) _ hp'`. Establish `a2` using `B_swap0 H (perp_X N₀.F (fun b => wt_e N₀ hp b.castSucc) _ hq')`. Establish `a3` using `X_iso N₀.F hp' hq'`.
+
+Simplify using `only [map_sub, LinearMap.sub_apply] at a1 a2 a3`. Unfold `Cmp`. Take the linear combination `-a1 - a2 - a3`. Apply the tactic sequence `obtain ⟨s, hs, hS⟩ := exists_isometry (H := H) {p | (∃ a, p = (N₀.F.e a, N₁.F.e a)) ∨ (∃ a, p = (N₀.F'.e a, N₁.F'.e a)) ∨ (∃ b : Fin r, N₀.j ≤ b.val ∧ p = (N₀.ist b, N₁.ist b)) ∨ (p.1 ∈ N₀.Wt ∧ p.2 ∈ N₁.Wt ∧ p.2 - p.1 ∈ N₀.F.X)} (by`. Introduce and unpack `p (⟨a, rfl⟩ | ⟨a, rfl⟩ | ⟨a, ha, rfl⟩ | ⟨p0, p1, p2⟩) q (⟨b, rfl⟩ | ⟨b, rfl⟩ | ⟨b, hb, rfl⟩ | ⟨q0, q1, q2⟩)`.
+
+Conclude with `ee a b`. Conclude with `ee' a b`. Conclude with `ei a b hb`. Conclude with `(wt_e N₀ q0 a).trans (wt_e N₁ q1 a).symm`. Conclude with `Cmp.symm (ee' b a)`.
+
+Conclude with `e'e' a b`. Conclude with `e'i a b hb`. Conclude with `(wt_e' N₀ q0 a).trans (wt_e' N₁ q1 a).symm`. Conclude with `Cmp.symm (ei b a ha)`. Conclude with `Cmp.symm (e'i b a ha)`.
+
+Conclude with `(N₀.ist_iso a b ha hb).trans (N₁.ist_iso a b (hj ▸ ha) (hj ▸ hb)).symm`. Conclude with `(wt_ist N₀ q0 a ha).trans (wt_ist N₁ q1 a (hj ▸ ha)).symm`. Conclude with `Cmp.symm ((wt_e N₀ p0 b).trans (wt_e N₁ p1 b).symm)`. Conclude with `Cmp.symm ((wt_e' N₀ p0 b).trans (wt_e' N₁ p1 b).symm)`. Conclude with `Cmp.symm ((wt_ist N₀ p0 b hb).trans (wt_ist N₁ p1 b (hj ▸ hb)).symm)`.
+
+Conclude with `ww p q p0 q0 p2 q2)`. Use the proof step `(by`. Use `eq_top N₀ _ (fun a => ⟨_, Submodule.subset_span (Or.inl ⟨a, rfl⟩), rfl⟩) (fun a => ⟨_, Submodule.subset_span (Or.inr (Or.inl ⟨a, rfl⟩)), rfl⟩) (fun b hb => ⟨_, Submodule.subset_span (Or.inr (Or.inr (Or.inl ⟨b, hb, rfl⟩))), rfl⟩) fun w hw => ?_` and prove the remaining obligations. Take `⟨u, hu, hx⟩` from `decomp N₁ (perp_transfer h (wt_e N₀ hw))`. Conclude with `⟨(w, u), Submodule.subset_span (Or.inr (Or.inr (Or.inr ⟨hw, hu, hX ▸ hx⟩))), rfl⟩)`.
+
+Use the proof step `(by`. Use `eq_top N₁ _ (fun a => ⟨_, Submodule.subset_span (Or.inl ⟨a, rfl⟩), rfl⟩) (fun a => ⟨_, Submodule.subset_span (Or.inr (Or.inl ⟨a, rfl⟩)), rfl⟩) (fun b hb => ⟨_, Submodule.subset_span (Or.inr (Or.inr (Or.inl ⟨b, hj ▸ hb, rfl⟩))), rfl⟩) fun w hw => ?_` and prove the remaining obligations. Take `⟨u, hu, hx⟩` from `decomp N₀ (perp_transfer (AdaptInv.sameGr_symm h) (wt_e N₁ hw))`. Conclude with `⟨(u, w), Submodule.subset_span (Or.inr (Or.inr (Or.inr ⟨hu, hw, by`. Simplify using `using Submodule.neg_mem _ hx⟩))), rfl⟩)`.
+
+Establish `se : ∀ a, s (N₀.F.e a) = N₁.F.e a` using `fun a => hS (_, _) (Or.inl ⟨a, rfl⟩)`. Use `⟨s, ⟨hs, s.bijective, fun a => ?_, fun y hy => ?_⟩, fun a => ⟨se a, hS (_, _) (Or.inr (Or.inl ⟨a, rfl⟩))⟩⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, se]`. Conclude with `h a.castSucc`. Set `M : Submodule K V` to `N₀.F.X.comap ((s : V →ₗ[K] V) - LinearMap.id)`.
+
+Establish `m1 : ∀ a, N₀.F.e a ∈ M` using `fun a => by`. Express the relevant statement in the definitionally equal form `s (N₀.F.e a) - N₀.F.e a ∈ N₀.F.X`. Rewrite using `[se]`. Conclude with `Xa_le_X _ _ (h a)`. Establish `m2 : N₀.F.X ≤ M` using `Submodule.span_le.2 (by rintro _ ⟨b, -, rfl⟩; exact m1 _)`.
+
+Establish `m3 : N₀.Wt ≤ M` using `fun w hw => by`. Take `⟨u, hu, hx⟩` from `decomp N₁ (perp_transfer h (wt_e N₀ hw))`. Express the relevant statement in the definitionally equal form `s w - w ∈ N₀.F.X`. Rewrite using `[show s w = u from hS (w, u) (Or.inr (Or.inr (Or.inr ⟨hw, hu, hX ▸ hx⟩))), ← hX]`. Conclude with `hx`.
+
+Take `⟨u, hu, hx⟩` from `decomp N₀ (w := y + star (H.B N₀.F.z y / N₀.F.T) • N₀.F.z) (fun a => by`. Use `Fin.lastCases ?_ (fun a => ?_) a` and prove the remaining obligations. Use `N₀.F.hT` as an intermediate fact. Express the relevant statement in the definitionally equal form `H.B N₀.F.z _ = 0`. Simplify using `only [map_add, LinearMap.map_smulₛₗ, starRingEnd_apply, star_star, smul_eq_mul, pairing_lastVector_lastVector]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hy a, pairing_isotropicSpan_lastVector N₀.F (e_mem_X _ a)])`. Establish `m4 : y ∈ M`. Use `M.sub_mem (M.sub_mem (m3 hu) (m2 hx)) (M.smul_mem (star (H.B N₀.F.z y / N₀.F.T)) (m1 (Fin.last r)))` as an intermediate fact.
+
+Simplify `this` using `[FlagD.z]`. Conclude with `m4`.
+-/
 theorem main (N₀ N₁ : NF H r) (h : SameGr N₀.F N₁.F) (hj : N₀.j = N₁.j) (hc : N₀.c = N₁.c) (hT : N₀.T = N₁.T)
     (hM : pairM N₀.F N₀.F' N₀.j = pairM N₁.F N₁.F' N₁.j) :
     ∃ s : V ≃ₗ[K] V, N₀.F.InN (s : V →ₗ[K] V) ∧ ∀ a, s (N₀.F.e a) = N₁.F.e a ∧ s (N₀.F'.e a) = N₁.F'.e a := by
@@ -223,6 +316,11 @@ end GlobalTheory.DegAsm.NFUnique
 
 namespace GlobalTheory.DegAsm
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H _ r F N₀ N₁ h₀ h₁ hj hc hT hM`. Establish `h : SameGr N₀.F N₁.F` using `fun a => by`. Rewrite using `[AdaptInv.xa_eq h₀]`. Simplify using `using Submodule.sub_mem _ (h₁ a) (h₀ a)`. Take `⟨s, hs, he⟩` from `NFUnique.main N₀ N₁ h hj hc hT hM`.
+
+Conclude with `⟨s, AdaptInv.inN_of (AdaptInv.sameGr_symm h₀) _ hs, he⟩`.
+-/
 theorem nf_unique : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (F : FlagD H r) (N₀ N₁ : NF H r), SameGr F N₀.F → SameGr F N₁.F → N₀.j = N₁.j → N₀.c = N₁.c → N₀.T = N₁.T → pairM N₀.F N₀.F' N₀.j = pairM N₁.F N₁.F' N₁.j → ∃ s : V ≃ₗ[K] V, F.InN (s : V →ₗ[K] V) ∧ ∀ a, s (N₀.F.e a) = N₁.F.e a ∧ s (N₀.F'.e a) = N₁.F'.e a := by
   intro K V _ _ _ _ _ _ _ _ H _ r F N₀ N₁ h₀ h₁ hj hc hT hM
   have h : SameGr N₀.F N₁.F := fun a => by

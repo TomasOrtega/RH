@@ -8,6 +8,11 @@ open MvPolynomial IsLocalRing
 def jacSpanAt {σ : Type} (I : Ideal (MvPolynomial σ ℂ)) (z : σ → ℂ) : Submodule ℂ (σ → ℂ) :=
   Submodule.span ℂ ((fun h : MvPolynomial σ ℂ => fun j => eval z (pderiv j h)) '' (I : Set _))
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite σ`. Establish `hle : I ≤ ptIdealOf z` using `fun h hh => by show h ∈ RingHom.ker (MvPolynomial.eval z : MvPolynomial σ ℂ →+* ℂ)`. Conclude with `hz h hh`. Establish `hne : Ideal.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime (ptIdealOf z))) I ≠ ⊤`. Introduce `htop`.
+
+Establish `h1 : Ideal.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime (ptIdealOf z))) (ptIdealOf z) = ⊤` using `top_unique (htop ▸ Ideal.map_mono hle)`. Rewrite `h1` using `[Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top h1`. Use `haveI : Nontrivial (locAt I z) := Ideal.Quotient.nontrivial_iff.2 hne`. Conclude with `⟨IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, inferInstance⟩`.
+-/
 theorem locAt_isLocalRing_isNoetherian {σ : Type} [Finite σ] (I : Ideal (MvPolynomial σ ℂ))
     (z : σ → ℂ) (hz : ∀ h ∈ I, eval z h = 0) :
     IsLocalRing (locAt I z) ∧ IsNoetherianRing (locAt I z) := by
@@ -24,6 +29,11 @@ theorem locAt_isLocalRing_isNoetherian {σ : Type} [Finite σ] (I : Ideal (MvPol
   haveI : Nontrivial (locAt I z) := Ideal.Quotient.nontrivial_iff.2 hne
   exact ⟨IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective, inferInstance⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [grad, renC, renameEquiv_apply]`. Use `conv_lhs => rw [← Equiv.apply_symm_apply (Fintype.equivFin σ) j]`. Rewrite using `[pderiv_rename (Equiv.injective _), eval_rename]`. Establish `hc : renPt z ∘ (Fintype.equivFin σ) = z`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[renPt]`. Rewrite using `[hc]`.
+-/
 theorem grad_renC {σ : Type} [Fintype σ] (z : σ → ℂ) (h : MvPolynomial σ ℂ) :
     grad (renPt z) (renC σ h) = fun j => eval z (pderiv ((Fintype.equivFin σ).symm j) h) := by
   funext j
@@ -35,6 +45,15 @@ theorem grad_renC {σ : Type} [Fintype σ] (z : σ → ℂ) (h : MvPolynomial σ
     simp [renPt]
   rw [hc]
 
+/- English proof (translation)
+Set `L : (σ → ℂ) ≃ₗ[ℂ] (Fin (Fintype.card σ) → ℂ)` to `LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin σ).symm`. Establish `hset : grad (renPt z) '' ((I.map (renR σ : MvPolynomial σ ℂ →+* MvPolynomial (Fin (Fintype.card σ)) ℂ) : Ideal (MvPolynomial (Fin (Fintype.card σ)) ℂ)) : Set (MvPolynomial (Fin (Fintype.card σ)) ℂ)) = (L : (σ → ℂ) →ₗ[ℂ] _) '' ((fun h : MvPolynomial σ ℂ => fun j => eval z (pderiv …`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`.
+
+Take `⟨h, hh, rfl⟩` from `(Ideal.mem_map_of_equiv (renR σ) q).1 hq`. Use `⟨_, ⟨h, hh, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[show (renR σ) h = renC σ h from rfl, grad_renC]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨_, ⟨h, hh, rfl⟩, rfl⟩`. Use `⟨renR σ h, Ideal.mem_map_of_mem _ hh, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[show (renR σ) h = renC σ h from rfl, grad_renC]`. Both sides reduce to the same expression.
+
+Unfold `jacSpan jacSpanAt`. Rewrite using `[hset, Submodule.span_image]`. Conclude with `(LinearEquiv.finrank_map_eq L _).symm`.
+-/
 theorem finrank_jacSpanAt_eq {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ)) (z : σ → ℂ) :
     Module.finrank ℂ (jacSpanAt I z) =
       Module.finrank ℂ (jacSpan (I.map (renR σ : MvPolynomial σ ℂ →+* _)) (renPt z)) := by
@@ -60,6 +79,9 @@ theorem finrank_jacSpanAt_eq {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial �
   rw [hset, Submodule.span_image]
   exact (LinearEquiv.finrank_map_eq L _).symm
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing (locAt I z) := inferInstance`. Use `haveI : Nontrivial (locRing (I.map (renR σ : MvPolynomial σ ℂ →+* _)) (renPt z)) := (locAtEquiv I z).symm.toEquiv.nontrivial`. Use `haveI : IsLocalRing (locRing (I.map (renR σ : MvPolynomial σ ℂ →+* _)) (renPt z)) := IsLocalRing.of_surjective' (locAtEquiv I z).toRingHom (locAtEquiv I z).surjective`. Use `haveI : IsNoetherianRing (locRing (I.map (renR σ : MvPolynomial σ ℂ →+* _)) (renPt z)) := isNoetherianRing_of_ringEquiv _ (locAtEquiv I z)`. Rewrite using `[finrank_cotangentSpace_eq_of_ringEquiv (locAtEquiv I z), finrank_jacSpanAt_eq, finrank_cotangentSpace_locRing]`.
+-/
 theorem finrank_cotangentSpace_locAt {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ))
     (z : σ → ℂ) [IsLocalRing (locAt I z)] :
     Module.finrank (ResidueField (locAt I z)) (CotangentSpace (locAt I z))

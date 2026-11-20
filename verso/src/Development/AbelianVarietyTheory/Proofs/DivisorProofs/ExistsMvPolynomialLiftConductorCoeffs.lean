@@ -9,6 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R R' ν _ _ _ c hc G hG`. Establish `key : ∀ z ∈ c.map (algebraMap R R'), ∃ y ∈ c, algebraMap R R' y = z`. Introduce `z hz`. Use `Submodule.span_induction (p := fun z _ => ∃ y ∈ c, algebraMap R R' y = z) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `⟨y, hy, rfl⟩`. Conclude with `⟨0, c.zero_mem, map_zero _⟩`. Introduce and unpack `_ _ _ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, c.add_mem ha hb, map_add _ _ _⟩`. Introduce and unpack `r _ _ ⟨a, ha, rfl⟩`.
+
+Take `⟨y, hy, h⟩` from `hc a ha r`. Conclude with `⟨y, hy, by rw [h, smul_eq_mul, mul_comm]⟩`. Rewrite `hG` using `[MvPolynomial.mem_map_C_iff]`. Use `choose y hy hyG using fun m => key _ (hG m)`. Use `⟨∑ m ∈ G.support, MvPolynomial.monomial m (y m), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, Ideal.Quotient.eq_zero_iff_mem.mpr (hy m), map_zero]`. Rewrite using `[map_sum] conv_rhs => rw [G.as_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.map_monomial, hyG]`.
+-/
 theorem exists_mvPolynomial_lift_of_mem_conductor :
     ∀ (R R' ν : Type) [CommRing R] [CommRing R'] [Algebra R R'] (c : Ideal R), (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ G ∈ (c.map (algebraMap R R')).map (MvPolynomial.C : R' →+* MvPolynomial ν R'), ∃ H : MvPolynomial ν R, MvPolynomial.map (Ideal.Quotient.mk c) H = 0 ∧ MvPolynomial.map (algebraMap R R') H = G := by
   intro R R' ν _ _ _ c hc G hG

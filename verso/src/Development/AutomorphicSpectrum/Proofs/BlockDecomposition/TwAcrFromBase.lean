@@ -12,17 +12,26 @@ namespace GlobalTheory.CompanionTheory.BetaGal
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Consider the cases of `k`. Use `exacts [dp_twAcr A σ n, dpP_twAcr A σ n]`.
+-/
 theorem dd_twAcr (k : Bool) (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (n : ℕ) :
     IsDPMorphism (DD k (tw σ A) n) (DD k A n) (twAcr σ A n) := by
   cases k
   exacts [dp_twAcr A σ n, dpP_twAcr A σ n]
 
+/- English proof (translation)
+Establish `e : (tw σ A).fromBase = baseTw σ ≫ twMap σ A.fromBase` using `(fromBase_comp _ (twMap σ A.fromBase)).symm`. Rewrite using `[e, mapAcr_comp, twAcr_mapAcr]`. Both sides reduce to the same expression.
+-/
 theorem twAcr_fromBase (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (n : ℕ) (r : (base l).Acr n) :
     twAcr σ A n (mapAcr (tw σ A).fromBase n r) = mapAcr A.fromBase n (galBase σ n r) := by
   have e : (tw σ A).fromBase = baseTw σ ≫ twMap σ A.fromBase := (fromBase_comp _ (twMap σ A.fromBase)).symm
   rw [e, mapAcr_comp, twAcr_mapAcr]
   rfl
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `Ideal.quotientMap (JJ k A n) (twAcr σ A n) h (uJ k (tw σ A) n ((tw σ A).th w)) = uJ k A n (twU σ A ((tw σ A).th w))`. Rewrite using `[uJ_th, twU_th, uJ_th, Ideal.quotientMap_mk]`. Conclude with `congrArg (Ideal.Quotient.mk _) ((pdOk_twId σ A).acr_toAcr n w)`.
+-/
 theorem uJ_tw (k : Bool) (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (n : ℕ) (h) (x : (tw σ A).U) :
     Ideal.quotientMap (JJ k A n) (twAcr σ A n) h (uJ k (tw σ A) n x) = uJ k A n (twU σ A x) := by
   obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -30,6 +39,9 @@ theorem uJ_tw (k : Bool) (σ : Gal(PadicAlgCl l/K)) (A : PAlg l) (n : ℕ) (h) (
   rw [uJ_th, twU_th, uJ_th, Ideal.quotientMap_mk]
   exact congrArg (Ideal.Quotient.mk _) ((pdOk_twId σ A).acr_toAcr n w)
 
+/- English proof (translation)
+Establish `e' : CommRingCat.ofHom f ≫ CommRingCat.ofHom g ≫ CommRingCat.ofHom h = CommRingCat.ofHom e` using `CommRingCat.hom_ext (RingHom.ext he)`. Rewrite using `[← e', Functor.map_comp_apply, Functor.map_comp_apply]`.
+-/
 theorem map3 (P : CommRingCat.{0} ⥤ Type) {A B C D : Type} [CommRing A] [CommRing B] [CommRing C] [CommRing D]
     (f : A →+* B) (g : B →+* C) (h : C →+* D) (e : A →+* D) (he : ∀ x, h (g (f x)) = e x) (y : P.obj (CommRingCat.of A)) :
     P.map (CommRingCat.ofHom h) (P.map (CommRingCat.ofHom g) (P.map (CommRingCat.ofHom f) y)) = P.map (CommRingCat.ofHom e) y := by
@@ -47,6 +59,9 @@ def etaGal (T : El (F.pt κ)) :
       (uJ k T.1.obj n) (fun x => (uJ_tw k σ T.1.obj n h _).trans
         (congrArg (uJ k T.1.obj n) ((twUEquiv σ T.1.obj).apply_symm_apply x))) T.2.1
 
+/- English proof (translation)
+Introduce `l _ O _ F κ K σ hσ k n j x`. Establish `h1` using `pull_pull (ACris.galCris σ) (galMorC F κ σ hσ k n) (βMor F κ k n) j x`. Establish `h2` using `pull_pull (ACris.galCris σ) (βMor F κ k n) (galMor σ (ptTw F κ σ hσ) n) j x`. Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Conclude with `(cr_pull_eq ((βMor F κ k n).comp (σ'' := ACris.galCris σ) (galMor σ (ptTw F κ σ hσ) n)) ((galMorC F κ σ hσ k n).comp (σ'' := ACris.galCris σ) (βMor F κ k n)) (etaGal F κ σ hσ k n) (fun f x => twAcr_mapAcr σ f.1.hom n x) (fun _ _ => rfl) j x).symm`.
+-/
 theorem β_gal : ∀ {l : ℕ} [Fact l.Prime], ∀ {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ x, galOC σ (κ x) = κ x) (k : Bool) (n j : ℕ) (x : Hc F κ k n j), β F κ k n j (galHc F κ σ hσ k n j x) = (galMor σ (ptTw F κ σ hσ) n).pull j (β F κ k n j x) := by
   intro l _ O _ F κ K σ hσ k n j x
   have h1 := pull_pull (ACris.galCris σ) (galMorC F κ σ hσ k n) (βMor F κ k n) j x

@@ -8,6 +8,17 @@ namespace MassDataLevelSSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures Formalism.L2.SG.TypedSets MeasureTheory NumberField
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
+/- English proof (translation)
+Unfold `Subgroup.relIndex`. Rewrite using `[Subgroup.index, Subgroup.index]`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (Quotient.map' (Subgroup.inclusion hBA) ?_) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `x y h`.
+
+Rewrite `h`, the goal using `[QuotientGroup.leftRel_apply]`. Simplify `h` using `[Subgroup.mem_subgroupOf]`. Introduce `p q h`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective p`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective q`.
+
+Establish `h' : (QuotientGroup.mk (Subgroup.inclusion hBA x) : A ⧸ U.subgroupOf A) = QuotientGroup.mk (Subgroup.inclusion hBA y)` using `h`. Rewrite `h'`, the goal using `[QuotientGroup.eq]`. Simplify `h'` using `[Subgroup.mem_subgroupOf]`. Introduce `p`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective p`.
+
+Take `⟨u, hu, b, hb, hab⟩` from `hdec (a : G)⁻¹ (A.inv_mem a.2)`. Use `⟨QuotientGroup.mk ⟨b⁻¹, B.inv_mem hb⟩, ?_⟩` and prove the remaining obligations. Use `show (QuotientGroup.mk (Subgroup.inclusion hBA ⟨b⁻¹, B.inv_mem hb⟩) : A ⧸ U.subgroupOf A) = QuotientGroup.mk a`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Establish `ha : (a : G) = b⁻¹ * u⁻¹` using `by rw [← mul_inv_rev, ← hab, inv_inv]`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inclusion, inv_inv]`. Rewrite using `[ha, ← mul_assoc, mul_inv_cancel, one_mul]`. Conclude with `U.inv_mem hu`.
+-/
 theorem relIndex_eq_of_le_of_dec {G : Type*} [Group G] (U A B : Subgroup G) (hBA : B ≤ A)
     (hdec : ∀ a ∈ A, ∃ u ∈ U, ∃ b ∈ B, a = u * b) : U.relIndex A = U.relIndex B := by
   unfold Subgroup.relIndex
@@ -35,17 +46,28 @@ theorem relIndex_eq_of_le_of_dec {G : Type*} [Group G] (U A B : Subgroup G) (hBA
     rw [ha, ← mul_assoc, mul_inv_cancel, one_mul]
     exact U.inv_mem hu
 
+/- English proof (translation)
+Rewrite using `[show (Subtype.val ⁻¹' (V : Set G) : Set S) = (V.subgroupOf S : Set S) from (Subgroup.coe_subgroupOf V S).symm, Subgroup.closure_eq]`.
+-/
 theorem closure_val_preimage_eq_subgroupOf {G : Type*} [Group G] (S V : Subgroup G) :
     Subgroup.closure (Subtype.val ⁻¹' (V : Set G) : Set S) = V.subgroupOf S := by
   rw [show (Subtype.val ⁻¹' (V : Set G) : Set S) = (V.subgroupOf S : Set S) from
     (Subgroup.coe_subgroupOf V S).symm, Subgroup.closure_eq]
 
+/- English proof (translation)
+Rewrite using `[closure_val_preimage_eq_subgroupOf, closure_val_preimage_eq_subgroupOf, ← Subgroup.inf_subgroupOf_right K S, Subgroup.relIndex_subgroupOf inf_le_right]`.
+-/
 theorem relIndex_traces {G : Type*} [Group G] (S U K : Subgroup G) :
     (Subgroup.closure (Subtype.val ⁻¹' (U : Set G) : Set S)).relIndex
       (Subgroup.closure (Subtype.val ⁻¹' (K : Set G) : Set S)) = U.relIndex (K ⊓ S) := by
   rw [closure_val_preimage_eq_subgroupOf, closure_val_preimage_eq_subgroupOf, ← Subgroup.inf_subgroupOf_right K S,
     Subgroup.relIndex_subgroupOf inf_le_right]
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite `hg` using `[Hsub, mem_stabT]`. Use `show UniC R σ J (F0 P) g`. Introduce `b`. Establish `h` using `hg (Fin.castAdd r b)`.
+
+Simplify using `only [tupH, Fin.append_left] at h`. Rewrite using `[h, sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem Hsub_le_Ssub {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {r : ℕ} (P : Frame E n r) :
     Hsub R σ J P ≤ Ssub R σ J P := by
@@ -66,20 +88,34 @@ def KvSubT (X : HidaSetting D) (p : TypX X) : Subgroup (HA (Fv X.B.I.F p.1) X.B.
   mul_mem' := fun ha hb => (Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))).mul_mem ha hb
   inv_mem' := fun ha => (Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))).inv_mem ha
 
+/- English proof (translation)
+Unfold `finHA`. Rewrite using `[show ((1 : _), x * y) = ((1, x) * (1, y) : X.B.I.GA) from by simp, map_mul, map_mul, Prod.snd_mul]`.
+-/
 theorem finiteAdelic_map_mul (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x y : X.B.I.Gf) :
     finHA X hb (x * y) = finHA X hb x * finHA X hb y := by
   unfold finHA
   rw [show ((1 : _), x * y) = ((1, x) * (1, y) : X.B.I.GA) from by simp, map_mul, map_mul, Prod.snd_mul]
 
+/- English proof (translation)
+Unfold `finHA`. Rewrite using `[show ((1 : _), x⁻¹) = ((1, x)⁻¹ : X.B.I.GA) from by simp, map_inv, map_inv, Prod.snd_inv]`.
+-/
 theorem finiteAdelic_map_inv (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (x : X.B.I.Gf) :
     finHA X hb x⁻¹ = (finHA X hb x)⁻¹ := by
   unfold finHA
   rw [show ((1 : _), x⁻¹) = ((1, x)⁻¹ : X.B.I.GA) from by simp, map_inv, map_inv, Prod.snd_inv]
 
+/- English proof (translation)
+Unfold `finHA`. Rewrite using `[show ((1 : _), (1 : X.B.I.Gf)) = (1 : X.B.I.GA) from rfl, map_one, map_one, Prod.snd_one]`.
+-/
 theorem finiteAdelic_map_one (X : HidaSetting D) (hb : AdBridgeIso X.B.I) : finHA X hb 1 = 1 := by
   unfold finHA
   rw [show ((1 : _), (1 : X.B.I.Gf)) = (1 : X.B.I.GA) from rfl, map_one, map_one, Prod.snd_one]
 
+/- English proof (translation)
+Simplify using `only [compSet, K2u, levelUnitary, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨y', ⟨k, hk, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨k, hk, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Conclude with `⟨_, ⟨_, ⟨k, hk, rfl⟩, rfl⟩, rfl⟩`.
+-/
 theorem mem_local_component_iff (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (w : D.what₂.Word) (p : TypX X)
     (z : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) :
     z ∈ compSet X.B.I.cm.sig X.B.I.J (K2u X hb w) p.1 ↔
@@ -134,6 +170,15 @@ def UnipotentIntegralInLevel : Prop :=
       n ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) p.1 →
       n ∈ compSet X.B.I.cm.sig X.B.I.J (K2u X hb w) p.1
 
+/- English proof (translation)
+Introduce `D X hb hK hM hL w p`. Establish `e1 : idxS X hb w p = (conjugateLevelLocalSubgroup X hb hK w p).relIndex (KvSubT X p ⊓ Ssub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w))`. Unfold `idxS`. Conclude with `relIndex_traces _ (conjugateLevelLocalSubgroup X hb hK w p) (KvSubT X p)`. Establish `e2 : idxHp X hb w p = (conjugateLevelLocalSubgroup X hb hK w p).relIndex (KvSubT X p ⊓ Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w))`.
+
+Unfold `idxHp`. Conclude with `relIndex_traces _ (conjugateLevelLocalSubgroup X hb hK w p) (KvSubT X p)`. Rewrite using `[e1, e2]`. Apply `relIndex_eq_of_le_of_dec` to reduce the goal to its premises. Conclude with `inf_le_inf_left _ (Hsub_le_Ssub _ _ _ _)`.
+
+Introduce and unpack `a ⟨haK, haS⟩`. Take `⟨n, h, hn, hh, rfl⟩` from `ha X w p a haS`. Establish `hhK` using `hbI X w p n h hn hh haK`. Establish `hnK : n ∈ KvSubT X p`. Establish `e : n = (n * h) * h⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `(KvSubT X p).mul_mem haK ((KvSubT X p).inv_mem hhK)`. Conclude with `⟨n, hc X hb hK hM hL w p n hn hnK, h, ⟨hhK, hh⟩, rfl⟩`.
+-/
 theorem locLevi_of (ha : LeviRat) (hbI : LeviIntH) (hc : UnipotentIntegralInLevel) : LocLevi := by
   intro D X hb hK hM hL w p
   have e1 : idxS X hb w p = (conjugateLevelLocalSubgroup X hb hK w p).relIndex

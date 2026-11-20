@@ -32,12 +32,21 @@ def normSub {F L : Type} [Field F] [Field L] (φ : F →+* L) (δ : F) : Subgrou
     field_simp
     rw [← h]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sqSub {F L : Type} [Field F] [Field L] (φ : F →+* L) (x : Fˣ) :
     x ∈ sqSub φ ↔ IsSquare (φ (x : F)) := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_normSub {F L : Type} [Field F] [Field L] (φ : F →+* L) (δ : F) (x : Fˣ) :
     x ∈ normSub φ δ ↔ ∃ a b : L, φ (x : F) = a ^ 2 - φ δ * b ^ 2 := Iff.rfl
 
+/- English proof (translation)
+Introduce and unpack `x ⟨r, hr⟩`. Conclude with `⟨r, 0, by rw [hr]; ring⟩`.
+-/
 theorem sqSub_le_normSub {F L : Type} [Field F] [Field L] (φ : F →+* L) (δ : F) :
     sqSub φ ≤ normSub φ δ := by
   rintro x ⟨r, hr⟩
@@ -71,6 +80,9 @@ variable (F : Type) [Field F] [NumberField F]
 def sUnits (S : Finset (HeightOneSpectrum (𝓞 F))) : Subgroup Fˣ :=
   (S : Set (HeightOneSpectrum (𝓞 F))).unit F
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_sUnits (S : Finset (HeightOneSpectrum (𝓞 F))) (x : Fˣ) :
     x ∈ sUnits F S ↔ ∀ v : HeightOneSpectrum (𝓞 F), v ∉ S → v.valuation F (x : F) = 1 :=
   Iff.rfl
@@ -95,6 +107,9 @@ def admitted (S : Finset (HeightOneSpectrum (𝓞 F))) : Prop :=
     ∃ π : F, v.valuation F π = WithZero.exp (-1) ∧
       ∀ w : HeightOneSpectrum (𝓞 F), w ∉ S → w ≠ v → w.valuation F π = 1
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨h2, π, hπ, hw⟩` from `h v (fun a => hv (hST a))`. Conclude with `⟨h2, π, hπ, fun w hwT hne => hw w (fun a => hwT (hST a)) hne⟩`.
+-/
 theorem admitted.mono {F : Type} [Field F] [NumberField F] {S T : Finset (HeightOneSpectrum (𝓞 F))}
     (h : admitted F S) (hST : S ⊆ T) : admitted F T := by
   intro v hv

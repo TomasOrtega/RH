@@ -18,6 +18,9 @@ open Classical
 
 namespace GlobalTheory.Poinc.Eq8.PowChar
 
+/- English proof (translation)
+Use `GlobalTheory.GrpPullPow.isMonHom_of_mul_pts z fun T x y => ?_` and prove the remaining obligations. Use `(huniv T (fun a => (x * y) ≫ z ≫ pr a)).unique (fun a => Category.assoc _ _ _) (fun a => ?_)` and prove the remaining obligations. Use `haveI := hpr a`. Use `haveI := h a`. Rewrite using `[MonObj.mul_comp, Category.assoc, Category.assoc, ← MonObj.mul_comp]`.
+-/
 theorem isMonHom_of_coords {S : Scheme.{0}} {B C X : Over S} [GrpObj B] [GrpObj C] [GrpObj X]
     (pr : Fin 8 → (B ⟶ C)) (hpr : ∀ a, IsMonHom (pr a))
     (huniv : ∀ (T : Over S) (y : Fin 8 → (T ⟶ C)), ∃! x : T ⟶ B, ∀ a, x ≫ pr a = y a)
@@ -28,9 +31,17 @@ theorem isMonHom_of_coords {S : Scheme.{0}} {B C X : Over S} [GrpObj B] [GrpObj 
   haveI := h a
   rw [MonObj.mul_comp, Category.assoc, Category.assoc, ← MonObj.mul_comp]
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (IsMonHom (toUnit B ≫ η[C]))`.
+-/
 theorem isMonHom_one {S : Scheme.{0}} {B C : Over S} [GrpObj B] [GrpObj C] : IsMonHom (1 : B ⟶ C) :=
   inferInstanceAs (IsMonHom (toUnit B ≫ η[C]))
 
+/- English proof (translation)
+Use `choose z hz _ using fun u : Fin 8 => huniv C (fun v => if v = u then 𝟙 C else 1)`. Use `⟨z, fun u => isMonHom_of_coords pr hpr huniv (z u) fun a => ?_, hz⟩` and prove the remaining obligations. Rewrite using `[hz u a]`. Use `split_ifs`. Use `infer_instance`.
+
+Conclude with `isMonHom_one`.
+-/
 theorem exists_incl {S : Scheme.{0}} {B C : Over S} [GrpObj B] [GrpObj C]
     (pr : Fin 8 → (B ⟶ C)) (hpr : ∀ a, IsMonHom (pr a))
     (huniv : ∀ (T : Over S) (y : Fin 8 → (T ⟶ C)), ∃! x : T ⟶ B, ∀ a, x ≫ pr a = y a) :
@@ -46,6 +57,11 @@ end GlobalTheory.Poinc.Eq8.PowChar
 
 namespace GlobalTheory.Poinc.Eq8.PowChar
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty]`. Conclude with `isMonHom_one`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha]`.
+
+Use `haveI := hf a`. Conclude with `inferInstanceAs (IsMonHom (lift (f a) (∏ i ∈ s, f i) ≫ μ[M]))`.
+-/
 theorem isMonHom_prod {S : Scheme.{0}} {X M : Over S} [GrpObj X] [GrpObj M] [IsCommMonObj M] {J : Type}
     (f : J → (X ⟶ M)) (hf : ∀ i, IsMonHom (f i)) (s : Finset J) : IsMonHom (∏ i ∈ s, f i) := by
   refine Finset.induction_on s ?_ ?_
@@ -55,6 +71,9 @@ theorem isMonHom_prod {S : Scheme.{0}} {X M : Over S} [GrpObj X] [GrpObj M] [IsC
     haveI := hf a
     exact inferInstanceAs (IsMonHom (lift (f a) (∏ i ∈ s, f i) ≫ μ[M]))
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.prod_empty, MonObj.one_comp]`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, MonObj.mul_comp, ih]`.
+-/
 theorem prod_comp {S : Scheme.{0}} {X M N : Over S} [GrpObj M] [GrpObj N] [IsCommMonObj M] [IsCommMonObj N] {J : Type}
     (f : J → (X ⟶ M)) (s : Finset J) (g : M ⟶ N) [IsMonHom g] : (∏ i ∈ s, f i) ≫ g = ∏ i ∈ s, f i ≫ g := by
   refine Finset.induction_on s ?_ ?_
@@ -68,6 +87,51 @@ namespace GlobalTheory.Poinc.Eq8
 
 open PowChar in
 
+/- English proof (translation)
+Introduce `R _ _ _ hR hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W _ pr hpr huniv _ pG hpG hgen c hc`. Use `haveI := hdvr`. Use `haveI := U.gen_hom`. Use `haveI := U'.gen_hom`. Establish `ext : ∀ {H H' : Over (Sp R)} [GrpObj H] [GrpObj H'], IsSemiAbelian H → IsSemiAbelian H' → ∀ (F₁ F₂ : H ⟶ H'), IsMonHom F₁ → IsMonHom F₂ → (Over.pullback (jK R)).map F₁ = (Over.pullback (jK R)).map F₂ → F₁ = F₂`.
+
+Introduce `H H' _ _ h h' F₁ F₂ h₁ h₂ e`. Conclude with `(GlobalTheory.semiAbelian_hom_extends_uniquely_dvr R (FractionRing R) H H' h h' _ inferInstance).unique ⟨h₁, e⟩ ⟨h₂, rfl⟩`. Take `⟨z, hzm, hz⟩` from `exists_incl pr hpr huniv`. Establish `hic : ∀ u, ∃ ic : G ⟶ G', IsMonHom ic ∧ (Over.pullback (jK R)).map ic = U.gen.hom ≫ z u ≫ U'.gen.inv`. Introduce `u`.
+
+Use `haveI := hzm u`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.semiAbelian_hom_extends_uniquely_dvr R (FractionRing R) G G' hG hG' (U.gen.hom ≫ z u ≫ U'.gen.inv) inferInstance`. Conclude with `⟨F, hF, hF'⟩`. Use `choose ic hicm hicg using hic`. Establish `hicp : ∀ u v, ic u ≫ pG v = if v = u then 𝟙 G else 1`.
+
+Introduce `u v`. Use `haveI := hicm u`. Use `haveI := hpG v`. Establish `key : (Over.pullback (jK R)).map (ic u ≫ pG v) ≫ U.gen.hom = U.gen.hom ≫ (if v = u then 𝟙 A.A else 1)`. Rewrite using `[Functor.map_comp, Category.assoc, hgen v, ← Category.assoc, hicg u]`.
+
+Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc, hz u v]`. Distinguish the cases in `h : v = u`. Rewrite `key`, the goal using `[if_pos h]`. Use `ext hG hG _ _ inferInstance inferInstance ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono U.gen.hom, key, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`.
+
+Rewrite `key`, the goal using `[if_neg h]`. Use `ext hG hG _ _ inferInstance isMonHom_one ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono U.gen.hom, key, Functor.map_one, MonObj.comp_one, MonObj.one_comp]`. Establish `hpw : ∀ w, (∏ v, pG v ≫ ic v) ≫ pG w = pG w`. Introduce `w`.
+
+Use `haveI := hpG w`. Rewrite using `[PowChar.prod_comp, Finset.prod_eq_single w]`. Rewrite using `[Category.assoc, hicp w w, if_pos rfl, Category.comp_id]`. Introduce `v _ hv`. Rewrite using `[Category.assoc, hicp v w, if_neg (Ne.symm hv), MonObj.comp_one]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`. Establish `hprod : (∏ v, pG v ≫ ic v) = 𝟙 G'`. Establish `hm : IsMonHom (∏ v, pG v ≫ ic v)` using `isMonHom_prod _ (fun v => by haveI := hpG v; haveI := hicm v; infer_instance) _`. Use `ext hG' hG' _ _ hm inferInstance ?_` and prove the remaining obligations.
+
+Rewrite using `[CategoryTheory.Functor.map_id, ← cancel_mono U'.gen.hom, Category.id_comp]`. Use `(huniv _ (fun w => U'.gen.hom ≫ pr w)).unique (fun w => ?_) (fun w => rfl)` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hgen w, ← Category.assoc, ← Functor.map_comp, hpw w]`. Establish `hinj : Function.Injective (RingHom.id R)` using `Function.injective_id`. Establish `hk : ∀ k : ℕ, IsUnit (k : R) → IsUnit (k : R)` using `fun _ h => h`.
+
+Use `choose d hd using fun u => GlobalTheory.Poinc.HomTor.exists_torMatch R hR G' hG' D' A' U' G hG D A U (ic u) (hicm u)`. Take `⟨hid, hone, -⟩` from `torMatch_id_one_mul R hR G hG D A U G hG D A U`. Take `⟨hid', hone', hmul'⟩` from `torMatch_id_one_mul R hR G' hG' D' A' U' G' hG' D' A' U'`. Take `⟨-, hone'', -⟩` from `torMatch_id_one_mul R hR G hG D A U G' hG' D' A' U'`. Establish `hdc : ∀ u v, (d u).comp (c v) = if v = u then AddMonoidHom.id _ else 0`.
+
+Introduce `u v`. Establish `h1` using `torMatch_comp R hR G hG D A U R hR G' hG' D' A' U' (RingHom.id R) (pG v).left R hR G hG D A U (RingHom.id R) (ic u).left hinj hk (c v) (d u) (hc v) (hd u)`. Rewrite `h1` using `[← Over.comp_left, hicp u v, RingHom.id_comp]`. Distinguish the cases in `h : v = u`. Rewrite `h1`, the goal using `[if_pos h]`.
+
+Rewrite `h1` using `[Over.id_left]`. Conclude with `torMatch_unique R hR G hG D A U R hR G hG D A U _ _ hinj _ _ h1 hid`. Rewrite `h1`, the goal using `[if_neg h]`. Conclude with `torMatch_unique R hR G hG D A U R hR G hG D A U _ _ hinj _ _ h1 hone`. Establish `hcd : ∑ v, (c v).comp (d v) = AddMonoidHom.id _`.
+
+Establish `hs : ∀ s : Finset (Fin 8), TorMatch U' U' (RingHom.id R) (∏ v ∈ s, pG v ≫ ic v).left (∑ v ∈ s, (c v).comp (d v))`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Conclude with `hone'`.
+
+Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Establish `h1` using `torMatch_comp R hR G' hG' D' A' U' R hR G hG D A U (RingHom.id R) (ic a).left R hR G' hG' D' A' U' (RingHom.id R) (pG a).left hinj hk (d a) (c a) (hd a) (hc a)`. Rewrite `h1` using `[← Over.comp_left, RingHom.id_comp]`. Conclude with `hmul' _ _ _ _ h1 ih`.
+
+Establish `h2` using `hs Finset.univ`. Rewrite `h2` using `[hprod, Over.id_left]`. Conclude with `torMatch_unique R hR G' hG' D' A' U' R hR G' hG' D' A' U' _ _ hinj _ _ h2 hid'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.bijective_iff_has_inverse]`.
+
+Use `⟨fun x u => d u x, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Establish `e : ∀ v, d u (c v (y v)) = if v = u then y v else 0` using `fun v => by`. Use `DFunLike.congr_fun (hdc u v) (y v)` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.comp_apply]`.
+
+Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [map_sum, e, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `DFunLike.congr_fun hcd x` as an intermediate fact. Simplify `this` using `[AddMonoidHom.finset_sum_apply]`.
+
+Introduce `a b f f₁ m hf hf₁ hff₁ hm w x haveI := hf haveI := hpG w`. Establish `hfp : f ≫ pG w = if w = a then pG b else 1`. Establish `key : (Over.pullback (jK R)).map (f ≫ pG w) ≫ U.gen.hom = U'.gen.hom ≫ (if w = a then pr b else 1)`. Rewrite using `[Functor.map_comp, Category.assoc, hgen w, ← Category.assoc, hff₁, Category.assoc, hf₁.2 w]`. Distinguish the cases in `h : w = a`.
+
+Rewrite `key`, the goal using `[if_pos h]`. Use `ext hG' hG _ _ inferInstance (hpG b) ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono U.gen.hom, key, hgen b]`. Rewrite `key`, the goal using `[if_neg h]`. Use `ext hG' hG _ _ inferInstance isMonHom_one ?_` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono U.gen.hom, key, Functor.map_one, MonObj.comp_one, MonObj.one_comp]`. Establish `h1` using `torMatch_comp R hR G hG D A U R hR G' hG' D' A' U' (RingHom.id R) (pG w).left R hR G' hG' D' A' U' (RingHom.id R) f.left hinj hk (c w) m (hc w) (GlobalTheory.Poinc.TorEnd.torMatch_of_endChar R hR G' hG' D' A' U' f hf m hm)`. Rewrite `h1` using `[← Over.comp_left, hfp, RingHom.id_comp]`. Establish `e : m.comp (c w) = if w = a then c b else 0`. Distinguish the cases in `h : w = a`.
+
+Rewrite `h1`, the goal using `[if_pos h]`. Conclude with `torMatch_unique R hR G hG D A U R hR G' hG' D' A' U' _ _ hinj _ _ h1 (hc b)`. Rewrite `h1`, the goal using `[if_neg h]`. Conclude with `torMatch_unique R hR G hG D A U R hR G' hG' D' A' U' _ _ hinj _ _ h1 hone''`. Use `DFunLike.congr_fun e x` as an intermediate fact.
+
+Rewrite `this` using `[AddMonoidHom.comp_apply]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem characters_eighthPower_elementaryMatrices : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → IsDiscreteValuationRing R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G') (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (pr : Fin 8 → (A'.A ⟶ A.A)), (∀ a, IsMonHom (pr a)) → (∀ (T' : Over (Sp (FractionRing R))) (y : Fin 8 → (T' ⟶ A.A)), ∃! z : T' ⟶ A'.A, ∀ a, z ≫ pr a = y a) → LBIso A'.L (LB.LinComb (abelian₂ A.A A.L) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∀ (pG : Fin 8 → (G' ⟶ G)), (∀ v, IsMonHom (pG v)) → (∀ v, (Over.pullback (jK R)).map (pG v) ≫ U.gen.hom = U'.gen.hom ≫ pr v) → ∀ (c : Fin 8 → (D.toPre.X →+ D'.toPre.X)), (∀ v, TorMatch U U' (RingHom.id R) (pG v).left (c v)) → (Function.Bijective fun y : Fin 8 → D.toPre.X => ∑ v, c v (y v)) ∧ ∀ (a b : Fin 8) (f : G' ⟶ G') (f₁ : A'.A ⟶ A'.A) (m : D'.toPre.X →+ D'.toPre.X), IsMonHom f → MatEnd pr a b f₁ → (Over.pullback (jK R)).map f ≫ U'.gen.hom = U'.gen.hom ≫ f₁ → EndChar U' f m → ∀ w x, m (c w x) = if w = a then c b x else 0 := by
   intro R _ _ _ hR hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W _ pr hpr huniv _ pG hpG hgen c hc
   haveI := hdvr

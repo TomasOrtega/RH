@@ -23,6 +23,33 @@ section Density
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hone : ∀ k : Eˣ, PP.valuation E ((k : E) - 1) < 1 → H.locK PP k = 1`. Introduce `k hk`. Establish `hv1 : PP.valuation E (k : E) = 1`. Establish `e : (k : E) = 1 + ((k : E) - 1)` using `by ring`. Establish `h1 : PP.valuation E ((k : E) - 1) < PP.valuation E 1` using `by rwa [map_one]`.
+
+Rewrite using `[e]`. Use `first`. Consider the case `rw [Valuation.map_add_eq_of_lt_right _ h1, map_one]`. Consider the case `rw [Valuation.map_add_eq_of_lt_left _ h1, map_one]`. Consider the case `rw [add_comm, Valuation.map_add_eq_of_lt_right _ h1, map_one]`.
+
+Consider the case `rw [add_comm, Valuation.map_add_eq_of_lt_left _ h1, map_one]`. Take `⟨a, s, h⟩` from `PP.exists_primeCompl_mul_eq_of_integer (k : E) hv1.le`. Establish `hs : (s : 𝓞 E) ∉ PP.asIdeal` using `s.2`. Establish `hsv` using `GlobalTheory.ChainOnto.TameRes.valuation_eq_one_of_not_mem PP _ hs`. Establish `hav : PP.valuation E (algebraMap (𝓞 E) E a) = 1`.
+
+Rewrite using `[← h, map_mul, hv1, hsv, one_mul]`. Establish `ha : a ∉ PP.asIdeal`. Introduce `hm`. Establish `hlt : PP.valuation E (algebraMap (𝓞 E) E a) < 1` using `(PP.valuation_lt_one_iff_mem (K := E) a).mpr hm`. Conclude with `absurd hav (ne_of_lt hlt)`.
+
+Establish `hs0 : algebraMap (𝓞 E) E s ≠ 0` using `fun h0 => by`. Rewrite `hsv` using `[h0, map_zero]`. Conclude with `zero_ne_one hsv`. Establish `ha0 : algebraMap (𝓞 E) E a ≠ 0` using `fun h0 => by`. Rewrite `hav` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hav`. Establish `hdiff : a - (s : 𝓞 E) ∈ PP.asIdeal`. Apply `(PP.valuation_lt_one_iff_mem (K := E) _).mp` to reduce the goal to its premises. Use `show PP.valuation E (algebraMap (𝓞 E) E (a - (s : 𝓞 E))) < 1`. Rewrite using `[map_sub, ← h, ← sub_one_mul, map_mul, hsv, mul_one]`.
+
+Conclude with `hk`. Set `ka : Eˣ` to `Units.mk0 _ ha0`. Set `ks : Eˣ` to `Units.mk0 _ hs0`. Establish `e1 : H.locK PP ka = H.locK PP ks` using `hc a (s : 𝓞 E) ka ks rfl rfl ha hdiff`. Establish `hk' : k = ka * ks⁻¹`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, ka, ks]`. Rewrite using `[← h, mul_assoc, mul_inv_cancel₀ hs0, mul_one]`. Rewrite using `[hk', map_mul, map_inv, e1, mul_inv_cancel]`. Unfold `Formalism.L2.Host.HChar.TameAt Formalism.L2.Host.HChar.LevelLe`.
+
+Introduce `x _ hx1`. Assume the negation of the conclusion as `hne`. Establish `hcont : Continuous (H.loc PP)` using `H.2.1.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele PP)`. Establish `hW : IsOpen {y : (PP.adicCompletion E)ˣ | H.loc PP y ≠ 1}` using `isOpen_ne_fun hcont continuous_const`. Take `⟨T, hT, hTe⟩` from `Units.isEmbedding_val₀.isInducing.isOpen_iff.1 hW`.
+
+Establish `hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero]; exact WithZero.exp_lt_exp.mpr (by norm_num)`. Establish `hxT : (x : PP.adicCompletion E) ∈ T ∩ {z | Valued.v (z - 1) < 1}`. Use `⟨?_, lt_of_le_of_lt hx1 hlt⟩` and prove the remaining obligations. Establish `: x ∈ (Units.val ⁻¹' T : Set (PP.adicCompletion E)ˣ)` using `by rw [hTe]; exact hne`.
+
+Conclude with `this`. Establish `hU : IsOpen (T ∩ {z : PP.adicCompletion E | Valued.v (z - 1) < 1})` using `hT.inter ((GlobalTheory.ChainOnto.TameRes.isOpen_ltOne PP).preimage (continuous_sub_right 1))`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap E PP).exists_mem_open hU ⟨_, hxT⟩`. Establish `hk1 : PP.valuation E (k - 1) < 1`. Rewrite using `[← GlobalTheory.ChainOnto.TameRes.val_alg, map_sub, map_one]`.
+
+Conclude with `hk.2`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hk1`. Establish `hloc` using `hone (Units.mk0 k hk0) hk1`.
+
+Establish `hmem : Formalism.L2.Host.atFin PP (Units.mk0 k hk0) ∈ (Units.val ⁻¹' T : Set (PP.adicCompletion E)ˣ)` using `hk.1`. Rewrite `hmem` using `[hTe]`. Conclude with `hmem hloc`.
+-/
 theorem tameAt_of_congr (H : Formalism.L2.Host.HChar E) (PP : HeightOneSpectrum (𝓞 E))
     (hc : ∀ (a b : 𝓞 E) (ka kb : Eˣ), (ka : E) = (a : E) → (kb : E) = (b : E) → a ∉ PP.asIdeal →
       a - b ∈ PP.asIdeal → H.locK PP ka = H.locK PP kb) : H.TameAt PP := by
@@ -95,6 +122,19 @@ variable {D : D7}
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `he` using `hδ.split.isIdemAt hPP`. Establish `hee : idemAt PP * idemAt PP = idemAt PP` using `he.1.1`. Take `⟨hi, h1⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D _ PP he`. Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`. Establish `hma : (Ideal.Quotient.mk PP.asIdeal a : kP PP) ≠ 0`.
+
+Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ha`. Set `u : (kP PP)ˣ` to `Units.mk0 _ hma`. Establish `key : ∀ (c : 𝓞 D.host.E) (z : (AE D)ˣ), (z : AE D) = 1 + idemAt PP * (incA D (c : D.host.E) - 1) → Ideal.Quotient.mk PP.asIdeal c = (u : kP PP) → δ.chi z = δ.res PP u`. Introduce `c z hz hcu`.
+
+Establish `hv : Formalism.IndefR.Datum.toEAf D (z : AE D) = ((1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E c - 1) : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Datum.EAf D)`. Establish `hb : Formalism.IndefR.Datum.toEAf D (incA D (c : D.host.E)) = ((oToS D.host.F D.host.E c : Formalism.L2.Herm.intAf D.host.F D.host.E) : Formalism.IndefR.Datum.EAf D)` using `rfl`. Rewrite using `[hz, GlobalTheory.ConjTwist.map_loc, hb]`. Both sides reduce to the same expression. Establish `hzi : Formalism.IndefR.Datum.toEAf D (z : AE D) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+
+Rewrite using `[hv]`. Conclude with `Subtype.property _`. Use `hδ.res PP hPP z ?_ hzi u ?_` and prove the remaining obligations. Rewrite using `[hz]`. Take the linear combination `(1 - incA D (c : D.host.E)) * hee`.
+
+Establish `e2 : (⟨_, hzi⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = 1 + ⟨_, hi⟩ * (oToS D.host.F D.host.E c - 1)` using `Subtype.ext hv`. Rewrite using `[e2, GlobalTheory.ConjTwist.map_loc, h1, resS_oToS, hcu]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : Ideal.Quotient.mk PP.asIdeal b = (u : kP PP)` using `by show Ideal.Quotient.mk PP.asIdeal b = Ideal.Quotient.mk PP.asIdeal a`. Conclude with `(Ideal.Quotient.eq.mpr hab).symm`.
+
+Rewrite using `[key a x hx rfl, key b y hy hb]`.
+-/
 theorem chi_locE_congr (δ : Twist D Circle) (hδ : δ.Good) {PP : Pl D.host.E} (hPP : PP ∈ δ.Q) (a b : 𝓞 D.host.E)
     (ha : a ∉ PP.asIdeal) (hab : a - b ∈ PP.asIdeal) (x y : (AE D)ˣ)
     (hx : (x : AE D) = 1 + idemAt PP * (incA D (a : D.host.E) - 1))
@@ -130,6 +170,25 @@ theorem chi_locE_congr (δ : Twist D Circle) (hδ : δ.Good) {PP : Pl D.host.E} 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `he'` using `hδ.split.isIdemAt hP'`. Establish `he : Formalism.L2.NTheta.IsIdemAt (cA D (idemAt P')) P` using `(GlobalTheory.IdemSupport.supported_group_and_prime_idempotents D.sp.X').2.2.2 P' _ _ he' hPP`. Establish `hee : cA D (idemAt P') * cA D (idemAt P') = cA D (idemAt P')` using `he.1.1`. Establish `hcc : cA D (cA D (idemAt P')) = idemAt P'` using `GlobalTheory.MovedIdem.cA_cA _`. Establish `step : ∀ (k : D.host.Eˣ) (c : 𝓞 D.host.E), (k : D.host.E) = star (c : D.host.E) → ∀ z : (AE D)ˣ, (z : AE D) = 1 + idemAt P' * (incA D (c : D.host.E) - 1) → ((χ.locK P k : ℂˣ) : ℂ) = ((δ.chi z : Circle) : ℂ)⁻¹`.
+
+Introduce `k c hk z hz`. Set `x` to `locU hee k`. Establish `h1 : ((δ.chi x : Circle) : ℂ) = ((χ.locK P k : ℂˣ) : ℂ)` using `hc.2 P _ (GlobalTheory.HeckeDetChar.isPlIdem he) k x (locU_val hee k)`. Establish `hxz : cA D (x : AE D) = (z : AE D)`. Rewrite using `[locU_val, locE, hz, RingHom.map_add, RingHom.map_one, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, hcc, GlobalTheory.MovedIdem.cA_incA, hk, star_star]`.
+
+Establish `hfix : cA D ((x * z : (AE D)ˣ) : AE D) = ((x * z : (AE D)ˣ) : AE D)`. Rewrite using `[Units.val_mul, RingHom.map_mul, hxz, ← hxz, GlobalTheory.MovedIdem.cA_cA, mul_comm]`. Take `⟨α, hα⟩` from `(GlobalTheory.DetRootRows.fixed_iff_idF (x * z)).1 hfix`. Establish `h2 : δ.chi x * δ.chi z = 1` using `by rw [← map_mul, ← hα, hδ.real]`. Rewrite using `[← h1]`.
+
+Establish `h3 : ((δ.chi x : Circle) : ℂ) * ((δ.chi z : Circle) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, h2, Circle.coe_one]`. Conclude with `eq_inv_of_mul_eq_one_left h3`. Establish `hsym` using `GlobalTheory.ParahoricLift.isConjPl_symm hPP`. Establish `hca : Formalism.L2.Col.cO _ a ∉ P'.asIdeal`.
+
+Introduce `hm`. Take `⟨c', hc', hc'e⟩` from `hPP _ hm`. Apply `ha` to reduce the goal to its premises. Establish `: c' = a` using `RingOfIntegers.ext (by rw [hc'e]; exact star_star (a : D.host.E))`. Rewrite using `[← this]` and apply the resulting hypothesis.
+
+Establish `hcab : Formalism.L2.Col.cO _ a - Formalism.L2.Col.cO _ b ∈ P'.asIdeal`. Take `⟨c', hc', hc'e⟩` from `hsym _ hab`. Establish `: c' = Formalism.L2.Col.cO _ a - Formalism.L2.Col.cO _ b` using `RingOfIntegers.ext (by`. Rewrite using `[hc'e]`. Use `show star (((a - b : 𝓞 D.host.E)) : D.host.E) = star (a : D.host.E) - star (b : D.host.E)`.
+
+Use `push_cast`. Conclude with `star_sub _ _)`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hcne : ∀ c : 𝓞 D.host.E, c ∉ P'.asIdeal → (c : D.host.E) ≠ 0` using `fun c hc0 h0 => hc0 (by rw [show c = 0 from RingOfIntegers.ext h0]; exact zero_mem _)`. Establish `hcb : Formalism.L2.Col.cO _ b ∉ P'.asIdeal` using `fun hm => hca (by`.
+
+Use `add_mem hcab hm` as an intermediate fact. Rewrite using `[sub_add_cancel] at this)` and apply the resulting hypothesis. Establish `he'e : idemAt P' * idemAt P' = idemAt P'` using `he'.1.1`. Set `za` to `locU he'e (Units.mk0 _ (hcne _ hca))`. Set `zb` to `locU he'e (Units.mk0 _ (hcne _ hcb))`.
+
+Establish `hza` using `step ka (Formalism.L2.Col.cO _ a) (by rw [hka]; exact (star_star (a : D.host.E)).symm) za (locU_val he'e _)`. Establish `hzb` using `step kb (Formalism.L2.Col.cO _ b) (by rw [hkb]; exact (star_star (b : D.host.E)).symm) zb (locU_val he'e _)`. Establish `heq` using `chi_locE_congr δ hδ hP' _ _ hca hcab za zb (locU_val he'e _) (locU_val he'e _)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hza, hzb, heq]`.
+-/
 theorem locK_congr_conj (δ : Twist D Circle) (hδ : δ.Good) (χ : Formalism.L2.Host.HChar D.host.E) (hc : ChrEq δ.chi χ)
     {P' : Pl D.host.E} (hP' : P' ∈ δ.Q) {P : Pl D.host.E} (hPP : Formalism.IndefR.Lev.IsConjPl P' P)
     (a b : 𝓞 D.host.E) (ka kb : D.host.Eˣ) (hka : (ka : D.host.E) = (a : D.host.E)) (hkb : (kb : D.host.E) = (b : D.host.E))
@@ -188,6 +247,9 @@ theorem locK_congr_conj (δ : Twist D Circle) (hδ : δ.Good) (χ : Formalism.L2
   apply Units.ext
   rw [hza, hzb, heq]
 
+/- English proof (translation)
+Introduce `D δ hδ χ hc P' hP' P hPP`. Conclude with `tameAt_of_congr χ P fun a b ka kb hka hkb ha hab => locK_congr_conj δ hδ χ hc hP' hPP a b ka kb hka hkb ha hab`.
+-/
 theorem tameAt_conj : ∀ (D : D7) (δ : GlobalTheory.ExportSeries.Twist D Circle), δ.Good → ∀ (χ : Formalism.L2.Host.HChar D.host.E),
     ChrEq δ.chi χ → ∀ P' ∈ δ.Q, ∀ P : Pl D.host.E, Formalism.IndefR.Lev.IsConjPl P' P → χ.TameAt P := by
   intro D δ hδ χ hc P' hP' P hPP

@@ -21,6 +21,9 @@ open scoped Pointwise
 open Formalism.IndefR.Datum
 open GlobalTheory.Grid
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixWeight.mixS_weight_le | exact GlobalTheory.MixWeight.mixS_weight_le | (intros; apply GlobalTheory.MixWeight.mixS_weight_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mixed_theta_series_rapid_decay : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (θ : InfFam D), IsInfFam θ →
     ∀ (V X S₀ : HSp D) (r : ℕ) (d : GlobalTheory.MixModel.HypDec V S₀ r) (μ' : Measure (Mx D X.rank r))
     (𝓕' : Set (Mx D X.rank r)), IsCovolOne (GlobalTheory.MixModel.ratMx D X.rank r) μ' 𝓕' → ∀ N : ℕ,

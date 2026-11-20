@@ -17,6 +17,13 @@ namespace GlobalTheory.QVal.InnerSupp
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨α, rfl, h1, h0⟩` from `hε`. Establish `hαα : α * α = α`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`. Express the relevant statement in the definitionally equal form `evalV D.host.F w (α * α) = evalV D.host.F w α`.
+
+Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[h1, mul_one]`. Rewrite using `[h0 w hw, zero_mul]`.
+
+Use `show ((0 : Ainf D.host.F), α) * ((0 : Ainf D.host.F), α) = ((0 : Ainf D.host.F), α)`. Rewrite using `[Prod.mk_mul_mk, mul_zero, hαα]`.
+-/
 theorem placeIdem_self {v : Pl D} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) : ε * ε = ε := by
   obtain ⟨α, rfl, h1, h0⟩ := hε
   have hαα : α * α = α := by
@@ -30,11 +37,25 @@ theorem placeIdem_self {v : Pl D} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) 
   show ((0 : Ainf D.host.F), α) * ((0 : Ainf D.host.F), α) = ((0 : Ainf D.host.F), α)
   rw [Prod.mk_mul_mk, mul_zero, hαα]
 
+/- English proof (translation)
+Take `⟨ε, hε, heq⟩` from `q.above`. Rewrite using `[heq, ← map_mul, placeIdem_self hε]`.
+-/
 theorem idem_sq {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) :
     (q.e + cA D q.e) * (q.e + cA D q.e) = q.e + cA D q.e := by
   obtain ⟨ε, hε, heq⟩ := q.above
   rw [heq, ← map_mul, placeIdem_self hε]
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ u hu`. Establish `h` using `Finsupp.support_single_subset (show u ∈ (Finsupp.single (0 : G) (1 : ℂ)).support from hu)`.
+
+Rewrite `h` using `[Finset.mem_singleton]`. Substitute `h` using the available equality. Conclude with `h0`. Consider the case `cons e l ih`. Introduce `hl u hu`.
+
+Establish `hu' : u ∈ (e.sum fun g a => (aconv l).sum fun h b => Finsupp.single (g + h) (a * b)).support` using `hu`. Establish `h1` using `Finsupp.support_sum hu'`. Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨g, hg, h2⟩` from `h1`. Establish `h3` using `Finsupp.support_sum h2`.
+
+Rewrite `h3` using `[Finset.mem_biUnion]`. Take `⟨h, hh, h4⟩` from `h3`. Establish `h5` using `Finsupp.support_single_subset h4`. Rewrite `h5` using `[Finset.mem_singleton]`. Substitute `h5` using the available equality.
+
+Conclude with `hadd g h (hl e (List.mem_cons.2 (Or.inl rfl)) g hg) (ih (fun c hc => hl c (List.mem_cons.2 (Or.inr hc))) h hh)`.
+-/
 theorem support_aconv {G : Type} [AddMonoid G] (P : G → Prop) (h0 : P 0) (hadd : ∀ a b, P a → P b → P (a + b)) :
     ∀ l : List (G →₀ ℂ), (∀ c ∈ l, ∀ u ∈ c.support, P u) → ∀ u ∈ (aconv l).support, P u := by
   classical
@@ -61,6 +82,11 @@ theorem support_aconv {G : Type} [AddMonoid G] (P : G → Prop) (h0 : P 0) (hadd
     exact hadd g h (hl e (List.mem_cons.2 (Or.inl rfl)) g hg)
       (ih (fun c hc => hl c (List.mem_cons.2 (Or.inr hc))) h hh)
 
+/- English proof (translation)
+Establish `key` using `support_aconv (fun u : WO A T => (∀ a b, E₀ * u a b = 0) ∧ u.map (infPart D) = 0) ⟨fun a b => by rw [Matrix.zero_apply, mul_zero], by ext a b; simp⟩ (fun u u' hu hu' => ⟨fun a b => by rw [Matrix.add_apply, mul_add, hu.1 a b, hu'.1 a b, add_zero], by`. Use extensionality with `a b`. Establish `e1` using `congrFun (congrFun hu.2 a) b`. Establish `e2` using `congrFun (congrFun hu'.2 a) b`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply, Matrix.add_apply] at e1 e2 ⊢`.
+
+Rewrite using `[(infPart D).map_add, e1, e2, add_zero]⟩) l hl`. Establish `half : ∀ u ∈ (aconv l).support, IsHalf (1 - E₀) u` using `fun u hu a b => by`. Rewrite using `[sub_mul, one_mul, (key u hu).1 a b, sub_zero]`. Use `⟨fun u hu => (key u hu).2, half, fun x hx y hy => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.HeisComb.symplO_half A T E₀ (1 - E₀) x y hc (by rw [mul_sub, mul_one, hsq, sub_self]) (h₀ x hx) (half y hy)`.
+-/
 theorem side {A T : HSp D} (E₀ : AE D) (hc : cA D E₀ = E₀) (hsq : E₀ * E₀ = E₀) (c₀ : WO A T →₀ ℂ)
     (l : List (WO A T →₀ ℂ)) (h₀ : ∀ x ∈ c₀.support, IsHalf E₀ x)
     (hl : ∀ c ∈ l, ∀ u ∈ c.support, (∀ a b, E₀ * u a b = 0) ∧ u.map (infPart D) = 0) :
@@ -83,6 +109,15 @@ end GlobalTheory.QVal.InnerSupp
 
 open GlobalTheory.QVal.InnerSupp in
 
+/- English proof (translation)
+Introduce `D ψ σ S r Q hinj`. Establish `hv : ∀ i : Fin r, (Q 0).q.v ≠ (Q i.succ).q.v` using `fun i h => Fin.succ_ne_zero i (hinj h).symm`. Take `⟨hc, -, horth⟩` from `GlobalTheory.PlaceIdemFacts.idem_facts D (Q 0).k (Q 0).q`. Establish `hsq` using `idem_sq (Q 0).q`. Establish `kill : ∀ (i : Fin r) {m n : ℕ} (u : Mx D m n), IsHalf ((Q i.succ).q.e + cA D (Q i.succ).q.e) u → (∀ a b, ((Q 0).q.e + cA D (Q 0).q.e) * u a b = 0) ∧ u.map (infPart D) = 0`.
+
+Introduce `i m n u hu`. Take `⟨-, hinf, -⟩` from `GlobalTheory.PlaceIdemFacts.idem_facts D (Q i.succ).k (Q i.succ).q`. Use `⟨fun a b => ?_, (hinf (fun _ => True) trivial m n u hu).2⟩` and prove the remaining obligations. Rewrite using `[← hu a b, ← mul_assoc, horth (Q i.succ).k (Q i.succ).q (hv i), zero_mul]`. Use `⟨side _ hc hsq (Q 0).D₁ _ (fun x hx => (Q 0).dat₁.1 x hx) ?_, side _ hc hsq (Q 0).D₂ _ (fun x hx => (Q 0).dat₂.1 x hx) ?_⟩` and prove the remaining obligations.
+
+Introduce `c hc' u hu`. Simplify using `only [List.mem_ofFn] at hc'`. Take `⟨i, rfl⟩` from `hc'`. Conclude with `kill i u ((Q i.succ).dat₁.1 u hu)`. Introduce `c hc' u hu`.
+
+Simplify using `only [List.mem_ofFn] at hc'`. Take `⟨i, rfl⟩` from `hc'`. Conclude with `kill i u ((Q i.succ).dat₂.1 u hu)`.
+-/
 theorem GlobalTheory.QVal.inner_supp : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (σ : ℕ) (S : Dbl2 ψ σ) (r : ℕ) (Q : Fin (r + 1) → QStep S), Function.Injective (fun i => (Q i).q.v) → (IsFinComb (aconv (List.ofFn fun i : Fin r => (Q i.succ).D₁)) ∧ (Q 0).Away (aconv (List.ofFn fun i : Fin r => (Q i.succ).D₁)) ∧ ∀ x ∈ (Q 0).D₁.support, ∀ y ∈ (aconv (List.ofFn fun i : Fin r => (Q i.succ).D₁)).support, symplO _ _ x y = 0) ∧ (IsFinComb (aconv (List.ofFn fun i : Fin r => (Q i.succ).D₂)) ∧ (Q 0).Away (aconv (List.ofFn fun i : Fin r => (Q i.succ).D₂)) ∧ ∀ x ∈ (Q 0).D₂.support, ∀ y ∈ (aconv (List.ofFn fun i : Fin r => (Q i.succ).D₂)).support, symplO _ _ x y = 0) := by
   intro D ψ σ S r Q hinj
   have hv : ∀ i : Fin r, (Q 0).q.v ≠ (Q i.succ).q.v := fun i h => Fin.succ_ne_zero i (hinj h).symm

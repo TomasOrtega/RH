@@ -12,6 +12,13 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Mai
 
 namespace GlobalTheory.SplitRowAll
 
+/- English proof (translation)
+Introduce `D`. Use `⟨fun l hl => GlobalTheory.T.split_prime_implies_places_split D.host l hl, fun i hi => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `w hw`. Establish `h2 : D.nd.l i ∉ D.host.small` using `((primeClass_eq_splitK_iff _).1 hi.2.2.2.2.2).1`. Conclude with `(GlobalTheory.T.K0_eq_and_good_of_ne D i h2 hi.2.2.1 hi.2.2.2.1 w hw).1`.
+
+Introduce and unpack `w hw τ ⟨h1, h2⟩`. Break down `GlobalTheory.SplitRowProbe.embIn_xor D i w hw τ with h | h` into its components or cases. Conclude with `h.2 h2`. Conclude with `h.2 h1`. Conclude with `GlobalTheory.T.splitPrime_place_cmType_conjugate D i hi`.
+
+Conclude with `GlobalTheory.T.cmHalfTypePlaces_meet_conjugatePairs_and_count D i hi`.
+-/
 theorem splitRow_at : ∀ D : D7, SplitRow_at D := by
   intro D
   refine ⟨fun l hl => GlobalTheory.T.split_prime_implies_places_split D.host l hl, fun i hi => ⟨?_, ?_, ?_, ?_⟩⟩

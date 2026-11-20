@@ -3,6 +3,61 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨avg, havg⟩ : ∃ avg : Subgroup K → Module.End ℂ V, ∀ N, avg N = (N.index : ℂ)⁻¹ • ∑ᶠ q : K ⧸ N, ρ q.out` from `⟨_, fun _ => rfl⟩`. Establish `hform : ∀ (N : Subgroup K) [Fintype (K ⧸ N)] (v : V), avg N v = (N.index : ℂ)⁻¹ • ∑ q : K ⧸ N, ρ q.out v`. Introduce `N _ v`. Rewrite using `[havg, finsum_eq_sum_of_fintype, LinearMap.smul_apply, LinearMap.sum_apply]`. Establish `hcard : ∀ (N : Subgroup K) [N.FiniteIndex] [Fintype (K ⧸ N)], (Fintype.card (K ⧸ N) : ℂ) = N.index ∧ (N.index : ℂ) ≠ 0`.
+
+Introduce `N _ _`. Use `⟨by rw [Subgroup.index_eq_card, Nat.card_eq_fintype_card], ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.index_ne_zero_of_finite` after adjusting the coercions. Establish `hlift : ∀ (N : Subgroup K) (v : V), (∀ n ∈ N, ρ n v = v) → ∀ g : K, ρ ((g : K ⧸ N).out) v = ρ g v`. Introduce `N v hv g`.
+
+Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N g`. Rewrite using `[hn, map_mul, Module.End.mul_apply, hv _ n.2]`. Establish `hconj : ∀ (N : Subgroup K) [N.Normal] (v : V), (∀ n ∈ N, ρ n v = v) → ∀ k : K, ∀ n ∈ N, ρ n (ρ k v) = ρ k v`. Introduce `N hN v hv k n hn`. Establish `h1 : k⁻¹ * n * k ∈ N`.
+
+Simplify using `using hN.conj_mem n hn k⁻¹`. Establish `h2 : n * k = k * (k⁻¹ * n * k)` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, h2, map_mul, Module.End.mul_apply, hv _ h1]`. Establish `hinv : ∀ (N : Subgroup K) [N.Normal] [N.FiniteIndex] (v : V), (∀ n ∈ N, ρ n v = v) → ∀ u : K, ρ u (avg N v) = avg N v`. Introduce `N _ _ v hv u`.
+
+Use `letI : Fintype (K ⧸ N) := Subgroup.fintypeQuotientOfFiniteIndex`. Rewrite using `[hform N v, map_smul, map_sum]`. Use `congr 1`. Establish `hq : ∀ q : K ⧸ N, ρ u (ρ q.out v) = ρ ((u • q).out) v`. Introduce `q`.
+
+Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[hlift N v hv, MulAction.Quotient.smul_mk, hlift N v hv, smul_eq_mul, map_mul, Module.End.mul_apply]`. Simplify using `only [hq]`. Conclude with `Equiv.sum_comp (MulAction.toPerm u) (fun q : K ⧸ N => ρ q.out v)`.
+
+Establish `hfixed : ∀ (N : Subgroup K) [N.FiniteIndex] (v : V), (∀ u, ρ u v = v) → avg N v = v`. Introduce `N _ v hv`. Use `letI : Fintype (K ⧸ N) := Subgroup.fintypeQuotientOfFiniteIndex`. Rewrite using `[hform N v]`. Simplify using `only [hv, Finset.sum_const, Finset.card_univ]`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, (hcard N).1, inv_mul_cancel₀ (hcard N).2, one_smul]`. Establish `hshift : ∀ (N : Subgroup K) [N.Normal] [N.FiniteIndex] (v : V), (∀ n ∈ N, ρ n v = v) → ∀ k : K, avg N (ρ k v) = avg N v`. Introduce `N _ _ v hv k`. Use `letI : Fintype (K ⧸ N) := Subgroup.fintypeQuotientOfFiniteIndex`. Rewrite using `[hform N (ρ k v), hform N v]`.
+
+Use `congr 1`. Establish `hq : ∀ q : K ⧸ N, ρ q.out (ρ k v) = ρ ((q * (k : K ⧸ N)).out) v`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`.
+
+Rewrite using `[hlift N _ (hconj N v hv k), ← QuotientGroup.mk_mul, hlift N v hv, map_mul, Module.End.mul_apply]`. Simplify using `only [hq]`. Conclude with `Equiv.sum_comp (Equiv.mulRight (k : K ⧸ N)) (fun q : K ⧸ N => ρ q.out v)`. Set `A : Submodule ℂ V` to `Submodule.span ℂ {x | ∃ k u, ρ k u - u = x}`. Establish `hdiff : ∀ (N : Subgroup K) [N.FiniteIndex] (v : V), v - avg N v ∈ A`.
+
+Introduce `N _ v`. Use `letI : Fintype (K ⧸ N) := Subgroup.fintypeQuotientOfFiniteIndex`. Establish `e : v - avg N v = (N.index : ℂ)⁻¹ • ∑ q : K ⧸ N, (v - ρ q.out v)`. Rewrite using `[hform N v, Finset.sum_sub_distrib, smul_sub, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, (hcard N).1, inv_mul_cancel₀ (hcard N).2, one_smul]`. Rewrite using `[e]`.
+
+Use `A.smul_mem _ (A.sum_mem fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `A.neg_mem (Submodule.subset_span ⟨q.out, v, rfl⟩)`. Establish `hcomm : ∀ (N : Subgroup K) [N.FiniteIndex] (T : Module.End ℂ V), (∀ u, Commute T (ρ u)) → ∀ v, T (avg N v) = avg N (T v)`. Introduce `N _ T hT v`.
+
+Use `letI : Fintype (K ⧸ N) := Subgroup.fintypeQuotientOfFiniteIndex`. Rewrite using `[hform N v, hform N (T v), map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, (hT q.out).eq, Module.End.mul_apply]`.
+
+Establish `hkill : ∀ a ∈ A, ∃ N : Subgroup K, N.Normal ∧ N.FiniteIndex ∧ ∀ N' : Subgroup K, N'.Normal → N'.FiniteIndex → N' ≤ N → (∀ n ∈ N', ρ n a = a) ∧ avg N' a = 0`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, u, rfl⟩` from `hx`.
+
+Take `⟨N, hN, hNf, hu⟩` from `h u`. Use `⟨N, hN, hNf, fun N' hN' hN'f hle => ?_⟩` and prove the remaining obligations. Establish `hu' : ∀ n ∈ N', ρ n u = u` using `fun n hn => hu n (hle hn)`. Use `⟨fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hconj N' u hu' k n hn, hu' n hn]`.
+
+Rewrite using `[map_sub, hshift N' u hu' k, sub_self]`. Consider the case `zero`. Use `⟨⊤, inferInstance, inferInstance, fun N' _ _ _ => ⟨fun n _ => map_zero _, map_zero _⟩⟩` and prove the remaining obligations. Consider the case `add x y _ _ hx hy`. Take `⟨N1, h1n, h1f, h1⟩` from `hx`.
+
+Take `⟨N2, h2n, h2f, h2⟩` from `hy`. Use `⟨N1 ⊓ N2, inferInstance, inferInstance, fun N' hN' hN'f hle => ?_⟩` and prove the remaining obligations. Take `⟨a1, b1⟩` from `h1 N' hN' hN'f (hle.trans inf_le_left)`. Take `⟨a2, b2⟩` from `h2 N' hN' hN'f (hle.trans inf_le_right)`. Use `⟨fun n hn => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, a1 n hn, a2 n hn]`. Rewrite using `[map_add, b1, b2, add_zero]`. Consider the case `smul c x _ hx`. Take `⟨N1, h1n, h1f, h1⟩` from `hx`. Use `⟨N1, h1n, h1f, fun N' hN' hN'f hle => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a1, b1⟩` from `h1 N' hN' hN'f hle`. Use `⟨fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, a1 n hn]`. Rewrite using `[map_smul, b1, smul_zero]`. Establish `hzero : ∀ w ∈ A, (∀ u, ρ u w = w) → w = 0`.
+
+Introduce `w hw hfix`. Take `⟨N, hN, hNf, hN'⟩` from `hkill w hw`. Rewrite using `[← hfixed N w hfix]`. Conclude with `(hN' N hN hNf le_rfl).2`. Use `choose Nv hNv hNvf hNvfix using h`.
+
+Set `pf : V → V` to `fun v => avg (Nv v) v`. Establish `hagree : ∀ (N : Subgroup K) [N.Normal] [N.FiniteIndex] (v : V), (∀ n ∈ N, ρ n v = v) → avg N v = pf v`. Introduce `N _ _ v hv`. Use `haveI := hNv v`. Use `haveI := hNvf v`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `hzero` to reduce the goal to its premises. Establish `e : avg N v - pf v = (v - pf v) - (v - avg N v)` using `by abel`. Rewrite using `[e]`. Conclude with `A.sub_mem (hdiff _ v) (hdiff N v)`.
+
+Introduce `u`. Rewrite using `[map_sub, hinv N v hv u, hinv (Nv v) v (hNvfix v) u]`. Set `p : Module.End ℂ V` to `{ toFun := pf map_add' := fun v w => by haveI := hNv v; haveI := hNvf v; haveI := hNv w; haveI := hNvf w`. Establish `hv : ∀ n ∈ Nv v ⊓ Nv w, ρ n v = v` using `fun n hn => hNvfix v n hn.1`. Establish `hw : ∀ n ∈ Nv v ⊓ Nv w, ρ n w = w` using `fun n hn => hNvfix w n hn.2`.
+
+Establish `hvw : ∀ n ∈ Nv v ⊓ Nv w, ρ n (v + w) = v + w` using `fun n hn => by`. Rewrite using `[map_add, hv n hn, hw n hn]`. Rewrite using `[← hagree _ _ hvw, ← hagree _ _ hv, ← hagree _ _ hw, map_add]`. Use the proof step `map_smul' := fun c v => by haveI := hNv v; haveI := hNvf v`. Establish `hcv : ∀ n ∈ Nv v, ρ n (c • v) = c • v` using `fun n hn => by`.
+
+Rewrite using `[map_smul, hNvfix v n hn]`. Rewrite using `[RingHom.id_apply, ← hagree _ _ hcv, map_smul] }`. Use `⟨p, fun v u => ?_, fun v hv => ?_, fun T hT => ?_⟩` and prove the remaining obligations. Use `haveI := hNv v`. Use `haveI := hNvf v`.
+
+Conclude with `hinv (Nv v) v (hNvfix v) u`. Use `haveI := hNvf v`. Conclude with `hfixed (Nv v) v hv`. Use `LinearMap.ext fun v => ?_ haveI := hNv v` and prove the remaining obligations. Use `haveI := hNvf v`.
+
+Establish `hTv : ∀ n ∈ Nv v, ρ n (T v) = T v` using `fun n hn => by`. Rewrite using `[← Module.End.mul_apply, ← (hT n).eq, Module.End.mul_apply, hNvfix v n hn]`. Use `show T (pf v) = pf (T v)`. Rewrite using `[← hagree (Nv v) (T v) hTv]`. Conclude with `hcomm (Nv v) T hT v`.
+-/
 private theorem avg_abs {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ K V)
     (h : ∀ v, ∃ N : Subgroup K, N.Normal ∧ N.FiniteIndex ∧ ∀ n ∈ N, ρ n v = v) :
     ∃ p : Module.End ℂ V, (∀ v u, ρ u (p v) = p v) ∧ (∀ v, (∀ u, ρ u v = v) → p v = v) ∧
@@ -161,6 +216,15 @@ private theorem avg_abs {K V : Type} [Group K] [AddCommGroup V] [Module ℂ V] (
     rw [← hagree (Nv v) (T v) hTv]
     exact hcomm (Nv v) T hT v
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ ρ U hU hopen`. Use `haveI : CompactSpace U := isCompact_iff_compactSpace.mp hU`. Set `ρU : Representation ℂ U V` to `ρ.comp U.subtype`. Establish `h : ∀ v, ∃ N : Subgroup U, N.Normal ∧ N.FiniteIndex ∧ ∀ n ∈ N, ρU n v = v`. Introduce `v`.
+
+Set `S : Subgroup U` to `{ carrier := {u | ρ (u : G) v = v} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, Subgroup.coe_mul, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by`.
+
+Simplify using `only [Set.mem_setOf_eq, Subgroup.coe_inv] at *`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hS : IsOpen (S : Set U)` using `(hopen v).preimage continuous_subtype_val`. Use `haveI : Finite (U ⧸ S) := Subgroup.quotient_finite_of_isOpen S hS`.
+
+Use `haveI : S.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Conclude with `⟨S.normalCore, inferInstance, inferInstance, fun n hn => S.normalCore_le hn⟩`. Take `⟨p, h1, h2, h3⟩` from `avg_abs ρU h`. Conclude with `⟨p, fun v u hu => h1 v ⟨u, hu⟩, fun v hv => h2 v (fun u => hv u u.2), fun T hT => h3 T (fun u => hT u u.2)⟩`.
+-/
 theorem UpperTheory.V.Lit.Bor.avgProj :
     UpperTheory.V.Lit.Bor.AvgProj := by
   intro G V _ _ _ _ _ ρ U hU hopen

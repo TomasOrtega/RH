@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTh
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Mean4O GlobalTheory.CoverNorm GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag GlobalTheory.WholeFlag GlobalTheory.ConstLat
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConstLat.regAt_secondLat | exact GlobalTheory.ConstLat.regAt_secondLat | (intros; apply GlobalTheory.ConstLat.regAt_secondLat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.second_lattice_regular_at_p : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (κ : F →+* V.X.functionField) {N : ℕ}
     (J : Matrix (Fin N) (Fin N) ℤ) (p n : ℕ) (P Q : Matrix (Fin N) (Fin N) F), p.Prime → IsUnit J.det →
     SecondLat J p n P Q → ∀ x : V.X, ¬ IsUnit (p : V.X.presheaf.stalk x) → ∀ i j,

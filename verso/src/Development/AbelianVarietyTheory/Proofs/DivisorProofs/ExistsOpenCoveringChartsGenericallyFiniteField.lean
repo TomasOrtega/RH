@@ -21,6 +21,21 @@ open GlobalTheory.ChartGlue
 
 namespace GlobalTheory.CoverDegField
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q σ D hpP hqP hsm π hπ hη hδ`. Use `haveI : SmoothOfRelativeDimension D p := hsm`. Use `haveI : CharZero k := RingHom.charZero σ`. Take `⟨U₁, t₁, hU₁, hx₁, ht⟩` from `GlobalTheory.AlgChart.exists_etale_coords (p := p) (D := D) (genericPoint X)`. Take `⟨U₂, hU₂, hx₂, hV₂, he₂, hf₂, hr₂⟩` from `GlobalTheory.T.exists_affine_etale_finite_free_nbhd k X Y p q hpP hqP π hπ hη hδ`.
+
+Take `⟨U, hxU, hG⟩` from `GlobalTheory.CoverDeg.exists_goodCover_of_coords_of_cover p π D _ _ U₁ U₂ hU₁ hx₁ ⟨t₁, ht⟩ hU₂ hx₂ hV₂ he₂ hf₂ hr₂`. Use `⟨U, hxU, fun y hy => ?_, fun y hy => ?_, fun z hz c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.encard_fibre_eq_encard_ringHom π hπ U hG.1 hG.2.1 σ y hy]`. Conclude with `GlobalTheory.EtaleComplexPoints.encard_complexPoints_eq_rank (π.app U).hom _ hG.2.2.2.1 hG.2.2.2.2.1 hG.2.2.2.2.2 _`. Take `⟨t, ht⟩` from `hG.2.2.1`.
+
+Take `⟨c, hc, -⟩` from `AlgChart.exists_of_etale hG.1 t ht hy`. Conclude with `⟨c, hc⟩`. Use `set y := PtsOver.map π hπ (spMap σ) z with hy`. Establish `hyc : y ∈ ptsIn p σ c.U` using `c.source_subset hc`. Establish `hpt : ∀ W : X.Opens, y ∈ ptsIn p σ W → π (z.1 (IsLocalRing.closedPoint ℂ)) ∈ W`.
+
+Introduce `W hW`. Use `mem_ptsIn.1 hW` as an intermediate fact. Conclude with `this`. Take `⟨V, hV, hzV, h, hVe⟩` from `GlobalTheory.CoverDeg.etale_pullback_coords π hπ D _ U hG c.U c.x c.affine c.etale _ (hpt U hz) (hpt c.U hyc)`. Take `⟨c'', hc'', hU'', hx''⟩` from `AlgChart.exists_of_etale (σ := σ) hV _ hVe (mem_ptsIn.2 hzV)`.
+
+Establish `key : ∀ w ∈ c''.e.source, w ∈ ptsIn q σ V ∧ ∀ a, c''.e w a = ev q σ V ((π.appLE c.U V h).hom (c.x a)) w`. Break down `c'' with ⟨e, U', aff, x', et, ss, ae, ho⟩` into its components or cases. Simplify using `only at hU'' hx'' ⊢`. Substitute `hU''` using the available equality. Establish `hx : x' = fun a => (π.appLE c.U U' h).hom (c.x a)` using `hx''`.
+
+Substitute `hx` using the available equality. Conclude with `fun w hw => ⟨ss hw, ae w hw⟩`. Establish `hS : IsOpen (c''.e.source ∩ PtsOver.map π hπ (spMap σ) ⁻¹' c.e.source)` using `(PtsOver.continuous_map π hπ (spMap σ)).continuousOn.isOpen_inter_preimage c''.e.open_source c.e.open_source`. Use `⟨c''.restr _ hS, ⟨hc'', hc'', hc⟩, fun w hw => ⟨hw.2.2, ?_⟩⟩` and prove the remaining obligations. Establish `hw' : w ∈ c''.e.source` using `hw.1`.
+
+Take `⟨hwV, hwe⟩` from `key w hw'`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `c''.e w a = c.e (PtsOver.map π hπ (spMap σ) w) a`. Rewrite using `[hwe a, c.apply_eq _ hw.2.2 a]`. Conclude with `valR_appLE w.1 π h hwV _`.
+-/
 theorem exists_open_covering_charts : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ), IsProjOver p → IsProjOver q → SmoothOfRelativeDimension D p → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∃ U : X.Opens, genericPoint X ∈ U ∧ (∀ y ∈ ptsIn p σ U, (PtsOver.map π hπ (spMap σ) ⁻¹' {y}).encard = (π.residueDegree (genericPoint Y) : ℕ∞)) ∧ (∀ y ∈ ptsIn p σ U, ∃ c : AlgChart p σ D, y ∈ c.e.source) ∧ (∀ z : CxPts q σ, PtsOver.map π hπ (spMap σ) z ∈ ptsIn p σ U → ∀ c : AlgChart p σ D, PtsOver.map π hπ (spMap σ) z ∈ c.e.source → ∃ c' : AlgChart q σ D, z ∈ c'.e.source ∧ ∀ w ∈ c'.e.source, PtsOver.map π hπ (spMap σ) w ∈ c.e.source ∧ c'.e w = c.e (PtsOver.map π hπ (spMap σ) w)) := by
   intro k _ X Y _ _ p q σ D hpP hqP hsm π hπ hη hδ
   haveI : SmoothOfRelativeDimension D p := hsm

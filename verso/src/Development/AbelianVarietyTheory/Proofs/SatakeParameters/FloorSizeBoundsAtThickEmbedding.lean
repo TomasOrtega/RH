@@ -6,6 +6,15 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW.SizeThick
 
+/- English proof (translation)
+Use `set ρ := D.eTau.symm ⟨plc g, plc_mem g⟩ with hρ`. Establish `hw : wj D (j.1 + 1) ρ = (((D.hc ρ).e j : ℚ) : ℝ)`. Establish `hj' : j.1 + 1 - 1 < D.R.m` using `by have := j.2; omega`. Rewrite using `[wj, dif_pos hj']`. Establish `: (⟨j.1 + 1 - 1, hj'⟩ : Fin D.R.m) = j` using `Fin.ext (by simp)`.
+
+Rewrite using `[this]`. Establish `hmem : (D.eTau ρ : D.R.GG) ∈ D.host.thickPlaces`. Rewrite using `[hρ, Equiv.apply_symm_apply]`. Conclude with `hT`. Establish `h` using `L.win_thick (j.1 + 1) (by omega) j.2 ρ hmem`.
+
+Rewrite `h` using `[hw]`. Establish `hc : hcAt D g = D.hc ρ` using `rfl`. Take `⟨z, hz⟩` from `(D.hc ρ).e_int j`. Rewrite using `[hc, hz, Int.floor_intCast]`. Rewrite `h` using `[hz]`.
+
+Move the coercions through the operations in `at h ⊢`. Conclude with `h`.
+-/
 theorem size_thick {D : D7} (L : SizeData₂ D) (g : D.R.GG) (j : Fin D.R.m) (hT : Thick D.host g) :
     L.sc.b ≤ (⌊(hcAt D g).e j⌋ : ℝ) ∧ (⌊(hcAt D g).e j⌋ : ℝ) ≤ L.sc.b + L.etaSz + 1 := by
   set ρ := D.eTau.symm ⟨plc g, plc_mem g⟩ with hρ

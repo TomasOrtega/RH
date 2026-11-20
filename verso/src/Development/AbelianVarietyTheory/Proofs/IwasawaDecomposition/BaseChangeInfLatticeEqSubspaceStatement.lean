@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.BaseChangeIn
 import Mathlib
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.baseChange_inf_lattice_eq_subspace | exact GlobalTheory.baseChange_inf_lattice_eq_subspace | (intros; apply GlobalTheory.baseChange_inf_lattice_eq_subspace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_injective_baseChange_inf_restrictScalars_range_eq : ∀ {O V : Type} [CommRing O] [IsDomain O] [AddCommGroup V] [Module (FractionRing O) V] [Module O V]
     [IsScalarTower O (FractionRing O) V] (N : Submodule O V),
     Submodule.span (FractionRing O) (N : Set V) = ⊤ → ∀ (W : Submodule (FractionRing O) V),

@@ -25,16 +25,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[pv]`.
+-/
 theorem pv_trans (π : Fin g ≃ Fin g) (x : Frame X.Ψ r) (v : Fin r → E) :
     pv X (π.trans idx) x v ∘ π.symm = pv X idx x v := by
   funext j
   simp [pv]
 
+/- English proof (translation)
+Rewrite using `[hMat, hMat, ← Matrix.inv_submatrix_equiv]`. Both sides reduce to the same expression.
+-/
 theorem hMat_trans (π : Fin g ≃ Fin g) (x : Frame X.Ψ r) :
     hMat X bas (π.trans idx) x = (hMat X bas idx x).submatrix (Equiv.refl _) π := by
   rw [hMat, hMat, ← Matrix.inv_submatrix_equiv]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ z : Fin g → ℂ, hMat X bas (π.trans idx) x *ᵥ z = hMat X bas idx x *ᵥ (z ∘ π.symm)` using `fun z => by`. Rewrite using `[hMat_trans, Matrix.submatrix_mulVec_equiv]`. Both sides reduce to the same expression. Establish `h2 : tauMat X bas (π.trans idx) x = tauMat X bas idx x`. Rewrite using `[tauMat, tauMat, hMat_trans]`.
+
+Conclude with `Matrix.submatrix_mul_equiv (hMat X bas idx x) (perMat X bas idx Sum.inr x) id π id`. Rewrite using `[hx, hx, h1, h1, imInv, imInv, h2]`.
+-/
 theorem hx_trans (π : Fin g ≃ Fin g) (x : Frame X.Ψ r) (z w : Fin g → ℂ) :
     hx X bas (π.trans idx) x z w = hx X bas idx x (z ∘ π.symm) (w ∘ π.symm) := by
   have h1 : ∀ z : Fin g → ℂ, hMat X bas (π.trans idx) x *ᵥ z = hMat X bas idx x *ᵥ (z ∘ π.symm) := fun z => by
@@ -45,6 +56,17 @@ theorem hx_trans (π : Fin g ≃ Fin g) (x : Frame X.Ψ r) (z w : Fin g → ℂ)
     exact Matrix.submatrix_mul_equiv (hMat X bas idx x) (perMat X bas idx Sum.inr x) id π id
   rw [hx, hx, h1, h1, imInv, imInv, h2]
 
+/- English proof (translation)
+Take `⟨A, Fd, hA, hF, hI⟩` from `h`. Set `T : (Fin g → ℂ) ≃ᵐ (Fin g → ℂ)` to `MeasurableEquiv.piCongrLeft (fun _ => ℂ) π`. Establish `hT : MeasureTheory.MeasurePreserving T` using `MeasureTheory.volume_measurePreserving_piCongrLeft (fun _ => ℂ) π`. Establish `hTa : ∀ z, T z = z ∘ π.symm` using `fun z => by`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[T, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft_apply]`. Set `Ta : (Fin g → ℂ) ≃+ (Fin g → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ π).toAddEquiv`. Use `⟨A.map Ta.toAddMonoidHom, T ⁻¹' Fd, fun z => ?_, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Take `⟨v, hv, rfl⟩` from `(hA u).1 hu`. Conclude with `⟨v, hv, rfl⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨_, (hA _).2 ⟨v, hv, rfl⟩, rfl⟩`. Use `hF.preimage_of_equiv hT.quasiMeasurePreserving (e := Ta.addSubgroupMap A) (Ta.addSubgroupMap A).bijective fun a z => ?_` and prove the remaining obligations.
+
+Rewrite using `[hTa, hTa]`. Use function extensionality and compare the values at `j`. Use `show (a : Fin g → ℂ) (π (π.symm j)) + z (π.symm j) = (a : Fin g → ℂ) j + z (π.symm j)`. Rewrite using `[π.apply_symm_apply]`. Rewrite using `[hT.measure_preimage_equiv, ← hI, ← hT.setIntegral_preimage_emb T.measurableEmbedding _ Fd]`.
+
+Simplify using `only [hTa, hx_trans]`.
+-/
 theorem meanOne_trans (π : Fin g ≃ Fin g) {x : Frame X.Ψ r} {L : Lt E r} {ϑ : (Fin g → ℂ) → ℂ}
     (h : MeanOne X bas idx x L ϑ) : MeanOne X bas (π.trans idx) x L fun z => ϑ (z ∘ π.symm) := by
   obtain ⟨A, Fd, hA, hF, hI⟩ := h
@@ -73,6 +95,21 @@ theorem meanOne_trans (π : Fin g ≃ Fin g) {x : Frame X.Ψ r} {L : Lt E r} {ϑ
 variable {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} [Algebra c.F ℂ]
   {e : Fin g ≃ Lt1 Dw} {x : Frame X.Ψ r} {L : Lt E r} {y : FrPt Xo c ℂ}
 
+/- English proof (translation)
+Set `T : (Fin g → ℂ) ≃L[ℂ] (Fin g → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ π.symm).toContinuousLinearEquiv`. Establish `hT : ∀ z, T z = z ∘ π.symm` using `fun _ => rfl`. Establish `hp : ∀ v, T (pv X (π.trans idx) x v) = pv X idx x v` using `pv_trans π x`. Use `⟨{ ex := fun z => A.ex (T z) ex_add := fun z w => by rw [map_add, A.ex_add] ex_onto := A.ex_onto.comp T.surjective ex_ker := fun z => by` and prove the remaining obligations. Rewrite using `[A.ex_ker]`.
+
+Conclude with `exists_congr fun v => and_congr_right fun _ => by rw [← hp, T.injective.eq_iff]`. Use `ex_lin := fun a z => by`. Rewrite using `[← A.ex_lin]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[hT]`. Use `hol := fun U f => ⟨(A.hol U f).1.preimage T.continuous, (A.hol U f).2.comp T.differentiableOn fun _ h => h⟩`. Use `der := fun ℓ => ⟨by simp only [map_zero]; exact (A.der ℓ).1, fun U h f => ?_⟩`. Use `fr := fun j z => A.fr j (T z)`. Use `fr_hol := fun j => (A.fr_hol j).comp T.differentiableOn fun _ h => h`.
+
+Use `fr_ne := fun j z => A.fr_ne j _`. Use `fr_g := fun j j' z => A.fr_g j j' _`. Use `fr_0 := fun j => by rw [map_zero]; exact A.fr_0 j`. Use `χ := A.χ`. Use `χ_norm := A.χ_norm`.
+
+Use `fr_per := fun v hv j z hz => by`. Rewrite using `[hx_trans, hx_trans, pv_trans, map_add, hp]`. Conclude with `A.fr_per v hv j _ hz }, fun mk hmk a ha => ?_, fun ϑ h j z => h j (T z)⟩`. Rewrite using `[(A.der ℓ).2 U h f]`. Use `T.comp_right_fderiv (f := fun z => valAt' (A.ex z).left U f) (x := 0)` as an intermediate fact.
+
+Use `Eq.trans ?_ (DFunLike.congr_fun this _).symm` and prove the remaining obligations. Rewrite using `[map_zero, ContinuousLinearMap.comp_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[hT, Pi.single_apply, Equiv.symm_apply_eq]`.
+
+Conclude with `(hmk a ha).trans (congrArg A.ex (hp _).symm)`.
+-/
 theorem exists_anFib_trans (π : Fin g ≃ Fin g) (A : AnFib X bas idx e x L y) :
     ∃ A' : AnFib X bas (π.trans idx) (π.trans e) x L y, (∀ mk, A.Marked mk → A'.Marked mk) ∧
       ∀ ϑ, A.Reads 1 y.s ϑ → A'.Reads 1 y.s fun z => ϑ (z ∘ π.symm) := by
@@ -125,6 +162,15 @@ open scoped ComplexConjugate Classical
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ}
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(GlobalTheory.frames_isConnected E r X).nonempty`. Establish `hsp` using `((hx_laws E r X g bas idx 0 hs Even.zero x hx).2.2.2.2.2.2.1 _ X.Λ_span).1`. Use `Equiv.ext fun j => ?_` and prove the remaining obligations. Establish `key : ∀ z : Fin g → ℂ, z j = z (idx.symm (idx' j))` using `fun z => by`. Establish `hz : z ∈ Submodule.span ℝ (pv X idx x '' (X.Λ : Set (Fin r → E)))` using `hsp ▸ Submodule.mem_top`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨v, -, rfl⟩` from `hz`. Rewrite using `[h]`. Simplify using `[pv]`.
+
+Consider the case `zero => rfl`. Consider the case `add a b _ _ ha hb => rw [Pi.add_apply, Pi.add_apply, ← ha, ← hb]`. Consider the case `smul t a _ ha => rw [Pi.smul_apply, Pi.smul_apply, ← ha]`. Assume the negation of the conclusion as `hne`. Use `key (Pi.single j 1)` as an intermediate fact.
+
+Rewrite `this` using `[Pi.single_eq_same, Pi.single_eq_of_ne fun h => hne (idx.symm_apply_eq.1 h).symm]`. Conclude with `one_ne_zero this`.
+-/
 theorem idx_unique {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx idx' : Fin g ≃ X.Ψ × Fin r}
     (hs : IsSympl X bas) (h : ∀ x v j, pv X idx x v j = pv X idx' x v j) : idx = idx' := by
   obtain ⟨x, hx⟩ := (GlobalTheory.frames_isConnected E r X).nonempty
@@ -145,6 +191,11 @@ theorem idx_unique {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X
   rw [Pi.single_eq_same, Pi.single_eq_of_ne fun h => hne (idx.symm_apply_eq.1 h).symm] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Establish `key : ∀ (k : ℕ), k = 0 → ∀ v : Fin k → W, iteratedFDeriv ℂ k F x v = F x`. Introduce and unpack `k rfl v`. Conclude with `iteratedFDeriv_zero_apply v`. Unfold `I2.polyDeriv`. Rewrite using `[MvPolynomial.support_one, Finset.sum_singleton, key _ (by simp)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem polyDeriv_one {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] (u : σ → W) (F : W → ℂ) (x : W) :
     I2.polyDeriv (1 : MvPolynomial σ ℂ) u F x = F x := by
   have key : ∀ (k : ℕ), k = 0 → ∀ v : Fin k → W, iteratedFDeriv ℂ k F x v = F x := by
@@ -155,6 +206,13 @@ theorem polyDeriv_one {σ W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W] 
 
 variable {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
 
+/- English proof (translation)
+Use `⟨⟨?_, fun _ _ _ _ _ => map_one _, fun m hm σ i => ?_⟩, fun m => ?_⟩` and prove the remaining obligations. Simplify using `[harmK, lap]`. Establish `: m = 0`. Assume the negation of the conclusion as `h0`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one, if_neg (Ne.symm h0)]`.
+
+Conclude with `hm rfl`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.coeff_one] split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`.
+-/
 theorem one_mem_harmA (c : Coeff l) (n : ℕ) : (1 : MvPolynomial (LtN Dw n) c.F) ∈ harmA c 0 n := by
   refine ⟨⟨?_, fun _ _ _ _ _ => map_one _, fun m hm σ i => ?_⟩, fun m => ?_⟩
   · simp [harmK, lap]
@@ -169,12 +227,26 @@ theorem one_mem_harmA (c : Coeff l) (n : ℕ) : (1 : MvPolynomial (LtN Dw n) c.F
     · exact one_mem _
     · exact zero_mem _
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨A, Fd, -, -, hI⟩` from `h`. Simplify using `at hI`.
+-/
 theorem ne_zero_of_meanOne {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
     {x : Frame X.Ψ r} {L : Lt E r} {ϑ : (Fin g → ℂ) → ℂ} (h : MeanOne X bas idx x L ϑ) : ϑ ≠ 0 := by
   rintro rfl
   obtain ⟨A, Fd, -, -, hI⟩ := h
   simp at hI
 
+/- English proof (translation)
+Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hM0 : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Take `⟨-, -, h1, h2, -⟩` from `DualMark.dual_marking E H Dw l r X L mk _ hL hmk (Complex.isPrimitiveRoot_exp l.M hM.ne')`. Take `⟨u, hu, hne⟩` from `GlobalTheory.T.exists_levelOne_theta_ne_zero_on_ideal_half_lattice E r X g bas idx hs w L hL x hx (Mfr l) l.M (le_trans (by norm_num) l.three_le) (by rw [h1, h2]) ϑ h h0`. Take `⟨a, ha, t, ht, rfl⟩` from `hmk.surj u hu`.
+
+Use `⟨fun _ => Submodule.Quotient.mk a, fun b hb => hne ?_⟩` and prove the remaining obligations. Take `⟨⟨a', ha', hq, hy⟩, -⟩` from `hY (fun _ => Submodule.Quotient.mk a) b`. Take `⟨s, hs', s', hs'', hss⟩` from `LevelFibre.level_split l`. Take `⟨b₁, -, hb₁⟩` from `MarkLift.modN_of_mem_half l hs' (Submodule.sub_mem _ ha' ha)`. Take `⟨b₂, hb₂⟩` from `MarkLift.modN_of_mem_bar l hs'' ((Submodule.Quotient.eq _).1 hq)`.
+
+Establish `e₀ : mk a' = mk a + l.M • mk (b₁ + b₂)`. Rewrite using `[← map_nsmul, smul_add, ← hb₁, ← hb₂, ← add_smul, hss, one_smul, ← map_add, add_sub_cancel]`. Use `set y := Y (fun _ => Submodule.Quotient.mk a) b`. Establish `hv : y - (l.M : E)⁻¹ • mk a' + mk (b₁ + b₂) - t ∈ L` using `L.sub_mem (L.add_mem hy (hmk.mem _)) ht`. Establish `e₁ : (l.M : E)⁻¹ • (mk a + l.M • t) + (y - (l.M : E)⁻¹ • mk a' + mk (b₁ + b₂) - t) = y`.
+
+Rewrite using `[e₀, smul_add, smul_add, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hM0, inv_smul_smul₀ hM0]`. Normalize the expressions using the abelian group laws. Establish `e₂` using `congrFun (h.2 _ hv) (pv X idx x ((l.M : E)⁻¹ • (mk a + l.M • t)))`. Establish `hadd : ∀ u v, pv X idx x u + pv X idx x v = pv X idx x (u + v)` using `fun u v => by`. Rewrite using `[pv, pv, pv, per_add]`.
+
+Both sides reduce to the same expression. Rewrite using `[← e₂, Pi.smul_apply, fock, hadd, e₁, hb, mul_zero, smul_zero]`.
+-/
 theorem exists_root_ne_zero {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
     (hs : IsSympl X bas) {w : E} {L : Lt E r} (hL : SelfD X L) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     {mk : Dw.La →ₗ[𝓞 E] (Fin r → E)} (hmk : IsMark l L mk) {n N : ℕ}
@@ -206,6 +278,31 @@ theorem exists_root_ne_zero {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃�
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨W⟩` from `nonempty_uw hU`. Take `rfl : g = W.g` from `Fin.equiv_iff_eq.1 ⟨e.trans W.e.symm⟩`. Take `⟨-, hL, hmk, -⟩` from `uw_lattice E H Dw l Xo c σ r U hσ hU hr1 W k`. Use `⟨hL, ?_⟩` and prove the remaining obligations.
+
+Establish `hw : IsIntegral ℤ (H.w0 : E)` using `H.w0.isIntegral_coe`. Establish `hw'` using `ThRead.cmHost_idempotent_trace_eq_one H`. Establish `hD : Dom (0 : (E →+* ℂ) × ℕ → ℕ) n` using `⟨fun _ => antitone_const, hn⟩`. Take `⟨Dc, hDe, -⟩` from `exists_dic E H Dw l c σ r W.g n (U.X k) 0 e hσ hU.1 (hU.2.1 k).1 (hU.2.1 k).2 hL hD`. Substitute `hDe` using the available equality.
+
+Take `rfl : idx = Dc.idx` from `idx_unique hs fun x u j => (hI.1 x u j).trans (Dc.per_eq x u j).symm`. Take `⟨ρ, hρ, hnorm⟩` from `VacNorm.norm_factor_eq E r _ _ bas Dc.idx n hs hn _ hw hw' _ hL v hv`. Establish `hpt : ∀ x (hx : x ∈ (U.X k).dom), IsUnitFr (U.X k) x → ∃ κ : ℂ, ‖κ‖ = ρ ∧ ∃ (A : AnFib (U.X k) bas Dc.idx Dc.e x (U.X k).Λ (unC U k ⟨x, hx⟩)) (ϑ : (Fin W.g → ℂ) → ℂ), A.Marked (W.mark k) ∧ A.Reads 1 (unC U k ⟨x, hx⟩).s ϑ ∧ IsTheta1 (U.X k) bas Dc.idx (H.w0 : E) x (U.X k).Λ ϑ ∧ Me …`. Introduce `x hx hux`. Take `⟨π, hπ⟩ : ∃ π : Fin W.g ≃ Fin W.g, π.trans W.e = Dc.e` from `⟨Dc.e.trans W.e.symm, by ext1; simp⟩`.
+
+Establish `hπ' : ∀ j, W.e j = Dc.e (π.symm j)` using `fun j => by rw [← hπ]; simp`. Establish `hid : π.trans (π.symm.trans Dc.idx) = Dc.idx` using `by ext1; simp`. Take `⟨A₀, hA₀, ϑ₀, hϑ₀, hm₀⟩` from `uw_anFib E H Dw l Xo c σ r U hσ hU hr1 W k bas (π.symm.trans Dc.idx) hs (fun x u j => by rw [hπ']; exact Dc.per_eq x u _) (fun j => by rw [hπ']; exact Dc.ty_eq _) ⟨x, hx⟩ hux`. Establish `h1` using `exists_anFib_trans π A₀`. Establish `hmean` using `meanOne_trans π hm₀`.
+
+Rewrite `h1` using `[hid, hπ]`. Rewrite `hmean` using `[hid]`. Take `⟨A, hA, hR⟩` from `h1`. Establish `hT` using `isTheta1_of_reads_generator E H Dw l Xo c r _ _ bas Dc.idx Dc.e x _ _ A hs hx hL _ (hR _ hϑ₀)`. Take `⟨κ, hκ⟩` from `VacProd.prod_eq_mul_thA E r _ _ bas Dc.idx n hs hn _ hw hw' _ hL v hv x hx _ hT`.
+
+Conclude with `⟨κ, hnorm x hx hux _ κ hT hmean hκ, A, _, hA _ hA₀, hR _ hϑ₀, hT, hmean, hκ⟩`. Use `choose κ hκ hpt using hpt`. Take `⟨C, hCn, hCe⟩` from `Const.exists_const (U.X k) (Formalism.L2.PjFree.laU U 0 n k) ρ hρ κ hκ`. Use `⟨C, norm_pos_iff.1 (hCn ▸ hρ), fun x hux => ?_⟩` and prove the remaining obligations. Take `⟨A, ϑ, -, hϑ, hT, hmean, hprod⟩` from `hpt x.1 x.2 hux`.
+
+Use `⟨A, ϑ, hϑ, hT, hmean, ?_⟩` and prove the remaining obligations. Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨Y, hY⟩` from `(DualMark.dual_marking E H Dw l r (U.X k) _ (W.mark k) _ hL hmk (Complex.isPrimitiveRoot_exp l.M hM.ne')).2.2.2.2 n l.M hM`. Take `⟨q, hq⟩` from `exists_root_ne_zero hs hL x.2 hmk hY hT (ne_zero_of_meanOne hmean)`. Take `⟨_, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab_uncond E H Dw l Xo c`.
+
+Establish `hLaw : Laws` using `GlobalTheory.allSixLaws.1`. Establish `hP` using `one_mem_harmA (Dw := Dw) c n`. Take `⟨f, hf⟩` from `(existsUnique_thRule Xo c nab (GlobalTheory.thValTot_of_chartIndep hLaw hC E H Dw l Xo c nab hnab) (fun b => levRep (q b)) hP).exists`. Establish `hsec : f ∈ sec Xo c 0 n` using `GlobalTheory.thetaRule_mem_sec hLaw hC E H Dw l Xo c nab hnab 0 n f ⟨_, _, hP, hf⟩`. Establish `hsb : IsSB (heisG (U.X k) bas (Y q) v)` using `((GlobalTheory.SW.heisG_laws E r (U.X k) W.g bas Dc.idx n hs hn).2.2.2 (Y q) v hv.1).1`.
+
+Establish `hhol` using `GlobalTheory.SW.theta_holomorphic_weight E r (U.X k) W.g Dw.p Dc.hr bas Dc.idx n hs hn Dc.k Dc.k' _ hsb _ (Dc.mem 1 hP.1)`. Establish `hS` using `hU.2.2.2.2.1 0 n hD f hsec k`. Establish `hwt : wtOf (U.X k) Dc.hr Dc.k Dc.k' n = Formalism.L2.PjFree.laU U 0 n k` using `Dc.wt_eq`. Rewrite `hhol` using `[hwt]`. Establish `hval : ∀ x' hx' hu', Formalism.L2.PjFree.rdU U f k x' = κ x' hx' hu' * thP (U.X k) Dc.hr bas Dc.idx (heisG (U.X k) bas (Y q) v) (MvPolynomial.rename Dc.eL (MvPolynomial.map σ 1)) x'` using `fun x' hx' hu' => by`.
+
+Take `⟨A', ϑ', hA', hϑ', -, -, hprod'⟩` from `hpt x' hx' hu'`. Use `thVal_eq_thP hC E H Dw l Xo c r W.g (U.X k) bas Dc.idx Dc.e x' _ _ A' hs hx' hL Dw.p n Dc.hr Dc.eL hU.1 hn Dc.dir_eq nab hnab ϑ' v _ hϑ' hv hprod' (W.mark k) hmk hA' (fun b => levRep (q b)) (Y q) (fun b => by` as an intermediate fact. Take `⟨⟨a', ha', hq, hy⟩, hj⟩` from `hY q b`. Conclude with `⟨⟨a', ha', (Submodule.Quotient.eq _).1 (hq.trans (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (q b))).symm), hy⟩, hj⟩) 0 1 hP _`. Use the proof step `(ThRead.thValAt_evR hC Xo c nab hnab _ hP hf ℂ (unC U k ⟨x', hx'⟩))`.
+
+Conclude with `Eq.trans (dif_pos hx') this`. Establish `h1` using `hCe _ _ hS.1 hhol.1 (fun x hx b hb => ⟨hS.2.1 x hx b hb, hhol.2.1 x hx b hb⟩) hval x.1 x.2`. Establish `h2` using `(fock_laws E r _ _ bas Dc.idx n hs hn x.1 x.2 1 ϑ).2.2.2.2 (fun _ => ϑ) _ v hv.1 hprod (Y q) 0`. Establish `h3 : thA (U.X k) bas Dc.idx (heisG (U.X k) bas (Y q) v) x.1 0 ≠ 0`. Use `right_ne_zero_of_mul (h2 ▸ Finset.prod_ne_zero_iff.2 fun b _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[fock, Pi.zero_apply, zero_add, zero_add]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) (hq b)`. Rewrite `h1` using `[hval x.1 x.2 hux, map_one, map_one, thP, polyDeriv_one]`. Rewrite using `[← mul_right_cancel₀ h3 h1]`. Conclude with `hprod`.
+-/
 theorem exists_const_fib (hC : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2) (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (hr1 : 1 ≤ r) (k : U.Comp) (n : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ)
     (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (hn : Even n) (hs : IsSympl (U.X k) bas)
@@ -301,6 +398,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 open scoped TensorProduct Classical ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `hC E _ _ _ H Dw l Xo c σ r U hσ hU hr1 _ k n g bas idx e hn hs hI v hv`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨hL, C, hC0, h⟩` from `GenConst.exists_const_fib hC (Formalism.L2.PjFree.Unf.ofPj U) hσ hU hr1 k n bas idx e hn hs hI v hv`. Use `⟨C, hC0, fun x hux => ?_⟩` and prove the remaining obligations. Take `⟨A, ϑ, hϑ, h1⟩` from `h x hux`.
+
+Use `⟨⟨ϑ, A, hϑ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ϑ' ⟨A', hϑ'⟩`. Establish `h2` using `((GlobalTheory.T.analyticFibreDescription_unique E H Dw l Xo c r g _ bas idx e x.1 _ _ A A' hs x.2 hL).2 ϑ').2 hϑ'`. Take `rfl : ϑ = ϑ'` from `(reads_existsUnique_theta E H Dw l Xo c r g _ bas idx e x.1 _ _ A hs x.2 hL 1 _).1.unique hϑ h2`. Conclude with `h1`.
+-/
 theorem GlobalTheory.AdTh.prod_gen_eq_const_mul_thA : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → l.A = 1 → ∀ (k : U.Comp) (n g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw), Even n → IsSympl (U.X k) bas → IdxIs c σ (U.X k) idx e → ∀ v : TF n g, IsVac (U.X k) bas (H.w0 : E) (tens (stdL E n) (U.X k).Λ) v → ∃ C : ℂ, C ≠ 0 ∧ ∀ x : (U.X k).dom, IsUnitFr (U.X k) x.1 → (∃ ϑ, GenReads U k bas idx e x ϑ) ∧ ∀ ϑ, GenReads U k bas idx e x ϑ → IsTheta1 (U.X k) bas idx (H.w0 : E) x.1 (U.X k).Λ ϑ ∧ MeanOne (U.X k) bas idx x.1 (U.X k).Λ ϑ ∧ ∀ z : Fin n → Fin g → ℂ, ∏ b, ϑ (z b) = C * thA (U.X k) bas idx v x.1 z := by
   intro hC E _ _ _ H Dw l Xo c σ r U hσ hU hr1 _ k n g bas idx e hn hs hI v hv
   letI : Algebra c.F ℂ := σ.toAlgebra

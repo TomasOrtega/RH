@@ -21,6 +21,19 @@ open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.Ph
 
 variable [IsDomain O] [NeZero n]
 
+/- English proof (translation)
+Take `⟨h3r, -⟩` from `Formalism.MainNotions.UnusedSlot80.SatW.ring_clauses W hR`. Establish `hπU` using `Formalism.MainNotions.UnusedSlot80.SatW.isUnit_EE_of_UPi W (Formalism.MainNotions.UnusedSlot80.SatW.UPi_π₀ W h3r)`. Establish `key : ∀ k : ℕ, ∀ c : Fin d → LetA O n, (∀ m, c m ∈ W.AΔ) → (∀ m, letE (c' + (e : ZMod n)) * c m = c m) → ∑ m, c m • ((W.φD T) ^ e) (b m) = 0 → ∀ m, ∃ c₁ : LetA O n, c m = W.π₀ ^ k * c₁`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro c _ _ _ m; exact ⟨c m, by simp⟩`. Consider the case `succ k ih`. Introduce `c hc hcl h0 m`. Use `choose c₁ hc₁ hc₁l hcm using indep_step W hinj hV hs hR hp0 h5 T h3 hmod A hA c' hc' hT b hb e c hc hcl h0`. Establish `h0' : ∑ m, c₁ m • ((W.φD T) ^ e) (b m) = 0`.
+
+Use `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T hπU ?_` and prove the remaining obligations. Rewrite using `[smul_zero, Finset.smul_sum, ← h0]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← hcm m]`. Take `⟨c₂, hc₂⟩` from `ih c₁ hc₁ hc₁l h0' m`.
+
+Conclude with `⟨c₂, by rw [hcm m, hc₂, pow_succ]; ring⟩`. Introduce `m`. Take `⟨w, -, hw⟩` from `Formalism.MainNotions.UnusedSlot80.ToolsR.π₀_comp hR`. Use function extensionality and compare the values at `i`. Use `PowerSeries.ext fun j => ?_` and prove the remaining obligations.
+
+Take `⟨c₁, hc₁⟩` from `key (j + 1) c hc hcl h0 m`. Establish `hl : 2 ≤ PD.p` using `PD.hp.two_le`. Establish `hdvd : (PowerSeries.X : PowerSeries O) ^ ((PD.p - 1) * (j + 1)) ∣ c m i`. Rewrite using `[hc₁, Pi.mul_apply, Pi.pow_apply, show W.π₀ i = W.π₀₁ from rfl, hw, mul_pow, ← pow_mul]`. Conclude with `⟨w ^ (j + 1) * c₁ i, by ring⟩`.
+
+Rewrite using `[PowerSeries.X_pow_dvd_iff.1 hdvd j (by nlinarith [Nat.sub_add_cancel (by omega : 1 ≤ PD.p)])]`. Simplify using the standard rewrite rules.
+-/
 theorem indep (hinj : Function.Injective (algebraMap O LL)) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing (LL := LL) O v)
     (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -62,6 +75,31 @@ theorem indep (hinj : Function.Injective (algebraMap O LL)) (hV : Formalism.Main
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Use `set Hps : Matrix (Fin d) (Fin d) (PowerSeries LL) := Matrix.of fun m' k' => PowerSeries.mk fun r' => sol k' r' m' with hHps`. Establish `hdet : IsUnit Hps.det`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, RingHom.map_det]`. Establish `h1 : (PowerSeries.constantCoeff : PowerSeries LL →+* LL).mapMatrix Hps = 1`. Use extensionality with `i k`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, hHps, Matrix.of_apply, PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.constantCoeff_mk, hsol0, Matrix.one_apply, Pi.single_apply]`. Rewrite using `[h1, Matrix.det_one]`. Conclude with `isUnit_one`. Establish `hinv : Hps⁻¹ * Hps = 1` using `Matrix.nonsing_inv_mul Hps hdet`. Establish `hcoef : ∀ t, ∑ m, ∑ x ∈ Finset.HasAntidiagonal.antidiagonal t, PowerSeries.coeff x.1 (Hps⁻¹ k m) * sol k' x.2 m = if t = 0 ∧ k = k' then 1 else 0`.
+
+Introduce `t`. Establish `h` using `congrArg (fun Q : Matrix (Fin d) (Fin d) (PowerSeries LL) => PowerSeries.coeff t (Q k k')) hinv`. Simplify using `only [Matrix.mul_apply, map_sum, PowerSeries.coeff_mul, hHps, Matrix.of_apply, PowerSeries.coeff_mk] at h`. Rewrite using `[h, Matrix.one_apply]`. Distinguish the cases in `hm : k = k'`.
+
+Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `[hm]`. Simplify using `[hm, ht, PowerSeries.coeff_one]`. Simplify using `[hm]`.
+
+Set `GP : Fin d → Polynomial O` to `fun m => ∑ r ∈ Finset.range M, Polynomial.C (zz r k m) * Polynomial.X ^ r`. Set `HP : Fin d → Polynomial O` to `fun m => ∑ r ∈ Finset.range M, Polynomial.C (yy k' r m) * Polynomial.X ^ r`. Establish `hGPc : ∀ m i, (GP m).coeff i = if i < M then zz i k m else 0`. Introduce `m i`. Simplify using `only [GP, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]`.
+
+Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Finset.mem_range]`. Establish `hHPc : ∀ m i, (HP m).coeff i = if i < M then yy k' i m else 0`. Introduce `m i`. Simplify using `only [HP, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]`.
+
+Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Finset.mem_range]`. Use `set cst : O := ((PD.p : ℕ) : O) ^ (2 * κ) * if k = k' then 1 else 0 with hcst`. Use `set Q : Polynomial O := ∑ m, GP m * HP m - Polynomial.C cst with hQdef`. Establish `hQ : ∀ t < M, Q.coeff t = 0`.
+
+Introduce `t ht`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, hQdef, Polynomial.coeff_sub, Polynomial.finsetSum_coeff, Polynomial.coeff_C, map_sub, map_sum]`. Establish `hk : ∀ m, algebraMap O LL ((GP m * HP m).coeff t) = (PD.p : LL) ^ (2 * κ) * ∑ x ∈ Finset.HasAntidiagonal.antidiagonal t, PowerSeries.coeff x.1 (Hps⁻¹ k m) * sol k' x.2 m`. Introduce `m`.
+
+Rewrite using `[Polynomial.coeff_mul, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Rewrite using `[hGPc, hHPc, if_pos (by omega), if_pos (by omega), map_mul, hzz x.1 (by omega), hyy k' x.2 (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun m _ => hk m, ← Finset.mul_sum, hcoef t, hcst]`. Distinguish the cases in `ht0 : t = 0`. Substitute `ht0` using the available equality. Apply the tactic sequence `by_cases hm : k = k' <;> simp [hm]`. Simplify using `[ht0]`.
+
+Take `⟨ρ, hρ⟩` from `(Polynomial.X_pow_dvd_iff).2 hQ`. Use `⟨ρ, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Polynomial.aeval Y) hρ`. Simplify using `only [hQdef, map_sub, map_sum, map_mul, Polynomial.aeval_C, Polynomial.aeval_X_pow, GP, HP, Polynomial.aeval_X] at h`. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem frame_inv_poly' (hinj : Function.Injective (algebraMap O LL)) {d : ℕ}
     (sol : Fin d → ℕ → Fin d → LL) (hsol0 : ∀ k, sol k 0 = Pi.single k 1) (M κ : ℕ)
     (yy : Fin d → ℕ → Fin d → O) (hyy : ∀ k, ∀ r < M, ∀ m, algebraMap O LL (yy k r m) = (PD.p : LL) ^ κ * sol k r m)
@@ -140,6 +178,61 @@ theorem frame_inv_poly' (hinj : Function.Injective (algebraMap O LL)) {d : ℕ}
   rw [← h]
   ring
 
+/- English proof (translation)
+Establish `hl : 2 ≤ PD.p` using `PD.hp.two_le`. Use `set a : ZMod n := c' + (e : ZMod n) with hadef`. Use `set Λ : LetA O n := abelian₂ W A a e with hΛdef`. Use `set M : ℕ := A.M PD.p with hMdef`. Take `⟨U, hU⟩` from `lam_unit W hR A a e`.
+
+Establish `hΛc : ∀ y z : W.EE, algebraMap (LetA O n) W.EE Λ * y = algebraMap (LetA O n) W.EE Λ * z → y = z` using `fun y z h => by`. Establish `hU' : (U : W.EE) = algebraMap (LetA O n) W.EE Λ` using `hU`. Rewrite `h` using `[← hU']`. Use `congrArg (fun w => ((U⁻¹ : W.EEˣ) : W.EE) * w) h` as an intermediate fact. Simplify `this` using `only [← mul_assoc, Units.inv_mul, one_mul]`.
+
+Establish `h0` using `repVV_sub W hinj T c' e M Λ b sol x x f g hf hg`. Rewrite `h0` using `[sub_self, repVV_iff]`. Take `⟨κ, Hh, hHh, hRV⟩` from `h0`. Use `set K : ℕ := κ + Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p M with hKdef`. Establish `hRV'` using `rv_up W T c' e Λ κ (Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p M) Hh 0 (f - g) hRV`.
+
+Take `⟨κ', aa, haa, hP⟩` from `hRV'`. Use `choose yy hyy hHe using fun k => horTr_scale W T b sol M κ (Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p M) k (hHh k)`. Use `choose uf huf hfu using hfr`. Use `choose ug hug hgu using hgr`. Establish `haa_eq : ∀ k, aa k = letE a * (uf k - ug k)`.
+
+Introduce `k`. Apply `W.EE_inj` to reduce the goal to its premises. Rewrite using `[← (haa k).2, Pi.sub_apply, mul_sub, hfu k, hgu k, ← map_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `haal : ∀ k, letE a * aa k = aa k`. Introduce `k`. Rewrite using `[haa_eq k, ← mul_assoc, letE_mul_self]`. Simplify using `only [smul_zero, zero_sub, smul_neg] at hP`. Take `⟨p, hp, hpe⟩` from `hP`.
+
+Take `⟨δ, hδ, hpδ⟩` from `Formalism.MainNotions.UnusedSlot80.ArcF.Pp_repr W T c' e b hb.1 p hp`. Use `set Y : LetA O n := (W.φA ^ e) W.π₀ with hYdef`. Establish `hY : Y ∈ W.AΔ` using `φA_pow_mem_AΔ W hR.1 e`. Set `HY : Fin d → Fin d → LetA O n` to `fun m k => ∑ r ∈ Finset.range M, algebraMap O (LetA O n) (yy k r m) * Y ^ r`. Establish `hφH : ∀ k, ((W.φD T) ^ e) (lA W ^ Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p M • Hh k) = ∑ m, HY m k • ((W.φD T) ^ e) (b m)`.
+
+Introduce `k`. Rewrite using `[hHe k, Formalism.MainNotions.UnusedSlot80.ArcF.phi_trunc]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [HY, ← hYdef]`.
+
+Conclude with `Finset.sum_congr rfl fun r _ => mul_comm _ _`. Set `E : Fin d → LetA O n` to `fun m => lA W ^ κ' * ∑ k, aa k * HY m k`. Establish `hrel : ∑ m, (letE a * (E m + W.π₀ * Λ ^ 2 * δ m)) • ((W.φD T) ^ e) (b m) = 0`. Establish `h1 : lA W ^ κ' • ∑ k, aa k • ((W.φD T) ^ e) (lA W ^ Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p M • Hh k) = ∑ m, E m • ((W.φD T) ^ e) (b m)`. Simplify using `only [hφH, Finset.smul_sum, smul_smul, E]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_smul]`. Establish `h2 : ∑ m, (E m + W.π₀ * Λ ^ 2 * δ m) • ((W.φD T) ^ e) (b m) = 0`. Rewrite using `[show ∑ m, (E m + W.π₀ * Λ ^ 2 * δ m) • ((W.φD T) ^ e) (b m) = (∑ m, E m • ((W.φD T) ^ e) (b m)) + (W.π₀ * Λ ^ 2) • p by`.
+
+Simplify using `only [add_smul, Finset.sum_add_distrib, hpδ, Finset.smul_sum, mul_smul], ← h1, ← hpe,`. Use the proof step `add_neg_cancel]`. Simplify using `only [mul_smul]`. Rewrite using `[← Finset.smul_sum, h2, smul_zero]`. Establish `hEl : ∀ m, letE a * E m = E m`.
+
+Introduce `m`. Simplify using `only [E, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← haal k]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[sq, letE_mul_self]`. Establish `hind` using `indep W hinj hV hs hR hp0 h5 T h3 hmod A hA c' hc' hT b hb.1 e _ (fun m => W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) (W.AΔ.add_mem (W.AΔ.mul_mem (lA_mem W κ') (W.AΔ.sum_mem fun k _ => W.AΔ.mul_mem (haa k).1 (W.AΔ.sum_mem fun r _ => W.AΔ.mul_mem (W.AΔ …`. Establish `hEm : ∀ m, E m = -(W.π₀ * Λ ^ 2 * (letE a * δ m))`. Introduce `m`. Use `hind m` as an intermediate fact.
+
+Rewrite `this` using `[mul_add, hEl m]`. Take the linear combination `this`. Establish `hHc` using `hH hCA T hT.1 c'`. Establish `hH5` using `hHc.2.2.2.2 d b hb.1 sol hb.2`. Establish `h4` using `hHc.2.2.2.1`.
+
+Use `choose g' hg' using fun r k m => Formalism.MainNotions.UnusedSlot80.Relay2.int_of_bd W hO2 r (h4 r) _ (hH5.2 k m r)`. Set `zz : ℕ → Fin d → Fin d → O` to `fun r k m => ((PD.p : ℕ) : O) ^ (K - Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r) * g' r k m`. Establish `hzz : ∀ r < M, ∀ k m, algebraMap O LL (zz r k m) = (PD.p : LL) ^ K * PowerSeries.coeff r ((Matrix.of fun m' k' => PowerSeries.mk fun r' => sol k' r' m' : Matrix (Fin d) (Fin d) (PowerSeries LL))⁻¹ k m)`. Introduce `r hr k m`. Establish `hle : Formalism.MainNotions.UnusedSlot80.Relay2.Ex PD.p r ≤ K` using `(Formalism.MainNotions.UnusedSlot80.Relay2.Ex_mono PD.p hl hr.le).trans (Nat.le_add_left _ _)`.
+
+Simplify using `only [zz, map_mul, map_pow, map_natCast, hg']`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hle]`. Use `choose ρ hρ using fun k k' => frame_inv_poly' (PD := PD) hinj sol (fun k => (hb.2 k).2) M K yy hyy zz hzz Y k k'`. Take `⟨ν, hν, hYM⟩` from `yM_gen W hTr hCA hR.1 h5p A hA a e`. Establish `hYM' : Y ^ M = W.π₀ * Λ ^ 2 * ν` using `by rw [hYdef, hMdef, hYM]`.
+
+Set `GY : Fin d → Fin d → LetA O n` to `fun k m => ∑ r ∈ Finset.range M, algebraMap O (LetA O n) (zz r k m) * Y ^ r`. Establish `hGY : ∀ k m, GY k m ∈ W.AΔ` using `fun k m => W.AΔ.sum_mem fun r _ => W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) (W.AΔ.pow_mem hY r)`. Establish `hpK : algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ (2 * K)) = lA W ^ (2 * K)`. Rewrite using `[map_pow, map_natCast]`. Both sides reduce to the same expression.
+
+Use `⟨κ' + 2 * K, fun k₀ => ?_⟩` and prove the remaining obligations. Use `set θ : LetA O n := -(∑ m, GY k₀ m * (letE a * δ m)) - lA W ^ κ' * ν * ∑ k, aa k * Polynomial.aeval Y (ρ k₀ k) with hθ`. Establish `hθΔ : θ ∈ W.AΔ` using `W.AΔ.sub_mem (W.AΔ.neg_mem (W.AΔ.sum_mem fun m _ => W.AΔ.mul_mem (hGY k₀ m) (W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W a) (hδ m)))) (W.AΔ.mul_mem (W.AΔ.mul_mem (lA_mem W κ') hν) (W.AΔ.sum_mem fun k _ => W.AΔ.mul_mem (haa k).1 (Formalism.MainNotions.Unus …`. Establish `hkey : lA W ^ (κ' + 2 * K) * aa k₀ = W.π₀ * Λ ^ 2 * θ`. Establish `hS1 : ∑ m, GY k₀ m * E m = lA W ^ κ' * ∑ k, aa k * (∑ m, GY k₀ m * HY m k)`.
+
+Simplify using `only [E, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => by ring`. Establish `hS2 : ∑ k, aa k * (∑ m, GY k₀ m * HY m k) = lA W ^ (2 * K) * aa k₀ + Y ^ M * ∑ k, aa k * Polynomial.aeval Y (ρ k₀ k)`. Establish `: ∀ k, aa k * (∑ m, GY k₀ m * HY m k) = lA W ^ (2 * K) * ((if k₀ = k then 1 else 0) * aa k) + Y ^ M * (aa k * Polynomial.aeval Y (ρ k₀ k))`.
+
+Introduce `k`. Establish `h` using `hρ k₀ k`. Simplify using `only [GY, HY] at h ⊢`. Rewrite using `[h, map_mul, hpK, apply_ite (algebraMap O (LetA O n)), map_one, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun k _ => this k, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Simplify using `only [ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hS3 : ∑ m, GY k₀ m * E m = -(W.π₀ * Λ ^ 2 * ∑ m, GY k₀ m * (letE a * δ m))`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [hEm m]; ring`.
+
+Rewrite `hS3` using `[hS1, hS2, hYM']`. Rewrite using `[hθ, pow_add]`. Take the linear combination `hS3`. Establish `hlet : ∀ k, algebraMap (LetA O n) W.EE (letE a) * (f - g) k = (f - g) k`. Introduce `k`.
+
+Apply `hΛc` to reduce the goal to its premises. Rewrite using `[← mul_assoc, mul_comm (algebraMap (LetA O n) W.EE Λ), mul_assoc, (haa k).2, ← map_mul, haal k]`. Establish `hX : letE a * ∑ m, GY k₀ m * (letE a * δ m) = ∑ m, GY k₀ m * (letE a * δ m)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Take the linear combination `(GY k₀ m * δ m) * (letE_mul_self (O := O) a)`. Establish `hZ : letE a * ∑ k, aa k * Polynomial.aeval Y (ρ k₀ k) = ∑ k, aa k * Polynomial.aeval Y (ρ k₀ k)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, haal k]`.
+
+Establish `hθl : letE a * θ = θ`. Rewrite using `[hθ]`. Take the linear combination `-hX - (lA W ^ κ' * ν) * hZ`. Use `⟨θ, hθΔ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul]`.
+
+Apply `hΛc` to reduce the goal to its premises. Establish `hfg : algebraMap (LetA O n) W.EE Λ * (f k₀ - g k₀) = algebraMap (LetA O n) W.EE (aa k₀)` using `(haa k₀).2`. Establish `hlE : lE W (κ' + 2 * K) = algebraMap (LetA O n) W.EE (lA W ^ (κ' + 2 * K))`. Unfold `lE lA`. Rewrite using `[map_pow, map_natCast]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hkey, ← map_mul]`. Use `congrArg (algebraMap (LetA O n) W.EE) ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hθl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sec_unique (hinj : Function.Injective (algebraMap O LL)) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing (LL := LL) O v)
     (hO2 : ∀ x : LL, 0 ≤ v x → ∃ o : O, algebraMap O LL o = x)
     (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0)

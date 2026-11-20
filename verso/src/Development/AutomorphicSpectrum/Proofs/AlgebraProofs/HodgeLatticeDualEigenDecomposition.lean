@@ -12,6 +12,17 @@ section
 variable {E : Type} [Field E] [NumberField E] {C : Type} [Field C] {W : Type} [AddCommGroup W]
   [Module C W]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← hsum x]`. Rewrite using `[map_sum, Finset.sum_eq_single σ']`. Apply `HT.LatBasic.eigProj_of_mem` to reduce the goal to its premises. Rewrite using `[HT.LatBasic.mem_eigSp]`. Introduce `a`.
+
+Establish `h` using `HT.LatBasic.mem_eigSp.1 (HT.LatBasic.eigProj_mem ρ σ' x) (bar a)`. Rewrite `h` using `[hσ, hbar]`. Conclude with `h`. Introduce `s _ hs`. Use `HT.LatBasic.eigProj_of_eigenSub_ne (χ := (s.comp (algebraMap (𝓞 E) E)).comp (bar : 𝓞 E →+* 𝓞 E)) ?_ ?_` and prove the remaining obligations.
+
+Introduce `e`. Apply `hs` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E))` to reduce the goal to its premises. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Establish `h` using `DFunLike.congr_fun e (bar a)`.
+
+Establish `h2 : σ ((bar a : 𝓞 E) : E) = s (a : E)`. Simplify `h` using `[hbar]`. Express the relevant statement in the definitionally equal form `s (a : E) = σ' (a : E)`. Rewrite using `[hσ, h2]`. Rewrite using `[GlobalTheory.EigenSplit.mem_eigenSub]`.
+
+Introduce `a`. Conclude with `HT.LatBasic.mem_eigSp.1 (HT.LatBasic.eigProj_mem ρ s x) (bar a)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem eigProj_comp_bar [Fintype (E →+* C)] (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* C)
     (ρ : 𝓞 E →+* Module.End C W) (hsum : ∀ y, ∑ s, HT.eigProj ρ s y = y)
     (hσ : ∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) (hbar : ∀ a, bar (bar a) = a) (x : W) :
@@ -43,6 +54,9 @@ theorem eigProj_comp_bar [Fintype (E →+* C)] (bar : 𝓞 E ≃+* 𝓞 E) (σ �
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, hact]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum]`. Use extensionality with `x`. Simplify using `[Prod.snd_sum, LinearMap.sum_apply]`.
+-/
 theorem eigProj_zero_form (bar : 𝓞 E ≃+* 𝓞 E) (σ : E →+* C) (ρ : 𝓞 E →+* Module.End C W)
     (ρH : 𝓞 E →+* Module.End C (W × Module.Dual C W))
     (hact : ∀ a φ, ρH a (0, φ) = (0, φ ∘ₗ ρ (bar a))) (φ : Module.Dual C W) :
@@ -55,6 +69,35 @@ theorem eigProj_zero_form (bar : 𝓞 E ≃+* 𝓞 E) (σ : E →+* C) (ρ : �
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ V C _ _ _ _ bar σ σ' W _ _ _ _ ρ ρH HV Lie n w ψ hsum hσ hbar _ hact hlat hspan hwL hψ hint y`. Establish `hform : ∀ φ : Module.Dual C W, HT.eigProj ρH σ (0, φ) = (0, φ ∘ₗ HT.eigProj ρ σ')`. Introduce `φ`. Rewrite using `[eigProj_zero_form bar σ ρ ρH hact φ]`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[eigProj_comp_bar bar σ σ' ρ hsum hσ hbar x]`. Establish `hψe : ∀ j, ψ j = (0, (ψ j).2)` using `fun j => Prod.ext (hψ j).2.1 rfl`. Establish `hχ : ∀ j x, (ψ j).2 x = (ψ j).2 (HT.eigProj ρ σ' x)`.
+
+Introduce `j x`. Establish `h` using `HT.LatBasic.eigProj_of_mem (hψ j).1`. Rewrite `h` using `[hψe j, hform]`. Establish `h2` using `congrArg (fun z : W × Module.Dual C W => z.2 x) h`. Conclude with `h2.symm`.
+
+Establish `hexp : ∀ x, HT.eigProj ρ σ' x = ∑ j, (ψ j).2 x • w j`. Introduce `x`. Establish `hm : HT.eigProj ρ σ' x ∈ Submodule.span C (Set.range w)`. Rewrite using `[hspan]`. Conclude with `HT.LatBasic.eigProj_mem ρ σ' x`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hm`. Establish `hcj : ∀ j, (ψ j).2 x = c j`. Introduce `j`. Rewrite using `[hχ j x, ← hc, map_sum]`. Simplify using `[(hψ j).2.2]`.
+
+Simplify using `only [hcj]`. Conclude with `hc.symm`. Establish `key : ∀ φ : Module.Dual C W, HT.eigProj ρH σ (0, φ) = ∑ j, φ (w j) • ψ j`. Introduce `φ`. Rewrite using `[hform]`.
+
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Prod.fst_sum, (hψ _).2.1]`. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hexp x, map_sum, Prod.snd_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Establish `hsm : ∀ (v : V) (z : W × Module.Dual C W), v • z = algebraMap V C v • z`. Introduce `v z`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use extensionality with `x`. Simplify using `[Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun V).1 hy`. Use `choose φ hφ1 hφ2 using hint`. Use `⟨∑ j, algebraMap V C (c j) • φ j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Introduce `e he`.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Subring.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ ⟨c j, rfl⟩ (hφ1 j e he)`. Rewrite using `[key]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : (∑ j, algebraMap V C (c j) • φ j) (w k) = algebraMap V C (c k)`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, hφ2, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hsm, hk]`. Introduce and unpack `⟨φ, h0, rfl⟩`. Rewrite using `[key]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `(hlat φ).1 h0 (w j) (hwL j)`. Rewrite using `[← hv, ← hsm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem span_iff_proj : ∀ (E : Type) [Field E] [NumberField E] (V C : Type) [CommRing V] [Field C] [Algebra V C] [Fintype (E →+* C)] (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* C) (W : Type) [AddCommGroup W] [Module C W] [Module V W] [IsScalarTower V C W] (ρ : 𝓞 E →+* Module.End C W) (ρH : 𝓞 E →+* Module.End C (W × Module.Dual C W)) (HV : Submodule V (W × Module.Dual C W)) (Lie : Submodule V W) (n : ℕ) (w : Fin n → W) (ψ : Fin n → W × Module.Dual C W), (∀ y, ∑ s, HT.eigProj ρ s y = y) → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → (∀ a y, (ρH a y).1 = ρ a y.1) → (∀ a φ, ρH a (0, φ) = (0, φ ∘ₗ ρ (bar a))) → (∀ φ : Module.Dual C W, (0, φ) ∈ HV ↔ ∀ e ∈ Lie, φ e ∈ (algebraMap V C).range) → Submodule.span C (Set.range w) = HT.eigSp ρ σ' → (∀ j, w j ∈ Lie) → (∀ j, ψ j ∈ HT.eigSp ρH σ ∧ (ψ j).1 = 0 ∧ ∀ j', (ψ j).2 (w j') = if j = j' then 1 else 0) → (∀ j, ∃ φ : Module.Dual C W, (∀ y ∈ Lie, φ y ∈ (algebraMap V C).range) ∧ ∀ k, φ (w k) = if k = j then 1 else 0) → ∀ y, y ∈ Submodule.span V (Set.range ψ) ↔ ∃ φ : Module.Dual C W, ((0, φ) : W × Module.Dual C W) ∈ HV ∧ HT.eigProj ρH σ (0, φ) = y := by
   intro E _ _ V C _ _ _ _ bar σ σ' W _ _ _ _ ρ ρH HV Lie n w ψ hsum hσ hbar _ hact hlat hspan hwL hψ hint y
   classical

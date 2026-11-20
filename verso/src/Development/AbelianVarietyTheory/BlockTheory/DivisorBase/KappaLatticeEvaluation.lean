@@ -17,6 +17,11 @@ def latIn (C : Submodule K R) (Vs : HeightOneSpectrum (𝓞 K) → Set (R → ER
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) : Submodule (𝓞 K) R :=
   (latOf C Vs hV).map (C.subtype.restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Unfold `latIn latOf`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `⟨F.2, hF⟩`.
+
+Introduce and unpack `⟨hC, hv⟩`. Conclude with `⟨⟨f, hC⟩, hv, rfl⟩`.
+-/
 theorem mem_latIn (C : Submodule K R) (Vs : HeightOneSpectrum (𝓞 K) → Set (R → EReal))
     (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) (f : R) :
     f ∈ latIn C Vs hV ↔ f ∈ C ∧ ∀ la, ∀ v ∈ Vs la, 0 ≤ v f := by
@@ -62,10 +67,21 @@ def SupLatticeFull : Prop := ∀ (D : D7) (T : Core D), Pinned T → FullKappa T
 
 def SupLatticeFullLaws : Prop := ∀ (D : D7) (T : Core D), LawsM T → FullKappa T
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.pins, h.half, h.evalWD, h.unf, h.unTest⟩`.
+-/
 theorem Pinned.of_laws {T : Core D} (h : LawsM T) : Pinned T := ⟨h.pins, h.half, h.evalWD, h.unf, h.unTest⟩
 
+/- English proof (translation)
+Introduce `D T hL` and use `h D T (Pinned.of_laws hL)`.
+-/
 theorem SupLatticeFull.laws (h : SupLatticeFull) : SupLatticeFullLaws := fun D T hL => h D T (Pinned.of_laws hL)
 
+/- English proof (translation)
+Use `(mem_latIn _ _ _ f).trans (and_congr_right fun _ => ?_)` and prove the remaining obligations. Unfold `valSet algCls`. Simplify using `only [Set.forall_mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `h la V io e hO y hy`.
+
+Conclude with `h la ⟨_, V, io, e, hO, y, hy, (), trivial, rfl⟩`. Introduce `h la i`. Take `⟨⟨v, u⟩, V, io, e, hO, y, hy, eta, -, hv⟩` from `i`. Take `rfl : v = _` from `congrArg Prod.fst hv`. Conclude with `h la V io e hO y hy`.
+-/
 theorem mem_supLat (T : Core D) (j : ℕ) (w : WeightFamilies.Wt D j) (f : T.R j) :
     f ∈ supLat T j w ↔ f ∈ cuspW T j w ∧
       ∀ (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (V : CDVR) (io : T.Q.c.F →+* V.Fr) (e : ℕ),

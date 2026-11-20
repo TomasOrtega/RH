@@ -11,6 +11,19 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial MeasureTheory Metric Matrix ComplexSets
 
+/- English proof (translation)
+Introduce `n d W A σ r N hW hdim hA hσ hinj hN hZ`. Establish `hg : DifferentiableOn ℂ (fun v => A *ᵥ σ v) (ball (0 : Fin d → ℂ) r)`. Establish `hL : Differentiable ℂ (fun x : Fin n → ℂ => A *ᵥ x)` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).differentiable`. Conclude with `hL.comp_differentiableOn hσ`. Use `set Ω : Set (Fin d → ℂ) := ball (0 : Fin d → ℂ) r ∩ σ ⁻¹' N with hΩdef`.
+
+Establish `hΩ : IsOpen Ω` using `hσ.continuousOn.isOpen_inter_preimage isOpen_ball hN`. Break down `Set.eq_empty_or_nonempty Ω with hemp | hne` into its components or cases. Establish `hsub : {w | w ∈ ball (0 : Fin d → ℂ) r ∧ σ w ∈ N ∧ LinearMap.det (fderiv ℂ (fun v => A *ᵥ σ v) w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) = 0} ⊆ Ω` using `fun w hw => ⟨hw.1, hw.2.1⟩`. Rewrite `hsub` using `[hemp]`. Rewrite using `[Set.subset_empty_iff.mp hsub, measure_empty]`.
+
+Establish `hsome : ∃ w ∈ ball (0 : Fin d → ℂ) r, LinearMap.det (fderiv ℂ (fun v => A *ᵥ σ v) w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ) ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hrank : ∀ v ∈ Ω, ¬ Function.Injective (fderiv ℂ (fun v => A *ᵥ σ v) v)`. Introduce `v hv hinjv`.
+
+Establish `h0` using `hcon v hv.1`. Rewrite `h0` using `[LinearMap.det_eq_zero_iff_ker_ne_bot]`. Conclude with `h0 (LinearMap.ker_eq_bot.mpr hinjv)`. Take `⟨y, hy⟩` from `IndefiniteRowSideFullHecke.ComplexSets.RankDeficientFibreInfinite.proof d d Ω (fun v => A *ᵥ σ v) hΩ hne (hg.mono Set.inter_subset_left) hrank`. Establish `himg : (σ '' {t | t ∈ Ω ∧ A *ᵥ σ t = y}).Infinite` using `hy.image (hinj.mono fun t ht => ht.1.1)`.
+
+Establish `hfin` using `(ComplexSets.FibreBound.proof n d W A hW hdim hA y).2.1`. Use `himg (hfin.subset ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨t, ⟨⟨htb, htN⟩, hty⟩, rfl⟩`. Conclude with `⟨hZ t htb htN, hty⟩`. Establish `han : AnalyticOnNhd ℂ (fun w => LinearMap.det (fderiv ℂ (fun v => A *ᵥ σ v) w : (Fin d → ℂ) →ₗ[ℂ] Fin d → ℂ)) (ball (0 : Fin d → ℂ) r)` using `fun w hw => IndefiniteRowSideFullHecke.ComplexSets.analyticAt_det_fderiv (IndefiniteRowSideFullHecke.ComplexSets.InjectiveHolomorphicInverse.analyticAt_of_differentiableOn isOpen_ball hg hw)`.
+
+Use `measure_mono_null ?_ (ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd isOpen_ball (convex_ball (0 : Fin d → ℂ) r).isPreconnected han hsome)` and prove the remaining obligations. Conclude with `fun w hw => ⟨hw.1, hw.2.2⟩`.
+-/
 theorem ParamCritNull.proof : ParamCritNull.Statement := by
   intro n d W A σ r N hW hdim hA hσ hinj hN hZ
   have hg : DifferentiableOn ℂ (fun v => A *ᵥ σ v) (ball (0 : Fin d → ℂ) r) := by

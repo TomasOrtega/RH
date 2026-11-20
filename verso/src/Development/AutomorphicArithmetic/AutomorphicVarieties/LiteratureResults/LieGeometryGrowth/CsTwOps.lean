@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Geo.Cs UpperTheory.V.Lit.Dr
 open scoped ContDiff
 
+/- English proof (translation)
+Introduce `z hz`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Use `altSmooth _ _ _ q _ z fun v => ?_` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ∞ (fun y : V => w (A y)) z` using `(hw.contDiffAt (hY.mem_nhds (hA z hz))).comp z A.contDiff.contDiffAt`. Establish `h2 : ContDiffAt ℝ ∞ (fun y : V => w (A y) fun i => A (v i)) z` using `(ContinuousAlternatingMap.apply ℝ V F (fun i => A (v i))).contDiff.contDiffAt.comp z h1`.
+
+Conclude with `B.contDiff.contDiffAt.comp z h2`.
+-/
 private theorem tp_contDiffOn {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [FiniteDimensional ℝ V] [FiniteDimensional ℝ F] {Y : Set V} (hY : IsOpen Y) (A : V →L[ℝ] V) (B : F →L[ℝ] F)
     (hA : ∀ p ∈ Y, A p ∈ Y) {q : ℕ} {w : V → V [⋀^Fin q]→L[ℝ] F} (hw : ContDiffOn ℝ ∞ w Y) :
@@ -19,6 +24,15 @@ private theorem tp_contDiffOn {V F : Type} [NormedAddCommGroup V] [NormedSpace �
     (ContinuousAlternatingMap.apply ℝ V F (fun i => A (v i))).contDiff.contDiffAt.comp z h1
   exact B.contDiff.contDiffAt.comp z h2
 
+/- English proof (translation)
+Establish `hf : ∀ t p, flow (fun p => A' (W (A p))) t p = A' (flow W t (A p))` using `fun t p => by`. Simplify using `only [flow, map_add, map_smul, h2]`. Establish `hZ : IsField Y (fun p => A' (W (A p)))` using `⟨A'.contDiff.comp_contDiffOn (hW.1.comp A.contDiff.contDiffOn hA), fun p hp t ht => by`. Rewrite using `[hf]`. Conclude with `hA' _ (hW.2 _ (hA p hp) t ht)⟩`.
+
+Use `⟨hZ, hf, fun q => ?_⟩` and prove the remaining obligations. Establish `nat` using `pbNat V F Y hY A' B W _ hW hZ hA' (fun p _ => by simp only [h1]) q`. Establish `rel : ∀ (n : ℕ) (w : V → V [⋀^Fin n]→L[ℝ] F), ∀ p ∈ Y, ∀ v : Fin n → V, tp A B w (A' p) (fun i => A' (v i)) = B (w p v)` using `fun n w p _ v => by`. Simplify using `only [tp_apply, h1]`. Use `⟨fun w p hp => ?_, fun w hw p hp => ?_⟩` and prove the remaining obligations.
+
+Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations. Use `nat.1 _ _ (rel q w) 1 ⟨zero_le_one, le_rfl⟩ _ (hA p hp) (fun i => A (v i))` as an intermediate fact. Simplify using `only [h2] at this`. Conclude with `this.symm`. Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations.
+
+Use `(nat.2 _ _ (rel (q + 1) w)).2 hw (tp_contDiffOn hY A B hA hw) _ (hA p hp) (fun i => A (v i))` as an intermediate fact. Simplify using `only [h2] at this`. Conclude with `this.symm`.
+-/
 private theorem twOps_abs {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [FiniteDimensional ℝ V] [FiniteDimensional ℝ F] {Y : Set V} (hY : IsOpen Y) (A A' : V →L[ℝ] V) (B : F →L[ℝ] F)
     (hA : ∀ p ∈ Y, A p ∈ Y) (hA' : ∀ p ∈ Y, A' p ∈ Y) (h1 : ∀ p, A (A' p) = p) (h2 : ∀ p, A' (A p) = p)
@@ -48,6 +62,15 @@ private theorem twOps_abs {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
     simp only [h2] at this
     exact this.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ a ho U Ξ W hW g x`. Establish `h1 : ∀ p : HV E a, sand g (sand g⁻¹ p) = p` using `fun p => by`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Establish `h2 : ∀ p : HV E a, sand g⁻¹ (sand g p) = p` using `fun p => by`.
+
+Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Take `⟨k1, k2, k3⟩` from `twOps_abs ho (sand g) (sand g⁻¹) (mulVecL (Ξ.mat g⁻¹)) (fun p hp => sand_mem_cone g hp) (fun p hp => sand_mem_cone g⁻¹ hp) h1 h2 (hW.field (QuotientGroup.mk x))`. Use `⟨k1, k2, fun q => ?_⟩` and prove the remaining obligations. Establish `app` using `omApply _ _ _ _ (geo ho U Ξ) W hW q`.
+
+Use `⟨fun w => ⟨tp_contDiffOn ho _ _ (fun p hp => sand_mem_cone g hp) (w.2 _).1, fun p hp => ?_⟩, fun w p hp => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ ((k3 q).1 (w.1 _) p hp)` and prove the remaining obligations. Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Tw, tp_apply, tp_apply, app.1 w _ _ (sand_mem_cone g hp)]`. Use `Eq.trans ?_ ((k3 q).2 (w.1 _) (w.2 _).1 p hp)` and prove the remaining obligations.
+
+Use `ContinuousAlternatingMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[Tw, tp_apply, tp_apply, app.2 w _ _ (sand_mem_cone g hp)]`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.twOps :
     UpperTheory.V.Lit.Geo.Cs.TwOps := by
   intro E _ _ _ a ho U Ξ W hW g x

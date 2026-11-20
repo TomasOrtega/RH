@@ -12,6 +12,11 @@ namespace GlobalTheory.Obs.TrivAug
 
 variable {R R₀ : Type} [CommRing R] [CommRing R₀]
 
+/- English proof (translation)
+Establish `h1 : a - b ∈ I` using `hk ▸ (RingHom.mem_ker.2 (by rw [map_sub, h, sub_self]))`. Establish `h2 : (a - b) * (i : R) ∈ I ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul h1 i.2`. Rewrite `h2` using `[hI, Ideal.zero_eq_bot, Ideal.mem_bot, sub_mul, sub_eq_zero]`.
+
+Conclude with `h2`.
+-/
 theorem mul_eq_of_map_eq {I : Ideal R} (hI : I ^ 2 = 0) {π : R →+* R₀} (hk : RingHom.ker π = I)
     {a b : R} (h : π a = π b) (i : I) : a * (i : R) = b * i := by
   have h1 : a - b ∈ I := hk ▸ (RingHom.mem_ker.2 (by rw [map_sub, h, sub_self]))
@@ -39,6 +44,21 @@ end GlobalTheory.Obs.TrivAug
 end
 
 open GlobalTheory.Obs.TrivAug in
+/- English proof (translation)
+Introduce `R R₀ _ _ I hI π hπ hk`. Use `letI : Module R₀ I := modI hI hπ hk`. Use `letI : Module R₀ᵐᵒᵖ I := modOpI hI hπ hk`. Use `haveI : IsCentralScalar R₀ I := ⟨fun r m => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show Function.surjInv hπ (MulOpposite.unop (MulOpposite.op r)) * (m : R) = Function.surjInv hπ r * m`. Use the proof step `rfl⟩`. Use `haveI : IsScalarTower R₀ R₀ᵐᵒᵖ I := ⟨fun r s m => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Function.surjInv hπ (MulOpposite.unop (r • s)) * (m : R) = Function.surjInv hπ r * (Function.surjInv hπ (MulOpposite.unop s) * m)`.
+
+Rewrite using `[← _root_.mul_assoc]`. Use `mul_eq_of_map_eq hI hk ?_ m` and prove the remaining obligations. Simplify using `[Function.surjInv_eq hπ, smul_eq_mul, mul_comm]⟩`. Use `⟨TrivSqZeroExt R₀ I, inferInstance, inferInstance, ⟨?_⟩⟩` and prove the remaining obligations. Use `exact`.
+
+Use the proof step `{ q := TrivSqZeroExt.fstHom R₀ R₀ I k := { toFun := fun y => (y.snd : R), map_zero' := rfl, map_add' := fun _ _ => rfl } mem := fun y => y.snd.2 smul := fun r y => by show Function.surjInv hπ (π r) * (y.snd : R) = r * y.snd`. Conclude with `mul_eq_of_map_eq hI hk (Function.surjInv_eq hπ (π r)) _`. Use `one := rfl`. Use `sq := fun y y' h h' => by`. Establish `h0 : y.fst = 0` using `h`.
+
+Establish `h0' : y'.fst = 0` using `h'`. Use `ext`. Simplify using `[h0]`. Simplify using `[h0, h0']`. Use `inj := fun y h h' => by`.
+
+Establish `h0 : y.fst = 0` using `h`. Use `ext`. Conclude with `h0`. Establish `h1 : (y.snd : R) = 0` using `h'`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression. Use `surj := fun i hi => ⟨TrivSqZeroExt.inr ⟨i, hi⟩, rfl, rfl⟩ }`.
+-/
 theorem GlobalTheory.Obs.exists_aug : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I), ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R₀ R₁), Nonempty (Aug I π R₁) := by
   intro R R₀ _ _ I hI π hπ hk
   letI : Module R₀ I := modI hI hπ hk

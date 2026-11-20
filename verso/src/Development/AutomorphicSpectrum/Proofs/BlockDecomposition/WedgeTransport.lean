@@ -17,12 +17,18 @@ section Transport
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Take `⟨p⟩ : Nonempty (PrimeSpectrum k)` from `inferInstance`. Establish `e` using `congrFun (Module.rankAtStalk_eq_finrank_of_free (R := k) (M := M)) p`. Conclude with `e.symm.trans (h.2.2 p)`.
+-/
 theorem finrank_of_vb {k M : Type} [Field k] [AddCommGroup M] [Module k M] {g : ℕ} (h : VB k M g) :
     Module.finrank k M = g := by
   obtain ⟨p⟩ : Nonempty (PrimeSpectrum k) := inferInstance
   have e := congrFun (Module.rankAtStalk_eq_finrank_of_free (R := k) (M := M)) p
   exact e.symm.trans (h.2.2 p)
 
+/- English proof (translation)
+The claim follows from `have := h.1 have := h.2.1 ⟨Module.Finite.equiv e, Module.Projective.of_equiv e, fun p ↦ (congrFun (Module.rankAtStalk_eq_of_equiv e) p).symm.trans (h.2.2 p)⟩`.
+-/
 theorem vb_of_equiv {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] {g : ℕ}
     (e : M ≃ₗ[R] N) (h : VB R M g) : VB R N g :=
   have := h.1
@@ -36,6 +42,11 @@ def wedgeEquiv {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Modu
     (by rw [← exteriorPower.map_comp]; simp)
     (by rw [← exteriorPower.map_comp]; simp)
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Use `⟨(wedgeEquiv e₁.symm).trans (e.trans e₂), fun a b ↦ ?_⟩` and prove the remaining obligations. Establish `k : wedgeEquiv e₁.symm (exteriorPower.ιMulti R 2 ![a, b]) = exteriorPower.ιMulti R 2 ![e₁.symm a, e₁.symm b]`. Use `(exteriorPower.map_apply_ιMulti _ _).trans (congrArg _ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> rfl`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[k, he, hB, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem wedge_transport {M M' N N' : Type} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M']
     [AddCommGroup N] [Module R N] [AddCommGroup N'] [Module R N'] (e₁ : M ≃ₗ[R] M') (e₂ : N ≃ₗ[R] N')
     (B : M → M → N) (B' : M' → M' → N') (hB : ∀ a b, e₂ (B a b) = B' (e₁ a) (e₁ b))
@@ -54,11 +65,17 @@ theorem wedge_transport {M M' N N' : Type} [AddCommGroup M] [Module R M] [AddCom
 variable {C C' : Type} [Category.{0} C] [Category.{0} C'] {F : C ⥤ CommAlgCat.{0} R}
   {F' : C' ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+The claim follows from `wedge_transport (LinearEquiv.ofBijective m.pull1 h₁) (LinearEquiv.ofBijective m.pull2 h₂) (fun a b ↦ cup F a b) (fun a b ↦ cup F' a b) (fun a b ↦ m.pullCohomologyTwo_cup a b) h`.
+-/
 theorem wedge_of_bij (m : CoefMap (RingHom.id R) F F') (h₁ : Function.Bijective m.pull1)
     (h₂ : Function.Bijective m.pull2) (h : Wedge F) : Wedge F' :=
   wedge_transport (LinearEquiv.ofBijective m.pull1 h₁) (LinearEquiv.ofBijective m.pull2 h₂)
     (fun a b ↦ cup F a b) (fun a b ↦ cup F' a b) (fun a b ↦ m.pullCohomologyTwo_cup a b) h
 
+/- English proof (translation)
+The claim follows from `wedge_transport (LinearEquiv.ofBijective m.pull1 h₁).symm (LinearEquiv.ofBijective m.pull2 h₂).symm (fun a b ↦ cup F' a b) (fun a b ↦ cup F a b) (fun a b ↦ by refine (LinearEquiv.symm_apply_eq _).2 ?_ refine Eq.trans ?_ (m.pullCohomologyTwo_cup _ _).symm change _ = cup F' (Linear …`.
+-/
 theorem wedge_of_bij' (m : CoefMap (RingHom.id R) F F') (h₁ : Function.Bijective m.pull1)
     (h₂ : Function.Bijective m.pull2) (h : Wedge F') : Wedge F :=
   wedge_transport (LinearEquiv.ofBijective m.pull1 h₁).symm (LinearEquiv.ofBijective m.pull2 h₂).symm
@@ -68,12 +85,18 @@ theorem wedge_of_bij' (m : CoefMap (RingHom.id R) F F') (h₁ : Function.Bijecti
       change _ = cup F' (LinearEquiv.ofBijective m.pull1 h₁ _) (LinearEquiv.ofBijective m.pull1 h₁ _)
       rw [LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]) h
 
+/- English proof (translation)
+Take `⟨D, _, G, π, m, h₁, h₂, -⟩` from `h`. Conclude with `⟨D, _, G, π, m, h₁, h₂, False.elim⟩`.
+-/
 theorem hopf_false {b : Prop} (h : Hopf F b) : Hopf F False := by
   obtain ⟨D, _, G, π, m, h₁, h₂, -⟩ := h
   exact ⟨D, _, G, π, m, h₁, h₂, False.elim⟩
 
 end Transport
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨A', i, φ, hφ.1, GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hφ, (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 hg⟩`.
+-/
 theorem pack {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {R' : Type} [CommRing R'] [Algebra R R'] (A' : Over (Sp R'))
     {i : GrpObj A'} (φ : A'.left ⟶ A.left) (hφ : IsGrpPullback A' A (spMap (algebraMap R R')) φ) :
@@ -83,6 +106,9 @@ theorem pack {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA 
   ⟨A', i, φ, hφ.1, GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA hφ,
     (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hφ.1 hg⟩
 
+/- English proof (translation)
+The claim follows from `pack A g hA hg _ _ (isGrpPullback_pullback A (spMap (algebraMap R R')))`.
+-/
 theorem exists_base {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (R' : Type) [CommRing R'] [Algebra R R'] :
     ∃ (A' : Over (Sp R')) (_ : GrpObj A') (φ : A'.left ⟶ A.left),
@@ -90,6 +116,9 @@ theorem exists_base {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : �
         SmoothOfRelativeDimension g A'.hom :=
   pack A g hA hg _ _ (isGrpPullback_pullback A (spMap (algebraMap R R')))
 
+/- English proof (translation)
+Use `ha.proper` as an intermediate fact. Conclude with `hL R' _ _ (OAff A'.hom) (OSys A'.hom S') (resSys A'.hom S') (hD R' A'.left A'.hom inferInstance P S')`.
+-/
 theorem low (hD : DescentSt) (hL : LowSt) {P : Type} [SemilatticeInf P] (R' : Type) [CommRing R'] (A' : Over (Sp R'))
     [GrpObj A'] (ha : IsAbelianScheme A') (S' : Sys A'.left P) :
     Function.Bijective (resSys A'.hom S').pull1 ∧ Function.Bijective (resSys A'.hom S').pull2 ∧
@@ -97,6 +126,9 @@ theorem low (hD : DescentSt) (hL : LowSt) {P : Type} [SemilatticeInf P] (R' : Ty
   have := ha.proper
   exact hL R' _ _ (OAff A'.hom) (OSys A'.hom S') (resSys A'.hom S') (hD R' A'.left A'.hom inferInstance P S')
 
+/- English proof (translation)
+Establish `pr` using `hA.proper`. Establish `sep : IsSeparated A.hom` using `inferInstance`. Take `⟨A', _, φ, h, ha, hg'⟩` from `exists_base A g hA hg R'`. Take `⟨S', m, -⟩` from `hS R R' A.left A'.left A.hom A'.hom φ h sep P S`. Conclude with `⟨A', _, S', m, ha, hg'⟩`.
+-/
 theorem base (hS : SysBCSt) {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) {P : Type} [SemilatticeInf P] (S : Sys A.left P) (R' : Type)
     [CommRing R'] [Algebra R R'] : ∃ (A' : Over (Sp R')) (_ : GrpObj A') (S' : Sys A'.left P)
@@ -107,17 +139,26 @@ theorem base (hS : SysBCSt) {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A]
   obtain ⟨S', m, -⟩ := hS R R' A.left A'.left A.hom A'.hom φ h sep P S
   exact ⟨A', _, S', m, ha, hg'⟩
 
+/- English proof (translation)
+The claim follows from `fun R' _ _ ↦ by obtain ⟨A', _, S', m, ha, hg'⟩ := base hS A g hA hg S R' exact ⟨_, m, (low hD hL R' A' ha S').2.2.1 (hSt R' A' g ha hg')⟩`.
+-/
 theorem steinU (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hSt : SteinSt) {R : Type} [CommRing R]
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {P : Type} [SemilatticeInf P] (S : Sys A.left P) : SteinU (OSys A.hom S) := fun R' _ _ ↦ by
   obtain ⟨A', _, S', m, ha, hg'⟩ := base hS A g hA hg S R'
   exact ⟨_, m, (low hD hL R' A' ha S').2.2.1 (hSt R' A' g ha hg')⟩
 
+/- English proof (translation)
+The claim follows from `vb_of_equiv (LinearEquiv.ofBijective _ (low hD hL R A hA S).1) (hH1 R A g hA hg)`.
+-/
 theorem vbSys (hD : DescentSt) (hL : LowSt) (hH1 : H1StructureBundle) {R : Type} [CommRing R]
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {P : Type} [SemilatticeInf P] (S : Sys A.left P) : VB R (H1 (OSys A.hom S)) g :=
   vb_of_equiv (LinearEquiv.ofBijective _ (low hD hL R A hA S).1) (hH1 R A g hA hg)
 
+/- English proof (translation)
+Take `⟨A', _, S', m, ha, hg'⟩` from `base hS A g hA hg S k`. Conclude with `⟨_, m, finrank_of_vb (vbSys hD hL hH1 A' g ha hg' S')⟩`.
+-/
 theorem finFib (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hH1 : H1StructureBundle) {R : Type} [CommRing R]
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {P : Type} [SemilatticeInf P] (S : Sys A.left P) (k : Type) [Field k] [Algebra R k] :
@@ -125,6 +166,9 @@ theorem finFib (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hH1 : H1StructureBu
   obtain ⟨A', _, S', m, ha, hg'⟩ := base hS A g hA hg S k
   exact ⟨_, m, finrank_of_vb (vbSys hD hL hH1 A' g ha hg' S')⟩
 
+/- English proof (translation)
+Take `⟨A', _, S', m, ha, hg'⟩` from `base hS A g hA hg S k`. Establish `b` using `low hD hL k A' ha S'`. Conclude with `⟨_, m, wedge_of_bij (resSys A'.hom S') b.1 b.2.1 (hWF k A' g ha hg' (Field.toIsField k))⟩`.
+-/
 theorem wedgeFib (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hWF : WedgeFieldSt) {R : Type} [CommRing R]
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {P : Type} [SemilatticeInf P] (S : Sys A.left P) (k : Type) [Field k] [Algebra R k] :
@@ -133,6 +177,9 @@ theorem wedgeFib (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hWF : WedgeFieldS
   have b := low hD hL k A' ha S'
   exact ⟨_, m, wedge_of_bij (resSys A'.hom S') b.1 b.2.1 (hWF k A' g ha hg' (Field.toIsField k))⟩
 
+/- English proof (translation)
+Establish `hSU` using `steinU hD hL hS hSt A g hA hg S`. Establish `hV` using `vbSys hD hL hH1 A g hA hg S`. Establish `hB : H1CommutesBaseChange (OSys A.hom S)` using `hPH1 R P (OSys A.hom S) g hPf hSU hV fun k _ _ ↦ finFib hD hL hS hH1 A g hA hg S k`. Take `⟨h2, hs⟩` from `hPH2 R P (OSys A.hom S) g hPf hSU hV hB fun k _ _ ↦ wedgeFib hD hL hS hWF A g hA hg S k`. Conclude with `⟨hB, hWO R P (OSys A.hom S) g (hopf_false (hHopf R A g hA hg P S)) hV hB h2 hs⟩`.
+-/
 theorem coreSys (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hSt : SteinSt) (hH1 : H1StructureBundle)
     (hWF : WedgeFieldSt) (hHopf : HopfSt) (hPH1 : PerfectH1BaseChange) (hPH2 : PerfectH2FromFibres) (hWO : WedgeOfSt)
     {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
@@ -146,6 +193,17 @@ theorem coreSys (hD : DescentSt) (hL : LowSt) (hS : SysBCSt) (hSt : SteinSt) (hH
     wedgeFib hD hL hS hWF A g hA hg S k
   exact ⟨hB, hWO R P (OSys A.hom S) g (hopf_false (hHopf R A g hA hg P S)) hV hB h2 hs⟩
 
+/- English proof (translation)
+Introduce `hD hL hS hP hSt hH1 hWF hHopf hPH1 hPH2 hWO`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `R _ A _ g hA hg R' _ _ X' s' φ h`. Establish `pr` using `hA.proper`. Establish `sep : IsSeparated A.hom` using `inferInstance`.
+
+Establish `sep' : IsSeparated s'` using `MorphismProperty.of_isPullback h sep`. Take `⟨P, _, _, S, hPf⟩` from `hP R A.left A.hom hA.smooth pr`. Establish `hB` using `(coreSys hD hL hS hSt hH1 hWF hHopf hPH1 hPH2 hWO A g hA hg S hPf).1`. Take `⟨S', m, hc⟩` from `hS R R' A.left X' A.hom s' φ h sep P S`. Take `⟨e₀, he₀⟩` from `hB R' _ m`.
+
+Establish `b₁` using `(hL R _ _ _ _ (resSys A.hom S) (hD R A.left A.hom sep P S)).1`. Establish `b₂` using `(hL R' _ _ _ _ (resSys s' S') (hD R' X' s' sep' P S')).1`. Set `e₁` to `LinearEquiv.ofBijective _ b₁`. Set `e₂` to `LinearEquiv.ofBijective _ b₂`. Use `⟨(LinearEquiv.baseChange R R' _ _ e₁).trans (e₀.trans e₂.symm), fun c ↦ hc c _ ?_⟩` and prove the remaining obligations.
+
+Use `(he₀ _).symm.trans ?_` and prove the remaining obligations. Conclude with `(e₂.apply_symm_apply _).symm`. Introduce `R _ A _ g hA hg`. Establish `pr` using `hA.proper`. Take `⟨P, _, _, S, hPf⟩` from `hP R A.left A.hom hA.smooth pr`.
+
+Establish `hW` using `(coreSys hD hL hS hSt hH1 hWF hHopf hPH1 hPH2 hWO A g hA hg S hPf).2`. Establish `b` using `low hD hL R A hA S`. Conclude with `wedge_of_bij' (resSys A.hom S) b.1 b.2.1 hW`.
+-/
 theorem oBC_wedge : DescentSt → LowSt → SysBCSt → PerfSt → SteinSt → H1StructureBundle → WedgeFieldSt → HopfSt → PerfectH1BaseChange →
     PerfectH2FromFibres → WedgeOfSt → OBCSt ∧ WedgeSt := by
   intro hD hL hS hP hSt hH1 hWF hHopf hPH1 hPH2 hWO

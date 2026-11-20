@@ -11,6 +11,11 @@ namespace GlobalTheory.IwRed
 
 open GlobalTheory.LeviDesc GlobalTheory.TwOrbConj
 
+/- English proof (translation)
+Establish `hR : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[mem_rStab]`. Unfold `avg`. Simplify using `only`.
+
+Rewrite using `[hR, Subgroup.index_top]`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := ⟨⟨QuotientGroup.mk 1⟩, fun a => QuotientGroup.induction_on a fun x => QuotientGroup.eq.2 (Subgroup.mem_top _)⟩`. Rewrite using `[finsum_unique]`. Simplify using the standard rewrite rules.
+-/
 theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have hR : rStab (fun _ : H => c) = ⊤ := by
     ext k; simp [mem_rStab]
@@ -24,6 +29,13 @@ theorem avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := b
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `h : ∀ k : K.subgroupOf P, cavg K f (((p * k)⁻¹ * ⟨δ, hδ⟩ * (p * k) : P) : G) = avg (fun k : K => f (((p : G) * k)⁻¹ * δ * ((p : G) * k)))`. Introduce `k`. Establish `hk : ((k : P) : G) ∈ K` using `k.2`. Unfold `cavg`. Rewrite using `[← avg_left (fun k' : K => f (((p : G) * k')⁻¹ * δ * ((p : G) * k'))) ⟨_, hk⟩]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k'`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, InvMemClass.coe_inv, _root_.mul_inv_rev]`. Use `group`.
+
+Repeatedly rewrite using `[h]`. Conclude with `avg_const _`.
+-/
 theorem avg_cavg (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) (f : G → ℂ) (p : P) :
     avg (fun k : K.subgroupOf P => cavg K f (((p * k)⁻¹ * ⟨δ, hδ⟩ * (p * k) : P) : G)) =
       avg (fun k : K => f (((p : G) * k)⁻¹ * δ * ((p : G) * k))) := by
@@ -41,11 +53,17 @@ theorem avg_cavg (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) (f : G → ℂ) (p
   simp_rw [h]
   exact avg_const _
 
+/- English proof (translation)
+Rewrite using `[mem_twCent, mem_twCent, Subtype.ext_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_twCent_sub (P : Subgroup G) (δ : G) (hδ : δ ∈ P) (x : P) :
     x ∈ twCent (MonoidHom.id P) ⟨δ, hδ⟩ ↔ (x : G) ∈ twCent (MonoidHom.id G) δ := by
   rw [mem_twCent, mem_twCent, Subtype.ext_iff]
   simp
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_map_equiv, mem_twCent_sub, MulAut.conj_symm_apply, Subgroup.mem_subgroupOf, Subgroup.coe_subtype, Subgroup.coe_mul, InvMemClass.coe_inv]`.
+-/
 theorem inf_eq_comap (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) (p : P) :
     twCent (MonoidHom.id P) ⟨δ, hδ⟩ ⊓ (K.subgroupOf P).map (MulAut.conj p).toMonoidHom =
       (twCent (MonoidHom.id G) δ ⊓ K.map (MulAut.conj (p : G)).toMonoidHom).comap P.subtype := by
@@ -55,6 +73,15 @@ theorem inf_eq_comap (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) (p : P) :
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Unfold `cptPart`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Establish `hc : ∀ x : P, IsCompact (closure (Subgroup.zpowers x : Set P)) ↔ IsCompact (closure (Subgroup.zpowers (x : G) : Set G))`. Introduce `x`.
+
+Rewrite using `[(hP.isClosedEmbedding_subtypeVal).isInducing.isCompact_iff, ← (hP.isClosedEmbedding_subtypeVal).closure_image_eq]`. Establish `: (Subtype.val '' (Subgroup.zpowers x : Set P)) = (Subgroup.zpowers (x : G) : Set G)`. Rewrite using `[← Subgroup.coe_subtype, ← Subgroup.coe_map, MonoidHom.map_zpowers]`. Use `first`. Consider the case `(convert Iff.rfl using 3; exact this.symm)`.
+
+Consider the case `(convert Iff.rfl using 3; exact this)`. Consider the case `exact this ▸ Iff.rfl`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨hx, hx'⟩, rfl⟩`.
+
+Conclude with `⟨(mem_twCent_sub P δ hδ x).1 hx, (hc x).1 hx'⟩`. Introduce and unpack `⟨hy, hy'⟩`. Conclude with `⟨⟨y, hT hy⟩, ⟨(mem_twCent_sub P δ hδ _).2 hy, (hc _).2 hy'⟩, rfl⟩`.
+-/
 theorem cptPart_map_sub (P : Subgroup G) (hP : IsClosed (P : Set G)) (δ : G) (hδ : δ ∈ P)
     (hT : twCent (MonoidHom.id G) δ ≤ P) :
     (cptPart (twCent (MonoidHom.id P) ⟨δ, hδ⟩)).map P.subtype = cptPart (twCent (MonoidHom.id G) δ) := by
@@ -87,6 +114,9 @@ open GlobalTheory.LeviDesc GlobalTheory.TwOrbConj
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Rewrite using `[inf_eq_comap, Subgroup.relIndex_comap, cptPart_map_sub P hP δ hδ hT]`.
+-/
 theorem relIndex_sub (K P : Subgroup G) (hP : IsClosed (P : Set G)) (δ : G) (hδ : δ ∈ P)
     (hT : twCent (MonoidHom.id G) δ ≤ P) (p : P) :
     (twCent (MonoidHom.id P) ⟨δ, hδ⟩ ⊓ (K.subgroupOf P).map (MulAut.conj p).toMonoidHom).relIndex
@@ -95,6 +125,9 @@ theorem relIndex_sub (K P : Subgroup G) (hP : IsClosed (P : Set G)) (δ : G) (h�
         (cptPart (twCent (MonoidHom.id G) δ)) := by
   rw [inf_eq_comap, Subgroup.relIndex_comap, cptPart_map_sub P hP δ hδ hT]
 
+/- English proof (translation)
+Unfold `summand`. Rewrite using `[relIndex_sub K P hP δ hδ hT p]`. Use `congr 1`. Simplify using `using avg_cavg K P δ hδ f p`.
+-/
 theorem summand_sub (K P : Subgroup G) (hP : IsClosed (P : Set G)) (δ : G) (hδ : δ ∈ P)
     (hT : twCent (MonoidHom.id G) δ ≤ P) (f : G → ℂ) (p : P) :
     summand (MonoidHom.id P) (K.subgroupOf P) ⟨δ, hδ⟩ (fun x : P => cavg K f (x : G)) p =
@@ -109,6 +142,17 @@ def dcMap (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) :
       DoubleCoset.Quotient (twCent (MonoidHom.id G) δ : Set G) (K : Set G) :=
   fun q => DoubleCoset.mk _ K ((Quotient.out q : P) : G)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `q₁ q₂ h`. Take `⟨t, ht, k, hk, he⟩` from `(DoubleCoset.eq _ _ _ _).1 h`. Establish `htP : t ∈ P` using `hT ht`. Establish `hkP : k ∈ P`.
+
+Establish `: k = ((Quotient.out q₁ : P) : G)⁻¹ * t⁻¹ * ((Quotient.out q₂ : P) : G)` using `by rw [he]; group`. Rewrite using `[this]`. Conclude with `P.mul_mem (P.mul_mem (P.inv_mem (Quotient.out q₁).2) (P.inv_mem htP)) (Quotient.out q₂).2`. Rewrite using `[← DoubleCoset.out_eq' _ _ q₁, ← DoubleCoset.out_eq' _ _ q₂, DoubleCoset.eq]`. Use `⟨⟨t, htP⟩, (mem_twCent_sub P δ hδ _).2 ht, ⟨k, hkP⟩, (Subgroup.mem_subgroupOf).2 hk, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (by simpa using he)`. Introduce `q`. Take `⟨p, hp, k, hk, hg⟩` from `hPK (Quotient.out q)`. Use `⟨DoubleCoset.mk _ _ (⟨p, hp⟩ : P), ?_⟩` and prove the remaining obligations. Take `⟨t, ht, k', hk', he⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' (twCent (MonoidHom.id P) ⟨δ, hδ⟩) (K.subgroupOf P) (DoubleCoset.mk _ _ (⟨p, hp⟩ : P))).symm`.
+
+Rewrite using `[← DoubleCoset.out_eq' _ _ q]`. Use `show DoubleCoset.mk _ K _ = _`. Rewrite using `[DoubleCoset.eq]`. Use `⟨(t : G)⁻¹, (twCent (MonoidHom.id G) δ).inv_mem ((mem_twCent_sub P δ hδ t).1 ht), ((k' : P) : G)⁻¹ * k, K.mul_mem (K.inv_mem ((Subgroup.mem_subgroupOf).1 hk')) hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`.
+
+Establish `he'` using `congrArg (fun x : P => (x : G)) he`. Simplify using `only [Subgroup.coe_mul] at he'`. Rewrite using `[he']`. Use `group`.
+-/
 theorem dcMap_bij (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) (hT : twCent (MonoidHom.id G) δ ≤ P)
     (hPK : ∀ g : G, ∃ p ∈ P, ∃ k ∈ K, g = p * k) : Function.Bijective (dcMap K P δ hδ) := by
   constructor
@@ -138,6 +182,11 @@ theorem dcMap_bij (K P : Subgroup G) (δ : G) (hδ : δ ∈ P) (hT : twCent (Mon
     rw [he']
     group
 
+/- English proof (translation)
+Introduce `G _ _ _ K P _ _ hP hPK δ hδ hT f _`. Rewrite using `[twOrb_eq, twOrb_eq]`. Rewrite using `[← finsum_comp_equiv (Equiv.ofBijective _ (dcMap_bij K P δ hδ hT hPK))]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[summand_sub K P hP δ hδ hT f]`.
+
+Use `show summand _ K δ f (Quotient.out (DoubleCoset.mk _ K ((Quotient.out q : P) : G))) = _`. Take `⟨t, ht, k, hk, he⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' (twCent (MonoidHom.id G) δ) K (DoubleCoset.mk _ K ((Quotient.out q : P) : G))).symm`. Rewrite using `[he, summand_rep _ K δ f _ ht hk]`.
+-/
 theorem twOrb_sub : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K P : Subgroup G),
     IsOpen (K : Set G) → IsCompact (K : Set G) → IsClosed (P : Set G) → (∀ g : G, ∃ p ∈ P, ∃ k ∈ K, g = p * k) →
     ∀ (δ : G) (hδ : δ ∈ P), twCent (MonoidHom.id G) δ ≤ P → ∀ f : G → ℂ,

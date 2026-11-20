@@ -16,6 +16,9 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM
 
+/- English proof (translation)
+Take `⟨N, i, hi, hq, rfl⟩` from `h`. Establish `: IsProper (PSpace.str o N)` using `isProper_str o N`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str o N)`. Conclude with `⟨N, U.ι ≫ i, inferInstance, inferInstance, by simp⟩`.
+-/
 theorem isQProjOver_opens_of_noetherian {o : Type} [CommRing o] [IsNoetherianRing o] {X : Scheme.{0}} {s : X ⟶ Sp o}
     (h : IsQProjOver s) (U : X.Opens) : IsQProjOver (U.ι ≫ s) := by
   obtain ⟨N, i, hi, hq, rfl⟩ := h
@@ -23,6 +26,9 @@ theorem isQProjOver_opens_of_noetherian {o : Type} [CommRing o] [IsNoetherianRin
   have : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str o N)
   exact ⟨N, U.ι ≫ i, inferInstance, inferInstance, by simp⟩
 
+/- English proof (translation)
+Establish `hs : Function.Surjective z`. Introduce `p`. Conclude with `(IsLocalRing.specializes_closedPoint (R := R) p).mem_open z.isOpenEmbedding.isOpen_range h`. Establish `: Epi z.base` using `(TopCat.epi_iff_surjective _).2 hs`. Conclude with `IsOpenImmersion.isIso z`.
+-/
 theorem isIso_of_closedPoint_mem_range {R : Type} [CommRing R] [IsLocalRing R] {Z : Scheme.{0}} (z : Z ⟶ Sp R)
     [IsOpenImmersion z] (h : (IsLocalRing.closedPoint R : Sp R) ∈ Set.range z) : IsIso z := by
   have hs : Function.Surjective z := by
@@ -31,6 +37,11 @@ theorem isIso_of_closedPoint_mem_range {R : Type} [CommRing R] [IsLocalRing R] {
   have : Epi z.base := (TopCat.epi_iff_surjective _).2 hs
   exact IsOpenImmersion.isIso z
 
+/- English proof (translation)
+Take `⟨R', _, z, v, hz, hp, hv⟩` from `GlobalTheory.T.exists_thetaConstants_locally_on_base h1 h2 o g N' J b _ s' t hN (IsLocalRing.closedPoint R)`. Use `isIso_of_closedPoint_mem_range z hp` as an intermediate fact. Take `⟨φ, hφ⟩` from `Spec.map_surjective (inv z)`. Use `GlobalTheory.T.hasThetaConstants_ring_baseChange h2 o g N' J b _ s' t R' R φ.hom z v hv` as an intermediate fact. Establish `e : spMap φ.hom ≫ z = 𝟙 (Sp R)`.
+
+Express the relevant statement in the definitionally equal form `Spec.map φ ≫ z = _`. Rewrite using `[hφ, IsIso.inv_hom_id]`. Rewrite `this` using `[e]`. Conclude with `⟨_, this⟩`.
+-/
 theorem TObj.exists_hasTh_of_isLocalRing (h1 : Out.Laws) (h2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} (hN : Odd N') {R : Type} [CommRing R] [IsLocalRing R] {s' : Sp R ⟶ Sp o}
     (t : TObj g (N' ^ 2) J b s') : ∃ v, t.HasTh (𝟙 (Sp R)) v := by
@@ -44,6 +55,15 @@ theorem TObj.exists_hasTh_of_isLocalRing (h1 : Out.Laws) (h2 : Out.Laws2) {o : T
   rw [e] at this
   exact ⟨_, this⟩
 
+/- English proof (translation)
+Introduce `h1 h2 o _ g n N' J b em C Mat κ F hN`. Use `F.Y.flat` as an intermediate fact. Use `F.Y.reduced` as an intermediate fact. Use `⟨?_, inferInstance, isReduced_of_isOpenImmersion F.U.ι, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hn : IsNoetherianRing o`.
+
+Conclude with `Or.inl (isQProjOver_opens_of_noetherian F.Y.qproj F.U)`. Conclude with `Or.inr hn`. Introduce `R _ _ x y s' t hxy hx hy`. Take `⟨v, hv⟩` from `TObj.exists_hasTh_of_isLocalRing h1 h2 hN t`. Establish `vx` using `(GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ F.univ _ s' t x R (𝟙 _) v hx).1 hv`.
+
+Establish `vy` using `(GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ F.univ _ s' t y R (𝟙 _) v hy).1 hv`. Rewrite `vx`, `vy` using `[Category.id_comp]`. Establish `cx` using `(F.th R x v).1 vx`. Establish `cy` using `(F.th R y v).1 vy`. Take `⟨β, hβ⟩` from `Spec.map_surjective (x ≫ F.U.ι ≫ F.Y.s)`.
+
+Establish `bx : (x ≫ F.U.ι) ≫ F.Y.s = spMap β.hom` using `by rw [Category.assoc, ← hβ]; rfl`. Establish `by' : (y ≫ F.U.ι) ≫ F.Y.s = spMap β.hom` using `by rw [Category.assoc, ← hxy, ← hβ]; rfl`. Establish `hin` using `F.Y.loc R β.hom _ v bx cx`. Use `(F.Y.pts R β.hom v hin).unique ⟨bx, cx⟩ ⟨by', cy⟩` as an intermediate fact. Conclude with `(cancel_mono F.U.ι).1 this`.
+-/
 theorem WFam.qproj_flat_reduced_ext : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g n N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) Mat κ (F : WFam n em C Mat κ), Odd N' → (IsQProjOver (F.U.ι ≫ F.Y.s) ∨ ¬ IsNoetherianRing o) ∧ Flat (F.U.ι ≫ F.Y.s) ∧ IsReduced F.U.toScheme ∧ ∀ (R : Type) [CommRing R] [IsLocalRing R] (x y : Sp R ⟶ F.U.toScheme) (s' : Sp R ⟶ Sp o) (t : TObj g (N' ^ 2) J b s'), x ≫ F.U.ι ≫ F.Y.s = y ≫ F.U.ι ≫ F.Y.s → TMap t F.univ x → TMap t F.univ y → x = y := by
   intro h1 h2 o _ g n N' J b em C Mat κ F hN
   have := F.Y.flat

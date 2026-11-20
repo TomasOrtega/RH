@@ -53,6 +53,11 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree.Line GroundTheory.Heights₂
 variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
+/- English proof (translation)
+Use `show Submodule.span Ω {Pi.single 0 1} = Submodule.span Ω ((Pi.basisFun Ω (Fin 2)) '' {i | (i : ℕ) < 1})`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_image, Set.mem_ofPred_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `rfl`. Conclude with `⟨0, by simp, by simp⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Rewrite using `[show i = 0 from Fin.ext (Nat.lt_one_iff.mp hi)]`. Simplify using the standard rewrite rules.
+-/
 theorem lineF_eq : lineF = (lineDataHodge II hII).F () := by
   show Submodule.span Ω {Pi.single 0 1} = Submodule.span Ω ((Pi.basisFun Ω (Fin 2)) '' {i | (i : ℕ) < 1})
   congr 1
@@ -87,6 +92,9 @@ def flatFuller : FullerData II Unit Unit (PBlk 2) Ω (fun _ => Fin 2 → Ω) Gau
   htLat _ _ := (lineData II hII).W ()
   ht_away _ h := absurd h (Finset.notMem_empty _)
 
+/- English proof (translation)
+Simplify using `[FullerData.cuspU, flatFuller, Real.iSup_of_isEmpty]`.
+-/
 theorem flatFuller_cuspU (z : (Σ _ : Unit, Fin 2) → ℂ) : (flatFuller II hII).cuspU z = 0 := by
   simp [FullerData.cuspU, flatFuller, Real.iSup_of_isEmpty]
 

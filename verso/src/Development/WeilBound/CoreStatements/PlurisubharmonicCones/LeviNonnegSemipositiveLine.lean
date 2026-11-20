@@ -17,6 +17,15 @@ section
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)}
 
 open MvPolynomial in
+/- English proof (translation)
+Take `⟨S, hS, hPS⟩` from `hP`. Establish `hle : Ideal.span S ≤ (tanIdeal z (torusSmul c⁻¹ w)).comap (MvPolynomial.map (Int.castRingHom ℂ))`. Rewrite using `[Ideal.span_le]`. Introduce `f hf`. Take `⟨d, hd⟩` from `hS f hf`.
+
+Establish `hfP : f ∈ P` using `by rw [hPS]; exact Ideal.subset_span hf`. Use `mem_tanIdeal.2 ⟨hz.2 f hfP, ?_⟩` and prove the remaining obligations. Establish `hd' : ReciprocityTheory.AnForm.R.IsMultiHomog (MvPolynomial.map (Int.castRingHom ℂ) f) d` using `fun m hm k => hd m (support_map_subset _ _ hm) k`. Establish `hne : (∏ k, c k ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
+
+Rewrite using `[mul_zero, Finset.mul_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun q _ => ?_) (hw f hfP)` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← eval_pderiv_scale hd' c z q]`. Use `hc q.1` as an intermediate fact. Use `show c q.1 * eval (torusSmul c z) (pderiv q (MvPolynomial.map (Int.castRingHom ℂ) f)) * ((c q.1)⁻¹ * w q) = _`.
+
+Clear the denominators using the available nonvanishing facts. Introduce `f hf`. Rewrite `hf` using `[hPS]`. Conclude with `(mem_tanIdeal.1 (hle hf)).2`.
+-/
 theorem coneTangent_inv (hP : IsMultiHomogIdeal P) {z w : (Σ k, J k) → ℂ} (hz : z ∈ mcPts P) {c : K → ℂ}
     (hc : ∀ k, c k ≠ 0) (hw : IsConeTangent (Int.castRingHom ℂ) P (torusSmul c z) w) :
     IsConeTangent (Int.castRingHom ℂ) P z (torusSmul c⁻¹ w) := by
@@ -41,6 +50,23 @@ theorem coneTangent_inv (hP : IsMultiHomogIdeal P) {z w : (Σ k, J k) → ℂ} (
   rw [hPS] at hf
   exact (mem_tanIdeal.1 (hle hf)).2
 
+/- English proof (translation)
+Establish `hγ` using `χ.analytic t ht`. Establish `hz` using `(χ.mem t ht).1`. Establish `hℓa : AnalyticAt ℂ (fun ζ : ℂ => t + ζ • u) 0` using `analyticAt_const.add (analyticAt_id.smul analyticAt_const)`. Establish `hℓ0 : t + (0 : ℂ) • u = t` using `by simp`. Establish `hℓd : HasDerivAt (fun ζ : ℂ => t + ζ • u) u 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const u).const_add t`. Establish `hγ' : AnalyticAt ℂ χ.γ (t + (0 : ℂ) • u)` using `by rw [hℓ0]; exact hγ`. Establish `hga : AnalyticAt ℂ (fun ζ : ℂ => χ.γ (t + ζ • u)) 0` using `AnalyticAt.comp (g := χ.γ) (f := fun ζ : ℂ => t + ζ • u) hγ' hℓa`. Establish `hgd : HasDerivAt (fun ζ : ℂ => χ.γ (t + ζ • u)) (fderiv ℂ χ.γ t u) 0` using `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hγ.differentiableAt.hasFDerivAt hℓd hℓ0.symm`. Establish `hψ : ContDiffAt ℝ 2 (fun t' => Real.log (A.h (χ.γ t'))) t`.
+
+Establish `hR : AnalyticAt ℝ χ.γ t` using `hγ.restrictScalars`. Conclude with `ContDiffAt.comp (g := fun z => Real.log (A.h z)) t (contDiffAt_log_h hA hz) hR.contDiffAt`. Set `δ : ℂ → (Σ k, J k) → ℂ` to `fun ζ => torusSmul (fun k => c k * Complex.exp (ζ * c' k)) (χ.γ (t + ζ • u))`. Establish `hδa : AnalyticAt ℂ δ 0` using `analyticAt_pi_iff.2 fun p => (analyticAt_const.mul (analyticAt_id.mul analyticAt_const).cexp).mul (analyticAt_pi_iff.1 hga p)`. Establish `hδ0 : δ 0 = torusSmul c (χ.γ t)`.
+
+Use function extensionality and compare the values at `p`. Simplify using `[δ, torusSmul]`. Establish `hδd : HasDerivAt δ w 0`. Use `hasDerivAt_pi.2 fun p => ?_` and prove the remaining obligations. Establish `h1` using `(((hasDerivAt_id (0 : ℂ)).mul_const (c' p.1)).cexp.const_mul (c p.1)).mul (hasDerivAt_pi.1 hgd p)`.
+
+Establish `h2 : (c p.1)⁻¹ * w p = fderiv ℂ χ.γ t u p + c' p.1 * χ.γ t p` using `congrFun hw p`. Establish `h3 : w p = c p.1 * (fderiv ℂ χ.γ t u p + c' p.1 * χ.γ t p)`. Rewrite using `[← h2, mul_inv_cancel_left₀ (hc p.1)]`. Use `HasDerivAt.congr_deriv h1 ?_` and prove the remaining obligations. Rewrite using `[h3]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hcz : ∀ k, ∃ i, torusSmul c (χ.γ t) ⟨k, i⟩ ≠ 0` using `fun k => (hz k).imp fun i hi => mul_ne_zero (hc k) hi`. Rewrite using `[levi_disc hδa hδd hδ0 (contDiffAt_log_h hA hcz), levi_disc hℓa hℓd hℓ0 hψ]`. Establish `hp : AnalyticAt ℂ (fun s : Fin 1 → ℂ => s 0) 0` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt 0`.
+
+Establish `hq : AnalyticAt ℂ (fun s : Fin 1 → ℂ => t + s 0 • u) 0` using `analyticAt_const.add (hp.smul analyticAt_const)`. Establish `hq0 : t + (0 : Fin 1 → ℂ) 0 • u = t` using `by simp`. Use `levi_add_re (G := fun s => ∑ k, (A.a k : ℂ) * ((Real.log ‖c k‖ : ℝ) + s 0 * c' k)) ?_ (Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul (analyticAt_const.add (hp.mul analyticAt_const))) ?_ _` and prove the remaining obligations. Establish `hR : AnalyticAt ℝ (fun s : Fin 1 → ℂ => t + s 0 • u) 0` using `hq.restrictScalars`. Conclude with `ContDiffAt.comp (g := fun t' => Real.log (A.h (χ.γ t'))) (f := fun s : Fin 1 → ℂ => t + s 0 • u) 0 (by rw [hq0]; exact hψ) hR.contDiffAt`.
+
+Establish `hq1 : t + (0 : Fin 1 → ℂ) 0 • u ∈ Metric.ball (0 : Fin n → ℂ) 1` using `by rw [hq0]; exact ht filter_upwards [hq.continuousAt.eventually (Metric.isOpen_ball.mem_nhds hq1)] with s hs`. Rewrite using `[show δ (s 0) = torusSmul (fun k => c k * Complex.exp (s 0 * c' k)) (χ.γ (t + s 0 • u)) from rfl, log_h_smul A (χ.mem _ hs).1 fun k => mul_ne_zero (hc k) (Complex.exp_ne_zero _), Complex.re_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 (Complex.exp_ne_zero _)), Complex.norm_exp, Real.log_exp, ← Complex.ofReal_intCast, Complex.re_ofReal_mul, Complex.add_re, Complex.ofReal_re]`.
+-/
 theorem levi_of_chart {n : ℕ} {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd) {A : HermLine J}
     (hA : IsSmoothHerm A) {t u : Fin n → ℂ} (ht : t ∈ Metric.ball (0 : Fin n → ℂ) 1) {c c' : K → ℂ}
     (hc : ∀ k, c k ≠ 0) {w : (Σ k, J k) → ℂ}
@@ -99,6 +125,11 @@ theorem levi_of_chart {n : ℕ} {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart 
 
 end
 
+/- English proof (translation)
+Introduce `K _ J _ II Ψ _ Ω _ _ W _ _ D A hA h`. Use `⟨hA, fun z hz w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, t, ht, c, hc, rfl⟩` from `D.chart_cover z hz`. Establish `ht' : t ∈ Metric.ball (0 : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ) 1` using `mem_ball_zero_iff.2 (ht.trans_lt (by norm_num))`. Take `⟨u, c', hu⟩` from `GlobalTheory.T.cone_tangent_lift_in_chart K J II Ψ Ω W D a t ht' _ (coneTangent_inv D.arith.2.1.2.1 ((D.chart a).mem t ht') hc hw)`.
+
+Conclude with `(h a t ht u).trans_eq (levi_of_chart (D.chart a) hA ht' hc hu).symm`.
+-/
 theorem levi_nonneg_semipositive_line : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (II : IntersectionSystem) (Ψ : Type) [Fintype Ψ] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : Ψ → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (D : ComponentData II Ψ K J Ω W) (A : HermLine J), IsSmoothHerm A → (∀ a, ∀ t : Fin (Fintype.card Ψ * D.j * (D.N - D.j)) → ℂ, ‖t‖ ≤ 1 / 2 → ∀ v, 0 ≤ levi (fun t' => Real.log (A.h ((D.chart a).γ t'))) t v) → IsSemipositiveH (mCoordIdeal D.y) A := by
   intro K _ J _ II Ψ _ Ω _ _ W _ _ D A hA h
   refine ⟨hA, fun z hz w hw => ?_⟩

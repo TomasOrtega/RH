@@ -14,6 +14,9 @@ def ex (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Ix Dw → �
   | none => n
   | some x => a (x.1, x.2)
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; cases i <;> rfl`.
+-/
 theorem ex_add (Dw : Datum H) (a a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) :
     ex Dw (a + a') (n + n') = ex Dw a n + ex Dw a' n' := by
   funext i; cases i <;> rfl
@@ -30,6 +33,9 @@ def embF (τ : E →+* ℂ) : E →+* c.F := τ.codRestrict c.F (c.conj τ)
 
 def embK (τ : E →+* ℂ) : 𝓞 E →+* c.F := (embF c τ).comp (algebraMap (𝓞 E) E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embK_coe (τ : E →+* ℂ) (a : 𝓞 E) : ((embK c τ a : c.F) : ℂ) = τ (a : E) := rfl
 
 end Formalism.L2.Pj

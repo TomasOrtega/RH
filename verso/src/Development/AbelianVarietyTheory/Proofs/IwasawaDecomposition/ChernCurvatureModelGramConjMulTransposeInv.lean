@@ -20,6 +20,9 @@ noncomputable def linMatEntry (a : Fin p) (b : Fin q) : ReciprocityTheory.L2Dbar
       map_add' := fun u v => by simp
       map_smul' := fun c u => by simp }
 
+/- English proof (translation)
+Introduce `a b` and use `by have : (fun u => Z u a b) = ((linMatEntry Z a b).restrictScalars ℝ : ReciprocityTheory.L2DbarEstimates.V n →L[ℝ] ℂ) := by funext u; rfl rw [this] exact ContinuousLinearMap.contDiff _ |>.contDiffAt`.
+-/
 theorem mContDiffAt_linMat (k : WithTop ℕ∞) (x : ReciprocityTheory.L2DbarEstimates.V n) :
     MContDiffAt k (fun u => Z u) x := fun a b => by
   have : (fun u => Z u a b) = ((linMatEntry Z a b).restrictScalars ℝ : ReciprocityTheory.L2DbarEstimates.V n →L[ℝ] ℂ) := by
@@ -27,6 +30,9 @@ theorem mContDiffAt_linMat (k : WithTop ℕ∞) (x : ReciprocityTheory.L2DbarEst
   rw [this]
   exact ContinuousLinearMap.contDiff _ |>.contDiffAt
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `have : (fun u => Z u a b) = fun u => linMatEntry Z a b u := rfl`. Apply the tactic sequence `rw [mdel_apply, this, del_eq_fderiv (linMatEntry Z a b).differentiableAt, ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+-/
 theorem mdel_linMat (x ξ : ReciprocityTheory.L2DbarEstimates.V n) : mdel (fun u => Z u) x ξ = Z ξ := by
   ext a b
   have : (fun u => Z u a b) = fun u => linMatEntry Z a b u := rfl
@@ -34,20 +40,32 @@ theorem mdel_linMat (x ξ : ReciprocityTheory.L2DbarEstimates.V n) : mdel (fun u
     ContinuousLinearMap.fderiv]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `have : (fun u => Z u a b) = fun u => linMatEntry Z a b u := rfl`. Apply the tactic sequence `rw [mdbar_apply, this, dbar_eq_zero (linMatEntry Z a b).differentiableAt]`. Both sides reduce to the same expression.
+-/
 theorem mdbar_linMat (x η : ReciprocityTheory.L2DbarEstimates.V n) : mdbar (fun u => Z u) x η = 0 := by
   ext a b
   have : (fun u => Z u a b) = fun u => linMatEntry Z a b u := rfl
   rw [mdbar_apply, this, dbar_eq_zero (linMatEntry Z a b).differentiableAt]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mdel_conjTranspose, mdbar_linMat, conjTranspose_zero]`.
+-/
 theorem mdel_linMat_conjTranspose (x ξ : ReciprocityTheory.L2DbarEstimates.V n) :
     mdel (fun u => (Z u)ᴴ) x ξ = 0 := by
   rw [mdel_conjTranspose, mdbar_linMat, conjTranspose_zero]
 
+/- English proof (translation)
+Rewrite using `[mdbar_conjTranspose, mdel_linMat]`.
+-/
 theorem mdbar_linMat_conjTranspose (x η : ReciprocityTheory.L2DbarEstimates.V n) :
     mdbar (fun u => (Z u)ᴴ) x η = (Z η)ᴴ := by
   rw [mdbar_conjTranspose, mdel_linMat]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [mdel_apply, Matrix.sub_apply, Matrix.neg_apply]`. Rewrite using `[del_sub (differentiableAt_const _) (h.diff a b)]`. Simplify using the standard rewrite rules.
+-/
 theorem mdel_const_sub {m l : Type*} {B : ReciprocityTheory.L2DbarEstimates.V n → Matrix m l ℂ}
     {x : ReciprocityTheory.L2DbarEstimates.V n} (C : Matrix m l ℂ) (h : MContDiffAt 1 B x) (ξ : ReciprocityTheory.L2DbarEstimates.V n) :
     mdel (fun u => C - B u) x ξ = -mdel B x ξ := by
@@ -56,6 +74,9 @@ theorem mdel_const_sub {m l : Type*} {B : ReciprocityTheory.L2DbarEstimates.V n 
   rw [del_sub (differentiableAt_const _) (h.diff a b)]
   simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [mdbar_apply, Matrix.sub_apply, Matrix.neg_apply]`. Rewrite using `[dbar_sub (differentiableAt_const _) (h.diff a b)]`. Simplify using the standard rewrite rules.
+-/
 theorem mdbar_const_sub {m l : Type*} {B : ReciprocityTheory.L2DbarEstimates.V n → Matrix m l ℂ}
     {x : ReciprocityTheory.L2DbarEstimates.V n} (C : Matrix m l ℂ) (h : MContDiffAt 1 B x) (η : ReciprocityTheory.L2DbarEstimates.V n) :
     mdbar (fun u => C - B u) x η = -mdbar B x η := by
@@ -64,6 +85,21 @@ theorem mdbar_const_sub {m l : Type*} {B : ReciprocityTheory.L2DbarEstimates.V n
   rw [dbar_sub (differentiableAt_const _) (h.diff a b)]
   simp
 
+/- English proof (translation)
+Establish `hZ : ∀ x, MContDiffAt 2 (fun u => Z u) x` using `mContDiffAt_linMat Z 2`. Establish `hB : ∀ x, MContDiffAt 2 (fun u => Z u * (Z u)ᴴ) x` using `fun x => (hZ x).mul (hZ x).conjTranspose`. Establish `hA : ∀ x, MContDiffAt 2 (fun u => 1 - Z u * (Z u)ᴴ) x` using `fun x => (mContDiffAt_const 1).sub (hB x)`. Establish `hAu : IsUnit (1 - Z w * (Z w)ᴴ).det`. Rewrite using `[det_one_sub_mul_comm]`.
+
+Conclude with `hw.det_pos.ne'.isUnit`. Establish `hH : (fun u => (1 - (Z u).map (starRingEnd ℂ) * (Z u)ᵀ)⁻¹) = fun u => ((1 - Z u * (Z u)ᴴ)⁻¹)ᵀ`. Use function extensionality and compare the values at `u`. Establish `e : 1 - (Z u).map (starRingEnd ℂ) * (Z u)ᵀ = (1 - Z u * (Z u)ᴴ)ᵀ`. Use extensionality with `a b`.
+
+Simplify using `[Matrix.mul_apply, Matrix.one_apply, Matrix.sub_apply, eq_comm, mul_comm]`. Rewrite using `[e, transpose_nonsing_inv]`. Establish `hconn : ∀ x, IsUnit (1 - Z x * (Z x)ᴴ).det → conn (fun u => ((1 - Z u * (Z u)ᴴ)⁻¹)ᵀ) x ξ = Z ξ * (Z x)ᴴ * (1 - Z x * (Z x)ᴴ)⁻¹`. Introduce `x hx`. Establish `h1 : MContDiffAt 1 (fun u => 1 - Z u * (Z u)ᴴ) x` using `(hA x).of_le one_le_two`.
+
+Establish `hZ1 : MContDiffAt 1 (fun u => Z u) x` using `(hZ x).of_le one_le_two`. Establish `hdA : mdel (fun u => 1 - Z u * (Z u)ᴴ) x ξ = -(Z ξ * (Z x)ᴴ)`. Rewrite using `[mdel_const_sub _ ((hB x).of_le one_le_two), mdel_mul hZ1 hZ1.conjTranspose, mdel_linMat, mdel_linMat_conjTranspose, Matrix.mul_zero, zero_add]`. Rewrite using `[conn, transpose_transpose, nonsing_inv_nonsing_inv _ hx, mdel_transpose (fun u => (1 - Z u * (Z u)ᴴ)⁻¹), transpose_transpose, mdel_inv h1 hx, hdA]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hx]`.
+
+Establish `hev : (fun x => conn (fun u => ((1 - Z u * (Z u)ᴴ)⁻¹)ᵀ) x ξ) =ᶠ[𝓝 w] fun x => Z ξ * (Z x)ᴴ * (1 - Z x * (Z x)ᴴ)⁻¹` using `((hA w).eventually_isUnit hAu).mono fun x hx => hconn x hx`. Establish `h1 : MContDiffAt 1 (fun u => 1 - Z u * (Z u)ᴴ) w` using `(hA w).of_le one_le_two`. Establish `hZ1 : MContDiffAt 1 (fun u => Z u) w` using `(hZ w).of_le one_le_two`. Establish `hdA : mdbar (fun u => 1 - Z u * (Z u)ᴴ) w η = -(Z w * (Z η)ᴴ)`. Rewrite using `[mdbar_const_sub _ ((hB w).of_le one_le_two), mdbar_mul hZ1 hZ1.conjTranspose, mdbar_linMat, mdbar_linMat_conjTranspose, Matrix.zero_mul, add_zero]`.
+
+Rewrite using `[hH, curv, mdbar_congr hev, mdbar_mul ((mContDiffAt_const (Z ξ)).mul hZ1.conjTranspose) (h1.inv hAu), mdbar_inv h1 hAu, mdbar_mul (mContDiffAt_const _) hZ1.conjTranspose, mdbar_linMat_conjTranspose, mdbar_const, hdA]`. Establish `hP : (1 - Z w * (Z w)ᴴ) * (1 - Z w * (Z w)ᴴ)⁻¹ = 1` using `mul_nonsing_inv _ hAu`. Establish `hQ : (1 - (Z w)ᴴ * Z w)⁻¹ = 1 + (Z w)ᴴ * (1 - Z w * (Z w)ᴴ)⁻¹ * Z w`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `e : (1 - (Z w)ᴴ * Z w) * (1 + (Z w)ᴴ * (1 - Z w * (Z w)ᴴ)⁻¹ * Z w) = 1 - (Z w)ᴴ * Z w + (Z w)ᴴ * ((1 - Z w * (Z w)ᴴ) * (1 - Z w * (Z w)ᴴ)⁻¹) * Z w`.
+
+Simplify using `only [Matrix.sub_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[e, hP, Matrix.mul_one, sub_add_cancel]`. Rewrite using `[hQ]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_assoc, neg_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem curv_modelGram_lie (w ξ η : ReciprocityTheory.L2DbarEstimates.V n) (hw : (1 - (Z w)ᴴ * Z w).PosDef) :
     curv (fun u => (1 - (Z u).map (starRingEnd ℂ) * (Z u)ᵀ)⁻¹) w ξ η =
       -(Z ξ * (1 - (Z w)ᴴ * Z w)⁻¹ * (Z η)ᴴ * (1 - Z w * (Z w)ᴴ)⁻¹) := by

@@ -24,18 +24,32 @@ def wU : OO p n := ω
 
 def jO : WQ p n →+* OO p n := (algebraMap (W2 p n) (OO p n)).comp (jW p n)
 
+/- English proof (translation)
+The claim follows from `(Quad.algebraMap_injective _).comp (jW_injective p n)`.
+-/
 theorem jO_injective : Function.Injective (jO p n) :=
   (Quad.algebraMap_injective _).comp (jW_injective p n)
 
+/- English proof (translation)
+The claim follows from `(IsFractionRing.injective (OO p n) (KO p n)).comp (jO_injective p n)`.
+-/
 theorem inj_WK : Function.Injective ((algebraMap (OO p n) (KO p n)).comp (jO p n)) :=
   (IsFractionRing.injective (OO p n) (KO p n)).comp (jO_injective p n)
 
 def iota : QQ p n →+* KO p n := IsFractionRing.lift (inj_WK p n)
 
+/- English proof (translation)
+Unfold `wU`. Rewrite using `[GatR.om_sq, map_natCast]`.
+-/
 theorem wU_sq : wU p n ^ 2 = (p : OO p n) := by
   unfold wU
   rw [GatR.om_sq, map_natCast]
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Conclude with `⟨0, by simp [hz]⟩`. Establish `hfin : FiniteMultiplicity (p : ℤ) z` using `Int.finiteMultiplicity_iff.2 ⟨by simpa using hp.out.one_lt.ne', hz⟩`. Take `⟨c, hc, hpc⟩` from `hfin.exists_eq_pow_mul_and_not_dvd`. Take `⟨y, hy⟩` from `exists_sq_eq_intCast_of_not_dvd_of_ne_two p n hp2 c hpc`.
+
+Use `⟨wU p n ^ multiplicity (p : ℤ) z * algebraMap (W2 p n) (OO p n) y, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm _ 2, pow_mul, wU_sq, ← map_pow, hy, map_intCast]`. Use `conv_rhs => rw [hc]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sq_OO [NeZero n] (hp2 : p ≠ 2) (z : ℤ) : ∃ y : OO p n, y ^ 2 = (z : OO p n) := by
   by_cases hz : z = 0
   · exact ⟨0, by simp [hz]⟩
@@ -49,6 +63,13 @@ theorem sq_OO [NeZero n] (hp2 : p ≠ 2) (z : ℤ) : ∃ y : OO p n, y ^ 2 = (z 
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `: NeZero n` using `⟨by omega⟩`. Use `⟨?_, GatR.om_irreducible (WittVector.irreducible p), ?_, sq_OO p n (by omega)⟩` and prove the remaining obligations. Conclude with `{ prime := hp.out five_le := h5 two_le := h2 even := he frac_alt := inferInstance frac_O := inferInstance p_unif := WittVector.irreducible p res_card := card_quot_WQ p n eq_sum_herm_smul_frame_of_inW := inferInstance frob := fun x => by`. Take `⟨y, hy⟩` from `frob_WQ p n x`. Conclude with `⟨y, by rw [sig_alg, hy]⟩`.
+
+Use `period := sig_period p n`. Use `ι_comp := fun x => IsFractionRing.lift_algebraMap (inj_WK p n) x`. Use `finite := (Quad.algebraMap_finite _).comp (jW_finite p n)`. Use `complete_O := GatR.isAdicComplete (WittVector.irreducible p) inferInstance`. Use `w_sq := wU_sq p n }`.
+
+Conclude with `(Quad.card_res _).trans (card_quotient_extRing p n)`.
+-/
 theorem settingStd (h5 : 5 ≤ p) (h2 : 2 ≤ n) (he : Even n) :
     UnramifiedQuadraticSetting p n (WQ p n) (QQ p n) (OO p n) (KO p n) (iota p n) (sig p n) (jO p n) (wU p n) := by
   have : NeZero n := ⟨by omega⟩
@@ -73,6 +94,9 @@ theorem settingStd (h5 : 5 ≤ p) (h2 : 2 ≤ n) (he : Even n) :
       w_sq := wU_sq p n }
   · exact (Quad.card_res _).trans (card_quotient_extRing p n)
 
+/- English proof (translation)
+The claim follows from `(settingStd p n h5 h2 he).1`.
+-/
 theorem setting (h5 : 5 ≤ p) (h2 : 2 ≤ n) (he : Even n) :
     HidaSetting p n (WQ p n) (QQ p n) (OO p n) (KO p n) (iota p n) (sig p n) (jO p n) (wU p n) :=
   (settingStd p n h5 h2 he).1

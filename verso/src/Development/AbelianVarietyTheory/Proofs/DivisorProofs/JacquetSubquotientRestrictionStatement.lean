@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullRankSB
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThK.MidJac GlobalTheory.CuspBlock
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MidIrr.exists_smIrr_subquotient_map | exact GlobalTheory.MidIrr.exists_smIrr_subquotient_map | (intros; apply GlobalTheory.MidIrr.exists_smIrr_subquotient_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacquet_subquotient_restriction : GlobalTheory.Published.BernsteinZelevinskyFiniteness →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N l n : ℕ) (h : l + n ≤ N)
     (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → HasFiniteLength π →

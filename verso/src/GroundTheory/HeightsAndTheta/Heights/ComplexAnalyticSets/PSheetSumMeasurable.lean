@@ -14,6 +14,11 @@ namespace SheetSumMeasurable
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Use `set M : ((Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) → Matrix (Fin D) (Fin D) ℂ := fun H i j => ((H (Pi.single i 1) (Pi.single j 1) + H (Complex.I • Pi.single i 1) (Complex.I • Pi.single j 1) : ℝ) + Complex.I * ((H (Pi.single i 1) (Complex.I • Pi.single j 1) - H (Complex.I • Pi.single …`. Establish `hM : Continuous M` using `continuous_pi fun i => continuous_pi fun j => by`. Simplify using `only [hMdef]`. Use `fun_prop`. Establish `hdisc : Continuous fun B : Fin D → Matrix (Fin D) (Fin D) ℂ => (ReciprocityTheory.AnForm.mdisc B).re`.
+
+Unfold `ReciprocityTheory.AnForm.mdisc`. Conclude with `Complex.continuous_re.comp (continuous_const.mul (continuous_finsetSum _ fun S _ => continuous_const.mul (Continuous.matrix_det (continuous_finsetSum _ fun k _ => continuous_apply k))))`. Establish `heq : ReciprocityTheory.AnForm.maDens ψ = fun z => (D.factorial : ℝ) * (2 / Real.pi) ^ D * (ReciprocityTheory.AnForm.mdisc fun k => M (fderiv ℝ (fderiv ℝ (ψ k)) z)).re` using `rfl`. Rewrite using `[heq]`. Conclude with `measurable_const.mul ((hdisc.comp (continuous_pi fun k => hM.comp (continuous_apply k))).measurable.comp (measurable_pi_lambda _ fun k => measurable_fderiv ℝ _))`.
+-/
 theorem measurable_maDens {D : ℕ} (ψ : Fin D → (Fin D → ℂ) → ℝ) :
     Measurable (ReciprocityTheory.AnForm.maDens ψ) := by
   set M : ((Fin D → ℂ) →L[ℝ] (Fin D → ℂ) →L[ℝ] ℝ) → Matrix (Fin D) (Fin D) ℂ := fun H i j =>
@@ -36,6 +41,11 @@ theorem measurable_maDens {D : ℕ} (ψ : Fin D → (Fin D → ℂ) → ℝ) :
   exact measurable_const.mul ((hdisc.comp (continuous_pi fun k => hM.comp (continuous_apply k))).measurable.comp
     (measurable_pi_lambda _ fun k => measurable_fderiv ℝ _))
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, -, -, -, V, hV, hVs⟩` from `hs`. Take `⟨U', hU', hxU', hsd', hsx', hsec', -⟩` from `hs'`. Establish `hcont : ContinuousAt s' (A *ᵥ x)` using `hsd'.continuousOn.continuousAt (hU'.mem_nhds hxU')`. Establish `h1 : ∀ᶠ w in 𝓝 (A *ᵥ x), s' w ∈ V` using `hcont.preimage_mem_nhds (by rw [hsx']; exact hV)`. Use `filter_upwards [h1, hU.mem_nhds hxU, hU'.mem_nhds hxU'] with w hwV hwU hwU'`.
+
+Establish `h` using `hVs (s' w) ⟨(hsec' w hwU').2, hwV⟩ (by rw [(hsec' w hwU').1]; exact hwU)`. Rewrite `h` using `[(hsec' w hwU').1]`. Conclude with `h`.
+-/
 theorem sheet_eventuallyEq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {x : Fin n → ℂ} {s s' : (Fin d → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s)
     (hs' : IsSheetAt J A x s') : s' =ᶠ[𝓝 (A *ᵥ x)] s := by
@@ -48,6 +58,9 @@ theorem sheet_eventuallyEq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (F
   rw [(hsec' w hwU').1] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[IndefiniteRowSideFullHecke.ComplexSets.maDens_congr_of_eventuallyEq fun k => ((sheet_eventuallyEq hs h.choose_spec).fun_comp (φ k))]`.
+-/
 theorem term_eq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (Φ : ℝ → ℝ → ℝ) (g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) {x : Fin n → ℂ}
     {s : (Fin d → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) (h : ∃ s, IsSheetAt J A x s) :
@@ -56,6 +69,11 @@ theorem term_eq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin 
   rw [IndefiniteRowSideFullHecke.ComplexSets.maDens_congr_of_eventuallyEq fun k =>
     ((sheet_eventuallyEq hs h.choose_spec).fun_comp (φ k))]
 
+/- English proof (translation)
+Distinguish the cases in `hx : ∃ s, IsSheetAt J A x s`. Take `⟨s, U, hU, hxU, hsd, hsx, hsec, V, hV, hVs⟩` from `hx`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Use `⟨s, U, interior V ∩ (fun z => A *ᵥ z) ⁻¹' U, hU, isOpen_interior.inter (hU.preimage hAc), hsd.continuousOn, hsec, ?_, fun _ => ⟨mem_interior_iff_mem_nhds.2 hV, hxU⟩⟩` and prove the remaining obligations. Introduce and unpack `x' ⟨hx'Z, hx'V, hx'U⟩`.
+
+Establish `hx's : s (A *ᵥ x') = x'` using `(hVs x' ⟨hx'Z, interior_subset hx'V⟩ hx'U).symm`. Conclude with `⟨hx'U, U, hU, hx'U, hsd, hx's, hsec, interior V, isOpen_interior.mem_nhds hx'V, fun x'' hx'' hAx'' => hVs x'' ⟨hx''.1, interior_subset hx''.2⟩ hAx''⟩`. Conclude with `⟨fun _ => x, ∅, ∅, isOpen_empty, isOpen_empty, continuousOn_empty _, by simp, by simp, fun h => absurd h hx⟩`.
+-/
 theorem exists_sheet_nhds {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (x : Fin n → ℂ) :
     ∃ (s : (Fin d → ℂ) → Fin n → ℂ) (U : Set (Fin d → ℂ)) (W : Set (Fin n → ℂ)),
@@ -75,6 +93,9 @@ theorem exists_sheet_nhds {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fi
   · exact ⟨fun _ => x, ∅, ∅, isOpen_empty, isOpen_empty, continuousOn_empty _, by simp,
       by simp, fun h => absurd h hx⟩
 
+/- English proof (translation)
+Establish `: zeroSet J = ⋂ q ∈ J, {x : Fin n → ℂ | eval x q = 0}`. Use extensionality with `x`. Simplify using `[zeroSet]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`.
+-/
 theorem isClosed_zeroSet (J : Ideal (MvPolynomial (Fin n) ℂ)) : IsClosed (zeroSet J) := by
   have : zeroSet J = ⋂ q ∈ J, {x : Fin n → ℂ | eval x q = 0} := by
     ext x
@@ -84,6 +105,47 @@ theorem isClosed_zeroSet (J : Ideal (MvPolynomial (Fin n) ℂ)) : IsClosed (zero
 
 open Classical in
 
+/- English proof (translation)
+Use `choose σ U W hU hW hσc hσsec hWsh hxW using fun x : Fin n → ℂ => exists_sheet_nhds (J := J) (A := A) x`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable W hW`. Take `⟨e, he⟩` from `(hTc.insert 0).exists_eq_range (Set.insert_nonempty 0 T)`. Establish `hcover : ∀ x, (∃ s, IsSheetAt J A x s) → ∃ k, x ∈ W (e k)`. Introduce `x hx`.
+
+Establish `: x ∈ ⋃ i ∈ T, W i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxW x hx⟩`. Take `⟨i, hiT, hxi⟩` from `Set.mem_iUnion₂.1 this`. Take `⟨k, rfl⟩ : i ∈ Set.range e` from `he ▸ Set.mem_insert_of_mem 0 hiT`. Conclude with `⟨k, hxi⟩`. Use `set E : ℕ → Set (Fin n → ℂ) := fun k => zeroSet J ∩ disjointed (fun k => W (e k)) k with hE`.
+
+Establish `hEm : ∀ k, MeasurableSet (E k)` using `fun k => (isClosed_zeroSet J).measurableSet.inter (MeasurableSet.disjointed (fun k => (hW (e k)).measurableSet) k)`. Establish `hEW : ∀ k, E k ⊆ zeroSet J ∩ W (e k)` using `fun k x hx => ⟨hx.1, disjointed_subset (fun k => W (e k)) k hx.2⟩`. Establish `hEdisj : ∀ k k' x, x ∈ E k → x ∈ E k' → k = k'`. Introduce `k k' x hk hk'`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `Set.disjoint_left.1 (disjoint_disjointed (fun k => W (e k)) hne) hk.2 hk'.2`. Establish `hEcover : ∀ x, (∃ s, IsSheetAt J A x s) → ∃ k, x ∈ E k`. Introduce `x hx`. Take `⟨m, hm⟩` from `hcover x hx`. Establish `hxZ : x ∈ zeroSet J`.
+
+Take `⟨s, U₀, -, hxU₀, -, hsx, hsec, -⟩` from `hx`. Rewrite using `[← hsx]`. Conclude with `(hsec _ hxU₀).2`. Establish `: x ∈ ⋃ k, disjointed (fun k => W (e k)) k`. Rewrite using `[iUnion_disjointed]`.
+
+Conclude with `Set.mem_iUnion.2 ⟨m, hm⟩`. Take `⟨k, hk⟩` from `Set.mem_iUnion.1 this`. Conclude with `⟨k, hxZ, hk⟩`. Use `set t : (Fin n → ℂ) → ℝ := fun x => if h : ∃ s, IsSheetAt J A x s then Φ (g x) (ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ h.choose) (A *ᵥ x)) else 0 with ht`. Establish `htdef : ∀ x, t x = if h : ∃ s, IsSheetAt J A x s then Φ (g x) (ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ h.choose) (A *ᵥ x)) else 0` using `fun x => rfl`.
+
+Establish `htE : ∀ k x, x ∈ E k → t x = Φ (g x) (ReciprocityTheory.AnForm.maDens (fun k' => φ k' ∘ σ (e k)) (A *ᵥ x))`. Introduce `k x hx`. Establish `hsh` using `(hWsh (e k) x (hEW k hx)).2`. Rewrite using `[htdef, dif_pos ⟨_, hsh⟩]`. Conclude with `term_eq Φ g φ hsh _`.
+
+Establish `htS : ∀ x, t x ≠ 0 → ∃ s, IsSheetAt J A x s`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hx (by rw [htdef, dif_neg h])`. Use `set σ' : ℕ → (Fin d → ℂ) → Fin n → ℂ := fun k => (U (e k)).piecewise (σ (e k)) fun _ => 0 with hσ'`.
+
+Use `set f : ℕ → (Fin d → ℂ) → ℝ := fun k => (U (e k) ∩ σ' k ⁻¹' E k).indicator (fun y => Φ (g (σ' k y)) (ReciprocityTheory.AnForm.maDens (fun k' => φ k' ∘ σ (e k)) y)) with hf`. Establish `hσ'm : ∀ k, Measurable (σ' k)` using `fun k => (hσc (e k)).measurable_piecewise continuousOn_const (hU (e k)).measurableSet`. Establish `hfm : ∀ k, Measurable (f k)` using `fun k => (hΦ.comp ((hg.comp (hσ'm k)).prodMk (measurable_maDens _))).indicator ((hU (e k)).measurableSet.inter (hσ'm k (hEm k)))`. Establish `hpiece : ∀ (k : ℕ) (y : Fin d → ℂ) (F : Finset (Fin n → ℂ)), (∀ x, x ∈ F ↔ x ∈ fibre J A y) → ∑ x ∈ F, (E k).indicator t x = f k y`. Introduce `k y F hF`.
+
+Distinguish the cases in `hy : y ∈ U (e k) ∧ σ (e k) y ∈ E k`. Establish `hσ'y : σ' k y = σ (e k) y` using `by simp [hσ', Set.piecewise_eq_of_mem _ _ _ hy.1]`. Establish `hx0 : σ (e k) y ∈ F` using `(hF _).2 ⟨(hEW k hy.2).1, (hσsec (e k) y hy.1).1⟩`. Rewrite using `[Finset.sum_eq_single_of_mem _ hx0, Set.indicator_of_mem hy.2, htE k _ hy.2, (hσsec (e k) y hy.1).1, hf]`. Simplify using `only`.
+
+Rewrite using `[Set.indicator_of_mem (show y ∈ U (e k) ∩ σ' k ⁻¹' E k from ⟨hy.1, by simp only [Set.mem_preimage, hσ'y]; exact hy.2⟩), hσ'y]`. Introduce `x hxF hne`. Use `Set.indicator_of_notMem (fun hxE => hne ?_) _` and prove the remaining obligations. Take `⟨-, hAx⟩` from `(hF x).1 hxF`. Take `⟨-, hsh⟩` from `hWsh (e k) x (hEW k hxE)`.
+
+Take `⟨-, -, -, -, hsx, -⟩` from `hsh`. Rewrite using `[← hsx, hAx]`. Establish `hfy : f k y = 0`. Rewrite using `[hf]`. Use `Set.indicator_of_notMem (fun hmem => hy ⟨hmem.1, ?_⟩) _` and prove the remaining obligations.
+
+Establish `hσ'y : σ' k y = σ (e k) y` using `by simp [hσ', Set.piecewise_eq_of_mem _ _ _ hmem.1]`. Use `hmem.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, hσ'y] at this`. Conclude with `this`. Rewrite using `[hfy]`.
+
+Use `Finset.sum_eq_zero fun x hxF => Set.indicator_of_notMem (fun hxE => hy ?_) _` and prove the remaining obligations. Take `⟨-, hAx⟩` from `(hF x).1 hxF`. Take `⟨hAU, hsh⟩` from `hWsh (e k) x (hEW k hxE)`. Take `⟨-, -, -, -, hsx, -⟩` from `hsh`. Rewrite `hAU`, `hsx` using `[hAx]`.
+
+Conclude with `⟨hAU, hsx ▸ hxE⟩`. Use `measurable_of_tendsto_metrizable (f := fun N y => ∑ k ∈ Finset.range N, f k y) (fun N => Finset.measurable_sum _ fun k _ => hfm k) (tendsto_pi_nhds.2 fun y => ?_)` and prove the remaining obligations. Establish `hfin` using `IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Establish `hsum : sheetSum J A (fun x s => Φ (g x) (ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ s) y)) y = ∑ x ∈ hfin.toFinset, t x`. Unfold `sheetSum`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Rewrite using `[htdef, hx.2]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
+
+Establish `hev : ∀ x ∈ hfin.toFinset, ∀ᶠ N in atTop, t x = ∑ k ∈ Finset.range N, (E k).indicator t x`. Introduce `x _`. Distinguish the cases in `hx : ∃ s, IsSheetAt J A x s`. Take `⟨k0, hk0⟩` from `hEcover x hx filter_upwards [eventually_gt_atTop k0] with N hN`. Rewrite using `[Finset.sum_eq_single_of_mem k0 (Finset.mem_range.2 hN), Set.indicator_of_mem hk0]`.
+
+Introduce `k _ hk`. Conclude with `Set.indicator_of_notMem (fun hxk => hk (hEdisj k k0 x hxk hk0)) _`. Establish `htx : t x = 0` using `by rw [htdef, dif_neg hx]`. Use `Eventually.of_forall fun N => ?_` and prove the remaining obligations. Rewrite using `[htx]`.
+
+Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Distinguish the cases in `hxk : x ∈ E k`. Rewrite using `[Set.indicator_of_mem hxk]`. Conclude with `htx`. Conclude with `Set.indicator_of_notMem hxk _`.
+
+Use `filter_upwards [(eventually_all_finset _).2 hev] with N hN`. Rewrite using `[hsum, Finset.sum_congr rfl hN, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => hpiece k y _ fun x => Set.Finite.mem_toFinset hfin`.
+-/
 theorem measurable_sheetSum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hA : IsFiniteProjection J A) (Φ : ℝ → ℝ → ℝ) (hΦ : Measurable (Function.uncurry Φ))
     {g : (Fin n → ℂ) → ℝ} (hg : Measurable g) (φ : Fin d → (Fin n → ℂ) → ℝ) :
@@ -215,6 +277,9 @@ theorem measurable_sheetSum {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (
 
 end SheetSumMeasurable
 
+/- English proof (translation)
+Introduce `n d J A g φ _ _ hA hg _`. Use `⟨SheetSumMeasurable.measurable_sheetSum hA (fun a b => a * b) (continuous_fst.mul continuous_snd).measurable hg φ, SheetSumMeasurable.measurable_sheetSum hA (fun a b => |a * b|) (continuous_fst.mul continuous_snd).abs.measurable hg φ⟩` and prove the remaining obligations.
+-/
 theorem SheetSumMeasurable.proof : SheetSumMeasurable.Statement := by
   intro n d J A g φ _ _ hA hg _
   refine ⟨SheetSumMeasurable.measurable_sheetSum hA (fun a b => a * b)

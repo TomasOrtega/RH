@@ -6,6 +6,11 @@ open NumberField GlobalTheory.CuspRep
 
 namespace GlobalTheory.ZalgCpt
 
+/- English proof (translation)
+Introduce `E _ _ _ a k z hz`. Establish `hle : GlobalTheory.CuspRep.Zalg E a ≤ Subalgebra.centralizer ℂ {GlobalTheory.CuspRep.cptRep E a k}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`.
+
+Introduce and unpack `g rfl`. Conclude with `(GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u (Unitary.toUnits k)).eq.symm`. Conclude with `((Subalgebra.mem_centralizer_iff ℂ).1 (hle hz) _ rfl).symm`.
+-/
 theorem zalg_comm_cptRep : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (k : GlobalTheory.CuspRep.Kinf E a) (z : Module.End ℂ (GlobalTheory.CuspRep.Sm E a)),
     z ∈ GlobalTheory.CuspRep.Zalg E a → z * GlobalTheory.CuspRep.cptRep E a k = GlobalTheory.CuspRep.cptRep E a k * z := by

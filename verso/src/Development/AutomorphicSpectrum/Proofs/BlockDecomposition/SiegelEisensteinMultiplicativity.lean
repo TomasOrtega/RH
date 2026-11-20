@@ -14,6 +14,29 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl PositivityTheory.RgEis
 
+/- English proof (translation)
+Establish `h1 : η 1 = 0`. Use `hη.left 1 (one_mem _) 1` as an intermediate fact. Simplify using `only [mul_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzero : ∀ r ∈ P, r ∈ K → η r = 0` using `fun r _ hr => by`.
+
+Use `hη.right 1 r hr` as an intermediate fact. Rewrite `this` using `[one_mul, h1]`. Then use the resulting hypothesis. Take `⟨d, ρ, w, e, hρ, hw, he⟩` from `GlobalTheory.T.finite_K_type_decomposition G Γ K P c η hP.ch hzero (fun p hp q _ => hη.left p hp q) f u hf hlaw hfin`. Take `⟨R, D, Op, H, hWl⟩` from `hW (Fin d → ℂ) ρ hρ`. Take `⟨hs₁, -, M₀, hM₀⟩` from `hSec G (Fin d → ℂ) K ρ hK hρ Γ P c hP`.
+
+Take `⟨-, -, hbd⟩` from `hWL G (Fin d → ℂ) K ρ hK hρ Γ P P c η η β _ R D Op H hP hP hη hη hβ hWl`. Set `w' : secSp K P c ρ` to `⟨w, hw⟩`. Establish `hsec : ∀ y, f y = Complex.exp (u * η y) * e (sec K P c ρ y w)`. Introduce `y`. Take `⟨p, hp, k, hk, rfl⟩` from `hP.iwa y`.
+
+Rewrite using `[hs₁ w hw p hp ⟨k, hk⟩ |> fun h => (by simpa using h : sec K P c ρ (p * k) w = c p • ρ (⟨k, hk⟩ : K)⁻¹ w)]`. Rewrite using `[map_smul, he, hlaw p hp k, hη.right p k hk, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨R, D, fun z g => e (H z g w'), hWl.dEnt.1, hWl.dNe, fun g => ?_, ?_, hWl.convR, hWl.convL, ?_, ?_⟩` and prove the remaining obligations. Conclude with `e.differentiable.comp ((hWl.hol g).clm_apply (differentiable_const _))`.
+
+Conclude with `e.continuous.comp (hWl.cont.clm_apply continuous_const)`. Introduce `a b ha hb`. Take `⟨M, hM⟩` from `hbd a b ha hb`. Use `⟨‖e‖ * M * ‖w'‖, fun z h₁ h₂ g => ?_⟩` and prove the remaining obligations. Establish `q₁` using `e.le_opNorm (H z g w')`.
+
+Establish `q₂` using `(H z g).le_opNorm w'`. Establish `q₃` using `hM z h₁ h₂ g`. Combine the equalities or inequalities in the displayed calculation. Introduce `z hz g`. Establish `hconv` using `hWl.convR z.re hz g`.
+
+Establish `hsum : Summable fun q : Cos P Γ => Complex.exp (z * η (rep q * g)) • sec K P c ρ (rep q * g) w`. Use `Summable.of_norm_bounded (g := fun q : Cos P Γ => Real.exp (z.re * η (rep q * g)) * (M₀ * ‖w‖)) (hconv.mul_right _) fun q => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_exp]`. Establish `: ((z * (η (rep q * g) : ℂ))).re = z.re * η (rep q * g)` using `by simp`. Rewrite using `[this]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hM₀ _ _) (Real.exp_pos _).le`. Establish `h2 : HasSum (fun q : Cos P Γ => D z • (Complex.exp (z * η (rep q * g)) • sec K P c ρ (rep q * g) w)) (H z g w')`. Use `hsum.hasSum.const_smul (D z)` as an intermediate fact. Rewrite `this` using `[show (∑' q : Cos P Γ, Complex.exp (z * η (rep q * g)) • sec K P c ρ (rep q * g) w) = eis Γ K P c ρ (fun x => z * η x) g w from rfl, ← show H z g w' = D z • eis Γ K P c ρ (fun x => z * η x) g w from hWl.eqR z hz g w']`. Then use the resulting hypothesis. Establish `h3` using `e.hasSum h2`.
+
+Establish `e2 : (fun q : Cos P Γ => e (D z • (Complex.exp (z * η (rep q * g)) • sec K P c ρ (rep q * g) w))) = fun q => D z * (Complex.exp ((z - u) * η (rep q * g)) * f (rep q * g))`. Use function extensionality and compare the values at `q`. Establish `e3 : Complex.exp (z * η (rep q * g)) = Complex.exp ((z - u) * η (rep q * g)) * Complex.exp (u * η (rep q * g))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsec (rep q * g), map_smul, map_smul, smul_eq_mul, smul_eq_mul, e3]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : HasSum (fun q : Cos P Γ => e (D z • (Complex.exp (z * η (rep q * g)) • sec K P c ρ (rep q * g) w))) (e (H z g w'))` using `h3`. Rewrite `h4` using `[e2]`.
+
+Conclude with `h4`.
+-/
 theorem scalar_wall (hSec : SecLaw) (hWL : WallLaw) {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [LocallyCompactSpace G] (Γ K P : Subgroup G) (c : G → ℂ) (η β : G → ℝ) (hK : IsCompact (K : Set G)) (hP : IsPar Γ K P c)
     (hη : IsHt Γ K P η) (hβ : IsHt Γ K P β) (hW : AllRep K fun ρ => HasWall Γ K P P c η η β ρ) (f : G → ℂ) (u : ℂ)
@@ -84,6 +107,21 @@ theorem scalar_wall (hSec : SecLaw) (hWL : WallLaw) {G : Type} [Group G] [Topolo
     rw [e2] at h4
     exact h4
 
+/- English proof (translation)
+Set `m : Γ → Γ'` to `fun γ => ⟨Φ γ.1, (hΓ _).1 γ.2⟩`. Establish `hrel : ∀ a b : Γ, QuotientGroup.rightRel (P.subgroupOf Γ) a b ↔ QuotientGroup.rightRel (P'.subgroupOf Γ') (m a) (m b)`. Introduce `a b`. Rewrite using `[QuotientGroup.rightRel_apply, QuotientGroup.rightRel_apply, Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf, hP]`. Simplify using `[m]`.
+
+Set `g : Cos P Γ → Cos P' Γ'` to `Quotient.map' m fun a b hab => (hrel a b).1 hab`. Establish `hinj : Function.Injective g`. Introduce `q₁ q₂`. Proceed by induction on `q₁ using Quotient.inductionOn' with | h a => ?_`. Proceed by induction on `q₂ using Quotient.inductionOn' with | h b => ?_`.
+
+Introduce `e`. Conclude with `Quotient.sound' ((hrel a b).2 (Quotient.exact' e))`. Establish `hsurj : Function.Surjective g`. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn' with | h a => ?_`.
+
+Use `⟨Quotient.mk'' ⟨Φ.symm a.1, (hΓ _).2 (by simpa using a.2)⟩, ?_⟩` and prove the remaining obligations. Use `show Quotient.mk'' (m _) = _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[m]`.
+
+Establish `h2` using `((Equiv.ofBijective g ⟨hinj, hsurj⟩).hasSum_iff).2 h`. Establish `e : ((fun q => T (rep q * y)) ∘ (Equiv.ofBijective g ⟨hinj, hsurj⟩)) = fun q : Cos P Γ => T (Φ (rep q) * y)`. Use function extensionality and compare the values at `q`. Establish `e1 : (Quotient.mk'' (Quotient.out (g q)) : Cos P' Γ') = Quotient.mk'' (m (Quotient.out q))`. Rewrite using `[Quotient.out_eq']`.
+
+Use `show g q = g (Quotient.mk'' (Quotient.out q))`. Rewrite using `[Quotient.out_eq']`. Establish `e2` using `Quotient.exact' e1`. Rewrite `e2` using `[QuotientGroup.rightRel_apply, Subgroup.mem_subgroupOf]`. Establish `e3 : Φ (rep q) * y = (((m (Quotient.out q)) * (Quotient.out (g q))⁻¹ : Γ') : U) * (rep (g q) * y)` using `by show _ = (Φ (Quotient.out q).1 * (Quotient.out (g q)).1⁻¹) * ((Quotient.out (g q)).1 * y)`.
+
+Simplify using `[rep, mul_assoc]`. Rewrite using `[e3, hT _ (Subtype.coe_prop _) e2]`. Both sides reduce to the same expression. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 theorem hasSum_cos {G U X : Type} [Group G] [Group U] [AddCommMonoid X] [TopologicalSpace X] (Φ : G ≃* U)
     (Γ P : Subgroup G) (Γ' P' : Subgroup U) (hΓ : ∀ x, x ∈ Γ ↔ Φ x ∈ Γ') (hP : ∀ x, x ∈ P ↔ Φ x ∈ P') (T : U → X)
     (hT : ∀ γ ∈ Γ', γ ∈ P' → ∀ y, T (γ * y) = T y) (y : U) (S : X)
@@ -126,6 +164,13 @@ theorem hasSum_cos {G U X : Type} [Group G] [Group U] [AddCommMonoid X] [Topolog
   rw [e] at h2
   exact h2
 
+/- English proof (translation)
+Establish `e : Submodule.span ℂ (Set.range fun k : K' => fun y => f (Φ.symm (y * (k : U)))) = (Submodule.span ℂ (Set.range fun k : K => fun x => f (x * (k : G)))).map (LinearMap.funLeft ℂ ℂ Φ.symm)`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨k, rfl⟩`. Use `⟨_, ⟨⟨Φ.symm k, (hKK _).2 (by simpa using k.2)⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[LinearMap.funLeft_apply]`. Introduce and unpack `⟨_, ⟨k, rfl⟩, rfl⟩`.
+
+Use `⟨⟨Φ k, (hKK _).1 k.2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[LinearMap.funLeft_apply]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem fin_pull {G U : Type} [Group G] [Group U] (Φ : G ≃* U) (K : Subgroup G) (K' : Subgroup U)
     (hKK : ∀ x, x ∈ K ↔ Φ x ∈ K') (f : G → ℂ)
     (hfin : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K => fun x => f (x * (k : G))))) :
@@ -149,6 +194,13 @@ theorem fin_pull {G U : Type} [Group G] [Group U] (Φ : G ≃* U) (K : Subgroup 
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `Subgroup.mem_subgroupOf.2 ⟨b⁻¹ * g * b, ?_⟩` and prove the remaining obligations. Use `show Matrix.GeneralLinearGroup.map (n := Fin n ⊕ Fin n) (inclR (F := F) (E := E) (AF F)) (b⁻¹ * g * b) = (bA b)⁻¹ * x.1 * bA b`. Rewrite using `[map_mul, map_mul, map_inv, hg]`.
+
+Both sides reduce to the same expression. Introduce `h`. Take `⟨g, hg⟩` from `Subgroup.mem_subgroupOf.1 h`. Use `Subgroup.mem_subgroupOf.2 ⟨b * g * b⁻¹, ?_⟩` and prove the remaining obligations. Establish `hg' : Matrix.GeneralLinearGroup.map (n` using `Fin n ⊕ Fin n) (inclR (F := F) (E := E) (AF F)) g = (bA b)⁻¹ * x.1 * bA b := hg`.
+
+Use `show Matrix.GeneralLinearGroup.map (n := Fin n ⊕ Fin n) (inclR (F := F) (E := E) (AF F)) (b * g * b⁻¹) = x.1`. Rewrite using `[map_mul, map_mul, map_inv, hg']`. Use `show bA b * ((bA b)⁻¹ * x.1 * bA b) * (bA b)⁻¹ = x.1`. Use `group`.
+-/
 theorem rat_iff (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (x : G2 σ Y) :
     x ∈ rat2 σ Y ↔ frameEquiv χ ε b hb x ∈ (adCM σ χ).uΓ ε (Fin n) := by
@@ -167,6 +219,13 @@ theorem rat_iff (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     show bA b * ((bA b)⁻¹ * x.1 * bA b) * (bA b)⁻¹ = x.1
     group
 
+/- English proof (translation)
+Establish `h : ∃ k' : K, p * k * (k' : G)⁻¹ ∈ P` using `⟨⟨k, hk⟩, by simpa using hp⟩`. Unfold `ext`. Rewrite using `[dif_pos h]`. Establish `hs` using `h.choose_spec`. Establish `hr : k * (h.choose : G)⁻¹ ∈ K` using `K.mul_mem hk (K.inv_mem h.choose.2)`.
+
+Establish `e : p * k * (h.choose : G)⁻¹ = p * (k * (h.choose : G)⁻¹)` using `by group`. Rewrite `hs`, the goal using `[e]`. Establish `hrP : k * (h.choose : G)⁻¹ ∈ P`. Use `P.mul_mem (P.inv_mem hp) hs` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hadd p hp _ hrP, h0 _ hrP hr, add_zero]`.
+-/
 theorem ext_mul {G : Type} [Group G] (K P : Subgroup G) (f : G → ℝ) (hadd : ∀ p ∈ P, ∀ q ∈ P, f (p * q) = f p + f q)
     (h0 : ∀ r ∈ P, r ∈ K → f r = 0) {p k : G} (hp : p ∈ P) (hk : k ∈ K) : ext K P f (p * k) = f p := by
   have h : ∃ k' : K, p * k * (k' : G)⁻¹ ∈ P := ⟨⟨k, hk⟩, by simpa using hp⟩
@@ -181,6 +240,17 @@ theorem ext_mul {G : Type} [Group G] (K P : Subgroup G) (f : G → ℝ) (hadd : 
     simpa using this
   rw [hadd p hp _ hrP, h0 _ hrP hr, add_zero]
 
+/- English proof (translation)
+Take `⟨p, t, hp, k, hk, rfl⟩` from `ha.iwa x`. Rewrite using `[ha.val p t hp k hk]`. Establish `hpos : (0 : ℝ) < (GlobalTheory.Doubling.absE F E (Matrix.GeneralLinearGroup.det t) : ℝ)`. Establish `: GlobalTheory.Doubling.absE F E (Matrix.GeneralLinearGroup.det t) ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `map_mul (GlobalTheory.Doubling.absE F E) (Matrix.GeneralLinearGroup.det t) (Matrix.GeneralLinearGroup.det t)⁻¹`. Rewrite `h1` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero h1`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions. Use `⟨hpos, ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, hmul, -, -, hzero, -⟩` from `hBd E (AE F E) (adCM σ χ) hg.toGoodL (Fin n ⊕ Fin n) (Sum.inl '' (Set.univ : Set (Fin n)))`. Establish `hQ : frameEquiv χ ε b hb p ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))` using `(GlobalTheory.T.parabolic_iff_frame_parabolic F E σ n Y χ ε b hb t₀ ht₀ p).1 ⟨t, hp⟩`. Rewrite using `[map_mul]`. Establish `h1 : (adCM σ χ).uH ε (Set.univ : Set (Fin n)) (frameEquiv χ ε b hb p * frameEquiv χ ε b hb k) = (adCM σ χ).lg (bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hb p).1)`. Use `ext_mul _ _ (fun q : (adCM σ χ).U ε (Fin n) => (adCM σ χ).lg (bdet (Sum.inl '' (Set.univ : Set (Fin n))) q.1)) ?_ ?_ hQ ((hK k).1 hk)` and prove the remaining obligations.
+
+Introduce `q₁ h₁ q₂ h₂ show (adCM σ χ).lg (bdet _ (q₁.1 * q₂.1)) = _`. Rewrite using `[hmul q₁.1 h₁ q₂.1 h₂, hg.lgmul]`. Introduce `r h₁ h₂`. Conclude with `hzero _ h₁ h₂`. Rewrite using `[h1, GlobalTheory.T.block_det_parabolic_frame F E σ n Y χ ε b hb t₀ ht₀ p t hp]`.
+
+Establish `h2` using `(hD F E).2.2.2.2 (Matrix.GeneralLinearGroup.det t)`. Use `show Real.log ((GroundTheory.Global.IdeleGroup.ideleModule E _ : ℝ)) = _`. Rewrite using `[h2]`.
+-/
 theorem uH_eq (hD : Dict) (hBd : BdetLaw) (χ : Chr F E) (hg : (adCM σ χ).Good) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (t₀ : GL (Fin n) E)
     (ht₀ : b.1.toCols₁ = diagCols (Fin n) * t₀.1) (K : Subgroup (G2 σ Y)) (hK : ∀ x, x ∈ K ↔ frameEquiv χ ε b hb x ∈ (adCM σ χ).uK ε (Fin n))
@@ -212,6 +282,45 @@ theorem uH_eq (hD : Dict) (hBd : BdetLaw) (χ : Chr F E) (hg : (adCM σ χ).Good
   have h2 := (hD F E).2.2.2.2 (Matrix.GeneralLinearGroup.det t)
   show Real.log ((GroundTheory.Global.IdeleGroup.ideleModule E _ : ℝ)) = _
   rw [h2]
+/- English proof (translation)
+Establish `hβ : IsHt Γ' K' P' (fun g => (n : ℝ) * η g)` using `⟨fun p hp g => by rw [hη.left p hp g]; ring, fun g k hk => by rw [hη.right g k hk], fun γ h1 h2 => by rw [hη.rat γ h1 h2, mul_zero], continuous_const.mul hη.cont⟩`. Use `set u : ℂ := s₁ + n / 2 with hu`. Establish `hlaw : ∀ p ∈ P', ∀ x, f (Φ.symm (p * x)) = c' p * Complex.exp (u * η p) * f (Φ.symm x)`. Introduce `p hp x`. Take `⟨t, ht⟩` from `(hIP (Φ.symm p)).2 (by simpa using hp)`.
+
+Take `⟨h1, h2⟩` from `hval _ t ht`. Establish `h3` using `hH (Φ.symm p)`. Rewrite `h1`, `h3` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[map_mul, hf.law _ t _ ht, h1, h3.2, ← h2]`. Establish `hne : ((a (Φ.symm p) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast h3.1.ne'`.
+
+Rewrite using `[Complex.cpow_def_of_ne_zero hne, Complex.ofReal_log h3.1.le, mul_comm u]`. Take `⟨R, D, H, hD, hDne, hHd, hHc, hcv, hcv', hbd, hsum⟩` from `scalar_wall hSec hWL Γ' K' P' c' η _ hKc hP hη hβ hW (fun y => f (Φ.symm y)) u (hf.cont.comp hΦs) hlaw (fin_pull Φ K K' hKK f hf.fin)`. Establish `hposeq : ∀ τ : ℝ, (Conv Γ' P' fun g => τ * η g) → ∀ x, pos Γ' P' (fun g => τ * η g) (Φ x) = ∑' q : Cos (par2 σ Y) (rat2 σ Y), a ((Quotient.out q).1 * x) ^ τ`. Introduce `τ hc x`. Establish `h1` using `hasSum_cos Φ (rat2 σ Y) (par2 σ Y) Γ' P' hΓ hPP (fun y => Real.exp (τ * η y)) (fun γ h1 h2 y => by rw [hη.left γ h2 y, hη.rat γ h1 h2, zero_add]) (Φ x) _ (hc (Φ x)).hasSum`.
+
+Establish `e : (fun q : Cos (par2 σ Y) (rat2 σ Y) => Real.exp (τ * η (Φ (rep q) * Φ x))) = fun q => a ((Quotient.out q).1 * x) ^ τ`. Use function extensionality and compare the values at `q`. Rewrite using `[← map_mul, (hH _).2, Real.rpow_def_of_pos (hH _).1, mul_comm]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`.
+
+Conclude with `h1.tsum_eq.symm`. Establish `hgrow : ∀ b₀ a₀ : ℝ, ∃ (C : ℝ) (N : ℕ), ∀ z : ℂ, b₀ ≤ z.re → z.re ≤ a₀ → ∀ x, ‖H z (Φ x)‖ ≤ C * (ht2 x : ℝ) ^ N`. Take `⟨σ₀, hσ⟩` from `hGod`. Introduce `b₀ a₀`. Take `⟨A₁, hA₁, hA₂, hA₃⟩ : ∃ A₁ : ℝ, a₀ ≤ A₁ ∧ R < A₁ ∧ σ₀ < A₁` from `⟨max a₀ (max (R + 1) (σ₀ + 1)), le_max_left _ _, lt_of_lt_of_le (by linarith) ((le_max_left _ _).trans (le_max_right _ _)), lt_of_lt_of_le (by linarith) ((le_max_right _ _).trans (le_max_right _ _))⟩`.
+
+Take `⟨B₁, hB₁, hB₂, hB₃⟩ : ∃ B₁ : ℝ, B₁ ≤ b₀ ∧ B₁ < -R ∧ σ₀ < n - B₁` from `⟨min b₀ (min (-R - 1) (n - σ₀ - 1)), min_le_left _ _, lt_of_le_of_lt ((min_le_right _ _).trans (min_le_left _ _)) (by linarith), by have := (min_le_right b₀ _).trans (min_le_right (-R - 1) ((n : ℝ) - σ₀ - 1)); linarith⟩`. Take `⟨C₁, N₁, h₁⟩` from `hσ A₁ hA₃`. Take `⟨C₂, N₂, h₂⟩` from `hσ _ hB₃`. Take `⟨M, hM⟩` from `hbd A₁ B₁ hA₂ hB₂`. Use `⟨|M| * (|C₁| + |C₂|), N₁ + N₂, fun z hz₁ hz₂ x => ?_⟩` and prove the remaining obligations.
+
+Establish `hone : (1 : ℝ) ≤ (ht2 x : ℝ)` using `by exact_mod_cast GlobalTheory.AdelicU.one_le_heightGL F x.1`. Establish `e₂ : (fun g => (n : ℝ) * η g - B₁ * η g) = fun g => ((n : ℝ) - B₁) * η g`. Use function extensionality and compare the values at `g`. Expand and normalize the polynomial expressions, which then agree. Establish `c₂ : Conv Γ' P' fun g => ((n : ℝ) - B₁) * η g` using `by rw [← e₂]; exact hcv' B₁ hB₂`.
+
+Establish `p₁` using `hposeq A₁ (hcv A₁ hA₂) x`. Establish `p₂` using `hposeq _ c₂ x`. Establish `h₃` using `hM z (hB₁.trans hz₁) (hz₂.trans hA₁) (Φ x)`. Rewrite `h₃` using `[e₂, p₁, p₂]`. Establish `q₁` using `h₁ x`.
+
+Establish `q₂` using `h₂ x`. Establish `w₁ : (ht2 x : ℝ) ^ N₁ ≤ (ht2 x : ℝ) ^ (N₁ + N₂)` using `pow_le_pow_right₀ hone (by omega)`. Establish `w₂ : (ht2 x : ℝ) ^ N₂ ≤ (ht2 x : ℝ) ^ (N₁ + N₂)` using `pow_le_pow_right₀ hone (by omega)`. Establish `w₀ : (0 : ℝ) ≤ (ht2 x : ℝ) ^ N₁` using `by positivity`. Establish `w₀' : (0 : ℝ) ≤ (ht2 x : ℝ) ^ N₂` using `by positivity`.
+
+Establish `r₁ : C₁ * (ht2 x : ℝ) ^ N₁ ≤ |C₁| * (ht2 x : ℝ) ^ (N₁ + N₂)` using `(mul_le_mul_of_nonneg_right (le_abs_self _) w₀).trans (mul_le_mul_of_nonneg_left w₁ (abs_nonneg _))`. Establish `r₂ : C₂ * (ht2 x : ℝ) ^ N₂ ≤ |C₂| * (ht2 x : ℝ) ^ (N₁ + N₂)` using `(mul_le_mul_of_nonneg_right (le_abs_self _) w₀').trans (mul_le_mul_of_nonneg_left w₂ (abs_nonneg _))`. Establish `s₀ : 0 ≤ ∑' q : Cos (par2 σ Y) (rat2 σ Y), a ((Quotient.out q).1 * x) ^ A₁ + ∑' q : Cos (par2 σ Y) (rat2 σ Y), a ((Quotient.out q).1 * x) ^ ((n : ℝ) - B₁)` using `add_nonneg (tsum_nonneg fun q => (Real.rpow_pos_of_pos (hH _).1 _).le) (tsum_nonneg fun q => (Real.rpow_pos_of_pos (hH _).1 _).le)`. Combine the equalities or inequalities in the displayed calculation. Establish `hcontH : Continuous fun y : ℂ × G2 σ Y => H (y.1 + n / 2) (Φ y.2)` using `hHc.comp ((continuous_fst.add continuous_const).prodMk (hΦ.comp continuous_snd))`.
+
+Establish `hmem : ∀ s : ℂ, (fun x => H (s + n / 2) (Φ x)) ∈ modFun σ Y`. Introduce `s`. Take `⟨C, N, h⟩` from `hgrow (s + n / 2).re (s + n / 2).re`. Conclude with `GlobalTheory.CompanionTheory.WeakHolo.mem_modFun (hcontH.comp (Continuous.prodMk_right s)) fun x => h _ le_rfl le_rfl x`. Set `V : ℂ → modFun σ Y` to `fun s => ⟨fun x => H (s + n / 2) (Φ x), hmem s⟩`.
+
+Use `⟨fun s => D (s + n / 2), V, R - n / 2, hD.comp (differentiable_id.add_const _), ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hDne`. Conclude with `⟨z - n / 2, by simpa using hz⟩`. Introduce `μ hμ`. Establish `hh` using `GlobalTheory.CompanionTheory.WeakHolo.wholo_growForms V isOpen_univ (fun x => ((hHd (Φ x)).comp (differentiable_id.add_const _)).differentiableOn) hcontH.continuousOn ?_ μ hμ`.
+
+Conclude with `differentiableOn_univ.1 hh`. Introduce `Q _ hQc`. Break down `Q.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨0, 0, by simp⟩`. Take `⟨z₁, -, hmin⟩` from `hQc.exists_isMinOn hne Complex.continuous_re.continuousOn`.
+
+Take `⟨z₂, -, hmax⟩` from `hQc.exists_isMaxOn hne Complex.continuous_re.continuousOn`. Take `⟨C, N, h⟩` from `hgrow (z₁.re + n / 2) (z₂.re + n / 2)`. Use `⟨C, N, fun s hs x => h _ ?_ ?_ x⟩` and prove the remaining obligations. Use `hmin hs` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.div_ofNat_re, Complex.natCast_re]`.
+
+Simplify using `using this`. Use `hmax hs` as an intermediate fact. Simplify using `only [Complex.add_re, Complex.div_ofNat_re, Complex.natCast_re]`. Simplify using `using this`. Introduce `s hs x`.
+
+Establish `hz : R < (s + n / 2).re`. Simplify using `only [Complex.add_re, Complex.div_ofNat_re, Complex.natCast_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hasSum_cos Φ (rat2 σ Y) (par2 σ Y) Γ' P' hΓ hPP (fun y => D (s + n / 2) * (Complex.exp ((s + n / 2 - u) * η y) * f (Φ.symm y))) (fun γ h1 h2 y => by`. Rewrite using `[hlaw γ h2 y, hη.left γ h2 y, hη.rat γ h1 h2, hP.ch.rat γ h1 h2, zero_add]`.
+
+Use the proof step `simp) (Φ x) _ (hsum _ hz (Φ x))`. Establish `e : (fun q : Cos (par2 σ Y) (rat2 σ Y) => D (s + n / 2) * (Complex.exp ((s + n / 2 - u) * η (Φ (rep q) * Φ x)) * f (Φ.symm (Φ (rep q) * Φ x)))) = fun q => D (s + n / 2) * eisTerm (flat a f s₁ s) x q`. Use function extensionality and compare the values at `q`. Rewrite using `[← map_mul, MulEquiv.symm_apply_apply, (hH _).2]`. Establish `h` using `(hH (rep q * x)).1`.
+
+Establish `hne : ((a (rep q * x) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast h.ne'`. Establish `e' : eisTerm (flat a f s₁ s) x q = ((a (rep q * x) : ℝ) : ℂ) ^ (s - s₁) * f (rep q * x)` using `rfl`. Rewrite using `[e', Complex.cpow_def_of_ne_zero hne, Complex.ofReal_log h.le, hu]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[e]`. Conclude with `h1`.
+-/
 theorem eis_from_U (hSec : SecLaw) (hWL : WallLaw) {U : Type} [Group U] [TopologicalSpace U] [IsTopologicalGroup U] [T2Space U]
     [LocallyCompactSpace U] (Φ : G2 σ Y ≃* U) (hΦ : Continuous Φ)
     (Γ' K' P' : Subgroup U) (c' : U → ℂ) (η : U → ℝ) (hKc : IsCompact (K' : Set U)) (hP : IsPar Γ' K' P' c') (hη : IsHt Γ' K' P' η)
@@ -342,6 +451,25 @@ theorem eis_from_U (hSec : SecLaw) (hWL : WallLaw) {U : Type} [Group U] [Topolog
     rw [e] at h1
     exact h1
 
+/- English proof (translation)
+Introduce `hSec hWL hD hDI hCM hGT hBd _ hPar hSg`. Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY χ hχ c hres b K a hb hK ha s₁ f hf`. Take `⟨⟨ε, hε⟩, t₀, ht₀⟩` from `hb`. Establish `hb' : IsFrame2 σ Y b` using `⟨⟨ε, hε⟩, t₀, ht₀⟩`. Establish `hcm` using `hB.cm`.
+
+Establish `hunr` using `hB.unram`. Establish `hgood : (adCM σ χ).Good` using `hCM F E σ χ c hcm hunr hχ hres`. Take `⟨-, -, -, ht2', hlc', hsc', hKc⟩` from `hGT E (AE F E) (adCM σ χ) hgood (Fin n) ε`. Set `Φ` to `frameEquiv (Y := Y) χ ε b hε`. Establish `hΓ : ∀ x, x ∈ rat2 σ Y ↔ Φ x ∈ (adCM σ χ).uΓ ε (Fin n)` using `rat_iff χ ε b hε`.
+
+Establish `hKK : ∀ x, x ∈ K ↔ Φ x ∈ (adCM σ χ).uK ε (Fin n)` using `fun x => GlobalTheory.T.standard_compact_frame_equiv F E σ n Y hD hDI hcm χ ε b hε B K hK x`. Establish `hIP : ∀ x, (∃ t, IsPar x t) ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))` using `GlobalTheory.T.parabolic_iff_frame_parabolic F E σ n Y χ ε b hε t₀ ht₀`. Establish `hPP : ∀ x, x ∈ par2 σ Y ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Establish `: par2 σ Y ≤ ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))).comap Φ.toMonoidHom` using `(Subgroup.closure_le _).2 fun p hp => (hIP p).1 hp`. Conclude with `this hx`. Introduce `hx`. Conclude with `Subgroup.subset_closure ((hIP x).2 hx)`.
+
+Establish `hH` using `fun x => uH_eq hD hBd χ hgood ε b hε t₀ ht₀ K hKK a ha x`. Establish `hiwa : Iwa ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))) ((adCM σ χ).uK ε (Fin n))`. Introduce `y`. Take `⟨p, t, hp, k, hk, e⟩` from `ha.iwa (Φ.symm y)`. Use `⟨Φ p, (hIP p).1 ⟨t, hp⟩, Φ k, (hKK k).1 hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, ← e, MulEquiv.apply_symm_apply]`. Take `⟨-, hparU⟩` from `hPar E (AE F E) (adCM σ χ) hgood (Fin n) ε (Set.univ : Set (Fin n))`. Take `⟨hIP', hIH, -⟩` from `hparU (by rwa [inf_idem])`. Rewrite `hIP'` using `[inf_idem]`. Use `haveI := ht2'`.
+
+Use `haveI := hlc'`. Establish `hW` using `hSg F E σ χ c hcm hunr hχ hres ε (Fin n) (by simpa using hn) hiwa`. Take `⟨σ₀, hσ₀⟩` from `GlobalTheory.CompanionTheory.GodementH.godement_sum F E σ B n Y r s hB hn hY b K a hb' hK ha`. Use `eis_from_U hSec hWL Φ (continuous_frameEquiv χ ε b hε) _ _ _ ((adCM σ χ).uC ε (Fin n)) ((adCM σ χ).uH ε (Set.univ : Set (Fin n))) hKc hIP' hIH ?_ K a χ s₁ f hf hΓ hKK hPP hIP hH (continuous_frameEquiv_symm χ ε b hε) ?_ ⟨σ₀, fun σ' h => ?_⟩` and prove the remaining obligations. Simplify using `using hW`.
+
+Introduce `p t hp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (((adCM σ χ).χ (bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hε p).1) : Circle) : ℂ) = _`. Rewrite using `[GlobalTheory.T.block_det_parabolic_frame F E σ n Y χ ε b hε t₀ ht₀ p t hp]`. Both sides reduce to the same expression.
+
+Use `ha.val p t hp 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Take `⟨C, N, h⟩` from `hσ₀ σ' h`. Conclude with `⟨C, N, fun x => (h x).2⟩`.
+-/
 theorem siegelMult_of : SecLaw → WallLaw → Dict → DictInf → CMGood → GrpTop → BdetLaw → ExtLaw → ParLaw → SgAll →
     SiegelEisensteinSeries.BRoad.SiegelMult := by
   intro hSec hWL hD hDI hCM hGT hBd _ hPar hSg

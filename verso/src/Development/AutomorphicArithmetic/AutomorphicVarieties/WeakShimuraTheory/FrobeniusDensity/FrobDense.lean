@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ChebotarevDegr
 import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.ChebotarevDegreeOneIffCheb
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ 𝔪 h𝔪`. Establish `hS : {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ 𝔪}.Finite` using `Ideal.finite_factors h𝔪`. Use `(GlobalTheory.Published.ChebotarevDegreeOne.dense (F := K) (Ω := Ω) GlobalTheory.Published.chebotarevDegreeOne' hS).mono ?_` and prove the remaining obligations. Introduce and unpack `σ ⟨v, hv, _, B, hB, hσ⟩`. Conclude with `⟨v, B, hv, hB, hσ⟩`.
+-/
 theorem UpperTheory.V.Ws.Tw.frobDense :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (𝔪 : Ideal (𝓞 K)), 𝔪 ≠ ⊥ → Dense {σ : G K Ω | ∃ (w : HeightOneSpectrum (𝓞 K)) (A : ValuationSubring Ω), ¬ w.asIdeal ∣ 𝔪 ∧ IsPlaceOver A w ∧ IsFrob A (normV w) σ} := by
   intro K Ω _ _ _ _ _ 𝔪 h𝔪

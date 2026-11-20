@@ -24,6 +24,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Exist
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Establish `hL` using `GlobalTheory.lawsFieldsSeparately`. Establish `hS : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `hL.2.1`. Establish `hT : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt` using `hL.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hC` using `GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c`.
+
+Establish `hA` using `GlobalTheory.Frames.allTest_of_secBaseChange hS E H Dw l Xo c`. Establish `hN : N1c` using `GlobalTheory.closing_of_abelianSchemeLaws`. Use `⟨⟨hC, frChartF_of hC, borChartF_of_cover hC, GlobalTheory.Frames.intLatU_holds E H Dw l Xo c, hA, fun σ => ⟨fun p y ψ => ?_, wtC_of (borChartF_of_cover hC) hA σ⟩⟩, fun hpq => ⟨?_, GlobalTheory.algPtLa_moduli hN E H Dw l Xo c hpq, fun hg => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c _ _ ψ y`. Take `⟨L, _, _, j, x, -⟩` from `GlobalTheory.moduli_exists_numberField_point hN E H Dw l Xo c hpq`.
+
+Conclude with `⟨x (IsLocalRing.closedPoint L)⟩`. Conclude with `GlobalTheory.Exist.intFrExt_of_good GlobalTheory.partI_closed GlobalTheory.Moduli.moduli_scheme_exists hS hT E H Dw l Xo c hpq hg`. Conclude with `(Formalism.L2.PjFree.intAll_iff Xo c).1 (GlobalTheory.IntegralFrames.intAll GlobalTheory.partI_closed GlobalTheory.Moduli.moduli_scheme_exists hS hT E H Dw l Xo c hpq hg)`.
+-/
 theorem frame_laws_of_moduli : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), (ChartCoverF Xo c ∧ FrChartF Xo c ∧ BorChartF Xo c ∧ IntLatU Xo c ∧ AllTest Xo c ∧ ∀ σ : c.F →+* ℂ, BCEx Xo c σ ∧ WtC Xo c σ) ∧ (1 ≤ Dw.p + Dw.q → Nonempty Xo.X ∧ AlgPtLa Xo c ∧ ((∀ p : ℕ, p.Prime → l.GoodAt p) → IntFrExt Xo c ∧ IntAll Xo c)) := by
   intro E _ _ _ H Dw l Xo c
   have hL := GlobalTheory.lawsFieldsSeparately

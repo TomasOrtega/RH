@@ -16,6 +16,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SumSize.TopInt
 
+/- English proof (translation)
+Introduce `hP hI hD hE`. Take `⟨C1, hC1, hPL⟩` from `hPL`. Take `⟨CF1, hS⟩` from `hSL C1 hC1`. Take `⟨CF2, hD⟩` from `hD`. Take `⟨CF3, hE⟩` from `hE`.
+
+Use `⟨max CF1 (max CF2 CF3), fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C01, hS⟩` from `hS CF (le_of_max_le_left hCF)`. Take `⟨C02, hD⟩` from `hD CF (le_trans (le_max_left _ _) (le_of_max_le_right hCF))`. Take `⟨C03, hE⟩` from `hE CF (le_trans (le_max_right _ _) (le_of_max_le_right hCF))`. Use `⟨max C01 (max C02 C03), fun ε C hC => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x1, hS⟩` from `hS ε C (le_of_max_le_left hC)`. Take `⟨x2, hD⟩` from `hD ε C (le_trans (le_max_left _ _) (le_of_max_le_right hC))`. Take `⟨x3, hE⟩` from `hE ε C (le_trans (le_max_right _ _) (le_of_max_le_right hC))`. Use `⟨max x1 (max x2 x3), fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hs ch hch hsc hfo => ?_⟩` and prove the remaining obligations. Establish `dict : DictAt ch` using `hD D large₂ he (le_trans (le_max_left _ _) (le_of_max_le_right hx)) Γ Pl0 T A Ks R F hs ch hch hsc hfo`.
+
+Establish `dep : DepthAt ch` using `hE D large₂ he (le_trans (le_max_right _ _) (le_of_max_le_right hx)) Γ Pl0 T A Ks R F hs ch hch hsc hfo`. Take `⟨S, δ, hL⟩` from `(GlobalTheory.NormSum.letters_and_sizes D (hI D).g1).1`. Establish `loss` using `hS D large₂ he (le_of_max_le_left hx) Γ Pl0 T A Ks R F hs ch hch hsc hfo (hI D) S δ hL`. Use `⟨topDl ch.G δ C1 large₂.sc.b, loss, ?_⟩` and prove the remaining obligations. Introduce `t w hw Φ β d hocc c j a v hv`.
+
+Take `⟨hβ, τ, hτ, hd⟩` from `hocc`. Establish `hτ'` using `hτ`. Take `⟨hk, ⟨e, -, h1, -⟩, h3⟩` from `hτ'`. Establish `hrat` using `(hfo.isRatAt hβ hτ hd c).1 j`. Establish `key` using `hPL D large₂ Γ Pl0 T A Ks R F hs ch CF hch hsc hfo hP (hI D) dict S δ hL t (.top t j) (show (j : ℕ) + 1 ≤ D.R.m from j.2) _ (d.1 j) hk ((h3 d hd).1 j) ((h1 d hd).1 j).2.2 ((h1 d hd).1 j).1 _ _ hrat w (primeUnder w) (primeUnder_prime w) (primeUnder_mem w) hw a v hv`.
+
+Use `inLat_mono key ?_` and prove the remaining obligations. Establish `hdep` using `(dep t Φ β hβ).2 w (primeUnder w) (primeUnder_prime w) (primeUnder_mem w) hw`. Use `le_topDl ch.G hL.2.1 hC1.le large₂.sc.b w j.2 hdep` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem finTopK_of (hPL : ∃ C1 : ℝ, 0 < C1 ∧ ∀ (D : D7) (large₂ : SizeData₂ D) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)
       (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), HidaSetting large₂ R F →
       ∀ (ch : Choice R) (CF : ℝ), ch.Is → ch.AtScale CF large₂.sc.b → ch.FieldOK → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.NormSum.Inp D →
@@ -68,6 +81,9 @@ theorem finTopK_of (hPL : ∃ C1 : ℝ, 0 < C1 ∧ ∀ (D : D7) (large₂ : Size
   have := le_topDl ch.G hL.2.1 hC1.le large₂.sc.b w j.2 hdep
   linarith
 
+/- English proof (translation)
+The claim follows from `finTopK_of GlobalTheory.T.norm_sum_choice_bound GlobalTheory.T.sum_equalSign_kernel_losses_bounded`.
+-/
 theorem finTopK : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → FinTopK :=
   finTopK_of GlobalTheory.T.norm_sum_choice_bound GlobalTheory.T.sum_equalSign_kernel_losses_bounded
 

@@ -10,6 +10,13 @@ noncomputable def tGL {n : ℕ} {i j : Fin n} (h : i ≠ j) (c : ℂ) : GL (Fin 
     by rw [transvection_mul_transvection_same i j h]; simp,
     by rw [transvection_mul_transvection_same i j h]; simp⟩
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [transvection, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.add_apply, diagonal_mul, mul_diagonal, single_apply, one_apply]`. Apply the tactic sequence `by_cases ha : i = a <;> by_cases hb : j = b`. Substitute `ha hb` using the available equality. Simplify using `[h]`.
+
+Clear denominators, using `[hd j]` for the nonvanishing conditions. Apply the tactic sequence `by_cases hab : a = b <;> simp [ha, hb, hab]`. Substitute `hb` using the available equality. Distinguish the cases in `hab : a = j`. Substitute `hab` using the available equality.
+
+Simplify using `[h]`. Simplify using `[ha, hab]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [ha, hb, hab]`.
+-/
 theorem diag_mul_transvection {n : ℕ} {i j : Fin n} (h : i ≠ j) (d : Fin n → ℂ) (hd : ∀ l, d l ≠ 0) (s : ℂ) :
     diagonal d * transvection i j s = transvection i j (s * d i / d j) * diagonal d := by
   ext a b
@@ -23,6 +30,15 @@ theorem diag_mul_transvection {n : ℕ} {i j : Fin n} (h : i ≠ j) (d : Fin n �
     · simp [ha, hab]
   · by_cases hab : a = b <;> simp [ha, hb, hab]
 
+/- English proof (translation)
+Set `Q : Polynomial ℂ` to `∑ k ∈ Finset.range (K + 1), Polynomial.C (x k - y k) * Polynomial.X ^ k`. Establish `hQ : Q = 0`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `s`. Simplify using `only [Q, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_zero]`.
+
+Use `hxy s` as an intermediate fact. Rewrite `this` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun m _ => by ring` and prove the remaining obligations. Establish `hc` using `congrArg (fun p => Polynomial.coeff p k) hQ`.
+
+Simplify using `only [Q, Polynomial.finset_sum_coeff, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at hc`. Rewrite `hc` using `[Finset.sum_eq_single k]`. Simplify `hc` using `[sub_eq_zero]`. Introduce `m _ hm`. Simplify using `[Ne.symm hm]`.
+
+Introduce `hk'`. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_of_le hk)) hk'`.
+-/
 theorem poly_coeff_eq (K : ℕ) (x y : ℕ → ℂ) (hxy : ∀ s : ℂ, ∑ k ∈ Finset.range (K + 1), s ^ k * x k =
     ∑ k ∈ Finset.range (K + 1), s ^ k * y k) (k : ℕ) (hk : k ≤ K) : x k = y k := by
   let Q : Polynomial ℂ := ∑ k ∈ Finset.range (K + 1), Polynomial.C (x k - y k) * Polynomial.X ^ k
@@ -46,6 +62,11 @@ end GlobalTheory.UnipotentWeights
 
 namespace GlobalTheory.UnipotentWeights
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem prod_single_zpow {n : ℕ} (d : Fin n → ℂ) (i : Fin n) :
     ∏ l, d l ^ ((Pi.single i (1 : ℤ) : Fin n → ℤ) l) = d i := by
   rw [Finset.prod_eq_single i]
@@ -53,6 +74,11 @@ theorem prod_single_zpow {n : ℕ} (d : Fin n → ℂ) (i : Fin n) :
   · intro b _ hb; simp [Pi.single_apply, hb]
   · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Establish `hpt : ∀ l, d l ^ ((μ + (k : ℤ) • (Pi.single i 1 - Pi.single j 1) : Fin n → ℤ) l) = d l ^ μ l * ((d l ^ ((Pi.single i (1 : ℤ) : Fin n → ℤ) l)) ^ k * ((d l ^ ((Pi.single j (1 : ℤ) : Fin n → ℤ) l)) ^ k)⁻¹)`. Introduce `l`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Rewrite using `[zpow_add₀ (hd l), mul_sub, zpow_sub₀ (hd l), div_eq_mul_inv, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul, mul_comm ((Pi.single i (1:ℤ) : Fin n → ℤ) l), mul_comm ((Pi.single j (1:ℤ) : Fin n → ℤ) l)]`. Repeatedly rewrite using `[hpt]`.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_inv_distrib, Finset.prod_pow, Finset.prod_pow, prod_single_zpow, prod_single_zpow, div_pow, div_eq_mul_inv]`.
+-/
 theorem prod_wt_shift {n : ℕ} (d : Fin n → ℂ) (hd : ∀ l, d l ≠ 0) (i j : Fin n) (μ : Fin n → ℤ) (k : ℕ) :
     ∏ l, d l ^ ((μ + (k : ℤ) • (Pi.single i 1 - Pi.single j 1) : Fin n → ℤ) l) =
       (∏ l, d l ^ μ l) * (d i / d j) ^ k := by
@@ -73,6 +99,29 @@ namespace GlobalTheory
 
 open GlobalTheory.UnipotentWeights in
 
+/- English proof (translation)
+Introduce `n ι _ _ Φ hΦ i j hij μ v hv`. Take `⟨P, hP⟩` from `polyRep_transvection_entries_poly n ι Φ hΦ i j hij`. Set `K : ℕ` to `Finset.univ.sup (fun ab : ι × ι => (P ab.1 ab.2).natDegree)`. Establish `hK : ∀ a b, (P a b).natDegree < K + 1` using `fun a b => Nat.lt_succ_of_le (Finset.le_sup (f := fun ab : ι × ι => (P ab.1 ab.2).natDegree) (Finset.mem_univ (a, b)))`. Set `w : ℕ → ι → ℂ` to `fun k a => ∑ b, (P a b).coeff k * v b`.
+
+Establish `hexp : ∀ (s : ℂ) (B : GL (Fin n) ℂ), B.val = transvection i j s → Φ B *ᵥ v = ∑ k ∈ Finset.range (K + 1), s ^ k • w k`. Introduce `s B hB`. Use extensionality with `a`. Simplify using `only [mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, w]`. Repeatedly rewrite using `[hP s B hB a, Polynomial.eval_eq_sum_range' (hK a _) s, Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations. Use `⟨K, w, ?_, ?_, hexp⟩` and prove the remaining obligations. Establish `h0` using `hexp 0 1 (by simp)`. Rewrite `h0` using `[hΦ.one, one_mulVec, Finset.sum_range_succ']`.
+
+Simplify using `using h0.symm`. Introduce `k D hD`. Distinguish the cases in `hk : K < k`. Establish `hw : w k = 0`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [w, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le (hK a b) hk), zero_mul]`. Rewrite using `[hw, mulVec_zero, smul_zero]`. Use `push_neg at hk`.
+
+Use `set d : Fin n → ℂ := fun l => D.val l l with hd_def`. Establish `hDd : D.val = diagonal d` using `((isDiag_iff_diagonal_diag _).1 hD).symm`. Establish `hd : ∀ l, d l ≠ 0`. Establish `hdet : D.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 D.isUnit).ne_zero`. Rewrite `hdet` using `[hDd, det_diagonal, Finset.prod_ne_zero_iff]`.
+
+Conclude with `fun l => hdet l (Finset.mem_univ l)`. Use `set lam : ℂ := ∏ l, D.val l l ^ μ l with hlam`. Establish `hcomm : ∀ s : ℂ, D * tGL hij s = tGL hij (s * d i / d j) * D`. Introduce `s`. Use `ext1`.
+
+Simplify using `only [Units.val_mul, tGL]`. Rewrite using `[hDd]`. Conclude with `diag_mul_transvection hij d hd s`. Establish `hmain : ∀ s : ℂ, Φ D *ᵥ (∑ k ∈ Finset.range (K + 1), s ^ k • w k) = lam • ∑ k ∈ Finset.range (K + 1), (s * d i / d j) ^ k • w k`. Introduce `s`.
+
+Rewrite using `[← hexp s (tGL hij s) rfl, ← hexp _ (tGL hij (s * d i / d j)) rfl, mulVec_mulVec, ← hΦ.mul, hcomm, hΦ.mul, ← mulVec_mulVec, hv D hD, mulVec_smul]`. Establish `hcoord : ∀ a, (Φ D *ᵥ w k) a = (lam * (d i / d j) ^ k) * w k a`. Introduce `a`. Use `poly_coeff_eq K (fun m => (Φ D *ᵥ w m) a) (fun m => (lam * (d i / d j) ^ m) * w m a) ?_ k hk` and prove the remaining obligations. Introduce `s`.
+
+Use `congrFun (hmain s) a` as an intermediate fact. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum] at this`. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun m _ => by ring` and prove the remaining obligations. Use extensionality with `a`.
+
+Rewrite using `[hcoord a, Pi.smul_apply, smul_eq_mul, prod_wt_shift d hd i j μ k]`.
+-/
 theorem transvection_weightVec_expansion :
     ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Φ : GL (Fin n) ℂ → Matrix ι ι ℂ), IsPolyRep Φ →
       ∀ (i j : Fin n), i ≠ j → ∀ (μ : Fin n → ℤ) (v : ι → ℂ), IsWtVec Φ μ v →

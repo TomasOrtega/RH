@@ -29,9 +29,15 @@ def stab (H : AddSubgroup (Fin n → R)) : Subring (Matrix (Fin n) (Fin n) R) wh
   zero_mem' := fun z _ => by rw [Matrix.zero_mulVec]; exact zero_mem _
   neg_mem' := fun {A} hA z hz => by rw [Matrix.neg_mulVec]; exact neg_mem (hA z hz)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stab {H : AddSubgroup (Fin n → R)} {A : Matrix (Fin n) (Fin n) R} :
     A ∈ stab H ↔ ∀ z ∈ H, A *ᵥ z ∈ H := Iff.rfl
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hD.exists_left_inv`. Use `⟨i • A, fun z hz => ?_, by rw [smul_smul, mul_comm, hi, one_smul]⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h z hz`. Rewrite using `[Matrix.smul_mulVec, e, ← Nat.cast_smul_eq_nsmul R, smul_smul, hi, one_smul]`. Conclude with `hw`.
+-/
 theorem exists_of_cong {H : AddSubgroup (Fin n → R)} {D : ℕ} (hD : IsUnit (D : R))
     {A : Matrix (Fin n) (Fin n) R} (h : ∀ z ∈ H, ∃ w ∈ H, A *ᵥ z = D • w) :
     ∃ B ∈ stab H, A = (D : R) • B := by
@@ -41,10 +47,18 @@ theorem exists_of_cong {H : AddSubgroup (Fin n → R)} {D : ℕ} (hD : IsUnit (D
   rw [Matrix.smul_mulVec, e, ← Nat.cast_smul_eq_nsmul R, smul_smul, hi, one_smul]
   exact hw
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem h k`.
+-/
 theorem natCast_smul_mem {H : AddSubgroup (Fin n → R)} (k : ℕ) {A : Matrix (Fin n) (Fin n) R}
     (h : A ∈ stab H) : (k : R) • A ∈ stab H := by
   rw [Nat.cast_smul_eq_nsmul]; exact nsmul_mem h k
 
+/- English proof (translation)
+Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hkl`. Establish `e : A = a • ((k : R) • A) + b • ((l : R) • A)`. Rewrite using `[← Int.cast_smul_eq_zsmul R, ← Int.cast_smul_eq_zsmul R, smul_smul, smul_smul, ← add_smul]`. Use `congrArg (Int.cast : ℤ → R) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite using `[this, one_smul]`. Rewrite using `[e]`. Conclude with `add_mem (zsmul_mem hk a) (zsmul_mem hl b)`.
+-/
 theorem mem_of_coprime {H : AddSubgroup (Fin n → R)} {k l : ℕ} (hkl : k.Coprime l)
     {A : Matrix (Fin n) (Fin n) R} (hk : (k : R) • A ∈ stab H) (hl : (l : R) • A ∈ stab H) :
     A ∈ stab H := by
@@ -60,10 +74,24 @@ theorem mem_of_coprime {H : AddSubgroup (Fin n → R)} {k l : ℕ} (hkl : k.Copr
 def scal (H : AddSubgroup (Fin n → R)) : Subring R :=
   (stab H).comap (algebraMap R (Matrix (Fin n) (Fin n) R))
 
+/- English proof (translation)
+Rewrite using `[scal, Subring.mem_comap, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem mem_scal {H : AddSubgroup (Fin n → R)} {a : R} :
     a ∈ scal H ↔ a • (1 : Matrix (Fin n) (Fin n) R) ∈ stab H := by
   rw [scal, Subring.mem_comap, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Use `choose f hf0 hf using fun p : Fin n × Fin n => hb (Matrix.single p.1 p.2 1)`. Establish `h1 : ∀ a b, ((∏ p, f p : ℕ) : R) • Matrix.single a b (1 : R) ∈ stab H`. Introduce `a b`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem f (Finset.mem_univ (a, b))`. Rewrite using `[hk, mul_comm, Nat.cast_mul, mul_smul]`.
+
+Conclude with `natCast_smul_mem k (hf (a, b))`. Establish `h0 : 0 < ∏ p, f p` using `Finset.prod_pos fun p _ => hf0 p`. Generalize the expression as in `∏ p, f p = d at h1 h0`. Use `⟨d * d, Nat.mul_pos h0 h0, fun B hB i j => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_scal]`.
+
+Establish `e : (((d * d : ℕ) : R) * B i j) • (1 : Matrix (Fin n) (Fin n) R) = ∑ k, ((d : R) • Matrix.single k i (1 : R)) * B * ((d : R) • Matrix.single j k (1 : R))`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.single_mul_mul_single, smul_smul]`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.sum_apply, Matrix.single_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single a]`.
+
+Apply the tactic sequence `by_cases h : a = b <;> simp [h]`. Introduce `c _ hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `sum_mem fun k _ => mul_mem (mul_mem (h1 _ _) hB) (h1 _ _)`.
+-/
 theorem exists_entry_bound {H : AddSubgroup (Fin n → R)}
     (hb : ∀ A : Matrix (Fin n) (Fin n) R, ∃ d : ℕ, 0 < d ∧ (d : R) • A ∈ stab H) :
     ∃ d : ℕ, 0 < d ∧ ∀ B ∈ stab H, ∀ i j, (d : R) * B i j ∈ scal H := by
@@ -90,6 +118,15 @@ theorem exists_entry_bound {H : AddSubgroup (Fin n → R)}
   rw [e]
   exact sum_mem fun k _ => mul_mem (mul_mem (h1 _ _) hB) (h1 _ _)
 
+/- English proof (translation)
+Set `B' : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i j => ⟨B i j, hB i j⟩`. Set `I : Ideal S` to `Ideal.span {(D : S)}`. Establish `h1 : ((t : S) • (1 : Matrix (Fin n) (Fin n) S) + (D : S) • B').det - (t : S) ^ n ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, RingHom.map_det]`. Establish `hD : Ideal.Quotient.mk I (D : S) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`.
+
+Establish `: (Ideal.Quotient.mk I).mapMatrix ((t : S) • (1 : Matrix (Fin n) (Fin n) S) + (D : S) • B') = (Ideal.Quotient.mk I t) • (1 : Matrix (Fin n) (Fin n) (S ⧸ I))`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hD, zero_mul, add_zero, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, Matrix.det_smul, Matrix.det_one, Fintype.card_fin, mul_one, map_pow, sub_self]`.
+
+Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 h1`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations. Establish `h2 : S.subtype.mapMatrix ((t : S) • (1 : Matrix (Fin n) (Fin n) S) + (D : S) • B') = (t : R) • (1 : Matrix (Fin n) (Fin n) R) + (D : R) • B`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, Matrix.one_apply, map_natCast]`.
+
+Apply the tactic sequence `split_ifs <;> simp [B']`. Rewrite using `[← h2, ← RingHom.map_det, ← sub_eq_iff_eq_add', show (t : R) ^ n = S.subtype ((t : S) ^ n) by simp, ← map_sub, ← hs]`. Simplify using `[mul_comm]`.
+-/
 theorem det_cong (S : Subring R) (t D : ℕ) (B : Matrix (Fin n) (Fin n) R) (hB : ∀ i j, B i j ∈ S) :
     ∃ s ∈ S, ((t : R) • (1 : Matrix (Fin n) (Fin n) R) + (D : R) • B).det = (t : R) ^ n + D * s := by
   let B' : Matrix (Fin n) (Fin n) S := Matrix.of fun i j => ⟨B i j, hB i j⟩
@@ -117,6 +154,17 @@ theorem det_cong (S : Subring R) (t D : ℕ) (B : Matrix (Fin n) (Fin n) R) (hB 
     show (t : R) ^ n = S.subtype ((t : S) ^ n) by simp, ← map_sub, ← hs]
   simp [mul_comm]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hM.exists_left_inv`. Use `⟨i • (m' * g - 1), ?_, by rw [smul_smul, mul_comm, hi, one_smul, add_sub_cancel]⟩` and prove the remaining obligations. Use `mem_of_coprime (k := k * t) (l := (M * d) ^ (e + 1)) (Nat.Coprime.pow_right _ (Nat.Coprime.mul_left hk ht)) ?_ ?_` and prove the remaining obligations. Establish `: ((k * t : ℕ) : R) • i • (m' * g - 1) = (t : R) • (W * ((d : R) • g)) + (k : R) • C`. Establish `e1 : m' * g - 1 = (m' - m) * g + (m * g - 1)` using `by noncomm_ring`.
+
+Establish `e2 : ((k * t : ℕ) : R) • i • (m' * g - 1) = (i * t) • (((k : R) • (m' - m)) * g) + (i * k) • ((t : R) • (m * g - 1))`. Rewrite using `[e1, Matrix.smul_mul]`. Use `push_cast`. Use `module`. Rewrite using `[e2, h1, h2, Matrix.smul_mul, Matrix.mul_smul]`.
+
+Use `push_cast`. Simplify using `only [smul_smul]`. Use `congr 2`. Take the linear combination `(t * d : R) * hi`. Take the linear combination `(k : R) * hi`.
+
+Rewrite using `[this]`. Conclude with `add_mem (natCast_smul_mem _ (mul_mem hW hg)) (natCast_smul_mem _ hC)`. Establish `: (((M * d) ^ (e + 1) : ℕ) : R) • i • (m' * g - 1) = ((((M * d) ^ e : ℕ) : R) • m') * ((d : R) • g) - (((M * d) ^ e * d : ℕ) : R) • 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul]`. Use `push_cast`.
+
+Simplify using `only [smul_smul, ← smul_sub]`. Use `congr 1`. Take the linear combination `((M : R) * d) ^ e * d * hi`. Rewrite using `[this]`. Conclude with `sub_mem (mul_mem hm' hg) (natCast_smul_mem _ (one_mem _))`.
+-/
 theorem glue {H : AddSubgroup (Fin n → R)} {M d t k e : ℕ} (hM : IsUnit (M : R))
     (ht : t.Coprime (M * d)) (hk : k.Coprime (M * d)) {g m m' C W : Matrix (Fin n) (Fin n) R}
     (hg : (d : R) • g ∈ stab H) (hC : C ∈ stab H) (hW : W ∈ stab H)
@@ -151,6 +199,11 @@ theorem glue {H : AddSubgroup (Fin n → R)} {M d t k e : ℕ} (hM : IsUnit (M :
     rw [this]
     exact sub_mem (mul_mem hm' hg) (natCast_smul_mem _ (one_mem _))
 
+/- English proof (translation)
+Use `⟨(M : R) • (C * C') + (t' : R) • C + (t : R) • C', add_mem (add_mem (natCast_smul_mem _ (mul_mem hC hC')) (natCast_smul_mem _ hC)) (natCast_smul_mem _ hC'), ?_⟩` and prove the remaining obligations. Establish `e1 : A * A' - 1 = (A - 1) * (A' - 1) + (A - 1) + (A' - 1)` using `by noncomm_ring`. Establish `e2 : ((t * t' : ℕ) : R) • (A * A' - 1) = ((t : R) • (A - 1)) * ((t' : R) • (A' - 1)) + (t' : R) • ((t : R) • (A - 1)) + (t : R) • ((t' : R) • (A' - 1))`. Rewrite using `[e1, Matrix.smul_mul, Matrix.mul_smul]`. Use `push_cast`.
+
+Use `module`. Rewrite using `[e2, h, h', Matrix.smul_mul, Matrix.mul_smul]`. Use `module`.
+-/
 theorem mul_cong {H : AddSubgroup (Fin n → R)} {M t t' : ℕ} {A A' C C' : Matrix (Fin n) (Fin n) R}
     (hC : C ∈ stab H) (hC' : C' ∈ stab H) (h : (t : R) • (A - 1) = (M : R) • C)
     (h' : (t' : R) • (A' - 1) = (M : R) • C') :
@@ -174,22 +227,34 @@ noncomputable def emb : E →+* RA F E :=
   (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E).toRingHom
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (emb F) γ v i).symm`.
+-/
 theorem emb_mulVec (γ : Matrix (Fin n) (Fin n) E) (v : Fin n → E) :
     (emb F).mapMatrix γ *ᵥ fv F v = fv F (γ *ᵥ v) := by
   funext i
   exact (RingHom.map_mulVec (emb F) γ v i).symm
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap F (RA F E))]`. Conclude with `(IsUnit.mk0 _ (by exact_mod_cast hD.ne')).map _`.
+-/
 theorem isUnit_nat {D : ℕ} (hD : 0 < D) : IsUnit (D : RA F E) := by
   rw [← map_natCast (algebraMap F (RA F E))]
   exact (IsUnit.mk0 _ (by exact_mod_cast hD.ne')).map _
 
 omit [NumberField E] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem emb_smul (a : E) (γ : Matrix (Fin n) (Fin n) E) :
     (emb F).mapMatrix (a • γ) = emb F a • (emb F).mapMatrix γ := by
   ext i j; simp
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `z hz`. Use `Translate.mulVec_mem_hat (fun v hv => ?_) hz` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Translate.mem_pre, emb_mulVec]`. Conclude with `Translate.fv_mem_hat (h v hv)`.
+-/
 theorem emb_mem_stab {L : Submodule (𝓞 E) (Fin n → E)} {γ : Matrix (Fin n) (Fin n) E}
     (h : ∀ v ∈ L, γ *ᵥ v ∈ L) : (emb F).mapMatrix γ ∈ stab (hat F (L : Set (Fin n → E))) := by
   intro z hz
@@ -197,6 +262,15 @@ theorem emb_mem_stab {L : Submodule (𝓞 E) (Fin n → E)} {γ : Matrix (Fin n)
   rw [SetLike.mem_coe, Translate.mem_pre, emb_mulVec]
   exact Translate.fv_mem_hat (h v hv)
 
+/- English proof (translation)
+Establish `h1` using `(hat_rational_points_and_approx F E n L hL hsp).1`. Establish `hne : L ≠ ⊥`. Introduce and unpack `rfl`. Establish `: (Pi.single i 1 : Fin n → E) ∈ Submodule.span E (((⊥ : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)))` using `by rw [hsp]; trivial`. Simplify using `at this`.
+
+Establish `hint : IsIntegral (𝓞 E) s`. Use `isIntegral_of_smul_mem_submodule L hne hL s fun v hv => ?_` and prove the remaining obligations. Rewrite using `[← h1, Translate.fv_smul]`. Use `mem_scal.1 hs _ (Translate.fv_mem_hat hv)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+
+Establish `hz : IsIntegral ℤ s` using `isIntegral_trans s hint`. Establish `hc : IsIntegral ℤ (c s)` using `hz.map c.toRingEquiv.toRingHom.toIntAlgHom`. Rewrite using `[mem_scal]`. Introduce `z hz`. Rewrite using `[Matrix.smul_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `Translate.hat_smul_ring L ⟨c s, hc⟩ hz`.
+-/
 theorem conj_mem_scal (c : E ≃ₐ[F] E) {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (i : Fin n) {s : E}
     (hs : emb F s ∈ scal (hat F (L : Set (Fin n → E)))) :
@@ -219,6 +293,9 @@ theorem conj_mem_scal (c : E ≃ₐ[F] E) {L : Submodule (𝓞 E) (Fin n → E)}
   rw [Matrix.smul_mulVec, Matrix.one_mulVec]
   exact Translate.hat_smul_ring L ⟨c s, hc⟩ hz
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `Translate.exists_bound A hL (hat_rational_points_and_approx F E n L hL hsp).2.2.2`. Use `⟨d, hd, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, Matrix.smul_mulVec]`. Conclude with `h z hz`.
+-/
 theorem exists_bound_stab {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) (A : Matrix (Fin n) (Fin n) (RA F E)) :
     ∃ d : ℕ, 0 < d ∧ (d : RA F E) • A ∈ stab (hat F (L : Set (Fin n → E))) := by
@@ -230,6 +307,45 @@ theorem exists_bound_stab {L : Submodule (𝓞 E) (Fin n → E)} (hL : L.FG)
 
 end Adelic
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ c n G hrk hG hiso L hL hsp g hg hdet M hM`. Establish `hG' : GlobalTheory.UnRep.IsHermForm c G`. Use `⟨hG.invol, ?_, hG.herm, hG.det_ne⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨a, ha⟩` from `hG.ne_id`.
+
+Conclude with `ha rfl`. Take `⟨i₀, -⟩` from `Function.ne_iff.1 hiso.choose_spec.1`. Take `⟨xs, hxs, -⟩` from `GlobalTheory.UnRep.exists_anisotropic_orthogonal_basis F E c n G hG'`. Establish `hx : hf (c : E →+* E) G (xs i₀) (xs i₀) ≠ 0` using `hxs i₀`. Generalize the expression as in `xs i₀ = x at hx`.
+
+Use `set h := hf (c : E →+* E) G x x with hh`. Use `set H := hat F (L : Set (Fin n → E)) with hH`. Use `set g' : Matrix (Fin n) (Fin n) (RA F E) := (g : Matrix (Fin n) (Fin n) (RA F E)) with hg'`. Set `P : Matrix (Fin n) (Fin n) E` to `Matrix.of fun a b => h⁻¹ * x a * ∑ e, G b e * c (x e)`. Establish `hP : ∀ a : E, tv (c : E →+* E) G x (a / h) - 1 = a • P`.
+
+Introduce `a`. Rewrite using `[tv, add_sub_cancel_left]`. Use extensionality with `i j`. Simplify using `only [P, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨d, hd, hdB⟩` from `exists_entry_bound (exists_bound_stab F hL hsp)`. Take `⟨dg, hdg, hdg'⟩` from `exists_bound_stab F hL hsp g'`. Take `⟨dP, hdP, hdP'⟩` from `exists_bound_stab F hL hsp ((emb F).mapMatrix P)`. Establish `hb : 0 < M * dg` using `Nat.mul_pos hM hdg`. Establish `hD₁ : 0 < M * dP` using `Nat.mul_pos hM hdP`.
+
+Establish `hD : 0 < M * dP * d` using `Nat.mul_pos hD₁ hd`. Take `⟨γ₀, hγ₀, t, ht, hcong⟩` from `GlobalTheory.T.unitaryGroup_weak_approximation_at_primes F E c n G hG' hrk L hL hsp g (M * dg) (M * dP * d) hg hb hD`. Establish `hU : IsU (c : E →+* E) G γ₀.1` using `hγ₀`. Use `set γ : Matrix (Fin n) (Fin n) E := γ₀.1 with hγ`. Take `⟨B, hB, hBe⟩` from `exists_of_cong (H := H) (isUnit_nat F hD) (A := (t : RA F E) • ((emb F).mapMatrix γ * g' - 1)) (fun z hz => by`.
+
+Take `⟨w, hw, e⟩` from `hcong z hz`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `e)`. Take `⟨s, hs, hse⟩` from `det_cong (scal H) t (M * dP) ((d : RA F E) • B) (hdB B hB)`.
+
+Establish `e0 : (t : RA F E) • (1 : Matrix (Fin n) (Fin n) (RA F E)) + ((M * dP : ℕ) : RA F E) • (d : RA F E) • B = (t : RA F E) • ((emb F).mapMatrix γ * g')`. Rewrite using `[smul_smul, ← Nat.cast_mul, ← hBe, ← smul_add, add_sub_cancel]`. Rewrite `hse` using `[e0, Matrix.det_smul, Fintype.card_fin, Matrix.det_mul, hdet, mul_one, ← RingHom.map_det]`. Use `set u := γ.det with hu`. Establish `hD₁E : ((M * dP : ℕ) : E) ≠ 0` using `by exact_mod_cast hD₁.ne'`.
+
+Set `s₀ : E` to `(t : E) ^ n * (u - 1) / ((M * dP : ℕ) : E)`. Establish `hs₀ : ((M * dP : ℕ) : E) * s₀ = (t : E) ^ n * (u - 1)` using `mul_div_cancel₀ _ hD₁E`. Establish `hs₁ : emb F s₀ = s`. Use `(isUnit_nat F hD₁).mul_left_cancel ?_` and prove the remaining obligations. Use `congrArg (emb F) hs₀` as an intermediate fact.
+
+Simplify using `only [map_mul, map_natCast, map_pow, map_sub, map_one] at this`. Rewrite using `[this]`. Take the linear combination `hse`. Establish `hcs` using `mem_scal.1 (conj_mem_scal F c hL hsp i₀ (hs₁ ▸ hs))`. Establish `hs₂ : ((M * dP : ℕ) : RA F E) * emb F (c s₀) = (t : RA F E) ^ n * emb F (c u - 1)`.
+
+Use `congrArg (fun a => emb F (c a)) hs₀` as an intermediate fact. Simplify `this` using `only [map_mul, map_natCast, map_pow, map_sub, map_one]`. Take `⟨hnorm, hnormal⟩` from `GlobalTheory.T.unitaryTransvectionSubmonoid_normal_det_one E n (c : E →+* E) G hG`. Establish `hu1 : u * c u = 1` using `(hnorm γ hU).1`. Take `⟨m, hm, hme⟩` from `(GlobalTheory.T.unitary_eq_quasiReflection_mul_transvections F E c n G hG hiso γ hU).1 x hx`.
+
+Establish `hmul` using `(GlobalTheory.T.transvection_identities_unitary E n (c : E →+* E) G hG.invol hG.herm).2.2.1 x`. Establish `hm' : m = tv (c : E →+* E) G x ((c u - 1) / h) * γ`. Establish `h0 : (c u - 1) / h + (u - 1) / h + (c u - 1) / h * ((u - 1) / h) * h = 0`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hu1`.
+
+Establish `h1 : tv (c : E →+* E) G x 0 = 1`. Use `hP 0` as an intermediate fact. Rewrite `this` using `[zero_div, zero_smul, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite using `[hme, ← Matrix.mul_assoc, hmul, ← hu, ← hh, h0, h1, Matrix.one_mul]`. Establish `hc1 : ((t ^ n : ℕ) : RA F E) • ((emb F).mapMatrix (tv (c : E →+* E) G x ((c u - 1) / h)) - 1) = (M : RA F E) • ((emb F (c s₀) • (1 : Matrix (Fin n) (Fin n) (RA F E))) * ((dP : RA F E) • (emb F).mapMatrix P))`.
+
+Rewrite using `[← map_one (emb F).mapMatrix, ← map_sub, hP, emb_smul, map_one, Matrix.smul_mul, Matrix.one_mul, smul_smul, smul_smul, smul_smul]`. Use `congr 1`. Move the coercions through the operations in `at hs₂ ⊢`. Take the linear combination `-hs₂`. Establish `hc2 : (t : RA F E) • ((emb F).mapMatrix γ * g' - 1) = (M : RA F E) • (((dP * d : ℕ) : RA F E) • B)`.
+
+Rewrite using `[hBe, smul_smul, ← Nat.cast_mul, mul_assoc]`. Take `⟨C, hC, hCe⟩` from `mul_cong (mul_mem hcs hdP') (natCast_smul_mem _ hB) hc1 hc2`. Rewrite `hCe` using `[← Matrix.mul_assoc, ← map_mul, ← hm']`. Take `⟨m', hm'T, k, e, hk, hadj⟩` from `GlobalTheory.T.unitaryTransvectionSubmonoid_adjust_integral_away F E c n G hrk hG L hL hsp m hm (M * dg) hb 1`. Establish `hbE : ((M * dg : ℕ) : E) ≠ 0` using `by exact_mod_cast hb.ne'`.
+
+Establish `hW : (emb F).mapMatrix (((k : E) / ((M * dg : ℕ) : E)) • (m' - m)) ∈ stab H`. Use `emb_mem_stab F fun v hv => ?_` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `(hadj v hv).1`. Rewrite `e` using `[pow_one, ← Nat.cast_smul_eq_nsmul E, ← Nat.cast_smul_eq_nsmul E]`. Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, div_eq_inv_mul, mul_smul, e, smul_smul, inv_mul_cancel₀ hbE, one_smul]`.
+
+Conclude with `hw`. Establish `hint : (((M * dg) ^ e : ℕ) : RA F E) • (emb F).mapMatrix m' ∈ stab H`. Rewrite using `[← map_natCast (emb F), ← emb_smul]`. Use `emb_mem_stab F fun v hv => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul, Matrix.smul_mulVec]`.
+
+Conclude with `(hadj v hv).2.1`. Take `⟨Y, hY, hYe⟩` from `glue (isUnit_nat F hM) (Nat.Coprime.mul_left (Nat.Coprime.pow_left n ht) ht) hk hdg' hC hW hint hCe (by`. Rewrite using `[← map_sub, ← map_natCast (emb F), ← map_natCast (emb F), ← emb_smul, ← emb_smul, smul_smul, mul_div_cancel₀ _ hbE])`. Use `⟨m', (hnormal m' hm'T).1, (hnormal m' hm'T).2.1, fun z hz => ⟨Y *ᵥ z, hY z hz, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((emb F).mapMatrix m' * g') *ᵥ z = _`.
+
+Rewrite using `[hYe, Matrix.add_mulVec, Matrix.one_mulVec, Nat.cast_smul_eq_nsmul, Matrix.smul_mulVec]`.
+-/
 theorem strong_approximation : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E) (n : ℕ) (G : Matrix (Fin n) (Fin n) E), Module.finrank F E = 2 → IsHerm (c : E →+* E) G → (∃ z : Fin n → E, z ≠ 0 ∧ hf (c : E →+* E) G z z = 0) → ∀ L : Submodule (𝓞 E) (Fin n → E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ g : GL (Fin n) (RA F E), (∀ x y, hermA c G ((g : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ x) ((g : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ y) = hermA c G x y) → (g : Matrix (Fin n) (Fin n) (RA F E)).det = 1 → ∀ M : ℕ, 0 < M → ∃ γ : Matrix (Fin n) (Fin n) E, IsU (c : E →+* E) G γ ∧ γ.det = 1 ∧ ∀ z ∈ hat F (L : Set (Fin n → E)), ∃ w ∈ hat F (L : Set (Fin n → E)), ((γ.map (fun a => ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] a : RA F E))) * (g : Matrix (Fin n) (Fin n) (RA F E))) *ᵥ z = z + M • w := by
   intro F E _ _ _ _ _ c n G hrk hG hiso L hL hsp g hg hdet M hM
   have hG' : GlobalTheory.UnRep.IsHermForm c G := by

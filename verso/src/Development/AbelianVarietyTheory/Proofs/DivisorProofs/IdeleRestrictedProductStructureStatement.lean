@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ConeSoB GlobalTheory.ThK.ConeEuler GlobalTheory.UnrEuler
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdeleRestr.isRestrGroup_ideles | exact GlobalTheory.IdeleRestr.isRestrGroup_ideles | (intros; apply GlobalTheory.IdeleRestr.isRestrGroup_ideles <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_restricted_product_structure : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     GlobalTheory.RestrMeas.IsRestrGroup (X := (AE F E)ˣ) (W := Unit) (V := Pl F)
       (fun _ => (unitArch F E).codRestrict (idelesAt E (evI F)) unitArch_mem)

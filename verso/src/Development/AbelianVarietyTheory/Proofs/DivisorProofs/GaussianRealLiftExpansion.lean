@@ -18,6 +18,17 @@ def trL {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (b : κ �
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP hDer hLaws f₀ hf₀ ⟨ε, hε⟩`. Take `⟨D, hD⟩` from `hDer F E σ (Fin n) (Fin d) (Fin n × Fin d) B.ψ (incM F X.J) (incM F W.J) M.co hP.base.std`. Establish `hz0 : ∀ (u : Matrix (Fin n) (Fin d) (AE F E)) (t : ℝ), M.heisLine B.ψ u t 0 = 0`. Introduce `u t`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[Model.heisLine, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`. Establish `act : ∀ u, At (evI F) u → ActsD (evI F) (M.heisLine B.ψ u) f₀ (D u f₀)` using `fun u hu => (hLaws F (Fin n × Fin d) f₀ (D u f₀) (D u f₀)).1 _ (hz0 u) (hD u hu f₀).1`. Use `choose u u' hu hu' hrel ha ha' using GlobalTheory.T.pair_exists_archimedean_translates F E σ B n d X W M χX χW om r s r' s' hP ε`. Establish `key : ∀ α x, fderiv ℝ (⇑f₀) x α = ((2 * Real.pi * Complex.I) * (trL (fun i => evI F ((M.co.e (u' α)).2 i)) x : ℂ) + 2 * Real.pi * (trL (fun i => evI F ((M.co.e (u α)).2 i)) x : ℂ)) * f₀ x`. Introduce `α x`.
+
+Establish `h` using `hε (u α) (u' α) (hu α) (hu' α) (hrel α) _ _ (act _ (hu α)) (act _ (hu' α))`. Establish `h2` using `congrArg (fun g : SInf F (Fin n × Fin d) => g x) h`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul] at h2`. Rewrite `h2` using `[(hD _ (hu α) f₀).2 x, (hD _ (hu' α) f₀).2 x]`. Establish `e1 : (fun i => evI F ((M.co.e (u α)).1 i)) = 0` using `funext (ha α)`.
+
+Establish `e2 : (fun i => evI F ((M.co.e (u' α)).1 i)) = α` using `funext (ha' α)`. Rewrite `h2` using `[e1, e2, map_zero]`. Use `show _ = ((2 * Real.pi * Complex.I) * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((M.co.e (u' α)).2 i)) : ℝ) : ℂ) + 2 * Real.pi * ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((M.co.e (u α)).2 i)) : ℝ) : ℂ)) * f₀ x`. Take the linear combination `h2 - (2 * Real.pi * (((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((M.co.e (u α)).2 i)) : ℝ) : ℂ)) * f₀ x) * Complex.I_sq`. Conclude with `GlobalTheory.T.schwartz_log_derivative_gaussian f₀ hf₀ (fun α => (2 * Real.pi * Complex.I) • Complex.ofRealCLM.toLinearMap.comp (trL (fun i => evI F ((M.co.e (u' α)).2 i))) + ((2 * Real.pi : ℝ) : ℂ) • Complex.ofRealCLM.toLinearMap.comp (trL (fun i => evI F ((M.co.e (u α)).2 i)))) …`.
+
+Rewrite using `[key α x]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, ContinuousLinearMap.coe_coe, Complex.ofRealCLM_apply, smul_eq_mul]`. Use `push_cast`. Use the proof step `ring)`.
+-/
 theorem fock_vacuum_gaussian : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
     (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.ActsLaws →

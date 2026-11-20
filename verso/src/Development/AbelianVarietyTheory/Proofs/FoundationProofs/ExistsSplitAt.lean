@@ -14,6 +14,9 @@ namespace GlobalTheory.MovedSplit
 
 open GlobalTheory.SplitIdem GlobalTheory.IdemModTwo
 
+/- English proof (translation)
+Establish `h2 : (U * w - U * R) * (U * w' - U * R) = 0`. Take the linear combination `U * U * hR - w * w' * U * hU`. Use `⟨?_, h2, by linear_combination hδ⟩` and prove the remaining obligations. Take the linear combination `(U * w - U * R) * hδ - h2 + (w - R) * hU`.
+-/
 theorem idem_alg {T : Type} [CommRing T] (p U R w w' : T) (hU : p * U = U)
     (hR : R * R - (w + w') * R + w * w' * p = 0) (hδ : (w + w') * U - 2 * (U * R) = p) :
     (U * w - U * R) * (U * w - U * R) = U * w - U * R ∧
@@ -24,6 +27,19 @@ theorem idem_alg {T : Type} [CommRing T] (p U R w w' : T) (hU : p * U = U)
   refine ⟨?_, h2, by linear_combination hδ⟩
   linear_combination (U * w - U * R) * hδ - h2 + (w - R) * hU
 
+/- English proof (translation)
+Set `j : A →+* A ⊗[F] E` to `algebraMap A _`. Set `k : E →+* A ⊗[F] E` to `(Algebra.TensorProduct.includeRight : E →ₐ[F] A ⊗[F] E)`. Establish `hjk : ∀ a x, a ⊗ₜ[F] x = j a * k x` using `fun a x => by`. Simplify using `[j, k, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `hF : ∀ s : F, j (algebraMap F A s) = k (algebraMap F E s)` using `fun s => by`.
+
+Establish `h` using `hjk 1 (algebraMap F E s)`. Rewrite `h` using `[tmul_algebraMap_eq, mul_one, map_one, one_mul]`. Conclude with `h`. Establish `h1 : e = j (φ u) * k a - j (φ u) * j (φ r)`. Rewrite using `[he, hjk, hjk, map_neg, map_mul, map_neg, map_mul, map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : c e = j (φ u) * k b - j (φ u) * j (φ r)`. Rewrite using `[he, map_add, hc1, hca, hjk, hjk, map_neg, map_mul, map_neg, map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, h1]`.
+
+Use `idem_alg (j (φ 1)) _ _ _ _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, one_mul]`. Establish `: φ r * φ r - algebraMap F A t * φ r + algebraMap F A n * φ 1 = 0`. Rewrite using `[← hφ, ← hφ, ← map_mul, ← map_sub, ← map_add, mul_one, hr, map_zero]`. Establish `h` using `congrArg j this`.
+
+Rewrite `h` using `[map_add, map_sub, map_mul, map_mul, map_mul, hF, hF, ht, hn, map_add, map_mul, map_zero]`. Then use the resulting hypothesis. Establish `: algebraMap F A t * φ u - 2 * (φ u * φ r) = φ 1`. Rewrite using `[two_mul, ← hφ, ← map_mul, ← map_add, ← map_sub, ← hu]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `congrArg j this`. Rewrite `h` using `[map_sub, map_mul, map_mul, map_mul, map_ofNat, hF, ht, map_add]`. Then use the resulting hypothesis.
+-/
 theorem idem_tensor {F A E K : Type} [Field F] [CommRing A] [Algebra F A] [CommRing E] [Algebra F E]
     [CommRing K] [Algebra F K] (φ : K →ₙ+* A)
     (hφ : ∀ (t : F) (y : K), φ (algebraMap F K t * y) = algebraMap F A t * φ y)
@@ -57,6 +73,15 @@ theorem idem_tensor {F A E K : Type} [Field F] [CommRing A] [Algebra F A] [CommR
     have h := congrArg j this
     rwa [map_sub, map_mul, map_mul, map_mul, map_ofNat, hF, ht, map_add] at h
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Establish `hm : algebraMap (𝓞 F) (v.adicCompletionIntegers F) n ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff]`. Conclude with `fun h => h hn`. Establish `hT : IsUnit (algebraMap (𝓞 F) (v.adicCompletionIntegers F) t)` using `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v t).2 ht`.
+
+Generalize the expression as in `algebraMap (𝓞 F) (v.adicCompletionIntegers F) t = T at hT`. Generalize the expression as in `algebraMap (𝓞 F) (v.adicCompletionIntegers F) n = N at hm`. Take `⟨r, hr, hr0⟩` from `HenselianRing.is_henselian (I := IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)) (Polynomial.X ^ 2 - Polynomial.C T * Polynomial.X + Polynomial.C N) (by monicity!) 0 (by simpa using hm) (by simpa using hT.map _)`. Rewrite `hr0` using `[sub_zero]`. Establish `hunit : IsUnit (T - 2 * r)`.
+
+Assume the negation of the conclusion as `h`. Establish `h1 : T - 2 * r ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F)` using `h`. Establish `h2` using `Ideal.add_mem _ h1 (Ideal.mul_mem_left _ 2 hr0)`. Rewrite `h2` using `[sub_add_cancel]`. Conclude with `h2 hT`.
+
+Take `⟨u, hu⟩` from `hunit.exists_left_inv`. Use `⟨r, u, ?_, hu⟩` and prove the remaining obligations. Simplify `hr` using `[Polynomial.IsRoot, pow_two]`.
+-/
 theorem exists_root (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (t n : 𝓞 F)
     (ht : t ∉ v.asIdeal) (hn : n ∈ v.asIdeal) :
     ∃ r u : v.adicCompletionIntegers F,
@@ -86,6 +111,9 @@ theorem exists_root (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum 
   refine ⟨r, u, ?_, hu⟩
   simpa [Polynomial.IsRoot, pow_two] using hr
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_of_star_eq D hx`. Establish `hi : IsIntegral ℤ t` using `(isIntegral_algebraMap_iff (algebraMap D.host.F D.host.E).injective).1 (ht ▸ x.2)`. Conclude with `⟨⟨t, hi⟩, RingOfIntegers.ext ht, ht⟩`.
+-/
 theorem exists_int (D : D7) (x : 𝓞 D.host.E) (hx : star (x : D.host.E) = x) :
     ∃ t : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t = x ∧
       algebraMap D.host.F D.host.E (t : D.host.F) = x := by
@@ -94,6 +122,17 @@ theorem exists_int (D : D7) (x : 𝓞 D.host.E) (hx : star (x : D.host.E) = x) :
     (isIntegral_algebraMap_iff (algebraMap D.host.F D.host.E).injective).1 (ht ▸ x.2)
   exact ⟨⟨t, hi⟩, RingOfIntegers.ext ht, ht⟩
 
+/- English proof (translation)
+Introduce and unpack `D v ⟨P, hP, hPv, a, ha, b, hb, hbP⟩`. Establish `hb' : (b : D.host.E) = star (a : D.host.E)` using `hb`. Take `⟨t, ht, ht'⟩` from `exists_int D (a + b) (by show star ((a : D.host.E) + b) = (a : D.host.E) + b`. Rewrite using `[hb', star_add, star_star, add_comm])`. Take `⟨n, hn, hn'⟩` from `exists_int D (a * b) (by show star ((a : D.host.E) * b) = (a : D.host.E) * b`.
+
+Rewrite using `[hb', star_mul', star_star, mul_comm])`. Establish `htv : t ∉ v.asIdeal`. Rewrite using `[← hPv, Ideal.mem_comap, ht]`. Conclude with `fun h => hbP ((Ideal.add_mem_iff_right P ha).1 h)`. Establish `hnv : n ∈ v.asIdeal`.
+
+Rewrite using `[← hPv, Ideal.mem_comap, hn]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Take `⟨r, u, hr, hu⟩` from `exists_root D.host.F v t n htv hnv`. Establish `key` using `idem_tensor (placeHom D.host.F v) (fun s y => by`. Use `Prod.ext (mul_zero _).symm ?_` and prove the remaining obligations.
+
+Use `show singleV D.host.F v _ = algebraMap D.host.F (Af D.host.F) s * singleV D.host.F v y`. Rewrite using `[singleV_mul, AlgHom.commutes])`. Use the proof step `(cA D) (a : D.host.E) (b : D.host.E) (t : D.host.F) (n : D.host.F) (r : Fv D.host.F v) (u : Fv D.host.F v)`. Use the proof step `(fun x => by rw [cA_tmul, star_one]) (fun x => by rw [cA_tmul, hb']) ht' hn'`. Use the proof step `(congrArg Subtype.val hr) (congrArg Subtype.val hu) _ rfl`.
+
+Conclude with `⟨_, key⟩`.
+-/
 theorem exists_splitAt : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)), GlobalTheory.UnRep.SplitPl (GlobalTheory.Member.cF D) v → ∃ e : Formalism.L2.Theta.AE D, GlobalTheory.IdemModTwo.SplitAt D v e := by
   rintro D v ⟨P, hP, hPv, a, ha, b, hb, hbP⟩
   have hb' : (b : D.host.E) = star (a : D.host.E) := hb

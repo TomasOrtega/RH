@@ -12,6 +12,13 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two
 
 namespace GlobalTheory.Mum.GenOne
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Establish `h1 : pullU (jK R) ⊤ a = 1`. Use `unit_ext fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_one, gm_pull (𝟙 _) (jK R) x ⊤ trivial, Category.id_comp]`. Conclude with `h x`.
+
+Establish `h2 : (jK R).appTop.hom (a : Γ(Spec (CommRingCat.of R), ⊤)) = 1` using `congrArg Units.val h1`. Establish `h3` using `congrArg (fun f => f.hom (a : Γ(Spec (CommRingCat.of R), ⊤))) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R))))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h3`. Rewrite `h3` using `[h2, map_one]`. Establish `h4 : (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (a : Γ(Spec (CommRingCat.of R), ⊤)) = 1` using `IsFractionRing.injective R (FractionRing R) (by rw [map_one]; exact h3.symm)`.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises. Rewrite using `[Units.val_one, map_one]`. Conclude with `h4`.
+-/
 theorem unit_eq_one_of_generic (R : Type) [CommRing R] [IsDomain R] (V : (Spec (CommRingCat.of R)).Opens) (hV : V = ⊤)
     (a : Γ(Spec (CommRingCat.of R), V)ˣ) (h : ∀ z, gm (jK R) z V a = 1) : a = 1 := by
   subst hV
@@ -31,6 +38,15 @@ theorem unit_eq_one_of_generic (R : Type) [CommRing R] [IsDomain R] (V : (Spec (
   rw [Units.val_one, map_one]
   exact h4
 
+/- English proof (translation)
+Introduce `R _ _ X L hL K _ φ ε hF t ht hgen Z r z J hJ`. Take `⟨t', -, hv⟩` from `exists_gen hL hF t ht`. Establish `htop : ∀ j : PEmpty → L.ι, L.wchart (PEmpty.elim : PEmpty → (Spec (CommRingCat.of R) ⟶ X)) j = ⊤`. Introduce `j`. Simplify using `[LB.wchart]`.
+
+Establish `key : ∀ j, t'.s j = 1`. Introduce `j`. Use `unit_eq_one_of_generic R _ (htop j) _ fun y => ?_` and prove the remaining obligations. Use `choose J' hJ' using fun ψ : (TK R).left ⟶ X => exists_chart hL (ψ y)`. Establish `h1` using `(hv _ (jK R) y J' hJ').trans (hgen y J' hJ')`.
+
+Establish `e : j = fun k => J' (jK R ≫ (PEmpty.elim : PEmpty → (Spec (CommRingCat.of R) ⟶ X)) k)`. Use function extensionality and compare the values at `fun k => k.elim`. Substitute `e` using the available equality. Conclude with `h1`. Rewrite using `[← hv Z r z J hJ]`.
+
+Conclude with `(congrArg (gm r z _) (key _)).trans (map_one _)`.
+-/
 theorem val_eq_one_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] {X : Scheme.{0}} (L : LB X), L.IsLB → ∀ {K : Type} [Fintype K] (φ : K → (Spec (CommRingCat.of R) ⟶ X)) (ε : K → ℤ), FormEq φ ε (PEmpty.elim : PEmpty → (Spec (CommRingCat.of R) ⟶ X)) (PEmpty.elim : PEmpty → ℤ) → ∀ t : LB.Gen (LB.LinComb L φ ε), t.IsGen → (∀ (z : (TK R).left) (J : ((TK R).left ⟶ X) → L.ι), Good L z J → val t (jK R) z J = 1) → ∀ (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of R)) (z : Z) (J : (Z ⟶ X) → L.ι), Good L z J → val t r z J = 1 := by
   intro R _ _ X L hL K _ φ ε hF t ht hgen Z r z J hJ
   obtain ⟨t', -, hv⟩ := exists_gen hL hF t ht

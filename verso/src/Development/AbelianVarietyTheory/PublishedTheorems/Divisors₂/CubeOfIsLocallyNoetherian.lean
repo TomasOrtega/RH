@@ -19,11 +19,17 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 def pts {T : Over S} (a b c : T ⟶ A) : Fin 8 → (T.left ⟶ A.left) :=
   fun k ↦ (![a * b * c, a * b, a * c, b * c, a, b, c, 1] k).left
 
+/- English proof (translation)
+Use `(Over.comp_left _ _ _ w _).symm.trans (congrArg (fun q : Z ⟶ A ↦ q.left) ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases k <;> simp [MonObj.comp_mul]`.
+-/
 theorem comp_pts {T Z : Over S} (w : Z ⟶ T) (a b c : T ⟶ A) (k : Fin 8) :
     w.left ≫ pts a b c k = pts (w ≫ a) (w ≫ b) (w ≫ c) k := by
   refine (Over.comp_left _ _ _ w _).symm.trans (congrArg (fun q : Z ⟶ A ↦ q.left) ?_)
   fin_cases k <;> simp [MonObj.comp_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases h with rfl | rfl | rfl <;>`. Simplify using `only [Fin.prod_univ_eight, pts, _root_.one_mul, _root_.mul_one, Matrix.cons_val, zpow_one, zpow_neg]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prod_pts {T : Over S} (a b c : T ⟶ A) (h : a = 1 ∨ b = 1 ∨ c = 1) (U : Type) [CommGroup U]
     (k : (T.left ⟶ A.left) → U) :
     ∏ i, k (pts a b c i) ^ (![1, -1, -1, -1, 1, 1, 1, -1] : Fin 8 → ℤ) i = 1 := by
@@ -33,6 +39,13 @@ theorem prod_pts {T : Over S} (a b c : T ⟶ A) (h : a = 1 ∨ b = 1 ∨ c = 1) 
     simp only [ofMul_mul, ofMul_inv, ofMul_one]
     abel
 
+/- English proof (translation)
+Establish `formal : ∀ {Z : Scheme.{0}} (r : Z ⟶ (G3 A).left) (i : Fin 3) (b : Z ⟶ S), r ≫ (x3 A i).left = b ≫ η[A].left → ∀ (U : Type) [CommGroup U] (k : (Z ⟶ A.left) → U), ∏ i, k (r ≫ pts (x3 A 0) (x3 A 1) (x3 A 2) i) ^ (![1, -1, -1, -1, 1, 1, 1, -1] : Fin 8 → ℤ) i = 1`. Introduce `Z r i b h U _ k`. Take `⟨w, hw, h'⟩` from `GlobalTheory.Biadditive.exists_over r i b h`. Use `prod_pts (w ≫ x3 A 0) (w ≫ x3 A 1) (w ≫ x3 A 2) (by fin_cases i exacts [Or.inl h', Or.inr (Or.inl h'), Or.inr (Or.inr h')]) U k` as an intermediate fact. Simplify using `only [← comp_pts, hw] at this`.
+
+Conclude with `this`. Take `⟨t, ht⟩` from `CubeNoeth.triv_of_faces GlobalTheory.laws_without_cohomology.1 hA hL (pts (x3 A 0) (x3 A 1) (x3 A 2)) ![1, -1, -1, -1, 1, 1, 1, -1] (fun r i b h ↦ trivAt_of_formal hL r (formal r i b h)) (fun r b h ↦ formal r 0 b h)`. Establish `c₀ : TrivAt L (pts (x3 A 0) (x3 A 1) (x3 A 2)) ![1, -1, -1, -1, 1, 1, 1, -1] (lift a (lift b c)).left` using `⟨_, DVR.pullGen_isGen _ _ _ t ht _⟩`. Establish `e : (fun k ↦ (lift a (lift b c)).left ≫ pts (x3 A 0) (x3 A 1) (x3 A 2) k) = pts a b c` using `funext fun k ↦ by`. Rewrite using `[comp_pts]`.
+
+Simplify using `[x3]`. Unfold `TrivAt at c₀`. Rewrite `c₀` using `[e]`. Conclude with `c₀`.
+-/
 theorem cube_of_isLocallyNoetherian [IsLocallyNoetherian S] (hA : IsAbelianScheme A) (L : LB A.left) (hL : L.IsLB)
     (T : Over S) (a b c : T ⟶ A) :
     Triv (LB.LinComb L (fun k : Fin 8 ↦ (![a * b * c, a * b, a * c, b * c, a, b, c, 1] k).left)
@@ -59,6 +72,9 @@ theorem cube_of_isLocallyNoetherian [IsLocallyNoetherian S] (hA : IsAbelianSchem
   rw [e] at c₀
   exact c₀
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(WeierstrassCurve.ellPolAV W).isAb, (WeierstrassCurve.ellPolAV W).isLB, cube_of_isLocallyNoetherian (WeierstrassCurve.ellPolAV W).isAb _ (WeierstrassCurve.ellPolAV W).isLB⟩`.
+-/
 theorem cube_ell {R : Type} [CommRing R] [IsNoetherianRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     IsAbelianScheme (WeierstrassCurve.ellPolAV W).A ∧ (WeierstrassCurve.ellPolAV W).L.IsLB ∧
     ∀ (T : Over (Spec (CommRingCat.of R))) (a b c : T ⟶ (WeierstrassCurve.ellPolAV W).A),
@@ -67,6 +83,11 @@ theorem cube_ell {R : Type} [CommRing R] [IsNoetherianRing R] (W : WeierstrassCu
   ⟨(WeierstrassCurve.ellPolAV W).isAb, (WeierstrassCurve.ellPolAV W).isLB,
     cube_of_isLocallyNoetherian (WeierstrassCurve.ellPolAV W).isAb _ (WeierstrassCurve.ellPolAV W).isLB⟩
 
+/- English proof (translation)
+Take `⟨L, hL, rfl⟩` from `GlobalTheory.CechPic.cls_surj x`. Establish `z` using `(GlobalTheory.CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 (h S A hA L hL T a b c)`. Rewrite `z` using `[GlobalTheory.CechPic.cls_linComb hL, Fin.sum_univ_eight]`. Simplify using `only [Matrix.cons_val, one_smul, neg_smul] at z`. Rewrite using `[← sub_eq_zero, ← z]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem pic_of_cube (h : GlobalTheory.Published.CubeTheorem) (hA : IsAbelianScheme A) (x : GlobalTheory.CechPic.Pic A.left) (T : Over S)
     (a b c : T ⟶ A) :
     GlobalTheory.CechPic.pull (a * b * c).left x + GlobalTheory.CechPic.pull a.left x + GlobalTheory.CechPic.pull b.left x +

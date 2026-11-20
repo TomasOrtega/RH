@@ -27,6 +27,17 @@ namespace GlobalTheory.LineAtPlace
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hconj : ∀ a : D.host.E, e₁ (star a) = starRingEnd ℂ (e₁ a)` using `D.sp.cm.cmUnram.2.1 e₁`. Establish `hb` using `Eqv.star_alphaE D`. Establish `hdec : ∀ y : D.host.E, ∃ p q : D.host.F, y = algebraMap D.host.F D.host.E p + algebraMap D.host.F D.host.E q * Eqv.alphaE D`. Introduce `y`. Use `⟨(Eqv.basE D).repr y 0, (Eqv.basE D).repr y 1, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← (Eqv.basE D).sum_repr y]`. Rewrite using `[Fin.sum_univ_two, Eqv.basE_zero, Eqv.basE_one, Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `hb2 : e₂ (Eqv.alphaE D) ^ 2 = e₁ (Eqv.alphaE D) ^ 2`. Establish `h1 : star (Eqv.alphaE D ^ 2) = Eqv.alphaE D ^ 2` using `by rw [star_pow, hb]; ring`. Take `⟨t, ht⟩` from `(D.sp.cm.fixed _).1 h1`.
+
+Rewrite using `[← map_pow, ← map_pow, ← ht, h]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hb2 with hc | hc` into its components or cases. Use `left`. Introduce `y`. Take `⟨p, q, rfl⟩` from `hdec y`.
+
+Rewrite using `[map_add, map_add, map_mul, map_mul, hc, h, h]`. Use `right`. Introduce `y`. Take `⟨p, q, rfl⟩` from `hdec y`. Rewrite using `[← hconj, star_add, star_mul, Eqv.star_algebraMapF, Eqv.star_algebraMapF, hb, map_add, map_add, map_mul, map_mul, map_neg, hc, h, h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem emb_eq_or_conj (e₁ e₂ : D.host.E →+* ℂ)
     (h : ∀ a : D.host.F, e₁ (algebraMap D.host.F D.host.E a) = e₂ (algebraMap D.host.F D.host.E a)) :
     (∀ x, e₂ x = e₁ x) ∨ ∀ x, e₂ x = starRingEnd ℂ (e₁ x) := by
@@ -54,6 +65,13 @@ theorem emb_eq_or_conj (e₁ e₂ : D.host.E →+* ℂ)
       map_neg, hc, h, h]
     ring
 
+/- English proof (translation)
+Establish `key : ∀ c : ℂ →+* ℂ, (∀ t : ℝ, c t = t) → (∀ x, tauE D τ x = c (p.1 x)) → ∀ y : AE D, Eqv.psiT D τ y = c (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf p y)`. Introduce `c hc hx y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, ha, hb]`.
+
+Consider the case `tmul a x`. Establish `l1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf p (a ⊗ₜ[D.host.F] x) = Eqv.gW D (Eqv.plW D τ) (fstA D.host.F a) * p.1 x` using `GlobalTheory.AdelicU.infEmb_tmul p _ x`. Establish `l2 : Eqv.psiT D τ (a ⊗ₜ[D.host.F] x) = Eqv.gW D (Eqv.plW D τ) (fstA D.host.F a) * tauE D τ x` using `Eqv.thetaC_tmul D τ _ x`. Rewrite using `[l1, l2, map_mul, hx, Eqv.gW_real, hc]`. Break down `emb_eq_or_conj p.1 (tauE D τ) (fun a => RingHom.congr_fun (p.2.trans (Eqv.plW_embedding D τ)) a) with h | h` into its components or cases.
+
+Conclude with `⟨RingHom.id ℂ, continuous_id, fun _ _ => rfl, key _ (fun _ => rfl) h⟩`. Conclude with `⟨starRingEnd ℂ, Complex.continuous_conj, fun t z => by simp, key _ Complex.conj_ofReal h⟩`.
+-/
 theorem exists_piInf (τ : D.what₂.Tau) (p : GlobalTheory.AdelicU.EmbOver D.host.E (Eqv.plW D τ)) :
     ∃ c : ℂ →+* ℂ, Continuous c ∧ (∀ (t : ℝ) z, c (t • z) = t • c z) ∧
       ∀ y : AE D, Eqv.psiT D τ y = c (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf p y) := by
@@ -73,6 +91,13 @@ theorem exists_piInf (τ : D.what₂.Tau) (p : GlobalTheory.AdelicU.EmbOver D.ho
   · exact ⟨RingHom.id ℂ, continuous_id, fun _ _ => rfl, key _ (fun _ => rfl) h⟩
   · exact ⟨starRingEnd ℂ, Complex.continuous_conj, fun t z => by simp, key _ Complex.conj_ofReal h⟩
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Establish `h1 : (k.1.1)ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (D.host.xi0 • reindex e e X.gramᵀ) * (k.1.1).map (cA D) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (D.host.xi0 • reindex e e X.gramᵀ)` using `k.2`. Rewrite `h1` using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hx : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `h2` using `congrArg (fun Y => ((incA D D.host.xi0⁻¹ • Y)ᵀ).submatrix e e) h1`.
+
+Simplify using `only [smul_smul, ← map_mul, inv_mul_cancel₀ hx, map_one, one_smul, transpose_mul, transpose_transpose, ← Matrix.mul_assoc] at h2`. Rewrite `h2` using `[← submatrix_mul_equiv _ _ _ e, ← submatrix_mul_equiv _ _ _ e]`. Establish `e1 : (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (reindex e e X.gramᵀ))ᵀ.submatrix e e = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram`. Use extensionality with `i j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`.
+
+Rewrite `h2` using `[e1]`. Use `⟨⟨Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom k.1, h2⟩, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Use `show reindex e e (reindex e.symm e.symm k.1.1) = k.1.1`. Simplify using the standard rewrite rules.
+-/
 theorem kapX_surj (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (k : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) : ∃ h, kapX X e hJ h = k := by
   subst hJ
@@ -94,6 +119,11 @@ theorem kapX_surj (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
+/- English proof (translation)
+Establish `h1` using `((hasDerivAt_exp_smul_const (𝕂 := ℝ) Yᴴ (0 : ℝ)).mul_const H).fun_mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) Y (0 : ℝ))`. Establish `h2 : (fun t : ℝ => NormedSpace.exp (t • Yᴴ) * H * NormedSpace.exp (t • Y)) = fun _ => H`. Use function extensionality and compare the values at `t`. Establish `e : t • Yᴴ = (t • Y)ᴴ` using `by rw [Matrix.conjTranspose_smul, star_trivial]`. Rewrite using `[e, Matrix.exp_conjTranspose]`.
+
+Conclude with `h t`. Establish `h3` using `(h1.congr_of_eventuallyEq (f₁ := fun _ => H) (Filter.Eventually.of_forall fun t => (congrFun h2 t).symm)).unique (hasDerivAt_const _ _)`. Simplify using `using h3`.
+-/
 theorem lie_of_exp {n : ℕ} (Y H : Matrix (Fin n) (Fin n) ℂ)
     (h : ∀ t : ℝ, (NormedSpace.exp (t • Y))ᴴ * H * NormedSpace.exp (t • Y) = H) : Yᴴ * H + H * Y = 0 := by
   have h1 := ((hasDerivAt_exp_smul_const (𝕂 := ℝ) Yᴴ (0 : ℝ)).mul_const H).fun_mul
@@ -109,6 +139,9 @@ theorem lie_of_exp {n : ℕ} (Y H : Matrix (Fin n) (Fin n) ℂ)
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
+/- English proof (translation)
+The claim follows from `NormedSpace.map_exp ((Matrix.reindexAlgEquiv ℂ ℂ e.symm).toRingHom.comp c.mapMatrix) ((continuous_id.matrix_map hc).matrix_submatrix e e) Z`.
+-/
 theorem exp_map {n d : ℕ} (e : Fin n ≃ Fin d) (c : ℂ →+* ℂ) (hc : Continuous c) (Z : Matrix (Fin d) (Fin d) ℂ) :
     ((NormedSpace.exp Z).map c).submatrix e e = NormedSpace.exp ((Z.map c).submatrix e e) :=
   NormedSpace.map_exp ((Matrix.reindexAlgEquiv ℂ ℂ e.symm).toRingHom.comp c.mapMatrix)
@@ -117,6 +150,27 @@ theorem exp_map {n d : ℕ} (e : Fin n ≃ Fin d) (c : ℂ →+* ℂ) (hc : Cont
 end GlobalTheory.LineAtPlace
 
 open GlobalTheory.LineAtPlace in
+/- English proof (translation)
+Introduce `D θ X hθ d e Wd hJ emb w Z γ hγ hw ho`. Take `rfl` from `Eqv.eq_thetaC D hθ`. Take `⟨τ, rfl⟩ : ∃ τ, Eqv.plW D τ = w` from `⟨_, Eqv.plW_symm D w⟩`. Use `choose h hh using fun t : ℝ => kapX_surj X e hJ (γ (Multiplicative.ofAdd t))`. Establish `hm : ∀ t, Eqv.matA D X (h t) = (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat (γ (Multiplicative.ofAdd t))).submatrix e e`.
+
+Introduce `t`. Rewrite using `[← hh t]`. Use `show _ = (reindex e e (Eqv.matA D X (h t))).submatrix e e`. Simplify using the standard rewrite rules. Take `⟨c, hc, hcs, hp⟩` from `exists_piInf τ (emb _)`.
+
+Establish `h1 : ∀ t : ℝ, infMat D.sp.cm.sig X.gram (Eqv.thetaC D τ) (h t) = NormedSpace.exp (t • (Z.map c).submatrix e e)`. Introduce `t`. Establish `e1 : t • (Z.map c).submatrix e e = ((t • Z).map c).submatrix e e`. Use extensionality with `i j`. Conclude with `(hcs t _).symm`.
+
+Rewrite using `[Eqv.infMat_thetaC, hm, e1, ← exp_map e c hc, ← hw]`. Use extensionality with `i j`. Conclude with `hp _`. Establish `hu : ∀ t : ℝ, (NormedSpace.exp (t • (Z.map c).submatrix e e))ᴴ * gramAt D X τ * NormedSpace.exp (t • (Z.map c).submatrix e e) = gramAt D X τ`. Introduce `t`.
+
+Rewrite using `[← h1]`. Conclude with `Eqv.infMat_unitary' D X (h t) τ`. Use `⟨τ, (Z.map c).submatrix e e, lie_of_exp _ _ hu, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hh t, oneP, Eqv.atTau_eq D X τ _ (hu t)]`. Use `congr 1`.
+
+Apply `Eqv.matA_inj D X` to reduce the goal to its premises. Rewrite using `[Eqv.matA_atH]`. Use `Eqv.matA_of_isAtTau D X ⟨(Eqv.mem_GinfC D X _).2 ?_, h1 t, fun ρ hρ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `k1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat (γ (Multiplicative.ofAdd t)) (e i) (e j) - (1 : Matrix _ _ (AE D)) (e i) (e j))` using `fun u hu => congrFun (congrFun (hγ.2 _ u hu) (e i)) (e j)`.
+
+Establish `k2` using `GlobalTheory.ConjInfExp.finPart_eq_one (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat (γ (Multiplicative.ofAdd t)) (e i) (e j) - (1 : Matrix _ _ (AE D)) (e i) (e j) + 1) (by rwa [add_sub_cancel_right])`. Rewrite `k2` using `[RingHom.map_add, RingHom.map_one, add_eq_right, RingHom.map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, hm, submatrix_apply, k2]`. Distinguish the cases in `k : i = j`. Substitute `k` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne k, Matrix.one_apply_ne (e.injective.ne k)]`. Take `⟨c', -, -, hp'⟩` from `exists_piInf ρ (emb _)`. Establish `k1 : Eqv.plW D ρ ≠ Eqv.plW D τ` using `fun k => hρ (by rw [← Eqv.symm_plW D ρ, k, Eqv.symm_plW])`. Rewrite using `[Eqv.infMat_thetaC, hm]`.
+
+Use extensionality with `i j`. Establish `k2` using `congrFun (congrFun (ho t _ k1) (e i)) (e j)`. Rewrite `k2` using `[Matrix.map_apply]`. Rewrite using `[Matrix.map_apply, submatrix_apply, hp', k2]`. Distinguish the cases in `k : i = j`.
+
+Substitute `k` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne k, Matrix.one_apply_ne (e.injective.ne k)]`.
+-/
 theorem GlobalTheory.LineAtPlace.exists_oneP : ∀ (D : D7) (θ : InfFam D) (X : HSp D), IsInfFam θ → ∀ {d : ℕ} (e : Fin X.rank ≃ Fin d)
     (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d) (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ)
     (emb : ∀ w : InfinitePlace D.host.F, GlobalTheory.AdelicU.EmbOver D.host.E w) (w : InfinitePlace D.host.F)

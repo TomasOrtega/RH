@@ -13,11 +13,27 @@ namespace GlobalTheory.LKCountComm
 section Gen
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Rewrite using `[inf_assoc, Subgroup.inf_relIndex_left]`. Conclude with `Subgroup.relIndex_inf_ne_zero hV hW`.
+-/
 theorem relIndex_triple_inf_ne_zero_of_relIndex_ne_zero {U V W : Subgroup G} (hV : V.relIndex U ≠ 0) (hW : W.relIndex U ≠ 0) :
     (U ⊓ V ⊓ W).relIndex U ≠ 0 := by
   rw [inf_assoc, Subgroup.inf_relIndex_left]
   exact Subgroup.relIndex_inf_ne_zero hV hW
 
+/- English proof (translation)
+Establish `dU : (U ⊓ V ⊓ W).relIndex U ≠ 0` using `relIndex_triple_inf_ne_zero_of_relIndex_ne_zero hUV.2 hUW.2`. Establish `dV : (U ⊓ V ⊓ W).relIndex V ≠ 0`. Establish `h` using `relIndex_triple_inf_ne_zero_of_relIndex_ne_zero (U := V) (V := U) (W := W) hUV.1 hVW.2`. Establish `e : V ⊓ U ⊓ W = U ⊓ V ⊓ W` using `Subgroup.ext fun z => by simp only [Subgroup.mem_inf]; tauto`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+
+Establish `dW : (U ⊓ V ⊓ W).relIndex W ≠ 0`. Establish `h` using `relIndex_triple_inf_ne_zero_of_relIndex_ne_zero (U := W) (V := U) (W := V) hUW.1 hVW.1`. Establish `e : W ⊓ U ⊓ V = U ⊓ V ⊓ W` using `Subgroup.ext fun z => by simp only [Subgroup.mem_inf]; tauto`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `nU` using `GlobalTheory.LKCountPoint.relIndex_inf_inf_ne_zero N dU`.
+
+Establish `nV` using `GlobalTheory.LKCountPoint.relIndex_inf_inf_ne_zero N dV`. Establish `nW` using `GlobalTheory.LKCountPoint.relIndex_inf_inf_ne_zero N dW`. Establish `sub : ∀ {X Y : Subgroup G}, (N ⊓ (U ⊓ V ⊓ W)).relIndex X ≠ 0 → Y ≤ X → (N ⊓ (U ⊓ V ⊓ W)).relIndex Y ≠ 0` using `fun hX hYX h => hX (Subgroup.relIndex_eq_zero_of_le_right hYX h)`. Establish `l1 : N ⊓ (U ⊓ V ⊓ W) ≤ (N ⊓ U) ⊓ (N ⊓ V)`. Introduce `x hx`.
+
+Simplify using `only [Subgroup.mem_inf] at hx ⊢`. The claim follows by propositional logic. Establish `l2 : N ⊓ (U ⊓ V ⊓ W) ≤ (N ⊓ V) ⊓ (N ⊓ W)`. Introduce `x hx`. Simplify using `only [Subgroup.mem_inf] at hx ⊢`.
+
+The claim follows by propositional logic. Establish `l3 : N ⊓ (U ⊓ V ⊓ W) ≤ (N ⊓ U) ⊓ (N ⊓ W)`. Introduce `x hx`. Simplify using `only [Subgroup.mem_inf] at hx ⊢`. The claim follows by propositional logic.
+
+Rewrite using `[GlobalTheory.FunObj.idxRatio_eq_of_le l1 (sub nU inf_le_left), GlobalTheory.FunObj.idxRatio_eq_of_le l2 (sub nV inf_le_left), GlobalTheory.FunObj.idxRatio_eq_of_le l3 (sub nU inf_le_left)]`. Establish `nV' : ((N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ V) : ℚ) ≠ 0` using `by exact_mod_cast nV`. Establish `nW' : ((N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ W) : ℚ) ≠ 0` using `by exact_mod_cast nW`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem idxRatio_cocycle_of_commensurable (N : Subgroup G) {U V W : Subgroup G}
     (hUV : U.Commensurable V) (hVW : V.Commensurable W) (hUW : U.Commensurable W) :
     GlobalTheory.FunObj.idxRatio (N ⊓ U) (N ⊓ V) * GlobalTheory.FunObj.idxRatio (N ⊓ V) (N ⊓ W) =
@@ -49,6 +65,9 @@ theorem idxRatio_cocycle_of_commensurable (N : Subgroup G) {U V W : Subgroup G}
   have nW' : ((N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ W) : ℚ) ≠ 0 := by exact_mod_cast nW
   field_simp
 
+/- English proof (translation)
+Establish `hc` using `idxRatio_cocycle_of_commensurable T ((hK (t * x)).trans (hK t).symm) (hK t) (hK (t * x))`. Rewrite `hc` using `[GlobalTheory.LKCount.OrbKProd.map_conj_mul, GlobalTheory.LKCount.OrbKProd.inf_map_conj T _ ht, GlobalTheory.LKCount.OrbKProd.inf_map_conj T _ ht, GlobalTheory.FunObj.idxRatio_map (MulAut.conj t).injective, show GlobalTheory.FunObj.idxRatio ((T ⊓ K).map (MulAut.conj t).toMonoidHo …`. Rewrite using `[GlobalTheory.LKCount.OrbKProd.vol_eq_idxRatio, GlobalTheory.LKCount.OrbKProd.vol_eq_idxRatio]`. Conclude with `hc.symm`.
+-/
 theorem vol_conj_of_commensurable (T K : Subgroup G)
     (hK : ∀ x : G, (K.map (MulAut.conj x).toMonoidHom).Commensurable K)
     {t : G} (ht : t ∈ T) (hvol : vol (T ⊓ K) ((T ⊓ K).map (MulAut.conj t).toMonoidHom) = 1) (x : G) :
@@ -66,6 +85,11 @@ end Gen
 section Prod
 variable {G₁ G₂ : Type} [Group G₁] [Group G₂]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LKCountPoint.prod_map_conj]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LKCountPoint.relIndex_prod]`. Conclude with `mul_ne_zero (h₁ x.1).1 (h₂ x.2).1`. Rewrite using `[GlobalTheory.LKCountPoint.relIndex_prod]`.
+
+Conclude with `mul_ne_zero (h₁ x.1).2 (h₂ x.2).2`.
+-/
 theorem commensurable_prod (K₁ : Subgroup G₁) (K₂ : Subgroup G₂)
     (h₁ : ∀ g : G₁, (K₁.map (MulAut.conj g).toMonoidHom).Commensurable K₁)
     (h₂ : ∀ g : G₂, (K₂.map (MulAut.conj g).toMonoidHom).Commensurable K₂) (x : G₁ × G₂) :
@@ -82,6 +106,9 @@ variable {G : Type} [Group G]
 
 open GlobalTheory.BCT GlobalTheory.BCT.OrbProd GlobalTheory.LKCount.OrbKProd
 
+/- English proof (translation)
+Unfold `oTerm`. Rewrite using `[f_inv θ K δ f hf ht hk x, map_conj_mul_three_subgroup_of_mem K hk, GlobalTheory.LKCount.OrbKProd.inf_map_conj _ _ ht, vol_conj_of_commensurable _ K hK ht (hvol t ht) x]`.
+-/
 theorem oTerm_inv_of_commensurable (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ)
     (hK : ∀ x : G, (K.map (MulAut.conj x).toMonoidHom).Commensurable K)
     (hf : ∀ k ∈ K, ∀ y, f (k⁻¹ * y * θ k) = f y)
@@ -92,6 +119,9 @@ theorem oTerm_inv_of_commensurable (θ : G →* G) (K : Subgroup G) (δ : G) (f 
   rw [f_inv θ K δ f hf ht hk x, map_conj_mul_three_subgroup_of_mem K hk, GlobalTheory.LKCount.OrbKProd.inf_map_conj _ _ ht,
     vol_conj_of_commensurable _ K hK ht (hvol t ht) x]
 
+/- English proof (translation)
+Unfold `oTerm`. Rewrite using `[GlobalTheory.BCT.OrbProd.twCent_prod, map_conj_prod, prod_inf_prod, prod_inf_prod, GlobalTheory.LKCount.OrbKProd.vol_prod]`. Use `push_cast`. Rewrite using `[mul_inv, mul_mul_mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem oTerm_prod' {G' : Type} [Group G'] (θ : G →* G) (θ' : G' →* G') (K : Subgroup G) (K' : Subgroup G')
     (δ : G) (δ' : G') (f : G → ℂ) (f' : G' → ℂ) (x : G) (x' : G') :
     oTerm (θ.prodMap θ') (K.prod K') ((twCent θ δ).prod (twCent θ' δ') ⊓ K.prod K') (δ, δ')
@@ -107,6 +137,13 @@ end Term
 
 open GlobalTheory.BCT GlobalTheory.BCT.OrbProd GlobalTheory.LKCount.OrbKProd in
 
+/- English proof (translation)
+Unfold `orbK`. Rewrite using `[orbC_eq, orbC_eq, orbC_eq, GlobalTheory.BCT.OrbProd.twCent_prod]`. Establish `hz : ∀ z, oTerm (θ₁.prodMap θ₂) (K₁.prod K₂) ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂) ⊓ K₁.prod K₂) (δ₁, δ₂) (fun y => f₁ y.1 * f₂ y.2) (Quotient.out (Equiv.ofBijective _ (dcPair_bij (twCent θ₁ δ₁) K₁ (twCent θ₂ δ₂) K₂) z)) = oTerm θ₁ K₁ (twCent θ₁ δ₁ ⊓ K₁) δ₁ f₁ (Quotient.out z.1) * …`. Introduce `z`. Take `⟨a, b, ha, hb, e⟩` from `DoubleCoset.mk_out_eq_mul ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂)) (K₁.prod K₂) (Quotient.out z.1, Quotient.out z.2)`.
+
+Rewrite `ha`, `hb` using `[Subgroup.mem_prod]`. Establish `e2 : Quotient.out (Equiv.ofBijective _ (dcPair_bij (twCent θ₁ δ₁) K₁ (twCent θ₂ δ₂) K₂) z) = (a.1 * Quotient.out z.1 * b.1, a.2 * Quotient.out z.2 * b.2)` using `e`. Rewrite using `[e2, oTerm_prod', oTerm_inv_of_commensurable θ₁ K₁ δ₁ f₁ hK₁ hf₁ hv₁ ha.1 hb.1, oTerm_inv_of_commensurable θ₂ K₂ δ₂ f₂ hK₂ hf₂ hv₂ ha.2 hb.2]`. Establish `hq` using `finsum_comp_equiv (Equiv.ofBijective _ (dcPair_bij (twCent θ₁ δ₁) K₁ (twCent θ₂ δ₂) K₂)) (f := fun q => oTerm (θ₁.prodMap θ₂) (K₁.prod K₂) ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂) ⊓ K₁.prod K₂) (δ₁, δ₂) (fun y => f₁ y.1 * f₂ y.2) (Quotient.out q))`. Rewrite using `[← hq, finsum_congr hz]`.
+
+Conclude with `finsum_prod_mul (fun q => oTerm θ₁ K₁ (twCent θ₁ δ₁ ⊓ K₁) δ₁ f₁ (Quotient.out q)) (fun q => oTerm θ₂ K₂ (twCent θ₂ δ₂ ⊓ K₂) δ₂ f₂ (Quotient.out q))`.
+-/
 theorem orbK_prod_of_commensurable {G₁ G₂ : Type} [Group G₁] [Group G₂] (θ₁ : G₁ →* G₁) (θ₂ : G₂ →* G₂)
     (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (δ₁ : G₁) (δ₂ : G₂) (f₁ : G₁ → ℂ) (f₂ : G₂ → ℂ)
     (hK₁ : ∀ x : G₁, (K₁.map (MulAut.conj x).toMonoidHom).Commensurable K₁)
@@ -140,6 +177,19 @@ theorem orbK_prod_of_commensurable {G₁ G₂ : Type} [Group G₁] [Group G₂] 
 section Core
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Establish `hri1 : ∀ y, (T ⊓ K).relIndex (T ⊓ K.map (MulAut.conj y).toMonoidHom) ≠ 0` using `fun y => GlobalTheory.LKCountPoint.relIndex_inf_inf_ne_zero T (hK y).2`. Establish `hri2 : ∀ y, (T ⊓ K.map (MulAut.conj y).toMonoidHom).relIndex (T ⊓ K) ≠ 0` using `fun y => GlobalTheory.LKCountPoint.relIndex_inf_inf_ne_zero T (hK y).1`. Establish `hfinC : ∀ t ∈ T, ((Γ' ⊓ (T ⊓ K).map (MulAut.conj t).toMonoidHom : Subgroup G) : Set G).Finite` using `fun t _ => (hfin t).subset (SetLike.coe_subset_coe.2 (inf_le_inf_left _ (Subgroup.map_mono inf_le_right)))`. Establish `hfinY : ∀ y, ∀ t ∈ T, ((Γ' ⊓ (T ⊓ K.map (MulAut.conj y).toMonoidHom).map (MulAut.conj t).toMonoidHom : Subgroup G) : Set G).Finite` using `fun y t _ => (hfin (t * y)).subset (SetLike.coe_subset_coe.2 (inf_le_inf_left _ (by`. Rewrite using `[← GlobalTheory.LKCountPoint.map_conj_map_conj]`.
+
+Conclude with `Subgroup.map_mono inf_le_right)))`. Establish `hmc : ∀ y, massC Γ' T (T ⊓ K.map (MulAut.conj y).toMonoidHom) * vol (T ⊓ K) (T ⊓ K.map (MulAut.conj y).toMonoidHom) = massC Γ' T (T ⊓ K)` using `fun y => GlobalTheory.LKCount.MassChange.massC_mul_vol Γ' T (T ⊓ K) (T ⊓ K.map (MulAut.conj y).toMonoidHom) inf_le_left inf_le_left (hri1 y) (hri2 y) hfinC (hfinY y)`. Establish `hvol : ∀ y, vol (T ⊓ K) (T ⊓ K.map (MulAut.conj y).toMonoidHom) ≠ 0` using `fun y => by`. Unfold `vol; exact div_ne_zero (by exact_mod_cast hri1 y) (by exact_mod_cast hri2 y)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.LKCountPoint.fold_sum Γ' T K F hΓT hF hfin hsupp, mul_finsum]`. Use `finsum_congr fun y => ?_` and prove the remaining obligations. Establish `hv' : ((vol (T ⊓ K) (T ⊓ K.map (MulAut.conj (Quotient.out y)).toMonoidHom) : ℚ) : ℂ) ≠ 0`. Conclude with `hvol (Quotient.out y)` after adjusting the coercions. Rewrite using `[← hmc (Quotient.out y)]`.
+
+Use `push_cast`. Rewrite using `[mul_assoc, mul_inv_cancel_left₀ hv']`. Introduce and unpack `⟨q₀, hq₀⟩ t ht`. Establish `hmC : massC Γ' T (T ⊓ K) ≠ 0`. Rewrite using `[← hmc (Quotient.out q₀)]`.
+
+Conclude with `mul_ne_zero (GlobalTheory.LKCountPoint.massC_ne_zero_of_ne Γ' T K F hΓT hF hfin hsupp _ hq₀) (hvol _)`. Use `GlobalTheory.LKCount.vol_conj_eq_one_of_massC_ne_zero Γ' T (T ⊓ K) t ht inf_le_left ?_ ?_ hfinC ?_ hmC` and prove the remaining obligations. Rewrite using `[GlobalTheory.LKCountPoint.map_conj_inf_of_mem ht K]`. Conclude with `hri1 t`. Rewrite using `[GlobalTheory.LKCountPoint.map_conj_inf_of_mem ht K]`.
+
+Conclude with `hri2 t`. Introduce `s hs`. Rewrite using `[GlobalTheory.LKCountPoint.map_conj_map_conj]`. Conclude with `hfinC (s * t) (T.mul_mem hs ht)`.
+-/
 theorem core_count_of_commensurable (Γ' T K : Subgroup G) (F : G → ℂ) (hΓT : Γ' ≤ T)
     (hK : ∀ x : G, (K.map (MulAut.conj x).toMonoidHom).Commensurable K)
     (hF : ∀ t ∈ T, ∀ x, ∀ k ∈ K, F (t * x * k) = F x)
@@ -193,6 +243,37 @@ end Core
 
 open GlobalTheory.LKCountPoint in
 
+/- English proof (translation)
+Introduce `Γ G₁ G₂ _ _ _ ι₁ ι₂ θ K₁ K₂ γ δ f₁ φ hK₁ hK₂ _ hf₁ hφ hc₁ hc₂ hι hstab hsupp`. Establish `hΓT : (ι₁.prod ι₂).range ≤ GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ)`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `show (ι₁.prod ι₂) g * (γ, δ) = (γ, δ) * ((MonoidHom.id G₁).prodMap θ) ((ι₁.prod ι₂) g)`. Conclude with `Prod.ext (hc₁ g) (hc₂ g)`.
+
+Establish `hFinv : ∀ t ∈ GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ), ∀ x : G₁ × G₂, ∀ k ∈ K₁.prod K₂, f₁ ((t * x * k).1⁻¹ * γ * (t * x * k).1) * φ ((t * x * k).2⁻¹ * δ * θ (t * x * k).2) = f₁ (x.1⁻¹ * γ * x.1) * φ (x.2⁻¹ * δ * θ x.2)`. Introduce `t ht x k hk`. Establish `ht' : t * (γ, δ) = (γ, δ) * ((MonoidHom.id G₁).prodMap θ) t` using `ht`. Establish `h1 : t.1 * γ = γ * t.1` using `congrArg Prod.fst ht'`. Establish `h2 : t.2 * δ = δ * θ t.2` using `congrArg Prod.snd ht'`.
+
+Establish `e1 : (t * x * k).1⁻¹ * γ * (t * x * k).1 = k.1⁻¹ * (x.1⁻¹ * (t.1⁻¹ * γ * t.1) * x.1) * k.1`. Simplify using `only [Prod.fst_mul]`. Use `group`. Establish `e2 : (t * x * k).2⁻¹ * δ * θ (t * x * k).2 = k.2⁻¹ * (x.2⁻¹ * (t.2⁻¹ * δ * θ t.2) * θ x.2) * θ k.2`. Simplify using `only [Prod.snd_mul, map_mul]`.
+
+Use `group`. Establish `h1' : t.1⁻¹ * γ * t.1 = γ` using `by rw [mul_assoc, ← h1, inv_mul_cancel_left]`. Establish `h2' : t.2⁻¹ * δ * θ t.2 = δ` using `by rw [mul_assoc, ← h2, inv_mul_cancel_left]`. Rewrite using `[e1, e2, h1', h2', hf₁ _ (Subgroup.mem_prod.1 hk).1, hφ _ (Subgroup.mem_prod.1 hk).2]`. Establish `hfin` using `fun x => finite_inter ι₁ ι₂ K₁ K₂ x (hstab x)`.
+
+Establish `hcore` using `core_count_of_commensurable (ι₁.prod ι₂).range (GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ)) (K₁.prod K₂) (fun x => f₁ (x.1⁻¹ * γ * x.1) * φ (x.2⁻¹ * δ * θ x.2)) hΓT (commensurable_prod K₁ K₂ hK₁ hK₂) hFinv hfin hsupp`. Establish `hPS : pointSum ι₁ ι₂ θ K₁ K₂ γ δ f₁ φ = ∑ᶠ q : DoubleCoset.Quotient ((ι₁.prod ι₂).range : Set (G₁ × G₂)) ((K₁.prod K₂ : Subgroup (G₁ × G₂)) : Set (G₁ × G₂)), ((Nat.card ((ι₁.prod ι₂).range ⊓ (K₁.prod K₂).map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup (G₁ × G₂)) : ℕ) : …`. Unfold `pointSum`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[card_stab ι₁ ι₂ K₁ K₂ hι]`.
+
+Distinguish the cases in `hne : ∃ q : DoubleCoset.Quotient ((ι₁.prod ι₂).range : Set (G₁ × G₂)) ((K₁.prod K₂ : Subgroup (G₁ × G₂)) : Set (G₁ × G₂)), f₁ ((Quotient.out q).1⁻¹ * γ * (Quotient.out q).1) * φ ((Quotient.out q).2⁻¹ * δ * θ (Quotient.out q).2) ≠ 0`. Establish `hu` using `hcore.2 hne`. Establish `hTp : GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ) = (GlobalTheory.BCT.twCent (MonoidHom.id G₁) γ).prod (GlobalTheory.BCT.twCent θ δ)` using `twCent_prod _ _ γ δ`. Establish `hCp : GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ) ⊓ K₁.prod K₂ = (GlobalTheory.BCT.twCent (MonoidHom.id G₁) γ ⊓ K₁).prod (GlobalTheory.BCT.twCent θ δ ⊓ K₂)`. Rewrite using `[hTp]`.
+
+Use extensionality with `z`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_prod]`. The claim follows by propositional logic. Establish `hu1 : ∀ t ∈ GlobalTheory.BCT.twCent (MonoidHom.id G₁) γ, vol (GlobalTheory.BCT.twCent (MonoidHom.id G₁) γ ⊓ K₁) ((GlobalTheory.BCT.twCent (MonoidHom.id G₁) γ ⊓ K₁).map (MulAut.conj t).toMonoidHom) = 1`. Introduce `t ht`.
+
+Establish `hmem : (t, (1 : G₂)) ∈ GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ)`. Rewrite using `[hTp]`. Conclude with `Subgroup.mem_prod.2 ⟨ht, one_mem _⟩`. Establish `h` using `hu _ hmem`. Rewrite `h` using `[hCp, prod_map_conj, vol_prod]`.
+
+Simplify using `only at h`. Rewrite `h` using `[map_conj_one, vol_self, mul_one]`. Then use the resulting hypothesis. Establish `hu2 : ∀ t ∈ GlobalTheory.BCT.twCent θ δ, vol (GlobalTheory.BCT.twCent θ δ ⊓ K₂) ((GlobalTheory.BCT.twCent θ δ ⊓ K₂).map (MulAut.conj t).toMonoidHom) = 1`. Introduce `t ht`. Establish `hmem : ((1 : G₁), t) ∈ GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ)`.
+
+Rewrite using `[hTp]`. Conclude with `Subgroup.mem_prod.2 ⟨one_mem _, ht⟩`. Establish `h` using `hu _ hmem`. Rewrite `h` using `[hCp, prod_map_conj, vol_prod]`. Simplify using `only at h`.
+
+Rewrite `h` using `[map_conj_one, vol_self, one_mul]`. Then use the resulting hypothesis. Establish `hprod` using `orbK_prod_of_commensurable (MonoidHom.id G₁) θ K₁ K₂ γ δ f₁ φ hK₁ hK₂ (fun k hk y => hf₁ k hk y) hφ hu1 hu2`. Rewrite using `[hPS, hcore.1]`. Unfold `pointSide`. Rewrite using `[← hprod]`.
+
+Both sides reduce to the same expression. Use `push_neg at hne`. Establish `hF0 : ∀ x : G₁ × G₂, f₁ (x.1⁻¹ * γ * x.1) * φ (x.2⁻¹ * δ * θ x.2) = 0`. Introduce `x`. Take `⟨h, k, hh, hk, he⟩` from `DoubleCoset.mk_out_eq_mul (ι₁.prod ι₂).range (K₁.prod K₂) x`.
+
+Rewrite using `[← hFinv h (hΓT hh) x k hk, ← he]`. Conclude with `hne _`. Establish `hor : (∀ x₁ : G₁, f₁ (x₁⁻¹ * γ * x₁) = 0) ∨ (∀ x₂ : G₂, φ (x₂⁻¹ * δ * θ x₂) = 0)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Take `⟨⟨a, ha⟩, ⟨b, hb⟩⟩` from `hc`. Conclude with `mul_ne_zero ha hb (hF0 (a, b))`. Rewrite using `[hPS]`. Unfold `pointSide orbK orbC`. Break down `hor with h | h` into its components or cases.
+
+Simplify using `[hF0, h]`. Simplify using `[hF0, h]`.
+-/
 theorem pointSum_eq_pointSide_of_commensurable : ∀ {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (θ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ : G₁) (δ : G₂) (f₁ : G₁ → ℂ) (φ : G₂ → ℂ), (∀ g : G₁, Subgroup.Commensurable (K₁.map (MulAut.conj g).toMonoidHom) K₁) → (∀ g : G₂, Subgroup.Commensurable (K₂.map (MulAut.conj g).toMonoidHom) K₂) → K₂.map θ ≤ K₂ → (∀ k ∈ K₁, ∀ x, f₁ (k⁻¹ * x * k) = f₁ x) → (∀ k ∈ K₂, ∀ x, φ (k⁻¹ * x * θ k) = φ x) → (∀ g : Γ, ι₁ g * γ = γ * ι₁ g) → (∀ g : Γ, ι₂ g * δ = δ * θ (ι₂ g)) → Function.Injective (ι₁.prod ι₂) → (∀ x : G₁ × G₂, Finite (stab ι₁ ι₂ K₁ K₂ x)) → {q : DoubleCoset.Quotient ((ι₁.prod ι₂).range : Set (G₁ × G₂)) ((K₁.prod K₂ : Subgroup (G₁ × G₂)) : Set (G₁ × G₂)) | f₁ ((Quotient.out q).1⁻¹ * γ * (Quotient.out q).1) * φ ((Quotient.out q).2⁻¹ * δ * θ (Quotient.out q).2) ≠ 0}.Finite → pointSum ι₁ ι₂ θ K₁ K₂ γ δ f₁ φ = pointSide ι₁ ι₂ θ K₁ K₂ γ δ f₁ φ := by
   intro Γ G₁ G₂ _ _ _ ι₁ ι₂ θ K₁ K₂ γ δ f₁ φ hK₁ hK₂ _ hf₁ hφ hc₁ hc₂ hι hstab hsupp
   have hΓT : (ι₁.prod ι₂).range ≤ GlobalTheory.BCT.twCent ((MonoidHom.id G₁).prodMap θ) (γ, δ) := by

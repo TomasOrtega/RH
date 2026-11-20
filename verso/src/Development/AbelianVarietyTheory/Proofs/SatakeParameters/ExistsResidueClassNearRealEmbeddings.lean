@@ -4,6 +4,11 @@ open NumberField NumberField.InfinitePlace NumberField.mixedEmbedding
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hreal : ComplexEmbedding.IsReal (Complex.ofRealHom.comp τ)`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hP : (InfinitePlace.mk (Complex.ofRealHom.comp τ)).IsReal` using `isReal_mk_iff.2 hreal`.
+
+Use `⟨_, hP, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[embedding_of_isReal_apply, embedding_mk_eq_of_isReal hreal]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_realPlace_embedding {F : Type} [Field F] [NumberField F] (τ : F →+* ℝ) :
     ∃ (P : InfinitePlace F) (hP : P.IsReal), embedding_of_isReal hP = τ := by
   have hreal : ComplexEmbedding.IsReal (Complex.ofRealHom.comp τ) := by
@@ -17,6 +22,21 @@ theorem exists_realPlace_embedding {F : Type} [Field F] [NumberField F] (τ : F 
   rw [embedding_of_isReal_apply, embedding_mk_eq_of_isReal hreal]
   simp
 
+/- English proof (translation)
+Establish `hfin : Finite (F →+* ℝ)`. Use `Finite.of_injective (fun τ => (Complex.ofRealHom.comp τ : F →+* ℂ)) ?_` and prove the remaining obligations. Introduce `a b h`. Use extensionality with `x`. Use `congrArg (fun f : F →+* ℂ => f x) h` as an intermediate fact.
+
+Simplify using `using this`. Use `Fintype.ofFinite (F →+* ℝ)` as an intermediate fact. Set `b` to `RingOfIntegers.basis F`. Use `⟨∑ τ : F →+* ℝ, ∑ i, |τ ((b i : 𝓞 F) : F)|, fun w => ?_⟩` and prove the remaining obligations. Set `v : mixedSpace F` to `(fun w' => w (embedding_of_isReal w'.2), 0)`.
+
+Set `c` to `(latticeBasis F).repr v`. Use `⟨∑ i, round (c i) • b i, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨P, hP, hτ⟩` from `exists_realPlace_embedding τ`. Establish `hv : v = ∑ i, c i • latticeBasis F i` using `((latticeBasis F).sum_repr v).symm`. Establish `hw : w τ = ∑ i, c i * τ ((b i : 𝓞 F) : F)`.
+
+Establish `h1` using `congrArg (fun u : mixedSpace F => u.1 ⟨P, hP⟩) hv`. Simplify using `only [v, hτ] at h1`. Rewrite using `[h1]`. Simplify using `[Prod.fst_sum, Finset.sum_apply, latticeBasis_apply, integralBasis_apply, mixedEmbedding_apply_isReal, hτ, b, c, v]`. Establish `hz : τ (((∑ i, round (c i) • b i : 𝓞 F)) : F) = ∑ i, (round (c i) : ℝ) * τ ((b i : 𝓞 F) : F)`.
+
+Simplify using `[map_sum]`. Rewrite using `[hz, hw, ← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, abs_mul]`.
+
+Establish `h2 : |(round (c i) : ℝ) - c i| ≤ 1`. Use `abs_sub_round (c i)` as an intermediate fact. Rewrite using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `mul_le_of_le_one_left (abs_nonneg _) h2`.
+
+Use `_ ≤ ∑ τ' : F →+* ℝ, ∑ i, |τ' ((b i : 𝓞 F) : F)| := Finset.single_le_sum (f := fun τ' : F →+* ℝ => ∑ i, |τ' ((b i : 𝓞 F) : F)|) (fun τ' _ => Finset.sum_nonneg fun i _ => abs_nonneg _) (Finset.mem_univ τ)`.
+-/
 theorem exists_integer_near (F : Type) [Field F] [NumberField F] :
     ∃ C : ℝ, ∀ w : (F →+* ℝ) → ℝ, ∃ z : 𝓞 F, ∀ τ : F →+* ℝ, |τ (z : F) - w τ| ≤ C := by
   classical
@@ -59,6 +79,15 @@ theorem exists_integer_near (F : Type) [Field F] [NumberField F] :
         Finset.single_le_sum (f := fun τ' : F →+* ℝ => ∑ i, |τ' ((b i : 𝓞 F) : F)|)
           (fun τ' _ => Finset.sum_nonneg fun i _ => abs_nonneg _) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Introduce `F _ _ _ m a₀ hm`. Take `⟨C, hC⟩` from `exists_integer_near F`. Establish `hMpos : 0 < Ideal.absNorm m` using `Nat.pos_of_ne_zero (fun h => hm (Ideal.absNorm_eq_zero_iff.1 h))`. Use `set M : ℕ := Ideal.absNorm m with hMdef`. Establish `hMmem : ((M : ℕ) : 𝓞 F) ∈ m` using `Ideal.absNorm_mem m`.
+
+Establish `hM0 : (0 : ℝ) < M` using `by exact_mod_cast hMpos`. Use `⟨M * C, fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hC (fun τ => (y τ - τ (a₀ : F)) / M)`. Use `⟨a₀ + (M : 𝓞 F) * z, ?_, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `using m.mul_mem_right z hMmem`.
+
+Establish `h` using `hz τ`. Establish `h3 : τ (((a₀ + (M : 𝓞 F) * z : 𝓞 F)) : F) - y τ = M * (τ (z : F) - (y τ - τ (a₀ : F)) / M)`. Establish `: τ (((a₀ + (M : 𝓞 F) * z : 𝓞 F)) : F) = τ (a₀ : F) + M * τ (z : F)`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, abs_mul, abs_of_pos hM0]`. Conclude with `mul_le_mul_of_nonneg_left h hM0.le`.
+-/
 theorem residueClass_relativelyDense : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
     (m : Ideal (𝓞 F)) (a₀ : 𝓞 F), m ≠ ⊥ →
     ∃ C : ℝ, ∀ y : (F →+* ℝ) → ℝ, ∃ a : 𝓞 F, a - a₀ ∈ m ∧

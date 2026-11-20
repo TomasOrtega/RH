@@ -40,6 +40,9 @@ def ownNorm (B : WeightFamilies.Prov D) : RunIn.SecNorm B :=
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem sharesAt_ownNorm {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (S : Scal B) (Tn : ℕ) (c : ℝ)
     (Sh : Set (B.Cusp j wF)) :
     SharesAt (RunIn.globalFamilyDataBaseChange (ownNorm B) X E hM G) (scalarsWithNorm (ownNorm B).N (ownNorm B).h0 (ownNorm B).h1 (ownNorm B).h2
@@ -48,6 +51,9 @@ theorem sharesAt_ownNorm {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyDat
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨del, th', h1, h2⟩` from `h`. Use `⟨del, th', h1, fun rz alz th0 zc rq th iet et => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c, d, e⟩` from `h2 rz alz th0 zc rq th iet et`. Conclude with `⟨fun la => a la, b, c, d, fun la => e la⟩`.
+-/
 theorem sharesAt_of_xplus {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (S : Scal B) (Tn : ℕ) (c : ℝ)
     (Sh : Set (B.Cusp j wF)) (h : SharesAt (gd2Xplus G E hM) S Tn c Sh) : SharesAt G S Tn c Sh := by
   obtain ⟨del, th', h1, h2⟩ := h
@@ -57,6 +63,9 @@ theorem sharesAt_of_xplus {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyDa
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem shortG_xN (wL wF : WeightFamilies.Wt D j) (S : Scal B) (β : ℝ) :
     ShortG (RunIn.xN n X E hM) ((RunIn.xN n X E hM).wF0 wL wF)
       ((RunIn.xN n X E hM).Thc (scalarsWithNorm n.N n.h0 n.h1 n.h2 n.h3 n.h4 S).s0 ((RunIn.xN n X E hM).wF0 wL wF)) β ↔
@@ -68,6 +77,13 @@ end General
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus hPar hPg hH hLat hjm G hG hE Sh hSh`. Establish `ht : TieC (⟨1,2,1,2,1,2,1,4,7⟩ : KAdm) H 1 4 0 11 C2 A2 7`. Take `⟨a, b, c, d, e, f⟩` from `hPg.tie`. Conclude with `⟨a, b, c, d, e, rfl, rfl, f, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩`. Take `⟨-, -, -, -, hadd, h2, h11⟩` from `GlobalTheory.ExtraWeight.numbers D _ _ j (recPJ h j hj) _ 1 4 0 11 large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hPg.hyp ht hPg.page hjm hj.1 (le_trans (by norm_num) hPg.df)`.
+
+Establish `hA` using `GlobalTheory.T.thetaArchimedeanData_indefiniteModels D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus hPar hPg hH hjm G hG hE`. Take `⟨hR, hMg⟩` from `GlobalTheory.T.cuspReadings_span_model_forms_shifted_weights D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p hPar hPg`. Take `⟨-, -, ⟨-, -, -, -, -, po, -, -, PL, -, -, -, hS0, -⟩, -⟩` from `hH`. Set `n` to `ownNorm (recB h.toLawsCore)`. Use `sharesAt_of_xplus (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) G S Tn _ Sh ((sharesAt_ownNorm (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) G S Tn _ Sh).1 ?_)` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.Shares.exists_inBasis_shares_inContain D T h j hj n ka wL wF (RunIn.globalFamilyDataBaseChange n (recPJ h j hj) (extAll h j hj) (intAtExt_extAll h j hj) G) Tn 7 (cc D large₂ C2 A2 7 wL) (scalarsWithNorm n.N n.h0 n.h1 n.h2 n.h3 n.h4 S) hadd h2 h11 hA hR hMg hLat ⟨_, ( …`.
+-/
 theorem sharesAt_of_lt : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (EX : ErrX D) (p : ℕ) (S : Scal (recB h.toLawsCore)) (nus : HeightOneSpectrum (𝓞 (recB h.toLawsCore).KO) → ℝ), ParOK T EX p j → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → HypC large₂ (recPJ h j hj) H C2 A2 7 0 CT S ka wL wF Tn nP nW h0 nus → LatAt (recB h.toLawsCore) j ka → j < D.R.m → ∀ G : GlobalFamilyData (recPJ h j hj) ka wL wF, GenOK h j hj large₂ G S (cc D large₂ C2 A2 7 wL) → EtaOK h j hj large₂ wL G.iet G.et → ∀ Sh : Set ((recB h.toLawsCore).Cusp j wF), Submodule.span (recB h.toLawsCore).KO Sh = ⊤ → SharesAt G S Tn (cc D large₂ C2 A2 7 wL) Sh := by
   intro D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 EX p S nus hPar hPg hH hLat hjm G hG hE Sh hSh
   have ht : TieC (⟨1,2,1,2,1,2,1,4,7⟩ : KAdm) H 1 4 0 11 C2 A2 7 := by

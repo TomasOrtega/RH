@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalis
 
 namespace GlobalTheory.CompanionTheory.LocDual.Kernels
 
+/- English proof (translation)
+Use `set N : Submodule O (M ⧸ E) := Λ.map E.mkQ with hNdef`. Establish `hNfg : N.FG` using `hΛ.map _`. Use `haveI : Module.Finite O N := Module.Finite.iff_fg.2 hNfg`. Establish `hE : ∀ e ∈ E, E.mkQ e = 0` using `fun e he => (Submodule.Quotient.mk_eq_zero E).2 he`. Take `⟨e₀, he₀, t₀, ht₀, hw₀⟩` from `h 0`.
+
+Establish `hwN : E.mkQ w ∈ N` using `⟨t₀, ht₀, by rw [hw₀, pow_zero, one_smul, map_add, hE e₀ he₀, zero_add]⟩`. Establish `hI : Ideal.span {ϖ} ≠ ⊤` using `fun h' => hϖ (Ideal.span_singleton_eq_top.1 h')`. Establish `hbot` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := N) (Ideal.span {ϖ}) hI`. Establish `hmem : (⟨E.mkQ w, hwN⟩ : N) ∈ (⨅ i : ℕ, Ideal.span {ϖ} ^ i • ⊤ : Submodule O N)`. Use `Submodule.mem_iInf _ |>.2 fun i => ?_` and prove the remaining obligations.
+
+Take `⟨e, he, t, ht, hw⟩` from `h i`. Establish `htN : E.mkQ t ∈ N` using `⟨t, ht, rfl⟩`. Establish `heq : (⟨E.mkQ w, hwN⟩ : N) = ϖ ^ i • (⟨E.mkQ t, htN⟩ : N)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`.
+
+Use `show E.mkQ w = ϖ ^ i • E.mkQ t`. Rewrite using `[hw, map_add, map_smul, hE e he, zero_add]`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self ϖ) i) Submodule.mem_top`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`.
+
+Establish `h0 : E.mkQ w = 0` using `congrArg Subtype.val hmem`. Conclude with `(Submodule.Quotient.mk_eq_zero E).1 h0`.
+-/
 theorem mem_of_forall_pow {O M : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [AddCommGroup M] [Module O M] (Λ E : Submodule O M) (hΛ : Λ.FG) (ϖ : O) (hϖ : ¬ IsUnit ϖ)
     (w : M) (h : ∀ n : ℕ, ∃ e ∈ E, ∃ t ∈ Λ, w = e + ϖ ^ n • t) : w ∈ E := by
@@ -37,6 +48,15 @@ theorem mem_of_forall_pow {O M : Type} [CommRing O] [IsLocalRing O] [IsNoetheria
   have h0 : E.mkQ w = 0 := congrArg Subtype.val hmem
   exact (Submodule.Quotient.mk_eq_zero E).1 h0
 
+/- English proof (translation)
+Set `Kf : Finset G → Submodule k U` to `fun F => ⨅ g ∈ F, LinearMap.ker ((LinearMap.proj g).comp φ)`. Take `⟨_, ⟨F, rfl⟩, hmin⟩` from `WellFounded.has_min (wellFounded_lt (α := Submodule k U)) (Set.range Kf) ⟨Kf ∅, Set.mem_range_self _⟩`. Establish `hall : ∀ g, Kf F ≤ LinearMap.ker ((LinearMap.proj g).comp φ)`. Introduce `g`. Establish `hle : Kf (insert g F) ≤ Kf F`.
+
+Use `le_iInf₂ fun g' hg' => iInf₂_le g' (Finset.mem_insert_of_mem hg')` and prove the remaining obligations. Establish `heq : Kf (insert g F) = Kf F`. Assume the negation of the conclusion as `hne`. Conclude with `hmin _ (Set.mem_range_self _) (lt_of_le_of_ne hle hne)`. Rewrite using `[← heq]`.
+
+Conclude with `iInf₂_le g (Finset.mem_insert_self g F)`. Use `⟨F, fun u hu => funext fun g => ?_⟩` and prove the remaining obligations. Establish `huF : u ∈ Kf F`. Simplify using `only [Kf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval]`. Conclude with `hu`.
+
+Use `hall g huF` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_finset_sep {k U G X : Type} [Field k] [AddCommGroup U] [Module k U]
     [FiniteDimensional k U] [AddCommGroup X] [Module k X] (φ : U →ₗ[k] G → X) :
     ∃ F : Finset G, ∀ u, (∀ g ∈ F, φ u g = 0) → φ u = 0 := by
@@ -60,6 +80,49 @@ theorem exists_finset_sep {k U G X : Type} [Field k] [AddCommGroup U] [Module k 
   have := hall g huF
   simpa using this
 
+/- English proof (translation)
+Take `⟨⟨hdom, hdvr, hfrac⟩, -⟩` from `id hO`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfrac`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Take `⟨LA, LA', hLat, -⟩` from `(GlobalTheory.T.exists_dual_lattices D l K).2 LL O hO A A' P hP`. Take `⟨-, hLat2⟩` from `id hLat`. Take `⟨L1, hL1⟩` from `(GlobalTheory.T.exists_dual_lattices D l K).1 LL O hO`. Establish `h52` using `GlobalTheory.T.lattice_open_compact_nhds_basis D l K LL O hO A' LA' ϖ hϖ`. Establish `h53` using `GlobalTheory.T.cup_flip_continuous_cocycle D l K LL O hO A A' P hP`.
+
+Establish `hb' : Continuous b ∧ ∀ g h, b (g * h) = b g + A'.ρ g (b h)` using `hb`. Take `⟨β, hβdef⟩ : ∃ β : LL, β = algebraMap O LL ϖ` from `⟨_, rfl⟩`. Establish `hβ : β ≠ 0`. Rewrite using `[hβdef]`. Conclude with `fun h => hϖ.ne_zero (IsFractionRing.injective O LL (h.trans (map_zero _).symm))`.
+
+Establish `hmkLC : IsLocallyConstant (Submodule.Quotient.mk (p` using `LA'.T)) := by`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ⟨(· + -x) ⁻¹' (LA'.T : Set A'.V), h52.1.preimage (continuous_add_const _), ?_, fun x' hx' => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `(Submodule.Quotient.eq _).2 (by simpa [sub_eq_add_neg] using hx')`. Establish `hactD : ∀ g (v : A'.V), Formalism.WeaklyAdmissibleFiltrations.actD LA' g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (A'.ρ g v)` using `fun g v => rfl`.
+
+Establish `hlift : ∀ q : A'.V ⧸ LA'.T, Submodule.Quotient.mk (Formalism.MainNotions.N.liftD LA' q) = q` using `fun q => by`. Unfold `Formalism.MainNotions.N.liftD`. Use `generalize_proofs hq`. Conclude with `hq.choose_spec`. Establish `e1 : ∀ (v : A'.V) g, (LinearMap.pi fun g => Formalism.WeaklyAdmissibleFiltrations.actD LA' g - LinearMap.id) (Submodule.Quotient.mk v : A'.V ⧸ LA'.T) g = Submodule.Quotient.mk (A'.ρ g v - v)` using `fun v g => by`.
+
+Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, hactD, Submodule.Quotient.mk_sub]`. Establish `hBZ : BD LA' ≤ divisibleCocycles LA'`. Introduce `s hs`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.1 hs`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+
+Use `show IsLocallyConstant _ ∧ ∀ g h, _ = _ + Formalism.WeaklyAdmissibleFiltrations.actD LA' g _`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `hf : (fun g => (LinearMap.pi fun g => Formalism.WeaklyAdmissibleFiltrations.actD LA' g - LinearMap.id) (Submodule.Quotient.mk v : A'.V ⧸ LA'.T) g) = (Submodule.Quotient.mk (p` using `LA'.T)) ∘ fun g => A'.ρ g v + -v := funext fun g => by`. Rewrite using `[e1, sub_eq_add_neg]`. Both sides reduce to the same expression.
+
+Establish `hcont : Continuous fun g : ↥(GK K) => A'.ρ g v + -v` using `(A'.cont v).add continuous_const`. Establish `hlc` using `hmkLC.comp_continuous hcont`. Use `hlc using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e1, e1, e1, hactD, ← Submodule.Quotient.mk_add]`. Use `congr 1`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Establish `step : ∀ n : ℕ, ∃ x : A'.V, ∀ g, (β ^ n)⁻¹ • b g - (A'.ρ g x - x) ∈ LA'.T`. Introduce `n`. Establish `hc : (fun g => (Submodule.Quotient.mk ((β ^ n)⁻¹ • b g) : A'.V ⧸ LA'.T)) ∈ divisibleCocycles LA'` using `by show IsLocallyConstant _ ∧ ∀ g h, _ = _ + Formalism.WeaklyAdmissibleFiltrations.actD LA' g _`.
+
+Use `⟨hmkLC.comp_continuous (hb'.1.const_smul _), fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hactD, ← Submodule.Quotient.mk_add, hb'.2 g h, smul_add, map_smul]`. Establish `hcS` using `hD LL O hO L1 hL1 A A' LA LA' P hLat (BD LA') le_rfl hBZ _ hc (by`. Introduce `d hd _`.
+
+Establish `hd1 : d ∈ continuousCocycles A.ρ` using `(Submodule.mem_inf.1 hd).1`. Establish `hdT : ∀ g, d g ∈ LA.T` using `fun g => (Submodule.mem_pi.1 (Submodule.mem_inf.1 hd).2) g (Set.mem_univ g)`. Establish `hcup` using `(hC LL O hO L1 hL1 _ (h53.2 d hd1 b hb).1).1 (hab d hd1) ((β ^ n)⁻¹)`. Unfold `Formalism.MainNotions.N.CobO at hcup ⊢`. Use `hcup using 2` and compare the differences between its conclusion and the goal.
+
+Name the introduced variables `x`. Rewrite using `[Submodule.Quotient.eq, hL1]`. Establish `hl` using `(Submodule.Quotient.eq LA'.T).1 (hlift (Submodule.Quotient.mk ((β ^ n)⁻¹ • b x.2)))`. Take `⟨a, ha⟩` from `(hLat2 _).1 (LA'.stable x.1 _ hl) (d x.1) (hdT x.1)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.linearMap_apply, ← ha]`. Simplify using `only [Formalism.MainNotions.N.cupLD, Formalism.MainNotions.N.cupL, Pi.smul_apply, smul_eq_mul, map_sub, map_smul])`. Take `⟨z, hz⟩` from `LinearMap.mem_range.1 hcS`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Use `⟨x, fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congr_fun hz g`. Rewrite `h1` using `[e1]`. Establish `h2` using `LA'.T.neg_mem ((Submodule.Quotient.eq LA'.T).1 h1)`. Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis. Take `⟨U, hU⟩ : ∃ U : Submodule LL (↥(GK K) → A'.V), U = Submodule.span LL {b} ⊔ B1 A'.ρ` from `⟨_, rfl⟩`.
+
+Use `haveI hB1fd : FiniteDimensional LL ↥(B1 A'.ρ) := LinearMap.finiteDimensional_range _`. Use `haveI : FiniteDimensional LL ↥U := by`. Rewrite using `[hU]`. Conclude with `Submodule.finiteDimensional_sup _ _`. Take `⟨F, hF⟩` from `exists_finset_sep (k := LL) U.subtype`.
+
+Set `Φ : A'.V →ₗ[O] (↥F → A'.V)` to `(LinearMap.pi fun f : ↥F => A'.ρ f - LinearMap.id).restrictScalars O`. Set `Λ : Submodule O (↥F → A'.V)` to `⨆ f : ↥F, LA'.T.map (LinearMap.single O (fun _ : ↥F => A'.V) f)`. Establish `hΛ : Λ.FG` using `Submodule.fg_iSup _ fun f => LA'.fg.map _`. Establish `hw : (fun f : ↥F => b f) ∈ LinearMap.range Φ`. Use `mem_of_forall_pow Λ (LinearMap.range Φ) hΛ ϖ hϖ.not_isUnit _ fun n => ?_` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `step n`. Use `⟨Φ (β ^ n • x), LinearMap.mem_range_self _ _, fun f => (β ^ n)⁻¹ • b f - (A'.ρ f x - x), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.univ_sum_single (fun f : ↥F => (β ^ n)⁻¹ • b f - (A'.ρ f x - x))]`. Conclude with `Submodule.sum_mem _ fun f _ => Submodule.mem_iSup_of_mem f ⟨_, hx f, rfl⟩`. Use function extensionality and compare the values at `f`.
+
+Establish `e2 : (ϖ ^ n) • ((β ^ n)⁻¹ • b f - (A'.ρ f x - x)) = b f - β ^ n • (A'.ρ f x - x)`. Rewrite using `[← algebraMap_smul LL (ϖ ^ n), map_pow, ← hβdef, smul_sub, smul_inv_smul₀ (pow_ne_zero n hβ)]`. Use `show b f = Φ (β ^ n • x) f + (ϖ ^ n) • ((β ^ n)⁻¹ • b f - (A'.ρ f x - x))`. Rewrite using `[e2]`. Simplify using `only [Φ, LinearMap.restrictScalars_apply, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, map_smul, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨x, hx⟩` from `LinearMap.mem_range.1 hw`. Establish `hu : b - Formalism.WeaklyAdmissibleFiltrations.cob A'.ρ x ∈ U`. Rewrite using `[hU]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.mem_span_singleton_self b)) (Submodule.mem_sup_right (LinearMap.mem_range_self (Formalism.WeaklyAdmissibleFiltrations.cob A'.ρ) x))`.
+
+Establish `hzero : b - Formalism.WeaklyAdmissibleFiltrations.cob A'.ρ x = 0` using `hF ⟨_, hu⟩ fun g hg => by`. Establish `h1` using `congr_fun hx ⟨g, hg⟩`. Simplify using `only [Φ, LinearMap.restrictScalars_apply, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply] at h1`. Simplify using `only [Submodule.coe_subtype, Pi.sub_apply, Formalism.WeaklyAdmissibleFiltrations.cob, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[h1, sub_self]`.
+
+Conclude with `LinearMap.mem_range.2 ⟨x, (sub_eq_zero.1 hzero).symm⟩`.
+-/
 theorem right_kernel (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l)
     (hD : DualD ((D.loc l).PD K)) (hC : CobLO ((D.loc l).PD K))
     (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
@@ -179,6 +242,11 @@ theorem right_kernel (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l)
     rw [h1, sub_self]
   exact LinearMap.mem_range.2 ⟨x, (sub_eq_zero.1 hzero).symm⟩
 
+/- English proof (translation)
+Introduce `D l _ K hD hC`. Unfold `GlobalTheory.CompanionTheory.LocDual.NondegL`. Introduce `LL _ _ _ O _ _ hO A A' P hP`. Establish `h53` using `GlobalTheory.T.cup_flip_continuous_cocycle D l K LL O hO A A' P hP`. Use `⟨fun a ha hab => ?_, fun b hb hab => right_kernel D l K hD hC LL O hO A A' P hP b hb hab⟩` and prove the remaining obligations.
+
+Conclude with `right_kernel D l K hD hC LL O hO A' A P.flip h53.1 a ha fun b hb => ((h53.2 a ha b hb).2.2.1).1 (hab b hb)`.
+-/
 theorem nondegL : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), DualD ((D.loc l).PD K) →
     CobLO ((D.loc l).PD K) → NondegL ((D.loc l).PD K) := by
   intro D l _ K hD hC

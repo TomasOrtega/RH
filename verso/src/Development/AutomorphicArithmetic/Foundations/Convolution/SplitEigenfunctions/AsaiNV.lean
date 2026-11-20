@@ -20,8 +20,14 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SplitEigenfunct
 
 namespace UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+The claim follows from `trAdm_of decE`.
+-/
 theorem trAdm : TrAdm := trAdm_of decE
 
+/- English proof (translation)
+The claim follows from `asai_of trAdm exGd_of chEx_of (asEx_of satU_of) (ext_of trAdm perTr_of ent_of unf_of phiMem_of fac_of (shiftM_of trAdm (shift_of trAdm)) hol_of nonZ_of) (lan_of satU_of landau_of)`.
+-/
 theorem asaiNV : AsaiNV :=
   asai_of trAdm exGd_of chEx_of (asEx_of satU_of)
     (ext_of trAdm perTr_of ent_of unf_of phiMem_of fac_of (shiftM_of trAdm (shift_of trAdm)) hol_of nonZ_of) (lan_of satU_of landau_of)

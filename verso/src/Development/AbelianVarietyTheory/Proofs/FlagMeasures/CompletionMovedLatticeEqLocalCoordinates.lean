@@ -10,6 +10,13 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 open scoped Pointwise ENNReal Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D Z T T' F0 F0' FP G c σ p g Λ hE`. Unfold `GlobalTheory.HL.GCoord.lat GlobalTheory.HL.Places.lat GlobalTheory.HL.WCoord.lat Formalism.MainNotions.S.LocNG.img Formalism.L2.SG.TermLoc.lattice₂`. Rewrite using `[Submodule.map_span, Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_image, SetLike.mem_coe, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨g (baseChange₂ D p x), ⟨baseChange₂ D p x, ⟨x, hx, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (c.c p).e (g (baseChange₂ D p x)) = (placesOf Z).bc p (c.e (σ x))`.
+
+Rewrite using `[hE x, c.compat p (σ x)]`. Introduce and unpack `⟨_, ⟨_, ⟨x, hx, rfl⟩, rfl⟩, rfl⟩`. Use `⟨c.e (σ x), ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (placesOf Z).bc p (c.e (σ x)) = (c.c p).e (g (baseChange₂ D p x))`. Rewrite using `[hE x, c.compat p (σ x)]`.
+-/
 theorem GlobalTheory.HL.placesLat_gcoordLat_eq : ∀ (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T') (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (G : GFrames (placesOf Z) D.R.rS D.R.k) (c : GCoord Z F0 F0' FP G) (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (p : PlF D) (g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (Λ : Submodule (𝓞 D.host.E) (VS D).V), GlobalTheory.LocOver.Ext p σ g → (placesOf Z).lat p (c.lat σ Λ) = (c.c p).lat (LocNG.img (M := Z.M p) g (lattice₂ D Z.M p Λ)) := by
   intro D Z T T' F0 F0' FP G c σ p g Λ hE
   unfold GlobalTheory.HL.GCoord.lat GlobalTheory.HL.Places.lat GlobalTheory.HL.WCoord.lat Formalism.MainNotions.S.LocNG.img Formalism.L2.SG.TermLoc.lattice₂

@@ -20,6 +20,9 @@ section Br
 variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
 
+/- English proof (translation)
+Use `⟨fun x y hx hy => hadd x y hx hy, fun x hx => hint x hx, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `twPsiQ`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨b, hb, -⟩`. Conclude with `hx hb`.
+-/
 theorem doubleCosetDatum_psi_ok (G : ChGlob X R.m) (P : rowSG Pr sel mu)
     (hadd : ∀ x y : X.E, IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * x) → IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * y) →
       twPsiQ G.σ₀ G.xi0 P.1 (2 * R.m) (x + y) = twPsiQ G.σ₀ G.xi0 P.1 (2 * R.m) x * twPsiQ G.σ₀ G.xi0 P.1 (2 * R.m) y)
@@ -31,6 +34,9 @@ theorem doubleCosetDatum_psi_ok (G : ChGlob X R.m) (P : rowSG Pr sel mu)
   rintro ⟨b, hb, -⟩
   exact hx hb
 
+/- English proof (translation)
+Unfold `twMuq`. Rewrite using `[if_neg hP]`. Use `split_ifs`. Conclude with `Units.ne_zero _`. Conclude with `one_ne_zero`.
+-/
 theorem twistedMultiplier_ne_zero (G : ChGlob X R.m) (i : ℕ) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) : twMuq Ch sel mu G (i + 1) P ≠ 0 := by
   unfold twMuq
   rw [if_neg hP]
@@ -38,6 +44,9 @@ theorem twistedMultiplier_ne_zero (G : ChGlob X R.m) (i : ℕ) (P : rowSG Pr sel
   · exact Units.ne_zero _
   · exact one_ne_zero
 
+/- English proof (translation)
+Introduce `h0`. Rewrite `hsq` using `[h0, zero_pow two_ne_zero]`. Establish `: (qOf P.1 : X.K) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Conclude with `this hsq.symm`.
+-/
 theorem squareRoot_norm_ne_zero (P : rowSG Pr sel mu) (hq : (Ideal.absNorm P.1.asIdeal).Prime) (hsq : twSqrt P.1 ^ 2 = (qOf P.1 : X.K)) :
     twSqrt (X := X) P.1 ≠ 0 := by
   intro h0
@@ -45,6 +54,9 @@ theorem squareRoot_norm_ne_zero (P : rowSG Pr sel mu) (hq : (Ideal.absNorm P.1.a
   have : (qOf P.1 : X.K) ≠ 0 := by exact_mod_cast hq.ne_zero
   exact this hsq.symm
 
+/- English proof (translation)
+Unfold `E1at omPhi muAt PhiAt`. Simplify using `only [twCst, if_neg hP]`. Both sides reduce to the same expression.
+-/
 theorem firstUnfolding_eq_doubleCosetDatum (G : ChGlob X R.m) (i : ℕ) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs) (A' B' : ℕ) (hal : AutY X R i) (h : AutY X R (i + 1)) :
     E1at Ch sel mu { twCst Ch sel mu G with A := A', B := B' } i P hal h =
       PI.TwistedEisensteinNonvanishing.TwistedEisensteinCoefficient (toTwistedEisensteinRanks R) P.1 (twPsiQ G.σ₀ G.xi0 P.1 (2 * R.m)) (twSqrt P.1) (twMuq Ch sel mu G (i + 1) P)
@@ -53,6 +65,13 @@ theorem firstUnfolding_eq_doubleCosetDatum (G : ChGlob X R.m) (i : ℕ) (P : row
   simp only [twCst, if_neg hP]
   rfl
 
+/- English proof (translation)
+Establish `hL : ∀ j, lamYat (Pr` using `Pr) (R := R) j P.1 = LocE.lamY P.1 (qOf P.1) (R.N j) (cOf R j) 0 := fun j => by`. Unfold `lamYat`. Rewrite using `[if_neg hP]`. Establish `hJ : ∀ j, Jat (Pr` using `Pr) (R := R) true j P.1 = LocE.JQ P.1 (qOf P.1) (R.k + j) (R.N j) (cOf R j) := fun j => by`. Unfold `Jat`.
+
+Rewrite using `[if_neg hP]`. Establish `bdd : ∀ j (g : AutY X R j), TwBdd (Pr` using `Pr) j P.1 g → PI.TwistedEisensteinNonvanishing.BddL (toTwistedEisensteinRanks R) P.1 j g := fun j g hg x hx => by`. Use `hg x (by rw [hL]; exact hx)` as an intermediate fact. Rewrite `this` using `[hL]`. Conclude with `this`.
+
+Take `⟨A₀, B₀, hAB⟩` from `hne`. Use `H X.E X.K (toTwistedEisensteinRanks R) P.1 hq hu (twPsiQ G.σ₀ G.xi0 P.1 (2 * R.m)) (twSqrt P.1) (twMuq Ch sel mu G (i + 1) P) (resChar (mu : Chr X.F X.E X.K) P.1) (doubleCosetDatum_psi_ok G P hadd hint) (squareRoot_norm_ne_zero P hq hsq) (twistedMultiplier_ne_zero G i P hP) i hi …` as an intermediate fact. Take `⟨A₁, B₁, h1⟩` from `this`. Conclude with `⟨A₁, B₁, fun A' B' hA hB => by rw [firstUnfolding_eq_doubleCosetDatum G i P hP]; exact h1 A' B' hA hB⟩`.
+-/
 theorem doubleCosetDatum_hypotheses (H : PI.TwistedEisensteinNonvanishing.TwistedEisensteinNonvanishing) (G : ChGlob X R.m) {i : ℕ} (hi : i + 3 ≤ R.m) (P : rowSG Pr sel mu) (hP : P.1 ∉ Pr.vGs)
     (hq : (Ideal.absNorm P.1.asIdeal).Prime) (hu : ((Ideal.absNorm P.1.asIdeal : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2)
     (hadd : ∀ x y : X.E, IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * x) → IntAt P.1 ((qOf P.1 : X.E) ^ (2 * R.m) * y) →
@@ -78,12 +97,18 @@ theorem doubleCosetDatum_hypotheses (H : PI.TwistedEisensteinNonvanishing.Twiste
   obtain ⟨A₁, B₁, h1⟩ := this
   exact ⟨A₁, B₁, fun A' B' hA hB => by rw [firstUnfolding_eq_doubleCosetDatum G i P hP]; exact h1 A' B' hA hB⟩
 
+/- English proof (translation)
+Introduce `i hi P hP hd hal h h' hbal hb hb' hs hne`. Conclude with `doubleCosetDatum_hypotheses _root_.TwistedEisensteinNonvanishing G (by omega) P hP hd.1 hd.2 (hK.psi_add P hP) (hK.psi_int P hP) (hK.sq_sq P hP) hal h h' hbal hb hb' hs hne`.
+-/
 theorem unfoldingNonvanishingDoubleCoset_holds (G : ChGlob X R.m) {m2 : ℕ} (hm : R.m = m2 + 2) (hK : TwCstQ (Pr := Pr) sel mu G) :
     UnfoldingNonvanishingDoubleCoset Ch sel mu (twCst Ch sel mu G) m2 := by
   intro i hi P hP hd hal h h' hbal hb hb' hs hne
   exact doubleCosetDatum_hypotheses _root_.TwistedEisensteinNonvanishing G (by omega) P hP hd.1 hd.2 (hK.psi_add P hP) (hK.psi_int P hP) (hK.sq_sq P hP)
     hal h h' hbal hb hb' hs hne
 
+/- English proof (translation)
+Establish `hK` using `twCstQ_of hd hz hs hxi`. Establish `hc` using `twCst_ok hPr hCh h4 hK`. Conclude with `twistedIndex_firstUnfolding_ok hX hPr hCh h4 G hT hW hval hm hQG hd hz hs hxi (unfoldingNonvanishingDoubleCoset_holds G hm hK) (characterNonvanishing_holds hm hc)`.
+-/
 theorem twIdx_ok_closed (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)
     (hval : ∀ (j : Fin R.m) (w : HeightOneSpectrum (𝓞 X.E)), w ∈ Pr.vGs →

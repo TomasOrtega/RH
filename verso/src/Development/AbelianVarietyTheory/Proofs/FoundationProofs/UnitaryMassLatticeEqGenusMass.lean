@@ -24,6 +24,17 @@ local notation "𝓛" => latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮
 
 omit [NumberField F] [Algebra F E] in
 
+/- English proof (translation)
+Take `⟨m', hm', hs⟩` from `csGlob_single N hN`. Take `⟨s, rfl⟩` from `hΛ`. Take `⟨m, hm, hi⟩` from `adelstabL_den (fun p : s × Fin n => (p.1 : Fin n → E) p.2)`. Use `⟨m * m', mul_ne_zero hm hm', fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Establish `: (m * m') • x = ∑ k, (⟨(m : E) * x k, hi (⟨x, hx⟩, k)⟩ : 𝓞 E) • (Pi.single k (m' : E) : Fin n → E)`. Use extensionality with `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def, Algebra.smul_def]`.
+
+Express the relevant statement in the definitionally equal form `_ = (m : E) * x j * m'`. Simplify using `only [map_mul, eq_intCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k _ hkj`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hkj), smul_zero]`.
+
+Conclude with `fun h => absurd (Finset.mem_univ j) h`. Rewrite using `[this]`. Conclude with `sum_mem fun k _ => N.smul_mem _ (hs k)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `N.smul_mem a hx`.
+-/
 theorem exists_den (Λ N : Submodule (𝓞 E) (Fin n → E)) (hΛ : Λ.FG)
     (hN : Submodule.span E (N : Set (Fin n → E)) = ⊤) : ∃ m : ℤ, m ≠ 0 ∧ ∀ x ∈ Λ, m • x ∈ N := by
   obtain ⟨m', hm', hs⟩ := csGlob_single N hN
@@ -49,6 +60,11 @@ theorem exists_den (Λ N : Submodule (𝓞 E) (Fin n → E)) (hΛ : Λ.FG)
   | smul a x _ hx => rw [smul_comm]; exact N.smul_mem a hx
 
 omit [NumberField F] [Algebra F E] [NumberField E] in
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+
+Rewrite using `[glEquiv_apply', Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Rewrite using `[glEquiv_apply', Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mem_gmap (γ : GL (Fin n) E) (N : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E) :
     x ∈ Formalism.HermitianLatticesTheory.gmap (glEquiv γ) N ↔ (γ⁻¹).1 *ᵥ x ∈ N := by
   unfold Formalism.HermitianLatticesTheory.gmap
@@ -64,11 +80,17 @@ theorem mem_gmap (γ : GL (Fin n) E) (N : Submodule (𝓞 E) (Fin n → E)) (x :
     rw [glEquiv_apply', Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one,
       Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `h : (p.comap (algebraMap (𝓞 F) (𝓞 E))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal p`. Conclude with `⟨⟨_, h.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField h (RingOfIntegers.not_isField F)⟩, rfl⟩`.
+-/
 theorem exists_place (p : Ideal (𝓞 E)) (hp : p.IsMaximal) :
     ∃ v : HeightOneSpectrum (𝓞 F), p.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal := by
   have h : (p.comap (algebraMap (𝓞 F) (𝓞 E))).IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal p
   exact ⟨⟨_, h.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField h (RingOfIntegers.not_isField F)⟩, rfl⟩
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Use `Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal ?_` and prove the remaining obligations. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]`. Conclude with `bot_le`.
+-/
 theorem exists_over (v : HeightOneSpectrum (𝓞 F)) :
     ∃ p : Ideal (𝓞 E), p.IsMaximal ∧ p.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal := by
   haveI := v.isMaximal
@@ -76,12 +98,22 @@ theorem exists_over (v : HeightOneSpectrum (𝓞 F)) :
   rw [(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))]
   exact bot_le
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `span_recovery_of_integral_adelic_approx integral_adele_approximation_holds F E (Fin n) Λ hΛ hsp g _`.
+-/
 theorem eps_glob {Λ : Submodule (𝓞 E) (Fin n → E)} (hΛ : Module.Finite (𝓞 E) Λ)
     (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (g : GL (Fin n) 𝒜) (e : 𝒜) (u : Fin n → 𝒜) :
     e • u ∈ 𝓛 (globLat g Λ) ↔ e • ((g⁻¹).1 *ᵥ u) ∈ 𝓛 Λ := by
   rw [← Matrix.mulVec_smul]
   exact span_recovery_of_integral_adelic_approx integral_adele_approximation_holds F E (Fin n) Λ hΛ hsp g _
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp, fun _ _ => rfl⟩`. Consider the case `insert w S _ ih`. Take `⟨g, hg, h1, h2⟩` from `ih`. Establish `hne : ∀ v, v ≠ w → bc (prV (E` using `E) v) (afsplitU w (bc (prV (E := E) w) (δ w)) g) = bc (prV (E := E) v) g := fun v hv => by`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[afsplit_coe_bc_prV, afsplit_coe_bc_prV, afsplitU_coe, afsplitC_prV_ne w v hv]`. Use `⟨afsplitU w (bc (prV (E := E) w) (δ w)) g, afsplitU_mem w σ J _ _ (afsplit_bc_mem σ J w _ (hδ w)) hg, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+
+Conclude with `afsplit_right1 v _ _`. Rewrite using `[hne v h, h1 v ((Finset.mem_insert.1 hv).resolve_left h)]`. Rewrite `hv` using `[Finset.mem_insert, not_or]`. Rewrite using `[hne v hv.1, h2 v hv.2]`.
+-/
 theorem exists_glue (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     (δ : HeightOneSpectrum (𝓞 F) → GL (Fin n) 𝒜) (hδ : ∀ v, δ v ∈ UPts σ J 𝔸)
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
@@ -104,6 +136,11 @@ theorem exists_glue (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     · rw [Finset.mem_insert, not_or] at hv
       rw [hne v hv.1, h2 v hv.2]
 
+/- English proof (translation)
+Establish `e' : bc (prV (E` using `E) v) g⁻¹ = bc (prV (E := E) v) h⁻¹ := by rw [map_inv, map_inv, e]`. Rewrite using `[← Matrix.smul_mulVec, ← Matrix.smul_mulVec]`. Use `congr 1`. Use extensionality with `i j`. Establish `e''` using `Units.ext_iff.1 e'`.
+
+Use `congrArg (afsplitIE v) (congrFun (congrFun e'' i) j)` as an intermediate fact. Rewrite `this` using `[afsplit_coe_bc_prV, afsplit_coe_bc_prV, Matrix.map_apply, Matrix.map_apply, afsplit_decomp, afsplit_decomp]`. Conclude with `this`.
+-/
 theorem eps_congr (v : HeightOneSpectrum (𝓞 F)) {g h : GL (Fin n) 𝒜}
     (e : bc (prV (E := E) v) g = bc (prV (E := E) v) h) (u : Fin n → 𝒜) :
     afsplitEps E v • ((g⁻¹).1 *ᵥ u) = afsplitEps E v • ((h⁻¹).1 *ᵥ u) := by
@@ -119,6 +156,11 @@ theorem eps_congr (v : HeightOneSpectrum (𝓞 F)) {g h : GL (Fin n) 𝒜}
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hne`. Set `A : Subalgebra F E` to `AlgHom.equalizer σ (AlgHom.id F E)`. Break down `Subalgebra.isSimpleOrder_of_finrank hr |>.eq_bot_or_eq_top A with h | h` into its components or cases. Establish `: e ∈ A` using `he`. Rewrite `this` using `[h]`.
+
+Conclude with `Algebra.mem_bot.1 this`. Establish `: z ∈ A` using `h ▸ Algebra.mem_top`. Conclude with `absurd this hz`.
+-/
 theorem fixed_mem (σ : E →ₐ[F] E) (hr : Module.finrank F E = 2) (hne : ∃ z, σ z ≠ z) (e : E) (he : σ e = e) :
     ∃ a : F, algebraMap F E a = e := by
   obtain ⟨z, hz⟩ := hne
@@ -133,6 +175,11 @@ theorem fixed_mem (σ : E →ₐ[F] E) (hr : Module.finrank F E = 2) (hne : ∃ 
 variable {σ : E →ₐ[F] E} (hs : ∀ e, (σ : E →+* E) ((σ : E →+* E) e) = e) {J : Matrix (Fin n) (Fin n) E}
   {Λ : Submodule (𝓞 E) (Fin n → E)}
 
+/- English proof (translation)
+Use `letI := starOfInv (σ : E →+* E) hs`. Establish `hL` using `global_lattice_isLattice_holds F E (Fin n) Λ hΛ hsp g`. Use `⟨hL, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_place (F := F) p hp`. Take `⟨D, hD, hc⟩` from `GlobalTheory.GenusCong.eps_mem_latS_iff F E n Λ hΛ hsp v`.
+
+Take `⟨γ, hγ, X, hX, e⟩` from `GlobalTheory.Mass.OnePlace.weak_approx_at F E σ hs hne n J hJ hdet v D hD g hg`. Use `⟨glEquiv γ⁻¹, (unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).1 (inv_mem hγ), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_gmap, inv_inv, GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n Λ hΛ hsp v p hp.isPrime hv, GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n _ (Module.Finite.iff_fg.2 hL.fg) hL.span_eq_top v p hp.isPrime hv, eps_glob hΛ hsp, hc _ X hX e ((g⁻¹).1 *ᵥ _), Matrix.mulVec_mulVec, …`.
+-/
 theorem globLat_mem_genus (hfix : ∀ e : E, σ e = e → ∃ a : F, algebraMap F E a = e) (hne : ∃ z, σ z ≠ z)
     (hJ : IsHerm (σ : E →+* E) J) (hdet : J.det ≠ 0) (hΛ : Module.Finite (𝓞 E) Λ)
     (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (g : GL (Fin n) 𝒜) (hg : g ∈ UPts σ J 𝔸) :
@@ -151,6 +198,27 @@ theorem globLat_mem_genus (hfix : ∀ e : E, σ e = e → ∃ a : F, algebraMap 
     eps_glob hΛ hsp, hc _ X hX e ((g⁻¹).1 *ᵥ _), Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_right,
     csEquiv_bc_mulVec]
 
+/- English proof (translation)
+Use `letI := starOfInv (σ : E →+* E) hs`. Take `⟨hL, hG⟩` from `hN`. Establish `hNf : Module.Finite (𝓞 E) N` using `Module.Finite.iff_fg.2 hL.fg`. Establish `h1 : ∀ v : HeightOneSpectrum (𝓞 F), ∃ γ ∈ UJ (σ : E →+* E) J, ∀ x : Fin n → E, afsplitEps E v • (((bc ιA γ)⁻¹).1 *ᵥ fun i => ιA (x i)) ∈ 𝓛 Λ ↔ (afsplitEps E v • fun i => ιA (x i)) ∈ 𝓛 N`. Introduce `v`.
+
+Take `⟨p, hp, hv⟩` from `exists_over (E := E) v`. Take `⟨u, hu, e⟩` from `hG p hp`. Take `⟨γ, rfl⟩` from `Formalism.UG.Final.HermBridgeSurj E (Fin n) _ u hu`. Use `⟨γ, (unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).2 hu, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, csEquiv_bc_mulVec, ← GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n Λ hΛ hsp v p hp.isPrime hv, ← GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n N hNf hL.span_eq_top v p hp.isPrime hv, ← e, mem_gmap]`.
+
+Use `choose γ hγ hγ' using h1`. Take `⟨a, ha, haN⟩` from `exists_den Λ N (Module.Finite.iff_fg.1 hΛ) hL.span_eq_top`. Take `⟨b, hb, hbΛ⟩` from `exists_den N Λ hL.fg hsp`. Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | ((a * b : ℤ) : 𝓞 F) ∈ v.asIdeal}.Finite`. Establish `hne : Ideal.span {((a * b : ℤ) : 𝓞 F)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Int.cast_ne_zero.2 (mul_ne_zero ha hb)`. Conclude with `(Ideal.finite_factors hne).subset fun v hv => Ideal.dvd_span_singleton.2 hv`. Take `⟨g, hg, g1, g2⟩` from `exists_glue σ J (fun v => bc ιA (γ v)) (fun v => rational_points_le_holds F E (Fin n) σ J 𝔸 ⟨γ v, hγ v, rfl⟩) hfin.toFinset`. Establish `hL'` using `global_lattice_isLattice_holds F E (Fin n) Λ hΛ hsp g`.
+
+Establish `key : ∀ p : Ideal (𝓞 E), p.IsMaximal → Formalism.HermitianLatticesTheory.loc (K` using `E) p (globLat g Λ) = Formalism.HermitianLatticesTheory.loc (K := E) p N := by`. Introduce `p hp`. Take `⟨v, hv⟩` from `exists_place (F := F) p hp`. Use extensionality with `x`. Rewrite using `[GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n _ (Module.Finite.iff_fg.2 hL'.fg) hL'.span_eq_top v p hp.isPrime hv, eps_glob hΛ hsp]`.
+
+Distinguish the cases in `h : v ∈ hfin.toFinset`. Rewrite using `[eps_congr v (g1 v h), hγ', GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n N hNf hL.span_eq_top v p hp.isPrime hv]`. Rewrite using `[eps_congr v (g2 v h), inv_one, Units.val_one, Matrix.one_mulVec, ← GlobalTheory.LocDict.mem_loc_iff F E σ hs hfix n Λ hΛ hsp v p hp.isPrime hv]`. Establish `hm : ((a * b : ℤ) : 𝓞 E) ∉ p` using `fun h' => h (hfin.mem_toFinset.2 (by`. Express the relevant statement in the definitionally equal form `_ ∈ v.asIdeal`.
+
+Rewrite using `[← hv, Ideal.mem_comap, map_intCast]`. Conclude with `h'))`. Establish `hc : ((a * b : ℤ) : 𝓞 E) ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `E) p := by`. Use `Submonoid.subset_closure ⟨hm, fun t ht => ?_⟩` and prove the remaining obligations. Establish `: t = ((a * b : ℤ) : 𝓞 E)` using `RingOfIntegers.coe_injective (by`.
+
+Rewrite using `[ht, map_intCast]`. Conclude with `map_intCast (σ : E →+* E) _)`. Rewrite using `[this]` and apply the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs', hx⟩`.
+
+Use `⟨_, mul_mem hc hs', ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, Int.cast_smul_eq_zsmul, mul_comm, mul_smul]`. Conclude with `zsmul_mem (haN _ hx) _`. Introduce and unpack `⟨s, hs', hx⟩`. Use `⟨_, mul_mem hc hs', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, Int.cast_smul_eq_zsmul, mul_smul]`. Conclude with `zsmul_mem (hbΛ _ hx) _`. Establish `lg` using `(Formalism.HermitianLatticesTheory.locBasic (𝓞 E) E (Fin n → E) RingOfIntegers.coe_injective).2.2.1`. Conclude with `⟨g, hg, le_antisymm (lg _ _ fun p hp => (key p hp).le) (lg _ _ fun p hp => (key p hp).ge)⟩`.
+-/
 theorem exists_globLat_eq (hfix : ∀ e : E, σ e = e → ∃ a : F, algebraMap F E a = e)
     (hΛ : Module.Finite (𝓞 E) Λ) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
     (N : Submodule (𝓞 E) (Fin n → E))
@@ -214,6 +282,11 @@ theorem exists_globLat_eq (hfix : ∀ e : E, σ e = e → ∃ a : F, algebraMap 
 local notation "Γ" => Subgroup.subgroupOf (ratPts σ J 𝔸) (UPts σ J 𝔸)
 local notation "𝒦" => Subgroup.subgroupOf (levelAfL σ J Λ) (UPts σ J 𝔸)
 
+/- English proof (translation)
+Use `letI := starOfInv (σ : E →+* E) hs`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨c, ⟨γ, hγ, e⟩, k, hk, rfl⟩` from `(DoubleCoset.eq _ _ _ _).1 h`. Use `⟨glEquiv γ, (unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).1 hγ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← global_lattice_equiv_holds F E (Fin n) Λ γ g k hk.2, e]`. Both sides reduce to the same expression. Introduce and unpack `⟨u, hu, e⟩`. Take `⟨γ, rfl⟩` from `Formalism.UG.Final.HermBridgeSurj E (Fin n) _ u hu`. Conclude with `(class_injective_of_span_recovery (span_recovery_of_integral_adelic_approx integral_adele_approximation_holds) global_lattice_equiv_holds F E (Fin n) σ J Λ hΛ hsp g' g γ ((unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).2 hu) e.symm).symm`.
+-/
 theorem mk_eq_iff (hΛ : Module.Finite (𝓞 E) Λ) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
     (g g' : UPts σ J 𝔸) :
     letI := starOfInv (σ : E →+* E) hs
@@ -232,6 +305,13 @@ theorem mk_eq_iff (hΛ : Module.Finite (𝓞 E) Λ) (hsp : Submodule.span E (Λ 
     exact (class_injective_of_span_recovery (span_recovery_of_integral_adelic_approx integral_adele_approximation_holds) global_lattice_equiv_holds F E (Fin n) σ J Λ hΛ hsp g' g γ
       ((unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).2 hu) e.symm).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← global_lattice_equiv_holds F E (Fin n) Λ γ g _ (inv_mem h)]`. Use `congr 1`. Use `group`.
+
+Introduce `h`. Rewrite `h` using `[← global_lattice_equiv_holds F E (Fin n) Λ γ g 1 (one_mem _), mul_one]`. Use `(inv_mem_iff (H := stabGL (𝓛 Λ))).1 fun u => ?_` and prove the remaining obligations. Establish `h1` using `eps_glob hΛ hsp g 1 (g.1 *ᵥ u)`. Establish `h2` using `eps_glob hΛ hsp (bc ιA γ * g) 1 (g.1 *ᵥ u)`.
+
+Rewrite `h2` using `[h, h1, one_smul, one_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[h2]`. Simplify using `only [mul_inv_rev, inv_inv, mul_assoc]`.
+-/
 theorem conj_mem_stab_iff (hΛ : Module.Finite (𝓞 E) Λ) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
     (g : GL (Fin n) 𝒜) (γ : GL (Fin n) E) :
     g⁻¹ * bc ιA γ * g ∈ stabGL (𝓛 Λ) ↔ Formalism.HermitianLatticesTheory.gmap (glEquiv γ) (globLat g Λ) = globLat g Λ := by
@@ -251,6 +331,11 @@ theorem conj_mem_stab_iff (hΛ : Module.Finite (𝓞 E) Λ) (hsp : Submodule.spa
     simp only [mul_inv_rev, inv_inv, mul_assoc]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `haveI : Nontrivial 𝒜 := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Use `haveI : Nontrivial 𝔸 := (evalV F ⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩).toRingHom.domain_nontrivial`. Conclude with `(Algebra.TensorProduct.includeRight_injective (R := F) (A := E) (B := 𝔸) (algebraMap F E).injective).nontrivial`. Introduce `x y e`.
+
+Conclude with `Units.ext (Matrix.map_injective (ιA).injective (congrArg Units.val e : x.1.map ιA = y.1.map ιA))`.
+-/
 theorem bc_injective : Function.Injective (bc (n := Fin n) ιA) := by
   haveI : Nontrivial 𝒜 := by
     obtain ⟨P, hP⟩ := Ideal.exists_maximal (𝓞 F)
@@ -261,6 +346,9 @@ theorem bc_injective : Function.Injective (bc (n := Fin n) ιA) := by
   intro x y e
   exact Units.ext (Matrix.map_injective (ιA).injective (congrArg Units.val e : x.1.map ιA = y.1.map ιA))
 
+/- English proof (translation)
+Use `(Nat.card_eq_of_bijective (fun a : {a : A // a ∈ U ∧ (g : B)⁻¹ * φ a * g ∈ K} => (⟨⟨⟨_, hU a.1 a.2.1⟩, a.1, a.2.1, rfl⟩, Subgroup.mem_inf.2 ⟨mul_mem (mul_mem (inv_mem g.2) (hU a.1 a.2.1)) g.2, a.2.2⟩⟩ : stabAt ((U.map φ).subgroupOf V) ((V ⊓ K).subgroupOf V) g)) ⟨fun x y e => ?_, …` and prove the remaining obligations. Conclude with `Subtype.ext (hφ (congrArg (fun z => z.1.1.1) e))`. Introduce and unpack `⟨⟨⟨c, hc⟩, γ, hγ, e⟩, h⟩`. Take `rfl : φ γ = c` from `e`. Conclude with `⟨⟨γ, hγ, h.2⟩, rfl⟩`.
+-/
 theorem card_stabAt_of_injective {A B : Type} [Group A] [Group B] (φ : A →* B) (hφ : Function.Injective φ)
     (U : Subgroup A) (V K : Subgroup B) (hU : ∀ a ∈ U, φ a ∈ V) (g : V) :
     Nat.card (stabAt ((U.map φ).subgroupOf V) ((V ⊓ K).subgroupOf V) g) =
@@ -274,6 +362,11 @@ theorem card_stabAt_of_injective {A B : Type} [Group A] [Group B] (φ : A →* B
     obtain rfl : φ γ = c := e
     exact ⟨⟨γ, hγ, h.2⟩, rfl⟩
 
+/- English proof (translation)
+Use `letI := starOfInv (σ : E →+* E) hs`. Use `(card_stabAt_of_injective (bc ιA) bc_injective (UJ (σ : E →+* E) J) (UPts σ J 𝔸) (stabGL (𝓛 Λ)) (fun γ hγ => rational_points_le_holds F E (Fin n) σ J 𝔸 ⟨γ, hγ, rfl⟩) g).trans ?_` and prove the remaining obligations. Use `Nat.card_eq_of_bijective (fun γ => ⟨glEquiv γ.1, (unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).1 γ.2.1, (conj_mem_stab_iff hΛ hsp _ _).1 γ.2.2⟩) ⟨fun x y e => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : glEquiv x.1 = glEquiv y.1` using `congrArg Subtype.val e`. Conclude with `Subtype.ext (Matrix.GeneralLinearGroup.toLin.injective ((LinearMap.GeneralLinearGroup.generalLinearEquiv E (Fin n → E)).injective e1))`.
+
+Introduce and unpack `⟨u, hu, h⟩`. Take `⟨γ, rfl⟩` from `Formalism.UG.Final.HermBridgeSurj E (Fin n) _ u hu`. Conclude with `⟨⟨γ, (unitary_isometry_lattice_holds E _ hs (Fin n) J 1 one_ne_zero (map_one _) _).2 hu, (conj_mem_stab_iff hΛ hsp _ _).2 h⟩, rfl⟩`.
+-/
 theorem card_stabAt (hΛ : Module.Finite (𝓞 E) Λ) (hsp : Submodule.span E (Λ : Set (Fin n → E)) = ⊤)
     (g : UPts σ J 𝔸) :
     letI := starOfInv (σ : E →+* E) hs
@@ -297,6 +390,23 @@ end GlobalTheory.Mass.Genus
 
 open GlobalTheory.Mass.Genus Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
+/- English proof (translation)
+Use `letI := starOfInv (σ : E →+* E) hs`. Establish `hτ : ∀ τ : E →+* ℂ, τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ` using `fun τ => RingHom.ext (hσ.2.2.2 τ)`. Establish `hH : IsHerm (σ : E →+* E) J` using `Matrix.ext fun i j => hJ.1 i j`. Establish `hne : ∃ z, σ z ≠ z` using `by by_contra! h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+
+Use `haveI := hσ.2.1`. Use `IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_))` and prove the remaining obligations. Use `hσ.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this.symm`.
+
+Establish `hfix` using `fixed_mem σ hσ.2.2.1 hne`. Use `haveI := Formalism.UG.Final.ClassSetFiniteL F E _ σ J hτ hH hJ.2.isUnit hd Λ hΛ hsp`. Establish `hgen` using `globLat_mem_genus hs hfix hne hH hJ.2 hΛ hsp`. Establish `hsur` using `exists_globLat_eq (J := J) hs hfix hΛ hsp`. Establish `hmk` using `mk_eq_iff (J := J) hs hΛ hsp`.
+
+Establish `hex : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps (formJ (σ : E →+* E) hs J 1) Λ s`. Set `f : ClassSet ((ratPts σ J (Af F)).subgroupOf (UPts σ J (Af F))) ((levelAfL σ J Λ).subgroupOf (UPts σ J (Af F))) → Submodule (𝓞 E) (Fin M → E)` to `fun c => globLat (c.out : UPts σ J (Af F)).1 Λ`. Use `⟨(Set.finite_range f).toFinset, fun N hN => ?_, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hN`. Conclude with `hgen _ c.out.2`.
+
+Take `⟨g, hg, rfl⟩` from `hsur N hN`. Use `⟨f (DoubleCoset.mk _ _ ⟨g, hg⟩), ⟨(Set.Finite.mem_toFinset _).2 ⟨_, rfl⟩, (hmk _ ⟨g, hg⟩).1 (DoubleCoset.out_eq' _ _ _)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `N ⟨hN', h⟩`. Take `⟨c, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hN'`. Rewrite using `[← (hmk c.out ⟨g, hg⟩).2 h, DoubleCoset.out_eq']`.
+
+Rewrite using `[Formalism.HermitianLatticesTheory.mass, dif_pos hex]`. Take `⟨h1, h2⟩` from `hex.choose_spec`. Use `set s := hex.choose`. Use `choose g hg hgN using fun N : s => hsur N (h1 N N.2)`. Rewrite using `[GlobalTheory.Mass.classMass_eq_sum_of_bijective (fun N : s => (⟨g N, hg N⟩ : UPts σ J (Af F))) ⟨fun N N' e => ?_, fun c => ?_⟩, ← Finset.sum_coe_sort s]`.
+
+Use `Finset.sum_congr rfl fun N _ => ?_` and prove the remaining obligations. Rewrite using `[card_stabAt hs hΛ hsp, hgN]`. Use `(hmk _ _).1 e` as an intermediate fact. Simplify using `only [hgN] at this`. Conclude with `Subtype.ext ((h2 N' (h1 N' N'.2)).unique ⟨N.2, this⟩ ⟨N'.2, 1, one_mem _, csAsm_gmap_one _⟩)`.
+
+Take `⟨N, ⟨hN, h⟩, -⟩` from `h2 _ (hgen _ c.out.2)`. Use `⟨⟨N, hN⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← DoubleCoset.out_eq' _ _ c]`. Use `(hmk _ _).2 ?_` and prove the remaining obligations. Simplify `h` using `only [hgN]`.
+-/
 theorem GlobalTheory.Mass.classMass_lattice_eq_genus_mass {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hd : IsTotDef σ J) (hs : ∀ e, (σ : E →+* E) ((σ : E →+* E) e) = e) (Λ : Submodule (𝓞 E) (Fin M → E))
@@ -356,6 +466,9 @@ theorem GlobalTheory.Mass.classMass_lattice_eq_genus_mass {F E : Type} [Field F]
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes in
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Mass.unitaryMass_comap_swapPts σ J _).trans (GlobalTheory.Mass.classMass_lattice_eq_genus_mass hσ hJ hd hs Λ hΛ hsp)`.
+-/
 theorem GlobalTheory.Mass.unitaryMass_lattice_eq_genus_mass {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hσ : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hd : IsTotDef σ J) (hs : ∀ e, (σ : E →+* E) ((σ : E →+* E) e) = e) (Λ : Submodule (𝓞 E) (Fin M → E))

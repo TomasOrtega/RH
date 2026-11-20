@@ -21,6 +21,11 @@ open Set
 variable {k : Type} [CommRing k] {Y Y' : Scheme.{0}} [IsIntegral Y] [IsIntegral Y'] {q : Y ⟶ Sp k}
   {σ : k →+* ℂ}
 
+/- English proof (translation)
+Introduce `y hy`. Establish `ho` using `isOpen_offSupp (q := q) (σ := σ) (divOfRatSec φ.isLB hr)`. Establish `hi : y ∈ ptsIn q σ (L.U (pick φ.isLB y))` using `mem_pick _ y`. Establish `hu` using `hr.unitAt φ.isLB hy hi`. Establish `hn : ptsIn q σ (L.U (pick φ.isLB y)) ∩ offSupp q σ (divOfRatSec φ.isLB hr) ∈ 𝓝 y` using `inter_mem ((isOpen_ptsIn _).mem_nhds hi) (ho.mem_nhds hy)`.
+
+Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun z => Real.log ‖ratVal (r (pick φ.isLB y) : Y.functionField) z‖ - φ.φ (pick φ.isLB y) z / 2) y` using `((LogNormInt.continuousAt_ratVal hu.regAt).norm.log (norm_ne_zero_iff.2 (ratVal_ne_zero hu))).sub ((hφ _ y hi).continuousAt.div_const 2)`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [hn] with z hz`. Conclude with `(logNorm_eq φ hr hz.2 hz.1).symm`.
+-/
 theorem continuousOn_logNorm {L : LB Y} (φ : Weight q σ L) {r : L.ι → Y.functionFieldˣ}
     (hr : IsRatSec L r) (hφ : φ.IsCInf) :
     ContinuousOn (logNorm φ r) (offSupp q σ (divOfRatSec φ.isLB hr)) := by
@@ -42,6 +47,11 @@ theorem continuousOn_logNorm {L : LB Y} (φ : Weight q σ L) {r : L.ι → Y.fun
 variable (M : HermLB q) (ρ : Y' ⟶ Y) (hη : ρ (genericPoint Y') ⤳ genericPoint Y)
   {r : M.B.ι → Y.functionFieldˣ} (hr : IsRatSec M.B r)
 
+/- English proof (translation)
+Establish `hx : PtsOver.map ρ rfl _ y ∈ offSupp q σ (M.div hr)` using `mem_ptsIn.2 (mem_ptsIn.1 hy)`. Take `⟨c, hc⟩` from `exists_chart (M.restr ρ).isLB (under y)`. Establish `hc' : PtsOver.map ρ rfl _ y ∈ ptsIn q σ (M.B.U (c PUnit.unit))` using `mem_ptsIn.2 (Set.mem_iInter.1 hc PUnit.unit)`. Establish `hu` using `hr.unitAt M.isLB hx hc'`. Establish `hu'` using `FrameGlue.Pull.unitAt_fnMap ρ hη hu`.
+
+Conclude with `mem_offSupp.2 fun h => ((presents_divOfRatSec (M.restr ρ).isLB (MultPull.isRatSec_pull_map ρ hη hr)).isEqn c _ hc).mem_supp_iff.1 h hu'`.
+-/
 theorem mem_offSupp_pull {y : CxPts (ρ ≫ q) σ}
     (hy : y ∈ ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl)) :
     y ∈ offSupp (ρ ≫ q) σ ((M.restr ρ).div (MultPull.isRatSec_pull_map ρ hη hr)) := by
@@ -54,6 +64,11 @@ theorem mem_offSupp_pull {y : CxPts (ρ ≫ q) σ}
   exact mem_offSupp.2 fun h => ((presents_divOfRatSec (M.restr ρ).isLB
     (MultPull.isRatSec_pull_map ρ hη hr)).isEqn c _ hc).mem_supp_iff.1 h hu'
 
+/- English proof (translation)
+Establish `hx : PtsOver.map ρ rfl _ y ∈ offSupp q σ (M.div hr)` using `mem_ptsIn.2 (mem_ptsIn.1 hy)`. Establish `hj : y ∈ ptsIn _ σ ((M.restr ρ).B.U (pick ((M.restr ρ).φ σ).isLB y))` using `mem_pick _ y`. Establish `hj' : PtsOver.map ρ rfl _ y ∈ ptsIn q σ (M.B.U (pick ((M.restr ρ).φ σ).isLB y PUnit.unit))` using `mem_ptsIn.2 (Set.mem_iInter.1 (mem_ptsIn.1 hj) PUnit.unit)`. Establish `hu` using `hr.unitAt M.isLB hx hj'`. Establish `hu'` using `FrameGlue.Pull.unitAt_fnMap ρ hη hu`.
+
+Establish `e₁ : ((M.restr ρ).φ σ).φ (pick ((M.restr ρ).φ σ).isLB y) y = (M.φ σ).φ (pick ((M.restr ρ).φ σ).isLB y PUnit.unit) (PtsOver.map ρ rfl _ y)` using `(M.φ σ).pull_φ ρ rfl _ y`. Establish `e₂ : ratVal ((Units.map (TrueGeo.SmallSec.fnMap ρ hη).toMonoidHom (r (pick ((M.restr ρ).φ σ).isLB y PUnit.unit)) : Y'.functionFieldˣ) : Y'.functionField) y = ratVal (r (pick ((M.restr ρ).φ σ).isLB y PUnit.unit) : Y.functionField) (PtsOver.map ρ rfl _ y)` using `by show ratVal (TrueGeo.SmallSec.fnMap ρ hη (r (pick ((M.restr ρ).φ σ).isLB y PUnit.unit) : Y.functionField)) y = _`. Rewrite using `[TrueGeo.SmallSec.ratVal_eq_valAt y hu'.regAt, TrueGeo.SmallSec.valAt_fnMap ρ hη _ hu.regAt, TrueGeo.SmallSec.ratVal_eq_valAt _ hu.regAt]`. Both sides reduce to the same expression. Rewrite using `[logNorm_eq (M.φ σ) hr hx hj', logNorm, e₁, e₂]`.
+-/
 theorem logNorm_pull {y : CxPts (ρ ≫ q) σ}
     (hy : y ∈ ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl)) :
     logNorm ((M.restr ρ).φ σ) (fun c => Units.map (TrueGeo.SmallSec.fnMap ρ hη).toMonoidHom
@@ -85,6 +100,11 @@ namespace GlobalTheory.ArchIntAlter
 
 open Set
 
+/- English proof (translation)
+Introduce `hRA k _ Y _ q e hY M N r hr σ`. Take `⟨Y', _, ρ, hreg, hgen, hdeg⟩` from `GlobalTheory.T.exists_regular_alteration_arithmetic hRA k Y q e hY`. Establish `hη : ρ (genericPoint Y') ⤳ genericPoint Y` using `hgen ▸ specializes_rfl`. Establish `hr'` using `MultPull.isRatSec_pull_map ρ hη hr`. Establish `hup` using `LogNormInt.archIntegrable hreg (N.restr ρ) (M.restr ρ) hr' σ`.
+
+Establish `hsub : ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl) ⊆ offSupp (ρ ≫ q) σ ((M.restr ρ).div hr')` using `fun y hy => mem_offSupp_pull M ρ hη hr hy`. Establish `hm : MeasurableSet (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl))` using `(isOpen_ptsIn _).measurableSet`. Establish `heq : EqOn (logNorm ((M.restr ρ).φ σ) fun c => Units.map (TrueGeo.SmallSec.fnMap ρ hη).toMonoidHom (r (c PUnit.unit))) (fun y => logNorm (M.φ σ) r (PtsOver.map ρ rfl _ y)) (ptsIn (ρ ≫ q) σ (ρ ⁻¹ᵁ (M.div hr).supp.compl))` using `fun y hy => logNorm_pull M ρ hη hr hy`. Conclude with `GlobalTheory.T.chernIntegrableOn_descend_genericallyFinite k Y q e hY Y' ρ hreg.toIsArithVar hgen hdeg N σ _ _ (continuousOn_logNorm (M.φ σ) hr (M.cInf σ)) ⟨(hup.1.mono_set hsub).congr_fun heq hm, (hup.2.mono_set hsub).congr_fun heq hm⟩`.
+-/
 theorem archIntegrable : Published.RegularAlteration → ∀ (k : Type) [CommRing k] (Y : Scheme.{0})
     [IsIntegral Y] (q : Y ⟶ Sp k) (e : ℕ), IsArithVar q e → ∀ (M N : HermLB q)
     (r : M.B.ι → Y.functionFieldˣ) (hr : IsRatSec M.B r), N.ArchIntegrable M e hr := by

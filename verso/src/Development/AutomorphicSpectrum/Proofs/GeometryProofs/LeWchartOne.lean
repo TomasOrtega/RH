@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyDeg
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy`.
+-/
 theorem le_wchart_one {X : Scheme.{0}} (L : LB X) (i : L.ι) :
     L.U i ≤ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => i) :=
   fun _ hy => Set.mem_iInter.2 fun _ => hy

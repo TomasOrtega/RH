@@ -30,6 +30,41 @@ structure Inv (w : Equiv.Perm (Fin m)) (l : Matrix (Fin m) (Fin m) ℂ) (n : ℕ
   supB : ∀ i j : Fin m, j < i → w.symm j < w.symm i → B i j = 0
   prod : ∀ i j : Fin m, i.val ≤ j.val + n → (A * B) i j = l i j
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => show Inv w l 0 1 1`. Use `⟨fun i j h => ?_, fun i => by simp, fun i j h => ?_, fun i j h _ => ?_, fun i j h _ => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Establish `hne : i ≠ j` using `ne_of_lt h`.
+
+Simplify using `[Matrix.one_apply_ne hne]`. Establish `hne : i ≠ j` using `fun e => by subst e; omega`. Simplify using `[Matrix.one_apply_ne hne]`. Simplify using `[Matrix.one_apply_ne (ne_of_lt h).symm]`. Simplify using `[Matrix.one_apply_ne (ne_of_lt h).symm]`.
+
+Rewrite using `[Matrix.one_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hl.2 i]`. Establish `hlt : i < j`.
+
+Establish `hv : i.val ≠ j.val` using `fun e => hij (Fin.ext e)`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.one_apply_ne hij, hl.1 i j hlt]`. Consider the case `succ n ih`.
+
+Take `⟨hup, hdiag, hfar, hsupA, hsupB, hprod⟩` from `ih`. Use `set A := (lsStep w l n).1 with hAdef`. Use `set B := (lsStep w l n).2 with hBdef`. Establish `hA' : ∀ i j, (lsStep w l (n + 1)).1 i j = if i.val = j.val + n + 1 then (if w.symm j < w.symm i then l i j - (A * B) i j else 0) else A i j` using `fun i j => rfl`. Establish `hB' : ∀ i j, (lsStep w l (n + 1)).2 i j = if i.val = j.val + n + 1 then (if w.symm j < w.symm i then 0 else l i j - (A * B) i j) else B i j` using `fun i j => rfl`.
+
+Use `⟨fun i j h => ?_, fun i => ?_, fun i j h => ?_, fun i j h hw => ?_, fun i j h hw => ?_, fun i j h => ?_⟩` and prove the remaining obligations. Establish `hv : ¬ i.val = j.val + n + 1`. Rewrite `h` using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hA', hB', if_neg hv, if_neg hv]`.
+
+Conclude with `hup i j h`. Establish `hv : ¬ i.val = i.val + n + 1` using `by omega`. Rewrite using `[hA', hB', if_neg hv, if_neg hv]`. Conclude with `hdiag i`. Establish `hv : ¬ i.val = j.val + n + 1` using `by omega`.
+
+Rewrite using `[hA', hB', if_neg hv, if_neg hv]`. Conclude with `hfar i j (by omega)`. Rewrite using `[hA'] split_ifs with hv`. Both sides reduce to the same expression. Conclude with `hsupA i j h hw`.
+
+Rewrite using `[hB'] split_ifs with hv`. Both sides reduce to the same expression. Conclude with `hsupB i j h hw`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hgap : i.val = j.val + n + 1`.
+
+Establish `hji : j ≠ i` using `fun e => by subst e; omega`. Establish `hAij : A i j = 0` using `(hfar i j (by omega)).1`. Establish `hBij : B i j = 0` using `(hfar i j (by omega)).2`. Establish `hterm : ∀ k, (lsStep w l (n + 1)).1 i k * (lsStep w l (n + 1)).2 k j = A i k * B k j + (if k = j then (lsStep w l (n + 1)).1 i j else 0) + (if k = i then (lsStep w l (n + 1)).2 i j else 0)`. Introduce `k`.
+
+Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality. Establish `hv : ¬ k.val = k.val + n + 1` using `by omega`. Rewrite using `[hB' k k, if_neg hv, (hdiag k).2, hAij, if_pos rfl, if_neg hji]`. Simplify using the standard rewrite rules.
+
+Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Establish `hv : ¬ k.val = k.val + n + 1` using `by omega`. Rewrite using `[hA' k k, if_neg hv, (hdiag k).1, hBij, if_neg hkj, if_pos rfl]`. Simplify using the standard rewrite rules.
+
+Establish `hv1 : ¬ i.val = k.val + n + 1` using `fun e => hkj (Fin.ext (by omega))`. Establish `hv2 : ¬ k.val = j.val + n + 1` using `fun e => hki (Fin.ext (by omega))`. Rewrite using `[hA' i k, hB' k j, if_neg hv1, if_neg hv2, if_neg hkj, if_neg hki]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun k _ => hterm k, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq' Finset.univ j, Finset.sum_ite_eq' Finset.univ i, if_pos (Finset.mem_univ _), if_pos (Finset.mem_univ _), ← Matrix.mul_apply, hA', hB', if_pos hgap, if_pos hgap]`.
+
+Apply the tactic sequence `split_ifs <;> ring`. Establish `hle : i.val ≤ j.val + n` using `by omega`. Rewrite using `[← hprod i j hle, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk1 : i.val = k.val + n + 1`.
+
+Establish `hkj : k < j`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Establish `hv2 : ¬ k.val = j.val + n + 1` using `by omega`. Rewrite using `[hB' k j, if_neg hv2, (hup k j hkj).2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hA' i k, if_neg hk1]`. Distinguish the cases in `hk2 : k.val = j.val + n + 1`. Establish `hik : i < k`. Rewrite using `[Fin.lt_iff_val_lt_val]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[(hup i k hik).1]`. Simplify using the standard rewrite rules. Rewrite using `[hB' k j, if_neg hk2]`.
+-/
 lemma inv_step (w : Equiv.Perm (Fin m)) (l : Matrix (Fin m) (Fin m) ℂ) (hl : l ∈ C2.LTset m) :
     ∀ n, Inv w l n (lsStep w l n).1 (lsStep w l n).2 := by
   intro n
@@ -134,14 +169,27 @@ end InverseSplitting
 
 open C2x2 InverseSplitting
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hP]`.
+-/
 lemma conj_mul_eq_mul_conj {m : ℕ} (P X Y : Matrix (Fin m) (Fin m) ℂ) (hP : IsUnit P.det) :
     P⁻¹ * (X * Y) * P = (P⁻¹ * X * P) * (P⁻¹ * Y * P) := by
   simp only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hP]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hP, Matrix.mul_assoc]`.
+-/
 lemma conj_inv_eq_inv_conj {m : ℕ} (P X : Matrix (Fin m) (Fin m) ℂ) (hP : IsUnit P.det) :
     (P⁻¹ * X * P)⁻¹ = P⁻¹ * X⁻¹ * P := by
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hP, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hik : i < k`. Rewrite using `[hA.1 i k hik, zero_mul]`.
+
+Rewrite using `[hB.1 k j (lt_of_le_of_lt (not_lt.1 hik) h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA.2 i, hB.2 i, one_mul]`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases.
+
+Rewrite using `[hB.1 k i h, mul_zero]`. Rewrite using `[hA.1 i k h, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 private lemma mul_mem_ltset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m)
     (hB : B ∈ C2.LTset m) : A * B ∈ C2.LTset m := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -158,6 +206,13 @@ private lemma mul_mem_ltset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A
       · rw [hA.1 i k h, zero_mul]
     · simp
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hki : k < i`. Rewrite using `[hA.1 i k hki, zero_mul]`.
+
+Rewrite using `[hB.1 k j (lt_of_lt_of_le h (not_lt.1 hki)), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA.2 i, hB.2 i, one_mul]`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases.
+
+Rewrite using `[hA.1 i k h, zero_mul]`. Rewrite using `[hB.1 k i h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private lemma mul_mem_utset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m)
     (hB : B ∈ C2.UTset m) : A * B ∈ C2.UTset m := by
   refine ⟨fun i j h => ?_, fun i => ?_⟩
@@ -174,16 +229,29 @@ private lemma mul_mem_utset {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A
       · rw [hB.1 k i h, mul_zero]
     · simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular A (fun i j h => hA.1 i j h)]`. Simplify using `[hA.2]`.
+-/
 private lemma det_eq_one_of_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m) :
     A.det = 1 := by
   rw [Matrix.det_of_lowerTriangular A (fun i j h => hA.1 i j h)]
   simp [hA.2]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => hA.1 i j h)]`. Simplify using `[hA.2]`.
+-/
 private lemma det_eq_one_of_mem_utset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
     A.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j h => hA.1 i j h)]
   simp [hA.2]
 
+/- English proof (translation)
+Establish `hbt : A.BlockTriangular OrderDual.toDual` using `fun i j h => hA.1 i j h`. Establish `hdet : IsUnit A.det` using `by rw [det_eq_one_of_mem_ltset hA]; exact isUnit_one`. Use `haveI := A.invertibleOfIsUnitDet hdet`. Establish `hbi` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Use `⟨fun i j h => hbi h, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv A hdet) i) i`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i, hA.2 i, one_mul]`. Simplify using `using h1`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases.
+
+Rewrite using `[hbi h, mul_zero]`. Rewrite using `[hA.1 i k h, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 private lemma inv_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.LTset m) :
     A⁻¹ ∈ C2.LTset m := by
   have hbt : A.BlockTriangular OrderDual.toDual := fun i j h => hA.1 i j h
@@ -200,6 +268,13 @@ private lemma inv_mem_ltset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A �
     · rw [hA.1 i k h, zero_mul]
   · simp
 
+/- English proof (translation)
+Establish `hbt : A.BlockTriangular id` using `fun i j h => hA.1 i j h`. Establish `hdet : IsUnit A.det` using `by rw [det_eq_one_of_mem_utset hA]; exact isUnit_one`. Use `haveI := A.invertibleOfIsUnitDet hdet`. Establish `hbi` using `Matrix.blockTriangular_inv_of_blockTriangular hbt`. Use `⟨fun i j h => hbi h, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv A hdet) i) i`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i, hA.2 i, one_mul]`. Simplify using `using h1`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases.
+
+Rewrite using `[hA.1 i k h, zero_mul]`. Rewrite using `[hbi h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 private lemma inv_mem_utset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m) :
     A⁻¹ ∈ C2.UTset m := by
   have hbt : A.BlockTriangular id := fun i j h => hA.1 i j h
@@ -216,6 +291,39 @@ private lemma inv_mem_utset {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A �
     · rw [hbi h, mul_zero]
   · simp
 
+/- English proof (translation)
+Introduce `m P hP l hl`. Take `⟨w, d, hd, rfl⟩` from `hP`. Use `set Q : Matrix (Fin m) (Fin m) ℂ := Matrix.of fun a i => if i = w a then (d a)⁻¹ else 0 with hQ`. Establish `hQP : Q * C2.monoP w d = 1`. Use extensionality with `a b`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hQ, C2.monoP, Matrix.of_apply, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[hd a]`.
+
+Simplify using `[Matrix.one_apply_ne hab, w.injective.ne hab, Ne.symm hab]`. Establish `hPinv : (C2.monoP w d)⁻¹ = Q` using `Matrix.inv_eq_left_inv hQP`. Establish `hPdet : IsUnit (C2.monoP w d).det` using `Matrix.isUnit_det_of_left_inverse hQP`. Establish `hconj : ∀ (X : Matrix (Fin m) (Fin m) ℂ) (a b : Fin m), ((C2.monoP w d)⁻¹ * X * C2.monoP w d) a b = (d a)⁻¹ * X (w a) (w b) * d b`. Introduce `X a b`.
+
+Rewrite using `[hPinv, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, hQ, C2.monoP, Matrix.of_apply, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `I` using `inv_step w l hl m`. Use `set A := (lsStep w l m).1 with hAdef`. Use `set B := (lsStep w l m).2 with hBdef`.
+
+Establish `hAB : l = A * B`. Use extensionality with `i j`. Conclude with `(I.prod i j (by omega)).symm`. Establish `hAL : A ∈ C2.LTset m` using `⟨fun i j h => (I.up i j h).1, fun i => (I.diag i).1⟩`. Establish `hBL : B ∈ C2.LTset m` using `⟨fun i j h => (I.up i j h).2, fun i => (I.diag i).2⟩`.
+
+Establish `hAc : (C2.monoP w d)⁻¹ * A * C2.monoP w d ∈ C2.LTset m`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hconj]`. Break down `lt_trichotomy (w a) (w b) with h | h | h` into its components or cases. Rewrite using `[(I.up _ _ h).1]`.
+
+Simplify using the standard rewrite rules. Conclude with `absurd (w.injective h) (ne_of_lt hab)`. Rewrite using `[I.supA _ _ h (by simpa using (not_lt.2 hab.le))]`. Simplify using the standard rewrite rules. Rewrite using `[hconj, (I.diag (w a)).1]`.
+
+Clear denominators, using `[hd a]` for the nonvanishing conditions. Establish `hBc : (C2.monoP w d)⁻¹ * B * C2.monoP w d ∈ C2.UTset m`. Use `⟨fun a b hba => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hconj]`. Break down `lt_trichotomy (w a) (w b) with h | h | h` into its components or cases.
+
+Rewrite using `[(I.up _ _ h).2]`. Simplify using the standard rewrite rules. Conclude with `absurd (w.injective h) (ne_of_lt hba).symm`. Rewrite using `[I.supB _ _ h (by simpa using hba)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hconj, (I.diag (w a)).2]`. Clear denominators, using `[hd a]` for the nonvanishing conditions. Use `⟨(A, B), ⟨⟨hAL, hAc⟩, ⟨hBL, hBc⟩, hAB⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨A2, B2⟩ ⟨hA2, hB2, hl2⟩`. Establish `hl2' : l = A2 * B2` using `hl2`.
+
+Establish `hAdet : IsUnit A.det` using `by rw [det_eq_one_of_mem_ltset hAL]; exact isUnit_one`. Establish `hB2det : IsUnit B2.det` using `by rw [det_eq_one_of_mem_ltset hB2.1]; exact isUnit_one`. Establish `hkey : A⁻¹ * A2 = B * B2⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv B2 hB2det, Matrix.mul_one]`.
+
+Use `_ = A⁻¹ * (A2 * B2) * B2⁻¹ := by simp only [Matrix.mul_assoc]`. Use `_ = A⁻¹ * (A * B) * B2⁻¹ := by rw [← hl2', ← hAB]`. Use `_ = B * B2⁻¹ := by rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul A hAdet, Matrix.one_mul]`. Establish `hYL : (C2.monoP w d)⁻¹ * (A⁻¹ * A2) * C2.monoP w d ∈ C2.LTset m`. Rewrite using `[conj_mul_eq_mul_conj _ _ _ hPdet, ← conj_inv_eq_inv_conj _ _ hPdet]`.
+
+Conclude with `mul_mem_ltset (inv_mem_ltset hAc) hA2.2`. Establish `hYU : (C2.monoP w d)⁻¹ * (A⁻¹ * A2) * C2.monoP w d ∈ C2.UTset m`. Rewrite using `[hkey, conj_mul_eq_mul_conj _ _ _ hPdet, ← conj_inv_eq_inv_conj _ _ hPdet]`. Conclude with `mul_mem_utset hBc (inv_mem_utset hB2.2)`. Establish `hY : (C2.monoP w d)⁻¹ * (A⁻¹ * A2) * C2.monoP w d = 1`.
+
+Use extensionality with `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Rewrite using `[hYL.1 i j h, Matrix.one_apply_ne (ne_of_lt h)]`. Substitute `h` using the available equality. Rewrite using `[hYL.2 i, Matrix.one_apply_eq]`.
+
+Rewrite using `[hYU.1 i j h, Matrix.one_apply_ne (ne_of_lt h).symm]`. Establish `hZ : A⁻¹ * A2 = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPdet, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hPdet]`. Use `_ = 1 := by rw [hY, Matrix.mul_one, Matrix.mul_nonsing_inv _ hPdet]`.
+
+Establish `hA2A : A2 = A`. Combine the equalities or inequalities in the displayed calculation. Establish `hB2B : B2 = B`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA2A, hB2B]`.
+-/
 theorem lower_triangular_splitting : C2.LowSplit := by
   intro m P hP l hl
   obtain ⟨w, d, hd, rfl⟩ := hP
@@ -306,16 +414,29 @@ theorem lower_triangular_splitting : C2.LowSplit := by
       _ = B := Matrix.nonsing_inv_mul_cancel_left A B hAdet
   rw [hA2A, hB2B]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j h => by simp [Matrix.conjTranspose_apply, hv.1 j i h], fun i => by simp [Matrix.conjTranspose_apply, hv.2 i]⟩`.
+-/
 private lemma conjTranspose_mem_ltset_of_mem_utset {m : ℕ} {v : Matrix (Fin m) (Fin m) ℂ} (hv : v ∈ C2.UTset m) :
     vᴴ ∈ C2.LTset m :=
   ⟨fun i j h => by simp [Matrix.conjTranspose_apply, hv.1 j i h],
     fun i => by simp [Matrix.conjTranspose_apply, hv.2 i]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j h => by simp [Matrix.conjTranspose_apply, hv.1 j i h], fun i => by simp [Matrix.conjTranspose_apply, hv.2 i]⟩`.
+-/
 private lemma conjTranspose_mem_utset_of_mem_ltset {m : ℕ} {v : Matrix (Fin m) (Fin m) ℂ} (hv : v ∈ C2.LTset m) :
     vᴴ ∈ C2.UTset m :=
   ⟨fun i j h => by simp [Matrix.conjTranspose_apply, hv.1 j i h],
     fun i => by simp [Matrix.conjTranspose_apply, hv.2 i]⟩
 
+/- English proof (translation)
+Introduce `m P hP u hu`. Take `⟨⟨a, b⟩, ⟨ha, hb, hab⟩, huniq⟩` from `lower_triangular_splitting m P hP uᴴ (conjTranspose_mem_ltset_of_mem_utset hu)`. Use `⟨(bᴴ, aᴴ), ⟨conjTranspose_mem_utset_of_mem_ltset hb.1, conjTranspose_mem_utset_of_mem_ltset ha.1, by simpa only [Matrix.conjTranspose_conjTranspose] using hb, by simpa only [Matrix.conjTranspose_conjTranspose] using ha, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hab' : uᴴ = a * b` using `hab show u = bᴴ * aᴴ`. Rewrite using `[← Matrix.conjTranspose_mul, ← hab', Matrix.conjTranspose_conjTranspose]`.
+
+Introduce and unpack `⟨q1, q2⟩ ⟨_, _, hq1c, hq2c, hq⟩`. Establish `hq' : u = q1 * q2` using `hq`. Establish `h` using `huniq (q2ᴴ, q1ᴴ) ⟨hq2c, hq1c, by show uᴴ = q2ᴴ * q1ᴴ`. Rewrite using `[← Matrix.conjTranspose_mul, ← hq']⟩`. Simplify using `only [Prod.mk.injEq] at h`.
+
+Rewrite using `[← h.1, ← h.2, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_conjTranspose]`.
+-/
 theorem upper_splitting : C2.UpSplit := by
   intro m P hP u hu
   obtain ⟨⟨a, b⟩, ⟨ha, hb, hab⟩, huniq⟩ := lower_triangular_splitting m P hP uᴴ (conjTranspose_mem_ltset_of_mem_utset hu)

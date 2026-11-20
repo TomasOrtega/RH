@@ -20,9 +20,17 @@ def TorBd (om : Rep σ X W) (fr : Frame σ X.J) (fr' : Frame σ W.J) (e : (Fin f
   ∀ (Ω : Set (UA σ X.J)) (Ω' : Set (UA σ W.J)), IsCompact Ω → IsCompact Ω' → ∃ A : ℝ≥0, ∀ s ∈ Cone fr.r, ∀ t ∈ Cone fr'.r,
     ∀ κ ∈ Ω, ∀ κ' ∈ Ω', ‖theta om Φ (fr.a s * κ) (fr'.a t * κ')‖ₑ ≤ A * ENNReal.ofReal (Real.exp (e s t))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+-/
 theorem pureA_mem' {κ : Type} [Fintype κ] (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB _) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
+/- English proof (translation)
+Establish `hpres : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F (Fin n × Fin d)` using `(IsUWeilPair.isUSplitting hP.weil).pres`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro Ω Ω' _ _; exact ⟨0, fun s _ t _ κ _ κ' _ => by simp [theta, thetaSum]⟩`. Consider the case `insert a T ha ih`. Introduce `Ω Ω' h1 h2`.
+
+Take `⟨A, hA⟩` from `h a Ω Ω' h1 h2`. Take `⟨A', hA'⟩` from `ih Ω Ω' h1 h2`. Use `⟨A + A', fun s hs t ht κ hκ κ' hκ' => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert ha, theta, map_add, thetaSum_add F (hpres _ _ (hΦ a)) (hpres _ _ (Submodule.sum_mem _ fun i _ => hΦ i)), ENNReal.coe_add, add_mul]`. Conclude with `(enorm_add_le _ _).trans (add_le_add (hA s hs t ht κ hκ κ' hκ') (hA' s hs t ht κ hκ κ' hκ'))`.
+-/
 theorem torBd_sum {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ}
     (hP : IsPair B M χX χW om r s r' s') {fr : Frame σ X.J} {fr' : Frame σ W.J}
     {e : (Fin fr.r → ℝ) → (Fin fr'.r → ℝ) → ℝ} {ι : Type} (T : Finset ι) (Φ : ι → (Fin n × Fin d → AF F) → ℂ)
@@ -41,6 +49,15 @@ theorem torBd_sum {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Re
       thetaSum_add F (hpres _ _ (hΦ a)) (hpres _ _ (Submodule.sum_mem _ fun i _ => hΦ i)), ENNReal.coe_add, add_mul]
     exact (enorm_add_le _ _).trans (add_le_add (hA s hs t ht κ hκ κ' hκ') (hA' s hs t ht κ hκ κ' hκ'))
 
+/- English proof (translation)
+Introduce `Ω Ω' h1 h2`. Take `⟨p, C, -, hCc, hb⟩` from `hS φ hφ N`. Take `⟨C', K, hC', hK⟩` from `hC F E σ hB.cm B.emb n d X.J W.J hX hW Ω Ω' h1 h2 C N hCc`. Take `⟨K', hK'⟩` from `hT C' hC'`. Use `⟨(p f).toNNReal * NNReal.sqrt (K * K'), fun s hs t ht κ hκ κ' hκ' => ?_⟩` and prove the remaining obligations.
+
+Use `(ENNReal.pow_le_pow_left_iff two_ne_zero).1 ((hb f _ _).trans ?_)` and prove the remaining obligations. Establish `e1 : ((NNReal.sqrt (K * K') : ℝ≥0) : ℝ≥0∞) ^ 2 = K * K'`. Rewrite using `[← ENNReal.coe_pow, NNReal.sq_sqrt, ENNReal.coe_mul]`. Establish `e2 : ENNReal.ofReal (Real.exp (e₂ s t)) ≤ ENNReal.ofReal (Real.exp (e s t)) ^ 2`. Rewrite using `[← ENNReal.ofReal_pow (Real.exp_pos _).le, ← Real.exp_nat_mul]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 (by exact_mod_cast he s hs t ht))`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_right ((hK S _ _ κ hκ κ' hκ').trans (mul_le_mul_right ((hK' s hs t ht).trans ?_) _)) _` and prove the remaining obligations. Conclude with `mul_le_mul_right e2 _`. Use `_ = _ := by`.
+
+Rewrite using `[ENNReal.coe_mul, mul_pow, mul_pow, e1]`. Simplify using `only [ENNReal.ofReal, mul_assoc]`.
+-/
 theorem torBd_pure (hC : LatCpt) {B : Base F E} {M : Model σ X W} {om : Rep σ X W} (hB : B.IsGood σ) (hX : EpsHerm σ X.J)
     (hW : EpsHerm σ W.J) {fr : Frame σ X.J} {fr' : Frame σ W.J} {𝓕 : Set ((Fin n × Fin d → Af F) → ℂ)}
     {S : Set (Matrix (Fin n) (Fin d) E)} (hS : SqBound B M om 𝓕 S) {e e₂ : (Fin fr.r → ℝ) → (Fin fr'.r → ℝ) → ℝ} {N : ℕ}
@@ -66,6 +83,25 @@ theorem torBd_pure (hC : LatCpt) {B : Base F E} {M : Model σ X W} {om : Rep σ 
         rw [ENNReal.coe_mul, mul_pow, mul_pow, e1]
         simp only [ENNReal.ofReal, mul_assoc]
 
+/- English proof (translation)
+Take `⟨lc, sc, -⟩` from `hG F E σ hP.base.cm n X.J hX`. Take `⟨lc', sc', -⟩` from `hG F E σ hP.base.cm d W.J hW`. Establish `: BorelSpace (UA σ X.J)` using `⟨rfl⟩`. Establish `: BorelSpace (UA σ W.J)` using `⟨rfl⟩`. Use `hP.good.haar` as an intermediate fact.
+
+Establish `: SigmaCompactSpace (UA σ X.J)` using `sigmaCompactSpace_of_locallyCompact_secondCountable`. Establish `: SigmaFinite M.μ` using `MeasureTheory.sigmaFinite_of_locallyFinite`. Establish `: SFinite (M.μ.restrict M.dom)` using `@MeasureTheory.instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.Restrict.sigmaFinite M.μ M.dom)`. Take `⟨hcont, hinv, -⟩` from `(hTh F E σ B n d X W M χX χW om r s r' s' hP).1 Φ hΦ`. Take `⟨K, Ω, hK, hΩ, H⟩` from `hI M.μ M.dom hP.good.haar hP.good.dom`.
+
+Take `⟨K', Ω', hK', hΩ', H'⟩` from `hI' μ 𝓕 hμ h𝓕`. Take `⟨A, hA⟩` from `hb Ω Ω' hΩ hΩ'`. Establish `hsm : StronglyMeasurable (M.I om Φ)` using `StronglyMeasurable.integral_prod_left (μ := M.μ.restrict M.dom) (f := fun g h => theta om Φ g h) hcont.stronglyMeasurable`. Use `set IU := ∫⁻ s in Cone fr.r, ENNReal.ofReal (Real.exp (U s)) * ENNReal.ofReal (Real.exp (-(Module.finrank ℚ E * rho2 n s)))`. Establish `h1 : ∀ t ∈ Cone fr'.r, ∀ κ' ∈ Ω', ‖M.I om Φ (fr'.a t * κ')‖ₑ ≤ (K * A * IU) * ENNReal.ofReal (Real.exp (V t))`.
+
+Introduce `t ht κ' hκ'`. Establish `a1` using `H (fun s => (A * ENNReal.ofReal (Real.exp (V t))) * ENNReal.ofReal (Real.exp (U s))) (measurable_const.mul (Real.measurable_exp.comp hUm).ennreal_ofReal) (fun g => ‖theta om Φ g (fr'.a t * κ')‖ₑ) (hcont.comp (continuous_id.prodMk continuous_const)).measurable.enorm (fun γ hγ g => …`. Rewrite using `[Real.exp_add, ENNReal.ofReal_mul (Real.exp_pos _).le]`. Use the proof step `ring)))`. Use `(enorm_integral_le_lintegral_enorm _).trans (a1.trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, mul_comm IU]`. Establish `hc : K * A * IU ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top hK.ne ENNReal.coe_ne_top) hU.ne`. Establish `h2` using `H' (fun t => (K * A * IU) ^ 2 * ENNReal.ofReal (Real.exp (2 * V t))) (measurable_const.mul (Real.measurable_exp.comp (hVm.const_mul 2)).ennreal_ofReal) (fun h => ‖M.I om Φ h‖ₑ ^ 2) (hsm.measurable.enorm.pow_const 2) (fun γ hγ h => by`. Establish `: M.I om Φ (γ * h) = M.I om Φ h`.
+
+Unfold `Model.I`. Use `congr 1`. Use function extensionality and compare the values at `g`. Use `hinv 1 (one_mem _) γ hγ g h` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Simplify using `only [this])`. Use the proof step `(fun t ht κ' hκ' => (pow_le_pow_left' (h1 t ht κ' hκ') 2).trans (le_of_eq (by`. Rewrite using `[mul_pow _ (ENNReal.ofReal _), ← ENNReal.ofReal_pow (Real.exp_pos _).le, ← Real.exp_nat_mul]`. Use the proof step `norm_num)))`. Use `⟨(hsm.norm.pow 2).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ h, ‖‖M.I om Φ h‖ ^ 2‖ₑ = ‖M.I om Φ h‖ₑ ^ 2` using `fun h => by rw [enorm_pow, enorm_norm]`. Unfold `HasFiniteIntegral`. Simplify using `only [e]`. Use `h2.trans_lt (ENNReal.mul_lt_top hK' ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc ((K * A * IU) ^ 2)]`.
+
+Rewrite using `[lintegral_const_mul' _ _ (ENNReal.pow_ne_top hc)]`. Conclude with `ENNReal.mul_lt_top (ENNReal.pow_lt_top hc.lt_top) hV`.
+-/
 theorem square_integrable_of_torus_bound (hG : GrpTop) (hTh : ThetaBasic) {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
     {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (hX : EpsHerm σ X.J) (hW : EpsHerm σ W.J) {fr : Frame σ X.J}
     {fr' : Frame σ W.J} (hI : SiegelInt fr) (hI' : SiegelInt fr') {U : (Fin fr.r → ℝ) → ℝ} {V : (Fin fr'.r → ℝ) → ℝ}
@@ -128,9 +164,19 @@ theorem square_integrable_of_torus_bound (hG : GrpTop) (hTh : ThetaBasic) {B : B
   rw [lintegral_const_mul' _ _ (ENNReal.pow_ne_top hc)]
   exact ENNReal.mul_lt_top (ENNReal.pow_lt_top hc.lt_top) hV
 
+/- English proof (translation)
+Conclude with `Module.finrank_pos` after adjusting the coercions.
+-/
 theorem finrank_pos' (E : Type) [Field E] [NumberField E] : (0 : ℝ) < Module.finrank ℚ E := by
   exact_mod_cast Module.finrank_pos
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP h1 h2 μ 𝓕 hμ h𝓕 Φ hΦ`. Take `⟨hX, -, hr⟩` from `hE F E σ B hP.base n X r s (Or.inl hP.herm)`. Take `⟨hW, -, hr'⟩` from `hE F E σ B hP.base d W r' s' (Or.inr hP.skew)`. Take `⟨fr, hf, -, -, hI, -⟩` from `hS F E σ hP.base.cm n X.J hX`. Take `⟨fr', hf', -, -, hI', -⟩` from `hS F E σ hP.base.cm d W.J hW`.
+
+Establish `hD` using `finrank_pos' E`. Take `⟨a1, a2⟩` from `square_integrable_integral_holds n d fr.r fr'.r _ hD (by have := hr fr hf; omega) (by have := hr' fr' hf'; omega)`. Take `⟨N, hN⟩` from `hT F E σ hP.base.cm B.emb n d X.J W.J hX hW fr fr' hf hf'`. Take `⟨m, f, φ, hφ, rfl⟩` from `(hF F E σ B n d X W M χX χW om r s r' s' hP).2.1 Φ hΦ`. Use `square_integrable_of_torus_bound hG hTh hP hX hW hI hI' (U := fun s => Module.finrank ℚ E * (d / 2 * ∑ i, s i)) (V := fun t => Module.finrank ℚ E * (n * ∑ j, t j) / 2) (by fun_prop) (by fun_prop) a1 ?_ hΦ ?_ μ 𝓕 hμ h𝓕` and prove the remaining obligations.
+
+Simplify `a2` using `only [mul_div_cancel₀ _ (two_ne_zero (α := ℝ))]`. Use `torBd_sum hP _ _ (fun i => pureA_mem' _ (hφ i)) fun i => torBd_pure hC hP.base hX hW (hq F E σ B n d X W M χX χW om r s r' s' hP) hN (fun s hs t ht => ?_) _ (hφ i)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (posWt' n d _ _ s t hs ht).1 hD.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem square_integrable_of_lattice_torus (hG : GrpTop) (hE : EpsOf) (hS : SiegelAll) (hTh : ThetaBasic) (hq : SqAll) (hF : SoFin) (hC : LatCpt)
     (hT : LatTor) : SquareIntegrableWeilRange := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP h1 h2 μ 𝓕 hμ h𝓕 Φ hΦ
@@ -150,6 +196,9 @@ theorem square_integrable_of_lattice_torus (hG : GrpTop) (hE : EpsOf) (hS : Sieg
     have := mul_le_mul_of_nonneg_left (posWt' n d _ _ s t hs ht).1 hD.le
     linarith
 
+/- English proof (translation)
+Use `lt_of_eq_of_lt (lintegral_congr fun t => ?_) (coneAff r (-c) 0 fun k _ _ => by simpa using hc)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add]`. Use `congr 2`. Simplify using `only [zero_mul, add_zero, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exp_cancel {r : ℕ} (c : ℝ) (hc : 0 < c) (ρ : (Fin r → ℝ) → ℝ) :
     ∫⁻ t in Cone r, ENNReal.ofReal (Real.exp (ρ t - c * ∑ i, t i)) * ENNReal.ofReal (Real.exp (-ρ t)) < ⊤ := by
   refine lt_of_eq_of_lt (lintegral_congr fun t => ?_) (coneAff r (-c) 0 fun k _ _ => by simpa using hc)
@@ -158,6 +207,15 @@ theorem exp_cancel {r : ℕ} (c : ℝ) (hc : 0 < c) (ρ : (Fin r → ℝ) → �
   simp only [zero_mul, add_zero, ← Finset.mul_sum]
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP h1 ⟨Y, y1, y2, y3⟩ μ 𝓕 hμ h𝓕 Φ hΦ`. Take `⟨hX, -, hr⟩` from `hE F E σ B hP.base n X r s (Or.inl hP.herm)`. Take `⟨hW, -, hr'⟩` from `hE F E σ B hP.base d W r' s' (Or.inr hP.skew)`. Take `⟨fr, hf, -, -, hI, -⟩` from `hS F E σ hP.base.cm n X.J hX`. Take `⟨fr', hf', -, -, hI', -⟩` from `hS F E σ hP.base.cm d W.J hW`.
+
+Establish `hD` using `finrank_pos' E`. Use `set D : ℝ := ((Module.finrank ℚ E : ℕ) : ℝ)`. Take `⟨m₀, hm₀⟩` from `exponent_bound_orthogonal_case n d fr.r fr'.r Y ((hr fr hf).trans y1) ((hr' fr' hf').trans y2) y3 h1`. Take `⟨N, hN⟩` from `hT F E σ hP.base.cm B.emb n d X.J W.J hX hW fr fr' hf hf' ⌈2 * D * m₀⌉₊`. Take `⟨b1, -, b3, -⟩` from `hF F E σ B n d X W M χX χW om r s r' s' hP`.
+
+Establish `hΦ'` using `b3 Φ hΦ`. Take `⟨m, f, φ, hφ, rfl⟩` from `b1 Φ hΦ`. Use `square_integrable_of_torus_bound hG hTh hP hX hW hI hI' (U := fun s => D * rho2 n s - D / (4 * (fr.r + 1)) * ∑ i, s i) (V := fun t => (D * rho2 d t - D / 2 * ∑ j, t j) / 2) (by unfold rho2; fun_prop) (by unfold rho2; fun_prop) (exp_cancel _ (by positivity) _) ?_ hΦ' ?_ μ 𝓕 hμ h𝓕` and prove the remaining obligations. Simplify `exp_cancel (D / 2) (by positivity) fun t => D * rho2 d t` using `only [mul_div_cancel₀ _ (two_ne_zero (α := ℝ))]`. Use `torBd_sum hP _ _ (fun i => pureA_mem' _ (hφ i).1) fun i => torBd_pure hC hP.base hX hW (hq F E σ B n d X W M χX χW om r s r' s' hP) hN (fun s hs t ht => ?_) _ (hφ i)` and prove the remaining obligations.
+
+Establish `a1` using `mul_le_mul_of_nonneg_left (hm₀ s hs t ht) hD.le`. Establish `a2` using `mul_le_mul_of_nonneg_right (Nat.le_ceil (2 * D * m₀)) (posWt' n d _ _ s t hs ht).2.1`. Establish `e : D * ((∑ i, s i) / (4 * ((fr.r : ℝ) + 1))) = D / (4 * (fr.r + 1)) * ∑ i, s i` using `by ring`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem square_integrable_orthogonal_case (hG : GrpTop) (hE : EpsOf) (hS : SiegelAll) (hTh : ThetaBasic) (hq : SqSo) (hF : SoFin) (hC : LatCpt)
     (hT : LatFull) : SquareIntegrableSiegelSet := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP h1 ⟨Y, y1, y2, y3⟩ μ 𝓕 hμ h𝓕 Φ hΦ
@@ -184,6 +242,9 @@ theorem square_integrable_orthogonal_case (hG : GrpTop) (hE : EpsOf) (hS : Siege
     nlinarith
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, h1, h2, rfl⟩`. Establish `h3` using `(h2.and hM.std).mono fun _ h => h.1.trans h.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`.
+-/
 theorem polData_le {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) : PolData B M ≤ schA F (Fin n × Fin d) := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨f, -, φ, h1, h2, rfl⟩
@@ -191,6 +252,9 @@ theorem polData_le {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) : PolD
   exact Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3,
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr μ 𝓕 hμ h𝓕`. Take `⟨p1, p2, p3⟩` from `hT F E σ B a a' G X om om' hTr`. Establish `g1` using `hTr.geo.lt`. Establish `g2` using `hTr.geo.aBig`. Conclude with `⟨fun Φ hΦ => h1 F E σ B _ _ _ _ _ _ _ om _ _ _ _ p1 (Or.inl p3) (Or.inr (by omega)) μ 𝓕 hμ h𝓕 Φ (polData_le hTr.geo.hM hΦ), fun Φ hΦ => h2 F E σ B _ _ _ _ _ _ _ om' _ _ _ _ p2 (by omega) ⟨G.p + G.q, by omega, by omega, g2⟩ μ 𝓕 hμ h𝓕 Φ hΦ.2⟩`.
+-/
 theorem sqInt_of (hT : TriplePair) (h1 : SquareIntegrableWeilRange) (h2 : SquareIntegrableSiegelSet) : SqInt := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hTr μ 𝓕 hμ h𝓕
   obtain ⟨p1, p2, p3⟩ := hT F E σ B a a' G X om om' hTr

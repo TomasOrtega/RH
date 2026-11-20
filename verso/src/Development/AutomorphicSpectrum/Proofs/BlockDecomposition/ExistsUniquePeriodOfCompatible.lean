@@ -10,6 +10,21 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatC
 
+/- English proof (translation)
+Establish `hmem : ∀ (n : ℕ) (a : R), a ∈ ((Ideal.span {t}) ^ n • ⊤ : Submodule R R) ↔ t ^ n ∣ a`. Introduce `n a`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Establish `hchain : ∀ {m n : ℕ}, m ≤ n → t ^ m ∣ z n - z m`. Introduce `m n hmn`.
+
+Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`. Establish `h1 : t ^ m ∣ z (n + 1) - z n` using `(pow_dvd_pow t (by omega)).trans (hz n)`. Establish `h2` using `dvd_add h1 ih`.
+
+Simplify using `using h2`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {t}) z (fun {m n} hmn => by`. Rewrite using `[SModEq.comm, SModEq.sub_mem, hmem]`. Conclude with `hchain hmn)`. Use `⟨L, fun m => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : t ^ (m + 1) ∣ L - z (m + 1)`. Use `hL (m + 1)` as an intermediate fact. Rewrite `this` using `[SModEq.comm, SModEq.sub_mem, hmem]`. Conclude with `this`. Establish `h2` using `dvd_add h1 (hz m)`.
+
+Simplify using `using h2`. Establish `hLd : ∀ m, t ^ (m + 1) ∣ L - z m`. Introduce `m`. Establish `h1 : t ^ (m + 1) ∣ L - z (m + 1)`. Use `hL (m + 1)` as an intermediate fact.
+
+Rewrite `this` using `[SModEq.comm, SModEq.sub_mem, hmem]`. Conclude with `this`. Establish `h2` using `dvd_add h1 (hz m)`. Simplify using `using h2`. Use `sub_eq_zero.1 (IsHausdorff.haus' (I := Ideal.span {t}) _ fun n => ?_)` and prove the remaining obligations.
+
+Rewrite using `[SModEq.zero, hmem]`. Establish `h3` using `dvd_sub (hx n) (hLd n)`. Establish `h4 : t ^ (n + 1) ∣ x - L` using `by simpa using h3`. Conclude with `(pow_dvd_pow t (Nat.le_succ n)).trans h4`.
+-/
 theorem existsUnique_limit_of_dvd {R : Type*} [CommRing R] (t : R)
     [IsAdicComplete (Ideal.span {t}) R] (z : ℕ → R)
     (hz : ∀ m, t ^ (m + 1) ∣ z (m + 1) - z m) :
@@ -49,22 +64,38 @@ theorem existsUnique_limit_of_dvd {R : Type*} [CommRing R] (t : R)
     have h4 : t ^ (n + 1) ∣ x - L := by simpa using h3
     exact (pow_dvd_pow t (Nat.le_succ n)).trans h4
 
+/- English proof (translation)
+Rewrite using `[← maximalIdeal_eq_span_tBdR]`. Conclude with `IsPerfectoidField.instIsAdicCompleteMaximalIdealBdR`.
+-/
 theorem isAdicComplete_span_tBdR (l : ℕ) [Fact l.Prime] :
     IsAdicComplete (Ideal.span {tBdR l}) (BdRp l) := by
   rw [← maximalIdeal_eq_span_tBdR]
   exact IsPerfectoidField.instIsAdicCompleteMaximalIdealBdR
 
+/- English proof (translation)
+The claim follows from `RingEquiv.symm_apply_apply (RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩) b`.
+-/
 theorem pInv_rangeRestrict (l : ℕ) [Fact l.Prime] (b : BdRp l) :
     pInv l ((algebraMap (BdRp l) (BdR l)).rangeRestrict b) = b :=
   RingEquiv.symm_apply_apply (RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict
     ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l)
       (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩) b
 
+/- English proof (translation)
+The claim follows from `(RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l) (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).symm.injective`.
+-/
 theorem pInv_injective (l : ℕ) [Fact l.Prime] : Function.Injective (pInv l) :=
   (RingEquiv.ofBijective (algebraMap (BdRp l) (BdR l)).rangeRestrict
     ⟨fun x y h => IsPerfectoidField.algebraMap_bDeRham_injective (K := ℂ_[l]) (p := l)
       (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩).symm.injective
 
+/- English proof (translation)
+Use `haveI := isAdicComplete_span_tBdR l`. Use `choose z hz using fun m => Ideal.Quotient.mk_surjective (y m)`. Establish `key : ∀ (m : ℕ) (x : BdRp l), pk l (m + 1) x = y m ↔ tBdR l ^ (m + 1) ∣ x - z m`. Introduce `m x`. Rewrite using `[← hz m, pk, Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+
+Establish `hstep : ∀ m, tBdR l ^ (m + 1) ∣ z (m + 1) - z m`. Introduce `m`. Rewrite using `[← key m]`. Use `hy m` as an intermediate fact. Rewrite `this` using `[← hz (m + 1)]`.
+
+Conclude with `this`. Take `⟨x, hx, hu⟩` from `existsUnique_limit_of_dvd (tBdR l) z hstep`. Conclude with `⟨x, fun m => (key m x).2 (hx m), fun x' hx' => hu x' fun m => (key m x').1 (hx' m)⟩`.
+-/
 theorem existsUnique_bdRp_of_compatible (l : ℕ) [Fact l.Prime]
     (y : ∀ m : ℕ, Bk l (m + 1)) (hy : ∀ m, dk l (m + 1) (y (m + 1)) = y m) :
     ∃! x : BdRp l, ∀ m, pk l (m + 1) x = y m := by
@@ -82,6 +113,11 @@ theorem existsUnique_bdRp_of_compatible (l : ℕ) [Fact l.Prime]
   obtain ⟨x, hx, hu⟩ := existsUnique_limit_of_dvd (tBdR l) z hstep
   exact ⟨x, fun m => (key m x).2 (hx m), fun x' hx' => hu x' fun m => (key m x').1 (hx' m)⟩
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨b, hb, hu⟩` from `existsUnique_bdRp_of_compatible l y hy`. Use `⟨(algebraMap (BdRp l) (BdR l)).rangeRestrict b, fun m => ?_, fun x' hx' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pk l (m + 1) (pInv l ((algebraMap (BdRp l) (BdR l)).rangeRestrict b)) = y m`. Rewrite using `[pInv_rangeRestrict]`.
+
+Conclude with `hb m`. Use `pInv_injective l ?_` and prove the remaining obligations. Rewrite using `[pInv_rangeRestrict]`. Conclude with `hu _ hx'`.
+-/
 theorem levSys_existsUnique {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
     {M : ℕ} (h : LevHyp l K M) :
     ∀ y : ∀ m, ((levSys h).L m).B, (∀ m, (levSys h).dB m (y (m + 1)) = y m) →

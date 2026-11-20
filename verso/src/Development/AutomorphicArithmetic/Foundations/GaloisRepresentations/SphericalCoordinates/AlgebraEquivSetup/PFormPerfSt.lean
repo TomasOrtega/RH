@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.LKTrip GlobalTheory.LKGeo UpperTheory.Gal.W2.Seed
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ A n q hP`. Take `⟨e, he, hx, c', hc⟩` from `hP`. Use `⟨e ^ 3, Nat.Coprime.pow_left 3 he, fun f => ?_⟩` and prove the remaining obligations. Use `choose x hxf using fun i : Fin n => hx (((f.toAddMonoidHom.comp (AddMonoidHom.single _ i)).comp A.bar.toAddMonoidHom).toIntLinearMap)`. Use `⟨fun i => -((if (i : ℕ) = 0 then c' * (e : 𝓞 E) else c' ^ 2) * x i), ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[Arith.EF_apply]`. Establish `key : ∀ i, A.hd n i * -((if (i : ℕ) = 0 then c' * (e : 𝓞 E) else c' ^ 2) * x i) * A.bar (y i) = ((e ^ 2 : ℕ) : 𝓞 E) * (x i * A.bar (y i))`. Introduce `i`. Simplify using `only [Arith.hd, Arith.dg]`.
+
+Use `push_cast`. Use `split_ifs`. Take the linear combination `((e : 𝓞 E) * x i * A.bar (y i)) * hc`. Take the linear combination `(c' * A.c + (e : 𝓞 E)) * x i * A.bar (y i) * hc`. Establish `hs : ∀ i, A.trd (x i * A.bar (y i)) = (e : ℤ) * f (Pi.single i (y i))`.
+
+Introduce `i`. Rewrite using `[hxf i]`. Simplify using `[Arith.bar_bar]`. Rewrite using `[Finset.sum_congr rfl (fun i _ => key i), ← Finset.mul_sum, ← nsmul_eq_mul, map_nsmul, map_sum]`. Repeatedly rewrite using `[hs]`.
+
+Rewrite using `[← Finset.mul_sum, ← map_sum, Finset.univ_sum_single]`. Simplify using `only [LinearMap.smul_apply, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Gal.W2.Seed.pFormPerfSt :
     FormPerfSt := by
   intro E _ _ _ A n q hP

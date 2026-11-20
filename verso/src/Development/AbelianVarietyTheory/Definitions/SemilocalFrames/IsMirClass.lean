@@ -68,6 +68,9 @@ def wI (g : ℕ) [Fact g.Prime] (a c i n : ℕ) : Gn g n :=
 
 def mean {G : Type} [Fintype G] (f : G → ℂ) : ℂ := (Fintype.card G : ℂ)⁻¹ * ∑ x, f x
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem inMir_one (n : ℕ) : InMir (1 : Mt g n) := fun _ _ _ => rfl
 
 end GlobalTheory.GLm

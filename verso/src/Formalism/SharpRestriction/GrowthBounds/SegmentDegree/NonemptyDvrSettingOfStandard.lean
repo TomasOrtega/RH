@@ -106,6 +106,11 @@ def RestRank (C₀ Crk : ℝ) : Prop :=
     [IsDiscreteValuationRing O], UniformizedDVR p O → X.Hyp p K → C₀ ≤ X.CLa → C₀ ≤ X.Ck →
     ((p : ℝ) ^ n') ^ (-((r * K : ℕ) : ℤ)) * X.bound K Crk ≤ (Module.finrank (FF O) (X.NNbar p K O) : ℝ)
 
+/- English proof (translation)
+Establish `hpi : (Set.pi Set.univ fun v : Fin n' × Fin k => Set.Iic (d v.1)).Finite` using `Set.Finite.pi fun v => Set.finite_Iic _`. Establish `hpre` using `Set.Finite.preimage (f := (Finsupp.equivFunOnFinite : (Fin n' × Fin k →₀ ℕ) → (Fin n' × Fin k → ℕ))) (fun a _ b _ hab => Finsupp.equivFunOnFinite.injective hab) hpi`. Use `hpre.subset ?_` and prove the remaining obligations. Introduce `m hm`. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Iic, Finsupp.equivFunOnFinite_apply]`.
+
+Introduce `v`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem degSet_finite (n' k : ℕ) (d : Fin n' → ℕ) :
     {m : Fin n' × Fin k →₀ ℕ | ∀ t, ∑ c : Fin k, m (t, c) = d t}.Finite := by
   have hpi : (Set.pi Set.univ fun v : Fin n' × Fin k => Set.Iic (d v.1)).Finite :=
@@ -121,6 +126,11 @@ theorem degSet_finite (n' k : ℕ) (d : Fin n' → ℕ) :
         Finset.single_le_sum (f := fun c => m (v.1, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ v.2)
     _ = d v.1 := hm v.1
 
+/- English proof (translation)
+Take `⟨hS, hw, -, -⟩` from `h`. Establish `hw0 : w ≠ 0` using `hw.ne_zero`. Establish `hwm : w ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal]`. Conclude with `hw.not_isUnit`.
+
+Use `⟨⟨w, hw, ?_, ?_, hS.complete_O⟩⟩` and prove the remaining obligations. Rewrite using `[← hS.w_sq]; exact Ideal.pow_mem_of_mem _ hwm 2 (by norm_num)`. Rewrite using `[← hS.w_sq]`. Conclude with `pow_ne_zero 2 hw0`.
+-/
 theorem nonempty_dvr_setting_of_standard {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq]
     [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
     {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {jW : W →+* O} {w : O} (h : UnramifiedQuadraticSetting p n' W Qq O Kf ι σ jW w) :
@@ -133,6 +143,19 @@ theorem nonempty_dvr_setting_of_standard {p n' : ℕ} {W Qq O Kf : Type} [CommRi
   · rw [← hS.w_sq]; exact Ideal.pow_mem_of_mem _ hwm 2 (by norm_num)
   · rw [← hS.w_sq]; exact pow_ne_zero 2 hw0
 
+/- English proof (translation)
+Introduce `hAdm`. Use `⟨C₀, hC₀, fun CLa Ck hCLa hCk => ⟨Crk, 10, hCrk, by norm_num, ?_⟩⟩` and prove the remaining obligations. Introduce `p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jW w hSet hp13 r K _ _ hr2 F deg L₁ N₁ Ns E₀ mStar E' a Y Q hV hdeg hcard hNsN₁ hNsN hNsK htw hY hP1 hP2 hE' hP3`. Take `⟨S⟩` from `nonempty_dvr_setting_of_standard hSet`. Set `X : Dat n' r` to `⟨F, deg, L₁, N₁, Ns, E₀, mStar, E', a, Y, Q, CLa, Ck⟩`.
+
+Establish `hX : X.Hyp p K` using `⟨hSet.1.prime, hSet.1.even, hp13, hr2, hV, hdeg, hcard, hNsN₁, hNsN, hNsK, htw, hY, hP1, hP2, hE', hP3⟩`. Establish `hrk` using `hRank hAdm p n' r K X O S hX hCLa hCk`. Establish `hdg` using `hDeg p n' r K X O hX (hC₀.le.trans hCLa)`. Take `⟨Sg, hle, hT, hb, hfr⟩` from `hSel O (Fin n' × Fin (r + K)) _ (degSet_finite n' (r + K) X.d) (X.gen p K O) (fun g hg => by obtain ⟨x, -, l, -, -, h⟩ := hg; exact h)`. Establish `hrk' : ((p : ℝ) ^ n') ^ (-((r * K : ℕ) : ℤ)) * X.bound K Crk ≤ (Module.finrank O Sg : ℝ)`.
+
+Rewrite using `[hfr]`. Conclude with `hrk`. Use `⟨⟨Sg, hle, hT, hb, hrk', ?_⟩, hdg⟩` and prove the remaining obligations. Introduce `FFq _ _ hcardF`. Establish `h6 : Fintype.card FFq ^ (r * (r + K - r)) ≤ nPl FFq (r + K) r` using `hAdm.2.2.2.2.2.1 FFq (r + K) r (Nat.le_add_right r K)`.
+
+Rewrite `h6` using `[hcardF, Nat.add_sub_cancel_left]`. Establish `hq : (0 : ℝ) < ((p : ℝ) ^ n') ^ (r * K)`. Establish `: (0 : ℝ) < p` using `by exact_mod_cast hSet.1.prime.pos`. Check the signs of the components of the expression. Establish `h6' : ((p : ℝ) ^ n') ^ (r * K) ≤ (nPl FFq (r + K) r : ℝ)` using `by exact_mod_cast h6`.
+
+Establish `hn : (0 : ℝ) < (nPl FFq (r + K) r : ℝ)` using `lt_of_lt_of_le hq h6'`. Break down `le_or_gt (X.bound K Crk) 0 with hb0 | hb0` into its components or cases. Conclude with `le_trans (div_nonpos_of_nonpos_of_nonneg hb0 hn.le) (Nat.cast_nonneg _)`. Use `le_trans ?_ hrk'` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, div_eq_inv_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (inv_anti₀ hq h6') hb0.le`.
+-/
 theorem second_estimate_of_rank_bound (D : Formalism.BasicNotions.D7) (C₀ Crk : ℝ) (hC₀ : 0 < C₀) (hCrk : 0 < Crk)
     (hDeg : RestDeg) (hSel : RestSel) (hRank : AdmB D → RestRank C₀ Crk) : SecondPartClosed D := by
   intro hAdm

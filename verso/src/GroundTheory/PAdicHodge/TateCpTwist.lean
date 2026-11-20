@@ -18,11 +18,17 @@ instance uniformContinuousConstSMul_intermediateField
 
 variable (K : IntermediateField ℚ_[p] (PadicAlgCl p))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_intermediateField_cp (k : K) :
     algebraMap K ℂ_[p] k = ((k : PadicAlgCl p) : ℂ_[p]) := rfl
 
 instance : IsScalarTower K (PadicAlgCl p) ℂ_[p] := IsScalarTower.of_algebraMap_eq fun _ => rfl
 
+/- English proof (translation)
+The claim follows from `(Completion.continuous_coe _).comp continuous_subtype_val`.
+-/
 theorem continuous_algebraMap_intermediateField_cp : Continuous (algebraMap K ℂ_[p]) :=
   (Completion.continuous_coe _).comp continuous_subtype_val
 
@@ -33,10 +39,16 @@ instance : ContinuousSMul K ℂ_[p] :=
     rw [h]
     exact ((continuous_algebraMap_intermediateField_cp K).comp continuous_fst).mul continuous_snd⟩
 
+/- English proof (translation)
+The claim follows from `gal_smul_coe_of_mem σ k`.
+-/
 theorem gal_smul_algebraMap_intermediateField (σ : Gal(PadicAlgCl p/K)) (k : K) :
     σ • algebraMap K ℂ_[p] k = algebraMap K ℂ_[p] k :=
   gal_smul_coe_of_mem σ k
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', gal_smul_algebraMap_intermediateField]`.
+-/
 theorem gal_smul_smul_intermediateField (σ : Gal(PadicAlgCl p/K)) (k : K) (x : ℂ_[p]) :
     σ • (k • x) = k • (σ • x) := by
   rw [Algebra.smul_def, Algebra.smul_def, smul_mul', gal_smul_algebraMap_intermediateField]
@@ -45,9 +57,15 @@ noncomputable def cycloChar : Gal(PadicAlgCl p/K) →* ℤ_[p]ˣ :=
   (cyclotomicCharacter (PadicAlgCl p) p).comp
     (MulSemiringAction.toRingAut Gal(PadicAlgCl p/K) (PadicAlgCl p))
 
+/- English proof (translation)
+The claim follows from `cyclotomicCharacter.continuous p K (PadicAlgCl p)`.
+-/
 theorem continuous_cycloChar : Continuous (cycloChar K) :=
   cyclotomicCharacter.continuous p K (PadicAlgCl p)
 
+/- English proof (translation)
+The claim follows from `cyclotomicCharacter.spec p (MulSemiringAction.toRingAut Gal(PadicAlgCl p/K) (PadicAlgCl p) σ) ζ hζ`.
+-/
 theorem cycloChar_spec (σ : Gal(PadicAlgCl p/K)) {n : ℕ} {ζ : PadicAlgCl p} (hζ : ζ ^ p ^ n = 1) :
     σ ζ = ζ ^ ((cycloChar K σ : ℤ_[p]).toZModPow n).val :=
   cyclotomicCharacter.spec p (MulSemiringAction.toRingAut Gal(PadicAlgCl p/K) (PadicAlgCl p) σ) ζ hζ
@@ -55,16 +73,28 @@ theorem cycloChar_spec (σ : Gal(PadicAlgCl p/K)) {n : ℕ} {ζ : PadicAlgCl p} 
 noncomputable def twistScalar (j : ℤ) (σ : Gal(PadicAlgCl p/K)) : ℂ_[p] :=
   algebraMap ℚ_[p] ℂ_[p] (((cycloChar K σ ^ j : ℤ_[p]ˣ) : ℤ_[p]) : ℚ_[p])
 
+/- English proof (translation)
+Simplify using `[twistScalar]`.
+-/
 theorem twistScalar_one (j : ℤ) : twistScalar K j 1 = 1 := by
   simp [twistScalar]
 
+/- English proof (translation)
+Simplify using `only [twistScalar, map_mul, mul_zpow, Units.val_mul, PadicInt.coe_mul]`.
+-/
 theorem twistScalar_mul (j : ℤ) (σ τ : Gal(PadicAlgCl p/K)) :
     twistScalar K j (σ * τ) = twistScalar K j σ * twistScalar K j τ := by
   simp only [twistScalar, map_mul, mul_zpow, Units.val_mul, PadicInt.coe_mul]
 
+/- English proof (translation)
+Simplify using `[twistScalar]`.
+-/
 theorem twistScalar_zero (σ : Gal(PadicAlgCl p/K)) : twistScalar K 0 σ = 1 := by
   simp [twistScalar]
 
+/- English proof (translation)
+The claim follows from `gal_smul_algebraMap σ _`.
+-/
 theorem gal_smul_twistScalar (j : ℤ) (σ τ : Gal(PadicAlgCl p/K)) :
     σ • twistScalar K j τ = twistScalar K j τ :=
   gal_smul_algebraMap σ _
@@ -76,6 +106,9 @@ noncomputable def cpTwistMap (j : ℤ) (σ : Gal(PadicAlgCl p/K)) : ℂ_[p] →L
     rw [gal_smul_smul_intermediateField, RingHom.id_apply, mul_smul_comm]
   cont := continuous_const.mul (continuous_const_smul σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpTwistMap_apply (j : ℤ) (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     cpTwistMap K j σ x = twistScalar K j σ * (σ • x) := rfl
 
@@ -93,9 +126,15 @@ noncomputable def cpTwistRep (j : ℤ) : ContRepresentation K Gal(PadicAlgCl p/K
 
 noncomputable abbrev cpTwist (j : ℤ) : TopRep K Gal(PadicAlgCl p/K) := TopRep.of (cpTwistRep K j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpTwistRep_apply (j : ℤ) (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     cpTwistRep K j σ x = twistScalar K j σ * (σ • x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpTwist_ρ_apply (j : ℤ) (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     (cpTwist K j).ρ σ x = twistScalar K j σ * (σ • x) := rfl
 

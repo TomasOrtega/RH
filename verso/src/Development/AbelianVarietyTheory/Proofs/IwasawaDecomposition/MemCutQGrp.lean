@@ -29,17 +29,26 @@ def frStab (P : HeightOneSpectrum (𝓞 E)) (C : Set (Sp E n)) : Subgroup ↥(GL
     rw [e] at h
     exact h.symm
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_frStab {P : HeightOneSpectrum (𝓞 E)} {C : Set (Sp E n)} {g : ↥(GLint E n P)} :
     g ∈ frStab P C ↔ ∀ v, g.1 v ∈ C ↔ v ∈ C := Iff.rfl
 
 def cutQ (Θ : LevQFam E K n Q) (C : ∀ P : Q, Set (Sp E n)) : LevQFam E K n Q := fun P =>
   ⟨(Θ P).H ⊓ frStab P.1 (C P), (Θ P).lam.comp (Subgroup.inclusion inf_le_left)⟩
 
+/- English proof (translation)
+Simplify using `only [LevQFam.grp, Subgroup.mem_pi, Set.mem_univ, forall_const]`. Conclude with `forall_and`.
+-/
 theorem mem_cutQ_grp {Θ : LevQFam E K n Q} {C : ∀ P : Q, Set (Sp E n)} {t : GLQ E n Q} :
     t ∈ (cutQ Θ C).grp ↔ t ∈ Θ.grp ∧ ∀ P, t P ∈ frStab P.1 (C P) := by
   simp only [LevQFam.grp, Subgroup.mem_pi, Set.mem_univ, forall_const]
   exact forall_and
 
+/- English proof (translation)
+Introduce `_ ht` and use `(mem_cutQ_grp.1 ht).1`.
+-/
 theorem cutQ_grp_le (Θ : LevQFam E K n Q) (C : ∀ P : Q, Set (Sp E n)) : (cutQ Θ C).grp ≤ Θ.grp := fun _ ht => (mem_cutQ_grp.1 ht).1
 
 end Cut
@@ -78,6 +87,11 @@ def PtDet (cq : PtY ST SG Q y → ∀ P : Q, Set (Sp X.E n)) : Prop :=
 
 end Inv
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[mul_assoc]`. Introduce `h`.
+
+Conclude with `⟨k⁻¹ * x * k, h, by simp [mul_assoc]⟩`.
+-/
 theorem mem_map_conj {G : Type} [Group G] (S : Subgroup G) (k x : G) :
     x ∈ S.map (MulAut.conj k).toMonoidHom ↔ k⁻¹ * x * k ∈ S := by
   rw [Subgroup.mem_map]
@@ -101,15 +115,24 @@ abbrev rpT (u : B.Word) (a : I.ι) (i : ℕ) (c : (I.stp u a i).Cl) : PtAt B.R I
   rp (lvG I a i) (lvQ I a i) ((I.Tp a).pref u i) (I.pref u a i) c
 
 open Classical in
+/- English proof (translation)
+Introduce `P hP`. Unfold `ColIn.SQ`. Conclude with `Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hP⟩`.
+-/
 theorem q_sub_SQ (a : I.ι) : I.Q a ⊆ I.SQ := by
   intro P hP
   unfold ColIn.SQ
   exact Finset.mem_biUnion.2 ⟨a, Finset.mem_univ _, hP⟩
 
+/- English proof (translation)
+Introduce `P hP hG`. Conclude with `Finset.disjoint_left.1 (LevTwist.levOk_twists B X I hI).2.1 hG (q_sub_SQ I a hP)`.
+-/
 theorem q_disj (hI : I.Ok) (a : I.ι) : ∀ P ∈ QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K), P ∉ (B.primes X).vGs := by
   intro P hP hG
   exact Finset.disjoint_left.1 (LevTwist.levOk_twists B X I hI).2.1 hG (q_sub_SQ I a hP)
 
+/- English proof (translation)
+Introduce `P hc`. Take `⟨-, hs⟩` from `(LevTwist.levOk_twists B X I hI).1`. Establish `hm : P.1 ∈ uSG (B.primes X).vGs I.SQ`. Simplify using `[uSG, q_sub_SQ I a P.2]`. Conclude with `hs _ hm (by rw [hc]; exact hm)`.
+-/
 theorem q_conj (hI : I.Ok) (a : I.ι) : ∀ P : I.Q a, conjPrime₂ P.1 ≠ P.1 := by
   intro P hc
   obtain ⟨-, hs⟩ := (LevTwist.levOk_twists B X I hI).1
@@ -117,6 +140,11 @@ theorem q_conj (hI : I.Ok) (a : I.ι) : ∀ P : I.Q a, conjPrime₂ P.1 ≠ P.1 
     simp [uSG, q_sub_SQ I a P.2]
   exact hs _ hm (by rw [hc]; exact hm)
 
+/- English proof (translation)
+Establish `e : ∀ r : PtAt B.R I.sel (I.tup a) (I.cst a) u i, r.1.2 = ∅` using `fun r => by`. Establish `hr` using `r.2`. Rewrite `hr` using `[ysAt_ys_of_ne (h := h)]`. Conclude with `Set.mem_singleton_iff.1 hr`. Use function extensionality and compare the values at `P`.
+
+Use extensionality with `z`. Simplify using `[cosetIn, e q, e q']`.
+-/
 theorem cos_of_neT {u : B.Word} {a : I.ι} {i : ℕ} (h : i + 1 ≠ B.R.m) (q q' : PtAt B.R I.sel (I.tup a) (I.cst a) u i) :
     cosetIn q = cosetIn q' := by
   have e : ∀ r : PtAt B.R I.sel (I.tup a) (I.cst a) u i, r.1.2 = ∅ := fun r => by

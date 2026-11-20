@@ -6,6 +6,9 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm | exact GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm | (intros; apply GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fubini_study_log_le_log_norm : ∀ (n : ℕ) (h : HermNorm n) (u : Fin n → ℂ) (y : EuclideanSpace ℂ (Fin n)), y ≠ 0 →
   ∑ j, u j * h.pointOf y j ≠ 0 → fsLog h u (h.pointOf y) ≤ Real.log (h.norm u) := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm | exact GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm | (intros; apply GlobalTheory.CompanionTheory.Ar.Short.Crofton.fsLog_pointOf_le_log_norm <;> assumption)

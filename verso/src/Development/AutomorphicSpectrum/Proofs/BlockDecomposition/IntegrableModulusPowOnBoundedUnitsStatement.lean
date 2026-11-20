@@ -11,5 +11,8 @@ open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.DualHol
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ModulusWeight.integrable_modulus_rpow_indicator | exact GlobalTheory.CompanionTheory.ModulusWeight.integrable_modulus_rpow_indicator | (intros; apply GlobalTheory.CompanionTheory.ModulusWeight.integrable_modulus_rpow_indicator <;> assum …`.
+-/
 theorem _root_.GlobalTheory.T.integrable_modulus_pow_on_bounded_units : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (δ B : ℝ), 0 < δ → Integrable (fun a : Fˣ => Set.indicator {a : Fˣ | (modulus (a : F) : ℝ) ≤ B} (fun a : Fˣ => (modulus (a : F) : ℝ) ^ δ) a) (multHaar F) := by
   first | exact @GlobalTheory.CompanionTheory.ModulusWeight.integrable_modulus_rpow_indicator | exact GlobalTheory.CompanionTheory.ModulusWeight.integrable_modulus_rpow_indicator | (intros; apply GlobalTheory.CompanionTheory.ModulusWeight.integrable_modulus_rpow_indicator <;> assumption)

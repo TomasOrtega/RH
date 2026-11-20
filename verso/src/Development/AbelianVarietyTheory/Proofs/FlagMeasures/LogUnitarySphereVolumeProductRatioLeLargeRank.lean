@@ -4,16 +4,35 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.SphRatio
 
+/- English proof (translation)
+Unfold `sphV`. Rewrite using `[Finset.prod_Icc_succ_top (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem sphV_succ (i : ℕ) :
     sphV (i + 1) = sphV i * (2 * Real.pi ^ (i + 1) / (i.factorial : ℝ)) := by
   unfold sphV
   rw [Finset.prod_Icc_succ_top (by omega)]
   simp
 
+/- English proof (translation)
+Unfold `sphV`. Conclude with `Finset.prod_pos fun l _ => by have := Real.pi_pos; positivity`.
+-/
 theorem sphV_pos (i : ℕ) : 0 < sphV i := by
   unfold sphV
   exact Finset.prod_pos fun l _ => by have := Real.pi_pos; positivity
 
+/- English proof (translation)
+Establish `hpi` using `Real.pi_pos`. Establish `he` using `Real.exp_pos 1`. Establish `hn' : (18 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hm0 : (0 : ℝ) < m` using `by linarith`. Establish `hf : (0 : ℝ) < m.factorial` using `by exact_mod_cast m.factorial_pos`.
+
+Establish `hc : 2 * Real.pi * Real.exp 1 ≤ n`. Establish `h1` using `Real.pi_lt_d2`. Establish `h2` using `Real.exp_one_lt_d9`. Use the polynomial consequences of the given equalities and inequalities. Establish `hL : 0 ≤ Real.log (n / (2 * Real.pi * Real.exp 1))` using `Real.log_nonneg (by rw [le_div_iff₀ (by positivity)]; linarith)`.
+
+Establish `h1 : (m : ℝ) ^ m / m.factorial ≤ Real.exp 1 ^ m`. Rewrite using `[← Real.exp_nat_mul, mul_one]`. Conclude with `Real.pow_div_factorial_le_exp _ hm0.le m`. Establish `h2 : 2 * Real.pi ^ (m + 1) / (m.factorial : ℝ) ≤ (2 * Real.pi) * ((n / (2 * Real.pi * Real.exp 1))⁻¹) ^ m`. Establish `h3 : Real.pi * Real.exp 1 / m ≤ (n / (2 * Real.pi * Real.exp 1))⁻¹`.
+
+Rewrite using `[inv_div, div_le_div_iff₀ hm0 (by linarith)]`. Establish `: 0 < Real.pi * Real.exp 1` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, pow_succ]`.
+
+Clear the denominators using the available nonvanishing facts. Use `_ ≤ (2 * Real.pi) * ((Real.pi / m) ^ m * Real.exp 1 ^ m) := by gcongr`. Use `_ = (2 * Real.pi) * (Real.pi * Real.exp 1 / m) ^ m := by`. Rewrite using `[← mul_pow]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Use `(Real.log_le_log (by positivity) h2).trans ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_inv]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem log_factor_le (n m : ℕ) (a : ℝ) (hn : 18 ≤ n) (ha : a ≤ m) (hm : (n : ℝ) / 2 ≤ m) :
     Real.log (2 * Real.pi ^ (m + 1) / (m.factorial : ℝ)) ≤
       Real.log (2 * Real.pi) - a * Real.log (n / (2 * Real.pi * Real.exp 1)) := by
@@ -48,6 +67,13 @@ theorem log_factor_le (n m : ℕ) (a : ℝ) (hn : 18 ≤ n) (ha : a ≤ m) (hm :
   rw [Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_inv]
   nlinarith
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp [(sphV_pos q).ne']`. Consider the case `succ j ih`. Establish `hpi` using `Real.pi_pos`. Establish `h0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`.
+
+Establish `h` using `log_factor_le n (q + j) a hn (by push_cast; linarith) (by push_cast; linarith)`. Establish `h1` using `sphV_pos (q + j)`. Establish `h2` using `sphV_pos q`. Rewrite using `[← add_assoc, sphV_succ, mul_div_right_comm, Real.log_mul (by positivity) (by positivity)]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_ratio_add_le (n q : ℕ) (a : ℝ) (hn : 18 ≤ n) (ha : a ≤ q) (hq : (n : ℝ) / 2 ≤ q)
     (j : ℕ) : Real.log (sphV (q + j) / sphV q) ≤
       j * (Real.log (2 * Real.pi) - a * Real.log (n / (2 * Real.pi * Real.exp 1))) := by
@@ -64,6 +90,9 @@ theorem log_ratio_add_le (n q : ℕ) (a : ℝ) (hn : 18 ≤ n) (ha : a ≤ q) (h
     push_cast
     linarith
 
+/- English proof (translation)
+Introduce `n p j hn hj _ ha hq`. Establish `hc : ((p - j : ℕ) : ℝ) = (p : ℝ) - j` using `Nat.cast_sub hj`. Establish `h` using `log_ratio_add_le n (p - j) _ hn (hc ▸ ha) (hc ▸ hq) j`. Rewrite `h` using `[Nat.sub_add_cancel hj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_sphV_ratio_le : ∀ (n p j : ℕ), 18 ≤ n → j ≤ p → p ≤ n → (n : ℝ) - 2 * Real.sqrt n ≤ (p : ℝ) - j → (n : ℝ) / 2 ≤ (p : ℝ) - j → Real.log (sphV p / sphV (p - j)) ≤ j * Real.log (2 * Real.pi) - j * ((n : ℝ) - 2 * Real.sqrt n) * Real.log (n / (2 * Real.pi * Real.exp 1)) := by
   intro n p j hn hj _ ha hq
   have hc : ((p - j : ℕ) : ℝ) = (p : ℝ) - j := Nat.cast_sub hj

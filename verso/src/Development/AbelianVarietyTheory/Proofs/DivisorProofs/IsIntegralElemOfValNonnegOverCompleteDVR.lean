@@ -15,6 +15,45 @@ namespace GlobalTheory.IntOverCdvr
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `V _ _ _ hV ϖ hϖ F _ _ _ v hv z hz`. Take `⟨hdvr, hcomp, hchar⟩` from `hV`. Set `K` to `FractionRing V`. Use `letI : Algebra V F := ((algebraMap K F).comp (algebraMap V K)).toAlgebra`. Use `haveI : IsScalarTower V K F := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `haveI : FaithfulSMul V F := (faithfulSMul_iff_algebraMap_injective V F).mpr ((algebraMap K F).injective.comp (IsFractionRing.injective V K))`. Use `haveI : Algebra.IsAlgebraic V F := (IsFractionRing.comap_isAlgebraic_iff (A := V) (K := K) (C := F)).mpr inferInstance`. Take `⟨W, hW, -, -, hfin, -, hloc, hs, -⟩` from `GlobalTheory.exists_complete_dvr_finite_subalgebra V F {z}`. Use `haveI := hfin`. Establish `hVnn : ∀ r : V, 0 ≤ v (algebraMap V F r)` using `fun r => GlobalTheory.FiniteDVRValuation.val_nonneg hϖ hv r`.
+
+Set `S : ValuationSubring F` to `GlobalTheory.FiniteDVRValuation.nonnegSubring v (RingHom.id F)`. Establish `hWnn : ∀ w ∈ W, 0 ≤ v w`. Introduce `w hw`. Establish `hint : IsIntegral V w` using `(Algebra.IsIntegral.isIntegral (R := V) (⟨w, hw⟩ : W)).map W.val`. Set `φ : V →+* S` to `(algebraMap V F).codRestrict S (fun r => hVnn r)`.
+
+Establish `hS : (algebraMap S F).IsIntegralElem w` using `RingHom.IsIntegralElem.of_comp (f := φ) hint`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := S) (K := F)).1 hS`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `hϖpos : 0 < v (algebraMap V F ϖ)`.
+
+Take `⟨n, hn, hu⟩` from `GlobalTheory.FiniteDVRValuation.exists_nat_val hϖ hv hϖ.ne_zero`. Establish `hn0 : n ≠ 0` using `fun h => hϖ.not_isUnit (hu h)`. Express the relevant statement in the definitionally equal form `0 < v (algebraMap K F (algebraMap V K ϖ))`. Rewrite using `[hn]`. Conclude with `Nat.pos_of_ne_zero hn0` after adjusting the coercions.
+
+Establish `hunit : ∀ c : W, v (c : F) = 0 → IsUnit c`. Introduce `c hc`. Assume the negation of the conclusion as `hnu`. Establish `hinj : Function.Injective (algebraMap V W)`. Introduce `a b hab`.
+
+Apply `FaithfulSMul.algebraMap_injective V F` to reduce the goal to its premises. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`. Use `set ϖW : W := algebraMap V W ϖ`. Establish `hϖW0 : ϖW ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, IsDiscreteValuationRing.addVal W ϖW = N := by`. Break down `h : IsDiscreteValuationRing.addVal W ϖW with _ | N` into its components or cases. Conclude with `absurd (IsDiscreteValuationRing.addVal_eq_top_iff.1 h) hϖW0`. Conclude with `⟨N, rfl⟩`. Establish `hc1 : 1 ≤ IsDiscreteValuationRing.addVal W c`.
+
+Rewrite using `[ENat.one_le_iff_ne_zero]`. Conclude with `fun h => hnu (IsDiscreteValuationRing.addVal_eq_zero_iff.1 h)`. Establish `hdvd : ϖW ∣ c ^ N`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, AddValuation.map_pow, hN]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨d, hd⟩` from `hdvd`. Establish `h1 : v ((c : F) ^ N) = 0` using `by rw [AddValuation.map_pow, hc, nsmul_zero]`. Establish `h2 : v ((c : F) ^ N) = v (algebraMap V F ϖ) + v (d : F)`. Rewrite using `[← AddValuation.map_mul]`. Use `congr 1`.
+
+Establish `h` using `congrArg Subtype.val hd`. Simplify using `only [SubmonoidClass.coe_pow, MulMemClass.coe_mul] at h`. Conclude with `h`. Establish `h3 : 0 < v ((c : F) ^ N)`. Rewrite using `[h2]`.
+
+Conclude with `lt_of_lt_of_le hϖpos (le_add_of_nonneg_right (hWnn d d.2))`. Rewrite `h3` using `[h1]`. Conclude with `lt_irrefl _ h3`. Take `⟨a, ha, b, hb, hb0, hab⟩` from `hs z (Finset.mem_singleton_self z)`. Establish `hzW : z ∈ W`.
+
+Set `a' : W` to `⟨a, ha⟩`. Set `b' : W` to `⟨b, hb⟩`. Break down `le_total (IsDiscreteValuationRing.addVal W b') (IsDiscreteValuationRing.addVal W a') with h | h` into its components or cases. Take `⟨c, hc⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.1 h`. Establish `hc' : a = b * c` using `congrArg Subtype.val hc`.
+
+Establish `: z = c`. Apply `mul_left_cancel₀ hb0` to reduce the goal to its premises. Rewrite using `[mul_comm, hab, hc']`. Rewrite using `[this]`. Conclude with `c.2`.
+
+Take `⟨c, hc⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.1 h`. Establish `hc' : b = a * c` using `congrArg Subtype.val hc`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hb0 (by simpa using hc')`.
+
+Establish `hzc : z * c = 1`. Apply `mul_left_cancel₀ ha0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hz0 : z ≠ 0` using `left_ne_zero_of_mul_eq_one hzc`. Establish `hvc : v (c : F) = 0`.
+
+Establish `hsum : v z + v (c : F) = 0` using `by rw [← AddValuation.map_mul, hzc, AddValuation.map_one]`. Establish `hc0` using `hWnn c c.2`. Use `le_antisymm ?_ hc0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨u, hu⟩` from `hunit c hvc`.
+
+Establish `: z = ((u⁻¹ : Wˣ) : W)`. Establish `h1 : ((u : W) : F) * (((u⁻¹ : Wˣ) : W) : F) = 1`. Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Rewrite `h1` using `[hu]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `Subtype.property _`. Conclude with `(Algebra.IsIntegral.isIntegral (R := V) (⟨z, hzW⟩ : W)).map W.val`.
+-/
 theorem isIntegralElem_of_val_nonneg : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (ϖ : V), Irreducible ϖ → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] [Algebra.IsAlgebraic (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ReciprocityTheory.ChartRestriction.G.DVR.ValOver ϖ F v → ∀ z : F, 0 ≤ v z → ((algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))).IsIntegralElem z := by
   intro V _ _ _ hV ϖ hϖ F _ _ _ v hv z hz
   obtain ⟨hdvr, hcomp, hchar⟩ := hV

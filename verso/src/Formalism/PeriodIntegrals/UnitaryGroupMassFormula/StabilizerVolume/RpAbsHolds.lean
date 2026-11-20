@@ -8,6 +8,43 @@ namespace PI.VolStabS
 open MeasureTheory Filter Finset PI.VolStabS.RPA
 open scoped NNReal ENNReal
 
+/- English proof (translation)
+Introduce `ι _ W _ m _ L hL hLfin hTail`. Use `⟨Measure.sum fun S : Finset ι => kap m L S, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.sum_apply_eq_zero]`. Introduce `S`. Use `measure_mono_null ?_ (ae_iff.1 (kap_ae hL S))` and prove the remaining obligations.
+
+Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at hx ⊢`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use `Filter.eventually_cofinite.2 ((S.finite_toSet).subset ?_)` and prove the remaining obligations.
+
+Introduce `i hi`. Assume the negation of the conclusion as `hiS`. Conclude with `hi ((h i).2 hiS)`. Introduce `i C hC hCm`. Rewrite using `[Measure.sum_apply_eq_zero]`.
+
+Introduce `S`. Apply `kap_eval_null hC.compl` to reduce the goal to its premises. Simplify using `only [mu]`. Use `split_ifs`. Conclude with `nonpos_iff_eq_zero.1 ((Measure.restrict_apply_le _ _).trans hCm.le)`.
+
+Conclude with `nonpos_iff_eq_zero.1 ((Measure.restrict_apply_le _ _).trans hCm.le)`. Introduce `f hfi hf`. Take `⟨T0, hT0⟩ : ∃ T0 : Finset ι, ∀ i ∉ T0, f i = (L i).indicator 1` from `⟨(Filter.eventually_cofinite.1 hf).toFinset, fun i hi => by simpa using hi⟩`. Establish `hsub : ∀ (S : Finset ι) (x : (i : ι) → W i), (∀ i, i ∉ S → x i ∈ L i) → Function.mulSupport (fun i => f i (x i)) ⊆ ↑(S ∪ T0)`. Introduce `S x hx i hi`.
+
+Assume the negation of the conclusion as `hni`. Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hni`. Apply `hi` to reduce the goal to its premises. Use `show f i (x i) = 1`. Rewrite using `[hT0 i hni.2]`.
+
+Simplify using `[hx i hni.1]`. Establish `hA : ∀ S : Finset ι, (fun x : (i : ι) → W i => ∏ᶠ i, f i (x i)) =ᵐ[kap m L S] fun x => ∏ i ∈ S ∪ T0, f i (x i)`. Introduce `S`. Use `filter_upwards [kap_ae hL S] with x hx`. Conclude with `finprod_eq_prod_of_mulSupport_subset _ (hsub S x fun i hi => (hx i).2 hi)`.
+
+Establish `hZ : ∀ S : Finset ι, ¬ S ⊆ T0 → (fun x : (i : ι) → W i => ∏ᶠ i, f i (x i)) =ᵐ[kap m L S] 0`. Introduce `S hS`. Take `⟨j, hjS, hjT⟩` from `Finset.not_subset.1 hS`. Use `filter_upwards [kap_ae hL S] with x hx`. Use `finprod_eq_zero (fun i => f i (x i)) j ?_ ((S ∪ T0).finite_toSet.subset (hsub S x fun i hi => (hx i).2 hi))` and prove the remaining obligations.
+
+Rewrite using `[hT0 j hjT]`. Simplify using `[(hx j).1 hjS]`. Establish `hint : ∀ S : Finset ι, Integrable (fun x : (i : ι) → W i => ∏ᶠ i, f i (x i)) (kap m L S)` using `fun S => (kap_integral hLfin hTail Finset.subset_union_left f hfi).1.congr (hA S).symm`. Establish `hI : ∀ S : Finset ι, ∫ x, ∏ᶠ i, f i (x i) ∂kap m L S = if S ⊆ T0 then (∏ i ∈ T0, ∫ w, f i w ∂mu m L S i) * ((tl m L T0 : ℝ) : ℂ) else 0`. Introduce `S`.
+
+Use `split_ifs with h`. Rewrite using `[integral_congr_ae (hA S), Finset.union_eq_right.2 h]`. Conclude with `(kap_integral hLfin hTail h f hfi).2`. Rewrite using `[integral_congr_ae (hZ S h)]`. Simplify using the standard rewrite rules.
+
+Establish `hρint : Integrable (fun x : (i : ι) → W i => ∏ᶠ i, f i (x i)) (Measure.sum fun S => kap m L S)`. Use `integrable_sum_measure hint (summable_of_ne_finset_zero (s := T0.powerset) ?_)` and prove the remaining obligations. Introduce `S hS`. Rewrite `hS` using `[Finset.mem_powerset]`. Establish `h0 : (fun x : (i : ι) → W i => ‖∏ᶠ i, f i (x i)‖) =ᵐ[kap m L S] fun _ => (0 : ℝ)` using `(hZ S hS).mono fun x hx => by simp only [Pi.zero_apply] at hx; simp [hx]`.
+
+Rewrite using `[integral_congr_ae h0, integral_zero]`. Establish `hsum : HasSum (fun S : Finset ι => ∫ x, ∏ᶠ i, f i (x i) ∂kap m L S) (∑ S ∈ T0.powerset, (∏ i ∈ T0, ∫ w, f i w ∂mu m L S i) * ((tl m L T0 : ℝ) : ℂ))`. Establish `h : HasSum (fun S : Finset ι => ∫ x, ∏ᶠ i, f i (x i) ∂kap m L S) (∑ S ∈ T0.powerset, ∫ x, ∏ᶠ i, f i (x i) ∂kap m L S)` using `hasSum_sum_of_ne_finset_zero (fun S hS => by rw [hI S, if_neg (by simpa using hS)])`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations.
+
+Rewrite using `[hI S, if_pos (Finset.mem_powerset.1 hS)]`. Establish `hval : ∫ x, ∏ᶠ i, f i (x i) ∂(Measure.sum fun S => kap m L S) = (∏ i ∈ T0, ∫ w, f i w ∂m i) * ((tl m L T0 : ℝ) : ℂ)`. Rewrite using `[(hasSum_integral_measure hρint).unique hsum, ← Finset.sum_mul]`. Use `congr 1`. Rewrite using `[show (∏ i ∈ T0, ∫ w, f i w ∂m i) = ∏ i ∈ T0, ((∫ w in (L i)ᶜ, f i w ∂m i) + ∫ w in L i, f i w ∂m i) from Finset.prod_congr rfl fun i _ => by rw [add_comm, integral_add_compl (hL i) (hfi i)], Finset.prod_add]`.
+
+Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite `hS` using `[Finset.mem_powerset]`. Rewrite using `[← Finset.prod_sdiff hS, mul_comm]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i hi => by simp [mu, hi]`.
+
+Conclude with `Finset.prod_congr rfl fun i hi => by simp [mu, (Finset.mem_sdiff.1 hi).2]`. Use `⟨hρint, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Establish `h1 : HasProd (fun i => if i ∈ T0 then ∫ w, f i w ∂m i else 1) (∏ i ∈ T0, ∫ w, f i w ∂m i)`. Use `hasProd_prod_of_ne_finset_one (s := T0) (f := fun i => if i ∈ T0 then ∫ w, f i w ∂m i else 1) (fun i hi => if_neg hi) using 1` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals first | infer_instance | exact Finset.prod_congr rfl fun i hi => (if_pos hi).symm`. Establish `h2 : HasProd (fun i => (((({i | i ∉ T0} : Set ι).mulIndicator (am m L) i : ℝ≥0) : ℝ) : ℂ)) ((tl m L T0 : ℝ) : ℂ)` using `(hasProd_ind hTail T0).map ((Complex.ofRealHom.toMonoidHom).comp NNReal.toRealHom.toMonoidHom) (Complex.continuous_ofReal.comp NNReal.continuous_coe)`. Use `h1.mul h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i ∈ T0`.
+
+Simplify using `[hi, Set.mulIndicator_apply]`. Establish `hind : ∫ w, (L i).indicator (1 : W i → ℂ) w ∂m i = (((m i) (L i)).toReal : ℂ)`. Rewrite using `[show (1 : W i → ℂ) = fun _ => (1 : ℂ) from rfl, integral_indicator_const _ (hL i)]`. Simplify using `[Measure.real]`. Rewrite using `[hT0 i hi, hind]`.
+
+Simplify using `only [hi, if_false, one_mul, Set.mulIndicator_apply, Set.mem_setOf_eq, not_false_eq_true, if_true, am, ENNReal.coe_toNNReal_eq_toReal]`.
+-/
 theorem rpAbs_holds : RPAbs := by
   intro ι _ W _ m _ L hL hLfin hTail
   classical

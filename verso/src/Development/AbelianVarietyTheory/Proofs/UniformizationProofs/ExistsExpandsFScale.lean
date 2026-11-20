@@ -28,6 +28,9 @@ variable {K F : Type} [Field K] [Field F] [Algebra K F]
   {J : Type} {P₀ P P' : J → Type} [∀ j, AddCommGroup (P₀ j)] [∀ j, Module R (P₀ j)]
   [∀ j, AddCommGroup (P j)] [∀ j, Module K (P j)] [∀ j, AddCommGroup (P' j)] [∀ j, Module F (P' j)]
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hc, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [Algebra.smul_def, mul_comm]`.
+-/
 theorem sum_regroup {M M' : Type} [AddCommGroup M] [Module K M] [AddCommGroup M'] [Module F M']
     (a : M →ₛₗ[algebraMap K F] M') {n N : ℕ} (c : Fin n → F) (e : Fin N → F) (m : Fin N → Fin n → K)
     (hc : ∀ i, c i = ∑ l, m l i • e l) (x : Fin n → M) :
@@ -38,6 +41,21 @@ theorem sum_regroup {M M' : Type} [AddCommGroup M] [Module K M] [AddCommGroup M'
   rw [hc, Finset.sum_smul]
   exact Finset.sum_congr rfl fun l _ => by rw [Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, c, x, hx, e₁, e₂⟩`. Set `B` to `Module.Basis.ofVectorSpace K F`. Set `S` to `Finset.univ.biUnion fun i => (B.repr (c i)).support`. Set `q : Fin S.card → _` to `fun l => (S.equivFin.symm l).1`.
+
+Establish `hc : ∀ i, c i = ∑ l, B.coord (q l) (c i) • B (q l)` using `fun i => by`. Establish `hS : (B.repr (c i)).support ⊆ S` using `fun t ht => Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, ht⟩`. Use `conv_lhs => rw [← B.linearCombination_repr (c i), Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hS _ (by simp), ← Finset.sum_coe_sort, ← S.equivFin.symm.sum_comp]`. Both sides reduce to the same expression. Use `choose Λ hΛ using fun l j => (hb j).coord (B.coord (q l))`.
+
+Use `choose w hw using fun l => desc _ (Λ l) (hΛ l)`. Establish `hw' : ∀ l j, π j (w l) = ∑ i, B.coord (q l) (c i) • ρ' j ((x i).2 j)` using `fun l j => by`. Rewrite using `[hw, e₂, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hΛ l j _ _`. Use `⟨S.card, fun l => B (q l), fun l => ∑ i, B.coord (q l) (c i) • ρ (x i).1, w, fun l => ?_, e₁.trans (sum_regroup a c _ _ hc _), fun j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, hr⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors R) (fun i => B.coord (q l) (c i)) choose m hm using hr`. Use `(hE _ _).2 ⟨r, nonZeroDivisors.coe_ne_zero r, ∑ i, m i • x i, Submodule.sum_mem _ fun i _ => X.smul_mem _ (hx i), ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, Prod.fst_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Prod.smul_fst, map_smulₛₗ, hm, smul_smul, Algebra.smul_def]`.
+
+Rewrite using `[hw', Finset.smul_sum, Prod.snd_sum, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Prod.smul_snd, Pi.smul_apply, map_smulₛₗ, hm, smul_smul, Algebra.smul_def]`. Simplify using `only [hw']`. Conclude with `(e₂ j).trans (sum_regroup (b j) c _ _ hc _)`.
+
+Introduce and unpack `⟨n, c, u, w, h, e₃, e₄⟩ choose r hr x hx e₁ e₂ using fun i => (hE _ _).1 (h i)`. Establish `hr' : ∀ i, algebraMap K F (algebraMap R K (r i)) ≠ 0` using `fun i => by`. Rewrite using `[map_ne_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 (hr i)`. Use `⟨n, fun i => c i * (algebraMap K F (algebraMap R K (r i)))⁻¹, x, hx, e₃.trans ?_, fun j => (e₄ j).trans ?_⟩` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[e₁, map_smulₛₗ, smul_smul, inv_mul_cancel_right₀ (hr' i)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[e₂, map_smulₛₗ, smul_smul, inv_mul_cancel_right₀ (hr' i)]`.
+-/
 theorem comb_iff (X : Submodule R (V₀ × ∀ j, P₀ j))
     (ρ : V₀ →ₛₗ[algebraMap R K] V) (ρ' : ∀ j, P₀ j →ₛₗ[algebraMap R K] P j)
     (a : V →ₛₗ[algebraMap K F] V')
@@ -101,11 +119,21 @@ section Families
 
 variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[famMap_fst, IndefiniteRowSideFullHecke.BaseChangeCharts.bcB, whiskerRight_fst]`. Both sides reduce to the same expression. Conclude with `(IndefiniteRowSideFullHecke.BaseChangeCharts.bcB_prB D F).trans (famMap_snd D _ F).symm`.
+-/
 theorem bcB_eq : IndefiniteRowSideFullHecke.BaseChangeCharts.bcB D F = famMap D (FractionRing R) F := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [famMap_fst, IndefiniteRowSideFullHecke.BaseChangeCharts.bcB, whiskerRight_fst]; rfl
   · exact (IndefiniteRowSideFullHecke.BaseChangeCharts.bcB_prB D F).trans (famMap_snd D _ F).symm
 
+/- English proof (translation)
+Use `forall_congr' fun α => ?_` and prove the remaining obligations. Establish `key : ∀ j : Fin 4 → D.P.L.ι, chartLin (famBase D F) (LB.LinComb D.P.L (DegPre.famφ D F α) (DegPre.famε k)) j (∑ i, c i • termPull D (FractionRing R) F k α (famProj D _ k α (f i))) = ∑ i, DegPre.constBF D F (c i) (LB.wchart D.P.L (DegPre.famφ D F α) j) * ((DegPre.BF D F).left.pres …` using `fun j => by`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+
+Use `congrArg (DegPre.constBF D F (c i) (LB.wchart D.P.L (DegPre.famφ D F α) j) * ·) (fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `hy' : y ∈ LB.wchart D.P.L (DegPre.famφ D F α) j` using `hy`. Use `(gs_pullFn (isPullback_famMap D (FractionRing R) F).w (wchart_eq (famφ_famMap D (FractionRing R) F α) j).le _ (𝟙 _) y hy').trans (Eq.trans ?_ ((gs_res (𝟙 _) y (IndefiniteRowSideFullHecke.BaseChangeCharts.chart_le_bcB D F α j) hy' _).trans (gs_pull (𝟙 _) (IndefiniteRowSideFullHeck …` and prove the remaining obligations. Rewrite using `[bcB_eq]`. Both sides reduce to the same expression.
+
+Conclude with `⟨fun H => SecOver.ext _ _ fun j => (H j).trans (key j).symm, fun H j => (congrArg (chartLin (famBase D F) (LB.LinComb D.P.L (DegPre.famφ D F α) (DegPre.famε k)) j) H).trans (key j)⟩`.
+-/
 theorem famComb_iff (k : ℕ) {n : ℕ} (c : Fin n → F) (f : Fin n → Fam D (FractionRing R) k) (s : Fam D F k) :
     IndefiniteRowSideFullHecke.BaseChangeCharts.FamComb D F k c f s ↔ ∀ α, famProj D F k α s =
       ∑ i, c i • termPull D (FractionRing R) F k α (famProj D _ k α (f i)) := by
@@ -132,6 +160,9 @@ theorem famComb_iff (k : ℕ) {n : ℕ} (c : Fin n → F) (f : Fin n → Fam D (
     fun H j => (congrArg (chartLin (famBase D F) (LB.LinComb D.P.L (DegPre.famφ D F α) (DegPre.famε k)) j)
       H).trans (key j)⟩
 
+/- English proof (translation)
+Establish `hG : GlobalFnsSt` using `globalFns_holds`. Use `choose Θ hΘ using exists_isShift D (FractionRing R) hG k`. Use `choose Θ' hΘ' using exists_isShift D F hG k`. Use `⟨⟨fun α => Λ α (s.s α), (famFE_iff hG hΘ _).2 fun mu α => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `(congrArg (Λ _) ((famFE_iff hG hΘ' s.s).1 s.fe mu α)).trans (IsCoord.natural (isExtension_termPull D _ F k α).span (hΛ α) (hΛ _) (Θ mu α) (Θ' mu α) (shift_termPull (hΘ mu α) (hΘ' mu α)) _)`.
+-/
 theorem exists_fam_coord (k : ℕ) (s : Fam D F k) (ℓ : F →ₗ[FractionRing R] FractionRing R)
     (Λ : ∀ α, FamTerm D F k α →+ FamTerm D (FractionRing R) k α)
     (hΛ : ∀ α, IsCoord (termPull D (FractionRing R) F k α) ℓ (Λ α)) :
@@ -150,6 +181,13 @@ section Ratio
 
 variable {Y X₁ X₂ : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
 
+/- English proof (translation)
+Set `W : L₂.ι × L₁.ι → Y.Opens` to `fun p => (L₂.pull f₂).U (fun _ => p.1) ⊓ (L₁.pull f₁).U (fun _ => p.2)`. Set `u : ∀ p, Γ(Y, W p)ˣ` to `fun p => @id Γ(Y, W p)ˣ (w'.s (fun _ => p.1, fun _ => p.2)) * (@id Γ(Y, W p)ˣ (w.s (fun _ => p.1, fun _ => p.2)))⁻¹`. Establish `hu : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) p, gm r z (W p) (u p) = isoVal w' r z p.1 p.2 * (isoVal w r z p.1 p.2)⁻¹` using `fun Z r z p => (map_mul _ _ _).trans (congrArg _ (map_inv _ _))`. Take `⟨s, hs⟩` from `glue_unit ⊤ W (fun _ => le_top) (fun y _ => by`. Take `⟨a, ha⟩` from `exists_chart hL₂ (f₂ y)`.
+
+Take `⟨b, hb⟩` from `exists_chart hL₁ (f₁ y)`. Conclude with `Opens.mem_iSup.2 ⟨(a, b), mem_pull.2 ha, mem_pull.2 hb⟩) u (fun p q y hy => by`. Rewrite using `[hu, hu, isoVal_trans hw (𝟙 Y) y (mem_pull.1 hy.1.1) (mem_pull.1 hy.2.1) (mem_pull.1 hy.1.2) (mem_pull.1 hy.2.2), isoVal_trans hw' (𝟙 Y) y (mem_pull.1 hy.1.1) (mem_pull.1 hy.2.1) (mem_pull.1 hy.1.2) (mem_pull.1 hy.2.2), ← div_eq_mul_inv, mul_div_mul_left_eq_div, div_eq_mul_inv])`. Use `⟨s, fun Z r z i₂ i₁ a₂ a₁ => ?_⟩` and prove the remaining obligations. Establish `hz : r z ∈ W (i₂, i₁)` using `⟨mem_pull.2 a₂, mem_pull.2 a₁⟩`.
+
+Use `(gm_res r z le_top hz s).symm.trans ((congrArg (gm r z _) (hs (i₂, i₁))).trans (hu Z r z _))` as an intermediate fact. Rewrite using `[this]`. Conclude with `(inv_mul_cancel_right _ _).symm`.
+-/
 theorem exists_isoVal_ratio (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {w w' : LB.Iso (L₁.pull f₁) (L₂.pull f₂)}
     (hw : w.IsGen) (hw' : w'.IsGen) : ∃ u : Γ(Y, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) i₂ i₁,
       f₂ (r z) ∈ L₂.U i₂ → f₁ (r z) ∈ L₁.U i₁ → isoVal w' r z i₂ i₁ = gm r z ⊤ u * isoVal w r z i₂ i₁ := by
@@ -183,6 +221,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
   (F : Type) [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Use `(expandsG_iff U F k v s).trans ((comb_iff (expansionPairs U k) (genericSec U k) (genericTerm D k) (extendSec U F k) (termPull D.toPre (FractionRing R) F k) (isExtension_termPull D.toPre _ F k) (famProj D.toPre _ k) _ (expands_iff U k) v (fun α => famProj D.toPre F k α s) (exists_ …` and prove the remaining obligations. Use `exists₄_congr fun n c σ f => and_congr Iff.rfl (and_congr Iff.rfl (famComb_iff D.toPre F k c f s).symm)` and prove the remaining obligations.
+-/
 theorem expandsG_iff_comb (k : ℕ) (v : GroupSec U F k) (s : Fam D.toPre F k) :
     U.ExpandsG F k v s ↔ ∃ (n : ℕ) (c : Fin n → F) (σ : Fin n → U.SecK k)
       (f : Fin n → Fam D.toPre (FractionRing R) k), (∀ i, U.Expands k (σ i) (f i)) ∧
@@ -200,25 +241,46 @@ abbrev prGK : (UnifPre.GF (G := G) F).left ⟶ pullback G.hom (jK R) :=
 
 def invF : TFK (R := R) F ⊗ A.A ⟶ UnifPre.GF (G := G) F := lift (fst _ _) (snd _ _ ≫ U.gen.inv)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (show invF U F ≫ U.genF F = 𝟙 _ by apply CartesianMonoidalCategory.hom_ext <;> simp [invF])`.
+-/
 theorem invF_genF : (invF U F).left ≫ (U.genF F).left = 𝟙 _ :=
   congrArg (fun q => q.left) (show invF U F ≫ U.genF F = 𝟙 _ by
     apply CartesianMonoidalCategory.hom_ext <;> simp [invF])
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_snd _ _ : invF U F ≫ snd _ _ = _)`.
+-/
 theorem invF_pr : (invF U F).left ≫ prGK G F = IndefiniteRowSideFullHecke.BaseChangeCharts.toGK F U :=
   congrArg (fun q => q.left) (lift_snd _ _ : invF U F ≫ snd _ _ = _)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_fst _ _ : invF U F ≫ fst _ _ = _)`.
+-/
 theorem invF_base : (invF U F).left ≫ groupBase G F = abelianBase A F :=
   congrArg (fun q => q.left) (lift_fst _ _ : invF U F ≫ fst _ _ = _)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (show U.genF F ≫ snd _ _ ≫ U.gen.inv = snd _ _ by simp)`.
+-/
 theorem genF_toGK : (U.genF F).left ≫ IndefiniteRowSideFullHecke.BaseChangeCharts.toGK F U = prGK G F :=
   congrArg (fun q => q.left) (show U.genF F ≫ snd _ _ ≫ U.gen.inv = snd _ _ by simp)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_fst _ _ : U.genF F ≫ fst _ _ = _)`.
+-/
 theorem genF_base : (U.genF F).left ≫ abelianBase A F = groupBase G F :=
   congrArg (fun q => q.left) (lift_fst _ _ : U.genF F ≫ fst _ _ = _)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (lift_snd _ _ : U.genF F ≫ snd _ _ = _)`.
+-/
 theorem genF_snd : (U.genF F).left ≫ (snd (TFK (R := R) F) A.A).left = prGK G F ≫ U.gen.hom.left :=
   congrArg (fun q => q.left) (lift_snd _ _ : U.genF F ≫ snd _ _ = _)
 
+/- English proof (translation)
+Establish `hz : r z ∈ LB.wchart U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G` using `G) F) (fun _ => a) := mem_wchart.2 fun _ => ha`. Use `(congrArg (gs r z _) (map_sum (chartLin (groupBase G F) (LB.LinComb U.LG.L (K := Fin 1) (fun _ => UnifPre.gFK (G := G) F) (fun _ => (k : ℤ))) (fun _ => a)) _ _)).trans ((gs_fsum r z _ hz _ _).trans (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Conclude with `(powVal_smul (c i) (extendSec U F k (σ i)) r z ha).trans (congrArg _ (gs_pullFn (isPullback_groupBase F).w _ _ r z hz))`.
+-/
 theorem powVal_comb {k n : ℕ} (c : Fin n → F) (σ : Fin n → U.SecK k) {Z : Scheme.{0}}
     (r : Z ⟶ (UnifPre.GF (G := G) F).left) (z : Z) {a : U.LG.L.ι} (ha : UnifPre.gFK (G := G) F (r z) ∈ U.LG.L.U a) :
     powVal (∑ i, c i • extendSec U F k (σ i) : GroupSec U F k) r z a =
@@ -233,6 +295,9 @@ theorem powVal_comb {k n : ℕ} (c : Fin n → F) (σ : Fin n → U.SecK k) {Z :
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Use `⟨(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ?_ (gs_res r z _ hz _)), (gs_fsum r z _ hz _ _).trans (Finset.sum_congr rfl fun i _ => (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_const (abelianBase A F) r z _ hz (c i)) ((gs_res r z (IndefiniteRowSideFullHecke.BaseChangeCha …` and prove the remaining obligations. Use `(gs_unit r z _ hz (@id Γ(IndefiniteRowSideFullHecke.BaseChangeCharts.AF F A, IndefiniteRowSideFullHecke.BaseChangeCharts.cmpW F U a b)ˣ (pullU (IndefiniteRowSideFullHecke.BaseChangeCharts.toGK F U) _ (w.1.s (fun _ => a, fun _ => b))) ^ k)).trans (congrArg Units.val ?_)` and prove the remaining obligations. Rewrite using `[map_pow, zpow_natCast]`. Conclude with `congrArg (· ^ k) (gm_pull r _ z _ hz _)`.
+-/
 theorem secComb_germ (w : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) {n : ℕ} (c : Fin n → F) (σ : Fin n → U.SecK k)
     (t : IndefiniteRowSideFullHecke.BaseChangeCharts.SecF F A k) {Z : Scheme.{0}} (r : Z ⟶ IndefiniteRowSideFullHecke.BaseChangeCharts.AF F A) (z : Z) (a : U.LG.L.ι) (b : A.L.ι)
     (hz : r z ∈ IndefiniteRowSideFullHecke.BaseChangeCharts.cmpW F U a b) :
@@ -257,6 +322,17 @@ theorem secComb_germ (w : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) {
   rw [map_pow, zpow_natCast]
   exact congrArg (· ^ k) (gm_pull r _ z _ hz _)
 
+/- English proof (translation)
+Establish `iff` using `isoRelM_iff w.1 (prGK G F) k (U.genF F).left (genF_snd U F) (g₂ := UnifPre.gFK (G := G) F) (𝟙 _) (Category.id_comp _) t (∑ i, c i • extendSec U F k (σ i) : GroupSec U F k)`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `iff.2 fun y a b ha hb => ?_` and prove the remaining obligations. Establish `pt : IndefiniteRowSideFullHecke.BaseChangeCharts.toGK F U ((U.genF F).left y) = prGK G F y` using `congrArg (fun q : _ ⟶ pullback G.hom (jK R) => q y) (genF_toGK U F)`.
+
+Establish `hz : (U.genF F).left y ∈ IndefiniteRowSideFullHecke.BaseChangeCharts.cmpW F U a b` using `⟨mem_pull.2 (pt.symm ▸ ha), mem_pull.2 (pt.symm ▸ hb)⟩`. Take `⟨k₁, k₂⟩` from `secComb_germ U F w c σ t (U.genF F).left y a b hz`. Establish `e` using `k₁.symm.trans ((congrArg (gs (U.genF F).left y _) (H a b)).trans k₂)`. Rewrite `e` using `[genF_toGK, genF_base]`. Use `(powVal_comb U F c σ (𝟙 _ ≫ 𝟙 _) y (a := a) ha).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [Category.id_comp]`. Conclude with `e.symm`. Introduce `H a b`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `secComb_germ U F w c σ t (𝟙 _) y a b hy`.
+
+Establish `pt : prGK G F ((invF U F).left y) = IndefiniteRowSideFullHecke.BaseChangeCharts.toGK F U y` using `congrArg (fun q : _ ⟶ pullback G.hom (jK R) => q y) (invF_pr U F)`. Establish `ha : pullback.fst G.hom (jK R) (prGK G F ((invF U F).left y)) ∈ U.LG.L.U a` using `pt.symm ▸ mem_pull.1 hy.1`. Establish `e` using `iff.1 H _ (invF U F).left y a b ha (pt.symm ▸ mem_pull.1 hy.2)`. Use `replace e := (powVal_comb U F c σ ((invF U F).left ≫ 𝟙 _) y (a := a) ha).symm.trans e`. Rewrite `e` using `[Category.comp_id, invF_genF, invF_pr, invF_base]`.
+
+Simplify using `only [Category.id_comp] at k₁ k₂`. Conclude with `k₁.trans (e.symm.trans k₂.symm)`.
+-/
 theorem secComb_iff (w : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) {n : ℕ} (c : Fin n → F) (σ : Fin n → U.SecK k)
     (t : IndefiniteRowSideFullHecke.BaseChangeCharts.SecF F A k) :
     IndefiniteRowSideFullHecke.BaseChangeCharts.SecComb F U w k c σ t ↔ GeneratorPullback.IsoRelM A.L U.LG.L U.gen.hom.left (pullback.fst G.hom (jK R)) w.1
@@ -289,6 +365,11 @@ theorem secComb_iff (w : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) {n
     simp only [Category.id_comp] at k₁ k₂
     exact k₁.trans (e.symm.trans k₂.symm)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, h₁, h₂⟩`. Take `⟨n, c, σ, f, e₁, rfl, e₃⟩` from `(expandsG_iff_comb U F k v s).1 h₂`. Conclude with `⟨n, c, σ, f, e₁, (secComb_iff U F w c σ t).2 h₁, e₃⟩`. Introduce and unpack `⟨n, c, σ, f, e₁, e₂, e₃⟩`.
+
+Conclude with `⟨_, (secComb_iff U F w c σ t).1 e₂, (expandsG_iff_comb U F k _ s).2 ⟨n, c, σ, f, e₁, rfl, e₃⟩⟩`.
+-/
 theorem expandsF_iff (w : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) (t : IndefiniteRowSideFullHecke.BaseChangeCharts.SecF F A k) (s : Fam D.toPre F k) :
     U.ExpandsF F k w.1 t s ↔ IndefiniteRowSideFullHecke.BaseChangeCharts.ExpandsF F U w k t s := by
   constructor
@@ -298,6 +379,15 @@ theorem expandsF_iff (w : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) (
   · rintro ⟨n, c, σ, f, e₁, e₂, e₃⟩
     exact ⟨_, (secComb_iff U F w c σ t).1 e₂, (expandsG_iff_comb U F k _ s).2 ⟨n, c, σ, f, e₁, rfl, e₃⟩⟩
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_isoVal_ratio A.isLB U.LG.isLB w'.2 w.2`. Take `⟨c₀, hc₀, huc⟩` from `BoxExpansion.unit_const globalFns_holds A U.gen u`. Use `⟨algebraMap (FractionRing R) F c₀ ^ k, pow_ne_zero _ ((map_ne_zero _).2 hc₀), fun t s h => ?_⟩` and prove the remaining obligations. Take `⟨v, h₁, h₂⟩` from `(expandsF_iff U F w' t s).2 h`. Establish `z : U.ExpandsG F k (0 : GroupSec U F k) 0` using `(expandsG_iff U F k _ _).2 ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, (Fin.sum_univ_zero _).symm, fun α => (map_zero _).trans (Fin.sum_univ_zero _).symm⟩`.
+
+Establish `h₃` using `expandsG_lin U F k (algebraMap (FractionRing R) F c₀ ^ k) h₂ z`. Rewrite `h₃` using `[add_zero, add_zero]`. Use `(expandsF_iff U F w t _).1 ⟨_, ?_, h₃⟩` and prove the remaining obligations. Use `(isoRelM_iff w.1 (prGK G F) k (U.genF F).left h₁.1 (𝟙 _) h₁.2.1 t _).2 fun y a b ha hb => ?_` and prove the remaining obligations. Establish `e` using `(isoRelM_iff w'.1 (prGK G F) k (U.genF F).left h₁.1 (𝟙 _) h₁.2.1 t v).1 h₁ _ (𝟙 _) y a b ha hb`.
+
+Establish `e₃ : (𝟙 _ ≫ prGK G F) ≫ ((Over.pullback (jK R)).obj G).hom = ((𝟙 _ ≫ 𝟙 _) ≫ groupBase G F) ≫ jFK (R` using `R) F := by`. Simplify using `only [Category.id_comp]`. Conclude with `(isPullback_groupBase F).w`. Establish `e₄ : (gm (𝟙 _ ≫ prGK G F) y ⊤ u).val = BoxExpansion.constHomVal ((𝟙 _ ≫ 𝟙 _) ≫ groupBase G F) y (algebraMap (FractionRing R) F c₀)` using `((gs_unit (𝟙 _ ≫ prGK G F) y ⊤ trivial u).symm.trans (congrArg (gs _ y ⊤) huc)).trans ((gs_scal _ _ y c₀).trans ((congrArg (fun q => constVal q y c₀) e₃).trans ((constVal_specMap _ _ y c₀).trans (BoxExpansion.constVal_eq _ _ _))))`. Use `(powVal_smul (π := groupBase G F) _ v (𝟙 _ ≫ 𝟙 _) y (i := a) ha).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[e, hu _ (𝟙 _ ≫ prGK G F) y a b ha hb, mul_zpow, Units.val_mul, BoxExpansion.constVal_eq, map_pow, ← e₄, zpow_natCast (gm _ _ _ _), Units.val_pow_eq_pow_val, _root_.mul_assoc]`.
+-/
 theorem exists_expandsF_scale (k : ℕ) (w w' : IndefiniteRowSideFullHecke.BaseChangeCharts.Ident U) : ∃ d : F, d ≠ 0 ∧
     ∀ t s, IndefiniteRowSideFullHecke.BaseChangeCharts.ExpandsF F U w' k t s → IndefiniteRowSideFullHecke.BaseChangeCharts.ExpandsF F U w k t (d • s) := by
   obtain ⟨u, hu⟩ := exists_isoVal_ratio A.isLB U.LG.isLB w'.2 w.2

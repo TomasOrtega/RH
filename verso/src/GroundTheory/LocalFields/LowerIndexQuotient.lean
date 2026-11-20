@@ -10,6 +10,9 @@ namespace GroundTheory.LocalField
 
 open ValuativeRel IsLocalRing IsDiscreteValuationRing Polynomial
 
+/- English proof (translation)
+The claim follows from `_root_.Bl.general_b_fact'''''''.goal1 s f`.
+-/
 theorem addVal_prod {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {ι : Type*}
     (s : Finset ι) (f : ι → R) : addVal R (∏ i ∈ s, f i) = ∑ i ∈ s, addVal R (f i) :=
   _root_.Bl.general_b_fact'''''''.goal1 s f
@@ -18,11 +21,19 @@ section Restrict
 
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] (M : IntermediateField K L)
 
+/- English proof (translation)
+Rewrite using `[← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, ← range_restrictScalarsHom M]`. Conclude with `⟨τ, rfl⟩`.
+-/
 theorem restrictNormalHom_restrictScalars [Normal K M] (τ : L ≃ₐ[M] L) :
     AlgEquiv.restrictNormalHom M (τ.restrictScalars K) = 1 := by
   rw [← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, ← range_restrictScalarsHom M]
   exact ⟨τ, rfl⟩
 
+/- English proof (translation)
+Establish `hker : σ⁻¹ * ρ ∈ (AlgEquiv.restrictNormalHom M).ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h, inv_mul_cancel]`. Rewrite `hker` using `[IntermediateField.restrictNormalHom_ker, ← range_restrictScalarsHom M]`. Take `⟨τ, hτ⟩` from `hker`. Use `⟨τ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← AlgEquiv.restrictScalarsHom_apply, hτ, mul_inv_cancel_left]`.
+-/
 theorem exists_eq_mul_restrictScalars_of_restrictNormalHom_eq [Normal K M] {σ ρ : L ≃ₐ[K] L}
     (h : AlgEquiv.restrictNormalHom M ρ = AlgEquiv.restrictNormalHom M σ) :
     ∃ τ : L ≃ₐ[M] L, σ * τ.restrictScalars K = ρ := by
@@ -44,6 +55,9 @@ section
 
 variable (M : IntermediateField K L)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_integerAlgEquiv_apply, coe_algebraMap_integer, AlgEquiv.restrictScalars_apply]`. Conclude with `τ.commutes _`.
+-/
 theorem integerAlgEquiv_restrictScalars_algebraMap (τ : L ≃ₐ[M] L) (y : 𝒪[M]) :
     integerAlgEquiv K L (τ.restrictScalars K) (algebraMap 𝒪[M] 𝒪[L] y) = algebraMap 𝒪[M] 𝒪[L] y := by
   apply Subtype.ext
@@ -52,6 +66,9 @@ theorem integerAlgEquiv_restrictScalars_algebraMap (τ : L ≃ₐ[M] L) (y : �
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.RamificationLowerIndex.ramificationIndex_mul_lowerIndex_restrictNormalHom <;> assumption`.
+-/
 theorem ramificationIndex_mul_lowerIndex_restrictNormalHom [Normal K M] (σ : L ≃ₐ[K] L) :
     (ramificationIndex M L : ℕ∞) * lowerIndex K M (AlgEquiv.restrictNormalHom M σ) =
       ∑ τ : L ≃ₐ[M] L, lowerIndex K L (σ * τ.restrictScalars K) :=
@@ -59,6 +76,13 @@ theorem ramificationIndex_mul_lowerIndex_restrictNormalHom [Normal K M] (σ : L 
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := M) L s`. Rewrite using `[ramificationIndex_mul_lowerIndex_restrictNormalHom]`. Use `Finset.sum_bij (fun τ _ ↦ σ * τ.restrictScalars K) ?_ ?_ ?_ (fun _ _ ↦ rfl)` and prove the remaining obligations. Introduce `τ _`. Rewrite using `[Finset.mem_filter, map_mul, restrictNormalHom_restrictScalars, mul_one]`.
+
+Conclude with `⟨Finset.mem_univ _, rfl⟩`. Introduce `a _ b _ hab`. Conclude with `AlgEquiv.restrictScalars_injective K (mul_left_cancel hab)`. Introduce `ρ hρ`. Take `⟨τ, hτ⟩` from `exists_eq_mul_restrictScalars_of_restrictNormalHom_eq M (Finset.mem_filter.mp hρ).2`.
+
+Conclude with `⟨τ, Finset.mem_univ _, hτ⟩`.
+-/
 theorem ramificationIndex_mul_lowerIndex_eq_sum_fiber [Normal K M] (s : M ≃ₐ[K] M) :
     (ramificationIndex M L : ℕ∞) * lowerIndex K M s =
       ∑ σ ∈ Finset.univ.filter (fun σ : L ≃ₐ[K] L ↦ AlgEquiv.restrictNormalHom M σ = s),
@@ -78,6 +102,13 @@ theorem ramificationIndex_mul_lowerIndex_eq_sum_fiber [Normal K M] (s : M ≃ₐ
 
 omit [IsGalois K L] in
 
+/- English proof (translation)
+Take `⟨τ₀, -, hmax⟩` from `Finset.exists_max_image Finset.univ (fun τ : L ≃ₐ[M] L ↦ lowerIndex K L (σ * τ.restrictScalars K)) Finset.univ_nonempty`. Use `⟨τ₀, fun τ ↦ hmax τ (Finset.mem_univ _), fun τ ↦ ?_⟩` and prove the remaining obligations. Use `set σ₀ := σ * τ₀.restrictScalars K with hσ₀`. Rewrite using `[← lowerIndex_restrictScalars (K := K)]`. Break down `lt_or_ge (lowerIndex K L (τ.restrictScalars K)) (lowerIndex K L σ₀) with h | h` into its components or cases.
+
+Rewrite using `[lowerIndex_mul_of_lt h, min_eq_left h.le]`. Rewrite using `[min_eq_right h]`. Use `le_antisymm ?_ ((min_eq_left h).symm.le.trans (min_le_lowerIndex_mul _ _))` and prove the remaining obligations. Establish `hm : (τ₀ * τ).restrictScalars K = τ₀.restrictScalars K * τ.restrictScalars K` using `AlgEquiv.ext fun _ ↦ rfl`. Use `hmax (τ₀ * τ) (Finset.mem_univ _)` as an intermediate fact.
+
+Rewrite `this` using `[hm, ← mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem exists_lowerIndex_mul_eq_min (σ : L ≃ₐ[K] L) :
     ∃ τ₀ : L ≃ₐ[M] L,
       (∀ τ : L ≃ₐ[M] L, lowerIndex K L (σ * τ.restrictScalars K) ≤
@@ -98,6 +129,11 @@ theorem exists_lowerIndex_mul_eq_min (σ : L ≃ₐ[K] L) :
     have := hmax (τ₀ * τ) (Finset.mem_univ _)
     rwa [hm, ← mul_assoc] at this
 
+/- English proof (translation)
+Take `⟨τ₀, hmax, hmin⟩` from `exists_lowerIndex_mul_eq_min M σ`. Establish `hres : AlgEquiv.restrictNormalHom M (σ * τ₀.restrictScalars K) = AlgEquiv.restrictNormalHom M σ`. Rewrite using `[map_mul, restrictNormalHom_restrictScalars, mul_one]`. Use `⟨σ * τ₀.restrictScalars K, hres, hmax, ?_⟩` and prove the remaining obligations. Rewrite using `[← hres, ramificationIndex_mul_lowerIndex_restrictNormalHom]`.
+
+Conclude with `Finset.sum_congr rfl fun τ _ ↦ hmin τ`.
+-/
 theorem exists_ramificationIndex_mul_lowerIndex_eq_sum_min [Normal K M] (σ : L ≃ₐ[K] L) :
     ∃ σ₀ : L ≃ₐ[K] L, AlgEquiv.restrictNormalHom M σ₀ = AlgEquiv.restrictNormalHom M σ ∧
       (∀ τ : L ≃ₐ[M] L, lowerIndex K L (σ * τ.restrictScalars K) ≤ lowerIndex K L σ₀) ∧

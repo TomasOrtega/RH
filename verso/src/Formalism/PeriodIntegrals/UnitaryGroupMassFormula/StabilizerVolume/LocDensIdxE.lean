@@ -16,6 +16,9 @@ section Comap
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   (b : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (a : ℕ)
 
+/- English proof (translation)
+Establish `hx' : Valued.v x ≤ 1` using `hx`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem val_mul_lt {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (hy : Valued.v y < 1) :
     Valued.v (x * y) < 1 := by
   have hx' : Valued.v x ≤ 1 := hx
@@ -24,6 +27,35 @@ theorem val_mul_lt {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (hy : 
     _ = Valued.v y := one_mul _
     _ < 1 := hy
 
+/- English proof (translation)
+Rewrite using `[← ker_redH]`. Use extensionality with `S`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_comap, AddSubgroup.mem_pi]`. Establish `key : redH b v σ a S = 0 ↔ ∀ i j k, Valued.v (crdS b v σ a S i j k) < 1`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i j k`. Establish `h1 : residue _ (⟨crdS b v σ a S i j k, (mem_hermO_iff b v σ a S).1 S.2 i j k⟩ : v.adicCompletionIntegers F) = 0` using `congrFun (congrFun (congrFun h i) j) k`. Establish `h2` using `(ReciprocityTheory.Aut.mem_maxIdeal_iff v _).1 ((residue_eq_zero_iff _).1 h1)`. Conclude with `h2`. Introduce `h`.
+
+Use function extensionality and compare the values at `i j k`. Establish `h3` using `res_of_val v ⟨crdS b v σ a S i j k, (mem_hermO_iff b v σ a S).1 S.2 i j k⟩ (h i j k)`. Conclude with `h3`. Rewrite using `[key]`. Use `set Sm : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E) := ((S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) with hSm`.
+
+Establish `hps : ∀ q, psi b v σ a k0 S q ∈ (maximalIdeal (v.adicCompletionIntegers F)).toAddSubgroup ↔ Valued.v ((psi b v σ a k0 S q : v.adicCompletionIntegers F) : Fv F v) < 1` using `fun q => ReciprocityTheory.Aut.mem_maxIdeal_iff v _`. Prove the components needed by the constructor for the conclusion. Introduce `h q _`. Rewrite using `[hps]`. Take `⟨i, j⟩` from `q`.
+
+Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_pos hij]`. Conclude with `h i j 0`. Substitute `hij` using the available equality. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, lt_irrefl, if_false]`.
+
+Conclude with `h i i k0`. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_neg (not_lt.2 hij.le), if_pos hij]`. Conclude with `h j i 1`. Introduce `h`. Establish `h' : ∀ q, Valued.v ((psi b v σ a k0 S q : v.adicCompletionIntegers F) : Fv F v) < 1` using `fun q => (hps q).1 (h q (Set.mem_univ q))`.
+
+Establish `hup : ∀ i j, i < j → ∀ k, Valued.v (crdS b v σ a S i j k) < 1`. Introduce `i j hij k`. Use `fin_cases k`. Use `h' (i, j)` as an intermediate fact. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_pos hij] at this`.
+
+Conclude with `this`. Use `h' (j, i)` as an intermediate fact. Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, if_neg (not_lt.2 hij.le), if_pos hij] at this`. Conclude with `this`. Introduce `i j k`.
+
+Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Conclude with `hup i j hij k`. Substitute `hij` using the available equality. Establish `hd : Valued.v (crdS b v σ a S i i k0) < 1`. Use `h' (i, i)` as an intermediate fact.
+
+Simplify using `only [psi, AddMonoidHom.coe_mk, ZeroHom.coe_mk, lt_irrefl, if_false] at this`. Conclude with `this`. Establish `hfx` using `hfix (fun l => crdS b v σ a S i i l) (by`. Use function extensionality and compare the values at `m`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+
+Establish `hs : sigR (Fv F v) σ (Sm i i) = Sm i i` using `S.1.2 i i`. Use `cr_sig b v σ (Sm i i) m` as an intermediate fact. Rewrite `this` using `[hs]`. Simplify using `only [crdS_eq]`. Conclude with `this.symm)`.
+
+Apply the tactic sequence `have hkk : k = k0 ∨ k = k1 := by fin_cases k <;> fin_cases k0 <;> fin_cases k1 <;> simp_all`. Break down `hkk with rfl | rfl` into its components or cases. Conclude with `hd`. Establish `e : crdS b v σ a S i i k = algebraMap F (Fv F v) ρ * crdS b v σ a S i i k0` using `hfx`. Rewrite using `[e]`.
+
+Conclude with `val_mul_lt v hρ hd`. Establish `hs : Sm i j = sigR (Fv F v) σ (Sm j i)` using `(S.1.2 i j).symm`. Rewrite using `[crdS_eq, show ((S : HermR (Fv F v) σ a) : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j = Sm i j from rfl, hs, cr_sig, Fin.sum_univ_two]`. Use `Valuation.map_add_lt _ (val_mul_lt v (hC _ _) ?_) (val_mul_lt v (hC _ _) ?_)` and prove the remaining obligations. Conclude with `hup j i hij 0`.
+
+Conclude with `hup j i hij 1`.
+-/
 theorem comap_eq (k0 k1 : Fin 2) (hk : k0 ≠ k1) (ρ : F)
     (hC : ∀ k l, algebraMap F (Fv F v) (Cmat b σ k l) ∈ v.adicCompletionIntegers F)
     (hρ : algebraMap F (Fv F v) ρ ∈ v.adicCompletionIntegers F)
@@ -110,6 +142,9 @@ theorem comap_eq (k0 k1 : Fin 2) (hk : k0 ≠ k1) (ρ : F)
 
 end Comap
 
+/- English proof (translation)
+Rewrite using `[← ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue v]`. Both sides reduce to the same expression.
+-/
 theorem index_max {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     (maximalIdeal (v.adicCompletionIntegers F)).toAddSubgroup.index = Nat.card (𝓞 F ⧸ v.asIdeal) := by
   rw [← ReciprocityTheory.Bridge.ResidueFieldCardinality.card_residue v]

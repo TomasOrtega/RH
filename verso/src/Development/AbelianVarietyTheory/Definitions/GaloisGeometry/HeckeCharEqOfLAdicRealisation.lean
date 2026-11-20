@@ -134,6 +134,9 @@ def HOneTwo (D : D7) : Prop :=
     ∀ e : ℤ, Formalism.MainNotions.SumRepresentations.At.HOneTwoZero D.nd i w
       (Formalism.MainNotions.N.twistRep (Formalism.MainNotions.N.glRep rb) (Formalism.MainNotions.SumRepresentations.At.chiEpsBar D.nd i e))
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : (2 : ℕ) • ({1} : Multiset ℕ) ≤ 2 ::ₘ Multiset.replicate 2 1 := by decide
 
 end GlobalTheory.StringRepresentationDecomposition

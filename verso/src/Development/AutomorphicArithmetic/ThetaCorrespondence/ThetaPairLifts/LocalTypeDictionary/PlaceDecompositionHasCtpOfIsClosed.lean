@@ -12,6 +12,19 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 noncomputable section
 namespace GlobalTheory.PlaceDecomp
+/- English proof (translation)
+Introduce `D θ _ hp N U W _ _ ρ τ hadd _ hsmul`. Use `haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1`. Establish `hσ` using `(std_of_isDS hp.harishChandraModules (N.M.ds τ)).1`. Establish `hs : ∀ (c : ℂ) (T : N.M.H τ → N.M.H τ), HasCtp θ N U (TyOf θ N ρ) τ T → HasCtp θ N U (TyOf θ N ρ) τ (fun w => c • T w)`. Introduce and unpack `c T ⟨A, hA, hm⟩`.
+
+Use `⟨fun φ => c • A φ, ⟨fun f hf => (hA.cont f hf).const_smul c, fun f f' hf hf' => ?_, fun a f hf => ?_, fun f hf => hsmul c _ (hA.maps f hf), fun τ' h f hf ht x => ?_, fun τ' h g hg f hf => ?_, fun τ' h X hX f hf => ?_⟩, fun φ hφ x S v ℓ C hS hc h => (hm φ hφ x S v ℓ C hS hc h).smu …` and prove the remaining obligations. Simplify using `only [hA.add f f' hf hf', smul_add]`. Simplify using `only [hA.smul a f hf, smul_comm c a]`. Conclude with `Submodule.smul_mem _ c (hA.keep τ' h f hf ht x)`. Simplify using `only [hA.tr τ' h g hg f hf]`.
+
+Both sides reduce to the same expression. Simplify using `only [hA.lie τ' h X hX f hf, GlobalTheory.Mem.AutSpace.Rder_smul]`. Use `⟨?_, hs, ?_⟩` and prove the remaining obligations. Introduce and unpack `T T' ⟨A, hA, hm⟩ ⟨A', hA', hm'⟩`. Use `⟨⟨fun φ => A φ + A' φ, ⟨fun f hf => (hA.cont f hf).add (hA'.cont f hf), fun f f' hf hf' => ?_, fun a f hf => ?_, fun f hf => hadd _ _ (hA.maps f hf) (hA'.maps f hf), fun τ' h f hf ht x => ?_, fun τ' h g hg f hf => ?_, fun τ' h X hX f hf => ?_⟩, fun φ hφ x S v ℓ C hS hc h => (hm φ …` and prove the remaining obligations.
+
+Simplify using `only [hA.add f f' hf hf', hA'.add f f' hf hf']`. Normalize the expressions using the abelian group laws. Simplify using `only [hA.smul a f hf, hA'.smul a f hf, smul_add]`. Conclude with `Submodule.add_mem _ (hA.keep τ' h f hf ht x) (hA'.keep τ' h f hf ht x)`. Simplify using `only [hA.tr τ' h g hg f hf, hA'.tr τ' h g hg f hf]`.
+
+Both sides reduce to the same expression. Simplify using `only [hA.lie τ' h X hX f hf, hA'.lie τ' h X hX f hf]`. Conclude with `(GlobalTheory.Mem.AutSpace.Rder_add (hA.maps f hf).1.1.smooth (hA'.maps f hf).1.1.smooth hX).symm`. Simplify using `only [hA'.add f f' hf hf', hA.add _ _ (hA'.cont f hf) (hA'.cont f' hf')]`. Simplify using `only [hA'.smul a f hf, hA.smul a _ (hA'.cont f hf)]`.
+
+Simplify using `only [hA'.tr τ' h g hg f hf, hA.tr τ' h g hg _ (hA'.maps f hf)]`. Simplify using `only [hA'.lie τ' h X hX f hf, hA.lie τ' h X hX _ (hA'.maps f hf)]`. Simplify using `using hs 0 _ (hasCtp_id θ N U _ τ)`.
+-/
 theorem placeDecomposition_hasCtp_of_isClosed : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (N.M.ε τ)) (W τ)) (τ : D.what₂.Tau), (∀ f f' : GA D N.V → ℂ, f ∈ Cls θ N U → f' ∈ Cls θ N U → f + f' ∈ Cls θ N U) → (0 : GA D N.V → ℂ) ∈ Cls θ N U → (∀ (c : ℂ) (f : GA D N.V → ℂ), f ∈ Cls θ N U → c • f ∈ Cls θ N U) → (∀ T T' : N.M.H τ → N.M.H τ, HasCtp θ N U (TyOf θ N ρ) τ T → HasCtp θ N U (TyOf θ N ρ) τ T' → HasCtp θ N U (TyOf θ N ρ) τ (fun w => T w + T' w) ∧ HasCtp θ N U (TyOf θ N ρ) τ (fun w => T (T' w))) ∧ (∀ (c : ℂ) (T : N.M.H τ → N.M.H τ), HasCtp θ N U (TyOf θ N ρ) τ T → HasCtp θ N U (TyOf θ N ρ) τ (fun w => c • T w)) ∧ HasCtp θ N U (TyOf θ N ρ) τ (fun _ => 0) := by
   intro D θ _ hp N U W _ _ ρ τ hadd _ hsmul
   haveI : CompleteSpace (N.M.H τ) := (N.M.ds τ).1
@@ -63,6 +76,9 @@ open GlobalTheory.Grow GlobalTheory.Size
 open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum GlobalTheory.SeriesToClosure GlobalTheory.PlaceDecomp GlobalTheory.KFinDecomp Matrix
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_hasCtp_of_isClosed | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_hasCtp_of_isClosed | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_hasCtp_of_isClosed <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_placeDecomposition_hasCtp : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (N.M.ε τ)) (W τ)) (τ : D.what₂.Tau), (∀ f f' : GA D N.V → ℂ, f ∈ Cls θ N U → f' ∈ Cls θ N U → f + f' ∈ Cls θ N U) → (0 : GA D N.V → ℂ) ∈ Cls θ N U → (∀ (c : ℂ) (f : GA D N.V → ℂ), f ∈ Cls θ N U → c • f ∈ Cls θ N U) → (∀ T T' : N.M.H τ → N.M.H τ, HasCtp θ N U (TyOf θ N ρ) τ T → HasCtp θ N U (TyOf θ N ρ) τ T' → HasCtp θ N U (TyOf θ N ρ) τ (fun w => T w + T' w) ∧ HasCtp θ N U (TyOf θ N ρ) τ (fun w => T (T' w))) ∧ (∀ (c : ℂ) (T : N.M.H τ → N.M.H τ), HasCtp θ N U (TyOf θ N ρ) τ T → HasCtp θ N U (TyOf θ N ρ) τ (fun w => c • T w)) ∧ HasCtp θ N U (TyOf θ N ρ) τ (fun _ => 0) := by
   first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_hasCtp_of_isClosed | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_hasCtp_of_isClosed | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_hasCtp_of_isClosed <;> assumption)
 end

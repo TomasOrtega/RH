@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ConeSoB GlobalTheory.ThK.ConeEuler GlobalTheory.UnrEuler
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeMeas.integral_comp_euler | exact GlobalTheory.ConeMeas.integral_comp_euler | (intros; apply GlobalTheory.ConeMeas.integral_comp_euler <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_stabilizer_normalized_haar_factor : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n r s : ℕ} {X : Spc F E n}, B.IsGood σ → X.IsHerm σ B r s →
     ∀ {K : Subgroup (UA σ X.J)}, IsStab B K →

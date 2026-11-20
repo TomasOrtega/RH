@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.StepIdentity
 
 variable {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, hj, Pi.single_apply]`.
+-/
 theorem update_add_single (i : Fin r) (m : Fin r → ℕ) (n k : ℕ) :
     Function.update (m + (Pi.single i n : Fin r → ℕ)) i k = Function.update m i k := by
   funext j
@@ -20,6 +23,9 @@ theorem update_add_single (i : Fin r) (m : Fin r → ℕ) (n k : ℕ) :
     simp
   · simp [Function.update_apply, hj, Pi.single_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, hj, Pi.single_apply]`.
+-/
 theorem update_self_add (i : Fin r) (m : Fin r → ℕ) (e : ℕ) :
     Function.update m i (m i + e) = m + (Pi.single i e : Fin r → ℕ) := by
   funext j
@@ -28,19 +34,33 @@ theorem update_self_add (i : Fin r) (m : Fin r → ℕ) (e : ℕ) :
     simp
   · simp [Function.update_apply, hj, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [partialSum, update_add_single, Pi.add_apply, Pi.single_eq_same]`. Rewrite using `[Finset.sum_range_succ, Function.update_eq_self]`.
+-/
 theorem partialSum_succ (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r → ℕ) :
     partialSum i v (m + Pi.single i 1) = partialSum i v m + v m := by
   simp only [partialSum, update_add_single, Pi.add_apply, Pi.single_eq_same]
   rw [Finset.sum_range_succ, Function.update_eq_self]
 
+/- English proof (translation)
+Simplify using `[partialSum, h]`.
+-/
 theorem partialSum_of_zero (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r → ℕ) (h : m i = 0) :
     partialSum i v m = 0 := by
   simp [partialSum, h]
 
+/- English proof (translation)
+Simplify using `only [meanP, update_add_single]`.
+-/
 theorem partialSumMean_add_single_one (l : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r → ℕ) :
     meanP l i v (m + Pi.single i 1) = meanP l i v m := by
   simp only [meanP, update_add_single]
 
+/- English proof (translation)
+Simplify using `only [partialSum, update_add_single, Pi.add_apply, Pi.single_eq_same]`. Rewrite using `[Finset.sum_range_add]`. Establish `h2 : ∑ e ∈ Finset.range l, v (Function.update m i (m i + e)) = 0`. Simplify using `only [update_self_add]`. Conclude with `h.2 m`.
+
+Rewrite using `[h2, add_zero]`.
+-/
 theorem partialSum_period {l : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (h : GoodAt l i v)
     (m : Fin r → ℕ) : partialSum i v (m + Pi.single i l) = partialSum i v m := by
   simp only [partialSum, update_add_single, Pi.add_apply, Pi.single_eq_same]
@@ -50,6 +70,15 @@ theorem partialSum_period {l : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (h
     exact h.2 m
   rw [h2, add_zero]
 
+/- English proof (translation)
+Establish `key : ∀ n, ∀ m : Fin r → ℕ, m i = n → |(partialSum i v m : ℝ)| ≤ l * C`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `m hm`.
+
+Distinguish the cases in `hn : n < l`. Simplify using `only [partialSum, hm]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hn` using `[not_lt]`.
+
+Establish `hmm : m = Function.update m i (n - l) + Pi.single i l`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [Pi.add_apply, Function.update_self, Pi.single_eq_same]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[Function.update_apply, hj, Pi.single_apply]`. Rewrite using `[hmm, partialSum_period h]`. Conclude with `ih (n - l) (by omega) _ (by simp)`. Conclude with `fun m => key (m i) m rfl`.
+-/
 theorem partialSum_bound {l : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 < l)
     (h : GoodAt l i v) {C : ℝ} (hC0 : 0 ≤ C) (hC : ∀ m, |(v m : ℝ)| ≤ C) :
     ∀ m, |(partialSum i v m : ℝ)| ≤ l * C := by
@@ -78,6 +107,9 @@ theorem partialSum_bound {l : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl
         exact ih (n - l) (by omega) _ (by simp)
   exact fun m => key (m i) m rfl
 
+/- English proof (translation)
+The claim follows from `|(meanP l i v m : ℝ)| ≤ K := by have hl' : (0 : ℝ) < l := by exact_mod_cast hl simp only [meanP] push_cast rw [abs_div, abs_of_pos hl', div_le_iff₀ hl'] calc |∑ k ∈ Finset.range l, (partialSum i v (Function.update m i k) : ℝ)| ≤ ∑ k ∈ Finset.range l, |(partialSum i v (Function.up …`.
+-/
 theorem abs_partialSumMean_le {l : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ} (hl : 0 < l)
     {K : ℝ} (hK : ∀ m, |(partialSum i v m : ℝ)| ≤ K) (m : Fin r → ℕ) :
     |(meanP l i v m : ℝ)| ≤ K := by
@@ -90,6 +122,11 @@ theorem abs_partialSumMean_le {l : ℕ} {i : Fin r} {v : (Fin r → ℕ) → ℚ
     _ ≤ ∑ k ∈ Finset.range l, K := Finset.sum_le_sum fun k _ => hK _
     _ = K * l := by simp [mul_comm]
 
+/- English proof (translation)
+Establish `hn : Summable (fun m => ‖g m‖)` using `by first`. Consider the case `exact hg.norm`. Consider the case `exact summable_norm_iff.mpr hg`. Use `Summable.of_norm_bounded (hn.mul_left K) (fun m => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hw m) (norm_nonneg _)`.
+-/
 theorem summable_cast_mul {α : Type*} (w : α → ℚ) (K : ℝ) (hw : ∀ m, |(w m : ℝ)| ≤ K)
     {g : α → ℂ} (hg : Summable g) : Summable (fun m => (w m : ℂ) * g m) := by
   have hn : Summable (fun m => ‖g m‖) := by
@@ -100,6 +137,33 @@ theorem summable_cast_mul {α : Type*} (w : α → ℚ) (K : ℝ) (hw : ∀ m, |
   rw [norm_mul, ← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]
   exact mul_le_mul_of_nonneg_right (hw m) (norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hv`. Establish `hC0 : 0 ≤ C` using `le_trans (abs_nonneg _) (hC 0)`. Establish `hlC : 0 ≤ (l : ℝ) * C` using `mul_nonneg (Nat.cast_nonneg _) hC0`. Establish `hPS` using `partialSum_bound hl hgood hC0 hC`. Establish `hMP : ∀ m, |(meanP l i v m : ℝ)| ≤ l * C` using `abs_partialSumMean_le hl hPS`.
+
+Use `set δ : Fin r → ℕ := Pi.single i 1 with hδ`. Establish `hsub : ∀ a b : ℝ, |a - b| ≤ |a| + |b|` using `fun a b => by`. Simplify `norm_sub_le a b` using `only [Real.norm_eq_abs]`. Establish `hBb : ∀ m, |(Bop l i v m : ℝ)| ≤ l * C`. Introduce `m`.
+
+Unfold `Bop`. Use `split_ifs`. Conclude with `hMP m`. Rewrite using `[Rat.cast_zero, abs_zero]`. Conclude with `hlC`.
+
+Establish `hAb : ∀ m, |(Aop l i v m : ℝ)| ≤ 2 * (l * C)`. Introduce `m`. Simplify using `only [Aop, Rat.cast_sub]`. Combine the equalities or inequalities in the displayed calculation. Set `T : (Fin r → ℕ) → ℂ` to `fun m => ((partialSum i v m - meanP l i v m + Bop l i v m : ℚ) : ℂ) * g m`.
+
+Establish `hTb : ∀ m, |((partialSum i v m - meanP l i v m + Bop l i v m : ℚ) : ℝ)| ≤ 3 * (l * C)`. Introduce `m`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Establish `hinj : Function.Injective (fun m : Fin r → ℕ => m + δ)` using `add_left_injective δ`.
+
+Establish `hgs : Summable (fun m => g (m + δ))` using `hg.comp_injective hinj`. Establish `hfd : Summable (fd i g)`. Establish `: fd i g = fun m => g (m + δ) - g m` using `rfl`. Rewrite using `[this]`. Conclude with `hgs.sub hg`.
+
+Establish `hsB : Summable (fun m => (Bop l i v m : ℂ) * g m)` using `summable_cast_mul _ _ hBb hg`. Establish `hsA : Summable (fun m => (Aop l i v m : ℂ) * fd i g m)` using `summable_cast_mul _ _ hAb hfd`. Establish `hsT : Summable T` using `summable_cast_mul _ _ hTb hg`. Establish `hsT' : Summable (fun m => T (m + δ))` using `hsT.comp_injective hinj`. Establish `hT0 : ∀ m, m i = 0 → T m = 0`.
+
+Introduce `m hm`. Simplify using `[T, Bop, hm, partialSum_of_zero i v m hm]`. Establish `hBs : ∀ m, Bop l i v (m + δ) = 0`. Introduce `m`. Simplify using `[Bop, δ]`.
+
+Establish `hpt : ∀ m, (v m : ℂ) * g m = ((Bop l i v m : ℂ) * g m - (Aop l i v m : ℂ) * fd i g m) + (T (m + δ) - T m)`. Introduce `m`. Establish `h1` using `partialSum_succ i v m`. Establish `h2` using `partialSumMean_add_single_one l i v m`. Establish `h3 : Bop l i v (m + Pi.single i 1) = 0` using `hBs m`.
+
+Simplify using `only [T, Aop, fd, hδ, h1, h2, h3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hshift : ∑' m, T (m + δ) = ∑' m, T m`. Use `hinj.tsum_eq (f := T) ?_` and prove the remaining obligations.
+
+Introduce `m hm`. Establish `hmi : m i ≠ 0` using `fun h0 => hm (hT0 m h0)`. Use `⟨m - δ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using `only [Pi.add_apply, Pi.sub_apply, δ, Pi.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `[δ, Pi.single_apply, hj]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[(hsB.sub hsA).tsum_add (hsT'.sub hsT), hsB.tsum_sub hsA, hsT'.tsum_sub hsT]`. Use `_ = _ := by rw [hshift, sub_self, add_zero]`.
+-/
 theorem stepIdentity (r l : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (g : (Fin r → ℕ) → ℂ)
     (hl : 0 < l) (hgood : GoodAt l i v) (hv : BddW v) (hg : Summable g) :
     ∑' m, (v m : ℂ) * g m = ∑' m, (Bop l i v m : ℂ) * g m - ∑' m, (Aop l i v m : ℂ) * fd i g m := by

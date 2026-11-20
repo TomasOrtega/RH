@@ -30,6 +30,9 @@ def isColimitCofanSigmaOfRepresentablePresheaves : IsColimit (Cofan.mk (P0 X) (i
 def φ : P0 X ⟶ yoneda.obj (∐ X) where
   app U := ↾fun (x : Σ j, (unop U ⟶ X j)) => x.2 ≫ Sigma.ι X x.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma inj_φ (j : ι) : inj X j ≫ φ X = yoneda.map (Sigma.ι X j) := rfl
 
 abbrev ψ := Functor.whiskerRight (φ X) uliftFunctor.{1}
@@ -69,12 +72,20 @@ instance : PreservesColimitsOfShape (Discrete ι) (freeP R) := by
 instance : PreservesColimitsOfShape (Discrete ι) (free R) := by
   unfold free; infer_instance
 
+/- English proof (translation)
+Establish `h1 : Scheme.etaleTopology.W (ψ X)` using `GrothendieckTopology.W_of_isLocallyBijective _ _`. Establish `h2` using `Scheme.etaleTopology.W_of_preservesSheafification (ModuleCat.free (ULift.{1} R)) _ h1`. Rewrite `h2` using `[GrothendieckTopology.W_iff]`. Conclude with `h2`.
+-/
 lemma isIso_free_φ : IsIso ((free R).map (φ X)) := by
   have h1 : Scheme.etaleTopology.W (ψ X) := GrothendieckTopology.W_of_isLocallyBijective _ _
   have h2 := Scheme.etaleTopology.W_of_preservesSheafification (ModuleCat.free (ULift.{1} R)) _ h1
   rw [GrothendieckTopology.W_iff] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `R _ ι X`. Use `isIso_free_φ X R` as an intermediate fact. Establish `h0` using `isColimitCofanMkObjOfIsColimit (free R) _ _ (isColimitCofanSigmaOfRepresentablePresheaves X)`. Use `⟨IsColimit.ofIsoColimit h0 (Cofan.ext (asIso ((free R).map (φ X))) fun j => ?_)⟩` and prove the remaining obligations. Use `show (free R).map (inj X j) ≫ (free R).map (φ X) = (free R).map (yoneda.map (Sigma.ι X j))`.
+
+Rewrite using `[← Functor.map_comp, inj_φ]`.
+-/
 theorem FreeCoprod_of : LateralTheory.E.CoprodPf.FreeCoprod := by
   intro R _ ι X
   have := isIso_free_φ X R

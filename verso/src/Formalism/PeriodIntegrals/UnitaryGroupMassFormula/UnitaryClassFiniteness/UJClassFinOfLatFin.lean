@@ -4,6 +4,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitaryClassFiniteness.
 
 namespace PI.UnitaryGroupMassFormula.UJClassFin
 
+/- English proof (translation)
+The claim follows from `uJClassFin_of rational_points_dense (classFinite_of hS hA hB)`.
+-/
 theorem uJClassFin_of_latFin (hS : SigPos) (hA : AdelBounds) (hB : LatFin) : PI.UJClassFin.UJClassFin :=
   uJClassFin_of rational_points_dense (classFinite_of hS hA hB)
 

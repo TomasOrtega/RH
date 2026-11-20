@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.InertiaTate
 
+/- English proof (translation)
+Proceed by induction on `j generalizing a b with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, Function.iterate_succ_apply, map_mul, ih]`.
+-/
 theorem iterate_map_mul' {M : Type} [CommGroup M] (φ : M →* M) (j : ℕ) (a b : M) :
     (⇑φ)^[j] (a * b) = (⇑φ)^[j] a * (⇑φ)^[j] b := by
   induction j generalizing a b with
@@ -24,6 +27,19 @@ theorem iterate_map_mul' {M : Type} [CommGroup M] (φ : M →* M) (j : ℕ) (a b
   | succ j ih =>
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, Function.iterate_succ_apply, map_mul, ih]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x hx`. Rewrite using `[pow_zero, Function.iterate_one]`.
+
+Conclude with `h x (by simpa using hx)`. Consider the case `succ k ih`. Introduce `x hx`. Set `ψ : M →* M` to `MonoidHom.mk' ((⇑φ)^[l ^ k]) (iterate_map_mul' φ _)`. Establish `hψ : ∀ y, ψ y = (⇑φ)^[l ^ k] y` using `fun _ => rfl`.
+
+Establish `ih' : ∀ y : M, y ^ l ^ (k + 1) = 1 → ψ y = y` using `fun y hy => by rw [hψ]; exact ih y hy`. Establish `hxl : ψ (x ^ l) = x ^ l` using `ih' _ (by rw [← pow_mul, ← pow_succ', hx])`. Take `⟨d, hd⟩ : ∃ d : M, d = ψ x * x⁻¹` from `⟨_, rfl⟩`. Establish `hψx : ψ x = x * d` using `by rw [hd, mul_comm (ψ x), mul_inv_cancel_left]`. Establish `hdl : d ^ l = 1`.
+
+Rewrite using `[hd, mul_pow, inv_pow, ← map_pow, hxl, mul_inv_cancel]`. Establish `hdψ : ψ d = d` using `ih' d (by rw [pow_succ', pow_mul, hdl, one_pow])`. Establish `hit : ∀ j : ℕ, (⇑ψ)^[j] x = x * d ^ j`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ihj`. Rewrite using `[Function.iterate_succ_apply', ihj, map_mul, map_pow, hdψ, hψx, _root_.mul_assoc, ← pow_succ']`. Establish `e : (⇑φ)^[l ^ (k + 1)] x = (⇑ψ)^[l] x`. Rewrite using `[pow_succ, Function.iterate_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, hit, hdl, _root_.mul_one]`.
+-/
 theorem pow_fix_of_fix {M : Type} [CommGroup M] (φ : M →* M) (l : ℕ)
     (h : ∀ x : M, x ^ l = 1 → φ x = x) :
     ∀ (k : ℕ) (x : M), x ^ l ^ (k + 1) = 1 → (⇑φ)^[l ^ k] x = x := by
@@ -55,6 +71,11 @@ theorem pow_fix_of_fix {M : Type} [CommGroup M] (φ : M →* M) (l : ℕ)
       rfl
     rw [e, hit, hdl, _root_.mul_one]
 
+/- English proof (translation)
+Establish `e : ((Nat.gcd m n : ℕ) : ℤ) = m * Nat.gcdA m n + n * Nat.gcdB m n` using `Nat.gcd_eq_gcd_ab m n`. Rewrite `e` using `[hmn.gcd_eq_one, Nat.cast_one]`. Establish `: g = (g ^ m) ^ Nat.gcdA m n * (g ^ n) ^ Nat.gcdB m n`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add, ← e, zpow_one]`. Rewrite using `[this]`.
+
+Conclude with `H.mul_mem (H.zpow_mem hm _) (H.zpow_mem hn _)`.
+-/
 theorem mem_of_pow_mem_of_coprime {G : Type} [Group G] (H : Subgroup G) (g : G) {m n : ℕ}
     (hmn : Nat.Coprime m n) (hm : g ^ m ∈ H) (hn : g ^ n ∈ H) : g ∈ H := by
   have e : ((Nat.gcd m n : ℕ) : ℤ) = m * Nat.gcdA m n + n * Nat.gcdB m n := Nat.gcd_eq_gcd_ab m n
@@ -84,8 +105,16 @@ def stab (x : ptOver K Ω ⟶ A) : Subgroup (Ω ≃ₐ[K] Ω) where
     conv_lhs => rw [← ha]
     rw [← Category.assoc, ← specAut_mul, inv_mul_cancel, specAut_one, Category.id_comp]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stab_iff (x : ptOver K Ω ⟶ A) (σ : Ω ≃ₐ[K] Ω) : σ ∈ stab A x ↔ galPts A σ x = x := Iff.rfl
 
+/- English proof (translation)
+Proceed by induction on `j generalizing x with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `specAut (σ ^ 0) ≫ x = x`. Rewrite using `[pow_zero, specAut_one, Category.id_comp]`. Consider the case `succ j ih`.
+
+Rewrite using `[Function.iterate_succ_apply', ← ih]`. Express the relevant statement in the definitionally equal form `specAut (σ ^ (j + 1)) ≫ x = specAut σ ≫ (specAut (σ ^ j) ≫ x)`. Rewrite using `[pow_succ', specAut_mul, Category.assoc]`.
+-/
 theorem galPts_pow (σ : Ω ≃ₐ[K] Ω) (j : ℕ) (x : ptOver K Ω ⟶ A) :
     galPts A (σ ^ j) x = (⇑(galPts A σ))^[j] x := by
   induction j generalizing x with
@@ -97,6 +126,15 @@ theorem galPts_pow (σ : Ω ≃ₐ[K] Ω) (j : ℕ) (x : ptOver K Ω ⟶ A) :
     change specAut (σ ^ (j + 1)) ≫ x = specAut σ ≫ (specAut (σ ^ j) ≫ x)
     rw [pow_succ', specAut_mul, Category.assoc]
 
+/- English proof (translation)
+Take `⟨E, hE1, -, hE3⟩` from `GlobalTheory.SS.exists_fieldOfValues A.left Ω x.left`. Take `⟨L, hL, hLE⟩` from `hE3 K A.hom inferInstance (Over.w x) inferInstance`. Use `⟨L, hL, fun σ => ?_⟩` and prove the remaining obligations. Establish `hid : spMap (RingHom.id Ω) = 𝟙 (Sp Ω)`. Rewrite using `[← Spec.map_id]`.
+
+Use `congr 1`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `h1 : σ ∈ stab A x ↔ spMap (σ : Ω →+* Ω) ≫ x.left = spMap (RingHom.id Ω) ≫ x.left`. Rewrite using `[hid, Category.id_comp]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `congrArg CommaMorphism.left h`. Introduce `h`. Conclude with `Over.OverMorphism.ext h`. Rewrite using `[h1, hE1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Conclude with `h c (by rw [← hLE]; exact hc)`. Introduce `h c hc`. Conclude with `h c (by rw [← hLE] at hc; exact hc)`.
+-/
 theorem exists_field_of_point [Algebra.IsAlgebraic K Ω] [LocallyOfFiniteType A.hom] (x : ptOver K Ω ⟶ A) :
     ∃ E : IntermediateField K Ω, FiniteDimensional K E ∧ ∀ σ : Ω ≃ₐ[K] Ω, σ ∈ stab A x ↔ σ ∈ E.fixingSubgroup := by
   obtain ⟨E, hE1, -, hE3⟩ := GlobalTheory.SS.exists_fieldOfValues A.left Ω x.left
@@ -126,6 +164,15 @@ namespace GlobalTheory.InertiaTate
 
 variable {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+Use `choose E hE hEs using fun x : S => exists_field_of_point A x.1`. Use `haveI : Finite S := hS.to_subtype`. Use `haveI := hE`. Establish `key : ∀ σ : Ω ≃ₐ[K] Ω, σ ∈ (⨆ x : S, E x).fixingSubgroup ↔ ∀ x ∈ S, σ ∈ stab A x`. Introduce `σ`.
+
+Rewrite using `[← Subgroup.zpowers_le, ← IntermediateField.le_iff_le, iSup_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Conclude with `(hEs ⟨x, hx⟩ σ).2 (Subgroup.zpowers_le.1 ((IntermediateField.le_iff_le _ _).1 (h ⟨x, hx⟩)))`. Introduce `h x`.
+
+Conclude with `(IntermediateField.le_iff_le _ _).2 (Subgroup.zpowers_le.2 ((hEs x σ).1 (h x.1 x.2)))`. Use `⟨⨆ x : S, E x, inferInstance, ?_, key⟩` and prove the remaining obligations. Use `(InfiniteGalois.normal_iff_isGalois _).1 ⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[key]`. Introduce `x hx`.
+
+Establish `h1` using `hn _ (hst g⁻¹ x hx)`. Express the relevant statement in the definitionally equal form `specAut n ≫ (specAut g⁻¹ ≫ x) = specAut g⁻¹ ≫ x at h1`. Express the relevant statement in the definitionally equal form `specAut (g * n * g⁻¹) ≫ x = x`. Rewrite using `[specAut_mul, specAut_mul, Category.assoc, Category.assoc, h1, ← Category.assoc, ← specAut_mul, mul_inv_cancel, specAut_one, Category.id_comp]`.
+-/
 theorem exists_galois_field_of_finite [IsGalois K Ω] [LocallyOfFiniteType A.hom] (S : Set (ptOver K Ω ⟶ A))
     (hS : S.Finite) (hst : ∀ σ : Ω ≃ₐ[K] Ω, ∀ x ∈ S, galPts A σ x ∈ S) :
     ∃ L : IntermediateField K Ω, FiniteDimensional K L ∧ IsGalois K L ∧
@@ -151,6 +198,11 @@ theorem exists_galois_field_of_finite [IsGalois K Ω] [LocallyOfFiniteType A.hom
   rw [specAut_mul, specAut_mul, Category.assoc, Category.assoc, h1, ← Category.assoc, ← specAut_mul,
     mul_inv_cancel, specAut_one, Category.id_comp]
 
+/- English proof (translation)
+Introduce `α β`. Take `⟨σ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) Ω α`. Take `⟨τ, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) Ω β`. Rewrite using `[← map_mul, ← map_mul, MonoidHom.eq_iff, IntermediateField.restrictNormalHom_ker, hL]`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Establish `h1 : galTate A l ((τ * σ)⁻¹ * (σ * τ)) = 1`. Rewrite using `[map_mul, map_mul (galTate A l) σ τ, hc σ τ, ← map_mul (galTate A l) τ σ, ← map_mul, inv_mul_cancel, map_one]`. Conclude with `(congrArg (fun f => Tate.lev (f t) n) h1 :)`.
+-/
 theorem aut_comm_of_galTate_comm (l : ℕ) [Fact l.Prime]
     (hc : ∀ σ τ : Ω ≃ₐ[K] Ω, galTate A l σ * galTate A l τ = galTate A l τ * galTate A l σ)
     (L : IntermediateField K Ω) [Normal K L] [Normal K Ω] (n : ℕ)
@@ -171,6 +223,31 @@ end GlobalTheory.InertiaTate
 
 open GlobalTheory.InertiaTate in
 
+/- English proof (translation)
+Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA l _ hl hc`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Use `haveI : LocallyOfFiniteType A.hom := by haveI := hA.smooth infer_instance`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim K A hA`. Establish `hlK : (l : K) ≠ 0`.
+
+Introduce `h0`. Apply `hl` to reduce the goal to its premises. Establish `: (l : R) = 0` using `IsFractionRing.injective R K (by rw [map_natCast, h0, map_zero])`. Rewrite using `[← map_natCast (residue R), this, map_zero]`. Establish `hfin : ∀ n : ℕ, {x : ptOver K Ω ⟶ A | x ^ (l ^ n) = 1}.Finite`.
+
+Introduce `n`. Establish `h` using `GlobalTheory.T.card_abelianVariety_torsion_sepClosed K Ω A hA g hg (l ^ n) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hlK)`. Establish `: Finite {x : ptOver K Ω ⟶ A // x ^ (l ^ n) = 1}` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[h]`. Conclude with `pow_ne_zero _ (pow_ne_zero _ (Fact.out : l.Prime).ne_zero))`.
+
+Conclude with `Set.finite_coe_iff.mp this`. Establish `hSfin : ∀ n, (Set.range (fun t : Tate l (ptOver K Ω ⟶ A) => t.lev n)).Finite` using `fun n => (hfin n).subset (by rintro _ ⟨t, rfl⟩; exact t.lev_pow n)`. Establish `hSst : ∀ n, ∀ σ : Ω ≃ₐ[K] Ω, ∀ x ∈ Set.range (fun t : Tate l (ptOver K Ω ⟶ A) => t.lev n), galPts A σ x ∈ Set.range (fun t : Tate l (ptOver K Ω ⟶ A) => t.lev n)`. Introduce and unpack `n σ _ ⟨t, rfl⟩`. Conclude with `⟨galTate A l σ t, rfl⟩`.
+
+Establish `h1st : ∀ σ : Ω ≃ₐ[K] Ω, ∀ x ∈ {x : ptOver K Ω ⟶ A | x ^ l = 1}, galPts A σ x ∈ {x : ptOver K Ω ⟶ A | x ^ l = 1}`. Introduce `σ x hx`. Express the relevant statement in the definitionally equal form `galPts A σ x ^ l = 1`. Rewrite using `[← map_pow, show x ^ l = 1 from hx, map_one]`. Take `⟨L₁, hL₁f, hL₁g, hL₁⟩` from `exists_galois_field_of_finite A {x : ptOver K Ω ⟶ A | x ^ l = 1} (by simpa using hfin 1) h1st`.
+
+Establish `hq : 1 < Nat.card (ResidueField R)` using `Finite.one_lt_card`. Establish `hN : 0 < Nat.card (L₁ ≃ₐ[K] L₁)` using `Nat.card_pos`. Use `⟨(Nat.card (ResidueField R) - 1) * Nat.card (L₁ ≃ₐ[K] L₁), Nat.mul_pos (by omega) hN, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Take `⟨g0, hg0⟩ : ∃ g0, g0 = (σ ^ (Nat.card (ResidueField R) - 1)) ^ Nat.card (L₁ ≃ₐ[K] L₁)` from `⟨_, rfl⟩`.
+
+Rewrite using `[← map_pow, pow_mul, ← hg0]`. Use `LinearMap.ext fun t => Tate.ext fun n => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `galPts A g0 (t.lev n) = t.lev n`. Rewrite using `[← mem_stab_iff]`. Establish `hp : (ringChar (ResidueField R)).Prime` using `CharP.char_is_prime (ResidueField R) _`.
+
+Establish `hpl : ringChar (ResidueField R) ≠ l`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Rewrite using `[← h, ringChar.Nat.cast_ringChar]`. Establish `hA1 : ∀ y : ptOver K Ω ⟶ A, y ^ l = 1 → galPts A g0 y = y`.
+
+Introduce `y hy`. Establish `: g0 ∈ L₁.fixingSubgroup`. Rewrite using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, hg0, map_pow, pow_card_eq_one']`. Conclude with `(hL₁ g0).1 this y hy`. Establish `hlp : g0 ^ (l ^ n) ∈ stab A (t.lev n)`.
+
+Rewrite using `[mem_stab_iff, galPts_pow]`. Conclude with `pow_fix_of_fix (galPts A g0) l hA1 n _ (by rw [pow_succ, pow_mul, t.lev_pow, one_pow])`. Take `⟨Ln, hLnf, hLng, hLn⟩` from `exists_galois_field_of_finite A _ (hSfin n) (hSst n)`. Establish `hcomm` using `aut_comm_of_galTate_comm A l hc Ln n hLn`. Take `⟨a, ha⟩` from `GlobalTheory.T.inertia_pow_fixes_of_commutative_alt R K Ω V hV Ln hLnf hLng hcomm σ hσ`.
+
+Establish `hpp : g0 ^ (ringChar (ResidueField R) ^ a) ∈ stab A (t.lev n)`. Establish `h2 : σ ^ ((Nat.card (ResidueField R) - 1) * ringChar (ResidueField R) ^ a) ∈ Ln.fixingSubgroup` using `(IntermediateField.mem_fixingSubgroup_iff _ _).2 ha`. Establish `h3` using `(hLn _).1 h2 _ ⟨t, rfl⟩`. Establish `e : g0 ^ (ringChar (ResidueField R) ^ a) = (σ ^ ((Nat.card (ResidueField R) - 1) * ringChar (ResidueField R) ^ a)) ^ Nat.card (L₁ ≃ₐ[K] L₁)`. Rewrite using `[hg0, ← pow_mul, ← pow_mul, ← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Subgroup.pow_mem _ h3 _`. Conclude with `mem_of_pow_mem_of_coprime _ g0 (Nat.Coprime.pow _ _ ((Nat.coprime_primes hp Fact.out).2 hpl)) hpp hlp`.
+-/
 theorem GlobalTheory.InertiaTate.exists_exponent_inertia_galTate : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Finite (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (l : ℕ) [Fact l.Prime], (l : ResidueField R) ≠ 0 → (∀ σ τ : Ω ≃ₐ[K] Ω, galTate A l σ * galTate A l τ = galTate A l τ * galTate A l σ) → ∃ E : ℕ, 0 < E ∧ ∀ σ ∈ inertia K V, galTate A l σ ^ E = 1 := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA l _ hl hc
   haveI : IsSepClosed Ω := IsSepClosure.sep_closed K

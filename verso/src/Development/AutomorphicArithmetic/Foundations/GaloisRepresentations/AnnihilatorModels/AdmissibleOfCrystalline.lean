@@ -16,6 +16,9 @@ def HeckeRoots : Prop :=
   ∀ (K : Type) [CommRing K] (q n : ℕ) (t u : K) (β : Multiset K) (θ : ℕ → K), t ^ 2 = q → β.card = n →
     (∀ j ≤ n, θ j = u * t ^ (j * (n - j)) * β.esymm j) → heckePol q n θ = Polynomial.C u * rootPol (β.map fun b => t ^ (n - 1) * b)
 
+/- English proof (translation)
+Simplify using `[heckePol, Polynomial.map_sum]`.
+-/
 theorem heckePol_map {K K' : Type} [CommRing K] [CommRing K'] (f : K →+* K') (q n : ℕ) (θ : ℕ → K) :
     (heckePol q n θ).map f = heckePol q n fun j => f (θ j) := by
   simp [heckePol, Polynomial.map_sum]
@@ -61,6 +64,11 @@ def JoinSt : Prop :=
       (∀ a, Subq ρU (ρC a)) → (∀ a, Inter ρW (ρC a) (e a)) → (∀ v, (∀ a, e a v = 0) → v = 0) →
       NilD (σSt P K) (ψSt P f) ρW (heckePol q n θ)
 
+/- English proof (translation)
+Introduce `l _ P K V _ _ ρ h`. Establish `e : Dinv (σCr P K) ρ = Dcris (P.PD K) ρ`. Unfold `Dinv Dcris actVB σCr`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Use `congr 3`.
+
+Use extensionality with `b`. Simplify using `[P.PD_actB]`. Unfold `admitted`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem admissible_of_crystalline : AdmOfCrys := by
   intro l _ P K V _ _ ρ h
   have e : Dinv (σCr P K) ρ = Dcris (P.PD K) ρ := by
@@ -73,6 +81,9 @@ theorem admissible_of_crystalline : AdmOfCrys := by
   rw [e]
   exact h
 
+/- English proof (translation)
+Introduce `l _ P AI hT K LL c hc V _ _ a b ρ f q n T hcr hann U _ _ ρU i TU θ a1 a2 a3 a4 a5 a6 W _ _ _ _ ρW I _ C _ _ ρC e b1 b2 b3`. Use `haveI : Module.Finite ℚ_[l] V := Module.Finite.of_basis b`. Take `⟨hB, hcm⟩` from `h2 l P AI hT K LL`. Take `⟨hA, hD⟩` from `h3 l P AI hT K V ρ (admissible_of_crystalline l P K V ρ hcr)`. Conclude with `h1 ℚ_[l] _ _ (σSt P K) (ψSt P f) (hcm f) ↥LL.1 _ hB V ρ q n T hA (hD f q n T (h4 l P AI hT K c hc V a b ρ f q n T hann)) U ρU i TU θ a1 a2 a3 a4 a5 a6 W ρW I C ρC e b1 b2 b3`.
+-/
 theorem joinSt_of (h1 : JoinAbs) (h2 : BoundSt) (h3 : StOfCr) (h4 : AnnTied) : JoinSt := by
   intro l _ P AI hT K LL c hc V _ _ a b ρ f q n T hcr hann U _ _ ρU i TU θ a1 a2 a3 a4 a5 a6 W _ _ _ _ ρW I _ C _ _ ρC e b1 b2 b3
   haveI : Module.Finite ℚ_[l] V := Module.Finite.of_basis b

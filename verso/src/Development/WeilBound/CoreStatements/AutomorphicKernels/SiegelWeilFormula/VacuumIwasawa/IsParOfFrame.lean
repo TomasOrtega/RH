@@ -17,9 +17,39 @@ open GlobalTheory.Doubling (absE)
 local notation:70 X:70 " ⬝ " Y:71 => @HMul.hMul _ _ _ Matrix.instHMulOfFintypeOfMulOfAddCommMonoid X Y
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem incM_mul'' {a b c : Type} [Fintype b] (X : Matrix a b E) (Y : Matrix b c E) :
     incM F (X ⬝ Y) = incM F X ⬝ incM F Y := Matrix.map_mul
 
+/- English proof (translation)
+Take `⟨-, tb, htb⟩` from `d.ok.frame`. Use `set M := inFrame d.b p with hM`. Set `E1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)` to `Matrix.fromRows 1 0`. Set `DC : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)` to `diagCols (Fin d.n)`. Establish `htb' : d.b.1.toCols₁ = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) ⬝ tb.1` using `htb`.
+
+Establish `hcol : ∀ N : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E), N ⬝ E1 = N.toCols₁`. Introduce `N`. Use extensionality with `i j`. Simplify using `[E1, Matrix.mul_apply, Fintype.sum_sum_type, Matrix.one_apply, Matrix.toCols₁]`. Establish `h1 : incM F d.b.1 ⬝ E1 = incM F (d.b.1.toCols₁)`.
+
+Rewrite using `[hcol]`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `h2 : incM F ((diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) ⬝ tb.1) = DC ⬝ incM F tb.1`. Rewrite using `[incM_mul'']`.
+
+Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `cases i <;> simp [DC, diagCols, incM, Matrix.one_apply, apply_ite] <;> split_ifs <;> simp_all`. Establish `hb : incM F d.b.1 ⬝ E1 = DC ⬝ incM F tb.1` using `h1.trans ((congrArg (incM F) htb').trans h2)`. Establish `hTb : incM F tb.1 ⬝ incM F (tb⁻¹).1 = 1`.
+
+Rewrite using `[← incM_mul'', Units.mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hTb' : incM F (tb⁻¹).1 ⬝ incM F tb.1 = 1`. Rewrite using `[← incM_mul'', Units.inv_mul]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `hdc : DC = incM F d.b.1 ⬝ E1 ⬝ incM F (tb⁻¹).1`. Rewrite using `[hb, Matrix.mul_assoc, hTb, Matrix.mul_one]`. Establish `hME : M ⬝ E1 = E1 ⬝ M.toBlocks₁₁`. Rewrite using `[hcol]`. Use extensionality with `i j`.
+
+Consider the cases of `i with`. Consider the case `inl i => simp [E1, Matrix.toCols₁, Matrix.toBlocks₁₁, Matrix.mul_apply, Matrix.one_apply]`. Consider the case `inr i`. Use `congrFun (congrFun h21 i) j` as an intermediate fact. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this`.
+
+Simplify using `[E1, Matrix.toCols₁, this, Matrix.mul_apply]`. Establish `hBm : IsUnit (incM F d.b.1)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, KWhit.incM_mul_inv d, Matrix.det_one]⟩)`. Establish `hBi : IsUnit (incM F (d.b⁻¹).1)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, KWhit.incM_inv_mul d, Matrix.det_one]⟩)`. Establish `hug : IsUnit M` using `(hBi.mul (Units.isUnit p.1)).mul hBm`. Establish `hgb : M = Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ 0 M.toBlocks₂₂`.
+
+Rewrite using `[← h21, Matrix.fromBlocks_toBlocks]`. Establish `hdet : IsUnit (M.toBlocks₁₁.det * M.toBlocks₂₂.det)`. Rewrite using `[← Matrix.det_fromBlocks_zero₂₁ M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₂, ← hgb]`. Conclude with `(Matrix.isUnit_iff_isUnit_det M).1 hug`. Establish `hA : IsUnit M.toBlocks₁₁.det` using `isUnit_of_mul_isUnit_left hdet`.
+
+Establish `hTbu : IsUnit (incM F tb.1).det` using `isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, hTb, Matrix.det_one]⟩`. Establish `hTbiu : IsUnit (incM F (tb⁻¹).1).det` using `isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, hTb', Matrix.det_one]⟩`. Establish `hu : IsUnit (incM F tb.1 * M.toBlocks₁₁ * incM F (tb⁻¹).1)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul, Matrix.det_mul]`. Conclude with `(hTbu.mul hA).mul hTbiu`.
+
+Use `⟨hu.unit, ?_, ?_⟩` and prove the remaining obligations. Use `show mat2 p * DC = DC * (hu.unit : Matrix (Fin d.n) (Fin d.n) (AE F E))`. Rewrite using `[IsUnit.unit_spec, KWhit.matrix_eq_frame_conjugate d p]`. Express the relevant statement in the definitionally equal form `incM F d.b.1 * M * incM F (d.b⁻¹).1 ⬝ DC = DC ⬝ (incM F tb.1 * M.toBlocks₁₁ * incM F (tb⁻¹).1)`. Rewrite using `[hdc]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = incM F d.b.1 ⬝ (M ⬝ E1) ⬝ incM F (tb⁻¹).1 := by`. Rewrite using `[KWhit.incM_inv_mul d, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = incM F d.b.1 ⬝ E1 ⬝ (incM F (tb⁻¹).1 * incM F tb.1) ⬝ M.toBlocks₁₁ ⬝ incM F (tb⁻¹).1 := by`. Rewrite using `[hME, hTb', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, IsUnit.unit_spec, Matrix.det_mul, Matrix.det_mul, mul_comm _ M.toBlocks₁₁.det, mul_assoc, ← Matrix.det_mul, hTb, Matrix.det_one, mul_one]`.
+-/
 theorem isPar_of_frame (d : SD σ) (p : d.G) (h21 : (inFrame d.b p).toBlocks₂₁ = 0) :
     ∃ t : GL (Fin d.n) (AE F E), IsPar p t ∧ (Matrix.GeneralLinearGroup.det t : AE F E) = (inFrame d.b p).toBlocks₁₁.det := by
   obtain ⟨-, tb, htb⟩ := d.ok.frame
@@ -93,6 +123,9 @@ theorem isPar_of_frame (d : SD σ) (p : d.G) (h21 : (inFrame d.b p).toBlocks₂�
   · rw [Matrix.GeneralLinearGroup.val_det_apply, IsUnit.unit_spec, Matrix.det_mul, Matrix.det_mul, mul_comm _ M.toBlocks₁₁.det,
       mul_assoc, ← Matrix.det_mul, hTb, Matrix.det_one, mul_one]
 
+/- English proof (translation)
+Take `⟨p, t', hp, k, hk, rfl⟩` from `d.ok.hgt.iwa y`. Rewrite using `[← mul_assoc, d.ok.hgt.val _ _ (KSplitP.isPar_mul hq hp) k hk, d.ok.hgt.val p t' hp k hk, map_mul, map_mul, NNReal.coe_mul]`.
+-/
 theorem a_mul_par (d : SD σ) {q : d.G} {t : GL (Fin d.n) (AE F E)} (hq : IsPar q t) (y : d.G) :
     d.a (q * y) = (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) * d.a y := by
   obtain ⟨p, t', hp, k, hk, rfl⟩ := d.ok.hgt.iwa y

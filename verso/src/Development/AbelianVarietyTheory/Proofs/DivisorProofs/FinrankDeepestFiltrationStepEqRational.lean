@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.HSShort.DeepStep
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro g k _`. Simplify using `using h1`. Consider the case `succ n ih`.
+
+Introduce `g k hg`. Rewrite using `[List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ]`. Conclude with `hmul _ _ _ _ (hg 0) (ih _ _ fun i => hg i.succ)`.
+-/
 theorem ofFn_prod_induct {M : Type} [Monoid M] (p : M → ℕ → Prop) (h1 : p 1 0)
     (hmul : ∀ a b k l, p a k → p b l → p (a * b) (k + l)) :
     ∀ (n : ℕ) (g : Fin n → M) (k : Fin n → ℕ), (∀ i, p (g i) (k i)) → p (List.ofFn g).prod (∑ i, k i) := by
@@ -22,6 +27,9 @@ theorem ofFn_prod_induct {M : Type} [Monoid M] (p : M → ℕ → Prop) (h1 : p 
     rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ]
     exact hmul _ _ _ _ (hg 0) (ih _ _ fun i => hg i.succ)
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `hmul _ _ _ _ ih ha`.
+-/
 theorem pow_induct {M : Type} [Monoid M] (p : M → ℕ → Prop) (h1 : p 1 0)
     (hmul : ∀ a b k l, p a k → p b l → p (a * b) (k + l)) (a : M) (ha : p a 1) : ∀ n, p (a ^ n) n := by
   intro n
@@ -34,6 +42,11 @@ section Inter
 variable {F E A A' : Type} [Field F] [Field E] [Algebra F E] [AddCommGroup A] [Module F A] [AddCommGroup A'] [Module E A']
   (ι : A →ₛₗ[algebraMap F E] A')
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro g' g _ x`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+
+Introduce `g' g hg x`. Rewrite using `[List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, ih _ _ (fun i => hg i.succ), hg 0]`.
+-/
 theorem ofFn_prod_comm : ∀ (n : ℕ) (g' : Fin n → Module.End E A') (g : Fin n → Module.End F A),
     (∀ i x, g' i (ι x) = ι (g i x)) → ∀ x, (List.ofFn g').prod (ι x) = ι ((List.ofFn g).prod x) := by
   intro n
@@ -44,6 +57,11 @@ theorem ofFn_prod_comm : ∀ (n : ℕ) (g' : Fin n → Module.End E A') (g : Fin
     rw [List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply,
       ih _ _ (fun i => hg i.succ), hg 0]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ n ih => intro x`.
+
+Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, h, ih]`.
+-/
 theorem pow_comm (f' : Module.End E A') (f : Module.End F A) (h : ∀ x, f' (ι x) = ι (f x)) :
     ∀ (n : ℕ) x, (f' ^ n) (ι x) = ι ((f ^ n) x) := by
   intro n
@@ -51,6 +69,11 @@ theorem pow_comm (f' : Module.End E A') (f : Module.End F A) (h : ∀ x, f' (ι 
   | zero => intro x; simp
   | succ n ih => intro x; rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, h, ih]
 
+/- English proof (translation)
+Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem mem_span_image (Y : Set A) : ∀ y ∈ Submodule.span F Y, ι y ∈ Submodule.span E (ι '' Y) := by
   intro y hy
   induction hy using Submodule.span_induction with
@@ -65,8 +88,16 @@ variable {F A : Type} [Field F] [NumberField F] [AddCommGroup A] [Module F A] [M
 
 def Up (S : Sys F A) (f : Module.End F A) (k : ℕ) : Prop := ∀ j, j + k ≤ S.T → ∀ x ∈ S.V j, f x ∈ S.V (j + k)
 
+/- English proof (translation)
+Introduce `j _ x hx` and use `by simpa using hx`.
+-/
 theorem up_one (S : Sys F A) : Up S 1 0 := fun j _ x hx => by simpa using hx
 
+/- English proof (translation)
+Introduce `a b k l ha hb j hj x hx`. Establish `h1` using `hb j (by omega) x hx`. Establish `h2` using `ha (j + l) (by omega) _ h1`. Rewrite using `[Module.End.mul_apply]`. Establish `e : j + (k + l) = j + l + k` using `by omega`.
+
+Rewrite using `[e]`. Conclude with `h2`.
+-/
 theorem up_mul (S : Sys F A) : ∀ a b k l, Up S a k → Up S b l → Up S (a * b) (k + l) := by
   intro a b k l ha hb j hj x hx
   have h1 := hb j (by omega) x hx
@@ -75,11 +106,17 @@ theorem up_mul (S : Sys F A) : ∀ a b k l, Up S a k → Up S b l → Up S (a * 
   have e : j + (k + l) = j + l + k := by omega
   rw [e]; exact h2
 
+/- English proof (translation)
+Introduce `j hj x hx`. Use `(GlobalTheory.T.productOfVectorMultiplications_mem_filtration_lattice F A S hS j 1 hj).1 (fun _ => u) x hx` as an intermediate fact. Simplify `this` using `[word]`.
+-/
 theorem up_mul_gen (S : Sys F A) (hS : S.Hyp) (u : Fin S.N → F) : Up S (S.mul u) 1 := by
   intro j hj x hx
   have := (GlobalTheory.T.productOfVectorMultiplications_mem_filtration_lattice F A S hS j 1 hj).1 (fun _ => u) x hx
   simpa [word] using this
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum]`. Conclude with `ofFn_prod_induct (Up S) (up_one S) (up_mul S) S.D _ _ fun i => pow_induct (Up S) (up_one S) (up_mul S) _ (up_mul_gen S hS (s i)) (α i)`.
+-/
 theorem up_pw (S : Sys F A) (hS : S.Hyp) (s : Fin S.D → Fin S.N → F) (α : Fin S.D →₀ ℕ) :
     Up S (pw S.mul s α) α.degree := by
   rw [Finsupp.degree_eq_sum]
@@ -90,6 +127,29 @@ end GlobalTheory.HSShort.DeepStep
 
 open GlobalTheory.HSShort.DeepStep in
 
+/- English proof (translation)
+Introduce `F A _ _ _ _ _ _ S hS E A' _ _ _ _ s δ Φ`. Use `set P : Submodule F A := ⨆ α : MonoDeg (Fin S.D) (S.T - S.D), (S.V S.D).map (pw S.mul s α.1) with hP`. Establish `hle` using `hS.le_T`. Establish `hPT : P ≤ S.V S.T` using `iSup_le fun α => by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Establish `h` using `up_pw S hS s α.1 S.D (by rw [α.2]; omega) x hx`. Establish `e : S.D + α.1.degree = S.T` using `by rw [α.2]; omega`. Rewrite `h` using `[e]`. Conclude with `h`. Use `haveI : FiniteDimensional F (S.V S.T) := by`.
+
+Take `⟨r, b, -⟩` from `hS.shortT`. Conclude with `Module.Finite.of_basis b`. Use `haveI : FiniteDimensional F P := Submodule.finiteDimensional_of_le hPT`. Establish `hdeep : S.deepRank s = Module.finrank F P` using `rfl`. Set `b` to `Module.finBasis F P`.
+
+Set `v : Fin (Module.finrank F P) → A` to `fun i => (b i : A)`. Establish `hv : Submodule.span F (Set.range v) = P`. Establish `: Set.range v = (P.subtype) '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hli : LinearIndependent E (fun i => Φ.ι (v i))`. Use `Φ.indep _ (fun i => (⟨v i, hPT (b i).2⟩ : S.V S.T)) ?_` and prove the remaining obligations. Use `LinearIndependent.of_comp (S.V S.T).subtype ?_` and prove the remaining obligations. Conclude with `b.linearIndependent.map' P.subtype (Submodule.ker_subtype P)`.
+
+Establish `hcomm : ∀ (α : Fin S.D →₀ ℕ) (x : A), pw Φ.mul (fun i k => algebraMap F E (s i k)) α (Φ.ι x) = Φ.ι (pw S.mul s α x)` using `fun α x => ofFn_prod_comm Φ.ι _ _ _ (fun i y => pow_comm Φ.ι _ _ (fun z => Φ.mul_ι (s i) z) (α i) y) x`. Establish `hU : Φ.U (S.T - S.D) = Submodule.span E (Set.range fun i => Φ.ι (v i))`. Rewrite using `[Φ.div]`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun α => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, hcomm]`. Establish `h1 : pw S.mul s α.1 x ∈ P` using `Submodule.mem_iSup_of_mem α ⟨x, hx, rfl⟩`. Rewrite `h1` using `[← hv]`.
+
+Establish `h2` using `mem_span_image Φ.ι _ _ h1`. Rewrite `h2` using `[← Set.range_comp]`. Then use the resulting hypothesis. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `hvi : v i ∈ P` using `(b i).2`.
+
+Conclude with `Submodule.iSup_induction (fun α : MonoDeg (Fin S.D) (S.T - S.D) => (S.V S.D).map (pw S.mul s α.1)) (motive := fun y => Φ.ι y ∈ ⨆ α : MonoDeg (Fin S.D) (S.T - S.D), (Submodule.span E (Φ.ι '' S.V S.D)).map (pw Φ.mul (fun i k => algebraMap F E (s i k)) α.1)) hvi (fun α y hy => by`. Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[← hcomm]`. Conclude with `Submodule.mem_iSup_of_mem α (Submodule.mem_map_of_mem (Submodule.subset_span ⟨x, hx, rfl⟩)))`. Use the proof step `(by simp only [map_zero]; exact zero_mem _)`.
+
+Use the proof step `(fun y z hy hz => by simp only [map_add]; exact add_mem hy hz)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hU]`. Conclude with `FiniteDimensional.span_of_finite E (Set.finite_range _)`. Rewrite using `[hU, finrank_span_eq_card hli, Fintype.card_fin, hdeep]`.
+
+Rewrite using `[hdeep]`. Conclude with `Submodule.finrank_mono hPT`.
+-/
 theorem GlobalTheory.HSShort.deepStep_finrank : ∀ (F A : Type) [Field F] [NumberField F] [AddCommGroup A] [Module F A] [Module (𝓞 F) A] [IsScalarTower (𝓞 F) F A] (S : Sys F A), S.Hyp → ∀ (E A' : Type) [Field E] [Algebra F E] [AddCommGroup A'] [Module E A'] (s : Fin S.D → Fin S.N → F) (δ : ℕ) (Φ : S.Flat E A' (fun i k => algebraMap F E (s i k)) δ), FiniteDimensional E (Φ.U (S.T - S.D)) ∧ Module.finrank E (Φ.U (S.T - S.D)) = S.deepRank s ∧ S.deepRank s ≤ Module.finrank F (S.V S.T) := by
   intro F A _ _ _ _ _ _ S hS E A' _ _ _ _ s δ Φ
   set P : Submodule F A := ⨆ α : MonoDeg (Fin S.D) (S.T - S.D), (S.V S.D).map (pw S.mul s α.1) with hP

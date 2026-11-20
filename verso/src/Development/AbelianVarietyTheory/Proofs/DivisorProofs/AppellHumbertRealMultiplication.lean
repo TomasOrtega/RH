@@ -22,6 +22,37 @@ namespace GlobalTheory.RosatiAH
 
 open GlobalTheory.PullHermitian in
 
+/- English proof (translation)
+Introduce `A A' _ _ L L' hL hL' g g' u u' Hm χ Hm' χ' hu hu' f F hF m n ⟨w, hw⟩`. Establish `hFl : ∀ z, (u'.ex (F z)).left = (u.ex z).left ≫ f.left` using `fun z => by`. Rewrite using `[hF, Over.comp_left]`. Establish `hΛ : ∀ l : u.Λ, F l ∈ u'.Λ` using `fun l => by`. Rewrite using `[← u'.ker, hF, (u.ker l).2 l.2, ← (u.ker 0).2 u.Λ.zero_mem, ← hF, map_zero]`.
+
+Conclude with `(u'.ker 0).2 u'.Λ.zero_mem`. Establish `hper : ∀ (l : u.Λ) z, u.ex (z + l) = u.ex z` using `fun l z => by`. Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`. Establish `hFd : Differentiable ℂ F` using `(LinearMap.toContinuousLinearMap F).differentiable`. Take `⟨r, hr, hrφ⟩` from `exists_glue (fun p : L.ι × L'.ι => {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) (fun p => (u.hol _ 0).1.inter ((u'.hol _ 0).1.preimage hFd.continuous)) (fun z => by`.
+
+Take `⟨i, hi⟩` from `exists_chart (u.ex z).left hL`. Take `⟨j, hj⟩` from `exists_chart (u'.ex (F z)).left hL'`. Conclude with `⟨(i, j), hi, hj⟩)`. Use the proof step `(fun p z => valAt' (u.ex z).left _ (w.s (idx f.left m n p.1 p.2)).val * u'.fr p.2 (F z) ^ m / u.fr p.1 z ^ n)`. Use the proof step `(fun p => by`.
+
+Establish `d1` using `(u.hol _ (w.s (idx f.left m n p.1 p.2)).val).2.mono (s := {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) fun z hz => idx_chart _ _ _ _ _ _ hz.1 (hFl z ▸ hz.2)`. Establish `d2` using `(u'.fr_hol p.2).comp (s := {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) hFd.differentiableOn fun z hz => hz.2`. Establish `d3` using `(u.fr_hol p.1).mono (s := {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U p.1} ∩ F ⁻¹' {z | ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L'.U p.2}) Set.inter_subset_left`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(d1.mul (d2.pow m)).mul ((d3.pow n).inv fun z hz => pow_ne_zero n (u.fr_ne p.1 z hz.1)))`.
+
+Use the proof step `(fun p q z hp hq => by`. Establish `h` using `val_iso_pow (u.ex z).left f.left m n w hw p.1 q.1 p.2 q.2 hp.1 hq.1 (hFl z ▸ hp.2) (hFl z ▸ hq.2)`. Establish `h1` using `u.fr_compat p.1 q.1 z (inf_of _ hp.1 hq.1)`. Establish `h2` using `u'.fr_compat p.2 q.2 (F z) (inf_of _ hp.2 hq.2)`. Rewrite `h2` using `[hFl]`.
+
+Rewrite using `[div_eq_div_iff (pow_ne_zero _ (u.fr_ne _ _ hp.1)) (pow_ne_zero _ (u.fr_ne _ _ hq.1)), h1, h2, mul_pow, mul_pow, ← _root_.mul_assoc, h]`. Use the proof step `ring)`. Use `set H₂ := (LinearMap.toMatrix' F).transpose * Hm' * (LinearMap.toMatrix' F).transpose.conjTranspose with hH₂`. Establish `hH₂h : H₂.IsHermitian` using `Matrix.isHermitian_mul_mul_conjTranspose _ hu'.1`. Establish `hchart : ∀ z, ∃ i j, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i ∧ ⊤ ≤ (u'.ex (F z)).left ⁻¹ᵁ L'.U j` using `fun z => by`.
+
+Take `⟨i, hi⟩` from `exists_chart (u.ex z).left hL`. Take `⟨j, hj⟩` from `exists_chart (u'.ex (F z)).left hL'`. Conclude with `⟨i, j, hi, hj⟩`. Use `haveI := u.discrete`. Establish `key` using `appellHumbert_trivial_of_nowhere_vanishing g u.Λ u.full ((n : ℂ) • Hm - (m : ℂ) • H₂) (fun l => χ l ^ n / χ' ⟨F l, hΛ l⟩ ^ m) r ((hu.1.smul (by simp [IsSelfAdjoint])).sub (hH₂h.smul (by simp [IsSelfAdjoint]))) (fun l => by simp [hu.2.1, hu'.2.1]) hr (fun z => by`.
+
+Take `⟨i, j, hi, hj⟩` from `hchart z`. Rewrite using `[hrφ (i, j) z ⟨hi, hj⟩, valAt'_eq_unitVal _ (idx_chart _ _ _ _ _ _ hi (hFl z ▸ hj))]`. Conclude with `div_ne_zero (mul_ne_zero (Units.ne_zero _) (pow_ne_zero _ (u'.fr_ne _ _ hj))) (pow_ne_zero _ (u.fr_ne _ _ hi)))`. Use the proof step `(fun l z => by`. Take `⟨i, j, hi, hj⟩` from `hchart z`.
+
+Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U i` using `by rwa [hper]`. Establish `hj' : ⊤ ≤ (u'.ex (F (z + l))).left ⁻¹ᵁ L'.U j` using `by rwa [hF, hper, ← hF]`. Establish `h1` using `hu.2.2 l i z hi`. Establish `h2` using `hu'.2.2 ⟨F l, hΛ l⟩ j (F z) hj`. Establish `h3 : χ l ≠ 0` using `norm_ne_zero_iff.1 (by rw [hu.2.1]; exact one_ne_zero)`.
+
+Establish `h4 : χ' ⟨F l, hΛ l⟩ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hu'.2.1]; exact one_ne_zero)`. Establish `h5` using `u.fr_ne _ _ hi'`. Rewrite using `[hrφ (i, j) z ⟨hi, hj⟩, hrφ (i, j) (z + l) ⟨hi', hj'⟩]`. Simplify using `only [hper, hermForm_sub_smul, hH₂, hermForm_pull, map_add]`. Rewrite using `[h1, h2]`.
+
+Simplify using `only [hermForm]`. Generalize the expression as in `(z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) = a`. Generalize the expression as in `((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) = b`. Generalize the expression as in `(F z ⬝ᵥ Hm'.mulVec (star (F l))) = a'`. Generalize the expression as in `(F l ⬝ᵥ Hm'.mulVec (star (F l))) = b'`.
+
+Establish `e : Complex.exp (Real.pi * (n * a - m * a') + Real.pi / 2 * (n * b - m * b')) = Complex.exp (Real.pi * a + Real.pi / 2 * b) ^ n / Complex.exp (Real.pi * a' + Real.pi / 2 * b') ^ m`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_sub]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `Complex.exp_ne_zero (Real.pi * a + Real.pi / 2 * b)`.
+
+Establish `h7` using `Complex.exp_ne_zero (Real.pi * a' + Real.pi / 2 * b')`. Rewrite using `[e]`. Generalize the expression as in `Complex.exp (Real.pi * a + Real.pi / 2 * b) = s at h6`. Generalize the expression as in `Complex.exp (Real.pi * a' + Real.pi / 2 * b') = s' at h7`. Simplify using `only [mul_pow]`.
+
+Use the proof step `field_simp)`. Introduce `z v`. Establish `h` using `hermForm_sub_smul Hm H₂ n m z v`. Rewrite `h` using `[key.1, hH₂, hermForm_pull]`. Simplify using `only [hermForm, Matrix.zero_mulVec, dotProduct_zero] at h`.
+
+Conclude with `(sub_eq_zero.1 h.symm).symm`.
+-/
 theorem hermForm_pull_eq_of_lbIso_pow_factor :
     ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left), L.IsLB → L'.IsLB →
   ∀ (g g' : ℕ) (u : HolUnif A L g) (u' : HolUnif A' L' g') (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ)
@@ -124,6 +155,9 @@ theorem hermForm_pull_eq_of_lbIso_pow_factor :
   simp only [hermForm, Matrix.zero_mulVec, dotProduct_zero] at h
   exact (sub_eq_zero.1 h.symm).symm
 
+/- English proof (translation)
+Introduce `A A' _ _ L L' hL hL' g g' u u' Hm χ Hm' χ' hu hu' f F hF hiso z w`. Establish `hP : (L'.pull f.left).IsLB` using `LB.isLB_pull hL' _`. Establish `i1 : LBIso (lbPow (L'.pull f.left) 1) (lbPow L 1)` using `((GlobalTheory.lbIso_lbPow_one hP).trans (GlobalTheory.isLB_lbPow hP 1) hP hL (LBIso.symm hiso)).trans (GlobalTheory.isLB_lbPow hP 1) hL (GlobalTheory.isLB_lbPow hL 1) (LBIso.symm (GlobalTheory.lbIso_lbPow_one hL))`. Use `hermForm_pull_eq_of_lbIso_pow_factor A A' L L' hL hL' g g' u u' Hm χ Hm' χ' hu hu' f F hF 1 1 i1 z w` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem hermForm_eq_of_lbIso_pull :
     ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left), L.IsLB → L'.IsLB →
   ∀ (g g' : ℕ) (u : HolUnif A L g) (u' : HolUnif A' L' g') (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ)
@@ -146,12 +180,18 @@ open GlobalTheory.AppellHumbertTrivial
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.add_apply, Pi.zero_apply, add_zero]`. Simplify using `only [Fin.append_right, Pi.add_apply, Pi.zero_apply, zero_add]`.
+-/
 theorem append_split (x y : Fin g → ℂ) : Fin.append x y = Fin.append x 0 + Fin.append 0 y := by
   funext i
   refine Fin.addCases (fun i => ?_) (fun i => ?_) i
   · simp only [Fin.append_left, Pi.add_apply, Pi.zero_apply, add_zero]
   · simp only [Fin.append_right, Pi.add_apply, Pi.zero_apply, zero_add]
 
+/- English proof (translation)
+Rewrite using `[append_split x y, append_split x' y', hermForm_add_left, hermForm_add_right, hermForm_add_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_append (H : Matrix (Fin (g + g)) (Fin (g + g)) ℂ) (x y x' y' : Fin g → ℂ) :
     hermForm H (Fin.append x y) (Fin.append x' y') =
       hermForm H (Fin.append x 0) (Fin.append x' 0) + hermForm H (Fin.append x 0) (Fin.append 0 y') +
@@ -159,12 +199,30 @@ theorem herm_append (H : Matrix (Fin (g + g)) (Fin (g + g)) ℂ) (x y x' y' : Fi
   rw [append_split x y, append_split x' y', hermForm_add_left, hermForm_add_right, hermForm_add_right]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Pi.smul_apply]`. Simplify using `only [Fin.append_right, Pi.smul_apply]`.
+-/
 theorem append_smul (t : ℂ) (x y : Fin g → ℂ) : Fin.append (t • x) (t • y) = t • Fin.append x y := by
   funext i
   refine Fin.addCases (fun i => ?_) (fun i => ?_) i
   · simp only [Fin.append_left, Pi.smul_apply]
   · simp only [Fin.append_right, Pi.smul_apply]
 
+/- English proof (translation)
+Establish `hA : ∀ x x', hermForm Hc (Fin.append x 0) (Fin.append x' 0) = 0`. Introduce `x x'`. Establish `e1` using `hM2 x 0 x' 0`. Establish `e2` using `hS2 x 0 x' 0`. Establish `e3` using `hM2 0 x 0 x'`.
+
+Establish `e4` using `hSc x 0 x' 0`. Simplify using `only [smul_zero] at e1`. Establish `e5 : Fin.append (0 : Fin g → ℂ) ((2 : ℂ) • x) = (2 : ℂ) • Fin.append 0 x`. Rewrite using `[← append_smul, smul_zero]`. Establish `e6 : Fin.append (0 : Fin g → ℂ) ((2 : ℂ) • x') = (2 : ℂ) • Fin.append 0 x'`.
+
+Rewrite using `[← append_smul, smul_zero]`. Rewrite `e3` using `[e5, e6, hermForm_smul_left, hermForm_smul_right]`. Establish `hs : (star (2 : ℂ)) = 2` using `by simp`. Rewrite `e3` using `[hs]`. Establish `: hermForm Hc (Fin.append x 0) (Fin.append x' 0) = 4 * hermForm Hc (Fin.append x 0) (Fin.append x' 0)`.
+
+Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-1/3 : ℂ) * this`. Establish `hA2 : ∀ y y', hermForm Hc (Fin.append 0 y) (Fin.append 0 y') = 0`. Introduce `y y'`. Rewrite using `[← hSc y 0 y' 0]`.
+
+Conclude with `hA y y'`. Establish `hBC : ∀ x y', hermForm Hc (Fin.append 0 x) (Fin.append y' 0) = hermForm Hc (Fin.append x 0) (Fin.append 0 y')` using `fun x y' => (hSc x 0 0 y').symm`. Establish `hB : ∀ x y', hermForm Hc (Fin.append (D x) 0) (Fin.append 0 y') = hermForm Hc (Fin.append x 0) (Fin.append 0 (D y'))`. Introduce `x y'`. Establish `e1` using `hMd x 0 0 y'`.
+
+Establish `e2` using `hSd x 0 0 y'`. Establish `e3` using `hMd 0 x y' 0`. Rewrite `e1`, `e3` using `[map_zero]`. Rewrite using `[← hBC, ← e3, ← e2, e1]`. Introduce `z w`.
+
+Rewrite using `[hD, hD, herm_append Hc (D z) (D z) w w, herm_append Hc z z (D w) (D w)]`. Simplify using `only [hA, hA2, zero_add, add_zero, hBC, hB]`.
+-/
 theorem rosati_alg (Hm : Matrix (Fin g) (Fin g) ℂ) (Hc Hd H2 : Matrix (Fin (g + g)) (Fin (g + g)) ℂ)
     (D : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hD : ∀ z w, hermForm Hm z w = hermForm Hc (Fin.append z z) (Fin.append w w))
@@ -228,6 +286,9 @@ def dmul (s : Fin g → ℂ) : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ) where
   map_add' z w := by funext j; simp [mul_add]
   map_smul' t z := by funext j; simp; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dmul_apply (s z : Fin g → ℂ) : dmul s z = fun j => s j * z j := rfl
 
 def fdiag (g : ℕ) : (Fin g → ℂ) →ₗ[ℂ] (Fin (g + g) → ℂ) where
@@ -273,17 +334,29 @@ def fswap (g : ℕ) : (Fin (g + g) → ℂ) →ₗ[ℂ] (Fin (g + g) → ℂ) wh
     · simp only [Fin.append_left, Pi.smul_apply, RingHom.id_apply]
     · simp only [Fin.append_right, Pi.smul_apply, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fdiag_apply (z : Fin g → ℂ) : fdiag g z = Fin.append z z := rfl
 
+/- English proof (translation)
+Use `show Fin.append (fun i => Fin.append x y (Fin.castAdd g i)) (D fun i => Fin.append x y (Fin.natAdd g i)) = _`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+-/
 theorem fmul_append (D : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (x y : Fin g → ℂ) :
     fmul D (Fin.append x y) = Fin.append x (D y) := by
   show Fin.append (fun i => Fin.append x y (Fin.castAdd g i)) (D fun i => Fin.append x y (Fin.natAdd g i)) = _
   simp only [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Use `show Fin.append (fun i => Fin.append x y (Fin.natAdd g i)) (fun i => Fin.append x y (Fin.castAdd g i)) = _`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+-/
 theorem fswap_append (x y : Fin g → ℂ) : fswap g (Fin.append x y) = Fin.append y x := by
   show Fin.append (fun i => Fin.append x y (Fin.natAdd g i)) (fun i => Fin.append x y (Fin.castAdd g i)) = _
   simp only [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Simplify using `only [Fin.append_right]`.
+-/
 theorem eq_append (v : Fin (g + g) → ℂ) :
     v = Fin.append (fun i => v (Fin.castAdd g i)) (fun i => v (Fin.natAdd g i)) := by
   funext i
@@ -295,6 +368,27 @@ end GlobalTheory.RosatiAH
 
 open GlobalTheory.RosatiAH in
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 X c _ u e hu Hm χ hAH a i j`. Take `⟨U0, hU0⟩` from `GlobalTheory.T.product_abelian_uniformization X.A X.ab (X.diag c) _ u`. Establish `hAb2` using `AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab`. Establish `frame : ∀ c' : 𝔠.elt, ∃ (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)) (H : Matrix (Fin (Module.finrank ℚ F + Module.finrank ℚ F)) (Fin (Module.finrank ℚ F + Module.finrank ℚ F)) ℂ) (χ : U.Λ → ℂ), (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y …` using `fun c' => by`. Take `⟨U, H, χ', hex, hF⟩` from `GlobalTheory.T.exists_appell_humbert_line_bundle (X.A ⊗ X.A) hAb2 _ _ U0 (X.P c') (X.isLB c')`.
+
+Conclude with `⟨U, H, χ', fun x y => by rw [hex]; exact hU0 x y, hF⟩`. Take `⟨Uc, Hc, χc, hexc, hFc⟩` from `frame c`. Take `⟨Ud, Hd, χd, hexd, hFd⟩` from `frame (a • c)`. Take `⟨U2, H2, χ2, hex2, hF2⟩` from `frame ((2 : 𝓞 F) • c)`. Establish `hswap : ∀ {c' : 𝔠.elt} (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)), (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → ∀ v, U.ex (fswap _ v) = U.ex v ≫ lift (snd X.A X.A) (fst X.A X.A)`.
+
+Introduce `c' U hex v`. Rewrite using `[eq_append v, fswap_append, hex, hex]`. Simplify using the standard rewrite rules. Establish `hmul : ∀ {c' c'' : 𝔠.elt} (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)) (U' : HolUnif (X.A ⊗ X.A) (X.P c'') (Module.finrank ℚ F + Module.finrank ℚ F)), (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → (∀ x y, U'.ex (Fin.append x y) = lift ( …`. Introduce `c' c'' U U' hex hex' b v`.
+
+Rewrite using `[eq_append v, fmul_append, hex, hex', dmul_apply, hu]`. Simplify using the standard rewrite rules. Establish `hdiag : ∀ z, Uc.ex (fdiag _ z) = u.ex z ≫ lift (𝟙 X.A) (𝟙 X.A)`. Introduce `z`. Rewrite using `[fdiag_apply, hexc]`.
+
+Simplify using the standard rewrite rules. Establish `hdLB : (X.diag c).IsLB` using `LB.isLB_pull (X.isLB c) _`. Establish `hD` using `hermForm_eq_of_lbIso_pull X.A (X.A ⊗ X.A) (X.diag c) (X.P c) hdLB (X.isLB c) _ _ u Uc Hm χ Hc χc (isFactorAH_of_isAH hAH) hFc (lift (𝟙 X.A) (𝟙 X.A)) (fdiag _) hdiag (by unfold Obj.diag; exact GlobalTheory.lbIso_refl hdLB)`. Establish `hS : ∀ {c' : 𝔠.elt} (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)) H χ', (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → IsFactorAH U H χ' → ∀ x y x' y', hermForm H (Fin.append x y) (Fin.append x' y') = hermForm H (Fin.append y x) (Fin.appe …`. Introduce `c' U H χ' hex hF x y x' y'`.
+
+Use `hermForm_eq_of_lbIso_pull (X.A ⊗ X.A) (X.A ⊗ X.A) (X.P c') (X.P c') (X.isLB c') (X.isLB c') _ _ U U H χ' H χ' hF hF (lift (snd X.A X.A) (fst X.A X.A)) (fswap _) (hswap U hex) (X.symm c') (Fin.append x y) (Fin.append x' y')` as an intermediate fact. Rewrite `this` using `[fswap_append, fswap_append]`. Then use the resulting hypothesis. Establish `hM : ∀ (b : 𝓞 F) {U : HolUnif (X.A ⊗ X.A) (X.P (b • c)) (Module.finrank ℚ F + Module.finrank ℚ F)} {H χ'}, (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → IsFactorAH U H χ' → ∀ x y x' y', hermForm H (Fin.append x y) (Fin.append x' y') = hermForm Hc (Fin.append x (dmul ( …`. Introduce `b U H χ' hex hF x y x' y'`. Use `hermForm_eq_of_lbIso_pull (X.A ⊗ X.A) (X.A ⊗ X.A) (X.P (b • c)) (X.P c) (X.isLB _) (X.isLB c) _ _ U Uc H χ' Hc χc hF hFc (lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act b)) (fmul (dmul fun j => e j (b : F))) (hmul U Uc hex hexc b) (X.smul b c) (Fin.append x y) (Fin.append x' y')` as an intermediate fact.
+
+Rewrite `this` using `[fmul_append, fmul_append]`. Then use the resulting hypothesis. Establish `h2F : (((2 : 𝓞 F)) : F) = 2` using `by norm_cast`. Establish `h2 : (dmul fun j => e j (((2 : 𝓞 F) : F))) = (2 : ℂ) • LinearMap.id`. Use `LinearMap.ext fun z => funext fun k => ?_` and prove the remaining obligations. Simplify using `only [dmul_apply, h2F, map_ofNat, LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Establish `key` using `rosati_alg Hm Hc Hd H2 (dmul fun j => e j (a : F)) hD (hS Uc Hc χc hexc hFc) (hS Ud Hd χd hexd hFd) (hM a hexd hFd) (hS U2 H2 χ2 hex2 hF2) (fun x y x' y' => by rw [hM 2 hex2 hF2, h2]; rfl) (Pi.single i 1) (Pi.single j 1)`. Establish `e1 : (dmul fun j => e j (a : F)) (Pi.single i 1) = Pi.single i (e i (a : F))`. Apply the tactic sequence `funext k; by_cases hk : k = i <;> simp [dmul_apply, Pi.single_apply, hk]`. Establish `e2 : (dmul fun j => e j (a : F)) (Pi.single j 1) = Pi.single j (e j (a : F))`. Apply the tactic sequence `funext k; by_cases hk : k = j <;> simp [dmul_apply, Pi.single_apply, hk]`.
+
+Rewrite `key` using `[e1, e2]`. Simplify using `only [hermForm] at key`. Establish `s1 : star (Pi.single j (1:ℂ) : Fin (Module.finrank ℚ F) → ℂ) = Pi.single j 1` using `by simp`. Establish `s2 : star (Pi.single j (e j (a : F)) : Fin (Module.finrank ℚ F) → ℂ) = Pi.single j (star (e j (a : F)))` using `by simp`. Rewrite `key` using `[s1, s2, Matrix.mulVec_single, Matrix.mulVec_single, single_dotProduct, single_dotProduct]`.
+
+Simplify using `using key`.
+-/
 theorem GlobalTheory.RosatiAH.rosati_diag : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt),
     IsTotPos (c : F) → ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) → (F →+* ℂ)),
     (∀ (a : 𝓞 F) w, u.ex (fun j ↦ e j (a : F) * w j) = u.ex w ≫ X.rm.act a) →

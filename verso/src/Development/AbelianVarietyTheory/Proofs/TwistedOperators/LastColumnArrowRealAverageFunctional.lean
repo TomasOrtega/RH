@@ -25,6 +25,15 @@ noncomputable section
 
 namespace GlobalTheory.LastColAvg
 
+/- English proof (translation)
+Introduce `D T L sc G μ0 hL i hi`. Establish `hm1 : 1 ≤ D.R.m - i` using `by omega`. Establish `hm2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `h0 : ∀ τ, HasInfExp D (G.ch.chi (D.R.m - i)) τ (cen D sc.cGap τ (D.R.m - i) : ℚ)` using `fun τ => GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ)) (G.ch.chi_eq _ hm1 hm2) ⟨fun τ => 2 * cen D sc.cGap τ (D.R.m - i), fun τ => by push_cast; ring, G.ch.inf _ hm1 hm2⟩ τ`. Establish `hatt : ∀ (n : ℕ) τ, HasInfExp D (Formalism.IndefR.Lift.attChr (G.ch.chi (D.R.m - i)) L.eta n) τ ((cen D sc.cGap τ (D.R.m - i) : ℚ) - if Odd n then 1 / 2 else 0)`.
+
+Introduce `n τ`. Unfold `Formalism.IndefR.Lift.attChr`. Use `split_ifs`. Rewrite using `[sub_eq_add_neg]`. Conclude with `GlobalTheory.Chain.StepVac.hasInfExp_mul (h0 τ) (GlobalTheory.Chain.StepVac.hasInfExp_inv (GlobalTheory.SquareExps.eta_exp hL τ))`.
+
+Simplify using `using h0 τ`. Use `⟨fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ) - if Odd (G.pS (.chi i D.R.m : Pair T)).rank then 1 / 2 else 0, fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ) - if Odd (G.pT (.chi i D.R.m : Pair T)).rank then 1 / 2 else 0, fun τ => (cen D sc.cGap τ (D.R.m - i) : ℤ) - (((G.pS (.chi i D.R. …` and prove the remaining obligations. Simplify using `only [sgnP]`. Break down `Nat.even_or_odd (G.pS (.chi i D.R.m : Pair T)).rank with ⟨k, hk⟩ | ⟨k, hk⟩` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 ⟨k, hk⟩), hk, show (k + k + 1) / 2 = k by omega] push_cast; ring`.
+
+Rewrite using `[if_pos ⟨k, hk⟩, hk, show (2 * k + 1 + 1) / 2 = k + 1 by omega] push_cast; ring`. Simplify using `only [sgnP]`. Break down `Nat.even_or_odd (G.pT (.chi i D.R.m : Pair T)).rank with ⟨k, hk⟩ | ⟨k, hk⟩` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 ⟨k, hk⟩), hk, show (k + k + 1) / 2 = k by omega] push_cast; ring`. Rewrite using `[if_pos ⟨k, hk⟩, hk, show (2 * k + 1 + 1) / 2 = k + 1 by omega] push_cast; ring`.
+-/
 theorem exps_chi : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ0 : T}, L.Is μ0 → ∀ (i : ℕ), i < D.R.m →
     ∃ (a b : D.what₂.Tau → ℚ) (e₁ e₂ : D.what₂.Tau → ℤ),
       (∀ τ, HasInfExp D (G.chrS (.chi i D.R.m : Pair T)) τ (a τ)) ∧ (∀ τ, HasInfExp D (G.chrT (.chi i D.R.m : Pair T)) τ (b τ)) ∧
@@ -62,6 +71,13 @@ theorem exps_chi : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : Gr
     · rw [if_pos ⟨k, hk⟩, hk, show (2 * k + 1 + 1) / 2 = k + 1 by omega]
       push_cast; ring
 
+/- English proof (translation)
+Introduce `D T L sc G W U S μ0 hL i hi t ht d hd P x y`. Establish `hp : DefPair D.R.m (.chi i D.R.m : Pair T)` using `⟨hi, rfl⟩`. Establish `hn` using `DefPair.nodes hp`. Establish `hom` using `W.om_is (.chi i D.R.m) (by`. Simplify using `only [DefPair, DefNode] at hp hn`.
+
+Simplify using `only [Pair.InRange, Node.InRange]`. Use the proof step `omega)`. Take `⟨h1, -⟩` from `GlobalTheory.T.gridFiniteDatumVector_theta_fockVacuum W S.Z hp d hd`. Establish `m1 : (G.toPair (.chi i D.R.m) (S.N.u (.grid i D.R.m)).1 (S.N.u (.grid (i + 1) D.R.m)).1).1 ∈ GfC (G.pS (.chi i D.R.m : Pair T))` using `negGA_mem_GfC _ (S.N.u _).2`. Establish `m2 : (G.toPair (.chi i D.R.m) (S.N.u (.grid i D.R.m)).1 (S.N.u (.grid (i + 1) D.R.m)).1).2 ∈ GfC (G.pT (.chi i D.R.m : Pair T))` using `(S.N.u _).2`.
+
+Establish `e : W.fock (.chi i D.R.m) (movedVec t S d) P = W.om (.chi i D.R.m) (G.toPair (.chi i D.R.m) (S.N.u (.grid i D.R.m)).1 (S.N.u (.grid (i + 1) D.R.m)).1) (W.fock (.chi i D.R.m) (S.Z.vec d) P)` using `(GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ _ _ _ _ _ hom W.θ W.θ_is _ m1 _ m2 _ _ _ _ (S.Z.vec d) P h1).symm`. Rewrite using `[e]`. Unfold `GridData.Weil.ker`. Rewrite using `[GlobalTheory.RowClaim.toPair_mul]`. Simplify using `only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]`.
+-/
 theorem ker_fock_moved_fin : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ0 : T},
     L.Is μ0 → ∀ (i : ℕ), i < D.R.m → ∀ (t : T), t ∈ U → ∀ (d : FinDatum G t (.chi i D.R.m)), S.Z.HasVec d →
     ∀ (P : PolF D (G.pT (.chi i D.R.m : Pair T)).rank (G.pS (.chi i D.R.m : Pair T)).rank) (x : GA D (G.V (.grid i D.R.m))) (y : GA D (G.V (.grid (i + 1) D.R.m))),
@@ -86,6 +102,17 @@ theorem ker_fock_moved_fin : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Const
   rw [GlobalTheory.RowClaim.toPair_mul]
   simp only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `D T L sc G W U S μ0 hL i hi Q Λ`. Take `⟨a, b, e₁, e₂, ha, hb, he₁, he₂⟩` from `exps_chi G hL i hi`. Take `⟨σ₀, hσf, hσr⟩` from `GlobalTheory.T.exists_fockFrameChange_lastColumn_definitePair S hL i hi`. Take `⟨Λ', hΛ'⟩` from `GlobalTheory.T.compactPair_realAverage_fock_eq_jetOperator S hL i hi a b ha hb e₁ e₂ he₁ he₂ (σ₀ Q) Λ`. Use `⟨Λ', fun t ht d hd κ hκ hκp x h v => ?_⟩` and prove the remaining obligations.
+
+Establish `hp : DefPair D.R.m (.chi i D.R.m : Pair T)` using `⟨hi, rfl⟩`. Establish `hh : h = ((finOf _ h : GfC (G.V (.grid (i + 1) D.R.m))) : GA D (G.V (.grid (i + 1) D.R.m))) * ((infOf _ h : GinfC (G.V (.grid (i + 1) D.R.m))) : GA D (G.V (.grid (i + 1) D.R.m)))`. Rewrite using `[← GlobalTheory.AdelicSplit.commute_GinfC_GfC _ (infOf _ h).2 (finOf _ h).2, infOf_mul_finOf]`. Set `ℓ : PolF D (G.pT (.chi i D.R.m : Pair T)).rank (G.pS (.chi i D.R.m : Pair T)).rank →ₗ[ℂ] ℂ` to `((LinearMap.proj 0 : (WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ) →ₗ[ℂ] ℂ) ∘ₗ W.om (.chi i D.R.m) (G.toPair (.chi i D.R.m) ((x * S.N.u _ : FinPt G (.grid i D.R.m)) : GA D (G.V (.grid i D.R.m))) ((finOf _ h * S.N.u _ : FinPt G (.grid (i + 1) D.R.m)) : GA …`. Establish `key : ∀ k : GinfC (G.V (.grid i D.R.m)), W.kerA (.right i D.R.m : Arrow T) (W.fock (.chi i D.R.m) (movedVec t S d) Q) ((x : GA D (G.V (.grid i D.R.m))) * (k : GA D (G.V (.grid i D.R.m)))) h = realChar W (.chi i D.R.m) e₁ e₂ (k : GA D (G.V (.grid i D.R.m))) (infOf _ h : GA D (G.V …`.
+
+Introduce `k`. Use `show W.ker (.chi i D.R.m) (W.fock (.chi i D.R.m) (movedVec t S d) Q) _ _ = _`. Use `conv_lhs => rw [hh]`. Rewrite using `[ker_fock_moved_real hL W S t hp d hd a b ha hb e₁ e₂ he₁ he₂ _ k.2 _ (infOf _ h).2 Q _ _, ker_fock_moved_fin S hL i hi t ht d hd, hσf t ht d hd, hσr _ k.2 _ (infOf _ h).2]`. Both sides reduce to the same expression.
+
+Repeatedly rewrite using `[key]`. Rewrite using `[hΛ' ℓ κ hκ hκp _ (infOf _ h).2 v]`. Establish `hY : realAct W.θ S.N.fr (.grid (i + 1) D.R.m) h⁻¹ = realAct W.θ S.N.fr (.grid (i + 1) D.R.m) ((infOf _ h : GA D (G.V (.grid (i + 1) D.R.m))))⁻¹` using `by conv_lhs => rw [hh]`. Rewrite using `[mul_inv_rev, map_mul, realAct_fin _ _ _ (inv_mem (finOf _ h).2), mul_one]`. Rewrite using `[hY]`.
+
+Both sides reduce to the same expression.
+-/
 theorem real_average : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ0 : T}, L.Is μ0 → ∀ (i : ℕ), i < D.R.m →
     ∀ (Q : PolF D (G.pT (.chi i D.R.m : Pair T)).rank (G.pS (.chi i D.R.m : Pair T)).rank)
       (Λ : Module.Dual ℂ (VV ℂ (wt G (.grid i D.R.m)))),

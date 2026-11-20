@@ -12,6 +12,11 @@ open GlobalTheory.EtC.Tr GlobalTheory.EtC.TrDeg
 
 variable (R : Type) [CommRing R]
 
+/- English proof (translation)
+Use `⟨fun j => ha _, ?_⟩` and prove the remaining obligations. Set `w : ∐ (fun _ : Fin m => V) ≅ ∐ (fun _ : G => V)` to `Sigma.reindex e (fun _ : G => V)`. Establish `hw : ∀ j, Sigma.ι (fun _ : Fin m => V) j ≫ w.hom = Sigma.ι (fun _ : G => V) (e j)` using `fun j => Sigma.ι_reindex_hom e (fun _ : G => V) j`. Use `(inferInstance : IsIso (w.hom ≫ (Sigma.desc (fun g => pullback.lift (a g) (𝟙 V) (by rw [ha g, Category.id_comp])) : ∐ (fun _ : G => V) ⟶ pullback f y)))` and compare the differences between its conclusion and the goal. Apply `Sigma.hom_ext` to reduce the goal to its premises.
+
+Introduce `j`. Rewrite using `[Sigma.ι_desc, reassoc_of% (hw j), Sigma.ι_desc]`.
+-/
 theorem splitBy_of_equiv {Y X V : Scheme.{0}} (f : Y ⟶ X) (y : V ⟶ X) {G : Type} {m : ℕ} (e : Fin m ≃ G)
     (a : G → (V ⟶ Y)) (ha : ∀ g, a g ≫ f = y)
     (h : IsIso (Sigma.desc (fun g => pullback.lift (a g) (𝟙 V) (by rw [ha g, Category.id_comp])) :
@@ -26,10 +31,16 @@ theorem splitBy_of_equiv {Y X V : Scheme.{0}} (f : Y ⟶ X) (y : V ⟶ X) {G : T
   intro j
   rw [Sigma.ι_desc, reassoc_of% (hw j), Sigma.ι_desc]
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun u : freeSch R X ⟶ freeSch R Y => along R F n u x) (fun u v => along_add R F n u v x)) t s`.
+-/
 theorem along_sum {X Y : Scheme.{0}} (F : Shv R) (n : ℤ) {ι : Type} (s : Finset ι) (t : ι → (freeSch R X ⟶ freeSch R Y))
     (x : H R (sch.obj Y) F n) : along R F n (∑ j ∈ s, t j) x = ∑ j ∈ s, along R F n (t j) x :=
   map_sum (AddMonoidHom.mk' (fun u : freeSch R X ⟶ freeSch R Y => along R F n u x) (fun u v => along_add R F n u v x)) t s
 
+/- English proof (translation)
+Rewrite using `[trH, ← along_free, ← along_comp, (transfer_spec R (existsUnique_isTransfer R f).exists).apply_of_splitBy R hs, along_sum]`. Simplify using `only [along_free]`.
+-/
 theorem pull_trH {Y X V : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [Etale f] {y : V ⟶ X} {m : ℕ}
     {s : Fin m → (V ⟶ Y)} (hs : SplitBy f y s) (F : Shv R) (n : ℤ) (x : H R (sch.obj Y) F n) :
     pull R (sch.map y) F n (trH R f F n x) = ∑ j, pull R (sch.map (s j)) F n x := by
@@ -37,6 +48,11 @@ theorem pull_trH {Y X V : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [Etale f] {y : 
     (transfer_spec R (existsUnique_isTransfer R f).exists).apply_of_splitBy R hs, along_sum]
   simp only [along_free]
 
+/- English proof (translation)
+Introduce `l _ Y X f _ _ _ G _ a ha hiso n i`. Establish `hs` using `splitBy_of_equiv f f (Fintype.equivFin G).symm a ha hiso`. Establish `h` using `trHl_spec l (redCompat_of_finite_etale l f (fun R _ => existsUnique_isTransfer R f) n i)`. Use `⟨trHl l f n i, fun x => Subtype.ext (funext fun k => ?_), fun y => Subtype.ext (funext fun k => ?_)⟩` and prove the remaining obligations. Conclude with `(h _ k).trans (trH_pull (ZMod (l ^ k)) f hs (tw (l ^ k) i) n (x.1 k))`.
+
+Rewrite using `[← Equiv.sum_comp (Fintype.equivFin G).symm, AddSubmonoidClass.coe_finsetSum, Finset.sum_apply]`. Conclude with `(congrArg (pull (ZMod (l ^ k)) (sch.map f) (tw (l ^ k) i) n) (h y k)).trans (pull_trH (ZMod (l ^ k)) f hs (tw (l ^ k) i) n (y.1 k))`.
+-/
 theorem exists_trace_galois : ∀ (l : ℕ) [Fact l.Prime] {Y X : Scheme.{0}} (f : Y ⟶ X) [IsFinite f] [Etale f] [Surjective f] (G : Type) [Fintype G]
   (a : G → (Y ⟶ Y)) (ha : ∀ g, a g ≫ f = f),
   IsIso (Sigma.desc (fun g => pullback.lift (a g) (𝟙 Y) (by rw [ha g, Category.id_comp])) : ∐ (fun _ : G => Y) ⟶ pullback f f) → ∀ n i : ℤ, ∃ tr : Hl l (sch.obj Y) n i →ₗ[ℤ_[l]] Hl l (sch.obj X) n i,

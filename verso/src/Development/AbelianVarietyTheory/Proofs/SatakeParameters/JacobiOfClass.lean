@@ -23,6 +23,13 @@ namespace GlobalTheory.KerStd.HostInert
 open Formalism.InvariantFactorPaths.G7 (lgF at1) in
 open Formalism.L2.G.Pend (k0ToC wittFractionAlgebraCp) in
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.FormalGroupSystem.inParamK`. Establish `hlog : PowerSeries.map (k0ToC l) (Formalism.MainNotions.FormalGroupSystem.logF l) = lgF ℂ_[l] l`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map]`. Simplify using `only [Formalism.MainNotions.FormalGroupSystem.logF, lgF, PowerSeries.coeff_mk, map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[show @algebraMap (Formalism.MainNotions.FormalGroupSystem.K0 l) ℂ_[l] _ _ (wittFractionAlgebraCp l) = k0ToC l from rfl, hlog]`. Both sides reduce to the same expression.
+-/
 theorem inParamK_eq {l : ℕ} [Fact l.Prime] {ι : Type} (f : MvPowerSeries ι ℂ_[l]) :
     @Formalism.MainNotions.FormalGroupSystem.inParamK l _ ι ℂ_[l] _ (wittFractionAlgebraCp l) f = MvPowerSeries.subst (fun i => at1 i (lgF ℂ_[l] l)) f := by
   unfold Formalism.MainNotions.FormalGroupSystem.inParamK
@@ -38,6 +45,15 @@ theorem inParamK_eq {l : ℕ} [Fact l.Prime] {ι : Type} (f : MvPowerSeries ι �
   rw [show @algebraMap (Formalism.MainNotions.FormalGroupSystem.K0 l) ℂ_[l] _ _ (wittFractionAlgebraCp l) = k0ToC l from rfl, hlog]
   rfl
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Establish `hd : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `key : p ≠ D.host.d ∧ jacobiSym (-(D.host.d : ℤ)) p ≠ 1`. Establish `h' : D.host.cls p = PrimeClass.inertClass ∨ D.host.cls p = PrimeClass.signal` using `h`. Break down `h' with h' | h'` into its components or cases.
+
+Take `⟨-, -, h3, h4, -⟩` from `(primeClass_eq_inert_iff _).1 h'`. Conclude with `⟨h3, h4⟩`. Take `⟨-, -, h3, h4, -⟩` from `(primeClass_eq_signal_iff _).1 h'`. Conclude with `⟨h3, h4⟩`. Use `haveI : NeZero p := ⟨hp.ne_zero⟩`.
+
+Break down `jacobiSym.trichotomy (-(D.host.d : ℤ)) p with h0 | h1 | h1` into its components or cases. It suffices to derive a contradiction. Rewrite `h0` using `[jacobiSym.eq_zero_iff_not_coprime]`. Apply `h0` to reduce the goal to its premises. Establish `: Nat.Coprime D.host.d p` using `(Nat.coprime_primes hd hp).2 key.1.symm`.
+
+Simplify `this` using `[Int.gcd_neg, Int.gcd_natCast_natCast]`. Conclude with `absurd h1 key.2`. Conclude with `h1`.
+-/
 theorem jacobi_of_class (D : D7) (p : ℕ) [Fact p.Prime] (h : IsResidueClassZero D p ∨ IsSg D p) :
     jacobiSym (-(D.host.d : ℤ)) p = -1 := by
   have hp : p.Prime := Fact.out
@@ -60,6 +76,15 @@ theorem jacobi_of_class (D : D7) (p : ℕ) [Fact p.Prime] (h : IsResidueClassZer
   · exact absurd h1 key.2
   · exact h1
 
+/- English proof (translation)
+Introduce `h1 h2 h3 D cc δ B χ hc hδ hχ p _ lam h5 hcl`. Establish `hin` using `jacobi_of_class D p hcl`. Take `⟨cc', δ', g, -, -, hL, hlam, hAt, hM, hLT⟩` from `h1 D cc δ hc hδ p h5 hin lam`. Take `⟨g2, g3, ε, s2, -, -, -, -, hn, ⟨a1, a2, a3, a4, a5, -, F, hF, -⟩, hD⟩` from `h2 D cc' δ' p g hLT hAt h5 hin hM`. Take `⟨σ, hσ, -⟩` from `Formalism.L2.Th1.D.fieldDataCM p h5`.
+
+Use `⟨_, g2, g3, s2, ε, σ, F, hn, ⟨h5, a1, a2, a3, a4, hσ, hF, a5 σ hσ⟩, ?_⟩` and prove the remaining obligations. Introduce `N N' L L' hA`. Take `⟨r, b, hb, ho⟩` from `Formalism.L2.KerInert.orthBasisExists_of Formalism.L2.KerInert.global_orthonormal_basis_four Formalism.L2.KerInert.weakApprox_of_approx_and_separation D p h5 hin N N' L L' hA`. Use `⟨r, b, hb, ho, fun G hG => ?_⟩` and prove the remaining obligations. Take `⟨C, wq, hC, hw, hd⟩` from `hD D`.
+
+Establish `hΛ : g.abelian₂ = B.tor.abelian₂` using `hAt.2.2.2.1.trans hL`. Substitute `hlam` using the available equality. Rewrite `hC`, `hw`, `hd` using `[hΛ]`. Use `hd N N' r b G (h3 D cc δ B hc hδ χ hχ p h5 hin g.lam N N' L L' hA G hG C wq r b hC hw hb ho)` as an intermediate fact. Rewrite using `[HostLog.iff_phSum]`.
+
+Rewrite `this` using `[inParamK_eq]`. Conclude with `this`.
+-/
 theorem hostAt_inert : Formalism.L2.KerInert.GenusOneModelExistsLattice → Formalism.L2.KerInert.Rep.CurveDict → Formalism.L2.KerInert.IntInert → ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Formalism.L2.Ker.Base D cc δ) (χ : IdE D → ℂ), IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → IsChi D χ → ∀ (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), 5 ≤ p → (IsResidueClassZero D p ∨ IsSg D p) → HostAt B χ p lam := by
   intro h1 h2 h3 D cc δ B χ hc hδ hχ p _ lam h5 hcl
   have hin := jacobi_of_class D p hcl

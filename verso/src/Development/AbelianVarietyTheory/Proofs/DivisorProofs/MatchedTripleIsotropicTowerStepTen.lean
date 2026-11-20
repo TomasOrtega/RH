@@ -18,6 +18,15 @@ namespace GlobalTheory.ThK.DescB.Nondeg
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Set `w : InfinitePlace F` to `Classical.arbitrary _`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Set `M : Matrix (Fin n) (Fin n) ℂ` to `Complex.I • Y.J.map τ`.
+
+Set `v' : Fin n → ℂ` to `fun i => τ (v i)`. Establish `hv' : v' ≠ 0` using `fun h => hv (funext fun i => τ.injective (by simpa [v'] using congrFun h i))`. Establish `hMv : M *ᵥ v' = 0`. Use extensionality with `i`. Use `congrArg τ (congrFun hJv i)` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at this`. Simplify using `only [M, v', Matrix.smul_mulVec, Matrix.mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Matrix.smul_apply, mul_assoc, ← Finset.mul_sum, this, mul_zero]`. Establish `hx : star v' ≠ 0` using `fun h => hv' (by simpa using congrArg star h)`. Use `(h w).2.2 (star v') hx` as an intermediate fact. Rewrite `this` using `[star_star]`.
+
+Express the relevant statement in the definitionally equal form `0 < (_ ⬝ᵥ M *ᵥ v').re at this`. Rewrite `this` using `[hMv, dotProduct_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem det_ne_zero_of_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
     (h : ∀ w, IsCartan (Complex.I • Y.J.map (B.emb w).1) (Y.θ w)) : Y.J.det ≠ 0 := by
   intro h0
@@ -40,6 +49,11 @@ theorem det_ne_zero_of_cartan (B : Base F E) {n : ℕ} (Y : Spc F E n)
   rw [hMv, dotProduct_zero, Complex.zero_re] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `ha`. Take `⟨k1, k2, k3⟩` from `hb`. Simplify using `only [Units.val_one, inv_one, map_one, one_smul] at h1 h2 k1 k2 ⊢`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnipCT.mat_mul', ← Matrix.mulVec_mulVec, k1, h1]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.UnipCT.mat_mul', ← Matrix.mulVec_mulVec, k2, h2]`. Simplify using the standard rewrite rules. Rewrite using `[GlobalTheory.UnipCT.mat_mul', GlobalTheory.UnipCT.mat_mul', Matrix.mul_assoc, k3, ← Matrix.mul_assoc, h3, Matrix.mul_assoc]`.
+-/
 theorem levi_mul {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁} {a b : UA σ Y₁.J}
     {m m' : UA σ Y.J} (ha : IsLevi (W₁ := Y₁) H 1 a m) (hb : IsLevi (W₁ := Y₁) H 1 b m') :
     IsLevi (W₁ := Y₁) H 1 (a * b) (m * m') := by
@@ -51,6 +65,11 @@ theorem levi_mul {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane
   · rw [GlobalTheory.UnipCT.mat_mul', ← Matrix.mulVec_mulVec, k2, h2]; simp
   · rw [GlobalTheory.UnipCT.mat_mul', GlobalTheory.UnipCT.mat_mul', Matrix.mul_assoc, k3, ← Matrix.mul_assoc, h3, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `hdom`. Establish `e : c = fun h => ∫ u in 𝓕, f (u.1 * h) ∂μ` using `funext fun h => hct μ 𝓕 hμ h𝓕 h1 h`. Rewrite using `[e]`. Take `⟨i1, -, i3, -⟩` from `GlobalTheory.UnipCT.topFacts σ Y.J`. Use `haveI := i1`.
+
+Use `haveI : FirstCountableTopology (UA σ Y.J) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i3`. Conclude with `GlobalTheory.CtLeviCont.continuous_setIntegral_of_cocompact hcc hfi hf μ 𝓕 (by rw [h1]; exact ENNReal.one_ne_top)`.
+-/
 theorem ct_continuous {n n₁ : ℕ} {Y : Spc F E n} (H : Plane E n n₁)
     (hcc : ∃ K : Set (unip σ Y H), IsCompact K ∧ ∀ u : unip σ Y H, ∃ γ ∈ (ratU σ Y.J).subgroupOf (unip σ Y H), γ * u ∈ K)
     (hdom : ∃ (μ : Measure (unip σ Y H)) (𝓕 : Set (unip σ Y H)), μ.IsHaarMeasure ∧
@@ -65,6 +84,17 @@ theorem ct_continuous {n n₁ : ℕ} {Y : Spc F E n} (H : Plane E n n₁)
   haveI : FirstCountableTopology (UA σ Y.J) := @TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _ _ i3
   exact GlobalTheory.CtLeviCont.continuous_setIntegral_of_cocompact hcc hfi hf μ 𝓕 (by rw [h1]; exact ENNReal.one_ne_top)
 
+/- English proof (translation)
+Take `⟨i1, -, -, -⟩` from `GlobalTheory.UnipCT.topFacts σ Y.J`. Use `haveI := i1`. Introduce `g hg`. Unfold `alphaSpan at hg`. Proceed by induction on `hg using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨f, hf, fa, fb, hs, h, -, -, hx'⟩` from `hx`. Establish `hfb` using `hβ f hf fa fb hs`. Substitute `hfb` using the available equality. Establish `hct : IsCT H f fa` using `by simpa using hs.1`.
+
+Take `⟨hfc, hfi⟩` from `hS f hf`. Establish `hfac` using `ct_continuous H hcc hdom hct hfc hfi`. Establish `ex : x = fun h₁ => fa (M h₁ * h)` using `funext fun h₁ => hx' h₁ (M h₁) (hML h₁)`. Use `⟨?_, fun γ hγ y => ?_⟩` and prove the remaining obligations. Rewrite using `[ex]`.
+
+Conclude with `hfac.comp (hMc.mul continuous_const)`. Rewrite using `[hx' (γ * y) (M γ * M y) (levi_mul (hML γ) (hML y)), ex, mul_assoc]`. Conclude with `GlobalTheory.T.constant_term_unipotent_integral_bis H f fa hct hfi hdom γ (M γ) (hML γ) (hMr γ hγ) _`. Consider the case `zero => exact ⟨continuous_const, fun _ _ _ => rfl⟩`. Consider the case `add x y _ _ hx hy`.
+
+Conclude with `⟨hx.1.add hy.1, fun γ hγ z => by simp only [Pi.add_apply, hx.2 γ hγ z, hy.2 γ hγ z]⟩`. Consider the case `smul r x _ hx`. Conclude with `⟨continuous_const.mul hx.1, fun γ hγ z => by simp only [Pi.smul_apply, smul_eq_mul, hx.2 γ hγ z]⟩`.
+-/
 theorem alphaSpan_reg {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} (H : Plane E n n₁) (χa χb : Chr F E) (za zb : ℝ)
     (Kh : Set (UA σ Y.J)) (S : Submodule ℂ (UA σ Y.J → ℂ))
     (hcc : ∃ K : Set (unip σ Y H), IsCompact K ∧ ∀ u : unip σ Y H, ∃ γ ∈ (ratU σ Y.J).subgroupOf (unip σ Y H), γ * u ∈ K)
@@ -98,6 +128,13 @@ theorem alphaSpan_reg {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} (H : 
   | smul r x _ hx =>
     exact ⟨continuous_const.mul hx.1, fun γ hγ z => by simp only [Pi.smul_apply, smul_eq_mul, hx.2 γ hγ z]⟩
 
+/- English proof (translation)
+Introduce `f hf`. Unfold `Diffs at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨Φ, Φ', hΦ', hm, rfl⟩` from `hx`.
+
+Take `⟨hP, hP'⟩` from `GlobalTheory.ThKSelfOrth.polData_of_polMatch hm`. Take `⟨c1, i1⟩` from `GlobalTheory.T.continuous_left_invariant_theta hK F E σ B a a' G X om om' hM.triple Φ hP`. Take `⟨c2, i2⟩` from `GlobalTheory.T.continuous_left_invariant_dual hK F E σ B a a' G X om om' hM.triple Φ' ⟨hP', hΦ'⟩`. Use `⟨c1.sub (continuous_const.mul c2), fun γ hγ y => ?_⟩` and prove the remaining obligations. Simplify using `only [i1 γ hγ, i2 γ hγ]`.
+
+Consider the case `zero => exact ⟨continuous_const, fun _ _ _ => rfl⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨hx.1.add hy.1, fun γ hγ z => by simp only [Pi.add_apply, hx.2 γ hγ z, hy.2 γ hγ z]⟩`. Consider the case `smul r x _ hx`. Conclude with `⟨continuous_const.mul hx.1, fun γ hγ z => by simp only [Pi.smul_apply, smul_eq_mul, hx.2 γ hγ z]⟩`.
+-/
 theorem diffs_reg (hK : KP) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'} (hM : IsMatched B G X om om' R Rf) (c : ℂ) :
     ∀ f ∈ Diffs B G X om om' R Rf c, Continuous f ∧ ∀ γ ∈ ratU σ G.W.J, ∀ x, f (γ * x) = f x := by
@@ -117,6 +154,19 @@ theorem diffs_reg (hK : KP) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : C
   | smul r x _ hx =>
     exact ⟨continuous_const.mul hx.1, fun γ hγ z => by simp only [Pi.smul_apply, smul_eq_mul, hx.2 γ hγ z]⟩
 
+/- English proof (translation)
+Establish `hT` using `hM.triple`. Establish `hcm` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hsk` using `NextStep.skew_sp hσ B hT.geo.hW.skew hH hiso`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero`. Introduce `hp f hf`. Rewrite `hf` using `[lev_zero]`. Establish `hI` using `hiso 0 hp`.
+
+Establish `hdet1 : (sp 0).J.det ≠ 0` using `det_ne_zero_of_cartan B (sp 0) hI.2.2.2.2.2.2.1`. Take `⟨M, hMc, hML, hMr⟩` from `GlobalTheory.T.hyperbolic_plane_complement_form G.W (sp 0) H' hσ hT.geo.hW.skew hH.rank hH.xx hH.yy hH.xy hH.orth hH.gram hdet1`. Establish `hcc` using `GlobalTheory.T.hyperbolic_plane_complement_det G.W (sp 0) H' hcm hT.geo.hW.skew hH.rank hH.xx hH.yy hH.xy hH.orth hH.gram (det_ne_zero_of_cartan B G.W hT.geo.hW.cartan) hdet1`. Take `⟨μ, 𝓕, hμ, h𝓕, h1, -⟩` from `GlobalTheory.T.unipotent_haar_fundamental_domain_exists F E σ B a a' G X om om' hK hT d₁ (sp 0) H' i₀ i₁ hH`. Conclude with `alphaSpan_reg H' _ _ _ _ _ _ hcc ⟨μ, 𝓕, hμ, h𝓕, h1⟩ M hMc hML hMr (diffs_reg hK hM c) h0 f hf`.
+
+Consider the case `succ j ih`. Introduce `hp f hf`. Rewrite `hf` using `[lev_succ]`. Establish `hI` using `hiso j (by omega)`. Establish `hdet0` using `det_ne_zero_of_cartan B (sp j) hI.2.2.2.2.2.2.1`.
+
+Establish `hdet1` using `det_ne_zero_of_cartan B (sp (j + 1)) hI.2.2.2.2.2.2.2`. Establish `hskj` using `hsk j (by omega)`. Take `⟨M, hMc, hML, hMr⟩` from `GlobalTheory.T.hyperbolic_plane_complement_form (sp j) (sp (j + 1)) (pl j) hσ hskj hI.1 hI.2.1 hI.2.2.1 hI.2.2.2.1 hI.2.2.2.2.1 hI.2.2.2.2.2.1 hdet1`. Establish `hcc` using `GlobalTheory.T.hyperbolic_plane_complement_det (sp j) (sp (j + 1)) (pl j) hcm hskj hI.1 hI.2.1 hI.2.2.1 hI.2.2.2.1 hI.2.2.2.2.1 hI.2.2.2.2.2.1 hdet0 hdet1`. Establish `hdom` using `GlobalTheory.T.unipotent_quotient_unit_volume F E σ B hT.base _ _ (sp j) (sp (j + 1)) (pl j) hskj hI`.
+
+Conclude with `alphaSpan_reg (pl j) _ _ _ _ _ _ hcc hdom M hMc hML hMr (ih (by omega)) (hj j (by omega)) f hf`.
+-/
 theorem lev_reg (hK : KP) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'} (hM : IsMatched B G X om om' R Rf)
     {d₁ : ℕ} {H' : Plane E (a + a') d₁} {i₀ i₁ : ℕ} {sp : ∀ j : ℕ, Spc F E (d₁ - 2 * j)}

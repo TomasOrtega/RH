@@ -16,6 +16,13 @@ namespace UpperTheory.V.Z.Win
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨hG, hZ⟩` from `GlobalTheory.geometricLemma_and_zelevinskyPolynomialRing`. Take `⟨𝔪, hm⟩` from `GlobalTheory.langlandsExhaustionGL_holds (w.adicCompletion E) x`. Establish `he : GlobalTheory.RoadU.chars ξ hξ = msupp 𝔪` using `GlobalTheory.LocGL.SupportUnique.hasSupport_unique hG GlobalTheory.Laid.bzfin_holds hZ _ x _ _ hs (GlobalTheory.LocGL.hasSupport_msupp_of_isL hZ _ 𝔪 x hm)`. Establish `hsum : (rc x).charPol g = ((msupp 𝔪).map fun y => (rc y).charPol g).prod`.
+
+Rewrite using `[H.langlands 𝔪.toList x (by rw [Multiset.coe_toList]; exact hm), segSum, CuspExt.charPol_sumList, List.map_map, msupp, Multiset.map_bind, Multiset.prod_bind]`. Establish `hl : ∀ (l : List (Segment (w.adicCompletion E))) (F : Segment (w.adicCompletion E) → ℂ[X]), (l.map F).prod = ((l : Multiset _).map F).prod` using `fun l F => by rw [Multiset.map_coe, Multiset.prod_coe]`. Rewrite using `[hl, Multiset.coe_toList]`. Conclude with `congrArg Multiset.prod (Multiset.map_congr rfl fun Δ _ => GlobalTheory.RoadU.CharSupport.charPol_seg H Δ g)`. Rewrite using `[hsum, ← he, GlobalTheory.RoadU.chars, Multiset.map_map, Finset.prod_eq_multiset_prod]`.
+
+Use `congrArg Multiset.prod (Multiset.map_congr rfl fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[H.one, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`. Simplify using the standard rewrite rules.
+-/
 theorem charPol_of_chars {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {rc : IrrGL (w.adicCompletion E) → WD h} (H : UpperTheory.Zero.LLC.LawsT a ha rc) (x : IrrGL (w.adicCompletion E)) {n : ℕ}
     (ξ : Fin n → ((w.adicCompletion E)ˣ →* ℂˣ)) (hξ : ∀ j, IsSmoothChar (ξ j))

@@ -18,6 +18,15 @@ open GlobalTheory.HeightCounting.Up (PrN)
 
 namespace GlobalTheory.PlaceIndep
 
+/- English proof (translation)
+Use `choose g hg using fun a => Finsupp.mem_span_range_iff_exists_finsupp.1 (hv a)`. Use `set t := s.biUnion fun a => (g a).support with ht`. Establish `hv' : ∀ a ∈ s, v a = ∑ k ∈ t, g a k • b k` using `fun a ha => by`. Rewrite using `[← hg a]`. Conclude with `Finsupp.sum_of_support_subset _ (Finset.subset_biUnion_of_mem (fun a => (g a).support) ha) _ fun _ _ => zero_smul _ _`.
+
+Establish `h1 : ∑ k ∈ t, (∑ a ∈ s, g a k • c a) • b k = 0`. Rewrite using `[← h]`. Repeatedly rewrite using `[Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite using `[hv' a ha, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_assoc, smul_comm]`. Establish `h2` using `linearIndependent_iff'.1 hb t _ h1`. Rewrite using `[Finset.sum_congr rfl fun a ha => by rw [hv' a ha, Finset.smul_sum], Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations.
+
+Establish `h3` using `congrArg φ (h2 k hk)`. Rewrite `h3` using `[map_sum, map_zero]`. Repeatedly rewrite using `[smul_smul]`. Rewrite using `[← Finset.sum_smul, Finset.sum_congr rfl fun a _ => by rw [mul_comm, ← smul_eq_mul, ← map_smul], h3, zero_smul]`.
+-/
 theorem sum_dual_smul_eq_zero {W ι I : Type} [AddCommGroup W] [Module ℂ W] (F : Subfield ℂ) {b : ι → W}
     (hb : LinearIndependent ℂ b) {v : I → W} (hv : ∀ a, v a ∈ Submodule.span F (Set.range b)) (s : Finset I) (c : I → ℂ)
     (h : ∑ a ∈ s, c a • v a = 0) (φ : Module.Dual F ℂ) : ∑ a ∈ s, φ (c a) • v a = 0 := by
@@ -42,6 +51,17 @@ theorem sum_dual_smul_eq_zero {W ι I : Type} [AddCommGroup W] [Module ℂ W] (F
   simp_rw [smul_smul]
   rw [← Finset.sum_smul, Finset.sum_congr rfl fun a _ => by rw [mul_comm, ← smul_eq_mul, ← map_smul], h3, zero_smul]
 
+/- English proof (translation)
+Establish `hσ : ∀ x : K, σ x ∈ F` using `fun x => by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Rewrite using `[map_div₀]`. Conclude with `div_mem (hF (hc.int a)) (hF (hc.int b))`. Proceed by induction on `h using Submodule.span_induction with`.
+
+Consider the case `mem _ h`. Take `⟨G, -, rfl⟩` from `h`. Rewrite using `[HarmLattice.coefFn_eq]`. Establish `hG : G ∈ Submodule.span K (Set.range (bVV K lam))` using `by rw [(bVV K lam).span_eq]; trivial`. Proceed by induction on `hG using Submodule.span_induction with`.
+
+Consider the case `mem _ h => obtain ⟨k, rfl⟩ := h`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [map_add, map_add]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `smul a G _ h1`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`. Conclude with `Submodule.smul_mem _ (⟨σ a, hσ a⟩ : F) h1`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `smul c _ _ h1 => exact Submodule.smul_mem _ (⟨c.1, hF c.2⟩ : F) h1`.
+-/
 theorem coefLatFn_mem_span {D : D7} {n : ℕ} {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ}
     {emb : D.what₂.Tau → (D.host.E →+* K)} {O : Subring ℂ} (hc : IsCoefRing σ emb O) {F : Subfield ℂ} (hF : O ≤ F.toSubring)
     (lam : D.what₂.Tau → DomWeight n) (M : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) {φ : GLR D n → ℂ}
@@ -67,6 +87,15 @@ theorem coefLatFn_mem_span {D : D7} {n : ℕ} {K : Type} [Field K] [NumberField 
   | add _ _ _ _ h1 h2 => exact add_mem h1 h2
   | smul c _ _ h1 => exact Submodule.smul_mem _ (⟨c.1, hF c.2⟩ : F) h1
 
+/- English proof (translation)
+Introduce `D S T B hB K _ _ σ emb O hc F hF I f hf hli`. Establish `hpq : ∀ τ, B.w.p τ + B.w.q τ ≤ T.rank` using `fun τ => by`. Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact.
+
+Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers. Establish `hcf : Function.Injective (HarmLattice.cf B.w.lam)` using `(injective_iff_map_eq_zero _).2 fun G hG => Subtype.ext (GlobalTheory.T.coeffPolynomial_eq_zero_of_vanishing_on_GLFamily D _ B.w.lam G fun x => congrFun hG x)`. Establish `hb` using `(GlobalTheory.CoefModel.linearIndependent_mapVV σ B.w.lam).map' (HarmLattice.cf B.w.lam) (LinearMap.ker_eq_bot.2 hcf)`. Use `linearIndependent_iff'.2 fun s c h a ha => (Module.forall_dual_apply_eq_zero_iff F (c a)).1 fun φ => ?_` and prove the remaining obligations.
+
+Use `linearIndependent_iff'.1 hli s (fun a => φ (c a)) (funext fun y => ?_) a ha` and prove the remaining obligations. Use `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ B.w B.F.BS hB.wt hpq _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Conclude with `sum_mem fun a _ => Submodule.smul_mem _ (φ (c a) : ℂ) (hf a y).1`. Establish `h0` using `congrArg (harmFn T.rank B.w B.F.BS) (congrFun h y)`.
+
+Rewrite `h0` using `[Finset.sum_apply, map_sum, Pi.zero_apply, map_zero]`. Simplify using `only [Pi.smul_apply, map_smul] at h0`. Use `sum_dual_smul_eq_zero F hb (fun a => coefLatFn_mem_span hc hF B.w.lam _ (hf a y).2) s c h0 φ` as an intermediate fact. Rewrite using `[Finset.sum_apply, map_sum, ← this]`. Conclude with `Finset.sum_congr rfl fun a _ => (harmFn T.rank B.w B.F.BS).map_smul (φ (c a) : ℂ) (f a y)`.
+-/
 theorem linearIndependent_complex : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K)) (O : Subring ℂ), IsCoefRing σ emb O → ∀ F : Subfield ℂ, O ≤ F.toSubring →
   ∀ (I : Type) (f : I → Bridge.Gf S → PolF D T.rank S.rank), (∀ a h, f a h ∈ B.coefLat σ emb O h) → LinearIndependent F f → LinearIndependent ℂ f := by
   intro D S T B hB K _ _ σ emb O hc F hF I f hf hli

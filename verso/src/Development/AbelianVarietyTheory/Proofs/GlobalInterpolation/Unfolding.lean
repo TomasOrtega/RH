@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.StabSelfDualL
 
 namespace GlobalTheory.UnfoldingObj
 
+/- English proof (translation)
+Introduce `D` and use `(GlobalTheory.UnfoldingCompare.unfolding_iff D).1 (GlobalTheory.T.unitaryUnfolding_volume_vectorStabilizer GlobalTheory.T.quotientMeasure_integration_formulas_unimodular GlobalTheory.T.adelicUnitaryGroupHaarProperties_proof GlobalTheory.T.stabSelfDualLattice_transitive_on_length …`.
+-/
 theorem unfolding : ∀ D : Formalism.BasicNotions.D7, GlobalTheory.IndefiniteRowSideFullHecke.LatticeTensorUnfolding.Unfolding D := fun D =>
   (GlobalTheory.UnfoldingCompare.unfolding_iff D).1 (GlobalTheory.T.unitaryUnfolding_volume_vectorStabilizer GlobalTheory.T.quotientMeasure_integration_formulas_unimodular GlobalTheory.T.adelicUnitaryGroupHaarProperties_proof GlobalTheory.T.stabSelfDualLattice_transitive_on_length D)
 

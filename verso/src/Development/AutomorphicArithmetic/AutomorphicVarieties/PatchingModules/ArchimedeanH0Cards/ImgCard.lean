@@ -59,6 +59,15 @@ private def eqnL : (F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) R) →ₗ[R] (Jx 
       simp only [eqn, dY, Pi.smul_apply, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul,
         Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `ev y i j _ => rfl`. Consider the case `ine u g hg i j => rfl`. Consider the case `coc g h i j`. Simplify using `only [eqn]`.
+
+Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add, ← Matrix.map_sub, Matrix.map_apply]`. Apply the tactic sequence `all_goals intro a₁ a₂`. Apply the tactic sequence `all_goals first | exact map_sub p a₁ a₂ | exact map_add p a₁ a₂`. Consider the case `pol g i j`. Simplify using `only [eqn]`.
+
+Rewrite using `[← Matrix.transpose_map, ← Matrix.map_add, Matrix.map_apply]`. Introduce `a₁ a₂`. Conclude with `map_add p a₁ a₂`. Consider the case `loc v g i j _`. Simplify using `only [eqn, dY]`.
+
+Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_sub, ← Matrix.map_sub, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`. Apply the tactic sequence `all_goals intro a₁ a₂`. Apply the tactic sequence `all_goals exact map_sub p a₁ a₂`.
+-/
 private theorem eqn_map (p : R →+* R') (f : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) R) (j : Jx F n a) :
     eqn F a (fun g => (ρ g).map p) (fun v => (w v).map p) (fun v => (wi v).map p) (fun y => (f y).map p) j =
       p (eqn F a ρ w wi f j) := by
@@ -82,6 +91,29 @@ private theorem eqn_map (p : R →+* R') (f : F.G₀ ⊕ F.Vl → Matrix (Fin n)
     all_goals intro a₁ a₂
     all_goals exact map_sub p a₁ a₂
 
+/- English proof (translation)
+Establish `hmem : ∀ Z : Matrix (Fin n) (Fin n) R, Z ∈ Od A R n a ↔ ∀ i j : Fin n, ((i : ℕ) < a ↔ (j : ℕ) < a) → Z i j = 0`. Introduce `Z`. Prove the components needed by the constructor for the conclusion. Introduce `hZ i j hij`. Conclude with `(Submodule.mem_bot A).mp ((hZ i j).1 hij)`.
+
+Introduce `hZ i j`. Conclude with `⟨fun hij => (Submodule.mem_bot A).mpr (hZ i j hij), fun _ => Submodule.mem_top⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `hev : ∀ y, f y ∈ Od A R n a`.
+
+Introduce `y`. Rewrite using `[hmem]`. Introduce `i j hij`. Conclude with `H (.ev y i j hij)`. Use `⟨fun g => hev _, fun g h => ?_, fun g => ?_, fun u g hg => ?_, fun v => ⟨hev _, fun g => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Establish `e` using `H (.coc g h i j)`. Simplify using `only [eqn, Matrix.sub_apply] at e`. Rewrite using `[Matrix.add_apply]`. Simplify `sub_eq_zero.mp e` using `[Matrix.add_apply]`.
+
+Use extensionality with `i j`. Establish `e` using `H (.pol g i j)`. Simplify using `only [eqn, Matrix.add_apply, Matrix.transpose_apply] at e`. Rewrite using `[Matrix.neg_apply, Matrix.transpose_apply]`. Conclude with `eq_neg_of_add_eq_zero_left e`.
+
+Use extensionality with `i j`. Conclude with `H (.ine u g hg i j)`. Introduce `i j hji`. Conclude with `H (.loc v g i j (Or.inl hji))`. Introduce `hg i`.
+
+Conclude with `H (.loc v g i i (Or.inr ⟨rfl, hg⟩))`. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩ j`. Consider the cases of `j with`. Consider the case `ev y i j h`. Consider the cases of `y with`.
+
+Consider the case `inl g => exact (hmem _).mp (h1 g) i j h`. Consider the case `inr v => exact (hmem _).mp (h5 v).1 i j h`. Consider the case `coc g h i j`. Simplify using `only [eqn, Matrix.sub_apply]`. Rewrite using `[h2 g h]`.
+
+Conclude with `sub_self _`. Consider the case `pol g i j`. Simplify using `only [eqn, Matrix.add_apply, Matrix.transpose_apply]`. Rewrite using `[h3 g, Matrix.neg_apply, Matrix.transpose_apply, neg_add_cancel]`. Consider the case `ine u g hg i j`.
+
+Simplify using `only [eqn]`. Rewrite using `[h4 u g hg, Matrix.zero_apply]`. Consider the case `loc v g i j h`. Simplify using `only [eqn]`. Break down `h with h | ⟨rfl, hg⟩` into its components or cases.
+
+Conclude with `((h5 v).2 g).1 i j h`. Conclude with `((h5 v).2 g).2 hg j`.
+-/
 private theorem eqn_iff (A : Type) [CommRing A] [Algebra A R] (f : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) R) :
     (∀ j, eqn F a ρ w wi f j = 0) ↔ (∀ g, f (.inl g) ∈ Od A R n a) ∧
       (∀ g h, f (.inl (g * h)) = f (.inl g) + ρ g * f (.inl h) * ρ g⁻¹) ∧
@@ -143,6 +175,21 @@ private theorem eqn_iff (A : Type) [CommRing A] [Algebra A R] (f : F.G₀ ⊕ F.
 
 end
 
+/- English proof (translation)
+Use `haveI : Finite (x.Am m) := (am_fin l F n x m 0).1`. Use `set π : x.A →+* x.Am m := Ideal.Quotient.mk (Ideal.span {x.t ^ m}) with hπ`. Use `set Bm := Bd F (x.ρX (x.Am m)) (Od x.A (x.Am m) n x.a) with hBm`. Set `Φ : (Fin k.g → x.Am m) × (F.G₀ → Matrix (Fin n) (Fin n) (x.Am m)) → (F.G₀ → Matrix (Fin n) (Fin n) (x.Am m))` to `fun p g => ∑ j, p.1 j • (k.κ j g).map π + p.2 g`. Establish `hred : ∀ b ∈ Bd F (x.ρX x.A) (Od x.A x.A n x.a), (fun g => (b g).map π) ∈ Bm`.
+
+Introduce and unpack `b ⟨Y, hY, hT, rfl⟩`. Use `⟨Y.map π, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `⟨fun hij => ?_, fun _ => Submodule.mem_top⟩` and prove the remaining obligations. Establish `h0 : Y i j = 0` using `(Submodule.mem_bot x.A).mp ((hY i j).1 hij)`.
+
+Rewrite using `[Submodule.mem_bot, Matrix.map_apply, h0, map_zero]`. Use extensionality with `i j`. Use `congrFun (congrFun hT i) j` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at this`. Simplify using `[Matrix.transpose_apply, Matrix.map_apply, this]`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [dY, NP.ρX]`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply]`. Rewrite using `[map_sub, map_mul, map_mul]`. Simplify using `[RingHom.mapMatrix_apply, Matrix.map_map, hπ, Ideal.Quotient.algebraMap_eq]`.
+
+Establish `hsub : T ⊆ Φ '' (Set.univ ×ˢ Bm)`. Introduce `z hz`. Take `⟨c, b, hb, rfl⟩` from `hT z hz`. Use `⟨(fun j => π (c j), fun g => (b g).map π), ⟨Set.mem_univ _, hred b hb⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Use extensionality with `i j`. Simplify using `[Φ, Matrix.sum_apply, map_sum, Finset.sum_apply, Matrix.map_apply]`. Establish `hfinB : Bm.Finite`. Use `(Set.finite_range (fun Y : Matrix (Fin n) (Fin n) (x.Am m) => dY F (x.ρX (x.Am m)) Y)).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨Y, _, _, rfl⟩`.
+
+Conclude with `⟨Y, rfl⟩`. Establish `hfinP : (Set.univ ×ˢ Bm : Set ((Fin k.g → x.Am m) × (F.G₀ → Matrix (Fin n) (Fin n) (x.Am m)))).Finite` using `Set.finite_univ.prod hfinB`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.ncard_univ, Nat.card_fun, (am_fin l F n x m 0).2.1, Nat.card_fin, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem img_card {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (k : Kap x) (m : ℕ)
     (T : Set (F.G₀ → Matrix (Fin n) (Fin n) (x.Am m)))
     (hT : ∀ z ∈ T, ∃ (c : Fin k.g → x.A) (b : F.G₀ → Matrix (Fin n) (Fin n) x.A),
@@ -193,6 +240,51 @@ private theorem img_card {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : 
       rw [Set.ncard_univ, Nat.card_fun, (am_fin l F n x m 0).2.1, Nat.card_fin, ← pow_mul]
       ring
 
+/- English proof (translation)
+Use `haveI : Fintype F.Vl := F.finV`. Take `⟨⟨Ssel, hSsel⟩, ⟨Sbd, hSbd⟩⟩` from `sel_lin l F n x.A x.A x.t (x.ρX x.A) (x.wX x.A) (x.wiX x.A) (Od x.A x.A n x.a)`. Establish `memSel : ∀ z, z ∈ Ssel ↔ z ∈ SelZ F x.t (x.ρX x.A) (x.wX x.A) (x.wiX x.A) (Od x.A x.A n x.a)`. Introduce `z`. Rewrite using `[← SetLike.mem_coe, hSsel]`.
+
+Establish `memBd : ∀ z, z ∈ Sbd ↔ z ∈ Bd F (x.ρX x.A) (Od x.A x.A n x.a)`. Introduce `z`. Rewrite using `[← SetLike.mem_coe, hSbd]`. Set `Linl : (F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A) →ₗ[x.A] (F.G₀ → Matrix (Fin n) (Fin n) x.A)` to `LinearMap.funLeft x.A (Matrix (Fin n) (Fin n) x.A) Sum.inl`. Set `Φ` to `eqnL F x.a (x.ρX x.A) (x.wX x.A) (x.wiX x.A)`.
+
+Set `B : Submodule x.A (F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A)` to `Ssel.comap Linl ⊓ LinearMap.ker Φ ⊓ (Submodule.span x.A (Set.range k.κ) ⊔ Sbd).comap Linl`. Set `Sol : (m : ℕ) → Set (F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) (x.Am m))` to `fun m => {fb | (∀ i j, IsLocallyConstant fun g => fb (Sum.inl g) i j) ∧ ∀ j, eqn F x.a (x.ρX (x.Am m)) (x.wX (x.Am m)) (x.wiX (x.Am m)) fb j = 0}`. Establish `hρ : ∀ m, (fun g => (x.ρX x.A g).map (Ideal.Quotient.mk (Ideal.span {x.t ^ m}))) = x.ρX (x.Am m)`. Introduce `m`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[NP.ρX, Matrix.map_map, Ideal.Quotient.algebraMap_eq]`. Establish `hw : ∀ m, (fun v => (x.wX x.A v).map (Ideal.Quotient.mk (Ideal.span {x.t ^ m}))) = x.wX (x.Am m)`. Introduce `m`. Use function extensionality and compare the values at `v`. Simplify using `[NP.wX, Matrix.map_map, Ideal.Quotient.algebraMap_eq]`.
+
+Establish `hwi : ∀ m, (fun v => (x.wiX x.A v).map (Ideal.Quotient.mk (Ideal.span {x.t ^ m}))) = x.wiX (x.Am m)`. Introduce `m`. Use function extensionality and compare the values at `v`. Simplify using `[NP.wiX, Matrix.map_map, Ideal.Quotient.algebraMap_eq]`. Establish `hmap : ∀ m (f : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A) j, eqn F x.a (x.ρX (x.Am m)) (x.wX (x.Am m)) (x.wiX (x.Am m)) (fun y => (f y).map (Ideal.Quotient.mk (Ideal.span {x.t ^ m}))) j = Ideal.Quotient.mk (Ideal.span {x.t ^ m}) (Φ f j)`.
+
+Introduce `m f j`. Rewrite using `[← hρ m, ← hw m, ← hwi m]`. Conclude with `eqn_map F x.a (x.ρX x.A) (x.wX x.A) (x.wiX x.A) _ f j`. Establish `hnil : ∀ m, (algebraMap x.A (x.Am m) x.t) ^ m = 0`. Introduce `m`.
+
+Rewrite using `[← map_pow, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`. Establish `toSel : ∀ m (fb : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) (x.Am m)), fb ∈ Sol m → (fun g => fb (Sum.inl g)) ∈ SelZ F x.t (x.ρX (x.Am m)) (x.wX (x.Am m)) (x.wiX (x.Am m)) (Od x.A (x.Am m) n x.a)`. Introduce and unpack `m fb ⟨hlc, he⟩`. Take `⟨hV, hcoc, hconj, hine, hloc⟩` from `(eqn_iff F x.a _ _ _ x.A fb).mp he`.
+
+Conclude with `⟨hV, fun i j => (adicLC F.G₀ (x.Am m) _ m _ (hnil m)).mpr (hlc i j), hcoc, hconj, hine, fun v => ⟨fb (Sum.inr v), (hloc v).1, (hloc v).2⟩⟩`. Establish `fromSel : ∀ m z, z ∈ SelZ F x.t (x.ρX (x.Am m)) (x.wX (x.Am m)) (x.wiX (x.Am m)) (Od x.A (x.Am m) n x.a) → z ∈ (fun fb => fb ∘ Sum.inl) '' Sol m`. Introduce and unpack `m z ⟨hV, hc, hcoc, hconj, hine, hloc⟩`. Use `choose Y hY hL using hloc`. Use `⟨Sum.elim z Y, ⟨fun i j => (adicLC F.G₀ (x.Am m) _ m _ (hnil m)).mp (hc i j), ?_⟩, rfl⟩` and prove the remaining obligations.
+
+Conclude with `(eqn_iff F x.a _ _ _ x.A (Sum.elim z Y)).mpr ⟨hV, hcoc, hconj, hine, fun v => ⟨hY v, hL v⟩⟩`. Establish `hiff : ∀ m fb, fb ∈ Sol m ↔ (∀ i j, IsLocallyConstant fun g => fb (Sum.inl g) i j) ∧ ∃ f : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A, (∀ y, (f y).map (Ideal.Quotient.mk (Ideal.span {PowerSeries.X ^ m})) = fb y) ∧ ∀ j, Φ f j ∈ Ideal.span {PowerSeries.X ^ m}`. Introduce `m fb`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hlc, he⟩`.
+
+Establish `hs` using `Ideal.Quotient.mk_surjective (I := Ideal.span {x.t ^ m})`. Use `⟨hlc, fun y => (fb y).map (Function.surjInv hs), fun y => ?_, fun j => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Function.surjInv_eq hs]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `e` using `hmap m (fun y => (fb y).map (Function.surjInv hs)) j`. Establish `hfb : (fun y => ((fb y).map (Function.surjInv hs)).map (Ideal.Quotient.mk (Ideal.span {x.t ^ m}))) = fb`. Use function extensionality and compare the values at `y`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Function.surjInv_eq hs]`.
+
+Rewrite `e` using `[hfb, he j]`. Conclude with `e.symm`. Introduce and unpack `⟨hlc, f, hf, hΦ⟩`. Use `⟨hlc, fun j => ?_⟩` and prove the remaining obligations. Establish `e` using `hmap m f j`.
+
+Establish `hfb : (fun y => (f y).map (Ideal.Quotient.mk (Ideal.span {x.t ^ m}))) = fb` using `funext hf`. Rewrite `e` using `[hfb]`. Rewrite using `[e, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hΦ j`. Establish `hSol1 : (Sol 1).Finite` using `by haveI : Finite (x.Am 1) := (am_fin l F n x 1 0).1`.
+
+Set `e` to `Equiv.sumArrowEquivProdArrow F.G₀ F.Vl (Matrix (Fin n) (Fin n) (x.Am 1))`. Use `((h1.prod (Set.finite_univ (α := F.Vl → Matrix (Fin n) (Fin n) (x.Am 1)))).preimage e.injective.injOn).subset ?_` and prove the remaining obligations. Introduce `fb hfb`. Conclude with `⟨toSel 1 fb hfb, Set.mem_univ _⟩`. Establish `hB1 : ∀ f ∈ B, (∀ i j, UpperTheory.V.Alg.AdicCont (Ideal.span {PowerSeries.X}) fun g => f (Sum.inl g) i j) ∧ Φ f = 0`.
+
+Introduce and unpack `f ⟨⟨hs, hk⟩, _⟩`. Establish `hs'` using `(memSel _).mp hs`. Use `⟨fun i j => ?_, hk⟩` and prove the remaining obligations. Use `hs'.2.1 i j` as an intermediate fact. Simplify `this` using `[Linl, LinearMap.funLeft_apply]`.
+
+Establish `hB2 : ∀ f : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A, (∀ i j, UpperTheory.V.Alg.AdicCont (Ideal.span {PowerSeries.X}) fun g => f (Sum.inl g) i j) → Φ f = 0 → ∃ s : ℕ, (PowerSeries.X : PowerSeries x.K) ^ s • f ∈ B`. Introduce `f hc hΦ`. Establish `he : ∀ j, eqn F x.a (x.ρX x.A) (x.wX x.A) (x.wiX x.A) f j = 0` using `fun j => congrFun hΦ j`. Take `⟨hV, hcoc, hconj, hine, hloc⟩` from `(eqn_iff F x.a _ _ _ x.A f).mp he`. Establish `hz : Linl f ∈ SelZ F x.t (x.ρX x.A) (x.wX x.A) (x.wiX x.A) (Od x.A x.A n x.a)`.
+
+Use `⟨hV, fun i j => ?_, hcoc, hconj, hine, fun v => ⟨f (Sum.inr v), (hloc v).1, (hloc v).2⟩⟩` and prove the remaining obligations. Conclude with `hc i j`. Take `⟨s, c, hsc⟩` from `k.gen _ hz`. Use `⟨s, ⟨⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Use `show Linl ((PowerSeries.X : PowerSeries x.K) ^ s • f) ∈ Ssel`.
+
+Rewrite using `[map_smul]`. Conclude with `Ssel.smul_mem _ ((memSel _).mpr hz)`. Use `show Φ ((PowerSeries.X : PowerSeries x.K) ^ s • f) = 0`. Rewrite using `[map_smul, hΦ, smul_zero]`. Use `show Linl ((PowerSeries.X : PowerSeries x.K) ^ s • f) ∈ Submodule.span x.A (Set.range k.κ) ⊔ Sbd`.
+
+Rewrite using `[map_smul]`. Use `Submodule.mem_sup.mpr ⟨∑ j, c j • k.κ j, ?_, _, (memBd _).mpr hsc, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Use `show ∑ j, c j • k.κ j + (x.t ^ s • Linl f - ∑ j, c j • k.κ j) = (PowerSeries.X : PowerSeries x.K) ^ s • Linl f`. Normalize the expressions using the abelian group laws.
+
+Take `⟨C, hC⟩` from `UpperTheory.finite_truncated_locallyConstant_matrix_solutions x.K n F.G₀ (F.G₀ ⊕ F.Vl) (Jx F n x.a) Sum.inl Φ B Sol hiff hSol1 hB1 hB2`. Use `⟨C, fun m => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hle⟩` from `hC m`. Establish `hT : ∀ z ∈ ((fun (f : F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A) (g : F.G₀) => (f (Sum.inl g)).map (Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries x.K) ^ m}))) '' (B : Set (F.G₀ ⊕ F.Vl → Matrix (Fin n) (Fin n) x.A))), ∃ (c : Fin k.g → x.A) (b : F.G₀ → Matrix (Fin n) ( …`. Introduce and unpack `z ⟨f, ⟨_, hsp⟩, rfl⟩`.
+
+Take `⟨p, hp, b, hb, hpb⟩` from `Submodule.mem_sup.mp hsp`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun x.A).mp hp`. Use `⟨c, b, (memBd _).mp hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `congrFun hpb g` as an intermediate fact.
+
+Simplify using `only [Linl, LinearMap.funLeft_apply] at this`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sel_cnt {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n) (k : Kap x)
     (h1 : (SelZ F x.t (x.ρX (x.Am 1)) (x.wX (x.Am 1)) (x.wiX (x.Am 1)) (Od x.A (x.Am 1) n x.a)).Finite) :
     ∃ C : ℕ, ∀ m, (SelZ F x.t (x.ρX (x.Am m)) (x.wX (x.Am m)) (x.wiX (x.Am m)) (Od x.A (x.Am m) n x.a)).ncard ≤
@@ -337,6 +429,15 @@ private theorem sel_cnt {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : N
         Nat.mul_le_mul_right _ (img_card x k m _ hT)
     _ = _ := by rw [pow_add, mul_assoc]
 
+/- English proof (translation)
+Introduce `l _ L G0 n x k d dv hl hc`. Establish `hS : ∀ e, SelM (Glob.Hom.refl G0) x (x.Am e) = SelZ G0.frame x.t (x.ρX (x.Am e)) (x.wX (x.Am e)) (x.wiX (x.Am e)) (Od x.A (x.Am e) n x.a)` using `fun e => rfl`. Establish `hB : ∀ e, BdM (Glob.Hom.refl G0) x (x.Am e) = Bd G0.frame (x.ρX (x.Am e)) (Od x.A (x.Am e) n x.a)` using `fun e => rfl`. Establish `hfinM : ∀ e, (SelM (Glob.Hom.refl G0) x (x.Am e)).Finite` using `fun e => UpperTheory.finite_selmerModule_of_finite_cohomology l L G0 G0 (Glob.Hom.refl G0) n x e hc.fin`. Take `⟨C, hC⟩` from `sel_cnt x k (by rw [← hS 1]; exact hfinM 1)`.
+
+Use `⟨C, fun e D hD => ?_⟩` and prove the remaining obligations. Establish `h1` using `UpperTheory.card_selmer_mul_card_boundary_le_card_selmerMatrix l L G0 G0 (Glob.Hom.refl G0) n x e D hl hD (hfinM e)`. Rewrite `h1` using `[hS e, hB e]`. Establish `h2` using `hC e`. Use `haveI : Finite (x.Am e) := (am_fin l G0.frame n x e 0).1`.
+
+Establish `hfinB : (Bd G0.frame (x.ρX (x.Am e)) (Od x.A (x.Am e) n x.a)).Finite`. Use `(Set.finite_range (fun Y : Matrix (Fin n) (Fin n) (x.Am e) => dY G0.frame (x.ρX (x.Am e)) Y)).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨Y, _, _, rfl⟩`. Conclude with `⟨Y, rfl⟩`. Establish `hpos : 0 < (Bd G0.frame (x.ρX (x.Am e)) (Od x.A (x.Am e) n x.a)).ncard`.
+
+Rewrite using `[Set.ncard_pos hfinB]`. Use `⟨dY G0.frame (x.ρX (x.Am e)) 0, 0, Submodule.zero_mem _, by simp, rfl⟩` and prove the remaining obligations. Establish `h3` using `h1.trans h2`. Rewrite `h3` using `[mul_comm ((Bd G0.frame (x.ρX (x.Am e)) (Od x.A (x.Am e) n x.a)).ncard)]`. Conclude with `Nat.le_of_mul_le_mul_right h3 hpos`.
+-/
 theorem UpperTheory.V.Pa.B2.sel0 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (d : ℕ) (dv : L.Vl → ℕ), l ≠ 2 → CohAx G0 d dv → ∃ C : ℕ, ∀ (e : ℕ) (D : Dat x.A (plOf G0)), IsOd (Glob.Hom.refl G0) x (x.Am e) D → Nat.card D.Sel ≤ Nat.card x.K ^ (k.g * e + C) := by
   intro l _ L G0 n x k d dv hl hc

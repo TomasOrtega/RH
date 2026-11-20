@@ -53,6 +53,11 @@ def CapRel : Prop :=
   ∀ N : ℕ, (∀ a s b t, xo N a s * xo N b t = xo N b t * xo N a s) ∧
     (∀ a s b t, dop N b t * xo N a s = xo N a s * dop N b t + if a = b ∧ s = t then 1 else 0)
 
+/- English proof (translation)
+Introduce `N`. Take `⟨h1, h2⟩` from `hR N`. Establish `h` using `hA (Module.End ℚ (MvPolynomial (Fin N × Fin N) ℚ)) (Fin N) (Fin N) (xo N) (dop N) h1 h2 N id id`. Simplify using `only [id_eq, smul_sub, Finset.sum_sub_distrib] at h`. Rewrite using `[hS N, hL N]`.
+
+Conclude with `(sub_eq_zero.1 h).symm`.
+-/
 theorem detDetId_of (hA : CapAbsMain) (hS : CapSquare) (hL : CapLeft) (hR : CapRel) :
     DetDetId := by
   intro N

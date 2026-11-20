@@ -14,6 +14,33 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.TC
 
+/- English proof (translation)
+Introduce `B X I _hOk _hPins l Z l0 Y O Pl Bs _hQp hStd _hBas _hBsLL _hUnf _hJets u μ i hi φ hφ hv`. Use `clear _hBsLL _hUnf _hJets _hBas _hQp _hPins _hOk Bs Pl`. Establish `hlam : lamTG (D` using `I.rec7 l Z) (I.fm l u μ) (i + 1) = lamT (B.hcW u) (i + 1) := by`. Use function extensionality and compare the values at `τ`. Use `show Formalism.L2.Forms.shW (Examples₂.lamOf (B.hcW u τ) (i+1)) (((i+1) * (B.R.t + 1) / 2 : ℕ) : ℤ) = GlobalTheory.Mem.Col2.shW (Examples₂.lamOf (B.hcW u τ) (i+1)) (-(((i+1 : ℕ) : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ)))`.
+
+Take `⟨k, hk⟩` from `B.R.t_odd`. Establish `e1 : (B.R.t + 1) / 2 = k + 1` using `by omega`. Establish `e2 : (i+1) * (B.R.t + 1) / 2 = (i+1) * (k + 1)`. Rewrite using `[show B.R.t + 1 = (k + 1) * 2 by omega, ← mul_assoc, Nat.mul_div_cancel _ two_pos]`. Unfold `Formalism.L2.Forms.shW GlobalTheory.Mem.Col2.shW`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[e1, e2, Nat.cast_mul, sub_eq_add_neg]`. Take `⟨nn, h1, -, h3, h4⟩` from `GlobalTheory.KerWtStep.trueWt_step (I.rec7 l Z) u _ _ _ ((I.tw l l0 Z).fm u μ) i hi`. Express the relevant statement in the definitionally equal form `∀ τ r, (lamTG (D := I.rec7 l Z) (I.fm l u μ) (i + 1) τ).natW r = _ at h3`.
+
+Express the relevant statement in the definitionally equal form `∀ τ, (lamTG (D := I.rec7 l Z) (I.fm l u μ) (i + 1) τ).detShift = _ at h4`. Rewrite `h3`, `h4` using `[hlam]`. Establish `hnat : (fun τ r => (lamT (B.hcW u) (i + 1) τ).natW r) = extNu (B.R.N (i + 1)) (nuT (I.rec7 l Z) u i)`. Use function extensionality and compare the values at `τ r`. Use `(h3 τ r).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ' r'`. Conclude with `h1 τ' r'`. Use `haveI hLL : Infinite B.LL := Infinite.of_injective (fun n : ℕ => (n : B.LL)) (fun a b h => by`. Use `congrArg B.embLL h` as an intermediate fact.
+
+Simplify using `only [map_natCast] at this`. Conclude with `this)` after adjusting the coercions. Establish `hVV : Formalism.L2.DIV.VV B.LL (lamT (B.hcW u) (i + 1)) = polV (I.rec7 l Z) u (i + 1)`. Rewrite using `[GlobalTheory.PdvKm.VV_eq_WtPol, hnat]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ c', ∃ z : Formalism.L2.DIV.VV B.LL (lamT (B.hcW u) (i + 1)), evV B.fields.emb 1 (lamT (B.hcW u) (i + 1)) B.embLL z = φ c'`. Introduce `c'`. Take `⟨v', hv'⟩` from `hv c'`. Take `⟨⟨Q, hQ⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ v'`. Use `⟨⟨Q, hVV ▸ hQ⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hv']`. Use `clear hnat h3 h1 hlam hφ hv hv'`. Use `show _ = evP O u μ (i + 1) ⟨Q, hQ⟩`. Use function extensionality and compare the values at `y`. Rewrite using `[evV_apply]`.
+
+Use `show _ = (∏ τ, (((I.rec7 l Z).chTw u μ).de (i + 1) y τ) ^ (-(twB (I.rec7 l Z) u μ (i + 1) τ))) * GL3Theta.evFr (I.rec7 l Z) (MvPolynomial.map (I.rec7 l Z).what₂.embLL Q) ((O u μ).frm (i + 1) y)`. Establish `hde : ∀ τ, ((I.rec7 l Z).chTw u μ).de (i + 1) y τ = (y.1 τ).det` using `fun τ => by`. Rewrite using `[(O u μ).frm_de (i + 1) hi y τ, hStd.frm u μ (i + 1) y]`. Both sides reduce to the same expression. Simplify using `only [fnOf, LinearMap.coe_mk, AddHom.coe_mk, Matrix.one_mul, shiftOf, twB, GL3Theta.evFr, hStd.frm u μ (i + 1) y, hde, Pi.one_apply]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `congrArg (fun e : ℤ => (y.1 τ).det ^ e) (h4 τ)`. Use `choose z hz using key`. Set `o : Frames (gramC (1 : Matrix (Fin (B.R.N (i + 1))) (Fin (B.R.N (i + 1))) B.fields.E) (embAt B.embLL B.fields.emb))` to `⟨fun _ => 1, fun τ => by simp⟩`.
+
+Establish `hinv : ∀ c' (g : (I.stp u μ (i + 1)).Stab c'), (I.stp u μ (i + 1)).rho B.fields.emb (lamT (B.hcW u) (i + 1)) c'.1 g.1 (z c') = z c'`. Introduce `c' g`. Apply `evV_injective B.fields.emb 1 (lamT (B.hcW u) (i + 1)) B.embLL o` to reduce the goal to its premises. Establish `e1` using `Law.evV_rho (I.stp u μ (i + 1)) B.fields.emb B.embLL (lamT (B.hcW u) (i + 1)) c'.1 g.1 (z c')`. Establish `e2` using `(hφ c').2 g`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Use `(congrArg ((I.stp u μ (i + 1)).tr B.fields.emb B.embLL c'.1 g.1) (hz c')).trans ?_` and prove the remaining obligations. Conclude with `e2.trans (hz c').symm`. Use `⟨⟨z, hinv⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c'`.
+
+Conclude with `hz c'`.
+-/
 theorem form_of_rat_values : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (Pl : Examples₂.EntPl (I.rec7 l Z)) (Bs : PlaceMatrixFamily (I.rec7 l Z)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → BasOk Pl O Bs → (∀ u a w, LevFree Y u a w → ∀ i, i ≤ B.R.m → ∀ c τ j k, ∃ x : (I.rec7 l Z).what₂.LL, Bs u a w i c τ j k = Pl.iL w x) → (∀ u a i, i < B.R.m → UnfIsAll (O u a) i) → ColIn.JetsIn I → ∀ (u : B.Word) (μ : I.ι) (i : ℕ), i < (I.rec7 l Z).R.m → ∀ φ : ((I.rec7 l Z).chTw u μ).cls (i + 1) → ((I.rec7 l Z).chTw u μ).Y (i + 1) → ℂ, φ ∈ ((I.tw l l0 Z).fm u μ).Fi (i + 1) → (∀ c', ∃ v' : ValQ O u μ (i + 1), evC O u μ (i + 1) v' = φ c') → ∃ x, ((I.tw l l0 Z).fm u μ).emb (i + 1) x = φ := by
   intro B X I _hOk _hPins l Z l0 Y O Pl Bs _hQp hStd _hBas _hBsLL _hUnf _hJets u μ i hi φ hφ hv
   clear _hBsLL _hUnf _hJets _hBas _hQp _hPins _hOk Bs Pl

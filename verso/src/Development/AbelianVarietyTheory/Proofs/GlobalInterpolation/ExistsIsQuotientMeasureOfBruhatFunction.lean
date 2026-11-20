@@ -8,6 +8,23 @@ namespace GlobalTheory
 open MeasureTheory Topology in
 open scoped ENNReal in
 
+/- English proof (translation)
+Introduce `T T' _ _ _ _ _ _ _ j hj m _ _ m' _ _ _ b hb hint`. Use `⟨(m.withDensity b).map (Quotient.mk'' : T → _root_.GlobalTheory.IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.RightCosets j), ?_⟩` and prove the remaining obligations. Introduce `f hf`. Use `set F : T → ℝ≥0∞ := fun t => ∫⁻ s, f (j s * t) ∂m' with hFdef`. Establish `hF : Measurable F`.
+
+Establish `hprod : Measurable fun p : T × T' => f (j p.2 * p.1)` using `hf.comp ((hj.comp measurable_snd).mul measurable_fst)`. Conclude with `hprod.lintegral_prod_right'`. Establish `hG : ∀ t : T, ∫⁻ s, f (j s * Quotient.out (Quotient.mk'' t : _root_.GlobalTheory.IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.RightCosets j)) ∂m' = F t`. Introduce `t`. Establish `hrel` using `Quotient.mk_out (s := QuotientGroup.rightRel j.range) t`.
+
+Take `⟨u, hu⟩` from `QuotientGroup.rightRel_apply.mp hrel`. Establish `ht : t = j u * Quotient.out (Quotient.mk'' t : _root_.GlobalTheory.IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.RightCosets j)`. Express the relevant statement in the definitionally equal form `t = j u * Quotient.out (Quotient.mk (QuotientGroup.rightRel j.range) t)`. Rewrite using `[hu, inv_mul_cancel_right]`. Simplify using `only [hFdef]`.
+
+Use `conv_rhs => rw [ht]`. Repeatedly rewrite using `[← mul_assoc, ← map_mul]`. Conclude with `(lintegral_mul_right_eq_self (fun s => f (j s * Quotient.out (Quotient.mk'' t : _root_.GlobalTheory.IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.RightCosets j))) u).symm`. Use `set G : _root_.GlobalTheory.IndefiniteRowSideFullHecke.InfiniteCoordinateUnfold.RightCosets j → ℝ≥0∞ := fun c => ∫⁻ s, f (j s * Quotient.out c) ∂m' with hGdef`. Establish `hGmeas : Measurable G`.
+
+Use `(measurable_from_quotient (s := QuotientGroup.rightRel j.range)).mpr ?_` and prove the remaining obligations. Use `hF using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Conclude with `hG t`. Establish `key : ∫⁻ t, f t ∂m = ∫⁻ t, b t * F t ∂m`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h` using `lintegral_mul_left_eq_self (μ := m) (fun t => b t * f (j s⁻¹ * t)) (j s)`. Simplify using `only [← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul] at h`. Conclude with `h`. Use `_ = ∫⁻ t, ∫⁻ s, b t * f (j s⁻¹ * t) ∂m' ∂m := lintegral_lintegral_swap ((hb.comp measurable_snd).mul (hf.comp ((hj.comp measurable_fst.inv).mul measurable_snd))).aemeasurable`.
+
+Use `_ = ∫⁻ t, b t * F t ∂m := lintegral_congr fun t => by`. Establish `hmeas : Measurable fun s : T' => f (j s⁻¹ * t)` using `hf.comp ((hj.comp measurable_inv).mul_const t)`. Rewrite using `[lintegral_const_mul _ hmeas]`. Use `congr 1`. Conclude with `lintegral_inv_eq_self (fun s => f (j s * t))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.exists_isQuotientMeasure_of_bruhatFunction :
     ∀ (T T' : Type) [Group T] [MeasurableSpace T] [MeasurableMul₂ T] [Group T'] [MeasurableSpace T']
       [MeasurableMul T'] [MeasurableInv T'] (j : T' →* T), Measurable j →

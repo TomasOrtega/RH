@@ -20,6 +20,23 @@ noncomputable section
 
 namespace GlobalTheory.UniDepthZero
 
+/- English proof (translation)
+Set `e : L ≃ₐ[(maximalRealSubfield L)] ψ.fieldRange` to `AlgEquiv.ofInjectiveField ψ`. Use `haveI : Normal (maximalRealSubfield L) ψ.fieldRange := Normal.of_algEquiv e`. Establish `hR : φ.fieldRange = ψ.fieldRange`. Establish `h` using `AlgHom.fieldRange_of_normal (E := ψ.fieldRange) (φ.comp e.symm.toAlgHom)`. Rewrite using `[← h]`.
+
+Use extensionality with `x`. Simplify using `only [AlgHom.mem_fieldRange, AlgHom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩; exact ⟨e y, by simp⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨_, rfl⟩`. Establish `hmem : ∀ z, φ z ∈ ψ.fieldRange` using `fun z => hR ▸ ⟨z, rfl⟩`. Set `g₀ : L →ₐ[(maximalRealSubfield L)] L` to `e.symm.toAlgHom.comp (φ.codRestrict ψ.fieldRange.toSubalgebra hmem)`. Establish `hg₀ : ∀ z, ψ (g₀ z) = φ z` using `fun z => by`. Use `congrArg Subtype.val (e.apply_symm_apply ⟨φ z, hmem z⟩)` as an intermediate fact.
+
+Conclude with `this`. Set `σ : L ≃ₐ[(maximalRealSubfield L)] L` to `AlgEquiv.ofBijective g₀ (Algebra.IsAlgebraic.algHom_bijective g₀)`. Establish `hσ : ∀ z, ψ (σ z) = φ z` using `hg₀`. Establish `htop` using `IsCMField.zpowers_complexConj_eq_top L`. Establish `hmemσ : σ ∈ Subgroup.zpowers (IsCMField.complexConj L)` using `by rw [htop]; trivial`.
+
+Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 hmemσ`. Establish `hk2 : IsCMField.complexConj L ^ (k % 2) = σ`. Establish `h` using `zpow_mod_orderOf (IsCMField.complexConj L) k`. Rewrite `h` using `[IsCMField.orderOf_complexConj L]`. Rewrite using `[← hk]`.
+
+Conclude with `h` after adjusting the coercions. Break down `Int.emod_two_eq_zero_or_one k with h0 | h1` into its components or cases. Use `left`. Rewrite `hk2` using `[h0, zpow_zero]`. Use extensionality with `z`.
+
+Rewrite using `[← hσ, ← hk2]`. Both sides reduce to the same expression. Use `right`. Rewrite `hk2` using `[h1, zpow_one]`. Use extensionality with `z`.
+
+Rewrite using `[← hσ, ← hk2]`. Both sides reduce to the same expression.
+-/
 theorem algHom_eq_or_conj {L K : Type} [Field L] [NumberField L] [IsCMField L] [Field K] [Algebra (maximalRealSubfield L) K]
     (φ ψ : L →ₐ[(maximalRealSubfield L)] K) : φ = ψ ∨ φ = ψ.comp (IsCMField.complexConj L).toAlgHom := by
   let e : L ≃ₐ[(maximalRealSubfield L)] ψ.fieldRange := AlgEquiv.ofInjectiveField ψ
@@ -63,6 +80,9 @@ end GlobalTheory.UniDepthZero
 
 namespace GlobalTheory.UniDepthZero
 
+/- English proof (translation)
+Substitute `hi` using the available equality. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [SplitPlace.proj, conjAL, Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`.
+-/
 theorem proj_conj {L : Type} [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (i i₀ : L →ₐ[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L))
@@ -74,6 +94,11 @@ theorem proj_conj {L : Type} [Field L] [NumberField L] [IsCMField L]
   | tmul a b => simp [SplitPlace.proj, conjAL, Algebra.TensorProduct.map_tmul]
   | add x y hx hy => rw [map_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hm` using `κ.2`. Simplify using `only [GA, UGroup, Subgroup.mem_mk] at hm`. Establish `h1 : ((κ.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) κ.1` using `Units.inv_eq_of_mul_eq_one_right hm`. Establish `h2 : (((κ⁻¹ : GA L n) : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) b a = conjAL L ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) a b)`. Rewrite using `[InvMemClass.coe_inv, h1]`.
+
+Both sides reduce to the same expression. Simplify using `only [SplitPlace.loc, MonoidHom.comp_apply, Subgroup.coe_subtype, GeneralLinearGroup.map_apply]`. Rewrite using `[h2, proj_conj v i i₀ hi]`.
+-/
 theorem loc_conj_apply {L : Type} [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (i i₀ : L →ₐ[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L))
@@ -89,6 +114,13 @@ theorem loc_conj_apply {L : Type} [Field L] [NumberField L] [IsCMField L]
   simp only [SplitPlace.loc, MonoidHom.comp_apply, Subgroup.coe_subtype, GeneralLinearGroup.map_apply]
   rw [h2, proj_conj v i i₀ hi]
 
+/- English proof (translation)
+Break down `algHom_eq_or_conj i i₀ with rfl | hi` into its components or cases. Conclude with `h`. Establish `h' : SplitPlace.loc (⟨v, i₀⟩ : SplitPlace L) n κ⁻¹ ∈ KOne (v.adicCompletion (maximalRealSubfield L)) (Fin n)`. Use `(GlobalTheory.FixedAtSplit.mem_KOne_iff' _).2 fun a b => ?_` and prove the remaining obligations. Use `(GlobalTheory.FixedAtSplit.mem_KOne_iff' _).1 h b a` as an intermediate fact.
+
+Simplify using `only [Matrix.sub_apply, Matrix.one_apply] at this ⊢`. Rewrite using `[← loc_conj_apply v i i₀ hi]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `using this`.
+
+Simplify `this` using `[hab, Ne.symm hab]`. Use `inv_mem h'` as an intermediate fact. Rewrite `this` using `[map_inv, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem loc_mem_KOne_of_same {L : Type} [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (i i₀ : L →ₐ[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L)) {n : ℕ} (κ : GA L n)
@@ -111,6 +143,29 @@ end GlobalTheory.UniDepthZero
 
 namespace GlobalTheory.UniDepthZero
 
+/- English proof (translation)
+Use `set g := s₀.loc n κ with hg`. Establish `hv` using `(GlobalTheory.FixedAtSplit.mem_KOne_iff' g).1 hK`. Establish `hoff : ∀ a b : Fin n, a ≠ b → Valued.v (g.val a b) < 1` using `fun a b hab => by`. Simplify `hv a b` using `[Matrix.sub_apply, Matrix.one_apply_ne hab]`. Establish `hdiag : ∀ a : Fin n, Valued.v (g.val a a - 1) < 1` using `fun a => by`.
+
+Simplify `hv a a` using `[Matrix.sub_apply]`. Establish `hint : g ∈ Formalism.UG.GLint (Fin n) (s₀.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Rewrite using `[(GlobalTheory.AdelicU.GLint_eq_KO_and_princ_eq_KOne s₀.v n).1]`. Conclude with `GlobalTheory.StepData.KOne_le_KO hK`. Establish `huni : NG.UniRT s₀ r g`.
+
+Use `⟨⟨hint, fun a b ha hb => hoff a b ?_⟩, fun a b ha hb => ⟨fun hba => hoff a b ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `hab` using the available equality. Conclude with `hdiag a`. Establish `hmem : κ ∈ J` using `(hJ.mem κ hκ).2 huni`. Set `D : Matrix {x : Fin n // r ≤ x.val} {x : Fin n // r ≤ x.val} (s₀.v.adicCompletion (maximalRealSubfield L))` to `Matrix.of fun a b => g.val a.1 b.1`. Establish `hD : GlobalTheory.StepData.MaxM (D - 1)`.
+
+Establish `hm` using `GlobalTheory.StepData.mem_KOne.1 hK`. Introduce `a b`. Establish `h3` using `hm a.1 b.1`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify `h3` using `[D, Matrix.sub_apply]`. Establish `h4 : a.1 ≠ b.1` using `fun h => hab (Subtype.ext h)`. Simplify `h3` using `[D, Matrix.sub_apply, Matrix.one_apply_ne hab, Matrix.one_apply_ne h4]`. Take `⟨u', hu', hu'v⟩` from `GlobalTheory.StepData.exists_mem_KOne hD`. Establish `hdet` using `GlobalTheory.StepData.det_of_mem_KOne hu'`.
+
+Establish `: (Valued.v : Valuation (s₀.v.adicCompletion (maximalRealSubfield L)) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (s₀.v.adicCompletion (maximalRealSubfield L))) (Valued.v : Valuation (s₀.v.adicCompletion (maximalRealSubfield L)) (WithZero (Multiplicative ℤ)))`. Establish `hdetv : Valued.v (NG.detDD s₀ r g - 1) < 1`. Rewrite using `[← he.lt_one_iff_lt_one]`. Use `hdet using 3` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hu'v]`. Both sides reduce to the same expression. Establish `hne : NG.detDD s₀ r g ≠ 0` using `fun h0 => by`. Rewrite `hdetv` using `[h0, zero_sub, Valuation.map_neg, Valuation.map_one]`. Conclude with `lt_irrefl _ hdetv`.
+
+Establish `hχ` using `hJ.chr κ hmem hκ (Units.mk0 _ hne) rfl`. Establish `h1 : ψ₀ (NG.supDiag s₀ r g) = 1`. Use `hψ.1 _ ?_` and prove the remaining obligations. Use `Valuation.map_sum_lt _ one_ne_zero fun a _ => Valuation.map_sum_lt _ one_ne_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `hoff a b (fun e => by subst e; omega)`. Simplify using the standard rewrite rules. Establish `h2 : ξ (Units.mk0 _ hne) = 1` using `hξ _ (by simpa using hdetv)`. Use `⟨hmem, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hχ, h1, h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem level_trivial {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (s₀ : SplitPlace L) (r : ℕ)
     (ψ₀ : AddChar (s₀.v.adicCompletion (maximalRealSubfield L)) ℂ)
@@ -177,6 +232,19 @@ end GlobalTheory.UniDepthZero
 
 namespace GlobalTheory.UniDepthZero
 
+/- English proof (translation)
+Introduce `L _ _ _ n a S hS J χ _ s₀ r ψ₀ ξ hJ hψ hξ f hf hfJ hf0 s hs σ hσ`. Take `⟨c, T, hc, hci, -⟩` from `id hσ`. Establish `hfix : ∀ κ : GAf L n, TrivOutside {s.v} κ → s.loc n κ ∈ KOne (s.v.adicCompletion (maximalRealSubfield L)) (Fin n) → NG.rt L n κ f = f`. Introduce `κ hκ hK`. Take `⟨v, i⟩` from `s`.
+
+Take `⟨v₀, i₀⟩` from `s₀`. Take `rfl : v = v₀` from `hs`. Establish `hK₀` using `loc_mem_KOne_of_same _ i i₀ κ hK`. Take `⟨hm, h1⟩` from `level_trivial J χ _ r ψ₀ ξ hJ hψ hξ κ hκ hK₀`. Establish `h2` using `hfJ.2 ⟨κ, hm⟩`.
+
+Rewrite `h2` using `[h1]`. Simplify using `using h2`. Take `⟨u, hu0, hu⟩` from `GlobalTheory.LocVec.main L n a S hS s σ hσ c hc hci (KOne (s.v.adicCompletion (maximalRealSubfield L)) (Fin n)) 1 (fun g hg => by`. Rewrite using `[(GlobalTheory.AdelicU.GLint_eq_KO_and_princ_eq_KOne s.v n).1]`. Conclude with `GlobalTheory.StepData.KOne_le_KO hg)`.
+
+Use the proof step `(by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ)`. Use `f hf hf0 (fun κ hκ h => by rw [hfix κ hκ h]; simp)`. Use `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv (IrrRep.nonempty_equiv_rep σ).some.symm ?_` and prove the remaining obligations. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨u, GlobalTheory.Parabolic.mem_fixed.2 fun h hh => ?_, hu0⟩` and prove the remaining obligations.
+
+Establish `e : Matrix.GeneralLinearGroup.map c.toRingHom (Matrix.GeneralLinearGroup.map c.symm.toRingHom h) = h`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hg` using `GlobalTheory.FixedAtSplit.mem_KOne_of_map c hc _ (e.symm ▸ hh)`. Establish `h3` using `hu _ hg`.
+
+Rewrite `h3` using `[e]`. Simplify using `using h3`.
+-/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (S : Submodule ℂ (GAf L n → a.W)), NG.IsIrrRep a.ρ S → ∀ (J : Subgroup (GAf L n)) (χ : J →* ℂˣ), (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → ∀ (s₀ : SplitPlace L) (r : ℕ) (ψ₀ : AddChar (s₀.v.adicCompletion (maximalRealSubfield L)) ℂ) (ξ : (s₀.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), NG.LevelUni J χ s₀ r ψ₀ ξ → NG.IsPsi0 s₀ ψ₀ → (∀ u : (s₀.v.adicCompletion (maximalRealSubfield L))ˣ, Valued.v ((u : s₀.v.adicCompletion (maximalRealSubfield L)) - 1) < 1 → ξ u = 1) → ∀ f ∈ NG.isoTyp a.ρ S, f ∈ NG.TypeSp a.ρ J χ → f ≠ 0 → ∀ (s : SplitPlace L), s.v = s₀.v → ∀ (σ : IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS S s σ → fixed (GlobalTheory.LocLanglands.cls σ).rep (KOne (s.w.adicCompletion L) (Fin n)) ≠ ⊥ := by
   intro L _ _ _ n a S hS J χ _ s₀ r ψ₀ ξ hJ hψ hξ f hf hfJ hf0 s hs σ hσ
   obtain ⟨c, T, hc, hci, -⟩ := id hσ

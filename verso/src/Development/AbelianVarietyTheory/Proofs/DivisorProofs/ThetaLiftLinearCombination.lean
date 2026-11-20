@@ -18,6 +18,9 @@ namespace GlobalTheory.ThKSmallLin
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Establish `h3` using `(h2.and hM.std).mono fun w hw => hw.1.trans hw.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`.
+-/
 theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} (hM : M.IsGood ψ)
     {v : Pl F} (t : E →ₐ[F] Fv F v) : M.So ψ t ≤ schA F _ := by
   refine Submodule.span_le.2 ?_
@@ -26,6 +29,9 @@ theorem so_le_schA {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W
   exact Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3,
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hw`. Take `⟨l, -, hl⟩` from `GlobalTheory.ThetaAdmitted.exists_admitted_form_eq_adelicThetaDistribution_alt F (Fin n × Fin d)`. Simplify using `only [theta]`. Rewrite using `[← hl _ (hS.pres _ _ hΦ), ← hl _ (hS.pres _ _ hΨ), ← hl _ (hS.pres _ _ (Submodule.add_mem _ hΦ (Submodule.smul_mem _ c hΨ))), map_add, map_smul, map_add, map_smul, smul_eq_mul]`.
+-/
 theorem theta_add_smul {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} {ψ : AddChar (AF F) ℂ}
     {χ χ' : Chr F E} {om : Rep σ Y W} (hw : M.IsWeil ψ χ χ' om) {Φ Ψ : (Fin n × Fin d → AF F) → ℂ}
     (hΦ : Φ ∈ schA F _) (hΨ : Ψ ∈ schA F _) (c : ℂ) (g : UA σ Y.J) (h : UA σ W.J) :
@@ -37,6 +43,11 @@ theorem theta_add_smul {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ
     ← hl _ (hS.pres _ _ (Submodule.add_mem _ hΦ (Submodule.smul_mem _ c hΨ))), map_add, map_smul, map_add, map_smul,
     smul_eq_mul]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT Φ hΦ Ψ hΨ c h`. Establish `hD : Decay B G om om'` using `GlobalTheory.T.theta_kernel_decay hP F E σ B a a' G X om om' hT`. Establish `i1` using `(hD.2 Φ hΦ).2.1 h`. Establish `i2` using `(hD.2 Ψ hΨ).2.1 h`. Establish `e` using `fun g => theta_add_smul hT.weil' (so_le_schA hT.geo.hM' _ hΦ) (so_le_schA hT.geo.hM' _ hΨ) c g h`.
+
+Unfold `Model.I`. Simplify using `only [e]`. Rewrite using `[integral_add i1 (i2.const_mul c), integral_const_mul]`.
+-/
 theorem smallI_add_smul : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

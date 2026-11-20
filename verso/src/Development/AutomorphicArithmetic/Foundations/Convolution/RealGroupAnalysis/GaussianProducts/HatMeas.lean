@@ -10,6 +10,11 @@ namespace UpperTheory.ConvolutionTheory.R2.G.UnipotentAverage
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `hH` using `(_root_.UpperTheory.ConvolutionTheory.R2.hatSt F E D W).n b (W.Om g Ψ) (pt ξ)`. Establish `e : W.Om (nU b * g) Ψ = W.Om (nU b) (W.Om g Ψ)` using `by rw [map_mul]; rfl`. Establish `e1 : pt ξ 1 + b * pt ξ 0 = pt ξ 1` using `by simp [pt]`. Establish `e3 : b * (pt ξ 2 ^ 2 - rt D.δ * pt ξ 3 ^ 2) = rt (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2) * b`. Simplify using `only [pt, rt, map_sub, map_mul, map_pow]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hH, e1, Function.update_eq_self, e3]`.
+-/
 private theorem hat_n {D : Dat F E} (W : Weil D) (Ψ : S4 F) (ξ : Fin 2 → F) (b : A F) (g : G1 F) :
     hat (W.Om (nU b * g) Ψ).1 (pt ξ) = ψ (rt (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2) * b) * hat (W.Om g Ψ).1 (pt ξ) := by
   have hH := (_root_.UpperTheory.ConvolutionTheory.R2.hatSt F E D W).n b (W.Om g Ψ) (pt ξ)
@@ -21,6 +26,11 @@ private theorem hat_n {D : Dat F E} (W : Weil D) (Ψ : S4 F) (ξ : Fin 2 → F) 
     ring
   rw [e, hH, e1, Function.update_eq_self, e3]
 
+/- English proof (translation)
+Establish `hc : Continuous fun p : G1 F × A F => (W.Om p.1 Ψ).1 (Function.update v 1 p.2) * ψ (-(p.2 * v 1))`. Establish `h2 : Continuous fun s : A F => Function.update v 1 s` using `continuous_const.update 1 continuous_id`. Establish `h1 : Continuous fun p : G1 F × A F => (p.1, Function.update v 1 p.2)` using `continuous_fst.prodMk (h2.comp continuous_snd)`. Establish `h3 : Continuous fun s : A F => ψ (-(s * v 1))` using `Pp.cont_ψ.comp ((continuous_id.mul continuous_const).neg)`. Conclude with `((W.cont Ψ).comp h1).mul (h3.comp continuous_snd)`.
+
+Conclude with `(hc.stronglyMeasurable.integral_prod_right (ν := adeleMeasure F)).measurable`.
+-/
 private theorem hat_meas {D : Dat F E} (W : Weil D) (Ψ : S4 F) (v : V4 F) :
     Measurable fun g : G1 F => hat (W.Om g Ψ).1 v := by
   have hc : Continuous fun p : G1 F × A F =>
@@ -36,6 +46,17 @@ private theorem hat_meas {D : Dat F E} (W : Weil D) (Ψ : S4 F) (v : V4 F) :
 end UpperTheory.ConvolutionTheory.R2.G.UnipotentAverage
 
 open UpperTheory.ConvolutionTheory.R2.G.UnipotentAverage in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W f hf φ h ξ`. Establish `hgl : ∀ x y : G1 F, gl (x * y) = gl x * gl y` using `fun x y => map_mul _ x y`. Establish `hux : ∀ b g, ux W f φ h ξ (nU b * g) = f (gl (nU b) * (gl g * dM (nu F h))) * ψ (rt (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2) * b) * hat (W.Om g (W.L h φ)).1 (pt ξ)`. Introduce `b g`. Simplify using `only [ux]`.
+
+Rewrite using `[hat_n, hgl, mul_assoc (gl (nU b)), mul_assoc]`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous fun g : G1 F => f (gl g * dM (nu F h))` using `hf.1.comp (_root_.UpperTheory.ConvolutionTheory.R2.M.continuous_gl.mul continuous_const)`. Conclude with `h1.measurable.mul (hat_meas W _ _)`. Introduce `c g`.
+
+Rewrite using `[hux]`. Establish `e : rt (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2) * rt c = rt ((ξ 0 ^ 2 - D.δ * ξ 1 ^ 2) * c)` using `(map_mul _ _ _).symm`. Establish `e2 : f (gl (nU (rt c)) * (gl g * dM (nu F h))) = f (gl g * dM (nu F h))`. Take `⟨γ, hγ⟩` from `Pp.rat_n c`. Rewrite using `[← hγ, hf.2]`.
+
+Rewrite using `[e, Pp.ψ_rt, mul_one, e2]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `g`. Simplify using `only [av, wx]`. Rewrite using `[← integral_mul_const]`.
+
+Conclude with `integral_congr_ae (Eventually.of_forall fun b => hux b g)`. Introduce `b g`. Simplify using `only [ux]`. Rewrite using `[hat_n, norm_mul, norm_mul, Pp.norm_ψ, one_mul]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.uxAv :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (f : GL (Fin 2) (A F) → ℂ), Pp.Lf f → ∀ φ h ξ, NInv (ux W f φ h ξ) ∧ av (ux W f φ h ξ) = wx W f φ h ξ ∧
     ∀ b g, ‖ux W f φ h ξ (nU b * g)‖ = ‖f (gl (nU b * g) * dM (nu F h))‖ * ‖hat (W.Om g (W.L h φ)).1 (pt ξ)‖ := by

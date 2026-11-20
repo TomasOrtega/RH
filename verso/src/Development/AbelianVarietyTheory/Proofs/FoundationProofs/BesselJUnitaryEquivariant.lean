@@ -10,6 +10,9 @@ namespace GlobalTheory.BesselUnitary
 def partner (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if r ≤ i.val ∧ i.val ≤ r + k then i else ⟨2 * r + k - i.val, by omega⟩
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk partner`. Apply the tactic sequence `split_ifs <;> simp only [Fin.ext_iff] at * <;> first | rfl | omega`.
+-/
 lemma gram_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = partner k r i then (if i.val = r + k then -1 else 1) else 0 := by
   have hi := i.isLt
@@ -17,6 +20,11 @@ lemma gram_apply (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   unfold Hpk partner
   split_ifs <;> simp only [Fin.ext_iff] at * <;> first | rfl | omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (partner k r i)]`. Rewrite using `[gram_apply, gram_apply, Matrix.one_apply, if_pos rfl]`.
+
+Unfold `partner`. Apply the tactic sequence `split_ifs <;> simp only [Fin.ext_iff] at * <;> first | omega | (simp; done) | (split_ifs <;> first | omega | simp)`. Introduce `b _ hb`. Rewrite using `[gram_apply k r i b, if_neg hb, zero_mul]`. Simplify using the standard rewrite rules.
+-/
 lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
   have hi := i.isLt
@@ -29,17 +37,28 @@ lemma gram_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
     rw [gram_apply k r i b, if_neg hb, zero_mul]
   · simp
 
+/- English proof (translation)
+Establish `h : (Hpk k r * (gᴴ * Hpk k r)) * g = 1`. Rewrite using `[mul_assoc, show gᴴ * Hpk k r * g = Hpk k r from hg, gram_sq]`. Conclude with `Matrix.isUnit_det_of_left_inverse h`.
+-/
 lemma isUnit_det_of_mem {k r : ℕ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
   have h : (Hpk k r * (gᴴ * Hpk k r)) * g = 1 := by
     rw [mul_assoc, show gᴴ * Hpk k r * g = Hpk k r from hg, gram_sq]
   exact Matrix.isUnit_det_of_left_inverse h
 
+/- English proof (translation)
+Use `conv_lhs => rw [← hv]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]`.
+-/
 lemma inv_mulVec_fixed {m : ℕ} {g : Matrix (Fin m) (Fin m) ℂ} (hg : IsUnit g.det) {v : Fin m → ℂ}
     (hv : g *ᵥ v = v) : g⁻¹ *ᵥ v = v := by
   conv_lhs => rw [← hv]
   rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hg, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hu` using `isUnit_det_of_mem hg.1`. Use `⟨?_, fun a => ⟨inv_mulVec_fixed hu (hg.2.1 a).1, inv_mulVec_fixed hu (hg.2.1 a).2⟩, inv_mulVec_fixed hu hg.2.2⟩` and prove the remaining obligations. Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Use `_ = Hpk k r := by rw [Matrix.mul_nonsing_inv _ hu]; simp`.
+-/
 lemma inv_mem {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UWset k r z) : g⁻¹ ∈ UWset k r z := by

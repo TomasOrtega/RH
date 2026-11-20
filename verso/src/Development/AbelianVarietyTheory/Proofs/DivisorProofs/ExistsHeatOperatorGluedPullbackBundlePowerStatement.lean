@@ -13,5 +13,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Heat.Glue.exists_acts | exact GlobalTheory.Heat.Glue.exists_acts | (intros; apply GlobalTheory.Heat.Glue.exists_acts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_heatOperator_glued_pullbackBundlePower : ∀ {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] {n : ℕ} {X : Scheme.{0}} (m : G.left ⟶ X) (L : LB X), L.IsLB → ∀ (dd : Fin n → Fld G.left), (∀ a, IsField ⊤ (dd a)) → ∀ (D : R → R) (h : Heat G m L dd D) (k : ℕ) (τ : SecM m L k), ∃ τ' : SecM m L k, h.Acts k τ τ' := by
   first | exact @GlobalTheory.Heat.Glue.exists_acts | exact GlobalTheory.Heat.Glue.exists_acts | (intros; apply GlobalTheory.Heat.Glue.exists_acts <;> assumption)

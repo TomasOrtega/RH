@@ -3,6 +3,19 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨U, hU, hqU, -⟩` from `(Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show q ∈ (⊤ : X.Opens) from trivial)`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hηU : η ∈ U` using `hsp.mem_open U.isOpen hqU`. Set `qU : U` to `⟨q, hqU⟩`. Set `ηU : U` to `⟨η, hηU⟩`.
+
+Set `algQ : Algebra Γ(X, U) (X.presheaf.stalk q)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf qU`. Set `algη : Algebra Γ(X, U) (X.presheaf.stalk η)` to `TopCat.Presheaf.algebra_section_stalk X.presheaf ηU`. Establish `hlq : IsLocalization.AtPrime (X.presheaf.stalk q) (hU.primeIdealOf qU).asIdeal` using `hU.isLocalization_stalk qU`. Establish `hlη : IsLocalization.AtPrime (X.presheaf.stalk η) (hU.primeIdealOf ηU).asIdeal` using `hU.isLocalization_stalk ηU`. Use `set Pq := hU.primeIdealOf qU`.
+
+Use `set Pη := hU.primeIdealOf ηU`. Establish `hfq : hU.fromSpec Pq = q` using `hU.fromSpec_primeIdealOf qU`. Establish `hfη : hU.fromSpec Pη = η` using `hU.fromSpec_primeIdealOf ηU`. Establish `emb` using `hU.fromSpec.isOpenEmbedding`. Establish `hle : Pη ≤ Pq`.
+
+Rewrite using `[PrimeSpectrum.le_iff_specializes]`. Conclude with `emb.isInducing.specializes_iff.mp (by rw [hfη, hfq]; exact hsp)`. Establish `hne' : Pη ≠ Pq` using `fun h => hne (by rw [← hfη, ← hfq, h])`. Establish `hlt : Pη.asIdeal < Pq.asIdeal` using `lt_of_le_of_ne hle (fun h => hne' (PrimeSpectrum.ext h))`. Rewrite `hq` using `[IsLocalization.AtPrime.ringKrullDim_eq_height Pq.asIdeal (X.presheaf.stalk q)]`.
+
+Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height Pη.asIdeal (X.presheaf.stalk η)]`. Establish `hq' : Pq.asIdeal.height ≤ 1` using `by exact_mod_cast hq`. Establish `: Pq.asIdeal.FiniteHeight` using `Pq.asIdeal.finiteHeight_iff.mpr (Or.inr (ne_top_of_le_ne_top ENat.one_ne_top hq'))`. Establish `h1 : Pη.asIdeal.height < 1` using `(Ideal.height_strict_mono_of_isPrime_of_isPrime hlt).trans_le hq'`. Rewrite `h1` using `[ENat.lt_one_iff_eq_zero]`.
+
+Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem ringKrullDim_stalk_nonpos_of_specializes_of_ne (X : Scheme.{0}) (q η : X) (hsp : η ⤳ q)
     (hne : η ≠ q) (hq : ringKrullDim (X.presheaf.stalk q) ≤ 1) :
     ringKrullDim (X.presheaf.stalk η) ≤ 0 := by

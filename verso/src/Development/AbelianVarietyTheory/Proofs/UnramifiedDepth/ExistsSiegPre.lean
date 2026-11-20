@@ -25,6 +25,11 @@ noncomputable section
 
 namespace GlobalTheory.SiegelOverLocal
 
+/- English proof (translation)
+Set `F₀ : (T ⟶ G') → (Over.mk (T.hom ≫ f) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by show (x.left ≫ φ) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, H.1.w, ← Category.assoc, Over.w])`. Set `F : (T ⟶ G') →* (Over.mk (T.hom ≫ f) ⟶ G)` to `MonoidHom.mk' F₀ fun x y => Over.OverMorphism.ext (H.2 T x y _ _ rfl rfl).symm`. Establish `hF : Function.Bijective F`. Use `⟨fun x y e => Over.OverMorphism.ext (H.1.hom_ext (congrArg CommaMorphism.left e) ?_), fun y => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Over.w x).trans (Over.w y).symm`. Conclude with `⟨Over.homMk (H.1.lift y.left T.hom (Over.w y)) (H.1.lift_snd _ _ _), Over.OverMorphism.ext (H.1.lift_fst _ _ _)⟩`. Set `e` to `MulEquiv.ofBijective F hF`. Conclude with `Nat.card_congr (e.toEquiv.subtypeEquiv fun x => by show x ^ n = 1 ↔ e x ^ n = 1`. Rewrite using `[← map_pow, e.map_eq_one_iff])`.
+-/
 private theorem card_torsion {S' S : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (H : Geo.Tor.IsGrpPullback G' G f φ) (T : Over S') (n : ℕ) :
     Nat.card {x : T ⟶ G' // x ^ n = 1} = Nat.card {x : Over.mk (T.hom ≫ f) ⟶ G // x ^ n = 1} := by
@@ -46,6 +51,31 @@ private theorem card_torsion {S' S : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G :
 
 open GlobalTheory.SiegelOfPolarised GlobalTheory.PrimNorm Geo.Tor in
 
+/- English proof (translation)
+Introduce `O _ _ T _ _ P₀ io P ϕ hpb _ hgg o _ em h k ζ ze lev hg hk hze hprim add tors weil`. Establish `hL : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Use `haveI := P.isAb.comm`. Establish `lam : (abelian₂ P.A P.L).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `dg : ((abelian₂ P.A P.L).pull (lift (𝟙 P.A) (𝟙 P.A)).left).IsLB` using `LB.isLB_linComb lam _ _`.
+
+Establish `diag` using `GlobalTheory.SiegelOfTheta.cls_diag hL.globalFns GlobalTheory.AbLaw.CubeAssembly.cube_gen P`. Establish `lev0 : lev 0 = 1` using `mul_eq_left.1 ((add 0 0).symm.trans (by rw [add_zero]))`. Set `c : SiegPre h k ζ (Geo.Tor.spMap em)` to `{ A := P.A ab := P.isAb P := abelian₂ P.A P.L isLB := lam rig₁ := hasGen_lam_pull P.isLB _ _ (by simp [diff₂]) rig₂ := hasGen_lam_pull P.isLB _ _ (by simp [diff₂])`. Use symmetry as in `:= lbIso_lam_pull P.isLB _ _ (diff₂_comm _ _)`. Use `lev := lev`.
+
+Use `lev_add := add`. Use `lev_tors := tors`. Use `geom := by`. Introduce `k' _ _ x β z hx hz`. Take `⟨φ₀, rfl⟩` from `Spec.map_surjective x`.
+
+Set `φ : O →+* k'` to `φ₀.hom`. Establish `hβ : φ.comp em = β`. Establish `: CommRingCat.ofHom em ≫ φ₀ = CommRingCat.ofHom β`. Rewrite using `[← Spec.map_inj, Spec.map_comp]`. Conclude with `hx`.
+
+Conclude with `congrArg (fun q => q.hom) this`. Take `rfl : z = Units.map φ.toMonoidHom ze` from `Units.ext (by rw [hz, ← hβ]; simp [hze])`. Establish `hz' : IsPrimitiveRoot (Units.map φ.toMonoidHom ze) k` using `IsPrimitiveRoot.coe_units_iff.1 (hprim k' φ)`. Establish `hk' : (k : k') ≠ 0` using `by rw [← map_natCast φ]; exact (hk.map φ).ne_zero`. Establish `hk₀ : k ≠ 0` using `fun e => hk' (by simp [e])`.
+
+Establish `W : ∀ a b, Out.WeilIs P.A P.L k (toUnit (Over.mk (Spec.map φ₀)) ≫ lev a) (toUnit _ ≫ lev b) (unitOn (Units.map φ.toMonoidHom ze ^ omegaStd a b))` using `fun a b => by`. Establish `H` using `CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB (toUnit (Over.mk (Spec.map φ₀))) (weil a b)`. Establish `e : Units.map (toUnit (Over.mk (Spec.map φ₀))).left.appTop.hom.toMonoidHom (unitOn (ze ^ omegaStd a b)) = unitOn (Units.map φ.toMonoidHom (ze ^ omegaStd a b))` using `Units.ext (congrArg (fun q => q.hom (ze ^ omegaStd a b).val) (Scheme.ΓSpecIso_inv_naturality φ₀)).symm`. Rewrite `H` using `[e, map_zpow]`. Conclude with `H`.
+
+Establish `ker : ∀ a, toUnit (Over.mk (Spec.map φ₀)) ≫ lev a = 1 → ∃ b, a = k • b` using `fun a ha => exists_smul_of_dvd fun b => by`. Establish `w₁` using `W a b`. Establish `w₀` using `W 0 b`. Rewrite `w₁` using `[ha]`. Rewrite `w₀` using `[lev0, MonObj.comp_one]`.
+
+Establish `e` using `unitOn_inj (CommutatorPairing.weilIs_unique hL.globalFns P.isAb P.isLB w₁ w₀)`. Rewrite `e` using `[show omegaStd 0 b = 0 by simp [omegaStd], zpow_zero]`. Conclude with `(hz'.zpow_eq_one_iff_dvd _).1 e`. Use `⟨fun a => ⟨ker a, ?_⟩, onto_torsion hk₀ _ (fun a b => by rw [add, MonObj.comp_mul]) (fun a => by rw [← MonObj.comp_pow, tors, MonObj.comp_one]) ker ?_, fun a b => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, rfl⟩`.
+
+Establish `pw : ∀ n : ℕ, lev (n • b) = lev b ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, lev0]`. Consider the case `succ n ih => rw [succ_nsmul, add, ih, pow_succ]`. Rewrite using `[pw, tors, MonObj.comp_one]`.
+
+Use `(card_torsion hpb _ k).trans ?_` and prove the remaining obligations. Use `((hL.mulN _ P₀ k (Nat.pos_of_ne_zero hk₀)).2.2.2.2 k' _ hk').trans ?_` and prove the remaining obligations. Rewrite using `[← hgg, hg]`. Simplify using `[two_mul]`. Establish `H` using `GlobalTheory.SiegelOfTheta.weilIs_of_pow hL.globalFns P.isAb P.isLB dg 2 diag (W a b)`.
+
+Establish `e : unitOn (Units.map φ.toMonoidHom ze ^ (2 * omegaStd a b)) = unitOn (Units.map φ.toMonoidHom ze ^ omegaStd a b) ^ 2`. Rewrite using `[mul_comm, _root_.zpow_mul, zpow_ofNat]`. Conclude with `map_pow _ _ _`. Rewrite using `[e]`. Conclude with `H }`.
+
+Conclude with `⟨c, Iso.refl _, inferInstanceAs (IsMonHom (𝟙 P.A)), ⟨GlobalTheory.SiegelOfTheta.relAmple_of_pow P.isAb P.isLB dg one_le_two diag P.ample, fun T x hx => eq_one_of_lam P.isLB P.ktriv x hx⟩, lbIso_lam_pull P.isLB _ _ (congrArg₂ _ (Category.comp_id _) (Category.comp_id _))⟩`.
+-/
 theorem exists_siegPre : ∀ (O : Type) [CommRing O] [IsLocalRing O] (T : Type) [CommRing T] [IsNoetherianRing T] (P₀ : Out.PolAV (Geo.Tor.Sp T)) (io : T →+* O) (P : Out.PolAV (Geo.Tor.Sp O)) (φ : P.A.left ⟶ P₀.A.left), Geo.Tor.IsGrpPullback P.A P₀.A (Geo.Tor.spMap io) φ → Geo.Tor.LBIso P.L (P₀.L.pull φ) → P.g = P₀.g → ∀ (o : Type) [CommRing o] (em : o →+* O) (h M : ℕ) (ζ : o) (ze : Oˣ) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over (Geo.Tor.Sp O)) ⟶ P.A)), P.g = h → IsUnit (M : O) → (ze : O) = em ζ → (∀ (k : Type) [Field k] (gk : O →+* k), IsPrimitiveRoot (gk ze) M) → (∀ x y, lev (x + y) = lev x * lev y) → (∀ x, lev x ^ M = 1) → (∀ x y, Out.WeilIs P.A P.L M (lev x) (lev y) (Geo.Tor.unitOn (ze ^ Geo.Tor.omegaStd x y))) → ∃ (c : Geo.Tor.SiegPre h M ζ (Geo.Tor.spMap em)) (ψ : c.A ≅ P.A), IsMonHom ψ.hom ∧ c.Principal ∧ Geo.Tor.LBIso c.P ((abelian₂ P.A P.L).pull (lift (fst c.A c.A ≫ ψ.hom) (snd c.A c.A ≫ ψ.hom)).left) := by
   intro O _ _ T _ _ P₀ io P ϕ hpb _ hgg o _ em h k ζ ze lev hg hk hze hprim add tors weil
   have hL : Out.Laws := GlobalTheory.firstFiveLaws.1

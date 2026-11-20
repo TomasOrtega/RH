@@ -15,6 +15,13 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hc : I.comap j = Scheme.Hom.ker (Limits.pullback.fst j I.subschemeι)` using `rfl`. Establish `hcomm : lam ≫ j = 𝟙 I.subscheme ≫ I.subschemeι` using `by rw [hlam, Category.id_comp]`. Take `⟨e, hefst, hesnd⟩ : ∃ e : I.subscheme ⟶ Limits.pullback j I.subschemeι, e ≫ Limits.pullback.fst j I.subschemeι = lam ∧ e ≫ Limits.pullback.snd j I.subschemeι = 𝟙 I.subscheme` from `⟨Limits.pullback.lift lam (𝟙 I.subscheme) hcomm, Limits.pullback.lift_fst _ _ _, Limits.pullback.lift_snd _ _ _⟩`. Establish `hsndlam : Limits.pullback.snd j I.subschemeι ≫ lam = Limits.pullback.fst j I.subschemeι`. Rewrite using `[← cancel_mono j, Category.assoc, hlam, ← Limits.pullback.condition]`.
+
+Establish `: IsIso e`. Use `⟨Limits.pullback.snd j I.subschemeι, hesnd, ?_⟩` and prove the remaining obligations. Use `Limits.pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hefst, hsndlam, Category.id_comp]`. Rewrite using `[Category.assoc, hesnd, Category.comp_id, Category.id_comp]`.
+
+Rewrite using `[hc]`. Conclude with `(ker_eq_ker_of_isIso_comp lam (Limits.pullback.fst j I.subschemeι) e hefst).symm`.
+-/
 private theorem comap_eq_ker_of_mono {U V : Scheme.{u}} (j : U ⟶ V) [Mono j]
     (I : V.IdealSheafData) (lam : I.subscheme ⟶ U) (hlam : lam ≫ j = I.subschemeι) :
     I.comap j = Scheme.Hom.ker lam := by
@@ -36,10 +43,18 @@ private theorem comap_eq_ker_of_mono {U V : Scheme.{u}} (j : U ⟶ V) [Mono j]
   rw [hc]
   exact (ker_eq_ker_of_isIso_comp lam (Limits.pullback.fst j I.subschemeι) e hefst).symm
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι]`.
+-/
 theorem map_eq_ker_subschemeι_comp {U V : Scheme.{u}} (j : U ⟶ V) (K : U.IdealSheafData) :
     K.map j = Scheme.Hom.ker (K.subschemeι ≫ j) := by
   rw [Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι]
 
+/- English proof (translation)
+Establish `hle : Scheme.Hom.ker j ≤ Scheme.Hom.ker L.subschemeι`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `hL`. Establish `hfac : IsClosedImmersion.lift j L.subschemeι hle ≫ j = L.subschemeι`. Rewrite using `[IsClosedImmersion.lift_fac]`.
+
+Establish `hcomap : L.comap j = Scheme.Hom.ker (IsClosedImmersion.lift j L.subschemeι hle)` using `comap_eq_ker_of_mono j L (IsClosedImmersion.lift j L.subschemeι hle) hfac`. Rewrite using `[hK, hcomap, Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι, ← Scheme.Hom.ker_comp, hfac, Scheme.IdealSheafData.ker_subschemeι]`.
+-/
 theorem ker_subschemeι_comp_eq_of_ker_le {U V : Scheme.{u}} (j : U ⟶ V) [IsClosedImmersion j]
     (L : V.IdealSheafData) (hL : Scheme.Hom.ker j ≤ L) (K : U.IdealSheafData)
     (hK : K = L.comap j) :
@@ -54,6 +69,9 @@ theorem ker_subschemeι_comp_eq_of_ker_le {U V : Scheme.{u}} (j : U ⟶ V) [IsCl
   rw [hK, hcomap, Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι,
     ← Scheme.Hom.ker_comp, hfac, Scheme.IdealSheafData.ker_subschemeι]
 
+/- English proof (translation)
+Rewrite using `[Blowup.strictTransform_eq_ker, Blowup.strictTransformImmersion_eq, Blowup.strictTransformOpens_eq, ← complComapSupport_eq]`. Conclude with `ker_ι_preimage_comp_subschemeι_eq_ker_comap (D.comap π) (complComapSupport π Z)`.
+-/
 theorem strictTransform_eq_ker_complComapSupport {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) :
     Blowup.strictTransform π Z D =
@@ -64,6 +82,11 @@ theorem strictTransform_eq_ker_complComapSupport {X X₁ : Scheme.{u}} (π : X�
     ← complComapSupport_eq]
   exact ker_ι_preimage_comp_subschemeι_eq_ker_comap (D.comap π) (complComapSupport π Z)
 
+/- English proof (translation)
+Establish `key : ((Scheme.Hom.ker (Z.subschemeι ≫ j)).comap π').comap j₁ = Z.comap π`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, hsq, Scheme.IdealSheafData.comap_comp, ← map_eq_ker_subschemeι_comp, Blowup.comap_map_of_isClosedImmersion]`. Establish `h2 : ((Z.comap π).support : Set A₁) = ⇑j₁.base ⁻¹' ((((Scheme.Hom.ker (Z.subschemeι ≫ j)).comap π').support : Set A'₁))`. Rewrite using `[← key, Scheme.IdealSheafData.support_comap ((Scheme.Hom.ker (Z.subschemeι ≫ j)).comap π') j₁]`. Both sides reduce to the same expression.
+
+Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Establish `h1 : (((Opens.map j₁.base).obj (complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j)))) : Set A₁) = ⇑j₁.base ⁻¹' (((Scheme.Hom.ker (Z.subschemeι ≫ j)).comap π').support : Set A'₁)ᶜ` using `rfl`. Rewrite using `[h1, coe_complComapSupport, h2, Set.preimage_compl]`.
+-/
 theorem preimage_complComapSupport_eq {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A') [IsClosedImmersion j]
     (Z : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)
     (hsq : j₁ ≫ π' = π ≫ j) :
@@ -84,6 +107,13 @@ theorem preimage_complComapSupport_eq {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ 
       = ⇑j₁.base ⁻¹' (((Scheme.Hom.ker (Z.subschemeι ≫ j)).comap π').support : Set A'₁)ᶜ := rfl
   rw [h1, coe_complComapSupport, h2, Set.preimage_compl]
 
+/- English proof (translation)
+Establish `hm : (j₁ ∣_ V') ≫ V'.ι ≫ π' = (j₁ ⁻¹ᵁ V').ι ≫ π ≫ j`. Rewrite using `[← Category.assoc, morphismRestrict_ι, Category.assoc, hsq]`. Establish `hMcomap : ((((Scheme.Hom.ker (D.subschemeι ≫ j)).comap π').comap V'.ι).comap (j₁ ∣_ V')) = (D.comap π).comap (j₁ ⁻¹ᵁ V').ι`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.IdealSheafData.comap_comp (Scheme.Hom.ker (D.subschemeι ≫ j)) (j₁ ∣_ V') (V'.ι ≫ π'), Scheme.IdealSheafData.comap_comp (Scheme.Hom.ker (D.subschemeι ≫ j)) V'.ι π']`.
+
+Use `_ = (Scheme.Hom.ker (D.subschemeι ≫ j)).comap ((j₁ ⁻¹ᵁ V').ι ≫ π ≫ j) := by rw [hm]`. Use `_ = (D.comap π).comap (j₁ ⁻¹ᵁ V').ι := by`. Rewrite using `[Scheme.IdealSheafData.comap_comp (Scheme.Hom.ker (D.subschemeι ≫ j)) (j₁ ⁻¹ᵁ V').ι (π ≫ j), Scheme.IdealSheafData.comap_comp (Scheme.Hom.ker (D.subschemeι ≫ j)) π j, ← map_eq_ker_subschemeι_comp j D, Blowup.comap_map_of_isClosedImmersion j D]`. Establish `hmor : ((((D.comap π).comap (j₁ ⁻¹ᵁ V').ι).subschemeι ≫ (j₁ ⁻¹ᵁ V').ι) ≫ j₁) = ((((D.comap π).comap (j₁ ⁻¹ᵁ V').ι).subschemeι ≫ (j₁ ∣_ V')) ≫ V'.ι)`. Simplify using `only [Category.assoc, morphismRestrict_ι]`.
+
+Rewrite using `[← Scheme.Hom.ker_comp, hmor, Scheme.Hom.ker_comp (((D.comap π).comap (j₁ ⁻¹ᵁ V').ι).subschemeι ≫ (j₁ ∣_ V')) V'.ι, ker_subschemeι_comp_eq_of_ker_le (j₁ ∣_ V') (((Scheme.Hom.ker (D.subschemeι ≫ j)).comap π').comap V'.ι) hkerr ((D.comap π).comap (j₁ ⁻¹ᵁ V').ι) hMcomap.symm, Scheme …`.
+-/
 private theorem map_ker_subschemeι_comp_restrict {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j]
     (D : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁) [IsClosedImmersion j₁]
@@ -121,6 +151,13 @@ private theorem map_ker_subschemeι_comp_restrict {A A' A₁ A'₁ : Scheme.{u}}
       ((((Scheme.Hom.ker (D.subschemeι ≫ j)).comap π').comap V'.ι).subschemeι) V'.ι,
     Scheme.IdealSheafData.ker_subschemeι]
 
+/- English proof (translation)
+Establish `: IsClosedImmersion (j₁ ∣_ complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j)))` using `inferInstance`. Establish `hDle : Scheme.Hom.ker j ≤ Scheme.Hom.ker (D.subschemeι ≫ j)`. Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι, ← Scheme.IdealSheafData.map_bot j]`. Conclude with `Scheme.IdealSheafData.map_mono j bot_le`. Establish `hUeq : j₁ ⁻¹ᵁ complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j)) = complComapSupport π Z` using `preimage_complComapSupport_eq j Z π π' j₁ hsq`.
+
+Establish `hkerr : Scheme.Hom.ker (j₁ ∣_ complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))) ≤ ((Scheme.Hom.ker (D.subschemeι ≫ j)).comap π').comap (complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))).ι`. Rewrite using `[← ker_comap_ι_eq_ker_morphismRestrict j₁ (complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))), hker, strictTransform_comap_complComapSupport_ι π' (Scheme.Hom.ker (Z.subschemeι ≫ j)) (Scheme.Hom.ker j)]`. Conclude with `Scheme.IdealSheafData.comap_mono (complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))).ι (Scheme.IdealSheafData.comap_mono π' hDle)`. Establish `hTmap : Scheme.Hom.ker ((Blowup.strictTransform π Z D).subschemeι ≫ j₁) = (Blowup.strictTransform π Z D).map j₁`. Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι]`.
+
+Rewrite using `[hTmap, strictTransform_eq_ker_complComapSupport π Z D, ← hUeq, map_ker_subschemeι_comp_restrict j D π π' j₁ hsq (complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))) hkerr]`. Conclude with `(strictTransform_eq_ker_complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j)) (Scheme.Hom.ker (D.subschemeι ≫ j))).symm`.
+-/
 theorem image_strictTransform_eq_strictTransform_image {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j] (Z D : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)
     [IsClosedImmersion j₁] [IsNoetherian A₁] [IsNoetherian A'₁]
@@ -157,6 +194,9 @@ theorem image_strictTransform_eq_strictTransform_image {A A' A₁ A'₁ : Scheme
   exact (strictTransform_eq_ker_complComapSupport π' (Scheme.Hom.ker (Z.subschemeι ≫ j))
     (Scheme.Hom.ker (D.subschemeι ≫ j))).symm
 
+/- English proof (translation)
+Establish `hZ : Z.map j = Scheme.Hom.ker (Z.subschemeι ≫ j)` using `map_eq_ker_subschemeι_comp j Z`. Establish `hD : D.map j = Scheme.Hom.ker (D.subschemeι ≫ j)` using `map_eq_ker_subschemeι_comp j D`. Establish `hT : (Blowup.strictTransform π Z D).map j₁ = Scheme.Hom.ker ((Blowup.strictTransform π Z D).subschemeι ≫ j₁)` using `map_eq_ker_subschemeι_comp j₁ (Blowup.strictTransform π Z D)`. Rewrite using `[hT, hD, hZ]`. Conclude with `image_strictTransform_eq_strictTransform_image j Z D π π' j₁ hsq (by rw [hker, hZ])`.
+-/
 theorem map_strictTransform_eq_strictTransform_map {A A' A₁ A'₁ : Scheme.{u}} (j : A ⟶ A')
     [IsClosedImmersion j] (Z D : A.IdealSheafData) (π : A₁ ⟶ A) (π' : A'₁ ⟶ A') (j₁ : A₁ ⟶ A'₁)
     [IsClosedImmersion j₁] [IsNoetherian A₁] [IsNoetherian A'₁]

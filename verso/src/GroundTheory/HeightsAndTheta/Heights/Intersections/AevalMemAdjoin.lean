@@ -12,6 +12,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace FibreTranscendence
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f i hf => simp only [map_mul, hf, map_X, aeval_X]`.
+-/
 theorem aeval_red {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) L] {J : Type} (y : J → L)
     (g : MvPolynomial J ℤ) :
     aeval y (MvPolynomial.map (Int.castRingHom (ZMod p)) g) = aeval y g := by
@@ -20,6 +23,9 @@ theorem aeval_red {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p
   | add f g hf hg => simp only [map_add, hf, hg]
   | mul_X f i hf => simp only [map_mul, hf, map_X, aeval_X]
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [intCast_mem]`. Consider the case `add f g hf hg => simpa using add_mem hf hg`. Consider the case `mul_X f i hf`. Simplify using `using mul_mem hf (IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩)`.
+-/
 theorem aeval_mem_adjoin {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) L] {J : Type} (y : J → L)
     (g : MvPolynomial J ℤ) : aeval y g ∈ IntermediateField.adjoin (ZMod p) (Set.range y) := by
   induction g using MvPolynomial.induction_on with
@@ -30,6 +36,9 @@ theorem aeval_mem_adjoin {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra 
 
 variable {K : Type} {ι : K → Type}
 
+/- English proof (translation)
+Use extensionality with `f`. Take `⟨g, rfl⟩` from `PointVertical.red_surjective (ι := ι) p f`. Rewrite using `[PointVertical.mem_map_red_iff p hp, RingHom.mem_ker, ← hJ, RingHom.mem_ker]`. Conclude with `iff_of_eq (congrArg (· = 0) (aeval_red p y g))`.
+-/
 theorem ker_aeval_F {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) L] (y : (Σ k, ι k) → L)
     {J : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ J) (hJ : RingHom.ker (aeval y : MRing ι →ₐ[ℤ] L) = J) :
     RingHom.ker (aeval y : MRingOver (ZMod p) ι →ₐ[ZMod p] L) = J.map (PointVertical.red (ι := ι) p) := by
@@ -38,6 +47,9 @@ theorem ker_aeval_F {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra (ZMod
   rw [PointVertical.mem_map_red_iff p hp, RingHom.mem_ker, ← hJ, RingHom.mem_ker]
   exact iff_of_eq (congrArg (· = 0) (aeval_red p y g))
 
+/- English proof (translation)
+Establish `h` using `hE K ι (ZMod p) L y`. Rewrite `h` using `[ker_aeval_F p y hp hJ, hV.2]`. Establish `h' : (Algebra.trdeg (ZMod p) (IntermediateField.adjoin (ZMod p) (Set.range y))).toENat = ((n + Fintype.card K : ℕ) : ℕ∞)` using `by exact_mod_cast h.symm`. Conclude with `Cardinal.toENat_eq_natCast.mp h'`.
+-/
 theorem trdeg_adjoin [Fintype K] [∀ k, Fintype (ι k)] (hE : EvalKerKrullDim.Statement) {L : Type} [Field L] (p : ℕ) [Fact p.Prime] [Algebra (ZMod p) L]
     (y : (Σ k, ι k) → L) {J : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ J)
     (hJ : RingHom.ker (aeval y : MRing ι →ₐ[ℤ] L) = J) {n : ℕ} (hV : IsProjVarF (J.map (PointVertical.red (ι := ι) p)) n) :
@@ -52,6 +64,33 @@ end FibreTranscendence
 
 open FibreTranscendence in
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v p _ W' n hv hp hW hV G'`. Establish `hpI : ((p : ℕ) : MRing ι) ∈ imageZ v W'` using `by show rename v ((p : ℕ) : MRing ι) ∈ W'`. Simplify using `using hp`. Establish `hΦp : ((p : ℕ) : G'.Φ) = 0`. Establish `h` using `hpI`.
+
+Rewrite `h` using `[← G'.ker_x, RingHom.mem_ker]`. Simplify using `using h`. Establish `hΦ'p : ((p : ℕ) : G'.Φ') = 0`. Establish `h` using `hp`. Rewrite `h` using `[← G'.genericFibre_ker_target, RingHom.mem_ker]`.
+
+Simplify using `using h`. Establish `: CharP G'.Φ p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 hΦp`. Establish `: CharP G'.Φ' p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 hΦ'p`. Set `_ : Algebra (ZMod p) G'.Φ` to `ZMod.algebra _ p`. Set `_ : Algebra (ZMod p) G'.Φ'` to `ZMod.algebra _ p`.
+
+Establish `: IsScalarTower (ZMod p) G'.Φ G'.Φ'` using `IsScalarTower.of_algebraMap_eq fun a => DFunLike.congr_fun (Subsingleton.elim (algebraMap (ZMod p) G'.Φ') ((algebraMap G'.Φ G'.Φ').comp (algebraMap (ZMod p) G'.Φ))) a`. Establish `hx` using `trdeg_adjoin hE p G'.x hpI G'.ker_x (by rw [← PointVertical.imageVar_red p v hp]; exact hV)`. Establish `htop : IntermediateField.adjoin (ZMod p) (Set.range G'.x) = ⊤`. Use `eq_top_iff.2 fun c _ => ?_` and prove the remaining obligations. Take `⟨f, g, -, rfl⟩` from `G'.gen c`.
+
+Conclude with `div_mem (aeval_mem_adjoin p _ f) (aeval_mem_adjoin p _ g)`. Establish `hΦ : Algebra.trdeg (ZMod p) G'.Φ = ((n + Fintype.card K : ℕ) : Cardinal)`. Rewrite using `[← hx, htop, IntermediateField.topEquiv.trdeg_eq]`. Use `set E := IntermediateField.adjoin G'.Φ (Set.range fun q : (Σ k : FibreBlock κ, ι' k.1) => G'.x' ⟨q.1.1, q.2⟩) with hEdef`. Establish `hEeq : E.restrictScalars (ZMod p) = IntermediateField.adjoin (ZMod p) (Set.range G'.x')`.
+
+Use `le_antisymm (fun c hc => ?_) (IntermediateField.adjoin_le_iff.2 ?_)` and prove the remaining obligations. Establish `hle : E.toSubfield ≤ (IntermediateField.adjoin (ZMod p) (Set.range G'.x')).toSubfield`. Rewrite using `[hEdef, IntermediateField.adjoin_toSubfield]`. Use `Subfield.closure_le.2 (Set.union_subset ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`.
+
+Take `⟨f, g, -, rfl⟩` from `G'.gen c`. Establish `key : ∀ f : MRing ι, algebraMap G'.Φ G'.Φ' (aeval G'.x f) = aeval G'.x' (rename v f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`.
+
+Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f i hf => simp only [map_mul, hf, aeval_X, rename_X, G'.compat]`. Rewrite using `[map_div₀, key, key]`. Conclude with `div_mem (aeval_mem_adjoin p _ _) (aeval_mem_adjoin p _ _)`. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨_, rfl⟩`. Conclude with `hle hc`. Introduce and unpack `_ ⟨q, rfl⟩ show G'.x' q ∈ E`. Distinguish the cases in `hq : q.1 ∈ Set.range κ`. Take `⟨q0, rfl⟩` from `hv.2.2.2 q hq`.
+
+Rewrite using `[G'.compat]`. Conclude with `E.algebraMap_mem _`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨⟨q.1, hq⟩, q.2⟩, rfl⟩`. Establish `hEt : Algebra.trdeg (ZMod p) E = ((n + Fintype.card K' : ℕ) : Cardinal)`. Rewrite using `[← trdeg_adjoin hE p G'.x' hp G'.genericFibre_ker_target hW, ← hEeq]`.
+
+Both sides reduce to the same expression. Establish `hadd` using `trdeg_add_eq (ZMod p) G'.Φ (A := E)`. Rewrite `hadd` using `[hΦ, hEt]`. Establish `hc : Fintype.card (FibreBlock κ) + Fintype.card K = Fintype.card K'`. Simplify using `only [← Nat.card_eq_fintype_card]`.
+
+Establish `h1` using `Set.ncard_add_ncard_compl (Set.range κ)`. Rewrite `h1` using `[Set.ncard_range_of_injective hv.1, add_comm]`. Conclude with `h1`. Establish `hlt : Algebra.trdeg G'.Φ E < Cardinal.aleph0`. Use `lt_of_le_of_lt (le_add_self.trans_eq hadd) Cardinal.natCast_lt_aleph0` and prove the remaining obligations.
+
+Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.1 hlt`. Rewrite `hadd`, the goal using `[hm]`. Establish `: n + Fintype.card K + m = n + Fintype.card K'` using `by exact_mod_cast hadd`. Conclude with `(by omega : m = Fintype.card (FibreBlock κ))` after adjusting the coercions.
+-/
 theorem FibreTranscendenceDegreeAlt.proof (hE : EvalKerKrullDim.Statement) : FibreTranscendenceDegreeAlt.Statement := by
   intro K _ ι _ K' _ ι' _ κ v p _ W' n hv hp hW hV G'
   classical

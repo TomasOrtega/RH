@@ -35,6 +35,17 @@ namespace MainStatements.WeightKernel.RegInt
 
 variable {D : D7} {V : HSp D} {r : ℕ}
 
+/- English proof (translation)
+Use `set d := min c 1 with hd`. Establish `hd0 : 0 < d` using `lt_min hc one_pos`. Establish `hd1 : d ≤ 1` using `min_le_right _ _`. Use `⟨d ^ r, pow_pos hd0 _, fun t ht i => ?_⟩` and prove the remaining obligations. Establish `key : ∀ k : ℕ, ∀ i : Fin r, r - i.val = k + 1 → d ^ (k + 1) ≤ t i`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i hi`. Establish `: i.val + 1 = r` using `by have := i.2; omega`.
+
+Rewrite using `[zero_add, pow_one]`. Conclude with `(min_le_left c 1).trans (ht.2.2 i this)`. Consider the case `succ k ih`. Introduce `i hi`. Establish `hlt : i.val + 1 < r` using `by have := i.2; omega`.
+
+Establish `h1` using `ih ⟨i.val + 1, hlt⟩ (by simp only; omega)`. Establish `h2` using `ht.2.1 i ⟨i.val + 1, hlt⟩ rfl`. Establish `h3` using `ht.1 ⟨i.val + 1, hlt⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `hi` using `i.2`.
+
+Take `⟨k, hk⟩ : ∃ k, r - i.val = k + 1` from `⟨r - i.val - 1, by omega⟩`. Conclude with `(pow_le_pow_of_le_one hd0.le hd1 (by omega)).trans (key k i hk)`.
+-/
 theorem cone_lower {c : ℝ} (hc : 0 < c) : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ i, c₀ ≤ t i := by
   set d := min c 1 with hd
   have hd0 : 0 < d := lt_min hc one_pos
@@ -62,6 +73,15 @@ theorem cone_lower {c : ℝ} (hc : 0 < c) : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ t �
   obtain ⟨k, hk⟩ : ∃ k, r - i.val = k + 1 := ⟨r - i.val - 1, by omega⟩
   exact (pow_le_pow_of_le_one hd0.le hd1 (by omega)).trans (key k i hk)
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∀ i : Fin r, r - i.val = k + 1 → t i ≤ ρ ^ (k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i hi`.
+
+Establish `h1` using `h i`. Rewrite `h1` using `[root, dif_neg (by have := i.2; omega)]`. Simplify using `using h1`. Consider the case `succ k ih`. Introduce `i hi`.
+
+Establish `hlt : i.val + 1 < r` using `by have := i.2; omega`. Establish `h1` using `ih ⟨i.val + 1, hlt⟩ (by simp only; omega)`. Establish `h2` using `h i`. Rewrite `h2` using `[root, dif_pos hlt, div_le_iff₀ (ht _)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hi` using `i.2`. Take `⟨k, hk⟩ : ∃ k, r - i.val = k + 1` from `⟨r - i.val - 1, by omega⟩`. Conclude with `(key k i hk).trans (pow_le_pow_right₀ hρ (by omega))`.
+-/
 theorem le_pow_of_root {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) {ρ : ℝ} (hρ : 1 ≤ ρ) (h : ∀ j, root t j ≤ ρ) (i : Fin r) :
     t i ≤ ρ ^ r := by
   have key : ∀ k : ℕ, ∀ i : Fin r, r - i.val = k + 1 → t i ≤ ρ ^ (k + 1) := by
@@ -85,6 +105,9 @@ theorem le_pow_of_root {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) {ρ : ℝ} (hρ
   obtain ⟨k, hk⟩ : ∃ k, r - i.val = k + 1 := ⟨r - i.val - 1, by omega⟩
   exact (key k i hk).trans (pow_le_pow_right₀ hρ (by omega))
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_max_le {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) {ρ : ℝ} (hρ : 1 ≤ ρ) (h : ∀ j, root t j ≤ ρ) :
     ∏ i, max (t i) 1 ≤ ρ ^ (r * r) := by
   calc ∏ i, max (t i) 1 ≤ ∏ _i : Fin r, ρ ^ r :=
@@ -92,11 +115,19 @@ theorem prod_max_le {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) {ρ : ℝ} (hρ : 
           max_le (le_pow_of_root ht hρ h i) (one_le_pow₀ hρ)
     _ = ρ ^ (r * r) := by simp [pow_mul]
 
+/- English proof (translation)
+Use `Finset.prod_le_prod (s := Finset.univ) (f := fun _ : Fin r => (1 : ℝ)) (g := fun i => max (t i) 1) (fun _ _ => zero_le_one) fun i _ => le_max_right _ _` as an intermediate fact. Simplify using `using this`.
+-/
 theorem one_le_prod_max (t : Fin r → ℝ) : 1 ≤ ∏ i, max (t i) 1 := by
   have := Finset.prod_le_prod (s := Finset.univ) (f := fun _ : Fin r => (1 : ℝ)) (g := fun i => max (t i) 1)
     (fun _ _ => zero_le_one) fun i _ => le_max_right _ _
   simpa using this
 
+/- English proof (translation)
+Establish `hρ0 : 0 < ρ` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, inv_pow, ← pow_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ ∏ i, (t i)⁻¹ ^ m := Finset.prod_le_prod (fun i _ => by positivity) fun i _ => by gcongr`. Conclude with `ht i`. Conclude with `le_pow_of_root ht hρ h i`.
+-/
 theorem inv_pow_le_prod {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) {ρ : ℝ} (hρ : 1 ≤ ρ) (h : ∀ j, root t j ≤ ρ) (m : ℕ) :
     ρ⁻¹ ^ (r * r * m) ≤ ∏ i, (t i)⁻¹ ^ m := by
   have hρ0 : 0 < ρ := by linarith
@@ -108,6 +139,29 @@ theorem inv_pow_le_prod {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) {ρ : ℝ} (h�
         · exact ht i
         · exact le_pow_of_root ht hρ h i
 
+/- English proof (translation)
+Use `set S := hfin.toFinset with hS`. Establish `hSm : ∀ δ, δ ∈ S ↔ h δ ≠ 0 ∧ δ ∈ Cl` using `fun δ => by simp [hS]`. Establish `e0 : ∑' δ : Cl, h δ = ∑ δ ∈ S, h δ`. Rewrite using `[tsum_subtype Cl h]`. Use `(tsum_eq_sum (s := S) fun δ hδ => ?_).trans (Finset.sum_congr rfl fun δ hδ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hc : δ ∈ Cl`. Rewrite using `[Set.indicator_of_mem hc]`. Assume the negation of the conclusion as `hne`. Conclude with `hδ ((hSm δ).2 ⟨hne, hc⟩)`. Rewrite using `[Set.indicator_of_notMem hc]`.
+
+Rewrite using `[Set.indicator_of_mem ((hSm δ).1 hδ).2]`. Set `q : G → G ⧸ N` to `QuotientGroup.mk`. Establish `e1 : ∑ δ ∈ S, h δ = ∑ b ∈ S.image q, ∑ δ ∈ S with q δ = b, h δ` using `(Finset.sum_fiberwise_of_maps_to (fun δ hδ => Finset.mem_image_of_mem q hδ) _).symm`. Establish `e2 : ∀ b ∈ S.image q, ‖∑ δ ∈ S with q δ = b, h δ‖ ≤ β`. Introduce `b hb`.
+
+Take `⟨δ₀, hδ₀, rfl⟩` from `Finset.mem_image.1 hb`. Take `⟨hne, hcl⟩` from `(hSm δ₀).1 hδ₀`. Use `le_trans (le_of_eq ?_) (h3 δ₀ hcl hne)` and prove the remaining obligations. Use `congr 1`. Establish `hinj : Function.Injective fun ν : N => δ₀ * (ν : G)` using `fun a b e => Subtype.ext (mul_left_cancel e)`.
+
+Use `set u : G → ℂ := fun δ => if q δ = q δ₀ then h δ else 0 with hu`. Establish `hq : ∀ ν : N, q (δ₀ * ν) = q δ₀` using `fun ν => by`. Conclude with `QuotientGroup.eq.2 (by simp)`. Establish `e3 : ∑' ν : N, h (δ₀ * ν) = ∑' ν : N, u (δ₀ * ν)` using `tsum_congr fun ν => by simp only [hu, hq ν, if_true]`. Establish `hsupp : Function.support u ⊆ Set.range fun ν : N => δ₀ * (ν : G)`.
+
+Introduce `δ hδ`. Establish `hδ' : q δ = q δ₀`. Assume the negation of the conclusion as `hn; exact hδ (by simp only [hu, if_neg hn])`. Establish `: δ₀⁻¹ * δ ∈ N` using `QuotientGroup.eq.1 hδ'.symm`. Conclude with `⟨⟨_, this⟩, by simp⟩`.
+
+Rewrite using `[e3, hinj.tsum_eq hsupp]`. Establish `e4 : ∑' δ, u δ = ∑ δ ∈ S with q δ = q δ₀, u δ`. Use `tsum_eq_sum fun δ hδ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne'`. Establish `hq' : q δ = q δ₀`.
+
+Assume the negation of the conclusion as `hn; exact hne' (by simp only [hu, if_neg hn])`. Establish `hhδ : h δ ≠ 0`. Introduce `h0; exact hne' (by simp only [hu, if_pos hq', h0])`. Establish `hN : δ₀⁻¹ * δ ∈ N` using `QuotientGroup.eq.1 hq'.symm`. Establish `hc` using `h1 δ₀ hcl hne _ hN`.
+
+Rewrite `hc` using `[mul_inv_cancel_left]`. Conclude with `hδ (Finset.mem_filter.2 ⟨(hSm δ).2 ⟨hhδ, hc⟩, hq'⟩)`. Rewrite using `[e4]`. Conclude with `Finset.sum_congr rfl fun δ hδ => by simp only [hu, if_pos (Finset.mem_filter.1 hδ).2]`. Establish `hcardS : ((S.image q).card : ℝ) ≤ κ`.
+
+Use `le_trans ?_ hcard` and prove the remaining obligations. Rewrite using `[Set.ncard_eq_toFinset_card _ hfin]`. Conclude with `Finset.card_image_le` after adjusting the coercions. Rewrite using `[e0, e1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `using norm_sum_le_of_le (S.image q) e2`. Use `_ ≤ κ * β := by gcongr`.
+-/
 theorem coset_sum {G : Type} [Group G] (N : Subgroup G) (Cl : Set G) (h : G → ℂ) {β : ℝ} (hβ : 0 ≤ β) {κ : ℝ}
     (hfin : (Function.support h ∩ Cl).Finite) (hcard : (((Function.support h ∩ Cl).ncard : ℕ) : ℝ) ≤ κ)
     (h1 : ∀ δ ∈ Cl, h δ ≠ 0 → ∀ ν ∈ N, δ * ν ∈ Cl)
@@ -168,6 +222,15 @@ theorem coset_sum {G : Type} [Group G] (N : Subgroup G) (Cl : Set G) (h : G → 
         simpa using norm_sum_le_of_le (S.image q) e2
     _ ≤ κ * β := by gcongr
 
+/- English proof (translation)
+Use `set S := hfin.toFinset with hS`. Establish `hSm : ∀ δ, δ ∈ S ↔ h δ ≠ 0 ∧ δ ∈ Cl` using `fun δ => by simp [hS]`. Establish `e0 : ∑' δ : Cl, h δ = ∑ δ ∈ S, h δ`. Rewrite using `[tsum_subtype Cl h]`. Use `(tsum_eq_sum (s := S) fun δ hδ => ?_).trans (Finset.sum_congr rfl fun δ hδ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hc : δ ∈ Cl`. Rewrite using `[Set.indicator_of_mem hc]`. Assume the negation of the conclusion as `hne`. Conclude with `hδ ((hSm δ).2 ⟨hne, hc⟩)`. Rewrite using `[Set.indicator_of_notMem hc]`.
+
+Rewrite using `[Set.indicator_of_mem ((hSm δ).1 hδ).2]`. Establish `hcardS : (S.card : ℝ) ≤ κ`. Use `le_trans ?_ hcard` and prove the remaining obligations. Rewrite using `[Set.ncard_eq_toFinset_card _ hfin]`. Rewrite using `[e0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `using norm_sum_le_of_le S (fun δ _ => hM δ)`. Use `_ ≤ κ * M := by gcongr`.
+-/
 theorem set_sum_le {G : Type} (Cl : Set G) (h : G → ℂ) {M : ℝ} (hM : ∀ g, ‖h g‖ ≤ M) (hM0 : 0 ≤ M) {κ : ℝ}
     (hfin : (Function.support h ∩ Cl).Finite) (hcard : (((Function.support h ∩ Cl).ncard : ℕ) : ℝ) ≤ κ) :
     ‖∑' δ : Cl, h δ‖ ≤ κ * M := by
@@ -189,6 +252,13 @@ theorem set_sum_le {G : Type} (Cl : Set G) (h : G → ℂ) {M : ℝ} (hM : ∀ g
         simpa using norm_sum_le_of_le S (fun δ _ => hM δ)
     _ ≤ κ * M := by gcongr
 
+/- English proof (translation)
+Establish `hmem : ∀ δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) γ, (δ : GA D V) ∈ GQ V` using `fun ⟨δ, k, hk, e⟩ => e ▸ mul_mem (mul_mem (inv_mem hk) hγ) hk`. Set `ι : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) γ → GQ V` to `fun δ => ⟨δ, hmem δ⟩`. Establish `hι : Function.Injective ι` using `fun a b e => Subtype.ext (congrArg (fun z : GQ V => (z : GA D V)) e)`. Establish `hlf : LocallyFinite fun δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) γ => Function.support fun x : GA D V => f (x⁻¹ * δ * x)`. Introduce `x`.
+
+Take `⟨C, hC, hx⟩` from `exists_compact_mem_nhds x`. Use `⟨C, hx, ((GlobalTheory.AutomorphicL2KernelContinuous.finite_contributing (Γ := GQ V) hc hC hC).preimage hι.injOn).subset ?_⟩` and prove the remaining obligations. Introduce and unpack `δ ⟨y, h, h1⟩`. Conclude with `⟨y, h1, y, h1, h⟩`. Establish `h : Continuous fun x : GA D V => ∑ᶠ δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) γ, f (x⁻¹ * δ * x)` using `continuous_finsum (fun δ => by fun_prop) hlf`.
+
+Use `h.congr fun x => ?_` and prove the remaining obligations. Use `(tsum_eq_finsum ?_).symm` and prove the remaining obligations. Conclude with `((GlobalTheory.AutomorphicL2Unitary.finite_support_kernel (Γ := GQ V) hc x x).preimage hι.injOn).subset fun δ hδ => hδ`.
+-/
 theorem continuous_classKernel {f : GA D V → ℂ} (hf : Continuous f) (hc : HasCompactSupport f) {γ : GA D V}
     (hγ : γ ∈ GQ V) : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) γ f) := by
   have hmem : ∀ δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) γ, (δ : GA D V) ∈ GQ V :=
@@ -208,6 +278,9 @@ theorem continuous_classKernel {f : GA D V → ℂ} (hf : Continuous f) (hc : Ha
   refine (tsum_eq_finsum ?_).symm
   exact ((GlobalTheory.AutomorphicL2Unitary.finite_support_kernel (Γ := GQ V) hc x x).preimage hι.injOn).subset fun δ hδ => hδ
 
+/- English proof (translation)
+Rewrite using `[show GQ V = (rat V).range from (range_ratEmb ..).symm]`. Conclude with `⟨g, rfl⟩`.
+-/
 theorem rat_mem (g : GF V) : rat V g ∈ GQ V := by
   rw [show GQ V = (rat V).range from (range_ratEmb ..).symm]; exact ⟨g, rfl⟩
 
@@ -223,10 +296,16 @@ def classEquiv (γ : GF V) : {δ : GF V | IsConj γ δ} ≃ GlobalTheory.Indefin
       refine ⟨⟨c⁻¹ * γ * c, isConj_iff.2 ⟨c⁻¹, by group⟩⟩, Subtype.ext ?_⟩
       simp only [map_mul, map_inv]⟩
 
+/- English proof (translation)
+The claim follows from `((classEquiv γ).tsum_eq fun δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) (rat V γ) => f (x⁻¹ * δ * x)).symm`.
+-/
 theorem classKernel_eq (γ : GF V) (f : GA D V → ℂ) (x : GA D V) :
     GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f x = ∑' δ : {δ : GF V | IsConj γ δ}, f (x⁻¹ * rat V δ * x) :=
   ((classEquiv γ).tsum_eq fun δ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ratClass (GQ V) (rat V γ) => f (x⁻¹ * δ * x)).symm
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `isConj_iff.1 h`. Use `show IsRegSS ((g.1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * γ.1.1 * ((g.1)⁻¹ : GL (Fin V.rank) D.host.E).1)`. Unfold `IsRegSS`. Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `hγ`.
+-/
 theorem regSS_of_conj {γ δ : GF V} (h : IsConj γ δ) (hγ : IsRegSS γ.1.1) : IsRegSS δ.1.1 := by
   obtain ⟨g, rfl⟩ := isConj_iff.1 h
   show IsRegSS ((g.1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * γ.1.1 * ((g.1)⁻¹ : GL (Fin V.rank) D.host.E).1)
@@ -234,12 +313,74 @@ theorem regSS_of_conj {γ δ : GF V} (h : IsConj γ δ) (hγ : IsRegSS γ.1.1) :
   rw [Matrix.coe_units_inv, Matrix.charpoly_units_conj]
   exact hγ
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem conj_id {G : Type} [Group G] (a ω d n : G) :
     (a * ω)⁻¹ * (d * n) * (a * ω) = ω⁻¹ * (a⁻¹ * d * a) * (a⁻¹ * n * a) * ω := by group
 
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.SiegelSet in
 
+/- English proof (translation)
+Take `⟨C₀, hC₀, hC₀m⟩` from `hconj`. Take `⟨hfc, hfs⟩` from `GlobalTheory.Orb.continuous_of_mem_ccAd hf`. Establish `hS : IsCompact (tsupport f)` using `hfs.isCompact`. Use `set W : Set (GA D V) := C₀ * (K : Set (GA D V)) with hWdef`. Establish `hWc : IsCompact W` using `hC₀.mul hK`.
+
+Use `set C₁ : Set (GA D V) := W * tsupport f * W⁻¹ with hC₁`. Establish `hC₁c : IsCompact C₁` using `(hWc.mul hS).mul hWc.inv`. Take `⟨A₁, B₁, hcnt⟩` from `GlobalTheory.T.finite_lattice_points_in_siegel_set_bound D V r X Y hW c hc C₁ hC₁c`. Establish `hdec` using `fun j : Fin r => MainStatements.WeightKernel.Dec.decay_holds D V r X Y hW c hc j f hf (hcusp _ (IsoFlag.proper_single _)) (W⁻¹ * C₁) W (hWc.inv.mul hC₁c) hWc`. Use `choose A hA using hdec`.
+
+Take `⟨t1, ht1⟩` from `GlobalTheory.CompanionTheory.FlagKey.flag_key _ _ D.sp.cm.sig (isCMExt_host D) V.rank V.gram (GlobalTheory.Doubling.isHermND_gram V) r X Y hW Ω hΩ hΩP K hK c hc (tsupport f) hS`. Take `⟨c₀, hc₀, hlow⟩` from `cone_lower (r := r) hc`. Take `⟨M, hM⟩` from `hfc.bounded_above_of_compact_support hfs`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 1)`. Use `set R₀ : ℝ := max 1 (max t1 (t1 / c₀)) with hR₀`.
+
+Establish `hR1 : 1 ≤ R₀` using `le_max_left _ _`. Establish `hRt : t1 ≤ R₀` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hRt' : t1 / c₀ ≤ R₀` using `(le_max_right _ _).trans (le_max_right _ _)`. Use `set A₂ : ℕ := ∑ j, A j with hA₂`. Use `set m' : ℕ := r * r * (A₁ + A₂ + m) with hm'`.
+
+Use `choose Bj hBj using fun j => hA j m'`. Use `set B₂ : ℝ := ∑ j, |Bj j| with hB₂`. Establish `hB₂0 : 0 ≤ B₂` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `set B₁' : ℝ := |B₁| with hB₁'`. Establish `hB₁0 : 0 ≤ B₁'` using `abs_nonneg _`.
+
+Use `⟨B₁' * M * R₀ ^ (r * r * (A₁ + m)) + B₁' * B₂, by positivity, ?_⟩` and prove the remaining obligations. Introduce `p hp t ht a ha k hk`. Establish `tpos` using `ht.1`. Use `set T : ℝ := ∏ i, max (t i) 1 with hT`. Establish `hT1 : 1 ≤ T` using `one_le_prod_max t`.
+
+Use `set ω : GA D V := a⁻¹ * p * a * k with hω`. Establish `hωW : ω ∈ W` using `Set.mul_mem_mul (hC₀m p hp t ht a ha) hk`. Establish `hx : p * a * k = a * ω` using `by rw [hω]; group`. Use `set x : GA D V := p * a * k with hxdef`. Use `set h : GF V → ℂ := fun δ => f (x⁻¹ * rat V δ * x) with hh`.
+
+Use `set Cl : Set (GF V) := {δ | IsConj γ δ} with hCl`. Establish `hsub : ∀ δ, h δ ≠ 0 → a⁻¹ * rat V δ * a ∈ C₁`. Introduce `δ hδ`. Establish `h1 : x⁻¹ * rat V δ * x ∈ tsupport f` using `subset_tsupport f hδ`. Establish `e : a⁻¹ * rat V δ * a = ω * (x⁻¹ * rat V δ * x) * ω⁻¹` using `by rw [hx]; group`.
+
+Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hωW h1) (Set.inv_mem_inv.2 hωW)`. Take `⟨hfin0, hcard0⟩` from `hcnt t ht a ha`. Establish `hss : Function.support h ∩ Cl ⊆ {δ : GF V | a⁻¹ * rat V δ * a ∈ C₁}` using `fun δ hδ => hsub δ hδ.1`. Establish `hfin : (Function.support h ∩ Cl).Finite` using `hfin0.subset hss`.
+
+Establish `hcard : (((Function.support h ∩ Cl).ncard : ℕ) : ℝ) ≤ B₁' * T ^ A₁`. Establish `h1 : (Function.support h ∩ Cl).ncard ≤ {δ : GF V | a⁻¹ * rat V δ * a ∈ C₁}.ncard` using `Set.ncard_le_ncard hss hfin0`. Establish `h2 : B₁ * T ^ A₁ ≤ B₁' * T ^ A₁` using `by gcongr; exact le_abs_self _`. Conclude with `le_trans (by exact_mod_cast h1) (hcard0.trans h2)`. Rewrite using `[classKernel_eq]`.
+
+Distinguish the cases in `hsh : ∀ j, root t j ≤ R₀`. Establish `h1` using `set_sum_le Cl h (fun _ => hM _) hM0 hfin hcard`. Establish `h2 : T ≤ R₀ ^ (r * r)` using `prod_max_le tpos hR1 hsh`. Establish `h3` using `inv_pow_le_prod tpos hR1 hsh m`. Establish `hR0 : 0 < R₀` using `by linarith`.
+
+Establish `h4 : T ^ A₁ ≤ R₀ ^ (r * r * A₁)`. Rewrite using `[pow_mul]`. Use `gcongr`. Establish `hP : 0 ≤ ∏ i, (t i)⁻¹ ^ m` using `Finset.prod_nonneg fun i _ => by have := tpos i; positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_add, pow_add, inv_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ B₁' * M * R₀ ^ (r * r * (A₁ + m)) * ∏ i, (t i)⁻¹ ^ m := by gcongr`. Use `_ ≤ _ := by`. Rewrite using `[add_mul]`.
+
+Establish `: 0 ≤ B₁' * B₂ * ∏ i, (t i)⁻¹ ^ m` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hsh`. Take `⟨j₁, hj₁⟩` from `hsh`. Take `⟨j, -, hjmax⟩` from `Finset.exists_max_image Finset.univ (root t) ⟨j₁, Finset.mem_univ _⟩`.
+
+Use `set ρ : ℝ := root t j with hρ`. Establish `hρR : R₀ < ρ` using `hj₁.trans_le (hjmax j₁ (Finset.mem_univ _))`. Establish `hρ1 : 1 ≤ ρ` using `hR1.trans hρR.le`. Establish `hρ0 : 0 < ρ` using `by linarith`. Establish `hall : ∀ i, root t i ≤ ρ` using `fun i => hjmax i (Finset.mem_univ _)`.
+
+Establish `hc1 : t1 < t j`. Distinguish the cases in `hl : j.val + 1 < r`. Establish `e : ρ = t j / t ⟨j.val + 1, hl⟩` using `by rw [hρ, root, dif_pos hl]`. Establish `hp` using `tpos ⟨j.val + 1, hl⟩`. Establish `h2 : R₀ * t ⟨j.val + 1, hl⟩ < t j`.
+
+Rewrite `hρR` using `[e, lt_div_iff₀ hp]`. Conclude with `hρR`. Establish `h3` using `hlow t ht ⟨j.val + 1, hl⟩`. Establish `h4 : t1 / c₀ * c₀ ≤ R₀ * t ⟨j.val + 1, hl⟩`. Establish `: 0 ≤ R₀` using `by linarith`.
+
+Conclude with `mul_le_mul hRt' h3 hc₀.le this`. Rewrite `h4` using `[div_mul_cancel₀ _ hc₀.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : ρ = t j` using `by rw [hρ, root, dif_neg hl]`. Rewrite using `[← e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc2 : ∀ j' : Fin r, j'.val = j.val + 1 → t1 * t j' < t j`. Introduce `j' hj'`. Establish `hl : j.val + 1 < r` using `hj' ▸ j'.2`. Establish `e : ρ = t j / t ⟨j.val + 1, hl⟩` using `by rw [hρ, root, dif_pos hl]`.
+
+Establish `e' : j' = ⟨j.val + 1, hl⟩` using `Fin.ext hj'`. Establish `hp` using `tpos j'`. Rewrite `hp`, the goal using `[e', ]`. Rewrite `hρR` using `[e, lt_div_iff₀ hp]`. Conclude with `lt_of_le_of_lt (by gcongr) hρR`.
+
+Establish `hstab : ∀ δ, h δ ≠ 0 → δ ∈ (frameFlag (isIsoFrame_firstCols hW j)).parRat D.sp.cm`. Introduce `δ hδ`. Conclude with `GlobalTheory.T.mem_parabolic_of_flag_preserving D V r X Y hW j δ (ht1 p hp t ht a ha k hk δ (subset_tsupport f hδ) j hc1 hc2)`. Establish `hmul : ∀ δ ∈ Cl, h δ ≠ 0 → ∀ ν ∈ (frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm, δ * ν ∈ Cl`. Introduce `δ hδ hne ν hν`.
+
+Take `⟨g, hg⟩` from `GlobalTheory.T.regular_semisimple_conjugate_unipotent_translate D V _ _ (isIsoFrame_firstCols hW j) δ (regSS_of_conj hδ hreg) (hstab δ hne) ν hν`. Conclude with `IsConj.trans hδ (isConj_iff.2 ⟨g, hg⟩)`. Establish `hT' : T ≤ ρ ^ (r * r)` using `prod_max_le tpos hρ1 hall`. Use `set β : ℝ := B₂ * T ^ A₂ * ρ⁻¹ ^ m' with hβ`. Establish `hβ0 : 0 ≤ β` using `by positivity`.
+
+Establish `hsum : ∀ δ ∈ Cl, h δ ≠ 0 → ‖∑' ν : (frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm, h (δ * ν)‖ ≤ β`. Introduce `δ hδ hne`. Establish `hy` using `hsub δ hne`. Establish `hb` using `hBj j t ht a ha (ω⁻¹ * (a⁻¹ * rat V δ * a)) (Set.mul_mem_mul (Set.inv_mem_inv.2 hωW) hy) ω hωW`. Establish `e : ∀ ν : (frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm, h (δ * ν) = f (ω⁻¹ * (a⁻¹ * rat V δ * a) * (a⁻¹ * rat V ν * a) * ω)` using `fun ν => by`.
+
+Establish `e1 : (rat V) (δ * (ν : GF V)) = rat V δ * rat V ν` using `map_mul _ _ _`. Simplify using `only [hh, e1, hx]`. Rewrite using `[conj_id]`. Simplify using `only [e]`. Use `hb.trans ?_` and prove the remaining obligations.
+
+Establish `h1 : Bj j ≤ B₂` using `(le_abs_self _).trans (Finset.single_le_sum (f := fun j => |Bj j|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j))`. Establish `h2 : T ^ A j ≤ T ^ A₂` using `pow_le_pow_right₀ hT1 (Finset.single_le_sum (f := A) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j))`. Establish `h3 : (0 : ℝ) ≤ ρ⁻¹ ^ m'` using `by positivity`. Establish `h4 : (0 : ℝ) ≤ T ^ A j` using `by positivity`. Rewrite using `[hβ]`.
+
+Use `gcongr`. Establish `h1` using `coset_sum _ Cl h hβ0 hfin hcard hmul hsum`. Establish `hP` using `inv_pow_le_prod tpos hρ1 hall m`. Establish `hP0 : 0 ≤ ∏ i, (t i)⁻¹ ^ m` using `le_trans (by positivity) hP`. Establish `h5 : T ^ A₁ ≤ ρ ^ (r * r * A₁)` using `by rw [pow_mul]; gcongr`.
+
+Establish `h6 : T ^ A₂ ≤ ρ ^ (r * r * A₂)` using `by rw [pow_mul]; gcongr`. Establish `h7 : ρ ^ (r * r * A₁) * ρ ^ (r * r * A₂) * ρ⁻¹ ^ m' = ρ⁻¹ ^ (r * r * m)`. Establish `ha : ρ ^ (r * r * A₁) ≠ 0` using `by positivity`. Establish `hb : ρ ^ (r * r * A₂) ≠ 0` using `by positivity`. Rewrite using `[hm', mul_add, mul_add, pow_add, pow_add, inv_pow, inv_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul]`. Establish `: 0 ≤ B₁' * M * R₀ ^ (r * r * (A₁ + m)) * ∏ i, (t i)⁻¹ ^ m`. Establish `: 0 < R₀` using `by linarith`.
+
+Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem class_bound {X Y : Matrix (Fin V.rank) (Fin r) D.host.E} (hW : IsWittFrame D.sp.cm.sig V.gram X Y)
     {K : Subgroup (GA D V)} {Ω : Set (GA D V)} {c : ℝ} (hK : IsCompact (K : Set (GA D V))) (hΩ : IsCompact Ω)
     (hΩP : Ω ⊆ minParOne D.sp.cm.sig V.gram X) (hc : 0 < c)
@@ -408,6 +549,19 @@ end MainStatements.WeightKernel.RegInt
 namespace MainStatements.WeightKernel.RegInt
 open GlobalTheory.SiegelSet in
 
+/- English proof (translation)
+Introduce `hcore D V μ _ f hf hcusp γ hreg`. Establish `hknown` using `PositivityTheory.ThKR.siegel_of_core hcore`. Establish `hcm` using `isCMExt_host D`. Establish `hJ` using `GlobalTheory.Doubling.isHermND_gram V`. Take `⟨r, X, Y, hWF⟩` from `exists_isWittFrame hcm hJ`.
+
+Take `⟨K, Ω, c, hK, hΩ, hΩP, hc, -, hcl, hcov, hconj, hmeas, -, -⟩` from `hknown _ _ D.sp.cm.sig hcm _ _ hJ r X Y hWF`. Take `⟨-, Cm, hbd⟩` from `hmeas μ inferInstance`. Take `⟨hfc, hfs⟩` from `GlobalTheory.Orb.continuous_of_mem_ccAd hf`. Establish `hcont : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f)` using `continuous_classKernel hfc hfs (rat_mem γ)`. Use `GlobalTheory.CompanionTheory.AutCover.integrable_descend_of_cover D V μ _ hcl.measurableSet hcov _ (fun δ hδ x => GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel_mul _ _ hδ x) hcont.measurable ?_` and prove the remaining obligations.
+
+Take `⟨m₀, hm₀⟩` from `GlobalTheory.T.cone_integral_finite_large_exponent D.host.F V.rank r c hc`. Take `⟨B, hB0, hB⟩` from `class_bound hWF hK hΩ hΩP hc hconj hf hcusp hreg m₀`. Use `⟨hcont.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hm` using `hm₀ m₀ le_rfl`. Use `set w : (Fin r → ℝ) → ENNReal := fun t => ENNReal.ofReal ((modulus D.host.F V.rank t * ∏ i, t i)⁻¹) with hw`.
+
+Use `set q : (Fin r → ℝ) → ENNReal := fun t => ENNReal.ofReal (∏ i, (t i)⁻¹ ^ m₀) with hq`. Establish `hqm : Measurable q`. Use `ENNReal.measurable_ofReal.comp ?_` and prove the remaining obligations. Use `Finset.measurable_prod _ fun i _ => ?_` and prove the remaining obligations. Conclude with `((measurable_pi_apply i).inv).pow_const _`.
+
+Establish `h1` using `hbd (fun g => ‖GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f g‖ₑ) (fun t => ENNReal.ofReal B * q t) (hqm.const_mul _) (fun p hp t ht a ha k hk => by`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul hB0]`. Conclude with `ENNReal.ofReal_le_ofReal (hB p hp t ht a ha k hk))`. Establish `h2 : ∫⁻ t in cone r c, ENNReal.ofReal B * q t * w t = ENNReal.ofReal B * ∫⁻ t in cone r c, q t * w t`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+
+Conclude with `lintegral_congr fun t => mul_assoc _ _ _`. Rewrite using `[HasFiniteIntegral]`. Use `lt_of_le_of_lt h1 ?_` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hm)`.
+-/
 theorem regClassInt : PositivityTheory.ThKR.SiegelCore → MainStatements.RegularCuspidalTrace.RegClassInt := by
   intro hcore D V μ _ f hf hcusp γ hreg
   have hknown := PositivityTheory.ThKR.siegel_of_core hcore

@@ -27,9 +27,17 @@ def Wd (B : Germ.FB k d O) (a : O) : Submodule k (Fin d → k) where
     refine ⟨by simp [Matrix.mulVec_smul, hu1], fun z hz => ?_⟩
     simp [Matrix.mulVec_smul, dotProduct_smul, hu2 z hz]
 
+/- English proof (translation)
+Introduce `u hu` and use `by simpa [Matrix.toLin'_apply] using hu.1`.
+-/
 theorem Wd_le (B : Germ.FB k d O) (a : O) : Wd B a ≤ LinearMap.ker (Matrix.toLin' (rho B a)) :=
   fun u hu => by simpa [Matrix.toLin'_apply] using hu.1
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' M)`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' M.transpose)`. Establish `h3 : Module.finrank k (LinearMap.range (Matrix.toLin' M.transpose)) = Module.finrank k (LinearMap.range (Matrix.toLin' M))`. Use `Matrix.rank_transpose M` as an intermediate fact. Rewrite `this` using `[Matrix.rank, Matrix.rank]`.
+
+Rewrite using `[Matrix.toLin'_apply', Matrix.toLin'_apply']`. Use `this using 2` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_ker_transpose (M : Matrix (Fin d) (Fin d) k) :
     Module.finrank k (LinearMap.ker (Matrix.toLin' M.transpose)) =
       Module.finrank k (LinearMap.ker (Matrix.toLin' M)) := by
@@ -43,6 +51,19 @@ theorem finrank_ker_transpose (M : Matrix (Fin d) (Fin d) k) :
     convert this using 2
   omega
 
+/- English proof (translation)
+Use `set K := LinearMap.ker (rhoH B a)`. Set `f : K →ₗ[k] (Fin d → k)` to `(LinearMap.fst k (Fin d → k) (Fin d → k)).comp K.subtype`. Establish `hrange : LinearMap.range f ≤ Wd B a`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hy : rhoH B a y = 0` using `y.2`.
+
+Rewrite `hy` using `[rhoH_apply, Prod.mk_eq_zero]`. Use `⟨hy.1, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h2 : (bil (B.ad a) 1 1).transpose.mulVec (y : (Fin d → k) × (Fin d → k)).1 = (rho B (star a)).transpose.mulVec (y : (Fin d → k) × (Fin d → k)).2` using `(sub_eq_zero.1 hy.2).symm`. Simplify using `only [f, LinearMap.comp_apply, Submodule.coe_subtype, LinearMap.fst_apply]`. Rewrite using `[h2, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, hz, zero_dotProduct]`.
+
+Set `g : LinearMap.ker f →ₗ[k] (Fin d → k)` to `(LinearMap.snd k (Fin d → k) (Fin d → k)).comp (K.subtype.comp (LinearMap.ker f).subtype)`. Establish `hg : Function.Injective g`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Establish `h1 : ((y : K) : (Fin d → k) × (Fin d → k)).1 = 0` using `y.2`.
+
+Establish `h2 : ((y : K) : (Fin d → k) × (Fin d → k)).2 = 0` using `hy`. Conclude with `Subtype.ext (Subtype.ext (Prod.ext h1 h2))`. Establish `hgr : LinearMap.range g ≤ LinearMap.ker (Matrix.toLin' (rho B (star a)).transpose)`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `h1 : ((y : K) : (Fin d → k) × (Fin d → k)).1 = 0` using `y.2`.
+
+Establish `hy : rhoH B a (y : K) = 0` using `(y : K).2`. Rewrite `hy` using `[rhoH_apply, Prod.mk_eq_zero, h1]`. Simplify `hy.2` using `[g, Matrix.toLin'_apply]`. Establish `e1` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `e2 : Module.finrank k (LinearMap.range f) ≤ Module.finrank k (Wd B a)` using `Submodule.finrank_mono hrange`.
+
+Establish `e3 : Module.finrank k (LinearMap.ker f) ≤ Module.finrank k (LinearMap.ker (Matrix.toLin' (rho B (star a)).transpose))`. Rewrite using `[← LinearMap.finrank_range_of_inj hg]`. Conclude with `Submodule.finrank_mono hgr`. Rewrite `e3` using `[finrank_ker_transpose]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_ker_rhoH_le (B : Germ.FB k d O) (a : O) :
     Module.finrank k (LinearMap.ker (rhoH B a)) ≤
       Module.finrank k (LinearMap.ker (Matrix.toLin' (rho B (star a)))) + Module.finrank k (Wd B a) := by
@@ -85,6 +106,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open GlobalTheory.CompanionTheory.Ar.Flat.KerBd in
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ hbar k _ _ p _ _ t hprop hK d g a A _ _ _ i hpb`. Take `⟨A', _, _, _, _, hrk, D, T, hD, hT, hder, hprim, horth⟩` from `GlobalTheory.T.proper_group_germ_finite_subscheme E H hbar k p t hprop hK d g a A i hpb`. Set `W0 : Submodule k (LinearMap.ker (Matrix.toLin' (rho g.B a)))` to `(Wd g.B a).comap (LinearMap.ker (Matrix.toLin' (rho g.B a))).subtype`. Establish `hW0 : Module.finrank k W0 = Module.finrank k (Wd g.B a)` using `(Submodule.comapSubtypeEquivOfLe (Wd_le g.B a)).finrank_eq`. Establish `hc` using `GlobalTheory.T.primitive_derivation_pairing k p A' (LinearMap.range T) (W0.map D) (by rintro _ ⟨z, rfl⟩; exact hprim z) (by rintro _ ⟨u, -, rfl⟩; exact hder u) (by`.
+
+Introduce and unpack `_ ⟨u, hu, rfl⟩ _ ⟨z, rfl⟩`. Establish `hz : (rho g.B (star a)).mulVec (z : Fin d → k) = 0`. Use `z.2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, Matrix.toLin'_apply]`. Then use the resulting hypothesis. Conclude with `horth u z ((hu : (u : Fin d → k) ∈ Wd g.B a).2 z hz))`.
+
+Rewrite `hc` using `[LinearMap.finrank_range_of_inj hT, ← (Submodule.equivMapOfInjective D hD W0).finrank_eq, hW0, hrk]`. Conclude with `(pow_dvd_pow p (finrank_ker_rhoH_le g.B a)).trans hc`.
+-/
 theorem lemF_ker_order_dvd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (t : SAB H (Sp k)), IsProper t.G.hom → Out.KTriv t.G t.PP.L → ∀ (d : ℕ) (g : GermAt t (𝟙 (Sp k)) d) (a : 𝓞 E) (A : Type) [CommRing A] [Algebra k A] [Module.Finite k A] (i : Sp A ⟶ t.G.left), IsPullback i (spMap (algebraMap k A)) (t.act.act a).left (η[t.G]).left → p ^ Module.finrank k (LinearMap.ker (rhoH g.B a)) ∣ Module.finrank k A := by
   intro E _ _ _ H _ hbar k _ _ p _ _ t hprop hK d g a A _ _ _ i hpb
   obtain ⟨A', _, _, _, _, hrk, D, T, hD, hT, hder, hprim, horth⟩ :=

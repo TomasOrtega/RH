@@ -17,6 +17,11 @@ open Formalism.QuantumDeterminants PI.AmpRootCommon PI.AmpRelAtPt
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `ha' : a ∈ Nset k r ∧ g₀⁻¹ * a * g₀ ∈ Nset k r` using `ha`. Establish `hsum` using `sum_super (ptσ_invol p) (zhat_pt hZ) (ptζ_ne p) (fun i i1 h => pt_adj p i i1 h) (flagMat_upper (z := z) ha'.1) (flagMat_diag ha'.1) (flagMat_upper (z := z') ha'.2) (flagMat_diag ha'.2) (flag_rel hz hz' hg ha)`. Establish `hell : ell k r z' (g₀⁻¹ * a * g₀) = star (ell k r z a)`. Rewrite using `[ell_eq, ell_eq, hsum]`. Establish `hcim : c.im = 0` using `Complex.conj_eq_iff_im.mp hc`.
+
+Establish `hre : (c * star (ell k r z a)).re = (c * ell k r z a).re`. Simplify using `[Complex.mul_re, hcim]`. Simplify using `only [Formalism.QuantumDeterminants.psi, hell, hre]`.
+-/
 theorem psi_rel (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : inWb k r z') (c : ℂ) (hc : star c = c)
     (p : Point ℂ (r + 1)) (g₀ : MatKR k r) (hg : g₀ ∈ UH (Hpk k r)) (hZ : ZhatO k r z z' g₀ = ptMat p)
     (a : MatKR k r) (ha : a ∈ RStab k r g₀) : psi k r z c a = psi k r z' c (g₀⁻¹ * a * g₀) := by
@@ -31,6 +36,13 @@ theorem psi_rel (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : in
     simp [Complex.mul_re, hcim]
   simp only [Formalism.QuantumDeterminants.psi, hell, hre]
 
+/- English proof (translation)
+Take `⟨hone, hmulN, hinvN⟩` from `Formalism.QuantumDeterminants.unipotent_subgroup_holds k r`. Establish `hni : n⁻¹ ∈ Nset k r` using `hinvN n hn`. Establish `h1 : psi k r z c 1 = 1`. Establish `hmul` using `Formalism.FourierDecayAlt.P.PBG.psi_mul_nset z hz c hone hone`. Rewrite `hmul` using `[Matrix.one_mul]`.
+
+Establish `hne : psi k r z c 1 ≠ 0` using `Complex.exp_ne_zero _`. Conclude with `mul_left_cancel₀ hne (hmul.symm.trans (mul_one _).symm)`. Establish `hinv : n⁻¹ * n = 1` using `uh_inv_mul hn.1`. Establish `hpair` using `Formalism.FourierDecayAlt.P.PBG.psi_mul_nset z hz c hni hn`. Rewrite `hpair` using `[hinv, h1]`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.PBG.psi_mul_nset z hz c (hmulN _ hni _ hm) hn, Formalism.FourierDecayAlt.P.PBG.psi_mul_nset z hz c hni hm]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem psi_conj (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : ℂ) {n m : MatKR k r}
     (hn : n ∈ Nset k r) (hm : m ∈ Nset k r) : psi k r z c (n⁻¹ * m * n) = psi k r z c m := by
   obtain ⟨hone, hmulN, hinvN⟩ := Formalism.QuantumDeterminants.unipotent_subgroup_holds k r
@@ -49,6 +61,13 @@ theorem psi_conj (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : ℂ) {
       = psi k r z c m * (psi k r z c n⁻¹ * psi k r z c n) := by ring
     _ = psi k r z c m := by rw [← hpair, mul_one]
 
+/- English proof (translation)
+Take `⟨n, hn, n', hn', g₀, hg₀, rfl, hZ⟩` from `GlobalTheory.CellRep.cell_rep k r z z' γ p hz hz' hT hT' hγ hcell`. Take `⟨_, hmulN, hinvN⟩` from `Formalism.QuantumDeterminants.unipotent_subgroup_holds k r`. Establish `e1 : n' * n'⁻¹ = 1` using `uh_mul_inv hn'.1`. Establish `key : n' * ((n * g₀ * n')⁻¹ * m * (n * g₀ * n')) * n'⁻¹ = g₀⁻¹ * (n⁻¹ * m * n) * g₀`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc n' n'⁻¹, e1, Matrix.one_mul, Matrix.mul_one]`. Establish `hnmn : n⁻¹ * m * n ∈ Nset k r` using `hmulN _ (hmulN _ (hinvN n hn) _ hm) _ hn`. Establish `ha : n⁻¹ * m * n ∈ RStab k r g₀`. Use `⟨hnmn, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← key]`. Conclude with `hmulN _ (hmulN _ hn' _ hm') _ (hinvN n' hn')`. Establish `hback` using `psi_conj z' hz' c (hinvN n' hn') hm'`. Rewrite `hback` using `[Matrix.nonsing_inv_nonsing_inv _ (Matrix.isUnit_det_of_right_inverse e1)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem psi_cell (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hz' : inWb k r z')
     (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') (c : ℂ) (hc : star c = c) (p : Point ℂ (r + 1)) (γ : MatKR k r)
     (hγ : γ ∈ UH (Hpk k r)) (hcell : IsInCell (ZhatO k r z z' γ) p) {m : MatKR k r} (hm : m ∈ Nset k r)
@@ -79,6 +98,13 @@ namespace GlobalTheory.StabInv
 
 open Formalism.QuantumDeterminants Formalism.L2.SG.Pf.WuDec Formalism.L2.SG.Pf.EquivPf Formalism.L2.SG.Pf.Choice
 
+/- English proof (translation)
+Establish `h1H : (1 : Formalism.REAL.UJ (X.B.I.ε v)) ∈ Hloc X u v`. Introduce `y _`. Rewrite using `[uMat_one', Matrix.one_mulVec]`. Establish `h1N : (1 : Formalism.REAL.UJ (X.B.I.ε v)) ∈ Nloc X u v`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[uMat_one']`. Conclude with `inS_one`. Introduce `y _`. Rewrite using `[uMat_one', sub_self, Matrix.zero_mulVec]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `hA` using `locEquiv X u v s hs 1 h1H x`. Establish `hB` using `locEquiv X u v 1 h1N 1 h1H x`. Simplify using `only [mul_one] at hA`. Simplify using `only [mul_one, one_mul, uMat_one', psiV_one, one_smul] at hB`. Rewrite using `[hA, ← hB]`.
+-/
 theorem wloc_n {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePlace X.B.I.F)
     (s x : Formalism.REAL.UJ (X.B.I.ε v)) (hs : s ∈ Nloc X u v) :
     X.Wloc u v (s * x) = psiV X u v (uMat s) • X.Wloc u v x := by
@@ -98,8 +124,36 @@ theorem wloc_n {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (v : InfinitePl
   simp only [mul_one, one_mul, uMat_one', psiV_one, one_smul] at hB
   rw [hA, ← hB]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_mul_loc {n : ℕ} {ε : Fin n → Bool} (a b : Formalism.REAL.UJ ε) : uMat (a * b) = uMat a * uMat b := rfl
 
+/- English proof (translation)
+Introduce `D X θ C _ u u' τ γ p _ hrel s hs x`. Take `⟨hQiQ, hQQi, hgram, hcol⟩` from `C.isT τ`. Establish `hs1 : s ∈ Nloc X u (vOf X τ)` using `hs.1`. Establish `hs2 : γ⁻¹ * s * γ ∈ Nloc X u' (vOf X τ)` using `hs.2`. Establish `hn : X.B.I.n = 2 * D.R.rS + D.R.k + 1` using `Formalism.L2.SG.Pf.Choice.n_eq' X`.
+
+Establish `hc : ∀ a : Fin D.R.rS, frS D ^ (D.R.rS - (a : ℕ)) ≠ 0` using `fun a => pow_ne_zero _ (Formalism.L2.SG.Pf.Choice.frS_ne D)`. Establish `hcolE : ∀ a : Fin D.R.rS, C.Q τ *ᵥ Pi.single (eI D.R.k D.R.rS a) 1 = frS D ^ (D.R.rS - (a : ℕ)) • Formalism.L2.SG.HidaSetting.rv X.B.I (vOf X τ) (X.eR a)` using `fun a => (hcol a a rfl).1`. Establish `hmN : ∀ (w : D.what₂.Word) (t : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))), t ∈ Nloc X w (vOf X τ) → C.Qi τ * uMat t * C.Q τ ∈ Nset D.R.k D.R.rS`. Introduce `w t ht`. Establish `hU : (uMat t)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * uMat t = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))` using `t.2`.
+
+Conclude with `nset_loc hn _ _ _ hQiQ hQQi hgram _ _ hc hcolE _ hU ht`. Establish `hpsi : ∀ (w : D.what₂.Word) (t : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))), t ∈ Nloc X w (vOf X τ) → psiV X w (vOf X τ) (uMat t) = psiS D (zB X (C.Qi τ) w τ) (C.Qi τ * uMat t * C.Q τ)`. Introduce `w t ht`. Establish `hback : C.Q τ * (C.Qi τ * uMat t * C.Q τ) * C.Qi τ = uMat t`. Simplify using `only [← Matrix.mul_assoc, hQQi, Matrix.one_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, hQQi, Matrix.mul_one]`. Establish `h` using `Formalism.L2.SG.Pf.psiTr C w τ _ (hmN w t ht)`. Rewrite `h` using `[hback]`. Conclude with `h`. Use `set g := Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) γ with hg`.
+
+Establish `hginv : g⁻¹ = C.Qi τ * uMat γ⁻¹ * C.Q τ`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[hg, Formalism.L2.SG.RealObj.trG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hQQi, Matrix.mul_one, uMat_inv_mul, Matrix.mul_one, hQiQ]`. Establish `hconj : C.Qi τ * uMat (γ⁻¹ * s * γ) * C.Q τ = g⁻¹ * (C.Qi τ * uMat s * C.Q τ) * g`. Rewrite using `[hginv, hg, Formalism.L2.SG.RealObj.trG, uMat_mul_loc, uMat_mul_loc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_one, Matrix.mul_one]`.
+
+Use `_ = C.Qi τ * uMat γ⁻¹ * C.Q τ * (C.Qi τ * uMat s * C.Q τ) * (C.Qi τ * uMat γ * C.Q τ) := by`. Rewrite using `[← hQQi]`. Simplify using `only [Matrix.mul_assoc]`. Take `⟨hz, hTz⟩` from `Formalism.L2.SG.Pf.zTr C u τ`. Take `⟨hz', hTz'⟩` from `Formalism.L2.SG.Pf.zTr C u' τ`.
+
+Establish `hT : 0 < Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ)`. Rewrite using `[hTz]`. Conclude with `Formalism.L2.SG.Pf.Choice.Tr_pos D u`. Establish `hT' : 0 < Tz D.R.k D.R.rS (zB X (C.Qi τ) u' τ)`. Rewrite using `[hTz']`.
+
+Conclude with `Formalism.L2.SG.Pf.Choice.Tr_pos D u'`. Establish `hm' : g⁻¹ * (C.Qi τ * uMat s * C.Q τ) * g ∈ Nset D.R.k D.R.rS`. Rewrite using `[← hconj]`. Conclude with `hmN u' _ hs2`. Establish `hkey : psiV X u (vOf X τ) (uMat s) = psiV X u' (vOf X τ) (uMat (γ⁻¹ * s * γ))`.
+
+Rewrite using `[hpsi u s hs1, hpsi u' _ hs2, hconj]`. Conclude with `psi_cell _ _ hz hz' hT hT' _ (Complex.conj_ofReal _) p g hrel.1 hrel.2.1 (hmN u s hs1) hm'`. Establish `hx : γ⁻¹ * (s * x) = (γ⁻¹ * s * γ) * (γ⁻¹ * x)` using `by group`. Rewrite using `[wloc_n X u (vOf X τ) s x hs1, hx, wloc_n X u' (vOf X τ) _ _ hs2, ← hkey]`. Establish `hnorm : ‖psiV X u (vOf X τ) (uMat s)‖ = 1` using `norm_psiR _ _ _ _ _ _`.
+
+Establish `hcm : (starRingEnd ℂ) (psiV X u (vOf X τ) (uMat s)) * psiV X u (vOf X τ) (uMat s) = 1`. Rewrite using `[Complex.conj_mul', hnorm]`. Evaluate the numerical expressions. Use extensionality with `ξ`. Rewrite using `[Formalism.L2.SG.TermOp.rankOneInnerOperator_apply, Formalism.L2.SG.TermOp.rankOneInnerOperator_apply, inner_smul_left, smul_smul]`.
+
+Use `congr 1`. Take the linear combination `(inner ℂ (X.Wloc u' (vOf X τ) (γ⁻¹ * x)) ξ) * hcm`.
+-/
 theorem stab_inv : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) (p : Point ℂ (D.R.rS + 1)), Formalism.L2.SG.ConcreteSettingExists.GapHyp D → RelPt D (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) γ) p → ∀ s ∈ Formalism.L2.SG.RealObj.StSet (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε (vOf X τ)) (fun a => rv X.B.I (vOf X τ) (X.eR a)) (rv X.B.I (vOf X τ) (X.zR u))) (Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.NLoc (X.B.I.ε (vOf X τ)) (fun a => rv X.B.I (vOf X τ) (X.eR a)) (rv X.B.I (vOf X τ) (X.zR u'))) γ, ∀ x, Formalism.L2.SG.TermOp.rk1 (X.Wloc u (vOf X τ) (s * x)) (X.Wloc u' (vOf X τ) (γ⁻¹ * (s * x))) = Formalism.L2.SG.TermOp.rk1 (X.Wloc u (vOf X τ) x) (X.Wloc u' (vOf X τ) (γ⁻¹ * x)) := by
   intro D X θ C _ u u' τ γ p _ hrel s hs x
   obtain ⟨hQiQ, hQQi, hgram, hcol⟩ := C.isT τ

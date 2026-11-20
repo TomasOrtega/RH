@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped GlobalTheory.VacAny
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchFourier.fourier_twice_sInf | exact GlobalTheory.ArchFourier.fourier_twice_sInf | (intros; apply GlobalTheory.ArchFourier.fourier_twice_sInf <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_fourier_inversion_constant : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure],
     ∃ d : ℂ, d ≠ 0 ∧ ∀ (f : SInf F κ) (a : κ → mixedEmbedding.mixedSpace F),

@@ -136,6 +136,9 @@ def phiSpan (Y : LocLat S.G S.Qp S.LL S.O) (N : Submodule (LetA S.O S.n) (S.W.DD
     Submodule (LetA S.O S.n) (S.W.DD Y) :=
   Submodule.span (LetA S.O S.n) (S.W.φD Y '' (N : Set (S.W.DD Y)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phiSpan_rec {S : Sit} (Y : LocLat S.G S.Qp S.LL S.O) : phiSpan S Y (S.W.N Y) = S.W.φpull Y := rfl
 
 def WClauses (Y : LocLat S.G S.Qp S.LL S.O) (M0 h0 : ℕ) (N : Submodule (LetA S.O S.n) (S.W.DD Y)) :
@@ -152,6 +155,9 @@ def HypW (Y : LocLat S.G S.Qp S.LL S.O) (M0 h0 : ℕ) : Prop :=
   IsCrysOn S S.W.GKs Y ∧ (∀ a ∈ Jset S Y, -(M0 : ℤ) ≤ a ∧ a ≤ h0) ∧
   ∃ N : Submodule (LetA S.O S.n) (S.W.DD Y), WClauses S E Y M0 h0 N
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hc, hj, _, hN⟩`.
+-/
 theorem HypW_of_rec {S : Sit} {E : S.Comparison₂} {Y : LocLat S.G S.Qp S.LL S.O} {M0 h0 : ℕ}
     (hc : IsCrysOn S S.W.GKs Y) (hj : ∀ a ∈ Jset S Y, -(M0 : ℤ) ≤ a ∧ a ≤ h0)
     (hN : WClauses S E Y M0 h0 (S.W.N Y)) : HypW S E Y M0 h0 :=
@@ -183,6 +189,9 @@ def TBeAt : Prop :=
     (e = 0 → ∀ c : S.G → Ve.V ⧸ Ve.L.T, c ∈ HfD S.PD Ve.L ↔
       (c ∈ divisibleCocycles Ve.L ∧ ∃ x, ∀ g ∈ S.IK, c g = actD Ve.L g x - x))
 
+/- English proof (translation)
+The claim follows from `(h e Ve h1 hχ).1 n`.
+-/
 theorem TBeAt.len {S : Sit} (h : TBeAt S) (e n : ℕ) (Ve : LocLat S.G S.Qp S.LL S.O)
     (h1 : finrank S.LL Ve.V = 1)
     (hχ : ∀ g x, Ve.ρ g x = ((algebraMap S.Qp S.LL (S.PD.χ g : S.Qp))⁻¹) ^ e • x) :
@@ -355,6 +364,11 @@ def XiOK : Prop :=
 
 variable {AA act ξ}
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a using Int.induction_on with`. Consider the case `zero => simpa using AA.one_mem`. Consider the case `succ k ih`. Rewrite using `[zpow_add_one, Units.val_mul]`.
+
+Conclude with `AA.mul_mem ih hu`. Consider the case `pred k ih`. Rewrite using `[zpow_sub_one, Units.val_mul]`. Conclude with `AA.mul_mem ih hu'`.
+-/
 theorem zpow_mem (h : XiOK AA act ξ) (u : WCˣ) (hu : (u : WC) ∈ AA) (hu' : ((u⁻¹ : WCˣ) : WC) ∈ AA) :
     ∀ a : ℤ, ((u ^ a : WCˣ) : WC) ∈ AA := by
   intro a
@@ -365,6 +379,9 @@ theorem zpow_mem (h : XiOK AA act ξ) (u : WCˣ) (hu : (u : WC) ∈ AA) (hu' : (
   | pred k ih =>
     rw [zpow_sub_one, Units.val_mul]; exact AA.mul_mem ih hu'
 
+/- English proof (translation)
+Establish `h2 : act g ((ξ⁻¹ : WCˣ) : WC) * ((u * ξ : WCˣ) : WC) = 1`. Rewrite using `[Units.val_mul, ← hg, ← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Use `_ = (((u * ξ)⁻¹ : WCˣ) : WC) := by rw [← mul_assoc, h2, one_mul]`.
+-/
 theorem act_inv (g : G) (u : WCˣ) (hg : act g ξ = u * ξ) :
     act g ((ξ⁻¹ : WCˣ) : WC) = (((u * ξ)⁻¹ : WCˣ) : WC) := by
   have h2 : act g ((ξ⁻¹ : WCˣ) : WC) * ((u * ξ : WCˣ) : WC) = 1 := by
@@ -374,6 +391,11 @@ theorem act_inv (g : G) (u : WCˣ) (hg : act g ξ = u * ξ) :
         rw [← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]
     _ = (((u * ξ)⁻¹ : WCˣ) : WC) := by rw [← mul_assoc, h2, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `a using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[zpow_add_one, zpow_add_one, Units.val_mul, Units.val_mul, map_mul, ih, hg]`. Simplify using `only [Units.val_mul]`.
+
+Consider the case `pred k ih`. Rewrite using `[zpow_sub_one, zpow_sub_one, Units.val_mul, Units.val_mul, map_mul, ih, act_inv g u hg]`.
+-/
 theorem act_zpow (g : G) (a : ℤ) (u : WCˣ) (hg : act g ξ = u * ξ) :
     act g ((ξ ^ a : WCˣ) : WC) = (((u * ξ) ^ a : WCˣ) : WC) := by
   induction a using Int.induction_on with
@@ -384,6 +406,11 @@ theorem act_zpow (g : G) (a : ℤ) (u : WCˣ) (hg : act g ξ = u * ξ) :
   | pred k ih =>
     rw [zpow_sub_one, zpow_sub_one, Units.val_mul, Units.val_mul, map_mul, ih, act_inv g u hg]
 
+/- English proof (translation)
+Introduce and unpack `x ⟨y, hy, rfl⟩`. Take `⟨u, hu, hu', hg⟩` from `h.2.2 g`. Use `⟨((u ^ a : WCˣ) : WC) * act g y, AA.mul_mem (zpow_mem h u hu hu' a) (h.1 g y hy), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, map_mul]`. Rewrite using `[act_zpow g a u hg, mul_zpow, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Mxi_stable (h : XiOK AA act ξ) (g : G) (a : ℤ) :
     ∀ x ∈ Mxi AA ξ a, act g x ∈ Mxi AA ξ a := by
   rintro x ⟨y, hy, rfl⟩
@@ -393,6 +420,11 @@ theorem Mxi_stable (h : XiOK AA act ξ) (g : G) (a : ℤ) :
   rw [act_zpow g a u hg, mul_zpow, Units.val_mul]
   ring
 
+/- English proof (translation)
+Introduce and unpack `x ⟨y, hy, rfl⟩`. Take `⟨k, rfl⟩` from `Int.exists_add_of_le hab`. Use `⟨((ξ ^ (k : ℤ) : WCˣ) : WC) * y, AA.mul_mem ?_ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Conclude with `AA.pow_mem h.2.1 k`.
+
+Simplify using `only [LinearMap.mulLeft_apply]`. Rewrite using `[zpow_add, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Mxi_anti (h : XiOK AA act ξ) {a b : ℤ} (hab : a ≤ b) : Mxi AA ξ b ≤ Mxi AA ξ a := by
   rintro x ⟨y, hy, rfl⟩
   obtain ⟨k, rfl⟩ := Int.exists_add_of_le hab
@@ -412,11 +444,17 @@ def actQab (h : XiOK AA act ξ) (a b : ℤ) (g : G) : Qab AA ξ a b →ₗ[O] Qa
     simp only [Submodule.mem_comap] at hx ⊢
     exact Mxi_stable h g b _ hx)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [actQab, actM, map_one]`. Both sides reduce to the same expression.
+-/
 theorem actQab_one (h : XiOK AA act ξ) (a b : ℤ) : actQab h a b 1 = LinearMap.id := by
   ext x
   simp only [actQab, actM, map_one]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [actQab, actM, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem actQab_mul (h : XiOK AA act ξ) (a b : ℤ) (g g' : G) :
     actQab h a b (g * g') = actQab h a b g ∘ₗ actQab h a b g' := by
   ext x
@@ -453,6 +491,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 def xiU : (WCb l)ˣ := AI.isUnit_inclW_ξ.unit
 
+/- English proof (translation)
+Use extensionality with `n`. Express the relevant statement in the definitionally equal form `(WittVector.map (autCb l (AI.actT g)).toRingHom (WittVector.map (algebraMap (OCb l) (Cb l)) a)).coeff n = (WittVector.map (algebraMap (OCb l) (Cb l)) (WittVector.map (AI.actT g).toRingHom a)).coeff n`. Simplify using `only [WittVector.map_coeff]`. Conclude with `autCb_alg l (AI.actT g) (a.coeff n)`.
+-/
 theorem inclW_act (g : GQ l) (a : Ainf l) :
     AI.actWCbHom g (inclW l a) = inclW l (AI.actWHom g a) := by
   ext n
@@ -464,11 +505,19 @@ theorem inclW_act (g : GQ l) (a : Ainf l) :
 
 def botExt (l : ℕ) [Fact l.Prime] : FinExt l := ⟨⊥, inferInstance⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `g ∈ (⊥ : IntermediateField ℚ_[l] (Om l)).fixingSubgroup`. Rewrite using `[IntermediateField.fixingSubgroup_bot]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem mem_GK_bot (g : GQ l) : g ∈ GK (botExt l) := by
   change g ∈ (⊥ : IntermediateField ℚ_[l] (Om l)).fixingSubgroup
   rw [IntermediateField.fixingSubgroup_bot]
   trivial
 
+/- English proof (translation)
+Establish `h1` using `(AI.ainf_image_mem_filtration_one_iff (botExt l) a).mpr h`. Apply `(AI.ainf_image_mem_filtration_one_iff (botExt l) (AI.actWHom g a)).mp` to reduce the goal to its premises. Establish `h2 : AI.ιA (AI.actWHom g a) = P.actQ g (AI.ιA a)` using `AI.ιA_act g a`. Establish `h3` using `(P.PD (botExt l)).ι_comm ⟨g, mem_GK_bot g⟩ (AI.ιA a)`. Rewrite `h3` using `[P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR]`.
+
+Rewrite using `[h2, h3, ← P.PD_actdR (botExt l) ⟨g, mem_GK_bot g⟩]`. Conclude with `(P.PD (botExt l)).Fil_G _ 1 _ h1`.
+-/
 theorem xi_dvd_act (g : GQ l) (a : Ainf l) (h : ∃ b, a = AI.ξ * b) :
     ∃ b, AI.actWHom g a = AI.ξ * b := by
   have h1 := (AI.ainf_image_mem_filtration_one_iff (botExt l) a).mpr h
@@ -479,6 +528,15 @@ theorem xi_dvd_act (g : GQ l) (a : Ainf l) (h : ∃ b, a = AI.ξ * b) :
   rw [h2, h3, ← P.PD_actdR (botExt l) ⟨g, mem_GK_bot g⟩]
   exact (P.PD (botExt l)).Fil_G _ 1 _ h1
 
+/- English proof (translation)
+Use `⟨?_, ⟨AI.ξ, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g x ⟨a, rfl⟩`. Conclude with `⟨AI.actWHom g a, (inclW_act AI g a).symm⟩`. Introduce `g`. Take `⟨b, hb⟩` from `xi_dvd_act AI g AI.ξ ⟨1, (mul_one _).symm⟩`.
+
+Take `⟨b', hb'⟩` from `xi_dvd_act AI g⁻¹ AI.ξ ⟨1, (mul_one _).symm⟩`. Establish `h1 : AI.ξ = AI.ξ * (b * AI.actWHom g b')`. Use `congrArg (AI.actWHom g) hb'` as an intermediate fact. Rewrite `this` using `[← AlgEquiv.mul_apply, ← map_mul, mul_inv_cancel, map_one, AlgEquiv.one_apply, map_mul, hb]`. Rewrite using `[← mul_assoc]`.
+
+Conclude with `this`. Establish `h2 : inclW l b * inclW l (AI.actWHom g b') = 1`. Use `congrArg (inclW l) h1` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `(AI.isUnit_inclW_ξ.mul_left_cancel (by rw [mul_one]; exact this)).symm`.
+
+Use `⟨⟨inclW l b, inclW l (AI.actWHom g b'), h2, by rw [mul_comm]; exact h2⟩, ⟨b, rfl⟩, ⟨AI.actWHom g b', rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AI.actWCbHom g (inclW l AI.ξ) = inclW l b * inclW l AI.ξ`. Rewrite using `[inclW_act, hb, map_mul, mul_comm]`.
+-/
 theorem xiOK : XiOK (AinfSub l) AI.actWCbHom (xiU AI) := by
   refine ⟨?_, ⟨AI.ξ, rfl⟩, ?_⟩
   · rintro g x ⟨a, rfl⟩
@@ -500,6 +558,9 @@ theorem xiOK : XiOK (AinfSub l) AI.actWCbHom (xiU AI) := by
     change AI.actWCbHom g (inclW l AI.ξ) = inclW l b * inclW l AI.ξ
     rw [inclW_act, hb, map_mul, mul_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g x hx => (xiOK AI).1 (g : GQ l) x hx, (xiOK AI).2.1, fun g => (xiOK AI).2.2 (g : GQ l)⟩`.
+-/
 theorem xiOK_res (K : FinExt l) : XiOK (AinfSub l) (AI.actWCbHom.comp (GK K).subtype) (xiU AI) :=
   ⟨fun g x hx => (xiOK AI).1 (g : GQ l) x hx, (xiOK AI).2.1, fun g => (xiOK AI).2.2 (g : GQ l)⟩
 

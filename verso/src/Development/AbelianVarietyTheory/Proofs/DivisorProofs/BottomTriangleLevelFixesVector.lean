@@ -52,6 +52,11 @@ variable {D : D7}
 
 local notation "OO" => Formalism.L2.Herm.intAf D.host.F D.host.E
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih fun x hx y hy => h x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy)]`. Establish `h0 : es a * ∑ b ∈ s, es b = 0`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun b hb => h a (Finset.mem_insert_self _ _) b (Finset.mem_insert_of_mem hb) fun e => ha (e ▸ hb)`. Take the linear combination `(d - 1) ^ 2 * h0`.
+-/
 theorem prod_idem {R ι : Type} [CommRing R] [DecidableEq ι] (es : ι → R) (d : R) (s : Finset ι)
     (h : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → es a * es b = 0) :
     ∏ a ∈ s, (es a * d + (1 - es a)) = (∑ a ∈ s, es a) * d + (1 - ∑ a ∈ s, es a) := by
@@ -66,14 +71,25 @@ theorem prod_idem {R ι : Type} [CommRing R] [DecidableEq ι] (es : ι → R) (d
         fun e => ha (e ▸ hb)
     linear_combination (d - 1) ^ 2 * h0
 
+/- English proof (translation)
+The claim follows from `Units.ext (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.eq_of_parts (hx.1.trans hy.1.symm) (hx.2.1.trans hy.2.1.symm))`.
+-/
 theorem isUnitDet_unique {e : Formalism.L2.Theta.AE D} {k : ℕ} {N : Matrix (Fin k) (Fin k) (Lev.EAf D)} {x y : (Formalism.L2.Theta.AE D)ˣ}
     (hx : IsUnitDet e N x) (hy : IsUnitDet e N y) : x = y :=
   Units.ext (StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.eq_of_parts (hx.1.trans hy.1.symm) (hx.2.1.trans hy.2.1.symm))
 
+/- English proof (translation)
+Take the linear combination `(1 - a - b + a * b) * h`.
+-/
 theorem ring_mul {R : Type} [CommRing R] {ε a b : R} (h : ε * ε = ε) :
     (1 - ε + ε * a) * (1 - ε + ε * b) = 1 - ε + ε * (a * b) := by
   linear_combination (1 - a - b + a * b) * h
 
+/- English proof (translation)
+Establish `hee : toEAf D e * toEAf D e = toEAf D e` using `by rw [← RingHom.map_mul, he]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, RingHom.map_mul, hx.1, hy.1, one_mul]`. Rewrite using `[Units.val_mul, RingHom.map_mul, hx.2.1, hy.2.1, Matrix.det_mul]`. Conclude with `ring_mul hee`.
+
+Rewrite using `[mul_inv, Units.val_mul, RingHom.map_mul]`. Conclude with `mul_mem hx.2.2 hy.2.2`.
+-/
 theorem isUnitDet_mul {e : Formalism.L2.Theta.AE D} (he : e * e = e) {k : ℕ} {M N : Matrix (Fin k) (Fin k) (Lev.EAf D)}
     {x y : (Formalism.L2.Theta.AE D)ˣ} (hx : IsUnitDet e M x) (hy : IsUnitDet e N y) : IsUnitDet e (M * N) (x * y) := by
   have hee : toEAf D e * toEAf D e = toEAf D e := by rw [← RingHom.map_mul, he]
@@ -84,6 +100,11 @@ theorem isUnitDet_mul {e : Formalism.L2.Theta.AE D} (he : e * e = e) {k : ℕ} {
   · rw [mul_inv, Units.val_mul, RingHom.map_mul]
     exact mul_mem hx.2.2 hy.2.2
 
+/- English proof (translation)
+Unfold `unitChar`. Distinguish the cases in `h : ∃ y, IsUnitDet e N y`. Establish `h' : ∃ y, IsUnitDet e (K * N) y` using `⟨_, isUnitDet_mul he hx h.choose_spec⟩`. Rewrite using `[dif_pos h, dif_pos h', isUnitDet_unique h'.choose_spec (isUnitDet_mul he hx h.choose_spec), map_mul, mul_inv, Circle.coe_mul]`. Rewrite using `[dif_neg h, dif_neg, mul_zero]`.
+
+Introduce and unpack `⟨y, hy⟩`. Use `isUnitDet_mul he hx' hy` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, hK, Matrix.one_mul]`. Conclude with `h ⟨_, this⟩`.
+-/
 theorem unitChar_mul (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) {e : Formalism.L2.Theta.AE D} (he : e * e = e) {k : ℕ}
     {K K' : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hK : K' * K = 1) {x x' : (Formalism.L2.Theta.AE D)ˣ} (hx : IsUnitDet e K x)
     (hx' : IsUnitDet e K' x') (N : Matrix (Fin k) (Fin k) (Lev.EAf D)) :
@@ -99,6 +120,9 @@ theorem unitChar_mul (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) {e : Formali
     rw [← Matrix.mul_assoc, hK, Matrix.one_mul] at this
     exact h ⟨_, this⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [rightBlock, Matrix.mul_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem rightBlock_mul {κ : Type} [CommRing κ] {k d : ℕ} (a : ℕ) (K : Matrix (Fin k) (Fin k) κ)
     (Y : Matrix (Fin k) (Fin d) κ) : rightBlock a (K * Y) = K * rightBlock a Y := by
   ext i j
@@ -107,6 +131,11 @@ theorem rightBlock_mul {κ : Type} [CommRing κ] {k d : ℕ} (a : ℕ) (K : Matr
   · rfl
   · simp
 
+/- English proof (translation)
+Use `choose h1 h2 using h`. Establish `hm : (HMul.hMul K Y) i j ∈ OO`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hK i l) (h1 l)`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (⟨(HMul.hMul K Y) i j, hm⟩ : OO) = ∑ l, (⟨K i l, hK i l⟩ : OO) * ⟨Y l j, h1 l⟩` using `Subtype.ext (by`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Conclude with `Matrix.mul_apply)`. Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (h2 l)`.
+-/
 theorem inId_mul {I : Ideal (𝓞 D.host.E)} {k d : ℕ} {K : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hK : IsIntM K)
     {Y : Matrix (Fin k) (Fin d) (Lev.EAf D)} {j : Fin d} (h : ∀ i, InId I (Y i j)) (i : Fin k) : InId I ((HMul.hMul K Y) i j) := by
   choose h1 h2 using h
@@ -120,6 +149,9 @@ theorem inId_mul {I : Ideal (𝓞 D.host.E)} {k d : ℕ} {K : Matrix (Fin k) (Fi
   rw [e]
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (h2 l)
 
+/- English proof (translation)
+Establish `h1 : frG T βT 1 = 1`. Unfold `frG`. Rewrite using `[map_one, mul_one, inv_mul_cancel]`. Unfold `dualCoord`. Rewrite using `[Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frMapAdj_actO, h1, inv_one, Units.val_one, Matrix.mul_one, Matrix.mul_smul]`.
+-/
 theorem dualCoord_actO (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (g : Formalism.L2.Theta.GA D S) (y : WO S T) :
     dualCoord S T βS βT (actO S T g 1 y) = HMul.hMul (frG S βS g).1 (dualCoord S T βS βT y) := by
@@ -129,6 +161,11 @@ theorem dualCoord_actO (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : 
   unfold dualCoord
   rw [Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frMapAdj_actO, h1, inv_one, Units.val_one, Matrix.mul_one, Matrix.mul_smul]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hg`. Establish `e : frG S β g = intGL D.host.F D.host.E _ y`. Unfold `frG`. Rewrite using `[← hy]`. Use `show β⁻¹ * (β * intGL D.host.F D.host.E _ y * β⁻¹) * β = _`.
+
+Use `group`. Rewrite using `[e]`. Conclude with `fun i j => (y.1 i j).2`.
+-/
 theorem isIntM_frG {S : HSp D} {β : GL (Fin S.rank) (Lev.EAf D)} {g : Formalism.L2.Theta.GA D S} (hg : Lev.finE S g ∈ St β) :
     IsIntM (frG S β g).1 := by
   obtain ⟨y, hy⟩ := hg
@@ -140,17 +177,30 @@ theorem isIntM_frG {S : HSp D} {β : GL (Fin S.rank) (Lev.EAf D)} {g : Formalism
   rw [e]
   exact fun i j => (y.1 i j).2
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Conclude with `Subring.sum_mem _ fun σ _ => by`. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (Subring.prod_mem _ fun i _ => hN _ _) _`.
+-/
 theorem det_mem {k : ℕ} {N : Matrix (Fin k) (Fin k) (Lev.EAf D)} (hN : IsIntM N) : N.det ∈ OO := by
   rw [Matrix.det_apply]
   exact Subring.sum_mem _ fun σ _ => by
     rw [Units.smul_def]
     exact zsmul_mem (Subring.prod_mem _ fun i _ => hN _ _) _
 
+/- English proof (translation)
+Rewrite using `[Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG_coe, Matrix.det_units_conj', RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_frG (S : HSp D) (β : GL (Fin S.rank) (Lev.EAf D)) (g : Formalism.L2.Theta.GA D S) :
     (frG S β g).1.det = toEAf D (Formalism.L2.Theta.mt S g).det := by
   rw [Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG_coe, Matrix.det_units_conj', RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hinf : infPart D e = 0` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Establish `hE` using `StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.toEAf_mem he`. Establish `hinv : ((detIdl e S g)⁻¹ : (Formalism.L2.Theta.AE D)ˣ) = detIdl e S g⁻¹`. Use `inv_eq_of_mul_eq_one_right (Units.ext ?_)` and prove the remaining obligations.
+
+Establish `h1 : (Formalism.L2.Theta.mt S g).det * (Formalism.L2.Theta.mt S g⁻¹).det = 1`. Rewrite using `[← Matrix.det_mul, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.mt_mul_inv, Matrix.det_one]`. Rewrite using `[Units.val_mul, detIdl_val hee, detIdl_val hee, Units.val_one]`. Take the linear combination `e * h1 + ((Formalism.L2.Theta.mt S g).det * (Formalism.L2.Theta.mt S g⁻¹).det - (Formalism.L2.Theta.mt S g).det - (Formalism.L2.Theta.mt S g⁻¹).det + 1) * hee`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[detIdl_val hee, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, hinf, RingHom.map_one, zero_mul, zero_add, sub_zero]`. Rewrite using `[detIdl_val hee, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, det_frG, add_comm]`. Rewrite using `[hinv, detIdl_val hee, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, ← det_frG S β]`. Conclude with `add_mem (mul_mem hE (det_mem (isIntM_frG (by rw [map_inv]; exact inv_mem hg)))) (sub_mem (one_mem _) hE)`.
+-/
 theorem isUnitDet_frG {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {S : HSp D}
     {β : GL (Fin S.rank) (Lev.EAf D)} {g : Formalism.L2.Theta.GA D S} (hg : Lev.finE S g ∈ St β) :
     IsUnitDet e (frG S β g).1 (detIdl e S g) := by
@@ -170,6 +220,15 @@ theorem isUnitDet_frG {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (
   · rw [hinv, detIdl_val hee, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, ← det_frG S β]
     exact add_mem (mul_mem hE (det_mem (isIntM_frG (by rw [map_inv]; exact inv_mem hg)))) (sub_mem (one_mem _) hE)
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hg' : Lev.finE S g⁻¹ ∈ St βS` using `by rw [map_inv]; exact inv_mem hg`. Establish `hK : (frG S βS g⁻¹).1 * (frG S βS g).1 = 1`. Rewrite using `[Formalism.IndefR.Fin.LevelGroupLemmas.Lat.frG_inv, Units.inv_mul]`. Establish `hback : dualCoord S T βS βT y = HMul.hMul (frG S βS g⁻¹).1 (HMul.hMul (frG S βS g).1 (dualCoord S T βS βT y))`.
+
+Rewrite using `[← Matrix.mul_assoc, hK, Matrix.one_mul]`. Unfold `stdSnd`. Rewrite using `[dualCoord_actO]`. Distinguish the cases in `hc : IsHalf (cA D e) y ∧ IsIntM (dualCoord S T βS βT y) ∧ ∀ i j, j.1 < a → InId I (dualCoord S T βS βT y i j)`. Rewrite using `[if_pos hc, if_pos ⟨(GlobalTheory.SchrMove.isHalf_actO_iff g 1 y).2 hc.1, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.isIntM_mul (isIntM_frG hg) hc.2.1, fun i j hj => inId_mul (isIntM_frG hg) (fun l => hc.2.2 l j hj) i⟩, rightBlock_mul]`.
+
+Conclude with `unitChar_mul ν hee hK (isUnitDet_frG he hg) (isUnitDet_frG he hg') _`. Rewrite using `[if_neg hc, if_neg, mul_zero]`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `hc ⟨(GlobalTheory.SchrMove.isHalf_actO_iff g 1 y).1 h1, ?_, fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[hback]`.
+
+Conclude with `Formalism.IndefR.Fin.LevelGroupLemmas.Lat.isIntM_mul (isIntM_frG hg') h2`. Rewrite using `[hback]`. Conclude with `inId_mul (isIntM_frG hg') (fun l => h3 l j hj) i`.
+-/
 theorem stdSnd_actO (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
     (I : Ideal (𝓞 D.host.E)) (a : ℕ) (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     {g : Formalism.L2.Theta.GA D S} (hg : Lev.finE S g ∈ St βS) (y : WO S T) :
@@ -194,6 +253,9 @@ theorem stdSnd_actO (ν : (Formalism.L2.Theta.AE D)ˣ →* Circle) {e : Formalis
     · rw [hback]; exact Formalism.IndefR.Fin.LevelGroupLemmas.Lat.isIntM_mul (isIntM_frG hg') h2
     · rw [hback]; exact inId_mul (isIntM_frG hg') (fun l => h3 l j hj) i
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LevSplit.latHat_iff, GlobalTheory.LevSplit.latHat_iff, GlobalTheory.IndefiniteRowSideFullHecke.SplitSumStabLattice.mulVec_mem_hatL_iff hβ hg]`. Use `iff_of_eq (congrArg (· ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) (funext fun i => ?_))` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem keeps_latHat {S : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {β : GL (Fin S.rank) (Lev.EAf D)}
     (hβ : IsFrame β Λ) {g : Formalism.L2.Theta.GA D S} (hg : Lev.finE S g ∈ St β) (y) :
     y ∈ latHat D.host.F D.host.E (Λ : Set (Fin S.rank → D.host.E)) ↔
@@ -203,6 +265,11 @@ theorem keeps_latHat {S : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin S.rank →
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul]
   rfl
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Take `⟨⟨es, hes, hs⟩, -⟩` from `he`. Establish `hs' : e = ∑ w ∈ P, idemAt w` using `hs.trans (Finset.sum_congr rfl fun w hw => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ w w (hes w hw) (hP w hw)).1 rfl)`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod, detIdl_val hee, Finset.prod_congr rfl fun w hw => detIdl_val (hP w hw).1.1 S g, hs']`.
+
+Conclude with `prod_idem _ _ P fun a ha b hb hab => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ a b (hP a ha) (hP b hb)).2 hab`.
+-/
 theorem prod_detIdl {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P)
     (hP : ∀ w ∈ P, Formalism.L2.NTheta.IsIdemAt (idemAt w) w) (S : HSp D) (g : Formalism.L2.Theta.GA D S) :
     ∏ w ∈ P, detIdl (idemAt w) S g = detIdl e S g := by
@@ -214,6 +281,9 @@ theorem prod_detIdl {e : Formalism.L2.Theta.AE D} {P : Finset (Pl D.host.E)} (he
   rw [Units.coe_prod, detIdl_val hee, Finset.prod_congr rfl fun w hw => detIdl_val (hP w hw).1.1 S g, hs']
   exact prod_idem _ _ P fun a ha b hb hab => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ a b (hP a ha) (hP b hb)).2 hab
 
+/- English proof (translation)
+Distinguish the cases in `hee : e * e = e`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[detIdl_val hee, Formalism.IndefR.Fin.LevelGroupLemmas.Lat.mt_one, Matrix.det_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[detIdl, dif_neg hee]`.
+-/
 theorem detIdl_one (e : Formalism.L2.Theta.AE D) (S : HSp D) : detIdl e S 1 = 1 := by
   by_cases hee : e * e = e
   · refine Units.ext ?_
@@ -221,6 +291,15 @@ theorem detIdl_one (e : Formalism.L2.Theta.AE D) (S : HSp D) : detIdl e S 1 = 1 
     ring
   · rw [detIdl, dif_neg hee]
 
+/- English proof (translation)
+Take `⟨hk1, hk2⟩` from `Lev.mem_levA.1 hk`. Establish `hW : IsWeilDatumO ψ A' WW (α s) (α s / β s) (X.ω' s)` using `hX.weil' s`. Establish `he` using `hX.idem s`. Establish `hee : X.e s * X.e s = X.e s` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hP : ∀ w ∈ S s, Formalism.L2.NTheta.IsIdemAt (idemAt w) w` using `fun w hw => by`.
+
+Take `⟨⟨es, hes, -⟩, -⟩` from `he`. Conclude with `Classical.epsilon_spec (p := fun e : Formalism.L2.Theta.AE D => Formalism.L2.NTheta.IsIdemAt e w) ⟨es w, hes w hw⟩`. Establish `h1 : Lev.finE WW 1 ∈ St X.rW.β` using `by rw [map_one]; exact one_mem _`. Establish `hv` using `GlobalTheory.LatStabScalar.om_eq_prod_splitFac hW hX.rigA'.1 hX.rigW.1 (S s) hP (GlobalTheory.LevelPlaces.under_injOn he) (fun v hv => ⟨(hu v hv).1, by`. Rewrite using `[div_eq_mul_inv]`.
+
+Conclude with `GlobalTheory.SeeSaw.WeilLines.charUnram_mul (hu v hv).1 (GlobalTheory.SeeSaw.WeilLines.charUnram_inv (hu v hv).2)⟩)`. Use `k hk1 1 (one_mem _) (keeps_latHat hX.rigA'.2.1 hk2) (keeps_latHat hX.rigW.2.1 h1) X.vac' hX.isVac'.2.theta hX.isVac'.2.lat`. Establish `hc : (∏ w ∈ S s, ((splitFacO (α s) (α s / β s) (detIdl (idemAt w) A' k) (detIdl (idemAt w) WW 1) : Circle) : ℂ)) = ((((α s / β s) (detIdl (X.e s) A' k))⁻¹ : Circle) : ℂ)`. Rewrite using `[← prod_detIdl he hP, map_prod, ← Finset.prod_inv_distrib]`. Rewrite using `[show ∀ f : Pl D.host.E → Circle, ((∏ w ∈ S s, f w : Circle) : ℂ) = ∏ w ∈ S s, (f w : ℂ) from fun f => map_prod Circle.coeHom f (S s)]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[splitFacO, detIdl_one, map_one, mul_one]`. Rewrite `hv` using `[hc]`. Establish `key` using `GlobalTheory.SchrMove.smul_om_eq D ψ A' WW X.rA'.Λ X.rW.Λ _ _ _ hW hX.rigA'.1 hX.rigW.1 (cA D (X.e s)) (by rw [← RingHom.map_mul, hee]) (GlobalTheory.PlaceDatum.infPart_cA (GlobalTheory.PlaceDatum.infPart_idemSum he)) k 1 (GlobalTheory.StabLatInv.mem_latO_iff_actO_mem D A' WW _ _ …`. Conclude with `smul_right_injective _ (Circle.coe_ne_zero _) key`.
+-/
 theorem fix_of_unram {T : Type} {A A' WW : HSp D} {X : Tri T A A' WW} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     {α β : T → ((Formalism.L2.Theta.AE D)ˣ →* Circle)} {νH : T → Formalism.L2.Host.HChar D.host.E} {S : T → Finset (Pl D.host.E)}
     (hX : X.Is ψ θ α β νH S) (s : T)
@@ -255,10 +334,26 @@ theorem fix_of_unram {T : Type} {A A' WW : HSp D} {X : Tri T A A' WW} {ψ : AddC
     (stdSnd_actO _ he _ _ A' WW _ _ hk2)
   exact smul_right_injective _ (Circle.coe_ne_zero _) key
 
+/- English proof (translation)
+Introduce `x a b c d` and use `by rw [MonoidHom.pow_apply, h x a b c d, one_pow]`.
+-/
 theorem charUnram_pow {χ : (Formalism.L2.Theta.AE D)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 D.host.F)} (h : CharUnramAt D χ v) (n : ℕ) :
     CharUnramAt D (χ ^ n) v := fun x a b c d => by
   rw [MonoidHom.pow_apply, h x a b c d, one_pow]
 
+/- English proof (translation)
+Establish `hS : v ∉ G.pl.S0` using `fun h => by`. Establish `hw : G.pl.w v ∈ locPl G t`. Unfold `locPl`. Conclude with `Finset.mem_union_left _ (by unfold Places.W0; exact Finset.mem_image_of_mem _ h)`. Conclude with `hv _ hw (G.pl.under_w h)`.
+
+Establish `hQ : ∀ w ∈ L.Q t, w.under (𝓞 D.host.F) ≠ v` using `fun w hw => hv w (by`. Unfold `locPl`. Conclude with `Finset.mem_union_right _ hw)`. Establish `hη : CharUnramAt D L.eta v` using `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 (L.C.isEta.unr w)`. Establish `h1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`.
+
+Establish `h2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Establish `hχ : CharUnramAt D (G.ch.chi (D.R.m - i)) v` using `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => (GlobalTheory.LFun.unrAt_iff_of_chrEq (G.ch.chi_eq _ h1 h2) w).2 (G.ch.unr _ h1 h2 w (by rwa [hw]))`. Establish `hμ : CharUnramAt D (L.mu t (j + 1)) v`. Use `GlobalTheory.SeeSaw.WeilLines.charUnram_mul (χ := L.mu0 ((j : ℕ) + 1)) (χ' := L.xi t) (GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun P hP => (GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.mu0 j) P).2 ?_) (GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun P hP => (GlobalTheory.LFun.u …` and prove the remaining obligations. Use `(L.C.isMu0 j).unr P fun k hk => hS ?_` and prove the remaining obligations.
+
+Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ v.asIdeal`. Rewrite using `[← hP]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.F) (𝓞 D.host.E) _ ∈ P.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`.
+
+Use `G.pl.mem_S0_of_sum_eq.2 (Or.inr ((S1_mem_OmF D).2 ?_))` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hk'`. Conclude with `Or.inr (Or.inl hk')`. Assume the negation of the conclusion as `hn`.
+
+Break down `(hL.Q_ram t P).1 hn with hq | ⟨P', hq, hc⟩` into its components or cases. Conclude with `hQ P hq hP`. Conclude with `hQ P' hq ((GlobalTheory.BotTripleUnr.under_eq_of_isConjPl hc).trans hP)`. Conclude with `⟨GlobalTheory.SeeSaw.WeilLines.charUnram_mul hμ (charUnram_pow hη n), GlobalTheory.SeeSaw.WeilLines.charUnram_mul hχ (charUnram_pow hη n)⟩`.
+-/
 theorem unram_off {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m) (n : ℕ) {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) ≠ v) :
     CharUnramAt D (L.mu t (j + 1) * L.eta ^ n) v ∧ CharUnramAt D (G.ch.chi (D.R.m - i) * L.eta ^ n) v := by
@@ -299,6 +394,9 @@ theorem unram_off {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} 
 
 end GlobalTheory.BotFinLevel
 
+/- English proof (translation)
+Introduce `_ _ _ _ _`. Use `⟨0, fun _ _ _ => ⟨0, 0, fun _ _ D large₂ _ _ _ T Lc μ₀ hμ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W _ i j A A' WW X hX s k hk`. Conclude with `GlobalTheory.BotFinLevel.fix_of_unram hX.is s (fun v hv => GlobalTheory.BotFinLevel.unram_off G hμ s i j _ hv) hk`.
+-/
 theorem GlobalTheory.BotFinLevel.finLevel_fix : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
     GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil), IsStdChar D W.ψ (-1) → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)

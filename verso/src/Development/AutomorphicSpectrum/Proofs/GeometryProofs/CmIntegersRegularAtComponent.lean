@@ -13,6 +13,9 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ _ _ β Y U Z τ σ _ q a`. Establish `hN : NormalCpt (Z.ξ₀ ≫ Y.j)` using `XR.normalCpt_of_isCptGen Z.gen Y.normal`. Conclude with `hN q _ ((map_isIntegral_int σ (RingOfIntegers.isIntegral_coe a)).tower_top)`.
+-/
 theorem integers_mem_regAt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ) (σ : E →+* Z.Ω), (∀ b : 𝓞 E, σ (b : E) = Z.inc (tauIn c τ b)) →
     ∀ (q : Cpt (Z.ξ₀ ≫ Y.j)) (a : 𝓞 E), σ (a : E) ∈ regAt (Z.ξ₀ ≫ Y.j) q := by
   intro E _ _ _ H D l Xo c O _ _ _ β Y U Z τ σ _ q a

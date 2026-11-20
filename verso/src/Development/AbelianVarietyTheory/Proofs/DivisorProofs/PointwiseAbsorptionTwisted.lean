@@ -7,6 +7,23 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `T x u g t k1 k2 E hu hg hk2 hE ht hw hwin hoff`. Establish `ha : 0 ≤ t ^ 2 * g ^ 2 / k2` using `by positivity`. Establish `hb : 0 ≤ k1 ^ 2 / k2` using `by positivity`. Establish `hA` using `Real.sq_sqrt ha`. Establish `hB` using `Real.sq_sqrt hb`.
+
+Establish `hA0` using `Real.sqrt_nonneg (t ^ 2 * g ^ 2 / k2)`. Establish `hB0` using `Real.sqrt_nonneg (k1 ^ 2 / k2)`. Distinguish the cases in `h : (-T - 1 ≤ x ∧ x ≤ -T + 1)`. Rewrite using `[if_pos h]`. Take `⟨h1, h2⟩` from `hwin h`.
+
+Establish `ht2 : t ^ 2 ≤ 9 / 16`. Establish `h0 : 0 ≤ |t|` using `abs_nonneg t`. Establish `: |t| ^ 2 ≤ (3 / 4) ^ 2` using `by nlinarith`. Rewrite `this` using `[sq_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `haE : t ^ 2 * g ^ 2 / k2 * E ≤ 3 * g ^ 2`. Establish `e : t ^ 2 * g ^ 2 / k2 * E = t ^ 2 * g ^ 2 * (E / k2)` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_right ht2 (sq_nonneg g)) h1 (by positivity) (by positivity)` to reduce the goal to its premises.
+
+Use `_ = 3 * g ^ 2 := by ring`. Establish `key : (Real.sqrt (t ^ 2 * g ^ 2 / k2) + u * Real.sqrt (k1 ^ 2 / k2)) ^ 2 ≤ 5 / 4 * (t ^ 2 * g ^ 2 / k2) + 5 * (k1 ^ 2 / k2) * u ^ 2`. Use polynomial arithmetic with `[sq_nonneg (Real.sqrt (t ^ 2 * g ^ 2 / k2) / 2 - 2 * u * Real.sqrt (k1 ^ 2 / k2))]`. Establish `k1'` using `mul_le_mul_of_nonneg_right key hE.le`. Establish `k2'` using `mul_le_mul_of_nonneg_left h2 (sq_nonneg u)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[if_neg h]`. Establish `t0` using `hoff h`. Substitute `t0` using the available equality. Establish `z : Real.sqrt ((0:ℝ) ^ 2 * g ^ 2 / k2) = 0` using `by simp`.
+
+Rewrite using `[z]`. Establish `k2'` using `mul_le_mul_of_nonneg_left hw (sq_nonneg u)`. Establish `e : (0 + u * Real.sqrt (k1 ^ 2 / k2)) ^ 2 * E = u ^ 2 * (k1 ^ 2 / k2) * E`. Rewrite using `[zero_add, mul_pow, hB]`. Rewrite using `[e]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem pointwise_absorption_twisted :
     ∀ (T x u g t k1 k2 E : ℝ), 0 ≤ u → 0 ≤ g → 0 < k2 → 0 < E → |t| ≤ 3 / 4 →
       wT T x / 8 ≤ (1 - k1 ^ 2 / k2) * E →

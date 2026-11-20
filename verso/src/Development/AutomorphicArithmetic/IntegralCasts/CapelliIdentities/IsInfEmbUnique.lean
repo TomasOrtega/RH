@@ -4,18 +4,30 @@ import Mathlib
     (F : Type) → [Field F] → Type :=
     fun (F : Type) [Field F] ↦ NumberField.InfiniteAdeleRing F
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qh26.aux2 :
     ∀ {F : Type} [inst : Field F], SMulCommClass F (UpperTheory.Reformulated.B.Qh26.Ainf F) (UpperTheory.Reformulated.B.Qh26.Ainf F) := by
   intros; infer_instance
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qh26.aux3 :
     ∀ {F : Type} [inst : Field F], IsScalarTower F (UpperTheory.Reformulated.B.Qh26.Ainf F) (UpperTheory.Reformulated.B.Qh26.Ainf F) := by
   intros; infer_instance
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qh26.aux4 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], SMulCommClass F E E := by
   intros; infer_instance
 
+/- English proof (translation)
+Use `intros`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Qh26.aux5 :
     ∀ {F E : Type} [inst : Field F] [inst_1 : Field E] [inst_2 : Algebra F E], IsScalarTower F E E := by
   intros; infer_instance
@@ -31,6 +43,15 @@ noncomputable def UpperTheory.Reformulated.B.Qh26.IsInfEmb :
         Continuous fun (a : UpperTheory.Reformulated.B.Qh26.Ainf F) ↦
           (θ : TensorProduct F (UpperTheory.Reformulated.B.Qh26.Ainf F) E → ℂ) (a ⊗ₜ[F] (1 : E))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ τ θ θ' h h'`. Establish `hd : DenseRange (algebraMap F (UpperTheory.Reformulated.B.Qh26.Ainf F))` using `NumberField.InfiniteAdeleRing.denseRange_algebraMap F`. Establish `key : ∀ x : F, (algebraMap F (UpperTheory.Reformulated.B.Qh26.Ainf F) x) ⊗ₜ[F] (1 : E) = (1 : UpperTheory.Reformulated.B.Qh26.Ainf F) ⊗ₜ[F] (algebraMap F E x)`. Introduce `x`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+
+Establish `h1 : (fun a : UpperTheory.Reformulated.B.Qh26.Ainf F ↦ θ (a ⊗ₜ[F] (1 : E))) = fun a : UpperTheory.Reformulated.B.Qh26.Ainf F ↦ θ' (a ⊗ₜ[F] (1 : E))`. Use `hd.equalizer h.2 h'.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[key, h.1, h'.1]`.
+
+Use `RingHom.ext fun z ↦ ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a e`.
+
+Establish `hs : a ⊗ₜ[F] e = (a ⊗ₜ[F] (1 : E)) * ((1 : UpperTheory.Reformulated.B.Qh26.Ainf F) ⊗ₜ[F] e)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hs, map_mul, map_mul, h.1, h'.1, congrFun h1 a]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh26.isInfEmb_unique :
     ∀ {F E : Type} [inst : Field F] [NumberField F] [inst_2 : Field E] [NumberField E] [inst_4 : Algebra F E] (τ : E →+* ℂ)
       {θ θ' : TensorProduct F (UpperTheory.Reformulated.B.Qh26.Ainf F) E →+* ℂ},

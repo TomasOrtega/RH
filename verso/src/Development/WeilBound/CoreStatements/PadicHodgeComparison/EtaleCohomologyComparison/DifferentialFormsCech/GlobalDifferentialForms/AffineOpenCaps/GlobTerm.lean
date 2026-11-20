@@ -13,6 +13,11 @@ universe w
 noncomputable section
 namespace GlobalTheory.CompanionTheory.OmGlobTerm.AssemblyHe1
 
+/- English proof (translation)
+Establish `h` using `U.inter (Finset.image i Finset.univ) ⟨i 0, Finset.mem_image_of_mem i (Finset.mem_univ 0)⟩`. Establish `e : (⨅ α ∈ Finset.image i Finset.univ, U.U α) = capO U.U i`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `le_iInf fun k => iInf₂_le (i k) (Finset.mem_image_of_mem i (Finset.mem_univ k))`. Use `le_iInf₂ fun α hα => ?_` and prove the remaining obligations.
+
+Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hα`. Conclude with `capO_le U.U i k`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem capO_isAffineOpen {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q)
     {n : ℕ} (i : Fin (n + 1) → U.ι) : IsAffineOpen (capO U.U i) := by
   classical
@@ -29,10 +34,24 @@ def capEquiv {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingC
     (i : Fin (n + 1) → U.ι) : HU (Fk q U a) (capT (Vk q U a) i) a ≃ₗ[K] CH.H (FV q (capO U.U i) a) a :=
   LinearEquiv.ofBijective ((capM q U a n i).pull a) (capM_bij q U a n i a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem capEquiv_apply {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a n : ℕ)
     (i : Fin (n + 1) → U.ι) (x : HU (Fk q U a) (capT (Vk q U a) i) a) :
     capEquiv q U a n i x = (capM q U a n i).pull a x := rfl
 
+/- English proof (translation)
+Introduce `K _ _`. Take `⟨t0, h0⟩` from `CrystallineSemistableComparison.Om.Nt2.TermAff.term_aff K`. Use `⟨fun {X} q _ U a n i => (capEquiv q U a n i).trans (t0 q (capO U.U i) (capO_isAffineOpen q U i) a), ?_, ?_⟩` and prove the remaining obligations. Introduce `X q _ U a m n i θ x`. Establish `hle : KS q (a + 1) {capO U.U i} ≤ KS q (a + 1) {capO U.U (i ∘ θ)}`.
+
+Introduce and unpack `T ⟨h1, V', rfl, h2⟩`. Conclude with `⟨h1, _, rfl, inU_mono q (capO_comp U.U i θ) T h2⟩`. Establish `hG : ∀ T, KS q (a + 1) {capO U.U i} T → KS q (a + 1) {capO U.U (i ∘ θ)} ((pullM (𝟙 X) (Category.id_comp q) a).G.obj T)` using `fun T hT => ks_pull (𝟙 X) (Category.id_comp q) (capO_comp U.U i θ) (a + 1) a T hT`. Establish `e1` using `capM_res U a m n i θ x`. Establish `e2` using `morU_id (Category.id_comp q) a _ _ hG hle a ((capM q U a m (i ∘ θ)).pull a x)`.
+
+Establish `e3` using `h0 q q (𝟙 X) (Category.id_comp q) (capO U.U i) (capO U.U (i ∘ θ)) (capO_isAffineOpen q U i) (capO_isAffineOpen q U (i ∘ θ)) (capO_comp U.U i θ) a hG ((capM q U a m (i ∘ θ)).pull a x)`. Establish `e4` using `formPull_id q a (capO U.U (i ∘ θ)) (t0 q (capO U.U (i ∘ θ)) (capO_isAffineOpen q U (i ∘ θ)) a ((capM q U a m (i ∘ θ)).pull a x))`. Express the relevant statement in the definitionally equal form `t0 q (capO U.U i) _ a ((capM q U a n i).pull a _) = formRes q _ a (t0 q (capO U.U (i ∘ θ)) _ a ((capM q U a m (i ∘ θ)).pull a x))`. Rewrite using `[e1, ← e2, e3]`. Conclude with `congrArg (formRes q (capO_comp U.U i θ) a) e4`.
+
+Introduce `X Y q p _ _ u hu U W τ hτ a hG n i hG' x`. Establish `h : ∀ T, KS q (a + 1) {capO U.U i} T → KS p (a + 1) {capO W.U (τ ∘ i)} ((pullM u hu a).G.obj T)` using `fun T hT => ks_pull u hu (hτ n i) (a + 1) a T hT`. Establish `e1` using `capM_pull u hu U W τ a hG n i hG' h x`. Establish `e3` using `h0 q p u hu (capO U.U i) (capO W.U (τ ∘ i)) (capO_isAffineOpen q U i) (capO_isAffineOpen p W (τ ∘ i)) (hτ n i) a h ((capM p W a n (τ ∘ i)).pull a x)`. Express the relevant statement in the definitionally equal form `t0 q (capO U.U i) _ a ((capM q U a n i).pull a _) = formRes q _ a (formPull hu _ a (t0 p (capO W.U (τ ∘ i)) _ a ((capM p W a n (τ ∘ i)).pull a x)))`.
+
+Rewrite using `[e1, e3]`.
+-/
 theorem term : ∀ (K : Type) [Field K] [CharZero K],
     ∃ t : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (U : Cov q) (a n : ℕ) (i : Fin (n + 1) → U.ι),
       HU (Fk q U a) (capT (Vk q U a) i) a ≃ₗ[K] OmU q (capO U.U i) a,

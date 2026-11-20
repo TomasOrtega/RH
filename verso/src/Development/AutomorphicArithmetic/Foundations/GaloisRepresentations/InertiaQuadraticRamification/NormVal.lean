@@ -4,6 +4,23 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.V.Published
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
+/- English proof (translation)
+Introduce `Ω _ _ _ U hU q hq`. Use `set K : IntermediateField ℚ Ω := IntermediateField.fixedField U with hK`. Establish `hfix : K.fixingSubgroup = U` using `InfiniteGalois.fixingSubgroup_fixedField ⟨U, U.isClosed_of_isOpen hU⟩`. Establish `hfin : FiniteDimensional ℚ K`. Rewrite using `[← InfiniteGalois.isOpen_iff_finite, hfix]`.
+
+Conclude with `hU`. Establish `hq0 : q ≠ 0` using `by omega`. Establish `hpp : q.minFac.Prime` using `Nat.minFac_prime (by omega)`. Use `haveI : Fact q.minFac.Prime := ⟨hpp⟩`. Establish `ha : 0 < padicValNat q.minFac q` using `one_le_padicValNat_of_dvd hq0 (Nat.minFac_dvd q)`.
+
+Use `⟨Module.finrank ℚ K * padicValNat q.minFac q, Nat.mul_pos Module.finrank_pos ha, ?_⟩` and prove the remaining obligations. Introduce `z n c hz hzq`. Break down `n with _ | k` into its components or cases. Establish `h1 : ((q ^ c : ℕ) : Ω) = ((1 : ℕ) : Ω)` using `by simpa using hzq`. Establish `h2 : q ^ c = 1` using `Nat.cast_injective h1`.
+
+Break down `(Nat.pow_eq_one.1 h2) with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Simplify using `[h]`. Establish `hzK : z ∈ K` using `(IntermediateField.mem_fixedField_iff U z).2 hz`. Use `set w : K := ⟨z, hzK⟩ with hwdef`.
+
+Establish `hw : w ^ (k + 1) * (algebraMap ℚ K (q : ℚ)) ^ c = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hzq` using `[hwdef]`. Establish `hN` using `congrArg (Algebra.norm ℚ) hw`. Rewrite `hN` using `[map_mul, map_pow, map_pow, Algebra.norm_algebraMap, map_one]`.
+
+Establish `hNw : Algebra.norm ℚ w ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0, zero_pow (Nat.succ_ne_zero k), zero_mul]`. Conclude with `zero_ne_one hN`. Establish `hqQ : (q : ℚ) ≠ 0` using `by exact_mod_cast hq0`.
+
+Establish `hv` using `congrArg (padicValRat q.minFac) hN`. Rewrite `hv` using `[padicValRat.mul (pow_ne_zero _ hNw) (pow_ne_zero _ (pow_ne_zero _ hqQ)), padicValRat.pow, padicValRat.pow, padicValRat.pow, padicValRat.one, padicValRat.of_nat]`. Establish `hd : ((k + 1 : ℕ) : ℤ) ∣ ((c * (Module.finrank ℚ K * padicValNat q.minFac q) : ℕ) : ℤ)`. Use `⟨-padicValRat q.minFac (Algebra.norm ℚ w), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, Nat.cast_mul]`.
+
+Take the linear combination `hv`. Conclude with `Int.natCast_dvd_natCast.1 hd`.
+-/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.normVal :
     NormVal := by
   intro Ω _ _ _ U hU q hq

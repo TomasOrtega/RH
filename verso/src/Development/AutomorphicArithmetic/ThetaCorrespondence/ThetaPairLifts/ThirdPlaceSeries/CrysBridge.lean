@@ -17,6 +17,9 @@ end
 section
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Module
 namespace GlobalTheory.DualTwistCrys
+/- English proof (translation)
+The claim follows from `((D.loc_tie i w hw).2.1 D.R.nV (r x) (hR x).1).1.1 (_root_.UpperTheory.GalS.g2a' hCr w hw h0 h1 x).1`.
+-/
 theorem crys_bridge_alt_alt (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (hR : GoodR D.nd i r) (hCr : _root_.UpperTheory.GalS.G2a D.nd D.naut i r) (h0 : D.nd.l i ≠ D.host.g 0)
     (h1 : D.nd.l i ≠ D.host.g 1) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))

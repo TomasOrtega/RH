@@ -20,6 +20,15 @@ noncomputable section
 
 namespace GlobalTheory.HodgeGradInt
 
+/- English proof (translation)
+Take `⟨W, φ, hW, ho, hs, eφ⟩` from `ha.1 y₀`. Take `⟨i, hi⟩` from `R.cover y₀`. Use `set ch := R.chart i`. Establish `hD : ContinuousAt (fun y => fderiv ℝ (f ∘ ch.e.symm) (ch.e y)) y₀` using `ContinuousAt.comp (g := fderiv ℝ (f ∘ ch.e.symm)) (f := ch.e) ((hf.contDiffAt_two hS hi hy).fderiv_right (m := 0) (by norm_num)).continuousAt (ch.e.continuousAt hi)`. Take `⟨K, hK⟩` from `CurvBound.eventually_abs_le (E := ReciprocityTheory.L2DbarEstimates.V d) (x₀ := y₀) (F := fun y ξ => (fderiv ℝ (f ∘ ch.e.symm) (ch.e y) ξ) ^ 2) (G := fun y ξ => ddcForm φ ch y ξ.ofLp) (fun ξ => ((hD.comp (f := Prod.fst) (x := (y₀, ξ)) continuousAt_fst).clm_apply continuousAt_snd) …`.
+
+Take `⟨U, hU, hUo, hyU⟩` from `eventually_nhds_iff.1 (hK.and ((show ∀ᶠ y in 𝓝 y₀, y ∈ S from hS.mem_nhds hy).and ((show ∀ᶠ y in 𝓝 y₀, y ∈ W from ho.mem_nhds hW).and (show ∀ᶠ y in 𝓝 y₀, y ∈ ch.e.source from ch.e.open_source.mem_nhds hi))))`. Use `⟨ch, U, √|K|, hUo, hyU, fun y h => (hU y h).2.2.2, fun y h => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hU y h`. Use `⟨h2, (hf.contDiffAt_two hS h4 h2).differentiableAt (by norm_num), fun ξ => ?_⟩` and prove the remaining obligations. Establish `h5` using `h1 ξ`.
+
+Rewrite `h5` using `[← eφ _ _ h4 h3]`. Establish `h0 : 0 ≤ a ch y ξ.ofLp`. Break down `eq_or_ne ξ.ofLp 0 with e | hξ` into its components or cases. Use `CurvBound.ddcForm_smul ch φ y 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul]`.
+
+Rewrite using `[e, eφ _ _ h4 h3, this]`. Simplify using the standard rewrite rules. Conclude with `(ha.2 _ _ h4 _ hξ).le`. Rewrite using `[← Real.sqrt_mul (abs_nonneg K)]`. Conclude with `Real.abs_le_sqrt (((le_abs_self _).trans h5).trans (mul_le_mul_of_nonneg_right (le_abs_self K) h0))`.
+-/
 theorem exists_grad_le {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k} {σ : k →+* ℂ} {d : ℕ}
     {R R' : GlobalTheory.AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) {S : Set (GlobalTheory.CxPts p σ)} (hS : IsOpen S)
     {f : GlobalTheory.CxPts p σ → ℝ} (hf : R'.SmoothOn S f) {y₀ : GlobalTheory.CxPts p σ} (hy : y₀ ∈ S) :
@@ -58,6 +67,9 @@ theorem exists_grad_le {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Recip
   rw [← Real.sqrt_mul (abs_nonneg K)]
   exact Real.abs_le_sqrt (((le_abs_self _).trans h5).trans (mul_le_mul_of_nonneg_right (le_abs_self K) h0))
 
+/- English proof (translation)
+The claim follows from `|fderiv ℝ (lnRatio (metsOf x O.Φ c none σ (O.ex ρ)) (refMet x O.Φ c σ (O.ex ρ)) ∘ ch.e.symm) (ch.e y) ξ| ≤ C * √(P.om c σ ch y ξ.ofLp) := by intro _ _ D O x P _ _ _ c σ ρ y₀ hy have hT := isOpen_not_liesIn (p := GlobalTheory.Toroidal.genStr O.s.T.Z) (σ := embOf O.κ.e σ) (GlobalTh …`.
+-/
 theorem grad_le_int : Hypotheses2 → HypothesesH → OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (ρ : DV.Rt D.what₂.Tau O.N)
   (y₀ : GlobalTheory.CxPts (O.var c).str σ), y₀ ∈ offBd O.Φ c σ →
   ∃ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (C : ℝ),

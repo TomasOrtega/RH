@@ -14,6 +14,25 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open PositivityTheory.Rg.Sw.LVs PositivityTheory.Rg.Sw.LVs.CK
 
+/- English proof (translation)
+Use `set σ := Equiv.Perm.decomposeFin.symm (c.succ, e) with hσ`. Use `set k0 : Fin (M + 1) := e.symm c with hk0`. Establish `hek0 : e k0 = c` using `by rw [hk0, Equiv.apply_symm_apply]`. Establish `hσk0 : σ k0.succ = 0`. Rewrite using `[hσ, Equiv.Perm.decomposeFin_symm_apply_succ, hek0, Equiv.swap_apply_right]`.
+
+Establish `hσo : ∀ j : Fin M, σ (k0.succAbove j).succ = (e (k0.succAbove j)).succ`. Introduce `j`. Rewrite using `[hσ, Equiv.Perm.decomposeFin_symm_apply_succ]`. Apply `Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _)` to reduce the goal to its premises. Introduce `h`.
+
+Establish `h'` using `Fin.succ_injective _ h`. Rewrite `h'` using `[← hek0]`. Conclude with `Fin.succAbove_ne k0 j (e.injective h')`. Establish `hslit0 : (1 + piF (0 : Matrix (Fin (M + 1)) (Fin (M + 1 + 1)) ℂ)).det ∈ Complex.slitPlane`. Simplify using `[piF_zero]`.
+
+Establish `hA` using `icompL (fun y => fderiv ℂ (Hc (M + 1 + 1) t) y (Matrix.single 0 c.succ 1)) phiF phiF_add phiF_smul 0 0 phiF_zero (analyticAt_fderiv_apply _ _ _ (analyticAt_determinant_power_zero _ t)) (M + 1) (fun k => Matrix.single k (σ k.succ) 1) (fun k => Matrix.single k.succ (σ k.succ) 1) (f …`. Rewrite using `[← hA]`. Establish `hB : (fun y => fderiv ℂ (Hc (M + 1 + 1) t) y (Matrix.single 0 c.succ 1)) ∘ phiF =ᶠ[𝓝 0] fsumc t c` using `by filter_upwards [ev_piFc (M + 1)] with X hX`. Conclude with `fderiv_determinant_power_column t X hX c`. Rewrite using `[(hB.iteratedFDeriv ℂ (M + 1)).eq_of_nhds]`.
+
+Rewrite using `[ipeel (fsumc t c) 0 (analyticAt_fsumc t c 0 hslit0) M _ k0]`. Establish `hD : (fun y => fderiv ℂ (fsumc t c) y (Matrix.single k0 (σ k0.succ) 1)) =ᶠ[𝓝 0] fun y => (-1 : ℂ) * ((fun z => fderiv ℂ (Hc (M + 1) t) z (Matrix.single k0 c 1)) ∘ piF) y` using `by filter_upwards [ev_piFc (M + 1)] with X hX`. Establish `h` using `fderiv_fsumc t c k0 X hX`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hσk0]`.
+
+Use `erw [h]`. Expand and normalize the polynomial expressions, which then agree. Use `(congrFun (congrArg DFunLike.coe (hD.iteratedFDeriv ℂ M).eq_of_nhds) _).trans ?_` and prove the remaining obligations. Establish `hG0 : AnalyticAt ℂ (fun z => fderiv ℂ (Hc (M + 1) t) z (Matrix.single k0 c 1)) 0` using `analyticAt_fderiv_apply _ _ _ (analyticAt_determinant_power_zero _ t)`. Establish `hGc : AnalyticAt ℂ ((fun z => fderiv ℂ (Hc (M + 1) t) z (Matrix.single k0 c 1)) ∘ piF) 0`.
+
+Establish `hcomp : ((fun z => fderiv ℂ (Hc (M + 1) t) z (Matrix.single k0 c 1)) ∘ piF) = (fun z => fderiv ℂ (Hc (M + 1) t) z (Matrix.single k0 c 1)) ∘ (piL (M + 1))`. Use function extensionality and compare the values at `X`. Simplify using `only [Function.comp_apply, piL_apply]`. Rewrite using `[hcomp]`. Use `AnalyticAt.comp ?_ ((piL (M + 1)).analyticAt 0)` and prove the remaining obligations.
+
+Rewrite using `[piL_apply, piF_zero]`. Conclude with `hG0`. Use `(iconst_mul _ 0 (-1) hGc M _).trans ?_` and prove the remaining obligations. Rewrite using `[icompL (fun z => fderiv ℂ (Hc (M + 1) t) z (Matrix.single k0 c 1)) piF piF_add piF_smul 0 0 piF_zero hG0 M _ (fun k => Matrix.single (k0.succAbove k) (e (k0.succAbove k)) 1) (fun k => by simp only [hσo, piF_single_succ])]`. Rewrite using `[neg_one_mul, ipeel (Hc (M + 1) t) 0 (analyticAt_determinant_power_zero _ t) M _ k0, hek0]`.
+
+Both sides reduce to the same expression.
+-/
 theorem iterated_derivative_column_case (t : ℂ) (M : ℕ) (e : Equiv.Perm (Fin (M + 1))) (c : Fin (M + 1)) :
     iteratedFDeriv ℂ (M + 1) (fun y => fderiv ℂ (Hc (M + 1 + 1) t) y (Matrix.single 0 c.succ 1)) 0
         (fun k => Matrix.single k.succ (Equiv.Perm.decomposeFin.symm (c.succ, e) k.succ) 1) =
@@ -75,6 +94,9 @@ theorem iterated_derivative_column_case (t : ℂ) (M : ℕ) (e : Equiv.Perm (Fin
   rw [neg_one_mul, ipeel (Hc (M + 1) t) 0 (analyticAt_determinant_power_zero _ t) M _ k0, hek0]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ipeel0 (Hc (N + 1) t) 0 (analyticAt_determinant_power_zero (N + 1) t) N]`. Simplify using `only [Equiv.Perm.decomposeFin_symm_apply_zero]`. Both sides reduce to the same expression.
+-/
 theorem term_pc (t : ℂ) (N : ℕ) (p : Fin (N + 1)) (e : Equiv.Perm (Fin N)) :
     iteratedFDeriv ℂ (N + 1) (Hc (N + 1) t) 0
         (fun k => Matrix.single k (Equiv.Perm.decomposeFin.symm (p, e) k) 1) =
@@ -84,6 +106,15 @@ theorem term_pc (t : ℂ) (N : ℕ) (p : Fin (N + 1)) (e : Equiv.Perm (Fin N)) :
   simp only [Equiv.Perm.decomposeFin_symm_apply_zero]
   rfl
 
+/- English proof (translation)
+Establish `h0 : ∀ e : Equiv.Perm (Fin N), iteratedFDeriv ℂ (N + 1) (Hc (N + 1) t) 0 (fun k => Matrix.single k (Equiv.Perm.decomposeFin.symm (0, e) k) 1) = t * iteratedFDeriv ℂ N (Hc N t) 0 (fun k => Matrix.single k (e k) 1)`. Introduce `e`. Rewrite using `[term_pc]`. Simplify using `only [Equiv.Perm.decomposeFin_symm_apply_succ, Equiv.swap_self, Equiv.refl_apply]`. Conclude with `iterated_derivative_corner_case t e`.
+
+Establish `h1 : ∀ (c : Fin N) (e : Equiv.Perm (Fin N)), iteratedFDeriv ℂ (N + 1) (Hc (N + 1) t) 0 (fun k => Matrix.single k (Equiv.Perm.decomposeFin.symm (c.succ, e) k) 1) = -iteratedFDeriv ℂ N (Hc N t) 0 (fun k => Matrix.single k (e k) 1)`. Introduce `c e`. Consider the cases of `N with`. Consider the case `zero => exact c.elim0`. Consider the case `succ M`.
+
+Rewrite using `[term_pc]`. Conclude with `iterated_derivative_column_case t M e c`. Rewrite using `[detD_fin (N + 1) _ (analyticAt_determinant_power_zero (N + 1) t), detD_fin N _ (analyticAt_determinant_power_zero N t), ← Equiv.sum_comp Equiv.Perm.decomposeFin.symm, Fintype.sum_prod_type, Fin.sum_univ_succ]`. Simplify using `only [Equiv.Perm.decomposeFin.symm_sign, h0, h1, Fin.succ_ne_zero, if_true, if_false, Units.val_mul, Units.val_neg, Units.val_one, Int.cast_mul, Int.cast_neg, Int.cast_one, one_mul, neg_one_mul, mul_neg, neg_neg, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[add_mul, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun e _ => by ring`.
+-/
 theorem rec_stepc (t : ℂ) (N : ℕ) : detD (Hc (N + 1) t) = (t + N) * detD (Hc N t) := by
   have h0 : ∀ e : Equiv.Perm (Fin N),
       iteratedFDeriv ℂ (N + 1) (Hc (N + 1) t) 0
@@ -113,6 +144,9 @@ theorem rec_stepc (t : ℂ) (N : ℕ) : detD (Hc (N + 1) t) = (t + N) * detD (Hc
     ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun e _ => by ring
 
+/- English proof (translation)
+The claim follows from `| 0 => by rw [detD_fin 0 _ (analyticAt_determinant_power_zero 0 t)] simp [Hc, iteratedFDeriv_zero_apply] | N + 1 => by rw [rec_stepc, capelli_determinant_rising_factorial t N, Finset.prod_range_succ] ring`.
+-/
 theorem capelli_determinant_rising_factorial (t : ℂ) : ∀ N : ℕ, detD (Hc N t) = ∏ i ∈ Finset.range N, (t + i)
   | 0 => by
     rw [detD_fin 0 _ (analyticAt_determinant_power_zero 0 t)]
@@ -129,8 +163,14 @@ open PositivityTheory.Rg.Sw.LVs
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `N t` and use `CKC.capelli_determinant_rising_factorial t N`.
+-/
 theorem kappaC : KappaC := fun N t => CKC.capelli_determinant_rising_factorial t N
 
+/- English proof (translation)
+Establish `h1 : AnalyticAt ℂ (fun T : Matrix ι ι ℂ => (1 + T).det) 0` using `(LVs.analyticAt_det (1 + 0)).comp (analyticAt_const.add analyticAt_id)`. Conclude with `h1.cpow analyticAt_const (by simpa using Complex.one_mem_slitPlane)`.
+-/
 theorem analyticAt_det_one_add_cpow {ι : Type} [Fintype ι] [DecidableEq ι] (t : ℂ) :
     AnalyticAt ℂ (fun T : Matrix ι ι ℂ => (1 + T).det ^ t) 0 := by
   have h1 : AnalyticAt ℂ (fun T : Matrix ι ι ℂ => (1 + T).det) 0 :=

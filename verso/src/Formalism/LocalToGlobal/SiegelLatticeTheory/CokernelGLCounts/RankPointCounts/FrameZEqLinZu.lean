@@ -16,18 +16,36 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Establish `hγ : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Use `show (mapLF t.lin (lf D (X.Fu u'))).fl.fvec b = _`. Rewrite using `[mapLF_fl hγ, fvec_mapFlag]`.
+-/
 theorem frame_fvec (t : TauC Y u u') (b : Fin (D.R.rS + 1)) : t.frame.fl.fvec b = t.lin ((X.Fu u').fvec b) := by
   have hγ : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := t.rep.2.2.1
   show (mapLF t.lin (lf D (X.Fu u'))).fl.fvec b = _
   rw [mapLF_fl hγ, fvec_mapFlag]
 
+/- English proof (translation)
+Use `frame_fvec Y t (Fin.last _)` as an intermediate fact. Simplify `this` using `[FlagG.fvec, Fin.snoc_last]`.
+-/
 theorem frame_z_eq_lin_zu (t : TauC Y u u') : t.frame.fl.z = t.lin (X.Fu u').z := by
   have := frame_fvec Y t (Fin.last _)
   simpa [FlagG.fvec, Fin.snoc_last] using this
 
+/- English proof (translation)
+The claim follows from `CorankRelation.mem_Xsp_mapLF t.lin t.rep.2.2.1 (lf D (X.Fu u')) x`.
+-/
 theorem mem_frameX (t : TauC Y u u') (x : (VS D).V) : x ∈ t.frame.fl.X ↔ t.lin.symm x ∈ (X.Fu u').X :=
   CorankRelation.mem_Xsp_mapLF t.lin t.rep.2.2.1 (lf D (X.Fu u')) x
 
+/- English proof (translation)
+Establish `hσ'` using `SRat_inv (lf D (X.Fu u)) hσ`. Take `⟨hσi, -, -⟩` from `hσ`. Take `⟨hσi', hσf', hσz'⟩` from `hσ'`. Take `⟨-, hsf, hsz⟩` from `hs'`. Establish `hγ1 : t1.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t1.rep.2.2.1`.
+
+Establish `hγ2 : σ * t1.lin * s' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `he ▸ t2.rep.2.2.1`. Take `⟨o1, o2, o3, o4⟩` from `omp_coset (X.Fu u) (X.Fu u') σ t1.lin s' hσi hσi' hγ1 hγ2 hσf' hσz' hsf hsz`. Establish `hF1 : t1.frame.fl = mapFlag t1.lin hγ1 (X.Fu u')` using `mapLF_fl hγ1 (lf D (X.Fu u'))`. Establish `hF2 : ∀ b, t2.frame.fl.fvec b = (mapFlag (σ * t1.lin * s') hγ2 (X.Fu u')).fvec b` using `fun b => by`. Rewrite using `[frame_fvec, fvec_mapFlag, he]`.
+
+Establish `hrefl : ∀ b, (X.Fu u).fvec b = (X.Fu u).fvec b` using `fun b => rfl`. Take `⟨k1, k2⟩` from `omp_congr (F := X.Fu u) (G := X.Fu u) hrefl hF2`. Take `⟨k3, k4⟩` from `omp_congr (F := t2.frame.fl) (G := mapFlag (σ * t1.lin * s') hγ2 (X.Fu u')) hF2 hrefl`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `k1.trans (o1.trans (congrArg (fun G => σ (omp (X.Fu u) G)) hF1.symm))`.
+
+Use `((det_eq_Dl _ _).symm.trans ?_).trans (det_eq_Dl _ _)` and prove the remaining obligations. Conclude with `(congrArg Matrix.det k2).trans (o2.trans (congrArg (fun G => (Zhat (X.Fu u) G).det) hF1.symm))`. Conclude with `k3.trans (o3.trans (congrArg (fun G => σ (omp G (X.Fu u))) hF1.symm))`. Use `((det_eq_Dl _ _).symm.trans ?_).trans (det_eq_Dl _ _)` and prove the remaining obligations. Conclude with `(congrArg Matrix.det k4).trans (o4.trans (congrArg (fun G => (Zhat G (X.Fu u)).det) hF1.symm))`.
+-/
 theorem omp_terms (t1 t2 : TauC Y u u') (σ s' : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hσ : σ ∈ SRat (lf D (X.Fu u))) (hs' : s' ∈ SRat (lf D (X.Fu u'))) (he : t2.lin = σ * t1.lin * s') :
     omp (X.Fu u) t2.frame.fl = σ (omp (X.Fu u) t1.frame.fl) ∧

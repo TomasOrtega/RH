@@ -6,6 +6,11 @@ open scoped Matrix
 
 namespace GlobalTheory.LimCoc
 
+/- English proof (translation)
+Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])`. Rewrite using `[map_natCast]`. Rewrite using `[h]`. Use `PadicAlgCl.norm_extends l (l : ℚ_[l])` as an intermediate fact. Rewrite using `[this, Padic.norm_p]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`.
+-/
 theorem norm_l_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l]) := by
     rw [map_natCast]
@@ -14,6 +19,9 @@ theorem norm_l_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ < 1 
   rw [this, Padic.norm_p]
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)
 
+/- English proof (translation)
+Establish `hsub : ∀ u v : K, ‖u‖ ≤ ε → ‖v‖ ≤ ε → ‖u - v‖ ≤ ε` using `fun u v hu hv => by`. Rewrite using `[sub_eq_add_neg]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu (by rwa [norm_neg]))`. Conclude with `hsub _ _ (hsub _ _ ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)) hc) he`.
+-/
 theorem ultra3 {K : Type*} [NormedField K] [IsUltrametricDist K] (a b c e : K) (ε : ℝ)
     (ha : ‖a‖ ≤ ε) (hb : ‖b‖ ≤ ε) (hc : ‖c‖ ≤ ε) (he : ‖e‖ ≤ ε) :
     ‖a + b - c - e‖ ≤ ε := by
@@ -22,6 +30,11 @@ theorem ultra3 {K : Type*} [NormedField K] [IsUltrametricDist K] (a b c e : K) (
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hu (by rwa [norm_neg]))
   exact hsub _ _ (hsub _ _ ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)) hc) he
 
+/- English proof (translation)
+Establish `hε : 0 ≤ ε` using `(norm_nonneg _).trans (hw 0)`. Establish `key : ∀ j, ‖A i j * w j‖ ≤ ε` using `fun j => by`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (key 0) (key 1))`.
+-/
 theorem mulVec_small {K : Type*} [NormedField K] [IsUltrametricDist K]
     (A : Matrix (Fin 2) (Fin 2) K) (w : Fin 2 → K) (ε : ℝ) (hA : ∀ i j, ‖A i j‖ ≤ 1)
     (hw : ∀ j, ‖w j‖ ≤ ε) (i : Fin 2) : ‖(A *ᵥ w) i‖ ≤ ε := by
@@ -33,6 +46,13 @@ theorem mulVec_small {K : Type*} [NormedField K] [IsUltrametricDist K]
   simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le (key 0) (key 1))
 
+/- English proof (translation)
+Introduce `l _ Γ _ M z y hM _ hz hy s t`. Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero, ← norm_eq_zero]`. Establish `hbound : ∀ r : ℕ, ‖y (s * t) i - (y s + M s *ᵥ y t) i‖ ≤ ‖((l : ℕ) : Qbar l)‖ ^ r`. Introduce `r`.
+
+Rewrite using `[← norm_pow]`. Establish `hdecomp : y (s * t) i - (y s + M s *ᵥ y t) i = (y (s * t) i - z r (s * t) i) + (z r (s * t) i - (z r s + M s *ᵥ z r t) i) - (y s i - z r s i) - (M s *ᵥ (y t - z r t)) i`. Simplify using `only [Pi.add_apply, Matrix.mulVec_sub, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdecomp]`.
+
+Conclude with `ultra3 _ _ _ _ _ (hy r (s * t) i) (hz r s t i) (hy r s i) (mulVec_small (M s) (y t - z r t) _ (hM s) (fun j => by simpa using hy r t j) i)`. Establish `hlim` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_l_lt_one l)`. Conclude with `le_antisymm (ge_of_tendsto' hlim hbound) (norm_nonneg _)`.
+-/
 theorem limit_cocycle : ∀ (l : ℕ) [Fact l.Prime] {Γ : Type} [Group Γ] (M : Γ → Matrix (Fin 2) (Fin 2) (Qbar l)) (z : ℕ → Γ → Fin 2 → Qbar l) (y : Γ → Fin 2 → Qbar l), (∀ s i j, ‖M s i j‖ ≤ 1) → (∀ r s i, ‖z r s i‖ ≤ 1) → (∀ r s t i, ‖z r (s * t) i - (z r s + M s *ᵥ z r t) i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → (∀ r s i, ‖y s i - z r s i‖ ≤ ‖((l : ℕ) : Qbar l) ^ r‖) → ∀ s t, y (s * t) = y s + M s *ᵥ y t := by
   intro l _ Γ _ M z y hM _ hz hy s t
   funext i

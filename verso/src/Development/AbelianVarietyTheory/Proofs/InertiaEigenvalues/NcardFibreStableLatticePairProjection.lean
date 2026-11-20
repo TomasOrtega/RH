@@ -14,6 +14,11 @@ variable {O E A₁ A₂ : Type} [CommRing O] [Field E] [Algebra O E]
   [CommRing A₁] [CommRing A₂] [Algebra O A₁] [Algebra O A₂] [Algebra E A₁] [Algebra E A₂]
   [IsScalarTower O E A₁] [IsScalarTower O E A₂]
 
+/- English proof (translation)
+Use extensionality with `⟨a, b⟩`. Simplify using `only [Submodule.mem_inf, LinearMap.mem_ker, LinearMap.snd_apply, Submodule.mem_map, Submodule.mem_comap, LinearMap.inl_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨a, h, rfl⟩`.
+
+Introduce and unpack `⟨x, hx, h⟩`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨rfl, rfl⟩` from `h`. Conclude with `⟨hx, rfl⟩`.
+-/
 theorem inf_ker_snd_eq (M : Submodule O (A₁ × A₂)) :
     M ⊓ LinearMap.ker (LinearMap.snd O A₁ A₂) =
       (M.comap (LinearMap.inl O A₁ A₂)).map (LinearMap.inl O A₁ A₂) := by
@@ -28,6 +33,15 @@ theorem inf_ker_snd_eq (M : Submodule O (A₁ × A₂)) :
     obtain ⟨rfl, rfl⟩ := h
     exact ⟨hx, rfl⟩
 
+/- English proof (translation)
+Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker (LinearMap.snd O A₁ A₂) h₂.1 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inf_ker_snd_eq]`. Conclude with `h₁.1.map _`. Use `set S := Submodule.span E (M : Set (A₁ × A₂)) with hS`. Establish `hl : LinearMap.range (LinearMap.inl E A₁ A₂) ≤ S`.
+
+Rewrite using `[LinearMap.range_eq_map, ← h₁.2, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span (by simpa using hx)`. Establish `hr : S.map (LinearMap.snd E A₁ A₂) = ⊤`. Rewrite using `[hS, Submodule.map_span, ← h₂.2]`.
+
+Use `congr 1`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, b⟩ -`. Establish `hb : b ∈ S.map (LinearMap.snd E A₁ A₂)` using `by rw [hr]; trivial`. Take `⟨z, hz, hzb⟩` from `hb`.
+
+Establish `hab : ((a, b) : A₁ × A₂) = z + LinearMap.inl E A₁ A₂ (a - z.1)`. Apply the tactic sequence `ext <;> simp [← hzb]`. Rewrite using `[hab]`. Conclude with `S.add_mem hz (hl ⟨_, rfl⟩)`.
+-/
 theorem isLat_of_comap_inl_map_snd {M : Submodule O (A₁ × A₂)}
     (h₁ : IsLat O E (M.comap (LinearMap.inl O A₁ A₂)))
     (h₂ : IsLat O E (M.map (LinearMap.snd O A₁ A₂))) : IsLat O E M := by
@@ -52,6 +66,11 @@ theorem isLat_of_comap_inl_map_snd {M : Submodule O (A₁ × A₂)}
 
 end Fibre
 
+/- English proof (translation)
+Introduce `hR y`. Establish `key` using `GlobalTheory.T.card_stable_lattices_alt O E A₁ A₂ g₁ g₂ hR y.1.1 y.2.1 y.1.2.1 y.2.2.1 y.1.2.2 y.2.2.2`. Set `e : ↥(latProj O E g₁ g₂ ⁻¹' {y}) ≃ {M : Submodule O (A₁ × A₂) // (∀ z ∈ M, (g₁, g₂) * z ∈ M) ∧ M.comap (LinearMap.inl O A₁ A₂) = y.1.1 ∧ M.map (LinearMap.snd O A₁ A₂) = y.2.1}` to `{ toFun := fun M => ⟨M.1.1, M.1.2.2, congrArg (fun p : LatPair O E g₁ g₂ => (p.1 : Submodule O A₁)) M.2, congrArg (fun p : LatPair O E g₁ g₂ => (p.2 : Submodule O A₂)) M.2⟩ invFun := fun M => ⟨⟨M.1, isLat_of_comap_inl_map_snd (by rw [M.2.2.1]; exact y.1.2.1) (by rw [M.2.2.2]; exa …`. Establish `hc : (latProj O E g₁ g₂ ⁻¹' {y}).ncard = Nat.card {M : Submodule O (A₁ × A₂) // (∀ z ∈ M, (g₁, g₂) * z ∈ M) ∧ M.comap (LinearMap.inl O A₁ A₂) = y.1.1 ∧ M.map (LinearMap.snd O A₁ A₂) = y.2.1}`. Rewrite using `[← Nat.card_coe_set_eq]`.
+
+Conclude with `Nat.card_congr e`. Rewrite using `[hc]`. Conclude with `key`.
+-/
 theorem ncard_fibre_latProj (O E A₁ A₂ : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] [Field E] [Algebra O E] [IsFractionRing O E] [CommRing A₁]
     [CommRing A₂] [Algebra O A₁] [Algebra O A₂] [Algebra E A₁] [Algebra E A₂] [IsScalarTower O E A₁]

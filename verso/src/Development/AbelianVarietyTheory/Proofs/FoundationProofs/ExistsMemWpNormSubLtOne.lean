@@ -20,15 +20,30 @@ def ball (p : ℕ) [Fact p.Prime] : Subring ℂ_[p] where
   zero_mem' := by show ‖(0 : ℂ_[p])‖ ≤ 1; simp
   neg_mem' := fun {a} ha => by show ‖-a‖ ≤ 1; rw [norm_neg]; exact ha
 
+/- English proof (translation)
+Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `h2 : ‖(p : ℚ_[p])‖ < 1` using `Padic.norm_p_lt_one`. Rewrite `h2` using `[← h]`. Simplify using `using h2`.
+-/
 theorem norm_p_lt_one : ‖(p : ℂ_[p])‖ < 1 := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
   have h2 : ‖(p : ℚ_[p])‖ < 1 := Padic.norm_p_lt_one
   rw [← h] at h2
   simpa using h2
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)`.
+-/
 theorem norm_add_lt_one {a b : ℂ_[p]} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 :=
   (IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)
 
+/- English proof (translation)
+Set `Y : ball p` to `⟨y, hy⟩`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp.out (Y - 1) 1`. Establish `hr'` using `congrArg (fun t : ball p => (t : ℂ_[p])) hr`. Simplify using `only [sub_add_cancel, one_pow, mul_one] at hr'`. Move the coercions through the operations in `at hr'`.
+
+Establish `hz : ‖y - 1‖ ≤ 1` using `(Y - 1).2`. Establish `hrr : ‖(r : ℂ_[p])‖ ≤ 1` using `r.2`. Establish `e : (y - 1) ^ p = (y ^ p - 1) + -((p : ℂ_[p]) * (y - 1) * r)`. Establish `: (Y : ℂ_[p]) = y` using `rfl`. Rewrite `hr'` using `[this]`.
+
+Rewrite using `[hr']`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖(y - 1) ^ p‖ < 1`. Rewrite using `[e]`. Use `norm_add_lt_one h ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_neg, norm_mul, norm_mul, mul_assoc]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) norm_p_lt_one (mul_le_one₀ hz (norm_nonneg _) hrr)`. Rewrite `h2` using `[norm_pow]`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hp.out.ne_zero).1 h2`.
+-/
 theorem sub_one_lt_of_pow_p {y : ℂ_[p]} (hy : ‖y‖ ≤ 1) (h : ‖y ^ p - 1‖ < 1) : ‖y - 1‖ < 1 := by
   let Y : ball p := ⟨y, hy⟩
   obtain ⟨r, hr⟩ := exists_add_pow_prime_eq hp.out (Y - 1) 1
@@ -50,6 +65,11 @@ theorem sub_one_lt_of_pow_p {y : ℂ_[p]} (hy : ‖y‖ ≤ 1) (h : ‖y ^ p - 1
   rw [norm_pow] at h2
   exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hp.out.ne_zero).1 h2
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Apply `sub_one_lt_of_pow_p` to reduce the goal to its premises.
+
+Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hy`. Rewrite using `[← pow_mul, ← pow_succ]` and apply the resulting hypothesis.
+-/
 theorem sub_one_lt_of_pow_p_pow (k : ℕ) {y : ℂ_[p]} (hy : ‖y‖ ≤ 1) (h : ‖y ^ p ^ k - 1‖ < 1) :
     ‖y - 1‖ < 1 := by
   induction k with
@@ -60,6 +80,11 @@ theorem sub_one_lt_of_pow_p_pow (k : ℕ) {y : ℂ_[p]} (hy : ‖y‖ ≤ 1) (h 
     · rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hy
     · rwa [← pow_mul, ← pow_succ]
 
+/- English proof (translation)
+Use `haveI : NeZero m := ⟨hm.ne'⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℂ_[p] m`. Establish `e` using `congrArg (eval x) (X_pow_sub_one_eq_prod hm hξ)`. Simplify using `only [eval_sub, eval_pow, eval_X, eval_one, eval_prod, eval_C] at e`. Rewrite `h` using `[e, norm_prod]`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `absurd h (not_lt.2 ?_)` and prove the remaining obligations. Conclude with `Finset.prod_induction _ (fun r : ℝ => 1 ≤ r) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun ζ hζ => hc ζ ((mem_nthRootsFinset hm _).1 hζ)`.
+-/
 theorem exists_root {x : ℂ_[p]} {m : ℕ} (hm : 0 < m) (h : ‖x ^ m - 1‖ < 1) :
     ∃ ζ : ℂ_[p], ζ ^ m = 1 ∧ ‖x - ζ‖ < 1 := by
   haveI : NeZero m := ⟨hm.ne'⟩
@@ -73,6 +98,11 @@ theorem exists_root {x : ℂ_[p]} {m : ℕ} (hm : 0 < m) (h : ‖x ^ m - 1‖ < 
   exact Finset.prod_induction _ (fun r : ℝ => 1 ≤ r) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb)
     le_rfl fun ζ hζ => hc ζ ((mem_nthRootsFinset hm _).1 hζ)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one`. Consider the case `exact _root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one`. Consider the case `(apply _root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one ..)`.
+-/
 theorem exists_pow_alg (x : PadicAlgCl p) (hx : ‖x‖ = 1) : ∃ n, 0 < n ∧ ‖x ^ n - 1‖ < 1 := by
   first
   | exact @_root_.GlobalTheory.PowerNearOneNorm.exists_pow_sub_one_norm_lt_one
@@ -88,6 +118,17 @@ namespace GlobalTheory
 
 open ResidueRoot
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `Metric.denseRange_iff.1 (UniformSpace.Completion.denseRange_coe (α := PadicAlgCl p)) x 1 one_pos`. Rewrite `hy` using `[dist_eq_norm]`. Establish `hy1 : ‖(y : ℂ_[p])‖ ≤ 1`. Establish `: (y : ℂ_[p]) = x + -(x - y)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx (by rw [norm_neg]; exact hy.le))`. Break down `hy1.lt_or_eq with h | h` into its components or cases. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Use `norm_add_lt_one hy h` as an intermediate fact. Simplify using `using this`.
+
+Take `⟨n, hn, hyn⟩` from `exists_pow_alg y (by rwa [PadicComplex.norm_extends] at h)`. Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' p hp.out.ne_one`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; exact hm (dvd_zero p))`. Establish `h3 : ‖((y : ℂ_[p]) ^ m) ^ p ^ k - 1‖ < 1`. Rewrite `hyn` using `[← PadicComplex.norm_extends, PadicComplex.coe_eq, map_sub, map_pow, map_one, ← PadicComplex.coe_eq]`.
+
+Rewrite using `[← pow_mul, mul_comm]` and apply the resulting hypothesis. Establish `h4` using `sub_one_lt_of_pow_p_pow k (by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) hy1) h3`. Take `⟨ζ, hζ, h5⟩` from `exists_root hm0 h4`. Use `⟨ζ, Subring.le_topologicalClosure _ (Subring.subset_closure ⟨m, hm0, ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hm).symm, hζ⟩), ?_⟩` and prove the remaining obligations. Use `norm_add_lt_one hy h5` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem exists_mem_Wp_norm_sub_lt_one (p : ℕ) [hp : Fact p.Prime] (x : ℂ_[p]) (hx : ‖x‖ ≤ 1) :
     ∃ w ∈ GL3Theta.Wp p, ‖x - w‖ < 1 := by
   obtain ⟨y, hy⟩ := Metric.denseRange_iff.1

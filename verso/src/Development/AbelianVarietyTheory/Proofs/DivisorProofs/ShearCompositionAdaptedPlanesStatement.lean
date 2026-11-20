@@ -22,6 +22,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallMidJB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RationalShear.shear_mem_ratU | exact GlobalTheory.RationalShear.shear_mem_ratU | (intros; apply GlobalTheory.RationalShear.shear_mem_ratU <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.shear_composition_adapted_planes : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ e : ℕ)
     (J : Matrix (Fin d) (Fin d) E) (H' : Plane E d d₁) (H₂ : Plane E d₁ e),
     (∀ v : Fin d → E, ∃ (a b : E) (u : Fin d₁ → E), v = a • H'.x + H'.ι *ᵥ u + b • H'.y) →

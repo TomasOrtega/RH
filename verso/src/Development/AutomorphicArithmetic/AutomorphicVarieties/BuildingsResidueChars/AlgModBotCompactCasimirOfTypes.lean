@@ -11,6 +11,21 @@ private noncomputable def slc {K : Type} [Field K] [NumberField K] {n : ℕ} (g 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Set `γ : ℝ → archCompact K n` to `fun t => ⟨(isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie X), hX t⟩`. Establish `F : ∀ (g : AdelicGLn.AdelicGL K n) (φ : archSmooth K n) (k : archCompact K n), HasDerivAt (fun t => slc g φ (k * γ t)) (slc g (uAction (UniversalEnvelopingAlgebra.ι ℝ X) φ) k) 0`. Introduce `g φ k`. Establish `d` using `(isExpLieAlgebra K n).hasDerivAt_rightDeriv ((show IsArchSmooth φ.1 from φ.2) (g * infEmb K n k.1)) ((isExpLieAlgebra K n).ofLie X) 1`. Use `show HasDerivAt _ ((uAction (UniversalEnvelopingAlgebra.ι ℝ X) φ).1 (g * infEmb K n k.1)) 0`.
+
+Rewrite using `[uAction_ι_apply]`. Establish `e : (fun t => slc g φ (k * γ t)) = fun t => archSlice φ.1 (g * infEmb K n k.1) (1 * (isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie X))`. Use function extensionality and compare the values at `t`. Simplify using `only [slc, LinearMap.coe_mk, AddHom.coe_mk, archSlice_apply, one_mul, Subgroup.coe_mul, map_mul, mul_assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `d`. Set `P : Submodule ℂ (archCompact K n → ℂ)` to `{ carrier := {f | ∀ k, DifferentiableAt ℝ (fun t => f (k * γ t)) 0} add_mem' := fun ha hb k => (ha k).add (hb k) zero_mem' := fun _ => differentiableAt_const _ smul_mem' := fun c _ hf k => (hf k).const_smul c }`. Set `D₀ : P →ₗ[ℂ] (archCompact K n → ℂ)` to `{ toFun := fun f k => deriv (fun t => f.1 (k * γ t)) 0 map_add' := fun f h => by`. Use function extensionality and compare the values at `k`.
+
+Use `show deriv (fun t => f.1 (k * γ t) + h.1 (k * γ t)) 0 = _`. Conclude with `deriv_add (f.2 k) (h.2 k)`. Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `k`. Use `show deriv (fun t => c • f.1 (k * γ t)) 0 = _`.
+
+Conclude with `deriv_const_smul c (f.2 k) }`. Take `⟨D, hD⟩` from `LinearMap.exists_extend D₀`. Use `⟨⟨D, fun g φ => ?_⟩, fun V hV hVs g φ hφ => ?_⟩` and prove the remaining obligations. Establish `hm : slc g φ ∈ P` using `fun k => (F g φ k).differentiableAt`. Establish `h1` using `congrArg (fun L => L ⟨slc g φ, hm⟩) hD`.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`. Rewrite using `[h1]`. Use function extensionality and compare the values at `k`. Conclude with `(F g φ k).deriv`. Use `haveI := hV`.
+
+Conclude with `mem_of_hasDerivAt V (c := fun t k => slc g φ (k * γ t)) (fun t => hVs _ hφ (γ t)) (fun k => F g φ k)`.
+-/
 private theorem slc_op {K : Type} [Field K] [NumberField K] {n : ℕ} (X : (isExpLieAlgebra K n).lieSubalgebra)
     (hX : ∀ t : ℝ, (isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie X) ∈ archCompact K n) :
     (∃ D : Module.End ℂ (archCompact K n → ℂ), ∀ g φ,
@@ -60,6 +75,25 @@ private theorem slc_op {K : Type} [Field K] [NumberField K] {n : ℕ} (X : (isEx
   · haveI := hV
     exact mem_of_hasDerivAt V (c := fun t k => slc g φ (k * γ t)) (fun t => hVs _ hφ (γ t)) (fun k => F g φ k)
 
+/- English proof (translation)
+Introduce `K _ _ n S hS ι _ X c hc`. Take `⟨V, hV, hVs, hSV⟩` from `hS`. Establish `hi : ∀ i, ∃ Di : Module.End ℂ (archCompact K n → ℂ), ∀ g φ, c i • Di (Di (slc g φ)) = slc g (c i • uAction (UniversalEnvelopingAlgebra.ι ℝ (X i)) (uAction (UniversalEnvelopingAlgebra.ι ℝ (X i)) φ))`. Introduce `i`. Break down `hc i with h0 | hX` into its components or cases.
+
+Conclude with `⟨0, fun g φ => by simp [h0]⟩`. Take `⟨D, hD⟩` from `(slc_op (X i) hX).1`. Conclude with `⟨D, fun g φ => by rw [hD, hD, LinearMap.map_smul_of_tower]⟩`. Use `choose Di hDi using hi`. Establish `e1 : ∀ φ : archSmooth K n, uAction (∑ i, c i • (UniversalEnvelopingAlgebra.ι ℝ (X i) * UniversalEnvelopingAlgebra.ι ℝ (X i))) φ = ∑ i, c i • uAction (UniversalEnvelopingAlgebra.ι ℝ (X i)) (uAction (UniversalEnvelopingAlgebra.ι ℝ (X i)) φ)`.
+
+Introduce `φ`. Simplify using `only [map_sum, map_smul, map_mul, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Establish `hinter : ∀ g φ, (∑ i, c i • (Di i * Di i)) (slc g φ) = slc g (uAction (∑ i, c i • (UniversalEnvelopingAlgebra.ι ℝ (X i) * UniversalEnvelopingAlgebra.ι ℝ (X i))) φ)`. Introduce `g φ`. Rewrite using `[e1, map_sum]`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => hDi i g φ`. Establish `hstab : ∀ φ ∈ (⨅ g, V.comap (slc g)), uAction (∑ i, c i • (UniversalEnvelopingAlgebra.ι ℝ (X i) * UniversalEnvelopingAlgebra.ι ℝ (X i))) φ ∈ (⨅ g, V.comap (slc g))`. Introduce `φ hφ`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at hφ ⊢`.
+
+Introduce `g`. Rewrite using `[e1, map_sum]`. Use `V.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower]`. Break down `hc i with h0 | hX` into its components or cases.
+
+Rewrite using `[h0, zero_smul]`. Conclude with `V.zero_mem`. Conclude with `V.smul_of_tower_mem _ ((slc_op (X i) hX).2 V hV hVs g _ ((slc_op (X i) hX).2 V hV hVs g φ (hφ g)))`. Establish `hinV : ∀ g, ∀ φ ∈ (⨅ g, V.comap (slc g)), slc g φ ∈ V`. Introduce `g φ hφ`.
+
+Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap] at hφ`. Conclude with `hφ g`. Take `⟨q, hq, -, hq0⟩` from `UpperTheory.V.Af.CuspFin.polySlices (archSmooth K n) (archCompact K n → ℂ) (AdelicGLn.AdelicGL K n) _ _ (fun g => slc g) hinter V hV _ hstab hinV`. Use `⟨q, hq, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`.
+
+Establish `hN : φ ∈ (⨅ g, V.comap (slc g))`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap]`. Conclude with `fun g => hSV φ hφ g`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Establish `h1` using `congrFun (hq0 g φ hN) 1`. Simplify `h1` using `[slc]`.
+-/
 theorem UpperTheory.algMod_bot_compact_casimir_of_types :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (S : Submodule ℂ (archSmooth K n)), Types S → ∀ (ι : Type) [Fintype ι] (X : ι → (isExpLieAlgebra K n).lieSubalgebra) (c : ι → ℝ), (∀ i, c i = 0 ∨ ∀ t : ℝ, (isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie (X i)) ∈ archCompact K n) → AlgMod S ⊥ (uAction (∑ i, c i • (UniversalEnvelopingAlgebra.ι ℝ (X i) * UniversalEnvelopingAlgebra.ι ℝ (X i)))) := by
   intro K _ _ n S hS ι _ X c hc

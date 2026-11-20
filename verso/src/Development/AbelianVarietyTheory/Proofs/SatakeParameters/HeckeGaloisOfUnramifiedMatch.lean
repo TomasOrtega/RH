@@ -9,6 +9,15 @@ namespace GlobalTheory.NRows
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain Polynomial
 
+/- English proof (translation)
+Introduce `D i x P Pa hP hBC ρ hc hss hwd`. Use `⟨hc, hss, fun w hw B σ hB hσ => ?_⟩` and prove the remaining obligations. Establish `hS` using `(D.nd.S_def i w).not.1 hw.2.2.1`. Establish `hunr : D.naut.unr (D.naut.locV i P w)`. Use `D.naut.locV_unr i P w hw.1 hw.2.2.2 (fun k hk => hS ⟨?_, hw.2.1⟩) (fun hk => hS ⟨Or.inr (Or.inr hk), hw.2.1⟩)` and prove the remaining obligations.
+
+Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`. Establish `hloc` using `hBC.2.2.2.1 w hw.1`. Establish `hw'` using `hwd w hw.2.1`.
+
+Establish `hu : D.naut.unr (D.naut.wdOf i ρ w)`. Rewrite using `[hw', hloc]`. Conclude with `(D.naut.unr_tw _ _).2 hunr`. Establish `e` using `D.naut.wdOf_frob i ρ w hw.2.1 hc hu B σ hB hσ`. Rewrite `e` using `[hw', hloc, ← D.naut.pt_loc i P x hP w hw]`.
+
+Apply `Polynomial.map_injective (D.naut.iotaQC i).toRingHom (D.naut.iotaQC i).injective` to reduce the goal to its premises. Rewrite using `[e, Polynomial.map_map]`. Both sides reduce to the same expression.
+-/
 theorem isHeckeGaloisQ_of_wdOf_baseChange : ∀ (D : D7) (i : D.nd.Loc) (x : D.nd.X i) (P : D.naut.AV i)
     (Pa : List (Part D.naut.CG)), D.naut.ptV i P = some x → IsBCV D.nd D.naut i P Pa →
     ∀ ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.nV) (Qbar (D.nd.l i)), SumRepresentations.At.ContQ D.nd i ρ → IsSSRep ρ →

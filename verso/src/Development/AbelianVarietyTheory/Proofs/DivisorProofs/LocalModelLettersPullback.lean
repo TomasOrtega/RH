@@ -22,12 +22,18 @@ namespace GlobalTheory.ChainPts.PtDesc
 open GlobalTheory.VB (IsFrame IsVB)
 open GlobalTheory.ChainPts.PullHT
 
+/- English proof (translation)
+Take `⟨V, e, hx, he⟩` from `hF x`. Take `⟨U, hU, hxU, hUV⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hx`. Conclude with `⟨⟨U, hU, ⟨⟨x, hxU⟩⟩⟩, _, hxU, he.res hUV⟩`.
+-/
 theorem exists_affOp_frame {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (hF : IsVB F r) (x : X) :
     ∃ (U : AffOp X) (e : Fin r → Γ(F, U.1)), x ∈ U.1 ∧ IsFrame e := by
   obtain ⟨V, e, hx, he⟩ := hF x
   obtain ⟨U, hU, hxU, hUV⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hx
   exact ⟨⟨U, hU, ⟨⟨x, hxU⟩⟩⟩, _, hxU, he.res hUV⟩
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.TorsCharExt.intO_valuationRing C`. Use `haveI := GlobalTheory.TorsCharExt.intO_isFractionRing C`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hx`. Conclude with `y.2`.
+-/
 theorem mem_intO_of_isIntegral (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (x : C)
     (hx : IsIntegral (intO C) x) : x ∈ intO C := by
   haveI := GlobalTheory.TorsCharExt.intO_valuationRing C
@@ -35,6 +41,9 @@ theorem mem_intO_of_isIntegral (C : Type) [NontriviallyNormedField C] [IsUltrame
   obtain ⟨y, rfl⟩ := IsIntegrallyClosed.isIntegral_iff.mp hx
   exact y.2
 
+/- English proof (translation)
+Rewrite using `[coef_pullS g d le_rfl (Scheme.Hom.comp_preimage g h _).le he hs l i]`. Conclude with `valF_appLE w g (U := V ⊓ h ⁻¹ᵁ A) (U' := g ⁻¹ᵁ V ⊓ (g ≫ h) ⁻¹ᵁ A) _ (by rw [Scheme.Hom.comp_preimage]; exact le_rfl) _`.
+-/
 theorem valF_coef_pull {k : Type} [Field k] {T X X' : Scheme.{0}} (w : Sp k ⟶ X') (g : X' ⟶ X) (h : X ⟶ T) {F : X.Modules}
     [F.IsQuasicoherent] {r : ℕ} (d : Bool) {V : X.Opens} {A : T.Opens} {e : Fin r → Γ(F, V)} {s : Fin r → Γ(F, h ⁻¹ᵁ A)}
     (he : IsFrame e) (hs : IsFrame s) (l i : Fin r) :
@@ -44,12 +53,26 @@ theorem valF_coef_pull {k : Type} [Field k] {T X X' : Scheme.{0}} (w : Sp k ⟶ 
   exact valF_appLE w g (U := V ⊓ h ⁻¹ᵁ A) (U' := g ⁻¹ᵁ V ⊓ (g ≫ h) ⁻¹ᵁ A) _
     (by rw [Scheme.Hom.comp_preimage]; exact le_rfl) _
 
+/- English proof (translation)
+Rewrite using `[← valF_appLE w g (U := ⊤) (U' := ⊤) le_rfl le_rfl c]`. Use `congr 1`. Apply the tactic sequence `first | (erw [Scheme.Hom.appLE_eq_app]; done) | (erw [Scheme.Hom.appLE_eq_app]; rfl) | done`.
+-/
 theorem valF_appTop {k : Type} [Field k] {X X' : Scheme.{0}} (w : Sp k ⟶ X') (g : X' ⟶ X) (c : Γ(X, ⊤)) :
     valF w ⊤ (g.appTop c) = valF (w ≫ g) ⊤ c := by
   rw [← valF_appLE w g (U := ⊤) (U' := ⊤) le_rfl le_rfl c]
   congr 1
   first | (erw [Scheme.Hom.appLE_eq_app]; done) | (erw [Scheme.Hom.appLE_eq_app]; rfl) | done
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p _ W Y i₀ Z O _ _ _ B h r x x' Lie Om sL hL sO hO n o π γ C X' f Q₁ Q₂ j' ρ' hL' hO' vbL vbO hSys hKer`. Use `haveI := vbL.isQuasicoherent`. Use `haveI := vbO.isQuasicoherent`. Establish `hp : ∀ y : Z.Pt, (p : ↥y.C.S) ≠ 0` using `fun y => Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero`. Use `⟨fun y w hw a φ hφ => ?_, fun y w hw a φ hφ => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := GlobalTheory.TorsCharExt.intO_valuationRing ↥y.C.S`. Take `⟨U, e, hx, he⟩` from `exists_affOp_frame vbL (f (w (IsLocalRing.closedPoint _)))`. Establish `hU : ⊤ ≤ w ⁻¹ᵁ f ⁻¹ᵁ U.1` using `top_le_of_closedPoint w _ hx`. Take `⟨ψ, hψ, hJ, -⟩` from `hKer ↥y.C.S (intO ↥y.C.S) (mem_intO_of_isIntegral _) (hp y) w U hU`. Establish `hS` using `(hSys y U ψ (by rw [hψ, Category.assoc]; exact hw) a φ hφ).1 e he`.
+
+Rewrite `hS` using `[hψ, ← hJ]`. Use `⟨f ⁻¹ᵁ U.1, _, isFrame_pullS f le_rfl he, hU, fun cf v hv => (hS cf v hv).trans ?_⟩` and prove the remaining obligations. Establish `hc` using `valF_coef_pull (spMap (intO ↥y.C.S).subtype ≫ w) f h false he (hL a)`. Simplify using `only [← Category.assoc, ← hc, valF_appTop]`. Use `haveI := GlobalTheory.TorsCharExt.intO_valuationRing ↥y.C.S`.
+
+Take `⟨U, e, hx, he⟩` from `exists_affOp_frame vbO (f (w (IsLocalRing.closedPoint _)))`. Establish `hU : ⊤ ≤ w ⁻¹ᵁ f ⁻¹ᵁ U.1` using `top_le_of_closedPoint w _ hx`. Take `⟨ψ, hψ, -, hR⟩` from `hKer ↥y.C.S (intO ↥y.C.S) (mem_intO_of_isIntegral _) (hp y) w U hU`. Establish `hS` using `(hSys y U ψ (by rw [hψ, Category.assoc]; exact hw) a φ hφ).2 e he`. Rewrite `hS` using `[hψ, ← hR]`.
+
+Use `⟨f ⁻¹ᵁ U.1, _, isFrame_pullS f le_rfl he, hU, fun cf v hv => (hS cf v hv).trans ?_⟩` and prove the remaining obligations. Establish `hc` using `valF_coef_pull (spMap (intO ↥y.C.S).subtype ≫ w) f h true he (hO a)`. Simplify using `only [← Category.assoc, ← hc]`.
+-/
 theorem ptJ_ptR_of_kerMatch : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} [Fact p.Prime] {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : GlobalTheory.LocM.Mdl Y i₀) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : GlobalTheory.Vert.Model O} (h : B.X ⟶ Z.X) {r : ℕ} (x x' : Fin r → Letter Dw) (Lie Om : AM B (𝓞 E)) (sL : ∀ a : Fin Z.m, Fin r → Γ(Lie.V, h ⁻¹ᵁ (Z.U a).1)) (hL : ∀ a, GlobalTheory.VB.IsFrame (sL a)) (sO : ∀ a : Fin Z.m, Fin r → Γ(Om.V, h ⁻¹ᵁ (Z.U a).1)) (hO : ∀ a, GlobalTheory.VB.IsFrame (sO a)) (n o : ℕ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (C : ChainsBp p n o Lie Om π γ) (X' : Scheme.{0}) (f : X' ⟶ B.X) (Q₁ Q₂ : X'.Modules) (j' : (Scheme.Modules.pullback f).obj Lie.V ⟶ Q₁) (ρ' : (Scheme.Modules.pullback f).obj Om.V ⟶ Q₂) (hL' : ∀ a, GlobalTheory.VB.IsFrame (pullS f sL a)) (hO' : ∀ a, GlobalTheory.VB.IsFrame (pullS f sO a)), GlobalTheory.VB.IsVB Lie.V r → GlobalTheory.VB.IsVB Om.V r → SysPt Z h x x' hL hO C → KerMatch C f j' ρ' → PtJ Z (f ≫ h) x hL' (f.appTop π) j' ∧ PtR Z (f ≫ h) x' hO' ρ' := by
   intro E _ _ _ H Dw Xo p _ W Y i₀ Z O _ _ _ B h r x x' Lie Om sL hL sO hO n o π γ C X' f Q₁ Q₂ j' ρ' hL' hO' vbL vbO hSys hKer
   haveI := vbL.isQuasicoherent

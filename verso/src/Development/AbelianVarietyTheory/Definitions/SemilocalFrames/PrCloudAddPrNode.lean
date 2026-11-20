@@ -58,6 +58,9 @@ def HRep.EEd (A : HRep k r) (P : Mat k r) (x : Idx k r 1 → A.H) : Idx k r 1 �
 def HRep.EEo (A : HRep k r) (P : Mat k r) (x : Idx k r 1 → A.H) : Idx k r 1 → A.H :=
   fun b => -∑ c ∈ univ.erase b, A.E P (el b) (el c) (x c)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [HRep.EE, HRep.EEd, HRep.EEo, Pi.add_apply]`. Rewrite using `[← Finset.add_sum_erase _ _ (mem_univ b), neg_add]`.
+-/
 theorem HRep.EE_eq_add (A : HRep k r) (P : Mat k r) (x : Idx k r 1 → A.H) : A.EE P x = A.EEd P x + A.EEo P x := by
   funext b
   simp only [HRep.EE, HRep.EEd, HRep.EEo, Pi.add_apply]
@@ -85,6 +88,9 @@ def prNode (x : Idx k r 1 → (R μ).H) : Idx k r 1 → (R μ).H :=
 
 variable {R μ ι p}
 
+/- English proof (translation)
+Rewrite using `[prCloud, prNode, Finset.sum_filter_add_sum_filter_not]`. Conclude with `hT.sum_ι_p x hx`.
+-/
 theorem prCloud_add_prNode {P : Mat k r} (hT : IsTensDec R true P 1 μ ι p) {x : Idx k r 1 → (R μ).H}
     (hx : (R μ).SmT x) : prCloud R μ ι p x + prNode R μ ι p x = x := by
   rw [prCloud, prNode, Finset.sum_filter_add_sum_filter_not]
@@ -104,11 +110,17 @@ def QQ (r : ℕ) (bv : ℝ) : ℝ := 4 + 9 * (2 * r + 2 : ℝ) * (6 * bv) ^ (2 *
 def HRep.expect (A : HRep k r) {W : Type} [NormedAddCommGroup W] (ν : Measure (Mt k r)) (B : A.H → W)
     (φ : Mat k r → ℝ) (w : A.H) : ℝ≥0∞ := A.mass ν B φ w / ‖w‖ₑ ^ 2
 
+/- English proof (translation)
+The claim follows from `ENNReal.div_le_iff (pow_ne_zero _ (by simpa using hw)) (ENNReal.pow_ne_top enorm_ne_top)`.
+-/
 theorem HRep.expect_le_iff (A : HRep k r) {W : Type} [NormedAddCommGroup W] (ν : Measure (Mt k r)) (B : A.H → W)
     (φ : Mat k r → ℝ) {w : A.H} (hw : w ≠ 0) (C : ℝ≥0∞) :
     A.expect ν B φ w ≤ C ↔ A.mass ν B φ w ≤ C * ‖w‖ₑ ^ 2 :=
   ENNReal.div_le_iff (pow_ne_zero _ (by simpa using hw)) (ENNReal.pow_ne_top enorm_ne_top)
 
+/- English proof (translation)
+Rewrite using `[HRep.expect, hB.2 w hs]`. Conclude with `ENNReal.div_self (pow_ne_zero _ (by simpa using hw)) (ENNReal.pow_ne_top enorm_ne_top)`.
+-/
 theorem Flag.Iso.expect_one {F : Flag k r} {A : HRep k r} {B : A.H → F.W} (hB : F.Iso A B) {w : A.H}
     (hs : w ∈ smoothVecs (k := k) (r := r) A.σ) (hw : w ≠ 0) : A.expect F.ν B (fun _ => 1) w = 1 := by
   rw [HRep.expect, hB.2 w hs]
@@ -132,20 +144,41 @@ def MomProd (A : HRep k r) (F : Flag k r) (B : A.H → F.W) (H : ℝ) {l : ℕ} 
   A.mass F.ν B (fun g => (∏ a : Fin l, lA k r F.z g (Fin.castLE hl a)) ^ (2 * q)) w ≤
     ENNReal.ofReal (H ^ (2 * q * l)) * ‖w‖ₑ ^ 2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.trans hst⟩`.
+-/
 theorem InPP.mono {n : ℕ} {lam μ : Fin n → ℝ} {s t : ℝ} (h : InPP lam s μ) (hst : s ≤ t) : InPP lam t μ :=
   ⟨h.1, h.2.trans hst⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => ⟨0, by simp⟩, by simpa [dist1] using ht⟩`.
+-/
 theorem inPP_self {n : ℕ} (lam : Fin n → ℝ) {t : ℝ} (ht : 0 ≤ t) : InPP lam t lam :=
   ⟨fun _ => ⟨0, by simp⟩, by simpa [dist1] using ht⟩
 
+/- English proof (translation)
+The claim follows from `(single_le_sum (f := fun a => |μ a - lam a|) (fun _ _ => abs_nonneg _) (mem_univ a)).trans h.2`.
+-/
 theorem InPP.abs_le {n : ℕ} {lam μ : Fin n → ℝ} {t : ℝ} (h : InPP lam t μ) (a : Fin n) : |μ a - lam a| ≤ t :=
   (single_le_sum (f := fun a => |μ a - lam a|) (fun _ _ => abs_nonneg _) (mem_univ a)).trans h.2
 
+/- English proof (translation)
+Establish `h1` using `abs_add_abs_le_dist1 μ lam hab`. Combine the linear relations using `[h.2, neg_abs_le (μ a - lam a), le_abs_self (μ b - lam b)]`.
+-/
 theorem InPP.gap {n : ℕ} {lam μ : Fin n → ℝ} {t : ℝ} (h : InPP lam t μ) {a b : Fin n} (hab : a ≠ b) :
     lam a - lam b - t ≤ μ a - μ b := by
   have h1 := abs_add_abs_le_dist1 μ lam hab
   linarith [h.2, neg_abs_le (μ a - lam a), le_abs_self (μ b - lam b)]
 
+/- English proof (translation)
+Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `h.1 a`. Use `⟨m + (if a ∈ I.1 then (if dual then -1 else 1) else 0), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, wtI]`. Apply the tactic sequence `split_ifs <;> push_cast <;> linarith`.
+
+Establish `h1 : ∑ a, |wtI dual I a| = l`. Establish `: ∀ a, |wtI dual I a| = if a ∈ I.1 then (1 : ℝ) else 0` using `fun a => by`. Apply the tactic sequence `unfold wtI; split_ifs <;> simp`. Simplify using `[this, I.2]`. Establish `h2 : dist1 (μ + wtI dual I) lam ≤ dist1 μ lam + ∑ a, |wtI dual I a|`.
+
+Unfold `dist1`. Rewrite using `[← sum_add_distrib]`. Use `sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, add_sub_right_comm]`. Conclude with `abs_add_le _ _`.
+
+Combine the linear relations using `[h.2]`.
+-/
 theorem InPP.add_wtI {lam μ : Fin (2 * r + k + 1) → ℝ} {t : ℝ} (h : InPP lam t μ) (dual : Bool) {l : ℕ}
     (I : Idx k r l) : InPP lam (t + l) (μ + wtI dual I) := by
   refine ⟨fun a => ?_, ?_⟩
@@ -165,6 +198,9 @@ theorem InPP.add_wtI {lam μ : Fin (2 * r + k + 1) → ℝ} {t : ℝ} (h : InPP 
       exact abs_add_le _ _
     linarith [h.2]
 
+/- English proof (translation)
+Use `norm_le_pi_norm μ a` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Unfold `bStar`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem abs_add_le_bStar {n : ℕ} (μ : Fin n → ℝ) (a : Fin n) : |μ a| + n ≤ bStar μ := by
   have := norm_le_pi_norm μ a
   rw [Real.norm_eq_abs] at this
@@ -175,6 +211,11 @@ section Conseq
 variable {c Ch Cg C₀ bv h q : ℝ} {P : Mat k r} {lam μ : Fin (2 * r + k + 1) → ℝ}
   {R : (Fin (2 * r + k + 1) → ℝ) → HRep k r}
 
+/- English proof (translation)
+Establish `hij' : i.val < j.val` using `hij`. Set `i' : Fin (2 * r + k + 1)` to `⟨i.val + 1, by omega⟩`. Establish `h1 : lam i' < lam i` using `hs.1.1 (show i < i' from Nat.lt_succ_self i.val)`. Establish `h2 : lam j ≤ lam i'`. Break down `(show i' ≤ j from hij').eq_or_lt with e | e` into its components or cases.
+
+Rewrite using `[e]`. Conclude with `(hs.1.1 e).le`. Establish `h3` using `hg i i' (sgnCN_succ_ne hi rfl)`. Rewrite `h3` using `[abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem node_gap (hs : IsShape k r lam bv) (hg : GapAtLeast (sgnCN k r) lam h) {i j : Fin (2 * r + k + 1)}
     (hi : k - 1 ≤ i.val) (hij : i < j) : h ≤ lam i - lam j := by
   have hij' : i.val < j.val := hij
@@ -188,12 +229,20 @@ theorem node_gap (hs : IsShape k r lam bv) (hg : GapAtLeast (sgnCN k r) lam h) {
   rw [abs_of_pos (by linarith)] at h3
   linarith
 
+/- English proof (translation)
+Establish `h1` using `node_gap hs hg (i := ⟨k - 1, by omega⟩) (j := ⟨k, by omega⟩) le_rfl (show k - 1 < k by omega)`. Establish `h2` using `hs.2.2 ⟨k - 1, by omega⟩ le_rfl`. Establish `h3` using `hs.2.2 ⟨k, by omega⟩ (show k - 1 ≤ k by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gap_le_bv (hk : 1 ≤ k) (hs : IsShape k r lam bv) (hg : GapAtLeast (sgnCN k r) lam h) : h ≤ bv := by
   have h1 := node_gap hs hg (i := ⟨k - 1, by omega⟩) (j := ⟨k, by omega⟩) le_rfl (show k - 1 < k by omega)
   have h2 := hs.2.2 ⟨k - 1, by omega⟩ le_rfl
   have h3 := hs.2.2 ⟨k, by omega⟩ (show k - 1 ≤ k by omega)
   linarith
 
+/- English proof (translation)
+Take `⟨hc, -, h0, -⟩` from `hr`. Establish `h1 : (1 : ℝ) ≤ Real.sqrt (2 * r + 2)` using `Real.one_le_sqrt.2 (by linarith [Nat.cast_nonneg (α := ℝ) r])`. Establish `h2 : c * (100 * q) ≤ 100 * max 1 c * q` using `by nlinarith [le_max_right 1 c]`. Establish `h3 : 0 ≤ 100 * max 1 c * q` using `le_trans (by positivity) h2`. Use `le_of_mul_le_mul_left ?_ hc` and prove the remaining obligations.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem IsRange.radius_le (hr : IsRange k r lam c h q) (hq : 0 ≤ q) : 100 * q ≤ h := by
   obtain ⟨hc, -, h0, -⟩ := hr
   have h1 : (1 : ℝ) ≤ Real.sqrt (2 * r + 2) := Real.one_le_sqrt.2 (by linarith [Nat.cast_nonneg (α := ℝ) r])
@@ -202,15 +251,24 @@ theorem IsRange.radius_le (hr : IsRange k r lam c h q) (hq : 0 ≤ q) : 100 * q 
   refine le_of_mul_le_mul_left ?_ hc
   nlinarith
 
+/- English proof (translation)
+Establish `h0 : 100 * max 1 c * q ≤ 100 * max 1 c * q'` using `mul_le_mul_of_nonneg_left hq (by linarith [le_max_left 1 c])`. Conclude with `⟨hr.1, hr.2.1, (mul_le_mul_of_nonneg_right h0 (Real.sqrt_nonneg _)).trans hr.2.2.1, fun i j hij hj => h0.trans (hr.2.2.2 i j hij hj)⟩`.
+-/
 theorem IsRange.mono {q' : ℝ} (hr : IsRange k r lam c h q') (hq : q ≤ q') : IsRange k r lam c h q := by
   have h0 : 100 * max 1 c * q ≤ 100 * max 1 c * q' :=
     mul_le_mul_of_nonneg_left hq (by linarith [le_max_left 1 c])
   exact ⟨hr.1, hr.2.1, (mul_le_mul_of_nonneg_right h0 (Real.sqrt_nonneg _)).trans hr.2.2.1,
     fun i j hij hj => h0.trans (hr.2.2.2 i j hij hj)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hS.1, hS.2.1, hS.2.2.1.mono hq, hS.2.2.2.1, fun μ hμ => hS.2.2.2.2 μ (hμ.mono hq)⟩`.
+-/
 theorem Setup.mono {q' : ℝ} (hS : Setup k r c Ch P lam bv h q' R) (hq : q ≤ q') : Setup k r c Ch P lam bv h q R :=
   ⟨hS.1, hS.2.1, hS.2.2.1.mono hq, hS.2.2.2.1, fun μ hμ => hS.2.2.2.2 μ (hμ.mono hq)⟩
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Conclude with `⟨hk, hS.2.2.1.1, hCh, hCg, hC₀, hq, hS.mono (by linarith), fun i j hij => h2.trans (hS.2.2.1.le_gap hS.2.1 hij), h3, fun μ hμ => hS.2.2.2.2 μ (hμ.mono h1)⟩`.
+-/
 theorem Setup.standing {q' : ℝ} (hS : Setup k r c Ch P lam bv h q' R) (hk : 1 ≤ k) (hCh : 915 ≤ Ch)
     (hCg : 1 ≤ Cg) (hC₀ : 10 ^ 4 ≤ C₀) (hq : 0 ≤ q) (h1 : q + r + 2 ≤ q') (h2 : Cg * (2 * r + 2 : ℝ) ^ 3 ≤ 100 * q')
     (h3 : C₀ * ((2 * r + k + 1 : ℕ) : ℝ) ^ 7 ≤ bv) : Standing k r c Ch Cg C₀ P lam bv h q R := by
@@ -221,32 +279,56 @@ theorem Setup.standing {q' : ℝ} (hS : Setup k r c Ch P lam bv h q' R) (hk : 1 
 
 namespace Standing
 
+/- English proof (translation)
+The claim follows from `H.2.2.2.2.2.2.1`.
+-/
 theorem setup (H : Standing k r c Ch Cg C₀ P lam bv h q R) : Setup k r c Ch P lam bv h q R := H.2.2.2.2.2.2.1
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, -, a7, a8, a9, a10⟩` from `H`. Conclude with `⟨a1, a2, a3, a4, a5, h0, a7.mono hq, a8, a9, fun μ hμ => a10 μ (hμ.mono (by linarith))⟩`.
+-/
 theorem mono {q' : ℝ} (H : Standing k r c Ch Cg C₀ P lam bv h q' R) (h0 : 0 ≤ q) (hq : q ≤ q') :
     Standing k r c Ch Cg C₀ P lam bv h q R := by
   obtain ⟨a1, a2, a3, a4, a5, -, a7, a8, a9, a10⟩ := H
   exact ⟨a1, a2, a3, a4, a5, h0, a7.mono hq, a8, a9, fun μ hμ => a10 μ (hμ.mono (by linarith))⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mom.inPP_self lam H.2.2.2.2.2.1`.
+-/
 theorem inPP_self (H : Standing k r c Ch Cg C₀ P lam bv h q R) : InPP lam q lam := GlobalTheory.Mom.inPP_self lam H.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `H.setup.2.2.1.le_gap H.setup.2.1 hij`.
+-/
 theorem radius_le_gap (H : Standing k r c Ch Cg C₀ P lam bv h q R) {i j : Fin (2 * r + k + 1)} (hij : i < j) :
     100 * q ≤ lam i - lam j :=
   H.setup.2.2.1.le_gap H.setup.2.1 hij
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.setup.2.2.1.radius_le H.2.2.2.2.2.1, gap_le_bv H.1 H.setup.2.1 H.setup.2.2.1.2.1⟩`.
+-/
 theorem radius_le_bv (H : Standing k r c Ch Cg C₀ P lam bv h q R) : 100 * q ≤ h ∧ h ≤ bv :=
   ⟨H.setup.2.2.1.radius_le H.2.2.2.2.2.1, gap_le_bv H.1 H.setup.2.1 H.setup.2.2.1.2.1⟩
 
+/- English proof (translation)
+Establish `h0 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Use `le_trans ?_ H.2.2.2.2.2.2.2.2.1` and prove the remaining obligations. Conclude with `mul_le_mul H.2.2.2.2.1 (pow_le_pow_right₀ h0 (by norm_num)) (by positivity) (le_trans (by norm_num) H.2.2.2.2.1)`.
+-/
 theorem cube_le_bv (H : Standing k r c Ch Cg C₀ P lam bv h q R) : 10 ^ 4 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 ≤ bv := by
   have h0 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) := by exact_mod_cast (by omega)
   refine le_trans ?_ H.2.2.2.2.2.2.2.2.1
   exact mul_le_mul H.2.2.2.2.1 (pow_le_pow_right₀ h0 (by norm_num)) (by positivity)
     (le_trans (by norm_num) H.2.2.2.2.1)
 
+/- English proof (translation)
+Combine the linear relations using `[hμ.gap hij.ne, H.radius_le_gap hij, H.2.2.2.2.2.1]`.
+-/
 theorem gap_ge (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam q μ) {i j : Fin (2 * r + k + 1)}
     (hij : i < j) : 0.98 * (lam i - lam j) ≤ μ i - μ j := by
   linarith [hμ.gap hij.ne, H.radius_le_gap hij, H.2.2.2.2.2.1]
 
+/- English proof (translation)
+Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `h1 : (2 * r + 2 : ℝ) ^ 3 ≤ Cg * (2 * r + 2 : ℝ) ^ 3` using `le_mul_of_one_le_left (by positivity) H.2.2.2.1`. Establish `h2 : 8 * (r : ℝ) + 8 ≤ (2 * r + 2 : ℝ) ^ 3` using `by nlinarith [mul_nonneg hr hr, mul_nonneg hr (mul_nonneg hr hr)]`. Combine the linear relations using `[hμ.gap hij.ne, H.radius_le_gap hij, H.2.2.2.2.2.2.2.1 i j hij]`.
+-/
 theorem four_le_gap (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam (q + r + 2) μ)
     {i j : Fin (2 * r + k + 1)} (hij : i < j) : 4 ≤ μ i - μ j := by
   have hr : (0 : ℝ) ≤ r := Nat.cast_nonneg r
@@ -254,12 +336,18 @@ theorem four_le_gap (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP l
   have h2 : 8 * (r : ℝ) + 8 ≤ (2 * r + 2 : ℝ) ^ 3 := by nlinarith [mul_nonneg hr hr, mul_nonneg hr (mul_nonneg hr hr)]
   linarith [hμ.gap hij.ne, H.radius_le_gap hij, H.2.2.2.2.2.2.2.1 i j hij]
 
+/- English proof (translation)
+Use `⟨fun a b hab => by linarith [H.four_le_gap hμ hab], fun a => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hμ.1 a`. Take `⟨m', hm'⟩` from `H.setup.2.1.1.2 a`. Conclude with `⟨m + m', by rw [Int.cast_add]; linarith⟩`.
+-/
 theorem isHCParam (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam (q + r + 2) μ) : IsHCParam μ := by
   refine ⟨fun a b hab => by linarith [H.four_le_gap hμ hab], fun a => ?_⟩
   obtain ⟨m, hm⟩ := hμ.1 a
   obtain ⟨m', hm'⟩ := H.setup.2.1.1.2 a
   exact ⟨m + m', by rw [Int.cast_add]; linarith⟩
 
+/- English proof (translation)
+Establish `hl' : (l : ℝ) ≤ r + 1` using `by exact_mod_cast hl`. Use `(hμ.add_wtI dual I).mono (show q + l ≤ q + r + 2 by linarith)` as an intermediate fact. Conclude with `⟨H.isHCParam this, H.2.2.2.2.2.2.2.2.2 _ this⟩`.
+-/
 theorem isDSAt_add (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam q μ) (dual : Bool) {l : ℕ}
     (hl : l ≤ r + 1) (I : Idx k r l) :
     IsHCParam (μ + wtI dual I) ∧ (R (μ + wtI dual I)).IsDSAt P (μ + wtI dual I) := by
@@ -267,6 +355,11 @@ theorem isDSAt_add (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP la
   have := (hμ.add_wtI dual I).mono (show q + l ≤ q + r + 2 by linarith)
   exact ⟨H.isHCParam this, H.2.2.2.2.2.2.2.2.2 _ this⟩
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1` using `H.setup.2.2.1.2.1 a b hab`. Break down `lt_trichotomy a b with e | e | e` into its components or cases. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (H.setup.2.1.1.1 e))]`. Combine the linear relations using `[H.gap_ge hμ e, le_abs_self (μ a - μ b)]`.
+
+Conclude with `absurd (e ▸ rfl) hab`. Rewrite `h1` using `[abs_sub_comm, abs_of_pos (sub_pos.2 (H.setup.2.1.1.1 e))]`. Combine the linear relations using `[H.gap_ge hμ e, neg_abs_le (μ a - μ b)]`.
+-/
 theorem gapAtLeast (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam q μ) :
     GapAtLeast (sgnCN k r) μ (0.98 * h) := by
   intro a b hab
@@ -278,6 +371,9 @@ theorem gapAtLeast (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP la
   · rw [abs_sub_comm, abs_of_pos (sub_pos.2 (H.setup.2.1.1.1 e))] at h1
     linarith [H.gap_ge hμ e, neg_abs_le (μ a - μ b)]
 
+/- English proof (translation)
+Establish `h1` using `abs_le.1 (hμ.abs_le i)`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro hi; have := H.setup.2.1.2.1 i hi; constructor <;> linarith`. Apply the tactic sequence `intro hi; have := H.setup.2.1.2.2 i hi; constructor <;> linarith`.
+-/
 theorem entries (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam q μ) (i : Fin (2 * r + k + 1)) :
     (i.val < k - 1 → -q ≤ μ i ∧ μ i ≤ bv / 8 + q) ∧ (k - 1 ≤ i.val → -(2 * bv) - q ≤ μ i ∧ μ i ≤ -bv + q) := by
   have h1 := abs_le.1 (hμ.abs_le i)
@@ -285,6 +381,13 @@ theorem entries (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam q
   · intro hi; have := H.setup.2.1.2.1 i hi; constructor <;> linarith
   · intro hi; have := H.setup.2.1.2.2 i hi; constructor <;> linarith
 
+/- English proof (translation)
+Establish `h0 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Establish `h1` using `H.cube_le_bv`. Establish `h2 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `le_self_pow₀ h0 (by norm_num)`. Establish `h3` using `H.radius_le_bv`. Establish `h4` using `H.2.2.2.2.2.1`.
+
+Establish `h5 : ‖μ‖ ≤ 2 * bv + q`. Use `(pi_norm_le_iff_of_nonneg (by linarith)).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`. Break down `lt_or_ge i.val (k - 1) with hi | hi` into its components or cases. Apply the tactic sequence `have := (H.entries hμ i).1 hi; constructor <;> linarith`.
+
+Apply the tactic sequence `have := (H.entries hμ i).2 hi; constructor <;> linarith`. Unfold `bStar`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bStar_le (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam q μ) : bStar μ ≤ 2.02 * bv := by
   have h0 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) := by exact_mod_cast (by omega)
   have h1 := H.cube_le_bv
@@ -301,6 +404,11 @@ theorem bStar_le (H : Standing k r c Ch Cg C₀ P lam bv h q R) (hμ : InPP lam 
 
 end Standing
 
+/- English proof (translation)
+Establish `h0 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Establish `h2 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `le_self_pow₀ h0 (by norm_num)`. Establish `h3 : (2 * r + 1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by push_cast; linarith [Nat.cast_nonneg (α := ℝ) k]`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `h4` using `hJ.2`.
+
+Establish `h5 : (1 : ℝ) ≤ (6 * bv) ^ (2 * (2 * r + 2) - 2)` using `one_le_pow₀ (by linarith)`. Establish `h6 : 4 + 9 * (2 * r + 2 : ℝ) ≤ (6 * bv) ^ 2` using `by nlinarith`. Rewrite using `[QQ, show 2 * (2 * r + 2) = 2 + (2 * (2 * r + 2) - 2) by omega, pow_add, Nat.add_sub_cancel_left]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem HypJ.QQ_le {j : ℕ} (hJ : HypJ k r bv j) : QQ r bv ≤ (6 * bv) ^ (2 * (2 * r + 2)) := by
   have h0 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) := by exact_mod_cast (by omega)
   have h2 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 := le_self_pow₀ h0 (by norm_num)
@@ -314,16 +422,28 @@ theorem HypJ.QQ_le {j : ℕ} (hJ : HypJ k r bv j) : QQ r bv ≤ (6 * bv) ^ (2 * 
 
 end Conseq
 
+/- English proof (translation)
+Establish `: ‖![(1 : ℝ), -3]‖ = 3`. Apply the tactic sequence `refine le_antisymm ((pi_norm_le_iff_of_nonneg (by norm_num)).2 fun i => by fin_cases i <;> simp) ?_`. Simplify using `using norm_le_pi_norm ![(1 : ℝ), -3] 1`. Rewrite using `[bStar, this]`. Evaluate the numerical expressions.
+-/
 example : bStar ![(1 : ℝ), -3] = 5 := by
   have : ‖![(1 : ℝ), -3]‖ = 3 := by
     refine le_antisymm ((pi_norm_le_iff_of_nonneg (by norm_num)).2 fun i => by fin_cases i <;> simp) ?_
     simpa using norm_le_pi_norm ![(1 : ℝ), -3] 1
   rw [bStar, this]; norm_num
 
+/- English proof (translation)
+Evaluate the numerical expressions using `[QQ]`.
+-/
 example : QQ 0 1 = 652 := by norm_num [QQ]
 
+/- English proof (translation)
+Evaluate the numerical expressions using `[HypJ]`.
+-/
 example : HypJ 1 0 (10 ^ 5) 3 ∧ ¬ HypJ 1 0 (10 ^ 5) 4 := by norm_num [HypJ]
 
+/- English proof (translation)
+Unfold `xS`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (μ : Fin (2 * 0 + 1 + 1) → ℝ) (s : Idx 1 0 1) : xS μ s = -μ (el s) - 1 / 2 := by
   unfold xS; norm_num; ring
 

@@ -33,6 +33,9 @@ def seamVec (n : ℕ) :
 def latBack {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Submodule (𝓞 X.E) (Sp X.E n) :=
   L.comap (seamVec s n)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latBack {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (y : Sp X.E n) :
     y ∈ latBack s L ↔ (fun l => s.iE (y l)) ∈ L := Iff.rfl
 

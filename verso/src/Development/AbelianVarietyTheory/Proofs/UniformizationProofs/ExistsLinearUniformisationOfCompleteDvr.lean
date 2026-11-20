@@ -23,6 +23,17 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `hU h1 h2 h3 h4 h5 hTB hVR hTW hUU E _ _ _ H V _ _ _ hV t A gen hgen ⟨w, hw⟩ ⟨S, ⟨d⟩⟩`. Take `⟨hdvr, hcomp, hchar⟩` from `id hV`. Establish `hnoeth : IsNoetherianRing V` using `inferInstance`. Establish `hic : IsIntegrallyClosed V` using `inferInstance`. Take `⟨P, hPL, -⟩` from `GlobalTheory.T.exists_cubical_bundle_of_symmetric_semiAbelian h1 V A t.G t.semi gen hgen t.PP t.cub t.sym`.
+
+Take `⟨r, hr⟩` from `thick_zero_factor V`. Take `⟨Q₀⟩ : Nonempty (TQ (thickObj V (maximalIdeal V) 0 t.G) S.X)` from `nonempty_tq_pullback_comp r _ hr t.G (TQ.ofGtDatum d)`. Take `⟨P₀, hP₀⟩` from `exists_isLevelCP (maximalIdeal V) 0 P`. Establish `hfree` using `S.free`. Establish `hfin` using `S.finite`.
+
+Establish `hprim : LBIso P.L.L (cubeLB t.G ![𝟙 t.G, t.act.act H.w0] P.L.L)` using `by rw [hPL]; exact t.prim`. Establish `heven` using `GlobalTheory.T.exists_even_cubical_trivialisation_specialFibre h1 V hV A t.G t.semi gen hgen P _ (t.act.hom H.w0) hprim S.X Q₀ P₀ hP₀`. Choose the witnesses or unpack the hypotheses as in `⟨w', hw'⟩ : ∃ w : LB.Iso (A.L.pull gen.hom.left) (P.L.L.pull (pullback.fst t.G.hom (jK V))), w.IsGen := by`. Rewrite using `[hPL]`. Conclude with `⟨w, hw⟩`.
+
+Set `s : HidaSetting V A t.G` to `{ cdvr := hV, semi := t.semi, gen := gen, gen_hom := hgen, P := P, wA := w', wA_gen := hw', X := S.X, Q₀ := Q₀, P₀ := P₀, lev₀ := hP₀, even₀ := heven }`. Take `⟨D, U, hL, hg, -⟩` from `hU V A t.G s`. Take `⟨Pu, hD, hA, hPU, hT⟩` from `GlobalTheory.T.uniformisation_triple_linear_torsionIso ⟨h1, h2, h3, h4, h5⟩ hTB hVR hTW hUU E H V (maximalIdeal V) ⟨hnoeth, inferInstance, hic, hcomp⟩ t D A U (hL.trans hPL)`. Use `⟨Pu, hA, ?_, hT⟩` and prove the remaining obligations. Substitute `hD hA` using the available equality.
+
+Rewrite using `[eq_of_heq hPU]`. Conclude with `heq_of_eq hg`.
+-/
 theorem exists_pelUnif_of_cdvr : (AllSet fun {V} _ _ _ {A} {G} _ _ s => ∃ (D : DegData V (IsLocalRing.maximalIdeal V)) (U : Unif (IsLocalRing.maximalIdeal V) D A G), U.LG = s.P.L ∧ U.gen = s.gen ∧ HEq U.cubG s.P.c) → Laws → Laws2 → Laws3 → Laws4 → Laws5 → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDVR V → ∀ (t : SAB H (Sp V)) (A : PolAV (Sp (FractionRing V))) (gen : (Over.pullback (jK V)).obj t.G ≅ A.A), IsMonHom gen.hom → (∃ w : LB.Iso (A.L.pull gen.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (jK V))), w.IsGen) → (∃ S : SplitExt (Sp (IsLocalRing.ResidueField V)), S.IsGt ((Over.pullback (spMap (IsLocalRing.residue V))).obj t.G)) → ∃ P : PELUnif (maximalIdeal V) t, P.A = A ∧ HEq P.U.gen gen ∧ P.TorsionIso := by
   intro hU h1 h2 h3 h4 h5 hTB hVR hTW hUU E _ _ _ H V _ _ _ hV t A gen hgen ⟨w, hw⟩ ⟨S, ⟨d⟩⟩
   obtain ⟨hdvr, hcomp, hchar⟩ := id hV

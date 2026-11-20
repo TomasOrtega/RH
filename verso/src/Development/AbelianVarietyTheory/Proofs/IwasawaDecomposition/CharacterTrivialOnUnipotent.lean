@@ -10,6 +10,23 @@ namespace GlobalTheory.UnipKill
 
 open ReciprocityTheory.ChartRestriction.G.FD NumberField
 
+/- English proof (translation)
+Introduce `E _ _ _ N X hE φ γ hγ`. Use `set A : Matrix (Fin N) (Fin N) E := ((γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) with hA`. Use `set n : Matrix (Fin N) (Fin N) E := A - 1 with hn`. Establish `h2 : n * n = 0` using `by rw [← pow_two]; exact hγ`. Establish `hiso : IsIsom X.Gm A` using `fun x y => (X.Γ_stab _ γ.2).1 x y`.
+
+Establish `hsk : IsSkew X.Gm n` using `isSkew_sub_one X.Gm hiso h2`. Use `set W : Submodule E (Fin N → E) := LinearMap.range (Matrix.mulVecLin n) with hW`. Establish `hWiso : ∀ u ∈ W, ∀ v ∈ W, herm X.Gm u v = 0`. Introduce and unpack `u ⟨x, rfl⟩ v ⟨y, rfl⟩`. Conclude with `herm_mulVec_mulVec_eq_zero X.Gm hsk h2 x y`.
+
+Establish `hκ : cc X.κ0 = -X.κ0`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] <;> simp [cc_mul, cc_neg, X.ξ0_im, cc_two]`. Establish `hκ0 : X.κ0 ≠ 0`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> rw [h] <;> simp [X.ξ0_ne]`. Take `⟨d, ξ, t, hξW, ht, hnd⟩` from `GlobalTheory.T.skew_eq_sum_rank_one_isotropic E N X.Gm X.κ0 X.Gm_herm X.Gm_det hκ hκ0 W hWiso n hsk (fun y => ⟨y, rfl⟩)`.
+
+Take `⟨k, ξ', s, hk, hξ'Λ, hξ'a, hs, hsint, hsum⟩` from `GlobalTheory.T.sum_rank_one_integral_rescaling E N X d ξ t ht`. Establish `horth : ∀ i j, herm X.Gm (ξ' i) (ξ' j) = 0`. Introduce `i j`. Take `⟨a, ha⟩` from `hξ'a i`. Take `⟨b, hb⟩` from `hξ'a j`.
+
+Rewrite using `[ha, hb, herm_smul_left, herm_smul_right, hWiso _ (hξW i) _ (hξW j)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkill : ∀ j, ∃ γ' : X.Γ, ((γ' : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) = transvMat X.Gm (ξ' j) (X.m * s j * X.κ0) ∧ φ γ' = 1`. Introduce `j`. Take `⟨γ', hγ'Γ, hγ'⟩` from `X.transv (ξ' j) (hξ'Λ j) (horth j j) (s j) (hs j) (hsint j)`.
+
+Conclude with `⟨⟨γ', hγ'Γ⟩, hγ', GlobalTheory.T.character_trivial_on_integral_transvections E N X hE φ (ξ' j) (s j) (hξ'Λ j) (horth j j) (hs j) (hsint j) ⟨γ', hγ'Γ⟩ hγ'⟩`. Take `⟨γ', hγ'eq, hφγ'⟩` from `GlobalTheory.T.character_trivial_on_sum_transvections E N X φ d ξ' (fun j => X.m * s j * X.κ0) horth hkill`. Establish `hpow : γ ^ k = γ'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Subgroup.coe_pow, Units.val_pow_eq_pow_val, hγ'eq, ← hsum, ← hnd]`. Establish `: (γ : GL (Fin N) E).val = 1 + n` using `by rw [hn]; abel`. Rewrite using `[this, one_add_pow_of_sq_eq_zero h2]`. Establish `hφ : φ γ ^ k = 1` using `by rw [← map_pow, hpow, hφγ']`. Establish `: k • Multiplicative.toAdd (φ γ) = 0`.
+
+Use `congrArg Multiplicative.toAdd hφ` as an intermediate fact. Rewrite `this` using `[toAdd_pow, toAdd_one]`. Then use the resulting hypothesis. Establish `h0` using `(smul_eq_zero.1 this).resolve_left hk.ne'`. Conclude with `Multiplicative.toAdd.injective (by simpa using h0)`.
+-/
 theorem char_eq_one_of_sq_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (X : Data E N), 1 < Module.finrank ℚ E / 2 → ∀ (φ : X.Γ →* Multiplicative ℝ) (γ : X.Γ), (((γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) - 1) ^ 2 = 0 → φ γ = 1 := by
   intro E _ _ _ N X hE φ γ hγ
   set A : Matrix (Fin N) (Fin N) E := ((γ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) with hA

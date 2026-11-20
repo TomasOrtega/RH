@@ -21,6 +21,9 @@ open GlobalTheory.ConstRatio (NegIdx Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HypPairSelfDual.exists_partner | exact GlobalTheory.HypPairSelfDual.exists_partner | (intros; apply GlobalTheory.HypPairSelfDual.exists_partner <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_hyperbolicPartner_splitting_selfDualLattice : ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (x : S.V),
     IsSelfDualC S Λ → x ≠ 0 → S.hT x x = 0 →
     ∃ y : S.V, S.hT y y = 0 ∧ S.hT x y = 1 ∧

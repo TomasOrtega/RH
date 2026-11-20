@@ -31,12 +31,18 @@ noncomputable def lin (N : ℕ) (ξ : J → PowerSeries k) (s : I → J → Powe
   map_smul' c v := by
     funext e; rcases e with _ | ⟨i, l⟩ <;> simp [linFun, Finset.mul_sum, mul_assoc, mul_add]
 
+/- English proof (translation)
+Proceed by induction on `l generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih]`. Both sides reduce to the same expression.
+-/
 lemma iter_eq (f : PowerSeries k) (l : ℕ) :
     (PowerSeries.derivativeFun)^[l] f = (PowerSeries.derivative k)^[l] f := by
   induction l generalizing f with
   | zero => rfl
   | succ n ih => rw [Function.iterate_succ_apply, Function.iterate_succ_apply, ih]; rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.powerSeries_taylor_subst_first_order k φ a 0 1 le_rfl ha).1`.
+-/
 lemma cc_subst (φ a : PowerSeries k) (ha : PowerSeries.constantCoeff a = 0) :
     PowerSeries.constantCoeff (φ.subst a : PowerSeries k) = PowerSeries.constantCoeff φ :=
   (GlobalTheory.T.powerSeries_taylor_subst_first_order k φ a 0 1 le_rfl ha).1
@@ -47,6 +53,13 @@ namespace GlobalTheory.DeformZeros
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `hT`. Establish `hS' : S' = S + PowerSeries.X ^ m * PowerSeries.C c + PowerSeries.X ^ (m + 1) * r`. Take the linear combination `hr`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Establish `heq : (y + PowerSeries.X ^ (n + 1) * g) * S' - y * S - PowerSeries.X ^ (n + 1) * PowerSeries.C (PowerSeries.constantCoeff g * A + y0 * c) = PowerSeries.X ^ (n + 1) * (y * PowerSeries.C c - PowerSeries.C (y0 * c) + (g * S - PowerSeries.C (PowerSeries.constantCoeff g * A))) + Power …`.
+
+Rewrite using `[hS', map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `dvd_add ?_ (dvd_mul_right _ _)` and prove the remaining obligations. Rewrite using `[pow_succ]`.
+
+Use `mul_dvd_mul_left _ ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using `[hy, hS]`.
+-/
 lemma dvd_step {m : ℕ} (hm : 1 ≤ m) (y g S S' : PowerSeries k) (y0 c A : k)
     (hy : PowerSeries.constantCoeff y = y0) (hS : PowerSeries.constantCoeff S = A)
     (hT : (PowerSeries.X : PowerSeries k) ^ (m + 1) ∣
@@ -76,6 +89,41 @@ end GlobalTheory.DeformZeros
 
 namespace GlobalTheory.DeformZeros
 
+/- English proof (translation)
+Introduce `k J I _ _ _ _ N ξ s y₀ hN h0 hlow hN' hsurj`. Establish `hA : ∀ (f : PowerSeries k) (l : ℕ), PowerSeries.constantCoeff ((PowerSeries.derivativeFun)^[l] f) = (l.factorial : k) * PowerSeries.coeff l f`. Introduce `f l`. Rewrite using `[iter_eq]`. Conclude with `PowerSeries.constantCoeff_iterate_derivative f l`.
+
+Establish `hB : ∀ (f : PowerSeries k) (l : ℕ), PowerSeries.coeff 1 ((PowerSeries.derivativeFun)^[l] f) = ((2 : ℕ).ascFactorial l : k) * PowerSeries.coeff (1 + l) f`. Introduce `f l`. Rewrite using `[iter_eq]`. Conclude with `PowerSeries.coeff_iterate_derivative f l 1`. Establish `hsur : Function.Surjective (lin N ξ s y₀)`.
+
+Introduce `w`. Establish `hfac : ∀ l : ℕ, (l.factorial : k) ≠ 0` using `fun l => Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero l)`. Take `⟨hv, hv0, hvl⟩` from `hsurj (w none) (fun i l => if hl : l < N then w (some (i, ⟨l, hl⟩)) / (l.factorial : k) else 0)`. Establish `hN1 : N - 1 < N` using `by omega`. Establish `hS : ∀ i, ∑ j, y₀ j * PowerSeries.coeff 1 ((PowerSeries.derivativeFun)^[N - 1] (s i j)) ≠ 0`.
+
+Introduce `i`. Simplify using `only [hB]`. Establish `e1 : 1 + (N - 1) = N` using `by omega`. Rewrite using `[e1]`. Establish `hasc : ((Nat.ascFactorial 2 (N - 1) : ℕ) : k) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.ascFactorial_pos 1 (N - 1)).ne'`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ ≠ 0 := mul_ne_zero hasc (hN' i)`. Use `⟨Sum.elim hv (fun i => (w (some (i, ⟨N - 1, hN1⟩)) - ∑ j, hv j * PowerSeries.constantCoeff ((PowerSeries.derivativeFun)^[N - 1] (s i j))) / ∑ j, y₀ j * PowerSeries.coeff 1 ((PowerSeries.derivativeFun)^[N - 1] (s i j))), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `e`.
+
+Break down `e with _ | ⟨i, l⟩` into its components or cases. Simplify `hv0` using `[lin, linFun]`. Simplify using `only [lin, linFun, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl, Sum.elim_inr]`. Break down `Nat.lt_or_ge (l.1 + 1) N with hl | hl` into its components or cases. Establish `h1 : ∑ j, hv j * PowerSeries.constantCoeff ((PowerSeries.derivativeFun)^[l.1] (s i j)) = w (some (i, l))`.
+
+Simplify using `only [hA]`. Use `hvl i l.1 hl` as an intermediate fact. Rewrite `this` using `[dif_pos l.2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`.
+
+Use `_ = w (some (i, l)) := by rw [this, mul_div_assoc', mul_div_cancel_left₀ _ (hfac _)]`. Establish `h2 : ∑ j, y₀ j * PowerSeries.coeff 1 ((PowerSeries.derivativeFun)^[l.1] (s i j)) = 0`. Simplify using `only [hB]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`.
+
+Use `_ = 0 := by rw [hlow i (1 + l.1) (by omega), mul_zero]`. Rewrite using `[h1, h2, mul_zero, add_zero]`. Establish `hl' : l = ⟨N - 1, hN1⟩` using `Fin.ext (by simp; omega)`. Substitute `hl'` using the available equality. Rewrite using `[div_mul_cancel₀ _ (hS i)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hbase : ∀ e, PowerSeries.constantCoeff (sys N ξ s (fun i => PowerSeries.C (Sum.elim y₀ 0 i)) e) = 0`. Introduce `e`. Break down `e with _ | ⟨i, l⟩` into its components or cases. Simplify using `[sys, map_sum, h0]`.
+
+Simplify using `only [sys, map_sum, map_mul, PowerSeries.constantCoeff_C, Sum.elim_inl, Sum.elim_inr]`. Establish `h' : ∀ j, PowerSeries.constantCoeff (((PowerSeries.derivativeFun)^[l.1] (s i j)).subst (PowerSeries.C ((0 : I → k) i)) : PowerSeries k) = (l.1.factorial : k) * PowerSeries.coeff l.1 (s i j)`. Introduce `j; rw [cc_subst _ _ (by simp), hA]`. Simplify using `only [h']`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [hlow i l.1 l.2, mul_zero]`. Establish `htay : ∀ (x h : J ⊕ I → PowerSeries k) (m : ℕ), 1 ≤ m → (∀ i, PowerSeries.constantCoeff (x i) = Sum.elim y₀ 0 i) → ∀ e, (PowerSeries.X : PowerSeries k) ^ (m + 1) ∣ sys N ξ s (fun i => x i + PowerSeries.X ^ m * h i) e - sys N ξ s x e - PowerSeries.X ^ m * PowerSeries.C (lin N ξ s …`. Introduce `x h m hm hx0 e`. Break down `e with _ | ⟨i, l⟩` into its components or cases.
+
+Simplify using `only [sys, lin, linFun, LinearMap.coe_mk, AddHom.coe_mk, Sum.elim_inl]`. Establish `heq : ∑ j, (x (Sum.inl j) + PowerSeries.X ^ m * h (Sum.inl j)) * ξ j - ∑ j, x (Sum.inl j) * ξ j - PowerSeries.X ^ m * PowerSeries.C (∑ j, PowerSeries.constantCoeff (h (Sum.inl j)) * PowerSeries.constantCoeff (ξ j)) = PowerSeries.X ^ m * (∑ j, h (Sum.inl j) * ξ j - PowerSeries.C ( …`. Rewrite using `[mul_sub, Finset.mul_sum]`. Simplify using `only [add_mul, Finset.sum_add_distrib, mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[heq, pow_succ]`. Use `mul_dvd_mul_left _ ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using `[map_sum]`. Simplify using `only [sys, lin, linFun, LinearMap.coe_mk, AddHom.coe_mk] set a := x (Sum.inr i) set b := h (Sum.inr i)`.
+
+Establish `ha : PowerSeries.constantCoeff a = 0` using `by simpa using hx0 (Sum.inr i)`. Establish `key : ∀ j, (PowerSeries.X : PowerSeries k) ^ (m + 1) ∣ (x (Sum.inl j) + PowerSeries.X ^ m * h (Sum.inl j)) * (((PowerSeries.derivativeFun)^[l.1] (s i j)).subst (a + PowerSeries.X ^ m * b) : PowerSeries k) - x (Sum.inl j) * (((PowerSeries.derivativeFun)^[l.1] (s i j)).subst a : Po …`. Introduce `j`. Establish `T` using `GlobalTheory.T.powerSeries_taylor_subst_first_order k ((PowerSeries.derivativeFun)^[l.1] (s i j)) a b m hm ha`. Conclude with `dvd_step hm _ _ _ _ _ _ _ (by simpa using hx0 (Sum.inl j)) T.1 T.2`.
+
+Establish `heq : ∑ j, (x (Sum.inl j) + PowerSeries.X ^ m * h (Sum.inl j)) * (((PowerSeries.derivativeFun)^[l.1] (s i j)).subst (a + PowerSeries.X ^ m * b) : PowerSeries k) - ∑ j, x (Sum.inl j) * (((PowerSeries.derivativeFun)^[l.1] (s i j)).subst a : PowerSeries k) - PowerSeries.X ^ m * Powe …`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← map_sum, Finset.sum_add_distrib, Finset.mul_sum (a := PowerSeries.constantCoeff b)]`. Use `congr 4`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite using `[heq]`.
+
+Conclude with `Finset.dvd_sum fun j _ => key j`. Take `⟨x, hx0, hx⟩` from `GlobalTheory.T.newton_powerSeries_surjective_linearization_solution k (J ⊕ I) (Option (I × Fin N)) (sys N ξ s) (Sum.elim y₀ 0) (lin N ξ s y₀) hsur hbase htay`. Use `⟨fun j => x (Sum.inl j), fun i => x (Sum.inr i), fun j => by simpa using hx0 (Sum.inl j), fun i => by simpa using hx0 (Sum.inr i), hx none, ?_⟩` and prove the remaining obligations. Introduce `i l hl`. Conclude with `hx (some (i, ⟨l, hl⟩))`.
+-/
 theorem deform : ∀ (k J I : Type) [Field k] [CharZero k] [Fintype J] [Fintype I] (N : ℕ) (ξ : J → PowerSeries k) (s : I → J → PowerSeries k) (y₀ : J → k), 1 ≤ N →
  ∑ j, y₀ j * PowerSeries.constantCoeff (ξ j) = 0 →
  (∀ i, ∀ l < N, ∑ j, y₀ j * PowerSeries.coeff l (s i j) = 0) → (∀ i, ∑ j, y₀ j * PowerSeries.coeff N (s i j) ≠ 0) →

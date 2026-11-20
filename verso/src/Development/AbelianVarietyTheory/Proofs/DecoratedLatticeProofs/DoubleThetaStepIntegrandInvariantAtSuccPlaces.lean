@@ -25,17 +25,30 @@ section Idem
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
+/- English proof (translation)
+Take `⟨ε, ⟨α, rfl, -⟩, h4⟩` from `q.above`. Rewrite using `[h4]`. Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem infPart_idem (q : GlobalTheory.FinPl.SplitPt D k) : infPart D (q.e + cA D q.e) = 0 := by
   obtain ⟨ε, ⟨α, rfl, -⟩, h4⟩ := q.above
   rw [h4]
   exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Take `⟨ε, -, h4⟩` from `q.above`. Rewrite using `[h4]`. Use `show cA D (ε ⊗ₜ[D.host.F] (1 : D.host.E)) = ε ⊗ₜ[D.host.F] (1 : D.host.E)`. Simplify using `[cA, sigR]`.
+-/
 theorem cA_idem (q : GlobalTheory.FinPl.SplitPt D k) : cA D (q.e + cA D q.e) = q.e + cA D q.e := by
   obtain ⟨ε, -, h4⟩ := q.above
   rw [h4]
   show cA D (ε ⊗ₜ[D.host.F] (1 : D.host.E)) = ε ⊗ₜ[D.host.F] (1 : D.host.E)
   simp [cA, sigR]
 
+/- English proof (translation)
+Take `⟨ε, ⟨α, rfl, -, hα⟩, h⟩` from `q.above`. Take `⟨ε', ⟨β, rfl, -, hβ⟩, h'⟩` from `q'.above`. Establish `key : ∀ w, evalV D.host.F w (α * β) = 0`. Introduce `w`. Rewrite using `[map_mul]`.
+
+Distinguish the cases in `hw : w = q.v`. Rewrite using `[hβ w (hw ▸ hne), mul_zero]`. Rewrite using `[hα w hw, zero_mul]`. Establish `hab : α * β = 0` using `RestrictedProduct.ext _ _ fun w => key w`. Establish `h0 : pairA D.host.F 0 α * pairA D.host.F 0 β = 0` using `by show ((0 : Ainf D.host.F), α) * ((0 : Ainf D.host.F), β) = 0`.
+
+Rewrite using `[Prod.mk_mul_mk, hab, mul_zero]`. Both sides reduce to the same expression. Rewrite using `[h, h', ← map_mul, h0, map_zero]`.
+-/
 theorem idem_mul_idem (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.FinPl.SplitPt D k') (hne : q.v ≠ q'.v) :
     (q.e + cA D q.e) * (q'.e + cA D q'.e) = 0 := by
   obtain ⟨ε, ⟨α, rfl, -, hα⟩, h⟩ := q.above
@@ -53,6 +66,9 @@ theorem idem_mul_idem (q : GlobalTheory.FinPl.SplitPt D k) (q' : GlobalTheory.Fi
     rfl
   rw [h, h', ← map_mul, h0, map_zero]
 
+/- English proof (translation)
+Establish `h1` using `q.split.1`. Establish `h2` using `q.split.2.1`. Establish `h3 : cA D q.e * cA D q.e = cA D q.e` using `by rw [← map_mul, h1]`. Take the linear combination `h1 + 2 * h2 + h3`.
+-/
 theorem idem_sq (q : GlobalTheory.FinPl.SplitPt D k) : (q.e + cA D q.e) * (q.e + cA D q.e) = q.e + cA D q.e := by
   have h1 := q.split.1
   have h2 := q.split.2.1
@@ -64,9 +80,19 @@ end Idem
 section Comb
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aconv_cons {G : Type} [AddMonoid G] (e : G →₀ ℂ) (l : List (G →₀ ℂ)) :
     aconv (e :: l) = ∑ g ∈ e.support, ∑ h ∈ (aconv l).support, Finsupp.single (g + h) (e g * aconv l h) := rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Introduce `u hu`. Establish `h3` using `Finsupp.support_single_subset hu`. Rewrite `h3` using `[Finset.mem_singleton]`.
+
+Conclude with `h3 ▸ h0`. Consider the case `cons e l ih`. Introduce `w hw`. Rewrite `hw` using `[aconv_cons]`. Take `⟨x, hx, hw2⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hw)`.
+
+Take `⟨y, hy, hw3⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hw2)`. Establish `h3` using `Finsupp.support_single_subset hw3`. Rewrite `h3` using `[Finset.mem_singleton]`. Conclude with `h3 ▸ hadd x y (hl e List.mem_cons_self x hx) (ih (fun e' he' => hl e' (List.mem_cons_of_mem _ he')) y hy)`.
+-/
 theorem support_aconv {G : Type} [AddMonoid G] (p : G → Prop) (h0 : p 0) (hadd : ∀ x y, p x → p y → p (x + y))
     (l : List (G →₀ ℂ)) (hl : ∀ e ∈ l, ∀ u ∈ e.support, p u) : ∀ u ∈ (aconv l).support, p u := by
   classical
@@ -85,6 +111,11 @@ theorem support_aconv {G : Type} [AddMonoid G] (p : G → Prop) (h0 : p 0) (hadd
     rw [Finset.mem_singleton] at h3
     exact h3 ▸ hadd x y (hl e List.mem_cons_self x hx) (ih (fun e' he' => hl e' (List.mem_cons_of_mem _ he')) y hy)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HeisComb.comb_comb, GlobalTheory.HeisComb.comb_eq_sum, aconv_cons]`. Rewrite using `[← Finsupp.sum_finset_sum_index (fun u => zero_smul ℂ (heisO ψ S T u f)) (fun u a b => add_smul a b (heisO ψ S T u f))]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_finset_sum_index (fun u => zero_smul ℂ (heisO ψ S T u f)) (fun u a b => add_smul a b (heisO ψ S T u f))]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Establish `h0 : symplOH S T x y = 0`. Unfold `symplOH`. Rewrite using `[h x hx y hy, mul_zero]`. Rewrite using `[Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T (x + y) f)), GlobalTheory.WeilVacMove.heisO_heisO, h0, AddChar.map_zero_eq_one, one_smul]`.
+-/
 theorem comb_aconv_cons (e : WO S T →₀ ℂ) (l : List (WO S T →₀ ℂ))
     (h : ∀ x ∈ e.support, ∀ y ∈ (aconv l).support, symplO S T x y = 0) (f : WO S T → ℂ) :
     comb ψ S T (aconv (e :: l)) f = comb ψ S T e (comb ψ S T (aconv l) f) := by
@@ -99,23 +130,49 @@ theorem comb_aconv_cons (e : WO S T →₀ ℂ) (l : List (WO S T →₀ ℂ))
   rw [Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T (x + y) f)), GlobalTheory.WeilVacMove.heisO_heisO, h0, AddChar.map_zero_eq_one,
     one_smul]
 
+/- English proof (translation)
+Introduce `i j` and use `by show e * (x i j + y i j) = x i j + y i j rw [mul_add, hx i j, hy i j]`.
+-/
 theorem half_add {e : AE D} {x y : WO S T} (hx : IsHalf e x) (hy : IsHalf e y) : IsHalf e (x + y) := fun i j => by
   show e * (x i j + y i j) = x i j + y i j
   rw [mul_add, hx i j, hy i j]
 
+/- English proof (translation)
+Introduce `_ _` and use `mul_zero e`.
+-/
 theorem half_zero (e : AE D) : IsHalf e (0 : WO S T) := fun _ _ => mul_zero e
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [sub_mul, one_mul, ← hx i j, ← mul_assoc, h, zero_mul, sub_zero]`.
+-/
 theorem half_compl {e e' : AE D} (h : e * e' = 0) {x : WO S T} (hx : IsHalf e' x) : IsHalf (1 - e) x := fun i j => by
   rw [sub_mul, one_mul, ← hx i j, ← mul_assoc, h, zero_mul, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_add _ (fun a b => (infPart D).map_add a b), hx, hy, add_zero]`.
+-/
 theorem fin_add {x y : WO S T} (hx : x.map (infPart D) = 0) (hy : y.map (infPart D) = 0) : (x + y).map (infPart D) = 0 := by
   rw [Matrix.map_add _ (fun a b => (infPart D).map_add a b), hx, hy, add_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, ← hu i j, map_mul, he, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem fin_of_half {e : AE D} (he : infPart D e = 0) {u : WO S T} (hu : IsHalf e u) : u.map (infPart D) = 0 := by
   ext i j
   rw [Matrix.map_apply, ← hu i j, map_mul, he, zero_mul]
   rfl
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _ _ _ _ _ _ _ i`. Conclude with `i.elim0`. Consider the case `succ n ih`.
+
+Introduce `ε d hc hi ho hf hd i`. Establish `htail : ∀ u ∈ (aconv (List.ofFn fun j : Fin n => d j.succ)).support, IsHalf (1 - ε 0) u ∧ u.map (infPart D) = 0`. Use `support_aconv (fun u : WO S T => IsHalf (1 - ε 0) u ∧ u.map (infPart D) = 0) ⟨half_zero _, Matrix.map_zero _ (infPart D).map_zero⟩ (fun x y hx hy => ⟨half_add hx.1 hy.1, fin_add hx.2 hy.2⟩) _ fun e he u hu => ?_` and prove the remaining obligations. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 he`. Conclude with `⟨half_compl (ho 0 j.succ (Fin.succ_ne_zero j).symm) (hd _ u hu), fin_of_half (hf _) (hd _ u hu)⟩`.
+
+Establish `h1 : ∀ f, comb ψ S T (aconv (List.ofFn d)) f = comb ψ S T (d 0) (comb ψ S T (aconv (List.ofFn fun j : Fin n => d j.succ)) f)` using `fun f => by`. Rewrite using `[List.ofFn_succ]`. Conclude with `comb_aconv_cons _ _ (fun x hx y hy => GlobalTheory.HeisComb.symplO_half S T (ε 0) (1 - ε 0) x y (hc 0) (by rw [mul_sub, mul_one, hi 0, sub_self]) (hd 0 x hx) (htail y hy).1) f`. Use `Fin.cases ⟨_, htail, h1⟩ (fun i => ?_) i` and prove the remaining obligations. Take `⟨c', hc', he'⟩` from `ih (fun j => ε j.succ) (fun j => d j.succ) (fun j => hc _) (fun j => hi _) (fun j j' h => ho _ _ fun h' => h (Fin.succ_injective _ h')) (fun j => hf _) (fun j => hd _) i`.
+
+Take `⟨c'', hs, he''⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 (d 0) c'`. Use `⟨c'', fun w hw => ?_, fun f => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, rfl⟩` from `hs w hw`. Conclude with `⟨half_add (half_compl (ho _ _ (Fin.succ_ne_zero i)) (hd 0 x hx)) (hc' y hy).1, fin_add (fin_of_half (hf 0) (hd 0 x hx)) (hc' y hy).2⟩`. Rewrite using `[h1, he', he'']`.
+
+Conclude with `(GlobalTheory.HeisComb.main D ψ S T).2.1 _ _ (fun x hx y hy => GlobalTheory.HeisComb.symplO_half S T (ε 0) (ε i.succ) x y (hc 0) (ho _ _ (Fin.succ_ne_zero i).symm) (hd 0 x hx) (hd _ y hy)) _`.
+-/
 theorem comb_aconv_isolate : ∀ (n : ℕ) (ε : Fin n → AE D) (d : Fin n → WO S T →₀ ℂ), (∀ j, cA D (ε j) = ε j) →
     (∀ j, ε j * ε j = ε j) → (∀ j j', j ≠ j' → ε j * ε j' = 0) → (∀ j, infPart D (ε j) = 0) →
     (∀ j, ∀ u ∈ (d j).support, IsHalf (ε j) u) → ∀ i, ∃ c : WO S T →₀ ℂ,
@@ -160,9 +217,17 @@ def combLin (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ �
     simp only [comb, heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T y f)), one_smul]`.
+-/
 theorem comb_single_one (y : WO S T) (f : WO S T → ℂ) : comb ψ S T (Finsupp.single y 1) f = heisO ψ S T y f := by
   rw [GlobalTheory.HeisComb.comb_eq_sum, Finsupp.sum_single_index (zero_smul ℂ (heisO ψ S T y f)), one_smul]
 
+/- English proof (translation)
+Establish `hi` using `idem_sq q`. Use `(GlobalTheory.LocModU.localModel_uniq_transport_exist D k (ofSplit q) Y Y' S T FS FT ψ hψ).2.1 Tm h (combLin ψ S T c) (fun f hf => (GlobalTheory.HeisComb.main D ψ S T).2.2.1 c f hf (fun u hu => (hc u hu).2) hψ) fun f _ y hy => ?_` and prove the remaining obligations. Use `show comb ψ S T c (heisO ψ S T y f) = heisO ψ S T y (comb ψ S T c f)`. Rewrite using `[← comb_single_one, ← comb_single_one y (comb ψ S T c f)]`. Use `((GlobalTheory.HeisComb.main D ψ S T).2.1 _ _ (fun x hx u hu => ?_) f).symm` and prove the remaining obligations.
+
+Establish `hx' : x = y` using `Finset.mem_singleton.1 (Finsupp.support_single_subset hx)`. Conclude with `GlobalTheory.HeisComb.symplO_half S T (q.e + cA D q.e) (1 - (q.e + cA D q.e)) x u (cA_idem q) (by rw [mul_sub, mul_one, hi, sub_self]) (hx' ▸ hy) (hc u hu).1`.
+-/
 theorem isModel_comb {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hψ : IsStdChar D ψ (-1)) (q : GlobalTheory.FinPl.SplitPt D k) {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (c : WO S T →₀ ℂ)
@@ -183,6 +248,9 @@ end Comb
 section Group
 variable {V : HSp D}
 
+/- English proof (translation)
+Establish `h1 : x ∈ grpAt V (· ∈ (∅ : Finset (GlobalTheory.FinPl.Pl D)))` using `by simpa using hx`. Establish `h2 : x ∈ grpAt V (· ∉ (∅ : Finset (GlobalTheory.FinPl.Pl D)))` using `(SetCut.mem_grpAt_iff_parts V _ x).2 fun i j => ⟨((SetCut.mem_grpAt_iff_parts V _ x).1 hx i j).1, fun w hw => absurd (Finset.notMem_empty w) hw⟩`. Establish `h3` using `(SetCut.cutG_left V ∅ h1 (one_mem _)).symm`. Rewrite `h3` using `[mul_one, ← one_mul x, SetCut.cutG_left V ∅ (one_mem _) h2]`. Rewrite `h3` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem eq_one_of_grpAt_empty {x : GA D V} (hx : x ∈ grpAt V fun _ => False) : x = 1 := by
   have h1 : x ∈ grpAt V (· ∈ (∅ : Finset (GlobalTheory.FinPl.Pl D))) := by simpa using hx
   have h2 : x ∈ grpAt V (· ∉ (∅ : Finset (GlobalTheory.FinPl.Pl D))) :=
@@ -192,6 +260,17 @@ theorem eq_one_of_grpAt_empty {x : GA D V} (hx : x ∈ grpAt V fun _ => False) :
   rw [mul_one, ← one_mul x, SetCut.cutG_left V ∅ (one_mem _) h2] at h3
   rwa [one_mul] at h3
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset (Fin n), ∀ x ∈ H, x ∈ grpAt V (fun p => ∃ i ∈ s, v i = p) → C x`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `x _ hx`.
+
+Rewrite using `[eq_one_of_grpAt_empty (x := x) (by simpa using hx)]`. Conclude with `h1`. Consider the case `insert i s _ ih`. Introduce `x hH hx`. Take `⟨a, haH, hCa, ha, hoff⟩` from `hloc i x hH`.
+
+Establish `ha' : a ∈ grpAt V (fun p => ∃ j ∈ insert i s, v j = p)` using `(SetCut.mem_grpAt_iff_parts V _ a).2 fun r t => ⟨((SetCut.mem_grpAt_iff_parts V _ a).1 ha r t).1, fun w hw => ((SetCut.mem_grpAt_iff_parts V _ a).1 ha r t).2 w fun h => hw ⟨i, Finset.mem_insert_self _ _, h.symm⟩⟩`. Establish `hy` using `(SetCut.mem_grpAt_iff_parts V _ _).1 (mul_mem hx (inv_mem ha'))`. Establish `hy' : x * a⁻¹ ∈ grpAt V (fun p => ∃ j ∈ s, v j = p)`. Use `(SetCut.mem_grpAt_iff_parts V _ _).2 fun r t => ⟨(hy r t).1, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : w = v i`.
+
+Conclude with `(SetCut.mem_grpOff_iff_parts V _ _).1 hoff r t w h`. Use `(hy r t).2 w ?_` and prove the remaining obligations. Introduce and unpack `⟨j, hj, rfl⟩`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `h rfl`.
+
+Conclude with `hw ⟨j, hj, rfl⟩`. Use `hmul _ _ (ih _ (mul_mem hH (inv_mem haH)) hy') hCa` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis. Introduce `x hH hx`. Conclude with `key Finset.univ x hH (by simpa using hx)`.
+-/
 theorem induction_places {n : ℕ} (v : Fin n → GlobalTheory.FinPl.Pl D) (H : Subgroup (GA D V)) (C : GA D V → Prop) (h1 : C 1)
     (hmul : ∀ x y, C x → C y → C (x * y))
     (hloc : ∀ i, ∀ x ∈ H, ∃ a ∈ H, C a ∧ a ∈ grpAt V (· = v i) ∧ x * a⁻¹ ∈ grpOff V (· = v i)) :
@@ -225,6 +304,9 @@ theorem induction_places {n : ℕ} (v : Fin n → GlobalTheory.FinPl.Pl D) (H : 
   intro x hH hx
   exact key Finset.univ x hH (by simpa using hx)
 
+/- English proof (translation)
+The claim follows from `(SetCut.mem_grpOff_iff_parts V _ x).2 fun i j w hw => (SetCut.mem_grpOff_iff_parts V _ x).1 hx i j w (hw ▸ hv)`.
+-/
 theorem grpOff_of_places {P : GlobalTheory.FinPl.Pl D → Prop} {v : GlobalTheory.FinPl.Pl D} (hv : P v) {x : GA D V} (hx : x ∈ grpOff V P) :
     x ∈ grpOff V (· = v) :=
   (SetCut.mem_grpOff_iff_parts V _ x).2 fun i j w hw => (SetCut.mem_grpOff_iff_parts V _ x).1 hx i j w (hw ▸ hv)
@@ -233,6 +315,13 @@ end Group
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {S : Dbl2 ψ σ}
 
+/- English proof (translation)
+Establish `G₀` using `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D Q.k Q.q S.B.V _ Q.F.G₀ Q.gl₀ Q.loc₀`. Establish `G₁` using `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D Q.k Q.q S.J.W _ Q.F.G₁ Q.gl₁ Q.loc₁`. Establish `G₂` using `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D Q.k Q.q S.B'.V _ Q.F.G₂ Q.gl₂ Q.loc₂`. Take `⟨g₀, hg, -⟩` from `G₀.2.2.1 g`. Take `⟨x₀, hx, -⟩` from `G₁.2.2.1 x`.
+
+Take `⟨y₀, hy, -⟩` from `G₂.2.2.1 y`. Establish `key` using `GlobalTheory.T.doubleThetaStep_splitPlace_value_periodGroup_invariant D ψ hψ σ S Q c₁ c₂ h₁ h₂ f₁ f₂ hv φ f hφ hf ht _ _ _ hg hx hy g₀ x₀ y₀ a ha j hj a' ha' j' hj'`. Establish `e₁ : x * (Q.gl₁ x₀)⁻¹ * Q.gl₁ (a * x₀ * j) = Q.gl₁ a * x * Q.gl₁ j`. Rewrite using `[map_mul, map_mul, ← mul_assoc, ← mul_assoc, ← G₁.2.2.2.1 a _ hx, mul_assoc (Q.gl₁ a), inv_mul_cancel_right]`. Establish `e₂ : y * (Q.gl₂ y₀)⁻¹ * Q.gl₂ (a' * y₀ * j') = Q.gl₂ a' * y * Q.gl₂ j'`.
+
+Rewrite using `[map_mul, map_mul, ← mul_assoc, ← mul_assoc, ← G₂.2.2.2.1 a' _ hy, mul_assoc (Q.gl₂ a'), inv_mul_cancel_right]`. Rewrite `key` using `[e₁, e₂, inv_mul_cancel_right, inv_mul_cancel_right, inv_mul_cancel_right]`. Conclude with `key`.
+-/
 theorem val_inv (hψ : IsStdChar D ψ (-1)) (Q : QStep S) {c₁ c₂} (h₁ : Q.Away c₁) (h₂ : Q.Away c₂) {f₁ f₂} (hv : Q.Vac f₁ f₂) {φ f}
     (hφ : IsContAut S.B.A φ) (hf : IsContAut S.B'.V f) (ht : Q.Typed f) (g : GA D S.B.V) (x : GA D S.J.W) (y : GA D S.B'.V)
     {a j a' j'} (ha : a ∈ RFJ Q.k Q.n₁ (Q.c + 1 + 1) (σ + 1)) (hj : j ∈ Q.L₁.J) (ha' : a' ∈ R Q.k Q.n₂ (Q.c + 1) (σ + 1))
@@ -253,6 +342,15 @@ theorem val_inv (hψ : IsStdChar D ψ (-1)) (Q : QStep S) {c₁ c₂} (h₁ : Q.
   rw [e₁, e₂, inv_mul_cancel_right, inv_mul_cancel_right, inv_mul_cancel_right] at key
   exact key
 
+/- English proof (translation)
+Take `⟨hc, -, -, hv, hφ, hf, ht, -, hh₁, hh₂⟩` from `hH`. Establish `hi : ∀ j, ((Q j).q.e + cA D (Q j).q.e) * ((Q j).q.e + cA D (Q j).q.e) = (Q j).q.e + cA D (Q j).q.e` using `fun j => idem_sq _`. Establish `ho : ∀ j j', j ≠ j' → ((Q j).q.e + cA D (Q j).q.e) * ((Q j').q.e + cA D (Q j').q.e) = 0` using `fun j j' h => idem_mul_idem _ _ fun h' => h (hinj h')`. Take `⟨d₁, hd₁, e₁⟩` from `comb_aconv_isolate (ψ := ψ) n (fun j => (Q j).q.e + cA D (Q j).q.e) (fun j => (Q j).D₁) (fun j => cA_idem _) hi ho (fun j => infPart_idem _) (fun j => (Q j).dat₁.1) i`. Take `⟨d₂, hd₂, e₂⟩` from `comb_aconv_isolate (ψ := ψ) n (fun j => (Q j).q.e + cA D (Q j).q.e) (fun j => (Q j).D₂) (fun j => cA_idem _) hi ho (fun j => infPart_idem _) (fun j => (Q j).dat₂.1) i`.
+
+Establish `hv' : (Q i).Vac (comb ψ _ _ d₁ f₁) (comb ψ _ _ d₂ f₂)`. Take `⟨⟨T₁, O₁, m₁, o₁, rfl⟩, T₂, O₂, m₂, o₂, rfl⟩` from `hv i`. Conclude with `⟨⟨_, O₁, isModel_comb hψ _ _ _ d₁ hd₁ T₁ m₁, o₁, rfl⟩, _, O₂, isModel_comb hψ _ _ _ d₂ hd₂ T₂ m₂, o₂, rfl⟩`. Establish `c₁'` using `(GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q i).k (Q i).q S.J.W _ (Q i).F.G₁ (Q i).gl₁ (Q i).loc₁).2.2.2.1 a h₁ (grpOff_of_places (P := places Q) ⟨i, rfl⟩ hh₁)`. Establish `c₂'` using `(GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q i).k (Q i).q S.B'.V _ (Q i).F.G₂ (Q i).gl₂ (Q i).loc₂).2.2.2.1 a' h₂ (grpOff_of_places (P := places Q) ⟨i, rfl⟩ hh₂)`.
+
+Establish `m₁ : h₁ * ((Q i).gl₁ a * x * (Q i).gl₁ j) = (Q i).gl₁ a * (h₁ * x) * (Q i).gl₁ j`. Rewrite using `[← mul_assoc h₁, ← mul_assoc h₁, ← c₁', mul_assoc _ h₁]`. Establish `m₂ : h₂ * ((Q i).gl₂ a' * y * (Q i).gl₂ j') = (Q i).gl₂ a' * (h₂ * y) * (Q i).gl₂ j'`. Rewrite using `[← mul_assoc h₂, ← mul_assoc h₂, ← c₂', mul_assoc _ h₂]`. Unfold `integrand`.
+
+Use `congrArg (GlobalTheory.PosOne.comb _) (funext fun b => ?_)` and prove the remaining obligations. Rewrite using `[e₁ f₁, e₂ f₂, m₁, m₂]`. Conclude with `val_inv hψ (Q i) (hc i).1 (hc i).2 hv' hφ hf (ht i) (g * b) (h₁ * x) (h₂ * y) ha hj ha' hj'`.
+-/
 theorem integrand_inv (hψ : IsStdChar D ψ (-1)) {n : ℕ} (Q : Fin n → QStep S) (hinj : Function.Injective fun i => (Q i).q.v)
     {c₁ c₂ f₁ f₂ φ f g h₁ h₂} (hH : Hyps Q c₁ c₂ f₁ f₂ φ f g h₁ h₂) (i : Fin n) (x : GA D S.J.W) (y : GA D S.B'.V) {a j a' j'}
     (ha : a ∈ RFJ (Q i).k (Q i).n₁ ((Q i).c + 1 + 1) (σ + 1)) (hj : j ∈ (Q i).L₁.J)
@@ -290,26 +388,43 @@ variable (hψ : IsStdChar D ψ (-1)) {n : ℕ} (Q : Fin n → QStep S) (hinj : F
   (hH : Hyps Q c₁ c₂ f₁ f₂ φ f g h₁ h₂)
 include hψ hinj hH
 
+/- English proof (translation)
+Establish `h` using `integrand_inv hψ Q hinj hH i x y ha (one_mem _) (one_mem _) (one_mem _)`. Rewrite `h` using `[map_one, map_one, mul_one, mul_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem left₁ (i : Fin n) {a} (ha : a ∈ RFJ (Q i).k (Q i).n₁ ((Q i).c + 1 + 1) (σ + 1)) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ ((Q i).gl₁ a * x) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
   have h := integrand_inv hψ Q hinj hH i x y ha (one_mem _) (one_mem _) (one_mem _)
   rwa [map_one, map_one, mul_one, mul_one, one_mul] at h
 
+/- English proof (translation)
+Establish `h` using `integrand_inv hψ Q hinj hH i x y (one_mem _) hj (one_mem _) (one_mem _)`. Rewrite `h` using `[map_one, map_one, one_mul, mul_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem right₁ (i : Fin n) {j} (hj : j ∈ (Q i).L₁.J) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (x * (Q i).gl₁ j) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
   have h := integrand_inv hψ Q hinj hH i x y (one_mem _) hj (one_mem _) (one_mem _)
   rwa [map_one, map_one, one_mul, mul_one, one_mul] at h
 
+/- English proof (translation)
+Establish `h` using `integrand_inv hψ Q hinj hH i x y (one_mem _) (one_mem _) ha (one_mem _)`. Rewrite `h` using `[map_one, map_one, mul_one, mul_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem left₂ (i : Fin n) {a} (ha : a ∈ R (Q i).k (Q i).n₂ ((Q i).c + 1) (σ + 1)) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x ((Q i).gl₂ a * y) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
   have h := integrand_inv hψ Q hinj hH i x y (one_mem _) (one_mem _) ha (one_mem _)
   rwa [map_one, map_one, mul_one, mul_one, one_mul] at h
 
+/- English proof (translation)
+Establish `h` using `integrand_inv hψ Q hinj hH i x y (one_mem _) (one_mem _) (one_mem _) hj`. Rewrite `h` using `[map_one, map_one, mul_one, one_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem right₂ (i : Fin n) {j} (hj : j ∈ (Q i).L₂.J) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (y * (Q i).gl₂ j) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
   have h := integrand_inv hψ Q hinj hH i x y (one_mem _) (one_mem _) (one_mem _) hj
   rwa [map_one, map_one, mul_one, one_mul, one_mul] at h
 
+/- English proof (translation)
+Use `induction_places (fun i => (Q (τ i)).q.v) (jacGrp S.J.d) (fun ρ => ∀ x, integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (ρ * x) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) (fun x => by rw [one_mul]) (fun a b ha hb x => by rw [mul_assoc, ha, hb]) (fun i z hz => ?_) ρ hρ hP x` and prove the remaining obligations. Establish `G` using `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q (τ i)).k (Q (τ i)).q S.J.W _ (Q (τ i)).F.G₁ (Q (τ i)).gl₁ (Q (τ i)).loc₁`. Establish `H` using `(GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D (Q (τ i)).k (Q (τ i)).q (Q (τ i)).n₁ ((Q (τ i)).c + 1 + 1) (σ + 1)).1 S.J _ _ _ _ (Q (τ i)).gl₁ (Nat.le_add_left 1 σ) (Q (τ i)).F.s_ne (GlobalTheory.LocMod.Witness.hz_ne _ S.B) (Q (τ i)).F.jac (Q (τ i)).loc₁`. Take `⟨a, ha, -⟩` from `G.2.2.1 z`. Establish `hm : (Q (τ i)).gl₁ a ∈ jacGrp S.J.d` using `H.2 a _ ha (by rw [G.2.2.2.1 a _ ha, inv_mul_cancel_right]; exact hz)`.
+
+Conclude with `⟨_, hm, fun x => left₁ hψ Q hinj hH (τ i) ((H.1 a).1 hm) x y, G.2.1 ▸ MonoidHom.mem_range.2 ⟨a, rfl⟩, ha⟩`.
+-/
 theorem left_jac {m : ℕ} (τ : Fin m → Fin n) {ρ : GA D S.J.W} (hρ : ρ ∈ jacGrp S.J.d)
     (hP : ρ ∈ grpAt S.J.W (places fun i => Q (τ i))) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (ρ * x) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
@@ -323,6 +438,11 @@ theorem left_jac {m : ℕ} (τ : Fin m → Fin n) {ρ : GA D S.J.W} (hρ : ρ �
   have hm : (Q (τ i)).gl₁ a ∈ jacGrp S.J.d := H.2 a _ ha (by rw [G.2.2.2.1 a _ ha, inv_mul_cancel_right]; exact hz)
   exact ⟨_, hm, fun x => left₁ hψ Q hinj hH (τ i) ((H.1 a).1 hm) x y, G.2.1 ▸ MonoidHom.mem_range.2 ⟨a, rfl⟩, ha⟩
 
+/- English proof (translation)
+Use `induction_places (fun i => (Q (τ i)).q.v) (besGrp S.B'.d S.B'.o) (fun ρ => ∀ y, integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (ρ * y) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) (fun x => by rw [one_mul]) (fun a b ha hb x => by rw [mul_assoc, ha, hb]) (fun i z hz => ?_) ρ hρ hP y` and prove the remaining obligations. Establish `G` using `GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q (τ i)).k (Q (τ i)).q S.B'.V _ (Q (τ i)).F.G₂ (Q (τ i)).gl₂ (Q (τ i)).loc₂`. Establish `H` using `(GlobalTheory.T.periodLocalGroups_normalFrames_splitPlace D (Q (τ i)).k (Q (τ i)).q (Q (τ i)).n₂ ((Q (τ i)).c + 1) σ).2 S.B' _ _ _ (Q (τ i)).gl₂ (mul_ne_zero (Q (τ i)).F.s_ne (GlobalTheory.LocMod.Witness.xi_ne _)) (Q (τ i)).F.bes' (Q (τ i)).loc₂`. Take `⟨a, ha, -⟩` from `G.2.2.1 z`. Establish `hm : (Q (τ i)).gl₂ a ∈ besGrp S.B'.d S.B'.o` using `H.2 a _ ha (by rw [G.2.2.2.1 a _ ha, inv_mul_cancel_right]; exact hz)`.
+
+Conclude with `⟨_, hm, fun y => left₂ hψ Q hinj hH (τ i) ((H.1 a).1 hm) x y, G.2.1 ▸ MonoidHom.mem_range.2 ⟨a, rfl⟩, ha⟩`.
+-/
 theorem left_bes {m : ℕ} (τ : Fin m → Fin n) {ρ : GA D S.B'.V} (hρ : ρ ∈ besGrp S.B'.d S.B'.o)
     (hP : ρ ∈ grpAt S.B'.V (places fun i => Q (τ i))) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (ρ * y) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
@@ -336,6 +456,9 @@ theorem left_bes {m : ℕ} (τ : Fin m → Fin n) {ρ : GA D S.B'.V} (hρ : ρ �
   have hm : (Q (τ i)).gl₂ a ∈ besGrp S.B'.d S.B'.o := H.2 a _ ha (by rw [G.2.2.2.1 a _ ha, inv_mul_cancel_right]; exact hz)
   exact ⟨_, hm, fun y => left₂ hψ Q hinj hH (τ i) ((H.1 a).1 hm) x y, G.2.1 ▸ MonoidHom.mem_range.2 ⟨a, rfl⟩, ha⟩
 
+/- English proof (translation)
+Use `Subgroup.iSup_induction _ (C := fun κ => ∀ x, integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (x * κ) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) hκ ?_ (fun x => by rw [mul_one]) (fun a b ha hb x => by rw [← mul_assoc, hb, ha]) x` and prove the remaining obligations. Introduce and unpack `i _ ⟨j, hj, rfl⟩ x`. Conclude with `right₁ hψ Q hinj hH (τ i) hj x y`.
+-/
 theorem right_lev₁ {m : ℕ} (τ : Fin m → Fin n) {κ : GA D S.J.W} (hκ : κ ∈ ⨆ i, (Q (τ i)).L₁.J.map (Q (τ i)).gl₁) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (x * κ) y = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
   refine Subgroup.iSup_induction _
@@ -344,6 +467,9 @@ theorem right_lev₁ {m : ℕ} (τ : Fin m → Fin n) {κ : GA D S.J.W} (hκ : �
   rintro i _ ⟨j, hj, rfl⟩ x
   exact right₁ hψ Q hinj hH (τ i) hj x y
 
+/- English proof (translation)
+Use `Subgroup.iSup_induction _ (C := fun κ => ∀ y, integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (y * κ) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) hκ ?_ (fun x => by rw [mul_one]) (fun a b ha hb x => by rw [← mul_assoc, hb, ha]) y` and prove the remaining obligations. Introduce and unpack `i _ ⟨j, hj, rfl⟩ y`. Conclude with `right₂ hψ Q hinj hH (τ i) hj x y`.
+-/
 theorem right_lev₂ {m : ℕ} (τ : Fin m → Fin n) {κ : GA D S.B'.V} (hκ : κ ∈ ⨆ i, (Q (τ i)).L₂.J.map (Q (τ i)).gl₂) (x y) :
     integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (y * κ) = integrand Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y := by
   refine Subgroup.iSup_induction _
@@ -354,6 +480,17 @@ theorem right_lev₂ {m : ℕ} (τ : Fin m → Fin n) {κ : GA D S.B'.V} (hκ : 
 
 end Main
 
+/- English proof (translation)
+Introduce `D ψ hψ σ S r Q hinj c₁ c₂ f₁ f₂ φ f g h₁ h₂ hH`. Establish `hdis : ∀ p, places (fun i : Fin r => Q i.succ) p → ¬ p = (Q 0).q.v`. Introduce and unpack `p ⟨i, rfl⟩ h`. Conclude with `Fin.succ_ne_zero i (hinj h)`. Establish `k₁ : ∀ a (z : grpAt S.J.W (places fun i : Fin r => Q i.succ)), (Q 0).gl₁ a * z.1 = z.1 * (Q 0).gl₁ a` using `fun a z => (GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q 0).k (Q 0).q S.J.W _ (Q 0).F.G₁ (Q 0).gl₁ (Q 0).loc₁).2.2.2.1 a _ (SetCut.grpAt_le_grpOff _ _ _ hdis z.2)`.
+
+Establish `k₂ : ∀ a (z : grpAt S.B'.V (places fun i : Fin r => Q i.succ)), (Q 0).gl₂ a * z.1 = z.1 * (Q 0).gl₂ a` using `fun a z => (GlobalTheory.T.splitPlace_local_group_closedEmbedding_integral D (Q 0).k (Q 0).q S.B'.V _ (Q 0).F.G₂ (Q 0).gl₂ (Q 0).loc₂).2.2.2.1 a _ (SetCut.grpAt_le_grpOff _ _ _ hdis z.2)`. Use `⟨fun x y ρ hρ κ hκ => ?_, fun x y κ hκ => ?_, fun x y ρ hρ => ?_⟩` and prove the remaining obligations. Establish `e : (ρ * y * κ).1.1 * (Q 0).gl₂ (ρ * y * κ).2 = ρ.1.1 * ((Q 0).gl₂ ρ.2 * (y.1.1 * (Q 0).gl₂ y.2 * κ.1.1 * (Q 0).gl₂ κ.2))` using `by show ρ.1.1 * y.1.1 * κ.1.1 * (Q 0).gl₂ (ρ.2 * y.2 * κ.2) = _`. Rewrite using `[map_mul, map_mul, ← map_mul _ ρ.2, ← mul_assoc, mul_assoc _ κ.1.1, ← k₂, map_mul, ← mul_assoc, ← mul_assoc, mul_assoc _ y.1.1, ← k₂]`. Simplify using `only [mul_assoc]`.
+
+Unfold `pint`. Rewrite using `[e, left_bes hψ Q hinj hH Fin.succ (Subgroup.mem_subgroupOf.1 hρ.1) ρ.1.2, left₂ hψ Q hinj hH 0 hρ.2, right₂ hψ Q hinj hH 0 hκ.2, right_lev₂ hψ Q hinj hH Fin.succ (Subgroup.mem_subgroupOf.1 hκ.1)]`. Establish `e : (x * κ).1.1 * (Q 0).gl₁ (x * κ).2 = x.1.1 * (Q 0).gl₁ x.2 * κ.1.1 * (Q 0).gl₁ κ.2` using `by show x.1.1 * κ.1.1 * (Q 0).gl₁ (x.2 * κ.2) = _`. Rewrite using `[map_mul, ← mul_assoc, mul_assoc _ κ.1.1, ← k₁, ← mul_assoc]`. Unfold `pint`.
+
+Rewrite using `[e, right₁ hψ Q hinj hH 0 hκ.2, right_lev₁ hψ Q hinj hH Fin.succ (Subgroup.mem_subgroupOf.1 hκ.1)]`. Establish `e : (ρ * x).1.1 * (Q 0).gl₁ (ρ * x).2 = ρ.1.1 * ((Q 0).gl₁ ρ.2 * (x.1.1 * (Q 0).gl₁ x.2))` using `by show ρ.1.1 * x.1.1 * (Q 0).gl₁ (ρ.2 * x.2) = _`. Rewrite using `[map_mul, ← mul_assoc, mul_assoc _ x.1.1, ← k₁]`. Simplify using `only [mul_assoc]`. Unfold `pint`.
+
+Rewrite using `[e, left_jac hψ Q hinj hH Fin.succ (Subgroup.mem_subgroupOf.1 hρ.1) ρ.1.2, left₁ hψ Q hinj hH 0 hρ.2]`.
+-/
 theorem pint_invariant : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (S : Dbl2 ψ σ) (r : ℕ) (Q : Fin (r + 1) → QStep S), Function.Injective (fun i => (Q i).q.v) → ∀ c₁ c₂ f₁ f₂ φ f g h₁ h₂, Hyps Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ → (∀ x y, ∀ r ∈ ((besGrp S.B'.d S.B'.o).subgroupOf (grpAt S.B'.V (places fun i => Q i.succ))).prod (R (Q 0).k (Q 0).n₂ ((Q 0).c + 1) (σ + 1)), ∀ κ ∈ (levB fun i => Q i.succ).prod (Q 0).L₂.J, pint Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x (r * y * κ) = pint Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) ∧ (∀ x y, ∀ κ ∈ (levJ fun i => Q i.succ).prod (Q 0).L₁.J, pint Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (x * κ) y = pint Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) ∧ (∀ x y, ∀ r ∈ ((jacGrp S.J.d).subgroupOf (grpAt S.J.W (places fun i => Q i.succ))).prod (RFJ (Q 0).k (Q 0).n₁ ((Q 0).c + 1 + 1) (σ + 1)), pint Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ (r * x) y = pint Q c₁ c₂ f₁ f₂ φ f g h₁ h₂ x y) := by
   intro D ψ hψ σ S r Q hinj c₁ c₂ f₁ f₂ φ f g h₁ h₂ hH
   have hdis : ∀ p, places (fun i : Fin r => Q i.succ) p → ¬ p = (Q 0).q.v := by

@@ -45,6 +45,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
 
 def idxOf (D : D7) (j : ℕ) : Fin D.R.m := ⟨min (j - 1) (D.R.m - 1), by have := D.R.two_le_m; omega⟩
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [idxOf, Nat.add_sub_cancel]`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem idxOf_succ (D : D7) (i : Fin D.R.m) : idxOf D ((i : ℕ) + 1) = i := by
   apply Fin.ext
   simp only [idxOf, Nat.add_sub_cancel]
@@ -68,6 +71,9 @@ abbrev ratDatR (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_ne_zero, fun x hx => by rw [one_smul]; exact (h x).1 hx, fun x hx => by rw [one_smul]; exact (h x).2 hx⟩`.
+-/
 theorem bsupOfIff {O M N : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [AddCommGroup N] [Module O M] [Module O N]
     (e : M →+ N) (B : Submodule O M) (B' : Submodule O N) (h : ∀ x, x ∈ B ↔ e x ∈ B') :
     ∃ c : O, c ≠ 0 ∧ (∀ x, x ∈ B → c • e x ∈ B') ∧ (∀ x, e x ∈ B' → c • x ∈ B) :=

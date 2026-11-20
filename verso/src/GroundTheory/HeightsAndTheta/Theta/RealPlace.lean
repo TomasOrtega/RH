@@ -37,15 +37,24 @@ noncomputable def quadComplexEquiv : QuadraticAlgebra R a 0 ≃+* ℂ where
     · simp
     · simp [add_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quadComplexEquiv_apply (z : QuadraticAlgebra R a 0) :
     quadComplexEquiv φ ha z = ⟨φ z.re, φ z.im * Real.sqrt (-φ a)⟩ := rfl
 
+/- English proof (translation)
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[quadComplexEquiv_apply, QuadraticAlgebra.re_star]`. Simplify using `[quadComplexEquiv_apply, QuadraticAlgebra.im_star]`.
+-/
 theorem quadComplexEquiv_star (z : QuadraticAlgebra R a 0) :
     quadComplexEquiv φ ha (star z) = starRingEnd ℂ (quadComplexEquiv φ ha z) := by
   apply Complex.ext
   · simp [quadComplexEquiv_apply, QuadraticAlgebra.re_star]
   · simp [quadComplexEquiv_apply, QuadraticAlgebra.im_star]
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [quadComplexEquiv_apply, QuadraticAlgebra.algebraMap_eq]`.
+-/
 theorem quadComplexEquiv_algebraMap (r : R) :
     quadComplexEquiv φ ha (algebraMap R (QuadraticAlgebra R a 0) r) = (φ r : ℂ) := by
   apply Complex.ext <;> simp [quadComplexEquiv_apply, QuadraticAlgebra.algebraMap_eq]
@@ -56,6 +65,9 @@ section Place
 
 variable {K E : Type*} [Field K] [Field E] [Algebra K E] [Algebra.IsQuadraticExtension K E]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg w.embedding h` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Conclude with `two_ne_zero this`.
+-/
 theorem two_ne_zero_of_infinitePlace (w : InfinitePlace K) : (2 : K) ≠ 0 := by
   intro h
   have := congrArg w.embedding h
@@ -77,6 +89,9 @@ variable (K E) in
 noncomputable def quadPsi (w : InfinitePlace K) : E ≃ₐ[K] QuadraticAlgebra K (quadD K E w) 0 :=
   (exists_algEquiv_quadraticAlgebra K E (two_ne_zero_of_infinitePlace w)).choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `(exists_algEquiv_quadraticAlgebra K E (two_ne_zero_of_infinitePlace w)).choose_spec.choose_spec.2 x`.
+-/
 theorem quadPsi_conj (w : InfinitePlace K) (x : E) :
     quadPsi K E w (conj K E x) = star (quadPsi K E w x) :=
   (exists_algEquiv_quadraticAlgebra K E (two_ne_zero_of_infinitePlace w)).choose_spec.choose_spec.2 x
@@ -91,6 +106,19 @@ noncomputable def realPlaceTensorEquiv :
       QuadraticAlgebra w.Completion (algebraMap K w.Completion (quadD K E w)) 0 :=
   tensorQuadEquiv (quadPsi K E w) w.Completion
 
+/- English proof (translation)
+Use `set φ := ringEquivRealOfIsReal hw`. Use `set dw := algebraMap K w.Completion (quadD K E w)`. Establish `hF : IsField (QuadraticAlgebra w.Completion dw 0)` using `MulEquiv.isField hE (realPlaceTensorEquiv (E := E) (w := w)).symm.toMulEquiv`. Assume the negation of the conclusion as `hnn`. Use `push Not at hnn`.
+
+Use `set r := φ.symm (Real.sqrt (φ dw))`. Establish `hr : r * r = dw`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, RingEquiv.apply_symm_apply]`. Conclude with `Real.mul_self_sqrt hnn`.
+
+Use `set ω : QuadraticAlgebra w.Completion dw 0 := ⟨0, 1⟩`. Use `set c := algebraMap w.Completion (QuadraticAlgebra w.Completion dw 0) r`. Establish `hprod : (ω - c) * (ω + c) = 0`. Use `ext`. Simplify using `[ω, c, QuadraticAlgebra.algebraMap_eq, hr]`.
+
+Simplify using `[ω, c, QuadraticAlgebra.algebraMap_eq]`. Establish `hne : ω - c ≠ 0`. Introduce `h`. Use `congrArg QuadraticAlgebra.im h` as an intermediate fact. Simplify using `[ω, c, QuadraticAlgebra.algebraMap_eq] at this`.
+
+Establish `hne' : ω + c ≠ 0`. Introduce `h`. Use `congrArg QuadraticAlgebra.im h` as an intermediate fact. Simplify using `[ω, c, QuadraticAlgebra.algebraMap_eq] at this`. Take `⟨y, hy⟩` from `hF.mul_inv_cancel hne`.
+
+Apply `hne'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem realPlaceD_neg (hE : IsNonsplitAt E w) : realPlaceD (E := E) hw < 0 := by
   set φ := ringEquivRealOfIsReal hw
   set dw := algebraMap K w.Completion (quadD K E w)
@@ -124,11 +152,17 @@ theorem realPlaceD_neg (hE : IsNonsplitAt E w) : realPlaceD (E := E) hw < 0 := b
 
 omit [Algebra.IsQuadraticExtension K E] in
 
+/- English proof (translation)
+The claim follows from `MulEquiv.isField (MulEquiv.isField (Field.toIsField ℂ) (quadComplexEquiv _ hd).toMulEquiv) (tensorQuadEquiv ψ w.Completion).toMulEquiv`.
+-/
 theorem isNonsplitAt_of_algEquiv {d : K} (ψ : E ≃ₐ[K] QuadraticAlgebra K d 0)
     (hd : ringEquivRealOfIsReal hw (algebraMap K w.Completion d) < 0) : IsNonsplitAt E w :=
   MulEquiv.isField (MulEquiv.isField (Field.toIsField ℂ) (quadComplexEquiv _ hd).toMulEquiv)
     (tensorQuadEquiv ψ w.Completion).toMulEquiv
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨realPlaceD_neg hw, isNonsplitAt_of_algEquiv hw (quadPsi K E w)⟩`.
+-/
 theorem isNonsplitAt_iff : IsNonsplitAt E w ↔ realPlaceD (E := E) hw < 0 :=
   ⟨realPlaceD_neg hw, isNonsplitAt_of_algEquiv hw (quadPsi K E w)⟩
 
@@ -143,34 +177,56 @@ noncomputable def realPlaceEquiv : w.Completion ⊗[K] E ≃+* ℂ :=
   (realPlaceTensorEquiv (E := E) (w := w)).toRingEquiv.trans
     (quadComplexEquiv (ringEquivRealOfIsReal hw) (realPlaceD_neg hw hE))
 
+/- English proof (translation)
+Simplify using `only [realPlaceEquiv, RingEquiv.trans_apply, AlgEquiv.coe_ringEquiv]`. Rewrite using `[realPlaceTensorEquiv, tensorQuadEquiv_conjBase (R := w.Completion) (quadPsi_conj w)]`. Conclude with `quadComplexEquiv_star _ _ _`.
+-/
 theorem realPlaceEquiv_conjBase (z : w.Completion ⊗[K] E) :
     realPlaceEquiv hw hE (conjBase K E w.Completion z) = starRingEnd ℂ (realPlaceEquiv hw hE z) := by
   simp only [realPlaceEquiv, RingEquiv.trans_apply, AlgEquiv.coe_ringEquiv]
   rw [realPlaceTensorEquiv, tensorQuadEquiv_conjBase (R := w.Completion) (quadPsi_conj w)]
   exact quadComplexEquiv_star _ _ _
 
+/- English proof (translation)
+Simplify using `only [realPlaceEquiv, RingEquiv.trans_apply, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]`. Conclude with `quadComplexEquiv_algebraMap _ _ t`.
+-/
 theorem realPlaceEquiv_algebraMap (t : w.Completion) :
     realPlaceEquiv hw hE (algebraMap w.Completion (w.Completion ⊗[K] E) t) =
       (ringEquivRealOfIsReal hw t : ℂ) := by
   simp only [realPlaceEquiv, RingEquiv.trans_apply, AlgEquiv.coe_ringEquiv, AlgEquiv.commutes]
   exact quadComplexEquiv_algebraMap _ _ t
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, realPlaceEquiv_algebraMap]`.
+-/
 theorem realPlaceEquiv_smul (t : w.Completion) (z : w.Completion ⊗[K] E) :
     realPlaceEquiv hw hE (t • z) = (ringEquivRealOfIsReal hw t : ℂ) * realPlaceEquiv hw hE z := by
   rw [Algebra.smul_def, map_mul, realPlaceEquiv_algebraMap]
 
+/- English proof (translation)
+Apply `(realPlaceEquiv hw hE).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply, realPlaceEquiv_algebraMap, RingEquiv.apply_symm_apply]`.
+-/
 theorem realPlaceEquiv_symm_ofReal (r : ℝ) :
     (realPlaceEquiv hw hE).symm (r : ℂ) =
       algebraMap w.Completion (w.Completion ⊗[K] E) ((ringEquivRealOfIsReal hw).symm r) := by
   apply (realPlaceEquiv hw hE).injective
   rw [RingEquiv.apply_symm_apply, realPlaceEquiv_algebraMap, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+The claim follows from `(isometryEquivRealOfIsReal hw).symm.continuous`.
+-/
 theorem continuous_ringEquivRealOfIsReal_symm :
     Continuous (ringEquivRealOfIsReal hw).symm :=
   (isometryEquivRealOfIsReal hw).symm.continuous
 
 attribute [local instance] tensorTopology isModuleTopology_tensor isTopologicalRing_tensor
 
+/- English proof (translation)
+Set `φ` to `ringEquivRealOfIsReal hw`. Set `: Module w.Completion ℂ` to `Module.compHom ℂ (φ : w.Completion →+* ℝ)`. Establish `hsmul : ∀ (t : w.Completion) (c : ℂ), t • c = (φ t : ℂ) * c` using `fun t c => by`. Express the relevant statement in the definitionally equal form `(φ t : ℝ) • c = _`. Rewrite using `[Complex.real_smul]`.
+
+Establish `: ContinuousSMul w.Completion ℂ` using `⟨by`. Establish `: (fun p : w.Completion × ℂ => p.1 • p.2) = fun p => (φ p.1 : ℂ) * p.2`. Use function extensionality and compare the values at `fun p => hsmul p.1 p.2`. Rewrite using `[this]`. Conclude with `(Complex.continuous_ofReal.comp ((continuous_ringEquivRealOfIsReal hw).comp continuous_fst)).mul continuous_snd⟩`.
+
+Set `L : (w.Completion ⊗[K] E) →ₗ[w.Completion] ℂ` to `{ toFun := realPlaceEquiv hw hE map_add' := map_add _ map_smul' := fun t z => by`. Rewrite using `[RingHom.id_apply, hsmul, realPlaceEquiv_smul] }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+-/
 theorem continuous_realPlaceEquiv : Continuous (realPlaceEquiv hw hE) := by
   let φ := ringEquivRealOfIsReal hw
   let : Module w.Completion ℂ := Module.compHom ℂ (φ : w.Completion →+* ℝ)
@@ -190,6 +246,13 @@ theorem continuous_realPlaceEquiv : Continuous (realPlaceEquiv hw hE) := by
         rw [RingHom.id_apply, hsmul, realPlaceEquiv_smul] }
   exact IsModuleTopology.continuous_of_linearMap L
 
+/- English proof (translation)
+Set `φ` to `ringEquivRealOfIsReal hw`. Set `: Module ℝ (w.Completion ⊗[K] E)` to `Module.compHom _ (φ.symm : ℝ →+* w.Completion)`. Establish `hsmul : ∀ (r : ℝ) (z : w.Completion ⊗[K] E), r • z = φ.symm r • z` using `fun _ _ => rfl`. Establish `: ContinuousSMul ℝ (w.Completion ⊗[K] E)` using `⟨by`. Establish `: (fun p : ℝ × (w.Completion ⊗[K] E) => p.1 • p.2) = fun p => φ.symm p.1 • p.2`.
+
+Use function extensionality and compare the values at `fun p => hsmul p.1 p.2`. Rewrite using `[this]`. Conclude with `((continuous_ringEquivRealOfIsReal_symm hw).comp continuous_fst).smul continuous_snd⟩`. Establish `: T2Space (w.Completion ⊗[K] E)` using `t2Space_tensor w.Completion`. Set `L : ℂ →ₗ[ℝ] (w.Completion ⊗[K] E)` to `{ toFun := (realPlaceEquiv hw hE).symm map_add' := map_add _ map_smul' := fun r c => by`.
+
+Rewrite using `[RingHom.id_apply, hsmul, Complex.real_smul, map_mul, realPlaceEquiv_symm_ofReal, Algebra.smul_def] }`. Conclude with `LinearMap.continuous_of_finiteDimensional L`.
+-/
 theorem continuous_realPlaceEquiv_symm : Continuous (realPlaceEquiv hw hE).symm := by
   let φ := ringEquivRealOfIsReal hw
   let : Module ℝ (w.Completion ⊗[K] E) :=

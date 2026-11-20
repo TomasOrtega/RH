@@ -3,6 +3,29 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h1 : f (fun i => ∑ l, a i l • v l) = ∑ φ : Fin q → Fin d, (∏ i, a i (φ i)) • f (fun i => v (φ i))`. Establish `h` using `f.toMultilinearMap.map_sum (fun i l => a i l • v l)`. Use `h.trans (Finset.sum_congr rfl fun φ _ => ?_)` and prove the remaining obligations. Conclude with `f.toMultilinearMap.map_smul_univ _ _`. Set `e : {S : Finset (Fin d) // S.card = q} → Fin q → Fin d` to `fun S j => S.1.orderEmbOfFin S.2 j`.
+
+Establish `he : ∀ S, Function.Injective (e S)` using `fun S => (S.1.orderEmbOfFin S.2).injective`. Establish `hr : ∀ S, Set.range (e S) = S.1` using `fun S => Finset.range_orderEmbOfFin S.1 S.2`. Set `Φ : (Σ _ : {S : Finset (Fin d) // S.card = q}, Equiv.Perm (Fin q)) → {φ : Fin q → Fin d // Function.Injective φ}` to `fun p => ⟨e p.1 ∘ p.2, (he p.1).comp p.2.injective⟩`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨S, σ⟩ ⟨S', σ'⟩ h`. Establish `h' : e S ∘ σ = e S' ∘ σ'` using `congrArg Subtype.val h`. Establish `hS : S = S'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Finset.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[← hr S, ← hr S', ← σ.surjective.range_comp (e S), ← σ'.surjective.range_comp (e S'), h']`. Substitute `hS` using the available equality. Establish `: σ = σ'`. Use extensionality with `i`. Conclude with `congrArg _ (he S (congrFun h' i))`.
+
+Rewrite using `[this]`. Introduce and unpack `⟨φ, hφ⟩`. Establish `hc : (Finset.univ.image φ).card = q`. Rewrite using `[Finset.card_image_of_injective _ hφ]`. Simplify using the standard rewrite rules.
+
+Set `S : {S : Finset (Fin d) // S.card = q}` to `⟨_, hc⟩`. Establish `hm : ∀ i, ∃ j, e S j = φ i` using `fun i => by`. Establish `: φ i ∈ Set.range (e S)` using `by rw [hr]; simp [S]`. Conclude with `this`. Use `choose s hs using hm`.
+
+Establish `hsi : Function.Injective s` using `fun i i' h => hφ (by rw [← hs, ← hs, h])`. Use `⟨⟨S, Equiv.ofBijective s (Finite.injective_iff_bijective.1 hsi)⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `hs i`.
+
+Rewrite using `[h1, ← Fintype.sum_subtype_add_sum_subtype (fun φ : Fin q → Fin d => Function.Injective φ)]`. Establish `h0 : ∑ φ : {φ : Fin q → Fin d // ¬ Function.Injective φ}, (∏ i, a i (φ.1 i)) • f (fun i => v (φ.1 i)) = 0`. Use `Finset.sum_eq_zero fun φ _ => ?_` and prove the remaining obligations. Establish `: ¬ Function.Injective (fun i => v (φ.1 i))` using `fun h => φ.2 fun i i' hi => h (by simp [hi])`. Rewrite using `[f.map_eq_zero_of_not_injective _ this, smul_zero]`.
+
+Rewrite using `[h0, add_zero, ← hΦ.sum_comp, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `hp` using `f.map_perm (fun j => v (e S j)) σ`.
+
+Establish `hp' : f (fun i => v (e S (σ i))) = Equiv.Perm.sign σ • f (fun j => v (e S j))` using `hp`. Express the relevant statement in the definitionally equal form `(∏ i, a i (e S (σ i))) • f (fun i => v (e S (σ i))) = _`. Rewrite using `[hp']`. Establish `hq : ∏ i, (Matrix.of fun i j => a i (S.1.orderEmbOfFin S.2 j)).transpose (σ i) i = ∏ i, a i (e S (σ i))`. Both sides reduce to the same expression.
+
+Rewrite using `[hq]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h, e]`.
+-/
 private theorem alt_expand {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] {d q : ℕ} (f : M [⋀^Fin q]→ₗ[R] N) (a : Fin q → Fin d → R) (v : Fin d → M) :
     f (fun i => ∑ l, a i l • v l) =
@@ -67,6 +90,9 @@ private theorem alt_expand {R M N : Type} [CommRing R] [AddCommGroup M] [Module 
   rw [hq]
   rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h, e]
 
+/- English proof (translation)
+Simplify using `only [ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `a`. Simplify using `[mapDR, map1, KaehlerDifferential.map_D]`.
+-/
 private theorem mapDR_iM (K L : Type) [Field K] [Field L] [Algebra ℂ K] [Algebra ℂ L] [Algebra K L]
     [IsScalarTower ℂ K L] (n : ℕ) (v : Fin n → K) :
     mapDR ℂ K L (ExteriorAlgebra.ιMulti K n fun a => D ℂ K (v a)) =
@@ -76,6 +102,9 @@ private theorem mapDR_iM (K L : Type) [Field K] [Field L] [Algebra ℂ K] [Algeb
   funext a
   simp [mapDR, map1, KaehlerDifferential.map_D]
 
+/- English proof (translation)
+Use `letI : Algebra K L := j2.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ K L := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm`. Conclude with `mapDR_iM K L n v`.
+-/
 private theorem pullback_kahler_iMulti {K L : Type} [Field K] [Field L] [Algebra ℂ K] [Algebra ℂ L] (j2 : K →ₐ[ℂ] L)
     (n : ℕ) (v : Fin n → K) :
     pr2L j2 (ExteriorAlgebra.ιMulti K n fun a => D ℂ K (v a)) =
@@ -84,12 +113,38 @@ private theorem pullback_kahler_iMulti {K L : Type} [Field K] [Field L] [Algebra
   haveI : IsScalarTower ℂ K L := IsScalarTower.of_algebraMap_eq fun c => (j2.commutes c).symm
   exact mapDR_iM K L n v
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem iM_cast {L : Type} [Field L] [Algebra ℂ L] {d : ℕ} (S : Finset (Fin d)) (q : ℕ)
     (h : S.card = q) (w : Fin d → Ω[L⁄ℂ]) :
     ExteriorAlgebra.ιMulti L q (fun j => w (S.orderEmbOfFin h j)) =
       ExteriorAlgebra.ιMulti L S.card (fun j => w (S.orderEmbOfFin rfl j)) := by
   subst h; rfl
 
+/- English proof (translation)
+Introduce `hLO hVB F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY e he T`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(mapDR_iM K K' _ _).trans ?_` and prove the remaining obligations. Unfold `dtS`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Simplify using `only [tt, ← IsScalarTower.algebraMap_apply]`. Take `⟨hle, ⟨ev, hev⟩, hbv, -⟩` from `hVB K' (rB ℂ K' (xv x) {0}) e.1`. Establish `hLoc` using `hLO F K' d x hY.covY hY.red e`. Establish `htB : ∀ l, tt K' x l ∈ rB ℂ K' (xv x) {0}` using `fun l => tco_mem ℂ K' (xv x) l`.
+
+Establish `ht0 : ∀ l, ev ⟨tt K' x l, hle (htB l)⟩ = 0` using `fun l => by`. Take `⟨h, hh⟩` from `(hev _ _).1 (hbv ⟨tt K' x l, htB l⟩)`. Conclude with `hh.trans (e.2 l)`. Use `choose g hgv hgt using hY.tan e he`. Establish `hg : ∀ m l, ∃ h : g m l ∈ loc (rB ℂ K' (xv x) {0}) e.1, ev ⟨g m l, h⟩ = A e m l` using `fun m l => (hev _ _).1 (hgv m l)`.
+
+Use `choose hgl hge using hg`. Use `choose c hcl hcD using fun m l => hLoc (g m l) (hgl m l)`. Set `ah : Matrix (Fin d) (Fin d) (loc (rB ℂ K' (xv x) {0}) e.1)` to `fun m l => ⟨g m l, hgl m l⟩ + ∑ l', ⟨tt K' x l', hle (htB l')⟩ * ⟨c m l' l, hcl m l' l⟩`. Establish `hah : ∀ m l, (ah m l : K') = g m l + ∑ l', tt K' x l' * c m l' l` using `fun m l => by`. Simplify using `[ah]`.
+
+Establish `hAh : ev.mapMatrix ah = A e`. Use extensionality with `m l`. Express the relevant statement in the definitionally equal form `ev (⟨g m l, hgl m l⟩ + ∑ l', ⟨tt K' x l', hle (htB l')⟩ * ⟨c m l' l, hcl m l' l⟩) = A e m l`. Rewrite using `[map_add, map_sum, hge]`. Simplify using `only [map_mul, ht0, zero_mul, Finset.sum_const_zero, add_zero]`.
+
+Establish `hD : ∀ m, D ℂ K' (j2 (tt K x m)) = ∑ l, (ah m l : K') • D ℂ K' (tt K' x l)`. Introduce `m`. Rewrite using `[hgt m, map_sum]`. Repeatedly rewrite using `[hah, add_smul, Finset.sum_add_distrib, Derivation.leibniz, hcD, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_add_distrib]`.
+
+Use `congr 1`. Conclude with `Finset.sum_comm`. Use `⟨fun S => if hS : S.card = T.card then (((ah.submatrix (T.orderEmbOfFin rfl) (S.orderEmbOfFin hS)).det : loc (rB ℂ K' (xv x) {0}) e.1) : K') else 0, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : pr2L j2 (dtS K x T) = ExteriorAlgebra.ιMulti K' T.card (fun a => ∑ l, (ah (T.orderEmbOfFin rfl a) l : K') • D ℂ K' (tt K' x l))`. Unfold `dtS`.
+
+Rewrite using `[pullback_kahler_iMulti]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hD _`. Rewrite using `[h1, alt_expand (ExteriorAlgebra.ιMulti K' T.card) (fun a l => (ah (T.orderEmbOfFin rfl a) l : K')) (fun l => D ℂ K' (tt K' x l)), Finset.sum_subtype (Finset.univ.powersetCard T.card) (p := fun S => S.card = T.card) (by simp [Finset.mem_powersetCard])]`.
+
+Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Simplify using `only [dif_pos S.2]`. Rewrite using `[iM_cast S.1 T.card S.2 (fun l => D ℂ K' (tt K' x l))]`. Unfold `dtS`. Use `congr 1`.
+
+Conclude with `((loc (rB ℂ K' (xv x) {0}) e.1).val.map_det (ah.submatrix (T.orderEmbOfFin rfl) (S.1.orderEmbOfFin S.2))).symm`. Introduce `S hS`. Simplify using `only [dif_pos hS]`. Use `(hev _ _).2 ⟨SetLike.coe_mem _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ev (ah.submatrix (T.orderEmbOfFin rfl) (S.orderEmbOfFin hS)).det = _`.
+
+Rewrite using `[AlgHom.map_det, ← hAh]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.productCup_of_system.dtPull_of :
     LocOne → ValBasic → DtPull := by
   intro hLO hVB F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY e he T

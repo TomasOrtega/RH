@@ -5,6 +5,9 @@ open scoped ContDiff nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hn0 : 0 < n` using `by omega`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos hn0, Complex.neg_re]`. Establish `: (0 : ℝ) ≤ (n : ℝ) ^ (-s.re)` using `Real.rpow_nonneg (Nat.cast_nonneg n) _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eulerTerm_norm_le_rpow (n : ℕ) (hn : 2 ≤ n) (c s : ℂ) (hc : ‖c‖ ≤ 1) :
     ‖c * (n : ℂ) ^ (-s)‖ ≤ (n : ℝ) ^ (-s.re) := by
   have hn0 : 0 < n := by omega
@@ -13,6 +16,9 @@ theorem eulerTerm_norm_le_rpow (n : ℕ) (hn : 2 ≤ n) (c s : ℂ) (hc : ‖c�
   calc ‖c‖ * (n : ℝ) ^ (-s.re) ≤ 1 * (n : ℝ) ^ (-s.re) := by gcongr
     _ = (n : ℝ) ^ (-s.re) := one_mul _
 
+/- English proof (translation)
+Use `(eulerTerm_norm_le_rpow n hn c s hc).trans ?_` and prove the remaining obligations. Establish `h2 : (2 : ℝ) ≤ n` using `by exact_mod_cast hn`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eulerTerm_norm_le_half (n : ℕ) (hn : 2 ≤ n) (c s : ℂ) (hc : ‖c‖ ≤ 1) (hs : 1 < s.re) :
     ‖c * (n : ℂ) ^ (-s)‖ ≤ 1 / 2 := by
   refine (eulerTerm_norm_le_rpow n hn c s hc).trans ?_
@@ -22,11 +28,31 @@ theorem eulerTerm_norm_le_half (n : ℕ) (hn : 2 ≤ n) (c s : ℂ) (hc : ‖c�
     _ ≤ (2 : ℝ) ^ (-1 : ℝ) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
     _ = 1 / 2 := by rw [Real.rpow_neg_one]; norm_num
 
+/- English proof (translation)
+Rewrite using `[Complex.sub_re, Complex.one_re]`. Use `Complex.re_le_norm z` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem one_sub_re_pos_of_norm_le_half (z : ℂ) (hz : ‖z‖ ≤ 1 / 2) : 0 < (1 - z).re := by
   rw [Complex.sub_re, Complex.one_re]
   have := Complex.re_le_norm z
   linarith
 
+/- English proof (translation)
+Introduce `ι N c hN hc hsum`. Establish `hsmall : ∀ s : ℂ, 1 < s.re → ∀ i, ‖c i * ((N i : ℕ) : ℂ) ^ (-s)‖ ≤ 1 / 2` using `fun s hs i => eulerTerm_norm_le_half (N i) (hN i) (c i) s (hc i) hs`. Establish `hne : ∀ s : ℂ, 1 < s.re → ∀ i, (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)) ≠ 0`. Introduce `s hs i h`. Use `one_sub_re_pos_of_norm_le_half _ (hsmall s hs i)` as an intermediate fact.
+
+Rewrite `this` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl 0 this`. Establish `hsummable : ∀ s : ℂ, 1 < s.re → Summable (fun i => -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)))`. Introduce `s hs`. Use `Summable.of_norm_bounded ((hsum s.re hs).mul_left (3 / 2)) (fun i => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_neg, sub_eq_add_neg]`. Use `(Complex.norm_log_one_add_half_le_self (by rw [norm_neg]; exact hsmall s hs i)).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg]`. Use `gcongr`. Conclude with `eulerTerm_norm_le_rpow (N i) (hN i) (c i) s (hc i)`.
+
+Use `⟨fun s hs => ⟨hsummable s hs, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(hsummable s hs).hasSum.cexp using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp, Complex.exp_neg, Complex.exp_log (hne s hs i)]`. Introduce `e hNe hce s hs him`.
+
+Establish `hsre : s = ((s.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Establish `hreal : ∀ i, starRingEnd ℂ (((N i : ℕ) : ℂ) ^ (-s)) = ((N i : ℕ) : ℂ) ^ (-s)`. Introduce `i`. Rewrite using `[hsre, ← Complex.ofReal_neg, ← Complex.ofReal_natCast, ← Complex.ofReal_cpow (Nat.cast_nonneg _), Complex.conj_ofReal]`. Establish `hterm : ∀ i, starRingEnd ℂ (-Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s))) = -Complex.log (1 - c (e i) * ((N (e i) : ℕ) : ℂ) ^ (-s))`.
+
+Introduce `i`. Establish `harg : (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)).arg ≠ Real.pi`. Rewrite using `[Ne, Complex.arg_eq_pi_iff]`. Use `one_sub_re_pos_of_norm_le_half _ (hsmall s hs i)` as an intermediate fact. Introduce `h`.
+
+Combine the linear relations using `[h.1]`. Rewrite using `[map_neg, ← Complex.log_conj _ harg, map_sub, map_one, map_mul, hreal, hce, hNe]`. Use `set S := ∑' i, -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)) with hS`. Establish `hconj : starRingEnd ℂ S = S`. Rewrite using `[hS, Complex.conj_tsum]`.
+
+Repeatedly rewrite using `[hterm]`. Conclude with `Equiv.tsum_eq e (fun i => -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)))`. Establish `hSim : S.im = 0` using `Complex.conj_eq_iff_im.mp hconj`. Rewrite using `[Complex.exp_im, Complex.exp_re, hSim, Real.sin_zero, Real.cos_zero, mul_zero, mul_one]`. Conclude with `⟨rfl, Real.exp_pos _⟩`.
+-/
 theorem eulerProduct_eq_exp_and_pos :
     ∀ (ι : Type) (N : ι → ℕ) (c : ι → ℂ), (∀ i, 2 ≤ N i) → (∀ i, ‖c i‖ ≤ 1) → (∀ σ : ℝ, 1 < σ → Summable fun i => (N i : ℝ) ^ (-σ)) → (∀ s : ℂ, 1 < s.re → Summable (fun i => -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s))) ∧ HasProd (fun i => (1 - c i * ((N i : ℕ) : ℂ) ^ (-s))⁻¹) (Complex.exp (∑' i, -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s))))) ∧ ∀ e : ι ≃ ι, (∀ i, N (e i) = N i) → (∀ i, c (e i) = starRingEnd ℂ (c i)) → ∀ s : ℂ, 1 < s.re → s.im = 0 → (Complex.exp (∑' i, -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)))).im = 0 ∧ 0 < (Complex.exp (∑' i, -Complex.log (1 - c i * ((N i : ℕ) : ℂ) ^ (-s)))).re := by
   intro ι N c hN hc hsum

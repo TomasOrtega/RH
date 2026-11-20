@@ -20,27 +20,50 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 def HP (P : HeightOneSpectrum (𝓞 E)) (L : Submodule (𝓞 E) (Fin N → E)) (z : Fin N → E ⊗[F] 𝔸) : Prop :=
   ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ iA F E (algebraMap (𝓞 E) E s) • z ∈ Formalism.L2.Herm.hatL (F := F) L
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E s, s, rfl⟩, rfl⟩)`.
+-/
 theorem iA_mem (s : 𝓞 E) : iA F E (algebraMap (𝓞 E) E s) ∈ Formalism.L2.Herm.intAf F E :=
   Subring.subset_closure (Or.inl ⟨⟨algebraMap (𝓞 E) E s, s, rfl⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mem _ (⟨a, ha⟩ : Formalism.L2.Herm.intAf F E) hz`.
+-/
 theorem smul_mem_hatL {L : Submodule (𝓞 E) (Fin N → E)} {a : E ⊗[F] 𝔸} (ha : a ∈ Formalism.L2.Herm.intAf F E)
     {z : Fin N → E ⊗[F] 𝔸} (hz : z ∈ Formalism.L2.Herm.hatL (F := F) L) : a • z ∈ Formalism.L2.Herm.hatL (F := F) L :=
   Submodule.smul_mem _ (⟨a, ha⟩ : Formalism.L2.Herm.intAf F E) hz
 
+/- English proof (translation)
+Introduce `h` and use `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+-/
 theorem one_notMem (P : HeightOneSpectrum (𝓞 E)) : (1 : 𝓞 E) ∉ P.asIdeal :=
   fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
+/- English proof (translation)
+Introduce `h` and use `(P.isPrime.mem_or_mem h).elim hs ht`.
+-/
 theorem mul_notMem {P : HeightOneSpectrum (𝓞 E)} {s t : 𝓞 E} (hs : s ∉ P.asIdeal) (ht : t ∉ P.asIdeal) :
     s * t ∉ P.asIdeal :=
   fun h => (P.isPrime.mem_or_mem h).elim hs ht
 
 variable {P : HeightOneSpectrum (𝓞 E)} {L : Submodule (𝓞 E) (Fin N → E)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_notMem P, by simpa using hz⟩`.
+-/
 theorem HP.of_mem {z : Fin N → E ⊗[F] 𝔸} (hz : z ∈ Formalism.L2.Herm.hatL (F := F) L) : HP P L z :=
   ⟨1, one_notMem P, by simpa using hz⟩
 
+/- English proof (translation)
+The claim follows from `HP.of_mem (zero_mem _)`.
+-/
 theorem HP.zero : HP (F := F) P L 0 := HP.of_mem (zero_mem _)
 
+/- English proof (translation)
+Take `⟨s, hs, hz⟩` from `h`. Take `⟨t, ht, hz'⟩` from `h'`. Use `⟨s * t, mul_notMem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * t)) • (z + z') = iA F E (algebraMap (𝓞 E) E t) • (iA F E (algebraMap (𝓞 E) E s) • z) + iA F E (algebraMap (𝓞 E) E s) • (iA F E (algebraMap (𝓞 E) E t) • z')`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (smul_mem_hatL (iA_mem t) hz) (smul_mem_hatL (iA_mem s) hz')`.
+-/
 theorem HP.add {z z' : Fin N → E ⊗[F] 𝔸} (h : HP P L z) (h' : HP P L z') : HP P L (z + z') := by
   obtain ⟨s, hs, hz⟩ := h
   obtain ⟨t, ht, hz'⟩ := h'
@@ -54,6 +77,11 @@ theorem HP.add {z z' : Fin N → E ⊗[F] 𝔸} (h : HP P L z) (h' : HP P L z') 
   rw [e]
   exact add_mem (smul_mem_hatL (iA_mem t) hz) (smul_mem_hatL (iA_mem s) hz')
 
+/- English proof (translation)
+Take `⟨t, ht, hta⟩` from `ha`. Take `⟨s, hs, hz⟩` from `h`. Use `⟨t * s, mul_notMem ht hs, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (t * s)) • (a • z) = (iA F E (algebraMap (𝓞 E) E t) * a) • (iA F E (algebraMap (𝓞 E) E s) • z)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `smul_mem_hatL hta hz`.
+-/
 theorem HP.smul {a : E ⊗[F] 𝔸} (ha : IntAtA P a) {z : Fin N → E ⊗[F] 𝔸} (h : HP P L z) : HP P L (a • z) := by
   obtain ⟨t, ht, hta⟩ := ha
   obtain ⟨s, hs, hz⟩ := h
@@ -66,20 +94,37 @@ theorem HP.smul {a : E ⊗[F] 𝔸} (ha : IntAtA P a) {z : Fin N → E ⊗[F] �
   rw [e]
   exact smul_mem_hatL hta hz
 
+/- English proof (translation)
+Take `⟨s, hs, hz⟩` from `h`. Conclude with `⟨s, hs, by rw [smul_neg]; exact neg_mem hz⟩`.
+-/
 theorem HP.neg {z : Fin N → E ⊗[F] 𝔸} (h : HP P L z) : HP P L (-z) := by
   obtain ⟨s, hs, hz⟩ := h
   exact ⟨s, hs, by rw [smul_neg]; exact neg_mem hz⟩
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `h.add h'.neg`.
+-/
 theorem HP.sub {z z' : Fin N → E ⊗[F] 𝔸} (h : HP P L z) (h' : HP P L z') : HP P L (z - z') := by
   rw [sub_eq_add_neg]; exact h.add h'.neg
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (HP P L) (fun _ _ => HP.add) HP.zero h`.
+-/
 theorem HP.sum {ι : Type} (S : Finset ι) (f : ι → Fin N → E ⊗[F] 𝔸) (h : ∀ i ∈ S, HP P L (f i)) :
     HP P L (∑ i ∈ S, f i) :=
   Finset.sum_induction _ (HP P L) (fun _ _ => HP.add) HP.zero h
 
+/- English proof (translation)
+Simplify using `using GlobalTheory.CongMove.intAtA_int (F := F) (P := P) 0`.
+-/
 theorem intAtA_zero : IntAtA (F := F) P (0 : E ⊗[F] 𝔸) := by
   simpa using GlobalTheory.CongMove.intAtA_int (F := F) (P := P) 0
 
+/- English proof (translation)
+Establish `hs0 : algebraMap (𝓞 E) E s ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Rewrite using `[(IsFractionRing.injective (𝓞 E) E) (h0.trans (map_zero _).symm)]`. Conclude with `zero_mem _`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, mul_inv_cancel₀ hs0, map_one]`. Conclude with `one_mem _`.
+-/
 theorem intAtA_inv {s : 𝓞 E} (hs : s ∉ P.asIdeal) :
     IntAtA (F := F) P (iA F E (algebraMap (𝓞 E) E s)⁻¹) := by
   have hs0 : algebraMap (𝓞 E) E s ≠ 0 := by
@@ -93,10 +138,18 @@ theorem intAtA_inv {s : 𝓞 E} (hs : s ∉ P.asIdeal) :
 
 abbrev ev (i : Fin N) : Fin N → E ⊗[F] 𝔸 := fun j => if i = j then 1 else 0
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Col.mem_latS_std z`.
+-/
 theorem mem_hatL_std_iff (z : Fin N → E ⊗[F] 𝔸) :
     z ∈ Formalism.L2.Herm.hatL (F := F) (Formalism.L2.Col.stdLat E N) ↔ ∀ i, z i ∈ Formalism.L2.Herm.intAf F E :=
   Formalism.L2.Col.mem_latS_std z
 
+/- English proof (translation)
+Rewrite using `[mem_hatL_std_iff]`. Introduce `j`. Distinguish the cases in `h : i = j`. Simplify using `only [ev, if_pos h]`. Conclude with `one_mem _`.
+
+Simplify using `only [ev, if_neg h]`. Conclude with `zero_mem _`.
+-/
 theorem ev_mem_std (i : Fin N) : ev (F := F) (E := E) i ∈ Formalism.L2.Herm.hatL (F := F) (Formalism.L2.Col.stdLat E N) := by
   rw [mem_hatL_std_iff]
   intro j
@@ -104,6 +157,11 @@ theorem ev_mem_std (i : Fin N) : ev (F := F) (E := E) i ∈ Formalism.L2.Herm.ha
   · simp only [ev, if_pos h]; exact one_mem _
   · simp only [ev, if_neg h]; exact zero_mem _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hz⟩ i`. Conclude with `⟨s, hs, by simpa using (mem_hatL_std_iff _).1 hz i⟩`. Introduce `h`. Rewrite using `[pi_eq_sum_univ z]`.
+
+Conclude with `HP.sum _ _ fun i _ => HP.smul (h i) (HP.of_mem (ev_mem_std i))`.
+-/
 theorem integralAt_stdLattice_iff (z : Fin N → E ⊗[F] 𝔸) :
     HP P (Formalism.L2.Col.stdLat E N) z ↔ ∀ i, IntAtA (F := F) P (z i) := by
   constructor
@@ -113,6 +171,9 @@ theorem integralAt_stdLattice_iff (z : Fin N → E ⊗[F] 𝔸) :
     rw [pi_eq_sum_univ z]
     exact HP.sum _ _ fun i _ => HP.smul (h i) (HP.of_mem (ev_mem_std i))
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[integralAt_stdLattice_iff]`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_induction _ (IntAtA P) (fun _ _ => GlobalTheory.CongMove.intAtA_add) intAtA_zero fun j _ => GlobalTheory.CongMove.intAtA_mul (hK i j) (hz j)`.
+-/
 theorem integralAt_stdLattice_mulVec (K : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) (hK : ∀ a b, IntAtA (F := F) P (K a b))
     {z : Fin N → E ⊗[F] 𝔸} (hz : HP P (Formalism.L2.Col.stdLat E N) z) : HP P (Formalism.L2.Col.stdLat E N) (K *ᵥ z) := by
   rw [integralAt_stdLattice_iff] at hz ⊢
@@ -121,6 +182,9 @@ theorem integralAt_stdLattice_mulVec (K : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)
   exact Finset.sum_induction _ (IntAtA P) (fun _ _ => GlobalTheory.CongMove.intAtA_add) intAtA_zero
     fun j _ => GlobalTheory.CongMove.intAtA_mul (hK i j) (hz j)
 
+/- English proof (translation)
+Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS Formalism.MainNotions.S.lamAf`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem hatL_eq_lamAf (L : Submodule (𝓞 E) (Fin N → E)) :
     Formalism.L2.Herm.hatL (F := F) L = Formalism.MainNotions.S.lamAf (F := F) L := by
   unfold Formalism.L2.Herm.hatL Formalism.UG.latS Formalism.MainNotions.S.lamAf
@@ -128,11 +192,17 @@ theorem hatL_eq_lamAf (L : Submodule (𝓞 E) (Fin N → E)) :
   ext x
   simp
 
+/- English proof (translation)
+Rewrite using `[hatL_eq_lamAf]`. Conclude with `GlobalTheory.AdelicLattice.incl_mem_iff (F := F) L hL hspan u`.
+-/
 theorem incl_mem_hatL_iff (hL : L.FG) (hspan : Submodule.span E (L : Set (Fin N → E)) = ⊤) (u : Fin N → E) :
     (fun i => iA F E (u i)) ∈ Formalism.L2.Herm.hatL (F := F) L ↔ u ∈ L := by
   rw [hatL_eq_lamAf]
   exact GlobalTheory.AdelicLattice.incl_mem_iff (F := F) L hL hspan u
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `GlobalTheory.AutInhab.lamAf_absorbs (F := F) M hspan z`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hatL_eq_lamAf, ← Nat.cast_smul_eq_nsmul (E ⊗[F] 𝔸)]`. Conclude with `h`.
+-/
 theorem exists_nsmul_mem (M : Submodule (𝓞 E) (Fin N → E)) (hspan : Submodule.span E (M : Set (Fin N → E)) = ⊤)
     (z : Fin N → E ⊗[F] 𝔸) : ∃ n : ℕ, 0 < n ∧ n • z ∈ Formalism.L2.Herm.hatL (F := F) M := by
   obtain ⟨m, hm, h⟩ := GlobalTheory.AutInhab.lamAf_absorbs (F := F) M hspan z
@@ -140,11 +210,19 @@ theorem exists_nsmul_mem (M : Submodule (𝓞 E) (Fin N → E)) (hspan : Submodu
   rw [hatL_eq_lamAf, ← Nat.cast_smul_eq_nsmul (E ⊗[F] 𝔸)]
   exact h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`.
+-/
 theorem iA_smul_incl (s : 𝓞 E) (u : Fin N → E) :
     iA F E (algebraMap (𝓞 E) E s) • (fun i => iA F E (u i)) = fun i => iA F E ((s • u) i) := by
   funext i
   simp [Algebra.smul_def]
 
+/- English proof (translation)
+Use `show _ ↔ ∃ s ∈ P.asIdeal.primeCompl, s • u ∈ L`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Rewrite `h` using `[iA_smul_incl, incl_mem_hatL_iff hL hspan]`. Conclude with `⟨s, hs, h⟩`.
+
+Introduce and unpack `⟨s, hs, h⟩`. Conclude with `⟨s, hs, by rw [iA_smul_incl, incl_mem_hatL_iff hL hspan]; exact h⟩`.
+-/
 theorem integralAt_incl_iff (hL : L.FG) (hspan : Submodule.span E (L : Set (Fin N → E)) = ⊤) (u : Fin N → E) :
     HP P L (fun i => iA F E (u i)) ↔ u ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal L := by
   show _ ↔ ∃ s ∈ P.asIdeal.primeCompl, s • u ∈ L
@@ -155,6 +233,13 @@ theorem integralAt_incl_iff (hL : L.FG) (hspan : Submodule.span E (L : Set (Fin 
   · rintro ⟨s, hs, h⟩
     exact ⟨s, hs, by rw [iA_smul_incl, incl_mem_hatL_iff hL hspan]; exact h⟩
 
+/- English proof (translation)
+Use `choose n hn hmem using fun i : Fin N => exists_nsmul_mem (F := F) M hspan (ev (F := F) (E := E) i)`. Use `⟨∏ i, n i, Finset.prod_pos fun i _ => hn i, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i, HP (F` using `F) P M ((∏ j, n j) • ev (F := F) (E := E) i) := fun i => by`. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_univ i)`. Rewrite using `[hm, mul_nsmul]`.
+
+Conclude with `HP.of_mem (nsmul_mem (hmem i) _)`. Rewrite `hz` using `[integralAt_stdLattice_iff]`. Rewrite using `[pi_eq_sum_univ z, Finset.smul_sum]`. Use `HP.sum _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `HP.smul (hz i) (hc i)`.
+-/
 theorem exists_nat_smul (M : Submodule (𝓞 E) (Fin N → E)) (hspan : Submodule.span E (M : Set (Fin N → E)) = ⊤) :
     ∃ c : ℕ, 0 < c ∧ ∀ z : Fin N → E ⊗[F] 𝔸, HP P (Formalism.L2.Col.stdLat E N) z → HP P M ((c : E ⊗[F] 𝔸) • z) := by
   choose n hn hmem using fun i : Fin N => exists_nsmul_mem (F := F) M hspan (ev (F := F) (E := E) i)
@@ -169,6 +254,17 @@ theorem exists_nat_smul (M : Submodule (𝓞 E) (Fin N → E)) (hspan : Submodul
   rw [smul_comm, Nat.cast_smul_eq_nsmul]
   exact HP.smul (hz i) (hc i)
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `hz`. Establish `hl : Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E N) = Formalism.MainNotions.S.lamAf (F := F) (Formalism.L2.Col.stdLat E N) := by`. Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS Formalism.MainNotions.S.lamAf`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite `h` using `[hl]`. Take `⟨x, -, w₀, hw₀, e⟩` from `GlobalTheory.AdelicLattice.exists_approx (F := F) _ g hg _ h`. Rewrite `hw₀` using `[← hl]`. Use `set a := iA F E (algebraMap (𝓞 E) E s)⁻¹ with ha`.
+
+Establish `hinv : a * iA F E (algebraMap (𝓞 E) E s) = 1`. Establish `hs0 : algebraMap (𝓞 E) E s ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Rewrite using `[(IsFractionRing.injective (𝓞 E) E) (h0.trans (map_zero _).symm)]`.
+
+Conclude with `zero_mem _`. Rewrite using `[ha, ← map_mul, inv_mul_cancel₀ hs0, map_one]`. Use `⟨fun i => (algebraMap (𝓞 E) E s)⁻¹ * x i, a • w₀, HP.smul (intAtA_inv hs) (HP.of_mem hw₀), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `ei` using `congrFun e i`.
+
+Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul] at ei ⊢`. Rewrite using `[map_mul, ← ha]`. Take the linear combination `a * ei - z i * hinv`.
+-/
 theorem exists_approx (g : ℕ) (hg : 1 ≤ g) {z : Fin N → E ⊗[F] 𝔸} (hz : HP P (Formalism.L2.Col.stdLat E N) z) :
     ∃ u : Fin N → E, ∃ w, HP P (Formalism.L2.Col.stdLat E N) w ∧
       z = (fun i => iA F E (u i)) + (g : E ⊗[F] 𝔸) • w := by
@@ -196,9 +292,17 @@ theorem exists_approx (g : ℕ) (hg : 1 ≤ g) {z : Fin N → E ⊗[F] 𝔸} (hz
   rw [map_mul, ← ha]
   linear_combination a * ei - z i * hinv
 
+/- English proof (translation)
+Simplify using `using GlobalTheory.CongMove.intAtA_int (F := F) (P := P) (n : 𝓞 E)`.
+-/
 theorem intAtA_nat (n : ℕ) : IntAtA (F := F) P (n : E ⊗[F] 𝔸) := by
   simpa using GlobalTheory.CongMove.intAtA_int (F := F) (P := P) (n : 𝓞 E)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxv⟩`. Establish `hxv' : (R : Matrix (Fin N) (Fin N) E) *ᵥ x = (R : Matrix (Fin N) (Fin N) E) *ᵥ v` using `hxv`. Establish `h2` using `congrArg (fun w => ((R⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) *ᵥ w) hxv'`. Simplify using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at h2`.
+
+Conclude with `h2 ▸ hx`. Introduce `hv`. Conclude with `⟨v, hv, rfl⟩`.
+-/
 theorem mvL_mulVec_mem_iff (R : GL (Fin N) E) (X : Submodule (𝓞 E) (Fin N → E)) (v : Fin N → E) :
     (R : Matrix (Fin N) (Fin N) E) *ᵥ v ∈ mvL R X ↔ v ∈ X := by
   constructor
@@ -210,6 +314,13 @@ theorem mvL_mulVec_mem_iff (R : GL (Fin N) E) (X : Submodule (𝓞 E) (Fin N →
   · intro hv
     exact ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[pi_eq_sum_univ x]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Use `show _ ∈ Submodule.pi Set.univ _`.
+
+Rewrite using `[Submodule.mem_pi]`. Introduce `j _`. Rewrite using `[Submodule.mem_one]`. Distinguish the cases in `h : i = j`. Conclude with `⟨1, by simp [h]⟩`.
+
+Conclude with `⟨0, by simp [h]⟩`.
+-/
 theorem span_std : Submodule.span E ((Formalism.L2.Col.stdLat E N : Submodule (𝓞 E) (Fin N → E)) : Set (Fin N → E)) = ⊤ := by
   rw [eq_top_iff]
   intro x _
@@ -223,6 +334,17 @@ theorem span_std : Submodule.span E ((Formalism.L2.Col.stdLat E N : Submodule (�
   · exact ⟨1, by simp [h]⟩
   · exact ⟨0, by simp [h]⟩
 
+/- English proof (translation)
+Establish `e : ∀ s : 𝓞 E, ((y⁻¹ : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ (fun i => inclE 𝔸 ((s • ((R : Matrix (Fin N) (Fin N) E) *ᵥ v)) i)) = iA F E (algebraMap (𝓞 E) E s) • (((y⁻¹ * ratA F R : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ fun i => i …`. Introduce `s`. Establish `h1 : (fun i => iA F E (((R : Matrix (Fin N) (Fin N) E) *ᵥ v) i)) = ((ratA F R : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ fun i => iA F E (v i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ i`.
+
+Establish `h2` using `iA_smul_incl (F := F) s ((R : Matrix (Fin N) (Fin N) E) *ᵥ v)`. Express the relevant statement in the definitionally equal form `_ *ᵥ (fun i => iA F E ((s • ((R : Matrix (Fin N) (Fin N) E) *ᵥ v)) i)) = _`. Rewrite using `[← h2, h1, Units.val_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul]`. Establish `hv : v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.L2.Col.stdLat E N) ↔ (R : Matrix (Fin N) (Fin N) E) *ᵥ v ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (latAd y M)`. Rewrite using `[h]`.
+
+Conclude with `(mvL_mulVec_mem_iff R _ v).symm`. Rewrite using `[hv]`. Use `show _ ↔ ∃ s ∈ P.asIdeal.primeCompl, s • ((R : Matrix (Fin N) (Fin N) E) *ᵥ v) ∈ latAd y M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hm⟩`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LatAway.mem_latAd_iff, e]`. Conclude with `hm`. Introduce and unpack `⟨s, hs, hm⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hm` using `[GlobalTheory.LatAway.mem_latAd_iff, e]`. Conclude with `hm`.
+-/
 theorem key_iff (y : GL (Fin N) (E ⊗[F] 𝔸)) (R : GL (Fin N) E) (M : Submodule (𝓞 E) (Fin N → E))
     (h : Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (latAd y M) = mvL R (stdAt E N P)) (v : Fin N → E) :
     HP P M (((y⁻¹ * ratA F R : GL (Fin N) (E ⊗[F] 𝔸)) : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) *ᵥ
@@ -255,6 +377,29 @@ theorem key_iff (y : GL (Fin N) (E ⊗[F] 𝔸)) (R : GL (Fin N) E) (M : Submodu
     rw [GlobalTheory.LatAway.mem_latAd_iff, e] at hm
     exact hm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ N P d hd y R M hfg hspan hcong hloc`. Establish `hsfin : (Formalism.L2.Col.stdLat E N).FG` using `GlobalTheory.DatumJets.Transl.stdLat_fg E N`. Use `set k := y⁻¹ * ratA F R with hk`. Use `set K : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := (↑k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) with hK`. Use `set K' : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := (↑(k⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) with hK'`.
+
+Establish `hKK' : K * K' = 1` using `by rw [hK, hK', ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hKi : ∀ a b, IntAtA P (K a b)` using `GlobalTheory.CongMove.intAtA_of_congAt d hcong`. Establish `hK'i : ∀ a b, IntAtA P (K' a b)` using `GlobalTheory.CongMove.intAtA_of_congAt d (GlobalTheory.LevFrame.congAt_inv F E N d P k hd hcong)`. Take `⟨c, hc0, hc⟩` from `exists_nat_smul (F := F) (P := P) M hspan`. Establish `step1 : ∀ z : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F, HP P (Formalism.L2.Col.stdLat E N) z → HP P M (K *ᵥ z)`.
+
+Introduce `z hz`. Take `⟨u, w, hw, rfl⟩` from `exists_approx (P := P) c hc0 hz`. Establish `hu : HP P (Formalism.L2.Col.stdLat E N) (fun i => iA F E (u i))`. Establish `e : (fun i => iA F E (u i)) = ((fun i => iA F E (u i)) + ((c : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) • w) - ((c : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) • w` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `hz.sub (HP.smul (intAtA_nat c) hw)`. Establish `hKu` using `(key_iff y R M hloc u).2 ((integralAt_incl_iff hsfin span_std u).1 hu)`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul]`. Conclude with `hKu.add (hc _ (integralAt_stdLattice_mulVec K hKi hw))`. Establish `step2 : ∀ h : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F, HP P M h → HP P (Formalism.L2.Col.stdLat E N) (K' *ᵥ h)`.
+
+Introduce `h hh`. Take `⟨n, hn, hnz⟩` from `exists_nsmul_mem (F := F) (Formalism.L2.Col.stdLat E N) span_std (K' *ᵥ h)`. Establish `hz : HP P (Formalism.L2.Col.stdLat E N) (((n : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) • (K' *ᵥ h))` using `HP.of_mem (by rw [Nat.cast_smul_eq_nsmul]; exact hnz)`. Take `⟨u', w, hw, e⟩` from `exists_approx (P := P) (n * c) (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hn.ne' hc0.ne')) hz`. Establish `hnE : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`.
+
+Establish `hinv : iA F E ((n : E)⁻¹) * ((n : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) = 1`. Rewrite using `[← map_natCast (iA F E), ← map_mul, inv_mul_cancel₀ hnE, map_one]`. Establish `ez : K' *ᵥ h = (fun i => iA F E ((n : E)⁻¹ * u' i)) + ((c : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) • w`. Use function extensionality and compare the values at `i`. Establish `ei` using `congrFun e i`.
+
+Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Nat.cast_mul] at ei ⊢`. Rewrite using `[map_mul]`. Take the linear combination `iA F E ((n : E)⁻¹) * ei - (K' *ᵥ h) i * hinv + ((c : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) * w i * hinv`. Establish `hKu : HP P M (K *ᵥ fun i => iA F E ((n : E)⁻¹ * u' i))`. Establish `e2 : (fun i => iA F E ((n : E)⁻¹ * u' i)) = K' *ᵥ h - ((c : ℕ) : E ⊗[F] FiniteAdeleRing (𝓞 F) F) • w`.
+
+Rewrite using `[ez]`. Normalize the expressions using the abelian group laws. Rewrite using `[e2, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hKK', Matrix.one_mulVec, Matrix.mulVec_smul]`. Conclude with `hh.sub (hc _ (integralAt_stdLattice_mulVec K hKi hw))`. Establish `hu` using `(integralAt_incl_iff (F := F) (P := P) hsfin span_std _).2 ((key_iff y R M hloc _).1 hKu)`.
+
+Rewrite using `[ez]`. Conclude with `hu.add (HP.smul (intAtA_nat c) hw)`. Use `show Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Formalism.L2.Col.stdLat E N)`. Use extensionality with `u`. Rewrite using `[← integralAt_incl_iff (F := F) hfg hspan u, ← integralAt_incl_iff (F := F) hsfin span_std u]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `h3` using `integralAt_stdLattice_mulVec K hKi (step2 _ hu)`. Rewrite `h3` using `[Matrix.mulVec_mulVec, hKK', Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `hu`.
+
+Establish `h3` using `step1 _ (integralAt_stdLattice_mulVec K' hK'i hu)`. Rewrite `h3` using `[Matrix.mulVec_mulVec, hKK', Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem localization_eq_stdAt_of_congAt : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ} (P : HeightOneSpectrum (𝓞 E)) (d : ℕ), 1 ≤ d → ∀ (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (R : GL (Fin N) E) (M : Submodule (𝓞 E) (Fin N → E)), M.FG → Submodule.span E (M : Set (Fin N → E)) = ⊤ → CongAt (F := F) P d (y⁻¹ * ratA F R) → Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (latAd y M) = mvL R (stdAt E N P) → Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M = stdAt E N P := by
   intro F E _ _ _ _ _ _ N P d hd y R M hfg hspan hcong hloc
   have hsfin : (Formalism.L2.Col.stdLat E N).FG := GlobalTheory.DatumJets.Transl.stdLat_fg E N

@@ -4,6 +4,9 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris DividedPowers CrystallineSemistableComparison CrystallineSemistableComparison.Pb
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete | exact GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete | (intros; apply GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.almost_finite_module_bounded_torsion : ∀ (R : Type) [CommRing R] (I : Ideal R) (c : R), I.FG → IsNilpotent I → I.IsPrime →
     (∀ x y : R, x ∈ Ideal.span {y} ⊔ I ∨ y ∈ Ideal.span {x} ⊔ I) → (∀ x : R, x ∉ I → ∃ n : ℕ, c ^ n ∈ Ideal.span {x} ⊔ I) →
     IsPrecomplete (Ideal.span {c}) R → (∀ x : R, (∀ n : ℕ, x ∈ Ideal.span {c ^ n} ⊔ I) → x ∈ I) →

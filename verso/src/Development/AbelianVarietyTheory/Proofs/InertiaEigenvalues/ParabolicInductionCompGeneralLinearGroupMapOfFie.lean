@@ -40,6 +40,9 @@ def pullFun (e : (Σ a, m a) ≃ n) {ρ₁ : Representation ℂ (Levi K₁ m) W}
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullFun_apply (e : (Σ a, m a) ≃ n) {ρ₁ : Representation ℂ (Levi K₁ m) W}
     {ρ₂ : Representation ℂ (Levi K₂ m) W}
     (s : GL n K₂ →* GL n K₁) (hs : Continuous s) (t : Levi K₂ m →* Levi K₁ m)
@@ -78,21 +81,35 @@ variable {R S : Type} [CommRing R] [CommRing S]
 def blockMap (φ : R →+* S) : Levi R m →* Levi S m :=
   MonoidHom.pi fun a => (GeneralLinearGroup.map φ).comp (Pi.evalMonoidHom (fun a => GL (m a) R) a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blockMap_apply (φ : R →+* S) (L : Levi R m) (a : α) :
     blockMap φ L a = GeneralLinearGroup.map φ (L a) := rfl
 
 omit [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] in
 
+/- English proof (translation)
+The claim follows from `mem_parab.2 fun i j h => by rw [GeneralLinearGroup.map_apply, mem_parab.1 p.2 i j h, map_zero]`.
+-/
 theorem map_mem_parab (e : (Σ a, m a) ≃ n) (φ : R →+* S) (p : parab R e) :
     GeneralLinearGroup.map φ (p : GL n R) ∈ parab S e :=
   mem_parab.2 fun i j h => by
     rw [GeneralLinearGroup.map_apply, mem_parab.1 p.2 i j h, map_zero]
 
+/- English proof (translation)
+The claim follows from `funext fun _ => Matrix.GeneralLinearGroup.ext fun _ _ => rfl`.
+-/
 theorem leviProj_map (e : (Σ a, m a) ≃ n) (φ : R →+* S) (p : parab R e) :
     leviProj S e ⟨GeneralLinearGroup.map φ (p : GL n R), map_mem_parab e φ p⟩ =
       blockMap φ (leviProj R e p) :=
   funext fun _ => Matrix.GeneralLinearGroup.ext fun _ _ => rfl
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_map hφ : Continuous fun g : GL n R => (g : Matrix n n R).map φ)`. Establish `: (fun g : GL n R => (((GeneralLinearGroup.map φ g)⁻¹ : GL n S) : Matrix n n S)) = fun g => ((g⁻¹ : GL n R) : Matrix n n R).map φ`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Units.continuous_coe_inv.matrix_map hφ`.
+-/
 theorem continuous_glMap [TopologicalSpace R] [IsTopologicalRing R] [TopologicalSpace S] [IsTopologicalRing S]
     (φ : R →+* S) (hφ : Continuous φ) : Continuous (GeneralLinearGroup.map (n := n) φ) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -105,6 +122,9 @@ theorem continuous_glMap [TopologicalSpace R] [IsTopologicalRing R] [Topological
 
 end Map
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Use `Finset.prod_congr rfl fun a _ => Units.ext ?_` and prove the remaining obligations. Rewrite using `[val_absPow, val_absPow, blockMap_apply, GeneralLinearGroup.map_det]`. Conclude with `congrArg (fun r : ℝ => ((r : ℂ)) ^ _) (hn _)`.
+-/
 theorem deltaHalf_blockMap {K₁ K₂ : Type} [Field K₁] [ValuativeRel K₁] [TopologicalSpace K₁]
     [IsNonarchimedeanLocalField K₁] [Field K₂] [ValuativeRel K₂] [TopologicalSpace K₂]
     [IsNonarchimedeanLocalField K₂] (φ : K₂ →+* K₁)
@@ -115,6 +135,15 @@ theorem deltaHalf_blockMap {K₁ K₂ : Type} [Field K₁] [ValuativeRel K₁] [
   rw [val_absPow, val_absPow, blockMap_apply, GeneralLinearGroup.map_det]
   exact congrArg (fun r : ℝ => ((r : ℂ)) ^ _) (hn _)
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ _ _ _ _ i hi hi' hn α n m _ _ _ _ _ _ e X _ _ σ`. Establish `hn' : ∀ y : k'ˣ, nabs k (Units.map i.symm.toRingHom.toMonoidHom y) = nabs k' y` using `fun y => by`. Establish `h` using `hn (Units.map i.symm.toRingHom.toMonoidHom y)`. Rewrite `h` using `[show Units.map i.toRingHom.toMonoidHom (Units.map i.symm.toRingHom.toMonoidHom y) = y from Units.ext (by simp)]`. Conclude with `h.symm`.
+
+Set `Φ` to `pullMap e (ρ₁ := piTensor σ) (ρ₂ := piTensor fun a => (σ a).comp (GeneralLinearGroup.map (n := m a) i.symm.toRingHom)) (GeneralLinearGroup.map i.symm.toRingHom) (continuous_glMap _ hi') (blockMap i.symm.toRingHom) (fun p => map_mem_parab e _ p) (fun p => leviProj_map e _ p) (fun …`. Set `Ψ` to `pullFun e (ρ₁ := piTensor fun a => (σ a).comp (GeneralLinearGroup.map (n := m a) i.symm.toRingHom)) (ρ₂ := piTensor σ) (GeneralLinearGroup.map i.toRingHom) (continuous_glMap _ hi) (blockMap i.toRingHom) (fun p => map_mem_parab e _ p) (fun p => leviProj_map e _ p) (fun L => by sho …`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `ext`.
+
+Use the proof step `simp) (fun L => deltaHalf_blockMap _ hn L)`. Use `⟨GlobalTheory.LocGL.equivOfBijective Φ (Function.bijective_iff_has_inverse.2 ⟨Ψ, fun f => ?_, fun f => ?_⟩)⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun x => ?_)) show f.1.1 (GeneralLinearGroup.map i.symm.toRingHom (GeneralLinearGroup.map i.toRingHom x)) = f.1.1 x` and prove the remaining obligations. Rewrite using `[show GeneralLinearGroup.map i.symm.toRingHom (GeneralLinearGroup.map i.toRingHom x) = x from Matrix.GeneralLinearGroup.ext fun _ _ => by simp]`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_)) show f.1.1 (GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.map i.symm.toRingHom x)) = f.1.1 x` and prove the remaining obligations.
+
+Rewrite using `[show GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.map i.symm.toRingHom x) = x from Matrix.GeneralLinearGroup.ext fun _ _ => by simp]`.
+-/
 theorem multiProd_comp_glMap : ∀ {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (i : k ≃+* k'), Continuous i → Continuous i.symm → (∀ x : kˣ, GlobalTheory.SplitWeil.nabs k' (Units.map i.toRingHom.toMonoidHom x) = GlobalTheory.SplitWeil.nabs k x) → ∀ {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {X : α → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (σ : ∀ a, Representation ℂ (GL (m a) k) (X a)), Nonempty (Representation.Equiv ((GlobalTheory.SmGL.multiProd e σ).comp (Matrix.GeneralLinearGroup.map (n := n) i.symm.toRingHom)) (GlobalTheory.SmGL.multiProd e fun a => (σ a).comp (Matrix.GeneralLinearGroup.map (n := m a) i.symm.toRingHom))) := by
   intro k k' _ _ _ _ _ _ _ _ i hi hi' hn α n m _ _ _ _ _ _ e X _ _ σ
   have hn' : ∀ y : k'ˣ, nabs k (Units.map i.symm.toRingHom.toMonoidHom y) = nabs k' y := fun y => by

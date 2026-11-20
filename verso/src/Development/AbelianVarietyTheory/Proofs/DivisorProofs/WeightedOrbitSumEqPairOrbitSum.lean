@@ -9,6 +9,11 @@ namespace GlobalTheory.OrbitUnfold
 
 variable {Γ Y : Type} [Group Γ] [MulAction Γ Y]
 
+/- English proof (translation)
+Establish `hmap : (MulAction.stabilizer (MulAction.stabilizer Γ y) γ).map (MulAction.stabilizer Γ y).subtype = MulAction.stabilizer Γ (y, γ)`. Use extensionality with `η`. Simplify using `only [Subgroup.mem_map, MulAction.mem_stabilizer_iff, Subgroup.coe_subtype, Prod.smul_mk, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Conclude with `⟨k.2, hk⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨η, h1⟩, h2, rfl⟩`. Rewrite using `[← hmap, Subgroup.card_map_of_injective (Subgroup.subtype_injective _)]`.
+-/
 theorem card_stabilizer_pair_eq (y : Y) (γ : ConjSelf Γ) :
     Nat.card (MulAction.stabilizer Γ (y, γ)) =
       Nat.card (MulAction.stabilizer (MulAction.stabilizer Γ y) γ) := by
@@ -30,6 +35,13 @@ namespace GlobalTheory.OrbitUnfold
 
 variable {Γ Y : Type} [Group Γ] [MulAction Γ Y]
 
+/- English proof (translation)
+Use `haveI : Finite (MulAction.stabilizer Γ y) := hfin.to_subtype`. Establish `hinv : ∀ (k : MulAction.stabilizer Γ y) (z : ConjSelf Γ), F y (val (k • z)) = F y (val z)`. Introduce `k z`. Establish `hk : (k : Γ) • y = y` using `k.2`. Establish `e1 : val (k • z) = (k : Γ) * val z * (k : Γ)⁻¹` using `rfl`.
+
+Establish `e2` using `hF (k : Γ) y (val z)`. Rewrite `e2` using `[hk]`. Rewrite using `[e1, e2]`. Establish `hs : (Function.support (fun z : ConjSelf Γ => F y (val z))).Finite` using `hsupp`. Establish `key` using `GlobalTheory.T.finsum_orbits_inv_stabilizer_card_mass (K := MulAction.stabilizer Γ y) (Z := ConjSelf Γ) (fun z => F y (val z)) hinv hs`.
+
+Use `Eq.trans ?_ key` and prove the remaining obligations. Use `finsum_congr fun o' => ?_` and prove the remaining obligations. Unfold `pairTerm`. Rewrite using `[card_stabilizer_pair_eq]`.
+-/
 theorem inner_sum_eq (F : Y → Γ → ℂ)
     (hF : ∀ (η : Γ) (y : Y) (γ : Γ), F (η • y) (η * γ * η⁻¹) = F y γ) (y : Y)
     (hfin : (MulAction.stabilizer Γ y : Set Γ).Finite) (hsupp : (Function.support (F y)).Finite) :
@@ -53,6 +65,15 @@ theorem inner_sum_eq (F : Y → Γ → ℂ)
   unfold pairTerm
   rw [card_stabilizer_pair_eq]
 
+/- English proof (translation)
+Establish `hg` using `GlobalTheory.T.finite_support_stabilizerWeightedPairTerm F hF hsupp horb`. Establish `hπ : ∀ (h : Γ) (x : Y × ConjSelf Γ), (h • x).1 = h • x.1` using `fun _ _ => rfl`. Establish `hinj : ∀ y : Y, Function.Injective (fun γ : ConjSelf Γ => (y, γ))` using `fun y a b hab => (Prod.mk.inj hab).2`. Establish `hsurj : ∀ (y : Y) (x : Y × ConjSelf Γ), x.1 = y → ∃ e : ConjSelf Γ, (y, e) = x`. Introduce and unpack `y ⟨a, b⟩ rfl`.
+
+Conclude with `⟨b, rfl⟩`. Establish `hequi : ∀ (y : Y), ∀ h ∈ MulAction.stabilizer Γ y, ∀ e : ConjSelf Γ, ((y, h • e) : Y × ConjSelf Γ) = h • (y, e)`. Introduce `y h hh e`. Establish `hh' : h • y = y` using `hh`. Rewrite using `[Prod.smul_mk, hh']`.
+
+Establish `h` using `GlobalTheory.T.finsum_orbitRel_fibred_equivariant (H := Γ) (X := Y × ConjSelf Γ) (B := Y) (E := ConjSelf Γ) Prod.fst hπ (fun y => MulAction.stabilizer Γ y) (fun _ => le_rfl) (fun y γ => (y, γ)) hinj (fun _ _ => rfl) hsurj hequi Quotient.out (fun q => Quotient.out_eq q) (fun o => …`. Unfold `pairSum`. Rewrite using `[h]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← inner_sum_eq F hF (Quotient.out q) (hstab _) (hsupp _)]`.
+
+Use `finsum_congr fun o' => ?_` and prove the remaining obligations. Conclude with `(pairTerm_out F hF (Quotient.out q, Quotient.out o')).symm`.
+-/
 theorem orbitSum_eq_pairSum (F : Y → Γ → ℂ)
     (hF : ∀ (η : Γ) (y : Y) (γ : Γ), F (η • y) (η * γ * η⁻¹) = F y γ)
     (hstab : ∀ y : Y, (MulAction.stabilizer Γ y : Set Γ).Finite)

@@ -11,6 +11,11 @@ namespace GlobalTheory.JR.DescOrb
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨z, rfl⟩` from `j.surjective v`. Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Et.mulMat_mulVec_apply, ← hA]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulMat_comm (A : Et F E) {r : ℕ} (τ : A.K) (j : A.L ≃ₗ[E] (Fin r → E)) (Ax : Matrix (Fin r) (Fin r) E)
     (hA : ∀ z, j (algebraMap A.K A.L τ * z) = Ax *ᵥ j z) (t : A.L) :
     Ax * A.mulMat j t = A.mulMat j t * Ax := by
@@ -21,6 +26,11 @@ theorem mulMat_comm (A : Et F E) {r : ℕ} (τ : A.K) (j : A.L ≃ₗ[E] (Fin r 
   simp only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, Et.mulMat_mulVec_apply, ← hA]
   congr 1; ring
 
+/- English proof (translation)
+Use `Prod.ext (Subtype.ext ?_) (Prod.ext ?_ rfl)` and prove the remaining obligations. Use `show g.1 * (h.1 * X.1.1 * star h.1) * star g.1 = (g.1 * h.1) * X.1.1 * star (g.1 * h.1)`. Rewrite using `[star_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `show g.1 *ᵥ (h.1 *ᵥ X.2.1) = (g.1 * h.1) *ᵥ X.2.1`.
+
+Rewrite using `[Matrix.mulVec_mulVec]`.
+-/
 theorem actU_actU {r : ℕ} (g h : unitaryGroup (Fin r) E) (X : Hn r F E) :
     actU g (actU h X) = actU (g * h) X := by
   refine Prod.ext (Subtype.ext ?_) (Prod.ext ?_ rfl)
@@ -35,6 +45,11 @@ namespace GlobalTheory.JR.DescOrb
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Use `haveI := hU.lcF`. Use `haveI := EtMeas.finite_L A`. Use `haveI : IsTopologicalRing A.L := IsModuleTopology.isTopologicalRing F A.L`. Establish `hj : Continuous (j : A.L → Fin r → E)` using `IsModuleTopology.continuous_of_linearMap ((j : A.L →ₗ[E] (Fin r → E)).restrictScalars F)`. Use `continuous_matrix fun i k => ?_` and prove the remaining obligations.
+
+Simplify using `only [Et.mulMat, LinearMap.toMatrix'_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply, LinearEquiv.coe_coe]`. Conclude with `(continuous_apply i).comp (hj.comp (continuous_id.mul continuous_const))`.
+-/
 theorem continuous_mulMat [hU : Unram F E] (A : Et F E) {r : ℕ} (j : A.L ≃ₗ[E] (Fin r → E)) :
     Continuous fun t : A.L => A.mulMat j t := by
   haveI := hU.lcF
@@ -47,6 +62,37 @@ theorem continuous_mulMat [hU : Unram F E] (A : Et F E) {r : ℕ} (j : A.L ≃�
     LinearEquiv.coe_coe]
   exact (continuous_apply i).comp (hj.comp (continuous_id.mul continuous_const))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU A r M τ x j hx Ax hA lam ν hν α hα hα0 Z hZ f₀ hf₀ hf₀Z y hint`. Use `letI := M.mU`. Use `haveI := M.bU`. Use `haveI := M.haarU`. Use `haveI := hU.ultraE`.
+
+Use `haveI := hU.lcE`. Use `haveI := hU.ultraF`. Use `haveI := hU.lcF`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : NormedStarGroup E := ⟨fun y => (hU.norm_star y).le⟩`.
+
+Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) E) := inferInstanceAs (SecondCountableTopology (Fin r → Fin r → E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin r) (Fin r) E) := inferInstanceAs (LocallyCompactSpace (Fin r → Fin r → E))`. Use `haveI : LocallyCompactSpace (unitaryGroup (Fin r) E) := (isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).locallyCompactSpace`. Use `haveI : SecondCountableTopology (unitaryGroup (Fin r) E) := (isClosed_unitary (R := Matrix (Fin r) (Fin r) E)).isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Use `haveI := EtMeas.finite_L A`.
+
+Take `⟨_, _, _, _, -⟩` from `EtMeas.top_facts F A.L`. Use `haveI : IsTopologicalRing A.L := IsModuleTopology.isTopologicalRing F A.L`. Use `haveI : ContinuousStar A.L := ⟨IsModuleTopology.continuous_of_linearMap (EtMeas.starF A)⟩`. Use `haveI : LocallyCompactSpace (unitary A.L) := (isClosed_unitary (R := A.L)).locallyCompactSpace`. Use `haveI : SecondCountableTopology (unitary A.L) := (isClosed_unitary (R := A.L)).isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`.
+
+Use `haveI : SigmaFinite ν := inferInstance`. Use `haveI : SigmaFinite M.μU := inferInstance`. Use `haveI : M.μU.IsMulRightInvariant := (GlobalTheory.T.unitaryGroup_positiveCharacter_trivial_and_unimodular F E r).2 M`. Establish `huc : Continuous (A.uHom hx)` using `continuous_induced_rng.2 ((continuous_mulMat A j).comp continuous_subtype_val)`. Establish `hinvc : Continuous fun g : unitaryGroup (Fin r) E => g⁻¹` using `continuous_inv`.
+
+Use `set X : Hn r F E := (Ax, j y, lam) with hXdef`. Establish `hcomm : ∀ t : unitary A.L, ((A.uHom hx t : Matrix (Fin r) (Fin r) E)) * Ax.1 = Ax.1 * A.uHom hx t` using `fun t => (mulMat_comm A τ j Ax.1 hA t).symm`. Establish `hshift : ∀ t : unitary A.L, ((Ax, j (t.1 * y), lam) : Hn r F E) = actU (A.uHom hx t) X`. Introduce `t`. Use `Prod.ext (Subtype.ext ?_) (Prod.ext ?_ rfl)` and prove the remaining obligations.
+
+Use `show Ax.1 = (A.uHom hx t : Matrix (Fin r) (Fin r) E) * Ax.1 * star (A.uHom hx t : Matrix (Fin r) (Fin r) E)`. Rewrite using `[hcomm, Matrix.mul_assoc, Unitary.mul_star_self_of_mem (A.uHom hx t).2, Matrix.mul_one]`. Use `show j (t.1 * y) = (A.uHom hx t : Matrix (Fin r) (Fin r) E) *ᵥ j y`. Rewrite using `[Et.uHom_apply, Et.mulMat_mulVec_apply]`. Establish `step1 : ∀ t : unitary A.L, A.descFn M Ax j lam α f₀ (t.1 * y) = ∫ g, f₀ (actU g X) * (α (g * (A.uHom hx t)⁻¹) : ℂ) ∂M.μU`.
+
+Introduce `t`. Establish `h` using `integral_mul_right_eq_self (μ := M.μU) (fun g => f₀ (actU g X) * (α (g * (A.uHom hx t)⁻¹) : ℂ)) (A.uHom hx t)`. Simplify using `only [mul_inv_cancel_right] at h`. Rewrite using `[← h]`. Use `show (∫ g, f₀ (actU g ((Ax, j (t.1 * y), lam) : Hn r F E)) * (α g : ℂ) ∂M.μU) = _`.
+
+Simplify using `only [hshift t, actU_actU]`. Establish `hact : Continuous fun g : unitaryGroup (Fin r) E => actU g X`. Use `Continuous.prodMk ?_ (Continuous.prodMk ?_ continuous_const)` and prove the remaining obligations. Conclude with `(((continuous_subtype_val.matrix_mul continuous_const).matrix_mul (continuous_subtype_val.star))).subtype_mk _`. Conclude with `continuous_subtype_val.matrix_mulVec continuous_const`.
+
+Establish `hcont : Continuous (Function.uncurry fun (t : unitary A.L) (g : unitaryGroup (Fin r) E) => f₀ (actU g X) * (α (g * (A.uHom hx t)⁻¹) : ℂ))` using `(hf₀.comp (hact.comp continuous_snd)).mul (Complex.continuous_ofReal.comp (hα.continuous.comp (continuous_snd.mul (hinvc.comp (huc.comp continuous_fst)))))`. Establish `hαint : ∀ g : unitaryGroup (Fin r) E, f₀ (actU g X) ≠ 0 → Integrable (fun t => α (g * (A.uHom hx t)⁻¹)) ν`. Introduce `g hg`. Assume the negation of the conclusion as `hn`. Establish `h1` using `integral_undef hn`.
+
+Rewrite `h1` using `[hZ g (hf₀Z _ hg)]`. Conclude with `one_ne_zero h1`. Establish `hInt : Integrable (Function.uncurry fun (t : unitary A.L) (g : unitaryGroup (Fin r) E) => f₀ (actU g X) * (α (g * (A.uHom hx t)⁻¹) : ℂ)) (ν.prod M.μU)`. Rewrite using `[integrable_prod_iff' hcont.aestronglyMeasurable]`. Use `⟨Eventually.of_forall fun g => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hg : f₀ (actU g X) = 0`. Simplify using `[Function.uncurry, hg]`. Conclude with `((hαint g hg).ofReal).const_mul (f₀ (actU g X))`. Use `hint.norm.congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry_apply_pair, norm_mul, Complex.norm_real, Real.norm_eq_abs]`.
+
+Rewrite using `[integral_const_mul]`. Distinguish the cases in `hg : f₀ (actU g X) = 0`. Simplify using `[hg]`. Rewrite using `[integral_congr_ae (Eventually.of_forall fun t => abs_of_nonneg (hα0 _)), hZ g (hf₀Z _ hg), mul_one]`. Use `show ∫ t : unitary A.L, A.descFn M Ax j lam α f₀ (t.1 * y) ∂ν = ∫ g, f₀ (actU g X) ∂M.μU`.
+
+Repeatedly rewrite using `[step1]`. Rewrite using `[integral_integral_swap hInt]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_const_mul, integral_complex_ofReal]`.
+
+Distinguish the cases in `hg : f₀ (actU g X) = 0`. Simplify using `[hg]`. Rewrite using `[hZ g (hf₀Z _ hg)]`. Simplify using the standard rewrite rules.
+-/
 theorem orbL_descFn : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (r : ℕ) (M : Meas r F E) (τ : A.K) (x : A.K) (j : A.L ≃ₗ[E] (Fin r → E)) (hx : A.IsIsom x j) (Ax : selfAdjoint (Matrix (Fin r) (Fin r) E)), (∀ z, j (algebraMap A.K A.L τ * z) = Ax.1 *ᵥ j z) → ∀ (lam : F) (ν : Measure (unitary A.L)), ν.IsHaarMeasure → ∀ (α : Matrix.unitaryGroup (Fin r) E → ℝ), IsLocallyConstant α → (∀ g, 0 ≤ α g) → ∀ Z : Set (Matrix (Fin r) (Fin r) E), (∀ g : Matrix.unitaryGroup (Fin r) E, g.1 * Ax.1 * star g.1 ∈ Z → ∫ t, α (g * (A.uHom hx t)⁻¹) ∂ν = 1) → ∀ f₀ : Hn r F E → ℂ, Continuous f₀ → (∀ X, f₀ X ≠ 0 → X.1.1 ∈ Z) → ∀ y : A.L, (letI := M.mU; Integrable (fun g => f₀ (actU g (Ax, j y, lam))) M.μU) → A.orbL ν (A.descFn M Ax j lam α f₀) y = orbU M f₀ (Ax, j y, lam) := by
   intro F E _ _ _ _ hU A r M τ x j hx Ax hA lam ν hν α hα hα0 Z hZ f₀ hf₀ hf₀Z y hint
   letI := M.mU

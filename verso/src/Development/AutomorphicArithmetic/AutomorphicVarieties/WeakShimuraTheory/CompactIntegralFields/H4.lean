@@ -16,6 +16,37 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `l _ hl F O _ _ _ _ _ r x ⟨v⟩ _ ha hb hc hd`. Establish `hlp : l.Prime` using `Fact.out`. Use `haveI : CharP x.K l := charP_of_injective_algebraMap (algebraMap (ResidueField O) x.K).injective l`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Use `haveI hN : F.G'.Normal := MonoidHom.normal_ker _`.
+
+Set `j : x.A →+* x.Fb` to `(algebraMap x.Fr x.Fb).comp (algebraMap x.A x.Fr)`. Establish `hj : Function.Injective j` using `(algebraMap x.Fr x.Fb).injective.comp (IsFractionRing.injective x.A x.Fr)`. Set `ρ : F.G₀ →* Matrix (Fin 4) (Fin 4) x.Fb` to `W.mat (W.pushRep (algebraMap x.Fr x.Fb) x.ρF)`. Establish `hρ : ∀ g, ρ g = (W.mat x.ρ g).map j` using `fun g => rfl`. Establish `two : ∀ (k : Type) [Field k] [CharP k l], (2 : k) ≠ 0` using `fun k _ _ h => hl ((Nat.prime_dvd_prime_iff_eq hlp Nat.prime_two).1 ((CharP.cast_eq_zero_iff k l 2).1 (by exact_mod_cast h)))`.
+
+Use `haveI : CharP x.Fb l := charP_of_injective_ringHom (j.comp (PowerSeries.C : x.K →+* x.A)).injective l`. Take `⟨cpR, cpL⟩` from `h4Cp l F O 4 r x`. Take `⟨g, hg, hfree⟩` from `exists_mem_powerSeries_char_ratios_not_isOfFinOrder l (F.Gv v) x.K 4 (x.ψ v) (F.G'.comap (F.φ v)) fun a b hab => by`. Take `⟨s, h1, h2, h3⟩` from `ha v a b hab`. Use `⟨s, h1, ?_, h3⟩` and prove the remaining obligations.
+
+Establish `h4 : ∀ i, PowerSeries.constantCoeff (x.ψ v i s : PowerSeries x.K) = algebraMap (ResidueField O) x.K (r.psib v i s)` using `fun i => congrArg Units.val (DFunLike.congr_fun (x.ψ_red v i) s)`. Rewrite using `[h4, h4, h2]`. Set `a : Fin 4 → x.Fbˣ` to `fun i => Units.map (j : x.A →* x.Fb) (x.ψ v i g)`. Establish `hu : (ρ (F.φ v g)).charpoly = ∏ i, (X - C (a i : x.Fb))`. Rewrite using `[hρ, Matrix.charpoly_map, cpL, Polynomial.map_prod]`.
+
+Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Both sides reduce to the same expression. Establish `hfa : ∀ s t, s ≠ t → ¬ IsOfFinOrder (a s / a t)` using `fun s t hst h => hfree s t hst <| by`. Rewrite `h` using `[← _root_.map_div]`. Conclude with `(Function.Injective.isOfFinOrder_iff (Units.map_injective (f := (j : x.A →* x.Fb)) hj)).1 h`.
+
+Establish `hsep` using `charpoly_pow_separable_of_eigenvalue_ratios_not_finOrder _ 4 _ a hu hfa`. Establish `hcomm : commutator F.G₀ ≤ F.G'` using `Abelianization.commutator_subset_ker _`. Establish `hI : x.TypeI`. Assume the negation of the conclusion as `hI`. Take `⟨V, S, hV0, hV1, hNS, hS, hSi⟩` from `exists_stabilizer_index_dvd_of_not_irreducible_restriction x.Fb F.G₀ 4 ρ hb F.G' hcomm ⟨_, hg, by simpa using hsep 1 one_pos⟩ hI`.
+
+Take `⟨η, hη, hSη, hcp⟩` from `exists_sign_twist_charpoly_of_not_irreducible_restriction x.Fb F.G₀ (two _) ρ hb S (hcomm.trans hNS) hSi fun h => (h V fun s hs => (hS s).1 hs).elim hV0 hV1`. Use `haveI : S.FiniteIndex := ⟨fun h => by simp [h] at hSi⟩`. Establish `hSo : IsOpen (S : Set F.G₀)`. Use `S.isOpen_of_isClosed_of_finiteIndex ?_` and prove the remaining obligations. Establish `h1` using `isClosed_setOf_matrix_stabilizes_submodule F.G₀ x.Fb 4 _ (Pr.linClosedOfAdic F.G₀ x.A x.Fb j hj 4 (W.mat x.ρ) x.cont) V`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Conclude with `hS s`. Establish `hk` using `sign_char_eq_one_of_cyclotomic_sub_one_not_isUnit l hl F.G₀ (F.ε.comp F.η.ker.subtype) (F.ε_cont.comp continuous_subtype_val) η (Subgroup.isOpen_mono hSη hSo) (hNS.trans hSη)`. Establish `h1` using `hc (W.pushCh (Int.castRingHom (ResidueField O)) η) ?_ ?_ (exists_sign_twist_char_eq_of_charpoly_twist_invariant x.Fb (ResidueField O) x.K x.A F.G₀ 4 (W.mat x.ρ) j _ _ r.chib η hj cpR hcp)`.
+
+Use `hη (MonoidHom.ext fun s => ?_)` and prove the remaining obligations. Break down `Int.units_eq_one_or (η s) with h | h` into its components or cases. Conclude with `h`. Establish `h2` using `congrArg Units.val (DFunLike.congr_fun h1 s)`. Simplify using `only [MonoidHom.comp_apply, h] at h2`.
+
+Conclude with `absurd (by simp at h2; linear_combination -h2) (two (ResidueField O))`. Use extensionality with `s`. Apply the tactic sequence `rcases Int.units_eq_one_or (η s) with h | h <;> simp [h]`. Introduce `s hs`. Establish `h2 : η s = 1` using `hk s fun h => by`.
+
+Establish `h3` using `h.map ((algebraMap O (ResidueField O)).comp (algebraMap ℤ_[l] O))`. Establish `h4 : ((algebraMap O (ResidueField O)).comp (algebraMap ℤ_[l] O)) ((F.ε.comp F.η.ker.subtype) s : ℤ_[l]) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hs)`. Rewrite `h3` using `[map_sub, h4, map_one, sub_self]`. Conclude with `not_isUnit_zero h3`. Simplify using `[MonoidHom.mem_ker, h2]`.
+
+Use `⟨fun w => ⟨fun s t hst h => ?_, fun s t hst h => ?_⟩, hI, ?_⟩` and prove the remaining obligations. Take `⟨y, -, -, h3⟩` from `ha w s t hst`. Conclude with `h3 (by rw [h])`. Take `⟨y, h1, -, h3⟩` from `ha w s t hst.ne`. Establish `h4 : (F.ε.comp F.η.ker.subtype) (F.φ w y) = 1` using `h1`.
+
+Use `h3 ?_` and prove the remaining obligations. Rewrite using `[h, MonoidHom.mul_apply, MonoidHom.comp_apply, W.GFrame.eps, MonoidHom.comp_apply, h4, map_one, mul_one]`. Establish `hsp : Submodule.span x.Fb (Set.range (ρ.comp F.G'.subtype)) = ⊤` using `KStar.Schema.span_eq_top_of_irreducible _ fun N hN => hI N fun s hs => hN ⟨s, hs⟩`. Establish `hsp' : Submodule.span x.Fb (Set.range ρ) = ⊤` using `KStar.Schema.span_eq_top_of_irreducible _ fun N hN => hb N fun s _ => hN s`. Establish `hnc` using `exists_noncommuting_images_in_finiteIndex_normal_subgroup x.Fb x.K x.A F.G₀ ρ j PowerSeries.constantCoeff (fun i => W.pushCh (algebraMap (ResidueField O) x.K) (r.chib i)) hj (fun s => ⟨(W.mat x.ρ s).charpoly, by rw [hρ, Matrix.charpoly_map], cpR s⟩) hsp' (by`.
+
+Take `⟨s, t, h⟩` from `hd`. Use `⟨s, t, fun n h0 h4 he => h n h0 h4 (MonoidHom.ext fun y => ?_)⟩` and prove the remaining obligations. Apply `Units.map_injective (f := (algebraMap (ResidueField O) x.K : ResidueField O →* x.K)) (RingHom.injective _)` to reduce the goal to its premises. Simplify using `using DFunLike.congr_fun he y) F.G' _ hg hsep`. Use `exists_mem_open_inter_subgroup_of_cosetwise_finiteIndex F.G₀ F.G' (fun s => (W.mat x.ρF s).charpoly.Separable) fun V hV σ => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy, hs⟩` from `AlgebraTools.regCosetFour x.Fb F.G' (two _) (ρ.comp F.G'.subtype) (fun f => (isClosed_zeroLocus_mvPolynomial_eval_adicContinuous F.G₀ x.A x.Fb (Fin 4 × Fin 4) j hj (fun p s => W.mat x.ρ s p.1 p.2) (fun p => x.cont p.1 p.2) f).preimage continuous_subtype_val) hsp ⟨⟨_, hg⟩, a, hu, …`. Use `⟨y, hy, (Polynomial.separable_map (algebraMap x.Fr x.Fb)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.charpoly_map]`. Conclude with `hs`.
+-/
 theorem UpperTheory.V.Ws.h4 :
     ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (F : W.GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] [Finite (ResidueField O)] [CharP (ResidueField O) l]
       (r : W.Resid F O 4) (x : W.Point r), Nonempty F.Vl → (∀ v i, Alg.AdicCont (maximalIdeal x.A) fun g => ((x.ψ v i g : x.Aˣ) : x.A)) →

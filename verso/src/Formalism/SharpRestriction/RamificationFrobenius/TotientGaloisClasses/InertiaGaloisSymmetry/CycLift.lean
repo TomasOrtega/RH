@@ -14,17 +14,26 @@ section Tower
 variable {E L : Type} [Field E] [NumberField E] [Field L] [NumberField L] [Algebra E L] [IsScalarTower ℚ E L]
 
 omit [IsScalarTower ℚ E L] in
+/- English proof (translation)
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Conclude with `h x`.
+-/
 theorem res_smul (σ : E ≃ₐ[ℚ] E) (τ : L ≃ₐ[ℚ] L) (h : ∀ x, algebraMap E L (σ x) = τ (algebraMap E L x)) (x : 𝓞 E) :
     algebraMap (𝓞 E) (𝓞 L) (σ • x) = τ • algebraMap (𝓞 E) (𝓞 L) x := by
   apply RingOfIntegers.coe_injective
   exact h x
 
 omit [IsScalarTower ℚ E L] [NumberField E] [NumberField L] in
+/- English proof (translation)
+Rewrite using `[Ideal.over_def Q P, Ideal.under_def, Ideal.mem_comap]`.
+-/
 theorem mem_over_iff (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) [Q.LiesOver P] (x : 𝓞 E) :
     x ∈ P ↔ algebraMap (𝓞 E) (𝓞 L) x ∈ Q := by
   rw [Ideal.over_def Q P, Ideal.under_def, Ideal.mem_comap]
 
 omit [IsScalarTower ℚ E L] in
+/- English proof (translation)
+Rewrite using `[mem_over_iff P Q, map_sub, res_smul σ τ h]`. Conclude with `hτ _`.
+-/
 theorem inertia_res (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) [Q.LiesOver P] (σ : E ≃ₐ[ℚ] E) (τ : L ≃ₐ[ℚ] L)
     (h : ∀ x, algebraMap E L (σ x) = τ (algebraMap E L x)) (hτ : ∀ y : 𝓞 L, τ • y - y ∈ Q) (x : 𝓞 E) :
     σ • x - x ∈ P := by
@@ -32,6 +41,11 @@ theorem inertia_res (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) [Q.LiesOver P] (σ
   exact hτ _
 
 omit [IsScalarTower ℚ E L] in
+/- English proof (translation)
+Introduce `x`. Establish `hx : τ • algebraMap (𝓞 E) (𝓞 L) x - algebraMap (𝓞 E) (𝓞 L) x ^ Nat.card (ℤ ⧸ Q.under ℤ) ∈ Q` using `hτ (algebraMap (𝓞 E) (𝓞 L) x)`. Use `show σ • x - x ^ Nat.card (ℤ ⧸ P.under ℤ) ∈ P`. Rewrite `hx` using `[odd_card_under p Q]`. Rewrite using `[odd_card_under p P, mem_over_iff P Q, map_sub, map_pow, res_smul σ τ h]`.
+
+Conclude with `hx`.
+-/
 theorem frob_res (p : ℕ) (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) [Q.LiesOver P] [Q.LiesOver (span {(p : ℤ)})]
     [P.LiesOver (span {(p : ℤ)})] (σ : E ≃ₐ[ℚ] E) (τ : L ≃ₐ[ℚ] L)
     (h : ∀ x, algebraMap E L (σ x) = τ (algebraMap E L x)) (hτ : IsArithFrobAt ℤ τ Q) : IsArithFrobAt ℤ σ P := by
@@ -43,10 +57,28 @@ theorem frob_res (p : ℕ) (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) [Q.LiesOver
   rw [odd_card_under p P, mem_over_iff P Q, map_sub, map_pow, res_smul σ τ h]
   exact hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hz => by simpa using I.sub_mem hz (h z), fun hz => by simpa using I.add_mem (h z) hz⟩`.
+-/
 theorem smul_mem_of_inertia {G S : Type*} [Group G] [CommRing S] [MulSemiringAction G S] (g : G) (I : Ideal S)
     (h : ∀ x : S, g • x - x ∈ I) (z : S) : g • z ∈ I ↔ z ∈ I :=
   ⟨fun hz => by simpa using I.sub_mem hz (h z), fun hz => by simpa using I.add_mem (h z) hz⟩
 
+/- English proof (translation)
+Establish `: IsGalois E L` using `IsGalois.tower_top_of_isGalois ℚ E L`. Establish `hinv : Algebra.IsInvariant (𝓞 E) (𝓞 L) (L ≃ₐ[E] L)` using `inferInstance`. Set `τ₀ : L ≃ₐ[ℚ] L` to `σ.liftNormal L`. Establish `h₀ : ∀ x, algebraMap E L (σ x) = τ₀ (algebraMap E L x)` using `fun x => (AlgEquiv.liftNormal_commutes σ L x).symm`. Establish `hunder : (τ₀⁻¹ • Q).under (𝓞 E) = Q.under (𝓞 E)`.
+
+Use extensionality with `a`. Rewrite using `[Ideal.under_def, Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_inv_pointwise_smul_iff, ← res_smul σ τ₀ h₀, ← mem_over_iff P Q, ← mem_over_iff P Q]`. Conclude with `smul_mem_of_inertia σ P hσ a`. Take `⟨ρ, hρ⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (𝓞 E) (𝓞 L) (L ≃ₐ[E] L) Q (τ₀⁻¹ • Q) hunder.symm`. Set `τ₁ : L ≃ₐ[ℚ] L` to `τ₀ * ρ.restrictScalars ℚ`.
+
+Establish `hs : ∀ (r : L ≃ₐ[E] L) (y : 𝓞 L), (r.restrictScalars ℚ) • y = r • y` using `fun _ _ => rfl`. Establish `h₁ : ∀ x, algebraMap E L (σ x) = τ₁ (algebraMap E L x)` using `fun x => by show _ = τ₀ (ρ (algebraMap E L x))`. Rewrite using `[ρ.commutes, h₀]`. Establish `hst : τ₁ ∈ MulAction.stabilizer (L ≃ₐ[ℚ] L) Q`. Use `Decomp.mem_stab_of τ₁ Q fun z => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, hs, ← Ideal.mem_inv_pointwise_smul_iff, hρ]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff`. Set `f : (𝓞 L ⧸ Q) ≃ₐ[𝓞 E ⧸ P] (𝓞 L ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := (Ideal.Quotient.stabilizerHom Q (Q.under ℤ) (L ≃ₐ[ℚ] L) ⟨τ₁, hst⟩).toRingEquiv) (by`. Introduce `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Use `show Ideal.Quotient.mk Q (τ₁ • algebraMap (𝓞 E) (𝓞 L) a) = Ideal.Quotient.mk Q (algebraMap (𝓞 E) (𝓞 L) a)`. Rewrite using `[Ideal.Quotient.eq, ← res_smul σ τ₁ h₁, ← map_sub, ← mem_over_iff P Q]`. Conclude with `hσ a)`. Take `⟨r, hr⟩` from `Ideal.Quotient.stabilizerHom_surjective (L ≃ₐ[E] L) P Q f`. Use `⟨τ₁ * (r.1⁻¹).restrictScalars ℚ, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Use `show _ = τ₁ ((r.1⁻¹) (algebraMap E L x))`. Rewrite using `[AlgEquiv.commutes, h₁]`. Establish `h2 : Ideal.Quotient.mk Q (r.1 • (r.1⁻¹ • y)) = Ideal.Quotient.mk Q (τ₁ • (r.1⁻¹ • y))` using `DFunLike.congr_fun hr (Ideal.Quotient.mk Q (r.1⁻¹ • y))`. Rewrite `h2` using `[smul_inv_smul]`. Rewrite using `[mul_smul, hs, ← Ideal.Quotient.eq]`.
+
+Conclude with `h2.symm`.
+-/
 theorem inertia_lift [IsGalois ℚ L] (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) [Q.IsPrime] [Q.LiesOver P] (σ : E ≃ₐ[ℚ] E)
     (hσ : ∀ x : 𝓞 E, σ • x - x ∈ P) :
     ∃ τ : L ≃ₐ[ℚ] L, (∀ x, algebraMap E L (σ x) = τ (algebraMap E L x)) ∧ ∀ y : 𝓞 L, τ • y - y ∈ Q := by
@@ -88,6 +120,9 @@ theorem inertia_lift [IsGalois ℚ L] (P : Ideal (𝓞 E)) (Q : Ideal (𝓞 L)) 
 
 end Tower
 
+/- English proof (translation)
+Set `_ : Algebra E L` to `ι.toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ E L` using `IsScalarTower.of_algebraMap_eq fun x => (ι.commutes x).symm`. Take `⟨⟨Q, hQp, hQl⟩⟩ : Nonempty (P.primesOver (𝓞 L))` from `inferInstance`. Establish `hQ : Q.LiesOver (span {(l : ℤ)})` using `Ideal.LiesOver.trans Q P (span {(l : ℤ)})`. Conclude with `⟨Q, hQp, hQ, fun σ => ⟨inertia_lift P Q σ, fun ⟨τ, h1, h2⟩ => inertia_res P Q σ τ h1 h2⟩, fun σ τ h1 h2 => frob_res l P Q σ τ h1 h2⟩`.
+-/
 theorem exists_over {E L : Type} [Field E] [NumberField E] [Field L] [NumberField L] [IsGalois ℚ L] (ι : E →ₐ[ℚ] L)
     (l : ℕ) (P : Ideal (𝓞 E)) [P.IsPrime] [P.LiesOver (span {(l : ℤ)})] :
     ∃ (Q : Ideal (𝓞 L)) (_ : Q.IsPrime) (_ : Q.LiesOver (span {(l : ℤ)})),
@@ -101,6 +136,11 @@ theorem exists_over {E L : Type} [Field E] [NumberField E] [Field L] [NumberFiel
   exact ⟨Q, hQp, hQ, fun σ => ⟨inertia_lift P Q σ, fun ⟨τ, h1, h2⟩ => inertia_res P Q σ τ h1 h2⟩,
     fun σ τ h1 h2 => frob_res l P Q σ τ h1 h2⟩
 
+/- English proof (translation)
+Establish `hF' : ∀ x : S, F • x - x ^ Nat.card (ℤ ⧸ P.under ℤ) ∈ P` using `hF`. Prove the components needed by the constructor for the conclusion. Introduce `hσ x`. Establish `hσ' : ∀ x : S, σ • x - x ^ Nat.card (ℤ ⧸ P.under ℤ) ∈ P` using `hσ`. Establish `h1` using `P.sub_mem (hσ' (F⁻¹ • x)) (hF' (F⁻¹ • x))`.
+
+Rewrite `h1` using `[smul_inv_smul, ← mul_smul, sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Introduce `hρ x show σ • x - x ^ Nat.card (ℤ ⧸ P.under ℤ) ∈ P`. Establish `h1` using `P.add_mem (hρ (F • x)) (hF' x)`. Rewrite `h1` using `[← mul_smul, inv_mul_cancel_right, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem frob_iff_inertia {G S : Type*} [Group G] [CommRing S] [MulSemiringAction G S] [SMulCommClass G ℤ S]
     (P : Ideal S) (F σ : G) (hF : IsArithFrobAt ℤ F P) :
     IsArithFrobAt ℤ σ P ↔ ∀ x : S, (σ * F⁻¹) • x - x ∈ P := by

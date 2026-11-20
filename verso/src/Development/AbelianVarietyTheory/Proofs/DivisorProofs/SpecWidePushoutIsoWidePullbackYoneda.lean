@@ -11,14 +11,27 @@ noncomputable def specHomEquiv (X : Scheme.{0}) (R : CommRingCat.{0}) :
     (show Scheme.Γ.rightOp.obj X ⟶ op R from φ.op))
   right_inv y := Equiv.apply_symm_apply (ΓSpec.adjunction.homEquiv X (op R)) y
 
+/- English proof (translation)
+Conclude with `ΓSpec.adjunction.homEquiv_naturality_right (show Scheme.Γ.rightOp.obj X ⟶ op R from φ.op) ψ.op`.
+-/
 theorem specHomEquiv_comp (X : Scheme.{0}) {R R' : CommRingCat.{0}} (ψ : R' ⟶ R) (φ : R ⟶ Γ(X, ⊤)) :
     specHomEquiv X R' (ψ ≫ φ) = specHomEquiv X R φ ≫ Spec.map ψ := by
   exact ΓSpec.adjunction.homEquiv_naturality_right (show Scheme.Γ.rightOp.obj X ⟶ op R from φ.op) ψ.op
 
+/- English proof (translation)
+Rewrite using `[Equiv.symm_apply_eq, specHomEquiv_comp, Equiv.apply_symm_apply]`.
+-/
 theorem specHomEquiv_symm_comp (X : Scheme.{0}) {R R' : CommRingCat.{0}} (y : X ⟶ Spec R) (ψ : R' ⟶ R) :
     (specHomEquiv X R').symm (y ≫ Spec.map ψ) = ψ ≫ (specHomEquiv X R).symm y := by
   rw [Equiv.symm_apply_eq, specHomEquiv_comp, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Set `g : Fin (k + 1) → (B →+* Γ(X, ⊤))` to `fun j => ((specHomEquiv X _).symm (y j)).hom`. Establish `hg : ∀ j, (g j).comp a = (g 0).comp a` using `fun j => by`. Use `congrArg (fun z => ((specHomEquiv X (CommRingCat.of A)).symm z).hom) (hy j)` as an intermediate fact. Simplify `this` using `[g, specHomEquiv_symm_comp]`. Take `⟨φ, hφ, huniq⟩` from `hu Γ(X, ⊤) g hg`.
+
+Use `⟨specHomEquiv X _ (CommRingCat.ofHom φ), fun j => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← specHomEquiv_comp, Equiv.apply_eq_iff_eq_symm_apply]`. Conclude with `CommRingCat.hom_ext (hφ j)`. Establish `h1 : ((specHomEquiv X _).symm m).hom = φ` using `huniq _ fun j => by`. Use `congrArg (fun z => ((specHomEquiv X (CommRingCat.of B)).symm z).hom) (hm j)` as an intermediate fact.
+
+Simplify `this` using `[g, specHomEquiv_symm_comp]`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules.
+-/
 theorem existsUnique_lift {A B T : Type} [CommRing A] [CommRing B] [CommRing T] (a : A →+* B) {k : ℕ}
     (ι : Fin (k + 1) → (B →+* T))
     (hu : ∀ (R : Type) [CommRing R] (g : Fin (k + 1) → (B →+* R)),
@@ -44,6 +57,17 @@ end GlobalTheory.SpecWidePullback
 
 namespace GlobalTheory.SpecWidePullback
 
+/- English proof (translation)
+Establish `hleg : ∀ j, Spec.map (CommRingCat.ofHom (ι j)) ≫ Spec.map (CommRingCat.ofHom a) = Spec.map (CommRingCat.ofHom ((ι 0).comp a))` using `fun j => by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hι j]`. Set `c : Cone (WidePullbackShape.wideCospan (yoneda.obj (Spec (CommRingCat.of A))) (fun _ : Fin (k + 1) => yoneda.obj (Spec (CommRingCat.of B))) (fun _ => yoneda.map (Spec.map (CommRingCat.ofHom a))))` to `WidePullbackShape.mkCone (yoneda.map (Spec.map (CommRingCat.ofHom ((ι 0).comp a)))) (fun j => yoneda.map (Spec.map (CommRingCat.ofHom (ι j)))) (fun j => by`. Express the relevant statement in the definitionally equal form `yoneda.map (Spec.map (CommRingCat.ofHom (ι j))) ≫ yoneda.map (Spec.map (CommRingCat.ofHom a)) = _`. Rewrite using `[← yoneda.map_comp, hleg j])`.
+
+Establish `hc : IsLimit c`. Apply `evaluationJointlyReflectsLimits` to reduce the goal to its premises. Introduce `U`. Establish `hw : ∀ (s : Cone (WidePullbackShape.wideCospan (yoneda.obj (Spec (CommRingCat.of A))) (fun _ : Fin (k + 1) => yoneda.obj (Spec (CommRingCat.of B))) (fun _ => yoneda.map (Spec.map (CommRingCat.ofHom a))) ⋙ (evaluation _ _).obj U)) (x : s.pt) j, s.π.app (some j) x ≫ Spec.map (CommR …` using `fun s x j => ConcreteCategory.congr_hom (s.w (WidePullbackShape.Hom.term j)) x`. Establish `H` using `fun (s : Cone (WidePullbackShape.wideCospan (yoneda.obj (Spec (CommRingCat.of A))) (fun _ : Fin (k + 1) => yoneda.obj (Spec (CommRingCat.of B))) (fun _ => yoneda.map (Spec.map (CommRingCat.ofHom a))) ⋙ (evaluation _ _).obj U)) (x : s.pt) => existsUnique_lift a ι hu (unop U) (fun …`.
+
+Use `IsLimit.mk (fun s => TypeCat.ofHom (fun x => (H s x).exists.choose)) (fun s j => ?_) (fun s m hm => ?_)` and prove the remaining obligations. Use extensionality with `x`. Break down `j with _ | j` into its components or cases. Express the relevant statement in the definitionally equal form `(H s x).exists.choose ≫ Spec.map (CommRingCat.ofHom ((ι 0).comp a)) = s.π.app none x`. Rewrite using `[← hleg 0, ← Category.assoc, (H s x).exists.choose_spec 0, hw]`.
+
+Conclude with `(H s x).exists.choose_spec j`. Use extensionality with `x`. Use `(H s x).unique (fun j => ?_) (H s x).exists.choose_spec` and prove the remaining obligations. Establish `h` using `ConcreteCategory.congr_hom (hm (some j)) x`. Rewrite `h` using `[ConcreteCategory.comp_apply]`.
+
+Conclude with `h`. Conclude with `⟨hc.conePointUniqueUpToIso (limit.isLimit _), fun j => hc.conePointUniqueUpToIso_hom_comp (limit.isLimit _) (some j)⟩`.
+-/
 theorem yoneda_spec_isoWidePullback (A B T : Type) [CommRing A] [CommRing B] [CommRing T] (a : A →+* B)
     (k : ℕ) (ι : Fin (k + 1) → (B →+* T)) (hι : ∀ j, (ι j).comp a = (ι 0).comp a)
     (hu : ∀ (R : Type) [CommRing R] (g : Fin (k + 1) → (B →+* R)),

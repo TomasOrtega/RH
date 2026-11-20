@@ -23,6 +23,13 @@ section Abstract
 
 open Formalism.UG GlobalTheory.PRep
 
+/- English proof (translation)
+Establish `hinj : Set.InjOn (fun i : ι => (g i : G ⧸ K)) R` using `fun γ hγ δ hδ e => (hR' _ (hR δ hδ)).unique ⟨hγ, QuotientGroup.eq.1 e⟩ ⟨hδ, by simp⟩`. Rewrite using `[GlobalTheory.LFun.heckeVec, finsum_eq_sum_of_support_subset (s := R.image fun i : ι => (g i : G ⧸ K)), Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K (g γ)`. Rewrite using `[hk, Set.indicator_of_mem (hm _ (hR γ hγ) k k.2), map_mul, Module.End.mul_apply, GlobalTheory.LGrp.mem_fixed.1 hx _ k.2]`.
+
+Simplify using the standard rewrite rules. Introduce `c hc`. Establish `: c.out ∈ S`. Assume the negation of the conclusion as `h0`. Conclude with `hc (by simp [h0])`.
+
+Take `⟨γ, ⟨h1, h2⟩, -⟩` from `hR' _ this`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨γ, h1, (QuotientGroup.eq.2 h2).trans c.out_eq'⟩)`.
+-/
 theorem heckeVec_indicator {G V ι : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {K : Subgroup G} {x : V} (hx : x ∈ fixed ρ K) {S : Set G} (hm : ∀ g ∈ S, ∀ k ∈ K, g * k ∈ S) (R : Finset ι)
     (g : ι → G) (hR : ∀ i ∈ R, g i ∈ S) (hR' : ∀ y ∈ S, ∃! i, i ∈ R ∧ (g i)⁻¹ * y ∈ K) :
@@ -48,6 +55,29 @@ end Abstract
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.InertHeckeEigen Formalism.UG GlobalTheory.PRep GlobalTheory.DefU in
 
+/- English proof (translation)
+Establish `hfin : {c : locU n w ⧸ K.comap p | h (p c.out) ≠ 0}.Finite` using `finite_support_comp p hp hh.1 (Formalism.UG.P.finite_support_cosets hK hh.2)`. Establish `hS : ∀ c : locU n w ⧸ K.comap p, (fun x => h (p x)) c.out ≠ 0 → c ∈ hfin.toFinset` using `fun c hc => hfin.mem_toFinset.2 hc`. Set `T : (UA L n → ℂ) →ₗ[ℂ] (UA L n → ℂ)` to `∑ c ∈ hfin.toFinset, h (p c.out) • (RU L n) (c.out : UA L n)`. Establish `hT : ∀ x, GlobalTheory.LFun.heckeVec ((RU L n).comp (locU n w).subtype) (K.comap p) (fun x => h (p x)) x = T x` using `fun x => by`. Rewrite using `[heckeVec_eq_sum _ _ _ _ hS x]`.
+
+Simplify using `[T, LinearMap.sum_apply]`. Set `Z : Submodule ℂ (UA L n → ℂ)` to `fixed ((RU L n).comp (locU n w).subtype) (K.comap p) ⊓ LinearMap.ker (T - lam • LinearMap.id)`. Establish `hZ' : ∀ x, x ∈ Z ↔ (∀ k ∈ K.comap p, RU L n (k : UA L n) x = x) ∧ T x = lam • x` using `fun x => by`. Simplify using `only [Z, Submodule.mem_inf, GlobalTheory.LGrp.mem_fixed, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Both sides reduce to the same expression.
+
+Set `π : AutSub L n` to `⟨U, hU⟩`. Take `⟨hσirr, f, hf0, hfm, hf⟩` from `hcomp`. Establish `hirr : Representation.IsIrreducible (σ.comp p)`. Take `⟨h0, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 hσirr`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun Y hY => h1 Y fun g v hv => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `hp g`. Conclude with `hY x v hv`. Set `F : Representation.IntertwiningMap (σ.comp p) (π.rep.comp (locU n w).subtype)` to `⟨f.codRestrict _ hfm, fun x => LinearMap.ext fun v => Subtype.ext (hf x v)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => by`. Use `congrArg Subtype.val (DFunLike.congr_fun h v)` as an intermediate fact.
+
+Conclude with `this)`. Take `⟨r, -, -, hr⟩` from `GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints L n w`. Establish `htop` using `(GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor (UA L n) (locU n w) π.V X X π.rep (locU n w).subtype (σ.comp p) (σ.comp p) π.isIrreducible_rep hirr hirr (fun g => ⟨r g, fun y => hr g y⟩) F hF0).1`. Set `fi : Representation.IntertwiningMap (σ.comp p) (π.rep.comp (locU n w).subtype) → X →ₗ[ℂ] (UA L n → ℂ)` to `fun i => U.subtype ∘ₗ i.toLinearMap`. Establish `hfi : ∀ i g u, fi i ((σ.comp p) g u) = (RU L n).comp (locU n w).subtype g (fi i u)` using `fun i g u => congrArg Subtype.val (Representation.IntertwiningMap.isIntertwining (σ.comp p) (π.rep.comp (locU n w).subtype) i g u)`.
+
+Establish `hmem : φ ∈ ⨆ i, LinearMap.range (fi i)`. Establish `: φ ∈ (⨆ i : Representation.IntertwiningMap (σ.comp p) (π.rep.comp (locU n w).subtype), LinearMap.range i.toLinearMap).map U.subtype`. Rewrite using `[htop]`. Conclude with `⟨⟨φ, hφ⟩, Submodule.mem_top, rfl⟩`. Simplify using `only [fi, LinearMap.range_comp]`.
+
+Rewrite `this` using `[Submodule.map_iSup]`. Then use the resulting hypothesis. Establish `hZ : ∀ i v, (∀ k ∈ (K.comap p : Set (locU n w)), (σ.comp p) k v = v) → fi i v ∈ Z`. Introduce `i v hv`. Distinguish the cases in `hv0 : v = 0`. Rewrite using `[hv0, map_zero]`.
+
+Conclude with `Z.zero_mem`. Establish `hvK : v ∈ fixed σ K` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Take `⟨x, rfl⟩` from `hp k`. Conclude with `hv x hk`. Use `(hZ' _).2 ⟨fun k hk => (hfi i k v).symm.trans (congrArg (fi i) (hv k hk)), ?_⟩` and prove the remaining obligations.
+
+Establish `e2` using `heckeVec_comp_surj p hp hh.1 σ hvK`. Rewrite `e2` using `[heckeVec_eq_sum _ _ _ _ hS]`. Rewrite `e2` using `[hsat v hvK hv0]`. Rewrite using `[← hT (fi i v), heckeVec_eq_sum _ _ _ _ hS]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hfi]`. Use `_ = lam • fi i v := by rw [e2, map_smul]`. Establish `hZK : ∀ z ∈ Z, ∀ k ∈ (K.comap p : Set (locU n w)), (RU L n).comp (locU n w).subtype k z = z` using `fun z hz k hk => ((hZ' z).1 hz).1 k hk`.
+
+Establish `hφZ` using `mem_of_mem_iSup ((RU L n).comp (locU n w).subtype) (σ.comp p) hirr fi hfi _ Z hZ hZK φ (fun k hk => hfix k hk) hmem`. Rewrite using `[hT]`. Conclude with `((hZ' φ).1 hφZ).2`.
+-/
 theorem heckeVec_eq_of_isCompAlong {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     {U : Submodule ℂ (UA L n → ℂ)} (hU : IsAutRepU U) (w : HeightOneSpectrum (𝓞 L)) {H X : Type} [Group H]
     [AddCommGroup X] [Module ℂ X] {K : Subgroup H} (hK : IsCommensurated K) (p : locU n w →* H)
@@ -130,6 +160,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SplitTransfer
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hT.2.2.2.2.2.2.2 P d R hR`. Set `g : GA D V → locU V.rank P` to `fun γ => if h : (cj j h₀).symm γ ∈ locU V.rank P then ⟨_, h⟩ else 1`. Establish `hg : ∀ γ ∈ R, (g γ : UA D.host.E V.rank) = (cj j h₀).symm γ` using `fun γ hγ => by`. Simplify using `only [g, dif_pos (h1 γ hγ).1]`. Establish `e : (fun x : locU V.rank P => divInd (Ov D.host.E P) d (((cLoc P).comp (locU V.rank P).subtype) x)) = Set.indicator {x : locU V.rank P | HasDiv (Ov D.host.E P) d (cLoc P x.val)} 1`.
+
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : HasDiv (Ov D.host.E P) d (cLoc P x.val)`. Rewrite using `[Set.indicator_of_mem (s := {x : locU V.rank P | HasDiv (Ov D.host.E P) d (cLoc P x.val)}) hx]`. Conclude with `Set.indicator_of_mem (s := {g | HasDiv (Ov D.host.E P) d g}) hx _`. Rewrite using `[Set.indicator_of_notMem (s := {x : locU V.rank P | HasDiv (Ov D.host.E P) d (cLoc P x.val)}) hx]`.
+
+Conclude with `Set.indicator_of_notMem (s := {g | HasDiv (Ov D.host.E P) d g}) hx _`. Rewrite using `[e, heckeVec_indicator (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hφ k.val ⟨k.2, hk⟩) ?_ R g ?_ ?_]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Rewrite using `[← hg γ hγ]`. Both sides reduce to the same expression.
+
+Introduce `x hx k hk`. Use `GlobalTheory.SphGal.hasDiv_mul_mul hx (one_mem _) hk` as an intermediate fact. Rewrite `this` using `[one_mul]`. Express the relevant statement in the definitionally equal form `HasDiv _ d (cLoc P (x.val * k.val))`. Rewrite using `[map_mul]`.
+
+Conclude with `this`. Introduce `γ hγ`. Express the relevant statement in the definitionally equal form `HasDiv _ d (cLoc P (g γ).val)`. Rewrite using `[hg γ hγ]`. Conclude with `(h1 γ hγ).2`.
+
+Introduce `y hy`. Take `⟨γ, ⟨a1, a2⟩, a3⟩` from `h2 y.val y.2 hy`. Use `⟨γ, ⟨a1, ?_⟩, fun δ hδ => a3 δ ⟨hδ.1, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cLoc P ((g γ).val⁻¹ * y.val) ∈ GlobalTheory.LFun.KGL P V.rank`. Rewrite using `[hg γ a1]`.
+
+Conclude with `a2.2`. Rewrite using `[← hg δ hδ.1]`. Conclude with `⟨((g δ)⁻¹ * y).2, hδ.2⟩`.
+-/
 theorem heckeVec_divInd {D : D7} [IsCMField D.host.E] {V : HSp D}
     {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
     {j : UA D.host.E V.rank ≃ₜ* GA D V} {h₀ : GA D V} (hT : IsTransfer V θ j h₀)

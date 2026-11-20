@@ -23,6 +23,9 @@ def basePts : Subgroup (GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) where
   mul_mem' := fun ha hb => ⟨mul_mem ha.1 hb.1, fun v h => by rw [map_mul, ha.2 v h, hb.2 v h, mul_one]⟩
   inv_mem' := fun ha => ⟨inv_mem ha.1, fun v h => by rw [map_inv, ha.2 v h, inv_one]⟩
 
+/- English proof (translation)
+Rewrite using `[← and_assoc, ← GlobalTheory.LatticeStabLocal.mem_levelAfL_iff F E σ n J S.Lb S.Lb_fin k]`. Both sides reduce to the same expression.
+-/
 theorem mem_basePts_iff (k : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : k ∈ basePts S ↔
     k ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) ∧ (∀ v, bc (prV (E := E) v) k ∈ levelVL σ J v S.Lb) ∧
       ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → bc (prV (E := E) v) k = 1 := by
@@ -33,9 +36,15 @@ variable {S} (k : basePts S)
 
 def basePtU : UPts σ J (FiniteAdeleRing (𝓞 F) F) := ⟨k.1, k.2.1.1⟩
 
+/- English proof (translation)
+The claim follows from `((mem_basePts_iff S k.1).1 k.2).2.1 v`.
+-/
 theorem basePt_loc (v : HeightOneSpectrum (𝓞 F)) : bc (prV (E := E) v) k.1 ∈ levelVL σ J v S.Lb :=
   ((mem_basePts_iff S k.1).1 k.2).2.1 v
 
+/- English proof (translation)
+Rewrite using `[H.mul_mem_cancel_right (inv_mem ha), H.mul_mem_cancel_left ha]`.
+-/
 theorem conj_mem_iff {G : Type} [Group G] {H : Subgroup G} {a : G} (ha : a ∈ H) (x : G) : a * x * a⁻¹ ∈ H ↔ x ∈ H := by
   rw [H.mul_mem_cancel_right (inv_mem ha), H.mul_mem_cancel_left ha]
 
@@ -86,8 +95,14 @@ def moveLev : StepLevel F E σ J T f bad :=
       show bc (prV (E := E) v) (k.1 * x.1 * k.1⁻¹) = 1
       rw [map_mul, map_mul, hx v hv, mul_one, ← map_mul, mul_inv_cancel, map_one] }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_moveLev (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : x ∈ (moveLev k).U ↔ k.1 * x * k.1⁻¹ ∈ S.U := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem moveLev_chi (x : (moveLev k).U) : (moveLev k).chi x = S.chi ⟨k.1 * x.1 * k.1⁻¹, x.2⟩ := rfl
 
 def toMoved (κ : S.U) : (moveLev k).U :=
@@ -96,6 +111,9 @@ def toMoved (κ : S.U) : (moveLev k).U :=
     rw [mem_moveLev, e]
     exact κ.2⟩
 
+/- English proof (translation)
+Rewrite using `[moveLev_chi]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show k.1 * (k.1⁻¹ * κ.1 * k.1) * k.1⁻¹ = κ.1`. Use `group`.
+-/
 theorem chi_toMoved (κ : S.U) : (moveLev k).chi (toMoved k κ) = S.chi κ := by
   rw [moveLev_chi]
   congr 1
@@ -103,11 +121,22 @@ theorem chi_toMoved (κ : S.U) : (moveLev k).chi (toMoved k κ) = S.chi κ := by
   show k.1 * (k.1⁻¹ * κ.1 * k.1) * k.1⁻¹ = κ.1
   group
 
+/- English proof (translation)
+Introduce `z` and use `((inv_mem k.2.1).2 z).symm`.
+-/
 theorem basePt_hatStab : HatStab S.Lb k.1 := fun z => ((inv_mem k.2.1).2 z).symm
 
+/- English proof (translation)
+The claim follows from `latAd_stab x k.1 S.Lb (basePt_hatStab k)`.
+-/
 theorem latAd_basePt [StarRing E] (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : latAd (x * k.1) S.Lb = latAd x S.Lb :=
   latAd_stab x k.1 S.Lb (basePt_hatStab k)
 
+/- English proof (translation)
+Use `(DoubleCoset.eq _ _ _ _).trans (Iff.trans ?_ (DoubleCoset.eq _ _ _ _).symm)` and prove the remaining obligations. Use `exists_congr fun g => and_congr_right fun _ => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨κ, hκ, e⟩`. Use `⟨basePtU k * κ * (basePtU k)⁻¹, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_inv_cancel_right y (basePtU k), e]`.
+
+Use `group`. Introduce and unpack `⟨κ, hκ, e⟩`. Use `⟨(basePtU k)⁻¹ * κ * basePtU k, (toMoved k ⟨κ.1, hκ⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Use `group`.
+-/
 theorem cls_move_iff (x y : UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
     (Quotient.mk'' (x * basePtU k) : Cls (moveLev k)) = Quotient.mk'' (y * basePtU k) ↔
       (Quotient.mk'' x : Cls S) = Quotient.mk'' y := by
@@ -122,6 +151,9 @@ theorem cls_move_iff (x y : UPts σ J (FiniteAdeleRing (𝓞 F) F)) :
     rw [e]
     group
 
+/- English proof (translation)
+Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `(inv_mem k.2.1).2 _`.
+-/
 theorem mem_hat_move_iff (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (x : Fin n → E ⊗[F] FiniteAdeleRing (𝓞 F) F) :
     (y⁻¹).1 *ᵥ x ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) S.Lb ↔
       ((y * k.1)⁻¹).1 *ᵥ x ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F))
@@ -129,6 +161,11 @@ theorem mem_hat_move_iff (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) 
   rw [_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]
   exact (inv_mem k.2.1).2 _
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, e⟩`. Use `⟨_, (mem_moveLev k κ).1 hκ, Eq.trans ?_ e⟩` and prove the remaining obligations. Use `show y * (k.1 * κ * k.1⁻¹) * y⁻¹ = y * k.1 * κ * (y * k.1)⁻¹`.
+
+Use `group`. Introduce and unpack `⟨κ, hκ, e⟩`. Use `⟨_, (toMoved k ⟨κ, hκ⟩).2, Eq.trans ?_ e⟩` and prove the remaining obligations. Use `show y * k.1 * (k.1⁻¹ * κ * k.1) * (y * k.1)⁻¹ = y * κ * y⁻¹`. Use `group`.
+-/
 theorem map_conj_move (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     (moveLev k).U.map (MulAut.conj (y * k.1)).toMonoidHom = S.U.map (MulAut.conj y).toMonoidHom := by
   ext g
@@ -142,6 +179,11 @@ theorem map_conj_move (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
     show y * k.1 * (k.1⁻¹ * κ * k.1) * (y * k.1)⁻¹ = y * κ * y⁻¹
     group
 
+/- English proof (translation)
+Use `⟨fun c c' e => h.1 ((cls_move_iff k _ _).1 e), fun q => ?_⟩` and prove the remaining obligations. Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h x`. Take `⟨c, hc⟩` from `h.2 (Quotient.mk'' (x * (basePtU k)⁻¹))`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(cls_move_iff k _ _).2 hc`. Rewrite `h` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem bij_move {cl : Type} {y : cl → UPts σ J (FiniteAdeleRing (𝓞 F) F)} (h : Function.Bijective fun c => (Quotient.mk'' (y c) : Cls S)) :
     Function.Bijective fun c => (Quotient.mk'' (y c * basePtU k) : Cls (moveLev k)) := by
   refine ⟨fun c c' e => h.1 ((cls_move_iff k _ _).1 e), fun q => ?_⟩
@@ -152,10 +194,16 @@ theorem bij_move {cl : Type} {y : cl → UPts σ J (FiniteAdeleRing (𝓞 F) F)}
     have h := (cls_move_iff k _ _).2 hc
     rwa [inv_mul_cancel_right] at h
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mem_moveLev]`.
+-/
 example : (moveLev (1 : basePts S)).U = S.U := by
   ext x
   simp [mem_moveLev]
 
+/- English proof (translation)
+The claim follows from `(mem_basePts_iff S _).2 ⟨((S.U_eq _).1 κ.2).1, fun v => S.Uloc_lev v (((S.U_eq _).1 κ.2).2 v), h⟩`.
+-/
 example (κ : S.U) (h : ∀ v : HeightOneSpectrum (𝓞 F), (T : 𝓞 F) ∈ v.asIdeal → bc (prV (E := E) v) κ.1 = 1) : κ.1 ∈ basePts S :=
   (mem_basePts_iff S _).2 ⟨((S.U_eq _).1 κ.2).1, fun v => S.Uloc_lev v (((S.U_eq _).1 κ.2).2 v), h⟩
 

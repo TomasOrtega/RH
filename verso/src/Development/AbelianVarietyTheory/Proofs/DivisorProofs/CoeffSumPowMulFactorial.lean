@@ -5,12 +5,20 @@ open MvPolynomial GlobalTheory.FlagPoly GlobalTheory.FlagForm GlobalTheory.FlagC
 
 namespace GlobalTheory.MultinomCoeff
 
+/- English proof (translation)
+Unfold `mono`. Rewrite using `[Finsupp.finsetSum_apply]`. Simplify using `[Finsupp.single_apply]`.
+-/
 theorem mono_apply {σ : Type} [DecidableEq σ] (T : Finset σ) (x : σ) :
     mono T x = if x ∈ T then 1 else 0 := by
   unfold mono
   rw [Finsupp.finsetSum_apply]
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Finsupp.tsub_apply, mono_apply, mono_apply, Finsupp.single_apply]`. Distinguish the cases in `hx : x = s`. Substitute `hx` using the available equality. Simplify using `[hs]`.
+
+Simplify using `[Finset.mem_erase, hx, Ne.symm hx]`.
+-/
 theorem mono_sub_single {σ : Type} [DecidableEq σ] (T : Finset σ) (s : σ) (hs : s ∈ T) :
     mono T - Finsupp.single s 1 = mono (T.erase s) := by
   ext x
@@ -19,10 +27,16 @@ theorem mono_sub_single {σ : Type} [DecidableEq σ] (T : Finset σ) (s : σ) (h
   · subst hx; simp [hs]
   · simp [Finset.mem_erase, hx, Ne.symm hx]
 
+/- English proof (translation)
+Apply the tactic sequence `rw [Finsupp.mem_support_iff, mono_apply]; split_ifs with h <;> simp [h]`.
+-/
 theorem mem_support_mono {σ : Type} [DecidableEq σ] (T : Finset σ) (s : σ) :
     s ∈ (mono T).support ↔ s ∈ T := by
   rw [Finsupp.mem_support_iff, mono_apply]; split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[coeff_X_mul']`. Distinguish the cases in `h : s ∈ T`. Rewrite using `[if_pos ((mem_support_mono T s).2 h), if_pos h, mono_sub_single T s h]`. Rewrite using `[if_neg (fun h' => h ((mem_support_mono T s).1 h')), if_neg h]`.
+-/
 theorem coeff_mono_X_mul {σ : Type} [DecidableEq σ] (T : Finset σ) (s : σ) (ω : MvPolynomial σ ℝ) :
     coeff (mono T) (X s * ω) = if s ∈ T then coeff (mono (T.erase s)) ω else 0 := by
   rw [coeff_X_mul']
@@ -30,6 +44,19 @@ theorem coeff_mono_X_mul {σ : Type} [DecidableEq σ] (T : Finset σ) (s : σ) (
   · rw [if_pos ((mem_support_mono T s).2 h), if_pos h, mono_sub_single T s h]
   · rw [if_neg (fun h' => h ((mem_support_mono T s).1 h')), if_neg h]
 
+/- English proof (translation)
+Establish `hR : ((k:ℝ) + 1) * ∑ V ∈ A.powersetCard (k+1), f V = ∑ V ∈ A.powersetCard (k+1), ∑ s ∈ V, f (insert s (V.erase s))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun V hV => ?_` and prove the remaining obligations. Establish `hc` using `(Finset.mem_powersetCard.1 hV).2`. Rewrite using `[Finset.sum_congr rfl fun s hs => by rw [Finset.insert_erase hs]]`.
+
+Rewrite using `[Finset.sum_const, hc, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR, Finset.sum_sigma', Finset.sum_sigma']`. Use `Finset.sum_bij' (fun p _ => ⟨insert p.2 p.1, p.2⟩) (fun p _ => ⟨p.1.erase p.2, p.2⟩) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨U, s⟩ h`. Simplify using `only [Finset.mem_sigma, Finset.mem_powersetCard, Finset.mem_sdiff] at h ⊢`. Take `⟨⟨hU, hk⟩, hsA, hsU⟩` from `h`. Use `⟨⟨Finset.insert_subset hsA hU, ?_⟩, Finset.mem_insert_self _ _⟩` and prove the remaining obligations. Rewrite using `[Finset.card_insert_of_notMem hsU, hk]`.
+
+Introduce and unpack `⟨V, s⟩ h`. Simplify using `only [Finset.mem_sigma, Finset.mem_powersetCard, Finset.mem_sdiff] at h ⊢`. Take `⟨⟨hV, hk⟩, hsV⟩` from `h`. Use `⟨⟨(Finset.erase_subset _ _).trans hV, ?_⟩, hV hsV, Finset.notMem_erase _ _⟩` and prove the remaining obligations. Rewrite using `[Finset.card_erase_of_mem hsV, hk]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨U, s⟩ h`. Simplify using `only [Finset.mem_sigma, Finset.mem_sdiff] at h`. Simplify using `[Finset.erase_insert h.2.2]`. Introduce and unpack `⟨V, s⟩ h`.
+
+Simplify using `only [Finset.mem_sigma] at h`. Simplify using `[Finset.insert_erase h.2]`. Introduce and unpack `⟨U, s⟩ h`. Simplify using `only [Finset.mem_sigma, Finset.mem_sdiff] at h`. Simplify using `[Finset.erase_insert h.2.2]`.
+-/
 theorem sum_powersetCard_insert {σ : Type} [DecidableEq σ] (A : Finset σ) (k : ℕ) (f : Finset σ → ℝ) :
     ∑ U ∈ A.powersetCard k, ∑ s ∈ A \ U, f (insert s U)
       = ((k:ℝ) + 1) * ∑ V ∈ A.powersetCard (k+1), f V := by
@@ -62,6 +89,15 @@ theorem sum_powersetCard_insert {σ : Type} [DecidableEq σ] (A : Finset σ) (k 
     simp only [Finset.mem_sigma, Finset.mem_sdiff] at h
     simp [Finset.erase_insert h.2.2]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing ω with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hin : ∀ U ∈ (R ∩ C).powersetCard k, coeff (mono (R \ U)) ((∑ s ∈ C, X s) * ω) = ∑ s ∈ (R ∩ C) \ U, coeff (mono (R \ insert s U)) ω`. Introduce `U _`.
+
+Rewrite using `[Finset.sum_mul, coeff_sum]`. Repeatedly rewrite using `[coeff_mono_X_mul]`. Rewrite using `[Finset.sum_ite_mem]`. Establish `: C ∩ (R \ U) = (R ∩ C) \ U`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_inter, Finset.mem_sdiff]`. The claim follows by propositional logic. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sdiff_insert]`.
+
+Rewrite using `[pow_succ, mul_assoc, ih, Finset.sum_congr rfl hin, sum_powersetCard_insert (R ∩ C) k (fun V => coeff (mono (R \ V)) ω), Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_mono_sum_pow_mul {σ : Type} [DecidableEq σ] (C R : Finset σ) (k : ℕ) (ω : MvPolynomial σ ℝ) :
     coeff (mono R) ((∑ s ∈ C, X s) ^ k * ω)
       = (k.factorial : ℝ) * ∑ U ∈ (R ∩ C).powersetCard k, coeff (mono (R \ U)) ω := by

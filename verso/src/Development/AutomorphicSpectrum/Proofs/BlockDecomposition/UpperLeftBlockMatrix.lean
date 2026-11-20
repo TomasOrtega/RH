@@ -21,10 +21,18 @@ namespace GlobalTheory.CompanionTheory.IwaAd
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [npow, NNReal.coe_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg r.2 h.2 t`.
+-/
 theorem npow_mul' {r h : ℝ≥0} (t : ℂ) : npow (r * h) t = npow r t * npow h t := by
   simp only [npow, NNReal.coe_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg r.2 h.2 t
 
+/- English proof (translation)
+Establish `hr' : 0 < r⁻¹` using `inv_pos.2 hr`. Rewrite using `[npow_eq_exp hr', npow_eq_exp hr]`. Use `congr 1`. Rewrite using `[NNReal.coe_inv, Real.log_inv]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem npow_inv' {r : ℝ≥0} (hr : 0 < r) (t : ℂ) : npow r⁻¹ t = npow r (-t) := by
   have hr' : 0 < r⁻¹ := inv_pos.2 hr
   rw [npow_eq_exp hr', npow_eq_exp hr]
@@ -33,18 +41,32 @@ theorem npow_inv' {r : ℝ≥0} (hr : 0 < r) (t : ℂ) : npow r⁻¹ t = npow r 
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[npow_eq_exp hr, npow_eq_exp hr, npow_eq_exp hr, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem npow_add' {r : ℝ≥0} (hr : 0 < r) (s t : ℂ) : npow r (s + t) = npow r s * npow r t := by
   rw [npow_eq_exp hr, npow_eq_exp hr, npow_eq_exp hr, ← Complex.exp_add]
   congr 1
   ring
 
+/- English proof (translation)
+Rewrite using `[npow_eq_exp hr]`. Simplify using the standard rewrite rules.
+-/
 theorem npow_zero' (r : ℝ≥0) (hr : 0 < r) : npow r 0 = 1 := by
   rw [npow_eq_exp hr]; simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[blkA, blk4, Matrix.toBlocks₁₁]`.
+-/
 theorem upperLeft_blockMatrix {R : Type} (x y z t : Matrix (Fin n) (Fin n) R) : blkA (blk4 x y z t) = x := by
   ext i j
   simp [blkA, blk4, Matrix.toBlocks₁₁]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : ((Matrix.GeneralLinearGroup.det (ad a) : (AE D)ˣ) : AE D) = (adj (a⁻¹).1 : Mx D n n).det` using `Matrix.GeneralLinearGroup.val_det_apply _`. Establish `h2 : (adj (a⁻¹).1 : Mx D n n).det = cA D ((a⁻¹).1.det)`. Unfold `adj`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `(RingHom.map_det (cA D) _).symm`. Establish `h3 : ((Matrix.GeneralLinearGroup.det a⁻¹ : (AE D)ˣ) : AE D) = (a⁻¹).1.det` using `Matrix.GeneralLinearGroup.val_det_apply _`. Rewrite using `[h1, h2, ← h3]`. Both sides reduce to the same expression.
+-/
 theorem det_ad (a : GL (Fin n) (AE D)) :
     (Matrix.GeneralLinearGroup.det (ad a) : (AE D)ˣ) =
       conjUnit (R := AF D.host.F) D.sp.cm.sig (Matrix.GeneralLinearGroup.det a⁻¹ : (AE D)ˣ) := by
@@ -59,10 +81,20 @@ theorem det_ad (a : GL (Fin n) (AE D)) :
     Matrix.GeneralLinearGroup.val_det_apply _
   rw [h1, h2, ← h3]
   rfl
+/- English proof (translation)
+Rewrite using `[det_ad, GlobalTheory.DiagThetaRule.absA_conj, map_inv, map_inv]`.
+-/
 theorem absA_ad (a : GL (Fin n) (AE D)) : absA D (Matrix.GeneralLinearGroup.det (ad a)) =
     (absA D (Matrix.GeneralLinearGroup.det a))⁻¹ := by
   rw [det_ad, GlobalTheory.DiagThetaRule.absA_conj, map_inv, map_inv]
 
+/- English proof (translation)
+Take `⟨m', hm'⟩` from `exists_levi (ad a)`. Take `⟨m'', hm''⟩` from `exists_levi (ad a)⁻¹`. Establish `e1 : mat m' = blk4 (adj (a⁻¹).1) 0 0 a.1`. Rewrite using `[hm']`. Establish `: (adj ((ad a)⁻¹).1 : Mx D n n) = a.1` using `adj_adj _`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Establish `h1 : m'' * m' = 1` using `mat_inj (by`. Rewrite using `[mat_mul, mat_one, hm', hm'']`. Use `levi_mul_inv (D := D) (ad a)⁻¹` as an intermediate fact.
+
+Rewrite using `[inv_inv] at this)` and apply the resulting hypothesis. Conclude with `⟨m', levi_mem_P hm' hm'' h1, e1⟩`.
+-/
 theorem exists_ad (a : GL (Fin n) (AE D)) : ∃ m' ∈ P D n, mat m' = blk4 (adj (a⁻¹).1) 0 0 a.1 := by
   obtain ⟨m', hm'⟩ := exists_levi (ad a)
   obtain ⟨m'', hm''⟩ := exists_levi (ad a)⁻¹
@@ -77,6 +109,13 @@ theorem exists_ad (a : GL (Fin n) (AE D)) : ∃ m' ∈ P D n, mat m' = blk4 (adj
     rwa [inv_inv] at this)
   exact ⟨m', levi_mem_P hm' hm'' h1, e1⟩
 
+/- English proof (translation)
+Establish `h0 : gramQ V ξ = ξᴴ * (HSpace.gram V * ξ)` using `rfl`. Establish `e : ((gramQ V ξ).map (incA D) : Mx D n n) = HMul.hMul (adj (ξ.map (incA D))) (HMul.hMul (gA V) (ξ.map (incA D)) : Mx D V.rank n)`. Express the relevant statement in the definitionally equal form `rat (gramQ V ξ) = HMul.hMul (adj (rat ξ)) (HMul.hMul (gA V) (rat ξ) : Mx D V.rank n)`. Rewrite using `[h0, rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Unfold `GlobalTheory.StdUnn.inner`. Establish `u` using `GlobalTheory.MixModel.mt_unitary V h⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[adj_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [u]`.
+-/
 theorem gram_pt (V : HSp D) (h : GA D V) (ξ : Matrix (Fin V.rank) (Fin n) D.host.E) :
     StdUnn.inner V (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (ξ.map (incA D)) : Mx D V.rank n)
       (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (ξ.map (incA D)) : Mx D V.rank n) = (gramQ V ξ).map (incA D) := by
@@ -95,6 +134,13 @@ theorem gram_pt (V : HSp D) (h : GA D V) (ξ : Matrix (Fin V.rank) (Fin n) D.hos
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [u]
 
+/- English proof (translation)
+Use `set K : ℂ := (χ (Matrix.GeneralLinearGroup.det a) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det a)) ((V.rank : ℂ) / 2) * ψ (halfTr (Matrix.trace (b1 * (adj a.1 * β.1.map (incA D) * a.1)))) with hK`. Establish `key : (fun h : GA D V => ∑' x : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = n ∧ gramQ V x = β.1}, (ω (m * u) φ).1 (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D)))) = fun h => K * ∑' x : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = n ∧ gramQ V x = β. …`. Use function extensionality and compare the values at `h`. Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[weil_pt hω a hm hu, inner_mul_right, gram_pt, x.2.2, hK]`. Expand and normalize the polynomial expressions, which then agree. Unfold `IfrB`. Rewrite using `[key]`. Use `show ⨍ q, K * _ ∂_ = _`.
+
+Simplify using `only [average_eq, integral_const_mul, mul_smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem ifrB_step {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D} {V : HSp D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
     (ν : Measure (GA D V)) (a : GL (Fin n) (AE D)) {m u : G D n} (hm : mat m = blk4 a.1 0 0 (adj (a⁻¹).1))

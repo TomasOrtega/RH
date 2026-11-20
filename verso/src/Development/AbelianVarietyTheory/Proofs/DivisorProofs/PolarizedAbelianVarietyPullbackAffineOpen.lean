@@ -18,6 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.TorsExtend
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.FactorAndSection.exists_section`. Consider the case `exact _root_.GlobalTheory.FactorAndSection.exists_section`. Consider the case `(apply _root_.GlobalTheory.FactorAndSection.exists_section <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FactorAndSection.exists_section <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.FactorAndSection.exists_section <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FactorAndSection.exists_section ..)`.
+-/
 theorem exists_section_of_isFinite {R K : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K]
     [Algebra R K] [IsFractionRing R K] {Z : Scheme.{0}} (p : Z ⟶ Sp R) [IsFinite p] (y : Sp K ⟶ Z)
     (h : y ≫ p = spMap (algebraMap R K)) : ∃ x : Sp R ⟶ Z, spMap (algebraMap R K) ≫ x = y ∧ x ≫ p = 𝟙 _ := by
@@ -29,6 +34,9 @@ theorem exists_section_of_isFinite {R K : Type} [CommRing R] [IsDomain R] [IsInt
   | (intros; apply @_root_.GlobalTheory.FactorAndSection.exists_section <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.FactorAndSection.exists_section ..)
 
+/- English proof (translation)
+Establish `e : (1 : T ⟶ G).left = T.hom ≫ (η[G]).left`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules. Rewrite using `[← Over.comp_left, mulA, MonObj.comp_pow, Category.comp_id, ← e]`. Conclude with `⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h⟩`.
+-/
 theorem pow_eq_one_iff {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) {T : Over S} (z : T ⟶ G) :
     z ^ n = 1 ↔ z.left ≫ (mulA G n).left = T.hom ≫ (η[G]).left := by
   have e : (1 : T ⟶ G).left = T.hom ≫ (η[G]).left := by
@@ -36,6 +44,13 @@ theorem pow_eq_one_iff {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) {T : O
   rw [← Over.comp_left, mulA, MonObj.comp_pow, Category.comp_id, ← e]
   exact ⟨fun h => by rw [h], fun h => Over.OverMorphism.ext h⟩
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Use `haveI := (hL.mulN _ P n hn).1`. Set `e : Sp R ⟶ P.A.left` to `(η[P.A]).left`. Establish `he : e ≫ P.A.hom = 𝟙 _` using `Over.w η[P.A]`. Take `⟨x, h₁, h₂⟩` from `exists_section_of_isFinite (pullback.snd (mulA P.A n).left e) (pullback.lift y.left (spMap (algebraMap R K)) ((pow_eq_one_iff _ _ _).1 hy)) (pullback.lift_snd _ _ _)`.
+
+Establish `h₃ : (x ≫ pullback.fst (mulA P.A n).left e) ≫ (mulA P.A n).left = e`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, h₂, Category.id_comp]`. Use `⟨Over.homMk (x ≫ pullback.fst _ _) ?_, (pow_eq_one_iff _ _ _).2 (h₃.trans (Category.id_comp _).symm), ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w (mulA P.A n), ← Category.assoc, h₃]`. Conclude with `he`.
+
+Use `show _ ≫ x ≫ pullback.fst _ _ = _`. Rewrite using `[← Category.assoc, h₁, pullback.lift_fst]`.
+-/
 theorem exists_torsion_section (hL : Laws) {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [Field K] [Algebra R K] [IsFractionRing R K] (P : PolAV (Sp R)) {n : ℕ} (hn : 1 ≤ n)
     {s : Sp K ⟶ Sp R} (hs : s = spMap (algebraMap R K)) (y : Over.mk s ⟶ P.A) (hy : y ^ n = 1) :
@@ -54,6 +69,9 @@ theorem exists_torsion_section (hL : Laws) {R K : Type} [CommRing R] [IsDomain R
   · show _ ≫ x ≫ pullback.fst _ _ = _
     rw [← Category.assoc, h₁, pullback.lift_fst]
 
+/- English proof (translation)
+Use `haveI := (hL.mulN _ P n hn).1`. Use `haveI := (hL.mulN _ P n hn).2.2.2.1 (by simpa using hu.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Use `haveI : PreconnectedSpace (Sp R) := inferInstanceAs (PreconnectedSpace (PrimeSpectrum R))`. Conclude with `Over.OverMorphism.ext (eq_of_preconnected_of_unramified (T := Sp R) (mulA P.A n).left (((pow_eq_one_iff _ _ _).1 hx).trans ((pow_eq_one_iff _ _ _).1 hy).symm) s h)`.
+-/
 theorem torsion_section_eq (hL : Laws) {R K : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K]
     (P : PolAV (Sp R)) {n : ℕ} (hn : 1 ≤ n) (hu : IsUnit (n : R)) {x y : baseOver (Sp R) ⟶ P.A} (hx : x ^ n = 1)
     (hy : y ^ n = 1) (s : Sp K ⟶ Sp R) (h : s ≫ x.left = s ≫ y.left) : x = y := by
@@ -63,6 +81,31 @@ theorem torsion_section_eq (hL : Laws) {R K : Type} [CommRing R] [IsDomain R] [I
   exact Over.OverMorphism.ext (eq_of_preconnected_of_unramified (T := Sp R) (mulA P.A n).left
     (((pow_eq_one_iff _ _ _).1 hx).trans ((pow_eq_one_iff _ _ _).1 hy).symm) s h)
 
+/- English proof (translation)
+Use `haveI := P₀.isAb.comm`. Use `haveI := P'.isAb.proper`. Establish `hi` using `IsFractionRing.injective R Ω`. Establish `hb` using `GenericKTriv.pushHom_bijective ha (baseOver (Sp Ω))`. Establish `hb'` using `GenericKTriv.pushHom_bijective ha' (baseOver (Sp Ω))`.
+
+Set `h₀ : Over.mk ((baseOver (Sp Ω)).hom ≫ spMap j₀) ⟶ baseOver (Sp R₀)` to `Over.homMk (spMap j₀) (by simp)`. Set `h : Over.mk ((baseOver (Sp Ω)).hom ≫ spMap (algebraMap R Ω)) ⟶ baseOver (Sp R)` to `Over.homMk (spMap (algebraMap R Ω)) (by simp)`. Establish `zero : pt 0 = 1`. Use `add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+
+Conclude with `mul_eq_left.1 this.symm`. Establish `smul : ∀ (k : ℕ) x, pt (k • x) = pt x ^ k` using `fun k x => by`. Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, zero, pow_zero]`. Consider the case `succ k ih => rw [succ_nsmul, add, ih, pow_succ]`.
+
+Establish `tor : ∀ x, pt x ^ n = 1` using `fun x => by rw [← smul, hM, zero]`. Use `choose w hw using fun x => hb.2 (h₀ ≫ pt x)`. Establish `torw : ∀ x, w x ^ n = 1` using `fun x => hb.1 (by`. Rewrite using `[map_pow, hw, map_one, ← MonObj.comp_pow, tor, MonObj.comp_one])`. Establish `addw : ∀ x y, w (x + y) = w x * w y` using `fun x y => hb.1 (by`.
+
+Rewrite using `[map_mul, hw, hw, hw, add, MonObj.comp_mul])`. Use `choose pt' tor' hpt' using fun x => exists_torsion_section hL P' hn (Category.id_comp _) (pushHom ha' (baseOver (Sp Ω)) (w x)) (by rw [← map_pow, torw, map_one])`. Establish `hpt : ∀ x, h ≫ pt' x = pushHom ha' (baseOver (Sp Ω)) (w x)` using `fun x => Over.OverMorphism.ext (hpt' x)`. Establish `e₀ : ∀ x, (w x).left ≫ a = spMap j₀ ≫ (pt x).left` using `fun x => congrArg (fun q => q.left) (hw x)`. Establish `e₁ : ∀ x, (w x).left ≫ a' = spMap (algebraMap R Ω) ≫ (pt' x).left` using `fun x => (hpt' x).symm`.
+
+Set `F` to `AlgebraicClosure Ω`. Set `t : Sp F ⟶ Sp Ω` to `spMap (algebraMap Ω F)`. Set `g : Over.mk (t ≫ spMap j₀) ⟶ baseOver (Sp R₀)` to `Over.homMk (t ≫ spMap j₀) (by simp)`. Establish `torg : ∀ x, (g ≫ pt x) ^ n = 1` using `fun x => by rw [← MonObj.comp_pow, tor, MonObj.comp_one]`. Establish `inj : Function.Injective pt'` using `fun x y e => by`.
+
+Establish `e₂ : w x = w y` using `hb'.1 (by rw [← hpt, ← hpt, e])`. Use `(bij F (t ≫ spMap j₀) (g ≫ pt y) (torg y)).unique (Over.OverMorphism.ext ?_) rfl` and prove the remaining obligations. Use `show (t ≫ spMap j₀) ≫ (pt x).left = (t ≫ spMap j₀) ≫ (pt y).left`. Rewrite using `[Category.assoc, Category.assoc, ← e₀, ← e₀, e₂]`. Establish `ne : ∀ (K : Type) [Field K] (s : Sp K ⟶ Sp R), (n : K) ≠ 0` using `fun K _ s => by`.
+
+Use `hu.map (Spec.preimage s).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `card : Nat.card M = n ^ (2 * P'.g)`. Rewrite using `[← (hL.mulN _ P' n hn).2.2.2.2 F (t ≫ spMap (algebraMap R Ω)) (ne F (t ≫ spMap (algebraMap R Ω))), GenericKTriv.card_torsion ha' t rfl, ← GenericKTriv.card_torsion ha t rfl]`.
+
+Use `Nat.card_eq_of_bijective (fun x => ⟨g ≫ pt x, torg x⟩) ⟨fun x y e => ?_, fun z => ?_⟩` and prove the remaining obligations. Conclude with `(bij F (t ≫ spMap j₀) (g ≫ pt y) (torg y)).unique (congrArg Subtype.val e) rfl`. Take `⟨c, hc, -⟩` from `bij F (t ≫ spMap j₀) z.1 z.2`. Conclude with `⟨c, Subtype.ext hc⟩`. Use `⟨pt', fun x y => ?_, fun K _ _ s z hz => ?_, fun x y c₀ c hc H => ?_, fun x => ⟨(w x).left, e₀ x, e₁ x⟩⟩` and prove the remaining obligations.
+
+Establish `e : h ≫ pt' (x + y) = h ≫ (pt' x * pt' y)`. Rewrite using `[MonObj.comp_mul, hpt, hpt, hpt, addw, map_mul]`. Conclude with `over_points_ext_of_injective _ P'.A R Ω _ hi _ _ _ (congrArg (fun q => q.left) e)`. Establish `hc` using `(hL.mulN _ P' n hn).2.2.2.2 K s (ne K s)`. Set `Φ : M → {x : Over.mk s ⟶ P'.A // x ^ n = 1}` to `fun c => ⟨(Over.homMk s (by simp) : Over.mk s ⟶ baseOver (Sp R)) ≫ pt' c, by`.
+
+Rewrite using `[← MonObj.comp_pow, tor', MonObj.comp_one]⟩`. Establish `hΦ : Function.Injective Φ` using `fun c c' e => inj (torsion_section_eq hL P' hn hu (tor' c) (tor' c') s (congrArg (fun q => q.1.left) e))`. Establish `: Finite {x : Over.mk s ⟶ P'.A // x ^ n = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`. Take `⟨c, e⟩` from `(hΦ.bijective_of_nat_card_le (by rw [hc, card])).2 ⟨z, hz⟩`. Conclude with `⟨c, congrArg Subtype.val e, fun c' e' => hΦ ((Subtype.ext e').trans e.symm)⟩`.
+
+Use `MumPair.weilIs_of_spread Ω R _ hi P₀ P' a' ha' hl' n (w x) (w y) _ _ c hn (e₁ x) (e₁ y) (tor' x) (tor' y) ?_` and prove the remaining obligations. Establish `H₁` using `CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB h₀ H`. Establish `H₂` using `(weilIs_grpPullback_of_comm' (Sp R₀) (Sp Ω) P.A P₀.A (spMap j₀) a P.L P₀.L P.isLB P₀.isLB ha hl (baseOver (Sp Ω)) n (w x) (w y) (h₀ ≫ pt x) (h₀ ≫ pt y) _ (e₀ x).symm (e₀ y).symm).2 H₁`. Establish `e` using `SpreadLevel.appTop_unitOn j₀ c₀ (Units.map (algebraMap R Ω).toMonoidHom c) hc`. Conclude with `e ▸ H₂`.
+-/
 theorem exists_labelled (hL : Laws) {R R₀ Ω : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [IsIntegrallyClosed R] [Field Ω] [Algebra R Ω] [IsFractionRing R Ω] [CommRing R₀] (j₀ : R₀ →+* Ω)
     (P : PolAV (Sp R₀)) (P' : PolAV (Sp R)) (P₀ : PolAV (Sp Ω)) (a : P₀.A.left ⟶ P.A.left) (a' : P₀.A.left ⟶ P'.A.left)
@@ -147,6 +190,11 @@ theorem exists_labelled (hL : Laws) {R R₀ Ω : Type} [CommRing R] [IsDomain R]
     have e := SpreadLevel.appTop_unitOn j₀ c₀ (Units.map (algebraMap R Ω).toMonoidHom c) hc
     exact e ▸ H₂
 
+/- English proof (translation)
+Use `haveI := RatModel.isFractionRing_ringOn hU hne`. Use `(isIntegrallyClosed_iff Ω).2 fun {x} hx => ⟨⟨x, RatModel.mem_ringOn.2 fun z hz => ?_⟩, rfl⟩` and prove the remaining obligations. Use `RatModel.isIntegrallyClosed_O hM z` as an intermediate fact. Use `letI : Algebra (M.ringOn U) (M.O z) := (Subalgebra.inclusion (RatModel.ringOn_le_O hz)).toRingHom.toAlgebra`. Use `haveI : IsScalarTower (M.ringOn U) (M.O z) Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hx.tower_top (A := M.O z))`. Conclude with `hy ▸ y.2`.
+-/
 theorem isIntegrallyClosed_ringOn {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z) {U : M.Z.Opens} (hU : IsAffineOpen U) (hne : (U : Set M.Z).Nonempty) :
     IsIntegrallyClosed (M.ringOn U) := by
@@ -158,6 +206,15 @@ theorem isIntegrallyClosed_ringOn {o Ω : Type} [CommRing o] [Field Ω] [Algebra
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 (hx.tower_top (A := M.O z))
   exact hy ▸ y.2
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ U P' P₀ a a' hU hne ha ha' hl hl'`. Take `⟨⟨hL, -⟩, -⟩` from `GlobalTheory.lawsAndExpansions`. Use `haveI := RatModel.isFractionRing_ringOn hU hne`. Use `haveI := isIntegrallyClosed_ringOn X₁.M ((isNormalScheme_iff_pred _).1 X₁.normal) hU hne`. Use `haveI := ArithBase.ded (o := X₁.o₁) (Ω := X₁.Ω₁)`.
+
+Use `haveI : IsNoetherianRing (X₁.M.ringOn U) := isNoetherianRing_of_fg (fg_ringOn_of_isAffineOpen _ _ X₁.M U hU hne)`. Establish `hn : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.mul_pos X₁.S.r_pos (le_trans one_le_two X₁.S.N_ge)`. Establish `hu : IsUnit ((X₁.S.r * X₁.S.N : ℕ) : X₁.M.ringOn U)`. Use `X₁.S.unit.map (algebraMap X₁.o₁ (X₁.M.ringOn U))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Take `⟨pt', h₁, h₂, h₃, h₄⟩` from `exists_labelled hL X₁.S.R.val.toRingHom X₁.ρ.P P' P₀ a a' ha ha' hl hl' hn hu (M := X₁.S.Gam) (fun x => by ext k; simp [nsmul_eq_mul, -Nat.cast_mul]) X₁.ρ.pt X₁.ρ.pt_add X₁.ρ.pt_bij`. Use `⟨pt', h₁, h₂, fun x y c hc => ?_, h₄⟩` and prove the remaining obligations. Take `⟨c₀, hc₀⟩` from `((X₁.S.prim.isUnit (by positivity)).pow (X₁.S.r * X₁.S.N * (eStd X₁.S.g _ x y).val)).map (algebraMap X₁.o₁ X₁.S.R)`. Use `h₃ x y c₀ c ?_ (X₁.ρ.weil x y c₀ hc₀)` and prove the remaining obligations. Rewrite using `[hc₀, hc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_labelled_on_chart : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (U : X₁.M.Z.Opens) (P' : PolAV (Sp (X₁.M.ringOn U))) (P₀ : PolAV (Sp X₁.Ω₁)) (a : P₀.A.left ⟶ X₁.ρ.P.A.left) (a' : P₀.A.left ⟶ P'.A.left), IsAffineOpen U → (U : Set X₁.M.Z).Nonempty → IsGrpPullback P₀.A X₁.ρ.P.A (spMap X₁.S.R.val.toRingHom) a → IsGrpPullback P₀.A P'.A (spMap (X₁.M.ringOn U).val.toRingHom) a' → LBIso P₀.L (X₁.ρ.P.L.pull a) → LBIso P₀.L (P'.L.pull a') → ∃ pt' : X₁.S.Gam → (baseOver (Sp (X₁.M.ringOn U)) ⟶ P'.A), (∀ x y, pt' (x + y) = pt' x * pt' y) ∧ (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp (X₁.M.ringOn U)) (z : Over.mk x ⟶ P'.A), z ^ (X₁.S.r * X₁.S.N) = 1 → ∃! c, (Over.homMk x (by simp) : Over.mk x ⟶ baseOver (Sp (X₁.M.ringOn U))) ≫ pt' c = z) ∧ (∀ x y (c : (X₁.M.ringOn U)ˣ), (c : (X₁.M.ringOn U)) = algebraMap X₁.o₁ (X₁.M.ringOn U) (X₁.S.ζ ^ (X₁.S.r * X₁.S.N * (eStd X₁.S.g _ x y).val)) → WeilIs P'.A P'.L (X₁.S.r * X₁.S.N : ℕ) (pt' x) (pt' y) (unitOn c)) ∧ (∀ x, ∃ w0 : Sp X₁.Ω₁ ⟶ P₀.A.left, w0 ≫ a = spMap X₁.S.R.val.toRingHom ≫ (X₁.ρ.pt x).left ∧ w0 ≫ a' = spMap (X₁.M.ringOn U).val.toRingHom ≫ (pt' x).left) := by
   intro g n F W Z i X₁ U P' P₀ a a' hU hne ha ha' hl hl'
   obtain ⟨⟨hL, -⟩, -⟩ := GlobalTheory.lawsAndExpansions

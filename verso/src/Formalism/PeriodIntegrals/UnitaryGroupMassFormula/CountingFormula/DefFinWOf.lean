@@ -21,6 +21,31 @@ def WPos : Prop :=
     (∀ a, (VS D).hT (D.sp.hypF a) w = 0) → (VS D).hT D.sp.zm w = 0 → w ≠ 0 →
       0 < Algebra.trace ℚ D.host.E ((VS D).hT w w)
 
+/- English proof (translation)
+Introduce `D P hP c`. Use `letI : Module ℚ (VS D).V := Module.compHom (VS D).V (algebraMap ℚ D.host.E)`. Establish `hsm : ∀ (q : ℚ) (v : (VS D).V), q • v = (algebraMap ℚ D.host.E q) • v` using `fun _ _ => rfl`. Establish `hsmL : ∀ (q : ℚ) (v w : (VS D).V), (VS D).hT (q • v) w = (q : D.host.E) * (VS D).hT v w`. Introduce `q v w`.
+
+Rewrite using `[hsm, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, eq_ratCast, map_ratCast]`. Establish `hsmR : ∀ (q : ℚ) (v w : (VS D).V), (VS D).hT v (q • w) = (q : D.host.E) * (VS D).hT v w`. Introduce `q v w`. Rewrite using `[hsm, map_smul, smul_eq_mul, eq_ratCast]`. Establish `htr : ∀ (q : ℚ) (y : D.host.E), Algebra.trace ℚ D.host.E ((q : D.host.E) * y) = q * Algebra.trace ℚ D.host.E y`.
+
+Introduce `q y`. Rewrite using `[show (q : D.host.E) * y = q • y by rw [Algebra.smul_def, eq_ratCast], map_smul, smul_eq_mul]`. Set `Wq : Submodule ℚ (VS D).V` to `{ carrier := {w | (∀ a, (VS D).hT (D.sp.hypE a) w = 0) ∧ (∀ a, (VS D).hT (D.sp.hypF a) w = 0) ∧ (VS D).hT D.sp.zm w = 0} add_mem' := by`. Introduce and unpack `x y ⟨hx1, hx2, hx3⟩ ⟨hy1, hy2, hy3⟩`. Conclude with `⟨fun a => by rw [map_add, hx1, hy1, add_zero], fun a => by rw [map_add, hx2, hy2, add_zero], by rw [map_add, hx3, hy3, add_zero]⟩`.
+
+Use the proof step `zero_mem' := ⟨fun a => map_zero _, fun a => map_zero _, map_zero _⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `q x ⟨hx1, hx2, hx3⟩`. Conclude with `⟨fun a => by rw [hsmR, hx1, mul_zero], fun a => by rw [hsmR, hx2, mul_zero], by rw [hsmR, hx3, mul_zero]⟩ }`. Set `A0 : Submodule ℤ (VS D).V` to `P ⊓ Wq.restrictScalars ℤ`.
+
+Establish `hA0 : A0.FG` using `by haveI := isNoetherian_of_fg_of_noetherian P hP`. Establish `hfg : (A0.comap P.subtype).FG` using `IsNoetherian.noetherian _`. Use `hfg.map P.subtype` as an intermediate fact. Rewrite `this` using `[Submodule.map_comap_subtype, inf_of_le_right (inf_le_left : A0 ≤ P)]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `hA0`.
+
+Set `U : Submodule ℚ (VS D).V` to `Submodule.span ℚ (s : Set (VS D).V)`. Use `haveI : FiniteDimensional ℚ U := FiniteDimensional.span_finset ℚ s`. Establish `hA0U : ∀ w ∈ A0, w ∈ U` using `fun w hw => by`. Rewrite `hw` using `[← hs]`. Conclude with `Submodule.span_le_restrictScalars ℤ ℚ _ hw`.
+
+Establish `hUle : U ≤ Wq`. Use `Submodule.span_le.mpr fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ∈ A0`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span hx`.
+
+Conclude with `(Submodule.mem_inf.mp hx').2`. Set `B : LinearMap.BilinForm ℚ U` to `LinearMap.mk₂ ℚ (fun u v : U => (Algebra.trace ℚ D.host.E ((VS D).hT u v) + Algebra.trace ℚ D.host.E ((VS D).hT v u)) / 2) (fun m1 m2 n => by simp only [Submodule.coe_add, map_add, LinearMap.add_apply]; ring) (fun q m n => by simp only [Submodule.coe_smul, hsmL, hsmR, htr, smul_e …`. Establish `hS : ∀ x y, B x y = B y x` using `fun x y => by`. Simplify using `only [B, LinearMap.mk₂_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpos : ∀ v, v ≠ 0 → 0 < B v v`. Introduce `v hv`. Take `⟨h1, h2, h3⟩` from `hUle v.2`. Use `hW D v h1 h2 h3 (fun h => hv (Subtype.ext h))` as an intermediate fact. Simplify using `only [B, LinearMap.mk₂_apply]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Set `A : Submodule ℤ U` to `A0.comap (U.subtype.restrictScalars ℤ)`. Establish `hA : A.FG`. Use `Submodule.fg_of_fg_map_injective (U.subtype.restrictScalars ℤ) Subtype.val_injective ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_comap_eq_self (fun w hw => ⟨⟨w, hA0U w hw⟩, rfl⟩)]`.
+
+Conclude with `⟨s, hs⟩`. Establish `hfin` using `finite_le_of_posDef B hS hpos A hA (Algebra.trace ℚ D.host.E c)`. Use `(hfin.image U.subtype).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hwP, h1, h2, h3, hc⟩`. Establish `hwA0 : w ∈ A0` using `Submodule.mem_inf.mpr ⟨hwP, ⟨h1, h2, h3⟩⟩`.
+
+Use `⟨⟨w, hA0U w hwA0⟩, ⟨hwA0, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [B, LinearMap.mk₂_apply, Subtype.coe_mk, hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem defFinW_of (hW : WPos) : DefFinW := by
   intro D P hP c
   classical

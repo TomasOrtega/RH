@@ -30,33 +30,51 @@ noncomputable def Pplus (jp : ℕ) (y : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     (scalZ N r D.T.t (Fin.last D.T.t)) (scalS N r D.T.t (Fin.last D.T.t))
     (D.LL.deg D.uPos - jp) (D.B - jp) D.zPlus y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Pall_eq (j : Fin D.T.t → ℕ) (jp : ℕ) (y : MvPolynomial (BVar N r D.T.t) ℚ_[p]) :
     D.Pall p j jp y = Pplus p D jp (PL p D (List.finRange D.T.t) j jp y) := rfl
 
 variable {p D}
 
+/- English proof (translation)
+Simplify using `only [wv, chainEmb, Sum.inl.injEq, Prod.mk.injEq, and_true]`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finPos_pos_val hB, Fin.coe_castSucc, letterAt_pos_val hB]`.
+-/
 theorem wv_chain (hB : D.BlockOK) (i : Fin D.T.t) (c : Fin r) :
     wv D i c = chainEmb N r D.T.t (D.letterAt (D.T.pos i), c) := by
   simp only [wv, chainEmb, Sum.inl.injEq, Prod.mk.injEq, and_true]
   apply Fin.ext
   rw [finPos_pos_val hB, Fin.coe_castSucc, letterAt_pos_val hB]
 
+/- English proof (translation)
+Simplify using `only [ev, chainEmb, Sum.inl.injEq, Prod.mk.injEq, and_true]`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finPos_succ_val hB, Fin.coe_castSucc, letterAt_succ_val hB]`.
+-/
 theorem ev_chain (hB : D.BlockOK) (i : Fin D.T.t) (c : Fin r) :
     ev D i c = chainEmb N r D.T.t (D.letterAt (D.T.pos i + 1), c) := by
   simp only [ev, chainEmb, Sum.inl.injEq, Prod.mk.injEq, and_true]
   apply Fin.ext
   rw [finPos_succ_val hB, Fin.coe_castSucc, letterAt_succ_val hB]
 
+/- English proof (translation)
+Introduce `x y h`. Simplify using `only [chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] at h`. Conclude with `Prod.ext h.1 h.2`.
+-/
 theorem chainEmb_inj : Function.Injective (chainEmb N r D.T.t) := by
   intro x y h
   simp only [chainEmb, Sum.inl.injEq, Prod.mk.injEq, Fin.castSucc_inj] at h
   exact Prod.ext h.1 h.2
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx⟩`. Simplify using `only [chainEmb, xiVar, Sum.inl.injEq, Prod.mk.injEq] at hx`. Conclude with `(Fin.castSucc_lt_last x.1).ne hx.1`.
+-/
 theorem xi_notin (c : Fin r) : xiVar N r D.T.t c ∉ Set.range (chainEmb N r D.T.t) := by
   rintro ⟨x, hx⟩
   simp only [chainEmb, xiVar, Sum.inl.injEq, Prod.mk.injEq] at hx
   exact (Fin.castSucc_lt_last x.1).ne hx.1
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul _ _ hm)`. Rewrite `ha` using `[MvPolynomial.support_rename_of_injective chainEmb_inj]`. Take `⟨m1, hm1, rfl⟩` from `Finset.mem_image.mp ha`. Conclude with `⟨m1, hm1, b, hb, rfl⟩`.
+-/
 theorem supp_gen {y : MvPolynomial (Fin N × Fin r) ℚ_[p]} {g : MvPolynomial (BVar N r D.T.t) ℚ_[p]}
     {mon : BVar N r D.T.t →₀ ℕ} (hm : mon ∈ (rename (chainEmb N r D.T.t) y * g).support) :
     ∃ m1 ∈ y.support, ∃ m2 ∈ g.support, mon = Finsupp.mapDomain (chainEmb N r D.T.t) m1 + m2 := by
@@ -66,6 +84,11 @@ theorem supp_gen {y : MvPolynomial (Fin N × Fin r) ℚ_[p]} {g : MvPolynomial (
   obtain ⟨m1, hm1, rfl⟩ := Finset.mem_image.mp ha
   exact ⟨m1, hm1, b, hb, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `(Submodule.mem_inf.mp hg).1`. Rewrite `h1` using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Establish `h2` using `h1 hm2`. Use `⟨fun v hv => ?_, h2.2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Take `⟨c, hc⟩` from `h2.1 v (Finsupp.mem_support_iff.mpr hne)`. Conclude with `hv c hc`.
+-/
 theorem xi_supp {b : ℕ} {g : MvPolynomial (BVar N r D.T.t) ℚ_[p]} (hg : g ∈ XiPolZ p N r D.T.t b)
     {m2 : BVar N r D.T.t →₀ ℕ} (hm2 : m2 ∈ g.support) :
     (∀ v, (∀ c, v ≠ xiVar N r D.T.t c) → m2 v = 0) ∧ ∑ c, m2 (xiVar N r D.T.t c) = b := by

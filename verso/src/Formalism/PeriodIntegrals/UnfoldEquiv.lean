@@ -32,6 +32,11 @@ def R1cond (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : Prop :=
     ∀ i, r (eN k (n + c) (n + i)) - eN k (n + c) (n + i) ∈ Ufl k n c i
 
 variable {k n c} in
+/- English proof (translation)
+Use `⟨fun i v hv => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.mul_apply]`. Conclude with `hr.1 i _ (hs.1 i v hv)`. Rewrite using `[LinearEquiv.mul_apply, hs.2.1, hr.2.1]`. Rewrite using `[LinearEquiv.mul_apply]`.
+
+Establish `h1 : r (s (PI.UnfoldEquiv.Loc.eN k (n + c) (n + i))) - PI.UnfoldEquiv.Loc.eN k (n + c) (n + i) = r (s (PI.UnfoldEquiv.Loc.eN k (n + c) (n + i)) - PI.UnfoldEquiv.Loc.eN k (n + c) (n + i)) + (r (PI.UnfoldEquiv.Loc.eN k (n + c) (n + i)) - PI.UnfoldEquiv.Loc.eN k (n + c) (n + i))`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1]`. Conclude with `Submodule.add_mem _ (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)`.
+-/
 theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr : R1cond k n c r) (hs : R1cond k n c s) :
     R1cond k n c (r * s) := by
   refine ⟨fun i v hv => ?_, ?_, fun i => ?_⟩
@@ -46,6 +51,9 @@ theorem R1cond.mul {r s : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hr
     rw [h1]
     exact Submodule.add_mem _ (hr.1 i _ (hs.2.2 i)) (hr.2.2 i)
 
+/- English proof (translation)
+Use `⟨fun i v hv => hv, rfl, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[show (1 : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) (eN k (n + c) (n + i)) = eN k (n + c) (n + i) from rfl, sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem R1cond_one : R1cond k n c 1 := by
   refine ⟨fun i v hv => hv, rfl, fun i => ?_⟩
   rw [show (1 : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) (eN k (n + c) (n + i)) =

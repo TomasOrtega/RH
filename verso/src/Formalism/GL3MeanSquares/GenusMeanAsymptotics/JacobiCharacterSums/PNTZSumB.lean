@@ -8,6 +8,29 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Take `⟨A, B, C, h⟩` from `h`. Use `⟨max A 1, max B 0, max C 1, le_max_right _ _, le_max_right _ _, le_max_right _ _, ?_⟩` and prove the remaining obligations. Introduce `M _ T v S hM hT hS hsp`. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hMT : (6 : ℝ) ≤ (M : ℝ) * T` using `by nlinarith`.
+
+Use `set ℓ : ℝ := Real.log ((M : ℝ) * T) with hℓ`. Establish `hℓ1 : 1 ≤ ℓ`. Rewrite using `[hℓ, Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hℓ0 : 0 < ℓ` using `by linarith`. Break down `S.eq_empty_or_nonempty with rfl | ⟨p0, hp0⟩` into its components or cases. Simplify using `only [card_empty, Nat.cast_zero]`. Establish `: 0 < max C 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Check the signs of the components of the expression.
+
+Establish `hv : 0 ≤ v`. Take `⟨_, h2, h3, _⟩` from `hS p0 hp0`. Establish `: 0 ≤ ℓ * (1 - p0.2.re)` using `mul_nonneg hℓ0.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set σ : ℝ := max (1 / 2) (1 - v / ℓ) with hσ`.
+
+Establish `hσ1 : σ ≤ 1`. Apply `max_le (by norm_num)` to reduce the goal to its premises. Establish `: 0 ≤ v / ℓ` using `div_nonneg hv hℓ0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hσ2 : 1 - σ ≤ v / ℓ`.
+
+Use `le_max_right (1 / 2 : ℝ) (1 - v / ℓ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `h M T σ S hM hT (le_max_left _ _) (by`. Introduce `p hp`. Take `⟨h1, h2, h3, h4, h5⟩` from `hS p hp`.
+
+Use `⟨max_le h1 ?_, h4, h5⟩` and prove the remaining obligations. Establish `: 1 - p.2.re ≤ v / ℓ` using `by rw [le_div_iff₀ hℓ0]; linarith`. Use the proof step `linarith) hsp`. Use `key.trans ?_` and prove the remaining obligations. Establish `e1 : ((M : ℝ) * T) ^ (A * (1 - σ)) ≤ Real.exp (max A 1 * v)`.
+
+Rewrite using `[Real.rpow_def_of_pos (by linarith)]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h1 : A * (1 - σ) ≤ max A 1 * (v / ℓ)`. Establish `hA0 : 0 ≤ max A 1` using `le_trans zero_le_one (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ℓ ^ B ≤ ℓ ^ (max B 0)` using `Real.rpow_le_rpow_of_exponent_le hℓ1 (le_max_left _ _)`. Establish `p1 : 0 ≤ ((M : ℝ) * T) ^ (A * (1 - σ))` using `Real.rpow_nonneg (by linarith) _`. Establish `p2 : 0 ≤ ℓ ^ B` using `Real.rpow_nonneg hℓ0.le _`. Establish `hC0 : 0 ≤ max C 1` using `le_trans zero_le_one (le_max_right _ _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ p2` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) p1`. Use `_ ≤ max C 1 * Real.exp (max A 1 * v) * ℓ ^ (max B 0) := by`. Apply `mul_le_mul _ e2 p2 (by positivity)` to reduce the goal to its premises.
+
+Conclude with `mul_le_mul_of_nonneg_left e1 hC0`.
+-/
 theorem density_norm (h : LogDensityM) :
     ∃ a B C : ℝ, 1 ≤ a ∧ 0 ≤ B ∧ 1 ≤ C ∧
       ∀ (M : ℕ) [NeZero M] (T v : ℝ) (S : Finset (DirichletCharacter ℂ M × ℂ)), 3 ≤ M → 2 ≤ T →
@@ -70,6 +93,15 @@ theorem density_norm (h : LogDensityM) :
         apply mul_le_mul _ e2 p2 (by positivity)
         exact mul_le_mul_of_nonneg_left e1 hC0
 
+/- English proof (translation)
+Establish `hM' : (8 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Establish `hp : (M : ℝ) ≤ (M : ℝ) ^ A₁` using `by conv_lhs => rw [← Real.rpow_one (M : ℝ)]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) hA`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Real.log 8 ≤ Real.log M` using `Real.log_le_log (by norm_num) hM'`. Establish `h2 : Real.log 8 = 3 * Real.log 2`. Rewrite using `[show (8 : ℝ) = 2 ^ 3 by norm_num, Real.log_pow]; norm_num`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Apply `Real.log_le_log hM0` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : (M : ℝ) * ((M : ℝ) ^ A₁ + 3) ≤ (M : ℝ) ^ (A₁ + 2)`. Rewrite using `[Real.rpow_add hM0, show ((M : ℝ) ^ (2 : ℝ)) = (M : ℝ) * M by`. Rewrite using `[show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]; ring]`.
+
+Establish `h2 : (M : ℝ) ^ A₁ + 3 ≤ (M : ℝ) ^ A₁ * M` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ell_bounds (M : ℕ) (hM : 8 ≤ M) (A₁ : ℝ) (hA : 1 ≤ A₁) :
     2 ≤ Real.log M ∧ Real.log M ≤ Real.log ((M : ℝ) * ((M : ℝ) ^ A₁ + 3)) ∧
       Real.log ((M : ℝ) * ((M : ℝ) ^ A₁ + 3)) ≤ (A₁ + 2) * Real.log M := by

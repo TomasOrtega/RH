@@ -24,6 +24,13 @@ def sat {V V' : Type*} [AddCommGroup V] [AddCommGroup V'] (f : V →+ V') (B : A
     rintro x ⟨n, hn, hx⟩
     exact ⟨n, hn, by rw [map_neg, smul_neg]; exact B.neg_mem hx⟩
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hA`. Establish `h' : ∀ y : S, ∃ n : ℕ, 0 < n ∧ n • f y ∈ B` using `fun y => h (AddSubgroup.subset_closure y.2)`. Use `choose n hn hy using h'`. Use `⟨∏ y, n y, Finset.prod_pos fun y _ => hn y, fun y hy' => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy' using AddSubgroup.closure_induction with`.
+
+Consider the case `mem x hx`. Take `⟨c, hc⟩ : n ⟨x, hx⟩ ∣ ∏ y, n y` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ _)`. Rewrite using `[hc, mul_comm, mul_smul]`. Conclude with `B.nsmul_mem (hy ⟨x, hx⟩) _`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`. Conclude with `B.add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg, smul_neg]`. Conclude with `B.neg_mem hx`.
+-/
 theorem uniform_of_fg {V V' : Type*} [AddCommGroup V] [AddCommGroup V'] (f : V →+ V') (A : AddSubgroup V)
     (B : AddSubgroup V') (hA : A.FG) (h : A ≤ sat f B) : ∃ R : ℕ, 0 < R ∧ ∀ y ∈ A, R • f y ∈ B := by
   obtain ⟨S, rfl⟩ := hA
@@ -39,6 +46,13 @@ theorem uniform_of_fg {V V' : Type*} [AddCommGroup V] [AddCommGroup V'] (f : V �
   | add x y _ _ hx hy => rw [map_add, smul_add]; exact B.add_mem hx hy
   | neg x _ hx => rw [map_neg, smul_neg]; exact B.neg_mem hx
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℤ κ` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic κ)`. Take `⟨d, hd, hi⟩` from `halg.exists_integral_multiple`. Break down `Int.natAbs_eq d with h | h` into its components or cases. Use `⟨d.natAbs, ⟨d • κ, hi⟩, Int.natAbs_pos.2 hd, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `d • κ = _`.
+
+Rewrite using `[zsmul_eq_mul]`. Use `conv_lhs => rw [h]`. Rewrite using `[Int.cast_natCast]`. Use `⟨d.natAbs, -⟨d • κ, hi⟩, Int.natAbs_pos.2 hd, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(d • κ) = _`.
+
+Rewrite using `[zsmul_eq_mul]`. Use `conv_lhs => rw [h]`. Rewrite using `[Int.cast_neg, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_nat_mul_int {K : Type*} [Field K] [NumberField K] (κ : K) :
     ∃ (n : ℕ) (a : 𝓞 K), 0 < n ∧ (a : K) = n * κ := by
   have halg : IsAlgebraic ℤ κ := (IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic κ)
@@ -56,6 +70,15 @@ theorem exists_nat_mul_int {K : Type*} [Field K] [NumberField K] (κ : K) :
     rw [Int.cast_neg, Int.cast_natCast]
     ring
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hst⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hD cc δ hc`. Establish `hA : A ∈ Submodule.span D.host.K (Set.range b)` using `by rw [hb.2]; trivial`. Take `⟨κ, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hA`. Establish `e : w • embV D (tor0 D cc δ) (∑ i, κ i • b i) = ∑ i, (D.host.φ₀ (κ i : D.host.E) * w) • embV D (tor0 D cc δ) (b i)`. Use function extensionality and compare the values at `τ s t`.
+
+Establish `h1 : ∀ i, (κ i • b i) s t = (κ i : D.host.E) * b i s t` using `fun i => rfl`. Establish `h2` using `hD.1 τ`. Simplify using `only [embV, tor0, Pi.smul_apply, Finset.sum_apply, Matrix.sum_apply, h1, map_sum, map_mul, h2, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e]`.
+
+Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨n, a, hn, ha⟩` from `exists_nat_mul_int (κ i)`. Use `⟨n, hn, AddSubgroup.subset_closure ⟨_, hst a w hw, i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.id_apply, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, ha]`. Use `congr 1`.
+
+Use `push_cast`. Rewrite using `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_nsmul_mem (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) {N N' r : ℕ}
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (hb : OnB D b) (w : ℂ) (hw : w ∈ lamOf D cc δ)
     (A : Matrix (Fin N') (Fin N) D.host.E) :
@@ -81,6 +104,11 @@ theorem exists_nsmul_mem (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (�
   rw [map_mul, map_natCast]
   ring
 
+/- English proof (translation)
+Introduce `D hD cc δ hc N N' m r L L' b hb hfg`. Use `uniform_of_fg (padL D m).toAddMonoidHom _ _ hfg ?_` and prove the remaining obligations. Rewrite using `[La, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨w, hw, A, -, rfl⟩`. Take `⟨n, hn, h⟩` from `exists_nsmul_mem D hD cc δ hc b hb w hw (padM D m A)`.
+
+Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `n • pad D m _ ∈ _`. Rewrite using `[pad_smul, pad_embV D _ (fun τ => map_zero (embT D τ))]`. Conclude with `h`.
+-/
 theorem nsmul_pad_mem : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' m r : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (b : Fin r → Matrix (Fin N') (Fin (N + m)) D.host.E), OnB D b → (La D (tor0 D cc δ) L L').FG → ∃ R : ℕ, 0 < R ∧ ∀ y ∈ La D (tor0 D cc δ) L L', R • pad D m y ∈ LaB D (tor0 D cc δ) b := by
   intro D hD cc δ hc N N' m r L L' b hb hfg
   refine uniform_of_fg (padL D m).toAddMonoidHom _ _ hfg ?_

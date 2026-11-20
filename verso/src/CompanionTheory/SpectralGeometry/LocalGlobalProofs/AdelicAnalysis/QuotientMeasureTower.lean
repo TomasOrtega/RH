@@ -13,6 +13,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   {G₁ : Type} [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁]
   [SecondCountableTopology G₁] [MeasurableSpace G₁] [BorelSpace G₁]
 
+/- English proof (translation)
+Rewrite using `[(measurePreserving_mul_right μ₁ u₀).setLIntegral_comp_emb (MeasurableEquiv.mulRight u₀).measurableEmbedding f 𝓕₁]`. Establish `h2 : IsFundamentalDomain Γ₁ ((Equiv.mulRight u₀) '' 𝓕₁) μ₁` using `h𝓕₁.image_of_equiv (Equiv.mulRight u₀) (by`. Rewrite using `[Equiv.mulRight_symm]`. Conclude with `(measurePreserving_mul_right μ₁ u₀⁻¹).quasiMeasurePreserving)`. Use the proof step `(Equiv.refl _) (fun g => by`.
+
+Introduce `x`. Simplify using `only [Equiv.coe_mulRight, Equiv.refl_apply, Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Conclude with `h2.setLIntegral_eq h𝓕₁ f (fun g x => by`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hf g g.2 x)`.
+-/
 theorem setLIntegral_mul_right_eq (μ₁ : Measure G₁) [SFinite μ₁] [μ₁.IsMulLeftInvariant]
     [μ₁.IsMulRightInvariant] (Γ₁ : Subgroup G₁) [Countable Γ₁] (𝓕₁ : Set G₁)
     (h𝓕₁ : IsFundamentalDomain Γ₁ 𝓕₁ μ₁) (f : G₁ → ℝ≥0∞)
@@ -32,6 +37,15 @@ theorem setLIntegral_mul_right_eq (μ₁ : Measure G₁) [SFinite μ₁] [μ₁.
     rw [Subgroup.smul_def, smul_eq_mul]
     exact hf g g.2 x)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, v⟩ ⟨q', v'⟩ h`. Establish `hval : ι (v : G₁)⁻¹ * r q = ι (v' : G₁)⁻¹ * r q'` using `congrArg Subtype.val h`. Take `⟨q₀, -, huniq⟩` from `hQ _ (Γ.mul_mem (hΓ _ (Γ₁.inv_mem v.2)) (hr q))`. Establish `hq : q = q'`.
+
+Rewrite using `[huniq q ⟨(v : G₁)⁻¹, Γ₁.inv_mem v.2, rfl⟩, huniq q' ⟨(v' : G₁)⁻¹, Γ₁.inv_mem v'.2, hval⟩]`. Substitute `hq` using the available equality. Establish `h3 : ι (v : G₁)⁻¹ = ι (v' : G₁)⁻¹` using `mul_right_cancel hval`. Establish `hv : (v : G₁) = v'` using `inv_injective (hι h3)`. Simplify using `only [Prod.mk.injEq, true_and]`.
+
+Conclude with `Subtype.ext hv`. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨q, ⟨u, hu, hγu⟩, -⟩` from `hQ γ hγ`. Use `⟨(q, ⟨u⁻¹, Γ₁.inv_mem hu⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show ι (u⁻¹)⁻¹ * r q = γ`. Rewrite using `[inv_inv]`. Conclude with `hγu.symm`.
+-/
 theorem bijective_pair (ι : G₁ →* G) (hι : Function.Injective ι)
     (Γ : Subgroup G) (Γ₁ : Subgroup G₁) (hΓ : ∀ u ∈ Γ₁, ι u ∈ Γ)
     {Q : Type} (r : Q → G) (hr : ∀ q, r q ∈ Γ)
@@ -57,6 +71,25 @@ theorem bijective_pair (ι : G₁ →* G) (hι : Function.Injective ι)
     rw [inv_inv]
     exact hγu.symm
 
+/- English proof (translation)
+Establish `hιm : Measurable ι` using `hιc.measurable`. Establish `hm1 : Measurable (fun p : G × G₁ => ι p.2 * p.1)` using `((hιc.comp continuous_snd).mul continuous_fst).measurable`. Establish `hm2 : Measurable (fun p : G₁ × G => (ι p.1)⁻¹ * p.2)` using `((hιc.comp continuous_fst).inv.mul continuous_snd).measurable`. Establish `hm3 : Measurable (fun p : G × G₁ => (ι p.2)⁻¹ * p.1)` using `((hιc.comp continuous_snd).inv.mul continuous_fst).measurable`. Establish `hWm : Measurable (fun g : G => ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * g) ∂μ₁)` using `(hw.comp hm3).lintegral_prod_right'`.
+
+Establish `hFm : Measurable (fun g : G => ψ g * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * g) ∂μ₁)` using `hψ.mul hWm`. Establish `hsumW : ∀ x : G, ∑' v : Γ₁, ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * (ι (v : G₁)⁻¹ * x)) ∂μ₁ = 1`. Introduce `x`. Establish `h0 : ∫⁻ y, w ((ι y)⁻¹ * x) ∂μ₁ = 1`. Establish `h` using `lintegral_inv_eq_self (μ := μ₁) (fun y => w (ι y * x))`.
+
+Simplify using `only [map_inv] at h`. Rewrite using `[h, hw1 x]`. Rewrite using `[← h0, h𝓕₁.lintegral_eq_tsum'' (fun y => w ((ι y)⁻¹ * x))]`. Use `tsum_congr fun v => lintegral_congr fun u => ?_` and prove the remaining obligations. Simplify using `only [Subgroup.smul_def, smul_eq_mul, map_mul, map_inv, mul_inv_rev, mul_assoc]`.
+
+Establish `key : ∀ u : G₁, ∫⁻ g, w g * ψ (ι u * g) ∂μ = ∫⁻ g, w ((ι u)⁻¹ * g) * ψ g ∂μ`. Introduce `u`. Establish `h` using `lintegral_mul_left_eq_self (μ := μ) (fun x => w ((ι u)⁻¹ * x) * ψ x) (ι u)`. Simplify using `only [inv_mul_cancel_left] at h`. Conclude with `h`.
+
+Establish `hpt : ∀ h : G, ∑' γ : Γ, ψ (γ • h) * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * (γ • h)) ∂μ₁ = ∑' q, ψ (r q * h)`. Introduce `h`. Set `E` to `Equiv.ofBijective _ (bijective_pair ι hι Γ Γ₁ hΓ r hr hQ)`. Set `F : G → ℝ≥0∞` to `fun x => ψ x * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * x) ∂μ₁`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.tsum_mul_left]`. Use `tsum_congr fun v => ?_` and prove the remaining obligations. Use `show ψ ((ι (v : G₁)⁻¹ * r q) * h) * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * ((ι (v : G₁)⁻¹ * r q) * h)) ∂μ₁ = _`. Rewrite using `[mul_assoc, hinv _ (Γ₁.inv_mem v.2)]`.
+
+Use `_ = ∑' q, ψ (r q * h) := by simp only [hsumW, mul_one]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul (w g) (f := fun u => ψ (ι u * g)) (hψ.comp (hιm.mul_const g))]`.
+
+Use `_ = ∫⁻ u in 𝓕₁, ∫⁻ g, w g * ψ (ι u * g) ∂μ ∂μ₁ := lintegral_lintegral_swap ((hw.comp measurable_fst).mul (hψ.comp hm1)).aemeasurable`. Use `_ = ∫⁻ u in 𝓕₁, ∫⁻ g, w ((ι u)⁻¹ * g) * ψ g ∂μ ∂μ₁ := lintegral_congr fun u => key u`. Use `_ = ∫⁻ g, ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * g) * ψ g ∂μ₁ ∂μ := lintegral_lintegral_swap ((hw.comp hm2).mul (hψ.comp measurable_snd)).aemeasurable`. Use `_ = ∫⁻ g, ψ g * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * g) ∂μ₁ ∂μ := by`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_mul_const (ψ g) (f := fun u => w ((ι u)⁻¹ * g)) (hw.comp (hιm.inv.mul_const g))]`. Conclude with `mul_comm _ _`. Use `_ = ∑' γ : Γ, ∫⁻ h in 𝓕, ψ (γ • h) * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * (γ • h)) ∂μ₁ ∂μ := h𝓕.lintegral_eq_tsum'' _`. Use `_ = ∫⁻ h in 𝓕, ∑' γ : Γ, ψ (γ • h) * ∫⁻ u in 𝓕₁, w ((ι u)⁻¹ * (γ • h)) ∂μ₁ ∂μ := (lintegral_tsum fun γ : Γ => (hFm.comp (measurable_const_mul (γ : G))).aemeasurable).symm`. Use `_ = ∫⁻ h in 𝓕, ∑' q, ψ (r q * h) ∂μ := lintegral_congr fun h => hpt h`.
+-/
 theorem lintegral_sum_cosets_eq (ι : G₁ →* G) (hιc : Continuous ι) (hι : Function.Injective ι)
     (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant]
     (μ₁ : Measure G₁) [SFinite μ₁] [μ₁.IsMulLeftInvariant] [μ₁.IsInvInvariant]
@@ -129,6 +162,17 @@ theorem lintegral_sum_cosets_eq (ι : G₁ →* G) (hιc : Continuous ι) (hι :
 
 end
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ G₁ _ _ _ _ _ _ _ ι hιce μ _ μ₁ _ Γ _ Γ₁ _ 𝓕 𝓕₁ h𝓕 h𝓕₁ hfin hΓ Q _ r hr hQ φ hφ hinv`. Use `haveI : T2Space G₁ := hιce.isEmbedding.t2Space`. Take `⟨hne, hright, hinvinv⟩` from `GlobalTheory.CompanionTheory.SW.LatticeUnimod.unimodular_of_isFundamentalDomain G₁ Γ₁ μ₁ 𝓕₁ h𝓕₁ hfin`. Use `haveI := hright`. Use `haveI := hinvinv`.
+
+Take `⟨w, hw, hw1⟩` from `GlobalTheory.T.closed_subgroup_quotient_measure G G₁ ι hιce μ₁`. Establish `hιc : Continuous ι` using `hιce.continuous`. Establish `hι : Function.Injective ι` using `hιce.injective`. Establish `hm : Measurable (fun p : G × G₁ => φ (ι p.2 * p.1))` using `hφ.comp ((hιc.comp continuous_snd).mul continuous_fst).measurable`. Establish `hAm : Measurable (fun g : G => ∫⁻ u in 𝓕₁, φ (ι u * g) ∂μ₁)` using `hm.lintegral_prod_right'`.
+
+Establish `hAinv : ∀ (v : G₁) (g : G), ∫⁻ u in 𝓕₁, φ (ι u * (ι v * g)) ∂μ₁ = ∫⁻ u in 𝓕₁, φ (ι u * g) ∂μ₁`. Introduce `v g`. Establish `h` using `setLIntegral_mul_right_eq μ₁ Γ₁ 𝓕₁ h𝓕₁ (fun u => φ (ι u * g)) (fun γ hγ u => by`. Simplify using `only [map_mul, mul_assoc]`. Conclude with `hinv γ hγ _) v`.
+
+Simplify `h` using `only [map_mul, mul_assoc]`. Establish `hA` using `lintegral_sum_cosets_eq ι hιc hι μ μ₁ Γ Γ₁ 𝓕 𝓕₁ h𝓕 h𝓕₁ hΓ r hr hQ w hw hw1 φ hφ hinv`. Establish `hB` using `lintegral_sum_cosets_eq ι hιc hι μ μ₁ Γ Γ₁ 𝓕 𝓕₁ h𝓕 h𝓕₁ hΓ r hr hQ w hw hw1 (fun g => (μ₁ 𝓕₁)⁻¹ * ∫⁻ u in 𝓕₁, φ (ι u * g) ∂μ₁) (hAm.const_mul _) (fun u _ g => by simp only [hAinv])`. Rewrite using `[hA, hB]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `only [hAinv]`. Rewrite using `[setLIntegral_const, mul_comm, ← mul_assoc, ENNReal.mul_inv_cancel hne hfin.ne, one_mul]`.
+-/
 theorem lintegral_sum_cosets_average : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (G₁ : Type) [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [MeasurableSpace G₁] [BorelSpace G₁] (ι : G₁ →* G), IsClosedEmbedding ι → ∀ (μ : Measure G) [μ.IsHaarMeasure] (μ₁ : Measure G₁) [μ₁.IsHaarMeasure] (Γ : Subgroup G) [Countable Γ] (Γ₁ : Subgroup G₁) [Countable Γ₁] (𝓕 : Set G) (𝓕₁ : Set G₁), IsFundamentalDomain Γ 𝓕 μ → IsFundamentalDomain Γ₁ 𝓕₁ μ₁ → μ₁ 𝓕₁ < ⊤ → (∀ u ∈ Γ₁, ι u ∈ Γ) → ∀ (Q : Type) [Countable Q] (r : Q → G), (∀ q, r q ∈ Γ) → (∀ γ ∈ Γ, ∃! q, ∃ u ∈ Γ₁, γ = ι u * r q) → ∀ φ : G → ℝ≥0∞, Measurable φ → (∀ u ∈ Γ₁, ∀ g, φ (ι u * g) = φ g) → ∫⁻ h in 𝓕, ∑' q, φ (r q * h) ∂μ = ∫⁻ h in 𝓕, ∑' q, (μ₁ 𝓕₁)⁻¹ * ∫⁻ u in 𝓕₁, φ (ι u * (r q * h)) ∂μ₁ ∂μ := by
   intro G _ _ _ _ _ _ _ _ G₁ _ _ _ _ _ _ _ ι hιce μ _ μ₁ _ Γ _ Γ₁ _ 𝓕 𝓕₁ h𝓕 h𝓕₁ hfin hΓ Q _ r hr hQ φ hφ hinv
   haveI : T2Space G₁ := hιce.isEmbedding.t2Space

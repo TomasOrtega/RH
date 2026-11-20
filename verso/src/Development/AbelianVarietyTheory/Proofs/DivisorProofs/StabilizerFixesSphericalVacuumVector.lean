@@ -29,6 +29,13 @@ namespace GlobalTheory.UnrVacFixV
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨hkK, hU⟩` from `hk`. Establish `hL` using `((hK k).1 hkK).2`. Establish `hinv : mat k⁻¹ * mat k = 1` using `Units.inv_mul k.1`. Establish `hU' : At (evFin F v) (mat k⁻¹ - 1)`. Introduce `u hu`.
+
+Establish `h0 : u • (mat k - 1) = 0` using `hU u hu`. Establish `: mat k⁻¹ - 1 = -(mat k⁻¹ * (mat k - 1))`. Rewrite using `[Matrix.mul_sub, hinv, Matrix.mul_one, neg_sub]`. Rewrite using `[this, smul_neg, ← Matrix.mul_smul, h0, Matrix.mul_zero, neg_zero]`. Use `⟨hU, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.VacFixKAt.mulVec_mem_latAt X v _ hU (fun z hz => (hL z hz).1) hz`. Establish `hL' : ∀ z ∈ latHat X, mat k⁻¹ *ᵥ z ∈ latHat X` using `fun z hz => (hL z hz).2`. Conclude with `GlobalTheory.VacFixKAt.mulVec_mem_latAt X v _ hU' hL' hz`.
+-/
 theorem mem_latKAt_of_isStab {σ : E →ₐ[F] E} (B : Base F E) {n : ℕ} (X : Spc F E n) {K : Subgroup (UA σ X.J)}
     (hK : IsStab B K) (v : Pl F) {k : UA σ X.J} (hk : k ∈ KAt K (evFin F v)) : k ∈ GlobalTheory.InertSph.KAt σ X v := by
   obtain ⟨hkK, hU⟩ := hk
@@ -45,6 +52,17 @@ theorem mem_latKAt_of_isStab {σ : E →ₐ[F] E} (B : Base F E) {n : ℕ} (X : 
   · have hL' : ∀ z ∈ latHat X, mat k⁻¹ *ᵥ z ∈ latHat X := fun z hz => (hL z hz).2
     exact GlobalTheory.VacFixKAt.mulVec_mem_latAt X v _ hU' hL' hz
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v θ _ hvac φ hφ hfix`. Establish `hat : ∀ γ ∈ latAtV G.V G.W v, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V G.W v).1`. Set `cf : latAtV G.V G.W v → ℂ` to `fun γ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ)`. Establish `hloc : ∀ f ∈ SB (Fin a × Fin (a + a') → Fv F v), (∀ γ ∈ latAtV G.V G.W v, Acts (evFin F v) (G.M.co.rho B.ψ γ) f (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • f)) → ∀ γ : latAtV G.V G.W v, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M.co v γ) f = cf γ • f := by`. Introduce `f hf h γ`.
+
+Conclude with `GlobalTheory.TensUniq.eq_of_tens_eq v f _ _ hf fun r hr => (GlobalTheory.VacBridge.rho_acts_locCo G.M.co B.ψ v γ (hat γ γ.2) f r hr).symm.trans (h γ γ.2 r hr)`. Establish `hsd : ∀ z, z ∈ (latAtV G.V G.W v).map (GlobalTheory.LatVac.locCo G.M.co v) ↔ ∀ l ∈ (latAtV G.V G.W v).map (GlobalTheory.LatVac.locCo G.M.co v), GlobalTheory.LatVac.psiAt B.ψ v (z.1 ⬝ᵥ l.2 - l.1 ⬝ᵥ z.2) = 1` using `GlobalTheory.LatVac.DualLoc.map_selfDual v G.M.co B.ψ (latAtV G.V G.W v) hat (fun z hz => GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B a (a + a') G.V G.W _ _ _ _ hTr.base hTr.geo.hV hTr.geo.hW v z hz)`. Establish `hst : ∀ t ∈ v.adicCompletionIntegers F, ∀ l ∈ (latAtV G.V G.W v).map (GlobalTheory.LatVac.locCo G.M.co v), t • l ∈ (latAtV G.V G.W v).map (GlobalTheory.LatVac.locCo G.M.co v)`. Introduce and unpack `t ht _ ⟨γ, hγ, rfl⟩`. Use `⟨GlobalTheory.LatVac.liftV v t • γ, (GlobalTheory.LatVac.latAtV_at_stable G.V G.W v).2 t ht γ hγ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.LatOpenCpt.locCo_smul, GlobalTheory.LatVac.evFin_liftV]`. Establish `hbd : ∃ c : Fv F v, c ≠ 0 ∧ ∀ l ∈ (latAtV G.V G.W v).map (GlobalTheory.LatVac.locCo G.M.co v), ∀ i, c * l.1 i ∈ v.adicCompletionIntegers F`. Take `⟨c, hc0, hc⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded G.V G.W v G.M.co hTr.geo.hV.lat hTr.geo.hW.lat`. Conclude with `⟨c, hc0, by rintro _ ⟨γ, hγ, rfl⟩ i; exact (hc γ hγ i).1⟩`. Establish `hD` using `GlobalTheory.T.exists_second_coordinate_of_orthogonal_selfDual v (GlobalTheory.LatVac.psiAt B.ψ v) _ hsd hst hbd`.
+
+Use `GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt B.ψ v) (fun γ : latAtV G.V G.W v => GlobalTheory.LatVac.locCo G.M.co v γ) cf (fun u hu => ?_) φ (G.M.vac v) (hloc φ hφ hfix) (hloc _ (hTr.geo.hM.vac v).1 hvac) (hTr.geo.hM.vac v).2.1` and prove the remaining obligations. Take `⟨y', γ, hγ, he⟩` from `hD u (by`. Introduce and unpack `y ⟨γ, hγ, he⟩`. Establish `h1` using `hu ⟨γ, hγ⟩ (congrArg Prod.fst he)`. Establish `h2 : (GlobalTheory.LatVac.locCo G.M.co v γ).2 = y` using `congrArg Prod.snd he`.
+
+Simplify using `only at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1)`. Conclude with `⟨⟨γ, hγ⟩, congrArg Prod.fst he⟩`.
+-/
 theorem vac_unique_left : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (θ : 𝓞 E), (θ : E) + σ θ = 1 →
@@ -92,12 +110,20 @@ theorem vac_unique_left : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     exact h1)
   exact ⟨⟨γ, hγ⟩, congrArg Prod.fst he⟩
 
+/- English proof (translation)
+Introduce `P hP`. Rewrite using `[Ideal.ramificationIdx_eq_one_iff]`. Use `infer_instance`.
+-/
 theorem isUnram_of_unramified {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h : Algebra.Unramified (𝓞 F) (𝓞 E)) (v : Pl F) : Formalism.MainNotions.SchurIrreducible.IsUnram (E := E) v := by
   intro P hP
   rw [Ideal.ramificationIdx_eq_one_iff]
   infer_instance
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr K hK v hv k hk`. Establish `hk'` using `mem_latKAt_of_isStab B G.V hK v hk`. Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt (isUnram_of_unramified hTr.base.unram v) with hs | ⟨w, hw⟩` into its components or cases. Take `⟨hSB, -, θ, hθ, hvac⟩` from `hTr.geo.hM.vac v`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupV_pairVW F E σ B a a' G X om om' hTr v k hk'.1 _ hSB`.
+
+Establish `h1` using `GlobalTheory.VacTransportLeft.transport_left F E σ B a a' G X om om' hTr v k hk' θ hθ _ hSB φ₁ hφ₁ hvac hact`. Take `⟨c, rfl⟩` from `vac_unique_left F E σ B a a' G X om om' hTr v θ hθ hvac φ₁ hφ₁ h1`. Establish `hc` using `GlobalTheory.T.split_place_vacuum_eigenvalue_one F E σ B a a' G X om om' hTr v hs hv k hk' c hact`. Rewrite `hact` using `[hc, one_smul]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.T.inert_place_both_stabilisers_fix_vacuum F E σ B a a' G X om om' hTr v w hw hv k hk' 1 (GlobalTheory.InertSph.one_mem_KAt σ G.W v)`.
+-/
 theorem vac_fixed_V : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {a a' : ℕ}
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ K : Subgroup (UA σ G.V.J), IsStab B K → ∀ v : Pl F, v ∉ X.T →

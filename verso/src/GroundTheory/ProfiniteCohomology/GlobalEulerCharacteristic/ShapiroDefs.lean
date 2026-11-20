@@ -21,6 +21,9 @@ def funDiagRepresentation (X : Type*) [MulAction G X] (ρ : Representation k G V
     simp [mul_smul]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem funDiagRepresentation_apply (X : Type*) [MulAction G X] (ρ : Representation k G V) (g : G)
     (F : X → V) (x : X) : funDiagRepresentation X ρ g F x = ρ g (F (g⁻¹ • x)) :=
   rfl

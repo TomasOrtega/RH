@@ -39,24 +39,41 @@ def VacFixOffO (D : D7) : Prop :=
       (∀ i j, (e + cA D e) * (Formalism.L2.Theta.mt T h - 1) i j = 0) →
       om (g, h) f₀ = f₀
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨sglV v 1, rfl, by classical exact Pi.single_eq_same v (1 : v.adicCompletion D.host.F), fun v' hv' => by classical exact Pi.single_eq_of_ne hv' (1 : v.adicCompletion D.host.F)⟩`.
+-/
 theorem placeIdem_sA (v : HeightOneSpectrum (𝓞 D.host.F)) : IsPlaceIdem D v (sA v (1 : v.adicCompletion D.host.F)) :=
   ⟨sglV v 1, rfl, by classical exact Pi.single_eq_same v (1 : v.adicCompletion D.host.F),
     fun v' hv' => by classical exact Pi.single_eq_of_ne hv' (1 : v.adicCompletion D.host.F)⟩
 
+/- English proof (translation)
+Use `(eq_inv_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[← resG_mul (V := V) (ε := ε) hε, inv_mul_cancel, resG_one (V := V) (ε := ε) hε]`.
+-/
 theorem resG_inv {V : HSp D} {ε : AF D.host.F} (hε : IsIdempotentElem ε) (g : GA D V) :
     (resG V ε g)⁻¹ = resG V ε g⁻¹ := by
   refine (eq_inv_of_mul_eq_one_left ?_).symm
   rw [← resG_mul (V := V) (ε := ε) hε, inv_mul_cancel, resG_one (V := V) (ε := ε) hε]
 
+/- English proof (translation)
+Rewrite using `[mt_resG (V := V) (ε := ε) hε]`. Both sides reduce to the same expression.
+-/
 theorem mt_resG' {V : HSp D} {ε : AF D.host.F} (hε : IsIdempotentElem ε) (g : GA D V) :
     Formalism.L2.Theta.mt V (resG V ε g) = 1 + algebraMap (AF D.host.F) (AE D) ε • (Formalism.L2.Theta.mt V g - 1) := by
   rw [mt_resG (V := V) (ε := ε) hε]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mt_resG' hε, add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem mt_resG_sub {V : HSp D} {ε : AF D.host.F} (hε : IsIdempotentElem ε) (g : GA D V) (i j : Fin V.rank) :
     (Formalism.L2.Theta.mt V (resG V ε g) - 1) i j = algebraMap (AF D.host.F) (AE D) ε * (Formalism.L2.Theta.mt V g - 1) i j := by
   rw [mt_resG' hε, add_sub_cancel_left, Matrix.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[he, map_sum, ← Finset.sum_add_distrib, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun PP hPP => ?_` and prove the remaining obligations. Establish `h1 : es PP * phiE (belowPl PP) 1 = es PP` using `idemAt_eps (hes PP hPP)`. Establish `h2 : es PP + cA D (es PP) = phiE (D` using `D) (belowPl PP) 1 := below_of_idemAt (hes PP hPP)`. Establish `h3 : phiE (D` using `D) (belowPl PP) 1 * phiE v 1 = 0 := phiE_orth (hv PP hPP)`.
+
+Express the relevant statement in the definitionally equal form `(es PP + cA D (es PP)) * phiE v 1 = 0`. Rewrite using `[h2, h3]`.
+-/
 theorem eps_orth {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} {es : Formalism.L2.DIV.Pl D.host.E → AE D}
     (hes : ∀ PP ∈ P, Formalism.L2.NTheta.IsIdemAt (es PP) PP) (he : e = ∑ PP ∈ P, es PP) {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hv : ∀ PP ∈ P, belowPl PP ≠ v) :
@@ -69,6 +86,11 @@ theorem eps_orth {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} {es : Fo
   change (es PP + cA D (es PP)) * phiE v 1 = 0
   rw [h2, h3]
 
+/- English proof (translation)
+Establish `hsum : e + cA D e = ∑ Q ∈ P, phiE (D` using `D) (belowPl Q) 1 := by`. Rewrite using `[he, map_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun Q hQ => below_of_idemAt (hes Q hQ)`. Express the relevant statement in the definitionally equal form `phiE (D := D) (belowPl PP) 1 * (e + cA D e) = phiE (D := D) (belowPl PP) 1`. Rewrite using `[hsum, Finset.mul_sum, Finset.sum_eq_single_of_mem PP hPP]`.
+
+Rewrite using `[← phiE_mul, one_mul]`. Introduce `Q hQ hne`. Conclude with `phiE_orth fun h => hne (idemSum_below_inj hes he hc hPP hQ h).symm`.
+-/
 theorem eps_absorb {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} {es : Formalism.L2.DIV.Pl D.host.E → AE D}
     (hes : ∀ PP ∈ P, Formalism.L2.NTheta.IsIdemAt (es PP) PP) (he : e = ∑ PP ∈ P, es PP) (hc : e * cA D e = 0)
     {PP : Formalism.L2.DIV.Pl D.host.E} (hPP : PP ∈ P) :
@@ -83,6 +105,15 @@ theorem eps_absorb {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} {es : 
   · intro Q hQ hne
     exact phiE_orth fun h => hne (idemSum_below_inj hes he hc hPP hQ h).symm
 
+/- English proof (translation)
+Introduce `x hx hf hfi`. Use `set a := algebraMap (AF D.host.F) (AE D) (sA v 1) with ha`. Establish `hx' : (x : AE D) - 1 = a * ((x : AE D) - 1)` using `by linear_combination hx`. Establish `hinf : infPart D a = 0`. Establish `h0 : fstA D.host.F (sA v (1 : v.adicCompletion D.host.F)) = 0` using `rfl`.
+
+Rewrite using `[ha]`. Use `show (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)) (sA v (1 : v.adicCompletion D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul, h0, TensorProduct.zero_tmul]`. Establish `hinfx : infPart D (x : AE D) = 1`. Establish `h1` using `congrArg (infPart D) hx'`.
+
+Rewrite `h1` using `[map_sub, map_mul, hinf, zero_mul, map_one, sub_eq_zero]`. Conclude with `h1`. Establish `hex : (e + cA D e) * (x : AE D) = e + cA D e`. Establish `h2 : (e + cA D e) * ((x : AE D) - 1) = 0` using `by rw [hx', ← mul_assoc, hv, zero_mul]`. Take the linear combination `h2`.
+
+Conclude with `hU x hinfx hf hfi hex`.
+-/
 theorem unrAtV_of_unrOff {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hv : (e + cA D e) * algebraMap (AF D.host.F) (AE D) (sA v 1) = 0) {χ : (AE D)ˣ →* Circle} (hU : UnrOff e χ) :
     WeilFull.UnrAtV (sA v 1) χ := by
@@ -104,11 +135,17 @@ theorem unrAtV_of_unrOff {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)}
     linear_combination h2
   exact hU x hinfx hf hfi hex
 
+/- English proof (translation)
+Establish `hinj` using `Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := AF D.host.F) (B := D.host.E) (algebraMap D.host.F D.host.E).injective`. Conclude with `hinj (by rw [map_zero]; exact h)`.
+-/
 theorem algebraMap_AE_eq_zero {a : AF D.host.F} (h : algebraMap (AF D.host.F) (AE D) a = 0) : a = 0 := by
   have hinj := Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F)
     (A := AF D.host.F) (B := D.host.E) (algebraMap D.host.F D.host.E).injective
   exact hinj (by rw [map_zero]; exact h)
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `congrArg (fun z => evalV D.host.F v (sndA D.host.F z)) h`. Simplify using `only [map_zero] at h2`. Establish `h3 : evalV D.host.F v (sndA D.host.F (sA v (1 : v.adicCompletion D.host.F))) = 1` using `by classical exact Pi.single_eq_same v (1 : v.adicCompletion D.host.F)`. Conclude with `one_ne_zero (h3.symm.trans h2)`.
+-/
 theorem sA_one_ne_zero (v : HeightOneSpectrum (𝓞 D.host.F)) : sA v (1 : v.adicCompletion D.host.F) ≠ 0 := by
   intro h
   have h2 := congrArg (fun z => evalV D.host.F v (sndA D.host.F z)) h
@@ -117,6 +154,11 @@ theorem sA_one_ne_zero (v : HeightOneSpectrum (𝓞 D.host.F)) : sA v (1 : v.adi
     classical exact Pi.single_eq_same v (1 : v.adicCompletion D.host.F)
   exact one_ne_zero (h3.symm.trans h2)
 
+/- English proof (translation)
+Introduce `h2`. Take `⟨e, ε, hs, hε, hse⟩` from `twoSplitIdem D v h2`. Rewrite `hse` using `[placeIdem_eq hε]`. Establish `h0` using `hin e hs`. Rewrite `h0` using `[← hse]`.
+
+Establish `he0 : e = 0`. Establish `: e * (e + cA D e) = e` using `by rw [mul_add, hs.1, hs.2.1, add_zero]`. Rewrite using `[← this, h0]`. Rewrite `hse` using `[he0, map_zero, add_zero]`. Conclude with `sA_one_ne_zero v (algebraMap_AE_eq_zero hse.symm)`.
+-/
 theorem two_not_mem_of_inert {v : HeightOneSpectrum (𝓞 D.host.F)}
     (hin : ∀ e, IsSplitIdem D e → e * algebraMap (AF D.host.F) (AE D) (sA v 1) = 0) : (2 : 𝓞 D.host.F) ∉ v.asIdeal := by
   intro h2
@@ -132,6 +174,27 @@ theorem two_not_mem_of_inert {v : HeightOneSpectrum (𝓞 D.host.F)}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hε : IsIdempotentElem (sA v (1 : v.adicCompletion D.host.F))` using `sA_idem v`. Take `⟨⟨es, hes, hesum⟩, hc⟩` from `he`. Use `set s := algebraMap (AF D.host.F) (AE D) (sA v 1) with hsdef`. Establish `hgv : Lev.finE S (resG S (sA v 1) g) ∈ Formalism.L2.DIV.St βS` using `finE_resG_mem_St (V := S) hε hgS`. Establish `hhv : Lev.finE T (resG T (sA v 1) h) ∈ Formalism.L2.DIV.St βT` using `finE_resG_mem_St (V := T) hε hhT`.
+
+Distinguish the cases in `hunder : ∃ PP ∈ P, belowPl PP = v`. Take `⟨PP, hPP, rfl⟩` from `hunder`. Establish `hab` using `eps_absorb hes hesum hc hPP`. Establish `hg1 : resG S (sA (belowPl PP) 1) g = 1`. Apply `gaExt` to reduce the goal to its premises.
+
+Rewrite using `[mtG_one]`. Use extensionality with `i j`. Use `mt_resG_sub (V := S) hε g i j` as an intermediate fact. Rewrite `this` using `[← hab, mul_assoc, hgP i j, mul_zero]`. Simplify `this` using `[sub_eq_zero]`.
+
+Establish `hh1 : resG T (sA (belowPl PP) 1) h = 1`. Apply `gaExt` to reduce the goal to its premises. Rewrite using `[mtG_one]`. Use extensionality with `i j`. Use `mt_resG_sub (V := T) hε h i j` as an intermediate fact.
+
+Rewrite `this` using `[← hab, mul_assoc, hhP i j, mul_zero]`. Simplify `this` using `[sub_eq_zero]`. Rewrite using `[hg1, hh1, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Use `push Not at hunder`. Establish `horth` using `eps_orth hes hesum hunder`.
+
+Break down `hSOI v _ (placeIdem_sA v) with ⟨PP, hPPv, hPPc⟩ | hin` into its components or cases. Take `⟨e', he', ε', hε', hse'⟩` from `idem_at PP hPPc v hPPv`. Rewrite `hse'` using `[placeIdem_eq hε']`. Establish `hsp : IsSplitIdem D e'` using `he'.1`. Establish `hsum1 : IsIdemSum e' {PP}` using `⟨⟨fun _ => e', by simpa using he', by simp⟩, hsp.2.1⟩`.
+
+Establish `horth' : (e + cA D e) * e' = 0`. Establish `: e' = e' * (e' + cA D e')` using `by rw [mul_add, hsp.1, hsp.2.1, add_zero]`. Rewrite using `[this, hse', mul_comm e', ← mul_assoc, horth, zero_mul]`. Establish `hfac : splitFacO χS χT (detAt e' S (resG S (sA v 1) g)) (detAt e' T (resG T (sA v 1) h)) = 1`. Simplify using `only [splitFacO, unrOff_detAt he' horth' S hgv huT, unrOff_detAt he' horth' T hhv huS, inv_one, mul_one]`.
+
+Establish `hgvi : Lev.finE S (resG S (sA v 1) g)⁻¹ ∈ Formalism.L2.DIV.St βS`. Rewrite using `[map_inv]`. Conclude with `inv_mem hgv`. Establish `hhvi : Lev.finE T (resG T (sA v 1) h)⁻¹ ∈ Formalism.L2.DIV.St βT`. Rewrite using `[map_inv]`.
+
+Conclude with `inv_mem hhv`. Conclude with `fix_split hSL hPM hW hsS hsT he' hf₀ hlat hn (suppAt_resG (V := S) hε g hse') (suppAt_resG (V := T) hε h hse') (isDetAt_detAt hsp.1 S _) (isDetAt_detAt hsp.1 T _) hfac (fun t _ => hLP _ _ (resG_mem_GfC (V := S) hε hgf) (resG_mem_GfC (V := T) hε hhf) hgv hhv t) (fun t _ => hLP _ _ …`. Establish `hsupp : ∀ (V : HSp D) (x : GA D V), WeilFull.SuppV (sA v 1) V (resG V (sA v 1) x)`. Introduce `V x i j`. Rewrite using `[mt_resG_sub (V := V) hε x i j, ← mul_assoc, algIdem hε]`.
+
+Conclude with `fix_inert hI hrk hev hsS hsT hfS hfT (placeIdem_sA v) (two_not_mem_of_inert hin) hin (unrAtV_of_unrOff horth huS) (unrAtV_of_unrOff horth huT) (hsupp S g) (hsupp T h) hgv hhv hf₀ hlat`.
+-/
 theorem loc_fix (hSL : SplitLin D) (hPM : PlaceModelAt D) (hSOI : SplitOrInert D) {ψ : AddChar (AF D.host.F) ℂ}
     {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hW : IsWeilDatumO ψ S T χS χT om) (hI : WeilFull.SphInertAtO ψ S T χS χT om) (hrk : S.rank ≠ T.rank)
@@ -199,6 +262,13 @@ theorem loc_fix (hSL : SplitLin D) (hPM : PlaceModelAt D) (hSOI : SplitOrInert D
       exact fix_inert hI hrk hev hsS hsT hfS hfT (placeIdem_sA v) (two_not_mem_of_inert hin) hin
         (unrAtV_of_unrOff horth huS) (unrAtV_of_unrOff horth huT) (hsupp S g) (hsupp T h) hgv hhv hf₀ hlat
 
+/- English proof (translation)
+Introduce `ψ S T χS χT om hW hI hrk hev ΛS ΛT hsS hsT βS βT hfS hfT P e he huS huT f₀ hf₀ hlat hn g h hgf hhf hgS hhT hgP hhP`. Establish `hLP'` using `hLP S T ΛS ΛT βS βT hsS hsT hfS hfT`. Use `om_fix_of_trunc hW hf₀ hgf hhf (fun A => resG S (idemS A) g) (fun A => resG T (idemS A) h) (fun A => mt_resG' (idemS_idem A) g) (fun A => by rw [resG_inv (idemS_idem A)]; exact mt_resG' (idemS_idem A) g⁻¹) (fun A => mt_resG' (idemS_idem A) h) (fun A => by rw [resG_inv (idemS_idem …` and prove the remaining obligations. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`.
+
+Simplify using `only [idemS_empty, resG_zero_eps (V := S), resG_zero_eps (V := T)]`. Rewrite using `[← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Consider the case `insert v A hv ih`. Establish `hmul : idemS (insert v A) = sA v 1 + idemS A` using `by rw [idemS_insert hv, add_comm]`. Establish `horth : sA v (1 : v.adicCompletion D.host.F) * idemS A = 0` using `by rw [mul_comm]; exact idemS_mul_sA hv`.
+
+Simplify using `only [hmul]`. Rewrite using `[← resG_orth (V := S) (sA_idem v) (idemS_idem A) horth g, ← resG_orth (V := T) (sA_idem v) (idemS_idem A) horth h, ← Prod.mk_mul_mk, map_mul, Module.End.mul_apply, ih]`. Conclude with `loc_fix hSL hPM hSOI hW hI hrk hev hsS hsT hfS hfT hLP' he huS huT hf₀ hlat hn hgf hhf hgS hhT hgP hhP v`.
+-/
 theorem vacFixOff_of (hSL : SplitLin D) (hPM : PlaceModelAt D) (hSOI : SplitOrInert D)
     (hLP : ∀ (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
       (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D))

@@ -20,6 +20,9 @@ def Mop {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedAddCom
 
 omit [ProperSpace H] [FiniteDimensional ℂ H] [CompactSpace K] [MeasurableSpace K] [OpensMeasurableSpace K]
   [T2Space K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mop_apply {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedAddCommGroup E]
     [NormedSpace ℂ E] (L : K → E' →L[ℂ] E) (k : K) (T : H →L[ℂ] E') :
     Mop c L k T = (L k).comp (T.comp (c k)) := rfl
@@ -27,6 +30,9 @@ lemma mop_apply {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [Norm
 include hc in
 omit [ProperSpace H] [FiniteDimensional ℂ H] [CompactSpace K] [MeasurableSpace K] [OpensMeasurableSpace K]
   [T2Space K] in
+/- English proof (translation)
+Establish `h1 : Continuous fun k => ContinuousLinearMap.compL ℂ H E' E (L k)` using `(ContinuousLinearMap.compL ℂ H E' E).continuous.comp hL`. Establish `h2 : Continuous fun k => (ContinuousLinearMap.compL ℂ H H E').flip (c k)` using `(ContinuousLinearMap.compL ℂ H H E').flip.continuous.comp hc`. Conclude with `h1.clm_comp h2`.
+-/
 lemma continuous_mop {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedAddCommGroup E]
     [NormedSpace ℂ E] {L : K → E' →L[ℂ] E} (hL : Continuous L) : Continuous (Mop c L) := by
   have h1 : Continuous fun k => ContinuousLinearMap.compL ℂ H E' E (L k) :=
@@ -36,6 +42,15 @@ lemma continuous_mop {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] 
   exact h1.clm_comp h2
 
 include hc hU hΩ hUΩ in
+/- English proof (translation)
+Take `⟨ε, hε, hεU⟩` from `Metric.isOpen_iff.mp hU x₀ hx₀`. Establish `hSU : Metric.closedBall x₀ (ε / 2) ⊆ U` using `(Metric.closedBall_subset_ball (half_lt_self hε)).trans hεU`. Establish `hfc : ContinuousOn f Ω` using `hf.continuousOn`. Establish `hfd : ContinuousOn (fderiv ℂ f) Ω` using `hf.continuousOn_fderiv_of_isOpen hΩ le_rfl`. Establish `hdiff : ∀ y ∈ Ω, DifferentiableAt ℂ f y` using `fun y hy => (hf.differentiableOn one_ne_zero).differentiableAt (hΩ.mem_nhds hy)`.
+
+Establish `hcont : ∀ x ∈ U, Continuous fun k => L k (f (c k x))` using `fun x hx => hL.clm_apply (hfc.comp_continuous (hc.clm_apply continuous_const) fun k => hUΩ x hx k)`. Establish `hcont' : Continuous fun k => Mop c L k (fderiv ℂ f (c k x₀))` using `(continuous_mop c hc hL).clm_apply (hfd.comp_continuous (hc.clm_apply continuous_const) fun k => hUΩ x₀ hx₀ k)`. Establish `hcj : Continuous fun p : K × H => c p.1 p.2` using `(hc.comp continuous_fst).clm_apply continuous_snd`. Take `⟨C, hC⟩` from `(isCompact_univ.prod (isCompact_closedBall x₀ (ε / 2))).exists_bound_of_continuousOn (f := fun p : K × H => Mop c L p.1 (fderiv ℂ f (c p.1 p.2))) (((continuous_mop c hc hL).comp continuous_fst).continuousOn.clm_apply (hfd.comp hcj.continuousOn fun p hp => hUΩ p.2 (hSU hp.2) p.1))`. Establish `hI : Integrable (fun k => L k (f (c k x₀))) ν`.
+
+Take `⟨C0, hC0⟩` from `(isCompact_range (hcont x₀ hx₀)).isBounded.exists_norm_le`. Conclude with `Integrable.of_bound (hcont x₀ hx₀).aestronglyMeasurable C0 (Filter.Eventually.of_forall fun k => hC0 _ (Set.mem_range_self k))`. Establish `hD : ∀ k, ∀ x ∈ U, HasFDerivAt (fun x => L k (f (c k x))) (Mop c L k (fderiv ℂ f (c k x))) x`. Introduce `k x hx`. Rewrite using `[mop_apply]`.
+
+Conclude with `(L k).hasFDerivAt.comp x ((hdiff _ (hUΩ x hx k)).hasFDerivAt.comp x (c k).hasFDerivAt)`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := ν) (bound := fun _ => C) (F := fun x k => L k (f (c k x))) (F' := fun x k => Mop c L k (fderiv ℂ f (c k x))) (Metric.ball_mem_nhds x₀ (half_pos hε)) (Filter.eventually_of_mem (Metric.ball_mem_nhds x₀ (half_pos hε)) fun x hx => …`.
+-/
 lemma hasFDerivAt_param {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E'] [NormedAddCommGroup E]
     [NormedSpace ℂ E] [CompleteSpace E] [FiniteDimensional ℂ E] (f : H → E') (L : K → E' →L[ℂ] E) (hf : ContDiffOn ℂ 1 f Ω)
     (hL : Continuous L) {x₀ : H} (hx₀ : x₀ ∈ U) :
@@ -79,6 +94,13 @@ lemma hasFDerivAt_param {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E
     (Filter.Eventually.of_forall fun k x hx => hD k x (hSU (Metric.ball_subset_closedBall hx)))
 
 include hc hU hΩ hUΩ in
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `E' E _ _ _ _ _ _ f L hf hL`. Apply the tactic sequence `have hf1 : ContDiffOn ℂ 1 f Ω := hf.of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp | decide : (1 : WithTop ℕ∞) ≤ ∞)`. Establish `h0 : ContDiffOn ℂ 0 (fun x => ∫ k, L k (f (c k x)) ∂ν) U` using `contDiffOn_zero.mpr fun x hx => (hasFDerivAt_param ν c hc hU hΩ hUΩ f L hf1 hL hx).continuousAt.continuousWithinAt`.
+
+Conclude with `h0` after adjusting the coercions. Consider the case `succ m ih`. Introduce `E' E _ _ _ _ _ _ f L hf hL`. Apply the tactic sequence `have hf1 : ContDiffOn ℂ 1 f Ω := hf.of_le (by first | exact WithTop.coe_le_coe.mpr le_top | simp | decide : (1 : WithTop ℕ∞) ≤ ∞)`. Establish `hd` using `fun x (hx : x ∈ U) => hasFDerivAt_param ν c hc hU hΩ hUΩ f L hf1 hL hx`.
+
+Establish `hf' : ContDiffOn ℂ ∞ (fderiv ℂ f) Ω` using `((contDiffOn_infty_iff_fderiv_of_isOpen hΩ).mp hf).2`. Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Use `⟨fun x hx => (hd x hx).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations. Conclude with `(ih (fderiv ℂ f) (fun k => Mop c L k) hf' (continuous_mop c hc hL)).congr fun x hx => (hd x hx).fderiv`.
+-/
 theorem contDiffOn_param_nat (m : ℕ) : ∀ {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E']
     [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] [FiniteDimensional ℂ E] (f : H → E') (L : K → E' →L[ℂ] E),
     ContDiffOn ℂ ∞ f Ω → Continuous L → ContDiffOn ℂ m (fun x => ∫ k, L k (f (c k x)) ∂ν) U := by
@@ -102,6 +124,9 @@ theorem contDiffOn_param_nat (m : ℕ) : ∀ {E' E : Type} [NormedAddCommGroup E
       fun x hx => (hd x hx).fderiv
 
 include hc hU hΩ hUΩ in
+/- English proof (translation)
+The claim follows from `contDiffOn_infty.mpr fun m => contDiffOn_param_nat ν c hc hU hΩ hUΩ m f L hf hL`.
+-/
 theorem contDiffOn_param {E' E : Type} [NormedAddCommGroup E'] [NormedSpace ℂ E']
     [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] [FiniteDimensional ℂ E] (f : H → E') (L : K → E' →L[ℂ] E)
     (hf : ContDiffOn ℂ ∞ f Ω) (hL : Continuous L) :

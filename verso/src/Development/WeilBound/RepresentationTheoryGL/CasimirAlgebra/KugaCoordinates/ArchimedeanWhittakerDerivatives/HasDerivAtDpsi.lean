@@ -17,6 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 def dpsi (ψ : AddChar (Ad E) ℂ) (Z : Cinf E) : ℂ := deriv (fun t : ℝ => ψ (sInf E (t • Z))) 0
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hasDerivAt_of_mulHom (fun t : ℝ => ψ (sInf E (t • Z))) (hψ.cont.comp (continuous_sInf'.comp (continuous_id.smul continuous_const))) (by simp only [zero_smul, map_zero, AddChar.map_zero_eq_one]) (fun s t => by simp only [add_smul, map_add, AddChar.map_add_eq_mul])`. Establish `h` using `hc 0`. Simplify using `only [zero_smul, map_zero, AddChar.map_zero_eq_one, mul_one] at h`. Rewrite using `[dpsi, h.deriv]`. Conclude with `h`.
+-/
 theorem hasDerivAt_dpsi {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (Z : Cinf E) :
     HasDerivAt (fun t : ℝ => ψ (sInf E (t • Z))) (dpsi ψ Z) 0 := by
   obtain ⟨c, hc⟩ := hasDerivAt_of_mulHom (fun t : ℝ => ψ (sInf E (t • Z)))
@@ -28,9 +31,17 @@ theorem hasDerivAt_dpsi {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (Z : Cinf E)
   rw [dpsi, h.deriv]
   exact h
 
+/- English proof (translation)
+Simplify using `[dpsi]`.
+-/
 theorem dpsi_zero (ψ : AddChar (Ad E) ℂ) : dpsi ψ (0 : Cinf E) = 0 := by
   simp [dpsi]
 
+/- English proof (translation)
+Establish `hg : ∀ φ : π.V, Good ψ (a - 1) φ.1.1` using `fun φ => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ φ.1 (π.cusp _ φ.2)`. Establish `h0 : a - 1 < a ∨ a - 1 = 0` using `by omega`. Establish `hrel : IntRel M hM φ.1.1 (lieOp π (toL M) φ).1.1` using `intRel_sm M hM φ.1`. Establish `hD` using `hasDerivAt_of_intRel M hM (whit_good hψ (a - 1) h0 (hg (lieOp π (toL M) φ))).1.cont (intRel_whit hψ M hM (a - 1) h0 (hg φ) (hg _) hrel) (infGL E a b)`. Establish `he : (fun t => whit ψ (a - 1) φ.1.1 (infGL E a b * infGL E a (cu M hM t))) = fun t : ℝ => ψ (sInf E (t • sd (b.val * M * (b⁻¹).val))) * whit ψ (a - 1) φ.1.1 (infGL E a b)`.
+
+Use function extensionality and compare the values at `fun t => law_conj ψ _ (whit_good hψ (a - 1) h0 (hg φ)).1.law b M hM hMu t`. Rewrite `hD` using `[he]`. Conclude with `hD.unique ((hasDerivAt_dpsi hψ _).mul_const _)`.
+-/
 theorem whit_lie_eq {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (π : CuspSub E a) (b : GL (Fin a) (Cinf E))
     (M : Matrix (Fin a) (Fin a) (Cinf E)) (hM : M * M = 0)
     (hMu : ∀ i j : Fin a, j ≤ i → (b.val * M * (b⁻¹).val) i j = 0) (φ : π.V) :
@@ -47,6 +58,27 @@ theorem whit_lie_eq {ψ : AddChar (Ad E) ℂ} (hψ : StdPsi ψ) (π : CuspSub E 
   rw [he] at hD
   exact hD.unique ((hasDerivAt_dpsi hψ _).mul_const _)
 
+/- English proof (translation)
+Introduce `E _ _ _ a π`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_standardAdelicAddChar E`. Establish `hg : ∀ φ : π.V, Good ψ (a - 1) φ.1.1` using `fun φ => GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E a ψ φ.1 (π.cusp _ φ.2)`. Establish `h0 : a - 1 < a ∨ a - 1 = 0` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨φ₀, hφ₀⟩ : ∃ φ : π.V, φ ≠ 0 := by`.
+
+Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne_bot`. Conclude with `⟨⟨x, hx⟩, fun h => hx0 (congrArg Subtype.val h)⟩`. Establish `hw0 : whit ψ (a - 1) φ₀.1.1 ≠ 0` using `(whit_good hψ (a - 1) h0 (hg φ₀)).2 fun h => hφ₀ (Subtype.ext (Subtype.ext h))`. Take `⟨g₀, hg₀⟩` from `Function.ne_iff.1 hw0`. Take `⟨b, k, hb, hyk⟩` from `exists_upper_unitary (GeneralLinearGroup.map (pInf E) g₀)`.
+
+Set `ℓ : π.V →ₗ[ℂ] ℂ` to `{ toFun := fun φ => whit ψ (a - 1) φ.1.1 (infGL E a b) map_add' := fun φ φ' => congrFun (whit_add hψ (a - 1) h0 (hg φ) (hg φ')) _ map_smul' := fun c φ => congrFun (whit_smul (a - 1) c φ.1.1) _ }`. Establish `hℓ : ∀ φ, ℓ φ = whit ψ (a - 1) φ.1.1 (infGL E a b)` using `fun _ => rfl`. Use `⟨ℓ, fun h => ?_, fun τ => ?_⟩` and prove the remaining obligations. Apply `hg₀` to reduce the goal to its premises. Rewrite using `[Pi.zero_apply]`.
+
+Establish `e` using `LinearMap.congr_fun h (π.op (.cpt k) (π.op (.fin (GeneralLinearGroup.map (pFin E) g₀)) φ₀))`. Rewrite `e` using `[hℓ, LinearMap.zero_apply]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Use `Eq.trans ?_ (whit_rt (a - 1) (fun y => φ₀.1.1 (y * finGL E a (GeneralLinearGroup.map (pFin E) g₀))) (infGL E a (Unitary.toUnits k)) (infGL E a b)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (whit_rt (a - 1) φ₀.1.1 (finGL E a (GeneralLinearGroup.map (pFin E) g₀)) _).symm` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, ← hyk, infGL_mul_finGL]`. Use `set β : Fin a → Fin a → ℂ := fun p q => coord τ (b.val p p * (b⁻¹).val q q) with hβ`. Use `⟨fun p q => if (p : ℕ) + 1 = q then (1 / 2 : ℂ) * (dpsi ψ (atEmb τ (β p q)) - Complex.I * dpsi ψ (atEmb τ (β p q * Complex.I))) else 0, fun p q hpq => ?_, fun p q hpq => ?_, fun p q hpq => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[if_pos hpq]`.
+
+Use `mul_ne_zero (by norm_num) ?_` and prove the remaining obligations. Establish `hu : IsUnit (b.val p p * (b⁻¹).val q q)` using `(IsUnit.of_mul_eq_one _ (diag_inv b hb p)).mul (IsUnit.of_mul_eq_one_right _ (diag_inv b hb q))`. Establish `hβ0 : β p q ≠ 0` using `(hu.map (coord τ)).ne_zero`. Conclude with `wirtinger_ne_zero (fun z => ψ (sInf E (atEmb τ z))) (hψ.cont.comp (continuous_sInf'.comp (continuous_atEmb τ))) (fun z w => by simp only [atEmb_add, map_add, AddChar.map_add_eq_mul]) (fun z => hψ.norm _) (psi_nontriv hψ τ) (fun z => dpsi ψ (atEmb τ z)) (fun z => by simpa only [at …`. Use `beta_reduce`.
+
+Rewrite using `[if_neg (by omega)]`. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Establish `hpq' : p ≠ q` using `ne_of_lt hpq`. Establish `key : ∀ w : ℂ, ℓ (lieOp π (toL (Matrix.single p q (atEmb τ w))) φ) = dpsi ψ (sd (b.val * Matrix.single p q (atEmb τ w) * (b⁻¹).val)) * ℓ φ` using `fun w => whit_lie_eq hψ π b _ (single_sq p q hpq' _) (conj_single_upper b hb p q hpq _) φ`. Establish `hz : ∀ w, b.val p p * atEmb τ w * (b⁻¹).val q q = atEmb τ (β p q * w)` using `fun w => by`.
+
+Rewrite using `[mul_right_comm, mul_embeddingScalar_eq_coord_mul]`. Rewrite using `[LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `ℓ ((1 / 2 : ℂ) • (lieOp π (toL (Matrix.single p q (atEmb τ 1))) φ - Complex.I • lieOp π (toL (Matrix.single p q (atEmb τ Complex.I))) φ)) = _`. Rewrite using `[map_smul, map_sub, map_smul, key, key, sd_conj_single b hb p q hpq, sd_conj_single b hb p q hpq, smul_eq_mul, smul_eq_mul]`. Distinguish the cases in `h1 : (p : ℕ) + 1 = q`.
+
+Simplify using `only [h1, ↓reduceIte]`. Rewrite using `[hz, hz, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, ↓reduceIte]`. Rewrite using `[dpsi_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem whitLie_holds : WhitLie := by
   intro E _ _ _ a π
   obtain ⟨ψ, hψ⟩ := GlobalTheory.T.exists_standardAdelicAddChar E

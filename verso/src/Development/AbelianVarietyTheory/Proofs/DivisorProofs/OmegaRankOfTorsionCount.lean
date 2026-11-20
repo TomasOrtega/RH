@@ -23,6 +23,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.OmegaRankGen
 
+/- English proof (translation)
+Use `haveI := hG.smooth`. Use `haveI : IsIntegral G.left := isIntegral_left_of_isSemiAbelian G`. Take `⟨x⟩ : Nonempty (Sp R)` from `inferInstance`. Conclude with `exists_dim_of_preconnected G.hom (η[G].left x)`.
+-/
 theorem exists_relDim (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] (hG : IsSemiAbelian G) :
     ∃ d, SmoothOfRelativeDimension d G.hom := by
   haveI := hG.smooth
@@ -30,6 +33,17 @@ theorem exists_relDim (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [Gr
   obtain ⟨x⟩ : Nonempty (Sp R) := inferInstance
   exact exists_dim_of_preconnected G.hom (η[G].left x)
 
+/- English proof (translation)
+Set `f : Sp K ⟶ Sp R` to `spMap (algebraMap R K)`. Set `G₀ : Over (Sp K)` to `(Over.pullback f).obj G`. Establish `h` using `isGrpPullback_pullback G f`. Establish `hG₀ : IsSemiAbelian G₀` using `IsSemiAbelian.pullback _ _ hG`. Establish `hA : IsAbelianScheme G₀` using `⟨hG₀.comm, hG₀.smooth, hP, hG₀.geomConnected⟩`.
+
+Establish `hd₀ : SmoothOfRelativeDimension d G₀.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback (IsPullback.of_hasPullback _ _) hd`. Establish `hcard` using `card_torsion_abelianVariety K G₀ d p hA hd₀ (by exact_mod_cast hp.ne_zero)`. Set `T : Over (Sp K)` to `𝟙_ (Over (Sp K))`. Establish `hc' : T.hom ≫ f = (SpAlg R K).hom` using `Category.id_comp _`. Set `ρ : SpAlg R K ⟶ Over.mk (T.hom ≫ f)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans hc')`.
+
+Set `Φ : (T ⟶ G₀) →* (SpAlg R K ⟶ G)` to `(preHom ρ).comp (pushHom h T)`. Establish `hΦ : ∀ x, (Φ x).left = x.left ≫ pullback.fst G.hom f` using `fun x => Category.id_comp _`. Establish `hb : Function.Bijective Φ`. Use `⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext ?_ ((Over.w x).trans (Over.w y).symm)), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ, ← hΦ, e]`.
+
+Conclude with `⟨Over.homMk (h.1.lift a.left T.hom ((Over.w a).trans hc'.symm)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext ((hΦ _).trans (h.1.lift_fst _ _ _))⟩`. Set `e` to `MulEquiv.ofBijective Φ hb`. Establish `e1 : {x : T ⟶ G₀ // x ^ p = 1} ≃ Tors G p K` using `e.toEquiv.subtypeEquiv fun x => by show _ ↔ e x ^ p = 1`. Rewrite using `[← map_pow, EmbeddingLike.map_eq_one_iff]`. Rewrite `hc` using `[← Nat.card_congr e1, hcard]`.
+
+Use `Nat.pow_right_injective hp.two_le hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem relDim_eq_of_card (R K : Type) [CommRing R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K]
     (G : Over (Sp R)) [GrpObj G] (hG : IsSemiAbelian G)
     (hP : IsProper (pullback.snd G.hom (spMap (algebraMap R K)))) (d : ℕ) (hd : SmoothOfRelativeDimension d G.hom)
@@ -71,6 +85,9 @@ def wmodEquiv (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [QuasiSeparat
     (GlobalTheory.OmegaGlobal.toOmega_bijective R G
       ⟨GlobalTheory.LieVB.tangent_injective R G, GlobalTheory.LieVB.TangentSurj.tangent_surjective R G⟩)
 
+/- English proof (translation)
+Use `Module.rankAtStalk_baseChange (R := R) (M := M) (S := k) ⊥` as an intermediate fact. Rewrite `this` using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `this.trans (h _)`.
+-/
 theorem finrank_of_rankAtStalk {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] [Module.Finite R M] [Module.Projective R M] (d : ℕ)
     (h : ∀ p, Module.rankAtStalk (R := R) M p = d) (k : Type) [Field k] [Algebra R k] :
     Module.finrank k (k ⊗[R] M) = d := by
@@ -78,6 +95,13 @@ theorem finrank_of_rankAtStalk {R M : Type} [CommRing R] [AddCommGroup M] [Modul
   rw [Module.rankAtStalk_eq_finrank_of_free] at this
   exact this.trans (h _)
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG hP p g hp hc k _ _`. Take `⟨d, hd⟩` from `exists_relDim R G hG`. Take `rfl` from `relDim_eq_of_card R K G hG hP d hd p g hp hc`. Use `haveI := hG.smooth`. Use `haveI := hd`.
+
+Establish `hV` using `GlobalTheory.LieVB.isVB_omega G d`. Establish `hfr : ∀ x : Sp R, ∃ (U : (Sp R).Opens) (n : ℕ) (s : Fin n → Γ(GlobalTheory.LieVB.omega G, U)), x ∈ U ∧ GlobalTheory.VB.IsFrame s` using `fun x => by`. Take `⟨U, e, hx, he⟩` from `hV x`. Conclude with `⟨U, d, e, hx, he⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.FramesFGP.finite_projective_wmod R G hfr`.
+
+Set `e` to `wmodEquiv R G`. Use `haveI : Module.Finite R (Pdiv.omega G) := Module.Finite.equiv e`. Use `haveI : Module.Projective R (Pdiv.omega G) := Module.Projective.of_equiv e`. Conclude with `finrank_of_rankAtStalk d (fun q => (congrFun (Module.rankAtStalk_eq_of_equiv e.symm) q).trans (GlobalTheory.T.rank_at_stalk_invariant_differentials R G d hV q)) k`.
+-/
 theorem finrank_omega : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → IsProper (pullback.snd G.hom (spMap (algebraMap R K))) → ∀ (p g : ℕ), p.Prime → Nat.card (Tors G p K) = p ^ (2 * g) → ∀ (k : Type) [Field k] [Algebra R k], Module.finrank k (k ⊗[R] Pdiv.omega G) = g := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG hP p g hp hc k _ _
   obtain ⟨d, hd⟩ := exists_relDim R G hG

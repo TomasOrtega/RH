@@ -14,6 +14,25 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.RealGeo
 set_option maxHeartbeats 4000000
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' hPre Z hX Wt z Z' hX' Wt' core' alg' halg hcore hlaws Xg tr R' hR hmu ι hι`. Take `⟨P'⟩` from `B'`. Simplify using `only at hPre`. Substitute `hPre` using the available equality. Use `clear hmu hlaws hcore`.
+
+Establish `key : ∀ (i : Fin (w'.st Z').toD7.R.m) (σ : (w'.st Z').toD7.what₂.LL →+* ℂ), ∃ v : (R'.MW i σ).Vec, HEq v (z.geo.v₀ i (σ.comp ι))`. Introduce `i σ`. Establish `hs` using `((hR.2.2.2.2.2.2.2.2.2.2.2.2.1 i i rfl).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2 ι hι).1 σ`. Take `⟨⟨h1, h2, h3, h4, h5, h6, h7, -⟩, -⟩` from `hs`. Use `clear hR`.
+
+Generalize the expression as in `R'.MW i σ = M' at h1 h2 h3 h4 h5 h6 h7 ⊢`. Take `@⟨H, nacg, ips, sg, lam, ep, fr, enum, ds, fu, fg⟩` from `M'`. Simplify using `only at h1 h2 h3 h4 h5 h6 h7`. Use the proof step `( (`. Establish `e : @Eq (type_of% (H)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).H) :))) (H)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (H)) (H) ((((z.R.MW i (σ.comp ι)).H))) (((h1)))).symm : _))`.
+
+Use `clear (h1)`. Substitute `e)) ( (` using the available equality. Establish `e : @Eq (type_of% (nacg)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).nacg) :))) (nacg)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (nacg)) (nacg) ((((z.R.MW i (σ.comp ι)).nacg))) (((h2)))).symm : _))`. Use `clear (h2)`. Substitute `e)) ( (` using the available equality.
+
+Establish `e : @Eq (type_of% (ips)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).ips) :))) (ips)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ips)) (ips) ((((z.R.MW i (σ.comp ι)).ips))) (((h3)))).symm : _))`. Use `clear (h3)`. Substitute `e)) ( (` using the available equality. Establish `e : @Eq (type_of% (sg)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).σ) :))) (sg)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (sg)) (sg) ((((z.R.MW i (σ.comp ι)).σ))) (((h4)))).symm : _))`. Use `clear (h4)`.
+
+Substitute `e)) ( (` using the available equality. Establish `e : @Eq (type_of% (lam)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).lam) :))) (lam)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (lam)) (lam) ((((z.R.MW i (σ.comp ι)).lam))) (((h5)))).symm : _))`. Use `clear (h5)`. Substitute `e)) ( (` using the available equality. Establish `e : @Eq (type_of% (ep)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).ε) :))) (ep)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (ep)) (ep) ((((z.R.MW i (σ.comp ι)).ε))) (((h6)))).symm : _))`.
+
+Use `clear (h6)`. Substitute `e)) ( (` using the available equality. Establish `e : @Eq (type_of% (fr)) ((by with_unfolding_all exact (((z.R.MW i (σ.comp ι)).fr) :))) (fr)` using `(by with_unfolding_all exact ((@eq_of_heq (type_of% (fr)) (fr) ((((z.R.MW i (σ.comp ι)).fr))) (((h7)))).symm : _))`. Use `clear (h7)`. Substitute `e))` using the available equality.
+
+Conclude with `⟨(by with_unfolding_all exact ((z.geo.v₀ i (σ.comp ι)) :)), (by with_unfolding_all exact ((HEq.refl (z.geo.v₀ i (σ.comp ι))) :))⟩`. Use `choose v hv using key`. Use `⟨v, fun i i' hi σ' => ?_⟩` and prove the remaining obligations. Establish `e : i = i'` using `Fin.ext hi`. Substitute `e` using the available equality.
+
+Conclude with `hv i σ'`.
+-/
 theorem UpperTheory.cuspCoreDatum_transport_of_same_pre :
     ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
         B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

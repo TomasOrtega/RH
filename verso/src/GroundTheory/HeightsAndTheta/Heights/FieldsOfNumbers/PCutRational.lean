@@ -8,6 +8,11 @@ open GroundTheory.Heights₂.Heights.NumbersDVR
 
 universe u
 
+/- English proof (translation)
+Apply `(Ideal.finite_minimalPrimes_of_isNoetherianRing (MRing ι F) (P ⊔ Ideal.span {f})).subset` to reduce the goal to its premises. Introduce `W hW`. Assume the negation of the conclusion as `h`. Apply `hW` to reduce the goal to its premises. Simplify using `only [divCycle]`.
+
+Rewrite using `[dif_neg (fun h' => h h'.1)]`.
+-/
 theorem divCycle_support_finite {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K]
     {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι F)) (f : MRing ι F) :
     (Function.support (divCycle P f)).Finite := by
@@ -19,6 +24,9 @@ theorem divCycle_support_finite {F : Type u} [Field F] {K : Type} [Fintype K] [D
   simp only [divCycle]
   rw [dif_neg (fun h' => h h'.1)]
 
+/- English proof (translation)
+Simplify using `only [cycEval, ratDiv, sub_mul]`. Apply `finsum_sub_distrib` to reduce the goal to its premises. Conclude with `(divCycle_support_finite P f).subset (Function.support_mul_subset_left _ _)`. Conclude with `(divCycle_support_finite P g).subset (Function.support_mul_subset_left _ _)`.
+-/
 theorem cycEval_ratDiv {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K]
     {ι : K → Type} [∀ k, Fintype (ι k)] (N : Ideal (MRing ι F) → ℤ) (P : Ideal (MRing ι F))
     (f g : MRing ι F) :
@@ -28,6 +36,11 @@ theorem cycEval_ratDiv {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableE
   · exact (divCycle_support_finite P f).subset (Function.support_mul_subset_left _ _)
   · exact (divCycle_support_finite P g).subset (Function.support_mul_subset_left _ _)
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ P hP n hn bf bg f g hf hg hfP hgP bs`. Establish `hadd` using `h2 F K ι P hP.multiHomog hP.relevant (n + 1) hn (Fin.snoc (α := fun _ => K → ℤ) bs 0) (Fin.last n) (fun k => (bf k : ℤ) - bg k) (fun k => (bg k : ℤ))`. Simplify using `only [Fin.update_snoc_last] at hadd`. Establish `hsum : ((fun k => (bf k : ℤ) - bg k) + fun k => (bg k : ℤ)) = fun k => (bf k : ℤ)`. Use function extensionality and compare the values at `k`.
+
+Simplify using the standard rewrite rules. Rewrite `hadd` using `[hsum, h1 F K ι P hP n hn bf f hf hfP bs, h1 F K ι P hP n hn bg g hg hgP bs]`. Rewrite using `[cycEval_ratDiv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem CutRational.proof (h1 : CutRegular.Statement.{u}) (h2 : IntNumAdd.Statement.{u}) :
     CutRational.Statement.{u} := by
   intro F _ K _ _ ι _ P hP n hn bf bg f g hf hg hfP hgP bs

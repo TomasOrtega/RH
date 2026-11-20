@@ -33,6 +33,9 @@ structure Shape0 (D : D7) : Prop where
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `S.mult amb := S.amb mtL := S.mtL mj := S.mj ee0 := S.ee0 rr := S.rr nu := S.nu lat := S.lat yTw := S.yTw clsTw := S.clsTw mtV := S.mtV fmN := S.fmN ll0 := S.ll0 Ij0 := S.Ij0 jw0 := S.jw0 drows := S.drows dgam := S.dgam mink := S.mink loc := S.loc gatM := withGatC_M D h0 rOf eOf b …`.
+-/
 theorem Shape0.withGat (S : Shape0 D) (h0 : ∀ u, Module.finrank ℂ (D.mem u).A.Mu0 = 0)
     (rOf : D.what₂.Word → ℕ → ℕ) (eOf : ℕ → ℕ) (bs : D.what₂.Word → ℕ → Set ↥(D.R.Psi)) :
     Shape (withGatC D h0 rOf eOf bs) where
@@ -59,6 +62,9 @@ theorem Shape0.withGat (S : Shape0 D) (h0 : ∀ u, Module.finrank ℂ (D.mem u).
   gatComp := fun u w _ => S.cls0 u (D.what₂.muAt w)
   gatTr := withGatC_trans D h0 rOf eOf bs
 
+/- English proof (translation)
+The claim follows from `S.mult amb := S.amb mtL := S.mtL mj := S.mj ee0 := S.ee0 rr := S.rr nu := S.nu lat := S.lat yTw := S.yTw clsTw := S.clsTw mtV := S.mtV fmN := S.fmN ll0 := S.ll0 Ij0 := S.Ij0 jw0 := S.jw0 drows := S.drows dgam := S.dgam mink := S.mink loc := S.loc cls0 := S.cls0`.
+-/
 theorem Shape0.withSeen (S : Shape0 D) (seen tau) : Shape0 (withSeen D seen tau) where
   mult := S.mult
   amb := S.amb
@@ -149,12 +155,18 @@ def LevErr.withGat (le : LevErr D) : LevErr (withGatC D h0 rOf eOf bs) where
 
 variable (B : D.what₂.Word → ℕ → Set (G.HH D))
 
+/- English proof (translation)
+The claim follows from `S.withGat h0 rOf eOf _`.
+-/
 theorem Shape0.withGatB (S : Shape0 D) : Shape (withGatCB D h0 rOf eOf B) := S.withGat h0 rOf eOf _
 
 def LevErr.withGatB (le : LevErr D) : LevErr (withGatCB D h0 rOf eOf B) := LevErr.withGat h0 rOf eOf _ le
 
 end LevelValuationRings
 
+/- English proof (translation)
+The claim follows from `S.withSeen _ _`.
+-/
 theorem LevGapD.shape0 (large₂ : LevGapD D) (S : Shape0 D) : Shape0 large₂.recS := S.withSeen _ _
 
 def ServedGap : Prop :=

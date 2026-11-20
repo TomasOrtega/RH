@@ -13,6 +13,35 @@ section DualQ
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hP1 : (1 : 𝓞 E) ∉ P` using `P.ne_top_iff_one.1 (Ideal.IsPrime.ne_top inferInstance)`. Introduce `x hx`. Take `⟨t0, ht0, hx0⟩` from `(rlv_mem_locP _ _ _).1 hx`. Take `⟨a, ha, hax⟩` from `Submodule.mem_map.1 hx0`. Simplify using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply] at hax`.
+
+Establish `key : ∀ y ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl σ J B, ∃ s : 𝓞 E, s ∉ P ∧ (s : E) * hform (σ : E →+* E) J (g *ᵥ a) y ∈ (algebraMap (𝓞 E) E).range`. Introduce `y hy`. Take `⟨s, hs, hsy⟩` from `(rlv_mem_locP _ _ _).1 (hP ((rlv_mem_locP _ _ _).2 ⟨1, hP1, by rw [one_smul]; exact hy⟩))`. Take `⟨w, hw, hwy⟩` from `Submodule.mem_map.1 hsy`. Simplify using `only [LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply] at hwy`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `e1 : (s : E) * hform (σ : E →+* E) J (g *ᵥ a) y = hform (σ : E →+* E) J (g *ᵥ a) (s • y)`. Rewrite using `[← algebraMap_smul E s y, Formalism.L2.GlobalTheoryTheory.Comp.hform_smul_right]`. Rewrite using `[e1, ← hwy, Formalism.UG.P.hform_mulVec, hg]`. Conclude with `(Formalism.L2.GlobalTheoryTheory.Comp.mem_dl σ J A w).1 hw a ha`.
+
+Use `choose! sf hsfP hsf using key`. Take `⟨S, hS⟩` from `hBfg`. Establish `hSsub : ∀ y ∈ S, y ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl σ J B` using `fun y hy => hS ▸ Submodule.subset_span hy`. Use `set s : 𝓞 E := ∏ y ∈ S, sf y with hsdef`. Establish `hsP : s ∉ P`.
+
+Rewrite using `[hsdef, Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨y, hy, hyP⟩`. Conclude with `hsfP y (hSsub y hy) hyP`. Establish `hgen : ∀ y ∈ S, (s : E) * hform (σ : E →+* E) J (g *ᵥ a) y ∈ (algebraMap (𝓞 E) E).range`. Introduce `y hy`.
+
+Rewrite using `[hsdef, ← Finset.mul_prod_erase S sf hy]`. Take `⟨r, hr⟩` from `hsf y (hSsub y hy)`. Use `⟨(∏ z ∈ S.erase y, sf z) * r, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hall : ∀ y ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl σ J B, (s : E) * hform (σ : E →+* E) J (g *ᵥ a) y ∈ (algebraMap (𝓞 E) E).range`. Introduce `y hy`. Rewrite `hy` using `[← hS]`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact hgen y hy`. Consider the case `zero => rw [Formalism.L2.GlobalTheoryTheory.Comp.hform_zero_right, mul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Formalism.L2.GlobalTheoryTheory.Comp.hform_add_right, mul_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `smul r y _ hy`. Rewrite using `[← algebraMap_smul E r y, Formalism.L2.GlobalTheoryTheory.Comp.hform_smul_right]`. Take `⟨q, hq⟩` from `hy`. Conclude with `⟨r * q, by rw [map_mul, hq]; ring⟩`. Use `set s' : 𝓞 E := RingOfIntegers.mapRingHom (σ : E →+* E) s with hs'def`.
+
+Establish `hs'E : (s' : E) = σ (s : E)` using `rfl`. Establish `hmem : s' • (g *ᵥ a) ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl σ J (Formalism.L2.GlobalTheoryTheory.Comp.dl σ J B)`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `y hy`. Establish `e2 : hform (σ : E →+* E) J y (s' • (g *ᵥ a)) = σ ((s : E) * hform (σ : E →+* E) J (g *ᵥ a) y)`.
+
+Rewrite using `[← algebraMap_smul E s' (g *ᵥ a), Formalism.L2.GlobalTheoryTheory.Comp.hform_smul_right, hH, map_mul]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Take `⟨q, hq⟩` from `hall y hy`. Conclude with `⟨RingOfIntegers.mapRingHom (σ : E →+* E) q, by rw [← hq]; rfl⟩`.
+
+Use `(rlv_mem_locP _ _ _).2 ⟨s' * t0, ?_, ?_⟩` and prove the remaining obligations. Introduce `hm`. Break down `(Ideal.IsPrime.mem_or_mem inferInstance hm) with h1 | h1` into its components or cases. Apply `hsP` to reduce the goal to its premises. Establish `: RingOfIntegers.mapRingHom (σ : E →+* E) s' = s`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show σ (σ (s : E)) = (s : E)`. Conclude with `hσσ _`. Rewrite using `[← this]`. Conclude with `h1`.
+
+Conclude with `ht0 h1`. Rewrite using `[mul_smul, ← hax]`. Conclude with `hBB hmem`.
+-/
 theorem rlv_dualQ {n : ℕ} (σ : E →ₐ[F] E) (hσσ : ∀ x, σ (σ x) = x) (J : Matrix (Fin n) (Fin n) E)
     (hH : ∀ u w, hform (σ : E →+* E) J w u = σ (hform (σ : E →+* E) J u w))
     (g : Matrix (Fin n) (Fin n) E) (hg : cT (σ : E →+* E) g * J * g = J)
@@ -97,11 +126,29 @@ section TiedQ
 
 variable {D : D7} {u : D.what₂.Word}
 
+/- English proof (translation)
+Rewrite using `[forms_involution_eq_host_conj, forms_involution_eq_host_conj, host_conj_involutive]`.
+-/
 theorem rlv_sig_sig (x : D.host.E) : sigD D (sigD D x) = x := by
   rw [forms_involution_eq_host_conj, forms_involution_eq_host_conj, host_conj_involutive]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Use `set κ : (D.sp.X i).V ≃ₗ[D.host.E] (Fin (D.R.N i) → D.host.E) := (D.sp.X i).frame.equivFun.trans (LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr (rankN D i hi)).symm) with hκ`. Establish `hform_eq : ∀ x y, (D.sp.X i).hT x y = hform (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) (κ x) (κ y)`. Introduce `x y`. Establish `hx : (D.sp.X i).hT x y = ∑ a, ∑ b, star ((D.sp.X i).frame.repr x a) * (D.sp.X i).gram a b * (D.sp.X i).frame.repr y b` using `by conv_lhs => rw [← (D.sp.X i).frame.sum_repr x, ← (D.sp.X i).frame.sum_repr y]`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, HSpace.gram, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hx]`. Unfold `hform`. Rewrite using `[← (finCongr (rankN D i hi)).symm.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (finCongr (rankN D i hi)).symm.sum_comp]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[gramN, hκ, CMData.sig, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft, starRingEnd_apply]`. Set `K : Formalism.L2.GlobalTheoryTheory.Comp.Coord D.sp.cm (D.sp.X i) (Fin (D.R.N i))` to `⟨κ, gramN D i hi, hform_eq⟩`. Use `⟨fun c => ?_, fun c => ?_, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `Formalism.HermitianLatticesTheory.dualLattice (𝓞 D.host.E) D.host.E (D.sp.X i).V (D.sp.X i).hT (D.sp.X i).herm (D.sp.X i).nondeg Formalism.L2.GlobalTheoryTheory.Comp.star_int (D.clsLat u i c) (D.clsLat_lat u i c)`.
+
+Establish `e1` using `K.lat_dual (Formalism.HermitianLatticesTheory.dual (D.sp.X i).hT (D.clsLat u i c))`. Establish `e2` using `K.lat_dual (D.clsLat u i c)`. Rewrite `e1` using `[h1.2.1, e2]`. Conclude with `e1.symm`. Establish `h1` using `Formalism.HermitianLatticesTheory.dualLattice (𝓞 D.host.E) D.host.E (D.sp.X i).V (D.sp.X i).hT (D.sp.X i).herm (D.sp.X i).nondeg Formalism.L2.GlobalTheoryTheory.Comp.star_int (D.clsLat u i c) (D.clsLat_lat u i c)`.
+
+Establish `e2` using `K.lat_dual (D.clsLat u i c)`. Establish `h3` using `K.isLat_lat h1.1`. Rewrite `h3` using `[e2]`. Conclude with `Module.Finite.iff_fg.1 h3.1`. Establish `h` using `(D.sp.X i).herm.eq (κ.symm a) (κ.symm b)`.
+
+Rewrite `h` using `[hform_eq, hform_eq, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `h.symm`.
+-/
 theorem rlv_coordFacts (i : ℕ) (hi : i ≤ D.R.m) :
     (∀ c, Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c)) =
       clsCrd D u i hi c) ∧
@@ -149,6 +196,15 @@ theorem rlv_coordFacts (i : ℕ) (hi : i ≤ D.R.m) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨hdd, hfg, hH⟩` from `rlv_coordFacts (D := D) (u := u) i hi`. Establish `hgU' : g⁻¹ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi)` using `inv_mem hgU`. Establish `hg1 : cT (sigD D : D.host.E →+* D.host.E) (g : Matrix _ _ D.host.E) * gramN D i hi * (g : Matrix _ _ D.host.E) = gramN D i hi` using `hgU`. Establish `hg1' : cT (sigD D : D.host.E →+* D.host.E) ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) * gramN D i hi * ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) = gramN D i hi` using `hgU'`. Establish `hPd' : Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c)) ≤ Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (mulLat (g : Matrix _ _ D.host.E) (Formalism.L2.GlobalTheoryT …` using `hPd.ge`.
+
+Establish `hPd'' : Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (mulLat (g : Matrix _ _ D.host.E) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c2))) ≤ Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (Formalism.L2.GlobalTheo …` using `hPd.le`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `rlv_dualQ (sigD D) rlv_sig_sig (gramN D i hi) hH _ hg1 (Tf.atT.Pv v) (hfg c) (hdd c).le hPd'`. Establish `h1 : Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D i hi) (clsCrd D u i hi c2)) ≤ Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (mulLat ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.ho …`. Use `rlv_locP_mulLat_le (Tf.atT.Pv v) ((g⁻¹ : GL (Fin (D.R.N i)) D.host.E) : Matrix _ _ D.host.E) hPd''` as an intermediate fact.
+
+Rewrite `this` using `[rlv_mulLat_inv]`. Then use the resulting hypothesis. Establish `h2` using `rlv_dualQ (sigD D) rlv_sig_sig (gramN D i hi) hH _ hg1' (Tf.atT.Pv v) (hfg c2) (hdd c2).le h1`. Establish `h3` using `rlv_locP_mulLat_le (rlvQ Tf.atT v) (g : Matrix _ _ D.host.E) h2`. Establish `e3` using `rlv_mulLat_inv g⁻¹ (clsCrd D u i hi c)`. Rewrite `e3` using `[inv_inv]`.
+
+Rewrite `h3` using `[e3]`. Conclude with `h3`.
+-/
 theorem rlv_Q_of_dualP (Tf : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c2 : (D.mem u).C.cls i)
     (g : GL (Fin (D.R.N i)) D.host.E) (hgU : g ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi))
     (hPd : Formalism.HermitianLatticesTheory.localization₂ (Tf.atT.Pv v) (mulLat (g : Matrix _ _ D.host.E) (Ld D u i hi c2)) =
@@ -261,6 +317,9 @@ def RDnLocW (Tf : FormsTied D u) : Prop :=
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun`. Take `⟨e, he1, he2⟩` from `h i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun`. Use `⟨e, he1, fun γ' η' κ' hsup' hrel' hl1' hfun' => ?_⟩` and prove the remaining obligations. Take `⟨hP, hF⟩` from `he2 γ' η' κ' hsup' hrel' hl1' hfun'`. Conclude with `⟨hP, rlv_Q_of_dualP Tf i hi v c _ (γ.1 * γ'.1) (mul_mem γ.2 γ'.2) (rlv_upDn_dualP Tf i hi v c _ _ γ γ' hl1 hl1'), hF⟩`.
+-/
 theorem raising_local_v_of_local_w (Tf : FormsTied D u) (h : RUpLocW Tf) : RUpLocV Tf := by
   intro i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun
   obtain ⟨e, he1, he2⟩ := h i hi v c z hz γ η κ hsup hrel hl1 hl2 hfun
@@ -271,6 +330,9 @@ theorem raising_local_v_of_local_w (Tf : FormsTied D u) (h : RUpLocW Tf) : RUpLo
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Take `⟨e, he1, he2⟩` from `h i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'`. Use `⟨e, he1, fun z hz γ η κ hsup hrel hl1 hl2 hfun => ?_⟩` and prove the remaining obligations. Take `⟨hPd, hF⟩` from `he2 z hz γ η κ hsup hrel hl1 hl2 hfun`. Conclude with `⟨rlv_dnUp_latP Tf i hi v c _ _ γ' γ hl1' hl1, rlv_Q_of_dualP Tf i hi v c _ (γ'.1 * γ.1) (mul_mem γ'.2 γ.2) hPd, hF⟩`.
+-/
 theorem lowering_local_v_of_local_w (Tf : FormsTied D u) (h : RDnLocW Tf) : RDnLocV Tf := by
   intro i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'
   obtain ⟨e, he1, he2⟩ := h i hi v c g hg γ' η' κ' hsup' hrel' hl1' hfun'
@@ -279,8 +341,14 @@ theorem lowering_local_v_of_local_w (Tf : FormsTied D u) (h : RDnLocW Tf) : RDnL
   exact ⟨rlv_dnUp_latP Tf i hi v c _ _ γ' γ hl1' hl1,
     rlv_Q_of_dualP Tf i hi v c _ (γ'.1 * γ.1) (mul_mem γ'.2 γ.2) hPd, hF⟩
 
+/- English proof (translation)
+The claim follows from `rupLocM_of_V Tf (raising_local_v_of_local_w Tf h)`.
+-/
 theorem rupLocM_of_rupLocW (Tf : FormsTied D u) (h : RUpLocW Tf) : RUpLocM Tf := rupLocM_of_V Tf (raising_local_v_of_local_w Tf h)
 
+/- English proof (translation)
+The claim follows from `rdnLocM_of_V Tf (lowering_local_v_of_local_w Tf h)`.
+-/
 theorem rdnLocM_of_rdnLocW (Tf : FormsTied D u) (h : RDnLocW Tf) : RDnLocM Tf := rdnLocM_of_V Tf (lowering_local_v_of_local_w Tf h)
 
 end TiedW

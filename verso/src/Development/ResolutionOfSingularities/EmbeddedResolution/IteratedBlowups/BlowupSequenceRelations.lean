@@ -13,13 +13,22 @@ namespace FunctorialResolution.EmbeddedResolution
 def imageIdealSheaf {S X : Scheme.{u}} (σ : S ⟶ X) (I : S.IdealSheafData) : X.IdealSheafData :=
   (I.subschemeι ≫ σ).ker
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_eq_imageIdealSheaf {S X : Scheme.{u}} (f : S ⟶ X) (I : S.IdealSheafData) :
     I.map f = imageIdealSheaf f I := rfl
 
+/- English proof (translation)
+Simplify using `only [← map_eq_imageIdealSheaf, Scheme.IdealSheafData.map_comp]`.
+-/
 theorem imageIdealSheaf_comp {W A B : Scheme.{u}} (g : W ⟶ A) (w : A ⟶ B) (I : W.IdealSheafData) :
     imageIdealSheaf (g ≫ w) I = imageIdealSheaf w (imageIdealSheaf g I) := by
   simp only [← map_eq_imageIdealSheaf, Scheme.IdealSheafData.map_comp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem imageIdealSheaf_eq_ker {S X : Scheme.{u}} (σ : S ⟶ X) (I : S.IdealSheafData) :
     imageIdealSheaf σ I = (I.subschemeι ≫ σ).ker := rfl
 
@@ -32,6 +41,9 @@ def SequenceOfBlowups.Isomorphic {X : Scheme.{u}} (B B' : SequenceOfBlowups X) :
       (∀ i : ℕ, ∀ hi : i < B.length,
         (B'.center i).comap (e i hi.le).hom = B.center i)
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨rfl, fun i _ => Iso.refl _, ?_, ?_, ?_⟩ <;> simp`.
+-/
 theorem SequenceOfBlowups.isomorphic_refl {X : Scheme.{u}} (B : SequenceOfBlowups X) : B.Isomorphic B := by
   refine ⟨rfl, fun i _ => Iso.refl _, ?_, ?_, ?_⟩ <;> simp
 
@@ -64,6 +76,11 @@ private def schemeAtHomOfEqZero {X' X : Scheme.{u}} (g : X' ⟶ X) (t : Sequence
   eqToHom (congrArg t.schemeAt hi0) ≫ t.isoZero.hom ≫ g ≫ s.isoZero.inv ≫
     eqToHom (congrArg s.schemeAt hi0).symm
 
+/- English proof (translation)
+Use `⟨ht.trans hs.symm, fun i hi => schemeAtHomOfEqZero g t s i (Nat.eq_zero_of_le_zero (le_of_le_of_eq hi ht)), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[schemeAtHomOfEqZero]`. Introduce `i hi`. Conclude with `absurd (lt_of_lt_of_eq hi ht) (Nat.not_lt_zero i)`. Introduce `i hi`.
+
+Conclude with `absurd (lt_of_lt_of_eq hi ht) (Nat.not_lt_zero i)`.
+-/
 theorem IsStrictPullbackBlowupSeq.of_length_zero {X' X : Scheme.{u}} (g : X' ⟶ X) (t : SequenceOfBlowups X')
     (s : SequenceOfBlowups X) (ht : t.length = 0) (hs : s.length = 0) :
     IsStrictPullbackBlowupSeq g t s := by
@@ -76,6 +93,9 @@ theorem IsStrictPullbackBlowupSeq.of_length_zero {X' X : Scheme.{u}} (g : X' ⟶
   · intro i hi
     exact absurd (lt_of_lt_of_eq hi ht) (Nat.not_lt_zero i)
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsStrictPullbackBlowupSeq.length_eq {X' X : Scheme.{u}} {φ : X' ⟶ X}
     {B' : SequenceOfBlowups X'} {B : SequenceOfBlowups X} (h : IsStrictPullbackBlowupSeq φ B' B) :
     B'.length = B.length := h.1

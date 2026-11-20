@@ -7,6 +7,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ X _ _ _ _`. Establish `hfin : Module.Finite ℤ X` using `Module.Finite.trans (𝓞 E) X`. Establish `hflat : Module.Flat ℤ X` using `Module.Flat.trans ℤ (𝓞 E) X`. Establish `hfree : Module.Free ℤ X` using `inferInstance`. Use `⟨hfin, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[finrank_int_eq_mul_of_finite (O := 𝓞 E), RingOfIntegers.rank]`.
+-/
 theorem finite_projective_int_of_ringOfIntegers :
     ∀ (E : Type) [Field E] [NumberField E] (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.Finite ℤ X ∧ Module.Projective ℤ X ∧ Module.finrank ℤ X = Module.finrank ℚ E * Module.finrank (𝓞 E) X := by
   intro E _ _ X _ _ _ _

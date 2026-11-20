@@ -15,6 +15,11 @@ section SlopeTestRemainingChoices
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, w, hw, h⟩`. Use `⟨u⁻¹ * v, U.mul_mem (U.inv_mem hu) hv, w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc u⁻¹ v a, mul_assoc u⁻¹, ← h]`. Use `group`.
+
+Introduce and unpack `⟨v, hv, w, hw, rfl⟩`. Conclude with `⟨u * v, U.mul_mem hu hv, w, hw, by group⟩`.
+-/
 private theorem dc_left (U : Subgroup G) (a : G) {u : G} (hu : u ∈ U) (y : G) :
     u * y ∈ DC U a ↔ y ∈ DC U a := by
   constructor
@@ -25,6 +30,11 @@ private theorem dc_left (U : Subgroup G) (a : G) {u : G} (hu : u ∈ U) (y : G) 
   · rintro ⟨v, hv, w, hw, rfl⟩
     exact ⟨u * v, U.mul_mem hu hv, w, hw, by group⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, c, hc, h⟩`. Conclude with `⟨b, hb, c * u⁻¹, U.mul_mem hc (U.inv_mem hu), by`. Rewrite using `[← mul_assoc, ← h]`. Use the proof step `group⟩`.
+
+Introduce and unpack `⟨b, hb, c, hc, rfl⟩`. Conclude with `⟨b, hb, c * u, U.mul_mem hc hu, by group⟩`.
+-/
 private theorem dc_right (U : Subgroup G) (a : G) {u : G} (hu : u ∈ U) (y : G) :
     y * u ∈ DC U a ↔ y ∈ DC U a := by
   constructor
@@ -34,6 +44,11 @@ private theorem dc_right (U : Subgroup G) (a : G) {u : G} (hu : u ∈ U) (y : G)
   · rintro ⟨b, hb, c, hc, rfl⟩
     exact ⟨b, hb, c * u, U.mul_mem hc hu, by group⟩
 
+/- English proof (translation)
+Take `⟨v, hv, w, hw, h⟩` from `h`. Use `⟨⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' x, h]`. Use `show (v : G) • ((a : G ⧸ U)) = QuotientGroup.mk (v * a * w)`. Rewrite using `[QuotientGroup.mk_mul_of_mem _ hw]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem out_orbit (U : Subgroup G) (a : G) (x : G ⧸ U) (h : x.out ∈ DC U a) :
     x ∈ MulAction.orbit U (a : G ⧸ U) := by
   obtain ⟨v, hv, w, hw, h⟩ := h
@@ -43,6 +58,9 @@ private theorem out_orbit (U : Subgroup G) (a : G) (x : G ⧸ U) (h : x.out ∈ 
   rw [QuotientGroup.mk_mul_of_mem _ hw]
   rfl
 
+/- English proof (translation)
+Simplify using `[one, h]`.
+-/
 private theorem one_neg {p : Prop} (h : ¬p) : one p = 0 := by
   classical
   simp [one, h]
@@ -51,6 +69,21 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Introduce `Γ G V _ _ _ _ B hω g hfin`. Establish `hω1 : ∀ u : B.U, (B.ω u : ℂ) = 1`. Introduce `u`. Rewrite using `[hω]`. Both sides reduce to the same expression.
+
+Establish `htest : (Base.Tw.one B).IsTest fun y ↦ one (y ∈ DC B.U g)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u y`. Simplify using `only [hω, MonoidHom.one_apply, inv_one, Units.val_one, one_mul]`. Use `show one (↑u * y ∈ DC B.U g) = one (y ∈ DC B.U g)`.
+
+Rewrite using `[dc_left B.U g u.2 y]`. Introduce `u y`. Simplify using `only [hω, MonoidHom.one_apply, inv_one, Units.val_one, one_mul]`. Use `show one (y * ↑u ∈ DC B.U g) = one (y ∈ DC B.U g)`. Rewrite using `[dc_right B.U g u.2 y]`.
+
+Use `Set.Finite.subset hfin ?_` and prove the remaining obligations. Introduce `x hx`. Apply `out_orbit B.U g x` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Conclude with `hx (one_neg h)`.
+
+Use `⟨htest, ?_⟩` and prove the remaining obligations. Introduce `φ`. Rewrite using `[Tf.rSpec Γ G V B _ _ htest φ]`. Use function extensionality and compare the values at `y`. Establish `hinv : ∀ u ∈ B.U, ∀ z : G, (φ : G → V) (z * u) = (φ : G → V) z`.
+
+Introduce `u hu z`. Rewrite using `[φ.2.2 z ⟨u, hu⟩, hω1, one_smul]`. Rewrite using `[(dcBasic G V B.U g hfin φ hinv).2.1 y]`. Use `show ∑ᶠ x : G ⧸ B.U, one (x.out ∈ DC B.U g) • (φ : G → V) (y * x.out) = _`. Use `finsum_congr ?_` and prove the remaining obligations.
+
+Introduce `x`. Distinguish the cases in `h : x.out ∈ DC B.U g`. Simplify using `[one, h]`. Simplify using `[one, h]`.
+-/
 theorem UpperTheory.V.Z.Sym.So.opDc :
     UpperTheory.V.Z.Sym.So.OpDc := by
   intro Γ G V _ _ _ _ B hω g hfin

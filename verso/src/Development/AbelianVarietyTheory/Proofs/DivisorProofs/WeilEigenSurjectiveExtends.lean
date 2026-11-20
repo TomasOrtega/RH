@@ -8,6 +8,11 @@ open GlobalTheory.AdelicU GlobalTheory.LFun
 
 namespace GlobalTheory.ArchSurj
 
+/- English proof (translation)
+Establish `key : ∀ v : Pl F, ∃ z : κ → Fv F v, φ v z ≠ 0 ∧ (φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → ∀ i, z i ∈ v.adicCompletionIntegers F)`. Introduce `v`. Take `⟨z, hz⟩` from `Function.ne_iff.mp (hne v)`. Use `⟨z, hz, fun h => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[h]`.
+
+Conclude with `Set.mem_of_indicator_ne_zero hz`. Use `choose z hz hz' using key`. Conclude with `⟨fun i => ⟨fun v => z v i, hstd.mono fun v hv => hz' v hv i⟩, hz⟩`.
+-/
 theorem exists_point_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ)
     (hne : ∀ v, φ v ≠ 0)
     (hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -22,6 +27,23 @@ theorem exists_point_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} (�
   choose z hz hz' using key
   exact ⟨fun i => ⟨fun v => z v i, hstd.mono fun v hv => hz' v hv i⟩, hz⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M M₁ hM hM₁ e hsurj ei ev hev he h`. Establish `h₁ : pure h M₁.vac ∈ schA F (Fin n × Fin d)` using `GlobalTheory.TensUniq.pure_mem_schA h M₁.vac (fun v => (hM₁.vac v).1) hM₁.std`. Take `⟨Ψ, hΨ, heΨ⟩` from `hsurj h₁`. Take `⟨T, m, f, φ, hSB, hstd, hsum⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F _ Ψ hΨ`. Establish `hvac : ∀ i, ∀ᶠ v in Filter.cofinite, φ i v = M.vac v`.
+
+Introduce `i`. Use `filter_upwards [hM.std, T.eventually_cofinite_notMem] with v hv hT`. Rewrite using `[hv, hstd i v hT]`. Establish `hid : pure h M₁.vac = ∑ i, pure (ei (f i)) fun v => ev v (φ i v)`. Rewrite using `[← heΨ, hsum, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => he (f i) (φ i) (hSB i) (hvac i)`. Take `⟨y, hy⟩` from `exists_point_ne_zero M₁.vac (fun v => (hM₁.vac v).2.1) hM₁.std`. Use `set c : ℂ := ∏ᶠ v, M₁.vac v (fun j => y j v) with hc`. Establish `hc0 : c ≠ 0` using `finprod_induction (fun a : ℂ => a ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) hy`. Use `set cs : Fin m → ℂ := fun i => ∏ᶠ v, ev v (φ i v) (fun j => y j v) with hcs`.
+
+Use `⟨∑ i, (cs i / c) • f i, ?_⟩` and prove the remaining obligations. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Set `a : Fin n × Fin d → AF F` to `fun j => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x j), y j)`. Establish `hI : (fun j => evI F (a j)) = x`. Use function extensionality and compare the values at `j`.
+
+Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (x j)`. Establish `hx : h x * c = ∑ i, ei (f i) x * cs i`. Use `congrFun hid a` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hI] at this`.
+
+Conclude with `this`. Rewrite using `[map_sum]`. Establish `hs : (∑ i, ei ((cs i / c) • f i)) x = ∑ i, (cs i / c) * ei (f i) x`. Rewrite using `[SchwartzMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Both sides reduce to the same expression. Rewrite using `[hs]`. Apply `mul_right_cancel₀ hc0` to reduce the goal to its premises. Rewrite using `[hx, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem surjective_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M M₁ : Model σ X W), M.IsGood B.ψ → M₁.IsGood B.ψ → ∀ e : Fn F n d →ₗ[ℂ] Fn F n d, Set.SurjOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) → ∀ (ei : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n × Fin d)) (ev : ∀ v : Pl F, ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Fin n × Fin d → Fv F v) → ℂ), (∀ v, ev v (M.vac v) = M₁.vac v ∧ (SB _).map (ev v) = SB _) → (∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → e (pure f φ) = pure (ei f) fun v => ev v (φ v)) → Function.Surjective ei := by
   intro F E _ _ _ _ _ σ B n d X W M M₁ hM hM₁ e hsurj ei ev hev he h
   have h₁ : pure h M₁.vac ∈ schA F (Fin n × Fin d) :=

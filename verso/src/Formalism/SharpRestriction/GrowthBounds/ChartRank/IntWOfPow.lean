@@ -16,15 +16,34 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
   {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} {p : ℕ} {G : GAtP p}
 
+/- English proof (translation)
+Simplify using `[epsU]`.
+-/
 theorem epsU_val (B B' γ : GL (Fin n) E) (k : ℕ) :
     ((epsU B B' γ k : Eˣ) : E) = (B'.1.det * (B.1.det)⁻¹) ^ k * (γ.1.det)⁻¹ := by
   simp [epsU]
 
+/- English proof (translation)
+Unfold `cT`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(RingHom.map_det τ M).symm`.
+-/
 theorem det_cT (τ : E →+* E) (M : Matrix (Fin n) (Fin n) E) : (cT τ M).det = τ M.det := by
   unfold cT
   rw [Matrix.det_transpose]
   exact (RingHom.map_det τ M).symm
 
+/- English proof (translation)
+Establish `hJ0 : J.det ≠ 0` using `hJ.ne_zero`. Establish `h1 : σ γ.1.det * γ.1.det = 1`. Establish `h` using `congrArg Matrix.det (show cT (σ : E →+* E) γ.1 * J * γ.1 = J from hγ)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, det_cT]`. Establish `h' : (σ γ.1.det * γ.1.det) * J.det = 1 * J.det`.
+
+Rewrite using `[one_mul]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = J.det := h`. Conclude with `mul_right_cancel₀ hJ0 h'`.
+
+Establish `h2 : σ B.1.det * B.1.det = (J.det)⁻¹`. Establish `h` using `congrArg Matrix.det hB`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, det_cT, Matrix.det_one]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := h`. Establish `h3 : (cT (σ : E →+* E) B'.1 * J * B'.1).det = σ B'.1.det * B'.1.det * J.det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, det_cT]`. Use `show σ B'.1.det * J.det * B'.1.det = _`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[epsU_val, h3]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_pow, map_inv₀, mul_pow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by rw [h1, h2, inv_inv, inv_one, mul_one]`.
+-/
 theorem epsU_conj (hJ : IsUnit J.det) (B B' γ : GL (Fin n) E) (k : ℕ) (hγ : γ ∈ UJ (σ : E →+* E) J)
     (hB : cT (σ : E →+* E) B.1 * J * B.1 = 1) :
     σ (epsU B B' γ k : Eˣ) * (epsU B B' γ k : Eˣ) = ((cT (σ : E →+* E) B'.1 * J * B'.1).det) ^ k := by
@@ -60,6 +79,19 @@ theorem epsU_conj (hJ : IsUnit J.det) (B B' γ : GL (Fin n) E) (k : ℕ) (hγ : 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `key : ∀ x : E, A.phE v x ∈ (A.pl v).1.adicCompletionIntegers F → A.iw v x ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`. Introduce `x hx`. Use `(hW v _).2 ?_` and prove the remaining obligations. Establish `e : A.eQ v (A.iw v x) = A.phE v x` using `(A.eQ v).apply_symm_apply _`. Rewrite using `[e]`.
+
+Conclude with `hx`. Take `⟨h1, h2⟩` from `epsU_ph S A hp hT halg hb Lc y hy hle B' hB' γ κ b k h v`. Establish `e1 : A.iw v (epsU A.B B' γ k : Eˣ) ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range` using `key _ h1`. Establish `e2 : A.iw v ((epsU A.B B' γ k : Eˣ) : E)⁻¹ ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`. Use `key _ ?_` and prove the remaining obligations.
+
+Rewrite `h2` using `[← map_inv, Units.coe_map]`. Rewrite using `[← Units.val_inv_eq_inv_val]`. Conclude with `h2`. Establish `hg` using `gramW_gen S A hW hp hT halg hJ Lc y hy hle B' hB' v`. Establish `g1 : A.iw v (cT (σ : E →+* E) B'.1 * J * B'.1).det ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`.
+
+Rewrite using `[RingHom.map_det]`. Conclude with `det_mem_sub _ _ fun a b => (hg a b).1`. Establish `g2 : A.iw v ((cT (σ : E →+* E) B'.1 * J * B'.1).det)⁻¹ ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range`. Establish `e : ((cT (σ : E →+* E) B'.1 * J * B'.1).det)⁻¹ = ((cT (σ : E →+* E) B'.1 * J * B'.1)⁻¹).det`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+
+Rewrite using `[e, RingHom.map_det]`. Conclude with `det_mem_sub _ _ fun a b => (hg a b).2`. Establish `hc` using `epsU_conj hJ A.B B' γ k hγ hB`. Establish `h0 : ((epsU A.B B' γ k : Eˣ) : E) ≠ 0` using `Units.ne_zero _`. Establish `c1 : σ (epsU A.B B' γ k : Eˣ) = ((cT (σ : E →+* E) B'.1 * J * B'.1).det) ^ k * ((epsU A.B B' γ k : Eˣ) : E)⁻¹` using `(eq_mul_inv_iff_mul_eq₀ h0).2 hc`.
+
+Use `⟨⟨e1, ?_⟩, e2, ?_⟩` and prove the remaining obligations. Rewrite using `[c1, map_mul, map_pow]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ g1 k) e2`. Rewrite using `[map_inv₀, c1, mul_inv, inv_inv, ← inv_pow, map_mul, map_pow]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ g2 k) e1`.
+-/
 theorem epsU_iw (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : LocInt A) (hp : p.Prime) (hT : ¬ p ∣ T)
     (halg : ∀ v (a : (A.pl v).1.adicCompletion F), A.spl v ((1 : E) ⊗ₜ[F] a) = (a, a))
     (hb : ∀ v (t : Fin n → (A.pl v).1.adicCompletion F),
@@ -112,6 +144,9 @@ theorem epsU_iw (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (hW : LocIn
 
 end Gen
 
+/- English proof (translation)
+Rewrite using `[_root_.inv_zpow', neg_neg, _root_.zpow_neg, ← _root_.inv_zpow, ← mul_pow, ← mul_zpow, mul_comm a⁻¹ b, ← zpow_natCast, ← _root_.zpow_mul, mul_comm c, _root_.zpow_mul, zpow_natCast]`.
+-/
 theorem zpow_calc {K : Type} [Field K] (a b : K) (c : ℤ) (k : ℕ) :
     (a ^ (-c)) ^ k * ((b⁻¹) ^ (-c)) ^ k = ((b * a⁻¹) ^ k) ^ c := by
   rw [_root_.inv_zpow', neg_neg, _root_.zpow_neg, ← _root_.inv_zpow, ← mul_pow, ← mul_zpow, mul_comm a⁻¹ b, ← zpow_natCast, ← _root_.zpow_mul,
@@ -119,6 +154,15 @@ theorem zpow_calc {K : Type} [Field K] (a b : K) (c : ℤ) (k : ℕ) :
 
 variable {D : D7}
 
+/- English proof (translation)
+Distinguish the cases in `hr0 : r = 0`. Substitute `hr0` using the available equality. Conclude with `⟨Subring.zero_mem _, by rw [_root_.inv_zero]; exact Subring.zero_mem _⟩`. Establish `hd : r ∈ intW D.what₂.places w ∨ r⁻¹ ∈ intW D.what₂.places w`. Assume the negation of the conclusion as `hcon`.
+
+Rewrite `hcon` using `[not_or]`. Establish `a1 : D.what₂.places.val w r < 0` using `not_le.1 hcon.1`. Establish `a2 : D.what₂.places.val w r⁻¹ < 0` using `not_le.1 hcon.2`. Establish `a3 : D.what₂.places.val w r + D.what₂.places.val w r⁻¹ < 0` using `Left.add_neg_of_neg_of_nonpos a1 a2.le`. Rewrite `a3` using `[← AddValuation.map_mul, mul_inv_cancel₀ hr0, AddValuation.map_one]`.
+
+Conclude with `lt_irrefl _ a3`. Establish `e1 : r⁻¹ = r ^ (k - 1) * (r ^ k)⁻¹`. Establish `: r ^ k = r ^ (k - 1) * r` using `pow_sub_one_mul hk.ne' r |>.symm`. Rewrite using `[this, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hr0), one_mul]`. Establish `e2 : r = (r⁻¹) ^ (k - 1) * r ^ k`.
+
+Establish `: r ^ k = r ^ (k - 1) * r` using `pow_sub_one_mul hk.ne' r |>.symm`. Rewrite using `[this, ← mul_assoc, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ hr0), one_mul]`. Break down `hd with h | h` into its components or cases. Conclude with `⟨h, by rw [e1]; exact Subring.mul_mem _ (Subring.pow_mem _ h _) h2⟩`. Conclude with `⟨by rw [e2]; exact Subring.mul_mem _ (Subring.pow_mem _ h _) h1, h⟩`.
+-/
 theorem intW_of_pow (w : D.what₂.places.Pl) (r : D.what₂.LL) (k : ℕ) (hk : 0 < k) (h1 : r ^ k ∈ intW D.what₂.places w)
     (h2 : (r ^ k)⁻¹ ∈ intW D.what₂.places w) : r ∈ intW D.what₂.places w ∧ r⁻¹ ∈ intW D.what₂.places w := by
   by_cases hr0 : r = 0
@@ -148,6 +192,11 @@ variable {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A :
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hfin : Finite (Cls (S.K β).lev)` using `Finite.of_surjective _ (S.K β).y_bij.2`. Take `⟨a, b, hab, he⟩` from `@Finite.exists_ne_map_eq_of_infinite ℕ (Cls (S.K β).lev) _ hfin (fun n : ℕ => (Quotient.mk'' ((S.K β).y cl ^ n) : Cls (S.K β).lev))`. Use `wlog hlt : a < b generalizing a b`. Conclude with `this b a hab.symm he.symm (by omega)`. Take `⟨g, hg, κ, hκ, e⟩` from `(DoubleCoset.eq _ _ ((S.K β).y cl ^ a) ((S.K β).y cl ^ b)).1 he`.
+
+Take `⟨γ, hγ, hγe⟩` from `Subgroup.mem_subgroupOf.1 hg`. Use `⟨a, b - a, by omega, g, κ, γ, hγ, hγe.symm, Subgroup.mem_subgroupOf.1 hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[show a + (b - a) = b by omega]`. Conclude with `e`.
+-/
 theorem exists_pow (S : StepIn M i hi G) (β : S.Ch) (cl : {c // S.chOf c = β}) :
     ∃ (b k : ℕ), 0 < k ∧ ∃ (g κ : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F))
       (γ : GL (Fin (D.R.N i)) D.host.E), γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi) ∧
@@ -166,6 +215,37 @@ theorem exists_pow (S : StepIn M i hi G) (β : S.Ch) (cl : {c // S.chOf c = β})
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `cl B' hB'`. Establish `hpw` using `L.resChar`. Substitute `hpw` using the available equality. Take `⟨b, k, hk, g, κ, γ, hγ, hg, hκ, hpow⟩` from `exists_pow S β cl`. Establish `hσσ : ∀ x : D.host.E, sigD D (sigD D x) = x` using `fun x => by`.
+
+Rewrite using `[Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.forms_involution_eq_host_conj, Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.host_conj_involutive]`. Establish `hpow' : ((S.K β).y cl).1 ^ (b + k) = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ * ((S.K β).y cl).1 ^ b * (⟨κ.1, hκ⟩ : (S.K β).lev.U).1 := by`. Use `congrArg Subtype.val hpow` as an intermediate fact. Rewrite using `[← hg]`. Conclude with `this`.
+
+Establish `hiw` using `epsU_iw (S.K β).lev (S.loc β) H.int L.prime L.siteGood_prime_torsion L.alg L.base (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D i hi) H.std (S.lat cl.1) ((S.K β).y cl) ((S.K β).y_lat cl) (le_dual_chart (S.K β) cl) B' hB' γ hγ ⟨κ.1, hκ⟩ b k hpow'`. Use `set ε : D.host.E := ((epsU (S.loc β).B B' γ k : D.host.Eˣ) : D.host.E) with hε`. Establish `hint : ∀ x : D.host.E, (∀ v, (S.loc β).iw v x ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range ∧ (S.loc β).iw v (sigD D x) ∈ (algebraMap (G.P.W v) (G.P.Qq v)).range) → ∀ τ, tEL D τ x ∈ intW D.what₂.places w`. Introduce `x hx τ`. Take `⟨⟨v, s⟩, rfl⟩` from `S.pos.surjective τ`.
+
+Rewrite using `[hR0]`. Distinguish the cases in `hs : Even s.val`. Establish `h1` using `H.pos_emb v s x`. Rewrite `h1` using `[if_pos hs]`. Rewrite using `[h1]`.
+
+Conclude with `rho_int v s.val _ (hx v).1`. Establish `h1` using `H.pos_emb v s (sigD D x)`. Rewrite `h1` using `[if_neg hs, hσσ]`. Rewrite using `[h1]`. Conclude with `rho_int v s.val _ (hx v).2`.
+
+Establish `i1 : ∀ τ, tEL D τ ε ∈ intW D.what₂.places w` using `hint ε fun v => (hiw v).1`. Establish `i2 : ∀ τ, (tEL D τ ε)⁻¹ ∈ intW D.what₂.places w` using `fun τ => by`. Rewrite using `[← map_inv₀]`. Conclude with `hint ε⁻¹ (fun v => (hiw v).2) τ`. Establish `i3 : ∀ τ, D.what₂.embLL (tEL D τ ε) ∈ unitsW D w` using `fun τ => ⟨_, i1 τ, i2 τ, rfl⟩`.
+
+Take `⟨rc, hrc⟩` from `H.chRat cl`. Use `set r : D.what₂.LL := (∏ τ, (tEL D τ (S.loc β).B.1.det) ^ (-(cTw D i))) * rc * ∏ τ, (tEL D τ ((B'⁻¹ : GL (Fin (D.R.N i)) D.host.E).1.det)) ^ (-(cTw D i)) with hr`. Establish `hrs : D.what₂.embLL r = S.sTw β cl B'`. Rewrite using `[hr, map_mul, map_mul, map_prod, map_prod, hrc]`. Unfold `StepIn.sTw StepIn.kTw`.
+
+Use `congr 1`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, tEL_emb]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zpow₀, tEL_emb]`. Use `congr 1`. Conclude with `RingHom.map_det (embT D τ) _`. Establish `hch : (((S.tw β).ch ((S.K β).y cl) : ℂˣ) : ℂ) ^ k * ∏ τ, (embT D τ γ.1.det) ^ (cTw D i) = 1`. Establish `h1` using `congrArg (S.tw β).ch hpow`.
+
+Rewrite `h1` using `[map_mul, map_mul, map_pow, map_pow, (S.tw β).ch_U κ hκ, mul_one, pow_add, mul_comm]`. Establish `h2 : (S.tw β).ch ((S.K β).y cl) ^ k = (S.tw β).ch g` using `mul_right_cancel h1`. Establish `h3` using `(S.tw β).ch_rat γ hγ g hg`. Rewrite `h3` using `[← h2, Units.val_pow_eq_pow_val]`. Conclude with `h3`.
+
+Establish `hdet : ((B'⁻¹ : GL (Fin (D.R.N i)) D.host.E).1.det) = (B'.1.det)⁻¹`. Use `congrArg Units.val (map_inv Matrix.GeneralLinearGroup.det B')` as an intermediate fact. Rewrite `this` using `[Units.val_inv_eq_inv_val]`. Conclude with `this`. Establish `hpw : D.what₂.embLL (r ^ k) = ∏ τ, (D.what₂.embLL (tEL D τ ε)) ^ (cTw D i)`.
+
+Establish `hP0 : (∏ τ, (embT D τ γ.1.det) ^ (cTw D i)) ≠ 0` using `right_ne_zero_of_mul_eq_one hch`. Establish `hchk : (((S.tw β).ch ((S.K β).y cl) : ℂˣ) : ℂ) ^ k = (∏ τ, (embT D τ γ.1.det) ^ (cTw D i))⁻¹` using `eq_inv_of_mul_eq_one_left hch`. Rewrite using `[map_pow, hr, map_mul, map_mul, map_prod, map_prod, hrc, mul_pow, mul_pow, hchk, ← Finset.prod_pow, ← Finset.prod_pow, mul_right_comm, ← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, map_zpow₀, tEL_emb, tEL_emb, tEL_emb, hdet, map_inv₀, zpow_calc, hε, epsU_val, map_mul, map_pow, map_mul, map_inv₀, map_inv₀, mul_zpow, _root_.inv_zpow]`.
+
+Establish `hU : D.what₂.embLL (r ^ k) ∈ unitsW D w`. Rewrite using `[hpw]`. Use `Submonoid.prod_mem _ fun τ _ => ?_` and prove the remaining obligations. Break down `Int.eq_nat_or_neg (cTw D i) with ⟨m, hm | hm⟩` into its components or cases. Rewrite using `[hm, zpow_natCast]`.
+
+Conclude with `Submonoid.pow_mem _ (i3 τ) m`. Rewrite using `[hm, _root_.zpow_neg, zpow_natCast]`. Conclude with `unitsW_inv (Submonoid.pow_mem _ (i3 τ) m)`. Take `⟨r', hr1, hr2, hr3⟩` from `hU`. Establish `hrr : r' = r ^ k` using `D.what₂.embLL.injective hr3`.
+
+Rewrite `hr1`, `hr2` using `[hrr]`. Take `⟨a1, a2⟩` from `intW_of_pow w r k hk hr1 hr2`. Conclude with `⟨r, a1, a2, hrs⟩`.
+-/
 theorem twUnit_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (w : D.what₂.places.Pl) (β : S.Ch) (H : S.Core e β)
     (hR0 : ∀ x, x ∈ intW D.what₂.places w ↔ e x ∈ Set.range (algebraMap G.O G.Kf)) (L : LatIn S w β) : S.TwUnit w β := by
   intro cl B' hB'

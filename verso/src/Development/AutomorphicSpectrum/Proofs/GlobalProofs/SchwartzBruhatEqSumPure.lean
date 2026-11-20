@@ -16,6 +16,15 @@ section Group
 
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
 
+/- English proof (translation)
+Establish `hg : IsLocallyConstant fun p : V × V => f (p.1 + p.2) - f p.1` using `(h1.comp_continuous (f := fun p : V × V => p.1 + p.2) (by fun_prop)).sub (h1.comp_continuous (f := fun p : V × V => p.1) (by fun_prop))`. Establish `hn` using `hg.isOpen_fiber 0`. Take `⟨u, v, _, hv, hCu, h0, huv⟩` from `generalized_tube_lemma h2.isCompact (isCompact_singleton (x := (0 : V))) hn (by`. Introduce and unpack `⟨c, x⟩ ⟨_, hx⟩`. Establish `hx' : x = 0` using `hx`.
+
+Substitute `hx'` using the available equality. Use the proof step `simp)`. Establish `hv0 : v ∈ 𝓝 (0 : V)` using `hv.mem_nhds (h0 rfl)`. Establish `hv1 : (fun x : V => -x) ⁻¹' v ∈ 𝓝 (0 : V)`. Establish `hc : ContinuousAt (fun x : V => -x) 0` using `by fun_prop`.
+
+Conclude with `hc.preimage_mem_nhds (by simpa using hv0)`. Use `Filter.mem_of_superset (Filter.inter_mem hv0 hv1) fun w hw x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Use `huv (Set.mk_mem_prod (hCu hx) hw.1)` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+
+Distinguish the cases in `hx' : x + w ∈ tsupport f`. Establish `h : f (x + w + -w) - f (x + w) = 0` using `huv (Set.mk_mem_prod (hCu hx') hw.2)`. Rewrite `h` using `[add_neg_cancel_right, sub_eq_zero]`. Conclude with `h.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`.
+-/
 theorem invariant_mem_nhds {f : V → ℂ} (h1 : IsLocallyConstant f) (h2 : HasCompactSupport f) :
     {u : V | ∀ x, f (x + u) = f x} ∈ 𝓝 (0 : V) := by
   have hg : IsLocallyConstant fun p : V × V => f (p.1 + p.2) - f p.1 :=
@@ -42,6 +51,19 @@ theorem invariant_mem_nhds {f : V → ℂ} (h1 : IsLocallyConstant f) (h2 : HasC
       exact h.symm
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hφ.isCompact.elim_finite_subcover (fun a : V => {y | y - a ∈ L}) (fun a => hL.preimage (continuous_id.sub continuous_const)) (fun x _ => Set.mem_iUnion.2 ⟨x, by simp [L.zero_mem]⟩)`. Set `T : Finset (V ⧸ L)` to `t.image (QuotientAddGroup.mk : V → V ⧸ L)`. Use `⟨T.image Quotient.out, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image (fun a _ b _ hab => Quotient.out_injective hab)]`. Establish `key : ∀ q : V ⧸ L, x - q.out ∈ L ↔ q = (x : V ⧸ L)`.
+
+Introduce `q`. Use `conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Establish `hval : φ ((x : V ⧸ L).out) = φ x`. Establish `hm : x - ((x : V ⧸ L)).out ∈ L` using `(key _).2 rfl`.
+
+Use `hinv ((x : V ⧸ L)).out _ hm` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `hterm : ∀ q : V ⧸ L, φ q.out * Set.indicator {y | y - q.out ∈ L} (fun _ => (1 : ℂ)) x = if q = (x : V ⧸ L) then φ x else 0`.
+
+Introduce `q`. Distinguish the cases in `hq : q = (x : V ⧸ L)`. Substitute `hq` using the available equality. Rewrite using `[if_pos rfl, Set.indicator_of_mem (show x ∈ {y | y - ((x : V ⧸ L)).out ∈ L} from (key _).2 rfl), hval, mul_one]`. Rewrite using `[if_neg hq, Set.indicator_of_notMem (show x ∉ {y | y - q.out ∈ L} from fun hx => hq ((key _).1 hx)), mul_zero]`.
+
+Simplify using `only [hterm, Finset.sum_ite_eq']`. Use `split_ifs with hx`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Establish `hmem : x ∈ tsupport φ` using `subset_tsupport φ hne`.
+
+Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 (ht hmem)`. Apply `hx` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Conclude with `hxa`.
+-/
 theorem eq_sum_cosets {φ : V → ℂ} (hφ : HasCompactSupport φ) (L : AddSubgroup V) (hL : IsOpen (L : Set V))
     (hinv : ∀ x, ∀ l ∈ L, φ (x + l) = φ x) :
     ∃ s : Finset V, ∀ x, φ x = ∑ a ∈ s, φ a * Set.indicator {y | y - a ∈ L} (fun _ => (1 : ℂ)) x := by
@@ -84,6 +106,9 @@ theorem eq_sum_cosets {φ : V → ℂ} (hφ : HasCompactSupport φ) (L : AddSubg
 
 end Group
 
+/- English proof (translation)
+Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hsub⟩` from `hU`. Conclude with `⟨⋂ i ∈ I, t i, (Filter.biInter_mem hI).2 fun i _ => ht i, fun c hc => hsub fun i hi => Set.mem_iInter₂.1 (hc i) i hi⟩`.
+-/
 theorem exists_nhds_of_pi {ι X : Type} [Finite ι] [TopologicalSpace X] {x : X} {U : Set (ι → X)}
     (hU : U ∈ 𝓝 (fun _ => x)) : ∃ W ∈ 𝓝 x, ∀ c : ι → X, (∀ i, c i ∈ W) → c ∈ U := by
   rw [nhds_pi, Filter.mem_pi] at hU
@@ -96,9 +121,29 @@ variable {F : Type} [Field F] [NumberField F]
 def intSub (v : HeightOneSpectrum (𝓞 F)) : OpenAddSubgroup (Fv F v) :=
   ⟨(v.adicCompletionIntegers F).toSubring.toAddSubgroup, ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intSub (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) :
     x ∈ intSub v ↔ x ∈ v.adicCompletionIntegers F := Iff.rfl
 
+/- English proof (translation)
+Set `R` to `fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F`. Set `A` to `fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Establish `hc : Continuous (RestrictedProduct.structureMap R A Filter.cofinite)` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Establish `hp : (RestrictedProduct.structureMap R A Filter.cofinite) ⁻¹' W ∈ 𝓝 (fun v => (0 : A v))` using `hc.continuousAt.preimage_mem_nhds hW`. Rewrite `hp` using `[nhds_pi, Filter.mem_pi]`.
+
+Take `⟨I, hI, t, ht, hsub⟩` from `hp`. Establish `hQ : ∀ v : HeightOneSpectrum (𝓞 F), ∃ Q : OpenAddSubgroup (Fv F v), Q ≤ intSub v ∧ ∀ x : A v, (x : Fv F v) ∈ Q → x ∈ t v`. Introduce `v`. Take `⟨u, hu, hut⟩` from `mem_nhds_subtype _ _ _ |>.1 (ht v)`. Establish `h0 : u ∩ (intSub v : Set (Fv F v)) ∈ 𝓝 (0 : Fv F v)` using `Filter.inter_mem hu ((intSub v).isOpen.mem_nhds (intSub v).zero_mem)`.
+
+Take `⟨Q, hQ⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ h0`. Conclude with `⟨Q, fun x hx => (hQ hx).2, fun x hx => hut (hQ hx).1⟩`. Use `choose Q hQ1 hQ2 using hQ`. Use `⟨hI.toFinset, fun v => if v ∈ I then Q v else intSub v, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ I`. Simplify `hQ1 v` using `[hv]`. Simplify using `[hv]`. Introduce `v hv`. Establish `: v ∉ I` using `by simpa using hv`.
+
+Simplify using `[this]`. Introduce `y hy`. Establish `hint : ∀ v, y v ∈ A v`. Introduce `v`. Distinguish the cases in `hv : v ∈ I`.
+
+Use `hy v` as an intermediate fact. Simplify using `only [hv, if_true] at this`. Conclude with `hQ1 v this`. Use `hy v` as an intermediate fact. Simplify using `only [hv, if_false] at this`.
+
+Conclude with `this`. Establish `: (fun v => (⟨y v, hint v⟩ : A v)) ∈ (RestrictedProduct.structureMap R A Filter.cofinite) ⁻¹' W`. Use `hsub fun v hv => hQ2 v _ ?_` and prove the remaining obligations. Use `hy v` as an intermediate fact. Simplify using `only [hv, if_true] at this`.
+
+Conclude with `this`. Conclude with `this`.
+-/
 theorem exists_box_subset {W : Set (Af F)} (hW : W ∈ 𝓝 (0 : Af F)) :
     ∃ (T : Finset (HeightOneSpectrum (𝓞 F))) (P : ∀ v : HeightOneSpectrum (𝓞 F), OpenAddSubgroup (Fv F v)),
       (∀ v, P v ≤ intSub v) ∧ (∀ v, v ∉ T → P v = intSub v) ∧ {y : Af F | ∀ v, y v ∈ P v} ⊆ W := by
@@ -147,14 +192,23 @@ theorem exists_box_subset {W : Set (Af F)} (hW : W ∈ 𝓝 (0 : Af F)) :
 
 variable {E : Type} [Field E] [Algebra F E] [FiniteDimensional F E] {d : ℕ} (b : Module.Basis (Fin d) F E)
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_add {R : Type} [CommRing R] [Algebra F R] (x y : R ⊗[F] E) (k : Fin d) :
     crd b R (x + y) k = crd b R x k + crd b R y k := by
   simp [crd]
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_neg {R : Type} [CommRing R] [Algebra F R] (x : R ⊗[F] E) (k : Fin d) :
     crd b R (-x) k = - crd b R x k := by
   simp [crd]
 
+/- English proof (translation)
+Simplify using `[crd]`.
+-/
 theorem crd_zero {R : Type} [CommRing R] [Algebra F R] (k : Fin d) :
     crd b R (0 : R ⊗[F] E) k = 0 := by
   simp [crd]

@@ -5,6 +5,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[_root_.pow_succ, _root_.mul_assoc, h, ← _root_.mul_assoc, ih, _root_.mul_assoc, Matrix.diagonal_mul_diagonal]`. Simplify using `only [_root_.pow_succ]`.
+-/
 private theorem pow_mul_Sb {g : ℕ} {H Sb : Matrix (Fin g) (Fin g) ℂ} {ev : Fin g → ℂ}
     (h : H * Sb = Sb * Matrix.diagonal ev) (i : ℕ) :
     H ^ i * Sb = Sb * Matrix.diagonal (fun j => ev j ^ i) := by
@@ -15,6 +18,13 @@ private theorem pow_mul_Sb {g : ℕ} {H Sb : Matrix (Fin g) (Fin g) ℂ} {ev : F
       Matrix.diagonal_mul_diagonal]
     simp only [_root_.pow_succ]
 
+/- English proof (translation)
+Take `⟨-, hc, hH⟩` from `hD`. Establish `key : ∀ (i : ℕ) (b : 𝓞 F), ρ (a b) * H ^ i * Sb = Sb * Matrix.diagonal (fun j => ty j (b : F) * ev j ^ i)`. Introduce `i b`. Rewrite using `[_root_.mul_assoc, pow_mul_Sb hH i, ← _root_.mul_assoc, hc b, _root_.mul_assoc, Matrix.diagonal_mul_diagonal]`. Simplify using `only [Polynomial.sum_def, Finset.sum_mul, key, ← Finset.mul_sum]`.
+
+Use `congr 1`. Use extensionality with `k l`. Simplify using `only [Matrix.sum_apply, Matrix.diagonal_apply, Polynomial.map_map, Polynomial.eval_map, Polynomial.eval₂_eq_sum, Polynomial.sum_def]`. Use `split_ifs with hkl`. Substitute `hkl` using the available equality.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 private theorem sum_mul_Sb {F : Type} [Field F] [NumberField F] {O : Type} [Ring O] {g : ℕ}
     {ρ : O →+* Matrix (Fin g) (Fin g) ℂ} {a : 𝓞 F →+* O} {H Sb : Matrix (Fin g) (Fin g) ℂ}
     {ty : Fin g → (F →+* ℂ)} {ev : Fin g → ℂ} (hD : IsDiag a ρ H Sb ty ev) (q : (𝓞 F)[X]) :
@@ -36,6 +46,19 @@ private theorem sum_mul_Sb {F : Type} [Field F] [NumberField F] {O : Type} [Ring
     rfl
   · simp
 
+/- English proof (translation)
+Introduce `hTC hPS hNP hKM F _ _ O _ bar g ρ a n t₀ ε hS D P₀ hP ga H hga Sb ty ev hD χ hχ hdeg τ`. Establish `hcard : ∀ σ, (evFull ty ev σ).card = n` using `fun σ => (hTC F O bar g ρ a n t₀ ε hS H Sb ty ev hD σ).2`. Take `⟨ψ, hψm, hψd, hψ⟩` from `hNP F n (evFull ty ev) hcard (hPS F O bar g ρ a D P₀ hP ga H hga Sb ty ev hD)`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors (𝓞 F)) ψ`. Use `set q := IsLocalization.integerNormalization (nonZeroDivisors (𝓞 F)) ψ`.
+
+Establish `hb' : q.map (algebraMap (𝓞 F) F) = Polynomial.C (algebraMap (𝓞 F) F (b : 𝓞 F)) * ψ`. Rewrite using `[hb, Polynomial.C_mul', algebraMap_smul]`. Establish `h0 : (fun j => ((q.map (algebraMap (𝓞 F) F)).map (ty j)).eval (ev j)) = 0`. Use function extensionality and compare the values at `j`. Establish `hmem : ev j ∈ evFull ty ev (ty j)` using `Multiset.mem_add.2 (Or.inl (Multiset.mem_map.2 ⟨j, by simp, rfl⟩))`.
+
+Rewrite using `[hb', Polynomial.map_mul, Polynomial.eval_mul, hψ (ty j), Polynomial.eval_multiset_prod, Pi.zero_apply]`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Apply `Multiset.prod_eq_zero` to reduce the goal to its premises. Rewrite using `[Multiset.map_map]`. Conclude with `Multiset.mem_map.2 ⟨ev j, hmem, by simp⟩`.
+
+Establish `h1` using `sum_mul_Sb hD q`. Rewrite `h1` using `[h0, show Matrix.diagonal (0 : Fin g → ℂ) = 0 from Matrix.diagonal_zero, Matrix.mul_zero]`. Establish `hu : IsUnit Sb.det` using `isUnit_iff_ne_zero.mpr hD.1`. Establish `hsum : (q.sum fun i c => ρ (a c) * H ^ i) = 0`. Rewrite using `[← Matrix.mul_one (q.sum fun i c => ρ (a c) * H ^ i), ← Matrix.mul_nonsing_inv Sb hu, ← Matrix.mul_assoc, h1, Matrix.zero_mul]`.
+
+Establish `hk` using `(hKM F O bar g ρ a D P₀ hP ga H hga q).2 hsum`. Establish `hdvd : χ ∣ ψ`. Use `(hχ.2 q).1 hk` as an intermediate fact. Rewrite `this` using `[hb']`. Establish `hne : algebraMap (𝓞 F) F (b : 𝓞 F) ≠ 0` using `(IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2)`.
+
+Conclude with `(Polynomial.dvd_C_mul hne).1 this`. Establish `heq : ψ = χ` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hχ.1 hψm hdvd (by rw [hψd, hdeg])`. Use `show (Polynomial.map τ χ).roots = _`. Rewrite using `[← heq, hψ τ, Polynomial.roots_multiset_prod_X_sub_C]`.
+-/
 theorem UpperTheory.Gal.W2.rootsFull_of :
     UpperTheory.Gal.W2.TypeCount → UpperTheory.Gal.W2.PowSumRat → UpperTheory.Gal.W2.NewtonPoly → UpperTheory.Gal.W2.KillsMat → UpperTheory.Gal.W2.RootsFull := by
   intro hTC hPS hNP hKM F _ _ O _ bar g ρ a n t₀ ε hS D P₀ hP ga H hga Sb ty ev hD χ hχ hdeg τ

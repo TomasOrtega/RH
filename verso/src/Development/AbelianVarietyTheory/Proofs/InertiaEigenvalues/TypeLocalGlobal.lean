@@ -8,6 +8,11 @@ open Polynomial
 
 namespace GlobalTheory.TypeAbove
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.ConjPlaceOff.isConjPl_iff D w w').1 hc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e` using `(h ((p : ℕ) : 𝓞 D.host.E)).1 hw`. Rewrite `e` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨x, hx, hcx⟩` from `(GlobalTheory.ConjPlaceOff.isSplitPl_iff D w).1 hs`.
+
+Conclude with `(GlobalTheory.ConjPlaceOff.isSplitPl_iff D w').2 ⟨_, (h x).1 hx, fun h' => hcx ((h _).2 h')⟩`.
+-/
 theorem conj_over_split (D : D7) {p : ℕ} {w w' : PlE D.host} (hw : w ∈ placesOver D.host.E p)
     (hs : IsSplitPl D.host w) (hc : IsConjPl D.host w w') :
     w' ∈ placesOver D.host.E p ∧ IsSplitPl D.host w' := by
@@ -18,6 +23,19 @@ theorem conj_over_split (D : D7) {p : ℕ} {w w' : PlE D.host} (hw : w ∈ place
   · obtain ⟨x, hx, hcx⟩ := (GlobalTheory.ConjPlaceOff.isSplitPl_iff D w).1 hs
     exact (GlobalTheory.ConjPlaceOff.isSplitPl_iff D w').2 ⟨_, (h x).1 hx, fun h' => hcx ((h _).2 h')⟩
 
+/- English proof (translation)
+Introduce `D P hDZ _ hWD i k hl r hr x PI hPI v τ hτ hsq hroot`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨u, hu, hm0, hlab, hconj⟩` from `hDZ i k v PI τ hτ hsq hroot`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `key : ∀ w, w ∈ placesOver D.host.E (D.host.g k) → IsSplitPl D.host w → D.naut.mono0 (D.naut.locV i PI w) → (D.naut.items₂ k w (D.naut.locV i PI w)).natDegree = D.R.nV → D.naut.IsdRW i (mapRep (iotaOQ D.nd D.naut i) (r x)) w ∧ D.naut.mono0 (D.naut.wdOf i (mapRep (iotaOQ D.nd D.nau …` using `D.host.E) (D.nd.plOm.1 w), D.naut.inePol (D.naut.wdOf i (mapRep (iotaOQ D.nd D.naut i) (r x)) w) σ = ((Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k w (D.naut.locV i PI w))).map fun y => X - C (P.om k w y σ)).prod := by`.
+
+Introduce `w hw hs hm hdeg`. Establish `hwl : w ∈ placesOver D.host.E (D.nd.l i)` using `hl ▸ hw`. Take `⟨hdR, heq⟩` from `hWD i r hr x PI hPI w hwl hs`. Establish `hdim : D.naut.lpDim (D.naut.locV i PI w) = D.R.nV`. Establish `h` using `D.naut.wdOf_dim i (mapRep (iotaOQ D.nd D.naut i) (r x)) w`.
+
+Rewrite `h` using `[heq, D.naut.lpDim_tw]`. Then use the resulting hypothesis. Use `⟨hdR, ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[heq, D.naut.monomial_twist_iff]`. Conclude with `hm`. Rewrite using `[heq, D.naut.inePol_tw _ _ σ hσ]`.
+
+Conclude with `P.inertiaCharpoly_eigenvalues k w hw _ (hdeg.trans hdim.symm) σ hσ`. Introduce `w M hwM`. Break down `hwM with ⟨rfl, rfl⟩ | ⟨hc, rfl⟩` into its components or cases. Establish `hdeg : (D.naut.items₂ k (D.naut.plGw k v) (D.naut.locV i PI (D.naut.plGw k v))).natDegree = D.R.nV`. Rewrite using `[hlab, ((P.lz k).lab_spec τ).1.natDegree_mul ((monic_X_sub_C _).pow _), ((P.lz k).lab_spec τ).2.1, (monic_X_sub_C _).natDegree_pow, natDegree_X_sub_C, mul_one]`.
+
+Both sides reduce to the same expression. Establish `h` using `key _ (D.naut.plGw_over k v) (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v) hm0 hdeg`. Rewrite `h` using `[hlab]`. Conclude with `h`. Take `⟨hw, hs⟩` from `conj_over_split D (D.naut.plGw_over k v) (GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v) hc`.
+
+Take `⟨hm, hdeg, hroots⟩` from `hconj w hc`. Establish `h` using `key w hw hs hm hdeg`. Rewrite `h` using `[hroots]`. Conclude with `h`.
+-/
 theorem main : ∀ (D : D7) (P : PairedCharacterCondition.Pend D), PairedCharacterCondition.admDZ P → SumRepresentations.tie0 D → WDAbove D → TypeLGC P := by
   intro D P hDZ _ hWD i k hl r hr x PI hPI v τ hτ hsq hroot
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩

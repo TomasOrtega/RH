@@ -22,30 +22,67 @@ section Classical
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} (X : Data E r)
   (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
 
+/- English proof (translation)
+Simplify using `only [hx, Matrix.mulVec_add, add_dotProduct]`.
+-/
 theorem hx_add_left (z z' w : Fin g → ℂ) :
     hx X bas idx x (z + z') w = hx X bas idx x z w + hx X bas idx x z' w := by
   simp only [hx, Matrix.mulVec_add, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hx, Matrix.mulVec_add, star_add, dotProduct_add]`.
+-/
 theorem hx_add_right (z w w' : Fin g → ℂ) :
     hx X bas idx x z (w + w') = hx X bas idx x z w + hx X bas idx x z w' := by
   simp only [hx, Matrix.mulVec_add, star_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [hx, Matrix.mulVec_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem hx_smul_left (c : ℂ) (z w : Fin g → ℂ) :
     hx X bas idx x (c • z) w = c * hx X bas idx x z w := by
   simp only [hx, Matrix.mulVec_smul, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [hx, Matrix.mulVec_smul, star_smul, dotProduct_smul, smul_eq_mul, Complex.star_def]`.
+-/
 theorem hx_smul_right (c : ℂ) (z w : Fin g → ℂ) :
     hx X bas idx x z (c • w) = conj c * hx X bas idx x z w := by
   simp only [hx, Matrix.mulVec_smul, star_smul, dotProduct_smul, smul_eq_mul, Complex.star_def]
 
+/- English proof (translation)
+Rewrite using `[← Complex.coe_smul, hx_smul_left]`.
+-/
 theorem hx_rsmul_left (t : ℝ) (z w : Fin g → ℂ) :
     hx X bas idx x (t • z) w = t * hx X bas idx x z w := by
   rw [← Complex.coe_smul, hx_smul_left]
 
+/- English proof (translation)
+Rewrite using `[← Complex.coe_smul, hx_smul_right, Complex.conj_ofReal]`.
+-/
 theorem hx_rsmul_right (t : ℝ) (z w : Fin g → ℂ) :
     hx X bas idx x z (t • w) = t * hx X bas idx x z w := by
   rw [← Complex.coe_smul, hx_smul_right, Complex.conj_ofReal]
 
+/- English proof (translation)
+Establish `hab : ∑ k, hx X bas idx x (ζ k) (u k) = conj (∑ k, hx X bas idx x (u k) (ζ k))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => hs (u k) (ζ k)`. Establish `hph : ∀ t : ℝ, (((∑ k, hx X bas idx x (ζ k) ((t • u) k)).im : ℝ) : ℂ) = (t : ℂ) * (((∑ k, hx X bas idx x (ζ k) (u k)).im : ℝ) : ℂ)`. Introduce `t`.
+
+Establish `h : ∑ k, hx X bas idx x (ζ k) ((t • u) k) = (t : ℂ) * ∑ k, hx X bas idx x (ζ k) (u k)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [Pi.smul_apply, hx_rsmul_right]`. Rewrite using `[h, Complex.im_ofReal_mul, Complex.ofReal_mul]`. Establish `hq : ∀ t : ℝ, ∑ k, hx X bas idx x ((ζ + t • u) k) ((ζ + t • u) k) = ∑ k, hx X bas idx x (ζ k) (ζ k) + (t : ℂ) * (∑ k, hx X bas idx x (ζ k) (u k) + ∑ k, hx X bas idx x (u k) (ζ k)) + (t : ℂ) ^ 2 * ∑ k, hx X bas idx x (u k) (u k)`.
+
+Introduce `t`. Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, hx_add_left, hx_add_right, hx_rsmul_left, hx_rsmul_right]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hT : HasDerivAt (fun t : ℝ => (t : ℂ)) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).ofReal_comp`. Establish `hE : HasDerivAt (fun t : ℝ => (Real.pi : ℂ) * I * ((t : ℂ) * (((∑ k, hx X bas idx x (ζ k) (u k)).im : ℝ) : ℂ)) - (Real.pi : ℂ) / 2 * (∑ k, hx X bas idx x (ζ k) (ζ k) + (t : ℂ) * (∑ k, hx X bas idx x (ζ k) (u k) + ∑ k, hx X bas idx x (u k) (ζ k)) + (t : ℂ) ^ 2 * ∑ k, hx X bas idx …`. Establish `h` using `((hT.mul_const (((∑ k, hx X bas idx x (ζ k) (u k)).im : ℝ) : ℂ)).const_mul ((Real.pi : ℂ) * I)).sub ((((hT.mul_const (∑ k, hx X bas idx x (ζ k) (u k) + ∑ k, hx X bas idx x (u k) (ζ k))).const_add (∑ k, hx X bas idx x (ζ k) (ζ k))).add ((hT.pow 2).mul_const (∑ k, hx X bas idx x (u …`. Conclude with `h.congr_deriv (by simp)`.
+
+Establish `hL : HasDerivAt (fun t : ℝ => ζ + t • u) u 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const u).const_add ζ`. Establish `hΦt : HasDerivAt (fun t : ℝ => Φ (ζ + t • u)) (fderiv ℝ Φ ζ u) 0` using `(hΦ ζ).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hL (by simp)`. Establish `hF` using `hE.cexp.mul hΦt`. Use `(hF.congr_deriv ?_).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Establish `key : (Real.pi : ℂ) * I * (((∑ k, hx X bas idx x (ζ k) (u k)).im : ℝ) : ℂ) - (Real.pi : ℂ) / 2 * (∑ k, hx X bas idx x (ζ k) (u k) + ∑ k, hx X bas idx x (u k) (ζ k)) = -((Real.pi : ℂ) * ∑ k, hx X bas idx x (u k) (ζ k))`. Rewrite using `[hab]`. Generalize the expression as in `∑ k, hx X bas idx x (u k) (ζ k) = b`. Apply the tactic sequence `have e1 : conj b = (b.re : ℂ) - (b.im : ℂ) * I := by apply Complex.ext <;> simp`. Establish `e2 : b = (b.re : ℂ) + (b.im : ℂ) * I` using `(Complex.re_add_im b).symm`.
+
+Rewrite using `[Complex.conj_im, e1]`. Use `push_cast`. Take the linear combination `((Real.pi : ℂ) / 2) * e2`. Rewrite using `[key]`. Simplify using `only [Complex.ofReal_zero, zero_mul, mul_zero, add_zero, zero_smul, zero_sub, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`.
+
+Unfold `GlobalTheory.Ker.gaussR`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[hph t]`. Unfold `GlobalTheory.Ker.gaussR`.
+
+Rewrite using `[hq t, ← mul_assoc, ← Complex.exp_add]`. Use `congr 2`.
+-/
 theorem hasDerivAt_translate (hs : ∀ z w, hx X bas idx x w z = conj (hx X bas idx x z w))
     (Φ : (Fin n → Fin g → ℂ) → ℂ) (hΦ : Differentiable ℝ Φ) (ζ u : Fin n → Fin g → ℂ) :
     HasDerivAt (fun t : ℝ => cexp (π * I * ((∑ k, hx X bas idx x (ζ k) ((t • u) k)).im : ℝ)) *
@@ -115,6 +152,17 @@ end Classical
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨R, -, -, -, hR1, hR2, -, -, hline, -⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`. Establish `hdom : C.xB B ∈ C.X.dom` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.1`. Establish `hs` using `(GlobalTheory.Dict.hx_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even (C.xB B) hdom).1`. Establish `hE` using `(zR_laws D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even (C.xB B) hdom).2.1`. Establish `hψ` using `(GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C).2.1`.
+
+Establish `hlin : ∀ (a : WR C.X S.rank) (t : ℝ) (b : WR C.X S.rank), zR C.X C.idx (C.xB B) (a + t • b) = zR C.X C.idx (C.xB B) a + t • zR C.X C.idx (C.xB B) b`. Introduce `a t b`. Establish `h` using `(zRLin C.X C.idx (C.xB B) (n := S.rank)).map_add a (t • b)`. Rewrite `h` using `[map_smul]`. Conclude with `h`.
+
+Establish `hsm : ∀ (t : ℝ) (b : WR C.X S.rank), zR C.X C.idx (C.xB B) (t • b) = t • zR C.X C.idx (C.xB B) b` using `fun t b => (zRLin C.X C.idx (C.xB B) (n := S.rank)).map_smul t b`. Establish `hT` using `hasDerivAt_translate C.X C.bas C.idx (C.xB B) hs Φ hΦ (C.zOf (C.xB B) w) u`. Unfold `Formalism.IndefR.Datum.dRho heisO`. Use `(hT.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)).deriv` and prove the remaining obligations. Use `beta_reduce`.
+
+Establish `hw' : w + lineAt C.θ τ z t = R (C.realPt w + t • (Pi.single (C.m.e τ) (fun k a => conj (z a k)) : WR C.X S.rank))`. Rewrite using `[hline, map_add, hR2 w hw]`. Establish `hz : C.zOf (C.xB B) (R (C.realPt w + t • (Pi.single (C.m.e τ) (fun k a => conj (z a k)) : WR C.X S.rank))) = C.zOf (C.xB B) w + t • u`. Unfold `Ctx.zOf`. Rewrite using `[(hR1 _).2, hlin, hu]`.
+
+Rewrite using `[hw', hG _ (hR1 _).1, hz, hline, hψ w _ hw (hR1 _).1, (hR1 _).2, ← hE, hsm, ← hu]`. Both sides reduce to the same expression.
+-/
 theorem dRho_eq (C : Ctx S T) (B : C.Bas) (hB : C.IsB B) (G : WO S T → ℂ)
     (Φ : (Fin S.rank → Fin C.g → ℂ) → ℂ) (hΦ : Differentiable ℝ Φ)
     (hG : ∀ w, IsRealPt w → G w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * Φ (C.zOf (C.xB B) w))
@@ -156,6 +204,13 @@ theorem dRho_eq (C : Ctx S T) (B : C.Bas) (hB : C.IsB B) (G : WO S T → ℂ)
 
 end GlobalTheory.Ker.HeisDeriv
 
+/- English proof (translation)
+Introduce `D S T C B hB G Φ hΦ hG τ z u hu w hw`. Establish `h1` using `GlobalTheory.Ker.HeisDeriv.dRho_eq C B hB G Φ hΦ hG τ z u hu w hw`. Establish `hJ : I • u = zR C.X C.idx (C.xB B) (Pi.single (C.m.e τ) (fun k a => conj ((cplxO 1 (C.sB B τ) z) a k)) : WR C.X S.rank)`. Rewrite using `[hu]`. Conclude with `(((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.2.2.1 τ z).symm`.
+
+Establish `h2` using `GlobalTheory.Ker.HeisDeriv.dRho_eq C B hB G Φ hΦ hG τ (cplxO 1 (C.sB B τ) z) (I • u) hJ w hw`. Simplify using `only [Pi.smul_apply, GlobalTheory.Ker.HeisDeriv.hx_smul_left, ← Finset.mul_sum] at h2`. Unfold `Formalism.IndefR.Datum.annih Formalism.IndefR.Datum.crea`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h1, h2]`.
+
+Prove the components needed by the constructor for the conclusion. Take the linear combination `(-(gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * (Real.pi : ℂ) * (∑ k, hx C.X C.bas C.idx (C.xB B) (u k) (C.zOf (C.xB B) w k)) * Φ (C.zOf (C.xB B) w))) * I_sq`. Take the linear combination `(gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * (Real.pi : ℂ) * (∑ k, hx C.X C.bas C.idx (C.xB B) (u k) (C.zOf (C.xB B) w k)) * Φ (C.zOf (C.xB B) w)) * I_sq`.
+-/
 theorem GlobalTheory.Ker.annih_crea_coord : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ B, C.IsB B → ∀ (G : WO S T → ℂ) (Φ : (Fin S.rank → Fin C.g → ℂ) → ℂ), Differentiable ℝ Φ → (∀ w, IsRealPt w → G w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * Φ (C.zOf (C.xB B) w)) → ∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (u : Fin S.rank → Fin C.g → ℂ), u = zR C.X C.idx (C.xB B) (Pi.single (C.m.e τ) (fun k a => conj (z a k)) : WR C.X S.rank) → ∀ w, IsRealPt w → annih (heisO C.ψ S T) C.θ τ (cplxO 1 (C.sB B τ)) z G w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * (fderiv ℝ Φ (C.zOf (C.xB B) w) u + I * fderiv ℝ Φ (C.zOf (C.xB B) w) (I • u)) ∧ crea (heisO C.ψ S T) C.θ τ (cplxO 1 (C.sB B τ)) z G w = gaussR C.X C.bas C.idx (C.xB B) (C.zOf (C.xB B) w) * (2 * ((-(π * ∑ k, hx C.X C.bas C.idx (C.xB B) (u k) (C.zOf (C.xB B) w k))) * Φ (C.zOf (C.xB B) w) + (1 / 2 : ℂ) * (fderiv ℝ Φ (C.zOf (C.xB B) w) u - I * fderiv ℝ Φ (C.zOf (C.xB B) w) (I • u)))) := by
   intro D S T C B hB G Φ hΦ hG τ z u hu w hw
   have h1 := GlobalTheory.Ker.HeisDeriv.dRho_eq C B hB G Φ hΦ hG τ z u hu w hw

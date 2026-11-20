@@ -11,6 +11,21 @@ noncomputable section
 
 namespace Formalism.DivisionValues
 
+/- English proof (translation)
+Introduce `K _ _ _ _ D hD X hX R hR`. Establish `hFG : R.FG` using `hR.fg`. Establish `hsp : Submodule.span K (R : Set (Fin D → K)) = ⊤` using `hR.2`. Take `⟨hdFG, hdsp, -, hsize, -⟩` from `Formalism.HN.dual_polygon_identity K (Fin D → K) (Fin D) (Pi.basisFun K (Fin D)) X hX R hFG hsp`. Establish `hdX : ∀ v, IsUnit (Formalism.HN.dualFrame X v).det`.
+
+Introduce `v`. Apply `Matrix.isUnit_nonsing_inv_det` to reduce the goal to its premises. Rewrite using `[Matrix.det_transpose]`. Conclude with `hX v`. Establish `hne : Formalism.HN.dualLat R ≠ ⊥`.
+
+Introduce `h`. Rewrite `hdsp` using `[h, Submodule.bot_coe, Submodule.span_zero_singleton]`. Establish `hmem : (Pi.basisFun K (Fin D)).dualBasis ⟨0, hD⟩ ∈ (⊤ : Submodule K _)` using `Submodule.mem_top`. Rewrite `hmem` using `[← hdsp, Submodule.mem_bot]`. Conclude with `(Pi.basisFun K (Fin D)).dualBasis.ne_zero _ hmem`.
+
+Establish `hmu` using `(Formalism.HN.size_maximal_slope K (Module.Dual K (Fin D → K)) (Fin D) (Pi.basisFun K (Fin D)).dualBasis (Formalism.HN.dualFrame X) hdX (Formalism.HN.dualLat R) hdFG hne).2.1`. Establish `hht` using `(Formalism.HN.place_lattice_structure K (Fin D → K) (Fin D) (Pi.basisFun K (Fin D)) X hX R hFG).2.2`. Establish `hrk : Formalism.HN.rkK R = D`. Unfold `Formalism.HN.rkK`. Use `erw [hsp]`.
+
+Simplify using the standard rewrite rules. Establish `hfr` using `Formalism.HN.sizeMu_finrank_eq K`. Establish `hn : (0 : ℝ) < (Formalism.HN.nPl K : ℝ)`. Establish `h0 : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `: 0 < Formalism.HN.nPl K` using `by omega`.
+
+Conclude with `this` after adjusting the coercions. Establish `hDr : (0 : ℝ) < (D : ℝ)` using `by exact_mod_cast hD`. Rewrite using `[hmu, hsize, Real.log_inv, Formalism.HN.size, Real.log_rpow hht, hrk]`. Unfold `Formalism.DivisionValues.lcv`. Rewrite using `[hfr]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem dual_lattice_measure : DualMu := by
   intro K _ _ _ _ D hD X hX R hR
   have hFG : R.FG := hR.fg

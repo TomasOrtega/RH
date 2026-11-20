@@ -49,6 +49,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
+/- English proof (translation)
+Use `haveI := hSf`. Establish `hU` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hfin` using `kfin_wts_finite hσ S`. Use `choose k hk using fun μ : Fin n → ℝ => khw_mem_layer hD.glRep hU hV hc hgap μ`. Use `le_trans (kfin_key hσ hD hV.1 hV.2.1 S hS hSK (hfin.toFinset.sup k) ?_) (Submodule.map_mono (layer_le_genSub _))` and prove the remaining obligations.
+
+Introduce `μ w hw hwμ hμS`. Conclude with `layer_mono (Finset.le_sup (hfin.mem_toFinset.2 hμS)) (hk μ w hw hwμ)`.
+-/
 theorem data_kfin_le (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (S : Submodule ℂ H) (hS : S ≤ closGen E V) (hSf : FiniteDimensional ℂ S)

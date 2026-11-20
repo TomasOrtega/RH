@@ -18,45 +18,89 @@ variable {R k : Type} [CommRing R] [CommRing k] (f : R →+* k) {d : ℕ}
 
 def mP {n : ℕ} (a : Pt R n d) : Pt k n d := fun i => MvPowerSeries.map f (a i)
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[MvPowerSeries.map_subst (gt_hasSubst a ha)]`. Both sides reduce to the same expression.
+-/
 theorem map_ev {m n : ℕ} (a : Fin m → Pt R n d) (ha : ∀ j, GP (a j)) (g : PS R m d) :
     MvPowerSeries.map f (ev a g) = ev (fun j => mP f (a j)) (MvPowerSeries.map f g) := by
   unfold ev
   rw [MvPowerSeries.map_subst (gt_hasSubst a ha)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_ev f _ (single_point_zero_constant ha)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+-/
 theorem map_ev1 {n : ℕ} {a : Pt R n d} (ha : GP a) (g : PS R 1 d) :
     MvPowerSeries.map f (ev ![a] g) = ev ![mP f a] (MvPowerSeries.map f g) := by
   rw [map_ev f _ (single_point_zero_constant ha)]
   congr 1
   funext j; fin_cases j; rfl
 
+/- English proof (translation)
+Rewrite using `[map_ev f _ (pair_points_zero_constant ha hb)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem map_ev2 {n : ℕ} {a b : Pt R n d} (ha : GP a) (hb : GP b) (g : PS R 2 d) :
     MvPowerSeries.map f (ev ![a, b] g) = ev ![mP f a, mP f b] (MvPowerSeries.map f g) := by
   rw [map_ev f _ (pair_points_zero_constant ha hb)]
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[map_ev f _ (triple_points_zero_constant ha hb hc)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+-/
 theorem map_ev3 {n : ℕ} {a b c : Pt R n d} (ha : GP a) (hb : GP b) (hc : GP c) (g : PS R 3 d) :
     MvPowerSeries.map f (ev ![a, b, c] g) = ev ![mP f a, mP f b, mP f c] (MvPowerSeries.map f g) := by
   rw [map_ev f _ (triple_points_zero_constant ha hb hc)]
   congr 1
   funext j; fin_cases j <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mP, pt]`.
+-/
 theorem mapPoint_pt {n : ℕ} (j : Fin n) : mP f (pt R d j) = pt k d j := by
   funext i; simp [mP, pt]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mP]`.
+-/
 theorem mapPoint_zero {n : ℕ} : mP f (0 : Pt R n d) = 0 := by
   funext i; simp [mP]
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_ev1 f ha (φ i)`.
+-/
 theorem mapPoint_comp1 {n : ℕ} (φ : Pt R 1 d) {a : Pt R n d} (ha : GP a) :
     mP f (comp1 φ a) = comp1 (mP f φ) (mP f a) := funext fun i => map_ev1 f ha (φ i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => map_ev2 f ha hb (F i)`.
+-/
 theorem mapPoint_addOf {n : ℕ} (F : Pt R 2 d) {a b : Pt R n d} (ha : GP a) (hb : GP b) :
     mP f (addOf F a b) = addOf (mP f F) (mP f a) (mP f b) := funext fun i => map_ev2 f ha hb (F i)
 
+/- English proof (translation)
+Introduce `i` and use `by simp only [mP, constantCoeff_map, ha i, map_zero]`.
+-/
 theorem constantCoeff_map_eq_zero₂ {n : ℕ} {a : Pt R n d} (ha : GP a) : GP (mP f a) := fun i => by
   simp only [mP, constantCoeff_map, ha i, map_zero]
 
+/- English proof (translation)
+Establish `hφ : GP φ` using `h.inv.1`. Establish `hφi : GP φi` using `h.inv.2.1`. Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt R (n` using `n) d j) := fun j => gp_pt j`. Establish `hc : ∀ {n : ℕ} (j : Fin n), GP (comp1 φ (pt R (n` using `n) d j)) := fun j => gp_comp1 φ _ hφ (hp j)`. Establish `mc : ∀ {n : ℕ} (ψ : Pt R 1 d) (j : Fin n), mP f (comp1 ψ (pt R (n` using `n) d j)) = comp1 (mP f ψ) (pt k d j) := fun ψ j => by`.
+
+Rewrite using `[mapPoint_comp1 f ψ (hp j), mapPoint_pt]`. Establish `hBa : ∀ a, GP (B.A.act a)` using `B.A.const`. Establish `hBa' : ∀ a, GP (B'.A.act a)` using `B'.A.const`. Use `⟨⟨constantCoeff_map_eq_zero₂ f hφ, constantCoeff_map_eq_zero₂ f hφi, ?_, ?_⟩, ?_, ?_, fun i => ?_, fun a => ?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← mapPoint_comp1 f φ hφi, h.inv.2.2.1, mapPoint_pt]`.
+
+Rewrite using `[← mapPoint_comp1 f φi hφ, h.inv.2.2.2, mapPoint_pt]`. Use `congrArg (MvPowerSeries.map f) h.ax0` as an intermediate fact. Rewrite `this` using `[map_ev2 f gp_zero₂ (hp 0), mapPoint_zero, mapPoint_pt, map_one]`. Then use the resulting hypothesis. Use `congrArg (MvPowerSeries.map f) h.ax1` as an intermediate fact. Rewrite `this` using `[map_ev2 f (hp 0) gp_zero₂, mapPoint_zero, mapPoint_pt, map_one]`. Then use the resulting hypothesis.
+
+Use `congrArg (MvPowerSeries.map f) (h.law i)` as an intermediate fact. Unfold `transF at this ⊢`. Rewrite `this` using `[map_ev1 f (gp_addOf _ B.G.const _ _ (hc 0) (hc 1)), mapPoint_addOf f _ (hc 0) (hc 1), mc, mc]`. Rewrite using `[hF', hF]`. Conclude with `this`.
+
+Rewrite using `[hA', hA, h.act a, mapPoint_comp1 f φi (gp_comp1 _ _ (hBa a) hφ), mapPoint_comp1 f _ hφ]`. Use `congrArg (MvPowerSeries.map f) h.ph1` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul, map_ev2 f (gp_addOf _ B'.G.const _ _ (hp 0) (hp 1)) (hp 2), map_ev3 f (hc 0) (hc 1) (hc 2), map_ev2 f (hp 0) (hp 2), map_ev2 f (hp 1) (hp 2), mapPoint_addOf f _ (hp 0) (hp 1), mc, mc, mc, mapPoint_pt, mapPoint_pt, mapPoint_pt]`. Rewrite using `[hF', h1', h1]`. Conclude with `this`.
+
+Use `congrArg (MvPowerSeries.map f) h.ph2` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_mul, map_ev2 f (hp 0) (gp_addOf _ B'.G.const _ _ (hp 1) (hp 2)), map_ev3 f (hc 0) (hc 1) (hc 2), map_ev2 f (hp 0) (hp 1), map_ev2 f (hp 0) (hp 2), mapPoint_addOf f _ (hp 1) (hp 2), mc, mc, mc, mapPoint_pt, mapPoint_pt, mapPoint_pt]`. Rewrite using `[hF', h2', h2]`. Conclude with `this`. Use `congrArg (MvPowerSeries.map f) h.sy` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, map_ev2 f (hc 0) (hc 1), map_ev2 f (hp 1) (hp 0), mc, mc, mapPoint_pt, mapPoint_pt]`. Rewrite using `[hs', hs]`. Conclude with `this`. Use `congrArg (MvPowerSeries.map f) (h.ad a)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, map_ev2 f (hc 0) (hc 1), map_ev2 f (hp 0) (gp_comp1 _ _ (hBa' _) (hp 1)), map_ev2 f (gp_comp1 _ _ (hBa' _) (hp 0)) (hp 1), mc, mc, mc, mc, mapPoint_pt, mapPoint_pt]`.
+
+Rewrite using `[hd', hd, hA', hA']`. Conclude with `this`.
+-/
 theorem related_map {O : Type} [CommRing O] [StarRing O] {B B' : FB R d O} {φ φi : Pt R 1 d} {ε : PS R 2 d}
     (h : Related B B' φ φi ε) {C C' : FB k d O}
     (hF : C.G.F = mP f B.G.F) (hA : ∀ a, C.A.act a = mP f (B.A.act a))
@@ -117,14 +161,23 @@ section Core
 
 variable {k : Type} [CommRing k] [Algebra ℚ k] {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `exp_zero`.
+-/
 theorem expS_zero {n : ℕ} : FB.expS k (0 : PS k n d) = 1 := exp_zero
 
+/- English proof (translation)
+Establish `hn : constantCoeff (-c) = 0` using `by rw [map_neg, hc, neg_zero]`. Rewrite using `[sub_eq_add_neg, gt_expS_add _ _ ha hn, ← _root_.mul_assoc, ← h, _root_.mul_assoc, ← gt_expS_add _ _ hc hn, add_neg_cancel, expS_zero, _root_.mul_one]`.
+-/
 theorem solve_exp {n : ℕ} {x y a c : PS k n d} (ha : constantCoeff a = 0) (hc : constantCoeff c = 0)
     (h : x * FB.expS k c = y * FB.expS k a) : x = y * FB.expS k (a - c) := by
   have hn : constantCoeff (-c) = 0 := by rw [map_neg, hc, neg_zero]
   rw [sub_eq_add_neg, gt_expS_add _ _ ha hn, ← _root_.mul_assoc, ← h, _root_.mul_assoc, ← gt_expS_add _ _ hc hn,
     add_neg_cancel, expS_zero, _root_.mul_one]
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_nsmul, expS_zero, pow_zero]`. Consider the case `succ m ih => rw [succ_nsmul, gt_expS_add _ _ (by rw [map_nsmul, ha, nsmul_zero]) ha, ih, pow_succ]`.
+-/
 theorem expS_nsmul {n : ℕ} {a : PS k n d} (ha : constantCoeff a = 0) (m : ℕ) :
     FB.expS k ((m : k) • a) = FB.expS k a ^ m := by
   rw [Nat.cast_smul_eq_nsmul]
@@ -132,12 +185,32 @@ theorem expS_nsmul {n : ℕ} {a : PS k n d} (ha : constantCoeff a = 0) (m : ℕ)
   | zero => rw [zero_nsmul, expS_zero, pow_zero]
   | succ m ih => rw [succ_nsmul, gt_expS_add _ _ (by rw [map_nsmul, ha, nsmul_zero]) ha, ih, pow_succ]
 
+/- English proof (translation)
+Establish `hV : ∀ j, GP (![pt k (n` using `1) d 0, 0] j) := pair_points_zero_constant (gp_pt 0) gp_zero₂`. Rewrite using `[← G.comm i, gt_ev_ev' _ _ hV (pair_points_zero_constant (gp_pt 1) (gp_pt 0)), eval_pair_points, evP_pt _ hV, evP_pt _ hV]`. Conclude with `G.unit i`.
+-/
 theorem unit_right (G : FGLaw k d) (i : Fin d) :
     ev (n := 1) ![pt k (n := 1) d 0, 0] (G.F i) = (X ((0 : Fin 1), i) : PS k 1 d) := by
   have hV : ∀ j, GP (![pt k (n := 1) d 0, 0] j) := pair_points_zero_constant (gp_pt 0) gp_zero₂
   rw [← G.comm i, gt_ev_ev' _ _ hV (pair_points_zero_constant (gp_pt 1) (gp_pt 0)), eval_pair_points, evP_pt _ hV, evP_pt _ hV]
   exact G.unit i
 
+/- English proof (translation)
+Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt k (n` using `n) d j) := fun j => gp_pt j`. Establish `hz : ∀ {n : ℕ}, GP (0 : Pt k n d)` using `gp_zero₂`. Establish `hε : constantCoeff ε = 1`. Use `congrArg constantCoeff r.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz (hp 0)), map_one]`. Then use the resulting hypothesis.
+
+Take `⟨lam, hl, he⟩ : ∃ lam : PS k 2 d, constantCoeff lam = 0 ∧ FB.expS k lam = ε` from `⟨_, constantCoeff_logS hε, exp_log hε⟩`. Substitute `he` using the available equality. Establish `E : ∀ {n : ℕ} {a b : Pt k n d}, GP a → GP b → ev ![a, b] (FB.expS k lam) = FB.expS k (ev ![a, b] lam)` using `fun ha hb => gt_ev_expS _ (pair_points_zero_constant ha hb) _ hl`. Establish `Z : ∀ {n : ℕ} {a b : Pt k n d}, GP a → GP b → constantCoeff (ev ![a, b] lam) = 0` using `fun ha hb => gt_const_ev _ (pair_points_zero_constant ha hb) _ hl`. Establish `l0 : ev (n` using `1) ![0, pt k (n := 1) d 0] lam = 0 := eq_zero_of_exp_eq_one (Z hz (hp 0)) ((E hz (hp 0)).symm.trans r.ax0)`.
+
+Establish `l1 : ev (n` using `1) ![pt k (n := 1) d 0, 0] lam = 0 := eq_zero_of_exp_eq_one (Z (hp 0) hz) ((E (hp 0) hz).symm.trans r.ax1)`. Establish `hBa' : ∀ a, GP (B'.A.act a)` using `B'.A.const`. Use `⟨_, gauge_transformation k d O B B' φ φi lam r.inv l0 l1 r.law r.act ?_ ?_ ?_ (fun a => ?_) h hh, ?_⟩` and prove the remaining obligations. Establish `g` using `gp_addOf _ B'.G.const _ _ (hp (n := 3) 0) (hp 1)`. Use `r.ph1` as an intermediate fact.
+
+Rewrite `this` using `[E g (hp 2), E (hp 0) (hp 2), E (hp 1) (hp 2), ← gt_expS_add _ _ (Z (hp 0) (hp 2)) (Z (hp 1) (hp 2))]`. Conclude with `solve_exp (by rw [map_add, Z (hp 0) (hp 2), Z (hp 1) (hp 2), add_zero]) (Z g (hp 2)) this`. Establish `g` using `gp_addOf _ B'.G.const _ _ (hp (n := 3) 1) (hp 2)`. Use `r.ph2` as an intermediate fact. Rewrite `this` using `[E (hp 0) g, E (hp 0) (hp 1), E (hp 0) (hp 2), ← gt_expS_add _ _ (Z (hp 0) (hp 1)) (Z (hp 0) (hp 2))]`.
+
+Conclude with `solve_exp (by rw [map_add, Z (hp 0) (hp 1), Z (hp 0) (hp 2), add_zero]) (Z (hp 0) g) this`. Use `r.sy` as an intermediate fact. Rewrite `this` using `[E (hp 1) (hp 0)]`. Conclude with `solve_exp (Z (hp 1) (hp 0)) hl this`. Establish `g0` using `gp_comp1 _ _ (hBa' a) (hp (n := 2) 0)`.
+
+Establish `g1` using `gp_comp1 _ _ (hBa' (star a)) (hp (n := 2) 1)`. Use `r.ad a` as an intermediate fact. Rewrite `this` using `[E (hp 0) g1, E g0 (hp 1)]`. Conclude with `solve_exp (Z g0 (hp 1)) (Z (hp 0) g1) this`. Introduce `w0 m f f' hf Λ _ u P`.
+
+Establish `ak : B'.actK k w0 = B'.A.act w0` using `funext fun i => gt_map_id _`. Establish `g` using `gp_comp1 _ _ (hBa' w0) (hp (n := 1) 0)`. Rewrite using `[← hN k d O B B' φ φi lam r.inv l0 l1 (unit_right B.G) r.law r.act h hh.ax0 w0 m f Λ u P, ak]`. Use `congr 1`. Rewrite `hf` using `[E (hp 0) g, ← expS_nsmul (Z (hp 0) g)]`.
+
+Use `solve_exp (x := f') (y := ev ![φ] f) (a := 0) (c := (m : k) • ev (n := 1) ![pt k (n := 1) d 0, comp1 (B'.A.act w0) (pt k (n := 1) d 0)] lam) (map_zero _) (by rw [Nat.cast_smul_eq_nsmul, map_nsmul, Z (hp 0) g, nsmul_zero]) (by rw [expS_zero, _root_.mul_one]; exact hf)` as an intermediate fact. Rewrite `this` using `[zero_sub]`. Then use the resulting hypothesis.
+-/
 theorem core (hN : NabTransSt) {O : Type} [CommRing O] [StarRing O] {B B' : FB k d O} {φ φi : Pt k 1 d}
     {ε : PS k 2 d} (r : Related B B' φ φi ε) (h : PS k 2 d) (hh : B.IsCanonGauge k h) :
     ∃ h' : PS k 2 d, B'.IsCanonGauge k h' ∧ ∀ (w0 : O) (m : ℕ) (f f' : PS k 1 d),
@@ -198,14 +271,31 @@ section BC
 variable {R k : Type} [CommRing R] [CommRing k] [Algebra ℚ k] [Algebra R k] {d : ℕ}
   {O : Type} [CommRing O] [StarRing O] {B : FB R d O} {C : FB k d O}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(gt_map_id _).trans (congrFun hF i)`.
+-/
 theorem FK_eq (hF : C.G.F = mP (algebraMap R k) B.G.F) : C.FK k = B.FK k := by
   funext i
   exact (gt_map_id _).trans (congrFun hF i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(gt_map_id _).trans (congrFun (hA a) i)`.
+-/
 theorem actK_eq (hA : ∀ a, C.A.act a = mP (algebraMap R k) (B.A.act a)) (a : O) : C.actK k a = B.actK k a := by
   funext i
   exact (gt_map_id _).trans (congrFun (hA a) i)
 
+/- English proof (translation)
+Establish `e1 : FB.toK k C.ph1 = FB.toK k B.ph1` using `(gt_map_id _).trans h1`. Establish `e2 : FB.toK k C.ph2 = FB.toK k B.ph2` using `(gt_map_id _).trans h2`. Establish `e3 : FB.toK k C.sy = FB.toK k B.sy` using `(gt_map_id _).trans hs`. Establish `e4 : ∀ a, FB.toK k (C.ad a) = FB.toK k (B.ad a)` using `fun a => (gt_map_id _).trans (hd a)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `g`. Use `⟨g.ax0, g.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← e1, ← FK_eq hF]`. Conclude with `g.ph1`. Rewrite using `[← e2, ← FK_eq hF]`.
+
+Conclude with `g.ph2`. Rewrite using `[← e3]`. Conclude with `g.sy`. Rewrite using `[← e4, ← actK_eq hA, ← actK_eq hA]`. Conclude with `g.ad a`.
+
+Introduce `g`. Use `⟨g.ax0, g.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[e1, FK_eq hF]`. Conclude with `g.ph1`. Rewrite using `[e2, FK_eq hF]`.
+
+Conclude with `g.ph2`. Rewrite using `[e3]`. Conclude with `g.sy`. Rewrite using `[e4, actK_eq hA, actK_eq hA]`. Conclude with `g.ad a`.
+-/
 theorem canon_iff (hF : C.G.F = mP (algebraMap R k) B.G.F) (hA : ∀ a, C.A.act a = mP (algebraMap R k) (B.A.act a))
     (h1 : C.ph1 = MvPowerSeries.map (algebraMap R k) B.ph1) (h2 : C.ph2 = MvPowerSeries.map (algebraMap R k) B.ph2)
     (hs : C.sy = MvPowerSeries.map (algebraMap R k) B.sy)
@@ -229,6 +319,9 @@ theorem canon_iff (hF : C.G.F = mP (algebraMap R k) B.G.F) (hA : ∀ a, C.A.act 
     · rw [e3]; exact g.sy
     · rw [e4, actK_eq hA, actK_eq hA]; exact g.ad a
 
+/- English proof (translation)
+Unfold `FB.nabVal FB.hL`. Rewrite using `[FK_eq hF, actK_eq hA]`.
+-/
 theorem nabVal_eq (hF : C.G.F = mP (algebraMap R k) B.G.F) (hA : ∀ a, C.A.act a = mP (algebraMap R k) (B.A.act a))
     (h : PS k 2 d) (w0 : O) (m : ℕ) (f : PS k 1 d) {ι : Type} [Fintype ι]
     (u : ι → Fin d → k) (P : MvPolynomial ι k) : C.nabVal k h w0 m f u P = B.nabVal k h w0 m f u P := by
@@ -237,6 +330,15 @@ theorem nabVal_eq (hF : C.G.F = mP (algebraMap R k) B.G.F) (hA : ∀ a, C.A.act 
 
 end BC
 
+/- English proof (translation)
+Introduce `R _ d O _ _ B B' φ φi ε r k _ _ _ h hh`. Take `⟨C, hF, hA, h1, h2, hs, hd⟩` from `hBC R k (algebraMap R k) d O B`. Take `⟨C', hF', hA', h1', h2', hs', hd'⟩` from `hBC R k (algebraMap R k) d O B'`. Establish `hF : C.G.F = mP (algebraMap R k) B.G.F` using `funext hF`. Establish `hF' : C'.G.F = mP (algebraMap R k) B'.G.F` using `funext hF'`.
+
+Establish `hA : ∀ a, C.A.act a = mP (algebraMap R k) (B.A.act a)` using `fun a => funext (hA a)`. Establish `hA' : ∀ a, C'.A.act a = mP (algebraMap R k) (B'.A.act a)` using `fun a => funext (hA' a)`. Establish `r'` using `related_map (algebraMap R k) r hF hA h1 h2 hs hd hF' hA' h1' h2' hs' hd'`. Take `⟨h', hc, hv⟩` from `core hN r' h ((canon_iff hF hA h1 h2 hs hd h).2 hh)`. Use `⟨h', (canon_iff hF' hA' h1' h2' hs' hd' h').1 hc, fun w0 m f f' hf Λ _ u P => ?_⟩` and prove the remaining obligations.
+
+Establish `hd : dLin (mP (algebraMap R k) φ) = (dLin φ).map (algebraMap R k)`. Use extensionality with `i j`. Simplify using `[dLin, mP]`. Rewrite using `[← nabVal_eq hF' hA', ← nabVal_eq hF hA, ← hd]`. Use `hv w0 m f f' ?_ Λ u P` and prove the remaining obligations.
+
+Rewrite `hf` using `[FB.toK, map_ev2 _ (gp_pt 0) (gp_comp1 _ _ (B'.A.const w0) (gp_pt 0)), mapPoint_comp1 _ _ (gp_pt 0), mapPoint_pt, ← hA']`. Conclude with `hf`.
+-/
 theorem intTrans (hN : NabTransSt)
     (hBC : ∀ (R k : Type) [CommRing R] [CommRing k] (f : R →+* k) (d : ℕ) (O : Type) [CommRing O] [StarRing O]
       (B : FB R d O), ∃ B' : FB k d O, (∀ i, B'.G.F i = MvPowerSeries.map f (B.G.F i)) ∧

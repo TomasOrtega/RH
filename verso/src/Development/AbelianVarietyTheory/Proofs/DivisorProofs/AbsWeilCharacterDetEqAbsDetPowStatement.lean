@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExists
 open MeasureTheory Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeisUnit.exists_unitary_factor | exact GlobalTheory.HeisUnit.exists_unitary_factor | (intros; apply GlobalTheory.HeisUnit.exists_unitary_factor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abs_weilCharacter_det_eq_abs_det_pow : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),
     Set.BijOn ι (GlobalTheory.WeilM.SB (Fin n × Fin d → k) : Set _) (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k) : Set _) →

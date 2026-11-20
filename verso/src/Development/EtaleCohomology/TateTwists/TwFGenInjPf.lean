@@ -4,20 +4,34 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.EtaleFoundations.TwFInj
 
+/- English proof (translation)
+Use `haveI : NeZero (q : k) := ⟨ζ.2.1.ne_zero⟩`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff]`. Establish `h` using `ζ.2.2`. Simplify `h` using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic_int]`.
+-/
 theorem prim_field {q : ℕ} {k : Type} [Field k] (ζ : Prim q k) : IsPrimitiveRoot ζ.1 q := by
   haveI : NeZero (q : k) := ⟨ζ.2.1.ne_zero⟩
   rw [← Polynomial.isRoot_cyclotomic_iff]
   have h := ζ.2.2
   simpa [Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic_int] using h
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Nat.mod_add_div n q, pow_add, pow_mul, hz.pow_eq_one, one_pow, mul_one]`.
+-/
 theorem pow_mod_eq {k : Type} [Field k] {q : ℕ} {z : k} (hz : IsPrimitiveRoot z q) (n : ℕ) :
     z ^ n = z ^ (n % q) := by
   conv_lhs => rw [← Nat.mod_add_div n q, pow_add, pow_mul, hz.pow_eq_one, one_pow, mul_one]
 
+/- English proof (translation)
+The claim follows from `Units.ext (ZMod.val_injective _ (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h))`.
+-/
 theorem unit_unique {k : Type} [Field k] {q : ℕ} [NeZero q] {z : k} (hz : IsPrimitiveRoot z q)
     {u v : (ZMod q)ˣ} (h : z ^ (u : ZMod q).val = z ^ (v : ZMod q).val) : u = v :=
   Units.ext (ZMod.val_injective _ (hz.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h))
 
+/- English proof (translation)
+Take `⟨j, hj, hjx⟩` from `hz.eq_pow_of_pow_eq_one hx.pow_eq_one`. Establish `hc : j.Coprime q` using `(hz.pow_iff_coprime (NeZero.pos q) j).1 (hjx ▸ hx)`. Use `⟨ZMod.unitOfCoprime j hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← hjx]`. Use `congr 1`.
+
+Simplify using `[ZMod.unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hj]`.
+-/
 theorem exists_unit {k : Type} [Field k] {q : ℕ} [NeZero q] {z x : k} (hz : IsPrimitiveRoot z q)
     (hx : IsPrimitiveRoot x q) : ∃ u : (ZMod q)ˣ, x = z ^ (u : ZMod q).val := by
   obtain ⟨j, hj, hjx⟩ := hz.eq_pow_of_pow_eq_one hx.pow_eq_one
@@ -36,9 +50,15 @@ variable {q : ℕ} [NeZero q] {B : Type} [CommRing B] {k : Type} [Field k] (π :
 
 noncomputable def ex (ξ : Prim q B) : (ZMod q)ˣ := Classical.choose (exists_unit hz (prim_field (ξ.map π)))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_unit hz (prim_field (ξ.map π)))`.
+-/
 theorem ex_spec (ξ : Prim q B) : π ξ.1 = z ^ (ex π hz ξ : ZMod q).val :=
   Classical.choose_spec (exists_unit hz (prim_field (ξ.map π)))
 
+/- English proof (translation)
+Apply `unit_unique hz` to reduce the goal to its premises. Rewrite using `[← ex_spec, h, map_pow, ex_spec π hz ζ, ← pow_mul, Units.val_mul, ZMod.val_mul, ← pow_mod_eq hz]`.
+-/
 theorem ex_rel {ζ ξ : Prim q B} {a : (ZMod q)ˣ} (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     ex π hz ξ = ex π hz ζ * a := by
   apply unit_unique hz
@@ -47,6 +67,9 @@ theorem ex_rel {ζ ξ : Prim q B} {a : (ZMod q)ˣ} (h : ξ.1 = ζ.1 ^ (a : ZMod 
 noncomputable def L (i : ℤ) : (Prim q B →₀ ULift.{1} (ZMod q)) →ₗ[ULift.{1} (ZMod q)] ULift.{1} (ZMod q) :=
   Finsupp.linearCombination (ULift.{1} (ZMod q)) (fun ξ => ULift.up (((ex π hz ξ) ^ i : (ZMod q)ˣ) : ZMod q))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ, ξ, a, h, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, L, Finsupp.linearCombination_single, one_smul]`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `[ex_rel π hz h, mul_zpow, mul_comm]`.
+-/
 theorem twRel_le_ker (i : ℤ) : twRel q i B ≤ LinearMap.ker (L π hz i) := by
   refine Submodule.span_le.2 ?_
   rintro x ⟨ζ, ξ, a, h, rfl⟩
@@ -56,6 +79,13 @@ theorem twRel_le_ker (i : ℤ) : twRel q i B ≤ LinearMap.ker (L π hz i) := by
 
 end LateralTheory.EtaleFoundations.TwFInj
 
+/- English proof (translation)
+Introduce `q _ B _ hB i ζ c1 c2 hc`. Simplify using `only at hc`. Take `⟨m, hm⟩` from `Ideal.exists_maximal B`. Use `letI := Ideal.Quotient.field m`. Set `π` to `Ideal.Quotient.mk m`.
+
+Establish `hz` using `LateralTheory.EtaleFoundations.TwFInj.prim_field (ζ.map π)`. Set `Φ` to `Submodule.liftQ _ (LateralTheory.EtaleFoundations.TwFInj.L π hz i) (LateralTheory.EtaleFoundations.TwFInj.twRel_le_ker π hz i)`. Establish `h2` using `congrArg Φ hc`. Simplify using `only [Φ, map_nsmul, Submodule.liftQ_apply, LateralTheory.EtaleFoundations.TwFInj.L, Finsupp.linearCombination_single, one_smul] at h2`. Establish `h3` using `congrArg ULift.down h2`.
+
+Establish `h4 : (c1.val : ZMod q) * ((LateralTheory.EtaleFoundations.TwFInj.ex π hz ζ ^ i : (ZMod q)ˣ) : ZMod q) = (c2.val : ZMod q) * ((LateralTheory.EtaleFoundations.TwFInj.ex π hz ζ ^ i : (ZMod q)ˣ) : ZMod q)`. Simplify using `only [nsmul_eq_mul] at h3`. Conclude with `h3`. Simplify `(Units.mul_left_inj _).1 h4` using `[ZMod.natCast_zmod_val]`.
+-/
 theorem LateralTheory.EtaleFoundations.twF_gen_inj_of : LateralTheory.EtaleFoundations.twF_gen_inj := by
   intro q _ B _ hB i ζ c1 c2 hc
   simp only at hc

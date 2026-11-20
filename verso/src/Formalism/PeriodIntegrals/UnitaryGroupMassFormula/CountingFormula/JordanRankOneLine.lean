@@ -16,12 +16,20 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V1 : Type} [AddCommGroup V1] [Module K V1] [FiniteDimensional K V1] [Module (𝓞 K) V1]
   [IsScalarTower (𝓞 K) K V1]
 
+/- English proof (translation)
+Unfold `vF`. Use `congr 1`. Use extensionality with `e`. Simplify using `only [Set.mem_ofPred_eq, neg_mem_iff]`.
+-/
 theorem vF_neg (𝔭 : Ideal (𝓞 F)) (n : 𝓞 F) : vF 𝔭 (-n) = vF 𝔭 n := by
   unfold vF
   congr 1
   ext e
   simp only [Set.mem_ofPred_eq, neg_mem_iff]
 
+/- English proof (translation)
+Establish `ht0 : ((t : ℕ) : 𝓞 F) ≠ 0` using `by exact_mod_cast ht.ne'`. Establish `hI : Ideal.span {((t : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ht0`. Establish `hne : 𝔭 ≠ ⊥` using `Formalism.HermitianLattices.Ext.L3.idealPowerSpanBounds.ne_bot h𝔭`.
+
+Establish `hp : Prime 𝔭` using `Ideal.prime_of_isPrime hne h𝔭.isPrime`. Rewrite using `[Formalism.L2.SG.Pf.G1.vF_eq_multiplicity h𝔭 ht0, vT, UniqueFactorizationMonoid.multiplicity_eq_count_normalizedFactors hp.irreducible hI, normalize_eq]`.
+-/
 theorem vF_eq_vT {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : ℕ} (ht : 0 < t) :
     vF 𝔭 ((t : ℕ) : 𝓞 F) = vT F t 𝔭 := by
   have ht0 : ((t : ℕ) : 𝓞 F) ≠ 0 := by exact_mod_cast ht.ne'
@@ -33,6 +41,19 @@ theorem vF_eq_vT {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {t : ℕ} (ht 
   rw [Formalism.L2.SG.Pf.G1.vF_eq_multiplicity h𝔭 ht0, vT,
     UniqueFactorizationMonoid.multiplicity_eq_count_normalizedFactors hp.irreducible hI, normalize_eq]
 
+/- English proof (translation)
+Take `⟨_, _, hs, hzz, ht, hd⟩` from `hH`. Establish `hz0 : h1 z z ≠ 0`. Rewrite using `[hzz, neg_ne_zero]`. Conclude with `ht.ne'` after adjusting the coercions. Introduce `x hx`.
+
+Take `⟨c, w, rfl⟩` from `(split h1 z hz0).cover x`. Establish `hwz : h1 w.1 z = 0`. Rewrite using `[← hs.eq z w.1]`. Establish `: h1 z w.1 = 0` using `w.2`. Rewrite using `[this, map_zero]`.
+
+Establish `e1` using `hx z`. Express the relevant statement in the definitionally equal form `h1 (c • z + w.1) z = 0 at e1`. Rewrite `e1` using `[map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hwz, add_zero, smul_eq_mul]`. Establish `hc : c = 0`. Establish `h2 : (starRingEnd K) c = 0` using `(mul_eq_zero.1 e1).resolve_right hz0`.
+
+Simplify using `using h2`. Substitute `hc` using the available equality. Establish `e2` using `hx w.1`. Express the relevant statement in the definitionally equal form `h1 ((0 : K) • z + w.1) w.1 = 0 at e2`. Rewrite `e2` using `[zero_smul, zero_add]`.
+
+Assume the negation of the conclusion as `hx0`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Apply `hx0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(0 : K) • z + ((0 : wPerp h1 z) : V1) = 0`.
+
+Simplify using the standard rewrite rules. Establish `hpos` using `hd w hw0 (Classical.arbitrary (K →+* ℂ))`. Establish `e3 : hPerp h1 z w w = 0` using `e2`. Rewrite `hpos` using `[e3, map_zero]`. Simplify using `at hpos`.
+-/
 theorem nondeg {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {t : ℕ} (hH : GlueHyp K F h1 z t) :
     Formalism.L2.SG.Pf.Cnt.Nondeg h1 := by
   obtain ⟨_, _, hs, hzz, ht, hd⟩ := hH
@@ -67,6 +88,13 @@ theorem nondeg {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {t : ℕ} (hH : Gl
   rw [e3, map_zero] at hpos
   simp at hpos
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxw`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Establish `: h1 z (c • z) = 0` using `hxw`.
+
+Rewrite `this` using `[map_smul, smul_eq_mul]`. Rewrite using `[(mul_eq_zero.1 this).resolve_right hz0, zero_smul]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`. Take `⟨c, w, rfl⟩` from `(split h1 z hz0).cover x`.
+
+Conclude with `Submodule.add_mem_sup (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self z)) w.2`.
+-/
 theorem isCompl_span {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} (hz0 : h1 z z ≠ 0) :
     IsCompl (Submodule.span K {z}) (wPerp h1 z) := by
   constructor
@@ -81,6 +109,15 @@ theorem isCompl_span {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} (hz0 : h1 z 
     obtain ⟨c, w, rfl⟩ := (split h1 z hz0).cover x
     exact Submodule.add_mem_sup (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self z)) w.2
 
+/- English proof (translation)
+Establish `h1r : finrank K (Submodule.span K {z}) = 1` using `finrank_span_singleton hz`. Establish `hne : Nonempty (Fin (finrank K (Submodule.span K {z})))`. Rewrite using `[h1r]`. Conclude with `⟨0⟩`. Use `⟨fun _ => Submodule.mem_span_singleton_self z, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.range_const]`. Introduce `i j hij`. It suffices to derive a contradiction. Apply `hij` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises.
+
+Establish `hi : i.val < 1` using `lt_of_lt_of_eq i.2 h1r`. Establish `hj : j.val < 1` using `lt_of_lt_of_eq j.2 h1r`. Use linear arithmetic over natural numbers and integers. Introduce `i`. Rewrite using `[hzz]`.
+
+Simplify using the standard rewrite rules. Introduce `i`. Simplify using `only [ne_eq, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `ht.ne'`.
+-/
 theorem jordan_rank_one_line {h1 : V1 →ₗ⋆[K] V1 →ₗ[K] K} {z : V1} {t : ℕ} (hzz : h1 z z = -((t : ℕ) : K))
     (ht : 0 < t) (hz : z ≠ 0) (𝔭 : Ideal (𝓞 F)) :
     Formalism.L2.SG.Pf.Cnt.IsJordanIn h1 (Submodule.span K {z}) (Submodule.span (𝓞 K) {z}) 𝔭

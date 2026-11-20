@@ -15,11 +15,20 @@ namespace UpperTheory.V.Lit.KT
 def quotInt (H : Subgroup SL(2, ℤ)) (φ : ℍ → ℂ) : ℂ :=
   ∑ᶠ γ : SL(2, ℤ) ⧸ H, ∫ z in ModularGroup.fd, φ (γ.out⁻¹ • z)
 
+/- English proof (translation)
+The claim follows from `Rs.fdFin (Rs.stripIm Rs.volMap) Rs.volMap`.
+-/
 private theorem fdFin' : Rs.FdFin := Rs.fdFin (Rs.stripIm Rs.volMap) Rs.volMap
 
+/- English proof (translation)
+The claim follows from `continuous_const_smul (γ : GL (Fin 2) ℝ)`.
+-/
 private theorem contSL (γ : SL(2, ℤ)) : Continuous fun z : ℍ => γ • z :=
   continuous_const_smul (γ : GL (Fin 2) ℝ)
 
+/- English proof (translation)
+Establish `hc : Continuous (fun z : ℍ => g • z)` using `continuous_const_smul g`. Use `⟨hc.measurable, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hc.measurable hs]`. Conclude with `measure_preimage_smul (volume : Measure ℍ) g s`.
+-/
 private theorem mpGL (g : GL (Fin 2) ℝ) : MeasurePreserving (fun z : ℍ => g • z) volume volume := by
   have hc : Continuous (fun z : ℍ => g • z) := continuous_const_smul g
   refine ⟨hc.measurable, ?_⟩
@@ -27,9 +36,23 @@ private theorem mpGL (g : GL (Fin 2) ℝ) : MeasurePreserving (fun z : ℍ => g 
   rw [Measure.map_apply hc.measurable hs]
   exact measure_preimage_smul (volume : Measure ℍ) g s
 
+/- English proof (translation)
+The claim follows from `mpGL (γ : GL (Fin 2) ℝ)`.
+-/
 private theorem mpSL (γ : SL(2, ℤ)) : MeasurePreserving (fun z : ℍ => γ • z) volume volume :=
   mpGL (γ : GL (Fin 2) ℝ)
 
+/- English proof (translation)
+Use `haveI : K.FiniteIndex := Subgroup.finiteIndex_of_le hle`. Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Use `haveI : Fintype (SL(2, ℤ) ⧸ K) := Fintype.ofFinite _`. Use `haveI : Fintype (K ⧸ H.subgroupOf K) := Fintype.ofFinite _`. Set `F : SL(2, ℤ) → ℂ` to `fun γ => ∫ z in ModularGroup.fd, φ (γ⁻¹ • z)`.
+
+Establish `hF : ∀ a b : SL(2, ℤ), (a : SL(2, ℤ) ⧸ K) = b → F a = F b` using `fun a b h => by`. Simplify using `only [F]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[← hφ _ (QuotientGroup.eq.1 h) (b⁻¹ • z), smul_smul, mul_inv_cancel_right]`.
+
+Set `e` to `Subgroup.quotientEquivProdOfLE hle`. Establish `h1 : ∀ q : SL(2, ℤ) ⧸ H, F q.out = F (e q).1.out` using `fun q => by`. Use `hF _ _ ?_` and prove the remaining obligations. Rewrite using `[QuotientGroup.out_eq']`. Use `conv_rhs => rw [← QuotientGroup.out_eq' q]`.
+
+Both sides reduce to the same expression. Simplify using `only [quotInt, finsum_eq_sum_of_fintype]`. Express the relevant statement in the definitionally equal form `∑ q : SL(2, ℤ) ⧸ H, F q.out = _ * ∑ q : SL(2, ℤ) ⧸ K, F q.out`. Simplify using `only [h1]`. Rewrite using `[e.sum_comp (fun x => F x.1.out), Fintype.sum_prod_type, Finset.mul_sum]`.
+
+Simplify using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+-/
 theorem quotInt_tower {H K : Subgroup SL(2, ℤ)} (hle : H ≤ K) [H.FiniteIndex] (φ : ℍ → ℂ)
     (hφ : ∀ γ ∈ K, ∀ z, φ (γ • z) = φ z) : quotInt H φ = (H.relIndex K : ℂ) * quotInt K φ := by
   haveI : K.FiniteIndex := Subgroup.finiteIndex_of_le hle
@@ -63,9 +86,19 @@ private instance : Countable SL(2, ℤ) :=
 
 private instance (H : Subgroup SL(2, ℤ)) : Countable (SL(2, ℤ) ⧸ H) := QuotientGroup.mk_surjective.countable
 
+/- English proof (translation)
+The claim follows from `Measurable.tsum fun q => (measurable_const.indicator fdFin'.1).comp (mpSL _).measurable`.
+-/
 private theorem wt_meas (H : Subgroup SL(2, ℤ)) : Measurable (wt H) :=
   Measurable.tsum fun q => (measurable_const.indicator fdFin'.1).comp (mpSL _).measurable
 
+/- English proof (translation)
+Establish `hc : Rs.FdCount` using `Rs.fdCount (Rs.fdNull Rs.volMap)`. Establish `hb : Function.Bijective fun x : (SL(2, ℤ) ⧸ H) × H => x.1.out * (x.2 : SL(2, ℤ))`. Use `⟨fun x y h => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : x.1 = y.1`. Use `congrArg (fun g : SL(2, ℤ) => (g : SL(2, ℤ) ⧸ H)) h` as an intermediate fact.
+
+Simplify using `using this`. Use `Prod.ext h1 (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [h1] at h`. Conclude with `mul_left_cancel h`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul H g`.
+
+Conclude with `⟨((g : SL(2, ℤ) ⧸ H), h⁻¹), by simp [hh]⟩`. Use `filter_upwards [hc] with z hz`. Rewrite using `[← hz, ← (Equiv.ofBijective _ hb).tsum_eq, ENNReal.tsum_prod', ENNReal.tsum_comm]`. Simplify using `only [wt, Equiv.ofBijective_apply, mul_smul]`.
+-/
 private theorem wt_sum (H : Subgroup SL(2, ℤ)) : ∀ᵐ z : ℍ, ∑' h : H, wt H ((h : SL(2, ℤ)) • z) = 2 := by
   have hc : Rs.FdCount := Rs.fdCount (Rs.fdNull Rs.volMap)
   have hb : Function.Bijective fun x : (SL(2, ℤ) ⧸ H) × H => x.1.out * (x.2 : SL(2, ℤ)) := by
@@ -82,6 +115,13 @@ private theorem wt_sum (H : Subgroup SL(2, ℤ)) : ∀ᵐ z : ℍ, ∑' h : H, w
   rw [← hz, ← (Equiv.ofBijective _ hb).tsum_eq, ENNReal.tsum_prod', ENNReal.tsum_comm]
   simp only [wt, Equiv.ofBijective_apply, mul_smul]
 
+/- English proof (translation)
+Establish `a1 : ∀ {V W : ℍ → ℝ≥0∞}, Measurable V → Measurable W → (∀ᵐ z : ℍ, ∑' h : H, W ((h : SL(2, ℤ)) • z) = 2) → (∫⁻ z in S, V z) * 2 = ∑' h : H, ∫⁻ z, S.indicator V z * W ((h : SL(2, ℤ)) • z)` using `fun {V W} hV hW sW => by`. Rewrite using `[← lintegral_tsum (f := fun (h : H) z => S.indicator V z * W ((h : SL(2, ℤ)) • z)) fun h => ((hV.indicator hS).mul (hW.comp (mpSL _).measurable)).aemeasurable, ← lintegral_indicator hS, ← lintegral_mul_const _ (hV.indicator hS)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [sW] with z hz`. Rewrite using `[ENNReal.tsum_mul_left, hz]`.
+
+Use `(ENNReal.mul_left_inj (c := 2) (by simp) (by simp)).1 ?_` and prove the remaining obligations. Rewrite using `[a1 hV hW sW, a1 hW hV sV, ← (Equiv.inv H).tsum_eq]`. Use `tsum_congr fun h => ?_` and prove the remaining obligations. Rewrite using `[← (mpSL (h : SL(2, ℤ))).lintegral_comp (f := fun z => S.indicator V z * W ((Equiv.inv H h : SL(2, ℤ)) • z)) ((hV.indicator hS).mul (hW.comp (mpSL _).measurable))]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hz : z ∈ S`. Rewrite using `[indicator_of_mem hz, indicator_of_mem ((hi _ h.2 z).2 hz), mul_comm, Equiv.inv_apply, Subgroup.coe_inv, inv_smul_smul]`. Rewrite using `[indicator_of_notMem hz, indicator_of_notMem (fun h' => hz ((hi _ h.2 z).1 h')), zero_mul, zero_mul]`.
+-/
 private theorem wt_indep (H : Subgroup SL(2, ℤ)) {S : Set ℍ} (hS : MeasurableSet S)
     (hi : ∀ γ ∈ H, ∀ z, γ • z ∈ S ↔ z ∈ S) {V W : ℍ → ℝ≥0∞} (hV : Measurable V) (hW : Measurable W)
     (sV : ∀ᵐ z : ℍ, ∑' h : H, V ((h : SL(2, ℤ)) • z) = 2) (sW : ∀ᵐ z : ℍ, ∑' h : H, W ((h : SL(2, ℤ)) • z) = 2) :
@@ -105,6 +145,13 @@ private theorem wt_indep (H : Subgroup SL(2, ℤ)) {S : Set ℍ} (hS : Measurabl
 private def mu (H : Subgroup SL(2, ℤ)) : Measure ℍ :=
   Measure.sum fun q : SL(2, ℤ) ⧸ H => Measure.map (fun z : ℍ => q.out⁻¹ • z) (volume.restrict ModularGroup.fd)
 
+/- English proof (translation)
+Rewrite using `[mu, Measure.sum_apply _ hS]`. Simplify using `only [wt]`. Rewrite using `[lintegral_tsum (f := fun (q : SL(2, ℤ) ⧸ H) (z : ℍ) => ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (q.out • z)) fun q => ((measurable_const.indicator fdFin'.1).comp (mpSL _).measurable).aemeasurable]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Establish `hm : MeasurableSet ((fun z : ℍ => q.out • z) ⁻¹' ModularGroup.fd)` using `(mpSL _).measurable fdFin'.1`.
+
+Establish `e : (fun z : ℍ => ModularGroup.fd.indicator (fun _ => (1 : ℝ≥0∞)) (q.out • z)) = ((fun z : ℍ => q.out • z) ⁻¹' ModularGroup.fd).indicator 1`. Use extensionality with `z`. Both sides reduce to the same expression. Rewrite using `[e, lintegral_indicator_one hm, Measure.restrict_apply hm, Measure.map_apply (mpSL _).measurable hS, Measure.restrict_apply ((mpSL _).measurable hS), ← (mpSL q.out⁻¹).measure_preimage (hm.inter hS).nullMeasurableSet]`. Use `congr 1`.
+
+Use extensionality with `z`. Simplify using `[and_comm]`.
+-/
 private theorem mu_apply (H : Subgroup SL(2, ℤ)) {S : Set ℍ} (hS : MeasurableSet S) : mu H S = ∫⁻ z in S, wt H z := by
   rw [mu, Measure.sum_apply _ hS]
   simp only [wt]
@@ -122,11 +169,19 @@ private theorem mu_apply (H : Subgroup SL(2, ℤ)) {S : Set ℍ} (hS : Measurabl
   ext z
   simp [and_comm]
 
+/- English proof (translation)
+The claim follows from `Measure.integrableOn_of_bounded (M := C) fdFin'.2.ne (hc.comp (contSL γ)).aestronglyMeasurable (Filter.Eventually.of_forall fun _ => hb _)`.
+-/
 private theorem intOn {φ : ℍ → ℂ} (hc : Continuous φ) {C : ℝ} (hb : ∀ z, ‖φ z‖ ≤ C) (γ : SL(2, ℤ)) :
     IntegrableOn (fun z : ℍ => φ (γ • z)) ModularGroup.fd :=
   Measure.integrableOn_of_bounded (M := C) fdFin'.2.ne (hc.comp (contSL γ)).aestronglyMeasurable
     (Filter.Eventually.of_forall fun _ => hb _)
 
+/- English proof (translation)
+Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Rewrite using `[integral_map (f := fun w : ℂ => w) hc.aemeasurable aestronglyMeasurable_id, mu, Measure.sum_fintype, integral_finset_sum_measure, quotInt, finsum_eq_sum_of_fintype]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_map (contSL _).aemeasurable hc.aestronglyMeasurable]`. Introduce `q _`.
+
+Conclude with `(integrable_map_measure hc.aestronglyMeasurable (contSL _).aemeasurable).2 (intOn hc hb _)`.
+-/
 private theorem quotInt_mu (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] {φ : ℍ → ℂ} (hc : Continuous φ) {C : ℝ}
     (hb : ∀ z, ‖φ z‖ ≤ C) : quotInt H φ = ∫ w, w ∂(Measure.map φ (mu H)) := by
   haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _
@@ -137,6 +192,13 @@ private theorem quotInt_mu (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] {φ : ℍ �
   · intro q _
     exact (integrable_map_measure hc.aestronglyMeasurable (contSL _).aemeasurable).2 (intOn hc hb _)
 
+/- English proof (translation)
+Establish `hc' : Continuous fun z : ℍ => φ (α • z)` using `hc.comp (continuous_const_smul α)`. Rewrite using `[quotInt_mu H hc' (fun z => hb _), quotInt_mu K hc hb]`. Use `congr 1`. Use extensionality with `T hT`. Establish `hS : MeasurableSet (φ ⁻¹' T)` using `hc.measurable hT`.
+
+Rewrite using `[Measure.map_apply hc'.measurable hT, Measure.map_apply hc.measurable hT, mu_apply _ (hc'.measurable hT), mu_apply _ hS, wt_indep K hS (fun γ hγ z => by rw [mem_preimage, mem_preimage, hφ γ hγ]) (wt_meas K) ((wt_meas H).comp (mpGL α⁻¹).measurable) (wt_sum K)]`. Rewrite using `[← (mpGL α).setLIntegral_comp_preimage hS ((wt_meas H).comp (mpGL α⁻¹).measurable)]`. Simplify using `only [Function.comp, inv_smul_smul]`. Both sides reduce to the same expression. Use `filter_upwards [(mpGL α⁻¹).quasiMeasurePreserving.ae (wt_sum H)] with z hz`.
+
+Rewrite using `[← hz, ← e.tsum_eq]`. Simplify using `only [Function.comp, he]`.
+-/
 private theorem quotInt_conj0 (H K : Subgroup SL(2, ℤ)) [H.FiniteIndex] [K.FiniteIndex] (α : GL (Fin 2) ℝ) (e : K ≃ H)
     (he : ∀ (h : K) (z : ℍ), α⁻¹ • (h : SL(2, ℤ)) • z = (e h : SL(2, ℤ)) • α⁻¹ • z)
     {φ : ℍ → ℂ} (hc : Continuous φ) {C : ℝ} (hb : ∀ z, ‖φ z‖ ≤ C) (hφ : ∀ γ ∈ K, ∀ z, φ (γ • z) = φ z) :
@@ -156,11 +218,17 @@ private theorem quotInt_conj0 (H K : Subgroup SL(2, ℤ)) [H.FiniteIndex] [K.Fin
     rw [← hz, ← e.tsum_eq]
     simp only [Function.comp, he]
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `mem_conjGL.1 hh.2`. Conclude with `⟨y, ⟨hy, mem_conjGL.2 ⟨h, hh.1, by rw [e]; group⟩⟩, e⟩`.
+-/
 private theorem conj_ex (H : Subgroup SL(2, ℤ)) (α : GL (Fin 2) ℝ) {h : SL(2, ℤ)} (hh : h ∈ H ⊓ conjGL H α) :
     ∃ y ∈ H ⊓ conjGL H α⁻¹, (y : GL (Fin 2) ℝ) = α * h * α⁻¹ := by
   obtain ⟨y, hy, e⟩ := mem_conjGL.1 hh.2
   exact ⟨y, ⟨hy, mem_conjGL.2 ⟨h, hh.1, by rw [e]; group⟩⟩, e⟩
 
+/- English proof (translation)
+Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Establish `h` using `Rs.fdPos Rs.volMap (fun _ => 1) continuous_const (fun _ => zero_le_one) (integrableOn_const fdFin'.2.ne) UpperHalfPlane.I (by simp [ModularGroup.fd]) one_pos`. Rewrite using `[quotInt, finsum_eq_sum_of_fintype]`. Simplify using `at h ⊢`. Conclude with `h.ne'`.
+-/
 private theorem quotInt_one_ne (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] : quotInt H (fun _ => 1) ≠ 0 := by
   haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _
   have h := Rs.fdPos Rs.volMap (fun _ => 1) continuous_const (fun _ => zero_le_one)
@@ -169,6 +237,17 @@ private theorem quotInt_one_ne (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] : quotI
   simp at h ⊢
   exact h.ne'
 
+/- English proof (translation)
+Establish `inj : ∀ x y : SL(2, ℤ), (x : GL (Fin 2) ℝ) = y → x = y` using `fun x y h => Matrix.SpecialLinearGroup.map_intCast_injective (Matrix.SpecialLinearGroup.toGL_injective h)`. Use `choose f hf ef using fun h : ↥(H ⊓ conjGL H α⁻¹) => conj_ex H α⁻¹ h.2`. Simplify using `only [inv_inv] at hf ef`. Establish `hbij : Function.Bijective fun h => (⟨f h, hf h⟩ : ↥(H ⊓ conjGL H α))`. Use `⟨fun x y h => Subtype.ext (inj _ _ ?_), fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h' : f x = f y` using `congrArg Subtype.val h`. Use `ef x` as an intermediate fact. Rewrite `this` using `[h', ef y]`. Simplify using `using this.symm`. Take `⟨y, hy, e⟩` from `conj_ex H α x.2`.
+
+Use `⟨⟨y, hy⟩, Subtype.ext (inj _ _ ?_)⟩` and prove the remaining obligations. Rewrite using `[ef, e]`. Use `group`. Establish `he : ∀ (h : ↥(H ⊓ conjGL H α⁻¹)) (z : ℍ), α⁻¹ • (h : SL(2, ℤ)) • z = (Equiv.ofBijective _ hbij h : SL(2, ℤ)) • α⁻¹ • z` using `fun h z => by`. Express the relevant statement in the definitionally equal form `α⁻¹ • ((h : SL(2, ℤ)) : GL (Fin 2) ℝ) • z = (f h : GL (Fin 2) ℝ) • α⁻¹ • z`.
+
+Rewrite using `[ef, smul_smul, smul_smul, mul_inv_cancel_right]`. Establish `a` using `quotInt_conj0 _ _ α _ he hc hb fun γ hγ => hφ γ hγ.1`. Establish `b` using `quotInt_conj0 _ _ α _ he (φ := fun _ => 1) continuous_const (C := 1) (by simp) fun _ _ _ => rfl`. Rewrite `a` using `[quotInt_tower inf_le_left _ hα, quotInt_tower inf_le_left _ hφ]`. Rewrite `b` using `[quotInt_tower (K := H) inf_le_left _ (fun _ _ _ => rfl), quotInt_tower (H := H ⊓ conjGL H α⁻¹) (K := H) inf_le_left _ (fun _ _ _ => rfl)]`.
+
+Rewrite `a` using `[mul_right_cancel₀ (quotInt_one_ne H) b]`. Use `mul_left_cancel₀ ?_ a` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero]`. Conclude with `Subgroup.FiniteIndex.index_ne_zero`.
+-/
 theorem quotInt_conj (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] (α : GL (Fin 2) ℝ) (h1 : (conjGL H α).FiniteIndex)
     (h2 : (conjGL H α⁻¹).FiniteIndex) {φ : ℍ → ℂ} (hc : Continuous φ) {C : ℝ} (hb : ∀ z, ‖φ z‖ ≤ C)
     (hφ : ∀ γ ∈ H, ∀ z, φ (γ • z) = φ z) (hα : ∀ γ ∈ H, ∀ z, φ (α • γ • z) = φ (α • z)) :
@@ -201,12 +280,18 @@ theorem quotInt_conj (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] (α : GL (Fin 2) 
   rw [Nat.cast_ne_zero]
   exact Subgroup.FiniteIndex.index_ne_zero
 
+/- English proof (translation)
+Use `Subgroup.IsArithmetic.conj (H.map (Matrix.SpecialLinearGroup.mapGL ℝ)) g⁻¹` as an intermediate fact. Rewrite using `[conjGL, ← map_inv]`. Use `infer_instance`.
+-/
 theorem finiteIndex_conjGL_rat (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] (g : GL (Fin 2) ℚ) :
     (conjGL H (g.map (Rat.castHom ℝ))).FiniteIndex := by
   have := Subgroup.IsArithmetic.conj (H.map (Matrix.SpecialLinearGroup.mapGL ℝ)) g⁻¹
   rw [conjGL, ← map_inv]
   infer_instance
 
+/- English proof (translation)
+Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Simplify using `only [quotInt, finsum_eq_sum_of_fintype]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun γ _ => integral_add (intOn hc hb _) (intOn hc' hb' _)`.
+-/
 theorem quotInt_add (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] {φ ψ : ℍ → ℂ} (hc : Continuous φ) {C : ℝ}
     (hb : ∀ z, ‖φ z‖ ≤ C) (hc' : Continuous ψ) {C' : ℝ} (hb' : ∀ z, ‖ψ z‖ ≤ C') :
     quotInt H (fun z => φ z + ψ z) = quotInt H φ + quotInt H ψ := by
@@ -215,6 +300,9 @@ theorem quotInt_add (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] {φ ψ : ℍ → �
   rw [← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun γ _ => integral_add (intOn hc hb _) (intOn hc' hb' _)
 
+/- English proof (translation)
+Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Simplify using `only [quotInt, finsum_eq_sum_of_fintype]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun γ _ => integral_finset_sum _ fun i _ => intOn (hc i) (hb i).choose_spec _`.
+-/
 theorem quotInt_sum (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] {ι : Type} (s : Finset ι) {φ : ι → ℍ → ℂ}
     (hc : ∀ i, Continuous (φ i)) (hb : ∀ i, ∃ C : ℝ, ∀ z, ‖φ i z‖ ≤ C) :
     quotInt H (fun z => ∑ i ∈ s, φ i z) = ∑ i ∈ s, quotInt H (φ i) := by
@@ -223,6 +311,9 @@ theorem quotInt_sum (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] {ι : Type} (s : F
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun γ _ => integral_finset_sum _ fun i _ => intOn (hc i) (hb i).choose_spec _
 
+/- English proof (translation)
+Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Simplify using `only [quotInt, finsum_eq_sum_of_fintype, Finset.mul_sum, integral_const_mul]`.
+-/
 theorem quotInt_mul (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] (c : ℂ) (φ : ℍ → ℂ) :
     quotInt H (fun z => c * φ z) = c * quotInt H φ := by
   haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _

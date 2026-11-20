@@ -16,6 +16,11 @@ namespace UpperTheory.Zero.LLC
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `haveI : CharZero (w.adicCompletion E) := algebraRat.charZero _`. Take `⟨-, hs, ht, -⟩` from `GlobalTheory.T.weil_deligne_sum_twist_compat E Ω A w h`. Establish `h2` using `GlobalTheory.T.isLanglandsClassification_twist_multisegment _ (l : Multiset (Segment (w.adicCompletion E))) x χ hχ hx`. Rewrite using `[hL l x hx, hL (l.map fun Δ : Segment _ => Δ.tw χ hχ) (x.tw χ hχ) h2, segSum, segSum, hs, List.map_map, List.map_map]`. Use `congrArg sumList (List.map_congr_left fun Δ hΔ => ?_)` and prove the remaining obligations.
+
+Use `show ((r (Δ.first.tw χ hχ)).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len) = WD.lpTwist _ _ _`. Rewrite using `[(ht _ _ _ _).2, hr Δ hΔ, WD.lpTw, WD.lpTw, GlobalTheory.LocLanglands.ExtTwist.lpTwist_lpTwist_comm]`.
+-/
 private theorem rc_tw_of_segments {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     {r rc : IrrGL (w.adicCompletion E) → WD h} (hL : IsLExt r rc)
     (l : List (Segment (w.adicCompletion E))) (x : IrrGL (w.adicCompletion E))
@@ -33,6 +38,15 @@ private theorem rc_tw_of_segments {a : Weil h →* (w.adicCompletion E)ˣ} (ha :
 
 end UpperTheory.Zero.LLC
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha r rc H hL`. Use `haveI : CharZero (w.adicCompletion E) := algebraRat.charZero _`. Use `⟨fun x s => ?_, fun x χ hχ hg => ?_⟩` and prove the remaining obligations. Take `⟨𝔪, h𝔪⟩` from `UpperTheory.Zero.LLC.Pr.exh _ x`. Take `⟨l, rfl⟩` from `Quotient.exists_rep 𝔪`.
+
+Establish `key` using `rc_tw_of_segments ha hL l x h𝔪 (absPow _ (s : ℂ)) (isSmoothChar_absPow _) (fun Δ _ => by`. Establish `h1` using `H.nu _ Δ.isCusp_first s`. Rewrite `h1` using `[WD.lpTw]`. Use `h1.trans ?_` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `(ha.absPow_comp s).symm)`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[WD.lpTw]`. Use `congr 1`. Conclude with `ha.absPow_comp s`.
+
+Take `⟨𝔪, h𝔪⟩` from `UpperTheory.Zero.LLC.Pr.exh _ x`. Take `⟨l, rfl⟩` from `Quotient.exists_rep 𝔪`. Establish `hg'` using `((UpperTheory.Zero.LLC.goodSeg _).1 l x h𝔪).1 hg`. Rewrite using `[lpChar_lpOfChar]`. Conclude with `rc_tw_of_segments ha hL l x h𝔪 χ hχ fun Δ hΔ => H.twist _ Δ.isCusp_first (hg' Δ hΔ) χ hχ`.
+-/
 theorem UpperTheory.Zero.LLC.extTw :
     UpperTheory.Zero.LLC.ExtTw := by
   intro E Ω _ _ _ _ _ A w h a ha r rc H hL

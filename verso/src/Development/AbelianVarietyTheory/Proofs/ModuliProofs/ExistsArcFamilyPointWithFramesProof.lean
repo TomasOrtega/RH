@@ -18,6 +18,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_arc_family_point_with_frames_of_laws GlobalTheory.lawsAndExpansions GlobalTheory.allSixLaws.2.2.2.2.2 GlobalTheory.T.uniformisation_triples_complete_DVR_torsion GlobalTheory.T.homExtension_semiAbelian_discreteValuationRing GlobalTheory.T.thetaPoint_determine …`.
+-/
 theorem arcFam_closed : GlobalTheory.LN.ArcFamSt :=
   GlobalTheory.T.exists_arc_family_point_with_frames_of_laws GlobalTheory.lawsAndExpansions GlobalTheory.allSixLaws.2.2.2.2.2 GlobalTheory.T.uniformisation_triples_complete_DVR_torsion GlobalTheory.T.homExtension_semiAbelian_discreteValuationRing
     GlobalTheory.T.thetaPoint_determines_and_end_determined_torsion.1 GlobalTheory.T.thetaPoint_determines_and_end_determined_torsion.2 GlobalTheory.thetaUnifAV_closed

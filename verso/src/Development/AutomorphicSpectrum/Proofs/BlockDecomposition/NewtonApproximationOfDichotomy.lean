@@ -8,6 +8,17 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 
 namespace GlobalTheory.CompanionTheory.NewtonStep
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Take `⟨w', hw'⟩` from `h.exists_right_inv`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective w'`. Establish `h1 : (a + b) * w - 1 ∈ Ideal.span {ϖ ^ 2}`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [map_sub, map_mul, map_add, map_one]`. Rewrite using `[hw', sub_self]`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton.mp h1`. Establish `hu : IsUnit ((a + b) * w)`.
+
+Establish `h2` using `(Ideal.mem_jacobson_bot.mp hj) (ϖ * v)`. Establish `e : (a + b) * w = ϖ * (ϖ * v) + 1` using `by linear_combination hv`. Rewrite using `[e]`. Conclude with `h2`. Establish `hab : IsUnit (a + b)` using `isUnit_of_mul_isUnit_left hu`.
+
+Establish `hspan : ϖ ^ 0 ∈ Ideal.span {a, b}`. Take `⟨t, ht⟩` from `hab.exists_right_inv`. Establish `h3 : (a + b) * t ∈ Ideal.span {a, b}` using `Ideal.mul_mem_right _ _ (Ideal.add_mem _ (Ideal.subset_span (by simp)) (Ideal.subset_span (by simp)))`. Rewrite `h3` using `[ht]`. Simplify using `using h3`.
+
+Break down `hD a b ⟨0, hspan⟩ with h4 | h4` into its components or cases. Use `right`. Conclude with `(isUnit_of_dvd_unit (dvd_add h4 dvd_rfl) hab).map _`. Use `left`. Conclude with `(isUnit_of_dvd_unit (dvd_add dvd_rfl h4) hab).map _`.
+-/
 theorem isUnit_or_of_add_quot {S : Type} [CommRing S] (ϖ : S)
     (hj : ϖ ∈ (⊥ : Ideal S).jacobson) (hD : Dich ϖ) (a b : S ⧸ Ideal.span {ϖ ^ 2})
     (h : IsUnit (a + b)) : IsUnit a ∨ IsUnit b := by
@@ -38,6 +49,39 @@ theorem isUnit_or_of_add_quot {S : Type} [CommRing S] (ϖ : S)
   · left
     exact (isUnit_of_dvd_unit (dvd_add dvd_rfl h4) hab).map _
 
+/- English proof (translation)
+Introduce `S _ ϖ hj hnz hD hA Q n hQ hd hn`. Establish `hRoots : Roots ϖ` using `GlobalTheory.T.polynomial_roots_of_closed_quotient ϖ hj hnz hD hA`. Establish `hq0 : Q.coeff 0 = Q.eval 0` using `Polynomial.coeff_zero_eq_eval_zero Q`. Establish `hspan : ϖ ^ (n + 1) ∈ Ideal.span {Q.coeff 0, ϖ ^ (n + 1)}` using `Ideal.subset_span (by simp)`. Break down `hD (Q.coeff 0) (ϖ ^ (n + 1)) ⟨n + 1, hspan⟩ with hdiv | hdiv` into its components or cases.
+
+Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hq0]`. Conclude with `hdiv`. Rewrite using `[zero_pow hd.ne']`. Conclude with `dvd_zero _`.
+
+Establish `hpow : ϖ ^ (n + 1) ∈ nonZeroDivisors S` using `pow_mem hnz _`. Establish `hcancel : ∀ x : S, Q.coeff 0 * x = 0 → x = 0`. Introduce `x hx`. Take `⟨e, he⟩` from `hdiv`. Establish `h0 : ϖ ^ (n + 1) * x = 0`.
+
+Rewrite using `[he]`. Take the linear combination `e * hx`. Conclude with `(mem_nonZeroDivisors_iff_right.mp hpow) x (by rw [mul_comm]; exact h0)`. Take `⟨c, hc1, i0, hi1, hi2, hi3⟩` from `GlobalTheory.T.newton_polygon_slope_existence ϖ hD hRoots (fun i => Q.coeff i) Q.natDegree (n + 1) hd hQ.coeff_natDegree hdiv`. Establish `hs : ∀ i, ∃ t, (i = 0 → t = 1) ∧ (i ≤ Q.natDegree → Q.coeff i * c ^ i = Q.coeff 0 * t)`.
+
+Introduce `i`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Conclude with `⟨1, fun _ => rfl, fun _ => by simp⟩`. Distinguish the cases in `hid : i ≤ Q.natDegree`. Take `⟨t, ht⟩` from `hc1 i hi hid`.
+
+Conclude with `⟨t, fun h => by omega, fun _ => ht⟩`. Conclude with `⟨0, fun h => by omega, fun h => by omega⟩`. Use `choose s hs0 hsd using hs`. Establish `hunit : IsUnit (s i0)`. Take `⟨t, ht⟩` from `hi3`.
+
+Establish `h5 : Q.coeff 0 * (s i0 * t - 1) = 0`. Establish `h6` using `hsd i0 hi2`. Rewrite `ht` using `[h6]`. Take the linear combination `-ht`. Establish `h7` using `hcancel _ h5`.
+
+Conclude with `IsUnit.of_mul_eq_one t (by linear_combination h7)`. Set `R : Polynomial S` to `∑ i ∈ Finset.range (Q.natDegree + 1), Polynomial.C (s i) * Polynomial.X ^ i`. Establish `hRc : ∀ j, j ≤ Q.natDegree → R.coeff j = s j`. Introduce `j hj'`. Simplify using `only [R, Polynomial.finsetSum_coeff, Polynomial.coeff_C_mul_X_pow]`.
+
+Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Nat.lt_succ_of_le hj']`. Establish `hRe : ∀ y, R.eval y = ∑ i ∈ Finset.range (Q.natDegree + 1), s i * y ^ i`. Introduce `y`. Simplify using `[R, Polynomial.eval_finsetSum]`.
+
+Set `P : Polynomial (S ⧸ Ideal.span {ϖ ^ 2})` to `R.map (Ideal.Quotient.mk _)`. Establish `hP0 : P.coeff 0 = 1`. Simplify using `only [P, Polynomial.coeff_map]`. Rewrite using `[hRc 0 (Nat.zero_le _), hs0 0 rfl, map_one]`. Establish `hPi : IsUnit (P.coeff i0)`.
+
+Simplify using `only [P, Polynomial.coeff_map]`. Rewrite using `[hRc i0 hi2]`. Conclude with `hunit.map _`. Take `⟨y', hy'⟩` from `GlobalTheory.T.absolutely_closed_unit_coefficient_root hA (isUnit_or_of_add_quot ϖ hj hD) P i0 hP0 hi1 hPi`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y'`.
+
+Establish `hRy : ϖ ^ 2 ∣ R.eval y`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [P, Polynomial.eval_map] at hy'`. Rewrite `hy'` using `[Polynomial.eval₂_at_apply]`. Then use the resulting hypothesis. Establish `hQz : Q.eval (c * y) = Q.coeff 0 * R.eval y`.
+
+Rewrite using `[Polynomial.eval_eq_sum_range, hRe, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `h8` using `hsd i (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))`. Rewrite using `[mul_pow]`. Take the linear combination `(y ^ i) * h8`.
+
+Establish `hn0 : ϖ ^ n ∣ Q.coeff 0` using `by rw [hq0]; exact hn`. Use `⟨c * y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hQz]`. Establish `h9 : ϖ ^ n * ϖ ^ 2 ∣ Q.coeff 0 * R.eval y` using `mul_dvd_mul hn0 hRy`. Use `dvd_trans ?_ h9` and prove the remaining obligations.
+
+Rewrite using `[← pow_add]`. Conclude with `pow_dvd_pow _ (by omega)`. Establish `h10 : Q.coeff 0 ∣ c ^ Q.natDegree`. Establish `h11` using `hc1 Q.natDegree hd le_rfl`. Simplify `h11` using `[hQ.coeff_natDegree]`.
+
+Rewrite using `[mul_pow]`. Conclude with `dvd_mul_of_dvd_left (dvd_trans hn0 h10) _`.
+-/
 theorem step_comp : ∀ {S : Type} [CommRing S] (ϖ : S), ϖ ∈ (⊥ : Ideal S).jacobson →
     ϖ ∈ nonZeroDivisors S → Dich ϖ → Aic (S ⧸ Ideal.span {ϖ ^ 2}) → Step ϖ := by
   intro S _ ϖ hj hnz hD hA Q n hQ hd hn

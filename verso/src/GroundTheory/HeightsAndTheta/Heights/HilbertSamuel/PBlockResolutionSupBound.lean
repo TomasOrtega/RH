@@ -15,6 +15,11 @@ section Invariance
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hf m hm`. Establish `hc : ∏ p : (Σ k, ι k), c p.1 ^ m p = c k₀ ^ n`. Rewrite using `[Fintype.prod_sigma]`.
+
+Repeatedly rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg]`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [blockDeg, hk]]`. Simplify using `[blockDeg]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     eval (fun p => c p.1 * z p) f = c k₀ ^ n * eval z f := by
@@ -29,6 +34,11 @@ theorem eval_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomo
   simp_rw [mul_pow, Finset.prod_mul_distrib, hc]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `h`. Rewrite using `[eval_torus hf, A.smul c z' hc, hA]`. Establish `hprod : ∏ k, ‖c k‖ ^ unitDeg k₀ k = ‖c k₀‖`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]`. Simplify using `[unitDeg]`.
+
+Rewrite using `[hprod, norm_mul, norm_pow, mul_pow]`. Establish `: ‖c k₀‖ ^ n ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 (hc k₀))`. Rewrite using `[mul_div_mul_left _ _ this]`.
+-/
 theorem normRatio_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     (A : HermLine ι) (hA : A.a = unitDeg k₀) {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     ‖eval z f‖ / A.h z ^ n = ‖eval z' f‖ / A.h z' ^ n := by
@@ -43,6 +53,9 @@ theorem normRatio_torus {f : MRingOver ℂ ι} {k₀ : K} {n : ℕ} (hf : IsMult
 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   simp only [Set.ofPred_forall, Set.ofPred_exists]
   exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
@@ -50,6 +63,15 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
 
 end Invariance
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d`. Take `⟨C, hC⟩` from `hI D K ι Ω d`. Use `⟨C, fun n hn f hf z hz => ?_⟩` and prove the remaining obligations. Use `set g : ((Σ k, ι k) → ℂ) → ℝ := fun w => ‖eval w f‖ / d.A.h w ^ n with hg`. Use `set M := C * (n : ℝ) ^ ((D : ℝ) / 2) * blockL2NormComplex d n f with hM`.
+
+Establish `hoff : ∀ w ∈ mcPts (mCoordIdeal d.y), w ∉ mcPts d.J → g w ≤ M`. Introduce `w hw hwJ`. Take `⟨x, hx⟩` from `d.R.surj w hw hwJ`. Combine the equalities or inequalities in the displayed calculation. Take `⟨F, hFJ, hFP⟩` from `SetLike.not_le_iff_exists.1 d.R.nondeg`.
+
+Use `set S := {w | w ∈ mcPts (mCoordIdeal d.y) ∧ eval w (map (Int.castRingHom ℂ) F) ≠ 0} with hSdef`. Establish `hcl : z ∈ closure S` using `hN K ι (mCoordIdeal d.y) (D + 1) F d.arith hFP hz`. Establish `hSM : ∀ w ∈ S, g w ≤ M` using `fun w hw => hoff w hw.1 fun hJ => hw.2 (hJ.2 F hFJ)`. Establish `hcont : ContinuousAt g z`. Establish `hh : ContinuousAt d.A.h z` using `d.semipos.1.continuousOn.continuousAt (isOpen_blockNonzero.mem_nhds hz.1)`.
+
+Conclude with `(continuous_norm.comp (MvPolynomial.continuous_eval _)).continuousAt.div (hh.pow n) (pow_ne_zero _ (d.A.pos z hz.1).ne')`. Use `mem_closure_iff_nhdsWithin_neBot.1 hcl` as an intermediate fact. Conclude with `le_of_tendsto (hcont.tendsto.mono_left nhdsWithin_le_nhds) (eventually_nhdsWithin_of_forall hSM)`.
+-/
 theorem proof (hI : BlockResolutionImageSup.Statement) (hN : NonvanishingDense.Statement) :
     BlockResolutionSupBound.Statement := by
   intro D K _ _ ι _ Ω _ _ d

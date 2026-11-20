@@ -30,12 +30,18 @@ section GeomAux
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[MonObj.mul_comp]`. Simplify using the standard rewrite rules. Rewrite using `[MonObj.mul_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem liftSq_mul' {T : Over S} (a b a' b' : T ⟶ A) :
     (lift a b : T ⟶ G2 A) * lift a' b' = lift (a * a') (b * b') := by
   apply CartesianMonoidalCategory.hom_ext
   · rw [MonObj.mul_comp]; simp
   · rw [MonObj.mul_comp]; simp
 
+/- English proof (translation)
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[MonObj.pow_comp]`. Simplify using the standard rewrite rules. Rewrite using `[MonObj.pow_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem liftSq_pow' {T : Over S} (a b : T ⟶ A) (n : ℕ) :
     (lift a b : T ⟶ G2 A) ^ n = lift (a ^ n) (b ^ n) := by
   apply CartesianMonoidalCategory.hom_ext
@@ -44,6 +50,73 @@ theorem liftSq_pow' {T : Over S} (a b : T ⟶ A) (n : ℕ) :
 
 end GeomAux
 
+/- English proof (translation)
+Introduce `p _ D R _ b h u c k N hc hk hN hNp hck _hlin hcomp hsim _hsurj S s o g₁ hg₁ g₂ hg₂ K _ _ x β hx v hv`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hA2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `hPL : o.P.IsLB` using `o.isLB`. Take `⟨I, hI⟩` from `o.geom K x β hx`.
+
+Take `⟨x₁, rfl⟩` from `hg₁`. Take `⟨x₂, rfl⟩` from `hg₂`. Establish `hpp : p.Prime` using `Fact.out`. Establish `hk0 : 0 < k`. Break down `Nat.eq_zero_or_pos k with h0 | h0` into its components or cases.
+
+Substitute `h0` using the available equality. Conclude with `absurd (Nat.coprime_zero_left p |>.1 hk) hpp.one_lt.ne'`. Conclude with `h0`. Establish `hN0 : 0 < N` using `by omega`. Establish `hc0 : 0 < c`.
+
+Break down `Nat.eq_zero_or_pos c with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Conclude with `absurd (Nat.eq_zero_of_zero_dvd hck) (pow_ne_zero 2 hk0.ne')`. Conclude with `h0`. Establish `hNk0 : 0 < N * k` using `Nat.mul_pos hN0 hk0`.
+
+Establish `hNkp : (N * k).Coprime p` using `Nat.Coprime.mul hNp hk`. Establish `hn'p : (N * k * c).Coprime p` using `Nat.Coprime.mul hNkp hc`. Establish `hn'0 : 0 < N * k * c` using `Nat.mul_pos hNk0 hc0`. Establish `hmove : ∀ z : D.La, o.eta (N • h (N * k) z) = o.eta (N • h (N * k * c) z)` using `fun z => by`. Take `⟨z', hz'⟩` from `(hcomp (N * k) c hNk0 hc0 hn'p).1 z`.
+
+Rewrite using `[hz', smul_add, o.eta_add, smul_comm N (N * k) z', o.eta_ker, _root_.mul_one]`. Rewrite `hv` using `[hmove, hmove]`. Establish `hdivE : ((c : ℕ) : ℤ) ∣ D.EF (h (N * k * c) x₁) (h (N * k * c) x₂)`. Establish `h1` using `(hsim (N * k * c) hn'0 hn'p).2 x₁ x₂`. Establish `h2 : ((c : ℕ) : ℤ) ∣ ((N * k * c : ℕ) : ℤ)`.
+
+Conclude with `Dvd.intro_left (N * k) rfl` after adjusting the coercions. Establish `h3` using `h2.trans h1`. Establish `h4 : ((c : ℕ) : ℤ) ∣ (c : ℤ) * u (N * k * c) * D.EF x₁ x₂` using `Dvd.dvd.mul_right (Dvd.dvd.mul_right (dvd_refl _) _) _`. Establish `h5` using `dvd_add h3 h4`. Rewrite `h5` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Take `⟨e', he'⟩` from `hdivE`. Take `⟨f, hf⟩ : ∃ f, f = h (N * k * c)` from `⟨_, rfl⟩`. Rewrite `hv`, `he'` using `[← hf]`. Take `⟨m, hm⟩ : ∃ m, m = k ^ 2 / c` from `⟨_, rfl⟩`. Rewrite `hv` using `[← hm]`.
+
+Establish `hmc : m * c = k ^ 2` using `by rw [hm]; exact Nat.div_mul_cancel hck`. Establish `hm0 : 0 < m`. Break down `Nat.eq_zero_or_pos m with h0 | h0` into its components or cases. Rewrite `hmc` using `[h0, zero_mul]`. Conclude with `absurd hmc.symm (pow_ne_zero 2 hk0.ne')`.
+
+Conclude with `h0`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj0, hjp, hjpar⟩ : ∃ j : ℕ, 0 < j ∧ (j * k ^ 2).Coprime p ∧ (Even j ∨ Odd (j * k ^ 2)) := by`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality. Establish `hko : Odd k` using `Nat.coprime_two_right.1 hk`.
+
+Conclude with `⟨1, one_pos, by rw [_root_.one_mul]; exact Nat.Coprime.pow_left 2 hk, Or.inr (by rw [_root_.one_mul]; exact hko.pow)⟩`. Use `⟨2, two_pos, Nat.coprime_mul_iff_left.2 ⟨?_, Nat.Coprime.pow_left 2 hk⟩, Or.inl even_two⟩` and prove the remaining obligations. Conclude with `(Nat.coprime_primes Nat.prime_two hpp).2 (Ne.symm h2)`. Take `⟨n₀, hn₀⟩ : ∃ n₀, n₀ = j * k ^ 2` from `⟨_, rfl⟩`. Rewrite `hjp`, `hjpar` using `[← hn₀]`.
+
+Establish `hn0 : 0 < n₀` using `by rw [hn₀]; positivity`. Establish `ev0 : ∀ n, I.ev n 0 = 1` using `fun n => by`. Establish `h0` using `I.add n 0 0`. Rewrite `h0` using `[add_zero]`. Conclude with `(mul_eq_left.1 h0.symm)`.
+
+Establish `evs : ∀ n (z : D.La) (r : ℕ), I.ev n (r • z) = I.ev n z ^ r` using `fun n z r => by`. Proceed by induction on `r with`. Consider the case `zero => rw [zero_smul, pow_zero, ev0]`. Consider the case `succ r ih => rw [succ_nsmul, I.add, ih, pow_succ]`. Establish `hdown : ∀ z : D.La, toUnit (Over.mk x) ≫ o.eta (N • z) = I.ev n₀ z ^ (j * k)` using `fun z => by`.
+
+Establish `t1` using `I.tower k N hk0 hN0 (Nat.coprime_mul_iff_left.2 ⟨hk, hNp⟩) z`. Establish `e : k * (j * k) = n₀` using `by rw [hn₀]; ring`. Establish `t2` using `I.tower k (j * k) hk0 (by positivity) (by rw [e]; exact hjp) z`. Rewrite `t1` using `[Nat.mul_comm k N]`. Rewrite using `[hI, evs, t1, ← t2, e]`.
+
+Take `⟨w, hw⟩ : ∃ w, w = I.ev n₀ (f x₁)` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y, y = I.ev n₀ (f x₂)` from `⟨_, rfl⟩`. Establish `ha : toUnit (Over.mk x) ≫ (lift (o.eta (N • f x₁)) 1 : 𝟙_ (Over S) ⟶ G2 o.A) = lift (w ^ (j * k)) (1 ^ (j * k))`. Rewrite using `[comp_lift, hdown, ← hw, one_pow, MonObj.comp_one]`. Establish `hb : toUnit (Over.mk x) ≫ (lift 1 (o.eta (N • f x₂)) : 𝟙_ (Over S) ⟶ G2 o.A) = lift (1 ^ (j * k)) (y ^ (j * k))`.
+
+Rewrite using `[comp_lift, hdown, ← hy, one_pow, MonObj.comp_one]`. Rewrite `hv` using `[ha, hb]`. Establish `e1` using `GlobalTheory.T.commutatorPairing_pullback_powerMap_level S o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) o.P o.ab (pull_isLB hPL _) o.ample hPL o.rig₁ o.rig₂ m (j * k) (j * k) 1 (Over.mk x) w 1 1 y v hv`. Establish `hwn : w ^ n₀ = 1` using `(I.onto n₀ hn0 hjp w).2 ⟨f x₁, hw.symm⟩`. Establish `hyn : y ^ n₀ = 1` using `(I.onto n₀ hn0 hjp y).2 ⟨f x₂, hy.symm⟩`.
+
+Establish `hK : ((n₀ : ℕ) : K) ≠ 0`. Use `(b.unit n₀ hjp).map β` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `tor : ∀ a a' : Over.mk x ⟶ o.A, a ^ n₀ = 1 → a' ^ n₀ = 1 → (lift a a' : Over.mk x ⟶ G2 o.A) ^ n₀ = 1` using `fun a a' h1 h1' => by`.
+
+Rewrite using `[liftSq_pow', h1, h1']`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `one_n : (1 : Over.mk x ⟶ o.A) ^ n₀ = 1` using `one_pow _`. Establish `ex : ∀ X Y : Over.mk x ⟶ G2 o.A, X ^ n₀ = 1 → Y ^ n₀ = 1 → ∃ e : Γ((Over.mk x).left, ⊤)ˣ, Out.WeilIs (G2 o.A) o.P (n₀ : ℤ) X Y e` using `fun X Y hX hY => GlobalTheory.WeilGeomPt.exists_weilIs_geomPt S (G2 o.A) o.P hA2 hPL K x n₀ hn0 hK X Y hX hY`. Take `⟨F, hF⟩` from `ex _ _ (tor w 1 hwn one_n) (tor 1 y one_n hyn)`.
+
+Establish `hFp : ∀ r : ℕ, Out.WeilIs (G2 o.A) o.P (n₀ : ℤ) (lift (w ^ (r + 1)) 1) (lift 1 y) (F ^ (r + 1))`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => simpa using hF`. Consider the case `succ r ih`.
+
+Use `GlobalTheory.SiegelTypings.weilIs_mul hA2 hPL ih hF` as an intermediate fact. Rewrite `this` using `[liftSq_mul', _root_.mul_one, ← pow_succ, ← pow_succ]`. Then use the resulting hypothesis. Establish `hjm : j * m = (j * m - 1) + 1` using `(Nat.sub_add_cancel (Nat.mul_pos hj0 hm0)).symm`. Establish `hFjm : Out.WeilIs (G2 o.A) o.P (n₀ : ℤ) (lift (w ^ (j * m)) 1) (lift 1 y) (F ^ (j * m))`. Rewrite using `[hjm]`.
+
+Conclude with `hFp _`. Establish `hl1 : (GlobalTheory.UPel.HT.Hecke.lbPow o.P 1).IsLB` using `LB.isLB_linComb hPL _ _`. Establish `iso1 : LBIso (GlobalTheory.UPel.HT.Hecke.lbPow o.P 1) (o.P.pull (Over.Hom.left (𝟙 (G2 o.A))))`. Establish `c1` using `GlobalTheory.CechPic.cls_linComb hPL (fun _ : Fin 1 => 𝟙 (G2 o.A).left) (fun _ => (1 : ℤ)) hl1`. Establish `c2` using `GlobalTheory.CechPic.cls_pull hPL (Over.Hom.left (𝟙 (G2 o.A))) (pull_isLB hPL _)`.
+
+Use `(GlobalTheory.CechPic.cls_eq_iff hl1 (pull_isLB hPL _)).1 (c1.trans (Eq.trans ?_ c2.symm))` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `e2' : Out.WeilIs (G2 o.A) (GlobalTheory.UPel.HT.Hecke.lbPow o.P 1) (n₀ : ℤ) (lift (w ^ (j * m)) (1 ^ 1)) (lift (1 ^ (j * m)) (y ^ 1)) (F ^ (j * m))`. Rewrite using `[one_pow, one_pow, pow_one]`. Conclude with `GlobalTheory.PELFamily.weilIs_of_lbIso hG hA2 hl1 hPL iso1 hFjm`.
+
+Establish `e2` using `GlobalTheory.T.commutatorPairing_pullback_powerMap_level S o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) o.P o.ab (pull_isLB hPL _) o.ample hPL o.rig₁ o.rig₂ 1 (j * m) 1 (n₀ : ℤ) (Over.mk x) w 1 1 y _ e2'`. Establish `hlev : (1 : ℤ) * ((m * (j * k) * (j * k) : ℕ) : ℤ) = (n₀ : ℤ) * ((1 * (j * m) * 1 : ℕ) : ℤ)`. Rewrite using `[hn₀]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv' : v = F ^ (j * m)` using `GlobalTheory.CommutatorPairing.weilIs_unique hG hA2 hPL e1 (hlev ▸ e2)`. Establish `hgeo` using `I.isom n₀ hn0 hjp (f x₁) (f x₂)`. Rewrite `hgeo` using `[← hw, ← hy]`. Take `⟨c11, h11⟩` from `ex (lift w 1) (lift y 1) (tor w 1 hwn one_n) (tor y 1 hyn one_n)`. Take `⟨c21, h21⟩` from `ex (lift 1 w) (lift y 1) (tor 1 w one_n hwn) (tor y 1 hyn one_n)`.
+
+Take `⟨c22, h22⟩` from `ex (lift 1 w) (lift 1 y) (tor 1 w one_n hwn) (tor 1 y one_n hyn)`. Establish `hA` using `GlobalTheory.SiegelTypings.weilIs_mul hA2 hPL h11 h21`. Establish `hB` using `GlobalTheory.SiegelTypings.weilIs_mul hA2 hPL hF h22`. Rewrite `hA`, `hB` using `[liftSq_mul', _root_.mul_one, _root_.one_mul]`. Establish `hs` using `GlobalTheory.CommPairing.weilIs_symm hPL (GlobalTheory.SiegelTypings.weilIs_mul hA2 hPL (GlobalTheory.CommPairing.weilIs_symm hPL hA) (GlobalTheory.CommPairing.weilIs_symm hPL hB))`.
+
+Rewrite `hs` using `[liftSq_mul', _root_.mul_one, _root_.one_mul]`. Establish `hd` using `GlobalTheory.T.weilPairing_diagonal_pullback_eq S o.A o.P o.ab hPL _ (Over.mk x) w y _ _ hs hgeo`. Establish `e11` using `(GlobalTheory.T.weilPairing_birigidified_trivial_on_axes S o.A o.P o.ab hPL o.rig₁ o.rig₂ _ (Over.mk x) w y c11).1 h11`. Establish `e22` using `(GlobalTheory.T.weilPairing_birigidified_trivial_on_axes S o.A o.P o.ab hPL o.rig₁ o.rig₂ _ (Over.mk x) w y c22).2 h22`. Establish `e21` using `GlobalTheory.T.commutatorPairing_swap_eq_of_swap_invariant S o.A o.P o.ab hPL o.symm _ (Over.mk x) w y c21 F h21 hF`.
+
+Rewrite `hd` using `[e11, e22, e21]`. Establish `hF2 : F ^ 2 = unitOn (I.ζ n₀ ^ (2 * ((c : ℤ) * e')))`. Rewrite using `[← he', ← hd]`. Use `group`. Establish `hζ : I.ζ n₀ ^ n₀ = 1` using `(I.ζ_prim n₀ hn0 hjp).pow_eq_one`.
+
+Establish `hz : ∀ z : ℤ, I.ζ n₀ ^ ((n₀ : ℤ) * z) = 1` using `fun z => by`. Rewrite using `[zpow_mul, zpow_natCast, hζ, one_zpow]`. Establish `hmcZ : (m : ℤ) * c = (k : ℤ) ^ 2` using `by exact_mod_cast hmc`. Establish `hnZ : (n₀ : ℤ) = j * (k : ℤ) ^ 2` using `by rw [hn₀]; push_cast; ring`. Establish `uPow : ∀ (a : Kˣ) (n : ℕ), unitOn (a ^ n) = unitOn a ^ n` using `fun a n => map_pow (Units.map _) a n`.
+
+Establish `uOne : unitOn (1 : Kˣ) = 1` using `map_one (Units.map _)`. Establish `hpw : ∀ t : ℕ, F ^ (2 * t) = unitOn (I.ζ n₀ ^ (2 * ((c : ℤ) * e') * (t : ℤ)))` using `fun t => by`. Rewrite using `[pow_mul, hF2, ← uPow, ← zpow_natCast, ← zpow_mul]`. Break down `hjpar with ⟨i, hi⟩ | hodd` into its components or cases. Establish `e : j * m = 2 * (i * m)` using `by rw [hi]; ring`.
+
+Rewrite using `[hv', e, hpw]`. Establish `ex' : 2 * ((c : ℤ) * e') * ((i * m : ℕ) : ℤ) = (n₀ : ℤ) * e'`. Rewrite using `[hnZ, ← hmcZ, hi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[ex', hz, uOne]`. Establish `h2 : v ^ 2 = 1`. Rewrite using `[hv', ← pow_mul, Nat.mul_comm, hpw]`. Establish `ex' : 2 * ((c : ℤ) * e') * ((j * m : ℕ) : ℤ) = (n₀ : ℤ) * (2 * e')`. Rewrite using `[hnZ, ← hmcZ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ex', hz, uOne]`. Establish `hFn : F ^ n₀ = 1` using `GlobalTheory.SiegelTypings.weil_pow_eq_one hA2 hPL (tor w 1 hwn one_n) hF`. Establish `hn : v ^ n₀ = 1` using `by rw [hv', ← pow_mul, Nat.mul_comm, pow_mul, hFn, one_pow]`.
+
+Establish `hgcd` using `pow_gcd_eq_one.2 ⟨h2, hn⟩`. Rewrite `hgcd` using `[Nat.Coprime.gcd_eq_one (Nat.coprime_two_left.2 hodd), pow_one]`. Then use the resulting hypothesis.
+-/
 theorem weilIs_heckeSubA_geom : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (h : ℕ → D.La →+ D.La) (u : ℕ → ℤ) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → c ∣ k ^ 2 → (∀ n, 0 < n → n.Coprime p → ∀ (a : D.O) (x : D.La), ∃ z, h n (a • x) = a • h n x + n • z) → (∀ n m, 0 < n → 0 < m → (n * m).Coprime p → (∀ x, ∃ z, h (n * m) x = h n x + n • z) ∧ (n : ℤ) ∣ u (n * m) - u n) → (∀ n, 0 < n → n.Coprime p → IsCoprime (u n) (n : ℤ) ∧ ∀ x y, (n : ℤ) ∣ D.EF (h n x) (h n y) - c * u n * D.EF x y) → (∀ n, 0 < n → n.Coprime p → ∀ x, ∃ y z, h n y = k • x + n • z) → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∀ g₁ ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, ∀ g₂ ∈ GlobalTheory.UPel.HT.HeckeAd.heckeSubA o (h (N * k)) N, ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (β : R →+* K), x ≫ s = spMap β → ∀ v : Γ((Over.mk x).left, ⊤)ˣ, Out.WeilIs (G2 o.A) (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) 1 (toUnit (Over.mk x) ≫ (lift g₁ 1 : 𝟙_ (Over S) ⟶ G2 o.A)) (toUnit (Over.mk x) ≫ (lift 1 g₂ : 𝟙_ (Over S) ⟶ G2 o.A)) v → v = 1 := by
 
   intro p _ D R _ b h u c k N hc hk hN hNp hck _hlin hcomp hsim _hsurj S s o g₁ hg₁ g₂ hg₂ K _ _ x β hx v hv

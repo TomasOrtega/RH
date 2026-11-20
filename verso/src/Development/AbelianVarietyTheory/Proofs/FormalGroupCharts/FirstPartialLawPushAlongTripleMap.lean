@@ -23,6 +23,11 @@ def isoVal (ψ : Z ⟶ X') : (Z.presheaf.stalk z)ˣ :=
 
 variable {w z J J'}
 
+/- English proof (translation)
+Establish `h1 : r z ∈ LB.wchart (L.pull F) φ fun k _ => J ((r ≫ φ k) ≫ F)` using `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => hJ ((r ≫ φ k) ≫ F)`. Establish `hm : r z ∈ LB.wchart (L.pull F) φ (fun k _ => J ((r ≫ φ k) ≫ F)) ⊓ LB.wchart L' φ (fun k => J' (r ≫ φ k))` using `⟨h1, hJ'.mem φ r⟩`. Use `(gm_res r z _ hm _).symm.trans ((congrArg (gm r z _) (h (fun k _ => J ((r ≫ φ k) ≫ F), fun k => J' (r ≫ φ k)))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res r z _ hm _))))` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun a _ => (map_zpow _ _ _).trans (congrArg (· ^ ε a) ?_))` and prove the remaining obligations. Establish `ha : (φ a) (r z) ∈ (L.pull F).U (fun _ => J ((r ≫ φ a) ≫ F)) ⊓ L'.U (J' (r ≫ φ a))` using `⟨LB.wchart_le (L.pull F) φ _ a hm.1, LB.wchart_le L' φ _ a hm.2⟩`.
+
+Conclude with `(gm_res r z _ hm _).trans (gm_pull r (φ a) z _ ha _)`.
+-/
 theorem val_maps (hJ : Good L z J) (hJ' : Good L' z J') {K : Type} [Fintype K] {φ : K → (Y ⟶ X')} {ε : K → ℤ}
     {g : LB.Gen (LB.LinComb L' φ ε)} {b : LB.Gen (LB.LinComb (L.pull F) φ ε)}
     (h : LB.Gen.Maps (LB.linCombIso w φ ε) g b) (r : Z ⟶ Y) :
@@ -40,6 +45,9 @@ theorem val_maps (hJ : Good L z J) (hJ' : Good L' z J') {K : Type} [Fintype K] {
     ⟨LB.wchart_le (L.pull F) φ _ a hm.1, LB.wchart_le L' φ _ a hm.2⟩
   exact (gm_res r z _ hm _).trans (gm_pull r (φ a) z _ ha _)
 
+/- English proof (translation)
+Use `Eq.trans ?_ (val_maps hJ hJ' h r)` and prove the remaining obligations. Rewrite using `[val_of g' r z J (fun k => J ((r ≫ φ k) ≫ F)) (fun k => by rw [Category.assoc])]`. Establish `h1 : r z ∈ LB.wchart (L.pull F) φ fun k _ => J ((r ≫ φ k) ≫ F)` using `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => hJ ((r ≫ φ k) ≫ F)`. Conclude with `(gm_res r z _ h1 _).symm`.
+-/
 theorem val_carries (hJ : Good L z J) (hJ' : Good L' z J') {K : Type} [Fintype K] {φ : K → (Y ⟶ X')} {ε : K → ℤ}
     {g : LB.Gen (LB.LinComb L' φ ε)} {g' : LB.Gen (LB.LinComb L (fun k => φ k ≫ F) ε)}
     (h : Carries L F w φ ε g g') (r : Z ⟶ Y) :
@@ -55,6 +63,11 @@ end Val
 section Cube
 variable {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Use `Eq.trans ?_ (val_maps hJ hJ' h r)` and prove the remaining obligations. Establish `e : ∀ k : thK, (r ≫ m.F3) ≫ thφ G (x3 G) k = (r ≫ thφ G' (x3 G') k) ≫ m.F` using `fun k => by`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg (r ≫ ·) (m.psum_comm k.down).symm`. Use `(val_of (φ := thφ G (x3 G)) (ε := thε) c (r ≫ m.F3) z J (fun k => J ((r ≫ thφ G' (x3 G') k) ≫ m.F)) (fun k => by rw [e])).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : r z ∈ LB.wchart (L.pull m.F) (thφ G' (x3 G')) fun k _ => J ((r ≫ thφ G' (x3 G') k) ≫ m.F)` using `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => hJ ((r ≫ thφ G' (x3 G') k) ≫ m.F)`. Conclude with `((gm_res r z _ h1 _).trans (gm_pull r m.F3 z _ (m.theta_le L _ h1) _)).symm`.
+-/
 theorem val_theta (m : CubeMap G' G) {L : LB G.left} {L' : LB G'.left} {w : LB.Iso L' (L.pull m.F)}
     {c : LB.Gen (Theta G L)} {c' : LB.Gen (Theta G' L')}
     (h : LB.Gen.Maps (LB.linCombIso w (thφ G' (x3 G')) thε) c' (m.thetaPull L c))
@@ -74,6 +87,17 @@ theorem val_theta (m : CubeMap G' G) {L : LB G.left} {L' : LB G'.left} {w : LB.I
 
 end Cube
 
+/- English proof (translation)
+Establish `k : ∀ i : Fin 3, (x3 G' i).left ≫ m.F = m.F3 ≫ (x3 G i).left` using `fun i => by`. Establish `e` using `m.psum_comm {i}`. Apply the tactic sequence `have p : psum G (x3 G) {i} = x3 G i * 1 := by fin_cases i <;> rfl`. Apply the tactic sequence `have p' : psum G' (x3 G') {i} = x3 G' i * 1 := by fin_cases i <;> rfl`. Rewrite `e` using `[p, p', _root_.mul_one, _root_.mul_one]`. Then use the resulting hypothesis.
+
+Apply the tactic sequence `have la : ∀ i : Fin 3, lift (a 0) (lift (a 1) (a 2)) ≫ x3 G' i = a i := fun i => by fin_cases i <;> simp [x3]`. Establish `k' : ∀ i : Fin 3, ((lift (a 0) (lift (a 1) (a 2))).left ≫ m.F3) ≫ (x3 G i).left = (b i).left` using `fun i => by`. Rewrite using `[Category.assoc, ← k, ← Category.assoc, ← Over.comp_left, la, h]`. Set `q : T ⟶ G3 G` to `Over.homMk ((lift (a 0) (lift (a 1) (a 2))).left ≫ m.F3) (by`. Rewrite using `[← Over.w (x3 G 0), ← Category.assoc, k', Over.w])`.
+
+Establish `hq : ∀ i : Fin 3, q ≫ x3 G i = b i` using `fun i => Over.OverMorphism.ext (k' i)`. Establish `: lift (b 0) (lift (b 1) (b 2)) = q`. Use `CartesianMonoidalCategory.hom_ext _ _ ((lift_fst _ _).trans (hq 0).symm) ?_` and prove the remaining obligations. Rewrite using `[lift_snd]`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[lift_fst, Category.assoc]`. Conclude with `(hq 1).symm`. Rewrite using `[lift_snd, Category.assoc]`. Conclude with `(hq 2).symm`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem lift_cubeMap {S : Scheme.{0}} {G' G T : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G]
     (m : CubeMap G' G) (a : Fin 3 → (T ⟶ G')) (b : Fin 3 → (T ⟶ G)) (h : ∀ i, (b i).left = (a i).left ≫ m.F) :
     (lift (b 0) (lift (b 1) (b 2))).left = (lift (a 0) (lift (a 1) (a 2))).left ≫ m.F3 := by
@@ -98,6 +122,9 @@ theorem lift_cubeMap {S : Scheme.{0}} {G' G T : Over S} [GrpObj G'] [IsCommMonOb
   rw [this]
   rfl
 
+/- English proof (translation)
+Simplify using `only [mul_inv]`. The two sides agree by associativity and commutativity.
+-/
 theorem rearrange {U : Type} [CommGroup U] (a b c u p q r : U) :
     a * (b⁻¹ * c⁻¹) * (u * (p * (q⁻¹ * r⁻¹))) = u * (a * p * ((b * q)⁻¹ * (c * r)⁻¹)) := by
   simp only [mul_inv]
@@ -105,6 +132,9 @@ theorem rearrange {U : Type} [CommGroup U] (a b c u p q r : U) :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) c) rfl)`.
+-/
 theorem val_scaleG {X0 : Scheme.{0}} (t : SAB H X0) {Y Z : Scheme.{0}} {K : Type} [Fintype K]
     {φ : K → (Y ⟶ t.G.left)} {ε : K → ℤ}
     {z : Z} {J : (Z ⟶ t.G.left) → t.PP.L.ι} (hJ : Good t.PP.L z J) (c : Γ(Y, ⊤)ˣ)
@@ -114,6 +144,15 @@ theorem val_scaleG {X0 : Scheme.{0}} (t : SAB H X0) {Y Z : Scheme.{0}} {K : Type
 
 open GlobalTheory.SecondPartialLaw in
 
+/- English proof (translation)
+Establish `hP' : ∀ (φ : Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) S) (a b : jOG x0 d m 3 ⟶ t.G), Formalism.L2.Pj.homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => φ 0 p.2)) ≫ x m = a → Formalism.L2.Pj.homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => φ 1 p.2)) ≫ x m = b → P φ = h (1 : jOG x0 …`. Introduce and unpack `φ _ _ rfl rfl`. Rewrite using `[← pt_sub m φ 0, ← pt_sub m φ 1]`. Establish `e1` using `Finset.prod_congr (s₁ := Finset.univ) rfl fun (k : ULift.{0} (Finset (Fin 2))) _ => congrArg (fun q => h q ^ cε 2 k) (pe_pt (t := t) (x := x) m (jetSubstP m fun p : Fin 2 × Fin d => φ p.1 p.2) k)`. Establish `e2` using `prod_cube2_swap (fun p : jOG x0 d m 3 ⟶ t.G => h p.left) ![Formalism.L2.Pj.homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ p.1 p.2) ≫ jptG t x0 d x m (0 : Fin 2), Formalism.L2.Pj.homAt x0 (jetSubstP m fun p : Fin 2 × Fin d => φ p.1 p.2) ≫ jptG t x0 d x m (1 : Fin 2)]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, _root_.mul_one] at e2`. Conclude with `(hP φ).trans (e1.trans e2)`. Rewrite using `[hP' ![fun j => psIn d m ![0, 1] (F j), fun j => MvPolynomial.X ((2 : Fin 3), j)] _ _ (pt_law hch m ![0, 1]) (pt_X m 2), hP' ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomial.X ((2 : Fin 3), j)] _ _ (pt_X m 0) (pt_X m 2), hP' ![fun j => MvPolynomial.X ((1 : Fin 3) …`. Use `(Finset.prod_congr rfl fun k _ => congrArg (fun q => h q ^ thε k) (th_pt _ _ _ k)).trans ((prod_cube3 t.G (fun p : jOG x0 d m 3 ⟶ t.G => h p.left) _).trans ?_)` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, _root_.mul_one]`.
+
+Generalize the expression as in `jptG t x0 d x m (0 : Fin 3) = a`. Generalize the expression as in `jptG t x0 d x m (1 : Fin 3) = b`. Generalize the expression as in `jptG t x0 d x m (2 : Fin 3) = c`. Rewrite using `[_root_.mul_comm c (a * b), _root_.mul_comm c a, _root_.mul_comm c b, _root_.mul_assoc a b c]`. Apply `ofMul_eq` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem formal_sum {X0 : Scheme.{0}} {t : SAB H X0} {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {d : ℕ}
     {x : ∀ m, jOG x0 d m 1 ⟶ t.G} {F : Fin d → MvPowerSeries (Fin 2 × Fin d) S}
     {act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S} {κ : Type} [Fintype κ]
@@ -161,6 +200,13 @@ namespace GlobalTheory
 
 open PushFirstLaw
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ t t' n w d x x' e e' hw hx _ hp F act κ _ tg uv ph hch h m`. Take `⟨u, hu, hcor⟩` from `h m`. Take `⟨-, c, -, hc, hcar⟩` from `hp m`. Use `⟨u, hu, corr_of_val t'.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ', -⟩` from `exists_good t.PP.L t.PP.isLB y (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`.
+
+Establish `k` using `val_corr hJ' hcor (𝟙 _)`. Establish `hpe : ∀ φ : Fin 2 → Fin d → MvPolynomial (Fin 3 × Fin d) V, val (peG t' (𝟙 (Sp V)) d x' e' m φ) (𝟙 _) y J = (∏ k, isoVal w y J J' ((Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetSubstP m fun p : Fin 2 × Fin d => φ p.1 p.2)).left ≫ cφG t ![jptG t (𝟙 (Sp V)) d x m (0 : Fin 2), jptG t (𝟙 (Sp …` using `fun φ => by`. Use `(val_pull hJ _ _ _).trans ((val_corr hJ hc _).symm.trans ((val_carries hJ hJ' hcar _).trans (congrArg₂ (· * ·) ?_ (val_pull hJ' _ _ _).symm)))` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Establish `hl` using `lift_cubeMap n.cm (fun i => jptG t (𝟙 (Sp V)) d x m i) (fun i => jptG t' (𝟙 (Sp V)) d x' m i) (fun i => by`.
+
+Simplify using `only [jptG, Over.comp_left, hx m, Category.assoc])`. Establish `hs` using `formal_sum hch m (isoVal w y J J') _ (fun _ => rfl)`. Establish `k2` using `(val_pull hJ' _ _ _).symm.trans (k.trans ((val_scaleG t hJ' _ _ _).trans (congrArg (_ * ·) ((val_mul hJ' _ _ _).trans (congrArg (_ * ·) ((val_mul hJ' _ _ _).trans (congrArg₂ (· * ·) (val_inv _ _) (val_inv _ _))))))))`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_scaleG t' hJ _ _ _).trans (congrArg (_ * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (hpe _) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_inv _ _).trans (congrArg (·⁻¹) (hpe _))) ((val_inv _ _).trans (congrArg (·⁻¹) (hpe _))) …` and prove the remaining obligations. Use `(congrArg (fun r => val (φ := thφ t'.G (x3 t'.G)) (ε := thε) t'.cub.t r y J) ((Category.id_comp _).trans hl)).trans ((val_theta n.cm hw.2 hJ hJ' _).trans ((congrArg₂ (· * ·) hs ((congrArg (fun r => val (φ := thφ t.G (x3 t.G)) (ε := thε) t.cub.t r y J') (Category.id_comp _)).symm. …` and prove the remaining obligations.
+-/
 theorem famPh1_push : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] (t t' : SAB H (Sp V)) (n : SABMap t t' (𝟙 (Sp V))) (w : LB.Iso t.PP.L (t'.PP.L.pull n.φ)) (d : ℕ) (x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t'.G) (e : ∀ m, FrTyG t (𝟙 (Sp V)) d x m) (e' : ∀ m, FrTyG t' (𝟙 (Sp V)) d x' m), CubIso n w → (∀ m, (x' m).left = (x m).left ≫ n.φ) → (∀ m, (e m).IsGen) → PushFr n w x x' e e' → ∀ (F : Fin d → PS V 2 d) (act : 𝓞 E → Fin d → PS V 1 d) (κ : Type) [Fintype κ] (tg : κ → (Sp (DualNumber V) ⟶ t.G.left)) (uv : κ → Fin d → V) (ph : PS V 3 d), IsChartG t (𝟙 (Sp V)) d F act tg uv x → FamPh1 t (𝟙 (Sp V)) d x F ph e → FamPh1 t' (𝟙 (Sp V)) d x' F ph e' := by
   intro E _ _ _ H V _ t t' n w d x x' e e' hw hx _ hp F act κ _ tg uv ph hch h m
   obtain ⟨u, hu, hcor⟩ := h m

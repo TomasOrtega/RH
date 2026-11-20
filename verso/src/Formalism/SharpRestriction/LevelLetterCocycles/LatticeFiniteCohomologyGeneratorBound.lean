@@ -13,6 +13,19 @@ section PID
 variable {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
   {Q : Type} [AddCommGroup Q] [Module O Q]
 
+/- English proof (translation)
+Set `φ : (↥s → O) →ₗ[O] Q` to `Fintype.linearCombination O (fun x : ↥s => (x : Q))`. Establish `hrange : LinearMap.range φ = Submodule.span O (↑s : Set Q)`. Rewrite using `[Fintype.range_linearCombination]`. Simplify using the standard rewrite rules. Set `N' : Submodule O (↥s → O)` to `N.comap φ`.
+
+Take `⟨k, bN⟩` from `Submodule.basisOfPid (Pi.basisFun O ↥s) N'`. Establish `hk : k ≤ s.card`. Establish `hli : LinearIndependent O (fun i => (bN i : ↥s → O))` using `bN.linearIndependent.map' N'.subtype (Submodule.ker_subtype N')`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify `this` using `[Module.finrank_fintype_fun_eq_card]`.
+
+Use `⟨Finset.univ.image (fun i : Fin k => φ (bN i)), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.card_image_le.trans (by simpa using hk)`. Introduce `y hy`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range] at hy`. Take `⟨i, rfl⟩` from `hy`.
+
+Conclude with `(bN i).2`. Introduce `y hy`. Take `⟨x, hx⟩ : y ∈ LinearMap.range φ` from `by rw [hrange]; exact hN hy`. Establish `hxN : x ∈ N'` using `by show φ x ∈ N; rw [hx]; exact hy`. Establish `key : (φ.comp N'.subtype) ⟨x, hxN⟩ ∈ Submodule.span O (Set.range fun i => φ (bN i))`.
+
+Establish `e : (Set.range fun i => φ (bN i)) = (φ.comp N'.subtype) '' Set.range bN`. Use extensionality with `z`. Simplify using `[Set.mem_range]`. Rewrite using `[e, Submodule.span_image, bN.span_eq, Submodule.map_top]`. Conclude with `LinearMap.mem_range_self _ _`.
+
+Rewrite using `[← hx]`. Simplify `key` using `[Finset.coe_image]`.
+-/
 theorem exists_gen_of_le_span (s : Finset Q) (N : Submodule O Q)
     (hN : N ≤ Submodule.span O (↑s : Set Q)) :
     ∃ t : Finset Q, t.card ≤ s.card ∧ (↑t : Set Q) ⊆ N ∧ N ≤ Submodule.span O (↑t : Set Q) := by
@@ -48,6 +61,17 @@ theorem exists_gen_of_le_span (s : Finset Q) (N : Submodule O Q)
 
 variable {M : Type} [AddCommGroup M] [Module O M]
 
+/- English proof (translation)
+Take `⟨t', ht'c, ht'sub, ht'span⟩` from `exists_gen_of_le_span s (LinearMap.range ob) (by rw [hQ]; exact le_top)`. Establish `hpre : ∀ q ∈ t', ∃ x : ↥B, ob x = q` using `fun q hq => ht'sub hq`. Use `choose! pre hpre' using hpre`. Use `⟨t'.image (fun q => (pre q : M)), Finset.card_image_le.trans (ht'c.trans hs), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Simplify using `only [Finset.coe_image, Set.mem_image] at hy`. Take `⟨q, hq, rfl⟩` from `hy`. Conclude with `(pre q).2`. Introduce `y hyB`. Establish `hq : ob ⟨y, hyB⟩ ∈ Submodule.span O (↑t' : Set Q)` using `ht'span (LinearMap.mem_range_self _ _)`.
+
+Rewrite `hq` using `[Submodule.mem_span_finset]`. Take `⟨c, -, hc⟩` from `hq`. Set `z : ↥B` to `∑ q ∈ t', c q • pre q`. Establish `hz : ob z = ob ⟨y, hyB⟩`. Rewrite using `[← hc, map_sum]`.
+
+Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hpre' q hq]`. Rewrite using `[Submodule.mem_sup]`. Use `⟨(z : M), ?_, y - (z : M), ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`.
+
+Use `Submodule.sum_mem _ fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp only [Finset.coe_image, Set.mem_image]; exact ⟨q, hq, rfl⟩))`. Establish `h0 : ob (⟨y, hyB⟩ - z) = 0` using `by rw [map_sub, hz, sub_self]`. Conclude with `(hker _).1 h0`.
+-/
 theorem gen_step_of_ker (A B : Submodule O M) (ob : ↥B →ₗ[O] Q)
     (hker : ∀ x : ↥B, ob x = 0 ↔ (x : M) ∈ A) (m : ℕ) (s : Finset Q) (hs : s.card ≤ m)
     (hQ : Submodule.span O (↑s : Set Q) = ⊤) :
@@ -79,6 +103,9 @@ theorem gen_step_of_ker (A B : Submodule O M) (ob : ↥B →ₗ[O] Q)
     · have h0 : ob (⟨y, hyB⟩ - z) = 0 := by rw [map_sub, hz, sub_self]
       exact (hker _).1 h0
 
+/- English proof (translation)
+Establish `hle : LinearMap.ker ob ≤ (A ⊔ P).comap B.subtype` using `fun x hx => Submodule.mem_comap.2 (Submodule.mem_sup_left (hker x (LinearMap.mem_ker.1 hx)))`. Establish `h1 : Module.length O (↥B ⧸ (A ⊔ P).comap B.subtype) ≤ Module.length O (↥B ⧸ LinearMap.ker ob)` using `Module.length_le_of_surjective (Submodule.factor hle) (Submodule.factor_surjective hle)`. Establish `h2 : Module.length O (↥B ⧸ LinearMap.ker ob) ≤ Module.length O Q` using `Module.length_le_of_injective ((LinearMap.range ob).subtype.comp ob.quotKerEquivRange.toLinearMap) ((Submodule.injective_subtype _).comp ob.quotKerEquivRange.injective)`. Conclude with `h1.trans h2`.
+-/
 theorem len_step_of_ker (A B P : Submodule O M) (ob : ↥B →ₗ[O] Q)
     (hker : ∀ x : ↥B, ob x = 0 → (x : M) ∈ A) :
     Module.length O (↥B ⧸ (A ⊔ P).comap B.subtype) ≤ Module.length O Q := by
@@ -116,6 +143,13 @@ def KerChain (PD : PeriodData G Qp K₀ K B BdR) {T₁ T₂ : LocLat G Qp LL O} 
           (L : ℝ) ≤ c * kO)) ∧
     ∀ x ∈ Fl k, ((PD.p : O) ^ e) • (g x : G → T₂.V) ∈ F.ImF PD
 
+/- English proof (translation)
+Take `⟨k, Fl, gen, hgc, hk, h0, hgen, hstep, hlast⟩` from `h`. Use `⟨FF, inferInstance, inferInstance, inferInstance, inferInstance, g, k, Fl, gen, hg, hr, hgc, hk, h0, fun i hi => (hstep i hi).1, hgen, ?_, ?_, hlast⟩` and prove the remaining obligations. Introduce `i hi`. Establish `hik : i < k` using `Finset.mem_range.1 (hgen hi)`. Take `⟨-, Q, _, _, ob, hker, hG, -⟩` from `hstep i hik`.
+
+Take `⟨s, hs, hspan⟩` from `hG hi`. Conclude with `gen_step_of_ker (Fl (i + 1)) (Fl i) ob hker m s hs hspan`. Introduce `i hik hi`. Take `⟨-, Q, _, _, ob, hker, -, hL⟩` from `hstep i hik`. Take `⟨L, kO, hlen, hkO, hLc⟩` from `hL hi`.
+
+Conclude with `⟨L, kO, (len_step_of_ker (Fl (i + 1)) (Fl i) (preIm PD F g) ob (fun x hx => (hker x).1 hx)).trans hlen, hkO, hLc⟩`.
+-/
 theorem lengthCount_of_kerChain [IsDomain O] [IsPrincipalIdealRing O] {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (FF : Type) [AddCommGroup FF] [Module O FF] [Module.Free O FF]
     [Module.Finite O FF] (g : FF →ₗ[O] ↥(latticeFiniteCocycles PD T₂.L))
@@ -136,6 +170,17 @@ theorem lengthCount_of_kerChain [IsDomain O] [IsPrincipalIdealRing O] {T₁ T₂
     exact ⟨L, kO, (len_step_of_ker (Fl (i + 1)) (Fl i) (preIm PD F g) ob (fun x hx => (hker x).1 hx)).trans hlen,
       hkO, hLc⟩
 
+/- English proof (translation)
+Establish `hmem : ∀ σ ∈ s, σ ∈ latticeFiniteCohomology PD T.L` using `fun σ hσ => hs ▸ Submodule.subset_span hσ`. Establish `hle : latticeFiniteCocycles PD T.L ≤ latticeCocycles T.L` using `inf_le_left`. Set `incl` to `Submodule.inclusion hle`. Set `cls : ↥(latticeFiniteCocycles PD T.L) →ₗ[O] LatticeCohomology T.L` to `((latticeCoboundaries T.L).comap (latticeCocycles T.L).subtype).mkQ.comp incl`. Establish `hrep : ∀ σ : ↥s, ∃ w : ↥(latticeFiniteCocycles PD T.L), cls w = σ`.
+
+Introduce `σ`. Take `⟨y, hy, hyσ⟩` from `Submodule.mem_map.1 (hmem σ σ.2)`. Conclude with `⟨⟨y, hy⟩, by rw [← hyσ]; rfl⟩`. Use `choose rep hrep using hrep`. Use `⟨Fintype.linearCombination O rep, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : cls z ∈ Submodule.span O (↑s : Set (LatticeCohomology T.L))`. Rewrite using `[hs]`. Conclude with `Submodule.mem_map.2 ⟨incl z, z.2, rfl⟩`. Rewrite `hz` using `[Submodule.mem_span_finset']`. Take `⟨c, hc⟩` from `hz`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hcls : cls (Fintype.linearCombination O rep c) = cls z`. Rewrite using `[Fintype.linearCombination_apply, map_sum, ← hc]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hrep]`.
+
+Establish `h0 : cls (z - Fintype.linearCombination O rep c) = 0` using `by rw [map_sub, hcls, sub_self]`. Establish `h1 : incl (z - Fintype.linearCombination O rep c) ∈ (latticeCoboundaries T.L).comap (latticeCocycles T.L).subtype` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Conclude with `h1`.
+-/
 theorem cover_of_gen (T : LocLat G Qp LL O) (s : Finset (LatticeCohomology T.L))
     (hs : Submodule.span O (↑s : Set (LatticeCohomology T.L)) = latticeFiniteCohomology PD T.L) :
     ∃ g : (↥s → O) →ₗ[O] ↥(latticeFiniteCocycles PD T.L),
@@ -172,6 +217,9 @@ def LatticeFiniteCohomologyGeneratorBound [NeZero n] (W : LocWach PD LL O v n) :
       ∃ s : Finset (LatticeCohomology T₂.L), Submodule.span O (↑s : Set (LatticeCohomology T₂.L)) = latticeFiniteCohomology PD T₂.L ∧
         s.card ≤ (n + 1) * finrank LL T₂.V
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset`. Take `⟨s, hs, hcard⟩` from `h hset.1.1 T₂ hset.2.2.2.2.2.1.2.1`. Conclude with `⟨s, hs, by rw [W.n_eq]; exact hcard⟩`.
+-/
 theorem generator_lemma_of_count [NeZero n] (W : LocWach PD LL O v n) (h : Formalism.MainNotions.LocalTheoryWindows.H1fGeneratorBound PD LL O) :
     LatticeFiniteCohomologyGeneratorBound W := by
   intro d T₁ T₂ F b S η m hset
@@ -199,6 +247,41 @@ def LocalLiftingConditions [NeZero n] (W : LocWach PD LL O v n) : Prop :=
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨a, b, s₁, E, e₂, hb, ha, hs₁, hEb, he₂, he₀⟩` from `hE`. Establish `hl' : (11 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hd : 0 < (l : ℝ) - 1` using `by linarith`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = 1 / ((l : ℝ) - 1)` from `⟨_, rfl⟩`. Establish `ht0 : 0 < t` using `by rw [ht]; positivity`.
+
+Establish `ht1 : t ≤ 1 / 10` using `by rw [ht, div_le_div_iff₀ hd (by norm_num)]; linarith`. Take `⟨Hr, hHr⟩ : ∃ Hr : ℝ, Hr = ((h + η : ℕ) : ℝ)` from `⟨_, rfl⟩`. Establish `hH0 : 0 ≤ Hr` using `by rw [hHr]; positivity`. Establish `hhH : (h : ℝ) ≤ Hr` using `by rw [hHr]; push_cast; linarith [(Nat.cast_nonneg η : (0 : ℝ) ≤ η)]`. Establish `hlam : 1 ≤ lam l (h + η)`.
+
+Unfold `lam`. Break down `Nat.eq_zero_or_pos (h + η) with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `h1 : (1 : ℝ) ≤ 2 * ((h + η : ℕ) : ℝ)`.
+
+Establish `: (1 : ℝ) ≤ ((h + η : ℕ) : ℝ)` using `by exact_mod_cast h0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.logb_nonneg (by linarith : (1 : ℝ) < l) h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `haR : aR l (h + η) = 2 * (Hr * t) + Hr * t ^ 2 + 3 + lam l (h + η)`.
+
+Unfold `aR`. Rewrite using `[ht, hHr]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsig2 : Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ l (h + η) = 2 * (Hr * t ^ 2) + 1`.
+
+Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂`. Rewrite using `[ht, hHr]`. Clear the denominators using the available nonvanishing facts. Establish `hsig : Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig l h η ≤ h * t ^ 2 + t + η * t + 1`. Unfold `Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig`.
+
+Establish `hc : ((l - 1 : ℕ) : ℝ) = (l : ℝ) - 1` using `by rw [Nat.cast_sub (by omega)]; simp`. Establish `hq : (((h / (l - 1) + 1 : ℕ)) : ℝ) ≤ h * t + 1`. Establish `h1` using `Nat.cast_div_le (α := ℝ) (m := h) (n := l - 1)`. Rewrite `h1` using `[hc]`. Establish `e : (h : ℝ) / ((l : ℝ) - 1) = h * t` using `by rw [ht]; ring`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : ((((h / (l - 1) + 1 : ℕ)) : ℝ) + η) / ((l : ℝ) - 1) = ((((h / (l - 1) + 1 : ℕ)) : ℝ) + η) * t` using `by rw [ht]; ring`. Rewrite using `[e2]`. Establish `h3` using `mul_le_mul_of_nonneg_right hq ht0.le`.
+
+Establish `e3 : ((((h / (l - 1) + 1 : ℕ)) : ℝ) + η) * t + 1 = (((h / (l - 1) + 1 : ℕ)) : ℝ) * t + η * t + 1` using `by ring`. Establish `e4 : ((h : ℝ) * t + 1) * t = h * t ^ 2 + t` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbt : (b : ℝ) / ((l : ℝ) * ((l : ℝ) - 1)) ≤ h * t ^ 2`. Establish `hb' : (b : ℝ) ≤ h` using `by exact_mod_cast hb`.
+
+Establish `e : (h : ℝ) * t ^ 2 = (h : ℝ) / (((l : ℝ) - 1) * ((l : ℝ) - 1))` using `by rw [ht]; field_simp`. Rewrite using `[e]`. Conclude with `div_le_div₀ (by positivity) hb' (by positivity) (mul_le_mul_of_nonneg_right (by linarith) hd.le)`. Establish `hl2 : Hr * t ^ 2 ≤ 121 / 100 * (Hr / (l : ℝ) ^ 2)`. Establish `h1 : (l : ℝ) ≤ 11 / 10 * ((l : ℝ) - 1)` using `by linarith`.
+
+Establish `h2 : t ^ 2 ≤ 121 / 100 / (l : ℝ) ^ 2`. Rewrite using `[ht, div_pow, one_pow, div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `h3` using `mul_le_mul h1 h1 (by positivity) (by positivity)`. Establish `e5 : (11 / 10 * ((l : ℝ) - 1)) * (11 / 10 * ((l : ℝ) - 1)) = 121 / 100 * ((l : ℝ) - 1) ^ 2` using `by ring`. Establish `e6 : (1 : ℝ) * (l : ℝ) ^ 2 = (l : ℝ) * (l : ℝ)` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : (2 * (a : ℝ) + 2 * (η : ℝ) + (S : ℝ)) / ((l : ℝ) - 1) = 2 * (a * t) + 2 * (η * t) + S * t`. Rewrite using `[ht]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : (3 * (a : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((l : ℝ) - 1) = 3 * (a * t) + S * t + 2 * (η * t)`. Rewrite using `[ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hs₁` using `[e1]`. Rewrite `hEb` using `[e2]`.
+
+Establish `hat : (a : ℝ) * t ≤ 2 * (Hr * t ^ 2) + Hr * t ^ 3 + 4 * t + lam l (h + η) * t`. Use `mul_le_mul_of_nonneg_right ha ht0.le` as an intermediate fact. Rewrite `this` using `[haR]`. Combine the equalities or inequalities in the displayed calculation. Establish `hHl : 0 ≤ Hr / (l : ℝ) ^ 2` using `by positivity`.
+
+Establish `hηt : 0 ≤ (η : ℝ) * t` using `by positivity`. Establish `hS0 : (0 : ℝ) ≤ S` using `by positivity`. Establish `hht : (h : ℝ) * t ^ 2 ≤ Hr * t ^ 2` using `mul_le_mul_of_nonneg_right hhH (by positivity)`. Establish `ht3 : Hr * t ^ 3 ≤ 1 / 10 * (Hr * t ^ 2)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hlt : lam l (h + η) * t ≤ lam l (h + η) / 10`. Combine the equalities or inequalities in the displayed calculation. Establish `hSt : (S : ℝ) * t ≤ S / 10`. Combine the equalities or inequalities in the displayed calculation. Unfold `eBd`.
+
+Rewrite `he₂`, `he₀` using `[hsig2]`. Establish `e3 : 10 * (η : ℝ) / ((l : ℝ) - 1) = 10 * (η * t)` using `by rw [ht]; ring`. Establish `e4 : 32 * ((h + η : ℕ) : ℝ) / (l : ℝ) ^ 2 = 32 * (Hr / (l : ℝ) ^ 2)` using `by rw [hHr]; ring`. Rewrite using `[e3, e4]`. Combine the linear relations using `[hsig, hbt, hat, hl2, hlam]`.
+-/
 private lemma e0_le_eBd_of_ExpC {l h η S e₀ : ℕ} (hl : 11 ≤ l) (hE : ExpC l h η S e₀) :
     (e₀ : ℝ) ≤ eBd 32 4 10 25 l (h + η) S η := by
   obtain ⟨a, b, s₁, E, e₂, hb, ha, hs₁, hEb, he₂, he₀⟩ := hE
@@ -291,6 +374,11 @@ private lemma e0_le_eBd_of_ExpC {l h η S e₀ : ℕ} (hl : 11 ≤ l) (hE : ExpC
   rw [e3, e4]
   linarith [hsig, hbt, hat, hl2, hlam]
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset _`. Take `⟨e₀, hE, hK, hL0⟩` from `hS d T₁ T₂ F b S η m hset`. Take `⟨s, hs, hcard⟩` from `hG d T₁ T₂ F b S η m hset`. Take `⟨g, hg⟩` from `cover_of_gen T₂ s hs`. Take `⟨hdomO, hdvr, -⟩` from `hset.2.2.2.1`.
+
+Use `haveI := hdomO`. Use `haveI := hdvr`. Use `⟨e₀, e0_le_eBd_of_ExpC hset.2.1 hE, lengthCount_of_kerChain F (↥s → O) g hg n (finrank LL T₂.V) m _ e₀ ?_ (hK (↥s → O) g hg), hL0⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_fintype_fun_eq_card, Fintype.card_coe]`. Conclude with `hcard`.
+-/
 theorem openC_of_steps [NeZero n] (W : LocWach PD LL O v n) (hG : LatticeFiniteCohomologyGeneratorBound W) (hS : LocalLiftingConditions W) :
     OpenC W (fun _ => True) 25 := by
   intro d T₁ T₂ F b S η m hset _
@@ -311,19 +399,31 @@ def localLiftingConditionsGlobal (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.l
   ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)
     [NeZero (Module.finrank ℚ_[l] ↥(Loc.K0 K))], LocalLiftingConditions ((HW l).W K 1 LL hg)
 
+/- English proof (translation)
+Introduce `l _ K LL hg _`. Conclude with `openC_of_steps _ (generator_lemma_of_count _ (hG l K LL)) (hS l K LL hg)`.
+-/
 theorem openKR_of_steps (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (hG : Formalism.MainNotions.LocalTheoryWindows.H1fGeneratorBoundAll D.loc) (hS : localLiftingConditionsGlobal D HW F) : openKR D HW F (fun _ => True) 25 := by
   intro l _ K LL hg _
   exact openC_of_steps _ (generator_lemma_of_count _ (hG l K LL)) (hS l K LL hg)
 
+/- English proof (translation)
+Conclude with `Theorem_C_of_open D HW F 25 CA CB CK h10 (openKR_of_steps D HW F hG hS)`.
+-/
 theorem theorem_of_lifting_steps (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (CA CB CK : ℝ)
     (h10 : adm10 D HW F CA CB CK) (hG : Formalism.MainNotions.LocalTheoryWindows.H1fGeneratorBoundAll D.loc) (hS : localLiftingConditionsGlobal D HW F) :
     aux₃ D HW F 25 := by
   exact Theorem_C_of_open D HW F 25 CA CB CK h10 (openKR_of_steps D HW F hG hS)
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem generator_count_iff (D : D7) : adm19 D ↔ Formalism.MainNotions.LocalTheoryWindows.H1fGeneratorBoundAll D.loc := by
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `hA`. Conclude with `theorem_of_lifting_steps D HW F CA CB CK hA.2.2.2.2.2.2.2.2.2.1 ((generator_count_iff D).1 hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2) (hS hA)`.
+-/
 theorem stmt_of_stepsAdm (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (CR CA CB CK : ℝ) (hS : admitted D HW F Cm CR CA CB CK → localLiftingConditionsGlobal D HW F) : Stmt D HW F Cm 25 CR CA CB CK := by
   intro hA

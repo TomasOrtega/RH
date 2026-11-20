@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 
 open Matrix UpperTheory.V.Weyl
 
+/- English proof (translation)
+Introduce `n N`. Express the relevant statement in the definitionally equal form `Module.finrank ℂ (MvPolynomial.restrictSupport ℂ {m : Fin n × Fin n →₀ ℕ | (m.sum fun _ e => e) ≤ N}) ≤ _`. Rewrite using `[Module.finrank_eq_nat_card_basis (MvPolynomial.basisRestrictSupport ℂ _)]`. Establish `key : ∀ m : {m : Fin n × Fin n →₀ ℕ | (m.sum fun _ e => e) ≤ N}, ∀ i, (m : Fin n × Fin n →₀ ℕ) i < N + 1`. Introduce `m i`.
+
+Establish `h1` using `Finsupp.le_degree i (m : Fin n × Fin n →₀ ℕ)`. Establish `h2 : Finsupp.degree (m : Fin n × Fin n →₀ ℕ) = (m : Fin n × Fin n →₀ ℕ).sum fun _ e => e` using `rfl`. Establish `h3` using `m.2`. Simplify using `only [Set.mem_setOf_eq] at h3`. Use linear arithmetic over natural numbers and integers.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i`. Use `congrArg Fin.val (congrFun h i)` as an intermediate fact.
+
+Simplify using `using this)`. Use `_ = (N + 1) ^ (n * n) := by`. Simplify using `[Nat.card_eq_fintype_card, Fintype.card_fun]`.
+-/
 theorem UpperTheory.V.Weyl.degRank :
     ∀ (n N : ℕ), Module.finrank ℂ (MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ N) ≤ (N + 1) ^ (n * n) := by
   intro n N

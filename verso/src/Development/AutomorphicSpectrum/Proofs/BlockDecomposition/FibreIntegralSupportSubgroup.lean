@@ -20,6 +20,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibOffQ
 
+/- English proof (translation)
+Unfold `smInt`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, smul_zero]`.
+
+Establish `hempty : φ ⁻¹' {v} = ∅`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Introduce `hx`. Conclude with `hv (hx.symm.trans (h x))`.
+
+Rewrite using `[hempty]`. Simplify using the standard rewrite rules.
+-/
 theorem smInt_zero_fun {X Z : Type} [MeasurableSpace X] [AddCommGroup Z] [Module ℂ Z]
     (μ : MeasureTheory.Measure X) (φ : X → Z) (h : ∀ x, φ x = 0) : smInt μ φ = 0 := by
   unfold smInt
@@ -35,6 +42,9 @@ theorem smInt_zero_fun {X Z : Type} [MeasurableSpace X] [AddCommGroup Z] [Module
     rw [hempty]
     simp
 
+/- English proof (translation)
+Take `⟨y', _, b', hb', hβe⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.mem_Bgrp.1 hβ`. Take `⟨x, q, hx⟩` from `GlobalTheory.T.parabolic_unipotent_levi_decomp k i t h`. Establish `e2 : uM k (i + t) y * levi k (i + t) g = uM k (i + t) (topV k i t x + ((q : GL (Fin (i + t)) k) : Matrix (Fin (i + t)) (Fin (i + t)) k).mulVec y') * levi k (i + t) ((q : GL (Fin (i + t)) k) * b')`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨q, b', hb', (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.uM_levi_inj _ e2).2⟩`.
+-/
 theorem mem_of_eq_mul (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (c : kˣ) (K₁ : Subgroup (GL (Fin (i + t)) k))
     (hK : K₁ ≤ GlobalTheory.SplitWeil.KO k (Fin (i + t))) (y : Fin (i + t) → k) (g : GL (Fin (i + t)) k)
@@ -52,6 +62,13 @@ theorem mem_of_eq_mul (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
       _ = _ := GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.uM_levi_mul_uM_levi _ _ _ _ _
   exact ⟨q, b', hb', (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.uM_levi_inj _ e2).2⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ _ μ c K₁ hK b hb g hg`. Establish `hz : ∀ v, fibV b g v = 0`. Introduce `v`. Assume the negation of the conclusion as `hne`. Establish `hex : ∃ h : HPG k i t, ∃ β ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK, uM k (i + t) (midV k i t v) * levi k (i + t) g = (h : Mir k (i + t)) * β`.
+
+Assume the negation of the conclusion as `hno`. Conclude with `hne (hb _ hno)`. Take `⟨h, β, hβ, e⟩` from `hex`. Conclude with `hg (mem_of_eq_mul k i t c K₁ hK _ g h β hβ e)`. Use `show clT τ W (smInt μ (fibV b g)) = 0`.
+
+Rewrite using `[smInt_zero_fun μ _ hz, map_zero]`.
+-/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W) [MeasurableSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) (c : kˣ) (K₁ : Subgroup (GL (Fin (i + t)) k)) (hK : K₁ ≤ GlobalTheory.SplitWeil.KO k (Fin (i + t))) (b : cIndSpace (HPG k i t) (hRep τ σ)), (∀ p : Mir k (i + t), (¬ ∃ h : HPG k i t, ∃ β ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK, p = (h : Mir k (i + t)) * β) → b.1.1.1 p = 0) → ∀ g : GL (Fin (i + t)) k, (¬ ∃ q : Qp k i t, ∃ b' ∈ K₁, g = (q : GL (Fin (i + t)) k) * b') → fibInt μ b g = 0 := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ _ μ c K₁ hK b hb g hg
   have hz : ∀ v, fibV b g v = 0 := by

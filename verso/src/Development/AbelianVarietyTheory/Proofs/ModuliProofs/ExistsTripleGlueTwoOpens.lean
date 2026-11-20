@@ -34,13 +34,22 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonOb
 def cub {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (c : Pic G.left) : Pic T.left :=
   ∑ I : ULift.{0} (Finset (Fin n)), ((-1 : ℤ) ^ (n - I.down.card)) • pull (psum G x I.down).left c
 
+/- English proof (translation)
+The claim follows from `cls_linComb hL _ _ h`.
+-/
 theorem cls_cubeLB {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) {L : LB G.left} (hL : L.IsLB)
     (h : (cubeLB G x L).IsLB) : cls (cubeLB G x L) h = cub x (cls L hL) :=
   cls_linComb hL _ _ h
 
+/- English proof (translation)
+The claim follows from `LB.isLB_linComb hL _ _`.
+-/
 theorem isLB_cubeLB {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) {L : LB G.left} (hL : L.IsLB) :
     (cubeLB G x L).IsLB := LB.isLB_linComb hL _ _
 
+/- English proof (translation)
+Unfold `cub`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left]`. Conclude with `congrArg (fun z : T' ⟶ G => _ • pull z.left c) (psum_hom (preHom U) x I.down)`.
+-/
 theorem pull_cub {T T' : Over S} {n : ℕ} (U : T' ⟶ T) (x : Fin n → (T ⟶ G)) (c : Pic G.left) :
     pull U.left (cub x c) = cub (fun i => U ≫ x i) c := by
   unfold cub
@@ -49,6 +58,9 @@ theorem pull_cub {T T' : Over S} {n : ℕ} (U : T' ⟶ T) (x : Fin n → (T ⟶ 
   rw [map_zsmul, ← pull_comp, ← Over.comp_left]
   exact congrArg (fun z : T' ⟶ G => _ • pull z.left c) (psum_hom (preHom U) x I.down)
 
+/- English proof (translation)
+Unfold `cub`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← psum_push h x' x U hx, pull_comp]`.
+-/
 theorem pull_cub_push (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ G'))
     (x : Fin n → (T ⟶ G)) (U : Over.mk (T'.hom ≫ f) ⟶ T) (hx : ∀ i, pushPt h.1.w (x' i) = U ≫ x i)
     (c : Pic G.left) : pull U.left (cub x c) = cub x' (pull φ c) := by
@@ -57,10 +69,18 @@ theorem pull_cub_push (h : IsGrpPullback G' G f φ) {T' : Over S'} {T : Over S} 
   refine Finset.sum_congr rfl fun I _ => ?_
   rw [map_zsmul, ← pull_comp, ← psum_push h x' x U hx, pull_comp]
 
+/- English proof (translation)
+Establish `: (1 : T ⟶ G).left = (toUnit T).left ≫ eSec G` using `rfl`. Rewrite using `[this, pull_comp, hc, map_zero]`.
+-/
 theorem pull_one {T : Over S} {c : Pic G.left} (hc : pull (eSec G) c = 0) : pull (1 : T ⟶ G).left c = 0 := by
   have : (1 : T ⟶ G).left = (toUnit T).left ≫ eSec G := rfl
   rw [this, pull_comp, hc, map_zero]
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Establish `e : psum G x I.down = 1`. Use `psum_hom (1 : (T ⟶ G) →* (T ⟶ G)) x I.down` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply]`. Conclude with `(congrArg (fun z => psum G z I.down) (funext hx)).trans this.symm`.
+
+Rewrite using `[e, pull_one hc, smul_zero]`.
+-/
 theorem cub_one {T : Over S} {n : ℕ} {x : Fin n → (T ⟶ G)} (hx : ∀ i, x i = 1) {c : Pic G.left}
     (hc : pull (eSec G) c = 0) : cub x c = 0 := by
   refine Finset.sum_eq_zero fun I _ => ?_
@@ -72,6 +92,11 @@ theorem cub_one {T : Over S} {n : ℕ} {x : Fin n → (T ⟶ G)} (hx : ∀ i, x 
 
 end Cube
 
+/- English proof (translation)
+Take `⟨N, hN, rfl⟩` from `cls_surj c`. Establish `he : e.left ≫ P.hom = 𝟙 X` using `Over.w e`. Use `(cls_eq_zero_iff hN).2 (GlobalTheory.RigidTriv.exists_gen_of_rigid X P e.left N he (GlobalTheory.eq_one_of_appLE_section_eq_one X P e.left he hs hg ⟨hr, hab⟩) hN ((cls_eq_zero_iff (pull_isLB hN _)).1 h₀) fun x => ?_)` and prove the remaining obligations. Establish `hx : x ∈ U ⊔ V` using `hUV ▸ trivial`. Break down `hx with hx | hx` into its components or cases.
+
+Conclude with `⟨U, hx, (cls_eq_zero_iff (pull_isLB hN _)).1 hU⟩`. Conclude with `⟨V, hx, (cls_eq_zero_iff (pull_isLB hN _)).1 hV⟩`.
+-/
 theorem eq_zero_of_cover {X : Scheme.{0}} (P : Over X) (e : 𝟙_ (Over X) ⟶ P) (hs : Smooth P.hom)
     (hg : GeometricallyIntegral P.hom) (hr : IsReduced X) (hab : genericPoints X ⊆ abLocus P) {U V : X.Opens}
     (hUV : U ⊔ V = ⊤) (c : Pic P.left) (h₀ : pull e.left c = 0) (hU : pull (P.hom ⁻¹ᵁ U).ι c = 0)
@@ -91,6 +116,9 @@ abbrev part {X : Scheme.{0}} (P : Over X) (W : X.Opens) : Over W.toScheme := Ove
 def partι {X : Scheme.{0}} (P : Over X) (W : X.Opens) : Over.mk ((part P W).hom ≫ W.ι) ⟶ P :=
   Over.homMk (P.hom ⁻¹ᵁ W).ι (morphismRestrict_ι P.hom W).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (h.lift (partι P W ≫ x).left (part P W).hom (Over.w _)) (h.lift_snd _ _ _), Over.OverMorphism.ext (h.lift_fst _ _ _)⟩`.
+-/
 theorem exists_lift {X : Scheme.{0}} {W : X.Opens} {G : Over X} {G' : Over W.toScheme} {ψ : G'.left ⟶ G.left}
     (h : IsPullback ψ G'.hom G.hom W.ι) {P : Over X} (x : P ⟶ G) :
     ∃ x' : part P W ⟶ G', pushPt h.w x' = partι P W ≫ x :=
@@ -99,6 +127,27 @@ theorem exists_lift {X : Scheme.{0}} {W : X.Opens} {G : Over X} {G' : Over W.toS
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `pa : ∀ {T : Over W.toScheme} (x : T ⟶ t.G) b, pushPt gp.1.w (x ≫ t.act.act b) = pushPt gp.1.w x ≫ a.act b` using `fun x b => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc])`. Take `⟨u, hu⟩` from `exists_lift gp.1 (𝟙 G)`. Establish `hu' : u.left ≫ ψ = (G.hom ⁻¹ᵁ W).ι` using `(congrArg (fun z => z.left) hu).trans (Category.comp_id _)`. Establish `hp : pull (G.hom ⁻¹ᵁ W).ι c = pull u.left (cls t.PP.L t.PP.isLB)` using `by rw [← hu', pull_comp, hc]`.
+
+Use `⟨?_, ?_, fun b => ?_, ?_⟩` and prove the remaining obligations. Use `choose x' hx' using fun i => exists_lift gp.1 (x3 G i)`. Establish `e₁` using `pull_cub_push gp x' _ _ hx' c`. Establish `e₂` using `pull_cub (lift (x' 0) (lift (x' 1) (x' 2))) (x3 t.G) (cls t.PP.L t.PP.isLB)`. Establish `e₃ : cub (x3 t.G) (cls t.PP.L t.PP.isLB) = 0` using `(cls_cubeLB _ _ (isLB_cubeLB _ t.PP.isLB)).symm.trans ((cls_eq_zero_iff _).2 ⟨t.cub.t, t.cub.isGen⟩)`.
+
+Establish `e₄ : (fun i => lift (x' 0) (lift (x' 1) (x' 2)) ≫ x3 t.G i) = x'`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [x3]`. Rewrite `e₂` using `[e₃, map_zero, e₄, ← hc]`. Conclude with `e₁.trans e₂.symm`.
+
+Take `⟨_, w, hw, -⟩` from `t.sym`. Establish `e₁ : cls t.PP.L t.PP.isLB = pull (GrpObj.inv (X` using `t.G)).left (cls t.PP.L t.PP.isLB) := (cls_eq_iff _ (pull_isLB t.PP.isLB _)).2 ⟨w, hw⟩`. Establish `e₂ : (GrpObj.inv (X` using `t.G)).left ≫ ψ = ψ ≫ (GrpObj.inv (X := G)).left := by`. Establish `e` using `congrArg (fun z => z.left) (map_inv (pushHom gp t.G) (𝟙 t.G))`. Simplify `e` using `[pushHom, pushPt, Hom.inv_def]`.
+
+Rewrite using `[map_sub, ← pull_comp, ← hu', Category.assoc, ← e₂, pull_comp, pull_comp, pull_comp, hc, ← e₁, sub_self]`. Take `⟨x, hx⟩` from `exists_lift gp.1 (fst G G)`. Take `⟨y, hy⟩` from `exists_lift gp.1 (snd G G)`. Establish `e₁` using `pull_cub_push gp ![x ≫ t.act.act b, y] ![fst G G ≫ a.act b, snd G G] (partι _ W) (fun i => by fin_cases i`. Conclude with `(pa _ _).trans (by rw [hx]; exact Category.assoc _ _ _)`.
+
+Conclude with `hy) c`. Establish `e₂` using `pull_cub_push gp ![x, y ≫ t.act.act (H.bar b)] ![fst G G, snd G G ≫ a.act (H.bar b)] (partι _ W) (fun i => by fin_cases i`. Conclude with `hx`. Conclude with `(pa _ _).trans (by rw [hy]; exact Category.assoc _ _ _)) c`. Establish `e₃` using `congrArg (pull (lift x y).left) ((cls_cubeLB _ t.PP.isLB _).symm.trans (((cls_eq_iff (isLB_cubeLB _ t.PP.isLB) (isLB_cubeLB _ t.PP.isLB)).2 (t.adj b)).trans (cls_cubeLB _ t.PP.isLB _)))`.
+
+Establish `f₁ : (fun i => lift x y ≫ ![fst t.G t.G ≫ t.act.act b, snd t.G t.G] i) = ![x ≫ t.act.act b, y]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Establish `f₂ : (fun i => lift x y ≫ ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar b)] i) = ![x, y ≫ t.act.act (H.bar b)]`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp`. Rewrite `e₃` using `[pull_cub, pull_cub, f₁, f₂, ← hc]`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `e₁.trans (e₃.trans e₂.symm)`. Establish `e₁` using `pull_cub_push gp ![u, u ≫ t.act.act H.w0] ![𝟙 G, a.act H.w0] (partι _ W) (fun i => by fin_cases i`.
+
+Conclude with `hu`. Conclude with `(pa _ _).trans (by rw [hu]; simp)) c`. Establish `e₃` using `congrArg (pull u.left) (((cls_eq_iff t.PP.isLB (isLB_cubeLB _ t.PP.isLB)).2 t.prim).trans (cls_cubeLB _ t.PP.isLB _))`. Establish `f₁ : (fun i => u ≫ ![𝟙 t.G, t.act.act H.w0] i) = ![u, u ≫ t.act.act H.w0]`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp`. Rewrite `e₃` using `[pull_cub, f₁]`. Rewrite `e₁` using `[hc]`. Rewrite using `[map_sub, sub_eq_zero, hp]`. Conclude with `e₃.trans e₁.symm`.
+-/
 theorem local_identities {X : Scheme.{0}} {W : X.Opens} {G : Over X} [GrpObj G] [IsCommMonObj G]
     (a : OAct (𝓞 E) G) (c : Pic G.left) (t : SAB H W.toScheme) {ψ : t.G.left ⟶ G.left}
     (gp : IsGrpPullback t.G G W.ι ψ) (ha : ∀ x, (t.act.act x).left ≫ ψ = ψ ≫ (a.act x).left)
@@ -172,6 +221,11 @@ theorem local_identities {X : Scheme.{0}} {W : X.Opens} {G : Over X} [GrpObj G] 
     rw [map_sub, sub_eq_zero, hp]
     exact e₃.trans e₁.symm
 
+/- English proof (translation)
+Establish `key : ∀ (W : X.Opens) [IsReduced W.toScheme] (x : X), x ∈ W → _root_.IsReduced (X.presheaf.stalk x)`. Introduce `W _ x hx`. Take `⟨y, rfl⟩ : ∃ y : W.toScheme, W.ι y = x` from `⟨⟨x, hx⟩, rfl⟩`. Conclude with `isReduced_of_injective (W.ι.stalkMap y).hom (ConcreteCategory.bijective_of_isIso (W.ι.stalkMap y)).1`. Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`.
+
+Establish `hx : x ∈ U ⊔ V` using `hUV ▸ trivial`. Break down `hx with hx | hx` into its components or cases. Conclude with `key U x hx`. Conclude with `key V x hx`. Conclude with `isReduced_of_isReduced_stalk X`.
+-/
 theorem isReduced_of_cover {X : Scheme.{0}} {U V : X.Opens} (hUV : U ⊔ V = ⊤) [IsReduced U.toScheme]
     [IsReduced V.toScheme] : IsReduced X := by
   have key : ∀ (W : X.Opens) [IsReduced W.toScheme] (x : X), x ∈ W → _root_.IsReduced (X.presheaf.stalk x) := by
@@ -185,6 +239,9 @@ theorem isReduced_of_cover {X : Scheme.{0}} {U V : X.Opens} (hUV : U ⊔ V = ⊤
     · exact key V x hx
   exact isReduced_of_isReduced_stalk X
 
+/- English proof (translation)
+Establish `h` using `preimage_mem_irreducibleComponents (t := closure {W.ι x}) hx W.ι.isOpenEmbedding ⟨W.ι x, subset_closure rfl, x, rfl⟩`. Express the relevant statement in the definitionally equal form `closure _ ∈ irreducibleComponents W.toScheme`. Rewrite using `[W.ι.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image, Set.image_singleton]`. Conclude with `h`.
+-/
 theorem mem_genericPoints_open {X : Scheme.{0}} (W : X.Opens) (x : W.toScheme) (hx : W.ι x ∈ genericPoints X) :
     x ∈ genericPoints W.toScheme := by
   have h := preimage_mem_irreducibleComponents (t := closure {W.ι x}) hx W.ι.isOpenEmbedding
@@ -193,10 +250,18 @@ theorem mem_genericPoints_open {X : Scheme.{0}} (W : X.Opens) (x : W.toScheme) (
   rw [W.ι.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image, Set.image_singleton]
   exact h
 
+/- English proof (translation)
+The claim follows from `(cls_eq_zero_iff (pull_isLB L.isLB _)).2 ⟨L.rig, L.rigGen⟩`.
+-/
 theorem pull_eSec {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (L : RigLB G) :
     pull (eSec G) (cls L.L L.isLB) = 0 :=
   (cls_eq_zero_iff (pull_isLB L.isLB _)).2 ⟨L.rig, L.rigGen⟩
 
+/- English proof (translation)
+Establish `e : ψ ≫ (toUnit G).left ≫ eSec G = (toUnit G').left ≫ eSec G' ≫ ψ`. Establish `e₁ : eSec G' ≫ ψ = f ≫ eSec G` using `(cubeMapOf gp).e_comm`. Establish `e₂ : ψ ≫ G.hom = G'.hom ≫ f` using `gp.1.w`. Rewrite using `[e₁, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ eSec G) e₂`.
+
+Rewrite using `[map_sub, ← pull_comp, e, pull_comp, pull_comp, ← h, pull_eSec, map_zero, sub_zero]`.
+-/
 theorem pull_rigidify {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : S' ⟶ S} {ψ : G'.left ⟶ G.left} (gp : IsGrpPullback G' G f ψ) (c : Pic G.left)
     (L : RigLB G') (h : cls L.L L.isLB = pull ψ c) :
@@ -208,6 +273,33 @@ theorem pull_rigidify {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G]
     exact congrArg (· ≫ eSec G) e₂
   rw [map_sub, ← pull_comp, e, pull_comp, pull_comp, ← h, pull_eSec, map_zero, sub_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ H X U V t₁ t₂ t₀ m₁ m₂ hUV h₁ h₂`. Take `⟨G, _, a, ψ₁, ψ₂, hG, gp₁, gp₂, hφ, ha⟩` from `GlobalTheory.GroupGlue.exists_glue_two (𝓞 E) X U V t₁.G t₂.G t₀.G t₁.act t₂.act t₀.act m₁.φ m₂.φ hUV t₁.semi t₂.semi m₁.cart m₂.cart fun x => ⟨m₁.act x, m₂.act x⟩`. Use `hG.comm` as an intermediate fact. Establish `o₁ : IsOpenImmersion ψ₁` using `MorphismProperty.of_isPullback gp₁.1.flip inferInstance`. Establish `o₂ : IsOpenImmersion ψ₂` using `MorphismProperty.of_isPullback gp₂.1.flip inferInstance`.
+
+Establish `sq : IsPullback m₁.φ m₂.φ ψ₁ ψ₂`. Establish `big` using `m₁.cart.1.paste_vert (isPullback_opens_inf U V)`. Rewrite `big` using `[← m₂.cart.1.w, ← gp₁.1.w]`. Conclude with `big.of_bot hφ gp₂.1`. Establish `cov : Set.range ψ₁ ∪ Set.range ψ₂ = Set.univ`.
+
+Use `Set.eq_univ_of_forall fun g => ?_` and prove the remaining obligations. Establish `hx : G.hom g ∈ U ⊔ V` using `hUV ▸ trivial`. Break down `hx with hx | hx` into its components or cases. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback gp₁.1 g ⟨_, hx⟩ rfl`. Conclude with `.inl ⟨z, hz⟩`.
+
+Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback gp₂.1 g ⟨_, hx⟩ rfl`. Conclude with `.inr ⟨z, hz⟩`. Take `⟨w₁, hw₁, -⟩` from `m₁.lin`. Take `⟨w₂, hw₂, -⟩` from `m₂.lin`. Take `⟨L, hL, i₁, i₂⟩` from `GlobalTheory.GlueTwoLB.glue G.left t₀.G.left t₁.G.left t₂.G.left ψ₁ ψ₂ m₁.φ m₂.φ t₁.PP.L t₂.PP.L o₁ o₂ sq cov t₁.PP.isLB t₂.PP.isLB (LBIso.trans (pull_isLB t₁.PP.isLB _) t₀.PP.isLB (pull_isLB t₂.PP.isLB _) (LBIso.symm ⟨w₁, hw₁⟩) ⟨w₂, hw₂⟩)`.
+
+Take `⟨M, hM, hc⟩` from `cls_surj (cls L hL - pull ((toUnit G).left ≫ eSec G) (cls L hL))`. Establish `c₁ : pull ψ₁ (cls M hM) = cls t₁.PP.L t₁.PP.isLB` using `hc ▸ pull_rigidify gp₁ _ t₁.PP ((cls_eq_iff _ (pull_isLB hL _)).2 i₁)`. Establish `c₂ : pull ψ₂ (cls M hM) = cls t₂.PP.L t₂.PP.isLB` using `hc ▸ pull_rigidify gp₂ _ t₂.PP ((cls_eq_iff _ (pull_isLB hL _)).2 i₂)`. Establish `c₀ : pull (eSec G) (cls M hM) = 0`. Establish `e : eSec G ≫ (toUnit G).left = 𝟙 _` using `Over.w η[G]`.
+
+Rewrite using `[hc, map_sub, ← pull_comp, ← Category.assoc, e, Category.id_comp, sub_self]`. Take `⟨ρ, hρ⟩` from `(cls_eq_zero_iff (pull_isLB hM _)).1 c₀`. Set `PP : RigLB G` to `⟨M, ρ, hM, hρ⟩`. Establish `hr : IsReduced X`. Use `h₁.1` as an intermediate fact.
+
+Use `h₂.1` as an intermediate fact. Conclude with `isReduced_of_cover hUV`. Establish `hab : genericPoints X ⊆ abLocus G` using `fun x hx => by`. Establish `hx' : x ∈ U ⊔ V` using `hUV ▸ trivial`. Break down `hx' with hx' | hx'` into its components or cases.
+
+Conclude with `(abLocus_pullback abLocusOne hG gp₁.1 ⟨x, hx'⟩).2 (h₁.2 (mem_genericPoints_open U ⟨x, hx'⟩ hx))`. Conclude with `(abLocus_pullback abLocusOne hG gp₂.1 ⟨x, hx'⟩).2 (h₂.2 (mem_genericPoints_open V ⟨x, hx'⟩ hx))`. Establish `a₁` using `hG.smooth`. Use `hG.geomConnected` as an intermediate fact. Establish `b₁` using `GlobalTheory.grpObj_geometricallyIntegral_of_smooth X G`.
+
+Take `⟨a₂, b₂, d₂⟩` from `GlobalTheory.smooth_geometricallyIntegral_abLocus_tensorObj X G G a₁ a₁ b₁ b₁`. Establish `g₂` using `(Set.subset_inter hab hab).trans d₂`. Take `⟨a₃, b₃, d₃⟩` from `GlobalTheory.smooth_geometricallyIntegral_abLocus_tensorObj X G _ a₁ a₂ b₁ b₂`. Establish `g₃` using `(Set.subset_inter hab g₂).trans d₃`. Take `⟨p₁, q₁, r₁, s₁⟩` from `local_identities a (cls M hM) t₁ gp₁ (fun x => (ha x).1) c₁`.
+
+Take `⟨p₂, q₂, r₂, s₂⟩` from `local_identities a (cls M hM) t₂ gp₂ (fun x => (ha x).2) c₂`. Establish `one_act : ∀ b, (1 : 𝟙_ (Over X) ⟶ G) ≫ a.act b = 1` using `fun b => by`. Use `a.hom b` as an intermediate fact. Conclude with `MonObj.one_comp _`. Establish `z₀ : pull (1 : 𝟙_ (Over X) ⟶ G).left (cls M hM) = 0` using `pull_one c₀`.
+
+Apply the tactic sequence `have p := eq_zero_of_cover (G3 G) (lift 1 (lift 1 1)) a₃ b₃ hr g₃ hUV _ ((pull_cub _ _ _).trans (cub_one (fun i => by fin_cases i <;> simp [x3]) c₀)) p₁ p₂`. Establish `q` using `eq_zero_of_cover G 1 a₁ b₁ hr hab hUV _ (by`. Establish `e : (1 : 𝟙_ (Over X) ⟶ G) ≫ GrpObj.inv (X` using `G) = 1 := (Hom.inv_def _).symm.trans inv_one`. Rewrite using `[map_sub, ← pull_comp, ← Over.comp_left, e, sub_self]) q₁ q₂`. Establish `r` using `fun b => eq_zero_of_cover (G ⊗ G) (lift 1 1) a₂ b₂ hr g₂ hUV _ (by`.
+
+Apply the tactic sequence `rw [map_sub, pull_cub, pull_cub, cub_one (fun i => by fin_cases i <;> simp [one_act]) c₀, cub_one (fun i => by fin_cases i <;> simp [one_act]) c₀, sub_self]) (r₁ b) (r₂ b)`. Establish `s` using `eq_zero_of_cover G 1 a₁ b₁ hr hab hUV _ (by`. Apply the tactic sequence `rw [map_sub, pull_cub, cub_one (fun i => by fin_cases i <;> simp [one_act]) c₀, z₀, sub_self]) s₁ s₂`. Take `⟨k₁, k₂⟩` from `GlobalTheory.CubeGen.cubical_and_symmetric X G PP hG ⟨hr, hab⟩`. Take `⟨cb⟩` from `k₁ ((cls_eq_zero_iff (isLB_cubeLB _ hM)).1 ((cls_cubeLB _ hM _).trans p))`.
+
+Set `t : SAB H X` to `{ G := G, semi := hG, act := a, PP := PP, cub := cb sym := k₂ ((cls_eq_iff hM (pull_isLB hM _)).1 (sub_eq_zero.1 q)) adj := fun b => (cls_eq_iff (isLB_cubeLB _ hM) (isLB_cubeLB _ hM)).1 ((cls_cubeLB _ hM _).trans ((sub_eq_zero.1 (r b)).trans (cls_cubeLB _ hM _).symm)) prim := (cl …`. Take `⟨n₁, hn₁⟩` from `GlobalTheory.exists_sabMap_of_lbIso E H X U t t₁ U.ι ψ₁ h₁ gp₁ (fun x => (ha x).1) ((cls_eq_iff t₁.PP.isLB (pull_isLB hM _)).1 c₁.symm)`. Take `⟨n₂, hn₂⟩` from `GlobalTheory.exists_sabMap_of_lbIso E H X V t t₂ V.ι ψ₂ h₂ gp₂ (fun x => (ha x).2) ((cls_eq_iff t₂.PP.isLB (pull_isLB hM _)).1 c₂.symm)`. Conclude with `⟨t, n₁, n₂, by rw [hn₁, hn₂]; exact hφ⟩`.
+-/
 theorem exists_sab_glue : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (U V : X.Opens) (t₁ : SAB H U.toScheme) (t₂ : SAB H V.toScheme) (t₀ : SAB H (U ⊓ V).toScheme) (m₁ : SABMap t₀ t₁ (X.homOfLE inf_le_left)) (m₂ : SABMap t₀ t₂ (X.homOfLE inf_le_right)), U ⊔ V = ⊤ → (IsReduced U.toScheme ∧ genericPoints U.toScheme ⊆ abLocus t₁.G) → (IsReduced V.toScheme ∧ genericPoints V.toScheme ⊆ abLocus t₂.G) → ∃ (t : SAB H X) (n₁ : SABMap t₁ t U.ι) (n₂ : SABMap t₂ t V.ι), m₁.φ ≫ n₁.φ = m₂.φ ≫ n₂.φ := by
   intro E _ _ _ H X U V t₁ t₂ t₀ m₁ m₂ hUV h₁ h₂
   obtain ⟨G, _, a, ψ₁, ψ₂, hG, gp₁, gp₂, hφ, ha⟩ := GlobalTheory.GroupGlue.exists_glue_two (𝓞 E) X U V t₁.G t₂.G t₀.G t₁.act t₂.act t₀.act

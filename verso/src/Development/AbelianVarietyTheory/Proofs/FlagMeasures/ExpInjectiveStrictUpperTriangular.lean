@@ -6,6 +6,13 @@ open Matrix Filter Topology
 
 namespace GlobalTheory.ExpStrictUpper
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.of_apply]`. Distinguish the cases in `h : j ≤ i`. Simplify using `[hX i j h]`. Establish `hij : (i : ℕ) ≤ (j : ℕ)`.
+
+Use `Fin.lt_def.mp (not_le.mp h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hp : τ ^ (j : ℕ) = τ ^ (i : ℕ) * τ ^ ((j : ℕ) - (i : ℕ))`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hij]`. Rewrite using `[hp]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ (pow_ne_zero _ hτ), one_mul]`.
+-/
 theorem conj_diagonal_eq {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) (hX : ∀ i j, j ≤ i → X i j = 0)
     {τ : ℂ} (hτ : τ ≠ 0) :
     (Matrix.diagonal fun i : Fin m => (τ ^ (i : ℕ))⁻¹) * X *
@@ -26,6 +33,13 @@ theorem conj_diagonal_eq {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) (hX : ∀ i 
       _ = τ ^ ((j : ℕ) - (i : ℕ)) * X i j := by
         rw [inv_mul_cancel₀ (pow_ne_zero _ hτ), one_mul]
 
+/- English proof (translation)
+Establish `hc : Continuous (fun τ : ℂ => (Matrix.of fun i j : Fin m => τ ^ ((j : ℕ) - (i : ℕ)) * X i j))` using `continuous_matrix fun i j => by`. Simplify using `only [Matrix.of_apply]`. Conclude with `(continuous_pow _).mul continuous_const`. Establish `h0 : (Matrix.of fun i j : Fin m => (0 : ℂ) ^ ((j : ℕ) - (i : ℕ)) * X i j) = 0`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.of_apply, Matrix.zero_apply]`. Distinguish the cases in `h : j ≤ i`. Rewrite using `[hX i j h, mul_zero]`. Establish `hn : (j : ℕ) - (i : ℕ) ≠ 0`. Use `Fin.lt_def.mp (not_le.mp h)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[zero_pow hn, zero_mul]`. Simplify `hc.tendsto 0` using `only [h0]`.
+-/
 theorem tendsto_scale {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) (hX : ∀ i j, j ≤ i → X i j = 0) :
     Tendsto (fun τ : ℂ => (Matrix.of fun i j : Fin m => τ ^ ((j : ℕ) - (i : ℕ)) * X i j))
       (𝓝 0) (𝓝 0) := by
@@ -44,6 +58,21 @@ theorem tendsto_scale {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) (hX : ∀ i j, 
       rw [zero_pow hn, zero_mul]
   simpa only [h0] using hc.tendsto 0
 
+/- English proof (translation)
+Introduce `m X Y hX hY hXY`. Take `⟨S, hS, hinj⟩` from `(GlobalTheory.ExpBallNhds.exp_local_matrix (Fin m)).1`. Establish `h1 : ∀ᶠ τ in 𝓝[≠] (0 : ℂ), (Matrix.of fun i j : Fin m => τ ^ ((j : ℕ) - (i : ℕ)) * X i j) ∈ S ∧ (Matrix.of fun i j : Fin m => τ ^ ((j : ℕ) - (i : ℕ)) * Y i j) ∈ S` using `nhdsWithin_le_nhds (((tendsto_scale X hX).eventually_mem hS).and ((tendsto_scale Y hY).eventually_mem hS))`. Establish `h2 : ∀ᶠ τ in 𝓝[≠] (0 : ℂ), τ ≠ 0` using `self_mem_nhdsWithin`. Establish `hev` using `h1.and h2`.
+
+Take `⟨τ, ⟨hxS, hyS⟩, hτ⟩` from `hev.exists`. Use `set D : Matrix (Fin m) (Fin m) ℂ := Matrix.diagonal fun i : Fin m => τ ^ (i : ℕ) with hD`. Use `set E : Matrix (Fin m) (Fin m) ℂ := Matrix.diagonal fun i : Fin m => (τ ^ (i : ℕ))⁻¹ with hE`. Establish `hDE : D * E = 1`. Rewrite using `[hD, hE, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ hτ)`. Establish `hED : E * D = 1`. Rewrite using `[hD, hE, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hτ)`. Establish `hU : IsUnit D` using `⟨⟨D, E, hDE, hED⟩, rfl⟩`. Establish `hinv : D⁻¹ = E` using `Matrix.inv_eq_left_inv hED`.
+
+Establish `hexp : ∀ Z : Matrix (Fin m) (Fin m) ℂ, NormedSpace.exp (E * Z * D) = E * NormedSpace.exp Z * D`. Introduce `Z`. Rewrite using `[← hinv]`. Conclude with `Matrix.exp_conj' D Z hU`. Establish `hxS' : E * X * D ∈ S`.
+
+Rewrite using `[hE, hD, conj_diagonal_eq X hX hτ]`. Conclude with `hxS`. Establish `hyS' : E * Y * D ∈ S`. Rewrite using `[hE, hD, conj_diagonal_eq Y hY hτ]`. Conclude with `hyS`.
+
+Establish `key : E * X * D = E * Y * D` using `hinj hxS' hyS' (by rw [hexp, hexp, hXY])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_inj_strictUpper : ∀ (m : ℕ) (X Y : Matrix (Fin m) (Fin m) ℂ),
     (∀ i j, j ≤ i → X i j = 0) → (∀ i j, j ≤ i → Y i j = 0) →
     NormedSpace.exp X = NormedSpace.exp Y → X = Y := by

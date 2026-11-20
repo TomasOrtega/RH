@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa only [Finset.prod_empty] using differentiableOn_const (c := (1 : ℂ))`. Consider the case `insert a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a).mul ih`.
+-/
 private theorem differentiableOn_prod_of_forall {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E}
     (s : Finset κ) (φ : κ → E → ℂ) (h : ∀ k, DifferentiableOn ℂ (φ k) S) :
     DifferentiableOn ℂ (fun z => ∏ k ∈ s, φ k z) S := by
@@ -67,6 +70,11 @@ def linCombUnif (h : ∀ k z, u'.ex (F k z) = u.ex z ≫ f k) :
 
 end
 
+/- English proof (translation)
+Introduce `A A' _ _ L L' g g' u u' K _ f F ε hF`. Use `⟨linCombUnif u u' f F ε hF, ?_, ?_, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Introduce `j z`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_holUnif_linComb : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left) (g g' : ℕ) (u : HolUnif A L g) (u' : HolUnif A' L' g') (K : Type) [Fintype K] (f : K → (A ⟶ A')) (F : K → ((Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ))) (ε : K → ℤ), (∀ k z, u'.ex (F k z) = u.ex z ≫ f k) → ∃ u₁ : HolUnif A (LB.LinComb L' (fun k => (f k).left) ε) g, u₁.ex = u.ex ∧ u₁.Λ = u.Λ ∧ ∀ (j : K → L'.ι) z, u₁.fr j z = ∏ k, u'.fr (j k) (F k z) ^ ε k := by
   intro A A' _ _ L L' g g' u u' K _ f F ε hF
   refine ⟨linCombUnif u u' f F ε hF, ?_, ?_, ?_⟩

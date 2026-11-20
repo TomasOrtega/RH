@@ -16,6 +16,11 @@ namespace GlobalTheory.Mum.NormBC
 
 open TensorProduct
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_matrix_det e, Algebra.norm_eq_matrix_det e', RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `h : ψ f * e' j = ∑ k, ρ (e.repr (f * e j) k) • e' k`.
+
+Rewrite using `[← he j, ← map_mul]`. Use `conv_lhs => rw [← e.sum_repr (f * e j)]`. Simplify using `only [map_sum, Algebra.smul_def, map_mul, hc, he]`. Rewrite using `[h, e'.repr_sum_self]`.
+-/
 theorem norm_map_of_basis {A A' B B' : Type} [CommRing A] [CommRing A'] [CommRing B] [CommRing B']
     [Algebra A B] [Algebra A' B'] (ρ : A →+* A') (ψ : B →+* B')
     (hc : ∀ a, ψ (algebraMap A B a) = algebraMap A' B' (ρ a)) {J : Type} [Fintype J] [DecidableEq J]
@@ -32,6 +37,9 @@ theorem norm_map_of_basis {A A' B B' : Type} [CommRing A] [CommRing A'] [CommRin
     simp only [map_sum, Algebra.smul_def, map_mul, hc, he]
   rw [h, e'.repr_sum_self]
 
+/- English proof (translation)
+Set `L : A ⊗[S₀] T₀ ≃ₗ[A] B` to `Φ.toAddEquiv.toLinearEquiv (fun a x => by show Φ (a • x) = a • Φ x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, ← hΦ]`. Use the proof step `rfl)`. Conclude with `⟨(Algebra.TensorProduct.basis A c).map L, fun i => by`. Simplify using `[L, Algebra.TensorProduct.basis_apply]⟩`.
+-/
 theorem exists_basis_of_ringEquiv {S₀ A T₀ B : Type} [CommRing S₀] [CommRing A] [CommRing T₀]
     [CommRing B] [Algebra S₀ A] [Algebra S₀ T₀] [Algebra A B] {J : Type}
     (c : Module.Basis J S₀ T₀) (Φ : A ⊗[S₀] T₀ ≃+* B) (hΦ : ∀ a, Φ (a ⊗ₜ 1) = algebraMap A B a) :
@@ -43,6 +51,15 @@ theorem exists_basis_of_ringEquiv {S₀ A T₀ B : Type} [CommRing S₀] [CommRi
   exact ⟨(Algebra.TensorProduct.basis A c).map L, fun i => by
     simp [L, Algebra.TensorProduct.basis_apply]⟩
 
+/- English proof (translation)
+Use `letI := ((spMap (algebraMap R R₁)).appLE ⊤ ⊤ le_top).hom.toAlgebra`. Set `σ : Γ(Sp R, ⊤) ≃+* R` to `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv`. Set `σ₁ : Γ(Sp R₁, ⊤) ≃+* R₁` to `(Scheme.ΓSpecIso (CommRingCat.of R₁)).commRingCatIsoToRingEquiv`. Establish `hnat : ∀ a, σ₁ (algebraMap Γ(Sp R, ⊤) Γ(Sp R₁, ⊤) a) = algebraMap R R₁ (σ a)` using `fun a => by`. Establish `h` using `congrArg (fun φ => φ.hom a) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R R₁)))`.
+
+Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h`. Rewrite `h` using `[AffDesc.appTop_eq_appLE]`. Conclude with `h`. Set `E : Γ(Sp R₁, ⊤) ≃ₗ[Γ(Sp R, ⊤)] (J → Γ(Sp R, ⊤))` to `{ toFun := fun y i => σ.symm (c'.repr (σ₁ y) i) invFun := fun g => σ₁.symm (∑ i, σ (g i) • c' i) map_add' := fun y y' => by funext i; simp map_smul' := fun a y => by`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [RingHom.id_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Algebra.smul_def, map_mul, hnat, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, RingEquiv.symm_apply_apply]`. Use `left_inv := fun y => by`. Simplify using `only [RingEquiv.apply_symm_apply, c'.sum_repr, RingEquiv.symm_apply_apply]`. Use `right_inv := fun g => by`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [RingEquiv.apply_symm_apply, c'.repr_sum_self, RingEquiv.symm_apply_apply] }`. Conclude with `⟨Module.Basis.ofEquivFun E⟩`.
+-/
 theorem exists_basis_Gamma {R R₁ : Type} [CommRing R] [CommRing R₁] [Algebra R R₁] {J : Type}
     [Fintype J] (c' : Module.Basis J R R₁) :
     letI := ((spMap (algebraMap R R₁)).appLE ⊤ ⊤ le_top).hom.toAlgebra
@@ -71,6 +88,9 @@ theorem exists_basis_Gamma {R R₁ : Type} [CommRing R] [CommRing R₁] [Algebra
         simp only [RingEquiv.apply_symm_apply, c'.repr_sum_self, RingEquiv.symm_apply_apply] }
   exact ⟨Module.Basis.ofEquivFun E⟩
 
+/- English proof (translation)
+Establish `h : (hU.primeIdealOf x : Spec Γ(X, U)) ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen s ↔ x.1 ∈ X.basicOpen s` using `by conv_rhs => rw [← hU.fromSpec_primeIdealOf x]`. Both sides reduce to the same expression. Rewrite using `[← h, hU.fromSpec_preimage_basicOpen]`. Conclude with `not_not.symm`.
+-/
 theorem mem_primeIdealOf_iff' {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : U)
     (s : Γ(X, U)) : s ∈ (hU.primeIdealOf x).asIdeal ↔ x.1 ∉ X.basicOpen s := by
   have h : (hU.primeIdealOf x : Spec Γ(X, U)) ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen s ↔
@@ -86,6 +106,37 @@ namespace GlobalTheory.Mum.NormBC
 
 open TensorProduct
 
+/- English proof (translation)
+Introduce `R R₁ _ _ _ _ _ X X₁ p p₁ b H V hVc hVq f`. Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Use `⟨0, fun x => ?_⟩` and prove the remaining obligations. Conclude with `absurd (Subsingleton.elim _ _ : (p x).asIdeal = ⊤) (p x).isPrime.ne_top`. Set `c'` to `Module.Free.chooseBasis R R₁`.
+
+Use `letI a0 : Algebra Γ(Sp R, ⊤) Γ(Sp R₁, ⊤) := ((spMap (algebraMap R R₁)).appLE ⊤ ⊤ le_top).hom.toAlgebra`. Take `⟨c⟩` from `exists_basis_Gamma c'`. Use `letI aX : ∀ U : X.Opens, Algebra Γ(Sp R, ⊤) Γ(X, U) := fun U => (p.appLE ⊤ U le_top).hom.toAlgebra`. Use `letI aB : ∀ U : X.Opens, Algebra Γ(X, U) Γ(X₁, b ⁻¹ᵁ U) := fun U => (b.appLE U (b ⁻¹ᵁ U) le_rfl).hom.toAlgebra`. Establish `key : ∀ U : X.Opens, IsIso (pushoutSection H (US` using `⊤) (UT := ⊤) (UX := U) le_top le_top (show b ⁻¹ᵁ U = b ⁻¹ᵁ U ⊓ p₁ ⁻¹ᵁ ⊤ by simp)) → ∃ e : Module.Basis (Module.Free.ChooseBasisIndex R R₁) Γ(X, U) Γ(X₁, b ⁻¹ᵁ U), ∀ i, e i = (p₁.appLE ⊤ (b ⁻¹ᵁ U) (by simp)).hom (c i) := by`.
+
+Introduce `U hU`. Set `Φ` to `(CommRingCat.isPushout_tensorProduct Γ(Sp R, ⊤) Γ(X, U) Γ(Sp R₁, ⊤)).isoPushout.hom ≫ pushoutSection H (US := ⊤) (UT := ⊤) (UX := U) le_top le_top (show b ⁻¹ᵁ U = b ⁻¹ᵁ U ⊓ p₁ ⁻¹ᵁ ⊤ by simp)`. Establish `: IsIso Φ` using `by dsimp only [Φ]; infer_instance`. Set `Φe : Γ(X, U) ⊗[Γ(Sp R, ⊤)] Γ(Sp R₁, ⊤) ≃+* Γ(X₁, b ⁻¹ᵁ U)` to `(asIso Φ).commRingCatIsoToRingEquiv`. Establish `fΦ : ∀ a t, Φe (a ⊗ₜ t) = (b.appLE U (b ⁻¹ᵁ U) le_rfl).hom a * (p₁.appLE ⊤ (b ⁻¹ᵁ U) (by simp)).hom t` using `fun a t => AffDesc.isoPushout_desc_tmul _ _ _ a t`.
+
+Take `⟨e, he⟩` from `exists_basis_of_ringEquiv c Φe (fun a => by rw [fΦ, map_one, _root_.mul_one]; rfl)`. Conclude with `⟨e, fun i => by rw [he, fΦ, map_one, _root_.one_mul]⟩`. Use `haveI : Module.Flat R R₁ := inferInstance`. Use `haveI : Flat (spMap (algebraMap R R₁)) := Flat.SpecMap_iff.mpr (RingHom.flat_algebraMap_iff.mpr inferInstance)`. Take `⟨e, he⟩` from `key V (isIso_pushoutSection_of_isQuasiSeparated_of_flat_right H le_top le_top _ (isAffineOpen_top _) (isAffineOpen_top _) hVc hVq)`.
+
+Use `⟨Algebra.norm Γ(X, V) f, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxV : x ∈ V`. Use `swap`. Conclude with `⟨fun h => absurd (X.basicOpen_le _ h) hxV, fun h => absurd h.1 hxV⟩`. Take `⟨U, hU, hxU, hUV⟩` from `exists_isAffineOpen_mem_and_subset hxV`.
+
+Establish `hUV' : U ≤ V` using `hUV`. Use `haveI : IsAffineHom b := MorphismProperty.of_isPullback H.flip inferInstance`. Establish `hU₁ : IsAffineOpen (b ⁻¹ᵁ U)` using `hU.preimage b`. Take `⟨e', he'⟩` from `key U (isIso_pushoutSection_of_isAffineOpen H le_top le_top _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hUV₁ : b ⁻¹ᵁ U ≤ b ⁻¹ᵁ V` using `b.preimage_mono hUV'`.
+
+Set `ρ` to `X.presheaf.map (homOfLE hUV').op`. Set `ψ` to `X₁.presheaf.map (homOfLE hUV₁).op`. Establish `hn : Algebra.norm Γ(X, U) (ψ.hom f) = ρ.hom (Algebra.norm Γ(X, V) f)`. Use `norm_map_of_basis ρ.hom ψ.hom (fun a => ?_) e e' (fun i => ?_) f` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b.appLE V _ le_rfl ≫ X₁.presheaf.map _).hom a = (X.presheaf.map _ ≫ b.appLE U _ le_rfl).hom a`.
+
+Rewrite using `[Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`. Rewrite using `[he, he']`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ (c i)) (Scheme.Hom.appLE_map p₁ _ _)`. Use `haveI : Module.Free Γ(X, U) Γ(X₁, b ⁻¹ᵁ U) := Module.Free.of_basis e'`. Use `haveI : Module.Finite Γ(X, U) Γ(X₁, b ⁻¹ᵁ U) := Module.Finite.of_basis e'`.
+
+Establish `I` using `GlobalTheory.T.norm_not_mem_iff_forall_over_not_mem Γ(X, U) Γ(X₁, b ⁻¹ᵁ U) (ψ.hom f) (hU.primeIdealOf ⟨x, hxU⟩)`. Establish `hsq` using `IsAffineOpen.SpecMap_appLE_fromSpec b hU hU₁ le_rfl`. Establish `hpt : ∀ Q, b (hU₁.fromSpec Q) = hU.fromSpec (Spec.map (b.appLE U (b ⁻¹ᵁ U) le_rfl) Q)` using `fun Q => by rw [← Scheme.Hom.comp_apply, ← hsq, Scheme.Hom.comp_apply]`. Establish `hfib : (∀ Q : PrimeSpectrum Γ(X₁, b ⁻¹ᵁ U), Q.asIdeal.comap (algebraMap Γ(X, U) Γ(X₁, b ⁻¹ᵁ U)) = (hU.primeIdealOf ⟨x, hxU⟩).asIdeal → ψ.hom f ∉ Q.asIdeal) ↔ ∀ z : X₁, b z = x → z ∈ X₁.basicOpen f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h z hz`. Establish `hzU : z ∈ b ⁻¹ᵁ U` using `by show b z ∈ U; rw [hz]; exact hxU`. Establish `hzf : z ∈ X₁.basicOpen (ψ.hom f)`. Assume the negation of the conclusion as `hcon`. Establish `hm` using `(mem_primeIdealOf_iff' hU₁ ⟨z, hzU⟩ (ψ.hom f)).2 hcon`.
+
+Use `h _ ?_ hm` and prove the remaining obligations. Establish `e1 : hU.fromSpec (Spec.map (b.appLE U (b ⁻¹ᵁ U) le_rfl) (hU₁.primeIdealOf ⟨z, hzU⟩)) = hU.fromSpec (hU.primeIdealOf ⟨x, hxU⟩)` using `(hpt _).symm.trans (by rw [hU₁.fromSpec_primeIdealOf, hU.fromSpec_primeIdealOf]; exact hz)`. Conclude with `congrArg PrimeSpectrum.asIdeal (hU.fromSpec.isOpenEmbedding.injective e1)`. Rewrite `hzf` using `[Scheme.basicOpen_res]`. Conclude with `hzf.2`.
+
+Introduce `h Q hQ hfQ`. Establish `hz` using `h (hU₁.fromSpec Q) ((hpt Q).trans ((congrArg hU.fromSpec (PrimeSpectrum.ext hQ)).trans (hU.fromSpec_primeIdealOf ⟨x, hxU⟩)))`. Establish `hzU : hU₁.fromSpec Q ∈ b ⁻¹ᵁ U`. Establish `: hU₁.fromSpec Q ∈ Set.range hU₁.fromSpec` using `⟨Q, rfl⟩`. Rewrite `this` using `[hU₁.range_fromSpec]`. Then use the resulting hypothesis.
+
+Establish `hz' : hU₁.fromSpec Q ∈ X₁.basicOpen (ψ.hom f)`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨hzU, hz⟩`. Establish `hz'' : Q ∈ hU₁.fromSpec ⁻¹ᵁ X₁.basicOpen (ψ.hom f)` using `hz'`. Rewrite `hz''` using `[hU₁.fromSpec_preimage_basicOpen]`.
+
+Conclude with `hz'' hfQ`. Establish `hbx : x ∈ X.basicOpen (Algebra.norm Γ(X, V) f) ↔ Algebra.norm Γ(X, U) (ψ.hom f) ∉ (hU.primeIdealOf ⟨x, hxU⟩).asIdeal`. Rewrite using `[mem_primeIdealOf_iff', not_not, hn, Scheme.basicOpen_res]`. Conclude with `⟨fun h => ⟨hxU, h⟩, fun h => h.2⟩`. Rewrite using `[hbx, I, hfib]`.
+
+Conclude with `⟨fun h => ⟨hxV, h⟩, fun h => h.2⟩`.
+-/
 theorem exists_norm_basicOpen : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] [Algebra R R₁]
     [Module.Finite R R₁] [Module.Free R R₁] (X X₁ : Scheme.{0}) (p : X ⟶ Sp R) (p₁ : X₁ ⟶ Sp R₁)
     (b : X₁ ⟶ X), IsPullback b p₁ p (spMap (algebraMap R R₁)) → ∀ (V : X.Opens),

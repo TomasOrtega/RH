@@ -24,34 +24,66 @@ variable {D : D7}
 
 def pairH (L : HSp D) (z y : Fin L.rank → AE D) : AE D := (fun a => cA D (z a)) ⬝ᵥ (gA L *ᵥ y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incA_eq (e : D.host.E) : incA D e = (1 : AF D.host.F) ⊗ₜ[D.host.F] e := rfl
 
+/- English proof (translation)
+Rewrite using `[incA_eq, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+-/
 theorem tmul_eq (γ : Af D.host.F) (e : D.host.E) :
     pairA D.host.F 0 γ ⊗ₜ[D.host.F] (1 * e) = (pairA D.host.F 0 γ ⊗ₜ[D.host.F] (1 : D.host.E)) * incA D e := by
   rw [incA_eq, Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
+/- English proof (translation)
+Use `GlobalTheory.SelfDualAt.cA_alg (D := D) a` as an intermediate fact. Simplify `this` using `[Algebra.TensorProduct.algebraMap_apply]`.
+-/
 theorem cA_tmul_one (a : AF D.host.F) : cA D (a ⊗ₜ[D.host.F] (1 : D.host.E)) = a ⊗ₜ[D.host.F] (1 : D.host.E) := by
   have := GlobalTheory.SelfDualAt.cA_alg (D := D) a
   simpa [Algebra.TensorProduct.algebraMap_apply] using this
 
+/- English proof (translation)
+Simplify using `only [pairH, dotProduct, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem pairH_add_left (L : HSp D) (z z' y : Fin L.rank → AE D) : pairH L (z + z') y = pairH L z y + pairH L z' y := by
   simp only [pairH, dotProduct, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [pairH, dotProduct, Pi.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem pairH_neg_left (L : HSp D) (z y : Fin L.rank → AE D) : pairH L (-z) y = -pairH L z y := by
   simp only [pairH, dotProduct, Pi.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [pairH, dotProduct, Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]`.
+-/
 theorem pairH_zero_left (L : HSp D) (y : Fin L.rank → AE D) : pairH L 0 y = 0 := by
   simp only [pairH, dotProduct, Pi.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]
 
+/- English proof (translation)
+Simplify using `only [pairH, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem pairH_add_right (L : HSp D) (z y y' : Fin L.rank → AE D) : pairH L z (y + y') = pairH L z y + pairH L z y' := by
   simp only [pairH, Matrix.mulVec_add, dotProduct_add]
 
+/- English proof (translation)
+Simplify using `only [pairH, Matrix.mulVec_neg, dotProduct_neg]`.
+-/
 theorem pairH_neg_right (L : HSp D) (z y : Fin L.rank → AE D) : pairH L z (-y) = -pairH L z y := by
   simp only [pairH, Matrix.mulVec_neg, dotProduct_neg]
 
+/- English proof (translation)
+Simplify using `only [pairH, Matrix.mulVec_zero, dotProduct_zero]`.
+-/
 theorem pairH_zero_right (L : HSp D) (z : Fin L.rank → AE D) : pairH L z 0 = 0 := by
   simp only [pairH, Matrix.mulVec_zero, dotProduct_zero]
 
+/- English proof (translation)
+Establish `hp : pairA D.host.F 0 α * pairA D.host.F 0 β = pairA D.host.F 0 (α * β)` using `Prod.ext (zero_mul _) rfl`. Simplify using `only [tmul_eq, pairH, dotProduct, Matrix.mulVec, gA, rat, Matrix.map_apply, map_mul, cA_tmul_one, GlobalTheory.DualPairCheck.cA_incA, map_sum]`. Rewrite using `[← hp, ← one_mul (1 : D.host.E), ← Algebra.TensorProduct.tmul_mul_tmul, one_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairH_gen (L : HSp D) (α β : Af D.host.F) (x x' : Fin L.rank → D.host.E) :
     pairH L (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i)) (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x' i)) =
       pairA D.host.F 0 (α * β) ⊗ₜ[D.host.F] (1 * ∑ i, ∑ j, star (x i) * L.gram i j * x' j) := by
@@ -64,6 +96,17 @@ theorem pairH_gen (L : HSp D) (α β : Af D.host.F) (x x' : Fin L.rank → D.hos
   refine Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hαi, -, c, hc, x, hx, rfl⟩` from `hz`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨β, hβi, -, c', hc', x', hx', rfl⟩` from `hy`. Rewrite `hc'` using `[Set.mem_singleton_iff]`. Substitute `hc'` using the available equality.
+
+Take `⟨b, hb⟩` from `(hL.2 x').1 hx' x hx`. Rewrite using `[pairH_gen, ← hb, GlobalTheory.LatVac.finPart_tmul, one_mul]`. Conclude with `AddSubgroup.subset_closure ⟨α * β, GlobalTheory.FinPl.LatMem.intAf_mul' hαi hβi, b, rfl⟩`. Consider the case `zero => rw [pairH_zero_right]`. Conclude with `zero_mem _`.
+
+Consider the case `add y y' _ _ h h' => rw [pairH_add_right, RingHom.map_add]`. Conclude with `add_mem h h'`. Consider the case `neg y _ h => rw [pairH_neg_right, RingHom.map_neg]`. Conclude with `neg_mem h`. Consider the case `zero => rw [pairH_zero_left]`.
+
+Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [pairH_add_left, RingHom.map_add]`. Conclude with `add_mem h h'`. Consider the case `neg z _ h => rw [pairH_neg_left, RingHom.map_neg]`. Conclude with `neg_mem h`.
+-/
 theorem pairH_int {L : HSp D} {LL : Lat L} (hL : IsSelfDualC L LL) {P : Pl D → Prop} {z y : Fin L.rank → AE D}
     (hz : z ∈ latV L LL P) (hy : y ∈ latV L LL P) : finPart D (pairH L z y) ∈ intAE D := by
   induction hz using AddSubgroup.closure_induction with
@@ -98,18 +141,39 @@ open GlobalTheory.FinPl GlobalTheory.KapLat
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `pairH`. Rewrite using `[Matrix.dotProduct_mulVec]`. Simplify using `only [dotProduct, Matrix.vecMul, GlobalTheory.DualPairCheck.cA_incA]`.
+-/
 theorem pairH_eq (S : HSp D) (t : Fin S.rank → D.host.E) (x : Fin S.rank → AE D) :
     pairH S (fun l => incA D (t l)) x = ∑ b, (∑ k, incA D (star (t k)) * gA S k b) * x b := by
   unfold pairH
   rw [Matrix.dotProduct_mulVec]
   simp only [dotProduct, Matrix.vecMul, GlobalTheory.DualPairCheck.cA_incA]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]`.
+-/
 theorem smul_mulVec' {m n : ℕ} (c : AE D) (M : Mx D m n) (v : Fin n → AE D) : (c • M) *ᵥ v = c • (M *ᵥ v) := by
   funext i
   simp only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Pi.smul_apply, Finset.mul_sum, mul_assoc]
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨m, s, s', hs, hs', hdual⟩` from `GlobalTheory.FinPl.LatMem.exists_dualBasis S hS`. Establish `hyv : ∀ i, (fun l => pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F P) ⊗ₜ[D.host.F] (1 * s i l)) ∈ latV S MS P` using `fun i => AddSubgroup.subset_closure ⟨GlobalTheory.FinPl.LatMem.indP D.host.F P, GlobalTheory.FinPl.LatMem.indicatorAdele_mem_integralAdeles' _ _, GlobalTheory.FinPl.LatMem.indicatorAdele_supported _ _, 1, rfl, s i, hs i, rfl⟩`. Establish `hdualA : ∀ a b, ∑ i, incA D (s i a) * ∑ k, incA D (star (s' i k)) * gA S k b = incA D (if a = b then 1 else 0)`. Introduce `a b`. Rewrite using `[← hdual a b, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_sum, gA, rat, Matrix.map_apply]`. Establish `h2 : ∀ a, ∑ i, incA D (s i a) * ∑ b, (∑ k, incA D (star (s' i k)) * gA S k b) * x b = x a`. Introduce `a`. Simplify using `only [Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `h3 : ∀ b, ∑ i, incA D (s i a) * ((∑ k, incA D (star (s' i k)) * gA S k b) * x b) = incA D (if a = b then 1 else 0) * x b`. Introduce `b`. Rewrite using `[← hdualA a b, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3]`. Rewrite using `[Finset.sum_eq_single a]`. Rewrite using `[if_pos rfl, map_one, one_mul]`. Introduce `b _ hb`.
+
+Rewrite using `[if_neg (Ne.symm hb), map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `key : x = ∑ i, fun a => pairH S (fun l => incA D (s' i l)) x * pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F P) ⊗ₜ[D.host.F] (1 * s i a)`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[Finset.sum_apply]`. Establish `h1 : ∀ i, pairH S (fun l => incA D (s' i l)) x * pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F P) ⊗ₜ[D.host.F] (1 * s i a) = (incA D (s i a) * ∑ b, (∑ k, incA D (star (s' i k)) * gA S k b) * x b) * (pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F P) ⊗ₜ[D.hos …`. Introduce `i`. Rewrite using `[tmul_eq, pairH_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h1]`. Rewrite using `[← Finset.sum_mul, h2 a]`. Conclude with `(GlobalTheory.FinPl.LatMem.mul_indP (hx a)).symm`. Rewrite using `[key]`. Conclude with `sum_mem fun i _ => GlobalTheory.FinPl.LatIndHalf.mul_mem_latV (hint _ (hs' i)) (hyv i)`.
+-/
 theorem mem_latV_of_pairH {S : HSp D} {MS : Lat S} (hS : IsSelfDualC S MS) {P : Pl D → Prop}
     {x : Fin S.rank → AE D} (hx : ∀ b, x b ∈ idAt D P)
     (hint : ∀ t ∈ MS, finPart D (pairH S (fun a => incA D (t a)) x) ∈ intAE D) : x ∈ latV S MS P := by
@@ -157,6 +221,11 @@ theorem mem_latV_of_pairH {S : HSp D} {MS : Lat S} (hS : IsSelfDualC S MS) {P : 
   rw [key]
   exact sum_mem fun i _ => GlobalTheory.FinPl.LatIndHalf.mul_mem_latV (hint _ (hs' i)) (hyv i)
 
+/- English proof (translation)
+Unfold `pairH GlobalTheory.FinPl.kap GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_smul, gA_giA_cancel, smul_mulVec', dotProduct_smul, smul_eq_mul]`. Use `congr 1`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.mulVec_mulVec, RingHom.map_mulVec, adj, Matrix.vecMul_transpose]`. Both sides reduce to the same expression.
+-/
 theorem pairH_kap (S L L'' : HSp D) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (w : WO S L'')
     (t : Fin S.rank → D.host.E) (y : Fin L.rank → AE D) :
     pairH S (fun a => incA D (t a)) (GlobalTheory.FinPl.kap τ S w *ᵥ y) =
@@ -178,6 +247,21 @@ open GlobalTheory.FinPl GlobalTheory.KapLat
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q S L L'' τ MS LL LZ hU hS hL hZ hτ w hw`. Establish `hwP : MxAt (· = q.v) w` using `GlobalTheory.FinPl.LatMem.latO_mxAt hw`. Establish `huP : MxAt (· = q.v) (GlobalTheory.FinPl.kap τ S w)` using `GlobalTheory.LastOpPf.mxAt_kap τ S hwP`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D L S LL MS hL hS]`. Use `⟨huP, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hU.2 S MS]`. Establish `hyP : ∀ b, y b ∈ idAt D (· = q.v)` using `GlobalTheory.ContrComb.LatT.latV_entry_mem hy`. Use `mem_latV_of_pairH hS (fun b => ?_) (fun t ht => ?_)` and prove the remaining obligations. Use `show (GlobalTheory.FinPl.kap τ S w *ᵥ y) b ∈ _`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (huP b j)`. Use `show finPart D (pairH S (fun a => incA D (t a)) (GlobalTheory.FinPl.kap τ S w *ᵥ y)) ∈ intAE D`. Rewrite using `[pairH_kap]`. Set `yv : Fin S.rank → AE D` to `fun l => pairA D.host.F 0 (GlobalTheory.FinPl.LatMem.indP D.host.F (· = q.v)) ⊗ₜ[D.host.F] (1 * t l)`. Establish `hyv : yv ∈ latV S MS (· = q.v)` using `AddSubgroup.subset_closure ⟨GlobalTheory.FinPl.LatMem.indP D.host.F (· = q.v), GlobalTheory.FinPl.LatMem.indicatorAdele_mem_integralAdeles' _ _, GlobalTheory.FinPl.LatMem.indicatorAdele_supported _ _, 1, rfl, t, ht, rfl⟩`.
+
+Establish `hwt : (w *ᵥ fun a => incA D (t a)) = w *ᵥ yv`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, yv, tmul_eq]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, GlobalTheory.FinPl.LatMem.mul_indP (hwP j l)]`.
+
+Establish `hz : (rat τ : Mx D L.rank L''.rank) *ᵥ (w *ᵥ fun a => incA D (t a)) ∈ latV L LL (· = q.v)`. Rewrite using `[hwt]`. Use `hτ _ ?_` and prove the remaining obligations. Rewrite using `[← hU.2 L'' LZ]`. Conclude with `GlobalTheory.FinPl.LatMem.latO_maps hS hw hyv`.
+
+Establish `hint` using `pairH_int hL hz hy`. Establish `hid : pairH L ((rat τ : Mx D L.rank L''.rank) *ᵥ (w *ᵥ fun a => incA D (t a))) y ∈ idAt D (· = q.v)`. Simplify using `only [pairH, Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun a _ => Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun b _ => Ideal.mul_mem_left _ _ (hyP b))`. Establish `h3` using `(hU.1 _ ⟨hid, hint⟩).2.2`.
+
+Rewrite using `[map_neg, neg_mul, map_neg]`. Conclude with `neg_mem h3`.
+-/
 theorem kap_mem_latO : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S L L'' : HSp D) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (MS : GlobalTheory.FinPl.Lat S) (LL : GlobalTheory.FinPl.Lat L) (LZ : GlobalTheory.FinPl.Lat L''), q.UnitAA → IsSelfDualC S MS → IsSelfDualC L LL → IsSelfDualC L'' LZ → (∀ y ∈ GlobalTheory.FinPl.latV L'' LZ (· = q.v), (rat τ : Mx D L.rank L''.rank) *ᵥ y ∈ GlobalTheory.FinPl.latV L LL (· = q.v)) → ∀ w ∈ latO S L'' (MS : Set _) (LZ : Set _) (· = q.v), GlobalTheory.FinPl.kap τ S w ∈ latO L S (LL : Set _) (MS : Set _) (· = q.v) := by
   intro D k _ _ _ _ q S L L'' τ MS LL LZ hU hS hL hZ hτ w hw
   have hwP : MxAt (· = q.v) w := GlobalTheory.FinPl.LatMem.latO_mxAt hw

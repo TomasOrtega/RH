@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.AdelicGroupFund
 
+/- English proof (translation)
+Introduce `D V μ hμ` and use `⟨GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ, GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ⟩`.
+-/
 theorem rightInvariant_and_exists_fundamentalDomain : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)), μ.IsHaarMeasure → μ.IsMulRightInvariant ∧ ∃ 𝓕, IsFundamentalDomain (GQ V) 𝓕 μ :=
   fun D V μ hμ => ⟨GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ,
     GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ⟩

@@ -6,6 +6,15 @@ namespace GlobalTheory
 
 open Filter Topology
 
+/- English proof (translation)
+Establish `hPm : ∀ n, MeasurableSet {x : G | (∃ l ∈ L, dist (y n) (l * x) < r) ∧ Q n x}`. Introduce `n`. Establish `hset : {x : G | ∃ l ∈ L, dist (y n) (l * x) < r} = ⋃ l : L, {x : G | dist (y n) ((l : G) * x) < r}`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Establish `hopen : IsOpen {x : G | ∃ l ∈ L, dist (y n) (l * x) < r}`. Rewrite using `[hset]`. Conclude with `isOpen_iUnion fun l => isOpen_lt (continuous_const.dist (continuous_const.mul continuous_id)) continuous_const`. Conclude with `hopen.measurableSet.inter (hQm n)`. Establish `hinv : ∀ l ∈ L, ∀ x n, ((∃ l' ∈ L, dist (y n) (l' * (l * x)) < r) ∧ Q n (l * x)) ↔ ((∃ l' ∈ L, dist (y n) (l' * x) < r) ∧ Q n x)`.
+
+Introduce `l hl x n`. Use `and_congr ⟨?_, ?_⟩ (hQi n l hl x)` and prove the remaining obligations. Introduce and unpack `⟨m, hm, hd⟩`. Conclude with `⟨m * l, L.mul_mem hm hl, by rwa [mul_assoc]⟩`. Introduce and unpack `⟨m, hm, hd⟩`.
+
+Use `⟨m * l⁻¹, L.mul_mem hm (L.inv_mem hl), ?_⟩` and prove the remaining obligations. Simplify `hd` using `[mul_assoc]`. Use `⟨fun x => Nat.find (hex x), measurable_find hex hPm, fun x => (Nat.find_spec (hex x)).1, fun l hl x => ?_, fun x => (Nat.find_spec (hex x)).2⟩` and prove the remaining obligations. Conclude with `le_antisymm (Nat.find_min' _ ((hinv l hl x _).2 (Nat.find_spec (hex x)))) (Nat.find_min' _ ((hinv l hl x _).1 (Nat.find_spec (hex (l * x)))))`.
+-/
 theorem exists_measurable_invariant_index {G : Type} [Group G] [MetricSpace G]
     [ContinuousMul G] [MeasurableSpace G] [BorelSpace G] (L : Subgroup G) (y : ℕ → G)
     (r : ℝ) (Q : ℕ → G → Prop) (hQm : ∀ n, MeasurableSet {x | Q n x})
@@ -38,6 +47,29 @@ theorem exists_measurable_invariant_index {G : Type} [Group G] [MetricSpace G]
   exact le_antisymm (Nat.find_min' _ ((hinv l hl x _).2 (Nat.find_spec (hex x))))
     (Nat.find_min' _ ((hinv l hl x _).1 (Nat.find_spec (hex (l * x)))))
 
+/- English proof (translation)
+Take `⟨y, hy⟩ : ∃ y : ℕ → G, DenseRange y` from `TopologicalSpace.exists_dense_seq G`. Set `S : ℕ → Type` to `fun k => {s : G → ℕ // Measurable s ∧ (∀ l ∈ L, ∀ x, s (l * x) = s x) ∧ ∀ x, ∃ l ∈ L, dist (y (s x)) (l * x) < (1 / 2 : ℝ) ^ k}`. Establish `hy_meas : ∀ s : G → ℕ, Measurable s → Measurable (fun x => y (s x))` using `fun s hs => measurable_from_nat.comp hs`. Establish `h0 : Nonempty (S 0)`. Take `⟨s, hs, hclose, hinv, -⟩` from `exists_measurable_invariant_index L y 1 (fun _ _ => True) (fun _ => MeasurableSet.univ) (fun _ _ _ _ => Iff.rfl) (fun x => by`.
+
+Take `⟨n, hn⟩` from `hy.exists_dist_lt x one_pos`. Conclude with `⟨n, ⟨1, L.one_mem, by rw [one_mul, dist_comm]; exact hn⟩, trivial⟩)`. Conclude with `⟨⟨s, hs, hinv, fun x => by simpa using hclose x⟩⟩`. Establish `hstep : ∀ k (s : S k), ∃ s' : S (k + 1), ∀ x, dist (y (s'.1 x)) (y (s.1 x)) < 2 * (1 / 2 : ℝ) ^ k`. Introduce `k s`.
+
+Take `⟨s, hsm, hsi, hsc⟩` from `s`. Establish `hpos : (0 : ℝ) < (1 / 2 : ℝ) ^ (k + 1)` using `by positivity`. Establish `hhalf : (1 / 2 : ℝ) ^ (k + 1) = (1 / 2 : ℝ) ^ k / 2` using `by ring`. Take `⟨s', hs'm, hclose, hinv, hQ⟩` from `exists_measurable_invariant_index L y ((1 / 2 : ℝ) ^ (k + 1)) (fun n x => dist (y n) (y (s x)) < 2 * (1 / 2 : ℝ) ^ k) (fun n => measurableSet_lt (measurable_const.dist (hy_meas s hsm)) measurable_const) (fun n l hl x => by simp only [hsi l hl x]) (fun x => by`. Take `⟨l, hl, hd⟩` from `hsc x`.
+
+Take `⟨n, hn⟩` from `hy.exists_dist_lt (l * x) hpos`. Use `⟨n, ⟨l, hl, by rw [dist_comm]; exact hn⟩, ?_⟩` and prove the remaining obligations. Establish `hk : (0 : ℝ) < (1 / 2 : ℝ) ^ k` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hn` using `[hhalf]`.
+
+Establish `e1` using `dist_comm (y n) (l * x)`. Establish `e2` using `dist_comm (l * x) (y (s x))`. Use the proof step `linarith)`. Conclude with `⟨⟨s', hs'm, hinv, hclose⟩, hQ⟩`. Use `choose step hstep using hstep`.
+
+Set `seq : (k : ℕ) → S k` to `fun k => Nat.rec (motive := S) h0.some (fun k s => step k s) k`. Set `f : ℕ → G → G` to `fun k x => y ((seq k).1 x)`. Establish `hf_succ : ∀ k x, dist (f k x) (f (k + 1) x) ≤ 2 * (1 / 2 : ℝ) ^ k` using `fun k x => by`. Rewrite using `[dist_comm]`. Conclude with `(hstep k (seq k) x).le`.
+
+Establish `hcauchy : ∀ x, CauchySeq (fun k => f k x)` using `fun x => cauchySeq_of_le_geometric (1 / 2 : ℝ) 2 (by norm_num) (hf_succ · x)`. Use `choose σ hσ using fun x => cauchySeq_tendsto_of_complete (hcauchy x)`. Use `⟨σ, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `measurable_of_tendsto_metrizable (fun k => hy_meas _ (seq k).2.1) (tendsto_pi_nhds.2 hσ)`. Introduce `x`.
+
+Establish `hC : IsClosed {z : G | z * x⁻¹ ∈ L}` using `hL.preimage (continuous_id.mul continuous_const)`. It suffices to establish `h : σ x ∈ closure {z : G | z * x⁻¹ ∈ L} by rwa [hC.closure_eq] at h`. Rewrite using `[Metric.mem_closure_iff]`. Introduce `ε hε`. Establish `h1 : ∀ᶠ k in atTop, dist (f k x) (σ x) < ε / 2` using `(hσ x).eventually (Metric.ball_mem_nhds _ (half_pos hε))`.
+
+Establish `h2 : ∀ᶠ k in atTop, (1 / 2 : ℝ) ^ k < ε / 2` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)).eventually (gt_mem_nhds (half_pos hε))`. Take `⟨k, hk1, hk2⟩` from `(h1.and h2).exists`. Take `⟨l, hl, hd⟩` from `(seq k).2.2.2 x`. Use `⟨l * x, by simpa using hl, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `l hl x`. Establish `hfx : (fun k => f k (l * x)) = fun k => f k x`. Use function extensionality and compare the values at `k`. Simplify using `only [f, (seq k).2.2.1 l hl x]`. Use `hσ (l * x)` as an intermediate fact.
+
+Rewrite `this` using `[hfx]`. Conclude with `tendsto_nhds_unique this (hσ x)`.
+-/
 theorem exists_measurable_coset_section_metric {G : Type} [Group G] [MetricSpace G]
     [CompleteSpace G] [SecondCountableTopology G]
     [ContinuousMul G] [MeasurableSpace G] [BorelSpace G] (L : Subgroup G)
@@ -111,6 +143,9 @@ theorem exists_measurable_coset_section_metric {G : Type} [Group G] [MetricSpace
     rw [hfx] at this
     exact tendsto_nhds_unique this (hσ x)
 
+/- English proof (translation)
+Set `` to `TopologicalSpace.upgradeIsCompletelyMetrizable G`. Conclude with `exists_measurable_coset_section_metric L hL`.
+-/
 theorem exists_measurable_coset_section (G : Type) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [PolishSpace G] [MeasurableSpace G] [BorelSpace G] (L : Subgroup G)
     (hL : IsClosed (L : Set G)) :

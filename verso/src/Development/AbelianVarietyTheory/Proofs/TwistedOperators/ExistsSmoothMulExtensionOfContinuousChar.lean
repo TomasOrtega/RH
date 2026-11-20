@@ -7,6 +7,15 @@ namespace GlobalTheory
 
 open MeasureTheory Filter Topology in
 
+/- English proof (translation)
+Use `borelize E`. Set `μ : Measure E` to `Measure.addHaar`. Set `b : ℕ → ContDiffBump (0 : E)` to `fun n => ⟨1 / ((n : ℝ) + 1) / 2, 1 / ((n : ℝ) + 1), by positivity, half_lt_self (by positivity)⟩`. Establish `hb : Tendsto (fun n => (b n).rOut) atTop (𝓝 0)` using `tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `ht` using `ContDiffBump.convolution_tendsto_right_of_continuous (μ := μ) hb hf 0`.
+
+Take `⟨n, hn⟩` from `(ht.eventually_ne h0).exists`. Establish `hs : ContDiff ℝ ∞ (convolution ((b n).normed μ) f (ContinuousLinearMap.lsmul ℝ ℝ) μ)` using `HasCompactSupport.contDiff_convolution_left _ (b n).hasCompactSupport_normed (b n).contDiff_normed hf.locallyIntegrable`. Establish `key : ∀ x, convolution ((b n).normed μ) f (ContinuousLinearMap.lsmul ℝ ℝ) μ x = f x * convolution ((b n).normed μ) f (ContinuousLinearMap.lsmul ℝ ℝ) μ 0`. Introduce `x`. Rewrite using `[convolution_def, convolution_def, ← integral_const_mul]`.
+
+Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `: x - t = x + (0 - t)` using `by abel`. Simplify using `only [ContinuousLinearMap.lsmul_apply]`. Rewrite using `[this, hadd, mul_smul_comm]`. Establish `: f = fun x => convolution ((b n).normed μ) f (ContinuousLinearMap.lsmul ℝ ℝ) μ x * (convolution ((b n).normed μ) f (ContinuousLinearMap.lsmul ℝ ℝ) μ 0)⁻¹`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[key x, mul_inv_cancel_right₀ hn]`. Rewrite using `[this]`. Conclude with `hs.mul contDiff_const`.
+-/
 theorem contDiff_of_continuous_of_map_add_eq_mul {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (f : E → ℂ) (hf : Continuous f)
     (hadd : ∀ x y, f (x + y) = f x * f y) (h0 : f 0 ≠ 0) : ContDiff ℝ ∞ f := by
@@ -44,11 +53,17 @@ noncomputable def mixedExpUnit (K : Type) [Field K] (y : mixedSpace K) : (mixedS
     Prod.ext (funext fun w => by simp [← Real.exp_add])
       (funext fun w => by simp [← Complex.exp_add])⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (Prod.ext (funext fun w => Real.exp_add (x.1 w) (y.1 w)) (funext fun w => Complex.exp_add (x.2 w) (y.2 w)))`.
+-/
 theorem mixedExpUnit_add (K : Type) [Field K] (x y : mixedSpace K) :
     mixedExpUnit K (x + y) = mixedExpUnit K x * mixedExpUnit K y :=
   Units.ext (Prod.ext (funext fun w => Real.exp_add (x.1 w) (y.1 w))
     (funext fun w => Complex.exp_add (x.2 w) (y.2 w)))
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous fun y : mixedSpace K => (((fun w => Real.exp (y.1 w), fun w => Complex.exp (y.2 w))) : mixedSpace K) fun_prop`. Use `show Continuous fun y : mixedSpace K => (((fun w => Real.exp (-y.1 w), fun w => Complex.exp (-y.2 w))) : mixedSpace K) fun_prop`.
+-/
 theorem continuous_mixedExpUnit (K : Type) [Field K] : Continuous (mixedExpUnit K) := by
   rw [Units.continuous_iff]
   constructor
@@ -62,6 +77,11 @@ theorem continuous_mixedExpUnit (K : Type) [Field K] : Continuous (mixedExpUnit 
 noncomputable def mixedLog (K : Type) [Field K] (x : mixedSpace K) : mixedSpace K :=
   (fun w => Real.log (x.1 w), fun w => Complex.log (x.2 w))
 
+/- English proof (translation)
+Use `ContDiffAt.prodMk (contDiffAt_pi.mpr fun w => ?_) (contDiffAt_pi.mpr fun w => ?_)` and prove the remaining obligations. Establish `h1 : ContDiff ℝ ∞ (fun x : mixedSpace K => x.1 w)` using `(contDiff_apply ℝ ℝ w).comp contDiff_fst`. Conclude with `h1.contDiffAt.log (by simp)`. Establish `h1 : ContDiff ℝ ∞ (fun x : mixedSpace K => x.2 w)` using `(contDiff_apply ℝ ℂ w).comp contDiff_snd`. Establish `h2 : ContDiffAt ℝ ∞ Complex.log ((1 : mixedSpace K).2 w)` using `(Complex.contDiffAt_log (by simp)).restrict_scalars ℝ`.
+
+Conclude with `h2.comp 1 h1.contDiffAt`.
+-/
 theorem contDiffAt_mixedLog_one (K : Type) [Field K] [NumberField K] :
     ContDiffAt ℝ ∞ (mixedLog K) 1 := by
   refine ContDiffAt.prodMk (contDiffAt_pi.mpr fun w => ?_) (contDiffAt_pi.mpr fun w => ?_)
@@ -75,6 +95,11 @@ theorem contDiffAt_mixedLog_one (K : Type) [Field K] [NumberField K] :
     exact h2.comp 1 h1.contDiffAt
 
 open Filter Topology in
+/- English proof (translation)
+Establish `h1 : ∀ᶠ x in 𝓝 (1 : mixedSpace K), ∀ w, 0 < x.1 w`. Use `eventually_all.mpr fun w => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun x : mixedSpace K => x.1 w)` using `by fun_prop`. Conclude with `hc.continuousAt.eventually (lt_mem_nhds (by simp))`. Establish `h2 : ∀ᶠ x in 𝓝 (1 : mixedSpace K), ∀ w, x.2 w ≠ 0`.
+
+Use `eventually_all.mpr fun w => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun x : mixedSpace K => x.2 w)` using `by fun_prop`. Conclude with `hc.continuousAt.eventually_ne (by simp)`. Use `filter_upwards [h1, h2] with x hx1 hx2`. Conclude with `Prod.ext (funext fun w => Real.exp_log (hx1 w)) (funext fun w => Complex.exp_log (hx2 w))`.
+-/
 theorem eventually_mixedExpUnit_mixedLog (K : Type) [Field K] [NumberField K] :
     ∀ᶠ x in 𝓝 (1 : mixedSpace K), (mixedExpUnit K (mixedLog K x) : mixedSpace K) = x := by
   have h1 : ∀ᶠ x in 𝓝 (1 : mixedSpace K), ∀ w, 0 < x.1 w := by
@@ -88,6 +113,15 @@ theorem eventually_mixedExpUnit_mixedLog (K : Type) [Field K] [NumberField K] :
   filter_upwards [h1, h2] with x hx1 hx2
   exact Prod.ext (funext fun w => Real.exp_log (hx1 w)) (funext fun w => Complex.exp_log (hx2 w))
 
+/- English proof (translation)
+Rewrite using `[mixedEmbedding.norm_ne_zero_iff, Prod.isUnit_iff, Pi.isUnit_iff, Pi.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Use `h w.1` as an intermediate fact.
+
+Rewrite `this` using `[normAtPlace_apply_of_isReal w.2]`. Conclude with `(norm_ne_zero_iff.mp this).isUnit`. Use `h w.1` as an intermediate fact. Rewrite `this` using `[normAtPlace_apply_of_isComplex w.2]`. Conclude with `(norm_ne_zero_iff.mp this).isUnit`.
+
+Introduce and unpack `⟨h1, h2⟩ w`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Rewrite using `[normAtPlace_apply_of_isReal hw]`. Conclude with `norm_ne_zero_iff.mpr (h1 _).ne_zero`. Rewrite using `[normAtPlace_apply_of_isComplex hw]`.
+
+Conclude with `norm_ne_zero_iff.mpr (h2 _).ne_zero`.
+-/
 theorem mixedSpace_norm_ne_zero_iff_isUnit (K : Type) [Field K] [NumberField K]
     (x : mixedSpace K) : mixedEmbedding.norm x ≠ 0 ↔ IsUnit x := by
   rw [mixedEmbedding.norm_ne_zero_iff, Prod.isUnit_iff, Pi.isUnit_iff, Pi.isUnit_iff]
@@ -107,6 +141,21 @@ theorem mixedSpace_norm_ne_zero_iff_isUnit (K : Type) [Field K] [NumberField K]
     · rw [normAtPlace_apply_of_isComplex hw]
       exact norm_ne_zero_iff.mpr (h2 _).ne_zero
 
+/- English proof (translation)
+Introduce `K _ _ ψ hψ`. Set `φ : mixedSpace K → ℂ` to `fun x => if h : IsUnit x then (ψ h.unit : ℂ) else 0`. Establish `hu : ∀ u : (mixedSpace K)ˣ, φ u = (ψ u : ℂ)`. Introduce `u`. Simplify using `only [φ, dif_pos u.isUnit, IsUnit.unit_of_val_units]`.
+
+Establish `hn : ∀ x, ¬ IsUnit x → φ x = 0` using `fun x hx => dif_neg hx`. Establish `hmul : ∀ x y, φ (x * y) = φ x * φ y`. Introduce `x y`. Distinguish the cases in `hx : IsUnit x`. Distinguish the cases in `hy : IsUnit y`.
+
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Rewrite using `[← Units.val_mul, hu, hu, hu, map_mul, Units.val_mul]`. Rewrite using `[hn y hy, hn _ (fun h => hy (isUnit_of_mul_isUnit_right h)), mul_zero]`. Rewrite using `[hn x hx, hn _ (fun h => hx (isUnit_of_mul_isUnit_left h)), zero_mul]`.
+
+Establish `hf : ContDiff ℝ ∞ (fun y => (ψ (mixedExpUnit K y) : ℂ))` using `contDiff_of_continuous_of_map_add_eq_mul _ (Units.continuous_val.comp (hψ.comp (continuous_mixedExpUnit K))) (fun x y => by rw [mixedExpUnit_add, map_mul, Units.val_mul]) (Units.ne_zero _)`. Establish `h1 : ContDiffAt ℝ ∞ φ 1`. Use `(hf.contDiffAt.comp 1 (contDiffAt_mixedLog_one K)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [eventually_mixedExpUnit_mixedLog K] with x hx`. Rewrite using `[Function.comp_apply, ← hu, hx]`.
+
+Use `⟨φ, hmul, fun x hx => ?_, hu, mixedSpace_norm_ne_zero_iff_isUnit K⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(mixedSpace_norm_ne_zero_iff_isUnit K x).mp hx`. Establish `h2 : φ = fun z => φ u * φ ((u⁻¹ : (mixedSpace K)ˣ) * z)`. Use function extensionality and compare the values at `z`. Rewrite using `[← hmul, Units.mul_inv_cancel_left]`.
+
+Establish `h3 : ContDiffAt ℝ ∞ φ (((u⁻¹ : (mixedSpace K)ˣ) : mixedSpace K) * u)`. Rewrite using `[Units.inv_mul]`. Conclude with `h1`. Establish `h4 : ContDiffAt ℝ ∞ (fun z : mixedSpace K => φ u * φ ((u⁻¹ : (mixedSpace K)ˣ) * z)) (u : mixedSpace K)` using `contDiffAt_const.mul (h3.comp (u : mixedSpace K) (f := fun z : mixedSpace K => ((u⁻¹ : (mixedSpace K)ˣ) : mixedSpace K) * z) (contDiffAt_const.mul contDiffAt_id))`. Rewrite `h4` using `[← h2]`.
+
+Conclude with `h4.contDiffWithinAt`.
+-/
 theorem exists_smooth_mul_extension_of_continuous_char :
     ∀ (K : Type) [Field K] [NumberField K] (ψ : (mixedSpace K)ˣ →* ℂˣ), Continuous ψ → ∃ φ : mixedSpace K → ℂ, (∀ x y, φ (x * y) = φ x * φ y) ∧ ContDiffOn ℝ ∞ φ {x | mixedEmbedding.norm x ≠ 0} ∧ (∀ u : (mixedSpace K)ˣ, φ u = (ψ u : ℂ)) ∧ ∀ x : mixedSpace K, mixedEmbedding.norm x ≠ 0 ↔ IsUnit x := by
   intro K _ _ ψ hψ

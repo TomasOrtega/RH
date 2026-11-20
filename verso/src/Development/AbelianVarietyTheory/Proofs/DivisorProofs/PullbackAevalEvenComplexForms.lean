@@ -6,6 +6,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 
+/- English proof (translation)
+Introduce `n n' L κ w w' P h`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.aeval_C]`. Rewrite using `[Subalgebra.coe_algebraMap, Subalgebra.coe_algebraMap, AlgHom.commutes]`.
+
+Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, Subalgebra.coe_add, Subalgebra.coe_add, map_add, hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, MvPolynomial.aeval_X, MvPolynomial.aeval_X, Subalgebra.coe_mul, Subalgebra.coe_mul, map_mul, hp, h i]`.
+-/
 theorem GlobalTheory.FlagCell2.pull_aeval_even : ∀ (n n' : ℕ) (L : V n →L[ℂ] V n') (κ : Type) (w : κ → Ev n) (w' : κ → Ev n') (P : MvPolynomial κ ℂ), (∀ x, (w x : Alt n) = pull L (w' x : Alt n')) → ((aeval w P : Ev n) : Alt n) = pull L ((aeval w' P : Ev n') : Alt n') := by
   intro n n' L κ w w' P h
   induction P using MvPolynomial.induction_on with

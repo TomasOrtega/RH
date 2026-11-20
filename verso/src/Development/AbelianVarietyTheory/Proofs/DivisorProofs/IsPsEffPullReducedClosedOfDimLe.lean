@@ -20,6 +20,15 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI := algebraΓAlong k (redι Z)`. Use `isIntegral_red hZ` as an intermediate fact. Take `⟨B, hB⟩` from `exists_isAmpleLB_of_isProjOver hX`. Establish `: IsProper (strHom k X)`. Take `⟨N, i, hi, e⟩` from `hX`.
+
+Use `isProper_str k N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`. Establish `hA` using `hB.pull_of_isClosedImmersion (redι Z)`. Establish `: IsProper (strHom k (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`.
+
+Rewrite using `[← comp_strHom (appTop_algebraMap_along k (redι Z))]`. Use `infer_instance`. Establish `hN` using `hM.pull_of_isClosedImmersion (redι Z) (appTop_algebraMap_along k (redι Z))`. Use `⟨hN.isLB, _, hA, fun m _ => ?_⟩` and prove the remaining obligations. Establish `hP` using `H _ (hA.isProjOver _) ((topologicalKrullDim_red Z).trans_le hd) _ _ hA (hN.pow hA m)`.
+
+Take `⟨r, hr, hg⟩` from `hP.exists_isGenerated_pow`. Use `⟨r, hr, hg.hasNonzeroSec.of_cls_eq (isLB_lbPow (isLB_tens (isLB_lbPow hN.isLB m) hA.isLB) r) hg.isLB ?_⟩` and prove the remaining obligations. Rewrite using `[cls_lbPow (isLB_tens (isLB_lbPow hN.isLB m) hA.isLB), cls_lbPow hP.isLB, cls_tens (isLB_lbPow hN.isLB m) hA.isLB, cls_tens hA.isLB (isLB_lbPow hN.isLB m), add_comm]`.
+-/
 theorem IsNef.isPsEff_pull_red_of_dim_le (k : Type) [Field k] [Infinite k] (d : ℕ)
     (H : ∀ (Y : Scheme.{0}) [Algebra k Γ(Y, ⊤)], IsProjOver (strHom k Y) →
       topologicalKrullDim Y ≤ (d : ℕ) → ∀ A N : LB Y, IsAmpleLB A → IsNef k N →

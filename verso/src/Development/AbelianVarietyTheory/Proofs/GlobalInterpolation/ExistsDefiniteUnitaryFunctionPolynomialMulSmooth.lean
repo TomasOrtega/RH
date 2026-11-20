@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 
 namespace GlobalTheory.UnitaryBC
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open e).2 fun x => ?_)` and prove the remaining obligations. Use `⟨(fun y => x⁻¹ * y) ⁻¹' (V : Set G), hV.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← h _ hy x, mul_inv_cancel_left]`.
+-/
 theorem continuous_of_right_invariant_open {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (e : G → ℂ) (V : Subgroup G) (hV : IsOpen (V : Set G)) (h : ∀ u ∈ V, ∀ g, e (g * u) = e g) :
     Continuous e := by
@@ -14,6 +17,29 @@ theorem continuous_of_right_invariant_open {G : Type} [Group G] [TopologicalSpac
   refine ⟨(fun y => x⁻¹ * y) ⁻¹' (V : Set G), hV.preimage (by fun_prop), by simp, fun y hy => ?_⟩
   rw [← h _ hy x, mul_inv_cancel_left]
 
+/- English proof (translation)
+Introduce `E _ _ _ n m p e hp he`. Take `⟨-, -, -, a, b, ha, hb, -, hab⟩` from `GlobalTheory.T.definiteUnitary_realApprox_and_finite_infinite_split E n`. Take `⟨hcont, -, -, -, hco⟩` from `GlobalTheory.T.unitary_coordinate_algebra_dense E n`. Use `choose V hVo hV using he`. Establish `haf : ∀ g : finU E n, a g.1 = g` using `fun g => by simpa using (hab g 1).1`.
+
+Establish `hbf : ∀ g : finU E n, b g.1 = 1` using `fun g => by simpa using (hab g 1).2`. Establish `hai : ∀ k : infU E n, a k.1 = 1` using `fun k => by simpa using (hab 1 k).1`. Establish `hbi : ∀ k : infU E n, b k.1 = k` using `fun k => by simpa using (hab 1 k).2`. Establish `hR : ∀ (x : UA E n) (φ : UA E n → ℂ) (g : UA E n), RU E n x φ g = φ (g * x)` using `fun _ _ _ => rfl`. Use `⟨fun x => ∑ i, p i (b x) * e i (a x), ?_, ?_, ?_, fun g k => ?_⟩` and prove the remaining obligations.
+
+Conclude with `continuous_finsetSum _ fun i _ => ((hcont _ (hp i)).comp hb).mul ((continuous_of_right_invariant_open _ _ (hVo i) (hV i)).comp ha)`. Use `set φ : UA E n → ℂ := fun x => ∑ i, p i (b x) * e i (a x) with hφ`. Set `S : Subgroup (finU E n)` to `{ carrier := {k : finU E n | RU E n k φ = φ} one_mem' := by`. Express the relevant statement in the definitionally equal form `RU E n ((1 : finU E n) : UA E n) φ = φ`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hR]`. Simplify using the standard rewrite rules. Use the proof step `mul_mem' := fun {x y} hx hy => by`. Express the relevant statement in the definitionally equal form `RU E n ((x * y : finU E n) : UA E n) φ = φ`. Use function extensionality and compare the values at `g`.
+
+Establish `h1` using `congrFun (show RU E n x φ = φ from hx) g`. Establish `h2` using `congrFun (show RU E n y φ = φ from hy) (g * x)`. Rewrite `h1`, `h2`, the goal using `[hR]`. Rewrite using `[Subgroup.coe_mul, ← mul_assoc, h2, h1]`. Use the proof step `inv_mem' := fun {x} hx => by`.
+
+Express the relevant statement in the definitionally equal form `RU E n ((x⁻¹ : finU E n) : UA E n) φ = φ`. Use function extensionality and compare the values at `g`. Establish `h1` using `congrFun (show RU E n x φ = φ from hx) (g * (x : UA E n)⁻¹)`. Rewrite `h1`, the goal using `[hR]`. Rewrite using `[Subgroup.coe_inv, ← h1, inv_mul_cancel_right] }`.
+
+Establish `hle : (⨅ i, V i) ≤ S` using `fun u hu => by`. Express the relevant statement in the definitionally equal form `RU E n (u : UA E n) φ = φ`. Use function extensionality and compare the values at `g`. Rewrite using `[hR]`. Simplify using `only [hφ, map_mul, haf, hbf, mul_one]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [hV i u (Subgroup.mem_iInf.1 hu i)]`. Use `Subgroup.isOpen_mono hle ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite hVo`. Use `choose N c d _ hcd using fun i => hco _ (hp i)`.
+
+Set `f : (Σ i, Fin (N i)) → UA E n → ℂ` to `fun s x => c s.1 s.2 (b x) * e s.1 (a x)`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range f)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range f)`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range f)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `: RU E n k (fun x => ∑ i, p i (b x) * e i (a x)) = ∑ s : Σ i, Fin (N i), d s.1 s.2 k • f s`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[hR]`. Simplify using `only [map_mul, hai, hbi, mul_one, hcd, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, f, Fintype.sum_sigma, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Express the relevant statement in the definitionally equal form `RU E n k _ ∈ _`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`. Simplify using `only [(hab g k).1, (hab g k).2]`.
+-/
 theorem exists_fun_of_poly_smooth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (m : ℕ) (p : Fin m → infU E n → ℂ) (e : Fin m → finU E n → ℂ), (∀ i, p i ∈ Algebra.adjoin ℂ {f : infU E n → ℂ | ∃ (τ : E →+* ℂ) (i j : Fin n), f = fun x => (cEmb τ x.1).val i j}) → (∀ i, ∃ V : Subgroup (finU E n), IsOpen (V : Set (finU E n)) ∧ ∀ u ∈ V, ∀ g, e i (g * u) = e i g) → ∃ φ : UA E n → ℂ, Continuous φ ∧ IsOpen {k : finU E n | RU E n k φ = φ} ∧ FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : infU E n => RU E n k φ)) ∧ ∀ (g : finU E n) (k : infU E n), φ (g.1 * k.1) = ∑ i, p i k * e i g := by
   intro E _ _ _ n m p e hp he
   obtain ⟨-, -, -, a, b, ha, hb, -, hab⟩ := GlobalTheory.T.definiteUnitary_realApprox_and_finite_infinite_split E n

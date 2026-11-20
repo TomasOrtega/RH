@@ -10,20 +10,38 @@ namespace GlobalTheory.LatClass
 section Pow
 variable {k : Type} [Field k] [ValuativeRel k] {ϖ : kˣ}
 
+/- English proof (translation)
+Simplify using `[zero_lt_iff]`.
+-/
 theorem val_pos (x : kˣ) : 0 < valuation k (x : k) := by simp [zero_lt_iff]
 
+/- English proof (translation)
+Simplify using `[powInt]`.
+-/
 theorem mem_pow {e : ℤ} {s : k} : s ∈ powInt ϖ e ↔ valuation k s ≤ valuation k (ϖ : k) ^ e := by
   simp [powInt]
 
+/- English proof (translation)
+Rewrite using `[mem_pow, zpow_zero]`. Both sides reduce to the same expression.
+-/
 theorem mem_pow_zero {s : k} : s ∈ powInt ϖ 0 ↔ s ∈ 𝒪[k] := by
   rw [mem_pow, zpow_zero]; rfl
 
+/- English proof (translation)
+Establish `h` using `val_pos ϖ`. Rewrite using `[mem_pow, mem_pow, map_mul, map_zpow₀, zpow_sub₀ h.ne', le_div_iff₀ (zpow_pos h a), mul_comm]`.
+-/
 theorem zpow_mul_mem_pow {a b : ℤ} {s : k} : (ϖ : k) ^ a * s ∈ powInt ϖ b ↔ s ∈ powInt ϖ (b - a) := by
   have h := val_pos ϖ
   rw [mem_pow, mem_pow, map_mul, map_zpow₀, zpow_sub₀ h.ne', le_div_iff₀ (zpow_pos h a), mul_comm]
 
+/- English proof (translation)
+Simplify using `[mem_pow]`.
+-/
 theorem zero_mem_pow {e : ℤ} : (0 : k) ∈ powInt ϖ e := by simp [mem_pow]
 
+/- English proof (translation)
+Rewrite `ht`, `hs`, the goal using `[mem_pow]`. Rewrite using `[map_mul, zpow_add₀ (val_pos ϖ).ne']`. Conclude with `mul_le_mul' ht hs`.
+-/
 theorem pow_mul_pow {a b : ℤ} {t s : k} (ht : t ∈ powInt ϖ a) (hs : s ∈ powInt ϖ b) : t * s ∈ powInt ϖ (a + b) := by
   rw [mem_pow] at ht hs ⊢
   rw [map_mul, zpow_add₀ (val_pos ϖ).ne']
@@ -32,9 +50,15 @@ theorem pow_mul_pow {a b : ℤ} {t s : k} (ht : t ∈ powInt ϖ a) (hs : s ∈ p
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hϖ : valuation k (ϖ : k) = uniformizer k)
 include hϖ
 
+/- English proof (translation)
+Rewrite using `[mem_pow, map_zpow₀, zpow_le_zpow_iff_right_of_lt_one₀ (val_pos ϖ) (hϖ ▸ uniformizer_lt_one)]`.
+-/
 theorem zpow_mem_pow {a b : ℤ} : (ϖ : k) ^ a ∈ powInt ϖ b ↔ b ≤ a := by
   rw [mem_pow, map_zpow₀, zpow_le_zpow_iff_right_of_lt_one₀ (val_pos ϖ) (hϖ ▸ uniformizer_lt_one)]
 
+/- English proof (translation)
+Use `(zpow_mem_pow hϖ).2 h` as an intermediate fact. Rewrite `hs`, `this`, the goal using `[mem_pow]`. Rewrite `this` using `[map_zpow₀]`. Conclude with `hs.trans this`.
+-/
 theorem pow_mono {a b : ℤ} (h : a ≤ b) {s : k} (hs : s ∈ powInt ϖ b) : s ∈ powInt ϖ a := by
   have := (zpow_mem_pow hϖ).2 h
   rw [mem_pow] at hs this ⊢
@@ -48,16 +72,32 @@ variable {k : Type} [Field k] [ValuativeRel k] {ϖ : kˣ}
 variable {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
+/- English proof (translation)
+Simplify using `[mem_latOf, mulVec_mulVec]`.
+-/
 theorem mem_latOf_mul {g a : GL Y k} {y : Y → k} : y ∈ latOf (g * a) ↔ (g⁻¹).val *ᵥ y ∈ latOf a := by
   simp [mem_latOf, mulVec_mulVec]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_latOf_mul, mem_latOf_mul, h]`.
+-/
 theorem latOf_mul_congr (g : GL Y k) {a b : GL Y k} (h : latOf a = latOf b) : latOf (g * a) = latOf (g * b) := by
   ext y; rw [mem_latOf_mul, mem_latOf_mul, h]
 
 omit [Fintype Y] [DecidableEq Y] in
+/- English proof (translation)
+The claim follows from `L.smul_mem ⟨t, ht⟩ hy`.
+-/
 theorem smul_mem_lat {L : Submodule 𝒪[k] (Y → k)} {t : k} (ht : t ∈ 𝒪[k]) {y : Y → k} (hy : y ∈ L) : t • y ∈ L :=
   L.smul_mem ⟨t, ht⟩ hy
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H i j`. Establish `: g.val *ᵥ Pi.single j 1 ∈ latOf g`. Use `(mulVec_mem_latOf g (g := 1) (y := Pi.single j 1)).2 (mem_latOf_one.2 fun l => by` as an intermediate fact. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `H _ this i` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, mulVec_mulVec, mulVec_single_one]`. Then use the resulting hypothesis.
+
+Introduce `H y hy i`. Establish `: (h⁻¹).val *ᵥ (x *ᵥ y) = ((h⁻¹).val * x * g.val) *ᵥ ((g⁻¹).val *ᵥ y)`. Simplify using `[mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[this]`. Conclude with `sum_mem fun l _ => mul_mem (H i l) (hy l)`.
+-/
 theorem mapsLat_iff {x : Matrix Y Y' k} {g : GL Y' k} {h : GL Y k} :
     MapsLat x (latOf g) (latOf h) ↔ IntM ((h⁻¹).val * x * g.val) := by
   constructor
@@ -75,6 +115,15 @@ theorem mapsLat_iff {x : Matrix Y Y' k} {g : GL Y' k} {h : GL Y k} :
     rw [this]
     exact sum_mem fun l _ => mul_mem (H i l) (hy l)
 
+/- English proof (translation)
+Establish `key : (nfBasis ϖ g e z).val *ᵥ Sum.elim ((g⁻¹).val *ᵥ fun r => y (.inl r) - y (.inr 0) * z r) (fun i => (ϖ : k) ^ (-e i) * y (.inr i)) = y`. Establish `h0 : ∀ a : ℤ, (ϖ : k) ^ a ≠ 0` using `fun a => zpow_ne_zero _ ϖ.ne_zero`. Rewrite using `[nfBasis_val, fromBlocks_mulVec]`. Use extensionality with `(r | i)`. Simplify using `only [Sum.elim_inl, Sum.elim_comp_inl, Sum.elim_comp_inr, mulVec_mulVec, Units.mul_inv, one_mulVec, Pi.add_apply]`.
+
+Simplify using `[mulVec, dotProduct]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[mulVec_diagonal, h0]`. Use `conv_lhs => rw [← key, ← mul_one (nfBasis ϖ g e z)]`.
+
+Rewrite using `[mul_one, ← mul_one (nfBasis ϖ g e z)]`. Use `conv_lhs => enter [2]`. Rewrite using `[mul_one]`. Rewrite using `[mulVec_mem_latOf, mem_latOf_one, Sum.forall]`. Use `and_congr Iff.rfl (forall_congr' fun i => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Sum.elim_inr, ← mem_pow_zero (ϖ := ϖ), zpow_mul_mem_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_nf {g : GL n k} {e : Fin (c + 1) → ℤ} {z : n → k} {y : n ⊕ Fin (c + 1) → k} :
     y ∈ latOf (nfBasis ϖ g e z) ↔
       (fun r => y (.inl r) - y (.inr 0) * z r) ∈ latOf g ∧ ∀ i, y (.inr i) ∈ powInt ϖ (e i) := by
@@ -96,12 +145,20 @@ theorem mem_nf {g : GL n k} {e : Fin (c + 1) → ℤ} {z : n → k} {y : n ⊕ F
   refine and_congr Iff.rfl (forall_congr' fun i => ?_)
   rw [Sum.elim_inr, ← mem_pow_zero (ϖ := ϖ), zpow_mul_mem_pow]; simp
 
+/- English proof (translation)
+Rewrite using `[← nfBasis_one, mem_nf, mem_latOf_one]`.
+-/
 theorem mem_normal {e : Fin (c + 1) → ℤ} {z : n → k} {y : n ⊕ Fin (c + 1) → k} :
     y ∈ latOf (normalBasis ϖ e z) ↔
       (∀ r, y (.inl r) - y (.inr 0) * z r ∈ 𝒪[k]) ∧ ∀ i, y (.inr i) ∈ powInt ϖ (e i) := by
   rw [← nfBasis_one, mem_nf, mem_latOf_one]
 
 omit [ValuativeRel k] in
+/- English proof (translation)
+Establish `hu'` using `(Radical.mem_N_iff u).1 hu`. Use `conv_rhs => rw [← one_mulVec y]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Break down `le_or_gt (lev p s) (lev p r) with hs | hs` into its components or cases. Conclude with `congrArg (· * y s) (hu' r s hs)`.
+
+Simplify using `[h s hs]`.
+-/
 theorem N_mulVec {p : ℕ} {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c p) (y : n ⊕ Fin c → k) (r : n ⊕ Fin c)
     (h : ∀ s, lev p r < lev p s → y s = 0) : (u.val *ᵥ y) r = y r := by
   have hu' := (Radical.mem_N_iff u).1 hu
@@ -113,6 +170,11 @@ theorem N_mulVec {p : ℕ} {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c p) (y : 
 
 omit [ValuativeRel k] in
 
+/- English proof (translation)
+Use extensionality with `r`. Use `N_mulVec hu y r ?_` and prove the remaining obligations. Introduce and unpack `(s | s) hs`. Apply the tactic sequence `rcases r with r | r <;> simp [lev] at hs`. Apply `h` to reduce the goal to its premises.
+
+Apply the tactic sequence `rcases r with r | r <;> simp [lev] at hs <;> omega`.
+-/
 theorem N_fix {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1) (y : n ⊕ Fin c → k)
     (h : ∀ l : Fin c, 0 < l.val → y (.inr l) = 0) : u.val *ᵥ y = y := by
   ext r
@@ -123,10 +185,20 @@ theorem N_fix {u : GL (n ⊕ Fin c) k} (hu : u ∈ N k n c 1) (y : n ⊕ Fin c �
     rcases r with r | r <;> simp [lev] at hs <;> omega
 
 omit [ValuativeRel k] in
+/- English proof (translation)
+Rewrite using `[Radical.embX_val, fromBlocks_mulVec]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem embX_mulVec (x : GL n k) (y : n ⊕ Fin c → k) :
     (embX c x).val *ᵥ y = Sum.elim (x.val *ᵥ fun r => y (.inl r)) fun l => y (.inr l) := by
   rw [Radical.embX_val, fromBlocks_mulVec]; simp; rfl
 
+/- English proof (translation)
+Take `⟨x, u, hu, rfl⟩` from `Radical.exists_of_mem_R hr`. Introduce and unpack `_ ⟨y, hy, h0, rfl⟩`. Establish `key : ∀ l, i ≤ l → ((embX c x * u).val *ᵥ y) (.inr l) = y (.inr l)` using `fun l hl => by`. Rewrite using `[Units.val_mul, ← mulVec_mulVec, embX_mulVec, Sum.elim_inr]`. Use `N_mulVec hu y _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `(s | s) hs`. Simplify using `[lev] at hs`. Apply `h0` to reduce the goal to its premises. Simplify using `[lev] at hs`. Conclude with `lt_of_le_of_lt hl hs`.
+
+Conclude with `⟨_, (mulVec_mem_latOf _).2 hy, fun l hl => (key l hl.le).trans (h0 l hl), key i le_rfl⟩`.
+-/
 theorem topCoord_le {r : GL (n ⊕ Fin c) k} (hr : r ∈ R k n c 1) (h : GL (n ⊕ Fin c) k) (i : Fin c) :
     topCoord (latOf h) i ⊆ topCoord (latOf (r * h)) i := by
   obtain ⟨x, u, hu, rfl⟩ := Radical.exists_of_mem_R hr
@@ -141,12 +213,20 @@ theorem topCoord_le {r : GL (n ⊕ Fin c) k} (hr : r ∈ R k n c 1) (h : GL (n �
       exact lt_of_le_of_lt hl hs
   exact ⟨_, (mulVec_mem_latOf _).2 hy, fun l hl => (key l hl.le).trans (h0 l hl), key i le_rfl⟩
 
+/- English proof (translation)
+Use `Set.Subset.antisymm ?_ (topCoord_le hr h i)` and prove the remaining obligations. Use `topCoord_le (inv_mem hr) (r * h) i` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem topCoord_R {r : GL (n ⊕ Fin c) k} (hr : r ∈ R k n c 1) (h : GL (n ⊕ Fin c) k) (i : Fin c) :
     topCoord (latOf (r * h)) i = topCoord (latOf h) i := by
   refine Set.Subset.antisymm ?_ (topCoord_le hr h i)
   have := topCoord_le (inv_mem hr) (r * h) i
   rwa [inv_mul_cancel_left] at this
 
+/- English proof (translation)
+Use `mem_nf.2 ⟨?_, fun l => ?_⟩` and prove the remaining obligations. Use `zero_mem (latOf g) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`. Distinguish the cases in `h : i = 0`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[Sum.elim_inr, Pi.single_apply] split_ifs with h`. Rewrite using `[h]` and apply the resulting hypothesis. Conclude with `zero_mem_pow`.
+-/
 theorem col_mem_nf {g : GL n k} {e : Fin (c + 1) → ℤ} {z : n → k} (i : Fin (c + 1)) {s : k}
     (hs : s ∈ powInt ϖ (e i)) :
     (Sum.elim (fun r => if i = 0 then s * z r else 0) (Pi.single i s) : n ⊕ Fin (c + 1) → k) ∈
@@ -162,6 +242,11 @@ theorem col_mem_nf {g : GL n k} {e : Fin (c + 1) → ℤ} {z : n → k} (i : Fin
     · rwa [h]
     · exact zero_mem_pow
 
+/- English proof (translation)
+Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, -, rfl⟩`. Conclude with `(mem_nf.1 hy).2 i`. Introduce `hs`.
+
+Conclude with `⟨_, col_mem_nf i hs, fun l hl => by simp [hl.ne'], by simp⟩`.
+-/
 theorem topCoord_nf (g : GL n k) (e : Fin (c + 1) → ℤ) (z : n → k) (i : Fin (c + 1)) :
     topCoord (latOf (nfBasis ϖ g e z)) i = powInt ϖ (e i) := by
   ext s
@@ -172,6 +257,11 @@ theorem topCoord_nf (g : GL n k) (e : Fin (c + 1) → ℤ) (z : n → k) (i : Fi
     exact ⟨_, col_mem_nf i hs, fun l hl => by simp [hl.ne'], by simp⟩
 
 omit [ValuativeRel k] in
+/- English proof (translation)
+Use `ext1`. Rewrite using `[Units.val_mul, nfBasis_val, nfBasis_val, Radical.embX_val, fromBlocks_multiply]`. Use extensionality with `(r | r) (s | s)`. Simplify using the standard rewrite rules. Apply the tactic sequence `by_cases h : s.val = 0 <;> simp [h, Matrix.mul_apply, mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem embX_mul_nf (x g : GL n k) (e : Fin c → ℤ) (z : n → k) :
     embX c x * nfBasis ϖ g e z = nfBasis ϖ (x * g) e (x.val *ᵥ z) := by
   ext1
@@ -184,14 +274,23 @@ theorem embX_mul_nf (x g : GL n k) (e : Fin c → ℤ) (z : n → k) :
 
 variable [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `(mem_stabLat_iff (g := 1) (h := g)).1 (by simpa [mem_stabLat] using hg)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem latOf_eq_of_KO {g : GL Y k} (hg : g ∈ KO k Y) : latOf g = latOf 1 := by
   have := (mem_stabLat_iff (g := 1) (h := g)).1 (by simpa [mem_stabLat] using hg)
   rwa [mul_one] at this
 
+/- English proof (translation)
+The claim follows from `mapsLat_iff.2 (hs _ (right_ne_zero_of_mul hx))`.
+-/
 theorem om_supp {μ : kˣ →* ℂˣ} {Φ : Matrix Y Y' k → ℂ} (hs : ∀ x, Φ x ≠ 0 → IntM x) (g : GL Y' k) (h : GL Y k)
     (x : Matrix Y Y' k) (hx : om μ g h Φ x ≠ 0) : MapsLat x (latOf g) (latOf h) :=
   mapsLat_iff.2 (hs _ (right_ne_zero_of_mul hx))
 
+/- English proof (translation)
+Unfold `om`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, hp]`. Introduce `i j`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul, map_mul, hϖ]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le uniformizer_lt_one (mapsLat_iff.1 hy i j)`.
+-/
 theorem om_per (hϖ : valuation k (ϖ : k) = uniformizer k) {μ : kˣ →* ℂˣ} {Φ : Matrix Y Y' k → ℂ}
     (hp : ∀ x y, MaxM y → Φ (x + y) = Φ x) (g : GL Y' k) (h : GL Y k)
     (x y : Matrix Y Y' k) (hy : MapsLat y (latOf g) (latOf h)) :

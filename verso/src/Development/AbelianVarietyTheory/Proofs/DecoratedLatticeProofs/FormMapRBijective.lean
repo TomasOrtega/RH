@@ -18,12 +18,22 @@ variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))
 def clMapR (c : ((stepY ST y β Λ Θ pref).reRep pr).Cl) : (base ST lam Λ₀).Cl :=
   (base ST lam Λ₀).cls (((stepY ST y β Λ Θ pref).reRep pr).rep c).1.1.deco
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun q : (stepY ST y β Λ Θ pref).D b => q.1.1.deco) (((stepY ST y β Λ Θ pref).reRep pr).mv_smul b p)`. Rewrite using `[← e]`. Conclude with `((base ST lam Λ₀).cls_smul (down (y := y) pref hΛ b (((stepY ST y β Λ Θ pref).reRep pr).mv b p)) _).symm`.
+-/
 theorem clMapR_cl (hΛ : ∀ b, Λ b = Λ₀) (b : β) (p : (stepY ST y β Λ Θ pref).D b) :
     clMapR (Λ₀ := Λ₀) pref pr lam (((stepY ST y β Λ Θ pref).reRep pr).cl b p) = (base ST lam Λ₀).cls p.1.1.deco := by
   have e := congrArg (fun q : (stepY ST y β Λ Θ pref).D b => q.1.1.deco) (((stepY ST y β Λ Θ pref).reRep pr).mv_smul b p)
   rw [← e]
   exact ((base ST lam Λ₀).cls_smul (down (y := y) pref hΛ b (((stepY ST y β Λ Θ pref).reRep pr).mv b p)) _).symm
 
+/- English proof (translation)
+Use `⟨?_, fun c₀ => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, q⟩ ⟨b', q'⟩ h`. Take `rfl : b = b'` from `Subsingleton.elim (α := β) _ _`. Take `⟨g₀, hg⟩` from `((base ST lam Λ₀).cls_eq_iff _ _).1 h`. Take `⟨g, -, h2⟩` from `exists_lift pref hy hΛ hΘ b _ _ g₀ hg`.
+
+Use `congr 1`. Rewrite using `[← ((stepY ST y β Λ Θ pref).reRep pr).rp_spec b q, ← ((stepY ST y β Λ Θ pref).reRep pr).rp_spec b q']`. Conclude with `Quotient.sound ⟨g, h2⟩`. Proceed by induction on `c₀ using Quotient.inductionOn' with`. Consider the case `h d`.
+
+Take `⟨p, rfl⟩` from `exists_pt (Q := Q) hy d`. Conclude with `⟨((stepY ST y β Λ Θ pref).reRep pr).cl default p, clMapR_cl pref pr lam hΛ default p⟩`.
+-/
 theorem clMapR_bijective [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀)
     (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) :
     Function.Bijective (clMapR (Λ₀ := Λ₀) pref pr lam) := by
@@ -57,6 +67,13 @@ def formMapR (hΛ : ∀ b, Λ b = Λ₀) (hΘ : ∀ b, Θ b = LevQFam.top X.E X.
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use `⟨fun φ ψ e => ?_, fun f => ?_⟩` and prove the remaining obligations. Apply `((base ST lam Λ₀).resOf h₀ (secR pref pr lam hy hΛ hΘ)).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Conclude with `congrFun (congrArg Subtype.val e) ((clEquivR pref pr lam hy hΛ hΘ).symm c)`.
+
+Set `f₀ : ((base ST lam Λ₀).toCSDOf h₀ (secR pref pr lam hy hΛ hΘ)).Forms` to `⟨fun c => f.1 ((clEquivR pref pr lam hy hΛ hΘ).symm c), fun c g₀ => by`. Take `⟨g, h1, h2⟩` from `exists_lift pref hy hΛ hΘ _ _ _ g₀.1 g₀.2`. Establish `h3` using `f.2 ((clEquivR pref pr lam hy hΛ hΘ).symm c) ⟨g, h2⟩`. Establish `h4` using `rho_eq pref lam hΛ hΘ _ g`. Rewrite `h4` using `[h1]`.
+
+Conclude with `(LinearMap.congr_fun h4 _).symm.trans h3⟩`. Use `⟨((base ST lam Λ₀).resOf h₀ (secR pref pr lam hy hΛ hΘ)).symm f₀, Subtype.ext (funext fun c => ?_)⟩` and prove the remaining obligations. Take `⟨c₀, rfl⟩` from `(clEquivR pref pr lam hy hΛ hΘ).symm.surjective c`. Conclude with `congrFun (congrArg Subtype.val (((base ST lam Λ₀).resOf h₀ (secR pref pr lam hy hΛ hΘ)).apply_symm_apply f₀)) c₀`.
+-/
 theorem formMapR_bijective [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀)
     (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (h : (((stepY ST y β Λ Θ pref).reRep pr).fam X.emb lam).Ok)
     (h₀ : (base ST lam Λ₀).Ok) :
@@ -80,6 +97,9 @@ theorem formMapR_bijective [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b
 
 end Forget
 
+/- English proof (translation)
+The claim follows from `letI := idxUnique hL ⟨LinearEquiv.ofBijective _ (formMapR_bijective (Tp.pref u 0) pr (lamT (W.hc u) 0) (ysAt_zero sel mu cst) (levGAt_zero Tp hL) (levQAt_zero Tp hL) h (colOk W Ch hX u 0)), fun _ _ => rfl⟩`.
+-/
 theorem exists_colZeroR {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) {Ch : Chars X Pr R.m}
     {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ}
     {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))}
@@ -100,6 +120,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
+/- English proof (translation)
+The claim follows from `exists_colZeroR (Pr := B.primes X) B.wts (I.Tp a) u (I.pref u a 0) hX (h.idx_ok a) ((l.fmL u a).fam 0)`.
+-/
 theorem exists_colEquiv {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (hX : B.fields.Ok) (l : I.Laws)
     (u : B.Word) (a : I.ι) :
     ∃ κ : ColsK I u ≃ₗ[B.fields.K] ((I.fm l u a).lat 0).V, ∀ φ, IsCol I u a l (κ φ) φ :=

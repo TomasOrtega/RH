@@ -12,6 +12,17 @@ open MvPolynomial Finset
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `f N`. Use `⟨flagIntegral f N (blockVandermonde f N) / (N.factorial : ℚ) ^ f, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `div_ne_zero (h2 f N).ne' (pow_ne_zero _ (Nat.cast_ne_zero.mpr N.factorial_ne_zero))`. Conclude with `fun H hH => h1 f N H hH`. Introduce `F Q hF k hk1 hkN τ G hG`.
+
+Use `choose R hR hRsym using fun l σ => h3 f N (G * Q l σ)`. Use `set P : RootRing f N := ∑ l ∈ Finset.Icc 1 N, ∑ σ : Fin f, blockPowerSum f N l σ * R l σ with hPdef`. Establish `hanti : antisymmetrize f N (G * F) = blockVandermonde f N * P` using `h4 f N F G Q R hF hR`. Use `⟨P, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hΔ : algebraMap (RootRing f N) (FractionRing (RootRing f N)) (blockVandermonde f N) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (RootRing f N) _)).mpr (Flag.blockVandermonde_ne_zero f N)`.
+
+Rewrite using `[dividedDifference, hanti, map_mul, mul_div_cancel_left₀ _ hΔ]`. Introduce `hFh`. Establish `hGF : (G * F).IsHomogeneous (topDegree f N + k)`. Use `hG.mul hFh` as an intermediate fact. Rewrite `this` using `[show k - 1 + (topDegree f N + 1) = topDegree f N + k by omega]`. Then use the resulting hypothesis.
+
+Establish `hA` using `h6 f N (G * F) _ hGF`. Rewrite `hA` using `[hanti]`. Conclude with `h8 f N τ P k (h7 _ _ _ _ _ (Flag.blockVandermonde_ne_zero f N) (h5 f N) hA)`. Take `⟨S, hS, hScoeff⟩` from `h11 N (fun l => restrictToBlock f N τ (R l τ)) (fun l => h9 f N τ (R l τ) (hRsym l τ))`. Use `⟨S, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hS, hPdef, h10]`. Rewrite using `[hScoeff k hk1 hkN, h12, h13 f N _ _ (hR k τ)]`.
+-/
 theorem LemmaA.proof (h1 : FlagIntegralTopDegree.Statement)
     (h2 : FlagIntegralVandermondePos.Statement) (h3 : FlagDividedDifferencePoly.Statement)
     (h4 : FlagAntisymDecomposition.Statement) (h5 : FlagVandermondeHomogeneous.Statement)

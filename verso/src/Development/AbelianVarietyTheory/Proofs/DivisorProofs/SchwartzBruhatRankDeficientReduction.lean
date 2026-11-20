@@ -7,6 +7,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LowRankFiltrationSt
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a d _ ν β _ hν ϖ hϖ hνϖ Φ hΦ`. Establish `key : ∀ r ≤ a, Φ ∈ (GlobalTheory.RankCoinv.lowRank r : Submodule ℂ (Matrix (Fin a) (Fin d) k → ℂ)) ⊔ GlobalTheory.RankCoinv.twistSpan ν β`. Introduce `r hr`. Proceed by induction on `r with`. Consider the case `zero => exact Submodule.mem_sup_left ⟨hΦ, fun Y hY => absurd hY (Nat.not_lt_zero _)⟩`.
+
+Consider the case `succ r ih`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 (ih (by omega))`. Use `GlobalTheory.T.low_rank_filtration_step k (Fin a) (Fin d) ϖ hϖ ν β hν hνϖ r (by simpa using hr) x hx` as an intermediate fact. Conclude with `Submodule.add_mem _ this (Submodule.mem_sup_right hy)`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (key a le_rfl)`.
+
+Use `⟨x, hx.1, fun Y hY => hx.2 Y (lt_of_le_of_ne (by simpa using Y.rank_le_card_height) hY), ?_⟩` and prove the remaining obligations. Establish `e : Φ - x = y` using `by rw [← hxy]; abel`. Rewrite using `[e]`. Conclude with `hy`.
+-/
 theorem GlobalTheory.RankCoinv.exists_fullRank_sub_mem_twistSpan : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a d : ℕ), a ≤ d →
     ∀ (ν β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν → ∀ ϖ : kˣ, GlobalTheory.SplitFlip.IsUnif ϖ → ν ϖ ≠ 1 →
     ∀ Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin d) k), ∃ Φ₀ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin d) k),

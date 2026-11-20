@@ -9,6 +9,11 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 
+/- English proof (translation)
+Introduce `X _ _ _ D A Yo r Om C₁ th u hYo hT`. Establish `hdens` using `hDens A Yo th Om.pot u hYo (fun i => (hT i).th_pot) Om.isPot (fun i => (hT i).u_smooth) (fun i => (hT i).th_le) (fun i => (hT i).nonneg)`. Use `⟨fun i => hRaise A Yo (th i) Om.pot (u i) hYo (hT i).th_pot Om.isPot (hT i).u_smooth (hT i).th_le (hT i).nonneg, fun j y hy hY => (hdens j y hy hY).1, fun g hg0 hgV hgA => ?_⟩` and prove the remaining obligations. Establish `hcT` using `hCont A Yo th u hYo (fun i => (hT i).th_pot) (fun i => (hT i).u_smooth)`. Establish `hcA` using `hCont A Yo (fun _ => Om.pot) u hYo (fun _ => Om.isPot) (fun i => (hT i).u_smooth)`.
+
+Conclude with `⟨hInt A Yo _ _ hYo hcT hcA hdens g hgV hgA, hMono A Yo _ _ hdens g hg0 hgV hgA⟩`.
+-/
 theorem ListMono.proof (hRaise : ListMonoRaise.Statement) (hDens : ListMonoDens.Statement)
     (hCont : LocDensContOnOpen.Statement) (hInt : MIntegrableOfDensLe.Statement)
     (hMono : MIntMonoOfDensLe.Statement) : ListMono.Statement := by

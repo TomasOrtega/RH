@@ -29,6 +29,9 @@ variable {D : D7}
 def piF {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F} (t : D.host.E →ₐ[D.host.F] Fv D.host.F v) : EAf D →+* Fv D.host.F v :=
   (Algebra.TensorProduct.lift t (evalV D.host.F v) fun _ _ => Commute.all _ _).toRingHom
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Consider the case `tmul a x => exact mul_comm _ _`.
+-/
 theorem piF_toEAf {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F} (t : D.host.E →ₐ[D.host.F] Fv D.host.F v) (z : AE D) :
     piF t (toEAf D z) = piW t z := by
   induction z using TensorProduct.induction_on with

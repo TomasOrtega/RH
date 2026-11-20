@@ -17,6 +17,11 @@ namespace GlobalTheory.ArchTens
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `σ Φ β hβ x y`. Use `set K : ℝ := C / 2 * (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 with hK`. Establish `h1` using `absLe_prod (Finset.univ : Finset (locPl ch.G A.μ0)) (σ := σ) (fun v => ((ch.S.term A.μ0 Φ β v).coef : ℂ)) (fun v => K * placeSz ch.G v) (fun v _ => absLe_rat σ _ (by simpa [hK] using hc Φ β hβ v))`. Establish `h2` using `absLe_prod (Finset.univ : Finset (locPl ch.G A.μ0)) (σ := σ) (fun v => (ch.S.term A.μ0 Φ β v).datum (ch.S.colAt A.μ0 v x) (ch.S.rowAt A.μ0 v y)) (fun v => K * placeSz ch.G v) (fun v _ => by simpa [hK] using hd σ Φ β hβ v x y)`. Use `absLe_mono (absLe_mul h1 h2) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_sum, ← two_mul, ← mul_assoc]`. Establish `: 2 * K = C * (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2` using `by rw [hK]; ring`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left (sum_placeSz_le ch.G A.μ0) (by positivity)`.
+-/
 theorem infTensAt_of_places {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) {C : ℝ} (hC : 0 ≤ C)
     (hd : DatAt ch (C / 2)) (hc : CoefAt ch (C / 2)) : InfTensAt ch C := by
@@ -38,6 +43,15 @@ end GlobalTheory.ArchTens
 
 open GlobalTheory.ArchTens in
 
+/- English proof (translation)
+Take `⟨F1, h1⟩` from `GlobalTheory.T.flip_bound_of_published_inputs hP`. Take `⟨F2, h2⟩` from `GlobalTheory.T.data_bound_of_half_flip hP`. Take `⟨F3, h3⟩` from `GlobalTheory.T.coefficient_bound_of_hypotheses hP`. Use `⟨max F1 (max F2 F3), fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, h1⟩` from `h1 CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨C2, h2⟩` from `h2 CF (le_trans ((le_max_left _ _).trans (le_max_right _ _)) hCF)`. Take `⟨C3, h3⟩` from `h3 CF (le_trans ((le_max_right _ _).trans (le_max_right _ _)) hCF)`. Use `⟨max (max (4 * C1) (2 * C2)) (max (2 * C3) 0), fun ε C hC => ?_⟩` and prove the remaining obligations. Establish `hC1 : C1 ≤ C / 2 / 2` using `by have := (le_max_left _ _).trans ((le_max_left _ _).trans hC); linarith`. Establish `hC2 : C2 ≤ C / 2` using `by have := (le_max_right _ _).trans ((le_max_left _ _).trans hC); linarith`.
+
+Establish `hC3 : C3 ≤ C / 2` using `by have := (le_max_left _ _).trans ((le_max_right _ _).trans hC); linarith`. Establish `hC0 : 0 ≤ C` using `(le_max_right _ _).trans ((le_max_right _ _).trans hC)`. Take `⟨x1, h1⟩` from `h1 ε (C / 2 / 2) hC1`. Take `⟨x2, h2⟩` from `h2 ε (C / 2) hC2`. Take `⟨x3, h3⟩` from `h3 ε (C / 2) hC3`.
+
+Use `⟨max x1 (max x2 x3), ?_⟩` and prove the remaining obligations. Introduce `D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt hF`. Conclude with `infTensAt_of_places ch hC0 (h2 D large₂ he (((le_max_left _ _).trans (le_max_right _ _)).trans hx) Γ Pl0 T A Ks R F hS ch hIs hAt hF (h1 D large₂ he ((le_max_left _ _).trans hx) Γ Pl0 T A Ks R F hS ch hIs hAt hF)) (h3 D large₂ he (((le_max_right _ _).trans (le_max_right _ _)).tra …`.
+-/
 theorem _root_.GlobalTheory.SumSize.infTensK_of_hypotheses (hP : GlobalTheory.FunPr.Hypotheses₂) : InfTensK := by
   obtain ⟨F1, h1⟩ := GlobalTheory.T.flip_bound_of_published_inputs hP
   obtain ⟨F2, h2⟩ := GlobalTheory.T.data_bound_of_half_flip hP

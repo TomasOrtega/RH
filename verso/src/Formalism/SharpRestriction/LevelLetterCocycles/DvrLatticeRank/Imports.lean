@@ -21,6 +21,9 @@ def Phi (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) {r : ℕ} (rep : Fin r →
   map_add' d d' := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' a d := by simp [Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Phi_apply (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) {r : ℕ} (rep : Fin r → W.DD T)
     (d : Fin r → LL) : Phi W T c ζ rep d = ∑ k, d k • valAt W T c ζ (rep k) := rfl
 

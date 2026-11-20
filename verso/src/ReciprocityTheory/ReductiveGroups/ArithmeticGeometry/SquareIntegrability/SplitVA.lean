@@ -9,6 +9,15 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Set `bZ` to `NumberField.RingOfIntegers.basis E`. Set `bQ` to `NumberField.integralBasis E`. Establish `hnd : (Algebra.traceForm ℚ E).Nondegenerate` using `traceForm_nondegenerate ℚ E`. Set `dB` to `(Algebra.traceForm ℚ E).dualBasis hnd bQ`. Use `⟨∑ i, (φ (bZ i) : ℚ) • dB i, fun β => ?_⟩` and prove the remaining obligations.
+
+Set `f₁ : 𝓞 E →ₗ[ℤ] ℚ` to `((Algebra.trace ℚ E).restrictScalars ℤ).comp ((LinearMap.mulRight ℚ (∑ i, (φ (bZ i) : ℚ) • dB i)).restrictScalars ℤ ∘ₗ (Algebra.linearMap (𝓞 E) E).restrictScalars ℤ)`. Set `f₂ : 𝓞 E →ₗ[ℤ] ℚ` to `(Int.castAddHom ℚ).toIntLinearMap ∘ₗ φ.toIntLinearMap`. Establish `hf : f₁ = f₂`. Use `bZ.ext fun j => ?_` and prove the remaining obligations. Simplify using `only [f₁, f₂, LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearMap.mulRight_apply, Algebra.linearMap_apply, AddMonoidHom.coe_toIntLinearMap, Int.coe_castAddHom]`.
+
+Rewrite using `[Finset.mul_sum, map_sum]`. Establish `hb : (algebraMap (𝓞 E) E) (bZ j) = bQ j` using `(NumberField.integralBasis_apply E j).symm`. Rewrite using `[hb]`. Repeatedly rewrite using `[mul_smul_comm, map_smul]`. Establish `h : ∀ i, Algebra.trace ℚ E (bQ j * dB i) = if j = i then 1 else 0` using `fun i => by`.
+
+Rewrite using `[mul_comm, ← Algebra.traceForm_apply]`. Conclude with `LinearMap.BilinForm.apply_dualBasis_left hnd bQ i j`. Simplify using `[h]`. Use `congrArg (fun g => g β) hf` as an intermediate fact. Simplify `this` using `[f₁, f₂]`.
+-/
 theorem exists_dual (φ : 𝓞 E →+ ℤ) :
     ∃ y : E, ∀ β : 𝓞 E, Algebra.trace ℚ E ((β : E) * y) = φ β := by
   classical
@@ -41,6 +50,11 @@ theorem exists_dual (φ : 𝓞 E →+ ℤ) :
 abbrev Dual1 (E : Type) [Field E] [NumberField E] : FractionalIdeal (𝓞 E)⁰ E :=
   FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 E)⁰ E)
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_dual (I := (1 : FractionalIdeal (𝓞 E)⁰ E)) one_ne_zero]`. Introduce `a ha`. Take `⟨β, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Take `⟨k, hk⟩` from `hy β`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.traceForm_apply, mul_comm, hk]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_dual_of (y : E) (hy : ∀ β : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E ((β : E) * y) = k) :
     y ∈ Dual1 E := by
   rw [FractionalIdeal.mem_dual (I := (1 : FractionalIdeal (𝓞 E)⁰ E)) one_ne_zero]
@@ -51,6 +65,17 @@ theorem mem_dual_of (y : E) (hy : ∀ β : 𝓞 E, ∃ k : ℤ, Algebra.trace �
   rw [Algebra.traceForm_apply, mul_comm, hk]
   simp
 
+/- English proof (translation)
+Establish `hD0 : Dual1 E ≠ 0` using `FractionalIdeal.dual_ne_zero ℤ ℚ one_ne_zero`. Use `set dI : FractionalIdeal (𝓞 E)⁰ E := ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) with hdI`. Establish `hdD : dI * Dual1 E = 1`. Rewrite using `[hdI, coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)]`. Conclude with `inv_mul_cancel₀ hD0`.
+
+Establish `hle : FractionalIdeal.spanSingleton (𝓞 E)⁰ l ≤ Dual1 E * Dual1 E` using `FractionalIdeal.spanSingleton_le_iff_mem.mpr hmem`. Establish `hJ : dI * dI * FractionalIdeal.spanSingleton (𝓞 E)⁰ l ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Take `⟨J, hJe⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hJ`. Establish `hn` using `congrArg FractionalIdeal.absNorm hJe`.
+
+Rewrite `hn` using `[map_mul, map_mul, FractionalIdeal.absNorm_span_singleton, hdI, FractionalIdeal.coeIdeal_absNorm (K := E), FractionalIdeal.coeIdeal_absNorm (K := E), NumberField.absNorm_differentIdeal (K := E) (𝒪 := 𝓞 E)]`. Establish `hN0 : Algebra.norm ℚ l ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hl`. Establish `hd0 : (NumberField.discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (NumberField.discr_ne_zero E)`. Establish `hpos : ((NumberField.discr E).natAbs : ℚ) * (NumberField.discr E).natAbs * |Algebra.norm ℚ l| ≠ 0` using `mul_ne_zero (mul_ne_zero (by exact_mod_cast hd0) (by exact_mod_cast hd0)) (abs_ne_zero.mpr hN0)`. Establish `hJ1 : 1 ≤ Ideal.absNorm J`.
+
+Break down `Nat.eq_zero_or_pos (Ideal.absNorm J) with h0 | h0` into its components or cases. It suffices to derive a contradiction. Rewrite `hn` using `[h0, Nat.cast_zero]`. Conclude with `hpos hn.symm`. Conclude with `h0`.
+
+Establish `h1 : (1 : ℚ) ≤ Ideal.absNorm J` using `by exact_mod_cast hJ1`. Rewrite `h1` using `[hn]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_norm_mul (l : E) (hl : l ≠ 0) (hmem : l ∈ Dual1 E * Dual1 E) :
     (1 : ℚ) ≤ |Algebra.norm ℚ l| * ((NumberField.discr E).natAbs : ℚ) ^ 2 := by
   classical

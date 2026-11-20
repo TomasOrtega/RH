@@ -17,15 +17,24 @@ variable {R : Type*} [CommRing R]
 def antiTr (A : Matrix (Fin 2) (Fin 2) R) : Matrix (Fin 2) (Fin 2) R :=
   !![A 1 1, A 0 1; A 1 0, A 0 0]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [antiTr, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 theorem antiTr_mul (A B : Matrix (Fin 2) (Fin 2) R) : antiTr (A * B) = antiTr B * antiTr A := by
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [antiTr, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [antiTr]`.
+-/
 theorem antiTr_one : antiTr (1 : Matrix (Fin 2) (Fin 2) R) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [antiTr]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [antiTr]`.
+-/
 theorem antiTr_antiTr (A : Matrix (Fin 2) (Fin 2) R) : antiTr (antiTr A) = A := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [antiTr]
@@ -36,15 +45,27 @@ def antiTrGL (g : GL (Fin 2) R) : GL (Fin 2) R where
   val_inv := by rw [← antiTr_mul, Units.inv_mul, antiTr_one]
   inv_val := by rw [← antiTr_mul, Units.mul_inv, antiTr_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_antiTrGL (g : GL (Fin 2) R) :
     (antiTrGL g : Matrix (Fin 2) (Fin 2) R) = antiTr (g : Matrix (Fin 2) (Fin 2) R) := rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (antiTr_mul _ _)`.
+-/
 theorem antiTrGL_mul (x y : GL (Fin 2) R) : antiTrGL (x * y) = antiTrGL y * antiTrGL x :=
   Units.ext (antiTr_mul _ _)
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem antiTrGL_inv (x : GL (Fin 2) R) : antiTrGL x⁻¹ = (antiTrGL x)⁻¹ :=
   Units.ext rfl
 
+/- English proof (translation)
+The claim follows from `Units.ext (antiTr_antiTr _)`.
+-/
 theorem antiTrGL_antiTrGL (x : GL (Fin 2) R) : antiTrGL (antiTrGL x) = x :=
   Units.ext (antiTr_antiTr _)
 
@@ -52,10 +73,16 @@ end AntiTranspose
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simpa [antiTr] using hA _ _`.
+-/
 theorem antiTr_entries_mem {A : Matrix (Fin 2) (Fin 2) F} (hA : ∀ a b, A a b ∈ 𝒪[F]) (a b : Fin 2) :
     antiTr A a b ∈ 𝒪[F] := by
   fin_cases a <;> fin_cases b <;> simpa [antiTr] using hA _ _
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_integralGL_iff F 2).1 hx`. Use `(mem_integralGL_iff F 2).2 ⟨fun a b => antiTr_entries_mem h1 a b, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← antiTrGL_inv]`. Conclude with `antiTr_entries_mem h2 a b`.
+-/
 theorem antiTrGL_mem_integralGL {x : GL (Fin 2) F} (hx : x ∈ integralGL F 2) :
     antiTrGL x ∈ integralGL F 2 := by
   obtain ⟨h1, h2⟩ := (mem_integralGL_iff F 2).1 hx
@@ -63,6 +90,11 @@ theorem antiTrGL_mem_integralGL {x : GL (Fin 2) F} (hx : x ∈ integralGL F 2) :
   rw [← antiTrGL_inv]
   exact antiTr_entries_mem h2 a b
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coe_antiTrGL, coe_rowRep, coe_normalGL]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify `(normalMat_self l c 0).symm` using `[antiTr]`.
+
+Simplify `(normalMat_of_lt l c (i := 0) (j := 1) (by decide)).symm` using `[antiTr]`. Simplify `(normalMat_of_gt l c (i := 1) (j := 0) (by decide)).symm` using `[antiTr]`. Simplify `(normalMat_self l c 1).symm` using `[antiTr]`.
+-/
 theorem antiTrGL_rowRep (l : Fin 2 → ℕ) (c : NormalData F l) :
     antiTrGL (rowRep (l 1) (l 0) (c ⟨(0, 1), by decide⟩)) = normalGL F l c := by
   refine Units.ext ?_
@@ -74,6 +106,11 @@ theorem antiTrGL_rowRep (l : Fin 2 → ℕ) (c : NormalData F l) :
   · simpa [antiTr] using (normalMat_of_gt l c (i := 1) (j := 0) (by decide)).symm
   · simpa [antiTr] using (normalMat_self l c 1).symm
 
+/- English proof (translation)
+Take `⟨l, c, hc⟩` from `exists_normalGL (g := antiTrGL g) (fun a b => antiTr_entries_mem hg a b)`. Establish `h1 : (normalGL F l c)⁻¹ * antiTrGL g ∈ integralGL F 2` using `QuotientGroup.eq.1 hc`. Use `⟨l 1, l 0, c ⟨(0, 1), by decide⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : antiTrGL (g * (rowRep (l 1) (l 0) (c ⟨(0, 1), by decide⟩))⁻¹) ∈ integralGL F 2`. Rewrite using `[antiTrGL_mul, antiTrGL_inv, antiTrGL_rowRep]`.
+
+Conclude with `h1`. Establish `h3` using `antiTrGL_mem_integralGL h2`. Rewrite `h3` using `[antiTrGL_antiTrGL]`. Then use the resulting hypothesis.
+-/
 theorem exists_mul_rowRep_inv_mem (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (g : GL (Fin 2) F)
     (hg : ∀ a b, (g : Matrix (Fin 2) (Fin 2) F) a b ∈ 𝒪[F]) :

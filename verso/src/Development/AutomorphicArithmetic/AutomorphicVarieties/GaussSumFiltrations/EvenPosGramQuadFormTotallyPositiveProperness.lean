@@ -10,15 +10,28 @@ namespace GlobalTheory.TPos
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Unfold `reAt`. Establish `h` using `InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v) x`. Rewrite using `[← h, Complex.ofReal_re]`.
+-/
 theorem reAt_eq (v : InfinitePlace F) (x : F) :
     reAt v x = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
   unfold reAt
   have h := InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v) x
   rw [← h, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[reAt_eq, ← InfinitePlace.norm_embedding_of_isReal (IsTotallyReal.isReal v), Real.norm_eq_abs]`.
+-/
 theorem abs_reAt (v : InfinitePlace F) (x : F) : |reAt v x| = v x := by
   rw [reAt_eq, ← InfinitePlace.norm_embedding_of_isReal (IsTotallyReal.isReal v), Real.norm_eq_abs]
 
+/- English proof (translation)
+Use `set φ := InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) with hφ`. Establish `hx : (fun i => reAt v (x i)) = φ ∘ x`. Use function extensionality and compare the values at `i`. Simplify using `[reAt_eq, hφ]`. Establish `hG : (G.map (Int.cast : ℤ → ℝ)) = (G.map (Int.cast : ℤ → F)).map φ`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hx, hG, reAt_eq, ← hφ]`. Unfold `QF BF`. Rewrite using `[map_div₀, map_ofNat, RingHom.map_dotProduct]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec φ _ x i`.
+-/
 theorem reAt_QF {κ : Type} [Fintype κ] (G : Matrix κ κ ℤ) (x : κ → F) (v : InfinitePlace F) :
     reAt v (QF G x) =
       (fun i => reAt v (x i)) ⬝ᵥ (G.map (Int.cast : ℤ → ℝ)) *ᵥ (fun i => reAt v (x i)) / 2 := by
@@ -36,6 +49,29 @@ theorem reAt_QF {κ : Type} [Fintype κ] (G : Matrix κ κ ℤ) (x : κ → F) (
   funext i
   exact RingHom.map_mulVec φ _ x i
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty κ with hκ | ⟨⟨i0⟩⟩` into its components or cases. Use `⟨1, one_pos, fun y => ?_⟩` and prove the remaining obligations. Simplify using `[dotProduct]`. Use `set f : (κ → ℝ) → ℝ := fun y => y ⬝ᵥ M *ᵥ y with hf`. Establish `hfc : Continuous f`.
+
+Simplify using `only [hf, dotProduct, Matrix.mulVec]`. Use `fun_prop`. Establish `hpos : ∀ y : κ → ℝ, y ≠ 0 → 0 < f y`. Introduce `y hy`. Use `(Matrix.posDef_iff_dotProduct_mulVec.mp hM).2 hy` as an intermediate fact.
+
+Simplify `this` using `[hf]`. Use `set S : Set (κ → ℝ) := {y | ∑ i, y i ^ 2 = 1} with hS`. Establish `hSc : IsCompact S`. Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Conclude with `isClosed_eq (by fun_prop) continuous_const`.
+
+Rewrite using `[Metric.isBounded_iff_subset_closedBall 0]`. Use `⟨1, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `i`. Rewrite using `[Real.norm_eq_abs]`.
+
+Establish `h1 : y i ^ 2 ≤ ∑ j, y j ^ 2` using `Finset.single_le_sum (f := fun j => y j ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Rewrite `h1` using `[show ∑ j, y j ^ 2 = 1 from hy]`. Conclude with `(sq_le_one_iff_abs_le_one _).mp h1`. Establish `hSn : S.Nonempty` using `⟨Pi.single i0 1, by simp [hS, Pi.single_apply]⟩`. Take `⟨y0, hy0S, hmin⟩` from `hSc.exists_isMinOn hSn hfc.continuousOn`.
+
+Establish `hy0 : y0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `[hS] at hy0S`. Use `⟨f y0, hpos y0 hy0, fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = 0`.
+
+Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Use `set s := ∑ i, y i ^ 2 with hs`. Establish `hs0 : 0 < s`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hy`.
+
+Establish `h1 : y i ^ 2 ≤ s` using `Finset.single_le_sum (f := fun j => y j ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Establish `hi' : y i ≠ 0` using `by simpa using hi`. Establish `: 0 < y i ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set t := Real.sqrt s with ht`.
+
+Establish `ht0 : 0 < t` using `Real.sqrt_pos.mpr hs0`. Establish `htt : t ^ 2 = s` using `Real.sq_sqrt hs0.le`. Establish `hz : t⁻¹ • y ∈ S`. Simplify using `only [hS, Set.mem_setOf_eq, Pi.smul_apply, smul_eq_mul, mul_pow]`. Rewrite using `[← Finset.mul_sum, ← hs, inv_pow, htt, inv_mul_cancel₀ hs0.ne']`.
+
+Establish `hfz : f (t⁻¹ • y) = (t ^ 2)⁻¹ * f y`. Simplify using `only [hf, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `hmin hz` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq] at this`.
+
+Rewrite `this` using `[hfz, htt]`. Establish `h2` using `mul_le_mul_of_nonneg_left this hs0.le`. Rewrite `h2` using `[← mul_assoc, mul_inv_cancel₀ hs0.ne', one_mul]`. Combine the linear relations using `[mul_comm s (f y0)]`.
+-/
 theorem posDef_lower {κ : Type} [Fintype κ] (M : Matrix κ κ ℝ) (hM : M.PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ y : κ → ℝ, c * ∑ i, y i ^ 2 ≤ y ⬝ᵥ M *ᵥ y := by
   classical
@@ -100,6 +136,31 @@ end GlobalTheory.TPos
 
 open GlobalTheory.TPos in
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ _ G hG`. Establish `hM : (G.map (Int.cast : ℤ → ℝ)).PosDef` using `hG.1`. Take `⟨c, hc, hcb⟩` from `posDef_lower _ hM`. Establish `key : ∀ (x : κ → F) v, (c / 2) * ∑ i, reAt v (x i) ^ 2 ≤ reAt v (QF G x)`. Introduce `x v`.
+
+Rewrite using `[reAt_QF]`. Use `hcb (fun i => reAt v (x i))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj : ∀ (v : InfinitePlace F) (y : F), reAt v y = 0 → y = 0`. Introduce `v y h`.
+
+Rewrite `h` using `[reAt_eq]`. Conclude with `(InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v)).injective (by simpa using h)`. Use `⟨?_, ⟨c / 2, by positivity, key⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx v`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`.
+
+Establish `hyi : reAt v (x i) ≠ 0` using `fun h => hi (hinj v _ h)`. Establish `h1 : reAt v (x i) ^ 2 ≤ ∑ j, reAt v (x j) ^ 2` using `Finset.single_le_sum (f := fun j => reAt v (x j) ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Establish `h2 : 0 < reAt v (x i) ^ 2` using `by positivity`. Establish `h3` using `mul_pos (half_pos hc) (lt_of_lt_of_le h2 h1)`. Use `key x v` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a ξ`. Distinguish the cases in `ha : a = 0`. Apply `(Set.finite_singleton (0 : κ → F)).subset` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, -⟩`.
+
+Unfold `aL at hx`. Take `⟨z, -, rfl⟩` from `AddSubgroup.mem_map.mp hx`. Simplify using `[ha]`. Use `set B : ℝ := ∑ v : InfinitePlace F, Real.sqrt (reAt v ξ / (c / 2)) / v a with hB`. Use `set T : Set F := {y : F | IsIntegral ℤ y ∧ ∀ φ : F →+* ℂ, ‖φ y‖ ≤ B} with hT`.
+
+Establish `hTf : T.Finite` using `NumberField.Embeddings.finite_of_norm_le F ℂ B`. Apply `((Set.Finite.pi (t := fun _ : κ => T) (fun _ => hTf)).image (fun z => a • z)).subset` to reduce the goal to its premises. Introduce and unpack `x ⟨hx, hxξ⟩`. Unfold `aL at hx`. Take `⟨z, hz, rfl⟩` from `AddSubgroup.mem_map.mp hx`.
+
+Use `⟨z, fun i _ => ?_, rfl⟩` and prove the remaining obligations. Unfold `LL at hz`. Establish `hzi` using `(AddSubgroup.mem_pi _).mp hz i (Set.mem_univ _)`. Use `⟨hzi, fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[← NumberField.InfinitePlace.apply]`.
+
+Use `set w := InfinitePlace.mk φ`. Establish `hxi : (DistribMulAction.toAddMonoidHom (κ → F) a z) i = a * z i` using `by simp`. Establish `hwa : 0 < w a` using `(InfinitePlace.pos_iff).mpr ha`. Establish `hk` using `key (DistribMulAction.toAddMonoidHom (κ → F) a z) w`. Rewrite `hk` using `[hxξ]`.
+
+Establish `h1 : reAt w ((DistribMulAction.toAddMonoidHom (κ → F) a z) i) ^ 2 ≤ ∑ j, reAt w ((DistribMulAction.toAddMonoidHom (κ → F) a z) j) ^ 2` using `Finset.single_le_sum (f := fun j => reAt w ((DistribMulAction.toAddMonoidHom (κ → F) a z) j) ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Establish `h2 : reAt w ((DistribMulAction.toAddMonoidHom (κ → F) a z) i) ^ 2 ≤ reAt w ξ / (c / 2)`. Rewrite using `[le_div_iff₀ (half_pos hc)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `Real.abs_le_sqrt h2`.
+
+Rewrite `h3` using `[abs_reAt, hxi, map_mul]`. Establish `h4 : w (z i) ≤ Real.sqrt (reAt w ξ / (c / 2)) / w a`. Rewrite using `[le_div_iff₀ hwa]`. Combine the linear relations using `[mul_comm (w a) (w (z i))]`. Use `h4.trans ?_` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun v : InfinitePlace F => Real.sqrt (reAt v ξ / (c / 2)) / v a) (fun v _ => div_nonneg (Real.sqrt_nonneg _) (apply_nonneg v a)) (Finset.mem_univ w)`.
+-/
 theorem GlobalTheory.HilbertThetaSeries.qf_totPos_proper : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ]
     (G : Matrix κ κ ℤ), EvenPos G → (∀ x : κ → F, x ≠ 0 → TP (QF G x)) ∧
       (∃ c : ℝ, 0 < c ∧ ∀ (x : κ → F) v, c * ∑ i, reAt v (x i) ^ 2 ≤ reAt v (QF G x)) ∧
@@ -169,5 +230,8 @@ theorem GlobalTheory.HilbertThetaSeries.qf_totPos_proper : ∀ (F : Type) [Field
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.qf_totPos_proper | exact GlobalTheory.HilbertThetaSeries.qf_totPos_proper | (intros; apply GlobalTheory.HilbertThetaSeries.qf_totPos_proper <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.evenPosGram_quadForm_totallyPositive_properness : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → (∀ x : κ → F, x ≠ 0 → TP (QF G x)) ∧ (∃ c : ℝ, 0 < c ∧ ∀ (x : κ → F) v, c * ∑ i, reAt v (x i) ^ 2 ≤ reAt v (QF G x)) ∧ ∀ (a ξ : F), {x : κ → F | x ∈ aL κ a ∧ QF G x = ξ}.Finite := by
   first | exact @GlobalTheory.HilbertThetaSeries.qf_totPos_proper | exact GlobalTheory.HilbertThetaSeries.qf_totPos_proper | (intros; apply GlobalTheory.HilbertThetaSeries.qf_totPos_proper <;> assumption)

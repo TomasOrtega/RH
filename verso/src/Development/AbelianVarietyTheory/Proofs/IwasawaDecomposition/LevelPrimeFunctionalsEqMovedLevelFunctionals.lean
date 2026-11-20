@@ -18,6 +18,11 @@ section Res
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨r, rfl, hr⟩` from `ha`. Take `⟨r', rfl, hr'⟩` from `hb`. Use `⟨r + r', by rw [map_add], ?_⟩` and prove the remaining obligations. Establish `e : a + b - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r + r')) = (a - algebraMap E _ (algebraMap (𝓞 E) E r)) + (b - algebraMap E _ (algebraMap (𝓞 E) E r'))`. Simplify using `only [map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ hr hr'`.
+-/
 theorem hasRes_add {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {c d : 𝓞 E ⧸ P.asIdeal}
     (ha : HasRes P a c) (hb : HasRes P b d) : HasRes P (a + b) (c + d) := by
   obtain ⟨r, rfl, hr⟩ := ha
@@ -29,6 +34,13 @@ theorem hasRes_add {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {
   rw [e]
   exact Valuation.map_add_lt _ hr hr'
 
+/- English proof (translation)
+Establish `hale` using `hasRes_le_one ha`. Take `⟨r, rfl, hr⟩` from `ha`. Take `⟨r', rfl, hr'⟩` from `hb`. Use `⟨r * r', by rw [map_mul], ?_⟩` and prove the remaining obligations. Establish `e : a * b - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (r * r')) = a * (b - algebraMap E _ (algebraMap (𝓞 E) E r')) + algebraMap E _ (algebraMap (𝓞 E) E r') * (a - algebraMap E _ (algebraMap (𝓞 E) E r))`.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hale) hr'`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (val_le_one P r')) hr`.
+-/
 theorem hasRes_mul {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {c d : 𝓞 E ⧸ P.asIdeal}
     (ha : HasRes P a c) (hb : HasRes P b d) : HasRes P (a * b) (c * d) := by
   have hale := hasRes_le_one ha
@@ -43,6 +55,9 @@ theorem hasRes_mul {P : HeightOneSpectrum (𝓞 E)} {a b : P.adicCompletion E} {
   · rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_left' hale) hr'
   · rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_left' (val_le_one P r')) hr
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hasRes_coe P 0`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Conclude with `hasRes_add (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem hasRes_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) (a : ι → P.adicCompletion E) (c : ι → 𝓞 E ⧸ P.asIdeal)
     (h : ∀ j ∈ s, HasRes P (a j) (c j)) : HasRes P (∑ j ∈ s, a j) (∑ j ∈ s, c j) := by
   classical
@@ -52,6 +67,9 @@ theorem hasRes_sum {P : HeightOneSpectrum (𝓞 E)} {ι : Type} (s : Finset ι) 
     rw [Finset.sum_insert hj, Finset.sum_insert hj]
     exact hasRes_add (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Take `⟨z, rfl⟩ : ∃ z, prV (E` from `E) v z = x := ⟨_, Formalism.UG.P.afsplit_prV_IE v x⟩`. Rewrite `hx`, the goal using `[psi_prV]`. Take `⟨c, hc⟩` from `exists_res P z hx`. Conclude with `⟨_, c, rfl, hc⟩`.
+-/
 theorem exists_hasRes [StarRing E] {v : HeightOneSpectrum (𝓞 F)} {P : HeightOneSpectrum (𝓞 E)} (hP : P.under (𝓞 F) = v)
     (x : E ⊗[F] v.adicCompletion F) (hx : Valued.v (psi v P hP x) ≤ 1) : ∃ c, HasRes P (psi v P hP x) c := by
   obtain ⟨z, rfl⟩ : ∃ z, prV (E := E) v z = x := ⟨_, Formalism.UG.P.afsplit_prV_IE v x⟩
@@ -72,6 +90,11 @@ namespace GlobalTheory.Mem.Col2.FunMv
 open GlobalTheory.Mem.Dil GlobalTheory.Mem.Col2.DilPt
 open scoped TensorProduct
 
+/- English proof (translation)
+Rewrite using `[pullbackVector_mul_right]`. Establish `e1 : adAt F P ((((k⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ GlobalTheory.Mem.Col2.pullV y x) r) = ∑ j, adAt F P ((k⁻¹ : GL (Fin n) (AfE F E)).1 r j) * adAt F P (GlobalTheory.Mem.Col2.pullV y x j)`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `e2 : b * cj r = ∑ j, (if j = r then b else 0) * cj j`. Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[e1, e2]`. Use `hasRes_sum _ _ _ fun j _ => hasRes_mul (hk j) ?_` and prove the remaining obligations. Rewrite using `[← psi_prV v P hP]`. Conclude with `hy j`.
+-/
 theorem hasRes_last {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (y k : GL (Fin n) (AfE F E)) (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)) (hP : P.under (𝓞 F) = v)
     (x : Sp E n) (r : Fin n) (b : 𝓞 E ⧸ P.asIdeal) (cj : Fin n → 𝓞 E ⧸ P.asIdeal)
@@ -127,11 +150,31 @@ def resL (hLb : IsBase S π) (hP : P.under (𝓞 F) = v) (h3 : π ∉ (conjPrime
     rw [e]
     exact hasRes_add hs ht
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_hasRes hP (s.1 r) (val_coord_le hLb hP h3 s.2 r))`.
+-/
 theorem resL_spec (hLb : IsBase S π) (hP : P.under (𝓞 F) = v) (h3 : π ∉ (conjPrime₂ P).asIdeal) (r : Fin n)
     (s : latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (hc.sig : E →+* E) 1 S.Lb))) :
     HasRes P (psi v P hP (s.1 r)) (resL hLb hP h3 r s) :=
   Classical.choose_spec (exists_hasRes hP (s.1 r) (val_coord_le hLb hP h3 s.2 r))
 
+/- English proof (translation)
+Use `set ψ := resL hLb hP h3 r with hψ`. Establish `hle : ∀ x, ψ x = 0 → S.fT v hv x = 0` using `fun x hx => by`. Establish `h` using `resL_spec hLb hP h3 r x`. Rewrite `h` using `[← hψ, hx]`. Conclude with `fT_kill hLb hv hP hw h2 h3 hk r hr x (hasRes_lt_one h)`.
+
+Establish `hne : ∃ a, (S.fT v hv).toAddMonoidHom a ≠ 0`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Conclude with `S.fT_ne v hv (LinearMap.ext H)`. Establish `hker : ∀ x, S.fT v hv x = 0 → ψ x = 0` using `fun x hx => GlobalTheory.Mem.Col2.Reside.ker_of_prime (S.fT v hv).toAddMonoidHom ψ (hcard ▸ hT) hne hle x hx`.
+
+Establish `hsurj : Function.Surjective (S.fT v hv)` using `by haveI : Fact (Nat.card (S.fM v hv)).Prime := ⟨(S.fM_card v hv).symm ▸ hT⟩`. Break down `AddSubgroup.eq_bot_or_eq_top_of_prime_card (S.fT v hv).toAddMonoidHom.range with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨a, ha⟩` from `hne`. Establish `: (S.fT v hv).toAddMonoidHom a ∈ (S.fT v hv).toAddMonoidHom.range` using `⟨a, rfl⟩`.
+
+Rewrite `this` using `[h]`. Conclude with `ha this`. Introduce `m`. Establish `: m ∈ (S.fT v hv).toAddMonoidHom.range` using `by rw [h]; trivial`. Take `⟨a, ha⟩` from `this`.
+
+Conclude with `⟨a, ha⟩`. Set `g` to `Function.surjInv hsurj`. Establish `hg : ∀ m, S.fT v hv (g m) = m` using `Function.surjInv_eq hsurj`. Use `⟨{ toFun := fun m => ψ (g m), map_zero' := ?_, map_add' := ?_ }, fun s c hc => ?_⟩` and prove the remaining obligations. Use `hker _ ?_` and prove the remaining obligations.
+
+Rewrite using `[hg]`. Introduce `m m'`. Rewrite using `[← sub_eq_zero, ← map_add, ← map_sub]`. Use `hker _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_add, hg, hg, hg, sub_self]`.
+
+Use `show ψ (g (S.fT v hv s)) = c`. Establish `e : ψ (g (S.fT v hv s)) = ψ s`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `hker _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, hg, sub_self]`.
+
+Rewrite using `[e]`. Conclude with `(resL_spec hLb hP h3 r s).unique hc`.
+-/
 theorem exists_fun (hLb : IsBase S π) (hv : (T : 𝓞 F) ∈ v.asIdeal) (hP : P.under (𝓞 F) = v)
     (hw : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → w = P ∨ w = conjPrime₂ P)
     (h2 : π ∉ P.asIdeal ^ 2) (h3 : π ∉ (conjPrime₂ P).asIdeal)
@@ -194,6 +237,9 @@ namespace GlobalTheory.Mem.Col2.FunMv
 open GlobalTheory.Mem.Dil GlobalTheory.Mem.Col2.DilPt
 open scoped TensorProduct
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Take `⟨ι₀, h⟩` from `exists_fun (S := S) hLb hv hP hw h2 h3 hk hT hcard r hr`. Conclude with `⟨ι₀, h, fun s j => exists_hasRes hP (s.1 j) (val_coord_le (S := S) hLb hP h3 s.2 j)⟩`.
+-/
 theorem exists_fun' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     (hc : Formalism.BasicNotions.CMData F E) {n T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} {J : Matrix (Fin n) (Fin n) E} (hJ : J = 1)
     (S : Formalism.L2.Forms.StepLevel F E hc.sig J T f bad) (π : 𝓞 E) (P : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 F))
@@ -218,6 +264,19 @@ end
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hPins l Z u a i hi bad Ch chOf K k hR β hkill P v h hov`. Establish `hX` using `GlobalTheory.Mem.FieldsLaws.fields_ok B`. Establish `hPr` using `l.pr`. Establish `hgr` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hPins l Z).2.2.2 i hi).1`. Establish `hsP : GlobalTheory.TwU.seamP (sm I l Z) P.1 = P.1`.
+
+Use extensionality with `x`. Conclude with `TwU.mem_seamP (sm I l Z) P.1 x`. Rewrite `hov` using `[hsP]`. Establish `hPv : P.1.under (𝓞 B.host.F) = v`. Unfold `IsOver at hov`.
+
+Conclude with `HeightOneSpectrum.ext hov.symm`. Establish `hw : ∀ w : HeightOneSpectrum (𝓞 B.host.E), w.under (𝓞 B.host.F) = v → w = P.1 ∨ w = conjPrime₂ P.1` using `fun w hw' => (under_eq_iff B.host P.1 w).1 (hw'.trans hPv.symm)`. Establish `hcard : Nat.card (𝓞 B.host.E ⧸ P.1.asIdeal) = B.T u`. Establish `e` using `hPr.vT_norm u P.1 P.2`. Rewrite `e` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Conclude with `e`. Establish `hN : 0 < B.R.N i` using `B.R.N_pos i`. Set `r : Fin (B.R.N i)` to `⟨B.R.N i - 1, by omega⟩`. Establish `hr : r.1 + 1 = B.R.N i` using `by show B.R.N i - 1 + 1 = _; omega`. Take `⟨ι₀, hι₀, hres⟩` from `GlobalTheory.Mem.Col2.FunMv.exists_fun' B.sp.cm hgr (K β).lev (X.piT u) P.1 v (fun x => hR.lb β x) h hPv hw (hPr.piT_notMem_sq hX u P.2) (conj_piT_notMem hPr u P) (hkill v h) (hPr.T_prime u) hcard r hr`.
+
+Use `⟨(AddMonoidHom.mulLeft (Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)))).comp ι₀, fun c hc => ?_⟩` and prove the remaining obligations. Substitute `hc` using the available equality. Introduce `w hw' z hz`. Use `choose cj hcj using hres z`. Establish `hf` using `(hR.pt c).f P w hw' r hr`.
+
+Establish `hsum` using `GlobalTheory.Mem.Col2.FunMv.hasRes_last (((K (chOf c)).y ⟨c, rfl⟩).1 : GA B (B.R.N i)) (k (chOf c)) v P.1 hPv w r _ cj (fun j => hR.k_T (chOf c) P r j hr) (fun j => by have := hcj j; rw [hz] at this; exact this)`. Use `(hf.unique hsum).trans ?_` and prove the remaining obligations. Use `show _ = Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) * ι₀ ((K (chOf c)).lev.fT v h z)`. Conclude with `congrArg _ (hι₀ z (cj r) (hcj r)).symm`.
+-/
 theorem GlobalTheory.Mem.Col2.TC.funMoved_charts : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ β : Ch, FunKilled (K β).lev (X.piT u) → ∀ (P : (B.primes X).vT u) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)) (h : ((B.T u : ℕ) : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) → ∃ ι : (K β).lev.fM v h →+ 𝓞 B.fields.E ⧸ P.1.asIdeal, ∀ c, chOf c = β → GlobalTheory.TwU.FunMoved (sm I l Z) (K β).lev P v h ι ((K (chOf c)).y ⟨c, rfl⟩).1 ((I.stp u a i).rep c).1.1.deco.1 := by
   intro B X I hI hPins l Z u a i hi bad Ch chOf K k hR β hkill P v h hov
   classical

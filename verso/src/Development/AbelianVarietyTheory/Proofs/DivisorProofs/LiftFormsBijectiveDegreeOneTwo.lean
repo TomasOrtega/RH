@@ -10,6 +10,9 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 
 namespace GlobalTheory.PDForm
 
+/- English proof (translation)
+The claim follows from `fun _ Λ U ↦ ⟨LiftRes.liftOneFormsToCompatible_bijective Λ U, LiftRes.fm_bij Λ U 2⟩`.
+-/
 theorem lift_forms_bij : ∀ (D : Data) (Λ : Lift D) (U : AffOp D.X),
     Function.Bijective (fun ω : Ω[Sec D.s U.unop.1⁄D.R] ↦
       (Submodule.Quotient.mk ((Λ.semi U).m1 ω) : K1 D.R (Λ.L.obj U).δ)) ∧

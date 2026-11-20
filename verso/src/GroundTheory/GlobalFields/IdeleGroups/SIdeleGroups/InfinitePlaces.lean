@@ -24,16 +24,25 @@ def infiniteAdeleAboveFun (a : (w : v.placesOver L) → w.1.Completion) (w : Inf
   if h : w ∈ v.placesOver L then a ⟨w, h⟩ else 1
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Rewrite using `[infiniteAdeleAboveFun, dif_pos w.2]`.
+-/
 theorem infiniteAdeleAboveFun_apply (a : (w : v.placesOver L) → w.1.Completion)
     (w : v.placesOver L) : infiniteAdeleAboveFun v a w.1 = a w := by
   rw [infiniteAdeleAboveFun, dif_pos w.2]
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Rewrite using `[infiniteAdeleAboveFun, dif_neg h]`.
+-/
 theorem infiniteAdeleAboveFun_apply_of_not (a : (w : v.placesOver L) → w.1.Completion)
     {w : InfinitePlace L} (h : w ∉ v.placesOver L) : infiniteAdeleAboveFun v a w = 1 := by
   rw [infiniteAdeleAboveFun, dif_neg h]
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w ∈ v.placesOver L`. Conclude with `infiniteAdeleAboveFun_apply v 1 ⟨w, h⟩`. Conclude with `infiniteAdeleAboveFun_apply_of_not v 1 h`.
+-/
 theorem infiniteAdeleAboveFun_one :
     infiniteAdeleAboveFun v (1 : (w : v.placesOver L) → w.1.Completion) = 1 := by
   funext w
@@ -42,6 +51,9 @@ theorem infiniteAdeleAboveFun_one :
   · exact infiniteAdeleAboveFun_apply_of_not v 1 h
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[Pi.mul_apply]`. Distinguish the cases in `h : w ∈ v.placesOver L`. Rewrite using `[infiniteAdeleAboveFun_apply v _ ⟨w, h⟩, infiniteAdeleAboveFun_apply v _ ⟨w, h⟩, infiniteAdeleAboveFun_apply v _ ⟨w, h⟩, Pi.mul_apply]`. Rewrite using `[infiniteAdeleAboveFun_apply_of_not v _ h, infiniteAdeleAboveFun_apply_of_not v _ h, infiniteAdeleAboveFun_apply_of_not v _ h, mul_one]`.
+-/
 theorem infiniteAdeleAboveFun_mul (a b : (w : v.placesOver L) → w.1.Completion) :
     infiniteAdeleAboveFun v (a * b) = infiniteAdeleAboveFun v a * infiniteAdeleAboveFun v b := by
   funext w
@@ -64,16 +76,25 @@ def infiniteEmbedAbove : ((w : v.placesOver L) → (w.1.Completion)ˣ) →* Idel
     (MulEquiv.piUnits (M := fun w : v.placesOver L ↦ w.1.Completion)).symm.toMonoidHom
 
 omit [NumberField K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_infiniteEmbedAbove_snd (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     ((infiniteEmbedAbove v y : IdeleGroup L) : 𝔸[L]).2 = 1 :=
   rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `infiniteAdeleAboveFun_apply v _ w`.
+-/
 theorem coe_infiniteEmbedAbove_fst (y : (w : v.placesOver L) → (w.1.Completion)ˣ)
     (w : v.placesOver L) : ((infiniteEmbedAbove v y : IdeleGroup L) : 𝔸[L]).1 w.1 = y w :=
   infiniteAdeleAboveFun_apply v _ w
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `infiniteAdeleAboveFun_apply_of_not v _ h`.
+-/
 theorem coe_infiniteEmbedAbove_fst_of_not (y : (w : v.placesOver L) → (w.1.Completion)ˣ)
     {w : InfinitePlace L} (h : w ∉ v.placesOver L) :
     ((infiniteEmbedAbove v y : IdeleGroup L) : 𝔸[L]).1 w = 1 :=
@@ -84,23 +105,35 @@ def infiniteProjAbove : IdeleGroup L →* ((w : v.placesOver L) → (w.1.Complet
 
 omit [NumberField K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_infiniteProjAbove_apply (x : IdeleGroup L) (w : v.placesOver L) :
     ((infiniteProjAbove v x w : (w.1.Completion)ˣ) : w.1.Completion) = (x : 𝔸[L]).1 w.1 :=
   rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+The claim follows from `funext fun w ↦ Units.ext (coe_infiniteEmbedAbove_fst v y w)`.
+-/
 theorem infiniteProjAbove_infiniteEmbedAbove (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     infiniteProjAbove v (infiniteEmbedAbove v y) = y :=
   funext fun w ↦ Units.ext (coe_infiniteEmbedAbove_fst v y w)
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Rewrite using `[comap_eq_inv_smul]`. Conclude with `(σ⁻¹ • w).2`.
+-/
 theorem comap_mem_placesOver (σ : L ≃ₐ[K] L) (w : v.placesOver L) :
     w.1.comap ((σ : L ≃+* L) : L →+* L) ∈ v.placesOver L := by
   rw [comap_eq_inv_smul]
   exact (σ⁻¹ • w).2
 
 omit [NumberField K] [NumberField L] in
+/- English proof (translation)
+Use `(σ⁻¹ • (⟨σ • w, h⟩ : v.placesOver L)).2` as an intermediate fact. Rewrite `this` using `[InfinitePlace.coe_smul_placesOver, inv_smul_smul]`. Then use the resulting hypothesis.
+-/
 theorem mem_placesOver_of_smul_mem (σ : L ≃ₐ[K] L) {w : InfinitePlace L}
     (h : σ • w ∈ v.placesOver L) : w ∈ v.placesOver L := by
   have := (σ⁻¹ • (⟨σ • w, h⟩ : v.placesOver L)).2
@@ -108,6 +141,9 @@ theorem mem_placesOver_of_smul_mem (σ : L ≃ₐ[K] L) {w : InfinitePlace L}
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coe_infiniteProjAbove_apply, coe_infiniteProjAbove_apply, coe_smul_idele, coe_smul_idele, smul_fst, smul_fst]`. Use `congr 1`. Conclude with `congrArg (fun f : (w : v.placesOver L) → (w.1.Completion)ˣ ↦ ((f ⟨u.1.comap ((σ : L ≃+* L) : L →+* L), comap_mem_placesOver v σ u⟩ : _) : (u.1.comap ((σ : L ≃+* L) : L →+* L)).Completion)) h`.
+-/
 theorem infiniteProjAbove_smul_congr (σ : L ≃ₐ[K] L) {x y : IdeleGroup L}
     (h : infiniteProjAbove v x = infiniteProjAbove v y) :
     infiniteProjAbove v (σ • x) = infiniteProjAbove v (σ • y) := by
@@ -141,15 +177,26 @@ instance infiniteUnitsAboveAction :
     change infiniteProjAbove v (σ • infiniteEmbedAbove v 1) = 1
     rw [map_one, smul_one, map_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteUnitsAbove_smul_def (σ : L ≃ₐ[K] L)
     (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     σ • y = infiniteProjAbove v (σ • infiniteEmbedAbove v y) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `infiniteProjAbove_smul_congr v σ (infiniteProjAbove_infiniteEmbedAbove v _).symm`.
+-/
 theorem infiniteProjAbove_smul (σ : L ≃ₐ[K] L) (x : IdeleGroup L) :
     infiniteProjAbove v (σ • x) = σ • infiniteProjAbove v x :=
   infiniteProjAbove_smul_congr v σ (infiniteProjAbove_infiniteEmbedAbove v _).symm
 
+/- English proof (translation)
+Use `Units.ext (adele_ext ?_ fun u ↦ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u ∈ v.placesOver L`. Rewrite using `[coe_infiniteEmbedAbove_fst v _ ⟨u, h⟩, infiniteUnitsAbove_smul_def, coe_infiniteProjAbove_apply]`. Rewrite using `[coe_infiniteEmbedAbove_fst_of_not v _ h, coe_smul_idele, smul_fst, coe_infiniteEmbedAbove_fst_of_not v _ ?_, map_one]`.
+
+Rewrite using `[comap_eq_inv_smul]`. Introduce `h'`. Conclude with `h (mem_placesOver_of_smul_mem v σ⁻¹ h')`. Rewrite using `[coe_infiniteEmbedAbove_snd, coe_smul_idele, smul_snd, coe_infiniteEmbedAbove_snd]`. Conclude with `(map_one (finiteCompletionMap _ u)).symm`.
+-/
 theorem infiniteEmbedAbove_smul (σ : L ≃ₐ[K] L) (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     infiniteEmbedAbove v (σ • y) = σ • infiniteEmbedAbove v y := by
   refine Units.ext (adele_ext ?_ fun u ↦ ?_)
@@ -167,6 +214,11 @@ theorem infiniteEmbedAbove_smul (σ : L ≃ₐ[K] L) (y : (w : v.placesOver L) �
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[coe_infiniteProjAbove_apply, coe_infiniteEmbedAbove_fst_of_not v y]`. Both sides reduce to the same expression. Introduce `hu`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[← (InfinitePlace.liesOver_iff_comap_eq v' u.1).1 u.2, (InfinitePlace.liesOver_iff_comap_eq v u.1).1 hu]`.
+-/
 theorem infiniteProjAbove_infiniteEmbedAbove_of_ne {v v' : InfinitePlace K} (h : v' ≠ v)
     (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     infiniteProjAbove v' (infiniteEmbedAbove v y) = 1 := by
@@ -181,16 +233,25 @@ theorem infiniteProjAbove_infiniteEmbedAbove_of_ne {v v' : InfinitePlace K} (h :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `funext fun _ ↦ Units.ext rfl`.
+-/
 theorem finiteProjAbove_infiniteEmbedAbove (v' : HeightOneSpectrum (𝓞 K))
     (y : (w : v.placesOver L) → (w.1.Completion)ˣ) :
     finiteProjAbove v' (infiniteEmbedAbove v y) = 1 :=
   funext fun _ ↦ Units.ext rfl
 
+/- English proof (translation)
+The claim follows from `funext fun _ ↦ Units.ext rfl`.
+-/
 theorem infiniteProjAbove_finiteEmbedAbove (v' : HeightOneSpectrum (𝓞 K))
     (y : (w : PlacesOver L v') → (w.1.adicCompletion L)ˣ) :
     infiniteProjAbove v (finiteEmbedAbove v' y) = 1 :=
   funext fun _ ↦ Units.ext rfl
 
+/- English proof (translation)
+Rewrite using `[infiniteUnitsAbove_smul_def, coe_infiniteProjAbove_apply, coe_smul_idele, smul_fst, coe_infiniteEmbedAbove_fst v y ⟨_, comap_mem_placesOver v σ w⟩]`.
+-/
 theorem infiniteUnitsAbove_smul_apply (σ : L ≃ₐ[K] L)
     (y : (w : v.placesOver L) → (w.1.Completion)ˣ) (w : v.placesOver L) :
     (((σ • y) w : (w.1.Completion)ˣ) : w.1.Completion) =

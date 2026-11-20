@@ -24,6 +24,9 @@ namespace GlobalTheory.Jet.MultGap
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hW k hk _ (W.starProjection_apply_mem x)) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, FormF.inner_rep_K hU hk]`. Conclude with `W.starProjection_inner_eq_zero x _ (hW _ (Kset_star ε hk) w hw)`.
+-/
 theorem proj_comm (hU : IsURepOn (Kset ε) σ) {W : Submodule ℂ H} [W.HasOrthogonalProjection]
     (hW : IsKStableOn ε σ W) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (x : H) :
     W.starProjection (σ k x) = σ k (W.starProjection x) := by
@@ -32,6 +35,15 @@ theorem proj_comm (hU : IsURepOn (Kset ε) σ) {W : Submodule ℂ H} [W.HasOrtho
   rw [← map_sub, FormF.inner_rep_K hU hk]
   exact W.starProjection_inner_eq_zero x _ (hW _ (Kset_star ε hk) w hw)
 
+/- English proof (translation)
+Use `haveI := hT.1`. Set `Q : S →L[ℂ] H` to `T.starProjection.comp S.subtypeL`. Distinguish the cases in `hQ : Q = 0`. Introduce `x hx y hy`. Establish `h1 : T.starProjection x = 0` using `congrArg (fun A : S →L[ℂ] H => A ⟨x, hx⟩) hQ`.
+
+Establish `h2` using `T.starProjection_inner_eq_zero x y hy`. Rewrite `h2` using `[h1, sub_zero]`. Then use the resulting hypothesis. It suffices to derive a contradiction. Establish `hR` using `FormF.rangeType n ε Λ H σ S H σ Q hS (fun k hk x y hxy => by`. Express the relevant statement in the definitionally equal form `T.starProjection (y : H) = σ k (T.starProjection (x : H))`.
+
+Rewrite using `[hxy, proj_comm hU hT.2.1 hk]) hQ`. Establish `hle : LinearMap.range (Q : S →ₗ[ℂ] H) ≤ T`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `T.starProjection_apply_mem _`. Take `⟨v, hv, hv0, hvw⟩` from `hR.2.2.2.1`.
+
+Break down `hT.2.2.1 _ hle hR.2.1 with h | h` into its components or cases. Rewrite `hv` using `[h]`. Conclude with `hv0 hv`. Take `⟨w, hw, hw0, hww⟩` from `hT.2.2.2.1`. Use `hne (GlobalTheory.LowHW.cdom_antisymm (ε := ε) (hR.2.2.2.2 μ w (h ▸ hw) hw0 hww) (hT.2.2.2.2 Λ v (hle hv) hv0 hvw))` and prove the remaining obligations.
+-/
 theorem orth_of_ne (hU : IsURepOn (Kset ε) σ) {Λ μ : Fin n → ℝ} {S T : Submodule ℂ H}
     (hS : IsKTypeOf ε σ Λ S) (hT : IsKTypeOf ε σ μ T) (hne : μ ≠ Λ) :
     ∀ x ∈ S, ∀ y ∈ T, ⟪x, y⟫_ℂ = 0 := by
@@ -57,6 +69,17 @@ theorem orth_of_ne (hU : IsURepOn (Kset ε) σ) {Λ μ : Fin n → ℝ} {S T : S
     refine hne (GlobalTheory.LowHW.cdom_antisymm (ε := ε) (hR.2.2.2.2 μ w (h ▸ hw) hw0 hww)
       (hT.2.2.2.2 Λ v (hle hv) hv0 hvw))
 
+/- English proof (translation)
+Use `haveI := hT.1`. Set `Q : S →L[ℂ] H` to `S.subtypeL - T.starProjection.comp S.subtypeL`. Establish `hQa : ∀ x : S, Q x = (x : H) - T.starProjection (x : H)` using `fun x => rfl`. Establish `hQ : Q ≠ 0`. Introduce `hQ`.
+
+Establish `hle : S ≤ T`. Introduce `x hx`. Establish `h1` using `hQa ⟨x, hx⟩`. Rewrite `h1` using `[hQ]`. Establish `h2 : x = T.starProjection x` using `sub_eq_zero.1 h1.symm`.
+
+Rewrite using `[h2]`. Conclude with `T.starProjection_apply_mem _`. Break down `hT.2.2.1 _ hle hS.2.1 with h | h` into its components or cases. Take `⟨v, hv, hv0, -⟩` from `hS.2.2.2.1`. Rewrite `hv` using `[h]`.
+
+Conclude with `hv0 hv`. Conclude with `hne h`. Use `⟨_, FormF.rangeType n ε Λ H σ S H σ Q hS (fun k hk x y hxy => by` and prove the remaining obligations. Rewrite using `[hQa, hQa, hxy, proj_comm hU hT.2.1 hk, map_sub]) hQ, ?_⟩`. Introduce and unpack `_ ⟨x, rfl⟩ y hy`.
+
+Conclude with `T.starProjection_inner_eq_zero x y hy`.
+-/
 theorem exists_orth (hU : IsURepOn (Kset ε) σ) {Λ : Fin n → ℝ} {S T : Submodule ℂ H}
     (hS : IsKTypeOf ε σ Λ S) (hT : IsKTypeOf ε σ Λ T) (hne : S ≠ T) :
     ∃ R : Submodule ℂ H, IsKTypeOf ε σ Λ R ∧ ∀ x ∈ R, ∀ y ∈ T, ⟪x, y⟫_ℂ = 0 := by
@@ -82,6 +105,11 @@ theorem exists_orth (hU : IsURepOn (Kset ε) σ) {Λ : Fin n → ℝ} {S T : Sub
   rintro _ ⟨x, rfl⟩ y hy
   exact T.starProjection_inner_eq_zero x y hy
 
+/- English proof (translation)
+Establish `key : ∀ᶠ g in nhdsWithin (2 * (n : ℝ)) (Set.Ioi (2 * (n : ℝ))), ∀ a b : Fin n, a < b → ε a ≠ ε b → g ≤ lam a - lam b`. Simplify using `only [Filter.eventually_all]`. Introduce `a b hab he`. Establish `h1` using `h a b he`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (hl hab))]`.
+
+Conclude with `Filter.Eventually.filter_mono nhdsWithin_le_nhds ((eventually_lt_nhds h1).mono fun g hg => hg.le)`. Conclude with `(key.and self_mem_nhdsWithin).exists`.
+-/
 theorem exists_gap {lam : Fin n → ℝ} (hl : StrictAnti lam)
     (h : ∀ a b : Fin n, ε a ≠ ε b → 2 * (n : ℝ) < |lam a - lam b|) :
     ∃ g : ℝ, (∀ a b : Fin n, a < b → ε a ≠ ε b → g ≤ lam a - lam b) ∧ 2 * (n : ℝ) < g := by
@@ -94,10 +122,16 @@ theorem exists_gap {lam : Fin n → ℝ} (hl : StrictAnti lam)
     exact Filter.Eventually.filter_mono nhdsWithin_le_nhds ((eventually_lt_nhds h1).mono fun g hg => hg.le)
   exact (key.and self_mem_nhdsWithin).exists
 
+/- English proof (translation)
+The claim follows from `sInf_le_sInf fun S hS => ⟨S.smul_mem c hS.1, hS.2⟩`.
+-/
 theorem kSpan_smul_le {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) (c : ℂ)
     (u : V) : kSpan ε E (c • u) ≤ kSpan ε E u :=
   sInf_le_sInf fun S hS => ⟨S.smul_mem c hS.1, hS.2⟩
 
+/- English proof (translation)
+Rewrite using `[cyc, Submodule.mem_sInf]`. Introduce `W hW`. Simplify using `only [Cas, LinearMap.sum_apply, Module.End.mul_apply]`. Conclude with `W.sum_mem fun a _ => W.sum_mem fun b _ => hW.2 _ _ _ (hW.2 _ _ _ hW.1)`.
+-/
 theorem cas_mem_cyc {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V)
     (u : V) : Cas E u ∈ cyc E u := by
   rw [cyc, Submodule.mem_sInf]
@@ -105,12 +139,20 @@ theorem cas_mem_cyc {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin n → Fi
   simp only [Cas, LinearMap.sum_apply, Module.End.mul_apply]
   exact W.sum_mem fun a _ => W.sum_mem fun b _ => hW.2 _ _ _ (hW.2 _ _ _ hW.1)
 
+/- English proof (translation)
+Establish `hc : ∀ a b, E a b (Cas E u) = Cas E (E a b u)` using `fun a b => (congrArg (fun A : Module.End ℂ V => A u) ((casCentral _ n ε E hE).1 a b)).symm`. Conclude with `⟨fun a => by rw [hc, hu.1 a, map_smul], fun a b h1 h2 => by rw [hc, hu.2 a b h1 h2, map_zero]⟩`.
+-/
 theorem cas_kHighest {V : Type} [AddCommGroup V] [Module ℂ V] {E : Fin n → Fin n → Module.End ℂ V}
     (hE : GlRel E) {μ : Fin n → ℝ} {u : V} (hu : KHighest ε E μ u) : KHighest ε E μ (Cas E u) := by
   have hc : ∀ a b, E a b (Cas E u) = Cas E (E a b u) := fun a b =>
     (congrArg (fun A : Module.End ℂ V => A u) ((casCentral _ n ε E hE).1 a b)).symm
   exact ⟨fun a => by rw [hc, hu.1 a, map_smul], fun a b h1 h2 => by rw [hc, hu.2 a b h1 h2, map_zero]⟩
 
+/- English proof (translation)
+Establish `h` using `wdCas V n ε E μ u hE hU hu`. Rewrite `h` using `[hc, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Generalize the expression as in `((nsq (μ + rhoC ε) - nsq (rhoC ε)) * ‖u‖ ^ 2 - ∑ a, ∑ b, (if ε a = ε b then 0 else ‖E a b u‖ ^ 2) : ℝ) = t at h`. Use `⟨t / ‖u‖ ^ 2, ?_⟩` and prove the remaining obligations. Establish `hn : ((‖u‖ : ℝ) : ℂ) ≠ 0` using `by simpa using hu0`.
+
+Rewrite using `[hc]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← h, eq_div_iff (pow_ne_zero 2 hn)]`. Both sides reduce to the same expression.
+-/
 theorem cas_real {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {E : Fin n → Fin n → Module.End ℂ V}
     (hE : GlRel E) (hU : IsUnitary ε E) {μ : Fin n → ℝ} {u : V} (hu : KHighest ε E μ u) (hu0 : u ≠ 0) {c : ℂ}
     (hc : Cas E u = c • u) : ∃ r : ℝ, Cas E u = (r : ℂ) • u := by
@@ -126,6 +168,23 @@ theorem cas_real {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {E 
   rw [← h, eq_div_iff (pow_ne_zero 2 hn)]
   rfl
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ σ hl hDS hgap`. Take `⟨hc, -, hU, hirr, -, ⟨S0, hS0⟩, -⟩` from `id hDS`. Establish `hK` using `FormF.URep_K hU`. Take `⟨V, E, S, hD, hS, hSV⟩` from `GlobalTheory.SmoothKType.exists_isDer_kType n ε _ H σ S0 hU hS0`. Take `⟨hk1, hk2⟩` from `GlobalTheory.Jet.KType.kType_iff n ε H σ V E hU hD`.
+
+Take `⟨v, hv, hv0, hvw⟩` from `hS.2.2.2.1`. Take `⟨u, rfl⟩ : ∃ u : V, (u : H) = v` from `⟨⟨v, hSV hv⟩, rfl⟩`. Establish `hu0 : u ≠ 0` using `fun h => hv0 (by rw [h]; rfl)`. Take `⟨huH, huS, hufd⟩` from `hk2 _ S u hS hSV hv hu0 hvw`. Take `⟨g, hg1, hg2⟩` from `exists_gap hl.1 hgap`.
+
+Establish `hm : ∀ x ∈ cyc E u, KHighest ε E (lowK ε lam) x → ∃ c : ℂ, x = c • u` using `GlobalTheory.Jet.kHighest_eq_smul_of_minus_killed V n ε E lam g u hD.1 hD.2.1 huH hufd hg1 hg2 (GlobalTheory.Jet.Schmid.mul_vminus_eq_zero n ε H σ V E lam u hl hDS hD huH hufd)`. Take `⟨c, hcu⟩` from `hm _ (cas_mem_cyc E u) (cas_kHighest hD.1 huH)`. Take `⟨r, hr⟩` from `cas_real hD.1 hD.2.1 huH hu0 hcu`. Establish `hdense` using `GlobalTheory.CycDense.cyc_dense n ε H σ V E _ r u hU hD hirr hu0 huH hufd hr`. Take `⟨-, -, hst, -, hpc, hcp, hfd⟩` from `pfilFacts V n ε E u hD.1`.
+
+Establish `huniq : ∀ T : Submodule ℂ H, IsKTypeOf ε σ (lowK ε lam) T → T = S`. Introduce `T hT`. Assume the negation of the conclusion as `hne`. Take `⟨R, hR, hRS⟩` from `exists_orth hK hT hS hne`. Take `⟨w, hw, hw0, -⟩` from `hR.2.2.2.1`.
+
+Use `hw0 (hdense.eq_zero_of_inner_left ℂ fun y hy => ?_)` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `hy`. Take `⟨j, hj⟩` from `hcp z hz`. Use `haveI := hfd hufd j`. Take `⟨m, x, μ, hx, -, hsup⟩` from `kDecomp V n ε E _ (hfd hufd j) (glRel_kRel ε E hD.1) (isUnitary_kUnit ε E hD.2.1) (hst j)`.
+
+Establish `hle : pfil ε E u j ≤ LinearMap.ker ((innerSL ℂ w : H →L[ℂ] ℂ).toLinearMap ∘ₗ V.subtype)`. Rewrite using `[← hsup]`. Use `iSup_le fun i y hy => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⟪w, (y : H)⟫_ℂ = 0`. Distinguish the cases in `hμ : μ i = lowK ε lam`.
+
+Take `⟨d, hd⟩` from `hm (x i) (hpc j (hx i).1) (hμ ▸ (hx i).2.2)`. Rewrite `hy` using `[hd]`. Conclude with `hRS w hw _ (huS ▸ ⟨y, kSpan_smul_le E d u hy, rfl⟩)`. Establish `hfi : FiniteDimensional ℂ (kSpan ε E (x i))` using `Submodule.finiteDimensional_of_le (S₂ := pfil ε E u j) (sInf_le ⟨(hx i).1, hst j⟩)`. Conclude with `orth_of_ne hK hR (hk1 _ _ (hx i).2.1 (hx i).2.2 hfi) hμ w hw _ ⟨y, hy, rfl⟩`.
+
+Conclude with `hle hj`. Establish `: lowKSub ε lam σ = S` using `le_antisymm (sSup_le fun T hT => (huniq T hT).le) (le_sSup hS)`. Rewrite using `[this]`. Conclude with `hS`.
+-/
 theorem isKTypeOf_lowKSub : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsHCParam lam → IsDS ε lam σ → (∀ a b : Fin n, ε a ≠ ε b → 2 * (n : ℝ) < |lam a - lam b|) → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) := by
   intro n ε lam H _ _ σ hl hDS hgap
   obtain ⟨hc, -, hU, hirr, -, ⟨S0, hS0⟩, -⟩ := id hDS

@@ -19,6 +19,13 @@ open scoped Classical
 
 namespace GlobalTheory.FockBridge.FramesAlpha
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hCfg X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hB` using `hM.triple.base`. Establish `hg` using `hM.triple.geo`. Establish `hg₁` using `hM₁.triple.geo`. Establish `hq` using `hCfg.q0`.
+
+Establish `hq₁` using `hCfg.q1`. Establish `hp` using `hCfg.ep`. Establish `ha` using `hg₁.aBig`. Take `⟨r₀, s₀, C, hC, hCθ, hAd⟩` from `GlobalTheory.T.adapted_real_frame_exists F E σ B (b + 2 + a') (b + a') 0 (b + 1) (b + 2 + a' - (G.p + G.q)) (G.p + G.q) (b + a' - (G₁.p + G₁.q)) (G₁.p + G₁.q) G.W G₁.W H' hB hg.hW hg₁.hW hCfg.hH' (by omega) (by omega)`. Use `choose A hA hAθ using fun w => GlobalTheory.RealLift.frameEx_holds _ _ _ _ _ (hg.hV.sig w) (hg.hV.cartan w)`.
+
+Use `⟨A, C, r₀, s₀, ⟨⟨one_mul _, fun w => ?_, hC⟩, hAθ, hCθ⟩, hAd⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealLift.Main.incM_map_piInf, one_smul]`. Conclude with `hA w`.
+-/
 theorem frames_alpha : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

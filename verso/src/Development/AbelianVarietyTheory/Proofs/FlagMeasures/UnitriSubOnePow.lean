@@ -12,6 +12,11 @@ namespace GlobalTheory.RowLev.LevelIdem
 
 open GlobalTheory.BadShare GlobalTheory.BadShare.Basic
 
+/- English proof (translation)
+Establish `ht : (M - 1).BlockTriangular id`. Introduce `a b hab`. Establish `hab' : b < a` using `hab`. Rewrite using `[Matrix.sub_apply, h2 a b hab', Matrix.one_apply_ne hab'.ne', sub_zero]`. Establish `h` using `Matrix.aeval_self_charpoly (M - 1)`.
+
+Rewrite `h` using `[Matrix.charpoly_of_isUpperTriangular _ ht]`. Simplify `h` using `[h1]`.
+-/
 theorem unitri_sub_one_pow {k : Type} [Field k] {N : ℕ} (M : Matrix (Fin N) (Fin N) k)
     (h1 : ∀ a, M a a = 1) (h2 : ∀ a b, b < a → M a b = 0) : (M - 1) ^ N = 0 := by
   have ht : (M - 1).BlockTriangular id := by
@@ -24,6 +29,13 @@ theorem unitri_sub_one_pow {k : Type} [Field k] {N : ℕ} (M : Matrix (Fin N) (F
 
 variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 
+/- English proof (translation)
+Establish `e : a = alg (eps L.Mem χ)`. Use extensionality with `x`. Rewrite using `[coeff_alg, ha]`. Use `⟨by rw [e, ← alg_conv, hp.1], fun q => ?_, fun q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ha, hp.2]`.
+
+Both sides reduce to the same expression. Rewrite `hq` using `[ha]`. Establish `hm : L.Mem q`. Assume the negation of the conclusion as `hc`. Conclude with `hq (if_neg hc)`.
+
+Conclude with `unitri_sub_one_pow _ hm.1.1 hm.1.2`.
+-/
 theorem spec_of_eps (L : Lev g N) (χ : GG g N → ℂ) (hp : IsProj (eps L.Mem χ)) (a : MonoidAlgebra ℂ (GG g N))
     (ha : ∀ x, a.coeff x = eps L.Mem χ x) :
     a * a = a ∧ IsSA a ∧ ∀ q, a.coeff q ≠ 0 → ((q : Matrix (Fin N) (Fin N) (ZMod g)) - 1) ^ N = 0 := by
@@ -39,6 +51,19 @@ theorem spec_of_eps (L : Lev g N) (χ : GG g N → ℂ) (hp : IsProj (eps L.Mem 
       exact hq (if_neg hc)
     exact unitri_sub_one_pow _ hm.1.1 hm.1.2
 
+/- English proof (translation)
+Distinguish the cases in `hψ : ψ = 1`. Use `swap`. Conclude with `spec_of_eps _ _ (isProj_e _) _ (H ψ hψ)`. Substitute `hψ` using the available equality. Establish `h0 : (ZMod.stdAddChar (N` using `g)) ≠ 1 := (levStandard g N b s k h).hψ`.
+
+Use `set L := levOfChar ZMod.stdAddChar h0 N b s k h with hL`. Use `haveI : Nonempty {u // L.Mem u} := ⟨⟨1, mem_one L⟩⟩`. Establish `hc : (Nat.card {u // L.Mem u} : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `hP : (fun u : GG g N => P u.val) = L.Mem`. Use function extensionality and compare the values at `x`.
+
+Establish `hx` using `H _ h0 x`. Rewrite `hx` using `[coeff_eDat, Lev.e]`. Unfold `eps at hx`. Use `propext ⟨fun h1 => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h2 haveI : Nonempty {u : GG g N // P u.val} := ⟨⟨x, h1⟩⟩`.
+
+Establish `hc' : (Nat.card {u : GG g N // P u.val} : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Rewrite `hx` using `[if_pos h1, if_neg h2]`. Use `div_ne_zero (inv_ne_zero fun h3 => ?_) hc' hx` and prove the remaining obligations. Use `AddChar.norm_apply (ZMod.stdAddChar (N := g)) (φ x.val)` as an intermediate fact. Use `beta_reduce at h3`.
+
+Rewrite `this` using `[h3]`. Simplify using `at this`. Assume the negation of the conclusion as `h2`. Rewrite `hx` using `[if_neg h2, if_pos h1]`. Conclude with `div_ne_zero (inv_ne_zero (chi_ne L x)) hc hx.symm`.
+
+Use `spec_of_eps L (fun _ => 1) (GlobalTheory.BadShare.EpsProj.isProj_eps (mem_one L) (fun _ _ => mem_mul L) rfl (fun _ _ _ _ => by simp)) _ fun x => ?_` and prove the remaining obligations. Rewrite using `[coeff_eDat, hP]`. Both sides reduce to the same expression.
+-/
 theorem spec_eDat (P : Matrix (Fin N) (Fin N) (ZMod g) → Prop) (φ : Matrix (Fin N) (Fin N) (ZMod g) → ZMod g)
     (b : Bool) (s k : ℕ) (h : s + k < N)
     (H : ∀ (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) x,
@@ -76,6 +101,11 @@ theorem spec_eDat (P : Matrix (Fin N) (Fin N) (ZMod g) → Prop) (φ : Matrix (F
   rw [coeff_eDat, hP]
   rfl
 
+/- English proof (translation)
+Introduce `D k ψ a ha`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hN : D.R.r = D.R.k + 2 * (D.R.m / 2 - 1) + 1`. Use `dimS_eq D.R` as an intermediate fact. Unfold `Ranks.rS at this`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h : (D.R.m / 2 - 1) + D.R.k < D.R.r` using `by omega`. Break down `ha with rfl | rfl` into its components or cases. Conclude with `spec_eDat _ _ false _ _ h (fun ψ hψ x => coeff_eU ψ hψ _ _ h x) ψ`. Conclude with `spec_eDat _ _ true _ _ h (fun ψ hψ x => coeff_eJ ψ hψ _ _ hN h x) ψ`.
+-/
 theorem eUk_eJk_spec : ∀ (D : D7) (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))), a = eUk D k ψ₀ ∨ a = eJk D k ψ₀ → a * a = a ∧ IsSA a ∧ ∀ q, a.coeff q ≠ 0 → ((q : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k))) - 1) ^ D.R.r = 0 := by
   intro D k ψ a ha
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩

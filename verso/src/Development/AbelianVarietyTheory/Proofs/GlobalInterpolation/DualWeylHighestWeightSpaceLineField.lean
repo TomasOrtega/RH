@@ -13,6 +13,25 @@ noncomputable section
 
 namespace GlobalTheory.Alc
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hg : rowDiv k a b j f ∈ dualWeyl k N N ν` using `rowDivStable k N N ν a b j f hf`. Establish `hZ : IsWeightedHomogeneous (GlobalTheory.LvT.KerLat.rowZ N N) f (fun i => (ν i : ℤ))`. Introduce `d hd`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[GlobalTheory.LvT.KerLat.weight_rowZ, hwt hd]`. Establish `hsh` using `GlobalTheory.LvT.KerLat.rowDiv_shift k (fun i => (ν i : ℤ)) a b j f hZ`. Take `⟨m, hm⟩` from `ne_zero_iff.mp hne`. Establish `e` using `hsh hm`. Establish `dom` using `(GlobalTheory.DualWeyl.rowDeg_dominated_of_mem_nabla ν _ hg m (mem_support_iff.mpr hm)).1 (a.val + 1)`.
+
+Establish `hrow : ∀ i, ((rowDeg m i : ℕ) : ℤ) = (ν i : ℤ) + (j : ℤ) * ((Pi.single a (1:ℤ) : Fin N → ℤ) i - (Pi.single b (1:ℤ) : Fin N → ℤ) i)`. Introduce `i`. Use `congrFun e i` as an intermediate fact. Rewrite `this` using `[GlobalTheory.LvT.KerLat.weight_rowZ, GlobalTheory.LvT.KerLat.weight_rowW]`. Rewrite using `[this]`.
+
+Simplify using `[Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hcast : ((∑ i : Fin N with i.val < a.val + 1, rowDeg m i : ℕ) : ℤ) = ((∑ i : Fin N with i.val < a.val + 1, ν i : ℕ) : ℤ) + j`. Use `push_cast`. Simplify using `only [hrow]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib]`.
+
+Establish `ha : (∑ i : Fin N with i.val < a.val + 1, (Pi.single a (1:ℤ) : Fin N → ℤ) i) = 1`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Pi.single_apply, hi]`.
+
+Introduce `h`. Simplify using `at h`. Establish `hb : (∑ i : Fin N with i.val < a.val + 1, (Pi.single b (1:ℤ) : Fin N → ℤ) i) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `: i ≠ b`. Introduce `h`. Substitute `h` using the available equality. Simplify using `at hi`. Establish `: a.val < i.val` using `hab`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[Pi.single_apply, this]`. Rewrite using `[ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj' : (1 : ℤ) ≤ j` using `by exact_mod_cast hj`.
+
+Establish `: ((∑ i : Fin N with i.val < a.val + 1, rowDeg m i : ℕ) : ℤ) ≤ ((∑ i : Fin N with i.val < a.val + 1, ν i : ℕ) : ℤ)` using `by exact_mod_cast dom`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rowDiv_raise_eq_zero (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ)
     (f : MvPolynomial (Fin N × Fin N) k) (hf : f ∈ dualWeyl k N N ν)
     (hwt : IsWeightedHomogeneous (rowW N N) f ν) (a b : Fin N) (hab : a < b) (j : ℕ) (hj : 1 ≤ j) :
@@ -59,6 +78,15 @@ theorem rowDiv_raise_eq_zero (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ)
       ((∑ i : Fin N with i.val < a.val + 1, ν i : ℕ) : ℤ) := by exact_mod_cast dom
   omega
 
+/- English proof (translation)
+Introduce `k _ N ν hν f hf hwt`. Set `K` to `AlgebraicClosure k`. Set `φ : k →+* K` to `algebraMap k K`. Establish `hgK : map φ f ∈ dualWeyl K N N ν` using `dualWeylMap k K φ N N ν f hf`. Establish `hrK : ∀ a b : Fin N, a < b → ∀ j : ℕ, 1 ≤ j → rowDiv K a b j (map φ f) = 0`.
+
+Introduce `a b hab j hj`. Rewrite using `[lclosedeq_rowDiv_map, rowDiv_raise_eq_zero k N ν f hf hwt a b hab j hj, map_zero]`. Take `⟨c, hc⟩` from `hwLine K N N le_rfl ν hν (map φ f) hgK hrK`. Take `⟨m, hm⟩` from `ne_zero_iff.mp (hwNe k N N le_rfl ν)`. Use `⟨coeff m f / coeff m (hw k le_rfl ν), ?_⟩` and prove the remaining obligations.
+
+Establish `hcm` using `congrArg (coeff m) hc`. Rewrite `hcm` using `[coeff_map, coeff_smul, ← lclosedeq_hw_map φ, coeff_map, smul_eq_mul]`. Establish `hφ : φ (coeff m (hw k le_rfl ν)) ≠ 0` using `(map_ne_zero φ).mpr hm`. Establish `hcv : c = φ (coeff m f / coeff m (hw k le_rfl ν))`. Rewrite using `[map_div₀, hcm, mul_div_cancel_right₀ _ hφ]`.
+
+Apply `map_injective φ φ.injective` to reduce the goal to its premises. Rewrite using `[hc, hcv, smul_eq_C_mul, smul_eq_C_mul, map_mul, map_C, lclosedeq_hw_map]`.
+-/
 theorem hw_line_field : ∀ (k : Type) [Field k] (N : ℕ) (ν : Fin N → ℕ), Antitone ν → ∀ f ∈ dualWeyl k N N ν,
     IsWeightedHomogeneous (rowW N N) f ν → ∃ c : k, f = c • hw k le_rfl ν := by
   intro k _ N ν hν f hf hwt

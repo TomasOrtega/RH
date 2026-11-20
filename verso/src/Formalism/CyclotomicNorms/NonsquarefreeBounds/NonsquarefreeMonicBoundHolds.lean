@@ -10,6 +10,9 @@ namespace Sqf
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Unfold `monicOf`. Rewrite using `[coeff_add, coeff_X_pow, if_neg (Nat.ne_of_lt i.2), zero_add, finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => if_neg (fun h => hj (Fin.ext h).symm)) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 lemma coeff_monicOf_lt {N : ℕ} (a : Fin N → K) (i : Fin N) :
     (monicOf a).coeff (i : ℕ) = a i := by
   unfold monicOf
@@ -18,6 +21,9 @@ lemma coeff_monicOf_lt {N : ℕ} (a : Fin N → K) (i : Fin N) :
   rw [Finset.sum_eq_single i (fun j _ hj => if_neg (fun h => hj (Fin.ext h).symm)) (by simp)]
   simp
 
+/- English proof (translation)
+Unfold `monicOf`. Rewrite using `[coeff_add, coeff_X_pow, finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_zero (fun j _ => if_neg (by have := j.2; omega)), add_zero]`.
+-/
 lemma coeff_monicOf_ge {N : ℕ} (a : Fin N → K) (k : ℕ) (hk : N ≤ k) :
     (monicOf a).coeff k = if k = N then 1 else 0 := by
   unfold monicOf
@@ -25,14 +31,25 @@ lemma coeff_monicOf_ge {N : ℕ} (a : Fin N → K) (k : ℕ) (hk : N ≤ k) :
   simp only [coeff_C_mul_X_pow]
   rw [Finset.sum_eq_zero (fun j _ => if_neg (by have := j.2; omega)), add_zero]
 
+/- English proof (translation)
+Unfold `monicOf`. Rewrite using `[natDegree_add_eq_left_of_degree_lt (by rw [degree_X_pow]; exact degree_sum_fin_lt a), natDegree_X_pow]`.
+-/
 lemma natDegree_monicOf {N : ℕ} (a : Fin N → K) : (monicOf a).natDegree = N := by
   unfold monicOf
   rw [natDegree_add_eq_left_of_degree_lt (by rw [degree_X_pow]; exact degree_sum_fin_lt a), natDegree_X_pow]
 
+/- English proof (translation)
+Unfold `monicOf`. Conclude with `monic_X_pow_add (degree_sum_fin_lt a)`.
+-/
 lemma monic_monicOf {N : ℕ} (a : Fin N → K) : (monicOf a).Monic := by
   unfold monicOf
   exact monic_X_pow_add (degree_sum_fin_lt a)
 
+/- English proof (translation)
+Use extensionality with `n`. Break down `lt_or_ge n m with h | h` into its components or cases. Conclude with `coeff_monicOf_lt (fun i : Fin m => p.coeff i) ⟨n, h⟩`. Rewrite using `[coeff_monicOf_ge _ n h] split_ifs with hn`. Substitute `hn` using the available equality.
+
+Rewrite using `[← hd]`. Conclude with `hp.coeff_natDegree.symm`. Conclude with `(coeff_eq_zero_of_natDegree_lt (by omega)).symm`.
+-/
 lemma monicOf_coeffs (p : K[X]) (hp : p.Monic) {m : ℕ} (hd : p.natDegree = m) :
     monicOf (fun i : Fin m => p.coeff i) = p := by
   ext n
@@ -45,6 +62,17 @@ lemma monicOf_coeffs (p : K[X]) (hp : p.Monic) {m : ℕ} (hd : p.natDegree = m) 
       exact hp.coeff_natDegree.symm
     · exact (coeff_eq_zero_of_natDegree_lt (by omega)).symm
 
+/- English proof (translation)
+Unfold `Squarefree at hsq`. Use `push_neg at hsq`. Take `⟨x, ⟨g, hg⟩, hx⟩` from `hsq`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hf.ne_zero (by simpa using hg)`. Establish `hc : x.leadingCoeff ≠ 0` using `leadingCoeff_ne_zero.mpr hx0`. Establish `hP : (x * C x.leadingCoeff⁻¹).Monic` using `monic_mul_leadingCoeff_inv hx0`. Establish `hu : C x.leadingCoeff⁻¹ * C x.leadingCoeff = (1 : K[X])`. Rewrite using `[← C_mul, inv_mul_cancel₀ hc, C_1]`.
+
+Establish `key : f = (x * C x.leadingCoeff⁻¹) * (x * C x.leadingCoeff⁻¹) * (C x.leadingCoeff * C x.leadingCoeff * g)`. Rewrite using `[hg]`. Take the linear combination `(-(x * x * g * (C x.leadingCoeff⁻¹ * C x.leadingCoeff + 1))) * hu`. Use `⟨x * C x.leadingCoeff⁻¹, C x.leadingCoeff * C x.leadingCoeff * g, hP, Monic.of_mul_monic_left (hP.mul hP) (by rw [← key]; exact hf), ?_, ?_, key⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt push_neg at hlt`.
+
+Establish `h1 : x * C x.leadingCoeff⁻¹ = 1` using `(Monic.natDegree_eq_zero hP).mp (by omega)`. Conclude with `hx (isUnit_iff_exists_inv.mpr ⟨_, h1⟩)`. Introduce `hz`. Apply `h0` to reduce the goal to its premises. Rewrite using `[key, mul_coeff_zero, mul_coeff_zero, hz]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma decomp (f : K[X]) (hf : f.Monic) (h0 : f.coeff 0 ≠ 0) (hsq : ¬ Squarefree f) :
     ∃ P h : K[X], P.Monic ∧ h.Monic ∧ 1 ≤ P.natDegree ∧ P.coeff 0 ≠ 0 ∧ f = P * P * h := by
   unfold Squarefree at hsq
@@ -72,6 +100,13 @@ lemma decomp (f : K[X]) (hf : f.Monic) (h0 : f.coeff 0 ≠ 0) (hsq : ¬ Squarefr
     rw [key, mul_coeff_zero, mul_coeff_zero, hz]
     simp
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+
+Introduce `hk`. Establish `ih'` using `ih (by omega)`. Rewrite using `[Finset.sum_Icc_succ_top (by omega)]`. Establish `e1 : N - 1 - k = (N - 1 - (k + 1)) + 1` using `by omega`. Establish `e2 : N - (k + 1) = N - 1 - k` using `by omega`.
+
+Rewrite using `[e2]`. Rewrite `ih'`, the goal using `[e1]`. Rewrite `ih'`, the goal using `[pow_succ]`. Establish `hm` using `Nat.mul_le_mul_left (q ^ (N - 1 - (k + 1))) hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma geo (q : ℕ) (hq : 2 ≤ q) (N : ℕ) :
     ∀ k, k < N → (∑ d ∈ Icc 1 k, q ^ (N - d)) + 2 * q ^ (N - 1 - k) ≤ 2 * q ^ (N - 1) := by
   intro k

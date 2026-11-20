@@ -16,6 +16,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 
 namespace GlobalTheory.Core.Diag
 
+/- English proof (translation)
+Introduce `D hN hR`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, _, h11⟩` from `hN`. Establish `hW : GlobalTheory.Diag.PG.DuWin D 3` using `GlobalTheory.Diag.PG.duWin_three_of_count D fun u => by`. Use `hR u` as an intermediate fact. Unfold `GlobalTheory.Core.Rk.RankMu at this`.
+
+Rewrite `this` using `[GlobalTheory.Core.Rk.d0_eq]`. Conclude with `this`. Conclude with `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, hW, h11⟩`.
+-/
 theorem standingNumericalData_three_of_dataNW_rankMu : ∀ D : D7, DataNW D → (∀ u, GlobalTheory.Core.Rk.RankMu D u) → StandingNumericalData D 3 := by
   intro D hN hR
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, _, h11⟩ := hN

@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 universe u
 
+/- English proof (translation)
+The claim follows from `IntNumIsFieldIntersection.of_intNumBase_cutRational FieldNumbers.IntNumBase.full FieldNumbers.CutRational.full`.
+-/
 theorem IntNumIsFieldIntersection.full : IntNumIsFieldIntersection.Statement.{u} :=
   IntNumIsFieldIntersection.of_intNumBase_cutRational FieldNumbers.IntNumBase.full
     FieldNumbers.CutRational.full

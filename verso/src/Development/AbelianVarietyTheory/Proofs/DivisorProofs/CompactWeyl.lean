@@ -27,10 +27,22 @@ def weylSub {n : ℕ} (ε : Fin n → Bool) : Subgroup (Equiv.Perm (Fin n)) wher
     conv_lhs => rw [← ha]
     ext i; simp
 
+/- English proof (translation)
+Simplify using `[weylSub, GlobalTheory.HCChar.compactWeyl]`.
+-/
 theorem mem_weylSub {n : ℕ} (ε : Fin n → Bool) (w : Equiv.Perm (Fin n)) :
     w ∈ weylSub ε ↔ w ∈ GlobalTheory.HCChar.compactWeyl ε := by
   simp [weylSub, GlobalTheory.HCChar.compactWeyl]
 
+/- English proof (translation)
+Introduce `D V S M ρ P hc`. Establish `hR'` using `hR D V S M P ρ hc (weylSub (M.ε ρ)) (mem_weylSub (M.ε ρ))`. Take `⟨T, b, hbij, hconj⟩` from `hR'`. Establish `hfin : (XSet P (placeOf D ρ).Completion V.gram).Finite` using `Set.finite_coe_iff.1 (Finite.of_equiv _ b.symm)`. Establish `h1` using `@GlobalTheory.T.compact_unitaryTorus_real_place_tensor_eq_complex_pow D.host.F D.host.E _ _ _ _ _ D.sp.cm.sig (GlobalTheory.AdelicU.isCMExt_host D) V.rank P (placeOf D ρ) (embOverOf D ρ)`.
+
+Establish `hnorm : ∀ i, ‖cxRoots (embOverOf D ρ).1 P i‖ = 1`. Take `⟨Ψ, h3⟩` from `h1 (by convert hc using 0)`. Conclude with `h3.2.2.2.2.2`. Establish `hexp : ∀ z : ℂ, ‖z‖ = 1 → Complex.exp (Complex.arg z * Complex.I) = z` using `fun z hz => by`. Establish `h` using `Complex.norm_mul_exp_arg_mul_I z`.
+
+Rewrite `h` using `[hz, Complex.ofReal_one, one_mul]`. Then use the resulting hypothesis. Use `⟨hfin, fun q => (b q : Equiv.Perm (Fin V.rank)), fun q a => Complex.arg (cxRoots (embOverOf D ρ).1 P (((b q : Equiv.Perm (Fin V.rank)))⁻¹ a)), ?_, fun q a => hexp _ (hnorm _), ?_⟩` and prove the remaining obligations. Set `e : GlobalTheory.HCChar.compactWeyl (M.ε ρ) ≃ weylSub (M.ε ρ)` to `{ toFun := fun w => ⟨w.1, (mem_weylSub _ _).2 w.2⟩, invFun := fun w => ⟨w.1, (mem_weylSub _ _).1 w.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Conclude with `hbij.comp (Equiv.prodCongr e b).bijective`. Introduce `q`.
+
+Establish `hq : HasCls P (placeOf D ρ).Completion V.gram (gam q.2.choose_spec.choose_spec.2) q.1` using `⟨_, _, q.2.choose_spec.choose_spec.2, q.2.choose_spec.choose_spec.1, rfl⟩`. Establish `hc2` using `hconj q (gam q.2.choose_spec.choose_spec.2) hq`. Take `⟨g, hg⟩` from `hc2`. Use `⟨g⁻¹, (congrArg (fun h => frameMat M ρ (h * gam q.2.choose_spec.choose_spec.2 * g⁻¹)) (inv_inv g)).trans (hg.trans ?_)⟩` and prove the remaining obligations. Conclude with `congrArg Matrix.diagonal (funext fun a => (hexp _ (hnorm _)).symm)`.
+-/
 theorem of_cosets (hR : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau), CompactSpace (Tor P (placeOf D ρ).Completion) → ∀ WK : Subgroup (Equiv.Perm (Fin V.rank)), (∀ w, w ∈ WK ↔ w ∈ GlobalTheory.HCChar.compactWeyl (M.ε ρ)) → ∃ (T : Finset (Equiv.Perm (Fin V.rank))) (b : XSet P (placeOf D ρ).Completion V.gram ≃ T), Function.Bijective (fun p : WK × T => ((p.2 : Equiv.Perm (Fin V.rank)))⁻¹ * (p.1 : Equiv.Perm (Fin V.rank))) ∧ ∀ (q : XSet P (placeOf D ρ).Completion V.gram) (γ : GArch D.sp.cm.sig V.gram (placeOf D ρ)), HasCls P (placeOf D ρ).Completion V.gram γ q.1 → ∃ g, frameMat M ρ (g * γ * g⁻¹) = Matrix.diagonal fun i => cxRoots (embOverOf D ρ).1 P ((b q : Equiv.Perm (Fin V.rank))⁻¹ i)) : ∀ {D : D7} (V : HSp D) {S : D.what₂.Tau → SPar} (M : DSModel V S) (ρ : D.what₂.Tau)
     (P : PPol D.sp.cm.sig V.rank), CompactSpace (Tor P (placeOf D ρ).Completion) →
     (XSet P (placeOf D ρ).Completion V.gram).Finite ∧

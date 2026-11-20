@@ -16,6 +16,9 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ GlobalTheory.CompanionTheory.Si
 open NumberField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SiegelND.Integ.Period.starLoc_periodic | exact GlobalTheory.CompanionTheory.SiegelND.Integ.Period.starLoc_periodic | (intros; apply GlobalTheory.CompanionTheory.SiegelND.Integ.Period.starLoc_periodic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_adelic_integral_invariant_open_subgroup : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (ψ : AddChar (AF F) ℂ), IsCharAF F ψ →
     ∀ μ : Measure (Fin n → Fin M → Af F ⊗[F] E), μ.IsAddHaarMeasure →

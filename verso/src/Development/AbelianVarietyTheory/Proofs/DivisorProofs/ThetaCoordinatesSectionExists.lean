@@ -19,11 +19,19 @@ noncomputable section
 namespace GlobalTheory.UMin.ThBdl
 open ProjSpace
 
+/- English proof (translation)
+Simplify using `only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG' {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (f : Γ(X, U)) :
     resG X h₂ (resG X h₁ f) = resG X (h₂.trans h₁) f := by
   simp only [resG, ← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hne : ((h ⁻¹ᵁ chart k n a : M.Z.Opens) : Set M.Z).Nonempty`. Establish `hloc` using `GlobalTheory.T.exists_localSection_thetaQuotient_projChart E H k Ω M t g m n c h θ pt hn ho h3 hu hp hg hl hc a choose N hzN hNle s hs hgs hfs using hloc`. Set `κ` to `{z : M.Z // z ∈ h ⁻¹ᵁ chart k n a}`. Establish `hsup : (⨆ z : κ, N z.1 z.2) = h ⁻¹ᵁ chart k n a` using `le_antisymm (iSup_le fun z => hNle z.1 z.2) fun z hz => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨z, hz⟩, hzN z hz⟩`. Take `⟨s', hs', hres⟩` from `GlobalTheory.T.exists_glued_lineBundleSection_over_cover M.Z t.G t.PP.L (h ⁻¹ᵁ chart k n a) κ (fun z => N z.1 z.2) (fun z => s z.1 z.2) (fun z => hNle z.1 z.2) hsup (fun z => hs z.1 z.2) (fun z z' i => GlobalTheory.T.lineBundleLocalSection_eq_of_generic_fibre M.Z t.G t.semi t.PP. …`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.glued_section_generic_value_nonvanishing M.Z t.G t.PP.L Ω M.pt _ κ (fun z => N z.1 z.2) (fun z => s z.1 z.2) s' _ (fun z => hNle z.1 z.2) hsup hres (fun z => hgs z.1 z.2) (fun z => hfs z.1 z.2)`. Conclude with `⟨s', hs', fun _ => h1 ⟨⟨hne.some, hne.some_mem⟩⟩, h2⟩`. Use `⟨0, isLocSec_zero, fun h' => absurd h' hne, fun K _ _ x hx => absurd ?_ hne⟩` and prove the remaining obligations. Conclude with `⟨_, hx ⟨IsLocalRing.closedPoint K, rfl⟩⟩`.
+-/
 theorem chart_sec (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k Ω : Type) [CommRing k]
     [IsNoetherianRing k] [Field Ω] [CharZero Ω] [Algebra k Ω] (M : RatModel k Ω) (t : SAB H M.Z) (g m n : ℕ)
     (c : Fin (n + 1) → Ω) (h : M.Z ⟶ PSpace k n) (θ : SecAt t.G t.PP.L M.pt) (pt : Fin (n + 1) → (Over.mk M.pt ⟶ t.G))
@@ -54,12 +62,18 @@ end GlobalTheory.UMin.ThBdl
 namespace GlobalTheory.UMin.ThBdl
 open ProjSpace
 
+/- English proof (translation)
+Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, f.naturality]`. Both sides reduce to the same expression.
+-/
 theorem app_resG {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (e : V ≤ U) (x : Γ(X, U)) :
     (f.app V).hom (resG X e x) = resG Y (fun _ hy => e hy : f ⁻¹ᵁ V ≤ f ⁻¹ᵁ U) ((f.app U).hom x) := by
   simp only [resG]
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, f.naturality]
   rfl
 
+/- English proof (translation)
+Unfold `valF`. Rewrite using `[dif_pos hV, dif_pos (hV.trans fun x hx => show y x ∈ U from e (show y x ∈ V from hx))]`. Use `congr 1`. Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem valF_resG {F : Type} [Field F] {X : Scheme.{0}} (y : Sp F ⟶ X) {U V : X.Opens} (e : V ≤ U)
     (hV : ⊤ ≤ y ⁻¹ᵁ V) (f : Γ(X, U)) : valF y V (resG X e f) = valF y U f := by
   unfold valF
@@ -72,9 +86,15 @@ end GlobalTheory.UMin.ThBdl
 
 namespace GlobalTheory.UMin.ThBdl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_res' {X : Scheme.{0}} {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U)ˣ) :
     ((res e u : Γ(X, V)ˣ) : Γ(X, V)) = resG X e (u : Γ(X, U)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_pullU' {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) :
     ((pullU f U u : Γ(Y, f ⁻¹ᵁ U)ˣ) : Γ(Y, f ⁻¹ᵁ U)) = (f.app U).hom (u : Γ(X, U)) := rfl
 end GlobalTheory.UMin.ThBdl
@@ -84,6 +104,25 @@ open ProjSpace
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H k Ω _ _ _ _ _ M t g m n c h hn ho h3 hu hp hth hc`. Take `⟨θ, pt, hg, hl⟩` from `hth`. Use `choose s hs hgs hfs using chart_sec E H k Ω M t g m n c h θ pt hn ho h3 hu hp hg hl hc`. Establish `hcross` using `GlobalTheory.T.localThetaSections_ratio_coordinates_overlap k Ω M t.G t.PP.L n c h (SecM.ofSec t.G θ) hc (GlobalTheory.T.lineBundleLocalSection_eq_of_generic_fibre M.Z t.G t.semi t.PP.L Ω M.pt M.gen)`. Establish `hle : ∀ p : (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).ι, (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U p ≤ t.PP.L.U p.1 ⊓ t.G.hom ⁻¹ᵁ (h ⁻¹ᵁ chart k n (p.2 PUnit.unit PUnit.unit))` using `fun p y hy => ⟨hy.1, Set.mem_iInter.1 (Set.mem_iInter.1 hy.2 PUnit.unit) PUnit.unit⟩`.
+
+Use `⟨⟨fun p => resG _ (hle p) (s _ p.1), fun p q => ?_⟩, fun K _ _ x => ?_⟩` and prove the remaining obligations. Take `⟨i, pj⟩` from `p`. Take `⟨i', qj⟩` from `q`. Establish `eB : ∀ (Y : Scheme.{0}) (φ : Y ⟶ M.Z) (u v : PUnit → PUnit → Fin (n + 1)), ((((ProjSpace.O1 k n).pull h).pull φ).g u v : Γ(Y, _)) = resG Y (fun y hy => ⟨Set.mem_iInter.1 (Set.mem_iInter.1 hy.1 PUnit.unit) PUnit.unit, Set.mem_iInter.1 (Set.mem_iInter.1 hy.2 PUnit.unit) PUnit.unit⟩ …`. Introduce `Y φ u v`.
+
+Establish `e1` using `ProjSpace.linComb_punit_g ((ProjSpace.O1 k n).pull h) φ 1 u v`. Establish `e2` using `ProjSpace.linComb_punit_g (ProjSpace.O1 k n) h 1 (u PUnit.unit) (v PUnit.unit)`. Rewrite `e1`, `e2` using `[zpow_one]`. Use `erw [e1]`. Use `erw [e2]`.
+
+Use `erw [val_res', val_pullU', val_res', val_pullU']`. Rewrite using `[O1_g_eq_ratioUnit_chart_inf, val_ratioUnit]`. Use `erw [app_resG, resG_resG']`. Both sides reduce to the same expression. Establish `hW1 : (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U (i, pj) ⊓ (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U (i', qj) ≤ t.PP.L.U i ⊓ t.G.hom ⁻¹ᵁ (h ⁻¹ᵁ (chart k n (pj PUnit.unit PUnit.unit) ⊓ chart k n (qj PUnit.unit PUnit.unit)))` using `fun y hy => ⟨hy.1.1, (hle _ hy.1).2, (hle _ hy.2).2⟩`.
+
+Establish `hW2 : (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U (i, pj) ⊓ (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U (i', qj) ≤ t.PP.L.U i ⊓ t.PP.L.U i' ⊓ t.G.hom ⁻¹ᵁ (h ⁻¹ᵁ chart k n (qj PUnit.unit PUnit.unit))` using `fun y hy => ⟨⟨hy.1.1, hy.2.1⟩, (hle _ hy.2).2⟩`. Establish `e1` using `congrArg (resG t.G.left hW1) (hcross _ _ (s _) (s _) (hgs _) (hgs _) i)`. Establish `e2` using `congrArg (resG t.G.left hW2) (hs (qj PUnit.unit PUnit.unit) i i')`. Rewrite `e1`, `e2` using `[map_mul]`. Use `erw [resG_resG', resG_resG', resG_resG'] at e1`.
+
+Use `erw [resG_resG', resG_resG', resG_resG'] at e2`. Use `show resG _ _ (resG _ (hle (i, pj)) (s (pj PUnit.unit PUnit.unit) i)) = _ * resG _ _ (resG _ (hle (i', qj)) (s (qj PUnit.unit PUnit.unit) i'))`. Rewrite using `[resG_resG', resG_resG']`. Use `erw [Units.val_mul, val_res', val_res', eB, resG_resG']`. Rewrite using `[e1, e2, mul_left_comm, ← _root_.mul_assoc]`.
+
+Both sides reduce to the same expression. Take `⟨a, ha⟩` from `exists_mem_chart k n (h (x (IsLocalRing.closedPoint K)))`. Establish `hx : Set.range x ⊆ h ⁻¹ᵁ chart k n a`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Subsingleton.elim w (IsLocalRing.closedPoint K)]`.
+
+Conclude with `ha`. Take `⟨y, i, hyx, hyr, hv⟩` from `hfs a K x hx`. Establish `hyr' : Set.range y ⊆ (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U (i, fun _ _ => a)` using `fun _ hw => ⟨(hyr hw).1, Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun _ => (hyr hw).2⟩`. Use `⟨y, (i, fun _ _ => a), hyx, hyr', ?_⟩` and prove the remaining obligations. Use `show valF y _ (resG _ (hle (i, fun _ _ => a)) (s a i)) ≠ 0`.
+
+Rewrite using `[valF_resG y _ ((GlobalTheory.ZH.top_le_preimage_iff y _).2 hyr')]` and apply the resulting hypothesis.
+-/
 theorem pull_theta_bundle : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k Ω : Type) [CommRing k] [IsNoetherianRing k] [Field Ω] [CharZero Ω] [Algebra k Ω] (M : RatModel k Ω) (t : SAB H M.Z) (g m n : ℕ) (c : Fin (n + 1) → Ω) (h : M.Z ⟶ PSpace k n), Geo.Tor.IsNormalScheme M.Z → Odd m → 3 ≤ m → IsUnit (m : k) → PolFib t.G t.PP.L g M.pt → HasTh t.G t.PP.L t.PP.rig m M.pt c → PCrd (M.pt ≫ h) c → ∃ σ : (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).Sec, ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ M.Z), ∃ (y : Sp K ⟶ t.G.left) (j : _), y ≫ t.G.hom = x ∧ Set.range y ⊆ (CechPic.tens t.PP.L (((ProjSpace.O1 k n).pull h).pull t.G.hom)).U j ∧ valF y _ (σ.f j) ≠ 0 := by
   intro E _ _ _ H k Ω _ _ _ _ _ M t g m n c h hn ho h3 hu hp hth hc
   obtain ⟨θ, pt, hg, hl⟩ := hth

@@ -161,6 +161,23 @@ noncomputable def UpperTheory.Reformulated.B.Qi38.mapRep :
             (@Semiring.toNonAssocSemiring R' (@CommSemiring.toSemiring R' (@CommRing.toCommSemiring R' inst_1))) f))
         r
 
+/- English proof (translation)
+Establish `key : ∀ A : Matrix (Fin n) (Fin n) E, ∀ v ∈ N, (A.map f).mulVec v ∈ N`. Introduce `A v hv`. Establish `hA : A ∈ Submodule.span E (Set.range r)` using `by rw [hr]; exact Submodule.mem_top`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨g, rfl⟩` from `hx`. Conclude with `hN g v hv`. Consider the case `zero`. Rewrite using `[Matrix.map_zero _ (map_zero f), Matrix.zero_mulVec]`. Conclude with `N.zero_mem`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.map_add _ (map_add f), Matrix.add_mulVec]`. Conclude with `N.add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `h : (a • x).map f = f a • x.map f`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[h, Matrix.smul_mulVec]`. Conclude with `N.smul_mem _ hx`. Use `or_iff_not_imp_left.2 fun hne => ?_` and prove the remaining obligations.
+
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff N).1 hne`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hv0`. Establish `hj' : v j ≠ 0` using `hj`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+
+Rewrite using `[← Finset.univ_sum_single w]`. Use `N.sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `N.smul_mem (w i * (v j)⁻¹) (key (Matrix.single i j 1) v hv)`. Establish `h2 : (w i * (v j)⁻¹) • ((Matrix.single i j (1 : E)).map f).mulVec v = Pi.single i (w i)`. Rewrite using `[Matrix.map_single, map_one, Matrix.single_mulVec]`.
+
+Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hj']`. Simplify using `[hk]`.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 private theorem UpperTheory.Reformulated.B.Qi38.aux {Γ E E' : Type} [Field E] [Field E'] (f : E →+* E') {n : Nat}
     (r : Γ → Matrix (Fin n) (Fin n) E) (hr : Submodule.span E (Set.range r) = ⊤)
     (N : Submodule E' (Fin n → E'))
@@ -202,6 +219,9 @@ private theorem UpperTheory.Reformulated.B.Qi38.aux {Γ E E' : Type} [Field E] [
     · simp [hk]
   rwa [h2] at h1
 
+/- English proof (translation)
+Introduce `Γ E E' _ _ _ f n r hr N hN`. Conclude with `UpperTheory.Reformulated.B.Qi38.aux f (fun g => r g) hr N hN`.
+-/
 theorem UpperTheory.Reformulated.B.Qi38.irr_map :
     ∀ {Γ E E' : Type} [inst : Group Γ] [inst_1 : Field E] [inst_2 : Field E']
       (f :

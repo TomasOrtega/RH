@@ -12,6 +12,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.SubFrame
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ L V' q g n b ix hix hb hL hV`. Substitute `hV` using the available equality. Use `And.intro (hb.comp ix hix) ?_` and prove the remaining obligations. Use `show L q ⊓ Submodule.restrictScalars (regAt ξ q) (Submodule.span Ω (Set.range (b ∘ ix))) = _`. Rewrite using `[hL]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `hx2' : x ∈ Submodule.span Ω (Set.range (b ∘ ix))` using `hx2`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hx1`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 hx2'`.
+
+Establish `hc' : ∑ i, (c i : Ω) • b i = x` using `hc`. Establish `hD : ∑ i, (∑ j, if ix j = i then d j else 0) • b i = x`. Rewrite using `[← hd]`. Simplify using `only [Finset.sum_smul, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `[Finset.sum_ite_eq]`. Establish `key : ∀ i, (c i : Ω) = ∑ j, if ix j = i then d j else 0`. Establish `h0` using `Fintype.linearIndependent_iff.1 hb (fun i => (c i : Ω) - ∑ j, if ix j = i then d j else 0) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[hc', hD, sub_self])`.
+
+Introduce `i`. Conclude with `sub_eq_zero.1 (h0 i)`. Rewrite using `[← hc]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `i _`.
+
+Distinguish the cases in `h : ∃ j, ix j = i`. Take `⟨j, rfl⟩` from `h`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Simplify using `only [not_exists] at h`. Establish `hci : c i = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key i]`. Simplify using `[h]`. Rewrite using `[hci, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Apply `le_inf` to reduce the goal to its premises. Conclude with `Submodule.span_mono (Set.range_comp_subset_range _ _)`. Conclude with `Submodule.span_le_restrictScalars _ _ _`.
+-/
 theorem isFrameAt_comp : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (V' : Submodule Ω E) (q : Cpt ξ) (g n : ℕ) (b : Fin g → E) (ix : Fin n → Fin g), Function.Injective ix → LinearIndependent Ω b → L q = Submodule.span (regAt ξ q) (Set.range b) → V' = Submodule.span Ω (Set.range (b ∘ ix)) → (L.inter V').IsFrameAt (b ∘ ix) q := by
   intro X Ω _ ξ E _ _ L V' q g n b ix hix hb hL hV
   subst hV

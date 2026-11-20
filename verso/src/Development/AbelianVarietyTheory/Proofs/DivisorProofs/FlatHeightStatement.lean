@@ -22,10 +22,16 @@ open scoped Classical
 
 namespace GlobalTheory.HeightParts
 
+/- English proof (translation)
+Simplify using `only [Setup.chg, neg_mul, Finset.sum_neg_distrib]`.
+-/
 theorem chg_neg {D : D7} (O : Setup D) (c : O.s.Comp) (R : Option ℝ) (u : D.what₂.Tau → Fin O.N → ℝ)
     (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) : O.chg c R (fun τ i => -u τ i) σ z = -O.chg c R u σ z := by
   simp only [Setup.chg, neg_mul, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Establish `hb : ∀ σ, ∃ B : ℝ, ∀ x, |g σ x| ≤ B` using `fun σ => by`. Take `⟨B, hB⟩` from `isCompact_univ.exists_bound_of_continuousOn (ReciprocityTheory.AnForm.M.PLAux.smooth_continuous (hg σ)).continuousOn`. Conclude with `⟨B, fun x => by simpa [Real.norm_eq_abs] using hB x (Set.mem_univ x)⟩`. Use `choose B hB using hb`. Conclude with `⟨∑ σ, |B σ|, fun σ x => (hB σ x).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun σ => |B σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)))⟩`.
+-/
 theorem exists_bound_of_smooth {e : ℕ} {M : Man e} {g : M.Fun} (hg : M.Smooth g) : ∃ B : ℝ, ∀ σ x, |g σ x| ≤ B := by
   have hb : ∀ σ, ∃ B : ℝ, ∀ x, |g σ x| ≤ B := fun σ => by
     obtain ⟨B, hB⟩ := isCompact_univ.exists_bound_of_continuousOn
@@ -35,6 +41,19 @@ theorem exists_bound_of_smooth {e : ℕ} {M : Man e} {g : M.Fun} (hg : M.Smooth 
   exact ⟨∑ σ, |B σ|, fun σ x => (hB σ x).trans ((le_abs_self _).trans
     (Finset.single_le_sum (f := fun σ => |B σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)))⟩
 
+/- English proof (translation)
+Introduce `D O hC hN A T H h`. Take `⟨-, -, hint, hH, -⟩` from `htTie_of_reads D O A T H h hC.mbIs`. Use `choose g hgs hgeq using GlobalTheory.T.smooth_extension_of_phase_function p2 pH D O hC hN A T H h`. Establish `hb : ∀ (τ : D.what₂.Tau) (c : O.s.Comp), ∃ B : ℝ, ∀ σ x, |g τ c σ x| ≤ B` using `fun τ c => exists_bound_of_smooth (hgs τ c)`. Use `choose B hB using hb`.
+
+Take `⟨C, hC'⟩` from `(Set.finite_range fun q : D.what₂.Tau × O.s.Comp => B q.1 q.2).bddAbove`. Use `⟨C, fun τ y hy => ?_⟩` and prove the remaining obligations. Establish `hval : ∀ σ i, |(T.F (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then 1 else 0) σ (h.pts.conj (O.Y.compPt y) y σ i)| ≤ C`. Introduce `σ i`. Establish `hz` using `(hint y).1 hy σ i`.
+
+Establish `e1` using `(h.an (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then 1 else 0) σ _ hz`. Establish `e2` using `(h.an (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then (-1 : ℝ) else 0) σ _ hz`. Establish `e3 : (fun τ' (_ : Fin O.N) => if τ' = τ then (-1 : ℝ) else 0) = fun τ' i => -((fun τ' (_ : Fin O.N) => if τ' = τ then (1 : ℝ) else 0) τ' i)`. Apply the tactic sequence `funext τ' i; by_cases hτ : τ' = τ <;> simp [hτ]`. Establish `e5 : ∀ σ' z, O.chg (O.Y.compPt y) none (fun τ' (_ : Fin O.N) => if τ' = τ then (-1 : ℝ) else 0) σ' z = -O.chg (O.Y.compPt y) none (fun τ' (_ : Fin O.N) => if τ' = τ then (1 : ℝ) else 0) σ' z` using `fun σ' z => by`.
+
+Rewrite using `[e3]`. Conclude with `chg_neg O (O.Y.compPt y) none _ σ' z`. Establish `e4` using `hgeq τ (O.Y.compPt y) σ _ hz`. Establish `: (T.F (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then 1 else 0) σ (h.pts.conj (O.Y.compPt y) y σ i) = -g τ (O.Y.compPt y) σ (h.pts.conj (O.Y.compPt y) y σ i)`. Establish `e6` using `e5 ((h.man (O.Y.compPt y)).ε σ) ((h.man (O.Y.compPt y)).pt σ (h.pts.conj (O.Y.compPt y) y σ i))`.
+
+Conclude with `e1.trans ((neg_neg _).symm.trans (congrArg Neg.neg (e4.trans (e2.trans e6)).symm))`. Rewrite using `[this, abs_neg]`. Conclude with `(hB τ (O.Y.compPt y) σ _).trans (hC' ⟨(τ, (O.Y.compPt y)), rfl⟩)`. Rewrite using `[hH _ y hy, add_sub_cancel_left, abs_le]`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `(h.pts.mean_const (O.Y.compPt y) y (-C)).symm.le.trans (h.pts.mean_le (c := (O.Y.compPt y)) (y := y) (g := fun _ _ => -C) (g' := (T.F (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then 1 else 0)) fun σ i => (abs_le.1 (hval σ i)).1)`. Conclude with `(h.pts.mean_le (c := (O.Y.compPt y)) (y := y) (g' := fun _ _ => C) (g := (T.F (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then 1 else 0)) fun σ i => (abs_le.1 (hval σ i)).2).trans (h.pts.mean_const (O.Y.compPt y) y C).le`.
+-/
 theorem height_difference_reference_bounded (p2 : Hypotheses2) (pH : HypothesesH) : OnObj fun D O _ _ H _ => ∃ C : ℝ, ∀ (τ : D.what₂.Tau) (y : Pt O.s),
     y ∈ H.int → |H.hH (fun τ' _ => if τ' = τ then 1 else 0) y - H.h0 (fun τ' _ => if τ' = τ then 1 else 0) y| ≤ C := by
   intro D O hC hN A T H h
@@ -71,6 +90,11 @@ theorem height_difference_reference_bounded (p2 : Hypotheses2) (pH : HypothesesH
       (g := (T.F (O.Y.compPt y)).ph (fun τ' _ => if τ' = τ then 1 else 0)) fun σ i => (abs_le.1 (hval σ i)).2).trans
       (h.pts.mean_const (O.Y.compPt y) y C).le
 
+/- English proof (translation)
+Introduce `D O hC hN A T H h`. Take `⟨C₁, h₁⟩` from `GlobalTheory.T.height_indicator_bounded p2 pH pS D O hC hN A T H h`. Take `⟨C₂, h₂⟩` from `height_difference_reference_bounded p2 pH D O hC hN A T H h`. Use `⟨|C₁| + |C₂|, fun τ y => ⟨(h₁ τ y).trans ((le_abs_self C₁).trans (le_add_of_nonneg_right (abs_nonneg C₂))), fun hy => ?_⟩⟩` and prove the remaining obligations. Establish `e₁` using `h₁ τ y`.
+
+Establish `e₂` using `h₂ τ y hy`. Rewrite `e₁`, `e₂`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [le_abs_self C₁, le_abs_self C₂]`.
+-/
 theorem flatHt (p2 : Hypotheses2) (pH : HypothesesH) (pS : GlobalTheory.Published.ScholzeWeinsteinB) : FlatHt := by
   intro D O hC hN A T H h
   obtain ⟨C₁, h₁⟩ := GlobalTheory.T.height_indicator_bounded p2 pH pS D O hC hN A T H h

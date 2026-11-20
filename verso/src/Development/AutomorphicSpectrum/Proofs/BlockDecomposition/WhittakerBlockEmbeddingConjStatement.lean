@@ -5,6 +5,9 @@ import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExist
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ColGeR
 open ReciprocityTheory.Ty.Fin GlobalTheory.CompanionTheory.TyFin.ColStep
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TyFin.ColStep.Conj.wh_colGeR_conj | exact GlobalTheory.CompanionTheory.TyFin.ColStep.Conj.wh_colGeR_conj | (intros; apply GlobalTheory.CompanionTheory.TyFin.ColStep.Conj.wh_colGeR_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_block_embedding_conj : ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (d j : ℕ) (ψ₀ : AddChar K ℂ) (χ : GL (Fin d) K → ℂ) (g : GL (Fin j) K) (h : GL (Fin d) K) (r : Fin j → K),
     j < d → (∀ x y, χ (x * y * x⁻¹) = χ y) →
     (h : Matrix (Fin d) (Fin d) K) = blkEmb K d j (g : Matrix (Fin j) (Fin j) K) →

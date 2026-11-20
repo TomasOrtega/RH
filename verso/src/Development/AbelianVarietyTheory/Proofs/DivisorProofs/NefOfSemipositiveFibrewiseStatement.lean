@@ -7,5 +7,8 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityThe
 open GlobalTheory GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovHt.Link GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.Cartier GlobalTheory.Mean4 GlobalTheory.Mean4O
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib | exact GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib | (intros; apply GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nef_of_semipositive_fibrewise : Hypotheses2 → HypothesesH → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (M : Adl C Y), M.SemiPos → M.NefFib → Y.nef M.D := by
   first | exact @GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib | exact GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib | (intros; apply GlobalTheory.CovHt.Link.nef_of_semiPos_nefFib <;> assumption)

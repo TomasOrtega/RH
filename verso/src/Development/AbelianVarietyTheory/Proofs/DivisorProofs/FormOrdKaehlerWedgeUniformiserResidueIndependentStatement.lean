@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.formOrd_dForm_cons_of_ord_eq_one | exact GlobalTheory.formOrd_dForm_cons_of_ord_eq_one | (intros; apply GlobalTheory.formOrd_dForm_cons_of_ord_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.formOrd_kaehlerWedge_uniformiser_residueIndependent_eq_zero : ∀ {K : Type} [Field K] (cK : ℂ →+* K) (F : Place cK) (m : ℕ) (π : K) (y : Fin m → K),
   F.ord π = 1 → (∀ i, y i ∈ F.ring) →
   (∀ P : MvPolynomial (Fin m) ℂ, P ≠ 0 → MvPolynomial.eval₂ cK y P ≠ 0 ∧ (MvPolynomial.eval₂ cK y P)⁻¹ ∈ F.ring) →

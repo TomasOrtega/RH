@@ -9,30 +9,45 @@ variable {Z : Scheme.{0}}
 noncomputable def rs {U V : Z.Opens} (h : U ≤ V) : Γ(Z, V) →+* Γ(Z, U) :=
   (Z.presheaf.map (homOfLE h).op).hom
 
+/- English proof (translation)
+Unfold `rs`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem rs_rs {U V W : Z.Opens} (h : U ≤ V) (h' : V ≤ W) (x : Γ(Z, W)) :
     rs h (rs h' x) = rs (h.trans h') x := by
   unfold rs
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Unfold `rs`. Establish `: (homOfLE h).op = 𝟙 (Opposite.op U)` using `rfl`. Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem rs_self {U : Z.Opens} (h : U ≤ U) (x : Γ(Z, U)) : rs h x = x := by
   unfold rs
   have : (homOfLE h).op = 𝟙 (Opposite.op U) := rfl
   rw [this, CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Unfold `rs`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 @[simp] theorem appLE_rs {T : Scheme.{0}} (f : T ⟶ Z) {U V : Z.Opens} (h : U ≤ V) {N : T.Opens}
     (e : N ≤ f ⁻¹ᵁ U) (x : Γ(Z, V)) :
     (f.appLE U N e).hom (rs h x) = (f.appLE V N (e.trans (f.preimage_mono h))).hom x := by
   unfold rs
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Unfold `rs`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+-/
 @[simp] theorem rs_appLE {T : Scheme.{0}} (f : T ⟶ Z) {U : Z.Opens} {N M : T.Opens} (h : M ≤ N)
     (e : N ≤ f ⁻¹ᵁ U) (x : Γ(Z, U)) :
     rs h ((f.appLE U N e).hom x) = (f.appLE U M (h.trans e)).hom x := by
   unfold rs
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
 
+/- English proof (translation)
+Take `⟨s, hs, -⟩` from `Z.sheaf.existsUnique_gluing' W O (fun j => homOfLE (hW j)) hc sf h`. Conclude with `⟨s, hs⟩`.
+-/
 theorem glue {J : Type} (O : Z.Opens) (W : J → Z.Opens) (hW : ∀ j, W j ≤ O) (hc : O ≤ iSup W)
     (sf : ∀ j, Γ(Z, W j))
     (h : ∀ j k, rs (inf_le_left : W j ⊓ W k ≤ W j) (sf j) = rs inf_le_right (sf k)) :
@@ -40,6 +55,9 @@ theorem glue {J : Type} (O : Z.Opens) (W : J → Z.Opens) (hW : ∀ j, W j ≤ O
   obtain ⟨s, hs, -⟩ := Z.sheaf.existsUnique_gluing' W O (fun j => homOfLE (hW j)) hc sf h
   exact ⟨s, hs⟩
 
+/- English proof (translation)
+Use `Z.sheaf.eq_of_locally_eq' (fun j => N ⊓ W j) N (fun j => homOfLE inf_le_left) ?_ x y h` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq]`. Conclude with `le_inf le_rfl hc`.
+-/
 theorem loc {J : Type} {N : Z.Opens} (W : J → Z.Opens) (hc : N ≤ iSup W) (x y : Γ(Z, N))
     (h : ∀ j, rs (inf_le_left : N ⊓ W j ≤ N) x = rs inf_le_left y) : x = y := by
   refine Z.sheaf.eq_of_locally_eq' (fun j => N ⊓ W j) N (fun j => homOfLE inf_le_left) ?_ x y h
@@ -63,6 +81,13 @@ def IsDiff {O O' P : Z.Opens} (ψ : ∀ a, Γ(Z, O ⊓ V a)) (ψ' : ∀ a, Γ(Z,
 
 variable {V φ}
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `glue P (fun a => P ⊓ V a) (fun a => inf_le_left) (by rw [← inf_iSup_eq, hV]; simp) (fun a => rs (inf_le_inf_right _ hO) (ψ a) - rs (inf_le_inf_right _ hO') (ψ' a)) (by`. Introduce `a b`. Establish `hP : P ⊓ V a ⊓ (P ⊓ V b) ≤ P` using `inf_le_left.trans inf_le_left`. Establish `ha : P ⊓ V a ⊓ (P ⊓ V b) ≤ V a` using `inf_le_left.trans inf_le_right`. Establish `hb : P ⊓ V a ⊓ (P ⊓ V b) ≤ V b` using `inf_le_right.trans inf_le_right`.
+
+Establish `e1` using `h a b _ (hP.trans hO) ha hb`. Establish `e2` using `h' a b _ (hP.trans hO') ha hb`. Simplify using `only [map_sub, rs_rs]`. Take the linear combination `e2 - e1)`. Use `⟨c, fun a M hM ha => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (rs (le_inf hM ha)) (hc a)` as an intermediate fact. Simplify `this` using `only [map_sub, rs_rs]`.
+-/
 theorem exists_isDiff (hV : ⨆ a, V a = ⊤) {O O' P : Z.Opens} {ψ : ∀ a, Γ(Z, O ⊓ V a)}
     {ψ' : ∀ a, Γ(Z, O' ⊓ V a)} (h : Splits V φ O ψ) (h' : Splits V φ O' ψ')
     (hO : P ≤ O) (hO' : P ≤ O') : ∃ c : Γ(Z, P), IsDiff V ψ ψ' hO hO' c := by
@@ -81,6 +106,15 @@ theorem exists_isDiff (hV : ⨆ a, V a = ⊤) {O O' P : Z.Opens} {ψ : ∀ a, Γ
   have := congrArg (rs (le_inf hM ha)) (hc a)
   simpa only [map_sub, rs_rs] using this
 
+/- English proof (translation)
+Establish `key : ∀ a, ∃ χ : Γ(Z, O₀ ⊓ V a), ∀ j, rs (inf_le_left : O₀ ⊓ V a ⊓ O j ≤ O₀ ⊓ V a) χ = rs (le_inf inf_le_right (inf_le_left.trans inf_le_right)) (ψ j a) - rs inf_le_right (g j)`. Introduce `a`. Use `glue (O₀ ⊓ V a) (fun j => O₀ ⊓ V a ⊓ O j) (fun j => inf_le_left) ?_ _ ?_` and prove the remaining obligations. Rewrite using `[← inf_iSup_eq]`. Conclude with `le_inf le_rfl (inf_le_left.trans hc)`.
+
+Introduce `j k`. Establish `e` using `hg j k a (O₀ ⊓ V a ⊓ O j ⊓ (O₀ ⊓ V a ⊓ O k)) (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) (inf_le_left.trans (inf_le_left.trans inf_le_right))`. Simplify using `only [map_sub, rs_rs]`. Take the linear combination `e`. Use `choose χ hχ using key`.
+
+Use `⟨χ, fun a b N hO ha hb => loc O (hO.trans hc) _ _ fun j => ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (rs (inf_le_inf_right (O j) (le_inf hO ha))) (hχ a j)`. Establish `e2` using `congrArg (rs (inf_le_inf_right (O j) (le_inf hO hb))) (hχ b j)`. Establish `e3` using `h j a b (N ⊓ O j) inf_le_right (inf_le_left.trans ha) (inf_le_left.trans hb)`. Simplify using `only [map_sub, rs_rs] at e1 e2 ⊢`.
+
+Take the linear combination `e3 - e1 + e2`.
+-/
 theorem splits_glue {J : Type} (O : J → Z.Opens) (ψ : ∀ j a, Γ(Z, O j ⊓ V a))
     (h : ∀ j, Splits V φ (O j) (ψ j)) (g : ∀ j, Γ(Z, O j))
     (hg : ∀ j k a (M : Z.Opens) (hj : M ≤ O j) (hk : M ≤ O k) (ha : M ≤ V a),
@@ -107,6 +141,19 @@ theorem splits_glue {J : Type} (O : J → Z.Opens) (ψ : ∀ j a, Γ(Z, O j ⊓ 
   simp only [map_sub, rs_rs] at e1 e2 ⊢
   linear_combination e3 - e1 + e2
 
+/- English proof (translation)
+Establish `hV' : ⨆ a, f ⁻¹ᵁ V a = ⊤` using `by rw [← f.preimage_iSup, hV]; rfl`. Set `φ' : ∀ a b, Γ(T, f ⁻¹ᵁ V a ⊓ f ⁻¹ᵁ V b)` to `fun a b => (f.appLE (V a ⊓ V b) _ (by rw [f.preimage_inf])).hom (φ a b)`. Set `ρ' : ∀ a, Γ(T, ⊤ ⊓ f ⁻¹ᵁ V a)` to `fun a => rs inf_le_right (ρ a)`. Establish `h1 : Splits (fun a => f ⁻¹ᵁ V a) φ' ⊤ ρ'`. Introduce `a b M _ ha hb`.
+
+Establish `hM : M ≤ f ⁻¹ᵁ (V a ⊓ V b)` using `by rw [f.preimage_inf]; exact le_inf ha hb`. Use `congrArg (rs hM) (hρ a b)` as an intermediate fact. Rewrite `this` using `[f.app_eq_appLE]`. Simplify `this` using `only [φ', ρ', rs_appLE, rs_rs, map_sub]`. Set `ψ' : ∀ j a, Γ(T, N j ⊓ f ⁻¹ᵁ V a)` to `fun j a => (f.appLE (O j ⊓ V a) _ (by rw [f.preimage_inf]; exact inf_le_inf_right _ (hN j))).hom (ψ j a)`.
+
+Establish `h2 : ∀ j, Splits (fun a => f ⁻¹ᵁ V a) φ' (N j) (ψ' j)`. Introduce `j a b M hj ha hb`. Establish `hM : M ≤ f ⁻¹ᵁ (O j ⊓ (V a ⊓ V b))`. Rewrite using `[f.preimage_inf, f.preimage_inf]`. Conclude with `le_inf (hj.trans (hN j)) (le_inf ha hb)`.
+
+Use `congrArg (f.appLE _ M hM).hom (h j a b (O j ⊓ (V a ⊓ V b)) inf_le_left (inf_le_right.trans inf_le_left) (inf_le_right.trans inf_le_right))` as an intermediate fact. Simplify `this` using `only [φ', ψ', rs_appLE, appLE_rs, map_sub]`. Use `choose x hx using fun j => exists_isDiff hV' (h2 j) h1 le_rfl le_top`. Use `⟨x, fun j k P hj hk c hc M hMj hMk hM => loc (fun a => f ⁻¹ᵁ V a) (by rw [hV']; exact le_top) _ _ fun a => ?_⟩` and prove the remaining obligations. Establish `e1` using `hx j a (M ⊓ f ⁻¹ᵁ V a) (inf_le_left.trans hMj) inf_le_right`.
+
+Establish `e2` using `hx k a (M ⊓ f ⁻¹ᵁ V a) (inf_le_left.trans hMk) inf_le_right`. Establish `hM' : M ⊓ f ⁻¹ᵁ V a ≤ f ⁻¹ᵁ (P ⊓ V a)`. Rewrite using `[f.preimage_inf]`. Conclude with `inf_le_inf_right _ hM`. Establish `e3` using `congrArg (f.appLE _ _ hM').hom (hc a (P ⊓ V a) inf_le_left inf_le_right)`.
+
+Simplify using `only [ψ', ρ', rs_appLE, appLE_rs, map_sub, rs_rs] at e1 e2 e3 ⊢`. Take the linear combination `e3 - e1 + e2`.
+-/
 theorem pull_coboundary (hV : ⨆ a, V a = ⊤) {T : Scheme.{0}} (f : T ⟶ Z)
     (ρ : ∀ a, Γ(T, f ⁻¹ᵁ V a))
     (hρ : ∀ a b, (f.app (V a ⊓ V b)).hom (φ a b) =
@@ -146,6 +193,41 @@ theorem pull_coboundary (hV : ⨆ a, V a = ⊤) {T : Scheme.{0}} (f : T ⟶ Z)
   simp only [ψ', ρ', rs_appLE, appLE_rs, map_sub, rs_rs] at e1 e2 e3 ⊢
   linear_combination e3 - e1 + e2
 
+/- English proof (translation)
+Establish `h1 : ∀ x : O, ∃ (f : Γ(Z, O)) (a : I), Z.basicOpen f ≤ V a ∧ x.1 ∈ Z.basicOpen f`. Introduce `x`. Establish `: x.1 ∈ ⨆ a, V a` using `by rw [hV]; trivial`. Take `⟨a, ha⟩` from `Opens.mem_iSup.mp this`. Take `⟨f, hf, hx⟩` from `hO.exists_basicOpen_le ⟨x.1, ha⟩ x.2`.
+
+Conclude with `⟨f, a, hf, hx⟩`. Use `choose f₀ a₀ hfa₀ hx₀ using h1`. Take `⟨s, hs⟩` from `hO.isCompact.elim_finite_subcover (fun x : O => (Z.basicOpen (f₀ x) : Set Z)) (fun x => (Z.basicOpen (f₀ x)).2) (fun x hx => Set.mem_iUnion.mpr ⟨⟨x, hx⟩, hx₀ _⟩)`. Set `f : s → Γ(Z, O)` to `fun k => f₀ k.1`. Set `a : s → I` to `fun k => a₀ k.1`.
+
+Set `D : s → Z.Opens` to `fun k => Z.basicOpen (f k)`. Establish `hDa : ∀ k, D k ≤ V (a k)` using `fun k => hfa₀ k.1`. Establish `hDO : ∀ k, D k ≤ O` using `fun k => Z.basicOpen_le _`. Establish `hcov : O ≤ iSup D`. Introduce `x hx`.
+
+Take `⟨k, hk, hxk⟩` from `Set.mem_iUnion₂.mp (hs hx)`. Conclude with `Opens.mem_iSup.mpr ⟨⟨k, hk⟩, hxk⟩`. Establish `hspan : Ideal.span (Set.range f) = ⊤`. Rewrite using `[← hO.self_le_iSup_basicOpen_iff]`. Use `hcov.trans (iSup_le fun k => ?_)` and prove the remaining obligations.
+
+Conclude with `le_iSup (fun g : Set.range f => Z.basicOpen g.1) ⟨f k, k, rfl⟩`. Establish `hDaff : ∀ k, IsAffineOpen (D k)` using `fun k => hO.basicOpen _`. Establish `hbo : ∀ (N : Z.Opens) (hN : N ≤ O) l, Z.basicOpen (rs hN (f l)) = N ⊓ D l` using `fun N hN l => Z.basicOpen_res _ _`. Establish `h2 : ∀ k l, ∃ (n : ℕ) (u : Γ(Z, D k)), rs (inf_le_left : D k ⊓ D l ≤ D k) u = rs (inf_le_left.trans (hDO k)) (f l) ^ n * rs (inf_le_inf (hDa k) (hDa l)) (φ (a k) (a l))`. Introduce `k l`.
+
+Establish `e` using `hbo (D k) (hDO k) l`. Take `⟨n, y, hy⟩` from `exists_eq_pow_mul_of_isAffineOpen Z (D k) (hDaff k) (rs (hDO k) (f l)) (rs (e.le.trans (inf_le_inf (hDa k) (hDa l))) (φ (a k) (a l)))`. Use `⟨n, y, ?_⟩` and prove the remaining obligations. Establish `hy' : rs (Z.basicOpen_le _) y = rs (Z.basicOpen_le _) (rs (hDO k) (f l)) ^ n * rs (e.le.trans (inf_le_inf (hDa k) (hDa l))) (φ (a k) (a l))` using `hy`. Simplify `congrArg (rs e.ge) hy'` using `only [rs_rs, map_mul, map_pow]`.
+
+Use `choose n u hu using h2`. Take `⟨A, hA⟩` from `(Set.finite_range fun p : s × s => n p.1 p.2).bddAbove`. Establish `hA' : ∀ k l, n k l ≤ A` using `fun k l => hA ⟨(k, l), rfl⟩`. Set `u' : ∀ k l : s, Γ(Z, D k)` to `fun k l => rs (hDO k) (f l) ^ (A - n k l) * u k l`. Establish `hu' : ∀ k l (M : Z.Opens) (hk : M ≤ D k) (hl : M ≤ D l), rs hk (u' k l) = rs (hk.trans (hDO k)) (f l) ^ A * rs (le_inf (hk.trans (hDa k)) (hl.trans (hDa l))) (φ (a k) (a l))`.
+
+Introduce `k l M hk hl`. Use `congrArg (rs (le_inf hk hl)) (hu k l)` as an intermediate fact. Simplify using `only [u', rs_rs, map_mul, map_pow] at this ⊢`. Rewrite using `[this, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (hA' k l)]`. Establish `h3 : ∀ k m l, ∃ n : ℕ, rs ((inf_le_left : D k ⊓ D m ≤ D k).trans (hDO k)) (f l) ^ n * (rs inf_le_left (u' k l) - rs inf_le_right (u' m l) - rs (inf_le_left.trans (hDO k)) (f l) ^ A * rs (inf_le_inf (hDa k) (hDa m)) (φ (a k) (a m))) = 0`.
+
+Introduce `k m l`. Establish `haff : IsAffineOpen (D k ⊓ D m)`. Rewrite using `[← hbo (D k) (hDO k) m]`. Conclude with `(hDaff k).basicOpen _`. Use `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Z haff _ _ ?_` and prove the remaining obligations.
+
+Establish `e` using `hbo (D k ⊓ D m) (inf_le_left.trans (hDO k)) l`. Establish `hk` using `e.le.trans (inf_le_left.trans inf_le_left)`. Establish `hm` using `e.le.trans (inf_le_left.trans inf_le_right)`. Establish `hl` using `e.le.trans inf_le_right`. Express the relevant statement in the definitionally equal form `rs (Z.basicOpen_le _) _ = 0`.
+
+Establish `e1` using `hu' k l _ hk hl`. Establish `e2` using `hu' m l _ hm hl`. Establish `e3` using `hφ (a k) (a m) (a l) _ (hk.trans (hDa k)) (hm.trans (hDa m)) (hl.trans (hDa l))`. Simplify using `only [rs_rs, map_mul, map_pow, map_sub]`. Rewrite using `[e1, e2, ← e3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose n' hn' using h3`. Take `⟨B, hB⟩` from `(Set.finite_range fun p : s × s × s => n' p.1 p.2.1 p.2.2).bddAbove`. Establish `hB' : ∀ k m l, n' k m l ≤ B` using `fun k m l => hB ⟨(k, m, l), rfl⟩`. Establish `hspan' : Ideal.span (Set.range fun l => f l ^ (B + A)) = ⊤`.
+
+Use `Ideal.span_pow_eq_top _ hspan (B + A)` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Then use the resulting hypothesis. Take `⟨e, he⟩` from `(Ideal.mem_span_range_iff_exists_fun).mp ((Ideal.eq_top_iff_one _).mp hspan')`. Set `g : ∀ k, Γ(Z, D k)` to `fun k => -∑ l, rs (hDO k) (e l * f l ^ B) * u' k l`. Set `ψ : ∀ k b, Γ(Z, D k ⊓ V b)` to `fun k b => rs (le_inf inf_le_right (inf_le_left.trans (hDa k))) (φ b (a k))`.
+
+Use `splits_glue D ψ ?_ g ?_ O hcov` and prove the remaining obligations. Introduce `k b d N hk hb hd`. Use `hφ b d (a k) N hb hd (hk.trans (hDa k))` as an intermediate fact. Simplify using `only [ψ, rs_rs]`. Take the linear combination `this`.
+
+Introduce `k m b M hk hm hb`. Establish `e1` using `hφ b (a k) (a m) M hb (hk.trans (hDa k)) (hm.trans (hDa m))`. Establish `hM` using `hk.trans (hDO k)`. Establish `e2 : ∀ l, rs hM (e l * f l ^ B) * rs hk (u' k l) - rs hM (e l * f l ^ B) * rs hm (u' m l) = rs hM (e l * f l ^ (B + A)) * rs (le_inf (hk.trans (hDa k)) (hm.trans (hDa m))) (φ (a k) (a m))`. Introduce `l`.
+
+Use `congrArg (rs (le_inf hk hm)) (hn' k m l)` as an intermediate fact. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le (hB' k m l)`. Simplify using `only [rs_rs, map_mul, map_pow, map_sub, map_zero] at this ⊢`. Rewrite using `[hc]`. Take the linear combination `(rs hM (e l) * rs hM (f l) ^ c) * this`.
+
+Establish `e3` using `Finset.sum_congr (rfl : (Finset.univ : Finset s) = _) (fun l _ => e2 l)`. Rewrite `e3` using `[Finset.sum_sub_distrib, ← Finset.sum_mul, ← map_sum, he, map_one, one_mul]`. Simplify using `only [ψ, g, rs_rs, map_neg, map_sum, map_mul] at e3 ⊢`. Take the linear combination `e3 + e1`.
+-/
 theorem exists_splits_of_isAffineOpen (hV : ⨆ a, V a = ⊤) (hφ : IsCocycle V φ) {O : Z.Opens}
     (hO : IsAffineOpen O) : ∃ ψ, Splits V φ O ψ := by
   classical

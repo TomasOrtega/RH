@@ -14,17 +14,29 @@ instance (R : Subalgebra k Ω) : PartialOrder (J R) := inferInstanceAs (PartialO
 instance (R : Subalgebra k Ω) : IsDirected (J R) (· ≤ ·) :=
   ⟨fun a b => ⟨⟨a.1 ⊔ b.1, le_sup_of_le_left a.2.1, a.2.2.sup b.2.2⟩, le_sup_left (a := a.1), le_sup_right (a := a.1)⟩⟩
 
+/- English proof (translation)
+Rewrite using `[toR, incl, toR, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma toR_incl {R S : Subalgebra k Ω} (h : R ≤ S) : toR S ≫ incl h = toR R := by
   rw [toR, incl, toR, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[incl, incl, incl, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma incl_incl {R S T : Subalgebra k Ω} (h : R ≤ S) (h' : S ≤ T) :
     incl h' ≫ incl h = incl (h.trans h') := by
   rw [incl, incl, incl, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[incl, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma incl_base {R S : Subalgebra k Ω} (h : R ≤ S) :
     incl h ≫ Spec.map (CommRingCat.ofHom (algebraMap k R)) = Spec.map (CommRingCat.ofHom (algebraMap k S)) := by
   rw [incl, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[toR, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma toR_base (R : Subalgebra k Ω) :
     toR R ≫ Spec.map (CommRingCat.ofHom (algebraMap k R)) = Spec.map (CommRingCat.ofHom (algebraMap k Ω)) := by
   rw [toR, ← Spec.map_comp]; rfl
@@ -34,6 +46,9 @@ end LateralTheory.E.LeafDescendMapPf
 namespace LateralTheory.E.LeafDescendMapPf
 variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω]
 
+/- English proof (translation)
+Rewrite using `[incl, ← Spec.map_id]`. Both sides reduce to the same expression.
+-/
 lemma incl_self {S : Subalgebra k Ω} (h : S ≤ S) : incl h = 𝟙 _ := by
   rw [incl, ← Spec.map_id]; rfl
 
@@ -65,6 +80,9 @@ def cocIsColimit (hR : R.FG) : IsColimit (coc R) := by
 def specLim (hR : R.FG) : IsLimit (Scheme.Spec.mapCone (coc R).op) :=
   isLimitOfPreserves Scheme.Spec (cocIsColimit R hR).op
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (S : J R) : (Scheme.Spec.mapCone (coc R).op).π.app (op S) = toR S.1 := rfl
 
 end LateralTheory.E.LeafDescendMapPf
@@ -101,6 +119,9 @@ instance (S : (J R)ᵒᵖ) [IsProper q] : CompactSpace ((D R q).obj S) := by
 instance (S : (J R)ᵒᵖ) [IsProper q] : QuasiSeparatedSpace ((D R q).obj S) := by
   dsimp [D]; exact quasiSeparatedSpace_of_quasiSeparated (pullback.snd q _)
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback q (incl h)).flip (by dsimp [incl]; infer_instance)`.
+-/
 lemma fstAff {S : Subalgebra k Ω} (h : R ≤ S) : IsAffineHom (pullback.fst q (incl h)) :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback q (incl h)).flip
     (by dsimp [incl]; infer_instance)
@@ -131,10 +152,16 @@ abbrev specCone (s : Cone (D R q)) : Cone ((F R).op ⋙ Scheme.Spec) where
 
 def bL (hR : R.FG) (s : Cone (D R q)) : s.pt ⟶ Sp Ω := (specLim R hR).lift (specCone R q s)
 
+/- English proof (translation)
+The claim follows from `(specLim R hR).fac (specCone R q s) j`.
+-/
 lemma bL_fac (hR : R.FG) (s : Cone (D R q)) (j : (J R)ᵒᵖ) :
     bL R q hR s ≫ toR j.unop.1 = s.π.app j ≫ pullback.snd q (incl j.unop.2.1) :=
   (specLim R hR).fac (specCone R q s) j
 
+/- English proof (translation)
+The claim follows from `(specLim R hR).uniq (specCone R q s) m hm`.
+-/
 lemma bL_uniq (hR : R.FG) (s : Cone (D R q)) (m : s.pt ⟶ Sp Ω)
     (hm : ∀ j : (J R)ᵒᵖ, m ≫ toR j.unop.1 = s.π.app j ≫ pullback.snd q (incl j.unop.2.1)) : m = bL R q hR s :=
   (specLim R hR).uniq (specCone R q s) m hm
@@ -142,6 +169,9 @@ lemma bL_uniq (hR : R.FG) (s : Cone (D R q)) (m : s.pt ⟶ Sp Ω)
 def aL (hR : R.FG) (s : Cone (D R q)) : s.pt ⟶ D0 :=
   s.π.app (op (⟨R, le_rfl, hR⟩ : J R)) ≫ pullback.fst q (incl (le_refl R))
 
+/- English proof (translation)
+Use `bL_fac R q hR s (op (⟨R, le_rfl, hR⟩ : J R))` as an intermediate fact. Simplify using `only [aL, Category.assoc, pullback.condition, incl_self, Category.comp_id]`. Conclude with `this.symm`.
+-/
 lemma aL_w (hR : R.FG) (s : Cone (D R q)) : aL R q hR s ≫ q = bL R q hR s ≫ toR R := by
   have := bL_fac R q hR s (op (⟨R, le_rfl, hR⟩ : J R))
   simp only [aL, Category.assoc, pullback.condition, incl_self, Category.comp_id]
@@ -166,6 +196,9 @@ def coneIsLimit (hR : R.FG) : IsLimit (cone R q c0 v0 hPB) where
       rw [← hm j]
       simp only [cone, Category.assoc, pullback.lift_snd]
 
+/- English proof (translation)
+Rewrite using `[HasRingHomProperty.iff_appLE (P := @LocallyOfFinitePresentation)]`. Introduce `U V e`. Use `haveI : IsNoetherianRing Γ(Sp k, U) := IsLocallyNoetherian.component_noetherian U`. Conclude with `RingHom.FinitePresentation.of_finiteType.mp (HasRingHomProperty.appLE @LocallyOfFiniteType p inferInstance U V e)`.
+-/
 lemma lfp {X : Scheme.{0}} (p : X ⟶ Sp k) [IsProper p] : LocallyOfFinitePresentation p := by
   rw [HasRingHomProperty.iff_appLE (P := @LocallyOfFinitePresentation)]
   intro U V e

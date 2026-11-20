@@ -20,6 +20,13 @@ noncomputable section
 
 namespace GlobalTheory.ProperCentre
 
+/- English proof (translation)
+Introduce `X Y _ _ s _ _ V x h`. Set `ψ : X.presheaf.stalk x →+* V` to `((GlobalTheory.functionFieldMap s).comp (algebraMap (X.presheaf.stalk x) X.functionField)).codRestrict V.toSubring (fun a => h _ ⟨a, rfl⟩)`. Set `r : Spec (.of V) ⟶ X` to `Spec.map (CommRingCat.ofHom ψ) ≫ X.fromSpecStalk x`. Establish `hc : GlobalTheory.genericFieldPoint Y ≫ s = GlobalTheory.specAlgebraMap V Y.functionField ≫ r`. Rewrite using `[← GlobalTheory.specMap_functionFieldMap, ← GlobalTheory.specAlgebraMap_fromSpecStalk x]`.
+
+Simplify using `only [r, GlobalTheory.specAlgebraMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Use `⟨GlobalTheory.valCentre s r (GlobalTheory.genericFieldPoint Y) hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.apply_valCentre_base]`. Use `(IsLocalRing.specializes_closedPoint (R := X.presheaf.stalk x) (Spec.map (CommRingCat.ofHom ψ) (IsLocalRing.closedPoint V))).map (X.fromSpecStalk x).continuous` as an intermediate fact.
+
+Rewrite `this` using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `this`. Establish `hd : GlobalTheory.DominatesStalk V (GlobalTheory.valCentre s r (GlobalTheory.genericFieldPoint Y) hc)` using `GlobalTheory.dominatesStalk_iff_exists_hom.mpr ⟨_, GlobalTheory.specAlgebraMap_valExt s r (GlobalTheory.genericFieldPoint Y) hc, rfl⟩`. Introduce and unpack `f ⟨a, rfl⟩`. Conclude with `hd.1 a`.
+-/
 theorem exists_regAt_centre : ∀ {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] [IsProper s]
     (V : ValuationSubring Y.functionField) (x : X), (∀ f, RegAt x f → functionFieldMap s f ∈ V) →
     ∃ y : Y, s y ⤳ x ∧ ∀ f, RegAt y f → f ∈ V := by

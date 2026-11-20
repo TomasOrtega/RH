@@ -26,6 +26,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.CombInd
 
+/- English proof (translation)
+Establish `hL` using `LB.isLB_pull (HermLB.triv M.p).isLB M.j`. Use `⟨hL, fun a b h => ?_, fun _ x _ => CartierDiv.isEqn_zero x⟩` and prove the remaining obligations. Take `rfl : a = b` from `Subsingleton.elim (α := PUnit → PUnit) _ _`. Use `congrArg (fun u : Γ(Y.X, _)ˣ => fnOf _ h.1 u.val) (hL.g_self a)` as an intermediate fact. Rewrite `this` using `[Units.val_one, map_one]`.
+
+Conclude with `(this.symm.trans (fnOf_resG _ h.1 _)).trans (mul_one _).symm`.
+-/
 theorem presents_zero_pull_triv {F : Type} [Field F] [NumberField F] {Y : Var F} (M : GlobalTheory.TrueGeo.Model Y) :
     Presents (0 : Y.Dv) ((HermLB.triv M.p).B.pull M.j) fun _ => 1 := by
   have hL := LB.isLB_pull (HermLB.triv M.p).isLB M.j
@@ -37,6 +42,23 @@ theorem presents_zero_pull_triv {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 open GlobalTheory.TrueGeo.Base in
 
+/- English proof (translation)
+Introduce `D A N j S κ s x Φ k M m`. Establish `hD0 : (adlOf (Φ.C k) (metsOf x Φ k) 0).D = 0`. Simplify using `[adlOf, LineTest.expo_zero, divOf]`. Establish `hmD : (m : ℕ) • (adlOf (Φ.C k) (metsOf x Φ k) 0).D = 0` using `by rw [hD0, smul_zero]`. Use `⟨by simp, fun _ => 1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmD]`. Conclude with `presents_zero_pull_triv M`. Introduce `σ y y' i f _ _ hf`. Rewrite `hf` using `[hmD]`. Establish `hf' : RegAt (under y) f` using `CartierDiv.regularAt_zero_iff.1 hf`.
+
+Establish `g0 : (0 : (Φ.C k).Y.Dv).GeneratesAt (under y) 1` using `CartierDiv.generatesAt_zero_iff.2 (unitAt_one _)`. Establish `gA : (adlOf (Φ.C k) (metsOf x Φ k) 0).D.GeneratesAt (under y) 1` using `by rw [hD0]; exact g0`. Establish `gm : ((m : ℕ) • (adlOf (Φ.C k) (metsOf x Φ k) 0).D).RegularAt (under y) 1`. Rewrite using `[hmD]`. Conclude with `g0.regularAt`.
+
+Establish `h₁` using `(cxSt D.what₂.LL).pn_mul _ σ _ ((cxSt D.what₂.LL).mPow _ σ _ m ((adlOf (Φ.C k) (metsOf x Φ k) 0).m σ)) f 1 y hf' gm`. Establish `h₂` using `(cxSt D.what₂.LL).pn_mPow _ σ _ m ((adlOf (Φ.C k) (metsOf x Φ k) 0).m σ) 1 y gA`. Establish `h₃ : (cxSt D.what₂.LL).pn _ σ _ ((adlOf (Φ.C k) (metsOf x Φ k) 0).m σ) ((cxSt D.what₂.LL).cx _ σ 1) y = 1` using `by show (cxSt D.what₂.LL).pn _ σ _ (metsOf x Φ k (parOf 0) σ (expo S.Dw 0)) ((cxSt D.what₂.LL).cx _ σ 1) y = 1`. Rewrite using `[LineTest.expo_zero]`. Take `⟨q, -, φ, f, h1, h2⟩` from `(Φ.C k).exists_adapted y`.
+
+Rewrite using `[pn_metsOf (parOf 0) (a := 1) ⟨_, _, φ, f, _, _, 1, ((Φ.C k).spMap_evStalk y).symm, h1, h2, by simp, by simp⟩]`. Simplify using the standard rewrite rules. Rewrite `h₁` using `[mul_one]`. Rewrite `h₂` using `[one_pow]`. Rewrite using `[h₁, h₂, h₃]`.
+
+Simplify using `[adlOf, HermLB.triv, Weight.ofFun]`. Introduce `v e y yt i _ _`. Establish `hlg : (adlOf (Φ.C k) (metsOf x Φ k) 0).lg v e y = Real.log (e.w (valAt y.1 (((eqn (0 : (Φ.C k).Y.Dv) (below y.1))⁻¹ : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn)))` using `by show lgOf (Φ.C k) 0 v e y = _`. Rewrite using `[lgOf, dif_pos (LineTest.residueCharacteristic_prime v)]`. Simplify using `[LineTest.expo_zero, divOf]`.
+
+Rewrite using `[hD0, hlg]`. Take `⟨h0, hz⟩` from `valAt_zpow y.1 (unitAt_eqn_zero (below y.1))`. Establish `a1` using `hz (-1)`. Establish `a2` using `hz (-((m : ℕ) : ℤ))`. Simplify using `only [zpow_neg, zpow_one, zpow_natCast] at a1 a2`.
+
+Simplify using `only [Units.val_mul, Units.val_one, mul_one, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, inv_pow, a1, a2, map_inv₀, map_pow, Real.log_inv, Real.log_pow, Pi.zero_apply, mul_zero, sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem induced_adlOf_zero : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (Φ : s.Flag) (k : s.Comp) (M : GlobalTheory.TrueGeo.Model (Φ.C k).Y) (m : ℕ+), (adlOf (Φ.C k) (metsOf x Φ k) 0).Induced M (GlobalTheory.HermLB.triv M.p) m 0 := by
   intro D A N j S κ s x Φ k M m
   have hD0 : (adlOf (Φ.C k) (metsOf x Φ k) 0).D = 0 := by

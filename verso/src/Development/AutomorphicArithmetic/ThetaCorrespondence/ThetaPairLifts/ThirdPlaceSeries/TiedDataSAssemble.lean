@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Top.Bl
 open Formalism.L2 in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Consider the cases of `h`. Substitute `he` using the available equality. Use `first`. Consider the case `exact ⟨{ host := host, level := level, cols := cols, full := full, extra := extra, provA := provA, theta := theta, twIn := twIn, n := n, frameN := frameN, thetaChr := thetaChr, chrVal := chrVal, chrDt := chrDt, chrN := chrN, chrGal := chrGal, chrPsi := chrPsi, sameChr := sameChr, …`. Consider the case `exact ⟨{ host := host, level := level, cols := cols, full := full, extra := extra, provA := provA, theta := theta, twIn := twIn, n := n, thetaChr := thetaChr, chrVal := chrVal, chrDt := chrDt, chrN := chrN, chrGal := chrGal, chrPsi := chrPsi, sameChr := sameChr, what₂ := what₂, i …`.
+-/
 theorem tiedDataS_assemble_alt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {K : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} (ex : Extra D L hT Gi Gl K Y cX)
     (host : Formalism.L2.Host.HostTied D) (level : Formalism.L2.Host.LevelTied D) (cols : Formalism.L2.Forms.ColsTiedSym D) (full : Formalism.L2.Forms.ColsFullS cols)
@@ -52,6 +55,17 @@ theorem tiedDataS_assemble_alt {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi
                g := g, herm_eq := herm_eq, forms_eq := forms_eq },
         rfl, rfl, HEq.rfl, rfl, rfl, rfl, HEq.rfl, fun _ => rfl, ⟨rfl, rfl⟩, rfl, HEq.rfl, hP⟩
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hA hW hL p K q hlev hze`. Take `⟨extra, g, hg, hherm, hforms⟩` from `WPt.extraTied_col p.s K q`. Take `⟨I, n, hE, hgood, hchr, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `_root_.GlobalTheory.Mem.Top.Bl.exists_core_parameters_agree hL p K q`. Take `⟨he, tw, hstd, emt⟩` from `GlobalTheory.Mem.Top.Bl.WPt.colsTwTied p.s K q`. Take `⟨dt, hdt⟩` from `TC.dtTied_true q.w.I q.w.ok q.w.pins q.w.l q.Z`.
+
+Establish `hO : ∃ O : Formalism.L2.Rows.OTied (q.w.D q.Z) q.core_data_of_point.a.host (TC.cf q.w.I q.w.l q.Z), O.pieces.rcf = GlobalTheory.Mem.HD.qb q.core_data_of_point.a.host.fr.ι q.w.δ.ray ∧ O.pieces.MDel = GlobalTheory.Mem.HD.qb q.core_data_of_point.a.host.fr.ι q.w.δ.M'`. Generalize the expression as in `q.core_data_of_point.a.host = H`. Rewrite using `[← ColW.cf_eq]`. Conclude with `GlobalTheory.Mem.CyclotomicFieldContainment.oTied_of_ksExact hA hW (q.w.st q.Z) q.f q.w.δ q.w.exact H`. Take `⟨O, hO1, hO2⟩` from `hO`.
+
+Establish `hval : Formalism.L2.Host.ValLL0 (q.w.D q.Z) (TC.cf q.w.I q.w.l q.Z)`. Rewrite using `[← ColW.cf_eq]`. Conclude with `q.w.val _ _ _ _ _ _`. Establish `hfr : ∀ x, n.gal.fr.jE x = q.core_data_of_point.a.host.fr.j x`. Rewrite using `[h1]`.
+
+Conclude with `q.core_data_of_point.a.frameN`. Take `⟨S, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12⟩` from `_root_.GlobalTheory.Mem.Top.Bl.tiedDataS_assemble_alt q.O.ex q.core_data_of_point.a.host hlev q.x.col.C q.x.col.full extra q.x.th.provA q.x.th.all I n hfr (TC.cf q.w.I q.w.l q.Z) q.x.n.tp hchr q.x.th.chr hval dt q.core_data_of_point.a.chrN q.core_data_of_point.a.chrGal q.x.n.chrP …`. Establish `key : ∀ Q : (Σ I, _root_.Formalism.L2.NTiedAllAlt (q.w.D q.Z) q.O.ex.nch I) → Prop, Q ⟨I, n⟩ → Q ⟨S.twIn, S.n⟩` using `fun Q hQ => s6 ▸ hQ`. Use `⟨S, s1, s2, s3, s4 ▸ hg, s5, key (fun z => z.1.E = _) hE, key (fun z => DQ.GoodAllAt _ _ z.1) hgood, key (fun z => (⟨z.2.cf, z.2.tp⟩ : Σ c : CharFrame (q.w.D q.Z), TupTied (q.w.D q.Z) c q.O.ex.nch) = _) hchr, key (fun z => z.2.gal = _) h1, key (fun z => z.2.n = _) h2, key (fun z …` and prove the remaining obligations. Rewrite using `[s9.1, s9.2, s1]`.
+
+Conclude with `⟨hO1, hO2⟩`.
+-/
 theorem WPt.exists_pinned_spectral_data_compatible : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.WeberRayFieldSt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (K : Ctx) (q : WPt p.s K), Formalism.L2.Host.LevelTied (q.w.D q.Z) → Formalism.L2.Rows.ZetaCompatible (q.w.D q.Z) → ∃ S : _root_.Formalism.L2.TiedDataSAlt q.O.ex, _root_.GlobalTheory.Mem.Top.Bl.SpectralDataCompatible q S := by
   intro hA hW hL p K q hlev hze
   obtain ⟨extra, g, hg, hherm, hforms⟩ := WPt.extraTied_col p.s K q

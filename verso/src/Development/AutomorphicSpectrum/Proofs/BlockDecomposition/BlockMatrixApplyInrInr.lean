@@ -18,22 +18,47 @@ section Entries
 
 variable {R : Type} [CommRing R] {n r t : ℕ}
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]`.
+-/
 theorem block_matrix_apply_inl_inl (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j)) = a i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]`.
+-/
 theorem block_matrix_apply_inl_inr (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inr j)) = b i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁]`.
+-/
 theorem block_matrix_apply_inr_inl (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inl j)) = c i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁]
 
+/- English proof (translation)
+Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]`.
+-/
 theorem block_matrix_apply_inr_inr (a b c d : Matrix (Fin n) (Fin n) R) (i j : Fin n) :
     blk4 a b c d (finSumFinEquiv (Sum.inr i)) (finSumFinEquiv (Sum.inr j)) = d i j := by
   simp only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]
 
+/- English proof (translation)
+Establish `h1 : (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = blk4 (bl hn 1 0 0 1) (bl hn 0 0 0 0) (bl hn 0 0 0 0) (bl hn 1 0 0 1)`. Establish `z : bl hn (0 : Matrix (Fin r) (Fin r) R) 0 0 (0 : Matrix (Fin t) (Fin t) R) = 0` using `blockMatrix_zero hn`. Rewrite using `[blockRowSubstitution_one, z, GlobalTheory.StdUnn.Model.block_matrix_one]`. Establish `h2 : (1 : Matrix (Fin (t + t)) (Fin (t + t)) R) = blk4 1 0 0 1` using `GlobalTheory.StdUnn.Model.block_matrix_one.symm`. Rewrite using `[h1, h2]`.
+
+Establish `bll : ∀ (a : Matrix (Fin r) (Fin r) R) b c (d : Matrix (Fin t) (Fin t) R) i j, bl hn a b c d ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl i)) ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl j)) = a i j`. Introduce `a b c d i j`. Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁]`. Establish `blr : ∀ (a : Matrix (Fin r) (Fin r) R) b c (d : Matrix (Fin t) (Fin t) R) i j, bl hn a b c d ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl i)) ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr j)) = b i j`. Introduce `a b c d i j`.
+
+Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₂]`. Establish `brl : ∀ (a : Matrix (Fin r) (Fin r) R) b c (d : Matrix (Fin t) (Fin t) R) i j, bl hn a b c d ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr i)) ((finSumFinEquiv.trans (finCongr hn)) (Sum.inl j)) = c i j`. Introduce `a b c d i j`. Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₁]`. Establish `brr : ∀ (a : Matrix (Fin r) (Fin r) R) b c (d : Matrix (Fin t) (Fin t) R) i j, bl hn a b c d ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr i)) ((finSumFinEquiv.trans (finCongr hn)) (Sum.inr j)) = d i j`.
+
+Introduce `a b c d i j`. Simplify using `only [bl, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₂₂]`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`.
+
+Apply the tactic sequence `obtain ⟨i, rfl⟩ := (finSumFinEquiv.trans (finCongr hn)).surjective i <;>`. Apply the tactic sequence `obtain ⟨j, rfl⟩ := (finSumFinEquiv.trans (finCongr hn)).surjective j <;>`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp only [block_matrix_apply_inl_inl, block_matrix_apply_inl_inr, block_matrix_apply_inr_inl, block_matrix_apply_inr_inr, bll, blr, brl, brr, true_or] <;>`. Use `first`.
+
+Consider the case `exact Or.inl rfl`. Consider the case `exact Or.inr ⟨_, _, (block_matrix_apply_inl_inl a b c d i j).symm, block_matrix_apply_inl_inl _ _ _ _ i j⟩`. Consider the case `exact Or.inr ⟨_, _, (block_matrix_apply_inl_inr a b c d i j).symm, block_matrix_apply_inl_inr _ _ _ _ i j⟩`. Consider the case `exact Or.inr ⟨_, _, (block_matrix_apply_inr_inl a b c d i j).symm, block_matrix_apply_inr_inl _ _ _ _ i j⟩`. Consider the case `exact Or.inr ⟨_, _, (block_matrix_apply_inr_inr a b c d i j).symm, block_matrix_apply_inr_inr _ _ _ _ i j⟩`.
+-/
 theorem entry (hn : r + t = n) (a b c d : Matrix (Fin t) (Fin t) R) (i j : Fin (n + n)) :
     blk4 (bl hn 1 0 0 a) (bl hn 0 0 0 b) (bl hn 0 0 0 c) (bl hn 1 0 0 d) i j = (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) i j ∨
     ∃ i' j', blk4 (bl hn 1 0 0 a) (bl hn 0 0 0 b) (bl hn 0 0 0 c) (bl hn 1 0 0 d) i j = blk4 a b c d i' j' ∧
@@ -70,6 +95,9 @@ theorem entry (hn : r + t = n) (a b c d : Matrix (Fin t) (Fin t) R) (i j : Fin (
     | exact Or.inr ⟨_, _, (block_matrix_apply_inr_inl a b c d i j).symm, block_matrix_apply_inr_inl _ _ _ _ i j⟩
     | exact Or.inr ⟨_, _, (block_matrix_apply_inr_inr a b c d i j).symm, block_matrix_apply_inr_inr _ _ _ _ i j⟩
 
+/- English proof (translation)
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+-/
 theorem map_one_apply {T : Type} [CommRing T] {N : ℕ} (f : R →+* T) (i j : Fin N) :
     f ((1 : Matrix (Fin N) (Fin N) R) i j) = (1 : Matrix (Fin N) (Fin N) T) i j := by
   by_cases h : i = j
@@ -80,6 +108,9 @@ end Entries
 
 variable {D : D7} {n r t : ℕ} {hn : r + t = n}
 
+/- English proof (translation)
+Rewrite using `[M.emb_mat u _ _ _ _ (block_matrix_of_blocks (mat u)).symm]`. Apply the tactic sequence `rcases entry hn (b11 (mat u)) (b12 (mat u)) (b21 (mat u)) (b22 (mat u)) i j with h | ⟨i', j', h, h'⟩`. Rewrite using `[h, map_one_apply]`. Rewrite using `[h, block_matrix_of_blocks, hu i' j', ← map_one_apply f i' j', h', map_one_apply]`.
+-/
 theorem emb_entries_one (M : Maps D hn) {T : Type} [CommRing T] (f : AE D →+* T) {u : G D t}
     (hu : ∀ i j, f (mat u i j) = (1 : Matrix (Fin (t + t)) (Fin (t + t)) T) i j) (i j : Fin (n + n)) :
     f (mat (M.emb u) i j) = (1 : Matrix (Fin (n + n)) (Fin (n + n)) T) i j := by
@@ -88,6 +119,11 @@ theorem emb_entries_one (M : Maps D hn) {T : Type} [CommRing T] (f : AE D →+* 
   · rw [h, map_one_apply]
   · rw [h, block_matrix_of_blocks, hu i' j', ← map_one_apply f i' j', h', map_one_apply]
 
+/- English proof (translation)
+Rewrite using `[M.emb_mat u _ _ _ _ (block_matrix_of_blocks (mat u)).symm]`. Apply the tactic sequence `rcases entry hn (b11 (mat u)) (b12 (mat u)) (b21 (mat u)) (b22 (mat u)) i j with h | ⟨i', j', h, -⟩`. Rewrite using `[h, map_one_apply]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+
+Simplify using `using P.one_mem`. Simplify `P.zero_mem` using `[Matrix.one_apply_ne e]`. Rewrite using `[h, block_matrix_of_blocks]`. Conclude with `hu i' j'`.
+-/
 theorem emb_entries_mem (M : Maps D hn) {T : Type} [CommRing T] (f : AE D →+* T) (P : Subring T) {u : G D t}
     (hu : ∀ i j, f (mat u i j) ∈ P) (i j : Fin (n + n)) : f (mat (M.emb u) i j) ∈ P := by
   rw [M.emb_mat u _ _ _ _ (block_matrix_of_blocks (mat u)).symm]
@@ -99,6 +135,13 @@ theorem emb_entries_mem (M : Maps D hn) {T : Type} [CommRing T] (f : AE D →+* 
   · rw [h, block_matrix_of_blocks]
     exact hu i' j'
 
+/- English proof (translation)
+Establish `hs : (Pi.single j 1 : Fin N → Fv F v ⊗[F] E) ∈ latLoc F (stdLattice E N) v`. Use `mem_latLoc_stdLattice.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `e : k = j`. Substitute `e` using the available equality. Simplify using `using (intLoc F E v).one_mem`.
+
+Simplify `(intLoc F E v).zero_mem` using `[Pi.single_eq_of_ne e]`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `mem_latLoc_stdLattice.1 ((h _).1 hs) i`. Simplify using `using h1`. Establish `e : m.1 *ᵥ ((m⁻¹).1 *ᵥ (Pi.single j 1 : Fin N → Fv F v ⊗[F] E)) = Pi.single j 1`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `h2 : (m⁻¹).1 *ᵥ (Pi.single j 1 : Fin N → Fv F v ⊗[F] E) ∈ latLoc F (stdLattice E N) v` using `(h _).2 (by rw [e]; exact hs)`. Establish `h1` using `mem_latLoc_stdLattice.1 h2 i`. Simplify using `using h1`.
+-/
 theorem stab_entries {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} {m : GL (Fin N) (Fv F v ⊗[F] E)}
     (h : m ∈ Formalism.UG.stabGL (latLoc F (stdLattice E N) v)) (i j : Fin N) :
@@ -118,6 +161,19 @@ theorem stab_entries {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     have h1 := mem_latLoc_stdLattice.1 h2 i
     simpa using h1
 
+/- English proof (translation)
+Introduce `D n r t hn M S u hu`. Take `⟨hf, h1, h2⟩` from `mem_levelOff.1 hu`. Use `mem_levelOff.2 ⟨mem_finPts_iff_forall.2 fun w => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hw` using `mem_finPts_iff_forall.1 hf w`. Establish `ent : ∀ i j, compInf D.host.F D.host.E w (mat u i j) = (1 : Matrix (Fin (t + t)) (Fin (t + t)) _) i j` using `fun i j => by`.
+
+Establish `e` using `congrArg (fun g => (matHom _ D.sp.cm.sig (Jst D t) g).1 i j) hw`. Simplify using `only [map_one, Units.val_one] at e`. Conclude with `e`. Apply `matHom_injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Rewrite using `[matHom_projArch, map_one]`. Conclude with `emb_entries_one M _ ent i j`. Establish `ent : ∀ i j, cv D v (mat u i j) = (1 : Matrix (Fin (t + t)) (Fin (t + t)) _) i j` using `fun i j => by`. Establish `e` using `congrArg (fun g => (matHom _ D.sp.cm.sig (Jst D t) g).1 i j) (h1 v hv)`.
+
+Simplify using `only [map_one, Units.val_one] at e`. Conclude with `e`. Apply `matHom_injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Rewrite using `[matHom_proj, map_one]`. Conclude with `emb_entries_one M _ ent i j`. Establish `key : ∀ x : G D t, proj D.sp.cm.sig (Jst D t) v x ∈ stabLoc D.sp.cm.sig (Jst D t) (stdLattice D.host.E (t + t)) v → ∀ i j, (matHom _ D.sp.cm.sig (Jst D n) (proj D.sp.cm.sig (Jst D n) v (M.emb x))).1 i j ∈ intLoc D.host.F D.host.E v`. Introduce `x hx i j`. Conclude with `emb_entries_mem M (cv D v) _ (fun i j => (stab_entries hx i j).1) i j`.
+
+Use `GlobalTheory.StdUnn.StabFin.mem_stab_std (key u (h2 v hv)) fun i j => ?_` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_inv, ← map_inv]`. Conclude with `key u⁻¹ (by rw [map_inv]; exact inv_mem (h2 v hv)) i j`.
+-/
 theorem emb_mem_KOff : ∀ {D : D7} {n r t : ℕ} {hn : r + t = n} (M : Maps D hn) (S : Finset (Pl D)) (u : G D t),
     u ∈ KOff D t S → M.emb u ∈ KOff D n S := by
   intro D n r t hn M S u hu

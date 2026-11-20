@@ -58,8 +58,14 @@ def finPtHom : UE E n →* finU E n where
     apply Subtype.ext
     exact (congrArg (finGL E n) (map_mul (ratF E n) a.1 b.1)).trans (map_mul _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPtHom_apply (γ : UE E n) : finPtHom γ = finPt γ := rfl
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.TrKer.wAt`. Rewrite using `[← PiTensorProduct.map_comp]`. Use `congrArg PiTensorProduct.map (funext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam v) (GeneralLinearGroup.map v.embedding (a.1 * b.1)) = _`. Rewrite using `[map_mul, map_mul, Module.End.mul_eq_comp]`.
+-/
 theorem wAt_mul (lam : InfinitePlace E → DomWeight n) (a b : UE E n) :
     GlobalTheory.BCT.TrKer.wAt lam (a * b) = GlobalTheory.BCT.TrKer.wAt lam a ∘ₗ GlobalTheory.BCT.TrKer.wAt lam b := by
   unfold GlobalTheory.BCT.TrKer.wAt
@@ -68,6 +74,9 @@ theorem wAt_mul (lam : InfinitePlace E → DomWeight n) (a b : UE E n) :
   change GlobalTheory.Branching.sqRep ℂ n (lam v) (GeneralLinearGroup.map v.embedding (a.1 * b.1)) = _
   rw [map_mul, map_mul, Module.End.mul_eq_comp]
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.TrKer.wAt`. Simplify using `only [OneMemClass.coe_one, map_one]`. Conclude with `PiTensorProduct.map_id`.
+-/
 theorem wAt_one (lam : InfinitePlace E → DomWeight n) : GlobalTheory.BCT.TrKer.wAt lam 1 = LinearMap.id := by
   unfold GlobalTheory.BCT.TrKer.wAt
   simp only [OneMemClass.coe_one, map_one]

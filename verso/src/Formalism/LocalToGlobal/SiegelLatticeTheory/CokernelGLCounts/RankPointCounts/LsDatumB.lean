@@ -9,6 +9,11 @@ open Classical
 
 section Abstract
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite P`. Establish `h1 : HasSum c (∑ x, c x)` using `hasSum_fintype c`. Establish `h2` using `h1.tsum_fiberwise cls`. Establish `e : F = fun g => ∑' x : ↑(cls ⁻¹' {g}), c x` using `funext fun g => ((hF g).tsum_eq).symm`. Establish `h4 : HasSum F (∑ x, c x)`.
+
+Rewrite using `[e]`. Conclude with `h2`. Rewrite using `[hs.unique h4]`. Conclude with `h1`.
+-/
 theorem hasSum_of_fiber {P G : Type*} [Finite P] (c : P → ℂ) (cls : P → G) (F : G → ℂ)
     (hF : ∀ g, HasSum (fun x : {x : P // cls x = g} => c x.1) (F g)) {s : ℂ} (hs : HasSum F s) :
     HasSum c s := by
@@ -26,6 +31,19 @@ variable {ι : Type*} {X : ι → Type*}
 
 def Rst (x0 : ∀ p, X p) : Type _ := {x : ∀ p, X p // {p | x p ≠ x0 p}.Finite}
 
+/- English proof (translation)
+Establish `h0` using `(Formalism.L2.SG.Pf.hasSum_prod_offS x0 f a S hf hn).1`. Set `j : Formalism.L2.SG.Pf.OffS x0 S → Rst x0` to `fun θ => ⟨θ.1, (S.finite_toSet).subset fun p hp => by`. Assume the negation of the conclusion as `h`. Conclude with `hp (θ.2 p h)⟩`. Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (congrArg (fun x : Rst x0 => x.1) h)`.
+
+Establish `hsupp : ∀ x : Rst x0, (Function.mulSupport fun p => f p (x.1 p)) ⊆ (S : Set ι) ∪ {p | x.1 p ≠ x0 p}`. Introduce `x p hp`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `(Function.mem_mulSupport.1 hp) (by rw [hoff p hc.1, if_pos hc.2])`.
+
+Establish `hfin : ∀ x : Rst x0, (Function.mulSupport fun p => f p (x.1 p)).Finite` using `fun x => ((S.finite_toSet).union x.2).subset (hsupp x)`. Establish `hzero : ∀ x ∉ Set.range j, (∏ᶠ p, f p (x.1 p)) = 0`. Introduce `x hx`. Establish `: ∃ p ∉ S, x.1 p ≠ x0 p`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hx ⟨⟨x.1, h⟩, rfl⟩`. Take `⟨p, hpS, hp⟩` from `this`. Conclude with `finprod_eq_zero _ p (by rw [hoff p hpS, if_neg hp]) (hfin x)`. Rewrite using `[← hj.hasSum_iff hzero]`.
+
+Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `θ`. Simplify using `only [Function.comp_apply]`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `p hp`.
+
+Assume the negation of the conclusion as `hS`. Conclude with `(Function.mem_mulSupport.1 hp) (by rw [hoff p hS, if_pos (θ.2 p hS)])`.
+-/
 theorem hasSum_rst (x0 : ∀ p, X p) (f : ∀ p, X p → ℂ) (a : ι → ℂ) (S : Finset ι)
     (hoff : ∀ p ∉ S, ∀ x, f p x = if x = x0 p then 1 else 0)
     (hf : ∀ p ∈ S, HasSum (f p) (a p)) (hn : ∀ p ∈ S, Summable fun x => ‖f p x‖) :
@@ -60,6 +78,11 @@ theorem hasSum_rst (x0 : ∀ p, X p) (f : ∀ p, X p → ℂ) (a : ι → ℂ) (
   by_contra hS
   exact (Function.mem_mulSupport.1 hp) (by rw [hoff p hS, if_pos (θ.2 p hS)])
 
+/- English proof (translation)
+Establish `h1` using `hasSum_rst x0 f a S hoff hf hn`. Establish `h2 : HasSum F (∏ p ∈ S, a p)`. Establish `e : F = (fun x : Rst x0 => ∏ᶠ p, f p (x.1 p)) ∘ loc` using `funext fun g => hFp g`. Rewrite using `[e]`. Conclude with `(loc.hasSum_iff).2 h1`.
+
+Conclude with `hasSum_of_fiber c cls F hF h2`.
+-/
 theorem hasSum_passage {P G : Type*} [Finite P] (c : P → ℂ) (cls : P → G) (F : G → ℂ)
     (hF : ∀ g, HasSum (fun x : {x : P // cls x = g} => c x.1) (F g))
     (x0 : ∀ p, X p) (loc : G ≃ Rst x0) (f : ∀ p, X p → ℂ) (a : ι → ℂ) (S : Finset ι)

@@ -21,14 +21,23 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 abbrev act (A : Rep.{0} k G) (c : G) : A →+ A := (A.ρ c).toAddMonoidHom
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] [IsDiscreteRep A] in
+/- English proof (translation)
+Rewrite using `[mem_fixedSub, AddMonoidHom.neg_apply, neg_eq_iff_add_eq_zero, add_comm]`. Both sides reduce to the same expression.
+-/
 theorem mem_fixedSub_neg_act {α : A} : α ∈ fixedSub (-act A c) ↔ α + A.ρ c α = 0 := by
   rw [mem_fixedSub, AddMonoidHom.neg_apply, neg_eq_iff_add_eq_zero, add_comm]
   rfl
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [DiscreteTopology G] [IsDiscreteRep A] in
+/- English proof (translation)
+The claim follows from `mem_fixedSub`.
+-/
 theorem mem_fixedSub_act {a : A} : a ∈ fixedSub (act A c) ↔ A.ρ c a = a :=
   mem_fixedSub
 
+/- English proof (translation)
+Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[map_add, cochainOf_add, cochainOf_cocycleOne, cochainOf_cocycleOne, cochainOf_cocycleOne]`. Use function extensionality and compare the values at `v`. Simplify using `only [cochainOne, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cocycleOne_add (α β : A) (hα : α + A.ρ c α = 0) (hβ : β + A.ρ c β = 0)
     (hαβ : α + β + A.ρ c (α + β) = 0) :
     cocycleOne A hG hc (α + β) hαβ = cocycleOne A hG hc α hα + cocycleOne A hG hc β hβ := by
@@ -38,6 +47,9 @@ theorem cocycleOne_add (α β : A) (hα : α + A.ρ c α = 0) (hβ : β + A.ρ c
   simp only [cochainOne, Pi.add_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[map_add, cochainOf_add, cochainOf_cocycleTwo, cochainOf_cocycleTwo, cochainOf_cocycleTwo]`. Use function extensionality and compare the values at `v`. Simplify using `only [cochainTwo, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cocycleTwo_add (a b : A) (ha : A.ρ c a = a) (hb : A.ρ c b = b)
     (hab : A.ρ c (a + b) = a + b) :
     cocycleTwo A hG hc (a + b) hab = cocycleTwo A hG hc a ha + cocycleTwo A hG hc b hb := by
@@ -61,6 +73,9 @@ def h1Hom : fixedSub (-act A c) →+ cohomology A 1 where
     congr 1
     exact cocycleOne_add A hG hc _ _ _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h1Hom_apply (α : fixedSub (-act A c)) :
     h1Hom A hG hc α = cohomologyπ A 1 (cocycleOne A hG hc α ((mem_fixedSub_neg_act A).1 α.2)) :=
   rfl
@@ -90,6 +105,9 @@ def h1EquivOfOrderTwo : tateQuot (-act A c) ≃+ cohomology A 1 :=
       exact ⟨((⟨α, (mem_fixedSub_neg_act A).2 hα⟩ : fixedSub (-act A c)) : tateQuot (-act A c)),
         rfl⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h1Equiv_mk (α : fixedSub (-act A c)) :
     h1EquivOfOrderTwo A hG hc (α : tateQuot (-act A c)) =
       cohomologyπ A 1 (cocycleOne A hG hc α ((mem_fixedSub_neg_act A).1 α.2)) :=
@@ -109,6 +127,9 @@ def h2Hom : fixedSub (act A c) →+ cohomology A 2 where
     congr 1
     exact cocycleTwo_add A hG hc _ _ _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h2Hom_apply (a : fixedSub (act A c)) :
     h2Hom A hG hc a = cohomologyπ A 2 (cocycleTwo A hG hc a ((mem_fixedSub_act A).1 a.2)) :=
   rfl
@@ -133,6 +154,9 @@ def h2EquivOfOrderTwo : tateQuot (act A c) ≃+ cohomology A 2 :=
       obtain ⟨a, ha, e⟩ := exists_cohomologyπ_eq_cocycleTwo A hG hc z
       exact ⟨((⟨a, (mem_fixedSub_act A).2 ha⟩ : fixedSub (act A c)) : tateQuot (act A c)), e.symm⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h2Equiv_mk (a : fixedSub (act A c)) :
     h2EquivOfOrderTwo A hG hc (a : tateQuot (act A c)) =
       cohomologyπ A 2 (cocycleTwo A hG hc a ((mem_fixedSub_act A).1 a.2)) :=
@@ -148,6 +172,9 @@ variable {k G : Type} [CommRing k] [Group G] [TopologicalSpace G] [IsTopological
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [Fintype G] [IsDiscreteRep A] in
 include hG in
+/- English proof (translation)
+Introduce `g`. Break down `hG g with rfl | rfl` into its components or cases. Rewrite using `[map_one, Module.End.one_apply]`. Conclude with `ha`.
+-/
 theorem mem_invariants_of_fixed {a : A} (ha : A.ρ c a = a) : a ∈ A.ρ.invariants := by
   intro g
   rcases hG g with rfl | rfl
@@ -164,12 +191,18 @@ def h0HomOfOrderTwo : fixedSub (act A c) →+ cohomologyTateZero A where
     rw [← Submodule.Quotient.mk_add, ← map_add]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h0Hom_apply (a : fixedSub (act A c)) :
     h0HomOfOrderTwo A hG a = Submodule.Quotient.mk ((H0Iso A).inv.hom
       ⟨a, mem_invariants_of_fixed A hG ((mem_fixedSub_act A).1 a.2)⟩) :=
   rfl
 
 omit [Fintype G] in
+/- English proof (translation)
+The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+-/
 theorem H0Iso_inv_injective : Function.Injective (H0Iso A).inv.hom :=
   (ModuleCat.mono_iff_injective _).1 inferInstance
 
@@ -209,6 +242,9 @@ def cohomZeroEquivContinuous : tateQuot (act A c) ≃+ cohomologyTateZero A :=
       change (H0Iso A).inv.hom a = x
       rw [ha, ← ModuleCat.comp_apply, Iso.hom_inv_id, ModuleCat.id_apply]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem h0Equiv_mk (a : fixedSub (act A c)) :
     cohomZeroEquivContinuous A hG hc (a : tateQuot (act A c)) = Submodule.Quotient.mk ((H0Iso A).inv.hom
       ⟨a, mem_invariants_of_fixed A hG ((mem_fixedSub_act A).1 a.2)⟩) :=

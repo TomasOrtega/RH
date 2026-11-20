@@ -4,6 +4,9 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Establish `t` using `Real.geom_mean_le_arith_mean2_weighted hp0 (sub_nonneg.2 hp1) (by linarith : (0:ℝ) ≤ 1 + s) zero_le_one (by ring : p + (1 - p) = 1)`. Rewrite `t` using `[Real.one_rpow, mul_one]`. Use polynomial arithmetic with `[t]`.
+-/
 private theorem one_add_rpow_le_one_add_mul {s p : ℝ} (hs : 0 ≤ s) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     (1 + s) ^ p ≤ 1 + p * s := by
   have t := Real.geom_mean_le_arith_mean2_weighted hp0 (sub_nonneg.2 hp1)
@@ -11,6 +14,9 @@ private theorem one_add_rpow_le_one_add_mul {s p : ℝ} (hs : 0 ≤ s) (hp0 : 0 
   rw [Real.one_rpow, mul_one] at t
   nlinarith [t]
 
+/- English proof (translation)
+Establish `h1 : (0:ℝ) < 1 + h` using `by linarith`. Establish `t` using `Real.log_le_sub_one_of_pos (inv_pos.2 h1)`. Rewrite `t` using `[Real.log_inv]`. Establish `e : (1 + h) * (1 + h)⁻¹ = 1` using `mul_inv_cancel₀ h1.ne'`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left t h1.le]`.
+-/
 private theorem le_one_add_mul_log_one_add {h : ℝ} (hh : 0 ≤ h) : h ≤ (1 + h) * Real.log (1 + h) := by
   have h1 : (0:ℝ) < 1 + h := by linarith
   have t := Real.log_le_sub_one_of_pos (inv_pos.2 h1)
@@ -18,6 +24,9 @@ private theorem le_one_add_mul_log_one_add {h : ℝ} (hh : 0 ≤ h) : h ≤ (1 +
   have e : (1 + h) * (1 + h)⁻¹ = 1 := mul_inv_cancel₀ h1.ne'
   nlinarith [mul_le_mul_of_nonneg_left t h1.le]
 
+/- English proof (translation)
+The claim follows from `|(y * (1 + h)) * (y ^ β / (β * (β - 1))) - y * ((y * (1 + h)) ^ β / (β * (β - 1))) + y * h * (y ^ β / β)| ≤ 2 * y ^ 2 * h ^ 2 := by have hy0 : 0 ≤ y := by linarith have h1 : (0:ℝ) < 1 + h := by linarith have hβ0 : 0 < β := by linarith have hq : 0 < 1 - β := by linarith have hβne …`.
+-/
 lemma abs_zero_term_second_difference_le {y h β : ℝ} (hy : 1 ≤ y) (hh : 0 < h) (_hh1 : h ≤ 1) (hβ1 : 1 / 2 ≤ β)
     (hβ2 : β < 1) :
     |(y * (1 + h)) * (y ^ β / (β * (β - 1))) - y * ((y * (1 + h)) ^ β / (β * (β - 1)))
@@ -65,6 +74,9 @@ lemma abs_zero_term_second_difference_le {y h β : ℝ} (hy : 1 ≤ y) (hh : 0 <
     mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hBy hy0) (sq_nonneg h)
   nlinarith [mul_nonneg (sq_nonneg y) (sq_nonneg h)]
 
+/- English proof (translation)
+The claim follows from `|y * ((y * (1 + h)) * Real.log (y * (1 + h)) - (1 + γ) * (y * (1 + h))) - (y * (1 + h)) * (y * Real.log y - (1 + γ) * y) - y * h * y| ≤ y ^ 2 * h ^ 2 := by have h1 : (0:ℝ) < 1 + h := by linarith have hlog : Real.log (y * (1 + h)) = Real.log y + Real.log (1 + h) := Real.log_mul hy …`.
+-/
 lemma abs_main_term_second_difference_le {y h γ : ℝ} (hy : 0 < y) (hh : 0 < h) :
     |y * ((y * (1 + h)) * Real.log (y * (1 + h)) - (1 + γ) * (y * (1 + h)))
       - (y * (1 + h)) * (y * Real.log y - (1 + γ) * y) - y * h * y| ≤ y ^ 2 * h ^ 2 := by
@@ -85,6 +97,9 @@ lemma abs_main_term_second_difference_le {y h γ : ℝ} (hy : 0 < y) (hh : 0 < h
     nlinarith [mul_le_mul_of_nonneg_left hL1 h1.le]
   nlinarith [mul_le_mul_of_nonneg_left t (sq_nonneg y)]
 
+/- English proof (translation)
+Establish `hlyz : Real.log y ≤ Real.log z` using `Real.log_le_log (by linarith) hyz`. Establish `hs : Real.sqrt (Real.log y) ≤ Real.sqrt (Real.log z)` using `Real.sqrt_le_sqrt hlyz`. Rewrite using `[sq, ← Real.exp_add, Real.exp_le_exp]`. Use polynomial arithmetic with `[mul_le_mul hcs hs (Real.sqrt_nonneg _) (le_trans hc0 hcs)]`.
+-/
 lemma exp_neg_sqrt_log_le_sq {cs c₀ y z : ℝ} (hc0 : 0 ≤ c₀) (hcs : c₀ ≤ cs) (hy : 1 ≤ y) (hyz : y ≤ z) :
     Real.exp (-cs * Real.sqrt (Real.log z)) ≤ Real.exp (-(c₀ / 2) * Real.sqrt (Real.log y)) ^ 2 := by
   have hlyz : Real.log y ≤ Real.log z := Real.log_le_log (by linarith) hyz

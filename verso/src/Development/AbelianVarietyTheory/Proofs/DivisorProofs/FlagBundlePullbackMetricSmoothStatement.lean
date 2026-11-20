@@ -10,6 +10,9 @@ open NumberField MvPolynomial Filter Topology Formalism.BasicNotions Formalism.M
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArInt GlobalTheory.BlockPoint
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CovTest.SwapLine.arFun_sumLine_base_eq_zero | exact GlobalTheory.CovTest.SwapLine.arFun_sumLine_base_eq_zero | (intros; apply GlobalTheory.CovTest.SwapLine.arFun_sumLine_base_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arFun_aeval_gr_sum_eq_zero_of_flagBundle_rank_two : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ),
     IsArithVar q d → IsArithVar p (d + 1) → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) →
     ∀ (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf), Nonempty (Vert.Flag E 2) →

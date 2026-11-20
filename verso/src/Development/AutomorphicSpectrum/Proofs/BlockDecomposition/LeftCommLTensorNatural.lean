@@ -5,6 +5,9 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.Dblock.AmiBc
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b m => simp [TensorProduct.leftComm_tmul]`. Consider the case `add x y hx hy`. Simplify using `only [TensorProduct.tmul_add, map_add, hx, hy]`.
+-/
 theorem leftComm_lTensor_natural {A B C M N : Type} [CommRing A] [CommRing B] [Algebra A B]
     [AddCommGroup C] [Module A C] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N]
     (d : M →ₗ[A] N) (c : C) (w : B ⊗[A] M) :
@@ -16,6 +19,17 @@ theorem leftComm_lTensor_natural {A B C M N : Type} [CommRing A] [CommRing B] [A
   | add x y hx hy =>
     simp only [TensorProduct.tmul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `A _ B _ _ C _ _ K _ _ d H ⟨h0, hS⟩`. Use `⟨fun n => (TensorProduct.leftComm A C B (K n)).toLinearMap ∘ₗ (H n).lTensor C, ?_, ?_⟩` and prove the remaining obligations. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c k`. Simplify using `[h0, TensorProduct.leftComm_tmul]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, hx, hy, TensorProduct.tmul_add]`. Introduce `n z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c k`. Establish `key` using `congrArg (fun t => TensorProduct.leftComm A C B (K (n + 1)) (c ⊗ₜ[A] t)) (hS n k)`. Simplify using `only [TensorProduct.tmul_add, map_add] at key`.
+
+Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.lTensor_tmul]`. Rewrite using `[leftComm_lTensor_natural, key, TensorProduct.leftComm_tmul]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, TensorProduct.tmul_add]`. Rewrite using `[← hx, ← hy]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem contraction_lTensor :
     ∀ (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (C : Type) [AddCommGroup C] [Module A C] (K : ℕ → Type) [∀ n, AddCommGroup (K n)] [∀ n, Module A (K n)] (d : ∀ n, K n →ₗ[A] K (n + 1)) (H : ∀ n, K (n + 1) →ₗ[A] B ⊗[A] K n), ((∀ z, H 0 (d 0 z) = (1 : B) ⊗ₜ[A] z) ∧ ∀ n z, (d n).lTensor B (H n z) + H (n + 1) (d (n + 1) z) = (1 : B) ⊗ₜ[A] z) → ∃ H₁ : ∀ n, C ⊗[A] K (n + 1) →ₗ[A] B ⊗[A] (C ⊗[A] K n), (∀ z, H₁ 0 ((d 0).lTensor C z) = (1 : B) ⊗ₜ[A] z) ∧ ∀ n z, ((d n).lTensor C).lTensor B (H₁ n z) + H₁ (n + 1) ((d (n + 1)).lTensor C z) = (1 : B) ⊗ₜ[A] z := by
   intro A _ B _ _ C _ _ K _ _ d H ⟨h0, hS⟩

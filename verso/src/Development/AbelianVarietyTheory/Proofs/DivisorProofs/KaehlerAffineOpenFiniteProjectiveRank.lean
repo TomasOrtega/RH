@@ -8,6 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Establish `h' : SmoothOfRelativeDimension g (str A)`. Simplify `h` using `[str]`. Establish `h1` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension g) (str A) h' ⟨⊤, isAffineOpen_top _⟩ U le_top`. Establish `hr` using `RingHom.locally_respectsIso (RingHom.isStandardSmoothOfRelativeDimension_respectsIso (n := g))`. Conclude with `hr.2 _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv h1`.
+-/
 theorem locally_standardSmooth_sec (A : Over (Sp ℂ)) (g : ℕ) (h : SmoothOfRelativeDimension g A.hom) (U : A.left.affineOpens) :
     RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension g) (algebraMap ℂ (Sec (str A) U.1)) := by
   have h' : SmoothOfRelativeDimension g (str A) := by
@@ -16,6 +19,9 @@ theorem locally_standardSmooth_sec (A : Over (Sp ℂ)) (g : ℕ) (h : SmoothOfRe
   have hr := RingHom.locally_respectsIso (RingHom.isStandardSmoothOfRelativeDimension_respectsIso (n := g))
   exact hr.2 _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv h1
 
+/- English proof (translation)
+Introduce `A g h U`. Establish `hl` using `locally_standardSmooth_sec A g h U`. Use `haveI := GlobalTheory.AugCot.smooth_of_locally hl`. Conclude with `⟨inferInstance, inferInstance, GlobalTheory.AugCot.rankAtStalk_kaehler_of_locally hl⟩`.
+-/
 theorem kaehler_sec_finite_projective_rank : ∀ (A : Over (Sp ℂ)) (g : ℕ), SmoothOfRelativeDimension g A.hom → ∀ U : A.left.affineOpens, Module.Finite (Sec (str A) U.1) Ω[Sec (str A) U.1⁄ℂ] ∧ Module.Projective (Sec (str A) U.1) Ω[Sec (str A) U.1⁄ℂ] ∧ ∀ p : PrimeSpectrum (Sec (str A) U.1), Module.rankAtStalk Ω[Sec (str A) U.1⁄ℂ] p = g := by
   intro A g h U
   have hl := locally_standardSmooth_sec A g h U

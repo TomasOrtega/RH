@@ -4,6 +4,21 @@ universe u_1 u_2 u_3 u_4
 
 namespace Bl.general_b_fact_right_bis_form
 
+/- English proof (translation)
+Use `Finset.induction_on F ?_ ?_` and prove the remaining obligations. Introduce `m _ h2`. Conclude with `hS m (fun i => h2 i (by simp))`. Introduce `a F ha ih m h1 h2`. Establish `hlin : ∀ y : M a, (∏ i, φ i (Function.update m a y i)) = φ a y * ∏ i ∈ Finset.univ.erase a, φ i (m i)`.
+
+Introduce `y`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a)]`. Use `congr 1`. Rewrite using `[Function.update_self]`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations.
+
+Introduce `i hi`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `hsub : Submodule.span R (S a) ≤ T.comap ((LinearMap.mulRight R (∏ i ∈ Finset.univ.erase a, φ i (m i))).comp (φ a))`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.comp_apply, LinearMap.mulRight_apply, ← hlin y]`. Use `ih (Function.update m a y) ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hia : i ≠ a` using `fun h => ha (h ▸ hi)`. Rewrite using `[Function.update_of_ne hia]`.
+
+Conclude with `h1 i (Finset.mem_insert_of_mem hi)`. Introduce `i hi`. Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `hy`. Rewrite using `[Function.update_of_ne hia]`. Conclude with `h2 i (by simp [hia, hi])`. Establish `hx` using `hsub (h1 a (Finset.mem_insert_self a F))`. Rewrite `hx` using `[Submodule.mem_comap, LinearMap.comp_apply, LinearMap.mulRight_apply, ← hlin (m a), Function.update_eq_self]`.
+
+Conclude with `hx`.
+-/
 private theorem aux {R : Type u_1} [CommRing R] {ι : Type u_2} [Fintype ι] [DecidableEq ι]
     {M : ι → Type u_3} [(i : ι) → AddCommGroup (M i)] [(i : ι) → Module R (M i)]
     {A : Type u_4} [CommRing A] [Algebra R A]
@@ -47,6 +62,9 @@ private theorem aux {R : Type u_1} [CommRing R] {ι : Type u_2} [Fintype ι] [De
       Function.update_eq_self] at hx
     exact hx
 
+/- English proof (translation)
+Introduce `R _ ι _ _ M _ _ A _ _ φ S T h m hm`. Conclude with `aux φ S T h Finset.univ m (fun i _ => hm i) (fun i hi => absurd (Finset.mem_univ i) hi)`.
+-/
 theorem goal1 :
   ∀ {R : Type u_1} [inst : CommRing.{u_1} R] {ι : Type u_2} [inst_1 : Fintype.{u_2} ι] [DecidableEq.{u_2 + 1} ι]
   {M : ι → Type u_3} [inst_3 : (i : ι) → AddCommGroup.{u_3} (M i)] [inst_4 : (i : ι) → Module.{u_1, u_3} R (M i)]

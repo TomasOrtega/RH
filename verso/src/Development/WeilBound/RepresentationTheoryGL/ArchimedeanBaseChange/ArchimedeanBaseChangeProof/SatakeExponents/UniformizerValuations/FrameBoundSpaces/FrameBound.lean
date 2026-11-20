@@ -41,6 +41,11 @@ def FrameRead : Prop := ∀ (hR : Rd.ReadLimit) (hD : DiagAlg) (E : Type) [Field
   ∀ n : ℕ, 1 ≤ n → ∀ (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π → ∀ (S T : Finset (Pl E)) (F₀ : Frame0 hR π S) (F : RunFrame F₀ T)
     (h : F.Struct), (F.toGenIn hD h).Read
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨F₀⟩` from `h0 hR E hE n hn π hπ S hS`. Use `⟨F₀.K, F₀.W, F₀.hK, F₀.hW, fun T => ?_⟩` and prove the remaining obligations. Take `⟨F⟩` from `h1 hR E hE n hn π hπ S F₀ T`. Establish `h` using `h2 hR E hE n hn π S T F₀ F`.
+
+Conclude with `⟨F.toGenIn hD h, h3 hR hD E hE n hn π hπ S T F₀ F h, h4 hR hD E hE n hn π hπ S T F₀ F h⟩`.
+-/
 theorem genEx_of (hR : Rd.ReadLimit) (hD : DiagAlg) (h0 : FrameEx0) (h1 : FrameEx) (h2 : FrameOk) (h3 : FrameBound)
     (h4 : FrameRead) : GenEx := by
   intro E _ _ _ hE n hn π hπ S hS

@@ -20,6 +20,15 @@ open GlobalTheory.CompanionTheory.PlaceBlocks
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use `haveI : NoZeroSMulDivisors (𝓞 ℚ) (𝓞 K) := by`. Establish `hinj : Function.Injective (algebraMap (𝓞 ℚ) (𝓞 K))`. Introduce `a b hab`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `(algebraMap ℚ K).injective` to reduce the goal to its premises.
+
+Conclude with `congrArg (fun x : 𝓞 K => (x : K)) hab`. Use `⟨fun {a x} h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl (hinj (h.trans (map_zero _).symm))`.
+
+Conclude with `Or.inr h`. Establish `h` using `Ideal.card_primesOverFinset_le_finrank (𝓞 K) ℚ K (p := v.asIdeal) v.ne_bot`. Rewrite `h` using `[h2]`. Use `le_trans ?_ h` and prove the remaining obligations. Rewrite using `[← Finset.card_image_of_injective (fib K v) (f := fun w : PlK K => w.asIdeal) (fun a b hab => HeightOneSpectrum.ext hab)]`.
+
+Use `Finset.card_le_card fun P hP => ?_` and prove the remaining obligations. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.mp hP`. Establish `hl : w.asIdeal.LiesOver v.asIdeal` using `(liesOver_iff w v).mpr (mem_fib.mp hw)`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff v.ne_bot]`. Conclude with `⟨w.isPrime, hl⟩`.
+-/
 theorem card_fib_le (h2 : Module.finrank ℚ K = 2) (v : Pl) : (fib K v).card ≤ 2 := by
   classical
   haveI : NoZeroSMulDivisors (𝓞 ℚ) (𝓞 K) := by
@@ -44,11 +53,21 @@ theorem card_fib_le (h2 : Module.finrank ℚ K = 2) (v : Pl) : (fib K v).card �
   rw [IsDedekindDomain.mem_primesOverFinset_iff v.ne_bot]
   exact ⟨w.isPrime, hl⟩
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 theorem finiteComponent_diagonal (w : PlK K) (κ : Kˣ) :
     IdeleGroup.finiteComponent w (IdeleGroup.toFinite K (IdeleGroup.diagonal K κ)) = atW w κ := by
   ext
   rfl
 
+/- English proof (translation)
+Establish `hc : ∀ w : PlK K, cK c w κ = (c.localComponent w (IdeleGroup.finiteComponent w (IdeleGroup.toFinite K (IdeleGroup.diagonal K κ))) : ℂ)`. Introduce `w`. Rewrite using `[finiteComponent_diagonal]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hc]`. Conclude with `c.finite_mulSupport_localComponent _`. Repeatedly rewrite using `[hc]`. Rewrite using `[← c.toIdele_ofFinite_eq_finprod]`. Establish `h` using `c.toIdele_diagonal κ`.
+
+Rewrite `h` using `[← IdeleGroup.ofFinite_mul_ofInfinite (IdeleGroup.diagonal K κ), map_mul, HeckeCharacter.toIdele_ofInfinite]`. Establish `h'` using `congrArg (fun x : Circle => (x : ℂ)) h`. Simplify using `only [Circle.coe_mul, Circle.coe_one] at h'`. Rewrite `h'` using `[show ((∏ w, c.infiniteComponent w (IdeleGroup.infiniteComponent w (IdeleGroup.toInfinite K (IdeleGroup.diagonal K κ))) : Circle) : ℂ) = _ from map_prod Circle.coeHom _ _]`. Conclude with `h'`.
+-/
 theorem global_prod (c : HeckeCharacter K) (κ : Kˣ) :
     (Function.mulSupport fun w : PlK K => cK c w κ).Finite ∧
       (∏ᶠ w : PlK K, cK c w κ) * ∏ w : InfinitePlace K, ((c.infiniteComponent w
@@ -71,6 +90,19 @@ theorem global_prod (c : HeckeCharacter K) (κ : Kˣ) :
       (IdeleGroup.toInfinite K (IdeleGroup.diagonal K κ))) : Circle) : ℂ) = _ from map_prod Circle.coeHom _ _] at h'
     exact h'
 
+/- English proof (translation)
+Consider the cases of `L with`. Consider the case `sp w₁ w₂ Φ`. Establish `hne : w₁ ≠ w₂` using `hL.1`. Establish `e : fib K v = {w₁, w₂}`. Use `symm`.
+
+Use `Finset.eq_of_subset_of_card_le ?_ ?_` and prove the remaining obligations. Introduce `w hw`. Break down `Finset.mem_insert.mp hw with rfl | hw` into its components or cases. Conclude with `mem_fib.mpr ((liesOver_iff _ _).mp inferInstance)`. Rewrite using `[Finset.mem_singleton.mp hw]`.
+
+Conclude with `mem_fib.mpr ((liesOver_iff _ _).mp inferInstance)`. Rewrite using `[Finset.card_pair hne]`. Conclude with `card_fib_le h2 v`. Rewrite using `[e, Finset.prod_pair hne]`. Both sides reduce to the same expression.
+
+Consider the case `ns w σ η Φ`. Establish `e : fib K v = {w}`. Use extensionality with `w'`. Rewrite using `[mem_fib, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `hL.1 w' ((liesOver_iff _ _).mpr h)`. Introduce and unpack `rfl`. Conclude with `(liesOver_iff _ _).mp inferInstance`. Rewrite using `[e, Finset.prod_singleton]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cW_eq_prod (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K} {v : Pl} (L : LM c v) (hL : L.ok) (κ : Kˣ) :
     cW L κ = ∏ w ∈ fib K v, cK c w κ := by
   classical
@@ -101,6 +133,13 @@ theorem cW_eq_prod (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K} {v : P
     rw [e, Finset.prod_singleton]
     rfl
 
+/- English proof (translation)
+Use `set S0 : Finset Pl := hf.toFinset.image vOf with hS0`. Establish `hsub : Function.mulSupport (fun v : Pl => ∏ w ∈ fib K v, f w) ⊆ (S0 : Set Pl)`. Introduce `v hv`. Take `⟨w, hw, hfw⟩` from `Finset.exists_ne_one_of_prod_ne_one hv`. Rewrite using `[Finset.mem_coe, hS0, Finset.mem_image]`.
+
+Conclude with `⟨w, hf.mem_toFinset.mpr hfw, mem_fib.mp hw⟩`. Use `⟨S0.finite_toSet.subset hsub, ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, ← Finset.prod_biUnion]`. Use `(finprod_eq_prod_of_mulSupport_subset f fun w hw => ?_).symm` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, Finset.mem_biUnion]`.
+
+Conclude with `⟨vOf w, Finset.mem_image_of_mem _ (hf.mem_toFinset.mpr hw), mem_fib.mpr rfl⟩`. Introduce `a _ b _ hab`. Use `Finset.disjoint_left.mpr fun w hw hw' => hab ?_` and prove the remaining obligations. Conclude with `(mem_fib.mp hw).symm.trans (mem_fib.mp hw')`.
+-/
 theorem finprod_regroup {N : Type*} [CommMonoid N] (f : PlK K → N) (hf : (Function.mulSupport f).Finite) :
     (Function.mulSupport fun v : Pl => ∏ w ∈ fib K v, f w).Finite ∧
       ∏ᶠ v : Pl, ∏ w ∈ fib K v, f w = ∏ᶠ w, f w := by
@@ -120,6 +159,9 @@ theorem finprod_regroup {N : Type*} [CommMonoid N] (f : PlK K → N) (hf : (Func
     refine Finset.disjoint_left.mpr fun w hw hw' => hab ?_
     exact (mem_fib.mp hw).symm.trans (mem_fib.mp hw')
 
+/- English proof (translation)
+Establish `h1 : Module.finrank ℚ K = 2 * InfinitePlace.nrComplexPlaces K` using `IsTotallyComplex.finrank K`. Establish `hc : Fintype.card (InfinitePlace K) = 1`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `Fintype.card_le_one_iff.mp hc.le _ _`.
+-/
 theorem infinitePlace_eq (h2 : Module.finrank ℚ K = 2) [IsTotallyComplex K] (w : InfinitePlace K) :
     w = Classical.arbitrary (InfinitePlace K) := by
   have h1 : Module.finrank ℚ K = 2 * InfinitePlace.nrComplexPlaces K := IsTotallyComplex.finrank K
@@ -128,6 +170,9 @@ theorem infinitePlace_eq (h2 : Module.finrank ℚ K = 2) [IsTotallyComplex K] (w
     omega
   exact Fintype.card_le_one_iff.mp hc.le _ _
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Use `ext`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe _ (WithAbs.equiv _ |>.symm (κ : K))`.
+-/
 theorem map_infiniteComponent_diagonal (w : InfinitePlace K) (hw : w = Classical.arbitrary (InfinitePlace K)) (κ : Kˣ) :
     Units.map (InfinitePlace.Completion.extensionEmbedding w).toMonoidHom
       (IdeleGroup.infiniteComponent w (IdeleGroup.toInfinite K (IdeleGroup.diagonal K κ))) = embU κ := by
@@ -135,6 +180,13 @@ theorem map_infiniteComponent_diagonal (w : InfinitePlace K) (hw : w = Classical
   ext
   exact InfinitePlace.Completion.extensionEmbedding_coe _ (WithAbs.equiv _ |>.symm (κ : K))
 
+/- English proof (translation)
+Introduce `K _ _ h2 hT DK c n t S hA M hM κ`. Take `⟨hf, hp⟩` from `global_prod c κ`. Take `⟨hs, hr⟩` from `finprod_regroup (fun w : PlK K => cK c w κ) hf`. Establish `e : (fun v : Pl => cW (M v) κ) = fun v : Pl => ∏ w ∈ fib K v, cK c w κ`. Use function extensionality and compare the values at `fun v => cW_eq_prod h2 (M v) (hM v) κ`.
+
+Rewrite using `[e]`. Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Establish `hu : ∀ w : InfinitePlace K, w = Classical.arbitrary (InfinitePlace K)` using `infinitePlace_eq h2`. Use `haveI : Unique (InfinitePlace K) := ⟨⟨Classical.arbitrary _⟩, hu⟩`.
+
+Rewrite `hp` using `[Fintype.prod_unique]`. Establish `hd : (default : InfinitePlace K) = Classical.arbitrary (InfinitePlace K)` using `hu _`. Rewrite `hp` using `[hA.inf, map_infiniteComponent_diagonal _ hd]`. Conclude with `hp`.
+-/
 theorem cW_finprod_mul_chC : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
   ∀ (DK : DatK K) (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (S : Finset (PlK K)), AdmK DK c n t S →
   ∀ M : ∀ v : Pl, LM c v, (∀ v, (M v).ok) → ∀ κ : Kˣ,

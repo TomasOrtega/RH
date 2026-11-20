@@ -7,6 +7,27 @@ open FunctorialResolution.Blowup
 
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
+/- English proof (translation)
+Establish `hM : IsAffineOpen (g ⁻¹ᵁ N)` using `hN.preimage g`. Use `set J := Ideal.map (f.appLE N V hVN).hom (RingHom.ker (g.app N).hom) with hJ`. Establish `hδ : Function.Surjective (g.app N).hom` using `g.app_surjective N hN`. Establish `hker : RingHom.ker (g.app N).hom ≤ RingHom.ker ((Ideal.Quotient.mk J).comp (f.appLE N V hVN).hom)`. Introduce `x hx`.
+
+Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Set `ψ : Γ(Y, g ⁻¹ᵁ N) →+* Γ(X, V) ⧸ J` to `(Ideal.Quotient.lift _ _ hker).comp (RingHom.quotientKerEquivOfSurjective hδ).symm.toRingHom`. Establish `hψ : ∀ b, ψ ((g.app N).hom b) = Ideal.Quotient.mk J ((f.appLE N V hVN).hom b)`. Introduce `b`.
+
+Establish `e : (RingHom.quotientKerEquivOfSurjective hδ).symm ((g.app N).hom b) = Ideal.Quotient.mk _ b`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e, Ideal.Quotient.lift_mk]`. Conclude with `Ideal.Quotient.lift_mk _ _ _`.
+
+Set `t : Spec (CommRingCat.of (Γ(X, V) ⧸ J)) ⟶ X` to `Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J)) ≫ hV.fromSpec`. Set `u : Spec (CommRingCat.of (Γ(X, V) ⧸ J)) ⟶ Y` to `Spec.map (CommRingCat.ofHom ψ) ≫ hM.fromSpec`. Establish `hring : f.appLE N V hVN ≫ CommRingCat.ofHom (Ideal.Quotient.mk J) = g.appLE N (g ⁻¹ᵁ N) le_rfl ≫ CommRingCat.ofHom ψ`. Use extensionality with `b`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`.
+
+Rewrite using `[← Scheme.Hom.app_eq_appLE, hψ]`. Establish `hcond : t ≫ f = u ≫ g`. Simplify using `only [t, u, Category.assoc]`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec f hN hV hVN, ← IsAffineOpen.SpecMap_appLE_fromSpec g hN hM le_rfl, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, hring]`. Set `ℓ` to `pullback.lift t u hcond`.
+
+Establish `hℓ : ℓ ≫ pullback.fst f g = t` using `pullback.lift_fst _ _ _`. Establish `e0 : (⊤ : (Spec (CommRingCat.of (Γ(X, V) ⧸ J))).Opens) ≤ t ⁻¹ᵁ V`. Introduce `x _`. Use `show t x ∈ (V : Set X)`. Rewrite using `[← hV.range_fromSpec]`.
+
+Simplify using `only [t, Scheme.Hom.comp_apply]`. Conclude with `Set.mem_range_self _`. Establish `key : ∀ (m : Spec (CommRingCat.of (Γ(X, V) ⧸ J)) ⟶ X) (hm : m = t) (e : ⊤ ≤ m ⁻¹ᵁ V), (m.appLE V ⊤ e).hom a = (t.appLE V ⊤ e0).hom a`. Introduce and unpack `m rfl e`. Both sides reduce to the same expression.
+
+Establish `h1 : (t.appLE V ⊤ e0).hom a = 0`. Rewrite using `[← key _ hℓ (by rw [hℓ]; exact e0), Scheme.Hom.comp_appLE]`. Simplify using `[ha]`. Establish `h2 : t.appLE V ⊤ e0 = CommRingCat.ofHom (Ideal.Quotient.mk J) ≫ (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, V) ⧸ J))).inv`. Simplify using `only [t, Scheme.Hom.comp_appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, Scheme.Hom.map_appLE]`.
+
+Rewrite using `[Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Establish `h3 : Ideal.Quotient.mk J a = 0`. Rewrite `h1` using `[CommRingCat.comp_apply]`.
+
+Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of (Γ(X, V) ⧸ J))).inv.hom (Ideal.Quotient.mk J a) = 0 at h1`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of (Γ(X, V) ⧸ J))).hom.hom h1` as an intermediate fact. Rewrite `this` using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, map_zero]`. Then use the resulting hypothesis. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h3`.
+-/
 private theorem mem_map_ker_app_of_pullback_fst_app_eq_zero {X Y S : Scheme.{0}} (f : X ⟶ S) (g : Y ⟶ S) [IsClosedImmersion g]
     {N : S.Opens} (hN : IsAffineOpen N) {V : X.Opens} (hV : IsAffineOpen V)
     (hVN : V ≤ f ⁻¹ᵁ N) (a : Γ(X, V)) (ha : (pullback.fst f g).app V a = 0) :
@@ -71,6 +92,57 @@ private theorem mem_map_ker_app_of_pullback_fst_app_eq_zero {X Y S : Scheme.{0}}
     rwa [← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply, map_zero] at this
   exact Ideal.Quotient.eq_zero_iff_mem.mp h3
 
+/- English proof (translation)
+Introduce `R _ Z W _ π D c b j`. Establish `hdg : IsClosedImmersion (dg Z).left`. Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.diagonal (Over.hom Z))`. Use `infer_instance`. Establish `hexI : IsClosedImmersion (exI π).left`.
+
+Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.fst π.left (dg Z).left)`. Use `infer_instance`. Establish `hM : IsAffineOpen ((dg Z).left ⁻¹ᵁ c.N)` using `c.aff.preimage _`. Establish `hE : IsAffineOpen ((exI π).left ⁻¹ᵁ b.V j)` using `(b.aff j).preimage _`. Establish `hsq : (exG π).left ≫ (dg Z).left = (exI π).left ≫ π.left`.
+
+Express the relevant statement in the definitionally equal form `pullback.snd π.left (dg Z).left ≫ _ = pullback.fst π.left (dg Z).left ≫ _`. Conclude with `pullback.condition.symm`. Establish `hle : (exI π).left ⁻¹ᵁ b.V j ≤ (exG π).left ⁻¹ᵁ (dg Z).left ⁻¹ᵁ c.N`. Introduce `x hx`. Establish `h1 : ((exI π).left ≫ π.left) x ∈ c.N` using `b.le j hx`.
+
+Rewrite `h1` using `[← hsq]`. Conclude with `h1`. Use `⟨hM, hE, ?_, hle, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals set φ := (secMap π (b.le j)).toRingHom with hφ set δ := (secMap (dg Z) (le_refl ((dg Z).left ⁻¹ᵁ c.N))).toRingHom with hδ set α := (secMap (exI π) (le_refl ((exI π).left ⁻¹ᵁ b.V j))).toRingHom with hα set γ := (secMap (exG π) hle).toRingHom with hγ`. Establish `hδsurj : Function.Surjective δ`.
+
+Use `(dg Z).left.app_surjective c.N c.aff` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.app_eq_appLE]`. Then use the resulting hypothesis. Establish `hαsurj : Function.Surjective α`. Use `(exI π).left.app_surjective (b.V j) (b.aff j)` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.app_eq_appLE]`. Then use the resulting hypothesis.
+
+Establish `hkerδ : RingHom.ker δ = Ideal.span (Set.range c.s)` using `c.ker`. Establish `hmemker : ∀ p, p ∈ Ideal.span (insert (MvPolynomial.X j - 1) (Set.range fun k ↦ MvPolynomial.C (c.s k) - MvPolynomial.C (c.s j) * MvPolynomial.X k)) → MvPolynomial.eval₂Hom φ (b.y j) p = 0`. Introduce `p hp`. Rewrite `hp` using `[← b.ker j]`. Conclude with `hp`.
+
+Establish `hyk : ∀ k, φ (c.s k) = φ (c.s j) * b.y j k`. Introduce `k`. Use `hmemker _ (Ideal.subset_span (Set.mem_insert_of_mem _ ⟨k, rfl⟩))` as an intermediate fact. Simplify using `only [map_sub, map_mul, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X'] at this`. Conclude with `sub_eq_zero.mp this`.
+
+Establish `hyj : b.y j j = 1`. Use `hmemker _ (Ideal.subset_span (Set.mem_insert _ _))` as an intermediate fact. Simplify using `only [map_sub, map_one, MvPolynomial.eval₂Hom_X'] at this`. Conclude with `sub_eq_zero.mp this`. Establish `hcomm : ∀ x, α (φ x) = γ (δ x)`.
+
+Introduce `x`. Establish `key : ∀ (m : (Ex π).left ⟶ (XX Z).left) (hm : m = (exG π).left ≫ (dg Z).left) (e : (exI π).left ⁻¹ᵁ b.V j ≤ m ⁻¹ᵁ c.N), (m.appLE c.N _ e).hom x = (((exG π).left ≫ (dg Z).left).appLE c.N _ (hm ▸ e)).hom x`. Introduce and unpack `m rfl e`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((π.left.appLE c.N (b.V j) (b.le j)) ≫ (exI π).left.appLE (b.V j) _ le_rfl).hom x = (((dg Z).left.appLE c.N _ le_rfl) ≫ (exG π).left.appLE _ _ hle).hom x`.
+
+Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, key _ hsq.symm]`. Establish `hsk : ∀ k, δ (c.s k) = 0` using `fun k ↦ by`. Rewrite using `[← RingHom.mem_ker, hkerδ]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`. Establish `hKer : RingHom.ker α = Ideal.span {φ (c.s j)}`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Use `mem_map_ker_app_of_pullback_fst_app_eq_zero π.left (dg Z).left c.aff (b.aff j) (b.le j) a (by` as an intermediate fact. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `ha)`.
+
+Establish `e1 : Ideal.map (π.left.appLE c.N (b.V j) (b.le j)).hom (RingHom.ker ((dg Z).left.app c.N).hom) = Ideal.map φ (RingHom.ker δ)`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite `this` using `[e1, hkerδ, Ideal.map_span]`. Use `(Ideal.span_le.mpr ?_) this` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, hyk k]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, hcomm, hsk, map_zero]`. Establish `hBij : Function.Bijective (MvPolynomial.eval₂Hom γ fun k : {k // k ≠ j} ↦ α (b.y j k))` using `by set P := MvPolynomial.eval₂Hom γ fun k : {k // k ≠ j} ↦ α (b.y j k) with hP set ev := MvPolynomial.eval₂Hom φ (b.y j) with hev`.
+
+Set `ρ : MvPolynomial (Fin D) _ →+* MvPolynomial {k // k ≠ j} _` to `MvPolynomial.eval₂Hom (MvPolynomial.C.comp δ) (fun k ↦ if h : k = j then 1 else MvPolynomial.X ⟨k, h⟩)`. Establish `hPρ : P.comp ρ = α.comp ev`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x show P (ρ (MvPolynomial.C x)) = α (ev (MvPolynomial.C x))`. Simplify using `only [ρ, hP, hev, MvPolynomial.eval₂Hom_C, RingHom.comp_apply]`.
+
+Conclude with `(hcomm x).symm`. Introduce `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `[ρ, P, ev, hyj]`.
+
+Simplify using `[ρ, P, ev, h]`. Establish `hρren : ρ.comp (MvPolynomial.rename Subtype.val).toRingHom = MvPolynomial.map δ`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[ρ]`.
+
+Introduce `k`. Simplify using `[ρ, k.2]`. Establish `hPmap : P.comp (MvPolynomial.map δ) = α.comp (ev.comp (MvPolynomial.rename Subtype.val).toRingHom)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`.
+
+Simplify using `[P, ev, hcomm]`. Introduce `k`. Simplify using `[P, ev]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `q hq`. Take `⟨q, rfl⟩` from `MvPolynomial.map_surjective δ hδsurj q`. Establish `h1 : α (ev (MvPolynomial.rename Subtype.val q)) = 0`. Rewrite using `[← hq]`. Conclude with `(RingHom.congr_fun hPmap q).symm`.
+
+Establish `h2 : ev (MvPolynomial.rename Subtype.val q) ∈ Ideal.span {φ (c.s j)}`. Rewrite using `[← hKer, RingHom.mem_ker]`. Conclude with `h1`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp h2`. Take `⟨p, rfl⟩` from `b.surj j r`.
+
+Establish `h3 : MvPolynomial.rename Subtype.val q - MvPolynomial.C (c.s j) * p ∈ RingHom.ker ev`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, ← hr, hev, MvPolynomial.eval₂Hom_C]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[b.ker j]`. Establish `h4 : ρ (MvPolynomial.rename Subtype.val q - MvPolynomial.C (c.s j) * p) = 0`.
+
+Establish `hle' : Ideal.span (insert (MvPolynomial.X j - 1) (Set.range fun k ↦ MvPolynomial.C (c.s k) - MvPolynomial.C (c.s j) * MvPolynomial.X k)) ≤ RingHom.ker ρ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ (rfl | ⟨k, rfl⟩)`. Simplify using `[ρ]`. Simplify using `[ρ, hsk]`.
+
+Conclude with `hle' h3`. Rewrite `h4` using `[map_sub, map_mul]`. Simplify using `only [ρ, MvPolynomial.eval₂Hom_C, RingHom.comp_apply, hsk, map_zero, zero_mul, sub_zero] at h4`. Rewrite using `[← RingHom.congr_fun hρren q]`. Conclude with `h4`.
+
+Introduce `e`. Take `⟨a, rfl⟩` from `hαsurj e`. Take `⟨p, rfl⟩` from `b.surj j a`. Conclude with `⟨ρ p, RingHom.congr_fun hPρ p⟩`. Use `first`.
+
+Consider the case `exact hKer`. Consider the case `exact hBij`.
+-/
 theorem exChart : ExChart := by
   intro R _ Z W _ π D c b j
   have hdg : IsClosedImmersion (dg Z).left := by
